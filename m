@@ -1,58 +1,63 @@
-Return-Path: <stable+bounces-141457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B4CCAAB3A3
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:50:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E86BAAB387
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:47:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 826CA3AD5A4
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:44:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8ED98170E88
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:44:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F24F29825E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B056B298271;
 	Tue,  6 May 2025 00:38:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lgOXEa+c"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tgpYSeLT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAAB8239E72;
-	Mon,  5 May 2025 23:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DE51239E89;
+	Mon,  5 May 2025 23:05:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486356; cv=none; b=PrtkXC0xUZJLubUa+rHpw+AW5qT9qAMi4Z62Hg8QtPyWA8tNTAzEBbSwW9/LwBsNNilx2a921caY3dVaLxJvxZIwtOfKMyLkUWi5A2TCwzi3SHqHOinIj2PZY1MN6AHP1OftxVIrAH53f3jBmVnM0CSEq2TDxoulVK1hxcCjNDg=
+	t=1746486359; cv=none; b=tHG2icB8xs/RjsotQN+CRr8a1hKP9u3vEp9VHxQ8ho7W7czREhvUgOF9i6PW/igOxoMb6YBsMTwqLlaF+VOPeSEvAaQUfY2WqcjZ+HA32yyEGHGmi39lxLOUtgkguyEsKWCYAeRlQ6ymRM6R6BKQ1dDSJ2Cd77eTRdjFpmxC6U4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486356; c=relaxed/simple;
-	bh=o3fek8CovNQudAwcjM9tbEogmSdp5XotgQ0/JnUDR4A=;
+	s=arc-20240116; t=1746486359; c=relaxed/simple;
+	bh=+mZAvTDf4lljc6lIkQQj9jtGcjET6YW7WsFqVIF/1yU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RrqVApm5AZvpDEmSVxEyZrOCZxG+MCIPikxj9sl1n9RcbAdu0L+O4RWRu23yP0ypzGr0sFWtNFEC1C6PFiRNZa7Hf3IXMJRqHWBhDuXy47K7vZBSdaE+aINR77SOYPsHnoskkYk1VBPjsR/1K+0D0vaiq1+yHaOccY2wSj0uEYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lgOXEa+c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B69A4C4CEED;
-	Mon,  5 May 2025 23:05:55 +0000 (UTC)
+	 MIME-Version; b=szC+7XnxS53Q3H5gtwrdW2oxGqBXSVkzFh9b4rf/6xmx4scFeSoM33LdjxIL/yXT7CyHyObqTN2K6FJ5WdIalJFCtjrUr3hhrdkLk0qYr6/F6XyN5cPKXqbYxBOppuXvk1uduqARBFfYJ+eqmNbZd/m4nvBGY4gEMO7TbRjW74g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tgpYSeLT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12731C4CEE4;
+	Mon,  5 May 2025 23:05:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486356;
-	bh=o3fek8CovNQudAwcjM9tbEogmSdp5XotgQ0/JnUDR4A=;
+	s=k20201202; t=1746486358;
+	bh=+mZAvTDf4lljc6lIkQQj9jtGcjET6YW7WsFqVIF/1yU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lgOXEa+c4TNh/fcZw1DM0dmgRYqCHfwahA1DSZ78WqKMdq7GQgeyaD7xfpUgvpzwU
-	 aAgObJJ+Uel3iokgXE2vR7hDzmL2a9eJPyDGedszhJFmo9VAxXmjWTyabaN+bmw45+
-	 uTUztDRpy0iKNkTHdri45RaaPpMPQ+kQ+c3M/brfwdo2FLdEja12VG+yogJrYgoWq0
-	 0DjSv7czb1lHoxYXUTMC1qxAGRQqMTbLAv8HkfUUS9i+N8cbD4VZ83kQxMR+TXKRSi
-	 V/Kc+GipyY5eJGytIkWMURZ0a7nAXEgKS6vMgcgbi4BVmE3yPiosB4yU0Y+x73r4uv
-	 RwrrTOSVos9Qg==
+	b=tgpYSeLTCl6p6V5HsV/ZON8P/KkThcAFCWITi7HTA3TPuSGEQBaO3/Tae0+8Tr7H3
+	 Pa5tl79Kn5EVad1cmgbg9iyG+Bah6TXLetA6iKkZY4KWhSuQFCKdIokGD57gOtsicj
+	 tHRAHX0JrOI9Z4aSLR7hQXf4+0KJUqkHWq14ItmkUqR+ndnLMXvn4KgbgNnr+HUHKY
+	 t/bsVQm9CV0RWUDzXPrnEi8n3xbTfjFU9A5QsL1vDW51TtNkrm1JfdEIIcjC2vOrkl
+	 S61B6nfm0l6VrNFkflbgfw27wPP8oqG8l+3B9XRu1P78hPfQOaheCgvmLpVGV40yEz
+	 i0aBEgA0YLIvw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Sudeep Holla <sudeep.holla@arm.com>,
-	Dhruva Gole <d-gole@ti.com>,
-	Peng Fan <peng.fan@nxp.com>,
+Cc: Ravi Bangoria <ravi.bangoria@amd.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	arm-scmi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.6 278/294] firmware: arm_scmi: Relax duplicate name constraint across protocol ids
-Date: Mon,  5 May 2025 18:56:18 -0400
-Message-Id: <20250505225634.2688578-278-sashal@kernel.org>
+	mingo@redhat.com,
+	acme@kernel.org,
+	tglx@linutronix.de,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	linux-perf-users@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 279/294] perf/amd/ibs: Fix perf_ibs_op.cnt_mask for CurCnt
+Date: Mon,  5 May 2025 18:56:19 -0400
+Message-Id: <20250505225634.2688578-279-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -67,73 +72,61 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Sudeep Holla <sudeep.holla@arm.com>
+From: Ravi Bangoria <ravi.bangoria@amd.com>
 
-[ Upstream commit 21ee965267bcbdd733be0f35344fa0f0226d7861 ]
+[ Upstream commit 46dcf85566170d4528b842bf83ffc350d71771fa ]
 
-Currently in scmi_protocol_device_request(), no duplicate scmi device
-name is allowed across any protocol. However scmi_dev_match_id() first
-matches the protocol id and then the name. So, there is no strict
-requirement to keep this scmi device name unique across all the protocols.
+IBS Op uses two counters: MaxCnt and CurCnt. MaxCnt is programmed with
+the desired sample period. IBS hw generates sample when CurCnt reaches
+to MaxCnt. The size of these counter used to be 20 bits but later they
+were extended to 27 bits. The 7 bit extension is indicated by CPUID
+Fn8000_001B_EAX[6 / OpCntExt].
 
-Relax the constraint on the duplicate name across the protocols and
-inhibit only within the same protocol id.
+perf_ibs->cnt_mask variable contains bit masks for MaxCnt and CurCnt.
+But IBS driver does not set upper 7 bits of CurCnt in cnt_mask even
+when OpCntExt CPUID bit is set. Fix this.
 
-Message-Id: <20250131141822.514342-1-sudeep.holla@arm.com>
-Reviewed-by: Dhruva Gole <d-gole@ti.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+IBS driver uses cnt_mask[CurCnt] bits only while disabling an event.
+Fortunately, CurCnt bits are not read from MSR while re-enabling the
+event, instead MaxCnt is programmed with desired period and CurCnt is
+set to 0. Hence, we did not see any issues so far.
+
+Signed-off-by: Ravi Bangoria <ravi.bangoria@amd.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Link: https://lkml.kernel.org/r/20250115054438.1021-5-ravi.bangoria@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_scmi/bus.c | 19 ++++++-------------
- 1 file changed, 6 insertions(+), 13 deletions(-)
+ arch/x86/events/amd/ibs.c         | 3 ++-
+ arch/x86/include/asm/perf_event.h | 1 +
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/arm_scmi/bus.c b/drivers/firmware/arm_scmi/bus.c
-index dcf774d3edfe4..0d61f84691d85 100644
---- a/drivers/firmware/arm_scmi/bus.c
-+++ b/drivers/firmware/arm_scmi/bus.c
-@@ -42,7 +42,7 @@ static atomic_t scmi_syspower_registered = ATOMIC_INIT(0);
-  * This helper let an SCMI driver request specific devices identified by the
-  * @id_table to be created for each active SCMI instance.
-  *
-- * The requested device name MUST NOT be already existent for any protocol;
-+ * The requested device name MUST NOT be already existent for this protocol;
-  * at first the freshly requested @id_table is annotated in the IDR table
-  * @scmi_requested_devices and then the requested device is advertised to any
-  * registered party via the @scmi_requested_devices_nh notification chain.
-@@ -52,7 +52,6 @@ static atomic_t scmi_syspower_registered = ATOMIC_INIT(0);
- static int scmi_protocol_device_request(const struct scmi_device_id *id_table)
- {
- 	int ret = 0;
--	unsigned int id = 0;
- 	struct list_head *head, *phead = NULL;
- 	struct scmi_requested_dev *rdev;
- 
-@@ -67,19 +66,13 @@ static int scmi_protocol_device_request(const struct scmi_device_id *id_table)
+diff --git a/arch/x86/events/amd/ibs.c b/arch/x86/events/amd/ibs.c
+index f483874fa20f1..85731f121feb5 100644
+--- a/arch/x86/events/amd/ibs.c
++++ b/arch/x86/events/amd/ibs.c
+@@ -1219,7 +1219,8 @@ static __init int perf_ibs_op_init(void)
+ 	if (ibs_caps & IBS_CAPS_OPCNTEXT) {
+ 		perf_ibs_op.max_period  |= IBS_OP_MAX_CNT_EXT_MASK;
+ 		perf_ibs_op.config_mask	|= IBS_OP_MAX_CNT_EXT_MASK;
+-		perf_ibs_op.cnt_mask    |= IBS_OP_MAX_CNT_EXT_MASK;
++		perf_ibs_op.cnt_mask    |= (IBS_OP_MAX_CNT_EXT_MASK |
++					    IBS_OP_CUR_CNT_EXT_MASK);
  	}
  
- 	/*
--	 * Search for the matching protocol rdev list and then search
--	 * of any existent equally named device...fails if any duplicate found.
-+	 * Find the matching protocol rdev list and then search of any
-+	 * existent equally named device...fails if any duplicate found.
- 	 */
- 	mutex_lock(&scmi_requested_devices_mtx);
--	idr_for_each_entry(&scmi_requested_devices, head, id) {
--		if (!phead) {
--			/* A list found registered in the IDR is never empty */
--			rdev = list_first_entry(head, struct scmi_requested_dev,
--						node);
--			if (rdev->id_table->protocol_id ==
--			    id_table->protocol_id)
--				phead = head;
--		}
-+	phead = idr_find(&scmi_requested_devices, id_table->protocol_id);
-+	if (phead) {
-+		head = phead;
- 		list_for_each_entry(rdev, head, node) {
- 			if (!strcmp(rdev->id_table->name, id_table->name)) {
- 				pr_err("Ignoring duplicate request [%d] %s\n",
+ 	if (ibs_caps & IBS_CAPS_ZEN4)
+diff --git a/arch/x86/include/asm/perf_event.h b/arch/x86/include/asm/perf_event.h
+index 384e8a7db4827..ba2a3935dc624 100644
+--- a/arch/x86/include/asm/perf_event.h
++++ b/arch/x86/include/asm/perf_event.h
+@@ -501,6 +501,7 @@ struct pebs_xmm {
+  */
+ #define IBS_OP_CUR_CNT		(0xFFF80ULL<<32)
+ #define IBS_OP_CUR_CNT_RAND	(0x0007FULL<<32)
++#define IBS_OP_CUR_CNT_EXT_MASK	(0x7FULL<<52)
+ #define IBS_OP_CNT_CTL		(1ULL<<19)
+ #define IBS_OP_VAL		(1ULL<<18)
+ #define IBS_OP_ENABLE		(1ULL<<17)
 -- 
 2.39.5
 
