@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-141352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FDA4AAB2C9
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:29:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92C42AAB2CC
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:29:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 246FC188E44B
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:27:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 057C84E6321
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:27:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C758036D433;
-	Tue,  6 May 2025 00:30:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91DE336BB00;
+	Tue,  6 May 2025 00:30:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kTa2LjBZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hv/VyZr2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28DF12D9DB6;
-	Mon,  5 May 2025 22:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BDA636EF2E;
+	Mon,  5 May 2025 22:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485857; cv=none; b=ibGAas7e2X0NI3xtUCXiCh6mNaTxcUEuGNJbaAKeLpAiZXA2Y5vrgnX0avWZQjv8XLScgrbAm2Bgqupm8Z9clamAAHo9PaBahqvR/RUA+usPlv1eaQVH5gAhxrJgFhvLMQiNCZuy7/nqqc1kWbnxbf0nIqCbWbuFvYfiBRdt02Y=
+	t=1746485863; cv=none; b=biZB9GhJ16FOGhXj7rlyY6J0O+Mu9vU1vb9D8Krqu47VDLJYp6ClMnZ3Cvzqh/72PDwirgv/6jwKt8KNsvtLGLfK417w0jblei1H9fIR/udr57HFudNQm2HobvwV/avJ4wvoiFTuFy4ZJW8ADc2yHwnxxVtWE0glNli1+0PTxw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485857; c=relaxed/simple;
-	bh=bzBkeijRqyaaAXDGuRqa9M0jzYd/bHRMlIYBpTmmdB8=;
+	s=arc-20240116; t=1746485863; c=relaxed/simple;
+	bh=u9jwbzTddMvDD1UzyjrxvTqlENFVGks2J67kdf+mvbQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Yq/yNbHeiFIi+XITFTCC3Itk63hV1U9c53oSsFbkkDBmQP/xbMtgPlNW6lqK9hIQNIv5THBBl5NDzvPmMHKSJh+mTnIxoiFFuG8TXyyeuAkExjjxI6CZVGldKxPReeGVPc/eTg5dvIQSm8p6/UT17mA+i7eOoqMrSvQ0ofAmUg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kTa2LjBZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31BC8C4CEE4;
-	Mon,  5 May 2025 22:57:36 +0000 (UTC)
+	 MIME-Version; b=n7kjupDdZVBRH9aFeJ7cMv+9vEN/54JzNIjWJ9OPvWY1ei9spWu4keEtWSg5osMmEnyo6p+x2T2E94MuquHgNsV7DXX6J+3NFYEukn2NBEEL7qXcODu/aZB/oYFodOfj8riXeLlDGEOvju8Zt5WLmyjezALDdqKXV2JVp9Z5BkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hv/VyZr2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53376C4CEED;
+	Mon,  5 May 2025 22:57:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485857;
-	bh=bzBkeijRqyaaAXDGuRqa9M0jzYd/bHRMlIYBpTmmdB8=;
+	s=k20201202; t=1746485862;
+	bh=u9jwbzTddMvDD1UzyjrxvTqlENFVGks2J67kdf+mvbQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kTa2LjBZlQH7CV49Pbxvjaru0hEU5194qtqsji2Xl9hPWKOULMCTxjX7Z+3U/MNfq
-	 KrLa7RmbT+CVdo0QpKR3tCI62ntTRzLNWqzURvTgpvVIbNqsDOPJ0Dq1DZ+ImI7/t5
-	 2XNBhhU4p5NQrgzvmtZTTEqA1YZuJ4RS9jbWmE77UY8JrHW0d9Vx12E9lyg8A68nSR
-	 IesMIAw/jrxofJKGdrSmNFrU2W1a4d7YhnKKpdkGXM5hAjx+Mpa2nsaek+QsaRihnt
-	 7qXiW4x/UEK0o7M/2/PrvoIFAz3sdhG8JEAn/v76jckif89wJZjRvUNuufJ2KCQ3ZV
-	 nMgC/0FM7bcpg==
+	b=Hv/VyZr2ivHM84oUKwo0P4IKJZCDlSFdKHoZPoYkzgzV0llkCFqBynmvLXtPKPD9A
+	 g7QsPWWvPjAsYGVLdkxzIpcaOa6JHT0AfYB9HeZ5Fxk6AO1quDoHJfI6K289ORvFDC
+	 CeoLjgMSi/8p2+kVMiG0ppKWkkaLeBwhKNK4CCnUyN4rIqttpKoQvFgP7hXqzCe1pz
+	 qVwDdcxA0Y96S5pzcHRodfxvo8MgF7Q6ORZV5N3sQ12wXY6SsvUwque+6g/IIhbxAB
+	 DCUzfbRu93eRsUemD3+m0bNVwpLgp93s2Vkzmtk+aGiJkNN0TkIEGKs6I8rY55kkXM
+	 44U5FR5u7YYcQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ian Rogers <irogers@google.com>,
-	James Clark <james.clark@linaro.org>,
-	Namhyung Kim <namhyung@kernel.org>,
+Cc: Nicolas Bretz <bretznic@gmail.com>,
+	Theodore Ts'o <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>,
-	charlie@rivosinc.com
-Subject: [PATCH AUTOSEL 6.6 032/294] tools/build: Don't pass test log files to linker
-Date: Mon,  5 May 2025 18:52:12 -0400
-Message-Id: <20250505225634.2688578-32-sashal@kernel.org>
+	adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 035/294] ext4: on a remount, only log the ro or r/w state when it has changed
+Date: Mon,  5 May 2025 18:52:15 -0400
+Message-Id: <20250505225634.2688578-35-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -66,46 +66,54 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Ian Rogers <irogers@google.com>
+From: Nicolas Bretz <bretznic@gmail.com>
 
-[ Upstream commit 935e7cb5bb80106ff4f2fe39640f430134ef8cd8 ]
+[ Upstream commit d7b0befd09320e3356a75cb96541c030515e7f5f ]
 
-Separate test log files from object files. Depend on test log output
-but don't pass to the linker.
+A user complained that a message such as:
 
-Reviewed-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Ian Rogers <irogers@google.com>
-Link: https://lore.kernel.org/r/20250311213628.569562-2-irogers@google.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
+EXT4-fs (nvme0n1p3): re-mounted UUID ro. Quota mode: none.
+
+implied that the file system was previously mounted read/write and was
+now remounted read-only, when it could have been some other mount
+state that had changed by the "mount -o remount" operation.  Fix this
+by only logging "ro"or "r/w" when it has changed.
+
+https://bugzilla.kernel.org/show_bug.cgi?id=219132
+
+Signed-off-by: Nicolas Bretz <bretznic@gmail.com>
+Link: https://patch.msgid.link/20250319171011.8372-1-bretznic@gmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/build/Makefile.build | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/ext4/super.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/tools/build/Makefile.build b/tools/build/Makefile.build
-index fac42486a8cf0..27f4ee9cb4db4 100644
---- a/tools/build/Makefile.build
-+++ b/tools/build/Makefile.build
-@@ -141,6 +141,10 @@ objprefix    := $(subst ./,,$(OUTPUT)$(dir)/)
- obj-y        := $(addprefix $(objprefix),$(obj-y))
- subdir-obj-y := $(addprefix $(objprefix),$(subdir-obj-y))
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index 751c879271e05..3dcaf06ada364 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -6771,6 +6771,7 @@ static int ext4_reconfigure(struct fs_context *fc)
+ {
+ 	struct super_block *sb = fc->root->d_sb;
+ 	int ret;
++	bool old_ro = sb_rdonly(sb);
  
-+# Separate out test log files from real build objects.
-+test-y       := $(filter %_log, $(obj-y))
-+obj-y        := $(filter-out %_log, $(obj-y))
-+
- # Final '$(obj)-in.o' object
- in-target := $(objprefix)$(obj)-in.o
+ 	fc->s_fs_info = EXT4_SB(sb);
  
-@@ -151,7 +155,7 @@ $(subdir-y):
+@@ -6782,9 +6783,9 @@ static int ext4_reconfigure(struct fs_context *fc)
+ 	if (ret < 0)
+ 		return ret;
  
- $(sort $(subdir-obj-y)): $(subdir-y) ;
+-	ext4_msg(sb, KERN_INFO, "re-mounted %pU %s. Quota mode: %s.",
+-		 &sb->s_uuid, sb_rdonly(sb) ? "ro" : "r/w",
+-		 ext4_quota_mode(sb));
++	ext4_msg(sb, KERN_INFO, "re-mounted %pU%s.",
++		 &sb->s_uuid,
++		 (old_ro != sb_rdonly(sb)) ? (sb_rdonly(sb) ? " ro" : " r/w") : "");
  
--$(in-target): $(obj-y) FORCE
-+$(in-target): $(obj-y) $(test-y) FORCE
- 	$(call rule_mkdir)
- 	$(call if_changed,$(host)ld_multi)
- 
+ 	return 0;
+ }
 -- 
 2.39.5
 
