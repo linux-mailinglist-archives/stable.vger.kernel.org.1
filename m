@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-140622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3037AAAA3E
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:32:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 356D1AAAA52
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:34:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C470E1886C68
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:29:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D31313B7533
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:29:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54B40377664;
-	Mon,  5 May 2025 23:00:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 258862DBB2D;
+	Mon,  5 May 2025 23:00:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ry+pjD6Y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mq2ahOo+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87906360A4E;
-	Mon,  5 May 2025 22:49:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74A0361289;
+	Mon,  5 May 2025 22:50:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485377; cv=none; b=c1LavmQix2UzVCly0V428XHad9GDisWms/zS8S8kAu9IvjMKXzOM6pfemme9eOFjEbgvhClsYqPSP2EGIeGdPphMY5Qtnx8jx6FL6r0I/x17sE//54HXB2GZ471gZjC69I/oT9uIBQLDIFN+x006vHwoZaRYaLb/A9m+2mubgPM=
+	t=1746485431; cv=none; b=Tu/9RDhvay+By2V/gmdfZWMsLNLnwuZcMtGxgMcH8CCTPefqvYZWxOpX4a5zVPzYkE5ASfFbIog1BGT0IbLTEvhskOlp1B38hyT+1SoNe8K1+uS0m1hzEFiBAXOtF35NC81PcjU0AFj2fXBBlWWlUXw1XPBgpeH45adBKe4Og9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485377; c=relaxed/simple;
-	bh=IIXK9K2DVzIQoWl91FaWaC67MYNxQPN0H26Z8DZxsgg=;
+	s=arc-20240116; t=1746485431; c=relaxed/simple;
+	bh=lUE1eP6OwOjt5dPp+quRCxl+4FiVxPZlYlJJNyOWc7c=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=a7kPa8V549lK/vNntnF9tj18pjxbtgjq3h2o5cLkci436sVhjrnWUH5dVG/XWEO53HKfKymiom2NSI9xABJcDerneidjdVXp2JvqfsoHKQL86oeivLThzlauumRr2DuAeG6OikZXZgRiKIezJgOwoxw3Mtslv9zW0K4d6hDgiIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ry+pjD6Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52B0BC4CEED;
-	Mon,  5 May 2025 22:49:35 +0000 (UTC)
+	 MIME-Version; b=dm+BJiXL3bYKq8O+gihGnEQbVRfEHpazJe443Isi/jvzKRYqwdbRlOBM0gOGu2iHX0O+GIFIMvVs2putibL3PymYFDtBKlCLsx1KjX7u6z7PrLtg9xv8U1UXwuMcAhm0LGLBuqhIMB4RS8Eguzc2FWIMSA41N7HsyKM0omnq0so=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mq2ahOo+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A711AC4CEE4;
+	Mon,  5 May 2025 22:50:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485376;
-	bh=IIXK9K2DVzIQoWl91FaWaC67MYNxQPN0H26Z8DZxsgg=;
+	s=k20201202; t=1746485430;
+	bh=lUE1eP6OwOjt5dPp+quRCxl+4FiVxPZlYlJJNyOWc7c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ry+pjD6YMpviKAtn30mSSsQi2gJkZEZJcj5Q9SLYvUOXu+cG61VTho7HfliPj/SSP
-	 AtBg2jRgGIbs9EO2u+KH7aq8Hs8t/vdhyGZSYqDndDMrQzCAHz0wh4/4nnGtgncGJX
-	 CG13G4jMVj7as3lVReppNPpEsrVWOuQdXMhyIGYsLJHNvEOn1owvl3BGDYcmZvBoNg
-	 m3jfRg5YVamLzl8a9uqDRF/MdAimf/Mu+Mju4EiZd6AM80QFznZct4a9aYTAq4UjZ8
-	 AVRl2lYMsRa1El2P7BtCTLVe7IF2t8Lxv9oTa5jUUcr0BDHSgprBEQlU4rz3n5wQ+N
-	 4osKjEbvSQMTg==
+	b=Mq2ahOo+yqzsy0k1C4x9R1hMuyh2FDbAodUi5l/DPOkJQTAzi/AeOCUK+2Txl/ika
+	 zn3AaZcwcm59nw0ImeWUuWshXWcXXe72dQ9UaPhTpXT1Wx1PgtQp1lgheSz76U3gnQ
+	 uSPAyu9HUy22R3lYs6ENFxXRnULEUK9gJEg1lpsdypjhJoVzJiu+OJry3/ivgLwZYM
+	 oHzBpYylcleZfaXDXx35sGlhI/IpOkhW7R/Tbw48DbBg5RmY8v+T8Cq9L1L4JsP+rl
+	 8ykfOWV0VkPpQu4RDwGHBco/DtcVXbM9Jx+khbG2S4ZnRbmKoWWfGcqp504nkMA5yI
+	 /Hr+sjXJ6MKEw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Anup Patel <apatel@ventanamicro.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+Cc: Michael Margolin <mrgolin@amazon.com>,
+	Firas Jahjah <firasj@amazon.com>,
+	Yonatan Nachum <ynachum@amazon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	anup@brainfault.org,
-	paul.walmsley@sifive.com,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	linux-riscv@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.12 298/486] irqchip/riscv-imsic: Separate next and previous pointers in IMSIC vector
-Date: Mon,  5 May 2025 18:36:14 -0400
-Message-Id: <20250505223922.2682012-298-sashal@kernel.org>
+	mbloch@nvidia.com,
+	phaddad@nvidia.com,
+	mgurtovoy@nvidia.com,
+	linux-rdma@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 307/486] RDMA/core: Fix best page size finding when it can cross SG entries
+Date: Mon,  5 May 2025 18:36:23 -0400
+Message-Id: <20250505223922.2682012-307-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -69,271 +70,137 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Anup Patel <apatel@ventanamicro.com>
+From: Michael Margolin <mrgolin@amazon.com>
 
-[ Upstream commit 0f67911e821c67ecfccc365a2103ce276a9a56fe ]
+[ Upstream commit 486055f5e09df959ad4e3aa4ee75b5c91ddeec2e ]
 
-Currently, there is only one "move" pointer in struct imsic_vector so
-during vector movement the old vector points to the new vector and new
-vector points to itself.
+A single scatter-gather entry is limited by a 32 bits "length" field
+that is practically 4GB - PAGE_SIZE. This means that even when the
+memory is physically contiguous, we might need more than one entry to
+represent it. Additionally when using dmabuf, the sg_table might be
+originated outside the subsystem and optimized for other needs.
 
-To support forced cleanup of the old vector, add separate "move_next" and
-"move_prev" pointers to struct imsic_vector, where during vector movement
-the "move_next" pointer of the old vector points to the new vector and the
-"move_prev" pointer of the new vector points to the old vector.
+For instance an SGT of 16GB GPU continuous memory might look like this:
+(a real life example)
 
-Both "move_next" and "move_prev" pointers are cleared separately by
-__imsic_local_sync() with a restriction that "move_prev" on the new
-CPU is cleared only after the old CPU has cleared "move_next".
+dma_address 34401400000, length fffff000
+dma_address 345013ff000, length fffff000
+dma_address 346013fe000, length fffff000
+dma_address 347013fd000, length fffff000
+dma_address 348013fc000, length 4000
 
-Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/all/20250217085657.789309-8-apatel@ventanamicro.com
+Since ib_umem_find_best_pgsz works within SG entries, in the above case
+we will result with the worst possible 4KB page size.
+
+Fix this by taking into consideration only the alignment of addresses of
+real discontinuity points rather than treating SG entries as such, and
+adjust the page iterator to correctly handle cross SG entry pages.
+
+There is currently an assumption that drivers do not ask for pages
+bigger than maximal DMA size supported by their devices.
+
+Reviewed-by: Firas Jahjah <firasj@amazon.com>
+Reviewed-by: Yonatan Nachum <ynachum@amazon.com>
+Signed-off-by: Michael Margolin <mrgolin@amazon.com>
+Link: https://patch.msgid.link/20250217141623.12428-1-mrgolin@amazon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-riscv-imsic-early.c |  8 ++-
- drivers/irqchip/irq-riscv-imsic-state.c | 96 +++++++++++++++++--------
- drivers/irqchip/irq-riscv-imsic-state.h |  7 +-
- 3 files changed, 78 insertions(+), 33 deletions(-)
+ drivers/infiniband/core/umem.c  | 36 ++++++++++++++++++++++++---------
+ drivers/infiniband/core/verbs.c | 11 +++++-----
+ 2 files changed, 32 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/irqchip/irq-riscv-imsic-early.c b/drivers/irqchip/irq-riscv-imsic-early.c
-index c5c2e6929a2f5..b5def6268936e 100644
---- a/drivers/irqchip/irq-riscv-imsic-early.c
-+++ b/drivers/irqchip/irq-riscv-imsic-early.c
-@@ -77,6 +77,12 @@ static void imsic_handle_irq(struct irq_desc *desc)
- 	struct imsic_vector *vec;
- 	unsigned long local_id;
- 
-+	/*
-+	 * Process pending local synchronization instead of waiting
-+	 * for per-CPU local timer to expire.
-+	 */
-+	imsic_local_sync_all(false);
-+
- 	chained_irq_enter(chip, desc);
- 
- 	while ((local_id = csr_swap(CSR_TOPEI, 0))) {
-@@ -120,7 +126,7 @@ static int imsic_starting_cpu(unsigned int cpu)
- 	 * Interrupts identities might have been enabled/disabled while
- 	 * this CPU was not running so sync-up local enable/disable state.
- 	 */
--	imsic_local_sync_all();
-+	imsic_local_sync_all(true);
- 
- 	/* Enable local interrupt delivery */
- 	imsic_local_delivery(true);
-diff --git a/drivers/irqchip/irq-riscv-imsic-state.c b/drivers/irqchip/irq-riscv-imsic-state.c
-index b97e6cd89ed74..1aeba76d72795 100644
---- a/drivers/irqchip/irq-riscv-imsic-state.c
-+++ b/drivers/irqchip/irq-riscv-imsic-state.c
-@@ -124,10 +124,11 @@ void __imsic_eix_update(unsigned long base_id, unsigned long num_id, bool pend,
- 	}
- }
- 
--static void __imsic_local_sync(struct imsic_local_priv *lpriv)
-+static bool __imsic_local_sync(struct imsic_local_priv *lpriv)
+diff --git a/drivers/infiniband/core/umem.c b/drivers/infiniband/core/umem.c
+index 07c571c7b6999..c5b6863947605 100644
+--- a/drivers/infiniband/core/umem.c
++++ b/drivers/infiniband/core/umem.c
+@@ -80,9 +80,12 @@ unsigned long ib_umem_find_best_pgsz(struct ib_umem *umem,
+ 				     unsigned long pgsz_bitmap,
+ 				     unsigned long virt)
  {
- 	struct imsic_local_config *mlocal;
- 	struct imsic_vector *vec, *mvec;
-+	bool ret = true;
+-	struct scatterlist *sg;
++	unsigned long curr_len = 0;
++	dma_addr_t curr_base = ~0;
+ 	unsigned long va, pgoff;
++	struct scatterlist *sg;
+ 	dma_addr_t mask;
++	dma_addr_t end;
  	int i;
  
- 	lockdep_assert_held(&lpriv->lock);
-@@ -143,35 +144,75 @@ static void __imsic_local_sync(struct imsic_local_priv *lpriv)
- 			__imsic_id_clear_enable(i);
+ 	umem->iova = va = virt;
+@@ -107,17 +110,30 @@ unsigned long ib_umem_find_best_pgsz(struct ib_umem *umem,
+ 	pgoff = umem->address & ~PAGE_MASK;
  
- 		/*
--		 * If the ID was being moved to a new ID on some other CPU
--		 * then we can get a MSI during the movement so check the
--		 * ID pending bit and re-trigger the new ID on other CPU
--		 * using MMIO write.
-+		 * Clear the previous vector pointer of the new vector only
-+		 * after the movement is complete on the old CPU.
+ 	for_each_sgtable_dma_sg(&umem->sgt_append.sgt, sg, i) {
+-		/* Walk SGL and reduce max page size if VA/PA bits differ
+-		 * for any address.
++		/* If the current entry is physically contiguous with the previous
++		 * one, no need to take its start addresses into consideration.
  		 */
--		mvec = READ_ONCE(vec->move);
--		WRITE_ONCE(vec->move, NULL);
--		if (mvec && mvec != vec) {
-+		mvec = READ_ONCE(vec->move_prev);
-+		if (mvec) {
-+			/*
-+			 * If the old vector has not been updated then
-+			 * try again in the next sync-up call.
-+			 */
-+			if (READ_ONCE(mvec->move_next)) {
-+				ret = false;
-+				continue;
-+			}
+-		mask |= (sg_dma_address(sg) + pgoff) ^ va;
++		if (check_add_overflow(curr_base, curr_len, &end) ||
++		    end != sg_dma_address(sg)) {
 +
-+			WRITE_ONCE(vec->move_prev, NULL);
++			curr_base = sg_dma_address(sg);
++			curr_len = 0;
++
++			/* Reduce max page size if VA/PA bits differ */
++			mask |= (curr_base + pgoff) ^ va;
++
++			/* The alignment of any VA matching a discontinuity point
++			* in the physical memory sets the maximum possible page
++			* size as this must be a starting point of a new page that
++			* needs to be aligned.
++			*/
++			if (i != 0)
++				mask |= va;
 +		}
 +
-+		/*
-+		 * If a vector was being moved to a new vector on some other
-+		 * CPU then we can get a MSI during the movement so check the
-+		 * ID pending bit and re-trigger the new ID on other CPU using
-+		 * MMIO write.
-+		 */
-+		mvec = READ_ONCE(vec->move_next);
-+		if (mvec) {
- 			if (__imsic_id_read_clear_pending(i)) {
- 				mlocal = per_cpu_ptr(imsic->global.local, mvec->cpu);
- 				writel_relaxed(mvec->local_id, mlocal->msi_va);
- 			}
- 
-+			WRITE_ONCE(vec->move_next, NULL);
- 			imsic_vector_free(&lpriv->vectors[i]);
- 		}
- 
- skip:
- 		bitmap_clear(lpriv->dirty_bitmap, i, 1);
++		curr_len += sg_dma_len(sg);
+ 		va += sg_dma_len(sg) - pgoff;
+-		/* Except for the last entry, the ending iova alignment sets
+-		 * the maximum possible page size as the low bits of the iova
+-		 * must be zero when starting the next chunk.
+-		 */
+-		if (i != (umem->sgt_append.sgt.nents - 1))
+-			mask |= va;
++
+ 		pgoff = 0;
  	}
-+
-+	return ret;
- }
  
--void imsic_local_sync_all(void)
-+#ifdef CONFIG_SMP
-+static void __imsic_local_timer_start(struct imsic_local_priv *lpriv)
-+{
-+	lockdep_assert_held(&lpriv->lock);
-+
-+	if (!timer_pending(&lpriv->timer)) {
-+		lpriv->timer.expires = jiffies + 1;
-+		add_timer_on(&lpriv->timer, smp_processor_id());
-+	}
-+}
-+#else
-+static inline void __imsic_local_timer_start(struct imsic_local_priv *lpriv)
-+{
-+}
-+#endif
-+
-+void imsic_local_sync_all(bool force_all)
+diff --git a/drivers/infiniband/core/verbs.c b/drivers/infiniband/core/verbs.c
+index 473ee0831307c..dc40001072a5e 100644
+--- a/drivers/infiniband/core/verbs.c
++++ b/drivers/infiniband/core/verbs.c
+@@ -3109,22 +3109,23 @@ EXPORT_SYMBOL(__rdma_block_iter_start);
+ bool __rdma_block_iter_next(struct ib_block_iter *biter)
  {
- 	struct imsic_local_priv *lpriv = this_cpu_ptr(imsic->lpriv);
- 	unsigned long flags;
+ 	unsigned int block_offset;
+-	unsigned int sg_delta;
++	unsigned int delta;
  
- 	raw_spin_lock_irqsave(&lpriv->lock, flags);
--	bitmap_fill(lpriv->dirty_bitmap, imsic->global.nr_ids + 1);
--	__imsic_local_sync(lpriv);
-+
-+	if (force_all)
-+		bitmap_fill(lpriv->dirty_bitmap, imsic->global.nr_ids + 1);
-+	if (!__imsic_local_sync(lpriv))
-+		__imsic_local_timer_start(lpriv);
-+
- 	raw_spin_unlock_irqrestore(&lpriv->lock, flags);
- }
+ 	if (!biter->__sg_nents || !biter->__sg)
+ 		return false;
  
-@@ -190,12 +231,7 @@ void imsic_local_delivery(bool enable)
- #ifdef CONFIG_SMP
- static void imsic_local_timer_callback(struct timer_list *timer)
- {
--	struct imsic_local_priv *lpriv = this_cpu_ptr(imsic->lpriv);
--	unsigned long flags;
--
--	raw_spin_lock_irqsave(&lpriv->lock, flags);
--	__imsic_local_sync(lpriv);
--	raw_spin_unlock_irqrestore(&lpriv->lock, flags);
-+	imsic_local_sync_all(false);
- }
+ 	biter->__dma_addr = sg_dma_address(biter->__sg) + biter->__sg_advance;
+ 	block_offset = biter->__dma_addr & (BIT_ULL(biter->__pg_bit) - 1);
+-	sg_delta = BIT_ULL(biter->__pg_bit) - block_offset;
++	delta = BIT_ULL(biter->__pg_bit) - block_offset;
  
- static void __imsic_remote_sync(struct imsic_local_priv *lpriv, unsigned int cpu)
-@@ -216,14 +252,11 @@ static void __imsic_remote_sync(struct imsic_local_priv *lpriv, unsigned int cpu
- 	 */
- 	if (cpu_online(cpu)) {
- 		if (cpu == smp_processor_id()) {
--			__imsic_local_sync(lpriv);
--			return;
-+			if (__imsic_local_sync(lpriv))
-+				return;
- 		}
- 
--		if (!timer_pending(&lpriv->timer)) {
--			lpriv->timer.expires = jiffies + 1;
--			add_timer_on(&lpriv->timer, cpu);
--		}
-+		__imsic_local_timer_start(lpriv);
+-	if (sg_dma_len(biter->__sg) - biter->__sg_advance > sg_delta) {
+-		biter->__sg_advance += sg_delta;
+-	} else {
++	while (biter->__sg_nents && biter->__sg &&
++	       sg_dma_len(biter->__sg) - biter->__sg_advance <= delta) {
++		delta -= sg_dma_len(biter->__sg) - biter->__sg_advance;
+ 		biter->__sg_advance = 0;
+ 		biter->__sg = sg_next(biter->__sg);
+ 		biter->__sg_nents--;
  	}
++	biter->__sg_advance += delta;
+ 
+ 	return true;
  }
- #else
-@@ -278,8 +311,9 @@ void imsic_vector_unmask(struct imsic_vector *vec)
- 	raw_spin_unlock(&lpriv->lock);
- }
- 
--static bool imsic_vector_move_update(struct imsic_local_priv *lpriv, struct imsic_vector *vec,
--				     bool new_enable, struct imsic_vector *new_move)
-+static bool imsic_vector_move_update(struct imsic_local_priv *lpriv,
-+				     struct imsic_vector *vec, bool is_old_vec,
-+				     bool new_enable, struct imsic_vector *move_vec)
- {
- 	unsigned long flags;
- 	bool enabled;
-@@ -289,7 +323,10 @@ static bool imsic_vector_move_update(struct imsic_local_priv *lpriv, struct imsi
- 	/* Update enable and move details */
- 	enabled = READ_ONCE(vec->enable);
- 	WRITE_ONCE(vec->enable, new_enable);
--	WRITE_ONCE(vec->move, new_move);
-+	if (is_old_vec)
-+		WRITE_ONCE(vec->move_next, move_vec);
-+	else
-+		WRITE_ONCE(vec->move_prev, move_vec);
- 
- 	/* Mark the vector as dirty and synchronize */
- 	bitmap_set(lpriv->dirty_bitmap, vec->local_id, 1);
-@@ -322,8 +359,8 @@ void imsic_vector_move(struct imsic_vector *old_vec, struct imsic_vector *new_ve
- 	 * interrupt on the old vector while device was being moved
- 	 * to the new vector.
- 	 */
--	enabled = imsic_vector_move_update(old_lpriv, old_vec, false, new_vec);
--	imsic_vector_move_update(new_lpriv, new_vec, enabled, new_vec);
-+	enabled = imsic_vector_move_update(old_lpriv, old_vec, true, false, new_vec);
-+	imsic_vector_move_update(new_lpriv, new_vec, false, enabled, old_vec);
- }
- 
- #ifdef CONFIG_GENERIC_IRQ_DEBUGFS
-@@ -386,7 +423,8 @@ struct imsic_vector *imsic_vector_alloc(unsigned int hwirq, const struct cpumask
- 	vec = &lpriv->vectors[local_id];
- 	vec->hwirq = hwirq;
- 	vec->enable = false;
--	vec->move = NULL;
-+	vec->move_next = NULL;
-+	vec->move_prev = NULL;
- 
- 	return vec;
- }
-diff --git a/drivers/irqchip/irq-riscv-imsic-state.h b/drivers/irqchip/irq-riscv-imsic-state.h
-index 391e442808275..f02842b84ed58 100644
---- a/drivers/irqchip/irq-riscv-imsic-state.h
-+++ b/drivers/irqchip/irq-riscv-imsic-state.h
-@@ -23,7 +23,8 @@ struct imsic_vector {
- 	unsigned int				hwirq;
- 	/* Details accessed using local lock held */
- 	bool					enable;
--	struct imsic_vector			*move;
-+	struct imsic_vector			*move_next;
-+	struct imsic_vector			*move_prev;
- };
- 
- struct imsic_local_priv {
-@@ -74,7 +75,7 @@ static inline void __imsic_id_clear_enable(unsigned long id)
- 	__imsic_eix_update(id, 1, false, false);
- }
- 
--void imsic_local_sync_all(void);
-+void imsic_local_sync_all(bool force_all);
- void imsic_local_delivery(bool enable);
- 
- void imsic_vector_mask(struct imsic_vector *vec);
-@@ -87,7 +88,7 @@ static inline bool imsic_vector_isenabled(struct imsic_vector *vec)
- 
- static inline struct imsic_vector *imsic_vector_get_move(struct imsic_vector *vec)
- {
--	return READ_ONCE(vec->move);
-+	return READ_ONCE(vec->move_prev);
- }
- 
- void imsic_vector_move(struct imsic_vector *old_vec, struct imsic_vector *new_vec);
 -- 
 2.39.5
 
