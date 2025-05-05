@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-141683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62154AAB599
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:32:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45980AAB595
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:32:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B04B3AABC7
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:27:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38E343A2F8C
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:27:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F2A29A9E7;
-	Tue,  6 May 2025 00:47:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71903349510;
+	Tue,  6 May 2025 00:47:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZX/XRmhS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pRGy9K5u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4CCE3ACFFC;
-	Mon,  5 May 2025 23:19:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A4A93ACFEE;
+	Mon,  5 May 2025 23:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487160; cv=none; b=niyaqGw/VeMn8lWJpZaiEBzX8/+T2DKmSJwLpaKhuTGU5Af4fIqB7eFDfNo3FFtLaIOKaeJF47Loln69enmGFNDqw3JTFl+gJ0vtYBLVQA5+7s8FLhiCwocB02RjWIy0nc7DYpZlx2CRSqghp5imbGCpTb5ySStXdjKEqGxFzIw=
+	t=1746487159; cv=none; b=g7kqKoOfy4i26TGMkcbMoXlvArGfby8qsOb7+97PqTvLpQLL+fwAJLgdwUcRohayHKA1VmazCSw5f8if1c6GqmhJ7ZTavTbilRy/kr5e2lOzMkJs+tsDG8mp2wvgDOVME0FWOKgGqU4xe8vKOpSsMCs14/TFMgJlxiOwZMY7Bwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487160; c=relaxed/simple;
-	bh=CFlI8amxnvW9hCT1y9g6G11aTMlGoZyNkfPHFYbFLko=;
+	s=arc-20240116; t=1746487159; c=relaxed/simple;
+	bh=sMwPyvXBpK7TDRml1p1f82FV+kXU0/d7luIOBrkuOvo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=RcSElAw/xktVGusO3jScM/s83p5V2zgPQitXDU5sXc04k+1FHQicfbGJ4l4enyYTiguvKPVzTbyQzhPqkYAHjuq77hEdz3hvJCAqwlzlCjIj5f2hzkKQfWYlSeXzMIr43ahccdThoQhzbmGAPsreE0BRUxZgyNd+xYD7kXy67hY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZX/XRmhS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91F26C4CEEE;
-	Mon,  5 May 2025 23:19:15 +0000 (UTC)
+	 MIME-Version; b=ZxcgBYVK1nl1swXqcRCN7cNzbZr6ZyHM3g9Ql+X1xy9eaixaci+oGpDOPrjUixtzS0LR1rb+ZNMXBFSqNVDJc05J1rjRwat806V5q6dOhazy0nPbNWCSiwDXUtqkvE56xJR6gJii5rMhspREScLFV0rD8Q2ArWZAZj00Ga8i0Ao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pRGy9K5u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03607C4CEED;
+	Mon,  5 May 2025 23:19:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487156;
-	bh=CFlI8amxnvW9hCT1y9g6G11aTMlGoZyNkfPHFYbFLko=;
+	s=k20201202; t=1746487159;
+	bh=sMwPyvXBpK7TDRml1p1f82FV+kXU0/d7luIOBrkuOvo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZX/XRmhSW+p/63+gkpHp0Q7Hbhd/mzyRml7E+wa3ofaDuEZOTJXLxJegl0GMssZWg
-	 vA+OI3mNFD5RhmSFqsdTG9SOyVhzK9b5AWaYxlC7dcWoCPte930VS9JN7n/rUxRLXI
-	 syhSZpqj9jIy/LLEZlSSbBa8739Mthz5X42CKVrasKrEy4W7NY04rqJGidmegHQIma
-	 mJUdpDQ0FJxdKP27+x4+lJmV1L2PhDvm/QBmQ8bPQ2B22aCH3dgtVZJT2FOjqvIuKQ
-	 Y0MYTkttFUfpWtVb+2KKH4UJH5dYeSR+G4IpBxP6ecYiHEpIxVgJGaxWBpGQgjl1u/
-	 XFGaMv+uo2sZw==
+	b=pRGy9K5u6ds7DKD+JKsESg4l2M33LrhOps55WZ9POcP19NkjDudN1u3zVtToPsfXK
+	 ObCChZexZmCGUH28SMrfU7GiyPaQvW0VHJI0kSR0FEASLP5/HmaUY5nuQ/FYdFa8P7
+	 n8RCmlesww6F6xkz2pq7G/NfW9avVpnc0gaHRkY9yiMYsKKbP/V1WSi4dq40g1VMfq
+	 7s+K8wFvDJbLvPOXrP23ic2kvinbQ7R7lpMLbHGWV8pyXVnLWL/utUEbjLvte8Srag
+	 oegfl3nhnm1lKe+H28hiQ5ayyXVaTXsTPfMM276YhpoLNBOOeJ0ImjWO2BhGFfZoGW
+	 DNRt2onu3FZFg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Frediano Ziglio <frediano.ziglio@cloud.com>,
-	Juergen Gross <jgross@suse.com>,
+Cc: Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>,
-	sstabellini@kernel.org,
-	xen-devel@lists.xenproject.org
-Subject: [PATCH AUTOSEL 5.10 031/114] xen: Add support for XenServer 6.1 platform device
-Date: Mon,  5 May 2025 19:16:54 -0400
-Message-Id: <20250505231817.2697367-31-sashal@kernel.org>
+	kadlec@netfilter.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 033/114] netfilter: conntrack: Bound nf_conntrack sysctl writes
+Date: Mon,  5 May 2025 19:16:56 -0400
+Message-Id: <20250505231817.2697367-33-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231817.2697367-1-sashal@kernel.org>
 References: <20250505231817.2697367-1-sashal@kernel.org>
@@ -66,63 +72,83 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.237
 Content-Transfer-Encoding: 8bit
 
-From: Frediano Ziglio <frediano.ziglio@cloud.com>
+From: Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>
 
-[ Upstream commit 2356f15caefc0cc63d9cc5122641754f76ef9b25 ]
+[ Upstream commit 8b6861390ffee6b8ed78b9395e3776c16fec6579 ]
 
-On XenServer on Windows machine a platform device with ID 2 instead of
-1 is used.
+nf_conntrack_max and nf_conntrack_expect_max sysctls were authorized to
+be written any negative value, which would then be stored in the
+unsigned int variables nf_conntrack_max and nf_ct_expect_max variables.
 
-This device is mainly identical to device 1 but due to some Windows
-update behaviour it was decided to use a device with a different ID.
+While the do_proc_dointvec_conv function is supposed to limit writing
+handled by proc_dointvec proc_handler to INT_MAX. Such a negative value
+being written in an unsigned int leads to a very high value, exceeding
+this limit.
 
-This causes compatibility issues with Linux which expects, if Xen
-is detected, to find a Xen platform device (5853:0001) otherwise code
-will crash due to some missing initialization (specifically grant
-tables). Specifically from dmesg
+Moreover, the nf_conntrack_expect_max sysctl documentation specifies the
+minimum value is 1.
 
-    RIP: 0010:gnttab_expand+0x29/0x210
-    Code: 90 0f 1f 44 00 00 55 31 d2 48 89 e5 41 57 41 56 41 55 41 89 fd
-          41 54 53 48 83 ec 10 48 8b 05 7e 9a 49 02 44 8b 35 a7 9a 49 02
-          <8b> 48 04 8d 44 39 ff f7 f1 45 8d 24 06 89 c3 e8 43 fe ff ff
-          44 39
-    RSP: 0000:ffffba34c01fbc88 EFLAGS: 00010086
-    ...
+The proc_handlers have thus been updated to proc_dointvec_minmax in
+order to specify the following write bounds :
 
-The device 2 is presented by Xapi adding device specification to
-Qemu command line.
+* Bound nf_conntrack_max sysctl writings between SYSCTL_ZERO
+  and SYSCTL_INT_MAX.
 
-Signed-off-by: Frediano Ziglio <frediano.ziglio@cloud.com>
-Acked-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20250227145016.25350-1-frediano.ziglio@cloud.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
+* Bound nf_conntrack_expect_max sysctl writings between SYSCTL_ONE
+  and SYSCTL_INT_MAX as defined in the sysctl documentation.
+
+With this patch applied, sysctl writes outside the defined in the bound
+will thus lead to a write error :
+
+```
+sysctl -w net.netfilter.nf_conntrack_expect_max=-1
+sysctl: setting key "net.netfilter.nf_conntrack_expect_max": Invalid argument
+```
+
+Signed-off-by: Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/platform-pci.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/netfilter/nf_conntrack_standalone.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/xen/platform-pci.c b/drivers/xen/platform-pci.c
-index 804d8f4d0e73d..e7a95f7926c4e 100644
---- a/drivers/xen/platform-pci.c
-+++ b/drivers/xen/platform-pci.c
-@@ -26,6 +26,8 @@
- 
- #define DRV_NAME    "xen-platform-pci"
- 
-+#define PCI_DEVICE_ID_XEN_PLATFORM_XS61	0x0002
-+
- static unsigned long platform_mmio;
- static unsigned long platform_mmio_alloc;
- static unsigned long platform_mmiolen;
-@@ -167,6 +169,8 @@ static int platform_pci_probe(struct pci_dev *pdev,
- static const struct pci_device_id platform_pci_tbl[] = {
- 	{PCI_VENDOR_ID_XEN, PCI_DEVICE_ID_XEN_PLATFORM,
- 		PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0},
-+	{PCI_VENDOR_ID_XEN, PCI_DEVICE_ID_XEN_PLATFORM_XS61,
-+		PCI_ANY_ID, PCI_ANY_ID, 0, 0, 0},
- 	{0,}
+diff --git a/net/netfilter/nf_conntrack_standalone.c b/net/netfilter/nf_conntrack_standalone.c
+index 8498bf27a3531..abf558868db11 100644
+--- a/net/netfilter/nf_conntrack_standalone.c
++++ b/net/netfilter/nf_conntrack_standalone.c
+@@ -613,7 +613,9 @@ static struct ctl_table nf_ct_sysctl_table[] = {
+ 		.data		= &nf_conntrack_max,
+ 		.maxlen		= sizeof(int),
+ 		.mode		= 0644,
+-		.proc_handler	= proc_dointvec,
++		.proc_handler	= proc_dointvec_minmax,
++		.extra1		= SYSCTL_ZERO,
++		.extra2		= SYSCTL_INT_MAX,
+ 	},
+ 	[NF_SYSCTL_CT_COUNT] = {
+ 		.procname	= "nf_conntrack_count",
+@@ -652,7 +654,9 @@ static struct ctl_table nf_ct_sysctl_table[] = {
+ 		.data		= &nf_ct_expect_max,
+ 		.maxlen		= sizeof(int),
+ 		.mode		= 0644,
+-		.proc_handler	= proc_dointvec,
++		.proc_handler	= proc_dointvec_minmax,
++		.extra1		= SYSCTL_ONE,
++		.extra2		= SYSCTL_INT_MAX,
+ 	},
+ 	[NF_SYSCTL_CT_ACCT] = {
+ 		.procname	= "nf_conntrack_acct",
+@@ -931,7 +935,9 @@ static struct ctl_table nf_ct_netfilter_table[] = {
+ 		.data		= &nf_conntrack_max,
+ 		.maxlen		= sizeof(int),
+ 		.mode		= 0644,
+-		.proc_handler	= proc_dointvec,
++		.proc_handler	= proc_dointvec_minmax,
++		.extra1		= SYSCTL_ZERO,
++		.extra2		= SYSCTL_INT_MAX,
+ 	},
+ 	{ }
  };
- 
 -- 
 2.39.5
 
