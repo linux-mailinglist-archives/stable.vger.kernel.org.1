@@ -1,62 +1,72 @@
-Return-Path: <stable+bounces-140310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05D01AAA77C
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:35:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D614AAA765
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:32:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B9D2988243
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:30:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9D3F4A327D
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:30:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16AA23380DB;
-	Mon,  5 May 2025 22:36:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC8272D5491;
+	Mon,  5 May 2025 22:36:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UkEU9teS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AIGfPcbl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C67B03380D4;
-	Mon,  5 May 2025 22:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 508BC2D5489;
+	Mon,  5 May 2025 22:36:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484613; cv=none; b=l7bYqN+TBd3rod2iOpnKuDV/GLeulU40fkTsdLgyJF6jeEsB22uUvzKySCbI5bMOHWKiz9bm5M0y0mFNyeyeZncuKMZEINnaS2LZnD+7GfwpGjzvEw6Q+Ckq2o3MBhGyRybBJvFV/hezVj23MDoR5Imn9+zRqcwlLdh8cyjszyk=
+	t=1746484617; cv=none; b=mY4grY4eKNCIcRSFWRFQM4JFRGjmYe/ETmgcQI8mdltuShjIdpSXdB0nDnqCXzSkR8WrPQqYZWRrNrWbvgZzZjeb/4oHeSrz0cyMFk+r6GLSfZdmQa0Ta+efn/20k03OXG+vk7+h9fBYc+2LlPYJKzOVzKIsI2iL3o2XPX3wBdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484613; c=relaxed/simple;
-	bh=5gAlm/aMRs/kQvtu4edHnWgZ6FVR2gwuKKGPTPrg1Tc=;
+	s=arc-20240116; t=1746484617; c=relaxed/simple;
+	bh=4z5bQ9xiMoopi0CZXN8uUN7kEuCig4/cpWfz7ZNYzzs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=FB7ZTyDf+PhH5F09m8Ho2ET6jDDTbm+wx7TVG8js8I+/c7JtOcHCvk6vcVMsMSpZ9Uac3Qx8Yo/rUlKcNQs4Ezpq9P6vFo48iXLICXnVB0/6xZqDaxQHSDZR8X5ZuWtRxa6dNHMtwzyy+DUa1gLPuW45eT9wK1+oYiDLKQ1bERM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UkEU9teS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2274C4CEEE;
-	Mon,  5 May 2025 22:36:51 +0000 (UTC)
+	 MIME-Version; b=qauRDpFZrbvccXktYKDN26SGS42LzenlTMASj3rS3BadFV3Uwj7zbYNbomCFkcZ8vCOhydoZJ4288jFztjSo8d7ptlE3SxQatWQIR8CxreDW6aFNqQHxpMVqKG2ofvL+Wcq086BpMHSbOuOP2mS+9qDjZAAf2zOiJn+5ND1J2kU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AIGfPcbl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EACCC4CEE4;
+	Mon,  5 May 2025 22:36:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484613;
-	bh=5gAlm/aMRs/kQvtu4edHnWgZ6FVR2gwuKKGPTPrg1Tc=;
+	s=k20201202; t=1746484616;
+	bh=4z5bQ9xiMoopi0CZXN8uUN7kEuCig4/cpWfz7ZNYzzs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UkEU9teSW2GGkIaEW8ukLl70gUS7uw5G/x+CjWZTE3BWL2wjjGU+p8UipvswrOKPF
-	 8u09vYLDXbxGxoB+geiGlme+giMzQiTr0gaXLixlmQdMcr7q0CuZpeNIyvDNV3pB4Q
-	 i6kXaKEU2U4eVl8dtIZTDNUflKy0/83RWKHJDTV+mVVF0fuUV9KNbdHfdsSkTe3CAs
-	 uFnwqQHi75dRrADgS595kW7fBOdhNX3r3vmdYee2ztwjDNUG/ogvkne+2wNaGR7yUN
-	 4v6lv4lahi63wXZut9GOiZZOomTqcgEwGzvjUjchxKH+AFaCrqJS2lxWFxfHSwQT0G
-	 ysrQ7asqtkX8w==
+	b=AIGfPcbltl0MtJVA/ACrAng2p9XTN0GwvX3RoxUC6f+mCMJdYWV/NVMMpGRVPIoP9
+	 3N7PLhMyYzZMcS2qXLPqpveihD1hLl8FH30KMi551sp/VIZlDgPWwYJWXXhxvZUURr
+	 8goclU0+D8hzPTG17koJDwiUzx8sCrZ/8bHJ3gN04/r+btQ3pSC+D63x7OO/MShc8p
+	 DSz+vg+8rJdlGeRTdhE11iSuM8oV998ENTvhPsri0ljhhTKsAr5NG6B1g/YboHEdO6
+	 LsM1C4tFyQaUHuEmZ7iPSGZirnPw8F0qXsqAKi7n3Sm2LYBqOgdcKZ01s3EBDrhMQl
+	 q9+OrzA269IOQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>,
-	Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>,
+Cc: Konstantin Taranov <kotaranov@microsoft.com>,
+	Shiraz Saleem <shirazsaleem@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	lucas.demarchi@intel.com,
-	thomas.hellstrom@linux.intel.com,
-	rodrigo.vivi@intel.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	intel-xe@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.14 562/642] drm/xe/relay: Don't use GFP_KERNEL for new transactions
-Date: Mon,  5 May 2025 18:12:58 -0400
-Message-Id: <20250505221419.2672473-562-sashal@kernel.org>
+	kys@microsoft.com,
+	haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	shradhagupta@linux.microsoft.com,
+	mlevitsk@redhat.com,
+	peterz@infradead.org,
+	ernis@linux.microsoft.com,
+	linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 563/642] net/mana: fix warning in the writer of client oob
+Date: Mon,  5 May 2025 18:12:59 -0400
+Message-Id: <20250505221419.2672473-563-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -71,59 +81,34 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Michal Wajdeczko <michal.wajdeczko@intel.com>
+From: Konstantin Taranov <kotaranov@microsoft.com>
 
-[ Upstream commit 78d5d1e20d1de9422f013338a0f2311448588ba7 ]
+[ Upstream commit 5ec7e1c86c441c46a374577bccd9488abea30037 ]
 
-VFs use a relay transaction during the resume/reset flow and use
-of the GFP_KERNEL flag may conflict with the reclaim:
+Do not warn on missing pad_data when oob is in sgl.
 
-     -> #0 (fs_reclaim){+.+.}-{0:0}:
- [ ]        __lock_acquire+0x1874/0x2bc0
- [ ]        lock_acquire+0xd2/0x310
- [ ]        fs_reclaim_acquire+0xc5/0x100
- [ ]        mempool_alloc_noprof+0x5c/0x1b0
- [ ]        __relay_get_transaction+0xdc/0xa10 [xe]
- [ ]        relay_send_to+0x251/0xe50 [xe]
- [ ]        xe_guc_relay_send_to_pf+0x79/0x3a0 [xe]
- [ ]        xe_gt_sriov_vf_connect+0x90/0x4d0 [xe]
- [ ]        xe_uc_init_hw+0x157/0x3b0 [xe]
- [ ]        do_gt_restart+0x1ae/0x650 [xe]
- [ ]        xe_gt_resume+0xb6/0x120 [xe]
- [ ]        xe_pm_runtime_resume+0x15b/0x370 [xe]
- [ ]        xe_pci_runtime_resume+0x73/0x90 [xe]
- [ ]        pci_pm_runtime_resume+0xa0/0x100
- [ ]        __rpm_callback+0x4d/0x170
- [ ]        rpm_callback+0x64/0x70
- [ ]        rpm_resume+0x594/0x790
- [ ]        __pm_runtime_resume+0x4e/0x90
- [ ]        xe_pm_runtime_get_ioctl+0x9c/0x160 [xe]
-
-Since we have a preallocated pool of relay transactions, which
-should cover all our normal relay use cases, we may use the
-GFP_NOWAIT flag when allocating new outgoing transactions.
-
-Signed-off-by: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Tested-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Reviewed-by: Marcin Bernatowicz <marcin.bernatowicz@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250131153713.808-1-michal.wajdeczko@intel.com
+Signed-off-by: Konstantin Taranov <kotaranov@microsoft.com>
+Link: https://patch.msgid.link/1737394039-28772-9-git-send-email-kotaranov@linux.microsoft.com
+Reviewed-by: Shiraz Saleem <shirazsaleem@microsoft.com>
+Reviewed-by: Long Li <longli@microsoft.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_guc_relay.c | 2 +-
+ drivers/net/ethernet/microsoft/mana/gdma_main.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_guc_relay.c b/drivers/gpu/drm/xe/xe_guc_relay.c
-index 8f62de026724c..e5dc94f3e6181 100644
---- a/drivers/gpu/drm/xe/xe_guc_relay.c
-+++ b/drivers/gpu/drm/xe/xe_guc_relay.c
-@@ -225,7 +225,7 @@ __relay_get_transaction(struct xe_guc_relay *relay, bool incoming, u32 remote, u
- 	 * with CTB lock held which is marked as used in the reclaim path.
- 	 * Btw, that's one of the reason why we use mempool here!
- 	 */
--	txn = mempool_alloc(&relay->pool, incoming ? GFP_ATOMIC : GFP_KERNEL);
-+	txn = mempool_alloc(&relay->pool, incoming ? GFP_ATOMIC : GFP_NOWAIT);
- 	if (!txn)
- 		return ERR_PTR(-ENOMEM);
+diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+index 638ef64d639f3..f412e17b0d505 100644
+--- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
++++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+@@ -1047,7 +1047,7 @@ static u32 mana_gd_write_client_oob(const struct gdma_wqe_request *wqe_req,
+ 	header->inline_oob_size_div4 = client_oob_size / sizeof(u32);
+ 
+ 	if (oob_in_sgl) {
+-		WARN_ON_ONCE(!pad_data || wqe_req->num_sge < 2);
++		WARN_ON_ONCE(wqe_req->num_sge < 2);
+ 
+ 		header->client_oob_in_sgl = 1;
  
 -- 
 2.39.5
