@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-141309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74439AAB259
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:19:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 303BDAAB24A
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:17:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72460188DB12
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:17:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B8E6174BA2
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:17:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2E752D4B6E;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF3CD2D7AC7;
 	Tue,  6 May 2025 00:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OqCES1vf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uH3hqqwr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59D62278747;
-	Mon,  5 May 2025 22:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDE5827874A;
+	Mon,  5 May 2025 22:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485739; cv=none; b=uCIOh68gDmwRAKoLFA0ZbCau4kFxIb8HyylWhkB9taCU051tvtJPgMy2dmUoODjtPyvv0lkduKHcVdrAPURHm04BkRglCEMrsibvePhE5Fly5OM7/FJR++H7701pfftcMwVEUCiBMKPIYZh0obEUyXBHvgmYE8zg6OhthRelFAY=
+	t=1746485740; cv=none; b=gpkg/eBOBCvBJy+XeYFfjN0pm8zUw/MDD0rQDdIQAJoAEyK3OnuTeIeGQ4fGLs1rzqsMr9lw7TXov4DbTCo8eabSYXUEyijX+MmtVFA9m8qx68rOwo044YLyHncbfIFx5JjxlnfJ9yyFk1HUk0alRJ9uPZiH6qI5foMqeywr30Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485739; c=relaxed/simple;
-	bh=auIwF0BsRvnVi0C+zFWokWEcplIdWkcrNlydNQ+w1hI=;
+	s=arc-20240116; t=1746485740; c=relaxed/simple;
+	bh=0lPb2S8NOP7UemPjX5NkJBUlfo60mQAsK16xdNfuBKU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m+FEzs56/maVOC5zdYWHIiKkC/339d7DIXKWqWlm2dFOA24MzzXOx0t7vl+D5FPGHIMFq5V3HfCo5seENq+/JCkAzT+yYwwY6N/riHFJLe2lS6DWBHOQYC7GmI1YsVifNWbBCfDpvJsODfpHj3giq32M0BIfLh5zkTjnvDmfocI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OqCES1vf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0191EC4CEEE;
-	Mon,  5 May 2025 22:55:37 +0000 (UTC)
+	 MIME-Version; b=U9LVvXW7J+Lofv8qerx8ZMkP0KWT7iIIVvkjdaP5tYfbV3zbuj2BvtQb0I00h8XWFjSeRjV9w9454k9eUf2Si4TEb66kCeeOQlV32M9GVk7g/kGfejRqjek/36F/km83FXwWH89DMxYmEMVr9xSQiBmTctmQg6OHeKX11LQg9LY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uH3hqqwr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2868DC4CEE4;
+	Mon,  5 May 2025 22:55:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485738;
-	bh=auIwF0BsRvnVi0C+zFWokWEcplIdWkcrNlydNQ+w1hI=;
+	s=k20201202; t=1746485740;
+	bh=0lPb2S8NOP7UemPjX5NkJBUlfo60mQAsK16xdNfuBKU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OqCES1vfYjdCVcVKg+9N1ifYL3IRrMMzjSm/D181Ml00LeY+ij5Hxq6fncFfr862E
-	 FQNEFP6mC26HVkbmwdfvcYRTUGOtXfIngG/icHrbomOMzHhL0AnXZMMFJonBwfG3Xz
-	 vbJ75/2sn3JU0CPbdMElA3+P/KgyGsm6V68T77aB/ROHsXsapkZaVCYyKNlp95q+VA
-	 xNMymKm1Ph1R6zgzeuRvqQlI3YiSL/W1EZNp/AuW+MaHaAQjE/Cqdg/cOHTSjumdou
-	 nIbm0s5nuT9OBqcjSguytbSsyvZTk0CXggU3+Wq/Igy78eZ+js0oqnIknpeYtkIps0
-	 0/mzbyWf/nlqw==
+	b=uH3hqqwrUIOjxQKMrvhfyUhpWfArdQm/1LsmvEJ7QK797TQpHGqgwuZVd8TWVS+Yl
+	 36JUPmL0BEwdz2MkzW4j+i2y0EX/ZJ5rGImJTpbYiJ/vGWwjCU9WTNEc7orGQxrYRC
+	 x3Lo2gRM4cT4Xjg1sSPb0qdtD9pnniABze9qTLSTKnQb+SPz5RuB6jbRwpBf6rperN
+	 hbbd7NAeKo4JBy/q7bfEvJc9IEt6KddtB0nCLyKJB46HKY+0S3LXBxiNMlZEW3lnGq
+	 LCDP5GJFWhUvkCq88Ek9JlZ/SQxs0N1lcBoevZAVfSe8LAs17lwWulky1vbbARdiMZ
+	 l/W2Qv3L8Ur0A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Matthew Sakai <msakai@redhat.com>,
-	John Garry <john.g.garry@oracle.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+Cc: Thomas Zimmermann <tzimmermann@suse.de>,
+	Jocelyn Falempe <jfalempe@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	dm-devel@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.12 454/486] dm vdo: use a short static string for thread name prefix
-Date: Mon,  5 May 2025 18:38:50 -0400
-Message-Id: <20250505223922.2682012-454-sashal@kernel.org>
+	airlied@redhat.com,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.12 455/486] drm/ast: Find VBIOS mode from regular display size
+Date: Mon,  5 May 2025 18:38:51 -0400
+Message-Id: <20250505223922.2682012-455-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -61,77 +65,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Matthew Sakai <msakai@redhat.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit 3280c9313c9adce01550cc9f00edfb1dc7c744da ]
+[ Upstream commit c81202906b5cd56db403e95db3d29c9dfc8c74c1 ]
 
-Also remove MODULE_NAME and a BUG_ON check, both unneeded.
+The ast driver looks up supplied display modes from an internal list of
+display modes supported by the VBIOS.
 
-This fixes a warning about string truncation in snprintf that
-will never happen in practice:
+Do not use the crtc_-prefixed display values from struct drm_display_mode
+for looking up the VBIOS mode. The fields contain raw values that the
+driver programs to hardware. They are affected by display settings like
+double-scan or interlace.
 
-drivers/md/dm-vdo/vdo.c: In function ‘vdo_make’:
-drivers/md/dm-vdo/vdo.c:564:5: error: ‘%s’ directive output may be truncated writing up to 55 bytes into a region of size 16 [-Werror=format-truncation=]
-    "%s%u", MODULE_NAME, instance);
-     ^~
-drivers/md/dm-vdo/vdo.c:563:2: note: ‘snprintf’ output between 2 and 66 bytes into a destination of size 16
-  snprintf(vdo->thread_name_prefix, sizeof(vdo->thread_name_prefix),
-  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    "%s%u", MODULE_NAME, instance);
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Instead use the regular vdisplay and hdisplay fields for lookup. As the
+programmed values can now differ from the values used for lookup, set
+struct drm_display_mode.crtc_vdisplay and .crtc_hdisplay from the VBIOS
+mode.
 
-Reported-by: John Garry <john.g.garry@oracle.com>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Signed-off-by: Matthew Sakai <msakai@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250131092257.115596-9-tzimmermann@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-vdo/vdo.c | 11 +----------
- 1 file changed, 1 insertion(+), 10 deletions(-)
+ drivers/gpu/drm/ast/ast_mode.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/md/dm-vdo/vdo.c b/drivers/md/dm-vdo/vdo.c
-index fff847767755a..b897f88250d2a 100644
---- a/drivers/md/dm-vdo/vdo.c
-+++ b/drivers/md/dm-vdo/vdo.c
-@@ -31,9 +31,7 @@
+diff --git a/drivers/gpu/drm/ast/ast_mode.c b/drivers/gpu/drm/ast/ast_mode.c
+index ed496fb32bf34..24ed1cd3caf17 100644
+--- a/drivers/gpu/drm/ast/ast_mode.c
++++ b/drivers/gpu/drm/ast/ast_mode.c
+@@ -131,7 +131,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
+ 		return false;
+ 	}
  
- #include <linux/completion.h>
- #include <linux/device-mapper.h>
--#include <linux/kernel.h>
- #include <linux/lz4.h>
--#include <linux/module.h>
- #include <linux/mutex.h>
- #include <linux/spinlock.h>
- #include <linux/types.h>
-@@ -142,12 +140,6 @@ static void finish_vdo_request_queue(void *ptr)
- 	vdo_unregister_allocating_thread();
- }
+-	switch (mode->crtc_hdisplay) {
++	switch (mode->hdisplay) {
+ 	case 640:
+ 		vbios_mode->enh_table = &res_640x480[refresh_rate_index];
+ 		break;
+@@ -145,7 +145,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
+ 		vbios_mode->enh_table = &res_1152x864[refresh_rate_index];
+ 		break;
+ 	case 1280:
+-		if (mode->crtc_vdisplay == 800)
++		if (mode->vdisplay == 800)
+ 			vbios_mode->enh_table = &res_1280x800[refresh_rate_index];
+ 		else
+ 			vbios_mode->enh_table = &res_1280x1024[refresh_rate_index];
+@@ -157,7 +157,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
+ 		vbios_mode->enh_table = &res_1440x900[refresh_rate_index];
+ 		break;
+ 	case 1600:
+-		if (mode->crtc_vdisplay == 900)
++		if (mode->vdisplay == 900)
+ 			vbios_mode->enh_table = &res_1600x900[refresh_rate_index];
+ 		else
+ 			vbios_mode->enh_table = &res_1600x1200[refresh_rate_index];
+@@ -166,7 +166,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
+ 		vbios_mode->enh_table = &res_1680x1050[refresh_rate_index];
+ 		break;
+ 	case 1920:
+-		if (mode->crtc_vdisplay == 1080)
++		if (mode->vdisplay == 1080)
+ 			vbios_mode->enh_table = &res_1920x1080[refresh_rate_index];
+ 		else
+ 			vbios_mode->enh_table = &res_1920x1200[refresh_rate_index];
+@@ -210,6 +210,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
+ 	hborder = (vbios_mode->enh_table->flags & HBorder) ? 8 : 0;
+ 	vborder = (vbios_mode->enh_table->flags & VBorder) ? 8 : 0;
  
--#ifdef MODULE
--#define MODULE_NAME THIS_MODULE->name
--#else
--#define MODULE_NAME "dm-vdo"
--#endif  /* MODULE */
--
- static const struct vdo_work_queue_type default_queue_type = {
- 	.start = start_vdo_request_queue,
- 	.finish = finish_vdo_request_queue,
-@@ -559,8 +551,7 @@ int vdo_make(unsigned int instance, struct device_config *config, char **reason,
- 	*vdo_ptr = vdo;
++	adjusted_mode->crtc_hdisplay = vbios_mode->enh_table->hde;
+ 	adjusted_mode->crtc_htotal = vbios_mode->enh_table->ht;
+ 	adjusted_mode->crtc_hblank_start = vbios_mode->enh_table->hde + hborder;
+ 	adjusted_mode->crtc_hblank_end = vbios_mode->enh_table->ht - hborder;
+@@ -219,6 +220,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
+ 					 vbios_mode->enh_table->hfp +
+ 					 vbios_mode->enh_table->hsync);
  
- 	snprintf(vdo->thread_name_prefix, sizeof(vdo->thread_name_prefix),
--		 "%s%u", MODULE_NAME, instance);
--	BUG_ON(vdo->thread_name_prefix[0] == '\0');
-+		 "vdo%u", instance);
- 	result = vdo_allocate(vdo->thread_config.thread_count,
- 			      struct vdo_thread, __func__, &vdo->threads);
- 	if (result != VDO_SUCCESS) {
++	adjusted_mode->crtc_vdisplay = vbios_mode->enh_table->vde;
+ 	adjusted_mode->crtc_vtotal = vbios_mode->enh_table->vt;
+ 	adjusted_mode->crtc_vblank_start = vbios_mode->enh_table->vde + vborder;
+ 	adjusted_mode->crtc_vblank_end = vbios_mode->enh_table->vt - vborder;
 -- 
 2.39.5
 
