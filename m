@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-141097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3C8FAAADD9
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:44:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B70F4AAB0AB
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:44:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B30816E68F
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:41:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A26193A38E4
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:40:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 954CD3110E4;
-	Mon,  5 May 2025 23:47:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C6BD4075A1;
+	Mon,  5 May 2025 23:47:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XkcDbAgm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KIpQ2lXV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13CFD3C1975;
-	Mon,  5 May 2025 23:24:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5CA53C1984;
+	Mon,  5 May 2025 23:24:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487445; cv=none; b=NmWcuNgnIG+4yleGSZ4MKIs16A89BkCmZfG42yiLX4rLQoa8FoSG/YJeE38klGlNEJ07yXn/qqLukpnHTFDCow8Csrt2+LaIkNh3uKJ4BXtxQ5VbZoGcoWeKKQ6U0LVlMDGesOmVHGlrTbYwVdU4xF7S8rjVEYnrdDgwyFdk3ug=
+	t=1746487445; cv=none; b=tFbjH2My9y61Tbv3h0bPuq7f5xNP3LCh8oyTul6ma1El6U6lwRtZmFyZJUBoNk07l2/+CsxM1zM+AIOSH37i6IwuxDLQ3OdTz0ylD+e3ALf3p7UAPRNYHopPLm05gSjeIXBjebSIs2+lhKebKeyEJNsrhma2MxSIwOVpwzXWB64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1746487445; c=relaxed/simple;
-	bh=JXp0knaPzG6xN53hQ7Z79Bnj5oEJPGq0liZqj3Zx9Dg=;
+	bh=utHLxvmx94jmXlBLf4SgV8vVmK4AJ5PPVUKB67LD8Cs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=loVFNPt2Bf5isVAZWB9FvmrsCuRayUzNykdEnQnYxTAVzVl/Yvle5onhoepkjYSH3w0KZ+HSGYCKpg9VNEh/8Btpiq/8pqzPNFgFJ5uoS1INwuFI7KNY79+n4//Y0kKWJtmwvyqYOjS/3uPuKw/39EBHPsX8ruEqyo8U6OtjLag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XkcDbAgm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B47FC4CEF1;
-	Mon,  5 May 2025 23:24:02 +0000 (UTC)
+	 MIME-Version; b=UqLGzrK2qSI7LDfag2AglFge5SY5tgRsao1gdrvXyUkfrM4a3KkMY1Q+vQjX8JXnk2elaFOVC699Ehe/8U8IgJHMkzrVBcnka6fnHW0r41avDoLQ1C/aWoW2QJg//xi42qUq/IeEykJtnja7hSQ9i/5p94MPdB7EH4Jo4RfZVys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KIpQ2lXV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5CC6C4CEED;
+	Mon,  5 May 2025 23:24:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487443;
-	bh=JXp0knaPzG6xN53hQ7Z79Bnj5oEJPGq0liZqj3Zx9Dg=;
+	s=k20201202; t=1746487444;
+	bh=utHLxvmx94jmXlBLf4SgV8vVmK4AJ5PPVUKB67LD8Cs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XkcDbAgmYs5Io0dk8XrNrNtw343UwpHIDSJWyzkomJmIC4CZ46mWiglIyZQ4YjlVh
-	 lE/nlwIhRY6d/q22cWuCwFRiK7v+Z51rX9ZRJae1JNxlyDjam7MGMyZBLxxR2OvypY
-	 tQqlV7MFkvazpsJ8fsbgqhnEJrFXzgEvnFIFKj9MV9PSLSjXdFUa7fnNvx0jFH3Jcl
-	 oy8T3++j14UepomVLqiSNUTPJip5cUeU4vzJ683ZwhoTeUITlSryFiSNAkT6xP4fpm
-	 9WNyBMj1w7uNM59NcvbcIcuDHCXkm9LUC4LQJ8ITN/XyoAnjvG1Mjut5+fjC15rbDQ
-	 hTCyH3m+iGftw==
+	b=KIpQ2lXVmKvMEL8rG7BceUqzbd7qpnhGnfNJjIfOL7qAe+7TVPuPgDTPRnrNlP/cV
+	 nAGv+c5goUhtfAjyQa8QWMEUnY/Ee9FEcFZfUPltyTcQa1cPyoShBV3EFW8aCSSwp9
+	 VV83CNXPvHeaop3YUukzO/cvx5LL/1xlPPiORPB2akvU9J0sEj3nOl4amqCFRip7RA
+	 QmjJicei9WnFa7RgaM1P4z0Z5S0TrOnXk7R9KxRKKXcpsG83rwsrBbtW4ZiTiBdh8Q
+	 he5oAj+cI4ia5WJG4EB7AsTuoBdVhZoly2mJNSw25jOqNByLdPUI/8BIezy+ENJdkf
+	 M8yf9CPBgxLVw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Viktor Malik <vmalik@redhat.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Quentin Monnet <qmo@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>,
-	daniel@iogearbox.net,
-	bpf@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 75/79] bpftool: Fix readlink usage in get_fd_type
-Date: Mon,  5 May 2025 19:21:47 -0400
-Message-Id: <20250505232151.2698893-75-sashal@kernel.org>
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 76/79] wifi: rtw88: Don't use static local variable in rtw8822b_set_tx_power_index_by_rate
+Date: Mon,  5 May 2025 19:21:48 -0400
+Message-Id: <20250505232151.2698893-76-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505232151.2698893-1-sashal@kernel.org>
 References: <20250505232151.2698893-1-sashal@kernel.org>
@@ -68,47 +65,75 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.293
 Content-Transfer-Encoding: 8bit
 
-From: Viktor Malik <vmalik@redhat.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-[ Upstream commit 0053f7d39d491b6138d7c526876d13885cbb65f1 ]
+[ Upstream commit 00451eb3bec763f708e7e58326468c1e575e5a66 ]
 
-The `readlink(path, buf, sizeof(buf))` call reads at most sizeof(buf)
-bytes and *does not* append null-terminator to buf. With respect to
-that, fix two pieces in get_fd_type:
+Some users want to plug two identical USB devices at the same time.
+This static variable could theoretically cause them to use incorrect
+TX power values.
 
-1. Change the truncation check to contain sizeof(buf) rather than
-   sizeof(path).
-2. Append null-terminator to buf.
+Move the variable to the caller and pass a pointer to it to
+rtw8822b_set_tx_power_index_by_rate().
 
-Reported by Coverity.
-
-Signed-off-by: Viktor Malik <vmalik@redhat.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Reviewed-by: Quentin Monnet <qmo@kernel.org>
-Link: https://lore.kernel.org/bpf/20250129071857.75182-1-vmalik@redhat.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/8a60f581-0ab5-4d98-a97d-dd83b605008f@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bpf/bpftool/common.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw88/rtw8822b.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/tools/bpf/bpftool/common.c b/tools/bpf/bpftool/common.c
-index a209f53901b8c..91bf7575493b5 100644
---- a/tools/bpf/bpftool/common.c
-+++ b/tools/bpf/bpftool/common.c
-@@ -283,10 +283,11 @@ int get_fd_type(int fd)
- 		p_err("can't read link type: %s", strerror(errno));
- 		return -1;
- 	}
--	if (n == sizeof(path)) {
-+	if (n == sizeof(buf)) {
- 		p_err("can't read link type: path too long!");
- 		return -1;
- 	}
-+	buf[n] = '\0';
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.c b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
+index 63abda3b0ebfc..004a85448ce99 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822b.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
+@@ -864,11 +864,11 @@ static void rtw8822b_query_rx_desc(struct rtw_dev *rtwdev, u8 *rx_desc,
+ }
  
- 	if (strstr(buf, "bpf-map"))
- 		return BPF_OBJ_MAP;
+ static void
+-rtw8822b_set_tx_power_index_by_rate(struct rtw_dev *rtwdev, u8 path, u8 rs)
++rtw8822b_set_tx_power_index_by_rate(struct rtw_dev *rtwdev, u8 path,
++				    u8 rs, u32 *phy_pwr_idx)
+ {
+ 	struct rtw_hal *hal = &rtwdev->hal;
+ 	static const u32 offset_txagc[2] = {0x1d00, 0x1d80};
+-	static u32 phy_pwr_idx;
+ 	u8 rate, rate_idx, pwr_index, shift;
+ 	int j;
+ 
+@@ -876,12 +876,12 @@ rtw8822b_set_tx_power_index_by_rate(struct rtw_dev *rtwdev, u8 path, u8 rs)
+ 		rate = rtw_rate_section[rs][j];
+ 		pwr_index = hal->tx_pwr_tbl[path][rate];
+ 		shift = rate & 0x3;
+-		phy_pwr_idx |= ((u32)pwr_index << (shift * 8));
++		*phy_pwr_idx |= ((u32)pwr_index << (shift * 8));
+ 		if (shift == 0x3) {
+ 			rate_idx = rate & 0xfc;
+ 			rtw_write32(rtwdev, offset_txagc[path] + rate_idx,
+-				    phy_pwr_idx);
+-			phy_pwr_idx = 0;
++				    *phy_pwr_idx);
++			*phy_pwr_idx = 0;
+ 		}
+ 	}
+ }
+@@ -889,11 +889,13 @@ rtw8822b_set_tx_power_index_by_rate(struct rtw_dev *rtwdev, u8 path, u8 rs)
+ static void rtw8822b_set_tx_power_index(struct rtw_dev *rtwdev)
+ {
+ 	struct rtw_hal *hal = &rtwdev->hal;
++	u32 phy_pwr_idx = 0;
+ 	int rs, path;
+ 
+ 	for (path = 0; path < hal->rf_path_num; path++) {
+ 		for (rs = 0; rs < RTW_RATE_SECTION_MAX; rs++)
+-			rtw8822b_set_tx_power_index_by_rate(rtwdev, path, rs);
++			rtw8822b_set_tx_power_index_by_rate(rtwdev, path, rs,
++							    &phy_pwr_idx);
+ 	}
+ }
+ 
 -- 
 2.39.5
 
