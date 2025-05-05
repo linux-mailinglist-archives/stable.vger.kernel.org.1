@@ -1,83 +1,132 @@
-Return-Path: <stable+bounces-139697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D245FAA94EF
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 15:56:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E6C9AA94FC
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 16:00:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E4DE3BCBF3
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 13:55:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 902F17A13B0
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 13:59:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0EF324C092;
-	Mon,  5 May 2025 13:55:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC41C2747B;
+	Mon,  5 May 2025 14:00:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="siGy6ILg"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OC65oLJU"
 X-Original-To: stable@vger.kernel.org
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F83E1FDD
-	for <stable@vger.kernel.org>; Mon,  5 May 2025 13:55:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A630F19A
+	for <stable@vger.kernel.org>; Mon,  5 May 2025 14:00:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746453359; cv=none; b=YPBCpax2iPdBOxs6zwLP38M9D0XMzmcdpJSMTOK65G2Gr6tKKWfvQ1i2A24hnVxLQavz1yuV4NHEDEapOXv5duc4IGwmcbEfSAvi0+D2SuZW9QDQ9uVEql05Z7+FHGFsl2fprRBXPmqZ2m/+svx/V2l2spo/vu1DLLQx2hJ24dk=
+	t=1746453636; cv=none; b=BKZ4MYHOnZSv8P5/5Ym0FpMnlXOB9d9OUR0HMTnFEQH59NQuWdk6ZBSHLZGc6O3MCpPFAwiM9X6nqs4u3elcm6rJhK2hdclDDgQZCFwCksupPgdKuVNYxAj/TNrETkImUmiaXROLyS8XqwkRmW5DX8EFxywUoFSIKElNfmTjZdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746453359; c=relaxed/simple;
-	bh=37kT7C4c/c/BVxK3pOrkTB887jVDgrtzhYOcjpxu3ps=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=m/48okck084l1FiYwFZvpZ4ImPhJ8u3YrVqKIhC1F+QmRm6K1bIsxDesDbcMu6QiN1EJq4uLXCS8LUYgOp0SNeQR+oDiKbYAw8iFlSL1rBq0O7iMO9Guar4g0fUOjC2PZRl1FerEJc0EPEVjAFZ6Gjma86827QmrunUyfEEHMQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=siGy6ILg; arc=none smtp.client-ip=95.215.58.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Mon, 5 May 2025 09:55:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1746453353;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
-	bh=XtRLUheaE6ilPFXAGDwguzy1lOFBtvV+bN2uo0xvyms=;
-	b=siGy6ILgK/Y0W4UUvexjxYR/kIdn1N25HrWcgAk00XQDKUvg91eedSNsAdL1mgbqqHwobc
-	QGoGnNA+GmCW62uVTDQRPWS4PV/LrCSS++Vap747rtFXcuaw5/R9BbEy8sZ0GaZfM2OqYG
-	IJ4DcySGDcnuyah83S6wdvI86xI3NhE=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-bcachefs@vger.kernel.org, stable@vger.kernel.org
-Subject: [GIT PULL] bcachefs fixes for 6.12.y
-Message-ID: <3bje6r3eacjrffmvayjgoaxrz3rowplfvq73vlm5oq3cx4vdow@b7mr6c6nbzwv>
+	s=arc-20240116; t=1746453636; c=relaxed/simple;
+	bh=8sx7iAwEY5wVEwk/YMijqbgIAFA0jCW8GzQqW/tcHzg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iDqf7JxIPrnk9FoDgx/NaP7rua2AA82ltDBrMdqmkM8bfTWLvBN8CX7cMrVBGF2luvx9nhHxzlxqWv25/zIjr5eElpZWbBUdT5v/wndhRsWbAZHC2UHRfu5ZeZZ4TLdI++/nQ7aElLFcjn/M+51bMf5oiqCLksENqW3lXyJyqqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OC65oLJU; arc=none smtp.client-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5e5c7d6b96fso8267768a12.3
+        for <stable@vger.kernel.org>; Mon, 05 May 2025 07:00:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746453633; x=1747058433; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:sender
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Z4W415zBYc/FrcFDPh5CD7dEppC5URQ9rStPXLLgxUo=;
+        b=OC65oLJU9BtOv4geBQa/x5cEOfIFKME36t/DNbGg4+5GtZ5Pkw9s386+Agv256XXQ/
+         UcRxoaIJ/28xCcXR1NQpj2HKJPa/Byi7eLYGmctWru3ZnCFMZxctWTfykwmveb0LIqOv
+         20ncWVG9XQ8sFVioe57zrVCrGOnsSp3HuF58hS23sduCkqUOa6yC09bz8EQrwDKiKWk8
+         Fd9GmcdHx0xfNEUh+hBHRXDpT5Zh+NUT8pbwJyGh1suj1xjzvYtpZFQus10Y+72YiSua
+         /cB2N9FQgZ2Ws9SdOlZPh4aUa1VkoHL5Y1BwNkOw9IyuuLrqq5RQSoJ7nxt5MCaQYjqy
+         sw4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746453633; x=1747058433;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:sender
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Z4W415zBYc/FrcFDPh5CD7dEppC5URQ9rStPXLLgxUo=;
+        b=l21RPYyLR5REV5oG6v7IPNcuhcD//1lbl8AoTpaUGufQmXaVWl7fKGHoGHpGNlr71i
+         qS8xQNcim8MJp3yB6bAj0t1T2L7rePDbeyMr7gSfgT2zeAJEVFgUP3cSb+R8DQWqct+y
+         SKLP6nLN5ozrTe1YIJKfpggmIsSj1vSfw4Q4qYl/k6fNtSkiDv/DIjC/GA8u+rrNVUOL
+         8I7GJLsjYht4pOg9f+7YHsU0sMt5ynXswGeK76PXfDUYzyaZZBvSU43YHBtDMk6DJIFE
+         c4UKYVMdYp02Nvh067l3iGtuki6SyYJZ4DsE8saCzmjc2/1sGghNEI9+WRglt8H5nyr6
+         CCIw==
+X-Forwarded-Encrypted: i=1; AJvYcCU1NkMItbB8k/STsWXzsymZ2NVtVPYQVBNJ3COXdxvf8A62mRN2WECWTD113Bt2xo1D/9Z7dR8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy66YokiLT+w/FZxmjWtSTme3ry346BFxgnFWm8XJP4HlLe5O57
+	pDqug185O4EniGjTL4cAgo4PrS2IR4FW88xPs0USXyi+18HWL0sJ
+X-Gm-Gg: ASbGncsR6gQl86Zd+hiOy4wbZOQWOgfyc0cRm7oXiyk7GKnxMcJGcGikArasMQuDUJu
+	y+HtkkWzgZay6P75ymfjX5MIeZh7yND2YD7N231O/Bm7asZ4JjlYSkVnRSmI8YoN4ghv4SXn+/6
+	k8Tp0NWmHSVIUZaicZcrfPjZ8iCPQiW3xYOWnIqbyc7NSES076VQbYUCZxc7YOyPDZVsaVJxGFA
+	dpLICIVkAPGPB2bBBa8y9nQW9GUR6SiklMCDmp3weBCt3MNYVM1t1Q8wdw0aygs0PwI4zQK9heM
+	1/v6io7r0bJm4Lvjy7Ix1/X7Rxoe8zhrLFOR5TTzEWpQo+n3JVR4pNnkFOzXSs6v9uq04Nr/Srg
+	erUYqF5FY
+X-Google-Smtp-Source: AGHT+IEqvZxAOUpRWWOSk50ECa6+3yzmb1X6nK3mvLHxDq+btzuzepBxjyQWGpD8AtPBFgUV9KfA4w==
+X-Received: by 2002:a17:907:72c9:b0:ac6:edd3:e466 with SMTP id a640c23a62f3a-ad1a491417dmr649282566b.19.1746453632606;
+        Mon, 05 May 2025 07:00:32 -0700 (PDT)
+Received: from eldamar.lan (c-82-192-244-13.customer.ggaweb.ch. [82.192.244.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad1894c032fsm492456566b.123.2025.05.05.07.00.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 May 2025 07:00:31 -0700 (PDT)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id 26597BE2DE0; Mon, 05 May 2025 16:00:31 +0200 (CEST)
+Date: Mon, 5 May 2025 16:00:31 +0200
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: Moritz =?iso-8859-1?Q?M=FChlenhoff?= <jmm@inutil.org>
+Cc: Yu Kuai <yukuai3@huawei.com>, Melvin Vermeeren <vermeeren@vermwa.re>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	1104460@bugs.debian.org, Coly Li <colyli@kernel.org>,
+	Sasha Levin <sashal@kernel.org>, stable <stable@vger.kernel.org>,
+	regressions@lists.linux.dev
+Subject: Re: [regression 6.1.y] discard/TRIM through RAID10 blocking (was:
+ Re: Bug#1104460: linux-image-6.1.0-34-powerpc64le: Discard broken) with
+ RAID10: BUG: kernel tried to execute user page (0) - exploit attempt?
+Message-ID: <aBjEf5R7X9GaJg2T@eldamar.lan>
+References: <174602441004.174814.6400502946223473449.reportbug@talos.vermwa.re>
+ <aBJH6Nsh-7Zj55nN@eldamar.lan>
+ <aBilQxLZ4MA4Tg8e@pisco.westfalen.local>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aBilQxLZ4MA4Tg8e@pisco.westfalen.local>
 
-The following changes since commit 1a7a2300e0dd8b4a73bcd3777a2947fe42a16bef:
+Hi Moritz,
 
-  bcachefs: bch2_ioctl_subvolume_destroy() fixes (2025-03-31 13:16:15 -0400)
+On Mon, May 05, 2025 at 01:47:15PM +0200, Moritz Mühlenhoff wrote:
+> Am Wed, Apr 30, 2025 at 05:55:20PM +0200 schrieb Salvatore Bonaccorso:
+> > Hi
+> > 
+> > We got a regression report in Debian after the update from 6.1.133 to
+> > 6.1.135. Melvin is reporting that discard/trimm trhough a RAID10 array
+> > stalls idefintively. The full report is inlined below and originates
+> > from https://bugs.debian.org/1104460 .
+> 
+> JFTR, we ran into the same problem with a few Wikimedia servers running
+> 6.1.135 and RAID 10: The servers started to lock up once fstrim.service
+> got started. Full oops messages are available at
+> https://phabricator.wikimedia.org/P75746
 
-are available in the Git repository at:
+Thanks for this aditional datapoints. Assuming you wont be able to
+thest the other stable series where the commit d05af90d6218
+("md/raid10: fix missing discard IO accounting") went in, might you at
+least be able to test the 6.1.y branch with the commit reverted again
+and manually trigger the issue?
 
-  git://evilpiepirate.org/bcachefs.git tags/bcachefs-for-6.12-2025-05-5
+If needed I can provide a test Debian package of 6.1.135 (or 6.1.137)
+with the patch reverted. 
 
-for you to fetch changes up to 3f105630c0b2e53a93713c2328e3426081f961c1:
-
-  bcachefs: Remove incorrect __counted_by annotation (2025-05-05 09:41:26 -0400)
-
-----------------------------------------------------------------
-bcachefs fixes for 6.12
-
-remove incorrect counted_by annotation, fixing FORTIFY_SOURCE crashes
-that have been hitting arch users
-
-----------------------------------------------------------------
-Alan Huang (1):
-      bcachefs: Remove incorrect __counted_by annotation
-
- fs/bcachefs/xattr_format.h | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+Regards,
+Salvatore
 
