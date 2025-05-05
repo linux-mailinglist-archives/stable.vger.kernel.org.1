@@ -1,63 +1,67 @@
-Return-Path: <stable+bounces-140075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2378FAAA4B0
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:33:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E254AAA4B1
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:33:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 920DC162AF2
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:33:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EB1C171AA3
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:33:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0E78289E22;
-	Mon,  5 May 2025 22:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 635462F6656;
+	Mon,  5 May 2025 22:27:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ifEiYg4V"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BlFG29rw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69B6A1DC994;
-	Mon,  5 May 2025 22:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F0AD289E29;
+	Mon,  5 May 2025 22:27:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484054; cv=none; b=L7K+ae/LRIuZxp6eAneQ/xjyrbqf3QxLFvEwEV7wNihRhC4VUFqO+paTmXKOnDWn7Fsx3gCkoptF6nKS7+oPDSHcuWwqjZMQd4iB+ziLO4LcLXNJ1/Z6fQXD+M1SJiTMDoyA2UblOL3ON+ySZLWC2nbCNHDXOKENRI2En6SzQ4U=
+	t=1746484057; cv=none; b=f1eS7hzbCtKw2exoHiTFvQaSEfyomKaA9g5sPl8vy1PiiTdCdpx8RXakClVGTTnQzHoWpPLA+DDK5hlEGkcbBKNdYiOCwHS594Ivc/v/MoZlpuKcNsKLh3Bhz9m/FwWIIeB8pzSeuHwAyd4DCC8Ld1I5g6Yqzxny+ayCtbDM34c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484054; c=relaxed/simple;
-	bh=LrT/BzsEdzbAPHh6GUB5YHHxutK4sZM6h/Bma2CUFEc=;
+	s=arc-20240116; t=1746484057; c=relaxed/simple;
+	bh=pZixKMDv/OOtTOQUEBvTpSiQGwtm0IPKyVHMle9zWxU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cU0vN0L9SIGAIqu/dhd2AQFbi/3y7b18p4VZZci1z61qG3OxiZ/2TTdyX6NP4pGK8+s1JWWmwzX+oodT5etdJxbGE1jhrS0NZfa2k2ZFtlACFFxWCz01tyFRHCQtgLj7N60ALEPkUlGU/lxo66S1bLfO04x6vKwLiJZ6c0dZ/Tg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ifEiYg4V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 791F8C4CEEF;
-	Mon,  5 May 2025 22:27:31 +0000 (UTC)
+	 MIME-Version; b=RoQOl48uNmZcZBohQHLibXiek6jwTzKTzDDlcfOMHSQx4A/coFlxlvv6L2EhDjVANpeUc4nj3fYOyPYTebVhleuDUjCNMBocE1BIhh59ps9LdjDEnXSyYs2+Yyz3CLDdTV7ZAP33OOYl/sXZRbZQ80YvdbYW5QMAsfaRIwEJt+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BlFG29rw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BCDBC4CEE4;
+	Mon,  5 May 2025 22:27:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484052;
-	bh=LrT/BzsEdzbAPHh6GUB5YHHxutK4sZM6h/Bma2CUFEc=;
+	s=k20201202; t=1746484057;
+	bh=pZixKMDv/OOtTOQUEBvTpSiQGwtm0IPKyVHMle9zWxU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ifEiYg4Vy9qkuuHby54cAgfNtGMFgLRCxIFWNHvBYYHXOp1CCPy1hX5vgMhFRyY87
-	 lK6PLf+tXYZAbnE1SD12yxwquHMV0hN6TU11m5G2dMZ773DgV/B9/UKbUCHR5x3Kpq
-	 /DsCQTffiPCIdvIgaxKOEiBJmwyCFLUPGkqF/YP3EG1Xc5RdJW8AAVJPHMawmqsQEO
-	 6nxLC6Lz5NCTANBsjZ52kw4m2oAJVRIKiK3PNtZF1fnNYzrvbREt2O9E4LvJsSo8jW
-	 LsT3M4o6W5EhH1rg47MbgOuC+0iOG2hffA3Zs2Fr73/W4QwqFI1rBps/JH8QA7m4wM
-	 IB0TsBtiZhvPw==
+	b=BlFG29rwHFwx0GwbZ318BrqLzbwFE3YwlZnq8ONCjD/7IVTQV6uOkk0Z87TKjmqNE
+	 +4f8EzgBs/JOWi6JNyfhpUsgKu/5J6TO48NEwcwDNW4hwmK+IUGm5CK83hwscaUuRD
+	 lMEY/bq6x5kGgpCLGzoHo/EWzL/mZhfbNQzzF2TPt3H1dLU4AvsF1Zq1vLVaksDmCM
+	 gf9FDL5+tHJFlrjQtf4qPEcKxZywlMACZxMiBdBp5sx0VpPpSCpW6SuFurxGhHutjy
+	 Ni46tgzFv+gA87uPMZe8v5alTq9m9R+YwQF+Ikbino4NaPVgoLsqTAlPGzk6fPC68e
+	 KikPAzBfc3fig==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?N=C3=ADcolas=20F=2E=20R=2E=20A=2E=20Prado?= <nfraprado@collabora.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Waiman Long <longman@redhat.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Rik van Riel <riel@surriel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>,
-	lgirdwood@gmail.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	matthias.bgg@gmail.com,
-	linux-sound@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.14 328/642] ASoC: mediatek: mt8188: Add reference for dmic clocks
-Date: Mon,  5 May 2025 18:09:04 -0400
-Message-Id: <20250505221419.2672473-328-sashal@kernel.org>
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	kirill.shutemov@linux.intel.com,
+	kai.huang@intel.com,
+	jpoimboe@kernel.org,
+	brgerst@gmail.com,
+	pbonzini@redhat.com,
+	peterz@infradead.org
+Subject: [PATCH AUTOSEL 6.14 329/642] x86/nmi: Add an emergency handler in nmi_desc & use it in nmi_shootdown_cpus()
+Date: Mon,  5 May 2025 18:09:05 -0400
+Message-Id: <20250505221419.2672473-329-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -67,69 +71,175 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit bf1800073f4d55f08191b034c86b95881e99b6fd ]
+[ Upstream commit fe37c699ae3eed6e02ee55fbf5cb9ceb7fcfd76c ]
 
-Add the names for the dmic clocks, aud_afe_dmic* and aud_dmic_hires*, so
-they can be acquired and enabled by the platform driver.
+Depending on the type of panics, it was found that the
+__register_nmi_handler() function can be called in NMI context from
+nmi_shootdown_cpus() leading to a lockdep splat:
 
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://patch.msgid.link/20250225-genio700-dmic-v2-2-3076f5b50ef7@collabora.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+  WARNING: inconsistent lock state
+  inconsistent {INITIAL USE} -> {IN-NMI} usage.
+
+   lock(&nmi_desc[0].lock);
+   <Interrupt>
+     lock(&nmi_desc[0].lock);
+
+  Call Trace:
+    _raw_spin_lock_irqsave
+    __register_nmi_handler
+    nmi_shootdown_cpus
+    kdump_nmi_shootdown_cpus
+    native_machine_crash_shutdown
+    __crash_kexec
+
+In this particular case, the following panic message was printed before:
+
+  Kernel panic - not syncing: Fatal hardware error!
+
+This message seemed to be given out from __ghes_panic() running in
+NMI context.
+
+The __register_nmi_handler() function which takes the nmi_desc lock
+with irq disabled shouldn't be called from NMI context as this can
+lead to deadlock.
+
+The nmi_shootdown_cpus() function can only be invoked once. After the
+first invocation, all other CPUs should be stuck in the newly added
+crash_nmi_callback() and cannot respond to a second NMI.
+
+Fix it by adding a new emergency NMI handler to the nmi_desc
+structure and provide a new set_emergency_nmi_handler() helper to set
+crash_nmi_callback() in any context. The new emergency handler will
+preempt other handlers in the linked list. That will eliminate the need
+to take any lock and serve the panic in NMI use case.
+
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Rik van Riel <riel@surriel.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20250206191844.131700-1-longman@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/mediatek/mt8188/mt8188-afe-clk.c | 8 ++++++++
- sound/soc/mediatek/mt8188/mt8188-afe-clk.h | 8 ++++++++
- 2 files changed, 16 insertions(+)
+ arch/x86/include/asm/nmi.h |  2 ++
+ arch/x86/kernel/nmi.c      | 42 ++++++++++++++++++++++++++++++++++++++
+ arch/x86/kernel/reboot.c   | 10 +++------
+ 3 files changed, 47 insertions(+), 7 deletions(-)
 
-diff --git a/sound/soc/mediatek/mt8188/mt8188-afe-clk.c b/sound/soc/mediatek/mt8188/mt8188-afe-clk.c
-index e69c1bb2cb239..7f411b8577823 100644
---- a/sound/soc/mediatek/mt8188/mt8188-afe-clk.c
-+++ b/sound/soc/mediatek/mt8188/mt8188-afe-clk.c
-@@ -58,7 +58,15 @@ static const char *aud_clks[MT8188_CLK_NUM] = {
- 	[MT8188_CLK_AUD_ADC] = "aud_adc",
- 	[MT8188_CLK_AUD_DAC_HIRES] = "aud_dac_hires",
- 	[MT8188_CLK_AUD_A1SYS_HP] = "aud_a1sys_hp",
-+	[MT8188_CLK_AUD_AFE_DMIC1] = "aud_afe_dmic1",
-+	[MT8188_CLK_AUD_AFE_DMIC2] = "aud_afe_dmic2",
-+	[MT8188_CLK_AUD_AFE_DMIC3] = "aud_afe_dmic3",
-+	[MT8188_CLK_AUD_AFE_DMIC4] = "aud_afe_dmic4",
- 	[MT8188_CLK_AUD_ADC_HIRES] = "aud_adc_hires",
-+	[MT8188_CLK_AUD_DMIC_HIRES1] = "aud_dmic_hires1",
-+	[MT8188_CLK_AUD_DMIC_HIRES2] = "aud_dmic_hires2",
-+	[MT8188_CLK_AUD_DMIC_HIRES3] = "aud_dmic_hires3",
-+	[MT8188_CLK_AUD_DMIC_HIRES4] = "aud_dmic_hires4",
- 	[MT8188_CLK_AUD_I2SIN] = "aud_i2sin",
- 	[MT8188_CLK_AUD_TDM_IN] = "aud_tdm_in",
- 	[MT8188_CLK_AUD_I2S_OUT] = "aud_i2s_out",
-diff --git a/sound/soc/mediatek/mt8188/mt8188-afe-clk.h b/sound/soc/mediatek/mt8188/mt8188-afe-clk.h
-index ec53c171c170a..c6c78d684f3ee 100644
---- a/sound/soc/mediatek/mt8188/mt8188-afe-clk.h
-+++ b/sound/soc/mediatek/mt8188/mt8188-afe-clk.h
-@@ -54,7 +54,15 @@ enum {
- 	MT8188_CLK_AUD_ADC,
- 	MT8188_CLK_AUD_DAC_HIRES,
- 	MT8188_CLK_AUD_A1SYS_HP,
-+	MT8188_CLK_AUD_AFE_DMIC1,
-+	MT8188_CLK_AUD_AFE_DMIC2,
-+	MT8188_CLK_AUD_AFE_DMIC3,
-+	MT8188_CLK_AUD_AFE_DMIC4,
- 	MT8188_CLK_AUD_ADC_HIRES,
-+	MT8188_CLK_AUD_DMIC_HIRES1,
-+	MT8188_CLK_AUD_DMIC_HIRES2,
-+	MT8188_CLK_AUD_DMIC_HIRES3,
-+	MT8188_CLK_AUD_DMIC_HIRES4,
- 	MT8188_CLK_AUD_I2SIN,
- 	MT8188_CLK_AUD_TDM_IN,
- 	MT8188_CLK_AUD_I2S_OUT,
+diff --git a/arch/x86/include/asm/nmi.h b/arch/x86/include/asm/nmi.h
+index 41a0ebb699ec6..f677382093f36 100644
+--- a/arch/x86/include/asm/nmi.h
++++ b/arch/x86/include/asm/nmi.h
+@@ -56,6 +56,8 @@ int __register_nmi_handler(unsigned int, struct nmiaction *);
+ 
+ void unregister_nmi_handler(unsigned int, const char *);
+ 
++void set_emergency_nmi_handler(unsigned int type, nmi_handler_t handler);
++
+ void stop_nmi(void);
+ void restart_nmi(void);
+ void local_touch_nmi(void);
+diff --git a/arch/x86/kernel/nmi.c b/arch/x86/kernel/nmi.c
+index ed163c8c8604e..9a95d00f14233 100644
+--- a/arch/x86/kernel/nmi.c
++++ b/arch/x86/kernel/nmi.c
+@@ -40,8 +40,12 @@
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/nmi.h>
+ 
++/*
++ * An emergency handler can be set in any context including NMI
++ */
+ struct nmi_desc {
+ 	raw_spinlock_t lock;
++	nmi_handler_t emerg_handler;
+ 	struct list_head head;
+ };
+ 
+@@ -132,9 +136,22 @@ static void nmi_check_duration(struct nmiaction *action, u64 duration)
+ static int nmi_handle(unsigned int type, struct pt_regs *regs)
+ {
+ 	struct nmi_desc *desc = nmi_to_desc(type);
++	nmi_handler_t ehandler;
+ 	struct nmiaction *a;
+ 	int handled=0;
+ 
++	/*
++	 * Call the emergency handler, if set
++	 *
++	 * In the case of crash_nmi_callback() emergency handler, it will
++	 * return in the case of the crashing CPU to enable it to complete
++	 * other necessary crashing actions ASAP. Other handlers in the
++	 * linked list won't need to be run.
++	 */
++	ehandler = desc->emerg_handler;
++	if (ehandler)
++		return ehandler(type, regs);
++
+ 	rcu_read_lock();
+ 
+ 	/*
+@@ -224,6 +241,31 @@ void unregister_nmi_handler(unsigned int type, const char *name)
+ }
+ EXPORT_SYMBOL_GPL(unregister_nmi_handler);
+ 
++/**
++ * set_emergency_nmi_handler - Set emergency handler
++ * @type:    NMI type
++ * @handler: the emergency handler to be stored
++ *
++ * Set an emergency NMI handler which, if set, will preempt all the other
++ * handlers in the linked list. If a NULL handler is passed in, it will clear
++ * it. It is expected that concurrent calls to this function will not happen
++ * or the system is screwed beyond repair.
++ */
++void set_emergency_nmi_handler(unsigned int type, nmi_handler_t handler)
++{
++	struct nmi_desc *desc = nmi_to_desc(type);
++
++	if (WARN_ON_ONCE(desc->emerg_handler == handler))
++		return;
++	desc->emerg_handler = handler;
++
++	/*
++	 * Ensure the emergency handler is visible to other CPUs before
++	 * function return
++	 */
++	smp_wmb();
++}
++
+ static void
+ pci_serr_error(unsigned char reason, struct pt_regs *regs)
+ {
+diff --git a/arch/x86/kernel/reboot.c b/arch/x86/kernel/reboot.c
+index dc1dd3f3e67fc..9aaac1f9f45b5 100644
+--- a/arch/x86/kernel/reboot.c
++++ b/arch/x86/kernel/reboot.c
+@@ -926,15 +926,11 @@ void nmi_shootdown_cpus(nmi_shootdown_cb callback)
+ 	shootdown_callback = callback;
+ 
+ 	atomic_set(&waiting_for_crash_ipi, num_online_cpus() - 1);
+-	/* Would it be better to replace the trap vector here? */
+-	if (register_nmi_handler(NMI_LOCAL, crash_nmi_callback,
+-				 NMI_FLAG_FIRST, "crash"))
+-		return;		/* Return what? */
++
+ 	/*
+-	 * Ensure the new callback function is set before sending
+-	 * out the NMI
++	 * Set emergency handler to preempt other handlers.
+ 	 */
+-	wmb();
++	set_emergency_nmi_handler(NMI_LOCAL, crash_nmi_callback);
+ 
+ 	apic_send_IPI_allbutself(NMI_VECTOR);
+ 
 -- 
 2.39.5
 
