@@ -1,60 +1,65 @@
-Return-Path: <stable+bounces-141528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 992D6AAB747
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:08:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C595BAAB768
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:11:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0BA51C25D3B
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:03:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A6DE3B1210
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:03:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7431F2EEBC6;
-	Tue,  6 May 2025 00:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8BEB474F30;
+	Tue,  6 May 2025 00:41:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YcTZsKUi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WnEbR1i1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F342EEBD1;
-	Mon,  5 May 2025 23:10:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C2C22EEBDC;
+	Mon,  5 May 2025 23:10:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486603; cv=none; b=mh4eRtl/Y5Kglus5BAkLpuQXUVOtTENxWORyOVFkATAMzOy0QfjvgguKlel57QIzcIvcjaezBFn3hn3lv1kU6t1H+035XPdIVfaecPrvDCSfnucx85pMnNyEANvoHMzMzaK1jqfZcrnojBpTqEPlb3+JBrlUOZoMBjU5YTabuNQ=
+	t=1746486605; cv=none; b=JUxD/Bp1ZNe7YkDPOmXCHesj4KkhnWoUIfeCOwJ+o84RTac9hEKYLca9kg49NSAAuYoTlZSzj0ubfM5xbzSKoF42lN8Ne7b1gc1+mG55/2z/Pc82M56mXwO91fXZoBHWQnWpcrVr45VjieS0sATMOf3PwBQS0873JuE5i9OJ+/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486603; c=relaxed/simple;
-	bh=/A2lNNDhMc5Fco9orW1zjWE7iSjabScTNUs6YZMsbcs=;
+	s=arc-20240116; t=1746486605; c=relaxed/simple;
+	bh=ZPRxVU0lKezTbs3m/k602XrKhy1fTRhX9BEl3kW1GfE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=TlADusUeF8tcWpQEnB+qWl9ZdtVoSms9mWNO/NT2C6Yd4Jyew4Vzi3rRPgRq4MJd2CWetZ7sf51/N2/X3nx66TZ0BtK5cYxA3+GqG2eFqhKefKYaeT6ye9c7hmx776IyNmw9puEcNQ+6bcNeGeZkmEeccc3rNnMmCyIHagBa+aM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YcTZsKUi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C799C4CEEE;
-	Mon,  5 May 2025 23:10:01 +0000 (UTC)
+	 MIME-Version; b=pwhoZoQ/CmN0kh+XegbZXAA84aiSaOYo8S/fPIeVecrnRH1YsVS28tN/rLRrnfhCFRg6V+M+wCfd7r6w12rFUkMj/CyqZGoHFgphYDNaj+Km9FLbNYUAKZ5dMIVlge3k9Lxakb8S8k9uPGtgT/kkj583x2bVUb1SGe/yJEMx43o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WnEbR1i1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7599C4CEEF;
+	Mon,  5 May 2025 23:10:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486602;
-	bh=/A2lNNDhMc5Fco9orW1zjWE7iSjabScTNUs6YZMsbcs=;
+	s=k20201202; t=1746486605;
+	bh=ZPRxVU0lKezTbs3m/k602XrKhy1fTRhX9BEl3kW1GfE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YcTZsKUiEAJ2VcHMcG+Igda5Mg/8P47PCr6DZhaBgjvYlDDfGi95984Wcr5/g6N9i
-	 D3UABN5gQ0kyTwAJ3m1rva5ZLHMFig7savcRjqhpr5yqCCwgYNnKwf/UZYNNE3WPBe
-	 yXfuT/ChfLrCq9Q4Z0KbvwYtjP1qpVruLZa3E+bG01onSo02OhPcQNjk50yeaGGvoP
-	 zL2iHkftp8zm3y+wSVUtMLD2ebyWLHCoWSdtnipvLbSdNEe8rsPLb/G+HRIfInrWQF
-	 TuaOlJPe+StLT5c/eZ/wfaLHIF3jFeL16dxfFcWKtX3aba/jlgaSPHVzjhjEgSQktY
-	 Q3RZ66RsrXysg==
+	b=WnEbR1i1UbKG8IQ/TRwoUZNuHZ4gmY48q/YCK29IQ5/wV6AB2PGBIuDG9gxPh8uSb
+	 nEYg9gMNT8BZvy/fdZr48MeGvLDN2kjn8tiZaw4B7x/xTnTfst/QH3HX/38ycO33ou
+	 12rZKaDGr6LBVAYYCQ+m4J4uqmzHz8UN8KGFwkbEBjGtkQ/uUiPzFuV95tMAMimotc
+	 j6ZIPLgrpvvN9TwXRJ+hhM8Ez48rOG4PaRp1a63GRVpfxXmYor4BKRbXI+Jgra830Q
+	 YDJ3DZWq3sp/uZuig1MiB5peOQNmV3h3mX58ksjtp9JdwQCAkKWf/8crkvRSYlp4uQ
+	 KtKhoFX3DtyMQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Xinyu Zhang <xizhang@purestorage.com>,
-	Caleb Sander Mateos <csander@purestorage.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Ming Lei <ming.lei@redhat.com>,
-	Keith Busch <kbusch@kernel.org>,
+Cc: Moshe Shemesh <moshe@nvidia.com>,
+	Shahar Shitrit <shshitrit@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	"David S . Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>,
-	sagi@grimberg.me,
-	linux-nvme@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.1 112/212] nvme: map uring_cmd data even if address is 0
-Date: Mon,  5 May 2025 19:04:44 -0400
-Message-Id: <20250505230624.2692522-112-sashal@kernel.org>
+	saeedm@nvidia.com,
+	andrew+netdev@lunn.ch,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 114/212] net/mlx5: Avoid report two health errors on same syndrome
+Date: Mon,  5 May 2025 19:04:46 -0400
+Message-Id: <20250505230624.2692522-114-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -69,46 +74,40 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Xinyu Zhang <xizhang@purestorage.com>
+From: Moshe Shemesh <moshe@nvidia.com>
 
-[ Upstream commit 99fde895ff56ac2241e7b7b4566731d72f2fdaa7 ]
+[ Upstream commit b5d7b2f04ebcff740f44ef4d295b3401aeb029f4 ]
 
-When using kernel registered bvec fixed buffers, the "address" is
-actually the offset into the bvec rather than userspace address.
-Therefore it can be 0.
+In case health counter has not increased for few polling intervals, miss
+counter will reach max misses threshold and health report will be
+triggered for FW health reporter. In case syndrome found on same health
+poll another health report will be triggered.
 
-We can skip checking whether the address is NULL before mapping
-uring_cmd data. Bad userspace address will be handled properly later when
-the user buffer is imported.
+Avoid two health reports on same syndrome by marking this syndrome as
+already known.
 
-With this patch, we will be able to use the kernel registered bvec fixed
-buffers in io_uring NVMe passthru with ublk zero-copy support.
-
-Reviewed-by: Caleb Sander Mateos <csander@purestorage.com>
-Reviewed-by: Jens Axboe <axboe@kernel.dk>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Signed-off-by: Xinyu Zhang <xizhang@purestorage.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Link: https://lore.kernel.org/r/20250227223916.143006-4-kbusch@meta.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
+Reviewed-by: Shahar Shitrit <shshitrit@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/ioctl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/health.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/nvme/host/ioctl.c b/drivers/nvme/host/ioctl.c
-index acf73a91e87e7..0d84acbdbf6b0 100644
---- a/drivers/nvme/host/ioctl.c
-+++ b/drivers/nvme/host/ioctl.c
-@@ -541,7 +541,7 @@ static int nvme_uring_cmd_io(struct nvme_ctrl *ctrl, struct nvme_ns *ns,
- 		return PTR_ERR(req);
- 	req->timeout = d.timeout_ms ? msecs_to_jiffies(d.timeout_ms) : 0;
- 
--	if (d.addr && d.data_len) {
-+	if (d.data_len) {
- 		ret = nvme_map_user_request(req, d.addr,
- 			d.data_len, nvme_to_user_ptr(d.metadata),
- 			d.metadata_len, 0, &meta, ioucmd, vec);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/health.c b/drivers/net/ethernet/mellanox/mlx5/core/health.c
+index 65483dab90573..b4faac12789d9 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/health.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/health.c
+@@ -850,6 +850,7 @@ static void poll_health(struct timer_list *t)
+ 	health->prev = count;
+ 	if (health->miss_counter == MAX_MISSES) {
+ 		mlx5_core_err(dev, "device's health compromised - reached miss count\n");
++		health->synd = ioread8(&h->synd);
+ 		print_health_info(dev);
+ 		queue_work(health->wq, &health->report_work);
+ 	}
 -- 
 2.39.5
 
