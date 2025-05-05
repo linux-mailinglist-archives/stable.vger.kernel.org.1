@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-141132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E12CAAAB647
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:46:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50212AAB64E
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:47:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE6A63A9D8C
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:40:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9FF23A7086
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:40:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B18CF29ACE8;
-	Tue,  6 May 2025 00:25:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8661D3278D1;
+	Tue,  6 May 2025 00:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jhw2t/A8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gh7ha+9W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098E437532D;
-	Mon,  5 May 2025 22:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BFA237533D;
+	Mon,  5 May 2025 22:47:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485266; cv=none; b=lzIpxGdiqslj46OG9jZR7johHhIS0P+xH+tZgeSteyfFeCKW8qr7lITPczO5iS/FrgXnyyMV70xgFxVBS6PFTUDq4FhxObFfpMWeKLQjsAjldoPK/f/zQ33cjknoS7rFVWnEPilEDm6LOrhhuk868kI0eCZE1bQth1HTK82xyLM=
+	t=1746485271; cv=none; b=RVqc9/hYvLsHeQdjvQkyKxjqCwWWBBY72tmaGwLJP6w/uoJ6kGShecKKWBh0MeykRukAUqJZAUd0QwA0DDURq1udZx5jb6zFQ1S/0nQqSjcTEXDcemLO1N3NczrlryAxmcruWZh7pPmBjk6OKlYFOTOvVJPUhyT9e/SMBGkVOL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485266; c=relaxed/simple;
-	bh=uoqatsxnaznUHh7zR9Q6eQtHRh1oWtgPBgbDgbm5Xfs=;
+	s=arc-20240116; t=1746485271; c=relaxed/simple;
+	bh=pb2oVT93ib72xdnlaAdoQ8z1PWQRPnFU+pEqI39w8SA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=WHL2hQI+bJwg3Iez0XT1mpqYkzhM5ntJ4ZiqwR8ze8bVVCrK/zsVl5PL4iFeiqdAM0u9YOMHNDhcvOVwHImzbraTQoqZEw5sSEImn1fWrl+3qPBdyLoPBCCrVheFC7XLlEtn2zb5NlVWNCOXOVqYWQLAGlAsyQAAD4PdkODuoFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jhw2t/A8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97982C4CEED;
-	Mon,  5 May 2025 22:47:43 +0000 (UTC)
+	 MIME-Version; b=kkueUyM5+F2I4D+AZcefHtzWNFL44vDGXFTBD98v9ISGMXGhXc6X2Kb9lsYxKKu1Uad2bPKG5T0S6J/aEvubL0Y0yfhX708c+VsFh7mHJbMemviZs2jdfUbOssNLdi8F0FX9MzhwDDPFbHEa4O92y41tuYXBl0eBHhlv8xDqboo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gh7ha+9W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7166C4CEF1;
+	Mon,  5 May 2025 22:47:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485264;
-	bh=uoqatsxnaznUHh7zR9Q6eQtHRh1oWtgPBgbDgbm5Xfs=;
+	s=k20201202; t=1746485271;
+	bh=pb2oVT93ib72xdnlaAdoQ8z1PWQRPnFU+pEqI39w8SA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jhw2t/A8hsTBGfqj5YyTPYzRb0pX3OTKU3rTc4nrraALssGPZPdPm5RQPBG75OfFc
-	 Sk6lfUknIXg0ioVtkircDlqLJN5EfxwP6sv9RqwR+Hn4vWjF1e5PqT230PwR8vMhsa
-	 5Fe21a3KdA+SeTgTNCJYgudIWFxMXguCCxplRjjPLS3ZNHOHUyfdJpvvt0Z1xqMF7j
-	 6e3xClefsl4eUv3fIZi260KOYwG6/f8IR0wz1fp7pvjNjuhRV0/Zvn8ZpMzOSWX8ZE
-	 yXeZo+j2xAhRmy/MbS0WHl0ep0F/pE4tv+IPyQA408SOYpGxakVafU7hiZLliNew0M
-	 PHBMzcrS/k5jA==
+	b=Gh7ha+9WrBIxuYo/8MIbkpLMXXWvtUO3Kw+dpDlGyfa6rOuzhrrSk4LTZO4U9yxM9
+	 4VyzV2QGag+6ZereS7z0bUxv0lsvlcHW0QtWz2tkCwvw94HYCVrLIQ+7xoG9LCnKFV
+	 hf/gOHqbi6JI7MBtzPNV2ghh+2NZmjFF1wrMW2IhjDPCfGibHqaWbain65dPpC7Ecx
+	 5v4EhVcvlzihvtjPYJYuU25w1mU59anmm/Hbx7Pu+4j9C/QB19ipIOYxhR943054o/
+	 dvdh29SANV9MzcDsuZfocevvgDPgizRfiLzYzaopQ0OZ71OqLrDQdwXAljhn0edvjT
+	 DbNi3czDnM5Ww==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Daniel Gomez <da.gomez@samsung.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	thomas.hellstrom@linux.intel.com,
-	rodrigo.vivi@intel.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	intel-xe@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.12 242/486] drm/xe: xe_gen_wa_oob: replace program_invocation_short_name
-Date: Mon,  5 May 2025 18:35:18 -0400
-Message-Id: <20250505223922.2682012-242-sashal@kernel.org>
+	iyappan@os.amperecomputing.com,
+	keyur@os.amperecomputing.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 245/486] net: xgene-v2: remove incorrect ACPI_PTR annotation
+Date: Mon,  5 May 2025 18:35:21 -0400
+Message-Id: <20250505223922.2682012-245-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -71,56 +71,45 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Daniel Gomez <da.gomez@samsung.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 89eb42b5539f6ae6a0cabcb39e5b6fcc83c106a1 ]
+[ Upstream commit 01358e8fe922f716c05d7864ac2213b2440026e7 ]
 
-program_invocation_short_name may not be available in other systems.
-Instead, replace it with the argv[0] to pass the executable name.
+Building with W=1 shows a warning about xge_acpi_match being unused when
+CONFIG_ACPI is disabled:
 
-Fixes build error when program_invocation_short_name is not available:
+drivers/net/ethernet/apm/xgene-v2/main.c:723:36: error: unused variable 'xge_acpi_match' [-Werror,-Wunused-const-variable]
 
-drivers/gpu/drm/xe/xe_gen_wa_oob.c:34:3: error: use of
-undeclared identifier 'program_invocation_short_name'    34 |
-program_invocation_short_name);       |                 ^ 1 error
-generated.
-
-Suggested-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Daniel Gomez <da.gomez@samsung.com>
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250224-macos-build-support-xe-v3-1-d2c9ed3a27cc@samsung.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://patch.msgid.link/20250225163341.4168238-2-arnd@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_gen_wa_oob.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/apm/xgene-v2/main.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_gen_wa_oob.c b/drivers/gpu/drm/xe/xe_gen_wa_oob.c
-index 904cf47925aa1..ed9183599e31c 100644
---- a/drivers/gpu/drm/xe/xe_gen_wa_oob.c
-+++ b/drivers/gpu/drm/xe/xe_gen_wa_oob.c
-@@ -28,10 +28,10 @@
- 	"\n" \
- 	"#endif\n"
+diff --git a/drivers/net/ethernet/apm/xgene-v2/main.c b/drivers/net/ethernet/apm/xgene-v2/main.c
+index 9e90c23814910..68335935cea77 100644
+--- a/drivers/net/ethernet/apm/xgene-v2/main.c
++++ b/drivers/net/ethernet/apm/xgene-v2/main.c
+@@ -9,8 +9,6 @@
  
--static void print_usage(FILE *f)
-+static void print_usage(FILE *f, const char *progname)
+ #include "main.h"
+ 
+-static const struct acpi_device_id xge_acpi_match[];
+-
+ static int xge_get_resources(struct xge_pdata *pdata)
  {
- 	fprintf(f, "usage: %s <input-rule-file> <generated-c-source-file> <generated-c-header-file>\n",
--		program_invocation_short_name);
-+		progname);
- }
- 
- static void print_parse_error(const char *err_msg, const char *line,
-@@ -144,7 +144,7 @@ int main(int argc, const char *argv[])
- 
- 	if (argc < 3) {
- 		fprintf(stderr, "ERROR: wrong arguments\n");
--		print_usage(stderr);
-+		print_usage(stderr, argv[0]);
- 		return 1;
- 	}
- 
+ 	struct platform_device *pdev;
+@@ -731,7 +729,7 @@ MODULE_DEVICE_TABLE(acpi, xge_acpi_match);
+ static struct platform_driver xge_driver = {
+ 	.driver = {
+ 		   .name = "xgene-enet-v2",
+-		   .acpi_match_table = ACPI_PTR(xge_acpi_match),
++		   .acpi_match_table = xge_acpi_match,
+ 	},
+ 	.probe = xge_probe,
+ 	.remove_new = xge_remove,
 -- 
 2.39.5
 
