@@ -1,66 +1,61 @@
-Return-Path: <stable+bounces-141185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F574AAB16D
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:00:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 458FCAAAE71
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:56:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E30F13ADCD3
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:55:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EA2CD166F64
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:54:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D669A2D43E7;
-	Tue,  6 May 2025 00:26:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE2C0381EA0;
+	Mon,  5 May 2025 23:00:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xyq6vDkx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CxPr68KW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB5692D0298;
-	Mon,  5 May 2025 22:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9289A2D0ADC;
+	Mon,  5 May 2025 22:50:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485447; cv=none; b=urCEtHFpfoOGN+r21XBrj6O/IJxLJk15u6CakT7h6Ma89rGMUHGg/GXLRhgrmeXOvTKpHJSaAmOrOQuk8iv4fesNhI8Yk0kHpNPCqNbB2S9RPpJXn90TavsDro3dz/diDf7mN/tBzo33Gmh9tIGVRBPxyzxmw7wg7flxCLOSrQ0=
+	t=1746485454; cv=none; b=fXmBtZ8w6XNqbHgAs+Fga89Bu0AnLIEIUcdx/CJp+JXXppiUUuFsTJdSjTun5qGOl8rsHz7EIfifOa6nN7MFj+fGeYhbHWN4OgXKjlhnnEyCBcdL+MK0eMI8RfxUpJQtuCtm6IU2EwVHmx6/gTx0JKMOPnVEAgBzVVCeqBmvwzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485447; c=relaxed/simple;
-	bh=b1JYZDxm/fglUhm8/o9+lonBk4/xFxZf/GkAfa+sEMw=;
+	s=arc-20240116; t=1746485454; c=relaxed/simple;
+	bh=WG6h0YozOTRuKa/hRcDZ+ntlBYNJHMUhoxiLBf1qQVo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=AN3QlebVbNOa/S94rwvGhrapzItQqrLQ6tzrEsxvUWKzZRdR7AQyRs5Jz/vo8gxJ8DI+HzNdqjsbXSt5lqn2AwYI/YbG51YWaAbud0TYdx4a8E+3RnbN3rCD+2VqKmeFkYwVvNniP5NpmsuiOiKZFdyzhKgg0ja86kHFsDYmFQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xyq6vDkx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CE14C4CEE4;
-	Mon,  5 May 2025 22:50:45 +0000 (UTC)
+	 MIME-Version; b=m0XKy08Ef+gUBJ27lPK38r/YVqxgZnKEQjO6FKMCxCdz/ifDMVrwjU0Pg7a4zskgODTqJH328Z1N7DJ9NWfDs/MWaKRW0yWcg5g7850l5y8Q/lEweTVxdiN+SGW4Coe9ztKaXG5yBwcm3HE711ieeTj3BAk0msig3FoPGTUZkrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CxPr68KW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50F0CC4CEEE;
+	Mon,  5 May 2025 22:50:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485447;
-	bh=b1JYZDxm/fglUhm8/o9+lonBk4/xFxZf/GkAfa+sEMw=;
+	s=k20201202; t=1746485453;
+	bh=WG6h0YozOTRuKa/hRcDZ+ntlBYNJHMUhoxiLBf1qQVo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xyq6vDkxgHFXGlGzo9yEBhT9wmGiEfZHBRcZ5yjAlTEDZZBteoDoYNWjc82QHYQtz
-	 MzG59u4M+swDcUZ0PlvI4BvGwfwXXpAQApJz2Oxmbs/ydsm/v7gUAfRNnkx1hGQxKC
-	 FyA4i6dACbSZLVYkbUDaeRvXJLTDKAHjt3O6H09PgpkEraHB3uwv0N4oybIxq48cFI
-	 UiQUsGIJsf2tptlEJmdtltA7INF5uVonFSXhLUErfJBAEvBHMpJmUcaH5qWgWqb1Mv
-	 88RzWM+8b6K+PzYu0txJ1lXiX4yeeWpqDOOZ2b1oBVzMjnpWkPmjP5PMe1js/Lc5XT
-	 tntHZ7ZM5hntw==
+	b=CxPr68KW7lBV2ZqgriVyy2JqPGULTNHlUTPn0q/N20pBs4GYCZK3S9aE57XblJhVj
+	 /s6cMnTMwFIvb5NcLM/ivuF1j2LsHt0oQQiuB+h1Gw/zhbIM6WjKPd3KrXNN7zyjo0
+	 AHD2g3t4+sgxEq1AcEtiCE1B/5xYWh1H37mdO0JP88jMPyQHjzU8WgNRjRr+NjyxUF
+	 fjU4QKsfI58IRDrhQAD8/hyyaDsL6FP4zYirdATsC0j1tb2VqcKVhKTzcW22tdhcVn
+	 /omIhMJDUcBJcd1K0Q2eqb/AMTjrgOOzJYznjdIKBkooJaWk88A3QsOEBeKBgWKEfC
+	 MCf+QcDj6GSGw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Brian Gerst <brgerst@gmail.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+Cc: Andrew Jones <ajones@ventanamicro.com>,
+	Anup Patel <apatel@ventanamicro.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	nathan@kernel.org,
-	ubizjak@gmail.com,
-	thomas.weissschuh@linutronix.de,
-	llvm@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.12 316/486] x86/relocs: Handle R_X86_64_REX_GOTPCRELX relocations
-Date: Mon,  5 May 2025 18:36:32 -0400
-Message-Id: <20250505223922.2682012-316-sashal@kernel.org>
+	anup@brainfault.org,
+	paul.walmsley@sifive.com,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	linux-riscv@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.12 319/486] irqchip/riscv-imsic: Set irq_set_affinity() for IMSIC base
+Date: Mon,  5 May 2025 18:36:35 -0400
+Message-Id: <20250505223922.2682012-319-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -75,56 +70,83 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Brian Gerst <brgerst@gmail.com>
+From: Andrew Jones <ajones@ventanamicro.com>
 
-[ Upstream commit cb7927fda002ca49ae62e2782c1692acc7b80c67 ]
+[ Upstream commit 999f458c1771354371ba367dd84f55f9a62a4233 ]
 
-Clang may produce R_X86_64_REX_GOTPCRELX relocations when redefining the
-stack protector location.  Treat them as another type of PC-relative
-relocation.
+The IMSIC driver assigns the IMSIC domain specific imsic_irq_set_affinity()
+callback to the per device leaf MSI domain. That's a layering violation as
+it is called with the leaf domain data and not with the IMSIC domain
+data. This prevents moving the IMSIC driver to the common MSI library which
+uses the generic msi_domain_set_affinity() callback for device MSI domains.
 
-Signed-off-by: Brian Gerst <brgerst@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20250123190747.745588-6-brgerst@gmail.com
+Instead of using imsic_irq_set_affinity() for leaf MSI domains, use
+imsic_irq_set_affinity() for the non-leaf IMSIC base domain and use
+irq_chip_set_affinity_parent() for leaf MSI domains.
+
+[ tglx: Massaged change log ]
+
+Signed-off-by: Andrew Jones <ajones@ventanamicro.com>
+Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20250217085657.789309-2-apatel@ventanamicro.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/tools/relocs.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/irqchip/irq-riscv-imsic-platform.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/tools/relocs.c b/arch/x86/tools/relocs.c
-index c101bed619400..7f390e3374a76 100644
---- a/arch/x86/tools/relocs.c
-+++ b/arch/x86/tools/relocs.c
-@@ -32,6 +32,11 @@ static struct relocs		relocs32;
- static struct relocs		relocs32neg;
- static struct relocs		relocs64;
- # define FMT PRIu64
-+
-+#ifndef R_X86_64_REX_GOTPCRELX
-+# define R_X86_64_REX_GOTPCRELX 42
-+#endif
-+
- #else
- # define FMT PRIu32
- #endif
-@@ -227,6 +232,7 @@ static const char *rel_type(unsigned type)
- 		REL_TYPE(R_X86_64_PC16),
- 		REL_TYPE(R_X86_64_8),
- 		REL_TYPE(R_X86_64_PC8),
-+		REL_TYPE(R_X86_64_REX_GOTPCRELX),
- #else
- 		REL_TYPE(R_386_NONE),
- 		REL_TYPE(R_386_32),
-@@ -861,6 +867,7 @@ static int do_reloc64(struct section *sec, Elf_Rel *rel, ElfW(Sym) *sym,
+diff --git a/drivers/irqchip/irq-riscv-imsic-platform.c b/drivers/irqchip/irq-riscv-imsic-platform.c
+index c708780e8760f..5d7c30ad8855b 100644
+--- a/drivers/irqchip/irq-riscv-imsic-platform.c
++++ b/drivers/irqchip/irq-riscv-imsic-platform.c
+@@ -96,9 +96,8 @@ static int imsic_irq_set_affinity(struct irq_data *d, const struct cpumask *mask
+ 				  bool force)
+ {
+ 	struct imsic_vector *old_vec, *new_vec;
+-	struct irq_data *pd = d->parent_data;
  
- 	case R_X86_64_PC32:
- 	case R_X86_64_PLT32:
-+	case R_X86_64_REX_GOTPCRELX:
- 		/*
- 		 * PC relative relocations don't need to be adjusted unless
- 		 * referencing a percpu symbol.
+-	old_vec = irq_data_get_irq_chip_data(pd);
++	old_vec = irq_data_get_irq_chip_data(d);
+ 	if (WARN_ON(!old_vec))
+ 		return -ENOENT;
+ 
+@@ -116,13 +115,13 @@ static int imsic_irq_set_affinity(struct irq_data *d, const struct cpumask *mask
+ 		return -ENOSPC;
+ 
+ 	/* Point device to the new vector */
+-	imsic_msi_update_msg(d, new_vec);
++	imsic_msi_update_msg(irq_get_irq_data(d->irq), new_vec);
+ 
+ 	/* Update irq descriptors with the new vector */
+-	pd->chip_data = new_vec;
++	d->chip_data = new_vec;
+ 
+-	/* Update effective affinity of parent irq data */
+-	irq_data_update_effective_affinity(pd, cpumask_of(new_vec->cpu));
++	/* Update effective affinity */
++	irq_data_update_effective_affinity(d, cpumask_of(new_vec->cpu));
+ 
+ 	/* Move state of the old vector to the new vector */
+ 	imsic_vector_move(old_vec, new_vec);
+@@ -135,6 +134,9 @@ static struct irq_chip imsic_irq_base_chip = {
+ 	.name			= "IMSIC",
+ 	.irq_mask		= imsic_irq_mask,
+ 	.irq_unmask		= imsic_irq_unmask,
++#ifdef CONFIG_SMP
++	.irq_set_affinity	= imsic_irq_set_affinity,
++#endif
+ 	.irq_retrigger		= imsic_irq_retrigger,
+ 	.irq_compose_msi_msg	= imsic_irq_compose_msg,
+ 	.flags			= IRQCHIP_SKIP_SET_WAKE |
+@@ -245,7 +247,7 @@ static bool imsic_init_dev_msi_info(struct device *dev,
+ 		if (WARN_ON_ONCE(domain != real_parent))
+ 			return false;
+ #ifdef CONFIG_SMP
+-		info->chip->irq_set_affinity = imsic_irq_set_affinity;
++		info->chip->irq_set_affinity = irq_chip_set_affinity_parent;
+ #endif
+ 		break;
+ 	default:
 -- 
 2.39.5
 
