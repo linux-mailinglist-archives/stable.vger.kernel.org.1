@@ -1,63 +1,60 @@
-Return-Path: <stable+bounces-140261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A093AAA6BD
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:19:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25D11AAA6F8
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:23:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA58C1885596
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:18:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFDBF988135
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:17:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47ABE29713C;
-	Mon,  5 May 2025 22:35:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C058A32DA82;
+	Mon,  5 May 2025 22:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s0TT+32z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kneLZSRk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D2929711C;
-	Mon,  5 May 2025 22:35:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72D96292912;
+	Mon,  5 May 2025 22:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484523; cv=none; b=qily6+AFg1H8Gkf/kppA8dCn/vb3PdwTqvAS1QpTbz/KzFOK3Pj+YJ1aCXMu8rsEdCI8+Ynh6fvv7MerX2ZNUZl3xBMlOxNZ7jikNiFg2E2SgPRp/nB3QzuwYq0C01neO+PPKymcE/qYg25isZ50jy/hT0s6RIE8b6FqfW7oaL0=
+	t=1746484524; cv=none; b=q6SNLTIsfY7hCUBTMbVDf+oaDXvXKh4QajzVSlFKb1pxjqyHWRBQ+lPjC3THTquvksSfgLHf1GP5beyHsjcTKbIpXNTqyFUJx7V5oa7uDpqKa92Xeqcg0PFIPe6rA9uTzh8/PtUfQmSVTD1zQBxJ6DzGeVWAy5Q0KiigK4U/PlI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484523; c=relaxed/simple;
-	bh=U1ridXpLRTNZDBkHjEBPQb0jeOdaoyd2hB9o89KazIU=;
+	s=arc-20240116; t=1746484524; c=relaxed/simple;
+	bh=KKeVLA+bLzCi3cNZBqiGJv5VKoSBgNyf6RITQsVfzOg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=X2SIX+bhQm1e89tt2MOgypQEtqoAVAMLAnkfAR+HIUULEryhconH/M6UEcNX8dYmU9e/wh0ZXC19EZGLfd1w2k4WZr9F7RGNxgVRl2JO8SvfjZuJI7nLu1d8vfsm+Ekufc7As5F3Cr73yTxMtsA1S+axBwJClrxQtrVr7helc+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s0TT+32z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10FB2C4CEE4;
-	Mon,  5 May 2025 22:35:20 +0000 (UTC)
+	 MIME-Version; b=SAWo1RKukRBlGn+5oRhWjyO5nn98imP+KlX81nVaihYLsB4KpWjsSf1d6EwEvolJvYPle/RA3yfF6Tya+SSCm5tIx48uughXtQvZCb4bf+//915NlrW1/i5hSzjGQt9U+sql6DVkWHwF4WUkjzvoc64fURb+eJohh0dXsXo+zio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kneLZSRk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB858C4CEED;
+	Mon,  5 May 2025 22:35:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484522;
-	bh=U1ridXpLRTNZDBkHjEBPQb0jeOdaoyd2hB9o89KazIU=;
+	s=k20201202; t=1746484523;
+	bh=KKeVLA+bLzCi3cNZBqiGJv5VKoSBgNyf6RITQsVfzOg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s0TT+32zlz1R2JM7KPrCKI6GaQ6BcxgRVs2L6IbhDV8bdn/jbiHnt5wGacE8sVF2d
-	 KzVTXqR3DZeAzd+6w3U3ObF62vd4MXl6hghkxB/plhvQc3pskc8xDWmNpS8Gx3SDt8
-	 47EAoJmwlQ5BS8LTdh2NXQ9ngmeOaBDK5SMsY6hoGpOxWAO5cKy4/EY2HZ/lvOeIN0
-	 M1dXSsqPqsa5oxXOkGsTw1Qgs23a8Qorp71SM+OkWd0Gw9IPQ6zIy7owzjrk7zHuXs
-	 ela3E9XJXcbj8tGrS1wQDwTecxQsH4gGHUkn4XeoIAAvrYqCOgdrn9L5ddslpG4rLY
-	 jdry83iCYoSMQ==
+	b=kneLZSRk4a9kSzlT8/6otKsfGLxSJo5CaVyE8OVevlSPWf2m6Bdi5wJggM8f8l/NI
+	 tXkSB0OrxGPdl6pl8vIGYdqKaI+N59i5i3lI1VgDv/+aTs3+5lvHeKcrBVD7/7HCV3
+	 gAfncbbp6vaQtkq1dHdp21AVM61xs2MdilwU6C+SthRu4KukEztYX1qI9JO0eCYNZe
+	 din0458SjhtN0/NGBztW9Xssr1e8usKP/n5TDnc/tjDf8gNCSkyXxzL0E5+erAqdqi
+	 JqJzJm8l7CMoeqggPycZfM/Ar1mEMyi08IE+YK8zv8ozwNpaAnYwzKYdzOok78y8Zt
+	 OaqnEjsOOohrg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Dave Martin <Dave.Martin@arm.com>,
-	Kees Cook <kees@kernel.org>,
+Cc: David Lechner <dlechner@baylibre.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>,
-	gor@linux.ibm.com,
-	agordeev@linux.ibm.com,
-	david@redhat.com,
-	zaslonko@linux.ibm.com,
-	guoweikang.kernel@gmail.com,
-	linux-s390@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 513/642] s390/crash: Use note name macros
-Date: Mon,  5 May 2025 18:12:09 -0400
-Message-Id: <20250505221419.2672473-513-sashal@kernel.org>
+	michael.hennerich@analog.com,
+	nuno.sa@analog.com,
+	lars@metafoo.de,
+	jic23@kernel.org,
+	linux-iio@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 514/642] iio: adc: ad7944: don't use storagebits for sizing
+Date: Mon,  5 May 2025 18:12:10 -0400
+Message-Id: <20250505221419.2672473-514-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -72,139 +69,96 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit d4a760fb77fdac07efa3da4fa4a18f49f178d048 ]
+[ Upstream commit 503d20ed8cf7c7b40ec0bd94f53c490c1d91c31b ]
 
-Use note name macros to match with the userspace's expectation.
+Replace use of storagebits with realbits for determining the number of
+bytes needed for SPI transfers.
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
-Reviewed-by: Dave Martin <Dave.Martin@arm.com>
-Link: https://lore.kernel.org/r/20250115-elf-v5-5-0f9e55bbb2fc@daynix.com
-Signed-off-by: Kees Cook <kees@kernel.org>
+When adding SPI offload support, storagebits will always be 32 rather
+than 16 for 16-bit 16-bit chips so we can no longer rely on storagebits
+being the correct size expected by the SPI framework (it always uses
+4 bytes for > 16-bit xfers and 2 bytes for > 8-bit xfers). Instead,
+derive the correct size from realbits since it will always be correct
+even when SPI offloading is used.
+
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-vy: Nuno Sa <nuno.sa@analog.com>
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250207-dlech-mainline-spi-engine-offload-2-v8-10-e48a489be48c@baylibre.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/crash_dump.c | 62 +++++++++++++----------------------
- 1 file changed, 23 insertions(+), 39 deletions(-)
+ drivers/iio/adc/ad7944.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/arch/s390/kernel/crash_dump.c b/arch/s390/kernel/crash_dump.c
-index 276cb4c1e11be..4a981266b4833 100644
---- a/arch/s390/kernel/crash_dump.c
-+++ b/arch/s390/kernel/crash_dump.c
-@@ -246,15 +246,6 @@ bool is_kdump_kernel(void)
- }
- EXPORT_SYMBOL_GPL(is_kdump_kernel);
+diff --git a/drivers/iio/adc/ad7944.c b/drivers/iio/adc/ad7944.c
+index 0ec9cda10f5f8..abfababcea101 100644
+--- a/drivers/iio/adc/ad7944.c
++++ b/drivers/iio/adc/ad7944.c
+@@ -98,6 +98,9 @@ struct ad7944_chip_info {
+ 	const struct iio_chan_spec channels[2];
+ };
  
--static const char *nt_name(Elf64_Word type)
--{
--	const char *name = "LINUX";
--
--	if (type == NT_PRPSINFO || type == NT_PRSTATUS || type == NT_PRFPREG)
--		name = KEXEC_CORE_NOTE_NAME;
--	return name;
--}
--
++/* get number of bytes for SPI xfer */
++#define AD7944_SPI_BYTES(scan_type) ((scan_type).realbits > 16 ? 4 : 2)
++
  /*
-  * Initialize ELF note
-  */
-@@ -279,10 +270,8 @@ static void *nt_init_name(void *buf, Elf64_Word type, void *desc, int d_len,
- 	return PTR_ADD(buf, len);
- }
+  * AD7944_DEFINE_CHIP_INFO - Define a chip info structure for a specific chip
+  * @_name: The name of the chip
+@@ -164,7 +167,7 @@ static int ad7944_3wire_cs_mode_init_msg(struct device *dev, struct ad7944_adc *
  
--static inline void *nt_init(void *buf, Elf64_Word type, void *desc, int d_len)
--{
--	return nt_init_name(buf, type, desc, d_len, nt_name(type));
--}
-+#define nt_init(buf, type, desc) \
-+	nt_init_name(buf, NT_ ## type, &(desc), sizeof(desc), NN_ ## type)
+ 	/* Then we can read the data during the acquisition phase */
+ 	xfers[2].rx_buf = &adc->sample.raw;
+-	xfers[2].len = BITS_TO_BYTES(chan->scan_type.storagebits);
++	xfers[2].len = AD7944_SPI_BYTES(chan->scan_type);
+ 	xfers[2].bits_per_word = chan->scan_type.realbits;
  
- /*
-  * Calculate the size of ELF note
-@@ -298,10 +287,7 @@ static size_t nt_size_name(int d_len, const char *name)
- 	return size;
- }
+ 	spi_message_init_with_transfers(&adc->msg, xfers, 3);
+@@ -193,7 +196,7 @@ static int ad7944_4wire_mode_init_msg(struct device *dev, struct ad7944_adc *adc
+ 	xfers[0].delay.unit = SPI_DELAY_UNIT_NSECS;
  
--static inline size_t nt_size(Elf64_Word type, int d_len)
--{
--	return nt_size_name(d_len, nt_name(type));
--}
-+#define nt_size(type, desc) nt_size_name(sizeof(desc), NN_ ## type)
+ 	xfers[1].rx_buf = &adc->sample.raw;
+-	xfers[1].len = BITS_TO_BYTES(chan->scan_type.storagebits);
++	xfers[1].len = AD7944_SPI_BYTES(chan->scan_type);
+ 	xfers[1].bits_per_word = chan->scan_type.realbits;
  
- /*
-  * Fill ELF notes for one CPU with save area registers
-@@ -322,18 +308,16 @@ static void *fill_cpu_elf_notes(void *ptr, int cpu, struct save_area *sa)
- 	memcpy(&nt_fpregset.fpc, &sa->fpc, sizeof(sa->fpc));
- 	memcpy(&nt_fpregset.fprs, &sa->fprs, sizeof(sa->fprs));
- 	/* Create ELF notes for the CPU */
--	ptr = nt_init(ptr, NT_PRSTATUS, &nt_prstatus, sizeof(nt_prstatus));
--	ptr = nt_init(ptr, NT_PRFPREG, &nt_fpregset, sizeof(nt_fpregset));
--	ptr = nt_init(ptr, NT_S390_TIMER, &sa->timer, sizeof(sa->timer));
--	ptr = nt_init(ptr, NT_S390_TODCMP, &sa->todcmp, sizeof(sa->todcmp));
--	ptr = nt_init(ptr, NT_S390_TODPREG, &sa->todpreg, sizeof(sa->todpreg));
--	ptr = nt_init(ptr, NT_S390_CTRS, &sa->ctrs, sizeof(sa->ctrs));
--	ptr = nt_init(ptr, NT_S390_PREFIX, &sa->prefix, sizeof(sa->prefix));
-+	ptr = nt_init(ptr, PRSTATUS, nt_prstatus);
-+	ptr = nt_init(ptr, PRFPREG, nt_fpregset);
-+	ptr = nt_init(ptr, S390_TIMER, sa->timer);
-+	ptr = nt_init(ptr, S390_TODCMP, sa->todcmp);
-+	ptr = nt_init(ptr, S390_TODPREG, sa->todpreg);
-+	ptr = nt_init(ptr, S390_CTRS, sa->ctrs);
-+	ptr = nt_init(ptr, S390_PREFIX, sa->prefix);
- 	if (cpu_has_vx()) {
--		ptr = nt_init(ptr, NT_S390_VXRS_HIGH,
--			      &sa->vxrs_high, sizeof(sa->vxrs_high));
--		ptr = nt_init(ptr, NT_S390_VXRS_LOW,
--			      &sa->vxrs_low, sizeof(sa->vxrs_low));
-+		ptr = nt_init(ptr, S390_VXRS_HIGH, sa->vxrs_high);
-+		ptr = nt_init(ptr, S390_VXRS_LOW, sa->vxrs_low);
- 	}
- 	return ptr;
- }
-@@ -346,16 +330,16 @@ static size_t get_cpu_elf_notes_size(void)
- 	struct save_area *sa = NULL;
- 	size_t size;
+ 	spi_message_init_with_transfers(&adc->msg, xfers, 2);
+@@ -228,7 +231,7 @@ static int ad7944_chain_mode_init_msg(struct device *dev, struct ad7944_adc *adc
+ 	xfers[0].delay.unit = SPI_DELAY_UNIT_NSECS;
  
--	size =	nt_size(NT_PRSTATUS, sizeof(struct elf_prstatus));
--	size +=  nt_size(NT_PRFPREG, sizeof(elf_fpregset_t));
--	size +=  nt_size(NT_S390_TIMER, sizeof(sa->timer));
--	size +=  nt_size(NT_S390_TODCMP, sizeof(sa->todcmp));
--	size +=  nt_size(NT_S390_TODPREG, sizeof(sa->todpreg));
--	size +=  nt_size(NT_S390_CTRS, sizeof(sa->ctrs));
--	size +=  nt_size(NT_S390_PREFIX, sizeof(sa->prefix));
-+	size =	nt_size(PRSTATUS, struct elf_prstatus);
-+	size += nt_size(PRFPREG, elf_fpregset_t);
-+	size += nt_size(S390_TIMER, sa->timer);
-+	size += nt_size(S390_TODCMP, sa->todcmp);
-+	size += nt_size(S390_TODPREG, sa->todpreg);
-+	size += nt_size(S390_CTRS, sa->ctrs);
-+	size += nt_size(S390_PREFIX, sa->prefix);
- 	if (cpu_has_vx()) {
--		size += nt_size(NT_S390_VXRS_HIGH, sizeof(sa->vxrs_high));
--		size += nt_size(NT_S390_VXRS_LOW, sizeof(sa->vxrs_low));
-+		size += nt_size(S390_VXRS_HIGH, sa->vxrs_high);
-+		size += nt_size(S390_VXRS_LOW, sa->vxrs_low);
- 	}
+ 	xfers[1].rx_buf = adc->chain_mode_buf;
+-	xfers[1].len = BITS_TO_BYTES(chan->scan_type.storagebits) * n_chain_dev;
++	xfers[1].len = AD7944_SPI_BYTES(chan->scan_type) * n_chain_dev;
+ 	xfers[1].bits_per_word = chan->scan_type.realbits;
  
- 	return size;
-@@ -371,7 +355,7 @@ static void *nt_prpsinfo(void *ptr)
- 	memset(&prpsinfo, 0, sizeof(prpsinfo));
- 	prpsinfo.pr_sname = 'R';
- 	strcpy(prpsinfo.pr_fname, "vmlinux");
--	return nt_init(ptr, NT_PRPSINFO, &prpsinfo, sizeof(prpsinfo));
-+	return nt_init(ptr, PRPSINFO, prpsinfo);
- }
+ 	spi_message_init_with_transfers(&adc->msg, xfers, 2);
+@@ -274,12 +277,12 @@ static int ad7944_single_conversion(struct ad7944_adc *adc,
+ 		return ret;
  
- /*
-@@ -610,7 +594,7 @@ static size_t get_elfcorehdr_size(int phdr_count)
- 	/* PT_NOTES */
- 	size += sizeof(Elf64_Phdr);
- 	/* nt_prpsinfo */
--	size += nt_size(NT_PRPSINFO, sizeof(struct elf_prpsinfo));
-+	size += nt_size(PRPSINFO, struct elf_prpsinfo);
- 	/* regsets */
- 	size += get_cpu_cnt() * get_cpu_elf_notes_size();
- 	/* nt_vmcoreinfo */
+ 	if (adc->spi_mode == AD7944_SPI_MODE_CHAIN) {
+-		if (chan->scan_type.storagebits > 16)
++		if (chan->scan_type.realbits > 16)
+ 			*val = ((u32 *)adc->chain_mode_buf)[chan->scan_index];
+ 		else
+ 			*val = ((u16 *)adc->chain_mode_buf)[chan->scan_index];
+ 	} else {
+-		if (chan->scan_type.storagebits > 16)
++		if (chan->scan_type.realbits > 16)
+ 			*val = adc->sample.raw.u32;
+ 		else
+ 			*val = adc->sample.raw.u16;
+@@ -409,8 +412,7 @@ static int ad7944_chain_mode_alloc(struct device *dev,
+ 	/* 1 word for each voltage channel + aligned u64 for timestamp */
+ 
+ 	chain_mode_buf_size = ALIGN(n_chain_dev *
+-		BITS_TO_BYTES(chan[0].scan_type.storagebits), sizeof(u64))
+-		+ sizeof(u64);
++		AD7944_SPI_BYTES(chan[0].scan_type), sizeof(u64)) + sizeof(u64);
+ 	buf = devm_kzalloc(dev, chain_mode_buf_size, GFP_KERNEL);
+ 	if (!buf)
+ 		return -ENOMEM;
 -- 
 2.39.5
 
