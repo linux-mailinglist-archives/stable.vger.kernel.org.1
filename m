@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-140185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42D89AAA603
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:03:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72F4AAAA5F0
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:01:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 090627B3550
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:59:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACF4B188788F
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:00:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0206291899;
-	Mon,  5 May 2025 22:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5B4931B9AE;
+	Mon,  5 May 2025 22:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="enyEOaBG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tjVyzdpq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D4BF1D86DC;
-	Mon,  5 May 2025 22:31:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79C7231B99F;
+	Mon,  5 May 2025 22:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484292; cv=none; b=inp6vqzCL1XdK24hjKenUbZlPUgXH4qZq4YqCm7Kj7SuhUZOouD+nPBdvZf7Q+SKT7lM1aC7hG07zPfys3GGMtUvZK6i2jkszakOg5+DM2dFKWaS/WlUC+DhbQFwhhfKOoIsi8MAv3kfE/Z3i5KgnYax+lGEmRQqd48NbHt9IOE=
+	t=1746484294; cv=none; b=UXuSgavrIsCdqVDJT/ZgjQ/cPIicDrcICaRUxLTKj0Dew/YasKGqU/k/tuapY3tcyQt4S4TJrPg7QZ1Zf0dMXgDcdm3mhjQnNGVhS+eqIocqq/mfZanpan5NFeEelSDC/NiEAcWcLweZnbZnRS/yf7J3IYnZHFB6DbgFJzI/DFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484292; c=relaxed/simple;
-	bh=Qk1eyKnX5OztIuXD3gcVb1g5PJcA+op3VmGa+6UqilU=;
+	s=arc-20240116; t=1746484294; c=relaxed/simple;
+	bh=yOy2mAmy57Pjf7MymOP9ARob9j9TN41ylxlIOtvfa+A=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=cf01wBfs0hO7QbAN46O0wYLUPZRWqhVMclu1XdphVLcW1jBn8l8jceZHV7PZxtpCkahqDIM4IY5J6GoD2qNTppPfhN14XTWsBbvVfTcKlurawn+q/WMqNdzDQuQujjqZI4P3NG+wekfYndvCjKmX04eDN2NfFUBBmv3wB5B1R9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=enyEOaBG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E77EC4CEEE;
-	Mon,  5 May 2025 22:31:31 +0000 (UTC)
+	 MIME-Version; b=uYTsdCs1KjssLfp+GzvPBuYLTcO+ZSd2aeJTo2jvyCrTaJf6CJhq3x3mKYjizZKAuxasw0WEBfFMDh2nERZ+mYVgRVXZm31h8qdrBDuTQ1nstvIEga7HyxKBYRlvj7+z/8yx77pGeBn3r+BzSeevbSYoS6aE+k9h9JPSLkxPZyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tjVyzdpq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6145C4CEE4;
+	Mon,  5 May 2025 22:31:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484292;
-	bh=Qk1eyKnX5OztIuXD3gcVb1g5PJcA+op3VmGa+6UqilU=;
+	s=k20201202; t=1746484293;
+	bh=yOy2mAmy57Pjf7MymOP9ARob9j9TN41ylxlIOtvfa+A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=enyEOaBGzJZFWxnO/t/H8oKwnYMtc6Q+/RFT5LZHc3H5hjx4xtPfgkwIHf8vxrJdM
-	 2xpywsbw7lVfPCJIARqZjvqvAae5xXDJ+1sH6e6na8cE7UbsaVvzxu/WK+1dvMEVWW
-	 Y3t5rP476yI9H5IuJwwVON927JWgcqNNQfu5D0gKMU30oNrRTpIEQpR5sXqKVVquET
-	 +ZpJlBzBEpWBeyPoYq3HDHSDVNJkhrXH4flwF900YGzeCn4Sw3jDWI0gkPq1rYjma+
-	 puJRJeq6yfdQPtTq1LNj3+00TH7ekWg+sFBC9YSRrmR8nd3s2y43lEaad2gIiqHtqm
-	 ObVUp6kjJyJ2w==
+	b=tjVyzdpqXsSdZqxsIPheG4KdCapdQdHlZTgV3ReROwnzldkEfCxjU1sWfVHO8BvPb
+	 yFXZlfpihtANCf62vzTNXf9+gVDIN5MeKHzzK2j4cjI+cvFWs/2WrnU0DPMOs3ktqf
+	 GJoZ11npuGtZB/m5oAxeCZBveKNo0PE73hmJs8iqVfhECrj8gfFYySVWV+DX8d4UA/
+	 Fjs2Zm/LaMLQxOK1v4F8Ll5xXKIN0e3y5BfMR7HPizfD5sZsDRoL7VBnoctqm4xbCI
+	 cJ0UyjWYkx7o+19VJdvf7+ZzRpuzKF2098XX7PDfQHfwKmVhGkW2PWKVimgkWhGgjc
+	 HOkbsJizNvvxQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Lizhi Hou <lizhi.hou@amd.com>,
-	Jeffrey Hugo <quic_jhugo@quicinc.com>,
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	min.ma@amd.com,
-	ogabbay@kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.14 439/642] accel/amdxdna: Refactor hardware context destroy routine
-Date: Mon,  5 May 2025 18:10:55 -0400
-Message-Id: <20250505221419.2672473-439-sashal@kernel.org>
+	mturquette@baylibre.com,
+	sboyd@kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-clk@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 440/642] clk: qcom: clk-alpha-pll: Do not use random stack value for recalc rate
+Date: Mon,  5 May 2025 18:10:56 -0400
+Message-Id: <20250505221419.2672473-440-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -67,134 +68,140 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Lizhi Hou <lizhi.hou@amd.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 4fd6ca90fc7f509977585d39885f21b2911123f3 ]
+[ Upstream commit 7a243e1b814a02ab40793026ef64223155d86395 ]
 
-It is required by firmware to wait up to 2 seconds for pending commands
-before sending the destroy hardware context command. After 2 seconds
-wait, if there are still pending commands, driver needs to cancel them.
+If regmap_read() fails, random stack value was used in calculating new
+frequency in recalc_rate() callbacks.  Such failure is really not
+expected as these are all MMIO reads, however code should be here
+correct and bail out.  This also avoids possible warning on
+uninitialized value.
 
-So the context destroy steps need to be:
-  1. Stop drm scheduler. (drm_sched_entity_destroy)
-  2. Wait up to 2 seconds for pending commands.
-  3. Destroy hardware context and cancel the rest pending requests.
-  4. Wait all jobs associated with the hwctx are freed.
-  5. Free job resources.
-
-Signed-off-by: Lizhi Hou <lizhi.hou@amd.com>
-Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Signed-off-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250124173536.148676-1-lizhi.hou@amd.com
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20250212-b4-clk-qcom-clean-v3-1-499f37444f5d@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/amdxdna/aie2_ctx.c    | 29 ++++++++++++++++-------------
- drivers/accel/amdxdna/amdxdna_ctx.c |  2 ++
- drivers/accel/amdxdna/amdxdna_ctx.h |  3 +++
- 3 files changed, 21 insertions(+), 13 deletions(-)
+ drivers/clk/qcom/clk-alpha-pll.c | 52 ++++++++++++++++++++++----------
+ 1 file changed, 36 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/accel/amdxdna/aie2_ctx.c b/drivers/accel/amdxdna/aie2_ctx.c
-index 5f43db02b2404..92c768b0c9a03 100644
---- a/drivers/accel/amdxdna/aie2_ctx.c
-+++ b/drivers/accel/amdxdna/aie2_ctx.c
-@@ -34,6 +34,8 @@ static void aie2_job_release(struct kref *ref)
+diff --git a/drivers/clk/qcom/clk-alpha-pll.c b/drivers/clk/qcom/clk-alpha-pll.c
+index 9a65d14acf71c..cec0afea8e446 100644
+--- a/drivers/clk/qcom/clk-alpha-pll.c
++++ b/drivers/clk/qcom/clk-alpha-pll.c
+@@ -709,14 +709,19 @@ clk_alpha_pll_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
+ 	struct clk_alpha_pll *pll = to_clk_alpha_pll(hw);
+ 	u32 alpha_width = pll_alpha_width(pll);
  
- 	job = container_of(ref, struct amdxdna_sched_job, refcnt);
- 	amdxdna_sched_job_cleanup(job);
-+	atomic64_inc(&job->hwctx->job_free_cnt);
-+	wake_up(&job->hwctx->priv->job_free_wq);
- 	if (job->out_fence)
- 		dma_fence_put(job->out_fence);
- 	kfree(job);
-@@ -134,7 +136,8 @@ static void aie2_hwctx_wait_for_idle(struct amdxdna_hwctx *hwctx)
- 	if (!fence)
- 		return;
+-	regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l);
++	if (regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l))
++		return 0;
++
++	if (regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl))
++		return 0;
  
--	dma_fence_wait(fence, false);
-+	/* Wait up to 2 seconds for fw to finish all pending requests */
-+	dma_fence_wait_timeout(fence, false, msecs_to_jiffies(2000));
- 	dma_fence_put(fence);
+-	regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl);
+ 	if (ctl & PLL_ALPHA_EN) {
+-		regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL(pll), &low);
++		if (regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL(pll), &low))
++			return 0;
+ 		if (alpha_width > 32) {
+-			regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL_U(pll),
+-				    &high);
++			if (regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL_U(pll),
++					&high))
++				return 0;
+ 			a = (u64)high << 32 | low;
+ 		} else {
+ 			a = low & GENMASK(alpha_width - 1, 0);
+@@ -942,8 +947,11 @@ alpha_pll_huayra_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
+ 	struct clk_alpha_pll *pll = to_clk_alpha_pll(hw);
+ 	u32 l, alpha = 0, ctl, alpha_m, alpha_n;
+ 
+-	regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l);
+-	regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl);
++	if (regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l))
++		return 0;
++
++	if (regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl))
++		return 0;
+ 
+ 	if (ctl & PLL_ALPHA_EN) {
+ 		regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL(pll), &alpha);
+@@ -1137,8 +1145,11 @@ clk_trion_pll_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
+ 	struct clk_alpha_pll *pll = to_clk_alpha_pll(hw);
+ 	u32 l, frac, alpha_width = pll_alpha_width(pll);
+ 
+-	regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l);
+-	regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL(pll), &frac);
++	if (regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l))
++		return 0;
++
++	if (regmap_read(pll->clkr.regmap, PLL_ALPHA_VAL(pll), &frac))
++		return 0;
+ 
+ 	return alpha_pll_calc_rate(parent_rate, l, frac, alpha_width);
  }
+@@ -1196,7 +1207,8 @@ clk_alpha_pll_postdiv_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
+ 	struct clk_alpha_pll_postdiv *pll = to_clk_alpha_pll_postdiv(hw);
+ 	u32 ctl;
  
-@@ -616,6 +619,7 @@ int aie2_hwctx_init(struct amdxdna_hwctx *hwctx)
- 	hwctx->status = HWCTX_STAT_INIT;
- 	ndev = xdna->dev_handle;
- 	ndev->hwctx_num++;
-+	init_waitqueue_head(&priv->job_free_wq);
+-	regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl);
++	if (regmap_read(pll->clkr.regmap, PLL_USER_CTL(pll), &ctl))
++		return 0;
  
- 	XDNA_DBG(xdna, "hwctx %s init completed", hwctx->name);
+ 	ctl >>= PLL_POST_DIV_SHIFT;
+ 	ctl &= PLL_POST_DIV_MASK(pll);
+@@ -1412,8 +1424,11 @@ static unsigned long alpha_pll_fabia_recalc_rate(struct clk_hw *hw,
+ 	struct clk_alpha_pll *pll = to_clk_alpha_pll(hw);
+ 	u32 l, frac, alpha_width = pll_alpha_width(pll);
  
-@@ -652,25 +656,23 @@ void aie2_hwctx_fini(struct amdxdna_hwctx *hwctx)
- 	xdna = hwctx->client->xdna;
- 	ndev = xdna->dev_handle;
- 	ndev->hwctx_num--;
--	drm_sched_wqueue_stop(&hwctx->priv->sched);
- 
--	/* Now, scheduler will not send command to device. */
-+	XDNA_DBG(xdna, "%s sequence number %lld", hwctx->name, hwctx->priv->seq);
-+	drm_sched_entity_destroy(&hwctx->priv->entity);
+-	regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l);
+-	regmap_read(pll->clkr.regmap, PLL_FRAC(pll), &frac);
++	if (regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l))
++		return 0;
 +
-+	aie2_hwctx_wait_for_idle(hwctx);
++	if (regmap_read(pll->clkr.regmap, PLL_FRAC(pll), &frac))
++		return 0;
+ 
+ 	return alpha_pll_calc_rate(parent_rate, l, frac, alpha_width);
+ }
+@@ -1563,7 +1578,8 @@ clk_trion_pll_postdiv_recalc_rate(struct clk_hw *hw, unsigned long parent_rate)
+ 	struct regmap *regmap = pll->clkr.regmap;
+ 	u32 i, div = 1, val;
+ 
+-	regmap_read(regmap, PLL_USER_CTL(pll), &val);
++	if (regmap_read(regmap, PLL_USER_CTL(pll), &val))
++		return 0;
+ 
+ 	val >>= pll->post_div_shift;
+ 	val &= PLL_POST_DIV_MASK(pll);
+@@ -2484,9 +2500,12 @@ static unsigned long alpha_pll_lucid_evo_recalc_rate(struct clk_hw *hw,
+ 	struct regmap *regmap = pll->clkr.regmap;
+ 	u32 l, frac;
+ 
+-	regmap_read(regmap, PLL_L_VAL(pll), &l);
++	if (regmap_read(regmap, PLL_L_VAL(pll), &l))
++		return 0;
+ 	l &= LUCID_EVO_PLL_L_VAL_MASK;
+-	regmap_read(regmap, PLL_ALPHA_VAL(pll), &frac);
 +
-+	/* Request fw to destroy hwctx and cancel the rest pending requests */
- 	aie2_release_resource(hwctx);
++	if (regmap_read(regmap, PLL_ALPHA_VAL(pll), &frac))
++		return 0;
  
--	/*
--	 * All submitted commands are aborted.
--	 * Restart scheduler queues to cleanup jobs. The amdxdna_sched_job_run()
--	 * will return NODEV if it is called.
--	 */
--	drm_sched_wqueue_start(&hwctx->priv->sched);
-+	/* Wait for all submitted jobs to be completed or canceled */
-+	wait_event(hwctx->priv->job_free_wq,
-+		   atomic64_read(&hwctx->job_submit_cnt) ==
-+		   atomic64_read(&hwctx->job_free_cnt));
+ 	return alpha_pll_calc_rate(parent_rate, l, frac, pll_alpha_width(pll));
+ }
+@@ -2699,7 +2718,8 @@ static unsigned long clk_rivian_evo_pll_recalc_rate(struct clk_hw *hw,
+ 	struct clk_alpha_pll *pll = to_clk_alpha_pll(hw);
+ 	u32 l;
  
--	aie2_hwctx_wait_for_idle(hwctx);
--	drm_sched_entity_destroy(&hwctx->priv->entity);
- 	drm_sched_fini(&hwctx->priv->sched);
- 	aie2_ctx_syncobj_destroy(hwctx);
+-	regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l);
++	if (regmap_read(pll->clkr.regmap, PLL_L_VAL(pll), &l))
++		return 0;
  
--	XDNA_DBG(xdna, "%s sequence number %lld", hwctx->name, hwctx->priv->seq);
--
- 	for (idx = 0; idx < ARRAY_SIZE(hwctx->priv->cmd_buf); idx++)
- 		drm_gem_object_put(to_gobj(hwctx->priv->cmd_buf[idx]));
- 	amdxdna_gem_unpin(hwctx->priv->heap);
-@@ -879,6 +881,7 @@ int aie2_cmd_submit(struct amdxdna_hwctx *hwctx, struct amdxdna_sched_job *job,
- 	drm_gem_unlock_reservations(job->bos, job->bo_cnt, &acquire_ctx);
- 
- 	aie2_job_put(job);
-+	atomic64_inc(&hwctx->job_submit_cnt);
- 
- 	return 0;
- 
-diff --git a/drivers/accel/amdxdna/amdxdna_ctx.c b/drivers/accel/amdxdna/amdxdna_ctx.c
-index d11b1c83d9c3b..43442b9e273b3 100644
---- a/drivers/accel/amdxdna/amdxdna_ctx.c
-+++ b/drivers/accel/amdxdna/amdxdna_ctx.c
-@@ -220,6 +220,8 @@ int amdxdna_drm_create_hwctx_ioctl(struct drm_device *dev, void *data, struct dr
- 	args->syncobj_handle = hwctx->syncobj_hdl;
- 	mutex_unlock(&xdna->dev_lock);
- 
-+	atomic64_set(&hwctx->job_submit_cnt, 0);
-+	atomic64_set(&hwctx->job_free_cnt, 0);
- 	XDNA_DBG(xdna, "PID %d create HW context %d, ret %d", client->pid, args->handle, ret);
- 	drm_dev_exit(idx);
- 	return 0;
-diff --git a/drivers/accel/amdxdna/amdxdna_ctx.h b/drivers/accel/amdxdna/amdxdna_ctx.h
-index 80b0304193ec3..f0a4a8586d858 100644
---- a/drivers/accel/amdxdna/amdxdna_ctx.h
-+++ b/drivers/accel/amdxdna/amdxdna_ctx.h
-@@ -87,6 +87,9 @@ struct amdxdna_hwctx {
- 	struct amdxdna_qos_info		     qos;
- 	struct amdxdna_hwctx_param_config_cu *cus;
- 	u32				syncobj_hdl;
-+
-+	atomic64_t			job_submit_cnt;
-+	atomic64_t			job_free_cnt ____cacheline_aligned_in_smp;
- };
- 
- #define drm_job_to_xdna_job(j) \
+ 	return parent_rate * l;
+ }
 -- 
 2.39.5
 
