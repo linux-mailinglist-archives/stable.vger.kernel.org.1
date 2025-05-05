@@ -1,65 +1,57 @@
-Return-Path: <stable+bounces-139796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EED83AA9FBC
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:27:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99B1AAA9FC4
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:27:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F3A53A6AEB
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:26:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 479E9460987
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:27:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF821289375;
-	Mon,  5 May 2025 22:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D8B3289E0A;
+	Mon,  5 May 2025 22:15:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fp6TcLrp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YpPolNXQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A86E828936C;
-	Mon,  5 May 2025 22:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D96F228937E;
+	Mon,  5 May 2025 22:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483353; cv=none; b=IArxg89xhEhtLAMEPqXECvE2rA9OwwMDgbZhW+51wBAq0+HQ2yQpz5rq68un4q7zNauVA90ZZbd3IhRWguMbUyqCFy8IFV0nTm+JnOvIj6N7RzJ2k1K3sdzTWXa6SQK7ok2zf6gm7oxfP5Ke/ExaV3+UXnnlfhC9I5tnfgX67dY=
+	t=1746483354; cv=none; b=OI0msAAlmUnTZH+VHLXlh90vKuUSUC3728x529xJUaBxVbVPVWQ7oPoRAM9R/5qioSwv0tlCsqsFbkFMiJWPlRCz+xrAC5FnuJJdgKmpnhTPNAA9tkYvmAGsFTKgDgvDTno63dB7Ghq8mqR9p8LE7ak7NHI3nln6mJGeu3lbRQw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483353; c=relaxed/simple;
-	bh=aMJpZbhrk1lyvoxeycNtnIzcxhgtNw6ZUzzuEiCE7OE=;
+	s=arc-20240116; t=1746483354; c=relaxed/simple;
+	bh=zhuL+YqLxc1F+UBF4Jsm+zm5tNVnXEuQhRkRyuMTEfo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=WythtABK+Vbsli2dEz31KReEY/WUIkqRjrquj4CxVKqt7dqgnpkJ/DiwwYynueEuRgmSNelEHxfvM1h6qPbLfmGku2MiA31hNCS/KcUQtTLw6/y/EbcL52avk9Pe50QdtPVc+PIC7tCBIIqvJc9AON3OQOPXBJLbcsFVniF6dR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fp6TcLrp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 096DFC4CEE4;
-	Mon,  5 May 2025 22:15:51 +0000 (UTC)
+	 MIME-Version; b=L31NTZFbokFXp84h+cTQ8UyK6knehpY8CMEa8yC2UTJV+0TQOqqFyWk3duDVComAfj2KDTUdkwyqWREGIwR+u4CO/aQHa7y90+bEb5luCQtYHvLLTTZBHuIJKPbh7yUROtzIFM/NRAA6eiBGkZHAg167e35bxrVgzE6s5A7XZJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YpPolNXQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBA15C4CEE4;
+	Mon,  5 May 2025 22:15:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483353;
-	bh=aMJpZbhrk1lyvoxeycNtnIzcxhgtNw6ZUzzuEiCE7OE=;
+	s=k20201202; t=1746483354;
+	bh=zhuL+YqLxc1F+UBF4Jsm+zm5tNVnXEuQhRkRyuMTEfo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fp6TcLrpAt0Yo/GnDtZlH7IIHuwiLuY3f/Px8lWs5XIrVhy6MJET6QRFbOBxrdhh7
-	 /5QC+3rzGKnNe4UqMnIabeJAr8zuXh3g5IAnq6dmC9jzllqLzKpjdLh+aiJKnnDwxE
-	 qL9j1EAUx/PAIbbOOlRD1ZqNxkYHMVhyKrLuHKSTffNBWEoJaXau/G4bN/sgoQBAmI
-	 SUQhgItFFz2wvaXPE77FkPwh8vwql4tPi8rQ1IycvAj4VwUePFhvcN7AYxKHjqrr2q
-	 N8Cj+9aA9K8/JVz7pv5jL0J9L4IsYnC/Bh1cCs+ti4yMniAYyKzXvfa/FcgjVmDydl
-	 rulRBKTPjQfjw==
+	b=YpPolNXQyTjyw0sPGo47AY5sOLBoIIcsCyycJ+TgXYRsvhF74a+EbUQ8l7VAb7bki
+	 s2GEPH82afoQvn0jKqldAIE0tNH5FxI5E/fVcJRHyUumCdeanz3mnHLdEAe7/3Fh/E
+	 U8qD0b4pjoGSvgZ/6P6jLronjX/5O22t11096Gr/TpABGUQgiY1vWp0/sroz0+vWhU
+	 Jt1hGoKXES3QBfyGoteqg/NGlOGD9P/kW75fgI3NPpaJ5nJvAcaQW3ehB7rj/9ZboL
+	 Jwlmf+Kh8scqXbifH1LCcp3Dp178pprjMXvONb34FERc1gkR3fbrXv602/UYuJ9ELr
+	 dGPAIbVI+OTZg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ryo Takakura <ryotkkr98@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
 	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	bigeasy@linutronix.de,
-	clrkwllms@kernel.org,
-	rostedt@goodmis.org,
-	tglx@linutronix.de,
-	peterz@infradead.org,
-	neilb@suse.de,
-	kprateek.nayak@amd.com,
-	csander@purestorage.com,
-	linux-rt-devel@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.14 049/642] lockdep: Fix wait context check on softirq for PREEMPT_RT
-Date: Mon,  5 May 2025 18:04:25 -0400
-Message-Id: <20250505221419.2672473-49-sashal@kernel.org>
+	peterz@infradead.org
+Subject: [PATCH AUTOSEL 6.14 050/642] objtool: Properly disable uaccess validation
+Date: Mon,  5 May 2025 18:04:26 -0400
+Message-Id: <20250505221419.2672473-50-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -74,97 +66,66 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Ryo Takakura <ryotkkr98@gmail.com>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-[ Upstream commit 61c39d8c83e2077f33e0a2c8980a76a7f323f0ce ]
+[ Upstream commit e1a9dda74dbffbc3fa2069ff418a1876dc99fb14 ]
 
-Since:
+If opts.uaccess isn't set, the uaccess validation is disabled, but only
+partially: it doesn't read the uaccess_safe_builtin list but still tries
+to do the validation.  Disable it completely to prevent false warnings.
 
-  0c1d7a2c2d32 ("lockdep: Remove softirq accounting on PREEMPT_RT.")
-
-the wait context test for mutex usage within "in softirq context" fails
-as it references @softirq_context:
-
-    | wait context tests |
-    --------------------------------------------------------------------------
-                                   | rcu  | raw  | spin |mutex |
-    --------------------------------------------------------------------------
-                 in hardirq context:  ok  |  ok  |  ok  |  ok  |
-  in hardirq context (not threaded):  ok  |  ok  |  ok  |  ok  |
-                 in softirq context:  ok  |  ok  |  ok  |FAILED|
-
-As a fix, add lockdep map for BH disabled section. This fixes the
-issue by letting us catch cases when local_bh_disable() gets called
-with preemption disabled where local_lock doesn't get acquired.
-In the case of "in softirq context" selftest, local_bh_disable() was
-being called with preemption disable as it's early in the boot.
-
-[ boqun: Move the lockdep annotations into __local_bh_*() to avoid false
-         positives because of unpaired local_bh_disable() reported by
-	 Borislav Petkov and Peter Zijlstra, and make bh_lock_map
-	 only exist for PREEMPT_RT. ]
-
-[ mingo: Restored authorship and improved the bh_lock_map definition. ]
-
-Signed-off-by: Ryo Takakura <ryotkkr98@gmail.com>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/20250321143322.79651-1-boqun.feng@gmail.com
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Link: https://lore.kernel.org/r/0e95581c1d2107fb5f59418edf2b26bba38b0cbb.1742852846.git.jpoimboe@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/softirq.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ tools/objtool/check.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/softirq.c b/kernel/softirq.c
-index 4dae6ac2e83fb..513b1945987cc 100644
---- a/kernel/softirq.c
-+++ b/kernel/softirq.c
-@@ -126,6 +126,18 @@ static DEFINE_PER_CPU(struct softirq_ctrl, softirq_ctrl) = {
- 	.lock	= INIT_LOCAL_LOCK(softirq_ctrl.lock),
- };
+diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+index c51be0f265ac6..a29e7580129ed 100644
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -3208,7 +3208,7 @@ static int handle_insn_ops(struct instruction *insn,
+ 		if (update_cfi_state(insn, next_insn, &state->cfi, op))
+ 			return 1;
  
-+#ifdef CONFIG_DEBUG_LOCK_ALLOC
-+static struct lock_class_key bh_lock_key;
-+struct lockdep_map bh_lock_map = {
-+	.name			= "local_bh",
-+	.key			= &bh_lock_key,
-+	.wait_type_outer	= LD_WAIT_FREE,
-+	.wait_type_inner	= LD_WAIT_CONFIG, /* PREEMPT_RT makes BH preemptible. */
-+	.lock_type		= LD_LOCK_PERCPU,
-+};
-+EXPORT_SYMBOL_GPL(bh_lock_map);
-+#endif
+-		if (!insn->alt_group)
++		if (!opts.uaccess || !insn->alt_group)
+ 			continue;
+ 
+ 		if (op->dest.type == OP_DEST_PUSHF) {
+@@ -3675,6 +3675,9 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
+ 			return 0;
+ 
+ 		case INSN_STAC:
++			if (!opts.uaccess)
++				break;
 +
- /**
-  * local_bh_blocked() - Check for idle whether BH processing is blocked
-  *
-@@ -148,6 +160,8 @@ void __local_bh_disable_ip(unsigned long ip, unsigned int cnt)
+ 			if (state.uaccess) {
+ 				WARN_INSN(insn, "recursive UACCESS enable");
+ 				return 1;
+@@ -3684,6 +3687,9 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
+ 			break;
  
- 	WARN_ON_ONCE(in_hardirq());
- 
-+	lock_map_acquire_read(&bh_lock_map);
+ 		case INSN_CLAC:
++			if (!opts.uaccess)
++				break;
 +
- 	/* First entry of a task into a BH disabled section? */
- 	if (!current->softirq_disable_cnt) {
- 		if (preemptible()) {
-@@ -211,6 +225,8 @@ void __local_bh_enable_ip(unsigned long ip, unsigned int cnt)
- 	WARN_ON_ONCE(in_hardirq());
- 	lockdep_assert_irqs_enabled();
+ 			if (!state.uaccess && func) {
+ 				WARN_INSN(insn, "redundant UACCESS disable");
+ 				return 1;
+@@ -4159,7 +4165,8 @@ static int validate_symbol(struct objtool_file *file, struct section *sec,
+ 	if (!insn || insn->ignore || insn->visited)
+ 		return 0;
  
-+	lock_map_release(&bh_lock_map);
-+
- 	local_irq_save(flags);
- 	curcnt = __this_cpu_read(softirq_ctrl.cnt);
+-	state->uaccess = sym->uaccess_safe;
++	if (opts.uaccess)
++		state->uaccess = sym->uaccess_safe;
  
-@@ -261,6 +277,8 @@ static inline void ksoftirqd_run_begin(void)
- /* Counterpart to ksoftirqd_run_begin() */
- static inline void ksoftirqd_run_end(void)
- {
-+	/* pairs with the lock_map_acquire_read() in ksoftirqd_run_begin() */
-+	lock_map_release(&bh_lock_map);
- 	__local_bh_enable(SOFTIRQ_OFFSET, true);
- 	WARN_ON_ONCE(in_interrupt());
- 	local_irq_enable();
+ 	ret = validate_branch(file, insn_func(insn), insn, *state);
+ 	if (ret)
 -- 
 2.39.5
 
