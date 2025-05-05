@@ -1,61 +1,67 @@
-Return-Path: <stable+bounces-140081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB6E0AAA4C1
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:35:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CCA4AAA4C7
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:35:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EEE8460A2F
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:34:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20D5B16D4B3
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:35:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDA3830572E;
-	Mon,  5 May 2025 22:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38633305F00;
+	Mon,  5 May 2025 22:27:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k7UipZfJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jb4XfHhN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72AEC305721;
-	Mon,  5 May 2025 22:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2043305721;
+	Mon,  5 May 2025 22:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484067; cv=none; b=uIJr8ReHensZzLZHb6cWUqjqHXEQSUUa/9+iDh3E0EsOJL+tjppPOUAvYt4GdI/8Xx2v19PIXlsDJb8Nh+Rnlx1Z0pHyEfulvFuYgC4etDC7/3z0DH7LS0lzh8rq6fURY0Glyy4eCOWBDcOOL+nDPLfhUehUGFO4UNhF8LGtVoE=
+	t=1746484072; cv=none; b=KVzhItK32CzTBgOxarniJ105h/faVlnA9UUJcvSMheLWVJG/aE3jkibKvh6uJi+Pw5iCWz9anCPJSztoLXq+vUTzbGwuw9Iv+uuFdlNEIpa0Q8UjrQ7ZD26lOgBwVtVPyvKEGd6Lt8z/s6dzFXyGF9PZ4ER7cuDdLtC/TOAmucU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484067; c=relaxed/simple;
-	bh=zSBuTCuV1sHVK1bFrmXNGcxIF6YPGZrSRYI/WDnvt08=;
+	s=arc-20240116; t=1746484072; c=relaxed/simple;
+	bh=Os1cUf3C85srmQ6nseFz6BkNxGokAim0dxrhNcZ/kN4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=f93avLm3y+jiyCehyavOK+xZGVs9ZB/KUCtiaDM2JgrcUzyZP7wdgcuHq8dLMIP8stXRB9F1I/acdQtWMwR/Y50c3SNSnqgWKD7450yoVFJMjuGWL7IlkbCs7zQU4d67WNjQuh7NSRcQFSXCjH9UYpK/+3XbCle58uE1DYKXlRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k7UipZfJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0884C4CEE4;
-	Mon,  5 May 2025 22:27:45 +0000 (UTC)
+	 MIME-Version; b=m2bJkGsw7339QPrnas4aj0/CI46WLcFYIv3OnN9g+3jlDuchn1V4gK0POwJVN6qL0Qt07nV5TZdKmsZFq1zxpFBXXvY739WY7CDAAGm1JtJh7eizM+L2Ntc/Wnk2X+Jz672pSiT54IbR81QlQ2f/dS7K8D8ea428dFjhfQCa684=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jb4XfHhN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 123D8C4CEE4;
+	Mon,  5 May 2025 22:27:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484067;
-	bh=zSBuTCuV1sHVK1bFrmXNGcxIF6YPGZrSRYI/WDnvt08=;
+	s=k20201202; t=1746484071;
+	bh=Os1cUf3C85srmQ6nseFz6BkNxGokAim0dxrhNcZ/kN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k7UipZfJ2puBLD6f1OdzSyAaO8gWgIYAD+YS+s7ClYGAefKbJzgpnylj5R2CczR0M
-	 L5i7Kc44zOAm7Z7IYez7pb/WwmbSl0glLQ9OCG+Vkcq41ZR2kxfRAVEJ2cF35ta2H9
-	 6hEwt11/K/1lI7fEjWkLQZ0gWD0gyrj1OMWGNBiXG/tASv3mAbg5uj3ER6KqOxBAWV
-	 fLq8VGtDyORfc7pHhZFfettbGC+YuwM8BtYF9fWxt/ZyJGHpTSexa/aD/sNMeN7PlG
-	 0bKF94fNTCoN5VMnhRXBXzdlPBiJYfwtTVXztmQU9sp7CxZX5/qCGBBho40KHzUyfh
-	 Jb21LJzciTJJA==
+	b=jb4XfHhN2XMNJQZi4550MzMwFjfiyJHeXyQ9KbZBbrBgas0ibyWX0jZJsn3LXvvWe
+	 r1yDizZbY6O0MJ6B5WminM20n07oZM/6oqg0oms4iHyQAtUAQCcztaWVAuQzCTEJPC
+	 zJn4oeNR3IihChbRlzLuOUr0gtK18UFALy6VHT67TI226Jrj7Dqmywet+gVSGO3J69
+	 MDugUQ/OFKL2LiR+zsqiqyTXs9rzZ/DWaJEl5Qs5H5UD61D0zMsqMXT1KUL1rNLuXN
+	 YnsXLTQwz0a1Vu99KlJLdKZMkcJqJNhdFebR8+kZCkHGaCk/AHMdtv+b7w0QZpz8JO
+	 0HcxAkBUM8Qpw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Matthias Fend <matthias.fend@emfend.at>,
-	Marco Felsch <m.felsch@pengutronix.de>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+Cc: Jianbo Liu <jianbol@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	mchehab@kernel.org,
-	sakari.ailus@linux.intel.com,
-	naush@raspberrypi.com,
-	ribalda@chromium.org,
-	linux-media@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 334/642] media: tc358746: improve calculation of the D-PHY timing registers
-Date: Mon,  5 May 2025 18:09:10 -0400
-Message-Id: <20250505221419.2672473-334-sashal@kernel.org>
+	saeedm@nvidia.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	rrameshbabu@nvidia.com,
+	moshe@nvidia.com,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 335/642] net/mlx5e: Add correct match to check IPSec syndromes for switchdev mode
+Date: Mon,  5 May 2025 18:09:11 -0400
+Message-Id: <20250505221419.2672473-335-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -70,78 +76,145 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Matthias Fend <matthias.fend@emfend.at>
+From: Jianbo Liu <jianbol@nvidia.com>
 
-[ Upstream commit 78d7265e2e1ce349e7f3c6a085f2b66d7b73f4ca ]
+[ Upstream commit 85e4a808af2545fefaf18c8fe50071b06fcbdabc ]
 
-When calculating D-PHY registers, using data rates that are not multiples
-of 16 can lead to precision loss in division operations. This can result in
-register values that produce timing violations against the MIPI standard.
+In commit dddb49b63d86 ("net/mlx5e: Add IPsec and ASO syndromes check
+in HW"), IPSec and ASO syndromes checks after decryption for the
+specified ASO object were added. But they are correct only for eswith
+in legacy mode. For switchdev mode, metadata register c1 is used to
+save the mapped id (not ASO object id). So, need to change the match
+accordingly for the check rules in status table.
 
-An example:
-cfg->hs_clk_rate = 294MHz
-hf_clk = 18
-
-If the desired value in cfg->init is 100us, which is the minimum allowed
-value, then the LINEINITCNT register is calculated as 1799. But since the
-actual clock is 18.375MHz instead of 18MHz, this setting results in a time
-that is shorter than 100us and thus violates the standard. The correct
-value for LINEINITCNT would be 1837.
-
-Improve the precision of calculations by using Hz instead of MHz as unit.
-
-Signed-off-by: Matthias Fend <matthias.fend@emfend.at>
-Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Reviewed-by: Patrisious Haddad <phaddad@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20250220213959.504304-4-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/tc358746.c | 19 +++++++------------
- 1 file changed, 7 insertions(+), 12 deletions(-)
+ .../mellanox/mlx5/core/en_accel/ipsec_fs.c    | 28 ++++++++++++++-----
+ .../mellanox/mlx5/core/esw/ipsec_fs.c         | 13 +++++++++
+ .../mellanox/mlx5/core/esw/ipsec_fs.h         |  5 ++++
+ include/linux/mlx5/eswitch.h                  |  2 ++
+ 4 files changed, 41 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/media/i2c/tc358746.c b/drivers/media/i2c/tc358746.c
-index 389582420ba78..048a1a381b333 100644
---- a/drivers/media/i2c/tc358746.c
-+++ b/drivers/media/i2c/tc358746.c
-@@ -460,24 +460,20 @@ static int tc358746_apply_misc_config(struct tc358746 *tc358746)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
+index e7b64679f1219..3cf44fbdf5ee6 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/ipsec_fs.c
+@@ -165,6 +165,25 @@ static void ipsec_rx_status_pass_destroy(struct mlx5e_ipsec *ipsec,
+ #endif
+ }
+ 
++static void ipsec_rx_rule_add_match_obj(struct mlx5e_ipsec_sa_entry *sa_entry,
++					struct mlx5e_ipsec_rx *rx,
++					struct mlx5_flow_spec *spec)
++{
++	struct mlx5e_ipsec *ipsec = sa_entry->ipsec;
++
++	if (rx == ipsec->rx_esw) {
++		mlx5_esw_ipsec_rx_rule_add_match_obj(sa_entry, spec);
++	} else {
++		MLX5_SET_TO_ONES(fte_match_param, spec->match_criteria,
++				 misc_parameters_2.metadata_reg_c_2);
++		MLX5_SET(fte_match_param, spec->match_value,
++			 misc_parameters_2.metadata_reg_c_2,
++			 sa_entry->ipsec_obj_id | BIT(31));
++
++		spec->match_criteria_enable |= MLX5_MATCH_MISC_PARAMETERS_2;
++	}
++}
++
+ static int rx_add_rule_drop_auth_trailer(struct mlx5e_ipsec_sa_entry *sa_entry,
+ 					 struct mlx5e_ipsec_rx *rx)
+ {
+@@ -200,11 +219,8 @@ static int rx_add_rule_drop_auth_trailer(struct mlx5e_ipsec_sa_entry *sa_entry,
+ 
+ 	MLX5_SET_TO_ONES(fte_match_param, spec->match_criteria, misc_parameters_2.ipsec_syndrome);
+ 	MLX5_SET(fte_match_param, spec->match_value, misc_parameters_2.ipsec_syndrome, 1);
+-	MLX5_SET_TO_ONES(fte_match_param, spec->match_criteria, misc_parameters_2.metadata_reg_c_2);
+-	MLX5_SET(fte_match_param, spec->match_value,
+-		 misc_parameters_2.metadata_reg_c_2,
+-		 sa_entry->ipsec_obj_id | BIT(31));
+ 	spec->match_criteria_enable = MLX5_MATCH_MISC_PARAMETERS_2;
++	ipsec_rx_rule_add_match_obj(sa_entry, rx, spec);
+ 	rule = mlx5_add_flow_rules(ft, spec, &flow_act, &dest, 1);
+ 	if (IS_ERR(rule)) {
+ 		err = PTR_ERR(rule);
+@@ -281,10 +297,8 @@ static int rx_add_rule_drop_replay(struct mlx5e_ipsec_sa_entry *sa_entry, struct
+ 
+ 	MLX5_SET_TO_ONES(fte_match_param, spec->match_criteria, misc_parameters_2.metadata_reg_c_4);
+ 	MLX5_SET(fte_match_param, spec->match_value, misc_parameters_2.metadata_reg_c_4, 1);
+-	MLX5_SET_TO_ONES(fte_match_param, spec->match_criteria, misc_parameters_2.metadata_reg_c_2);
+-	MLX5_SET(fte_match_param, spec->match_value,  misc_parameters_2.metadata_reg_c_2,
+-		 sa_entry->ipsec_obj_id | BIT(31));
+ 	spec->match_criteria_enable = MLX5_MATCH_MISC_PARAMETERS_2;
++	ipsec_rx_rule_add_match_obj(sa_entry, rx, spec);
+ 	rule = mlx5_add_flow_rules(ft, spec, &flow_act, &dest, 1);
+ 	if (IS_ERR(rule)) {
+ 		err = PTR_ERR(rule);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.c
+index ed977ae75fab8..4bba2884c1c05 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.c
+@@ -85,6 +85,19 @@ int mlx5_esw_ipsec_rx_setup_modify_header(struct mlx5e_ipsec_sa_entry *sa_entry,
  	return err;
  }
  
--/* Use MHz as base so the div needs no u64 */
--static u32 tc358746_cfg_to_cnt(unsigned int cfg_val,
--			       unsigned int clk_mhz,
--			       unsigned int time_base)
-+static u32 tc358746_cfg_to_cnt(unsigned long cfg_val, unsigned long clk_hz,
-+			       unsigned long long time_base)
++void mlx5_esw_ipsec_rx_rule_add_match_obj(struct mlx5e_ipsec_sa_entry *sa_entry,
++					  struct mlx5_flow_spec *spec)
++{
++	MLX5_SET(fte_match_param, spec->match_criteria,
++		 misc_parameters_2.metadata_reg_c_1,
++		 ESW_IPSEC_RX_MAPPED_ID_MATCH_MASK);
++	MLX5_SET(fte_match_param, spec->match_value,
++		 misc_parameters_2.metadata_reg_c_1,
++		 sa_entry->rx_mapped_id << ESW_ZONE_ID_BITS);
++
++	spec->match_criteria_enable |= MLX5_MATCH_MISC_PARAMETERS_2;
++}
++
+ void mlx5_esw_ipsec_rx_id_mapping_remove(struct mlx5e_ipsec_sa_entry *sa_entry)
  {
--	return DIV_ROUND_UP(cfg_val * clk_mhz, time_base);
-+	return div64_u64((u64)cfg_val * clk_hz + time_base - 1, time_base);
- }
+ 	struct mlx5e_ipsec *ipsec = sa_entry->ipsec;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.h b/drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.h
+index ac9c65b89166e..514c15258b1d1 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/ipsec_fs.h
+@@ -20,6 +20,8 @@ int mlx5_esw_ipsec_rx_ipsec_obj_id_search(struct mlx5e_priv *priv, u32 id,
+ void mlx5_esw_ipsec_tx_create_attr_set(struct mlx5e_ipsec *ipsec,
+ 				       struct mlx5e_ipsec_tx_create_attr *attr);
+ void mlx5_esw_ipsec_restore_dest_uplink(struct mlx5_core_dev *mdev);
++void mlx5_esw_ipsec_rx_rule_add_match_obj(struct mlx5e_ipsec_sa_entry *sa_entry,
++					  struct mlx5_flow_spec *spec);
+ #else
+ static inline void mlx5_esw_ipsec_rx_create_attr_set(struct mlx5e_ipsec *ipsec,
+ 						     struct mlx5e_ipsec_rx_create_attr *attr) {}
+@@ -48,5 +50,8 @@ static inline void mlx5_esw_ipsec_tx_create_attr_set(struct mlx5e_ipsec *ipsec,
+ 						     struct mlx5e_ipsec_tx_create_attr *attr) {}
  
--static u32 tc358746_ps_to_cnt(unsigned int cfg_val,
--			      unsigned int clk_mhz)
-+static u32 tc358746_ps_to_cnt(unsigned long cfg_val, unsigned long clk_hz)
- {
--	return tc358746_cfg_to_cnt(cfg_val, clk_mhz, USEC_PER_SEC);
-+	return tc358746_cfg_to_cnt(cfg_val, clk_hz, PSEC_PER_SEC);
- }
+ static inline void mlx5_esw_ipsec_restore_dest_uplink(struct mlx5_core_dev *mdev) {}
++static inline void
++mlx5_esw_ipsec_rx_rule_add_match_obj(struct mlx5e_ipsec_sa_entry *sa_entry,
++				     struct mlx5_flow_spec *spec) {}
+ #endif /* CONFIG_MLX5_ESWITCH */
+ #endif /* __MLX5_ESW_IPSEC_FS_H__ */
+diff --git a/include/linux/mlx5/eswitch.h b/include/linux/mlx5/eswitch.h
+index df73a2ccc9af3..67256e776566c 100644
+--- a/include/linux/mlx5/eswitch.h
++++ b/include/linux/mlx5/eswitch.h
+@@ -147,6 +147,8 @@ u32 mlx5_eswitch_get_vport_metadata_for_set(struct mlx5_eswitch *esw,
  
--static u32 tc358746_us_to_cnt(unsigned int cfg_val,
--			      unsigned int clk_mhz)
-+static u32 tc358746_us_to_cnt(unsigned long cfg_val, unsigned long clk_hz)
- {
--	return tc358746_cfg_to_cnt(cfg_val, clk_mhz, 1);
-+	return tc358746_cfg_to_cnt(cfg_val, clk_hz, USEC_PER_SEC);
- }
+ /* reuse tun_opts for the mapped ipsec obj id when tun_id is 0 (invalid) */
+ #define ESW_IPSEC_RX_MAPPED_ID_MASK GENMASK(ESW_TUN_OPTS_BITS - 1, 0)
++#define ESW_IPSEC_RX_MAPPED_ID_MATCH_MASK \
++	GENMASK(31 - ESW_RESERVED_BITS, ESW_ZONE_ID_BITS)
  
- static int tc358746_apply_dphy_config(struct tc358746 *tc358746)
-@@ -492,7 +488,6 @@ static int tc358746_apply_dphy_config(struct tc358746 *tc358746)
- 
- 	/* The hs_byte_clk is also called SYSCLK in the excel sheet */
- 	hs_byte_clk = cfg->hs_clk_rate / 8;
--	hs_byte_clk /= HZ_PER_MHZ;
- 	hf_clk = hs_byte_clk / 2;
- 
- 	val = tc358746_us_to_cnt(cfg->init, hf_clk) - 1;
+ u8 mlx5_eswitch_mode(const struct mlx5_core_dev *dev);
+ u16 mlx5_eswitch_get_total_vports(const struct mlx5_core_dev *dev);
 -- 
 2.39.5
 
