@@ -1,65 +1,60 @@
-Return-Path: <stable+bounces-140529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44E55AAAE07
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:48:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 593B1AAB155
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:58:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A73E3ADDDE
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:43:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 219BC4A1BD9
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:56:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A4D52BCF50;
-	Mon,  5 May 2025 22:46:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE9C9297B92;
+	Tue,  6 May 2025 00:20:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n/Z++15l"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DDjIenEc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF90227E1DC;
-	Mon,  5 May 2025 22:44:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3933829AB1A;
+	Mon,  5 May 2025 22:44:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485043; cv=none; b=iDuZV9kstvGDc+QVOSo/ieCYDqorSNc3OKwA8AG3NMyxGa0iQyctIT5FyQ5US4XeD6EgybQuOZ+7P4ZjWGWpjOF+R65uayx78ZBFf3ZPnBa8mmWcG8ea969nAYLDRa+77p6FTPqCihrgzgaEXUHRz0/+QIH8b/LDzEEI6yu4BTs=
+	t=1746485055; cv=none; b=VCqnSILg4umso3+snNONrDEQVopG1kYyyYGYB1NghJnEPw+FR9j4AclEZgwZhyXxvH8Iy8fKL5SAiO3myJ0JKKViM8XVbLw2GmtatqMQ+XCkfSRpebV6EsW0qXTltbr9NH3qQdyxAxmBHhM22/9vHCBOOH3I2ZnYvg7d/ZvYlzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485043; c=relaxed/simple;
-	bh=ILuU5mUox98kRSvahMMITcFsLpKEN2lWclTNJeUIJPI=;
+	s=arc-20240116; t=1746485055; c=relaxed/simple;
+	bh=D7eXuyELba5Og2esZH36Lvj9LlUf/dCO03XC8wf+1jM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DAy4OmR9RuuzIhE32GQPgy8pisV2wZhrNK/yp9Rm52ga2MkT9KfhB5Mndk4kbXAtjQ+PGrOdife/cNYHT6av55XRlcbSTBFZHBdGXiMXxo0FTtlgtx43KXDdxFSiruoDaiJ3kUHVME0sIYEKLMmxQrtn1Tnl7bdYcFkiUAjGBTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n/Z++15l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E876C4CEE4;
-	Mon,  5 May 2025 22:44:01 +0000 (UTC)
+	 MIME-Version; b=GLIhbgiB/KLOdfrs3mF+hrCAdqX4MnW2x6W5Y6lJ8lJXNP9/Yv6dyIHTWWsN8N3P0LXb5SsDMtDGFI9Q8+yF4IaJnDuHp/pyde7+SVlg0i9j5JPawpXbIIquigu7zSwSOuctRKU0++ufh79wRFShY0cQYN5JE/qrv/whN8zk5YM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DDjIenEc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01D8AC4CEE4;
+	Mon,  5 May 2025 22:44:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485043;
-	bh=ILuU5mUox98kRSvahMMITcFsLpKEN2lWclTNJeUIJPI=;
+	s=k20201202; t=1746485054;
+	bh=D7eXuyELba5Og2esZH36Lvj9LlUf/dCO03XC8wf+1jM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n/Z++15l53s0L2N/1E8pKE9xkLY34ryrZnQkxDqWXp49BliYMLBGP5eZbO9F6mH15
-	 ZoL5sgWBeZRolMpPGbeyCGDtOkZsZPpLvfiVe0qlKMljOu3V6lkQwdChzzGN1zHzcq
-	 1eGKT104o5HOVrlQGyjXnnMa58oKyf4RtyS28weRcyC4lUtSk+obWHCvzCt+ZS3hIo
-	 x9wByhxs52LSVfTqUPCApdUOluvDplNVhnIdHBblj64WW9/ObiMCpxJC1nfyefcP7o
-	 9uzK1hqYRGJVIJF06gGnZjkQIeTO5ns+ZzrPZf61ixoTgzsVPol4+8uzsNfF/ARk1/
-	 WjEi99C62uAdA==
+	b=DDjIenEc7+SddyqzYhSNLo1Ilcu5Cdjhhj2lHqU0XydVJK5Ehettu/5kZ0LFUyDv4
+	 bof/WZVsX6ab7cQ5YlQ2aSpoxw0bhReRuBaPx05fjLtyOq062yOUAFebUyNgFqrf0b
+	 tJINE/2ILRlsps9zn9JIZaGqdArfaa8nZxUsZA55esEew+P5/Wykqb+XbWjEfvOowa
+	 uUoAm/B7Ol8S3L3es2mNe12jSe7PyeOGMF24hk1fMzZzl4JN2dIDVXUH5d/sePUDUC
+	 BhG7P60PzBiN3gPs3RUrHPEcNaKdr0sSE9HGbKrqXWv6jWxZnpYGKsksLappEb52UE
+	 YtR8eRBKILNHA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ryan Roberts <ryan.roberts@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+Cc: Kurt Borja <kuurtb@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>,
-	gshan@redhat.com,
-	peterx@redhat.com,
-	joey.gouly@arm.com,
-	yangyicong@hisilicon.com,
-	ioworker0@gmail.com
-Subject: [PATCH AUTOSEL 6.12 138/486] arm64/mm: Check pmd_table() in pmd_trans_huge()
-Date: Mon,  5 May 2025 18:33:34 -0400
-Message-Id: <20250505223922.2682012-138-sashal@kernel.org>
+	jdelvare@suse.com,
+	corbet@lwn.net,
+	pali@kernel.org,
+	linux-hwmon@vger.kernel.org,
+	linux-doc@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 144/486] hwmon: (dell-smm) Increment the number of fans
+Date: Mon,  5 May 2025 18:33:40 -0400
+Message-Id: <20250505223922.2682012-144-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -74,71 +69,84 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Ryan Roberts <ryan.roberts@arm.com>
+From: Kurt Borja <kuurtb@gmail.com>
 
-[ Upstream commit d1770e909898c108e8c7d30ca039053e8818a9c9 ]
+[ Upstream commit dbcfcb239b3b452ef8782842c36fb17dd1b9092f ]
 
-Check for pmd_table() in pmd_trans_huge() rather then just checking for the
-PMD_TABLE_BIT. But ensure all present-invalid entries are handled correctly
-by always setting PTE_VALID before checking with pmd_table().
+Some Alienware laptops that support the SMM interface, may have up to 4
+fans.
 
-Cc: Will Deacon <will@kernel.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Link: https://lore.kernel.org/r/20250221044227.1145393-8-anshuman.khandual@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Tested on an Alienware x15 r1.
+
+Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+Link: https://lore.kernel.org/r/20250304055249.51940-2-kuurtb@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/pgtable.h | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ Documentation/hwmon/dell-smm-hwmon.rst | 14 +++++++-------
+ drivers/hwmon/dell-smm-hwmon.c         |  5 ++++-
+ 2 files changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index c329ea061dc98..8ee56ae999c16 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -554,18 +554,6 @@ static inline int pmd_protnone(pmd_t pmd)
- #endif
+diff --git a/Documentation/hwmon/dell-smm-hwmon.rst b/Documentation/hwmon/dell-smm-hwmon.rst
+index 74905675d71f9..5a4edb6565cf9 100644
+--- a/Documentation/hwmon/dell-smm-hwmon.rst
++++ b/Documentation/hwmon/dell-smm-hwmon.rst
+@@ -32,12 +32,12 @@ Temperature sensors and fans can be queried and set via the standard
+ =============================== ======= =======================================
+ Name				Perm	Description
+ =============================== ======= =======================================
+-fan[1-3]_input                  RO      Fan speed in RPM.
+-fan[1-3]_label                  RO      Fan label.
+-fan[1-3]_min                    RO      Minimal Fan speed in RPM
+-fan[1-3]_max                    RO      Maximal Fan speed in RPM
+-fan[1-3]_target                 RO      Expected Fan speed in RPM
+-pwm[1-3]                        RW      Control the fan PWM duty-cycle.
++fan[1-4]_input                  RO      Fan speed in RPM.
++fan[1-4]_label                  RO      Fan label.
++fan[1-4]_min                    RO      Minimal Fan speed in RPM
++fan[1-4]_max                    RO      Maximal Fan speed in RPM
++fan[1-4]_target                 RO      Expected Fan speed in RPM
++pwm[1-4]                        RW      Control the fan PWM duty-cycle.
+ pwm1_enable                     WO      Enable or disable automatic BIOS fan
+                                         control (not supported on all laptops,
+                                         see below for details).
+@@ -93,7 +93,7 @@ Again, when you find new codes, we'd be happy to have your patches!
+ ---------------------------
  
- #define pmd_present(pmd)	pte_present(pmd_pte(pmd))
--
--/*
-- * THP definitions.
-- */
--
--#ifdef CONFIG_TRANSPARENT_HUGEPAGE
--static inline int pmd_trans_huge(pmd_t pmd)
--{
--	return pmd_val(pmd) && pmd_present(pmd) && !(pmd_val(pmd) & PMD_TABLE_BIT);
--}
--#endif /* CONFIG_TRANSPARENT_HUGEPAGE */
--
- #define pmd_dirty(pmd)		pte_dirty(pmd_pte(pmd))
- #define pmd_young(pmd)		pte_young(pmd_pte(pmd))
- #define pmd_valid(pmd)		pte_valid(pmd_pte(pmd))
-@@ -725,6 +713,18 @@ extern pgprot_t phys_mem_access_prot(struct file *file, unsigned long pfn,
- #define pmd_leaf_size(pmd)	(pmd_cont(pmd) ? CONT_PMD_SIZE : PMD_SIZE)
- #define pte_leaf_size(pte)	(pte_cont(pte) ? CONT_PTE_SIZE : PAGE_SIZE)
+ The driver also exports the fans as thermal cooling devices with
+-``type`` set to ``dell-smm-fan[1-3]``. This allows for easy fan control
++``type`` set to ``dell-smm-fan[1-4]``. This allows for easy fan control
+ using one of the thermal governors.
  
-+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-+static inline int pmd_trans_huge(pmd_t pmd)
-+{
-+	/*
-+	 * If pmd is present-invalid, pmd_table() won't detect it
-+	 * as a table, so force the valid bit for the comparison.
-+	 */
-+	return pmd_val(pmd) && pmd_present(pmd) &&
-+	       !pmd_table(__pmd(pmd_val(pmd) | PTE_VALID));
-+}
-+#endif /* CONFIG_TRANSPARENT_HUGEPAGE */
-+
- #if defined(CONFIG_ARM64_64K_PAGES) || CONFIG_PGTABLE_LEVELS < 3
- static inline bool pud_sect(pud_t pud) { return false; }
- static inline bool pud_table(pud_t pud) { return true; }
+ Module parameters
+diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwmon.c
+index f5bdf842040e6..b043fbd15c9da 100644
+--- a/drivers/hwmon/dell-smm-hwmon.c
++++ b/drivers/hwmon/dell-smm-hwmon.c
+@@ -73,7 +73,7 @@
+ #define DELL_SMM_LEGACY_EXECUTE	0x1
+ 
+ #define DELL_SMM_NO_TEMP	10
+-#define DELL_SMM_NO_FANS	3
++#define DELL_SMM_NO_FANS	4
+ 
+ struct smm_regs {
+ 	unsigned int eax;
+@@ -1074,11 +1074,14 @@ static const struct hwmon_channel_info * const dell_smm_info[] = {
+ 			   HWMON_F_INPUT | HWMON_F_LABEL | HWMON_F_MIN | HWMON_F_MAX |
+ 			   HWMON_F_TARGET,
+ 			   HWMON_F_INPUT | HWMON_F_LABEL | HWMON_F_MIN | HWMON_F_MAX |
++			   HWMON_F_TARGET,
++			   HWMON_F_INPUT | HWMON_F_LABEL | HWMON_F_MIN | HWMON_F_MAX |
+ 			   HWMON_F_TARGET
+ 			   ),
+ 	HWMON_CHANNEL_INFO(pwm,
+ 			   HWMON_PWM_INPUT | HWMON_PWM_ENABLE,
+ 			   HWMON_PWM_INPUT,
++			   HWMON_PWM_INPUT,
+ 			   HWMON_PWM_INPUT
+ 			   ),
+ 	NULL
 -- 
 2.39.5
 
