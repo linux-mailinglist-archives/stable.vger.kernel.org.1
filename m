@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-139992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F26AAAA36F
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:14:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1D2EAAA380
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:15:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F4AD163890
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:14:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58E593A3D64
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:14:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 596E92F366C;
-	Mon,  5 May 2025 22:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E36A7283FE2;
+	Mon,  5 May 2025 22:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AtBhl5QZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IRQxWFDa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D3D2F366B;
-	Mon,  5 May 2025 22:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A088D2F3671;
+	Mon,  5 May 2025 22:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483840; cv=none; b=UrG/hkhSEQMxcp1XRStfTwz0T3Li52BH59+l5lP4UJsaZS1LbBXhvJbDFy0h4v3b9kMNhTZ3MIgVQTiWVeVAhiBzrwUErkgamL/TdwOynM7royeCJkKVzHUR3/qe3nmmb/tXyTw8yBK1XrCZaTu3SjWs5A2JfJ11IeUYmvD5Ccg=
+	t=1746483842; cv=none; b=JBM2kEREDdbWfSfrZE1m3mp1lAAocswWp8HqnulkNwwFjctQ0OL/sIbF/h9I00/ZjOe8y+DwbrR7jUpQ9bnaKhGH596wPz/LGDB2IL8jC8WNp/dPZpDIF7+Gn96clkdDm+TYifE0atSPpBJqWui9HoCdT7TwExDflyT9qdYAsVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483840; c=relaxed/simple;
-	bh=hCFiE0D1eQdV+kal9Pml7UWOvkzVV1cn5Kgk9o95lzc=;
+	s=arc-20240116; t=1746483842; c=relaxed/simple;
+	bh=qM4WJnGHM1m1fsGvJCRhq94cX/P+bapNYT6XAdoDPVs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=WguJEVMbIMzNFgvFX7zcdPOlnf7uid0zgtuuvRcw0LWHp4s7klMnPumnEIpaSkQe4bGygI7qPTM+EKSwIy8kYFC3o0dp8l22FVkcx7a4A8wjrpB+3BXqZf+nJV3wS07SzUokXqmluK/3Z8ZgojtQS6hu/GQPn7ofPc7fj6ihcSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AtBhl5QZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DCBCC4CEE4;
-	Mon,  5 May 2025 22:23:57 +0000 (UTC)
+	 MIME-Version; b=PMYN/6+9kwMwc/ZXvxMkiT2VKqrYtxcsBLFQbGRTOBeoG5A2yL4asi8QmatGGilSaJbUYdIWfKwWHqL96Uh+ht/lagego8f9nBY6VM0Tl3UNtWMTkTnaDxGq0O2yuJlnZY2p3+32I08WQyw+7IM3KDwFEbarKr+svz88QDOlYcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IRQxWFDa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0699C4CEEE;
+	Mon,  5 May 2025 22:23:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483838;
-	bh=hCFiE0D1eQdV+kal9Pml7UWOvkzVV1cn5Kgk9o95lzc=;
+	s=k20201202; t=1746483841;
+	bh=qM4WJnGHM1m1fsGvJCRhq94cX/P+bapNYT6XAdoDPVs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AtBhl5QZs85XtcpxDp0zUa2Yj5spHsAotPcGcjXu8p4kq0XHhjVY7vUsu9vuzG5aK
-	 1UCz/93J6NncBCAjHB4cg1e4HIMB+eiSjG3dgGm5IyAkV+LPQ4J8JegkWksdF3MdN2
-	 RgJn6F7RCxSBnd8YH52oI/iC/ugy0k60HYEfGsuxi6JpWWIEWl6vbazWSoj5Y1n0e3
-	 vYN2Ssa0XnkOLCn4HcxSAS2KAcRf5XAcjmrANJX2Ga1uAeDL2H8NifU0EZgTFl0Lig
-	 LxqoRCcTEQn5VNH0rhRVg5zG7iIl+La6VQtaRFTpzDOq/fw6TrL/YEn+eR5yk5eoWb
-	 wH7TO02RJX4lQ==
+	b=IRQxWFDaeiz0LKD/V5mWSaQf0kEXTrpd7we7T+iUc650PL3PfnBF/G980L/EgCSfn
+	 gCziogBiQDUhXH6dBLezRmCN87Yw2GX04wnQJnWcVfC4p6FXtEEn/y24lKKR3qb92b
+	 INDjZXkE6o1wHEqFu8W30cfgmYC/0HDUrsQGJ7RCiJjCZ1izx5oiAOU83TUOYfXy3q
+	 7ZIGpLseYVQCcT1o4CEikKrk6fVXDoFB2ENpgIGWyGaBjNCLhNgj0aipyRIm68qj1o
+	 R54/3FfdSYwt33uJfdo7zFWUh6xeLl5hZClzdbqQgSl0Sx9lQb00yFikSJ6Lr+16t6
+	 jZE01u1TJdMxQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Gustavo Sousa <gustavo.sousa@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
+Cc: Victor Lu <victorchengchi.lu@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	lucas.demarchi@intel.com,
-	thomas.hellstrom@linux.intel.com,
-	rodrigo.vivi@intel.com,
+	christian.koenig@amd.com,
 	airlied@gmail.com,
 	simona@ffwll.ch,
-	intel-xe@lists.freedesktop.org,
+	Hawking.Zhang@amd.com,
+	tao.zhou1@amd.com,
+	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.14 245/642] drm/xe: Disambiguate GMDID-based IP names
-Date: Mon,  5 May 2025 18:07:41 -0400
-Message-Id: <20250505221419.2672473-245-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.14 246/642] drm/amdgpu: Do not program AGP BAR regs under SRIOV in gfxhub_v1_0.c
+Date: Mon,  5 May 2025 18:07:42 -0400
+Message-Id: <20250505221419.2672473-246-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -71,148 +71,43 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Gustavo Sousa <gustavo.sousa@intel.com>
+From: Victor Lu <victorchengchi.lu@amd.com>
 
-[ Upstream commit 0695c746f55c875f4cf20bab92533a800a0fe4d6 ]
+[ Upstream commit 057fef20b8401110a7bc1c2fe9d804a8a0bf0d24 ]
 
-The name of an IP is a function of its version. As such, given an IP
-version, it should be clear to identify the name of that IP release.
+SRIOV VF does not have write access to AGP BAR regs.
+Skip the writes to avoid a dmesg warning.
 
-With the current code, we keep that mapping clear for pre-GMDID IPs, but
-ambiguous for GMDID-based ones. That causes two types of inconveniences:
-
- 1. The end user, who might not have all the necessary mapping at hand,
-    might be confused when seeing different possible IP names in the
-    dmesg log.
-
- 2. It makes a developer who is not familiar with the "IP version" to
-    "Release name" need to resort to looking at the specs to understand
-    see what version maps to what. While the specs should be the
-    authority on the mapping, we should make our lives easier by
-    reflecting that mapping in the source code.
-
-Thus, since the IP name is tied to the version, let's  remove the
-ambiguity by using a "name" field in struct gmdid_map instead of
-accumulating names in the descriptor instances.
-
-This does result in the code having IP name being defined in
-different structs (gmdid_map, xe_graphics_desc, xe_media_desc), but that
-will be resolved in upcoming changes.
-
-A side-effect of this change is that media_xe2 exactly matches
-media_xelpmp now, so we just re-use the latter.
-
-v2:
-  - Drop media_xe2 and re-use media_xelpmp. (Matt)
-
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
-Signed-off-by: Gustavo Sousa <gustavo.sousa@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250221-xe-unify-ip-descriptors-v2-2-5bc0c6d0c13f@intel.com
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+Signed-off-by: Victor Lu <victorchengchi.lu@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_pci.c       | 36 +++++++++++--------------------
- drivers/gpu/drm/xe/xe_pci_types.h |  1 +
- 2 files changed, 14 insertions(+), 23 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_pci.c b/drivers/gpu/drm/xe/xe_pci.c
-index 39be74848e447..9b8813a518d72 100644
---- a/drivers/gpu/drm/xe/xe_pci.c
-+++ b/drivers/gpu/drm/xe/xe_pci.c
-@@ -150,7 +150,6 @@ static const struct xe_graphics_desc graphics_xehpc = {
- };
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c b/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c
+index 0e3ddea7b8e0f..a7bfc9f41d0e3 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c
+@@ -92,12 +92,12 @@ static void gfxhub_v1_0_init_system_aperture_regs(struct amdgpu_device *adev)
+ {
+ 	uint64_t value;
  
- static const struct xe_graphics_desc graphics_xelpg = {
--	.name = "Xe_LPG",
- 	.hw_engine_mask =
- 		BIT(XE_HW_ENGINE_RCS0) | BIT(XE_HW_ENGINE_BCS0) |
- 		BIT(XE_HW_ENGINE_CCS0),
-@@ -174,8 +173,6 @@ static const struct xe_graphics_desc graphics_xelpg = {
- 		GENMASK(XE_HW_ENGINE_CCS3, XE_HW_ENGINE_CCS0)
- 
- static const struct xe_graphics_desc graphics_xe2 = {
--	.name = "Xe2_LPG / Xe2_HPG / Xe3_LPG",
+-	/* Program the AGP BAR */
+-	WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_BASE, 0);
+-	WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_BOT, adev->gmc.agp_start >> 24);
+-	WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_TOP, adev->gmc.agp_end >> 24);
 -
- 	XE2_GFX_FEATURES,
- };
- 
-@@ -200,15 +197,6 @@ static const struct xe_media_desc media_xehpm = {
- };
- 
- static const struct xe_media_desc media_xelpmp = {
--	.name = "Xe_LPM+",
--	.hw_engine_mask =
--		GENMASK(XE_HW_ENGINE_VCS7, XE_HW_ENGINE_VCS0) |
--		GENMASK(XE_HW_ENGINE_VECS3, XE_HW_ENGINE_VECS0) |
--		BIT(XE_HW_ENGINE_GSCCS0)
--};
--
--static const struct xe_media_desc media_xe2 = {
--	.name = "Xe2_LPM / Xe2_HPM / Xe3_LPM",
- 	.hw_engine_mask =
- 		GENMASK(XE_HW_ENGINE_VCS7, XE_HW_ENGINE_VCS0) |
- 		GENMASK(XE_HW_ENGINE_VECS3, XE_HW_ENGINE_VECS0) |
-@@ -357,21 +345,21 @@ __diag_pop();
- 
- /* Map of GMD_ID values to graphics IP */
- static const struct gmdid_map graphics_ip_map[] = {
--	{ 1270, &graphics_xelpg },
--	{ 1271, &graphics_xelpg },
--	{ 1274, &graphics_xelpg },	/* Xe_LPG+ */
--	{ 2001, &graphics_xe2 },
--	{ 2004, &graphics_xe2 },
--	{ 3000, &graphics_xe2 },
--	{ 3001, &graphics_xe2 },
-+	{ 1270, "Xe_LPG", &graphics_xelpg },
-+	{ 1271, "Xe_LPG", &graphics_xelpg },
-+	{ 1274, "Xe_LPG+", &graphics_xelpg },
-+	{ 2001, "Xe2_HPG", &graphics_xe2 },
-+	{ 2004, "Xe2_LPG", &graphics_xe2 },
-+	{ 3000, "Xe3_LPG", &graphics_xe2 },
-+	{ 3001, "Xe3_LPG", &graphics_xe2 },
- };
- 
- /* Map of GMD_ID values to media IP */
- static const struct gmdid_map media_ip_map[] = {
--	{ 1300, &media_xelpmp },
--	{ 1301, &media_xe2 },
--	{ 2000, &media_xe2 },
--	{ 3000, &media_xe2 },
-+	{ 1300, "Xe_LPM+", &media_xelpmp },
-+	{ 1301, "Xe2_HPM", &media_xelpmp },
-+	{ 2000, "Xe2_LPM", &media_xelpmp },
-+	{ 3000, "Xe3_LPM", &media_xelpmp },
- };
- 
- /*
-@@ -566,6 +554,7 @@ static void handle_gmdid(struct xe_device *xe,
- 	for (int i = 0; i < ARRAY_SIZE(graphics_ip_map); i++) {
- 		if (ver == graphics_ip_map[i].ver) {
- 			xe->info.graphics_verx100 = ver;
-+			xe->info.graphics_name = graphics_ip_map[i].name;
- 			*graphics = graphics_ip_map[i].ip;
- 
- 			break;
-@@ -586,6 +575,7 @@ static void handle_gmdid(struct xe_device *xe,
- 	for (int i = 0; i < ARRAY_SIZE(media_ip_map); i++) {
- 		if (ver == media_ip_map[i].ver) {
- 			xe->info.media_verx100 = ver;
-+			xe->info.media_name = media_ip_map[i].name;
- 			*media = media_ip_map[i].ip;
- 
- 			break;
-diff --git a/drivers/gpu/drm/xe/xe_pci_types.h b/drivers/gpu/drm/xe/xe_pci_types.h
-index 79b0f80376a4d..665b4447b2ebc 100644
---- a/drivers/gpu/drm/xe/xe_pci_types.h
-+++ b/drivers/gpu/drm/xe/xe_pci_types.h
-@@ -44,6 +44,7 @@ struct xe_media_desc {
- 
- struct gmdid_map {
- 	unsigned int ver;
-+	const char *name;
- 	const void *ip;
- };
- 
+ 	if (!amdgpu_sriov_vf(adev) || adev->asic_type <= CHIP_VEGA10) {
++		/* Program the AGP BAR */
++		WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_BASE, 0);
++		WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_BOT, adev->gmc.agp_start >> 24);
++		WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_TOP, adev->gmc.agp_end >> 24);
++
+ 		/* Program the system aperture low logical page number. */
+ 		WREG32_SOC15_RLC(GC, 0, mmMC_VM_SYSTEM_APERTURE_LOW_ADDR,
+ 			min(adev->gmc.fb_start, adev->gmc.agp_start) >> 18);
 -- 
 2.39.5
 
