@@ -1,113 +1,121 @@
-Return-Path: <stable+bounces-139738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4A51AA9CA0
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 21:28:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FCF9AA9CF0
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:00:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A7533A5790
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 19:27:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09B1717D280
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 20:00:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3D8026FDB4;
-	Mon,  5 May 2025 19:27:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46FFF1B5EB5;
+	Mon,  5 May 2025 20:00:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W7NRILBW"
 X-Original-To: stable@vger.kernel.org
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [217.70.183.197])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0AFF2557C;
-	Mon,  5 May 2025 19:27:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.197
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 023FF34CF5;
+	Mon,  5 May 2025 20:00:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746473278; cv=none; b=elt2fkdXkiZhLxKuYwuIyN+MJjfMlG9Gk62AzZT170JhLwQCk8T+EENEjw+mPyRMDq0miG2L5y94Z7XqUKtB2uWl3gcqWth1vdPTvu7sP65vgfupx9xvcPZ8LNE/JHVDU138F6Bc2S5mxfKMUgVl+3Yv9i/XZfNf4qR95zxKGhM=
+	t=1746475214; cv=none; b=cqSo400jissaCKCs//n3dx+lAJBYGOozWylaQIwY+gMDusxbATR8SLPbN63d5HsD3XXkx4YGk+VQmvgqsmAQzFbseHMmvLaC1UlXywdnL9QBZQ4HWNa5e6S4e/s8wpsypDQo2+HJGKNeZqZDgGDR99I5eJVMB4vS92o6BGT0Xjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746473278; c=relaxed/simple;
-	bh=8brw1Gjxn5zXovwDyimGvy7pHEterN2+6ivuHHAmf8o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IaXFgkr73CvGbC3/U+GdeQc9gZ7tPyYcEhobyh3TfgvOJPYFh9tECfBPgfJT6AcufQo+xKGnMqGvdSpyjmv4q7lFPY+8kYLDcl4j6v6287KvwoYVTDsujsD+jOg96oHVD09gExpBrseFBy4mFn/64l6EvF35l29+fqvhYTbNVZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr; spf=pass smtp.mailfrom=ghiti.fr; arc=none smtp.client-ip=217.70.183.197
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ghiti.fr
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 93A9C43A0F;
-	Mon,  5 May 2025 19:27:52 +0000 (UTC)
-Message-ID: <d7232e99-e899-4e50-b60f-2527be709d2c@ghiti.fr>
-Date: Mon, 5 May 2025 21:27:51 +0200
+	s=arc-20240116; t=1746475214; c=relaxed/simple;
+	bh=nn4mB8H4ufY4kw1Y9euB8H1PuuLGUJug1P4n+1/nRFg=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=E0jWV3Z4O23DqXa0LTsxqXFu4Z2Wh2C4m5PotM/POIOeu/30EuOdkrJTbF5V0olQKL0VjdOpa/K2nmONQIzT4+3Xw/OLpDr4uZUpykVp8ImJUQRKO/3rLht5q7LCG63wry/3VUOrTB+9NIuS/hCj0dodmdcOW35SgaMOjhdwEbo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W7NRILBW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B36EC4CEE4;
+	Mon,  5 May 2025 20:00:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746475213;
+	bh=nn4mB8H4ufY4kw1Y9euB8H1PuuLGUJug1P4n+1/nRFg=;
+	h=Date:From:To:Cc:Subject:From;
+	b=W7NRILBWo26BjRzhS2ooaBcA5gplnZBFpmkF3oM+/WmYGYlSGFAZ9jK1pFauF+0hy
+	 51YN4X75djshtQkoMTKF6EO4F6dUZlmm7D1kExjOwFkFUirNI0X2lcCsCDIlBqUtee
+	 O90JyvjIra0snBjn6kxr2rBezbJ4rV+BjFULQauzVkToLovV5GXw2XK/vEVFThI4Tk
+	 OwwL1j8t7G1tiRnH/NdUwc7qhRnJFbxgRQ80wkhs0mLMaz9NGu8qC0ea28fdX6d7Ij
+	 /TlbMdXmoXMBghAYjuQDS5/1jJUPwEaH7qRTuFD6dbNItXajtROLFbFZZNbcgu85TI
+	 H1/ouTOQs/+vA==
+Date: Mon, 5 May 2025 22:00:08 +0200
+From: Helge Deller <deller@kernel.org>
+To: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Pranjal Shrivastava <praan@google.com>, linux-parisc@vger.kernel.org
+Subject: [PATCH] parisc stable patch for kernel v6.12
+Message-ID: <aBkYyCNo1ebnzZgp@carbonx1>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] riscv: Fix kernel crash due to PR_SET_TAGGED_ADDR_CTRL
-Content-Language: en-US
-To: Nam Cao <namcao@linutronix.de>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Samuel Holland <samuel.holland@sifive.com>, linux-riscv@lists.infradead.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20250504101920.3393053-1-namcao@linutronix.de>
- <c59f2632-d96f-43c6-869d-5e5f743f2dbd@ghiti.fr>
- <20250505160722.s_w3u1pd@linutronix.de>
-From: Alexandre Ghiti <alex@ghiti.fr>
-In-Reply-To: <20250505160722.s_w3u1pd@linutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvkeduleegucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhjggtgfesthejredttddvjeenucfhrhhomheptehlvgigrghnughrvgcuifhhihhtihcuoegrlhgvgiesghhhihhtihdrfhhrqeenucggtffrrghtthgvrhhnpedtffduvdfhveefieefudffjeffffegudevfeffvdehhefhtddviefgledtgeehfeenucffohhmrghinhepmhgrnhhgohhpihdrohhrghdpihhnfhhrrgguvggrugdrohhrghenucfkphepvddttddumeekiedumeeffeekvdemvghfledtmedutgduvgemrgdutggsmehftdeisgemiegutdgtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddttddumeekiedumeeffeekvdemvghfledtmedutgduvgemrgdutggsmehftdeisgemiegutdgtpdhhvghloheplgfkrfggieemvddttddumeekiedumeeffeekvdemvghfledtmedutgduvgemrgdutggsmehftdeisgemiegutdgtngdpmhgrihhlfhhrohhmpegrlhgvgiesghhhihhtihdrfhhrpdhnsggprhgtphhtthhopeekpdhrtghpthhtohepnhgrmhgtrghosehlihhnuhhtrhhonhhigidruggvpdhrtghpthhtohepphgruhhlrdifrghlmhhslhgvhiesshhif
- hhivhgvrdgtohhmpdhrtghpthhtohepphgrlhhmvghrsegurggssggvlhhtrdgtohhmpdhrtghpthhtoheprghouhesvggvtghsrdgsvghrkhgvlhgvhidrvgguuhdprhgtphhtthhopehsrghmuhgvlhdrhhholhhlrghnugesshhifhhivhgvrdgtohhmpdhrtghpthhtoheplhhinhhugidqrhhishgtvheslhhishhtshdrihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-GND-Sasl: alex@ghiti.fr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On 05/05/2025 18:07, Nam Cao wrote:
-> Hi Alex,
->
-> On Mon, May 05, 2025 at 06:02:26PM +0200, Alexandre Ghiti wrote:
->> On 04/05/2025 12:19, Nam Cao wrote:
->>> When userspace does PR_SET_TAGGED_ADDR_CTRL, but Supm extension is not
->>> available, the kernel crashes:
->>>
->>> Oops - illegal instruction [#1]
->>>       [snip]
->>> epc : set_tagged_addr_ctrl+0x112/0x15a
->>>    ra : set_tagged_addr_ctrl+0x74/0x15a
->>> epc : ffffffff80011ace ra : ffffffff80011a30 sp : ffffffc60039be10
->>>       [snip]
->>> status: 0000000200000120 badaddr: 0000000010a79073 cause: 0000000000000002
->>>       set_tagged_addr_ctrl+0x112/0x15a
->>>       __riscv_sys_prctl+0x352/0x73c
->>>       do_trap_ecall_u+0x17c/0x20c
->>>       andle_exception+0x150/0x15c
->>
->> It seems like the csr write is triggering this illegal instruction, can you
->> confirm it is?
-> Yes, it is the "csr_write(CSR_ENVCFG, envcfg);" in envcfg_update_bits().
->
->> If so, I can't find in the specification that an implementation should do
->> that when writing envcfg and I can't reproduce it on qemu. Where did you
->> see this oops?
-> I can't find it in the spec either. I think it is up to the implementation.
+Hi Greg,
 
+below is a backport for upstream patch 
+fd87b7783802 ("net: Fix the devmem sock opts and msgs for parisc").
 
-The reserved fields of senvcfg are WPRI and contrary to WLRL, it does 
-not explicitly "permit" to raise an illegal instruction so I'd say it is 
-not up to the implementation, I'll ask around.
+This upstream patch does not apply cleanly against v6.12, and
+backporting all intermediate changes are too big, so I created this
+trivial standalone patch instead.
 
-Thanks,
+Can you please add the patc below to the stable queue for v6.12?
 
-Alex
+Thanks!
+Helge
 
+---
 
->
-> I got this crash on the MangoPI board:
-> https://mangopi.org/mqpro
->
-> Best regards,
-> Nam
->
-> _______________________________________________
-> linux-riscv mailing list
-> linux-riscv@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-riscv
+From: Pranjal Shrivastava <praan@google.com>
+Date: Mon, 24 Mar 2025 07:42:27 +0000
+Subject: [PATCH] net: Fix the devmem sock opts and msgs for parisc
+
+The devmem socket options and socket control message definitions
+introduced in the TCP devmem series[1] incorrectly continued the socket
+definitions for arch/parisc.
+
+The UAPI change seems safe as there are currently no drivers that
+declare support for devmem TCP RX via PP_FLAG_ALLOW_UNREADABLE_NETMEM.
+Hence, fixing this UAPI should be safe.
+
+Fix the devmem socket options and socket control message definitions to
+reflect the series followed by arch/parisc.
+
+[1] https://lore.kernel.org/lkml/20240910171458.219195-10-almasrymina@google.com/
+
+Patch modified for kernel 6.12 by Helge Deller.
+
+Fixes: 8f0b3cc9a4c10 ("tcp: RX path for devmem TCP")
+Signed-off-by: Pranjal Shrivastava <praan@google.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
+
+diff --git b/arch/parisc/include/uapi/asm/socket.h a/arch/parisc/include/uapi/asm/socket.h
+index 38fc0b188e08..96831c988606 100644
+--- b/arch/parisc/include/uapi/asm/socket.h
++++ a/arch/parisc/include/uapi/asm/socket.h
+@@ -132,11 +132,15 @@
+ #define SO_PASSPIDFD		0x404A
+ #define SO_PEERPIDFD		0x404B
+ 
+-#define SO_DEVMEM_LINEAR	78
++#define SCM_TS_OPT_ID		0x404C
++
++#define SO_RCVPRIORITY		0x404D
++
++#define SO_DEVMEM_LINEAR	0x404E
+ #define SCM_DEVMEM_LINEAR	SO_DEVMEM_LINEAR
+-#define SO_DEVMEM_DMABUF	79
++#define SO_DEVMEM_DMABUF	0x404F
+ #define SCM_DEVMEM_DMABUF	SO_DEVMEM_DMABUF
+-#define SO_DEVMEM_DONTNEED	80
++#define SO_DEVMEM_DONTNEED	0x4050
+ 
+ #if !defined(__KERNEL__)
+ 
 
