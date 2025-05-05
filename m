@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-139599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CC27AA8D31
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 09:41:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 293F6AA8D35
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 09:42:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAD8B16BDA8
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 07:41:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 712D93AB4DB
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 07:41:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA7581B424A;
-	Mon,  5 May 2025 07:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31AAC1D5CD1;
+	Mon,  5 May 2025 07:42:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JFyCNYKd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CXUZc5ZD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97FD128EA
-	for <stable@vger.kernel.org>; Mon,  5 May 2025 07:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCBB7176AC8
+	for <stable@vger.kernel.org>; Mon,  5 May 2025 07:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746430861; cv=none; b=CtUYTVt6wFMl5XZHI9VfLZ1ben9oYdrlS14zRQYY0SZ3OpW+NNUZNZW6oHkVGMkeKy0gFX5V2gVIuTpNkbcJEvi49bnCp7l8y7JWUJ8ZycUB8jxjsov3gD9jDMvKewluGVNYzTnr8TKOhhnFsKtx6xZq4YCCoQVbfHIh7FrUkt0=
+	t=1746430921; cv=none; b=GmZr9qmt9M/ImfgPAZ05srTwcfM6GdLNl1/wK+6yIYb7H72NhsUlIWsuYtKeDiKTqh4j/J8Lech5U93YSswNn0pf7pDcHFQafmYQ548rpVIpeqvOgvwE9KBJk3S3jVXbycdbhRdBl6TU4SUHq1XQEmPkHmaTuA2pzzDJifJEY0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746430861; c=relaxed/simple;
-	bh=xAKhSMx9bXgikXdU8+eHDQIMmnOexO5tyfoogI8gSJ4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=WAqM79LxFfY4B+vwIQpxCDLXWXH5rbCGliBTGnEr/oNcWObLqBX++0iTSybnihWxEWFSi0z2BTcIHwLw1UCY9+2LgEkFAwQv9VqdrpOtaut9S1y8mM+Eto5fvy9ntHhjTe+ceq9flCiKlmoX1N0nXjDaX5KerdDp+oavtIEEIg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JFyCNYKd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1922C4CEE4;
-	Mon,  5 May 2025 07:41:00 +0000 (UTC)
+	s=arc-20240116; t=1746430921; c=relaxed/simple;
+	bh=CfYBLYe+txazrOo2Yhl31Pt887fE93nxzFgnnTVDqYg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=NBI2bPJWOZbgE6Gc6NhcWFqMjY4NfvN90fm+Ph5gmSt8R/F6PZLfFnaiH0kk5+SWhKUiljvFuvB1XWnyGjCZeiKYXViRPcH0t9z+IfrZqeHzyOL058WYFR0iDa01vs0qrrMollU4m5BGMuGPgaKjPBsroIfFeCDUhurhuiNiVx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CXUZc5ZD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E954CC4CEE9;
+	Mon,  5 May 2025 07:42:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746430861;
-	bh=xAKhSMx9bXgikXdU8+eHDQIMmnOexO5tyfoogI8gSJ4=;
+	s=korg; t=1746430921;
+	bh=CfYBLYe+txazrOo2Yhl31Pt887fE93nxzFgnnTVDqYg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=JFyCNYKdp1RvENFUo7BvpOtEjSv91BUaAFxqNaRk21Ib0Xk4P+UweDnL8piDZ4fe3
-	 1M0l+wNQACRNW2VeOKvuTC3YyNcAR+aUBvhqXtOzVPh0ylTKbxWWw4YRlWfY7iFUqs
-	 uYFJZzUJtnYBUzEfzaP4yzBqrgJVkgqdCADdVrX4=
-Subject: FAILED: patch "[PATCH] drivers: base: handle module_kobject creation" failed to apply to 6.6-stable tree
-To: shyamsaini@linux.microsoft.com,gregkh@linuxfoundation.org,linux@rasmusvillemoes.dk,petr.pavlu@suse.com
+	b=CXUZc5ZDotcJAFPzNvqe25m6xMhTViaFlj7Oaf6QiBgvdAvfjBJOg3sSroOliXloO
+	 qAj1H04+Rep1j1CRMV8ZCXwasH47sy46JhNFys98O+1VJNaB9SGiZhbr29FxPcp9+Z
+	 ubLMC2D+o5slRVk3Pg9B5lpM7YCXlvhvS1Get/n4=
+Subject: FAILED: patch "[PATCH] btrfs: fix the inode leak in btrfs_iget()" failed to apply to 6.14-stable tree
+To: superman.xpt@gmail.com,dsterba@suse.com,wqu@suse.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 05 May 2025 09:40:48 +0200
-Message-ID: <2025050548-pursuable-absence-aa7d@gregkh>
+Date: Mon, 05 May 2025 09:41:58 +0200
+Message-ID: <2025050558-charger-crumpled-6ca4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.14.y
 git checkout FETCH_HEAD
-git cherry-pick -x f95bbfe18512c5c018720468959edac056a17196
+git cherry-pick -x 48c1d1bb525b1c44b8bdc8e7ec5629cb6c2b9fc4
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025050548-pursuable-absence-aa7d@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025050558-charger-crumpled-6ca4@gregkh' --subject-prefix 'PATCH 6.14.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,59 +77,80 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From f95bbfe18512c5c018720468959edac056a17196 Mon Sep 17 00:00:00 2001
-From: Shyam Saini <shyamsaini@linux.microsoft.com>
-Date: Thu, 27 Feb 2025 10:49:30 -0800
-Subject: [PATCH] drivers: base: handle module_kobject creation
+From 48c1d1bb525b1c44b8bdc8e7ec5629cb6c2b9fc4 Mon Sep 17 00:00:00 2001
+From: Penglei Jiang <superman.xpt@gmail.com>
+Date: Mon, 21 Apr 2025 08:40:29 -0700
+Subject: [PATCH] btrfs: fix the inode leak in btrfs_iget()
 
-module_add_driver() relies on module_kset list for
-/sys/module/<built-in-module>/drivers directory creation.
+[BUG]
+There is a bug report that a syzbot reproducer can lead to the following
+busy inode at unmount time:
 
-Since,
-commit 96a1a2412acba ("kernel/params.c: defer most of param_sysfs_init() to late_initcall time")
-drivers which are initialized from subsys_initcall() or any other
-higher precedence initcall couldn't find the related kobject entry
-in the module_kset list because module_kset is not fully populated
-by the time module_add_driver() refers it. As a consequence,
-module_add_driver() returns early without calling make_driver_name().
-Therefore, /sys/module/<built-in-module>/drivers is never created.
+  BTRFS info (device loop1): last unmount of filesystem 1680000e-3c1e-4c46-84b6-56bd3909af50
+  VFS: Busy inodes after unmount of loop1 (btrfs)
+  ------------[ cut here ]------------
+  kernel BUG at fs/super.c:650!
+  Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+  CPU: 0 UID: 0 PID: 48168 Comm: syz-executor Not tainted 6.15.0-rc2-00471-g119009db2674 #2 PREEMPT(full)
+  Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+  RIP: 0010:generic_shutdown_super+0x2e9/0x390 fs/super.c:650
+  Call Trace:
+   <TASK>
+   kill_anon_super+0x3a/0x60 fs/super.c:1237
+   btrfs_kill_super+0x3b/0x50 fs/btrfs/super.c:2099
+   deactivate_locked_super+0xbe/0x1a0 fs/super.c:473
+   deactivate_super fs/super.c:506 [inline]
+   deactivate_super+0xe2/0x100 fs/super.c:502
+   cleanup_mnt+0x21f/0x440 fs/namespace.c:1435
+   task_work_run+0x14d/0x240 kernel/task_work.c:227
+   resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
+   exit_to_user_mode_loop kernel/entry/common.c:114 [inline]
+   exit_to_user_mode_prepare include/linux/entry-common.h:329 [inline]
+   __syscall_exit_to_user_mode_work kernel/entry/common.c:207 [inline]
+   syscall_exit_to_user_mode+0x269/0x290 kernel/entry/common.c:218
+   do_syscall_64+0xd4/0x250 arch/x86/entry/syscall_64.c:100
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+   </TASK>
 
-Fix this issue by letting module_add_driver() handle module_kobject
-creation itself.
+[CAUSE]
+When btrfs_alloc_path() failed, btrfs_iget() directly returned without
+releasing the inode already allocated by btrfs_iget_locked().
 
-Fixes: 96a1a2412acb ("kernel/params.c: defer most of param_sysfs_init() to late_initcall time")
-Cc: stable@vger.kernel.org # requires all other patches from the series
-Suggested-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Signed-off-by: Shyam Saini <shyamsaini@linux.microsoft.com>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20250227184930.34163-5-shyamsaini@linux.microsoft.com
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+This results the above busy inode and trigger the kernel BUG.
 
-diff --git a/drivers/base/module.c b/drivers/base/module.c
-index 5bc71bea883a..218aaa096455 100644
---- a/drivers/base/module.c
-+++ b/drivers/base/module.c
-@@ -42,16 +42,13 @@ int module_add_driver(struct module *mod, const struct device_driver *drv)
- 	if (mod)
- 		mk = &mod->mkobj;
- 	else if (drv->mod_name) {
--		struct kobject *mkobj;
--
--		/* Lookup built-in module entry in /sys/modules */
--		mkobj = kset_find_obj(module_kset, drv->mod_name);
--		if (mkobj) {
--			mk = container_of(mkobj, struct module_kobject, kobj);
-+		/* Lookup or create built-in module entry in /sys/modules */
-+		mk = lookup_or_create_module_kobject(drv->mod_name);
-+		if (mk) {
- 			/* remember our module structure */
- 			drv->p->mkobj = mk;
--			/* kset_find_obj took a reference */
--			kobject_put(mkobj);
-+			/* lookup_or_create_module_kobject took a reference */
-+			kobject_put(&mk->kobj);
- 		}
- 	}
+[FIX]
+Fix it by calling iget_failed() if btrfs_alloc_path() failed.
+
+If we hit error inside btrfs_read_locked_inode(), it will properly call
+iget_failed(), so nothing to worry about.
+
+Although the iget_failed() cleanup inside btrfs_read_locked_inode() is a
+break of the normal error handling scheme, let's fix the obvious bug
+and backport first, then rework the error handling later.
+
+Reported-by: Penglei Jiang <superman.xpt@gmail.com>
+Link: https://lore.kernel.org/linux-btrfs/20250421102425.44431-1-superman.xpt@gmail.com/
+Fixes: 7c855e16ab72 ("btrfs: remove conditional path allocation in btrfs_read_locked_inode()")
+CC: stable@vger.kernel.org # 6.13+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Penglei Jiang <superman.xpt@gmail.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index 312fa996a987..d295a37fa049 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -5682,8 +5682,10 @@ struct btrfs_inode *btrfs_iget(u64 ino, struct btrfs_root *root)
+ 		return inode;
  
+ 	path = btrfs_alloc_path();
+-	if (!path)
++	if (!path) {
++		iget_failed(&inode->vfs_inode);
+ 		return ERR_PTR(-ENOMEM);
++	}
+ 
+ 	ret = btrfs_read_locked_inode(inode, path);
+ 	btrfs_free_path(path);
 
 
