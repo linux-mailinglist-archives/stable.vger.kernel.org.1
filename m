@@ -1,59 +1,64 @@
-Return-Path: <stable+bounces-141638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B93CAAB7AC
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:16:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F23CAAB75C
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:10:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5CD83A550B
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:09:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2A37A7AA8B8
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:09:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E61A5295531;
-	Tue,  6 May 2025 00:45:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 869812F4961;
+	Tue,  6 May 2025 00:45:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FagQhk8S"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UxOBz7Ko"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F3EE284685;
-	Mon,  5 May 2025 23:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48EA6390E0C;
+	Mon,  5 May 2025 23:16:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486989; cv=none; b=rTsN0VXvtd/cpMIlYfwD2JnOx//FpYBYGnSCh/uuB0Foa0tKHRKvJ0WRve5EK7W70uXnHOP50SRrZHhwCNAR/o8a1OdYWzrQcfRqkIkrnxIgZ3UkIgTDGwe7rb6DTU1e6ZBKp3UTCU8KQRSQA4HekuglHYW0ZXghhU+aNwamPfU=
+	t=1746486997; cv=none; b=LyqRha8tmQIQ3oltKucHATzNL7i5mfx5rfTjQr3aXx8bULgE1I2/cHhOnBWzZGobe6UfiU56RWRksMZl/oLmwqjJa06GXBednzEOI4ZlW2Lp6yakf74O/vaHDkvsqG7Da/nHLh8M5QA4EPaHTpUsq/7014gjC2QXJysrxsilP98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486989; c=relaxed/simple;
-	bh=VShZx/OtOKuuvh06Jv/lzdqlqBzM61dEtJe8X10rhZI=;
+	s=arc-20240116; t=1746486997; c=relaxed/simple;
+	bh=D2onoH0eioFutunK8t49CfkAwg7YCy58FHYrZHRgwp0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=PqedrXHrvdGJIWv4/Q5M7k5a09KyYpaeeg7K1H7SQu6bUF7FmKdx61/GoqeoVuM4nATiro1nNvD6qURUhMBf7Gjz4F9ZxII+1PTjQ7lm7WEWuUGx2ExF5MyYn7mnF8CurtAzzZP0YLFbhC/VmHzErxnvQNoGQUhLQ55BCv9SLIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FagQhk8S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62496C4CEF1;
-	Mon,  5 May 2025 23:16:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=heAvbJ1n+1ih3Z5X5lpU5CB3dZ7DMBG78IaeIHoffOAx+N0JJ5r0lCDbS7DaKYyTjooJqryUgsKNxwf8ko/JdvbijdBg7cprVTLwSFJTQVUkXzurY+Y1IzVe+eTt+gNrRovcaVWhuSBMQDl/HLZ6Z3iYs9kH5GUzRv/H1njwmQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UxOBz7Ko; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F234C4CEEF;
+	Mon,  5 May 2025 23:16:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486988;
-	bh=VShZx/OtOKuuvh06Jv/lzdqlqBzM61dEtJe8X10rhZI=;
+	s=k20201202; t=1746486995;
+	bh=D2onoH0eioFutunK8t49CfkAwg7YCy58FHYrZHRgwp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FagQhk8SrXYkKyVJErsZdGeN7L+Q7RQ8UlbyL/BIWPoyZjD1PtqThfteBstsr5W2a
-	 pqwbIOUzk4mpu+GLI9W3T4NGQBp2MqvQ+kMXArsbpf9OpkQl3N42S6xJxuN+xWRyAB
-	 7tb5zzmcW8eLpPgJc9K1Su5A0fnbD4NvZxFWP4TeImP1wV0w1eY4Sf67NuQF+zGH/Q
-	 8zTie9bVTjOwkHzYhMCSzxAAKY1MUjpTZlTDvM8x9Fxkl3GhjcykyXA/oWBE38HFwj
-	 kgj2teTFMcPRFfmW4G3vJrpSPglKnJMDtAlQKL60b+I5CR3BQBGU6nGP6OMQ8o7e0G
-	 RiD6Xxq0WO83A==
+	b=UxOBz7KowbWH2ZRTO5Cq4sdXczlwdK2rhRKJgeB3+DtJKZquMdoBZF+3SBHqnZLGt
+	 5/kzKtFIrwkGWC9ukKqWvonQGJChdEfMASoJM+dFWO2Gu8CiTrj72ab6CwYpBMhEx3
+	 L0ZbxOHQSBxw6KOZqEwPPVlFIWhb2uHwZV5qoEXQGXebzUL7yWreDYJJnkjY6rKpfR
+	 dxvNYqmlIRPlEzD4Hn3DWIHWl74nDg4e7zIlvSKaPhqrbKg+9BL6dhn7PA+7120wx6
+	 nBwo6VFav1JKwMB0AsUhOMJKawG//SrqEY27SZQZi8z8rrF40mdLO5+NlFWrDM+Jhi
+	 ZCZ8kmbceiZtg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Nandakumar Edamana <nandakumar@nandakumar.co.in>,
-	Andrii Nakryiko <andrii@kernel.org>,
+Cc: Paul Burton <paulburton@kernel.org>,
+	Chao-ying Fu <cfu@wavecomp.com>,
+	Dragan Mladjenovic <dragan.mladjenovic@syrmia.com>,
+	Aleksandar Rikalo <arikalo@gmail.com>,
+	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>,
-	eddyz87@gmail.com,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	bpf@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 093/153] libbpf: Fix out-of-bound read
-Date: Mon,  5 May 2025 19:12:20 -0400
-Message-Id: <20250505231320.2695319-93-sashal@kernel.org>
+	tglx@linutronix.de,
+	linux-mips@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 097/153] clocksource: mips-gic-timer: Enable counter when CPUs start
+Date: Mon,  5 May 2025 19:12:24 -0400
+Message-Id: <20250505231320.2695319-97-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
 References: <20250505231320.2695319-1-sashal@kernel.org>
@@ -63,46 +68,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.181
 Content-Transfer-Encoding: 8bit
 
-From: Nandakumar Edamana <nandakumar@nandakumar.co.in>
+From: Paul Burton <paulburton@kernel.org>
 
-[ Upstream commit 236d3910117e9f97ebf75e511d8bcc950f1a4e5f ]
+[ Upstream commit 3128b0a2e0cf6e07aa78e5f8cf7dd9cd59dc8174 ]
 
-In `set_kcfg_value_str`, an untrusted string is accessed with the assumption
-that it will be at least two characters long due to the presence of checks for
-opening and closing quotes. But the check for the closing quote
-(value[len - 1] != '"') misses the fact that it could be checking the opening
-quote itself in case of an invalid input that consists of just the opening
-quote.
+In multi-cluster MIPS I6500 systems there is a GIC in each cluster,
+each with its own counter. When a cluster powers up the counter will
+be stopped, with the COUNTSTOP bit set in the GIC_CONFIG register.
 
-This commit adds an explicit check to make sure the string is at least two
-characters long.
+In single cluster systems, it has been fine to clear COUNTSTOP once
+in gic_clocksource_of_init() to start the counter. In multi-cluster
+systems, this will only have started the counter in the boot cluster,
+and any CPUs in other clusters will find their counter stopped which
+will break the GIC clock_event_device.
 
-Signed-off-by: Nandakumar Edamana <nandakumar@nandakumar.co.in>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250221210110.3182084-1-nandakumar@nandakumar.co.in
+Resolve this by having CPUs clear the COUNTSTOP bit when they come
+online, using the existing gic_starting_cpu() CPU hotplug callback. This
+will allow CPUs in secondary clusters to ensure that the cluster's GIC
+counter is running as expected.
+
+Signed-off-by: Paul Burton <paulburton@kernel.org>
+Signed-off-by: Chao-ying Fu <cfu@wavecomp.com>
+Signed-off-by: Dragan Mladjenovic <dragan.mladjenovic@syrmia.com>
+Signed-off-by: Aleksandar Rikalo <arikalo@gmail.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Tested-by: Serge Semin <fancer.lancer@gmail.com>
+Tested-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+Acked-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/libbpf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clocksource/mips-gic-timer.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-index 294fdba9c76f7..40e0d84e3d8ed 100644
---- a/tools/lib/bpf/libbpf.c
-+++ b/tools/lib/bpf/libbpf.c
-@@ -1567,7 +1567,7 @@ static int set_kcfg_value_str(struct extern_desc *ext, char *ext_val,
+diff --git a/drivers/clocksource/mips-gic-timer.c b/drivers/clocksource/mips-gic-timer.c
+index be4175f415ba5..1946691f6b322 100644
+--- a/drivers/clocksource/mips-gic-timer.c
++++ b/drivers/clocksource/mips-gic-timer.c
+@@ -119,6 +119,9 @@ static void gic_update_frequency(void *data)
+ 
+ static int gic_starting_cpu(unsigned int cpu)
+ {
++	/* Ensure the GIC counter is running */
++	clear_gic_config(GIC_CONFIG_COUNTSTOP);
++
+ 	gic_clockevent_cpu_init(cpu, this_cpu_ptr(&gic_clockevent_device));
+ 	return 0;
+ }
+@@ -253,9 +256,6 @@ static int __init gic_clocksource_of_init(struct device_node *node)
+ 			pr_warn("Unable to register clock notifier\n");
  	}
  
- 	len = strlen(value);
--	if (value[len - 1] != '"') {
-+	if (len < 2 || value[len - 1] != '"') {
- 		pr_warn("extern (kcfg) '%s': invalid string config '%s'\n",
- 			ext->name, value);
- 		return -EINVAL;
+-	/* And finally start the counter */
+-	clear_gic_config(GIC_CONFIG_COUNTSTOP);
+-
+ 	/*
+ 	 * It's safe to use the MIPS GIC timer as a sched clock source only if
+ 	 * its ticks are stable, which is true on either the platforms with
 -- 
 2.39.5
 
