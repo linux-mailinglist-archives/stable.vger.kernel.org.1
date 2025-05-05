@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-141067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 357D2AAADB5
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:40:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5F7BAAADA7
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:39:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 146A01B65E1F
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:37:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C0FA188E132
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:37:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B41130D271;
-	Mon,  5 May 2025 23:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D81993BCB2A;
+	Mon,  5 May 2025 23:43:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aJ8tAhT1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="upU0G1eP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E02B82FA7E5;
-	Mon,  5 May 2025 23:22:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A7DE3BC8E0;
+	Mon,  5 May 2025 23:22:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487371; cv=none; b=EM/K06a7qa/SZOSHFwhWPlaAjzpmYF3ZDuiWzQjORWYS+rG3bEAqGOtK8MAdZPMuw1lhLmikBprAUcUnrIBJSV+o8/P3nd6PlSxJ4WrvEEqkoX/hwtUcr163Z0JV0oV663i2HSceZdFDoppauonfHEkkggkDuZb66URJ2YoAV2M=
+	t=1746487373; cv=none; b=W9Ca3GyVg7e9kSEzdkzVCdHlEMiG7z/wmhjx5ImcVIKQNDpTeLGhC6nBfi23nIJWFHgzcG0RUwI0+So3p6OCmCjEaBjIdWmVqTSBXeJQOnyNTbkF3sEKD1SBKIdhjPWjsY8DUr3MhSvr0101SzNzyF3bwxvt8t81ZIueX47Y0XE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487371; c=relaxed/simple;
-	bh=ikzvWiw406GCJXyN70LZHbijw0+CfJ3pc/l3O/+uycY=;
+	s=arc-20240116; t=1746487373; c=relaxed/simple;
+	bh=Wmcu4pkngqk3RBxPw+NFXKg6MgapnlPVjySJwH8I2ic=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=BQudxIWbTQ00B4IZAPDW0KHVNlA+MHumpruAin3bWp2tIYRP4G098w/PWoDY6cLN6Ek2tQ1QBueDTnZ3j7SMZD6g9LjeIB1bs9rbc5hTNXkWiktuPJ3UEcvLNV57vpHFQNzctkxEVvmAENw15csVtZuaHLdNDrLzaAUvN8pkyOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aJ8tAhT1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3B4AC4CEF6;
-	Mon,  5 May 2025 23:22:48 +0000 (UTC)
+	 MIME-Version; b=apvZ9QXlX2pjRuNAsjBqKM1NTY1/PXy/GI+8SS2S7aC/GUFHg/w+Yk2Nx/N372la7fyw4V8x91zJsnuP29foR7+SlGyQmsUDY8j7bK70ev32HvKXsw90hVQeSwF8kZ6juBykd1Vn40trGoSwLzDrGG2rjwda7CYADnayTU29hXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=upU0G1eP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BBA7C4CEED;
+	Mon,  5 May 2025 23:22:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487369;
-	bh=ikzvWiw406GCJXyN70LZHbijw0+CfJ3pc/l3O/+uycY=;
+	s=k20201202; t=1746487372;
+	bh=Wmcu4pkngqk3RBxPw+NFXKg6MgapnlPVjySJwH8I2ic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aJ8tAhT1V3uaMBE8osu7IquYbV9PVa+n11mJn+lK+AgOMuto4eQ9MOvPQcWr/9mvh
-	 jNtCWjpyd0YWplPvfAxiaWS6jpXbbkuyNRRSPvHTAhCjujDW14o7mBY4SC60MOe7X+
-	 c1eJXfCeSBYFEO5vm1jyAywu4SVEfxrwHiFYHvwqoSqt+J+dToQsQhoTto+1hbyh7p
-	 o3odwlQ1GnQcCf7nbQqm8uLf/9y27waL2eYEUbw8mK+gMHlyotSwlAQLWaMfxdpOlq
-	 1PraShq3iXz9rTy2nL1qfpR6K/iR6cV92WF6Etx4Lh73c7MjjSDIwPhAtvv3/5DRis
-	 GM2z02c0oAxfA==
+	b=upU0G1ePQNJAffq3wQSppaKIEKfIIJvw+sAZazYuyzvyYCnodgK6gM8iiilz6Gcjn
+	 +wOGVwqsunb8IPPo9GYAvO6JHULMZkfgW1XOnHFgE52n3wL2kLuGbnmXh7Y85BmCkb
+	 ZPSw3l79Uf/Oxisfhm6nEBTr6z59e58A2xzy2ETFfHqCoZg24lk7ACcNa1GWPpIhZA
+	 cIrISdSiknYS0QEJtGB1E5Xmrly7kblbRxvvBLliEVfS2POwhbwU24R19o1QGtnX6p
+	 My0VcucA7+hprsskdAss5/S25yMV06MwZMdct1/77616llFJ8e4Bs+Nww4MYBCkSp7
+	 5ACZiL794eXew==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hans Verkuil <hverkuil@xs4all.nl>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+Cc: Artur Weber <aweber.kernel@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	mchehab@kernel.org,
-	ribalda@chromium.org,
-	christophe.jaillet@wanadoo.fr,
-	linux-media@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 34/79] media: cx231xx: set device_caps for 417
-Date: Mon,  5 May 2025 19:21:06 -0400
-Message-Id: <20250505232151.2698893-34-sashal@kernel.org>
+	florian.fainelli@broadcom.com,
+	rjui@broadcom.com,
+	sbranden@broadcom.com,
+	dan.carpenter@linaro.org,
+	linux-gpio@vger.kernel.org,
+	linux-rpi-kernel@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.4 35/79] pinctrl: bcm281xx: Use "unsigned int" instead of bare "unsigned"
+Date: Mon,  5 May 2025 19:21:07 -0400
+Message-Id: <20250505232151.2698893-35-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505232151.2698893-1-sashal@kernel.org>
 References: <20250505232151.2698893-1-sashal@kernel.org>
@@ -68,38 +71,175 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.293
 Content-Transfer-Encoding: 8bit
 
-From: Hans Verkuil <hverkuil@xs4all.nl>
+From: Artur Weber <aweber.kernel@gmail.com>
 
-[ Upstream commit a79efc44b51432490538a55b9753a721f7d3ea42 ]
+[ Upstream commit 07b5a2a13f4704c5eae3be7277ec54ffdba45f72 ]
 
-The video_device for the MPEG encoder did not set device_caps.
+Replace uses of bare "unsigned" with "unsigned int" to fix checkpatch
+warnings. No functional change.
 
-Add this, otherwise the video device can't be registered (you get a
-WARN_ON instead).
-
-Not seen before since currently 417 support is disabled, but I found
-this while experimenting with it.
-
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
+Link: https://lore.kernel.org/20250303-bcm21664-pinctrl-v3-2-5f8b80e4ab51@gmail.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/cx231xx/cx231xx-417.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/pinctrl/bcm/pinctrl-bcm281xx.c | 44 +++++++++++++-------------
+ 1 file changed, 22 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/media/usb/cx231xx/cx231xx-417.c b/drivers/media/usb/cx231xx/cx231xx-417.c
-index 6d218a0369661..a9d080823f10a 100644
---- a/drivers/media/usb/cx231xx/cx231xx-417.c
-+++ b/drivers/media/usb/cx231xx/cx231xx-417.c
-@@ -1966,6 +1966,8 @@ static void cx231xx_video_dev_init(
- 	vfd->lock = &dev->lock;
- 	vfd->release = video_device_release_empty;
- 	vfd->ctrl_handler = &dev->mpeg_ctrl_handler.hdl;
-+	vfd->device_caps = V4L2_CAP_READWRITE | V4L2_CAP_STREAMING |
-+			   V4L2_CAP_VIDEO_CAPTURE;
- 	video_set_drvdata(vfd, dev);
- 	if (dev->tuner_type == TUNER_ABSENT) {
- 		v4l2_disable_ioctl(vfd, VIDIOC_G_FREQUENCY);
+diff --git a/drivers/pinctrl/bcm/pinctrl-bcm281xx.c b/drivers/pinctrl/bcm/pinctrl-bcm281xx.c
+index 3452005342ad6..69e8d7856fff7 100644
+--- a/drivers/pinctrl/bcm/pinctrl-bcm281xx.c
++++ b/drivers/pinctrl/bcm/pinctrl-bcm281xx.c
+@@ -79,7 +79,7 @@ static enum bcm281xx_pin_type hdmi_pin = BCM281XX_PIN_TYPE_HDMI;
+ struct bcm281xx_pin_function {
+ 	const char *name;
+ 	const char * const *groups;
+-	const unsigned ngroups;
++	const unsigned int ngroups;
+ };
+ 
+ /**
+@@ -91,10 +91,10 @@ struct bcm281xx_pinctrl_data {
+ 
+ 	/* List of all pins */
+ 	const struct pinctrl_pin_desc *pins;
+-	const unsigned npins;
++	const unsigned int npins;
+ 
+ 	const struct bcm281xx_pin_function *functions;
+-	const unsigned nfunctions;
++	const unsigned int nfunctions;
+ 
+ 	struct regmap *regmap;
+ };
+@@ -948,7 +948,7 @@ static struct bcm281xx_pinctrl_data bcm281xx_pinctrl = {
+ };
+ 
+ static inline enum bcm281xx_pin_type pin_type_get(struct pinctrl_dev *pctldev,
+-						  unsigned pin)
++						  unsigned int pin)
+ {
+ 	struct bcm281xx_pinctrl_data *pdata = pinctrl_dev_get_drvdata(pctldev);
+ 
+@@ -992,7 +992,7 @@ static int bcm281xx_pinctrl_get_groups_count(struct pinctrl_dev *pctldev)
+ }
+ 
+ static const char *bcm281xx_pinctrl_get_group_name(struct pinctrl_dev *pctldev,
+-						   unsigned group)
++						   unsigned int group)
+ {
+ 	struct bcm281xx_pinctrl_data *pdata = pinctrl_dev_get_drvdata(pctldev);
+ 
+@@ -1000,9 +1000,9 @@ static const char *bcm281xx_pinctrl_get_group_name(struct pinctrl_dev *pctldev,
+ }
+ 
+ static int bcm281xx_pinctrl_get_group_pins(struct pinctrl_dev *pctldev,
+-					   unsigned group,
++					   unsigned int group,
+ 					   const unsigned **pins,
+-					   unsigned *num_pins)
++					   unsigned int *num_pins)
+ {
+ 	struct bcm281xx_pinctrl_data *pdata = pinctrl_dev_get_drvdata(pctldev);
+ 
+@@ -1014,7 +1014,7 @@ static int bcm281xx_pinctrl_get_group_pins(struct pinctrl_dev *pctldev,
+ 
+ static void bcm281xx_pinctrl_pin_dbg_show(struct pinctrl_dev *pctldev,
+ 					  struct seq_file *s,
+-					  unsigned offset)
++					  unsigned int offset)
+ {
+ 	seq_printf(s, " %s", dev_name(pctldev->dev));
+ }
+@@ -1036,7 +1036,7 @@ static int bcm281xx_pinctrl_get_fcns_count(struct pinctrl_dev *pctldev)
+ }
+ 
+ static const char *bcm281xx_pinctrl_get_fcn_name(struct pinctrl_dev *pctldev,
+-						 unsigned function)
++						 unsigned int function)
+ {
+ 	struct bcm281xx_pinctrl_data *pdata = pinctrl_dev_get_drvdata(pctldev);
+ 
+@@ -1044,9 +1044,9 @@ static const char *bcm281xx_pinctrl_get_fcn_name(struct pinctrl_dev *pctldev,
+ }
+ 
+ static int bcm281xx_pinctrl_get_fcn_groups(struct pinctrl_dev *pctldev,
+-					   unsigned function,
++					   unsigned int function,
+ 					   const char * const **groups,
+-					   unsigned * const num_groups)
++					   unsigned int * const num_groups)
+ {
+ 	struct bcm281xx_pinctrl_data *pdata = pinctrl_dev_get_drvdata(pctldev);
+ 
+@@ -1057,8 +1057,8 @@ static int bcm281xx_pinctrl_get_fcn_groups(struct pinctrl_dev *pctldev,
+ }
+ 
+ static int bcm281xx_pinmux_set(struct pinctrl_dev *pctldev,
+-			       unsigned function,
+-			       unsigned group)
++			       unsigned int function,
++			       unsigned int group)
+ {
+ 	struct bcm281xx_pinctrl_data *pdata = pinctrl_dev_get_drvdata(pctldev);
+ 	const struct bcm281xx_pin_function *f = &pdata->functions[function];
+@@ -1089,7 +1089,7 @@ static const struct pinmux_ops bcm281xx_pinctrl_pinmux_ops = {
+ };
+ 
+ static int bcm281xx_pinctrl_pin_config_get(struct pinctrl_dev *pctldev,
+-					   unsigned pin,
++					   unsigned int pin,
+ 					   unsigned long *config)
+ {
+ 	return -ENOTSUPP;
+@@ -1098,9 +1098,9 @@ static int bcm281xx_pinctrl_pin_config_get(struct pinctrl_dev *pctldev,
+ 
+ /* Goes through the configs and update register val/mask */
+ static int bcm281xx_std_pin_update(struct pinctrl_dev *pctldev,
+-				   unsigned pin,
++				   unsigned int pin,
+ 				   unsigned long *configs,
+-				   unsigned num_configs,
++				   unsigned int num_configs,
+ 				   u32 *val,
+ 				   u32 *mask)
+ {
+@@ -1214,9 +1214,9 @@ static const u16 bcm281xx_pullup_map[] = {
+ 
+ /* Goes through the configs and update register val/mask */
+ static int bcm281xx_i2c_pin_update(struct pinctrl_dev *pctldev,
+-				   unsigned pin,
++				   unsigned int pin,
+ 				   unsigned long *configs,
+-				   unsigned num_configs,
++				   unsigned int num_configs,
+ 				   u32 *val,
+ 				   u32 *mask)
+ {
+@@ -1284,9 +1284,9 @@ static int bcm281xx_i2c_pin_update(struct pinctrl_dev *pctldev,
+ 
+ /* Goes through the configs and update register val/mask */
+ static int bcm281xx_hdmi_pin_update(struct pinctrl_dev *pctldev,
+-				    unsigned pin,
++				    unsigned int pin,
+ 				    unsigned long *configs,
+-				    unsigned num_configs,
++				    unsigned int num_configs,
+ 				    u32 *val,
+ 				    u32 *mask)
+ {
+@@ -1328,9 +1328,9 @@ static int bcm281xx_hdmi_pin_update(struct pinctrl_dev *pctldev,
+ }
+ 
+ static int bcm281xx_pinctrl_pin_config_set(struct pinctrl_dev *pctldev,
+-					   unsigned pin,
++					   unsigned int pin,
+ 					   unsigned long *configs,
+-					   unsigned num_configs)
++					   unsigned int num_configs)
+ {
+ 	struct bcm281xx_pinctrl_data *pdata = pinctrl_dev_get_drvdata(pctldev);
+ 	enum bcm281xx_pin_type pin_type;
 -- 
 2.39.5
 
