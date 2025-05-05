@@ -1,59 +1,66 @@
-Return-Path: <stable+bounces-140466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66515AAA932
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:09:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D20FAAA926
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:08:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0EA59A030D
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:05:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3619465143
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:08:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8E1B3582EC;
-	Mon,  5 May 2025 22:42:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47E1E27E7C5;
+	Mon,  5 May 2025 22:44:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YoDW5HGJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n86hZJU4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6985B2989B9;
-	Mon,  5 May 2025 22:42:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA4F356E71;
+	Mon,  5 May 2025 22:42:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484925; cv=none; b=hgxtxONA8qHQ2X8yewfv9RTBKSKi1V3jLmRjVPd+1iFbTlXyiPecMmYm0uVhJ4ArmQHpS+mq/NnRamV9d9H97GWWXLWgmj2CD63BZDkWAiBwhZC4WpAKUF4gFLm0REKV0fN9L9fmm3/1JJb9ZRNrFFWel0ZCmT0S7qcihvIX2bc=
+	t=1746484937; cv=none; b=Ea78E+5PE5tuMn9Xd9EG1jTkJI55VrlT0BswdzrKwv6qXf8wp/Ecv6qIJtbhwXgxGU6qKIds9OfsTVYdqfNouQbIQdsDOStDL0iY1gjICgsyJOGm068ZyhQvTMCi0CItlWv7SVqgaOLAUDAXbh+78grT/BK4gw7PPWgqKgsLM+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484925; c=relaxed/simple;
-	bh=vwyJJuUHQHIUu8CW2ekQWNLRuX3fK4CBnipe7jy1lc4=;
+	s=arc-20240116; t=1746484937; c=relaxed/simple;
+	bh=JQgySx1ZAiBLcZYCPGWNau41QHc0ukZYtN/IvnH6UNk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=C1VRPloR/Yslx2/lB5e70MW3HU4KER4/bv+lkTLaeDUF8/b+jKsxc1xy9B2fJSNf/yGzXn4AIyU8p+rglJA++lmUI71K2li+MttH5suatiuCQMixvnfwCd7SpxomoWsYCBBZqSLydW4J3xx06bZnL17MhoQIS1w/sWQ8yb4aMLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YoDW5HGJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D0C5C4CEEE;
-	Mon,  5 May 2025 22:42:04 +0000 (UTC)
+	 MIME-Version; b=grGrKHLnYZcHq/mI6/WxK9Os3crIw/+1tc0UMlMA/HzTU+FlL2BlPBdYtqy9mtYYmq3c/0j0GeJgyyTHALfkFk/iburqqMhFQWVo5D9zCMDpXdVFYXk3KVvulqsM/2dCDyeB4lAd7Ha3VxqLaNX1gZxFSyxcJjaMo156BDLLHaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n86hZJU4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4824EC4CEE4;
+	Mon,  5 May 2025 22:42:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484925;
-	bh=vwyJJuUHQHIUu8CW2ekQWNLRuX3fK4CBnipe7jy1lc4=;
+	s=k20201202; t=1746484936;
+	bh=JQgySx1ZAiBLcZYCPGWNau41QHc0ukZYtN/IvnH6UNk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YoDW5HGJHhWz9EXSbayOxWdFmnCe5ShXFaQBpq2cnvUpD9YMZYsxUCmuF7aFuyawy
-	 ZbfIHjWwGwTRFvJdulceGOKKXszoGzbSZfrVxjI3B9H0jKRH085ycm9ickbgW/4M+H
-	 hov4S2BpTNsT80RGpC1pdpLi1STvlPre23r3FU8lsDLxDBFJGJI8leQUWLJX+JE4XX
-	 doJTxWY7dknsK3vQCfbqS6+7qjY5i8emo2lIqFdzeIRIsn/IEHGsYm/WBMEwHUvxfz
-	 BeoRcLmnLAuPniRUei8c461TdsubrzLzB1uGi6suov0EI77WscwernPusaBWRiqj43
-	 sHFUl8gFqlSsQ==
+	b=n86hZJU4jrMnIncrlX9+Gxiy+mNEmoNyKZZJTiTR3aB0rGQbR6QhUwcBsP97b3s6r
+	 xXkx/v0g/rS4Xii/19PXwWnwLMoVsM5unRZ6wG6X9ew+Vo8J5gELHrpJSa8CZtEoI3
+	 6qOq0jpVH1uHCbnPqu4SpXxGZstBZG8rnOWZEtv8OL3XXYBcEhENnfSUyEL94i3hXd
+	 oMANG3ZRADO2QSDyum3gf96g0BmoLcH7VuJORakxWb3QVuKuMKuCG7L3kz56RDg691
+	 YvaCvHYL/4AhcfQPQbdaVK36s9m4lrbhv2hcSIFFMeowKobt1ptxTLc1GVzq6IcYfj
+	 3meTPZFQsP4Dw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	David Sterba <dsterba@suse.com>,
+Cc: Alex Deucher <alexander.deucher@amd.com>,
+	Kent Russell <kent.russell@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	clm@fb.com,
-	josef@toxicpanda.com,
-	linux-btrfs@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 080/486] btrfs: zoned: exit btrfs_can_activate_zone if BTRFS_FS_NEED_ZONE_FINISH is set
-Date: Mon,  5 May 2025 18:32:36 -0400
-Message-Id: <20250505223922.2682012-80-sashal@kernel.org>
+	christian.koenig@amd.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	lijo.lazar@amd.com,
+	mario.limonciello@amd.com,
+	marek.olsak@amd.com,
+	rajneesh.bhardwaj@amd.com,
+	tzimmermann@suse.de,
+	Ramesh.Errabolu@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.12 084/486] drm/amdgpu: adjust drm_firmware_drivers_only() handling
+Date: Mon,  5 May 2025 18:32:40 -0400
+Message-Id: <20250505223922.2682012-84-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -68,37 +75,63 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 26b38e28162ef4ceb1e0482299820fbbd7dbcd92 ]
+[ Upstream commit e00e5c223878a60e391e5422d173c3382d378f87 ]
 
-If BTRFS_FS_NEED_ZONE_FINISH is already set for the whole filesystem, exit
-early in btrfs_can_activate_zone(). There's no need to check if
-BTRFS_FS_NEED_ZONE_FINISH needs to be set if it is already set.
+Move to probe so we can check the PCI device type and
+only apply the drm_firmware_drivers_only() check for
+PCI DISPLAY classes.  Also add a module parameter to
+override the nomodeset kernel parameter as a workaround
+for platforms that have this hardcoded on their kernel
+command lines.
 
-Reviewed-by: Naohiro Aota <naohiro.aota@wdc.com>
-Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Reviewed-by: Kent Russell <kent.russell@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/zoned.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/fs/btrfs/zoned.c b/fs/btrfs/zoned.c
-index 2603c9d60fd21..d1167aeb07354 100644
---- a/fs/btrfs/zoned.c
-+++ b/fs/btrfs/zoned.c
-@@ -2326,6 +2326,9 @@ bool btrfs_can_activate_zone(struct btrfs_fs_devices *fs_devices, u64 flags)
- 	if (!btrfs_is_zoned(fs_info))
- 		return true;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+index a9eb0927a7664..e1d26a479ed87 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
+@@ -172,6 +172,7 @@ uint amdgpu_sdma_phase_quantum = 32;
+ char *amdgpu_disable_cu;
+ char *amdgpu_virtual_display;
+ bool enforce_isolation;
++int amdgpu_modeset = -1;
  
-+	if (test_bit(BTRFS_FS_NEED_ZONE_FINISH, &fs_info->flags))
-+		return false;
+ /* Specifies the default granularity for SVM, used in buffer
+  * migration and restoration of backing memory when handling
+@@ -1037,6 +1038,13 @@ module_param_named(user_partt_mode, amdgpu_user_partt_mode, uint, 0444);
+ module_param(enforce_isolation, bool, 0444);
+ MODULE_PARM_DESC(enforce_isolation, "enforce process isolation between graphics and compute . enforce_isolation = on");
+ 
++/**
++ * DOC: modeset (int)
++ * Override nomodeset (1 = override, -1 = auto). The default is -1 (auto).
++ */
++MODULE_PARM_DESC(modeset, "Override nomodeset (1 = enable, -1 = auto)");
++module_param_named(modeset, amdgpu_modeset, int, 0444);
 +
- 	/* Check if there is a device with active zones left */
- 	mutex_lock(&fs_info->chunk_mutex);
- 	spin_lock(&fs_info->zone_active_bgs_lock);
+ /**
+  * DOC: seamless (int)
+  * Seamless boot will keep the image on the screen during the boot process.
+@@ -2248,6 +2256,12 @@ static int amdgpu_pci_probe(struct pci_dev *pdev,
+ 	int ret, retry = 0, i;
+ 	bool supports_atomic = false;
+ 
++	if ((pdev->class >> 8) == PCI_CLASS_DISPLAY_VGA ||
++	    (pdev->class >> 8) == PCI_CLASS_DISPLAY_OTHER) {
++		if (drm_firmware_drivers_only() && amdgpu_modeset == -1)
++			return -EINVAL;
++	}
++
+ 	/* skip devices which are owned by radeon */
+ 	for (i = 0; i < ARRAY_SIZE(amdgpu_unsupported_pciidlist); i++) {
+ 		if (amdgpu_unsupported_pciidlist[i] == pdev->device)
 -- 
 2.39.5
 
