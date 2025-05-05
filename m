@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-139591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57BE4AA8D1C
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 09:36:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C95FAA8D29
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 09:39:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0C151888AE3
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 07:36:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD9F83B3C48
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 07:38:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4903719C57C;
-	Mon,  5 May 2025 07:36:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 895871DC9AF;
+	Mon,  5 May 2025 07:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U7D/E4KF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VTllPuMo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F935BAF0
-	for <stable@vger.kernel.org>; Mon,  5 May 2025 07:36:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4687F14AA9
+	for <stable@vger.kernel.org>; Mon,  5 May 2025 07:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746430599; cv=none; b=s249+Kg+y589wsA0BbDekrxwAe+MHp1Rb7QUMeV8Wus1R68b72OyoIh4OFcIHK3Eu6ub+19pAJdgbYewOJx5odoxLZtg6i0nGxjNuAEhaHOKr9U8F7P1GrlU3taXwt+0TaKXtpCTwmSGrGgm4cNM8rEpzf2sjyjagLQoSJSTrDI=
+	t=1746430736; cv=none; b=WxGLv4T/CgzN4wugGIhnABVa6ovYnDMcbmBR0s4tpVV1wOvlccVpjPWcMLRugJF81T0bHOoGN4eUlyFLWzpmqXpIFowF464jWJx+XLFIE1WYqpIPZdTqvUs30jxv9HOa056EUEaKjimgUDOS65zcjsvdmEPLqsa5tRMAwLW82QQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746430599; c=relaxed/simple;
-	bh=sNjxCgNTDClqR87fHugQcW+8yAy9Hw3CAxOXc9j9dPc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=axLxcIEskt53Wuv/9rKy8+ldYfFbb6/sXajxaH7U1tgSZFc0vLTUqPpkBMsWPdWZZFGTqiwSXlhVljVhM7VSwwRspkeXnTFY7Z+T41jFnoSssVF1zzEu1QU7ouRHtCMYYNzXqf77qYfzrFGJpj2q60ZIRFcW2PzYom3y1LgiTj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U7D/E4KF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB1C2C4CEEF;
-	Mon,  5 May 2025 07:36:37 +0000 (UTC)
+	s=arc-20240116; t=1746430736; c=relaxed/simple;
+	bh=cyt1W226nvj0zKCyYepjcSzdQjB/47fAqldzLUKnM5s=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=KVi6CehkIc7tbAG6EyqMdKJmIxl5tEDqhlGfHi/erN4P2FVrEtf8OC0wkOhHabTgvg0bj0dV2cBMnqgxnYJggm49gOTE4eSJhGUanObmBiKE1CyI6hdJsHPB3s9xANWT1cJye2pfIEWV53k5rcO4+KhQn8lQ6OUTSANfVrOFk2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VTllPuMo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A529C4CEEF;
+	Mon,  5 May 2025 07:38:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746430598;
-	bh=sNjxCgNTDClqR87fHugQcW+8yAy9Hw3CAxOXc9j9dPc=;
+	s=korg; t=1746430735;
+	bh=cyt1W226nvj0zKCyYepjcSzdQjB/47fAqldzLUKnM5s=;
 	h=Subject:To:Cc:From:Date:From;
-	b=U7D/E4KFq2C2mB0uI8pVIgrnVDtnKUw4jbdSBC+RQL9LXfkdLm4GiHvo3620Kq+bW
-	 c8t6tQXrqI7l/fr6qfNVec+feXTO6RTgJHX22vFGwXD5tGnekiJXxV0v6H3WUp6j4Q
-	 LvRDR4KzppfYVXlM8z5as/sA1fMOpScRpn0fdXus=
-Subject: FAILED: patch "[PATCH] spi: tegra114: Don't fail set_cs_timing when delays are zero" failed to apply to 6.1-stable tree
-To: webgeek1234@gmail.com,broonie@kernel.org
+	b=VTllPuMohqdr3dCjJMA9fATw1K+VIlNb/ojUlKrWzLWNmxtsecKdTSZKzvXSnR0TY
+	 xGZD8M1O4RJseqsLIa9CQ2PpXLO3TlkpwDjRil94khKIL9BImRNS5OVIL+7bnPeDmh
+	 5lh+qXAnMyX+rW0sEEaUsm7DlEcBzifXps398E+8=
+Subject: FAILED: patch "[PATCH] dm-bufio: don't schedule in atomic context" failed to apply to 6.1-stable tree
+To: weilongping@oppo.com,mpatocka@redhat.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 05 May 2025 09:36:35 +0200
-Message-ID: <2025050535-slider-herbicide-e70d@gregkh>
+Date: Mon, 05 May 2025 09:38:52 +0200
+Message-ID: <2025050552-backslid-thirsting-324d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,10 +62,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 4426e6b4ecf632bb75d973051e1179b8bfac2320
+git cherry-pick -x a3d8f0a7f5e8b193db509c7191fefeed3533fc44
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025050535-slider-herbicide-e70d@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025050552-backslid-thirsting-324d@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,38 +77,84 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 4426e6b4ecf632bb75d973051e1179b8bfac2320 Mon Sep 17 00:00:00 2001
-From: Aaron Kling <webgeek1234@gmail.com>
-Date: Wed, 23 Apr 2025 21:03:03 -0500
-Subject: [PATCH] spi: tegra114: Don't fail set_cs_timing when delays are zero
+From a3d8f0a7f5e8b193db509c7191fefeed3533fc44 Mon Sep 17 00:00:00 2001
+From: LongPing Wei <weilongping@oppo.com>
+Date: Thu, 17 Apr 2025 11:07:38 +0800
+Subject: [PATCH] dm-bufio: don't schedule in atomic context
 
-The original code would skip null delay pointers, but when the pointers
-were converted to point within the spi_device struct, the check was not
-updated to skip delays of zero. Hence all spi devices that didn't set
-delays would fail to probe.
+A BUG was reported as below when CONFIG_DEBUG_ATOMIC_SLEEP and
+try_verify_in_tasklet are enabled.
+[  129.444685][  T934] BUG: sleeping function called from invalid context at drivers/md/dm-bufio.c:2421
+[  129.444723][  T934] in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 934, name: kworker/1:4
+[  129.444740][  T934] preempt_count: 201, expected: 0
+[  129.444756][  T934] RCU nest depth: 0, expected: 0
+[  129.444781][  T934] Preemption disabled at:
+[  129.444789][  T934] [<ffffffd816231900>] shrink_work+0x21c/0x248
+[  129.445167][  T934] kernel BUG at kernel/sched/walt/walt_debug.c:16!
+[  129.445183][  T934] Internal error: Oops - BUG: 00000000f2000800 [#1] PREEMPT SMP
+[  129.445204][  T934] Skip md ftrace buffer dump for: 0x1609e0
+[  129.447348][  T934] CPU: 1 PID: 934 Comm: kworker/1:4 Tainted: G        W  OE      6.6.56-android15-8-o-g6f82312b30b9-debug #1 1400000003000000474e5500b3187743670464e8
+[  129.447362][  T934] Hardware name: Qualcomm Technologies, Inc. Parrot QRD, Alpha-M (DT)
+[  129.447373][  T934] Workqueue: dm_bufio_cache shrink_work
+[  129.447394][  T934] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[  129.447406][  T934] pc : android_rvh_schedule_bug+0x0/0x8 [sched_walt_debug]
+[  129.447435][  T934] lr : __traceiter_android_rvh_schedule_bug+0x44/0x6c
+[  129.447451][  T934] sp : ffffffc0843dbc90
+[  129.447459][  T934] x29: ffffffc0843dbc90 x28: ffffffffffffffff x27: 0000000000000c8b
+[  129.447479][  T934] x26: 0000000000000040 x25: ffffff804b3d6260 x24: ffffffd816232b68
+[  129.447497][  T934] x23: ffffff805171c5b4 x22: 0000000000000000 x21: ffffffd816231900
+[  129.447517][  T934] x20: ffffff80306ba898 x19: 0000000000000000 x18: ffffffc084159030
+[  129.447535][  T934] x17: 00000000d2b5dd1f x16: 00000000d2b5dd1f x15: ffffffd816720358
+[  129.447554][  T934] x14: 0000000000000004 x13: ffffff89ef978000 x12: 0000000000000003
+[  129.447572][  T934] x11: ffffffd817a823c4 x10: 0000000000000202 x9 : 7e779c5735de9400
+[  129.447591][  T934] x8 : ffffffd81560d004 x7 : 205b5d3938373434 x6 : ffffffd8167397c8
+[  129.447610][  T934] x5 : 0000000000000000 x4 : 0000000000000001 x3 : ffffffc0843db9e0
+[  129.447629][  T934] x2 : 0000000000002f15 x1 : 0000000000000000 x0 : 0000000000000000
+[  129.447647][  T934] Call trace:
+[  129.447655][  T934]  android_rvh_schedule_bug+0x0/0x8 [sched_walt_debug 1400000003000000474e550080cce8a8a78606b6]
+[  129.447681][  T934]  __might_resched+0x190/0x1a8
+[  129.447694][  T934]  shrink_work+0x180/0x248
+[  129.447706][  T934]  process_one_work+0x260/0x624
+[  129.447718][  T934]  worker_thread+0x28c/0x454
+[  129.447729][  T934]  kthread+0x118/0x158
+[  129.447742][  T934]  ret_from_fork+0x10/0x20
+[  129.447761][  T934] Code: ???????? ???????? ???????? d2b5dd1f (d4210000)
+[  129.447772][  T934] ---[ end trace 0000000000000000 ]---
 
-Fixes: 04e6bb0d6bb1 ("spi: modify set_cs_timing parameter")
+dm_bufio_lock will call spin_lock_bh when try_verify_in_tasklet
+is enabled, and __scan will be called in atomic context.
+
+Fixes: 7cd326747f46 ("dm bufio: remove dm_bufio_cond_resched()")
+Signed-off-by: LongPing Wei <weilongping@oppo.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
-Link: https://patch.msgid.link/20250423-spi-tegra114-v1-1-2d608bcc12f9@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 
-diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
-index 3822d7c8d8ed..2a8bb798e95b 100644
---- a/drivers/spi/spi-tegra114.c
-+++ b/drivers/spi/spi-tegra114.c
-@@ -728,9 +728,9 @@ static int tegra_spi_set_hw_cs_timing(struct spi_device *spi)
- 	u32 inactive_cycles;
- 	u8 cs_state;
+diff --git a/drivers/md/dm-bufio.c b/drivers/md/dm-bufio.c
+index 9c8ed65cd87e..f0b5a6931161 100644
+--- a/drivers/md/dm-bufio.c
++++ b/drivers/md/dm-bufio.c
+@@ -68,6 +68,8 @@
+ #define LIST_DIRTY	1
+ #define LIST_SIZE	2
  
--	if (setup->unit != SPI_DELAY_UNIT_SCK ||
--	    hold->unit != SPI_DELAY_UNIT_SCK ||
--	    inactive->unit != SPI_DELAY_UNIT_SCK) {
-+	if ((setup->unit && setup->unit != SPI_DELAY_UNIT_SCK) ||
-+	    (hold->unit && hold->unit != SPI_DELAY_UNIT_SCK) ||
-+	    (inactive->unit && inactive->unit != SPI_DELAY_UNIT_SCK)) {
- 		dev_err(&spi->dev,
- 			"Invalid delay unit %d, should be SPI_DELAY_UNIT_SCK\n",
- 			SPI_DELAY_UNIT_SCK);
++#define SCAN_RESCHED_CYCLE	16
++
+ /*--------------------------------------------------------------*/
+ 
+ /*
+@@ -2424,7 +2426,12 @@ static void __scan(struct dm_bufio_client *c)
+ 
+ 			atomic_long_dec(&c->need_shrink);
+ 			freed++;
+-			cond_resched();
++
++			if (unlikely(freed % SCAN_RESCHED_CYCLE == 0)) {
++				dm_bufio_unlock(c);
++				cond_resched();
++				dm_bufio_lock(c);
++			}
+ 		}
+ 	}
+ }
 
 
