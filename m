@@ -1,75 +1,60 @@
-Return-Path: <stable+bounces-141666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE2B6AAB7C0
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:17:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28DFFAAB7CB
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:18:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 529001C22A47
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:12:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61F901892836
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:12:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64A34347CFA;
-	Tue,  6 May 2025 00:46:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBEB127CCED;
+	Tue,  6 May 2025 00:46:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NqVgjClv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gZZV1W93"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E3B2F6B55;
-	Mon,  5 May 2025 23:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5250B3AA166;
+	Mon,  5 May 2025 23:18:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487079; cv=none; b=WBPI6LYLxbfAy7IVCZI7EafOiGfe0p2T0xQn1H+oB0qkcyTZYh1Lhi+KeeDnSyffsbWArkLJr9CoXi4qikXK3yeyxP76W7I/mnx9fKCLpdpvYJk/rWxcU0mFBq9LjCh630pwCLn62x+cXD7Eb1AWPXVc0nTiVDR+B77Zx/xUlcw=
+	t=1746487104; cv=none; b=sgYYQBgWph3kCBZRoj5V/sVizVkJPhq54h7GNJrwLVBkdJTe/rDaVKm6iv9qCyOXeXw/JMg5GyjLkbBGIAPbcSrDMVMy/uBr3O0EN5W8AdtqBqp23unmBK2+tI4yS5Ec1bjs0B+0M4f203+GAq0hy55fIcOQP3T0mtDwpVOPl64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487079; c=relaxed/simple;
-	bh=VkEDehoOkFDH575yzWrUFq76dyse+0I2ePUzowEbN3Q=;
+	s=arc-20240116; t=1746487104; c=relaxed/simple;
+	bh=JXQr+KMgwa7FAF4DacubuYflAo0Uq4YrcI4bW2ObYdE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kCl1o8xMXSIQfd3pbGMXv9eVa17LQJnoCZfBVpiOrh2PsHgxhqD0j5JkgRxLuCZK6KPDnmPNg6N+hNzKhz9Kt0u6IbFz4Vfc+o+zjxwyc2lHTZGj9gE4PEettFNsvLm7ad7lcBy/m1D46P6PkVkaS0yNRQ34Q45n1/ZWhUoibpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NqVgjClv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E25EC4CEE4;
-	Mon,  5 May 2025 23:17:56 +0000 (UTC)
+	 MIME-Version; b=VuOyVv9XfNyMkNb/AnlhSVHXWN0O3xs1IHv9eUuUNFH0keuh7miVHUhqQFV+wQKGn46gMorR5QwKi85zxPNCS6FUaV0kc4pi3P97gIAKqjQZH2kLV10KW6pxUdKfa35i3d20SIxg4oc6TYoO01VhQ2CROy2/krFQbQyCKaW1apQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gZZV1W93; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55056C4CEEE;
+	Mon,  5 May 2025 23:18:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487078;
-	bh=VkEDehoOkFDH575yzWrUFq76dyse+0I2ePUzowEbN3Q=;
+	s=k20201202; t=1746487103;
+	bh=JXQr+KMgwa7FAF4DacubuYflAo0Uq4YrcI4bW2ObYdE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NqVgjClviuWJlmLwjaS6PNMwSSzyfukt0VhG1WOPhHw6cjvPixxxgTKBQjG/U41tw
-	 1ol3yypsqUm+9GIcN03M5xZnqTJO1CWT2b43Wt3fZo1hDyOzxNqQdqNwcArovKhHRQ
-	 knK8sKPi/JwKnGOW7c2QLjl/jN6MhYqMGhemKr+X0t/7WdH+9+IUeBarPe1XCHQpWz
-	 OzZgdd5Zyod0thv4RZS+c7kcgtsLlgfYbpThFfkAXBAuZ2PYJBCrOl5SiCvy2WCfTE
-	 uSYLU9WI+UQNWFqJAr7m/pB+cBMqFv1mClDBqLt4lHY35lRR3yHkQzUpvsc/3wSGO1
-	 0CoDb9FDy1YlA==
+	b=gZZV1W93KsfQz5zJ/4Tm+uEx9TzvCFAK3vUt0P8mgxQH4SqmVPEwlq/i0awT161YJ
+	 7ESFg9LZDphTd878hfudjaciYRs9oaPhxVKmphi/Xc58a4DrJqXzSOlwW/9db2IbPb
+	 zTWk5jXzrmN7bP1rUaJM9hu63w5AsUqXSTe63EI+zdRUAC87pMNBCBPZULXB5b/xEl
+	 raCnbmIzT9/MBb/q3YOGAZ6avorS7v+fW9Lofvv5bKhZnajnc5LJI6MmvxFPEqdzp5
+	 TH1MZjUMLRi6xlW7y7N4chagq2WmZMj9u0oP+Q4rNBH7KTa5QTP7ZPdVKpwdSA1wwE
+	 ugne6GQKAGVPQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Konstantin Taranov <kotaranov@microsoft.com>,
-	Shiraz Saleem <shirazsaleem@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Leon Romanovsky <leon@kernel.org>,
+Cc: Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>,
-	kys@microsoft.com,
-	haiyangz@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	shradhagupta@linux.microsoft.com,
-	mlevitsk@redhat.com,
-	ernis@linux.microsoft.com,
-	peterz@infradead.org,
-	linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 141/153] net/mana: fix warning in the writer of client oob
-Date: Mon,  5 May 2025 19:13:08 -0400
-Message-Id: <20250505231320.2695319-141-sashal@kernel.org>
+	trondmy@kernel.org,
+	anna@kernel.org,
+	linux-nfs@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 002/114] NFSv4: Check for delegation validity in nfs_start_delegation_return_locked()
+Date: Mon,  5 May 2025 19:16:25 -0400
+Message-Id: <20250505231817.2697367-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
-References: <20250505231320.2695319-1-sashal@kernel.org>
+In-Reply-To: <20250505231817.2697367-1-sashal@kernel.org>
+References: <20250505231817.2697367-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,38 +63,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.181
+X-stable-base: Linux 5.10.237
 Content-Transfer-Encoding: 8bit
 
-From: Konstantin Taranov <kotaranov@microsoft.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 5ec7e1c86c441c46a374577bccd9488abea30037 ]
+[ Upstream commit 9e8f324bd44c1fe026b582b75213de4eccfa1163 ]
 
-Do not warn on missing pad_data when oob is in sgl.
+Check that the delegation is still attached after taking the spin lock
+in nfs_start_delegation_return_locked().
 
-Signed-off-by: Konstantin Taranov <kotaranov@microsoft.com>
-Link: https://patch.msgid.link/1737394039-28772-9-git-send-email-kotaranov@linux.microsoft.com
-Reviewed-by: Shiraz Saleem <shirazsaleem@microsoft.com>
-Reviewed-by: Long Li <longli@microsoft.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microsoft/mana/gdma_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfs/delegation.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-index 0fb42193643dc..7864611f55a77 100644
---- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
-+++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
-@@ -957,7 +957,7 @@ static u32 mana_gd_write_client_oob(const struct gdma_wqe_request *wqe_req,
- 	header->inline_oob_size_div4 = client_oob_size / sizeof(u32);
- 
- 	if (oob_in_sgl) {
--		WARN_ON_ONCE(!pad_data || wqe_req->num_sge < 2);
-+		WARN_ON_ONCE(wqe_req->num_sge < 2);
- 
- 		header->client_oob_in_sgl = 1;
- 
+diff --git a/fs/nfs/delegation.c b/fs/nfs/delegation.c
+index dbed8d44d8053..f3bb987e9dba7 100644
+--- a/fs/nfs/delegation.c
++++ b/fs/nfs/delegation.c
+@@ -297,7 +297,8 @@ nfs_start_delegation_return_locked(struct nfs_inode *nfsi)
+ 	if (delegation == NULL)
+ 		goto out;
+ 	spin_lock(&delegation->lock);
+-	if (!test_and_set_bit(NFS_DELEGATION_RETURNING, &delegation->flags)) {
++	if (delegation->inode &&
++	    !test_and_set_bit(NFS_DELEGATION_RETURNING, &delegation->flags)) {
+ 		clear_bit(NFS_DELEGATION_RETURN_DELAYED, &delegation->flags);
+ 		/* Refcount matched in nfs_end_delegation_return() */
+ 		ret = nfs_get_delegation(delegation);
 -- 
 2.39.5
 
