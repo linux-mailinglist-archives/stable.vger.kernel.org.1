@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-139925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59BC0AAA254
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:58:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FB99AAA256
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:58:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 72F597B033A
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:57:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 54F5E7B04CE
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:57:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 619612DA10D;
-	Mon,  5 May 2025 22:21:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D30072DA827;
+	Mon,  5 May 2025 22:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FHLdCOoM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XX1xYNlx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 179882DA104;
-	Mon,  5 May 2025 22:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BCCC2DA116;
+	Mon,  5 May 2025 22:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483684; cv=none; b=mGXAZetVpqq8h4CL0cFykyCbypNfJQH9LV+q9r5UgTht3YQokxMNFnMy4tpJ8Do9tfNss5HDBhJfOabTc9OiMhEi2ndvIteZjkz3zs9Elm8VNzE6+ZrkuQUaSpOGIEeea7E3Hy1U/7+t17bSVTsWn6Bzr2lLYrX++DLZsV+yXh4=
+	t=1746483685; cv=none; b=Qa8/71Aomm5wY3FVTEGwIY6JnqeBk5VWVUrI724gcsfROldMOaU+Ops0veJ6VDHkG0IO0YRFYJCoTCrhPh0u0EfhaKGLKZbizaZqzjQrTpS1jfpx92tdxhLS3w+4ozJ1sEyLxaVnSU3rXQKTcaLseip7if5uK+w2IU62bPH+bsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483684; c=relaxed/simple;
-	bh=4A6iHzWNOnohZZamH2T5qzWaSp4/sasUPIzHpMwtFuQ=;
+	s=arc-20240116; t=1746483685; c=relaxed/simple;
+	bh=eo4Fa6CgI/HpElnDm5vdUR99d7waC0pJUIEn/hDqvp0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=CQFiD+D5tbCcGmxRj549Tt6E34GiIxJ2gcTP6B7m06eoZ/L8toxuvslP2fdkJZZFKs7OqAsXI+3aNiW9JHu9gsue1bYG5cgGI/NHCkx3b1Qbgs05VkwS1jQGKmMXDtAK38VmrMlRxxCvQixuJG+zFxcljAjbFDU6jj1+Y8Cf1fw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FHLdCOoM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F0DEC4CEE4;
-	Mon,  5 May 2025 22:21:22 +0000 (UTC)
+	 MIME-Version; b=fTgK1Xf7gF8mpzmaGIhnKSqQca+6E/ddibcqWSmesXxlb6/otjiYSXA7/a0REcfLhpTdBxXU+FuLvtzy5F/a7kFpE80Eta43TsUOeJWEzOii3qga9pM0nfa5qZmR/yswU0bovk7WSrJqWTARPMxJ5+4nJbNgWwKRnc1qAuFImcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XX1xYNlx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01950C4CEEE;
+	Mon,  5 May 2025 22:21:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483683;
-	bh=4A6iHzWNOnohZZamH2T5qzWaSp4/sasUPIzHpMwtFuQ=;
+	s=k20201202; t=1746483685;
+	bh=eo4Fa6CgI/HpElnDm5vdUR99d7waC0pJUIEn/hDqvp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FHLdCOoMK3C4HYsEjSTeMLfR0wV+Ix0AlwWiNRBv2DLFiI+6+/6tu9R0RgW2HBy1h
-	 J6rd16CkBbFsBIjfmv1EOGB28WqC3Cj3d94t0yvQtUPq45vCDrkzhvnOMkX2G6ZEw7
-	 GrcLxb+3vM+pMLpAFQ4nbWu2tmOod+HzTHscaHWsZZATXgp0BBFetfvXKCJXF2m7dG
-	 GPFke+UrADgbEVxDvp1GZ718jiHWYvC6Uovp2MOrF9VAfPfq88n6y8RSFXaK34ded7
-	 dRowFIC0MdB4UzhdHLrXuHhIsgyuMKUEWsxX8Wm+t4njEO7dPPWDHeiBLjkPplhpqB
-	 Dl9xheHj2v/yg==
+	b=XX1xYNlxJ4bgr7sSCBsdVAw96QV1HdvMauep/+aU6rtlNWbH+3S1+G1tsG2X8c1Pk
+	 k8bhm9w7l+pfWZHDN3CFcQiTg4kQd0EzRD7A4xeADJO779L/Cotp52pKmI1FlPjxBu
+	 plu0wcy9FK+rAls21pF0Q1cUir2PFHHopKzLcGHgktM4zwM4mNagcKlGlGkISZcOWx
+	 8eBUqoNmNRIZfEWYyG5yP68Y5MhMkV04DntAOXm9k/2X5+ofigfFvdUrD3yL9P6LXY
+	 u/fyaebKfpmCsnMUhfPpBlcO9YBtJw87HNVoUbS5Kto6J3+A5XDOqlq7c8WDICHrrM
+	 9KkCIrTT2XLeA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kurt Borja <kuurtb@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+Cc: Robin Murphy <robin.murphy@arm.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>,
-	jdelvare@suse.com,
-	corbet@lwn.net,
-	pali@kernel.org,
-	linux-hwmon@vger.kernel.org,
-	linux-doc@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 178/642] hwmon: (dell-smm) Increment the number of fans
-Date: Mon,  5 May 2025 18:06:34 -0400
-Message-Id: <20250505221419.2672473-178-sashal@kernel.org>
+	joro@8bytes.org,
+	will@kernel.org,
+	iommu@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.14 179/642] iommu: Keep dev->iommu state consistent
+Date: Mon,  5 May 2025 18:06:35 -0400
+Message-Id: <20250505221419.2672473-179-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -69,84 +68,86 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Kurt Borja <kuurtb@gmail.com>
+From: Robin Murphy <robin.murphy@arm.com>
 
-[ Upstream commit dbcfcb239b3b452ef8782842c36fb17dd1b9092f ]
+[ Upstream commit 3832862eb9c4dfa0e80b2522bfaedbc8a43de97d ]
 
-Some Alienware laptops that support the SMM interface, may have up to 4
-fans.
+At the moment, if of_iommu_configure() allocates dev->iommu itself via
+iommu_fwspec_init(), then suffers a DT parsing failure, it cleans up the
+fwspec but leaves the empty dev_iommu hanging around. So far this is
+benign (if a tiny bit wasteful), but we'd like to be able to reason
+about dev->iommu having a consistent and unambiguous lifecycle. Thus
+make sure that the of_iommu cleanup undoes precisely whatever it did.
 
-Tested on an Alienware x15 r1.
-
-Signed-off-by: Kurt Borja <kuurtb@gmail.com>
-Link: https://lore.kernel.org/r/20250304055249.51940-2-kuurtb@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/d219663a3f23001f23d520a883ac622d70b4e642.1740753261.git.robin.murphy@arm.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/hwmon/dell-smm-hwmon.rst | 14 +++++++-------
- drivers/hwmon/dell-smm-hwmon.c         |  5 ++++-
- 2 files changed, 11 insertions(+), 8 deletions(-)
+ drivers/iommu/iommu-priv.h | 2 ++
+ drivers/iommu/iommu.c      | 2 +-
+ drivers/iommu/of_iommu.c   | 6 +++++-
+ 3 files changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/hwmon/dell-smm-hwmon.rst b/Documentation/hwmon/dell-smm-hwmon.rst
-index 74905675d71f9..5a4edb6565cf9 100644
---- a/Documentation/hwmon/dell-smm-hwmon.rst
-+++ b/Documentation/hwmon/dell-smm-hwmon.rst
-@@ -32,12 +32,12 @@ Temperature sensors and fans can be queried and set via the standard
- =============================== ======= =======================================
- Name				Perm	Description
- =============================== ======= =======================================
--fan[1-3]_input                  RO      Fan speed in RPM.
--fan[1-3]_label                  RO      Fan label.
--fan[1-3]_min                    RO      Minimal Fan speed in RPM
--fan[1-3]_max                    RO      Maximal Fan speed in RPM
--fan[1-3]_target                 RO      Expected Fan speed in RPM
--pwm[1-3]                        RW      Control the fan PWM duty-cycle.
-+fan[1-4]_input                  RO      Fan speed in RPM.
-+fan[1-4]_label                  RO      Fan label.
-+fan[1-4]_min                    RO      Minimal Fan speed in RPM
-+fan[1-4]_max                    RO      Maximal Fan speed in RPM
-+fan[1-4]_target                 RO      Expected Fan speed in RPM
-+pwm[1-4]                        RW      Control the fan PWM duty-cycle.
- pwm1_enable                     WO      Enable or disable automatic BIOS fan
-                                         control (not supported on all laptops,
-                                         see below for details).
-@@ -93,7 +93,7 @@ Again, when you find new codes, we'd be happy to have your patches!
- ---------------------------
+diff --git a/drivers/iommu/iommu-priv.h b/drivers/iommu/iommu-priv.h
+index de5b54eaa8bf1..a5913c0b02a0a 100644
+--- a/drivers/iommu/iommu-priv.h
++++ b/drivers/iommu/iommu-priv.h
+@@ -17,6 +17,8 @@ static inline const struct iommu_ops *dev_iommu_ops(struct device *dev)
+ 	return dev->iommu->iommu_dev->ops;
+ }
  
- The driver also exports the fans as thermal cooling devices with
--``type`` set to ``dell-smm-fan[1-3]``. This allows for easy fan control
-+``type`` set to ``dell-smm-fan[1-4]``. This allows for easy fan control
- using one of the thermal governors.
++void dev_iommu_free(struct device *dev);
++
+ const struct iommu_ops *iommu_ops_from_fwnode(const struct fwnode_handle *fwnode);
  
- Module parameters
-diff --git a/drivers/hwmon/dell-smm-hwmon.c b/drivers/hwmon/dell-smm-hwmon.c
-index cd00adaad1b41..79e5606e6d2f8 100644
---- a/drivers/hwmon/dell-smm-hwmon.c
-+++ b/drivers/hwmon/dell-smm-hwmon.c
-@@ -73,7 +73,7 @@
- #define DELL_SMM_LEGACY_EXECUTE	0x1
+ static inline const struct iommu_ops *iommu_fwspec_ops(struct iommu_fwspec *fwspec)
+diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+index 1efe7cddb4fe3..3a2804a98203b 100644
+--- a/drivers/iommu/iommu.c
++++ b/drivers/iommu/iommu.c
+@@ -352,7 +352,7 @@ static struct dev_iommu *dev_iommu_get(struct device *dev)
+ 	return param;
+ }
  
- #define DELL_SMM_NO_TEMP	10
--#define DELL_SMM_NO_FANS	3
-+#define DELL_SMM_NO_FANS	4
+-static void dev_iommu_free(struct device *dev)
++void dev_iommu_free(struct device *dev)
+ {
+ 	struct dev_iommu *param = dev->iommu;
  
- struct smm_regs {
- 	unsigned int eax;
-@@ -1074,11 +1074,14 @@ static const struct hwmon_channel_info * const dell_smm_info[] = {
- 			   HWMON_F_INPUT | HWMON_F_LABEL | HWMON_F_MIN | HWMON_F_MAX |
- 			   HWMON_F_TARGET,
- 			   HWMON_F_INPUT | HWMON_F_LABEL | HWMON_F_MIN | HWMON_F_MAX |
-+			   HWMON_F_TARGET,
-+			   HWMON_F_INPUT | HWMON_F_LABEL | HWMON_F_MIN | HWMON_F_MAX |
- 			   HWMON_F_TARGET
- 			   ),
- 	HWMON_CHANNEL_INFO(pwm,
- 			   HWMON_PWM_INPUT | HWMON_PWM_ENABLE,
- 			   HWMON_PWM_INPUT,
-+			   HWMON_PWM_INPUT,
- 			   HWMON_PWM_INPUT
- 			   ),
- 	NULL
+diff --git a/drivers/iommu/of_iommu.c b/drivers/iommu/of_iommu.c
+index 97987cd78da93..e10a68b5ffde1 100644
+--- a/drivers/iommu/of_iommu.c
++++ b/drivers/iommu/of_iommu.c
+@@ -116,6 +116,7 @@ static void of_pci_check_device_ats(struct device *dev, struct device_node *np)
+ int of_iommu_configure(struct device *dev, struct device_node *master_np,
+ 		       const u32 *id)
+ {
++	bool dev_iommu_present;
+ 	int err;
+ 
+ 	if (!master_np)
+@@ -127,6 +128,7 @@ int of_iommu_configure(struct device *dev, struct device_node *master_np,
+ 		mutex_unlock(&iommu_probe_device_lock);
+ 		return 0;
+ 	}
++	dev_iommu_present = dev->iommu;
+ 
+ 	/*
+ 	 * We don't currently walk up the tree looking for a parent IOMMU.
+@@ -147,8 +149,10 @@ int of_iommu_configure(struct device *dev, struct device_node *master_np,
+ 		err = of_iommu_configure_device(master_np, dev, id);
+ 	}
+ 
+-	if (err)
++	if (err && dev_iommu_present)
+ 		iommu_fwspec_free(dev);
++	else if (err && dev->iommu)
++		dev_iommu_free(dev);
+ 	mutex_unlock(&iommu_probe_device_lock);
+ 
+ 	if (!err && dev->bus)
 -- 
 2.39.5
 
