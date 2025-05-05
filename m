@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-139998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CEF0AAA395
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:16:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62829AAA387
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:16:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A65B53B0656
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:15:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5F8F4631DE
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:16:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B20C22F4952;
-	Mon,  5 May 2025 22:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7679D283FFD;
+	Mon,  5 May 2025 22:24:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UDTMmnfE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o/ffQbya"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E72B2F4961;
-	Mon,  5 May 2025 22:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3124A28467C;
+	Mon,  5 May 2025 22:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483861; cv=none; b=uEsjFF5kNXgQHq4yePD/rEOTP9Knf9qDglc74j+VHaHeNZxZzWkaZMgc6wtR7O73XZcO41fCE2sHIQPmDbb3YfW4qA/W2HrYVxyaib3iyom2sqhULMT9aG5ftsiSGGaOyq91nRdO7sbo/OpnvxqynPxqA3jbbxyijlZ9GHR3vYM=
+	t=1746483865; cv=none; b=d2wDKH3vk59jm3u8HsaahZHWPsVZDUZdoAMHEKrMtMaEHAWYRnbFZSNLApakktIxk7eNWMGdIWQEKNMR8tAaZeqxcbYmgDOU3e5qXkQ7MmscQR09jXImwB2j2rIfthRpjee8/3fCIMnUJHo1T5Jil+vyluVEWYkvKXVgumadLhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483861; c=relaxed/simple;
-	bh=M+HgMlX14NMgVFFSOwLP5oABcTLZTU1WSxrW0tLSHFo=;
+	s=arc-20240116; t=1746483865; c=relaxed/simple;
+	bh=xF8SmHu4JDO2uxxWJ+km3PqAGMefMdeEyhaIJCZaJu0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SCclk1LLNaFJcgbZm8jOIQQTvlhAUKAGvWS7/EuFwR8Z79IPAl8Pvv23+wIMYNK79mjVgP1Ys/dO635GmtiugosSpwq9TL6O/MVsdfBnsBb183WIDd8lL+IJhJWDe0ePDoVoPAL3EJVEQSEyKVTeD4qDzVlaSVuBsVYn2LTwjyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UDTMmnfE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B96DC4CEEE;
-	Mon,  5 May 2025 22:24:19 +0000 (UTC)
+	 MIME-Version; b=XIXujLl57obrN2GK9NsuJio6qt3cnLnu4mh3aVHUV9zFbYej7y4WxlmnbjU3f5RRTPyPmXjCNH5w32cycvLmkgfjsi5FUTdLsuvM4yzU3hf1NudcpFjpwEm4rtUc+i++YZ6UvbhTH45e9XVoFSscEjt8AJld3aQqjNSxCQe+rlc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o/ffQbya; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80AF6C4CEE4;
+	Mon,  5 May 2025 22:24:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483861;
-	bh=M+HgMlX14NMgVFFSOwLP5oABcTLZTU1WSxrW0tLSHFo=;
+	s=k20201202; t=1746483864;
+	bh=xF8SmHu4JDO2uxxWJ+km3PqAGMefMdeEyhaIJCZaJu0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UDTMmnfECLYrwzikR/kGUYU3ns231YW+48F4jhPF7wlQSIRgpY8Q0y0VljMcpOMPo
-	 JWWUCASxvRrj3KCkurz9dxGz9+MZK8NiHBqc64HaJ6EvshzQNtCG/u2GaA/UPUPAAq
-	 rfR7rl3e+LuBMlRz9TlQZlN4nV21Nq7lRzxmvWmCIl3DZgyfv6FgtQRoA5VrULhUGp
-	 GAAr0yvXnQeL6FCMPH5319+A5dbyAz528zqcbv6E7g89byLRANB2bWTzq6nVwqNCBw
-	 B1skH5CxiH9fi1grb8eGiwUReHhULekT6TqLJfz/wvBcvOQnIdEu7AqO4o0lXDPn2V
-	 YhdA2MniTnVSw==
+	b=o/ffQbyaFlOSywDkmPigan83H+IfUfk1jL+xE0uhCdviw5MVWsPS+yotIPcCdJiT7
+	 ZUopYKKbmcC7PsO0arGsFALDfIf2/iyj7kWnu1yuvjo1uKXyO3qCFwrTdbRDZMWo8t
+	 F6nHOaUFtjJln+6GdCm2BvyF+YvxdYUzUsPHCgluT6ON+p5lWn4/Mm8/8CJ+YkhS/J
+	 IekuslfyBi1V1vGZu9kyfxKG28otqFiHF/edxqgrkeBe1QIXxqwUwzWbeZ4rGX0QBx
+	 zIi0guKl5uHThRG8I7KovfQXP34IzQkT+7I4F491N6Yvt0+N7ecx6cOEdL/W/YPGBz
+	 51Doju6S0hmeQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Dillon Varone <Dillon.Varone@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Aric Cyr <aric.cyr@amd.com>,
 	Wayne Lin <wayne.lin@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
@@ -55,16 +55,17 @@ Cc: Dillon Varone <Dillon.Varone@amd.com>,
 	christian.koenig@amd.com,
 	airlied@gmail.com,
 	simona@ffwll.ch,
-	dillon.varone@amd.com,
 	chiahsuan.chung@amd.com,
-	joshua.aberback@amd.com,
-	Cruise.Hung@amd.com,
+	Alvin.Lee2@amd.com,
 	alex.hung@amd.com,
+	Leo.Zeng@amd.com,
+	Ilya.Bakoulin@amd.com,
+	Iswara.Nagulendran@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.14 251/642] drm/amd/display: Fix DMUB reset sequence for DCN401
-Date: Mon,  5 May 2025 18:07:47 -0400
-Message-Id: <20250505221419.2672473-251-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.14 252/642] drm/amd/display: Fix p-state type when p-state is unsupported
+Date: Mon,  5 May 2025 18:07:48 -0400
+Message-Id: <20250505221419.2672473-252-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -81,151 +82,35 @@ Content-Transfer-Encoding: 8bit
 
 From: Dillon Varone <Dillon.Varone@amd.com>
 
-[ Upstream commit 0dfcc2bf269010a6e093793034c048049a40ee93 ]
+[ Upstream commit a025f424af0407b7561bd5e6217295dde3abbc2e ]
 
-[WHY]
-It should no longer use DMCUB_SOFT_RESET as it can result
-in the memory request path becoming desynchronized.
+[WHY&HOW]
+P-state type would remain on previously used when unsupported which
+causes confusion in logging and visual confirm, so set back to zero
+when unsupported.
 
-[HOW]
-To ensure robustness in the reset sequence:
-1) Extend timeout on the "halt" command sent via gpint, and check for
-controller to enter "wait" as a stronger guarantee that there are no
-requests to memory still in flight.
-2) Remove usage of DMCUB_SOFT_RESET
-3) Rely on PSP to reset the controller safely
-
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Reviewed-by: Aric Cyr <aric.cyr@amd.com>
 Signed-off-by: Dillon Varone <Dillon.Varone@amd.com>
 Signed-off-by: Wayne Lin <wayne.lin@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/amd/display/dmub/src/dmub_dcn401.c    | 47 ++++++++++++-------
- .../drm/amd/display/dmub/src/dmub_dcn401.h    |  3 +-
- 2 files changed, 32 insertions(+), 18 deletions(-)
+ drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn401.c b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn401.c
-index 39a8cb6d7523c..e1c4fe1c6e3ee 100644
---- a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn401.c
-+++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn401.c
-@@ -63,8 +63,10 @@ static inline void dmub_dcn401_translate_addr(const union dmub_addr *addr_in,
- void dmub_dcn401_reset(struct dmub_srv *dmub)
- {
- 	union dmub_gpint_data_register cmd;
--	const uint32_t timeout = 30;
--	uint32_t in_reset, scratch, i;
-+	const uint32_t timeout_us = 1 * 1000 * 1000; //1s
-+	const uint32_t poll_delay_us = 1; //1us
-+	uint32_t i = 0;
-+	uint32_t in_reset, scratch, pwait_mode;
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c b/drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c
+index a49604b7701f7..1406ee4bff801 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c
+@@ -563,6 +563,7 @@ void set_p_state_switch_method(
+ 	if (!dc->ctx || !dc->ctx->dmub_srv || !pipe_ctx || !vba)
+ 		return;
  
- 	REG_GET(DMCUB_CNTL2, DMCUB_SOFT_RESET, &in_reset);
- 
-@@ -75,32 +77,35 @@ void dmub_dcn401_reset(struct dmub_srv *dmub)
- 
- 		dmub->hw_funcs.set_gpint(dmub, cmd);
- 
--		/**
--		 * Timeout covers both the ACK and the wait
--		 * for remaining work to finish.
--		 *
--		 * This is mostly bound by the PHY disable sequence.
--		 * Each register check will be greater than 1us, so
--		 * don't bother using udelay.
--		 */
--
--		for (i = 0; i < timeout; ++i) {
-+		for (i = 0; i < timeout_us; i++) {
- 			if (dmub->hw_funcs.is_gpint_acked(dmub, cmd))
- 				break;
-+
-+			udelay(poll_delay_us);
- 		}
- 
--		for (i = 0; i < timeout; ++i) {
-+		for (; i < timeout_us; i++) {
- 			scratch = dmub->hw_funcs.get_gpint_response(dmub);
- 			if (scratch == DMUB_GPINT__STOP_FW_RESPONSE)
- 				break;
-+
-+			udelay(poll_delay_us);
- 		}
- 
--		/* Force reset in case we timed out, DMCUB is likely hung. */
-+		for (; i < timeout_us; i++) {
-+			REG_GET(DMCUB_CNTL, DMCUB_PWAIT_MODE_STATUS, &pwait_mode);
-+			if (pwait_mode & (1 << 0))
-+				break;
-+
-+			udelay(poll_delay_us);
-+		}
-+	}
-+
-+	if (i >= timeout_us) {
-+		/* timeout should never occur */
-+		BREAK_TO_DEBUGGER();
- 	}
- 
--	REG_UPDATE(DMCUB_CNTL2, DMCUB_SOFT_RESET, 1);
--	REG_UPDATE(DMCUB_CNTL, DMCUB_ENABLE, 0);
--	REG_UPDATE(MMHUBBUB_SOFT_RESET, DMUIF_SOFT_RESET, 1);
- 	REG_WRITE(DMCUB_INBOX1_RPTR, 0);
- 	REG_WRITE(DMCUB_INBOX1_WPTR, 0);
- 	REG_WRITE(DMCUB_OUTBOX1_RPTR, 0);
-@@ -131,7 +136,10 @@ void dmub_dcn401_backdoor_load(struct dmub_srv *dmub,
- 
- 	dmub_dcn401_get_fb_base_offset(dmub, &fb_base, &fb_offset);
- 
-+	/* reset and disable DMCUB and MMHUBBUB DMUIF */
- 	REG_UPDATE(DMCUB_SEC_CNTL, DMCUB_SEC_RESET, 1);
-+	REG_UPDATE(MMHUBBUB_SOFT_RESET, DMUIF_SOFT_RESET, 1);
-+	REG_UPDATE(DMCUB_CNTL, DMCUB_ENABLE, 0);
- 
- 	dmub_dcn401_translate_addr(&cw0->offset, fb_base, fb_offset, &offset);
- 
-@@ -151,6 +159,7 @@ void dmub_dcn401_backdoor_load(struct dmub_srv *dmub,
- 			DMCUB_REGION3_CW1_TOP_ADDRESS, cw1->region.top,
- 			DMCUB_REGION3_CW1_ENABLE, 1);
- 
-+	/* release DMCUB reset only to prevent premature execution */
- 	REG_UPDATE_2(DMCUB_SEC_CNTL, DMCUB_SEC_RESET, 0, DMCUB_MEM_UNIT_ID,
- 			0x20);
- }
-@@ -161,7 +170,10 @@ void dmub_dcn401_backdoor_load_zfb_mode(struct dmub_srv *dmub,
- {
- 	union dmub_addr offset;
- 
-+	/* reset and disable DMCUB and MMHUBBUB DMUIF */
- 	REG_UPDATE(DMCUB_SEC_CNTL, DMCUB_SEC_RESET, 1);
-+	REG_UPDATE(MMHUBBUB_SOFT_RESET, DMUIF_SOFT_RESET, 1);
-+	REG_UPDATE(DMCUB_CNTL, DMCUB_ENABLE, 0);
- 
- 	offset = cw0->offset;
- 
-@@ -181,6 +193,7 @@ void dmub_dcn401_backdoor_load_zfb_mode(struct dmub_srv *dmub,
- 			DMCUB_REGION3_CW1_TOP_ADDRESS, cw1->region.top,
- 			DMCUB_REGION3_CW1_ENABLE, 1);
- 
-+	/* release DMCUB reset only to prevent premature execution */
- 	REG_UPDATE_2(DMCUB_SEC_CNTL, DMCUB_SEC_RESET, 0, DMCUB_MEM_UNIT_ID,
- 			0x20);
- }
-diff --git a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn401.h b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn401.h
-index 4c8843b796950..31f95b27e227d 100644
---- a/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn401.h
-+++ b/drivers/gpu/drm/amd/display/dmub/src/dmub_dcn401.h
-@@ -169,7 +169,8 @@ struct dmub_srv;
- 	DMUB_SF(HOST_INTERRUPT_CSR, HOST_REG_INBOX0_RSP_INT_EN) \
- 	DMUB_SF(HOST_INTERRUPT_CSR, HOST_REG_OUTBOX0_RDY_INT_ACK) \
- 	DMUB_SF(HOST_INTERRUPT_CSR, HOST_REG_OUTBOX0_RDY_INT_STAT) \
--	DMUB_SF(HOST_INTERRUPT_CSR, HOST_REG_OUTBOX0_RDY_INT_EN)
-+	DMUB_SF(HOST_INTERRUPT_CSR, HOST_REG_OUTBOX0_RDY_INT_EN) \
-+	DMUB_SF(DMCUB_CNTL, DMCUB_PWAIT_MODE_STATUS)
- 
- struct dmub_srv_dcn401_reg_offset {
- #define DMUB_SR(reg) uint32_t reg;
++	pipe_ctx->p_state_type = P_STATE_UNKNOWN;
+ 	if (vba->DRAMClockChangeSupport[vba->VoltageLevel][vba->maxMpcComb] !=
+ 			dm_dram_clock_change_unsupported) {
+ 		/* MCLK switching is supported */
 -- 
 2.39.5
 
