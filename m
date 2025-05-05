@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-139792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 588B7AA9FAF
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:26:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43030AA9FB4
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:26:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C8EE317E457
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:26:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 62BDB7A408C
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:25:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3EB22882CE;
-	Mon,  5 May 2025 22:15:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18C5D288C9E;
+	Mon,  5 May 2025 22:15:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LvDF/ev6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lmPF75gF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DC612882C5;
-	Mon,  5 May 2025 22:15:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1357288C93;
+	Mon,  5 May 2025 22:15:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483344; cv=none; b=MJrvvVE3S5jXTRI/3mADCqGzps1TMPLqulWGBMvXwWcDYmm6c6IlD5FzdS0EQsU9tVtDzO0TMgfSYZlEzd0+Uj3P+RIh8NdhqMJV9LN78QhbvhE1fRVCDZubNyTx14YiYAEXNiUL9kzxP2NwUfAYTBNxpn9fgf+8/Z7K7Diz7J4=
+	t=1746483346; cv=none; b=a6dNWRRCPjIOrxf22rELP5HrOApVXoNSQyHY1lEpIJ+fe0BGHdlDPbmt4TINBCngKnLnMUvtRd9rNE+QghI659JB3KEKlXI8/6KXggbpR3U0+h0nTVLt+pBE5WW4D8RcrwfoqL3XdEfKxUL/UFsft+HUPnNJhxcpXvg6AHdSqqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483344; c=relaxed/simple;
-	bh=T4emcv9UCK38JyLGZpfgRsXa/UJf9WjXoVPBejbJkwQ=;
+	s=arc-20240116; t=1746483346; c=relaxed/simple;
+	bh=tkogEudEvpw9mjS1wtAuORHuCiG1rANSBzhh0smNXaA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=B6uylbG3sOQsm+OoJ6ANUFiLvI+85gS02RFNcDh74xl8YZO6NPOj/547S3hnMCVYtEaKSHq2ltT6mMVnc6QOWXBwhvUzvHd7lTLqaGC86SzB9nL54loJnh9Lm4W+D+qPPhJYJ9L/MhPCmnSe4JWA50Go0DZq4Z5johCBahkTFfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LvDF/ev6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86DF6C4CEED;
-	Mon,  5 May 2025 22:15:43 +0000 (UTC)
+	 MIME-Version; b=RMHGUWx6wISIA16ghT2nNmc+a9kXy2WmvQNw3F+8+4kxlxhosAnmrgBRsYN9WzCidxc7grfRnyhs+Uk8ifdbl3T8rBfK8g48R/4tyeXjA4W098YR5jlMoZmmzIZOOpx1gGVTBPpHDSKbZnij6PIddMPoAO+VhOCYxI62pfOnS80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lmPF75gF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DF6EC4CEE4;
+	Mon,  5 May 2025 22:15:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483344;
-	bh=T4emcv9UCK38JyLGZpfgRsXa/UJf9WjXoVPBejbJkwQ=;
+	s=k20201202; t=1746483346;
+	bh=tkogEudEvpw9mjS1wtAuORHuCiG1rANSBzhh0smNXaA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LvDF/ev6JY4mS+xCDW561idfG42USUpuIuMiA3nuoc/mxQpCdovBOA8HRX+aixOjH
-	 oRlLWWaNSw3xL79J1/h4WaZ1KZ8dtoBeanYLGXW1xf8b2DPvA1PywwWXwqu/Wvp1AV
-	 uxhK0R4llm0Xx+J33g3coYSZ6JH23mzmegYbWBGUfdVHFGPCVOxjYhAiKE2Fzt+KwL
-	 CaS6q7rdlVz+W5OJ3+NL0Ip31OLYvhLXl7bJj5lUome4aI9TsoHYDRr+GcSqMB9mtD
-	 bNLivLhVDqZuDmGcUprTqAtuPVeBHIpYEeevx0OF5FVRsQ4fsgldRgPw/R7NEWN4xR
-	 vRV7swSa6fJiQ==
+	b=lmPF75gFVM4M5/BrmkKsPcTRicqYXUqmtNXXPJeZqQmxRve+2wGpirIBCZ8kIHEMO
+	 ZMj5UYUUkNtarXDXFajRLu8byKFG3zCmURUhy/ZBW16jZ4UhJ/cD+b1dVpo2xulrm9
+	 oNAt7kjs1vxuDcmpKQyzwpwhANW+Azz1PKoxjoA0rkHBlxOuCgomnR8Wed8q/1BbzI
+	 juP/4VGhBoNwdSJHqpvkIDoAWxMN4yfVNHKAlKWDSVfPJ1Yl1/yDuT/HfAQZRE1gMP
+	 Zc+kRjPC9Gd6RwymdA2uLBuSqTFt5OT4kLrVPFt7TluHl0Iyakw48nNEXEfmrYQXid
+	 YyDf/ZDJWXhPA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Pedro Nishiyama <nishiyama.pedro@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+Cc: Oleg Nesterov <oleg@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	marcel@holtmann.org,
-	johan.hedberg@gmail.com,
-	luiz.dentz@gmail.com,
-	linux-bluetooth@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 045/642] Bluetooth: Disable SCO support if READ_VOICE_SETTING is unsupported/broken
-Date: Mon,  5 May 2025 18:04:21 -0400
-Message-Id: <20250505221419.2672473-45-sashal@kernel.org>
+	akpm@linux-foundation.org,
+	mhocko@suse.com,
+	mjguzik@gmail.com,
+	pasha.tatashin@soleen.com,
+	alexjlzheng@tencent.com
+Subject: [PATCH AUTOSEL 6.14 046/642] exit: fix the usage of delay_group_leader->exit_code in do_notify_parent() and pidfs_exit()
+Date: Mon,  5 May 2025 18:04:22 -0400
+Message-Id: <20250505221419.2672473-46-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -68,34 +69,49 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Pedro Nishiyama <nishiyama.pedro@gmail.com>
+From: Oleg Nesterov <oleg@redhat.com>
 
-[ Upstream commit 14d17c78a4b1660c443bae9d38c814edea506f62 ]
+[ Upstream commit 9133607de37a4887c6f89ed937176a0a0c1ebb17 ]
 
-A SCO connection without the proper voice_setting can cause
-the controller to lock up.
+Consider a process with a group leader L and a sub-thread T.
+L does sys_exit(1), then T does sys_exit_group(2).
 
-Signed-off-by: Pedro Nishiyama <nishiyama.pedro@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+In this case wait_task_zombie(L) will notice SIGNAL_GROUP_EXIT and use
+L->signal->group_exit_code, this is correct.
+
+But, before that, do_notify_parent(L) called by release_task(T) will use
+L->exit_code != L->signal->group_exit_code, and this is not consistent.
+We don't really care, I think that nobody relies on the info which comes
+with SIGCHLD, if nothing else SIGCHLD < SIGRTMIN can be queued only once.
+
+But pidfs_exit() is more problematic, I think pidfs_exit_info->exit_code
+should report ->group_exit_code in this case, just like wait_task_zombie().
+
+TODO: with this change we can hopefully cleanup (or may be even kill) the
+similar SIGNAL_GROUP_EXIT checks, at least in wait_task_zombie().
+
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Link: https://lore.kernel.org/r/20250324171941.GA13114@redhat.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_event.c | 3 +++
+ kernel/exit.c | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 20d3cdcb14f6c..fa318f9ef40ec 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -930,6 +930,9 @@ static u8 hci_cc_read_buffer_size(struct hci_dev *hdev, void *data,
- 		hdev->sco_pkts = 8;
- 	}
- 
-+	if (!read_voice_setting_capable(hdev))
-+		hdev->sco_pkts = 0;
-+
- 	hdev->acl_cnt = hdev->acl_pkts;
- 	hdev->sco_cnt = hdev->sco_pkts;
- 
+diff --git a/kernel/exit.c b/kernel/exit.c
+index 3485e5fc499e4..6bb59b16e33e1 100644
+--- a/kernel/exit.c
++++ b/kernel/exit.c
+@@ -265,6 +265,9 @@ void release_task(struct task_struct *p)
+ 	leader = p->group_leader;
+ 	if (leader != p && thread_group_empty(leader)
+ 			&& leader->exit_state == EXIT_ZOMBIE) {
++		/* for pidfs_exit() and do_notify_parent() */
++		if (leader->signal->flags & SIGNAL_GROUP_EXIT)
++			leader->exit_code = leader->signal->group_exit_code;
+ 		/*
+ 		 * If we were the last child thread and the leader has
+ 		 * exited already, and the leader's parent ignores SIGCHLD,
 -- 
 2.39.5
 
