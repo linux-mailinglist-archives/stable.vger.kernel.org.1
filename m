@@ -1,54 +1,61 @@
-Return-Path: <stable+bounces-139636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79197AA8E84
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 10:50:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 442F2AA8E85
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 10:50:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E77821734C1
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 08:50:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 850E93B5C3D
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 08:50:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF5451C8619;
-	Mon,  5 May 2025 08:50:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21D7D1F1921;
+	Mon,  5 May 2025 08:50:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4RIatuH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S92i+grs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5408170A0B
-	for <stable@vger.kernel.org>; Mon,  5 May 2025 08:50:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6C39188734;
+	Mon,  5 May 2025 08:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746435000; cv=none; b=FsREvSxWmtOSOmXKxCcrqYdQ/wPxpR0YvoMrbKvVgM9Vb5RPaHz7xZLTjc8z4KAKEtfoYAjtJG31piiNCyk6IZ9jZpJSJVw4PDwOVf8V+yIqwd8VWNqSUApMAL8d9SejSy2OnFQTq+GuhqYc8UvhJ4mJDnp9ULOJs09bNSYI3Mg=
+	t=1746435050; cv=none; b=aoxoaK3Kspl0cJFzFFBumV/nzn8zr+3HfUQM0c5pETfMJN3hEsAguuRydtb1F9KAjEUwHVqYx8k3xWiYKxRYfJESNhKwPzveDbz8IGBsBFHehmYg0faLVgoul8AYoLM5AGdUYAsDkIJ07BXonk6wBmr8KLwG7B1TnDUMdlZL1Qk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746435000; c=relaxed/simple;
-	bh=5IUWU1pb9P+FExdnIuuDkTdV5urjSHIN+vM/ITUUq98=;
+	s=arc-20240116; t=1746435050; c=relaxed/simple;
+	bh=HvPQ0kBlCTfRM0u7GRysTIwbV2rkW7bK8jphMP3FJxg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dvLtF2uAX8Hh+vXdA10R4bq8TK3KZONbt6up1WYn41adyZVYdJjuWnCJxruOC/rZOLQsNac8zehYdlvXJ8KWt5Rx/hpVryTBobvaxhQLaky1vpowjWESCnkZk3wATo4APPuh8lh2SoZ910kCh0xXmNf7focyUPwxgVIx+ah1OiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4RIatuH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E567C4CEE4;
-	Mon,  5 May 2025 08:49:59 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=M4/VivWMB1s9EMQX0I9qbIxQ12C1kV47olSGAaFSnzaaK68ZBRfRdDb2FvyCvoKLS4XHV1i3dwfmtaJUTeOpICVp1E4N/B7rAzNFfIoH1ur2tcb3f5hsZ/ByMV9wmA0zJior4S2Ox4HkDAxaV/tTup/Fh6hRG2fOHYwaha+qsT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S92i+grs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1FD9C4CEE4;
+	Mon,  5 May 2025 08:50:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746435000;
-	bh=5IUWU1pb9P+FExdnIuuDkTdV5urjSHIN+vM/ITUUq98=;
+	s=korg; t=1746435050;
+	bh=HvPQ0kBlCTfRM0u7GRysTIwbV2rkW7bK8jphMP3FJxg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=q4RIatuHgH52BtsUQ+Y9NLux2RWZ7dZLRnEmxr1ykY4LoSU/5WAoaD7MDKyC3zpFW
-	 U7NAV+d3zYuhzXvVU206BEbX6uOqvj2v9DVpz2VxjI6Kuni7p0JfpLEFItIkLCW5Ie
-	 bR4UIWpeDmCAHQ9WjWFaaubQEGl58Ucs+jkMgVLg=
-Date: Mon, 5 May 2025 10:49:57 +0200
+	b=S92i+grsuH2A0JgHWK2i7DYhpLJZa9APjhEWwDkjw8YlvyE2utKwsUvwawrwx6Yt9
+	 KHUtWnmIkwGEOT1XzUJweY49M+e2qcMhUnwxXJMQb1765vgLS2ZqyHCiYANJ9LFv+o
+	 D4HyizMFR3xedwv1YZHHiY3rszqHblM4FCbGd+os=
+Date: Mon, 5 May 2025 10:50:47 +0200
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Janne Grunau <j@jannau.net>
-Cc: Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: FAILED: patch "[PATCH] drm: Select DRM_KMS_HELPER from" failed
- to apply to 6.6-stable tree
-Message-ID: <2025050530-monotype-eligibly-e5b1@gregkh>
-References: <2025050504-placate-iodize-9693@gregkh>
- <7cb8c3e1-52c3-498f-92af-b8b61a2ce8e8@app.fastmail.com>
+To: Jared Holzman <jholzman@nvidia.com>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Ming Lei <ming.lei@redhat.com>, Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.14 092/311] ublk: call ublk_dispatch_req() for handling
+ UBLK_U_IO_NEED_GET_DATA
+Message-ID: <2025050524-turmoil-garden-66b3@gregkh>
+References: <20250429161121.011111832@linuxfoundation.org>
+ <20250429161124.815951989@linuxfoundation.org>
+ <830759ad-243a-4fd5-9fa1-a106e6e6bb0d@nvidia.com>
+ <2025050455-reconvene-denial-e291@gregkh>
+ <744b4d9b-24f3-487c-805f-5aa02eaa093b@nvidia.com>
+ <2025050509-impending-uranium-ccba@gregkh>
+ <c5022682-52e7-4340-995c-7d3d84bb77aa@nvidia.com>
+ <2025050537-flaring-wolverine-c3fd@gregkh>
+ <843866f8-059a-4e5d-8316-19c92ae25a82@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,42 +64,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7cb8c3e1-52c3-498f-92af-b8b61a2ce8e8@app.fastmail.com>
+In-Reply-To: <843866f8-059a-4e5d-8316-19c92ae25a82@nvidia.com>
 
-On Mon, May 05, 2025 at 10:33:49AM +0200, Janne Grunau wrote:
-> Hej,
+On Mon, May 05, 2025 at 11:25:24AM +0300, Jared Holzman wrote:
+> On 05/05/2025 10:54, Greg Kroah-Hartman wrote:
+> > On Mon, May 05, 2025 at 10:47:03AM +0300, Jared Holzman wrote:
+> >> On 05/05/2025 8:51, Greg Kroah-Hartman wrote:
+> >>> On Sun, May 04, 2025 at 04:47:20PM +0300, Jared Holzman wrote:
+> >>>> On 04/05/2025 15:39, Greg Kroah-Hartman wrote:
+> >>>>> On Sun, May 04, 2025 at 02:55:00PM +0300, Jared Holzman wrote:
+> >>>>>> On 29/04/2025 19:38, Greg Kroah-Hartman wrote:
+> >>>>>>> 6.14-stable review patch.  If anyone has any objections, please let me know.
+> >>>>>>>
+> >>>>>>> ------------------
+> >>>>>>>
+> >>>>>>> From: Ming Lei <ming.lei@redhat.com>
+> >>>>>>>
+> >>>>>>> [ Upstream commit d6aa0c178bf81f30ae4a780b2bca653daa2eb633 ]
+> >>>>>>>
+> >>>>>>> We call io_uring_cmd_complete_in_task() to schedule task_work for handling
+> >>>>>>> UBLK_U_IO_NEED_GET_DATA.
+> >>>>>>>
+> >>>>>>> This way is really not necessary because the current context is exactly
+> >>>>>>> the ublk queue context, so call ublk_dispatch_req() directly for handling
+> >>>>>>> UBLK_U_IO_NEED_GET_DATA.
+> >>>>>>>
+> >>>>>>> Fixes: 216c8f5ef0f2 ("ublk: replace monitor with cancelable uring_cmd")
+> >>>>>>> Tested-by: Jared Holzman <jholzman@nvidia.com>
+> >>>>>>> Signed-off-by: Ming Lei <ming.lei@redhat.com>
+> >>>>>>> Link: https://lore.kernel.org/r/20250425013742.1079549-2-ming.lei@redhat.com
+> >>>>>>> Signed-off-by: Jens Axboe <axboe@kernel.dk>
+> >>>>>>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> >>>>>>> ---
+> >>>>>>>  drivers/block/ublk_drv.c | 14 +++-----------
+> >>>>>>>  1 file changed, 3 insertions(+), 11 deletions(-)
+> >>>>>>>
+> >>>>>>> diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
+> >>>>>>> index 437297022dcfa..c7761a5cfeec0 100644
+> >>>>>>> --- a/drivers/block/ublk_drv.c
+> >>>>>>> +++ b/drivers/block/ublk_drv.c
+> >>>>>>> @@ -1812,15 +1812,6 @@ static void ublk_mark_io_ready(struct ublk_device *ub, struct ublk_queue *ubq)
+> >>>>>>>  	mutex_unlock(&ub->mutex);
+> >>>>>>>  }
+> >>>>>>>  
+> >>>>>>> -static void ublk_handle_need_get_data(struct ublk_device *ub, int q_id,
+> >>>>>>> -		int tag)
+> >>>>>>> -{
+> >>>>>>> -	struct ublk_queue *ubq = ublk_get_queue(ub, q_id);
+> >>>>>>> -	struct request *req = blk_mq_tag_to_rq(ub->tag_set.tags[q_id], tag);
+> >>>>>>> -
+> >>>>>>> -	ublk_queue_cmd(ubq, req);
+> >>>>>>> -}
+> >>>>>>> -
+> >>>>>>>  static inline int ublk_check_cmd_op(u32 cmd_op)
+> >>>>>>>  {
+> >>>>>>>  	u32 ioc_type = _IOC_TYPE(cmd_op);
+> >>>>>>> @@ -1967,8 +1958,9 @@ static int __ublk_ch_uring_cmd(struct io_uring_cmd *cmd,
+> >>>>>>>  		if (!(io->flags & UBLK_IO_FLAG_OWNED_BY_SRV))
+> >>>>>>>  			goto out;
+> >>>>>>>  		ublk_fill_io_cmd(io, cmd, ub_cmd->addr);
+> >>>>>>> -		ublk_handle_need_get_data(ub, ub_cmd->q_id, ub_cmd->tag);
+> >>>>>>> -		break;
+> >>>>>>> +		req = blk_mq_tag_to_rq(ub->tag_set.tags[ub_cmd->q_id], tag);
+> >>>>>>> +		ublk_dispatch_req(ubq, req, issue_flags);
+> >>>>>>> +		return -EIOCBQUEUED;
+> >>>>>>>  	default:
+> >>>>>>>  		goto out;
+> >>>>>>>  	}
+> >>>>>>
+> >>>>>> Hi Greg,
+> >>>>>>
+> >>>>>> Will you also be backporting "ublk: fix race between io_uring_cmd_complete_in_task and ublk_cancel_cmd" to 6.14-stable?
+> >>>>>
+> >>>>> What is the git commit id you are referring to?  And was it asked to be
+> >>>>> included in a stable release?
+> >>>>>
+> >>>>> thanks,
+> >>>>>
+> >>>>> greg k-h
+> >>>>
+> >>>> Hi Greg,
+> >>>>
+> >>>> The commit is: f40139fde527
+> >>>>
+> >>>> It is Part 2 of the same patch series.
+> >>>
+> >>> It does not apply to the stable tree at all, so no, we will not be
+> >>> adding it unless someone provides a working version of it.
+> >>>
+> >>> thanks,
+> >>>
+> >>> greg k-h
+> >>
+> >> Hi Greg,
+> >>
+> >> Happy to provide a version that will apply. I just need to know where to get your working branch to base it on.
+> > 
+> > The latest stable release tree.
+> > 
+> > thanks,
+> > 
+> > greg k-h
 > 
-> On Mon, May 5, 2025, at 09:53, gregkh@linuxfoundation.org wrote:
-> > The patch below does not apply to the 6.6-stable tree. If someone
-> > wants it applied there, or to any other stable or longterm tree, then
-> > please email the backport, including the original git commit id to
-> > <stable@vger.kernel.org>.
-> >
-> > To reproduce the conflict and resubmit, you may use the following
-> > commands:
-> >
-> > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-> > git checkout FETCH_HEAD
-> > git cherry-pick -x 32dce6b1949a696dc7abddc04de8cbe35c260217
+> Hi Greg,
 > 
-> This works for me without conflicts. Are there git configs which might
-> influence this? The only noticeable thing is that the position of the
-> DRM_DEBUG_DP_MST_TOPOLOGY_REFS entry shifted 82 lines down. I looked
-> at the history of drivers/gpu/drm/Kconfig and the config
-> DRM_DEBUG_DP_MST_TOPOLOGY_REFS block hasn't changed since v5.10. So I
-> would expect the cherry-pick to work.
-
-It applies cleanly, but breaks the build badly.  Try it and see :)
-
-> Having said all that I don't know how important it is to have this in
-> older stable releases when nobody noticed it before. The issue presents
-> itself only with out-of-tree rust DRM drivers. I don't expect that
-> anyone will try to backport those to old stable releases.
+> I tried branch linux-6.14.y of repo: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/
 > 
-> I'm fine with skipping this commit for stable releases for 6.6 and older
-> and won't post backports.
+> But I can't apply any of the previous patches in the series [PATCH 6.14 000/311] to get to the point
+> where I can create my version of the patch.
 
-Ok, thanks!
+All of those changes are already in that branch, right?  So no need to
+apply them again :)
+
+thanks,
 
 greg k-h
 
