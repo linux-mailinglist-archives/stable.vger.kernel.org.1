@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-141207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C5B0AAB197
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:03:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EE390AAB19C
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:04:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6AB33A7726
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:58:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22A243AFBD2
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:58:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A2F13640E0;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B25E42D1F74;
 	Tue,  6 May 2025 00:27:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T15R05P5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pGB+BLCZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E29D52D1F44;
-	Mon,  5 May 2025 22:51:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709D42D1907;
+	Mon,  5 May 2025 22:51:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485488; cv=none; b=bzm+l0q22r+I+NNj/Bg/XhD7UMmSAABUcGSD6WnMQoAfWTn04iKp05mbCykdQj6zPpscS3bqMBHVXpNy7+jLJ0P0NxT9RoDWLaAiRteVjQTrOHySgLSGZ6trI/9ICvJ4n+XwzM28HR6//ptQIBkAnfyz+L5Wh8d6t45hkDrcwXs=
+	t=1746485490; cv=none; b=BpFyZUMsKbeFlGsuujUTUbiotrxk97mavLO8vZFTSdJo+p/UqaifkiIXoZTqZaLpfJxcWF9OrlZ2TYuO4j6K9m3PgmpMOnXlu5QbVVJy9zx844TTPMdEpY5pmn8n9MqRREOmpLb8JlBwd/L/19XH0Vx1BALpsnlmdayTNJfk0kU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485488; c=relaxed/simple;
-	bh=nGvdlCDrWtO7xRo/70W+vOcOv8cOxCWboXoNzYTDJTI=;
+	s=arc-20240116; t=1746485490; c=relaxed/simple;
+	bh=2ceJD08yP8wgB+0CCl0SfGxjXpS17on4ocWe/k5HT0E=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=sdh93xZ300NH5LdktZvKw10GWNyvgDre7+727bQnMhcKr3rkfI9Swe+r0jozBCNzspDgGd30M1Vx6ULrdnv4hjl3jJ3QeAs/CFncts/c3Y5ZmqsjhT3T5L3Md1S6vzI4pyp28z+uQf4oz07HzRYslPeyOlWGHTJhVIdbAWaRSK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T15R05P5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA155C4CEE4;
-	Mon,  5 May 2025 22:51:25 +0000 (UTC)
+	 MIME-Version; b=L/co6LyjM+uyEx1L6wx/FMblpCn44B+BvZCs5J/HhylCGgvpRg1gxdwTG1XPEpwfKpyR0m/YH6C3y+Eze5AG+LCk9ErTTBBVT6N8SffQDXszbhGKA19p/ldl18MB2tXW46oBepJHlpBI0irAKHXOH4NcrA04m1DXAugSW/dvtxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pGB+BLCZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11700C4CEE4;
+	Mon,  5 May 2025 22:51:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485486;
-	bh=nGvdlCDrWtO7xRo/70W+vOcOv8cOxCWboXoNzYTDJTI=;
+	s=k20201202; t=1746485490;
+	bh=2ceJD08yP8wgB+0CCl0SfGxjXpS17on4ocWe/k5HT0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T15R05P5h+jbsXQGHaedQtzOqZOgF7mTdMgDjWhvdx+1n8tqssOQ67d3QjRJWft5W
-	 SUpPz26t1Qbl8iakDqTVh7EdVEmehZXPfHQ1ADk2VpNeI7xXD/3/q8aUJSeFA4Yhi6
-	 rNNRlCxX0ejHpMa/n7TUQ1TyLyYVTrdC82JCTja5jz2keDwkduFb7KDXF61di+y467
-	 gVv9mdSG6oWB15JyDc2XYGrZRmjjgqbTarwvo/uNC5YNmlRV1eEwkNdDxSlYcIxXgA
-	 zMzEzLbswpO3gBBv+zhX7NYYprlVbjQhkJTDea9qnuhYifQblsX1QyY4bzH6I1koy4
-	 6UpqEfSfy9obw==
+	b=pGB+BLCZjylOvlxmaKInG9Ty+JxrugtN8I0B7vS1qgkR86Uj2GDGnToWxPuIJf94R
+	 55qYtqAyccpWj5YUB8s5ggGSF10bRrrC6+z4VdRlVl+E7+/mQZjkc6yiY+CkwAj3Uc
+	 9d//JNQW7TG+MH7O619XDXYRtIUGZPIYrqOzc1ro6dNnv8PITMKpal++7UM6C7W+yJ
+	 WKMYcHnF8xlia9Z1kIr8y/jzylSyX8Q9LeVOD868LE3g9AhD3s3yDTIdqardSwezXJ
+	 3p8NV1zqcMKIhego+yH0m4uCz3jYYPKRyMmL9vwzpLPGSgHNxNtuS3s4feCsFIZ+XU
+	 4uY/HQZwBspiQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Andrii Nakryiko <andrii@kernel.org>,
-	Emil Tsalapatis <emil@etsalapatis.com>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
+	Francois Dugast <francois.dugast@intel.com>,
+	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	daniel@iogearbox.net,
-	bpf@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 341/486] libbpf: fix LDX/STX/ST CO-RE relocation size adjustment logic
-Date: Mon,  5 May 2025 18:36:57 -0400
-Message-Id: <20250505223922.2682012-341-sashal@kernel.org>
+	thomas.hellstrom@linux.intel.com,
+	rodrigo.vivi@intel.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.12 343/486] drm/xe: Stop ignoring errors from xe_ttm_stolen_mgr_init()
+Date: Mon,  5 May 2025 18:36:59 -0400
+Message-Id: <20250505223922.2682012-343-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -68,90 +71,106 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Lucas De Marchi <lucas.demarchi@intel.com>
 
-[ Upstream commit 06096d19ee3897a7e70922580159607fe315da7a ]
+[ Upstream commit ff57025c358603555f1e0ae0d50282a460433594 ]
 
-Libbpf has a somewhat obscure feature of automatically adjusting the
-"size" of LDX/STX/ST instruction (memory store and load instructions),
-based on originally recorded access size (u8, u16, u32, or u64) and the
-actual size of the field on target kernel. This is meant to facilitate
-using BPF CO-RE on 32-bit architectures (pointers are always 64-bit in
-BPF, but host kernel's BTF will have it as 32-bit type), as well as
-generally supporting safe type changes (unsigned integer type changes
-can be transparently "relocated").
+Make sure to differentiate normal behavior, e.g. there's no stolen, from
+allocation errors or failure to initialize lower layers.
 
-One issue that surfaced only now, 5 years after this logic was
-implemented, is how this all works when dealing with fields that are
-arrays. This isn't all that easy and straightforward to hit (see
-selftests that reproduce this condition), but one of sched_ext BPF
-programs did hit it with innocent looking loop.
-
-Long story short, libbpf used to calculate entire array size, instead of
-making sure to only calculate array's element size. But it's the element
-that is loaded by LDX/STX/ST instructions (1, 2, 4, or 8 bytes), so
-that's what libbpf should check. This patch adjusts the logic for
-arrays and fixed the issue.
-
-Reported-by: Emil Tsalapatis <emil@etsalapatis.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20250207014809.1573841-1-andrii@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Reviewed-by: Francois Dugast <francois.dugast@intel.com>
+Reviewed-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250213192909.996148-5-lucas.demarchi@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/relo_core.c | 24 ++++++++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/xe/xe_device.c         |  4 +++-
+ drivers/gpu/drm/xe/xe_ttm_stolen_mgr.c | 17 +++++++++--------
+ drivers/gpu/drm/xe/xe_ttm_stolen_mgr.h |  2 +-
+ 3 files changed, 13 insertions(+), 10 deletions(-)
 
-diff --git a/tools/lib/bpf/relo_core.c b/tools/lib/bpf/relo_core.c
-index 63a4d5ad12d1a..26cde1b27174b 100644
---- a/tools/lib/bpf/relo_core.c
-+++ b/tools/lib/bpf/relo_core.c
-@@ -683,7 +683,7 @@ static int bpf_core_calc_field_relo(const char *prog_name,
+diff --git a/drivers/gpu/drm/xe/xe_device.c b/drivers/gpu/drm/xe/xe_device.c
+index bb85208cf1a94..5c37bed3c948f 100644
+--- a/drivers/gpu/drm/xe/xe_device.c
++++ b/drivers/gpu/drm/xe/xe_device.c
+@@ -694,7 +694,9 @@ int xe_device_probe(struct xe_device *xe)
+ 	}
+ 
+ 	/* Allocate and map stolen after potential VRAM resize */
+-	xe_ttm_stolen_mgr_init(xe);
++	err = xe_ttm_stolen_mgr_init(xe);
++	if (err)
++		return err;
+ 
+ 	/*
+ 	 * Now that GT is initialized (TTM in particular),
+diff --git a/drivers/gpu/drm/xe/xe_ttm_stolen_mgr.c b/drivers/gpu/drm/xe/xe_ttm_stolen_mgr.c
+index f7113cf6109d5..ef84fa757b26f 100644
+--- a/drivers/gpu/drm/xe/xe_ttm_stolen_mgr.c
++++ b/drivers/gpu/drm/xe/xe_ttm_stolen_mgr.c
+@@ -201,17 +201,16 @@ static u64 detect_stolen(struct xe_device *xe, struct xe_ttm_stolen_mgr *mgr)
+ #endif
+ }
+ 
+-void xe_ttm_stolen_mgr_init(struct xe_device *xe)
++int xe_ttm_stolen_mgr_init(struct xe_device *xe)
  {
- 	const struct bpf_core_accessor *acc;
- 	const struct btf_type *t;
--	__u32 byte_off, byte_sz, bit_off, bit_sz, field_type_id;
-+	__u32 byte_off, byte_sz, bit_off, bit_sz, field_type_id, elem_id;
- 	const struct btf_member *m;
- 	const struct btf_type *mt;
- 	bool bitfield;
-@@ -706,8 +706,14 @@ static int bpf_core_calc_field_relo(const char *prog_name,
- 	if (!acc->name) {
- 		if (relo->kind == BPF_CORE_FIELD_BYTE_OFFSET) {
- 			*val = spec->bit_offset / 8;
--			/* remember field size for load/store mem size */
--			sz = btf__resolve_size(spec->btf, acc->type_id);
-+			/* remember field size for load/store mem size;
-+			 * note, for arrays we care about individual element
-+			 * sizes, not the overall array size
-+			 */
-+			t = skip_mods_and_typedefs(spec->btf, acc->type_id, &elem_id);
-+			while (btf_is_array(t))
-+				t = skip_mods_and_typedefs(spec->btf, btf_array(t)->type, &elem_id);
-+			sz = btf__resolve_size(spec->btf, elem_id);
- 			if (sz < 0)
- 				return -EINVAL;
- 			*field_sz = sz;
-@@ -767,7 +773,17 @@ static int bpf_core_calc_field_relo(const char *prog_name,
- 	case BPF_CORE_FIELD_BYTE_OFFSET:
- 		*val = byte_off;
- 		if (!bitfield) {
--			*field_sz = byte_sz;
-+			/* remember field size for load/store mem size;
-+			 * note, for arrays we care about individual element
-+			 * sizes, not the overall array size
-+			 */
-+			t = skip_mods_and_typedefs(spec->btf, field_type_id, &elem_id);
-+			while (btf_is_array(t))
-+				t = skip_mods_and_typedefs(spec->btf, btf_array(t)->type, &elem_id);
-+			sz = btf__resolve_size(spec->btf, elem_id);
-+			if (sz < 0)
-+				return -EINVAL;
-+			*field_sz = sz;
- 			*type_id = field_type_id;
- 		}
- 		break;
+-	struct xe_ttm_stolen_mgr *mgr = drmm_kzalloc(&xe->drm, sizeof(*mgr), GFP_KERNEL);
+ 	struct pci_dev *pdev = to_pci_dev(xe->drm.dev);
++	struct xe_ttm_stolen_mgr *mgr;
+ 	u64 stolen_size, io_size;
+ 	int err;
+ 
+-	if (!mgr) {
+-		drm_dbg_kms(&xe->drm, "Stolen mgr init failed\n");
+-		return;
+-	}
++	mgr = drmm_kzalloc(&xe->drm, sizeof(*mgr), GFP_KERNEL);
++	if (!mgr)
++		return -ENOMEM;
+ 
+ 	if (IS_SRIOV_VF(xe))
+ 		stolen_size = 0;
+@@ -224,7 +223,7 @@ void xe_ttm_stolen_mgr_init(struct xe_device *xe)
+ 
+ 	if (!stolen_size) {
+ 		drm_dbg_kms(&xe->drm, "No stolen memory support\n");
+-		return;
++		return 0;
+ 	}
+ 
+ 	/*
+@@ -240,7 +239,7 @@ void xe_ttm_stolen_mgr_init(struct xe_device *xe)
+ 				     io_size, PAGE_SIZE);
+ 	if (err) {
+ 		drm_dbg_kms(&xe->drm, "Stolen mgr init failed: %i\n", err);
+-		return;
++		return err;
+ 	}
+ 
+ 	drm_dbg_kms(&xe->drm, "Initialized stolen memory support with %llu bytes\n",
+@@ -248,6 +247,8 @@ void xe_ttm_stolen_mgr_init(struct xe_device *xe)
+ 
+ 	if (io_size)
+ 		mgr->mapping = devm_ioremap_wc(&pdev->dev, mgr->io_base, io_size);
++
++	return 0;
+ }
+ 
+ u64 xe_ttm_stolen_io_offset(struct xe_bo *bo, u32 offset)
+diff --git a/drivers/gpu/drm/xe/xe_ttm_stolen_mgr.h b/drivers/gpu/drm/xe/xe_ttm_stolen_mgr.h
+index 1777245ff8101..8e877d1e839bd 100644
+--- a/drivers/gpu/drm/xe/xe_ttm_stolen_mgr.h
++++ b/drivers/gpu/drm/xe/xe_ttm_stolen_mgr.h
+@@ -12,7 +12,7 @@ struct ttm_resource;
+ struct xe_bo;
+ struct xe_device;
+ 
+-void xe_ttm_stolen_mgr_init(struct xe_device *xe);
++int xe_ttm_stolen_mgr_init(struct xe_device *xe);
+ int xe_ttm_stolen_io_mem_reserve(struct xe_device *xe, struct ttm_resource *mem);
+ bool xe_ttm_stolen_cpu_access_needs_ggtt(struct xe_device *xe);
+ u64 xe_ttm_stolen_io_offset(struct xe_bo *bo, u32 offset);
 -- 
 2.39.5
 
