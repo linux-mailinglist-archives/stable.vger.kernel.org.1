@@ -1,65 +1,62 @@
-Return-Path: <stable+bounces-140046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04CDCAAA458
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:27:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6991AAAA473
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:29:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7968D188149E
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:26:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C7013AFD9F
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:26:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7473328C2A3;
-	Mon,  5 May 2025 22:26:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B34028C2CF;
+	Mon,  5 May 2025 22:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nsWQuOy9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SNOVf6Zk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23B7E2882D3;
-	Mon,  5 May 2025 22:26:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C49DB28C2C2;
+	Mon,  5 May 2025 22:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483973; cv=none; b=DaHDorOIyVeVZ/AsrS3Cr5j+Zv1ql6Qh4wAEnsnE39EdfpCp4oIZ3s1A+XcZpdoHDNFItvGkU8qkbPTToZWEwK41guacnyf7u8GTL6HsewR+KoEdix8dlq1NHRX4EPJHrfLRdLdPEWxikWUjmp9MwHA6xPeLktOS8CVccklyNrY=
+	t=1746483974; cv=none; b=tC2wLXpHXit3Iunq37zh5n/MJE61DbHU47A0LtrQx+oORS2W5kg53oMWWMkJnaBRCGMULRsbodmttxusSUlH6T08js2fXJyPA5loP+xZgykFXSZPfW7idE8Y6Nwm1b/1xsQXCglnucUCz2WWX+Yls0YbyQ8ewvFInJ3z+jUxfcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483973; c=relaxed/simple;
-	bh=VqUtpLEe/mjyl4FHZoKwz7jUI868mLWleMa5ecX/Mpw=;
+	s=arc-20240116; t=1746483974; c=relaxed/simple;
+	bh=Z9n9wiIPdC41RfHmTwLHjKY+A1WrsoMrfXOJKYq3Qso=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=WXUiLNpdACCrKO2GKp2dPkrGZIsmm2dvpCY3QINQDhPgzoem3hs/kMegyNEAI2Vom61kV9RseF2FOLZjZES6W3UW45wZA9Essky0mrC7qO/D+IyttsJQqaKKpfQ0mp1ywZmPn2ymBB4o7ABlcfdovTH4bT/F26T1I8Xja+SUYkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nsWQuOy9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06BA4C4CEED;
-	Mon,  5 May 2025 22:26:10 +0000 (UTC)
+	 MIME-Version; b=jHdeavV6HDFYb11BH72mtkAcBucxkJx4j4Cwtm7+5icTybjb7jowa7PwSf5QYyiFuRao96mzoG0x3xRU3IEfjIviuMqMZNJC1wNDwr4SwGbd99T6ncFmQ8GiynCQmlA42vw653FZ66Rl4DE6PmEQXeEMiGtz65RPvNBf1Nn3gc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SNOVf6Zk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9600C4CEF2;
+	Mon,  5 May 2025 22:26:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483972;
-	bh=VqUtpLEe/mjyl4FHZoKwz7jUI868mLWleMa5ecX/Mpw=;
+	s=k20201202; t=1746483974;
+	bh=Z9n9wiIPdC41RfHmTwLHjKY+A1WrsoMrfXOJKYq3Qso=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nsWQuOy9JccJzSNrvdSbLE7jQGNgo3JCogBinjaVv+p7S7rsEIJCA0RSkDGk9alsu
-	 ehSe41Xupz6nVKlZ47BhVPrq/nyr6DBlsFhter+sTmJTUTwlxYkmxQnGbJSk3erh1k
-	 cZRQMOxMTJV1bi0WH9Xoq3GjBPq4v4awQMtO5taX2n1W7RN4YKs9KwA2dfaobl+1Gy
-	 ym0Xl3GWFs9POHV0/ElfvSUQAQu/QUYBDjm+mrsuHMrcZURst3y+9KSi8cYRixaZBc
-	 UkoxnxhtT84Z5pwJy/BcXG9jkJc6txAimjA/uhgoqSQ1BnzqLM67QIHuGLtdeijvub
-	 G0iQ2vWuH+jNw==
+	b=SNOVf6Zk3IzSYeIwJCU4j+TwOTPd+FgdDWIal24FD6Xtd8GMgfTGD7ZJgXnpT/Ub3
+	 Y4clKyk8lhngAr1NAxy1b8u63BgfF7YdYTd1DtCqejHu0yYYce4TJQ7ToCuFEPGb2F
+	 yLJ2HzVTmVTckQsIRxBHNKcYwYFwZ49t/AJWrQgUjkgUCbXwYYxbCc93XRnUjkds/f
+	 kFOleJgrCJcTltJ/y8dbBB9RgMlxi79KDakMaWzd5Mz7T/ktrL2c5pnYkumsPJ98M4
+	 93MCeykcW2rsbr5+r0EQJxxJm8odZhvhcmReKOenvgg7ytDaWkIMECG6shZVB/86ff
+	 adlQIb4kjjVfA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Moshe Shemesh <moshe@nvidia.com>,
-	Shahar Shitrit <shshitrit@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	"David S . Miller" <davem@davemloft.net>,
+Cc: Kevin Krakauer <krakauer@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	saeedm@nvidia.com,
-	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
 	edumazet@google.com,
-	kuba@kernel.org,
 	pabeni@redhat.com,
+	shuah@kernel.org,
 	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 299/642] net/mlx5: Avoid report two health errors on same syndrome
-Date: Mon,  5 May 2025 18:08:35 -0400
-Message-Id: <20250505221419.2672473-299-sashal@kernel.org>
+	linux-kselftest@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 300/642] selftests/net: have `gro.sh -t` return a correct exit code
+Date: Mon,  5 May 2025 18:08:36 -0400
+Message-Id: <20250505221419.2672473-300-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -74,40 +71,35 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Moshe Shemesh <moshe@nvidia.com>
+From: Kevin Krakauer <krakauer@google.com>
 
-[ Upstream commit b5d7b2f04ebcff740f44ef4d295b3401aeb029f4 ]
+[ Upstream commit 784e6abd99f24024a8998b5916795f0bec9d2fd9 ]
 
-In case health counter has not increased for few polling intervals, miss
-counter will reach max misses threshold and health report will be
-triggered for FW health reporter. In case syndrome found on same health
-poll another health report will be triggered.
+Modify gro.sh to return a useful exit code when the -t flag is used. It
+formerly returned 0 no matter what.
 
-Avoid two health reports on same syndrome by marking this syndrome as
-already known.
-
-Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
-Reviewed-by: Shahar Shitrit <shshitrit@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Tested: Ran `gro.sh -t large` and verified that test failures return 1.
+Signed-off-by: Kevin Krakauer <krakauer@google.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20250226192725.621969-2-krakauer@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/health.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/net/gro.sh | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/health.c b/drivers/net/ethernet/mellanox/mlx5/core/health.c
-index a6329ca2d9bff..52c8035547be5 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/health.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/health.c
-@@ -799,6 +799,7 @@ static void poll_health(struct timer_list *t)
- 	health->prev = count;
- 	if (health->miss_counter == MAX_MISSES) {
- 		mlx5_core_err(dev, "device's health compromised - reached miss count\n");
-+		health->synd = ioread8(&h->synd);
- 		print_health_info(dev);
- 		queue_work(health->wq, &health->report_work);
- 	}
+diff --git a/tools/testing/selftests/net/gro.sh b/tools/testing/selftests/net/gro.sh
+index 02c21ff4ca81f..aabd6e5480b8e 100755
+--- a/tools/testing/selftests/net/gro.sh
++++ b/tools/testing/selftests/net/gro.sh
+@@ -100,5 +100,6 @@ trap cleanup EXIT
+ if [[ "${test}" == "all" ]]; then
+   run_all_tests
+ else
+-  run_test "${proto}" "${test}"
++  exit_code=$(run_test "${proto}" "${test}")
++  exit $exit_code
+ fi;
 -- 
 2.39.5
 
