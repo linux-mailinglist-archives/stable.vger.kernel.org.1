@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-141644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96C00AAB527
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:23:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 982B5AAB532
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:24:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6346C4A09C3
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:19:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B9FC1881EBD
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:20:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29CE03464D7;
-	Tue,  6 May 2025 00:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA3BF3A7869;
+	Tue,  6 May 2025 00:45:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hijo+N4W"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JsHAp6qX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 341C328469A;
-	Mon,  5 May 2025 23:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87CD3284698;
+	Mon,  5 May 2025 23:16:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487015; cv=none; b=OVypa9YT5b60c9ja0n02ech0NixkrJ/uqJJl8LxUt+h8SQl3MdAfZsWY8hYRMH6Vvku6rMJ3kzx1o7zHHDwaHk4+TXZrYOo1NM3V7Xg8f+Or1Ed/1ZMi0FTVbOAODGbJaCwofYkQry1NLGBrsvvy3pIUUl1UyIureQvDQLjLk8U=
+	t=1746487016; cv=none; b=SdNKN0+DAlvdJGePYGdrNuZiDBWsta0CGiHvDqEhRedkDHJ6iIXNh2TltPnGHf01ySClTyZZanxTmQnhqem1TLeUV3WOjLdMTqpGVxjzV1EF+lUJFQwSU8xD1538BZC9IStzfYgrQ7gT6BnqSdyDoemoFItk7k9I2EPCiD4eKzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487015; c=relaxed/simple;
-	bh=TBiToOS22xXZR/yDLGAa0T27o9hnSJUf3WOeI4oWn+I=;
+	s=arc-20240116; t=1746487016; c=relaxed/simple;
+	bh=khnhXmagq4a7TPMzIk+VPWiuWvQNQtjNfkBupN1T8Ok=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ABMDNC3VuTodpIWWcTeJmT+XS10gxzHLJpSQL93NbX5REXC9gVk+zaoD2CtjX7S9Y1Xpq/GdIVRgq0tI3fpDwU0iYRxsKDzVWL81L4D60Mfq7N3N41TrmdiRX3bYwv/nIupOrdJEsG4P9n8JhtZ7NZydbgqcgHWM9jnYeXewl14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hijo+N4W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD794C4CEEF;
-	Mon,  5 May 2025 23:16:53 +0000 (UTC)
+	 MIME-Version; b=BvP7LiLdQPtboTvwKIX5BUI7NqWqWb3Vdm8ETUxFX+ieY2n1OduoAS/+bnuczshroEFKcCtD07YiKAKPILQ/uqAPOJN/STR4pa4akP48v0gLvVD2+kDF8mzVyVa7bDZJv2NR76suCCbDyYiUKPzmCnbjmjeeki4Y0crhr3+Ky7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JsHAp6qX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2089CC4CEEE;
+	Mon,  5 May 2025 23:16:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487014;
-	bh=TBiToOS22xXZR/yDLGAa0T27o9hnSJUf3WOeI4oWn+I=;
+	s=k20201202; t=1746487015;
+	bh=khnhXmagq4a7TPMzIk+VPWiuWvQNQtjNfkBupN1T8Ok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hijo+N4WP7o7uVFa6Zjgjqizh7luTpxPVRKCwHmTCJIOje3oYcwaGPvHYSJ71JoAM
-	 YQAznE4SeVoqbZr4P5oIBjZdmztzTFTVZfiLV/I9mEUWQlqvHh0k2x2yNoP2Ip+xwz
-	 l0o5DOTRhtd5cT5uwRyBPkhg6jQY1BoHjTp84EnwCLxmujoe+tesHqQPCTQ0NlQ/c/
-	 GQA1kS3PfBZiWB6OaQoNCkMC+kdtT+3NpUwH0uHk03F2FSztFsQ5epXX/ghoX5z+tu
-	 bsEOzu5PEFh9Xu1a2x9aZMyJjFZfh6vflpmaA4cITDMVkyapbNdJMWwDwob5TBK+f3
-	 BORqHawXuWiMg==
+	b=JsHAp6qXTi8Cy1ntWqJ6VQLqtKANaj1m8r4aEvAzLBXy2RKNX3aZDJj6AyKEDG3Ly
+	 SJ8T4mkoYCRiTHs2uQ1DXsL6mx5I6GnImaMRIvaWOnz4QrRDraA+nUkQtw22BzXdMJ
+	 FbZ82+IBl9nmErQZ2JR63j/oPawVEivtoOkTHpbApLvkZSnANi164h3W4gHqlvvucE
+	 DM2PzvJsPTsdZvPYkYB5kevsEzgA8hOkQvnbZ3wBRLaAF+ZjidDJjdz91/IZuU7RgY
+	 fye+TXVLL485627VFAD3CJTVW/vm5b6ZM5nzUNCso2pbXXcniGDJvMwHhMo63nl8Y+
+	 Qs+oLrDIteztQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Xiaochun Lee <lixc17@lenovo.com>,
+Cc: Xiaofei Tan <tanxiaofei@huawei.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-pci@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 108/153] PCI: Fix old_size lower bound in calculate_iosize() too
-Date: Mon,  5 May 2025 19:12:35 -0400
-Message-Id: <20250505231320.2695319-108-sashal@kernel.org>
+	rafael@kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 109/153] ACPI: HED: Always initialize before evged
+Date: Mon,  5 May 2025 19:12:36 -0400
+Message-Id: <20250505231320.2695319-109-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
 References: <20250505231320.2695319-1-sashal@kernel.org>
@@ -61,49 +61,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.181
 Content-Transfer-Encoding: 8bit
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Xiaofei Tan <tanxiaofei@huawei.com>
 
-[ Upstream commit ff61f380de5652e723168341480cc7adf1dd6213 ]
+[ Upstream commit cccf6ee090c8c133072d5d5b52ae25f3bc907a16 ]
 
-Commit 903534fa7d30 ("PCI: Fix resource double counting on remove &
-rescan") fixed double counting of mem resources because of old_size being
-applied too early.
+When the HED driver is built-in, it initializes after evged because they
+both are at the same initcall level, so the initialization ordering
+depends on the Makefile order.  However, this prevents RAS records
+coming in between the evged driver initialization and the HED driver
+initialization from being handled.
 
-Fix a similar counting bug on the io resource side.
+If the number of such RAS records is above the APEI HEST error source
+number, the HEST resources may be exhausted, and that may affect
+subsequent RAS error reporting.
 
-Link: https://lore.kernel.org/r/20241216175632.4175-6-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Xiaochun Lee <lixc17@lenovo.com>
+To fix this issue, change the initcall level of HED to subsys_initcall
+and prevent the driver from being built as a module by changing ACPI_HED
+in Kconfig from "tristate" to "bool".
+
+Signed-off-by: Xiaofei Tan <tanxiaofei@huawei.com>
+Link: https://patch.msgid.link/20250212063408.927666-1-tanxiaofei@huawei.com
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/setup-bus.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/acpi/Kconfig | 2 +-
+ drivers/acpi/hed.c   | 7 ++++++-
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
-index a159bfdfa2512..04c3ae8efc0f8 100644
---- a/drivers/pci/setup-bus.c
-+++ b/drivers/pci/setup-bus.c
-@@ -806,11 +806,9 @@ static resource_size_t calculate_iosize(resource_size_t size,
- 	size = (size & 0xff) + ((size & ~0xffUL) << 2);
- #endif
- 	size = size + size1;
--	if (size < old_size)
--		size = old_size;
+diff --git a/drivers/acpi/Kconfig b/drivers/acpi/Kconfig
+index 1da360c51d662..6a178e38fc4a8 100644
+--- a/drivers/acpi/Kconfig
++++ b/drivers/acpi/Kconfig
+@@ -437,7 +437,7 @@ config ACPI_SBS
+ 	  the modules will be called sbs and sbshc.
  
--	size = ALIGN(max(size, add_size) + children_add_size, align);
--	return size;
-+	size = max(size, add_size) + children_add_size;
-+	return ALIGN(max(size, old_size), align);
- }
+ config ACPI_HED
+-	tristate "Hardware Error Device"
++	bool "Hardware Error Device"
+ 	help
+ 	  This driver supports the Hardware Error Device (PNP0C33),
+ 	  which is used to report some hardware errors notified via
+diff --git a/drivers/acpi/hed.c b/drivers/acpi/hed.c
+index 60a2939cde6c5..e8e9b1ac06b88 100644
+--- a/drivers/acpi/hed.c
++++ b/drivers/acpi/hed.c
+@@ -72,7 +72,12 @@ static struct acpi_driver acpi_hed_driver = {
+ 		.notify = acpi_hed_notify,
+ 	},
+ };
+-module_acpi_driver(acpi_hed_driver);
++
++static int __init acpi_hed_driver_init(void)
++{
++	return acpi_bus_register_driver(&acpi_hed_driver);
++}
++subsys_initcall(acpi_hed_driver_init);
  
- static resource_size_t calculate_memsize(resource_size_t size,
+ MODULE_AUTHOR("Huang Ying");
+ MODULE_DESCRIPTION("ACPI Hardware Error Device Driver");
 -- 
 2.39.5
 
