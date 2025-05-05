@@ -1,67 +1,69 @@
-Return-Path: <stable+bounces-141463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A332AAB395
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:48:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BFB7AAB3B8
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:51:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F0D816CC9C
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:46:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4DB593B1014
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:45:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C17733A371;
-	Tue,  6 May 2025 00:38:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 125ED33AADA;
+	Tue,  6 May 2025 00:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kraXVoNO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j0I2NJ/9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B40C2820A1;
-	Mon,  5 May 2025 23:06:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6DC37B354;
+	Mon,  5 May 2025 23:06:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486378; cv=none; b=BHVeoKQBuBFB4mx9DTSv9g8x4ZL35pkERMIOTgPIlVeTovYZyMyGzY9hadquc/odfG01xA6YBQkAe0zP1+6dYIyMuS0wytw5Tj7558YwSga+f7WHqHcSCCrhqmAwrbcyf8ErXtlzXTa7Mbc7pqhQ7V5O9zgrog8VuLKzNIa25vA=
+	t=1746486380; cv=none; b=pCZvRMEYMxLLVlH80b3zHhgA4bk4uCq6P2CEUM4gnEYdOZsKJQq2QXiuE7C/B6JrsBPCQ5xTHDhdSi5cdqEXyEhCWkvchYrvH+pFYghSbKP9HpFd6gNtx0YWonVya3/mL3TZ5wp4zTC6JsvxQHss7dmZt6qPBBkRTlA7ITuYeWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486378; c=relaxed/simple;
-	bh=93cAwYNrBhIobUYALRIN+aixfXZiY+QQPC4xzf6ndok=;
+	s=arc-20240116; t=1746486380; c=relaxed/simple;
+	bh=MkjUxAaaM6BW5vs4DgRDLhu339tTQEcwHk28Wicshi8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Zul1/9jX7gszwmmEsYftj+8ZC2KQLWYKRfQ+I7WOtLbUYGE1KgTDp5cYYQuUkIvcYq5mEHINqTtblK5uRt2s1bB8p389g4xNekTT0qqhniZZAVcXxM1QW837G5Qs1tQE7867RboKC9cdm3lle5V4RRJTrukabb90YUa3v6N+f3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kraXVoNO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EBDFC4CEE4;
-	Mon,  5 May 2025 23:06:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KsIjf/qGo+vlbB6vod7SeXygNPjme4wCkcmlmeRXUp7bi/E3kCznoWduNO9zSSn8iwf8dy7OzcnwbaMAPK4laM/MgFJ8XPg2gErmUlEdyXlqgwjzVnD3HsWRewFMW1McOLXWGT5LeNPljBnelcpbLJLHAzIqUdhtKA/DTSAvNk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j0I2NJ/9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0F24C4CEED;
+	Mon,  5 May 2025 23:06:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486377;
-	bh=93cAwYNrBhIobUYALRIN+aixfXZiY+QQPC4xzf6ndok=;
+	s=k20201202; t=1746486379;
+	bh=MkjUxAaaM6BW5vs4DgRDLhu339tTQEcwHk28Wicshi8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kraXVoNOISee1WRfrr0ckycZjpfuecQUfUUUlr0IBKrMEBs44mJ1GFsqXZy2rWfR9
-	 t8BINZVWTnBCMgmOgpjgdyPdGGvN6hRb281xuKqyiHDK0CGcDqlfrS8D83svUKNbZx
-	 Fz51KO41woR+vjXgiWFjtBurmUsL/YCCl6vohzrAtCQc6ADnAHXZ+74Iq5widznAFz
-	 ZCuSJXn8TqnG8xkAnTlfnaR9BgZ5wEmyTN0kdqlJCwiYX+sqXBcYOzkLVK1oTFb5wO
-	 ySHmBvrVPnq9KKRJCKaBKn3h4j6uaOoc9y4EJ6Ygk6K3zYZBoW7dSJ/VYg50dIXtbj
-	 DAOvu9kLG72XA==
+	b=j0I2NJ/9jiL+xwurW4OfzJ8y++2WLfzyfuzo3XpYeUk5flqoKyapvdm82BneoRDq2
+	 EWQp3CSOpQzzgiAW31Ot7/FyInd2mLDnjAnQVGwVbZPkNzxk34xQV/k/bKGVojZK6D
+	 wFeiJuGgytS4wQ6qIVHKTcZV3/m4CZUPLAHNm3hwF08eFpRc9xewm6/EacDbJhFglE
+	 UsBkopH1c3o4bi+nkJ2s6A3L9jPA1s0Gxe57NhCYegWLDbBaXVNjQKtiU0P/J9lGpI
+	 6OtgE51gMAIpDY4Cp1t2cHsBtL9Ky7MTmJ6FkmMaD0yNAIHmwjKZw/WIFh+FWYeU4U
+	 BniUPc4eJ+2Eg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Olivier Moysan <olivier.moysan@foss.st.com>,
+Cc: Simona Vetter <simona.vetter@ffwll.ch>,
+	Pekka Paalanen <pekka.paalanen@collabora.com>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Rob Clark <robdclark@gmail.com>,
+	Simon Ser <contact@emersion.fr>,
+	Manasi Navare <navaremanasi@google.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Simona Vetter <simona.vetter@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	andrzej.hajda@intel.com,
-	neil.armstrong@linaro.org,
-	rfoss@kernel.org,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
 	simona@ffwll.ch,
-	lumag@kernel.org,
-	broonie@kernel.org,
-	stefan.ekenberg@axis.com,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.6 291/294] drm: bridge: adv7511: fill stream capabilities
-Date: Mon,  5 May 2025 18:56:31 -0400
-Message-Id: <20250505225634.2688578-291-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 292/294] drm/atomic: clarify the rules around drm_atomic_state->allow_modeset
+Date: Mon,  5 May 2025 18:56:32 -0400
+Message-Id: <20250505225634.2688578-292-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -71,42 +73,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Olivier Moysan <olivier.moysan@foss.st.com>
+From: Simona Vetter <simona.vetter@ffwll.ch>
 
-[ Upstream commit c852646f12d4cd5b4f19eeec2976c5d98c0382f8 ]
+[ Upstream commit c5e3306a424b52e38ad2c28c7f3399fcd03e383d ]
 
-Set no_i2s_capture and no_spdif_capture flags in hdmi_codec_pdata structure
-to report that the ADV7511 HDMI bridge does not support i2s or spdif audio
-capture.
+msm is automagically upgrading normal commits to full modesets, and
+that's a big no-no:
 
-Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250108170356.413063-2-olivier.moysan@foss.st.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+- for one this results in full on->off->on transitions on all these
+  crtc, at least if you're using the usual helpers. Which seems to be
+  the case, and is breaking uapi
+
+- further even if the ctm change itself would not result in flicker,
+  this can hide modesets for other reasons. Which again breaks the
+  uapi
+
+v2: I forgot the case of adding unrelated crtc state. Add that case
+and link to the existing kerneldoc explainers. This has come up in an
+irc discussion with Manasi and Ville about intel's bigjoiner mode.
+Also cc everyone involved in the msm irc discussion, more people
+joined after I sent out v1.
+
+v3: Wording polish from Pekka and Thomas
+
+Acked-by: Pekka Paalanen <pekka.paalanen@collabora.com>
+Acked-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: Pekka Paalanen <pekka.paalanen@collabora.com>
+Cc: Rob Clark <robdclark@gmail.com>
+Cc: Simon Ser <contact@emersion.fr>
+Cc: Manasi Navare <navaremanasi@google.com>
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Simona Vetter <simona.vetter@intel.com>
+Signed-off-by: Simona Vetter <simona.vetter@ffwll.ch>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250108172417.160831-1-simona.vetter@ffwll.ch
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/adv7511/adv7511_audio.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/drm/drm_atomic.h | 23 +++++++++++++++++++++--
+ 1 file changed, 21 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c b/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
-index 8f786592143b6..24e1e11acf697 100644
---- a/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
-+++ b/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
-@@ -244,7 +244,9 @@ static const struct hdmi_codec_pdata codec_data = {
- 	.ops = &adv7511_codec_ops,
- 	.max_i2s_channels = 2,
- 	.i2s = 1,
-+	.no_i2s_capture = 1,
- 	.spdif = 1,
-+	.no_spdif_capture = 1,
- };
- 
- int adv7511_audio_init(struct device *dev, struct adv7511 *adv7511)
+diff --git a/include/drm/drm_atomic.h b/include/drm/drm_atomic.h
+index 9a022caacf936..f3e7e3e5078db 100644
+--- a/include/drm/drm_atomic.h
++++ b/include/drm/drm_atomic.h
+@@ -372,8 +372,27 @@ struct drm_atomic_state {
+ 	 *
+ 	 * Allow full modeset. This is used by the ATOMIC IOCTL handler to
+ 	 * implement the DRM_MODE_ATOMIC_ALLOW_MODESET flag. Drivers should
+-	 * never consult this flag, instead looking at the output of
+-	 * drm_atomic_crtc_needs_modeset().
++	 * generally not consult this flag, but instead look at the output of
++	 * drm_atomic_crtc_needs_modeset(). The detailed rules are:
++	 *
++	 * - Drivers must not consult @allow_modeset in the atomic commit path.
++	 *   Use drm_atomic_crtc_needs_modeset() instead.
++	 *
++	 * - Drivers must consult @allow_modeset before adding unrelated struct
++	 *   drm_crtc_state to this commit by calling
++	 *   drm_atomic_get_crtc_state(). See also the warning in the
++	 *   documentation for that function.
++	 *
++	 * - Drivers must never change this flag, it is under the exclusive
++	 *   control of userspace.
++	 *
++	 * - Drivers may consult @allow_modeset in the atomic check path, if
++	 *   they have the choice between an optimal hardware configuration
++	 *   which requires a modeset, and a less optimal configuration which
++	 *   can be committed without a modeset. An example would be suboptimal
++	 *   scanout FIFO allocation resulting in increased idle power
++	 *   consumption. This allows userspace to avoid flickering and delays
++	 *   for the normal composition loop at reasonable cost.
+ 	 */
+ 	bool allow_modeset : 1;
+ 	/**
 -- 
 2.39.5
 
