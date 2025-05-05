@@ -1,65 +1,56 @@
-Return-Path: <stable+bounces-141409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F41BAAB6EB
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:00:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C6E7AAB6EF
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:01:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D73631C2290D
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:56:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8989C1C20EFD
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:57:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA5B72248B4;
-	Tue,  6 May 2025 00:36:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD098226888;
+	Tue,  6 May 2025 00:36:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h5EumBaV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SYkHoswe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738B22DFA4F;
-	Mon,  5 May 2025 23:02:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 009262DFA5B;
+	Mon,  5 May 2025 23:03:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486179; cv=none; b=XbO6TPhF6ySR5x3FxzGT3Ie7qHumFgrRTkouinKP1fijn95NgaW2GyK37ZV+ACypFOYYwDJUap8yM+epLiXM8nKrx7IMKts+N5eIN6Bo0p3N5v/6r97Paiw88ecPBskp5uLA+5nxJwvo7HEECRSmPEfKdqdL13Lo00kVpq5+rIg=
+	t=1746486196; cv=none; b=cllDUzZm72DUZKS5EG8hl+Bag1SoRJGGlAiwyf86HWEq4ng3ttJ6pcJMzBsVBjjmCaQxwf6Eyx7w77StPIIBtDD6xqyjlx/nwwGViU6L6CbKMWRVcJUjcnhfDOoMgVQwy7OcfPlmaM/pyQh/p2ZwqDq5a00j9l31nucd1QsRjcw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486179; c=relaxed/simple;
-	bh=YF4sqYUsi/wUGYdPp1hwG53Z8+TWL3CmgslUzgxjWwc=;
+	s=arc-20240116; t=1746486196; c=relaxed/simple;
+	bh=GVVXTEw23c+3r68phwdy/OxA9lfvg13unNs7GMRjoTg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Lpp2Rdws0ElvKfNIPwa3puhTnKzF7EC3m4BItpDW0TGzYDzvLUgyLcOmn2aQMh8A/FQYJU/qfOHTa/zrb++jHu9VFdi37dNYqg+rwRGx/U/MZVccJ6Zx7x6rT4LZA19n6zL0LPV9gt+hpVy48tCNGSzcvEOf3cLoJ9qRRAduwHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h5EumBaV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3E69C4CEE4;
-	Mon,  5 May 2025 23:02:56 +0000 (UTC)
+	 MIME-Version; b=cVrmNKuzf7B5bMLbkIdLvFmmWWbjOdYLZqdJj2yvOLVvFShGtLT+RSNU6w3Ulfd9wTGStpHYR/XLYu96v58c1HUx36fYpGxwC2CKtr63nQ/7xhRxcmSoBXOArvVH5bbOtwq22GkZWDkTLUfnoL98DT+EJ+wP9S165EieiWz2aPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SYkHoswe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1397C4CEF1;
+	Mon,  5 May 2025 23:03:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486178;
-	bh=YF4sqYUsi/wUGYdPp1hwG53Z8+TWL3CmgslUzgxjWwc=;
+	s=k20201202; t=1746486195;
+	bh=GVVXTEw23c+3r68phwdy/OxA9lfvg13unNs7GMRjoTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h5EumBaVcd3F2WTnvQQ4G1OkjH3isWLmfXhAXk6rh1NE8UTxpifDY8D9EpFfdrv5o
-	 QZ1JuLgyKC5RbS6xeaxL+rDna2UZGhVMZFphryNc0uukLycmFxSy32Pidxa8TlWlZ7
-	 r4OnjJtR0DBWtlsvn+sBV3C+rL5mg8rY2EoXo4yGL70y4AJc7pYcD+0RjQ1H8pqXiO
-	 P9cMxktrpOpbnMurEVRKhk4DZKKaYvyCZ08R4Op69QVEdhg5ysLaupMSdg1nj9Jou6
-	 XyOSBG8xZ0DWOaeBYTUzBypmLzChdYAszDfYRTXcDa2+1HN+Df/BXMmOU+j2zWTNpY
-	 1c3w971Fthmrg==
+	b=SYkHosweXBv4PMyoIV24xN7hpTxBRCpFHiYCiq6lsvLxRR25nrUthAYv8nBPu8fuJ
+	 5D7rYHNE3OeGXEQxLKQ9COfczk3iyr40sW5Ekvco5Y04zWEbwpbs2vG0bMWQlQDzPx
+	 fvrUFBQIMcAgivEj8mjWSQa/dbOTNozM4B7WmYNx4XdQZoVW3kc78W4OtZRP9Xp3nv
+	 HAeJFpXnXKtNeOi578VePrGHCqJdxbsjWqB0TdyFtdo9+PPRPg7C9ymnzx7DxYGlIO
+	 AeWQFjuypwefnpiZUohJi6BvQJwaBNtHq0RxQ4SPYjT7+LrPkZZ/jNSlCPIugWLLHC
+	 0qUY20cgnc5/A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+Cc: Sudeep Holla <sudeep.holla@arm.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	shawnguo@kernel.org,
-	shengjiu.wang@nxp.com,
-	dario.binacchi@amarulasolutions.com,
-	peng.fan@nxp.com,
-	michael@amarulasolutions.com,
-	krzysztof.kozlowski@linaro.org,
-	joe@pf.is.s.u-tokyo.ac.jp,
-	linux-pm@vger.kernel.org,
-	imx@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.6 188/294] pmdomain: imx: gpcv2: use proper helper for property detection
-Date: Mon,  5 May 2025 18:54:48 -0400
-Message-Id: <20250505225634.2688578-188-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 198/294] firmware: arm_ffa: Reject higher major version as incompatible
+Date: Mon,  5 May 2025 18:54:58 -0400
+Message-Id: <20250505225634.2688578-198-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -74,38 +65,48 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+From: Sudeep Holla <sudeep.holla@arm.com>
 
-[ Upstream commit 6568cb40e73163fa25e2779f7234b169b2e1a32e ]
+[ Upstream commit efff6a7f16b34fd902f342b58bd8bafc2d6f2fd1 ]
 
-Starting with commit c141ecc3cecd7 ("of: Warn when of_property_read_bool()
-is used on non-boolean properties"), probing the gpcv2 device on i.MX8M
-SoCs leads to warnings when LOCKDEP is enabled.
+When the firmware compatibility was handled previously in the commit
+8e3f9da608f1 ("firmware: arm_ffa: Handle compatibility with different firmware versions"),
+we only addressed firmware versions that have higher minor versions
+compared to the driver version which is should be considered compatible
+unless the firmware returns NOT_SUPPORTED.
 
-Fix this by checking property presence with of_property_present as
-intended.
+However, if the firmware reports higher major version than the driver
+supported, we need to reject it. If the firmware can work in a compatible
+mode with the driver requested version, it must return the same major
+version as requested.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Link: https://lore.kernel.org/r/20250218-gpcv2-of-property-present-v1-1-3bb1a9789654@pengutronix.de
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Tested-by: Viresh Kumar <viresh.kumar@linaro.org>
+Message-Id: <20250217-ffa_updates-v3-12-bd1d9de615e7@arm.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pmdomain/imx/gpcv2.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/firmware/arm_ffa/driver.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/pmdomain/imx/gpcv2.c b/drivers/pmdomain/imx/gpcv2.c
-index 13fce2b134f60..84d68c805cac8 100644
---- a/drivers/pmdomain/imx/gpcv2.c
-+++ b/drivers/pmdomain/imx/gpcv2.c
-@@ -1350,7 +1350,7 @@ static int imx_pgc_domain_probe(struct platform_device *pdev)
+diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
+index 7cd6b1564e801..906f0988bb557 100644
+--- a/drivers/firmware/arm_ffa/driver.c
++++ b/drivers/firmware/arm_ffa/driver.c
+@@ -121,6 +121,14 @@ static int ffa_version_check(u32 *version)
+ 		return -EOPNOTSUPP;
  	}
  
- 	if (IS_ENABLED(CONFIG_LOCKDEP) &&
--	    of_property_read_bool(domain->dev->of_node, "power-domains"))
-+	    of_property_present(domain->dev->of_node, "power-domains"))
- 		lockdep_set_subclass(&domain->genpd.mlock, 1);
- 
- 	ret = of_genpd_add_provider_simple(domain->dev->of_node,
++	if (FFA_MAJOR_VERSION(ver.a0) > FFA_MAJOR_VERSION(FFA_DRIVER_VERSION)) {
++		pr_err("Incompatible v%d.%d! Latest supported v%d.%d\n",
++		       FFA_MAJOR_VERSION(ver.a0), FFA_MINOR_VERSION(ver.a0),
++		       FFA_MAJOR_VERSION(FFA_DRIVER_VERSION),
++		       FFA_MINOR_VERSION(FFA_DRIVER_VERSION));
++		return -EINVAL;
++	}
++
+ 	if (ver.a0 < FFA_MIN_VERSION) {
+ 		pr_err("Incompatible v%d.%d! Earliest supported v%d.%d\n",
+ 		       FFA_MAJOR_VERSION(ver.a0), FFA_MINOR_VERSION(ver.a0),
 -- 
 2.39.5
 
