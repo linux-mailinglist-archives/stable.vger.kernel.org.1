@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-141164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44F46AAB12E
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:55:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12404AAB10A
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:52:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AADE13A35B3
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:50:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17F2C4E43DB
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:51:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D091633052A;
-	Tue,  6 May 2025 00:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AA33330ACA;
+	Tue,  6 May 2025 00:25:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uYEo+cyY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XlvnO/at"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AA6B2D60FD;
-	Mon,  5 May 2025 22:49:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADDCD2D611A;
+	Mon,  5 May 2025 22:49:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485357; cv=none; b=ndrH+TDQNHUDK6zPl8epGLABVCpJaYo9+9qAHTbaJJ5K826qaNXBf9lJaiCR9nk4onSs48Yef+EesdAU/eDilo7/FokIFSWhmXJCJFaHUfOL13VpgM8GtOOZ1IzTvT3HI6ryY/KtyNGawiMzE/CNKC1A8/Ovyn++S0PeUVIVRA0=
+	t=1746485360; cv=none; b=X9MznBHbIc8JU7bpwM2XEAoTEW1PlWWXxCfzFvOoPFPAKraMfqjqwY7jgt8QRUTLdJCyB1Tj5mo19YVVbzY7GY4Tr3Nadl5qwXdw5PaZcYSjRtvp2kPihKU9SWgDQZJvKq6X660PjkolGtZcfVZ53zny3fMwEgFXTv1toITpj2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485357; c=relaxed/simple;
-	bh=jA/n9HSlhB7PQUXusTx5SZz37B/RI+8M5PtPwdFqV4Q=;
+	s=arc-20240116; t=1746485360; c=relaxed/simple;
+	bh=HMZ3nO+106jsaZjEMJfbMC5DpoWEGIDhOs2S9vaJRT8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=tbvhe4TlwJJI3JiLa4PmvmqupAlHk+YfhBuUYFGVbh2LRn6xPip5ANlb2vBzduzxo0zMp+nApVKMxv4ms46v2HDEQN5Moqu0paAkPCqxkusetTL9CGUVdIrPb26cpT1V+DFz5OW3OLICs4pkpa0EB1fb2+AcSF7InrG/pmcjCDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uYEo+cyY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A577CC4CEEE;
-	Mon,  5 May 2025 22:49:15 +0000 (UTC)
+	 MIME-Version; b=gaYkmgJJdz7GwgQOJshjbDDnke6LsfhH2HQzrlcV+B2VDiCLiABxZUwPhCax5/n6yewuqcRTmw0eUUryNXg9zyoM5Cv2fPQerIZqT7PppId93zO8Qxzoxo761PPQxY1l2wNazdLeRiv9fxsCW01yzH70LqEQMjQsdlhIoy6XZH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XlvnO/at; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDD50C4CEE4;
+	Mon,  5 May 2025 22:49:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485356;
-	bh=jA/n9HSlhB7PQUXusTx5SZz37B/RI+8M5PtPwdFqV4Q=;
+	s=k20201202; t=1746485359;
+	bh=HMZ3nO+106jsaZjEMJfbMC5DpoWEGIDhOs2S9vaJRT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uYEo+cyYmdG+qF6jfXvZAXKakLRIjwFUpHiRb73k7F/ssYxrsF/8a9uZbTZrTsVzN
-	 AXMiFlcwLenx2r/xU0sCHmLl5UwWwm3HCzhU4DSis+U6dTnIciOVXNmWMNWAt5QpAp
-	 dij5UGW2Moj/EaPT4ZqOgHAzUjRABuCQnTol9N4Z8Kaqtc/8xPrXjcLpcRpQ5i4vGR
-	 Rl1/dHKM/9KGAuG5ljxjg5/yZU8aJhqUiunRcfDukP8TX7yrbfHO3LamkOq6SVpi0w
-	 bdS1qmehSNCdin3RkriTQfoVMaBGDUZ0QrDZ9KDswzy9tjZ4oWXy0UDK631pNMSBpW
-	 kb/q9DUBFr9Gg==
+	b=XlvnO/atiCGK0xgrEY/wuf9yOhJZTKj6E7ousUHfBRYbycoLzfc4W9QmemXJU3Md4
+	 cxZ+487E1zIRk//nngExc07XzvT3AQwhr+jL+54Yapc77cIMVzIVaq4qHjGTR3i/th
+	 h9/7C2Z30Zz++2CCyDGzOr5VqkXux88scBpnz9UTBsWBHibHZ0M8KKxHbLyntlwxNb
+	 8aAhr3b0k/vdVhJMw7Ioc8Bs4F5zcvO++Ik6UaTPN/EmTA3yjSVNLutQjdncCpclzz
+	 b/UmlrwPv6kr2L5+bkf+56DLeqsMzB9yISbl94Vv7r9OZ9jvgcbqNBJ14ma3dKUdmz
+	 Ofj4zJtqubqPQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+Cc: Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>,
 	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 284/486] wifi: rtw88: Fix rtw_init_vht_cap() for RTL8814AU
-Date: Mon,  5 May 2025 18:36:00 -0400
-Message-Id: <20250505223922.2682012-284-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 287/486] wifi: rtw89: fw: propagate error code from rtw89_h2c_tx()
+Date: Mon,  5 May 2025 18:36:03 -0400
+Message-Id: <20250505223922.2682012-287-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -65,66 +64,40 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-[ Upstream commit 6be7544d19fcfcb729495e793bc6181f85bb8949 ]
+[ Upstream commit 56e1acaa0f80620b8e2c3410db35b4b975782b0a ]
 
-Set the MCS maps and the highest rates according to the number of
-spatial streams the chip has. For RTL8814AU that is 3.
+The error code should be propagated to callers during downloading firmware
+header and body. Remove unnecessary assignment of -1.
 
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Acked-by: Ping-Ke Shih <pkshih@realtek.com>
 Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/e86aa009-b5bf-4b3a-8112-ea5e3cd49465@gmail.com
+Link: https://patch.msgid.link/20250217064308.43559-4-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/main.c | 23 +++++++++--------------
- 1 file changed, 9 insertions(+), 14 deletions(-)
+ drivers/net/wireless/realtek/rtw89/fw.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
-index bbdef38c7e341..2c81e4cae039e 100644
---- a/drivers/net/wireless/realtek/rtw88/main.c
-+++ b/drivers/net/wireless/realtek/rtw88/main.c
-@@ -1579,8 +1579,9 @@ static void rtw_init_vht_cap(struct rtw_dev *rtwdev,
- 			     struct ieee80211_sta_vht_cap *vht_cap)
- {
- 	struct rtw_efuse *efuse = &rtwdev->efuse;
--	u16 mcs_map;
-+	u16 mcs_map = 0;
- 	__le16 highest;
-+	int i;
- 
- 	if (efuse->hw_cap.ptcl != EFUSE_HW_CAP_IGNORE &&
- 	    efuse->hw_cap.ptcl != EFUSE_HW_CAP_PTCL_VHT)
-@@ -1603,21 +1604,15 @@ static void rtw_init_vht_cap(struct rtw_dev *rtwdev,
- 	if (rtw_chip_has_rx_ldpc(rtwdev))
- 		vht_cap->cap |= IEEE80211_VHT_CAP_RXLDPC;
- 
--	mcs_map = IEEE80211_VHT_MCS_SUPPORT_0_9 << 0 |
--		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 4 |
--		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 6 |
--		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 8 |
--		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 10 |
--		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 12 |
--		  IEEE80211_VHT_MCS_NOT_SUPPORTED << 14;
--	if (efuse->hw_cap.nss > 1) {
--		highest = cpu_to_le16(780);
--		mcs_map |= IEEE80211_VHT_MCS_SUPPORT_0_9 << 2;
--	} else {
--		highest = cpu_to_le16(390);
--		mcs_map |= IEEE80211_VHT_MCS_NOT_SUPPORTED << 2;
-+	for (i = 0; i < 8; i++) {
-+		if (i < efuse->hw_cap.nss)
-+			mcs_map |= IEEE80211_VHT_MCS_SUPPORT_0_9 << (i * 2);
-+		else
-+			mcs_map |= IEEE80211_VHT_MCS_NOT_SUPPORTED << (i * 2);
+diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
+index 620e076d1b597..9d26502a2885a 100644
+--- a/drivers/net/wireless/realtek/rtw89/fw.c
++++ b/drivers/net/wireless/realtek/rtw89/fw.c
+@@ -1234,7 +1234,6 @@ static int __rtw89_fw_download_hdr(struct rtw89_dev *rtwdev,
+ 	ret = rtw89_h2c_tx(rtwdev, skb, false);
+ 	if (ret) {
+ 		rtw89_err(rtwdev, "failed to send h2c\n");
+-		ret = -1;
+ 		goto fail;
  	}
  
-+	highest = cpu_to_le16(390 * efuse->hw_cap.nss);
-+
- 	vht_cap->vht_mcs.rx_mcs_map = cpu_to_le16(mcs_map);
- 	vht_cap->vht_mcs.tx_mcs_map = cpu_to_le16(mcs_map);
- 	vht_cap->vht_mcs.rx_highest = highest;
+@@ -1311,7 +1310,6 @@ static int __rtw89_fw_download_main(struct rtw89_dev *rtwdev,
+ 		ret = rtw89_h2c_tx(rtwdev, skb, true);
+ 		if (ret) {
+ 			rtw89_err(rtwdev, "failed to send h2c\n");
+-			ret = -1;
+ 			goto fail;
+ 		}
+ 
 -- 
 2.39.5
 
