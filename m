@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-140370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C262AAA7F5
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:45:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F8D2AAA7F4
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:45:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61FF31883EC7
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:43:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BFC73164D24
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:43:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E045344536;
-	Mon,  5 May 2025 22:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C863F295521;
+	Mon,  5 May 2025 22:38:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qBLvJQh1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YiGvS4EQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5703234452E;
-	Mon,  5 May 2025 22:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D3AE34451D;
+	Mon,  5 May 2025 22:38:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484711; cv=none; b=mgxFQPZFT2X7l3RLDVdUMZMsYWtD+E9dWE5EJoelDWtD4aMm+33+wDxUiWU9CoNgelRTkZQaRIh0YKUXr5OBomCQCol5PuvglwIGlSzxQvYxwCx5RMdynlykz2SuWReUtB4BaLK8ir7FKKH49BTPe28CmQZw2cXDvDGhgHYGlO0=
+	t=1746484712; cv=none; b=fPOXeALR0zohxQ7AfhGVkjI8K9MyUW2BIqr/oYKPK/lpYW2Er13jjA9kT6DqheXFNfYsZIK51U1J/9hz3vn3tFbqgXYRIEXNR2lp8h9Wr7ZWKtDHMF9pVzexpPtz1wsEX/RZhyT5WZ7faGmoMnrCmY/gnmuQ2w1pEnAeIKl5pgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484711; c=relaxed/simple;
-	bh=iczV1HlI/2jffBDU8pp3h5oTO12sKfPrCJaQ6eo9G8s=;
+	s=arc-20240116; t=1746484712; c=relaxed/simple;
+	bh=xzIqIZgerJnM3pWkDT5WnBHc7fyqGwyOl3LIJ3Oq8mI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pXgROGtlM2ixwlZX7FoGYttKcg9o36K5JfBQkIXIfjjHxPtM5hXbcgs8jSxyqhjdtR8DR9r8T6GMaEw3ABBeqbInRwyCFqhHcRjfK3cutpfEOBQfx2OAvr8UDdfKadtF0LtRantB8yzgeSPKjKtXFJ81aRCnBKNEoRyxMfIm8iE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qBLvJQh1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DE33C4CEED;
-	Mon,  5 May 2025 22:38:29 +0000 (UTC)
+	 MIME-Version; b=SXGhQWwVKfSWzVqI+Diy7rvrsz2wojnOC3S0qYXTOAglpXGHbsa5nLjlfXKTTA2v5KeyC5xdt5Vl/FE4zTmu0fka1MVeqwLuCYEPHTdIemGwRfmuCezUgQNqgxBCRqTxHdIIrk0+Ectc5S22rvhIIsH38qLS7Cb/U+ieD5RPYQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YiGvS4EQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C900C4CEE4;
+	Mon,  5 May 2025 22:38:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484710;
-	bh=iczV1HlI/2jffBDU8pp3h5oTO12sKfPrCJaQ6eo9G8s=;
+	s=k20201202; t=1746484712;
+	bh=xzIqIZgerJnM3pWkDT5WnBHc7fyqGwyOl3LIJ3Oq8mI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qBLvJQh17K3tWJQ2CJMT3owIop34cYBWEygdwvV/YMTKAH+Di19KcvvAABIIP9sgG
-	 v/KfYHhpNvfL3oQ2RIbXvSAT3Fp1knZm7zoYoGPn3KFmJOqKPaXNiXbIs+Dw7T0QBR
-	 6ZN7I28bnFKdCt/QYn5zNAHvqatUh4EyXh5NNINo3pjF2+BHlgQxP1mt/0fHIRnAJS
-	 KMA9F39r2d8HdRKaIlkQyV3lHE2BOqCgTvqmVIobb0rf3OvPPdlAx8zDURpRhkYdrL
-	 lyf6EEOX3Y3SYiOTx3c0cFatk5t2ZMocRx6hYnOSoxe/ZZVAgkbjdsPbllw6pBmP5V
-	 j0HrIrtcf06EQ==
+	b=YiGvS4EQ/y45WGtX6VQ/ploUhIU20XXDdG+i4Duby8/eFyX7Ih+8SuopylJzEtP0H
+	 FAyxkJ8Q87Wp0SQRjEWz5zJjiQjdofOvwkv0pJTfkCRnpAgWyaXuF0BCREkODZDj40
+	 Es69ll1tR1SS+L/VqSYBYJmG7PMav4OyeimLtn60oKN/7wyZW+VvZXWf9ipGWIqhXp
+	 n9RrksOiMBrX8EQ01s/2kek0ag88q5NJSwazD9uSCYVWFIbZpdmXPxLIx5pIgAdnh1
+	 AVObUYAw704ueYcVhniwsMnbSZU9hT1dDgyxyP+wGWXXDH1c5pZtnGIrd9HMq0MRat
+	 cxCw2PxvzD4Tg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jessica Zhang <quic_jesszhan@quicinc.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+Cc: Nathan Chancellor <nathan@kernel.org>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>,
-	maarten.lankhorst@linux.intel.com,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.14 621/642] drm: Add valid clones check
-Date: Mon,  5 May 2025 18:13:57 -0400
-Message-Id: <20250505221419.2672473-621-sashal@kernel.org>
+	miquel.raynal@bootlin.com,
+	Frank.Li@nxp.com,
+	yschu@nuvoton.com,
+	linux-i3c@lists.infradead.org,
+	imx@lists.linux.dev,
+	llvm@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.14 622/642] i3c: master: svc: Fix implicit fallthrough in svc_i3c_master_ibi_work()
+Date: Mon,  5 May 2025 18:13:58 -0400
+Message-Id: <20250505221419.2672473-622-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -70,68 +70,49 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Jessica Zhang <quic_jesszhan@quicinc.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 41b4b11da02157c7474caf41d56baae0e941d01a ]
+[ Upstream commit e8d2d287e26d9bd9114cf258a123a6b70812442e ]
 
-Check that all encoders attached to a given CRTC are valid
-possible_clones of each other.
+Clang warns (or errors with CONFIG_WERROR=y):
 
-Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241216-concurrent-wb-v4-3-fe220297a7f0@quicinc.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+  drivers/i3c/master/svc-i3c-master.c:596:2: error: unannotated fall-through between switch labels [-Werror,-Wimplicit-fallthrough]
+    596 |         default:
+        |         ^
+  drivers/i3c/master/svc-i3c-master.c:596:2: note: insert 'break;' to avoid fall-through
+    596 |         default:
+        |         ^
+        |         break;
+  1 error generated.
+
+Clang is a little more pedantic than GCC, which does not warn when
+falling through to a case that is just break or return. Clang's version
+is more in line with the kernel's own stance in deprecated.rst, which
+states that all switch/case blocks must end in either break,
+fallthrough, continue, goto, or return. Add the missing break to silence
+the warning.
+
+Fixes: 0430bf9bc1ac ("i3c: master: svc: Fix missing STOP for master request")
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://lore.kernel.org/r/20250319-i3c-fix-clang-fallthrough-v1-1-d8e02be1ef5c@kernel.org
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_atomic_helper.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ drivers/i3c/master/svc-i3c-master.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/drm_atomic_helper.c b/drivers/gpu/drm/drm_atomic_helper.c
-index 32902f77f00dd..40e4e1b6c9110 100644
---- a/drivers/gpu/drm/drm_atomic_helper.c
-+++ b/drivers/gpu/drm/drm_atomic_helper.c
-@@ -574,6 +574,30 @@ mode_valid(struct drm_atomic_state *state)
- 	return 0;
- }
- 
-+static int drm_atomic_check_valid_clones(struct drm_atomic_state *state,
-+					 struct drm_crtc *crtc)
-+{
-+	struct drm_encoder *drm_enc;
-+	struct drm_crtc_state *crtc_state = drm_atomic_get_new_crtc_state(state,
-+									  crtc);
-+
-+	drm_for_each_encoder_mask(drm_enc, crtc->dev, crtc_state->encoder_mask) {
-+		if (!drm_enc->possible_clones) {
-+			DRM_DEBUG("enc%d possible_clones is 0\n", drm_enc->base.id);
-+			continue;
-+		}
-+
-+		if ((crtc_state->encoder_mask & drm_enc->possible_clones) !=
-+		    crtc_state->encoder_mask) {
-+			DRM_DEBUG("crtc%d failed valid clone check for mask 0x%x\n",
-+				  crtc->base.id, crtc_state->encoder_mask);
-+			return -EINVAL;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
- /**
-  * drm_atomic_helper_check_modeset - validate state object for modeset changes
-  * @dev: DRM device
-@@ -745,6 +769,10 @@ drm_atomic_helper_check_modeset(struct drm_device *dev,
- 		ret = drm_atomic_add_affected_planes(state, crtc);
- 		if (ret != 0)
- 			return ret;
-+
-+		ret = drm_atomic_check_valid_clones(state, crtc);
-+		if (ret != 0)
-+			return ret;
+diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
+index 2cf2c567f8931..75127b6c161f0 100644
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -552,6 +552,7 @@ static void svc_i3c_master_ibi_work(struct work_struct *work)
+ 		break;
+ 	case SVC_I3C_MSTATUS_IBITYPE_MASTER_REQUEST:
+ 		svc_i3c_master_emit_stop(master);
++		break;
+ 	default:
+ 		break;
  	}
- 
- 	/*
 -- 
 2.39.5
 
