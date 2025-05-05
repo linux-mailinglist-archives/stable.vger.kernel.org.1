@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-140693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 942B0AAAEAD
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:01:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C90BAAAEAF
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:02:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0ABB616A5C6
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:59:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03B921655DD
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:59:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2141A2820A5;
-	Mon,  5 May 2025 23:06:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21BE1288C0A;
+	Mon,  5 May 2025 23:06:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c4eGLx0z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="akuCe4FU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E93B437BE28;
-	Mon,  5 May 2025 22:59:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70DD037C739;
+	Mon,  5 May 2025 22:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485973; cv=none; b=aSpwHIV6yNV3z7y/qMCEc6H4fsZU4vfSc7odKQllK4y8dDHpsO/JJ6W8pMPODs3vYEYSKMoXLISdGzjr8H4wqv3OYuD7gpKjicVW+1O4o+TjrvhrFZ2x2Y5XUjPnU43VzYkoARxZWEbIo6ac4DgcHSAXSDOHpsBDEFZPz1qwM9Q=
+	t=1746485980; cv=none; b=ll9kr26kV/7/dv4XXLEdnwHhYDgWtuoHWWrOppHJV6p9cNHlrHHq3u4CnbkuTXWFkqCzROZDebzlTZ9C53pFHBNgDmPuxqsa7aOAfG6GnkdBmCrdQ8cx1/GQhxAaCdo1ceFWan5Dhzp7Lb9xP2gf0MVofYPO8H7bpMmBd+kH4bw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485973; c=relaxed/simple;
-	bh=sggkn5Buws6iQxZ0z5gA8d/UmGBYOyuOaEJ/3vTAaBs=;
+	s=arc-20240116; t=1746485980; c=relaxed/simple;
+	bh=TghLYy3tw75un8ZZnDmu4bdbeNos3GdnefPwQ3e2oz0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=EO2JrUqa6eub7Q/lFWrhBZdaEFN8zThW2F6eh0+GVAdTeELiF2anaAg+0ZokqaITkkzpEQ1By654GkubHduvNBCLneQ1Ggsm1WOO9MIbvB7fuUQDc44aEaLw1SQy3f9rx0xGzP47EkkXKEgFom/22Cc77rPxCGnLMaz/3CXrF3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c4eGLx0z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7117C4CEE4;
-	Mon,  5 May 2025 22:59:30 +0000 (UTC)
+	 MIME-Version; b=GUYirekb4pHjziOz72n9dkiH4n+M3GJ7sBmq8q2tbRUqVXHaBQMFw0PWbq+HgTyDccb0Z2ed32K9QvGgynjPoT7RebbuBWKTe5lbSC4atUr7NyVzWfEm46d4bdbIr9+nUL3EhlGXvGQr1oZbTqY8cU6S7B1GaCSD7KO0G/dXmRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=akuCe4FU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEBAEC4CEEF;
+	Mon,  5 May 2025 22:59:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485972;
-	bh=sggkn5Buws6iQxZ0z5gA8d/UmGBYOyuOaEJ/3vTAaBs=;
+	s=k20201202; t=1746485979;
+	bh=TghLYy3tw75un8ZZnDmu4bdbeNos3GdnefPwQ3e2oz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c4eGLx0zUEZJqpsqlUH/hPm9GBaYAq7xOW4pAhjGwDQZWkUONoieiA4aoYDSYIAIm
-	 6/XD+xnnRlCBjcnxJxU7N9/JJ7Mzl5fHRhEdxBBoFZYhx+pdG/wP/tHfH2h+qPl2eK
-	 J9sNE/KHeKYVLJzHH/VYQIq3sBskyL4+A+HGzOIvOcokJrNcsjSEI/+2eszUU5Glzj
-	 23XfDIB5POCDJCzbnnTD0yWJQlJ4u4h93cSr+c70ui5JXlY7UYGmDwCUnLl/KiV9km
-	 Lz4+j8keZNJknJUdyGrf8Asoray+AxWIDV+UTcaK+xbzHQa43fFhxlxuiUHA9t6SUh
-	 Jc49okJTWEqCA==
+	b=akuCe4FUYlB+C5oqvT7rFmfxfsIoHokPyrM16jRUmP/KiM1VlrThz8FVtCEhLlGkD
+	 KWFQ6KVe82ithGGRzmalFtNVT4dR35MFJFtSNNg6i49oWf5XEVnoXgc8/Aj62EMbsL
+	 z81B3+/93llw8nJSsFJ0XscKxAVBu2bmK0F8maBck7BTyTL4xZwFOm81jV1vHtS+DW
+	 PoYJ3S2MqmUSWYAMZKPN4hZiMKYUI1R7EhC+jCActmI+TdqB9au5B7DlJ5O/Ls5+vA
+	 uLrLLqu6j3ZCFX/ZatR39y+7mRftxBYTRzS8w8A6xiDzN0BYqbcnrsESB4iSjtXcZu
+	 LJXxAolgz2Hgw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Charlene Liu <Charlene.Liu@amd.com>,
-	Ovidiu Bunea <ovidiu.bunea@amd.com>,
+Cc: Leon Huang <Leon.Huang1@amd.com>,
+	Robin Chen <robin.chen@amd.com>,
 	Tom Chung <chiahsuan.chung@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
@@ -55,14 +55,21 @@ Cc: Charlene Liu <Charlene.Liu@amd.com>,
 	christian.koenig@amd.com,
 	airlied@gmail.com,
 	simona@ffwll.ch,
-	alex.hung@amd.com,
-	chris.park@amd.com,
-	Jing.Zhou@amd.com,
+	wenjing.liu@amd.com,
+	Kaitlyn.Tse@amd.com,
+	anthony.koo@amd.com,
+	jerry.zuo@amd.com,
+	joshua.aberback@amd.com,
+	jack.chang@amd.com,
+	muyuan.yang@amd.com,
+	Sungjoon.Kim@amd.com,
+	michael.strauss@amd.com,
+	xi.liu@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.6 093/294] drm/amd/display: remove minimum Dispclk and apply oem panel timing.
-Date: Mon,  5 May 2025 18:53:13 -0400
-Message-Id: <20250505225634.2688578-93-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 095/294] drm/amd/display: Fix incorrect DPCD configs while Replay/PSR switch
+Date: Mon,  5 May 2025 18:53:15 -0400
+Message-Id: <20250505225634.2688578-95-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -77,69 +84,78 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Charlene Liu <Charlene.Liu@amd.com>
+From: Leon Huang <Leon.Huang1@amd.com>
 
-[ Upstream commit 756e58e83e89d372b94269c0cde61fe55da76947 ]
+[ Upstream commit 0d9cabc8f591ea1cd97c071b853b75b155c13259 ]
 
-[why & how]
-1. apply oem panel timing (not only on OLED)
-2. remove MIN_DPP_DISP_CLK request in driver.
+[Why]
+When switching between PSR/Replay,
+the DPCD config of previous mode is not cleared,
+resulting in unexpected behavior in TCON.
 
-This fix will apply for dcn31x but not
-sync with DML's output.
+[How]
+Initialize the DPCD in setup function
 
-Reviewed-by: Ovidiu Bunea <ovidiu.bunea@amd.com>
-Signed-off-by: Charlene Liu <Charlene.Liu@amd.com>
+Reviewed-by: Robin Chen <robin.chen@amd.com>
+Signed-off-by: Leon Huang <Leon.Huang1@amd.com>
 Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_clk_mgr.c | 2 --
- drivers/gpu/drm/amd/display/dc/clk_mgr/dcn316/dcn316_clk_mgr.c | 2 --
- drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c    | 3 ++-
- 3 files changed, 2 insertions(+), 5 deletions(-)
+ .../link/protocols/link_edp_panel_control.c   | 25 ++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_clk_mgr.c
-index ebeb969ee180b..327776eeb9f3e 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_clk_mgr.c
-@@ -194,8 +194,6 @@ static void dcn315_update_clocks(struct clk_mgr *clk_mgr_base,
- 	// workaround: Limit dppclk to 100Mhz to avoid lower eDP panel switch to plus 4K monitor underflow.
- 	if (new_clocks->dppclk_khz < MIN_DPP_DISP_CLK)
- 		new_clocks->dppclk_khz = MIN_DPP_DISP_CLK;
--	if (new_clocks->dispclk_khz < MIN_DPP_DISP_CLK)
--		new_clocks->dispclk_khz = MIN_DPP_DISP_CLK;
+diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c
+index 13104d000b9e0..d4d92da153ece 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_edp_panel_control.c
+@@ -662,6 +662,18 @@ bool edp_setup_psr(struct dc_link *link,
+ 	if (!link)
+ 		return false;
  
- 	if (should_set_clock(safe_to_lower, new_clocks->dppclk_khz, clk_mgr->base.clks.dppclk_khz)) {
- 		if (clk_mgr->base.clks.dppclk_khz > new_clocks->dppclk_khz)
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn316/dcn316_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn316/dcn316_clk_mgr.c
-index 6f1785715dfb7..f95e5e767eb1a 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn316/dcn316_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn316/dcn316_clk_mgr.c
-@@ -201,8 +201,6 @@ static void dcn316_update_clocks(struct clk_mgr *clk_mgr_base,
- 	// workaround: Limit dppclk to 100Mhz to avoid lower eDP panel switch to plus 4K monitor underflow.
- 	if (new_clocks->dppclk_khz < 100000)
- 		new_clocks->dppclk_khz = 100000;
--	if (new_clocks->dispclk_khz < 100000)
--		new_clocks->dispclk_khz = 100000;
++	//Clear PSR cfg
++	memset(&psr_configuration, 0, sizeof(psr_configuration));
++	dm_helpers_dp_write_dpcd(
++		link->ctx,
++		link,
++		DP_PSR_EN_CFG,
++		&psr_configuration.raw,
++		sizeof(psr_configuration.raw));
++
++	if (link->psr_settings.psr_version == DC_PSR_VERSION_UNSUPPORTED)
++		return false;
++
+ 	dc = link->ctx->dc;
+ 	dmcu = dc->res_pool->dmcu;
+ 	psr = dc->res_pool->psr;
+@@ -672,9 +684,6 @@ bool edp_setup_psr(struct dc_link *link,
+ 	if (!dc_get_edp_link_panel_inst(dc, link, &panel_inst))
+ 		return false;
  
- 	if (should_set_clock(safe_to_lower, new_clocks->dppclk_khz, clk_mgr->base.clks.dppclk_khz)) {
- 		if (clk_mgr->base.clks.dppclk_khz > new_clocks->dppclk_khz)
-diff --git a/drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c b/drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c
-index 7b5c1498941dd..d389eeb264a79 100644
---- a/drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c
-@@ -1066,7 +1066,8 @@ void dce110_edp_backlight_control(
- 			DC_LOG_DC("edp_receiver_ready_T9 skipped\n");
- 	}
+-
+-	memset(&psr_configuration, 0, sizeof(psr_configuration));
+-
+ 	psr_configuration.bits.ENABLE                    = 1;
+ 	psr_configuration.bits.CRC_VERIFICATION          = 1;
+ 	psr_configuration.bits.FRAME_CAPTURE_INDICATION  =
+@@ -938,6 +947,16 @@ bool edp_setup_replay(struct dc_link *link, const struct dc_stream_state *stream
+ 	if (!link)
+ 		return false;
  
--	if (!enable && link->dpcd_sink_ext_caps.bits.oled) {
-+	if (!enable) {
-+		/*follow oem panel config's requirement*/
- 		pre_T11_delay += link->panel_config.pps.extra_pre_t11_ms;
- 		msleep(pre_T11_delay);
- 	}
++	//Clear Replay config
++	dm_helpers_dp_write_dpcd(link->ctx, link,
++		DP_SINK_PR_ENABLE_AND_CONFIGURATION,
++		(uint8_t *)&(replay_config.raw), sizeof(uint8_t));
++
++	if (!(link->replay_settings.config.replay_supported))
++		return false;
++
++	link->replay_settings.config.replay_error_status.raw = 0;
++
+ 	dc = link->ctx->dc;
+ 
+ 	replay = dc->res_pool->replay;
 -- 
 2.39.5
 
