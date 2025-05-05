@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-139712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E4D9AA9710
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 17:14:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18C26AA9711
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 17:14:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9813A3A6491
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 15:13:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F8C6167245
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 15:14:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C497F25C83C;
-	Mon,  5 May 2025 15:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE6F625CC62;
+	Mon,  5 May 2025 15:14:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IlWUjCKj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ToyaE8Es"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85B564C85
-	for <stable@vger.kernel.org>; Mon,  5 May 2025 15:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF10E25C80A
+	for <stable@vger.kernel.org>; Mon,  5 May 2025 15:14:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746458038; cv=none; b=GiBuXtNnlfJnJdvQ4s4a256YnYc5wWAP9l5rQEW+FNNOba/mHZsqtwqNnNc26adMhhqu803UWLo2ncuklGcSaoPF7yM5yKBcpNLUFtJwSyWvCG3yTWwhAikWD/5FZmAp2do2XH43TMr2ozQgkWwk+26GDLKBcaYdcqbmGDsQbv0=
+	t=1746458043; cv=none; b=Tl0CsNL5Mou6hTeRKRpdWGESKF4CdnNj9l9u6Leq1bjxRokokGDMwMYN7jqNBnLbxQNR4C0Z29qFFwsQPMwDlfBS0XztRll5Rlutb/m7GHtnx7FhAuVeMW+pUhHgBHhTyoavUYvzPD8uJ1VBLDRbVqJ5SC3+oOv4ftW90TcGRLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746458038; c=relaxed/simple;
-	bh=7gJSXHZ7rXnwOQwtGPP3RUPU7DzszefNWRtS+xyl0+Q=;
+	s=arc-20240116; t=1746458043; c=relaxed/simple;
+	bh=F1R5fIBjLEVOw0K8LCtdzq/yHNqsYaFxWD59c+iBF44=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eUb6F1eXtIpGb8B3X5OIT8Qk+PdRgYQPWTa/AlRgjUygItkyoIAMY2vJ+lxRUQhV/g78JOaWUwRbWuRQrXizzwVK6ACePjuN05yhOlYmRdE65vqkF9O5DBmA0tsJzX4bWaBKEycmlboOxvbG0n6ntDTiGMCMqxygVPg0nQjRKTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IlWUjCKj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8781FC4CEE4;
-	Mon,  5 May 2025 15:13:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=afsbKohozlyxVo/JMS9TzQvDXQ10DVSTNGPTMtNiOs2zTXm9j2+PKAVK2f9tKgEfqIUsFLJSiBZULgGf9ONZeCkCa5bvbbtUEKvgCumr3OvbJP/tt10OYMPGcablU4IoEOjNVLJ1bPbnWcaMW8ksF9nEDimwjNJRZVZNPOuHnUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ToyaE8Es; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92439C4CEE4;
+	Mon,  5 May 2025 15:14:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746458038;
-	bh=7gJSXHZ7rXnwOQwtGPP3RUPU7DzszefNWRtS+xyl0+Q=;
+	s=k20201202; t=1746458043;
+	bh=F1R5fIBjLEVOw0K8LCtdzq/yHNqsYaFxWD59c+iBF44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IlWUjCKjQKWZBC8eYeqlhE1HxiKYJj+SOONc6rufIbCn8bylGusNhVxaznNkfQGTH
-	 MhkJ+NkF9rNu567RIX1Wbs5HqaWvYOyDTnrrGaJ6PMEd5U+JZ9K8zdRjGk7AY6YG/l
-	 IfLMOoJn6l3/GFxAcsIRHG2J2urut7PFftyfYnUsJV1wHG3upaXVqA5OxO+bGxny49
-	 yX/6bOaDAnnDg/Tc9FQ3pQTVnD95WYxZMuz7nTom4v3rZCrBlS7xdMTxkoEcb6R/15
-	 /VqFg/Fph1YK4hxw4YlNlPyMrMZkPIzDVkt7RAQN5hrT3aXeWmcKRIRiWydwKVtiRX
-	 lQV2jglbLH19g==
+	b=ToyaE8EsQnIPVYrzZ7vCfCPZWDUolw70YwH8WmlrvRotEsAMtJtsEZuyv1Jd1vNb+
+	 q/9l4hYf9jKgM1I5KOqlQJpsQffQR+VnfNnvkec9XDwPQOvhqvMrQKOrbzpGjyGt3L
+	 Sef4fsLpfpV3BZjP7zmtvkAV+G5YnaGolz+R6Y3qCFftWVqM8GRu14HbpURF1LXGPy
+	 LHbXzLtK4KH2t8wp4UZLPN2UDgfnY3YloW8fouetMLxxZ02bvu+HYzTs70IQ3PgArf
+	 W5HbcROcFF0Z7+YxhL5RRR1A0fqtAUjTZVvaN5kSjv0QoJgS6zMihT/X5ByKujlrg3
+	 pFkzib8EhHbeQ==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Pavel Paklov <Pavel.Paklov@cyberprotect.ru>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1] smb: client: fix double free of TCP_Server_Info::hostname
-Date: Mon,  5 May 2025 11:13:55 -0400
-Message-Id: <20250505074437-2be4ff98f8f823c8@stable.kernel.org>
+To: stable@vger.kernel.org,
+	chenhuacai@loongson.cn
+Cc: Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH for 6.1.y] LoongArch: Fix build error due to backport
+Date: Mon,  5 May 2025 11:13:58 -0400
+Message-Id: <20250505075755-47b742a3d177ed05@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250503175819.2818701-1-Pavel.Paklov@cyberprotect.ru>
+In-Reply-To:  <20250504021054.783045-1-chenhuacai@loongson.cn>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,56 +64,10 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+Summary of potential issues:
+⚠️ Could not find matching upstream commit
 
-The upstream commit SHA1 provided is correct: fa2f9906a7b333ba757a7dbae0713d8a5396186e
-
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Pavel Paklov<Pavel.Paklov@cyberprotect.ru>
-Commit author: Paulo Alcantara<pc@manguebit.com>
-
-Status in newer kernel trees:
-6.14.y | Present (exact SHA1)
-6.12.y | Present (different SHA1: a2be5f2ba34d)
-6.6.y | Present (different SHA1: 1ea680703385)
-
-Note: The patch differs from the upstream commit:
----
-1:  fa2f9906a7b33 ! 1:  56e7a9b9b42bb smb: client: fix double free of TCP_Server_Info::hostname
-    @@
-      ## Metadata ##
-    -Author: Paulo Alcantara <pc@manguebit.com>
-    +Author: Pavel Paklov <pavel.paklov@cyberprotect.ru>
-     
-      ## Commit message ##
-         smb: client: fix double free of TCP_Server_Info::hostname
-     
-    +    From: Paulo Alcantara <pc@manguebit.com>
-    +
-    +    commit fa2f9906a7b333ba757a7dbae0713d8a5396186e upstream
-    +
-         When shutting down the server in cifs_put_tcp_session(), cifsd thread
-         might be reconnecting to multiple DFS targets before it realizes it
-         should exit the loop, so @server->hostname can't be freed as long as
-    @@ Commit message
-         Reported-by: Jay Shin <jaeshin@redhat.com>
-         Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-         Signed-off-by: Steve French <stfrench@microsoft.com>
-    +    Signed-off-by: Pavel Paklov <pavel.paklov@cyberprotect.ru>
-     
-      ## fs/smb/client/connect.c ##
-    -@@ fs/smb/client/connect.c: clean_demultiplex_info(struct TCP_Server_Info *server)
-    - 	/* Release netns reference for this server. */
-    - 	put_net(cifs_net_ns(server));
-    +@@ fs/smb/client/connect.c: static void clean_demultiplex_info(struct TCP_Server_Info *server)
-    + 	kfree(server->origin_fullpath);
-      	kfree(server->leaf_fullpath);
-    + #endif
-     +	kfree(server->hostname);
-      	kfree(server);
-      
----
+No upstream commit was identified. Using temporary commit for testing.
 
 Results of testing on various branches:
 
