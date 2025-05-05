@@ -1,241 +1,122 @@
-Return-Path: <stable+bounces-141101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4348EAAB119
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:53:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB14BAAB640
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:45:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C9531BC15EA
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:53:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89E763A60B9
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:38:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F19DB28FFE5;
-	Tue,  6 May 2025 00:11:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADCD8321AC5;
+	Tue,  6 May 2025 00:23:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DlDEh4gv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R8ihMPEB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D08D630812F
-	for <stable@vger.kernel.org>; Mon,  5 May 2025 23:37:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19F252BDC24;
+	Mon,  5 May 2025 22:44:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746488272; cv=none; b=Q0wigfpXhqIGSWdAtIz55HzojWdVCYwnyyKeAigbe5ap3+VQz+2UL1gj5FqAM7bWca7yky0U4bXfp1WvPgB8Hpqly9He0d5xqczp8Er/vG3gYPDKJLN/cTomjX6vZfdt0tOKJrtuBSo9jSZDqNseb7iVLoXje6+WnklhwBQaAiI=
+	t=1746485058; cv=none; b=mGeeKRCB7Afkr4N14LWHyRc6IcTrNFAW9fx4bjulJHCtcYJJO1qIiKVvO9f/nSmgyKacMAkRJiKBN9bO9MVDtxCp3T1ZSKh7jOZUTg9ENUiWpV2o37hsLsiwTHG/AZ/+3k1RKJ3MS4xztcsjV+/CumlZgGpJXbNohqV2M31aH3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746488272; c=relaxed/simple;
-	bh=cMo/N1YJQwwS3G9EKa84K4qqhc/5JFz3QTXfURVubVI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gU+1H+BAnsyqX76NK22DIaXXo82+rugI+Uq7BLYE2+rmiFu19JjAFnfMzBrh9bHvktXOaY+4h8xLkqbHdhz8A07xNV6eTH20iHSDyA6TwC+tbapnGdOTnllWElPkTImsCEhwL8+/lOIRjQJtg0evlYmdgDIZtViZbRSgxG7eLr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DlDEh4gv; arc=none smtp.client-ip=209.85.160.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-47e9fea29easo58351cf.1
-        for <stable@vger.kernel.org>; Mon, 05 May 2025 16:37:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746488267; x=1747093067; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wjMyp4mBCu5u/Y/aXldwK0jA40xv5fb/aCK38lYHD98=;
-        b=DlDEh4gvMU7ux0RRaIavfX8ERffxi5bQm18sn/YRrc3iMZYwxjAcgH6cU0YnUaWjYv
-         1u9z9RC0tGPDM48rLYGmkRp4P5yRjqMhTdpUz60rqwKj50DIp0b3R0yf53sFRKh4YstZ
-         gBThAWt42LnEozUspwkauITqP51ifv1LVFi66Ynt82zMn7aaKnPDoPdD5QKGW7gkxXsw
-         Th9tD09M0EBEmS1ROFoatuNcCpYqZWusaO7v3aZVRSH+nXKLbtz5P9RMcNqyIMox8LUG
-         GMusDk5nRsmQMLuGxBzHYOPVsdHHdZFHkyXe8uxgwnkOgOD4fCytQPCi2paiQ9xTLjmr
-         yj7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746488267; x=1747093067;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wjMyp4mBCu5u/Y/aXldwK0jA40xv5fb/aCK38lYHD98=;
-        b=kxwRMm2zT0zWteCTobi+MnQOAwWCxZq5GVZXN+eQBYo1WSrIFvnVt7YAPdcZbZyJbo
-         K5Gh+timQDYvL4CzEaXrFl2XYiW33iAlH9fKP7aeO88jo64ITwT5MCdVmD1voYEVc/x3
-         qGhX3kgX4h9VQgh3e0h+uoOnzFOjOx+mqyUj36kDhmRXKc5SZUFb5IknZP+ut+SijLHt
-         8VXFvXwQRcFXPJMbbE+pUQRqos41JrV80rVpvkq9iK33Ib8PgtsUsaAEzXosKped404b
-         gKCuTMeEVUZrCXiXD9e1KQeCUhBMSRC6+p1nLJ4tmtIyjxgEYvUd4j+ICVp+EVSZ6avO
-         v9mw==
-X-Forwarded-Encrypted: i=1; AJvYcCWplwbWR8oYEWM5ScFC/PkYt24qM+lMpj3y8OhUnUIPT0q/gndccw7wB4InMaMjPOlXxzwAOGY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzT3BIenufmBYWbbJFZQ0erAv2o5dGUgp6rL0jaacMEV5RedSTQ
-	FFZTH9NzGTsuswejWvsYnuPIUnyVPUIwtX3M3MBZmgXDlapw0JtpZKee4uBHEc6UFUOpmyueILh
-	oOO2Gk4SwALFNt8b7xmN0foUGuRuQP9/YPs2A
-X-Gm-Gg: ASbGncsCQ5SDD6T92zDOnOP9zhg5+uXBuSn6rE5Hxa7sPxhoyaE1+QezazGVOYnsEId
-	X+soumliUlVTKs16+XiKQzJ578QVaVrORmZR8lzWBZsuJdg3J/f64V+fi70zU7yxa1YQ4hLkSxm
-	hlgh8rvtrRF3xoMlMCoIMbKOec/WCAXnbBsi+mi14MNwdr0sGG+Yh1
-X-Google-Smtp-Source: AGHT+IFcDOBWYVlR3divkat4OjTj2uKa0Ras8zwn26i54HahNCJVl63KWUuzmxW+Z53F+JV4XA+IblaDNCKhSxeipJM=
-X-Received: by 2002:ac8:7d43:0:b0:48a:7cd7:7e02 with SMTP id
- d75a77b69052e-490f5ec9ad9mr1516391cf.18.1746488267391; Mon, 05 May 2025
- 16:37:47 -0700 (PDT)
+	s=arc-20240116; t=1746485058; c=relaxed/simple;
+	bh=jL5I9luT96zXsu5gZSkxkJPM74NUyfrr+aez6MdkaRQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Aef+l9CiXj6m2lh0btVYYPYFDhfLfFDZp+KPl22PtELMGGLC8exckc1WvbNa8EcWoWlWB6LmbK+paNhzI/iGIqzKdAGLiH9u5SJAHPQfiZ6uZCOw3xjP0JrbhK4ZsieQPuGXE/aZeDDuLC5deVECkLj+KhJpGj3V68yeL/4tbkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R8ihMPEB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44B4EC4CEE4;
+	Mon,  5 May 2025 22:44:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746485057;
+	bh=jL5I9luT96zXsu5gZSkxkJPM74NUyfrr+aez6MdkaRQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=R8ihMPEB+RejuCsYFbKoSh0XXVLPak1Yuh83WXC6iM1ojbRRwuOKqeTjyLxnhqSgB
+	 RDDlmVz+KIZI08OxFfajaM9efB5Wx0gg2mnXs9yEqxdJvFuLrh3ZU0hzsXKwQTp5Hu
+	 QzE2FWSfn+MW+2YpWJaDt97EG+lPQDQsqcQWZJPFo+Br4uUUOgyZoe9D+sYQZXIs4I
+	 Zjlpl12eqqzw6JlvKprzlKYunNaqGGsVvIns7Hhpt5HnlDAiCnZ2XZdR2o5yEOZXhD
+	 RksXUrzCEY5LdahKw6yot8rsH3GhO9m7YkruO3ImzYXNrQEI8Y9ql08252kHAjQJrp
+	 SlgojyMX1NPiw==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Marcos Paulo de Souza <mpdesouza@suse.com>,
+	Petr Mladek <pmladek@suse.com>,
+	John Ogness <john.ogness@linutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 146/486] printk: Check CON_SUSPEND when unblanking a console
+Date: Mon,  5 May 2025 18:33:42 -0400
+Message-Id: <20250505223922.2682012-146-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
+References: <20250505223922.2682012-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2025050521-provable-extent-4108@gregkh> <CAJuCfpE-ZQwm7SxKVT49wgw=2Tko9xCVvCraacbQxp8inTG_RQ@mail.gmail.com>
-In-Reply-To: <CAJuCfpE-ZQwm7SxKVT49wgw=2Tko9xCVvCraacbQxp8inTG_RQ@mail.gmail.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Mon, 5 May 2025 16:37:36 -0700
-X-Gm-Features: ATxdqUEpjZLpoKTBem-xdGX5zvV6DajdVzwM7v7KpBzqN8wGQNu7NPPwoiM-DLY
-Message-ID: <CAJuCfpFYm4FespFH6t4Q5c0NWYaq3HJCPEdDa2AvpoSqPG4Ltw@mail.gmail.com>
-Subject: Re: FAILED: patch "[PATCH] mm, slab: clean up slab->obj_exts always"
- failed to apply to 6.14-stable tree
-To: gregkh@linuxfoundation.org
-Cc: quic_zhenhuah@quicinc.com, harry.yoo@oracle.com, rientjes@google.com, 
-	vbabka@suse.cz, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.12.26
+Content-Transfer-Encoding: 8bit
 
-On Mon, May 5, 2025 at 10:30=E2=80=AFAM Suren Baghdasaryan <surenb@google.c=
-om> wrote:
->
-> On Mon, May 5, 2025 at 12:55=E2=80=AFAM <gregkh@linuxfoundation.org> wrot=
-e:
-> >
-> >
-> > The patch below does not apply to the 6.14-stable tree.
-> > If someone wants it applied there, or to any other stable or longterm
-> > tree, then please email the backport, including the original git commit
-> > id to <stable@vger.kernel.org>.
->
-> I'll work on the backport. Thanks!
+From: Marcos Paulo de Souza <mpdesouza@suse.com>
 
-Posted both 6.12 and 6.14 backports.
+[ Upstream commit 72c96a2dacc0fb056d13a5f02b0845c4c910fe54 ]
 
->
-> >
-> > To reproduce the conflict and resubmit, you may use the following comma=
-nds:
-> >
-> > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.=
-git/ linux-6.14.y
-> > git checkout FETCH_HEAD
-> > git cherry-pick -x be8250786ca94952a19ce87f98ad9906448bc9ef
-> > # <resolve conflicts, build, test, etc.>
-> > git commit -s
-> > git send-email --to '<stable@vger.kernel.org>' --in-reply-to '202505052=
-1-provable-extent-4108@gregkh' --subject-prefix 'PATCH 6.14.y' HEAD^..
-> >
-> > Possible dependencies:
-> >
-> >
-> >
-> > thanks,
-> >
-> > greg k-h
-> >
-> > ------------------ original commit in Linus's tree ------------------
-> >
-> > From be8250786ca94952a19ce87f98ad9906448bc9ef Mon Sep 17 00:00:00 2001
-> > From: Zhenhua Huang <quic_zhenhuah@quicinc.com>
-> > Date: Mon, 21 Apr 2025 15:52:32 +0800
-> > Subject: [PATCH] mm, slab: clean up slab->obj_exts always
-> >
-> > When memory allocation profiling is disabled at runtime or due to an
-> > error, shutdown_mem_profiling() is called: slab->obj_exts which
-> > previously allocated remains.
-> > It won't be cleared by unaccount_slab() because of
-> > mem_alloc_profiling_enabled() not true. It's incorrect, slab->obj_exts
-> > should always be cleaned up in unaccount_slab() to avoid following erro=
-r:
-> >
-> > [...]BUG: Bad page state in process...
-> > ..
-> > [...]page dumped because: page still charged to cgroup
-> >
-> > [andriy.shevchenko@linux.intel.com: fold need_slab_obj_ext() into its o=
-nly user]
-> > Fixes: 21c690a349ba ("mm: introduce slabobj_ext to support slab object =
-extensions")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Zhenhua Huang <quic_zhenhuah@quicinc.com>
-> > Acked-by: David Rientjes <rientjes@google.com>
-> > Acked-by: Harry Yoo <harry.yoo@oracle.com>
-> > Tested-by: Harry Yoo <harry.yoo@oracle.com>
-> > Acked-by: Suren Baghdasaryan <surenb@google.com>
-> > Link: https://patch.msgid.link/20250421075232.2165527-1-quic_zhenhuah@q=
-uicinc.com
-> > Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-> >
-> > diff --git a/mm/slub.c b/mm/slub.c
-> > index dc9e729e1d26..be8b09e09d30 100644
-> > --- a/mm/slub.c
-> > +++ b/mm/slub.c
-> > @@ -2028,8 +2028,7 @@ int alloc_slab_obj_exts(struct slab *slab, struct=
- kmem_cache *s,
-> >         return 0;
-> >  }
-> >
-> > -/* Should be called only if mem_alloc_profiling_enabled() */
-> > -static noinline void free_slab_obj_exts(struct slab *slab)
-> > +static inline void free_slab_obj_exts(struct slab *slab)
-> >  {
-> >         struct slabobj_ext *obj_exts;
-> >
-> > @@ -2049,18 +2048,6 @@ static noinline void free_slab_obj_exts(struct s=
-lab *slab)
-> >         slab->obj_exts =3D 0;
-> >  }
-> >
-> > -static inline bool need_slab_obj_ext(void)
-> > -{
-> > -       if (mem_alloc_profiling_enabled())
-> > -               return true;
-> > -
-> > -       /*
-> > -        * CONFIG_MEMCG creates vector of obj_cgroup objects conditiona=
-lly
-> > -        * inside memcg_slab_post_alloc_hook. No other users for now.
-> > -        */
-> > -       return false;
-> > -}
-> > -
-> >  #else /* CONFIG_SLAB_OBJ_EXT */
-> >
-> >  static inline void init_slab_obj_exts(struct slab *slab)
-> > @@ -2077,11 +2064,6 @@ static inline void free_slab_obj_exts(struct sla=
-b *slab)
-> >  {
-> >  }
-> >
-> > -static inline bool need_slab_obj_ext(void)
-> > -{
-> > -       return false;
-> > -}
-> > -
-> >  #endif /* CONFIG_SLAB_OBJ_EXT */
-> >
-> >  #ifdef CONFIG_MEM_ALLOC_PROFILING
-> > @@ -2129,7 +2111,7 @@ __alloc_tagging_slab_alloc_hook(struct kmem_cache=
- *s, void *object, gfp_t flags)
-> >  static inline void
-> >  alloc_tagging_slab_alloc_hook(struct kmem_cache *s, void *object, gfp_=
-t flags)
-> >  {
-> > -       if (need_slab_obj_ext())
-> > +       if (mem_alloc_profiling_enabled())
-> >                 __alloc_tagging_slab_alloc_hook(s, object, flags);
-> >  }
-> >
-> > @@ -2601,8 +2583,12 @@ static __always_inline void account_slab(struct =
-slab *slab, int order,
-> >  static __always_inline void unaccount_slab(struct slab *slab, int orde=
-r,
-> >                                            struct kmem_cache *s)
-> >  {
-> > -       if (memcg_kmem_online() || need_slab_obj_ext())
-> > -               free_slab_obj_exts(slab);
-> > +       /*
-> > +        * The slab object extensions should now be freed regardless of
-> > +        * whether mem_alloc_profiling_enabled() or not because profili=
-ng
-> > +        * might have been disabled after slab->obj_exts got allocated.
-> > +        */
-> > +       free_slab_obj_exts(slab);
-> >
-> >         mod_node_page_state(slab_pgdat(slab), cache_vmstat_idx(s),
-> >                             -(PAGE_SIZE << order));
-> >
+The commit 9e70a5e109a4 ("printk: Add per-console suspended state")
+introduced the CON_SUSPENDED flag for consoles. The suspended consoles
+will stop receiving messages, so don't unblank suspended consoles
+because it won't be showing anything either way.
+
+Signed-off-by: Marcos Paulo de Souza <mpdesouza@suse.com>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Reviewed-by: John Ogness <john.ogness@linutronix.de>
+Link: https://lore.kernel.org/r/20250226-printk-renaming-v1-5-0b878577f2e6@suse.com
+Signed-off-by: Petr Mladek <pmladek@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ kernel/printk/printk.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
+index 881a26e18c658..3a91b739e8f30 100644
+--- a/kernel/printk/printk.c
++++ b/kernel/printk/printk.c
+@@ -3310,7 +3310,12 @@ void console_unblank(void)
+ 	 */
+ 	cookie = console_srcu_read_lock();
+ 	for_each_console_srcu(c) {
+-		if ((console_srcu_read_flags(c) & CON_ENABLED) && c->unblank) {
++		short flags = console_srcu_read_flags(c);
++
++		if (flags & CON_SUSPENDED)
++			continue;
++
++		if ((flags & CON_ENABLED) && c->unblank) {
+ 			found_unblank = true;
+ 			break;
+ 		}
+@@ -3347,7 +3352,12 @@ void console_unblank(void)
+ 
+ 	cookie = console_srcu_read_lock();
+ 	for_each_console_srcu(c) {
+-		if ((console_srcu_read_flags(c) & CON_ENABLED) && c->unblank)
++		short flags = console_srcu_read_flags(c);
++
++		if (flags & CON_SUSPENDED)
++			continue;
++
++		if ((flags & CON_ENABLED) && c->unblank)
+ 			c->unblank();
+ 	}
+ 	console_srcu_read_unlock(cookie);
+-- 
+2.39.5
+
 
