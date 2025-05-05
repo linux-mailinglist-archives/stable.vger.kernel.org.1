@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-141690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BE58AAB5AD
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:34:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F0E3AAB580
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:30:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 178D63A4A27
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:28:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ACD257B2ABE
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:28:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5481F4A173A;
-	Tue,  6 May 2025 00:48:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8650E3AE02E;
+	Tue,  6 May 2025 00:48:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IFQiUJEo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TZiLTBL+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41BAE2F7C4C;
-	Mon,  5 May 2025 23:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 442F62F7C5B;
+	Mon,  5 May 2025 23:19:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487176; cv=none; b=qEqR+e44xKnYCC7Ortn0kYbg2m4mWG9oRXp/rEtui0irEaROKg5GTdZcV13N9R0dVUWSjKIscyvdSikNJ2hmIOKqvjF1xdPbmDa71/s8lSxCGbuETTg6z6QbhYe6wUiQSoDB7o0QRTvVpbm13e08JRzTJQySZZRhuu2PqJu5bqU=
+	t=1746487178; cv=none; b=ccX8Nt+vSJP3GnDx9HqBteoH4yy2s2AwIg3Q4rpVDKfBBjRFbPzG5jGl2sFacgZ58as80L4O5dKbURdsjrI+e4SnHW9orDt9wodctRTGXB4qQmdeF7IEUifUonhjBlcOCGjHd+992TC9CH0WG+xjAWlyC94YuXV755KaXASubRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487176; c=relaxed/simple;
-	bh=pxt1vUwyhbVDVIH4B45gFvaUMGnvP+TYbfp1Y6nmaow=;
+	s=arc-20240116; t=1746487178; c=relaxed/simple;
+	bh=quJUHlrNvh6BDlXRUEyzXmngo9dhRmrwthDK3udwpDE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=NglIW0yZyY5ZdJZB5gfMoEQN79t3sJSc/bMDLpccQv6InjTIKnhLWmomr5GL0m4caCBjuBZ/ue9kFXQtqV+d7mQaUDhCWO5W94rxd43we0Ks4bghgJQE6OQAueLG3RBAig6HCR4TeyKBbxh9PppiXLW5pxtcgMQkFybIyfnpuXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IFQiUJEo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF450C4CEEE;
-	Mon,  5 May 2025 23:19:34 +0000 (UTC)
+	 MIME-Version; b=iikSTEVTlIy4tWS5+MEimvATaNfibs1Mhq3bpG6ISiiI48tg7CFvQ4qlJ/o8HkqgLXrQA8mjRuDfpREkt6a2yb/aNE1JoECT/rj5qivEEE5hSAWVHxXNr3bga+0+5+xLTkPFNIBhprGdldvUf9YNaS8yNAuqyh/2r0UbiKQO8wQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TZiLTBL+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56763C4CEE4;
+	Mon,  5 May 2025 23:19:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487176;
-	bh=pxt1vUwyhbVDVIH4B45gFvaUMGnvP+TYbfp1Y6nmaow=;
+	s=k20201202; t=1746487178;
+	bh=quJUHlrNvh6BDlXRUEyzXmngo9dhRmrwthDK3udwpDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IFQiUJEo+yQ8etA2ruA466psTfeh5IeOXRr7cqsR2lHm7ANGgoZU/ZmofmBuUTtQ2
-	 np61feDcrma3OSFUpVbC7nk4aa17O17kabvbiFHkgXcZtiDg0XUzcGGWlmpj2Z86wn
-	 b2M9zaqsHQ72ogiB+omPBAFuBH0t6TMNFCARuuSRd0r6NcR8Z/SmlvPfnkjUbIM4kx
-	 rAWI6WHP/Id28ykpgRzbW7FVszWQZRWmR/a2YmXu2+2ov9TLUkVL4X4hLal3xJHjkD
-	 kIzwUfkqogDceOuFQYDoWMCVOtHvKCwsmkqaEwt9HRmPC2/NO+Zp1FXDoQgj5B6E6U
-	 lGlDNng+tZ8kw==
+	b=TZiLTBL+DevRdyKwhDBiA3n53db4qCVZDwQQnG18NDpEMMkNXigNfcsJp2UyHlNJr
+	 ycaonNp7MXC2WFkMlaC3rOA8SEPlapprJRXOlSEm50SpU9i1ZASA1T4++xypYPyLiP
+	 pyFXCRJyJFX2mE5qx3oFYsYnOYXWJ17WHpavn3xG56/lk2lIXEDBh3DWp+eq73DyGd
+	 qw1duWXExSB7poSom1gg9WBYQvm7mCzVEtk2KRXiabxlIBpgcWAnJidkaqIVrPTxmv
+	 dJW3AdP+E+5v5+YCxmiiFH1R1iaP/gAzD+XmGQSP6hHu5yqXExZ/uJnDVvLnSrh+8N
+	 MGKyHvtrL8g6w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Svyatoslav Ryhel <clamor95@gmail.com>,
-	Thierry Reding <treding@nvidia.com>,
+Cc: Markus Elfring <elfring@users.sourceforge.net>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	thierry.reding@gmail.com,
-	jonathanh@nvidia.com,
-	devicetree@vger.kernel.org,
-	linux-tegra@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 042/114] ARM: tegra: Switch DSI-B clock parent to PLLD on Tegra114
-Date: Mon,  5 May 2025 19:17:05 -0400
-Message-Id: <20250505231817.2697367-42-sashal@kernel.org>
+	mchehab@kernel.org,
+	linux-media@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 043/114] media: c8sectpfe: Call of_node_put(i2c_bus) only once in c8sectpfe_probe()
+Date: Mon,  5 May 2025 19:17:06 -0400
+Message-Id: <20250505231817.2697367-43-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231817.2697367-1-sashal@kernel.org>
 References: <20250505231817.2697367-1-sashal@kernel.org>
@@ -71,34 +66,42 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.237
 Content-Transfer-Encoding: 8bit
 
-From: Svyatoslav Ryhel <clamor95@gmail.com>
+From: Markus Elfring <elfring@users.sourceforge.net>
 
-[ Upstream commit 2b3db788f2f614b875b257cdb079adadedc060f3 ]
+[ Upstream commit b773530a34df0687020520015057075f8b7b4ac4 ]
 
-PLLD is usually used as parent clock for internal video devices, like
-DSI for example, while PLLD2 is used as parent for HDMI.
+An of_node_put(i2c_bus) call was immediately used after a pointer check
+for an of_find_i2c_adapter_by_node() call in this function implementation.
+Thus call such a function only once instead directly before the check.
 
-Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
-Link: https://lore.kernel.org/r/20250226105615.61087-3-clamor95@gmail.com
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+This issue was transformed by using the Coccinelle software.
+
+Signed-off-by: Markus Elfring <elfring@users.sourceforge.net>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/tegra114.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/sti/c8sectpfe/c8sectpfe-core.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/tegra114.dtsi b/arch/arm/boot/dts/tegra114.dtsi
-index fb99b3e971c3b..c00097794dab1 100644
---- a/arch/arm/boot/dts/tegra114.dtsi
-+++ b/arch/arm/boot/dts/tegra114.dtsi
-@@ -126,7 +126,7 @@ dsi@54400000 {
- 			reg = <0x54400000 0x00040000>;
- 			clocks = <&tegra_car TEGRA114_CLK_DSIB>,
- 				 <&tegra_car TEGRA114_CLK_DSIBLP>,
--				 <&tegra_car TEGRA114_CLK_PLL_D2_OUT0>;
-+				 <&tegra_car TEGRA114_CLK_PLL_D_OUT0>;
- 			clock-names = "dsi", "lp", "parent";
- 			resets = <&tegra_car 82>;
- 			reset-names = "dsi";
+diff --git a/drivers/media/platform/sti/c8sectpfe/c8sectpfe-core.c b/drivers/media/platform/sti/c8sectpfe/c8sectpfe-core.c
+index b7e0ec265b70c..6e3b3643a2cdb 100644
+--- a/drivers/media/platform/sti/c8sectpfe/c8sectpfe-core.c
++++ b/drivers/media/platform/sti/c8sectpfe/c8sectpfe-core.c
+@@ -811,13 +811,12 @@ static int c8sectpfe_probe(struct platform_device *pdev)
+ 		}
+ 		tsin->i2c_adapter =
+ 			of_find_i2c_adapter_by_node(i2c_bus);
++		of_node_put(i2c_bus);
+ 		if (!tsin->i2c_adapter) {
+ 			dev_err(&pdev->dev, "No i2c adapter found\n");
+-			of_node_put(i2c_bus);
+ 			ret = -ENODEV;
+ 			goto err_clk_disable;
+ 		}
+-		of_node_put(i2c_bus);
+ 
+ 		tsin->rst_gpio = of_get_named_gpio(child, "reset-gpios", 0);
+ 
 -- 
 2.39.5
 
