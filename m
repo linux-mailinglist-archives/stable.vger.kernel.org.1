@@ -1,65 +1,65 @@
-Return-Path: <stable+bounces-140266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA355AAA6C6
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:19:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02A32AAA6CC
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:20:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B2BF16564B
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:19:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2A5B16081E
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:19:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8146B32EDC1;
-	Mon,  5 May 2025 22:35:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75B1432EDEF;
+	Mon,  5 May 2025 22:35:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kusESlna"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rjNX+s4g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CBD8292924;
-	Mon,  5 May 2025 22:35:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD5F32EDCF;
+	Mon,  5 May 2025 22:35:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484532; cv=none; b=UHXLw54EWVUeda32CUCBeAl0HaIOX6xNKk/YQCMTdmODVER8odMW9Ks/BI3b68Pwz0WmLBDMtED6UMAryU4DzErJ1iXgPyeBGdphXG7DBsKaTuGRMgXfEHkSgESYHfqfxri7xJCsfuf0n3TZEzPMeSXjbDmzfFrwzt7zGhmJybw=
+	t=1746484535; cv=none; b=Et4/rX82Tu+xqScqxlWiwouAYStdaZI31Gm3XhiF7H36mjW5ItVBmNBUoMmQFLwZ80GnXHc8DKhy0NzZkEkJ9oPBzAvyIfwPgU9D54jv3iTzSoaKXpLEWdrRpjN1PUMckm6UMXdm5XilqgVyllUXifphOsp+Kf5jGgfjidY1uiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484532; c=relaxed/simple;
-	bh=/gmC/LwgV+P9VSR2RvnXgektOsV3wus6WxQdu8FpCHA=;
+	s=arc-20240116; t=1746484535; c=relaxed/simple;
+	bh=3ytZPvvlRFrrlLBWurwIWAmr/1Tw6462yNR8Huny83o=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ExwfDatNWL5QeLluI9qiD5O8EwNT36kfT6BJMqQ5FjPO3Soe98a5w0YNV2xlXSsnLrIzDx2ajZXdLbGMt8XHPL4pKjrCF8oaK8i1smPb+JPCSWYtv/SBAmPYy+xZDCvaA5S2q43Elp+r0O/A0s78I/p+YvVmEU9yIfVBf2/JzX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kusESlna; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7467DC4CEED;
-	Mon,  5 May 2025 22:35:30 +0000 (UTC)
+	 MIME-Version; b=YmuIkXtOzHZpHb7qovPruxUyHcHLg6haUgOcKCpo26Z+R3B3cqhimMycmhRywW5jo8y0L0voERJyZLWa4zIAuh3+LM9epEwpROQv4MTcHyDS3BaPyzHxXS2hWcJsbUBpgFOau24t6SuuOqcYCLHYjklUm79kRs3xYy1Bh6/QW4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rjNX+s4g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20F77C4CEE4;
+	Mon,  5 May 2025 22:35:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484532;
-	bh=/gmC/LwgV+P9VSR2RvnXgektOsV3wus6WxQdu8FpCHA=;
+	s=k20201202; t=1746484534;
+	bh=3ytZPvvlRFrrlLBWurwIWAmr/1Tw6462yNR8Huny83o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kusESlna6ppCO670sw4HZuUXPX8jEs+UXq4RRGS3XkO5lKjgH9E4AvI5xdofSBBcX
-	 Qbed/afc89MOo47KK8QJLhOA33ah1MJ6bKShaeACD6cxgCvhI6jRh55v7oP5dYOzuB
-	 eQFmkJmDSVmOaM6k0IGxfWWznlwPbFOI92jHJinCDUmep/IM0Lil67cWub+eFrmvXe
-	 7BclBUrnYdSh0nFbtw3NRy1q5pgr1U3yOegGTA5Czah7B/KyGEYvDUSsOCrzJXjC4q
-	 3erbaadKTYmBWiaDuhuVvUYJQ30MLEfEh/JpNjSIvbsoqf4WtZzAmeTQUbjDiW948k
-	 9itN/rx50k/Lg==
+	b=rjNX+s4gY2GA415r78nIv9U+aZ4PyO7TtJWJXRYAcccIiXBuSnWQ4D852vfgdxrtq
+	 oWb9lyGx8D1h5FMhWyZg6zM1nN9LltlE6z7CzEXz9XffTJluW+oyRQurUAznIwk/MR
+	 vRIKP6atEt3IbaB++LXttZywjAUjST4fVO0I3MF2ou8XgCBTZguI27uDlgKlcow3lZ
+	 Vj+lQk8VtmKnws4VwyloqSDDoPLhs5n8xJ6JRS2gfrYgACWa7QViuhHxhQQ0I7iWX7
+	 9sJ2VdsvBDBKLlMivqsymY/buXnAKsZnQYP/KF+BVDVhNYUiA8FVai7cfEmoKc50Il
+	 i32UE8gNtLxLw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Karol Kolacinski <karol.kolacinski@intel.com>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	Joe Damato <jdamato@fastly.com>,
 	Sasha Levin <sashal@kernel.org>,
-	przemyslaw.kitszel@intel.com,
-	andrew+netdev@lunn.ch,
+	andrew@lunn.ch,
 	davem@davemloft.net,
 	edumazet@google.com,
-	kuba@kernel.org,
 	pabeni@redhat.com,
-	richardcochran@gmail.com,
-	intel-wired-lan@lists.osuosl.org,
+	ecree.xilinx@gmail.com,
+	gal@nvidia.com,
+	przemyslaw.kitszel@intel.com,
+	daniel.zahka@gmail.com,
+	almasrymina@google.com,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 518/642] ice: Don't check device type when checking GNSS presence
-Date: Mon,  5 May 2025 18:12:14 -0400
-Message-Id: <20250505221419.2672473-518-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.14 519/642] net: ethtool: prevent flow steering to RSS contexts which don't exist
+Date: Mon,  5 May 2025 18:12:15 -0400
+Message-Id: <20250505221419.2672473-519-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -74,353 +74,46 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Karol Kolacinski <karol.kolacinski@intel.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit e2c6737e6e82e9991646cd5389391bb6d3572a68 ]
+[ Upstream commit de7f7582dff292832fbdeaeff34e6b2ee6f9f95f ]
 
-Don't check if the device type is E810T as non-E810T devices can support
-GNSS too and PCA9575 check is enough to determine if GNSS is present or
-not.
+Since commit 42dc431f5d0e ("ethtool: rss: prevent rss ctx deletion
+when in use") we prevent removal of RSS contexts pointed to by
+existing flow rules. Core should also prevent creation of rules
+which point to RSS context which don't exist in the first place.
 
-Rename ice_gnss_is_gps_present() to ice_gnss_is_module_present()
-because GNSS module supports multiple GNSS providers, not only GPS.
-
-Move functions related to PCA9575 from ice_ptp_hw.c to ice_common.c
-to be able to access them when PTP is disabled in the kernel, but GNSS
-is enabled.
-
-Remove logical AND with ICE_AQC_LINK_TOPO_NODE_TYPE_M in
-ice_get_pca9575_handle(), which has no effect, and reorder device type
-checks to check the device_id first, then set other variables.
-
-Signed-off-by: Karol Kolacinski <karol.kolacinski@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Reviewed-by: Joe Damato <jdamato@fastly.com>
+Link: https://patch.msgid.link/20250206235334.1425329-2-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_common.c | 90 ++++++++++++++++++++
- drivers/net/ethernet/intel/ice/ice_common.h |  2 +
- drivers/net/ethernet/intel/ice/ice_gnss.c   | 29 +++----
- drivers/net/ethernet/intel/ice/ice_gnss.h   |  4 +-
- drivers/net/ethernet/intel/ice/ice_lib.c    |  2 +-
- drivers/net/ethernet/intel/ice/ice_ptp_hw.c | 93 ---------------------
- drivers/net/ethernet/intel/ice/ice_ptp_hw.h |  1 -
- 7 files changed, 105 insertions(+), 116 deletions(-)
+ net/ethtool/ioctl.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_common.c b/drivers/net/ethernet/intel/ice/ice_common.c
-index 1e801300310e9..f48cb93e10183 100644
---- a/drivers/net/ethernet/intel/ice/ice_common.c
-+++ b/drivers/net/ethernet/intel/ice/ice_common.c
-@@ -5765,6 +5765,96 @@ ice_aq_write_i2c(struct ice_hw *hw, struct ice_aqc_link_topo_addr topo_addr,
- 	return ice_aq_send_cmd(hw, &desc, NULL, 0, cd);
- }
+diff --git a/net/ethtool/ioctl.c b/net/ethtool/ioctl.c
+index 1c3ba2247776b..0d3a70a18884f 100644
+--- a/net/ethtool/ioctl.c
++++ b/net/ethtool/ioctl.c
+@@ -993,10 +993,14 @@ static noinline_for_stack int ethtool_set_rxnfc(struct net_device *dev,
+ 		return rc;
  
-+/**
-+ * ice_get_pca9575_handle - find and return the PCA9575 controller
-+ * @hw: pointer to the hw struct
-+ * @pca9575_handle: GPIO controller's handle
-+ *
-+ * Find and return the GPIO controller's handle in the netlist.
-+ * When found - the value will be cached in the hw structure and following calls
-+ * will return cached value.
-+ *
-+ * Return: 0 on success, -ENXIO when there's no PCA9575 present.
-+ */
-+int ice_get_pca9575_handle(struct ice_hw *hw, u16 *pca9575_handle)
-+{
-+	struct ice_aqc_get_link_topo *cmd;
-+	struct ice_aq_desc desc;
-+	int err;
-+	u8 idx;
+ 	/* Nonzero ring with RSS only makes sense if NIC adds them together */
+-	if (cmd == ETHTOOL_SRXCLSRLINS && info.fs.flow_type & FLOW_RSS &&
+-	    !ops->cap_rss_rxnfc_adds &&
+-	    ethtool_get_flow_spec_ring(info.fs.ring_cookie))
+-		return -EINVAL;
++	if (cmd == ETHTOOL_SRXCLSRLINS && info.fs.flow_type & FLOW_RSS) {
++		if (!ops->cap_rss_rxnfc_adds &&
++		    ethtool_get_flow_spec_ring(info.fs.ring_cookie))
++			return -EINVAL;
 +
-+	/* If handle was read previously return cached value */
-+	if (hw->io_expander_handle) {
-+		*pca9575_handle = hw->io_expander_handle;
-+		return 0;
++		if (!xa_load(&dev->ethtool->rss_ctx, info.rss_context))
++			return -EINVAL;
 +	}
-+
-+#define SW_PCA9575_SFP_TOPO_IDX		2
-+#define SW_PCA9575_QSFP_TOPO_IDX	1
-+
-+	/* Check if the SW IO expander controlling SMA exists in the netlist. */
-+	if (hw->device_id == ICE_DEV_ID_E810C_SFP)
-+		idx = SW_PCA9575_SFP_TOPO_IDX;
-+	else if (hw->device_id == ICE_DEV_ID_E810C_QSFP)
-+		idx = SW_PCA9575_QSFP_TOPO_IDX;
-+	else
-+		return -ENXIO;
-+
-+	/* If handle was not detected read it from the netlist */
-+	ice_fill_dflt_direct_cmd_desc(&desc, ice_aqc_opc_get_link_topo);
-+	cmd = &desc.params.get_link_topo;
-+	cmd->addr.topo_params.node_type_ctx =
-+		ICE_AQC_LINK_TOPO_NODE_TYPE_GPIO_CTRL;
-+	cmd->addr.topo_params.index = idx;
-+
-+	err = ice_aq_send_cmd(hw, &desc, NULL, 0, NULL);
-+	if (err)
-+		return -ENXIO;
-+
-+	/* Verify if we found the right IO expander type */
-+	if (desc.params.get_link_topo.node_part_num !=
-+	    ICE_AQC_GET_LINK_TOPO_NODE_NR_PCA9575)
-+		return -ENXIO;
-+
-+	/* If present save the handle and return it */
-+	hw->io_expander_handle =
-+		le16_to_cpu(desc.params.get_link_topo.addr.handle);
-+	*pca9575_handle = hw->io_expander_handle;
-+
-+	return 0;
-+}
-+
-+/**
-+ * ice_read_pca9575_reg - read the register from the PCA9575 controller
-+ * @hw: pointer to the hw struct
-+ * @offset: GPIO controller register offset
-+ * @data: pointer to data to be read from the GPIO controller
-+ *
-+ * Return: 0 on success, negative error code otherwise.
-+ */
-+int ice_read_pca9575_reg(struct ice_hw *hw, u8 offset, u8 *data)
-+{
-+	struct ice_aqc_link_topo_addr link_topo;
-+	__le16 addr;
-+	u16 handle;
-+	int err;
-+
-+	memset(&link_topo, 0, sizeof(link_topo));
-+
-+	err = ice_get_pca9575_handle(hw, &handle);
-+	if (err)
-+		return err;
-+
-+	link_topo.handle = cpu_to_le16(handle);
-+	link_topo.topo_params.node_type_ctx =
-+		FIELD_PREP(ICE_AQC_LINK_TOPO_NODE_CTX_M,
-+			   ICE_AQC_LINK_TOPO_NODE_CTX_PROVIDED);
-+
-+	addr = cpu_to_le16((u16)offset);
-+
-+	return ice_aq_read_i2c(hw, link_topo, 0, addr, 1, data, NULL);
-+}
-+
- /**
-  * ice_aq_set_gpio
-  * @hw: pointer to the hw struct
-diff --git a/drivers/net/ethernet/intel/ice/ice_common.h b/drivers/net/ethernet/intel/ice/ice_common.h
-index 15ba385437389..54a8692839dd0 100644
---- a/drivers/net/ethernet/intel/ice/ice_common.h
-+++ b/drivers/net/ethernet/intel/ice/ice_common.h
-@@ -306,5 +306,7 @@ int
- ice_aq_write_i2c(struct ice_hw *hw, struct ice_aqc_link_topo_addr topo_addr,
- 		 u16 bus_addr, __le16 addr, u8 params, const u8 *data,
- 		 struct ice_sq_cd *cd);
-+int ice_get_pca9575_handle(struct ice_hw *hw, u16 *pca9575_handle);
-+int ice_read_pca9575_reg(struct ice_hw *hw, u8 offset, u8 *data);
- bool ice_fw_supports_report_dflt_cfg(struct ice_hw *hw);
- #endif /* _ICE_COMMON_H_ */
-diff --git a/drivers/net/ethernet/intel/ice/ice_gnss.c b/drivers/net/ethernet/intel/ice/ice_gnss.c
-index b2148dbe49b28..6b26290452d48 100644
---- a/drivers/net/ethernet/intel/ice/ice_gnss.c
-+++ b/drivers/net/ethernet/intel/ice/ice_gnss.c
-@@ -381,32 +381,23 @@ void ice_gnss_exit(struct ice_pf *pf)
- }
  
- /**
-- * ice_gnss_is_gps_present - Check if GPS HW is present
-+ * ice_gnss_is_module_present - Check if GNSS HW is present
-  * @hw: pointer to HW struct
-+ *
-+ * Return: true when GNSS is present, false otherwise.
-  */
--bool ice_gnss_is_gps_present(struct ice_hw *hw)
-+bool ice_gnss_is_module_present(struct ice_hw *hw)
- {
--	if (!hw->func_caps.ts_func_info.src_tmr_owned)
--		return false;
-+	int err;
-+	u8 data;
- 
--	if (!ice_is_gps_in_netlist(hw))
-+	if (!hw->func_caps.ts_func_info.src_tmr_owned ||
-+	    !ice_is_gps_in_netlist(hw))
- 		return false;
- 
--#if IS_ENABLED(CONFIG_PTP_1588_CLOCK)
--	if (ice_is_e810t(hw)) {
--		int err;
--		u8 data;
--
--		err = ice_read_pca9575_reg(hw, ICE_PCA9575_P0_IN, &data);
--		if (err || !!(data & ICE_P0_GNSS_PRSNT_N))
--			return false;
--	} else {
--		return false;
--	}
--#else
--	if (!ice_is_e810t(hw))
-+	err = ice_read_pca9575_reg(hw, ICE_PCA9575_P0_IN, &data);
-+	if (err || !!(data & ICE_P0_GNSS_PRSNT_N))
- 		return false;
--#endif /* IS_ENABLED(CONFIG_PTP_1588_CLOCK) */
- 
- 	return true;
- }
-diff --git a/drivers/net/ethernet/intel/ice/ice_gnss.h b/drivers/net/ethernet/intel/ice/ice_gnss.h
-index 75e567ad70594..15daf603ed7bf 100644
---- a/drivers/net/ethernet/intel/ice/ice_gnss.h
-+++ b/drivers/net/ethernet/intel/ice/ice_gnss.h
-@@ -37,11 +37,11 @@ struct gnss_serial {
- #if IS_ENABLED(CONFIG_GNSS)
- void ice_gnss_init(struct ice_pf *pf);
- void ice_gnss_exit(struct ice_pf *pf);
--bool ice_gnss_is_gps_present(struct ice_hw *hw);
-+bool ice_gnss_is_module_present(struct ice_hw *hw);
- #else
- static inline void ice_gnss_init(struct ice_pf *pf) { }
- static inline void ice_gnss_exit(struct ice_pf *pf) { }
--static inline bool ice_gnss_is_gps_present(struct ice_hw *hw)
-+static inline bool ice_gnss_is_module_present(struct ice_hw *hw)
- {
- 	return false;
- }
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-index d0faa087793da..e0785e820d601 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-@@ -3882,7 +3882,7 @@ void ice_init_feature_support(struct ice_pf *pf)
- 			ice_set_feature_support(pf, ICE_F_CGU);
- 		if (ice_is_clock_mux_in_netlist(&pf->hw))
- 			ice_set_feature_support(pf, ICE_F_SMA_CTRL);
--		if (ice_gnss_is_gps_present(&pf->hw))
-+		if (ice_gnss_is_module_present(&pf->hw))
- 			ice_set_feature_support(pf, ICE_F_GNSS);
- 		break;
- 	default:
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-index ec91822e92806..53ce40fa2fe6b 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
-@@ -5315,68 +5315,6 @@ ice_get_phy_tx_tstamp_ready_e810(struct ice_hw *hw, u8 port, u64 *tstamp_ready)
-  * to access the extended GPIOs available.
-  */
- 
--/**
-- * ice_get_pca9575_handle
-- * @hw: pointer to the hw struct
-- * @pca9575_handle: GPIO controller's handle
-- *
-- * Find and return the GPIO controller's handle in the netlist.
-- * When found - the value will be cached in the hw structure and following calls
-- * will return cached value
-- */
--static int
--ice_get_pca9575_handle(struct ice_hw *hw, u16 *pca9575_handle)
--{
--	struct ice_aqc_get_link_topo *cmd;
--	struct ice_aq_desc desc;
--	int status;
--	u8 idx;
--
--	/* If handle was read previously return cached value */
--	if (hw->io_expander_handle) {
--		*pca9575_handle = hw->io_expander_handle;
--		return 0;
--	}
--
--	/* If handle was not detected read it from the netlist */
--	cmd = &desc.params.get_link_topo;
--	ice_fill_dflt_direct_cmd_desc(&desc, ice_aqc_opc_get_link_topo);
--
--	/* Set node type to GPIO controller */
--	cmd->addr.topo_params.node_type_ctx =
--		(ICE_AQC_LINK_TOPO_NODE_TYPE_M &
--		 ICE_AQC_LINK_TOPO_NODE_TYPE_GPIO_CTRL);
--
--#define SW_PCA9575_SFP_TOPO_IDX		2
--#define SW_PCA9575_QSFP_TOPO_IDX	1
--
--	/* Check if the SW IO expander controlling SMA exists in the netlist. */
--	if (hw->device_id == ICE_DEV_ID_E810C_SFP)
--		idx = SW_PCA9575_SFP_TOPO_IDX;
--	else if (hw->device_id == ICE_DEV_ID_E810C_QSFP)
--		idx = SW_PCA9575_QSFP_TOPO_IDX;
--	else
--		return -EOPNOTSUPP;
--
--	cmd->addr.topo_params.index = idx;
--
--	status = ice_aq_send_cmd(hw, &desc, NULL, 0, NULL);
--	if (status)
--		return -EOPNOTSUPP;
--
--	/* Verify if we found the right IO expander type */
--	if (desc.params.get_link_topo.node_part_num !=
--		ICE_AQC_GET_LINK_TOPO_NODE_NR_PCA9575)
--		return -EOPNOTSUPP;
--
--	/* If present save the handle and return it */
--	hw->io_expander_handle =
--		le16_to_cpu(desc.params.get_link_topo.addr.handle);
--	*pca9575_handle = hw->io_expander_handle;
--
--	return 0;
--}
--
- /**
-  * ice_read_sma_ctrl
-  * @hw: pointer to the hw struct
-@@ -5441,37 +5379,6 @@ int ice_write_sma_ctrl(struct ice_hw *hw, u8 data)
- 	return status;
- }
- 
--/**
-- * ice_read_pca9575_reg
-- * @hw: pointer to the hw struct
-- * @offset: GPIO controller register offset
-- * @data: pointer to data to be read from the GPIO controller
-- *
-- * Read the register from the GPIO controller
-- */
--int ice_read_pca9575_reg(struct ice_hw *hw, u8 offset, u8 *data)
--{
--	struct ice_aqc_link_topo_addr link_topo;
--	__le16 addr;
--	u16 handle;
--	int err;
--
--	memset(&link_topo, 0, sizeof(link_topo));
--
--	err = ice_get_pca9575_handle(hw, &handle);
--	if (err)
--		return err;
--
--	link_topo.handle = cpu_to_le16(handle);
--	link_topo.topo_params.node_type_ctx =
--		FIELD_PREP(ICE_AQC_LINK_TOPO_NODE_CTX_M,
--			   ICE_AQC_LINK_TOPO_NODE_CTX_PROVIDED);
--
--	addr = cpu_to_le16((u16)offset);
--
--	return ice_aq_read_i2c(hw, link_topo, 0, addr, 1, data, NULL);
--}
--
- /**
-  * ice_ptp_read_sdp_ac - read SDP available connections section from NVM
-  * @hw: pointer to the HW struct
-diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.h b/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
-index 6779ce120515a..15f048d9b5823 100644
---- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
-+++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
-@@ -395,7 +395,6 @@ int ice_phy_cfg_intr_e82x(struct ice_hw *hw, u8 quad, bool ena, u8 threshold);
- /* E810 family functions */
- int ice_read_sma_ctrl(struct ice_hw *hw, u8 *data);
- int ice_write_sma_ctrl(struct ice_hw *hw, u8 data);
--int ice_read_pca9575_reg(struct ice_hw *hw, u8 offset, u8 *data);
- int ice_ptp_read_sdp_ac(struct ice_hw *hw, __le16 *entries, uint *num_entries);
- int ice_cgu_get_num_pins(struct ice_hw *hw, bool input);
- enum dpll_pin_type ice_cgu_get_pin_type(struct ice_hw *hw, u8 pin, bool input);
+ 	if (cmd == ETHTOOL_SRXFH && ops->get_rxfh) {
+ 		struct ethtool_rxfh_param rxfh = {};
 -- 
 2.39.5
 
