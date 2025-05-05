@@ -1,58 +1,64 @@
-Return-Path: <stable+bounces-141552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2352AAB73C
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:08:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8E19AAB744
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:08:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6220D17E9CC
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:04:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A361D4C3BC4
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:04:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BEF7342C37;
-	Tue,  6 May 2025 00:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E9D4343189;
+	Tue,  6 May 2025 00:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YuT933/d"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nXL8nF3Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B5CE283C86;
-	Mon,  5 May 2025 23:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6276A2F0B8E;
+	Mon,  5 May 2025 23:11:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486679; cv=none; b=t/UuJKWT6Gg7bqMUfhLWQln9Z1pwEuFVtlbVk4+rchy9wzvsaG9bVXl2LJKfQyKCw331nTzon3+MBJ2a+ROavytnyPe5Y5prylEQ+4J7NxrHUEO8cVLsxlIeb8QxAiP5NZ4hTDMNrotHX7U/GTEsSZV7spYa2JYZDbzfm/oPcv4=
+	t=1746486691; cv=none; b=k8S7GvOYlk9t8XnVw36l0VPqYzMLT6JbyaGCCBAMnMKXhPXYEDHs6m3+xtqP2h9gvn8SWwAHy/Je5btow9DVEBdFtv/4bHIVNdwInIZkZhLJUUPEEdUG8PQON7IWB7MpcpI2s+rbpkLqKE6AeYphikoejRGqFJxEHhoxxTyUDKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486679; c=relaxed/simple;
-	bh=oxeGttg3SoJ505VY3yrwYPkfynDRPeZkZ0HzLDrc7gU=;
+	s=arc-20240116; t=1746486691; c=relaxed/simple;
+	bh=FXBc3pVht+69N963hdV7zdEpN/uveRYU86rGwTS/SY4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=uVA0uBJdzlOrohKpcT7fD64GWHQEwNkoefF5LRDxpURkAfrc/cSudvWGUlOXeh1HMiMfS+TnUik5l8nNhWp+Ph7glApKf67tUDrmHRm9XS6ESNPc8+SPWVEtTu+xh0CwW6zsEtCmBdQmkAMJLUq8Khdfp4De6OPFK4kPsrnB2t8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YuT933/d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E059BC4CEE4;
-	Mon,  5 May 2025 23:11:16 +0000 (UTC)
+	 MIME-Version; b=rbCt+f+47OfCCAJTfzcgO0gIILaT6DIVa7H1TlFYQoZcuj3X7ggl1KmA3ICqdtZRQkG5OpLjHi4EoKAKKZQb99XV0SYgvDWtvxFPKGHB8xSa8aFGsOWilVwhKrDnDhBrDJ8AiM41LpdkhUrY20xneRc6K9NWtPKDsIDkdsT+BiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nXL8nF3Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70E32C4CEEE;
+	Mon,  5 May 2025 23:11:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486677;
-	bh=oxeGttg3SoJ505VY3yrwYPkfynDRPeZkZ0HzLDrc7gU=;
+	s=k20201202; t=1746486690;
+	bh=FXBc3pVht+69N963hdV7zdEpN/uveRYU86rGwTS/SY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YuT933/d+uf/GcHdrR1Pwpc5KfGSR3a8hySKOStKrPhiO5BW2ewV3WMAcahXoV8NJ
-	 bWza/D/qKu9VArNoL7vrx67ScJQyFKD9DjcBXw4H+eL/7J8IlwqPfzaKttel7NVJPw
-	 E5z897aIfIiL70Nk+y4H/rhzhXNwwFgF5hyzkTue4EYfJgPr65AHR2M50sxQhrZp7Z
-	 GhHcaWthDOSHaqbTqYD9cETz/5gSs2XlR+WVeDp68r+IohzbJO3iFklC43Ql/6pgKN
-	 t3bGfU5WITnPppR2Ps7GBjuyy3RrNN/Hm7lKJ9A0937ReMp2RY2rUM7SvaAeR5Ql6z
-	 rfZcnp5P1JB4A==
+	b=nXL8nF3YzqTXZjyNhUjPJv4xQgXz3buZWyrWF2ZAmnhqjATSDhD7Xt5g0Q9ll1kLM
+	 mRh2sZ8gpdYbLBnR4bfby/eq7/3WirE4LpWznPeWpzXxuWo6bOFrijQ+qBX18H2eux
+	 ox119swqTIKpmy/TI25D/MnFWJrenWpL7cSgNDg9BVxhJRHig2hpUzHmW7mdFAnyRo
+	 i2uOtLWBtHZ6qBhOhCaiQW3Moal5l5+xJFyX2pBf4qLTszYseCg1dG609R+lRL7j7+
+	 7lH+bJ1JBEWURwoEE6FrQAAbH5U35j7T55tGQuRHCH5BDT9c6ttUtzKeZgbWPdc12n
+	 6D4R5aF1bMyrg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+Cc: Shahar Shitrit <shshitrit@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mateusz Polchlopek <mateusz.polchlopek@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	shawnguo@kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.1 146/212] pmdomain: imx: gpcv2: use proper helper for property detection
-Date: Mon,  5 May 2025 19:05:18 -0400
-Message-Id: <20250505230624.2692522-146-sashal@kernel.org>
+	saeedm@nvidia.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 153/212] net/mlx5: Modify LSB bitmask in temperature event to include only the first bit
+Date: Mon,  5 May 2025 19:05:25 -0400
+Message-Id: <20250505230624.2692522-153-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -67,38 +73,43 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+From: Shahar Shitrit <shshitrit@nvidia.com>
 
-[ Upstream commit 6568cb40e73163fa25e2779f7234b169b2e1a32e ]
+[ Upstream commit 633f16d7e07c129a36b882c05379e01ce5bdb542 ]
 
-Starting with commit c141ecc3cecd7 ("of: Warn when of_property_read_bool()
-is used on non-boolean properties"), probing the gpcv2 device on i.MX8M
-SoCs leads to warnings when LOCKDEP is enabled.
+In the sensor_count field of the MTEWE register, bits 1-62 are
+supported only for unmanaged switches, not for NICs, and bit 63
+is reserved for internal use.
 
-Fix this by checking property presence with of_property_present as
-intended.
+To prevent confusing output that may include set bits that are
+not relevant to NIC sensors, we update the bitmask to retain only
+the first bit, which corresponds to the sensor ASIC.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Link: https://lore.kernel.org/r/20250218-gpcv2-of-property-present-v1-1-3bb1a9789654@pengutronix.de
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Mateusz Polchlopek <mateusz.polchlopek@intel.com>
+Link: https://patch.msgid.link/20250213094641.226501-4-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/imx/gpcv2.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/events.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/soc/imx/gpcv2.c b/drivers/soc/imx/gpcv2.c
-index 88aee59730e39..6d5b6ed36169f 100644
---- a/drivers/soc/imx/gpcv2.c
-+++ b/drivers/soc/imx/gpcv2.c
-@@ -1347,7 +1347,7 @@ static int imx_pgc_domain_probe(struct platform_device *pdev)
- 	}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/events.c b/drivers/net/ethernet/mellanox/mlx5/core/events.c
+index 9459e56ee90a6..68b92927c74e9 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/events.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/events.c
+@@ -163,6 +163,10 @@ static int temp_warn(struct notifier_block *nb, unsigned long type, void *data)
+ 	u64 value_msb;
  
- 	if (IS_ENABLED(CONFIG_LOCKDEP) &&
--	    of_property_read_bool(domain->dev->of_node, "power-domains"))
-+	    of_property_present(domain->dev->of_node, "power-domains"))
- 		lockdep_set_subclass(&domain->genpd.mlock, 1);
+ 	value_lsb = be64_to_cpu(eqe->data.temp_warning.sensor_warning_lsb);
++	/* bit 1-63 are not supported for NICs,
++	 * hence read only bit 0 (asic) from lsb.
++	 */
++	value_lsb &= 0x1;
+ 	value_msb = be64_to_cpu(eqe->data.temp_warning.sensor_warning_msb);
  
- 	ret = of_genpd_add_provider_simple(domain->dev->of_node,
+ 	mlx5_core_warn(events->dev,
 -- 
 2.39.5
 
