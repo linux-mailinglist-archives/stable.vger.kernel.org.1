@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-139701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0F4FAA9591
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 16:21:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91B3FAA9595
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 16:22:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DBDF3A5FA2
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 14:21:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BC2D16C2E1
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 14:22:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B9801F4184;
-	Mon,  5 May 2025 14:21:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A0C91F30A4;
+	Mon,  5 May 2025 14:22:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z41/N4EF"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="U+uc+ib4"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A35C77111
-	for <stable@vger.kernel.org>; Mon,  5 May 2025 14:21:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 308F0846C
+	for <stable@vger.kernel.org>; Mon,  5 May 2025 14:22:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746454881; cv=none; b=a68TApIw//HzpLyHPnsFYHO5PNfe/Nn9l1Bm/hpl1dYcFm6MYJPkko/IbmYFSBhHnc6RJQs0bX0rSjwT3144TXW1BcrAPJZdmfV8C9KbDO2mheHFpl2XGeoJRk38iaPUIlR8dav0P8SWITiPByQBIVY6R5Qaj1ov08/zBi1VVEs=
+	t=1746454942; cv=none; b=Y0+3grgNIi47hbDFj8/sr7EvO35TPYs2hC/MjCEVXGBRY82/cRwU9R+/b6BJLUOxXbaosSO5ikjHM78q0qFTVAL6BK92w3ddjkuqFx8fq22BqrFAW4tmAvUI9NQHFSriKcJwQ9m2MuEmAQjC+3tftRlraDXHydwACSUHXIdztIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746454881; c=relaxed/simple;
-	bh=ukXEdZw9YlAH6F3MSohRVnDzG8TfTO5KUjs/S2Zu0S8=;
+	s=arc-20240116; t=1746454942; c=relaxed/simple;
+	bh=dqA8Vi7Tjf7vqVmmWKxDXv+wTh9E1QSiZixL+5eDALc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NXkGl4phG97DtzbgKuF9zrCySllpZtJhYeQqfSIrM/fIuh3qEsBYLX8CWUfSBF1uSu01WH4f3rODB6YJD6XejSi4cRb/AiHujy7sJFK6XmqvF5+gsjEmUHFT6Ss0u2NzRvYdUiT2YPlXqiFOFGRS2LYjbG3EroUpcgUA3p4LgKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z41/N4EF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 483CCC4CEE4;
-	Mon,  5 May 2025 14:21:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746454880;
-	bh=ukXEdZw9YlAH6F3MSohRVnDzG8TfTO5KUjs/S2Zu0S8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=z41/N4EFoFeH6uujMlx/wc0mIQ1F8wGn0YCaQkVMJPWSd4GaIQ/KRtgC/dPMsG1Pw
-	 5KQHEQWUgLoLtm2EUySD2Hmq5AyzgpBElydcGxpLUdgnZsuO97TyIy0+h/dzn1uzp4
-	 GCkOgh7ttQGWTcXwrE4o1oMVrSIlYYV2eqEN1Y30=
-Date: Mon, 5 May 2025 16:21:17 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Daniel Wagner <dwagner@suse.de>
-Cc: Jack Wang <jinpu.wang@ionos.com>, Wang Yugui <wangyugui@e16-tech.com>,
-	stable@vger.kernel.org, wagi@kernel.org
-Subject: Re: [6.12.y] WARNING: CPU: 0 PID: 681 at block/blk-mq-cpumap.c:90
- blk_mq_map_hw_queues+0xcf/0xe0
-Message-ID: <2025050507-devourer-semifinal-4967@gregkh>
-References: <2025050500-unchain-tricking-a90e@gregkh>
- <6818a2d5.170a0220.c6e7d.da1c@mx.google.com>
- <2025050554-reply-surging-929d@gregkh>
- <6f78e096-cb32-4056-a65a-50c27825d0e1@flourine.local>
- <2025050555-overhung-jiffy-6b63@gregkh>
- <98959a8c-67d7-49f0-bb65-80169b32b70c@flourine.local>
+	 Content-Type:Content-Disposition:In-Reply-To; b=FYNDO2bkYTlVxi+Ne617FbCW93YkaF96sbqYtOSAIRFMv1NwrkDb4BVOXyf8llCJXYHPcV2I2jXASYjxH8CC/nrGa28b0gbeD5M7do2xJ1Vw6rw2hQgFnpIUvIyRQu2M+ojkWrd6hl7jG2gjiVEjmxfCIPeC1GmYg8TPBgeST3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=U+uc+ib4; arc=none smtp.client-ip=95.215.58.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Date: Mon, 5 May 2025 10:22:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1746454938;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Uh7estd9zAu0O/tk7w0y7NuBGjZGcTGPLKVSreiVaAs=;
+	b=U+uc+ib4+1mljnJGKmb5XiNtprvdQoDRMTWfYpSoKGvkfhA6VbNwbFKt4sF6q1HAicTZ/8
+	HPeJsSO34QAk3dogACidrqokGKuMlFF3gRLRXwQtfI0LiiR8FqQnWReIJbnOyadmMfOu9Y
+	fxTizyTo9DoADuyMPkKvOtz3UQ6Wg50=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kent Overstreet <kent.overstreet@linux.dev>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: linux-bcachefs@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [GIT PULL] bcachefs fixes for 6.14.y
+Message-ID: <7jhqpuoe47jo3cm7hwo5mxstneacvws5ddxzyagyiayon3jldh@i6tnxq5z7ouz>
+References: <hbrzmt73aol6f2fmqpsdtcevhb2sme6lz2otdn73vqpsmlstzt@egrywwkbtpfm>
+ <2025050523-oversweet-mooned-3934@gregkh>
+ <gjr5fogy6fuev264diupbdyoyat6pdwa2fklxaf6cvu4mr3vck@6vvfw7awb5qy>
+ <2025050543-overkill-eradicate-2bdf@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,29 +59,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <98959a8c-67d7-49f0-bb65-80169b32b70c@flourine.local>
+In-Reply-To: <2025050543-overkill-eradicate-2bdf@gregkh>
+X-Migadu-Flow: FLOW_OUT
 
-On Mon, May 05, 2025 at 04:05:58PM +0200, Daniel Wagner wrote:
-> On Mon, May 05, 2025 at 03:52:38PM +0200, Greg KH wrote:
-> > But commit a9ae6fe1c319 ("blk-mq: create correct map for fallback case")
-> > says it fixes commit a5665c3d150c ("virtio: blk/scsi: replace
-> > blk_mq_virtio_map_queues with blk_mq_map_hw_queues"), which is ONLY in
-> > the 6.14 tree.
+On Mon, May 05, 2025 at 04:06:55PM +0200, Greg Kroah-Hartman wrote:
+> On Mon, May 05, 2025 at 09:54:24AM -0400, Kent Overstreet wrote:
+> > On Mon, May 05, 2025 at 10:32:49AM +0200, Greg Kroah-Hartman wrote:
+> > > On Fri, May 02, 2025 at 09:12:22PM -0400, Kent Overstreet wrote:
+> > > > 
+> > > > The following changes since commit 02a22be3c0003af08df510cba3d79d00c6495b74:
+> > > > 
+> > > >   bcachefs: bch2_ioctl_subvolume_destroy() fixes (2025-04-03 16:13:53 -0400)
+> > > > 
+> > > > are available in the Git repository at:
+> > > > 
+> > > >   git://evilpiepirate.org/bcachefs.git tags/bcachefs-for-6.14-2025-05-02
+> > > > 
+> > > > for you to fetch changes up to 52b17bca7b20663e5df6dbfc24cc2030259b64b6:
+> > > > 
+> > > >   bcachefs: Remove incorrect __counted_by annotation (2025-05-02 21:09:51 -0400)
+> > > > 
+> > > > ----------------------------------------------------------------
+> > > > bcachefs fixes for 6.15
+> > > > 
+> > > > remove incorrect counted_by annotation, fixing FORTIFY_SOURCE crashes
+> > > > that have been hitting arch users
+> > > > 
+> > > > ----------------------------------------------------------------
+> > > > Alan Huang (1):
+> > > >       bcachefs: Remove incorrect __counted_by annotation
+> > > > 
+> > > >  fs/bcachefs/xattr_format.h | 8 +++++++-
+> > > >  1 file changed, 7 insertions(+), 1 deletion(-)
+> > > 
+> > > You list 1 patch here, but if I pull this, I see 2 patches against the
+> > > latest linux-6.14.y branch.  When rebased, the "additional" one goes
+> > > away, as you already sent that to us in the past, so I'll just take the
+> > > one that's left here, but please, make this more obvious what is
+> > > happening.
 > > 
-> > Which is why we didn't pull it into the stable tree here.  Is that
-> > commit just not marked properly?  Will it cause problems if it is
-> > backported?
+> > That's because you're rebasing my patches.
 > 
-> The stack trace for this report is from a system which has a
-> megaraid_sas HBA. I did some testing with this HBA but somehow I
-> didn't run into the problem. Thus the Fixes is just not complete, it
-> misses
+> Not really a "rebase", but rather a "cherry-pick", but we've been
+> through this before, so no need to go over it again :)
 > 
-> Fixes: bd326a5ad639 ("scsi: replace blk_mq_pci_map_queues with blk_mq_map_hw_queues")
+> > > Also, I see a lot of syzbot fixes going into bcachefs recently,
+> > > hopefully those are all for issues that only affected the tree after
+> > > 6.14 was released.
+> > 
+> > Until the experimental label comes off I'm only doing critical
+> > backports - it really doesn't make any sense to do anything else right
+> > now.
 > 
-> Sorry about that.
+> Ok.
+> 
+> > The syzbot stuff has had zero overlap with user reported bugs, and since
+> > it's fuzzing the on disk image (and we don't support unprivilidged
+> > mounts - yet, at least) - they haven't been a security concern. There's
+> > been one security bug since 6.7, and you have that fix.
+> 
+> Great, thanks!
 
-No problem, thanks for letting me know, now queued up.
+BTW - in the interim, if we do want to backport a wider set of fixes the
+sane thing to do will be to forklift all of fs/bcachefs to the stable
+kernels. QA here has been good, so regressions in Linus's tree have been
+a non issue - in 6.15, all (2?) regressions were found and fixed before
+rc1 came out.
 
-greg k-h
+This hasn't been an option yet because the required on disk format
+upgrades have been too disruptive for stable kernels (the 6.14 upgrade
+took ~hours on the big 50-100TB filesystems), but as of 6.15 that should
+be over, so I've been giving some thought to the idea, especially since
+usage is steadily ticking up...
 
