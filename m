@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-140246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F0F8AAA690
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:14:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EFE2AAA6BE
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:19:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBA86166B10
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:14:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6B0C9874CF
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:14:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99707329437;
-	Mon,  5 May 2025 22:34:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B21F329D17;
+	Mon,  5 May 2025 22:34:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i312R2lx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dEg84qEn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51FD62918C4;
-	Mon,  5 May 2025 22:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E41A329D0C;
+	Mon,  5 May 2025 22:34:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484493; cv=none; b=lVjhjUx/enmr7l8gwQ3xoV7s/NQJTivo0/6uLpMOIT+c30gmlabr8oyzEHHuujcO/NIYk8wZ0Q6u/Qt4/HrdVapcGN461Bql/a6YVtQHTRXLGd1+DqnfEn1bl9N7SrFc/47aFrtp+zqpnYZJglSTcYWlMmSJA3eXAlWwSSJPAPk=
+	t=1746484494; cv=none; b=mFYtPb13cSCqhHtN2X+cLnHdGo7WTWroMJHgkrxzyFDVkJUcpxPCd4ALV/WGgL/sHMeiPqBW1Rjme0cKxv18EjoWI2jJ0sNvja4gfC53tVZRG46enF5z3CErrfIQuN/6W8foPD47vqaqsX8b7eeYxWNrqrcM4Db4whUg7lrVLUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484493; c=relaxed/simple;
-	bh=pycTl0WXJpjeJiLYbQCYWyh+olDVkiJRC+srfOeyQKg=;
+	s=arc-20240116; t=1746484494; c=relaxed/simple;
+	bh=sqCRRX5se34m6d3XsYR9wyca+/LOv0PL2t1VKF+e8lc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=e2Ynj2Th5kdANDv0jEBbW43ONBPFaxW3gWIk2sLyWplLcke44I/mBWfxuigdPdxV6pg7DzPtJeKhVZ0Alfj/YXHhLShm8Rf9OmRwdsoqFWInQw+DOKQyPz7NqD6EzNjDFCkqdE9H0pEMntcAsi/0bvWUzAIxy9xcqGi3+ZExxPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i312R2lx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DEC5C4CEF1;
-	Mon,  5 May 2025 22:34:50 +0000 (UTC)
+	 MIME-Version; b=JEA/I5ndH/tAE4o+ShdsA9u2pti2CKJQ7HwaTxoSc33bU67gwV2EwOYvlEnklzw1ynbwuyjE8nzA7+Ck9ZMb/6RiOvYlS925LOGaBEjeB9wfG+w4eRwK6a7RSFO/ujlMHCbI5sC2w8MlTb5JSGA+tCvw5Tv6683xqePgrcxT7vg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dEg84qEn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EAF7C4CEE4;
+	Mon,  5 May 2025 22:34:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484491;
-	bh=pycTl0WXJpjeJiLYbQCYWyh+olDVkiJRC+srfOeyQKg=;
+	s=k20201202; t=1746484494;
+	bh=sqCRRX5se34m6d3XsYR9wyca+/LOv0PL2t1VKF+e8lc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i312R2lxW5RAQscI3Wgw1weTmTt+t34LNOtzPnhpg/gGEZfGYM+0RgWkYanLZ/S82
-	 nRBIwtDCxavnZyLDAONA0jFy+D8nQ+56FeTYYscX9ulQp9zcD2NFHmPG2b4bCuhJ6i
-	 VRlsh5lbwUANIikubUMveYBIImfTXPrIDB3e473DRr0H1B+Bis/5BsmQdqP5J+bL53
-	 IVTYFiakWyIUo3X40j80R14yd4Z/2plVxGm/YBHliGwv2iji/A/amPBxkSXvIUcDDE
-	 sgw4niIXD/zh+RvvVxM3UXpfvvNpZENpLPK0ExLddcDqS8vhBviTv/5z6vahcdmJ6U
-	 UVugOXDkTc8MQ==
+	b=dEg84qEnXpQ4o4DVjxNcQPRUBmwIU+15GCSj6YFJmU6Z6ELsvxuuMX4t28f6Ax+UM
+	 5UFaQ4RRjHhVEBI+68S1oksFxfDYEtHjkPIbrdP1IlChX3P2G63LSHgjp9hmYY0Zdh
+	 dJwnaxgR4ICXcFthjl8pvPfmJvtPTeC65FJQ9atqVC9LyKZTsgo0Cr8FuY5RNswxlc
+	 UkaPtZMvXe4glX5eH4WE+Js5/Z9yBleJIn3SMsFmoaaEjzipbXhMM2cXY9Fq+127R7
+	 N6VOLPdd8tzzRqCU1UljzZOjhmASo5zWq4iFPDloR9ReELNLUYicm6rgNnjXnnRdjG
+	 5vqH2YcFhwwZw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	martineau@kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	netdev@vger.kernel.org,
-	mptcp@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.14 498/642] mptcp: pm: userspace: flags: clearer msg if no remote addr
-Date: Mon,  5 May 2025 18:11:54 -0400
-Message-Id: <20250505221419.2672473-498-sashal@kernel.org>
+	daniel.gabay@intel.com,
+	emmanuel.grumbach@intel.com,
+	yedidya.ben.shimol@intel.com,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 499/642] wifi: iwlwifi: use correct IMR dump variable
+Date: Mon,  5 May 2025 18:11:55 -0400
+Message-Id: <20250505221419.2672473-499-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -72,53 +68,43 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 58b21309f97b08b6b9814d1ee1419249eba9ef08 ]
+[ Upstream commit 21e4d29ac0def546d57bacebe4a51cbed1209b03 ]
 
-Since its introduction in commit 892f396c8e68 ("mptcp: netlink: issue
-MP_PRIO signals from userspace PMs"), it was mandatory to specify the
-remote address, because of the 'if (rem->addr.family == AF_UNSPEC)'
-check done later one.
+We shouldn't dump the reg_data here which dumps the last
+entry again, it should use the imr_reg_data.
 
-In theory, this attribute can be optional, but it sounds better to be
-precise to avoid sending the MP_PRIO on the wrong subflow, e.g. if there
-are multiple subflows attached to the same local ID. This can be relaxed
-later on if there is a need to act on multiple subflows with one
-command.
-
-For the moment, the check to see if attr_rem is NULL can be removed,
-because mptcp_pm_parse_entry() will do this check as well, no need to do
-that differently here.
-
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250205145347.3313b18667d1.Iaa9ab66b1d397912a573525e060d39ea01b29d19@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/pm_userspace.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/mptcp/pm_userspace.c b/net/mptcp/pm_userspace.c
-index 940ca94c88634..cd220742d2493 100644
---- a/net/mptcp/pm_userspace.c
-+++ b/net/mptcp/pm_userspace.c
-@@ -583,11 +583,9 @@ int mptcp_userspace_pm_set_flags(struct sk_buff *skb, struct genl_info *info)
- 	if (ret < 0)
- 		goto set_flags_err;
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+index 6594216f873c4..cd284767ff4ba 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /*
+- * Copyright (C) 2005-2014, 2018-2024 Intel Corporation
++ * Copyright (C) 2005-2014, 2018-2025 Intel Corporation
+  * Copyright (C) 2013-2015 Intel Mobile Communications GmbH
+  * Copyright (C) 2015-2017 Intel Deutschland GmbH
+  */
+@@ -2691,7 +2691,7 @@ static u32 iwl_dump_ini_trigger(struct iwl_fw_runtime *fwrt,
+ 	}
+ 	/* collect DRAM_IMR region in the last */
+ 	if (imr_reg_data.reg_tlv)
+-		size += iwl_dump_ini_mem(fwrt, list, &reg_data,
++		size += iwl_dump_ini_mem(fwrt, list, &imr_reg_data,
+ 					 &iwl_dump_ini_region_ops[IWL_FW_INI_REGION_DRAM_IMR]);
  
--	if (attr_rem) {
--		ret = mptcp_pm_parse_entry(attr_rem, info, false, &rem);
--		if (ret < 0)
--			goto set_flags_err;
--	}
-+	ret = mptcp_pm_parse_entry(attr_rem, info, false, &rem);
-+	if (ret < 0)
-+		goto set_flags_err;
- 
- 	if (loc.addr.family == AF_UNSPEC ||
- 	    rem.addr.family == AF_UNSPEC) {
+ 	if (size) {
 -- 
 2.39.5
 
