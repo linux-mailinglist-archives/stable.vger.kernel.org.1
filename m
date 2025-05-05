@@ -1,151 +1,133 @@
-Return-Path: <stable+bounces-139669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37530AA913F
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 12:34:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE827AA9141
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 12:34:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26E547A4B84
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 10:32:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 632FB167CF8
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 10:34:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 846CF1FF61D;
-	Mon,  5 May 2025 10:33:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD75B1FBE83;
+	Mon,  5 May 2025 10:34:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JfBJoHO/"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U9A6mbA/"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C21E201000
-	for <stable@vger.kernel.org>; Mon,  5 May 2025 10:33:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 309491CCB40
+	for <stable@vger.kernel.org>; Mon,  5 May 2025 10:34:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746441231; cv=none; b=HTEPdTxm/GArBHIy2NIFitCAXggegldW+kfonkTX4nnHTpVb6ykwVdMrN6imBOpDpuQDhTf+xlN2JvYPJPfR1RcSntwEMxjZSQLmX/XmuE/Q9IHezDkfmGFjEITUwlRE9Rz2K/z7P2ZNZVtCpue1q+qG/zHE2Uw7L6oAKYkaPYw=
+	t=1746441289; cv=none; b=NNSsom4HF0Wlmam3NtVC6KIZgfbzhTyziaf+ikSU4hnjOLGCXpOZ2Co56vH9dwQa7ZMe2peCfFC42WQomHyJg47MUaZ9tA4yNUqRW4eUtiKZu5tObkvJSplO97d0uzY0S438qeT2i6ebD/z7gycBnj/cGaAnME52Ger29jMKweM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746441231; c=relaxed/simple;
-	bh=VpWIOgBnBCKWfXRwPZZMxF8bpKW2vzNnXiFjz7P1DHM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i6O4rXo5ahAreUn5DXorAl3ZM1HRp0QIrlW0MWRWPpd59vR301Qk42KGYDPyb+tec8BGP5HO9J6aq92hEcXJXaEY9fyhlZu/ot/NH3oFhrq+n9m7CbChEQ2cdRZPVOBB3sP2GIC+2CdLl6iCf3pZGfOlZg8Xi2l3DzEZVFFuE6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JfBJoHO/; arc=none smtp.client-ip=192.198.163.18
+	s=arc-20240116; t=1746441289; c=relaxed/simple;
+	bh=v/yNwcX6lhLlBhxnUsYnRhzKU7ef2xEUnKnL76+2OBs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tSaXLn6UB1humsQfYs7+iFkHYMvaxzRs6Fa62vIX4Mpc8D+veXAOpuuXQp2QXJ47ehSdeuYkpT7H8PiKZZWFSfaitU3/nttK4XrTcE53GvfGECXDWOLheQBD2yzdj5VF4HnaoMDpFCzcxyDOOo4+qivnqUZOPlkAPRA/XWA4FFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U9A6mbA/; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746441229; x=1777977229;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=VpWIOgBnBCKWfXRwPZZMxF8bpKW2vzNnXiFjz7P1DHM=;
-  b=JfBJoHO/+0tAV9nD6HTMWIg56fBxeeEqcFz6Q0MFDm5COMkNci1iiF+K
-   6EGdz03GWSzw35K3z+AF0ts+v3M9UXyE98gXdNBHcL7sycfNZGfHkW/47
-   8fiL+hxUhG4r7QZk87BZLRVWiU/25NRUj8ZHjGNU7k6rSXpHqoYScr6pn
-   ByXIMRIlW6y7IJwM9RejxgNLmE//ahsOr6KaoyYMt+E1C0MjUTWa8cAKp
-   0aQJIVNroMqQ++kLOqb0JjjAiRuF4BlQRyIp/KHzFiNRN4itWU0GBuOLM
-   ZCU4QB8XGgZdwpBcejEMYJXgicPx8iAEg2/nwrJ+NTCqztNpemGyUR7ZW
-   w==;
-X-CSE-ConnectionGUID: irP0TNDCRLS+8hM2yg0oZQ==
-X-CSE-MsgGUID: 7Quo0sSQRSCBrn804OkAtQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11423"; a="47301826"
+  t=1746441288; x=1777977288;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=v/yNwcX6lhLlBhxnUsYnRhzKU7ef2xEUnKnL76+2OBs=;
+  b=U9A6mbA/5S84HPCBePgL1CmmRdCeJOrg8p9Nvm2mw491wVCS+bIeuORT
+   PnePDzfw968q4DfqqFwYjioZIdkq+qWrZ+gRU5uIX7i59m2SnvchU6TiZ
+   rdRp3knM7BRKFxfsvjaVMnwB+wSN1TDvgKvmoBfYXH5Kh+xBEuMWcrBMf
+   DRroO49zTf6Ew3/zQTvtUGXiceIcHGY198QeLCT1nC3RqSbTzhjixwF8g
+   quJ9hRy52i2RlJOl6PNZDqJHlPbr8A2Oe43d9/PcKUyK9SppZHAF1fyk5
+   ZsiHc21bgqXTAC/ba2VDa+IrvTg1LpJxnCbI7JKZsMJWbWm/ZGvuRPshp
+   Q==;
+X-CSE-ConnectionGUID: AgohNw++SEyN52+sYjzd2A==
+X-CSE-MsgGUID: Fp3HVne8T+ai9wCqPHM2eQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11423"; a="51850247"
 X-IronPort-AV: E=Sophos;i="6.15,262,1739865600"; 
-   d="scan'208";a="47301826"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2025 03:33:49 -0700
-X-CSE-ConnectionGUID: gKsiuj0jSJ66uXIjuVUDxA==
-X-CSE-MsgGUID: swlD9HA7SQmho8jqBQh9QQ==
+   d="scan'208";a="51850247"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2025 03:34:47 -0700
+X-CSE-ConnectionGUID: 6OFLfC8dQSenj5BL696m7Q==
+X-CSE-MsgGUID: motTpRMhQr2Q4qAj0U/15w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,262,1739865600"; 
-   d="scan'208";a="135186873"
-Received: from jlawryno.igk.intel.com ([10.91.220.59])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2025 03:33:47 -0700
-From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-To: stable@vger.kernel.org
-Cc: Karol Wachowski <karol.wachowski@intel.com>,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Subject: [PATCH v2 7/7] accel/ivpu: Add handling of VPU_JSM_STATUS_MVNCI_CONTEXT_VIOLATION_HW
-Date: Mon,  5 May 2025 12:33:34 +0200
-Message-ID: <20250505103334.79027-8-jacek.lawrynowicz@linux.intel.com>
-X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20250505103334.79027-1-jacek.lawrynowicz@linux.intel.com>
-References: <20250505103334.79027-1-jacek.lawrynowicz@linux.intel.com>
+   d="scan'208";a="135138968"
+Received: from unknown (HELO [10.245.83.192]) ([10.245.83.192])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2025 03:34:46 -0700
+Message-ID: <4616a3c3-fb83-4254-9ad6-17f35fc5822f@linux.intel.com>
+Date: Mon, 5 May 2025 12:34:43 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/7] accel/ivpu: Abort all jobs after command queue
+ unregister
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, Karol Wachowski <karol.wachowski@intel.com>
+References: <20250430124819.3761263-1-jacek.lawrynowicz@linux.intel.com>
+ <20250430124819.3761263-6-jacek.lawrynowicz@linux.intel.com>
+ <2025050504-change-ignore-e99d@gregkh>
+Content-Language: en-US
+From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
+ Gdansk - KRS 101882 - NIP 957-07-52-316
+In-Reply-To: <2025050504-change-ignore-e99d@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Karol Wachowski <karol.wachowski@intel.com>
+Hi,
 
-commit dad945c27a42dfadddff1049cf5ae417209a8996 upstream.
+On 5/5/2025 8:03 AM, Greg KH wrote:
+> On Wed, Apr 30, 2025 at 02:48:17PM +0200, Jacek Lawrynowicz wrote:
+>> From: Karol Wachowski <karol.wachowski@intel.com>
+>>
+>> commit 5bbccadaf33eea2b879d8326ad59ae0663be47d1 upstream.
+>>
+>> With hardware scheduler it is not expected to receive JOB_DONE
+>> notifications from NPU FW for the jobs aborted due to command queue destroy
+>> JSM command.
+>>
+>> Remove jobs submitted to unregistered command queue from submitted_jobs_xa
+>> to avoid triggering a TDR in such case.
+>>
+>> Add explicit submitted_jobs_lock that protects access to list of submitted
+>> jobs which is now used to find jobs to abort.
+>>
+>> Move context abort procedure to separate work queue not to slow down
+>> handling of IPCs or DCT requests in case where job abort takes longer,
+>> especially when destruction of the last job of a specific context results
+>> in context release.
+>>
+>> Cc: <stable@vger.kernel.org> # v6.12
+>> Signed-off-by: Karol Wachowski <karol.wachowski@intel.com>
+>> Signed-off-by: Maciej Falkowski <maciej.falkowski@linux.intel.com>
+>> Reviewed-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+>> Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+>> Link: https://patchwork.freedesktop.org/patch/msgid/20250107173238.381120-4-maciej.falkowski@linux.intel.com
+>> ---
+>>  drivers/accel/ivpu/ivpu_drv.c   | 32 +++----------
+>>  drivers/accel/ivpu/ivpu_drv.h   |  2 +
+>>  drivers/accel/ivpu/ivpu_job.c   | 82 +++++++++++++++++++++++++--------
+>>  drivers/accel/ivpu/ivpu_job.h   |  1 +
+>>  drivers/accel/ivpu/ivpu_mmu.c   |  3 +-
+>>  drivers/accel/ivpu/ivpu_sysfs.c |  5 +-
+>>  6 files changed, 77 insertions(+), 48 deletions(-)
+> 
+> Again, this is different from the original, so please document it as
+> such.
+> 
+> Please fix up both backported series of patches and resubmit a v2 of
+> them.
 
-Mark as invalid context of a job that returned HW context violation
-error and queue work that aborts jobs from faulty context.
-Add engine reset to the context abort thread handler to not only abort
-currently executing jobs but also to ensure NPU invalid state recovery.
+Sure, I've added descriptions of changes to commit messages and resubmitted the patchsets as v2.
 
-Cc: stable@vger.kernel.org # v6.12
-Signed-off-by: Karol Wachowski <karol.wachowski@intel.com>
-Signed-off-by: Maciej Falkowski <maciej.falkowski@linux.intel.com>
-Reviewed-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250107173238.381120-13-maciej.falkowski@linux.intel.com
-Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
----
- drivers/accel/ivpu/ivpu_job.c | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
-
-diff --git a/drivers/accel/ivpu/ivpu_job.c b/drivers/accel/ivpu/ivpu_job.c
-index a8e3eca14989c..27121c66e48f8 100644
---- a/drivers/accel/ivpu/ivpu_job.c
-+++ b/drivers/accel/ivpu/ivpu_job.c
-@@ -486,6 +486,26 @@ static int ivpu_job_signal_and_destroy(struct ivpu_device *vdev, u32 job_id, u32
- 
- 	lockdep_assert_held(&vdev->submitted_jobs_lock);
- 
-+	job = xa_load(&vdev->submitted_jobs_xa, job_id);
-+	if (!job)
-+		return -ENOENT;
-+
-+	if (job_status == VPU_JSM_STATUS_MVNCI_CONTEXT_VIOLATION_HW) {
-+		guard(mutex)(&job->file_priv->lock);
-+
-+		if (job->file_priv->has_mmu_faults)
-+			return 0;
-+
-+		/*
-+		 * Mark context as faulty and defer destruction of the job to jobs abort thread
-+		 * handler to synchronize between both faults and jobs returning context violation
-+		 * status and ensure both are handled in the same way
-+		 */
-+		job->file_priv->has_mmu_faults = true;
-+		queue_work(system_wq, &vdev->context_abort_work);
-+		return 0;
-+	}
-+
- 	job = ivpu_job_remove_from_submitted_jobs(vdev, job_id);
- 	if (!job)
- 		return -ENOENT;
-@@ -795,6 +815,9 @@ void ivpu_context_abort_thread_handler(struct work_struct *work)
- 	struct ivpu_job *job;
- 	unsigned long id;
- 
-+	if (vdev->fw->sched_mode == VPU_SCHEDULING_MODE_HW)
-+		ivpu_jsm_reset_engine(vdev, 0);
-+
- 	mutex_lock(&vdev->context_list_lock);
- 	xa_for_each(&vdev->context_xa, ctx_id, file_priv) {
- 		if (!file_priv->has_mmu_faults || file_priv->aborted)
-@@ -808,6 +831,8 @@ void ivpu_context_abort_thread_handler(struct work_struct *work)
- 
- 	if (vdev->fw->sched_mode != VPU_SCHEDULING_MODE_HW)
- 		return;
-+
-+	ivpu_jsm_hws_resume_engine(vdev, 0);
- 	/*
- 	 * In hardware scheduling mode NPU already has stopped processing jobs
- 	 * and won't send us any further notifications, thus we have to free job related resources
--- 
-2.45.1
+Regards
 
 
