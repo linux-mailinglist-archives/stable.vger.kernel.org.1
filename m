@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-140900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEA03AAAC68
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:16:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3A41AAAC64
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:15:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DC661BA63F1
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:12:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F198A1A85D19
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:12:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2017C2FD1A7;
-	Mon,  5 May 2025 23:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 798323B5C1C;
+	Mon,  5 May 2025 23:25:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H6M5T5rV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VxL/vLbw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E99D38AF47;
-	Mon,  5 May 2025 23:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 144DA38AF52;
+	Mon,  5 May 2025 23:13:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486781; cv=none; b=eqaFRbDajvKw0jH93NCS1gfAaCL2XMQ5LSQwzjXA4Hyq0DRpIm5aoJssDQLDR6aZVXJoFQhB0NPXGAoN8igmeVUFRMoYI5ayhqYZJQNf2QjIdHLmr3ZxB6ZkTHjGj07l6pndAoNDEpxrADcU5VjrKGBLFlHEZcvGhwTOaFy7SEo=
+	t=1746486784; cv=none; b=m9Lexl9wa0SEp9ShAofE8O+j+e+YGWCep/u8Q2T+jUPvOZAZkegubhr5pYCvRuOWcxCLLLuhpPy3Vx4CQ+cTJdp9TZFVN48L5lRUldY377JL8Sqi8uvNFM8gw9j0Fgh0tmRFVWnyl9Jj8fDuaS3tsdOrj0dfOjKeljpQXMjetso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486781; c=relaxed/simple;
-	bh=xnvKQSgmz6+WJmoTJIO0JKQ6WIu8i0r+uXotJHnnevk=;
+	s=arc-20240116; t=1746486784; c=relaxed/simple;
+	bh=flpjSRDVHokZv/xMjnTo+LIneg23OX0j++k0erz8Xrg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Eml5TqufsFOUR6FG3GtMp2sLYkSbgdsY2Oje1LXSRxUT3XImRVVuEzhdlxcUrPxJwEnjy2pPEbwUssIPDVswFkceufWlBddi8eRUyRTJ51AQDy9RAgvDcJ42J1t4suxdqaS6LX1qHkhMeY4SjJHslrpOz2JqU8l8Hqn5eJEebdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H6M5T5rV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE2A0C4CEE4;
-	Mon,  5 May 2025 23:12:59 +0000 (UTC)
+	 MIME-Version; b=Ucugz/EozEpVQpf7T6lUB3QkD1bEiTxbxJO2z7notTF2Kr4EzAH3EXYHsG0zoof4c0d82r+qN0LhxAzNfkdqcMIpEsao4IKSUcR4wRVaQ5Og0XpuUTAHk3Uxp9JF/FELUC1rDjG3xkUE6OM/+k92DwylO+2nb2jzaSOcw6lw4Ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VxL/vLbw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6328AC4CEED;
+	Mon,  5 May 2025 23:13:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486781;
-	bh=xnvKQSgmz6+WJmoTJIO0JKQ6WIu8i0r+uXotJHnnevk=;
+	s=k20201202; t=1746486782;
+	bh=flpjSRDVHokZv/xMjnTo+LIneg23OX0j++k0erz8Xrg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H6M5T5rVB+PoESIleVi7WQKxJrDz7yCKPSICfRP5mgweneRQ5kGIWJce+wuvU0syW
-	 yEMfX0YgpThWZplgSCGjwmmtD434X8UjLHNGDE7Sg+ny27NYKesrQ73SwOKn/Btwau
-	 +y0qasYisuimPS5vK7wLWLnwfDqEd7Pck9gxLmWaCTDbHM1KdHxJTyRZBwDzgDJ6bf
-	 YFCaZ3FidvkWXYYIHo1bkLKSYJSLXPT/Vd42UAZHsB++aS7FIa2tyniPq/hdxg8JqR
-	 mOfxs9h/zuT6MXN0172BK1MGau6yI5BN8DKGsLrAhbiPDEaUquPeUwu2Wl4bsbo52t
-	 Vi5ThCD3E8QOQ==
+	b=VxL/vLbwY1s19Uth/1HM6oNaELVQTqkanAved8HG52SOUOy067VHkbMWH7uQq1dWy
+	 G2ZyvEYJ+k+0Z+uwZCzXFtBHJt3YH/1VfDCxBD0KmoH3UgQiahwiI1hkPUOj6xcwN7
+	 6N++/Am/rCImu1OSwgrYoUHBsSkSaajxrMQKrgrIqW17pKwC5TgGqW2GgUTbY7Cs+C
+	 MR5/j77RllXY4KHtxIOdrKK/rVedJFNnNMRGQGZw/4QCAOpMxEuB4DKT9iSFL/Q8Ll
+	 KNBPp10+mQIWQyf6Kpkr5fa2fAhv1kgxN68MPWrEjeMjR1K6GBm6WgCGX8vR36vnsS
+	 CA1ZGS7qh/UdQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Cezary Rojewski <cezary.rojewski@intel.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Thomas Zimmermann <tzimmermann@suse.de>,
+	Jocelyn Falempe <jfalempe@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	shenghao-ding@ti.com,
-	kevin-lu@ti.com,
-	baojun.xu@ti.com,
-	lgirdwood@gmail.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 200/212] ASoC: codecs: pcm3168a: Allow for 24-bit in provider mode
-Date: Mon,  5 May 2025 19:06:12 -0400
-Message-Id: <20250505230624.2692522-200-sashal@kernel.org>
+	airlied@redhat.com,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.1 201/212] drm/ast: Find VBIOS mode from regular display size
+Date: Mon,  5 May 2025 19:06:13 -0400
+Message-Id: <20250505230624.2692522-201-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -71,38 +70,87 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Cezary Rojewski <cezary.rojewski@intel.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit 7d92a38d67e5d937b64b20aa4fd14451ee1772f3 ]
+[ Upstream commit c81202906b5cd56db403e95db3d29c9dfc8c74c1 ]
 
-As per codec device specification, 24-bit is allowed in provider mode.
-Update the code to reflect that.
+The ast driver looks up supplied display modes from an internal list of
+display modes supported by the VBIOS.
 
-Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Link: https://patch.msgid.link/20250203141051.2361323-4-cezary.rojewski@intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Do not use the crtc_-prefixed display values from struct drm_display_mode
+for looking up the VBIOS mode. The fields contain raw values that the
+driver programs to hardware. They are affected by display settings like
+double-scan or interlace.
+
+Instead use the regular vdisplay and hdisplay fields for lookup. As the
+programmed values can now differ from the values used for lookup, set
+struct drm_display_mode.crtc_vdisplay and .crtc_hdisplay from the VBIOS
+mode.
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Jocelyn Falempe <jfalempe@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250131092257.115596-9-tzimmermann@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/pcm3168a.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/ast/ast_mode.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/codecs/pcm3168a.c b/sound/soc/codecs/pcm3168a.c
-index 9d6431338fb71..329549936bd5c 100644
---- a/sound/soc/codecs/pcm3168a.c
-+++ b/sound/soc/codecs/pcm3168a.c
-@@ -494,9 +494,9 @@ static int pcm3168a_hw_params(struct snd_pcm_substream *substream,
- 		}
+diff --git a/drivers/gpu/drm/ast/ast_mode.c b/drivers/gpu/drm/ast/ast_mode.c
+index 1bc0220e6783e..9fe856fd8a84f 100644
+--- a/drivers/gpu/drm/ast/ast_mode.c
++++ b/drivers/gpu/drm/ast/ast_mode.c
+@@ -103,7 +103,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
+ 		return false;
+ 	}
+ 
+-	switch (mode->crtc_hdisplay) {
++	switch (mode->hdisplay) {
+ 	case 640:
+ 		vbios_mode->enh_table = &res_640x480[refresh_rate_index];
  		break;
- 	case 24:
--		if (provider_mode || (format == SND_SOC_DAIFMT_DSP_A) ||
--		    		     (format == SND_SOC_DAIFMT_DSP_B)) {
--			dev_err(component->dev, "24-bit slots not supported in provider mode, or consumer mode using DSP\n");
-+		if (!provider_mode && ((format == SND_SOC_DAIFMT_DSP_A) ||
-+				       (format == SND_SOC_DAIFMT_DSP_B))) {
-+			dev_err(component->dev, "24-bit slots not supported in consumer mode using DSP\n");
- 			return -EINVAL;
- 		}
+@@ -117,7 +117,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
+ 		vbios_mode->enh_table = &res_1152x864[refresh_rate_index];
  		break;
+ 	case 1280:
+-		if (mode->crtc_vdisplay == 800)
++		if (mode->vdisplay == 800)
+ 			vbios_mode->enh_table = &res_1280x800[refresh_rate_index];
+ 		else
+ 			vbios_mode->enh_table = &res_1280x1024[refresh_rate_index];
+@@ -129,7 +129,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
+ 		vbios_mode->enh_table = &res_1440x900[refresh_rate_index];
+ 		break;
+ 	case 1600:
+-		if (mode->crtc_vdisplay == 900)
++		if (mode->vdisplay == 900)
+ 			vbios_mode->enh_table = &res_1600x900[refresh_rate_index];
+ 		else
+ 			vbios_mode->enh_table = &res_1600x1200[refresh_rate_index];
+@@ -138,7 +138,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
+ 		vbios_mode->enh_table = &res_1680x1050[refresh_rate_index];
+ 		break;
+ 	case 1920:
+-		if (mode->crtc_vdisplay == 1080)
++		if (mode->vdisplay == 1080)
+ 			vbios_mode->enh_table = &res_1920x1080[refresh_rate_index];
+ 		else
+ 			vbios_mode->enh_table = &res_1920x1200[refresh_rate_index];
+@@ -182,6 +182,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
+ 	hborder = (vbios_mode->enh_table->flags & HBorder) ? 8 : 0;
+ 	vborder = (vbios_mode->enh_table->flags & VBorder) ? 8 : 0;
+ 
++	adjusted_mode->crtc_hdisplay = vbios_mode->enh_table->hde;
+ 	adjusted_mode->crtc_htotal = vbios_mode->enh_table->ht;
+ 	adjusted_mode->crtc_hblank_start = vbios_mode->enh_table->hde + hborder;
+ 	adjusted_mode->crtc_hblank_end = vbios_mode->enh_table->ht - hborder;
+@@ -191,6 +192,7 @@ static bool ast_get_vbios_mode_info(const struct drm_format_info *format,
+ 					 vbios_mode->enh_table->hfp +
+ 					 vbios_mode->enh_table->hsync);
+ 
++	adjusted_mode->crtc_vdisplay = vbios_mode->enh_table->vde;
+ 	adjusted_mode->crtc_vtotal = vbios_mode->enh_table->vt;
+ 	adjusted_mode->crtc_vblank_start = vbios_mode->enh_table->vde + vborder;
+ 	adjusted_mode->crtc_vblank_end = vbios_mode->enh_table->vt - vborder;
 -- 
 2.39.5
 
