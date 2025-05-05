@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-140626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 356D1AAAA52
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:34:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41A7EAAAA19
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:28:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D31313B7533
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:29:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 830F24A1CB8
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:28:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 258862DBB2D;
-	Mon,  5 May 2025 23:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DFA635B956;
+	Mon,  5 May 2025 23:00:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mq2ahOo+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IPoqathE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74A0361289;
-	Mon,  5 May 2025 22:50:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C414128313D;
+	Mon,  5 May 2025 22:50:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485431; cv=none; b=Tu/9RDhvay+By2V/gmdfZWMsLNLnwuZcMtGxgMcH8CCTPefqvYZWxOpX4a5zVPzYkE5ASfFbIog1BGT0IbLTEvhskOlp1B38hyT+1SoNe8K1+uS0m1hzEFiBAXOtF35NC81PcjU0AFj2fXBBlWWlUXw1XPBgpeH45adBKe4Og9g=
+	t=1746485437; cv=none; b=IeutrWnmlTrgOpPd84EPHouKGxqZiJNiWD6SoVtrDEs9ZDzMdo4d0pyeVaT9izS++4NU0hMh0fIJeIr4c6VvPJXwnxQpFtsAmptH7F5PLnSYajCJVr+TEM9EOKQ+cV654YTAwXnYc8EYMuv23zvLM/v4d6rVPuPsXPUqcoIfnC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485431; c=relaxed/simple;
-	bh=lUE1eP6OwOjt5dPp+quRCxl+4FiVxPZlYlJJNyOWc7c=;
+	s=arc-20240116; t=1746485437; c=relaxed/simple;
+	bh=Q/z1OYzbZGZh4Ae9QR7+MOtWA0d3XI9Jhx7OzIAuTVI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=dm+BJiXL3bYKq8O+gihGnEQbVRfEHpazJe443Isi/jvzKRYqwdbRlOBM0gOGu2iHX0O+GIFIMvVs2putibL3PymYFDtBKlCLsx1KjX7u6z7PrLtg9xv8U1UXwuMcAhm0LGLBuqhIMB4RS8Eguzc2FWIMSA41N7HsyKM0omnq0so=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mq2ahOo+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A711AC4CEE4;
-	Mon,  5 May 2025 22:50:28 +0000 (UTC)
+	 MIME-Version; b=QkDSTOe/DeP5oLLNu8+5zhfQa5f1RfqFjyFd1JpzzXmcO8gmrwEhpKpspHa3VIodmUFuVIPr1kCj13L7bkybMC1Czh8mhi2k80AaX1BC7qUVnOnbLH/I6XbkP1E3WOlAeIzXrHDMYVlibPT0vEGLFbUPxWsUi56Zpw+FSmLaEqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IPoqathE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 658A4C4CEED;
+	Mon,  5 May 2025 22:50:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485430;
-	bh=lUE1eP6OwOjt5dPp+quRCxl+4FiVxPZlYlJJNyOWc7c=;
+	s=k20201202; t=1746485436;
+	bh=Q/z1OYzbZGZh4Ae9QR7+MOtWA0d3XI9Jhx7OzIAuTVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mq2ahOo+yqzsy0k1C4x9R1hMuyh2FDbAodUi5l/DPOkJQTAzi/AeOCUK+2Txl/ika
-	 zn3AaZcwcm59nw0ImeWUuWshXWcXXe72dQ9UaPhTpXT1Wx1PgtQp1lgheSz76U3gnQ
-	 uSPAyu9HUy22R3lYs6ENFxXRnULEUK9gJEg1lpsdypjhJoVzJiu+OJry3/ivgLwZYM
-	 oHzBpYylcleZfaXDXx35sGlhI/IpOkhW7R/Tbw48DbBg5RmY8v+T8Cq9L1L4JsP+rl
-	 8ykfOWV0VkPpQu4RDwGHBco/DtcVXbM9Jx+khbG2S4ZnRbmKoWWfGcqp504nkMA5yI
-	 /Hr+sjXJ6MKEw==
+	b=IPoqathEoGXA71ZgPo4yf0280owY942NMg98fTwg7zIl1e4SvygPZs7TAZ+Ull8Oo
+	 5Lsa3HFYE1a+6NFMl4Q71jAdP2ZQssD2LZCjg76a1siwJ0o7c1KkXxqXiWStrE17O2
+	 6UhYacXVroUjo5lpRrt+AALklNA8Ylt78jHKe29938q/CF20bhXjqhEPv1UacT2tbB
+	 v3FyVolHRl3prY/aNYDU4lOAu5yZqS+UYHpYP9ivKRIxPGJtNurRP6nDl5d7SVet+4
+	 T1TzB/QRtOJzDgl53k65+re1Ocl/mZLpBULn+gDXJCvLKAcoaxihSMnMcTu2+6UTeb
+	 ywFVfTa/1eGVw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Michael Margolin <mrgolin@amazon.com>,
-	Firas Jahjah <firasj@amazon.com>,
-	Yonatan Nachum <ynachum@amazon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+Cc: Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	mbloch@nvidia.com,
-	phaddad@nvidia.com,
-	mgurtovoy@nvidia.com,
-	linux-rdma@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 307/486] RDMA/core: Fix best page size finding when it can cross SG entries
-Date: Mon,  5 May 2025 18:36:23 -0400
-Message-Id: <20250505223922.2682012-307-sashal@kernel.org>
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	bpf@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 310/486] bpf: don't do clean_live_states when state->loop_entry->branches > 0
+Date: Mon,  5 May 2025 18:36:26 -0400
+Message-Id: <20250505223922.2682012-310-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -70,137 +67,102 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Michael Margolin <mrgolin@amazon.com>
+From: Eduard Zingerman <eddyz87@gmail.com>
 
-[ Upstream commit 486055f5e09df959ad4e3aa4ee75b5c91ddeec2e ]
+[ Upstream commit 9e63fdb0cbdf3268c86638a8274f4d5549a82820 ]
 
-A single scatter-gather entry is limited by a 32 bits "length" field
-that is practically 4GB - PAGE_SIZE. This means that even when the
-memory is physically contiguous, we might need more than one entry to
-represent it. Additionally when using dmabuf, the sg_table might be
-originated outside the subsystem and optimized for other needs.
+verifier.c:is_state_visited() uses RANGE_WITHIN states comparison rules
+for cached states that have loop_entry with non-zero branches count
+(meaning that loop_entry's verification is not yet done).
 
-For instance an SGT of 16GB GPU continuous memory might look like this:
-(a real life example)
+The RANGE_WITHIN rules in regsafe()/stacksafe() require register and
+stack objects types to be identical in current and old states.
 
-dma_address 34401400000, length fffff000
-dma_address 345013ff000, length fffff000
-dma_address 346013fe000, length fffff000
-dma_address 347013fd000, length fffff000
-dma_address 348013fc000, length 4000
+verifier.c:clean_live_states() replaces registers and stack spills
+with NOT_INIT/STACK_INVALID marks, if these registers/stack spills are
+not read in any child state. This means that clean_live_states() works
+against loop convergence logic under some conditions. See selftest in
+the next patch for a specific example.
 
-Since ib_umem_find_best_pgsz works within SG entries, in the above case
-we will result with the worst possible 4KB page size.
+Mitigate this by prohibiting clean_verifier_state() when
+state->loop_entry->branches > 0.
 
-Fix this by taking into consideration only the alignment of addresses of
-real discontinuity points rather than treating SG entries as such, and
-adjust the page iterator to correctly handle cross SG entry pages.
+This undoes negative verification performance impact of the
+copy_verifier_state() fix from the previous patch.
+Below is comparison between master and current patch.
 
-There is currently an assumption that drivers do not ask for pages
-bigger than maximal DMA size supported by their devices.
+selftests:
 
-Reviewed-by: Firas Jahjah <firasj@amazon.com>
-Reviewed-by: Yonatan Nachum <ynachum@amazon.com>
-Signed-off-by: Michael Margolin <mrgolin@amazon.com>
-Link: https://patch.msgid.link/20250217141623.12428-1-mrgolin@amazon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+File                                Program                       Insns (A)  Insns (B)  Insns    (DIFF)  States (A)  States (B)  States  (DIFF)
+----------------------------------  ----------------------------  ---------  ---------  ---------------  ----------  ----------  --------------
+arena_htab.bpf.o                    arena_htab_llvm                     717        423   -294 (-41.00%)          57          37   -20 (-35.09%)
+arena_htab_asm.bpf.o                arena_htab_asm                      597        445   -152 (-25.46%)          47          37   -10 (-21.28%)
+arena_list.bpf.o                    arena_list_add                     1493       1822   +329 (+22.04%)          30          37    +7 (+23.33%)
+arena_list.bpf.o                    arena_list_del                      309        261    -48 (-15.53%)          23          15    -8 (-34.78%)
+iters.bpf.o                         checkpoint_states_deletion        18125      22154  +4029 (+22.23%)         818         918  +100 (+12.22%)
+iters.bpf.o                         iter_nested_deeply_iters            593        367   -226 (-38.11%)          67          43   -24 (-35.82%)
+iters.bpf.o                         iter_nested_iters                   813        772     -41 (-5.04%)          79          72     -7 (-8.86%)
+iters.bpf.o                         iter_subprog_check_stacksafe        155        135    -20 (-12.90%)          15          14     -1 (-6.67%)
+iters.bpf.o                         iter_subprog_iters                 1094        808   -286 (-26.14%)          88          68   -20 (-22.73%)
+iters.bpf.o                         loop_state_deps2                    479        356   -123 (-25.68%)          46          35   -11 (-23.91%)
+iters.bpf.o                         triple_continue                      35         31     -4 (-11.43%)           3           3     +0 (+0.00%)
+kmem_cache_iter.bpf.o               open_coded_iter                      63         59      -4 (-6.35%)           7           6    -1 (-14.29%)
+mptcp_subflow.bpf.o                 _getsockopt_subflow                 501        446    -55 (-10.98%)          25          23     -2 (-8.00%)
+pyperf600_iter.bpf.o                on_event                          12339       6379  -5960 (-48.30%)         441         286  -155 (-35.15%)
+verifier_bits_iter.bpf.o            max_words                            92         84      -8 (-8.70%)           8           7    -1 (-12.50%)
+verifier_iterating_callbacks.bpf.o  cond_break2                         113        192    +79 (+69.91%)          12          21    +9 (+75.00%)
+
+sched_ext:
+
+File               Program                 Insns (A)  Insns (B)  Insns      (DIFF)  States (A)  States (B)  States    (DIFF)
+-----------------  ----------------------  ---------  ---------  -----------------  ----------  ----------  ----------------
+bpf.bpf.o          layered_dispatch            11485       9039    -2446 (-21.30%)         848         662    -186 (-21.93%)
+bpf.bpf.o          layered_dump                 7422       5022    -2400 (-32.34%)         681         298    -383 (-56.24%)
+bpf.bpf.o          layered_enqueue             16854      13753    -3101 (-18.40%)        1611        1308    -303 (-18.81%)
+bpf.bpf.o          layered_init              1000001       5549  -994452 (-99.45%)       84672         523  -84149 (-99.38%)
+bpf.bpf.o          layered_runnable             3149       1899    -1250 (-39.70%)         288         151    -137 (-47.57%)
+bpf.bpf.o          p2dq_init                    2343       1936     -407 (-17.37%)         201         170     -31 (-15.42%)
+bpf.bpf.o          refresh_layer_cpumasks      16487       1285   -15202 (-92.21%)        1770         120   -1650 (-93.22%)
+bpf.bpf.o          rusty_select_cpu             1937       1386     -551 (-28.45%)         177         125     -52 (-29.38%)
+scx_central.bpf.o  central_dispatch              636        600       -36 (-5.66%)          63          59       -4 (-6.35%)
+scx_central.bpf.o  central_init                  913        632     -281 (-30.78%)          48          39      -9 (-18.75%)
+scx_nest.bpf.o     nest_init                     636        601       -35 (-5.50%)          60          58       -2 (-3.33%)
+scx_pair.bpf.o     pair_dispatch             1000001       1914  -998087 (-99.81%)       58169         142  -58027 (-99.76%)
+scx_qmap.bpf.o     qmap_dispatch                2393       2187      -206 (-8.61%)         196         174     -22 (-11.22%)
+scx_qmap.bpf.o     qmap_init                   16367      22777    +6410 (+39.16%)         603         768    +165 (+27.36%)
+
+'layered_init' and 'pair_dispatch' hit 1M on master, but are verified
+ok with this patch.
+
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20250215110411.3236773-4-eddyz87@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/umem.c  | 36 ++++++++++++++++++++++++---------
- drivers/infiniband/core/verbs.c | 11 +++++-----
- 2 files changed, 32 insertions(+), 15 deletions(-)
+ kernel/bpf/verifier.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/infiniband/core/umem.c b/drivers/infiniband/core/umem.c
-index 07c571c7b6999..c5b6863947605 100644
---- a/drivers/infiniband/core/umem.c
-+++ b/drivers/infiniband/core/umem.c
-@@ -80,9 +80,12 @@ unsigned long ib_umem_find_best_pgsz(struct ib_umem *umem,
- 				     unsigned long pgsz_bitmap,
- 				     unsigned long virt)
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 294fbafbeba75..592ee3b47635b 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -17282,12 +17282,16 @@ static void clean_verifier_state(struct bpf_verifier_env *env,
+ static void clean_live_states(struct bpf_verifier_env *env, int insn,
+ 			      struct bpf_verifier_state *cur)
  {
--	struct scatterlist *sg;
-+	unsigned long curr_len = 0;
-+	dma_addr_t curr_base = ~0;
- 	unsigned long va, pgoff;
-+	struct scatterlist *sg;
- 	dma_addr_t mask;
-+	dma_addr_t end;
- 	int i;
++	struct bpf_verifier_state *loop_entry;
+ 	struct bpf_verifier_state_list *sl;
  
- 	umem->iova = va = virt;
-@@ -107,17 +110,30 @@ unsigned long ib_umem_find_best_pgsz(struct ib_umem *umem,
- 	pgoff = umem->address & ~PAGE_MASK;
- 
- 	for_each_sgtable_dma_sg(&umem->sgt_append.sgt, sg, i) {
--		/* Walk SGL and reduce max page size if VA/PA bits differ
--		 * for any address.
-+		/* If the current entry is physically contiguous with the previous
-+		 * one, no need to take its start addresses into consideration.
- 		 */
--		mask |= (sg_dma_address(sg) + pgoff) ^ va;
-+		if (check_add_overflow(curr_base, curr_len, &end) ||
-+		    end != sg_dma_address(sg)) {
-+
-+			curr_base = sg_dma_address(sg);
-+			curr_len = 0;
-+
-+			/* Reduce max page size if VA/PA bits differ */
-+			mask |= (curr_base + pgoff) ^ va;
-+
-+			/* The alignment of any VA matching a discontinuity point
-+			* in the physical memory sets the maximum possible page
-+			* size as this must be a starting point of a new page that
-+			* needs to be aligned.
-+			*/
-+			if (i != 0)
-+				mask |= va;
-+		}
-+
-+		curr_len += sg_dma_len(sg);
- 		va += sg_dma_len(sg) - pgoff;
--		/* Except for the last entry, the ending iova alignment sets
--		 * the maximum possible page size as the low bits of the iova
--		 * must be zero when starting the next chunk.
--		 */
--		if (i != (umem->sgt_append.sgt.nents - 1))
--			mask |= va;
-+
- 		pgoff = 0;
- 	}
- 
-diff --git a/drivers/infiniband/core/verbs.c b/drivers/infiniband/core/verbs.c
-index 473ee0831307c..dc40001072a5e 100644
---- a/drivers/infiniband/core/verbs.c
-+++ b/drivers/infiniband/core/verbs.c
-@@ -3109,22 +3109,23 @@ EXPORT_SYMBOL(__rdma_block_iter_start);
- bool __rdma_block_iter_next(struct ib_block_iter *biter)
- {
- 	unsigned int block_offset;
--	unsigned int sg_delta;
-+	unsigned int delta;
- 
- 	if (!biter->__sg_nents || !biter->__sg)
- 		return false;
- 
- 	biter->__dma_addr = sg_dma_address(biter->__sg) + biter->__sg_advance;
- 	block_offset = biter->__dma_addr & (BIT_ULL(biter->__pg_bit) - 1);
--	sg_delta = BIT_ULL(biter->__pg_bit) - block_offset;
-+	delta = BIT_ULL(biter->__pg_bit) - block_offset;
- 
--	if (sg_dma_len(biter->__sg) - biter->__sg_advance > sg_delta) {
--		biter->__sg_advance += sg_delta;
--	} else {
-+	while (biter->__sg_nents && biter->__sg &&
-+	       sg_dma_len(biter->__sg) - biter->__sg_advance <= delta) {
-+		delta -= sg_dma_len(biter->__sg) - biter->__sg_advance;
- 		biter->__sg_advance = 0;
- 		biter->__sg = sg_next(biter->__sg);
- 		biter->__sg_nents--;
- 	}
-+	biter->__sg_advance += delta;
- 
- 	return true;
- }
+ 	sl = *explored_state(env, insn);
+ 	while (sl) {
+ 		if (sl->state.branches)
+ 			goto next;
++		loop_entry = get_loop_entry(&sl->state);
++		if (loop_entry && loop_entry->branches)
++			goto next;
+ 		if (sl->state.insn_idx != insn ||
+ 		    !same_callsites(&sl->state, cur))
+ 			goto next;
 -- 
 2.39.5
 
