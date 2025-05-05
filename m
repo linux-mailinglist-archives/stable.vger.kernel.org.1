@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-141708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6670AAB5BF
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:35:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64A38AAB5C8
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:36:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EF381B676EA
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:32:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36B381BC0506
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:32:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B75F3B11C4;
-	Tue,  6 May 2025 00:51:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1F4C29B8CB;
+	Tue,  6 May 2025 00:51:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ekPXbpMi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hvAPqnuF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F14C2797A5;
-	Mon,  5 May 2025 23:21:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE02F37EA72;
+	Mon,  5 May 2025 23:21:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487301; cv=none; b=ssuyKpztii+zZMVg1DlgYMM5+ObwTYN9Uu3doNTsblBSmmz/q7XhmYGCcI4Eovo0iP2NeYx5lE90VZnynW+APKW08lLjylKosNvwu3+L40rqO9mWBu4KQKjLXpUxDW/PsJdVoju87ypz+v7C2Qk4RIB/QRDX7OFrHEofLdrhBDY=
+	t=1746487317; cv=none; b=JmV+q33VyJJaMxjGPJBYgKZLFAwPmDykjOt5Vk3pELBqNQNl4g6hzcnwV2c/p5616bGen0rAge20viWMXfsh/rxjA/vzY7s8+JHi9fJxrbbGpqDy0eBdViwkcx15QG7eZXz9njOamTkQB1xW2Rurr60h6Tv0RseZttn4OMgT7kQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487301; c=relaxed/simple;
-	bh=7wa+U1T31NJK/tUCaixLIQ5iCyGeLrmTTRl81nmcU0M=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=MLx1UJklsLrlh2sYN4cfy/8qPJjWwXUcuw/gvcuwrwIQqeZv1uxa9z4IXD48f9aWYSk7cWqS12UK8SJXHnbKpJlxsgTeaQSxxEBxKgzxnnHSF5GMZ9dTHjkBjyp42dvkccq5cYROc7z5ewPtGrQBiYMbETIKCzks4IaIXwUI9DA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ekPXbpMi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A690C4CEF1;
-	Mon,  5 May 2025 23:21:40 +0000 (UTC)
+	s=arc-20240116; t=1746487317; c=relaxed/simple;
+	bh=D7yTrFE188wv1sO2UwjIZZtfQPAmYQjWziJlrOLJbv8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=q2NgCI6kJOArkEqwuyGZ9BzGt8e7vKmQAPBz/EpFgXonZEwNQBxKkvoCfHmVUOOUlArOUrkTwcT1FlAPefyNZXCizS/jphWJU5iL0GroAgkYn76YvBPWSHHVEd4//fmBrMMhst2u5d8kLguNqE+47Y+bTKZnYbvRosTBwNcKLjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hvAPqnuF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DE31C4CEE4;
+	Mon,  5 May 2025 23:21:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487301;
-	bh=7wa+U1T31NJK/tUCaixLIQ5iCyGeLrmTTRl81nmcU0M=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ekPXbpMi+82v04am7vGk8qItbPRF0Jcm4WINAmZcTJLFqB9q/5vWl7Q6StWwB6OCV
-	 9II1Fenrm7NZbtdiKWH3W9Z+//pwcRbBBDNu6HjZJMOIjscCmsPlg0+fWqY3tMWRPT
-	 zkK5FIZwoTT+2PMFaiz7Yl6rnAsUsB480DFJt1HQXBTmipD0saKqosxcMkc/mrd5JA
-	 F8KQuz19mXczOpllk2VuP6cHXwDXdSWOI3bwIT54SJCHmhL43uNtQXLS3f0AXTGb9T
-	 PSyWT2ur7MUgv/11M+EXPJt32uZygGfrlbevM230cdZo1i08jSumsAH4/uT22TwkPa
-	 wM4gYvLS2AEZA==
+	s=k20201202; t=1746487316;
+	bh=D7yTrFE188wv1sO2UwjIZZtfQPAmYQjWziJlrOLJbv8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=hvAPqnuFE2IaBSPX0HQH1FbKNmuDPHas5hitzGTv2jpFYTwkppVnA5oakg7/yLIIj
+	 vUqGoXTtkRZrwMxU0edC8VuyIuDkg0eftsOLE8MdaKFP9i8D5Hegu2fgYztflrADKF
+	 dkFbCR3IRhgSBpOWWNcCczPJehqIeWPCef9w+jc8D22bdrqJpx9Xr6g3dc6jDCLjXh
+	 Q5/JgJ0lvyXzjJJCevv2s/Nt2Ir1msiHo5LjDMv+Aq/sf+o0iqC3QSmL1Def/GhWoP
+	 dFNBMEbOrZvqXxGljfeNm8NK4T3neALNeAESY1dYYuTjREVSSPn1E0yT/uX6eVVPCw
+	 3GqXfkJ4t3ZUQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Viktor Malik <vmalik@redhat.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Quentin Monnet <qmo@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+Cc: Daniel Gomez <da.gomez@samsung.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	daniel@iogearbox.net,
-	bpf@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 108/114] bpftool: Fix readlink usage in get_fd_type
-Date: Mon,  5 May 2025 19:18:11 -0400
-Message-Id: <20250505231817.2697367-108-sashal@kernel.org>
+	linux-kbuild@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 01/79] kconfig: merge_config: use an empty file as initfile
+Date: Mon,  5 May 2025 19:20:33 -0400
+Message-Id: <20250505232151.2698893-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250505231817.2697367-1-sashal@kernel.org>
-References: <20250505231817.2697367-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,50 +59,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.10.237
+X-stable-base: Linux 5.4.293
 Content-Transfer-Encoding: 8bit
 
-From: Viktor Malik <vmalik@redhat.com>
+From: Daniel Gomez <da.gomez@samsung.com>
 
-[ Upstream commit 0053f7d39d491b6138d7c526876d13885cbb65f1 ]
+[ Upstream commit a26fe287eed112b4e21e854f173c8918a6a8596d ]
 
-The `readlink(path, buf, sizeof(buf))` call reads at most sizeof(buf)
-bytes and *does not* append null-terminator to buf. With respect to
-that, fix two pieces in get_fd_type:
+The scripts/kconfig/merge_config.sh script requires an existing
+$INITFILE (or the $1 argument) as a base file for merging Kconfig
+fragments. However, an empty $INITFILE can serve as an initial starting
+point, later referenced by the KCONFIG_ALLCONFIG Makefile variable
+if -m is not used. This variable can point to any configuration file
+containing preset config symbols (the merged output) as stated in
+Documentation/kbuild/kconfig.rst. When -m is used $INITFILE will
+contain just the merge output requiring the user to run make (i.e.
+KCONFIG_ALLCONFIG=<$INITFILE> make <allnoconfig/alldefconfig> or make
+olddefconfig).
 
-1. Change the truncation check to contain sizeof(buf) rather than
-   sizeof(path).
-2. Append null-terminator to buf.
+Instead of failing when `$INITFILE` is missing, create an empty file and
+use it as the starting point for merges.
 
-Reported by Coverity.
-
-Signed-off-by: Viktor Malik <vmalik@redhat.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Reviewed-by: Quentin Monnet <qmo@kernel.org>
-Link: https://lore.kernel.org/bpf/20250129071857.75182-1-vmalik@redhat.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Daniel Gomez <da.gomez@samsung.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bpf/bpftool/common.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ scripts/kconfig/merge_config.sh | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/bpf/bpftool/common.c b/tools/bpf/bpftool/common.c
-index eefa2b34e641a..33065b17900fa 100644
---- a/tools/bpf/bpftool/common.c
-+++ b/tools/bpf/bpftool/common.c
-@@ -311,10 +311,11 @@ int get_fd_type(int fd)
- 		p_err("can't read link type: %s", strerror(errno));
- 		return -1;
- 	}
--	if (n == sizeof(path)) {
-+	if (n == sizeof(buf)) {
- 		p_err("can't read link type: path too long!");
- 		return -1;
- 	}
-+	buf[n] = '\0';
+diff --git a/scripts/kconfig/merge_config.sh b/scripts/kconfig/merge_config.sh
+index d7d5c58b8b6aa..557f37f481fdf 100755
+--- a/scripts/kconfig/merge_config.sh
++++ b/scripts/kconfig/merge_config.sh
+@@ -98,8 +98,8 @@ INITFILE=$1
+ shift;
  
- 	if (strstr(buf, "bpf-map"))
- 		return BPF_OBJ_MAP;
+ if [ ! -r "$INITFILE" ]; then
+-	echo "The base file '$INITFILE' does not exist.  Exit." >&2
+-	exit 1
++	echo "The base file '$INITFILE' does not exist. Creating one..." >&2
++	touch "$INITFILE"
+ fi
+ 
+ MERGE_LIST=$*
 -- 
 2.39.5
 
