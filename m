@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-141191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C1FFAAB655
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:47:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B09DFAAB668
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:49:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 457F11BC2F8A
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:44:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1853D3A4EF9
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:44:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CADEC3C7D62;
-	Tue,  6 May 2025 00:26:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67D052D440B;
+	Tue,  6 May 2025 00:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i71IipO/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PKJMoRul"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DA0A2D1104;
-	Mon,  5 May 2025 22:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5D622749F0;
+	Mon,  5 May 2025 22:51:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485469; cv=none; b=B7HNiLRakNhFhkZ8mY9X+A3UthuHERNT6ZCLXoVNWjb2EIWSD39aUGjmoR7flSLImKpSe9MNZnxXh1U5gqY/Mfruv0yKn2KodPUHyc9AZiHFC7xHStxHDdzFH7v0ZTfjfnGxqkw1AWe9nJJDKInYmYYNxAyZs4w+ka3EG9NjvHs=
+	t=1746485480; cv=none; b=lf3stPeEZxlrPso3T//F3TKuwmCNY9o4CGkr3yfm/qO/k02bNCouw/CppTzMa4HdD5CPPaM8yJBqo8bzuoS5bXdxnJkJxy51dFA22i3Rs/gaNwmilOqTxglIekBwUen5yWKn5r+N/nrKq9DM7VhZ+6ZcVzWKEyQA900WUYUG2Nk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485469; c=relaxed/simple;
-	bh=0p6a0dm0WZpDnUSrzP1TWMURgSuCGh+2SAPykeJYoGY=;
+	s=arc-20240116; t=1746485480; c=relaxed/simple;
+	bh=lFmRf0UqXzAD/H+cDJ45OmX59Qe26LwGgupNtdazpJ0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Ksi1ckMg+nleYuOmezPw5xKa221HqxI4ag/ymAnyLh5XX5yweSucczRodMfcTMqVEl/FxBB7wlVDZEt26ASttK+fF8iA9Q2zyE5Mc15RXZvUozn2eGmcV288zqlX41YsWlxT2Nsvk01jWo1hRXrmLJkhZux1kVsV30m0G0B08KY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i71IipO/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA773C4CEE4;
-	Mon,  5 May 2025 22:51:06 +0000 (UTC)
+	 MIME-Version; b=LnFM5b7CVE/oBLoE8d8ytVh842RMKG2DGw90b6rdC05NfSKUzi86ZEUsS74bm55T4zQPhLIMRIjzwD/YqE4lcDHMXv4UvwP9Uy9PbaPIkUXIeFxtyR1DLfTNCJXqyrNxCip8O8z6Px8onkibVmb/WF4IfPHb8aWJh5BPPvfRm5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PKJMoRul; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 928EDC4CEE4;
+	Mon,  5 May 2025 22:51:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485467;
-	bh=0p6a0dm0WZpDnUSrzP1TWMURgSuCGh+2SAPykeJYoGY=;
+	s=k20201202; t=1746485480;
+	bh=lFmRf0UqXzAD/H+cDJ45OmX59Qe26LwGgupNtdazpJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i71IipO/hpOSAr8wrZte69bo+HzOgIlkUKINLobRYW7BUrTJ58ndMDKVmuErDmt1C
-	 CF0wcK8D6mLC/n1Co1VbrChVhzNIppC0aCVNSW1r8FWibWOjPtkgnRM443Tcyok9Qm
-	 W555GvkajGsW1Z/1KowjKxwFC27fokJgDhbgw0vErfwLMGoR/3W2Ftn96+coIOVxeQ
-	 h6DwM1gzEGNONDB1/RBM//eWZ6Ah8fdU3AikKuStbUlUMmysTPBp/dnBcXgHHBw3FJ
-	 pCQIbIyDOKrNVFIfkZMe2ZxOzMZZV9cpTD03pBtv2ZoAOw5+nX7slMGfdekUbtYvjq
-	 CiaZCPfRae6Ow==
+	b=PKJMoRulYn9MPLX0kzFLep1MuNVfyDWb4/5sCYHFX0mYehFW4Pu2HrbfDkf4LsJNz
+	 W3Syo1BGukpYzUrglSIa/7/yWpg343IWZ4LvyGeEkpTwyztHP3RJykWiadXeAWWAJw
+	 ngAiEA+AkA2Hm9zKSJgvc1VvE8b/0HfDoHVlHzp9hW4gNCJyKRmkR1g6HHSHZ9aZj0
+	 Bn3/A3+iIe9T7ei9JG6hAO3JPFlxoK77tFMarovzskQl5LcrI3rXIZ7ZbSLTRdr9Ik
+	 BpMQ0CYHQK2U2tbzBid74zcG5Ek3gYRdERRLrqFciCvjLKmSbRVUTgWXVD5mfQdnVN
+	 Y7Ry0LWfROdhg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hector Martin <marcan@marcan.st>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	shenghao-ding@ti.com,
-	kevin-lu@ti.com,
-	baojun.xu@ti.com,
-	lgirdwood@gmail.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 328/486] ASoC: tas2764: Mark SW_RESET as volatile
-Date: Mon,  5 May 2025 18:36:44 -0400
-Message-Id: <20250505223922.2682012-328-sashal@kernel.org>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Tejun Heo <tj@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 337/486] kernfs: Acquire kernfs_rwsem in kernfs_get_parent_dentry().
+Date: Mon,  5 May 2025 18:36:53 -0400
+Message-Id: <20250505223922.2682012-337-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -71,33 +65,39 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Hector Martin <marcan@marcan.st>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit f37f1748564ac51d32f7588bd7bfc99913ccab8e ]
+[ Upstream commit 122ab92dee80582c39740609a627198dd5b6b595 ]
 
-Since the bit is self-clearing.
+kernfs_get_parent_dentry() passes kernfs_node::parent to
+kernfs_get_inode().
 
-Signed-off-by: Hector Martin <marcan@marcan.st>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Link: https://patch.msgid.link/20250208-asoc-tas2764-v1-3-dbab892a69b5@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Acquire kernfs_root::kernfs_rwsem to ensure kernfs_node::parent isn't
+replaced during the operation.
+
+Acked-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/r/20250213145023.2820193-3-bigeasy@linutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/tas2764.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/kernfs/mount.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/soc/codecs/tas2764.c b/sound/soc/codecs/tas2764.c
-index bc0a73fc7ab41..31f94c8cf2844 100644
---- a/sound/soc/codecs/tas2764.c
-+++ b/sound/soc/codecs/tas2764.c
-@@ -652,6 +652,7 @@ static const struct regmap_range_cfg tas2764_regmap_ranges[] = {
- static bool tas2764_volatile_register(struct device *dev, unsigned int reg)
+diff --git a/fs/kernfs/mount.c b/fs/kernfs/mount.c
+index 0f6379ae258d1..4a0ff08d589ca 100644
+--- a/fs/kernfs/mount.c
++++ b/fs/kernfs/mount.c
+@@ -145,7 +145,9 @@ static struct dentry *kernfs_fh_to_parent(struct super_block *sb,
+ static struct dentry *kernfs_get_parent_dentry(struct dentry *child)
  {
- 	switch (reg) {
-+	case TAS2764_SW_RST:
- 	case TAS2764_INT_LTCH0 ... TAS2764_INT_LTCH4:
- 	case TAS2764_INT_CLK_CFG:
- 		return true;
+ 	struct kernfs_node *kn = kernfs_dentry_node(child);
++	struct kernfs_root *root = kernfs_root(kn);
+ 
++	guard(rwsem_read)(&root->kernfs_rwsem);
+ 	return d_obtain_alias(kernfs_get_inode(child->d_sb, kn->parent));
+ }
+ 
 -- 
 2.39.5
 
