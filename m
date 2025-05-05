@@ -1,110 +1,228 @@
-Return-Path: <stable+bounces-139717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E80EAAA9777
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 17:25:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B76EFAA978D
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 17:30:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4418A18835FB
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 15:26:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94C911883A45
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 15:30:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE44425DD16;
-	Mon,  5 May 2025 15:25:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 377C120966B;
+	Mon,  5 May 2025 15:30:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tubrorf5"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="loCa23km"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1513C25D538;
-	Mon,  5 May 2025 15:25:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288E81CD1F;
+	Mon,  5 May 2025 15:30:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746458741; cv=none; b=Jm6i3LzjZbW/OLPPiO/QcnUEK80iC5hmZT8YmlrlvUbIC0KUhQKhRk1F7WdNmw5tq4HsbSLyS44KSWjxXbDxmei98u4mKUbcy//O7Ni0n97zm8JJQwxWVTPjKbxteucblWum+0Ji5RXSIyGez2Vel1O4CO/BMmAZibDZRkRoaAo=
+	t=1746459025; cv=none; b=tXYoo3IyOzJeVgdlPt021cmDnmS0WN6MdNolSglw4gbrGx30DGPXwZm5H8MEVyZnR1bVXlDGPyedgbrcqQ9xAKSf1SJ8BbfrmNaW+Zbqe/bMJ7oghN6rxxzwnhXKir+sScDRZ5Z1/Gz7rP4ATSjv+vHmK3e3q9T3vfypR05nmkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746458741; c=relaxed/simple;
-	bh=k3cMIRpP9MAdOLr6JvQVd+B72Rzr+z/tx0HNQDqxZW4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IPtN/MBOqjK3pRfzcfFHXHTMSQO1vfrhFlyDL4YXXFM31M3PcfEfdmK3bGJowbBeJ7KbesM0tPVHvyLd/gEISbH8kaKAClC1xx5FIrqVms16V99tlFhfiML3YhjZ1SgiL5c+O5sUGXbJOlYnLTBD0m50sAtUL3Y45NCBkM+LmH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tubrorf5; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-309e54e469cso243844a91.1;
-        Mon, 05 May 2025 08:25:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746458739; x=1747063539; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=k3cMIRpP9MAdOLr6JvQVd+B72Rzr+z/tx0HNQDqxZW4=;
-        b=Tubrorf5kKJ75I7OoqGNnEJbDGVPRWJaPLHq45y3IKBNHCEBMgYpUYsVtrLPAepSBd
-         PNE0iqG1N8PLDbRSbp2UbJ+83pqsNPqHY0pcdZGnlXH3l/D/wrJIGQ3VCIv7tTOkL8RH
-         3UsLdcSzVnAlMZNM3l9c9+/v1tOjZ5kkj2gZW8D7UwXAdzJqC4nFf3C20tC3rAnO9PKA
-         hOJbzrV4NGdCknrA7e8/jITrw7fq0uXDZgrBjin4I3vSO1vCXV0G01kmqNch5bHLNgkb
-         GCUetTpodAn+s452VzC+WgMJcGA+ImH/GlvboUlfH57R+D081wb1SlC8CSXte5LnuYWs
-         Ae8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746458739; x=1747063539;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=k3cMIRpP9MAdOLr6JvQVd+B72Rzr+z/tx0HNQDqxZW4=;
-        b=u2A1uHn14JOnTm0FJpyF2JbS/mQK87XF8A31v3MGB1KBOOZEqGg6vXYN5cx4QPEdow
-         5uRYIBAud2cOkytmPe9mt0e55T+KaNCYSs4nZxEgWQ4qmrxr0SKCsMx+gavogxntopV1
-         k8PYZtkIggfUDwBiP+jreZKEVBk+SwtvAIZdhGsz3KJJpUW0+wJ/H7+aN/Yzo5fffBOJ
-         orfvcmb4M+y1popuPtBCTlQbA4z2//FZ8xFWAsAtn8bm0EEyNOew0s9I1NuJMIUKb3LK
-         AGkyXlWDLXJzK92QJLpP/2mSWb+ibtS3sfOvGBPgq4QMAgSX7q6dL2Vh9iii0Jit6cbg
-         eSxg==
-X-Forwarded-Encrypted: i=1; AJvYcCU4NtS7bE+cFvPtgB8Hc6pvU7dIX1Lmnh1l+j7jfcpBn3lGgTMo8BxwBElUofgIY+sI4+V8JUKR@vger.kernel.org, AJvYcCVsAmvRkCHQbcSViqFNj1SHmyZLILP4UbIBKs9RGgIfzYKQJeH/cFPZ3qt/5RmkbGnhni99q1qkDiK9ZJI=@vger.kernel.org, AJvYcCWRhSWmtN24d9peGN92CMyhJSfmtR85UOINqBYzjXMKFGBtFmmSQaGdUjnIuMpW4ZO1TrazGBemn7/7/+fA25c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyHPZ3nXeLqUcxnSiar4z+ZTp1BD58rmG9/Kxl3Syit3MrPPVMy
-	frMWeUWE29PpK7iWUAtMMnL8KZeGvOxNN1EDK+tXjvFq/FLUkXGzH5FXd+Uwql8L/QzaVU7o0Sz
-	9DHu+FOEj4G/pV3lkESR+9X+62wmGHUoY95U=
-X-Gm-Gg: ASbGncsTA3Gl2p7EadSwJJnWESp8ij5KVAlvX/kazoTwTNI/sye7Oikvr0HgSHI7UT8
-	TEz01IlL2L3j7ccZOXDSoS+v2WV40LJM/AfqISzBlcKjaRKdqhp2AnRp/4+8ANIEqd1BGM2voxw
-	UWeXRmYuDzbRnARKoc4fXCjw==
-X-Google-Smtp-Source: AGHT+IHRVyTkZMEkrjl1tb+xhWRz+XOO/RG+ywEWuBKUhWxMwlE4Nfhg6SesSBOEedXa+f/GB+dArhcsLbsvmsYMM00=
-X-Received: by 2002:a17:90b:1642:b0:30a:28e2:a003 with SMTP id
- 98e67ed59e1d1-30a4e621a86mr7214089a91.3.1746458739173; Mon, 05 May 2025
- 08:25:39 -0700 (PDT)
+	s=arc-20240116; t=1746459025; c=relaxed/simple;
+	bh=iVQWhaoZPi0VqNZxukEtId63UEg7pyAvuws6hkZFMYo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tZHfSWnHsyxR4Zvb16Qjxw6cf+lMYGGNfgOOu/vsmptixWXbTdPcZhhMJjn6bZ6SBXSFi7Dra6t2rH9b9/J5u8NWppcB6PTIfA4mfRhze0EytTH7tl8op+522qu3k6Gi3ENTe0Q83hFTb8o991bVP/Re68QZPL0XqnU5P1dppdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=loCa23km; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from [192.168.88.20] (91-158-153-178.elisa-laajakaista.fi [91.158.153.178])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 2E461289;
+	Mon,  5 May 2025 17:30:10 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1746459011;
+	bh=iVQWhaoZPi0VqNZxukEtId63UEg7pyAvuws6hkZFMYo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=loCa23km3IC9EfU0vwE8McXcQrFqUMX/XxE3Yc6QVAUGtzMSj9dte+rURLgK5gqH0
+	 3wDvXiyXr69mOwnEHtD/YZs9xWi5RtEKqjzIn6umwFF5STLSQf2hGfESKUkzRGsJ84
+	 qwrpbfP/F5VkJXj28CnT06Z79aRhs3DUdbAGMyp8=
+Message-ID: <a1cf67da-a0cb-46c5-b22b-10ecca8ab383@ideasonboard.com>
+Date: Mon, 5 May 2025 18:30:16 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250502140237.1659624-1-ojeda@kernel.org> <20250502140237.1659624-3-ojeda@kernel.org>
- <aBiDd43KSHJJqpge@google.com>
-In-Reply-To: <aBiDd43KSHJJqpge@google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 5 May 2025 17:25:25 +0200
-X-Gm-Features: ATxdqUHjO9VoZGiGMnlK5x2FmYOBWwyCMKRYdIXPOYP7wkN06j2ETlj7lPMEaGo
-Message-ID: <CANiq72nLLQcuMou_zLTiDggpnS9pLySax8QSNxD9mU27eZNPUw@mail.gmail.com>
-Subject: Re: [PATCH 2/5] rust: clean Rust 1.87.0's `clippy::ptr_eq` lints
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Trevor Gross <tmgross@umich.edu>, Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] drm/bridge: cdns-dsi: Replace deprecated
+ UNIVERSAL_DEV_PM_OPS()
+To: Vitor Soares <ivitro@gmail.com>
+Cc: Vitor Soares <vitor.soares@toradex.com>, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org, Aradhya Bhatia <aradhya.bhatia@linux.dev>,
+ Jayesh Choudhary <j-choudhary@ti.com>, stable@vger.kernel.org,
+ Andrzej Hajda <andrzej.hajda@intel.com>,
+ Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+ Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+References: <20250428094048.1459620-1-ivitro@gmail.com>
+ <fbde0659-78f3-46e4-98cf-d832f765a18b@ideasonboard.com>
+ <ec35d40dcd06ddbcfc0409ffa01aaee22c601716.camel@gmail.com>
+Content-Language: en-US
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Autocrypt: addr=tomi.valkeinen@ideasonboard.com; keydata=
+ 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
+In-Reply-To: <ec35d40dcd06ddbcfc0409ffa01aaee22c601716.camel@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, May 5, 2025 at 11:23=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
-rote:
->
-> For the list file, it might be nice to import core::ptr instead of using
-> the full path each time. Or maybe just disable this lint.
+Hi,
 
-Since they confirmed they will backport it, I will disable it locally
-when applying so that it is a smaller change, and then we can
-remove/revert the `allow` afterwards if all goes well.
+On 05/05/2025 17:45, Vitor Soares wrote:
+> On Tue, 2025-04-29 at 09:32 +0300, Tomi Valkeinen wrote:
+>> Hi,
+>>
+>> On 28/04/2025 12:40, Vitor Soares wrote:
+>>> From: Vitor Soares <vitor.soares@toradex.com>
+>>>
+>>> The deprecated UNIVERSAL_DEV_PM_OPS() macro uses the provided callbacks
+>>> for both runtime PM and system sleep. This causes the DSI clocks to be
+>>> disabled twice: once during runtime suspend and again during system
+>>> suspend, resulting in a WARN message from the clock framework when
+>>> attempting to disable already-disabled clocks.
+>>>
+>>> [   84.384540] clk:231:5 already disabled
+>>> [   84.388314] WARNING: CPU: 2 PID: 531 at /drivers/clk/clk.c:1181
+>>> clk_core_disable+0xa4/0xac
+>>> ...
+>>> [   84.579183] Call trace:
+>>> [   84.581624]  clk_core_disable+0xa4/0xac
+>>> [   84.585457]  clk_disable+0x30/0x4c
+>>> [   84.588857]  cdns_dsi_suspend+0x20/0x58 [cdns_dsi]
+>>> [   84.593651]  pm_generic_suspend+0x2c/0x44
+>>> [   84.597661]  ti_sci_pd_suspend+0xbc/0x15c
+>>> [   84.601670]  dpm_run_callback+0x8c/0x14c
+>>> [   84.605588]  __device_suspend+0x1a0/0x56c
+>>> [   84.609594]  dpm_suspend+0x17c/0x21c
+>>> [   84.613165]  dpm_suspend_start+0xa0/0xa8
+>>> [   84.617083]  suspend_devices_and_enter+0x12c/0x634
+>>> [   84.621872]  pm_suspend+0x1fc/0x368
+>>>
+>>> To address this issue, replace UNIVERSAL_DEV_PM_OPS() with
+>>> DEFINE_RUNTIME_DEV_PM_OPS(), which avoids redundant suspend/resume calls
+>>> by checking if the device is already runtime suspended.
+>>>
+>>> Cc: <stable@vger.kernel.org> # 6.1.x
+>>> Fixes: e19233955d9e ("drm/bridge: Add Cadence DSI driver")
+>>> Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
+>>> ---
+>>>    drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c | 10 +++++-----
+>>>    1 file changed, 5 insertions(+), 5 deletions(-)
+>>>
+>>> diff --git a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
+>>> b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
+>>> index b022dd6e6b6e..62179e55e032 100644
+>>> --- a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
+>>> +++ b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
+>>> @@ -1258,7 +1258,7 @@ static const struct mipi_dsi_host_ops cdns_dsi_ops = {
+>>>          .transfer = cdns_dsi_transfer,
+>>>    };
+>>>    
+>>> -static int __maybe_unused cdns_dsi_resume(struct device *dev)
+>>> +static int cdns_dsi_resume(struct device *dev)
+>>>    {
+>>>          struct cdns_dsi *dsi = dev_get_drvdata(dev);
+>>>    
+>>> @@ -1269,7 +1269,7 @@ static int __maybe_unused cdns_dsi_resume(struct
+>>> device *dev)
+>>>          return 0;
+>>>    }
+>>>    
+>>> -static int __maybe_unused cdns_dsi_suspend(struct device *dev)
+>>> +static int cdns_dsi_suspend(struct device *dev)
+>>>    {
+>>>          struct cdns_dsi *dsi = dev_get_drvdata(dev);
+>>>    
+>>> @@ -1279,8 +1279,8 @@ static int __maybe_unused cdns_dsi_suspend(struct
+>>> device *dev)
+>>>          return 0;
+>>>    }
+>>>    
+>>> -static UNIVERSAL_DEV_PM_OPS(cdns_dsi_pm_ops, cdns_dsi_suspend,
+>>> cdns_dsi_resume,
+>>> -                           NULL);
+>>> +static DEFINE_RUNTIME_DEV_PM_OPS(cdns_dsi_pm_ops, cdns_dsi_suspend,
+>>> +                                cdns_dsi_resume, NULL);
+>>
+>> I'm not sure if this, or the UNIVERSAL_DEV_PM_OPS, is right here. When
+>> the system is suspended, the bridge drivers will get a call to the
+>> *_disable() hook, which then disables the device. If the bridge driver
+>> would additionally do something in its system suspend hook, it would
+>> conflict with normal disable path.
+>>
+>> I think bridges/panels should only deal with runtime PM.
+>>
+>>    Tomi
+>>
+> 
+> In the proposed change, we make use of pm_runtime_force_suspend() during
+> system-wide suspend. If the device is already suspended, this call is a
+> no-op and disables runtime PM to prevent spurious wakeups during the
+> suspend period. Otherwise, it triggers the device’s runtime_suspend()
+> callback.
+> 
+> I briefly reviewed other bridge drivers, and those that implement runtime
+> PM appear to follow a similar approach, relying solely on runtime PM
+> callbacks and using pm_runtime_force_suspend()/resume() to handle
+> system-wide transitions.
 
-For the other one, it is a single line already anyway, so it does not
-matter much.
+Yes, I see such a solution in some of the bridge and panel drivers. I'm 
+probably missing something here, as I don't think it's correct.
 
-Cheers,
-Miguel
+Why do we need to set the system suspend/resume hooks? What is the 
+scenario where those will be called, and the 
+pm_runtime_force_suspend()/resume() do something that's not already done 
+via the normal DRM pipeline enable/disable?
+
+  Tomi
+
 
