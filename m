@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-139836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0D6BAAA09D
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:37:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF3E9AAA0A5
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:37:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B1FC3BCD61
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:37:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 03FD25A25A7
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:37:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEB4A293754;
-	Mon,  5 May 2025 22:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CD82293B55;
+	Mon,  5 May 2025 22:18:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I30BnIpK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M8hJg/Xw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C48B29374C;
-	Mon,  5 May 2025 22:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D83A0293B43;
+	Mon,  5 May 2025 22:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483513; cv=none; b=AdCTBTfeCN+I/RH4A3RYMlLoPUvWhmUiNuG7ZrnGF+/Zgdth7V7FBtGxHdzhKu7KavvyCkdzjxz1AhvuyCbyNtvPh8OxVWrHlTqhw9m7e0PpQhXmaK6ecp6+yT0j9Jq5OmHojC0gctD3FLNuGwTknhklN3CxLeAYndQpged19a4=
+	t=1746483515; cv=none; b=OeW4z7gXBfXWQdQHxIknwN9hQ7lq3b4nlQTMCxr+GWVcjuiYkAADDfpKRWykUF4I2Av0ILwhKCVJf4rsqCqBJcL6eruUkPUQysXUhvIPAMgOwiE7u2ew8Y7curZFecGTyzjqDrivVuf0g4NF8SNqoF2iijgma0co8NNOUTJtQYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483513; c=relaxed/simple;
-	bh=XgH3XKm1IAc32eD0g9jNld7LDdIY89FxHXmbpYkLaJU=;
+	s=arc-20240116; t=1746483515; c=relaxed/simple;
+	bh=GxnL0RJJlKT4X02HcJTH4gVc4JfUhTwAgPsph4hpezk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ZCg4jjDCHjBYBZ0NZ+Oe8OfWwUg/LkTJgGL4UqD+bSd0BI52xBIS/JSUPijSYrYCLgao+lBxMi94qp9XS0lRzxJPjrBPbqBn8CT/jcH760YIUtzNw44kj59984rwXq2E3xIK/lSjPXC12rBEJPSICNPD91gJO7TVTRu0RsigzaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I30BnIpK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B061C4CEEE;
-	Mon,  5 May 2025 22:18:31 +0000 (UTC)
+	 MIME-Version; b=O8etvdY6MzaacZynUrcKe83Ul+espymj7cqkwjAuEBX/OhjX1zxvVHfvPx9exAgr4N6icnm7HBVw9Okc6XWWBpKAiPZD9aCBGx0RclEWZuei22e03hk4nOTZCL2dCPhWl18XGei/dkCa3+QP4e6f8o/NCZk+TH1r6amjhVz/OVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M8hJg/Xw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFE57C4CEED;
+	Mon,  5 May 2025 22:18:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483513;
-	bh=XgH3XKm1IAc32eD0g9jNld7LDdIY89FxHXmbpYkLaJU=;
+	s=k20201202; t=1746483514;
+	bh=GxnL0RJJlKT4X02HcJTH4gVc4JfUhTwAgPsph4hpezk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I30BnIpK8ZqIzT/YffNhvvDCoT5dJfuTrbdPrYqJ9aT0eVo6aR11oDlXLFMSKQ2Br
-	 g8APrRvlCKQMunYlNhRvGcmO5UnMrkbtTcLIuR5vtMeuo+jCh0xEv7mHNGcjUsBLdy
-	 +2VLhpcxqF0ykORy6Hj9tp1bDtbOdeSVrcIxBk74EN3Gd4f32L1QkHaCTUgrMhR1Na
-	 aecuWvKM7vD+Z9Nel7HGKYgXx4uwy+REsCN26eoq8n49gIS40IFdkgm42jFBlZ0+JG
-	 /E4xMjsfFGC2TbXeFGnYBi1k10vzHvQOoQo193UiAsWIHkcQVy0FJKfW3Kr3Wy+u/P
-	 N/eYbBdekN7GA==
+	b=M8hJg/XwsDQw87B3VKvRmB65LYE1QiemcMrXXbaIwH8lV2Y7dFREKfADyih8B+9bq
+	 b4vohezP2kBaSoRVZbSrYOoDwwcduP+Zj0qR2fNupha0QI0DdUKEmkscjVSwCAfbM7
+	 JLlanKI739Q/uDJfIAl82IBraqvqwjM9hYeysiy9GM7W7q2HXmsCBCi5jEBXycAD9Y
+	 5KAeuBDxCvaXQ2MKCgmCNdIDBwyFjeE0DCAEhRnac+JGllu5X73TDi1BrxE/B0oGUE
+	 zpLLgCAvOymnTMHc8kPijswIJ3vKNpFp4MsMxS1FMvyyeuvxlbkqA8+JppWxeboOg8
+	 KVV7bH+6fqIIA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Philip Redkin <me@rarity.fan>,
-	Ingo Molnar <mingo@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Rik van Riel <riel@surriel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
+Cc: Stephan Gerhold <stephan.gerhold@kernkonzept.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	luto@kernel.org,
-	peterz@infradead.org,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	x86@kernel.org
-Subject: [PATCH AUTOSEL 6.14 089/642] x86/mm: Check return value from memblock_phys_alloc_range()
-Date: Mon,  5 May 2025 18:05:05 -0400
-Message-Id: <20250505221419.2672473-89-sashal@kernel.org>
+	linux-arm-msm@vger.kernel.org,
+	linux-i2c@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 090/642] i2c: qup: Vote for interconnect bandwidth to DRAM
+Date: Mon,  5 May 2025 18:05:06 -0400
+Message-Id: <20250505221419.2672473-90-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -73,51 +66,137 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Philip Redkin <me@rarity.fan>
+From: Stephan Gerhold <stephan.gerhold@kernkonzept.com>
 
-[ Upstream commit 631ca8909fd5c62b9fda9edda93924311a78a9c4 ]
+[ Upstream commit d4f35233a6345f62637463ef6e0708f44ffaa583 ]
 
-At least with CONFIG_PHYSICAL_START=0x100000, if there is < 4 MiB of
-contiguous free memory available at this point, the kernel will crash
-and burn because memblock_phys_alloc_range() returns 0 on failure,
-which leads memblock_phys_free() to throw the first 4 MiB of physical
-memory to the wolves.
+When the I2C QUP controller is used together with a DMA engine it needs
+to vote for the interconnect path to the DRAM. Otherwise it may be
+unable to access the memory quickly enough.
 
-At a minimum it should fail gracefully with a meaningful diagnostic,
-but in fact everything seems to work fine without the weird reserve
-allocation.
+The requested peak bandwidth is dependent on the I2C core clock.
 
-Signed-off-by: Philip Redkin <me@rarity.fan>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Link: https://lore.kernel.org/r/94b3e98f-96a7-3560-1f76-349eb95ccf7f@rarity.fan
+To avoid sending votes too often the bandwidth is always requested when
+a DMA transfer starts, but dropped only on runtime suspend. Runtime
+suspend should only happen if no transfer is active. After resumption we
+can defer the next vote until the first DMA transfer actually happens.
+
+The implementation is largely identical to the one introduced for
+spi-qup in commit ecdaa9473019 ("spi: qup: Vote for interconnect
+bandwidth to DRAM") since both drivers represent the same hardware
+block.
+
+Signed-off-by: Stephan Gerhold <stephan.gerhold@kernkonzept.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20231128-i2c-qup-dvfs-v1-3-59a0e3039111@kernkonzept.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/mm/init.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/i2c/busses/i2c-qup.c | 36 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
-diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
-index 62aa4d66a032d..bfa444a7dbb04 100644
---- a/arch/x86/mm/init.c
-+++ b/arch/x86/mm/init.c
-@@ -645,8 +645,13 @@ static void __init memory_map_top_down(unsigned long map_start,
- 	 */
- 	addr = memblock_phys_alloc_range(PMD_SIZE, PMD_SIZE, map_start,
- 					 map_end);
--	memblock_phys_free(addr, PMD_SIZE);
--	real_end = addr + PMD_SIZE;
-+	if (!addr) {
-+		pr_warn("Failed to release memory for alloc_low_pages()");
-+		real_end = max(map_start, ALIGN_DOWN(map_end, PMD_SIZE));
-+	} else {
-+		memblock_phys_free(addr, PMD_SIZE);
-+		real_end = addr + PMD_SIZE;
-+	}
+diff --git a/drivers/i2c/busses/i2c-qup.c b/drivers/i2c/busses/i2c-qup.c
+index da20b4487c9a5..3a36d682ed572 100644
+--- a/drivers/i2c/busses/i2c-qup.c
++++ b/drivers/i2c/busses/i2c-qup.c
+@@ -14,6 +14,7 @@
+ #include <linux/dma-mapping.h>
+ #include <linux/err.h>
+ #include <linux/i2c.h>
++#include <linux/interconnect.h>
+ #include <linux/interrupt.h>
+ #include <linux/io.h>
+ #include <linux/module.h>
+@@ -150,6 +151,8 @@
+ /* TAG length for DATA READ in RX FIFO  */
+ #define READ_RX_TAGS_LEN		2
  
- 	/* step_size need to be small so pgt_buf from BRK could cover it */
- 	step_size = PMD_SIZE;
++#define QUP_BUS_WIDTH			8
++
+ static unsigned int scl_freq;
+ module_param_named(scl_freq, scl_freq, uint, 0444);
+ MODULE_PARM_DESC(scl_freq, "SCL frequency override");
+@@ -227,6 +230,7 @@ struct qup_i2c_dev {
+ 	int			irq;
+ 	struct clk		*clk;
+ 	struct clk		*pclk;
++	struct icc_path		*icc_path;
+ 	struct i2c_adapter	adap;
+ 
+ 	int			clk_ctl;
+@@ -255,6 +259,10 @@ struct qup_i2c_dev {
+ 	/* To configure when bus is in run state */
+ 	u32			config_run;
+ 
++	/* bandwidth votes */
++	u32			src_clk_freq;
++	u32			cur_bw_clk_freq;
++
+ 	/* dma parameters */
+ 	bool			is_dma;
+ 	/* To check if the current transfer is using DMA */
+@@ -453,6 +461,23 @@ static int qup_i2c_bus_active(struct qup_i2c_dev *qup, int len)
+ 	return ret;
+ }
+ 
++static int qup_i2c_vote_bw(struct qup_i2c_dev *qup, u32 clk_freq)
++{
++	u32 needed_peak_bw;
++	int ret;
++
++	if (qup->cur_bw_clk_freq == clk_freq)
++		return 0;
++
++	needed_peak_bw = Bps_to_icc(clk_freq * QUP_BUS_WIDTH);
++	ret = icc_set_bw(qup->icc_path, 0, needed_peak_bw);
++	if (ret)
++		return ret;
++
++	qup->cur_bw_clk_freq = clk_freq;
++	return 0;
++}
++
+ static void qup_i2c_write_tx_fifo_v1(struct qup_i2c_dev *qup)
+ {
+ 	struct qup_i2c_block *blk = &qup->blk;
+@@ -838,6 +863,10 @@ static int qup_i2c_bam_xfer(struct i2c_adapter *adap, struct i2c_msg *msg,
+ 	int ret = 0;
+ 	int idx = 0;
+ 
++	ret = qup_i2c_vote_bw(qup, qup->src_clk_freq);
++	if (ret)
++		return ret;
++
+ 	enable_irq(qup->irq);
+ 	ret = qup_i2c_req_dma(qup);
+ 
+@@ -1643,6 +1672,7 @@ static void qup_i2c_disable_clocks(struct qup_i2c_dev *qup)
+ 	config = readl(qup->base + QUP_CONFIG);
+ 	config |= QUP_CLOCK_AUTO_GATE;
+ 	writel(config, qup->base + QUP_CONFIG);
++	qup_i2c_vote_bw(qup, 0);
+ 	clk_disable_unprepare(qup->pclk);
+ }
+ 
+@@ -1743,6 +1773,11 @@ static int qup_i2c_probe(struct platform_device *pdev)
+ 			goto fail_dma;
+ 		}
+ 		qup->is_dma = true;
++
++		qup->icc_path = devm_of_icc_get(&pdev->dev, NULL);
++		if (IS_ERR(qup->icc_path))
++			return dev_err_probe(&pdev->dev, PTR_ERR(qup->icc_path),
++					     "failed to get interconnect path\n");
+ 	}
+ 
+ nodma:
+@@ -1791,6 +1826,7 @@ static int qup_i2c_probe(struct platform_device *pdev)
+ 		qup_i2c_enable_clocks(qup);
+ 		src_clk_freq = clk_get_rate(qup->clk);
+ 	}
++	qup->src_clk_freq = src_clk_freq;
+ 
+ 	/*
+ 	 * Bootloaders might leave a pending interrupt on certain QUP's,
 -- 
 2.39.5
 
