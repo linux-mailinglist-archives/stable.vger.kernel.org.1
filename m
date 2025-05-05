@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-139921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29BC0AAA243
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:57:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D03D7AAA25A
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:58:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E00987AB5C0
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:55:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C6BC3B13C5
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:57:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 977AC2D997D;
-	Mon,  5 May 2025 22:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFBD52D999A;
+	Mon,  5 May 2025 22:21:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FTQ6mWaN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uq4BS9oi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B6642D9972;
-	Mon,  5 May 2025 22:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98BB62D9992;
+	Mon,  5 May 2025 22:21:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483677; cv=none; b=g19gphdBmxOezGEF7GRHgvqp7v75ymwwJmUI+YgAbBPPr9ed3AzTj7lkAK6ZVmF0PR1ZzseWGvFLMnH+kj2ieKyUpZtgjtF2DkyEJPO2nxvvfB6nexufp4IehpE2iUTyha0vz5IGRl3tteF7wGZ7ZZMKCPKubZGGt6LhRFWgzes=
+	t=1746483678; cv=none; b=lr52+k8AhyRTaJQ0d59RDH+cOJeQInsFahvU7mJkpyHNfquYmegKtvPv3c0NH04kKvKwGWdCqJVq1FmnCJo2X4MqzpzlStHI/ua3pvYt27wSZ5oEErB2gimY2A5369lfZqyaqd7K1HtF6f2UyNAUmHHJ8nU88MR5W4qnkQN2uLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483677; c=relaxed/simple;
-	bh=oNsrUzmhcU4awFKOANx2RutoLNLmj9Hg+0G6D9qSAvc=;
+	s=arc-20240116; t=1746483678; c=relaxed/simple;
+	bh=kCeaIbSSB1ifxm79iZjfgg5Xb2wk6xbwvMFE2K3KtSs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Wm10Ekz5/dqrSyaEvry9/SoBlv0WFtVjWLN8e/+PGZyPIGA9NTihALRZPNR1r1CXVDtN6cDy2+rWcMKOAdbU9jqccVmvj7d/q0Cr3UnYCqShf2bam/rJNtQWtvdrORaT1muruw/z5RmkAnQPUuoUilNuZ0WSRtKlQdm7IN6F8tc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FTQ6mWaN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B08DC4CEEE;
-	Mon,  5 May 2025 22:21:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=u4tiMKvxJrCeP7QpXPWMevgpPQpzSbZoLGFh1dU9n37w39+Qk2Ym86YSza6dZjrNcfJbgYr8rH7n+KRhEvNd/9xi33Br8ybEsROwZlWx0xwQQtUlTgR9SxCSRwFqv4fMmHbQvlqfSD3+rNDZ6rihoVnvKHe7T2S78VW4tTgT+nE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uq4BS9oi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1918AC4CEED;
+	Mon,  5 May 2025 22:21:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483676;
-	bh=oNsrUzmhcU4awFKOANx2RutoLNLmj9Hg+0G6D9qSAvc=;
+	s=k20201202; t=1746483678;
+	bh=kCeaIbSSB1ifxm79iZjfgg5Xb2wk6xbwvMFE2K3KtSs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FTQ6mWaN4/aPHZDL5BPyvr80NYQjd2o8pXJC0A5vjlE0aBjq6RUNbMuG3Vm6sFh/W
-	 T9Vr9GB6Nhe231JNAOA2vl5dcRtb5+xjleN3s1YReruVnbdSKsEPkYGWWZlFSnrl07
-	 treosn2nyVG/i51f8zBOfQlsB5rGWetwUuMzLbctl9OFOBfvNnbBpJjNNjDv5rzIZU
-	 pJYIyrdzd7uYPeNcBmRLAdc0MkMODVMJZRCQKzsnbAezCCHWDzwwhe2yE3HmXWBwWV
-	 ChYhh1fbAb9Fyt1R+DNU3/aoBMCitDm9w+qAGPEYhzrfh+SYDP8ZINux8iBnHQeKEO
-	 /fNikg1DT6ExA==
+	b=uq4BS9oiapH+kgOi9C2SIrSkStVe0h033tRZH3EqDMZVZLO91/uaRHmrb5hJkAodM
+	 tAEbBdpkU5R13WOijiAsjw8SVpSH14CqXf1j/GENEGpWx81QyDbonKeFco0yzqjSuh
+	 nApit09lrG0PKQ1jGkHHCgv0A8s/cH9gtwp7dbs0CSEBq7rSzIv6lL34jGlDkVVORN
+	 CqN00iEHjKZwPKZwUz5vAulDFJHmP3nzzjL76HSepXkeoKpYMu9V5+jnEsA7npaM7A
+	 AI6tu7B2tzWDhRyS9GOQFE3kgKFTRGMMq2bYO2wcXd0hBdmoJXnF8sEwLZNS07f135
+	 +x3bN0Mv1BEOw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kaustabh Chakraborty <kauschluss@disroot.org>,
+Cc: Erick Shepherd <erick.shepherd@ni.com>,
+	Kyle Roeschley <kyle.roeschley@ni.com>,
+	Brad Mouring <brad.mouring@ni.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
 	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	jh80.chung@samsung.com,
-	krzk@kernel.org,
-	linux-mmc@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-samsung-soc@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 174/642] mmc: dw_mmc: add exynos7870 DW MMC support
-Date: Mon,  5 May 2025 18:06:30 -0400
-Message-Id: <20250505221419.2672473-174-sashal@kernel.org>
+	linux-mmc@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 175/642] mmc: sdhci: Disable SD card clock before changing parameters
+Date: Mon,  5 May 2025 18:06:31 -0400
+Message-Id: <20250505221419.2672473-175-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -64,177 +63,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Kaustabh Chakraborty <kauschluss@disroot.org>
+From: Erick Shepherd <erick.shepherd@ni.com>
 
-[ Upstream commit 7cbe799ac10fd8be85af5e0615c4337f81e575f3 ]
+[ Upstream commit fb3bbc46c94f261b6156ee863c1b06c84cf157dc ]
 
-Add support for Exynos7870 DW MMC controllers, for both SMU and non-SMU
-variants. These controllers require a quirk to access 64-bit FIFO in 32-bit
-accesses (DW_MMC_QUIRK_FIFO64_32).
+Per the SD Host Controller Simplified Specification v4.20 §3.2.3, change
+the SD card clock parameters only after first disabling the external card
+clock. Doing this fixes a spurious clock pulse on Baytrail and Apollo Lake
+SD controllers which otherwise breaks voltage switching with a specific
+Swissbit SD card.
 
-Signed-off-by: Kaustabh Chakraborty <kauschluss@disroot.org>
-Link: https://lore.kernel.org/r/20250219-exynos7870-mmc-v2-3-b4255a3e39ed@disroot.org
+Signed-off-by: Kyle Roeschley <kyle.roeschley@ni.com>
+Signed-off-by: Brad Mouring <brad.mouring@ni.com>
+Signed-off-by: Erick Shepherd <erick.shepherd@ni.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20250211214645.469279-1-erick.shepherd@ni.com
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/dw_mmc-exynos.c | 41 +++++++++++++++++++++++++++++++-
- 1 file changed, 40 insertions(+), 1 deletion(-)
+ drivers/mmc/host/sdhci.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mmc/host/dw_mmc-exynos.c b/drivers/mmc/host/dw_mmc-exynos.c
-index 53d32d0f2709e..e3548408ca392 100644
---- a/drivers/mmc/host/dw_mmc-exynos.c
-+++ b/drivers/mmc/host/dw_mmc-exynos.c
-@@ -27,6 +27,8 @@ enum dw_mci_exynos_type {
- 	DW_MCI_TYPE_EXYNOS5420_SMU,
- 	DW_MCI_TYPE_EXYNOS7,
- 	DW_MCI_TYPE_EXYNOS7_SMU,
-+	DW_MCI_TYPE_EXYNOS7870,
-+	DW_MCI_TYPE_EXYNOS7870_SMU,
- 	DW_MCI_TYPE_ARTPEC8,
- };
+diff --git a/drivers/mmc/host/sdhci.c b/drivers/mmc/host/sdhci.c
+index f4a7733a8ad22..5f91b44891f9b 100644
+--- a/drivers/mmc/host/sdhci.c
++++ b/drivers/mmc/host/sdhci.c
+@@ -2065,10 +2065,15 @@ void sdhci_set_clock(struct sdhci_host *host, unsigned int clock)
  
-@@ -69,6 +71,12 @@ static struct dw_mci_exynos_compatible {
- 	}, {
- 		.compatible	= "samsung,exynos7-dw-mshc-smu",
- 		.ctrl_type	= DW_MCI_TYPE_EXYNOS7_SMU,
-+	}, {
-+		.compatible	= "samsung,exynos7870-dw-mshc",
-+		.ctrl_type	= DW_MCI_TYPE_EXYNOS7870,
-+	}, {
-+		.compatible	= "samsung,exynos7870-dw-mshc-smu",
-+		.ctrl_type	= DW_MCI_TYPE_EXYNOS7870_SMU,
- 	}, {
- 		.compatible	= "axis,artpec8-dw-mshc",
- 		.ctrl_type	= DW_MCI_TYPE_ARTPEC8,
-@@ -85,6 +93,8 @@ static inline u8 dw_mci_exynos_get_ciu_div(struct dw_mci *host)
- 		return EXYNOS4210_FIXED_CIU_CLK_DIV;
- 	else if (priv->ctrl_type == DW_MCI_TYPE_EXYNOS7 ||
- 			priv->ctrl_type == DW_MCI_TYPE_EXYNOS7_SMU ||
-+			priv->ctrl_type == DW_MCI_TYPE_EXYNOS7870 ||
-+			priv->ctrl_type == DW_MCI_TYPE_EXYNOS7870_SMU ||
- 			priv->ctrl_type == DW_MCI_TYPE_ARTPEC8)
- 		return SDMMC_CLKSEL_GET_DIV(mci_readl(host, CLKSEL64)) + 1;
- 	else
-@@ -100,7 +110,8 @@ static void dw_mci_exynos_config_smu(struct dw_mci *host)
- 	 * set for non-ecryption mode at this time.
- 	 */
- 	if (priv->ctrl_type == DW_MCI_TYPE_EXYNOS5420_SMU ||
--		priv->ctrl_type == DW_MCI_TYPE_EXYNOS7_SMU) {
-+		priv->ctrl_type == DW_MCI_TYPE_EXYNOS7_SMU ||
-+		priv->ctrl_type == DW_MCI_TYPE_EXYNOS7870_SMU) {
- 		mci_writel(host, MPSBEGIN0, 0);
- 		mci_writel(host, MPSEND0, SDMMC_ENDING_SEC_NR_MAX);
- 		mci_writel(host, MPSCTRL0, SDMMC_MPSCTRL_SECURE_WRITE_BIT |
-@@ -126,6 +137,12 @@ static int dw_mci_exynos_priv_init(struct dw_mci *host)
- 				DQS_CTRL_GET_RD_DELAY(priv->saved_strobe_ctrl);
- 	}
+ 	host->mmc->actual_clock = 0;
  
-+	if (priv->ctrl_type == DW_MCI_TYPE_EXYNOS7870 ||
-+		priv->ctrl_type == DW_MCI_TYPE_EXYNOS7870_SMU) {
-+		/* Quirk needed for certain Exynos SoCs */
-+		host->quirks |= DW_MMC_QUIRK_FIFO64_32;
+-	sdhci_writew(host, 0, SDHCI_CLOCK_CONTROL);
++	clk = sdhci_readw(host, SDHCI_CLOCK_CONTROL);
++	if (clk & SDHCI_CLOCK_CARD_EN)
++		sdhci_writew(host, clk & ~SDHCI_CLOCK_CARD_EN,
++			SDHCI_CLOCK_CONTROL);
+ 
+-	if (clock == 0)
++	if (clock == 0) {
++		sdhci_writew(host, 0, SDHCI_CLOCK_CONTROL);
+ 		return;
 +	}
-+
- 	if (priv->ctrl_type == DW_MCI_TYPE_ARTPEC8) {
- 		/* Quirk needed for the ARTPEC-8 SoC */
- 		host->quirks |= DW_MMC_QUIRK_EXTENDED_TMOUT;
-@@ -143,6 +160,8 @@ static void dw_mci_exynos_set_clksel_timing(struct dw_mci *host, u32 timing)
  
- 	if (priv->ctrl_type == DW_MCI_TYPE_EXYNOS7 ||
- 		priv->ctrl_type == DW_MCI_TYPE_EXYNOS7_SMU ||
-+		priv->ctrl_type == DW_MCI_TYPE_EXYNOS7870 ||
-+		priv->ctrl_type == DW_MCI_TYPE_EXYNOS7870_SMU ||
- 		priv->ctrl_type == DW_MCI_TYPE_ARTPEC8)
- 		clksel = mci_readl(host, CLKSEL64);
- 	else
-@@ -152,6 +171,8 @@ static void dw_mci_exynos_set_clksel_timing(struct dw_mci *host, u32 timing)
- 
- 	if (priv->ctrl_type == DW_MCI_TYPE_EXYNOS7 ||
- 		priv->ctrl_type == DW_MCI_TYPE_EXYNOS7_SMU ||
-+		priv->ctrl_type == DW_MCI_TYPE_EXYNOS7870 ||
-+		priv->ctrl_type == DW_MCI_TYPE_EXYNOS7870_SMU ||
- 		priv->ctrl_type == DW_MCI_TYPE_ARTPEC8)
- 		mci_writel(host, CLKSEL64, clksel);
- 	else
-@@ -222,6 +243,8 @@ static int dw_mci_exynos_resume_noirq(struct device *dev)
- 
- 	if (priv->ctrl_type == DW_MCI_TYPE_EXYNOS7 ||
- 		priv->ctrl_type == DW_MCI_TYPE_EXYNOS7_SMU ||
-+		priv->ctrl_type == DW_MCI_TYPE_EXYNOS7870 ||
-+		priv->ctrl_type == DW_MCI_TYPE_EXYNOS7870_SMU ||
- 		priv->ctrl_type == DW_MCI_TYPE_ARTPEC8)
- 		clksel = mci_readl(host, CLKSEL64);
- 	else
-@@ -230,6 +253,8 @@ static int dw_mci_exynos_resume_noirq(struct device *dev)
- 	if (clksel & SDMMC_CLKSEL_WAKEUP_INT) {
- 		if (priv->ctrl_type == DW_MCI_TYPE_EXYNOS7 ||
- 			priv->ctrl_type == DW_MCI_TYPE_EXYNOS7_SMU ||
-+			priv->ctrl_type == DW_MCI_TYPE_EXYNOS7870 ||
-+			priv->ctrl_type == DW_MCI_TYPE_EXYNOS7870_SMU ||
- 			priv->ctrl_type == DW_MCI_TYPE_ARTPEC8)
- 			mci_writel(host, CLKSEL64, clksel);
- 		else
-@@ -409,6 +434,8 @@ static inline u8 dw_mci_exynos_get_clksmpl(struct dw_mci *host)
- 
- 	if (priv->ctrl_type == DW_MCI_TYPE_EXYNOS7 ||
- 		priv->ctrl_type == DW_MCI_TYPE_EXYNOS7_SMU ||
-+		priv->ctrl_type == DW_MCI_TYPE_EXYNOS7870 ||
-+		priv->ctrl_type == DW_MCI_TYPE_EXYNOS7870_SMU ||
- 		priv->ctrl_type == DW_MCI_TYPE_ARTPEC8)
- 		return SDMMC_CLKSEL_CCLK_SAMPLE(mci_readl(host, CLKSEL64));
- 	else
-@@ -422,6 +449,8 @@ static inline void dw_mci_exynos_set_clksmpl(struct dw_mci *host, u8 sample)
- 
- 	if (priv->ctrl_type == DW_MCI_TYPE_EXYNOS7 ||
- 		priv->ctrl_type == DW_MCI_TYPE_EXYNOS7_SMU ||
-+		priv->ctrl_type == DW_MCI_TYPE_EXYNOS7870 ||
-+		priv->ctrl_type == DW_MCI_TYPE_EXYNOS7870_SMU ||
- 		priv->ctrl_type == DW_MCI_TYPE_ARTPEC8)
- 		clksel = mci_readl(host, CLKSEL64);
- 	else
-@@ -429,6 +458,8 @@ static inline void dw_mci_exynos_set_clksmpl(struct dw_mci *host, u8 sample)
- 	clksel = SDMMC_CLKSEL_UP_SAMPLE(clksel, sample);
- 	if (priv->ctrl_type == DW_MCI_TYPE_EXYNOS7 ||
- 		priv->ctrl_type == DW_MCI_TYPE_EXYNOS7_SMU ||
-+		priv->ctrl_type == DW_MCI_TYPE_EXYNOS7870 ||
-+		priv->ctrl_type == DW_MCI_TYPE_EXYNOS7870_SMU ||
- 		priv->ctrl_type == DW_MCI_TYPE_ARTPEC8)
- 		mci_writel(host, CLKSEL64, clksel);
- 	else
-@@ -443,6 +474,8 @@ static inline u8 dw_mci_exynos_move_next_clksmpl(struct dw_mci *host)
- 
- 	if (priv->ctrl_type == DW_MCI_TYPE_EXYNOS7 ||
- 		priv->ctrl_type == DW_MCI_TYPE_EXYNOS7_SMU ||
-+		priv->ctrl_type == DW_MCI_TYPE_EXYNOS7870 ||
-+		priv->ctrl_type == DW_MCI_TYPE_EXYNOS7870_SMU ||
- 		priv->ctrl_type == DW_MCI_TYPE_ARTPEC8)
- 		clksel = mci_readl(host, CLKSEL64);
- 	else
-@@ -453,6 +486,8 @@ static inline u8 dw_mci_exynos_move_next_clksmpl(struct dw_mci *host)
- 
- 	if (priv->ctrl_type == DW_MCI_TYPE_EXYNOS7 ||
- 		priv->ctrl_type == DW_MCI_TYPE_EXYNOS7_SMU ||
-+		priv->ctrl_type == DW_MCI_TYPE_EXYNOS7870 ||
-+		priv->ctrl_type == DW_MCI_TYPE_EXYNOS7870_SMU ||
- 		priv->ctrl_type == DW_MCI_TYPE_ARTPEC8)
- 		mci_writel(host, CLKSEL64, clksel);
- 	else
-@@ -632,6 +667,10 @@ static const struct of_device_id dw_mci_exynos_match[] = {
- 			.data = &exynos_drv_data, },
- 	{ .compatible = "samsung,exynos7-dw-mshc-smu",
- 			.data = &exynos_drv_data, },
-+	{ .compatible = "samsung,exynos7870-dw-mshc",
-+			.data = &exynos_drv_data, },
-+	{ .compatible = "samsung,exynos7870-dw-mshc-smu",
-+			.data = &exynos_drv_data, },
- 	{ .compatible = "axis,artpec8-dw-mshc",
- 			.data = &artpec_drv_data, },
- 	{},
+ 	clk = sdhci_calc_clk(host, clock, &host->mmc->actual_clock);
+ 	sdhci_enable_clk(host, clk);
 -- 
 2.39.5
 
