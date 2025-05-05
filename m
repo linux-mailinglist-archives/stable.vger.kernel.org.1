@@ -1,65 +1,59 @@
-Return-Path: <stable+bounces-140421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07512AAA8B5
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:59:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C5C3AAA88A
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:56:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 159D9987E72
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:55:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEF351886A7A
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:55:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E8CF34FAEE;
-	Mon,  5 May 2025 22:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 036E934FB19;
+	Mon,  5 May 2025 22:40:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Eo9JhrvG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gWt3Au6O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52F1934FAE6;
-	Mon,  5 May 2025 22:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF4BB34FB11;
+	Mon,  5 May 2025 22:40:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484821; cv=none; b=rn6wmIBqLa7r4YJmRSC1DqvJewcijyxMYqHZMhSagjfowXZk6M/A1HibobVD4motjUlP5kIPkrGzvi+0bUGqm57Cc7IpPayFGD22Smv0YfxAays1ZKr6NpzSAAa6fJGLjTyulAkRq4nytSjNy72+Uzwq6gMgsu9+H60sKOem6fc=
+	t=1746484822; cv=none; b=OJ4l517wqoopQ4mgUw2HXiYBxNRtSnFGWMc3wShQAbiiEMK82kW9Z5YRhxFxBpmZYabgM6T/9oEP3EXrE0qeBsMfTQTSr1CmYsHOwwibk8FomqPU5LoxaGke56izPOTDHhtGYkbYoujF59H0nM8cxUpp27ZiPmgMbUVYPT81bZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484821; c=relaxed/simple;
-	bh=BYmx1SoM6cZjl6yYUpyus6wm6SDYezgd/kLQ4Fl4VDg=;
+	s=arc-20240116; t=1746484822; c=relaxed/simple;
+	bh=DtvHFykVSDQuaO9lkQBRldoHX++x89ZUDYXZWFSdAIA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XpAmIVKxch2dinWFmc6RLtyUZmxtaYthjVsco6vYXtmRooeg48Xr6W9SlgczKvgN7+43YF9RS+f4S7BVlqRzoNeae5RMz+h+l/jlGN4LCBqcBUbc822hH9M88qB9FAWfRnUBjt7q2KADjPhNF2T+VygwYKjJ05H0xhkX7fZpN04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Eo9JhrvG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A894FC4CEED;
-	Mon,  5 May 2025 22:40:19 +0000 (UTC)
+	 MIME-Version; b=tppnNgLvO3Yl/XAts/BYPrHMrbW7VwMFlWx9Ht5VVIIx8MzYTRBjh6xv972XlhNhy+Jj0JCUjXdu1ImbVx4dG7Ja+QwT053wkNogMKRSecOlhR6ttVuZaNdHAfBi2GvCcrcbOMfIuuTHfGBy8Pq5kw/yMT5YxEz0fA9PY6KeTAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gWt3Au6O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97A0AC4CEEE;
+	Mon,  5 May 2025 22:40:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484821;
-	bh=BYmx1SoM6cZjl6yYUpyus6wm6SDYezgd/kLQ4Fl4VDg=;
+	s=k20201202; t=1746484822;
+	bh=DtvHFykVSDQuaO9lkQBRldoHX++x89ZUDYXZWFSdAIA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Eo9JhrvGKBrKck7wmWvTh9RjSkiL1DxMWo12WTqJmQajssuC45TgDS8eYprvF+Y0y
-	 jbLXck/6eVvTRspHRCMMtFTRftTYM8EY7hVB9hHPyaHuf/VyTAjI23w/NpoNyXtc29
-	 320jlQ0eKcoJmpBOeOuYy7NzNFgWWJ+405t/VGDf+sOuVIPp0Vzd9oAC4oNHnVGw7x
-	 JNBtr1/GDyCY7Tbve3o8UjlnrbrjJfEC8FANKu9ttQw+gNxGiDoKtiEH3LrwOZWXNr
-	 yE3Bx3AIBsKAgGBXieNbResBjJPNRlelgHGda410rhxDh9xRwnla5EjB/m2iVFElvn
-	 Wv7jQlJ5xg92g==
+	b=gWt3Au6Oga2Hd+B8hhpeiuFy/MNmC8NbuMn5tzL80rxdeVnRlfi3WDM27EBFtSSHz
+	 Y1aHzp0M28CiXGVa+GJcUsTX9OlqB9vB7dtpGG5J+WanrHqWVNdV8WYYFRWgfwINCZ
+	 Guhf++53j0b7QqcRM5nC+J0saQsWcIgs58/qQuXpWFAD+W8qkHSSVBK/E4OjUTOpiD
+	 ZfElBXIwCBCKq6Bw7N3KvnCmh37hQtjjRiRBkARB5b5SS+VobppRRIfbHzvVXCPHyE
+	 cf78TU+UckenYEVsyuGtL6PMmaGzgCjzitrVOdfCvkEFLy/FIsq7vhI2e1HcDQbFS9
+	 WIckcXpxaUE4w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Benjamin Coddington <bcodding@redhat.com>,
+Cc: Luis de Arquer <luis.dearquer@inertim.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	chuck.lever@oracle.com,
-	trondmy@kernel.org,
-	anna@kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-nfs@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 030/486] SUNRPC: rpcbind should never reset the port to the value '0'
-Date: Mon,  5 May 2025 18:31:46 -0400
-Message-Id: <20250505223922.2682012-30-sashal@kernel.org>
+	heiko@sntech.de,
+	linux-spi@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.12 031/486] spi-rockchip: Fix register out of bounds access
+Date: Mon,  5 May 2025 18:31:47 -0400
+Message-Id: <20250505223922.2682012-31-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -74,38 +68,35 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Luis de Arquer <luis.dearquer@inertim.com>
 
-[ Upstream commit 214c13e380ad7636631279f426387f9c4e3c14d9 ]
+[ Upstream commit 7a874e8b54ea21094f7fd2d428b164394c6cb316 ]
 
-If we already had a valid port number for the RPC service, then we
-should not allow the rpcbind client to set it to the invalid value '0'.
+Do not write native chip select stuff for GPIO chip selects.
+GPIOs can be numbered much higher than native CS.
+Also, it makes no sense.
 
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Luis de Arquer <luis.dearquer@inertim.com>
+Link: https://patch.msgid.link/365ccddfba110549202b3520f4401a6a936e82a8.camel@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/rpcb_clnt.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/spi/spi-rockchip.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sunrpc/rpcb_clnt.c b/net/sunrpc/rpcb_clnt.c
-index 102c3818bc54d..53bcca365fb1c 100644
---- a/net/sunrpc/rpcb_clnt.c
-+++ b/net/sunrpc/rpcb_clnt.c
-@@ -820,9 +820,10 @@ static void rpcb_getport_done(struct rpc_task *child, void *data)
- 	}
+diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
+index 40a64a598a749..5008489d6fac8 100644
+--- a/drivers/spi/spi-rockchip.c
++++ b/drivers/spi/spi-rockchip.c
+@@ -547,7 +547,7 @@ static int rockchip_spi_config(struct rockchip_spi *rs,
+ 	cr0 |= (spi->mode & 0x3U) << CR0_SCPH_OFFSET;
+ 	if (spi->mode & SPI_LSB_FIRST)
+ 		cr0 |= CR0_FBM_LSB << CR0_FBM_OFFSET;
+-	if (spi->mode & SPI_CS_HIGH)
++	if ((spi->mode & SPI_CS_HIGH) && !(spi_get_csgpiod(spi, 0)))
+ 		cr0 |= BIT(spi_get_chipselect(spi, 0)) << CR0_SOI_OFFSET;
  
- 	trace_rpcb_setport(child, map->r_status, map->r_port);
--	xprt->ops->set_port(xprt, map->r_port);
--	if (map->r_port)
-+	if (map->r_port) {
-+		xprt->ops->set_port(xprt, map->r_port);
- 		xprt_set_bound(xprt);
-+	}
- }
- 
- /*
+ 	if (xfer->rx_buf && xfer->tx_buf)
 -- 
 2.39.5
 
