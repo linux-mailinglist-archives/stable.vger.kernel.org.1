@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-141350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38582AAB2B7
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:27:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABA22AAB2C8
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:29:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C3977ABCE9
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:25:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FE67188C6EC
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:27:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89BA6293455;
-	Tue,  6 May 2025 00:30:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4287D36D43D;
+	Tue,  6 May 2025 00:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oKJ+LPaV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jlaStX4p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3913A2BD90E;
-	Mon,  5 May 2025 22:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FDAB2D9DA4;
+	Mon,  5 May 2025 22:57:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485854; cv=none; b=a0YsVKZkEALzWaqQ5JQLKrSiiDirydkGZ5tjK9+ebBpMlKiCCswB8cCaZqnb4w/fhUCqR+rj9+v7BaxtkrLNKrB8DWYUVCV3Y68EY983zBakeAStYB5hY7Uqz3wqqKzhcyMp4QGpAluQ2N6ii0ZClunRybe0OZap4+lulfB+Fgc=
+	t=1746485855; cv=none; b=kXl+Kc3KCZ4RU2GJgSB15yS52leL9DhO2/5qg5GK3wXdVAJv7wjh4iMOdFIvqRwBS8PGfEpZIVkuNW6/vhIRLSol6PmDoY222n7Eh8dmiIDQ6CAoMEtIfVEZI2GkPie37lOfKKmjFmGpZflp8o4gkIjPIaNBnjIJ4ssw21nrcjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485854; c=relaxed/simple;
-	bh=2FQDgPCajLxKbD65RjjBamLGkOjnxgGPH+1vSbcdkLU=;
+	s=arc-20240116; t=1746485855; c=relaxed/simple;
+	bh=3VTvkgWlhG6cml0I+iMJ5YstdI9lUTyy+ZFjdKg1mLk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=LxNUwP5GKlOTuXC0WgCpfzXRgyj3xz67Khac8u3mS0Z71ETL+x5ofd41jZCzVD8BByrnPfdjdHG51+jMnYw6stoKm38l2LUeFpfClED7LaDHiCdt6VagDQqTOEKoo7mZAVNuB7MEZoWwIDDBnqmxTf1yghjw/nMJFzQ8AJ2dxgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oKJ+LPaV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D69F0C4CEED;
-	Mon,  5 May 2025 22:57:32 +0000 (UTC)
+	 MIME-Version; b=YqMzw6VU4nQQfMXwBgKItwFDgeEBhCGHT6uirPie2pSIeddezBbgx5Z/6xGepJQYOl17B/dbbahwpdmGjN1cmvCtCWVX55C8He4mqKmWWJbgfxHdjAohTfqnjmkVMKakSpyziLaMl+oIE2Fw1E51plqL+EoI2p+HJpR50XqO2p0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jlaStX4p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 186FCC4CEEE;
+	Mon,  5 May 2025 22:57:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485853;
-	bh=2FQDgPCajLxKbD65RjjBamLGkOjnxgGPH+1vSbcdkLU=;
+	s=k20201202; t=1746485855;
+	bh=3VTvkgWlhG6cml0I+iMJ5YstdI9lUTyy+ZFjdKg1mLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oKJ+LPaVsRoHlUh/NKD0EYQTohJo64/JPFZZzV1XRTzg3PhPSKP4TMIKsm7YIrJvu
-	 HI/wcrzyJbBffz93JfUPbzTIfYW/eioC/hR2gmFzL2vnaorcKi/sxoMQkTbDowmGPx
-	 228J/oItHuJ5M8LDwe8/zI4JX+SVm+LNXNenJ8hLuDRk14Q24F6suHWUEwHaR4R88F
-	 lGqzLHtpJpRdki8MGkkrBniVehGfuOzp9n2JzOI8hRyIS8jd3ycuGJC9Y8nHBH586a
-	 0zCI8m/vW3F7RVXeo97wwA0OthaO9bAHfoI22N9T4gqVNB8s+MuatUx6SwtSm+1BC5
-	 x5B9Hac99MqmA==
+	b=jlaStX4pzLwK20c4jdajXDiGCl7tBMBSxvU0gtZPTwyvnWRA2HWTCLp2uD5UmLOq+
+	 IlCLDETIbf44tCuOuQ4vuZl6C1eBj5LJRU9ckMQmpfQe55tNLR/Bd3KKzqto/RtgTW
+	 ZLm1XPj8fGgCXlZQKFuNZXux0xJ/qKvsqW0uKFtT61ZBNnM61g52/Ag9+0QaDhHZDN
+	 sLEeHjTHs6mnNuGB7yY6jbUsjXe2pHw2yiusKnSefw8OEtotqXSrnhKw0Vh9eq8gFF
+	 Y6gUIPKSDLMwh4sED50KrtIDaxuvhCUrprBh0LdyrNJIjKm/uDhAG81cQqga5tU3GH
+	 K7a1Rmn1VdS+A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+Cc: Frank Li <Frank.Li@nxp.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>,
-	peterz@infradead.org
-Subject: [PATCH AUTOSEL 6.6 030/294] objtool: Properly disable uaccess validation
-Date: Mon,  5 May 2025 18:52:10 -0400
-Message-Id: <20250505225634.2688578-30-sashal@kernel.org>
+	jingoohan1@gmail.com,
+	manivannan.sadhasivam@linaro.org,
+	lpieralisi@kernel.org,
+	kw@linux.com,
+	linux-pci@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 031/294] PCI: dwc: ep: Ensure proper iteration over outbound map windows
+Date: Mon,  5 May 2025 18:52:11 -0400
+Message-Id: <20250505225634.2688578-31-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -66,66 +69,43 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit e1a9dda74dbffbc3fa2069ff418a1876dc99fb14 ]
+[ Upstream commit f3e1dccba0a0833fc9a05fb838ebeb6ea4ca0e1a ]
 
-If opts.uaccess isn't set, the uaccess validation is disabled, but only
-partially: it doesn't read the uaccess_safe_builtin list but still tries
-to do the validation.  Disable it completely to prevent false warnings.
+Most systems' PCIe outbound map windows have non-zero physical addresses,
+but the possibility of encountering zero increased after following commit
+("PCI: dwc: Use parent_bus_offset").
 
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/0e95581c1d2107fb5f59418edf2b26bba38b0cbb.1742852846.git.jpoimboe@kernel.org
+'ep->outbound_addr[n]', representing 'parent_bus_address', might be 0 on
+some hardware, which trims high address bits through bus fabric before
+sending to the PCIe controller.
+
+Replace the iteration logic with 'for_each_set_bit()' to ensure only
+allocated map windows are iterated when determining the ATU index from a
+given address.
+
+Link: https://lore.kernel.org/r/20250315201548.858189-12-helgaas@kernel.org
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/objtool/check.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/pci/controller/dwc/pcie-designware-ep.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index a1b14378bab04..f5af48502c9c8 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -3287,7 +3287,7 @@ static int handle_insn_ops(struct instruction *insn,
- 		if (update_cfi_state(insn, next_insn, &state->cfi, op))
- 			return 1;
+diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
+index f2e5feba55267..26ad643fb4248 100644
+--- a/drivers/pci/controller/dwc/pcie-designware-ep.c
++++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+@@ -281,7 +281,7 @@ static int dw_pcie_find_index(struct dw_pcie_ep *ep, phys_addr_t addr,
+ 	u32 index;
+ 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
  
--		if (!insn->alt_group)
-+		if (!opts.uaccess || !insn->alt_group)
+-	for (index = 0; index < pci->num_ob_windows; index++) {
++	for_each_set_bit(index, ep->ob_window_map, pci->num_ob_windows) {
+ 		if (ep->outbound_addr[index] != addr)
  			continue;
- 
- 		if (op->dest.type == OP_DEST_PUSHF) {
-@@ -3754,6 +3754,9 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
- 			return 0;
- 
- 		case INSN_STAC:
-+			if (!opts.uaccess)
-+				break;
-+
- 			if (state.uaccess) {
- 				WARN_INSN(insn, "recursive UACCESS enable");
- 				return 1;
-@@ -3763,6 +3766,9 @@ static int validate_branch(struct objtool_file *file, struct symbol *func,
- 			break;
- 
- 		case INSN_CLAC:
-+			if (!opts.uaccess)
-+				break;
-+
- 			if (!state.uaccess && func) {
- 				WARN_INSN(insn, "redundant UACCESS disable");
- 				return 1;
-@@ -4238,7 +4244,8 @@ static int validate_symbol(struct objtool_file *file, struct section *sec,
- 	if (!insn || insn->ignore || insn->visited)
- 		return 0;
- 
--	state->uaccess = sym->uaccess_safe;
-+	if (opts.uaccess)
-+		state->uaccess = sym->uaccess_safe;
- 
- 	ret = validate_branch(file, insn_func(insn), insn, *state);
- 	if (ret)
+ 		*atu_index = index;
 -- 
 2.39.5
 
