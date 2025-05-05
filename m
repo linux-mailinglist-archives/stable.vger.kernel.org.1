@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-139972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04569AAA328
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:10:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DBAFAAA32B
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:10:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CF7516DF53
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:10:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F40D01634CC
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:10:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE9932EEBE3;
-	Mon,  5 May 2025 22:23:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38E3828369A;
+	Mon,  5 May 2025 22:23:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JwrSxt84"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="khwClrlj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0B72EEBDF;
-	Mon,  5 May 2025 22:23:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E36562EEBFB;
+	Mon,  5 May 2025 22:23:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483805; cv=none; b=W+kSc9h7psZQBJ9DAgbUy+ySDd+GDBVsOx9dsTqB1USbrxdxwBQN+GVBp65JVNIqh/96eXxmqECc9xPCU/7xHzEd1mc8+lbttC91qEFpU38lk86fZVZfGdfdi+nhr4aap6QxZv/k0LmpoZ4I8oPsFS1s7xkE7WvVWCExw9kEevY=
+	t=1746483808; cv=none; b=UTpD7geIqcyqhZ9yZsazoHfHfxa5H+rXFv7YRUdpMGAGHz5As80SfqQcBCIjzxb0I16b/iv8dkXvWzJH5EDdWN3/jnIzIcmolfzGO1hyGPS7XrTRoaULCWZB6KIH8BW1fZHkYi0IpNpDFsqtVsEcgytGcQKrFLhDVkhUuA5m1bM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483805; c=relaxed/simple;
-	bh=bogz9Du2XlSVscSMUP8bER1aXgn506UsMYXn8KFqCwU=;
+	s=arc-20240116; t=1746483808; c=relaxed/simple;
+	bh=M3gOJF8FbIPNH7gnh+YiNGAF+azqNqWc3tUWY7cigN0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=O+hPA2doPh/LV7q9tZ3NrKMHy7TxH+r6/996WTYpDdRXDIX+oXkWaNmaT0SupmnTXOtECrCLOIvT9oSK4Zt7iIAAuu94z4/n+22WJFXb1TOza7FtPOuDS+TaFGtKRby38CLAEkfOSEwV3j/9/QP4JPw1Duwe+Akw71yvDYg88jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JwrSxt84; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E4D6C4CEE4;
-	Mon,  5 May 2025 22:23:23 +0000 (UTC)
+	 MIME-Version; b=H0KNlVVO4sAJF4FxTWhETC9Hx/Xzl7nuSEUomFA3X1qKzz1agdMdwR4NiPUs+uW1YJcx8N8i30Q8gZsIeujuu3bW2dVcEk7mXxIAKYiD4OUlXhpq3Kil6wD5RIbzrPmF6VqIpeGSgfJHih9ScxWVzxye7qdYME/D+IrWAefHoBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=khwClrlj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB9A4C4CEE4;
+	Mon,  5 May 2025 22:23:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483805;
-	bh=bogz9Du2XlSVscSMUP8bER1aXgn506UsMYXn8KFqCwU=;
+	s=k20201202; t=1746483807;
+	bh=M3gOJF8FbIPNH7gnh+YiNGAF+azqNqWc3tUWY7cigN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JwrSxt84e/oJudpVKBQcnytYdmYPVMS8qEieu6rx8F3lENMWK3Qbe4Rrne0D85DAs
-	 aRlqVEm1cblHIIb3SE4+xOrQADrTEQK/t+vbb/zD2eb/QvngH7fOAeheVtv3h84FI0
-	 1o2k/YQB4yt8u8GiNaFqAnHAaDZHo5roefUnIRU7A4ZMwXeWSh1XNdVoE4ubn6pQMO
-	 yZ9UYlAmHZh7+IjUk7bq04rp9ApkKP36XIg1NpkTszonztB3/ng/dC2pyLP3RRajDx
-	 Yhd1/FLLvIm68WhlQfqBCOpr0oQ92v07Vojnu3OydgEHUAPN04u6T+xtEeZyxqRXjn
-	 eYSALhrnyOs2Q==
+	b=khwClrljQV/16Z13hyP3591HnjJXGVJvvnJT6YqsO3SEiHVLtIWM9jC3EkK2jvcVp
+	 lj7DkwpfCERmv2aCZb8FDGUy4Q0fOO6W73LpSKSTwkWFqGL/HzHY3KcQ2XpRCyF0KA
+	 FfbWN7//sZlO0CZz2tYA4DrMcqVdHo69bWiyfS6gUHpXKxDkF1Mhb0bayUcwWjMbzs
+	 V2/fyglM6GHbe8Hevqd/yfb87zwSmltLVAmG9YBaF9B/gEv+edUFcpmaRtdyxCpJCA
+	 wxuqBx3vKPgrQVMGZsIBv2IjhIDpycPpIoEnM6zZ/5YOnOAmvj4RXbppfTXDKggDDV
+	 Rh0vNGSNfiIPA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Andreas Schwab <schwab@linux-m68k.org>,
-	Rob Herring <robh@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+Cc: Takashi Iwai <tiwai@suse.de>,
+	syzbot+2d373c9936c00d7e120c@syzkaller.appspotmail.com,
 	Sasha Levin <sashal@kernel.org>,
-	mpe@ellerman.id.au,
-	sourabhjain@linux.ibm.com,
-	mahesh@linux.ibm.com,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH AUTOSEL 6.14 225/642] powerpc/prom_init: Fixup missing #size-cells on PowerBook6,7
-Date: Mon,  5 May 2025 18:07:21 -0400
-Message-Id: <20250505221419.2672473-225-sashal@kernel.org>
+	perex@perex.cz,
+	tiwai@suse.com,
+	viro@zeniv.linux.org.uk,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 226/642] ALSA: seq: Improve data consistency at polling
+Date: Mon,  5 May 2025 18:07:22 -0400
+Message-Id: <20250505221419.2672473-226-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -69,42 +68,68 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Andreas Schwab <schwab@linux-m68k.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 7e67ef889c9ab7246547db73d524459f47403a77 ]
+[ Upstream commit e3cd33ab17c33bd8f1a9df66ec83a15dd8f7afbb ]
 
-Similar to the PowerMac3,1, the PowerBook6,7 is missing the #size-cells
-property on the i2s node.
+snd_seq_poll() calls snd_seq_write_pool_allocated() that reads out a
+field in client->pool object, while it can be updated concurrently via
+ioctls, as reported by syzbot.  The data race itself is harmless, as
+it's merely a poll() call, and the state is volatile.  OTOH, the read
+out of poll object info from the caller side is fragile, and we can
+leave it better in snd_seq_pool_poll_wait() alone.
 
-Depends-on: commit 045b14ca5c36 ("of: WARN on deprecated #address-cells/#size-cells handling")
-Signed-off-by: Andreas Schwab <schwab@linux-m68k.org>
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
-[maddy: added "commit" work in depends-on to avoid checkpatch error]
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/875xmizl6a.fsf@igel.home
+A similar pattern is seen in snd_seq_kernel_client_write_poll(), too,
+which is called from the OSS sequencer.
+
+This patch drops the pool checks from the caller side and add the
+pool->lock in snd_seq_pool_poll_wait() for better data consistency.
+
+Reported-by: syzbot+2d373c9936c00d7e120c@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/67c88903.050a0220.15b4b9.0028.GAE@google.com
+Link: https://patch.msgid.link/20250307084246.29271-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/prom_init.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/core/seq/seq_clientmgr.c | 5 +----
+ sound/core/seq/seq_memory.c    | 1 +
+ 2 files changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
-index 57082fac46687..fe4659ba8c22a 100644
---- a/arch/powerpc/kernel/prom_init.c
-+++ b/arch/powerpc/kernel/prom_init.c
-@@ -2889,11 +2889,11 @@ static void __init fixup_device_tree_pmac(void)
- 	char type[8];
- 	phandle node;
+diff --git a/sound/core/seq/seq_clientmgr.c b/sound/core/seq/seq_clientmgr.c
+index 706f53e39b53c..7f03e1ec92355 100644
+--- a/sound/core/seq/seq_clientmgr.c
++++ b/sound/core/seq/seq_clientmgr.c
+@@ -1150,8 +1150,7 @@ static __poll_t snd_seq_poll(struct file *file, poll_table * wait)
+ 	if (snd_seq_file_flags(file) & SNDRV_SEQ_LFLG_OUTPUT) {
  
--	// Some pmacs are missing #size-cells on escc nodes
-+	// Some pmacs are missing #size-cells on escc or i2s nodes
- 	for (node = 0; prom_next_node(&node); ) {
- 		type[0] = '\0';
- 		prom_getprop(node, "device_type", type, sizeof(type));
--		if (prom_strcmp(type, "escc"))
-+		if (prom_strcmp(type, "escc") && prom_strcmp(type, "i2s"))
- 			continue;
+ 		/* check if data is available in the pool */
+-		if (!snd_seq_write_pool_allocated(client) ||
+-		    snd_seq_pool_poll_wait(client->pool, file, wait))
++		if (snd_seq_pool_poll_wait(client->pool, file, wait))
+ 			mask |= EPOLLOUT | EPOLLWRNORM;
+ 	}
  
- 		if (prom_getproplen(node, "#size-cells") != PROM_ERROR)
+@@ -2586,8 +2585,6 @@ int snd_seq_kernel_client_write_poll(int clientid, struct file *file, poll_table
+ 	if (client == NULL)
+ 		return -ENXIO;
+ 
+-	if (! snd_seq_write_pool_allocated(client))
+-		return 1;
+ 	if (snd_seq_pool_poll_wait(client->pool, file, wait))
+ 		return 1;
+ 	return 0;
+diff --git a/sound/core/seq/seq_memory.c b/sound/core/seq/seq_memory.c
+index 20155e3e87c6a..ccde0ca3d2082 100644
+--- a/sound/core/seq/seq_memory.c
++++ b/sound/core/seq/seq_memory.c
+@@ -427,6 +427,7 @@ int snd_seq_pool_poll_wait(struct snd_seq_pool *pool, struct file *file,
+ 			   poll_table *wait)
+ {
+ 	poll_wait(file, &pool->output_sleep, wait);
++	guard(spinlock_irq)(&pool->lock);
+ 	return snd_seq_output_ok(pool);
+ }
+ 
 -- 
 2.39.5
 
