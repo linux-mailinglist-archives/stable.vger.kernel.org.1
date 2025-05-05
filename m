@@ -1,136 +1,195 @@
-Return-Path: <stable+bounces-139681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 597D5AA934B
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 14:36:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33EACAA93B9
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 14:57:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C18DB1779D7
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 12:36:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1DA5A7A9B07
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 12:56:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3999A248897;
-	Mon,  5 May 2025 12:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A2BB251797;
+	Mon,  5 May 2025 12:57:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ebwuewjD"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="exql5B09"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A86206F2A
-	for <stable@vger.kernel.org>; Mon,  5 May 2025 12:36:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEBA2146D53;
+	Mon,  5 May 2025 12:57:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746448589; cv=none; b=agdW7tv87KgKUGj2WI0dbKOOYXWWSm43FRPBECurGIMucil/VOk1RUB4mnTAmJ998vFz8goj7MiKcBOAurylnXCQfW79qzLM95oxNAMlc+nVNoSqyQGZxOJTJQ6M4PP94Ad15jC/3kq0hbwJexzUCNYbUF9Fii4sFag7BZvcPnA=
+	t=1746449846; cv=none; b=Y/3gAFfxGw9U9I+21USVMQjRnZybl6+KRG5WO9W2p0a8sWnOcaCBBJod7ZZMcJ2ffvPwFJ3JHjc9dVoScTvCjdJxI77y54Ii0GVIZG6fWDEjoHnhgTmFmVIOCx9ztiyEKaft/VlrJtiuc14EerGYG0c7wKb10O8mBK8cCT/icoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746448589; c=relaxed/simple;
-	bh=LC3z7RCWc/JvyjQUbetuKHaUmEJ8vDFK9bVb7iQVdFM=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=OJxLBWEduc1DHe3U8a0yFjzwWuDoqrrgWW7D++bmcs0F85sahjtlB+IToVl+nxG9XH1thIA6MCNH7ne3ydODfyko/TL0iiq4DjVNiqWIpHeiDa/adQRCUPhW4b0ylNn5CVOitgaVhwNiI84CGeI9LqXeRFYerUFodT8m7YR0ZU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ebwuewjD; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3a07a7b517dso2723208f8f.3
-        for <stable@vger.kernel.org>; Mon, 05 May 2025 05:36:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1746448585; x=1747053385; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Pms5fvQ0dnJoBWv+1H4MBoKeVfIfZlhVgzVaTxFBOSc=;
-        b=ebwuewjDjIQjexRgfqtFdaihjgh3tNgeiISAARecivYOz2Quacw0B67MEOFyoFAL1v
-         jD5hoJIhEOt9zJb8shSBj1PE9+ouHRL0+HwtUtMDobUpXZ0xKChJKtfGLvATosVp2cXn
-         /uvIJcfW2XHKJBC+5/VmS3BpgL2EmRJ7v289LP+z8xicwGmB/juYlezyuVgXXVFpi+bT
-         mI2lnwZKw3KHXPw2gl6WxIxejXOEBiSEBCzfagLE5N8aMFHjA1JAjnJIF3Xy8APM8L7b
-         ksU6UawgeAA2lOPZygd7r9O2qDINzS3GkzG58z33dnbRF0YqYhzl/P2yqVKoEuCg1/Uu
-         hk3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746448585; x=1747053385;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Pms5fvQ0dnJoBWv+1H4MBoKeVfIfZlhVgzVaTxFBOSc=;
-        b=eiSUDDXWqhPwV3ofoXI1rVd/8utbimMa/U3kbDbaa/kqmto2drF0fSjQaaLw6iVyF7
-         BQfGJsTY1Baecq/5NR4/92Dx7qec+Um6ZMp0fKvR/GoTqw9Hv7wTxdSf4zwKFtc4S++v
-         Oqhc46IQ2O0WfyKPOtFR0qhqwLCjunqS08buTBqEoDUolWvmc/ESWEwt6Mp1W2OzNsH6
-         QQK2K+e/dUnj7kjM102MR0VkXRVAm9sJ7IHiVVmsFk1oZ9y1WbQmCsFOGLGCRcakx+db
-         zwiD7ZG0S5WTfj+T6RJmh/0MptUuPLHtXCsCVEu+DgJd0PdCShwwPr7SJ4s8a6PVzEY5
-         0y1w==
-X-Gm-Message-State: AOJu0YxyUiS64EKFEA6xTP7HJEsTElhwA8c1dztAEhRd4g1gPlWIUV90
-	PyFpk7eLWyoLYxr7m3eJv/83kXlsJwqgzKFKmsEBsCOAryLL0umwq/PvtswclukOdcgseh4AbF8
-	G
-X-Gm-Gg: ASbGncsv/aRC5YaKB8NBnrcA9Lp7X6FMJNMImsTbmI+qUixMZb6L2o6LxKP6Ygmh1Oz
-	x1mm3NFkUCr352cY2JOPRtzGt6YtaG3cBEylNK40IMd8A5ISa/FbPwDjd4CDhhKaqEtTkeXB/WJ
-	M53Hk8IIyQqkeYAFj0lnhdr7QvRnF0hxE2zCQ1nEGdFxagj1ZxgRgpHcrBGzSDmN4W/8V1cm2k1
-	yD7a2Lzs1DB2xpuIAiGjw2a5HimgGCj9OcRB1hRj41eJ2ATEkuPalIt6JDt2eJUuMUpTJoIVezg
-	BgMUQ6EKoYzpTTvEaT9a18ht5UrfBBp+eUJSsVoXn9bfEMFwN614dgdxugzvMvzVEsT9mYAJ
-X-Google-Smtp-Source: AGHT+IGsEliGJnwJASNNzDOIlUfeubpmj2r4ysjGNDPlKRJUSM2MTHWLJu/fnMkKxMkulAhjanR1Kg==
-X-Received: by 2002:a05:6000:1a8a:b0:39c:d05:3779 with SMTP id ffacd0b85a97d-3a09cf4d5admr5929318f8f.49.1746448585435;
-        Mon, 05 May 2025 05:36:25 -0700 (PDT)
-Received: from arrakeen.starnux.net ([2a01:e0a:3d9:2080:8261:5fff:fe11:bdda])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a099ae0cefsm10434442f8f.15.2025.05.05.05.36.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 May 2025 05:36:24 -0700 (PDT)
-From: Neil Armstrong <neil.armstrong@linaro.org>
-To: Kevin Hilman <khilman@baylibre.com>, 
- Jerome Brunet <jbrunet@baylibre.com>, 
- Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, devicetree@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-amlogic@lists.infradead.org, 
- linux-kernel@vger.kernel.org, Christian Hewitt <christianshewitt@gmail.com>
-Cc: stable@vger.kernel.org, Emanuel Strobel <emanuel.strobel@yahoo.com>
-In-Reply-To: <20250503084443.3704866-1-christianshewitt@gmail.com>
-References: <20250503084443.3704866-1-christianshewitt@gmail.com>
-Subject: Re: [PATCH] arm64: dts: amlogic: dreambox: fix missing clkc_audio
- node
-Message-Id: <174644858455.1377517.9885445879892405270.b4-ty@linaro.org>
-Date: Mon, 05 May 2025 14:36:24 +0200
+	s=arc-20240116; t=1746449846; c=relaxed/simple;
+	bh=A8dahzrlKe2KglU8LHZBXCxvVFCHODOywH9O+yQASNU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=H4hH1R6Y3sqPELpNi+SlNxitt1ahBAi8MEdIacJOIgapDrcabNzr5GDxbkAZKMcPMse4JCSsjQbPDrxIxXlCW3Du2JnOI/sYBQJRQ0EHNRwNmhUOSgmNTMF/I0ys19B0vrLVaPVZwmiFKfRkr+gpj+YSyHk46PDV6le1WhU+9rI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=exql5B09; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1746449845; x=1777985845;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=A8dahzrlKe2KglU8LHZBXCxvVFCHODOywH9O+yQASNU=;
+  b=exql5B09DKgDbYEO84PPTSArqOsnlI2KNBIEr60zFntrZjTRi7poc4iw
+   qUdeZhP4BlrZv9JY9fUHfeUvI8UZf6se1wzhHmnWvYR1RvAOUVpPyiegR
+   ZZ724rCyM95mJqOLMZUX/2XTFtkyhvQKpoYYrek5dVJUrOIu1FHloId6S
+   cLklhRYr9mR1Z2UJX+8DRm4vVfilJtGscyncaW9FJnAjeHJf+S2K6DzhZ
+   RGe6NqqMbc2p28/njWVn+dyPjmzFlpZUhiA+v0E5S2CNBAqrXHqPIoJ80
+   JctBam0ind0+DhcT8t6HNNPF4Sc7o/Qad6Zur5gVmKI6LgytACGbBhyPL
+   A==;
+X-CSE-ConnectionGUID: lEO8AYKXQoa6IFcaYLCanw==
+X-CSE-MsgGUID: TGeL6MqUSVWnOf1Husiy+g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11423"; a="35675911"
+X-IronPort-AV: E=Sophos;i="6.15,262,1739865600"; 
+   d="scan'208";a="35675911"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2025 05:57:24 -0700
+X-CSE-ConnectionGUID: DsmJJm4wS9WNyh+Wwzc69A==
+X-CSE-MsgGUID: ileZhGtrSdSkoxzhti2K6g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,262,1739865600"; 
+   d="scan'208";a="135151089"
+Received: from unknown (HELO mnyman-desk.fi.intel.com) ([10.237.72.199])
+  by orviesa010.jf.intel.com with ESMTP; 05 May 2025 05:57:22 -0700
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
+To: <gregkh@linuxfoundation.org>
+Cc: <linux-usb@vger.kernel.org>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
+	stable@vger.kernel.org
+Subject: [PATCH 2/2] xhci: dbc: Avoid event polling busyloop if pending rx transfers are inactive.
+Date: Mon,  5 May 2025 15:56:30 +0300
+Message-ID: <20250505125630.561699-3-mathias.nyman@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250505125630.561699-1-mathias.nyman@linux.intel.com>
+References: <20250505125630.561699-1-mathias.nyman@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi,
+Event polling delay is set to 0 if there are any pending requests in
+either rx or tx requests lists. Checking for pending requests does
+not work well for "IN" transfers as the tty driver always queues
+requests to the list and TRBs to the ring, preparing to receive data
+from the host.
 
-On Sat, 03 May 2025 08:44:43 +0000, Christian Hewitt wrote:
-> Add the clkc_audio node to fix audio support on Dreambox One/Two.
-> 
-> 
+This causes unnecessary busylooping and cpu hogging.
 
-Thanks, Applied to https://git.kernel.org/pub/scm/linux/kernel/git/amlogic/linux.git (v6.15/fixes)
+Only set the event polling delay to 0 if there are pending tx "write"
+transfers, or if it was less than 10ms since last active data transfer
+in any direction.
 
-[1/1] arm64: dts: amlogic: dreambox: fix missing clkc_audio node
-      https://git.kernel.org/amlogic/c/0f67578587bb9e5a8eecfcdf6b8a501b5bd90526
+Cc: Łukasz Bartosik <ukaszb@chromium.org>
+Fixes: fb18e5bb9660 ("xhci: dbc: poll at different rate depending on data transfer activity")
+Cc: stable@vger.kernel.org
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+---
+ drivers/usb/host/xhci-dbgcap.c | 19 ++++++++++++++++---
+ drivers/usb/host/xhci-dbgcap.h |  3 +++
+ 2 files changed, 19 insertions(+), 3 deletions(-)
 
-These changes has been applied on the intermediate git tree [1].
-
-The v6.15/fixes branch will then be sent via a formal Pull Request to the Linux SoC maintainers
-for inclusion in their intermediate git branches in order to be sent to Linus during
-the next merge window, or sooner if it's a set of fixes.
-
-In the cases of fixes, those will be merged in the current release candidate
-kernel and as soon they appear on the Linux master branch they will be
-backported to the previous Stable and Long-Stable kernels [2].
-
-The intermediate git branches are merged daily in the linux-next tree [3],
-people are encouraged testing these pre-release kernels and report issues on the
-relevant mailing-lists.
-
-If problems are discovered on those changes, please submit a signed-off-by revert
-patch followed by a corrective changeset.
-
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/amlogic/linux.git
-[2] https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
-[3] https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git
-
+diff --git a/drivers/usb/host/xhci-dbgcap.c b/drivers/usb/host/xhci-dbgcap.c
+index fd7895b24367..0d4ce5734165 100644
+--- a/drivers/usb/host/xhci-dbgcap.c
++++ b/drivers/usb/host/xhci-dbgcap.c
+@@ -823,6 +823,7 @@ static enum evtreturn xhci_dbc_do_handle_events(struct xhci_dbc *dbc)
+ {
+ 	dma_addr_t		deq;
+ 	union xhci_trb		*evt;
++	enum evtreturn		ret = EVT_DONE;
+ 	u32			ctrl, portsc;
+ 	bool			update_erdp = false;
+ 
+@@ -909,6 +910,7 @@ static enum evtreturn xhci_dbc_do_handle_events(struct xhci_dbc *dbc)
+ 			break;
+ 		case TRB_TYPE(TRB_TRANSFER):
+ 			dbc_handle_xfer_event(dbc, evt);
++			ret = EVT_XFER_DONE;
+ 			break;
+ 		default:
+ 			break;
+@@ -927,7 +929,7 @@ static enum evtreturn xhci_dbc_do_handle_events(struct xhci_dbc *dbc)
+ 		lo_hi_writeq(deq, &dbc->regs->erdp);
+ 	}
+ 
+-	return EVT_DONE;
++	return ret;
+ }
+ 
+ static void xhci_dbc_handle_events(struct work_struct *work)
+@@ -936,6 +938,7 @@ static void xhci_dbc_handle_events(struct work_struct *work)
+ 	struct xhci_dbc		*dbc;
+ 	unsigned long		flags;
+ 	unsigned int		poll_interval;
++	unsigned long		busypoll_timelimit;
+ 
+ 	dbc = container_of(to_delayed_work(work), struct xhci_dbc, event_work);
+ 	poll_interval = dbc->poll_interval;
+@@ -954,11 +957,21 @@ static void xhci_dbc_handle_events(struct work_struct *work)
+ 			dbc->driver->disconnect(dbc);
+ 		break;
+ 	case EVT_DONE:
+-		/* set fast poll rate if there are pending data transfers */
++		/*
++		 * Set fast poll rate if there are pending out transfers, or
++		 * a transfer was recently processed
++		 */
++		busypoll_timelimit = dbc->xfer_timestamp +
++			msecs_to_jiffies(DBC_XFER_INACTIVITY_TIMEOUT);
++
+ 		if (!list_empty(&dbc->eps[BULK_OUT].list_pending) ||
+-		    !list_empty(&dbc->eps[BULK_IN].list_pending))
++		    time_is_after_jiffies(busypoll_timelimit))
+ 			poll_interval = 0;
+ 		break;
++	case EVT_XFER_DONE:
++		dbc->xfer_timestamp = jiffies;
++		poll_interval = 0;
++		break;
+ 	default:
+ 		dev_info(dbc->dev, "stop handling dbc events\n");
+ 		return;
+diff --git a/drivers/usb/host/xhci-dbgcap.h b/drivers/usb/host/xhci-dbgcap.h
+index 9dc8f4d8077c..47ac72c2286d 100644
+--- a/drivers/usb/host/xhci-dbgcap.h
++++ b/drivers/usb/host/xhci-dbgcap.h
+@@ -96,6 +96,7 @@ struct dbc_ep {
+ #define DBC_WRITE_BUF_SIZE		8192
+ #define DBC_POLL_INTERVAL_DEFAULT	64	/* milliseconds */
+ #define DBC_POLL_INTERVAL_MAX		5000	/* milliseconds */
++#define DBC_XFER_INACTIVITY_TIMEOUT	10	/* milliseconds */
+ /*
+  * Private structure for DbC hardware state:
+  */
+@@ -142,6 +143,7 @@ struct xhci_dbc {
+ 	enum dbc_state			state;
+ 	struct delayed_work		event_work;
+ 	unsigned int			poll_interval;	/* ms */
++	unsigned long			xfer_timestamp;
+ 	unsigned			resume_required:1;
+ 	struct dbc_ep			eps[2];
+ 
+@@ -187,6 +189,7 @@ struct dbc_request {
+ enum evtreturn {
+ 	EVT_ERR	= -1,
+ 	EVT_DONE,
++	EVT_XFER_DONE,
+ 	EVT_GSER,
+ 	EVT_DISC,
+ };
 -- 
-Neil
+2.43.0
 
 
