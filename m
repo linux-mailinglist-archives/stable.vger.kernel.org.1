@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-140646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 913D5AAAA63
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:36:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE447AAAA7E
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:39:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8508B18882E8
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:33:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB2B49870DB
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:33:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06A2138C408;
-	Mon,  5 May 2025 23:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64A1138CE88;
+	Mon,  5 May 2025 23:01:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kPPncBP6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V6ew2PLO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 340E136AD18;
-	Mon,  5 May 2025 22:56:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3935036AAD0;
+	Mon,  5 May 2025 22:56:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485774; cv=none; b=jY1OYYh5EW7A4FnLUUK6x8YHrTPJ8VPTQ8MSZzyB2ono/I9ElGOWCJ9w3GzvPg39DoN5JlCG+/DMM1sYatVDUh3zKn8oj4AbN/cuQpPsNjdhgCyoXgPITd4zAEwhp0yBSDuVZSizGniQwItkv8rB5FMfZi5+qtBjRXb/q6bHbk0=
+	t=1746485776; cv=none; b=WMCHHy5xaGV9FPcnLQFJ4a6JhiJbwqWHZi34Mu3yyIX25s34LQ9wJt96RVruTVnAKSsyKtDZhjZIkvFpWsiiVAZHTsJFSXO0ZNd5PZdofkCk+Ra+RAiEZvSj5jZLTxRc/A/ccctWJN4qSXaPuTcJiQIiXqp0W5j/OQ6eIXudkRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485774; c=relaxed/simple;
-	bh=04fT3HF5zV7+v+IOXiYHLUDgH0S8C7MsvuRieKy+yGM=;
+	s=arc-20240116; t=1746485776; c=relaxed/simple;
+	bh=cTQLQC5i8yLJif6gLu/9urK5FsL/5Z55FbEPV4/2QFA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Qtow2LcXNi7JPkFLkjSRnWi4T5OCXtllu3L1x+HSMPO5/iRfHs3wlbyMMBWfo+9Of5mXNw7gOjLGZ/kUXF2+IgyVw+zH2Pz8IxjnzKCbvy1yCNUGcDBwREq9sN/DkPR4pJWGcVjB2Kg7So7nnQyzm53fZBWZRau1M2xYcRG+cVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kPPncBP6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13B54C4CEE4;
-	Mon,  5 May 2025 22:56:11 +0000 (UTC)
+	 MIME-Version; b=HrYyGUOQA3SIKPbByANM7GEs6bRy+cgyBMG6lR3x77N+hKsfHCHgbvNuZXaS2VWhDK8zwLjsN6363DnsJtxsITbrTcb+0KPbfMTDdISCMW1GjWA33E5dfaQYZhbGyvW5LFNAlLd4gg1pUCnfPYnaJIKDz8YZlk5rlYVk2AeAyVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V6ew2PLO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F17DC4CEEF;
+	Mon,  5 May 2025 22:56:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485773;
-	bh=04fT3HF5zV7+v+IOXiYHLUDgH0S8C7MsvuRieKy+yGM=;
+	s=k20201202; t=1746485774;
+	bh=cTQLQC5i8yLJif6gLu/9urK5FsL/5Z55FbEPV4/2QFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kPPncBP66SLSDLMzxw8HcepL0B8eY7UVdkrwfqvzwkAmhvnB+dqGa0SGGrYbRJIiB
-	 YPGqdsgU0Hc7xQcnOyjYal2Ovl8ocEqqQjh84yEtn22yoeGWBbC8NKqyxcTPaVyGWZ
-	 j2vgBVR/fLOUOEn4LwAWk8cldv4sa1xmxNxgMal/Gw5o5pr8b1BfGZelfDNWu0T7YC
-	 mq2rysYbLmk0+MrNDOvTbjs3Qx3JEmzO55QJz3rW0e8zz9NcPoMdonbDT/hhIsYcDz
-	 8x8ueA/eN/QQNCJHKsRQxdX6CEcUHaj6z5sNAjOptQGq5m5+qeVKpzzYR1nGZ13pY5
-	 3w6aLoVAa8YKA==
+	b=V6ew2PLOtFg3vGAKY09xqxd6xDKuLc6ENHqiXuCauoRVGWUVIf5qpIa1HaIKjqoRg
+	 ZgzkuJkcvHXRTDdxgR8qoyYHK1IAFqkrz9Ld9l/AeBuwgh+0iN1oCvoAOqNJXXM6vr
+	 UIN9/2/aiPubPXvBZWhrkAecBznvFsoOGkxPEV9GsbNaXlZ/jCLBCcnIWk9yrYgGvg
+	 9QuMzImYapsTIkvmHP+cYZdgXSMvH5sOu2NEB2of9SaEBSbW2nXAY4bocz5laypNq1
+	 7De4eIvmTXcR/bmRrf7sSsKo8ryz9XdUe6Mip9cPC5ed/dkVmBdINh9JPHBv7k3UGx
+	 YDyFI2x06wxCA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: P Praneesh <quic_ppranees@quicinc.com>,
-	Tim Harvey <tharvey@gateworks.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+Cc: Maarten Lankhorst <dev@lankhorst.se>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jjohnson@kernel.org,
-	linux-wireless@vger.kernel.org,
-	ath11k@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.12 476/486] wifi: ath11k: Use dma_alloc_noncoherent for rx_tid buffer allocation
-Date: Mon,  5 May 2025 18:39:12 -0400
-Message-Id: <20250505223922.2682012-476-sashal@kernel.org>
+	lucas.demarchi@intel.com,
+	thomas.hellstrom@linux.intel.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.12 477/486] drm/xe: Move suballocator init to after display init
+Date: Mon,  5 May 2025 18:39:13 -0400
+Message-Id: <20250505223922.2682012-477-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -68,274 +70,79 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: P Praneesh <quic_ppranees@quicinc.com>
+From: Maarten Lankhorst <dev@lankhorst.se>
 
-[ Upstream commit eeadc6baf8b3dcd32787cc84f0473dc2a2850370 ]
+[ Upstream commit 380b0cdaa76bc8f5c16db16eaf48751e792ff041 ]
 
-Currently, the driver allocates cacheable DMA buffers for the rx_tid
-structure using kzalloc() and dma_map_single(). These buffers are
-long-lived and can persist for the lifetime of the peer, which is not
-advisable. Instead of using kzalloc() and dma_map_single() for allocating
-cacheable DMA buffers, utilize the dma_alloc_noncoherent() helper for the
-allocation of long-lived cacheable DMA buffers, such as the peer's rx_tid.
-Since dma_alloc_noncoherent() returns unaligned physical and virtual
-addresses, align them internally before use within the driver. This
-ensures proper allocation of non-coherent memory through the kernel
-helper.
+No allocations should be done before we have had a chance to preserve
+the display fb.
 
-Tested-on: QCN9074 hw1.0 PCI WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3
-
-Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
-Tested-by: Tim Harvey <tharvey@gateworks.com>
-Link: https://patch.msgid.link/20250119164219.647059-3-quic_ppranees@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241210083111.230484-4-dev@lankhorst.se
+Signed-off-by: Maarten Lankhorst <dev@lankhorst.se>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/dp.h    |   6 +-
- drivers/net/wireless/ath/ath11k/dp_rx.c | 117 +++++++++++-------------
- 2 files changed, 58 insertions(+), 65 deletions(-)
+ drivers/gpu/drm/xe/xe_device.c |  6 ++++++
+ drivers/gpu/drm/xe/xe_tile.c   | 12 ++++++++----
+ drivers/gpu/drm/xe/xe_tile.h   |  1 +
+ 3 files changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/dp.h b/drivers/net/wireless/ath/ath11k/dp.h
-index 65d2bc0687c88..eaf902c25e192 100644
---- a/drivers/net/wireless/ath/ath11k/dp.h
-+++ b/drivers/net/wireless/ath/ath11k/dp.h
-@@ -1,7 +1,7 @@
- /* SPDX-License-Identifier: BSD-3-Clause-Clear */
- /*
-  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2023 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2021-2023, 2025 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
+diff --git a/drivers/gpu/drm/xe/xe_device.c b/drivers/gpu/drm/xe/xe_device.c
+index 5c37bed3c948f..23e02372a49db 100644
+--- a/drivers/gpu/drm/xe/xe_device.c
++++ b/drivers/gpu/drm/xe/xe_device.c
+@@ -708,6 +708,12 @@ int xe_device_probe(struct xe_device *xe)
+ 	if (err)
+ 		goto err;
  
- #ifndef ATH11K_DP_H
-@@ -20,7 +20,6 @@ struct ath11k_ext_irq_grp;
++	for_each_tile(tile, xe, id) {
++		err = xe_tile_init(tile);
++		if (err)
++			goto err;
++	}
++
+ 	for_each_gt(gt, xe, id) {
+ 		last_gt = id;
  
- struct dp_rx_tid {
- 	u8 tid;
--	u32 *vaddr;
- 	dma_addr_t paddr;
- 	u32 size;
- 	u32 ba_win_sz;
-@@ -37,6 +36,9 @@ struct dp_rx_tid {
- 	/* Timer info related to fragments */
- 	struct timer_list frag_timer;
- 	struct ath11k_base *ab;
-+	u32 *vaddr_unaligned;
-+	dma_addr_t paddr_unaligned;
-+	u32 unaligned_size;
- };
+diff --git a/drivers/gpu/drm/xe/xe_tile.c b/drivers/gpu/drm/xe/xe_tile.c
+index 349beddf9b383..36c87d7c72fbc 100644
+--- a/drivers/gpu/drm/xe/xe_tile.c
++++ b/drivers/gpu/drm/xe/xe_tile.c
+@@ -167,15 +167,19 @@ int xe_tile_init_noalloc(struct xe_tile *tile)
+ 	if (err)
+ 		return err;
  
- #define DP_REO_DESC_FREE_THRESHOLD  64
-diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
-index 40b52d12b4323..bfb8e7b1a300c 100644
---- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: BSD-3-Clause-Clear
- /*
-  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
+-	tile->mem.kernel_bb_pool = xe_sa_bo_manager_init(tile, SZ_1M, 16);
+-	if (IS_ERR(tile->mem.kernel_bb_pool))
+-		return PTR_ERR(tile->mem.kernel_bb_pool);
+-
+ 	xe_wa_apply_tile_workarounds(tile);
  
- #include <linux/ieee80211.h>
-@@ -675,11 +675,11 @@ void ath11k_dp_reo_cmd_list_cleanup(struct ath11k_base *ab)
- 	list_for_each_entry_safe(cmd, tmp, &dp->reo_cmd_list, list) {
- 		list_del(&cmd->list);
- 		rx_tid = &cmd->data;
--		if (rx_tid->vaddr) {
--			dma_unmap_single(ab->dev, rx_tid->paddr,
--					 rx_tid->size, DMA_BIDIRECTIONAL);
--			kfree(rx_tid->vaddr);
--			rx_tid->vaddr = NULL;
-+		if (rx_tid->vaddr_unaligned) {
-+			dma_free_noncoherent(ab->dev, rx_tid->unaligned_size,
-+					     rx_tid->vaddr_unaligned,
-+					     rx_tid->paddr_unaligned, DMA_BIDIRECTIONAL);
-+			rx_tid->vaddr_unaligned = NULL;
- 		}
- 		kfree(cmd);
- 	}
-@@ -689,11 +689,11 @@ void ath11k_dp_reo_cmd_list_cleanup(struct ath11k_base *ab)
- 		list_del(&cmd_cache->list);
- 		dp->reo_cmd_cache_flush_count--;
- 		rx_tid = &cmd_cache->data;
--		if (rx_tid->vaddr) {
--			dma_unmap_single(ab->dev, rx_tid->paddr,
--					 rx_tid->size, DMA_BIDIRECTIONAL);
--			kfree(rx_tid->vaddr);
--			rx_tid->vaddr = NULL;
-+		if (rx_tid->vaddr_unaligned) {
-+			dma_free_noncoherent(ab->dev, rx_tid->unaligned_size,
-+					     rx_tid->vaddr_unaligned,
-+					     rx_tid->paddr_unaligned, DMA_BIDIRECTIONAL);
-+			rx_tid->vaddr_unaligned = NULL;
- 		}
- 		kfree(cmd_cache);
- 	}
-@@ -708,11 +708,11 @@ static void ath11k_dp_reo_cmd_free(struct ath11k_dp *dp, void *ctx,
- 	if (status != HAL_REO_CMD_SUCCESS)
- 		ath11k_warn(dp->ab, "failed to flush rx tid hw desc, tid %d status %d\n",
- 			    rx_tid->tid, status);
--	if (rx_tid->vaddr) {
--		dma_unmap_single(dp->ab->dev, rx_tid->paddr, rx_tid->size,
--				 DMA_BIDIRECTIONAL);
--		kfree(rx_tid->vaddr);
--		rx_tid->vaddr = NULL;
-+	if (rx_tid->vaddr_unaligned) {
-+		dma_free_noncoherent(dp->ab->dev, rx_tid->unaligned_size,
-+				     rx_tid->vaddr_unaligned,
-+				     rx_tid->paddr_unaligned, DMA_BIDIRECTIONAL);
-+		rx_tid->vaddr_unaligned = NULL;
- 	}
+ 	return xe_tile_sysfs_init(tile);
  }
  
-@@ -749,10 +749,10 @@ static void ath11k_dp_reo_cache_flush(struct ath11k_base *ab,
- 	if (ret) {
- 		ath11k_err(ab, "failed to send HAL_REO_CMD_FLUSH_CACHE cmd, tid %d (%d)\n",
- 			   rx_tid->tid, ret);
--		dma_unmap_single(ab->dev, rx_tid->paddr, rx_tid->size,
--				 DMA_BIDIRECTIONAL);
--		kfree(rx_tid->vaddr);
--		rx_tid->vaddr = NULL;
-+		dma_free_noncoherent(ab->dev, rx_tid->unaligned_size,
-+				     rx_tid->vaddr_unaligned,
-+				     rx_tid->paddr_unaligned, DMA_BIDIRECTIONAL);
-+		rx_tid->vaddr_unaligned = NULL;
- 	}
- }
++int xe_tile_init(struct xe_tile *tile)
++{
++	tile->mem.kernel_bb_pool = xe_sa_bo_manager_init(tile, SZ_1M, 16);
++	if (IS_ERR(tile->mem.kernel_bb_pool))
++		return PTR_ERR(tile->mem.kernel_bb_pool);
++
++	return 0;
++}
+ void xe_tile_migrate_wait(struct xe_tile *tile)
+ {
+ 	xe_migrate_wait(tile->migrate);
+diff --git a/drivers/gpu/drm/xe/xe_tile.h b/drivers/gpu/drm/xe/xe_tile.h
+index 1c9e42ade6b05..eb939316d55b0 100644
+--- a/drivers/gpu/drm/xe/xe_tile.h
++++ b/drivers/gpu/drm/xe/xe_tile.h
+@@ -12,6 +12,7 @@ struct xe_tile;
  
-@@ -802,10 +802,10 @@ static void ath11k_dp_rx_tid_del_func(struct ath11k_dp *dp, void *ctx,
+ int xe_tile_init_early(struct xe_tile *tile, struct xe_device *xe, u8 id);
+ int xe_tile_init_noalloc(struct xe_tile *tile);
++int xe_tile_init(struct xe_tile *tile);
  
- 	return;
- free_desc:
--	dma_unmap_single(ab->dev, rx_tid->paddr, rx_tid->size,
--			 DMA_BIDIRECTIONAL);
--	kfree(rx_tid->vaddr);
--	rx_tid->vaddr = NULL;
-+	dma_free_noncoherent(ab->dev, rx_tid->unaligned_size,
-+			     rx_tid->vaddr_unaligned,
-+			     rx_tid->paddr_unaligned, DMA_BIDIRECTIONAL);
-+	rx_tid->vaddr_unaligned = NULL;
- }
- 
- void ath11k_peer_rx_tid_delete(struct ath11k *ar,
-@@ -831,14 +831,16 @@ void ath11k_peer_rx_tid_delete(struct ath11k *ar,
- 		if (ret != -ESHUTDOWN)
- 			ath11k_err(ar->ab, "failed to send HAL_REO_CMD_UPDATE_RX_QUEUE cmd, tid %d (%d)\n",
- 				   tid, ret);
--		dma_unmap_single(ar->ab->dev, rx_tid->paddr, rx_tid->size,
--				 DMA_BIDIRECTIONAL);
--		kfree(rx_tid->vaddr);
--		rx_tid->vaddr = NULL;
-+		dma_free_noncoherent(ar->ab->dev, rx_tid->unaligned_size,
-+				     rx_tid->vaddr_unaligned,
-+				     rx_tid->paddr_unaligned, DMA_BIDIRECTIONAL);
-+		rx_tid->vaddr_unaligned = NULL;
- 	}
- 
- 	rx_tid->paddr = 0;
-+	rx_tid->paddr_unaligned = 0;
- 	rx_tid->size = 0;
-+	rx_tid->unaligned_size = 0;
- }
- 
- static int ath11k_dp_rx_link_desc_return(struct ath11k_base *ab,
-@@ -982,10 +984,9 @@ static void ath11k_dp_rx_tid_mem_free(struct ath11k_base *ab,
- 	if (!rx_tid->active)
- 		goto unlock_exit;
- 
--	dma_unmap_single(ab->dev, rx_tid->paddr, rx_tid->size,
--			 DMA_BIDIRECTIONAL);
--	kfree(rx_tid->vaddr);
--	rx_tid->vaddr = NULL;
-+	dma_free_noncoherent(ab->dev, rx_tid->unaligned_size, rx_tid->vaddr_unaligned,
-+			     rx_tid->paddr_unaligned, DMA_BIDIRECTIONAL);
-+	rx_tid->vaddr_unaligned = NULL;
- 
- 	rx_tid->active = false;
- 
-@@ -1000,9 +1001,8 @@ int ath11k_peer_rx_tid_setup(struct ath11k *ar, const u8 *peer_mac, int vdev_id,
- 	struct ath11k_base *ab = ar->ab;
- 	struct ath11k_peer *peer;
- 	struct dp_rx_tid *rx_tid;
--	u32 hw_desc_sz;
--	u32 *addr_aligned;
--	void *vaddr;
-+	u32 hw_desc_sz, *vaddr;
-+	void *vaddr_unaligned;
- 	dma_addr_t paddr;
- 	int ret;
- 
-@@ -1050,49 +1050,40 @@ int ath11k_peer_rx_tid_setup(struct ath11k *ar, const u8 *peer_mac, int vdev_id,
- 	else
- 		hw_desc_sz = ath11k_hal_reo_qdesc_size(DP_BA_WIN_SZ_MAX, tid);
- 
--	vaddr = kzalloc(hw_desc_sz + HAL_LINK_DESC_ALIGN - 1, GFP_ATOMIC);
--	if (!vaddr) {
-+	rx_tid->unaligned_size = hw_desc_sz + HAL_LINK_DESC_ALIGN - 1;
-+	vaddr_unaligned = dma_alloc_noncoherent(ab->dev, rx_tid->unaligned_size, &paddr,
-+						DMA_BIDIRECTIONAL, GFP_ATOMIC);
-+	if (!vaddr_unaligned) {
- 		spin_unlock_bh(&ab->base_lock);
- 		return -ENOMEM;
- 	}
- 
--	addr_aligned = PTR_ALIGN(vaddr, HAL_LINK_DESC_ALIGN);
--
--	ath11k_hal_reo_qdesc_setup(addr_aligned, tid, ba_win_sz,
--				   ssn, pn_type);
--
--	paddr = dma_map_single(ab->dev, addr_aligned, hw_desc_sz,
--			       DMA_BIDIRECTIONAL);
--
--	ret = dma_mapping_error(ab->dev, paddr);
--	if (ret) {
--		spin_unlock_bh(&ab->base_lock);
--		ath11k_warn(ab, "failed to setup dma map for peer %pM rx tid %d: %d\n",
--			    peer_mac, tid, ret);
--		goto err_mem_free;
--	}
--
--	rx_tid->vaddr = vaddr;
--	rx_tid->paddr = paddr;
-+	rx_tid->vaddr_unaligned = vaddr_unaligned;
-+	vaddr = PTR_ALIGN(vaddr_unaligned, HAL_LINK_DESC_ALIGN);
-+	rx_tid->paddr_unaligned = paddr;
-+	rx_tid->paddr = rx_tid->paddr_unaligned + ((unsigned long)vaddr -
-+			(unsigned long)rx_tid->vaddr_unaligned);
-+	ath11k_hal_reo_qdesc_setup(vaddr, tid, ba_win_sz, ssn, pn_type);
- 	rx_tid->size = hw_desc_sz;
- 	rx_tid->active = true;
- 
-+	/* After dma_alloc_noncoherent, vaddr is being modified for reo qdesc setup.
-+	 * Since these changes are not reflected in the device, driver now needs to
-+	 * explicitly call dma_sync_single_for_device.
-+	 */
-+	dma_sync_single_for_device(ab->dev, rx_tid->paddr,
-+				   rx_tid->size,
-+				   DMA_TO_DEVICE);
- 	spin_unlock_bh(&ab->base_lock);
- 
--	ret = ath11k_wmi_peer_rx_reorder_queue_setup(ar, vdev_id, peer_mac,
--						     paddr, tid, 1, ba_win_sz);
-+	ret = ath11k_wmi_peer_rx_reorder_queue_setup(ar, vdev_id, peer_mac, rx_tid->paddr,
-+						     tid, 1, ba_win_sz);
- 	if (ret) {
- 		ath11k_warn(ar->ab, "failed to setup rx reorder queue for peer %pM tid %d: %d\n",
- 			    peer_mac, tid, ret);
- 		ath11k_dp_rx_tid_mem_free(ab, peer_mac, vdev_id, tid);
- 	}
- 
--	return ret;
--
--err_mem_free:
--	kfree(rx_tid->vaddr);
--	rx_tid->vaddr = NULL;
--
- 	return ret;
- }
+ void xe_tile_migrate_wait(struct xe_tile *tile);
  
 -- 
 2.39.5
