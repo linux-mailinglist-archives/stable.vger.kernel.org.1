@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-140132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77F33AAA570
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:50:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AA9FAAA571
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:50:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B008718852E8
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:46:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B6FE1886D7C
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:47:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BA403103D2;
-	Mon,  5 May 2025 22:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B9703103E3;
+	Mon,  5 May 2025 22:29:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lSNYfxbI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EugzjuVv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DE5B3103C0;
-	Mon,  5 May 2025 22:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 035423103C0;
+	Mon,  5 May 2025 22:29:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484170; cv=none; b=HlgJ77uE++BatIJLPu6wDGzGlN/Ef9v0KcqpUKEXXPeT1Nx7no9CTQ9eQX2b9v4Z9xUAHqZAvZG64x5WyGRgOVS1gisPkqbmYUN77cKawGjyTnmSn/1Cb9gdAJAD3tG1WfFoZL0xqv9uuPMktlQrVK0AG41wA5FCNLF8S065JWM=
+	t=1746484187; cv=none; b=QiJAEi4u204rJ8LZ9IkmkM1Q0P58vHWktzhxJc2cGITjGscfSdM1QNcA+O5dTpQ2GosYmOUmYag9RtIjgBpaY/5Mb94eIKYdeEOcRM58975GvBboVGlq96sJbMQJeIzTaVi7KOUy+Ow0I5CFANfA+iEQm3d86IBTRdCLj19Sr+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484170; c=relaxed/simple;
-	bh=WkH9QAzOg9qFlj+eC8SmU7hdqXPvZNALVFTPQXnoYgk=;
+	s=arc-20240116; t=1746484187; c=relaxed/simple;
+	bh=i0MuW92W/UJyfe4hI7iDIGNXEgUHlzHlMvwTDlCea1k=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hRaI1gUbDw3tastE0PL4gxlczMc2RdUp4nskLJyv0xzJCx44/ppN2hwnedk19wUfZ4D9/QbUHRS9WIM0Mlr7sJ/fRTcnCydQq9jAuHnOWVPsuMqGkzt3IcapE0e1HA9JoGDpNnzlDO1DbvAu+U6qGGcS4DtqWktazrgkULTYfLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lSNYfxbI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A715C4CEEF;
-	Mon,  5 May 2025 22:29:27 +0000 (UTC)
+	 MIME-Version; b=T5UY8fWSxViLko/5D7kt58SkeFYRKAmZgeiqql4Bnt2FnOAHtinxbPk7NpM25eOdcehWI0BiuOMm8cKaSOY5zMndIukTy7wcY6nCTA9SnmNbiVPVPpgt1BYfq17kYwv2ikPUwy0OAnLEis2gfO+qTYbrdR+lZj8u/5wXtd9jr8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EugzjuVv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6F81C4CEE4;
+	Mon,  5 May 2025 22:29:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484170;
-	bh=WkH9QAzOg9qFlj+eC8SmU7hdqXPvZNALVFTPQXnoYgk=;
+	s=k20201202; t=1746484186;
+	bh=i0MuW92W/UJyfe4hI7iDIGNXEgUHlzHlMvwTDlCea1k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lSNYfxbIgEcckqhWz0E7LYaR8RUD1pTTcLOcNHSZnBfmHrS9Di3zf/XwYHIuxMLgL
-	 ytk26zcy7c4++rdVSQQKGfzlz2vheKFWqQ3iD2GinLHi34x60hreJjLxNA7zPyQwLl
-	 xE47MujzjG1s2RYkIy0kmINTsUOIQfOnJgCs2wq4JCBm0mDJ2fd5lh2nyRFNUsVQ+F
-	 veJebaUZjmahHuuFp1Ein5Y9YXNBuoVnjFf63i/8czn5OiP2zTZ0VV4PQDpLzNwqd0
-	 FdBhLxk4bkKv5OTrQ2ulo5GEp77cE2oNG+lUENySVCrnBAEJt0Japt5rFvMzCTbJ37
-	 eT+b7yDzT5fwQ==
+	b=EugzjuVvXnBAv6LQJMBxICeCgVPe1TijN351DljXNwKht8kL5PLAFi1DfZ7A58xXc
+	 CuRsnhfmfUm95MHoLkvFDMll6mZIZCcwqszYtBnmqw/oingdHtUKy2VRFjEyehLvVF
+	 a4NWfpI761iF7I9iPQ/sOHG7QX0LFtq7YM1mizebLptEf3gcrWqIXlGmEmP0Vk4Cg8
+	 2PBBS3Y8e6V49Fxf0LyZbTvq8zU/i23oHnd/2nJym4HT9pO4Qs6YntneojnEr7qJDB
+	 WxlAVGCibcv1CX2JDm7Hk7m93pOUGg/9nHNJakrOT4aNFdBnO7PUiNQ5BUlM5fIry4
+	 lpm8SdKDripdw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Gabe Teeger <gabe.teeger@amd.com>,
-	Leo Chen <leo.chen@amd.com>,
-	Syed Hassan <syed.hassan@amd.com>,
+Cc: Ilya Bakoulin <Ilya.Bakoulin@amd.com>,
+	Krunoslav Kovac <krunoslav.kovac@amd.com>,
 	Roman Li <roman.li@amd.com>,
+	Robert Mader <robert.mader@collabora.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
@@ -57,18 +56,45 @@ Cc: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
 	christian.koenig@amd.com,
 	airlied@gmail.com,
 	simona@ffwll.ch,
-	Charlene.Liu@amd.com,
+	mario.limonciello@amd.com,
 	alex.hung@amd.com,
+	chiahsuan.chung@amd.com,
+	sunil.khatri@amd.com,
+	aurabindo.pillai@amd.com,
+	Yilin.Chen@amd.com,
+	mwen@igalia.com,
+	Roman.Li@amd.com,
+	siqueira@igalia.com,
+	Kun.Liu2@amd.com,
+	Wayne.Lin@amd.com,
+	Dillon.Varone@amd.com,
+	alvin.lee2@amd.com,
+	Leo.Zeng@amd.com,
+	Iswara.Nagulendran@amd.com,
 	zaeem.mohamed@amd.com,
-	Ausef.Yousof@amd.com,
-	Nicholas.Susanto@amd.com,
-	sungjoon.kim@amd.com,
+	wenjing.liu@amd.com,
+	Samson.Tam@amd.com,
 	PeiChen.Huang@amd.com,
+	chris.park@amd.com,
+	peterson.guo@amd.com,
+	Yihan.Zhu@amd.com,
+	karthi.kandasamy@amd.com,
+	Zhongwei.Zhang@amd.com,
+	danny.wang@amd.com,
+	george.shen@amd.com,
+	Jerry.Zuo@amd.com,
+	bpinnint@amd.com,
+	Charlene.Liu@amd.com,
+	swapnil.patel@amd.com,
+	moadhuri@amd.com,
+	dmytro.laktyushkin@amd.com,
+	martin.leung@amd.com,
+	harikrishna.revalla@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.14 385/642] drm/amd/display: Guard against setting dispclk low when active
-Date: Mon,  5 May 2025 18:10:01 -0400
-Message-Id: <20250505221419.2672473-385-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.14 386/642] drm/amd/display: Fix BT2020 YCbCr limited/full range input
+Date: Mon,  5 May 2025 18:10:02 -0400
+Message-Id: <20250505221419.2672473-386-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -83,63 +109,280 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+From: Ilya Bakoulin <Ilya.Bakoulin@amd.com>
 
-[ Upstream commit 72d7a7fa1f2404fd31c84a8f808b1b37021a3a9e ]
+[ Upstream commit 07bc2dcbcf403d47d6f305ef7f0d3d489491c5fb ]
 
 [Why]
-We should never apply a minimum dispclk value while in prepare_bandwidth
-or while displays are active. This is always an optimization for when
-all displays are disabled.
+BT2020 YCbCr input is not handled properly when full range
+quantization is used and limited range is not supported at all.
 
 [How]
-Defer dispclk optimization until safe_to_lower = true and display_count
-reaches 0.
+- Add enums for BT2020 YCbCr limited/full range
+- Add limited range CSC matrix
 
-Since 0 has a special value in this logic (ie. no dispclk required)
-we also need adjust the logic that clamps it for the actual request
-to PMFW.
-
-Reviewed-by: Gabe Teeger <gabe.teeger@amd.com>
-Reviewed-by: Leo Chen <leo.chen@amd.com>
-Reviewed-by: Syed Hassan <syed.hassan@amd.com>
-Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Reviewed-by: Krunoslav Kovac <krunoslav.kovac@amd.com>
+Signed-off-by: Ilya Bakoulin <Ilya.Bakoulin@amd.com>
 Signed-off-by: Roman Li <roman.li@amd.com>
+Tested-by: Robert Mader <robert.mader@collabora.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c    | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c           | 6 +++---
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c   | 2 +-
+ drivers/gpu/drm/amd/display/dc/basics/dc_common.c           | 3 ++-
+ drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c       | 5 +++--
+ drivers/gpu/drm/amd/display/dc/core/dc_resource.c           | 4 ++--
+ drivers/gpu/drm/amd/display/dc/dc_hw_types.h                | 4 +++-
+ drivers/gpu/drm/amd/display/dc/dce/dce_stream_encoder.c     | 3 ++-
+ .../gpu/drm/amd/display/dc/dio/dcn10/dcn10_stream_encoder.c | 3 ++-
+ .../amd/display/dc/dio/dcn401/dcn401_dio_stream_encoder.c   | 3 ++-
+ .../amd/display/dc/hpo/dcn31/dcn31_hpo_dp_stream_encoder.c  | 3 ++-
+ drivers/gpu/drm/amd/display/dc/inc/hw/dpp.h                 | 6 +++++-
+ .../gpu/drm/amd/display/modules/info_packet/info_packet.c   | 4 ++--
+ 12 files changed, 29 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-index 1648226586e22..1f47931c2dafc 100644
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
-@@ -467,14 +467,19 @@ void dcn35_update_clocks(struct clk_mgr *clk_mgr_base,
- 		update_dppclk = true;
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 76c8e6457175f..79c01541a0190 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -5662,9 +5662,9 @@ fill_plane_color_attributes(const struct drm_plane_state *plane_state,
+ 
+ 	case DRM_COLOR_YCBCR_BT2020:
+ 		if (full_range)
+-			*color_space = COLOR_SPACE_2020_YCBCR;
++			*color_space = COLOR_SPACE_2020_YCBCR_FULL;
+ 		else
+-			return -EINVAL;
++			*color_space = COLOR_SPACE_2020_YCBCR_LIMITED;
+ 		break;
+ 
+ 	default:
+@@ -6160,7 +6160,7 @@ get_output_color_space(const struct dc_crtc_timing *dc_crtc_timing,
+ 		if (dc_crtc_timing->pixel_encoding == PIXEL_ENCODING_RGB)
+ 			color_space = COLOR_SPACE_2020_RGB_FULLRANGE;
+ 		else
+-			color_space = COLOR_SPACE_2020_YCBCR;
++			color_space = COLOR_SPACE_2020_YCBCR_LIMITED;
+ 		break;
+ 	case DRM_MODE_COLORIMETRY_DEFAULT: // ITU601
+ 	default:
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
+index 049046c604626..c7d13e743e6c8 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_debugfs.c
+@@ -1169,7 +1169,7 @@ static int amdgpu_current_colorspace_show(struct seq_file *m, void *data)
+ 	case COLOR_SPACE_2020_RGB_FULLRANGE:
+ 		seq_puts(m, "BT2020_RGB");
+ 		break;
+-	case COLOR_SPACE_2020_YCBCR:
++	case COLOR_SPACE_2020_YCBCR_LIMITED:
+ 		seq_puts(m, "BT2020_YCC");
+ 		break;
+ 	default:
+diff --git a/drivers/gpu/drm/amd/display/dc/basics/dc_common.c b/drivers/gpu/drm/amd/display/dc/basics/dc_common.c
+index b2fc4f8e64825..a51c2701da247 100644
+--- a/drivers/gpu/drm/amd/display/dc/basics/dc_common.c
++++ b/drivers/gpu/drm/amd/display/dc/basics/dc_common.c
+@@ -40,7 +40,8 @@ bool is_rgb_cspace(enum dc_color_space output_color_space)
+ 	case COLOR_SPACE_YCBCR709:
+ 	case COLOR_SPACE_YCBCR601_LIMITED:
+ 	case COLOR_SPACE_YCBCR709_LIMITED:
+-	case COLOR_SPACE_2020_YCBCR:
++	case COLOR_SPACE_2020_YCBCR_LIMITED:
++	case COLOR_SPACE_2020_YCBCR_FULL:
+ 		return false;
+ 	default:
+ 		/* Add a case to switch */
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c b/drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c
+index 1406ee4bff801..4f54e75a8f95b 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_hw_sequencer.c
+@@ -176,7 +176,7 @@ static bool is_ycbcr2020_type(
+ {
+ 	bool ret = false;
+ 
+-	if (color_space == COLOR_SPACE_2020_YCBCR)
++	if (color_space == COLOR_SPACE_2020_YCBCR_LIMITED || color_space == COLOR_SPACE_2020_YCBCR_FULL)
+ 		ret = true;
+ 	return ret;
+ }
+@@ -247,7 +247,8 @@ void color_space_to_black_color(
+ 	case COLOR_SPACE_YCBCR709_BLACK:
+ 	case COLOR_SPACE_YCBCR601_LIMITED:
+ 	case COLOR_SPACE_YCBCR709_LIMITED:
+-	case COLOR_SPACE_2020_YCBCR:
++	case COLOR_SPACE_2020_YCBCR_LIMITED:
++	case COLOR_SPACE_2020_YCBCR_FULL:
+ 		*black_color = black_color_format[BLACK_COLOR_FORMAT_YUV_CV];
+ 		break;
+ 
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+index 298668e9729c7..3367030da3414 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
+@@ -4247,7 +4247,7 @@ static void set_avi_info_frame(
+ 		break;
+ 	case COLOR_SPACE_2020_RGB_FULLRANGE:
+ 	case COLOR_SPACE_2020_RGB_LIMITEDRANGE:
+-	case COLOR_SPACE_2020_YCBCR:
++	case COLOR_SPACE_2020_YCBCR_LIMITED:
+ 		hdmi_info.bits.EC0_EC2 = COLORIMETRYEX_BT2020RGBYCBCR;
+ 		hdmi_info.bits.C0_C1   = COLORIMETRY_EXTENDED;
+ 		break;
+@@ -4261,7 +4261,7 @@ static void set_avi_info_frame(
+ 		break;
  	}
  
--	if (should_set_clock(safe_to_lower, new_clocks->dispclk_khz, clk_mgr_base->clks.dispclk_khz)) {
-+	if (should_set_clock(safe_to_lower, new_clocks->dispclk_khz, clk_mgr_base->clks.dispclk_khz) &&
-+	    (new_clocks->dispclk_khz > 0 || (safe_to_lower && display_count == 0))) {
-+		int requested_dispclk_khz = new_clocks->dispclk_khz;
-+
- 		dcn35_disable_otg_wa(clk_mgr_base, context, safe_to_lower, true);
+-	if (pixel_encoding && color_space == COLOR_SPACE_2020_YCBCR &&
++	if (pixel_encoding && color_space == COLOR_SPACE_2020_YCBCR_LIMITED &&
+ 			stream->out_transfer_func.tf == TRANSFER_FUNCTION_GAMMA22) {
+ 		hdmi_info.bits.EC0_EC2 = 0;
+ 		hdmi_info.bits.C0_C1 = COLORIMETRY_ITU709;
+diff --git a/drivers/gpu/drm/amd/display/dc/dc_hw_types.h b/drivers/gpu/drm/amd/display/dc/dc_hw_types.h
+index 37e381fc7f02a..d562ddeca5126 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc_hw_types.h
++++ b/drivers/gpu/drm/amd/display/dc/dc_hw_types.h
+@@ -653,7 +653,8 @@ enum dc_color_space {
+ 	COLOR_SPACE_YCBCR709_LIMITED,
+ 	COLOR_SPACE_2020_RGB_FULLRANGE,
+ 	COLOR_SPACE_2020_RGB_LIMITEDRANGE,
+-	COLOR_SPACE_2020_YCBCR,
++	COLOR_SPACE_2020_YCBCR_LIMITED,
++	COLOR_SPACE_2020_YCBCR_FULL,
+ 	COLOR_SPACE_ADOBERGB,
+ 	COLOR_SPACE_DCIP3,
+ 	COLOR_SPACE_DISPLAYNATIVE,
+@@ -661,6 +662,7 @@ enum dc_color_space {
+ 	COLOR_SPACE_APPCTRL,
+ 	COLOR_SPACE_CUSTOMPOINTS,
+ 	COLOR_SPACE_YCBCR709_BLACK,
++	COLOR_SPACE_2020_YCBCR = COLOR_SPACE_2020_YCBCR_LIMITED,
+ };
  
--		if (dc->debug.min_disp_clk_khz > 0 && new_clocks->dispclk_khz < dc->debug.min_disp_clk_khz)
--			new_clocks->dispclk_khz = dc->debug.min_disp_clk_khz;
-+		/* Clamp the requested clock to PMFW based on their limit. */
-+		if (dc->debug.min_disp_clk_khz > 0 && requested_dispclk_khz < dc->debug.min_disp_clk_khz)
-+			requested_dispclk_khz = dc->debug.min_disp_clk_khz;
+ enum dc_dither_option {
+diff --git a/drivers/gpu/drm/amd/display/dc/dce/dce_stream_encoder.c b/drivers/gpu/drm/amd/display/dc/dce/dce_stream_encoder.c
+index d199e4ed2e59e..1130d7619b263 100644
+--- a/drivers/gpu/drm/amd/display/dc/dce/dce_stream_encoder.c
++++ b/drivers/gpu/drm/amd/display/dc/dce/dce_stream_encoder.c
+@@ -418,7 +418,7 @@ static void dce110_stream_encoder_dp_set_stream_attribute(
+ 			dynamic_range_rgb = 1; /*limited range*/
+ 			break;
+ 		case COLOR_SPACE_2020_RGB_FULLRANGE:
+-		case COLOR_SPACE_2020_YCBCR:
++		case COLOR_SPACE_2020_YCBCR_LIMITED:
+ 		case COLOR_SPACE_XR_RGB:
+ 		case COLOR_SPACE_MSREF_SCRGB:
+ 		case COLOR_SPACE_ADOBERGB:
+@@ -430,6 +430,7 @@ static void dce110_stream_encoder_dp_set_stream_attribute(
+ 		case COLOR_SPACE_APPCTRL:
+ 		case COLOR_SPACE_CUSTOMPOINTS:
+ 		case COLOR_SPACE_UNKNOWN:
++		default:
+ 			/* do nothing */
+ 			break;
+ 		}
+diff --git a/drivers/gpu/drm/amd/display/dc/dio/dcn10/dcn10_stream_encoder.c b/drivers/gpu/drm/amd/display/dc/dio/dcn10/dcn10_stream_encoder.c
+index d01a8b8f95954..22e66b375a7fe 100644
+--- a/drivers/gpu/drm/amd/display/dc/dio/dcn10/dcn10_stream_encoder.c
++++ b/drivers/gpu/drm/amd/display/dc/dio/dcn10/dcn10_stream_encoder.c
+@@ -391,7 +391,7 @@ void enc1_stream_encoder_dp_set_stream_attribute(
+ 		break;
+ 	case COLOR_SPACE_2020_RGB_LIMITEDRANGE:
+ 	case COLOR_SPACE_2020_RGB_FULLRANGE:
+-	case COLOR_SPACE_2020_YCBCR:
++	case COLOR_SPACE_2020_YCBCR_LIMITED:
+ 	case COLOR_SPACE_XR_RGB:
+ 	case COLOR_SPACE_MSREF_SCRGB:
+ 	case COLOR_SPACE_ADOBERGB:
+@@ -404,6 +404,7 @@ void enc1_stream_encoder_dp_set_stream_attribute(
+ 	case COLOR_SPACE_CUSTOMPOINTS:
+ 	case COLOR_SPACE_UNKNOWN:
+ 	case COLOR_SPACE_YCBCR709_BLACK:
++	default:
+ 		/* do nothing */
+ 		break;
+ 	}
+diff --git a/drivers/gpu/drm/amd/display/dc/dio/dcn401/dcn401_dio_stream_encoder.c b/drivers/gpu/drm/amd/display/dc/dio/dcn401/dcn401_dio_stream_encoder.c
+index 098c2a01a8509..9e5072627ec7b 100644
+--- a/drivers/gpu/drm/amd/display/dc/dio/dcn401/dcn401_dio_stream_encoder.c
++++ b/drivers/gpu/drm/amd/display/dc/dio/dcn401/dcn401_dio_stream_encoder.c
+@@ -632,7 +632,7 @@ void enc401_stream_encoder_dp_set_stream_attribute(
+ 		break;
+ 	case COLOR_SPACE_2020_RGB_LIMITEDRANGE:
+ 	case COLOR_SPACE_2020_RGB_FULLRANGE:
+-	case COLOR_SPACE_2020_YCBCR:
++	case COLOR_SPACE_2020_YCBCR_LIMITED:
+ 	case COLOR_SPACE_XR_RGB:
+ 	case COLOR_SPACE_MSREF_SCRGB:
+ 	case COLOR_SPACE_ADOBERGB:
+@@ -645,6 +645,7 @@ void enc401_stream_encoder_dp_set_stream_attribute(
+ 	case COLOR_SPACE_CUSTOMPOINTS:
+ 	case COLOR_SPACE_UNKNOWN:
+ 	case COLOR_SPACE_YCBCR709_BLACK:
++	default:
+ 		/* do nothing */
+ 		break;
+ 	}
+diff --git a/drivers/gpu/drm/amd/display/dc/hpo/dcn31/dcn31_hpo_dp_stream_encoder.c b/drivers/gpu/drm/amd/display/dc/hpo/dcn31/dcn31_hpo_dp_stream_encoder.c
+index 678db949cfe3c..759b453385c46 100644
+--- a/drivers/gpu/drm/amd/display/dc/hpo/dcn31/dcn31_hpo_dp_stream_encoder.c
++++ b/drivers/gpu/drm/amd/display/dc/hpo/dcn31/dcn31_hpo_dp_stream_encoder.c
+@@ -323,7 +323,7 @@ static void dcn31_hpo_dp_stream_enc_set_stream_attribute(
+ 		break;
+ 	case COLOR_SPACE_2020_RGB_LIMITEDRANGE:
+ 	case COLOR_SPACE_2020_RGB_FULLRANGE:
+-	case COLOR_SPACE_2020_YCBCR:
++	case COLOR_SPACE_2020_YCBCR_LIMITED:
+ 	case COLOR_SPACE_XR_RGB:
+ 	case COLOR_SPACE_MSREF_SCRGB:
+ 	case COLOR_SPACE_ADOBERGB:
+@@ -336,6 +336,7 @@ static void dcn31_hpo_dp_stream_enc_set_stream_attribute(
+ 	case COLOR_SPACE_CUSTOMPOINTS:
+ 	case COLOR_SPACE_UNKNOWN:
+ 	case COLOR_SPACE_YCBCR709_BLACK:
++	default:
+ 		/* do nothing */
+ 		break;
+ 	}
+diff --git a/drivers/gpu/drm/amd/display/dc/inc/hw/dpp.h b/drivers/gpu/drm/amd/display/dc/inc/hw/dpp.h
+index 0150f2581ee4c..0c5675d1c5936 100644
+--- a/drivers/gpu/drm/amd/display/dc/inc/hw/dpp.h
++++ b/drivers/gpu/drm/amd/display/dc/inc/hw/dpp.h
+@@ -119,10 +119,14 @@ static const struct dpp_input_csc_matrix __maybe_unused dpp_input_csc_matrix[] =
+ 		{ 0x39a6, 0x2568, 0,      0xe0d6,
+ 		  0xeedd, 0x2568, 0xf925, 0x9a8,
+ 		  0,      0x2568, 0x43ee, 0xdbb2 } },
+-	{ COLOR_SPACE_2020_YCBCR,
++	{ COLOR_SPACE_2020_YCBCR_FULL,
+ 		{ 0x2F30, 0x2000, 0,      0xE869,
+ 		  0xEDB7, 0x2000, 0xFABC, 0xBC6,
+ 		  0,      0x2000, 0x3C34, 0xE1E6 } },
++	{ COLOR_SPACE_2020_YCBCR_LIMITED,
++		{ 0x35B9, 0x2543, 0,      0xE2B2,
++		  0xEB2F, 0x2543, 0xFA01, 0x0B1F,
++		  0,      0x2543, 0x4489, 0xDB42 } },
+ 	{ COLOR_SPACE_2020_RGB_LIMITEDRANGE,
+ 		{ 0x35E0, 0x255F, 0,      0xE2B3,
+ 		  0xEB20, 0x255F, 0xF9FD, 0xB1E,
+diff --git a/drivers/gpu/drm/amd/display/modules/info_packet/info_packet.c b/drivers/gpu/drm/amd/display/modules/info_packet/info_packet.c
+index a344e2e49b0ea..b3d55cac35694 100644
+--- a/drivers/gpu/drm/amd/display/modules/info_packet/info_packet.c
++++ b/drivers/gpu/drm/amd/display/modules/info_packet/info_packet.c
+@@ -383,10 +383,10 @@ void mod_build_vsc_infopacket(const struct dc_stream_state *stream,
+ 				colorimetryFormat = ColorimetryYCC_DP_ITU709;
+ 			else if (cs == COLOR_SPACE_ADOBERGB)
+ 				colorimetryFormat = ColorimetryYCC_DP_AdobeYCC;
+-			else if (cs == COLOR_SPACE_2020_YCBCR)
++			else if (cs == COLOR_SPACE_2020_YCBCR_LIMITED)
+ 				colorimetryFormat = ColorimetryYCC_DP_ITU2020YCbCr;
  
-+		dcn35_smu_set_dispclk(clk_mgr, requested_dispclk_khz);
- 		clk_mgr_base->clks.dispclk_khz = new_clocks->dispclk_khz;
--		dcn35_smu_set_dispclk(clk_mgr, clk_mgr_base->clks.dispclk_khz);
-+
- 		dcn35_disable_otg_wa(clk_mgr_base, context, safe_to_lower, false);
+-			if (cs == COLOR_SPACE_2020_YCBCR && tf == TRANSFER_FUNC_GAMMA_22)
++			if (cs == COLOR_SPACE_2020_YCBCR_LIMITED && tf == TRANSFER_FUNC_GAMMA_22)
+ 				colorimetryFormat = ColorimetryYCC_DP_ITU709;
+ 			break;
  
- 		update_dispclk = true;
 -- 
 2.39.5
 
