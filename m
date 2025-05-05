@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-141327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00508AAB2C3
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:28:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B726AAB281
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:23:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F79B3B401D
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:21:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 112F74E2045
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:22:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A59A2DD7AB;
-	Tue,  6 May 2025 00:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5349F42D04C;
+	Tue,  6 May 2025 00:29:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PGdYWSs0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WBb25xl1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E80EE36AADA;
-	Mon,  5 May 2025 22:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0D8636AAF2;
+	Mon,  5 May 2025 22:56:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485778; cv=none; b=RkpaMrkZKEzES53nYiU+ikskafZCYxdMjfMN7dir6z0/UjCOVmvGE1HnU7DD4tKnLL9bwURH5tIiXloamLzgji/uK+DFd+BH0K8M2JeE0o9GCJxoAKjKa5eTWFT2/CXCEoD2VEANHGyUvtwREQEB8sW/Fr2QnO+UIM74Gw0a0Fc=
+	t=1746485781; cv=none; b=NSwPTvdU7teNcsg0ThyeXPfa7wy5cbEfWe36o49J4Sw/s5WuVtqAJy4cGca+Rqgn+0ghUhlNgJAYQC9hrk/LJ7Mly3l/Ju02DgmtCa68GA6m7mU4NnG8Yxk+YDSr86V1LD0PQHob83twMjK3xaKv9KS64giuwUIUiYY1fpagYCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485778; c=relaxed/simple;
-	bh=q/+mYq37A2zsEi1sgl1dNJHL57ifGxjCo65jUBiAv88=;
+	s=arc-20240116; t=1746485781; c=relaxed/simple;
+	bh=ixfi30/lcflrPfhhbOcBX3S3YAtPFBIpsD7l18WacgA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=p9ia4LyGGZIfa8suFpf1ZrLqm63bCbhGiVYkBtgCAOnF8QTmcB+a4wH+pQht+hzufF8FN6mSsvNbDAO95UO16ntz1DNnAHze0jaPX5SUiI1HrzAue5gBumtS9gMXkEosZ1q97OVuXs2BnbIX9v73xVMeRdVRYm7mP0elW6WqeF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PGdYWSs0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9416CC4CEEE;
-	Mon,  5 May 2025 22:56:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bkUHSnC2PosqoogPdytLYGt1bOTA3D6TdgTJEAdpgzq3RDx2R+2I8PPPmmXaY8VkMlKC8gvQ5WT8ild/ZLLb7DTLCeUwDg1M97QT1nX2tjBQeLGqJvUs+WOqDvQMfg6FomYGni2zuQz57TvZAje3kta5YK1Pp5TeTzYVMywoHk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WBb25xl1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F2BAC4CEED;
+	Mon,  5 May 2025 22:56:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485777;
-	bh=q/+mYq37A2zsEi1sgl1dNJHL57ifGxjCo65jUBiAv88=;
+	s=k20201202; t=1746485780;
+	bh=ixfi30/lcflrPfhhbOcBX3S3YAtPFBIpsD7l18WacgA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PGdYWSs0aj9+zVi+d8hgmXU5d3556lgbLqVl/SiW/E84h5ZVmY4usGkJox1YuyIo6
-	 DllGYt/qQw3EJCbI0K7cMqLJFl4WmWYy0L88YUKhRvlwYTX8oAdpi0H26XKrJTBZLb
-	 No53pJmTJmzGTq/3ey4bQ3rjxu4o8eJXlWde/N/ewsqRB56aAQMNhBdeR1pTmj5+SG
-	 0Ogtj0fxrBbR0E6yQz5mlBgSbV7xzPtRec+GXs8qBuQ3eyN/zsyijll4TPSZMwCGE0
-	 ipOuH+TR+JmN8VEpMLySJlRtV3rINFwblCgB4n4S1H4gYPB6fCZtVo+ArQzPIEBWUN
-	 Fwb5cIttr4uMw==
+	b=WBb25xl1PwhPlkZYFdUAtgZPCNQXgE5pmJEwtoYag+55+p8wcexJRHUokA+wme9Nf
+	 6fZkIG9G38sJoj7vLERVfQuMZmU6LGLDLn/uvkjbw7h1JmVfFQaUwHQr18Npupb6Tu
+	 mQ9wOp4bl/vhJqzr/FPJx2G07uxHuIccnzQSLFw8NycavTVq2ZBTeek62hpUex1Ssr
+	 bfcX5brCzS9k7D1733RAFClND0DMMYGXNH+HHrP13eNshpLQTGUIBft+oeEu5f+EQr
+	 mJwFSxOYe1FSxR7RdW1OSNxfhP54lxrCax1x9m757KIGlv1BiAjn/lqEUVEdQWmIK6
+	 1//XXNKC/FMyg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ching-Te Ku <ku920601@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+Cc: Oak Zeng <oak.zeng@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 479/486] wifi: rtw89: coex: Separated Wi-Fi connecting event from Wi-Fi scan event
-Date: Mon,  5 May 2025 18:39:15 -0400
-Message-Id: <20250505223922.2682012-479-sashal@kernel.org>
+	lucas.demarchi@intel.com,
+	rodrigo.vivi@intel.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.12 481/486] drm/xe: Reject BO eviction if BO is bound to current VM
+Date: Mon,  5 May 2025 18:39:17 -0400
+Message-Id: <20250505223922.2682012-481-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -60,61 +65,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Ching-Te Ku <ku920601@realtek.com>
+From: Oak Zeng <oak.zeng@intel.com>
 
-[ Upstream commit 4a57346652154bb339c48b41166df9154cff33f5 ]
+[ Upstream commit 0af944f0e3082ff517958b1cea76fb9b8cb379dd ]
 
-Wi-Fi connecting process don't need to assign to firmware slot control,
-if assign firmware slot control for Wi-Fi connecting event, firmware will
-not toggle slots because driver don't tell the slot schedule to firmware.
-Wi-Fi connecting event end should also cancel the 4way handshake status.
+This is a follow up fix for
+https://patchwork.freedesktop.org/patch/msgid/20241203021929.1919730-1-oak.zeng@intel.com
+The overall goal is to fail vm_bind when there is memory pressure. See more
+details in the commit message of above patch. Abbove patch fixes the issue
+when user pass in a vm_id parameter during gem_create. If user doesn't pass
+in a vm_id during gem_create, above patch doesn't help.
 
-Signed-off-by: Ching-Te Ku <ku920601@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250110015416.10704-3-pkshih@realtek.com
+This patch further reject BO eviction (which could be triggered by bo validation)
+if BO is bound to the current VM. vm_bind could fail due to the eviction failure.
+The BO to VM reverse mapping structure is used to determine whether BO is bound
+to VM.
+
+v2:
+Move vm_bo definition from function scope to if(evict) clause (Thomas)
+Further constraint the condition by adding ctx->resv (Thomas)
+Add a short comment describe the change.
+
+Suggested-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Signed-off-by: Oak Zeng <oak.zeng@intel.com>
+Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250110210137.3181576-1-oak.zeng@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/coex.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_bo.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/coex.c b/drivers/net/wireless/realtek/rtw89/coex.c
-index 5f878f086f7cf..6cdbf02f405ae 100644
---- a/drivers/net/wireless/realtek/rtw89/coex.c
-+++ b/drivers/net/wireless/realtek/rtw89/coex.c
-@@ -5356,7 +5356,8 @@ static void _action_wl_scan(struct rtw89_dev *rtwdev)
- 	struct rtw89_btc_wl_info *wl = &btc->cx.wl;
- 	struct rtw89_btc_wl_dbcc_info *wl_dinfo = &wl->dbcc_info;
- 
--	if (RTW89_CHK_FW_FEATURE(SCAN_OFFLOAD, &rtwdev->fw)) {
-+	if (btc->cx.state_map != BTC_WLINKING &&
-+	    RTW89_CHK_FW_FEATURE(SCAN_OFFLOAD, &rtwdev->fw)) {
- 		_action_wl_25g_mcc(rtwdev);
- 		rtw89_debug(rtwdev, RTW89_DBG_BTC, "[BTC], Scan offload!\n");
- 	} else if (rtwdev->dbcc_en) {
-@@ -7178,6 +7179,8 @@ void rtw89_btc_ntfy_scan_finish(struct rtw89_dev *rtwdev, u8 phy_idx)
- 		_fw_set_drv_info(rtwdev, CXDRVINFO_DBCC);
+diff --git a/drivers/gpu/drm/xe/xe_bo.c b/drivers/gpu/drm/xe/xe_bo.c
+index 35a8242a9f541..8acc4640f0a28 100644
+--- a/drivers/gpu/drm/xe/xe_bo.c
++++ b/drivers/gpu/drm/xe/xe_bo.c
+@@ -702,6 +702,21 @@ static int xe_bo_move(struct ttm_buffer_object *ttm_bo, bool evict,
+ 		goto out;
  	}
  
-+	btc->dm.tdma_instant_excute = 1;
++	/* Reject BO eviction if BO is bound to current VM. */
++	if (evict && ctx->resv) {
++		struct drm_gpuvm_bo *vm_bo;
 +
- 	_run_coex(rtwdev, BTC_RSN_NTFY_SCAN_FINISH);
- }
- 
-@@ -7630,7 +7633,8 @@ void rtw89_btc_ntfy_role_info(struct rtw89_dev *rtwdev,
- 	else
- 		wl->status.map.connecting = 0;
- 
--	if (state == BTC_ROLE_MSTS_STA_DIS_CONN)
-+	if (state == BTC_ROLE_MSTS_STA_DIS_CONN ||
-+	    state == BTC_ROLE_MSTS_STA_CONN_END)
- 		wl->status.map._4way = false;
- 
- 	_run_coex(rtwdev, BTC_RSN_NTFY_ROLE_INFO);
++		drm_gem_for_each_gpuvm_bo(vm_bo, &bo->ttm.base) {
++			struct xe_vm *vm = gpuvm_to_vm(vm_bo->vm);
++
++			if (xe_vm_resv(vm) == ctx->resv &&
++			    xe_vm_in_preempt_fence_mode(vm)) {
++				ret = -EBUSY;
++				goto out;
++			}
++		}
++	}
++
+ 	/*
+ 	 * Failed multi-hop where the old_mem is still marked as
+ 	 * TTM_PL_FLAG_TEMPORARY, should just be a dummy move.
 -- 
 2.39.5
 
