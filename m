@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-140147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DC64AAA5A0
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:54:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E5CEAAA576
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:51:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8363B1887062
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:50:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B7871631B0
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:50:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ED4E313072;
-	Mon,  5 May 2025 22:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA2723120B6;
+	Mon,  5 May 2025 22:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jMkCuxrX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LwTgAMAt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26D2A313056;
-	Mon,  5 May 2025 22:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 717D228CF75;
+	Mon,  5 May 2025 22:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484232; cv=none; b=hFRDfvWdOifmFxvAf73Smp34y1u5hS6sxYzh/hqEtZXP2I6PGVl0OmBUR+tn8tMkUWF9hHcTaHLbT43mzLpbPktTRMOVAZ+f7y/Z6BoBz7Uua7TD9M+JL/xa6HLeO+ItlWoKpckXbyNIsY2Qi9M3QPPWM1f/G5FXaOUyytC89uI=
+	t=1746484234; cv=none; b=ibXsjKxXzrD2qakpWwjQPbb946M7rWZgrqb39mGLRavJt/n7ooAd3BaO2bfNDYiUAJ3mJ4Y4ipSr9BzZf9TPKBYZ3SKHrpif4Py1ojB3GnSEO/VTAMty74ibHe36+O+EZYPSxLqhweLzaMbCnzDDp0wm0682kfs2HZHeY7eTjQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484232; c=relaxed/simple;
-	bh=48PQfxHBs3eSka9Ze3qDcmDNf3YT2CBKYaX7XsictR0=;
+	s=arc-20240116; t=1746484234; c=relaxed/simple;
+	bh=HWnCyAbvDdirI8uYLst5UGg1wOV07mxIIYJ4NUlDZug=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=YXjLjbS6xkzcG7VqZR/i79/uioO0Gi6VrEP4eJqw+hs2i6mMua2CsfCSJURYhmFt9Ea+Hi6Rt/9VmNr9Tx+U0ZGYjJ8SXtc6XIcCJUd3Z4ohLDjfdvHxmnpd3YUZ8JMJ6rbWgtsTmR5+5vaauwkntUB0BAl9Auj9t9dN58dchwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jMkCuxrX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0CADC4CEE4;
-	Mon,  5 May 2025 22:30:29 +0000 (UTC)
+	 MIME-Version; b=ssktUkPtW651hRtawItEmbm1ULhV7tFuZpOQbzhSvmsmTs/e4Jnmbeusd9Jk92mKlk6qX+2CoKeMrbFpXLJb6BQOatMOMFTVqASKaTJ5+DaF1D5UvJ3AXSKXFoeMITNjvCjG5OpmFIV6uj616okUGiJX8CLDhsjy3zxsNt2Nup4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LwTgAMAt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0343C4CEF6;
+	Mon,  5 May 2025 22:30:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484231;
-	bh=48PQfxHBs3eSka9Ze3qDcmDNf3YT2CBKYaX7XsictR0=;
+	s=k20201202; t=1746484234;
+	bh=HWnCyAbvDdirI8uYLst5UGg1wOV07mxIIYJ4NUlDZug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jMkCuxrXZvhJCFfAIRPvJi3/lAiWHauJ/6FfOHkgSJt38BxeLc4Bse/0xLpAiRqns
-	 FfffakQz0uy3p1mdeDHtldloCV6P5uK3OBRxhE7d+L3IZt2StEDzffX37brd1LZ4BB
-	 A8S7QkAQ68+2OY/l6OYeMSoXLVRA4GSdGTa4ovnu6AmvW5a9KautaqOZBQTORPbsiT
-	 /7Uo8DDvMtfamtnyzbkM3UeWPpr4S3cu3ufTPJysawTDnlyhUn8YQt0oqKOgwLzomI
-	 JkBhF5H2JK2gBURhnG7MT7yqUqX05+Ep7U7asKBErWmWwnW96Mu6f1HH2kTmg1aTlK
-	 rI/4CUsYkpXHQ==
+	b=LwTgAMAtNxYfjcSv0Kyxu0+MS1bqzRXZTUEkaPIPVIWsGlp5/x+m/PXEUdabbxK7O
+	 viVI9z533YQtqrO1mNc+TeSrb9tkVfOByvwpJDlI9twBaGi0VGBqECRixoeJZ4r7jY
+	 Na7FklbuQuvrtBjaxjrc2lXkrAtNgZKLg1Wp9pOaOch6LGKAS3xYC93geWEueNvOPZ
+	 rUDdcxqL9Nri1xyKOb2g2o4ew2C6F7SFddmcpkIejLJCPK6E3GjMWKMy8JY3IeBZmf
+	 gvXaynF3m/CN1edo0+q4sRlyRJBd1EccyYgFlOYEvfkwyoP/adCFlar3Z6UAOJv/zZ
+	 ++Dw8ahk0f12g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -54,13 +54,14 @@ Cc: Brian Gerst <brgerst@gmail.com>,
 	bp@alien8.de,
 	dave.hansen@linux.intel.com,
 	x86@kernel.org,
-	nathan@kernel.org,
-	ubizjak@gmail.com,
-	thomas.weissschuh@linutronix.de,
-	llvm@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.14 400/642] x86/relocs: Handle R_X86_64_REX_GOTPCRELX relocations
-Date: Mon,  5 May 2025 18:10:16 -0400
-Message-Id: <20250505221419.2672473-400-sashal@kernel.org>
+	yazen.ghannam@amd.com,
+	nikunj@amd.com,
+	nicolas.schier@linux.dev,
+	masahiroy@kernel.org,
+	dvyukov@google.com
+Subject: [PATCH AUTOSEL 6.14 401/642] x86/boot: Disable stack protector for early boot code
+Date: Mon,  5 May 2025 18:10:17 -0400
+Message-Id: <20250505221419.2672473-401-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -77,54 +78,40 @@ Content-Transfer-Encoding: 8bit
 
 From: Brian Gerst <brgerst@gmail.com>
 
-[ Upstream commit cb7927fda002ca49ae62e2782c1692acc7b80c67 ]
+[ Upstream commit a9a76b38aaf577887103e3ebb41d70e6aa5a4b19 ]
 
-Clang may produce R_X86_64_REX_GOTPCRELX relocations when redefining the
-stack protector location.  Treat them as another type of PC-relative
-relocation.
+On 64-bit, this will prevent crashes when the canary access is changed
+from %gs:40 to %gs:__stack_chk_guard(%rip).  RIP-relative addresses from
+the identity-mapped early boot code will target the wrong address with
+zero-based percpu.  KASLR could then shift that address to an unmapped
+page causing a crash on boot.
+
+This early boot code runs well before user-space is active and does not
+need stack protector enabled.
 
 Signed-off-by: Brian Gerst <brgerst@gmail.com>
 Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20250123190747.745588-6-brgerst@gmail.com
+Link: https://lore.kernel.org/r/20250123190747.745588-4-brgerst@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/tools/relocs.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/x86/kernel/Makefile | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/tools/relocs.c b/arch/x86/tools/relocs.c
-index e937be979ec86..92a1e503305ef 100644
---- a/arch/x86/tools/relocs.c
-+++ b/arch/x86/tools/relocs.c
-@@ -32,6 +32,11 @@ static struct relocs		relocs32;
- static struct relocs		relocs32neg;
- static struct relocs		relocs64;
- # define FMT PRIu64
-+
-+#ifndef R_X86_64_REX_GOTPCRELX
-+# define R_X86_64_REX_GOTPCRELX 42
-+#endif
-+
- #else
- # define FMT PRIu32
- #endif
-@@ -227,6 +232,7 @@ static const char *rel_type(unsigned type)
- 		REL_TYPE(R_X86_64_PC16),
- 		REL_TYPE(R_X86_64_8),
- 		REL_TYPE(R_X86_64_PC8),
-+		REL_TYPE(R_X86_64_REX_GOTPCRELX),
- #else
- 		REL_TYPE(R_386_NONE),
- 		REL_TYPE(R_386_32),
-@@ -861,6 +867,7 @@ static int do_reloc64(struct section *sec, Elf_Rel *rel, ElfW(Sym) *sym,
+diff --git a/arch/x86/kernel/Makefile b/arch/x86/kernel/Makefile
+index b43eb7e384eba..84cfa179802c3 100644
+--- a/arch/x86/kernel/Makefile
++++ b/arch/x86/kernel/Makefile
+@@ -44,6 +44,8 @@ KCOV_INSTRUMENT_unwind_orc.o				:= n
+ KCOV_INSTRUMENT_unwind_frame.o				:= n
+ KCOV_INSTRUMENT_unwind_guess.o				:= n
  
- 	case R_X86_64_PC32:
- 	case R_X86_64_PLT32:
-+	case R_X86_64_REX_GOTPCRELX:
- 		/*
- 		 * PC relative relocations don't need to be adjusted unless
- 		 * referencing a percpu symbol.
++CFLAGS_head32.o := -fno-stack-protector
++CFLAGS_head64.o := -fno-stack-protector
+ CFLAGS_irq.o := -I $(src)/../include/asm/trace
+ 
+ obj-y			+= head_$(BITS).o
 -- 
 2.39.5
 
