@@ -1,60 +1,69 @@
-Return-Path: <stable+bounces-140262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25D11AAA6F8
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:23:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63478AAA6C2
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:19:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFDBF988135
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:17:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A9C0B18869C6
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:18:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C058A32DA82;
-	Mon,  5 May 2025 22:35:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3F7132DAAD;
+	Mon,  5 May 2025 22:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kneLZSRk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lcx3CuAx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72D96292912;
-	Mon,  5 May 2025 22:35:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55CEF32DAA0;
+	Mon,  5 May 2025 22:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484524; cv=none; b=q6SNLTIsfY7hCUBTMbVDf+oaDXvXKh4QajzVSlFKb1pxjqyHWRBQ+lPjC3THTquvksSfgLHf1GP5beyHsjcTKbIpXNTqyFUJx7V5oa7uDpqKa92Xeqcg0PFIPe6rA9uTzh8/PtUfQmSVTD1zQBxJ6DzGeVWAy5Q0KiigK4U/PlI=
+	t=1746484526; cv=none; b=SThNHqzK2J84Pu0eVaHHkRJy9Rms4q1jmOM7SC3OtICW0Rm9s03DMcvrKXZfKcePBUG1OA0hhP6naU/h1OAx+6TAxqRGlapJ2ofaHWw0anTKCl3r8NpYzCEuw9iY1dJk28oUT0hN0E7jv3QmkYy2ZUhKEY5Dfldq4RpxGzmW79A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484524; c=relaxed/simple;
-	bh=KKeVLA+bLzCi3cNZBqiGJv5VKoSBgNyf6RITQsVfzOg=;
+	s=arc-20240116; t=1746484526; c=relaxed/simple;
+	bh=rPXg2sY7ZfWVK8DP/KT2YWCX2cEprik+eD4oek2lEXE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SAWo1RKukRBlGn+5oRhWjyO5nn98imP+KlX81nVaihYLsB4KpWjsSf1d6EwEvolJvYPle/RA3yfF6Tya+SSCm5tIx48uughXtQvZCb4bf+//915NlrW1/i5hSzjGQt9U+sql6DVkWHwF4WUkjzvoc64fURb+eJohh0dXsXo+zio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kneLZSRk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB858C4CEED;
-	Mon,  5 May 2025 22:35:22 +0000 (UTC)
+	 MIME-Version; b=nPlZOplectM9zc7nz4wes3U88m2wQn1EDcmHcxX2zkEVX0ZRlgYNVoyRSQRNyR7fR7Bv5lLyK9EI42eQbLUlOWPTWqBeUajBpWkNV1IqYsEAmxiW5w9J098LmT5UgDyLd7j9vdNaokLqP/ILbAp5P2gnXY5kToIZzFUz0WBJoBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lcx3CuAx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F9EFC4CEEE;
+	Mon,  5 May 2025 22:35:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484523;
-	bh=KKeVLA+bLzCi3cNZBqiGJv5VKoSBgNyf6RITQsVfzOg=;
+	s=k20201202; t=1746484526;
+	bh=rPXg2sY7ZfWVK8DP/KT2YWCX2cEprik+eD4oek2lEXE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kneLZSRk4a9kSzlT8/6otKsfGLxSJo5CaVyE8OVevlSPWf2m6Bdi5wJggM8f8l/NI
-	 tXkSB0OrxGPdl6pl8vIGYdqKaI+N59i5i3lI1VgDv/+aTs3+5lvHeKcrBVD7/7HCV3
-	 gAfncbbp6vaQtkq1dHdp21AVM61xs2MdilwU6C+SthRu4KukEztYX1qI9JO0eCYNZe
-	 din0458SjhtN0/NGBztW9Xssr1e8usKP/n5TDnc/tjDf8gNCSkyXxzL0E5+erAqdqi
-	 JqJzJm8l7CMoeqggPycZfM/Ar1mEMyi08IE+YK8zv8ozwNpaAnYwzKYdzOok78y8Zt
-	 OaqnEjsOOohrg==
+	b=lcx3CuAx9kWyuEf2iKhiRmkR2AU9epXvIs6wb49zwtGVQcWH95qSsP3yEIY/3rDkH
+	 N6hDyUP/dua2oFC4cYy1V7XtsyiaN92GQDa9jS4kTPOLYbB8IulRp83sdKeEuQGs0n
+	 GoQ8QTUcl5NXZv2IMcMxJq7bG1LjhPNY2VkTB6rD49A+o5J+zdUFKjWIR82UzP7b+V
+	 Wd0KZkqW/bv9i4mPy8W4W+h9ERwAVCE9zFP+piRP2WW4j0lqUJWiFwcEclRxHBOato
+	 N5nJJvMXAQyiRqoWsKhU8kLP5hJEJ5uRMZ1DncSzHtz1HcpLC1hXad/IZbTbY2dT48
+	 0oHVBzSzOKJCA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: David Lechner <dlechner@baylibre.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+Cc: Song Yoong Siang <yoong.siang.song@intel.com>,
+	Avigail Dahan <avigailx.dahan@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	michael.hennerich@analog.com,
-	nuno.sa@analog.com,
-	lars@metafoo.de,
-	jic23@kernel.org,
-	linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 514/642] iio: adc: ad7944: don't use storagebits for sizing
-Date: Mon,  5 May 2025 18:12:10 -0400
-Message-Id: <20250505221419.2672473-514-sashal@kernel.org>
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	hawk@kernel.org,
+	john.fastabend@gmail.com,
+	przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	bpf@vger.kernel.org,
+	intel-wired-lan@lists.osuosl.org
+Subject: [PATCH AUTOSEL 6.14 515/642] igc: Avoid unnecessary link down event in XDP_SETUP_PROG process
+Date: Mon,  5 May 2025 18:12:11 -0400
+Message-Id: <20250505221419.2672473-515-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -69,96 +78,134 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: David Lechner <dlechner@baylibre.com>
+From: Song Yoong Siang <yoong.siang.song@intel.com>
 
-[ Upstream commit 503d20ed8cf7c7b40ec0bd94f53c490c1d91c31b ]
+[ Upstream commit be324b790368c1522f07c6bb5654122e07b5e588 ]
 
-Replace use of storagebits with realbits for determining the number of
-bytes needed for SPI transfers.
+The igc_close()/igc_open() functions are too drastic for installing a new
+XDP prog because they cause undesirable link down event and device reset.
 
-When adding SPI offload support, storagebits will always be 32 rather
-than 16 for 16-bit 16-bit chips so we can no longer rely on storagebits
-being the correct size expected by the SPI framework (it always uses
-4 bytes for > 16-bit xfers and 2 bytes for > 8-bit xfers). Instead,
-derive the correct size from realbits since it will always be correct
-even when SPI offloading is used.
+To avoid delays in Ethernet traffic, improve the XDP_SETUP_PROG process by
+using the same sequence as igc_xdp_setup_pool(), which performs only the
+necessary steps, as follows:
+ 1. stop the traffic and clean buffer
+ 2. stop NAPI
+ 3. install the XDP program
+ 4. resume NAPI
+ 5. allocate buffer and resume the traffic
 
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-vy: Nuno Sa <nuno.sa@analog.com>
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250207-dlech-mainline-spi-engine-offload-2-v8-10-e48a489be48c@baylibre.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+This patch has been tested using the 'ip link set xdpdrv' command to attach
+a simple XDP prog that always returns XDP_PASS.
+
+Before this patch, attaching xdp program will cause ptp4l to lose sync for
+few seconds, as shown in ptp4l log below:
+  ptp4l[198.082]: rms    4 max    8 freq   +906 +/-   2 delay    12 +/-   0
+  ptp4l[199.082]: rms    3 max    4 freq   +906 +/-   3 delay    12 +/-   0
+  ptp4l[199.536]: port 1 (enp2s0): link down
+  ptp4l[199.536]: port 1 (enp2s0): SLAVE to FAULTY on FAULT_DETECTED (FT_UNSPECIFIED)
+  ptp4l[199.600]: selected local clock 22abbc.fffe.bb1234 as best master
+  ptp4l[199.600]: port 1 (enp2s0): assuming the grand master role
+  ptp4l[199.600]: port 1 (enp2s0): master state recommended in slave only mode
+  ptp4l[199.600]: port 1 (enp2s0): defaultDS.priority1 probably misconfigured
+  ptp4l[202.266]: port 1 (enp2s0): link up
+  ptp4l[202.300]: port 1 (enp2s0): FAULTY to LISTENING on INIT_COMPLETE
+  ptp4l[205.558]: port 1 (enp2s0): new foreign master 44abbc.fffe.bb2144-1
+  ptp4l[207.558]: selected best master clock 44abbc.fffe.bb2144
+  ptp4l[207.559]: port 1 (enp2s0): LISTENING to UNCALIBRATED on RS_SLAVE
+  ptp4l[208.308]: port 1 (enp2s0): UNCALIBRATED to SLAVE on MASTER_CLOCK_SELECTED
+  ptp4l[208.933]: rms  742 max 1303 freq   -195 +/- 682 delay    12 +/-   0
+  ptp4l[209.933]: rms  178 max  274 freq   +387 +/- 243 delay    12 +/-   0
+
+After this patch, attaching xdp program no longer cause ptp4l to lose sync,
+as shown in ptp4l log below:
+  ptp4l[201.183]: rms    1 max    3 freq   +959 +/-   1 delay     8 +/-   0
+  ptp4l[202.183]: rms    1 max    3 freq   +961 +/-   2 delay     8 +/-   0
+  ptp4l[203.183]: rms    2 max    3 freq   +958 +/-   2 delay     8 +/-   0
+  ptp4l[204.183]: rms    3 max    5 freq   +961 +/-   3 delay     8 +/-   0
+  ptp4l[205.183]: rms    2 max    4 freq   +964 +/-   3 delay     8 +/-   0
+
+Besides, before this patch, attaching xdp program will causes flood ping to
+lose 10 packets, as shown in ping statistics below:
+  --- 169.254.1.2 ping statistics ---
+  100000 packets transmitted, 99990 received, +6 errors, 0.01% packet loss, time 34001ms
+  rtt min/avg/max/mdev = 0.028/0.301/3104.360/13.838 ms, pipe 10, ipg/ewma 0.340/0.243 ms
+
+After this patch, attaching xdp program no longer cause flood ping to loss
+any packets, as shown in ping statistics below:
+  --- 169.254.1.2 ping statistics ---
+  100000 packets transmitted, 100000 received, 0% packet loss, time 32326ms
+  rtt min/avg/max/mdev = 0.027/0.231/19.589/0.155 ms, pipe 2, ipg/ewma 0.323/0.322 ms
+
+On the other hand, this patch has been tested with tools/testing/selftests/
+bpf/xdp_hw_metadata app to make sure AF_XDP zero-copy is working fine with
+XDP Tx and Rx metadata. Below is the result of last packet after received
+10000 UDP packets with interval 1 ms:
+  poll: 1 (0) skip=0 fail=0 redir=10000
+  xsk_ring_cons__peek: 1
+  0x55881c7ef7a8: rx_desc[9999]->addr=8f110 addr=8f110 comp_addr=8f110 EoP
+  rx_hash: 0xFB9BB6A3 with RSS type:0x1
+  HW RX-time:   1733923136269470866 (sec:1733923136.2695) delta to User RX-time sec:0.0000 (43.280 usec)
+  XDP RX-time:   1733923136269482482 (sec:1733923136.2695) delta to User RX-time sec:0.0000 (31.664 usec)
+  No rx_vlan_tci or rx_vlan_proto, err=-95
+  0x55881c7ef7a8: ping-pong with csum=ab19 (want 315b) csum_start=34 csum_offset=6
+  0x55881c7ef7a8: complete tx idx=9999 addr=f010
+  HW TX-complete-time:   1733923136269591637 (sec:1733923136.2696) delta to User TX-complete-time sec:0.0001 (108.571 usec)
+  XDP RX-time:   1733923136269482482 (sec:1733923136.2695) delta to User TX-complete-time sec:0.0002 (217.726 usec)
+  HW RX-time:   1733923136269470866 (sec:1733923136.2695) delta to HW TX-complete-time sec:0.0001 (120.771 usec)
+  0x55881c7ef7a8: complete rx idx=10127 addr=8f110
+
+Signed-off-by: Song Yoong Siang <yoong.siang.song@intel.com>
+Tested-by: Avigail Dahan <avigailx.dahan@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7944.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/intel/igc/igc_xdp.c | 19 +++++++++++++++----
+ 1 file changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7944.c b/drivers/iio/adc/ad7944.c
-index 0ec9cda10f5f8..abfababcea101 100644
---- a/drivers/iio/adc/ad7944.c
-+++ b/drivers/iio/adc/ad7944.c
-@@ -98,6 +98,9 @@ struct ad7944_chip_info {
- 	const struct iio_chan_spec channels[2];
- };
+diff --git a/drivers/net/ethernet/intel/igc/igc_xdp.c b/drivers/net/ethernet/intel/igc/igc_xdp.c
+index 869815f48ac1d..9eb47b4beb062 100644
+--- a/drivers/net/ethernet/intel/igc/igc_xdp.c
++++ b/drivers/net/ethernet/intel/igc/igc_xdp.c
+@@ -14,6 +14,7 @@ int igc_xdp_set_prog(struct igc_adapter *adapter, struct bpf_prog *prog,
+ 	bool if_running = netif_running(dev);
+ 	struct bpf_prog *old_prog;
+ 	bool need_update;
++	unsigned int i;
  
-+/* get number of bytes for SPI xfer */
-+#define AD7944_SPI_BYTES(scan_type) ((scan_type).realbits > 16 ? 4 : 2)
-+
- /*
-  * AD7944_DEFINE_CHIP_INFO - Define a chip info structure for a specific chip
-  * @_name: The name of the chip
-@@ -164,7 +167,7 @@ static int ad7944_3wire_cs_mode_init_msg(struct device *dev, struct ad7944_adc *
+ 	if (dev->mtu > ETH_DATA_LEN) {
+ 		/* For now, the driver doesn't support XDP functionality with
+@@ -24,8 +25,13 @@ int igc_xdp_set_prog(struct igc_adapter *adapter, struct bpf_prog *prog,
+ 	}
  
- 	/* Then we can read the data during the acquisition phase */
- 	xfers[2].rx_buf = &adc->sample.raw;
--	xfers[2].len = BITS_TO_BYTES(chan->scan_type.storagebits);
-+	xfers[2].len = AD7944_SPI_BYTES(chan->scan_type);
- 	xfers[2].bits_per_word = chan->scan_type.realbits;
+ 	need_update = !!adapter->xdp_prog != !!prog;
+-	if (if_running && need_update)
+-		igc_close(dev);
++	if (if_running && need_update) {
++		for (i = 0; i < adapter->num_rx_queues; i++) {
++			igc_disable_rx_ring(adapter->rx_ring[i]);
++			igc_disable_tx_ring(adapter->tx_ring[i]);
++			napi_disable(&adapter->rx_ring[i]->q_vector->napi);
++		}
++	}
  
- 	spi_message_init_with_transfers(&adc->msg, xfers, 3);
-@@ -193,7 +196,7 @@ static int ad7944_4wire_mode_init_msg(struct device *dev, struct ad7944_adc *adc
- 	xfers[0].delay.unit = SPI_DELAY_UNIT_NSECS;
+ 	old_prog = xchg(&adapter->xdp_prog, prog);
+ 	if (old_prog)
+@@ -36,8 +42,13 @@ int igc_xdp_set_prog(struct igc_adapter *adapter, struct bpf_prog *prog,
+ 	else
+ 		xdp_features_clear_redirect_target(dev);
  
- 	xfers[1].rx_buf = &adc->sample.raw;
--	xfers[1].len = BITS_TO_BYTES(chan->scan_type.storagebits);
-+	xfers[1].len = AD7944_SPI_BYTES(chan->scan_type);
- 	xfers[1].bits_per_word = chan->scan_type.realbits;
+-	if (if_running && need_update)
+-		igc_open(dev);
++	if (if_running && need_update) {
++		for (i = 0; i < adapter->num_rx_queues; i++) {
++			napi_enable(&adapter->rx_ring[i]->q_vector->napi);
++			igc_enable_tx_ring(adapter->tx_ring[i]);
++			igc_enable_rx_ring(adapter->rx_ring[i]);
++		}
++	}
  
- 	spi_message_init_with_transfers(&adc->msg, xfers, 2);
-@@ -228,7 +231,7 @@ static int ad7944_chain_mode_init_msg(struct device *dev, struct ad7944_adc *adc
- 	xfers[0].delay.unit = SPI_DELAY_UNIT_NSECS;
- 
- 	xfers[1].rx_buf = adc->chain_mode_buf;
--	xfers[1].len = BITS_TO_BYTES(chan->scan_type.storagebits) * n_chain_dev;
-+	xfers[1].len = AD7944_SPI_BYTES(chan->scan_type) * n_chain_dev;
- 	xfers[1].bits_per_word = chan->scan_type.realbits;
- 
- 	spi_message_init_with_transfers(&adc->msg, xfers, 2);
-@@ -274,12 +277,12 @@ static int ad7944_single_conversion(struct ad7944_adc *adc,
- 		return ret;
- 
- 	if (adc->spi_mode == AD7944_SPI_MODE_CHAIN) {
--		if (chan->scan_type.storagebits > 16)
-+		if (chan->scan_type.realbits > 16)
- 			*val = ((u32 *)adc->chain_mode_buf)[chan->scan_index];
- 		else
- 			*val = ((u16 *)adc->chain_mode_buf)[chan->scan_index];
- 	} else {
--		if (chan->scan_type.storagebits > 16)
-+		if (chan->scan_type.realbits > 16)
- 			*val = adc->sample.raw.u32;
- 		else
- 			*val = adc->sample.raw.u16;
-@@ -409,8 +412,7 @@ static int ad7944_chain_mode_alloc(struct device *dev,
- 	/* 1 word for each voltage channel + aligned u64 for timestamp */
- 
- 	chain_mode_buf_size = ALIGN(n_chain_dev *
--		BITS_TO_BYTES(chan[0].scan_type.storagebits), sizeof(u64))
--		+ sizeof(u64);
-+		AD7944_SPI_BYTES(chan[0].scan_type), sizeof(u64)) + sizeof(u64);
- 	buf = devm_kzalloc(dev, chain_mode_buf_size, GFP_KERNEL);
- 	if (!buf)
- 		return -ENOMEM;
+ 	return 0;
+ }
 -- 
 2.39.5
 
