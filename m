@@ -1,68 +1,63 @@
-Return-Path: <stable+bounces-140964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05DDBAAACEB
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:25:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5F77AAAD4A
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:32:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D762F189448C
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:22:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1198B9A195F
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:23:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D28F3CEB77;
-	Mon,  5 May 2025 23:28:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF0F63CEB8C;
+	Mon,  5 May 2025 23:29:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ir5AZy11"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="irXGZByO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10F313A80E8;
-	Mon,  5 May 2025 23:17:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A800E2F6B29;
+	Mon,  5 May 2025 23:17:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487038; cv=none; b=tngk7iDeb0N+i83epw/RX287s9wg7LfeAs5LpZSMnk+osad0w1RQRh5w77te6iwV5Ic3XPYiXSgfPlq8Hx7gBNeAA78+ZPY7Gxne7BoEzq3KwlREigsrju0TsIYZEgjo0GJi0MGVAgcif9u6uhR5ybXWMRX5v+lptPAljzU5z/M=
+	t=1746487074; cv=none; b=YCZi+3FAjY16s8hW42BnQ6B4+0xtVs0k3G8nswda4QJwpi0okwj54n2O4aourPYy7dJ79S9Jb5pnAq7gdt+EGGr5orIztP8oTXQKbmgihU0Hzk+R9en3Mj3ctaciR2hnaqUqJa2BGMUzocUh4ocopMvZ+sL/4mJhPVsv/sfVT/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487038; c=relaxed/simple;
-	bh=uBdoissBPpGSULb9insgyqATPgy7GITB84igV0I3bo8=;
+	s=arc-20240116; t=1746487074; c=relaxed/simple;
+	bh=xSLLz/4eix5InbKfFV8XKKJhByYuDsQyk3B6wkXDwHY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=QyjDuxrZF1I/RkpfY2YdS8Pa2zN1nXWA+0prAP0UXhC4Tfz2UGTm39c8Ini7a0fN9VI+NcuqPnj/oe8SM80vVaKMoJ62f9r5/C4Y6FwXnAhLSc4RcWDSz5cUY6/Jl2gvlCuxDlPmpLX9jiXygxvyJE6dOgZq+UxtUij9lx2K5os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ir5AZy11; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAF07C4CEE4;
-	Mon,  5 May 2025 23:17:14 +0000 (UTC)
+	 MIME-Version; b=oyCicqZr2H+IOUc3IdsNH53iIOWma5EuzqHFBEg0cBRCTNz7+Kq2IhtQ2bdYFvcof/Q+t1qVxTE1x0hx7shxW8AfepJWEXnbIHaEVXbLSaL1M+IQxD3ZtlGwvql8QKBVKbtWTsqLISYUnx+2gynonGlTBStvBPwcK+cZrsDiXeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=irXGZByO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C03B6C4CEED;
+	Mon,  5 May 2025 23:17:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487036;
-	bh=uBdoissBPpGSULb9insgyqATPgy7GITB84igV0I3bo8=;
+	s=k20201202; t=1746487073;
+	bh=xSLLz/4eix5InbKfFV8XKKJhByYuDsQyk3B6wkXDwHY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ir5AZy11nZcAizCdGy+1r7A5a+fL0Ej4mdDkSyIMI2UHyfWjWgmdvkiQ6FJ5vjwEJ
-	 EFKytDhtJYTQTXQGc4CCxyR7W0mdkxN9J73hr3n/mIbE/ilI0QwN9psUFAiFWh0WZP
-	 8RQSgV+W4s/dqxL3lCtUdPfgoo/Ip07pt1C1HdsmwdVsbNh6sYSmnWIfgB9yruSDfK
-	 ZWbClV5DpO5CsKI36XKQdhwCeLU92VsARDc1StTV2FLwgi3YOZfkumZAlNWD/m6p2Q
-	 VTgDmWdbPB6vvYArGhRHF7EoKe8HNIPqN3WNfHbIXCdIoVC4+joh2YEDtirTU1XYlu
-	 4YpBr0+FlYt2Q==
+	b=irXGZByOeE0NR8B690YMlm6nRyb8bYnDF1GqztQnfVSNyAM822lYSHCS+PS/wKqni
+	 UeGifxkE8wko8hKU9w9WjcaUomfO7HOdRnKEkoyERnr0E+epToTdYYos76rqC6lpZy
+	 BOYEHy2BbNd8jckcz7EkflQ8YNEz9nbA6EzZibEbDhZtqlew5yL/EaBRh0+kFLXvoD
+	 4vBISjRYicvM1Gorh3fsqR7nLocL69BRlfj5IWWwfNeDTfAkqdSzAT4zKXGEs6Yfbf
+	 wRpvGXoWswecIuGSLg9De/h6pPdkOR8TO2JqbO+CXm+/4MUoW91f4gIEuo+JQDjbgU
+	 U6grwGpxRbXYA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jiang Liu <gerry@linux.alibaba.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Ankur Arora <ankur.a.arora@oracle.com>,
+	"Paul E . McKenney" <paulmck@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
 	Sasha Levin <sashal@kernel.org>,
-	christian.koenig@amd.com,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	Hawking.Zhang@amd.com,
-	sunil.khatri@amd.com,
-	candice.li@amd.com,
-	YiPeng.Chai@amd.com,
-	le.ma@amd.com,
-	Feifei.Xu@amd.com,
-	kevinyang.wang@amd.com,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.15 121/153] drm/amdgpu: reset psp->cmd to NULL after releasing the buffer
-Date: Mon,  5 May 2025 19:12:48 -0400
-Message-Id: <20250505231320.2695319-121-sashal@kernel.org>
+	neeraj.upadhyay@kernel.org,
+	joel@joelfernandes.org,
+	josh@joshtriplett.org,
+	urezki@gmail.com,
+	rcu@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 139/153] rcu: handle quiescent states for PREEMPT_RCU=n, PREEMPT_COUNT=y
+Date: Mon,  5 May 2025 19:13:06 -0400
+Message-Id: <20250505231320.2695319-139-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
 References: <20250505231320.2695319-1-sashal@kernel.org>
@@ -77,43 +72,61 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.181
 Content-Transfer-Encoding: 8bit
 
-From: Jiang Liu <gerry@linux.alibaba.com>
+From: Ankur Arora <ankur.a.arora@oracle.com>
 
-[ Upstream commit e92f3f94cad24154fd3baae30c6dfb918492278d ]
+[ Upstream commit 83b28cfe796464ebbde1cf7916c126da6d572685 ]
 
-Reset psp->cmd to NULL after releasing the buffer in function psp_sw_fini().
+With PREEMPT_RCU=n, cond_resched() provides urgently needed quiescent
+states for read-side critical sections via rcu_all_qs().
+One reason why this was needed: lacking preempt-count, the tick
+handler has no way of knowing whether it is executing in a
+read-side critical section or not.
 
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
-Signed-off-by: Jiang Liu <gerry@linux.alibaba.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+With (PREEMPT_LAZY=y, PREEMPT_DYNAMIC=n), we get (PREEMPT_COUNT=y,
+PREEMPT_RCU=n). In this configuration cond_resched() is a stub and
+does not provide quiescent states via rcu_all_qs().
+(PREEMPT_RCU=y provides this information via rcu_read_unlock() and
+its nesting counter.)
+
+So, use the availability of preempt_count() to report quiescent states
+in rcu_flavor_sched_clock_irq().
+
+Suggested-by: Paul E. McKenney <paulmck@kernel.org>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Ankur Arora <ankur.a.arora@oracle.com>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ kernel/rcu/tree_plugin.h | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-index a8b7f0aeacf83..64bf24b64446b 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp.c
-@@ -353,7 +353,6 @@ static int psp_sw_fini(void *handle)
+diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
+index b48b42d76474e..9e84d603e882e 100644
+--- a/kernel/rcu/tree_plugin.h
++++ b/kernel/rcu/tree_plugin.h
+@@ -945,13 +945,16 @@ static void rcu_preempt_check_blocked_tasks(struct rcu_node *rnp)
+  */
+ static void rcu_flavor_sched_clock_irq(int user)
  {
- 	struct amdgpu_device *adev = (struct amdgpu_device *)handle;
- 	struct psp_context *psp = &adev->psp;
--	struct psp_gfx_cmd_resp *cmd = psp->cmd;
+-	if (user || rcu_is_cpu_rrupt_from_idle()) {
++	if (user || rcu_is_cpu_rrupt_from_idle() ||
++	     (IS_ENABLED(CONFIG_PREEMPT_COUNT) &&
++	      (preempt_count() == HARDIRQ_OFFSET))) {
  
- 	psp_memory_training_fini(psp);
- 	if (psp->sos_fw) {
-@@ -373,8 +372,8 @@ static int psp_sw_fini(void *handle)
- 	    adev->asic_type == CHIP_SIENNA_CICHLID)
- 		psp_sysfs_fini(adev);
- 
--	kfree(cmd);
--	cmd = NULL;
-+	kfree(psp->cmd);
-+	psp->cmd = NULL;
- 
- 	amdgpu_bo_free_kernel(&psp->fw_pri_bo,
- 			      &psp->fw_pri_mc_addr, &psp->fw_pri_buf);
+ 		/*
+ 		 * Get here if this CPU took its interrupt from user
+-		 * mode or from the idle loop, and if this is not a
+-		 * nested interrupt.  In this case, the CPU is in
+-		 * a quiescent state, so note it.
++		 * mode, from the idle loop without this being a nested
++		 * interrupt, or while not holding the task preempt count
++		 * (with PREEMPT_COUNT=y). In this case, the CPU is in a
++		 * quiescent state, so note it.
+ 		 *
+ 		 * No memory barrier is required here because rcu_qs()
+ 		 * references only CPU-local variables that other CPUs
 -- 
 2.39.5
 
