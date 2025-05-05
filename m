@@ -1,55 +1,62 @@
-Return-Path: <stable+bounces-141587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E08EFAAB758
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:09:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52BB6AAB75A
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:10:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 65A7A4A5FB6
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:06:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D604A4C5DBD
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:07:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A842F1CF1;
-	Tue,  6 May 2025 00:43:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F04B38A9DD;
+	Tue,  6 May 2025 00:43:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mG7AAcCn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RcUafjmL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29F172F22E9;
-	Mon,  5 May 2025 23:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1D632F2315;
+	Mon,  5 May 2025 23:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486810; cv=none; b=AAeL1n32JINQwzzm7ypX1MSpREK5W++RlyjpM4ylUkvV9K5y4R3kEmx1PHLYd11aDAWy78L7HyOVuGsnn/8PBWFQvOqKXG11KD2TImh8GFGiP8NBXAMVErJWl/NKnpsvZlnXEG7Lfk4xF8IctuG8onQSqRAf/13W7csBn5Wae9o=
+	t=1746486818; cv=none; b=au+EEX4sWGfa7M0LG8zrURyesUmEEGl4KzikPjmsXg3K1dRjz3VjRYjxAAeivZLE5c0hBv8pA3WlJ4B4tnqTkO8iEYMbweNQ/OfuXlLyr5eij8IG88O9lRkRu8NbFxhp1/4//GaZs70/LLYz9M2nENZjABvSbpVF6qyvdsV1Lgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486810; c=relaxed/simple;
-	bh=zEWgyvgE0K3/6juLqJn8ugmpW06gemNbsD2fMXiHnzM=;
+	s=arc-20240116; t=1746486818; c=relaxed/simple;
+	bh=ME1YQ6PCxM9UuUnCFGESMmJvadNOkG7RIBMwNuon5kA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DSeOCeyuOc6IExcXm+uNkGCXTGzxGyiqV0+u5qQF7VoWYTzjpUAq9cDFGN6D2E7Uxwr0ZBLS2MUSINDEM29onHGNZbXsd4WNejBa8UYdUvDv8WHZb4F5F45QxRNr0zKEAEpxAJN7rh2kNFHxoTDAxXazrSpnHWlwNP7LfzYBnBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mG7AAcCn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E8F0C4CEED;
-	Mon,  5 May 2025 23:13:28 +0000 (UTC)
+	 MIME-Version; b=LKYVt4Ijhroy9UUhbcSOcZwZ5XGd0S4QPi9JTBR9qkJVm940SYob8r6jBOmcvDWTHAE1tbqSfZbsviY4ZGuz/LMnGmrHx0murqkL1KQl6rTt7I78NB8pTWL4E/ymRRecyqYtrdZ3LwYD34N6CeoyQc7fanBgHATT3d5UMfqcFlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RcUafjmL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EDD0C4CEE4;
+	Mon,  5 May 2025 23:13:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486809;
-	bh=zEWgyvgE0K3/6juLqJn8ugmpW06gemNbsD2fMXiHnzM=;
+	s=k20201202; t=1746486818;
+	bh=ME1YQ6PCxM9UuUnCFGESMmJvadNOkG7RIBMwNuon5kA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mG7AAcCnTKV10J51E4GRHSz7/XXXyX+ObT9E3gKS6vMf8skw2v4M7+MAcP3mO1yKV
-	 Y90cMNJz6Wmb4SODMTLCYK5ZT+XpX19DCxb6vev/m4ZQA4Tn7OGGOYoBlIMnyvTCRy
-	 4LZ8pJpuUHlfCbtqZHc5aO88sunZgfjTNOKVE+RoJFDSWCwnS+cI+Hn5sQh1sSI3Mp
-	 EOOcq5ubXCDNvj6a2TR135XlITLntuWSjB+WKL3UTvflLUrt38bUh85aOSY7lgxwBk
-	 n42KzIu1RGc0vBfj43UAmXNrl91oO2d9mxnmFns5ZaGmyBl5NoG02yx42SH3FizgDp
-	 X5vtMO/15SehA==
+	b=RcUafjmLrLqEVo11I68NQ8maetustyxRm2Oa6OzxH3qkopT6akDS1HGQBGi+VkuyZ
+	 i8ra/4xfOI8CVJ7EsycjljS8xyRyfpxnxm0iMU8U60bpBYC67hTgs3/ed70K8nEnat
+	 pi7CDV30TzH9hmk4YFXz6mP6Guxw3H4XbrJYzIpQVEDViFDGPZNwZ0EDycP1GupW0K
+	 HuapqLPDbje0xCu9Zh/uKi0PXX8o6dyi5ac5vxrw9yfC8kHfPTGnT5exj/DZPVu8bK
+	 qSYiRaCvmPMx5LLcj9+yQ9NHc3ilFVpJXQHWTjyET+Dr27a6467GlK13HzW3hHDo0D
+	 IzDJPtgb8ML6w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 5.15 004/153] mailbox: use error ret code of of_parse_phandle_with_args()
-Date: Mon,  5 May 2025 19:10:51 -0400
-Message-Id: <20250505231320.2695319-4-sashal@kernel.org>
+Cc: Zsolt Kajtar <soci@c64.rulez.org>,
+	Helge Deller <deller@gmx.de>,
+	Sasha Levin <sashal@kernel.org>,
+	simona@ffwll.ch,
+	jfalempe@redhat.com,
+	qianqiang.liu@163.com,
+	tzimmermann@suse.de,
+	oushixiong@kylinos.cn,
+	linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 5.15 006/153] fbcon: Use correct erase colour for clearing in fbcon
+Date: Mon,  5 May 2025 19:10:53 -0400
+Message-Id: <20250505231320.2695319-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
 References: <20250505231320.2695319-1-sashal@kernel.org>
@@ -64,43 +71,240 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.181
 Content-Transfer-Encoding: 8bit
 
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
+From: Zsolt Kajtar <soci@c64.rulez.org>
 
-[ Upstream commit 24fdd5074b205cfb0ef4cd0751a2d03031455929 ]
+[ Upstream commit 892c788d73fe4a94337ed092cb998c49fa8ecaf4 ]
 
-In case of error, of_parse_phandle_with_args() returns -EINVAL when the
-passed index is negative, or -ENOENT when the index is for an empty
-phandle. The mailbox core overwrote the error return code with a less
-precise -ENODEV. Use the error returned code from
-of_parse_phandle_with_args().
+The erase colour calculation for fbcon clearing should use get_color instead
+of attr_col_ec, like everything else. The latter is similar but is not correct.
+For example it's missing the depth dependent remapping and doesn't care about
+blanking.
 
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+The problem can be reproduced by setting up the background colour to grey
+(vt.color=0x70) and having an fbcon console set to 2bpp (4 shades of gray).
+Now the background attribute should be 1 (dark gray) on the console.
+
+If the screen is scrolled when pressing enter in a shell prompt at the bottom
+line then the new line is cleared using colour 7 instead of 1. That's not
+something fillrect likes (at 2bbp it expect 0-3) so the result is interesting.
+
+This patch switches to get_color with vc_video_erase_char to determine the
+erase colour from attr_col_ec. That makes the latter function redundant as
+no other users were left.
+
+Use correct erase colour for clearing in fbcon
+
+Signed-off-by: Zsolt Kajtar <soci@c64.rulez.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/mailbox.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/video/fbdev/core/bitblit.c   |  5 ++--
+ drivers/video/fbdev/core/fbcon.c     | 10 +++++---
+ drivers/video/fbdev/core/fbcon.h     | 38 +---------------------------
+ drivers/video/fbdev/core/fbcon_ccw.c |  5 ++--
+ drivers/video/fbdev/core/fbcon_cw.c  |  5 ++--
+ drivers/video/fbdev/core/fbcon_ud.c  |  5 ++--
+ drivers/video/fbdev/core/tileblit.c  |  8 +++---
+ 7 files changed, 18 insertions(+), 58 deletions(-)
 
-diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
-index 4229b9b5da98f..6f54501dc7762 100644
---- a/drivers/mailbox/mailbox.c
-+++ b/drivers/mailbox/mailbox.c
-@@ -350,11 +350,12 @@ struct mbox_chan *mbox_request_channel(struct mbox_client *cl, int index)
+diff --git a/drivers/video/fbdev/core/bitblit.c b/drivers/video/fbdev/core/bitblit.c
+index 8587c9da06700..42e681a78136a 100644
+--- a/drivers/video/fbdev/core/bitblit.c
++++ b/drivers/video/fbdev/core/bitblit.c
+@@ -59,12 +59,11 @@ static void bit_bmove(struct vc_data *vc, struct fb_info *info, int sy,
+ }
  
- 	mutex_lock(&con_mutex);
+ static void bit_clear(struct vc_data *vc, struct fb_info *info, int sy,
+-		      int sx, int height, int width)
++		      int sx, int height, int width, int fg, int bg)
+ {
+-	int bgshift = (vc->vc_hi_font_mask) ? 13 : 12;
+ 	struct fb_fillrect region;
  
--	if (of_parse_phandle_with_args(dev->of_node, "mboxes",
--				       "#mbox-cells", index, &spec)) {
-+	ret = of_parse_phandle_with_args(dev->of_node, "mboxes", "#mbox-cells",
-+					 index, &spec);
-+	if (ret) {
- 		dev_dbg(dev, "%s: can't parse \"mboxes\" property\n", __func__);
- 		mutex_unlock(&con_mutex);
--		return ERR_PTR(-ENODEV);
-+		return ERR_PTR(ret);
+-	region.color = attr_bgcol_ec(bgshift, vc, info);
++	region.color = bg;
+ 	region.dx = sx * vc->vc_font.width;
+ 	region.dy = sy * vc->vc_font.height;
+ 	region.width = width * vc->vc_font.width;
+diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+index b163b54b868e6..805a4745abd86 100644
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -1249,7 +1249,7 @@ static void fbcon_clear(struct vc_data *vc, int sy, int sx, int height,
+ {
+ 	struct fb_info *info = registered_fb[con2fb_map[vc->vc_num]];
+ 	struct fbcon_ops *ops = info->fbcon_par;
+-
++	int fg, bg;
+ 	struct fbcon_display *p = &fb_display[vc->vc_num];
+ 	u_int y_break;
+ 
+@@ -1270,16 +1270,18 @@ static void fbcon_clear(struct vc_data *vc, int sy, int sx, int height,
+ 		fbcon_clear_margins(vc, 0);
  	}
  
- 	chan = ERR_PTR(-EPROBE_DEFER);
++	fg = get_color(vc, info, vc->vc_video_erase_char, 1);
++	bg = get_color(vc, info, vc->vc_video_erase_char, 0);
+ 	/* Split blits that cross physical y_wrap boundary */
+ 
+ 	y_break = p->vrows - p->yscroll;
+ 	if (sy < y_break && sy + height - 1 >= y_break) {
+ 		u_int b = y_break - sy;
+-		ops->clear(vc, info, real_y(p, sy), sx, b, width);
++		ops->clear(vc, info, real_y(p, sy), sx, b, width, fg, bg);
+ 		ops->clear(vc, info, real_y(p, sy + b), sx, height - b,
+-				 width);
++				 width, fg, bg);
+ 	} else
+-		ops->clear(vc, info, real_y(p, sy), sx, height, width);
++		ops->clear(vc, info, real_y(p, sy), sx, height, width, fg, bg);
+ }
+ 
+ static void fbcon_putcs(struct vc_data *vc, const unsigned short *s,
+diff --git a/drivers/video/fbdev/core/fbcon.h b/drivers/video/fbdev/core/fbcon.h
+index 0f16cbc99e6a4..3e1ec454b8aa3 100644
+--- a/drivers/video/fbdev/core/fbcon.h
++++ b/drivers/video/fbdev/core/fbcon.h
+@@ -57,7 +57,7 @@ struct fbcon_ops {
+ 	void (*bmove)(struct vc_data *vc, struct fb_info *info, int sy,
+ 		      int sx, int dy, int dx, int height, int width);
+ 	void (*clear)(struct vc_data *vc, struct fb_info *info, int sy,
+-		      int sx, int height, int width);
++		      int sx, int height, int width, int fb, int bg);
+ 	void (*putcs)(struct vc_data *vc, struct fb_info *info,
+ 		      const unsigned short *s, int count, int yy, int xx,
+ 		      int fg, int bg);
+@@ -118,42 +118,6 @@ static inline int mono_col(const struct fb_info *info)
+ 	return (~(0xfff << max_len)) & 0xff;
+ }
+ 
+-static inline int attr_col_ec(int shift, struct vc_data *vc,
+-			      struct fb_info *info, int is_fg)
+-{
+-	int is_mono01;
+-	int col;
+-	int fg;
+-	int bg;
+-
+-	if (!vc)
+-		return 0;
+-
+-	if (vc->vc_can_do_color)
+-		return is_fg ? attr_fgcol(shift,vc->vc_video_erase_char)
+-			: attr_bgcol(shift,vc->vc_video_erase_char);
+-
+-	if (!info)
+-		return 0;
+-
+-	col = mono_col(info);
+-	is_mono01 = info->fix.visual == FB_VISUAL_MONO01;
+-
+-	if (attr_reverse(vc->vc_video_erase_char)) {
+-		fg = is_mono01 ? col : 0;
+-		bg = is_mono01 ? 0 : col;
+-	}
+-	else {
+-		fg = is_mono01 ? 0 : col;
+-		bg = is_mono01 ? col : 0;
+-	}
+-
+-	return is_fg ? fg : bg;
+-}
+-
+-#define attr_bgcol_ec(bgshift, vc, info) attr_col_ec(bgshift, vc, info, 0)
+-#define attr_fgcol_ec(fgshift, vc, info) attr_col_ec(fgshift, vc, info, 1)
+-
+     /*
+      *  Scroll Method
+      */
+diff --git a/drivers/video/fbdev/core/fbcon_ccw.c b/drivers/video/fbdev/core/fbcon_ccw.c
+index 2789ace796342..9f4d65478554a 100644
+--- a/drivers/video/fbdev/core/fbcon_ccw.c
++++ b/drivers/video/fbdev/core/fbcon_ccw.c
+@@ -78,14 +78,13 @@ static void ccw_bmove(struct vc_data *vc, struct fb_info *info, int sy,
+ }
+ 
+ static void ccw_clear(struct vc_data *vc, struct fb_info *info, int sy,
+-		     int sx, int height, int width)
++		     int sx, int height, int width, int fg, int bg)
+ {
+ 	struct fbcon_ops *ops = info->fbcon_par;
+ 	struct fb_fillrect region;
+-	int bgshift = (vc->vc_hi_font_mask) ? 13 : 12;
+ 	u32 vyres = GETVYRES(ops->p, info);
+ 
+-	region.color = attr_bgcol_ec(bgshift,vc,info);
++	region.color = bg;
+ 	region.dx = sy * vc->vc_font.height;
+ 	region.dy = vyres - ((sx + width) * vc->vc_font.width);
+ 	region.height = width * vc->vc_font.width;
+diff --git a/drivers/video/fbdev/core/fbcon_cw.c b/drivers/video/fbdev/core/fbcon_cw.c
+index 86a254c1b2b7b..b18e31886da10 100644
+--- a/drivers/video/fbdev/core/fbcon_cw.c
++++ b/drivers/video/fbdev/core/fbcon_cw.c
+@@ -63,14 +63,13 @@ static void cw_bmove(struct vc_data *vc, struct fb_info *info, int sy,
+ }
+ 
+ static void cw_clear(struct vc_data *vc, struct fb_info *info, int sy,
+-		     int sx, int height, int width)
++		     int sx, int height, int width, int fg, int bg)
+ {
+ 	struct fbcon_ops *ops = info->fbcon_par;
+ 	struct fb_fillrect region;
+-	int bgshift = (vc->vc_hi_font_mask) ? 13 : 12;
+ 	u32 vxres = GETVXRES(ops->p, info);
+ 
+-	region.color = attr_bgcol_ec(bgshift,vc,info);
++	region.color = bg;
+ 	region.dx = vxres - ((sy + height) * vc->vc_font.height);
+ 	region.dy = sx *  vc->vc_font.width;
+ 	region.height = width * vc->vc_font.width;
+diff --git a/drivers/video/fbdev/core/fbcon_ud.c b/drivers/video/fbdev/core/fbcon_ud.c
+index 23bc045769d08..b6b074cfd9dc0 100644
+--- a/drivers/video/fbdev/core/fbcon_ud.c
++++ b/drivers/video/fbdev/core/fbcon_ud.c
+@@ -64,15 +64,14 @@ static void ud_bmove(struct vc_data *vc, struct fb_info *info, int sy,
+ }
+ 
+ static void ud_clear(struct vc_data *vc, struct fb_info *info, int sy,
+-		     int sx, int height, int width)
++		     int sx, int height, int width, int fg, int bg)
+ {
+ 	struct fbcon_ops *ops = info->fbcon_par;
+ 	struct fb_fillrect region;
+-	int bgshift = (vc->vc_hi_font_mask) ? 13 : 12;
+ 	u32 vyres = GETVYRES(ops->p, info);
+ 	u32 vxres = GETVXRES(ops->p, info);
+ 
+-	region.color = attr_bgcol_ec(bgshift,vc,info);
++	region.color = bg;
+ 	region.dy = vyres - ((sy + height) * vc->vc_font.height);
+ 	region.dx = vxres - ((sx + width) *  vc->vc_font.width);
+ 	region.width = width * vc->vc_font.width;
+diff --git a/drivers/video/fbdev/core/tileblit.c b/drivers/video/fbdev/core/tileblit.c
+index 2768eff247ba4..674ca6a410ec8 100644
+--- a/drivers/video/fbdev/core/tileblit.c
++++ b/drivers/video/fbdev/core/tileblit.c
+@@ -32,16 +32,14 @@ static void tile_bmove(struct vc_data *vc, struct fb_info *info, int sy,
+ }
+ 
+ static void tile_clear(struct vc_data *vc, struct fb_info *info, int sy,
+-		       int sx, int height, int width)
++		       int sx, int height, int width, int fg, int bg)
+ {
+ 	struct fb_tilerect rect;
+-	int bgshift = (vc->vc_hi_font_mask) ? 13 : 12;
+-	int fgshift = (vc->vc_hi_font_mask) ? 9 : 8;
+ 
+ 	rect.index = vc->vc_video_erase_char &
+ 		((vc->vc_hi_font_mask) ? 0x1ff : 0xff);
+-	rect.fg = attr_fgcol_ec(fgshift, vc, info);
+-	rect.bg = attr_bgcol_ec(bgshift, vc, info);
++	rect.fg = fg;
++	rect.bg = bg;
+ 	rect.sx = sx;
+ 	rect.sy = sy;
+ 	rect.width = width;
 -- 
 2.39.5
 
