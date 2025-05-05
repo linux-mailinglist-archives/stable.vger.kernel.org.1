@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-141357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E06D2AAB2F2
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:34:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EFF0AAB2D4
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:31:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82AFE3A4C82
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:29:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6D411C01F5C
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:29:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0855543F3B5;
-	Tue,  6 May 2025 00:30:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43CCB43F3B9;
+	Tue,  6 May 2025 00:30:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E7C//cyl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bXkmY7az"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3F76280A22;
-	Mon,  5 May 2025 22:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E7B3703A4;
+	Mon,  5 May 2025 22:58:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485888; cv=none; b=SF+FGfbBU4GqZerWnJ3Lp1f9XS8W25rMfiwRBW387Jkt/U0bC3DFo3eQ9YSWd6Da+WNMDU/zcMRCzX3btUTNvhm353ElKrhKlWfe9d7IA0H4G1RnpDwx5goSl9rruw0/acj3JfHlKPO9jJVEeEtEN9jo+6aKNGYwp6QsAIZQafY=
+	t=1746485894; cv=none; b=WR32ufEA42vhEPOwIJJTQocmBn1ETMK+JAPJmYuFUNyDcQL8Sg0KrjEXvLKkXD6OKjTtEyqdJrFL2q8CYwRWwWtviDx8Im/JqLoTtIlofbtw60wDyls30VXjVYfrmZkJMm8v8S/SlHSsZckRQez9bPsKtRk5yTHe9PIz/0KbhYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485888; c=relaxed/simple;
-	bh=o6c5QcpxJdFwSOi4BUO2WlfrwA2X2QhZ89EvFtu3CGE=;
+	s=arc-20240116; t=1746485894; c=relaxed/simple;
+	bh=LVkJi8mchCIWcADcYyvzANclyip1P0il3Yw/lKBvEI4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=KAL92huoVbMV3wiZ55AechUSuKagaZkoEtkMIud587Y7TCI/ZRfiVajBu28hfLiVsOF3GaZ5CeD9pkVbz52+DFblvgNCw6GEaUyDnGrl51hXeBjISA9ATSmsQVcmbH+i+M2Pjnkg8UWxr6m72laY1Hc6qrBJP5VkOvmGjQskGpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E7C//cyl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC4BFC4CEED;
-	Mon,  5 May 2025 22:58:06 +0000 (UTC)
+	 MIME-Version; b=iUB3ow8WDnlbTx1uSo8gxqbHrOASGUMEYsxl7jdLN7Gg0tPFxMN548euHJvpzFlL4+Aato+Dc+/3xjkwZGpS2maBypmOvJ9YkKxboNINrwr+assZQ8V63D1anAWfnJ6M9ruQ6gnzAtJr6ehQA7+FujH7lY50AGvMSRG8KGRp//I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bXkmY7az; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87DC0C4CEEF;
+	Mon,  5 May 2025 22:58:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485887;
-	bh=o6c5QcpxJdFwSOi4BUO2WlfrwA2X2QhZ89EvFtu3CGE=;
+	s=k20201202; t=1746485894;
+	bh=LVkJi8mchCIWcADcYyvzANclyip1P0il3Yw/lKBvEI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E7C//cylFwMI95T+Yh/+H8vubPbqiv7J4MWa/gJlj2awtWohU7VfCGamd1wSOGtKm
-	 n1mxlaYF54kz5AipT8+1Dai4GATkUTA6rUd/cSt+tnMRxeuM228XlMlQv1SW08SJCN
-	 Z5PIVZv8Dt7my7AN3TVY9R8TtGTmFRMrKHaV8w1DBoCYFlk+WznA6Esh2aH9AVmw8t
-	 qYiVx03jO/EPE9EFbnLP4bG3DtmViw4gyDvwFr/0AYWpkdFHJo7vGXRGhdX7v5UwIa
-	 DgAL9DE4UwnDlINcafg4WukxtRbHFRk/BL8NAXx/rJ5wl59ZPEJ6SmVwHtLylGNpu/
-	 CJ3xJBK6sM5nQ==
+	b=bXkmY7az9lnR6fPwK9u0nyCTXfY59o2XGVwUWqz5LsjE9ues34hfQ/Bq89TayZWNd
+	 ZyKirQ3ICvdNGG1wktI+hjVkeemUVlW3gC3BmRiwx8J7MfMVQZYxjo6tw1K3Vjjm/Q
+	 YYHkcmtT+3RyJehSovC8dkUvX3HDzu6nCXdejYkFGwTme7AGCyuWc4OiOrioX4H4W5
+	 PhFm5HtjvvjpSGCO368avmqs4pM/1rWxpsxbRBBwoNoT0eif5f9mTFJ7ABnLQcdkMd
+	 a6tM3ArNoR09au+S+EVYwkQdCEglt9tfTj/rpBmWQqLMeYxuTeNm7c7pzOFbDvyU1n
+	 GRtAlLJzupqcQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+Cc: Stanley Chu <yschu@nuvoton.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>,
-	clm@fb.com,
-	josef@toxicpanda.com,
-	linux-btrfs@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 049/294] btrfs: send: return -ENAMETOOLONG when attempting a path that is too long
-Date: Mon,  5 May 2025 18:52:29 -0400
-Message-Id: <20250505225634.2688578-49-sashal@kernel.org>
+	miquel.raynal@bootlin.com,
+	linux-i3c@lists.infradead.org,
+	imx@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.6 052/294] i3c: master: svc: Fix missing STOP for master request
+Date: Mon,  5 May 2025 18:52:32 -0400
+Message-Id: <20250505225634.2688578-52-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -67,43 +68,35 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Stanley Chu <yschu@nuvoton.com>
 
-[ Upstream commit a77749b3e21813566cea050bbb3414ae74562eba ]
+[ Upstream commit 0430bf9bc1ac068c8b8c540eb93e5751872efc51 ]
 
-When attempting to build a too long path we are currently returning
--ENOMEM, which is very odd and misleading. So update fs_path_ensure_buf()
-to return -ENAMETOOLONG instead. Also, while at it, move the WARN_ON()
-into the if statement's expression, as it makes it clear what is being
-tested and also has the effect of adding 'unlikely' to the statement,
-which allows the compiler to generate better code as this condition is
-never expected to happen.
+The controller driver nacked the master request but didn't emit a
+STOP to end the transaction. The driver shall refuse the unsupported
+requests and return the controller state to IDLE by emitting a STOP.
 
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Stanley Chu <yschu@nuvoton.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20250318053606.3087121-4-yschu@nuvoton.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/send.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/i3c/master/svc-i3c-master.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/btrfs/send.c b/fs/btrfs/send.c
-index aa1e6d88a72c7..e2ead36e5be42 100644
---- a/fs/btrfs/send.c
-+++ b/fs/btrfs/send.c
-@@ -487,10 +487,8 @@ static int fs_path_ensure_buf(struct fs_path *p, int len)
- 	if (p->buf_len >= len)
- 		return 0;
- 
--	if (len > PATH_MAX) {
--		WARN_ON(1);
--		return -ENOMEM;
--	}
-+	if (WARN_ON(len > PATH_MAX))
-+		return -ENAMETOOLONG;
- 
- 	path_len = p->end - p->start;
- 	old_buf_len = p->buf_len;
+diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
+index fa1f12a89158c..3cef3794f10d3 100644
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -503,6 +503,7 @@ static void svc_i3c_master_ibi_work(struct work_struct *work)
+ 			queue_work(master->base.wq, &master->hj_work);
+ 		break;
+ 	case SVC_I3C_MSTATUS_IBITYPE_MASTER_REQUEST:
++		svc_i3c_master_emit_stop(master);
+ 	default:
+ 		break;
+ 	}
 -- 
 2.39.5
 
