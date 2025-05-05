@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-139888-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B67B0AAA1B4
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:50:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47836AAA1A4
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:50:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 062CB189FD89
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:49:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0F244616D7
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:49:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E8F7278143;
-	Mon,  5 May 2025 22:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97ECF27F731;
+	Mon,  5 May 2025 22:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NKo9ySXX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vK8qFy5A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 497022C1E04;
-	Mon,  5 May 2025 22:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A6B32C1E15;
+	Mon,  5 May 2025 22:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483610; cv=none; b=Fl+4G84KdEihdQcKJlxpFIteo8X5xE6zDzFs674JpZ3WIJeNl8fwemM5rRHmZs7Q9cCoLd6tajoHcnPKElqxDAQHqdp4zZufqDEEmvjpHAWO4v5RTGpKixC9OiFadoCw6HXDCaso3iqPPGW6O+RbLircOAPZsLoTIvbc818ml5M=
+	t=1746483611; cv=none; b=D8736xTkBu6sYswfbkfiTJUHNym+bnNOJi6zI+6yG5aK4s8T2qzP1Z1uRtCS+YjBiRo8r5iEy4xmXj9XMP1an4L46bpM/NUEjVl6fLqveLAuwNq2w0VAtgJYcTUFgMb/UAm5OAkBcfLbI6yr1KTFp3AxSb6THwIrTfIW/1+Cu00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483610; c=relaxed/simple;
-	bh=PnKYlJycEJNsBqUYVwar69zrMIukgXwAyTqvk8IyVXo=;
+	s=arc-20240116; t=1746483611; c=relaxed/simple;
+	bh=VzfuitWmNtwy2lfYXQP3+eZjHCxR1uGp2yuas6XIq0o=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=t2L3n+p3a7515CvaAq2rnyzgBv+oeUjwWyPld2AKshvq/JANlBhBWwHi+NKMRHdhHvwe+e8NdrUy4SRZBvwd/X4VBcHfhN/d1v0dNbhitW2selXfFRw0I5tDqhm/RbKx1wEod482UqTplbQ9+2V8H6FopR/+fZf+O7vq+MUbiS4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NKo9ySXX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81D2EC4CEE4;
-	Mon,  5 May 2025 22:20:09 +0000 (UTC)
+	 MIME-Version; b=tFmDsU9v8WKx/JmtXfx+qeBWQepLXD5D3PYkJL4O0h7/Avay0Pkxf0OpDoEhwfD15tAw/E0waWaQ/n8xu87H1BLO7U3BHosUXQQCGbnybObDyzlJMfmwihTRZHNsQolMdSRM18rglSHxuC8TYmfKSYg1sYwSRiSqRpDCqiPFu6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vK8qFy5A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81DFBC4CEED;
+	Mon,  5 May 2025 22:20:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483610;
-	bh=PnKYlJycEJNsBqUYVwar69zrMIukgXwAyTqvk8IyVXo=;
+	s=k20201202; t=1746483611;
+	bh=VzfuitWmNtwy2lfYXQP3+eZjHCxR1uGp2yuas6XIq0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NKo9ySXX2I6CCzq5zjqW6uqgoY5lkixPxMB8B82F8PMb+4DlYmM4rN4fZ+C9RZ1pP
-	 V75j3f6L4WH2MiaWRMe3GQZlShj1tKeRra9IYsP8rO/O9sFywJkO9qFJAT9hHt/Ic2
-	 M80mKgJWovG9/zlPQE83BSzd8kXYSsLHnr/2kUlm+MqM7gQaEIyHDhlDwig5posewN
-	 0fgh80IxZsCU7QWbtfOPsG/l05I/KgUapkh/9nkRiSbYRt2xv5QKF9/ytMicKN78qQ
-	 s6TSqmobiJ4rTq5/qnSG0nbqg27oxUqVZEI7gCyl+59kqieGsDIeUv2Rwtba0Tg9zr
-	 VexawXK1qa8Bw==
+	b=vK8qFy5A5pyNB/Xe6T1PycJOMiCQQ9B0hBd0k9fXGkAnLTn9LlhmkGUSfjazMq5Hz
+	 I8TtcopfbH/96FtT3NOLWbugXM99gV4ccxcEoBArYv6ehCsQ0E3x2IJ36qIDXSYunW
+	 upT/GwvC0hJbIAeF1NYdTZg1WaP4UHYSO4yskCGmyXHa+rxIRUp8SVIlmP2ctut3tx
+	 3eOTzmZ5usEGJv3DyPmp2NhDDN3MaupZVeunOdh4z4VxcplXC+K9IbncItJcAeqeyB
+	 NDfxfJ+4yMkSshjSakVBAuilVBcZ40u2AHe2U0bCtmJD8TMqcySLONF8RWcYfgx5Ix
+	 I1tqRX9jitplw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Seyediman Seyedarab <imandevel@gmail.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 6.14 141/642] kbuild: fix argument parsing in scripts/config
-Date: Mon,  5 May 2025 18:05:57 -0400
-Message-Id: <20250505221419.2672473-141-sashal@kernel.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	linux-kbuild@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 142/642] kconfig: do not clear SYMBOL_VALID when reading include/config/auto.conf
+Date: Mon,  5 May 2025 18:05:58 -0400
+Message-Id: <20250505221419.2672473-142-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -64,80 +64,87 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Seyediman Seyedarab <imandevel@gmail.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit f757f6011c92b5a01db742c39149bed9e526478f ]
+[ Upstream commit 226ac19c217f24f0927d0a73cf9ee613971a188d ]
 
-The script previously assumed --file was always the first argument,
-which caused issues when it appeared later. This patch updates the
-parsing logic to scan all arguments to find --file, sets the config
-file correctly, and resets the argument list with the remaining
-commands.
+When conf_read_simple() is called with S_DEF_AUTO, it is meant to read
+previous symbol values from include/config/auto.conf to determine which
+include/config/* files should be touched.
 
-It also fixes --refresh to respect --file by passing KCONFIG_CONFIG=$FN
-to make oldconfig.
+This process should not modify the current symbol status in any way.
+However, conf_touch_deps() currently invalidates all symbol values and
+recalculates them, which is totally unneeded.
 
-Signed-off-by: Seyediman Seyedarab <imandevel@gmail.com>
 Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/config | 26 ++++++++++++++++----------
- 1 file changed, 16 insertions(+), 10 deletions(-)
+ scripts/kconfig/confdata.c | 19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/scripts/config b/scripts/config
-index ff88e2faefd35..ea475c07de283 100755
---- a/scripts/config
-+++ b/scripts/config
-@@ -32,6 +32,7 @@ commands:
-                              Disable option directly after other option
- 	--module-after|-M beforeopt option
-                              Turn option into module directly after other option
-+	--refresh            Refresh the config using old settings
+diff --git a/scripts/kconfig/confdata.c b/scripts/kconfig/confdata.c
+index 3b55e7a4131d9..ac95661a1c9dd 100644
+--- a/scripts/kconfig/confdata.c
++++ b/scripts/kconfig/confdata.c
+@@ -385,7 +385,7 @@ int conf_read_simple(const char *name, int def)
  
- 	commands can be repeated multiple times
+ 	def_flags = SYMBOL_DEF << def;
+ 	for_all_symbols(sym) {
+-		sym->flags &= ~(def_flags|SYMBOL_VALID);
++		sym->flags &= ~def_flags;
+ 		switch (sym->type) {
+ 		case S_INT:
+ 		case S_HEX:
+@@ -398,7 +398,11 @@ int conf_read_simple(const char *name, int def)
+ 		}
+ 	}
  
-@@ -124,16 +125,22 @@ undef_var() {
- 	txt_delete "^# $name is not set" "$FN"
- }
+-	expr_invalidate_all();
++	if (def == S_DEF_USER) {
++		for_all_symbols(sym)
++			sym->flags &= ~SYMBOL_VALID;
++		expr_invalidate_all();
++	}
  
--if [ "$1" = "--file" ]; then
--	FN="$2"
--	if [ "$FN" = "" ] ; then
--		usage
-+FN=.config
-+CMDS=()
-+while [[ $# -gt 0 ]]; do
-+	if [ "$1" = "--file" ]; then
-+		if [ "$2" = "" ]; then
-+			usage
-+		fi
-+		FN="$2"
-+		shift 2
-+	else
-+		CMDS+=("$1")
-+		shift
- 	fi
--	shift 2
--else
--	FN=.config
--fi
-+done
+ 	while (getline_stripped(&line, &line_asize, in) != -1) {
+ 		struct menu *choice;
+@@ -464,6 +468,9 @@ int conf_read_simple(const char *name, int def)
+ 		if (conf_set_sym_val(sym, def, def_flags, val))
+ 			continue;
  
-+set -- "${CMDS[@]}"
- if [ "$1" = "" ] ; then
- 	usage
- fi
-@@ -217,9 +224,8 @@ while [ "$1" != "" ] ; do
- 		set_var "${CONFIG_}$B" "${CONFIG_}$B=m" "${CONFIG_}$A"
- 		;;
++		if (def != S_DEF_USER)
++			continue;
++
+ 		/*
+ 		 * If this is a choice member, give it the highest priority.
+ 		 * If conflicting CONFIG options are given from an input file,
+@@ -967,10 +974,8 @@ static int conf_touch_deps(void)
+ 	depfile_path[depfile_prefix_len] = 0;
  
--	# undocumented because it ignores --file (fixme)
- 	--refresh)
--		yes "" | make oldconfig
-+		yes "" | make oldconfig KCONFIG_CONFIG=$FN
- 		;;
+ 	conf_read_simple(name, S_DEF_AUTO);
+-	sym_calc_value(modules_sym);
  
- 	*)
+ 	for_all_symbols(sym) {
+-		sym_calc_value(sym);
+ 		if (sym_is_choice(sym))
+ 			continue;
+ 		if (sym->flags & SYMBOL_WRITE) {
+@@ -1084,12 +1089,12 @@ int conf_write_autoconf(int overwrite)
+ 	if (ret)
+ 		return -1;
+ 
+-	if (conf_touch_deps())
+-		return 1;
+-
+ 	for_all_symbols(sym)
+ 		sym_calc_value(sym);
+ 
++	if (conf_touch_deps())
++		return 1;
++
+ 	ret = __conf_write_autoconf(conf_get_autoheader_name(),
+ 				    print_symbol_for_c,
+ 				    &comment_style_c);
 -- 
 2.39.5
 
