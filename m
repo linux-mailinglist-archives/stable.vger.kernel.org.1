@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-141338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28AD2AAB2A0
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:25:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B83AAAB29C
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:25:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B107B1882CA3
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:24:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 822CB1881F83
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:24:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91C9237A28C;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 505A237A280;
 	Tue,  6 May 2025 00:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rthgZiFp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hlS2O6xn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48DAF36BA45;
-	Mon,  5 May 2025 22:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EED936BA47;
+	Mon,  5 May 2025 22:56:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485808; cv=none; b=rS0+pxereMUe2AJ2xt0cjyxlwqxEmc8qk2jcFLhT2kpiC4y0sSwMjZ7wTc0pFRAHPNk9Fcf7Ez8lS9pPbzcyU5rL8/tuGdlqMjzWP0R8VE1AUspf60aRL3bz82z0n8D6FxhJHWCXSPS0WXqSZo9SVgS8UJcLTi513020+2AIixg=
+	t=1746485810; cv=none; b=Zge+PqP6nRHna2yeJjwQLirzyFWr4kTxdDowMWLpvOrBqz4XMgUPdzilZ0vDXmej39AGPONH6IFYfoS/O76UDwJa/6Sj9hQG02PkZbF1gCivxuu04ht7i6BtFbLoLT05FdjVkTHrAIpQQcNCQYIO/BGaBbYyBhNEYYYZ2fnSNoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485808; c=relaxed/simple;
-	bh=jKbrhfN3cVBO9ZegR39O6gjyz0Xw+Su7GEF9S9yudCk=;
+	s=arc-20240116; t=1746485810; c=relaxed/simple;
+	bh=HzdditQjkwur0Bv5K9IZW5bJPDXO6F1EM/S7XQ66tCA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Up5HYOJ8wlg9+r2ZtTzxUJl//JTpXuSCsYQeiApgavAj5pUPuKNvdGzwXiYF2Fficg0Kl4aZvFrEys+ehzX0sypFV4PJnTFl5sNN1klZYBLT0FDB4Uh4kWaubkkdPSTQ1wDWcxe5iA50qsWRwVbZ9tk6McxAm90DOIcCNJccBHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rthgZiFp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED196C4CEF1;
-	Mon,  5 May 2025 22:56:46 +0000 (UTC)
+	 MIME-Version; b=JeBAiPW0+zr7kiOGn7onjoSlbEZ3zMoE/RwbqDGR6XR9+jZDnwg6pq04szhCUj6V+DZQThXlNWzpUBBA3asSZ2oiH0O4+TG6kELMuQldthA+VpqcYBkD7tKPx0feWnGGtcC+vr19RTFceGAc/F1eR3UyB1ROpFKtGIBG2WaP5jY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hlS2O6xn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 240E9C4CEEE;
+	Mon,  5 May 2025 22:56:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485807;
-	bh=jKbrhfN3cVBO9ZegR39O6gjyz0Xw+Su7GEF9S9yudCk=;
+	s=k20201202; t=1746485808;
+	bh=HzdditQjkwur0Bv5K9IZW5bJPDXO6F1EM/S7XQ66tCA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rthgZiFp90DKL/MTErtGP7+TX8Owh+ASvJOcuoCGi2ZTs9DlMCOTL+BAMEA1gsNPt
-	 /Pj89LUqBuVPWZLu0lEtaWeDln72siAtlYWkKsB8GP2Lo2IlCOZT11QixxahDMDwH+
-	 TRq7erOTZpvpEF+qYiZ2vHrVMN3T/V3aqAyDSGqWRBhdyl16LXtk/fYNouAxlEMLeP
-	 e/RD1uM+syMvI1wniec1GpQT1/Js3O2/SqKi+fOVi2ls7pKaSQVOKt+2X8EE6Yki8y
-	 3C0n7tf9hWZRoC5U6JaWOTnBDoGH9XU5IhA5qZa/cAK4mzSvrNaunojymsW+u0tTns
-	 j7mIiUMBDZoZQ==
+	b=hlS2O6xnAhBlxjO+fVeWgat903Iaa8peiPWGyGLFIRx84A57RXJeRDHf9yECq7ZXF
+	 LrXpMGy2s05WocbmiJeqpXFNuDXqV87qkTbdaTBx5MUXhHjyZJhFyCWfEI7/FqhiTn
+	 gAe5xMd0kfBrl4B8V9dXmm0UXlw3LZCJn3OtEjufgYI3toq+Vp89oOviN9XSzzoqqH
+	 3CuIRwFyBrrpx3Q4A4PMdwm7QuYEwPGiqhYWMjIxph0L9cGBOCABMNPO7SoJn76MJf
+	 4gZngtYASNFoysoH3jCf6vzrgtOuTpeFdpikwFGxnhHHmW7OKu36fShwQ94I1Ho8EO
+	 Z11jjTDQuXg8Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Matt Johnston <matt@codeconstruct.com.au>,
-	Miklos Szeredi <mszeredi@redhat.com>,
+Cc: Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>,
-	miklos@szeredi.hu,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 007/294] fuse: Return EPERM rather than ENOSYS from link()
-Date: Mon,  5 May 2025 18:51:47 -0400
-Message-Id: <20250505225634.2688578-7-sashal@kernel.org>
+	trondmy@kernel.org,
+	anna@kernel.org,
+	linux-nfs@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 008/294] NFSv4: Check for delegation validity in nfs_start_delegation_return_locked()
+Date: Mon,  5 May 2025 18:51:48 -0400
+Message-Id: <20250505225634.2688578-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -66,34 +66,33 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Matt Johnston <matt@codeconstruct.com.au>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 8344213571b2ac8caf013cfd3b37bc3467c3a893 ]
+[ Upstream commit 9e8f324bd44c1fe026b582b75213de4eccfa1163 ]
 
-link() is documented to return EPERM when a filesystem doesn't support
-the operation, return that instead.
+Check that the delegation is still attached after taking the spin lock
+in nfs_start_delegation_return_locked().
 
-Link: https://github.com/libfuse/libfuse/issues/925
-Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/dir.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/nfs/delegation.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/fuse/dir.c b/fs/fuse/dir.c
-index e4d6cc0d2332a..82951a535d2d4 100644
---- a/fs/fuse/dir.c
-+++ b/fs/fuse/dir.c
-@@ -1121,6 +1121,8 @@ static int fuse_link(struct dentry *entry, struct inode *newdir,
- 	else if (err == -EINTR)
- 		fuse_invalidate_attr(inode);
- 
-+	if (err == -ENOSYS)
-+		err = -EPERM;
- 	return err;
- }
- 
+diff --git a/fs/nfs/delegation.c b/fs/nfs/delegation.c
+index 55cfa1c4e0a65..bbd582d8a7dc9 100644
+--- a/fs/nfs/delegation.c
++++ b/fs/nfs/delegation.c
+@@ -297,7 +297,8 @@ nfs_start_delegation_return_locked(struct nfs_inode *nfsi)
+ 	if (delegation == NULL)
+ 		goto out;
+ 	spin_lock(&delegation->lock);
+-	if (!test_and_set_bit(NFS_DELEGATION_RETURNING, &delegation->flags)) {
++	if (delegation->inode &&
++	    !test_and_set_bit(NFS_DELEGATION_RETURNING, &delegation->flags)) {
+ 		clear_bit(NFS_DELEGATION_RETURN_DELAYED, &delegation->flags);
+ 		/* Refcount matched in nfs_end_delegation_return() */
+ 		ret = nfs_get_delegation(delegation);
 -- 
 2.39.5
 
