@@ -1,66 +1,59 @@
-Return-Path: <stable+bounces-140192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAF51AAA5F5
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:02:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57C15AAA605
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:03:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5B5917E1F3
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:01:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B588F18885B8
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:02:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA8FD31CA50;
-	Mon,  5 May 2025 22:31:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 040AF2920B0;
+	Mon,  5 May 2025 22:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k8lttG8p"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fCqDAWC2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86CA031CA4B;
-	Mon,  5 May 2025 22:31:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABF8C2920A9;
+	Mon,  5 May 2025 22:31:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484308; cv=none; b=ufBcG5nF8UATcKLIXi/kQWavrP/hP/wK+2E8epYe0Gmc1t8S9j5KeVo2s6BXtfdJ3yk4pyd52iDn1SxhZ9LxozVBuT5GIies8YzYgpU+E7Ok8vh5WBIP11ADKDM+sfYg1clZpRZrloAx/bfWQtwKmvMVM6zte4H1zq57S+t6KRY=
+	t=1746484313; cv=none; b=QM9DEhiQTt6+QjsXggdCQypMziUUVwHSZoReFwCgL8zROnvGh5iQapiT4d0CKDYf7fM90X5+g/DCPoZBR4RIGZCinwOzeNvLbM/N0SkXEjfUe3fBo1Q6QX7wFrG49nDQd8GPIYDJ2ob4tUP3XNwZTqBHpoUn+03JOmzQBW0Kwss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484308; c=relaxed/simple;
-	bh=MqjhplFZaDPteVIP+B5ZT8pn4nN4B99lZevRAF32rok=;
+	s=arc-20240116; t=1746484313; c=relaxed/simple;
+	bh=1kIsKvcpMKNVj+EGXm4QBSTOZ9ztqCSVR8Issyrytvs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=sZiEuu7VegcOv8H5lBVjITzufXv/8H4EaYPDErsPYETj0yXGqeLe8bj1pCaGbOuL1KcGDTM9CzgWnNsSUrRziaZP8qwksR3yNW9xJVn8+aM+XBwy/2bcLnBOWDUiwoEdxvwATRH4wS+V5ezMhM8AXrwI2DG7ytZvsQs0JK6AujU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k8lttG8p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E72CC4CEE4;
-	Mon,  5 May 2025 22:31:46 +0000 (UTC)
+	 MIME-Version; b=HwNeRm06CO9zFWgyyxsC90ciun7Wa9LdoSMSoGYXaLhlxfNBPnbLv6S0+zE1Omq93NXZOInZ2rt1sDaR5qASDWs4K3M0aNPxcaZ4W4SpNIDbbOp0t+EOg0xXBPQcYC85X0jeNplXwTtOYplmrYVVVycD8Drs2r3/v0n/4Olh04g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fCqDAWC2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90FF4C4CEE4;
+	Mon,  5 May 2025 22:31:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484308;
-	bh=MqjhplFZaDPteVIP+B5ZT8pn4nN4B99lZevRAF32rok=;
+	s=k20201202; t=1746484313;
+	bh=1kIsKvcpMKNVj+EGXm4QBSTOZ9ztqCSVR8Issyrytvs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k8lttG8pq90RSAcThLgz/O3PqVSzaejw6ie4eADP3EGvFkUOynALW2cRq0Cz/fA0S
-	 YcxYUl2zmDQy2eBvtqdBqsWZWX5GyMTHakt7bI1xg/H+ysh5P31wG+eFsMew+KYDcv
-	 4aLCdlpNr9r3cY5bCyFswePwoGVPWmlyURQMuIsw65lCeILsEfU6wdM22xBOGhRzbA
-	 nQnyaXBWGW+RG+BFmTNLFMTMh8SxWLB5mk0K14xGQCBuO5wkIhKANVNRbBKg3l4DqP
-	 iQzN/DqCcA9lmYvrnI2yVTcG+QhjN1CpMTlTl4AeXsgvCNJ3SO4nRZWBKLfkKju/+p
-	 iR7joOUijn34Q==
+	b=fCqDAWC2on1zzmKLiQG1nR9BB75aTOu2+vyuaK2hu+f1oimOJ18h0O8LcxRIU2wl2
+	 183gWMczbu8Gi/wwyeVU85xK1CSdbW0F42TlupSRgtlB7tRG39CFv52goCuVcEpxiX
+	 T1cMLLTWmO+kzKabSbZMXQKuah39Tph8wuFursdzZs/Uq5+jDl3T1nnCWmNht/Visj
+	 ibUUOAAWuDAVKUD+a7Q6EavinrpzQtSPB+TnhVr4Yo3vsvlRtHEyjlnHMmvspL5atL
+	 iurFAchvNNNywM9E41IXcwiEenJhcrg7eOvdZwUxLMyufl+nJdNHuNjJRp7aJW/Us3
+	 AODAaQkL9QpJA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Peter Zijlstra <peterz@infradead.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
+Cc: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	jpoimboe@kernel.org,
-	gautham.shenoy@amd.com,
-	patryk.wlazlyn@linux.intel.com,
-	brgerst@gmail.com,
-	kprateek.nayak@amd.com,
-	sohil.mehta@intel.com
-Subject: [PATCH AUTOSEL 6.14 445/642] x86/boot: Mark start_secondary() with __noendbr
-Date: Mon,  5 May 2025 18:11:01 -0400
-Message-Id: <20250505221419.2672473-445-sashal@kernel.org>
+	linus.walleij@linaro.org,
+	linux-renesas-soc@vger.kernel.org,
+	linux-gpio@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 448/642] pinctrl: renesas: rzg2l: Add suspend/resume support for pull up/down
+Date: Mon,  5 May 2025 18:11:04 -0400
+Message-Id: <20250505221419.2672473-448-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -75,69 +68,90 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit 93f16a1ab78ca56e3cd997d1ea54c214774781ac ]
+[ Upstream commit b2bd65fbb617353e3c46ba5206b3b030fa0f260c ]
 
-The handoff between the boot stubs and start_secondary() are before IBT is
-enabled and is definitely not subject to kCFI. As such, suppress all that for
-this function.
+The Renesas RZ/G3S supports a power-saving mode where power to most of
+the SoC components is lost, including the PIN controller.  Save and
+restore the pull-up/pull-down register contents to ensure the
+functionality is preserved after a suspend/resume cycle.
 
-Notably when the ENDBR poison would become fatal (ud1 instead of nop) this will
-trigger a tripple fault because we haven't set up the IDT to handle #UD yet.
-
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
-Link: https://lore.kernel.org/r/20250207122546.509520369@infradead.org
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/20250205100116.2032765-1-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/smpboot.c | 3 ++-
- include/linux/objtool.h   | 4 +++-
- 2 files changed, 5 insertions(+), 2 deletions(-)
+ drivers/pinctrl/renesas/pinctrl-rzg2l.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
-index 3d5069ee297bf..463634b138bbb 100644
---- a/arch/x86/kernel/smpboot.c
-+++ b/arch/x86/kernel/smpboot.c
-@@ -229,7 +229,7 @@ static void ap_calibrate_delay(void)
- /*
-  * Activate a secondary processor.
-  */
--static void notrace start_secondary(void *unused)
-+static void notrace __noendbr start_secondary(void *unused)
- {
- 	/*
- 	 * Don't put *anything* except direct CPU state initialization
-@@ -314,6 +314,7 @@ static void notrace start_secondary(void *unused)
- 	wmb();
- 	cpu_startup_entry(CPUHP_AP_ONLINE_IDLE);
- }
-+ANNOTATE_NOENDBR_SYM(start_secondary);
+diff --git a/drivers/pinctrl/renesas/pinctrl-rzg2l.c b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
+index d1da7f53fc600..c72e250f4a154 100644
+--- a/drivers/pinctrl/renesas/pinctrl-rzg2l.c
++++ b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
+@@ -318,6 +318,7 @@ struct rzg2l_pinctrl_pin_settings {
+  * @pmc: PMC registers cache
+  * @pfc: PFC registers cache
+  * @iolh: IOLH registers cache
++ * @pupd: PUPD registers cache
+  * @ien: IEN registers cache
+  * @sd_ch: SD_CH registers cache
+  * @eth_poc: ET_POC registers cache
+@@ -331,6 +332,7 @@ struct rzg2l_pinctrl_reg_cache {
+ 	u32	*pfc;
+ 	u32	*iolh[2];
+ 	u32	*ien[2];
++	u32	*pupd[2];
+ 	u8	sd_ch[2];
+ 	u8	eth_poc[2];
+ 	u8	eth_mode;
+@@ -2712,6 +2714,11 @@ static int rzg2l_pinctrl_reg_cache_alloc(struct rzg2l_pinctrl *pctrl)
+ 		if (!cache->ien[i])
+ 			return -ENOMEM;
  
- /*
-  * The bootstrap kernel entry code has set these up. Save them for
-diff --git a/include/linux/objtool.h b/include/linux/objtool.h
-index c722a921165ba..3ca965a2ddc80 100644
---- a/include/linux/objtool.h
-+++ b/include/linux/objtool.h
-@@ -128,7 +128,7 @@
- #define UNWIND_HINT(type, sp_reg, sp_offset, signal) "\n\t"
- #define STACK_FRAME_NON_STANDARD(func)
- #define STACK_FRAME_NON_STANDARD_FP(func)
--#define __ASM_ANNOTATE(label, type)
-+#define __ASM_ANNOTATE(label, type) ""
- #define ASM_ANNOTATE(type)
- #else
- .macro UNWIND_HINT type:req sp_reg=0 sp_offset=0 signal=0
-@@ -147,6 +147,8 @@
-  * these relocations will never be used for indirect calls.
-  */
- #define ANNOTATE_NOENDBR		ASM_ANNOTATE(ANNOTYPE_NOENDBR)
-+#define ANNOTATE_NOENDBR_SYM(sym)	asm(__ASM_ANNOTATE(sym, ANNOTYPE_NOENDBR))
++		cache->pupd[i] = devm_kcalloc(pctrl->dev, nports, sizeof(*cache->pupd[i]),
++					      GFP_KERNEL);
++		if (!cache->pupd[i])
++			return -ENOMEM;
 +
- /*
-  * This should be used immediately before an indirect jump/call. It tells
-  * objtool the subsequent indirect jump/call is vouched safe for retpoline
+ 		/* Allocate dedicated cache. */
+ 		dedicated_cache->iolh[i] = devm_kcalloc(pctrl->dev, n_dedicated_pins,
+ 							sizeof(*dedicated_cache->iolh[i]),
+@@ -2955,7 +2962,7 @@ static void rzg2l_pinctrl_pm_setup_regs(struct rzg2l_pinctrl *pctrl, bool suspen
+ 	struct rzg2l_pinctrl_reg_cache *cache = pctrl->cache;
+ 
+ 	for (u32 port = 0; port < nports; port++) {
+-		bool has_iolh, has_ien;
++		bool has_iolh, has_ien, has_pupd;
+ 		u32 off, caps;
+ 		u8 pincnt;
+ 		u64 cfg;
+@@ -2967,6 +2974,7 @@ static void rzg2l_pinctrl_pm_setup_regs(struct rzg2l_pinctrl *pctrl, bool suspen
+ 		caps = FIELD_GET(PIN_CFG_MASK, cfg);
+ 		has_iolh = !!(caps & (PIN_CFG_IOLH_A | PIN_CFG_IOLH_B | PIN_CFG_IOLH_C));
+ 		has_ien = !!(caps & PIN_CFG_IEN);
++		has_pupd = !!(caps & PIN_CFG_PUPD);
+ 
+ 		if (suspend)
+ 			RZG2L_PCTRL_REG_ACCESS32(suspend, pctrl->base + PFC(off), cache->pfc[port]);
+@@ -2985,6 +2993,15 @@ static void rzg2l_pinctrl_pm_setup_regs(struct rzg2l_pinctrl *pctrl, bool suspen
+ 			}
+ 		}
+ 
++		if (has_pupd) {
++			RZG2L_PCTRL_REG_ACCESS32(suspend, pctrl->base + PUPD(off),
++						 cache->pupd[0][port]);
++			if (pincnt >= 4) {
++				RZG2L_PCTRL_REG_ACCESS32(suspend, pctrl->base + PUPD(off),
++							 cache->pupd[1][port]);
++			}
++		}
++
+ 		RZG2L_PCTRL_REG_ACCESS16(suspend, pctrl->base + PM(off), cache->pm[port]);
+ 		RZG2L_PCTRL_REG_ACCESS8(suspend, pctrl->base + P(off), cache->p[port]);
+ 
 -- 
 2.39.5
 
