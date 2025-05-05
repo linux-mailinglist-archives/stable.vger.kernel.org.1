@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-141705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 369D1AAB7A4
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:15:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B03A0AAB7A7
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:15:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7CD307A2BB9
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:14:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 603B97B4D22
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:14:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18B6B34B1DE;
-	Tue,  6 May 2025 00:50:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B18BD34BA3F;
+	Tue,  6 May 2025 00:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sOU9EKSB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F5/+N33g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F40BA2F924A;
-	Mon,  5 May 2025 23:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 910F8399EC2;
+	Mon,  5 May 2025 23:21:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487266; cv=none; b=dCkrC6XIWpkrwJ0TsRL3nIAEUIlZjITeggYr3PZ09ddY6rl5Tr8km0XyPWCixoIYKBvrttsk0oTOilBS9rxTt3ycXxt85bPoYl6h5jJJ/dRkQC66CMOMjpsxvRJ9LQxjjP6nB7p3InTJjwmlk4UwKx60dQtPYIGLwlyvbMdlIXY=
+	t=1746487296; cv=none; b=sLIeHBaZ0u8qem9uwDhsdFuUY2088LAiCYDMATBzKAMVvDzrOVmQ4WtxNAPGx3z79dzdyg+MU3Nasqrvr+voeEPCtHW8UzwUeqQLLJsHF4TDiCg2sWKxWTH98PBUeEgTBAFYNfqI/V9z0Enz27pzbKDaxPXikuRup/4EK5HvyrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487266; c=relaxed/simple;
-	bh=ZEX27ppZRdcYi8EQSB2vV+HfefZ8MVVX4Xf7WMb1rTY=;
+	s=arc-20240116; t=1746487296; c=relaxed/simple;
+	bh=mextMfccy+akaj29ieKQGx7Is/MvqNh99rwzreWk7gU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=dakzjB2oijfDJ04NLnx8f+3bCnoTEHi+6Bn/qfhsFlDEUR+GQ0e2q3KRqhP6jDqilSXgs83qsXcv6nI8BBdntQ2PrZQgfYkSievxWs4vD3Razaxk/BccFfffSYwQ5jio7bEQqJTk9GCCZZFi7Y3AE/ImCxn+htXVYgf+w7Bg9yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sOU9EKSB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EBC5C4CEED;
-	Mon,  5 May 2025 23:21:04 +0000 (UTC)
+	 MIME-Version; b=OMydtPDrNX4H9d0lXUmd9LRjaWBtNExsb7XhD98sHeSdMfI2J56lQ+BmQ83ZefZ0iPwa7MP25OX9P/aLae6YtQVrwhZSF9SYX9rmTScLFucKGQfMNOmz3KG0vlMm+W5o7+eHzaKmsjORcF5FNquGbAKg5GZgAZ0tk0F2M5RdXmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F5/+N33g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77613C4CEE4;
+	Mon,  5 May 2025 23:21:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487265;
-	bh=ZEX27ppZRdcYi8EQSB2vV+HfefZ8MVVX4Xf7WMb1rTY=;
+	s=k20201202; t=1746487295;
+	bh=mextMfccy+akaj29ieKQGx7Is/MvqNh99rwzreWk7gU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sOU9EKSBDo60JQNgXD8T/CLTAX8GDpsArVKj+jy5FMCXPj76EUmOEA0SFU7L4sdEt
-	 doKLwikP8lJRK2/BDZ7RwuEjcUPt5+2PnOLNKSit1oXggCPZIdz7RH+iSGI3bQtIXd
-	 w/o9lhDNUuazG7wTt8yOsnF70STixqSEEqp4VDSxdahZ3SUy8XF5jY33C+CIl1q9OQ
-	 9iYvNF7p+h3gdowB+7uBr8nhEHCvUFKjdZCRes6VaEOxjgxHPN+9clspA3UPcNcU6F
-	 NoYQ0aod5aNz6n4W8IXZhMm78ni0K6e7EQ59tw22gbd4qrz5QKw5Z7GZEW+hbw0AYW
-	 QL4tdAB9Kqm8Q==
+	b=F5/+N33gL8va1DrjIfrjhjrK32P49PlHYfGyDWvi+8Myj7Gi7AryfVAefmKsWFvEO
+	 fV8B1k58him6roG7Ur/e92r8ughwSdflsa4zPqGrAnsOOlUGJuwL3hLrkbiqxB9TVV
+	 FrjOSNeDoVo4SPj5xfLCPKOGxisXr3KCAGjcUTmAXYFR29CHA473j0/N6ySZh5Ar5Q
+	 WK5F7busEVUGEuMtiAyfy1QmU8u7QRFUHj/zsx2YQKUFikKzJIPgNU1wyNZOAOrEmB
+	 2dozdKPyLWcUai/BtJmvs1otbXkOHjer690URYjCbQCDli7OusiFkI7zOMTcqQQld+
+	 jgRYybsoLcLBA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+Cc: Justin Tee <justin.tee@broadcom.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	mchehab@kernel.org,
-	laurent.pinchart+renesas@ideasonboard.com,
-	umang.jain@ideasonboard.com,
-	prabhakar.mahadev-lad.rj@bp.renesas.com,
-	tomm.merciai@gmail.com,
-	linux-media@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 089/114] media: v4l: Memset argument to 0 before calling get_mbus_config pad op
-Date: Mon,  5 May 2025 19:17:52 -0400
-Message-Id: <20250505231817.2697367-89-sashal@kernel.org>
+	james.smart@broadcom.com,
+	dick.kennedy@broadcom.com,
+	James.Bottomley@HansenPartnership.com,
+	linux-scsi@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 104/114] scsi: lpfc: Handle duplicate D_IDs in ndlp search-by D_ID routine
+Date: Mon,  5 May 2025 19:18:07 -0400
+Message-Id: <20250505231817.2697367-104-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231817.2697367-1-sashal@kernel.org>
 References: <20250505231817.2697367-1-sashal@kernel.org>
@@ -71,52 +68,64 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.237
 Content-Transfer-Encoding: 8bit
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Justin Tee <justin.tee@broadcom.com>
 
-[ Upstream commit 91d6a99acfa5ce9f95ede775074b80f7193bd717 ]
+[ Upstream commit 56c3d809b7b450379162d0b8a70bbe71ab8db706 ]
 
-Memset the config argument to get_mbus_config V4L2 sub-device pad
-operation to zero before calling the operation. This ensures the callers
-don't need to bother with it nor the implementations need to set all
-fields that may not be relevant to them.
+After a port swap between separate fabrics, there may be multiple nodes in
+the vport's fc_nodes list with the same fabric well known address.
+Duplication is temporary and eventually resolves itself after dev_loss_tmo
+expires, but nameserver queries may still occur before dev_loss_tmo.  This
+possibly results in returning stale fabric ndlp objects.  Fix by adding an
+nlp_state check to ensure the ndlp search routine returns the correct newer
+allocated ndlp fabric object.
 
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20250131000524.163662-5-justintee8345@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/v4l2-core/v4l2-subdev.c | 2 ++
- include/media/v4l2-subdev.h           | 4 +++-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ drivers/scsi/lpfc/lpfc_hbadisc.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/media/v4l2-core/v4l2-subdev.c b/drivers/media/v4l2-core/v4l2-subdev.c
-index fbf0dcb313c82..67d3e6511a146 100644
---- a/drivers/media/v4l2-core/v4l2-subdev.c
-+++ b/drivers/media/v4l2-core/v4l2-subdev.c
-@@ -312,6 +312,8 @@ static int call_enum_dv_timings(struct v4l2_subdev *sd,
- static int call_get_mbus_config(struct v4l2_subdev *sd, unsigned int pad,
- 				struct v4l2_mbus_config *config)
+diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
+index 3ff76ca147a5a..353c360b0c6ab 100644
+--- a/drivers/scsi/lpfc/lpfc_hbadisc.c
++++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
+@@ -5407,6 +5407,7 @@ static struct lpfc_nodelist *
+ __lpfc_findnode_did(struct lpfc_vport *vport, uint32_t did)
  {
-+	memset(config, 0, sizeof(*config));
+ 	struct lpfc_nodelist *ndlp;
++	struct lpfc_nodelist *np = NULL;
+ 	uint32_t data1;
+ 
+ 	list_for_each_entry(ndlp, &vport->fc_nodes, nlp_listp) {
+@@ -5421,14 +5422,20 @@ __lpfc_findnode_did(struct lpfc_vport *vport, uint32_t did)
+ 					 ndlp, ndlp->nlp_DID,
+ 					 ndlp->nlp_flag, data1, ndlp->nlp_rpi,
+ 					 ndlp->active_rrqs_xri_bitmap);
+-			return ndlp;
 +
- 	return check_pad(sd, pad) ? :
- 	       sd->ops->pad->get_mbus_config(sd, pad, config);
++			/* Check for new or potentially stale node */
++			if (ndlp->nlp_state != NLP_STE_UNUSED_NODE)
++				return ndlp;
++			np = ndlp;
+ 		}
+ 	}
+ 
+-	/* FIND node did <did> NOT FOUND */
+-	lpfc_printf_vlog(vport, KERN_INFO, LOG_NODE,
+-			 "0932 FIND node did x%x NOT FOUND.\n", did);
+-	return NULL;
++	if (!np)
++		/* FIND node did <did> NOT FOUND */
++		lpfc_printf_vlog(vport, KERN_INFO, LOG_NODE,
++				 "0932 FIND node did x%x NOT FOUND.\n", did);
++
++	return np;
  }
-diff --git a/include/media/v4l2-subdev.h b/include/media/v4l2-subdev.h
-index 73150520c02d4..ffc6d122f91e5 100644
---- a/include/media/v4l2-subdev.h
-+++ b/include/media/v4l2-subdev.h
-@@ -676,7 +676,9 @@ struct v4l2_subdev_pad_config {
-  *		     possible configuration from the remote end, likely calling
-  *		     this operation as close as possible to stream on time. The
-  *		     operation shall fail if the pad index it has been called on
-- *		     is not valid or in case of unrecoverable failures.
-+ *		     is not valid or in case of unrecoverable failures. The
-+ *		     config argument has been memset to 0 just before calling
-+ *		     the op.
-  *
-  * @set_mbus_config: set the media bus configuration of a remote sub-device.
-  *		     This operations is intended to allow, in combination with
+ 
+ struct lpfc_nodelist *
 -- 
 2.39.5
 
