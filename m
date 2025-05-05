@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-139757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7464CAA9EFD
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:17:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC0CDAA9EF7
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:16:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 857A27ABC76
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:15:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F397F188F013
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:17:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BF4527A918;
-	Mon,  5 May 2025 22:14:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F64F27B4F6;
+	Mon,  5 May 2025 22:14:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J8+Be04r"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F163Hjl7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13C6A275868;
-	Mon,  5 May 2025 22:14:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B7C27B4E3;
+	Mon,  5 May 2025 22:14:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483278; cv=none; b=k2fW2xUO3EER/z+yDvRjcm1f2Vut0VhHh2vSqMqV0upx63/Tc3xFyba4uH+ExbWAqfz1vjR573B0tmehyflGpfy3BW7DR8gK6LhRj+NT442UMH+QDqGa+kW7Z/OQAYZufaZaGNQ4UpbzEJYWQsEj3zNZ24by6W7+sk6IcG67htc=
+	t=1746483278; cv=none; b=Po2uFA5Hf+LowSu0w4qPEpmiro0OK4t/xEr9BoteeRvbLwlH21K9oP0EoB4YetUf1ixzTlUBxdkmdrwAMG9LgSRuY7PxDmR2hrkXaVR5Mb9zrn+xrDf0kPVgdZEg2KkFvGEMaPiSEeZ1DYHJcDVFPziq6LEaDU9F0k2flJGTcYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1746483278; c=relaxed/simple;
-	bh=clU6H9YBIBZ5AUwBp84Vouo+odx4clLgL35roPTLh6M=;
+	bh=Oz3eyYIFP4kwj0nI69Wh/mRzmq93sGznS23VdlXRZAg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=OwNhdbSlp0y7yRtXia1v4hHg32vChuo9B6YYPlJw9SZ0Zh1RptNCfTEWaruy54u6TR32kKSkDl2x+499Ob6AHxKumrHMOFroOIsWGDGwXXNL1f8/YRCPFxvoGnvMns7tO+Vach2XNiS5FU5NXgeoGFE9gy+xheHe8cW5Mxs/LlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J8+Be04r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC17BC4CEEE;
-	Mon,  5 May 2025 22:14:36 +0000 (UTC)
+	 MIME-Version; b=h5wp8Oa9RtyVb0HwK083dwurZixu9T8F1ty67mMOOa81Adkd7Zz+DGg8QtZWbO7gSwMky1tQF4T3zuVoGY8whFkd5fcs06lFlb60vj6XrYz6HQxBa41QzjuJJgXPgdD52HyWUef5VT05sgQ6niyh7Iso+YON7m7XDcnMdLS483w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F163Hjl7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFE28C4CEED;
+	Mon,  5 May 2025 22:14:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483277;
-	bh=clU6H9YBIBZ5AUwBp84Vouo+odx4clLgL35roPTLh6M=;
+	s=k20201202; t=1746483278;
+	bh=Oz3eyYIFP4kwj0nI69Wh/mRzmq93sGznS23VdlXRZAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J8+Be04rnzdnBFW24iltAknom7flR+SDPmAqID900EEfMk3Jv/zVJxBHqX9ddQNJM
-	 SrQVRfmMZPOK95ApsxJRzj7AhzugJ+HLpcajtq4LuxWIjMXUMzMmPxjp+4Vk025jBV
-	 iQGYi7079TQc1+FmdUhEYOTmjgZqqK1m2R746uEDyonLb9BgMScKb2OQ6sxvBGausa
-	 vJB8ofnvY64fAdp8gXZBkmn1OUT/kuEfAAkQPvZyy+jXFJ3nBnEgi3HDcTohUb/has
-	 bJlIvcXXoQKhkqmbrFsvmJLweVXJ1phFfHA0vcglf9D+43ZBpDgbJx3IaJe65DvojO
-	 s/y2FSwjf6s0w==
+	b=F163Hjl7RgcFSvlDxfBjupVplZ72qwU0WuiNPYixzOgJVhZ2yjB4z95iZ6MdlSMA/
+	 iT0K7CSAFx9jLSoGjdfTMj0l68pu0Qk2LMcyyQY5+hQqajx1dkXX+arw5qH4h3k/TL
+	 jcYHHkn5Zt8UVw0FZ0WTs3TYTtm4iQgoEuEGIz3koLc6OCgX8R8Xpxy9levodkMubY
+	 5DVR+UJVlMt4n6vaVg0Oo8h/54CzfudHY0wubKGZMj+oyBVWGJAGoZyQs6TB4wQhxY
+	 aEAlCET55Egno0fAVsiq9+fvthIx7hOq7n5YnBKPQ/v7x5jjnAj/uLRAUPxjNFnNM7
+	 dELIhTpw4ggRQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Sungjong Seo <sj1557.seo@samsung.com>,
-	Yuezhang Mo <Yuezhang.Mo@sony.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
+Cc: Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 010/642] exfat: call bh_read in get_block only when necessary
-Date: Mon,  5 May 2025 18:03:46 -0400
-Message-Id: <20250505221419.2672473-10-sashal@kernel.org>
+	io-uring@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 011/642] io_uring/msg: initialise msg request opcode
+Date: Mon,  5 May 2025 18:03:47 -0400
+Message-Id: <20250505221419.2672473-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -66,220 +65,34 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Sungjong Seo <sj1557.seo@samsung.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit c73e680d1f84059e1b1ea82a537f6ccc1c563eb4 ]
+[ Upstream commit 9cc0bbdaba2a66ad90bc6ce45163b7745baffe98 ]
 
-With commit 11a347fb6cef ("exfat: change to get file size from DataLength"),
-exfat_get_block() can now handle valid_size. However, most partial
-unwritten blocks that could be mapped with other blocks are being
-inefficiently processed separately as individual blocks.
+It's risky to have msg request opcode set to garbage, so at least
+initialise it to nop. Later we might want to add a user inaccessible
+opcode for such cases.
 
-Except for partial unwritten blocks that require independent processing,
-let's handle them simply as before.
-
-Signed-off-by: Sungjong Seo <sj1557.seo@samsung.com>
-Reviewed-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/9afe650fcb348414a4529d89f52eb8969ba06efd.1743190078.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/exfat/inode.c | 159 +++++++++++++++++++++++------------------------
- 1 file changed, 77 insertions(+), 82 deletions(-)
+ io_uring/msg_ring.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/exfat/inode.c b/fs/exfat/inode.c
-index a23677de4544f..b22c02d6000f7 100644
---- a/fs/exfat/inode.c
-+++ b/fs/exfat/inode.c
-@@ -274,9 +274,11 @@ static int exfat_get_block(struct inode *inode, sector_t iblock,
- 	sector_t last_block;
- 	sector_t phys = 0;
- 	sector_t valid_blks;
-+	loff_t i_size;
- 
- 	mutex_lock(&sbi->s_lock);
--	last_block = EXFAT_B_TO_BLK_ROUND_UP(i_size_read(inode), sb);
-+	i_size = i_size_read(inode);
-+	last_block = EXFAT_B_TO_BLK_ROUND_UP(i_size, sb);
- 	if (iblock >= last_block && !create)
- 		goto done;
- 
-@@ -305,102 +307,95 @@ static int exfat_get_block(struct inode *inode, sector_t iblock,
- 	if (buffer_delay(bh_result))
- 		clear_buffer_delay(bh_result);
- 
--	if (create) {
-+	/*
-+	 * In most cases, we just need to set bh_result to mapped, unmapped
-+	 * or new status as follows:
-+	 *  1. i_size == valid_size
-+	 *  2. write case (create == 1)
-+	 *  3. direct_read (!bh_result->b_folio)
-+	 *     -> the unwritten part will be zeroed in exfat_direct_IO()
-+	 *
-+	 * Otherwise, in the case of buffered read, it is necessary to take
-+	 * care the last nested block if valid_size is not equal to i_size.
-+	 */
-+	if (i_size == ei->valid_size || create || !bh_result->b_folio)
- 		valid_blks = EXFAT_B_TO_BLK_ROUND_UP(ei->valid_size, sb);
-+	else
-+		valid_blks = EXFAT_B_TO_BLK(ei->valid_size, sb);
- 
--		if (iblock + max_blocks < valid_blks) {
--			/* The range has been written, map it */
--			goto done;
--		} else if (iblock < valid_blks) {
--			/*
--			 * The range has been partially written,
--			 * map the written part.
--			 */
--			max_blocks = valid_blks - iblock;
--			goto done;
--		}
-+	/* The range has been fully written, map it */
-+	if (iblock + max_blocks < valid_blks)
-+		goto done;
- 
--		/* The area has not been written, map and mark as new. */
--		set_buffer_new(bh_result);
-+	/* The range has been partially written, map the written part */
-+	if (iblock < valid_blks) {
-+		max_blocks = valid_blks - iblock;
-+		goto done;
-+	}
- 
-+	/* The area has not been written, map and mark as new for create case */
-+	if (create) {
-+		set_buffer_new(bh_result);
- 		ei->valid_size = EXFAT_BLK_TO_B(iblock + max_blocks, sb);
- 		mark_inode_dirty(inode);
--	} else {
--		valid_blks = EXFAT_B_TO_BLK(ei->valid_size, sb);
-+		goto done;
-+	}
- 
--		if (iblock + max_blocks < valid_blks) {
--			/* The range has been written, map it */
--			goto done;
--		} else if (iblock < valid_blks) {
--			/*
--			 * The area has been partially written,
--			 * map the written part.
--			 */
--			max_blocks = valid_blks - iblock;
-+	/*
-+	 * The area has just one block partially written.
-+	 * In that case, we should read and fill the unwritten part of
-+	 * a block with zero.
-+	 */
-+	if (bh_result->b_folio && iblock == valid_blks &&
-+	    (ei->valid_size & (sb->s_blocksize - 1))) {
-+		loff_t size, pos;
-+		void *addr;
-+
-+		max_blocks = 1;
-+
-+		/*
-+		 * No buffer_head is allocated.
-+		 * (1) bmap: It's enough to set blocknr without I/O.
-+		 * (2) read: The unwritten part should be filled with zero.
-+		 *           If a folio does not have any buffers,
-+		 *           let's returns -EAGAIN to fallback to
-+		 *           block_read_full_folio() for per-bh IO.
-+		 */
-+		if (!folio_buffers(bh_result->b_folio)) {
-+			err = -EAGAIN;
- 			goto done;
--		} else if (iblock == valid_blks &&
--			   (ei->valid_size & (sb->s_blocksize - 1))) {
--			/*
--			 * The block has been partially written,
--			 * zero the unwritten part and map the block.
--			 */
--			loff_t size, pos;
--			void *addr;
--
--			max_blocks = 1;
--
--			/*
--			 * For direct read, the unwritten part will be zeroed in
--			 * exfat_direct_IO()
--			 */
--			if (!bh_result->b_folio)
--				goto done;
--
--			/*
--			 * No buffer_head is allocated.
--			 * (1) bmap: It's enough to fill bh_result without I/O.
--			 * (2) read: The unwritten part should be filled with 0
--			 *           If a folio does not have any buffers,
--			 *           let's returns -EAGAIN to fallback to
--			 *           per-bh IO like block_read_full_folio().
--			 */
--			if (!folio_buffers(bh_result->b_folio)) {
--				err = -EAGAIN;
--				goto done;
--			}
-+		}
- 
--			pos = EXFAT_BLK_TO_B(iblock, sb);
--			size = ei->valid_size - pos;
--			addr = folio_address(bh_result->b_folio) +
--			       offset_in_folio(bh_result->b_folio, pos);
-+		pos = EXFAT_BLK_TO_B(iblock, sb);
-+		size = ei->valid_size - pos;
-+		addr = folio_address(bh_result->b_folio) +
-+			offset_in_folio(bh_result->b_folio, pos);
- 
--			/* Check if bh->b_data points to proper addr in folio */
--			if (bh_result->b_data != addr) {
--				exfat_fs_error_ratelimit(sb,
-+		/* Check if bh->b_data points to proper addr in folio */
-+		if (bh_result->b_data != addr) {
-+			exfat_fs_error_ratelimit(sb,
- 					"b_data(%p) != folio_addr(%p)",
- 					bh_result->b_data, addr);
--				err = -EINVAL;
--				goto done;
--			}
--
--			/* Read a block */
--			err = bh_read(bh_result, 0);
--			if (err < 0)
--				goto done;
-+			err = -EINVAL;
-+			goto done;
-+		}
- 
--			/* Zero unwritten part of a block */
--			memset(bh_result->b_data + size, 0,
--			       bh_result->b_size - size);
-+		/* Read a block */
-+		err = bh_read(bh_result, 0);
-+		if (err < 0)
-+			goto done;
- 
--			err = 0;
--		} else {
--			/*
--			 * The range has not been written, clear the mapped flag
--			 * to only zero the cache and do not read from disk.
--			 */
--			clear_buffer_mapped(bh_result);
--		}
-+		/* Zero unwritten part of a block */
-+		memset(bh_result->b_data + size, 0, bh_result->b_size - size);
-+		err = 0;
-+		goto done;
+diff --git a/io_uring/msg_ring.c b/io_uring/msg_ring.c
+index 7e6f68e911f10..f844ab24cda42 100644
+--- a/io_uring/msg_ring.c
++++ b/io_uring/msg_ring.c
+@@ -93,6 +93,7 @@ static int io_msg_remote_post(struct io_ring_ctx *ctx, struct io_kiocb *req,
+ 		kmem_cache_free(req_cachep, req);
+ 		return -EOWNERDEAD;
  	}
-+
-+	/*
-+	 * The area has not been written, clear mapped for read/bmap cases.
-+	 * If so, it will be filled with zero without reading from disk.
-+	 */
-+	clear_buffer_mapped(bh_result);
- done:
- 	bh_result->b_size = EXFAT_BLK_TO_B(max_blocks, sb);
- 	if (err < 0)
++	req->opcode = IORING_OP_NOP;
+ 	req->cqe.user_data = user_data;
+ 	io_req_set_res(req, res, cflags);
+ 	percpu_ref_get(&ctx->refs);
 -- 
 2.39.5
 
