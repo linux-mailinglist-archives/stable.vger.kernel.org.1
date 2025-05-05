@@ -1,163 +1,117 @@
-Return-Path: <stable+bounces-141709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E1BAAAB7BC
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:17:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27F7EAAB7E3
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:21:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7361169D1E
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:15:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B70903B6AE0
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:15:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82C9F296FB8;
-	Tue,  6 May 2025 00:51:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83E3B34C99D;
+	Tue,  6 May 2025 00:51:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O5j1bCSz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ouw3d8UJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 393023B89E3;
-	Mon,  5 May 2025 23:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6923B9713;
+	Mon,  5 May 2025 23:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487309; cv=none; b=EK3XUeg9HQq+7s/uisb3wRs1i35r9jAdykriwb1Dy8mGsOEuKogHWqJO4l0kc/mQ0PZwFDHpx/asqLb7Rp8KutSPGgmbqNAtKMFZ3MoaRABsyf3zf0gY36udyGWrnTwlBv2vWgEowG2jfvBxDwMR5UsiOK4mdtoLpL9PkIEMUzs=
+	t=1746487327; cv=none; b=RYq1ukp5z2zrvU3wvzBfvyIXxBYDEnIYmELwgVcg2Eq36kt60p9hojWwDr10fAPW4I+T2KM5uMC3HN7f8gA66UGTYBicnD+2JAZG1ozTrz0yR4ZPq/g5mf5ykZIWJ2yvFoS+KVBhf6/P/mHZ+/vCrycbZqOW+34jgZWixXoowM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487309; c=relaxed/simple;
-	bh=VL5H2FW0sIWc1ybX28SpZkjySUj9Zblq9JKHOzk4tWU=;
+	s=arc-20240116; t=1746487327; c=relaxed/simple;
+	bh=U0TwbD88pZSRao+uKN5cVvjVctGmavvj1FmStfO7D18=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Lyfatf3HfspQkJEBSqYND+FtsUl7Ycfzt96cI802xO2vYAycrAWUwfKbQJn+nruNl6EWhxqIYZhzWCDuq5fD1BsFjv4tx2Bs8bBl3b/T9PL0aVi6dARaMgmybYnATG5d9oizpw4qO/EyWaX2PKjIGCWnx2Eazb4GhB9HBpYt6iE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O5j1bCSz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28E36C4CEE4;
-	Mon,  5 May 2025 23:21:47 +0000 (UTC)
+	 MIME-Version; b=JplbD4pDoHz4PyOtnugNEsbEsSuJajtvMJiPwuZuB5gEZy87IqLWZPs9av8c6M0kfBVd3x7fQfjnB9baWp4qreZUCCqZSMcdfP6bLv47FGzOv1VIVSfsrsqy5fRcwJSIX9y98lSle6eP4IRTl+0Jr21dTj/7UFxLylp0cQGwl5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ouw3d8UJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F63FC4CEE4;
+	Mon,  5 May 2025 23:22:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487309;
-	bh=VL5H2FW0sIWc1ybX28SpZkjySUj9Zblq9JKHOzk4tWU=;
+	s=k20201202; t=1746487326;
+	bh=U0TwbD88pZSRao+uKN5cVvjVctGmavvj1FmStfO7D18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O5j1bCSzZ1WVf/iAhsTjY54cCMBf3M++m4ffkTaDKbzY7TWPqp1GpH/wJS1hKVYN+
-	 K0dKi8oRpDDVdlISw/PSAwNIPOOt0Bjcvpal2+gbk9Rv/fuW3229QfhjnocTUqvSxw
-	 P22RplrUm+58ST0aIoYZz7ab8aOMfQmy2eQJWduOTA6PvoXJU+3TUNyLar1Su9TZHC
-	 1eEGxBMFHTk2a6ipXoyKgzu9VfxNKvYz8CM1/FV5lPEVlXiAE2s3IyBQUP/TvJXb3Z
-	 AoPlYQKzUpkK9qPqggC03KeCCWllkDkQg20W30NHO9tKr/qxqHQ8KOR+9b1tlxhfnS
-	 mNWSkTPzfHw9w==
+	b=ouw3d8UJiZkIaNUhLY/kNvzsKk5bLLL/ppUAYuEi8rjnuCA4+BRlTrnTOEuXJCXQk
+	 CIg8Yd9NFrL1s50ITCWKKnllbDLDPk+cbweljvtom3Hv9HDWaUMZ8p9lhoBTV3T4e2
+	 Wjz0GWd7UOPf89fNlKZnjQGbQb7uJt1sTZ4KdbYyG4OPgS5DH4tHK8dibkpprfVpLO
+	 RUJy4xcuk5dvm5IR8zMhFVBWnwMKyVWP2qMi+vXqBIVDkr5IjsRmx3aAaqhNW8EeHI
+	 Fst9lcHEHHaluWmYcsrwn5evM6qnOMTZMjmSWXgjf0/AjAIxqV+/OkIhgCLLWUDIvX
+	 8nKhYEwnYJBig==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Simona Vetter <simona.vetter@ffwll.ch>,
-	Pekka Paalanen <pekka.paalanen@collabora.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Rob Clark <robdclark@gmail.com>,
-	Simon Ser <contact@emersion.fr>,
-	Manasi Navare <navaremanasi@google.com>,
-	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Simona Vetter <simona.vetter@intel.com>,
+Cc: Oleg Nesterov <oleg@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	simona@ffwll.ch,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.10 113/114] drm/atomic: clarify the rules around drm_atomic_state->allow_modeset
-Date: Mon,  5 May 2025 19:18:16 -0400
-Message-Id: <20250505231817.2697367-113-sashal@kernel.org>
+	akpm@linux-foundation.org,
+	mhocko@suse.com,
+	mjguzik@gmail.com,
+	pasha.tatashin@soleen.com,
+	alexjlzheng@tencent.com
+Subject: [PATCH AUTOSEL 5.4 07/79] exit: fix the usage of delay_group_leader->exit_code in do_notify_parent() and pidfs_exit()
+Date: Mon,  5 May 2025 19:20:39 -0400
+Message-Id: <20250505232151.2698893-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250505231817.2697367-1-sashal@kernel.org>
-References: <20250505231817.2697367-1-sashal@kernel.org>
+In-Reply-To: <20250505232151.2698893-1-sashal@kernel.org>
+References: <20250505232151.2698893-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.10.237
+X-stable-base: Linux 5.4.293
 Content-Transfer-Encoding: 8bit
 
-From: Simona Vetter <simona.vetter@ffwll.ch>
+From: Oleg Nesterov <oleg@redhat.com>
 
-[ Upstream commit c5e3306a424b52e38ad2c28c7f3399fcd03e383d ]
+[ Upstream commit 9133607de37a4887c6f89ed937176a0a0c1ebb17 ]
 
-msm is automagically upgrading normal commits to full modesets, and
-that's a big no-no:
+Consider a process with a group leader L and a sub-thread T.
+L does sys_exit(1), then T does sys_exit_group(2).
 
-- for one this results in full on->off->on transitions on all these
-  crtc, at least if you're using the usual helpers. Which seems to be
-  the case, and is breaking uapi
+In this case wait_task_zombie(L) will notice SIGNAL_GROUP_EXIT and use
+L->signal->group_exit_code, this is correct.
 
-- further even if the ctm change itself would not result in flicker,
-  this can hide modesets for other reasons. Which again breaks the
-  uapi
+But, before that, do_notify_parent(L) called by release_task(T) will use
+L->exit_code != L->signal->group_exit_code, and this is not consistent.
+We don't really care, I think that nobody relies on the info which comes
+with SIGCHLD, if nothing else SIGCHLD < SIGRTMIN can be queued only once.
 
-v2: I forgot the case of adding unrelated crtc state. Add that case
-and link to the existing kerneldoc explainers. This has come up in an
-irc discussion with Manasi and Ville about intel's bigjoiner mode.
-Also cc everyone involved in the msm irc discussion, more people
-joined after I sent out v1.
+But pidfs_exit() is more problematic, I think pidfs_exit_info->exit_code
+should report ->group_exit_code in this case, just like wait_task_zombie().
 
-v3: Wording polish from Pekka and Thomas
+TODO: with this change we can hopefully cleanup (or may be even kill) the
+similar SIGNAL_GROUP_EXIT checks, at least in wait_task_zombie().
 
-Acked-by: Pekka Paalanen <pekka.paalanen@collabora.com>
-Acked-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: David Airlie <airlied@gmail.com>
-Cc: Daniel Vetter <daniel@ffwll.ch>
-Cc: Pekka Paalanen <pekka.paalanen@collabora.com>
-Cc: Rob Clark <robdclark@gmail.com>
-Cc: Simon Ser <contact@emersion.fr>
-Cc: Manasi Navare <navaremanasi@google.com>
-Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
-Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Simona Vetter <simona.vetter@intel.com>
-Signed-off-by: Simona Vetter <simona.vetter@ffwll.ch>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250108172417.160831-1-simona.vetter@ffwll.ch
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Link: https://lore.kernel.org/r/20250324171941.GA13114@redhat.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/drm/drm_atomic.h | 23 +++++++++++++++++++++--
- 1 file changed, 21 insertions(+), 2 deletions(-)
+ kernel/exit.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/include/drm/drm_atomic.h b/include/drm/drm_atomic.h
-index d07c851d255b5..4a245d79ba6b4 100644
---- a/include/drm/drm_atomic.h
-+++ b/include/drm/drm_atomic.h
-@@ -332,8 +332,27 @@ struct drm_atomic_state {
- 	 *
- 	 * Allow full modeset. This is used by the ATOMIC IOCTL handler to
- 	 * implement the DRM_MODE_ATOMIC_ALLOW_MODESET flag. Drivers should
--	 * never consult this flag, instead looking at the output of
--	 * drm_atomic_crtc_needs_modeset().
-+	 * generally not consult this flag, but instead look at the output of
-+	 * drm_atomic_crtc_needs_modeset(). The detailed rules are:
-+	 *
-+	 * - Drivers must not consult @allow_modeset in the atomic commit path.
-+	 *   Use drm_atomic_crtc_needs_modeset() instead.
-+	 *
-+	 * - Drivers must consult @allow_modeset before adding unrelated struct
-+	 *   drm_crtc_state to this commit by calling
-+	 *   drm_atomic_get_crtc_state(). See also the warning in the
-+	 *   documentation for that function.
-+	 *
-+	 * - Drivers must never change this flag, it is under the exclusive
-+	 *   control of userspace.
-+	 *
-+	 * - Drivers may consult @allow_modeset in the atomic check path, if
-+	 *   they have the choice between an optimal hardware configuration
-+	 *   which requires a modeset, and a less optimal configuration which
-+	 *   can be committed without a modeset. An example would be suboptimal
-+	 *   scanout FIFO allocation resulting in increased idle power
-+	 *   consumption. This allows userspace to avoid flickering and delays
-+	 *   for the normal composition loop at reasonable cost.
- 	 */
- 	bool allow_modeset : 1;
- 	bool legacy_cursor_update : 1;
+diff --git a/kernel/exit.c b/kernel/exit.c
+index 56d3a099825fb..5015ecdda6d95 100644
+--- a/kernel/exit.c
++++ b/kernel/exit.c
+@@ -262,6 +262,9 @@ void release_task(struct task_struct *p)
+ 	leader = p->group_leader;
+ 	if (leader != p && thread_group_empty(leader)
+ 			&& leader->exit_state == EXIT_ZOMBIE) {
++		/* for pidfs_exit() and do_notify_parent() */
++		if (leader->signal->flags & SIGNAL_GROUP_EXIT)
++			leader->exit_code = leader->signal->group_exit_code;
+ 		/*
+ 		 * If we were the last child thread and the leader has
+ 		 * exited already, and the leader's parent ignores SIGCHLD,
 -- 
 2.39.5
 
