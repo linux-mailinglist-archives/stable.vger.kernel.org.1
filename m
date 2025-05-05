@@ -1,66 +1,63 @@
-Return-Path: <stable+bounces-141442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C910FAAB721
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:04:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DAE4AAB385
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:47:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0245A3A9BA7
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:58:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A9CB3B194E
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:41:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BA382417C8;
-	Tue,  6 May 2025 00:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDAB223E336;
+	Tue,  6 May 2025 00:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dZNZ3WKA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wf0pmqYU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8718C22DA0F;
-	Mon,  5 May 2025 23:05:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE8022DA14;
+	Mon,  5 May 2025 23:05:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486327; cv=none; b=fg9zRxtgP0OJdSApyCx64RoUA5GDbqmp22YQKXkqMoXam84320f4CTUuW9SxgMChikfskkz8214zEh6YNVBxVpxz6pqzI6Rv58YcNvCTeg2WMK5EqnTS5ExQofBkV5QmdA6Hz5MpC6xgHrCsnoxU8UegDGcW/W8TDnZ1XHkhxFI=
+	t=1746486330; cv=none; b=WS57V33dnsQ3W+p4aZZZ+P2aucMUrOPk5qBm9TF00fYxfy9lVFQJWzN455RrQl2yUrqBWCWueG13JV9J+UZLwDpyGxCdVbETpOLfnn9dZdMOmYQnltaEPESUSEVWTnzrMt5eAu84Bqxgm+jVgt9D3fMLaS+pgb+nHGHF7EifYsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486327; c=relaxed/simple;
-	bh=m6pirEV9BqCwtGgA0arxUkBv9/+4hHliPFAgBuUA4gg=;
+	s=arc-20240116; t=1746486330; c=relaxed/simple;
+	bh=QXzH7nV2Y+fEKkz2afxoldpnLN/Y1oQVhmH8CU9tFHQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=QwYK88GLMX+5v02cx6rW9lwosxhW6QmMG4En39RtG9U1TvOH9/X7+hmeVdRzbEDveD4vKEnWNbBtDREuEEFoIyjrw2Y+FV1b2F+RDRdFa6Nju+/5Sk+W6Ua6JEXd24WWfNMSIqSbmYbnuYB2CXQ+eDu58NUE4knOLF2qonj71aY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dZNZ3WKA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9BFFC4CEED;
-	Mon,  5 May 2025 23:05:25 +0000 (UTC)
+	 MIME-Version; b=bL/59a/1UMPPDm+jDaYYlufPPKDgZh+ME5hNPz0rGAKrpKA3QjMPVQhZQY768eOhWOmQEYuBuB0u53TlT0LPCV13kIytM9Iw5f8Z8ofuwTfQtKLJrH2Bfabpg2CaC7ObzjIsWJKiEr7lKwZupEyXU38IIe6N8b1nUrW6vZphftQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wf0pmqYU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8FD2C4CEEF;
+	Mon,  5 May 2025 23:05:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486327;
-	bh=m6pirEV9BqCwtGgA0arxUkBv9/+4hHliPFAgBuUA4gg=;
+	s=k20201202; t=1746486329;
+	bh=QXzH7nV2Y+fEKkz2afxoldpnLN/Y1oQVhmH8CU9tFHQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dZNZ3WKAxEhMxSHH51IEBXTSKo6quhGcGiIzSGFMEBNP+800QnBqhq06T1Dyg6Up+
-	 fmmy4PQI6UBwzN11X04puzjIBKWH33OHczmQXDHY9LwFEGJc8CZfV7JsjQf/ac1/qE
-	 WFoZJf/OFE1kSa8zfElo6r8h4N2sEGlx5oQlKdKMv43OevuHMdx8ms9h76dXF3A3UP
-	 eC0uXbPNDVADQfrdQUOYpWXPaCgZHAhRxO988V/kfOR/HY2NdAiE16MkJFf4w/eP7T
-	 o7bzfjG1cAZvvhUAqC6iAuOvm5Hxfwr7R5vLACtl+hA31BGrOS2V0R5LDvCoyWoz7z
-	 f2VqnTUHK4v9Q==
+	b=Wf0pmqYUb3F6dBCHGtK5hOM9fTDoZCM/nYxtDiAOKWdJxtxQNXY+u/H4G6GdWGvaD
+	 9Zap4uwFhda0EVKL4QthRcipIWucdYaFRIvi7ZwcUskGpyoFA5JaFxciGKKnGEGq5d
+	 JprBxOZBL7enhtdriQv5n1Ay80ZYiPmwmpNUK8IcyjFwxT9hf8wR8QHYWq90+RhEBW
+	 op03qWDrCtYNJjTAJJvqiIQ24pXk9db5H/4l+ZwV/eBUe+ju9q6d4Ew6fk17ihdAA/
+	 Ry2gkibrKc9YdhJrSKJZTDqGWdUc7kAjKZ0GDFCJJQyBXQnH8fFlXWZMj7Ez5MVD/H
+	 W4O1TW3euUqNg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+Cc: Ankur Arora <ankur.a.arora@oracle.com>,
+	"Paul E . McKenney" <paulmck@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
 	Sasha Levin <sashal@kernel.org>,
-	przemyslaw.kitszel@intel.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 261/294] ice: treat dyn_allowed only as suggestion
-Date: Mon,  5 May 2025 18:56:01 -0400
-Message-Id: <20250505225634.2688578-261-sashal@kernel.org>
+	neeraj.upadhyay@kernel.org,
+	joel@joelfernandes.org,
+	josh@joshtriplett.org,
+	urezki@gmail.com,
+	rcu@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 262/294] rcu: handle quiescent states for PREEMPT_RCU=n, PREEMPT_COUNT=y
+Date: Mon,  5 May 2025 18:56:02 -0400
+Message-Id: <20250505225634.2688578-262-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -75,131 +72,61 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+From: Ankur Arora <ankur.a.arora@oracle.com>
 
-[ Upstream commit a8c2d3932c1106af2764cc6869b29bcf3cb5bc47 ]
+[ Upstream commit 83b28cfe796464ebbde1cf7916c126da6d572685 ]
 
-It can be needed to have some MSI-X allocated as static and rest as
-dynamic. For example on PF VSI. We want to always have minimum one MSI-X
-on it, because of that it is allocated as a static one, rest can be
-dynamic if it is supported.
+With PREEMPT_RCU=n, cond_resched() provides urgently needed quiescent
+states for read-side critical sections via rcu_all_qs().
+One reason why this was needed: lacking preempt-count, the tick
+handler has no way of knowing whether it is executing in a
+read-side critical section or not.
 
-Change the ice_get_irq_res() to allow using static entries if they are
-free even if caller wants dynamic one.
+With (PREEMPT_LAZY=y, PREEMPT_DYNAMIC=n), we get (PREEMPT_COUNT=y,
+PREEMPT_RCU=n). In this configuration cond_resched() is a stub and
+does not provide quiescent states via rcu_all_qs().
+(PREEMPT_RCU=y provides this information via rcu_read_unlock() and
+its nesting counter.)
 
-Adjust limit values to the new approach. Min and max in limit means the
-values that are valid, so decrease max and num_static by one.
+So, use the availability of preempt_count() to report quiescent states
+in rcu_flavor_sched_clock_irq().
 
-Set vsi::irq_dyn_alloc if dynamic allocation is supported.
-
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Suggested-by: Paul E. McKenney <paulmck@kernel.org>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Ankur Arora <ankur.a.arora@oracle.com>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_irq.c | 25 ++++++++++++------------
- drivers/net/ethernet/intel/ice/ice_lib.c |  2 ++
- 2 files changed, 15 insertions(+), 12 deletions(-)
+ kernel/rcu/tree_plugin.h | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_irq.c b/drivers/net/ethernet/intel/ice/ice_irq.c
-index ad82ff7d19957..09f9c7ba52795 100644
---- a/drivers/net/ethernet/intel/ice/ice_irq.c
-+++ b/drivers/net/ethernet/intel/ice/ice_irq.c
-@@ -45,7 +45,7 @@ static void ice_free_irq_res(struct ice_pf *pf, u16 index)
- /**
-  * ice_get_irq_res - get an interrupt resource
-  * @pf: board private structure
-- * @dyn_only: force entry to be dynamically allocated
-+ * @dyn_allowed: allow entry to be dynamically allocated
-  *
-  * Allocate new irq entry in the free slot of the tracker. Since xarray
-  * is used, always allocate new entry at the lowest possible index. Set
-@@ -53,11 +53,12 @@ static void ice_free_irq_res(struct ice_pf *pf, u16 index)
-  *
-  * Returns allocated irq entry or NULL on failure.
+diff --git a/kernel/rcu/tree_plugin.h b/kernel/rcu/tree_plugin.h
+index 41021080ad258..dccfc46496393 100644
+--- a/kernel/rcu/tree_plugin.h
++++ b/kernel/rcu/tree_plugin.h
+@@ -963,13 +963,16 @@ static void rcu_preempt_check_blocked_tasks(struct rcu_node *rnp)
   */
--static struct ice_irq_entry *ice_get_irq_res(struct ice_pf *pf, bool dyn_only)
-+static struct ice_irq_entry *ice_get_irq_res(struct ice_pf *pf,
-+					     bool dyn_allowed)
+ static void rcu_flavor_sched_clock_irq(int user)
  {
--	struct xa_limit limit = { .max = pf->irq_tracker.num_entries,
-+	struct xa_limit limit = { .max = pf->irq_tracker.num_entries - 1,
- 				  .min = 0 };
--	unsigned int num_static = pf->irq_tracker.num_static;
-+	unsigned int num_static = pf->irq_tracker.num_static - 1;
- 	struct ice_irq_entry *entry;
- 	unsigned int index;
- 	int ret;
-@@ -66,9 +67,9 @@ static struct ice_irq_entry *ice_get_irq_res(struct ice_pf *pf, bool dyn_only)
- 	if (!entry)
- 		return NULL;
+-	if (user || rcu_is_cpu_rrupt_from_idle()) {
++	if (user || rcu_is_cpu_rrupt_from_idle() ||
++	     (IS_ENABLED(CONFIG_PREEMPT_COUNT) &&
++	      (preempt_count() == HARDIRQ_OFFSET))) {
  
--	/* skip preallocated entries if the caller says so */
--	if (dyn_only)
--		limit.min = num_static;
-+	/* only already allocated if the caller says so */
-+	if (!dyn_allowed)
-+		limit.max = num_static;
- 
- 	ret = xa_alloc(&pf->irq_tracker.entries, &index, entry, limit,
- 		       GFP_KERNEL);
-@@ -78,7 +79,7 @@ static struct ice_irq_entry *ice_get_irq_res(struct ice_pf *pf, bool dyn_only)
- 		entry = NULL;
- 	} else {
- 		entry->index = index;
--		entry->dynamic = index >= num_static;
-+		entry->dynamic = index > num_static;
- 	}
- 
- 	return entry;
-@@ -272,7 +273,7 @@ int ice_init_interrupt_scheme(struct ice_pf *pf)
- /**
-  * ice_alloc_irq - Allocate new interrupt vector
-  * @pf: board private structure
-- * @dyn_only: force dynamic allocation of the interrupt
-+ * @dyn_allowed: allow dynamic allocation of the interrupt
-  *
-  * Allocate new interrupt vector for a given owner id.
-  * return struct msi_map with interrupt details and track
-@@ -285,20 +286,20 @@ int ice_init_interrupt_scheme(struct ice_pf *pf)
-  * interrupt will be allocated with pci_msix_alloc_irq_at.
-  *
-  * Some callers may only support dynamically allocated interrupts.
-- * This is indicated with dyn_only flag.
-+ * This is indicated with dyn_allowed flag.
-  *
-  * On failure, return map with negative .index. The caller
-  * is expected to check returned map index.
-  *
-  */
--struct msi_map ice_alloc_irq(struct ice_pf *pf, bool dyn_only)
-+struct msi_map ice_alloc_irq(struct ice_pf *pf, bool dyn_allowed)
- {
- 	int sriov_base_vector = pf->sriov_base_vector;
- 	struct msi_map map = { .index = -ENOENT };
- 	struct device *dev = ice_pf_to_dev(pf);
- 	struct ice_irq_entry *entry;
- 
--	entry = ice_get_irq_res(pf, dyn_only);
-+	entry = ice_get_irq_res(pf, dyn_allowed);
- 	if (!entry)
- 		return map;
- 
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-index 1fc4805353eb5..a6a290514e548 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-@@ -587,6 +587,8 @@ ice_vsi_alloc_def(struct ice_vsi *vsi, struct ice_channel *ch)
- 			return -ENOMEM;
- 	}
- 
-+	vsi->irq_dyn_alloc = pci_msix_can_alloc_dyn(vsi->back->pdev);
-+
- 	switch (vsi->type) {
- 	case ICE_VSI_SWITCHDEV_CTRL:
- 		/* Setup eswitch MSIX irq handler for VSI */
+ 		/*
+ 		 * Get here if this CPU took its interrupt from user
+-		 * mode or from the idle loop, and if this is not a
+-		 * nested interrupt.  In this case, the CPU is in
+-		 * a quiescent state, so note it.
++		 * mode, from the idle loop without this being a nested
++		 * interrupt, or while not holding the task preempt count
++		 * (with PREEMPT_COUNT=y). In this case, the CPU is in a
++		 * quiescent state, so note it.
+ 		 *
+ 		 * No memory barrier is required here because rcu_qs()
+ 		 * references only CPU-local variables that other CPUs
 -- 
 2.39.5
 
