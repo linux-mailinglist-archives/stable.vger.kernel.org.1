@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-140815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89EFEAAABDA
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:03:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AA42AAABB9
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:01:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8CE0D5A190A
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:57:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2F951A8643E
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:57:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05E5D3B35AB;
-	Mon,  5 May 2025 23:20:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7A2A3B3BB3;
+	Mon,  5 May 2025 23:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HsOG7yLM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e8dP6+MD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C4D6396ED1;
-	Mon,  5 May 2025 23:06:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1606396EDE;
+	Mon,  5 May 2025 23:06:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486393; cv=none; b=tjahWzzAArRlkYK82it+zmuuaGlq5FdGN/D7owcGqWFp+/DTnn6QZ6Rxdj4LOcc+JGNEjY64+RKeFE/pHkpo45qEYk5W6lT19hoBCFASqH3ntjH/nqOVILUY10dID2geSA4GrB8VwzgnJREtPfZhwTkfzCvo90qCCvM1SANSh7A=
+	t=1746486397; cv=none; b=rHp8v9lqoDQGut/l/a3XMiNao9e3ivT1Dgy690g77hnHcct6SHbqNWfrotELx8WpEjTHTpee7wGpoo0xGfAcd9LGq2XLeF7dJV7H7NpOC+rPi6S7b2g5R3ozPEHwQiW1W+zJL13gxgTVVhxZVKw7gPTNiQHn2x4G6GM95VifYBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486393; c=relaxed/simple;
-	bh=3hwOv7gbaxyRN3tOB36daa+Al+L5PlzqQYd3rpcfSx8=;
+	s=arc-20240116; t=1746486397; c=relaxed/simple;
+	bh=m2GFJbyIvE55mB9sL7la2Qs3ZSWL0oLBjNaV/X80mp4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eu/29mGyaHXGY+CIh9tbn4jKwGYm81OW9QjelqHejzK0Sczkf9HGtZBrXsrWn4/5kKAVv+T006pXZed+vXe+JCMfRiHJOLvM/A3N9Yh7ii7Y/uDoyLGRxuoNQRHMBEUlCJd0EyJRLsirsQH5iSLgNVLcllOfHf8bxVzgnY+eVeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HsOG7yLM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1689DC4CEF1;
-	Mon,  5 May 2025 23:06:31 +0000 (UTC)
+	 MIME-Version; b=j9luuiGJxwJW/HHBQRAZODIVUxsYoyDFHSBU3+u5OEdaiDoFrEDQOcwRrY9LYtDSmCd2Zy8hL7H8TJPmJIiK+iBOFuqy4906L6cLNzsl4bLRGyvI8oBDyjzlr2KDYpOT6JjV8JMuUO0dCrBCbEhWjXuOPdtCHC4wHaPzIbZPHmQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e8dP6+MD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 052F5C4CEF1;
+	Mon,  5 May 2025 23:06:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486392;
-	bh=3hwOv7gbaxyRN3tOB36daa+Al+L5PlzqQYd3rpcfSx8=;
+	s=k20201202; t=1746486395;
+	bh=m2GFJbyIvE55mB9sL7la2Qs3ZSWL0oLBjNaV/X80mp4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HsOG7yLMrt2CuCIV77LlcJhFQ/1DuBZJB2AfXmI1XaMe6ZEKz8AdJEbe+WZKmTeDr
-	 M/qqJsQ5Dp6cpjEQ7GgB4QRuM2eMKYlnPxdSiY5fRa2v/eWfmSdtPVdri72Uy/o8j5
-	 kmxwK+gFtvk7cfcK/NDSE6lTX2nhzEDyIW3uGCXpA7AoVr+m7hfamfZzmigs7tdHQd
-	 1JXV2nhMaEINFkzynuFy67uU1Sy1S3/eEpk4/wMzExwtn/HD0YbXjbwbgulipHwj2c
-	 9WURxPTqsGm4eZKwjFnnHcCe2J5ZA5ar0v+dpAajAJfvqECUWeka9/cpS1iiE0oxDP
-	 n8k7AKADEae9Q==
+	b=e8dP6+MDzZYcqJ+NfokNkVk+kyisLRLlQZn4GHZ4p1ss8aNzwyHYb3BFbCCCqXFfV
+	 bKGq9yXQtBlv69Vbt6LYpXmhLWm36DyFRR5XWoot0NqP7z8JkpXJ/OnJGvvQHZu8wi
+	 aHDVV8FDnEJIrLqGUtTiLZK17f77uDEM0lXF6DkSctdIc/G2+hAWY/9+9GpJrVq8Kp
+	 avj68vOnaOOs2kDFFJMn3FfCOQL2M/VgUKGceoUvDuw9wKZb3DI7y1MHLVt743QTiD
+	 QFPkrbB9/1mjGd59SRaW4R3O3JZSWwtnMn9vHOoo7/x96wwlcmGiVyZBzwqvhTGVH1
+	 uuqotkUouEcfw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+Cc: Matt Johnston <matt@codeconstruct.com.au>,
+	Miklos Szeredi <mszeredi@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	sfrench@samba.org,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org
-Subject: [PATCH AUTOSEL 6.1 003/212] cifs: Add fallback for SMB2 CREATE without FILE_READ_ATTRIBUTES
-Date: Mon,  5 May 2025 19:02:55 -0400
-Message-Id: <20250505230624.2692522-3-sashal@kernel.org>
+	miklos@szeredi.hu,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 006/212] fuse: Return EPERM rather than ENOSYS from link()
+Date: Mon,  5 May 2025 19:02:58 -0400
+Message-Id: <20250505230624.2692522-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -62,65 +61,38 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Pali Rohár <pali@kernel.org>
+From: Matt Johnston <matt@codeconstruct.com.au>
 
-[ Upstream commit e255612b5ed9f179abe8196df7c2ba09dd227900 ]
+[ Upstream commit 8344213571b2ac8caf013cfd3b37bc3467c3a893 ]
 
-Some operations, like WRITE, does not require FILE_READ_ATTRIBUTES access.
+link() is documented to return EPERM when a filesystem doesn't support
+the operation, return that instead.
 
-So when FILE_READ_ATTRIBUTES is not explicitly requested for
-smb2_open_file() then first try to do SMB2 CREATE with FILE_READ_ATTRIBUTES
-access (like it was before) and then fallback to SMB2 CREATE without
-FILE_READ_ATTRIBUTES access (less common case).
-
-This change allows to complete WRITE operation to a file when it does not
-grant FILE_READ_ATTRIBUTES permission and its parent directory does not
-grant READ_DATA permission (parent directory READ_DATA is implicit grant of
-child FILE_READ_ATTRIBUTES permission).
-
-Signed-off-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Link: https://github.com/libfuse/libfuse/issues/925
+Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2file.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ fs/fuse/dir.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/smb/client/smb2file.c b/fs/smb/client/smb2file.c
-index a7475bc05cac0..afdc78e92ee9b 100644
---- a/fs/smb/client/smb2file.c
-+++ b/fs/smb/client/smb2file.c
-@@ -108,16 +108,25 @@ int smb2_open_file(const unsigned int xid, struct cifs_open_parms *oparms, __u32
- 	int err_buftype = CIFS_NO_BUFFER;
- 	struct cifs_fid *fid = oparms->fid;
- 	struct network_resiliency_req nr_ioctl_req;
-+	bool retry_without_read_attributes = false;
+diff --git a/fs/fuse/dir.c b/fs/fuse/dir.c
+index c431abbf48e66..0dbacdd7bb0d8 100644
+--- a/fs/fuse/dir.c
++++ b/fs/fuse/dir.c
+@@ -1068,6 +1068,8 @@ static int fuse_link(struct dentry *entry, struct inode *newdir,
+ 	else if (err == -EINTR)
+ 		fuse_invalidate_attr(inode);
  
- 	smb2_path = cifs_convert_path_to_utf16(oparms->path, oparms->cifs_sb);
- 	if (smb2_path == NULL)
- 		return -ENOMEM;
- 
--	oparms->desired_access |= FILE_READ_ATTRIBUTES;
-+	if (!(oparms->desired_access & FILE_READ_ATTRIBUTES)) {
-+		oparms->desired_access |= FILE_READ_ATTRIBUTES;
-+		retry_without_read_attributes = true;
-+	}
- 	smb2_oplock = SMB2_OPLOCK_LEVEL_BATCH;
- 
- 	rc = SMB2_open(xid, oparms, smb2_path, &smb2_oplock, smb2_data, NULL, &err_iov,
- 		       &err_buftype);
-+	if (rc == -EACCES && retry_without_read_attributes) {
-+		oparms->desired_access &= ~FILE_READ_ATTRIBUTES;
-+		rc = SMB2_open(xid, oparms, smb2_path, &smb2_oplock, smb2_data, NULL, &err_iov,
-+			       &err_buftype);
-+	}
- 	if (rc && data) {
- 		struct smb2_hdr *hdr = err_iov.iov_base;
++	if (err == -ENOSYS)
++		err = -EPERM;
+ 	return err;
+ }
  
 -- 
 2.39.5
