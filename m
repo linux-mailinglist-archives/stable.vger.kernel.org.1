@@ -1,134 +1,94 @@
-Return-Path: <stable+bounces-139702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91B3FAA9595
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 16:22:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40328AA959C
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 16:23:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BC2D16C2E1
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 14:22:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A0743A7277
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 14:22:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A0C91F30A4;
-	Mon,  5 May 2025 14:22:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C24F4259C85;
+	Mon,  5 May 2025 14:23:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="U+uc+ib4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vBHvnNG8"
 X-Original-To: stable@vger.kernel.org
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 308F0846C
-	for <stable@vger.kernel.org>; Mon,  5 May 2025 14:22:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EDA7846C;
+	Mon,  5 May 2025 14:23:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746454942; cv=none; b=Y0+3grgNIi47hbDFj8/sr7EvO35TPYs2hC/MjCEVXGBRY82/cRwU9R+/b6BJLUOxXbaosSO5ikjHM78q0qFTVAL6BK92w3ddjkuqFx8fq22BqrFAW4tmAvUI9NQHFSriKcJwQ9m2MuEmAQjC+3tftRlraDXHydwACSUHXIdztIs=
+	t=1746454984; cv=none; b=WZKqBAZWCJGTpwq0Z9LsEvfIa6/3jFA4DV24j38u86cttvwNfA30snSPS+nNwlR4wVy9suPXO6PeryfF/Q1f9TB2kCw3tfvwzhkHJqUwL1rZm2X0eKgUEGN7qCep+AaRPWTgR1zodhQdNDTuqw/a6TjVJyElkBezZvFtPqq8i2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746454942; c=relaxed/simple;
-	bh=dqA8Vi7Tjf7vqVmmWKxDXv+wTh9E1QSiZixL+5eDALc=;
+	s=arc-20240116; t=1746454984; c=relaxed/simple;
+	bh=3dTkU/7lC44YMbIkb0IBuu22iBQwpntrjLelWWH2HaM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FYNDO2bkYTlVxi+Ne617FbCW93YkaF96sbqYtOSAIRFMv1NwrkDb4BVOXyf8llCJXYHPcV2I2jXASYjxH8CC/nrGa28b0gbeD5M7do2xJ1Vw6rw2hQgFnpIUvIyRQu2M+ojkWrd6hl7jG2gjiVEjmxfCIPeC1GmYg8TPBgeST3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=U+uc+ib4; arc=none smtp.client-ip=95.215.58.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Mon, 5 May 2025 10:22:11 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1746454938;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Uh7estd9zAu0O/tk7w0y7NuBGjZGcTGPLKVSreiVaAs=;
-	b=U+uc+ib4+1mljnJGKmb5XiNtprvdQoDRMTWfYpSoKGvkfhA6VbNwbFKt4sF6q1HAicTZ/8
-	HPeJsSO34QAk3dogACidrqokGKuMlFF3gRLRXwQtfI0LiiR8FqQnWReIJbnOyadmMfOu9Y
-	fxTizyTo9DoADuyMPkKvOtz3UQ6Wg50=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-bcachefs@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [GIT PULL] bcachefs fixes for 6.14.y
-Message-ID: <7jhqpuoe47jo3cm7hwo5mxstneacvws5ddxzyagyiayon3jldh@i6tnxq5z7ouz>
-References: <hbrzmt73aol6f2fmqpsdtcevhb2sme6lz2otdn73vqpsmlstzt@egrywwkbtpfm>
- <2025050523-oversweet-mooned-3934@gregkh>
- <gjr5fogy6fuev264diupbdyoyat6pdwa2fklxaf6cvu4mr3vck@6vvfw7awb5qy>
- <2025050543-overkill-eradicate-2bdf@gregkh>
+	 Content-Type:Content-Disposition:In-Reply-To; b=a4wNIx0SzYlIpVYM3Xpa8ZP6MIZXUWKp3iJXvn9/w3mi8MewOedycjBJritoVbrTGOR9PPDC9hABiS+L46wsMVbyUfgRtn2gJSbPiFsGfKpwNCuAiKYKnkxDoLmIKOtDXg5D9dKugAfYvEM+kmzl3T+pFHNIHwCJ++wuT3vSHqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vBHvnNG8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64E58C4CEE4;
+	Mon,  5 May 2025 14:23:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1746454983;
+	bh=3dTkU/7lC44YMbIkb0IBuu22iBQwpntrjLelWWH2HaM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=vBHvnNG8BqPqODc8WHTFGYCabDiU2fvxZkVzZG49Oyv4lDZCnBVLVO2/oGfyP3ic+
+	 YdRIPmZ90ERSTUdYRhvCTKgyeS8V/inJI+PmeBe0/+a0u1bmg2bNq5pZQNOdp4UbXy
+	 84Bmnbop4rqNcGAwJXcdikq/TkacFhu04Y2qsD/4=
+Date: Mon, 5 May 2025 16:23:00 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: linux-stable <stable@vger.kernel.org>, Sasha Levin <sashal@kernel.org>,
+	"linux-sound@vger.kernel.org" <linux-sound@vger.kernel.org>,
+	Mark Brown <broonie@kernel.org>
+Subject: Re: Please apply to v6.14.x commit 6eab70345799 ("ASoC: soc-core:
+ Stop using of_property_read_bool() for non-boolean properties")
+Message-ID: <2025050550-clause-macaw-771a@gregkh>
+References: <7fb43b27-8e61-4f87-b28b-8c8c24eb7f75@cs-soprasteria.com>
+ <2025050556-blurred-graves-b443@gregkh>
+ <8e6c91c0-6780-414e-9cf6-1cc2a058be0b@csgroup.eu>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <2025050543-overkill-eradicate-2bdf@gregkh>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <8e6c91c0-6780-414e-9cf6-1cc2a058be0b@csgroup.eu>
 
-On Mon, May 05, 2025 at 04:06:55PM +0200, Greg Kroah-Hartman wrote:
-> On Mon, May 05, 2025 at 09:54:24AM -0400, Kent Overstreet wrote:
-> > On Mon, May 05, 2025 at 10:32:49AM +0200, Greg Kroah-Hartman wrote:
-> > > On Fri, May 02, 2025 at 09:12:22PM -0400, Kent Overstreet wrote:
-> > > > 
-> > > > The following changes since commit 02a22be3c0003af08df510cba3d79d00c6495b74:
-> > > > 
-> > > >   bcachefs: bch2_ioctl_subvolume_destroy() fixes (2025-04-03 16:13:53 -0400)
-> > > > 
-> > > > are available in the Git repository at:
-> > > > 
-> > > >   git://evilpiepirate.org/bcachefs.git tags/bcachefs-for-6.14-2025-05-02
-> > > > 
-> > > > for you to fetch changes up to 52b17bca7b20663e5df6dbfc24cc2030259b64b6:
-> > > > 
-> > > >   bcachefs: Remove incorrect __counted_by annotation (2025-05-02 21:09:51 -0400)
-> > > > 
-> > > > ----------------------------------------------------------------
-> > > > bcachefs fixes for 6.15
-> > > > 
-> > > > remove incorrect counted_by annotation, fixing FORTIFY_SOURCE crashes
-> > > > that have been hitting arch users
-> > > > 
-> > > > ----------------------------------------------------------------
-> > > > Alan Huang (1):
-> > > >       bcachefs: Remove incorrect __counted_by annotation
-> > > > 
-> > > >  fs/bcachefs/xattr_format.h | 8 +++++++-
-> > > >  1 file changed, 7 insertions(+), 1 deletion(-)
+On Mon, May 05, 2025 at 03:27:18PM +0200, Christophe Leroy wrote:
+> 
+> 
+> Le 05/05/2025 à 15:10, Greg Kroah-Hartman a écrit :
+> > On Mon, May 05, 2025 at 11:48:45AM +0000, LEROY Christophe wrote:
+> > > Hi,
 > > > 
-> > > You list 1 patch here, but if I pull this, I see 2 patches against the
-> > > latest linux-6.14.y branch.  When rebased, the "additional" one goes
-> > > away, as you already sent that to us in the past, so I'll just take the
-> > > one that's left here, but please, make this more obvious what is
-> > > happening.
+> > > Could you please apply commit 6eab70345799 ("ASoC: soc-core: Stop using
+> > > of_property_read_bool() for non-boolean properties") to v6.14.x in order
+> > > to silence warnings introduced in v6.14 by commit c141ecc3cecd ("of:
+> > > Warn when of_property_read_bool() is used on non-boolean properties")
 > > 
-> > That's because you're rebasing my patches.
-> 
-> Not really a "rebase", but rather a "cherry-pick", but we've been
-> through this before, so no need to go over it again :)
-> 
-> > > Also, I see a lot of syzbot fixes going into bcachefs recently,
-> > > hopefully those are all for issues that only affected the tree after
-> > > 6.14 was released.
+> > What about 6.12.y and 6.6.y as well?  It's in the following released
+> > kernels:
+> > 	6.6.84 6.12.20 6.13.8 6.14
 > > 
-> > Until the experimental label comes off I'm only doing critical
-> > backports - it really doesn't make any sense to do anything else right
-> > now.
 > 
-> Ok.
+> Ah ! it has been applied to stable versions allthough it doesn't carry a
+> Fixes: tag.
 > 
-> > The syzbot stuff has had zero overlap with user reported bugs, and since
-> > it's fuzzing the on disk image (and we don't support unprivilidged
-> > mounts - yet, at least) - they haven't been a security concern. There's
-> > been one security bug since 6.7, and you have that fix.
+> So yes the 'fix' to ASoC should then be applied as well to stable versions
+> to avoid the warning.
 > 
-> Great, thanks!
+> Note that it doesn't cherry-pick cleanly to 6.6.84, you'll first need commit
+> 69dd15a8ef0a ("ASoC: Use of_property_read_bool()")
 
-BTW - in the interim, if we do want to backport a wider set of fixes the
-sane thing to do will be to forklift all of fs/bcachefs to the stable
-kernels. QA here has been good, so regressions in Linus's tree have been
-a non issue - in 6.15, all (2?) regressions were found and fixed before
-rc1 came out.
 
-This hasn't been an option yet because the required on disk format
-upgrades have been too disruptive for stable kernels (the 6.14 upgrade
-took ~hours on the big 50-100TB filesystems), but as of 6.15 that should
-be over, so I've been giving some thought to the idea, especially since
-usage is steadily ticking up...
+Now queued up, thanks!
+
+greg k-h
 
