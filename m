@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-141674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74BF0AAB57F
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:30:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0E8CAAB582
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:31:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5EEC3A6767
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:25:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 957251C21434
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:26:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2370649E67C;
-	Tue,  6 May 2025 00:47:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BE1849F054;
+	Tue,  6 May 2025 00:47:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nmVzxG2h"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i8MWo3gH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D13C279792;
-	Mon,  5 May 2025 23:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46F303ABCFD;
+	Mon,  5 May 2025 23:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487124; cv=none; b=oF8X/qB8a82yzuAyizbIOPcWYQ63bltP3aXEGlZxh9cJpeMOBEQNxytv3ShFftCwJ+dZbtyXTUvktSSdC3u5vS4qgv5UF0ZakNQSr8sACnPjpoSzcyFarGHjhEVU77hPlgh7u+u8uXyIc2I9YB93FxV05rODRE//2yEcpZxgv08=
+	t=1746487136; cv=none; b=I3Pqe8NkOZ6RgG1hNSzrAvhaEUquFqA64XO0Yh78ppjuC5jfMPGu4WRIXJhtIix1kyjV5ltoBjYPEIQsSYrjIcNn38ueDebUlNy2atHMFqqId1cdsliHk4NknPY9xUiPVQfbo7z24cT6EpMWPCYoHxPGrSi+0rORyMHd0VRpxIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487124; c=relaxed/simple;
-	bh=Qp0IIlHYIciNX7Eip4u3/xx/27fVip6CeUOfHnBhWHI=;
+	s=arc-20240116; t=1746487136; c=relaxed/simple;
+	bh=2pjdD08KhMw6FeRr9Qku1Tz+bsPUVl0cVg+Ep97vitY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SZ71gSd/VWAzcB8UkSZyIJaLD5CglLgHCSwckHq+aszA0J65GvrAb0XqceM+BP2XpWwpbpuhqDSZTLudb8ldOMwu8h2llErBN9rBHROhCXuU3HjR83Ib+3nDFTvKA+rEMiRRMrxQ3kYdlTAPZWt4Pdp7tqVkn0iGxwczEYRrAlI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nmVzxG2h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AA44C4CEE4;
-	Mon,  5 May 2025 23:18:42 +0000 (UTC)
+	 MIME-Version; b=iejWh3j6cUASAHwdumWQz9er79KE8OscQDIcjcL1S1CQaQy4yoYVbIQ0jEUrELxYyqfLdTpWtL8ZCu9UJu447RCcu6D4iyUt8Sz9icOwsvIKwwDsIy0VTPn3gzcM7nUEtwrLaM0Lx3kcaJzlzWCBllp29AiAKL1k/bEncNdzPJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i8MWo3gH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF5BC4CEED;
+	Mon,  5 May 2025 23:18:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487123;
-	bh=Qp0IIlHYIciNX7Eip4u3/xx/27fVip6CeUOfHnBhWHI=;
+	s=k20201202; t=1746487136;
+	bh=2pjdD08KhMw6FeRr9Qku1Tz+bsPUVl0cVg+Ep97vitY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nmVzxG2hzoYRQZDdKFVl4wVEG9c0eQ4LNlzahiUJZzx5FgO7e7f0Dp32zIOQoYIuy
-	 kzgV34Ppg/EY7Upy6o6bG1Epwhu3YpY9QhrRmu8H/jsUjDr7ofk4Fdiw/xrkvF5FpZ
-	 DKbzBqPokw6ZrhvJtIU0oIW5h6PWeDgwqpeDhXkQyiu+qZcTK2gzf9lFWCWrIrbIz7
-	 g/kb//+QC8E3yuE30Vzc9x+nLF+XeJyOdjQ8vLoc6Av2T0Y3pgqe027HW7VNMuHIcG
-	 zAitstkU+wXUfe72DIdWgECdLY9MQzD0SDpFhBWo73qbN3+rrIOEp6+ur/EvMXPeAL
-	 ZEjr+vkzeltbg==
+	b=i8MWo3gHGCzq+SaZQztvyEIeLk8RWPYGZpGpnTe8SD6lp/qVs24QzWF57LZhBnVf3
+	 nx7q2AjFdvfUP+C+7kfNkxXFhkTAcUTcI/15QRGtXHyDVXlTmPiWDNsfgxolMCteL5
+	 pjavyjGL0Qs+Tj0isUq+TJrfS1I3eh0hX5lKkZWckgt2es3h4AEQGA7WLsTcRy8W+Y
+	 U+gF/FmynT+zSjlzJdOBvVhPZ8CXbyRcLual4FtHZwvnpM6l2wUewH8INnrqENRjZx
+	 9gliYpYXR2/1as0kwuz3h1Q2CqZk2OtOlC5VxgNfb2VuDkBi/OoTv0oYQZ9AqM57Db
+	 GGZEmQDpcXr0w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alice Guo <alice.guo@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
+Cc: Vitalii Mordan <mordan@ispras.ru>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	linux-pm@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 010/114] thermal/drivers/qoriq: Power down TMU on system suspend
-Date: Mon,  5 May 2025 19:16:33 -0400
-Message-Id: <20250505231817.2697367-10-sashal@kernel.org>
+	linux-i2c@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 018/114] i2c: pxa: fix call balance of i2c->clk handling routines
+Date: Mon,  5 May 2025 19:16:41 -0400
+Message-Id: <20250505231817.2697367-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231817.2697367-1-sashal@kernel.org>
 References: <20250505231817.2697367-1-sashal@kernel.org>
@@ -67,61 +65,39 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.237
 Content-Transfer-Encoding: 8bit
 
-From: Alice Guo <alice.guo@nxp.com>
+From: Vitalii Mordan <mordan@ispras.ru>
 
-[ Upstream commit 229f3feb4b0442835b27d519679168bea2de96c2 ]
+[ Upstream commit be7113d2e2a6f20cbee99c98d261a1fd6fd7b549 ]
 
-Enable power-down of TMU (Thermal Management Unit) for TMU version 2 during
-system suspend to save power. Save approximately 4.3mW on VDD_ANA_1P8 on
-i.MX93 platforms.
+If the clock i2c->clk was not enabled in i2c_pxa_probe(), it should not be
+disabled in any path.
 
-Signed-off-by: Alice Guo <alice.guo@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20241209164859.3758906-2-Frank.Li@nxp.com
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Found by Linux Verification Center (linuxtesting.org) with Klever.
+
+Signed-off-by: Vitalii Mordan <mordan@ispras.ru>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20250212172803.1422136-1-mordan@ispras.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/qoriq_thermal.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/i2c/busses/i2c-pxa.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/thermal/qoriq_thermal.c b/drivers/thermal/qoriq_thermal.c
-index 73049f9bea252..34a5fbcc3d200 100644
---- a/drivers/thermal/qoriq_thermal.c
-+++ b/drivers/thermal/qoriq_thermal.c
-@@ -19,6 +19,7 @@
- #define SITES_MAX		16
- #define TMR_DISABLE		0x0
- #define TMR_ME			0x80000000
-+#define TMR_CMD			BIT(29)
- #define TMR_ALPF		0x0c000000
- #define TMR_ALPF_V2		0x03000000
- #define TMTMIR_DEFAULT	0x0000000f
-@@ -345,6 +346,12 @@ static int __maybe_unused qoriq_tmu_suspend(struct device *dev)
- 	if (ret)
- 		return ret;
+diff --git a/drivers/i2c/busses/i2c-pxa.c b/drivers/i2c/busses/i2c-pxa.c
+index 35ca2c02c9b9b..7fdc7f213b114 100644
+--- a/drivers/i2c/busses/i2c-pxa.c
++++ b/drivers/i2c/busses/i2c-pxa.c
+@@ -1508,7 +1508,10 @@ static int i2c_pxa_probe(struct platform_device *dev)
+ 				i2c->adap.name);
+ 	}
  
-+	if (data->ver > TMU_VER1) {
-+		ret = regmap_set_bits(data->regmap, REGS_TMR, TMR_CMD);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	clk_disable_unprepare(data->clk);
+-	clk_prepare_enable(i2c->clk);
++	ret = clk_prepare_enable(i2c->clk);
++	if (ret)
++		return dev_err_probe(&dev->dev, ret,
++				     "failed to enable clock\n");
  
- 	return 0;
-@@ -359,6 +366,12 @@ static int __maybe_unused qoriq_tmu_resume(struct device *dev)
- 	if (ret)
- 		return ret;
- 
-+	if (data->ver > TMU_VER1) {
-+		ret = regmap_clear_bits(data->regmap, REGS_TMR, TMR_CMD);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	/* Enable monitoring */
- 	return regmap_update_bits(data->regmap, REGS_TMR, TMR_ME, TMR_ME);
- }
+ 	if (i2c->use_pio) {
+ 		i2c->adap.algo = &i2c_pxa_pio_algorithm;
 -- 
 2.39.5
 
