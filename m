@@ -1,64 +1,63 @@
-Return-Path: <stable+bounces-139761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE46DAA9F02
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:17:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05766AA9F06
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:18:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3018C3A8CE8
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:17:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35B983A6F9F
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:17:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEFEC27C85C;
-	Mon,  5 May 2025 22:14:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EC59277021;
+	Mon,  5 May 2025 22:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="exGn1nF2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s1adGG4X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60C0827C17C;
-	Mon,  5 May 2025 22:14:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC98277016;
+	Mon,  5 May 2025 22:14:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483283; cv=none; b=e5vbjDn6Xop1l05xoMhzBnz8YWO6rswHU8D172T/hvzka0y+nbW7ZDT/rz1Ig16tAgjAQEz0OL/bdf/ZENVAccyJxYswCNPv/DUNqMC9g28bDS5Rki4qgYZdiBSxeHHfwlyRzUxVJniiFpxOJ2NN5V8jJVP9V+U9FOpRcjw7UGk=
+	t=1746483287; cv=none; b=SjdFX33s+UdJIfVBwzuOcQ0ipdO4TOKxTEUtNEfyfq1mda7kLvKo73HAXCpowvExcP3P8sQKWM6lmpTBQudSyFkzZlveME9nmKWe4akIn0shUkya0SjMa0lyu7lnjY6+7nw4Rfmc/GdqxMZnZ29YFTWYpLTz8a0CUCx6wDikT7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483283; c=relaxed/simple;
-	bh=qHENiOabmT77UFCXK7h2Oxu5/iLS0ySjclWVOhKY/ws=;
+	s=arc-20240116; t=1746483287; c=relaxed/simple;
+	bh=B09meR/X/Vqey5C36kswuNEt+Ib5nl3MyFppu5LOHCk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=plXIpQ8Z+qvmNhw2smJlF7bk0JZnY1op6wNmRJycmElDwNEtgTgqo4hi0pEbxeJrW68lVyRvbZ2KB7j/n83g3tcEbGMPLr5w+N2fjMbNs293VQQBUYhRhB6+EGJN5iXAIij1o6Fw0kPD4jkQebUU7VG9n45iu4RG7j6t5r+HHMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=exGn1nF2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B71BAC4CEF1;
-	Mon,  5 May 2025 22:14:41 +0000 (UTC)
+	 MIME-Version; b=hWx5huJWKie73adigAFAOdBin+inuDbu0kfdsv85gLQYuuNO/8pmM1KzYDGzIrbpxO13rQ/eHMqZNSYPeBIwBsoHGOMJa6xAb359nQq28rm4vnVrOicY9POV6KwsS4KqNDmTiyhOjhgpwUTrcwbw6Qzg0iA0r3j6vnUcxEGLKfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s1adGG4X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E1BAC4CEE4;
+	Mon,  5 May 2025 22:14:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483283;
-	bh=qHENiOabmT77UFCXK7h2Oxu5/iLS0ySjclWVOhKY/ws=;
+	s=k20201202; t=1746483286;
+	bh=B09meR/X/Vqey5C36kswuNEt+Ib5nl3MyFppu5LOHCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=exGn1nF211ZU/LdpgClgOJDYWbadM9ACef62sLsYsKlQaKaBD9/U92KjM4xQk2VNg
-	 CHDNDd6eFg4RQTdxdFhx6kDQPRsl25DnGEOMtk9E0LfUziLaivwD9NeumKAqhaTDDZ
-	 7FsRSUvyK9uaLs70sNqDX+Ndvvm1+XcvxydOypB8CTVdH4UKjn07MPBkr7XWUlMyc3
-	 N6cO4igFVe/KftxBPZOUZEaG3jYyjrgjCCaVwNyr3NS9NVquaGperDaupUov/ScelR
-	 8ng+n7NrPBrEUuQuGkYkRWnrYNttTfdFW0y2idmSe8gnM0yR7Nb+/lW5OKq3W8T8Kv
-	 nvPL3EqRCNxmA==
+	b=s1adGG4XXkyAiYY9raXFFqSZp4gZi8P3z7RYBo4/5YK1soW8Df16CfzUDo1SaP6j2
+	 58sFCYMhMzWRG7eZwuYT0Psdi/7ZS28HHIpejB2S6R4fPBpwthhMFPSbNzq9sNzw30
+	 yf+Lw9GTSSKG9BIMBcTe1BfWyRxxh7o2/HBE3588MsUK9jHFmOcNcd9XVkiJxTRJKu
+	 IhJEYIOUpGwjFv8zU5oHdFZRBal8QhMDFhSj8xRdVVMDbNUiZyQB6+BnPIXZJOseMt
+	 XXchYgGsWumisfwa3xpHi4PmMF78eOaNcbbXPxUFZMMU8ku9GjM3aiH/iTOPwtKXFA
+	 Yv1Q9SKW07v0g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Jeff Layton <jlayton@kernel.org>,
+Cc: Jinqian Yang <yangjinqian1@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	chuck.lever@oracle.com,
-	trondmy@kernel.org,
-	anna@kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-nfs@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 014/642] SUNRPC: Don't allow waiting for exiting tasks
-Date: Mon,  5 May 2025 18:03:50 -0400
-Message-Id: <20250505221419.2672473-14-sashal@kernel.org>
+	will@kernel.org,
+	mark.rutland@arm.com,
+	oliver.upton@linux.dev,
+	dianders@chromium.org,
+	shameerali.kolothum.thodi@huawei.com,
+	maz@kernel.org,
+	quic_tsoni@quicinc.com,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.14 015/642] arm64: Add support for HIP09 Spectre-BHB mitigation
+Date: Mon,  5 May 2025 18:03:51 -0400
+Message-Id: <20250505221419.2672473-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -73,33 +72,56 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Jinqian Yang <yangjinqian1@huawei.com>
 
-[ Upstream commit 14e41b16e8cb677bb440dca2edba8b041646c742 ]
+[ Upstream commit e18c09b204e81702ea63b9f1a81ab003b72e3174 ]
 
-Once a task calls exit_signals() it can no longer be signalled. So do
-not allow it to do killable waits.
+The HIP09 processor is vulnerable to the Spectre-BHB (Branch History
+Buffer) attack, which can be exploited to leak information through
+branch prediction side channels. This commit adds the MIDR of HIP09
+to the list for software mitigation.
 
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Jinqian Yang <yangjinqian1@huawei.com>
+Link: https://lore.kernel.org/r/20250325141900.2057314-1-yangjinqian1@huawei.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/sched.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/include/asm/cputype.h | 2 ++
+ arch/arm64/kernel/proton-pack.c  | 1 +
+ 2 files changed, 3 insertions(+)
 
-diff --git a/net/sunrpc/sched.c b/net/sunrpc/sched.c
-index 9b45fbdc90cab..73bc39281ef5f 100644
---- a/net/sunrpc/sched.c
-+++ b/net/sunrpc/sched.c
-@@ -276,6 +276,8 @@ EXPORT_SYMBOL_GPL(rpc_destroy_wait_queue);
+diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
+index 41c21feaef4ad..1c0b518d23745 100644
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -132,6 +132,7 @@
+ #define FUJITSU_CPU_PART_A64FX		0x001
  
- static int rpc_wait_bit_killable(struct wait_bit_key *key, int mode)
- {
-+	if (unlikely(current->flags & PF_EXITING))
-+		return -EINTR;
- 	schedule();
- 	if (signal_pending_state(mode, current))
- 		return -ERESTARTSYS;
+ #define HISI_CPU_PART_TSV110		0xD01
++#define HISI_CPU_PART_HIP09			0xD02
+ 
+ #define APPLE_CPU_PART_M1_ICESTORM	0x022
+ #define APPLE_CPU_PART_M1_FIRESTORM	0x023
+@@ -208,6 +209,7 @@
+ #define MIDR_NVIDIA_CARMEL MIDR_CPU_MODEL(ARM_CPU_IMP_NVIDIA, NVIDIA_CPU_PART_CARMEL)
+ #define MIDR_FUJITSU_A64FX MIDR_CPU_MODEL(ARM_CPU_IMP_FUJITSU, FUJITSU_CPU_PART_A64FX)
+ #define MIDR_HISI_TSV110 MIDR_CPU_MODEL(ARM_CPU_IMP_HISI, HISI_CPU_PART_TSV110)
++#define MIDR_HISI_HIP09 MIDR_CPU_MODEL(ARM_CPU_IMP_HISI, HISI_CPU_PART_HIP09)
+ #define MIDR_APPLE_M1_ICESTORM MIDR_CPU_MODEL(ARM_CPU_IMP_APPLE, APPLE_CPU_PART_M1_ICESTORM)
+ #define MIDR_APPLE_M1_FIRESTORM MIDR_CPU_MODEL(ARM_CPU_IMP_APPLE, APPLE_CPU_PART_M1_FIRESTORM)
+ #define MIDR_APPLE_M1_ICESTORM_PRO MIDR_CPU_MODEL(ARM_CPU_IMP_APPLE, APPLE_CPU_PART_M1_ICESTORM_PRO)
+diff --git a/arch/arm64/kernel/proton-pack.c b/arch/arm64/kernel/proton-pack.c
+index 0f51fd10b4b06..aaf6578c39ac4 100644
+--- a/arch/arm64/kernel/proton-pack.c
++++ b/arch/arm64/kernel/proton-pack.c
+@@ -901,6 +901,7 @@ static u8 spectre_bhb_loop_affected(void)
+ 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A77),
+ 		MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
+ 		MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_4XX_GOLD),
++		MIDR_ALL_VERSIONS(MIDR_HISI_HIP09),
+ 		{},
+ 	};
+ 	static const struct midr_range spectre_bhb_k11_list[] = {
 -- 
 2.39.5
 
