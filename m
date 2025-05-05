@@ -1,65 +1,72 @@
-Return-Path: <stable+bounces-141576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141578-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26B92AAB4C5
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:14:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 47C5FAAB4CF
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:15:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59B4C3A3D75
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:06:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 370B13B959A
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:07:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 534DD295510;
-	Tue,  6 May 2025 00:42:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BACC238A9BA;
+	Tue,  6 May 2025 00:42:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g5JhGqDo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G8zV5/bc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80E222F1CC2;
-	Mon,  5 May 2025 23:12:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E93A62F1CC0;
+	Mon,  5 May 2025 23:12:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486770; cv=none; b=KYSAS7Q+LotgGa0DucDmAcB5yhYqMgErZWawyFzlPvyfIIwGkpD2yFBvTpNOWw8I4eVb0wFekw1GZbsWXSsWXXoOmqpaZxlszVZbl7B11IugnD0z0UytjEZO/zu8nxh31/WUTQsuJy3eiMWSssXwxlukVEiHa8ZButEE0vWEaTY=
+	t=1746486775; cv=none; b=FUFKGGIu+V7MtieOnuCxeGj061qF/7iZZsGVh15np/aCre4UEfaKrJsZruEZXbVuxm00FNdoOWyHm3lLMspxp5zl2/QKe4WrucGp3jWybNCv1sMCO2JO3oegIPtFpMji3kmdAlJ/WvlD28Z8MILgfZx23+RbjQDAMj/tpxr9yis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486770; c=relaxed/simple;
-	bh=KUORKRFxLRLeo2nK01Rulv/sfPY/dQT8RgV35mjwmBI=;
+	s=arc-20240116; t=1746486775; c=relaxed/simple;
+	bh=mJNYIOLRP6hvW0SxNCmdphAtmZ6oNfD/R+SEJP65BXw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=S/I794mYD+gP6vwLFA8C9Gsf3jKfIwfvno1Od7Qnw8Gv80mTo4sx8jkM46z33LdPZ5VGDY74ASgJUcIyjpYbIVEDJaM5pbrktttksMm7IK4+Zpjt+m3lJlXwsuWKw2laG3Cthm9ClI5HKzqpcOxDco4IL/xlfk96AQjARjpRV+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g5JhGqDo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8E3DC4CEED;
-	Mon,  5 May 2025 23:12:48 +0000 (UTC)
+	 MIME-Version; b=GowCCKy2/K8s8jvp05oN8gso1kyiU+tVpNjL7oyJCUjN71nNZ2qyOtVTMSXHg+WxSjq/1BsC57TBpZKEgPwM/5uC3R2xgYjnd8+tr+VHy6usTBNddfk3iUYI5wb+uzE1unEe8/ddobby8w1Ttu6X4g3RsxBxvQpB7rV9n8ZKg8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G8zV5/bc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99115C4CEE4;
+	Mon,  5 May 2025 23:12:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486770;
-	bh=KUORKRFxLRLeo2nK01Rulv/sfPY/dQT8RgV35mjwmBI=;
+	s=k20201202; t=1746486773;
+	bh=mJNYIOLRP6hvW0SxNCmdphAtmZ6oNfD/R+SEJP65BXw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g5JhGqDoRPeTJegD0ycJJ0ttvWLbiVbwUszPZMZ6PKpOwGmDTZoHCV/Lar7mpPKgS
-	 l16CEkzP17/vlIsGxWhI4DG0DRga+IOXwHm6HJxMd4fOOSZBxM2surGGmqhVLOaTeW
-	 I+nuxfF4amEIGrbx1A8xznSOTo0TuxUydkuhWeShwoaUzk7ij8qZxu1h3a4WMhLx0P
-	 tETnNiZndOsjADcRPC7Q2Ff3lfZqV3G3a6y/283iB0o77FHrF2azjeZ78bWT02aVl8
-	 vQiKN8hAs+C42adBzVWHpgiFBsU0EqP+q6AQqJ+uPtvqbf7tGLB5cGAKYItYtqyRA9
-	 BI/fzM1D29RKA==
+	b=G8zV5/bc3qKoPowCIYtYiDz1vWSXl+nITNUTADvpYVyA6jE53viL9xT8U/1EZcLCa
+	 7DKajy+zrmTaUpvUzmHBEuwTqA+vaz0iJP6BmAKBZvaRJ6t9Bl3WSB4lujrDSp85Zj
+	 kDoQ3tHST7m/OecJRo59e3HaD84DSNoas80AzHvzjy0PHwwrdidDesga+yC5SeOckB
+	 8Gsv+TftOaT0ANqh0q7m4jEivl5dI8RpKvxn3GUAkMeBdysoVHwrzEHxmQGLaXQgtP
+	 +9xpuYYjlvrw97MxvtUT7O5bvdo5jgSxlKn11c/W/bLBA74MJ6Fhcych0M+qsVA8Az
+	 GpOEoLxhMgN4w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+Cc: Konstantin Taranov <kotaranov@microsoft.com>,
+	Shiraz Saleem <shirazsaleem@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	przemyslaw.kitszel@intel.com,
+	kys@microsoft.com,
+	haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
 	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
-	intel-wired-lan@lists.osuosl.org,
+	shradhagupta@linux.microsoft.com,
+	mlevitsk@redhat.com,
+	ernis@linux.microsoft.com,
+	peterz@infradead.org,
+	linux-hyperv@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 194/212] ice: count combined queues using Rx/Tx count
-Date: Mon,  5 May 2025 19:06:06 -0400
-Message-Id: <20250505230624.2692522-194-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 195/212] net/mana: fix warning in the writer of client oob
+Date: Mon,  5 May 2025 19:06:07 -0400
+Message-Id: <20250505230624.2692522-195-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -74,38 +81,35 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+From: Konstantin Taranov <kotaranov@microsoft.com>
 
-[ Upstream commit c3a392bdd31adc474f1009ee85c13fdd01fe800d ]
+[ Upstream commit 5ec7e1c86c441c46a374577bccd9488abea30037 ]
 
-Previous implementation assumes that there is 1:1 matching between
-vectors and queues. It isn't always true.
+Do not warn on missing pad_data when oob is in sgl.
 
-Get minimum value from Rx/Tx queues to determine combined queues number.
-
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Konstantin Taranov <kotaranov@microsoft.com>
+Link: https://patch.msgid.link/1737394039-28772-9-git-send-email-kotaranov@linux.microsoft.com
+Reviewed-by: Shiraz Saleem <shirazsaleem@microsoft.com>
+Reviewed-by: Long Li <longli@microsoft.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_ethtool.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/ethernet/microsoft/mana/gdma_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-index a163e7717a534..1f62d11831567 100644
---- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-@@ -3373,8 +3373,7 @@ static u32 ice_get_combined_cnt(struct ice_vsi *vsi)
- 	ice_for_each_q_vector(vsi, q_idx) {
- 		struct ice_q_vector *q_vector = vsi->q_vectors[q_idx];
+diff --git a/drivers/net/ethernet/microsoft/mana/gdma_main.c b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+index d674ebda2053d..9e55679796d93 100644
+--- a/drivers/net/ethernet/microsoft/mana/gdma_main.c
++++ b/drivers/net/ethernet/microsoft/mana/gdma_main.c
+@@ -995,7 +995,7 @@ static u32 mana_gd_write_client_oob(const struct gdma_wqe_request *wqe_req,
+ 	header->inline_oob_size_div4 = client_oob_size / sizeof(u32);
  
--		if (q_vector->rx.rx_ring && q_vector->tx.tx_ring)
--			combined++;
-+		combined += min(q_vector->num_ring_tx, q_vector->num_ring_rx);
- 	}
+ 	if (oob_in_sgl) {
+-		WARN_ON_ONCE(!pad_data || wqe_req->num_sge < 2);
++		WARN_ON_ONCE(wqe_req->num_sge < 2);
  
- 	return combined;
+ 		header->client_oob_in_sgl = 1;
+ 
 -- 
 2.39.5
 
