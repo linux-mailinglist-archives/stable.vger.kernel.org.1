@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-141364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F170AAB2DE
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:32:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69239AAB6D3
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:57:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D8271C022EA
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:31:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B2543A3A8B
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:52:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8504A44440D;
-	Tue,  6 May 2025 00:31:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AB4E2DF559;
+	Tue,  6 May 2025 00:31:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fJCugMx8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qHa3ENHQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 558132DA837;
-	Mon,  5 May 2025 22:58:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 115E32DF542;
+	Mon,  5 May 2025 22:58:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485919; cv=none; b=tonOdzye/UhctRgQ7qke4opRJV9qz67rzHeUwgZckQDjCtC4Be0DDm1kIr8OH9HcjgAbTv4qmIVNokhRULKz7eJc9fGP1JPIun7cZZl8fdeP5Rxzi6Xpba7T1gtj5sZxZPRdjNKsjZMCjgdVZfaPOtkPN8l6eNjrWO3fmphmNxs=
+	t=1746485923; cv=none; b=gFagWZXdjLodQzLgKAlCHWXjWK4CGEadzGu3DXpoGjzBSYZDFJXGLGPQ5kYR3AO56bCH9wWKZwKOK/TYU/HqI0XVUI7RNh6hPpkJzfxu27RafvclmTQKR68m729LmdL7i3QhN49n+EDcbTPffJCezTK9DDpml6vG1xPQdgH442k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485919; c=relaxed/simple;
-	bh=hOu6RDv2bofvpbBquQTaswVOnl7AAW2levu10RPPsGI=;
+	s=arc-20240116; t=1746485923; c=relaxed/simple;
+	bh=QZJg/qnDtIKPDm96Agh/Xj3Gqhe9xZPuYljzuQiAzTY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=NtzINr0tXV2zlioS3MYK1CO5NTacrf2wcSR1qyJHhJ+2pPa3/mpmP4XBWoA4Uwn2Yu+5eWWWkZg+qOAJdeGnshtkZenJzWVnZs5DpW98cRnh1aY/EdOkVgR95MJDS31KxOpDCSXoAwBdFnESgQhkE+Z8zgoOTXx46G5mOmali6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fJCugMx8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72B0AC4CEEE;
-	Mon,  5 May 2025 22:58:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WIRtGOxOnCMYYhcZb1RmZoPFOYE/TcJoax/0w9DgqoGweyjw/7wJMX5ZdhiuVUVNMdbVDyUdof8cgu3es1fvCMhzb22R4v2YS9vXRjJfLL23BE9vidq3EAFi3ph3ihT6zDyrvikQvJyCFUanNia1xtpAlz25LpQaZMJQfjDOC5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qHa3ENHQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 930DAC4CEE4;
+	Mon,  5 May 2025 22:58:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485918;
-	bh=hOu6RDv2bofvpbBquQTaswVOnl7AAW2levu10RPPsGI=;
+	s=k20201202; t=1746485921;
+	bh=QZJg/qnDtIKPDm96Agh/Xj3Gqhe9xZPuYljzuQiAzTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fJCugMx8IJfpT+j8BNkUnTpk4fF7rvMYU8MetX6rJj7Me+oeSnGlLYVvU8AQexlm/
-	 wn9JtkPpR/0NwT83bSPcPchIE1GyZEXzcVBXgRiobYZKPYbXfYmpO50oWi6/afpldu
-	 hfLPAAzS6WqpHIwP3Ca7MrfQxvOBJR+w/CxZ1PHijl3ztGac+NB1I6BG7g+wpZPso/
-	 qcx9tJAQEsJVhIsukP0xy5hroQKp/c7zxLXEnttgseQTxLZU1edWP9HzIGTLNojVT7
-	 iSk2/1VGRtGEv/ATf4UyUO3b9nN57EQXppm+9B7Y34Y3+jgBwfydeJMyTiQGlKwCzw
-	 9HGuqDD/AofAw==
+	b=qHa3ENHQ4J6S69Mj8pnN2cY5UbjJ9G0T1ERwBF8yZ35xClZrAXcaM3tEUyXXYRdWv
+	 ieZ3oBcqa6Drolpxi+O8vzLddmOsXRJu5mZvJ0YwvrIhZ5PFrLRglKOoUcBqda0mzw
+	 MeiJpMuPY8hVwVu7kn0qVSdPqHH2lHeEzmPDb/7xajyD74IMwbX5R0Ba7P7lslSNkx
+	 89srhf7cLD0MtUhNCQV4q/QGW1WL9nyLdkaaWxmYbRSxdtFMU/D8gib96H/0x6BvTa
+	 pj9JZjw2FP7Tx7eobOUvhUYOsEC+du2Ap8+QhP7oNraGVWFqH9lVx92aMECdrU1yGc
+	 7mmlz04MrBjag==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Brendan Jackman <jackmanb@google.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 6.6 065/294] objtool: Fix error handling inconsistencies in check()
-Date: Mon,  5 May 2025 18:52:45 -0400
-Message-Id: <20250505225634.2688578-65-sashal@kernel.org>
+Cc: =?UTF-8?q?N=C3=ADcolas=20F=2E=20R=2E=20A=2E=20Prado?= <nfraprado@collabora.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	lgirdwood@gmail.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	matthias.bgg@gmail.com,
+	linux-sound@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.6 067/294] ASoC: mediatek: mt6359: Add stub for mt6359_accdet_enable_jack_detect
+Date: Mon,  5 May 2025 18:52:47 -0400
+Message-Id: <20250505225634.2688578-67-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -60,70 +67,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Josh Poimboeuf <jpoimboe@kernel.org>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-[ Upstream commit b745962cb97569aad026806bb0740663cf813147 ]
+[ Upstream commit 0116a7d84b32537a10d9bea1fd1bfc06577ef527 ]
 
-Make sure all fatal errors are funneled through the 'out' label with a
-negative ret.
+Add a stub for mt6359_accdet_enable_jack_detect() to prevent linker
+failures in the machine sound drivers calling it when
+CONFIG_SND_SOC_MT6359_ACCDET is not enabled.
 
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Brendan Jackman <jackmanb@google.com>
-Link: https://lore.kernel.org/r/0f49d6a27a080b4012e84e6df1e23097f44cc082.1741975349.git.jpoimboe@kernel.org
+Suggested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Link: https://patch.msgid.link/20250306-mt8188-accdet-v3-3-7828e835ff4b@collabora.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/objtool/check.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ sound/soc/codecs/mt6359-accdet.h | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index f5af48502c9c8..f8e676a6e6f8e 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -4692,8 +4692,10 @@ int check(struct objtool_file *file)
- 	init_cfi_state(&force_undefined_cfi);
- 	force_undefined_cfi.force_undefined = true;
+diff --git a/sound/soc/codecs/mt6359-accdet.h b/sound/soc/codecs/mt6359-accdet.h
+index c234f2f4276a1..78ada3a5bfae5 100644
+--- a/sound/soc/codecs/mt6359-accdet.h
++++ b/sound/soc/codecs/mt6359-accdet.h
+@@ -123,6 +123,15 @@ struct mt6359_accdet {
+ 	struct workqueue_struct *jd_workqueue;
+ };
  
--	if (!cfi_hash_alloc(1UL << (file->elf->symbol_bits - 3)))
-+	if (!cfi_hash_alloc(1UL << (file->elf->symbol_bits - 3))) {
-+		ret = -1;
- 		goto out;
-+	}
- 
- 	cfi_hash_add(&init_cfi);
- 	cfi_hash_add(&func_cfi);
-@@ -4710,7 +4712,7 @@ int check(struct objtool_file *file)
- 	if (opts.retpoline) {
- 		ret = validate_retpoline(file);
- 		if (ret < 0)
--			return ret;
-+			goto out;
- 		warnings += ret;
- 	}
- 
-@@ -4746,7 +4748,7 @@ int check(struct objtool_file *file)
- 		 */
- 		ret = validate_unrets(file);
- 		if (ret < 0)
--			return ret;
-+			goto out;
- 		warnings += ret;
- 	}
- 
-@@ -4809,7 +4811,7 @@ int check(struct objtool_file *file)
- 	if (opts.prefix) {
- 		ret = add_prefix_symbols(file);
- 		if (ret < 0)
--			return ret;
-+			goto out;
- 		warnings += ret;
- 	}
- 
++#if IS_ENABLED(CONFIG_SND_SOC_MT6359_ACCDET)
+ int mt6359_accdet_enable_jack_detect(struct snd_soc_component *component,
+ 				     struct snd_soc_jack *jack);
++#else
++static inline int
++mt6359_accdet_enable_jack_detect(struct snd_soc_component *component,
++				 struct snd_soc_jack *jack)
++{
++	return -EOPNOTSUPP;
++}
++#endif
+ #endif
 -- 
 2.39.5
 
