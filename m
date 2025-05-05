@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-139763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139764-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 104A6AA9F0A
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:18:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1622AA9F26
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:20:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E550B188EFDF
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:18:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DA6AF7A8B7A
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:17:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F79327CCCC;
-	Mon,  5 May 2025 22:14:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F23B27CCFB;
+	Mon,  5 May 2025 22:14:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ttHZe6HJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XVCfV/PA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B284F27CCC2;
-	Mon,  5 May 2025 22:14:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E8F27703D;
+	Mon,  5 May 2025 22:14:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483288; cv=none; b=FkA7N95TnQIgdlHxaERpBpHu8Zw1hdW892TxuSE2j3QtvniP0uNMtdazDv1F1XCnlRE/a38eyu3US2TS5U0mwaaOcy1tT240xXi42mta8lE7kyB51i3Yvt6paTyh+CMyAJOa9U1v2e9Ngh45F1pRgKUbvG/FtsQrzm2fUB3MXqE=
+	t=1746483292; cv=none; b=WcxnGyx/Vq6iayH4zxQ4gkR4AECEGTxfh8DDFWhrAowA8blq2VaBnqqL4IcET7gbRCBOYS6yZihzcx8y17u+24d5Xg61GGrkkqBOt+dbrYq7IB8ViXQYkTQqHjUu65Qt5JUBUp/xt2cGT/K4hiaflEa7yeDrpJ4Q2px45qmZAsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483288; c=relaxed/simple;
-	bh=B3IV8SySonOl1LXlQqByKfWy8EfZB/ZgTO5hbOZv3rs=;
+	s=arc-20240116; t=1746483292; c=relaxed/simple;
+	bh=BQd8CxC2FCi/3RnCGra7CDdomOm2bp8Gv51vQry1QOo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=DRsyKPJcgjOmKYgi/xuOEo299Xtm8EuQN/6vQPyX2oiFkwo5q4Dtyl2UGa6CYBGz0fBCsNaPOKbt5sOxpaAtj5VtHLC+76eLFXvdZGCzYDW9COvDSp+uQB9bRBT+7wGUUXSlVQboWYRkTD7imOgQRMP1aks0KWfAXDnoXKWBHyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ttHZe6HJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BCAAC4CEED;
-	Mon,  5 May 2025 22:14:47 +0000 (UTC)
+	 MIME-Version; b=m3DOjTdq0UHUXRhCGxq7t5Sr430n+5mPb4QkCYy2qgUNw63LeAvALnJloesJpWANlTXGgT2M0RNPzJQxDbFVXDH5vgaer2J5lJb/WGM52RYww/7Hw/cXlzRp9cDxMCbZ2RaeGYCXcY4EPzZoVGQQoHQzJkiMJDYZTpgnC/IEZ48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XVCfV/PA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3531EC4CEE4;
+	Mon,  5 May 2025 22:14:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483288;
-	bh=B3IV8SySonOl1LXlQqByKfWy8EfZB/ZgTO5hbOZv3rs=;
+	s=k20201202; t=1746483291;
+	bh=BQd8CxC2FCi/3RnCGra7CDdomOm2bp8Gv51vQry1QOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ttHZe6HJJvD3KK30Dk6n1E4fmZi9kBrXFKdyMTwEzVL7aFzgSyqXNMIbUJR6REp2S
-	 AewbQ8FamcfnFdejG/ucunSkESgpqgcvqiDgB6IwaVAJbHkwX5SzM9DCnK12LWbGZr
-	 7PSrRdZ+N0ItOfltEyiKZ7JOZWphXTqyiYZr9fgy3NfRxICHDROTcEaOUfrkXj2LUT
-	 Zavo4IYpbN722E0SEfP7B6U1gtg0J8Q89EcHlV9LiNpufNBFAFb0DlWnQnYqr46HC7
-	 l9N8Qt2v7WjtnrL+X+WJKkF9OjRnzjlHZs1sthnktBVVLChDmt1/+CPiC1YcE5GFA/
-	 H1FpkDpQkPy6Q==
+	b=XVCfV/PA9wJWdvuoEUG0/XKb4UAMvx+jrPInABAQLCBKmExoRtgdtBADC/84SWlqJ
+	 kiMJMVPFhy4gY3ZGVfUZdxXSh+IGuWgTbB3czawJF7NYEVT8C5XUX00xoVloKK6U1V
+	 6DgmtymkwPOdiVqD/U4NgPS9kn6nuD9jFQuG0LGUBrX0n7dZIH4cIyFBenhRFje5qZ
+	 IfoJCcaxsQoKGGvfnVvpVPEcjmi8vNKVIuvdrTEgSZavpMEEAGUAquoXvwpl+gRTVj
+	 AWpT1fcU516wHXGg+sherRYm2PlHIxE6D7S64EFeV5wTGKQAgDD4wcH9/GPcRPN4l8
+	 HnROS9uc4Nmgw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Yi Liu <yi.l.liu@intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Zhangfei Gao <zhangfei.gao@linaro.org>,
-	Nicolin Chen <nicolinc@nvidia.com>,
+Cc: Steven Rostedt <rostedt@goodmis.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	joro@8bytes.org,
-	will@kernel.org,
-	iommu@lists.linux.dev,
-	linux-pci@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 016/642] iommufd: Extend IOMMU_GET_HW_INFO to report PASID capability
-Date: Mon,  5 May 2025 18:03:52 -0400
-Message-Id: <20250505221419.2672473-16-sashal@kernel.org>
+	david@redhat.com,
+	912460177@qq.com,
+	vdonnefort@google.com,
+	linux-trace-kernel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 017/642] ring-buffer: Use kaslr address instead of text delta
+Date: Mon,  5 May 2025 18:03:53 -0400
+Message-Id: <20250505221419.2672473-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -72,195 +71,252 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Yi Liu <yi.l.liu@intel.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 803f97298e7de9242eb677a1351dcafbbcc9117e ]
+[ Upstream commit bcba8d4dbe6880ce9883409df486de35d3946704 ]
 
-PASID usage requires PASID support in both device and IOMMU. Since the
-iommu drivers always enable the PASID capability for the device if it
-is supported, this extends the IOMMU_GET_HW_INFO to report the PASID
-capability to userspace. Also, enhances the selftest accordingly.
+Instead of saving off the text and data pointers and using them to compare
+with the current boot's text and data pointers, just save off the KASLR
+offset. Then that can be used to figure out how to read the previous boots
+buffer.
 
-Link: https://patch.msgid.link/r/20250321180143.8468-5-yi.l.liu@intel.com
-Cc: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Tested-by: Zhangfei Gao <zhangfei.gao@linaro.org> #aarch64 platform
-Tested-by: Nicolin Chen <nicolinc@nvidia.com>
-Signed-off-by: Yi Liu <yi.l.liu@intel.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+The last_boot_info will now show this offset, but only if it is for a
+previous boot:
+
+  ~# cat instances/boot_mapped/last_boot_info
+  39000000	[kernel]
+
+  ~# echo function > instances/boot_mapped/current_tracer
+  ~# cat instances/boot_mapped/last_boot_info
+  # Current
+
+If the KASLR offset saved is for the current boot, the last_boot_info will
+show the value of "current".
+
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Link: https://lore.kernel.org/20250305164608.274956504@goodmis.org
+Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/iommufd/device.c | 34 +++++++++++++++++++++++++++++++++-
- drivers/pci/ats.c              | 33 +++++++++++++++++++++++++++++++++
- include/linux/pci-ats.h        |  3 +++
- include/uapi/linux/iommufd.h   | 14 +++++++++++++-
- 4 files changed, 82 insertions(+), 2 deletions(-)
+ include/linux/ring_buffer.h |  3 +--
+ kernel/trace/ring_buffer.c  | 31 ++++++++++++-------------------
+ kernel/trace/trace.c        | 30 +++++++++++++++++++++---------
+ kernel/trace/trace.h        |  9 +++++----
+ 4 files changed, 39 insertions(+), 34 deletions(-)
 
-diff --git a/drivers/iommu/iommufd/device.c b/drivers/iommu/iommufd/device.c
-index 3c7800d4ab622..66a6b7466820d 100644
---- a/drivers/iommu/iommufd/device.c
-+++ b/drivers/iommu/iommufd/device.c
-@@ -3,6 +3,7 @@
-  */
- #include <linux/iommu.h>
- #include <linux/iommufd.h>
-+#include <linux/pci-ats.h>
- #include <linux/slab.h>
- #include <uapi/linux/iommufd.h>
+diff --git a/include/linux/ring_buffer.h b/include/linux/ring_buffer.h
+index 17fbb78552952..8de035f4f0d9a 100644
+--- a/include/linux/ring_buffer.h
++++ b/include/linux/ring_buffer.h
+@@ -94,8 +94,7 @@ struct trace_buffer *__ring_buffer_alloc_range(unsigned long size, unsigned flag
+ 					       unsigned long range_size,
+ 					       struct lock_class_key *key);
  
-@@ -1304,7 +1305,8 @@ int iommufd_get_hw_info(struct iommufd_ucmd *ucmd)
- 	void *data;
- 	int rc;
+-bool ring_buffer_last_boot_delta(struct trace_buffer *buffer, long *text,
+-				 long *data);
++bool ring_buffer_last_boot_delta(struct trace_buffer *buffer, unsigned long *kaslr_addr);
  
--	if (cmd->flags || cmd->__reserved)
-+	if (cmd->flags || cmd->__reserved[0] || cmd->__reserved[1] ||
-+	    cmd->__reserved[2])
- 		return -EOPNOTSUPP;
+ /*
+  * Because the ring buffer is generic, if other users of the ring buffer get
+diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
+index 9b8ce8f4ff9b3..e18d961f4bbd1 100644
+--- a/kernel/trace/ring_buffer.c
++++ b/kernel/trace/ring_buffer.c
+@@ -31,6 +31,7 @@
  
- 	idev = iommufd_get_device(ucmd, cmd->dev_id);
-@@ -1361,6 +1363,36 @@ int iommufd_get_hw_info(struct iommufd_ucmd *ucmd)
- 	if (device_iommu_capable(idev->dev, IOMMU_CAP_DIRTY_TRACKING))
- 		cmd->out_capabilities |= IOMMU_HW_CAP_DIRTY_TRACKING;
+ #include <asm/local64.h>
+ #include <asm/local.h>
++#include <asm/setup.h>
  
-+	cmd->out_max_pasid_log2 = 0;
-+	/*
-+	 * Currently, all iommu drivers enable PASID in the probe_device()
-+	 * op if iommu and device supports it. So the max_pasids stored in
-+	 * dev->iommu indicates both PASID support and enable status. A
-+	 * non-zero dev->iommu->max_pasids means PASID is supported and
-+	 * enabled. The iommufd only reports PASID capability to userspace
-+	 * if it's enabled.
-+	 */
-+	if (idev->dev->iommu->max_pasids) {
-+		cmd->out_max_pasid_log2 = ilog2(idev->dev->iommu->max_pasids);
-+
-+		if (dev_is_pci(idev->dev)) {
-+			struct pci_dev *pdev = to_pci_dev(idev->dev);
-+			int ctrl;
-+
-+			ctrl = pci_pasid_status(pdev);
-+
-+			WARN_ON_ONCE(ctrl < 0 ||
-+				     !(ctrl & PCI_PASID_CTRL_ENABLE));
-+
-+			if (ctrl & PCI_PASID_CTRL_EXEC)
-+				cmd->out_capabilities |=
-+						IOMMU_HW_CAP_PCI_PASID_EXEC;
-+			if (ctrl & PCI_PASID_CTRL_PRIV)
-+				cmd->out_capabilities |=
-+						IOMMU_HW_CAP_PCI_PASID_PRIV;
-+		}
-+	}
-+
- 	rc = iommufd_ucmd_respond(ucmd, sizeof(*cmd));
- out_free:
- 	kfree(data);
-diff --git a/drivers/pci/ats.c b/drivers/pci/ats.c
-index c6b266c772c81..ec6c8dbdc5e9c 100644
---- a/drivers/pci/ats.c
-+++ b/drivers/pci/ats.c
-@@ -538,4 +538,37 @@ int pci_max_pasids(struct pci_dev *pdev)
- 	return (1 << FIELD_GET(PCI_PASID_CAP_WIDTH, supported));
+ #include "trace.h"
+ 
+@@ -49,8 +50,7 @@ static void update_pages_handler(struct work_struct *work);
+ struct ring_buffer_meta {
+ 	int		magic;
+ 	int		struct_size;
+-	unsigned long	text_addr;
+-	unsigned long	data_addr;
++	unsigned long	kaslr_addr;
+ 	unsigned long	first_buffer;
+ 	unsigned long	head_buffer;
+ 	unsigned long	commit_buffer;
+@@ -550,8 +550,7 @@ struct trace_buffer {
+ 	unsigned long			range_addr_start;
+ 	unsigned long			range_addr_end;
+ 
+-	long				last_text_delta;
+-	long				last_data_delta;
++	unsigned long			kaslr_addr;
+ 
+ 	unsigned int			subbuf_size;
+ 	unsigned int			subbuf_order;
+@@ -1891,16 +1890,13 @@ static void rb_meta_validate_events(struct ring_buffer_per_cpu *cpu_buffer)
+ 	}
  }
- EXPORT_SYMBOL_GPL(pci_max_pasids);
-+
-+/**
-+ * pci_pasid_status - Check the PASID status
-+ * @pdev: PCI device structure
-+ *
-+ * Returns a negative value when no PASID capability is present.
-+ * Otherwise the value of the control register is returned.
-+ * Status reported are:
-+ *
-+ * PCI_PASID_CTRL_ENABLE - PASID enabled
-+ * PCI_PASID_CTRL_EXEC - Execute permission enabled
-+ * PCI_PASID_CTRL_PRIV - Privileged mode enabled
-+ */
-+int pci_pasid_status(struct pci_dev *pdev)
-+{
-+	int pasid;
-+	u16 ctrl;
-+
-+	if (pdev->is_virtfn)
-+		pdev = pci_physfn(pdev);
-+
-+	pasid = pdev->pasid_cap;
-+	if (!pasid)
-+		return -EINVAL;
-+
-+	pci_read_config_word(pdev, pasid + PCI_PASID_CTRL, &ctrl);
-+
-+	ctrl &= PCI_PASID_CTRL_ENABLE | PCI_PASID_CTRL_EXEC |
-+		PCI_PASID_CTRL_PRIV;
-+
-+	return ctrl;
-+}
-+EXPORT_SYMBOL_GPL(pci_pasid_status);
- #endif /* CONFIG_PCI_PASID */
-diff --git a/include/linux/pci-ats.h b/include/linux/pci-ats.h
-index 0e8b74e63767a..75c6c86cf09dc 100644
---- a/include/linux/pci-ats.h
-+++ b/include/linux/pci-ats.h
-@@ -42,6 +42,7 @@ int pci_enable_pasid(struct pci_dev *pdev, int features);
- void pci_disable_pasid(struct pci_dev *pdev);
- int pci_pasid_features(struct pci_dev *pdev);
- int pci_max_pasids(struct pci_dev *pdev);
-+int pci_pasid_status(struct pci_dev *pdev);
- #else /* CONFIG_PCI_PASID */
- static inline int pci_enable_pasid(struct pci_dev *pdev, int features)
- { return -EINVAL; }
-@@ -50,6 +51,8 @@ static inline int pci_pasid_features(struct pci_dev *pdev)
- { return -EINVAL; }
- static inline int pci_max_pasids(struct pci_dev *pdev)
- { return -EINVAL; }
-+static inline int pci_pasid_status(struct pci_dev *pdev)
-+{ return -EINVAL; }
- #endif /* CONFIG_PCI_PASID */
  
- #endif /* LINUX_PCI_ATS_H */
-diff --git a/include/uapi/linux/iommufd.h b/include/uapi/linux/iommufd.h
-index 78747b24bd0fb..9495604e40b06 100644
---- a/include/uapi/linux/iommufd.h
-+++ b/include/uapi/linux/iommufd.h
-@@ -608,9 +608,17 @@ enum iommu_hw_info_type {
-  *                                   IOMMU_HWPT_GET_DIRTY_BITMAP
-  *                                   IOMMU_HWPT_SET_DIRTY_TRACKING
+-/* Used to calculate data delta */
+-static char rb_data_ptr[] = "";
+-
+-#define THIS_TEXT_PTR		((unsigned long)rb_meta_init_text_addr)
+-#define THIS_DATA_PTR		((unsigned long)rb_data_ptr)
+-
+ static void rb_meta_init_text_addr(struct ring_buffer_meta *meta)
+ {
+-	meta->text_addr = THIS_TEXT_PTR;
+-	meta->data_addr = THIS_DATA_PTR;
++#ifdef CONFIG_RANDOMIZE_BASE
++	meta->kaslr_addr = kaslr_offset();
++#else
++	meta->kaslr_addr = 0;
++#endif
+ }
+ 
+ static void rb_range_meta_init(struct trace_buffer *buffer, int nr_pages)
+@@ -1928,8 +1924,7 @@ static void rb_range_meta_init(struct trace_buffer *buffer, int nr_pages)
+ 			meta->first_buffer += delta;
+ 			meta->head_buffer += delta;
+ 			meta->commit_buffer += delta;
+-			buffer->last_text_delta = THIS_TEXT_PTR - meta->text_addr;
+-			buffer->last_data_delta = THIS_DATA_PTR - meta->data_addr;
++			buffer->kaslr_addr = meta->kaslr_addr;
+ 			continue;
+ 		}
+ 
+@@ -2482,17 +2477,15 @@ struct trace_buffer *__ring_buffer_alloc_range(unsigned long size, unsigned flag
   *
-+ * @IOMMU_HW_CAP_PCI_PASID_EXEC: Execute Permission Supported, user ignores it
-+ *                               when the struct
-+ *                               iommu_hw_info::out_max_pasid_log2 is zero.
-+ * @IOMMU_HW_CAP_PCI_PASID_PRIV: Privileged Mode Supported, user ignores it
-+ *                               when the struct
-+ *                               iommu_hw_info::out_max_pasid_log2 is zero.
+  * Returns: The true if the delta is non zero
   */
- enum iommufd_hw_capabilities {
- 	IOMMU_HW_CAP_DIRTY_TRACKING = 1 << 0,
-+	IOMMU_HW_CAP_PCI_PASID_EXEC = 1 << 1,
-+	IOMMU_HW_CAP_PCI_PASID_PRIV = 1 << 2,
- };
+-bool ring_buffer_last_boot_delta(struct trace_buffer *buffer, long *text,
+-				 long *data)
++bool ring_buffer_last_boot_delta(struct trace_buffer *buffer, unsigned long *kaslr_addr)
+ {
+ 	if (!buffer)
+ 		return false;
+ 
+-	if (!buffer->last_text_delta)
++	if (!buffer->kaslr_addr)
+ 		return false;
+ 
+-	*text = buffer->last_text_delta;
+-	*data = buffer->last_data_delta;
++	*kaslr_addr = buffer->kaslr_addr;
+ 
+ 	return true;
+ }
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index 50aa6d5908329..ccadd8c657e1a 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -50,7 +50,7 @@
+ #include <linux/irq_work.h>
+ #include <linux/workqueue.h>
+ 
+-#include <asm/setup.h> /* COMMAND_LINE_SIZE */
++#include <asm/setup.h> /* COMMAND_LINE_SIZE and kaslr_offset() */
+ 
+ #include "trace.h"
+ #include "trace_output.h"
+@@ -4193,7 +4193,7 @@ static enum print_line_t print_trace_fmt(struct trace_iterator *iter)
+ 		 * safe to use if the array has delta offsets
+ 		 * Force printing via the fields.
+ 		 */
+-		if ((tr->text_delta || tr->data_delta) &&
++		if ((tr->text_delta) &&
+ 		    event->type > __TRACE_LAST_TYPE)
+ 			return print_event_fields(iter, event);
+ 
+@@ -5990,7 +5990,7 @@ ssize_t tracing_resize_ring_buffer(struct trace_array *tr,
+ 
+ static void update_last_data(struct trace_array *tr)
+ {
+-	if (!tr->text_delta && !tr->data_delta)
++	if (!(tr->flags & TRACE_ARRAY_FL_LAST_BOOT))
+ 		return;
+ 
+ 	/*
+@@ -6003,7 +6003,8 @@ static void update_last_data(struct trace_array *tr)
+ 
+ 	/* Using current data now */
+ 	tr->text_delta = 0;
+-	tr->data_delta = 0;
++
++	tr->flags &= ~TRACE_ARRAY_FL_LAST_BOOT;
+ }
  
  /**
-@@ -626,6 +634,9 @@ enum iommufd_hw_capabilities {
-  *                 iommu_hw_info_type.
-  * @out_capabilities: Output the generic iommu capability info type as defined
-  *                    in the enum iommu_hw_capabilities.
-+ * @out_max_pasid_log2: Output the width of PASIDs. 0 means no PASID support.
-+ *                      PCI devices turn to out_capabilities to check if the
-+ *                      specific capabilities is supported or not.
-  * @__reserved: Must be 0
-  *
-  * Query an iommu type specific hardware information data from an iommu behind
-@@ -649,7 +660,8 @@ struct iommu_hw_info {
- 	__u32 data_len;
- 	__aligned_u64 data_uptr;
- 	__u32 out_data_type;
--	__u32 __reserved;
-+	__u8 out_max_pasid_log2;
-+	__u8 __reserved[3];
- 	__aligned_u64 out_capabilities;
+@@ -6821,8 +6822,17 @@ tracing_last_boot_read(struct file *filp, char __user *ubuf, size_t cnt, loff_t
+ 
+ 	seq_buf_init(&seq, buf, 64);
+ 
+-	seq_buf_printf(&seq, "text delta:\t%ld\n", tr->text_delta);
+-	seq_buf_printf(&seq, "data delta:\t%ld\n", tr->data_delta);
++	/*
++	 * Do not leak KASLR address. This only shows the KASLR address of
++	 * the last boot. When the ring buffer is started, the LAST_BOOT
++	 * flag gets cleared, and this should only report "current".
++	 * Otherwise it shows the KASLR address from the previous boot which
++	 * should not be the same as the current boot.
++	 */
++	if (tr->flags & TRACE_ARRAY_FL_LAST_BOOT)
++		seq_buf_printf(&seq, "%lx\t[kernel]\n", tr->kaslr_addr);
++	else
++		seq_buf_puts(&seq, "# Current\n");
+ 
+ 	return simple_read_from_buffer(ubuf, cnt, ppos, buf, seq_buf_used(&seq));
+ }
+@@ -9210,8 +9220,10 @@ allocate_trace_buffer(struct trace_array *tr, struct array_buffer *buf, int size
+ 						      tr->range_addr_start,
+ 						      tr->range_addr_size);
+ 
+-		ring_buffer_last_boot_delta(buf->buffer,
+-					    &tr->text_delta, &tr->data_delta);
++#ifdef CONFIG_RANDOMIZE_BASE
++		if (ring_buffer_last_boot_delta(buf->buffer, &tr->kaslr_addr))
++			tr->text_delta = kaslr_offset() - tr->kaslr_addr;
++#endif
+ 		/*
+ 		 * This is basically the same as a mapped buffer,
+ 		 * with the same restrictions.
+@@ -10469,7 +10481,7 @@ __init static void enable_instances(void)
+ 		 * to it.
+ 		 */
+ 		if (start) {
+-			tr->flags |= TRACE_ARRAY_FL_BOOT;
++			tr->flags |= TRACE_ARRAY_FL_BOOT | TRACE_ARRAY_FL_LAST_BOOT;
+ 			tr->ref++;
+ 		}
+ 
+diff --git a/kernel/trace/trace.h b/kernel/trace/trace.h
+index 9c21ba45b7af6..abe8169c3e879 100644
+--- a/kernel/trace/trace.h
++++ b/kernel/trace/trace.h
+@@ -348,8 +348,8 @@ struct trace_array {
+ 	unsigned int		mapped;
+ 	unsigned long		range_addr_start;
+ 	unsigned long		range_addr_size;
++	unsigned long		kaslr_addr;
+ 	long			text_delta;
+-	long			data_delta;
+ 
+ 	struct trace_pid_list	__rcu *filtered_pids;
+ 	struct trace_pid_list	__rcu *filtered_no_pids;
+@@ -433,9 +433,10 @@ struct trace_array {
  };
- #define IOMMU_GET_HW_INFO _IO(IOMMUFD_TYPE, IOMMUFD_CMD_GET_HW_INFO)
+ 
+ enum {
+-	TRACE_ARRAY_FL_GLOBAL	= BIT(0),
+-	TRACE_ARRAY_FL_BOOT	= BIT(1),
+-	TRACE_ARRAY_FL_MOD_INIT	= BIT(2),
++	TRACE_ARRAY_FL_GLOBAL		= BIT(0),
++	TRACE_ARRAY_FL_BOOT		= BIT(1),
++	TRACE_ARRAY_FL_LAST_BOOT	= BIT(2),
++	TRACE_ARRAY_FL_MOD_INIT		= BIT(3),
+ };
+ 
+ #ifdef CONFIG_MODULES
 -- 
 2.39.5
 
