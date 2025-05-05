@@ -1,65 +1,60 @@
-Return-Path: <stable+bounces-141475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52EFBAAB3A4
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:50:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 098ECAAB3DA
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:54:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E582446315D
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:47:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5681A1BA74C7
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:49:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F7F933DE29;
-	Tue,  6 May 2025 00:38:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19B1733EF97;
+	Tue,  6 May 2025 00:38:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oqrs0urG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IaAj8c3m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE06F397A6D;
-	Mon,  5 May 2025 23:07:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C12A52EC001;
+	Mon,  5 May 2025 23:07:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486422; cv=none; b=RKDfbIyJIW8dRM1J2jcdhD79u3FCBDfSV9Gb8sAf1lMqNH3PNa0aGRW22TziOuanZ9VqKW4i8DHDNrAPH9vqBY0qZaKnkPiljhz4KA8u3qmn4k2zzWADVPvtjgmUJlRPVmIhbAHsTw+7jsuczEoZIWgVc17oQMWc2VilcwH1QcY=
+	t=1746486428; cv=none; b=HUExbS/yQ6l4wDCXCUXs15ySNJFbx91XN6sAT7uzpnOFkSFO44n4eRrsIlaFknOIRtOGBc1LHE7U2U1QBAvONJFdQONa7iVdFzz/z6BtjRNZy9z/YIEtTyFf22m27dsb2xWAhAX5sn0yiKxOhw4N9Td+p3Pr+amHXs0GvG/pVcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486422; c=relaxed/simple;
-	bh=A7i5tLEPyPySe+N7ZJRHPKe7cssth54UbZ58JOPmd6M=;
+	s=arc-20240116; t=1746486428; c=relaxed/simple;
+	bh=H9fBNf2WkO9vQdBrY6Y2YkfbryWz7lwKy+BWtT18YA0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=rUAtpUMiik0Urmpsa9i6evoYOQWBC3CsqxLH0jfOdfWYsJvMmxs0SJPtflwkfpt0+Pym8wEumQC+OWvWS1m1TMdR7E9yLx0HHPxAYrWVIgwQBfJM8f9MV0e/wCSywuHnS8J6ivhwCQJR+i+EDjPfDgo60ZMVaQjxhyRpg/59maU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oqrs0urG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF9B0C4CEEE;
-	Mon,  5 May 2025 23:07:00 +0000 (UTC)
+	 MIME-Version; b=Zhwl3K5InwCfHvqBy4XKyMnpZX/JpNu7SmWYwyORIOeVBkMnfvwDEP+0q1Yey255n0ItacP+4jFiuEBbD5NR58TuAez87ebdk9LakEy+3GrZwecMVuDIvxZ0fay1DLAFYvaolRMmNU2Ihe10hAsbkjxgrqeCsueHWAxAROhttUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IaAj8c3m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E7ABC4CEE4;
+	Mon,  5 May 2025 23:07:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486422;
-	bh=A7i5tLEPyPySe+N7ZJRHPKe7cssth54UbZ58JOPmd6M=;
+	s=k20201202; t=1746486427;
+	bh=H9fBNf2WkO9vQdBrY6Y2YkfbryWz7lwKy+BWtT18YA0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oqrs0urGF45oeOjih7Qr5CDMCv5s9VYKcDrwKQnduc4i8ObbnM8M0dtvPMriy3dtA
-	 fG+U8vUhaK08VP2HsatpNei6S5XVIw6o4kGXjnGbt6frkMzSoCUrZ6Tj4yZa1BmvAC
-	 3N/gsXnYbnJgDSfeXZyNlAKJ1F253QrF3eXJ3yo90K4tGSN5eQJx0FlZJmmwVyqVKB
-	 rj1qWBEuYZ+ySfwzfdXBv19iyTq2H1xc6wMd3MYL9PL8/dgb3JmiD0UIiNJ4P8VxIl
-	 uKE2R5JG7w14ecCppS1515plHNxRkg8NsEBzpyUqLWF7R+EXWxHJE3uix+qU3i7GRh
-	 YNIev3Ah65KgA==
+	b=IaAj8c3mIUTNEZ494AZtR6vavd8UDWvZLEOO5aUO9bjogoty/5eRhtOkGofagzawv
+	 zVKGyV9x+uReQ4BYQDdNzNfrgO/4rMIf5p8Hr2TDl+msfnX+I9heOtK8rmfYO52aWA
+	 jOXKOdrSi+2D+qTuTUoZgH3G1rwAK2F6UAEV0YbFYyGxtwJ/S7rEucahfhWwuIYO1T
+	 4QYM4NNB61dA3HNMUCXANIHIFZ83kKPUv2yCKZZjImTaGM3/ibp+b5vfjuDA6ZYcmg
+	 ZnvNZ3HZBnDZh01iIDg5iQNxc6pbEA2jzBS5ZeC4/vwbsO60bxVjW/ZHg6jvtDM306
+	 ZTsq57txmmZQA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Benjamin Coddington <bcodding@redhat.com>,
+Cc: Oleg Nesterov <oleg@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	chuck.lever@oracle.com,
-	trondmy@kernel.org,
-	anna@kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-nfs@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 018/212] SUNRPC: rpc_clnt_set_transport() must not change the autobind setting
-Date: Mon,  5 May 2025 19:03:10 -0400
-Message-Id: <20250505230624.2692522-18-sashal@kernel.org>
+	akpm@linux-foundation.org,
+	mhocko@suse.com,
+	mjguzik@gmail.com,
+	alexjlzheng@tencent.com,
+	pasha.tatashin@soleen.com
+Subject: [PATCH AUTOSEL 6.1 021/212] exit: fix the usage of delay_group_leader->exit_code in do_notify_parent() and pidfs_exit()
+Date: Mon,  5 May 2025 19:03:13 -0400
+Message-Id: <20250505230624.2692522-21-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -74,36 +69,49 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Oleg Nesterov <oleg@redhat.com>
 
-[ Upstream commit bf9be373b830a3e48117da5d89bb6145a575f880 ]
+[ Upstream commit 9133607de37a4887c6f89ed937176a0a0c1ebb17 ]
 
-The autobind setting was supposed to be determined in rpc_create(),
-since commit c2866763b402 ("SUNRPC: use sockaddr + size when creating
-remote transport endpoints").
+Consider a process with a group leader L and a sub-thread T.
+L does sys_exit(1), then T does sys_exit_group(2).
 
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+In this case wait_task_zombie(L) will notice SIGNAL_GROUP_EXIT and use
+L->signal->group_exit_code, this is correct.
+
+But, before that, do_notify_parent(L) called by release_task(T) will use
+L->exit_code != L->signal->group_exit_code, and this is not consistent.
+We don't really care, I think that nobody relies on the info which comes
+with SIGCHLD, if nothing else SIGCHLD < SIGRTMIN can be queued only once.
+
+But pidfs_exit() is more problematic, I think pidfs_exit_info->exit_code
+should report ->group_exit_code in this case, just like wait_task_zombie().
+
+TODO: with this change we can hopefully cleanup (or may be even kill) the
+similar SIGNAL_GROUP_EXIT checks, at least in wait_task_zombie().
+
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Link: https://lore.kernel.org/r/20250324171941.GA13114@redhat.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/clnt.c | 3 ---
- 1 file changed, 3 deletions(-)
+ kernel/exit.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/sunrpc/clnt.c b/net/sunrpc/clnt.c
-index b6529a9d37d37..a390a4e5592f2 100644
---- a/net/sunrpc/clnt.c
-+++ b/net/sunrpc/clnt.c
-@@ -275,9 +275,6 @@ static struct rpc_xprt *rpc_clnt_set_transport(struct rpc_clnt *clnt,
- 	old = rcu_dereference_protected(clnt->cl_xprt,
- 			lockdep_is_held(&clnt->cl_lock));
- 
--	if (!xprt_bound(xprt))
--		clnt->cl_autobind = 1;
--
- 	clnt->cl_timeout = timeout;
- 	rcu_assign_pointer(clnt->cl_xprt, xprt);
- 	spin_unlock(&clnt->cl_lock);
+diff --git a/kernel/exit.c b/kernel/exit.c
+index 156283b3c1bf6..49e4792405008 100644
+--- a/kernel/exit.c
++++ b/kernel/exit.c
+@@ -263,6 +263,9 @@ void release_task(struct task_struct *p)
+ 	leader = p->group_leader;
+ 	if (leader != p && thread_group_empty(leader)
+ 			&& leader->exit_state == EXIT_ZOMBIE) {
++		/* for pidfs_exit() and do_notify_parent() */
++		if (leader->signal->flags & SIGNAL_GROUP_EXIT)
++			leader->exit_code = leader->signal->group_exit_code;
+ 		/*
+ 		 * If we were the last child thread and the leader has
+ 		 * exited already, and the leader's parent ignores SIGCHLD,
 -- 
 2.39.5
 
