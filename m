@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-139905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63447AAA20B
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:54:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FDF8AAA1FD
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:53:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8A33188F62F
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:53:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E2DE462B2F
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:53:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A742D47A3;
-	Mon,  5 May 2025 22:20:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F9DD2D47C3;
+	Mon,  5 May 2025 22:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KLrMek3K"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pJ8svbjT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0055E2D3FB3;
-	Mon,  5 May 2025 22:20:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57F972D47B9;
+	Mon,  5 May 2025 22:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483646; cv=none; b=hL8CagBVUyx9GnqYUsGoOlx3JuUjyRbaVhdpZs/H7h7lFHcSjxdxBerAZlzePgQ80kBw/IQwNL1r1wBEP8sfbB+9qCOYGAC6gLKfINp62lYH1c+d+27eItYf4ib49ZH6lZiZEktUbiFG0O1UIXsW1Y+VZBgu/2aAkY5qWvgI63A=
+	t=1746483647; cv=none; b=JjMnWR0ueOOLYpNY7YFUw6iK5oAleqPFFQDU54fsxq/7DyA0T4jndX+2lE0E5seWswGaqAI9D/309ikypdPy/PXEcaUzqYN6hDiVYbeAjUvdrcX/8fsWoOnkN9Y+6ZUuMv92QmS7XfL0iaghHFTbK8a4EPmCKBvTL59alLXJxJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483646; c=relaxed/simple;
-	bh=FzkpaZBex9eLiv80aistErotSyM4GacvIqRXkFUGRR4=;
+	s=arc-20240116; t=1746483647; c=relaxed/simple;
+	bh=ToCSZrIFppiSThaLQyWf32m0rR7l7NXfN05e9FhqSpc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=mrtlbW4Nd9K0XwmYz4ySpv69VgytjOMyYMXaOFwO8pbJ4VmRi+Fct1PGQ8Jv3uXdkF4Q4W4W54PRfWBhC2Km0TQCLG7c3JdfRZVjlSZWMzmzJkP974hgOSTloYgrf05RiS7N2LEfXEXKnupVsnDuuCn2KES/AhanJbP03PuE+xY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KLrMek3K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 128F4C4CEED;
-	Mon,  5 May 2025 22:20:44 +0000 (UTC)
+	 MIME-Version; b=NnUgwuhi3eEaP9CXNIuubqqn5ZbSfeIMDc+ts6Bd/ar0ZiG+nX274HVPg7auWXZbeSqrKx9OV2vUYbIBgrGsDV/Qu666Emp0BtPO86kGQaaOIi0FiaKkMzXQtp4h8YsjTrZ+J5DvMT3HHYf+wE+xNvi/LTvTUShp/B1itymKRjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pJ8svbjT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43C74C4CEEE;
+	Mon,  5 May 2025 22:20:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483645;
-	bh=FzkpaZBex9eLiv80aistErotSyM4GacvIqRXkFUGRR4=;
+	s=k20201202; t=1746483647;
+	bh=ToCSZrIFppiSThaLQyWf32m0rR7l7NXfN05e9FhqSpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KLrMek3K+p4qw0WJMRnqyuBr3SkzPHU/IjNFohUVtar6PQNm4Bncsygjxh3yY0/RP
-	 aJdmZWubs1sSTsJxmYbjDUAIKE2bqUXBSqnLH0LqxgLzTPwji0qev1X7DZJKPjeUoS
-	 ogrRWVaE2sLT2vm6wTJR5NQUeY80SCIz4V2yc4xh1nVbGXqp56TkdnVholxHUprVdR
-	 Adnq1u4H7Msfru6wsPhFxwXl79OA/uMliOpx+PTSx1XwLiexQJfdx1U53qsO/0zhn5
-	 QT/zevJw9xfA4u6zXhdpnhybAJM2ya0ubor5WQsVx4XzdUosjY+tBu9MR+KFtNqF9Y
-	 np3Gn7wl9yEfw==
+	b=pJ8svbjTBeU9DAKrg9gwrjeMXwDuJ3sGadAUqLBGM/FDPVG2TMqGFWWD/CdiJQvoi
+	 vR5hVVteqbKTlGzy/JYRQG9mhpqNPIpTFtdHwusoVqrOiZHuJikoj8Ni4P8lruEBJN
+	 7DXaiA3VVuslDLLSnWBfdeHN6UDLll4FCP5uzcZvOF6MdzbTGH6CROHQFZfI5wiy1H
+	 mp6LIz9/JY1n3d7qU6tBAfLnmUPbpuhd+frqhi96w5ImIKu3/MCygRLUNENhb+sKV3
+	 xa6GRH9BiBgJXVZQFcc1uB1jOKWc07KzyXaEd6XtkRokM58DzhBA1EIt696Fx4wsHG
+	 JcWGI70VGDg4g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Manuel Fombuena <fombuena@outlook.com>,
-	Lee Jones <lee@kernel.org>,
+Cc: Baokun Li <libaokun1@huawei.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Ts'o <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>,
-	pavel@kernel.org,
-	linux-leds@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 158/642] leds: leds-st1202: Initialize hardware before DT node child operations
-Date: Mon,  5 May 2025 18:06:14 -0400
-Message-Id: <20250505221419.2672473-158-sashal@kernel.org>
+	adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 159/642] ext4: reject the 'data_err=abort' option in nojournal mode
+Date: Mon,  5 May 2025 18:06:15 -0400
+Message-Id: <20250505221419.2672473-159-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -66,54 +68,54 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Manuel Fombuena <fombuena@outlook.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit a17d9e736ddd78323e77d3066c1e86371a99023c ]
+[ Upstream commit 26343ca0df715097065b02a6cddb4a029d5b9327 ]
 
-Arguably, there are more chances of errors occurring during the
-initialization of the hardware, so this should complete successfully
-before the devicetree node's children are initialized.
+data_err=abort aborts the journal on I/O errors. However, this option is
+meaningless if journal is disabled, so it is rejected in nojournal mode
+to reduce unnecessary checks. Also, this option is ignored upon remount.
 
-st1202_dt_init() fills the led_classdev struct.
-
-st1202_setup() initializes the hardware. Specifically, resets the chip,
-enables its phase-shift delay feature, enables the device and disables all
-the LEDs channels. All that writing to registers, with no input from
-st1202_dt_init().
-
-Real-world testing corroborates that calling st1202_setup() before
-st1202_dt_init() doesn't cause any issue during initialization.
-
-Switch the order of st1202_dt_init() and st1202_setup() to ensure the
-hardware is correctly initialized before the led_classdev struct is
-filled.
-
-Signed-off-by: Manuel Fombuena <fombuena@outlook.com>
-Link: https://lore.kernel.org/r/CWLP123MB54731877A8DC54EDD33F0229C5C22@CWLP123MB5473.GBRP123.PROD.OUTLOOK.COM
-Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20250122110533.4116662-4-libaokun@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/leds-st1202.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/ext4/super.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/leds/leds-st1202.c b/drivers/leds/leds-st1202.c
-index 4cebc0203c227..ccea216c11f9b 100644
---- a/drivers/leds/leds-st1202.c
-+++ b/drivers/leds/leds-st1202.c
-@@ -350,11 +350,11 @@ static int st1202_probe(struct i2c_client *client)
- 		return ret;
- 	chip->client = client;
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index b4a02be2eacf6..b956e1ee98290 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -2785,6 +2785,13 @@ static int ext4_check_opt_consistency(struct fs_context *fc,
+ 	}
  
--	ret = st1202_dt_init(chip);
-+	ret = st1202_setup(chip);
- 	if (ret < 0)
- 		return ret;
- 
--	ret = st1202_setup(chip);
-+	ret = st1202_dt_init(chip);
- 	if (ret < 0)
- 		return ret;
- 
+ 	if (is_remount) {
++		if (!sbi->s_journal &&
++		    ctx_test_mount_opt(ctx, EXT4_MOUNT_DATA_ERR_ABORT)) {
++			ext4_msg(NULL, KERN_WARNING,
++				 "Remounting fs w/o journal so ignoring data_err option");
++			ctx_clear_mount_opt(ctx, EXT4_MOUNT_DATA_ERR_ABORT);
++		}
++
+ 		if (ctx_test_mount_opt(ctx, EXT4_MOUNT_DAX_ALWAYS) &&
+ 		    (test_opt(sb, DATA_FLAGS) == EXT4_MOUNT_JOURNAL_DATA)) {
+ 			ext4_msg(NULL, KERN_ERR, "can't mount with "
+@@ -5428,6 +5435,11 @@ static int __ext4_fill_super(struct fs_context *fc, struct super_block *sb)
+ 				 "data=, fs mounted w/o journal");
+ 			goto failed_mount3a;
+ 		}
++		if (test_opt(sb, DATA_ERR_ABORT)) {
++			ext4_msg(sb, KERN_ERR,
++				 "can't mount with data_err=abort, fs mounted w/o journal");
++			goto failed_mount3a;
++		}
+ 		sbi->s_def_mount_opt &= ~EXT4_MOUNT_JOURNAL_CHECKSUM;
+ 		clear_opt(sb, JOURNAL_CHECKSUM);
+ 		clear_opt(sb, DATA_FLAGS);
 -- 
 2.39.5
 
