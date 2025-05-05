@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-141698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AF79AAB7EE
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:23:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 369D1AAB7A4
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:15:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 246CA3AE955
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:13:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7CD307A2BB9
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:14:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B95A54A3C55;
-	Tue,  6 May 2025 00:48:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18B6B34B1DE;
+	Tue,  6 May 2025 00:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PPwkP90J"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sOU9EKSB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 115F03AE5CC;
-	Mon,  5 May 2025 23:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F40BA2F924A;
+	Mon,  5 May 2025 23:21:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487198; cv=none; b=D2hmmBZ667vuXuZfPcmMMdv/E4SO96tLxU4YyeZqgwpaFOj9Sq4cBJQiQohrHgNhJadu2rcpQaK++KtAVSqm6Hn0ODpoNE53ldqpMuqFT3jjdOkAoih/jgKDkvKh99qAMp7Wg6RwT+HyUKiGzTKb4zZ3RGWC3YhPgjAO9ws7Pas=
+	t=1746487266; cv=none; b=dCkrC6XIWpkrwJ0TsRL3nIAEUIlZjITeggYr3PZ09ddY6rl5Tr8km0XyPWCixoIYKBvrttsk0oTOilBS9rxTt3ycXxt85bPoYl6h5jJJ/dRkQC66CMOMjpsxvRJ9LQxjjP6nB7p3InTJjwmlk4UwKx60dQtPYIGLwlyvbMdlIXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487198; c=relaxed/simple;
-	bh=2jBwSyKGM+ef/ZauCGSmnloXly7OEv4EzUDDVBrMu+g=;
+	s=arc-20240116; t=1746487266; c=relaxed/simple;
+	bh=ZEX27ppZRdcYi8EQSB2vV+HfefZ8MVVX4Xf7WMb1rTY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=rQUPYdjdrluk3RNiTHy5kr36m8hpywsIaZHl0x0ZtL3fSg6SekmGovaqP2Wqkb+KU0aOxYw0pJ5o2F3eaRx5dmvYaTVCWJdAK5vc/v1u8ndzysfG8KYKyMNJSNXMw9h0WuSsCBJlAqDwHOhkCts/ecYPE3kpEFrKBjj/32DRqro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PPwkP90J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C949C4CEE4;
-	Mon,  5 May 2025 23:19:55 +0000 (UTC)
+	 MIME-Version; b=dakzjB2oijfDJ04NLnx8f+3bCnoTEHi+6Bn/qfhsFlDEUR+GQ0e2q3KRqhP6jDqilSXgs83qsXcv6nI8BBdntQ2PrZQgfYkSievxWs4vD3Razaxk/BccFfffSYwQ5jio7bEQqJTk9GCCZZFi7Y3AE/ImCxn+htXVYgf+w7Bg9yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sOU9EKSB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EBC5C4CEED;
+	Mon,  5 May 2025 23:21:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487196;
-	bh=2jBwSyKGM+ef/ZauCGSmnloXly7OEv4EzUDDVBrMu+g=;
+	s=k20201202; t=1746487265;
+	bh=ZEX27ppZRdcYi8EQSB2vV+HfefZ8MVVX4Xf7WMb1rTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PPwkP90JTQ+RezjoONVfTuoYahoblfyyEBsK+qyPN6ON5sxQXdI2wIaDLBdQD/SnN
-	 bIDaTVM298+jCUDqJEjgH4vvVXPsofb/cmGq+lUrTLi/vZr8f+YVcRHIhmCu2irGjA
-	 dc39A6Jbe8S0ptzkR6QPOuz7xYSOxGF8f8+GUGdEfDoho2Swa4ev9yEk432jaCb4L0
-	 H48q9thi03dAV1iXn1Mo4vio1vSxLirgbVQ/Y4dyCLTZuivPjoPcflHc5l1pdeLK/W
-	 joV/etj92U7mXxk/aihaOghdtzkCo/uzpJq0XEBOR1rX81JfQX/IBCPHYLfM8UN+hM
-	 OfvqM1ksaBRCw==
+	b=sOU9EKSBDo60JQNgXD8T/CLTAX8GDpsArVKj+jy5FMCXPj76EUmOEA0SFU7L4sdEt
+	 doKLwikP8lJRK2/BDZ7RwuEjcUPt5+2PnOLNKSit1oXggCPZIdz7RH+iSGI3bQtIXd
+	 w/o9lhDNUuazG7wTt8yOsnF70STixqSEEqp4VDSxdahZ3SUy8XF5jY33C+CIl1q9OQ
+	 9iYvNF7p+h3gdowB+7uBr8nhEHCvUFKjdZCRes6VaEOxjgxHPN+9clspA3UPcNcU6F
+	 NoYQ0aod5aNz6n4W8IXZhMm78ni0K6e7EQ59tw22gbd4qrz5QKw5Z7GZEW+hbw0AYW
+	 QL4tdAB9Kqm8Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	Peng Fan <peng.fan@nxp.com>,
-	Abel Vesa <abel.vesa@linaro.org>,
+Cc: Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>,
-	abelvesa@kernel.org,
-	mturquette@baylibre.com,
-	sboyd@kernel.org,
-	shawnguo@kernel.org,
-	linux-clk@vger.kernel.org,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 5.10 052/114] clk: imx8mp: inform CCF of maximum frequency of clocks
-Date: Mon,  5 May 2025 19:17:15 -0400
-Message-Id: <20250505231817.2697367-52-sashal@kernel.org>
+	mchehab@kernel.org,
+	laurent.pinchart+renesas@ideasonboard.com,
+	umang.jain@ideasonboard.com,
+	prabhakar.mahadev-lad.rj@bp.renesas.com,
+	tomm.merciai@gmail.com,
+	linux-media@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 089/114] media: v4l: Memset argument to 0 before calling get_mbus_config pad op
+Date: Mon,  5 May 2025 19:17:52 -0400
+Message-Id: <20250505231817.2697367-89-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231817.2697367-1-sashal@kernel.org>
 References: <20250505231817.2697367-1-sashal@kernel.org>
@@ -72,212 +71,52 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.237
 Content-Transfer-Encoding: 8bit
 
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit 06a61b5cb6a8638fa8823cd09b17233b29696fa2 ]
+[ Upstream commit 91d6a99acfa5ce9f95ede775074b80f7193bd717 ]
 
-The IMX8MPCEC datasheet lists maximum frequencies allowed for different
-modules. Some of these limits are universal, but some depend on
-whether the SoC is operating in nominal or in overdrive mode.
+Memset the config argument to get_mbus_config V4L2 sub-device pad
+operation to zero before calling the operation. This ensures the callers
+don't need to bother with it nor the implementations need to set all
+fields that may not be relevant to them.
 
-The imx8mp.dtsi currently assumes overdrive mode and configures some
-clocks in accordance with this. Boards wishing to make use of nominal
-mode will need to override some of the clock rates manually.
-
-As operating the clocks outside of their allowed range can lead to
-difficult to debug issues, it makes sense to register the maximum rates
-allowed in the driver, so the CCF can take them into account.
-
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Link: https://lore.kernel.org/r/20250218-imx8m-clk-v4-6-b7697dc2dcd0@pengutronix.de
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-imx8mp.c | 151 +++++++++++++++++++++++++++++++++++
- 1 file changed, 151 insertions(+)
+ drivers/media/v4l2-core/v4l2-subdev.c | 2 ++
+ include/media/v4l2-subdev.h           | 4 +++-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/imx/clk-imx8mp.c b/drivers/clk/imx/clk-imx8mp.c
-index 385653fe39660..aebeb4d3c8dd0 100644
---- a/drivers/clk/imx/clk-imx8mp.c
-+++ b/drivers/clk/imx/clk-imx8mp.c
-@@ -8,6 +8,7 @@
- #include <linux/err.h>
- #include <linux/io.h>
- #include <linux/module.h>
-+#include <linux/units.h>
- #include <linux/of_address.h>
- #include <linux/platform_device.h>
- #include <linux/slab.h>
-@@ -417,11 +418,151 @@ static const char * const imx8mp_clkout_sels[] = {"audio_pll1_out", "audio_pll2_
- static struct clk_hw **hws;
- static struct clk_hw_onecell_data *clk_hw_data;
- 
-+struct imx8mp_clock_constraints {
-+	unsigned int clkid;
-+	u32 maxrate;
-+};
-+
-+/*
-+ * Below tables are taken from IMX8MPCEC Rev. 2.1, 07/2023
-+ * Table 13. Maximum frequency of modules.
-+ * Probable typos fixed are marked with a comment.
-+ */
-+static const struct imx8mp_clock_constraints imx8mp_clock_common_constraints[] = {
-+	{ IMX8MP_CLK_A53_DIV,             1000 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_ENET_AXI,             266666667 }, /* Datasheet claims 266MHz */
-+	{ IMX8MP_CLK_NAND_USDHC_BUS,       266666667 }, /* Datasheet claims 266MHz */
-+	{ IMX8MP_CLK_MEDIA_APB,            200 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_HDMI_APB,             133333333 }, /* Datasheet claims 133MHz */
-+	{ IMX8MP_CLK_ML_AXI,               800 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_AHB,                  133333333 },
-+	{ IMX8MP_CLK_IPG_ROOT,              66666667 },
-+	{ IMX8MP_CLK_AUDIO_AHB,            400 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_MEDIA_DISP2_PIX,      170 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_DRAM_ALT,             666666667 },
-+	{ IMX8MP_CLK_DRAM_APB,             200 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_CAN1,                  80 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_CAN2,                  80 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_PCIE_AUX,              10 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_I2C5,                  66666667 }, /* Datasheet claims 66MHz */
-+	{ IMX8MP_CLK_I2C6,                  66666667 }, /* Datasheet claims 66MHz */
-+	{ IMX8MP_CLK_SAI1,                  66666667 }, /* Datasheet claims 66MHz */
-+	{ IMX8MP_CLK_SAI2,                  66666667 }, /* Datasheet claims 66MHz */
-+	{ IMX8MP_CLK_SAI3,                  66666667 }, /* Datasheet claims 66MHz */
-+	{ IMX8MP_CLK_SAI5,                  66666667 }, /* Datasheet claims 66MHz */
-+	{ IMX8MP_CLK_SAI6,                  66666667 }, /* Datasheet claims 66MHz */
-+	{ IMX8MP_CLK_ENET_QOS,             125 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_ENET_QOS_TIMER,       200 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_ENET_REF,             125 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_ENET_TIMER,           125 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_ENET_PHY_REF,         125 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_NAND,                 500 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_QSPI,                 400 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_USDHC1,               400 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_USDHC2,               400 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_I2C1,                  66666667 }, /* Datasheet claims 66MHz */
-+	{ IMX8MP_CLK_I2C2,                  66666667 }, /* Datasheet claims 66MHz */
-+	{ IMX8MP_CLK_I2C3,                  66666667 }, /* Datasheet claims 66MHz */
-+	{ IMX8MP_CLK_I2C4,                  66666667 }, /* Datasheet claims 66MHz */
-+	{ IMX8MP_CLK_UART1,                 80 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_UART2,                 80 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_UART3,                 80 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_UART4,                 80 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_ECSPI1,                80 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_ECSPI2,                80 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_PWM1,                  66666667 }, /* Datasheet claims 66MHz */
-+	{ IMX8MP_CLK_PWM2,                  66666667 }, /* Datasheet claims 66MHz */
-+	{ IMX8MP_CLK_PWM3,                  66666667 }, /* Datasheet claims 66MHz */
-+	{ IMX8MP_CLK_PWM4,                  66666667 }, /* Datasheet claims 66MHz */
-+	{ IMX8MP_CLK_GPT1,                 100 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_GPT2,                 100 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_GPT3,                 100 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_GPT4,                 100 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_GPT5,                 100 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_GPT6,                 100 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_WDOG,                  66666667 }, /* Datasheet claims 66MHz */
-+	{ IMX8MP_CLK_IPP_DO_CLKO1,         200 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_IPP_DO_CLKO2,         200 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_HDMI_REF_266M,        266 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_USDHC3,               400 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_MEDIA_MIPI_PHY1_REF,  300 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_MEDIA_DISP1_PIX,      250 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_MEDIA_CAM2_PIX,       277 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_MEDIA_LDB,            595 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_MEDIA_MIPI_TEST_BYTE, 200 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_ECSPI3,                80 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_PDM,                  200 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_SAI7,                  66666667 }, /* Datasheet claims 66MHz */
-+	{ IMX8MP_CLK_MAIN_AXI,             400 * HZ_PER_MHZ },
-+	{ /* Sentinel */ }
-+};
-+
-+static const struct imx8mp_clock_constraints imx8mp_clock_nominal_constraints[] = {
-+	{ IMX8MP_CLK_M7_CORE,           600 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_ML_CORE,           800 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_GPU3D_CORE,        800 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_GPU3D_SHADER_CORE, 800 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_GPU2D_CORE,        800 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_AUDIO_AXI_SRC,     600 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_HSIO_AXI,          400 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_MEDIA_ISP,         400 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_VPU_BUS,           600 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_MEDIA_AXI,         400 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_HDMI_AXI,          400 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_GPU_AXI,           600 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_GPU_AHB,           300 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_NOC,               800 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_NOC_IO,            600 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_ML_AHB,            300 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_VPU_G1,            600 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_VPU_G2,            500 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_MEDIA_CAM1_PIX,    400 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_VPU_VC8000E,       400 * HZ_PER_MHZ }, /* Datasheet claims 500MHz */
-+	{ IMX8MP_CLK_DRAM_CORE,         800 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_GIC,               400 * HZ_PER_MHZ },
-+	{ /* Sentinel */ }
-+};
-+
-+static const struct imx8mp_clock_constraints imx8mp_clock_overdrive_constraints[] = {
-+	{ IMX8MP_CLK_M7_CORE,            800 * HZ_PER_MHZ},
-+	{ IMX8MP_CLK_ML_CORE,           1000 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_GPU3D_CORE,        1000 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_GPU3D_SHADER_CORE, 1000 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_GPU2D_CORE,        1000 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_AUDIO_AXI_SRC,      800 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_HSIO_AXI,           500 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_MEDIA_ISP,          500 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_VPU_BUS,            800 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_MEDIA_AXI,          500 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_HDMI_AXI,           500 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_GPU_AXI,            800 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_GPU_AHB,            400 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_NOC,               1000 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_NOC_IO,             800 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_ML_AHB,             400 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_VPU_G1,             800 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_VPU_G2,             700 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_MEDIA_CAM1_PIX,     500 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_VPU_VC8000E,        500 * HZ_PER_MHZ }, /* Datasheet claims 400MHz */
-+	{ IMX8MP_CLK_DRAM_CORE,         1000 * HZ_PER_MHZ },
-+	{ IMX8MP_CLK_GIC,                500 * HZ_PER_MHZ },
-+	{ /* Sentinel */ }
-+};
-+
-+static void imx8mp_clocks_apply_constraints(const struct imx8mp_clock_constraints constraints[])
-+{
-+	const struct imx8mp_clock_constraints *constr;
-+
-+	for (constr = constraints; constr->clkid; constr++)
-+		clk_hw_set_rate_range(hws[constr->clkid], 0, constr->maxrate);
-+}
-+
- static int imx8mp_clocks_probe(struct platform_device *pdev)
+diff --git a/drivers/media/v4l2-core/v4l2-subdev.c b/drivers/media/v4l2-core/v4l2-subdev.c
+index fbf0dcb313c82..67d3e6511a146 100644
+--- a/drivers/media/v4l2-core/v4l2-subdev.c
++++ b/drivers/media/v4l2-core/v4l2-subdev.c
+@@ -312,6 +312,8 @@ static int call_enum_dv_timings(struct v4l2_subdev *sd,
+ static int call_get_mbus_config(struct v4l2_subdev *sd, unsigned int pad,
+ 				struct v4l2_mbus_config *config)
  {
- 	struct device *dev = &pdev->dev;
- 	struct device_node *np = dev->of_node;
- 	void __iomem *anatop_base, *ccm_base;
-+	const char *opmode;
- 	int err;
- 
- 	np = of_find_compatible_node(NULL, NULL, "fsl,imx8mp-anatop");
-@@ -736,6 +877,16 @@ static int imx8mp_clocks_probe(struct platform_device *pdev)
- 
- 	imx_check_clk_hws(hws, IMX8MP_CLK_END);
- 
-+	imx8mp_clocks_apply_constraints(imx8mp_clock_common_constraints);
++	memset(config, 0, sizeof(*config));
 +
-+	err = of_property_read_string(np, "fsl,operating-mode", &opmode);
-+	if (!err) {
-+		if (!strcmp(opmode, "nominal"))
-+			imx8mp_clocks_apply_constraints(imx8mp_clock_nominal_constraints);
-+		else if (!strcmp(opmode, "overdrive"))
-+			imx8mp_clocks_apply_constraints(imx8mp_clock_overdrive_constraints);
-+	}
-+
- 	err = of_clk_add_hw_provider(np, of_clk_hw_onecell_get, clk_hw_data);
- 	if (err < 0) {
- 		dev_err(dev, "failed to register hws for i.MX8MP\n");
+ 	return check_pad(sd, pad) ? :
+ 	       sd->ops->pad->get_mbus_config(sd, pad, config);
+ }
+diff --git a/include/media/v4l2-subdev.h b/include/media/v4l2-subdev.h
+index 73150520c02d4..ffc6d122f91e5 100644
+--- a/include/media/v4l2-subdev.h
++++ b/include/media/v4l2-subdev.h
+@@ -676,7 +676,9 @@ struct v4l2_subdev_pad_config {
+  *		     possible configuration from the remote end, likely calling
+  *		     this operation as close as possible to stream on time. The
+  *		     operation shall fail if the pad index it has been called on
+- *		     is not valid or in case of unrecoverable failures.
++ *		     is not valid or in case of unrecoverable failures. The
++ *		     config argument has been memset to 0 just before calling
++ *		     the op.
+  *
+  * @set_mbus_config: set the media bus configuration of a remote sub-device.
+  *		     This operations is intended to allow, in combination with
 -- 
 2.39.5
 
