@@ -1,66 +1,55 @@
-Return-Path: <stable+bounces-139794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 625B6AA9FB7
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:26:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75184AA9FB9
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:27:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5146D1881778
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:26:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0249618835BE
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:26:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68067288CBA;
-	Mon,  5 May 2025 22:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74706289349;
+	Mon,  5 May 2025 22:15:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kTuWlL7R"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HGdkPbeY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241C62798E9;
-	Mon,  5 May 2025 22:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE9B289345;
+	Mon,  5 May 2025 22:15:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483350; cv=none; b=KGpZri4bHZREV2fv12mGZXmHKXyGVbBrOXe262A0X/sgwW0YRB0JYCENG6PE5NMNiTVz2ehi+5YdntDvR2gOVQz/Gjj+jFYbCIkuW91ZeTAxCblQJoXQp8HjXdo6nIDysG2hZq+8Y0Ob6k/qNKSYqEmPuPJoq2C8sredAPPYNkQ=
+	t=1746483351; cv=none; b=ncCOKyCOdnpwzbUOgFBuTwQAggRAqIOxZ5JHXKXXUIjKattJs9Eq7SgQuFUrFXcIeZuuGiDz+hb6QjjkSq1KmvYub9QLSF0zgyQyYGEnPZkg2wxmU64piOv/OpGMC451VRAhDaVnYLYbmtBPHOOjNXhHHwkorQCe3CW4XaRsng8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483350; c=relaxed/simple;
-	bh=8aLFjEIcejOdEoMp0Exgz0jeYPGe4skXNfMWrYIFIC8=;
+	s=arc-20240116; t=1746483351; c=relaxed/simple;
+	bh=CFmWoJn0X1XzL9UZA969pY67TiklTsAy6LxaHpXKOtY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ZkISHlw0aWQGILtA2jQt7P1myXdPeWS97K0Ly1pkoXKpyX8xExojIIiNI95/gbFn8fG4TJnb5TAzmjbmlEiWgP6WYTTLh1tdbxSk4AppkEK7tdxt7w3EsE97f6oLyjD7Xyix0WswHO8XtKdZdyEth/6sqzIcJt0Z26dR4Z05J+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kTuWlL7R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55FB5C4CEE4;
-	Mon,  5 May 2025 22:15:48 +0000 (UTC)
+	 MIME-Version; b=PXRbElJLKZqtzDcxstyV/HxDvorms+tpMDyVOHKENWgkSQAuhJM3txIbnMdBZKd9Z430JCzLQIB8uiqLFvRet5t9Ruqdff7B/bDVoOn9tpbyAnrsCTHBknVmmLYYfbJMCzd3z5/uNVUGxLrwarabilZC3Sv/c0xWQO7UqDHP5Fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HGdkPbeY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63780C4CEEF;
+	Mon,  5 May 2025 22:15:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483350;
-	bh=8aLFjEIcejOdEoMp0Exgz0jeYPGe4skXNfMWrYIFIC8=;
+	s=k20201202; t=1746483351;
+	bh=CFmWoJn0X1XzL9UZA969pY67TiklTsAy6LxaHpXKOtY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kTuWlL7R7GdvyTiiRUvtCmhy3eGDnVXDNiI+QYLFW0dXKZRqPX6YUkRFaWp89vDH6
-	 tyEcFritpzy0o2+WNNVJk+5iK48FiVLfKhmoLOrHARyaoSLTshiXs+OK2v2IwHLUgY
-	 VDTqhGxZUlB9fMxYNo5icCGm4nNq6gnrUnVytvVw6pceI2zWpVhq4+LN4+Opb6rFyc
-	 tU4wXKg1fdvqOUVCO9RJuUQAj+pOv8hS7poYHB8CyXbkcMv1hL0mnbL10CwVB5P2zm
-	 gWpSAHRPKNDSkGQXPAslIZd3oVOaBLd4Mmm0rK69araihHiZt2/0sxCjiPjEi9hBDx
-	 WqaerW3J2Ho1A==
+	b=HGdkPbeYoArvx9v8x++bh7y9d/ojo8CtvOBw/G5aRkpvBgqGrQRwSZJXtJmoaFnCT
+	 +7IG+gDjaDLJv6o3lqNmz1TlIumo8pekFNphb9iqld9FwmTRxMMGsREDDGNG0dVUcN
+	 8xF9rS6S0lMt3/8YzkETSbXh0J4Bx3IZOx2KqaI29JdsPo+7rA7k50Tu/i9GOM8v4o
+	 VKsNqDOkORWqr+j7hTlZVS+YQrwwaHdJCn20N7/rjUZJm7Zh2vCNPSuLYJQcIYRNSa
+	 zwRXdZEUpDSh86u4vp4zU9Gz/qGIZbgFfLElDNHSYn+rBPwHDnxJUAQtMyQijMIYWi
+	 cr6irQm+RXlMw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Conor Dooley <conor.dooley@microchip.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>,
-	paul.walmsley@sifive.com,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	charlie@rivosinc.com,
-	jesse@rivosinc.com,
-	ajones@ventanamicro.com,
-	cleger@rivosinc.com,
-	samuel.holland@sifive.com,
-	andybnac@gmail.com,
-	inochiama@gmail.com,
-	linux-riscv@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.14 047/642] RISC-V: add vector extension validation checks
-Date: Mon,  5 May 2025 18:04:23 -0400
-Message-Id: <20250505221419.2672473-47-sashal@kernel.org>
+Cc: Jing Su <jingsusu@didiglobal.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.14 048/642] dql: Fix dql->limit value when reset.
+Date: Mon,  5 May 2025 18:04:24 -0400
+Message-Id: <20250505221419.2672473-48-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -75,138 +64,44 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Conor Dooley <conor.dooley@microchip.com>
+From: Jing Su <jingsusu@didiglobal.com>
 
-[ Upstream commit 9324571e9eea231321acf0a3d0fbc85a6e0f6ff6 ]
+[ Upstream commit 3a17f23f7c36bac3a3584aaf97d3e3e0b2790396 ]
 
-Using Clement's new validation callbacks, support checking that
-dependencies have been satisfied for the vector extensions. From the
-kernel's perfective, it's not required to differentiate between the
-conditions for all the various vector subsets - it's the firmware's job
-to not report impossible combinations. Instead, the kernel only has to
-check that the correct config options are enabled and to enforce its
-requirement of the d extension being present for FPU support.
+Executing dql_reset after setting a non-zero value for limit_min can
+lead to an unreasonable situation where dql->limit is less than
+dql->limit_min.
 
-Since vector will now be disabled proactively, there's no need to clear
-the bit in elf_hwcap in riscv_fill_hwcap() any longer.
+For instance, after setting
+/sys/class/net/eth*/queues/tx-0/byte_queue_limits/limit_min,
+an ifconfig down/up operation might cause the ethernet driver to call
+netdev_tx_reset_queue, which in turn invokes dql_reset.
 
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20250312-eclair-affluent-55b098c3602b@spud
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+In this case, dql->limit is reset to 0 while dql->limit_min remains
+non-zero value, which is unexpected. The limit should always be
+greater than or equal to limit_min.
+
+Signed-off-by: Jing Su <jingsusu@didiglobal.com>
+Link: https://patch.msgid.link/Z9qHD1s/NEuQBdgH@pilot-ThinkCentre-M930t-N000
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/include/asm/cpufeature.h |  3 ++
- arch/riscv/kernel/cpufeature.c      | 60 +++++++++++++++++++----------
- 2 files changed, 43 insertions(+), 20 deletions(-)
+ lib/dynamic_queue_limits.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/riscv/include/asm/cpufeature.h b/arch/riscv/include/asm/cpufeature.h
-index 19defdc2002d8..f56b409361fbe 100644
---- a/arch/riscv/include/asm/cpufeature.h
-+++ b/arch/riscv/include/asm/cpufeature.h
-@@ -56,6 +56,9 @@ void __init riscv_user_isa_enable(void);
- #define __RISCV_ISA_EXT_BUNDLE(_name, _bundled_exts) \
- 	_RISCV_ISA_EXT_DATA(_name, RISCV_ISA_EXT_INVALID, _bundled_exts, \
- 			    ARRAY_SIZE(_bundled_exts), NULL)
-+#define __RISCV_ISA_EXT_BUNDLE_VALIDATE(_name, _bundled_exts, _validate) \
-+	_RISCV_ISA_EXT_DATA(_name, RISCV_ISA_EXT_INVALID, _bundled_exts, \
-+			    ARRAY_SIZE(_bundled_exts), _validate)
- 
- /* Used to declare extensions that are a superset of other extensions (Zvbb for instance) */
- #define __RISCV_ISA_EXT_SUPERSET(_name, _id, _sub_exts) \
-diff --git a/arch/riscv/kernel/cpufeature.c b/arch/riscv/kernel/cpufeature.c
-index 40ac72e407b68..76a3b34d7a707 100644
---- a/arch/riscv/kernel/cpufeature.c
-+++ b/arch/riscv/kernel/cpufeature.c
-@@ -109,6 +109,38 @@ static int riscv_ext_zicboz_validate(const struct riscv_isa_ext_data *data,
- 	return 0;
- }
- 
-+static int riscv_ext_vector_x_validate(const struct riscv_isa_ext_data *data,
-+				       const unsigned long *isa_bitmap)
-+{
-+	if (!IS_ENABLED(CONFIG_RISCV_ISA_V))
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+
-+static int riscv_ext_vector_float_validate(const struct riscv_isa_ext_data *data,
-+					   const unsigned long *isa_bitmap)
-+{
-+	if (!IS_ENABLED(CONFIG_RISCV_ISA_V))
-+		return -EINVAL;
-+
-+	if (!IS_ENABLED(CONFIG_FPU))
-+		return -EINVAL;
-+
-+	/*
-+	 * The kernel doesn't support systems that don't implement both of
-+	 * F and D, so if any of the vector extensions that do floating point
-+	 * are to be usable, both floating point extensions need to be usable.
-+	 *
-+	 * Since this function validates vector only, and v/Zve* are probed
-+	 * after f/d, there's no need for a deferral here.
-+	 */
-+	if (!__riscv_isa_extension_available(isa_bitmap, RISCV_ISA_EXT_d))
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+
- static int riscv_ext_zca_depends(const struct riscv_isa_ext_data *data,
- 				 const unsigned long *isa_bitmap)
+diff --git a/lib/dynamic_queue_limits.c b/lib/dynamic_queue_limits.c
+index c1b7638a594ac..f97a752e900a0 100644
+--- a/lib/dynamic_queue_limits.c
++++ b/lib/dynamic_queue_limits.c
+@@ -190,7 +190,7 @@ EXPORT_SYMBOL(dql_completed);
+ void dql_reset(struct dql *dql)
  {
-@@ -326,12 +358,10 @@ const struct riscv_isa_ext_data riscv_isa_ext[] = {
- 	__RISCV_ISA_EXT_DATA(d, RISCV_ISA_EXT_d),
- 	__RISCV_ISA_EXT_DATA(q, RISCV_ISA_EXT_q),
- 	__RISCV_ISA_EXT_SUPERSET(c, RISCV_ISA_EXT_c, riscv_c_exts),
--	__RISCV_ISA_EXT_SUPERSET(v, RISCV_ISA_EXT_v, riscv_v_exts),
-+	__RISCV_ISA_EXT_SUPERSET_VALIDATE(v, RISCV_ISA_EXT_v, riscv_v_exts, riscv_ext_vector_float_validate),
- 	__RISCV_ISA_EXT_DATA(h, RISCV_ISA_EXT_h),
--	__RISCV_ISA_EXT_SUPERSET_VALIDATE(zicbom, RISCV_ISA_EXT_ZICBOM, riscv_xlinuxenvcfg_exts,
--					  riscv_ext_zicbom_validate),
--	__RISCV_ISA_EXT_SUPERSET_VALIDATE(zicboz, RISCV_ISA_EXT_ZICBOZ, riscv_xlinuxenvcfg_exts,
--					  riscv_ext_zicboz_validate),
-+	__RISCV_ISA_EXT_SUPERSET_VALIDATE(zicbom, RISCV_ISA_EXT_ZICBOM, riscv_xlinuxenvcfg_exts, riscv_ext_zicbom_validate),
-+	__RISCV_ISA_EXT_SUPERSET_VALIDATE(zicboz, RISCV_ISA_EXT_ZICBOZ, riscv_xlinuxenvcfg_exts, riscv_ext_zicboz_validate),
- 	__RISCV_ISA_EXT_DATA(ziccrse, RISCV_ISA_EXT_ZICCRSE),
- 	__RISCV_ISA_EXT_DATA(zicntr, RISCV_ISA_EXT_ZICNTR),
- 	__RISCV_ISA_EXT_DATA(zicond, RISCV_ISA_EXT_ZICOND),
-@@ -372,11 +402,11 @@ const struct riscv_isa_ext_data riscv_isa_ext[] = {
- 	__RISCV_ISA_EXT_DATA(ztso, RISCV_ISA_EXT_ZTSO),
- 	__RISCV_ISA_EXT_SUPERSET(zvbb, RISCV_ISA_EXT_ZVBB, riscv_zvbb_exts),
- 	__RISCV_ISA_EXT_DATA(zvbc, RISCV_ISA_EXT_ZVBC),
--	__RISCV_ISA_EXT_SUPERSET(zve32f, RISCV_ISA_EXT_ZVE32F, riscv_zve32f_exts),
--	__RISCV_ISA_EXT_DATA(zve32x, RISCV_ISA_EXT_ZVE32X),
--	__RISCV_ISA_EXT_SUPERSET(zve64d, RISCV_ISA_EXT_ZVE64D, riscv_zve64d_exts),
--	__RISCV_ISA_EXT_SUPERSET(zve64f, RISCV_ISA_EXT_ZVE64F, riscv_zve64f_exts),
--	__RISCV_ISA_EXT_SUPERSET(zve64x, RISCV_ISA_EXT_ZVE64X, riscv_zve64x_exts),
-+	__RISCV_ISA_EXT_SUPERSET_VALIDATE(zve32f, RISCV_ISA_EXT_ZVE32F, riscv_zve32f_exts, riscv_ext_vector_float_validate),
-+	__RISCV_ISA_EXT_DATA_VALIDATE(zve32x, RISCV_ISA_EXT_ZVE32X, riscv_ext_vector_x_validate),
-+	__RISCV_ISA_EXT_SUPERSET_VALIDATE(zve64d, RISCV_ISA_EXT_ZVE64D, riscv_zve64d_exts, riscv_ext_vector_float_validate),
-+	__RISCV_ISA_EXT_SUPERSET_VALIDATE(zve64f, RISCV_ISA_EXT_ZVE64F, riscv_zve64f_exts, riscv_ext_vector_float_validate),
-+	__RISCV_ISA_EXT_SUPERSET_VALIDATE(zve64x, RISCV_ISA_EXT_ZVE64X, riscv_zve64x_exts, riscv_ext_vector_x_validate),
- 	__RISCV_ISA_EXT_DATA(zvfh, RISCV_ISA_EXT_ZVFH),
- 	__RISCV_ISA_EXT_DATA(zvfhmin, RISCV_ISA_EXT_ZVFHMIN),
- 	__RISCV_ISA_EXT_DATA(zvkb, RISCV_ISA_EXT_ZVKB),
-@@ -960,16 +990,6 @@ void __init riscv_fill_hwcap(void)
- 		riscv_v_setup_vsize();
- 	}
- 
--	if (elf_hwcap & COMPAT_HWCAP_ISA_V) {
--		/*
--		 * ISA string in device tree might have 'v' flag, but
--		 * CONFIG_RISCV_ISA_V is disabled in kernel.
--		 * Clear V flag in elf_hwcap if CONFIG_RISCV_ISA_V is disabled.
--		 */
--		if (!IS_ENABLED(CONFIG_RISCV_ISA_V))
--			elf_hwcap &= ~COMPAT_HWCAP_ISA_V;
--	}
--
- 	memset(print_str, 0, sizeof(print_str));
- 	for (i = 0, j = 0; i < NUM_ALPHA_EXTS; i++)
- 		if (riscv_isa[0] & BIT_MASK(i))
+ 	/* Reset all dynamic values */
+-	dql->limit = 0;
++	dql->limit = dql->min_limit;
+ 	dql->num_queued = 0;
+ 	dql->num_completed = 0;
+ 	dql->last_obj_cnt = 0;
 -- 
 2.39.5
 
