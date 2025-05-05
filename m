@@ -1,57 +1,63 @@
-Return-Path: <stable+bounces-141619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB90CAAB4F6
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:19:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21460AAB4DF
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:17:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F7A7188F12D
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:15:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3AE557A9B06
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:14:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D2E134545A;
-	Tue,  6 May 2025 00:44:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51193345446;
+	Tue,  6 May 2025 00:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XP00LT1g"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kK2k9FLT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F9862F3A9A;
-	Mon,  5 May 2025 23:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B98D32F3A8E;
+	Mon,  5 May 2025 23:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486892; cv=none; b=Crmg/AanZes9XVLXeJnMNlIcod0hhN80/8T4aa9mMXZPmjzGR8aSqe9yEm5I4EFkNWIPSrQG3bTRdEj1DBBDZQ78NHeY2I+pUghTz/GIZVYSMe5begfkGYPp2kORLWoh2fBrMRaUsYnovHS21PDTUzI/CUdTwYD/FsYoF6VDUuA=
+	t=1746486893; cv=none; b=IbbWKS6qCjoklZflWKdcKPhuy5GSt1AmclodG1s//d2026vWISdkazQZgXspJJnAP7nXCRCnJ+IqD0rs9q+PEfHcm4jTN4YWlrWOTdX5FJakpJ/xh4P2l+T/dLCsifp75eJB2ddDELEz4L3INvpmFylyAqhUHoGCRMQH3YdtiEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486892; c=relaxed/simple;
-	bh=VN5EtMg9ZrHmsH7A10pX7oRSpKuBk9x0NuB/eM47aWc=;
+	s=arc-20240116; t=1746486893; c=relaxed/simple;
+	bh=k7U5ZkxStIoJ2OWerJ26c5Smu0n+lwx1QJs5hxu2pMw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ptvpmUpjK1pcVI2TNi4kHNNCO85OHDeqEAoJilZRqz0pFEj6w1z7/mBIPWQgaJV8pqEsvM/IUwtoENt0GHApDNRd9fU7zqTcgDy/yFc3rE+0rc92+BPDeu08hJGWfam98BFRaSc9VJ8VWA9RBa65t14jwP1Z+n892T9u4ceKBOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XP00LT1g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9546CC4CEED;
-	Mon,  5 May 2025 23:14:50 +0000 (UTC)
+	 MIME-Version; b=P+Ipl2+LZXb6bH7V0sIYwkl8qBVqpmo5fTSGzuNq3cyzTOhnRZcm2oFPP1cA+VaRj8ckaHH3+OOj5+V7uwowHycdqH3G4XNj63B8Wdq7Ng3wXSZV9DP0P9DJsS44CwAqznj8tJuGnmIsVB6PTgJEsQnvcp5h+U8k5VPnH6g+kmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kK2k9FLT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C44A7C4CEE4;
+	Mon,  5 May 2025 23:14:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486891;
-	bh=VN5EtMg9ZrHmsH7A10pX7oRSpKuBk9x0NuB/eM47aWc=;
+	s=k20201202; t=1746486893;
+	bh=k7U5ZkxStIoJ2OWerJ26c5Smu0n+lwx1QJs5hxu2pMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XP00LT1gnP2TGE4/Foqfv9K+b0DIuPThmCjZ5MJke8bu7Cs8KuIuzD5b51AreWmLT
-	 781E5Tvb039EZHPV6YSgP5T40yDYq1GFrLXjHeQOhGkUtyFKzItDJ/IOpXMxKKrktp
-	 3kmCSLx+A4gaSTSyijRCkoVsET2hCcl+d2u2ooyZSICI6dxDyXJy7mv1MRrz7jvpN6
-	 pFm3CrBmBaDwL/BhzksWgCMKTG7iaypqLIfxm/nZHliabq6/2DSnVfXFWBfCGN6Dfm
-	 AY1bpT4eVefbznMN3mRgcPqxiQ3py7QJGjI7cxMcOz/TVM7dJRVBKyFyvkn/oPUgle
-	 6gfeWz0BoQ1Vg==
+	b=kK2k9FLTxsNu2Rrx6XwooisGfWpTcO3pXFZSfSe9Zj4CSxwUSnfYmX4MCDNyMf9no
+	 IDvjQUevSBVe1wDv+qwNJ2cY19EirBMCJxyO83XvqtTFRUol+12FatHPJ59XhqL3a3
+	 XNjRVvqPsTqDHwG99lTK0I/mNleohAHGoROUsNlcDWK4tKmfEWu2n/EBEEw9ShjJWd
+	 sNr0UYSGHfJxTqaPEnYXI6CFprUJlumeCkHrqEe0OVSqzO9TRJYYSIL81/hX7sM82X
+	 sFMlihL5yexdvmBeO1+IBHsoKeFxLKbPC5quHsxaU4m0Ic8kNmuZI6cG4Lvszh5LEV
+	 IvzqiGkO/p2Ew==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
+Cc: Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>,
-	anna-maria@linutronix.de,
-	frederic@kernel.org
-Subject: [PATCH AUTOSEL 5.15 047/153] timer_list: Don't use %pK through printk()
-Date: Mon,  5 May 2025 19:11:34 -0400
-Message-Id: <20250505231320.2695319-47-sashal@kernel.org>
+	kadlec@netfilter.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 048/153] netfilter: conntrack: Bound nf_conntrack sysctl writes
+Date: Mon,  5 May 2025 19:11:35 -0400
+Message-Id: <20250505231320.2695319-48-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
 References: <20250505231320.2695319-1-sashal@kernel.org>
@@ -61,66 +67,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.181
 Content-Transfer-Encoding: 8bit
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>
 
-[ Upstream commit a52067c24ccf6ee4c85acffa0f155e9714f9adce ]
+[ Upstream commit 8b6861390ffee6b8ed78b9395e3776c16fec6579 ]
 
-This reverts commit f590308536db ("timer debug: Hide kernel addresses via
-%pK in /proc/timer_list")
+nf_conntrack_max and nf_conntrack_expect_max sysctls were authorized to
+be written any negative value, which would then be stored in the
+unsigned int variables nf_conntrack_max and nf_ct_expect_max variables.
 
-The timer list helper SEQ_printf() uses either the real seq_printf() for
-procfs output or vprintk() to print to the kernel log, when invoked from
-SysRq-q. It uses %pK for printing pointers.
+While the do_proc_dointvec_conv function is supposed to limit writing
+handled by proc_dointvec proc_handler to INT_MAX. Such a negative value
+being written in an unsigned int leads to a very high value, exceeding
+this limit.
 
-In the past %pK was prefered over %p as it would not leak raw pointer
-values into the kernel log. Since commit ad67b74d2469 ("printk: hash
-addresses printed with %p") the regular %p has been improved to avoid this
-issue.
+Moreover, the nf_conntrack_expect_max sysctl documentation specifies the
+minimum value is 1.
 
-Furthermore, restricted pointers ("%pK") were never meant to be used
-through printk(). They can still unintentionally leak raw pointers or
-acquire sleeping looks in atomic contexts.
+The proc_handlers have thus been updated to proc_dointvec_minmax in
+order to specify the following write bounds :
 
-Switch to the regular pointer formatting which is safer, easier to reason
-about and sufficient here.
+* Bound nf_conntrack_max sysctl writings between SYSCTL_ZERO
+  and SYSCTL_INT_MAX.
 
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/lkml/20250113171731-dc10e3c1-da64-4af0-b767-7c7070468023@linutronix.de/
-Link: https://lore.kernel.org/all/20250311-restricted-pointers-timer-v1-1-6626b91e54ab@linutronix.de
+* Bound nf_conntrack_expect_max sysctl writings between SYSCTL_ONE
+  and SYSCTL_INT_MAX as defined in the sysctl documentation.
+
+With this patch applied, sysctl writes outside the defined in the bound
+will thus lead to a write error :
+
+```
+sysctl -w net.netfilter.nf_conntrack_expect_max=-1
+sysctl: setting key "net.netfilter.nf_conntrack_expect_max": Invalid argument
+```
+
+Signed-off-by: Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/timer_list.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/netfilter/nf_conntrack_standalone.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/time/timer_list.c b/kernel/time/timer_list.c
-index ed7d6ad694fba..20a5e6962b696 100644
---- a/kernel/time/timer_list.c
-+++ b/kernel/time/timer_list.c
-@@ -46,7 +46,7 @@ static void
- print_timer(struct seq_file *m, struct hrtimer *taddr, struct hrtimer *timer,
- 	    int idx, u64 now)
- {
--	SEQ_printf(m, " #%d: <%pK>, %ps", idx, taddr, timer->function);
-+	SEQ_printf(m, " #%d: <%p>, %ps", idx, taddr, timer->function);
- 	SEQ_printf(m, ", S:%02x", timer->state);
- 	SEQ_printf(m, "\n");
- 	SEQ_printf(m, " # expires at %Lu-%Lu nsecs [in %Ld to %Ld nsecs]\n",
-@@ -98,7 +98,7 @@ print_active_timers(struct seq_file *m, struct hrtimer_clock_base *base,
- static void
- print_base(struct seq_file *m, struct hrtimer_clock_base *base, u64 now)
- {
--	SEQ_printf(m, "  .base:       %pK\n", base);
-+	SEQ_printf(m, "  .base:       %p\n", base);
- 	SEQ_printf(m, "  .index:      %d\n", base->index);
- 
- 	SEQ_printf(m, "  .resolution: %u nsecs\n", hrtimer_resolution);
+diff --git a/net/netfilter/nf_conntrack_standalone.c b/net/netfilter/nf_conntrack_standalone.c
+index 7515705583bcf..770590041c549 100644
+--- a/net/netfilter/nf_conntrack_standalone.c
++++ b/net/netfilter/nf_conntrack_standalone.c
+@@ -629,7 +629,9 @@ static struct ctl_table nf_ct_sysctl_table[] = {
+ 		.data		= &nf_conntrack_max,
+ 		.maxlen		= sizeof(int),
+ 		.mode		= 0644,
+-		.proc_handler	= proc_dointvec,
++		.proc_handler	= proc_dointvec_minmax,
++		.extra1		= SYSCTL_ZERO,
++		.extra2		= SYSCTL_INT_MAX,
+ 	},
+ 	[NF_SYSCTL_CT_COUNT] = {
+ 		.procname	= "nf_conntrack_count",
+@@ -665,7 +667,9 @@ static struct ctl_table nf_ct_sysctl_table[] = {
+ 		.data		= &nf_ct_expect_max,
+ 		.maxlen		= sizeof(int),
+ 		.mode		= 0644,
+-		.proc_handler	= proc_dointvec,
++		.proc_handler	= proc_dointvec_minmax,
++		.extra1		= SYSCTL_ONE,
++		.extra2		= SYSCTL_INT_MAX,
+ 	},
+ 	[NF_SYSCTL_CT_ACCT] = {
+ 		.procname	= "nf_conntrack_acct",
+@@ -976,7 +980,9 @@ static struct ctl_table nf_ct_netfilter_table[] = {
+ 		.data		= &nf_conntrack_max,
+ 		.maxlen		= sizeof(int),
+ 		.mode		= 0644,
+-		.proc_handler	= proc_dointvec,
++		.proc_handler	= proc_dointvec_minmax,
++		.extra1		= SYSCTL_ZERO,
++		.extra2		= SYSCTL_INT_MAX,
+ 	},
+ 	{ }
+ };
 -- 
 2.39.5
 
