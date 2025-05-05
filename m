@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-141010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 681F9AAB02A
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:33:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5A32AAAFED
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:28:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DC053AB74C
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:28:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48A244C3DB9
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:28:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F9F28A1D9;
-	Mon,  5 May 2025 23:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CED4305741;
+	Mon,  5 May 2025 23:35:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DCW1soBz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X86ujxmZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 417B928B400;
-	Mon,  5 May 2025 23:20:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0661A3B11C2;
+	Mon,  5 May 2025 23:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487230; cv=none; b=c/vFKP2VKQ6xRNfPZ8AQ7/lFejvWIzssVj84C6QGoCY0V7anHXe7fz1ECzNvWh2sEtM7OjNtdyC4LQMBe74wEEFS68tMsz/xBKWYu4AbIjqgQ2Md4LD+Fl0A0rpxSw+5V0j25wz5XbQ3ue+d3Evk90tXckCHOLCxTJgdcjzJYvE=
+	t=1746487232; cv=none; b=hIGRmoDibC9X6XBGNqlzQzxZ0i+4GWyZ4zPYIiLqcMMD+OnxzYM1MXCFRquh3wGXnVm0HT5kKhYKhL3cfxeNsoWig8d98BFX4vpePIiA0Qw7NHlE85cNl/QexgC1s3QVHNfVNITSjn4RFmShI2zxT0S+gvgcmiUvkjBFgR8M5ms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487230; c=relaxed/simple;
-	bh=vqnvNS9eSoUsYXNZeDhxKTBqZfo8233lKjz1aoDaY1s=;
+	s=arc-20240116; t=1746487232; c=relaxed/simple;
+	bh=aaoHzeX9kNdyJ+UGNMNnz6IM+kfANJ9lmqLQLCXrsqw=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=fadktpMguBGjoQ2Buf6VvFNph+CiReq96sdwJ2sy8Y4rA2kJpSLPfwo0TY4pSS97OFB0tosQrjtMPRhG8hsO0ZNKowvnZQBJ4PaHdc/kGUDKqldX3BF0ZKJan2BdIB7iSVr0HY7Y7/s/zIaoInw6A6ZnB8SW+orgoVBwACpTPdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DCW1soBz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 277D4C4CEE4;
-	Mon,  5 May 2025 23:20:28 +0000 (UTC)
+	 MIME-Version; b=Qjx9nL7xZtw7HksDooaGRB85P92pDrXho7zFFhmbI8c9HVmJK/tX+swGBwsCKmyw/f0aG0kN45ZslI2PIeQ+UNdLQhE/3937oeaVTpPb3xNV9LFe1+qiENA/mE2pXfbwVusJwC/LIbdgzvQ0V1LmY7Mhhafj+HZ16vRRb5eTy+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X86ujxmZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84378C4CEED;
+	Mon,  5 May 2025 23:20:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487229;
-	bh=vqnvNS9eSoUsYXNZeDhxKTBqZfo8233lKjz1aoDaY1s=;
+	s=k20201202; t=1746487230;
+	bh=aaoHzeX9kNdyJ+UGNMNnz6IM+kfANJ9lmqLQLCXrsqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DCW1soBzcLP2Y0fOS/MTVpkUL8Bea+/MJ7zam7gkINSe1okGIvB3JkxRrxaqShK2W
-	 gtUw12qtZc1zIIuCUyt+lBndPR6QeiMkQBr8zYhgv4PLNazHU74j75rXHEBIKi8duK
-	 94aSXmGA9jmen+5FjkCqPez1aB3DMreUp3VUoY0YKpxV35SFHxKwbcQgJRAgU5p39Y
-	 vanfKK/MHQzHuacyQaF0KJVfaUeiCpLDmyaDepL/gJXTfzELwnG07nolWzcCHySaAN
-	 S3RS/7XLXPa13H1yE3519IfqKAaC544G8zdWafvYhoG17pUX99KevRfPmhi4ZRhLjC
-	 YGWOJt8oDLFCQ==
+	b=X86ujxmZ1kQZsFVmIpIXFoGs3p4Nh3ISZ7GiGCjabc9Qj2kgY+FdV1vxzSx0aLJvH
+	 ZO12SNRCzJgpDD02LxDursqSj7XiFkZ7gv1Nx0+Fre18UvscVAKp+qCzdbfLMgyBuB
+	 wV8ikxeAOajk/NYjtjdQe0p14VsrQ76kIOmIIi4vYkpK1NpSzZIn1GBQ1NvfJ03Qjf
+	 v47C10zXzcFhYCN18QrZBEdW+SI6WuB0dgn3/eF6ULp6KrK+Lzlygw43oaJfaPR/r2
+	 7taYP9juaLTmJHgiJfExaEsgYOhS+Vw3ZDW6E3gfD04veLEDJftkf+3QAb1/ykoszO
+	 gdiyGb7YR4eSA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Nandakumar Edamana <nandakumar@nandakumar.co.in>,
-	Andrii Nakryiko <andrii@kernel.org>,
+Cc: Bibo Mao <maobibo@loongson.cn>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>,
-	eddyz87@gmail.com,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	bpf@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 067/114] libbpf: Fix out-of-bound read
-Date: Mon,  5 May 2025 19:17:30 -0400
-Message-Id: <20250505231817.2697367-67-sashal@kernel.org>
+	rostedt@goodmis.org,
+	mhiramat@kernel.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-mips@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 068/114] MIPS: Use arch specific syscall name match function
+Date: Mon,  5 May 2025 19:17:31 -0400
+Message-Id: <20250505231817.2697367-68-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231817.2697367-1-sashal@kernel.org>
 References: <20250505231817.2697367-1-sashal@kernel.org>
@@ -68,41 +68,53 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.237
 Content-Transfer-Encoding: 8bit
 
-From: Nandakumar Edamana <nandakumar@nandakumar.co.in>
+From: Bibo Mao <maobibo@loongson.cn>
 
-[ Upstream commit 236d3910117e9f97ebf75e511d8bcc950f1a4e5f ]
+[ Upstream commit 756276ce78d5624dc814f9d99f7d16c8fd51076e ]
 
-In `set_kcfg_value_str`, an untrusted string is accessed with the assumption
-that it will be at least two characters long due to the presence of checks for
-opening and closing quotes. But the check for the closing quote
-(value[len - 1] != '"') misses the fact that it could be checking the opening
-quote itself in case of an invalid input that consists of just the opening
-quote.
+On MIPS system, most of the syscall function name begin with prefix
+sys_. Some syscalls are special such as clone/fork, function name of
+these begin with __sys_. Since scratch registers need be saved in
+stack when these system calls happens.
 
-This commit adds an explicit check to make sure the string is at least two
-characters long.
+With ftrace system call method, system call functions are declared with
+SYSCALL_DEFINEx, metadata of the system call symbol name begins with
+sys_. Here mips specific function arch_syscall_match_sym_name is used to
+compare function name between sys_call_table[] and metadata of syscall
+symbol.
 
-Signed-off-by: Nandakumar Edamana <nandakumar@nandakumar.co.in>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250221210110.3182084-1-nandakumar@nandakumar.co.in
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/libbpf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/include/asm/ftrace.h | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-index 33cdcfe106344..f65e03e7cf944 100644
---- a/tools/lib/bpf/libbpf.c
-+++ b/tools/lib/bpf/libbpf.c
-@@ -1503,7 +1503,7 @@ static int set_kcfg_value_str(struct extern_desc *ext, char *ext_val,
- 	}
- 
- 	len = strlen(value);
--	if (value[len - 1] != '"') {
-+	if (len < 2 || value[len - 1] != '"') {
- 		pr_warn("extern (kcfg) '%s': invalid string config '%s'\n",
- 			ext->name, value);
- 		return -EINVAL;
+diff --git a/arch/mips/include/asm/ftrace.h b/arch/mips/include/asm/ftrace.h
+index b463f2aa5a613..7acbe701afd69 100644
+--- a/arch/mips/include/asm/ftrace.h
++++ b/arch/mips/include/asm/ftrace.h
+@@ -87,4 +87,20 @@ struct dyn_arch_ftrace {
+ #endif /*  CONFIG_DYNAMIC_FTRACE */
+ #endif /* __ASSEMBLY__ */
+ #endif /* CONFIG_FUNCTION_TRACER */
++
++#ifdef CONFIG_FTRACE_SYSCALLS
++#ifndef __ASSEMBLY__
++/*
++ * Some syscall entry functions on mips start with "__sys_" (fork and clone,
++ * for instance). We should also match the sys_ variant with those.
++ */
++#define ARCH_HAS_SYSCALL_MATCH_SYM_NAME
++static inline bool arch_syscall_match_sym_name(const char *sym,
++					       const char *name)
++{
++	return !strcmp(sym, name) ||
++		(!strncmp(sym, "__sys_", 6) && !strcmp(sym + 6, name + 4));
++}
++#endif /* __ASSEMBLY__ */
++#endif /* CONFIG_FTRACE_SYSCALLS */
+ #endif /* _ASM_MIPS_FTRACE_H */
 -- 
 2.39.5
 
