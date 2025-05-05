@@ -1,65 +1,59 @@
-Return-Path: <stable+bounces-141633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29A64AAB74F
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:09:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B93CAAB7AC
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:16:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 228417B3E27
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:08:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5CD83A550B
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:09:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11EB0295530;
-	Tue,  6 May 2025 00:44:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E61A5295531;
+	Tue,  6 May 2025 00:45:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MxXhmg1V"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FagQhk8S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A222F4F5F;
-	Mon,  5 May 2025 23:16:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F3EE284685;
+	Mon,  5 May 2025 23:16:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486963; cv=none; b=NfXRSmMOmfcb7h6YyBsPq0Mtr3Iivz4+3MzRJ2c+vISzauRMwHvnS1dhfKuc4L3ypaKDICS9AsLLngeQlMXpAMtkJWzgTwgAMt+pu/UC9qx0cN5IPvBXlyN9Z/PGCa+Fc0/f293LskLw0Os1ME7ib+l9zFqQBPEofeF+P1Qk3PI=
+	t=1746486989; cv=none; b=rTsN0VXvtd/cpMIlYfwD2JnOx//FpYBYGnSCh/uuB0Foa0tKHRKvJ0WRve5EK7W70uXnHOP50SRrZHhwCNAR/o8a1OdYWzrQcfRqkIkrnxIgZ3UkIgTDGwe7rb6DTU1e6ZBKp3UTCU8KQRSQA4HekuglHYW0ZXghhU+aNwamPfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486963; c=relaxed/simple;
-	bh=yXnrpblpUCPR/DQm/KS0JbHkePIGHb+ONn9ox3YVM/w=;
+	s=arc-20240116; t=1746486989; c=relaxed/simple;
+	bh=VShZx/OtOKuuvh06Jv/lzdqlqBzM61dEtJe8X10rhZI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=f38PQXtolnTpnc/dKiG4o98SYoeETtQPE4t1Cho2HwL8GjS9tQsmMz8j8Vuq3UB42JJLM+EqiIskk7cgp5iItw885l7sGQmyJWeXoAK9PzCanGITDhKRq5PRzZ1l/tm3nXD+7n4ezTFMjoNSPo+ExYi4nLOemEM8VIV3Sf0izp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MxXhmg1V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A846C4CEF1;
-	Mon,  5 May 2025 23:16:02 +0000 (UTC)
+	 MIME-Version; b=PqedrXHrvdGJIWv4/Q5M7k5a09KyYpaeeg7K1H7SQu6bUF7FmKdx61/GoqeoVuM4nATiro1nNvD6qURUhMBf7Gjz4F9ZxII+1PTjQ7lm7WEWuUGx2ExF5MyYn7mnF8CurtAzzZP0YLFbhC/VmHzErxnvQNoGQUhLQ55BCv9SLIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FagQhk8S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62496C4CEF1;
+	Mon,  5 May 2025 23:16:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486963;
-	bh=yXnrpblpUCPR/DQm/KS0JbHkePIGHb+ONn9ox3YVM/w=;
+	s=k20201202; t=1746486988;
+	bh=VShZx/OtOKuuvh06Jv/lzdqlqBzM61dEtJe8X10rhZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MxXhmg1VcctwD0zjfKuDELevv3MUMF12KDgPmYGQejALHssd4goTpwBoY5kGxc0ed
-	 5Dm/3WN7mne6dKU2/3KG07p22SBUnU3ZPJnOOhbHL1TNn0AqUIkbCX8GYh8UFOiRsE
-	 jZT61k/8XTIA/ZLZEuh0TUSojK3M9J+MynvV9BdsqcGlPmeZVHHyOghD2bphBTx85L
-	 GKd8nCelhBz1rn3j0UDYIrMf3Z0rIl7gwnR+7NBpw9evBQ3ebHGrRySOQHsgHb5i49
-	 tfiLdN9NCoVHH2hF33MDCQ95STq36+xBl2TppAB7OzzEtxzk10lY0HH7dO5sgJNSYI
-	 Nck9m45cwp5mA==
+	b=FagQhk8SrXYkKyVJErsZdGeN7L+Q7RQ8UlbyL/BIWPoyZjD1PtqThfteBstsr5W2a
+	 pqwbIOUzk4mpu+GLI9W3T4NGQBp2MqvQ+kMXArsbpf9OpkQl3N42S6xJxuN+xWRyAB
+	 7tb5zzmcW8eLpPgJc9K1Su5A0fnbD4NvZxFWP4TeImP1wV0w1eY4Sf67NuQF+zGH/Q
+	 8zTie9bVTjOwkHzYhMCSzxAAKY1MUjpTZlTDvM8x9Fxkl3GhjcykyXA/oWBE38HFwj
+	 kgj2teTFMcPRFfmW4G3vJrpSPglKnJMDtAlQKL60b+I5CR3BQBGU6nGP6OMQ8o7e0G
+	 RiD6Xxq0WO83A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Moshe Shemesh <moshe@nvidia.com>,
-	Shahar Shitrit <shshitrit@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	"David S . Miller" <davem@davemloft.net>,
+Cc: Nandakumar Edamana <nandakumar@nandakumar.co.in>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	saeedm@nvidia.com,
-	andrew+netdev@lunn.ch,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 082/153] net/mlx5: Avoid report two health errors on same syndrome
-Date: Mon,  5 May 2025 19:12:09 -0400
-Message-Id: <20250505231320.2695319-82-sashal@kernel.org>
+	eddyz87@gmail.com,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	bpf@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 093/153] libbpf: Fix out-of-bound read
+Date: Mon,  5 May 2025 19:12:20 -0400
+Message-Id: <20250505231320.2695319-93-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
 References: <20250505231320.2695319-1-sashal@kernel.org>
@@ -74,40 +68,41 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.181
 Content-Transfer-Encoding: 8bit
 
-From: Moshe Shemesh <moshe@nvidia.com>
+From: Nandakumar Edamana <nandakumar@nandakumar.co.in>
 
-[ Upstream commit b5d7b2f04ebcff740f44ef4d295b3401aeb029f4 ]
+[ Upstream commit 236d3910117e9f97ebf75e511d8bcc950f1a4e5f ]
 
-In case health counter has not increased for few polling intervals, miss
-counter will reach max misses threshold and health report will be
-triggered for FW health reporter. In case syndrome found on same health
-poll another health report will be triggered.
+In `set_kcfg_value_str`, an untrusted string is accessed with the assumption
+that it will be at least two characters long due to the presence of checks for
+opening and closing quotes. But the check for the closing quote
+(value[len - 1] != '"') misses the fact that it could be checking the opening
+quote itself in case of an invalid input that consists of just the opening
+quote.
 
-Avoid two health reports on same syndrome by marking this syndrome as
-already known.
+This commit adds an explicit check to make sure the string is at least two
+characters long.
 
-Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
-Reviewed-by: Shahar Shitrit <shshitrit@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Nandakumar Edamana <nandakumar@nandakumar.co.in>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20250221210110.3182084-1-nandakumar@nandakumar.co.in
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/health.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/lib/bpf/libbpf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/health.c b/drivers/net/ethernet/mellanox/mlx5/core/health.c
-index 1504856fafde4..2a0b111fbcd3c 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/health.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/health.c
-@@ -737,6 +737,7 @@ static void poll_health(struct timer_list *t)
- 	health->prev = count;
- 	if (health->miss_counter == MAX_MISSES) {
- 		mlx5_core_err(dev, "device's health compromised - reached miss count\n");
-+		health->synd = ioread8(&h->synd);
- 		print_health_info(dev);
- 		queue_work(health->wq, &health->report_work);
+diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
+index 294fdba9c76f7..40e0d84e3d8ed 100644
+--- a/tools/lib/bpf/libbpf.c
++++ b/tools/lib/bpf/libbpf.c
+@@ -1567,7 +1567,7 @@ static int set_kcfg_value_str(struct extern_desc *ext, char *ext_val,
  	}
+ 
+ 	len = strlen(value);
+-	if (value[len - 1] != '"') {
++	if (len < 2 || value[len - 1] != '"') {
+ 		pr_warn("extern (kcfg) '%s': invalid string config '%s'\n",
+ 			ext->name, value);
+ 		return -EINVAL;
 -- 
 2.39.5
 
