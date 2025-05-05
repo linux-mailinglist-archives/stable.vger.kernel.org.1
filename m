@@ -1,57 +1,69 @@
-Return-Path: <stable+bounces-141736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2102EAAB80E
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:25:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29B0EAAB7CF
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:19:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 159483AB366
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:17:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EB7950403F
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:18:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 062863430BF;
-	Tue,  6 May 2025 00:54:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E7B3385422;
+	Tue,  6 May 2025 00:54:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d2GEJX68"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fxf6jSbq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1873A3C1997;
-	Mon,  5 May 2025 23:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D85C72857FF;
+	Mon,  5 May 2025 23:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487447; cv=none; b=W0q68E5DMmfJ/H8REasKkr4nmZKJUyMXZVbtNIQMENi6zWJiWLIfde3IB1ZUy4bD7+ulc7Uftk48V4jocrDJPAblaVU9KQePv/+Wi+m5gXIyzXKFia+y3kBh6icfnLgKCMCAOmeVqflndRXj1wZxAm4jIBPnDEFLlFqBNAchuU4=
+	t=1746487449; cv=none; b=XPC/r9BuWF5MvI5xF1NbWfARwR+MfT0Ky2usAULrvIjEn6px7sdF8Qk2QPMje/mwhNqZlqFs/ZBkqO+w0JqtJmnCRhbGBmnuJPIypP//pRB0obLjd8LSHEtVH4Df0AJ8L/z1TxRnH61DHC8RXljIGT6pktjSl2Xw01ByRvN6bKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487447; c=relaxed/simple;
-	bh=zERVQQNvuOQinF99ex3FLAIPNtpSUKafbHMHhaIZqb0=;
+	s=arc-20240116; t=1746487449; c=relaxed/simple;
+	bh=jFzjI0qQiIPko2HExKolk6Id54lKfQ1zZvtX8oXdN4U=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=fi9PhoI9ua/vwXDL23wUV+jz18fu+i2mGi7/xWtergX+tIHCa84SFnneHueGm69GopbufptsEs8R1FAdy8lAI2yMrpk6Ldc30+vYxeQW5QZNWU1HDSVhNNkDzqvk7kls7IYJFScS3lKOkFGk887sf1dJ/tDsnE03Y1GEc+z9zBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d2GEJX68; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18462C4CEEE;
-	Mon,  5 May 2025 23:24:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JPa59vXpksxjQhNQp5Myt/hXI2DNjtRTp+sJvd6RFORcCZ8ZSNZygwlGxN8St0qXi/pzpE/QhcpLVEcEOmIUSR8N8iZdfWJvDK3GRvygLiFHhg0eiSlfp2vQ/akn4PshaLzitsyt7nA5LifjEY0k3C3W1N7MrbqaW0nL1Lxhjlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fxf6jSbq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 584EAC4CEE4;
+	Mon,  5 May 2025 23:24:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487445;
-	bh=zERVQQNvuOQinF99ex3FLAIPNtpSUKafbHMHhaIZqb0=;
+	s=k20201202; t=1746487448;
+	bh=jFzjI0qQiIPko2HExKolk6Id54lKfQ1zZvtX8oXdN4U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d2GEJX68x0NtHze3U/xreEyB+ayTf6BaNeKTMsh4VI7NKYMT6DzoOaL9M/lDJy/Nh
-	 TGnNG6/RvKFWGpZ7JzdUuMbm7HxN0jPzmovssIN8bT5zVioByfAcPnzpED5vkO6y8t
-	 9WHodEmrkpt3LjqG21EZnxKUmkq5lJD34csWyhAYf/sZI6pEtMtqkO8n0mbKOGg5LF
-	 1CGZVZS6wIeRWslBWcl3CVUrgucSt+nsKmNu8mQQjmT9fthN/5PdeYtRMQ0pcGcgE8
-	 N19VopXM8nXuOAUeQhzoxbD/k/HQmhUtksVKJeEiv8L5kRcveRiyW4o1CP+swIMdhP
-	 7kIsGJsv6I5qQ==
+	b=Fxf6jSbqjLZlof+omE/gphn9mhz9Kd7VYoSuwBMk34/UdR9hoigBFMzikcSOvxfOf
+	 7Gxg1L78dDuNEbAJxTOLgeSPlu+NMybPDA6J8DHSFkmW1XFrJVHLO0R+MzwR9yvsd5
+	 H5vPgjYyorlTqJIVfD/M4Y++pWnqkYSqugyZs+zJimtCAbf97AzgwyfLZNSDuCIEUP
+	 7BuYEjt/MS+zOdoNHZP03S04xxR3gYPl/1c7PBt3k4j0sGY8wEUg6TH6Av9QNd060O
+	 hxV9c6LdqeeZw0LjmU5G6vxqvuiUF3N5bgtryQcKJbyMAcvMTPaOFOuInP1A4SvBeN
+	 0ZxvXBPQ5k5Rg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Isaac Scott <isaac.scott@ideasonboard.com>,
-	Michael Hennerich <michael.hennerich@analog.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Simona Vetter <simona.vetter@ffwll.ch>,
+	Pekka Paalanen <pekka.paalanen@collabora.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Rob Clark <robdclark@gmail.com>,
+	Simon Ser <contact@emersion.fr>,
+	Manasi Navare <navaremanasi@google.com>,
+	=?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= <ville.syrjala@linux.intel.com>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Simona Vetter <simona.vetter@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	lgirdwood@gmail.com
-Subject: [PATCH AUTOSEL 5.4 77/79] regulator: ad5398: Add device tree support
-Date: Mon,  5 May 2025 19:21:49 -0400
-Message-Id: <20250505232151.2698893-77-sashal@kernel.org>
+	simona@ffwll.ch,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 5.4 78/79] drm/atomic: clarify the rules around drm_atomic_state->allow_modeset
+Date: Mon,  5 May 2025 19:21:50 -0400
+Message-Id: <20250505232151.2698893-78-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505232151.2698893-1-sashal@kernel.org>
 References: <20250505232151.2698893-1-sashal@kernel.org>
@@ -61,66 +73,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.293
 Content-Transfer-Encoding: 8bit
 
-From: Isaac Scott <isaac.scott@ideasonboard.com>
+From: Simona Vetter <simona.vetter@ffwll.ch>
 
-[ Upstream commit 5a6a461079decea452fdcae955bccecf92e07e97 ]
+[ Upstream commit c5e3306a424b52e38ad2c28c7f3399fcd03e383d ]
 
-Previously, the ad5398 driver used only platform_data, which is
-deprecated in favour of device tree. This caused the AD5398 to fail to
-probe as it could not load its init_data. If the AD5398 has a device
-tree node, pull the init_data from there using
-of_get_regulator_init_data.
+msm is automagically upgrading normal commits to full modesets, and
+that's a big no-no:
 
-Signed-off-by: Isaac Scott <isaac.scott@ideasonboard.com>
-Acked-by: Michael Hennerich <michael.hennerich@analog.com>
-Link: https://patch.msgid.link/20250128173143.959600-4-isaac.scott@ideasonboard.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+- for one this results in full on->off->on transitions on all these
+  crtc, at least if you're using the usual helpers. Which seems to be
+  the case, and is breaking uapi
+
+- further even if the ctm change itself would not result in flicker,
+  this can hide modesets for other reasons. Which again breaks the
+  uapi
+
+v2: I forgot the case of adding unrelated crtc state. Add that case
+and link to the existing kerneldoc explainers. This has come up in an
+irc discussion with Manasi and Ville about intel's bigjoiner mode.
+Also cc everyone involved in the msm irc discussion, more people
+joined after I sent out v1.
+
+v3: Wording polish from Pekka and Thomas
+
+Acked-by: Pekka Paalanen <pekka.paalanen@collabora.com>
+Acked-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: Pekka Paalanen <pekka.paalanen@collabora.com>
+Cc: Rob Clark <robdclark@gmail.com>
+Cc: Simon Ser <contact@emersion.fr>
+Cc: Manasi Navare <navaremanasi@google.com>
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Simona Vetter <simona.vetter@intel.com>
+Signed-off-by: Simona Vetter <simona.vetter@ffwll.ch>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250108172417.160831-1-simona.vetter@ffwll.ch
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/ad5398.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ include/drm/drm_atomic.h | 23 +++++++++++++++++++++--
+ 1 file changed, 21 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/regulator/ad5398.c b/drivers/regulator/ad5398.c
-index 75f432f61e919..f4d6e62bd963e 100644
---- a/drivers/regulator/ad5398.c
-+++ b/drivers/regulator/ad5398.c
-@@ -14,6 +14,7 @@
- #include <linux/platform_device.h>
- #include <linux/regulator/driver.h>
- #include <linux/regulator/machine.h>
-+#include <linux/regulator/of_regulator.h>
- 
- #define AD5398_CURRENT_EN_MASK	0x8000
- 
-@@ -221,15 +222,20 @@ static int ad5398_probe(struct i2c_client *client,
- 	const struct ad5398_current_data_format *df =
- 			(struct ad5398_current_data_format *)id->driver_data;
- 
--	if (!init_data)
--		return -EINVAL;
--
- 	chip = devm_kzalloc(&client->dev, sizeof(*chip), GFP_KERNEL);
- 	if (!chip)
- 		return -ENOMEM;
- 
- 	config.dev = &client->dev;
-+	if (client->dev.of_node)
-+		init_data = of_get_regulator_init_data(&client->dev,
-+						       client->dev.of_node,
-+						       &ad5398_reg);
-+	if (!init_data)
-+		return -EINVAL;
-+
- 	config.init_data = init_data;
-+	config.of_node = client->dev.of_node;
- 	config.driver_data = chip;
- 
- 	chip->client = client;
+diff --git a/include/drm/drm_atomic.h b/include/drm/drm_atomic.h
+index 927e1205d7aa4..202975db784c6 100644
+--- a/include/drm/drm_atomic.h
++++ b/include/drm/drm_atomic.h
+@@ -323,8 +323,27 @@ struct drm_atomic_state {
+ 	 *
+ 	 * Allow full modeset. This is used by the ATOMIC IOCTL handler to
+ 	 * implement the DRM_MODE_ATOMIC_ALLOW_MODESET flag. Drivers should
+-	 * never consult this flag, instead looking at the output of
+-	 * drm_atomic_crtc_needs_modeset().
++	 * generally not consult this flag, but instead look at the output of
++	 * drm_atomic_crtc_needs_modeset(). The detailed rules are:
++	 *
++	 * - Drivers must not consult @allow_modeset in the atomic commit path.
++	 *   Use drm_atomic_crtc_needs_modeset() instead.
++	 *
++	 * - Drivers must consult @allow_modeset before adding unrelated struct
++	 *   drm_crtc_state to this commit by calling
++	 *   drm_atomic_get_crtc_state(). See also the warning in the
++	 *   documentation for that function.
++	 *
++	 * - Drivers must never change this flag, it is under the exclusive
++	 *   control of userspace.
++	 *
++	 * - Drivers may consult @allow_modeset in the atomic check path, if
++	 *   they have the choice between an optimal hardware configuration
++	 *   which requires a modeset, and a less optimal configuration which
++	 *   can be committed without a modeset. An example would be suboptimal
++	 *   scanout FIFO allocation resulting in increased idle power
++	 *   consumption. This allows userspace to avoid flickering and delays
++	 *   for the normal composition loop at reasonable cost.
+ 	 */
+ 	bool allow_modeset : 1;
+ 	bool legacy_cursor_update : 1;
 -- 
 2.39.5
 
