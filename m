@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-140778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C2D7AAAB70
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:56:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A890DAAAB4E
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:55:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E2D4188BC4F
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:52:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F142188B853
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:51:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D20B23ABCE1;
-	Mon,  5 May 2025 23:18:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64DDC3ABCF0;
+	Mon,  5 May 2025 23:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MxBlDsLK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="euUTsRuP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C6923703B4;
-	Mon,  5 May 2025 23:03:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B1FC3703D1;
+	Mon,  5 May 2025 23:03:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486210; cv=none; b=fbDeiaxt6T8bqtBFrx9ugkOPyAjPI1JKOAPCq5OD8j9umOZIi8KZaJxkr2DiIboLhHxuXBcVgBLh1q77fS82Vm5Phc+KOLbl6PYPSuVnmA/TyVp+PMdSDu/zfoQj6f5QZCy519n3R6+j4SSQkrMQJ5XhTW1nkoAX/Syb4qAPTVY=
+	t=1746486219; cv=none; b=Zqcvevu4TthWHne/DsZ4lUpsN4WlV76Ja1FWCIvWcrhVi7YHi3hHb/TDNTZeIE1XbDiKioJcUt03TSqyDcT+a+P5LwtzAUWkEOvffyr0HNYUJAvDBUdy6EF9uPY+MwyGLPBsTR6WfnaOkAJbN56v4QsWFSxi2xirQTaLB+OHeZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486210; c=relaxed/simple;
-	bh=i0oL4w24qQt12YYISG+B4mmHcITlwFtaK/phJLsUicU=;
+	s=arc-20240116; t=1746486219; c=relaxed/simple;
+	bh=nGvdlCDrWtO7xRo/70W+vOcOv8cOxCWboXoNzYTDJTI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=H6l9kagHesk8IAYd9Y/8rMoKVPjad/63Won/4hvRJcPHBSu70uy8C6s9cVIK2BRxtSNcNqFEZ9tjSVp4JWwmroEbEimyigNEmNDopEmQx3Xu8w0Idh7NPOTuiXS45hO9cIqRT8l8WO5vD9ctMDWe4OXQco9CILgeuoTHLqcSLNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MxBlDsLK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3CC2C4CEE4;
-	Mon,  5 May 2025 23:03:29 +0000 (UTC)
+	 MIME-Version; b=ekuGJz+KEV1zCqkT4WdaBEvfMTUX4u5jR1wMAbweYJX4hXYnRj473KV20w5Rdf416oY3ZZ9YC8S1C0edPOWUvP0vG5dPshM/3jQ+pUiMV0sR9vTE+WEbx+wOU4hgvgrz4aSyWV2i2P2LSTK94hvz9d+8kdHAGU+kzie+psEPvy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=euUTsRuP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ED57C4CEF1;
+	Mon,  5 May 2025 23:03:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486210;
-	bh=i0oL4w24qQt12YYISG+B4mmHcITlwFtaK/phJLsUicU=;
+	s=k20201202; t=1746486218;
+	bh=nGvdlCDrWtO7xRo/70W+vOcOv8cOxCWboXoNzYTDJTI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MxBlDsLKPQuSNZROyzps2KcsgIrCaKExUZ/0w9jQj+RaluVEDJM2C/fsje3bSBIBQ
-	 3NJKSCnLGhPKh9fm9kpOt/sd+zn/IigUH1qhh4xiveHIq161fyA+QNwHKEmBx2KZ+n
-	 JX1z3cR9ZDy5rgpwYZmbnaORFwU5XIc7c57kcoldhxT7NYUku5H5U3cm692t+3ZUJZ
-	 agp0j3dJNRo1CN/7zjpn0RXjKl9P+UhnrWDUf8vt/W6eJnfvoWheFprMN9zLzqcey6
-	 LtwxRS7yWjROVafZpXwUfRHxw15Z0mwp9IKMhuFEJ2Rwb/XsqgE/c5uPu23aoSC1SE
-	 UvLc66MHqCPdA==
+	b=euUTsRuPjt8Rkwe95Tfoal9PSRYLN/7NkGXA2l9pPLR/t6pjsUWQN1qJCKn3qQuc4
+	 4HGvHxLDFFVy8iQ1o/xZqr+LVP4MvqLOLmwFoPfMIqgX/4XaLVtxj1FlXW0b5BrtDH
+	 n6tVN/cWmoiuCIRXXCkW+YuZY8+oGUufAeseS/5ehOmZcr2qBY+P496g8n9mDfJf9n
+	 OGsUDd1tcHHaM+zi9yqH06zheU361JrvPK7OFzLm2nzOPtICCP9Uzr5zCC/2Nhac3Z
+	 YSUxIDq9Nq0WtphKJGzQqwT2lWqQhRyBkdWBWs2AnTITGEllmsao6sebgjLjeOWkyY
+	 V0G7JVIZDRLbA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Tejun Heo <tj@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 6.6 208/294] kernfs: Don't re-lock kernfs_root::kernfs_rwsem in kernfs_fop_readdir().
-Date: Mon,  5 May 2025 18:55:08 -0400
-Message-Id: <20250505225634.2688578-208-sashal@kernel.org>
+Cc: Andrii Nakryiko <andrii@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	daniel@iogearbox.net,
+	bpf@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 213/294] libbpf: fix LDX/STX/ST CO-RE relocation size adjustment logic
+Date: Mon,  5 May 2025 18:55:13 -0400
+Message-Id: <20250505225634.2688578-213-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -65,53 +68,90 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit 9aab10a0249eab4ec77c6a5e4f66442610c12a09 ]
+[ Upstream commit 06096d19ee3897a7e70922580159607fe315da7a ]
 
-The readdir operation iterates over all entries and invokes dir_emit()
-for every entry passing kernfs_node::name as argument.
-Since the name argument can change, and become invalid, the
-kernfs_root::kernfs_rwsem lock should not be dropped to prevent renames
-during the operation.
+Libbpf has a somewhat obscure feature of automatically adjusting the
+"size" of LDX/STX/ST instruction (memory store and load instructions),
+based on originally recorded access size (u8, u16, u32, or u64) and the
+actual size of the field on target kernel. This is meant to facilitate
+using BPF CO-RE on 32-bit architectures (pointers are always 64-bit in
+BPF, but host kernel's BTF will have it as 32-bit type), as well as
+generally supporting safe type changes (unsigned integer type changes
+can be transparently "relocated").
 
-The lock drop around dir_emit() has been initially introduced in commit
-   1e5289c97bba2 ("sysfs: Cache the last sysfs_dirent to improve readdir scalability v2")
+One issue that surfaced only now, 5 years after this logic was
+implemented, is how this all works when dealing with fields that are
+arrays. This isn't all that easy and straightforward to hit (see
+selftests that reproduce this condition), but one of sched_ext BPF
+programs did hit it with innocent looking loop.
 
-to avoid holding a global lock during a page fault. The lock drop is
-wrong since the support of renames and not a big burden since the lock
-is no longer global.
+Long story short, libbpf used to calculate entire array size, instead of
+making sure to only calculate array's element size. But it's the element
+that is loaded by LDX/STX/ST instructions (1, 2, 4, or 8 bytes), so
+that's what libbpf should check. This patch adjusts the logic for
+arrays and fixed the issue.
 
-Don't re-acquire kernfs_root::kernfs_rwsem while copying the name to the
-userpace buffer.
-
-Acked-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://lore.kernel.org/r/20250213145023.2820193-5-bigeasy@linutronix.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Emil Tsalapatis <emil@etsalapatis.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20250207014809.1573841-1-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/kernfs/dir.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tools/lib/bpf/relo_core.c | 24 ++++++++++++++++++++----
+ 1 file changed, 20 insertions(+), 4 deletions(-)
 
-diff --git a/fs/kernfs/dir.c b/fs/kernfs/dir.c
-index b068ed32d7b32..60ea525dd205f 100644
---- a/fs/kernfs/dir.c
-+++ b/fs/kernfs/dir.c
-@@ -1868,10 +1868,10 @@ static int kernfs_fop_readdir(struct file *file, struct dir_context *ctx)
- 		file->private_data = pos;
- 		kernfs_get(pos);
- 
--		up_read(&root->kernfs_rwsem);
--		if (!dir_emit(ctx, name, len, ino, type))
-+		if (!dir_emit(ctx, name, len, ino, type)) {
-+			up_read(&root->kernfs_rwsem);
- 			return 0;
--		down_read(&root->kernfs_rwsem);
-+		}
- 	}
- 	up_read(&root->kernfs_rwsem);
- 	file->private_data = NULL;
+diff --git a/tools/lib/bpf/relo_core.c b/tools/lib/bpf/relo_core.c
+index 63a4d5ad12d1a..26cde1b27174b 100644
+--- a/tools/lib/bpf/relo_core.c
++++ b/tools/lib/bpf/relo_core.c
+@@ -683,7 +683,7 @@ static int bpf_core_calc_field_relo(const char *prog_name,
+ {
+ 	const struct bpf_core_accessor *acc;
+ 	const struct btf_type *t;
+-	__u32 byte_off, byte_sz, bit_off, bit_sz, field_type_id;
++	__u32 byte_off, byte_sz, bit_off, bit_sz, field_type_id, elem_id;
+ 	const struct btf_member *m;
+ 	const struct btf_type *mt;
+ 	bool bitfield;
+@@ -706,8 +706,14 @@ static int bpf_core_calc_field_relo(const char *prog_name,
+ 	if (!acc->name) {
+ 		if (relo->kind == BPF_CORE_FIELD_BYTE_OFFSET) {
+ 			*val = spec->bit_offset / 8;
+-			/* remember field size for load/store mem size */
+-			sz = btf__resolve_size(spec->btf, acc->type_id);
++			/* remember field size for load/store mem size;
++			 * note, for arrays we care about individual element
++			 * sizes, not the overall array size
++			 */
++			t = skip_mods_and_typedefs(spec->btf, acc->type_id, &elem_id);
++			while (btf_is_array(t))
++				t = skip_mods_and_typedefs(spec->btf, btf_array(t)->type, &elem_id);
++			sz = btf__resolve_size(spec->btf, elem_id);
+ 			if (sz < 0)
+ 				return -EINVAL;
+ 			*field_sz = sz;
+@@ -767,7 +773,17 @@ static int bpf_core_calc_field_relo(const char *prog_name,
+ 	case BPF_CORE_FIELD_BYTE_OFFSET:
+ 		*val = byte_off;
+ 		if (!bitfield) {
+-			*field_sz = byte_sz;
++			/* remember field size for load/store mem size;
++			 * note, for arrays we care about individual element
++			 * sizes, not the overall array size
++			 */
++			t = skip_mods_and_typedefs(spec->btf, field_type_id, &elem_id);
++			while (btf_is_array(t))
++				t = skip_mods_and_typedefs(spec->btf, btf_array(t)->type, &elem_id);
++			sz = btf__resolve_size(spec->btf, elem_id);
++			if (sz < 0)
++				return -EINVAL;
++			*field_sz = sz;
+ 			*type_id = field_type_id;
+ 		}
+ 		break;
 -- 
 2.39.5
 
