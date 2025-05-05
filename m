@@ -1,58 +1,67 @@
-Return-Path: <stable+bounces-140121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84869AAA534
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:44:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA345AAA554
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:48:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 361E017BE1B
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:44:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47123980C74
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:44:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3CF130DE1D;
-	Mon,  5 May 2025 22:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DCBC28BA93;
+	Mon,  5 May 2025 22:29:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vp7IuXDG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MLkH9D8a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B36E30DE13;
-	Mon,  5 May 2025 22:29:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43A5830DE3B;
+	Mon,  5 May 2025 22:29:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484147; cv=none; b=BYTw9334tzTQJOUXP20eM2uP/0DmFVTz9FWJTIpbIST6nC5L4rtZL8FB5zkFsSybzRnT4C64KI3XGrF5JuF9NRpuKFCQlY7mP1PTYUvGBqqTtckThRoTQf6W7gAvbumTc7e5jKvJXXAiVbfnueNxEHJ3FfOzqraPkykUlIP8lZg=
+	t=1746484149; cv=none; b=C4rJndIdHpdzk1227RsPtReJTPMqK8Kwb92pb2lMOMaqUztd2p1W/fkM4UkWQeyv/nfbaoIcLqSfGnZ9uWblPFgsfCyniOtkLJoBED6mlE+bXHyNMQc5ZxAhr1yKm5MSqc8iu7MsO+Nw2DKJG+B2/yS4sDp1p3ouaXQpuvEaE+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484147; c=relaxed/simple;
-	bh=xp7i7yrYfua8EgpoX9n1vKr200NGNNoWozeC3ptxk7o=;
+	s=arc-20240116; t=1746484149; c=relaxed/simple;
+	bh=+NGM2ARLj6oBXNjiFLOXDlNgO6++BB6IQRHibvF3vXE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Pqvc5gBzaBM9O3vNAde6yWE5yIl2deGtWh1oI2B9Otbgosk4nWMDhSVb20KiyXHTw/wrxVrcSvggP2wKpMBygVdSTzPdbZsEdQwR00tGprwhmaeFL9xze2+ddxt9H4Sdsx6dYB+/OwXaW60Ry/xcxgB/INmmMl7kn/0ltHtCR5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vp7IuXDG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBA16C4CEE4;
-	Mon,  5 May 2025 22:29:05 +0000 (UTC)
+	 MIME-Version; b=DCfSY+oFq0jMGLgPsLPoO+73V69gxw3PX+EMyO9mizUwpvMw1KaA2ViJR4qhM5IP5aP+43nNuHcH7rpAWfprpj/HtUxdd32ZbSUsCuDASM6BXcMljqX9P0Z+WkZ7sMLfxEPD+k+LQ9HpbNj5Q5Bgi0IOc2ARIBvivmI8CGGSEoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MLkH9D8a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E9D4C4CEED;
+	Mon,  5 May 2025 22:29:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484146;
-	bh=xp7i7yrYfua8EgpoX9n1vKr200NGNNoWozeC3ptxk7o=;
+	s=k20201202; t=1746484149;
+	bh=+NGM2ARLj6oBXNjiFLOXDlNgO6++BB6IQRHibvF3vXE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vp7IuXDGQZW+RFl8siIvYrEjEVe5K4nKVBVIu+0XNgnghJANe7JSJpdSrTBlS5Gio
-	 T7vw+9nbYedvcwSZC1kD/uoFDWZEsYIAWQtNqWonQNu5tEzW687ZwHz/hGZHy5d7Qo
-	 0wTxPaVgY14vJefVQN+xxjLegP9zc9LtYBOAsZ3iFACxXxavET31ddAM+sJwz8amjB
-	 zgtZyravKCEgZeYC8lGNE09aMQuJ/xyWkCvUkhMdxZYLF+AlyTd2ot0LtyP/o60PcB
-	 r2aVJ0DF0H7SwjHYXi2UzEUm4pT0B6c/tYgwQj3LdSutS1HmIpO1iAfKi4PT7WoomC
-	 j6nfEd2OJ6dAA==
+	b=MLkH9D8aK8aUXEcOj4PwOs7JldWpxNR4Y9ZEE+dIp4DieuXlitLAU4IBjT0iL44CI
+	 VInd74mRW6mq0rAwUIR2Jfeg734mvtmj73sAcMOJ1QZo22s/4IIXSrMkN2tGhoviSY
+	 1kjG/KqNsIFozSU2CiOBC9//U7WrDi3WExO+f6QnUP7t+bNQxUnp7ZnGtII0jewJPg
+	 n4nMA/0pGc5NOiTEsn5UFzo/Rhfvvw+QX1G8R6BIW+9TmEK4Yvcb5KnHRBHVWvQTZF
+	 labZXV84E2repOs0HpXg0ky2GQDwLQ6fXPo1FeFSYNbqJw7ZbTK/1sIfHMjKNEkWKd
+	 D5tj5aMAxgkUg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Jason Baron <jbaron@akamai.com>,
-	Tony Luck <tony.luck@intel.com>,
+Cc: Jason Xing <kerneljasonxing@gmail.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	bp@alien8.de,
-	linux-edac@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 374/642] EDAC/ie31200: work around false positive build warning
-Date: Mon,  5 May 2025 18:09:50 -0400
-Message-Id: <20250505221419.2672473-374-sashal@kernel.org>
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	edumazet@google.com,
+	ncardwell@google.com,
+	davem@davemloft.net,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	martin.lau@linux.dev,
+	dsahern@kernel.org,
+	bpf@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 375/642] bpf: Prevent unsafe access to the sock fields in the BPF timestamping callback
+Date: Mon,  5 May 2025 18:09:51 -0400
+Message-Id: <20250505221419.2672473-375-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -67,103 +76,147 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Jason Xing <kerneljasonxing@gmail.com>
 
-[ Upstream commit c29dfd661fe2f8d1b48c7f00590929c04b25bf40 ]
+[ Upstream commit fd93eaffb3f977b23bc0a48d4c8616e654fcf133 ]
 
-gcc-14 produces a bogus warning in some configurations:
+The subsequent patch will implement BPF TX timestamping. It will
+call the sockops BPF program without holding the sock lock.
 
-drivers/edac/ie31200_edac.c: In function 'ie31200_probe1.isra':
-drivers/edac/ie31200_edac.c:412:26: error: 'dimm_info' is used uninitialized [-Werror=uninitialized]
-  412 |         struct dimm_data dimm_info[IE31200_CHANNELS][IE31200_DIMMS_PER_CHANNEL];
-      |                          ^~~~~~~~~
-drivers/edac/ie31200_edac.c:412:26: note: 'dimm_info' declared here
-  412 |         struct dimm_data dimm_info[IE31200_CHANNELS][IE31200_DIMMS_PER_CHANNEL];
-      |                          ^~~~~~~~~
+This breaks the current assumption that all sock ops programs will
+hold the sock lock. The sock's fields of the uapi's bpf_sock_ops
+requires this assumption.
 
-I don't see any way the unintialized access could really happen here,
-but I can see why the compiler gets confused by the two loops.
+To address this, a new "u8 is_locked_tcp_sock;" field is added. This
+patch sets it in the current sock_ops callbacks. The "is_fullsock"
+test is then replaced by the "is_locked_tcp_sock" test during
+sock_ops_convert_ctx_access().
 
-Instead, rework the two nested loops to only read the addr_decode
-registers and then keep only one instance of the dimm info structure.
+The new TX timestamping callbacks added in the subsequent patch will
+not have this set. This will prevent unsafe access from the new
+timestamping callbacks.
 
-[Tony: Qiuxu pointed out that the "populate DIMM info" comment was left
-behind in the refactor and suggested moving it. I deleted the comment
-as unnecessry in front os a call to populate_dimm_info(). That seems
-pretty self-describing.]
+Potentially, we could allow read-only access. However, this would
+require identifying which callback is read-safe-only and also requires
+additional BPF instruction rewrites in the covert_ctx. Since the BPF
+program can always read everything from a socket (e.g., by using
+bpf_core_cast), this patch keeps it simple and disables all read
+and write access to any socket fields through the bpf_sock_ops
+UAPI from the new TX timestamping callback.
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Jason Baron <jbaron@akamai.com>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Link: https://lore.kernel.org/all/20250122065031.1321015-1-arnd@kernel.org
+Moreover, note that some of the fields in bpf_sock_ops are specific
+to tcp_sock, and sock_ops currently only supports tcp_sock. In
+the future, UDP timestamping will be added, which will also break
+this assumption. The same idea used in this patch will be reused.
+Considering that the current sock_ops only supports tcp_sock, the
+variable is named is_locked_"tcp"_sock.
+
+Signed-off-by: Jason Xing <kerneljasonxing@gmail.com>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://patch.msgid.link/20250220072940.99994-4-kerneljasonxing@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/ie31200_edac.c | 28 +++++++++++++---------------
- 1 file changed, 13 insertions(+), 15 deletions(-)
+ include/linux/filter.h | 1 +
+ include/net/tcp.h      | 1 +
+ net/core/filter.c      | 8 ++++----
+ net/ipv4/tcp_input.c   | 2 ++
+ net/ipv4/tcp_output.c  | 2 ++
+ 5 files changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/edac/ie31200_edac.c b/drivers/edac/ie31200_edac.c
-index 9b02a6b43ab58..a8dd55ec52cea 100644
---- a/drivers/edac/ie31200_edac.c
-+++ b/drivers/edac/ie31200_edac.c
-@@ -408,10 +408,9 @@ static int ie31200_probe1(struct pci_dev *pdev, int dev_idx)
- 	int i, j, ret;
- 	struct mem_ctl_info *mci = NULL;
- 	struct edac_mc_layer layers[2];
--	struct dimm_data dimm_info[IE31200_CHANNELS][IE31200_DIMMS_PER_CHANNEL];
- 	void __iomem *window;
- 	struct ie31200_priv *priv;
--	u32 addr_decode, mad_offset;
-+	u32 addr_decode[IE31200_CHANNELS], mad_offset;
- 
- 	/*
- 	 * Kaby Lake, Coffee Lake seem to work like Skylake. Please re-visit
-@@ -469,19 +468,10 @@ static int ie31200_probe1(struct pci_dev *pdev, int dev_idx)
- 		mad_offset = IE31200_MAD_DIMM_0_OFFSET;
+diff --git a/include/linux/filter.h b/include/linux/filter.h
+index a3ea462815957..d36d5d5180b11 100644
+--- a/include/linux/filter.h
++++ b/include/linux/filter.h
+@@ -1508,6 +1508,7 @@ struct bpf_sock_ops_kern {
+ 	void	*skb_data_end;
+ 	u8	op;
+ 	u8	is_fullsock;
++	u8	is_locked_tcp_sock;
+ 	u8	remaining_opt_len;
+ 	u64	temp;			/* temp and everything after is not
+ 					 * initialized to 0 before calling
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index 2d08473a6dc00..33c50ea976c88 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -2671,6 +2671,7 @@ static inline int tcp_call_bpf(struct sock *sk, int op, u32 nargs, u32 *args)
+ 	memset(&sock_ops, 0, offsetof(struct bpf_sock_ops_kern, temp));
+ 	if (sk_fullsock(sk)) {
+ 		sock_ops.is_fullsock = 1;
++		sock_ops.is_locked_tcp_sock = 1;
+ 		sock_owned_by_me(sk);
  	}
  
--	/* populate DIMM info */
- 	for (i = 0; i < IE31200_CHANNELS; i++) {
--		addr_decode = readl(window + mad_offset +
-+		addr_decode[i] = readl(window + mad_offset +
- 					(i * 4));
--		edac_dbg(0, "addr_decode: 0x%x\n", addr_decode);
--		for (j = 0; j < IE31200_DIMMS_PER_CHANNEL; j++) {
--			populate_dimm_info(&dimm_info[i][j], addr_decode, j,
--					   skl);
--			edac_dbg(0, "size: 0x%x, rank: %d, width: %d\n",
--				 dimm_info[i][j].size,
--				 dimm_info[i][j].dual_rank,
--				 dimm_info[i][j].x16_width);
--		}
-+		edac_dbg(0, "addr_decode: 0x%x\n", addr_decode[i]);
+diff --git a/net/core/filter.c b/net/core/filter.c
+index b0df9b7d16d3f..5fc520c815aee 100644
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -10366,10 +10366,10 @@ static u32 sock_ops_convert_ctx_access(enum bpf_access_type type,
+ 		}							      \
+ 		*insn++ = BPF_LDX_MEM(BPF_FIELD_SIZEOF(			      \
+ 						struct bpf_sock_ops_kern,     \
+-						is_fullsock),		      \
++						is_locked_tcp_sock),	      \
+ 				      fullsock_reg, si->src_reg,	      \
+ 				      offsetof(struct bpf_sock_ops_kern,      \
+-					       is_fullsock));		      \
++					       is_locked_tcp_sock));	      \
+ 		*insn++ = BPF_JMP_IMM(BPF_JEQ, fullsock_reg, 0, jmp);	      \
+ 		if (si->dst_reg == si->src_reg)				      \
+ 			*insn++ = BPF_LDX_MEM(BPF_DW, reg, si->src_reg,	      \
+@@ -10454,10 +10454,10 @@ static u32 sock_ops_convert_ctx_access(enum bpf_access_type type,
+ 					       temp));			      \
+ 		*insn++ = BPF_LDX_MEM(BPF_FIELD_SIZEOF(			      \
+ 						struct bpf_sock_ops_kern,     \
+-						is_fullsock),		      \
++						is_locked_tcp_sock),	      \
+ 				      reg, si->dst_reg,			      \
+ 				      offsetof(struct bpf_sock_ops_kern,      \
+-					       is_fullsock));		      \
++					       is_locked_tcp_sock));	      \
+ 		*insn++ = BPF_JMP_IMM(BPF_JEQ, reg, 0, 2);		      \
+ 		*insn++ = BPF_LDX_MEM(BPF_FIELD_SIZEOF(			      \
+ 						struct bpf_sock_ops_kern, sk),\
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 1b09b4d76c296..d1ed4ac74e1d0 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -169,6 +169,7 @@ static void bpf_skops_parse_hdr(struct sock *sk, struct sk_buff *skb)
+ 	memset(&sock_ops, 0, offsetof(struct bpf_sock_ops_kern, temp));
+ 	sock_ops.op = BPF_SOCK_OPS_PARSE_HDR_OPT_CB;
+ 	sock_ops.is_fullsock = 1;
++	sock_ops.is_locked_tcp_sock = 1;
+ 	sock_ops.sk = sk;
+ 	bpf_skops_init_skb(&sock_ops, skb, tcp_hdrlen(skb));
+ 
+@@ -185,6 +186,7 @@ static void bpf_skops_established(struct sock *sk, int bpf_op,
+ 	memset(&sock_ops, 0, offsetof(struct bpf_sock_ops_kern, temp));
+ 	sock_ops.op = bpf_op;
+ 	sock_ops.is_fullsock = 1;
++	sock_ops.is_locked_tcp_sock = 1;
+ 	sock_ops.sk = sk;
+ 	/* sk with TCP_REPAIR_ON does not have skb in tcp_finish_connect */
+ 	if (skb)
+diff --git a/net/ipv4/tcp_output.c b/net/ipv4/tcp_output.c
+index 6031d7f7f5198..2398b0fc62225 100644
+--- a/net/ipv4/tcp_output.c
++++ b/net/ipv4/tcp_output.c
+@@ -525,6 +525,7 @@ static void bpf_skops_hdr_opt_len(struct sock *sk, struct sk_buff *skb,
+ 		sock_owned_by_me(sk);
+ 
+ 		sock_ops.is_fullsock = 1;
++		sock_ops.is_locked_tcp_sock = 1;
+ 		sock_ops.sk = sk;
  	}
  
- 	/*
-@@ -492,14 +482,22 @@ static int ie31200_probe1(struct pci_dev *pdev, int dev_idx)
- 	 */
- 	for (i = 0; i < IE31200_DIMMS_PER_CHANNEL; i++) {
- 		for (j = 0; j < IE31200_CHANNELS; j++) {
-+			struct dimm_data dimm_info;
- 			struct dimm_info *dimm;
- 			unsigned long nr_pages;
+@@ -570,6 +571,7 @@ static void bpf_skops_write_hdr_opt(struct sock *sk, struct sk_buff *skb,
+ 		sock_owned_by_me(sk);
  
--			nr_pages = IE31200_PAGES(dimm_info[j][i].size, skl);
-+			populate_dimm_info(&dimm_info, addr_decode[j], i,
-+					   skl);
-+			edac_dbg(0, "size: 0x%x, rank: %d, width: %d\n",
-+				 dimm_info.size,
-+				 dimm_info.dual_rank,
-+				 dimm_info.x16_width);
-+
-+			nr_pages = IE31200_PAGES(dimm_info.size, skl);
- 			if (nr_pages == 0)
- 				continue;
+ 		sock_ops.is_fullsock = 1;
++		sock_ops.is_locked_tcp_sock = 1;
+ 		sock_ops.sk = sk;
+ 	}
  
--			if (dimm_info[j][i].dual_rank) {
-+			if (dimm_info.dual_rank) {
- 				nr_pages = nr_pages / 2;
- 				dimm = edac_get_dimm(mci, (i * 2) + 1, j, 0);
- 				dimm->nr_pages = nr_pages;
 -- 
 2.39.5
 
