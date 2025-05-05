@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-140182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1799AAA62B
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:06:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76709AAA639
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:08:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 21B967A1829
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:58:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE5F27AFDE4
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:58:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F039D31A9FF;
-	Mon,  5 May 2025 22:31:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10CAD29187A;
+	Mon,  5 May 2025 22:31:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fmf/pbAp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NJB4Buvc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A627731A9F0;
-	Mon,  5 May 2025 22:31:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC255291872;
+	Mon,  5 May 2025 22:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484286; cv=none; b=YhCd18U+JdNOJAck+V0dydsgmuPxRCQ2y235pJjnOGaiywYaSYekg76S2qFwXdnyetphYd9uFyq6C1xuihDTHr0RlGwewQkea8T4PX689JSmZFKyDOpt9joHEiXqd35B9zUCXQ3eODy+BNa7MXKFaCIi+/O6dtEXUZwcbi1RWDk=
+	t=1746484289; cv=none; b=lMes8BCnMoQ2VlaDqD1Ena4aD3K1/bpYDaAzThczCyv4DtJzMQHkzMCzlEREDedVShIO7TWanG2ml4g2WNqXPO5/auFWgygeNVKgEPFYbJ4q936xM9pZ6mSWA8jm0nf+tRdKmWr0y6CmWh9/0v88WMEt64K46HOkaV3/pIBCsKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484286; c=relaxed/simple;
-	bh=/poekQtgswXL0n9PrpAg6A9ekTrrgUkF7TlsYeW/k5A=;
+	s=arc-20240116; t=1746484289; c=relaxed/simple;
+	bh=zpK1R8wze3U6ReEPtkYuk8uW5B/Opn6Y5h40oQ9O7To=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=UbNpKWCWWCWm9d6tl9gRwmUELIrFUkgZcnzIC7EhIEpUTrIayt2Hha+g7szLII9ugl3N60WwE1bHkXWw3FkT1HIhxrpmeDgPeeTlre2OLSCLtmZZjMCptCZgFAsvmdIFE5M8bwi3j8lR2kvsjbKrbhQc+SNkGdby8jEsr9cAB5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fmf/pbAp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAA9DC4CEE4;
-	Mon,  5 May 2025 22:31:24 +0000 (UTC)
+	 MIME-Version; b=QGPpeAkh2Cya9naWBf7DwbD5UIZQhb5qJFvRcxsBLvHgb7j9zsO6XqjDsDOx4iEj9ALAoxchy7XiYrjwU38AcYmzun1+ePCIt03XfJj8mE7hR4qJ8WcewdTwGhE7mUj2irqVQbavF4iN579BJQ4TmToB3aFYO8uwOu4MAzfHNR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NJB4Buvc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C387C4CEEF;
+	Mon,  5 May 2025 22:31:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484286;
-	bh=/poekQtgswXL0n9PrpAg6A9ekTrrgUkF7TlsYeW/k5A=;
+	s=k20201202; t=1746484289;
+	bh=zpK1R8wze3U6ReEPtkYuk8uW5B/Opn6Y5h40oQ9O7To=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fmf/pbApYTbi3tFGodyvle1GmCnhb/90jJEvxA2Zvg+y4ZDP738BBtFbtGNzo/ssS
-	 B30Ie4HHc2MbP4apGimkU1notpFr9jXrmOXw0tT7wR9+SDqw2beY0AIOKJegtNL6v/
-	 CtLCXmJHy1GXla5qivzwFZLvJ09OuUEXT/XuQce+rIVgvc6I347g/tcloVt3L77izo
-	 6SksJZTwOBqv/1k9VSrOzCu7QfFLTYvCiVLfLrHd3lgeXO0uoj620JMZo+osgMhX/p
-	 Ih6oSO6fxtc8Z+DzTmvoIXnkrVxfZhaIT3XiOpjd7wOsC4AtkSscAo8TR6351ZP81L
-	 Has6M+nfMVR3A==
+	b=NJB4BuvcvYrpgwRwqL3ROSopDaUcy+mqfE2q0qdT6uk4SvYVnjXiw3uxFGTKBrlWP
+	 3tgZrdIVDC3tmbE7m0tx5ysq41YnegMxghRRqPp4OBGjZL6IRxao+VW3SkV+l7y42h
+	 OfDU1xDB4wm0pEtfvxKWtsuq0pon/Sf2EuQxTLPTDtXtXkVvwmLWByUoeiMUr+uOtl
+	 0jm9gwKt/xc4suenBMKAMm20NPSMlDk5GFMDRxtfiTbmcNNCznyibH1uPxah+DEQQ+
+	 KtNA3QJIpa8HoyYCMSKFt/cp4iVteKl3zjNWWoZuPfrklrjoMrJCmPZw2XoVOdQQqi
+	 J/pGXh+FEHBXw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kees Cook <kees@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>,
+	Francois Dugast <francois.dugast@intel.com>,
+	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	tariqt@nvidia.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	yishaih@nvidia.com,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 435/642] net/mlx4_core: Avoid impossible mlx4_db_alloc() order value
-Date: Mon,  5 May 2025 18:10:51 -0400
-Message-Id: <20250505221419.2672473-435-sashal@kernel.org>
+	thomas.hellstrom@linux.intel.com,
+	rodrigo.vivi@intel.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	intel-xe@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.14 437/642] drm/xe: Fix xe_tile_init_noalloc() error propagation
+Date: Mon,  5 May 2025 18:10:53 -0400
+Message-Id: <20250505221419.2672473-437-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -72,76 +71,37 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Kees Cook <kees@kernel.org>
+From: Lucas De Marchi <lucas.demarchi@intel.com>
 
-[ Upstream commit 4a6f18f28627e121bd1f74b5fcc9f945d6dbeb1e ]
+[ Upstream commit 0bcf41171c64234e79eb3552d00f0aad8a47e8d3 ]
 
-GCC can see that the value range for "order" is capped, but this leads
-it to consider that it might be negative, leading to a false positive
-warning (with GCC 15 with -Warray-bounds -fdiagnostics-details):
+Propagate the error to the caller so initialization properly stops if
+sysfs creation fails.
 
-../drivers/net/ethernet/mellanox/mlx4/alloc.c:691:47: error: array subscript -1 is below array bounds of 'long unsigned int *[2]' [-Werror=array-bounds=]
-  691 |                 i = find_first_bit(pgdir->bits[o], MLX4_DB_PER_PAGE >> o);
-      |                                    ~~~~~~~~~~~^~~
-  'mlx4_alloc_db_from_pgdir': events 1-2
-  691 |                 i = find_first_bit(pgdir->bits[o], MLX4_DB_PER_PAGE >> o);                        |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      |                     |                         |                                                   |                     |                         (2) out of array bounds here
-      |                     (1) when the condition is evaluated to true                             In file included from ../drivers/net/ethernet/mellanox/mlx4/mlx4.h:53,
-                 from ../drivers/net/ethernet/mellanox/mlx4/alloc.c:42:
-../include/linux/mlx4/device.h:664:33: note: while referencing 'bits'
-  664 |         unsigned long          *bits[2];
-      |                                 ^~~~
-
-Switch the argument to unsigned int, which removes the compiler needing
-to consider negative values.
-
-Signed-off-by: Kees Cook <kees@kernel.org>
-Link: https://patch.msgid.link/20250210174504.work.075-kees@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Francois Dugast <francois.dugast@intel.com>
+Reviewed-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250213192909.996148-4-lucas.demarchi@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx4/alloc.c | 6 +++---
- include/linux/mlx4/device.h                | 2 +-
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/xe/xe_tile.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx4/alloc.c b/drivers/net/ethernet/mellanox/mlx4/alloc.c
-index b330020dc0d67..f2bded847e61d 100644
---- a/drivers/net/ethernet/mellanox/mlx4/alloc.c
-+++ b/drivers/net/ethernet/mellanox/mlx4/alloc.c
-@@ -682,9 +682,9 @@ static struct mlx4_db_pgdir *mlx4_alloc_db_pgdir(struct device *dma_device)
+diff --git a/drivers/gpu/drm/xe/xe_tile.c b/drivers/gpu/drm/xe/xe_tile.c
+index 07cf7cfe4abd5..37f170effcd67 100644
+--- a/drivers/gpu/drm/xe/xe_tile.c
++++ b/drivers/gpu/drm/xe/xe_tile.c
+@@ -176,9 +176,7 @@ int xe_tile_init_noalloc(struct xe_tile *tile)
+ 
+ 	xe_wa_apply_tile_workarounds(tile);
+ 
+-	err = xe_tile_sysfs_init(tile);
+-
+-	return 0;
++	return xe_tile_sysfs_init(tile);
  }
  
- static int mlx4_alloc_db_from_pgdir(struct mlx4_db_pgdir *pgdir,
--				    struct mlx4_db *db, int order)
-+				    struct mlx4_db *db, unsigned int order)
- {
--	int o;
-+	unsigned int o;
- 	int i;
- 
- 	for (o = order; o <= 1; ++o) {
-@@ -712,7 +712,7 @@ static int mlx4_alloc_db_from_pgdir(struct mlx4_db_pgdir *pgdir,
- 	return 0;
- }
- 
--int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, int order)
-+int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, unsigned int order)
- {
- 	struct mlx4_priv *priv = mlx4_priv(dev);
- 	struct mlx4_db_pgdir *pgdir;
-diff --git a/include/linux/mlx4/device.h b/include/linux/mlx4/device.h
-index 27f42f713c891..86f0f2a25a3d6 100644
---- a/include/linux/mlx4/device.h
-+++ b/include/linux/mlx4/device.h
-@@ -1135,7 +1135,7 @@ int mlx4_write_mtt(struct mlx4_dev *dev, struct mlx4_mtt *mtt,
- int mlx4_buf_write_mtt(struct mlx4_dev *dev, struct mlx4_mtt *mtt,
- 		       struct mlx4_buf *buf);
- 
--int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, int order);
-+int mlx4_db_alloc(struct mlx4_dev *dev, struct mlx4_db *db, unsigned int order);
- void mlx4_db_free(struct mlx4_dev *dev, struct mlx4_db *db);
- 
- int mlx4_alloc_hwq_res(struct mlx4_dev *dev, struct mlx4_hwq_resources *wqres,
+ void xe_tile_migrate_wait(struct xe_tile *tile)
 -- 
 2.39.5
 
