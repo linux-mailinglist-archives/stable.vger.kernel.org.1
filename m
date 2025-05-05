@@ -1,60 +1,66 @@
-Return-Path: <stable+bounces-141525-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47E95AAB432
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:01:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCF87AAB44D
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:04:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8BE817C38A
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:58:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 040133A7310
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:57:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2A2A473DA0;
-	Tue,  6 May 2025 00:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3404474745;
+	Tue,  6 May 2025 00:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dtpum0PY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uh5mCCp8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFAC43839A1;
-	Mon,  5 May 2025 23:09:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD1172EEBC3;
+	Mon,  5 May 2025 23:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486593; cv=none; b=AzDnKY1EvHMLZw/rgzx9bVRe73pkG1OnYt4+Rl2JfUo6iX/Kt9omR5ZiXTKi0W0vJEZ1bDPJ8QsTV8eWzO3IfNxlDFKWcydhLGlGjMNyVVgZhPtbA3RsFJJNW07wMIgDR/I+EoB1P6LN9B881DTzDcJ1e5Gvs1+RQ7rjl5NVoww=
+	t=1746486600; cv=none; b=AUeAo1yxbDZ+ruRDgPaGxmLfYUf8SsUqX9jGOqFn+rsi7np2ncAOPe2ZnszMqtaFncsQS1P+GXWdDTZC5ZceCHYMCdvzhTDjC0QVjEaiOhEN7ixx8It/6DrXADT1uqiPbh0rGpdOkbTvmnCaXCVFqReinAhlg5nTEBbKJ+sswZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486593; c=relaxed/simple;
-	bh=8NVCDiz8iITfIRqltj6+2O2/8Z/wjMt5J+O98JIyMaA=;
+	s=arc-20240116; t=1746486600; c=relaxed/simple;
+	bh=jHrv6jf5BhecfcyDAtC7C0iKtIoXl+aJkKi5SvQn2NU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=HaHgyyuL+DZC9ecEvpsyibFE0NxeT3RgQsgTap0yPX7jKbfZNDGg/+I9AOk2Um1SDB0ANfLxaMAtQsYqrwuRrnLtKPkvDhOyr4C97WFcIckYjspzzHaEApAba4nTZ/s+hvyK2jafAuF+8ZPkPxXACxVXpxZSDqYPSbLuDhGXVrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dtpum0PY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96C41C4CEEE;
-	Mon,  5 May 2025 23:09:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GyHZUaqp+2jEVfpik8nJU0phWE1cIWKrwueUlY23oYPbtFJtRN7vrnHQOv2JPVr+FBdZhUxF6ZsTbPbqrCLbHmB2j5kv+qxwmjF47ZP0pFBIbd5yOX8gUI4325VFeY+nNv8TOAG2SfEFyUXeiTliw5Uq1652kfaCEx0AwXHEyjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uh5mCCp8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 072E4C4CEEF;
+	Mon,  5 May 2025 23:09:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486593;
-	bh=8NVCDiz8iITfIRqltj6+2O2/8Z/wjMt5J+O98JIyMaA=;
+	s=k20201202; t=1746486600;
+	bh=jHrv6jf5BhecfcyDAtC7C0iKtIoXl+aJkKi5SvQn2NU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dtpum0PYtsNzZFmyOEP/ibzMb3vADc/bhziCycdERO9TseylqH5901oOPExfAYgSE
-	 9eC3lc7JjISit3irdaF1QXYwYJkOxN0v7TvNmpdfyFLTFLIFtR5sExri3xU+XEwg2P
-	 kNegH0SHQM+FYkHygQwkNYH87coa+NIhM8oQG3oKr8celZR7W27egBJMFVF+mttn3l
-	 mG/8VLE+X2ks6UjjDtlncYeTVIBHMBJKWrB1tRCQS8TlJ3ERsUsvhTLah+6qa99sH/
-	 0nme6ecyDkqCpLFfubZuPTBYlagiMmXGkHzI1mPiNtGt8w1dtJTGOIyYHXX1od/+1r
-	 PrTmxgRGA4AnQ==
+	b=uh5mCCp8zy5RgdDL3lQo4DTyujd9ngv/snLLK5FMvxVHbwXqTtldyykecHspHihwU
+	 cMB5ketieVbfO8OLIARCVbxVcKtShOeZMqPA5WcvGGML80hhySX8H8FMgZdXsO/+4H
+	 By6m+5lzf6q4M5kGzOyIi+UV3AvVTW/NCYihpdKCjezLAFUpTb/ubVVcdl/AcVRFpp
+	 3+Rd8sd+Vpu7JfkOzWjrbotn/7QkY9UciV6qWta/ae9Ds9ysxh/NCJQUwi3VlREk7t
+	 ZT4vdp1h7ZwObmA7p71seh++DFZnkWu0VMWD1xe9T/fcUJMB5WKpLkLcwftm9A0xOo
+	 K586RBANdWMQA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kuhanh Murugasen Krishnan <kuhanh.murugasen.krishnan@intel.com>,
-	Ang Tien Sung <tien.sung.ang@intel.com>,
-	Xu Yilun <yilun.xu@intel.com>,
-	Xu Yilun <yilun.xu@linux.intel.com>,
+Cc: Stanimir Varbanov <svarbanov@suse.de>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	"Ivan T . Ivanov" <iivanov@suse.de>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	mdf@kernel.org,
-	hao.wu@intel.com,
-	linux-fpga@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 107/212] fpga: altera-cvp: Increase credit timeout
-Date: Mon,  5 May 2025 19:04:39 -0400
-Message-Id: <20250505230624.2692522-107-sashal@kernel.org>
+	jim2101024@gmail.com,
+	nsaenz@kernel.org,
+	lpieralisi@kernel.org,
+	kw@linux.com,
+	manivannan.sadhasivam@linaro.org,
+	bhelgaas@google.com,
+	linux-pci@vger.kernel.org,
+	linux-rpi-kernel@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.1 111/212] PCI: brcmstb: Add a softdep to MIP MSI-X driver
+Date: Mon,  5 May 2025 19:04:43 -0400
+Message-Id: <20250505230624.2692522-111-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -64,46 +70,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Kuhanh Murugasen Krishnan <kuhanh.murugasen.krishnan@intel.com>
+From: Stanimir Varbanov <svarbanov@suse.de>
 
-[ Upstream commit 0f05886a40fdc55016ba4d9ae0a9c41f8312f15b ]
+[ Upstream commit 2294059118c550464dd8906286324d90c33b152b ]
 
-Increase the timeout for SDM (Secure device manager) data credits from
-20ms to 40ms. Internal stress tests running at 500 loops failed with the
-current timeout of 20ms. At the start of a FPGA configuration, the CVP
-host driver reads the transmit credits from SDM. It then sends bitstream
-FPGA data to SDM based on the total credits. Each credit allows the
-CVP host driver to send 4kBytes of data. There are situations whereby,
-the SDM did not respond in time during testing.
+Then the brcmstb PCIe driver and MIP MSI-X interrupt controller
+drivers are built as modules there could be a race in probing.
 
-Signed-off-by: Ang Tien Sung <tien.sung.ang@intel.com>
-Signed-off-by: Kuhanh Murugasen Krishnan <kuhanh.murugasen.krishnan@intel.com>
-Acked-by: Xu Yilun <yilun.xu@intel.com>
-Link: https://lore.kernel.org/r/20250212221249.2715929-1-tien.sung.ang@intel.com
-Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+To avoid this, add a softdep to MIP driver to guarantee that
+MIP driver will be load first.
+
+Signed-off-by: Stanimir Varbanov <svarbanov@suse.de>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Tested-by: Ivan T. Ivanov <iivanov@suse.de>
+Link: https://lore.kernel.org/r/20250224083559.47645-5-svarbanov@suse.de
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/fpga/altera-cvp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/controller/pcie-brcmstb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/fpga/altera-cvp.c b/drivers/fpga/altera-cvp.c
-index 4ffb9da537d82..5295ff90482bc 100644
---- a/drivers/fpga/altera-cvp.c
-+++ b/drivers/fpga/altera-cvp.c
-@@ -52,7 +52,7 @@
- /* V2 Defines */
- #define VSE_CVP_TX_CREDITS		0x49	/* 8bit */
- 
--#define V2_CREDIT_TIMEOUT_US		20000
-+#define V2_CREDIT_TIMEOUT_US		40000
- #define V2_CHECK_CREDIT_US		10
- #define V2_POLL_TIMEOUT_US		1000000
- #define V2_USER_TIMEOUT_US		500000
+diff --git a/drivers/pci/controller/pcie-brcmstb.c b/drivers/pci/controller/pcie-brcmstb.c
+index fe37bd28761a8..c89ad1f92a07f 100644
+--- a/drivers/pci/controller/pcie-brcmstb.c
++++ b/drivers/pci/controller/pcie-brcmstb.c
+@@ -1619,3 +1619,4 @@ module_platform_driver(brcm_pcie_driver);
+ MODULE_LICENSE("GPL");
+ MODULE_DESCRIPTION("Broadcom STB PCIe RC driver");
+ MODULE_AUTHOR("Broadcom");
++MODULE_SOFTDEP("pre: irq_bcm2712_mip");
 -- 
 2.39.5
 
