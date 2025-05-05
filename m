@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-141518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B732AAB43E
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:02:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 991DDAAB440
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:02:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 144C33B0A37
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:56:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C58BD3AA9B8
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:57:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25E8F340A9A;
-	Tue,  6 May 2025 00:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E765381E04;
+	Tue,  6 May 2025 00:40:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ryYwcO1V"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P7z+Q6nJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB4F2EE44A;
-	Mon,  5 May 2025 23:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 919F2381E1B;
+	Mon,  5 May 2025 23:09:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486566; cv=none; b=QhzAhQC2g6SZnt+TCnwPS/GQDsusKb8HSjXd4zSZq2+WBSL/0W601JCwkZM4RxYhX/IUpWiHYBRgM/0bQePt1pytwCbgd1p8gw+NCk1YwUq0GfoFfQOqA5hlxtwjmAL1wxhB/hJMPP+rLrs7QJy6jsuF9bvqFrbqyRO895sc2WI=
+	t=1746486577; cv=none; b=kkgAAphTFyGluPzXGpKyuo2j0gaTfKveRQbJJNZ147GJu1dJ5RIn0z83hkJ3KUPsb9+P3O7EQoOBkfygFb+CE0SJX3hfxut+LdBUDIIrnwLxi9BlEzwPHlZ3cdjb8pYb5x7M7VAmCDfOUm4koIQtM2EkVQgc1hTpMSw/U4kWfr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486566; c=relaxed/simple;
-	bh=DDH2PqBQQnnJ63wVyJuyiJGbFJOjmbEg+rtvYc1CpJ8=;
+	s=arc-20240116; t=1746486577; c=relaxed/simple;
+	bh=ZCoaQWTmhgEq0dUG/UhfAbrWq2VppMVx6fdLK/fIntA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pcaeA4HKXLhXtmXWbjjUV1KtZq2lESgBo2vV8VjMHzVdTWLmsSbgmiok0xK4lLLhSiEkrTiRwnXffBtRmfRI1DPJfKPaHpzEznDZXVzOLABYx6lV17HZAaIj8j81RSoqAwA1OgmkE/B/Av+ZDR7s7wb0iQbTrQh9fSzha1hbXgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ryYwcO1V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC7AC4CEF2;
-	Mon,  5 May 2025 23:09:24 +0000 (UTC)
+	 MIME-Version; b=pc5itCqncEH2AsTVeQCauzE7oVG/xseMC304HEVI6v0M2lPPuGV2QRUGo8wNV+JTnUtE0tfd48+6g+H/ffLpcY9VO2xZwX7qjAdCwVqTr/g3eWWkbhf/2Z2BTK/VsnV37bvY7s0tevSIXEZMDS6b0msscS3teRv9shr3slD9gic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P7z+Q6nJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B80C8C4CEE4;
+	Mon,  5 May 2025 23:09:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486566;
-	bh=DDH2PqBQQnnJ63wVyJuyiJGbFJOjmbEg+rtvYc1CpJ8=;
+	s=k20201202; t=1746486577;
+	bh=ZCoaQWTmhgEq0dUG/UhfAbrWq2VppMVx6fdLK/fIntA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ryYwcO1VS85Ug0Jdcy0M4GmNbmw88KogcSJmlrqlkPpipL8ZKAZ16BsJBJNBptFsB
-	 16v49rLQ5OEnydCxHM6FrCdXAn/sAz9q3IFua394xzGZ+Ak+fIWPZPrczx+/qcGwna
-	 6a+IOlrvNYxoceTXmV/ZR4rrc5bO0h7TIPavghNAAJLp/mLqguSYfU/bJnhepg7KLd
-	 xWnlXtws5hGTnbhel/G8+nH9gR5nOo9VyXZyz1fRZ8fRnS5kB1ZmR7k67cLSgUBo2J
-	 pg828pk8MyXgh9ef7syDkl8YefBp7VfORmorQTNf0WC++kqm10hbwn1S5CSZUP7rX6
-	 m7D7qC5p5521A==
+	b=P7z+Q6nJvfnwpu5vM2TwYxpad1ru16WhXxZKK7Sdvdsg8yZFBOQYdJFqLU64i7NEZ
+	 R/ofJ5RuZCj33qJ27NBTQK2Z3TDKH0O8jv79de5uzY9s9UnjZLz6WVAgo8UVEM9fEA
+	 FX+i1LurVlAJZ6YfHDqU2aPMZAh1Y497DCXGU0u4+kzzykC81HDGB9Azr9f1QhorHt
+	 WmGUbsABf3hoJa8ujBTxXCNnfGs2dGqu/hI56NXlrGOAHbntkRpkkEn1o7sNfzJnHz
+	 AaT9+Kb3yUaOu66AjYKsYuPYfRWnzbU4y4bV1qMObN22zP4ra1sNKbMvWCaah+9EIG
+	 waid1GJzT3NJQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Artur Weber <aweber.kernel@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+Cc: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>,
+	kailang@realtek.com,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>,
-	florian.fainelli@broadcom.com,
-	rjui@broadcom.com,
-	sbranden@broadcom.com,
-	dan.carpenter@linaro.org,
-	linux-gpio@vger.kernel.org,
-	linux-rpi-kernel@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.1 094/212] pinctrl: bcm281xx: Use "unsigned int" instead of bare "unsigned"
-Date: Mon,  5 May 2025 19:04:26 -0400
-Message-Id: <20250505230624.2692522-94-sashal@kernel.org>
+	perex@perex.cz,
+	tiwai@suse.com,
+	sbinding@opensource.cirrus.com,
+	simont@opensource.cirrus.com,
+	josh@joshuagrisham.com,
+	linux-sound@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 098/212] ALSA: hda/realtek: Enable PC beep passthrough for HP EliteBook 855 G7
+Date: Mon,  5 May 2025 19:04:30 -0400
+Message-Id: <20250505230624.2692522-98-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -71,175 +71,175 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Artur Weber <aweber.kernel@gmail.com>
+From: "Maciej S. Szmigiero" <mail@maciej.szmigiero.name>
 
-[ Upstream commit 07b5a2a13f4704c5eae3be7277ec54ffdba45f72 ]
+[ Upstream commit aa85822c611aef7cd4dc17d27121d43e21bb82f0 ]
 
-Replace uses of bare "unsigned" with "unsigned int" to fix checkpatch
-warnings. No functional change.
+PC speaker works well on this platform in BIOS and in Linux until sound
+card drivers are loaded. Then it stops working.
 
-Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
-Link: https://lore.kernel.org/20250303-bcm21664-pinctrl-v3-2-5f8b80e4ab51@gmail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+There seems to be a beep generator node at 0x1a in this CODEC
+(ALC269_TYPE_ALC215) but it seems to be only connected to capture mixers
+at nodes 0x22 and 0x23.
+If I unmute the mixer input for 0x1a at node 0x23 and start recording
+from its "ALC285 Analog" capture device I can clearly hear beeps in that
+recording.
+
+So the beep generator is indeed working properly, however I wasn't able to
+figure out any way to connect it to speakers.
+
+However, the bits in the "Passthrough Control" register (0x36) seems to
+work at least partially: by zeroing "B" and "h" and setting "S" I can at
+least make the PIT PC speaker output appear either in this laptop speakers
+or headphones (depending on whether they are connected or not).
+
+There are some caveats, however:
+* If the CODEC gets runtime-suspended the beeps stop so it needs HDA beep
+device for keeping it awake during beeping.
+
+* If the beep generator node is generating any beep the PC beep passthrough
+seems to be temporarily inhibited, so the HDA beep device has to be
+prevented from using the actual beep generator node - but the beep device
+is still necessary due to the previous point.
+
+* In contrast with other platforms here beep amplification has to be
+disabled otherwise the beeps output are WAY louder than they were on pure
+BIOS setup.
+
+Unless someone (from Realtek probably) knows how to make the beep generator
+node output appear in speakers / headphones using PC beep passthrough seems
+to be the only way to make PC speaker beeping actually work on this
+platform.
+
+Signed-off-by: Maciej S. Szmigiero <mail@maciej.szmigiero.name>
+Acked-by: kailang@realtek.com
+Link: https://patch.msgid.link/7461f695b4daed80f2fc4b1463ead47f04f9ad05.1739741254.git.mail@maciej.szmigiero.name
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/bcm/pinctrl-bcm281xx.c | 44 +++++++++++++-------------
- 1 file changed, 22 insertions(+), 22 deletions(-)
+ include/sound/hda_codec.h     |  1 +
+ sound/pci/hda/hda_beep.c      | 15 +++++++++------
+ sound/pci/hda/patch_realtek.c | 34 +++++++++++++++++++++++++++++++++-
+ 3 files changed, 43 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/pinctrl/bcm/pinctrl-bcm281xx.c b/drivers/pinctrl/bcm/pinctrl-bcm281xx.c
-index bba5496335eeb..c313f01789575 100644
---- a/drivers/pinctrl/bcm/pinctrl-bcm281xx.c
-+++ b/drivers/pinctrl/bcm/pinctrl-bcm281xx.c
-@@ -69,7 +69,7 @@ static enum bcm281xx_pin_type hdmi_pin = BCM281XX_PIN_TYPE_HDMI;
- struct bcm281xx_pin_function {
- 	const char *name;
- 	const char * const *groups;
--	const unsigned ngroups;
-+	const unsigned int ngroups;
- };
+diff --git a/include/sound/hda_codec.h b/include/sound/hda_codec.h
+index bbb7805e85d8e..4ca45d5895dfd 100644
+--- a/include/sound/hda_codec.h
++++ b/include/sound/hda_codec.h
+@@ -199,6 +199,7 @@ struct hda_codec {
+ 	/* beep device */
+ 	struct hda_beep *beep;
+ 	unsigned int beep_mode;
++	bool beep_just_power_on;
  
- /*
-@@ -81,10 +81,10 @@ struct bcm281xx_pinctrl_data {
+ 	/* widget capabilities cache */
+ 	u32 *wcaps;
+diff --git a/sound/pci/hda/hda_beep.c b/sound/pci/hda/hda_beep.c
+index e63621bcb2142..1a684e47d4d18 100644
+--- a/sound/pci/hda/hda_beep.c
++++ b/sound/pci/hda/hda_beep.c
+@@ -31,8 +31,9 @@ static void generate_tone(struct hda_beep *beep, int tone)
+ 			beep->power_hook(beep, true);
+ 		beep->playing = 1;
+ 	}
+-	snd_hda_codec_write(codec, beep->nid, 0,
+-			    AC_VERB_SET_BEEP_CONTROL, tone);
++	if (!codec->beep_just_power_on)
++		snd_hda_codec_write(codec, beep->nid, 0,
++				    AC_VERB_SET_BEEP_CONTROL, tone);
+ 	if (!tone && beep->playing) {
+ 		beep->playing = 0;
+ 		if (beep->power_hook)
+@@ -212,10 +213,12 @@ int snd_hda_attach_beep_device(struct hda_codec *codec, int nid)
+ 	struct hda_beep *beep;
+ 	int err;
  
- 	/* List of all pins */
- 	const struct pinctrl_pin_desc *pins;
--	const unsigned npins;
-+	const unsigned int npins;
+-	if (!snd_hda_get_bool_hint(codec, "beep"))
+-		return 0; /* disabled explicitly by hints */
+-	if (codec->beep_mode == HDA_BEEP_MODE_OFF)
+-		return 0; /* disabled by module option */
++	if (!codec->beep_just_power_on) {
++		if (!snd_hda_get_bool_hint(codec, "beep"))
++			return 0; /* disabled explicitly by hints */
++		if (codec->beep_mode == HDA_BEEP_MODE_OFF)
++			return 0; /* disabled by module option */
++	}
  
- 	const struct bcm281xx_pin_function *functions;
--	const unsigned nfunctions;
-+	const unsigned int nfunctions;
- 
- 	struct regmap *regmap;
- };
-@@ -938,7 +938,7 @@ static struct bcm281xx_pinctrl_data bcm281xx_pinctrl = {
- };
- 
- static inline enum bcm281xx_pin_type pin_type_get(struct pinctrl_dev *pctldev,
--						  unsigned pin)
-+						  unsigned int pin)
- {
- 	struct bcm281xx_pinctrl_data *pdata = pinctrl_dev_get_drvdata(pctldev);
- 
-@@ -982,7 +982,7 @@ static int bcm281xx_pinctrl_get_groups_count(struct pinctrl_dev *pctldev)
+ 	beep = kzalloc(sizeof(*beep), GFP_KERNEL);
+ 	if (beep == NULL)
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 61b48f2418bf0..2f67cd955d651 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -24,6 +24,7 @@
+ #include <sound/hda_codec.h>
+ #include "hda_local.h"
+ #include "hda_auto_parser.h"
++#include "hda_beep.h"
+ #include "hda_jack.h"
+ #include "hda_generic.h"
+ #include "hda_component.h"
+@@ -6858,6 +6859,30 @@ static void alc285_fixup_hp_envy_x360(struct hda_codec *codec,
+ 	}
  }
  
- static const char *bcm281xx_pinctrl_get_group_name(struct pinctrl_dev *pctldev,
--						   unsigned group)
-+						   unsigned int group)
- {
- 	struct bcm281xx_pinctrl_data *pdata = pinctrl_dev_get_drvdata(pctldev);
++static void alc285_fixup_hp_beep(struct hda_codec *codec,
++				 const struct hda_fixup *fix, int action)
++{
++	if (action == HDA_FIXUP_ACT_PRE_PROBE) {
++		codec->beep_just_power_on = true;
++	} else  if (action == HDA_FIXUP_ACT_INIT) {
++#ifdef CONFIG_SND_HDA_INPUT_BEEP
++		/*
++		 * Just enable loopback to internal speaker and headphone jack.
++		 * Disable amplification to get about the same beep volume as
++		 * was on pure BIOS setup before loading the driver.
++		 */
++		alc_update_coef_idx(codec, 0x36, 0x7070, BIT(13));
++
++		snd_hda_enable_beep_device(codec, 1);
++
++#if !IS_ENABLED(CONFIG_INPUT_PCSPKR)
++		dev_warn_once(hda_codec_dev(codec),
++			      "enable CONFIG_INPUT_PCSPKR to get PC beeps\n");
++#endif
++#endif
++	}
++}
++
+ /* for hda_fixup_thinkpad_acpi() */
+ #include "thinkpad_helper.c"
  
-@@ -990,9 +990,9 @@ static const char *bcm281xx_pinctrl_get_group_name(struct pinctrl_dev *pctldev,
- }
- 
- static int bcm281xx_pinctrl_get_group_pins(struct pinctrl_dev *pctldev,
--					   unsigned group,
-+					   unsigned int group,
- 					   const unsigned **pins,
--					   unsigned *num_pins)
-+					   unsigned int *num_pins)
- {
- 	struct bcm281xx_pinctrl_data *pdata = pinctrl_dev_get_drvdata(pctldev);
- 
-@@ -1004,7 +1004,7 @@ static int bcm281xx_pinctrl_get_group_pins(struct pinctrl_dev *pctldev,
- 
- static void bcm281xx_pinctrl_pin_dbg_show(struct pinctrl_dev *pctldev,
- 					  struct seq_file *s,
--					  unsigned offset)
-+					  unsigned int offset)
- {
- 	seq_printf(s, " %s", dev_name(pctldev->dev));
- }
-@@ -1026,7 +1026,7 @@ static int bcm281xx_pinctrl_get_fcns_count(struct pinctrl_dev *pctldev)
- }
- 
- static const char *bcm281xx_pinctrl_get_fcn_name(struct pinctrl_dev *pctldev,
--						 unsigned function)
-+						 unsigned int function)
- {
- 	struct bcm281xx_pinctrl_data *pdata = pinctrl_dev_get_drvdata(pctldev);
- 
-@@ -1034,9 +1034,9 @@ static const char *bcm281xx_pinctrl_get_fcn_name(struct pinctrl_dev *pctldev,
- }
- 
- static int bcm281xx_pinctrl_get_fcn_groups(struct pinctrl_dev *pctldev,
--					   unsigned function,
-+					   unsigned int function,
- 					   const char * const **groups,
--					   unsigned * const num_groups)
-+					   unsigned int * const num_groups)
- {
- 	struct bcm281xx_pinctrl_data *pdata = pinctrl_dev_get_drvdata(pctldev);
- 
-@@ -1047,8 +1047,8 @@ static int bcm281xx_pinctrl_get_fcn_groups(struct pinctrl_dev *pctldev,
- }
- 
- static int bcm281xx_pinmux_set(struct pinctrl_dev *pctldev,
--			       unsigned function,
--			       unsigned group)
-+			       unsigned int function,
-+			       unsigned int group)
- {
- 	struct bcm281xx_pinctrl_data *pdata = pinctrl_dev_get_drvdata(pctldev);
- 	const struct bcm281xx_pin_function *f = &pdata->functions[function];
-@@ -1079,7 +1079,7 @@ static const struct pinmux_ops bcm281xx_pinctrl_pinmux_ops = {
- };
- 
- static int bcm281xx_pinctrl_pin_config_get(struct pinctrl_dev *pctldev,
--					   unsigned pin,
-+					   unsigned int pin,
- 					   unsigned long *config)
- {
- 	return -ENOTSUPP;
-@@ -1088,9 +1088,9 @@ static int bcm281xx_pinctrl_pin_config_get(struct pinctrl_dev *pctldev,
- 
- /* Goes through the configs and update register val/mask */
- static int bcm281xx_std_pin_update(struct pinctrl_dev *pctldev,
--				   unsigned pin,
-+				   unsigned int pin,
- 				   unsigned long *configs,
--				   unsigned num_configs,
-+				   unsigned int num_configs,
- 				   u32 *val,
- 				   u32 *mask)
- {
-@@ -1204,9 +1204,9 @@ static const u16 bcm281xx_pullup_map[] = {
- 
- /* Goes through the configs and update register val/mask */
- static int bcm281xx_i2c_pin_update(struct pinctrl_dev *pctldev,
--				   unsigned pin,
-+				   unsigned int pin,
- 				   unsigned long *configs,
--				   unsigned num_configs,
-+				   unsigned int num_configs,
- 				   u32 *val,
- 				   u32 *mask)
- {
-@@ -1274,9 +1274,9 @@ static int bcm281xx_i2c_pin_update(struct pinctrl_dev *pctldev,
- 
- /* Goes through the configs and update register val/mask */
- static int bcm281xx_hdmi_pin_update(struct pinctrl_dev *pctldev,
--				    unsigned pin,
-+				    unsigned int pin,
- 				    unsigned long *configs,
--				    unsigned num_configs,
-+				    unsigned int num_configs,
- 				    u32 *val,
- 				    u32 *mask)
- {
-@@ -1318,9 +1318,9 @@ static int bcm281xx_hdmi_pin_update(struct pinctrl_dev *pctldev,
- }
- 
- static int bcm281xx_pinctrl_pin_config_set(struct pinctrl_dev *pctldev,
--					   unsigned pin,
-+					   unsigned int pin,
- 					   unsigned long *configs,
--					   unsigned num_configs)
-+					   unsigned int num_configs)
- {
- 	struct bcm281xx_pinctrl_data *pdata = pinctrl_dev_get_drvdata(pctldev);
- 	enum bcm281xx_pin_type pin_type;
+@@ -7400,6 +7425,7 @@ enum {
+ 	ALC285_FIXUP_HP_GPIO_LED,
+ 	ALC285_FIXUP_HP_MUTE_LED,
+ 	ALC285_FIXUP_HP_SPECTRE_X360_MUTE_LED,
++	ALC285_FIXUP_HP_BEEP_MICMUTE_LED,
+ 	ALC236_FIXUP_HP_MUTE_LED_COEFBIT2,
+ 	ALC236_FIXUP_HP_GPIO_LED,
+ 	ALC236_FIXUP_HP_MUTE_LED,
+@@ -8947,6 +8973,12 @@ static const struct hda_fixup alc269_fixups[] = {
+ 		.type = HDA_FIXUP_FUNC,
+ 		.v.func = alc285_fixup_hp_spectre_x360_mute_led,
+ 	},
++	[ALC285_FIXUP_HP_BEEP_MICMUTE_LED] = {
++		.type = HDA_FIXUP_FUNC,
++		.v.func = alc285_fixup_hp_beep,
++		.chained = true,
++		.chain_id = ALC285_FIXUP_HP_MUTE_LED,
++	},
+ 	[ALC236_FIXUP_HP_MUTE_LED_COEFBIT2] = {
+ 	    .type = HDA_FIXUP_FUNC,
+ 	    .v.func = alc236_fixup_hp_mute_led_coefbit2,
+@@ -9860,7 +9892,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x8730, "HP ProBook 445 G7", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ 	SND_PCI_QUIRK(0x103c, 0x8735, "HP ProBook 435 G7", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ 	SND_PCI_QUIRK(0x103c, 0x8736, "HP", ALC285_FIXUP_HP_GPIO_AMP_INIT),
+-	SND_PCI_QUIRK(0x103c, 0x8760, "HP", ALC285_FIXUP_HP_MUTE_LED),
++	SND_PCI_QUIRK(0x103c, 0x8760, "HP EliteBook 8{4,5}5 G7", ALC285_FIXUP_HP_BEEP_MICMUTE_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x876e, "HP ENVY x360 Convertible 13-ay0xxx", ALC245_FIXUP_HP_X360_MUTE_LEDS),
+ 	SND_PCI_QUIRK(0x103c, 0x877a, "HP", ALC285_FIXUP_HP_MUTE_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x877d, "HP", ALC236_FIXUP_HP_MUTE_LED),
 -- 
 2.39.5
 
