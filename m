@@ -1,62 +1,55 @@
-Return-Path: <stable+bounces-140848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3389DAAABFC
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:06:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C04AAAABFD
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:06:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B98031B628DF
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:03:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 140F61A86E10
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:03:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E6D42EE17E;
-	Mon,  5 May 2025 23:22:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56C3B2FA10C;
+	Mon,  5 May 2025 23:22:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p7/NJEVF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Qz/uFum1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23ECA2EE181;
-	Mon,  5 May 2025 23:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 262032EE18A;
+	Mon,  5 May 2025 23:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486548; cv=none; b=MXPQnBl6uZYW4H9rx8bsJR1JEBIisljkUeqJMaiM9RQQuha2gA/Qo5kVN23LGvFGV95XkUChjjFSpGiTWSJsE/BFohngrD4mMzXhOIHwCetRJBiOH68xBb5MiaAquxwWbecYD+a4mYjRkDB8oNRVmkM52JYeof0bfINP7G3lrGg=
+	t=1746486549; cv=none; b=QFdeec/Hf2WnX3JrMuhs6/8459l98G6Qxyok8yr8Ge+ZkhgVDmV9wKpXCly29b7MnG731Zpgxt9rTNZ9WwLopw5UJhfu63HESXaO1pQSn8Yz+8fj7OH3xQqjAoxzTs47OHIpmf5hkFtL23jwJ2qO5l10kdBxypfEpdp8EDsVsMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486548; c=relaxed/simple;
-	bh=lKUOyyEsgfGMETIfBIUl6hMf95sF/LDWANlYOJwQH8w=;
+	s=arc-20240116; t=1746486549; c=relaxed/simple;
+	bh=deF9WFnhs+HXATmzRfNY6gqbFNY+7J57nQE35vZzB/M=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=lg4yxFagn2GufaNyAuwl4y0vaK/mLyXEnOGghDP5XKihFIyMtosgUbvmEkRbqqkXtMGYhktXr2qqNo7mXDzmEL3Um1cJ2Dh9STfMrynjyZNyWO1xdVaK8ztXcd82nj+WC5i/j9A/7V2XNUITjXR2vgXo1aTbBSQGBczoBHbszVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p7/NJEVF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFBFBC4CEEF;
-	Mon,  5 May 2025 23:09:05 +0000 (UTC)
+	 MIME-Version; b=GkMhDbJZCdqFtGeiMkud0aRmgVcIIj0yr7g+Ct1XT2SrUooNmCxFcZgYLlU/kqslkUM8u0HiCms6a94MiyE2yhLnVm9QJ7EzcsXcGb5I0+Pb8Kr+Ku4CKACvTL+IZsNjED52THdqKm+uNlDZT3TMBFQHSZ/amd+fW6FHrdy1jCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Qz/uFum1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 663B6C4CEF1;
+	Mon,  5 May 2025 23:09:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486547;
-	bh=lKUOyyEsgfGMETIfBIUl6hMf95sF/LDWANlYOJwQH8w=;
+	s=k20201202; t=1746486548;
+	bh=deF9WFnhs+HXATmzRfNY6gqbFNY+7J57nQE35vZzB/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p7/NJEVFZhQyVJgNkNfu1wnzLCAWiHgPHbm/NYYKTwySVgFKD7LAwzrMLhJrpbhzA
-	 HLmRlGpGs7XVvioKQCJSK0IdzSawxPGDycXOLerqZzyzFAJpvlelWH7DJlyBbzkPgN
-	 DE/0eGE7s0yuiuiF0KULaNWnOdBlbDi9Vx9ZLR+qkw8i5kjCvg0ERZkscm9UZi5pl4
-	 +ULDcloriRdqHG7FH+TCJK3BKABxrvEpjo5i2u7y5TNewY4kb9cZvZE7LJj4smtv0N
-	 jktHyAg7ZsYuAZ70Qub498APaMkm2E++vOs+rairI3bCJpL/A0PoXdSq4IHambl7xF
-	 OdEKEkLD+tu9g==
+	b=Qz/uFum11BLY5ePIF03u9dtt1MTnlB7BqxHRVRcgAiOv31lN25em4BzdJyD3fT4wH
+	 s9wqUTQ95ueA2SPUpV/h748jOQdE2cOTeAWCo1FNSq/yBkot2hWZFYbQavJxAMylyl
+	 hCkqpiaXxhLrRnFfn9OVRRKrHktHmHfLCbJcOYmcBH8JsW3XayMg0IiYDydu68YkjC
+	 UDhkqXK8xUgZ0OqI+KwI7nwlb19PoVDxtP+AN4ISUlFKdd2EFCcr5zFwlsF831ryHd
+	 yd73U/mN/I44S/n4sDsRSfRkdsaU+h3xA1b2uLfmaFEB/ZfeK2Gi/VSeoHyLR5mRxd
+	 hGO5mqasOsZng==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Eric Dumazet <edumazet@google.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>,
-	ncardwell@google.com,
-	davem@davemloft.net,
-	dsahern@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 083/212] tcp: bring back NUMA dispersion in inet_ehash_locks_alloc()
-Date: Mon,  5 May 2025 19:04:15 -0400
-Message-Id: <20250505230624.2692522-83-sashal@kernel.org>
+	linux-rtc@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 084/212] rtc: ds1307: stop disabling alarms on probe
+Date: Mon,  5 May 2025 19:04:16 -0400
+Message-Id: <20250505230624.2692522-84-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -71,103 +64,36 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Eric Dumazet <edumazet@google.com>
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
 
-[ Upstream commit f8ece40786c9342249aa0a1b55e148ee23b2a746 ]
+[ Upstream commit dcec12617ee61beed928e889607bf37e145bf86b ]
 
-We have platforms with 6 NUMA nodes and 480 cpus.
+It is a bad practice to disable alarms on probe or remove as this will
+prevent alarms across reboots.
 
-inet_ehash_locks_alloc() currently allocates a single 64KB page
-to hold all ehash spinlocks. This adds more pressure on a single node.
-
-Change inet_ehash_locks_alloc() to use vmalloc() to spread
-the spinlocks on all online nodes, driven by NUMA policies.
-
-At boot time, NUMA policy is interleave=all, meaning that
-tcp_hashinfo.ehash_locks gets hash dispersion on all nodes.
-
-Tested:
-
-lack5:~# grep inet_ehash_locks_alloc /proc/vmallocinfo
-0x00000000d9aec4d1-0x00000000a828b652   69632 inet_ehash_locks_alloc+0x90/0x100 pages=16 vmalloc N0=2 N1=3 N2=3 N3=3 N4=3 N5=2
-
-lack5:~# echo 8192 >/proc/sys/net/ipv4/tcp_child_ehash_entries
-lack5:~# numactl --interleave=all unshare -n bash -c "grep inet_ehash_locks_alloc /proc/vmallocinfo"
-0x000000004e99d30c-0x00000000763f3279   36864 inet_ehash_locks_alloc+0x90/0x100 pages=8 vmalloc N0=1 N1=2 N2=2 N3=1 N4=1 N5=1
-0x00000000d9aec4d1-0x00000000a828b652   69632 inet_ehash_locks_alloc+0x90/0x100 pages=16 vmalloc N0=2 N1=3 N2=3 N3=3 N4=3 N5=2
-
-lack5:~# numactl --interleave=0,5 unshare -n bash -c "grep inet_ehash_locks_alloc /proc/vmallocinfo"
-0x00000000fd73a33e-0x0000000004b9a177   36864 inet_ehash_locks_alloc+0x90/0x100 pages=8 vmalloc N0=4 N5=4
-0x00000000d9aec4d1-0x00000000a828b652   69632 inet_ehash_locks_alloc+0x90/0x100 pages=16 vmalloc N0=2 N1=3 N2=3 N3=3 N4=3 N5=2
-
-lack5:~# echo 1024 >/proc/sys/net/ipv4/tcp_child_ehash_entries
-lack5:~# numactl --interleave=all unshare -n bash -c "grep inet_ehash_locks_alloc /proc/vmallocinfo"
-0x00000000db07d7a2-0x00000000ad697d29    8192 inet_ehash_locks_alloc+0x90/0x100 pages=1 vmalloc N2=1
-0x00000000d9aec4d1-0x00000000a828b652   69632 inet_ehash_locks_alloc+0x90/0x100 pages=16 vmalloc N0=2 N1=3 N2=3 N3=3 N4=3 N5=2
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Tested-by: Jason Xing <kerneljasonxing@gmail.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250305130550.1865988-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/r/20250303223744.1135672-1-alexandre.belloni@bootlin.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/inet_hashtables.c | 37 ++++++++++++++++++++++++++-----------
- 1 file changed, 26 insertions(+), 11 deletions(-)
+ drivers/rtc/rtc-ds1307.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
-index 321f509f23473..5e7cdcebd64f8 100644
---- a/net/ipv4/inet_hashtables.c
-+++ b/net/ipv4/inet_hashtables.c
-@@ -1218,22 +1218,37 @@ int inet_ehash_locks_alloc(struct inet_hashinfo *hashinfo)
- {
- 	unsigned int locksz = sizeof(spinlock_t);
- 	unsigned int i, nblocks = 1;
-+	spinlock_t *ptr = NULL;
+diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
+index d51565bcc1896..b7f8b3f9b0595 100644
+--- a/drivers/rtc/rtc-ds1307.c
++++ b/drivers/rtc/rtc-ds1307.c
+@@ -1802,10 +1802,8 @@ static int ds1307_probe(struct i2c_client *client,
+ 		 * For some variants, be sure alarms can trigger when we're
+ 		 * running on Vbackup (BBSQI/BBSQW)
+ 		 */
+-		if (want_irq || ds1307_can_wakeup_device) {
++		if (want_irq || ds1307_can_wakeup_device)
+ 			regs[0] |= DS1337_BIT_INTCN | chip->bbsqi_bit;
+-			regs[0] &= ~(DS1337_BIT_A2IE | DS1337_BIT_A1IE);
+-		}
  
--	if (locksz != 0) {
--		/* allocate 2 cache lines or at least one spinlock per cpu */
--		nblocks = max(2U * L1_CACHE_BYTES / locksz, 1U);
--		nblocks = roundup_pow_of_two(nblocks * num_possible_cpus());
-+	if (locksz == 0)
-+		goto set_mask;
- 
--		/* no more locks than number of hash buckets */
--		nblocks = min(nblocks, hashinfo->ehash_mask + 1);
-+	/* Allocate 2 cache lines or at least one spinlock per cpu. */
-+	nblocks = max(2U * L1_CACHE_BYTES / locksz, 1U) * num_possible_cpus();
- 
--		hashinfo->ehash_locks = kvmalloc_array(nblocks, locksz, GFP_KERNEL);
--		if (!hashinfo->ehash_locks)
--			return -ENOMEM;
-+	/* At least one page per NUMA node. */
-+	nblocks = max(nblocks, num_online_nodes() * PAGE_SIZE / locksz);
-+
-+	nblocks = roundup_pow_of_two(nblocks);
-+
-+	/* No more locks than number of hash buckets. */
-+	nblocks = min(nblocks, hashinfo->ehash_mask + 1);
- 
--		for (i = 0; i < nblocks; i++)
--			spin_lock_init(&hashinfo->ehash_locks[i]);
-+	if (num_online_nodes() > 1) {
-+		/* Use vmalloc() to allow NUMA policy to spread pages
-+		 * on all available nodes if desired.
-+		 */
-+		ptr = vmalloc_array(nblocks, locksz);
-+	}
-+	if (!ptr) {
-+		ptr = kvmalloc_array(nblocks, locksz, GFP_KERNEL);
-+		if (!ptr)
-+			return -ENOMEM;
- 	}
-+	for (i = 0; i < nblocks; i++)
-+		spin_lock_init(&ptr[i]);
-+	hashinfo->ehash_locks = ptr;
-+set_mask:
- 	hashinfo->ehash_locks_mask = nblocks - 1;
- 	return 0;
- }
+ 		regmap_write(ds1307->regmap, DS1337_REG_CONTROL,
+ 			     regs[0]);
 -- 
 2.39.5
 
