@@ -1,65 +1,59 @@
-Return-Path: <stable+bounces-141267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54C21AAB20E
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:12:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95B22AAB670
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:50:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A45E189E163
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:10:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86B3A163E0F
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:47:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11DDE41E592;
-	Tue,  6 May 2025 00:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10B602D47B9;
+	Tue,  6 May 2025 00:28:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BSvih+rN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZfUWDlLb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF92027FD66;
-	Mon,  5 May 2025 22:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A4022D47D4;
+	Mon,  5 May 2025 22:54:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485645; cv=none; b=fpKjmy8TRi8WHleUmRf5QH+dPeLWMXqTCENuDFizEbnwYTVUEykZurSQ7LFWkksxWdvChIFkv0uXTmemfA+enCfwwu8kE+zPU8t+lIuBceop/yVFJGoniWmVe3/HJomoCJl3J/FPHctaNZO9hFUmE7IcKNb3nEAJr8UsSzAbyTE=
+	t=1746485647; cv=none; b=QtaFD20fycSacrBEgAxrJClQt/3BoIuewQRFh9Xulhqq36BLsp4pLjToA1Zly3WYC6D9mPqEVzgy6CHMt99Fq2C06+4ih9x+HDjA6Hc7FNIRLZV7EgO7A0j82x+XRXPy3UB2YEYQVOeTxwff9sHcOCEBoMaZlYb7fCFtc92+BhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485645; c=relaxed/simple;
-	bh=TtXmyqw612RsfiWMAd40wXZ2D5IaG3gtXNdnkD/J204=;
+	s=arc-20240116; t=1746485647; c=relaxed/simple;
+	bh=8a8lKG343Ye79VxVqSMDe+cPcdo5ypZNXs3TqFfTx5k=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pKMG3nTqbo2B9025QjhvhvWi9bPpOh9U5xdjlBjjI4P3T0v8Jvd3LFWgdaU6GQfFQWX/QBQVus2RVtPGy7TdqYSSPmqaP+3OzZRAb7z6hIFdAwmLIClDIh773gRta980BhuYHlGBZBZTeVhCpmi68lysc78f4I8lHqXv+dyfwEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BSvih+rN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A476C4CEED;
-	Mon,  5 May 2025 22:54:03 +0000 (UTC)
+	 MIME-Version; b=EpYX4ZlkLXEBQGPXvFWj/+IJF93tjW9e7ZI1+cHi0fBmZ79o/K6D4vF1Cf5xI1yS9sug+z/OxOo0G7AVc9XvF5uM/G1/rsAEEBxzUbhkO3FoW8xoHIZVbyVR+lG7S31CqZCxsl7C8qKsjMX3aC1an7dD5Wf2TEsf/R4pP1gSUqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZfUWDlLb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FF35C4CEEE;
+	Mon,  5 May 2025 22:54:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485644;
-	bh=TtXmyqw612RsfiWMAd40wXZ2D5IaG3gtXNdnkD/J204=;
+	s=k20201202; t=1746485646;
+	bh=8a8lKG343Ye79VxVqSMDe+cPcdo5ypZNXs3TqFfTx5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BSvih+rNeiqT1otowVHmUSr3+CPCVoTG7mUtZIymnUvxuiDXIbiMD35hL4KwfOWGJ
-	 egkgzs2HJnNV6GrbIudZI45zZAPDUI+PWIPGZ3Nl8Rlg8nQFDzagX86N4N7hTBKGzq
-	 fzITHxPfR+rOMHecm+P3rFP9Tu2jorcY6ZDulz72QSDgPQKyZ1BuA3ywafgDQQZDDI
-	 vquiV/PVFRjyhFd/mMCbYEARyY7TCQu5KkaJGNsXtH4NcgLtWuoAibZ1nT4eRZ5LOY
-	 G8Opyye9/eKVL3I24fUh2AWwDIcRRekP6aowVq8BDUd52ATrWye/JM1hmLn63h9O81
-	 m3gLUIs+bw3kQ==
+	b=ZfUWDlLbqzUUAXLRZibib9bIFWtbKE9CKOD2zWMkwo+xMXx+YUqmyDLRZpTFE1VQY
+	 Bd4TCzDnkqeFgEvN0vxFZMRDeIewDQq8ltKWkCVXuRFi2ZD51Py5oe42qduqJspe+f
+	 EoS2NQwP5XJYBC2nP+q9kUIL8K8KxmPFmfS3GMq6kVRaqBMSiFrvm59zvGy2BD4g+R
+	 d5pdVZQPWevIK2DFJ/x7R71CAGe5/Y/nMDFUsA+3srCGSTjmthQ0tvM++G4kiIO+Ul
+	 T3b62ag/GXZAJNpysUSTV6K4ZZwZlJ9xxzO6hYv0LKQ118ii2yLrpi7TsZv1jaNy8t
+	 YplOQTPZE0Nhg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	Joe Damato <jdamato@fastly.com>,
+Cc: Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Ojaswin Mujoo <ojaswin@linux.ibm.com>,
+	Theodore Ts'o <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>,
-	andrew@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	ecree.xilinx@gmail.com,
-	przemyslaw.kitszel@intel.com,
-	gal@nvidia.com,
-	daniel.zahka@gmail.com,
-	almasrymina@google.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 402/486] net: ethtool: prevent flow steering to RSS contexts which don't exist
-Date: Mon,  5 May 2025 18:37:58 -0400
-Message-Id: <20250505223922.2682012-402-sashal@kernel.org>
+	adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 403/486] ext4: don't write back data before punch hole in nojournal mode
+Date: Mon,  5 May 2025 18:37:59 -0400
+Message-Id: <20250505223922.2682012-403-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -74,46 +68,69 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-[ Upstream commit de7f7582dff292832fbdeaeff34e6b2ee6f9f95f ]
+[ Upstream commit 43d0105e2c7523cc6b14cad65e2044e829c0a07a ]
 
-Since commit 42dc431f5d0e ("ethtool: rss: prevent rss ctx deletion
-when in use") we prevent removal of RSS contexts pointed to by
-existing flow rules. Core should also prevent creation of rules
-which point to RSS context which don't exist in the first place.
+There is no need to write back all data before punching a hole in
+non-journaled mode since it will be dropped soon after removing space.
+Therefore, the call to filemap_write_and_wait_range() can be eliminated.
+Besides, similar to ext4_zero_range(), we must address the case of
+partially punched folios when block size < page size. It is essential to
+remove writable userspace mappings to ensure that the folio can be
+faulted again during subsequent mmap write access.
 
-Reviewed-by: Joe Damato <jdamato@fastly.com>
-Link: https://patch.msgid.link/20250206235334.1425329-2-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+In journaled mode, we need to write dirty pages out before discarding
+page cache in case of crash before committing the freeing data
+transaction, which could expose old, stale data, even if synchronization
+has been performed.
+
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Ojaswin Mujoo <ojaswin@linux.ibm.com>
+Link: https://patch.msgid.link/20241220011637.1157197-4-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ethtool/ioctl.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ fs/ext4/inode.c | 18 +++++-------------
+ 1 file changed, 5 insertions(+), 13 deletions(-)
 
-diff --git a/net/ethtool/ioctl.c b/net/ethtool/ioctl.c
-index 8b9692c35e706..6ed01cec97a8e 100644
---- a/net/ethtool/ioctl.c
-+++ b/net/ethtool/ioctl.c
-@@ -993,10 +993,14 @@ static noinline_for_stack int ethtool_set_rxnfc(struct net_device *dev,
- 		return rc;
+diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+index 487d9aec56c9d..819be57bb4ecf 100644
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -3933,17 +3933,6 @@ int ext4_punch_hole(struct file *file, loff_t offset, loff_t length)
  
- 	/* Nonzero ring with RSS only makes sense if NIC adds them together */
--	if (cmd == ETHTOOL_SRXCLSRLINS && info.fs.flow_type & FLOW_RSS &&
--	    !ops->cap_rss_rxnfc_adds &&
--	    ethtool_get_flow_spec_ring(info.fs.ring_cookie))
--		return -EINVAL;
-+	if (cmd == ETHTOOL_SRXCLSRLINS && info.fs.flow_type & FLOW_RSS) {
-+		if (!ops->cap_rss_rxnfc_adds &&
-+		    ethtool_get_flow_spec_ring(info.fs.ring_cookie))
-+			return -EINVAL;
+ 	trace_ext4_punch_hole(inode, offset, length, 0);
+ 
+-	/*
+-	 * Write out all dirty pages to avoid race conditions
+-	 * Then release them.
+-	 */
+-	if (mapping_tagged(mapping, PAGECACHE_TAG_DIRTY)) {
+-		ret = filemap_write_and_wait_range(mapping, offset,
+-						   offset + length - 1);
+-		if (ret)
+-			return ret;
+-	}
+-
+ 	inode_lock(inode);
+ 
+ 	/* No need to punch hole beyond i_size */
+@@ -4005,8 +3994,11 @@ int ext4_punch_hole(struct file *file, loff_t offset, loff_t length)
+ 		ret = ext4_update_disksize_before_punch(inode, offset, length);
+ 		if (ret)
+ 			goto out_dio;
+-		truncate_pagecache_range(inode, first_block_offset,
+-					 last_block_offset);
 +
-+		if (!xa_load(&dev->ethtool->rss_ctx, info.rss_context))
-+			return -EINVAL;
-+	}
++		ret = ext4_truncate_page_cache_block_range(inode,
++				first_block_offset, last_block_offset + 1);
++		if (ret)
++			goto out_dio;
+ 	}
  
- 	if (cmd == ETHTOOL_SRXFH && ops->get_rxfh) {
- 		struct ethtool_rxfh_param rxfh = {};
+ 	if (ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))
 -- 
 2.39.5
 
