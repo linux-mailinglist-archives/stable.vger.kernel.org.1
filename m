@@ -1,55 +1,66 @@
-Return-Path: <stable+bounces-141384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8602AAB30D
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:36:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C32AAAB6DA
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:59:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 238A91C03235
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:34:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F170B3AAEB0
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:53:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33DB14539F0;
-	Tue,  6 May 2025 00:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75BF1453A1B;
+	Tue,  6 May 2025 00:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="l3/daiIJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uE1iglPj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B75437C748;
-	Mon,  5 May 2025 22:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FDE735A56D;
+	Mon,  5 May 2025 22:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485981; cv=none; b=br+yMdvdDj012joInAXotR0T9bE+De69Ic//asg88wL6dIHYSmFAvO4cdwaFatzLW1nkvA6tAQ/RcUNJQZXn/LDLJt71SRaSHESX9BFi2wUCr0spnOAqDexBWuBkoC/El/KbUx1UUkTFEEsxttZEAXH+ZzMZYAE+dHHElx99VBY=
+	t=1746485986; cv=none; b=BqgB1/tp2neATG+e+5VmoIfXH9uY91ylNUXXjI2R/nwP0bLl/jemhew4HJ93XoFYl84TmAbEREWPPdocE04Rl0JB6HGeb1d+rYpPLC3+oO4mD3YUsXIDWJGSgcRXuCW3L8P0Ebrn19fyGy7Lnu58a2RUdbQhjGlcqu6vX+jd/RM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485981; c=relaxed/simple;
-	bh=o3QD/J3tU7Q74uHqCAl5L86/kt1bBA5NIb4E8urow+s=;
+	s=arc-20240116; t=1746485986; c=relaxed/simple;
+	bh=L1ECYrBZowF7wOI3xxzDuVGgb5BG8NyHsExHaFomqGM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=tKOpuvjyMGAnPzchUd7LO29gKPd57/7vwu1vnUcB4b90XLmDyRtrkXDV6pBITi3DNaNAgYOWBIuHRxnyCVTz3amJp/QACZSqxrx+M6EH2oLxSS8K1YadXOPTDQVYPOOEhyqJjTiCLl5lsCFoGWAsXWuJE15r4YXNvnWY554eVR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=l3/daiIJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0C85C4CEE4;
-	Mon,  5 May 2025 22:59:39 +0000 (UTC)
+	 MIME-Version; b=hRWZlC4pEldJhal6BZocRwyuZxWiFPFw1ZvAR64xUuFYArBNMv8Vjz2GhO6lZ9WzUTblbokXsv6a14SKOqc5iCJ9vCK2Y7UQuOARox9KV/Wr0tVmkPh0GOABAqwY/btXIdBexyRzbrShUW3qSl0s1uW96jn7o6s7QH2K2L5/AX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uE1iglPj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67686C4CEE4;
+	Mon,  5 May 2025 22:59:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485980;
-	bh=o3QD/J3tU7Q74uHqCAl5L86/kt1bBA5NIb4E8urow+s=;
+	s=k20201202; t=1746485986;
+	bh=L1ECYrBZowF7wOI3xxzDuVGgb5BG8NyHsExHaFomqGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l3/daiIJ5Fz+KBmlFivOqLRTva5RBTQnKxFqFEDpszsVLJZfCrF9T5/XkYrrD45h1
-	 8tqpvZS1Rgch2Um2fYAH0E4YNI9IXdLEmF3VXpDQwE+n5Og3Y4tCfWjccB0sFnXGhO
-	 jT/ANCst1r+WUZfKbAaYIkBI9wefOegNQVqVeRUt2qcT9sG3cfxytZf34yVieSUgSa
-	 4eK3RrksCRUdh++8E0NSEJUr2mqOy5ouNZLvwqRSu+dnajv5YoEjNPKdENdG9hAEcD
-	 JhnM2P1vmUq5JmMhi5GDpIotOJqwUjY1J4LCjbNYpOndJ3kDramC7vtaVgyOVdkoVv
-	 Xw/JaOlFMvDIQ==
+	b=uE1iglPjSvqIovrNeBdyaDRBg+te24t8J7Fc4QfMWfvOavKj40qivBf6IIEGjCOLl
+	 uItjhwp8SD2LktzWg+UBKLj1AwBTe7SbgOAWfNUMjKMZsVmXoS3hXX8yFVOpJ9AbUX
+	 EhCeZ1HdjfqYAS4SaQptZQgLx6OmNTnSpRaHpuoSOHwz4YooMQr3urAbIdJNjc6MRf
+	 U0rmPocdfRL6MkLIn6+z1+3ioVxlCBbVcaIAM87xcRalNBzvEinSYBDs34VDK84BPw
+	 qsjdLnXt5vAp9B+komyhhlEEk8q2edwBMx23Vd42P5zznDpkce+4nbX6uOp/zriERi
+	 3KWBeOsjVQtyg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Andreas Gruenbacher <agruenba@redhat.com>,
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
 	Sasha Levin <sashal@kernel.org>,
-	gfs2@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.6 096/294] gfs2: Check for empty queue in run_queue
-Date: Mon,  5 May 2025 18:53:16 -0400
-Message-Id: <20250505225634.2688578-96-sashal@kernel.org>
+	andy@kernel.org,
+	willy@haproxy.com,
+	ksenija.stanojevic@gmail.com,
+	viro@zeniv.linux.org.uk,
+	erick.archer@outlook.com,
+	haoxiang_li2024@163.com,
+	u.kleine-koenig@baylibre.com,
+	linux@treblig.org,
+	sudipm.mukherjee@gmail.com,
+	mingo@kernel.org,
+	tglx@linutronix.de
+Subject: [PATCH AUTOSEL 6.6 097/294] auxdisplay: charlcd: Partially revert "Move hwidth and bwidth to struct hd44780_common"
+Date: Mon,  5 May 2025 18:53:17 -0400
+Message-Id: <20250505225634.2688578-97-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -64,62 +75,114 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit d838605fea6eabae3746a276fd448f6719eb3926 ]
+[ Upstream commit 09965a142078080fe7807bab0f6f1890cb5987a4 ]
 
-In run_queue(), check if the queue of pending requests is empty instead
-of blindly assuming that it won't be.
+Commit 2545c1c948a6 ("auxdisplay: Move hwidth and bwidth to struct
+hd44780_common") makes charlcd_alloc() argument-less effectively dropping
+the single allocation for the struct charlcd_priv object along with
+the driver specific one. Restore that behaviour here.
 
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/glock.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/auxdisplay/charlcd.c | 5 +++--
+ drivers/auxdisplay/charlcd.h | 5 +++--
+ drivers/auxdisplay/hd44780.c | 2 +-
+ drivers/auxdisplay/lcd2s.c   | 2 +-
+ drivers/auxdisplay/panel.c   | 2 +-
+ 5 files changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
-index 2c0908a302102..687670075d225 100644
---- a/fs/gfs2/glock.c
-+++ b/fs/gfs2/glock.c
-@@ -853,11 +853,12 @@ static void run_queue(struct gfs2_glock *gl, const int nonblock)
- __releases(&gl->gl_lockref.lock)
- __acquires(&gl->gl_lockref.lock)
- {
--	struct gfs2_holder *gh = NULL;
-+	struct gfs2_holder *gh;
+diff --git a/drivers/auxdisplay/charlcd.c b/drivers/auxdisplay/charlcd.c
+index 6d309e4971b61..e243291a7e77c 100644
+--- a/drivers/auxdisplay/charlcd.c
++++ b/drivers/auxdisplay/charlcd.c
+@@ -594,18 +594,19 @@ static int charlcd_init(struct charlcd *lcd)
+ 	return 0;
+ }
  
- 	if (test_and_set_bit(GLF_LOCK, &gl->gl_flags))
+-struct charlcd *charlcd_alloc(void)
++struct charlcd *charlcd_alloc(unsigned int drvdata_size)
+ {
+ 	struct charlcd_priv *priv;
+ 	struct charlcd *lcd;
+ 
+-	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
++	priv = kzalloc(sizeof(*priv) + drvdata_size, GFP_KERNEL);
+ 	if (!priv)
+ 		return NULL;
+ 
+ 	priv->esc_seq.len = -1;
+ 
+ 	lcd = &priv->lcd;
++	lcd->drvdata = priv->drvdata;
+ 
+ 	return lcd;
+ }
+diff --git a/drivers/auxdisplay/charlcd.h b/drivers/auxdisplay/charlcd.h
+index eed80063a6d20..4bbf106b2dd8a 100644
+--- a/drivers/auxdisplay/charlcd.h
++++ b/drivers/auxdisplay/charlcd.h
+@@ -49,7 +49,7 @@ struct charlcd {
+ 		unsigned long y;
+ 	} addr;
+ 
+-	void *drvdata;
++	void *drvdata;			/* Set by charlcd_alloc() */
+ };
+ 
+ /**
+@@ -93,7 +93,8 @@ struct charlcd_ops {
+ };
+ 
+ void charlcd_backlight(struct charlcd *lcd, enum charlcd_onoff on);
+-struct charlcd *charlcd_alloc(void);
++
++struct charlcd *charlcd_alloc(unsigned int drvdata_size);
+ void charlcd_free(struct charlcd *lcd);
+ 
+ int charlcd_register(struct charlcd *lcd);
+diff --git a/drivers/auxdisplay/hd44780.c b/drivers/auxdisplay/hd44780.c
+index 8b690f59df27d..ebaf0ff518f4c 100644
+--- a/drivers/auxdisplay/hd44780.c
++++ b/drivers/auxdisplay/hd44780.c
+@@ -226,7 +226,7 @@ static int hd44780_probe(struct platform_device *pdev)
+ 	if (!hdc)
+ 		return -ENOMEM;
+ 
+-	lcd = charlcd_alloc();
++	lcd = charlcd_alloc(0);
+ 	if (!lcd)
+ 		goto fail1;
+ 
+diff --git a/drivers/auxdisplay/lcd2s.c b/drivers/auxdisplay/lcd2s.c
+index 6422be0dfe20e..0ecf6a9469f24 100644
+--- a/drivers/auxdisplay/lcd2s.c
++++ b/drivers/auxdisplay/lcd2s.c
+@@ -307,7 +307,7 @@ static int lcd2s_i2c_probe(struct i2c_client *i2c)
+ 	if (err < 0)
+ 		return err;
+ 
+-	lcd = charlcd_alloc();
++	lcd = charlcd_alloc(0);
+ 	if (!lcd)
+ 		return -ENOMEM;
+ 
+diff --git a/drivers/auxdisplay/panel.c b/drivers/auxdisplay/panel.c
+index eba04c0de7eb3..0f3999b665e70 100644
+--- a/drivers/auxdisplay/panel.c
++++ b/drivers/auxdisplay/panel.c
+@@ -835,7 +835,7 @@ static void lcd_init(void)
+ 	if (!hdc)
  		return;
  
-+	/* While a demote is in progress, the GLF_LOCK flag must be set. */
- 	GLOCK_BUG_ON(gl, test_bit(GLF_DEMOTE_IN_PROGRESS, &gl->gl_flags));
- 
- 	if (test_bit(GLF_DEMOTE, &gl->gl_flags) &&
-@@ -869,18 +870,22 @@ __acquires(&gl->gl_lockref.lock)
- 		set_bit(GLF_DEMOTE_IN_PROGRESS, &gl->gl_flags);
- 		GLOCK_BUG_ON(gl, gl->gl_demote_state == LM_ST_EXCLUSIVE);
- 		gl->gl_target = gl->gl_demote_state;
-+		do_xmote(gl, NULL, gl->gl_target);
-+		return;
- 	} else {
- 		if (test_bit(GLF_DEMOTE, &gl->gl_flags))
- 			gfs2_demote_wake(gl);
- 		if (do_promote(gl))
- 			goto out_unlock;
- 		gh = find_first_waiter(gl);
-+		if (!gh)
-+			goto out_unlock;
- 		gl->gl_target = gh->gh_state;
- 		if (!(gh->gh_flags & (LM_FLAG_TRY | LM_FLAG_TRY_1CB)))
- 			do_error(gl, 0); /* Fail queued try locks */
-+		do_xmote(gl, gh, gl->gl_target);
-+		return;
- 	}
--	do_xmote(gl, gh, gl->gl_target);
--	return;
- 
- out_sched:
- 	clear_bit(GLF_LOCK, &gl->gl_flags);
+-	charlcd = charlcd_alloc();
++	charlcd = charlcd_alloc(0);
+ 	if (!charlcd) {
+ 		kfree(hdc);
+ 		return;
 -- 
 2.39.5
 
