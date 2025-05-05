@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-140864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73098AAAF5F
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:15:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 784E3AAAC1F
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:09:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CCABB7B98DA
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:13:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8643A188ABC1
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:06:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE4B13BE0B8;
-	Mon,  5 May 2025 23:23:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DB4E2FB2C6;
+	Mon,  5 May 2025 23:23:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EgnsHDDk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bPj8J++W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D1CD388C20;
-	Mon,  5 May 2025 23:10:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 370002836B4;
+	Mon,  5 May 2025 23:10:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486612; cv=none; b=G9Bd9EXqGin0wzJTc6rWzpGzDfEt5roMcNc1uk3jDt3xz5jTpxaFCakPOshWeJ7G628/NtPc2VCCmJwd0pONiVFFB9Zay4s/BcOt49X1guHmSLA8v6sxM9HrK7n/Pml4BtGCCuIQiYJ/NYC4X6rZa2X/CoBOl+GnAMdqE4bJN5k=
+	t=1746486637; cv=none; b=HYmyXxGYJiBxvnKRdQATXckOX1EuM7stDmL++XJMkrSSzlfhGUt6kj4ixHiZ6CKSJRku0L/wNt2amxsALXNmsfKcdv5G8EG8tB9ufZK0uOQNhjWwl3IZcpkSUyZHhDNtpmDe2t0zNGuCm5V/Z00D4c08Vab4H7EXc6uqQOK7ehE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486612; c=relaxed/simple;
-	bh=phkeeO30HHKusTKd6SbxssgcErvrNyortPVsfg/RYQ0=;
+	s=arc-20240116; t=1746486637; c=relaxed/simple;
+	bh=V12DuPXNiRtWtQMzLPiLVqjBMCfbPhgvcS4XmvFCYQs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Q+Bti7vxhtsT2Q36tcO3iY3mHE+KmbVg91st8AQXwEwf8ZTVqQjTyS9Ijk1eING1I9WrMlv9XwQ3sef2/Y7BGOdiaUqaeqtjyNbAS4RDkl5ZMPQ7yTu6RCcoWjfJDNr8/7FIg1IF3c7j5R8VtP9PbmrkIg0uURiN3K4xOO2Cf1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EgnsHDDk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3A80C4CEE4;
-	Mon,  5 May 2025 23:10:09 +0000 (UTC)
+	 MIME-Version; b=lP3izxvKKOVwihg+U3vG9tePYtc8AZIgyb4cXkx9L+JG3FMHP9PFsgKn7bpBykVxaf7uPmBtIC2iU/abcn9Xz0kZPweIqWzc4qOKIJo37pAFxBl6SCyBHip8hKBh/1NwMGuWcE6p+rtzawKakoiPn7dZ22+ZgQ1X2nQXv1UYnDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bPj8J++W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16FFEC4CEE4;
+	Mon,  5 May 2025 23:10:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486611;
-	bh=phkeeO30HHKusTKd6SbxssgcErvrNyortPVsfg/RYQ0=;
+	s=k20201202; t=1746486636;
+	bh=V12DuPXNiRtWtQMzLPiLVqjBMCfbPhgvcS4XmvFCYQs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EgnsHDDk/ufj20MonrBfsjLABbLLQXe0Jjatz2yfuzywd9L4WgGKKAw2/XGmHlTsl
-	 SFVKK9kEOXmZ9ycFyiD797xAZxYP2+ZoQnxcPEWyAWzkD9EokGBboW+SwecOu8V4/y
-	 pA46n79wA569KSogBTHFiXrah+MiUujZiVdTWW3F6/NOT5yZnYTsokMfp+kYEBH+gD
-	 jQvpb+S7BqGqCnHeLqnLiRbTC0w3JUuoav6Do44loivCdmjKEvx6pLsky8wa25B9W5
-	 ksKpbP+cZjz/ETX750H8vEPbCrNDV06CoOVwGOuqtl9lPMpWVQRgXsUeDaTc3JoP0k
-	 8AuV5MxIK0BkA==
+	b=bPj8J++WWS6XGeL+TP2GgHiU+eQihBeEfVuFRp90uubztY+HE4BCvbUUSkM0tRXEt
+	 P00GkYmQfhbHJeyF+GHxtKSD9bniUqVU5PD2xuOiyL/T1KA+IMMaF9RGuJewSlOsrq
+	 /w0y+rp3Bed8/dSrh0DQ9Rqd3F0QXjEahXsZbv4TA0nRrpgbNDhH2FrYlt5jnn2yuu
+	 Kfy5rdBtnOGIYmKEUt5C7QtwAZOrkRjmz38uYtITP2HkIfx6eEAnlhQvRpRN9CEP5E
+	 +9ZSNzDwoXaoMaZFCyAztlwbhlgrf2VYO+Wj+f6P5LfZJRH+vA/QBr3S4vLGulwDm0
+	 VQjaquL0FNRXQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Yuanjun Gong <ruc_gongyuanjun@163.com>,
-	Lee Jones <lee@kernel.org>,
+Cc: Nandakumar Edamana <nandakumar@nandakumar.co.in>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	pavel@kernel.org,
-	jakob+lkml@paranoidlabs.org,
-	u.kleine-koenig@baylibre.com,
-	linux-leds@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 117/212] leds: pwm-multicolor: Add check for fwnode_property_read_u32
-Date: Mon,  5 May 2025 19:04:49 -0400
-Message-Id: <20250505230624.2692522-117-sashal@kernel.org>
+	eddyz87@gmail.com,
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	bpf@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 128/212] libbpf: Fix out-of-bound read
+Date: Mon,  5 May 2025 19:05:00 -0400
+Message-Id: <20250505230624.2692522-128-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -68,38 +68,41 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Yuanjun Gong <ruc_gongyuanjun@163.com>
+From: Nandakumar Edamana <nandakumar@nandakumar.co.in>
 
-[ Upstream commit 6d91124e7edc109f114b1afe6d00d85d0d0ac174 ]
+[ Upstream commit 236d3910117e9f97ebf75e511d8bcc950f1a4e5f ]
 
-Add a check to the return value of fwnode_property_read_u32()
-in case it fails.
+In `set_kcfg_value_str`, an untrusted string is accessed with the assumption
+that it will be at least two characters long due to the presence of checks for
+opening and closing quotes. But the check for the closing quote
+(value[len - 1] != '"') misses the fact that it could be checking the opening
+quote itself in case of an invalid input that consists of just the opening
+quote.
 
-Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
-Link: https://lore.kernel.org/r/20250223121459.2889484-1-ruc_gongyuanjun@163.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+This commit adds an explicit check to make sure the string is at least two
+characters long.
+
+Signed-off-by: Nandakumar Edamana <nandakumar@nandakumar.co.in>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20250221210110.3182084-1-nandakumar@nandakumar.co.in
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/rgb/leds-pwm-multicolor.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ tools/lib/bpf/libbpf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/leds/rgb/leds-pwm-multicolor.c b/drivers/leds/rgb/leds-pwm-multicolor.c
-index da9d2218ae184..97aa06e2ff603 100644
---- a/drivers/leds/rgb/leds-pwm-multicolor.c
-+++ b/drivers/leds/rgb/leds-pwm-multicolor.c
-@@ -135,8 +135,11 @@ static int led_pwm_mc_probe(struct platform_device *pdev)
+diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
+index a0fb50718daef..98d5e566e0582 100644
+--- a/tools/lib/bpf/libbpf.c
++++ b/tools/lib/bpf/libbpf.c
+@@ -1751,7 +1751,7 @@ static int set_kcfg_value_str(struct extern_desc *ext, char *ext_val,
+ 	}
  
- 	/* init the multicolor's LED class device */
- 	cdev = &priv->mc_cdev.led_cdev;
--	fwnode_property_read_u32(mcnode, "max-brightness",
-+	ret = fwnode_property_read_u32(mcnode, "max-brightness",
- 				 &cdev->max_brightness);
-+	if (ret)
-+		goto release_mcnode;
-+
- 	cdev->flags = LED_CORE_SUSPENDRESUME;
- 	cdev->brightness_set_blocking = led_pwm_mc_set;
- 
+ 	len = strlen(value);
+-	if (value[len - 1] != '"') {
++	if (len < 2 || value[len - 1] != '"') {
+ 		pr_warn("extern (kcfg) '%s': invalid string config '%s'\n",
+ 			ext->name, value);
+ 		return -EINVAL;
 -- 
 2.39.5
 
