@@ -1,191 +1,218 @@
-Return-Path: <stable+bounces-139704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3B88AA95A9
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 16:24:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01CA2AA961B
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 16:45:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3647189BCCE
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 14:25:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0AE4189C05B
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 14:45:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89A0125B69D;
-	Mon,  5 May 2025 14:24:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A8B025C83C;
+	Mon,  5 May 2025 14:45:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="juBUJjbO"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YtR3FyM+"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D0C5846C;
-	Mon,  5 May 2025 14:24:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37BC6204C0F;
+	Mon,  5 May 2025 14:45:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746455091; cv=none; b=DLczVGnsgG7ZzQKugfz0FoQVtQQ+uSIWL49+6Y4c9n8L5lRN/rqgyk7Eas9JvswfP9/1IbMjgfGA89/nBUSBzoOxBx4x2ciUOP25DO+PdFfPX2nSeSDaTAYAmF34OJ++21zv+DbedNLgCQoTdBg+Tulgvp6qAI80UYrXjEHg6uA=
+	t=1746456314; cv=none; b=QWDZ30VzF/S/Hu6fHfb/FlK9BxlyoevZUavoMXTbE6+336sKYEC+GdEIBxC6op2ui53ugOFZG9iseBEab9TJ/Y9lnv0al/JY8r1Y5Po8E0C5VWuzyHeTAkftfsgziEYscU16ar2thN4GkLib6+oAtv5Netc6/T7Ajw+b7Ye8twc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746455091; c=relaxed/simple;
-	bh=GB7ADHbBJlymyluovD3/Y6mm62xeoJLwTowA203SZvM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PaST9FlfvwX6fHt38AF3dbWMBYYdvzyaz3eqsJ0rJF5R0QYy3HrPDCZjnM066VMLT+04Y0eQCFT/adbiwqgFfMuAD+SrIjm9r7cop9qirJ+U2nFY2eO78uaosYv+K8ceZHquHmMa7PH0z0IHgjLuvS6s3JQ/a2A4SdufZmRmi/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=juBUJjbO; arc=none smtp.client-ip=209.85.167.51
+	s=arc-20240116; t=1746456314; c=relaxed/simple;
+	bh=Aak0zC7hFrMtPsSvTJIW47N4jkePCGca82zdtPNT7wQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=TQe4Dph/Jz74lgSZ8XcJAZzaDpQnkZeierrBaWZnaPrznBkPqww5p/jZrRAQFOjiY3Q2QZ+rGW4NzT3u5EyFK2W85+JEYbuG5Czq4sYssMxg6HG3x2esZk9ueAr6PgaJaZgUGFR6gyN1vsVNwNxuAl7DXn8ZtIjb3L+e7GY2S6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YtR3FyM+; arc=none smtp.client-ip=209.85.221.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-54d98aa5981so5395081e87.0;
-        Mon, 05 May 2025 07:24:49 -0700 (PDT)
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3a064a3e143so1985229f8f.3;
+        Mon, 05 May 2025 07:45:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746455087; x=1747059887; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4WGFSEkeAZiWksKb018fmfpHyOvjpAP1mkHklWaIOjo=;
-        b=juBUJjbOZp/626eUbkj49EopqIHSJANuPxEsGB8HaKKMqbuV0r8mkTDJD609CQjkSv
-         IPrgKL2dc1PkOQUHhqdYvH+Fa+crF5LhJuOjbMMHi0r7GAISnSugW6tQBRmXTR0MKB5F
-         cd7ZpA9qezNfC1Qxh+AX+3D7zA9l9s2nL8dG/AKa2VSBzwU72OklRyO3hW6qAgjGlD2b
-         7tyR97JcHxlaPdf7M5tkq3Id99E+2B/brSS2TQElWh/JYN4WQsuLz++zB6Q78h8Nrh4I
-         asI/QGq58Vi5C55icMLOnKvN8mwd1FxnDvtmwH2+CCO/u6AZSz0qznBjOnI1yHmx7gPd
-         9oCQ==
+        d=gmail.com; s=20230601; t=1746456310; x=1747061110; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Aak0zC7hFrMtPsSvTJIW47N4jkePCGca82zdtPNT7wQ=;
+        b=YtR3FyM+M1njA+QFd+jZ7kYV5c5RLAu09z01T7GjRIFwsYKEO/meO4mB6HnR8pFHPx
+         RNnDIQ7MAak7TOHX3smMGBu4+uupRSRaMfb47ugSqU21MaYP/MMgyzIULH15vbtyqU9X
+         VScg5Hl5hCniFgZG5RpFlhwd/mDdWYySuJJToQOrUSR0J8Sx7H08ku1voV/JORff9vQL
+         M0DuHqOiYWVxgE9ubflyqywtS+zrJPWZazowxc3QWEl7ymii+KDCUpchdotzw5HGhtXH
+         29VqLKAEpieKI6BIZouULxAEoxs8a+4hllEgw8TQq5nTnZRfYcAf3eNqJnQ/5boFGAli
+         AWzg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746455087; x=1747059887;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4WGFSEkeAZiWksKb018fmfpHyOvjpAP1mkHklWaIOjo=;
-        b=iu1ugYAMy0XbSWXh6ny/p8Zkx1l/2hWczpTpMqkEdlI9q6xva0gc96MwA2ywjwHDbE
-         BDEXoV39XkEC9F/jiRPZMvjKQB1tQyQNs0DuG50AdlatGBNMQRT5cdHEGKCioFD4Gz+a
-         99etSxikIba9Ib7jU29IsDL1utrRjwycLbw+yTBdgFEd1LitPmU78tHj9NHoJMLq6Q34
-         6Uf/0FVca2u0vC3j6IX+KYsZzLMmysbllJ420UHX9iXb676dl77Z7t2XqAIxGNRU5txk
-         OLOGk5gXbQ5sjk1D+Wj5u8PO354YH1085+STnC9dMAgzerLKtrRtuGsnQIRqzKipO5O2
-         tnNw==
-X-Forwarded-Encrypted: i=1; AJvYcCUXVpjXkJgfrwQY52oFHLmI8tK5PhZryaUPAOIT0hy67tYgZ0/aLTmc4ce25abx3b9rZKZBSfsl@vger.kernel.org, AJvYcCUsjUfU8zla2KUryRUcKI7b+R+LxyFQjmVFuC1x3IdTv/vSUU62FbczHuS9Ndo9rgRuFUI/xq1dkP0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyD+MEfWRbor+MzbDT/ktwBW50aok243369f9a85cvKBkNZjL3M
-	8u5peuxlptDLaZEQMEIMDz65+UejHdHRSyEBo0WPsCpTeYBDu9WMjxieNSjCKgSuvPPqpWb0bSG
-	aHz6tcD6/I4c0ql6Ou0EcQlECpIM=
-X-Gm-Gg: ASbGnctK+m6j7noP5QXlX9G/6dfs1LInF9RTTIY0nzSYfzyMJaMPPOMIiyG2dEX9lgX
-	VNMTAjWJ2ku+jKUEHNmFoEQuJQC6R8xFt9H/QveX2DzsyUv1VxRWKcORzyz9/19+i6GONQYGGZN
-	DS8XQ8SJQObvO2IT54DPRoIl3SVR3/dmpPSplJ67OpLLZ6Otb+NgDVtdIOYo24NBcl
-X-Google-Smtp-Source: AGHT+IFux6nXhUX/K7s04dLBPKVcwKLs4V3tjuFUHYMRRPkkEvOV8Mlsassg4yc/OxzeBLi4urSl+tSPJ64E+AuCRVU=
-X-Received: by 2002:a19:6a11:0:b0:54e:8194:9a72 with SMTP id
- 2adb3069b0e04-54f9efd96bbmr1550690e87.28.1746455087333; Mon, 05 May 2025
- 07:24:47 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1746456310; x=1747061110;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Aak0zC7hFrMtPsSvTJIW47N4jkePCGca82zdtPNT7wQ=;
+        b=FodfN1REHZk+7154w9M1tF58N+p4oODxDcrwQo+E5e6ZL96ZhTpiAyBEwDjDqzzj4W
+         O16WCE11CYaKG1lOQAvyciL9H30jCnzDp3ZsomywGqP56+kIgMESnj1QOOOjjWhoatmh
+         wyyraOZtinNlyc9wS5Ly5N5eSSVDidcRkaz+W8fRlXSEZSYGpl6mqb7HudOqWtQzYlpK
+         fk8mI6nZ6U09HApZTmfZRmOGuXf7FHL1t290GmkRtUrSUAFNyXPhWvIHsK7SYwNPoNyj
+         158tWCZ/gWNuQu3hAJ9sI39C5+0U/wpHaYz4qpuqifONQtkX63JLi0hS/KWzJg7mnapI
+         G4ow==
+X-Forwarded-Encrypted: i=1; AJvYcCVYxyvAXE2HeIt3tvVbyXyIrnsMTOtveu0BpMD7YyFxm0ymutDiJJXBOSbMuV+dnT/m04I3BMvOa05fr64=@vger.kernel.org, AJvYcCXFIGooLoaDuHWepuxYl/3mOyQHdve10i7ug7rXtqC0/YD7Rf3lD6NKpnMjTvKxu5pnDz0ig2U/@vger.kernel.org
+X-Gm-Message-State: AOJu0YxG6vHL4DpH1XXSh7EaeCZAF7hVXP66BMpoNzfQHttyHYWY2zKk
+	TDB9xCwqS6UiR9txxMVszSXlSPdDLg9JuNyftY9zmEAA6jTvKr1I
+X-Gm-Gg: ASbGncsEBuqe/moNtfrrsPkxiDbB+FirJahRWKGTjbl7pS80DkgiWxp00eGnbv0b5Vi
+	PfWK9EGAlsOgRBn+QcdXvul2mjQC32/v/cXhhEB+XfJ1HRhb9v9c3v2mSziBRBHdljsobiO7POw
+	C1aAsIk8vcbGH9DEv5KlbL+sOK0PUi+G3w8SzD5i1p+eDv3IOt+aWQQS+6vfehFHexFrzcQ3+92
+	/dxyVJwZifwk15QGLC3hIdOm4XlK6CGQe1cV1h6TqnkUZgOpok6g/0jGxt+FwCceFOC5Tp2yAKq
+	gLishtnI84Himdc4KyQSPPqCk4o2uJw6EmZLbR9PJoe6EJk/FQ3H72Sm39clHEQgmUsG6e0uChT
+	LHxmvXvjA
+X-Google-Smtp-Source: AGHT+IHjK1h3k/XdxelFNq/AmylJkok9PMTAM8PU6xwHm3aH5PDmmrprgcYcfC9J9d+yZNo3RyZVzg==
+X-Received: by 2002:a5d:5f41:0:b0:3a0:85b5:463b with SMTP id ffacd0b85a97d-3a09fdd83bamr5193375f8f.48.1746456310282;
+        Mon, 05 May 2025 07:45:10 -0700 (PDT)
+Received: from ?IPv6:2001:8a0:e602:d900:8437:41c5:1bd4:5790? ([2001:8a0:e602:d900:8437:41c5:1bd4:5790])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-441b2b28082sm180278025e9.34.2025.05.05.07.45.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 May 2025 07:45:09 -0700 (PDT)
+Message-ID: <ec35d40dcd06ddbcfc0409ffa01aaee22c601716.camel@gmail.com>
+Subject: Re: [PATCH v1] drm/bridge: cdns-dsi: Replace deprecated
+ UNIVERSAL_DEV_PM_OPS()
+From: Vitor Soares <ivitro@gmail.com>
+To: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Cc: Vitor Soares <vitor.soares@toradex.com>,
+ dri-devel@lists.freedesktop.org,  linux-kernel@vger.kernel.org, Aradhya
+ Bhatia <aradhya.bhatia@linux.dev>,  Jayesh Choudhary <j-choudhary@ti.com>,
+ stable@vger.kernel.org, Andrzej Hajda <andrzej.hajda@intel.com>, Neil
+ Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>,
+ Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, Jonas Karlman
+ <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, Maarten
+ Lankhorst <maarten.lankhorst@linux.intel.com>,  Maxime Ripard
+ <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
+ <airlied@gmail.com>,  Simona Vetter <simona@ffwll.ch>
+Date: Mon, 05 May 2025 15:45:08 +0100
+In-Reply-To: <fbde0659-78f3-46e4-98cf-d832f765a18b@ideasonboard.com>
+References: <20250428094048.1459620-1-ivitro@gmail.com>
+	 <fbde0659-78f3-46e4-98cf-d832f765a18b@ideasonboard.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.44.4-0ubuntu2 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250429150213.2953747-1-festevam@gmail.com> <20250429183301.326eaacf@jic23-huawei>
- <CAOMZO5DBpF+iO4NY4-tn3ar+Ld+c=SA6W-UKN0haWmAK=4g-+g@mail.gmail.com>
- <CAOMZO5B0nxVEW1Q-a05j8f+=waAYijvBq573Ha8DNbOgF0287w@mail.gmail.com>
- <20250430141112.00004bb8@huawei.com> <CAOMZO5CYuv94N_8ZepH04y8ez1CAmOJOq4eim=dLGmMFoStQ3g@mail.gmail.com>
- <20250430182537.00007eab@huawei.com> <CAOMZO5BCLWFJ=83r0saT=NxVP0f9G-P-2QosDNGArYAtX6v5Lw@mail.gmail.com>
- <20250504180420.73b96437@jic23-huawei>
-In-Reply-To: <20250504180420.73b96437@jic23-huawei>
-From: Fabio Estevam <festevam@gmail.com>
-Date: Mon, 5 May 2025 11:24:36 -0300
-X-Gm-Features: ATxdqUHAdyZF-dfSxY2aJGVPlzADAxmQQ0f5pvbu7RKFc7H8wpxrQIpF4Fu8qrw
-Message-ID: <CAOMZO5DeMNGqpF4T7tuvBBN=i95uReSTXkj-sNW2jZTUO++5ZA@mail.gmail.com>
-Subject: Re: [PATCH 1/2] iio: Fix scan mask subset check logic
-To: Jonathan Cameron <jic23@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>, mazziesaccount@gmail.com, 
-	linux-iio@vger.kernel.org, Fabio Estevam <festevam@denx.de>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi Jonathan,
+On Tue, 2025-04-29 at 09:32 +0300, Tomi Valkeinen wrote:
+> Hi,
+>=20
+> On 28/04/2025 12:40, Vitor Soares wrote:
+> > From: Vitor Soares <vitor.soares@toradex.com>
+> >=20
+> > The deprecated UNIVERSAL_DEV_PM_OPS() macro uses the provided callbacks
+> > for both runtime PM and system sleep. This causes the DSI clocks to be
+> > disabled twice: once during runtime suspend and again during system
+> > suspend, resulting in a WARN message from the clock framework when
+> > attempting to disable already-disabled clocks.
+> >=20
+> > [=C2=A0=C2=A0 84.384540] clk:231:5 already disabled
+> > [=C2=A0=C2=A0 84.388314] WARNING: CPU: 2 PID: 531 at /drivers/clk/clk.c=
+:1181
+> > clk_core_disable+0xa4/0xac
+> > ...
+> > [=C2=A0=C2=A0 84.579183] Call trace:
+> > [=C2=A0=C2=A0 84.581624]=C2=A0 clk_core_disable+0xa4/0xac
+> > [=C2=A0=C2=A0 84.585457]=C2=A0 clk_disable+0x30/0x4c
+> > [=C2=A0=C2=A0 84.588857]=C2=A0 cdns_dsi_suspend+0x20/0x58 [cdns_dsi]
+> > [=C2=A0=C2=A0 84.593651]=C2=A0 pm_generic_suspend+0x2c/0x44
+> > [=C2=A0=C2=A0 84.597661]=C2=A0 ti_sci_pd_suspend+0xbc/0x15c
+> > [=C2=A0=C2=A0 84.601670]=C2=A0 dpm_run_callback+0x8c/0x14c
+> > [=C2=A0=C2=A0 84.605588]=C2=A0 __device_suspend+0x1a0/0x56c
+> > [=C2=A0=C2=A0 84.609594]=C2=A0 dpm_suspend+0x17c/0x21c
+> > [=C2=A0=C2=A0 84.613165]=C2=A0 dpm_suspend_start+0xa0/0xa8
+> > [=C2=A0=C2=A0 84.617083]=C2=A0 suspend_devices_and_enter+0x12c/0x634
+> > [=C2=A0=C2=A0 84.621872]=C2=A0 pm_suspend+0x1fc/0x368
+> >=20
+> > To address this issue, replace UNIVERSAL_DEV_PM_OPS() with
+> > DEFINE_RUNTIME_DEV_PM_OPS(), which avoids redundant suspend/resume call=
+s
+> > by checking if the device is already runtime suspended.
+> >=20
+> > Cc: <stable@vger.kernel.org> # 6.1.x
+> > Fixes: e19233955d9e ("drm/bridge: Add Cadence DSI driver")
+> > Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
+> > ---
+> > =C2=A0 drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c | 10 +++++-----
+> > =C2=A0 1 file changed, 5 insertions(+), 5 deletions(-)
+> >=20
+> > diff --git a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
+> > b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
+> > index b022dd6e6b6e..62179e55e032 100644
+> > --- a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
+> > +++ b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
+> > @@ -1258,7 +1258,7 @@ static const struct mipi_dsi_host_ops cdns_dsi_op=
+s =3D {
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0.transfer =3D cdns_dsi_=
+transfer,
+> > =C2=A0 };
+> > =C2=A0=20
+> > -static int __maybe_unused cdns_dsi_resume(struct device *dev)
+> > +static int cdns_dsi_resume(struct device *dev)
+> > =C2=A0 {
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct cdns_dsi *dsi =
+=3D dev_get_drvdata(dev);
+> > =C2=A0=20
+> > @@ -1269,7 +1269,7 @@ static int __maybe_unused cdns_dsi_resume(struct
+> > device *dev)
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return 0;
+> > =C2=A0 }
+> > =C2=A0=20
+> > -static int __maybe_unused cdns_dsi_suspend(struct device *dev)
+> > +static int cdns_dsi_suspend(struct device *dev)
+> > =C2=A0 {
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct cdns_dsi *dsi =
+=3D dev_get_drvdata(dev);
+> > =C2=A0=20
+> > @@ -1279,8 +1279,8 @@ static int __maybe_unused cdns_dsi_suspend(struct
+> > device *dev)
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return 0;
+> > =C2=A0 }
+> > =C2=A0=20
+> > -static UNIVERSAL_DEV_PM_OPS(cdns_dsi_pm_ops, cdns_dsi_suspend,
+> > cdns_dsi_resume,
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0 NULL);
+> > +static DEFINE_RUNTIME_DEV_PM_OPS(cdns_dsi_pm_ops, cdns_dsi_suspend,
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 cdns_dsi_resume, NULL);
+>=20
+> I'm not sure if this, or the UNIVERSAL_DEV_PM_OPS, is right here. When=
+=20
+> the system is suspended, the bridge drivers will get a call to the=20
+> *_disable() hook, which then disables the device. If the bridge driver=
+=20
+> would additionally do something in its system suspend hook, it would=20
+> conflict with normal disable path.
+>=20
+> I think bridges/panels should only deal with runtime PM.
+>=20
+> =C2=A0 Tomi
+>=20
 
-On Sun, May 4, 2025 at 2:04=E2=80=AFPM Jonathan Cameron <jic23@kernel.org> =
-wrote:
+In the proposed change, we make use of pm_runtime_force_suspend() during
+system-wide suspend. If the device is already suspended, this call is a
+no-op and disables runtime PM to prevent spurious wakeups during the
+suspend period. Otherwise, it triggers the device=E2=80=99s runtime_suspend=
+()
+callback.
 
-> Ah. I was wrong for last two channels above. The scan masks for single ch=
-annel for
-> differential channels also index a bunch we aren't using in this device.
->
-> > +       MAX1363_CHAN_B(0, 1, d0m1, 12, bits, ev_spec, num_ev_spec),    =
- \
-> > +       MAX1363_CHAN_B(2, 3, d2m3, 13, bits, ev_spec, num_ev_spec),    =
- \
-> //gap here as we aren't using 4,5  6,7 8,9, 10,11
->
-> > +       MAX1363_CHAN_B(1, 0, d1m0, 14, bits, ev_spec, num_ev_spec),    =
- \
-> Should be 18
-> https://elixir.bootlin.com/linux/v6.14.5/source/drivers/iio/adc/max1363.c=
-#L262
-> > +       MAX1363_CHAN_B(3, 2, d3m2, 15, bits, ev_spec, num_ev_spec),    =
- \
-> and 19 I believe.
+I briefly reviewed other bridge drivers, and those that implement runtime
+PM appear to follow a similar approach, relying solely on runtime PM
+callbacks and using pm_runtime_force_suspend()/resume() to handle
+system-wide transitions.
 
-This works fine for me, thanks:
+Best regards,
+Vitor Soares
 
---- a/drivers/iio/adc/max1363.c
-+++ b/drivers/iio/adc/max1363.c
-@@ -504,10 +504,10 @@ static const struct iio_event_spec max1363_events[] =
-=3D {
-        MAX1363_CHAN_U(1, _s1, 1, bits, ev_spec, num_ev_spec),          \
-        MAX1363_CHAN_U(2, _s2, 2, bits, ev_spec, num_ev_spec),          \
-        MAX1363_CHAN_U(3, _s3, 3, bits, ev_spec, num_ev_spec),          \
--       MAX1363_CHAN_B(0, 1, d0m1, 4, bits, ev_spec, num_ev_spec),      \
--       MAX1363_CHAN_B(2, 3, d2m3, 5, bits, ev_spec, num_ev_spec),      \
--       MAX1363_CHAN_B(1, 0, d1m0, 6, bits, ev_spec, num_ev_spec),      \
--       MAX1363_CHAN_B(3, 2, d3m2, 7, bits, ev_spec, num_ev_spec),      \
-+       MAX1363_CHAN_B(0, 1, d0m1, 12, bits, ev_spec, num_ev_spec),     \
-+       MAX1363_CHAN_B(2, 3, d2m3, 13, bits, ev_spec, num_ev_spec),     \
-+       MAX1363_CHAN_B(1, 0, d1m0, 18, bits, ev_spec, num_ev_spec),     \
-+       MAX1363_CHAN_B(3, 2, d3m2, 19, bits, ev_spec, num_ev_spec),     \
-        IIO_CHAN_SOFT_TIMESTAMP(8)                                      \
-        }
-
-> Maybe we can simplify this and make it less error prone. These scan indic=
-es
-> are always the same as the enum max1363_mode entries in the 2nd or 3rd pa=
-rameter.
-> We can just reuse those I think.  Only the single channel ones apply here
-> but those are the first set of entries in that enum.
->
-> Bonus points for just dropping the parameter and using the existing addr
-> parameter for the macro as si as well.
->
-> That is:
-> #define MAX1363_CHAN_U(num, addr, bits, ev_spec, num_ev_spec)   \
->         {                                                               \
->                 .type =3D IIO_VOLTAGE,                                   =
- \
->                 .indexed =3D 1,                                          =
- \
->                 .channel =3D num,                                        =
- \
->                 .address =3D addr,                                       =
- \
->                 .info_mask_separate =3D BIT(IIO_CHAN_INFO_RAW),          =
- \
->                 .info_mask_shared_by_type =3D BIT(IIO_CHAN_INFO_SCALE),  =
- \
->                 .datasheet_name =3D "AIN"#num,                           =
- \
->                 .scan_type =3D {                                         =
- \
->                         .sign =3D 'u',                                   =
- \
->                         .realbits =3D bits,                              =
- \
->                         .storagebits =3D (bits > 8) ? 16 : 8,            =
- \
->                         .endianness =3D IIO_BE,                          =
- \
->                 },                                                      \
->                 .scan_index =3D (addr),                                  =
- \
-> The above changed from si to addr
-
-I tried this change on top of the previous one, and it still works.
-
-How do you think we should proceed? Can you please submit formal patches?
-
-You can add:
-
-Reported-by: Fabio Estevam <festevam@denx.de>
-Tested-by: Fabio Estevam <festevam@denx.de>
-
-Thanks
 
