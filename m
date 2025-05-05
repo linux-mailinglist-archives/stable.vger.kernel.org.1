@@ -1,61 +1,66 @@
-Return-Path: <stable+bounces-141440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141442-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72186AAB360
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:44:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C910FAAB721
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:04:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF73C16D00F
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:41:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0245A3A9BA7
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:58:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A07C823F41F;
-	Tue,  6 May 2025 00:38:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BA382417C8;
+	Tue,  6 May 2025 00:38:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GjFS5akl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dZNZ3WKA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E28D22DA0B;
-	Mon,  5 May 2025 23:05:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8718C22DA0F;
+	Mon,  5 May 2025 23:05:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486326; cv=none; b=JNWZYak7Hql2B96qvcP+w3up6AAWOhjcojIpNHBxzvIRCvsMVy1ESLKGXi1xv2O4p8eGQOo+qk4JzAmB8bKPOkni7FaTtFVviODWzw+JF4pB+Y4zfnfZmK9iwUCxSeqxO8Mp/M5hykZGgG5CvuzUrPylUJSZ0dEdhaa/4EZcl6E=
+	t=1746486327; cv=none; b=fg9zRxtgP0OJdSApyCx64RoUA5GDbqmp22YQKXkqMoXam84320f4CTUuW9SxgMChikfskkz8214zEh6YNVBxVpxz6pqzI6Rv58YcNvCTeg2WMK5EqnTS5ExQofBkV5QmdA6Hz5MpC6xgHrCsnoxU8UegDGcW/W8TDnZ1XHkhxFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486326; c=relaxed/simple;
-	bh=FuUTa7qeVl1tru7h7FAYg3CCm3SlmL2bCM5XtGtIPQQ=;
+	s=arc-20240116; t=1746486327; c=relaxed/simple;
+	bh=m6pirEV9BqCwtGgA0arxUkBv9/+4hHliPFAgBuUA4gg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hlRLeS8Al9NJPG2q9JV+MIpNclIRzS++Q453KQ29KS8wFfJW6cGH7QJ6GTyTkXN1LTiYS3Jp2VEcztZ4cHf3n1AGEKK1gPsBERi+e8bzP+yl9frqJsYFp5uDVffdXiHcvDPG7601tSaqlYQiMErF0DlTSvwZE18+Z8ginYc6H2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GjFS5akl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F6C1C4CEE4;
-	Mon,  5 May 2025 23:05:24 +0000 (UTC)
+	 MIME-Version; b=QwYK88GLMX+5v02cx6rW9lwosxhW6QmMG4En39RtG9U1TvOH9/X7+hmeVdRzbEDveD4vKEnWNbBtDREuEEFoIyjrw2Y+FV1b2F+RDRdFa6Nju+/5Sk+W6Ua6JEXd24WWfNMSIqSbmYbnuYB2CXQ+eDu58NUE4knOLF2qonj71aY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dZNZ3WKA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9BFFC4CEED;
+	Mon,  5 May 2025 23:05:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486325;
-	bh=FuUTa7qeVl1tru7h7FAYg3CCm3SlmL2bCM5XtGtIPQQ=;
+	s=k20201202; t=1746486327;
+	bh=m6pirEV9BqCwtGgA0arxUkBv9/+4hHliPFAgBuUA4gg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GjFS5aklkvsFLhvVln81hkvg++Q8lJNcgHZ/17vcYgimZzNNwDF6hen9mcXdjkoAx
-	 4gP6/d/yYvgwOVVvrTeriAWF+Y13bsUruLR1/eO1AHNWbC9hsHih0Zd+VBQTI8Dr/V
-	 VIxCxXTJeF5mZ1+e7B/cbpwuQQHD3v6KeTcuYTTOrEW0Wh6rCiDkC0mEqrMqkdiTSO
-	 EvVK6Obb/QKQrcpta4mZ76cvkpqbOYjUvc99ys72lRiJetw01wuoND137Wrb0HQoj4
-	 eszMJZ4p+PuXd8jgOY27p4evdDg+lzl10jgUOAEoD1cWWZv6VrbnyLsyfPq2W1zmPM
-	 LhstnfNwvS2lw==
+	b=dZNZ3WKAxEhMxSHH51IEBXTSKo6quhGcGiIzSGFMEBNP+800QnBqhq06T1Dyg6Up+
+	 fmmy4PQI6UBwzN11X04puzjIBKWH33OHczmQXDHY9LwFEGJc8CZfV7JsjQf/ac1/qE
+	 WFoZJf/OFE1kSa8zfElo6r8h4N2sEGlx5oQlKdKMv43OevuHMdx8ms9h76dXF3A3UP
+	 eC0uXbPNDVADQfrdQUOYpWXPaCgZHAhRxO988V/kfOR/HY2NdAiE16MkJFf4w/eP7T
+	 o7bzfjG1cAZvvhUAqC6iAuOvm5Hxfwr7R5vLACtl+hA31BGrOS2V0R5LDvCoyWoz7z
+	 f2VqnTUHK4v9Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Antoine Tenart <atenart@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
+	przemyslaw.kitszel@intel.com,
+	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@google.com,
+	kuba@kernel.org,
 	pabeni@redhat.com,
-	sdf@fomichev.me,
-	jdamato@fastly.com,
+	intel-wired-lan@lists.osuosl.org,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 260/294] net-sysfs: prevent uncleared queues from being re-added
-Date: Mon,  5 May 2025 18:56:00 -0400
-Message-Id: <20250505225634.2688578-260-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 261/294] ice: treat dyn_allowed only as suggestion
+Date: Mon,  5 May 2025 18:56:01 -0400
+Message-Id: <20250505225634.2688578-261-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -70,74 +75,131 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Antoine Tenart <atenart@kernel.org>
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 
-[ Upstream commit 7e54f85c60828842be27e0149f3533357225090e ]
+[ Upstream commit a8c2d3932c1106af2764cc6869b29bcf3cb5bc47 ]
 
-With the (upcoming) removal of the rtnl_trylock/restart_syscall logic
-and because of how Tx/Rx queues are implemented (and their
-requirements), it might happen that a queue is re-added before having
-the chance to be cleared. In such rare case, do not complete the queue
-addition operation.
+It can be needed to have some MSI-X allocated as static and rest as
+dynamic. For example on PF VSI. We want to always have minimum one MSI-X
+on it, because of that it is allocated as a static one, rest can be
+dynamic if it is supported.
 
-Signed-off-by: Antoine Tenart <atenart@kernel.org>
-Link: https://patch.msgid.link/20250204170314.146022-4-atenart@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Change the ice_get_irq_res() to allow using static entries if they are
+free even if caller wants dynamic one.
+
+Adjust limit values to the new approach. Min and max in limit means the
+values that are valid, so decrease max and num_static by one.
+
+Set vsi::irq_dyn_alloc if dynamic allocation is supported.
+
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/net-sysfs.c | 32 ++++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+ drivers/net/ethernet/intel/ice/ice_irq.c | 25 ++++++++++++------------
+ drivers/net/ethernet/intel/ice/ice_lib.c |  2 ++
+ 2 files changed, 15 insertions(+), 12 deletions(-)
 
-diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
-index f7404bc679746..d88682ae0e126 100644
---- a/net/core/net-sysfs.c
-+++ b/net/core/net-sysfs.c
-@@ -1077,6 +1077,22 @@ static int rx_queue_add_kobject(struct net_device *dev, int index)
- 	struct kobject *kobj = &queue->kobj;
- 	int error = 0;
+diff --git a/drivers/net/ethernet/intel/ice/ice_irq.c b/drivers/net/ethernet/intel/ice/ice_irq.c
+index ad82ff7d19957..09f9c7ba52795 100644
+--- a/drivers/net/ethernet/intel/ice/ice_irq.c
++++ b/drivers/net/ethernet/intel/ice/ice_irq.c
+@@ -45,7 +45,7 @@ static void ice_free_irq_res(struct ice_pf *pf, u16 index)
+ /**
+  * ice_get_irq_res - get an interrupt resource
+  * @pf: board private structure
+- * @dyn_only: force entry to be dynamically allocated
++ * @dyn_allowed: allow entry to be dynamically allocated
+  *
+  * Allocate new irq entry in the free slot of the tracker. Since xarray
+  * is used, always allocate new entry at the lowest possible index. Set
+@@ -53,11 +53,12 @@ static void ice_free_irq_res(struct ice_pf *pf, u16 index)
+  *
+  * Returns allocated irq entry or NULL on failure.
+  */
+-static struct ice_irq_entry *ice_get_irq_res(struct ice_pf *pf, bool dyn_only)
++static struct ice_irq_entry *ice_get_irq_res(struct ice_pf *pf,
++					     bool dyn_allowed)
+ {
+-	struct xa_limit limit = { .max = pf->irq_tracker.num_entries,
++	struct xa_limit limit = { .max = pf->irq_tracker.num_entries - 1,
+ 				  .min = 0 };
+-	unsigned int num_static = pf->irq_tracker.num_static;
++	unsigned int num_static = pf->irq_tracker.num_static - 1;
+ 	struct ice_irq_entry *entry;
+ 	unsigned int index;
+ 	int ret;
+@@ -66,9 +67,9 @@ static struct ice_irq_entry *ice_get_irq_res(struct ice_pf *pf, bool dyn_only)
+ 	if (!entry)
+ 		return NULL;
  
-+	/* Rx queues are cleared in rx_queue_release to allow later
-+	 * re-registration. This is triggered when their kobj refcount is
-+	 * dropped.
-+	 *
-+	 * If a queue is removed while both a read (or write) operation and a
-+	 * the re-addition of the same queue are pending (waiting on rntl_lock)
-+	 * it might happen that the re-addition will execute before the read,
-+	 * making the initial removal to never happen (queue's kobj refcount
-+	 * won't drop enough because of the pending read). In such rare case,
-+	 * return to allow the removal operation to complete.
-+	 */
-+	if (unlikely(kobj->state_initialized)) {
-+		netdev_warn_once(dev, "Cannot re-add rx queues before their removal completed");
-+		return -EAGAIN;
-+	}
-+
- 	/* Kobject_put later will trigger rx_queue_release call which
- 	 * decreases dev refcount: Take that reference here
- 	 */
-@@ -1684,6 +1700,22 @@ static int netdev_queue_add_kobject(struct net_device *dev, int index)
- 	struct kobject *kobj = &queue->kobj;
- 	int error = 0;
+-	/* skip preallocated entries if the caller says so */
+-	if (dyn_only)
+-		limit.min = num_static;
++	/* only already allocated if the caller says so */
++	if (!dyn_allowed)
++		limit.max = num_static;
  
-+	/* Tx queues are cleared in netdev_queue_release to allow later
-+	 * re-registration. This is triggered when their kobj refcount is
-+	 * dropped.
-+	 *
-+	 * If a queue is removed while both a read (or write) operation and a
-+	 * the re-addition of the same queue are pending (waiting on rntl_lock)
-+	 * it might happen that the re-addition will execute before the read,
-+	 * making the initial removal to never happen (queue's kobj refcount
-+	 * won't drop enough because of the pending read). In such rare case,
-+	 * return to allow the removal operation to complete.
-+	 */
-+	if (unlikely(kobj->state_initialized)) {
-+		netdev_warn_once(dev, "Cannot re-add tx queues before their removal completed");
-+		return -EAGAIN;
-+	}
+ 	ret = xa_alloc(&pf->irq_tracker.entries, &index, entry, limit,
+ 		       GFP_KERNEL);
+@@ -78,7 +79,7 @@ static struct ice_irq_entry *ice_get_irq_res(struct ice_pf *pf, bool dyn_only)
+ 		entry = NULL;
+ 	} else {
+ 		entry->index = index;
+-		entry->dynamic = index >= num_static;
++		entry->dynamic = index > num_static;
+ 	}
+ 
+ 	return entry;
+@@ -272,7 +273,7 @@ int ice_init_interrupt_scheme(struct ice_pf *pf)
+ /**
+  * ice_alloc_irq - Allocate new interrupt vector
+  * @pf: board private structure
+- * @dyn_only: force dynamic allocation of the interrupt
++ * @dyn_allowed: allow dynamic allocation of the interrupt
+  *
+  * Allocate new interrupt vector for a given owner id.
+  * return struct msi_map with interrupt details and track
+@@ -285,20 +286,20 @@ int ice_init_interrupt_scheme(struct ice_pf *pf)
+  * interrupt will be allocated with pci_msix_alloc_irq_at.
+  *
+  * Some callers may only support dynamically allocated interrupts.
+- * This is indicated with dyn_only flag.
++ * This is indicated with dyn_allowed flag.
+  *
+  * On failure, return map with negative .index. The caller
+  * is expected to check returned map index.
+  *
+  */
+-struct msi_map ice_alloc_irq(struct ice_pf *pf, bool dyn_only)
++struct msi_map ice_alloc_irq(struct ice_pf *pf, bool dyn_allowed)
+ {
+ 	int sriov_base_vector = pf->sriov_base_vector;
+ 	struct msi_map map = { .index = -ENOENT };
+ 	struct device *dev = ice_pf_to_dev(pf);
+ 	struct ice_irq_entry *entry;
+ 
+-	entry = ice_get_irq_res(pf, dyn_only);
++	entry = ice_get_irq_res(pf, dyn_allowed);
+ 	if (!entry)
+ 		return map;
+ 
+diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
+index 1fc4805353eb5..a6a290514e548 100644
+--- a/drivers/net/ethernet/intel/ice/ice_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_lib.c
+@@ -587,6 +587,8 @@ ice_vsi_alloc_def(struct ice_vsi *vsi, struct ice_channel *ch)
+ 			return -ENOMEM;
+ 	}
+ 
++	vsi->irq_dyn_alloc = pci_msix_can_alloc_dyn(vsi->back->pdev);
 +
- 	/* Kobject_put later will trigger netdev_queue_release call
- 	 * which decreases dev refcount: Take that reference here
- 	 */
+ 	switch (vsi->type) {
+ 	case ICE_VSI_SWITCHDEV_CTRL:
+ 		/* Setup eswitch MSIX irq handler for VSI */
 -- 
 2.39.5
 
