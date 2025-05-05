@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-140931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0CB3AAAC8D
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:18:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBD95AAAC8F
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:19:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BFE38467465
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:17:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E401D4C4741
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:17:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 465DD28C2B3;
-	Mon,  5 May 2025 23:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AF393A122E;
+	Mon,  5 May 2025 23:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GUUzTdPH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fMGP7bSC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB0D53A0133;
-	Mon,  5 May 2025 23:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAE5E3A0145;
+	Mon,  5 May 2025 23:15:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486924; cv=none; b=DTrCrLjCwtaHjxd32ZaQ0Yf/J4GPDjrlhyPdZlmqMLPDElDjvjXuUmYEEIjZV3BqkLFOTxYlG1MWWkkUbGy5v0pIbJoHLmc7lSepNyjnxBjReA/0QcBXkAlJQ4CXxIQFuUGzF3Knf0Acuhh55XvEMVQN5u3zXWbk0bi7HCOebRY=
+	t=1746486928; cv=none; b=livHj1THrrg+GtUHe6CYdJjMrKy6GXIoDCCAFWEamlpfYdoqWBCgRwr5gL8DNcPiiNXfUpVd3G4tMPPvYMRLWysNDz9ysrPhmoIlv3db4HxQTyK8/ZzIGAFMA7qQCAPWXsjnf45JLIGWuxI/ksDnopdUnRDpIPNsIXQcPOL6gJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486924; c=relaxed/simple;
-	bh=pxt1vUwyhbVDVIH4B45gFvaUMGnvP+TYbfp1Y6nmaow=;
+	s=arc-20240116; t=1746486928; c=relaxed/simple;
+	bh=JWjpskImZicdr/VdEAZ9aFzpPKysyXh4yv/zrRI3Bno=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=C4sl0si8UNBEyvggTVC8C0dlO3hog3WpR+OtQrIsfFPk0Xy1QEJdzBdHFU9RW7mvUou+LAEvowkapqspjbqDch2oPJm3FJWsV+TVEcAycCWj7M69T1Waf4kBBEO8ZMuKtBFtLTJHIQvUe+4gp85hbchaP8lZCIQ6hPoqFcIceOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GUUzTdPH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60CECC4CEEF;
-	Mon,  5 May 2025 23:15:22 +0000 (UTC)
+	 MIME-Version; b=PMmuwROSlI+IYfU75ToJL1Fqxw7LWMBk7A42Gop9s8GMSyv8klkQEcWSIBFG8Fmfjc50TvoX60WP51tfpPHA5I6r7WT8cpSCumUTi4El/HnrF37kuzyRRkVAHrfUyAMO2Z8N9U4dHRC2ODDDvoUWMLFgIT6+F4tM6Y94ofOpGtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fMGP7bSC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE72DC4CEF1;
+	Mon,  5 May 2025 23:15:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486923;
-	bh=pxt1vUwyhbVDVIH4B45gFvaUMGnvP+TYbfp1Y6nmaow=;
+	s=k20201202; t=1746486926;
+	bh=JWjpskImZicdr/VdEAZ9aFzpPKysyXh4yv/zrRI3Bno=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GUUzTdPHxqIYjMUoo2lC+IuRVftpzQjY3AW0K3uMJ665YedfRZlD/bOXqnDETFe4E
-	 U5jkMZY8Oje5MQg4DRcmdlcxOyvBHjCf3ialHB9W3K5zEh8yoIFLybtvKdJwdNh2Jg
-	 w5P8D3HGxzLIGh64Mif2A4U/40QL3C95SVqDeYCv7XrWzBho+iYbiWEykc6EC048RM
-	 WvnLCN4qCPMbQiW0pi3tGYVMACeT3OH+hfF5QGTjD7GnsnbqcTpzJOby87K/2tvOxU
-	 0E1s76eRaZW3obwPCguWDxa98Nql/eUDV/KTOegyCaA4zDG4sWqYZY0jhLiVZ6WXnQ
-	 1xmN2xG3BnbIg==
+	b=fMGP7bSCOzyyt34ce/ZylcMJyXNZ+Hz90PFUN9wq9dtls3Y56NssOikFrQ9ilJl09
+	 Abxsiwx5CXptw4tq5w5YEeI9+xsutiguqvYkt++FtdGH0sgYr1nahw+63Pay9GAJmr
+	 YyGCjtxpM40fhOxBzqLM96q1+qZz7pCREvOd6kU7DKmUQTGDASSE3OKIHrRSQ6oin1
+	 Ab12DpxBsciHEy0sxIvAKIjYQFyEai69eSwTm8/Uuda/IqQtayMfEN2c2uEYekwQQj
+	 BmgadeatOdeOgPsNcPmYjk1jyVrrmCZsNt4DIK87UMMcawCJ/xPyVAhlEf3agUMwza
+	 Njd6Lob8MKQfQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Svyatoslav Ryhel <clamor95@gmail.com>,
-	Thierry Reding <treding@nvidia.com>,
+Cc: Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	thierry.reding@gmail.com,
-	jonathanh@nvidia.com,
-	devicetree@vger.kernel.org,
-	linux-tegra@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 061/153] ARM: tegra: Switch DSI-B clock parent to PLLD on Tegra114
-Date: Mon,  5 May 2025 19:11:48 -0400
-Message-Id: <20250505231320.2695319-61-sashal@kernel.org>
+	agk@redhat.com,
+	snitzer@kernel.org,
+	dm-devel@lists.linux.dev
+Subject: [PATCH AUTOSEL 5.15 063/153] dm cache: prevent BUG_ON by blocking retries on failed device resumes
+Date: Mon,  5 May 2025 19:11:50 -0400
+Message-Id: <20250505231320.2695319-63-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
 References: <20250505231320.2695319-1-sashal@kernel.org>
@@ -71,34 +67,119 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.181
 Content-Transfer-Encoding: 8bit
 
-From: Svyatoslav Ryhel <clamor95@gmail.com>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-[ Upstream commit 2b3db788f2f614b875b257cdb079adadedc060f3 ]
+[ Upstream commit 5da692e2262b8f81993baa9592f57d12c2703dea ]
 
-PLLD is usually used as parent clock for internal video devices, like
-DSI for example, while PLLD2 is used as parent for HDMI.
+A cache device failing to resume due to mapping errors should not be
+retried, as the failure leaves a partially initialized policy object.
+Repeating the resume operation risks triggering BUG_ON when reloading
+cache mappings into the incomplete policy object.
 
-Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
-Link: https://lore.kernel.org/r/20250226105615.61087-3-clamor95@gmail.com
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+Reproduce steps:
+
+1. create a cache metadata consisting of 512 or more cache blocks,
+   with some mappings stored in the first array block of the mapping
+   array. Here we use cache_restore v1.0 to build the metadata.
+
+cat <<EOF >> cmeta.xml
+<superblock uuid="" block_size="128" nr_cache_blocks="512" \
+policy="smq" hint_width="4">
+  <mappings>
+    <mapping cache_block="0" origin_block="0" dirty="false"/>
+  </mappings>
+</superblock>
+EOF
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+cache_restore -i cmeta.xml -o /dev/mapper/cmeta --metadata-version=2
+dmsetup remove cmeta
+
+2. wipe the second array block of the mapping array to simulate
+   data degradations.
+
+mapping_root=$(dd if=/dev/sdc bs=1c count=8 skip=192 \
+2>/dev/null | hexdump -e '1/8 "%u\n"')
+ablock=$(dd if=/dev/sdc bs=1c count=8 skip=$((4096*mapping_root+2056)) \
+2>/dev/null | hexdump -e '1/8 "%u\n"')
+dd if=/dev/zero of=/dev/sdc bs=4k count=1 seek=$ablock
+
+3. try bringing up the cache device. The resume is expected to fail
+   due to the broken array block.
+
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+dmsetup create cdata --table "0 65536 linear /dev/sdc 8192"
+dmsetup create corig --table "0 524288 linear /dev/sdc 262144"
+dmsetup create cache --notable
+dmsetup load cache --table "0 524288 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+dmsetup resume cache
+
+4. try resuming the cache again. An unexpected BUG_ON is triggered
+   while loading cache mappings.
+
+dmsetup resume cache
+
+Kernel logs:
+
+(snip)
+------------[ cut here ]------------
+kernel BUG at drivers/md/dm-cache-policy-smq.c:752!
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN NOPTI
+CPU: 0 UID: 0 PID: 332 Comm: dmsetup Not tainted 6.13.4 #3
+RIP: 0010:smq_load_mapping+0x3e5/0x570
+
+Fix by disallowing resume operations for devices that failed the
+initial attempt.
+
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/tegra114.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/dm-cache-target.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/arch/arm/boot/dts/tegra114.dtsi b/arch/arm/boot/dts/tegra114.dtsi
-index fb99b3e971c3b..c00097794dab1 100644
---- a/arch/arm/boot/dts/tegra114.dtsi
-+++ b/arch/arm/boot/dts/tegra114.dtsi
-@@ -126,7 +126,7 @@ dsi@54400000 {
- 			reg = <0x54400000 0x00040000>;
- 			clocks = <&tegra_car TEGRA114_CLK_DSIB>,
- 				 <&tegra_car TEGRA114_CLK_DSIBLP>,
--				 <&tegra_car TEGRA114_CLK_PLL_D2_OUT0>;
-+				 <&tegra_car TEGRA114_CLK_PLL_D_OUT0>;
- 			clock-names = "dsi", "lp", "parent";
- 			resets = <&tegra_car 82>;
- 			reset-names = "dsi";
+diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
+index 1864e8180be89..1660d4fec7511 100644
+--- a/drivers/md/dm-cache-target.c
++++ b/drivers/md/dm-cache-target.c
+@@ -2883,6 +2883,27 @@ static dm_cblock_t get_cache_dev_size(struct cache *cache)
+ 	return to_cblock(size);
+ }
+ 
++static bool can_resume(struct cache *cache)
++{
++	/*
++	 * Disallow retrying the resume operation for devices that failed the
++	 * first resume attempt, as the failure leaves the policy object partially
++	 * initialized. Retrying could trigger BUG_ON when loading cache mappings
++	 * into the incomplete policy object.
++	 */
++	if (cache->sized && !cache->loaded_mappings) {
++		if (get_cache_mode(cache) != CM_WRITE)
++			DMERR("%s: unable to resume a failed-loaded cache, please check metadata.",
++			      cache_device_name(cache));
++		else
++			DMERR("%s: unable to resume cache due to missing proper cache table reload",
++			      cache_device_name(cache));
++		return false;
++	}
++
++	return true;
++}
++
+ static bool can_resize(struct cache *cache, dm_cblock_t new_size)
+ {
+ 	if (from_cblock(new_size) > from_cblock(cache->cache_size)) {
+@@ -2931,6 +2952,9 @@ static int cache_preresume(struct dm_target *ti)
+ 	struct cache *cache = ti->private;
+ 	dm_cblock_t csize = get_cache_dev_size(cache);
+ 
++	if (!can_resume(cache))
++		return -EINVAL;
++
+ 	/*
+ 	 * Check to see if the cache has resized.
+ 	 */
 -- 
 2.39.5
 
