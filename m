@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-140176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24666AAA5EE
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:01:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF7FEAAA5D9
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:59:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D1143BF81C
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:57:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 792FF188A221
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:58:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D848328DEF5;
-	Mon,  5 May 2025 22:31:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3583E319439;
+	Mon,  5 May 2025 22:31:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E3NndAz/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A+9TDjsH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90215318E39;
-	Mon,  5 May 2025 22:31:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E274B319430;
+	Mon,  5 May 2025 22:31:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484276; cv=none; b=qSIsUKdlaxEtSNBLM7UU8G9wbysguPon7/9ofx0x/GzOONszUaWNmK5MWkyPgEcJmFnwF0PyU/jbdHbGMQQGf5s8RvTNl4hI0BmYh9BoY4o9yp1Uro5si1FloalkoGw6jligfnE0dL9YRgYTMIg4/Zjzi15Zv+RJVlT9ldPK7OU=
+	t=1746484280; cv=none; b=jLcajWabn478klHC/C6a9lFD/VLwNXz37ZibBkmNPOspnqNy1MF9xGXEpebcyoWcsF3x4+BYE3IEhSQwcJlWjSxuf4dS+mChKyooqj6fgxwPEaB0tPIIjhB2xzlk8mNd1BdqA1t+yFGfG6FLdiK16/sSwqkjaAycCYQH4QA6SSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484276; c=relaxed/simple;
-	bh=D/IAG6bdcGYnJ7ACkHib5x/V+X8XCCk2XhDtgcK0fOU=;
+	s=arc-20240116; t=1746484280; c=relaxed/simple;
+	bh=v/ju6zynRUJtqKH6u2Ic/XOrJDA6okuwg9/FkbE2tGk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=a0ES3/qOt+ZtJTiDJE/7fynpRpDoIqW3Z6qYDUP8tOcPJmAYJGqzrF1qgWa9HbNRLxX5XyAFRRMBdxfCPpEjCTddM8A+GTGRK6kMUj9x4gEagG/SsHt0HS18MJqp1XRmRbb/+pAJ0asg1AcFTM9x6vc95Zzj/4Af9RW5AFUjr2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E3NndAz/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3245AC4CEE4;
-	Mon,  5 May 2025 22:31:15 +0000 (UTC)
+	 MIME-Version; b=SevnkNivsd/4QCMrv+9zG3YzEI1k/JfbdtBmC3K24OhDJPcFB9XWZbibD55jyXXZSxZCUYg9C+JWyZfpPjtaWcW/hqJDZjcdmi56dFky7u4WRMNV1E5Tww/BSK/uVG/EXWNB5DYaPpwJXAScTdEHxNOmeZKgI/kxkvpcMvz7Jik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A+9TDjsH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ECAEC4CEEE;
+	Mon,  5 May 2025 22:31:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484276;
-	bh=D/IAG6bdcGYnJ7ACkHib5x/V+X8XCCk2XhDtgcK0fOU=;
+	s=k20201202; t=1746484279;
+	bh=v/ju6zynRUJtqKH6u2Ic/XOrJDA6okuwg9/FkbE2tGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E3NndAz/9LbOA/lP35DapI5MQHBv60y3TkUF6tnZoynQBPY5BpLlXs8NviAC6Wm89
-	 jxoZHTBZfcgbCd0vIAvwoSqvEV3u2zrwwvtdnglm2e9Kp6o1f4FqaP1FTCczv7hIIN
-	 50yMPuZDJvkAYG6GdMc9PiGIzcUYKXOBOoMbiHA9esK8nWUBmvqR59yJi8cnz48iWS
-	 vB9nV2N/91hWRo+/YkB7lQJYzXotyX2d41+jAa+/97cl9bpOrWumWmQTcONN8lCHVB
-	 rX+WNnEu0ddwuBVwCySc+BIWIgj9ANHplLbavNXIaqnRm2ODnIS7DUZ1gRK8eYLo/k
-	 kQvAwADgPMslg==
+	b=A+9TDjsH975qB90gOtGzj6E8AYAO6D6H6gh72hzEOFkisAEf5JYKmoWKPAeZxcdY/
+	 AjlMjaSZ2a4nx1t7J/oNri/SagdMybVPD5L9ot6Vl9CzwLHqBUXAeajdjVjTzzrxm0
+	 cmu8xP+oTskjPSYxivCQaPu3PVq7iHtJ+V0eyu9HlWvBHHVAQ35gH8XMi2oi4z0xvf
+	 0lAznC+zZ7JD9W7Za+OYgO4MdN9WbroaDzZeA1qdmZYWo3iIqNm3dtOAATpT7y4mVm
+	 DyaMOKAGiLSQ6wlYp9XGagytxZWxlrYJ6uCKmFXeOOEzDo6TRyMZTXolysCoq3o+CH
+	 h7wNrylfx7iIQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+Cc: Alain Volmat <alain.volmat@foss.st.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>,
 	mchehab@kernel.org,
-	laurent.pinchart+renesas@ideasonboard.com,
-	umang.jain@ideasonboard.com,
-	tomm.merciai@gmail.com,
-	prabhakar.mahadev-lad.rj@bp.renesas.com,
-	linux-media@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 429/642] media: v4l: Memset argument to 0 before calling get_mbus_config pad op
-Date: Mon,  5 May 2025 18:10:45 -0400
-Message-Id: <20250505221419.2672473-429-sashal@kernel.org>
+	mcoquelin.stm32@gmail.com,
+	alexandre.torgue@foss.st.com,
+	linux-media@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.14 431/642] media: stm32: csi: add missing pm_runtime_put on error
+Date: Mon,  5 May 2025 18:10:47 -0400
+Message-Id: <20250505221419.2672473-431-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -71,52 +71,66 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Alain Volmat <alain.volmat@foss.st.com>
 
-[ Upstream commit 91d6a99acfa5ce9f95ede775074b80f7193bd717 ]
+[ Upstream commit f7cd9c94959e7a5b8c4eca33e20bd6ba1b048a64 ]
 
-Memset the config argument to get_mbus_config V4L2 sub-device pad
-operation to zero before calling the operation. This ensures the callers
-don't need to bother with it nor the implementations need to set all
-fields that may not be relevant to them.
+Within the stm32_csi_start function, pm_runtime_put should
+be called upon error following pm_runtime_get_sync.
+Rework the function error handling by putting a label in
+order to have common error handling for all calls requiring
+pm_runtime_put.
 
+Signed-off-by: Alain Volmat <alain.volmat@foss.st.com>
 Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/v4l2-core/v4l2-subdev.c | 2 ++
- include/media/v4l2-subdev.h           | 4 +++-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ drivers/media/platform/st/stm32/stm32-csi.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/media/v4l2-core/v4l2-subdev.c b/drivers/media/v4l2-core/v4l2-subdev.c
-index cde1774c9098d..a3074f469b150 100644
---- a/drivers/media/v4l2-core/v4l2-subdev.c
-+++ b/drivers/media/v4l2-core/v4l2-subdev.c
-@@ -444,6 +444,8 @@ static int call_enum_dv_timings(struct v4l2_subdev *sd,
- static int call_get_mbus_config(struct v4l2_subdev *sd, unsigned int pad,
- 				struct v4l2_mbus_config *config)
- {
-+	memset(config, 0, sizeof(*config));
+diff --git a/drivers/media/platform/st/stm32/stm32-csi.c b/drivers/media/platform/st/stm32/stm32-csi.c
+index a4f8db608cedd..0c776e4a7ce83 100644
+--- a/drivers/media/platform/st/stm32/stm32-csi.c
++++ b/drivers/media/platform/st/stm32/stm32-csi.c
+@@ -499,21 +499,19 @@ static int stm32_csi_start(struct stm32_csi_dev *csidev,
+ 
+ 	ret = pm_runtime_get_sync(csidev->dev);
+ 	if (ret < 0)
+-		return ret;
++		goto error_put;
+ 
+ 	/* Retrieve CSI2PHY clock rate to compute CCFR value */
+ 	phy_clk_frate = clk_get_rate(csidev->clks[STM32_CSI_CLK_CSI2PHY].clk);
+ 	if (!phy_clk_frate) {
+-		pm_runtime_put(csidev->dev);
+ 		dev_err(csidev->dev, "CSI2PHY clock rate invalid (0)\n");
+-		return ret;
++		ret = -EINVAL;
++		goto error_put;
+ 	}
+ 
+ 	ret = stm32_csi_setup_lane_merger(csidev);
+-	if (ret) {
+-		pm_runtime_put(csidev->dev);
+-		return ret;
+-	}
++	if (ret)
++		goto error_put;
+ 
+ 	/* Enable the CSI */
+ 	writel_relaxed(STM32_CSI_CR_CSIEN, csidev->base + STM32_CSI_CR);
+@@ -569,6 +567,10 @@ static int stm32_csi_start(struct stm32_csi_dev *csidev,
+ 	writel_relaxed(0, csidev->base + STM32_CSI_PMCR);
+ 
+ 	return ret;
 +
- 	return check_pad(sd, pad) ? :
- 	       sd->ops->pad->get_mbus_config(sd, pad, config);
++error_put:
++	pm_runtime_put(csidev->dev);
++	return ret;
  }
-diff --git a/include/media/v4l2-subdev.h b/include/media/v4l2-subdev.h
-index 2f2200875b038..57f2bcb4eb16c 100644
---- a/include/media/v4l2-subdev.h
-+++ b/include/media/v4l2-subdev.h
-@@ -822,7 +822,9 @@ struct v4l2_subdev_state {
-  *		     possible configuration from the remote end, likely calling
-  *		     this operation as close as possible to stream on time. The
-  *		     operation shall fail if the pad index it has been called on
-- *		     is not valid or in case of unrecoverable failures.
-+ *		     is not valid or in case of unrecoverable failures. The
-+ *		     config argument has been memset to 0 just before calling
-+ *		     the op.
-  *
-  * @set_routing: Enable or disable data connection routes described in the
-  *		 subdevice routing table. Subdevs that implement this operation
+ 
+ static void stm32_csi_stop(struct stm32_csi_dev *csidev)
 -- 
 2.39.5
 
