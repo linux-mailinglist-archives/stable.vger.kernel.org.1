@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-141050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC6FBAAB095
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:41:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C797DAAAD91
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:38:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1C5777BC815
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:33:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C0DA16FA92
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:35:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82E6C30B282;
-	Mon,  5 May 2025 23:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A4D130A804;
+	Mon,  5 May 2025 23:40:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sAfgX0mr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YMOoeNLb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 459D63B8A0F;
-	Mon,  5 May 2025 23:21:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D0DB37EA88;
+	Mon,  5 May 2025 23:21:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487312; cv=none; b=SBnWu8G5SOmwQCw4vnbZ77CMDiz0nd6dM0BarpCj8n9UF3WNhbHAiAqHsJ0XDlsDU4PooWjgv6zkLIurBsyBV8au31hLx7JTdw4yfy50UF2eD1tG80q7MvbOi//Abw+ow4Fmurgh87oVFXwcPERfUxp6WDwAqXtHfK52CsxMbbk=
+	t=1746487318; cv=none; b=ZkRYI1jSZk6Cv3mbJQL62BwS1NqurwPMGjOb+T41v0wrYTKD8JuI0HyK67lHXKzle8O/1MELuK1f3mXdGr5X8iGd8TMYtnqJDpQpJDg6kGuHRQnsvE7HBzc2HBCZqO1IRw+UJdAlPgs5LKqCQFxioeW9r2EsATFGGT0lgMsXc1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487312; c=relaxed/simple;
-	bh=AszapdjkdG/OED5SC5JlpPorz91kZ37h5pVVZ+Xc5mU=;
+	s=arc-20240116; t=1746487318; c=relaxed/simple;
+	bh=zEWgyvgE0K3/6juLqJn8ugmpW06gemNbsD2fMXiHnzM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=phClGlXJYJHnW/rYy0OOpECFKwCIysa3IdPbveQc2chWb/ld+FhDs/yLEPfPQ1b4WBtDFmtnIPGCIyojET+gYe1PB2S/igbDGMbZA/VmNbK0TP3v8eWp3GPwKGlCE47O669b/XKoeCBZ6eT5wFYq9XL5a3+p8dboFp26ejZdcAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sAfgX0mr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D469C4CEE4;
-	Mon,  5 May 2025 23:21:49 +0000 (UTC)
+	 MIME-Version; b=b47tNzJW03PRVRHjwU7Y4V1AjhSbLAADgBWXytwq5MuG4Azpjz6D5blfDiexqJkVYDyE5PkPJ6ZPtasvrlAU/u4KJxN4KvkCrsG1FsspbFcW2/S3CzQx+YO1i/Pb6NFlSmgmID4g9WkPZN0zUElRO4ccclAY+/EEtdgr6Rwo1Dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YMOoeNLb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BD18C4CEEE;
+	Mon,  5 May 2025 23:21:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487310;
-	bh=AszapdjkdG/OED5SC5JlpPorz91kZ37h5pVVZ+Xc5mU=;
+	s=k20201202; t=1746487317;
+	bh=zEWgyvgE0K3/6juLqJn8ugmpW06gemNbsD2fMXiHnzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sAfgX0mrfgqsKIw0+OBnmwj/TpSyRqkaz92WdznRpcT+VsvVH/xKw+HNFWGRiZ6Jm
-	 NZPHC5MFtKP9j9KIUk0e4/dDblpx/tnUSPH1jA+xar+ryoppWRqbYQh0I+thpdnjEK
-	 b7fzHuSLTZSj29Asrp7J7fxa2EWyzPWHsTFDCo4cvhg0ERdm+2zozY+wH0qmELM7jG
-	 NPClbtF3dovTr/11He3ZAJNqLNs/acQn3o5BlM6nDkOAxFxJbx6pTG2ynhxAumKMs3
-	 N6YE4TMp6DFhCaQMGWCsUknVo0MPaaT/QldA9OkuiaeT6/eY7XF1AoD3MrscZBcyaM
-	 m2bbl9GSxl2JQ==
+	b=YMOoeNLbKASS6peXeD6ID1XEvrEj4xxPeTo/uzuIaYQuz4/oWgOOm9rPuqaqHlrJ/
+	 3dDqHWmwNi0+/0MDBpkmIfpfD6UuS5rgkZ2e45wZwb8ujoo8/uCw4b11aPUi/xbqX7
+	 JPFzafWaU/paXNZsHWr7hIWhpKPjFGVVtk9p0+gDTkIuNiFYdR1mplKxWjwNzVzOBQ
+	 LSIRJuTaFzVtt6Zay/cdwKe97GSIFEFeLIy4/O1vIg614VBhbirmZh1GkzuCHSmY6d
+	 35NHpbynTOCg5Hpg34pYKjwz4TTDoD3pbwrmkSsrNQsLyvQ90p+ojWCTlpLreCRP2g
+	 UMkm8KBBy7hzw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jessica Zhang <quic_jesszhan@quicinc.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Sasha Levin <sashal@kernel.org>,
-	maarten.lankhorst@linux.intel.com,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.10 114/114] drm: Add valid clones check
-Date: Mon,  5 May 2025 19:18:17 -0400
-Message-Id: <20250505231817.2697367-114-sashal@kernel.org>
+Cc: Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Jassi Brar <jassisinghbrar@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.4 02/79] mailbox: use error ret code of of_parse_phandle_with_args()
+Date: Mon,  5 May 2025 19:20:34 -0400
+Message-Id: <20250505232151.2698893-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250505231817.2697367-1-sashal@kernel.org>
-References: <20250505231817.2697367-1-sashal@kernel.org>
+In-Reply-To: <20250505232151.2698893-1-sashal@kernel.org>
+References: <20250505232151.2698893-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,71 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.10.237
+X-stable-base: Linux 5.4.293
 Content-Transfer-Encoding: 8bit
 
-From: Jessica Zhang <quic_jesszhan@quicinc.com>
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
 
-[ Upstream commit 41b4b11da02157c7474caf41d56baae0e941d01a ]
+[ Upstream commit 24fdd5074b205cfb0ef4cd0751a2d03031455929 ]
 
-Check that all encoders attached to a given CRTC are valid
-possible_clones of each other.
+In case of error, of_parse_phandle_with_args() returns -EINVAL when the
+passed index is negative, or -ENOENT when the index is for an empty
+phandle. The mailbox core overwrote the error return code with a less
+precise -ENODEV. Use the error returned code from
+of_parse_phandle_with_args().
 
-Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241216-concurrent-wb-v4-3-fe220297a7f0@quicinc.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_atomic_helper.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ drivers/mailbox/mailbox.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_atomic_helper.c b/drivers/gpu/drm/drm_atomic_helper.c
-index dee3b81dec587..8612dd552d392 100644
---- a/drivers/gpu/drm/drm_atomic_helper.c
-+++ b/drivers/gpu/drm/drm_atomic_helper.c
-@@ -557,6 +557,30 @@ mode_valid(struct drm_atomic_state *state)
- 	return 0;
- }
+diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
+index 4229b9b5da98f..6f54501dc7762 100644
+--- a/drivers/mailbox/mailbox.c
++++ b/drivers/mailbox/mailbox.c
+@@ -350,11 +350,12 @@ struct mbox_chan *mbox_request_channel(struct mbox_client *cl, int index)
  
-+static int drm_atomic_check_valid_clones(struct drm_atomic_state *state,
-+					 struct drm_crtc *crtc)
-+{
-+	struct drm_encoder *drm_enc;
-+	struct drm_crtc_state *crtc_state = drm_atomic_get_new_crtc_state(state,
-+									  crtc);
-+
-+	drm_for_each_encoder_mask(drm_enc, crtc->dev, crtc_state->encoder_mask) {
-+		if (!drm_enc->possible_clones) {
-+			DRM_DEBUG("enc%d possible_clones is 0\n", drm_enc->base.id);
-+			continue;
-+		}
-+
-+		if ((crtc_state->encoder_mask & drm_enc->possible_clones) !=
-+		    crtc_state->encoder_mask) {
-+			DRM_DEBUG("crtc%d failed valid clone check for mask 0x%x\n",
-+				  crtc->base.id, crtc_state->encoder_mask);
-+			return -EINVAL;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
- /**
-  * drm_atomic_helper_check_modeset - validate state object for modeset changes
-  * @dev: DRM device
-@@ -720,6 +744,10 @@ drm_atomic_helper_check_modeset(struct drm_device *dev,
- 		ret = drm_atomic_add_affected_planes(state, crtc);
- 		if (ret != 0)
- 			return ret;
-+
-+		ret = drm_atomic_check_valid_clones(state, crtc);
-+		if (ret != 0)
-+			return ret;
+ 	mutex_lock(&con_mutex);
+ 
+-	if (of_parse_phandle_with_args(dev->of_node, "mboxes",
+-				       "#mbox-cells", index, &spec)) {
++	ret = of_parse_phandle_with_args(dev->of_node, "mboxes", "#mbox-cells",
++					 index, &spec);
++	if (ret) {
+ 		dev_dbg(dev, "%s: can't parse \"mboxes\" property\n", __func__);
+ 		mutex_unlock(&con_mutex);
+-		return ERR_PTR(-ENODEV);
++		return ERR_PTR(ret);
  	}
  
- 	/*
+ 	chan = ERR_PTR(-EPROBE_DEFER);
 -- 
 2.39.5
 
