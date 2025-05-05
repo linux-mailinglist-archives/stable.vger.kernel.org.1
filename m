@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-140962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51488AAAD02
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:27:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E831BAAACD4
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:24:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E11E9A14B8
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:21:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC26D4C4D81
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:22:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EE35300299;
-	Mon,  5 May 2025 23:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F40BC3A80C0;
+	Mon,  5 May 2025 23:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a+MTLqcG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OoS3TQFm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B6B32E6866;
-	Mon,  5 May 2025 23:17:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A22513A80D4;
+	Mon,  5 May 2025 23:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487030; cv=none; b=KJfgIOjk6Ymhy4p2p7Jdrokell9Ps0m33emUiB1DwSZJuBW4mn1I7ZZEE1v5M/pVPhBqpp7k+Fu5Oa5teNQ/roSPrioUZwPPb/fZr/Aa3WLxb9oDAi9CcIj5KLYRqNBIhXY+h8uMY8XtHE+po3lPwi3QPYIod1u9fx7KnQBX96s=
+	t=1746487034; cv=none; b=hJmthVnDImnIYPWI8mZg+09YypqR6Oq+7Uo7wzfXme2Bx05SaR2nS8/HorB3oBxveEYCOpLhPue0t3yhPWVXF/aXfU0WscdPpi/5Yip20nJozPO+d/qJirv945NkJk9hCL8Wi1x5PDkQ7Tt27B2nPSBiElSg0TzE9nvNsQML8Kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487030; c=relaxed/simple;
-	bh=mtJZe148ds/7SXixYCWlYPriawhd+rrZbac0kHfAhtQ=;
+	s=arc-20240116; t=1746487034; c=relaxed/simple;
+	bh=zbIh2rCXluk3jiPuns4fTzYWcbjU0+ods668F6FV3pQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=uaSEokcMLTnl09KmVruEDEB7jfEDyi7onC2tyscoujBrB5C6Iv910XQ+XbEvAGhI6oXnrW150N6zEkoNTf7Yf0nIP+JWg041ISacRJppJ+HaampLR6IB06KKd9s52gJVbVsUaGgXpxu/5fLuonrr9MjZyl2QXwlGI1VRWXXieyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a+MTLqcG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9FF6C4CEE4;
-	Mon,  5 May 2025 23:17:07 +0000 (UTC)
+	 MIME-Version; b=BwD8Q2vntVb/YdbOauAeaian2I8zKl1muvCI+eZPHsm10l1UEUKxduytuiVXZ9pcZAWFN5KVkv7ozw6qn1HGDhrF3ehYMMI9u8NyZybJ3RmkKd/OEII1n/lPYeNImgb4FNvhPQOK54+I1E9ohIOi7lr4W8Qh7zSevSmW7rlq1cY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OoS3TQFm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A05CDC4CEF1;
+	Mon,  5 May 2025 23:17:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487029;
-	bh=mtJZe148ds/7SXixYCWlYPriawhd+rrZbac0kHfAhtQ=;
+	s=k20201202; t=1746487033;
+	bh=zbIh2rCXluk3jiPuns4fTzYWcbjU0+ods668F6FV3pQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a+MTLqcGW5gZJqsNf8qPl+LEWJSymfu7QHCLyu+gwKGsZAkWjc6XyIpHLdi6j2JDf
-	 Nj/thGG17hHmKCBKrOF7RdQRfgVxpVsrTdbcNF2xL4lyXeXwQXvlRNV5VLP+H9abq+
-	 tSqRyScsl/oJE5aTcHRPPYAsanFaAQmt6gbRbjCUW0vKXco5JFpNxz2awmCbGo6ykr
-	 0eDgCShdYQ6yu05NMf6DM0h7mZ6V5Fw/2uWiRaQVmAcP38hS5SJ+g3FpBwhWrT3wkY
-	 3+lEXAkOGbOUH6knkgxHb393P9TMFTVmxCfmy/QdM3mjoalNNg1zBTZSwLsBmEglVR
-	 B0EQ5hY2d1qhQ==
+	b=OoS3TQFmYpmmAIf6QwP2di+0tFkQGIK8xmBdtY0bNLfXHhkwk7fVk+Ppx+3pBXCXZ
+	 lYawcyZdjGqOxKQRwr4Rb8ldR52uogw8xzFlrp1Q0bpbtEu/VzYWIGuApCGFdNI8qc
+	 GKBPVAYAoaYg35X5/R0DjUPzKa9KOGerb4eAdoUHBQcqXWlKGHnshwr8IYbysDPt8c
+	 9BRGUvQqj/Mbu5FMtFmu1sj/MPrmbCRtiFHvlMiQRRNiDcGlvoSfnA3D7226zExREZ
+	 zo0QRGkWU4ar807yK8FEdnY/YCHUKh6WzttOI6caVz/koXMWnTLDr7TK8xkkdTwfFE
+	 2uwdfqSNwnaaQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Damon Ding <damon.ding@rock-chips.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	mchehab@kernel.org,
-	laurent.pinchart+renesas@ideasonboard.com,
-	umang.jain@ideasonboard.com,
-	prabhakar.mahadev-lad.rj@bp.renesas.com,
-	tomm.merciai@gmail.com,
-	linux-media@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 117/153] media: v4l: Memset argument to 0 before calling get_mbus_config pad op
-Date: Mon,  5 May 2025 19:12:44 -0400
-Message-Id: <20250505231320.2695319-117-sashal@kernel.org>
+	kishon@kernel.org,
+	linux-phy@lists.infradead.org
+Subject: [PATCH AUTOSEL 5.15 120/153] phy: core: don't require set_mode() callback for phy_get_mode() to work
+Date: Mon,  5 May 2025 19:12:47 -0400
+Message-Id: <20250505231320.2695319-120-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
 References: <20250505231320.2695319-1-sashal@kernel.org>
@@ -71,52 +67,51 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.181
 Content-Transfer-Encoding: 8bit
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 91d6a99acfa5ce9f95ede775074b80f7193bd717 ]
+[ Upstream commit d58c04e305afbaa9dda7969151f06c4efe2c98b0 ]
 
-Memset the config argument to get_mbus_config V4L2 sub-device pad
-operation to zero before calling the operation. This ensures the callers
-don't need to bother with it nor the implementations need to set all
-fields that may not be relevant to them.
+As reported by Damon Ding, the phy_get_mode() call doesn't work as
+expected unless the PHY driver has a .set_mode() call. This prompts PHY
+drivers to have empty stubs for .set_mode() for the sake of being able
+to get the mode.
 
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Make .set_mode() callback truly optional and update PHY's mode even if
+it there is none.
+
+Cc: Damon Ding <damon.ding@rock-chips.com>
+Link: https://lore.kernel.org/r/96f8310f-93f1-4bcb-8637-137e1159ff83@rock-chips.com
+Tested-by: Damon Ding <damon.ding@rock-chips.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20250209-phy-fix-set-moe-v2-1-76e248503856@linaro.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/v4l2-core/v4l2-subdev.c | 2 ++
- include/media/v4l2-subdev.h           | 4 +++-
- 2 files changed, 5 insertions(+), 1 deletion(-)
+ drivers/phy/phy-core.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/v4l2-core/v4l2-subdev.c b/drivers/media/v4l2-core/v4l2-subdev.c
-index 5d27a27cc2f24..6f2267625c7ea 100644
---- a/drivers/media/v4l2-core/v4l2-subdev.c
-+++ b/drivers/media/v4l2-core/v4l2-subdev.c
-@@ -314,6 +314,8 @@ static int call_enum_dv_timings(struct v4l2_subdev *sd,
- static int call_get_mbus_config(struct v4l2_subdev *sd, unsigned int pad,
- 				struct v4l2_mbus_config *config)
+diff --git a/drivers/phy/phy-core.c b/drivers/phy/phy-core.c
+index e2bfd56d5086e..21f12aeb7747f 100644
+--- a/drivers/phy/phy-core.c
++++ b/drivers/phy/phy-core.c
+@@ -360,13 +360,14 @@ EXPORT_SYMBOL_GPL(phy_power_off);
+ 
+ int phy_set_mode_ext(struct phy *phy, enum phy_mode mode, int submode)
  {
-+	memset(config, 0, sizeof(*config));
-+
- 	return check_pad(sd, pad) ? :
- 	       sd->ops->pad->get_mbus_config(sd, pad, config);
- }
-diff --git a/include/media/v4l2-subdev.h b/include/media/v4l2-subdev.h
-index 9a476f902c425..262b5e5cebc4c 100644
---- a/include/media/v4l2-subdev.h
-+++ b/include/media/v4l2-subdev.h
-@@ -714,7 +714,9 @@ struct v4l2_subdev_state {
-  *		     possible configuration from the remote end, likely calling
-  *		     this operation as close as possible to stream on time. The
-  *		     operation shall fail if the pad index it has been called on
-- *		     is not valid or in case of unrecoverable failures.
-+ *		     is not valid or in case of unrecoverable failures. The
-+ *		     config argument has been memset to 0 just before calling
-+ *		     the op.
-  *
-  * @set_mbus_config: set the media bus configuration of a remote sub-device.
-  *		     This operations is intended to allow, in combination with
+-	int ret;
++	int ret = 0;
+ 
+-	if (!phy || !phy->ops->set_mode)
++	if (!phy)
+ 		return 0;
+ 
+ 	mutex_lock(&phy->mutex);
+-	ret = phy->ops->set_mode(phy, mode, submode);
++	if (phy->ops->set_mode)
++		ret = phy->ops->set_mode(phy, mode, submode);
+ 	if (!ret)
+ 		phy->attrs.mode = mode;
+ 	mutex_unlock(&phy->mutex);
 -- 
 2.39.5
 
