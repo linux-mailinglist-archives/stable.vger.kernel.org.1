@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-140620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9033AAAAE69
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:55:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D45FAAB10C
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:52:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B9AC4A4F26
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:53:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D4DCF1BC1682
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:52:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D62CF28033F;
-	Mon,  5 May 2025 23:00:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FDDC331F4D;
+	Tue,  6 May 2025 00:26:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JmvhBqS2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MGy3ZaX8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943F22C1785;
-	Mon,  5 May 2025 22:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51552C17A9;
+	Mon,  5 May 2025 22:49:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485372; cv=none; b=R0Qd2Em+qvGnFgdQJ3X1A029NIqHULGGEGTLBOX7L0Y/Fz1a8e4T57j1FCbeU1qfKQNvMlpWPafmgxOXih40CFw1jfnHX72L61bykf8Jb0dGjN2t3RhbdVTx+eGU1BMsWM55c/TP8ZJDAmrYUlE0SvVe6VGCeIiRbuGDTTUlEqI=
+	t=1746485375; cv=none; b=Rr4/MIpUFHgb8kKoTI6W9m7JgHBXUzB/rtGdXDotj/P5mCVOmrFc2N4hyFOaFaKlAFLL4oLkkakU34uK73GpHzwjU75XyS1GtrIxencAzttkLPX7Od0GOlVHISmj8lIUClQt1HKLuDXkje2JAvxDQlITGtejP5AADJbUMVUtg28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485372; c=relaxed/simple;
-	bh=YVBEWd8fzTq67NZgBhRcJJ1n5ZNEhk8+BBu3Q9IDrXI=;
+	s=arc-20240116; t=1746485375; c=relaxed/simple;
+	bh=ya6bTDMEoKFuM8nw+msw5m2ONCtsb+u6tThQg0e0PIg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=psNSVhbsXzhfGP1ziDRFYZPWq6Tt3SluXVvxSldFbGMTTDuKwZUVjLUixMFDdrtxIhIXFKXIE+GE4KIv4CDlVg6CZLq6i7aetiMWqmMk0FWTRPaOdMSHFxfml1vHuFGtXZHYbmnvf4oeG48+B620KXBpmhIZDU46q5ki/9kyNBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JmvhBqS2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90DD3C4CEEF;
-	Mon,  5 May 2025 22:49:30 +0000 (UTC)
+	 MIME-Version; b=tPMEUtdTMWPW8IsbeFWXGpgZGwyl7CKSWDzn0zDKEF+sToXd6pfS5rVl9YpSQfsd2AomCB3azX8p3P1sl1xJN4Q7yBc4EWr+OGRuIn3IqO5OryXIvqZ9QRdWRwwAaBbXakybc5JQ2daVSRNdJttpkY5nplCQH055AKeEirDpLTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MGy3ZaX8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C905FC4CEEF;
+	Mon,  5 May 2025 22:49:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485371;
-	bh=YVBEWd8fzTq67NZgBhRcJJ1n5ZNEhk8+BBu3Q9IDrXI=;
+	s=k20201202; t=1746485374;
+	bh=ya6bTDMEoKFuM8nw+msw5m2ONCtsb+u6tThQg0e0PIg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JmvhBqS2jPEH/9Ohwr9cbz+MQe9xVtExFodBDZ2p8Bc33w4PLzsKxQuf+TKatL9C+
-	 gflKvI4U+2sZ+DNFtLeb1Ai5dSUPVkw2f0IxB7XUc0HqGi/ZGJPb0mfaKFPm+4O1lM
-	 SVa6Hd0d1mYbAJVqsG4ECHBiuPzpbvtHysixi/37iCuHHI3o3lpXzqOnqHxNZIMsB+
-	 DXbBb4CU2e8viVmzNLvGUpXeKe3G6ngF3TUnF8gUN57R5GWQCY5q59J5kIMpSXH/Pg
-	 ObuMrTxEUyKRNFu/noZOHVbGpBXYrI3BNXB14BBb8LfmXkdf13LN1v2dYm9ogbhvIb
-	 dGPy7um37aRyg==
+	b=MGy3ZaX8mi7FayECjksrHygh/GTA6BS9K371B2QvwKFJC95txDHfNk6xcBAiEnemW
+	 EvX7iZoPQubN4OjYop/jrmCzGoeqSmWfPl6OUP6XAeeIqu/UcfyE5FmlzO08UssTL9
+	 uef4ZwJPMd7G6ebQ1gtaA37mv28qAHoiL1uP2AkG26F7IG2trnHpJUPv0pSUOmdPiO
+	 H11wFdWQSHj+e0Vz0YZAwrg7GX2uFwfyEWNK04gx5MaiuBhMR9Jfx6W3M4QfadnGld
+	 rgZ3EYsW7k46XjfcV2weooX9Ym7zACF2ohWEeHT59A98F9bBm9z/CxE6U5WFau59ta
+	 L4DMDs4+0F4iQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Frank Li <Frank.Li@nxp.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+Cc: Eddie James <eajames@linux.ibm.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-i3c@lists.infradead.org,
-	imx@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.12 295/486] i3c: master: svc: Flush FIFO before sending Dynamic Address Assignment(DAA)
-Date: Mon,  5 May 2025 18:36:11 -0400
-Message-Id: <20250505223922.2682012-295-sashal@kernel.org>
+	W_Armin@gmx.de,
+	linux@roeck-us.net,
+	dan.carpenter@linaro.org,
+	u.kleine-koenig@pengutronix.de
+Subject: [PATCH AUTOSEL 6.12 297/486] eeprom: ee1004: Check chip before probing
+Date: Mon,  5 May 2025 18:36:13 -0400
+Message-Id: <20250505223922.2682012-297-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -67,37 +68,36 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Eddie James <eajames@linux.ibm.com>
 
-[ Upstream commit a892ee4cf22a50e1d6988d0464a9a421f3e5db2f ]
+[ Upstream commit d9406677428e9234ea62bb2d2f5e996d1b777760 ]
 
-Ensure the FIFO is empty before issuing the DAA command to prevent
-incorrect command data from being sent. Align with other data transfers,
-such as svc_i3c_master_start_xfer_locked(), which flushes the FIFO before
-sending a command.
+Like other eeprom drivers, check if the device is really there and
+functional before probing.
 
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/r/20250129162250.3629189-1-Frank.Li@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Eddie James <eajames@linux.ibm.com>
+Link: https://lore.kernel.org/r/20250218220959.721698-1-eajames@linux.ibm.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/svc-i3c-master.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/misc/eeprom/ee1004.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
-index 6ffe022dbb5b4..62913feae45dd 100644
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -860,6 +860,8 @@ static int svc_i3c_master_do_daa_locked(struct svc_i3c_master *master,
- 	u32 reg;
- 	int ret, i;
+diff --git a/drivers/misc/eeprom/ee1004.c b/drivers/misc/eeprom/ee1004.c
+index 89224d4af4a20..e13f9fdd9d7b1 100644
+--- a/drivers/misc/eeprom/ee1004.c
++++ b/drivers/misc/eeprom/ee1004.c
+@@ -304,6 +304,10 @@ static int ee1004_probe(struct i2c_client *client)
+ 				     I2C_FUNC_SMBUS_BYTE | I2C_FUNC_SMBUS_READ_BYTE_DATA))
+ 		return -EPFNOSUPPORT;
  
-+	svc_i3c_master_flush_fifo(master);
++	err = i2c_smbus_read_byte(client);
++	if (err < 0)
++		return -ENODEV;
 +
- 	while (true) {
- 		/* SVC_I3C_MCTRL_REQUEST_PROC_DAA have two mode, ENTER DAA or PROCESS DAA.
- 		 *
+ 	mutex_lock(&ee1004_bus_lock);
+ 
+ 	err = ee1004_init_bus_data(client);
 -- 
 2.39.5
 
