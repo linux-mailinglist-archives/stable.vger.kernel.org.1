@@ -1,177 +1,165 @@
-Return-Path: <stable+bounces-139628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39EA5AA8DA9
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 09:57:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA899AA8DB7
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 09:58:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 213AD3A820D
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 07:56:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55A00173D55
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 07:58:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D2E91EEA4E;
-	Mon,  5 May 2025 07:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C1C91DF97D;
+	Mon,  5 May 2025 07:58:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U85W5fH/"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="tgbMITn2"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 382B71E1A3F
-	for <stable@vger.kernel.org>; Mon,  5 May 2025 07:55:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D37161A9B28
+	for <stable@vger.kernel.org>; Mon,  5 May 2025 07:58:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746431734; cv=none; b=amfUco3npSmDTahi5W0iQSe5z9EeKBnJiUUR+rtF10g7KLwrTqu1O1THJSlNl417kNRIaLcY4zTJVKvQzB0uvrdhzJkUW9j4OhASq4hrLqpIn2pcnb9eVzCd8egSFpt6rZmn3OMjyFevH98W8sOYzVrflybe1MEeB/7jzEKHTe8=
+	t=1746431922; cv=none; b=G1Basu++k9GbNhPOT0Jxx+tkYEeNExPc9bv4O4jfc+y2hEEO2LcpBJjV3M3c6rav/zojHjFlWf4OWxJOY4+wz74mSAb4+7bISbE5dNOCD0E7nV8VSwYbVsk0MqZl764Xt7jm0Zw97uQ4KqUn4HjGAivs2NBSivoiIVmP15jOJ5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746431734; c=relaxed/simple;
-	bh=y7PJxyixzFUgzbZI3SVfBMNEy7Vcx1cA6ShPGAj5Wx0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=sDc37eQfnaBufN7mvWFdrrXuWaiAovjvqPN/TKoTMPDqGuZwlMfVSP/qNlLM69DN+XD+LvJyQL+CzuL9DdaGup6UwWE2ZrvPGE3Dzv6vCorJ2OtkIl+6EUjvpRVcctlDyqAEtGOmm0F/AXQYYbZZxYoBhTf40Ui8qdn7EA+bWX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U85W5fH/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99C0BC4CEE9;
-	Mon,  5 May 2025 07:55:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746431734;
-	bh=y7PJxyixzFUgzbZI3SVfBMNEy7Vcx1cA6ShPGAj5Wx0=;
-	h=Subject:To:Cc:From:Date:From;
-	b=U85W5fH/1tsRRG6tq9LAoyXo/j4BWR0nKKTV0PGuyV6HvnZ6pTFWJgfwggXMXHOJP
-	 XINvZPTt25H2oYn8sW/RH5DMKgx1m8D4MnCdXBz9XNVYL4BsbM7kxxb9Os7o9f/Kef
-	 yC9YvUr0QQaMGtOuqk7Nw/DoTs9wTVj3hyb7WbIQ=
-Subject: FAILED: patch "[PATCH] mm, slab: clean up slab->obj_exts always" failed to apply to 6.14-stable tree
-To: quic_zhenhuah@quicinc.com,harry.yoo@oracle.com,rientjes@google.com,surenb@google.com,vbabka@suse.cz
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 05 May 2025 09:55:21 +0200
-Message-ID: <2025050521-provable-extent-4108@gregkh>
+	s=arc-20240116; t=1746431922; c=relaxed/simple;
+	bh=AmHa3ycc004iyFGHsYYX4kIfuniFqTXHQQYbVxzJKf8=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=oy95z4BNSIyBXUzsWusQNrcOBUhOloGZoi/yH5tvMytq+hOmaa9jrl90IdE06q4CI3kYGAisf1Vd0CAHYdHLcpLMREvf+H0hnZX9kJ4qK5zg4x6TI4lOWlDc5T+X2s1demUyba8DtfTAAMtr7lEcbdkoEAMpxM/qcguxUFRBGNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=tgbMITn2; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5e5e8274a74so6178559a12.1
+        for <stable@vger.kernel.org>; Mon, 05 May 2025 00:58:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1746431917; x=1747036717; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=c8qy8x2VM4E33zP+Ul3MQgzUGob/DpDmmEpO6CEf26s=;
+        b=tgbMITn2/f2ETTwPFrP93IMlFsLd90+CvfPcVD1QLAFKoBoEeqNFZ15dGAjijEGpya
+         +LmSoF87/BIqjb1f4D+D+/RDVQSG1I4fV3uVktjbqQEb+3Y4xsvjfsewYoOSYYSnDp0m
+         g3Nsy45eP6ZlpWfsY1rLF+0rmzXBcQNTQhvn8TX0dEOOhOjsRz7INF3y2DRzdbyt6ftd
+         FD14xM0bO2yOFSHhzksOuMMTUhl7KOufLk6b1lWIunZq8Iw4Wgm367VkcmJ17+EJNtJo
+         MdwlsIk/Tkp9DDoY6dOVevLFMUcdNtCI+O4/H5ikLHX0d+eIaDE+q1PSWtKXOJjLZfpy
+         GJyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746431917; x=1747036717;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=c8qy8x2VM4E33zP+Ul3MQgzUGob/DpDmmEpO6CEf26s=;
+        b=nMGxVsM5x0vrfWwOJOuomZ/PtSzlx6U+CziJCchUkPr4JVR6MeHufHO4GFKGAnFySC
+         GNunkZjY2Bu4eO9rOsnONFxyKsydnvAAL+rpAOFefm3qU/j7eZqH4/AAbYpc/IcPu1RE
+         o59Eu4U3Ujb993WNxCwXGzXhmdh1E1Pxhxpj4fNG0DhbOG2zvmhKZAo+Igo+/qK7HFXL
+         S+dWLynAyaTghiiwL54TqL7bERtAt14EQzUOhHzJJRTVKqVvTNy9qfG4liiA1QDd/gl3
+         wTjjd/72C+/ZDiVNGqRktg2x/+n4i+HK551WGyt1/Q4RLoFJ6iLSqiUhcJrRgbOrGolF
+         ImCg==
+X-Forwarded-Encrypted: i=1; AJvYcCUdSwjEPLoKFc3ZusGgyQyNe+1RhPfYh49kRnrtdYnPtCDUl/68vQD3ucPdwZEY7BSFDMJbEI8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzfWaKIJKmmOyj3XxXOKduAPPzkA1tjr4Sw1lyk5zP95lDT+zvV
+	TTolcSdJadldtonv6/xu8A7VX08RLyIYAZx16/63hliqs+8ul0bVYgsgVdf1sEI=
+X-Gm-Gg: ASbGnct+j0EzBgFQjwZ2vHlnQ0JVT5X5LN2nQvmqxoLEJz7oIV3y1FNyujcP1Unn8E+
+	vYpx2Se6epPtaisYHG8hkl0t7r0rJyv3aqgCwUCR2FNsLI2J4Zxpn6kEsDUW9LiPpm8zDzIkCNM
+	qveDpTtEMUYxZPEpR5nyoyzVLzkm0dpRvV/umOOsZHPJq0r8RdbxBbZ8IFWDhPZ6b2thmkWWN0a
+	nGidL/1NRozXqYyHXhJKhNnQojz2U9sXQumYDdDdqazNYKb7ZXKLX/6rZBSmT/lAMgO2EuLt2sk
+	2P1GTZ2aIVHSoGEDHAmoTD3+pLY/6Mn/f0sVWt0c2nyqW5qCOsybvfRnmAqYxBBolRoS5AZFSSX
+	CwcWY8oc4AA==
+X-Google-Smtp-Source: AGHT+IFZHl2dy4J+tovJB10LLReM42ovfZPhO257ZgiPrn9c3pUOWsbvfuKWtuAGkwm+2riUzR0qbw==
+X-Received: by 2002:a05:6402:35c8:b0:5f8:e07c:7746 with SMTP id 4fb4d7f45d1cf-5fab04bfa83mr4760665a12.0.1746431917138;
+        Mon, 05 May 2025 00:58:37 -0700 (PDT)
+Received: from localhost (dynamic-176-003-040-035.176.3.pool.telefonica.de. [176.3.40.35])
+        by smtp.gmail.com with UTF8SMTPSA id 4fb4d7f45d1cf-5fa77b8fbadsm5148712a12.50.2025.05.05.00.58.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 05 May 2025 00:58:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: multipart/signed;
+ boundary=8941660c9a8c947b1652ed122688064937432aafddb64f2deaaf508477a9;
+ micalg=pgp-sha512; protocol="application/pgp-signature"
+Date: Mon, 05 May 2025 09:58:23 +0200
+Message-Id: <D9O2FWGG83V6.L6IQOPRGZL68@baylibre.com>
+Cc: <linux-can@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-arm-kernel@lists.infradead.org>,
+ <linux-rockchip@lists.infradead.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH 2/3] can: rockchip_canfd: m_can_class_unregister: fix
+ order of unregistration calls
+From: "Markus Schneider-Pargmann" <msp@baylibre.com>
+To: "Marc Kleine-Budde" <mkl@pengutronix.de>, "Manivannan Sadhasivam"
+ <manivannan.sadhasivam@linaro.org>, "Thomas Kopp"
+ <thomas.kopp@microchip.com>, "Vincent Mailhol"
+ <mailhol.vincent@wanadoo.fr>, <kernel@pengutronix.de>, "Heiko Stuebner"
+ <heiko@sntech.de>, "Chandrasekar Ramakrishnan" <rcsekar@samsung.com>
+X-Mailer: aerc 0.20.1
+References: <20250502-can-rx-offload-del-v1-0-59a9b131589d@pengutronix.de>
+ <20250502-can-rx-offload-del-v1-2-59a9b131589d@pengutronix.de>
+In-Reply-To: <20250502-can-rx-offload-del-v1-2-59a9b131589d@pengutronix.de>
+
+--8941660c9a8c947b1652ed122688064937432aafddb64f2deaaf508477a9
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+
+On Fri May 2, 2025 at 4:13 PM CEST, Marc Kleine-Budde wrote:
+> If a driver is removed, the driver framework invokes the driver's
+> remove callback. A CAN driver's remove function calls
+> unregister_candev(), which calls net_device_ops::ndo_stop further down
+> in the call stack for interfaces which are in the "up" state.
+>
+> The removal of the module causes the a warning, as
+                                   ^^^
+Minor typo here.
+
+Otherwise this looks good to me.
+
+Reviewed-by: Markus Schneider-Pargmann
+
+> can_rx_offload_del() deletes the NAPI, while it is still active,
+> because the interface is still up.
+>
+> To fix the warning, first unregister the network interface, which
+> calls net_device_ops::ndo_stop, which disables the NAPI, and then call
+> can_rx_offload_del().
+>
+> Fixes: ff60bfbaf67f ("can: rockchip_canfd: add driver for Rockchip CAN-FD=
+ controller")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+> ---
+>  drivers/net/can/rockchip/rockchip_canfd-core.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/net/can/rockchip/rockchip_canfd-core.c b/drivers/net=
+/can/rockchip/rockchip_canfd-core.c
+> index 7107a37da36c..c3fb3176ce42 100644
+> --- a/drivers/net/can/rockchip/rockchip_canfd-core.c
+> +++ b/drivers/net/can/rockchip/rockchip_canfd-core.c
+> @@ -937,8 +937,8 @@ static void rkcanfd_remove(struct platform_device *pd=
+ev)
+>  	struct rkcanfd_priv *priv =3D platform_get_drvdata(pdev);
+>  	struct net_device *ndev =3D priv->ndev;
+> =20
+> -	can_rx_offload_del(&priv->offload);
+>  	rkcanfd_unregister(priv);
+> +	can_rx_offload_del(&priv->offload);
+>  	free_candev(ndev);
+>  }
+> =20
 
 
-The patch below does not apply to the 6.14-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+--8941660c9a8c947b1652ed122688064937432aafddb64f2deaaf508477a9
+Content-Type: application/pgp-signature; name="signature.asc"
 
-To reproduce the conflict and resubmit, you may use the following commands:
+-----BEGIN PGP SIGNATURE-----
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.14.y
-git checkout FETCH_HEAD
-git cherry-pick -x be8250786ca94952a19ce87f98ad9906448bc9ef
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025050521-provable-extent-4108@gregkh' --subject-prefix 'PATCH 6.14.y' HEAD^..
+iIcEABYKAC8WIQSJYVVm/x+5xmOiprOFwVZpkBVKUwUCaBhvoREcbXNwQGJheWxp
+YnJlLmNvbQAKCRCFwVZpkBVKU4zTAP0Yer+WBSFojQ6DiWBCD/1wd9ENW9dsLm7J
+ZLeShRvCOAEAgIm8MmcoLnCEO11f0Kg+X9mgAKtZb7OpE86RubTnags=
+=jybR
+-----END PGP SIGNATURE-----
 
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From be8250786ca94952a19ce87f98ad9906448bc9ef Mon Sep 17 00:00:00 2001
-From: Zhenhua Huang <quic_zhenhuah@quicinc.com>
-Date: Mon, 21 Apr 2025 15:52:32 +0800
-Subject: [PATCH] mm, slab: clean up slab->obj_exts always
-
-When memory allocation profiling is disabled at runtime or due to an
-error, shutdown_mem_profiling() is called: slab->obj_exts which
-previously allocated remains.
-It won't be cleared by unaccount_slab() because of
-mem_alloc_profiling_enabled() not true. It's incorrect, slab->obj_exts
-should always be cleaned up in unaccount_slab() to avoid following error:
-
-[...]BUG: Bad page state in process...
-..
-[...]page dumped because: page still charged to cgroup
-
-[andriy.shevchenko@linux.intel.com: fold need_slab_obj_ext() into its only user]
-Fixes: 21c690a349ba ("mm: introduce slabobj_ext to support slab object extensions")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhenhua Huang <quic_zhenhuah@quicinc.com>
-Acked-by: David Rientjes <rientjes@google.com>
-Acked-by: Harry Yoo <harry.yoo@oracle.com>
-Tested-by: Harry Yoo <harry.yoo@oracle.com>
-Acked-by: Suren Baghdasaryan <surenb@google.com>
-Link: https://patch.msgid.link/20250421075232.2165527-1-quic_zhenhuah@quicinc.com
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-
-diff --git a/mm/slub.c b/mm/slub.c
-index dc9e729e1d26..be8b09e09d30 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -2028,8 +2028,7 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
- 	return 0;
- }
- 
--/* Should be called only if mem_alloc_profiling_enabled() */
--static noinline void free_slab_obj_exts(struct slab *slab)
-+static inline void free_slab_obj_exts(struct slab *slab)
- {
- 	struct slabobj_ext *obj_exts;
- 
-@@ -2049,18 +2048,6 @@ static noinline void free_slab_obj_exts(struct slab *slab)
- 	slab->obj_exts = 0;
- }
- 
--static inline bool need_slab_obj_ext(void)
--{
--	if (mem_alloc_profiling_enabled())
--		return true;
--
--	/*
--	 * CONFIG_MEMCG creates vector of obj_cgroup objects conditionally
--	 * inside memcg_slab_post_alloc_hook. No other users for now.
--	 */
--	return false;
--}
--
- #else /* CONFIG_SLAB_OBJ_EXT */
- 
- static inline void init_slab_obj_exts(struct slab *slab)
-@@ -2077,11 +2064,6 @@ static inline void free_slab_obj_exts(struct slab *slab)
- {
- }
- 
--static inline bool need_slab_obj_ext(void)
--{
--	return false;
--}
--
- #endif /* CONFIG_SLAB_OBJ_EXT */
- 
- #ifdef CONFIG_MEM_ALLOC_PROFILING
-@@ -2129,7 +2111,7 @@ __alloc_tagging_slab_alloc_hook(struct kmem_cache *s, void *object, gfp_t flags)
- static inline void
- alloc_tagging_slab_alloc_hook(struct kmem_cache *s, void *object, gfp_t flags)
- {
--	if (need_slab_obj_ext())
-+	if (mem_alloc_profiling_enabled())
- 		__alloc_tagging_slab_alloc_hook(s, object, flags);
- }
- 
-@@ -2601,8 +2583,12 @@ static __always_inline void account_slab(struct slab *slab, int order,
- static __always_inline void unaccount_slab(struct slab *slab, int order,
- 					   struct kmem_cache *s)
- {
--	if (memcg_kmem_online() || need_slab_obj_ext())
--		free_slab_obj_exts(slab);
-+	/*
-+	 * The slab object extensions should now be freed regardless of
-+	 * whether mem_alloc_profiling_enabled() or not because profiling
-+	 * might have been disabled after slab->obj_exts got allocated.
-+	 */
-+	free_slab_obj_exts(slab);
- 
- 	mod_node_page_state(slab_pgdat(slab), cache_vmstat_idx(s),
- 			    -(PAGE_SIZE << order));
-
+--8941660c9a8c947b1652ed122688064937432aafddb64f2deaaf508477a9--
 
