@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-140823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08384AAAF2C
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:12:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C66EAAAF77
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:17:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1FB887A4F28
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:10:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 774DA3A4A89
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:11:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BBF32F8DF0;
-	Mon,  5 May 2025 23:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C0383B5B52;
+	Mon,  5 May 2025 23:21:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XAgj5YuO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hHJ0NrYN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50DC72EC871;
-	Mon,  5 May 2025 23:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F06C62ECFCF;
+	Mon,  5 May 2025 23:08:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486479; cv=none; b=ocHznQvWR0axIwQpYvonWZVp0kldmbwiealLll5Nyt91vT16Y/ZR2XzNvEBpjIGlOHsRzQmLrp0p1a8h8/2veA5LwAycglk3g92CUI8c5m7M66regpp+oYxeD5m6Ka3ApvTni1PhH4qCNDW1ysGCX6ZLb34VATDnVhsVYX42dnQ=
+	t=1746486491; cv=none; b=DaiRvkJs20tdIzWHCqT7/9kl9LdawjMWri0/oXd2Mv6Myxe8nk8icxCOOi82tsT0pOYtBkl/+cPDjm9KGx3TCF16oDimXysYA+YTH+Of9GaDhYm+wWnoa/u54QZJuXraMpNrh1U0XIGLPmOe0QR5j1e0cy9fWJ+XSZ7ZYmPtllA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486479; c=relaxed/simple;
-	bh=vtKUXitUTPieHzZ6OsMajJLUSV/qo8vzb6BEFkHPvBA=;
+	s=arc-20240116; t=1746486491; c=relaxed/simple;
+	bh=gYgC3uqARkx9Ycx1hG7wwHOFQuipsFmYjvt9NBeP2og=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ktYdnKuJM3f4qluvyPIG/n779kxqwQb1N7+G/b4XLuxNjkXbUw1EAlPhQVgB9b3v+w7CoEVNdkIxvqKKA0wNOuf1pFWn8dPJasdb1Zfrf3tAXIjknXQCAlH0W2yIU2T1boobIewX2L3mDtlC2IFTtw55wQcH6n51/oAkyRomSII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XAgj5YuO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35DE6C4CEEF;
-	Mon,  5 May 2025 23:07:57 +0000 (UTC)
+	 MIME-Version; b=u2oFz3oHs7dxhiIx1EGDvXXQIQb8NnqwKKDe8mVLMQ4AvJTxtM/7YGEfb3t2s6yahuT9sZPo9/oC91pdMTiS1xAZiFfZfz05u5CaoL3m/MAZ5hBPnabnFlMwdt3Ncgk2wlr8GAWPfRv4AwRsE9/+7wOPIFm9zlcrIDMX8OaFeBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hHJ0NrYN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F7A0C4CEED;
+	Mon,  5 May 2025 23:08:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486478;
-	bh=vtKUXitUTPieHzZ6OsMajJLUSV/qo8vzb6BEFkHPvBA=;
+	s=k20201202; t=1746486489;
+	bh=gYgC3uqARkx9Ycx1hG7wwHOFQuipsFmYjvt9NBeP2og=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XAgj5YuO6jhzcB4MNSKKpz7xQnA4Ghpp01WLTH+MnjXvHSbwLLZC0oFjfqzOxm/0e
-	 lk7xXJze91N45dicqSltJQqBr0OdJ+107AnOVTD439JeOLrnGoH8QRZySpGkANuXPA
-	 wKmwuvxikp+x5Pz6TaSdqG/QN9LZfMjbLJcU1Vbn1wu3Tm2+UVcrGAOG1YwijRHn8U
-	 5li/Jomq4lKnMdnd53yH4HvHCW3jR+u7H43lLRwk5vOku9ntB56PjCVSmnzUerC3lq
-	 Ksvbva17InhPEoSmPrUknnJU9EeYpxlKBsu3JDAX1vt41u8s1M0wUesmO3n6MT3ylp
-	 U4QpY+D+lDpdg==
+	b=hHJ0NrYNi0+e2TsMjZRSI/VaYLxP/k7VxV6BltnnegHFgiMMM2gq5FwR7dC27sKwI
+	 xnCIfsQ1zAw0FlxE/R3qqzthGqdmTGl1HAKEg0IistKbVdQO7yfLPXqcxUNH3da+qa
+	 vkryKIuq5RM0Paa2KXPKj6sdQVNKWElbf4wwmNCC78YtC7GztBax0QabuSzYV80Hx9
+	 ZbeRXW5+2MljD4aVTdRUha4S59I5y/VJEaxTdBGiYNt5Py8S7LWjHB/Ud3gOgeEjxD
+	 gX5+I2LDqgNOQj5C60TvGaFLKUkeEcccvLNV2qfPQpFqxMne8Uof2K2VA1V7o9UuQq
+	 9kVJ/rq2Hp0ZA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Mykyta Yatsenko <yatsenko@meta.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
+Cc: Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	bpf@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 050/212] bpf: Return prog btf_id without capable check
-Date: Mon,  5 May 2025 19:03:42 -0400
-Message-Id: <20250505230624.2692522-50-sashal@kernel.org>
+	agk@redhat.com,
+	snitzer@kernel.org,
+	dm-devel@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.1 057/212] dm: restrict dm device size to 2^63-512 bytes
+Date: Mon,  5 May 2025 19:03:49 -0400
+Message-Id: <20250505230624.2692522-57-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -68,45 +66,37 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Mykyta Yatsenko <yatsenko@meta.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit 07651ccda9ff10a8ca427670cdd06ce2c8e4269c ]
+[ Upstream commit 45fc728515c14f53f6205789de5bfd72a95af3b8 ]
 
-Return prog's btf_id from bpf_prog_get_info_by_fd regardless of capable
-check. This patch enables scenario, when freplace program, running
-from user namespace, requires to query target prog's btf.
+The devices with size >= 2^63 bytes can't be used reliably by userspace
+because the type off_t is a signed 64-bit integer.
 
-Signed-off-by: Mykyta Yatsenko <yatsenko@meta.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/bpf/20250317174039.161275-3-mykyta.yatsenko5@gmail.com
+Therefore, we limit the maximum size of a device mapper device to
+2^63-512 bytes.
+
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/syscall.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/md/dm-table.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
-index 27fdf1b2fc469..b145f3ef3695e 100644
---- a/kernel/bpf/syscall.c
-+++ b/kernel/bpf/syscall.c
-@@ -4005,6 +4005,8 @@ static int bpf_prog_get_info_by_fd(struct file *file,
- 	info.recursion_misses = stats.misses;
- 
- 	info.verified_insns = prog->aux->verified_insns;
-+	if (prog->aux->btf)
-+		info.btf_id = btf_obj_id(prog->aux->btf);
- 
- 	if (!bpf_capable()) {
- 		info.jited_prog_len = 0;
-@@ -4151,8 +4153,6 @@ static int bpf_prog_get_info_by_fd(struct file *file,
- 		}
+diff --git a/drivers/md/dm-table.c b/drivers/md/dm-table.c
+index aabb2435070b8..9e3f8c737c487 100644
+--- a/drivers/md/dm-table.c
++++ b/drivers/md/dm-table.c
+@@ -670,6 +670,10 @@ int dm_table_add_target(struct dm_table *t, const char *type,
+ 		DMERR("%s: zero-length target", dm_device_name(t->md));
+ 		return -EINVAL;
  	}
++	if (start + len < start || start + len > LLONG_MAX >> SECTOR_SHIFT) {
++		DMERR("%s: too large device", dm_device_name(t->md));
++		return -EINVAL;
++	}
  
--	if (prog->aux->btf)
--		info.btf_id = btf_obj_id(prog->aux->btf);
- 	info.attach_btf_id = prog->aux->attach_btf_id;
- 	if (attach_btf)
- 		info.attach_btf_obj_id = btf_obj_id(attach_btf);
+ 	ti->type = dm_get_target_type(type);
+ 	if (!ti->type) {
 -- 
 2.39.5
 
