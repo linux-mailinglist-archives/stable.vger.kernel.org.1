@@ -1,62 +1,67 @@
-Return-Path: <stable+bounces-140281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0790AAA73C
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:28:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A32FFAAA707
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:24:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F6E7983ECC
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:22:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B9A81B639AB
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:23:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F695331F76;
-	Mon,  5 May 2025 22:35:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D9C6332808;
+	Mon,  5 May 2025 22:35:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UjHpGTmD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XHtq7YJr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 455A1331F6F;
-	Mon,  5 May 2025 22:35:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A5E13327FE;
+	Mon,  5 May 2025 22:35:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484553; cv=none; b=SbB40XTl7D0IwNnuOesOkeyQzG6oQQjBEG3TEzWplQw+2S01ZmuI/alr3qU6Z9NfVi1S7WqkfDklmOeHtSbu3UR8FSUInSY4MalOiCtJVuAtQ6Gr/VOzOgZGiOUlfSAhJbHZ1U+Wi7wWFk+E+ZEoaDHT7Z/sihncczX9oJQdkag=
+	t=1746484556; cv=none; b=akVoQAqyLIEUH0VapjKjpAyCLUpSizXthm3/G9AuJayxEfRbxy4wK4KxSu282L42xGhGWL6hd8dM9zrFSXuKCInBEtGmM4ib/PCe5ksE+ZFFOgL3nIPfHBXp4vc4BvMV2J7NwTyYjAUtybIFp4LsGf6330Gl8tfu82YQcfpSuMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484553; c=relaxed/simple;
-	bh=U2WuZF++J+yU8AMVFz5H3SO6FY02eiBtByt94VFG4+Q=;
+	s=arc-20240116; t=1746484556; c=relaxed/simple;
+	bh=N50elTsvLV/m+xQAOHeAKX14EuZ7+WW4CerdYMMbhFI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qz+xnPxlzmmeGhuVj0nr8Hgz+zah0UNaefiTKal1X9KVDluCzYrtGThTehVNbrTsUmJW/jSZgY83+9XkMhZI7g5VzPQkWH9y0g4TC73YX4MBeAstfO/0HIBUmyk0K48QtgPXTjsBE9AnCPZEBkJItTx0s3x6tHgt7mrRYNuXoVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UjHpGTmD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0C9BC4CEE4;
-	Mon,  5 May 2025 22:35:51 +0000 (UTC)
+	 MIME-Version; b=WtnW5AM/KN35LZv17xEZfWiNLn1QifTyfH4XKHxBoNFd6JOIWp9ZY4YrkkuYd/T8TQxixCdtR55bwoaNBc6PN2ndl6CeGsmd3C0HSBwDTn6xOjUI6a6qV9GWrMPXTZr0PsGgGLJkhIuAfSPO5197hGhRdAC6goKCGGx8HBZ5NAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XHtq7YJr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CD3AC4CEE4;
+	Mon,  5 May 2025 22:35:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484553;
-	bh=U2WuZF++J+yU8AMVFz5H3SO6FY02eiBtByt94VFG4+Q=;
+	s=k20201202; t=1746484556;
+	bh=N50elTsvLV/m+xQAOHeAKX14EuZ7+WW4CerdYMMbhFI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UjHpGTmDbGISRZLVPKCJtsLQ+EzGwZ6z8hYHnM2dbEwou8PPerZfTIPEkuWsIk/ft
-	 YipwnOVXMzfAoKFhC+uT3wcw1MewpfhweIPGjqht5l7oUi3w+nMTTiN4hLmYZStMVa
-	 bOS7DZQXzxv+lCl4VHBu+qeutziClR8EReJ6Y1buoFCLMijpWEVADRgOcr6jdXGNEf
-	 CG/haNxbXdPKRyhNuiw38OCbS51M9M+IbJhZGgr92CaN2yhYVVbH5KpMlyjLj35+Rm
-	 UxQOEDOAIONoE4YhTQTlx1iOM0ptjD6w1gxEb2COewFFU91oIKnkXGc12GL3ceGYiU
-	 v17LmAKZ8wxSA==
+	b=XHtq7YJrgQU4euZaYr9NUkUnBusOgvwbCM8uIqKNQduS4Bg274nMq1kwcxpFqAH3U
+	 +PnpN/vjDm1/XbelL2pvhtF/THUl4fVKj9f9WOWscdlY89IstWH5wP6fVeHhA7qNXw
+	 o5R+4U/sSn/mMx9cNnuX+Do7hFigNSo+6WXM1Bcns/Mo6sNuSRylvQbgFFnfzDxelJ
+	 SKR0jGazhOimXTJPBmHSxa82MYwWykNl5KOLGs5siSo2BSJ87ylvmHXVkb3ZTYJkfw
+	 ijivj+ASHdE8kpMpvqrxvBn8+IT5ZENV0TQ4Uwx/RWos2pAL3y9brl8KGlU4M/xV1X
+	 zyFxUNS4uIrJw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Jakub Kicinski <kuba@kernel.org>,
 	Mina Almasry <almasrymina@google.com>,
 	Sasha Levin <sashal@kernel.org>,
-	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@google.com,
 	pabeni@redhat.com,
-	shuah@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 533/642] netdevsim: allow normal queue reset while down
-Date: Mon,  5 May 2025 18:12:29 -0400
-Message-Id: <20250505221419.2672473-533-sashal@kernel.org>
+	hawk@kernel.org,
+	ilias.apalodimas@linaro.org,
+	jdamato@fastly.com,
+	sdf@fomichev.me,
+	kuniyu@amazon.com,
+	kory.maincent@bootlin.com,
+	mkarsten@uwaterloo.ca,
+	bigeasy@linutronix.de,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 534/642] net: page_pool: avoid false positive warning if NAPI was never added
+Date: Mon,  5 May 2025 18:12:30 -0400
+Message-Id: <20250505221419.2672473-534-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -73,86 +78,68 @@ Content-Transfer-Encoding: 8bit
 
 From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 285b3f78eabd951e59e98f01f86abaaa6c76cd44 ]
+[ Upstream commit c1e00bc4be06cacee6307cedb9b55bbaddb5044d ]
 
-Resetting queues while the device is down should be legal.
-Allow it, test it. Ideally we'd test this with a real device
-supporting devmem but I don't have access to such devices.
+We expect NAPI to be in disabled state when page pool is torn down.
+But it is also legal if the NAPI is completely uninitialized.
 
 Reviewed-by: Mina Almasry <almasrymina@google.com>
-Link: https://patch.msgid.link/20250206225638.1387810-5-kuba@kernel.org
+Link: https://patch.msgid.link/20250206225638.1387810-4-kuba@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/netdevsim/netdev.c           | 10 ++++------
- tools/testing/selftests/net/nl_netdev.py | 18 +++++++++++++++++-
- 2 files changed, 21 insertions(+), 7 deletions(-)
+ net/core/dev.h       | 12 ++++++++++++
+ net/core/page_pool.c |  7 ++-----
+ 2 files changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/netdevsim/netdev.c b/drivers/net/netdevsim/netdev.c
-index e4c0d77849b82..a41dc79e9c2e0 100644
---- a/drivers/net/netdevsim/netdev.c
-+++ b/drivers/net/netdevsim/netdev.c
-@@ -664,8 +664,11 @@ nsim_queue_mem_alloc(struct net_device *dev, void *per_queue_mem, int idx)
- 	if (ns->rq_reset_mode > 3)
- 		return -EINVAL;
+diff --git a/net/core/dev.h b/net/core/dev.h
+index a5b166bbd169a..caa13e431a6bc 100644
+--- a/net/core/dev.h
++++ b/net/core/dev.h
+@@ -299,6 +299,18 @@ void xdp_do_check_flushed(struct napi_struct *napi);
+ static inline void xdp_do_check_flushed(struct napi_struct *napi) { }
+ #endif
  
--	if (ns->rq_reset_mode == 1)
-+	if (ns->rq_reset_mode == 1) {
-+		if (!netif_running(ns->netdev))
-+			return -ENETDOWN;
- 		return nsim_create_page_pool(&qmem->pp, &ns->rq[idx]->napi);
-+	}
- 
- 	qmem->rq = nsim_queue_alloc();
- 	if (!qmem->rq)
-@@ -773,11 +776,6 @@ nsim_qreset_write(struct file *file, const char __user *data,
- 		return -EINVAL;
- 
- 	rtnl_lock();
--	if (!netif_running(ns->netdev)) {
--		ret = -ENETDOWN;
--		goto exit_unlock;
--	}
--
- 	if (queue >= ns->netdev->real_num_rx_queues) {
- 		ret = -EINVAL;
- 		goto exit_unlock;
-diff --git a/tools/testing/selftests/net/nl_netdev.py b/tools/testing/selftests/net/nl_netdev.py
-index 93e8cb671c3d9..beaee5e4e2aab 100755
---- a/tools/testing/selftests/net/nl_netdev.py
-+++ b/tools/testing/selftests/net/nl_netdev.py
-@@ -35,6 +35,21 @@ def napi_list_check(nf) -> None:
-                         comment=f"queue count after reset queue {q} mode {i}")
- 
- 
-+def nsim_rxq_reset_down(nf) -> None:
-+    """
-+    Test that the queue API supports resetting a queue
-+    while the interface is down. We should convert this
-+    test to testing real HW once more devices support
-+    queue API.
-+    """
-+    with NetdevSimDev(queue_count=4) as nsimdev:
-+        nsim = nsimdev.nsims[0]
++/* Best effort check that NAPI is not idle (can't be scheduled to run) */
++static inline void napi_assert_will_not_race(const struct napi_struct *napi)
++{
++	/* uninitialized instance, can't race */
++	if (!napi->poll_list.next)
++		return;
 +
-+        ip(f"link set dev {nsim.ifname} down")
-+        for i in [0, 2, 3]:
-+            nsim.dfs_write("queue_reset", f"1 {i}")
++	/* SCHED bit is set on disabled instances */
++	WARN_ON(!test_bit(NAPI_STATE_SCHED, &napi->state));
++	WARN_ON(READ_ONCE(napi->list_owner) != -1);
++}
 +
-+
- def page_pool_check(nf) -> None:
-     with NetdevSimDev() as nsimdev:
-         nsim = nsimdev.nsims[0]
-@@ -106,7 +121,8 @@ def page_pool_check(nf) -> None:
+ void kick_defer_list_purge(struct softnet_data *sd, unsigned int cpu);
  
- def main() -> None:
-     nf = NetdevFamily()
--    ksft_run([empty_check, lo_check, page_pool_check, napi_list_check],
-+    ksft_run([empty_check, lo_check, page_pool_check, napi_list_check,
-+              nsim_rxq_reset_down],
-              args=(nf, ))
-     ksft_exit()
+ #define XMIT_RECURSION_LIMIT	8
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index ede82c610936e..cca51aa2e876f 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -25,6 +25,7 @@
  
+ #include <trace/events/page_pool.h>
+ 
++#include "dev.h"
+ #include "mp_dmabuf_devmem.h"
+ #include "netmem_priv.h"
+ #include "page_pool_priv.h"
+@@ -1146,11 +1147,7 @@ void page_pool_disable_direct_recycling(struct page_pool *pool)
+ 	if (!pool->p.napi)
+ 		return;
+ 
+-	/* To avoid races with recycling and additional barriers make sure
+-	 * pool and NAPI are unlinked when NAPI is disabled.
+-	 */
+-	WARN_ON(!test_bit(NAPI_STATE_SCHED, &pool->p.napi->state));
+-	WARN_ON(READ_ONCE(pool->p.napi->list_owner) != -1);
++	napi_assert_will_not_race(pool->p.napi);
+ 
+ 	mutex_lock(&page_pools_lock);
+ 	WRITE_ONCE(pool->p.napi, NULL);
 -- 
 2.39.5
 
