@@ -1,66 +1,61 @@
-Return-Path: <stable+bounces-140105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140106-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56667AAA507
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:40:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9EF6AAA527
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:43:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01E8017811B
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:40:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A6A41894EDA
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:40:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FF5828B4F0;
-	Mon,  5 May 2025 22:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8F4C30B272;
+	Mon,  5 May 2025 22:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nAtVs/dI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Eqailmkx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0378C2797B0;
-	Mon,  5 May 2025 22:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88A3930B26C;
+	Mon,  5 May 2025 22:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484118; cv=none; b=Jvof6Gs7zlVZWKO6T0RKqRcPOFznU0XlRhEpbWZRmx00fFAEAjYkaO3YAu/rURs2rHleTUu8pnjh3rLLwTD+qSVZsGJTI+3DuwX30vWAPMUvyUQS0pU/y5tj0WpudBa/FXm8Ze/YB4HS1REnDEZ1cMrdnkXWuPacFXoOuCLnsiY=
+	t=1746484126; cv=none; b=Z/lulld8adRtM90x90pHK+JhQDRgb1N6uq/HG1KDBRAO6jNRM99s4RWYPyVL401g3Ky8PLmalR8uL3NVP9EBy8Ok+5S9hruB0ETI8t2su28DucGL+/KwX7cv4Iu2zHVHrUx1dk31SW1iS8txAY+XEEv9oa7+gxpEeaDPINcBzhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484118; c=relaxed/simple;
-	bh=79VEN30GCnvOMddOYIMHiDjP9ORCLa8fZg4wW316d2c=;
+	s=arc-20240116; t=1746484126; c=relaxed/simple;
+	bh=k8fjQ8fvYUj8nlHhVhoy9r1NsnxC8kD+CF6PdIpcaE8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=u83Iwt/rpUr8XA0FOH99IttTDsMXC774TZXzqtMbC1W+sVyFitu1cMf0ZTTqQnmWOLoyCMR6MS1niOsTNN7MssX1PM+XRobSVqAIWhYOuzCA2t6aZ0GfTErD9djBKdTANOCYl96x+XbxJ894RBE+96tFncbtnh4iIYwr1xjwV/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nAtVs/dI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F583C4CEE4;
-	Mon,  5 May 2025 22:28:36 +0000 (UTC)
+	 MIME-Version; b=ZK4eNzbFgofaRoyppDCt4jOrelk/3R3jf6EYFyGAWyMrkxnslomb4iVrnnNj065v/dEw1i2DLCLRvumkNPKtZxR3KoH4HOtOOMDvMTl3wQPKa6uzG996Ix9FB3bAsYGNneM3Fh0puzEaO7h/VJQqr5AXeKtsjJVdoXhhz8qbCFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Eqailmkx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8E05C4CEE4;
+	Mon,  5 May 2025 22:28:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484117;
-	bh=79VEN30GCnvOMddOYIMHiDjP9ORCLa8fZg4wW316d2c=;
+	s=k20201202; t=1746484126;
+	bh=k8fjQ8fvYUj8nlHhVhoy9r1NsnxC8kD+CF6PdIpcaE8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nAtVs/dI0fb7mvo5sXaN+H/JIDzGca6P1mUzEejqwJtssYf17ZBPMV+y/NNo4Zxr6
-	 aBOtHWdsNi4LEWIPNymopoGOtYIV9jG1NstrZJ4BkI2RMScX/psViE1X1iNI+aQ+sy
-	 ieJvm6UcRXPuzjN9U0sAIXXhhWbi0N9lVE92wqJPoU2KXSmWZMQhLVR3OP4BotNkAV
-	 NQN/iheyIMVMFvvhBDrOeJDdKeYq/TrPq9C0IYEhzPjkXRB4vbvVD+ozadzvNnrOQ7
-	 mAvtGvO+x/LpPjV+vsJCQwqGKFsAAe5VYeFmuwoaG9y3/fPw8AkSLrgiaCUxvBJlmx
-	 awEn4B4vLWfJA==
+	b=EqailmkxnWuuS43LxHa9IxX9p8mhZ45dzo92ogmo5r5H6fWvUVK2yxGt+DzxpO4qk
+	 WZmwHMeF9SRCuVQzqDPU+ADSwHJA4pWB2LtjJVCPu+uAes/tQ9uUsj/U3GeS+Vu9pp
+	 ti2cx9pz8BxuBYJFQqlm1vmgC62xA6duw/qDZNpgop59xnWSMFe0w3IE9Wgfyr1mkw
+	 5pe+PJmMrX+3CBWclS/zYBHcVecmgkkf2ZaA8I+RAk08TeHLFbSWDVNQMZEsI1PDn/
+	 VCZopI1JjPymg5n0a8MZJ6z+GdZTbmz6VYN9GAJRWIGezHoqRcgaxMuFWTkTAvKLXn
+	 q5LylQivki8ZA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jason Gunthorpe <jgg@nvidia.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+Cc: Subramanian Mohan <subramanian.mohan@intel.com>,
+	Rodolfo Giometti <giometti@enneenne.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	robin.murphy@arm.com,
-	joro@8bytes.org,
-	will@kernel.org,
-	bhelgaas@google.com,
-	shivamurthy.shastri@linutronix.de,
-	anna-maria@linutronix.de,
-	jgross@suse.com,
-	jgg@ziepe.ca,
-	marek.vasut+renesas@mailbox.org,
-	iommu@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.14 358/642] genirq/msi: Store the IOMMU IOVA directly in msi_desc instead of iommu_cookie
-Date: Mon,  5 May 2025 18:09:34 -0400
-Message-Id: <20250505221419.2672473-358-sashal@kernel.org>
+	corbet@lwn.net,
+	tglx@linutronix.de,
+	mingo@kernel.org,
+	linux-doc@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 359/642] pps: generators: replace copy of pps-gen info struct with const pointer
+Date: Mon,  5 May 2025 18:09:35 -0400
+Message-Id: <20250505221419.2672473-359-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -75,172 +70,206 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Subramanian Mohan <subramanian.mohan@intel.com>
 
-[ Upstream commit 1f7df3a691740a7736bbc99dc4ed536120eb4746 ]
+[ Upstream commit ac9c5170a18162d45c6edd1f0fa2d2b2504bc2cb ]
 
-The IOMMU translation for MSI message addresses has been a 2-step process,
-separated in time:
+Some PPS generator drivers may need to retrieve a pointer to their
+internal data while executing the PPS generator enable() method.
 
- 1) iommu_dma_prepare_msi(): A cookie pointer containing the IOVA address
-    is stored in the MSI descriptor when an MSI interrupt is allocated.
+During the driver registration the pps_gen_device pointer is returned
+from the framework, and for that reason, there is difficulty in
+getting generator driver data back in the enable function. We won't be
+able to use container_of macro as it results in static assert, and we
+might end up in using static pointer.
 
- 2) iommu_dma_compose_msi_msg(): this cookie pointer is used to compute a
-    translated message address.
+To solve the issue and to get back the generator driver data back, we
+should not copy the struct pps_gen_source_info within the struct
+pps_gen_device during the registration stage, but simply save the
+pointer of the driver one. In this manner, driver may get a pointer
+to their internal data as shown below:
 
-This has an inherent lifetime problem for the pointer stored in the cookie
-that must remain valid between the two steps. However, there is no locking
-at the irq layer that helps protect the lifetime. Today, this works under
-the assumption that the iommu domain is not changed while MSI interrupts
-being programmed. This is true for normal DMA API users within the kernel,
-as the iommu domain is attached before the driver is probed and cannot be
-changed while a driver is attached.
+struct pps_gen_foo_data_s {
+        ...
+	struct pps_gen_source_info gen_info;
+	struct pps_gen_device *pps_gen;
+	...
+};
 
-Classic VFIO type1 also prevented changing the iommu domain while VFIO was
-running as it does not support changing the "container" after starting up.
+static int __init pps_gen_foo_init(void)
+{
+        struct pps_gen_foo_data_s *foo;
+	...
+        foo->pps_gen = pps_gen_register_source(&foo->gen_info);
+	...
+}
 
-However, iommufd has improved this so that the iommu domain can be changed
-during VFIO operation. This potentially allows userspace to directly race
-VFIO_DEVICE_ATTACH_IOMMUFD_PT (which calls iommu_attach_group()) and
-VFIO_DEVICE_SET_IRQS (which calls into iommu_dma_compose_msi_msg()).
+Then, in the enable() method, we can retrieve the pointer to the main
+struct by using the code below:
 
-This potentially causes both the cookie pointer and the unlocked call to
-iommu_get_domain_for_dev() on the MSI translation path to become UAFs.
+static int pps_gen_foo_enable(struct pps_gen_device *pps_gen, bool enable)
+{
+        struct pps_gen_foo_data_s *foo = container_of(pps_gen->info,
+						struct pps_gen_foo_data_s, gen_info);
+        ...
+}
 
-Fix the MSI cookie UAF by removing the cookie pointer. The translated IOVA
-address is already known during iommu_dma_prepare_msi() and cannot change.
-Thus, it can simply be stored as an integer in the MSI descriptor.
-
-The other UAF related to iommu_get_domain_for_dev() will be addressed in
-patch "iommu: Make iommu_dma_prepare_msi() into a generic operation" by
-using the IOMMU group mutex.
-
-Link: https://patch.msgid.link/r/a4f2cd76b9dc1833ee6c1cf325cba57def22231c.1740014950.git.nicolinc@nvidia.com
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Rodolfo Giometti <giometti@enneenne.com>
+Tested-by: Subramanian Mohan <subramanian.mohan@intel.com>
+Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Subramanian Mohan <subramanian.mohan@intel.com>
+Link: https://lore.kernel.org/r/20250219040618.70962-2-subramanian.mohan@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/dma-iommu.c | 28 +++++++++++++---------------
- include/linux/msi.h       | 33 ++++++++++++---------------------
- 2 files changed, 25 insertions(+), 36 deletions(-)
+ Documentation/driver-api/pps.rst       |  3 +--
+ drivers/pps/generators/pps_gen-dummy.c |  2 +-
+ drivers/pps/generators/pps_gen.c       | 14 +++++++-------
+ drivers/pps/generators/sysfs.c         |  6 +++---
+ include/linux/pps_gen_kernel.h         |  4 ++--
+ 5 files changed, 14 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/iommu/dma-iommu.c b/drivers/iommu/dma-iommu.c
-index 2a9fa0c8cc00f..0f0caf59023c7 100644
---- a/drivers/iommu/dma-iommu.c
-+++ b/drivers/iommu/dma-iommu.c
-@@ -1815,7 +1815,7 @@ int iommu_dma_prepare_msi(struct msi_desc *desc, phys_addr_t msi_addr)
- 	static DEFINE_MUTEX(msi_prepare_lock); /* see below */
+diff --git a/Documentation/driver-api/pps.rst b/Documentation/driver-api/pps.rst
+index 71ad04c82d6cf..04f1b88778fc5 100644
+--- a/Documentation/driver-api/pps.rst
++++ b/Documentation/driver-api/pps.rst
+@@ -206,8 +206,7 @@ To do so the class pps-gen has been added. PPS generators can be
+ registered in the kernel by defining a struct pps_gen_source_info as
+ follows::
  
- 	if (!domain || !domain->iova_cookie) {
--		desc->iommu_cookie = NULL;
-+		msi_desc_set_iommu_msi_iova(desc, 0, 0);
- 		return 0;
- 	}
- 
-@@ -1827,11 +1827,12 @@ int iommu_dma_prepare_msi(struct msi_desc *desc, phys_addr_t msi_addr)
- 	mutex_lock(&msi_prepare_lock);
- 	msi_page = iommu_dma_get_msi_page(dev, msi_addr, domain);
- 	mutex_unlock(&msi_prepare_lock);
--
--	msi_desc_set_iommu_cookie(desc, msi_page);
--
- 	if (!msi_page)
- 		return -ENOMEM;
-+
-+	msi_desc_set_iommu_msi_iova(
-+		desc, msi_page->iova,
-+		ilog2(cookie_msi_granule(domain->iova_cookie)));
- 	return 0;
- }
- 
-@@ -1842,18 +1843,15 @@ int iommu_dma_prepare_msi(struct msi_desc *desc, phys_addr_t msi_addr)
+-    static struct pps_gen_source_info pps_gen_dummy_info = {
+-            .name                   = "dummy",
++    static const struct pps_gen_source_info pps_gen_dummy_info = {
+             .use_system_clock       = true,
+             .get_time               = pps_gen_dummy_get_time,
+             .enable                 = pps_gen_dummy_enable,
+diff --git a/drivers/pps/generators/pps_gen-dummy.c b/drivers/pps/generators/pps_gen-dummy.c
+index b284c200cbe50..55de4aecf35ed 100644
+--- a/drivers/pps/generators/pps_gen-dummy.c
++++ b/drivers/pps/generators/pps_gen-dummy.c
+@@ -61,7 +61,7 @@ static int pps_gen_dummy_enable(struct pps_gen_device *pps_gen, bool enable)
+  * The PPS info struct
   */
- void iommu_dma_compose_msi_msg(struct msi_desc *desc, struct msi_msg *msg)
- {
--	struct device *dev = msi_desc_to_dev(desc);
--	const struct iommu_domain *domain = iommu_get_domain_for_dev(dev);
--	const struct iommu_dma_msi_page *msi_page;
-+#ifdef CONFIG_IRQ_MSI_IOMMU
-+	if (desc->iommu_msi_shift) {
-+		u64 msi_iova = desc->iommu_msi_iova << desc->iommu_msi_shift;
  
--	msi_page = msi_desc_get_iommu_cookie(desc);
--
--	if (!domain || !domain->iova_cookie || WARN_ON(!msi_page))
--		return;
--
--	msg->address_hi = upper_32_bits(msi_page->iova);
--	msg->address_lo &= cookie_msi_granule(domain->iova_cookie) - 1;
--	msg->address_lo += lower_32_bits(msi_page->iova);
-+		msg->address_hi = upper_32_bits(msi_iova);
-+		msg->address_lo = lower_32_bits(msi_iova) |
-+				  (msg->address_lo & ((1 << desc->iommu_msi_shift) - 1));
-+	}
-+#endif
+-static struct pps_gen_source_info pps_gen_dummy_info = {
++static const struct pps_gen_source_info pps_gen_dummy_info = {
+ 	.use_system_clock	= true,
+ 	.get_time		= pps_gen_dummy_get_time,
+ 	.enable			= pps_gen_dummy_enable,
+diff --git a/drivers/pps/generators/pps_gen.c b/drivers/pps/generators/pps_gen.c
+index ca592f1736f46..5b8bb454913cd 100644
+--- a/drivers/pps/generators/pps_gen.c
++++ b/drivers/pps/generators/pps_gen.c
+@@ -66,7 +66,7 @@ static long pps_gen_cdev_ioctl(struct file *file,
+ 		if (ret)
+ 			return -EFAULT;
+ 
+-		ret = pps_gen->info.enable(pps_gen, status);
++		ret = pps_gen->info->enable(pps_gen, status);
+ 		if (ret)
+ 			return ret;
+ 		pps_gen->enabled = status;
+@@ -76,7 +76,7 @@ static long pps_gen_cdev_ioctl(struct file *file,
+ 	case PPS_GEN_USESYSTEMCLOCK:
+ 		dev_dbg(pps_gen->dev, "PPS_GEN_USESYSTEMCLOCK\n");
+ 
+-		ret = put_user(pps_gen->info.use_system_clock, uiuarg);
++		ret = put_user(pps_gen->info->use_system_clock, uiuarg);
+ 		if (ret)
+ 			return -EFAULT;
+ 
+@@ -175,7 +175,7 @@ static int pps_gen_register_cdev(struct pps_gen_device *pps_gen)
+ 	devt = MKDEV(MAJOR(pps_gen_devt), pps_gen->id);
+ 
+ 	cdev_init(&pps_gen->cdev, &pps_gen_cdev_fops);
+-	pps_gen->cdev.owner = pps_gen->info.owner;
++	pps_gen->cdev.owner = pps_gen->info->owner;
+ 
+ 	err = cdev_add(&pps_gen->cdev, devt, 1);
+ 	if (err) {
+@@ -183,8 +183,8 @@ static int pps_gen_register_cdev(struct pps_gen_device *pps_gen)
+ 				MAJOR(pps_gen_devt), pps_gen->id);
+ 		goto free_ida;
+ 	}
+-	pps_gen->dev = device_create(pps_gen_class, pps_gen->info.parent, devt,
+-					pps_gen, "pps-gen%d", pps_gen->id);
++	pps_gen->dev = device_create(pps_gen_class, pps_gen->info->parent, devt,
++				     pps_gen, "pps-gen%d", pps_gen->id);
+ 	if (IS_ERR(pps_gen->dev)) {
+ 		err = PTR_ERR(pps_gen->dev);
+ 		goto del_cdev;
+@@ -225,7 +225,7 @@ static void pps_gen_unregister_cdev(struct pps_gen_device *pps_gen)
+  * Return: the PPS generator device in case of success, and ERR_PTR(errno)
+  *	 otherwise.
+  */
+-struct pps_gen_device *pps_gen_register_source(struct pps_gen_source_info *info)
++struct pps_gen_device *pps_gen_register_source(const struct pps_gen_source_info *info)
+ {
+ 	struct pps_gen_device *pps_gen;
+ 	int err;
+@@ -235,7 +235,7 @@ struct pps_gen_device *pps_gen_register_source(struct pps_gen_source_info *info)
+ 		err = -ENOMEM;
+ 		goto pps_gen_register_source_exit;
+ 	}
+-	pps_gen->info = *info;
++	pps_gen->info = info;
+ 	pps_gen->enabled = false;
+ 
+ 	init_waitqueue_head(&pps_gen->queue);
+diff --git a/drivers/pps/generators/sysfs.c b/drivers/pps/generators/sysfs.c
+index faf8b1c6d2026..6d6bc0006feae 100644
+--- a/drivers/pps/generators/sysfs.c
++++ b/drivers/pps/generators/sysfs.c
+@@ -19,7 +19,7 @@ static ssize_t system_show(struct device *dev, struct device_attribute *attr,
+ {
+ 	struct pps_gen_device *pps_gen = dev_get_drvdata(dev);
+ 
+-	return sysfs_emit(buf, "%d\n", pps_gen->info.use_system_clock);
++	return sysfs_emit(buf, "%d\n", pps_gen->info->use_system_clock);
  }
+ static DEVICE_ATTR_RO(system);
  
- static int iommu_dma_init(void)
-diff --git a/include/linux/msi.h b/include/linux/msi.h
-index 59a421fc42bf0..63d0e51f7a801 100644
---- a/include/linux/msi.h
-+++ b/include/linux/msi.h
-@@ -165,6 +165,10 @@ struct msi_desc_data {
-  * @dev:	Pointer to the device which uses this descriptor
-  * @msg:	The last set MSI message cached for reuse
-  * @affinity:	Optional pointer to a cpu affinity mask for this descriptor
-+ * @iommu_msi_iova: Optional shifted IOVA from the IOMMU to override the msi_addr.
-+ *                  Only used if iommu_msi_shift != 0
-+ * @iommu_msi_shift: Indicates how many bits of the original address should be
-+ *                   preserved when using iommu_msi_iova.
-  * @sysfs_attr:	Pointer to sysfs device attribute
-  *
-  * @write_msi_msg:	Callback that may be called when the MSI message
-@@ -183,7 +187,8 @@ struct msi_desc {
- 	struct msi_msg			msg;
- 	struct irq_affinity_desc	*affinity;
- #ifdef CONFIG_IRQ_MSI_IOMMU
--	const void			*iommu_cookie;
-+	u64				iommu_msi_iova : 58;
-+	u64				iommu_msi_shift : 6;
- #endif
- #ifdef CONFIG_SYSFS
- 	struct device_attribute		*sysfs_attrs;
-@@ -284,28 +289,14 @@ struct msi_desc *msi_next_desc(struct device *dev, unsigned int domid,
+@@ -30,7 +30,7 @@ static ssize_t time_show(struct device *dev, struct device_attribute *attr,
+ 	struct timespec64 time;
+ 	int ret;
  
- #define msi_desc_to_dev(desc)		((desc)->dev)
+-	ret = pps_gen->info.get_time(pps_gen, &time);
++	ret = pps_gen->info->get_time(pps_gen, &time);
+ 	if (ret)
+ 		return ret;
  
--#ifdef CONFIG_IRQ_MSI_IOMMU
--static inline const void *msi_desc_get_iommu_cookie(struct msi_desc *desc)
--{
--	return desc->iommu_cookie;
--}
--
--static inline void msi_desc_set_iommu_cookie(struct msi_desc *desc,
--					     const void *iommu_cookie)
--{
--	desc->iommu_cookie = iommu_cookie;
--}
--#else
--static inline const void *msi_desc_get_iommu_cookie(struct msi_desc *desc)
-+static inline void msi_desc_set_iommu_msi_iova(struct msi_desc *desc, u64 msi_iova,
-+					       unsigned int msi_shift)
- {
--	return NULL;
--}
--
--static inline void msi_desc_set_iommu_cookie(struct msi_desc *desc,
--					     const void *iommu_cookie)
--{
--}
-+#ifdef CONFIG_IRQ_MSI_IOMMU
-+	desc->iommu_msi_iova = msi_iova >> msi_shift;
-+	desc->iommu_msi_shift = msi_shift;
- #endif
-+}
+@@ -49,7 +49,7 @@ static ssize_t enable_store(struct device *dev, struct device_attribute *attr,
+ 	if (ret)
+ 		return ret;
  
- int msi_domain_insert_msi_desc(struct device *dev, unsigned int domid,
- 			       struct msi_desc *init_desc);
+-	ret = pps_gen->info.enable(pps_gen, status);
++	ret = pps_gen->info->enable(pps_gen, status);
+ 	if (ret)
+ 		return ret;
+ 	pps_gen->enabled = status;
+diff --git a/include/linux/pps_gen_kernel.h b/include/linux/pps_gen_kernel.h
+index 022ea0ac44402..6214c8aa2e020 100644
+--- a/include/linux/pps_gen_kernel.h
++++ b/include/linux/pps_gen_kernel.h
+@@ -43,7 +43,7 @@ struct pps_gen_source_info {
+ 
+ /* The main struct */
+ struct pps_gen_device {
+-	struct pps_gen_source_info info;	/* PSS generator info */
++	const struct pps_gen_source_info *info;	/* PSS generator info */
+ 	bool enabled;				/* PSS generator status */
+ 
+ 	unsigned int event;
+@@ -70,7 +70,7 @@ extern const struct attribute_group *pps_gen_groups[];
+  */
+ 
+ extern struct pps_gen_device *pps_gen_register_source(
+-				struct pps_gen_source_info *info);
++				const struct pps_gen_source_info *info);
+ extern void pps_gen_unregister_source(struct pps_gen_device *pps_gen);
+ extern void pps_gen_event(struct pps_gen_device *pps_gen,
+ 				unsigned int event, void *data);
 -- 
 2.39.5
 
