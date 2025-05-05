@@ -1,66 +1,60 @@
-Return-Path: <stable+bounces-141138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75672AAB0C6
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:47:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B10D3AAB100
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:51:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A6EA2167B3D
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:45:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E4BB3A3C4E
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:47:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC22D3280AD;
-	Tue,  6 May 2025 00:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82AA232ABB6;
+	Tue,  6 May 2025 00:25:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ow0DoITz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c7PEjqW8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 131CC2BEC50;
-	Mon,  5 May 2025 22:48:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB27A2BF3F2;
+	Mon,  5 May 2025 22:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485303; cv=none; b=qeumB61I9rlvLJJK+bm+Jg0dJGzVNgsC9TvqA+3MW+P9ppYTEU7jaeERqbJB6+fdRXL7dbjJUud3zGMTt6HBz2hX2tlKR9Znupf1+dvmuLXTxXvp2EHV5uCUwHSsiyQnt8DcVTjYBxH25qdUWYiUNOORtI3ROlMuD75YuLYfdfI=
+	t=1746485310; cv=none; b=HZCeOh++DDVmFmSvOhHy4ESBJ31d8iyGdxwZLlgqf9ogwqrhB3U/f/b21kVo70/rXzdKzHNs8PFFGGQPUznc1mQ4eBmHNrSn/cmvIYjgpHFHT4FJvgX2qAcBqMixq3ev3bgC6dcTxoC/0eU1EwWZ4HDVxi4bWuyOY9FAHLkjHGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485303; c=relaxed/simple;
-	bh=pZixKMDv/OOtTOQUEBvTpSiQGwtm0IPKyVHMle9zWxU=;
+	s=arc-20240116; t=1746485310; c=relaxed/simple;
+	bh=sA5+9iikc4LH5jdFJudKdSamGAlkuDYDKiR3L7gqSEk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Cr1zAYmQA5WVzXmzMnh/xTC4CGCo6QDIUinHqp7sT5DkYvo1+Y1opeSAS9rEhpVg9YMHJonVWAy+C9G5jegw3bCOBlzRHen9IrtSX5Ua4rfxTiUs1A8WVDzv5woc9nt3RcQuEKWkHx/Fj79y1Av03uvxIHt7N7tGNbCMlRgghjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ow0DoITz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6A09C4CEE4;
-	Mon,  5 May 2025 22:48:20 +0000 (UTC)
+	 MIME-Version; b=gLsIxUswSkYCyckYPoONVeJduPZ4yLDWEekE64ATFKWopMgPInyqjUzolZLfnsGdX2sguMnoo2+iaEjOQ5Stxdn/Wbe1HmKAxhEas1/yomGzOTJb5Qco2okDo3VVKdSu+KX89WVA3ohWRcgCRB5ib9/U8Z8C4TPlprVK+2PcsPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c7PEjqW8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAC1EC4CEED;
+	Mon,  5 May 2025 22:48:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485302;
-	bh=pZixKMDv/OOtTOQUEBvTpSiQGwtm0IPKyVHMle9zWxU=;
+	s=k20201202; t=1746485308;
+	bh=sA5+9iikc4LH5jdFJudKdSamGAlkuDYDKiR3L7gqSEk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ow0DoITzHXO1uUVY3j8TarJ1XFwimwUyPNGrqtfZd2xd+ml+cnLSKh5vkLNniA+i1
-	 4K6g03Lm2Rwe0m6xmxeNd3rp6Qh44wgSWCK+aOXUhhDKiLchdhfKG+OmrJdS/SEBtZ
-	 mxRZUtmR9ombVop4roVEaDAOGAQqDJiO2wFoup1aQQzaXCZM2LFpjnxS1D3bohxbGD
-	 fhihDRi9w7tSyutlBVoLLhWhDBirf10UGR4ALj4Guj9aJrcrD24xcLHC/TLjpiGg6S
-	 awZbuZOvDDY6UOSNl4nroUccw4ZJjU5xzlGH1A9CdsbTSLJ1JPT3aApbcuxPq/utiW
-	 O8ib1zs24xfEg==
+	b=c7PEjqW8eBVx2wyOtXYNXjA0iHAQqbSZ17WMihJ8tggzULfpJK5Fkc+PLy/PqGNF1
+	 bJnxQr6qbSsVRxb7iAH3Z1h1ID1TCtAnvvefmvpW5hSI/oY+zMJ9IsHhEm+c84vajV
+	 3YrElnXzLU+IyZnblVSiufoUv6z3mC2g9i8I674j1Riu+5fEvt5WScbXdiGeW5Af3o
+	 Wn9y9tvguzmQliq1sKZ0I/HdDkQ8fZYgzc0+r0RddnJ0q+3Iltug859GCjFKqigQuh
+	 pBPOlOxEBGhZmo4mgagZnse2zF9FjpHbwPHcNpnBEWeRi51Pgr9z0LEGunMmqh+OD7
+	 pPp1btXBg7MiQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Waiman Long <longman@redhat.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Rik van Riel <riel@surriel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Artem Bityutskiy <artem.bityutskiy@linux.intel.com>,
+	Christian Loehle <christian.loehle@arm.com>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	kirill.shutemov@linux.intel.com,
-	kai.huang@intel.com,
-	peterz@infradead.org,
-	pbonzini@redhat.com,
-	brgerst@gmail.com
-Subject: [PATCH AUTOSEL 6.12 257/486] x86/nmi: Add an emergency handler in nmi_desc & use it in nmi_shootdown_cpus()
-Date: Mon,  5 May 2025 18:35:33 -0400
-Message-Id: <20250505223922.2682012-257-sashal@kernel.org>
+	rafael@kernel.org,
+	daniel.lezcano@linaro.org,
+	linux-pm@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 260/486] cpuidle: menu: Avoid discarding useful information
+Date: Mon,  5 May 2025 18:35:36 -0400
+Message-Id: <20250505223922.2682012-260-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -75,170 +69,63 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Waiman Long <longman@redhat.com>
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-[ Upstream commit fe37c699ae3eed6e02ee55fbf5cb9ceb7fcfd76c ]
+[ Upstream commit 85975daeaa4d6ec560bfcd354fc9c08ad7f38888 ]
 
-Depending on the type of panics, it was found that the
-__register_nmi_handler() function can be called in NMI context from
-nmi_shootdown_cpus() leading to a lockdep splat:
+When giving up on making a high-confidence prediction,
+get_typical_interval() always returns UINT_MAX which means that the
+next idle interval prediction will be based entirely on the time till
+the next timer.  However, the information represented by the most
+recent intervals may not be completely useless in those cases.
 
-  WARNING: inconsistent lock state
-  inconsistent {INITIAL USE} -> {IN-NMI} usage.
+Namely, the largest recent idle interval is an upper bound on the
+recently observed idle duration, so it is reasonable to assume that
+the next idle duration is unlikely to exceed it.  Moreover, this is
+still true after eliminating the suspected outliers if the sample
+set still under consideration is at least as large as 50% of the
+maximum sample set size.
 
-   lock(&nmi_desc[0].lock);
-   <Interrupt>
-     lock(&nmi_desc[0].lock);
+Accordingly, make get_typical_interval() return the current maximum
+recent interval value in that case instead of UINT_MAX.
 
-  Call Trace:
-    _raw_spin_lock_irqsave
-    __register_nmi_handler
-    nmi_shootdown_cpus
-    kdump_nmi_shootdown_cpus
-    native_machine_crash_shutdown
-    __crash_kexec
-
-In this particular case, the following panic message was printed before:
-
-  Kernel panic - not syncing: Fatal hardware error!
-
-This message seemed to be given out from __ghes_panic() running in
-NMI context.
-
-The __register_nmi_handler() function which takes the nmi_desc lock
-with irq disabled shouldn't be called from NMI context as this can
-lead to deadlock.
-
-The nmi_shootdown_cpus() function can only be invoked once. After the
-first invocation, all other CPUs should be stuck in the newly added
-crash_nmi_callback() and cannot respond to a second NMI.
-
-Fix it by adding a new emergency NMI handler to the nmi_desc
-structure and provide a new set_emergency_nmi_handler() helper to set
-crash_nmi_callback() in any context. The new emergency handler will
-preempt other handlers in the linked list. That will eliminate the need
-to take any lock and serve the panic in NMI use case.
-
-Signed-off-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Rik van Riel <riel@surriel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20250206191844.131700-1-longman@redhat.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reported-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
+Tested-by: Artem Bityutskiy <artem.bityutskiy@linux.intel.com>
+Reviewed-by: Christian Loehle <christian.loehle@arm.com>
+Tested-by: Christian Loehle <christian.loehle@arm.com>
+Tested-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
+Link: https://patch.msgid.link/7770672.EvYhyI6sBW@rjwysocki.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/nmi.h |  2 ++
- arch/x86/kernel/nmi.c      | 42 ++++++++++++++++++++++++++++++++++++++
- arch/x86/kernel/reboot.c   | 10 +++------
- 3 files changed, 47 insertions(+), 7 deletions(-)
+ drivers/cpuidle/governors/menu.c | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/nmi.h b/arch/x86/include/asm/nmi.h
-index 41a0ebb699ec6..f677382093f36 100644
---- a/arch/x86/include/asm/nmi.h
-+++ b/arch/x86/include/asm/nmi.h
-@@ -56,6 +56,8 @@ int __register_nmi_handler(unsigned int, struct nmiaction *);
- 
- void unregister_nmi_handler(unsigned int, const char *);
- 
-+void set_emergency_nmi_handler(unsigned int type, nmi_handler_t handler);
-+
- void stop_nmi(void);
- void restart_nmi(void);
- void local_touch_nmi(void);
-diff --git a/arch/x86/kernel/nmi.c b/arch/x86/kernel/nmi.c
-index ed163c8c8604e..9a95d00f14233 100644
---- a/arch/x86/kernel/nmi.c
-+++ b/arch/x86/kernel/nmi.c
-@@ -40,8 +40,12 @@
- #define CREATE_TRACE_POINTS
- #include <trace/events/nmi.h>
- 
-+/*
-+ * An emergency handler can be set in any context including NMI
-+ */
- struct nmi_desc {
- 	raw_spinlock_t lock;
-+	nmi_handler_t emerg_handler;
- 	struct list_head head;
- };
- 
-@@ -132,9 +136,22 @@ static void nmi_check_duration(struct nmiaction *action, u64 duration)
- static int nmi_handle(unsigned int type, struct pt_regs *regs)
- {
- 	struct nmi_desc *desc = nmi_to_desc(type);
-+	nmi_handler_t ehandler;
- 	struct nmiaction *a;
- 	int handled=0;
- 
-+	/*
-+	 * Call the emergency handler, if set
-+	 *
-+	 * In the case of crash_nmi_callback() emergency handler, it will
-+	 * return in the case of the crashing CPU to enable it to complete
-+	 * other necessary crashing actions ASAP. Other handlers in the
-+	 * linked list won't need to be run.
-+	 */
-+	ehandler = desc->emerg_handler;
-+	if (ehandler)
-+		return ehandler(type, regs);
-+
- 	rcu_read_lock();
- 
- 	/*
-@@ -224,6 +241,31 @@ void unregister_nmi_handler(unsigned int type, const char *name)
- }
- EXPORT_SYMBOL_GPL(unregister_nmi_handler);
- 
-+/**
-+ * set_emergency_nmi_handler - Set emergency handler
-+ * @type:    NMI type
-+ * @handler: the emergency handler to be stored
-+ *
-+ * Set an emergency NMI handler which, if set, will preempt all the other
-+ * handlers in the linked list. If a NULL handler is passed in, it will clear
-+ * it. It is expected that concurrent calls to this function will not happen
-+ * or the system is screwed beyond repair.
-+ */
-+void set_emergency_nmi_handler(unsigned int type, nmi_handler_t handler)
-+{
-+	struct nmi_desc *desc = nmi_to_desc(type);
-+
-+	if (WARN_ON_ONCE(desc->emerg_handler == handler))
-+		return;
-+	desc->emerg_handler = handler;
-+
-+	/*
-+	 * Ensure the emergency handler is visible to other CPUs before
-+	 * function return
-+	 */
-+	smp_wmb();
-+}
-+
- static void
- pci_serr_error(unsigned char reason, struct pt_regs *regs)
- {
-diff --git a/arch/x86/kernel/reboot.c b/arch/x86/kernel/reboot.c
-index dc1dd3f3e67fc..9aaac1f9f45b5 100644
---- a/arch/x86/kernel/reboot.c
-+++ b/arch/x86/kernel/reboot.c
-@@ -926,15 +926,11 @@ void nmi_shootdown_cpus(nmi_shootdown_cb callback)
- 	shootdown_callback = callback;
- 
- 	atomic_set(&waiting_for_crash_ipi, num_online_cpus() - 1);
--	/* Would it be better to replace the trap vector here? */
--	if (register_nmi_handler(NMI_LOCAL, crash_nmi_callback,
--				 NMI_FLAG_FIRST, "crash"))
--		return;		/* Return what? */
-+
- 	/*
--	 * Ensure the new callback function is set before sending
--	 * out the NMI
-+	 * Set emergency handler to preempt other handlers.
+diff --git a/drivers/cpuidle/governors/menu.c b/drivers/cpuidle/governors/menu.c
+index f3c9d49f0f2a5..97ffadc7e57a6 100644
+--- a/drivers/cpuidle/governors/menu.c
++++ b/drivers/cpuidle/governors/menu.c
+@@ -239,8 +239,19 @@ static unsigned int get_typical_interval(struct menu_device *data)
+ 	 * This can deal with workloads that have long pauses interspersed
+ 	 * with sporadic activity with a bunch of short pauses.
  	 */
--	wmb();
-+	set_emergency_nmi_handler(NMI_LOCAL, crash_nmi_callback);
+-	if ((divisor * 4) <= INTERVALS * 3)
++	if (divisor * 4 <= INTERVALS * 3) {
++		/*
++		 * If there are sufficiently many data points still under
++		 * consideration after the outliers have been eliminated,
++		 * returning without a prediction would be a mistake because it
++		 * is likely that the next interval will not exceed the current
++		 * maximum, so return the latter in that case.
++		 */
++		if (divisor >= INTERVALS / 2)
++			return max;
++
+ 		return UINT_MAX;
++	}
  
- 	apic_send_IPI_allbutself(NMI_VECTOR);
- 
+ 	thresh = max - 1;
+ 	goto again;
 -- 
 2.39.5
 
