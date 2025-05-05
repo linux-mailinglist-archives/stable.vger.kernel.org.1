@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-140340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65D15AAA795
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:37:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9BDAAAA7DA
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:42:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3D2F97AB2A9
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:35:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5501298777C
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:37:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D793C33D7D4;
-	Mon,  5 May 2025 22:37:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C03D533E449;
+	Mon,  5 May 2025 22:37:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VJCuFm06"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DvLg+OtB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BEB233DE0D;
-	Mon,  5 May 2025 22:37:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B28033E43C;
+	Mon,  5 May 2025 22:37:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484660; cv=none; b=OFyM3o/xi8btreefA+n/20pV8myB7y8S5NU9FzaqvTXFrA8oIewkLbAfwobiJT7PuVyRO5v82378IuQdVxhfnSAH+NF4jm20VlUUa9HIY/aJEtySXaaqGmWO/UUS3Wjt0Mcx05UMHbS07k4gZa+TeA/WI5UG2b0ggGVX/7Sy9Tc=
+	t=1746484663; cv=none; b=QmQfahcxPhuOS3TMdVZUh6PMTVi0b+Cq+8/VsFVm2/iprw02aoslBgIT7S/tYoiv4kxpVMoPjQOwwY5ChHffPTKWc/aH82ZOOYez+5hpBwg6ff96KMnQSxN4V+3cgCjVzlhMP+RrBvfwBDdR+dlOzEOzn0BtA9rflzF1UIZ2mVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484660; c=relaxed/simple;
-	bh=SaAZ5YJkRyvfrSgUrMmePOISIBScFqRsqLDvQq2gi5w=;
+	s=arc-20240116; t=1746484663; c=relaxed/simple;
+	bh=PtKmNWhYuxw+9m13WySu1j15Y14gKpgGSQvph/hqweo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=D/LeR34RZopoNb/KNwjJYarGTeggFY6iuuM6kXxYa3UT6idq1DE7gOJ8dYh2AoPgoP5HMeOPv3VCPv+eld6BjKONRjOYTO5cEgYcIV0yuwPBfT53l1QpbSCbdOSkeYZ4zx6RDbr5qm1pviOAlI9idFusbUoWEtgY2HyK4l38fOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VJCuFm06; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AD6EC4CEEE;
-	Mon,  5 May 2025 22:37:39 +0000 (UTC)
+	 MIME-Version; b=ZS6BiRuZST5TcHYElYKulGp9D0erR9hwAsiAHsdE5ZSQ4+v7s9xobwnBShuNB/YazPKJvKlNNbNRpe33g8hql8/CcVTkGujfYsxQjYhqee/3WRpC9Ax6BNqZUx9AeBaUwC8LLwoFc9Q/OBMlJb4cMHa3X46ZAZ+tcaoQzJgjGcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DvLg+OtB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0828C4CEEF;
+	Mon,  5 May 2025 22:37:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484660;
-	bh=SaAZ5YJkRyvfrSgUrMmePOISIBScFqRsqLDvQq2gi5w=;
+	s=k20201202; t=1746484661;
+	bh=PtKmNWhYuxw+9m13WySu1j15Y14gKpgGSQvph/hqweo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VJCuFm06qgEWn/IqTW5ZpIPvsAc/HOIYejMfXXhq9fcJ86Lh7vSlQ8axItNHR7eMf
-	 gF0zwVN/lnb1k0YJqzHSS/KYtyh3zqtQC4uTtt3McT7GISGjoS5DPYQS+iubw8brFl
-	 KNOmms0HXi2BR5w3LXqysSucfcHTBzi8RhixqGlH9JqMCCq1g+Z8i7dAAWPwIhZb1a
-	 l7Sxb5P8c9RgP4AiFuZrkFQNRnUGzHQIUGnufh46f+DCAeZ1j+VNaltjwE1UYSnhty
-	 oM7v3YG7bXq/4RKUjoFVcmz4PNLe+j8CNzkub2hosHksKDzkDqZy+H917cM/uNYwL8
-	 Qwpdne2vvH+ng==
+	b=DvLg+OtBRPypsZNGYSEFYmNG2fmwNhpPca2KQ23Xhqno6Y586V8rBrBHrplg4YZpZ
+	 +Rg+yyNQyHDE/7OuLS2b01zTpSZIp76BBOOaxWYNwfzis3uxVltEr2djv3fUsrvJxK
+	 cUyL0MBWoOfjBQNrrDElPHq8JK17gYrTA9qdjucTivS04qcvyjsreXDg9TJI2TT0qQ
+	 TTWRdYpPMGw3w+/jSc3BcTWX+Yqhui+rr5IeH7hZcYFn29/2bQlWXDKlUSmp538E05
+	 SDf0JqZCgZnPoEPShCF3Mlw6lwaSr3z0w552elkw0VgovRSDMTTqaLTSwYn5Al8+aB
+	 WI4B5nO10l9xQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Nicolas Escande <nico.escande@gmail.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	lgirdwood@gmail.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	javier.carrasco.cruz@gmail.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 591/642] ASoC: cpcap: Implement .set_bias_level
-Date: Mon,  5 May 2025 18:13:27 -0400
-Message-Id: <20250505221419.2672473-591-sashal@kernel.org>
+	jjohnson@kernel.org,
+	linux-wireless@vger.kernel.org,
+	ath12k@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.14 592/642] wifi: ath12k: fix ath12k_hal_tx_cmd_ext_desc_setup() info1 override
+Date: Mon,  5 May 2025 18:13:28 -0400
+Message-Id: <20250505221419.2672473-592-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -69,91 +68,39 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
+From: Nicolas Escande <nico.escande@gmail.com>
 
-[ Upstream commit 5b4288792ff246cf2bda0c81cebcc02d1f631ca3 ]
+[ Upstream commit df11edfba49e5fb69f4c9e7cb76082b89c417f78 ]
 
-With VAUDIO regulator being always on, we have to put it in low-power mode
-when codec is not in use to decrease power usage.
+Since inception there is an obvious typo laying around in
+ath12k_hal_tx_cmd_ext_desc_setup(). Instead of initializing + adding
+flags to tcl_ext_cmd->info1, we initialize + override. This will be needed
+in the future to make broadcast frames work with ethernet encapsulation.
 
-Do so by implementing driver .set_bias_level callback.
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
 
-Signed-off-by: Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>
-Link: https://patch.msgid.link/20250122164129.807247-3-ivo.g.dimitrov.75@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Nicolas Escande <nico.escande@gmail.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250127071306.1454699-1-nico.escande@gmail.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/cpcap.c | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ drivers/net/wireless/ath/ath12k/dp_tx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/cpcap.c b/sound/soc/codecs/cpcap.c
-index 04304a7ad9153..53f549ede6a6f 100644
---- a/sound/soc/codecs/cpcap.c
-+++ b/sound/soc/codecs/cpcap.c
-@@ -11,6 +11,7 @@
- #include <linux/module.h>
- #include <linux/regmap.h>
- #include <linux/platform_device.h>
-+#include <linux/regulator/consumer.h>
- #include <linux/mfd/motorola-cpcap.h>
- #include <sound/core.h>
- #include <sound/soc.h>
-@@ -260,6 +261,7 @@ struct cpcap_audio {
- 	int codec_clk_id;
- 	int codec_freq;
- 	int codec_format;
-+	struct regulator *vaudio;
- };
+diff --git a/drivers/net/wireless/ath/ath12k/dp_tx.c b/drivers/net/wireless/ath/ath12k/dp_tx.c
+index 75608ae027afe..a39bfb959797a 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_tx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_tx.c
+@@ -117,7 +117,7 @@ static void ath12k_hal_tx_cmd_ext_desc_setup(struct ath12k_base *ab,
+ 			       le32_encode_bits(ti->data_len,
+ 						HAL_TX_MSDU_EXT_INFO1_BUF_LEN);
  
- static int cpcap_st_workaround(struct snd_soc_dapm_widget *w,
-@@ -1637,6 +1639,11 @@ static int cpcap_soc_probe(struct snd_soc_component *component)
- 	snd_soc_component_set_drvdata(component, cpcap);
- 	cpcap->component = component;
- 
-+	cpcap->vaudio = devm_regulator_get(component->dev, "VAUDIO");
-+	if (IS_ERR(cpcap->vaudio))
-+		return dev_err_probe(component->dev, PTR_ERR(cpcap->vaudio),
-+				     "Cannot get VAUDIO regulator\n");
-+
- 	cpcap->regmap = dev_get_regmap(component->dev->parent, NULL);
- 	if (!cpcap->regmap)
- 		return -ENODEV;
-@@ -1649,6 +1656,27 @@ static int cpcap_soc_probe(struct snd_soc_component *component)
- 	return cpcap_audio_reset(component, false);
- }
- 
-+static int cpcap_set_bias_level(struct snd_soc_component *component,
-+		enum snd_soc_bias_level level)
-+{
-+	struct cpcap_audio *cpcap = snd_soc_component_get_drvdata(component);
-+
-+	switch (level) {
-+	case SND_SOC_BIAS_OFF:
-+		break;
-+	case SND_SOC_BIAS_PREPARE:
-+		regulator_set_mode(cpcap->vaudio, REGULATOR_MODE_NORMAL);
-+		break;
-+	case SND_SOC_BIAS_STANDBY:
-+		regulator_set_mode(cpcap->vaudio, REGULATOR_MODE_STANDBY);
-+		break;
-+	case SND_SOC_BIAS_ON:
-+		break;
-+	}
-+
-+	return 0;
-+}
-+
- static const struct snd_soc_component_driver soc_codec_dev_cpcap = {
- 	.probe			= cpcap_soc_probe,
- 	.controls		= cpcap_snd_controls,
-@@ -1657,6 +1685,7 @@ static const struct snd_soc_component_driver soc_codec_dev_cpcap = {
- 	.num_dapm_widgets	= ARRAY_SIZE(cpcap_dapm_widgets),
- 	.dapm_routes		= intercon,
- 	.num_dapm_routes	= ARRAY_SIZE(intercon),
-+	.set_bias_level		= cpcap_set_bias_level,
- 	.idle_bias_on		= 1,
- 	.use_pmdown_time	= 1,
- 	.endianness		= 1,
+-	tcl_ext_cmd->info1 = le32_encode_bits(1, HAL_TX_MSDU_EXT_INFO1_EXTN_OVERRIDE) |
++	tcl_ext_cmd->info1 |= le32_encode_bits(1, HAL_TX_MSDU_EXT_INFO1_EXTN_OVERRIDE) |
+ 				le32_encode_bits(ti->encap_type,
+ 						 HAL_TX_MSDU_EXT_INFO1_ENCAP_TYPE) |
+ 				le32_encode_bits(ti->encrypt_type,
 -- 
 2.39.5
 
