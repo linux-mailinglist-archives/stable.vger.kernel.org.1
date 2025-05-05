@@ -1,64 +1,74 @@
-Return-Path: <stable+bounces-141174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06634AAB126
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:54:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47FDCAAB122
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:53:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7397B17AFA2
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:53:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4437E1BC1BAD
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:53:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 928993327F9;
-	Tue,  6 May 2025 00:26:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30AB2332818;
+	Tue,  6 May 2025 00:26:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G68lYuCk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DyvL4nf2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A87F377790;
-	Mon,  5 May 2025 22:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 548293777AB;
+	Mon,  5 May 2025 22:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485380; cv=none; b=Cl9rqtSHWV0kA9deNaeBNuuuE0FXIFcyfgsVkBUrPKWHF7DaMsAB1jSPUbvclNC2Db07UA0w5g3prmfz4vDh9Z8mLmOrMQnahg3MamsSOVioRfm6l0GIjIA41Z0sc/5vi1iqLY25oe1C17c1ghA9XoFM8FKkk/xTT/jwiFleG+c=
+	t=1746485387; cv=none; b=PbAqP9SZ4BtYePTc0xID+HzAcwcxSqxpp5/IuTDmKnM24RduRWj0MeG/86NJEQ/5bzGuWlJbE5iM7jvmlgrt8pJUTASU0LmKve9E/nT+tKTMFbY4t05jFDSOUg6cG1a4IkB+MCoPWS5u3rW14/cWlGP+t3Z3cR+YU/B3LYO0rO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485380; c=relaxed/simple;
-	bh=9OI6dHYLc8ecmfWf4k9XnmNSY3qVfYkQeVldy1ZXJ2E=;
+	s=arc-20240116; t=1746485387; c=relaxed/simple;
+	bh=Dj/wqjaxFVPICNVresQ1n3X4G4IA/QoG3r56gNsEk2I=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kQnl2fdwNhbNee8oofSaW/5hBv7jiQpKi6iUF+FsXh5lsnhYlsh8Vj/yguhLEoWHiS6FPfkIIOWQon9w2ptutPvRPqfqQMMNW1o1tXPhyEzcwF5/A+bxLEBRhR0UOjqFbGut/9r98TloLOM9UmEZU34rBcYHQ5wAiLIJeOyNGgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G68lYuCk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADAD6C4CEED;
-	Mon,  5 May 2025 22:49:37 +0000 (UTC)
+	 MIME-Version; b=NHz18+nppJEPzPT90Mr7GDhxJfkklwusVTXkuKRh9iRBgPGfPKnehwKNWqNHCd3PNfuY9a8ZdHmLC7anutr1rvm08Gytw3OAnm1H01t7Y9G+QsuJ8hdGs0OL5zOLDINw+MCuvUzM78vKp0LDdnnr/LBX0sSEWOwlIpyQVb9b3zE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DyvL4nf2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAA2AC4CEED;
+	Mon,  5 May 2025 22:49:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485379;
-	bh=9OI6dHYLc8ecmfWf4k9XnmNSY3qVfYkQeVldy1ZXJ2E=;
+	s=k20201202; t=1746485386;
+	bh=Dj/wqjaxFVPICNVresQ1n3X4G4IA/QoG3r56gNsEk2I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G68lYuCkX2zBeusSMzMDeozjIekCzUMYF8y9mkeFUmhWpIQXC5Sh31yOP+TKLjHPG
-	 27Qi3IzXhBwh430frIYcC2a/JSo1wiK+czE6LH7LkcqW3CW1zB1BkfpvTvPKtHY1Ag
-	 AExVYRFiTstOnCr8xZAbpGLux/Vgc/FeuydWoK6RZmK0HcbEfYfKd5vIEr7BROW2D0
-	 I4WlURCd18+hQpXjq801W3LNovcA1jaP6FFhNh5yif2BYFBuJEyT9yPJMPMDNoePji
-	 SFx0Kqt6SyeoCLbWNifDlb98NFnSAswR3jxNCP2NvrwXRBA8MA2Eg8VLhFwcimSfQf
-	 VY0aAN5Fv0Apg==
+	b=DyvL4nf2L0kmbPkuOxfffEii3a0nPxgwy7jBzEbVOpe0BrWAIR6KTCMR8bFT9pbMI
+	 Dyy9iTkWIqabxQ1t+NeDMSiqd80blQZxRJc6ZCmQxWv6a1pz7gg8BliFUhjnb/pV4h
+	 fKDnDZNTYvhfFLDS0+IGGrpLOxEvnwBVgPoiQv10OZBIggpuJDOnNSUgq06ZA4n4ib
+	 1alCKHUwB2042gJCNZp/eaf4FIaaxOQOOyogpQ7DDxz5DHOo+vSnX3rroI5LqOSpCs
+	 lvgMRvbIiEOIEY/A9QiIleoRreinS58y2gaVTKrqVeVZQyJJLWG0n6lDM4K4iR80vY
+	 r8xRGJgjJAmiw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Lijo Lazar <lijo.lazar@amd.com>,
-	Asad Kamal <asad.kamal@amd.com>,
+Cc: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Gabe Teeger <gabe.teeger@amd.com>,
+	Leo Chen <leo.chen@amd.com>,
+	Syed Hassan <syed.hassan@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	kenneth.feng@amd.com,
+	harry.wentland@amd.com,
+	sunpeng.li@amd.com,
 	christian.koenig@amd.com,
 	airlied@gmail.com,
 	simona@ffwll.ch,
-	sunil.khatri@amd.com,
-	boyuan.zhang@amd.com,
+	Charlene.Liu@amd.com,
+	chiahsuan.chung@amd.com,
+	alex.hung@amd.com,
+	Nicholas.Susanto@amd.com,
+	Ausef.Yousof@amd.com,
+	sungjoon.kim@amd.com,
+	PeiChen.Huang@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.12 299/486] drm/amd/pm: Fetch current power limit from PMFW
-Date: Mon,  5 May 2025 18:36:15 -0400
-Message-Id: <20250505223922.2682012-299-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 301/486] drm/amd/display: Guard against setting dispclk low when active
+Date: Mon,  5 May 2025 18:36:17 -0400
+Message-Id: <20250505223922.2682012-301-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -73,33 +83,63 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Lijo Lazar <lijo.lazar@amd.com>
+From: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
 
-[ Upstream commit b2a9e562dfa156bd53e62ce571f3f8f65d243f14 ]
+[ Upstream commit 72d7a7fa1f2404fd31c84a8f808b1b37021a3a9e ]
 
-On SMU v13.0.12, always query the firmware to get the current power
-limit as it could be updated through other means also.
+[Why]
+We should never apply a minimum dispclk value while in prepare_bandwidth
+or while displays are active. This is always an optimization for when
+all displays are disabled.
 
-Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
-Reviewed-by: Asad Kamal <asad.kamal@amd.com>
+[How]
+Defer dispclk optimization until safe_to_lower = true and display_count
+reaches 0.
+
+Since 0 has a special value in this logic (ie. no dispclk required)
+we also need adjust the logic that clamps it for the actual request
+to PMFW.
+
+Reviewed-by: Gabe Teeger <gabe.teeger@amd.com>
+Reviewed-by: Leo Chen <leo.chen@amd.com>
+Reviewed-by: Syed Hassan <syed.hassan@amd.com>
+Signed-off-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: Roman Li <roman.li@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c | 1 +
- 1 file changed, 1 insertion(+)
+ .../amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c    | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-index 99d2d3092ea54..3fd8da5dc761e 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-@@ -2772,6 +2772,7 @@ int smu_get_power_limit(void *handle,
- 			switch (amdgpu_ip_version(adev, MP1_HWIP, 0)) {
- 			case IP_VERSION(13, 0, 2):
- 			case IP_VERSION(13, 0, 6):
-+			case IP_VERSION(13, 0, 12):
- 			case IP_VERSION(13, 0, 14):
- 			case IP_VERSION(11, 0, 7):
- 			case IP_VERSION(11, 0, 11):
+diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
+index 7d0d8852ce8d2..a4ac601a30c35 100644
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
+@@ -452,14 +452,19 @@ void dcn35_update_clocks(struct clk_mgr *clk_mgr_base,
+ 		update_dppclk = true;
+ 	}
+ 
+-	if (should_set_clock(safe_to_lower, new_clocks->dispclk_khz, clk_mgr_base->clks.dispclk_khz)) {
++	if (should_set_clock(safe_to_lower, new_clocks->dispclk_khz, clk_mgr_base->clks.dispclk_khz) &&
++	    (new_clocks->dispclk_khz > 0 || (safe_to_lower && display_count == 0))) {
++		int requested_dispclk_khz = new_clocks->dispclk_khz;
++
+ 		dcn35_disable_otg_wa(clk_mgr_base, context, safe_to_lower, true);
+ 
+-		if (dc->debug.min_disp_clk_khz > 0 && new_clocks->dispclk_khz < dc->debug.min_disp_clk_khz)
+-			new_clocks->dispclk_khz = dc->debug.min_disp_clk_khz;
++		/* Clamp the requested clock to PMFW based on their limit. */
++		if (dc->debug.min_disp_clk_khz > 0 && requested_dispclk_khz < dc->debug.min_disp_clk_khz)
++			requested_dispclk_khz = dc->debug.min_disp_clk_khz;
+ 
++		dcn35_smu_set_dispclk(clk_mgr, requested_dispclk_khz);
+ 		clk_mgr_base->clks.dispclk_khz = new_clocks->dispclk_khz;
+-		dcn35_smu_set_dispclk(clk_mgr, clk_mgr_base->clks.dispclk_khz);
++
+ 		dcn35_disable_otg_wa(clk_mgr_base, context, safe_to_lower, false);
+ 
+ 		update_dispclk = true;
 -- 
 2.39.5
 
