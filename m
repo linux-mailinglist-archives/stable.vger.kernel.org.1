@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-141649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AD55AAB531
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:24:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 099D9AAB53E
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:25:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C21E9167B69
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:20:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D743F1BC4F43
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:21:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DC553A8847;
-	Tue,  6 May 2025 00:45:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2FA2496E8E;
+	Tue,  6 May 2025 00:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i9MYIkFK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YUa9A7pA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 135752E688B;
-	Mon,  5 May 2025 23:17:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26C412F5F84;
+	Mon,  5 May 2025 23:17:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487044; cv=none; b=R0tWpSo1RCZbpWQN8f5voUy0wZSfleSQhSv461OgmBuL6SJO6Bpf2YcVrPpXJFY3yys+N9S6VhuoN7/X1rQY54XUgxC0M7rHUNcxeXZw+0tder/HMFs6xq7cZyDx7a6xkK9NvC7E7hUrcj/z5OyyK+1kdjx26Obk1co0M7MmHR4=
+	t=1746487048; cv=none; b=qYkDx3Ynk+yRrnV0pkivpIKEwoxc9LUlAN79Tx1+axhEkdeiZ6lzwYHIykly0Tq+pWVMZcKip4V0ys5Gp1mtCYH+42A4ysG6Aj65kMpiYwle7kqkqY3GvZdO/6mppgWYvgEsmtjCTp3nL67N9c44RfaygFwbTG8kZBofN488DJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487044; c=relaxed/simple;
-	bh=EDmeW1Odctp79+4oJ8K+oDAGd4UCmE1KWx5Rr2il8sM=;
+	s=arc-20240116; t=1746487048; c=relaxed/simple;
+	bh=j5hfbKrkbWz+lyH5sXr3XwlAnquxKR9yS27cBjvRvOI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Pxl4y9MNApIW39j2gzPYd6CiBXHYXV6oBibKKSuifEBNafrJGtIzuyGukdvoD7TTExhqqVYl6gQQiASirQ+vUMBeLTRQ5b4y9KTVr5Oz/c/uamLLhbtfKXjAl+aSrDrJLAnGtR0TbZdp8OiGIr4HPUHxSUi8/s4TBPotFUB3YXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i9MYIkFK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79F2EC4CEF1;
-	Mon,  5 May 2025 23:17:21 +0000 (UTC)
+	 MIME-Version; b=VWy4N6b6J5gjaXjnfK7AY522M9mtkXojMvrLIk/tVWepUFez8zof+SqBzR1P3msrwgWEU9e1ULIkoApT6hRdOxyrXOY8veDFGFYBULaVSJYBGp5UziXId1fwpOXOAWlgEZ4bjzt0Ljd74lL4vUIk6Oi4fPwpyzSyOdkvLTmrJW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YUa9A7pA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25E50C4CEEF;
+	Mon,  5 May 2025 23:17:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487042;
-	bh=EDmeW1Odctp79+4oJ8K+oDAGd4UCmE1KWx5Rr2il8sM=;
+	s=k20201202; t=1746487048;
+	bh=j5hfbKrkbWz+lyH5sXr3XwlAnquxKR9yS27cBjvRvOI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i9MYIkFKPFxiQAOtLyIZsBfwfpS1FOizp6+eBsuxJwBzcDMCbGKXWVkspueNn0SuI
-	 qU8g6qrTHHmE6br0/PcuD09gxABxKvUDmm4+HcYA3vpB8KWDaZUh9rK4HP+2ALOJ+K
-	 +0EfRRx+q3NW67xdiRetr81iS9fZRBNqSnSzrGY6GTO4y/5PEHbNsGvYx1EvMrYc8o
-	 40M5R+gi6T7513lj9t+oo8x2H8rwvVSdTIVTBm5MrCbDXNyyGpJzN2RZV39L0h/Di9
-	 U8YjzgQCvY1l5xPQcqk8hkXnhcKKWqpmBhPn2Ob1lBxKlY0v+CD/CyGowFFfJu9wd7
-	 YXoBBptGRgikw==
+	b=YUa9A7pA8IxE6d0BR5I4MYQLqAORuUfviy4kuxt0waqx4FlH4bZ8/UTLvuq485dOW
+	 XUQSj7EeKuqe1EqVG73AUtfeQYcDN5m5NRahX04ZOQ1c3+/xWcP0Z4SJPVqIsgTpEO
+	 x9hxgQyw+MiR7ISSPfv2Ny+e6N/h52cmpkWm7YKPIt4OwEyLRA+ryssBQ1jKNDx89D
+	 4bP/dx+/xZCE9afClo/tkYI/omBj+eVR4NHr4hjQh8ycCsYfoShvS19qkgtaHFM7Ga
+	 +M2rj9ce6dL7GXcqDcceDKxTtuvNGo3qQu/J3rjkhk6h4wzVZ9oACIwN+LdDqLRE+E
+	 UIyxtNs7EO7Jg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alexei Lazar <alazar@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	saeedm@nvidia.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 123/153] net/mlx5: Extend Ethtool loopback selftest to support non-linear SKB
-Date: Mon,  5 May 2025 19:12:50 -0400
-Message-Id: <20250505231320.2695319-123-sashal@kernel.org>
+	johannes@sipsolutions.net,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 126/153] wifi: mac80211: don't unconditionally call drv_mgd_complete_tx()
+Date: Mon,  5 May 2025 19:12:53 -0400
+Message-Id: <20250505231320.2695319-126-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
 References: <20250505231320.2695319-1-sashal@kernel.org>
@@ -73,39 +67,37 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.181
 Content-Transfer-Encoding: 8bit
 
-From: Alexei Lazar <alazar@nvidia.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 95b9606b15bb3ce1198d28d2393dd0e1f0a5f3e9 ]
+[ Upstream commit 1798271b3604b902d45033ec569f2bf77e94ecc2 ]
 
-Current loopback test validation ignores non-linear SKB case in
-the SKB access, which can lead to failures in scenarios such as
-when HW GRO is enabled.
-Linearize the SKB so both cases will be handled.
+We might not have called drv_mgd_prepare_tx(), so only call
+drv_mgd_complete_tx() under the same conditions.
 
-Signed-off-by: Alexei Lazar <alazar@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20250209101716.112774-15-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250205110958.e091fc39a351.Ie6a3cdca070612a0aa4b3c6914ab9ed602d1f456@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_selftest.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/mac80211/mlme.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_selftest.c b/drivers/net/ethernet/mellanox/mlx5/core/en_selftest.c
-index ce8ab1f018769..c380340b81665 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_selftest.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_selftest.c
-@@ -188,6 +188,9 @@ mlx5e_test_loopback_validate(struct sk_buff *skb,
- 	struct udphdr *udph;
- 	struct iphdr *iph;
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index b71d3a03032e8..11d9bce1a4390 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -2336,7 +2336,8 @@ static void ieee80211_set_disassoc(struct ieee80211_sub_if_data *sdata,
+ 	if (tx)
+ 		ieee80211_flush_queues(local, sdata, false);
  
-+	if (skb_linearize(skb))
-+		goto out;
-+
- 	/* We are only going to peek, no need to clone the SKB */
- 	if (MLX5E_TEST_PKT_SIZE - ETH_HLEN > skb_headlen(skb))
- 		goto out;
+-	drv_mgd_complete_tx(sdata->local, sdata, &info);
++	if (tx || frame_buf)
++		drv_mgd_complete_tx(sdata->local, sdata, &info);
+ 
+ 	/* clear bssid only after building the needed mgmt frames */
+ 	eth_zero_addr(ifmgd->bssid);
 -- 
 2.39.5
 
