@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-141310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56B3AAAB25D
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:19:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74439AAB259
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:19:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 048FE18868E3
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:17:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72460188DB12
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:17:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A029379D65;
-	Tue,  6 May 2025 00:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2E752D4B6E;
+	Tue,  6 May 2025 00:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gYHN5xya"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OqCES1vf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA8AA278749;
-	Mon,  5 May 2025 22:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59D62278747;
+	Mon,  5 May 2025 22:55:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485737; cv=none; b=pFnt8fq7MCTOXMmWVWwc8/UiLRGHFQ0OdTH5b2xj+PFp3zF3PoJ9LIreCjA6hpTIVz/G5xC0+o5H17GkT1MbGbF72dR53pDi2usOddpkRsN3qtiO9swRwhcG3cRn0uXGiETgumbZj5zl3tftQKyFh/pf09gR3CFJbd1elTn7bkg=
+	t=1746485739; cv=none; b=uCIOh68gDmwRAKoLFA0ZbCau4kFxIb8HyylWhkB9taCU051tvtJPgMy2dmUoODjtPyvv0lkduKHcVdrAPURHm04BkRglCEMrsibvePhE5Fly5OM7/FJR++H7701pfftcMwVEUCiBMKPIYZh0obEUyXBHvgmYE8zg6OhthRelFAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485737; c=relaxed/simple;
-	bh=wFnYdOunZhmodXv3eiBhJ+0VqjL0WJ0/4/lSEKQo/eI=;
+	s=arc-20240116; t=1746485739; c=relaxed/simple;
+	bh=auIwF0BsRvnVi0C+zFWokWEcplIdWkcrNlydNQ+w1hI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SxLG4tCczFjunYqpRxF8L3qd+yfHtBo9QavLaEpiWRyc0EqCgMBp7/VVnazfACaTe9RXbLlMpnBiinqMvyXD/IdEhwjvZ77we0DxUAmYfOtYUyfjyC6AqBLvSEhQUJw8YXZzbhPbJ9RssZyasXudgAYrnZMbtLCyzT/RAOXesAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gYHN5xya; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B142AC4CEE4;
-	Mon,  5 May 2025 22:55:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=m+FEzs56/maVOC5zdYWHIiKkC/339d7DIXKWqWlm2dFOA24MzzXOx0t7vl+D5FPGHIMFq5V3HfCo5seENq+/JCkAzT+yYwwY6N/riHFJLe2lS6DWBHOQYC7GmI1YsVifNWbBCfDpvJsODfpHj3giq32M0BIfLh5zkTjnvDmfocI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OqCES1vf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0191EC4CEEE;
+	Mon,  5 May 2025 22:55:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485737;
-	bh=wFnYdOunZhmodXv3eiBhJ+0VqjL0WJ0/4/lSEKQo/eI=;
+	s=k20201202; t=1746485738;
+	bh=auIwF0BsRvnVi0C+zFWokWEcplIdWkcrNlydNQ+w1hI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gYHN5xyamDqyq6P656SGbAz3f8l+VqlvsZeoSkmWTojsNJlzgYSnXdfonfdDe+VLt
-	 w7KA2I5GFQMl0Ug9+eRSD++R815aHGVQaSPMASrWACmwEiOeqqgjsTplpUPGjAqjcN
-	 ocdHaGCJIdpdSZdV3V2eaOFd7TNh8+ygDFMtcFD4kHFDVi84yibxtnpXbm03eILFld
-	 IToxo8B/jQ1EySxOulH3+OjcA8yMm08pUhIYJjZ8jgXqx5sumgwLoOdkGrA/qFWgmC
-	 ceSYhejxh6SUd95iL5WKkLe24m41FvwxTnM2rALLeBG6ihsF06R0cgiCBhY09vgMBB
-	 e3Z5yv8saEiGQ==
+	b=OqCES1vfYjdCVcVKg+9N1ifYL3IRrMMzjSm/D181Ml00LeY+ij5Hxq6fncFfr862E
+	 FQNEFP6mC26HVkbmwdfvcYRTUGOtXfIngG/icHrbomOMzHhL0AnXZMMFJonBwfG3Xz
+	 vbJ75/2sn3JU0CPbdMElA3+P/KgyGsm6V68T77aB/ROHsXsapkZaVCYyKNlp95q+VA
+	 xNMymKm1Ph1R6zgzeuRvqQlI3YiSL/W1EZNp/AuW+MaHaAQjE/Cqdg/cOHTSjumdou
+	 nIbm0s5nuT9OBqcjSguytbSsyvZTk0CXggU3+Wq/Igy78eZ+js0oqnIknpeYtkIps0
+	 0/mzbyWf/nlqw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Chung Chung <cchung@redhat.com>,
-	Matthew Sakai <msakai@redhat.com>,
+Cc: Matthew Sakai <msakai@redhat.com>,
+	John Garry <john.g.garry@oracle.com>,
 	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux@treblig.org,
 	dm-devel@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.12 453/486] dm vdo indexer: prevent unterminated string warning
-Date: Mon,  5 May 2025 18:38:49 -0400
-Message-Id: <20250505223922.2682012-453-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 454/486] dm vdo: use a short static string for thread name prefix
+Date: Mon,  5 May 2025 18:38:50 -0400
+Message-Id: <20250505223922.2682012-454-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -68,48 +67,71 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Chung Chung <cchung@redhat.com>
+From: Matthew Sakai <msakai@redhat.com>
 
-[ Upstream commit f4e99b846c90163d350c69d6581ac38dd5818eb8 ]
+[ Upstream commit 3280c9313c9adce01550cc9f00edfb1dc7c744da ]
 
-Fix array initialization that triggers a warning:
+Also remove MODULE_NAME and a BUG_ON check, both unneeded.
 
-error: initializer-string for array of ‘unsigned char’ is too long
- [-Werror=unterminated-string-initialization]
+This fixes a warning about string truncation in snprintf that
+will never happen in practice:
 
-Signed-off-by: Chung Chung <cchung@redhat.com>
+drivers/md/dm-vdo/vdo.c: In function ‘vdo_make’:
+drivers/md/dm-vdo/vdo.c:564:5: error: ‘%s’ directive output may be truncated writing up to 55 bytes into a region of size 16 [-Werror=format-truncation=]
+    "%s%u", MODULE_NAME, instance);
+     ^~
+drivers/md/dm-vdo/vdo.c:563:2: note: ‘snprintf’ output between 2 and 66 bytes into a destination of size 16
+  snprintf(vdo->thread_name_prefix, sizeof(vdo->thread_name_prefix),
+  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    "%s%u", MODULE_NAME, instance);
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Reported-by: John Garry <john.g.garry@oracle.com>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
 Signed-off-by: Matthew Sakai <msakai@redhat.com>
 Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-vdo/indexer/index-layout.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/md/dm-vdo/vdo.c | 11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
 
-diff --git a/drivers/md/dm-vdo/indexer/index-layout.c b/drivers/md/dm-vdo/indexer/index-layout.c
-index 627adc24af3b7..053b7845d1f34 100644
---- a/drivers/md/dm-vdo/indexer/index-layout.c
-+++ b/drivers/md/dm-vdo/indexer/index-layout.c
-@@ -54,7 +54,6 @@
-  * Each save also has a unique nonce.
-  */
+diff --git a/drivers/md/dm-vdo/vdo.c b/drivers/md/dm-vdo/vdo.c
+index fff847767755a..b897f88250d2a 100644
+--- a/drivers/md/dm-vdo/vdo.c
++++ b/drivers/md/dm-vdo/vdo.c
+@@ -31,9 +31,7 @@
  
--#define MAGIC_SIZE 32
- #define NONCE_INFO_SIZE 32
- #define MAX_SAVES 2
+ #include <linux/completion.h>
+ #include <linux/device-mapper.h>
+-#include <linux/kernel.h>
+ #include <linux/lz4.h>
+-#include <linux/module.h>
+ #include <linux/mutex.h>
+ #include <linux/spinlock.h>
+ #include <linux/types.h>
+@@ -142,12 +140,6 @@ static void finish_vdo_request_queue(void *ptr)
+ 	vdo_unregister_allocating_thread();
+ }
  
-@@ -98,9 +97,11 @@ enum region_type {
- #define SUPER_VERSION_CURRENT 3
- #define SUPER_VERSION_MAXIMUM 7
+-#ifdef MODULE
+-#define MODULE_NAME THIS_MODULE->name
+-#else
+-#define MODULE_NAME "dm-vdo"
+-#endif  /* MODULE */
+-
+ static const struct vdo_work_queue_type default_queue_type = {
+ 	.start = start_vdo_request_queue,
+ 	.finish = finish_vdo_request_queue,
+@@ -559,8 +551,7 @@ int vdo_make(unsigned int instance, struct device_config *config, char **reason,
+ 	*vdo_ptr = vdo;
  
--static const u8 LAYOUT_MAGIC[MAGIC_SIZE] = "*ALBIREO*SINGLE*FILE*LAYOUT*001*";
-+static const u8 LAYOUT_MAGIC[] = "*ALBIREO*SINGLE*FILE*LAYOUT*001*";
- static const u64 REGION_MAGIC = 0x416c6252676e3031; /* 'AlbRgn01' */
- 
-+#define MAGIC_SIZE (sizeof(LAYOUT_MAGIC) - 1)
-+
- struct region_header {
- 	u64 magic;
- 	u64 region_blocks;
+ 	snprintf(vdo->thread_name_prefix, sizeof(vdo->thread_name_prefix),
+-		 "%s%u", MODULE_NAME, instance);
+-	BUG_ON(vdo->thread_name_prefix[0] == '\0');
++		 "vdo%u", instance);
+ 	result = vdo_allocate(vdo->thread_config.thread_count,
+ 			      struct vdo_thread, __func__, &vdo->threads);
+ 	if (result != VDO_SUCCESS) {
 -- 
 2.39.5
 
