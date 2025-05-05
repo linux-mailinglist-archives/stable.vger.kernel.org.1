@@ -1,66 +1,67 @@
-Return-Path: <stable+bounces-140350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49450AAA7EF
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:44:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01BD1AAA7CD
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:41:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B13D987EAE
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:39:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0175188D1F3
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:39:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D5DC33FD95;
-	Mon,  5 May 2025 22:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 378EE340A8E;
+	Mon,  5 May 2025 22:38:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VanjSCLR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="apghB54t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB7FE33FD8F;
-	Mon,  5 May 2025 22:37:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E91F1340A87;
+	Mon,  5 May 2025 22:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484677; cv=none; b=Mjly9cYBF0QX4kaDxY5LJ2+62T6mIQOX3aC+valFWkCHLIWdDmO1fYgYXDRdelc7dB7SCRzrUGZWQ3Jk2Tk94491kj5om3vWNKeUzC7Op1ydhhFVb1aEvPKxZRIlFiTb4wWldOmi47x4GcM95aGQzFfqmp/3THzjDmKE17GstLs=
+	t=1746484680; cv=none; b=tOs6UUPlOyyyBwLx6ss6Ze+JUUODLeVJiUj3hyb+HiYijEZA7LZoJ01Kj7t7J5s5FlvstSGflydWvM6VhaVo8w2Umq6LUgEuBSEux/ev1MvgRJbpRH701HakyX0IB44mI8P+CIDURD8OnR+uK/FdrZDLf7ndb9Di/241Fxj16vA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484677; c=relaxed/simple;
-	bh=HjNB+8AM96Z+ZemBOMVtBTLcrRMw83gjifHftvtdS8E=;
+	s=arc-20240116; t=1746484680; c=relaxed/simple;
+	bh=T+J2cNi2QZ0+RjAyOsVc7K/5Jt7jZTWdQRphP4bBNcM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=M4cckBiGe4AXOlNwKUoa6vXYsGYq67AAjt7Ptz41oTuHsBfCOPSscwMGqdt6GrG5tikPN+PJNKfH1GueKbEwZ73yNeb51825mIeIBYrVPmy+QtXb/X6H9AYeMg89+bPyS0f5uD76Zc4Rnanc1wE82J7qY5190eroCAo2pCtu5uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VanjSCLR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D308DC4CEE4;
-	Mon,  5 May 2025 22:37:54 +0000 (UTC)
+	 MIME-Version; b=CXKHMUyCb2egC1W2xIpXaPOQ8E81MRGvDJVhRtMifrBhHstuXpbI8wWN0wvLDzvs+9KPsdZqOBMQEWn4pI+45NEiVIcoWoJAk2eo/71hKbhR4HiQI0UpjvqMhZofoaD6FXKPc02AUYi95lc0f/sVELacdHdafssPzOo4twVuzoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=apghB54t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACDB0C4CEE4;
+	Mon,  5 May 2025 22:37:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484676;
-	bh=HjNB+8AM96Z+ZemBOMVtBTLcrRMw83gjifHftvtdS8E=;
+	s=k20201202; t=1746484679;
+	bh=T+J2cNi2QZ0+RjAyOsVc7K/5Jt7jZTWdQRphP4bBNcM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VanjSCLR2vttdDMLXCYhWYCUoSciQwMnwUCQq04zHXVcrR0N6CleY2p+/7zyRkTcP
-	 x7hIME94DFOfFvIn8pGlMHbObL0ml3nJSjYIlJLbBmxyJgJIoquC5UjyX555dqkXTz
-	 P8pZhZFy3ta4pwNbm7leBR2MbE3RggVvVSq47LsKf/b8FKMWIq1kyhAf1XCpp5oIsG
-	 nvHX6RAU9BuYhwIov2qnftdXNQUQWTbEdOhoG2g8j7uuPC6TCsv/1nuFkLfVN1jpTN
-	 FpA/xNyOji4YybkwtwNOAoLkItZ/DCo7xwofBsqxcROgJXbV3B64UuccIlWXaMkpSH
-	 829/CgQulpHsQ==
+	b=apghB54tCpEqsKoGoUuBVFlLQ1Wd97K2+xBEpyLDefrC4rAs7ubB2Vwlnc0JLi/e/
+	 dtr9HAXMLz73S5SZjYYzFv/CKlnRqGf4qebsIAl7LwPG3GftsyvMY2gf1AuClLEU0b
+	 wwmLwd+EO93Y+ad7PeE415mvWMAi/Z9aVrfP3tCxlZvmeui5Q5C9SS3XGNFScZRSeA
+	 9BELGaWGOVgKI+G4rSSH4lFCXepW3ILxE5hSWwjOiJe9dS/FP4glvRJOG1MRQhj9/3
+	 W6TX/MeGcQQde+FZffsiPeWl7CiGUFMi/yUEmEWrHfxceB/6GEztbWeLiOrOpE+PXQ
+	 pooKfKkQMoTsQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Olivier Moysan <olivier.moysan@foss.st.com>,
-	Mark Brown <broonie@kernel.org>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	perex@perex.cz,
-	tiwai@suse.com,
-	lgirdwood@gmail.com,
+	andrzej.hajda@intel.com,
+	neil.armstrong@linaro.org,
+	rfoss@kernel.org,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
 	lumag@kernel.org,
-	christianshewitt@gmail.com,
-	kuninori.morimoto.gx@renesas.com,
-	herve.codina@bootlin.com,
-	jonas@kwiboo.se,
-	krzysztof.kozlowski@linaro.org,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 601/642] ASoC: hdmi-codec: allow to refine formats actually supported
-Date: Mon,  5 May 2025 18:13:37 -0400
-Message-Id: <20250505221419.2672473-601-sashal@kernel.org>
+	stefan.ekenberg@axis.com,
+	broonie@kernel.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.14 602/642] drm: bridge: adv7511: fill stream capabilities
+Date: Mon,  5 May 2025 18:13:38 -0400
+Message-Id: <20250505221419.2672473-602-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -77,50 +78,35 @@ Content-Transfer-Encoding: 8bit
 
 From: Olivier Moysan <olivier.moysan@foss.st.com>
 
-[ Upstream commit 038f79638e0676359e44c5db458d52994f9b5ac1 ]
+[ Upstream commit c852646f12d4cd5b4f19eeec2976c5d98c0382f8 ]
 
-Currently the hdmi-codec driver registers all the formats that are
-allowed on the I2S bus. Add i2s_formats field to codec data, to allow
-the hdmi codec client to refine the list of the audio I2S formats
-actually supported.
+Set no_i2s_capture and no_spdif_capture flags in hdmi_codec_pdata structure
+to report that the ADV7511 HDMI bridge does not support i2s or spdif audio
+capture.
 
 Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
-Acked-by: Mark Brown <broonie@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250108170356.413063-3-olivier.moysan@foss.st.com
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250108170356.413063-2-olivier.moysan@foss.st.com
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/sound/hdmi-codec.h    | 1 +
- sound/soc/codecs/hdmi-codec.c | 4 ++++
- 2 files changed, 5 insertions(+)
+ drivers/gpu/drm/bridge/adv7511/adv7511_audio.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/include/sound/hdmi-codec.h b/include/sound/hdmi-codec.h
-index b220072cfa1ba..273f4c36fad98 100644
---- a/include/sound/hdmi-codec.h
-+++ b/include/sound/hdmi-codec.h
-@@ -120,6 +120,7 @@ struct hdmi_codec_ops {
- /* HDMI codec initalization data */
- struct hdmi_codec_pdata {
- 	const struct hdmi_codec_ops *ops;
-+	u64 i2s_formats;
- 	uint i2s:1;
- 	uint no_i2s_playback:1;
- 	uint no_i2s_capture:1;
-diff --git a/sound/soc/codecs/hdmi-codec.c b/sound/soc/codecs/hdmi-codec.c
-index 69f98975e14ae..5c47aa0551c94 100644
---- a/sound/soc/codecs/hdmi-codec.c
-+++ b/sound/soc/codecs/hdmi-codec.c
-@@ -1077,6 +1077,10 @@ static int hdmi_codec_probe(struct platform_device *pdev)
- 	if (hcd->i2s) {
- 		daidrv[i] = hdmi_i2s_dai;
- 		daidrv[i].playback.channels_max = hcd->max_i2s_channels;
-+		if (hcd->i2s_formats) {
-+			daidrv[i].playback.formats = hcd->i2s_formats;
-+			daidrv[i].capture.formats = hcd->i2s_formats;
-+		}
- 		if (hcd->no_i2s_playback)
- 			memset(&daidrv[i].playback, 0,
- 			       sizeof(daidrv[i].playback));
+diff --git a/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c b/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
+index 657bc3dd18dff..98030500a978a 100644
+--- a/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
++++ b/drivers/gpu/drm/bridge/adv7511/adv7511_audio.c
+@@ -245,7 +245,9 @@ static const struct hdmi_codec_pdata codec_data = {
+ 	.ops = &adv7511_codec_ops,
+ 	.max_i2s_channels = 2,
+ 	.i2s = 1,
++	.no_i2s_capture = 1,
+ 	.spdif = 1,
++	.no_spdif_capture = 1,
+ };
+ 
+ int adv7511_audio_init(struct device *dev, struct adv7511 *adv7511)
 -- 
 2.39.5
 
