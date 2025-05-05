@@ -1,68 +1,71 @@
-Return-Path: <stable+bounces-141232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5009AAB1AF
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:05:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9E9AAAB19D
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:04:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B91AC1BC44C4
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:04:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B3FC7B7480
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:02:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D1524182DA;
-	Tue,  6 May 2025 00:27:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 554202D26B2;
+	Tue,  6 May 2025 00:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LlroInC5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EVlHzqOF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 357E82D3A72;
-	Mon,  5 May 2025 22:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B1162DA545;
+	Mon,  5 May 2025 22:52:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485562; cv=none; b=sLTj6Eudtm6l3M4mejiIak7zDnfQ4Boq/KEVwLg+S3JWlQzZFlsoC8Ty2EyqnxdmsQLE2NRV7u3KSbaKfy/SPlb1bpTsElqlQUMKoik2Yf9RX2UsvMg6WPehK2ED0nJZYeTdIOhK3DNhATHrTIvkX0dXZS6ILqzFIpGBpRvNJNM=
+	t=1746485573; cv=none; b=ph037MFun5XUpor9t+PFMLNYuRjlzTrmfAowpQgH2vx181Me+uMeZdONCirWJy28LYqVwxJ7q4CPRoGy8LSzVz/orozvWmZM5mNN9JNrHda2Ajccx9Q7gxLIsk3NBIKne+v8FkZebs6nLvHVdyUBMl4yc/ypv2Ced1J6JeehqPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485562; c=relaxed/simple;
-	bh=II0+gCSOLa6r7EPGRSZL2qEFTLnBnuZXoGZUfo9fuTM=;
+	s=arc-20240116; t=1746485573; c=relaxed/simple;
+	bh=DG2CcR+hXoZUDxJmebsLWyCXU0Rqe4Z3prDsSICLdvc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=LK9ybXUjyjzPkxlBp4NoJqVcoPJhaRE4wWbpB1xx158303mJ0LtIokkiYCAXXuFjJWATrdSFCUMAl1KyWMAoiAOHOwZMDCQAf8Asxrwu7TssjIYgJqudJkZmC7FbfYn912sWBGg4i1kpiQKV0bL7kKsRBu3Dv3YxER0SPBw9h5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LlroInC5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42868C4CEED;
-	Mon,  5 May 2025 22:52:40 +0000 (UTC)
+	 MIME-Version; b=ixMmG5W4A5kxZrAwOTPzvODBHaWJQ9g3OJcNRB1SMtXxi5dlYTLqXxiFtzNwfVc6Rmx4MSOxYrHmV7EAaLsoxNtz5HgTemSxPTN/fwU3u5zOAb7MD6YuJ5lKFGObRVFBZUty1oDLNeAlEet1NKnpzdtPT9jnFbiuF4CBJWVPxmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EVlHzqOF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5919EC4CEED;
+	Mon,  5 May 2025 22:52:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485562;
-	bh=II0+gCSOLa6r7EPGRSZL2qEFTLnBnuZXoGZUfo9fuTM=;
+	s=k20201202; t=1746485573;
+	bh=DG2CcR+hXoZUDxJmebsLWyCXU0Rqe4Z3prDsSICLdvc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LlroInC5WsNlndcM5WxUh0xA02gSwCVK1a/Z2TzXVRp4TfMFnbt6b/Hu0C9gTFKXN
-	 CUBThKoLK9pJDuvZDKDt701g7PSZoZNdJpf5tv3FDRnYylRQVaWPWyS08ri5C4g23e
-	 kzz4D3r5k3L30NNX7gzPW6607/4sytx9GfvmpByOHhTA+81+zKbywkj6qYmSTrThy0
-	 YH56ZJakL3HkIrFAjF42Nm7Kpma7qCC7FBwc7+jBss5SfNtRDmdsYHYaFqM+KCrrWr
-	 m/TMk5V8ziHuzJ62wLER52K4HIPfMNe0zM2utq/6ywxISFzVEbvL2Bo4seX8II7CWs
-	 97OTT0H9TDAYw==
+	b=EVlHzqOFamLTtmzEYgHKXcGPmFbida3leCLuX8pqnA/uYh2Rx0VZeP5sxWlZeF8uI
+	 0K5ip+BCcudC0BxX3DzD3thgh3Mz05jpZQp3ZuJ2TAkxMzzqbxnBho6QAX7YDX1mwd
+	 m7Ztkyq74YWmbl/Yrj50F66n27Mx16S28BoUkLWmBZqnJMo1uvvgab3E8qyy/UnhAa
+	 J7nNxWBiD0LUFhXU6RNqPpTmZ9J8pm5ywENhKsPajJ6xURq5zHeyljNxgyzX60uLJX
+	 5gcT/SQ3Jz7DUZ/hvfbrYaD8/FAa0q3J1qVEtsiHBS0bag6cwwiffYQVneOyiT7nAm
+	 kRwXLl3KHAOyw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: George Shen <george.shen@amd.com>,
-	Michael Strauss <michael.strauss@amd.com>,
-	Wenjing Liu <wenjing.liu@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
+Cc: Austin Zheng <Austin.Zheng@amd.com>,
+	Dillon Varone <dillon.varone@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
+	austin.zheng@amd.com,
+	jun.lei@amd.com,
 	harry.wentland@amd.com,
 	sunpeng.li@amd.com,
 	christian.koenig@amd.com,
 	airlied@gmail.com,
 	simona@ffwll.ch,
-	meenakshikumar.somasundaram@amd.com,
-	PeiChen.Huang@amd.com,
+	siqueira@igalia.com,
+	alex.hung@amd.com,
+	colin.i.king@gmail.com,
+	aurabindo.pillai@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.12 369/486] drm/amd/display: Update CR AUX RD interval interpretation
-Date: Mon,  5 May 2025 18:37:25 -0400
-Message-Id: <20250505223922.2682012-369-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 372/486] drm/amd/display: Use Nominal vBlank If Provided Instead Of Capping It
+Date: Mon,  5 May 2025 18:37:28 -0400
+Message-Id: <20250505223922.2682012-372-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -77,69 +80,49 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: George Shen <george.shen@amd.com>
+From: Austin Zheng <Austin.Zheng@amd.com>
 
-[ Upstream commit 6a7fde433231c18164c117592d3e18ced648ad58 ]
+[ Upstream commit 41df56b1fc24cc36fffb10e437385b3a49fbb5e2 ]
 
-[Why]
-DP spec updated to have the CR AUX RD interval match the EQ AUX RD
-interval interpretation of DPCD 0000Eh/0220Eh for 8b/10b non-LTTPR mode
-and LTTPR transparent mode cases.
+[Why/How]
+vBlank used to determine the max vStartup is based on the smallest between
+the vblank provided by the timing and vblank in ip_caps.
+Extra vblank time is not considered if the vblank provided by the timing ends
+up being higher than what's defined by the ip_caps
 
-[How]
-Update interpretation of DPCD 0000Eh/0220Eh for CR AUX RD interval
-during 8b/10b link training.
+Use 1 less than the vblank size in case the timing is interlaced
+so vstartup will always be less than vblank_nom.
 
-Reviewed-by: Michael Strauss <michael.strauss@amd.com>
-Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
-Signed-off-by: George Shen <george.shen@amd.com>
-Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
+Reviewed-by: Dillon Varone <dillon.varone@amd.com>
+Signed-off-by: Austin Zheng <Austin.Zheng@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../display/dc/link/protocols/link_dp_training_8b_10b.c    | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ .../dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c       | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training_8b_10b.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training_8b_10b.c
-index 3bdce32a85e3c..ae95ec48e5721 100644
---- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training_8b_10b.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_training_8b_10b.c
-@@ -36,7 +36,8 @@
- 	link->ctx->logger
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c
+index e2a3764d9d181..0090b7bc232bf 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/src/dml2_core/dml2_core_dcn4_calcs.c
+@@ -3630,13 +3630,12 @@ static unsigned int CalculateMaxVStartup(
+ 	double line_time_us = (double)timing->h_total / ((double)timing->pixel_clock_khz / 1000);
+ 	unsigned int vblank_actual = timing->v_total - timing->v_active;
+ 	unsigned int vblank_nom_default_in_line = (unsigned int)math_floor2((double)vblank_nom_default_us / line_time_us, 1.0);
+-	unsigned int vblank_nom_input = (unsigned int)math_min2(timing->vblank_nom, vblank_nom_default_in_line);
+-	unsigned int vblank_avail = (vblank_nom_input == 0) ? vblank_nom_default_in_line : vblank_nom_input;
++	unsigned int vblank_avail = (timing->vblank_nom == 0) ? vblank_nom_default_in_line : (unsigned int)timing->vblank_nom;
  
- static int32_t get_cr_training_aux_rd_interval(struct dc_link *link,
--		const struct dc_link_settings *link_settings)
-+		const struct dc_link_settings *link_settings,
-+		enum lttpr_mode lttpr_mode)
- {
- 	union training_aux_rd_interval training_rd_interval;
- 	uint32_t wait_in_micro_secs = 100;
-@@ -49,6 +50,8 @@ static int32_t get_cr_training_aux_rd_interval(struct dc_link *link,
- 				DP_TRAINING_AUX_RD_INTERVAL,
- 				(uint8_t *)&training_rd_interval,
- 				sizeof(training_rd_interval));
-+		if (lttpr_mode != LTTPR_MODE_NON_TRANSPARENT)
-+			wait_in_micro_secs = 400;
- 		if (training_rd_interval.bits.TRAINIG_AUX_RD_INTERVAL)
- 			wait_in_micro_secs = training_rd_interval.bits.TRAINIG_AUX_RD_INTERVAL * 4000;
- 	}
-@@ -110,7 +113,6 @@ void decide_8b_10b_training_settings(
- 	 */
- 	lt_settings->link_settings.link_spread = link->dp_ss_off ?
- 			LINK_SPREAD_DISABLED : LINK_SPREAD_05_DOWNSPREAD_30KHZ;
--	lt_settings->cr_pattern_time = get_cr_training_aux_rd_interval(link, link_setting);
- 	lt_settings->eq_pattern_time = get_eq_training_aux_rd_interval(link, link_setting);
- 	lt_settings->pattern_for_cr = decide_cr_training_pattern(link_setting);
- 	lt_settings->pattern_for_eq = decide_eq_training_pattern(link, link_setting);
-@@ -119,6 +121,7 @@ void decide_8b_10b_training_settings(
- 	lt_settings->disallow_per_lane_settings = true;
- 	lt_settings->always_match_dpcd_with_hw_lane_settings = true;
- 	lt_settings->lttpr_mode = dp_decide_8b_10b_lttpr_mode(link);
-+	lt_settings->cr_pattern_time = get_cr_training_aux_rd_interval(link, link_setting, lt_settings->lttpr_mode);
- 	dp_hw_to_dpcd_lane_settings(lt_settings, lt_settings->hw_lane_settings, lt_settings->dpcd_lane_settings);
- }
+ 	vblank_size = (unsigned int)math_min2(vblank_actual, vblank_avail);
  
+ 	if (timing->interlaced && !ptoi_supported)
+-		max_vstartup_lines = (unsigned int)(math_floor2(vblank_size / 2.0, 1.0));
++		max_vstartup_lines = (unsigned int)(math_floor2((vblank_size - 1) / 2.0, 1.0));
+ 	else
+ 		max_vstartup_lines = vblank_size - (unsigned int)math_max2(1.0, math_ceil2(write_back_delay_us / line_time_us, 1.0));
+ #ifdef __DML_VBA_DEBUG__
 -- 
 2.39.5
 
