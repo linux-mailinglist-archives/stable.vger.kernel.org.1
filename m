@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-141573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E20B4AAB4D5
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:16:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2550BAAB472
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:07:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6146A3AC256
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:06:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15CE67B4001
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:05:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 801E847ED6F;
-	Tue,  6 May 2025 00:42:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BA2829550A;
+	Tue,  6 May 2025 00:42:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JwwZf7P9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J+EbGQbH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D0D12F0BB5;
-	Mon,  5 May 2025 23:12:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DB4D2F1CE2;
+	Mon,  5 May 2025 23:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486759; cv=none; b=FNy8oWkQbIfMXJFzgSaNbxtyMVj+rA8Xojh46iFCwqSWUi/3jJX7bnGOZxgpVbO/9XfP0gptUsJo2Yj3GEEuz4R0k45GiyMqhjc2Tb0eRKvZamt0gBJm0OXTfRlTCBeTXg/9108rMGUSnv3I2K1PgKvTX8kGaTRpiy7CpnLQItM=
+	t=1746486767; cv=none; b=komFCKkTA2Lat7MxYwavRyxUlkyoiw+a/2bEubo0JQ8yt3KzLur+PgU89Ew3FWhX3yYH3PZcMmYlke6cGqsvHbWE+HRbkTVi5BvJxkobyLcHexckoBCkgcp50E/VP5lTvYQMwcx8rEPxqTVJN99V4sKRsIxljPf9dAUn0CWfwb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486759; c=relaxed/simple;
-	bh=2MhPMJolL3bzf0hpny7AO0Glle1RNAMi1eEnNaXcDZs=;
+	s=arc-20240116; t=1746486767; c=relaxed/simple;
+	bh=CJ7mdf4vRbTYoLfPVW/MpaXB5BFerskzFGtYZi0NiU4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=c8mpPRiy1SyLxd/gWEGivK21BkzAQsJD8Q87GcsfZ1nQba1eEWLQgymlK8MAqHqcIiAZbRiqRRoVKWt6Av1dgg8a9IBZSzp7aJrC/e1wJZ4aBBwpdSC1d/yojbXPjenBA1+FOYpkPmywDXUg60WCwndyivmZ6Kei+sA02pH3Hw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JwwZf7P9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F84CC4CEEE;
-	Mon,  5 May 2025 23:12:38 +0000 (UTC)
+	 MIME-Version; b=nH5zjy7cGwyGNiqUReh7ePlHcpBBrreo0KT80aZmiHmXtQ0BaHPZvm7a2yQUzmnvFZ72NBKLoHrn+DyNa9p6ApBRH77QuLwk1wS1y11e51YtiGh4BN9hwG+kUljU1WCZ56nwld0KzMDv74K5sHEAPT5yvcpf29DMT/kVQm9Io+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J+EbGQbH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85142C4CEE4;
+	Mon,  5 May 2025 23:12:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486759;
-	bh=2MhPMJolL3bzf0hpny7AO0Glle1RNAMi1eEnNaXcDZs=;
+	s=k20201202; t=1746486766;
+	bh=CJ7mdf4vRbTYoLfPVW/MpaXB5BFerskzFGtYZi0NiU4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JwwZf7P9smrhSyYQxigbdDOObpT/rDs4oTcKaU6yI/8OnE6WlD5CZxs/GgEmcC5M2
-	 Uyc0iSRV1bMlsfY251IUilzaaqI8otmgZMqyeZNMQEAEFVBzfCxpbzyg4cIPp2x1yO
-	 8vyhxzWoG+lBggIhMwc8A/jVNxqaEywl4IWLWkHXYijyrnZnDhsiBRgaoS8D9Zppv8
-	 V+35DrbEuAC91O8O4jak8TmMng0NBziIXjfJgU9f1uaXSaKrD4EjVALZJeV0+GTRff
-	 elY2+6I9kVhsu/MA4r6w3eKWDf9Pv/ak4juke4bvWDefOewltqQP7DlpHFjeS64de+
-	 phQfxev2wpi7Q==
+	b=J+EbGQbHZz6M+EevWUBBJ5uLAc52mFoXfJtxv7ziawoTlqSAl9+5nv9dtXC6U4gZY
+	 Chc2g2JGDndcKskBVXpfAzmh3GblCORKLM+j5w93oK0fH8DU+3d6ZDKFFeuxHQRM9e
+	 GmucS0UUOATRY20AF4Ye20UZ/kQ4HeiM4lZNBgc+6L+O5lPqYzrKk7yinQvt8JQknK
+	 HrKyQ2Bxrpypkf/aRiDsjf8XpxJAWWnBsPR/vEI9j+NqyXxJqSZWz4mYofRT5Blr19
+	 nYlf6AOQwAYceFknidoIXC8bocR0ergrgMbLVIEkejZrILOJWBj38m6K0U5nsYtkaa
+	 1FeAwAjdpeG5w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Heiner Kallweit <hkallweit1@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Ankur Arora <ankur.a.arora@oracle.com>,
+	"Paul E . McKenney" <paulmck@kernel.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Boqun Feng <boqun.feng@gmail.com>,
 	Sasha Levin <sashal@kernel.org>,
-	nic_swsd@realtek.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 188/212] r8169: don't scan PHY addresses > 0
-Date: Mon,  5 May 2025 19:06:00 -0400
-Message-Id: <20250505230624.2692522-188-sashal@kernel.org>
+	neeraj.upadhyay@kernel.org,
+	joel@joelfernandes.org,
+	josh@joshtriplett.org,
+	urezki@gmail.com,
+	rcu@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 192/212] rcu: fix header guard for rcu_all_qs()
+Date: Mon,  5 May 2025 19:06:04 -0400
+Message-Id: <20250505230624.2692522-192-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -71,33 +72,41 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Ankur Arora <ankur.a.arora@oracle.com>
 
-[ Upstream commit faac69a4ae5abb49e62c79c66b51bb905c9aa5ec ]
+[ Upstream commit ad6b5b73ff565e88aca7a7d1286788d80c97ba71 ]
 
-The PHY address is a dummy, because r8169 PHY access registers
-don't support a PHY address. Therefore scan address 0 only.
+rcu_all_qs() is defined for !CONFIG_PREEMPT_RCU but the declaration
+is conditioned on CONFIG_PREEMPTION.
 
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/830637dd-4016-4a68-92b3-618fcac6589d@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+With CONFIG_PREEMPT_LAZY, CONFIG_PREEMPTION=y does not imply
+CONFIG_PREEMPT_RCU=y.
+
+Decouple the two.
+
+Cc: Paul E. McKenney <paulmck@kernel.org>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Ankur Arora <ankur.a.arora@oracle.com>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/r8169_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/rcutree.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-index 4b461e93ffe9d..6346821d480bd 100644
---- a/drivers/net/ethernet/realtek/r8169_main.c
-+++ b/drivers/net/ethernet/realtek/r8169_main.c
-@@ -5156,6 +5156,7 @@ static int r8169_mdio_register(struct rtl8169_private *tp)
- 	new_bus->priv = tp;
- 	new_bus->parent = &pdev->dev;
- 	new_bus->irq[0] = PHY_MAC_INTERRUPT;
-+	new_bus->phy_mask = GENMASK(31, 1);
- 	snprintf(new_bus->id, MII_BUS_ID_SIZE, "r8169-%x-%x",
- 		 pci_domain_nr(pdev->bus), pci_dev_id(pdev));
+diff --git a/include/linux/rcutree.h b/include/linux/rcutree.h
+index 5efb51486e8af..54483d5e6f918 100644
+--- a/include/linux/rcutree.h
++++ b/include/linux/rcutree.h
+@@ -105,7 +105,7 @@ extern int rcu_scheduler_active;
+ void rcu_end_inkernel_boot(void);
+ bool rcu_inkernel_boot_has_ended(void);
+ bool rcu_is_watching(void);
+-#ifndef CONFIG_PREEMPTION
++#ifndef CONFIG_PREEMPT_RCU
+ void rcu_all_qs(void);
+ #endif
  
 -- 
 2.39.5
