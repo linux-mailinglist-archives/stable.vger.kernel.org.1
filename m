@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-140415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5E80AAA875
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:54:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4248AAA871
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:54:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 66BF07B27BD
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:52:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A7CEC16527E
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:54:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECE463430B2;
-	Mon,  5 May 2025 22:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A86E2973C1;
+	Mon,  5 May 2025 22:40:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ct6VmvS3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RSbXjCOG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A450E34309A;
-	Mon,  5 May 2025 22:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECD41296FBE;
+	Mon,  5 May 2025 22:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484812; cv=none; b=mebaHAERfl6MI9+vg42XJwdWTybybldXgWPbAZc5rxX1EQ+fdGJuNb4/opJo1ZU4OQ/+Tdm8u35UapdqIZIlP7JhOKPyB4u5hUo6AyorkYuJ6Zj6S5g1f3weDQifU5SWgI0pYldpu0wAEX4CbO0hUuEQX1qpp9EX00bbB2DpHmo=
+	t=1746484814; cv=none; b=pNl+mFHgldR7Jt3xA9+Pho8Kdt0Ts3v84IVwyYz+xQ6kr9JXz7V98Z4bX4yk0pg0YJ90zobzQrgWro2SKRG7SsgkIIccRnyWEOPn9ugDhnp01nGLZpLVWP3OTp76NxRrh/LdZGBkZ8U42rPQ2prIR36OG+Kqhkd55zUL6nYMFW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484812; c=relaxed/simple;
-	bh=EIpr1zWw+ys/lzhSj3v7hVTQpyQG45ZQwzw7tfFMfpo=;
+	s=arc-20240116; t=1746484814; c=relaxed/simple;
+	bh=a/g9tbQUy99bGFVa/jbFGQ7/OzXkiGl+liVmBwJvrF0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=j4Gctwe5j4L2YWx3cN7Mp5NwyW8J7MQ5iQQJx6pl9CRb2EMFrjS8A1PiydifuKAhudo0hqtiaGhLDP3Slb1vjUt7rVO7fBpI45Qb/0+5+5DbXpvFzVBK9GQPyYnYp6FszSjiNqY2KynRZC2AYGG4PrzSznIFHna3LufcAuf2Gmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ct6VmvS3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FE6CC4CEE4;
-	Mon,  5 May 2025 22:40:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YhHDx6d/pS1Cew4f6/8Ossj33TTXuQmQBBEej6GheAtxkXJaruNmgl0H+o3IPDpaj1MZkv/f/+O80fav476iRWm/72Cz8KKjA1txUaexQTPF5Iig82icQrGFGZBcDwWctiBC6O1I9iEV6dPwm+jQa8jbTpAwM2qE88NgCu4DhhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RSbXjCOG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C888C4CEEE;
+	Mon,  5 May 2025 22:40:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484812;
-	bh=EIpr1zWw+ys/lzhSj3v7hVTQpyQG45ZQwzw7tfFMfpo=;
+	s=k20201202; t=1746484813;
+	bh=a/g9tbQUy99bGFVa/jbFGQ7/OzXkiGl+liVmBwJvrF0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ct6VmvS3Rus24qiSH+IAbDaDwkMDqaqSLt47HS9xqaoZKT2X042PxC++zNWA1xHHY
-	 WJ2/ZE4YnFxjZMVFbCk30YPldDqPJOlHvjvzT6EnsGnZCDEcFa8mZOmDQ8lVNofTEs
-	 qSTC/Id4qQhT/RK24C8HUhFVMDByok1xcaFoplLFgPQd7x8sqMKE8LGWD0i9Wpdcp/
-	 vjkXmv8oNRXDgpgdofxAQ1Ve22ewbiWjBQT93bdGLwLCWFQBWmrJkwYuDk8kxDrl08
-	 ekgMDfKcOKxheO1q0VlnxE8QVaiQ+ty0SPHXsotpXiWnq1KStEC6416Wni/jBVDarx
-	 JwJwNtGTam8Hg==
+	b=RSbXjCOGmMQoq3GFkfeKVh4H37gOIGWzpN8bCN13IEkJdaenbcPoK6Qu/ooDrawDc
+	 CXNyNY5TrFhXVsr97ZpGZbS46PEpMVBO77bAmdDuhqACJv8ZrQW+VSmeyajoAk2LS+
+	 zSYWAzxsCKCbJamPr+Jga1jm+7YJ1Cc/mqJTGovXSRYwo3RI/pp8D2uuDbp1IVBjUx
+	 vBGK6+6NDxTj3M+NhxUFqLfePpXT/ekH8Ty+7LRmQ+6Mh4Bnh1mL+jjCr3HqQbAAHf
+	 jt2YKZjf7dgcqFLKJZlwoVPtaITZ2BAO8xJNoV5GBeyF3w0xw7hA+J5Oh+5nulhc51
+	 +Yboq6YoJK2Mw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Zsolt Kajtar <soci@c64.rulez.org>,
-	Helge Deller <deller@gmx.de>,
+Cc: =?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>,
-	simona@ffwll.ch,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.12 024/486] fbdev: core: tileblit: Implement missing margin clearing for tileblit
-Date: Mon,  5 May 2025 18:31:40 -0400
-Message-Id: <20250505223922.2682012-24-sashal@kernel.org>
+	sfrench@samba.org,
+	linux-cifs@vger.kernel.org,
+	samba-technical@lists.samba.org
+Subject: [PATCH AUTOSEL 6.12 025/486] cifs: Set default Netbios RFC1001 server name to hostname in UNC
+Date: Mon,  5 May 2025 18:31:41 -0400
+Message-Id: <20250505223922.2682012-25-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -62,98 +62,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Zsolt Kajtar <soci@c64.rulez.org>
+From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit 76d3ca89981354e1f85a3e0ad9ac4217d351cc72 ]
+[ Upstream commit be786e509c1af9b2dcf25c3d601f05c8c251f482 ]
 
-I was wondering why there's garbage at the bottom of the screen when
-tile blitting is used with an odd mode like 1080, 600 or 200. Sure there's
-only space for half a tile but the same area is clean when the buffer
-is bitmap.
+Windows SMB servers (including SMB2+) which are working over RFC1001
+require that Netbios server name specified in RFC1001 Session Request
+packet is same as the UNC host name. Netbios server name can be already
+specified manually via -o servern= option.
 
-Then later I found that it's supposed to be cleaned but that's not
-implemented. So I took what's in bitblit and adapted it for tileblit.
+With this change the RFC1001 server name is set automatically by extracting
+the hostname from the mount source.
 
-This implementation was tested for both the horizontal and vertical case,
-and now does the same as what's done for bitmap buffers.
-
-If anyone is interested to reproduce the problem then I could bet that'd
-be on a S3 or Ark. Just set up a mode with an odd line count and make
-sure that the virtual size covers the complete tile at the bottom. E.g.
-for 600 lines that's 608 virtual lines for a 16 tall tile. Then the
-bottom area should be cleaned.
-
-For the right side it's more difficult as there the drivers won't let an
-odd size happen, unless the code is modified. But once it reports back a
-few pixel columns short then fbcon won't use the last column. With the
-patch that column is now clean.
-
-Btw. the virtual size should be rounded up by the driver for both axes
-(not only the horizontal) so that it's dividable by the tile size.
-That's a driver bug but correcting it is not in scope for this patch.
-
-Implement missing margin clearing for tileblit
-
-Signed-off-by: Zsolt Kajtar <soci@c64.rulez.org>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/tileblit.c | 37 ++++++++++++++++++++++++++++-
- 1 file changed, 36 insertions(+), 1 deletion(-)
+ fs/smb/client/fs_context.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/video/fbdev/core/tileblit.c b/drivers/video/fbdev/core/tileblit.c
-index 45b0828fad1cf..d342b90c42b7f 100644
---- a/drivers/video/fbdev/core/tileblit.c
-+++ b/drivers/video/fbdev/core/tileblit.c
-@@ -74,7 +74,42 @@ static void tile_putcs(struct vc_data *vc, struct fb_info *info,
- static void tile_clear_margins(struct vc_data *vc, struct fb_info *info,
- 			       int color, int bottom_only)
- {
--	return;
-+	unsigned int cw = vc->vc_font.width;
-+	unsigned int ch = vc->vc_font.height;
-+	unsigned int rw = info->var.xres - (vc->vc_cols*cw);
-+	unsigned int bh = info->var.yres - (vc->vc_rows*ch);
-+	unsigned int rs = info->var.xres - rw;
-+	unsigned int bs = info->var.yres - bh;
-+	unsigned int vwt = info->var.xres_virtual / cw;
-+	unsigned int vht = info->var.yres_virtual / ch;
-+	struct fb_tilerect rect;
-+
-+	rect.index = vc->vc_video_erase_char &
-+		((vc->vc_hi_font_mask) ? 0x1ff : 0xff);
-+	rect.fg = color;
-+	rect.bg = color;
-+
-+	if ((int) rw > 0 && !bottom_only) {
-+		rect.sx = (info->var.xoffset + rs + cw - 1) / cw;
-+		rect.sy = 0;
-+		rect.width = (rw + cw - 1) / cw;
-+		rect.height = vht;
-+		if (rect.width + rect.sx > vwt)
-+			rect.width = vwt - rect.sx;
-+		if (rect.sx < vwt)
-+			info->tileops->fb_tilefill(info, &rect);
-+	}
-+
-+	if ((int) bh > 0) {
-+		rect.sx = info->var.xoffset / cw;
-+		rect.sy = (info->var.yoffset + bs) / ch;
-+		rect.width = rs / cw;
-+		rect.height = (bh + ch - 1) / ch;
-+		if (rect.height + rect.sy > vht)
-+			rect.height = vht - rect.sy;
-+		if (rect.sy < vht)
-+			info->tileops->fb_tilefill(info, &rect);
-+	}
- }
+diff --git a/fs/smb/client/fs_context.c b/fs/smb/client/fs_context.c
+index 66d872d63f839..d6685679f84da 100644
+--- a/fs/smb/client/fs_context.c
++++ b/fs/smb/client/fs_context.c
+@@ -1028,6 +1028,7 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
+ 	int i, opt;
+ 	bool is_smb3 = !strcmp(fc->fs_type->name, "smb3");
+ 	bool skip_parsing = false;
++	char *hostname;
  
- static void tile_cursor(struct vc_data *vc, struct fb_info *info, bool enable,
+ 	cifs_dbg(FYI, "CIFS: parsing cifs mount option '%s'\n", param->key);
+ 
+@@ -1360,6 +1361,16 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
+ 			cifs_errorf(fc, "OOM when copying UNC string\n");
+ 			goto cifs_parse_mount_err;
+ 		}
++		hostname = extract_hostname(ctx->UNC);
++		if (IS_ERR(hostname)) {
++			cifs_errorf(fc, "Cannot extract hostname from UNC string\n");
++			goto cifs_parse_mount_err;
++		}
++		/* last byte, type, is 0x20 for servr type */
++		memset(ctx->target_rfc1001_name, 0x20, RFC1001_NAME_LEN_WITH_NULL);
++		for (i = 0; i < RFC1001_NAME_LEN && hostname[i] != 0; i++)
++			ctx->target_rfc1001_name[i] = toupper(hostname[i]);
++		kfree(hostname);
+ 		break;
+ 	case Opt_user:
+ 		kfree(ctx->username);
 -- 
 2.39.5
 
