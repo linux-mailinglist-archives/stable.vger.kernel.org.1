@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-141141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD6D8AAB0C5
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:47:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99E5EAAB0CD
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:47:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C6BD7B4CFC
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:45:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA2A84E2FC6
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:46:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE388328A81;
-	Tue,  6 May 2025 00:25:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86D6F2BF969;
+	Tue,  6 May 2025 00:25:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JD2ZwO4A"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TChQ+91U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 930C32BE7CB;
-	Mon,  5 May 2025 22:48:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7F252BEC29;
+	Mon,  5 May 2025 22:48:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485284; cv=none; b=S/gSawGmZX33WmPG+FMslZjLkfbltTNXybKfDLPOfARBggF9XugKe3jmQiBLAkPyqhJ4IhLyKaAYRYsViKNbF4MErO7rtFVqlS5431tRsLAqOvh2A584/CWLmtFSXVmkxkogZ5zzdAf1WI+zY9VsiBDKFc6rxvOaXVsh+n3VFQg=
+	t=1746485292; cv=none; b=n75jBQ0OF8eyWHxs0PWnfcM+Xw6u02NL2xCO4W+KT5EF7OMkKWIpqUD6BdYUkfjrxg5eR+6uxyR0U1BbL+m4jaG7CAy4O0JBWgPV58aGphpAzsYc6gf/X3ikc6vFaAecNBjr7s8l+0v7NPZPZ/4n83IQconNRA292XfI+vztlkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485284; c=relaxed/simple;
-	bh=fyiu71eYlgW/COF8lDRLJM6UWE/RGqymuevgYT5Uy9I=;
+	s=arc-20240116; t=1746485292; c=relaxed/simple;
+	bh=2gj39A3TJv/FRCdouiOH4XPaP1noapFKSqMjh5lbozI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=lIqKK2xwV2XNagCcdf/pKYEp4WS9xbN56T49a5TtiKo9vErHQGgTpPoJLed5QuNMSccP/r97qOwE+ZP+qw6XOF0SH3FQTBFaloOGhh7m0qgUM2EshRIBqn844q02QCo+qEsTk3zUF1qc5XYFvwFTWbHmdv5XxTiTb95V+7BXTUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JD2ZwO4A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5B31C4CEE4;
-	Mon,  5 May 2025 22:48:02 +0000 (UTC)
+	 MIME-Version; b=eFJ2R0eerDetIx7qRye4MLwS3gjQItjvS/Pw0KViuU43AKzdzBe2j3GchzLOz5eT6SJbe6FTG6m4ksBSOiWBzsWAuroX2YnLwih0UMNuQEYuIhJREk6oSUIb7Yux3IoyPlCHndJUw+yzfnK6tOqyJMjc/gbTTERRikiJEsPRoSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TChQ+91U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B13F8C4CEE4;
+	Mon,  5 May 2025 22:48:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485284;
-	bh=fyiu71eYlgW/COF8lDRLJM6UWE/RGqymuevgYT5Uy9I=;
+	s=k20201202; t=1746485292;
+	bh=2gj39A3TJv/FRCdouiOH4XPaP1noapFKSqMjh5lbozI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JD2ZwO4A5iqlMpy/Gk+JUluzICz1az+RPj6Uif2J7JJUzzEvNaln0Xct++t64qlDT
-	 uuKcIBN4+pwOG8/kMhbCEgJo4nrx7+CI/X4P6TuipbpQZSZkpoPwBWPUZqWwGQewmb
-	 mIREJna03EadSzpS5dvRXMqJAZ75Ub8uUAiHYJwdF9G03m1YSSzcc7vXepGeitE3DH
-	 ytCd6nKLvq2EgYq0KqWdutkH5UfJL3AKb9dlmVa28u2kV8mEN4JWEgP8LMbasguRwE
-	 p0JqGwC1yH4gQcJ1Qa2FIZPzKvb0V5iAiGqeh/Dt0uWoiDj3SYCOQEE0694OaZ48Ur
-	 wilE94LYrwnRw==
+	b=TChQ+91UuMlH/VgfCFmOABM40/Bq6Qvq7398fqv0Ct8apcgBsqPbcXxj6//5SivAI
+	 PkZ1s5Ec/WDXPeAQMl4Mx0neod2WL1TbdARhoLrMNAbE7pzv2rtXgwk9Z8JTDUYBdw
+	 69Ralg7vVXgpz31QfR29GkclDg7MndmcC++yZhYMqGnCWYTHV94aA0LMYguV3drbEC
+	 H+lUkhqIBZcGmcjvbTW5DxmQvWTmGuZFavULnEergNl9QtHozLT20QdeJ7JnBq86o7
+	 Ed+hK/NYyt2nvUqs6NWw3scA5DmpMpxenzMd1/9BiFaTNbTnvgGHAepC07e651W1CN
+	 imvhOz+gLToOQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Yihan Zhu <Yihan.Zhu@amd.com>,
-	Samson Tam <samson.tam@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
+Cc: "Assadian, Navid" <navid.assadian@amd.com>,
+	Joshua Aberback <joshua.aberback@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
@@ -55,14 +54,17 @@ Cc: Yihan Zhu <Yihan.Zhu@amd.com>,
 	christian.koenig@amd.com,
 	airlied@gmail.com,
 	simona@ffwll.ch,
-	ivlipski@amd.com,
-	nicholas.kazlauskas@amd.com,
-	sungjoon.kim@amd.com,
+	Samson.Tam@amd.com,
+	jun.lei@amd.com,
+	alex.hung@amd.com,
+	wenjing.liu@amd.com,
+	Relja.Vojvodic@amd.com,
+	rodrigo.siqueira@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.12 252/486] drm/amd/display: handle max_downscale_src_width fail check
-Date: Mon,  5 May 2025 18:35:28 -0400
-Message-Id: <20250505223922.2682012-252-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 254/486] drm/amd/display: Fix mismatch type comparison
+Date: Mon,  5 May 2025 18:35:30 -0400
+Message-Id: <20250505223922.2682012-254-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -77,57 +79,52 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Yihan Zhu <Yihan.Zhu@amd.com>
+From: "Assadian, Navid" <navid.assadian@amd.com>
 
-[ Upstream commit 02a940da2ccc0cc0299811379580852b405a0ea2 ]
+[ Upstream commit 26873260d394b1e33cdd720154aedf0af95327f9 ]
 
-[WHY]
-If max_downscale_src_width check fails, we exit early from TAP calculation and left a NULL
-value to the scaling data structure to cause the zero divide in the DML validation.
+The mismatch type comparison/assignment may cause data loss. Since the
+values are always non-negative, it is safe to use unsigned variables to
+resolve the mismatch.
 
-[HOW]
-Call set default TAP calculation before early exit in get_optimal_number_of_taps due to
-max downscale limit exceed.
-
-Reviewed-by: Samson Tam <samson.tam@amd.com>
-Signed-off-by: Yihan Zhu <Yihan.Zhu@amd.com>
-Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
+Signed-off-by: Navid Assadian <navid.assadian@amd.com>
+Reviewed-by: Joshua Aberback <joshua.aberback@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/display/dc/spl/dc_spl.c       | 4 ++--
+ drivers/gpu/drm/amd/display/dc/spl/dc_spl_types.h | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c b/drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c
-index 40acebd13e46d..abf439e743f23 100644
---- a/drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c
-+++ b/drivers/gpu/drm/amd/display/dc/dpp/dcn30/dcn30_dpp.c
-@@ -425,11 +425,6 @@ bool dpp3_get_optimal_number_of_taps(
- 	int min_taps_y, min_taps_c;
+diff --git a/drivers/gpu/drm/amd/display/dc/spl/dc_spl.c b/drivers/gpu/drm/amd/display/dc/spl/dc_spl.c
+index 014e8a296f0c7..54c7d6aecf51c 100644
+--- a/drivers/gpu/drm/amd/display/dc/spl/dc_spl.c
++++ b/drivers/gpu/drm/amd/display/dc/spl/dc_spl.c
+@@ -875,8 +875,8 @@ static bool spl_get_optimal_number_of_taps(
+ 	  bool *enable_isharp)
+ {
+ 	int num_part_y, num_part_c;
+-	int max_taps_y, max_taps_c;
+-	int min_taps_y, min_taps_c;
++	unsigned int max_taps_y, max_taps_c;
++	unsigned int min_taps_y, min_taps_c;
  	enum lb_memory_config lb_config;
+ 	bool skip_easf = false;
  
--	if (scl_data->viewport.width > scl_data->h_active &&
--		dpp->ctx->dc->debug.max_downscale_src_width != 0 &&
--		scl_data->viewport.width > dpp->ctx->dc->debug.max_downscale_src_width)
--		return false;
--
- 	/*
- 	 * Set default taps if none are provided
- 	 * From programming guide: taps = min{ ceil(2*H_RATIO,1), 8} for downscaling
-@@ -467,6 +462,12 @@ bool dpp3_get_optimal_number_of_taps(
- 	else
- 		scl_data->taps.h_taps_c = in_taps->h_taps_c;
- 
-+	// Avoid null data in the scl data with this early return, proceed non-adaptive calcualtion first
-+	if (scl_data->viewport.width > scl_data->h_active &&
-+		dpp->ctx->dc->debug.max_downscale_src_width != 0 &&
-+		scl_data->viewport.width > dpp->ctx->dc->debug.max_downscale_src_width)
-+		return false;
-+
- 	/*Ensure we can support the requested number of vtaps*/
- 	min_taps_y = dc_fixpt_ceil(scl_data->ratios.vert);
- 	min_taps_c = dc_fixpt_ceil(scl_data->ratios.vert_c);
+diff --git a/drivers/gpu/drm/amd/display/dc/spl/dc_spl_types.h b/drivers/gpu/drm/amd/display/dc/spl/dc_spl_types.h
+index 2a74ff5fdfdbc..a2c28949ec47f 100644
+--- a/drivers/gpu/drm/amd/display/dc/spl/dc_spl_types.h
++++ b/drivers/gpu/drm/amd/display/dc/spl/dc_spl_types.h
+@@ -479,7 +479,7 @@ struct spl_sharpness_range {
+ };
+ struct adaptive_sharpness {
+ 	bool enable;
+-	int sharpness_level;
++	unsigned int sharpness_level;
+ 	struct spl_sharpness_range sharpness_range;
+ };
+ enum linear_light_scaling	{	// convert it in translation logic
 -- 
 2.39.5
 
