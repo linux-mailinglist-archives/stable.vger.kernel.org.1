@@ -1,60 +1,80 @@
-Return-Path: <stable+bounces-139940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8769AAA2AB
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:03:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64473AAA2A6
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:03:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD3E33ADDED
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:02:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A1817A9AA6
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:01:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5F822DEBA9;
-	Mon,  5 May 2025 22:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8447E2DFA30;
+	Mon,  5 May 2025 22:21:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SM6As8DP"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u/vzT41t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB612DEB9F;
-	Mon,  5 May 2025 22:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FF4B280CFF;
+	Mon,  5 May 2025 22:21:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483713; cv=none; b=Zug/RrPlmEPdBUaOfmm4RmHJDA89OL/5br/rqt4cYn2HTmmkx7lq69a6oLGJxpv30Sv8oOYcYwN/WJC8sWiZWdfB+2pdPMdg+2xWFWIkUJ1EFs/wW6oikAvlyKXNHNG/s2P3OaDllVq2YBByh03UWha01+Xg/Vp5XfZAGdXQsAY=
+	t=1746483719; cv=none; b=PFjT38+q4gU4+r1yjv8AVk1roYxSNuVdHgy1uzcxfg6KhTJfsCgElOcW65WdLICPLuBTj4a9sf34m4G4WZHSUROweqJatd2JfGARwdLmPUimd20dlwErZRAjTMRPMBQqDj5SgR44H9nHIcJke9QghsE+aYy8HKytAVPerC4DyAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483713; c=relaxed/simple;
-	bh=6HngKe9i+3G7189mkVtqEMdH+TyjhtevOC1tIRaGFhc=;
+	s=arc-20240116; t=1746483719; c=relaxed/simple;
+	bh=2Hw6fdJq+FUgbrWWTy0B6ZhHWQYH9ZZSbiLdRnlJJ/o=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=eYNTDRXRHS5MVTjJPlyv9qafMenmjrQuFWZKO5d9RXOqD6UlBn762hXm0ERs1k3ekDdEaU2klVT1iMry6mb7usbUN1GMWFNl+3CpsqyLtPhsGwHo8zxWNF10yZ4J5FoVAA/WiPLwzdkKsP8ZDJseGgkdZSGq7o8atdMDOu3xm9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SM6As8DP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA4EAC4CEE4;
-	Mon,  5 May 2025 22:21:51 +0000 (UTC)
+	 MIME-Version; b=hFY4z9luTv0ISIc+Ib04jhg2I7flpUQbYUiwAzXZ98v7RyqSNfpLg3bmnWZtUoqnVXH4rq+7VBFe9UjF+qhMFmuoa+ohrPDB9jSzakGOWq9xuIta0ea4rkachIG/bto8tus3fD5MdJVup+mJUBmD9BTBxZafEL/axLZLBi71T6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u/vzT41t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C505C4CEE4;
+	Mon,  5 May 2025 22:21:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483712;
-	bh=6HngKe9i+3G7189mkVtqEMdH+TyjhtevOC1tIRaGFhc=;
+	s=k20201202; t=1746483719;
+	bh=2Hw6fdJq+FUgbrWWTy0B6ZhHWQYH9ZZSbiLdRnlJJ/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SM6As8DP4IKpsH1YOw6UTXDkIGssCTh49xj3NIi0yNrcDhUrc+uTqfubXp8rNIDlW
-	 nNvPBOR18nRwMmIyJYr3+cLIzsjSHUewu1SGdE0zrix07x9YNsV8y2DHT28BAU2CRU
-	 uS7ROozafoyT0+x+vUG0jkShfzJFJH32kgx2hCRsEb56P2WpOex1TNAssbz4XZcR9L
-	 uDaCCNalvH1zcyQ14vBg79PsnctAWPbrUAlEu2q0vO7aesCllYwDT2/8GoTXDOZe+A
-	 WjRex5US/Hqiw3S+0sGo0sFh4sl9Ez+mFsTOrpJ5Ac8MykhKR/fpZuu0IdBYs4zj0v
-	 Ts/e1ZdLs/DRA==
+	b=u/vzT41tbg+TJEtJuaIM1FLZtD84dnRZ+C0vy8YbkHhit6kqXHVlUtBseETnQtR8a
+	 hnBFZjBxuXeQtn1t4h7dnfSzQhVu2KdKNKxFAttw4X3b4oqwHOzRu12+vEklJrKGzy
+	 osGGMXP/hvKMKL0P/zMfIY+45dskFXiSHNme75yqqMZDH0z3/Zyvy7vFqMgM21N2qA
+	 vXKLN+Z/Q84kZ8XRzM3VI7/IOJmwbxn4fdrgguy/+4DwW+uFNhuuPBmyaAI/vtAinJ
+	 b5IFNgVzGiD27NYZjynAgDXG3jF7L03hRaygKf9R7eeSXB60PbRdrmv3FHp5ElYqVN
+	 5ain1diLIMwLw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Willem de Bruijn <willemb@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Charlene Liu <Charlene.Liu@amd.com>,
+	Ovidiu Bunea <ovidiu.bunea@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	davem@davemloft.net,
-	dsahern@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 193/642] ipv6: save dontfrag in cork
-Date: Mon,  5 May 2025 18:06:49 -0400
-Message-Id: <20250505221419.2672473-193-sashal@kernel.org>
+	harry.wentland@amd.com,
+	sunpeng.li@amd.com,
+	christian.koenig@amd.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	alex.hung@amd.com,
+	chris.park@amd.com,
+	hamzamahfooz@linux.microsoft.com,
+	Jing.Zhou@amd.com,
+	eric.yang@amd.com,
+	nicholas.kazlauskas@amd.com,
+	alvin.lee2@amd.com,
+	jerry.zuo@amd.com,
+	Kaitlyn.Tse@amd.com,
+	ryanseto@amd.com,
+	martin.tsai@amd.com,
+	yi-lchen@amd.com,
+	tjakobi@math.uni-bielefeld.de,
+	Sungjoon.Kim@amd.com,
+	michael.strauss@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.14 194/642] drm/amd/display: remove minimum Dispclk and apply oem panel timing.
+Date: Mon,  5 May 2025 18:06:50 -0400
+Message-Id: <20250505221419.2672473-194-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -69,101 +89,69 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Willem de Bruijn <willemb@google.com>
+From: Charlene Liu <Charlene.Liu@amd.com>
 
-[ Upstream commit a18dfa9925b9ef6107ea3aa5814ca3c704d34a8a ]
+[ Upstream commit 756e58e83e89d372b94269c0cde61fe55da76947 ]
 
-When spanning datagram construction over multiple send calls using
-MSG_MORE, per datagram settings are configured on the first send.
+[why & how]
+1. apply oem panel timing (not only on OLED)
+2. remove MIN_DPP_DISP_CLK request in driver.
 
-That is when ip(6)_setup_cork stores these settings for subsequent use
-in __ip(6)_append_data and others.
+This fix will apply for dcn31x but not
+sync with DML's output.
 
-The only flag that escaped this was dontfrag. As a result, a datagram
-could be constructed with df=0 on the first sendmsg, but df=1 on a
-next. Which is what cmsg_ip.sh does in an upcoming MSG_MORE test in
-the "diff" scenario.
-
-Changing datagram conditions in the middle of constructing an skb
-makes this already complex code path even more convoluted. It is here
-unintentional. Bring this flag in line with expected sockopt/cmsg
-behavior.
-
-And stop passing ipc6 to __ip6_append_data, to avoid such issues
-in the future. This is already the case for __ip_append_data.
-
-inet6_cork had a 6 byte hole, so the 1B flag has no impact.
-
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250307033620.411611-3-willemdebruijn.kernel@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Ovidiu Bunea <ovidiu.bunea@amd.com>
+Signed-off-by: Charlene Liu <Charlene.Liu@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/ipv6.h  | 1 +
- net/ipv6/ip6_output.c | 9 +++++----
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_clk_mgr.c | 2 --
+ drivers/gpu/drm/amd/display/dc/clk_mgr/dcn316/dcn316_clk_mgr.c | 2 --
+ drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c      | 3 ++-
+ 3 files changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/ipv6.h b/include/linux/ipv6.h
-index a6e2aadbb91bd..5aeeed22f35bf 100644
---- a/include/linux/ipv6.h
-+++ b/include/linux/ipv6.h
-@@ -207,6 +207,7 @@ struct inet6_cork {
- 	struct ipv6_txoptions *opt;
- 	u8 hop_limit;
- 	u8 tclass;
-+	u8 dontfrag:1;
- };
+diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_clk_mgr.c
+index 827b24b3442ad..e4d22f74f9869 100644
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_clk_mgr.c
+@@ -194,8 +194,6 @@ static void dcn315_update_clocks(struct clk_mgr *clk_mgr_base,
+ 	// workaround: Limit dppclk to 100Mhz to avoid lower eDP panel switch to plus 4K monitor underflow.
+ 	if (new_clocks->dppclk_khz < MIN_DPP_DISP_CLK)
+ 		new_clocks->dppclk_khz = MIN_DPP_DISP_CLK;
+-	if (new_clocks->dispclk_khz < MIN_DPP_DISP_CLK)
+-		new_clocks->dispclk_khz = MIN_DPP_DISP_CLK;
  
- /* struct ipv6_pinfo - ipv6 private area */
-diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index d577bf2f30538..eb636bec89796 100644
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -1386,6 +1386,7 @@ static int ip6_setup_cork(struct sock *sk, struct inet_cork_full *cork,
+ 	if (should_set_clock(safe_to_lower, new_clocks->dppclk_khz, clk_mgr->base.clks.dppclk_khz)) {
+ 		if (clk_mgr->base.clks.dppclk_khz > new_clocks->dppclk_khz)
+diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn316/dcn316_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn316/dcn316_clk_mgr.c
+index 37c39756fece4..49efea0c8fcff 100644
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn316/dcn316_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn316/dcn316_clk_mgr.c
+@@ -201,8 +201,6 @@ static void dcn316_update_clocks(struct clk_mgr *clk_mgr_base,
+ 	// workaround: Limit dppclk to 100Mhz to avoid lower eDP panel switch to plus 4K monitor underflow.
+ 	if (new_clocks->dppclk_khz < 100000)
+ 		new_clocks->dppclk_khz = 100000;
+-	if (new_clocks->dispclk_khz < 100000)
+-		new_clocks->dispclk_khz = 100000;
+ 
+ 	if (should_set_clock(safe_to_lower, new_clocks->dppclk_khz, clk_mgr->base.clks.dppclk_khz)) {
+ 		if (clk_mgr->base.clks.dppclk_khz > new_clocks->dppclk_khz)
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
+index 81f4c386c2875..fcbde50213d69 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
+@@ -1065,7 +1065,8 @@ void dce110_edp_backlight_control(
+ 			DC_LOG_DC("edp_receiver_ready_T9 skipped\n");
  	}
- 	v6_cork->hop_limit = ipc6->hlimit;
- 	v6_cork->tclass = ipc6->tclass;
-+	v6_cork->dontfrag = ipc6->dontfrag;
- 	if (rt->dst.flags & DST_XFRM_TUNNEL)
- 		mtu = READ_ONCE(np->pmtudisc) >= IPV6_PMTUDISC_PROBE ?
- 		      READ_ONCE(rt->dst.dev->mtu) : dst_mtu(&rt->dst);
-@@ -1421,7 +1422,7 @@ static int __ip6_append_data(struct sock *sk,
- 			     int getfrag(void *from, char *to, int offset,
- 					 int len, int odd, struct sk_buff *skb),
- 			     void *from, size_t length, int transhdrlen,
--			     unsigned int flags, struct ipcm6_cookie *ipc6)
-+			     unsigned int flags)
- {
- 	struct sk_buff *skb, *skb_prev = NULL;
- 	struct inet_cork *cork = &cork_full->base;
-@@ -1475,7 +1476,7 @@ static int __ip6_append_data(struct sock *sk,
- 	if (headersize + transhdrlen > mtu)
- 		goto emsgsize;
  
--	if (cork->length + length > mtu - headersize && ipc6->dontfrag &&
-+	if (cork->length + length > mtu - headersize && v6_cork->dontfrag &&
- 	    (sk->sk_protocol == IPPROTO_UDP ||
- 	     sk->sk_protocol == IPPROTO_ICMPV6 ||
- 	     sk->sk_protocol == IPPROTO_RAW)) {
-@@ -1855,7 +1856,7 @@ int ip6_append_data(struct sock *sk,
- 
- 	return __ip6_append_data(sk, &sk->sk_write_queue, &inet->cork,
- 				 &np->cork, sk_page_frag(sk), getfrag,
--				 from, length, transhdrlen, flags, ipc6);
-+				 from, length, transhdrlen, flags);
- }
- EXPORT_SYMBOL_GPL(ip6_append_data);
- 
-@@ -2060,7 +2061,7 @@ struct sk_buff *ip6_make_skb(struct sock *sk,
- 	err = __ip6_append_data(sk, &queue, cork, &v6_cork,
- 				&current->task_frag, getfrag, from,
- 				length + exthdrlen, transhdrlen + exthdrlen,
--				flags, ipc6);
-+				flags);
- 	if (err) {
- 		__ip6_flush_pending_frames(sk, &queue, cork, &v6_cork);
- 		return ERR_PTR(err);
+-	if (!enable && link->dpcd_sink_ext_caps.bits.oled) {
++	if (!enable) {
++		/*follow oem panel config's requirement*/
+ 		pre_T11_delay += link->panel_config.pps.extra_pre_t11_ms;
+ 		msleep(pre_T11_delay);
+ 	}
 -- 
 2.39.5
 
