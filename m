@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-140612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D7EEAAAE80
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:58:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B628AAB0DF
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:49:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9B343A1596
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:52:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BE064E3593
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:48:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E685537C73D;
-	Mon,  5 May 2025 22:59:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AD522BF999;
+	Tue,  6 May 2025 00:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="me/Emz+n"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fvIKVFST"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4DA235EB97;
-	Mon,  5 May 2025 22:48:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5FBC37642C;
+	Mon,  5 May 2025 22:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485322; cv=none; b=g8uzgkRegW2XKDDLoKbHetaEY4w9kJsuUCFNoywqhNuwDk3ABFO10ZU3xuZML8NGJlKqNaDHP8XQ1p/XdgB6P2tWlClzN4hFLHYuHCWEzrSOFilD/HBFrUF2BXm4GWt9eOAsQVZQeWxNtQBSCG3Cygr2Zg/Xdi0GDYbo85Kvrws=
+	t=1746485324; cv=none; b=pqpUCP3+4kfCjBryYqUQb3YU6IY317JCUScjoy+YyQe4WmvoM4WGlVd8GFPi/Q4G3+BHzhZCbSlh3xhZjeopN3yJle1NtXNF3AfhNE6tmN5ymqTLakEbmWfqoiVO98s9g/z0U+34+kUsaYNx+FU+g8kLqHl0ptBZJ+pAL2Cn7MM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485322; c=relaxed/simple;
-	bh=+kAlWFpPjvZ7Wc+Kh6SVwp/JOzpD4dwJ6NntXTUfaRU=;
+	s=arc-20240116; t=1746485324; c=relaxed/simple;
+	bh=LZ+fiuu8BZam2Vg/JHkRs5Bbuh7skjVBcr05ofEBWew=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=n8QHhl6ZIvGTun8xDrjKc83XqU6ANB4dPiIXolDj+3vNABd9lcLkc4VZacoBGjyDlu3LV4kWxwvCyQoCjBFzkxi4EexD8SLli/y8YKyD0iQEreb6NIdBzOJwEvgahWUjkiL7U/T9umrn4In/j/rXYFwoiHu/rRMcp2jYpqcUO8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=me/Emz+n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EF13C4CEE4;
-	Mon,  5 May 2025 22:48:40 +0000 (UTC)
+	 MIME-Version; b=E4EmJSrBkVTEDDDMSQj3ejs82iLqhv4dEkg+UT/F/EqKyjqKDBtbp7qKqWOrr4e6X3Ee12NHk0/3Jbr2Zc7AmeW5bVy5EAK+Bzym+EGCO7AmQRERmq6J30FlcJkerUQwu5D2SaEcmMA/964Va1dK0QQ8D+6Obn1x2SGb2oyiFt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fvIKVFST; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0068C4CEF2;
+	Mon,  5 May 2025 22:48:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485321;
-	bh=+kAlWFpPjvZ7Wc+Kh6SVwp/JOzpD4dwJ6NntXTUfaRU=;
+	s=k20201202; t=1746485324;
+	bh=LZ+fiuu8BZam2Vg/JHkRs5Bbuh7skjVBcr05ofEBWew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=me/Emz+nmToJ9Zbu5hsHxZYgoyWrEYlM7DHUvIvq2UsrBoF9HyvMECjoYPpogzvIZ
-	 u5FJjPu7FKj/1NZdfw949ieA56oxyuVRS/wElk1qQrzJi5M3J5o27YdqdDZqt6HJzY
-	 FKBhiirYceJy8OGbXir82J0/dv7Sxx0bI2ETm7KQKQnBO9XVStj3ZpYwMl1c5QMb5K
-	 cm9d3ztJ1E04brAbiw/3JE9gAyL5A1uTVgXOeM2AISFYsmQxmNUIPH4Iasl9WIcEe6
-	 26xDSGv0HkQ5heMEPJMpa3qEidec7/n3/YDbqgRVYgwILmCdcxlMLf1X/BDmb3Wooy
-	 hJtz+BkxxnVSw==
+	b=fvIKVFST9l03vZ1+8uw0dNEQ3wcjSsg85wWzpIVt7W/9mSLWU8sfBHO54VLvj5sO5
+	 JrWpOfl+xg3yfZHYc5t+bC18gaDvTpNphBnBq7XQc++IxiRqqfwX8gmHSVP1PA0ttL
+	 QMthO/JhXrP4CDf9At6yIULK32LeN0DNayqDse0j/Vh1zdtm9ZeMra1MTbRK12VttH
+	 CkT5zg9Ay71vQjMTMODneCzmxuznOo3kG7m63mobH49t2sxPpZgtFJr5ltCVSpL9Gs
+	 OAT0vkBSUSGP+h8cB+xPKBJutn4ZaYklEGu6jzsHl4Jqp6TnBw1q96z/w3RtJ+arOu
+	 RJwYF/EPBvIWw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Nandakumar Edamana <nandakumar@nandakumar.co.in>,
-	Andrii Nakryiko <andrii@kernel.org>,
+Cc: Hannes Reinecke <hare@kernel.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	eddyz87@gmail.com,
-	bpf@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 266/486] libbpf: Fix out-of-bound read
-Date: Mon,  5 May 2025 18:35:42 -0400
-Message-Id: <20250505223922.2682012-266-sashal@kernel.org>
+	viro@zeniv.linux.org.uk,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 268/486] fs/mpage: avoid negative shift for large blocksize
+Date: Mon,  5 May 2025 18:35:44 -0400
+Message-Id: <20250505223922.2682012-268-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -68,41 +69,47 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Nandakumar Edamana <nandakumar@nandakumar.co.in>
+From: Hannes Reinecke <hare@kernel.org>
 
-[ Upstream commit 236d3910117e9f97ebf75e511d8bcc950f1a4e5f ]
+[ Upstream commit 86c60efd7c0ede43bd677f2eee1d84200528df1e ]
 
-In `set_kcfg_value_str`, an untrusted string is accessed with the assumption
-that it will be at least two characters long due to the presence of checks for
-opening and closing quotes. But the check for the closing quote
-(value[len - 1] != '"') misses the fact that it could be checking the opening
-quote itself in case of an invalid input that consists of just the opening
-quote.
+For large blocksizes the number of block bits is larger than PAGE_SHIFT,
+so calculate the sector number from the byte offset instead. This is
+required to enable large folios with buffer-heads.
 
-This commit adds an explicit check to make sure the string is at least two
-characters long.
-
-Signed-off-by: Nandakumar Edamana <nandakumar@nandakumar.co.in>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250221210110.3182084-1-nandakumar@nandakumar.co.in
+Reviewed-by: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+Signed-off-by: Hannes Reinecke <hare@kernel.org>
+Link: https://lore.kernel.org/r/20250221223823.1680616-4-mcgrof@kernel.org
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/libbpf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/mpage.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-index 5b45f76059296..a6bbae1e4c6b9 100644
---- a/tools/lib/bpf/libbpf.c
-+++ b/tools/lib/bpf/libbpf.c
-@@ -2074,7 +2074,7 @@ static int set_kcfg_value_str(struct extern_desc *ext, char *ext_val,
- 	}
+diff --git a/fs/mpage.c b/fs/mpage.c
+index 82aecf3727437..a3c82206977f6 100644
+--- a/fs/mpage.c
++++ b/fs/mpage.c
+@@ -181,7 +181,7 @@ static struct bio *do_mpage_readpage(struct mpage_readpage_args *args)
+ 	if (folio_buffers(folio))
+ 		goto confused;
  
- 	len = strlen(value);
--	if (value[len - 1] != '"') {
-+	if (len < 2 || value[len - 1] != '"') {
- 		pr_warn("extern (kcfg) '%s': invalid string config '%s'\n",
- 			ext->name, value);
- 		return -EINVAL;
+-	block_in_file = (sector_t)folio->index << (PAGE_SHIFT - blkbits);
++	block_in_file = folio_pos(folio) >> blkbits;
+ 	last_block = block_in_file + args->nr_pages * blocks_per_page;
+ 	last_block_in_file = (i_size_read(inode) + blocksize - 1) >> blkbits;
+ 	if (last_block > last_block_in_file)
+@@ -527,7 +527,7 @@ static int __mpage_writepage(struct folio *folio, struct writeback_control *wbc,
+ 	 * The page has no buffers: map it to disk
+ 	 */
+ 	BUG_ON(!folio_test_uptodate(folio));
+-	block_in_file = (sector_t)folio->index << (PAGE_SHIFT - blkbits);
++	block_in_file = folio_pos(folio) >> blkbits;
+ 	/*
+ 	 * Whole page beyond EOF? Skip allocating blocks to avoid leaking
+ 	 * space.
 -- 
 2.39.5
 
