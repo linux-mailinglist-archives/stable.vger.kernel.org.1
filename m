@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-140083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E60CAAA4CA
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:35:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D69FEAAA4CB
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:35:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2709F465737
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:35:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC97946633D
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:35:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D9C8305F23;
-	Mon,  5 May 2025 22:27:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2702E305F3E;
+	Mon,  5 May 2025 22:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kLP67cgD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iDynibQd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED36F305F17;
-	Mon,  5 May 2025 22:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C936A305F37;
+	Mon,  5 May 2025 22:27:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484074; cv=none; b=pwaiU9pINQgECDEG3s13iw6hDja6M3Mp7agQAQYWqYVJGQUc0YcW2oMzciDTJy0cygjV1BN3ttsai+WtGUmuRjaDOFe72n0pNoxHyPjD+26soP/LTnaUb8aVsZY+lw1dYoADWxS00lxgoGKCbcVOdx5NpQvlVeKSemEUbf/1d40=
+	t=1746484074; cv=none; b=q+EhGBeIzOOf6EgOD3rW+UD/CCLr8Qxr0Pji5y7wWhwtBHQ0WbKX3iAovb2Yh5uTNTyD/D7evHX09EL0peX67MAhM5ds52XOejCjF7GG09zdgwxUFJZ5YSDxliGm4BgNAPSYaVmM6SPORyMcFsvtiklJlLqWD/EuJESlQBHBJ08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1746484074; c=relaxed/simple;
-	bh=nukJkg7Bz886A3Q15leWjngdksB8iowySDQppWfx5/M=;
+	bh=aFQhGFvxnrjur6qu9AGhaT/avWTiCZyTVs2nMq3QG5Q=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=lu/op16e0L3Nxk8WX0FcUC4+l9BAPPWSJiRF9d4brFZ/GvUfDhARDGuj+sD6hOd3J5cL+yGXhjNIwOsM093+4SaXiUDNAbu984bOcy982I9qcp8Vuk2P9C0RHWh1WzhCWjGNE1gbU3RaQ/1Atv6iB7L7jEvepmSfCHmYAmYpg90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kLP67cgD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31871C4CEEF;
-	Mon,  5 May 2025 22:27:52 +0000 (UTC)
+	 MIME-Version; b=Dtcegr2J3gIxxc7pQrYjQJsk05H2iwKsSMFajNSJqaULCcdxEL9qowMQ3ULfEM9J2rP8+GXAJZKzpFRJgG0Vspc2lNCTjaHTQ7zQ1+ZyRPnmiLRR+XVA980EsnG1MTwH+jRiiZDL5UjNbP3/dyupdqKjDgRVU9fBajBzhrcsf3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iDynibQd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0822C4CEE4;
+	Mon,  5 May 2025 22:27:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484073;
-	bh=nukJkg7Bz886A3Q15leWjngdksB8iowySDQppWfx5/M=;
+	s=k20201202; t=1746484074;
+	bh=aFQhGFvxnrjur6qu9AGhaT/avWTiCZyTVs2nMq3QG5Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kLP67cgDvfyhQdu8SEubPEilUnfDyUtf/XtQedgGklIuRehFTp4g2Hlcp4pUbNOhG
-	 mxfFnvkFVgRa/hgwkUpXP2F4/4a+nBGPxGGMueC5ukjZBCBvggSJN5CPgZ/YBN1hEG
-	 d6BL+JHznqEJo87paKfMJ3GtdSHPp7xFWqpSbnqjUt3hE9pVF12gSyP1girmKsApEk
-	 ZTQ8QmublM++o08XlrTc3HtA50vxinqsafojaSUGoUw3cQCQGxgXTOn5pwBmYhwWmS
-	 yaPr6vKQWYBEQAtTCaORwJQT0mbs2SXVQhc17anGBzQED/HQZbYpvXLdhyfQg4lqlO
-	 1NCdX+Q3jmX+A==
+	b=iDynibQdjByp9zNcdwwVQXBOq89ayPWkfrVmcCU2RcXugJeRwcKjuxi+2MJK4P5Vc
+	 gfS9EoKg6ZYhhLjps5O+0DHjpgqCIG1oewIBYckONyB+YUTRSFR9pYIBOUqk7Vdtmd
+	 inY/rbemajyVgURDOfFAC38mtgV+uRA6hjrnGaiOKXNC9Afbre0UbhwtePqlWrr82E
+	 DliJB9juuIQQxq5RvYMkqs95mNJh3BCXf6ZWmb4KwB5dgLo0tTaDBBPrPzH3eLoai9
+	 uOVKok2tTH7+qoe5NzS5D/4qamdH//0KKebhSQ8XYXPXTjRsfU1l2WkDL9Ij9DofaS
+	 vliMVEOWDbVSg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ranjan Kumar <ranjan.kumar@broadcom.com>,
-	Sumit Saxena <sumit.saxena@broadcom.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
+Cc: Christoph Hellwig <hch@lst.de>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>,
-	sathya.prakash@broadcom.com,
-	kashyap.desai@broadcom.com,
-	sreekanth.reddy@broadcom.com,
-	James.Bottomley@HansenPartnership.com,
-	mpi3mr-linuxdrv.pdl@broadcom.com,
-	linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 336/642] scsi: mpi3mr: Update timestamp only for supervisor IOCs
-Date: Mon,  5 May 2025 18:09:12 -0400
-Message-Id: <20250505221419.2672473-336-sashal@kernel.org>
+	linux-block@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 337/642] loop: check in LO_FLAGS_DIRECT_IO in loop_default_blocksize
+Date: Mon,  5 May 2025 18:09:13 -0400
+Message-Id: <20250505221419.2672473-337-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -71,42 +66,38 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Ranjan Kumar <ranjan.kumar@broadcom.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 83a9d30d29f275571f6e8f879f04b2379be7eb6c ]
+[ Upstream commit f6f9e32fe1e454ae8ac0190b2c2bd6074914beec ]
 
-The driver issues the time stamp update command periodically. Even if the
-command fails with supervisor only IOC Status.
+We can't go below the minimum direct I/O size no matter if direct I/O is
+enabled by passing in an O_DIRECT file descriptor or due to the explicit
+flag.  Now that LO_FLAGS_DIRECT_IO is set earlier after assigning a
+backing file, loop_default_blocksize can check it instead of the
+O_DIRECT flag to handle both conditions.
 
-Instead check the Non-Supervisor capability bit reported by IOC as part of
-IOC Facts.
-
-Co-developed-by: Sumit Saxena <sumit.saxena@broadcom.com>
-Signed-off-by: Sumit Saxena <sumit.saxena@broadcom.com>
-Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
-Link: https://lore.kernel.org/r/20250220142528.20837-3-ranjan.kumar@broadcom.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20250131120120.1315125-4-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mpi3mr/mpi3mr_fw.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/block/loop.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/mpi3mr/mpi3mr_fw.c b/drivers/scsi/mpi3mr/mpi3mr_fw.c
-index c0a372868e1d7..dee3ea8d4837e 100644
---- a/drivers/scsi/mpi3mr/mpi3mr_fw.c
-+++ b/drivers/scsi/mpi3mr/mpi3mr_fw.c
-@@ -2744,7 +2744,10 @@ static void mpi3mr_watchdog_work(struct work_struct *work)
- 		return;
- 	}
- 
--	if (mrioc->ts_update_counter++ >= mrioc->ts_update_interval) {
-+	if (!(mrioc->facts.ioc_capabilities &
-+		MPI3_IOCFACTS_CAPABILITY_NON_SUPERVISOR_IOC) &&
-+		(mrioc->ts_update_counter++ >= mrioc->ts_update_interval)) {
-+
- 		mrioc->ts_update_counter = 0;
- 		mpi3mr_sync_timestamp(mrioc);
- 	}
+diff --git a/drivers/block/loop.c b/drivers/block/loop.c
+index 1a90d7bd212e6..b8dcf24fab7de 100644
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -900,7 +900,7 @@ static unsigned int loop_default_blocksize(struct loop_device *lo,
+ 		struct block_device *backing_bdev)
+ {
+ 	/* In case of direct I/O, match underlying block size */
+-	if ((lo->lo_backing_file->f_flags & O_DIRECT) && backing_bdev)
++	if ((lo->lo_flags & LO_FLAGS_DIRECT_IO) && backing_bdev)
+ 		return bdev_logical_block_size(backing_bdev);
+ 	return SECTOR_SIZE;
+ }
 -- 
 2.39.5
 
