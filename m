@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-140191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CDA5AAA5F3
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:01:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DAF51AAA5F5
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:02:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E4BF4A015C
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:01:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5B5917E1F3
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:01:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC8A831CA28;
-	Mon,  5 May 2025 22:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA8FD31CA50;
+	Mon,  5 May 2025 22:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gfPxGnjn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k8lttG8p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E7531CA21;
-	Mon,  5 May 2025 22:31:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86CA031CA4B;
+	Mon,  5 May 2025 22:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484305; cv=none; b=T0Y43Fqks73K3pVAKyyhvWQgTN0uPkqRCEzMXZHsRfPD0SoyicGsxh06M01/nt7Suo1MqyO6m1QY54qH+syLH8SMoSpMlROQKxivgxnzpEowm8EdZ4xyueHTIiMA2BeFcCH2nJxlpzyBwl133tRylt4YmsnzaY1GIeUqC9zCydA=
+	t=1746484308; cv=none; b=ufBcG5nF8UATcKLIXi/kQWavrP/hP/wK+2E8epYe0Gmc1t8S9j5KeVo2s6BXtfdJ3yk4pyd52iDn1SxhZ9LxozVBuT5GIies8YzYgpU+E7Ok8vh5WBIP11ADKDM+sfYg1clZpRZrloAx/bfWQtwKmvMVM6zte4H1zq57S+t6KRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484305; c=relaxed/simple;
-	bh=J+eq82nQdxgoDQ2CSx4rRZWeroAWgm+COkFffK9krV8=;
+	s=arc-20240116; t=1746484308; c=relaxed/simple;
+	bh=MqjhplFZaDPteVIP+B5ZT8pn4nN4B99lZevRAF32rok=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pc4acb661tBtIkmI8bHFaAEABwzbDAqwOGBXs0oqLS7uweJ9PQPDtQxlCOBID696CBvp5LdQfewbhkIHqjOUPkjbXLOL1rnu0lroduwhslwLIOdvHeUtD7SvserPCfMipJu6zddqPiye+tgtYyZiSFpBK0O/w1LfXnG/8/ObUjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gfPxGnjn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5614EC4CEE4;
-	Mon,  5 May 2025 22:31:43 +0000 (UTC)
+	 MIME-Version; b=sZiEuu7VegcOv8H5lBVjITzufXv/8H4EaYPDErsPYETj0yXGqeLe8bj1pCaGbOuL1KcGDTM9CzgWnNsSUrRziaZP8qwksR3yNW9xJVn8+aM+XBwy/2bcLnBOWDUiwoEdxvwATRH4wS+V5ezMhM8AXrwI2DG7ytZvsQs0JK6AujU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k8lttG8p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E72CC4CEE4;
+	Mon,  5 May 2025 22:31:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484305;
-	bh=J+eq82nQdxgoDQ2CSx4rRZWeroAWgm+COkFffK9krV8=;
+	s=k20201202; t=1746484308;
+	bh=MqjhplFZaDPteVIP+B5ZT8pn4nN4B99lZevRAF32rok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gfPxGnjnfgZNrvTSUYeA4lerDN0I+X0DX8LTjwI+DLSwdHQcrN7Goz8Gimudz0ulz
-	 sAJ20qFUPWxA5ouGlthenORcW3PZK3tdIMHPJXekSLAk9u9Oho10u96gUa9qDjsOTt
-	 3WTOlz6rPGEPBnH0U+0M29OrW8O2AMiT9qcs4y3L4OiCRUVUQk82ItTL6/8uoCuqFm
-	 Q9VHXhc+JALuSasrpqxMkCIIVP3qCedM1oBTAUEMyJT7dI5e877gr107NqlBh6Qscm
-	 EfvQdMbzeTTMk9iHhdDYRf+Z1UaMmQoQHaNGPay3Mr4ODV9GENPKydxEgW2BcGOYsg
-	 wDM9QU1FfzRPw==
+	b=k8lttG8pq90RSAcThLgz/O3PqVSzaejw6ie4eADP3EGvFkUOynALW2cRq0Cz/fA0S
+	 YcxYUl2zmDQy2eBvtqdBqsWZWX5GyMTHakt7bI1xg/H+ysh5P31wG+eFsMew+KYDcv
+	 4aLCdlpNr9r3cY5bCyFswePwoGVPWmlyURQMuIsw65lCeILsEfU6wdM22xBOGhRzbA
+	 nQnyaXBWGW+RG+BFmTNLFMTMh8SxWLB5mk0K14xGQCBuO5wkIhKANVNRbBKg3l4DqP
+	 iQzN/DqCcA9lmYvrnI2yVTcG+QhjN1CpMTlTl4AeXsgvCNJ3SO4nRZWBKLfkKju/+p
+	 iR7joOUijn34Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -52,17 +52,15 @@ Cc: Peter Zijlstra <peterz@infradead.org>,
 	bp@alien8.de,
 	dave.hansen@linux.intel.com,
 	x86@kernel.org,
-	kees@kernel.org,
 	jpoimboe@kernel.org,
-	gatlin.newhouse@gmail.com,
-	andrii@kernel.org,
-	ast@kernel.org,
-	thuth@redhat.com,
-	xin@zytor.com,
-	snovitoll@gmail.com
-Subject: [PATCH AUTOSEL 6.14 444/642] x86/traps: Cleanup and robustify decode_bug()
-Date: Mon,  5 May 2025 18:11:00 -0400
-Message-Id: <20250505221419.2672473-444-sashal@kernel.org>
+	gautham.shenoy@amd.com,
+	patryk.wlazlyn@linux.intel.com,
+	brgerst@gmail.com,
+	kprateek.nayak@amd.com,
+	sohil.mehta@intel.com
+Subject: [PATCH AUTOSEL 6.14 445/642] x86/boot: Mark start_secondary() with __noendbr
+Date: Mon,  5 May 2025 18:11:01 -0400
+Message-Id: <20250505221419.2672473-445-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -79,188 +77,67 @@ Content-Transfer-Encoding: 8bit
 
 From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit c20ad96c9a8f0aeaf4e4057730a22de2657ad0c2 ]
+[ Upstream commit 93f16a1ab78ca56e3cd997d1ea54c214774781ac ]
 
-Notably, don't attempt to decode an immediate when MOD == 3.
+The handoff between the boot stubs and start_secondary() are before IBT is
+enabled and is definitely not subject to kCFI. As such, suppress all that for
+this function.
 
-Additionally have it return the instruction length, such that WARN
-like bugs can more reliably skip to the correct instruction.
+Notably when the ENDBR poison would become fatal (ud1 instead of nop) this will
+trigger a tripple fault because we haven't set up the IDT to handle #UD yet.
 
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
-Link: https://lore.kernel.org/r/20250207122546.721120726@infradead.org
+Link: https://lore.kernel.org/r/20250207122546.509520369@infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/bug.h |  5 ++-
- arch/x86/include/asm/ibt.h |  4 +-
- arch/x86/kernel/traps.c    | 82 ++++++++++++++++++++++++++++----------
- 3 files changed, 65 insertions(+), 26 deletions(-)
+ arch/x86/kernel/smpboot.c | 3 ++-
+ include/linux/objtool.h   | 4 +++-
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/include/asm/bug.h b/arch/x86/include/asm/bug.h
-index e85ac0c7c039e..1a5e4b3726940 100644
---- a/arch/x86/include/asm/bug.h
-+++ b/arch/x86/include/asm/bug.h
-@@ -22,8 +22,9 @@
- #define SECOND_BYTE_OPCODE_UD2	0x0b
- 
- #define BUG_NONE		0xffff
--#define BUG_UD1			0xfffe
--#define BUG_UD2			0xfffd
-+#define BUG_UD2			0xfffe
-+#define BUG_UD1			0xfffd
-+#define BUG_UD1_UBSAN		0xfffc
- 
- #ifdef CONFIG_GENERIC_BUG
- 
-diff --git a/arch/x86/include/asm/ibt.h b/arch/x86/include/asm/ibt.h
-index e7f4caa42839a..b04bcbb1a14ef 100644
---- a/arch/x86/include/asm/ibt.h
-+++ b/arch/x86/include/asm/ibt.h
-@@ -41,7 +41,7 @@
- 	_ASM_PTR fname "\n\t"				\
- 	".popsection\n\t"
- 
--static inline __attribute_const__ u32 gen_endbr(void)
-+static __always_inline __attribute_const__ u32 gen_endbr(void)
- {
- 	u32 endbr;
- 
-@@ -56,7 +56,7 @@ static inline __attribute_const__ u32 gen_endbr(void)
- 	return endbr;
- }
- 
--static inline __attribute_const__ u32 gen_endbr_poison(void)
-+static __always_inline __attribute_const__ u32 gen_endbr_poison(void)
+diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
+index 3d5069ee297bf..463634b138bbb 100644
+--- a/arch/x86/kernel/smpboot.c
++++ b/arch/x86/kernel/smpboot.c
+@@ -229,7 +229,7 @@ static void ap_calibrate_delay(void)
+ /*
+  * Activate a secondary processor.
+  */
+-static void notrace start_secondary(void *unused)
++static void notrace __noendbr start_secondary(void *unused)
  {
  	/*
- 	 * 4 byte NOP that isn't NOP4 (in fact it is OSP NOP3), such that it
-diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
-index 5e3e036e6e537..b18fc7539b8d7 100644
---- a/arch/x86/kernel/traps.c
-+++ b/arch/x86/kernel/traps.c
-@@ -94,10 +94,17 @@ __always_inline int is_valid_bugaddr(unsigned long addr)
+ 	 * Don't put *anything* except direct CPU state initialization
+@@ -314,6 +314,7 @@ static void notrace start_secondary(void *unused)
+ 	wmb();
+ 	cpu_startup_entry(CPUHP_AP_ONLINE_IDLE);
+ }
++ANNOTATE_NOENDBR_SYM(start_secondary);
  
  /*
-  * Check for UD1 or UD2, accounting for Address Size Override Prefixes.
-- * If it's a UD1, get the ModRM byte to pass along to UBSan.
-+ * If it's a UD1, further decode to determine its use:
-+ *
-+ * UBSan{0}:     67 0f b9 00             ud1    (%eax),%eax
-+ * UBSan{10}:    67 0f b9 40 10          ud1    0x10(%eax),%eax
-+ * static_call:  0f b9 cc                ud1    %esp,%ecx
-+ *
-+ * Notably UBSAN uses EAX, static_call uses ECX.
+  * The bootstrap kernel entry code has set these up. Save them for
+diff --git a/include/linux/objtool.h b/include/linux/objtool.h
+index c722a921165ba..3ca965a2ddc80 100644
+--- a/include/linux/objtool.h
++++ b/include/linux/objtool.h
+@@ -128,7 +128,7 @@
+ #define UNWIND_HINT(type, sp_reg, sp_offset, signal) "\n\t"
+ #define STACK_FRAME_NON_STANDARD(func)
+ #define STACK_FRAME_NON_STANDARD_FP(func)
+-#define __ASM_ANNOTATE(label, type)
++#define __ASM_ANNOTATE(label, type) ""
+ #define ASM_ANNOTATE(type)
+ #else
+ .macro UNWIND_HINT type:req sp_reg=0 sp_offset=0 signal=0
+@@ -147,6 +147,8 @@
+  * these relocations will never be used for indirect calls.
   */
--__always_inline int decode_bug(unsigned long addr, u32 *imm)
-+__always_inline int decode_bug(unsigned long addr, s32 *imm, int *len)
- {
-+	unsigned long start = addr;
- 	u8 v;
- 
- 	if (addr < TASK_SIZE_MAX)
-@@ -110,24 +117,42 @@ __always_inline int decode_bug(unsigned long addr, u32 *imm)
- 		return BUG_NONE;
- 
- 	v = *(u8 *)(addr++);
--	if (v == SECOND_BYTE_OPCODE_UD2)
-+	if (v == SECOND_BYTE_OPCODE_UD2) {
-+		*len = addr - start;
- 		return BUG_UD2;
-+	}
- 
--	if (!IS_ENABLED(CONFIG_UBSAN_TRAP) || v != SECOND_BYTE_OPCODE_UD1)
-+	if (v != SECOND_BYTE_OPCODE_UD1)
- 		return BUG_NONE;
- 
--	/* Retrieve the immediate (type value) for the UBSAN UD1 */
--	v = *(u8 *)(addr++);
--	if (X86_MODRM_RM(v) == 4)
--		addr++;
--
- 	*imm = 0;
--	if (X86_MODRM_MOD(v) == 1)
--		*imm = *(u8 *)addr;
--	else if (X86_MODRM_MOD(v) == 2)
--		*imm = *(u32 *)addr;
--	else
--		WARN_ONCE(1, "Unexpected MODRM_MOD: %u\n", X86_MODRM_MOD(v));
-+	v = *(u8 *)(addr++);		/* ModRM */
+ #define ANNOTATE_NOENDBR		ASM_ANNOTATE(ANNOTYPE_NOENDBR)
++#define ANNOTATE_NOENDBR_SYM(sym)	asm(__ASM_ANNOTATE(sym, ANNOTYPE_NOENDBR))
 +
-+	if (X86_MODRM_MOD(v) != 3 && X86_MODRM_RM(v) == 4)
-+		addr++;			/* SIB */
-+
-+	/* Decode immediate, if present */
-+	switch (X86_MODRM_MOD(v)) {
-+	case 0: if (X86_MODRM_RM(v) == 5)
-+			addr += 4; /* RIP + disp32 */
-+		break;
-+
-+	case 1: *imm = *(s8 *)addr;
-+		addr += 1;
-+		break;
-+
-+	case 2: *imm = *(s32 *)addr;
-+		addr += 4;
-+		break;
-+
-+	case 3: break;
-+	}
-+
-+	/* record instruction length */
-+	*len = addr - start;
-+
-+	if (X86_MODRM_REG(v) == 0)	/* EAX */
-+		return BUG_UD1_UBSAN;
- 
- 	return BUG_UD1;
- }
-@@ -258,10 +283,10 @@ static inline void handle_invalid_op(struct pt_regs *regs)
- static noinstr bool handle_bug(struct pt_regs *regs)
- {
- 	bool handled = false;
--	int ud_type;
--	u32 imm;
-+	int ud_type, ud_len;
-+	s32 ud_imm;
- 
--	ud_type = decode_bug(regs->ip, &imm);
-+	ud_type = decode_bug(regs->ip, &ud_imm, &ud_len);
- 	if (ud_type == BUG_NONE)
- 		return handled;
- 
-@@ -281,15 +306,28 @@ static noinstr bool handle_bug(struct pt_regs *regs)
- 	 */
- 	if (regs->flags & X86_EFLAGS_IF)
- 		raw_local_irq_enable();
--	if (ud_type == BUG_UD2) {
-+
-+	switch (ud_type) {
-+	case BUG_UD2:
- 		if (report_bug(regs->ip, regs) == BUG_TRAP_TYPE_WARN ||
- 		    handle_cfi_failure(regs) == BUG_TRAP_TYPE_WARN) {
--			regs->ip += LEN_UD2;
-+			regs->ip += ud_len;
- 			handled = true;
- 		}
--	} else if (IS_ENABLED(CONFIG_UBSAN_TRAP)) {
--		pr_crit("%s at %pS\n", report_ubsan_failure(regs, imm), (void *)regs->ip);
-+		break;
-+
-+	case BUG_UD1_UBSAN:
-+		if (IS_ENABLED(CONFIG_UBSAN_TRAP)) {
-+			pr_crit("%s at %pS\n",
-+				report_ubsan_failure(regs, ud_imm),
-+				(void *)regs->ip);
-+		}
-+		break;
-+
-+	default:
-+		break;
- 	}
-+
- 	if (regs->flags & X86_EFLAGS_IF)
- 		raw_local_irq_disable();
- 	instrumentation_end();
+ /*
+  * This should be used immediately before an indirect jump/call. It tells
+  * objtool the subsequent indirect jump/call is vouched safe for retpoline
 -- 
 2.39.5
 
