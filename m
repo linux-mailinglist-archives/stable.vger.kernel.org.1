@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-140819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DD9CAAAF38
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:12:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E6B0AAAF5C
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:15:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 77FC97B0B46
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:10:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8B0F3B027E
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:10:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA7283B3BB1;
-	Mon,  5 May 2025 23:20:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D3263B11EF;
+	Mon,  5 May 2025 23:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Pkqt+POw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q6S3gNis"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04EE1288C29;
-	Mon,  5 May 2025 23:06:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70964397A66;
+	Mon,  5 May 2025 23:07:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486407; cv=none; b=f7pfcto84QFJQs5C42trLhRgIx9qzciM1XFb/irzi+XZFy8VYZFDKKarlakJdWZ4T2atQmPbB1N8PhGbcV+2smupZpf9TdQkPpkBa6mW2YoNW0GRagLZq5Yl+zxcL6zZfzNRA34RKC/UvxOe4DKOdUdBzB3M8CA0LrqpzUYSME8=
+	t=1746486421; cv=none; b=U8JpkpOYoYkYA0ufXEXR4/eor2lHO61pqNMoJAujsu72mW3LUCxDvmjrRfaGFkdOGfYosPalmm354UKeWGWzqzC949Sv/ErwthpGAU4+bNQlw6Unhdnwm/KxASBf/OD9KbRkKdfzjEUoofdaQQLgKgTekdT1yLy8Clx7veFVTas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486407; c=relaxed/simple;
-	bh=zEWgyvgE0K3/6juLqJn8ugmpW06gemNbsD2fMXiHnzM=;
+	s=arc-20240116; t=1746486421; c=relaxed/simple;
+	bh=5THHuus3fgTQAgvQ3+PYY+FACHau1WzENPOs6L9Xu+0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nqY9mkY/kvrhF0wqyMjAs+o5g1DIsLm7TxnXpOpuyuGLEIEOEZjzT1HZXGdo9RD0Cn4bVs9krvWO8MBm80M2gZP01ets18kNvbZ2Vux3xHjlBok6lqJZxwYLnfnc9QJL3A/04y1QIdjlvfkH5Rxli0UkLgO2y9rrK8Bmq/Jc3OM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Pkqt+POw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45597C4CEF1;
-	Mon,  5 May 2025 23:06:45 +0000 (UTC)
+	 MIME-Version; b=AE0DuyqKSL06yq+si5T9aIC9eErqXyoQ8sikXhwCLzN9uwuVcjUdTUOurxEiPkviQami37knB77WS+iVuqbQTyJSaKEVfX9Ya7TWm5INnn6hkDkjm9npxl4rQVhFRNO7+/jrDtwPf3ig5sfbHRizOEv+kCLPZFrzUu1kKDsnHyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q6S3gNis; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EBBBC4AF5F;
+	Mon,  5 May 2025 23:06:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486405;
-	bh=zEWgyvgE0K3/6juLqJn8ugmpW06gemNbsD2fMXiHnzM=;
+	s=k20201202; t=1746486420;
+	bh=5THHuus3fgTQAgvQ3+PYY+FACHau1WzENPOs6L9Xu+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pkqt+POw8OFS+cUjFhbDIWLBsudRtxjNfd3hFdcL6EpUToCEv1Wykvu6Ayi5dsI04
-	 PxFDXmdRPkwGn+XABxoav8nVgks9jVRsMo0LTc4WXth8KpoWEXP+WaP7ogqTDwFfoC
-	 MHqE8SXDOTpLLizXTsiu6qK6X0R8MaXIkYflWLttg4cdBzN+3woicjIm7pP/O46hgF
-	 4fPRYdyp5xayOcLsES83Xy2ew3Yv7dFy1gv/89ozBycHdXBkBU8h/2SMMOSVsmwlXh
-	 7HpSX4NKXM01bqPk3O+TK/RYIArWWAIj7FzQWf9UI1HiBgOsM9Rktu35YOf2xgvPcO
-	 tTM3q8mn6X1zA==
+	b=Q6S3gNis+0JrsvRFMEOKbhJ00fjLRNVXuMFcJESMWS+kgRxzApLLq38IdZl/b/NFY
+	 nv+47mxXVdX6vpB9w1yzduewckZD+6d4gDL99WPZ7t08WVV8tVjk/SEv9Khl4NTTqs
+	 IgzyNCQWIVMrTzaT6bQA2m5iG4hJ1zkclvz2kyxNxtICbwSCgjL5rgWxYYap/UdLMi
+	 6UJWwCf+/7S90QVeRPzFUND4EdGdd/OoVUGRt/HUIApinGTK8deeFF+2sl8hBI7oad
+	 E1cES6O4Oc3TLTtWL4ronRKJjnUoPBZMJ8X9lBJHt7/EAykLoG3Sjk0eMP+ie/hD7F
+	 2J7baPHBNufYQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 6.1 012/212] mailbox: use error ret code of of_parse_phandle_with_args()
-Date: Mon,  5 May 2025 19:03:04 -0400
-Message-Id: <20250505230624.2692522-12-sashal@kernel.org>
+Cc: Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Sasha Levin <sashal@kernel.org>,
+	trondmy@kernel.org,
+	anna@kernel.org,
+	linux-nfs@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 017/212] NFSv4: Treat ENETUNREACH errors as fatal for state recovery
+Date: Mon,  5 May 2025 19:03:09 -0400
+Message-Id: <20250505230624.2692522-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -64,43 +68,44 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 24fdd5074b205cfb0ef4cd0751a2d03031455929 ]
+[ Upstream commit 0af5fb5ed3d2fd9e110c6112271f022b744a849a ]
 
-In case of error, of_parse_phandle_with_args() returns -EINVAL when the
-passed index is negative, or -ENOENT when the index is for an empty
-phandle. The mailbox core overwrote the error return code with a less
-precise -ENODEV. Use the error returned code from
-of_parse_phandle_with_args().
+If a containerised process is killed and causes an ENETUNREACH or
+ENETDOWN error to be propagated to the state manager, then mark the
+nfs_client as being dead so that we don't loop in functions that are
+expecting recovery to succeed.
 
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/mailbox.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ fs/nfs/nfs4state.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
-index 4229b9b5da98f..6f54501dc7762 100644
---- a/drivers/mailbox/mailbox.c
-+++ b/drivers/mailbox/mailbox.c
-@@ -350,11 +350,12 @@ struct mbox_chan *mbox_request_channel(struct mbox_client *cl, int index)
- 
- 	mutex_lock(&con_mutex);
- 
--	if (of_parse_phandle_with_args(dev->of_node, "mboxes",
--				       "#mbox-cells", index, &spec)) {
-+	ret = of_parse_phandle_with_args(dev->of_node, "mboxes", "#mbox-cells",
-+					 index, &spec);
-+	if (ret) {
- 		dev_dbg(dev, "%s: can't parse \"mboxes\" property\n", __func__);
- 		mutex_unlock(&con_mutex);
--		return ERR_PTR(-ENODEV);
-+		return ERR_PTR(ret);
- 	}
- 
- 	chan = ERR_PTR(-EPROBE_DEFER);
+diff --git a/fs/nfs/nfs4state.c b/fs/nfs/nfs4state.c
+index 48ea406604229..80a7c5bd7a476 100644
+--- a/fs/nfs/nfs4state.c
++++ b/fs/nfs/nfs4state.c
+@@ -2737,7 +2737,15 @@ static void nfs4_state_manager(struct nfs_client *clp)
+ 	pr_warn_ratelimited("NFS: state manager%s%s failed on NFSv4 server %s"
+ 			" with error %d\n", section_sep, section,
+ 			clp->cl_hostname, -status);
+-	ssleep(1);
++	switch (status) {
++	case -ENETDOWN:
++	case -ENETUNREACH:
++		nfs_mark_client_ready(clp, -EIO);
++		break;
++	default:
++		ssleep(1);
++		break;
++	}
+ out_drain:
+ 	memalloc_nofs_restore(memflags);
+ 	nfs4_end_drain_session(clp);
 -- 
 2.39.5
 
