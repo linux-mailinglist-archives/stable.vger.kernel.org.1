@@ -1,157 +1,101 @@
-Return-Path: <stable+bounces-139656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 114F7AA90C6
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 12:19:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B075AAA90EB
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 12:23:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D3C43B7EA5
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 10:19:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB3D31896A1C
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 10:23:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADEE71FDA7B;
-	Mon,  5 May 2025 10:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42C531FC104;
+	Mon,  5 May 2025 10:23:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="BQnp8OwS";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="zg+FqbdN";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="BQnp8OwS";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="zg+FqbdN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e23t5Lp5"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BADB3596A
-	for <stable@vger.kernel.org>; Mon,  5 May 2025 10:19:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A43F81FECB1
+	for <stable@vger.kernel.org>; Mon,  5 May 2025 10:23:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746440370; cv=none; b=ZAHOFTQb+mZf648PezTHhjzB2ptZcjHEJsDioKfNQi7SjL1C23IcPHkUNjZNNkjDHEbdJciNU9Icg8hHh3d3sk3lbXaAVdQX58adYI3cJbGe51Alqozv7wL21wKezd2yZUiycMtH383Iu3ftsZDX8ViBoj6EGDnko7tV17GJVsY=
+	t=1746440599; cv=none; b=mbQyiICHVrStEj6m9qMLFqGTS3ly7LM0Jtfe7vaIp0y/wR9O4KlmhImTI4W2BSRMUgj80qnI0MmYfny01jtCzKS69RZskURYtSTWLJmukovHVmaLgKobCu40yakowPpvw/qMsRImpTBXeqDt2QEqJzgm+IpRY6p7fVZrGb6nLOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746440370; c=relaxed/simple;
-	bh=fZRJRGBUfeoqYklT8YCLbziPfx9Gg5apvvccvcMpQRg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tWFCagW9fvwTlSJWf6OcDJLarz3v5gzehWP8oMxvJPfQ3lo8y99Ty6dHHNpo3FqQG4SVhPp/ah4YlEY6fXrTzYnPf4AukhWUqsJNq1t6kRoI0Lp3Dlc1CFs1WGCX8z8js5UYwoRnehzyTzgcjwnkdWpuakq2J3SEPVFukwSHy6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=BQnp8OwS; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=zg+FqbdN; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=BQnp8OwS; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=zg+FqbdN; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 1A6822118D;
-	Mon,  5 May 2025 10:19:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1746440367; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=W+CuKktiQKfpbKb73Elr0/AnTcjJL/9A/w+U7OWH/LE=;
-	b=BQnp8OwSgqSWoHT+0nVfOx/Lle04WqFl9X9v2XzL0Qx63oU3NH3XL3QGLO5RBaKskvvJou
-	vOXI51ngPXU+jBuKRbbK14OdEmW0EbiKXUm+qbWM5QUjFpXvAmuHl8HM2j3tkoS7Wnx40I
-	/Rlh7vu7whyExnLyK3AwM7zbSRbXd5s=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1746440367;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=W+CuKktiQKfpbKb73Elr0/AnTcjJL/9A/w+U7OWH/LE=;
-	b=zg+FqbdN21/EnNl6Bd644y2UX3BPB0TFhpdc/929XHC2jQeEoHi5xU6b8PmPn9HmFOBIqx
-	yOFvhGBAgjrQWXAw==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=BQnp8OwS;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zg+FqbdN
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1746440367; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=W+CuKktiQKfpbKb73Elr0/AnTcjJL/9A/w+U7OWH/LE=;
-	b=BQnp8OwSgqSWoHT+0nVfOx/Lle04WqFl9X9v2XzL0Qx63oU3NH3XL3QGLO5RBaKskvvJou
-	vOXI51ngPXU+jBuKRbbK14OdEmW0EbiKXUm+qbWM5QUjFpXvAmuHl8HM2j3tkoS7Wnx40I
-	/Rlh7vu7whyExnLyK3AwM7zbSRbXd5s=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1746440367;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=W+CuKktiQKfpbKb73Elr0/AnTcjJL/9A/w+U7OWH/LE=;
-	b=zg+FqbdN21/EnNl6Bd644y2UX3BPB0TFhpdc/929XHC2jQeEoHi5xU6b8PmPn9HmFOBIqx
-	yOFvhGBAgjrQWXAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 08DEB13883;
-	Mon,  5 May 2025 10:19:27 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id F04nAq+QGGhjewAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 05 May 2025 10:19:27 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 923C8A0670; Mon,  5 May 2025 12:19:26 +0200 (CEST)
-Date: Mon, 5 May 2025 12:19:26 +0200
-From: Jan Kara <jack@suse.cz>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Andrey Kriulin <kitotavrik.s@gmail.com>, 
-	Christian Brauner <brauner@kernel.org>, Andrey Kriulin <kitotavrik.media@gmail.com>, 
-	Josef Bacik <josef@toxicpanda.com>, NeilBrown <neilb@suse.de>, Jan Kara <jack@suse.cz>, 
-	linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org, stable@vger.kernel.org
-Subject: Re: [PATCH] fs: minix: Fix handling of corrupted directories
-Message-ID: <tmrfgsrexyytlgxpsf3xus7w6tv3ake4ogo2b7ul7p6vn36cqv@nv4m6clasxjv>
-References: <20250502165059.63012-1-kitotavrik.media@gmail.com>
- <aBUAbPum1d5dNrpG@casper.infradead.org>
+	s=arc-20240116; t=1746440599; c=relaxed/simple;
+	bh=MIrZPHsia9oyBjG8Qg/kNkF0/VRnU2/q96uLqPqc7Pk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=E7m84eryayFI7Ph9VRCQufVWBj5QobVQai+OrzgMBAxXwYW7PtjGeu+VXPjCJXdHQlCUJFN9GMhMvUXyXLoreJy7AWU0oR1XQF6JoOwOUlVQpBORm5ANc4qVQ5hZ50QSzNyT8nfJd7VFcnmkO0W88FpNKTnM1VXIV9IqcdijME0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e23t5Lp5; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1746440598; x=1777976598;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=MIrZPHsia9oyBjG8Qg/kNkF0/VRnU2/q96uLqPqc7Pk=;
+  b=e23t5Lp5EzQYwbChz7qgLMc1+cC7WBuXeoIWTZG7BK3xeUzzpvnmPwfG
+   YlI3eCKeA+31ooYlOV9/rXfKyETn1r138sEv7W9QLTSqmbqO9rIU3/dYX
+   FxsUOmXa/+5y3FuOozAEBN3m75W7PE95y3kR6ZK8+iD6oBV0vItn4B6EZ
+   3mNo0a2nLaWFm1kb/NaTj73fe/rtW/BSuTEKv28iuN6T9A1SRmYtiTIGe
+   HKdGUjbGfDs8DrXdiAlFGWFDNphyKan43MCAZDIalZEt7RPB0PoauNMNr
+   7WUGYci0TNeOlnG7Z+5xuDq4nFePUrCQUgjul3yU3CRP3ul0ZTjXZi0Te
+   A==;
+X-CSE-ConnectionGUID: lFA+abrZSEGFPzuies2aUw==
+X-CSE-MsgGUID: 7/mC3E63RVKrBwO51CZEbQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11423"; a="65447855"
+X-IronPort-AV: E=Sophos;i="6.15,262,1739865600"; 
+   d="scan'208";a="65447855"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2025 03:23:15 -0700
+X-CSE-ConnectionGUID: 64ZmEPl3Q9S3vAi9Zdd/xw==
+X-CSE-MsgGUID: CFLv80AZQny6yUuHOozC0A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,262,1739865600"; 
+   d="scan'208";a="135170570"
+Received: from jlawryno.igk.intel.com ([10.91.220.59])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2025 03:23:13 -0700
+From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+To: stable@vger.kernel.org
+Cc: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Subject: [PATCH v2 0/3] accel/ivpu: Add context violation handling for 6.14
+Date: Mon,  5 May 2025 12:23:08 +0200
+Message-ID: <20250505102311.23425-1-jacek.lawrynowicz@linux.intel.com>
+X-Mailer: git-send-email 2.45.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aBUAbPum1d5dNrpG@casper.infradead.org>
-X-Rspamd-Queue-Id: 1A6822118D
-X-Spam-Level: 
-X-Spamd-Result: default: False [-2.51 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RCVD_TLS_LAST(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[gmail.com,kernel.org,toxicpanda.com,suse.de,suse.cz,vger.kernel.org,linuxtesting.org];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	TAGGED_RCPT(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.com:email]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -2.51
-X-Spam-Flag: NO
+Content-Transfer-Encoding: 8bit
 
-On Fri 02-05-25 18:27:08, Matthew Wilcox wrote:
-> On Fri, May 02, 2025 at 07:50:57PM +0300, Andrey Kriulin wrote:
-> > If the directory is corrupted and the number of nlinks is less than 2 
-> 
-> ... so should it be EIO or EFSCORRUPTED?
+These patchset adds support for VPU_JSM_STATUS_MVNCI_CONTEXT_VIOLATION_HW
+message added in recent VPU firmware. Without it the driver will not be able to
+process any jobs after this message is received and would need to be reloaded.
 
-Well, EFSCORRUPTED is an internal define (to EUCLEAN) local to several
-filesystems. So we'd need to lift that define to a generic code first.
+The last patch in this series is as-is from upstream, but other two patches
+had to be rebased because of missing new CMDQ UAPI changes that should not be
+backported to stable. 
 
-								Honza
+Changes since v1:
+ - Documented deviations from the original upstream patches in commit messages
+
+Karol Wachowski (3):
+  accel/ivpu: Abort all jobs after command queue unregister
+  accel/ivpu: Fix locking order in ivpu_job_submit
+  accel/ivpu: Add handling of VPU_JSM_STATUS_MVNCI_CONTEXT_VIOLATION_HW
+
+ drivers/accel/ivpu/ivpu_drv.c   |  32 ++-------
+ drivers/accel/ivpu/ivpu_drv.h   |   2 +
+ drivers/accel/ivpu/ivpu_job.c   | 111 ++++++++++++++++++++++++++------
+ drivers/accel/ivpu/ivpu_job.h   |   1 +
+ drivers/accel/ivpu/ivpu_mmu.c   |   3 +-
+ drivers/accel/ivpu/ivpu_sysfs.c |   5 +-
+ 6 files changed, 103 insertions(+), 51 deletions(-)
+
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+2.45.1
 
