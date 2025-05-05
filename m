@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-139768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-139769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7759AA9F1E
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:19:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9226BAA9F1F
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:19:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CD4A17094D
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:19:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A3CF1A81F0F
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 22:20:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7561427E7ED;
-	Mon,  5 May 2025 22:14:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C1E727EC98;
+	Mon,  5 May 2025 22:14:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zq8fg8x6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SoHMZcc0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2705027E7D6;
-	Mon,  5 May 2025 22:14:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EC81277817;
+	Mon,  5 May 2025 22:14:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483297; cv=none; b=kPrlobQB4WyoVCBnhrI0Xn9buC/IqxXqqzEoUJZrnyXVHdixyclIQu4WZ9OB/vuVNUyd5dHxlpnTHu20eQVKaQNQRXoIb8t/j4fBXel7zmrbUB0s5svI/oK/vvpynRTaofRqYvAZlEkAgDbYMK/svjL6jAka8nlbO+oWAt++VRo=
+	t=1746483298; cv=none; b=ejHjyF4LZn9M7FGTkm2kYtmaH1er8Qw+Up1z8FbvS2bZy5fFL5iaFSGDMWdre5mwUy2FcZLZE/u2ovwVS+cfp1+DcaifZP6v7MuOBHJpiWcsF/GcvabkddXvY6kY21Vg55mPHYxyELpGhEOBd1DnM+Dmm5K2E6RnF8G767Bejm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483297; c=relaxed/simple;
-	bh=eEUI680ypmPuZ5QWILhPpSBV4+NzpYcdAqCvbVpWpUg=;
+	s=arc-20240116; t=1746483298; c=relaxed/simple;
+	bh=uuO6mDXQclPqjp6WfVLBdD0/cjM2MYWsa2dDKUm0Bpg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=euYztweYBZK/MpSA86zs9Wv1yCRXQYmk6hRvMySBWlJvklELQWpYEKH1RJgXcKJr6YiXBxbIKVnCYfqIwEcCenx/7QySoKVf0+ejDDSNJKnXbM6dnHmr7uDaesFm8F4PqbItZ2hDq1Z0XPmnZ4b0kPhVE7sfVvbgL+F4uz/OwYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zq8fg8x6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 249F0C4CEF1;
-	Mon,  5 May 2025 22:14:56 +0000 (UTC)
+	 MIME-Version; b=DCsqZJGNMIjtjJFKQqR8tVHuhKhsWOl3YvcDSjHXwCCloaHI78xTiDu+b1EjiJNZqKkctoCgR+YJM2GpuA71hy/S8QO608LGsLdQ+PhOfc9uj/vOTmLzxVdDd5UlmMRtUwyWYCU6uFMhiJvl3KQLtCnzrzA7QOR7hMELOHzuKQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SoHMZcc0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67AB4C4CEED;
+	Mon,  5 May 2025 22:14:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483297;
-	bh=eEUI680ypmPuZ5QWILhPpSBV4+NzpYcdAqCvbVpWpUg=;
+	s=k20201202; t=1746483298;
+	bh=uuO6mDXQclPqjp6WfVLBdD0/cjM2MYWsa2dDKUm0Bpg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zq8fg8x6Nf5pE90+VuZ2j5Lo2ni3JF1CzQvdXmZAhn1mVrrqeXkO6j1qbpnCJ/lKD
-	 o3fT3iqR5tffo1eXmZ7q/ZyEFJ10j2+5b3QbFhe99qcwXpGG9IsepxRsRFaAMTZSTE
-	 4kbhlgTmFeUA7OVz1E62olD+wiIqkNDXvdI1k0cNb/VYTzaQhgPKRwFV1+REJtB+ID
-	 AfvbvJVf5eR7lGSEFWm3cMdcf4z4lDvyG5pjnF2ASqLjhrWaQV/uMqUhBA618LL6EP
-	 AthNWBV8OlyhBtgyHQQ+lrlSnvvwDz2n2wE4igOLDD3DgRiyG6+jcZtg7VcDVsdeSf
-	 s0kYdfGLepI+g==
+	b=SoHMZcc0ibU8VI5XCIN3wSvWJH6k0S3+U/kRXRQ1F5rk1FXotE4VPvooGaKF9wxFK
+	 GU34wrPGsvth3aMD0LwpMohGTn6kk7G5nd958Atr1MMcx/2uzDmJ4iv2Zt/7Q8xlKr
+	 Qf7uTjGPGfXdd8NAnncFt7tSUgS13i+HQPYCYDwLHMAk46PBJPcg0Sfe+aKO/2GdUw
+	 9FSNlADlbeZO5b8pUwTySnX0XWtpuZiHt9lmCxpr9bkvPqDz4fbxEK+Rw2GE38hVjW
+	 EiO38x5LAWy+LqxSc4dTB2wGVlpRZ5Yj+q5MWXz6iQ6DkiOrk4W7DtR7XT4Ee5BqwI
+	 HmwzB4uJJL2QA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Sudeep Holla <sudeep.holla@arm.com>,
-	Huisong Li <lihuisong@huawei.com>,
-	Adam Young <admiyo@os.amperecomputing.com>,
+Cc: Tudor Ambarus <tudor.ambarus@linaro.org>,
 	Jassi Brar <jassisinghbrar@gmail.com>,
-	Sasha Levin <sashal@kernel.org>,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 021/642] mailbox: pcc: Use acpi_os_ioremap() instead of ioremap()
-Date: Mon,  5 May 2025 18:03:57 -0400
-Message-Id: <20250505221419.2672473-21-sashal@kernel.org>
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.14 022/642] mailbox: use error ret code of of_parse_phandle_with_args()
+Date: Mon,  5 May 2025 18:03:58 -0400
+Message-Id: <20250505221419.2672473-22-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -67,47 +64,43 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Sudeep Holla <sudeep.holla@arm.com>
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
 
-[ Upstream commit d181acea5b864e91f38f5771b8961215ce5017ae ]
+[ Upstream commit 24fdd5074b205cfb0ef4cd0751a2d03031455929 ]
 
-The Platform Communication Channel (PCC) mailbox driver currently uses
-ioremap() to map channel shared memory regions. However it is preferred
-to use acpi_os_ioremap(), which is mapping function specific to EFI/ACPI
-defined memory regions. It ensures that the correct memory attributes
-are applied when mapping ACPI-provided regions.
+In case of error, of_parse_phandle_with_args() returns -EINVAL when the
+passed index is negative, or -ENOENT when the index is for an empty
+phandle. The mailbox core overwrote the error return code with a less
+precise -ENODEV. Use the error returned code from
+of_parse_phandle_with_args().
 
-While at it, also add checks for handling any errors with the mapping.
-
-Acked-by: Huisong Li <lihuisong@huawei.com>
-Tested-by: Huisong Li <lihuisong@huawei.com>
-Tested-by: Adam Young <admiyo@os.amperecomputing.com>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
 Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/pcc.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/mailbox/mailbox.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mailbox/pcc.c b/drivers/mailbox/pcc.c
-index f8215a8f656a4..49254d99a8ad6 100644
---- a/drivers/mailbox/pcc.c
-+++ b/drivers/mailbox/pcc.c
-@@ -419,8 +419,12 @@ int pcc_mbox_ioremap(struct mbox_chan *chan)
- 		return -1;
- 	pchan_info = chan->con_priv;
- 	pcc_mbox_chan = &pchan_info->chan;
--	pcc_mbox_chan->shmem = ioremap(pcc_mbox_chan->shmem_base_addr,
--				       pcc_mbox_chan->shmem_size);
-+
-+	pcc_mbox_chan->shmem = acpi_os_ioremap(pcc_mbox_chan->shmem_base_addr,
-+					       pcc_mbox_chan->shmem_size);
-+	if (!pcc_mbox_chan->shmem)
-+		return -ENXIO;
-+
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(pcc_mbox_ioremap);
+diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
+index d3d26a2c98956..cb174e788a96c 100644
+--- a/drivers/mailbox/mailbox.c
++++ b/drivers/mailbox/mailbox.c
+@@ -415,11 +415,12 @@ struct mbox_chan *mbox_request_channel(struct mbox_client *cl, int index)
+ 
+ 	mutex_lock(&con_mutex);
+ 
+-	if (of_parse_phandle_with_args(dev->of_node, "mboxes",
+-				       "#mbox-cells", index, &spec)) {
++	ret = of_parse_phandle_with_args(dev->of_node, "mboxes", "#mbox-cells",
++					 index, &spec);
++	if (ret) {
+ 		dev_dbg(dev, "%s: can't parse \"mboxes\" property\n", __func__);
+ 		mutex_unlock(&con_mutex);
+-		return ERR_PTR(-ENODEV);
++		return ERR_PTR(ret);
+ 	}
+ 
+ 	chan = ERR_PTR(-EPROBE_DEFER);
 -- 
 2.39.5
 
