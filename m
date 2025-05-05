@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-140576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140578-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFE06AAAE45
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:53:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D505AAAE34
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:52:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05CBC188799E
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:50:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 836D61709E0
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:50:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0D413679CB;
-	Mon,  5 May 2025 22:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F22D27877B;
+	Mon,  5 May 2025 22:55:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iblX7p40"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W0T17SaI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ABE32BD585;
-	Mon,  5 May 2025 22:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 164FE36AD01;
+	Mon,  5 May 2025 22:46:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485191; cv=none; b=gczajIXzeRCRyY8/hYeP2JMdkDalKoYyUSFBuk4UDQeWIuKkkaoLmAeKga4uP0s32uxnluJnmU3XsWUf2+XnUC7kU8irlt+ly8OupyXUDdwR9jqlhBVzPQ1R3NmUbZ/kXNt0OW0JJH5ceDiaFStImwvJldTtt4vIM1cjVDdXvJ8=
+	t=1746485192; cv=none; b=GWKL0sIqaQ93JIdf1AxsA76psFLQKnU8mh990pdk3lY3V6qP+UXdpNYGvCMtMJJC2Quvc1QC/FU09oN9VNBFoNfStNTMj9pBt7/K/icD4/iGOAZFfyWD/Of95vaAm2TI0qLqvCLiw5K/flG+rs+t9deMhbgAeRjo4yHD+O3+H38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485191; c=relaxed/simple;
-	bh=Nb9WwKqb2w5KCbCEHMmkoXMoM7qE9XNWo3xQoG4YWSc=;
+	s=arc-20240116; t=1746485192; c=relaxed/simple;
+	bh=wxrYziaHvHD4g27gI9lEQ96DcRoUY+dEeU7cwjvuTl0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ZsA3I62bOPJ8+J1kiC69gxXqhe7MSpbBhaHVC6UrVngj6bQDw2fgPwiff2mSt72TW+qKJcoNQ1Csw+o1iTbi5j94vYq1OY9QNMb9zq3M3SzP8SPdkPpwogwDxQV4pTzHmFwUJJsJVJZ19RwytKW7fUi/oXmsYgfIvmw03Ow6qXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iblX7p40; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA247C4CEEF;
-	Mon,  5 May 2025 22:46:28 +0000 (UTC)
+	 MIME-Version; b=X/U78HgiRZ0myq71QUVwRIA6W+C2G1kLf/NM3KPq5iJF/B/8jvRfU+7rNvg0XGALwxJs5nVsfyuzmaaQYTZahOo6dGWuV+p6Cl2BTzeMPDxa3JqRlmzelBzUJstB+Raase9KxhHuVfZ5vpVZ9TlXr3jURdfm/PAOenLSom3qVq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W0T17SaI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEEFCC4CEE4;
+	Mon,  5 May 2025 22:46:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485189;
-	bh=Nb9WwKqb2w5KCbCEHMmkoXMoM7qE9XNWo3xQoG4YWSc=;
+	s=k20201202; t=1746485192;
+	bh=wxrYziaHvHD4g27gI9lEQ96DcRoUY+dEeU7cwjvuTl0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iblX7p408hqdLmDLKjYJEfKId/zMU/4uE4ufAYa3RB3XHh+Yq4SCakS0CKZ/k9pnX
-	 Szy/Lvjfh101ZQkWOhnduewTfsllCQIw/87Aaao8lXsNPnRNznuWUDk6snOXg+hwfd
-	 Zj1X0tImVZYGgFNNoiClvirKdugGZ6xh9bpZM0B+DEwuBnEueYXcsH6f0vulC53iy5
-	 yrnehDh2mHU5XiA1xXAF4bpgKj+cAAnKrUOq17tdQDxNhaUcCMBP1MRKygCN6yxZEi
-	 r9WAzIi3RiLomGVhnGNfQ9Y/slKIqPHSytAWuXESDj02qGqHPgiydy9vNxXnT0jjoE
-	 iTYlGw737Q1Nw==
+	b=W0T17SaIr3eBEquxW2dSEWgTDz6coZgGuigJPVMZw8cHxwueDDKwMnb5GTQduZ0h1
+	 NrXnGtly5s+NZJlwHOX4UF0q7dWpdzkc6/WL3GR39fX3s5UqRCE08qXACuTgtOelh/
+	 gsHpkaGAoigcug6asGcLV32J/vBZoBgi2/wMBoz6wXpB9gUN49qE1SbBcfWjIone1I
+	 MTYVlTz7gVOpN/dvDcsQvVrWM/NliVQpmcNOXNOygo9dWxK41JlLEVmO5TeyCSNnmv
+	 PSEjCfmLWqVJDm7iGgfq+A+F9WhwCOWBdUXtYZkGepLMtlVc32TavEh6f9VgRCu3Rj
+	 zXytkkqqcrUBw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Ravi Bangoria <ravi.bangoria@amd.com>,
+Cc: Hans Verkuil <hverkuil@xs4all.nl>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	mingo@redhat.com,
-	acme@kernel.org,
-	namhyung@kernel.org,
-	linux-perf-users@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 202/486] perf/core: Clean up perf_try_init_event()
-Date: Mon,  5 May 2025 18:34:38 -0400
-Message-Id: <20250505223922.2682012-202-sashal@kernel.org>
+	mchehab@kernel.org,
+	christophe.jaillet@wanadoo.fr,
+	ribalda@chromium.org,
+	linux-media@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 203/486] media: cx231xx: set device_caps for 417
+Date: Mon,  5 May 2025 18:34:39 -0400
+Message-Id: <20250505223922.2682012-203-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -69,105 +68,38 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Hans Verkuil <hverkuil@xs4all.nl>
 
-[ Upstream commit da02f54e81db2f7bf6af9d1d0cfc5b41ec6d0dcb ]
+[ Upstream commit a79efc44b51432490538a55b9753a721f7d3ea42 ]
 
-Make sure that perf_try_init_event() doesn't leave event->pmu nor
-event->destroy set on failure.
+The video_device for the MPEG encoder did not set device_caps.
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Ravi Bangoria <ravi.bangoria@amd.com>
-Link: https://lore.kernel.org/r/20250205102449.110145835@infradead.org
+Add this, otherwise the video device can't be registered (you get a
+WARN_ON instead).
+
+Not seen before since currently 417 support is disabled, but I found
+this while experimenting with it.
+
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c | 65 ++++++++++++++++++++++++++------------------
- 1 file changed, 38 insertions(+), 27 deletions(-)
+ drivers/media/usb/cx231xx/cx231xx-417.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index edafe9fc4bdd0..19dde12f23b83 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -11978,40 +11978,51 @@ static int perf_try_init_event(struct pmu *pmu, struct perf_event *event)
- 	if (ctx)
- 		perf_event_ctx_unlock(event->group_leader, ctx);
- 
--	if (!ret) {
--		if (!(pmu->capabilities & PERF_PMU_CAP_EXTENDED_REGS) &&
--		    has_extended_regs(event))
--			ret = -EOPNOTSUPP;
-+	if (ret)
-+		goto err_pmu;
- 
--		if (pmu->capabilities & PERF_PMU_CAP_NO_EXCLUDE &&
--		    event_has_any_exclude_flag(event))
--			ret = -EINVAL;
-+	if (!(pmu->capabilities & PERF_PMU_CAP_EXTENDED_REGS) &&
-+	    has_extended_regs(event)) {
-+		ret = -EOPNOTSUPP;
-+		goto err_destroy;
-+	}
- 
--		if (pmu->scope != PERF_PMU_SCOPE_NONE && event->cpu >= 0) {
--			const struct cpumask *cpumask = perf_scope_cpu_topology_cpumask(pmu->scope, event->cpu);
--			struct cpumask *pmu_cpumask = perf_scope_cpumask(pmu->scope);
--			int cpu;
--
--			if (pmu_cpumask && cpumask) {
--				cpu = cpumask_any_and(pmu_cpumask, cpumask);
--				if (cpu >= nr_cpu_ids)
--					ret = -ENODEV;
--				else
--					event->event_caps |= PERF_EV_CAP_READ_SCOPE;
--			} else {
--				ret = -ENODEV;
--			}
--		}
-+	if (pmu->capabilities & PERF_PMU_CAP_NO_EXCLUDE &&
-+	    event_has_any_exclude_flag(event)) {
-+		ret = -EINVAL;
-+		goto err_destroy;
-+	}
- 
--		if (ret && event->destroy)
--			event->destroy(event);
-+	if (pmu->scope != PERF_PMU_SCOPE_NONE && event->cpu >= 0) {
-+		const struct cpumask *cpumask;
-+		struct cpumask *pmu_cpumask;
-+		int cpu;
-+
-+		cpumask = perf_scope_cpu_topology_cpumask(pmu->scope, event->cpu);
-+		pmu_cpumask = perf_scope_cpumask(pmu->scope);
-+
-+		ret = -ENODEV;
-+		if (!pmu_cpumask || !cpumask)
-+			goto err_destroy;
-+
-+		cpu = cpumask_any_and(pmu_cpumask, cpumask);
-+		if (cpu >= nr_cpu_ids)
-+			goto err_destroy;
-+
-+		event->event_caps |= PERF_EV_CAP_READ_SCOPE;
- 	}
- 
--	if (ret) {
--		event->pmu = NULL;
--		module_put(pmu->module);
-+	return 0;
-+
-+err_destroy:
-+	if (event->destroy) {
-+		event->destroy(event);
-+		event->destroy = NULL;
- 	}
- 
-+err_pmu:
-+	event->pmu = NULL;
-+	module_put(pmu->module);
- 	return ret;
- }
- 
+diff --git a/drivers/media/usb/cx231xx/cx231xx-417.c b/drivers/media/usb/cx231xx/cx231xx-417.c
+index abb967c8bd352..6cb130eb32d58 100644
+--- a/drivers/media/usb/cx231xx/cx231xx-417.c
++++ b/drivers/media/usb/cx231xx/cx231xx-417.c
+@@ -1722,6 +1722,8 @@ static void cx231xx_video_dev_init(
+ 	vfd->lock = &dev->lock;
+ 	vfd->release = video_device_release_empty;
+ 	vfd->ctrl_handler = &dev->mpeg_ctrl_handler.hdl;
++	vfd->device_caps = V4L2_CAP_READWRITE | V4L2_CAP_STREAMING |
++			   V4L2_CAP_VIDEO_CAPTURE;
+ 	video_set_drvdata(vfd, dev);
+ 	if (dev->tuner_type == TUNER_ABSENT) {
+ 		v4l2_disable_ioctl(vfd, VIDIOC_G_FREQUENCY);
 -- 
 2.39.5
 
