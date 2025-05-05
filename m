@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-140870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B0ABAAAC46
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:13:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B9A7AAABFB
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:06:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E474C98430B
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:06:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 561047AB0CE
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:05:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E4F52882A3;
-	Mon,  5 May 2025 23:23:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9285F3BEECC;
+	Mon,  5 May 2025 23:23:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gXsFmyc/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FCDoGC7+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D91352F10DC;
-	Mon,  5 May 2025 23:11:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59E6537941A;
+	Mon,  5 May 2025 23:11:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486707; cv=none; b=QbBCU8aKm/ZBQ1EhydMV+o57EcaBLZ3sLi8jd2R/xJELo1Rpjz6ZNFOjka/ugpsvQqfCB4LQqrm7IexJTewhySRU59e+Pr6P+wbuuktMgtVaLOUZJ1WHoEXE6RrLVYDn+AfDPH/bIaYbCUCt+HHfP2Ojzk3PRm9WHUr/WOLgbyQ=
+	t=1746486710; cv=none; b=EmDUWgJgb5o58SWAh1GWWolFzAgyOOJ5eZOsf+zyePJk6/7o7dgOE9CbdOP3D6TrLNm/PDKZZY8sTzRWlzEbuYndoSf9kzaaSHkOQvjqwK0mSc2h5WL6DeXYHA5xQGoDLpHjjMSCPPI5ZEdFs+Xfyl6pXGrSdelM4x1NfwUrCeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486707; c=relaxed/simple;
-	bh=Zqp/bwpMcAv5iVBBpb5LTPQPE4uZFS6xV8tEQzyMIfI=;
+	s=arc-20240116; t=1746486710; c=relaxed/simple;
+	bh=C43Pz/hDzcDNEKIbrxLCPDxsolFRO71goEUky3/G04A=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=so9f1MyUn9SUj82xh4FAydfx8N0CKpKgM0WTJXJih8uf1qWdedJu7aSbJbTbUvIbZvy6WYoh4yVkrQQzVlCjErWhCq5QBfTZfJ7Sy65QmkU13HhH5SzfhIrxE0wBvkXv/Ba2MqZk1SrFU9c2nTbVsvJ6wdAP8JdHzZqx7BFovdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gXsFmyc/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3C6EC4CEEE;
-	Mon,  5 May 2025 23:11:46 +0000 (UTC)
+	 MIME-Version; b=UyleawBRtfG9JbiOGoGHzahGO7fWz1PGEaq+hH4GJCu6UHOuS28W83vFkzWVdbmvG11N/po/7IgSo98EPUyyC4RU7pESBiytcrNQEpwj/7MgnGzikwW6RSfFJQxVRKxcKkFJM/xibFTM13d0S92WzEPXZaa4kCCETqrroe5vdyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FCDoGC7+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4EBEC4CEE4;
+	Mon,  5 May 2025 23:11:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486707;
-	bh=Zqp/bwpMcAv5iVBBpb5LTPQPE4uZFS6xV8tEQzyMIfI=;
+	s=k20201202; t=1746486708;
+	bh=C43Pz/hDzcDNEKIbrxLCPDxsolFRO71goEUky3/G04A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gXsFmyc/bTm5CVpB2hId8K6KkHnIjVxBZGrlfM2ekO274+nGZdx0Qu/NeJ1lIvVV/
-	 EA9r62dYvh65hbhK5i3FFqmUcpEsM90wn4js4vKbaV17TD706DcH+lyP+PXFdwbs+d
-	 KNpwffZsQojLHBxZYc16Q7jsgWDpmGjkLXc5tJ8OVcRcDARy1a9xjn8JByEyLoWjdT
-	 bmJfE6zOiQANxaoTKkX3CMQTvstiXeFD4iO+z11ycqSzYXxLmudVyKJFZT3NaHHobr
-	 EUVdqN4Xu1xEtOCEPlcZhDBqAm9aKnyUyBnwXKY/SIwyZz4cMGyKh0OBVS0Q3qH6BX
-	 q/UGO/VjaJeyw==
+	b=FCDoGC7+HF2d1yZdJiFd+nu0c6d99soE0h6awJSET1IdWdqegQNKbQwIk47Oup/pB
+	 cSOyHy+Rab+W5+XK3lvu6MxerPCPGz/vD/WwjLqOguaquT8j543qHttz695psX+ssu
+	 X5BzQ5vcEUYc7YL910Kq6UbLvRDZQvAH8GHdw0Ej3QYhoX5ZJw7m57sx43/bnlQoWb
+	 88DR9O+3ZsSV6DWKkgnGh08b4dlDvf5TNIJF4vZ8GrusdCSU8s1HXTgQcPp9PNPm8V
+	 eEXjNJBUkBVKDTnbo/8j/Mjq3qF7H15U7TQDLVtTTZoJCryyOrVqVCqW2ItkM12g3j
+	 gjMpcVs1NFv+A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Tejun Heo <tj@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 6.1 164/212] kernfs: Acquire kernfs_rwsem in kernfs_get_parent_dentry().
-Date: Mon,  5 May 2025 19:05:36 -0400
-Message-Id: <20250505230624.2692522-164-sashal@kernel.org>
+Cc: Andrii Nakryiko <andrii@kernel.org>,
+	Emil Tsalapatis <emil@etsalapatis.com>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	daniel@iogearbox.net,
+	bpf@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 165/212] libbpf: fix LDX/STX/ST CO-RE relocation size adjustment logic
+Date: Mon,  5 May 2025 19:05:37 -0400
+Message-Id: <20250505230624.2692522-165-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -65,39 +68,90 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit 122ab92dee80582c39740609a627198dd5b6b595 ]
+[ Upstream commit 06096d19ee3897a7e70922580159607fe315da7a ]
 
-kernfs_get_parent_dentry() passes kernfs_node::parent to
-kernfs_get_inode().
+Libbpf has a somewhat obscure feature of automatically adjusting the
+"size" of LDX/STX/ST instruction (memory store and load instructions),
+based on originally recorded access size (u8, u16, u32, or u64) and the
+actual size of the field on target kernel. This is meant to facilitate
+using BPF CO-RE on 32-bit architectures (pointers are always 64-bit in
+BPF, but host kernel's BTF will have it as 32-bit type), as well as
+generally supporting safe type changes (unsigned integer type changes
+can be transparently "relocated").
 
-Acquire kernfs_root::kernfs_rwsem to ensure kernfs_node::parent isn't
-replaced during the operation.
+One issue that surfaced only now, 5 years after this logic was
+implemented, is how this all works when dealing with fields that are
+arrays. This isn't all that easy and straightforward to hit (see
+selftests that reproduce this condition), but one of sched_ext BPF
+programs did hit it with innocent looking loop.
 
-Acked-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://lore.kernel.org/r/20250213145023.2820193-3-bigeasy@linutronix.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Long story short, libbpf used to calculate entire array size, instead of
+making sure to only calculate array's element size. But it's the element
+that is loaded by LDX/STX/ST instructions (1, 2, 4, or 8 bytes), so
+that's what libbpf should check. This patch adjusts the logic for
+arrays and fixed the issue.
+
+Reported-by: Emil Tsalapatis <emil@etsalapatis.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20250207014809.1573841-1-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/kernfs/mount.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/lib/bpf/relo_core.c | 24 ++++++++++++++++++++----
+ 1 file changed, 20 insertions(+), 4 deletions(-)
 
-diff --git a/fs/kernfs/mount.c b/fs/kernfs/mount.c
-index e08e8d9998070..0c98621a17a80 100644
---- a/fs/kernfs/mount.c
-+++ b/fs/kernfs/mount.c
-@@ -138,7 +138,9 @@ static struct dentry *kernfs_fh_to_parent(struct super_block *sb,
- static struct dentry *kernfs_get_parent_dentry(struct dentry *child)
+diff --git a/tools/lib/bpf/relo_core.c b/tools/lib/bpf/relo_core.c
+index c4b0e81ae2931..84f26b36f664c 100644
+--- a/tools/lib/bpf/relo_core.c
++++ b/tools/lib/bpf/relo_core.c
+@@ -683,7 +683,7 @@ static int bpf_core_calc_field_relo(const char *prog_name,
  {
- 	struct kernfs_node *kn = kernfs_dentry_node(child);
-+	struct kernfs_root *root = kernfs_root(kn);
- 
-+	guard(rwsem_read)(&root->kernfs_rwsem);
- 	return d_obtain_alias(kernfs_get_inode(child->d_sb, kn->parent));
- }
- 
+ 	const struct bpf_core_accessor *acc;
+ 	const struct btf_type *t;
+-	__u32 byte_off, byte_sz, bit_off, bit_sz, field_type_id;
++	__u32 byte_off, byte_sz, bit_off, bit_sz, field_type_id, elem_id;
+ 	const struct btf_member *m;
+ 	const struct btf_type *mt;
+ 	bool bitfield;
+@@ -706,8 +706,14 @@ static int bpf_core_calc_field_relo(const char *prog_name,
+ 	if (!acc->name) {
+ 		if (relo->kind == BPF_CORE_FIELD_BYTE_OFFSET) {
+ 			*val = spec->bit_offset / 8;
+-			/* remember field size for load/store mem size */
+-			sz = btf__resolve_size(spec->btf, acc->type_id);
++			/* remember field size for load/store mem size;
++			 * note, for arrays we care about individual element
++			 * sizes, not the overall array size
++			 */
++			t = skip_mods_and_typedefs(spec->btf, acc->type_id, &elem_id);
++			while (btf_is_array(t))
++				t = skip_mods_and_typedefs(spec->btf, btf_array(t)->type, &elem_id);
++			sz = btf__resolve_size(spec->btf, elem_id);
+ 			if (sz < 0)
+ 				return -EINVAL;
+ 			*field_sz = sz;
+@@ -767,7 +773,17 @@ static int bpf_core_calc_field_relo(const char *prog_name,
+ 	case BPF_CORE_FIELD_BYTE_OFFSET:
+ 		*val = byte_off;
+ 		if (!bitfield) {
+-			*field_sz = byte_sz;
++			/* remember field size for load/store mem size;
++			 * note, for arrays we care about individual element
++			 * sizes, not the overall array size
++			 */
++			t = skip_mods_and_typedefs(spec->btf, field_type_id, &elem_id);
++			while (btf_is_array(t))
++				t = skip_mods_and_typedefs(spec->btf, btf_array(t)->type, &elem_id);
++			sz = btf__resolve_size(spec->btf, elem_id);
++			if (sz < 0)
++				return -EINVAL;
++			*field_sz = sz;
+ 			*type_id = field_type_id;
+ 		}
+ 		break;
 -- 
 2.39.5
 
