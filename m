@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-141668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24E3FAAB778
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:12:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE683AAB79A
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:14:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 145B17A94DD
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:11:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 060654E30EA
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:12:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96C6834826E;
-	Tue,  6 May 2025 00:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57EC549E683;
+	Tue,  6 May 2025 00:47:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b2zPjEek"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TOGD61Yq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57BB83AA167;
-	Mon,  5 May 2025 23:18:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C8D392F94;
+	Mon,  5 May 2025 23:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487104; cv=none; b=ccxYUE6izyBbFpnjqViGEWWCX9+7lRKdv1bBw9giFEEKAXHMfA2wXu5lJaSEAPNF7G8P5vAYfTGawAWCkp8M+mw8cSgvLXjrjTQ9FALWaXbIdhmUQcnxAUB9ne4XrJrdZcE5oGtnbRVjOlWGm7lvl0MQZCszBoAH/J9RsDHaejw=
+	t=1746487126; cv=none; b=k+MqW3xPnKflg9VO+ThUrQEMIW2EV8NjNaCqa+PUybop0fCm8YbMAlc0a8FajeRl1Ls2U7ZyzTcgu9vBuyEoAyO9wii4GiTa9a/KITzuY6mnYfQgb/AoLhNDX7yH4Tim3U/90FLVoOIdJNsIeep0tsXt6T2FeWDTva6sFtteuI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487104; c=relaxed/simple;
-	bh=zEWgyvgE0K3/6juLqJn8ugmpW06gemNbsD2fMXiHnzM=;
+	s=arc-20240116; t=1746487126; c=relaxed/simple;
+	bh=c/ZRcjt/5odMSgBwPe3ZiTpzNSyYGXxRkVdPpWZtesY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=t/owmNni298l6eV+0sRzUlLr7jtr3VIUA0rAc9iuRLXbl2te4JYTUdXcABo/7g1a7x41DwVWPM3Il4V+PRSPTEZQtMfoLhQCTj+NXqGnG5m4+KMTcowH7GTfjSs1n/4TtnmoxZKabIp35zwx7mpvtNyF8oMlcifpmvyb4CbhCQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b2zPjEek; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F43CC4CEF1;
-	Mon,  5 May 2025 23:18:23 +0000 (UTC)
+	 MIME-Version; b=sRaDjbIDYu+4kDEw9fzfjsmN5MH7KOq6qCtkxOAG+7OHd5f7cRC2wmfVSV24rGg1QhchGHjHREMpxuEVAnElFeY9AmYwBzxwso7o8k9KuhNm/bww93amXAfPmM10ADRSWZ9FZe+CtDLpPKUDhONIv11WuI5k/Dj+0UdZu+QPzLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TOGD61Yq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F35C4C4CEEF;
+	Mon,  5 May 2025 23:18:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487104;
-	bh=zEWgyvgE0K3/6juLqJn8ugmpW06gemNbsD2fMXiHnzM=;
+	s=k20201202; t=1746487126;
+	bh=c/ZRcjt/5odMSgBwPe3ZiTpzNSyYGXxRkVdPpWZtesY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b2zPjEekaW8EO1MfSHybTR+0SAp1w0PRBrIrdgSabG995cfBjBbHZ+y0cTYrTMO7c
-	 ZepMpWCDiUC2q5ql1hyB0huJLp3OmCsXuqS2SZx9ZDGsOv2LH44nZx4QebMFb0RmIL
-	 TwDsFiDTdMR7SmX8ts/ksxMr0YP1XOaYsd4G1afPVGvlBovYUvNU4GL99IREvahZxn
-	 O+ScW0BKcEf7jrVfZf9YLOpiosBhWZJGVy+i4M7+OJOSXJYxt7WkQ7KiaCgT17A2py
-	 ylYlGlfFFxaixtJgnPwy+qCeBOhh0f/Zd9fR41wj2h51buRHaqH4pUy+mnFjEjigAg
-	 uozKE4chDAqaQ==
+	b=TOGD61YqTLrMNflX7cPlUaWBLdrTGNrXRiBfy5vpJZ9Yyde+2wOIQCdPAARKaWMDD
+	 GF4+DmTPcv8oP+UkCQp+qCSoMgnO/TT37jtdSnvYQjYkqEKg8dJJxTw5VlY+y1W1RO
+	 A7m0mJNzqzwBs19HMeNiLW3c6Iqy3r5+Y0zmwXIWbbv0blPRs1TBF9dBFdYG1X7tS4
+	 UifkhA15BDfZmsTBs490myf0mEF8ApsbTdVSOKinLpYg57YSTGRExz10sSJeKUd54W
+	 RFUlENzNGFHH80patBRkn0pnRsL5+UyPxDLDmb2ZARPLMi5c6qSBtdlBx6t9kqxL5A
+	 my25a1PNHz3zA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Jassi Brar <jassisinghbrar@gmail.com>,
+Cc: Jing Su <jingsusu@didiglobal.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 5.10 003/114] mailbox: use error ret code of of_parse_phandle_with_args()
-Date: Mon,  5 May 2025 19:16:26 -0400
-Message-Id: <20250505231817.2697367-3-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 012/114] dql: Fix dql->limit value when reset.
+Date: Mon,  5 May 2025 19:16:35 -0400
+Message-Id: <20250505231817.2697367-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231817.2697367-1-sashal@kernel.org>
 References: <20250505231817.2697367-1-sashal@kernel.org>
@@ -64,43 +64,44 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.237
 Content-Transfer-Encoding: 8bit
 
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
+From: Jing Su <jingsusu@didiglobal.com>
 
-[ Upstream commit 24fdd5074b205cfb0ef4cd0751a2d03031455929 ]
+[ Upstream commit 3a17f23f7c36bac3a3584aaf97d3e3e0b2790396 ]
 
-In case of error, of_parse_phandle_with_args() returns -EINVAL when the
-passed index is negative, or -ENOENT when the index is for an empty
-phandle. The mailbox core overwrote the error return code with a less
-precise -ENODEV. Use the error returned code from
-of_parse_phandle_with_args().
+Executing dql_reset after setting a non-zero value for limit_min can
+lead to an unreasonable situation where dql->limit is less than
+dql->limit_min.
 
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Signed-off-by: Jassi Brar <jassisinghbrar@gmail.com>
+For instance, after setting
+/sys/class/net/eth*/queues/tx-0/byte_queue_limits/limit_min,
+an ifconfig down/up operation might cause the ethernet driver to call
+netdev_tx_reset_queue, which in turn invokes dql_reset.
+
+In this case, dql->limit is reset to 0 while dql->limit_min remains
+non-zero value, which is unexpected. The limit should always be
+greater than or equal to limit_min.
+
+Signed-off-by: Jing Su <jingsusu@didiglobal.com>
+Link: https://patch.msgid.link/Z9qHD1s/NEuQBdgH@pilot-ThinkCentre-M930t-N000
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mailbox/mailbox.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ lib/dynamic_queue_limits.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
-index 4229b9b5da98f..6f54501dc7762 100644
---- a/drivers/mailbox/mailbox.c
-+++ b/drivers/mailbox/mailbox.c
-@@ -350,11 +350,12 @@ struct mbox_chan *mbox_request_channel(struct mbox_client *cl, int index)
- 
- 	mutex_lock(&con_mutex);
- 
--	if (of_parse_phandle_with_args(dev->of_node, "mboxes",
--				       "#mbox-cells", index, &spec)) {
-+	ret = of_parse_phandle_with_args(dev->of_node, "mboxes", "#mbox-cells",
-+					 index, &spec);
-+	if (ret) {
- 		dev_dbg(dev, "%s: can't parse \"mboxes\" property\n", __func__);
- 		mutex_unlock(&con_mutex);
--		return ERR_PTR(-ENODEV);
-+		return ERR_PTR(ret);
- 	}
- 
- 	chan = ERR_PTR(-EPROBE_DEFER);
+diff --git a/lib/dynamic_queue_limits.c b/lib/dynamic_queue_limits.c
+index fde0aa2441480..a75a9ca46b594 100644
+--- a/lib/dynamic_queue_limits.c
++++ b/lib/dynamic_queue_limits.c
+@@ -116,7 +116,7 @@ EXPORT_SYMBOL(dql_completed);
+ void dql_reset(struct dql *dql)
+ {
+ 	/* Reset all dynamic values */
+-	dql->limit = 0;
++	dql->limit = dql->min_limit;
+ 	dql->num_queued = 0;
+ 	dql->num_completed = 0;
+ 	dql->last_obj_cnt = 0;
 -- 
 2.39.5
 
