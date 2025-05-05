@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-140241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C507AAAA6AC
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:17:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 334EBAAA676
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:13:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 782443AEFA8
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:11:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC52F17882B
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:12:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66971290BD4;
-	Mon,  5 May 2025 22:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03B7D3278F0;
+	Mon,  5 May 2025 22:34:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="niM801Kn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rcKUtw7D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 205663272D6;
-	Mon,  5 May 2025 22:34:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9F1C3278E1;
+	Mon,  5 May 2025 22:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484484; cv=none; b=ORbKFTQ1il0GWTzRXSflAQnc5YVhd84IVSmdNjaPyqVlCap6NoKFf5uxwN1YQP4e8uc21P3spcLMgf39N4CW/ZJmCvxctepw/P00Q2T2lgnalrNbjLo/pr1da/lsuPTA6fEtRGo5C4bFpLOj0+aAfsxzKkrEv2NJ3qgL4S08E0Y=
+	t=1746484485; cv=none; b=S1xWfCqARCnpMKh3Tq+6cLjzGT2LjWgWuFDCxPdoXZnKoSj2rp4QH74D4leTlRQJhYxLJrYYg2hy+OA7+V8+QP2Rdy8dc44EJrH5n18nHhhmE0nZyslY1v8tc47EIGg5NcJaaimURFS0Ufl62E9MiIHb9Ui5yIQ6fBH9g76ggF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484484; c=relaxed/simple;
-	bh=y4du74TKn+X96QeimtPntdcuAS8xlZ9guu7x0q8AqmA=;
+	s=arc-20240116; t=1746484485; c=relaxed/simple;
+	bh=28MycwQojl4yf0AI0YpWwlRGwTopcRDThnxfc93eX6Q=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Xptw/cphfUdq2LXI7Lx31jqwoYM4xMMx4lJ7JukZcQxetI4fs5ZMYtJTCgp9gs5Ge5YfEv+///sp8aS3uLX5fIK6FmJcDdPg2rquhWgs0wUzLBAxpdl3HRLNDvIefuY306q7BznRNLr0TqP3iAk/U+YHnEAKT1NUjyukGDIgLgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=niM801Kn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E87F2C4CEF2;
-	Mon,  5 May 2025 22:34:42 +0000 (UTC)
+	 MIME-Version; b=Q9rbJRiSzHsstG6XUNUlEaHgVYXBB+7o0+LmPb7cgaSB7+2ugLQWfnR8kiJwF3ldeR+tmEMB6c9BZlaJaiq37pKoZEMWPRL2Q7SQJIRglV+nmy7e7+ACYgeTWx1qUtav/ZQS3ZXkJxVTcTlqOcSlbdvMrxhB/jzwKOhf2abvRoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rcKUtw7D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D868C4CEF3;
+	Mon,  5 May 2025 22:34:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484484;
-	bh=y4du74TKn+X96QeimtPntdcuAS8xlZ9guu7x0q8AqmA=;
+	s=k20201202; t=1746484485;
+	bh=28MycwQojl4yf0AI0YpWwlRGwTopcRDThnxfc93eX6Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=niM801Kn28TE2aSEKtRGHxOUObxGnF7iVPRKtzHT+L5zZf+a3JAWqg5DHhTMK/XBF
-	 Vd6ZEb3VGXDspa8dfPf+FqZrcFw/tmi/6bAQSG2xRX+qV6+kWFFPRq5JEbfZ4MTXFH
-	 m6gM2AqY7tjSgXN8Oru2AXzJryDyHyuRvwPnIuHf/Kh0UtLqDrxVQuk7BGba9LUTjF
-	 3VduyqzYw75hNcCJyl39Ov+OBWg7FgZdJb7nK3y+mBvHDp86ESRrdLb+kMOt586OPi
-	 WxzUSuEBJFZb5Q2nWX/Lnsal3mx6gJE+n+0NG7oXebXXM0zZZWMhXcqZzcDnB8lrlU
-	 mIZylBk+xuLbg==
+	b=rcKUtw7Dh1L6U3jReQ0KXYCuSxuX9pqRjTF68Qd9XQQ2iZFUlq6wrKw+m6GYYFK1s
+	 fJlvmr5zU3oop+W12JdE3D3J9TZX2LABGoGeVoukhj1ant3Gsuq7Bsu4ZIlZizr++v
+	 eO7A8RSaGgt3MiVkUyKFtR3nHCsllB1LZss6KHgg/6pVt3sA/Ik2vPe51HGJO5Hgrh
+	 1FxMXBHWcTcWIlKSKU9P6gAwzyZJJPQ9BYbBzHNQGGGLmoew13orzUOA6qFFar6BFJ
+	 htfBhIH22/6z+qZkrdg47O6KhKDFNg4Vs/LmsYg0A7xmcjYjDKk3wtIomIt7cVhWSN
+	 yaeJEldgwuWuQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Angelo Dureghello <adureghello@baylibre.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+Cc: Aaradhana Sahu <quic_aarasahu@quicinc.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	lars@metafoo.de,
-	Michael.Hennerich@analog.com,
-	jic23@kernel.org,
-	linux-iio@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 493/642] iio: adc: ad7606: protect register access
-Date: Mon,  5 May 2025 18:11:49 -0400
-Message-Id: <20250505221419.2672473-493-sashal@kernel.org>
+	jjohnson@kernel.org,
+	linux-wireless@vger.kernel.org,
+	ath12k@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.14 494/642] wifi: ath12k: Enable MLO setup ready and teardown commands for single split-phy device
+Date: Mon,  5 May 2025 18:11:50 -0400
+Message-Id: <20250505221419.2672473-494-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -68,51 +68,134 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Angelo Dureghello <adureghello@baylibre.com>
+From: Aaradhana Sahu <quic_aarasahu@quicinc.com>
 
-[ Upstream commit 0f65f59e632d942cccffd12c36036c24eb7037eb ]
+[ Upstream commit 5cec2d86c7f4242fb30a696d8e6fd48109bf3e8f ]
 
-Protect register (and bus) access from concurrent
-read / write. Needed in the backend operating mode.
+When multi-link operation(MLO) is enabled through follow-up patches in
+the single split-phy device, the firmware expects hardware links
+(hw_links) information from the driver.
 
-Signed-off-by: Angelo Dureghello <adureghello@baylibre.com>
-Link: https://patch.msgid.link/20250210-wip-bl-ad7606_add_backend_sw_mode-v4-7-160df18b1da7@baylibre.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+If driver does not send WMI multi-link setup and ready command to the
+firmware during MLO setup for single split-phy device, the firmware will
+be unaware of the hw_links component of the multi-link operation. This may
+lead to firmware assert during multi-link association.
+
+Therefore, enable WMI setup, ready and teardown commands for single
+split-phy PCI device.
+
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+
+Signed-off-by: Aaradhana Sahu <quic_aarasahu@quicinc.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250207050327.360987-2-quic_aarasahu@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7606.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/net/wireless/ath/ath12k/core.c | 33 +++++++++++++++++++++++++-
+ drivers/net/wireless/ath/ath12k/core.h |  1 +
+ drivers/net/wireless/ath/ath12k/mac.c  |  9 +++++++
+ 3 files changed, 42 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
-index d39354afd5394..2b0725449a6ab 100644
---- a/drivers/iio/adc/ad7606.c
-+++ b/drivers/iio/adc/ad7606.c
-@@ -852,7 +852,12 @@ static int ad7606_write_raw(struct iio_dev *indio_dev,
+diff --git a/drivers/net/wireless/ath/ath12k/core.c b/drivers/net/wireless/ath/ath12k/core.c
+index 212cd935e60a0..ffd173ff7b08c 100644
+--- a/drivers/net/wireless/ath/ath12k/core.c
++++ b/drivers/net/wireless/ath/ath12k/core.c
+@@ -887,10 +887,41 @@ static void ath12k_core_hw_group_stop(struct ath12k_hw_group *ag)
+ 	ath12k_mac_destroy(ag);
+ }
+ 
++u8 ath12k_get_num_partner_link(struct ath12k *ar)
++{
++	struct ath12k_base *partner_ab, *ab = ar->ab;
++	struct ath12k_hw_group *ag = ab->ag;
++	struct ath12k_pdev *pdev;
++	u8 num_link = 0;
++	int i, j;
++
++	lockdep_assert_held(&ag->mutex);
++
++	for (i = 0; i < ag->num_devices; i++) {
++		partner_ab = ag->ab[i];
++
++		for (j = 0; j < partner_ab->num_radios; j++) {
++			pdev = &partner_ab->pdevs[j];
++
++			/* Avoid the self link */
++			if (ar == pdev->ar)
++				continue;
++
++			num_link++;
++		}
++	}
++
++	return num_link;
++}
++
+ static int __ath12k_mac_mlo_ready(struct ath12k *ar)
+ {
++	u8 num_link = ath12k_get_num_partner_link(ar);
+ 	int ret;
+ 
++	if (num_link == 0)
++		return 0;
++
+ 	ret = ath12k_wmi_mlo_ready(ar);
+ 	if (ret) {
+ 		ath12k_err(ar->ab, "MLO ready failed for pdev %d: %d\n",
+@@ -932,7 +963,7 @@ static int ath12k_core_mlo_setup(struct ath12k_hw_group *ag)
+ {
+ 	int ret, i;
+ 
+-	if (!ag->mlo_capable || ag->num_devices == 1)
++	if (!ag->mlo_capable)
+ 		return 0;
+ 
+ 	ret = ath12k_mac_mlo_setup(ag);
+diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
+index ee595794a7aee..6325ac493f82c 100644
+--- a/drivers/net/wireless/ath/ath12k/core.h
++++ b/drivers/net/wireless/ath/ath12k/core.h
+@@ -1084,6 +1084,7 @@ int ath12k_core_resume(struct ath12k_base *ab);
+ int ath12k_core_suspend(struct ath12k_base *ab);
+ int ath12k_core_suspend_late(struct ath12k_base *ab);
+ void ath12k_core_hw_group_unassign(struct ath12k_base *ab);
++u8 ath12k_get_num_partner_link(struct ath12k *ar);
+ 
+ const struct firmware *ath12k_core_firmware_request(struct ath12k_base *ab,
+ 						    const char *filename);
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 9c3e66dbe0c3b..9123ffab55b52 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -11140,6 +11140,9 @@ static int __ath12k_mac_mlo_setup(struct ath12k *ar)
  		}
- 		val = (val * MICRO) + val2;
- 		i = find_closest(val, scale_avail_uv, cs->num_scales);
+ 	}
+ 
++	if (num_link == 0)
++		return 0;
 +
-+		ret = iio_device_claim_direct_mode(indio_dev);
-+		if (ret < 0)
-+			return ret;
- 		ret = st->write_scale(indio_dev, ch, i + cs->reg_offset);
-+		iio_device_release_direct_mode(indio_dev);
- 		if (ret < 0)
- 			return ret;
- 		cs->range = i;
-@@ -863,7 +868,12 @@ static int ad7606_write_raw(struct iio_dev *indio_dev,
- 			return -EINVAL;
- 		i = find_closest(val, st->oversampling_avail,
- 				 st->num_os_ratios);
+ 	mlo.group_id = cpu_to_le32(ag->id);
+ 	mlo.partner_link_id = partner_link_id;
+ 	mlo.num_partner_links = num_link;
+@@ -11169,10 +11172,16 @@ static int __ath12k_mac_mlo_teardown(struct ath12k *ar)
+ {
+ 	struct ath12k_base *ab = ar->ab;
+ 	int ret;
++	u8 num_link;
+ 
+ 	if (test_bit(ATH12K_FLAG_RECOVERY, &ab->dev_flags))
+ 		return 0;
+ 
++	num_link = ath12k_get_num_partner_link(ar);
 +
-+		ret = iio_device_claim_direct_mode(indio_dev);
-+		if (ret < 0)
-+			return ret;
- 		ret = st->write_os(indio_dev, i);
-+		iio_device_release_direct_mode(indio_dev);
- 		if (ret < 0)
- 			return ret;
- 		st->oversampling = st->oversampling_avail[i];
++	if (num_link == 0)
++		return 0;
++
+ 	ret = ath12k_wmi_mlo_teardown(ar);
+ 	if (ret) {
+ 		ath12k_warn(ab, "failed to send MLO teardown WMI command for pdev %d: %d\n",
 -- 
 2.39.5
 
