@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-140701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC74DAAAEC3
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:03:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B988AAAEDE
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:06:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2053F189D37A
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:00:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D907D3B7F1E
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:00:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10A2D3991BA;
-	Mon,  5 May 2025 23:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A11A2EDB04;
+	Mon,  5 May 2025 23:08:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VRzk+bqM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D2SVAg/N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A1338094B;
-	Mon,  5 May 2025 23:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02FAF3628D8;
+	Mon,  5 May 2025 23:00:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486012; cv=none; b=Nr1ApOKs+gdx57WfzAp/lln1Qu3ye5/CfwXFka3oeNBZtU6pgUkbZ2n3tfhNiw/OusHf6CzZ/ESm5nOVZc45ccSqDcE5vYriX8fCA2lTB9CoJp6pf5YRR6O56e92hU8oeVlDFDuyavVJlvTArvqbKKeU2y8agkWMDArw/jLrQOk=
+	t=1746486020; cv=none; b=Dsnn7vD8R8YTCN+NsaHeXq5h+s0R+V9r7JwPLUTHhsWf3NxRTs3KsGysd4ShSiF7NtH4iuk06YxwrpanLgB3w1Ng+rd8QAa6lwqcLoWr0Ucrz0HXCcV2rn240baJfobQb8zx2+9CTsC5dVdO5SvFx1oyD9Idi+LkgZa/puacNUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486012; c=relaxed/simple;
-	bh=QQIXp7hbqbjPEumCt3kAXcAYUhfy4oRS2t8Xd1ElWJM=;
+	s=arc-20240116; t=1746486020; c=relaxed/simple;
+	bh=w77OVwFOBIqkTQWSAcVJmtejwe6G3YJjUFKC8U+KbCg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=oZtqHDBiW2XiFsj8mmnwRhkZCUKkE6k8mMOuiWCORMShgDDdYvXMnVPC8r/k9jf4G7EA0oeXXKO+6jY4EBwXo2PPhJrXtyoF3xc1VLuYP9pp7XLWoBHko5Av2g0dKsqmvuAgxWabjsjXP8Afz56sOZ5V0jB1yO8egPcT0TdapcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VRzk+bqM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 947CAC4CEEF;
-	Mon,  5 May 2025 23:00:09 +0000 (UTC)
+	 MIME-Version; b=aZWszP5BNybiu71Gf70DKHr2iLDoWN1CtOUj67OSwcpMZ4CqfnFcDR/9/YIbz4JK9rr7KH8U/HQv+2GFNjOuk85NQdFAxwGf4d+KS+tE2mpfSQrDmz7Jw0sbY3279EAeSW8TVZynGT8lGHQOGc76JwyY08VqUXI7BQJQXE59ns4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D2SVAg/N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3957C4CEE4;
+	Mon,  5 May 2025 23:00:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486010;
-	bh=QQIXp7hbqbjPEumCt3kAXcAYUhfy4oRS2t8Xd1ElWJM=;
+	s=k20201202; t=1746486018;
+	bh=w77OVwFOBIqkTQWSAcVJmtejwe6G3YJjUFKC8U+KbCg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VRzk+bqMARJEkxYl7RfVZFgwuvvFQV63TcQPDMaM8KiGjEkOGJA2AVv5nM6Df+TjG
-	 U3FpKhp7om4Rp28Ygwvlp8RJLd5tqVLgzkj4s3l92xetwcjl1Y0/beajDXaKzu5KCs
-	 +ICtpS3Tig7snywcfCc5zIdR5+1tTbeg/53uAei/W9XATm/GXuC3EA/YRhNSqwm7V5
-	 fUM/hjkCITVd0BhSMMxjkvhols6eqxOpJZP2ZxXODc/rlRgRBRIdS6b6E4DRdJsSAb
-	 JkhiFscmgMapzaBoHVeVxU0ObNzWb4BnSUuSMfeqB/0yHEewWqA1r+poeNQlmLADfA
-	 cPIbN/pH9zloQ==
+	b=D2SVAg/NHbVvYZ/9hOsmJeFs1BuC7dgrFcemi4y0eeat2OEKVQ9q7VNM/M2F/ZHLW
+	 F/jlOgVMKMRSjTTKXnHtFgj6NGxGtnUVuSOtCtQyv0aHOAZR9Z4c0OD3ruEO5qygMY
+	 bksoYpZVzftZcSljh1C1nHMGVZCEtyTLFq/hr5pvQGsymwtDHxwS85z9khdrzrjJir
+	 N0BiVJ61q2WZVTCayj1G25rJx3WUwX9ttkFuc0m6YZtJVq8JDWJZevYdHV+sM3Zd+e
+	 S3ZSeL+Wd5RVSU7Sl7cLnY4hOHRb9YdGHWPWC3fiG/cCw7nidvrcu0NxozH8qHHXs7
+	 i/GhkEVTK/8Bg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Eric Dumazet <edumazet@google.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Ming-Hung Tsai <mtsai@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	ncardwell@google.com,
-	davem@davemloft.net,
-	dsahern@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 108/294] tcp: bring back NUMA dispersion in inet_ehash_locks_alloc()
-Date: Mon,  5 May 2025 18:53:28 -0400
-Message-Id: <20250505225634.2688578-108-sashal@kernel.org>
+	agk@redhat.com,
+	snitzer@kernel.org,
+	dm-devel@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.6 113/294] dm cache: prevent BUG_ON by blocking retries on failed device resumes
+Date: Mon,  5 May 2025 18:53:33 -0400
+Message-Id: <20250505225634.2688578-113-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -71,103 +67,119 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ming-Hung Tsai <mtsai@redhat.com>
 
-[ Upstream commit f8ece40786c9342249aa0a1b55e148ee23b2a746 ]
+[ Upstream commit 5da692e2262b8f81993baa9592f57d12c2703dea ]
 
-We have platforms with 6 NUMA nodes and 480 cpus.
+A cache device failing to resume due to mapping errors should not be
+retried, as the failure leaves a partially initialized policy object.
+Repeating the resume operation risks triggering BUG_ON when reloading
+cache mappings into the incomplete policy object.
 
-inet_ehash_locks_alloc() currently allocates a single 64KB page
-to hold all ehash spinlocks. This adds more pressure on a single node.
+Reproduce steps:
 
-Change inet_ehash_locks_alloc() to use vmalloc() to spread
-the spinlocks on all online nodes, driven by NUMA policies.
+1. create a cache metadata consisting of 512 or more cache blocks,
+   with some mappings stored in the first array block of the mapping
+   array. Here we use cache_restore v1.0 to build the metadata.
 
-At boot time, NUMA policy is interleave=all, meaning that
-tcp_hashinfo.ehash_locks gets hash dispersion on all nodes.
+cat <<EOF >> cmeta.xml
+<superblock uuid="" block_size="128" nr_cache_blocks="512" \
+policy="smq" hint_width="4">
+  <mappings>
+    <mapping cache_block="0" origin_block="0" dirty="false"/>
+  </mappings>
+</superblock>
+EOF
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+cache_restore -i cmeta.xml -o /dev/mapper/cmeta --metadata-version=2
+dmsetup remove cmeta
 
-Tested:
+2. wipe the second array block of the mapping array to simulate
+   data degradations.
 
-lack5:~# grep inet_ehash_locks_alloc /proc/vmallocinfo
-0x00000000d9aec4d1-0x00000000a828b652   69632 inet_ehash_locks_alloc+0x90/0x100 pages=16 vmalloc N0=2 N1=3 N2=3 N3=3 N4=3 N5=2
+mapping_root=$(dd if=/dev/sdc bs=1c count=8 skip=192 \
+2>/dev/null | hexdump -e '1/8 "%u\n"')
+ablock=$(dd if=/dev/sdc bs=1c count=8 skip=$((4096*mapping_root+2056)) \
+2>/dev/null | hexdump -e '1/8 "%u\n"')
+dd if=/dev/zero of=/dev/sdc bs=4k count=1 seek=$ablock
 
-lack5:~# echo 8192 >/proc/sys/net/ipv4/tcp_child_ehash_entries
-lack5:~# numactl --interleave=all unshare -n bash -c "grep inet_ehash_locks_alloc /proc/vmallocinfo"
-0x000000004e99d30c-0x00000000763f3279   36864 inet_ehash_locks_alloc+0x90/0x100 pages=8 vmalloc N0=1 N1=2 N2=2 N3=1 N4=1 N5=1
-0x00000000d9aec4d1-0x00000000a828b652   69632 inet_ehash_locks_alloc+0x90/0x100 pages=16 vmalloc N0=2 N1=3 N2=3 N3=3 N4=3 N5=2
+3. try bringing up the cache device. The resume is expected to fail
+   due to the broken array block.
 
-lack5:~# numactl --interleave=0,5 unshare -n bash -c "grep inet_ehash_locks_alloc /proc/vmallocinfo"
-0x00000000fd73a33e-0x0000000004b9a177   36864 inet_ehash_locks_alloc+0x90/0x100 pages=8 vmalloc N0=4 N5=4
-0x00000000d9aec4d1-0x00000000a828b652   69632 inet_ehash_locks_alloc+0x90/0x100 pages=16 vmalloc N0=2 N1=3 N2=3 N3=3 N4=3 N5=2
+dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
+dmsetup create cdata --table "0 65536 linear /dev/sdc 8192"
+dmsetup create corig --table "0 524288 linear /dev/sdc 262144"
+dmsetup create cache --notable
+dmsetup load cache --table "0 524288 cache /dev/mapper/cmeta \
+/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
+dmsetup resume cache
 
-lack5:~# echo 1024 >/proc/sys/net/ipv4/tcp_child_ehash_entries
-lack5:~# numactl --interleave=all unshare -n bash -c "grep inet_ehash_locks_alloc /proc/vmallocinfo"
-0x00000000db07d7a2-0x00000000ad697d29    8192 inet_ehash_locks_alloc+0x90/0x100 pages=1 vmalloc N2=1
-0x00000000d9aec4d1-0x00000000a828b652   69632 inet_ehash_locks_alloc+0x90/0x100 pages=16 vmalloc N0=2 N1=3 N2=3 N3=3 N4=3 N5=2
+4. try resuming the cache again. An unexpected BUG_ON is triggered
+   while loading cache mappings.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Tested-by: Jason Xing <kerneljasonxing@gmail.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20250305130550.1865988-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+dmsetup resume cache
+
+Kernel logs:
+
+(snip)
+------------[ cut here ]------------
+kernel BUG at drivers/md/dm-cache-policy-smq.c:752!
+Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN NOPTI
+CPU: 0 UID: 0 PID: 332 Comm: dmsetup Not tainted 6.13.4 #3
+RIP: 0010:smq_load_mapping+0x3e5/0x570
+
+Fix by disallowing resume operations for devices that failed the
+initial attempt.
+
+Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/inet_hashtables.c | 37 ++++++++++++++++++++++++++-----------
- 1 file changed, 26 insertions(+), 11 deletions(-)
+ drivers/md/dm-cache-target.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
-index 7967ff7e02f79..60e81f6b1c6d4 100644
---- a/net/ipv4/inet_hashtables.c
-+++ b/net/ipv4/inet_hashtables.c
-@@ -1231,22 +1231,37 @@ int inet_ehash_locks_alloc(struct inet_hashinfo *hashinfo)
- {
- 	unsigned int locksz = sizeof(spinlock_t);
- 	unsigned int i, nblocks = 1;
-+	spinlock_t *ptr = NULL;
- 
--	if (locksz != 0) {
--		/* allocate 2 cache lines or at least one spinlock per cpu */
--		nblocks = max(2U * L1_CACHE_BYTES / locksz, 1U);
--		nblocks = roundup_pow_of_two(nblocks * num_possible_cpus());
-+	if (locksz == 0)
-+		goto set_mask;
- 
--		/* no more locks than number of hash buckets */
--		nblocks = min(nblocks, hashinfo->ehash_mask + 1);
-+	/* Allocate 2 cache lines or at least one spinlock per cpu. */
-+	nblocks = max(2U * L1_CACHE_BYTES / locksz, 1U) * num_possible_cpus();
- 
--		hashinfo->ehash_locks = kvmalloc_array(nblocks, locksz, GFP_KERNEL);
--		if (!hashinfo->ehash_locks)
--			return -ENOMEM;
-+	/* At least one page per NUMA node. */
-+	nblocks = max(nblocks, num_online_nodes() * PAGE_SIZE / locksz);
-+
-+	nblocks = roundup_pow_of_two(nblocks);
-+
-+	/* No more locks than number of hash buckets. */
-+	nblocks = min(nblocks, hashinfo->ehash_mask + 1);
- 
--		for (i = 0; i < nblocks; i++)
--			spin_lock_init(&hashinfo->ehash_locks[i]);
-+	if (num_online_nodes() > 1) {
-+		/* Use vmalloc() to allow NUMA policy to spread pages
-+		 * on all available nodes if desired.
-+		 */
-+		ptr = vmalloc_array(nblocks, locksz);
-+	}
-+	if (!ptr) {
-+		ptr = kvmalloc_array(nblocks, locksz, GFP_KERNEL);
-+		if (!ptr)
-+			return -ENOMEM;
- 	}
-+	for (i = 0; i < nblocks; i++)
-+		spin_lock_init(&ptr[i]);
-+	hashinfo->ehash_locks = ptr;
-+set_mask:
- 	hashinfo->ehash_locks_mask = nblocks - 1;
- 	return 0;
+diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
+index c5851c9f7ec04..0d002d50329da 100644
+--- a/drivers/md/dm-cache-target.c
++++ b/drivers/md/dm-cache-target.c
+@@ -2903,6 +2903,27 @@ static dm_cblock_t get_cache_dev_size(struct cache *cache)
+ 	return to_cblock(size);
  }
+ 
++static bool can_resume(struct cache *cache)
++{
++	/*
++	 * Disallow retrying the resume operation for devices that failed the
++	 * first resume attempt, as the failure leaves the policy object partially
++	 * initialized. Retrying could trigger BUG_ON when loading cache mappings
++	 * into the incomplete policy object.
++	 */
++	if (cache->sized && !cache->loaded_mappings) {
++		if (get_cache_mode(cache) != CM_WRITE)
++			DMERR("%s: unable to resume a failed-loaded cache, please check metadata.",
++			      cache_device_name(cache));
++		else
++			DMERR("%s: unable to resume cache due to missing proper cache table reload",
++			      cache_device_name(cache));
++		return false;
++	}
++
++	return true;
++}
++
+ static bool can_resize(struct cache *cache, dm_cblock_t new_size)
+ {
+ 	if (from_cblock(new_size) > from_cblock(cache->cache_size)) {
+@@ -2951,6 +2972,9 @@ static int cache_preresume(struct dm_target *ti)
+ 	struct cache *cache = ti->private;
+ 	dm_cblock_t csize = get_cache_dev_size(cache);
+ 
++	if (!can_resume(cache))
++		return -EINVAL;
++
+ 	/*
+ 	 * Check to see if the cache has resized.
+ 	 */
 -- 
 2.39.5
 
