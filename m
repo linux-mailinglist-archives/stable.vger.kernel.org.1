@@ -1,66 +1,66 @@
-Return-Path: <stable+bounces-141281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE9A6AAB24B
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:17:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9041CAAB25B
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:19:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16A5E3AB549
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:11:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06FBB3A7360
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:13:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA148421188;
-	Tue,  6 May 2025 00:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01BF54222FC;
+	Tue,  6 May 2025 00:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S/GQ9JMA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nde6B3e6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45DAF2BCF46;
-	Mon,  5 May 2025 22:54:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 049AB2D5D0F;
+	Mon,  5 May 2025 22:54:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485670; cv=none; b=O0Tip5FjEefhdRX8zOGuqsaxMaZ2QrafzKS/7XtB6G9pN1wkf9wC3OPA8Bx5D2yVTuXI14T8rm1aygH8Eli4WXwqUfENiRt6bffuefLPNLT48cif/y79NR1x+7208Ypa3jr1R6xQ4idq46hYTwwJrExBR4wxlNuktsUAAmm23dg=
+	t=1746485679; cv=none; b=EJnZEN1Yzn7XE0OoA+Y02S1M0TL/DSV4iRjNjFqJCKfDf9cEeeriChbbBTx2jvE2bn6qpK8Jl5EmcEOV5Cva6Fuu/LsTsjIeponQusW60PEovDvZRGDM9Ki33dfCvQPP61kinRyCjlAuBwVzRj2vNvK4OXlZS4bgN4FgamSY2bI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485670; c=relaxed/simple;
-	bh=QllDEA0wxQmEYPCZ0PctIfoSoTB7ZtFb1wtsfCkJV1M=;
+	s=arc-20240116; t=1746485679; c=relaxed/simple;
+	bh=l7jAxZOds+YpMtYaq2uWqkMKqPeBNVC/HpOgeEy1IPc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=eCF5+cGVPdVWvcUx8K7djCNmJaByv3UQVS3q9zWUWpqDyryt51VIPYwj/jNGrcKAXqZgl+PntzXvd418tvPDfCualIQIhH+owRHyAScZ5FpzCgkmCyYkIYz45vs+9La/oNiW7jJVd8g/F2ZwCg1+Gr+0Fs9I6AehaGxvodJqH0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S/GQ9JMA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 832E7C4CEED;
-	Mon,  5 May 2025 22:54:28 +0000 (UTC)
+	 MIME-Version; b=HEDsK4u7tkj4lLw4UlbaLfzzfrHYm3jGc4TokFp4DImXbKlFsK6zOVHV8Fv6Knzipx9I16ZyC0G9aVcQhEb26MHBQfvM6+kfrqOvhRyOXr8ko99J8eWQGT//oqS9u3MSMBeN3NF9Wep2IhbDf5MKQF+uwN5ISudHKRZo7JDNgeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nde6B3e6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E0FFC4CEED;
+	Mon,  5 May 2025 22:54:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485670;
-	bh=QllDEA0wxQmEYPCZ0PctIfoSoTB7ZtFb1wtsfCkJV1M=;
+	s=k20201202; t=1746485678;
+	bh=l7jAxZOds+YpMtYaq2uWqkMKqPeBNVC/HpOgeEy1IPc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S/GQ9JMA1p7QAaoATRRL95OCm36Om6+rrFCDqOF9zunbgDpO7rHBKdoosx4A5WaQh
-	 OvEIG3G3A3qDt2noZ853SVOdCLdzwApKwLng/QEp6izSAdLnECjFxcgwscp6Xvwd3R
-	 cYTHjprwV2ZaYJyOIrXCsZx5APkc0jYUmefpmaihKYqGTOrH2LlvaKSjUdZ7ffX/OF
-	 v9ul/Yd7TtFaqmed52qspx3dH/hxG0CnXIXym/jsC0XzYvQBD0oM0+N+EIY3H4jYZU
-	 oDdp3EUkQptU3oyonfB12kDpCkXNiUhzn+tzVbOna1xuuJyjbkEgMlwRfKJUukHbR7
-	 wZdmFof92E+WQ==
+	b=Nde6B3e6jruh96jvrtCtNyWi4oJ2qbf5/7INFNVqs/83jI4OqZdbNzykiCLYtRBhE
+	 yyhHe9/EF1OGLspWYbbgYETwWzjRxrLxQZlGBdyAs0sZ+pQ0SB0BTcnV40KjxYFnFi
+	 9xUyQdOobscA4QzOiH7WO/7n6hJb6S/0DkN+ULMZqx5jgmwqcGowdpiy4ytD58FyWo
+	 gydkosQzkmm7hI0aYWZjGi1/N8UjSaYk+5MheiklzoFPMJK9Pevoxm+oIT4339LU7o
+	 bNc3A55xz7wMsJczdb1m5+WQBx2nxpsdwPbMiDUKDb9ABEQ6i5xbs04PB4r6+MK0iB
+	 q3IQ/vocE7fNg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-	FUKAUMI Naoki <naoki@radxa.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+Cc: Carolina Jubran <cjubran@nvidia.com>,
+	Yael Chemla <ychemla@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	hjc@rock-chips.com,
-	andy.yan@rock-chips.com,
-	maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	dri-devel@lists.freedesktop.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-rockchip@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.12 419/486] drm/rockchip: vop2: Improve display modes handling on RK3588 HDMI0
-Date: Mon,  5 May 2025 18:38:15 -0400
-Message-Id: <20250505223922.2682012-419-sashal@kernel.org>
+	saeedm@nvidia.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 422/486] net/mlx5e: Avoid WARN_ON when configuring MQPRIO with HTB offload enabled
+Date: Mon,  5 May 2025 18:38:18 -0400
+Message-Id: <20250505223922.2682012-422-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -75,110 +75,46 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
+From: Carolina Jubran <cjubran@nvidia.com>
 
-[ Upstream commit 2c1268e7aad0819f38e56134bbc2095fd95fde1b ]
+[ Upstream commit 689805dcc474c2accb5cffbbcea1c06ee4a54570 ]
 
-The RK3588 specific implementation is currently quite limited in terms
-of handling the full range of display modes supported by the connected
-screens, e.g. 2560x1440@75Hz, 2048x1152@60Hz, 1024x768@60Hz are just a
-few of them.
+When attempting to enable MQPRIO while HTB offload is already
+configured, the driver currently returns `-EINVAL` and triggers a
+`WARN_ON`, leading to an unnecessary call trace.
 
-Additionally, it doesn't cope well with non-integer refresh rates like
-59.94, 29.97, 23.98, etc.
+Update the code to handle this case more gracefully by returning
+`-EOPNOTSUPP` instead, while also providing a helpful user message.
 
-Make use of HDMI0 PHY PLL as a more accurate DCLK source to handle
-all display modes up to 4K@60Hz.
-
-Tested-by: FUKAUMI Naoki <naoki@radxa.com>
-Signed-off-by: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250204-vop2-hdmi0-disp-modes-v3-3-d71c6a196e58@collabora.com
+Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
+Reviewed-by: Yael Chemla <ychemla@nvidia.com>
+Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 34 ++++++++++++++++++++
- 1 file changed, 34 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-index 2aab2a0956788..5d7df4c3b08c4 100644
---- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-+++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
-@@ -157,6 +157,7 @@ struct vop2_video_port {
- 	struct drm_crtc crtc;
- 	struct vop2 *vop2;
- 	struct clk *dclk;
-+	struct clk *dclk_src;
- 	unsigned int id;
- 	const struct vop2_video_port_data *data;
- 
-@@ -211,6 +212,7 @@ struct vop2 {
- 	struct clk *hclk;
- 	struct clk *aclk;
- 	struct clk *pclk;
-+	struct clk *pll_hdmiphy0;
- 
- 	/* optional internal rgb encoder */
- 	struct rockchip_rgb *rgb;
-@@ -219,6 +221,8 @@ struct vop2 {
- 	struct vop2_win win[];
- };
- 
-+#define VOP2_MAX_DCLK_RATE		600000000
-+
- #define vop2_output_if_is_hdmi(x)	((x) == ROCKCHIP_VOP2_EP_HDMI0 || \
- 					 (x) == ROCKCHIP_VOP2_EP_HDMI1)
- 
-@@ -1051,6 +1055,9 @@ static void vop2_crtc_atomic_disable(struct drm_crtc *crtc,
- 
- 	vop2_crtc_disable_irq(vp, VP_INT_DSP_HOLD_VALID);
- 
-+	if (vp->dclk_src)
-+		clk_set_parent(vp->dclk, vp->dclk_src);
-+
- 	clk_disable_unprepare(vp->dclk);
- 
- 	vop2->enable_count--;
-@@ -2071,6 +2078,27 @@ static void vop2_crtc_atomic_enable(struct drm_crtc *crtc,
- 
- 	vop2_vp_write(vp, RK3568_VP_MIPI_CTRL, 0);
- 
-+	/*
-+	 * Switch to HDMI PHY PLL as DCLK source for display modes up
-+	 * to 4K@60Hz, if available, otherwise keep using the system CRU.
-+	 */
-+	if (vop2->pll_hdmiphy0 && clock <= VOP2_MAX_DCLK_RATE) {
-+		drm_for_each_encoder_mask(encoder, crtc->dev, crtc_state->encoder_mask) {
-+			struct rockchip_encoder *rkencoder = to_rockchip_encoder(encoder);
-+
-+			if (rkencoder->crtc_endpoint_id == ROCKCHIP_VOP2_EP_HDMI0) {
-+				if (!vp->dclk_src)
-+					vp->dclk_src = clk_get_parent(vp->dclk);
-+
-+				ret = clk_set_parent(vp->dclk, vop2->pll_hdmiphy0);
-+				if (ret < 0)
-+					drm_warn(vop2->drm,
-+						 "Could not switch to HDMI0 PHY PLL: %d\n", ret);
-+				break;
-+			}
-+		}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index 15ec9750d4be0..36a2c935267b0 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -3759,8 +3759,11 @@ static int mlx5e_setup_tc_mqprio(struct mlx5e_priv *priv,
+ 	/* MQPRIO is another toplevel qdisc that can't be attached
+ 	 * simultaneously with the offloaded HTB.
+ 	 */
+-	if (WARN_ON(mlx5e_selq_is_htb_enabled(&priv->selq)))
+-		return -EINVAL;
++	if (mlx5e_selq_is_htb_enabled(&priv->selq)) {
++		NL_SET_ERR_MSG_MOD(mqprio->extack,
++				   "MQPRIO cannot be configured when HTB offload is enabled.");
++		return -EOPNOTSUPP;
 +	}
-+
- 	clk_set_rate(vp->dclk, clock);
  
- 	vop2_post_config(crtc);
-@@ -3242,6 +3270,12 @@ static int vop2_bind(struct device *dev, struct device *master, void *data)
- 		return PTR_ERR(vop2->pclk);
- 	}
- 
-+	vop2->pll_hdmiphy0 = devm_clk_get_optional(vop2->dev, "pll_hdmiphy0");
-+	if (IS_ERR(vop2->pll_hdmiphy0)) {
-+		drm_err(vop2->drm, "failed to get pll_hdmiphy0\n");
-+		return PTR_ERR(vop2->pll_hdmiphy0);
-+	}
-+
- 	vop2->irq = platform_get_irq(pdev, 0);
- 	if (vop2->irq < 0) {
- 		drm_err(vop2->drm, "cannot find irq for vop2\n");
+ 	switch (mqprio->mode) {
+ 	case TC_MQPRIO_MODE_DCB:
 -- 
 2.39.5
 
