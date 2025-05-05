@@ -1,66 +1,56 @@
-Return-Path: <stable+bounces-140746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 995FFAAAAF1
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:47:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52D49AAAB20
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:52:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E3D14A2D4A
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:47:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49EFC3BE572
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:47:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAE49389A0C;
-	Mon,  5 May 2025 23:15:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 469EA2F47B8;
+	Mon,  5 May 2025 23:15:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fY/zncVk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SuQGFzIw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D641E38F89D;
-	Mon,  5 May 2025 23:02:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B671135B92E;
+	Mon,  5 May 2025 23:02:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486136; cv=none; b=HLT2Tsi/V+fD0a2//kMqb9tGbkruFyPf+WocCqCohbo4nqGchHVlJh+Bjf4HLymRNq0pvezbKG98J42fbbhW+Gn7aFZIwB1E/yHIu8FNdah2yahScFplkc3v/HbbEmJUThCdpgZHc3pANciKnpNJc3oHhMnlPpFvmskrHg6sUGc=
+	t=1746486138; cv=none; b=MdCRqFyuAG47SSZSGMGW3MqeH83/8jbxQiCCUdszq3yDXdk+biohIbVlbLNyR9W+oJ/wVpiu4y9FFxPl22QNYphMJnqgxf4xtvDZd8K7TUicL1IbuFmE3M2CFNA137LUdekVefWfMaGkBx1E9vb/Ar+4Lva4ctuw23LKTPRlHi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486136; c=relaxed/simple;
-	bh=+w+qAdKI/xdoPS5oda+XoQCm0mKp1PpX5GAYE62NVHs=;
+	s=arc-20240116; t=1746486138; c=relaxed/simple;
+	bh=V88aNIaWiSEb+uXYq12/yLYHfrK/r/sRZOY2QArhhQo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=iwhFjnNjFTYFDUFjLE4zOUrPS4UWjF1IMwnc5YjNI0+G47XrDXFVPveOLfLVwQQcNZBypbVtm7pTzWcXh60kwXRZjATJVyWktgCeJsCfNGUXf8Vuch7M4SUzpV/mTgWwzfRFKZJPQ/v1K5rau5xmbcJ1NG+DIUodKCnYMDf2kl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fY/zncVk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACFF7C4CEF1;
-	Mon,  5 May 2025 23:02:13 +0000 (UTC)
+	 MIME-Version; b=C8ocqbmCstXHdI04gu25vhVfx/s7hJ7u45BzhmzqCld4/rqhXrrCfvCLM+crOSh15PF3Q262FMCYxNY0crSbBciWZrSpHpWAiP74TVoECoO/U9z0+T8Rkw34ONxjKhGCNI4fkMyzCXTqJeHqqrZm5C/t1Mpl+/ggCSSikSEkTZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SuQGFzIw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E021CC4CEEE;
+	Mon,  5 May 2025 23:02:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486135;
-	bh=+w+qAdKI/xdoPS5oda+XoQCm0mKp1PpX5GAYE62NVHs=;
+	s=k20201202; t=1746486137;
+	bh=V88aNIaWiSEb+uXYq12/yLYHfrK/r/sRZOY2QArhhQo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fY/zncVkxfTXPckBsJYAFkBvGwhWzUNIW+mkyIW2boSVh7FInyMG7CmzlphZvIZer
-	 8FK4pbGndQXz7b6e/bterceD94n8JlqZhGuGZn7bP6HCIDWiucUJKv3zo4/2aSMukg
-	 wT0G4k5Rt5b74oLG97jqT/XGnoVRG33Bc77QgCDXGzwpDfATlCmIo115JRryE1lk9E
-	 L7mOpzeTIwZrlwa8oBTMGwU2Sd8zascFEOakzpfqfZBBO/Sv+4IRzYBgthFUHlqINA
-	 AZhjXqakOEcqN0WQH7fi7LzzptHH59HeH3juOKfIjNhn7wlYuVSGySg6bd9EiVB0XJ
-	 tAXmXvgmlc1jA==
+	b=SuQGFzIwGjx1po7pGQfL5FoLhybFrZS/Mqh5FJgAVtN4S3zGlT4WCRvIi14fVIjq7
+	 Ul7g5xCNNr6/iJCMTzqyn8E04kePscdDvDejmdtyzFlTawEPfa1Fu8Jr9Cs5Jjzt3E
+	 l1yfo0NsTp5Zp1AjfStqGG7Cl01AN8WnMX7GDfloGK9TyEBxew66+Wa6kHQb/0Zh+3
+	 RoWQ16JO+29OmZVMUQf4XH7C3JBSw8lwbCYzudUiFBeOCYZ/vwZ/KiJKRREZnww5e+
+	 Cs0RnNKmLm0+a8u6vB+QUkoLE82goqPJcm2v8TLGrfQsOMuwvZYKaA9tJSi8qi/aJF
+	 WgTjX3MQWWSIA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Balbir Singh <balbirs@nvidia.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Andy Lutomirski <luto@kernel.org>,
+Cc: Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>,
-	dave.hansen@linux.intel.com,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	x86@kernel.org,
-	linux-pci@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 169/294] x86/kaslr: Reduce KASLR entropy on most x86 systems
-Date: Mon,  5 May 2025 18:54:29 -0400
-Message-Id: <20250505225634.2688578-169-sashal@kernel.org>
+	davem@davemloft.net,
+	linux-crypto@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 171/294] crypto: skcipher - Zap type in crypto_alloc_sync_skcipher
+Date: Mon,  5 May 2025 18:54:31 -0400
+Message-Id: <20250505225634.2688578-171-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -75,86 +65,31 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Balbir Singh <balbirs@nvidia.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 7ffb791423c7c518269a9aad35039ef824a40adb ]
+[ Upstream commit ee509efc74ddbc59bb5d6fd6e050f9ef25f74bff ]
 
-When CONFIG_PCI_P2PDMA=y (which is basically enabled on all
-large x86 distros), it maps the PFN's via a ZONE_DEVICE
-mapping using devm_memremap_pages(). The mapped virtual
-address range corresponds to the pci_resource_start()
-of the BAR address and size corresponding to the BAR length.
+The type needs to be zeroed as otherwise the user could use it to
+allocate an asynchronous sync skcipher.
 
-When KASLR is enabled, the direct map range of the kernel is
-reduced to the size of physical memory plus additional padding.
-If the BAR address is beyond this limit, PCI peer to peer DMA
-mappings fail.
-
-Fix this by not shrinking the size of the direct map when
-CONFIG_PCI_P2PDMA=y.
-
-This reduces the total available entropy, but it's better than
-the current work around of having to disable KASLR completely.
-
-[ mingo: Clarified the changelog to point out the broad impact ... ]
-
-Signed-off-by: Balbir Singh <balbirs@nvidia.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Kees Cook <kees@kernel.org>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com> # drivers/pci/Kconfig
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Andy Lutomirski <luto@kernel.org>
-Link: https://lore.kernel.org/lkml/20250206023201.1481957-1-balbirs@nvidia.com/
-Link: https://lore.kernel.org/r/20250206234234.1912585-1-balbirs@nvidia.com
---
- arch/x86/mm/kaslr.c | 10 ++++++++--
- drivers/pci/Kconfig |  6 ++++++
- 2 files changed, 14 insertions(+), 2 deletions(-)
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/mm/kaslr.c | 10 ++++++++--
- drivers/pci/Kconfig |  6 ++++++
- 2 files changed, 14 insertions(+), 2 deletions(-)
+ crypto/skcipher.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/mm/kaslr.c b/arch/x86/mm/kaslr.c
-index 230f1dee4f095..e0b0ec0f82457 100644
---- a/arch/x86/mm/kaslr.c
-+++ b/arch/x86/mm/kaslr.c
-@@ -109,8 +109,14 @@ void __init kernel_randomize_memory(void)
- 	memory_tb = DIV_ROUND_UP(max_pfn << PAGE_SHIFT, 1UL << TB_SHIFT) +
- 		CONFIG_RANDOMIZE_MEMORY_PHYSICAL_PADDING;
+diff --git a/crypto/skcipher.c b/crypto/skcipher.c
+index 7b275716cf4e3..acc879ed6031a 100644
+--- a/crypto/skcipher.c
++++ b/crypto/skcipher.c
+@@ -811,6 +811,7 @@ struct crypto_sync_skcipher *crypto_alloc_sync_skcipher(
  
--	/* Adapt physical memory region size based on available memory */
--	if (memory_tb < kaslr_regions[0].size_tb)
-+	/*
-+	 * Adapt physical memory region size based on available memory,
-+	 * except when CONFIG_PCI_P2PDMA is enabled. P2PDMA exposes the
-+	 * device BAR space assuming the direct map space is large enough
-+	 * for creating a ZONE_DEVICE mapping in the direct map corresponding
-+	 * to the physical BAR address.
-+	 */
-+	if (!IS_ENABLED(CONFIG_PCI_P2PDMA) && (memory_tb < kaslr_regions[0].size_tb))
- 		kaslr_regions[0].size_tb = memory_tb;
+ 	/* Only sync algorithms allowed. */
+ 	mask |= CRYPTO_ALG_ASYNC | CRYPTO_ALG_SKCIPHER_REQSIZE_LARGE;
++	type &= ~(CRYPTO_ALG_ASYNC | CRYPTO_ALG_SKCIPHER_REQSIZE_LARGE);
  
- 	/*
-diff --git a/drivers/pci/Kconfig b/drivers/pci/Kconfig
-index e9ae66cc4189b..a3927daebeb02 100644
---- a/drivers/pci/Kconfig
-+++ b/drivers/pci/Kconfig
-@@ -180,6 +180,12 @@ config PCI_P2PDMA
- 	  P2P DMA transactions must be between devices behind the same root
- 	  port.
+ 	tfm = crypto_alloc_tfm(alg_name, &crypto_skcipher_type, type, mask);
  
-+	  Enabling this option will reduce the entropy of x86 KASLR memory
-+	  regions. For example - on a 46 bit system, the entropy goes down
-+	  from 16 bits to 15 bits. The actual reduction in entropy depends
-+	  on the physical address bits, on processor features, kernel config
-+	  (5 level page table) and physical memory present on the system.
-+
- 	  If unsure, say N.
- 
- config PCI_LABEL
 -- 
 2.39.5
 
