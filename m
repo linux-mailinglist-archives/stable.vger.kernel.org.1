@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-140152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4DAEAAA58D
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:52:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 786BFAAA584
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:52:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 993477AC0AE
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:50:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7B8E171015
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:52:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D707D3143EA;
-	Mon,  5 May 2025 22:30:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3614231440F;
+	Mon,  5 May 2025 22:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CG2i7EbC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HwTYpfAb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 897483143E2;
-	Mon,  5 May 2025 22:30:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFB50314407;
+	Mon,  5 May 2025 22:30:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484240; cv=none; b=sQ3FB9CTTZk38tWDDg+GSxsBwGL19XcQo6GJO5ILoPL7EbNQR/GRPnk8Bdn8y/j5xjwlU+bmx2Lpm5yiZERa4xcRuubIqJIkrjE56GMlDXY9UHmFO+TOzJpEewo1X0Er2Q/FTZAlrkqbkmgxHPrQKqJTmCMLWgNM9smBqIBbU1s=
+	t=1746484241; cv=none; b=cAzJKPr2F3E8F0UwQxCtfnLeVXqMjghGiV+4Sjeysa3pzSXcWlmtumEn48fzFT5jVnV0os3HA0b6FfI+wXZ0dY8XE3FW/tvjt/TVp0Z54790JFK/+VA+MkO1ElVVFJkE+d1lCNLTfsNUlBxdqmxAHwzUmNdziNTTjV/kdrbBF/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484240; c=relaxed/simple;
-	bh=oS0C7+PAyMM+askC3/by4fpQfV9yqQxJiXvTA3UTgz4=;
+	s=arc-20240116; t=1746484241; c=relaxed/simple;
+	bh=kC+v/c4j7TFaDOunHRudJUgpVFOc4RqLB4Jd/KJ2/Rs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=saN39GAhzNi/plpM5c8JazD/lWNofSwbz0zvYVUJjfGdkL7EtPai977YgF1fyqUU2ye06tQZLyMF6qWmIXBxFNM9IN8vAO1G43AaRfOoq1GlIwPnCeXgEMpgICXovlaXwdc4kLv0de8BjiDEC8jiC/igBAiT13v6oOxAsr9iaYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CG2i7EbC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0902EC4CEED;
-	Mon,  5 May 2025 22:30:38 +0000 (UTC)
+	 MIME-Version; b=RvukP7sUcok/HCcJqmfjqrfJ1/P8IHusDe7u/8Hpk3HG+udTUJMCewH4t+/yoda/nXpaAc+xt20NW0Mx1coxmKIkEg/y0aJS28L5FqxPlf4NQ2QXCHLB+fRKVFx28QHfheh1aUmKe9JUTOkXL3OTR33+brLahqctEzx82uhNJZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HwTYpfAb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A41DC4CEE4;
+	Mon,  5 May 2025 22:30:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484240;
-	bh=oS0C7+PAyMM+askC3/by4fpQfV9yqQxJiXvTA3UTgz4=;
+	s=k20201202; t=1746484241;
+	bh=kC+v/c4j7TFaDOunHRudJUgpVFOc4RqLB4Jd/KJ2/Rs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CG2i7EbCGxmi2p16WcEIX/xlO8O9dW7UjFtT8luvvz8T+FMK/2e6KVfhfNI2zckv3
-	 Hdizy7J1yJN/QgU7dfwjiZWIn2sRNwZJGbPoxP+u9LF9sIyJbmFOHJGXRoiwGSoJsV
-	 dTXwJiFmLk25XMb3KXM3VSaXL6s+KEHm5AYrIReW4CmDmsoC+waEWFlBaCWQLKKA5X
-	 Orb4JxTdtVukuuT3jYQgDZZvCXuwkc4JLvstrTnCgRr8miPBaaPEk0NYLvvmIrPcNc
-	 pPdXfLEMYgS/KneF+Fecztxb2Gz+dtCcl/TqNKpQQx65Y2GIebLj3GYQbJwNkEWD20
-	 Ik+rZRiVlT/SA==
+	b=HwTYpfAb1IVN822ulmoIOkwlZMRCMA5rqnGK4Jy6L7rFUT696G2+MwCYATij+ma9f
+	 kZ5bJ+o/OwnM9pr/SbChaoMBrhpaGN5VBGugsYE4i9UJ+ypJC14crqOf2iTwqa0cw7
+	 i7ZEhIdtGx8D3Sl0ibqn5y3Js12ze4nW+Z4SzS1iiDFUzKJ6Dv8mMaPbv6FXEytdhS
+	 zN5umnCiB6NJRM2j5KuPltUo2p6xzax8g9B0ZAKfIE1d62IU2LuVaCqdHeStacQQi5
+	 dxuvnURI0k5IrbRVxDwtQO42Pa4P5UPoFPzCAs6nEb2h2d2E6i3QDa6DerxKJAWdVx
+	 1ogi+wfEfL4vQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hans Verkuil <hverkuil@xs4all.nl>,
-	"Artem S . Tashkinov" <aros@gmx.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+Cc: Amery Hung <ameryhung@gmail.com>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	mchehab@kernel.org,
-	linux-media@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 405/642] media: test-drivers: vivid: don't call schedule in loop
-Date: Mon,  5 May 2025 18:10:21 -0400
-Message-Id: <20250505221419.2672473-405-sashal@kernel.org>
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	yonghong.song@linux.dev,
+	bpf@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 406/642] bpf: Make every prog keep a copy of ctx_arg_info
+Date: Mon,  5 May 2025 18:10:22 -0400
+Message-Id: <20250505221419.2672473-406-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -68,126 +70,170 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Hans Verkuil <hverkuil@xs4all.nl>
+From: Amery Hung <ameryhung@gmail.com>
 
-[ Upstream commit e4740118b752005cbed339aec9a1d1c43620e0b9 ]
+[ Upstream commit 432051806f614ca512da401b80257b95b2a2241e ]
 
-Artem reported that the CPU load was 100% when capturing from
-vivid at low resolution with ffmpeg.
+Currently, ctx_arg_info is read-only in the view of the verifier since
+it is shared among programs of the same attach type. Make each program
+have their own copy of ctx_arg_info so that we can use it to store
+program specific information.
 
-This was caused by:
+In the next patch where we support acquiring a referenced kptr through a
+struct_ops argument tagged with "__ref", ctx_arg_info->ref_obj_id will
+be used to store the unique reference object id of the argument. This
+avoids creating a requirement in the verifier that "__ref" tagged
+arguments must be the first set of references acquired [0].
 
-while (time_is_after_jiffies(cur_jiffies + wait_jiffies) &&
-       !kthread_should_stop())
-        schedule();
+[0] https://lore.kernel.org/bpf/20241220195619.2022866-2-amery.hung@gmail.com/
 
-If there are no other processes running that can be scheduled,
-then this is basically a busy-loop.
-
-Change it to wait_event_interruptible_timeout() which doesn't
-have that problem.
-
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Reported-by: Artem S. Tashkinov <aros@gmx.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219570
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Amery Hung <ameryhung@gmail.com>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://lore.kernel.org/r/20250217190640.1748177-2-ameryhung@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/test-drivers/vivid/vivid-kthread-cap.c  | 11 ++++++++---
- drivers/media/test-drivers/vivid/vivid-kthread-out.c  | 11 ++++++++---
- .../media/test-drivers/vivid/vivid-kthread-touch.c    | 11 ++++++++---
- drivers/media/test-drivers/vivid/vivid-sdr-cap.c      | 11 ++++++++---
- 4 files changed, 32 insertions(+), 12 deletions(-)
+ include/linux/bpf.h   |  7 +++++--
+ kernel/bpf/bpf_iter.c | 13 ++++++-------
+ kernel/bpf/syscall.c  |  1 +
+ kernel/bpf/verifier.c | 22 ++++++++++++----------
+ 4 files changed, 24 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/media/test-drivers/vivid/vivid-kthread-cap.c b/drivers/media/test-drivers/vivid/vivid-kthread-cap.c
-index 669bd96da4c79..273e8ed8c2a90 100644
---- a/drivers/media/test-drivers/vivid/vivid-kthread-cap.c
-+++ b/drivers/media/test-drivers/vivid/vivid-kthread-cap.c
-@@ -789,9 +789,14 @@ static int vivid_thread_vid_cap(void *data)
- 			next_jiffies_since_start = jiffies_since_start;
+diff --git a/include/linux/bpf.h b/include/linux/bpf.h
+index f3f50e29d6392..f4df39e8c7357 100644
+--- a/include/linux/bpf.h
++++ b/include/linux/bpf.h
+@@ -1507,7 +1507,7 @@ struct bpf_prog_aux {
+ 	u32 max_rdonly_access;
+ 	u32 max_rdwr_access;
+ 	struct btf *attach_btf;
+-	const struct bpf_ctx_arg_aux *ctx_arg_info;
++	struct bpf_ctx_arg_aux *ctx_arg_info;
+ 	void __percpu *priv_stack_ptr;
+ 	struct mutex dst_mutex; /* protects dst_* pointers below, *after* prog becomes visible */
+ 	struct bpf_prog *dst_prog;
+@@ -1945,6 +1945,9 @@ static inline void bpf_struct_ops_desc_release(struct bpf_struct_ops_desc *st_op
  
- 		wait_jiffies = next_jiffies_since_start - jiffies_since_start;
--		while (time_is_after_jiffies(cur_jiffies + wait_jiffies) &&
--		       !kthread_should_stop())
--			schedule();
-+		if (!time_is_after_jiffies(cur_jiffies + wait_jiffies))
-+			continue;
-+
-+		wait_queue_head_t wait;
-+
-+		init_waitqueue_head(&wait);
-+		wait_event_interruptible_timeout(wait, kthread_should_stop(),
-+					cur_jiffies + wait_jiffies - jiffies);
- 	}
- 	dprintk(dev, 1, "Video Capture Thread End\n");
- 	return 0;
-diff --git a/drivers/media/test-drivers/vivid/vivid-kthread-out.c b/drivers/media/test-drivers/vivid/vivid-kthread-out.c
-index fac6208b51da8..015a7b166a1e6 100644
---- a/drivers/media/test-drivers/vivid/vivid-kthread-out.c
-+++ b/drivers/media/test-drivers/vivid/vivid-kthread-out.c
-@@ -235,9 +235,14 @@ static int vivid_thread_vid_out(void *data)
- 			next_jiffies_since_start = jiffies_since_start;
+ #endif
  
- 		wait_jiffies = next_jiffies_since_start - jiffies_since_start;
--		while (time_is_after_jiffies(cur_jiffies + wait_jiffies) &&
--		       !kthread_should_stop())
--			schedule();
-+		if (!time_is_after_jiffies(cur_jiffies + wait_jiffies))
-+			continue;
++int bpf_prog_ctx_arg_info_init(struct bpf_prog *prog,
++			       const struct bpf_ctx_arg_aux *info, u32 cnt);
 +
-+		wait_queue_head_t wait;
-+
-+		init_waitqueue_head(&wait);
-+		wait_event_interruptible_timeout(wait, kthread_should_stop(),
-+					cur_jiffies + wait_jiffies - jiffies);
- 	}
- 	dprintk(dev, 1, "Video Output Thread End\n");
- 	return 0;
-diff --git a/drivers/media/test-drivers/vivid/vivid-kthread-touch.c b/drivers/media/test-drivers/vivid/vivid-kthread-touch.c
-index fa711ee36a3fb..c862689786b69 100644
---- a/drivers/media/test-drivers/vivid/vivid-kthread-touch.c
-+++ b/drivers/media/test-drivers/vivid/vivid-kthread-touch.c
-@@ -135,9 +135,14 @@ static int vivid_thread_touch_cap(void *data)
- 			next_jiffies_since_start = jiffies_since_start;
+ #if defined(CONFIG_CGROUP_BPF) && defined(CONFIG_BPF_LSM)
+ int bpf_trampoline_link_cgroup_shim(struct bpf_prog *prog,
+ 				    int cgroup_atype);
+@@ -2546,7 +2549,7 @@ struct bpf_iter__bpf_map_elem {
  
- 		wait_jiffies = next_jiffies_since_start - jiffies_since_start;
--		while (time_is_after_jiffies(cur_jiffies + wait_jiffies) &&
--		       !kthread_should_stop())
--			schedule();
-+		if (!time_is_after_jiffies(cur_jiffies + wait_jiffies))
-+			continue;
-+
-+		wait_queue_head_t wait;
-+
-+		init_waitqueue_head(&wait);
-+		wait_event_interruptible_timeout(wait, kthread_should_stop(),
-+					cur_jiffies + wait_jiffies - jiffies);
- 	}
- 	dprintk(dev, 1, "Touch Capture Thread End\n");
- 	return 0;
-diff --git a/drivers/media/test-drivers/vivid/vivid-sdr-cap.c b/drivers/media/test-drivers/vivid/vivid-sdr-cap.c
-index 74a91d28c8be9..c633fc2ed664f 100644
---- a/drivers/media/test-drivers/vivid/vivid-sdr-cap.c
-+++ b/drivers/media/test-drivers/vivid/vivid-sdr-cap.c
-@@ -206,9 +206,14 @@ static int vivid_thread_sdr_cap(void *data)
- 			next_jiffies_since_start = jiffies_since_start;
+ int bpf_iter_reg_target(const struct bpf_iter_reg *reg_info);
+ void bpf_iter_unreg_target(const struct bpf_iter_reg *reg_info);
+-bool bpf_iter_prog_supported(struct bpf_prog *prog);
++int bpf_iter_prog_supported(struct bpf_prog *prog);
+ const struct bpf_func_proto *
+ bpf_iter_get_func_proto(enum bpf_func_id func_id, const struct bpf_prog *prog);
+ int bpf_iter_link_attach(const union bpf_attr *attr, bpfptr_t uattr, struct bpf_prog *prog);
+diff --git a/kernel/bpf/bpf_iter.c b/kernel/bpf/bpf_iter.c
+index 106735145948b..380e9a7cac75d 100644
+--- a/kernel/bpf/bpf_iter.c
++++ b/kernel/bpf/bpf_iter.c
+@@ -335,7 +335,7 @@ static void cache_btf_id(struct bpf_iter_target_info *tinfo,
+ 	tinfo->btf_id = prog->aux->attach_btf_id;
+ }
  
- 		wait_jiffies = next_jiffies_since_start - jiffies_since_start;
--		while (time_is_after_jiffies(cur_jiffies + wait_jiffies) &&
--		       !kthread_should_stop())
--			schedule();
-+		if (!time_is_after_jiffies(cur_jiffies + wait_jiffies))
-+			continue;
-+
-+		wait_queue_head_t wait;
-+
-+		init_waitqueue_head(&wait);
-+		wait_event_interruptible_timeout(wait, kthread_should_stop(),
-+					cur_jiffies + wait_jiffies - jiffies);
+-bool bpf_iter_prog_supported(struct bpf_prog *prog)
++int bpf_iter_prog_supported(struct bpf_prog *prog)
+ {
+ 	const char *attach_fname = prog->aux->attach_func_name;
+ 	struct bpf_iter_target_info *tinfo = NULL, *iter;
+@@ -344,7 +344,7 @@ bool bpf_iter_prog_supported(struct bpf_prog *prog)
+ 	int prefix_len = strlen(prefix);
+ 
+ 	if (strncmp(attach_fname, prefix, prefix_len))
+-		return false;
++		return -EINVAL;
+ 
+ 	mutex_lock(&targets_mutex);
+ 	list_for_each_entry(iter, &targets, list) {
+@@ -360,12 +360,11 @@ bool bpf_iter_prog_supported(struct bpf_prog *prog)
  	}
- 	dprintk(dev, 1, "SDR Capture Thread End\n");
- 	return 0;
+ 	mutex_unlock(&targets_mutex);
+ 
+-	if (tinfo) {
+-		prog->aux->ctx_arg_info_size = tinfo->reg_info->ctx_arg_info_size;
+-		prog->aux->ctx_arg_info = tinfo->reg_info->ctx_arg_info;
+-	}
++	if (!tinfo)
++		return -EINVAL;
+ 
+-	return tinfo != NULL;
++	return bpf_prog_ctx_arg_info_init(prog, tinfo->reg_info->ctx_arg_info,
++					  tinfo->reg_info->ctx_arg_info_size);
+ }
+ 
+ const struct bpf_func_proto *
+diff --git a/kernel/bpf/syscall.c b/kernel/bpf/syscall.c
+index 8c42c094f0d1e..32a8d5fd98612 100644
+--- a/kernel/bpf/syscall.c
++++ b/kernel/bpf/syscall.c
+@@ -2314,6 +2314,7 @@ static void __bpf_prog_put_noref(struct bpf_prog *prog, bool deferred)
+ 	kvfree(prog->aux->jited_linfo);
+ 	kvfree(prog->aux->linfo);
+ 	kfree(prog->aux->kfunc_tab);
++	kfree(prog->aux->ctx_arg_info);
+ 	if (prog->aux->attach_btf)
+ 		btf_put(prog->aux->attach_btf);
+ 
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 0752e8e556389..4392436ba7511 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -22429,6 +22429,15 @@ static void print_verification_stats(struct bpf_verifier_env *env)
+ 		env->peak_states, env->longest_mark_read_walk);
+ }
+ 
++int bpf_prog_ctx_arg_info_init(struct bpf_prog *prog,
++			       const struct bpf_ctx_arg_aux *info, u32 cnt)
++{
++	prog->aux->ctx_arg_info = kmemdup_array(info, cnt, sizeof(*info), GFP_KERNEL);
++	prog->aux->ctx_arg_info_size = cnt;
++
++	return prog->aux->ctx_arg_info ? 0 : -ENOMEM;
++}
++
+ static int check_struct_ops_btf_id(struct bpf_verifier_env *env)
+ {
+ 	const struct btf_type *t, *func_proto;
+@@ -22509,17 +22518,12 @@ static int check_struct_ops_btf_id(struct bpf_verifier_env *env)
+ 		return -EACCES;
+ 	}
+ 
+-	/* btf_ctx_access() used this to provide argument type info */
+-	prog->aux->ctx_arg_info =
+-		st_ops_desc->arg_info[member_idx].info;
+-	prog->aux->ctx_arg_info_size =
+-		st_ops_desc->arg_info[member_idx].cnt;
+-
+ 	prog->aux->attach_func_proto = func_proto;
+ 	prog->aux->attach_func_name = mname;
+ 	env->ops = st_ops->verifier_ops;
+ 
+-	return 0;
++	return bpf_prog_ctx_arg_info_init(prog, st_ops_desc->arg_info[member_idx].info,
++					  st_ops_desc->arg_info[member_idx].cnt);
+ }
+ #define SECURITY_PREFIX "security_"
+ 
+@@ -22996,9 +23000,7 @@ static int check_attach_btf_id(struct bpf_verifier_env *env)
+ 		prog->aux->attach_btf_trace = true;
+ 		return 0;
+ 	} else if (prog->expected_attach_type == BPF_TRACE_ITER) {
+-		if (!bpf_iter_prog_supported(prog))
+-			return -EINVAL;
+-		return 0;
++		return bpf_iter_prog_supported(prog);
+ 	}
+ 
+ 	if (prog->type == BPF_PROG_TYPE_LSM) {
 -- 
 2.39.5
 
