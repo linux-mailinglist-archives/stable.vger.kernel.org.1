@@ -1,59 +1,71 @@
-Return-Path: <stable+bounces-141172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66539AAB639
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:45:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40345AAB63D
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:45:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4E9C1BC498F
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:42:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D72B31C035A0
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:42:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5515F2C109E;
-	Tue,  6 May 2025 00:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81B5E2C0854;
+	Tue,  6 May 2025 00:26:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eRuB0xyS"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jf95r6Km"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEDA72C0325;
-	Mon,  5 May 2025 22:49:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A783A37778E;
+	Mon,  5 May 2025 22:49:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485367; cv=none; b=MFM76Q1vAiaAMON6AX64Bid1GpzBynPK7Oq5eZTq1oF7DUFtgOkZ5DyvPs5PBt/Q6OwpCgeHEPZMHwk/awZRyUChKmHsvDcLPzyV5qW7QVNnlStgHPTO5ljmZ2pjBymEtCMzZfn8/y7qeXYhjY8Nm/QDO1BmiaJ+pjXsCQ3B+Jo=
+	t=1746485383; cv=none; b=Z3Sn5uBvhGxL7BVnV81aY0F6sRb+3UkzD+0MW9MNpcGwBGjQmONp5gKluITeWT3F8keeU7aMBkD0OvTdQgBkHSwHWKlu8ZNkqCui/w+IgfkWy5ZluqfmsZC7B7EcAmHLQxSf4Cd+TKJxBLDRF0dVafXGqZK9q59ifjEpq2Mlgz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485367; c=relaxed/simple;
-	bh=iQuqLNlbfnoQsokddA345vQSrEYLa7Cz6ZvGPBbtin4=;
+	s=arc-20240116; t=1746485383; c=relaxed/simple;
+	bh=nJtv7p0rucIQvy2LKomc4PsnCh5XM7YlZVAREd7jaEM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=G37mbHsgvqWpEUIX/zyiSV/kXsSLi9mY3aUG8W1V4maKFd555EvUYsLzUXtu+IV3CdKSdvBc8nKzXq1qe5LG/OH19iRX4+fA2CDB54/nJsLmvs8koE2AvT710V+JPOUUCb2f1d0W3Q0rc4M9abobHdN0z+jYdFp9TK8Yj8cJwkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eRuB0xyS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EFF8C4CEED;
-	Mon,  5 May 2025 22:49:25 +0000 (UTC)
+	 MIME-Version; b=WJpsjJreBRYXE3B3NHbf4S7qBNG7U4MdvckqwlKGgmvlBayhRMErjsVfa05IyoaiEwwKPlzG+M7udF/yiFI5PxZ0/lp6K9ymoQogrHwlkju2yY7mFE14srd4TS9/MKSwkjGMlop4+r4dII7HyKwQw0jHubTQiKK2N8dksVlUZ3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jf95r6Km; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BE3CC4CEE4;
+	Mon,  5 May 2025 22:49:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485366;
-	bh=iQuqLNlbfnoQsokddA345vQSrEYLa7Cz6ZvGPBbtin4=;
+	s=k20201202; t=1746485382;
+	bh=nJtv7p0rucIQvy2LKomc4PsnCh5XM7YlZVAREd7jaEM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eRuB0xySkEibXzLRtI1FGVhu4Ma/viu6DfbOg9UtnC4jsJN+iYZYACh3FFxAq6nNf
-	 ByMIfOBrBEEXikXSrmeNa4fwF/TiwPwNDK/DBEQi8+Mz1ORf2Q82LjSbaOMrWJADKV
-	 SzFp2cL22MvapEzYMEeBa76aYLzBpwqxfX95qWM5zjDrgoxqXmKKi/aUAtCizCITR1
-	 mT0373vWp6laRs4JjIJQ02iFReduM1eeqAN3LSSNm4ggiotsnya9sxDlPWBHzoddBt
-	 8CcsRdbPLl0g5haIN+Y8xACLBp3eWV8R1iKPgMybfUS5h3GtS+eix7KRk6q6ONjaB8
-	 mfawMGUtJ98Lg==
+	b=jf95r6KmOEFysX6RevRfDKtSi8VCkEuEXe8kL/DolrJeG0j4r2v28bWl2dO00SQRT
+	 8tnY+dkf3MN8EM6e26nH7bSCE+xQzQfmorLmiao22Qpw8MsCMkpy+tFr87/yXQVRsz
+	 4xnHq2eLJi0VqFGYttZzW7rA/ku9vhJ7DnetSmHA/D6ouRnahRvxUyBwSxhJbHriJn
+	 l2r/NKuZXv0+mj8ZXnEAihoHQNLyvZXWW0AyxbvbMRuJqyyMbxI3ShdNoeDDlVlUpO
+	 WnQj9HoyErnKclKzIxVw5lvsfRRL7QzK19sl4P4ZsScSifbwLAPI3Vi8pdZaAFJ33D
+	 oBK8OOdw0nMGg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Chris Morgan <macromorgan@hotmail.com>,
-	Philippe Simons <simons.philippe@gmail.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+Cc: Harry VanZyllDeJong <hvanzyll@amd.com>,
+	Wenjing Liu <wenjing.liu@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	sre@kernel.org,
-	wens@csie.org,
-	linux-pm@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 292/486] power: supply: axp20x_battery: Update temp sensor for AXP717 from device tree
-Date: Mon,  5 May 2025 18:36:08 -0400
-Message-Id: <20250505223922.2682012-292-sashal@kernel.org>
+	harry.wentland@amd.com,
+	sunpeng.li@amd.com,
+	christian.koenig@amd.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	alex.hung@amd.com,
+	michael.strauss@amd.com,
+	george.shen@amd.com,
+	PeiChen.Huang@amd.com,
+	Ausef.Yousof@amd.com,
+	Cruise.Hung@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.12 300/486] drm/amd/display: Add support for disconnected eDP streams
+Date: Mon,  5 May 2025 18:36:16 -0400
+Message-Id: <20250505223922.2682012-300-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -68,70 +80,52 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Chris Morgan <macromorgan@hotmail.com>
+From: Harry VanZyllDeJong <hvanzyll@amd.com>
 
-[ Upstream commit bbcfe510ecd47f2db4c8653c7dfa9dc7a55b1583 ]
+[ Upstream commit 6571bef25fe48c642f7a69ccf7c3198b317c136a ]
 
-Allow a boolean property of "x-powers,no-thermistor" to specify devices
-where the ts pin is not connected to anything. This works around an
-issue found with some devices where the efuse is not programmed
-correctly from the factory or when the register gets set erroneously.
+[Why]
+eDP may not be connected to the GPU on driver start causing
+fail enumeration.
 
-Signed-off-by: Chris Morgan <macromorgan@hotmail.com>
-Tested-by: Philippe Simons <simons.philippe@gmail.com>
-Link: https://lore.kernel.org/r/20250204155835.161973-4-macroalpha82@gmail.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+[How]
+Move the virtual signal type check before the eDP connector
+signal check.
+
+Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
+Signed-off-by: Harry VanZyllDeJong <hvanzyll@amd.com>
+Signed-off-by: Roman Li <roman.li@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/axp20x_battery.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ .../drm/amd/display/dc/link/protocols/link_dp_capability.c  | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/power/supply/axp20x_battery.c b/drivers/power/supply/axp20x_battery.c
-index 57eba1ddb17ba..88fbae613e8bc 100644
---- a/drivers/power/supply/axp20x_battery.c
-+++ b/drivers/power/supply/axp20x_battery.c
-@@ -89,6 +89,8 @@
- #define AXP717_BAT_CC_MIN_UA		0
- #define AXP717_BAT_CC_MAX_UA		3008000
- 
-+#define AXP717_TS_PIN_DISABLE		BIT(4)
-+
- struct axp20x_batt_ps;
- 
- struct axp_data {
-@@ -117,6 +119,7 @@ struct axp20x_batt_ps {
- 	/* Maximum constant charge current */
- 	unsigned int max_ccc;
- 	const struct axp_data	*data;
-+	bool ts_disable;
- };
- 
- static int axp20x_battery_get_max_voltage(struct axp20x_batt_ps *axp20x_batt,
-@@ -983,6 +986,24 @@ static void axp717_set_battery_info(struct platform_device *pdev,
- 	int ccc = info->constant_charge_current_max_ua;
- 	int val;
- 
-+	axp_batt->ts_disable = (device_property_read_bool(axp_batt->dev,
-+							  "x-powers,no-thermistor"));
-+
-+	/*
-+	 * Under rare conditions an incorrectly programmed efuse for
-+	 * the temp sensor on the PMIC may trigger a fault condition.
-+	 * Allow users to hard-code if the ts pin is not used to work
-+	 * around this problem. Note that this requires the battery
-+	 * be correctly defined in the device tree with a monitored
-+	 * battery node.
-+	 */
-+	if (axp_batt->ts_disable) {
-+		regmap_update_bits(axp_batt->regmap,
-+				   AXP717_TS_PIN_CFG,
-+				   AXP717_TS_PIN_DISABLE,
-+				   AXP717_TS_PIN_DISABLE);
-+	}
-+
- 	if (vmin > 0 && axp717_set_voltage_min_design(axp_batt, vmin))
- 		dev_err(&pdev->dev,
- 			"couldn't set voltage_min_design\n");
+diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
+index 23e650e39910e..d9a1e1a599674 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
+@@ -945,6 +945,9 @@ bool link_decide_link_settings(struct dc_stream_state *stream,
+ 		 * TODO: add MST specific link training routine
+ 		 */
+ 		decide_mst_link_settings(link, link_setting);
++	} else if (stream->signal == SIGNAL_TYPE_VIRTUAL) {
++		link_setting->lane_count = LANE_COUNT_FOUR;
++		link_setting->link_rate = LINK_RATE_HIGH3;
+ 	} else if (link->connector_signal == SIGNAL_TYPE_EDP) {
+ 		/* enable edp link optimization for DSC eDP case */
+ 		if (stream->timing.flags.DSC) {
+@@ -967,9 +970,6 @@ bool link_decide_link_settings(struct dc_stream_state *stream,
+ 		} else {
+ 			edp_decide_link_settings(link, link_setting, req_bw);
+ 		}
+-	} else if (stream->signal == SIGNAL_TYPE_VIRTUAL) {
+-		link_setting->lane_count = LANE_COUNT_FOUR;
+-		link_setting->link_rate = LINK_RATE_HIGH3;
+ 	} else {
+ 		decide_dp_link_settings(link, link_setting, req_bw);
+ 	}
 -- 
 2.39.5
 
