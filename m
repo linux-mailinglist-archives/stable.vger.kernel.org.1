@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-141216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69CF4AAB174
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:01:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB52AAAB1B1
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:05:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F8061BC2405
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:00:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBD253AD3FB
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:00:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 168124035E6;
-	Tue,  6 May 2025 00:27:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4635C403616;
+	Tue,  6 May 2025 00:27:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OKCXehr9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KpK+a+V7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E4922D9033;
-	Mon,  5 May 2025 22:51:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA9E72D903A;
+	Mon,  5 May 2025 22:51:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485507; cv=none; b=V+SO126Cir0on1FmP20aH6vuvXtdLbWeXFFS/5aXL/z3mB5kki3l3JRXAskBXpO8HGK4gmbCt9+23Gcu9Fx/cpBIvWFoqc0Qz204vBvU3aRazRSpnPAvn6rPViq5jfCAo04O1dcTYVYgKYJYyVVVhGD/e84JvQzEpc73RL+a36M=
+	t=1746485510; cv=none; b=DL/yQf7DfzCd/AZZm5METNCnMu4bB4h9FAqvoJQvM1na4LwZOOXPOpSOGdeBzDDC2hP3dgML+92v8U19KfIPHXswMlQxlb7/TCXx2QBHaHnpf/kQ9rXyWj3VTzO3Rhmbz/uscKVlto3sYFJ2AFt/T+5mlU8g0fE04BzKuKiWdxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485507; c=relaxed/simple;
-	bh=hShYuml63OkOA2pzS1iBOosLFm/RL26Rsn3KpQO4mG0=;
+	s=arc-20240116; t=1746485510; c=relaxed/simple;
+	bh=L6D9xzoCd0UnYBZlHB7c9sOjUCs838NdruQURRT1GHc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=cpiE0e2tVP/OGZMGbl8b/CklrIxWU5xkSgEnuf3NzCaIfDH4HGAWHqfJek45o+qteF72lLOZStySinvrarXgioSIpAmUXiL4a1pbaP916o5iN0lynBnLkUTIEe+2fHPjasUtrTicYOML1+5czAw9P5CKQBiyG03/nnDtm4Pmi3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OKCXehr9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BE0DC4CEED;
-	Mon,  5 May 2025 22:51:46 +0000 (UTC)
+	 MIME-Version; b=aP50wV3PRgtkDpZBAzAZW9530CuHBqTrAnpKfHYIwxirFmTaeWLaBqGDNiCz91AW/VvmqOfyGYteXP7aTpzYo6rA66j9GUEZ81sgnPIiZgzV3Nm/h0bWxK5BftGhEraMbELtvQ2GhmWHTZvT7Tbwshe/xy0UPt5DjolftwhBthU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KpK+a+V7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F950C4CEE4;
+	Mon,  5 May 2025 22:51:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485507;
-	bh=hShYuml63OkOA2pzS1iBOosLFm/RL26Rsn3KpQO4mG0=;
+	s=k20201202; t=1746485509;
+	bh=L6D9xzoCd0UnYBZlHB7c9sOjUCs838NdruQURRT1GHc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OKCXehr9524mKSGMjtIr+jLPm6KPdr34fwgK3LqinyP7ZvACKhrDnnVt/ZfB1x/vW
-	 zLSuyWq6KHC6UHRe3T8jkmbj9ec1bI01M77UKjKSs+l0JJeWIIuBEmcV4CwmOeONDE
-	 KF5QMhPV9Uwi20xMAroT2K2DlSVu1/JH/619hM/yIhtvdHl+nYo71NGcA/J2dmmOmZ
-	 gNKvkhe0qcuKvQAOYZrAzEJW+BJGdNi+/YBQySJvimyiv7mIrb4up+N0SpB3deuUPt
-	 lSEO8CaPKbH4zG6CeiJexAx3/OC4cXALhD2qV92yWsZia/p5UOlY0E5Ar67qhZ8UND
-	 +nuDbV6PxVM3Q==
+	b=KpK+a+V75Q6xPXb/cPRRVQZcPXzIrccHXceFTod+JAqqE2R/dwE3SMxYKgwrL/lTj
+	 MR9tyscBNCeLUfcizVhYyxAhNEYONSvjnpdXefwFsHYZTqatYg7EXtqgI14fgt2K5N
+	 RFQYHctQBrqBbt8tJsftsQZgGo7R4S+WadSNrVxNs6CA/x0JPmlKge0WxecFZ1xV95
+	 vkP0coutb+R2iKJikI96R7WnOArObbmbE+vSrwJjAV8GGS7CzlMgZanvQBgl+OZ5Qp
+	 iichhs88WEC5cnGytbkhMxwuqVkCo/KLE/iLDq2jORUpsvd60lkcHJ3qKkAeMJFiYW
+	 8AVUbUM2YTB1g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: zihan zhou <15645113830zzh@gmail.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
+Cc: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>,
-	mingo@redhat.com,
-	juri.lelli@redhat.com
-Subject: [PATCH AUTOSEL 6.12 351/486] sched: Reduce the default slice to avoid tasks getting an extra tick
-Date: Mon,  5 May 2025 18:37:07 -0400
-Message-Id: <20250505223922.2682012-351-sashal@kernel.org>
+	jirislaby@kernel.org,
+	p.zabel@pengutronix.de,
+	wsa+renesas@sang-engineering.com,
+	prabhakar.mahadev-lad.rj@bp.renesas.com,
+	namcao@linutronix.de,
+	linux-serial@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 352/486] serial: sh-sci: Update the suspend/resume support
+Date: Mon,  5 May 2025 18:37:08 -0400
+Message-Id: <20250505223922.2682012-352-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -67,78 +71,162 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: zihan zhou <15645113830zzh@gmail.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit 2ae891b826958b60919ea21c727f77bcd6ffcc2c ]
+[ Upstream commit 22a6984c5b5df8eab864d7f3e8b94d5a554d31ab ]
 
-The old default value for slice is 0.75 msec * (1 + ilog(ncpus)) which
-means that we have a default slice of:
+The Renesas RZ/G3S supports a power saving mode where power to most of the
+SoC components is turned off. When returning from this power saving mode,
+SoC components need to be re-configured.
 
-  0.75 for 1 cpu
-  1.50 up to 3 cpus
-  2.25 up to 7 cpus
-  3.00 for 8 cpus and above.
+The SCIFs on the Renesas RZ/G3S need to be re-configured as well when
+returning from this power saving mode. The sh-sci code already configures
+the SCIF clocks, power domain and registers by calling uart_resume_port()
+in sci_resume(). On suspend path the SCIF UART ports are suspended
+accordingly (by calling uart_suspend_port() in sci_suspend()). The only
+missing setting is the reset signal. For this assert/de-assert the reset
+signal on driver suspend/resume.
 
-For HZ=250 and HZ=100, because of the tick accuracy, the runtime of
-tasks is far higher than their slice.
+In case the no_console_suspend is specified by the user, the registers need
+to be saved on suspend path and restore on resume path. To do this the
+sci_console_save()/sci_console_restore() functions were added. There is no
+need to cache/restore the status or FIFO registers. Only the control
+registers. The registers that will be saved/restored on suspend/resume are
+specified by the struct sci_suspend_regs data structure.
 
-For HZ=1000 with 8 cpus or more, the accuracy of tick is already
-satisfactory, but there is still an issue that tasks will get an extra
-tick because the tick often arrives a little faster than expected. In
-this case, the task can only wait until the next tick to consider that it
-has reached its deadline, and will run 1ms longer.
-
-vruntime + sysctl_sched_base_slice =     deadline
-        |-----------|-----------|-----------|-----------|
-             1ms          1ms         1ms         1ms
-                   ^           ^           ^           ^
-                 tick1       tick2       tick3       tick4(nearly 4ms)
-
-There are two reasons for tick error: clockevent precision and the
-CONFIG_IRQ_TIME_ACCOUNTING/CONFIG_PARAVIRT_TIME_ACCOUNTING. with
-CONFIG_IRQ_TIME_ACCOUNTING every tick will be less than 1ms, but even
-without it, because of clockevent precision, tick still often less than
-1ms.
-
-In order to make scheduling more precise, we changed 0.75 to 0.70,
-Using 0.70 instead of 0.75 should not change much for other configs
-and would fix this issue:
-
-  0.70 for 1 cpu
-  1.40 up to 3 cpus
-  2.10 up to 7 cpus
-  2.8 for 8 cpus and above.
-
-This does not guarantee that tasks can run the slice time accurately
-every time, but occasionally running an extra tick has little impact.
-
-Signed-off-by: zihan zhou <15645113830zzh@gmail.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
-Link: https://lkml.kernel.org/r/20250208075322.13139-1-15645113830zzh@gmail.com
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20250207113313.545432-1-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/fair.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/tty/serial/sh-sci.c | 71 +++++++++++++++++++++++++++++++++++--
+ 1 file changed, 69 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index ceb023629d48d..7a2c94e8f0b2c 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -71,10 +71,10 @@ unsigned int sysctl_sched_tunable_scaling = SCHED_TUNABLESCALING_LOG;
- /*
-  * Minimal preemption granularity for CPU-bound tasks:
-  *
-- * (default: 0.75 msec * (1 + ilog(ncpus)), units: nanoseconds)
-+ * (default: 0.70 msec * (1 + ilog(ncpus)), units: nanoseconds)
-  */
--unsigned int sysctl_sched_base_slice			= 750000ULL;
--static unsigned int normalized_sysctl_sched_base_slice	= 750000ULL;
-+unsigned int sysctl_sched_base_slice			= 700000ULL;
-+static unsigned int normalized_sysctl_sched_base_slice	= 700000ULL;
+diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
+index 80efe3b0ed0c3..779074b1c2be4 100644
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -104,6 +104,15 @@ struct plat_sci_reg {
+ 	u8 offset, size;
+ };
  
- const_debug unsigned int sysctl_sched_migration_cost	= 500000UL;
++struct sci_suspend_regs {
++	u16 scsmr;
++	u16 scscr;
++	u16 scfcr;
++	u16 scsptr;
++	u8 scbrr;
++	u8 semr;
++};
++
+ struct sci_port_params {
+ 	const struct plat_sci_reg regs[SCIx_NR_REGS];
+ 	unsigned int fifosize;
+@@ -134,6 +143,8 @@ struct sci_port {
+ 	struct dma_chan			*chan_tx;
+ 	struct dma_chan			*chan_rx;
  
++	struct reset_control		*rstc;
++
+ #ifdef CONFIG_SERIAL_SH_SCI_DMA
+ 	struct dma_chan			*chan_tx_saved;
+ 	struct dma_chan			*chan_rx_saved;
+@@ -153,6 +164,7 @@ struct sci_port {
+ 	int				rx_trigger;
+ 	struct timer_list		rx_fifo_timer;
+ 	int				rx_fifo_timeout;
++	struct sci_suspend_regs		suspend_regs;
+ 	u16				hscif_tot;
+ 
+ 	bool has_rtscts;
+@@ -3384,6 +3396,7 @@ static struct plat_sci_port *sci_parse_dt(struct platform_device *pdev,
+ 	}
+ 
+ 	sp = &sci_ports[id];
++	sp->rstc = rstc;
+ 	*dev_id = id;
+ 
+ 	p->type = SCI_OF_TYPE(data);
+@@ -3532,13 +3545,57 @@ static int sci_probe(struct platform_device *dev)
+ 	return 0;
+ }
+ 
++static void sci_console_save(struct sci_port *s)
++{
++	struct sci_suspend_regs *regs = &s->suspend_regs;
++	struct uart_port *port = &s->port;
++
++	if (sci_getreg(port, SCSMR)->size)
++		regs->scsmr = sci_serial_in(port, SCSMR);
++	if (sci_getreg(port, SCSCR)->size)
++		regs->scscr = sci_serial_in(port, SCSCR);
++	if (sci_getreg(port, SCFCR)->size)
++		regs->scfcr = sci_serial_in(port, SCFCR);
++	if (sci_getreg(port, SCSPTR)->size)
++		regs->scsptr = sci_serial_in(port, SCSPTR);
++	if (sci_getreg(port, SCBRR)->size)
++		regs->scbrr = sci_serial_in(port, SCBRR);
++	if (sci_getreg(port, SEMR)->size)
++		regs->semr = sci_serial_in(port, SEMR);
++}
++
++static void sci_console_restore(struct sci_port *s)
++{
++	struct sci_suspend_regs *regs = &s->suspend_regs;
++	struct uart_port *port = &s->port;
++
++	if (sci_getreg(port, SCSMR)->size)
++		sci_serial_out(port, SCSMR, regs->scsmr);
++	if (sci_getreg(port, SCSCR)->size)
++		sci_serial_out(port, SCSCR, regs->scscr);
++	if (sci_getreg(port, SCFCR)->size)
++		sci_serial_out(port, SCFCR, regs->scfcr);
++	if (sci_getreg(port, SCSPTR)->size)
++		sci_serial_out(port, SCSPTR, regs->scsptr);
++	if (sci_getreg(port, SCBRR)->size)
++		sci_serial_out(port, SCBRR, regs->scbrr);
++	if (sci_getreg(port, SEMR)->size)
++		sci_serial_out(port, SEMR, regs->semr);
++}
++
+ static __maybe_unused int sci_suspend(struct device *dev)
+ {
+ 	struct sci_port *sport = dev_get_drvdata(dev);
+ 
+-	if (sport)
++	if (sport) {
+ 		uart_suspend_port(&sci_uart_driver, &sport->port);
+ 
++		if (!console_suspend_enabled && uart_console(&sport->port))
++			sci_console_save(sport);
++		else
++			return reset_control_assert(sport->rstc);
++	}
++
+ 	return 0;
+ }
+ 
+@@ -3546,8 +3603,18 @@ static __maybe_unused int sci_resume(struct device *dev)
+ {
+ 	struct sci_port *sport = dev_get_drvdata(dev);
+ 
+-	if (sport)
++	if (sport) {
++		if (!console_suspend_enabled && uart_console(&sport->port)) {
++			sci_console_restore(sport);
++		} else {
++			int ret = reset_control_deassert(sport->rstc);
++
++			if (ret)
++				return ret;
++		}
++
+ 		uart_resume_port(&sci_uart_driver, &sport->port);
++	}
+ 
+ 	return 0;
+ }
 -- 
 2.39.5
 
