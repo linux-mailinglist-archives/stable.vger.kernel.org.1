@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-140741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6254EAAAF05
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:09:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAA75AAAEFE
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:08:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D3AB1BA63FC
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:05:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D815A1BA525A
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:04:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2B662F378C;
-	Mon,  5 May 2025 23:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ED962F2C64;
+	Mon,  5 May 2025 23:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VUrgY/at"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KvTsmBIP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1412E36E099;
-	Mon,  5 May 2025 23:01:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C0092E5DEC;
+	Mon,  5 May 2025 23:01:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486117; cv=none; b=eN9FE3VYhTufET/RDNDzmB91Wv3Z510Kv7LAp2YXDDEpxEZHZFW/nmmUL1q1r8lJIb258F15EuT0uIuZQcBX04yHmMwZtGUh6QNma+XmPJA8MyUXIV3jMN2Qx2U1K4jp2EpN9tOQI0rYuviZ4eavq+76shaF75Dbv/ZSDC0gcd0=
+	t=1746486120; cv=none; b=USELNMhnaN6s8Gfj8khKPpUgkgYvVgSrZLJ1Em6sMW71/afPFMG6GNvsBftJ2/I518PLsDjD0yvcR/yDY16Y96c0d/F7Y+sI/iovBNPwMvlwt+uyZ/6RappSXIDnquu2ClwMCCv1AGEa0nH5v4q3ga1IAy7lRwJjNXoqwNTIEtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486117; c=relaxed/simple;
-	bh=PAZV3TgFo6qGCFziwxdvUIXqDXd56PaqynSudrDxEgU=;
+	s=arc-20240116; t=1746486120; c=relaxed/simple;
+	bh=NhetDVpHwaNtQW9Pf4j1Qjez9peTYB0dwDkouFiyJuA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=p4BBcLfXiFBvYkl5XFuF7HJwXFcR66QmVRSU0bdXxyGwfQLmP46YFqihESFNfUuAc9FdEmxRzpYy639KSdkB0kTxp00jJDuv3YaNPXeewL8qIfqHK+hVYztXM1xfmnnLQZh1I/1rvRXE7fRqunE1UxWTObS16/FF6Xba1NxyFpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VUrgY/at; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6E78C4CEF2;
-	Mon,  5 May 2025 23:01:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Io4mJRdAWc3nveQj82t88NfSu3LVTvVpj+NKkT4rwET1PVyEm/TlQDyN+rsndHckFJZXIQrcuDyYZR45ue7SQOOwKMmaBxrvG9omymt/0vEG61ikgahOtY9rCYIOB0wULD2BBV2QDV4czmw9n26PUK5qzTodm45tWWkMZdYE+TE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KvTsmBIP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A005C4CEE4;
+	Mon,  5 May 2025 23:01:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486116;
-	bh=PAZV3TgFo6qGCFziwxdvUIXqDXd56PaqynSudrDxEgU=;
+	s=k20201202; t=1746486118;
+	bh=NhetDVpHwaNtQW9Pf4j1Qjez9peTYB0dwDkouFiyJuA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VUrgY/at7dgk0SfpA+WFXOR8anyvfrpIPQrqniYEwHMlvUmm9QffwmPk1LqEr4NHJ
-	 VHI8dRY5SF0MWLxY8t646Zjt5v/Dq/BDNkVDCaspY7PIdNaW6JhzykC2RLK1B/JVsy
-	 rO/rEWx3Oe0FbAZu7Xa9tUf4Jsr7b36h089z2NrdAhnkZ1ZtnZnZnq/BxqCdAZOEfS
-	 NkoKalXOXK+41jt1AJL2tc/cfBMRtwhvYYSlv8gAYUndFJ0u4zuH6O+9TXmV47Uyk5
-	 /LbOeurpxPChb6WoKDINNPDS4e/elA++6dOjRnhAxiQD38IJL5MVtKddM15Yckci5z
-	 MIvlqRuKSs8Fw==
+	b=KvTsmBIPx4fuFqf2ar8PpLMhw+IYtRpbr+xdIArIcu0bu2jc1YXKI07jJ0ne391vn
+	 bOF36nqOXpskVuiNuMyAaskyzjeaoNXOQTtgHzem+TIXGzfcu6uNakBWwyF5r3rDYv
+	 O4uUot6iLrViL5vKk/by1VmKXdUe8/5iv3sJZBL+7s1W5TY8RyXl180v17faCt/iUC
+	 Zv64JcxrmXp1Q7TG8YT8EAOAIFyGAMpAJLKU+qrYmRFMO07ryvgWbGYlYKLxukCkeZ
+	 VztKtZub8eWHeySS+OwPPTgKuiN+zznlZy9Z1yIp8nLFzuodpXORWPyH7OwovEcWhx
+	 7hSM40PUHXzzQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Mike Christie <michael.christie@oracle.com>,
+Cc: Konstantin Shkolnyy <kshk@linux.ibm.com>,
 	"Michael S . Tsirkin" <mst@redhat.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Jason Wang <jasowang@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jasowang@redhat.com,
-	virtualization@lists.linux.dev,
-	kvm@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 160/294] vhost-scsi: Return queue full for page alloc failures during copy
-Date: Mon,  5 May 2025 18:54:20 -0400
-Message-Id: <20250505225634.2688578-160-sashal@kernel.org>
+	eperezma@redhat.com,
+	cratiu@nvidia.com,
+	tariqt@nvidia.com,
+	virtualization@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.6 161/294] vdpa/mlx5: Fix mlx5_vdpa_get_config() endianness on big-endian machines
+Date: Mon,  5 May 2025 18:54:21 -0400
+Message-Id: <20250505225634.2688578-161-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -64,82 +65,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Mike Christie <michael.christie@oracle.com>
+From: Konstantin Shkolnyy <kshk@linux.ibm.com>
 
-[ Upstream commit 891b99eab0f89dbe08d216f4ab71acbeaf7a3102 ]
+[ Upstream commit 439252e167ac45a5d46f573aac1da7d8f3e051ad ]
 
-This has us return queue full if we can't allocate a page during the
-copy operation so the initiator can retry.
+mlx5_vdpa_dev_add() doesn’t initialize mvdev->actual_features. It’s
+initialized later by mlx5_vdpa_set_driver_features(). However,
+mlx5_vdpa_get_config() depends on the VIRTIO_F_VERSION_1 flag in
+actual_features, to return data with correct endianness. When it’s called
+before mlx5_vdpa_set_driver_features(), the data are incorrectly returned
+as big-endian on big-endian machines, while QEMU then interprets them as
+little-endian.
 
-Signed-off-by: Mike Christie <michael.christie@oracle.com>
-Message-Id: <20241203191705.19431-5-michael.christie@oracle.com>
+The fix is to initialize this VIRTIO_F_VERSION_1 as early as possible,
+especially considering that mlx5_vdpa_dev_add() insists on this flag to
+always be set anyway.
+
+Signed-off-by: Konstantin Shkolnyy <kshk@linux.ibm.com>
+Message-Id: <20250204173127.166673-1-kshk@linux.ibm.com>
 Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Stefan Hajnoczi <stefanha@redhat.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vhost/scsi.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/vdpa/mlx5/net/mlx5_vnet.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/vhost/scsi.c b/drivers/vhost/scsi.c
-index 8d8a22504d71f..9a62372bdac32 100644
---- a/drivers/vhost/scsi.c
-+++ b/drivers/vhost/scsi.c
-@@ -746,7 +746,7 @@ vhost_scsi_copy_iov_to_sgl(struct vhost_scsi_cmd *cmd, struct iov_iter *iter,
- 	size_t len = iov_iter_count(iter);
- 	unsigned int nbytes = 0;
- 	struct page *page;
--	int i;
-+	int i, ret;
+diff --git a/drivers/vdpa/mlx5/net/mlx5_vnet.c b/drivers/vdpa/mlx5/net/mlx5_vnet.c
+index b56aae3f7be37..9b8b70ffde5a0 100644
+--- a/drivers/vdpa/mlx5/net/mlx5_vnet.c
++++ b/drivers/vdpa/mlx5/net/mlx5_vnet.c
+@@ -3420,6 +3420,9 @@ static int mlx5_vdpa_dev_add(struct vdpa_mgmt_dev *v_mdev, const char *name,
+ 	ndev->mvdev.max_vqs = max_vqs;
+ 	mvdev = &ndev->mvdev;
+ 	mvdev->mdev = mdev;
++	/* cpu_to_mlx5vdpa16() below depends on this flag */
++	mvdev->actual_features =
++			(device_features & BIT_ULL(VIRTIO_F_VERSION_1));
  
- 	if (cmd->tvc_data_direction == DMA_FROM_DEVICE) {
- 		cmd->saved_iter_addr = dup_iter(&cmd->saved_iter, iter,
-@@ -759,6 +759,7 @@ vhost_scsi_copy_iov_to_sgl(struct vhost_scsi_cmd *cmd, struct iov_iter *iter,
- 		page = alloc_page(GFP_KERNEL);
- 		if (!page) {
- 			i--;
-+			ret = -ENOMEM;
- 			goto err;
- 		}
- 
-@@ -766,8 +767,10 @@ vhost_scsi_copy_iov_to_sgl(struct vhost_scsi_cmd *cmd, struct iov_iter *iter,
- 		sg_set_page(&sg[i], page, nbytes, 0);
- 
- 		if (cmd->tvc_data_direction == DMA_TO_DEVICE &&
--		    copy_page_from_iter(page, 0, nbytes, iter) != nbytes)
-+		    copy_page_from_iter(page, 0, nbytes, iter) != nbytes) {
-+			ret = -EFAULT;
- 			goto err;
-+		}
- 
- 		len -= nbytes;
- 	}
-@@ -782,7 +785,7 @@ vhost_scsi_copy_iov_to_sgl(struct vhost_scsi_cmd *cmd, struct iov_iter *iter,
- 	for (; i >= 0; i--)
- 		__free_page(sg_page(&sg[i]));
- 	kfree(cmd->saved_iter_addr);
--	return -ENOMEM;
-+	return ret;
- }
- 
- static int
-@@ -1221,9 +1224,9 @@ vhost_scsi_handle_vq(struct vhost_scsi *vs, struct vhost_virtqueue *vq)
- 			 " %d\n", cmd, exp_data_len, prot_bytes, data_direction);
- 
- 		if (data_direction != DMA_NONE) {
--			if (unlikely(vhost_scsi_mapal(cmd, prot_bytes,
--						      &prot_iter, exp_data_len,
--						      &data_iter))) {
-+			ret = vhost_scsi_mapal(cmd, prot_bytes, &prot_iter,
-+					       exp_data_len, &data_iter);
-+			if (unlikely(ret)) {
- 				vq_err(vq, "Failed to map iov to sgl\n");
- 				vhost_scsi_release_cmd_res(&cmd->tvc_se_cmd);
- 				goto err;
+ 	ndev->vqs = kcalloc(max_vqs, sizeof(*ndev->vqs), GFP_KERNEL);
+ 	ndev->event_cbs = kcalloc(max_vqs + 1, sizeof(*ndev->event_cbs), GFP_KERNEL);
 -- 
 2.39.5
 
