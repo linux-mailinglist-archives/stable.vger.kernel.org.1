@@ -1,64 +1,61 @@
-Return-Path: <stable+bounces-140891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1385AAAC36
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:12:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EA10AAAC3C
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:12:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27F1F163F13
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:10:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6BAE163EC8
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:10:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A5D33C3993;
-	Mon,  5 May 2025 23:24:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CBF82FCA84;
+	Mon,  5 May 2025 23:24:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GmalkvYZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UsTovTg3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F394B38943A;
-	Mon,  5 May 2025 23:12:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC65F2F1CCD;
+	Mon,  5 May 2025 23:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486758; cv=none; b=NYm0N6LMPVPao9hUV2Hj0ER6QKUmSszIs7mYkOZg55R1thNRfzUOBWYiEnivejWG+w4RZJv1lmc0S64KLHsmN2fJGh080zwzgSLteH6iRamtWD3zHYtGo10zI+q6MgKquc87JJE/jEoLfuI1TyTIHHMhDMjcpO6gLtdItMJhNf0=
+	t=1746486762; cv=none; b=Yq1nVPFUaQMmAEGA0tNNK9NY/kFGtw1T4/AEUQYmWxgOl6tNDX0YSL8AbZKQMfe6BP2c5K7pT85Q1vDbk+AROt8CBa9tfxOcqoFOwXNTSMclNeC0YiMP/NGGIiWGGHTeWezfobSmuln0mesh3TkWl7NoB4cBPSd18eXG3VLNkrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486758; c=relaxed/simple;
-	bh=Lpsb/dOflHCkt6eipB9Vj1VHtPnMKoK6a5Sav2lGK/g=;
+	s=arc-20240116; t=1746486762; c=relaxed/simple;
+	bh=br+Mbv3A/bYJ0vyPTdvaWCJwXmFes9Pkihotvm54Mdc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XyLbCArSOftsYt9A5ffwJ9fFTQcVhSmQxWni0OnT8oWMgn2sxdL44RCbFTacZUA3/PPOSulPE8RB8T8t86BwqrC2/5Y6gM3P5vwOBTMt8KdfSMz89K4OpDJfBEk+ZS2lFytoXGnjNBr++ue+GZwzsckITpihDT6/jpCXktXXi5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GmalkvYZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CDA3C4CEE4;
-	Mon,  5 May 2025 23:12:36 +0000 (UTC)
+	 MIME-Version; b=NaSP21wJXcLmdS45+KF7Njm4zR6gHqdugURd+gsupMh3WU5NMFMv93jZNISuBAjL/4R0DvST/rEAyJUQyGcugUnHfkvPBZ2pyObDAMRyK39cxyVNhkadlCIIR+KxzCmtjLGi0lgHu/osfFrhzbhbtAF46SS5AwhhoakcNBJlSNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UsTovTg3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 869D3C4CEED;
+	Mon,  5 May 2025 23:12:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486757;
-	bh=Lpsb/dOflHCkt6eipB9Vj1VHtPnMKoK6a5Sav2lGK/g=;
+	s=k20201202; t=1746486761;
+	bh=br+Mbv3A/bYJ0vyPTdvaWCJwXmFes9Pkihotvm54Mdc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GmalkvYZU/xuCNnDBMfm4L6TRI7IGdx7L9GXGMLhu2RNk6SciKHW4j6p9X/KpQNmN
-	 LFIEFT8F/H433koXO5s5lSlnWSM2c7xiUdCp3S+cELuzZRiNHY2YSrAZfA2IcH5957
-	 80FWgz9NJPLlIizIFYLMgsu3+rSMtVAytYdAfS1vVNaCPqXEdty7rit41uHvlcXAVv
-	 ywMgrGNnpVZCJwDUZUwrE0aChoghJM6siPXWZKX+RnFSxYu2+QBYOfIgXsLINRKo38
-	 yzCfkxbtXCPH8ANhr1gyjFdri7WlFgxneqrB9TjFAg7OVCRyLOGtp+er0HyPfpS7/9
-	 XFjeznrINiduw==
+	b=UsTovTg3WYA/As4Ma4nKgHMgIBljLkJ0tI8KxYORhZ4O1Y+t/bd6i6+rJmPJ6OY0Q
+	 x7MVS8Utr90/pPKcnCf1L4vQ7Q8Db2tLacUcYg7uIrPDlffE7YrnB1uHmil5J36ccb
+	 yvIBx5VlEMEpX0BGqzNN3SFKgqPM4Y3POEkYAejq3+GcQmj+0goJOMDUxAk3Ha2Nv6
+	 d1Ta3a+ArdCccY8W1sfxkNhg61usEn3HmR00TTdfqCcHmnbMS+hL+86Vj1AX8LtT7M
+	 oYJudGkRxMi1QHsfsyJRJwd1MxbWSOYTQFT3m8EfFGBY/bYbRCr1dZQ9IvOFk9HJWC
+	 Ke4ZUwYhI2zcA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
+Cc: Antoine Tenart <atenart@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
+	edumazet@google.com,
 	pabeni@redhat.com,
-	menglong8.dong@gmail.com,
-	gnault@redhat.com,
+	sdf@fomichev.me,
+	jdamato@fastly.com,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 187/212] vxlan: Annotate FDB data races
-Date: Mon,  5 May 2025 19:05:59 -0400
-Message-Id: <20250505230624.2692522-187-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 189/212] net-sysfs: prevent uncleared queues from being re-added
+Date: Mon,  5 May 2025 19:06:01 -0400
+Message-Id: <20250505230624.2692522-189-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -73,142 +70,74 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Antoine Tenart <atenart@kernel.org>
 
-[ Upstream commit f6205f8215f12a96518ac9469ff76294ae7bd612 ]
+[ Upstream commit 7e54f85c60828842be27e0149f3533357225090e ]
 
-The 'used' and 'updated' fields in the FDB entry structure can be
-accessed concurrently by multiple threads, leading to reports such as
-[1]. Can be reproduced using [2].
+With the (upcoming) removal of the rtnl_trylock/restart_syscall logic
+and because of how Tx/Rx queues are implemented (and their
+requirements), it might happen that a queue is re-added before having
+the chance to be cleared. In such rare case, do not complete the queue
+addition operation.
 
-Suppress these reports by annotating these accesses using
-READ_ONCE() / WRITE_ONCE().
-
-[1]
-BUG: KCSAN: data-race in vxlan_xmit / vxlan_xmit
-
-write to 0xffff942604d263a8 of 8 bytes by task 286 on cpu 0:
- vxlan_xmit+0xb29/0x2380
- dev_hard_start_xmit+0x84/0x2f0
- __dev_queue_xmit+0x45a/0x1650
- packet_xmit+0x100/0x150
- packet_sendmsg+0x2114/0x2ac0
- __sys_sendto+0x318/0x330
- __x64_sys_sendto+0x76/0x90
- x64_sys_call+0x14e8/0x1c00
- do_syscall_64+0x9e/0x1a0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-read to 0xffff942604d263a8 of 8 bytes by task 287 on cpu 2:
- vxlan_xmit+0xadf/0x2380
- dev_hard_start_xmit+0x84/0x2f0
- __dev_queue_xmit+0x45a/0x1650
- packet_xmit+0x100/0x150
- packet_sendmsg+0x2114/0x2ac0
- __sys_sendto+0x318/0x330
- __x64_sys_sendto+0x76/0x90
- x64_sys_call+0x14e8/0x1c00
- do_syscall_64+0x9e/0x1a0
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-value changed: 0x00000000fffbac6e -> 0x00000000fffbac6f
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 2 UID: 0 PID: 287 Comm: mausezahn Not tainted 6.13.0-rc7-01544-gb4b270f11a02 #5
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-3.fc41 04/01/2014
-
-[2]
- #!/bin/bash
-
- set +H
- echo whitelist > /sys/kernel/debug/kcsan
- echo !vxlan_xmit > /sys/kernel/debug/kcsan
-
- ip link add name vx0 up type vxlan id 10010 dstport 4789 local 192.0.2.1
- bridge fdb add 00:11:22:33:44:55 dev vx0 self static dst 198.51.100.1
- taskset -c 0 mausezahn vx0 -a own -b 00:11:22:33:44:55 -c 0 -q &
- taskset -c 2 mausezahn vx0 -a own -b 00:11:22:33:44:55 -c 0 -q &
-
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20250204145549.1216254-2-idosch@nvidia.com
+Signed-off-by: Antoine Tenart <atenart@kernel.org>
+Link: https://patch.msgid.link/20250204170314.146022-4-atenart@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/vxlan/vxlan_core.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ net/core/net-sysfs.c | 32 ++++++++++++++++++++++++++++++++
+ 1 file changed, 32 insertions(+)
 
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index 0afd7eb976e6c..ef61eab81707c 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -274,9 +274,9 @@ static int vxlan_fdb_info(struct sk_buff *skb, struct vxlan_dev *vxlan,
- 			be32_to_cpu(fdb->vni)))
- 		goto nla_put_failure;
+diff --git a/net/core/net-sysfs.c b/net/core/net-sysfs.c
+index 8a06f97320e04..08d926cdd5804 100644
+--- a/net/core/net-sysfs.c
++++ b/net/core/net-sysfs.c
+@@ -1052,6 +1052,22 @@ static int rx_queue_add_kobject(struct net_device *dev, int index)
+ 	struct kobject *kobj = &queue->kobj;
+ 	int error = 0;
  
--	ci.ndm_used	 = jiffies_to_clock_t(now - fdb->used);
-+	ci.ndm_used	 = jiffies_to_clock_t(now - READ_ONCE(fdb->used));
- 	ci.ndm_confirmed = 0;
--	ci.ndm_updated	 = jiffies_to_clock_t(now - fdb->updated);
-+	ci.ndm_updated	 = jiffies_to_clock_t(now - READ_ONCE(fdb->updated));
- 	ci.ndm_refcnt	 = 0;
++	/* Rx queues are cleared in rx_queue_release to allow later
++	 * re-registration. This is triggered when their kobj refcount is
++	 * dropped.
++	 *
++	 * If a queue is removed while both a read (or write) operation and a
++	 * the re-addition of the same queue are pending (waiting on rntl_lock)
++	 * it might happen that the re-addition will execute before the read,
++	 * making the initial removal to never happen (queue's kobj refcount
++	 * won't drop enough because of the pending read). In such rare case,
++	 * return to allow the removal operation to complete.
++	 */
++	if (unlikely(kobj->state_initialized)) {
++		netdev_warn_once(dev, "Cannot re-add rx queues before their removal completed");
++		return -EAGAIN;
++	}
++
+ 	/* Kobject_put later will trigger rx_queue_release call which
+ 	 * decreases dev refcount: Take that reference here
+ 	 */
+@@ -1655,6 +1671,22 @@ static int netdev_queue_add_kobject(struct net_device *dev, int index)
+ 	struct kobject *kobj = &queue->kobj;
+ 	int error = 0;
  
- 	if (nla_put(skb, NDA_CACHEINFO, sizeof(ci), &ci))
-@@ -482,8 +482,8 @@ static struct vxlan_fdb *vxlan_find_mac(struct vxlan_dev *vxlan,
- 	struct vxlan_fdb *f;
- 
- 	f = __vxlan_find_mac(vxlan, mac, vni);
--	if (f && f->used != jiffies)
--		f->used = jiffies;
-+	if (f && READ_ONCE(f->used) != jiffies)
-+		WRITE_ONCE(f->used, jiffies);
- 
- 	return f;
- }
-@@ -1057,12 +1057,12 @@ static int vxlan_fdb_update_existing(struct vxlan_dev *vxlan,
- 	    !(f->flags & NTF_VXLAN_ADDED_BY_USER)) {
- 		if (f->state != state) {
- 			f->state = state;
--			f->updated = jiffies;
-+			WRITE_ONCE(f->updated, jiffies);
- 			notify = 1;
- 		}
- 		if (f->flags != fdb_flags) {
- 			f->flags = fdb_flags;
--			f->updated = jiffies;
-+			WRITE_ONCE(f->updated, jiffies);
- 			notify = 1;
- 		}
- 	}
-@@ -1096,7 +1096,7 @@ static int vxlan_fdb_update_existing(struct vxlan_dev *vxlan,
- 	}
- 
- 	if (ndm_flags & NTF_USE)
--		f->used = jiffies;
-+		WRITE_ONCE(f->used, jiffies);
- 
- 	if (notify) {
- 		if (rd == NULL)
-@@ -1525,7 +1525,7 @@ static bool vxlan_snoop(struct net_device *dev,
- 				    src_mac, &rdst->remote_ip.sa, &src_ip->sa);
- 
- 		rdst->remote_ip = *src_ip;
--		f->updated = jiffies;
-+		WRITE_ONCE(f->updated, jiffies);
- 		vxlan_fdb_notify(vxlan, f, rdst, RTM_NEWNEIGH, true, NULL);
- 	} else {
- 		u32 hash_index = fdb_head_index(vxlan, src_mac, vni);
-@@ -2936,7 +2936,7 @@ static void vxlan_cleanup(struct timer_list *t)
- 			if (f->flags & NTF_EXT_LEARNED)
- 				continue;
- 
--			timeout = f->used + vxlan->cfg.age_interval * HZ;
-+			timeout = READ_ONCE(f->used) + vxlan->cfg.age_interval * HZ;
- 			if (time_before_eq(timeout, jiffies)) {
- 				netdev_dbg(vxlan->dev,
- 					   "garbage collect %pM\n",
++	/* Tx queues are cleared in netdev_queue_release to allow later
++	 * re-registration. This is triggered when their kobj refcount is
++	 * dropped.
++	 *
++	 * If a queue is removed while both a read (or write) operation and a
++	 * the re-addition of the same queue are pending (waiting on rntl_lock)
++	 * it might happen that the re-addition will execute before the read,
++	 * making the initial removal to never happen (queue's kobj refcount
++	 * won't drop enough because of the pending read). In such rare case,
++	 * return to allow the removal operation to complete.
++	 */
++	if (unlikely(kobj->state_initialized)) {
++		netdev_warn_once(dev, "Cannot re-add tx queues before their removal completed");
++		return -EAGAIN;
++	}
++
+ 	/* Kobject_put later will trigger netdev_queue_release call
+ 	 * which decreases dev refcount: Take that reference here
+ 	 */
 -- 
 2.39.5
 
