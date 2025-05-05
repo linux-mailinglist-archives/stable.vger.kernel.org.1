@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-141545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACA8DAAB458
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:04:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13F9CAAB455
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:04:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 852EB1BA4F81
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:01:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BBA42169485
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:01:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CD6C477999;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 718EF47799E;
 	Tue,  6 May 2025 00:41:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d215BN0I"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vMBNl+W+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ACD12EEBF9;
-	Mon,  5 May 2025 23:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB242EFB80;
+	Mon,  5 May 2025 23:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486654; cv=none; b=ddRwvS+jjnz+G1H0Y5uKbR9lK591hFrlXdZGhUROiHd1lxBDFxNr1BvB09V6W3ySccvg0JGtKYz5B4V9W3ZCJ/N2lDpxMM2Sha9WzovrJ1252FB/ag9CbCYN47t/wauLPectAbqf/taZQmGhYQh7UTuK3ba4xsXtxCWfX545q/Y=
+	t=1746486656; cv=none; b=RbmJhxBMK9PkiJea1SG4L2l0UbIWcN0Xf++d1/52MJRZDV2xdVoA3s0DES0OLebTmTtuY0v7oIdsKWp7TtVOgvBYOKiWGHWorO3X08GFG7Ub/OfGdTQvvroQLoJS4MD+AWTS4CU+fT+if0WSdkv8Js13fvLQLPSBCNXsY6+5F08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486654; c=relaxed/simple;
-	bh=TYh/0K8l5itOK887KQGJmTaJDIL0FULokbgPttmwIdI=;
+	s=arc-20240116; t=1746486656; c=relaxed/simple;
+	bh=Pa7L28cijMi8iOzF4/ANZtkfnSuJCas+Gkv0hY5XP1Y=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=MZjLNm5PlylJtZGCIZvojP6dHOyAVC4O9llJwwEe8/WFcYtfUEWa7w3VNYOvqSpOgCU7ajiwwrhG6IdRIrXpD3Mqn7SmjGWXk/ULarphvPRe+eHMSXC5sWxknGVjRIAymWfcu8+JWV2SuEEK+L2mTFLDr4SxqgMt09jeHc7N2aU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d215BN0I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4343C4CEE4;
-	Mon,  5 May 2025 23:10:53 +0000 (UTC)
+	 MIME-Version; b=PCZ88zA9jblEGGlOT128YG2UUnIM4kCJ9ehNrsCPD8qXXxiAd+8qN/SWWmgwp06zNtBetYOLI+BGqF7g8c1K0OMkZvjmZGh2kPULaoWf7qAeG6HEaH0SWAhpFEo/XQLKwlzUDoEcXoSvJouIPk21QzwUW/TlVJyInAlMV4Jh2iY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vMBNl+W+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 516F3C4CEED;
+	Mon,  5 May 2025 23:10:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486654;
-	bh=TYh/0K8l5itOK887KQGJmTaJDIL0FULokbgPttmwIdI=;
+	s=k20201202; t=1746486656;
+	bh=Pa7L28cijMi8iOzF4/ANZtkfnSuJCas+Gkv0hY5XP1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d215BN0ITJDsoVifjkJc2ZZrGlftw28wqXDzbE5JoAaDfg36RS1rK2MzEfJZZ0wKu
-	 dqK3ERwuV7fEodNQcPYaMxhDY4ZK6vO/jaCbRPrUY3J1Cb8j+318VzEeirGrtvrCfR
-	 HFUaQdzw2rpK7YA1DDOy5UReG+QhH0QclEEhYgw8i5dDLwAqfbg50eC2SBdjCyN6fE
-	 pYsAx6HkIake3hV0gAkpD37ir5KyqmaqhwM8PpYwykGJ3yuAWjAoyVqd9HAOaktGa+
-	 fT4Jrtl5ySJi/ZIChN0PUAsylR1I29N4KEkk3VV4j9li1WTgOZeAZAcvadDil13z/R
-	 q+/pioPjitiNA==
+	b=vMBNl+W+fTyfYuhJw/vjqaIvcgE99M1m363kh8tSrzF9r9yVTvM3OoIAAxRarvRyI
+	 JEwaZ+kZnrIyAxM6MBF2WKAo6vSJ+9JWm4fx2Gd/9ZghMFQ+perTLNNkVPH6dUKfk/
+	 7lBJcQEd6vlIaxtlFWp/digAobw7WW9HfPV+7jtyt/t2o6OLufOakw8HntRhoXYzWS
+	 iu9MN5mcWyHtZOiDqqBfs7OHuhJ0OZSxdgqvc32tmqrUl+t73HCRsKuwQbdWMftP7c
+	 ofepVELn1pzKhjNdO6U2SGDpmewh/7b91bYYBY/OfKh1ybomFlwUTrE6GCHrqBvFdN
+	 HtkPhOTbbLO1Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ping-Ke Shih <pkshih@realtek.com>,
+Cc: Peter Seiderer <ps.report@gmx.net>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 139/212] wifi: rtw89: fw: propagate error code from rtw89_h2c_tx()
-Date: Mon,  5 May 2025 19:05:11 -0400
-Message-Id: <20250505230624.2692522-139-sashal@kernel.org>
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 140/212] net: pktgen: fix access outside of user given buffer in pktgen_thread_write()
+Date: Mon,  5 May 2025 19:05:12 -0400
+Message-Id: <20250505230624.2692522-140-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -64,40 +69,47 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Peter Seiderer <ps.report@gmx.net>
 
-[ Upstream commit 56e1acaa0f80620b8e2c3410db35b4b975782b0a ]
+[ Upstream commit 425e64440ad0a2f03bdaf04be0ae53dededbaa77 ]
 
-The error code should be propagated to callers during downloading firmware
-header and body. Remove unnecessary assignment of -1.
+Honour the user given buffer size for the strn_len() calls (otherwise
+strn_len() will access memory outside of the user given buffer).
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250217064308.43559-4-pkshih@realtek.com
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250219084527.20488-8-ps.report@gmx.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/fw.c | 2 --
- 1 file changed, 2 deletions(-)
+ net/core/pktgen.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/fw.c b/drivers/net/wireless/realtek/rtw89/fw.c
-index 1d57a8c5e97df..0f022a5192ac6 100644
---- a/drivers/net/wireless/realtek/rtw89/fw.c
-+++ b/drivers/net/wireless/realtek/rtw89/fw.c
-@@ -373,7 +373,6 @@ static int __rtw89_fw_download_hdr(struct rtw89_dev *rtwdev, const u8 *fw, u32 l
- 	ret = rtw89_h2c_tx(rtwdev, skb, false);
- 	if (ret) {
- 		rtw89_err(rtwdev, "failed to send h2c\n");
--		ret = -1;
- 		goto fail;
- 	}
+diff --git a/net/core/pktgen.c b/net/core/pktgen.c
+index 5917820f92c3d..a2838c15aa9da 100644
+--- a/net/core/pktgen.c
++++ b/net/core/pktgen.c
+@@ -1877,8 +1877,8 @@ static ssize_t pktgen_thread_write(struct file *file,
+ 	i = len;
  
-@@ -434,7 +433,6 @@ static int __rtw89_fw_download_main(struct rtw89_dev *rtwdev,
- 		ret = rtw89_h2c_tx(rtwdev, skb, true);
- 		if (ret) {
- 			rtw89_err(rtwdev, "failed to send h2c\n");
--			ret = -1;
- 			goto fail;
- 		}
+ 	/* Read variable name */
+-
+-	len = strn_len(&user_buffer[i], sizeof(name) - 1);
++	max = min(sizeof(name) - 1, count - i);
++	len = strn_len(&user_buffer[i], max);
+ 	if (len < 0)
+ 		return len;
  
+@@ -1908,7 +1908,8 @@ static ssize_t pktgen_thread_write(struct file *file,
+ 	if (!strcmp(name, "add_device")) {
+ 		char f[32];
+ 		memset(f, 0, 32);
+-		len = strn_len(&user_buffer[i], sizeof(f) - 1);
++		max = min(sizeof(f) - 1, count - i);
++		len = strn_len(&user_buffer[i], max);
+ 		if (len < 0) {
+ 			ret = len;
+ 			goto out;
 -- 
 2.39.5
 
