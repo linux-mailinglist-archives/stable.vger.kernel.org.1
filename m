@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-141078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8288CAAB06C
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:38:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89968AAB072
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:38:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A70FA1BA0D2A
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:38:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7F454E236B
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:38:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5EC630EA94;
-	Mon,  5 May 2025 23:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D8B528B51C;
+	Mon,  5 May 2025 23:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mbOJ7T2x"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tFc3MNHJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A87DE2FB45C;
-	Mon,  5 May 2025 23:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F14352FB2BA;
+	Mon,  5 May 2025 23:23:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487405; cv=none; b=PXnG+v1E101gdqicBSbKqNMDVsrqBuU+Ienmw2G9TQ/KAUWPwRwRMIQ5ir5caEUP2bVpP8QlZtvN7nbh/8TTsQDaDlkD91t/3ljMxW6EpLDeg4iRmVagkRf2Ti6v/6IphXcKLhyKymmcuzjjujg5C/4kvlVFpmwAhGKetYfhejM=
+	t=1746487407; cv=none; b=ZOv+fciPE4tD7HBiXUTR8qGTNnf3NTr+mYpQ4+nYzTfS2LDRKOq3OjI6rI1jNY72YP88D8vP0wTYHANG2+bohWaW2u/raZQsl7dUQVsseXS1Dyt8nKPC4Ku0ED9Y9XduFJxrWokrNgvNL6a+gNawPd7ngyAgq61uYVHrmxmNYiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487405; c=relaxed/simple;
-	bh=TLK/nw2rcYQzO6iVjYaqZj4A8EqjcfM5zZQ6+AxLI/4=;
+	s=arc-20240116; t=1746487407; c=relaxed/simple;
+	bh=dyCX6F2jPhi6g0pJYPEwuDqcq3tMWkUoLJk0fI2gYWA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=opGaJ7c4dT1M0l9LduPh+c3UT2oQg0IfuLGg21HmXPBkfyBd62lArPuZkhKXkz8cb/QM4NRxswvggSnk81XtKVOzYQBi0to2FHHqiM9dk8f0I7i0d+WiscRgcFSu7drMsxRDL8PLNM+K3w82Py6Ojr5bBXqkPlkUfJkbpeT6PLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mbOJ7T2x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78A27C4CEE4;
-	Mon,  5 May 2025 23:23:23 +0000 (UTC)
+	 MIME-Version; b=PAaG0RD5HdtL/qkNXOJQn7IFw2g2TwqcwYUfD4qDzISSfoOkqPiAg/I1JPWakmHI67SGJX/RQ4LfwF2IKM/HrNcp1WUXnj9tacHlXv0CauwPR37dWxY9px3JGxqFWbCMsCHsW8zzTFZB4WmkUvXPOsFlC5u43fUhfdhHbgMWLWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tFc3MNHJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC7ADC4CEED;
+	Mon,  5 May 2025 23:23:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487404;
-	bh=TLK/nw2rcYQzO6iVjYaqZj4A8EqjcfM5zZQ6+AxLI/4=;
+	s=k20201202; t=1746487405;
+	bh=dyCX6F2jPhi6g0pJYPEwuDqcq3tMWkUoLJk0fI2gYWA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mbOJ7T2x03FT5Yn1xinxvVrTkFAlzupqeocTWv8hYJwgREJ2V1zy0xe59acJtlD0H
-	 y6yZwIj1/VAeFHr/u3cQCynnigdpU4kBLPyqDIFgbsuX01DPSiTG3WgYjfbQzkR3Z7
-	 vU2PFLxG1cRdHMOpPw7psgE8tObkR6sTGluJzz8BBDJzKNOyQ5Q6kxMTTlLJp8AIjz
-	 GZAjBkPgTDRopHNdv0tDvc1T+GXOVicXFpC/mJ2iLJo4CGWKfXk4SHYZyOx5X4m51m
-	 jNfTK2iAmelqyOfwkd0RaGuHx1pZt+u2I/ISstjh3otdTM48U5T1ciulElu0Xz/oWL
-	 iJGig+ORMJQzQ==
+	b=tFc3MNHJf9nEyhtFXlJ9WwI9zJZ3tAavU4JDtZM3pWZBA5Te3MvN95rEVPeI39vwi
+	 OBIAe0guEl0McZA8Ehz2MGkACad078rJXLyszkv00UDT01qclDW4cmOT2LRbVCxr1c
+	 Z2Pkx2EOoKXdFf9OSrhEQEH/mxzpbqDU7BW4yAh708UJoS+mvvdo8sluEIfCQ5B33X
+	 hO0g7DY3xh3rHup33LKP/wXEKKmNF5gDEU2XXZg+ZsJY1nRc2DlGAJ17u8/xzNMolw
+	 ckCSDDzIop95c3Gk+QMtbv3iNw+ty54aqAYvHY8nRtTKRledavjm0M0cLHxv2Ys/8Q
+	 vXrZia38ypmGQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Peter Seiderer <ps.report@gmx.net>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Jason Baron <jbaron@akamai.com>,
+	Tony Luck <tony.luck@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 51/79] net: pktgen: fix access outside of user given buffer in pktgen_thread_write()
-Date: Mon,  5 May 2025 19:21:23 -0400
-Message-Id: <20250505232151.2698893-51-sashal@kernel.org>
+	bp@alien8.de,
+	linux-edac@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 52/79] EDAC/ie31200: work around false positive build warning
+Date: Mon,  5 May 2025 19:21:24 -0400
+Message-Id: <20250505232151.2698893-52-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505232151.2698893-1-sashal@kernel.org>
 References: <20250505232151.2698893-1-sashal@kernel.org>
@@ -69,47 +67,103 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.293
 Content-Transfer-Encoding: 8bit
 
-From: Peter Seiderer <ps.report@gmx.net>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 425e64440ad0a2f03bdaf04be0ae53dededbaa77 ]
+[ Upstream commit c29dfd661fe2f8d1b48c7f00590929c04b25bf40 ]
 
-Honour the user given buffer size for the strn_len() calls (otherwise
-strn_len() will access memory outside of the user given buffer).
+gcc-14 produces a bogus warning in some configurations:
 
-Signed-off-by: Peter Seiderer <ps.report@gmx.net>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250219084527.20488-8-ps.report@gmx.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+drivers/edac/ie31200_edac.c: In function 'ie31200_probe1.isra':
+drivers/edac/ie31200_edac.c:412:26: error: 'dimm_info' is used uninitialized [-Werror=uninitialized]
+  412 |         struct dimm_data dimm_info[IE31200_CHANNELS][IE31200_DIMMS_PER_CHANNEL];
+      |                          ^~~~~~~~~
+drivers/edac/ie31200_edac.c:412:26: note: 'dimm_info' declared here
+  412 |         struct dimm_data dimm_info[IE31200_CHANNELS][IE31200_DIMMS_PER_CHANNEL];
+      |                          ^~~~~~~~~
+
+I don't see any way the unintialized access could really happen here,
+but I can see why the compiler gets confused by the two loops.
+
+Instead, rework the two nested loops to only read the addr_decode
+registers and then keep only one instance of the dimm info structure.
+
+[Tony: Qiuxu pointed out that the "populate DIMM info" comment was left
+behind in the refactor and suggested moving it. I deleted the comment
+as unnecessry in front os a call to populate_dimm_info(). That seems
+pretty self-describing.]
+
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Jason Baron <jbaron@akamai.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Link: https://lore.kernel.org/all/20250122065031.1321015-1-arnd@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/pktgen.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/edac/ie31200_edac.c | 28 +++++++++++++---------------
+ 1 file changed, 13 insertions(+), 15 deletions(-)
 
-diff --git a/net/core/pktgen.c b/net/core/pktgen.c
-index e7cde4f097908..4fd66e6466d29 100644
---- a/net/core/pktgen.c
-+++ b/net/core/pktgen.c
-@@ -1770,8 +1770,8 @@ static ssize_t pktgen_thread_write(struct file *file,
- 	i = len;
+diff --git a/drivers/edac/ie31200_edac.c b/drivers/edac/ie31200_edac.c
+index d3d9916b1ba3f..f865528728d75 100644
+--- a/drivers/edac/ie31200_edac.c
++++ b/drivers/edac/ie31200_edac.c
+@@ -398,10 +398,9 @@ static int ie31200_probe1(struct pci_dev *pdev, int dev_idx)
+ 	int i, j, ret;
+ 	struct mem_ctl_info *mci = NULL;
+ 	struct edac_mc_layer layers[2];
+-	struct dimm_data dimm_info[IE31200_CHANNELS][IE31200_DIMMS_PER_CHANNEL];
+ 	void __iomem *window;
+ 	struct ie31200_priv *priv;
+-	u32 addr_decode, mad_offset;
++	u32 addr_decode[IE31200_CHANNELS], mad_offset;
  
- 	/* Read variable name */
--
--	len = strn_len(&user_buffer[i], sizeof(name) - 1);
-+	max = min(sizeof(name) - 1, count - i);
-+	len = strn_len(&user_buffer[i], max);
- 	if (len < 0)
- 		return len;
+ 	/*
+ 	 * Kaby Lake, Coffee Lake seem to work like Skylake. Please re-visit
+@@ -459,19 +458,10 @@ static int ie31200_probe1(struct pci_dev *pdev, int dev_idx)
+ 		mad_offset = IE31200_MAD_DIMM_0_OFFSET;
+ 	}
  
-@@ -1801,7 +1801,8 @@ static ssize_t pktgen_thread_write(struct file *file,
- 	if (!strcmp(name, "add_device")) {
- 		char f[32];
- 		memset(f, 0, 32);
--		len = strn_len(&user_buffer[i], sizeof(f) - 1);
-+		max = min(sizeof(f) - 1, count - i);
-+		len = strn_len(&user_buffer[i], max);
- 		if (len < 0) {
- 			ret = len;
- 			goto out;
+-	/* populate DIMM info */
+ 	for (i = 0; i < IE31200_CHANNELS; i++) {
+-		addr_decode = readl(window + mad_offset +
++		addr_decode[i] = readl(window + mad_offset +
+ 					(i * 4));
+-		edac_dbg(0, "addr_decode: 0x%x\n", addr_decode);
+-		for (j = 0; j < IE31200_DIMMS_PER_CHANNEL; j++) {
+-			populate_dimm_info(&dimm_info[i][j], addr_decode, j,
+-					   skl);
+-			edac_dbg(0, "size: 0x%x, rank: %d, width: %d\n",
+-				 dimm_info[i][j].size,
+-				 dimm_info[i][j].dual_rank,
+-				 dimm_info[i][j].x16_width);
+-		}
++		edac_dbg(0, "addr_decode: 0x%x\n", addr_decode[i]);
+ 	}
+ 
+ 	/*
+@@ -482,14 +472,22 @@ static int ie31200_probe1(struct pci_dev *pdev, int dev_idx)
+ 	 */
+ 	for (i = 0; i < IE31200_DIMMS_PER_CHANNEL; i++) {
+ 		for (j = 0; j < IE31200_CHANNELS; j++) {
++			struct dimm_data dimm_info;
+ 			struct dimm_info *dimm;
+ 			unsigned long nr_pages;
+ 
+-			nr_pages = IE31200_PAGES(dimm_info[j][i].size, skl);
++			populate_dimm_info(&dimm_info, addr_decode[j], i,
++					   skl);
++			edac_dbg(0, "size: 0x%x, rank: %d, width: %d\n",
++				 dimm_info.size,
++				 dimm_info.dual_rank,
++				 dimm_info.x16_width);
++
++			nr_pages = IE31200_PAGES(dimm_info.size, skl);
+ 			if (nr_pages == 0)
+ 				continue;
+ 
+-			if (dimm_info[j][i].dual_rank) {
++			if (dimm_info.dual_rank) {
+ 				nr_pages = nr_pages / 2;
+ 				dimm = EDAC_DIMM_PTR(mci->layers, mci->dimms,
+ 						     mci->n_layers, (i * 2) + 1,
 -- 
 2.39.5
 
