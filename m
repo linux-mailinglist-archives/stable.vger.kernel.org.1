@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-140484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CB43AAA93F
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:10:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 495C4AAA9A2
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:18:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA0831BA03CC
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:08:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDBFE4A2271
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:17:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD0AD2C2FB8;
-	Mon,  5 May 2025 22:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C1C036AD0D;
+	Mon,  5 May 2025 22:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u51/6Fvz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Crmbaj0w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D43035965E;
-	Mon,  5 May 2025 22:42:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 285AD298CDF;
+	Mon,  5 May 2025 22:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484955; cv=none; b=YsuKzO9VdIs5rWoMtQ8Gh73P1jGvKpB89b1+uais29DbdZXdDyVTAwnzor0FPAABjWQYIuDPgs1at3EQJqNstpcAjqHD0ax/k1imrfIDuZfVNmDpxxk20Mp54/lG6MInXmBF+KjOQyB1Ha32qB20p06iZTNen0vhvv06OarSjt4=
+	t=1746484959; cv=none; b=dI8l4ylQ/wlxZRoyVlH/szsbwNlYU7c3vv48vkDhhEggzKoDVVDoUTfmq0WdmliVA4R+JHAW180hqQJHJHYWZHGQEVLsk/2/jiLgMdBaHU7KbAuG5wHOJh+S5/ILeEEHW6j/slzMSskOV6N6GcfZa664ut/3QVjEZXiCeiyA03g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484955; c=relaxed/simple;
-	bh=9tNZxUuqG1AtGoHQhp8p2F/QBEZIRb2NRve237ywaYo=;
+	s=arc-20240116; t=1746484959; c=relaxed/simple;
+	bh=vYBIDgjPuAT1pjrXhbJXLQ/c65u0Xv16gt1tFOp2Wa8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=F1w/alxaa7uBTCaj4VnbMX1teE9cPVBYbjuEV8bnH92HTHlepNAcvtzr+2m6IDO4pmc4j+nwI7/jhOZZzXSbDSwDn6nB7tVu8amBNN2OC4wxCkzy6qKzLssGuFo/S5Ag4tXzVozKQuSLyD05ELj9T4XncMYG6JJ18ev61MGksf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u51/6Fvz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E641C4CEE4;
-	Mon,  5 May 2025 22:42:33 +0000 (UTC)
+	 MIME-Version; b=uDK1zLjHf+m2UiBnunCp+Wxn+woygvRFVIh7CNXBYXFW30SBu3W/jHri/5NYLwnQHyKWn7hqUeif8Y12rVuc9HFdunj6TZTmeYZE5QrDVgXTmdnwH5cbN9qIV92ZTw+oVlw50UoUgJ2oyhsYXVCfqzUFNi9xVDdrdN7+EQG8qQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Crmbaj0w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3006C4CEE4;
+	Mon,  5 May 2025 22:42:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484954;
-	bh=9tNZxUuqG1AtGoHQhp8p2F/QBEZIRb2NRve237ywaYo=;
+	s=k20201202; t=1746484958;
+	bh=vYBIDgjPuAT1pjrXhbJXLQ/c65u0Xv16gt1tFOp2Wa8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u51/6Fvz13TKbSSYq9FpPgOZftXqfJYHj5V+Y39Av787RGZrvqidWINnCFkwwfO3U
-	 B2qwlMDscXFZ23q4hTsoawYrWiv5ZDMM40fd2AKbvTyyo5KY8vpf4v7ZNBXjQQjAOr
-	 tLVz89jR4CL4SOIIgH4ZTmi/OtNq4DK1iuTZBuyXSMk4kDbCxrfeMn3ly6SYVDtQ8X
-	 PKLA61/8hrmmwEDEYF9VwW+aAfVkaUo1WiRxSCYcvJ3/6//GZpRJ7Ine+aN+uiXZhn
-	 WzDF+ZCrvk8K90QEr4FarX0TxhiyRswsOsc/9E2l9+vgnKLCbifS7/1SkSNcFY7BAp
-	 uzwH2y9xv1eNg==
+	b=Crmbaj0wYzyyOvfux//FhZlQABkO10fPXhDYuBVCWWMabPLkuddZiFq3V6jK6ky/7
+	 klm0Qea27W3MWogfZ1aUvK1U6t7sa/oqXFPBx1lepL/H+Xf4MczDZMthneokwTvU41
+	 o+LWS/HmF+Fc8kyKceI8Qldrgsu31FU7QRjFaTQpnVNOxn3jv/9h0m/kCoE/f2UoZg
+	 9lD6mxH7wRPtTXUALHlQqXeUd2YLIYtyddxXlYuDXx51WekmeTKUZ0yjZY9kqL3Kan
+	 WqsWm/DRFrlpQvAFe31ao8kXdsSTE6H+h5T7L7D0oAFWDjcrS2SrD+YpkGUkQ3r0Fk
+	 k8RiRdRIPvIug==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alexandre Ghiti <alexghiti@rivosinc.com>,
-	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
-	Samuel Holland <samuel.holland@sifive.com>,
+Cc: Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>,
-	paul.walmsley@sifive.com,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	akpm@linux-foundation.org,
-	baohua@kernel.org,
-	wangkefeng.wang@huawei.com,
-	linux-riscv@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.12 093/486] riscv: Call secondary mmu notifier when flushing the tlb
-Date: Mon,  5 May 2025 18:32:49 -0400
-Message-Id: <20250505223922.2682012-93-sashal@kernel.org>
+	hca@linux.ibm.com,
+	gor@linux.ibm.com,
+	agordeev@linux.ibm.com,
+	linux-s390@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.12 095/486] hypfs_create_cpu_files(): add missing check for hypfs_mkdir() failure
+Date: Mon,  5 May 2025 18:32:51 -0400
+Message-Id: <20250505223922.2682012-95-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -67,141 +62,34 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit d9be2b9b60497a82aeceec3a98d8b37fdd2960f2 ]
+[ Upstream commit 00cdfdcfa0806202aea56b02cedbf87ef1e75df8 ]
 
-This is required to allow the IOMMU driver to correctly flush its own
-TLB.
-
-Reviewed-by: Clément Léger <cleger@rivosinc.com>
-Reviewed-by: Samuel Holland <samuel.holland@sifive.com>
-Link: https://lore.kernel.org/r/20250113142424.30487-1-alexghiti@rivosinc.com
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/mm/tlbflush.c | 37 ++++++++++++++++++++++---------------
- 1 file changed, 22 insertions(+), 15 deletions(-)
+ arch/s390/hypfs/hypfs_diag_fs.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/riscv/mm/tlbflush.c b/arch/riscv/mm/tlbflush.c
-index 9b6e86ce38674..bb77607c87aa2 100644
---- a/arch/riscv/mm/tlbflush.c
-+++ b/arch/riscv/mm/tlbflush.c
-@@ -4,6 +4,7 @@
- #include <linux/smp.h>
- #include <linux/sched.h>
- #include <linux/hugetlb.h>
-+#include <linux/mmu_notifier.h>
- #include <asm/sbi.h>
- #include <asm/mmu_context.h>
- 
-@@ -78,10 +79,17 @@ static void __ipi_flush_tlb_range_asid(void *info)
- 	local_flush_tlb_range_asid(d->start, d->size, d->stride, d->asid);
- }
- 
--static void __flush_tlb_range(const struct cpumask *cmask, unsigned long asid,
-+static inline unsigned long get_mm_asid(struct mm_struct *mm)
-+{
-+	return mm ? cntx2asid(atomic_long_read(&mm->context.id)) : FLUSH_TLB_NO_ASID;
-+}
-+
-+static void __flush_tlb_range(struct mm_struct *mm,
-+			      const struct cpumask *cmask,
- 			      unsigned long start, unsigned long size,
- 			      unsigned long stride)
- {
-+	unsigned long asid = get_mm_asid(mm);
- 	unsigned int cpu;
- 
- 	if (cpumask_empty(cmask))
-@@ -105,30 +113,26 @@ static void __flush_tlb_range(const struct cpumask *cmask, unsigned long asid,
- 	}
- 
- 	put_cpu();
--}
- 
--static inline unsigned long get_mm_asid(struct mm_struct *mm)
--{
--	return cntx2asid(atomic_long_read(&mm->context.id));
-+	if (mm)
-+		mmu_notifier_arch_invalidate_secondary_tlbs(mm, start, start + size);
- }
- 
- void flush_tlb_mm(struct mm_struct *mm)
- {
--	__flush_tlb_range(mm_cpumask(mm), get_mm_asid(mm),
--			  0, FLUSH_TLB_MAX_SIZE, PAGE_SIZE);
-+	__flush_tlb_range(mm, mm_cpumask(mm), 0, FLUSH_TLB_MAX_SIZE, PAGE_SIZE);
- }
- 
- void flush_tlb_mm_range(struct mm_struct *mm,
- 			unsigned long start, unsigned long end,
- 			unsigned int page_size)
- {
--	__flush_tlb_range(mm_cpumask(mm), get_mm_asid(mm),
--			  start, end - start, page_size);
-+	__flush_tlb_range(mm, mm_cpumask(mm), start, end - start, page_size);
- }
- 
- void flush_tlb_page(struct vm_area_struct *vma, unsigned long addr)
- {
--	__flush_tlb_range(mm_cpumask(vma->vm_mm), get_mm_asid(vma->vm_mm),
-+	__flush_tlb_range(vma->vm_mm, mm_cpumask(vma->vm_mm),
- 			  addr, PAGE_SIZE, PAGE_SIZE);
- }
- 
-@@ -161,13 +165,13 @@ void flush_tlb_range(struct vm_area_struct *vma, unsigned long start,
- 		}
- 	}
- 
--	__flush_tlb_range(mm_cpumask(vma->vm_mm), get_mm_asid(vma->vm_mm),
-+	__flush_tlb_range(vma->vm_mm, mm_cpumask(vma->vm_mm),
- 			  start, end - start, stride_size);
- }
- 
- void flush_tlb_kernel_range(unsigned long start, unsigned long end)
- {
--	__flush_tlb_range(cpu_online_mask, FLUSH_TLB_NO_ASID,
-+	__flush_tlb_range(NULL, cpu_online_mask,
- 			  start, end - start, PAGE_SIZE);
- }
- 
-@@ -175,7 +179,7 @@ void flush_tlb_kernel_range(unsigned long start, unsigned long end)
- void flush_pmd_tlb_range(struct vm_area_struct *vma, unsigned long start,
- 			unsigned long end)
- {
--	__flush_tlb_range(mm_cpumask(vma->vm_mm), get_mm_asid(vma->vm_mm),
-+	__flush_tlb_range(vma->vm_mm, mm_cpumask(vma->vm_mm),
- 			  start, end - start, PMD_SIZE);
- }
- #endif
-@@ -189,7 +193,10 @@ void arch_tlbbatch_add_pending(struct arch_tlbflush_unmap_batch *batch,
- 			       struct mm_struct *mm,
- 			       unsigned long uaddr)
- {
-+	unsigned long start = uaddr & PAGE_MASK;
-+
- 	cpumask_or(&batch->cpumask, &batch->cpumask, mm_cpumask(mm));
-+	mmu_notifier_arch_invalidate_secondary_tlbs(mm, start, start + PAGE_SIZE);
- }
- 
- void arch_flush_tlb_batched_pending(struct mm_struct *mm)
-@@ -199,7 +206,7 @@ void arch_flush_tlb_batched_pending(struct mm_struct *mm)
- 
- void arch_tlbbatch_flush(struct arch_tlbflush_unmap_batch *batch)
- {
--	__flush_tlb_range(&batch->cpumask, FLUSH_TLB_NO_ASID, 0,
--			  FLUSH_TLB_MAX_SIZE, PAGE_SIZE);
-+	__flush_tlb_range(NULL, &batch->cpumask,
-+			  0, FLUSH_TLB_MAX_SIZE, PAGE_SIZE);
- 	cpumask_clear(&batch->cpumask);
- }
+diff --git a/arch/s390/hypfs/hypfs_diag_fs.c b/arch/s390/hypfs/hypfs_diag_fs.c
+index 00a6d370a2803..280266a74f378 100644
+--- a/arch/s390/hypfs/hypfs_diag_fs.c
++++ b/arch/s390/hypfs/hypfs_diag_fs.c
+@@ -208,6 +208,8 @@ static int hypfs_create_cpu_files(struct dentry *cpus_dir, void *cpu_info)
+ 	snprintf(buffer, TMP_SIZE, "%d", cpu_info__cpu_addr(diag204_get_info_type(),
+ 							    cpu_info));
+ 	cpu_dir = hypfs_mkdir(cpus_dir, buffer);
++	if (IS_ERR(cpu_dir))
++		return PTR_ERR(cpu_dir);
+ 	rc = hypfs_create_u64(cpu_dir, "mgmtime",
+ 			      cpu_info__acc_time(diag204_get_info_type(), cpu_info) -
+ 			      cpu_info__lp_time(diag204_get_info_type(), cpu_info));
 -- 
 2.39.5
 
