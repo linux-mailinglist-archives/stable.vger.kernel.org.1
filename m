@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-140106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9EF6AAA527
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:43:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 370D8AAA50B
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:41:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A6A41894EDA
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:40:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCA2816EC4E
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:40:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8F4C30B272;
-	Mon,  5 May 2025 22:28:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD6CC30B28E;
+	Mon,  5 May 2025 22:28:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Eqailmkx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s524ScRN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88A3930B26C;
-	Mon,  5 May 2025 22:28:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CD9430B286;
+	Mon,  5 May 2025 22:28:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484126; cv=none; b=Z/lulld8adRtM90x90pHK+JhQDRgb1N6uq/HG1KDBRAO6jNRM99s4RWYPyVL401g3Ky8PLmalR8uL3NVP9EBy8Ok+5S9hruB0ETI8t2su28DucGL+/KwX7cv4Iu2zHVHrUx1dk31SW1iS8txAY+XEEv9oa7+gxpEeaDPINcBzhU=
+	t=1746484128; cv=none; b=P15p6WcAB0u7mZFLvM/WdDjeNQdg+QRGNruJeW/YsvIACDLW1DkJkWGviRM99b6nEva7v/HwgPeJkLcyvx2x1lHEp7AyNv0DEn5O4Bimyeb96ZeJ/lWaZALKFKdfcYqwLGYnGi2eRQxdNlRnWR1A8fxDFE8+P4VOMfwRR4I20HA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484126; c=relaxed/simple;
-	bh=k8fjQ8fvYUj8nlHhVhoy9r1NsnxC8kD+CF6PdIpcaE8=;
+	s=arc-20240116; t=1746484128; c=relaxed/simple;
+	bh=Vy+KkFjntDuEDeG7cGuv0LVLb2B1oozjJdV61bBbuXY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ZK4eNzbFgofaRoyppDCt4jOrelk/3R3jf6EYFyGAWyMrkxnslomb4iVrnnNj065v/dEw1i2DLCLRvumkNPKtZxR3KoH4HOtOOMDvMTl3wQPKa6uzG996Ix9FB3bAsYGNneM3Fh0puzEaO7h/VJQqr5AXeKtsjJVdoXhhz8qbCFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Eqailmkx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8E05C4CEE4;
-	Mon,  5 May 2025 22:28:44 +0000 (UTC)
+	 MIME-Version; b=cp95yw01gt3Gkcv4s8U30ZANYGSNnlM3gXeAWRO9KzWUYWbLY1DsAdDLQFixXyT/38OnBtZe7ayvWZGb24r7VUvFUG2hgbVtZYA3CugBLweAL/HjYHrAUwV9JDtfC+S7ZoJD8f84L1hBI6cgsEbQ+e6u1QbfFS503wynQVdrlCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s524ScRN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01B26C4CEE4;
+	Mon,  5 May 2025 22:28:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484126;
-	bh=k8fjQ8fvYUj8nlHhVhoy9r1NsnxC8kD+CF6PdIpcaE8=;
+	s=k20201202; t=1746484128;
+	bh=Vy+KkFjntDuEDeG7cGuv0LVLb2B1oozjJdV61bBbuXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EqailmkxnWuuS43LxHa9IxX9p8mhZ45dzo92ogmo5r5H6fWvUVK2yxGt+DzxpO4qk
-	 WZmwHMeF9SRCuVQzqDPU+ADSwHJA4pWB2LtjJVCPu+uAes/tQ9uUsj/U3GeS+Vu9pp
-	 ti2cx9pz8BxuBYJFQqlm1vmgC62xA6duw/qDZNpgop59xnWSMFe0w3IE9Wgfyr1mkw
-	 5pe+PJmMrX+3CBWclS/zYBHcVecmgkkf2ZaA8I+RAk08TeHLFbSWDVNQMZEsI1PDn/
-	 VCZopI1JjPymg5n0a8MZJ6z+GdZTbmz6VYN9GAJRWIGezHoqRcgaxMuFWTkTAvKLXn
-	 q5LylQivki8ZA==
+	b=s524ScRN8BSyIS1SRF2a8oEeI+gXXN6QWkylg1AZPQPj3hll7/ZcTi3BlZognwJWx
+	 kDeGmobo9SaqvuSq82Q/6QEHk9enNMBhCcfYuScvujqnGt9ROoBpwW27lC5U99J8ul
+	 /tAIXh7QQq7MR0TpOouA7nmS8Js87GbsFnqwp6KgIth0ga+0ftC296bma/BPwp0h/J
+	 po9/4E14UASUcop990tnscL5MSkctFtHutef+yQ5QDXo9HTjvIgP/obUwzm7MKE9fC
+	 UYEQroz75V1JxbdPVWjDcaG3X/Q6CT8cYx9N8fLL7BMlvblk7dfOxqKrrMUjZYITyY
+	 AtFII/T2Gta6A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Subramanian Mohan <subramanian.mohan@intel.com>,
-	Rodolfo Giometti <giometti@enneenne.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+Cc: Paul Burton <paulburton@kernel.org>,
+	Dragan Mladjenovic <dragan.mladjenovic@syrmia.com>,
+	Aleksandar Rikalo <arikalo@gmail.com>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>,
-	corbet@lwn.net,
-	tglx@linutronix.de,
-	mingo@kernel.org,
-	linux-doc@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 359/642] pps: generators: replace copy of pps-gen info struct with const pointer
-Date: Mon,  5 May 2025 18:09:35 -0400
-Message-Id: <20250505221419.2672473-359-sashal@kernel.org>
+	linux-mips@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 360/642] MIPS: pm-cps: Use per-CPU variables as per-CPU, not per-core
+Date: Mon,  5 May 2025 18:09:36 -0400
+Message-Id: <20250505221419.2672473-360-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -70,206 +69,126 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Subramanian Mohan <subramanian.mohan@intel.com>
+From: Paul Burton <paulburton@kernel.org>
 
-[ Upstream commit ac9c5170a18162d45c6edd1f0fa2d2b2504bc2cb ]
+[ Upstream commit 00a134fc2bb4a5f8fada58cf7ff4259149691d64 ]
 
-Some PPS generator drivers may need to retrieve a pointer to their
-internal data while executing the PPS generator enable() method.
+The pm-cps code has up until now used per-CPU variables indexed by core,
+rather than CPU number, in order to share data amongst sibling CPUs (ie.
+VPs/threads in a core). This works fine for single cluster systems, but
+with multi-cluster systems a core number is no longer unique in the
+system, leading to sharing between CPUs that are not actually siblings.
 
-During the driver registration the pps_gen_device pointer is returned
-from the framework, and for that reason, there is difficulty in
-getting generator driver data back in the enable function. We won't be
-able to use container_of macro as it results in static assert, and we
-might end up in using static pointer.
+Avoid this issue by using per-CPU variables as they are more generally
+used - ie. access them using CPU numbers rather than core numbers.
+Sharing between siblings is then accomplished by:
+ - Assigning the same pointer to entries for each sibling CPU for the
+   nc_asm_enter & ready_count variables, which allow this by virtue of
+   being per-CPU pointers.
 
-To solve the issue and to get back the generator driver data back, we
-should not copy the struct pps_gen_source_info within the struct
-pps_gen_device during the registration stage, but simply save the
-pointer of the driver one. In this manner, driver may get a pointer
-to their internal data as shown below:
+ - Indexing by the first CPU set in a CPUs cpu_sibling_map in the case
+   of pm_barrier, for which we can't use the previous approach because
+   the per-CPU variable is not a pointer.
 
-struct pps_gen_foo_data_s {
-        ...
-	struct pps_gen_source_info gen_info;
-	struct pps_gen_device *pps_gen;
-	...
-};
-
-static int __init pps_gen_foo_init(void)
-{
-        struct pps_gen_foo_data_s *foo;
-	...
-        foo->pps_gen = pps_gen_register_source(&foo->gen_info);
-	...
-}
-
-Then, in the enable() method, we can retrieve the pointer to the main
-struct by using the code below:
-
-static int pps_gen_foo_enable(struct pps_gen_device *pps_gen, bool enable)
-{
-        struct pps_gen_foo_data_s *foo = container_of(pps_gen->info,
-						struct pps_gen_foo_data_s, gen_info);
-        ...
-}
-
-Signed-off-by: Rodolfo Giometti <giometti@enneenne.com>
-Tested-by: Subramanian Mohan <subramanian.mohan@intel.com>
-Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Subramanian Mohan <subramanian.mohan@intel.com>
-Link: https://lore.kernel.org/r/20250219040618.70962-2-subramanian.mohan@intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Paul Burton <paulburton@kernel.org>
+Signed-off-by: Dragan Mladjenovic <dragan.mladjenovic@syrmia.com>
+Signed-off-by: Aleksandar Rikalo <arikalo@gmail.com>
+Tested-by: Serge Semin <fancer.lancer@gmail.com>
+Tested-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/driver-api/pps.rst       |  3 +--
- drivers/pps/generators/pps_gen-dummy.c |  2 +-
- drivers/pps/generators/pps_gen.c       | 14 +++++++-------
- drivers/pps/generators/sysfs.c         |  6 +++---
- include/linux/pps_gen_kernel.h         |  4 ++--
- 5 files changed, 14 insertions(+), 15 deletions(-)
+ arch/mips/kernel/pm-cps.c | 30 +++++++++++++++++-------------
+ 1 file changed, 17 insertions(+), 13 deletions(-)
 
-diff --git a/Documentation/driver-api/pps.rst b/Documentation/driver-api/pps.rst
-index 71ad04c82d6cf..04f1b88778fc5 100644
---- a/Documentation/driver-api/pps.rst
-+++ b/Documentation/driver-api/pps.rst
-@@ -206,8 +206,7 @@ To do so the class pps-gen has been added. PPS generators can be
- registered in the kernel by defining a struct pps_gen_source_info as
- follows::
+diff --git a/arch/mips/kernel/pm-cps.c b/arch/mips/kernel/pm-cps.c
+index d09ca77e624d7..9369a8dc385e2 100644
+--- a/arch/mips/kernel/pm-cps.c
++++ b/arch/mips/kernel/pm-cps.c
+@@ -57,10 +57,7 @@ static DEFINE_PER_CPU_ALIGNED(u32*, ready_count);
+ /* Indicates online CPUs coupled with the current CPU */
+ static DEFINE_PER_CPU_ALIGNED(cpumask_t, online_coupled);
  
--    static struct pps_gen_source_info pps_gen_dummy_info = {
--            .name                   = "dummy",
-+    static const struct pps_gen_source_info pps_gen_dummy_info = {
-             .use_system_clock       = true,
-             .get_time               = pps_gen_dummy_get_time,
-             .enable                 = pps_gen_dummy_enable,
-diff --git a/drivers/pps/generators/pps_gen-dummy.c b/drivers/pps/generators/pps_gen-dummy.c
-index b284c200cbe50..55de4aecf35ed 100644
---- a/drivers/pps/generators/pps_gen-dummy.c
-+++ b/drivers/pps/generators/pps_gen-dummy.c
-@@ -61,7 +61,7 @@ static int pps_gen_dummy_enable(struct pps_gen_device *pps_gen, bool enable)
-  * The PPS info struct
-  */
+-/*
+- * Used to synchronize entry to deep idle states. Actually per-core rather
+- * than per-CPU.
+- */
++/* Used to synchronize entry to deep idle states */
+ static DEFINE_PER_CPU_ALIGNED(atomic_t, pm_barrier);
  
--static struct pps_gen_source_info pps_gen_dummy_info = {
-+static const struct pps_gen_source_info pps_gen_dummy_info = {
- 	.use_system_clock	= true,
- 	.get_time		= pps_gen_dummy_get_time,
- 	.enable			= pps_gen_dummy_enable,
-diff --git a/drivers/pps/generators/pps_gen.c b/drivers/pps/generators/pps_gen.c
-index ca592f1736f46..5b8bb454913cd 100644
---- a/drivers/pps/generators/pps_gen.c
-+++ b/drivers/pps/generators/pps_gen.c
-@@ -66,7 +66,7 @@ static long pps_gen_cdev_ioctl(struct file *file,
- 		if (ret)
- 			return -EFAULT;
+ /* Saved CPU state across the CPS_PM_POWER_GATED state */
+@@ -112,9 +109,10 @@ int cps_pm_enter_state(enum cps_pm_state state)
+ 	cps_nc_entry_fn entry;
+ 	struct core_boot_config *core_cfg;
+ 	struct vpe_boot_config *vpe_cfg;
++	atomic_t *barrier;
  
--		ret = pps_gen->info.enable(pps_gen, status);
-+		ret = pps_gen->info->enable(pps_gen, status);
- 		if (ret)
- 			return ret;
- 		pps_gen->enabled = status;
-@@ -76,7 +76,7 @@ static long pps_gen_cdev_ioctl(struct file *file,
- 	case PPS_GEN_USESYSTEMCLOCK:
- 		dev_dbg(pps_gen->dev, "PPS_GEN_USESYSTEMCLOCK\n");
+ 	/* Check that there is an entry function for this state */
+-	entry = per_cpu(nc_asm_enter, core)[state];
++	entry = per_cpu(nc_asm_enter, cpu)[state];
+ 	if (!entry)
+ 		return -EINVAL;
  
--		ret = put_user(pps_gen->info.use_system_clock, uiuarg);
-+		ret = put_user(pps_gen->info->use_system_clock, uiuarg);
- 		if (ret)
- 			return -EFAULT;
+@@ -150,7 +148,7 @@ int cps_pm_enter_state(enum cps_pm_state state)
+ 	smp_mb__after_atomic();
  
-@@ -175,7 +175,7 @@ static int pps_gen_register_cdev(struct pps_gen_device *pps_gen)
- 	devt = MKDEV(MAJOR(pps_gen_devt), pps_gen->id);
+ 	/* Create a non-coherent mapping of the core ready_count */
+-	core_ready_count = per_cpu(ready_count, core);
++	core_ready_count = per_cpu(ready_count, cpu);
+ 	nc_addr = kmap_noncoherent(virt_to_page(core_ready_count),
+ 				   (unsigned long)core_ready_count);
+ 	nc_addr += ((unsigned long)core_ready_count & ~PAGE_MASK);
+@@ -158,7 +156,8 @@ int cps_pm_enter_state(enum cps_pm_state state)
  
- 	cdev_init(&pps_gen->cdev, &pps_gen_cdev_fops);
--	pps_gen->cdev.owner = pps_gen->info.owner;
-+	pps_gen->cdev.owner = pps_gen->info->owner;
+ 	/* Ensure ready_count is zero-initialised before the assembly runs */
+ 	WRITE_ONCE(*nc_core_ready_count, 0);
+-	coupled_barrier(&per_cpu(pm_barrier, core), online);
++	barrier = &per_cpu(pm_barrier, cpumask_first(&cpu_sibling_map[cpu]));
++	coupled_barrier(barrier, online);
  
- 	err = cdev_add(&pps_gen->cdev, devt, 1);
- 	if (err) {
-@@ -183,8 +183,8 @@ static int pps_gen_register_cdev(struct pps_gen_device *pps_gen)
- 				MAJOR(pps_gen_devt), pps_gen->id);
- 		goto free_ida;
- 	}
--	pps_gen->dev = device_create(pps_gen_class, pps_gen->info.parent, devt,
--					pps_gen, "pps-gen%d", pps_gen->id);
-+	pps_gen->dev = device_create(pps_gen_class, pps_gen->info->parent, devt,
-+				     pps_gen, "pps-gen%d", pps_gen->id);
- 	if (IS_ERR(pps_gen->dev)) {
- 		err = PTR_ERR(pps_gen->dev);
- 		goto del_cdev;
-@@ -225,7 +225,7 @@ static void pps_gen_unregister_cdev(struct pps_gen_device *pps_gen)
-  * Return: the PPS generator device in case of success, and ERR_PTR(errno)
-  *	 otherwise.
-  */
--struct pps_gen_device *pps_gen_register_source(struct pps_gen_source_info *info)
-+struct pps_gen_device *pps_gen_register_source(const struct pps_gen_source_info *info)
+ 	/* Run the generated entry code */
+ 	left = entry(online, nc_core_ready_count);
+@@ -629,12 +628,14 @@ static void *cps_gen_entry_code(unsigned cpu, enum cps_pm_state state)
+ 
+ static int cps_pm_online_cpu(unsigned int cpu)
  {
- 	struct pps_gen_device *pps_gen;
- 	int err;
-@@ -235,7 +235,7 @@ struct pps_gen_device *pps_gen_register_source(struct pps_gen_source_info *info)
- 		err = -ENOMEM;
- 		goto pps_gen_register_source_exit;
+-	enum cps_pm_state state;
+-	unsigned core = cpu_core(&cpu_data[cpu]);
++	unsigned int sibling, core;
+ 	void *entry_fn, *core_rc;
++	enum cps_pm_state state;
++
++	core = cpu_core(&cpu_data[cpu]);
+ 
+ 	for (state = CPS_PM_NC_WAIT; state < CPS_PM_STATE_COUNT; state++) {
+-		if (per_cpu(nc_asm_enter, core)[state])
++		if (per_cpu(nc_asm_enter, cpu)[state])
+ 			continue;
+ 		if (!test_bit(state, state_support))
+ 			continue;
+@@ -646,16 +647,19 @@ static int cps_pm_online_cpu(unsigned int cpu)
+ 			clear_bit(state, state_support);
+ 		}
+ 
+-		per_cpu(nc_asm_enter, core)[state] = entry_fn;
++		for_each_cpu(sibling, &cpu_sibling_map[cpu])
++			per_cpu(nc_asm_enter, sibling)[state] = entry_fn;
  	}
--	pps_gen->info = *info;
-+	pps_gen->info = info;
- 	pps_gen->enabled = false;
  
- 	init_waitqueue_head(&pps_gen->queue);
-diff --git a/drivers/pps/generators/sysfs.c b/drivers/pps/generators/sysfs.c
-index faf8b1c6d2026..6d6bc0006feae 100644
---- a/drivers/pps/generators/sysfs.c
-+++ b/drivers/pps/generators/sysfs.c
-@@ -19,7 +19,7 @@ static ssize_t system_show(struct device *dev, struct device_attribute *attr,
- {
- 	struct pps_gen_device *pps_gen = dev_get_drvdata(dev);
+-	if (!per_cpu(ready_count, core)) {
++	if (!per_cpu(ready_count, cpu)) {
+ 		core_rc = kmalloc(sizeof(u32), GFP_KERNEL);
+ 		if (!core_rc) {
+ 			pr_err("Failed allocate core %u ready_count\n", core);
+ 			return -ENOMEM;
+ 		}
+-		per_cpu(ready_count, core) = core_rc;
++
++		for_each_cpu(sibling, &cpu_sibling_map[cpu])
++			per_cpu(ready_count, sibling) = core_rc;
+ 	}
  
--	return sysfs_emit(buf, "%d\n", pps_gen->info.use_system_clock);
-+	return sysfs_emit(buf, "%d\n", pps_gen->info->use_system_clock);
- }
- static DEVICE_ATTR_RO(system);
- 
-@@ -30,7 +30,7 @@ static ssize_t time_show(struct device *dev, struct device_attribute *attr,
- 	struct timespec64 time;
- 	int ret;
- 
--	ret = pps_gen->info.get_time(pps_gen, &time);
-+	ret = pps_gen->info->get_time(pps_gen, &time);
- 	if (ret)
- 		return ret;
- 
-@@ -49,7 +49,7 @@ static ssize_t enable_store(struct device *dev, struct device_attribute *attr,
- 	if (ret)
- 		return ret;
- 
--	ret = pps_gen->info.enable(pps_gen, status);
-+	ret = pps_gen->info->enable(pps_gen, status);
- 	if (ret)
- 		return ret;
- 	pps_gen->enabled = status;
-diff --git a/include/linux/pps_gen_kernel.h b/include/linux/pps_gen_kernel.h
-index 022ea0ac44402..6214c8aa2e020 100644
---- a/include/linux/pps_gen_kernel.h
-+++ b/include/linux/pps_gen_kernel.h
-@@ -43,7 +43,7 @@ struct pps_gen_source_info {
- 
- /* The main struct */
- struct pps_gen_device {
--	struct pps_gen_source_info info;	/* PSS generator info */
-+	const struct pps_gen_source_info *info;	/* PSS generator info */
- 	bool enabled;				/* PSS generator status */
- 
- 	unsigned int event;
-@@ -70,7 +70,7 @@ extern const struct attribute_group *pps_gen_groups[];
-  */
- 
- extern struct pps_gen_device *pps_gen_register_source(
--				struct pps_gen_source_info *info);
-+				const struct pps_gen_source_info *info);
- extern void pps_gen_unregister_source(struct pps_gen_device *pps_gen);
- extern void pps_gen_event(struct pps_gen_device *pps_gen,
- 				unsigned int event, void *data);
+ 	return 0;
 -- 
 2.39.5
 
