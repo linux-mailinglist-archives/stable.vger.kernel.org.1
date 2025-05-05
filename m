@@ -1,58 +1,64 @@
-Return-Path: <stable+bounces-140705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B988AAAEDE
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:06:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA29EAAAECD
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:04:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D907D3B7F1E
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:00:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2408A188A67C
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:01:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A11A2EDB04;
-	Mon,  5 May 2025 23:08:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9CFA37F083;
+	Mon,  5 May 2025 23:08:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="D2SVAg/N"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n1U912O0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02FAF3628D8;
-	Mon,  5 May 2025 23:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A1D381E95;
+	Mon,  5 May 2025 23:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486020; cv=none; b=Dsnn7vD8R8YTCN+NsaHeXq5h+s0R+V9r7JwPLUTHhsWf3NxRTs3KsGysd4ShSiF7NtH4iuk06YxwrpanLgB3w1Ng+rd8QAa6lwqcLoWr0Ucrz0HXCcV2rn240baJfobQb8zx2+9CTsC5dVdO5SvFx1oyD9Idi+LkgZa/puacNUQ=
+	t=1746486023; cv=none; b=Kp+uM5TxthQ+PqCr5nILVZ3nvGstSlQSg+fKSSIPba3QCDJi2YYU/7ua6Lb+qNjeM28sj47KwhFoXkd1C4gSkfrDGWiCGVmqSgS4qBis6THfFRpUIN21F7cOhiPQn8ksjSQxZ0le5zXqrk4HnpgvvATc7ERvBm6LLgrhTZBjbec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486020; c=relaxed/simple;
-	bh=w77OVwFOBIqkTQWSAcVJmtejwe6G3YJjUFKC8U+KbCg=;
+	s=arc-20240116; t=1746486023; c=relaxed/simple;
+	bh=ZchkXoDyD7r8OEYD1u42HjJUEz45xF48xeTC4e2IYxo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=aZWszP5BNybiu71Gf70DKHr2iLDoWN1CtOUj67OSwcpMZ4CqfnFcDR/9/YIbz4JK9rr7KH8U/HQv+2GFNjOuk85NQdFAxwGf4d+KS+tE2mpfSQrDmz7Jw0sbY3279EAeSW8TVZynGT8lGHQOGc76JwyY08VqUXI7BQJQXE59ns4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=D2SVAg/N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3957C4CEE4;
-	Mon,  5 May 2025 23:00:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=A/yXYb7lG7QvwQsuGMPtB0p7pLVOEhifZkyYE6yNH8BbeLmcDfLZqsZnUsnk45TaDLkicsAporSdwaL/5Ryk3uyzYsXxIJOUQc8KoLMw/kwinSuIW4wKZ8/2nE87/gNdUIhBmey2/TSqsk+kyQUfHTDih+AsUMXT9WaXkw6iHn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n1U912O0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82E0EC4CEED;
+	Mon,  5 May 2025 23:00:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486018;
-	bh=w77OVwFOBIqkTQWSAcVJmtejwe6G3YJjUFKC8U+KbCg=;
+	s=k20201202; t=1746486022;
+	bh=ZchkXoDyD7r8OEYD1u42HjJUEz45xF48xeTC4e2IYxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D2SVAg/NHbVvYZ/9hOsmJeFs1BuC7dgrFcemi4y0eeat2OEKVQ9q7VNM/M2F/ZHLW
-	 F/jlOgVMKMRSjTTKXnHtFgj6NGxGtnUVuSOtCtQyv0aHOAZR9Z4c0OD3ruEO5qygMY
-	 bksoYpZVzftZcSljh1C1nHMGVZCEtyTLFq/hr5pvQGsymwtDHxwS85z9khdrzrjJir
-	 N0BiVJ61q2WZVTCayj1G25rJx3WUwX9ttkFuc0m6YZtJVq8JDWJZevYdHV+sM3Zd+e
-	 S3ZSeL+Wd5RVSU7Sl7cLnY4hOHRb9YdGHWPWC3fiG/cCw7nidvrcu0NxozH8qHHXs7
-	 i/GhkEVTK/8Bg==
+	b=n1U912O05HaJXatmkLPBFgNMpwPNbNeAhOzB0etgjrtR307hY2v2quGHAViILiKYX
+	 RpSPrqjnPHgkGA8Gb04rwFyZVcZuesI0W5nVkqAbH8P6AZGznl7CR6x/hx9dBGCU4A
+	 VLvXN37DwzspZ5dTTtIHteIPCjByKCPxoMKiwflgC8txMaaFvhOhuWobpo6GizcQ4l
+	 2gJSoC2xUiuqUFhLk/W9nAWC3MHFpI49yanIC4JZadJkyILTdpIXUi3KvkChfS4/63
+	 Hb99yrzvw+hB3v2wiE2pttxI/njipAzxvocEAb8mk7aQVy/XScHT/R3/FlLazEPx3N
+	 TU50fjZ8pnF4g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ming-Hung Tsai <mtsai@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+Cc: Thomas Zimmermann <tzimmermann@suse.de>,
+	Anusha Srivatsa <asrivats@redhat.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	agk@redhat.com,
-	snitzer@kernel.org,
-	dm-devel@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.6 113/294] dm cache: prevent BUG_ON by blocking retries on failed device resumes
-Date: Mon,  5 May 2025 18:53:33 -0400
-Message-Id: <20250505225634.2688578-113-sashal@kernel.org>
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	sumit.semwal@linaro.org,
+	dri-devel@lists.freedesktop.org,
+	linux-media@vger.kernel.org,
+	linaro-mm-sig@lists.linaro.org
+Subject: [PATCH AUTOSEL 6.6 115/294] drm/gem: Test for imported GEM buffers with helper
+Date: Mon,  5 May 2025 18:53:35 -0400
+Message-Id: <20250505225634.2688578-115-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505225634.2688578-1-sashal@kernel.org>
 References: <20250505225634.2688578-1-sashal@kernel.org>
@@ -62,124 +68,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.89
 Content-Transfer-Encoding: 8bit
 
-From: Ming-Hung Tsai <mtsai@redhat.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit 5da692e2262b8f81993baa9592f57d12c2703dea ]
+[ Upstream commit b57aa47d39e94dc47403a745e2024664e544078c ]
 
-A cache device failing to resume due to mapping errors should not be
-retried, as the failure leaves a partially initialized policy object.
-Repeating the resume operation risks triggering BUG_ON when reloading
-cache mappings into the incomplete policy object.
+Add drm_gem_is_imported() that tests if a GEM object's buffer has
+been imported. Update the GEM code accordingly.
 
-Reproduce steps:
+GEM code usually tests for imports if import_attach has been set
+in struct drm_gem_object. But attaching a dma-buf on import requires
+a DMA-capable importer device, which is not the case for many serial
+busses like USB or I2C. The new helper tests if a GEM object's dma-buf
+has been created from the GEM object.
 
-1. create a cache metadata consisting of 512 or more cache blocks,
-   with some mappings stored in the first array block of the mapping
-   array. Here we use cache_restore v1.0 to build the metadata.
-
-cat <<EOF >> cmeta.xml
-<superblock uuid="" block_size="128" nr_cache_blocks="512" \
-policy="smq" hint_width="4">
-  <mappings>
-    <mapping cache_block="0" origin_block="0" dirty="false"/>
-  </mappings>
-</superblock>
-EOF
-dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
-cache_restore -i cmeta.xml -o /dev/mapper/cmeta --metadata-version=2
-dmsetup remove cmeta
-
-2. wipe the second array block of the mapping array to simulate
-   data degradations.
-
-mapping_root=$(dd if=/dev/sdc bs=1c count=8 skip=192 \
-2>/dev/null | hexdump -e '1/8 "%u\n"')
-ablock=$(dd if=/dev/sdc bs=1c count=8 skip=$((4096*mapping_root+2056)) \
-2>/dev/null | hexdump -e '1/8 "%u\n"')
-dd if=/dev/zero of=/dev/sdc bs=4k count=1 seek=$ablock
-
-3. try bringing up the cache device. The resume is expected to fail
-   due to the broken array block.
-
-dmsetup create cmeta --table "0 8192 linear /dev/sdc 0"
-dmsetup create cdata --table "0 65536 linear /dev/sdc 8192"
-dmsetup create corig --table "0 524288 linear /dev/sdc 262144"
-dmsetup create cache --notable
-dmsetup load cache --table "0 524288 cache /dev/mapper/cmeta \
-/dev/mapper/cdata /dev/mapper/corig 128 2 metadata2 writethrough smq 0"
-dmsetup resume cache
-
-4. try resuming the cache again. An unexpected BUG_ON is triggered
-   while loading cache mappings.
-
-dmsetup resume cache
-
-Kernel logs:
-
-(snip)
-------------[ cut here ]------------
-kernel BUG at drivers/md/dm-cache-policy-smq.c:752!
-Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN NOPTI
-CPU: 0 UID: 0 PID: 332 Comm: dmsetup Not tainted 6.13.4 #3
-RIP: 0010:smq_load_mapping+0x3e5/0x570
-
-Fix by disallowing resume operations for devices that failed the
-initial attempt.
-
-Signed-off-by: Ming-Hung Tsai <mtsai@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Anusha Srivatsa <asrivats@redhat.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250226172457.217725-2-tzimmermann@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-cache-target.c | 24 ++++++++++++++++++++++++
- 1 file changed, 24 insertions(+)
+ drivers/gpu/drm/drm_gem.c |  4 ++--
+ include/drm/drm_gem.h     | 14 ++++++++++++++
+ 2 files changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/md/dm-cache-target.c b/drivers/md/dm-cache-target.c
-index c5851c9f7ec04..0d002d50329da 100644
---- a/drivers/md/dm-cache-target.c
-+++ b/drivers/md/dm-cache-target.c
-@@ -2903,6 +2903,27 @@ static dm_cblock_t get_cache_dev_size(struct cache *cache)
- 	return to_cblock(size);
+diff --git a/drivers/gpu/drm/drm_gem.c b/drivers/gpu/drm/drm_gem.c
+index 44a948b80ee14..deb93f78ce344 100644
+--- a/drivers/gpu/drm/drm_gem.c
++++ b/drivers/gpu/drm/drm_gem.c
+@@ -322,7 +322,7 @@ int drm_gem_dumb_map_offset(struct drm_file *file, struct drm_device *dev,
+ 		return -ENOENT;
+ 
+ 	/* Don't allow imported objects to be mapped */
+-	if (obj->import_attach) {
++	if (drm_gem_is_imported(obj)) {
+ 		ret = -EINVAL;
+ 		goto out;
+ 	}
+@@ -1155,7 +1155,7 @@ void drm_gem_print_info(struct drm_printer *p, unsigned int indent,
+ 			  drm_vma_node_start(&obj->vma_node));
+ 	drm_printf_indent(p, indent, "size=%zu\n", obj->size);
+ 	drm_printf_indent(p, indent, "imported=%s\n",
+-			  str_yes_no(obj->import_attach));
++			  str_yes_no(drm_gem_is_imported(obj)));
+ 
+ 	if (obj->funcs->print_info)
+ 		obj->funcs->print_info(p, indent, obj);
+diff --git a/include/drm/drm_gem.h b/include/drm/drm_gem.h
+index 7c2ec139c464a..fbfccb96dd17b 100644
+--- a/include/drm/drm_gem.h
++++ b/include/drm/drm_gem.h
+@@ -35,6 +35,7 @@
+  */
+ 
+ #include <linux/kref.h>
++#include <linux/dma-buf.h>
+ #include <linux/dma-resv.h>
+ #include <linux/list.h>
+ #include <linux/mutex.h>
+@@ -557,6 +558,19 @@ static inline bool drm_gem_object_is_shared_for_memory_stats(struct drm_gem_obje
+ 	return (obj->handle_count > 1) || obj->dma_buf;
  }
  
-+static bool can_resume(struct cache *cache)
++/**
++ * drm_gem_is_imported() - Tests if GEM object's buffer has been imported
++ * @obj: the GEM object
++ *
++ * Returns:
++ * True if the GEM object's buffer has been imported, false otherwise
++ */
++static inline bool drm_gem_is_imported(const struct drm_gem_object *obj)
 +{
-+	/*
-+	 * Disallow retrying the resume operation for devices that failed the
-+	 * first resume attempt, as the failure leaves the policy object partially
-+	 * initialized. Retrying could trigger BUG_ON when loading cache mappings
-+	 * into the incomplete policy object.
-+	 */
-+	if (cache->sized && !cache->loaded_mappings) {
-+		if (get_cache_mode(cache) != CM_WRITE)
-+			DMERR("%s: unable to resume a failed-loaded cache, please check metadata.",
-+			      cache_device_name(cache));
-+		else
-+			DMERR("%s: unable to resume cache due to missing proper cache table reload",
-+			      cache_device_name(cache));
-+		return false;
-+	}
-+
-+	return true;
++	/* The dma-buf's priv field points to the original GEM object. */
++	return obj->dma_buf && (obj->dma_buf->priv != obj);
 +}
 +
- static bool can_resize(struct cache *cache, dm_cblock_t new_size)
- {
- 	if (from_cblock(new_size) > from_cblock(cache->cache_size)) {
-@@ -2951,6 +2972,9 @@ static int cache_preresume(struct dm_target *ti)
- 	struct cache *cache = ti->private;
- 	dm_cblock_t csize = get_cache_dev_size(cache);
- 
-+	if (!can_resume(cache))
-+		return -EINVAL;
-+
- 	/*
- 	 * Check to see if the cache has resized.
- 	 */
+ #ifdef CONFIG_LOCKDEP
+ /**
+  * drm_gem_gpuva_set_lock() - Set the lock protecting accesses to the gpuva list.
 -- 
 2.39.5
 
