@@ -1,66 +1,60 @@
-Return-Path: <stable+bounces-140041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CCFAAAA454
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:27:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4738EAAA459
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 01:27:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44E9B5A7CDE
-	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:25:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50C153ACB3A
+	for <lists+stable@lfdr.de>; Mon,  5 May 2025 23:25:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B13852FCA71;
-	Mon,  5 May 2025 22:26:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8612228C015;
+	Mon,  5 May 2025 22:26:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Kx0qi3MK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HvWj18zU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B3932882C0;
-	Mon,  5 May 2025 22:26:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 445BD28C018;
+	Mon,  5 May 2025 22:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746483964; cv=none; b=EqM59gtvPZBhU80SfDktNL6tv3fI/x422wjdQ1w3O1Af4BdKeg1TJhBvVYKa2OxLiA6FlhR3P/acUDnAJ/iY8F2jZuz9uugyCmYZIAbphsxqsYpSRlNPlzVPu3+DuLl9AQ/E7v9hosgDF3qj4349rRcK/w1CSQ2sKgBNBeZxzrQ=
+	t=1746483966; cv=none; b=fcn8HXtUbVjgO+xDrcj21DSRcKHbdqCcZF7EYWB5fkYKlhQvu25dltHc0Adf31nXnufnMR95j4JQn+yeQrdbY231/zn61tlqyf0cdKzQz2Que+xI0ymkFVxjd0M2VKoI/dKzZwjYqnUw6ESiYCiij+uQIygiF92BfpiHucG2UR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746483964; c=relaxed/simple;
-	bh=oWo5y1RaFIe1LD0KY9udUqxhUFVnrrcknEQyAbOi8pE=;
+	s=arc-20240116; t=1746483966; c=relaxed/simple;
+	bh=G+46tQlxluCP6eWe/CdD8mmIezTjRDbXVZi4O5UPoPE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Exbkn9/pVyqSthm7uWvdIaImBYNVL8Ve/YTB6D39GBUPcGYV8P+5yWnUAwH2nIFVjQHlArgU5ewBjMw21FWWD1qo79JOIgKTE0aasoNRiBKqc5Bl4ldntOYAXLpKjw8L19056YbCUs2MiS4IXukBfhUInNYXXyUMSnxt0m87GKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Kx0qi3MK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A493AC4CEEE;
-	Mon,  5 May 2025 22:26:02 +0000 (UTC)
+	 MIME-Version; b=INykNzsH1lafglpYM5Gaq0As/KpC1UkYYKAponIuh4s6brFeqhjvepeQr1GitRbXovD46dOypQ2dLd2B8qWaPYhbK+/2keC/I7usAbjy4+Q5mE6QzLt82FpTbMoaljCLEaxN53j1PJ51cA2mR+gTzFXj0jFGvSpOcn7ztQjP2RI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HvWj18zU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC929C4CEEF;
+	Mon,  5 May 2025 22:26:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746483964;
-	bh=oWo5y1RaFIe1LD0KY9udUqxhUFVnrrcknEQyAbOi8pE=;
+	s=k20201202; t=1746483965;
+	bh=G+46tQlxluCP6eWe/CdD8mmIezTjRDbXVZi4O5UPoPE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kx0qi3MKKGU02G4NZKnD83DCbGCWByvNO73B85uJMUmJCAhbo14+LYnQfF8FHPxo1
-	 kL6E4xBLzDXosf5LeVlsxjZQLyr1oQkpMbUbItKiJsOfkn56sHgCwm+E6fbMr/1Th2
-	 YYCo9emnnQX+xzwWBj40FlEPe4GsM1f0BUZslOYZtb/2AerPZxbci6gZeqGucwJ/kl
-	 JNXfrx9hvhfeBncpopvmXlOaaus3bBo1nZSj8a8Wr62dL2d98J1yZoLQVpQzdArk8d
-	 kwVcSh7lu2JKKhPZEhWa08FWQnSR386FaFg/GOdOLyG34IOc9EHHUDrrWOcGE4wWNx
-	 S7sL69sKXyK6g==
+	b=HvWj18zUAJYf3ApV3bp5Ecr4At8c/66hQNsZnAR8/7mJ1iT5k7QjAyfAndECCkLNW
+	 7HhjEHO+C0iM95IIcXg53tVfPqDD9TcYJy8RRT8yn4Ins+92vThJ+IfSuVL0TfW/v/
+	 HZDx+UYGF1SOFHsDnvahDaI524mTp/TwJzphpx+HPEX4LtG5nyNeel13JYTJhVuAzu
+	 TYVPzuZjRgmBddPeDVDNy13Og2zCbha3uxCnwvAocoom5LwvNSXfp6US0T0K1i4yUl
+	 X8z8z/qJqg+M+z9qv47dFcsdEf5tnqisfD1tlzoXjudFKAlDF3gcmRvb1N+kJf4u6z
+	 8ABH01B8GOkWg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Stanimir Varbanov <svarbanov@suse.de>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	"Ivan T . Ivanov" <iivanov@suse.de>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+Cc: Xinyu Zhang <xizhang@purestorage.com>,
+	Caleb Sander Mateos <csander@purestorage.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Ming Lei <ming.lei@redhat.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	jim2101024@gmail.com,
-	nsaenz@kernel.org,
-	lpieralisi@kernel.org,
-	kw@linux.com,
-	manivannan.sadhasivam@linaro.org,
-	bhelgaas@google.com,
-	linux-pci@vger.kernel.org,
-	linux-rpi-kernel@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.14 294/642] PCI: brcmstb: Add a softdep to MIP MSI-X driver
-Date: Mon,  5 May 2025 18:08:30 -0400
-Message-Id: <20250505221419.2672473-294-sashal@kernel.org>
+	sagi@grimberg.me,
+	linux-nvme@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.14 295/642] nvme: map uring_cmd data even if address is 0
+Date: Mon,  5 May 2025 18:08:31 -0400
+Message-Id: <20250505221419.2672473-295-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -70,42 +64,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Stanimir Varbanov <svarbanov@suse.de>
+From: Xinyu Zhang <xizhang@purestorage.com>
 
-[ Upstream commit 2294059118c550464dd8906286324d90c33b152b ]
+[ Upstream commit 99fde895ff56ac2241e7b7b4566731d72f2fdaa7 ]
 
-Then the brcmstb PCIe driver and MIP MSI-X interrupt controller
-drivers are built as modules there could be a race in probing.
+When using kernel registered bvec fixed buffers, the "address" is
+actually the offset into the bvec rather than userspace address.
+Therefore it can be 0.
 
-To avoid this, add a softdep to MIP driver to guarantee that
-MIP driver will be load first.
+We can skip checking whether the address is NULL before mapping
+uring_cmd data. Bad userspace address will be handled properly later when
+the user buffer is imported.
 
-Signed-off-by: Stanimir Varbanov <svarbanov@suse.de>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Tested-by: Ivan T. Ivanov <iivanov@suse.de>
-Link: https://lore.kernel.org/r/20250224083559.47645-5-svarbanov@suse.de
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+With this patch, we will be able to use the kernel registered bvec fixed
+buffers in io_uring NVMe passthru with ublk zero-copy support.
+
+Reviewed-by: Caleb Sander Mateos <csander@purestorage.com>
+Reviewed-by: Jens Axboe <axboe@kernel.dk>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Signed-off-by: Xinyu Zhang <xizhang@purestorage.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Link: https://lore.kernel.org/r/20250227223916.143006-4-kbusch@meta.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-brcmstb.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/nvme/host/ioctl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/controller/pcie-brcmstb.c b/drivers/pci/controller/pcie-brcmstb.c
-index ff217a0b80ad3..bae226c779a50 100644
---- a/drivers/pci/controller/pcie-brcmstb.c
-+++ b/drivers/pci/controller/pcie-brcmstb.c
-@@ -1947,3 +1947,4 @@ module_platform_driver(brcm_pcie_driver);
- MODULE_LICENSE("GPL");
- MODULE_DESCRIPTION("Broadcom STB PCIe RC driver");
- MODULE_AUTHOR("Broadcom");
-+MODULE_SOFTDEP("pre: irq_bcm2712_mip");
+diff --git a/drivers/nvme/host/ioctl.c b/drivers/nvme/host/ioctl.c
+index fed6b29098ad3..11509ffd28fb5 100644
+--- a/drivers/nvme/host/ioctl.c
++++ b/drivers/nvme/host/ioctl.c
+@@ -514,7 +514,7 @@ static int nvme_uring_cmd_io(struct nvme_ctrl *ctrl, struct nvme_ns *ns,
+ 		return PTR_ERR(req);
+ 	req->timeout = d.timeout_ms ? msecs_to_jiffies(d.timeout_ms) : 0;
+ 
+-	if (d.addr && d.data_len) {
++	if (d.data_len) {
+ 		ret = nvme_map_user_request(req, d.addr,
+ 			d.data_len, nvme_to_user_ptr(d.metadata),
+ 			d.metadata_len, ioucmd, vec);
 -- 
 2.39.5
 
