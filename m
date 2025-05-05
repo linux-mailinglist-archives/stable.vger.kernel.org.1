@@ -1,62 +1,71 @@
-Return-Path: <stable+bounces-140570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8676BAAAE25
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:50:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C4C1AAAE47
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:53:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A426417FDF9
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:48:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82C1F3B4A83
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:49:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A28A2DA540;
-	Mon,  5 May 2025 22:52:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D59F2D4B42;
+	Mon,  5 May 2025 22:54:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AxM5ChGv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lfSZi23A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D75F365717;
-	Mon,  5 May 2025 22:46:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 734543679D9;
+	Mon,  5 May 2025 22:46:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485168; cv=none; b=Ieb9vKJrjOfrIv07Y+Cpp2z2ePDE4fL/l6dGDKKgpxmBFnfbCywAiub0XLB2TzCFT3dXB7Lqex+uoZBcX2MYcTSuKmi69DSaQkK7NS6XOE6LwK8aG8MAfG1wqB4sB/ALwN5sLs5esudeXpg4MRw7gxTxrd+d2MjUYBf+oSO07zI=
+	t=1746485176; cv=none; b=thRqNZ9Q7/e5nbH30oTlog3foWuIZHQL/t+BVcSlf32QI5iPSWYtlSj+kBSr/jbIHvHRx3eyDrrH+UANYdtqyuU5oJewKDdfXvxcTp97upMBxrI8qb1mKUK+ebOoJ0+FhBfyCdBqGuqvTGYnJIK/3qrU/jjJIeWT+dWQXnfzYYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485168; c=relaxed/simple;
-	bh=qM4WJnGHM1m1fsGvJCRhq94cX/P+bapNYT6XAdoDPVs=;
+	s=arc-20240116; t=1746485176; c=relaxed/simple;
+	bh=IM+quJAHAyIiqqydPfve0lj9WWv+tWG5QphYLrWXjIE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=mi7WHDK69iM2aOPZvcXA2O8xb7u5prw+qfxT8b3jLFFoO4fnT1ylWhQv4mjurzgRU9unLwt9Qo+Q49BHwgd4MkPzR47t0hsrMTuu9dZpOCaL+Ok2oCi7oXkLQq0txFb2LPxUTR6MBgHa3Hb6uU7HqOlMv3XWBGJFsADXl2J81AY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AxM5ChGv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A567EC4CEE4;
-	Mon,  5 May 2025 22:46:05 +0000 (UTC)
+	 MIME-Version; b=ZKUQ6xtY6PcVCkOBE+OsXwif9EROQpOVqHNlplqigtLO3RxhopKKz31l6YLHFpsajrGfNSYVavVWnQgDxD0R3NxFpxdh9lfqkNBnKQhKCdxHHseRQuuLPN1hQlhyXiwz5WfoBxrK7pAnGJVT/XgIk0Typ83gZlrfjoWmUxMtfz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lfSZi23A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70548C4CEE4;
+	Mon,  5 May 2025 22:46:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485166;
-	bh=qM4WJnGHM1m1fsGvJCRhq94cX/P+bapNYT6XAdoDPVs=;
+	s=k20201202; t=1746485174;
+	bh=IM+quJAHAyIiqqydPfve0lj9WWv+tWG5QphYLrWXjIE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AxM5ChGvRH3pgLaGJcESJIGNuaz4oDXK6phtpI2fkhJy0UEb2m4VWBZGGRdzsR2co
-	 0VaZMRgoNPgGc3LKoMrnzjKR/h0B94qEfqPMu3867GM1GGMvxXMKUMML+Z+XBWNS5x
-	 h4+ABjXfdJOCbNxfNw0TINq7J/15wZN0P4+EmrOxACeOj1eNEhuv1zhUe6+Qpc/tzx
-	 dJX+JaZ+DLcVCDMsf1vbyk28GIBcYQiFNZSIZkGYr00UxtVlHRFQrot96EKwbSihZ+
-	 2SWCUG4ar8TsOtyOpPNs96eZROk9Zblc7CtWhhWfWqJhLRYZ1Yen+WcNeCXpTFxoe7
-	 u1QQaoJMnoFaQ==
+	b=lfSZi23Akh1MtCPOeXv3yPUueE3YnRlJvvaYk7VHyzFTQoKW9tzqgAtQKSXG19Yoa
+	 YzaFTv/deVheEltH9b61rXJoTsTvHTPOSeVY1jj9Qfh8lD2QNj6Oa20EMePoS0MhMm
+	 0ar0IN+R47geJsIPLNsePhNJur2kjItvgMrb/5kAcTMyN9v/NxWngrVMIDEHgyg4qr
+	 rcFbOdudzorSGtAOzQm13R48vO1TLFk3/2wcZHShM+NmjptHcAh+BxBGCYQ5yWwh3r
+	 4KSUAQ0GIgQWKolJz6KFqMrBpz08Iculw0KJU9oKG8JV1BjCPPD8j6pQbIupt/CUJJ
+	 5HaChF5lwWNbg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Victor Lu <victorchengchi.lu@amd.com>,
+Cc: George Shen <george.shen@amd.com>,
+	Wenjing Liu <wenjing.liu@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
+	harry.wentland@amd.com,
+	sunpeng.li@amd.com,
 	christian.koenig@amd.com,
 	airlied@gmail.com,
 	simona@ffwll.ch,
-	Hawking.Zhang@amd.com,
-	tao.zhou1@amd.com,
+	alex.hung@amd.com,
+	roman.li@amd.com,
+	michael.strauss@amd.com,
+	PeiChen.Huang@amd.com,
+	Ausef.Yousof@amd.com,
+	Cruise.Hung@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.12 196/486] drm/amdgpu: Do not program AGP BAR regs under SRIOV in gfxhub_v1_0.c
-Date: Mon,  5 May 2025 18:34:32 -0400
-Message-Id: <20250505223922.2682012-196-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 198/486] drm/amd/display: Skip checking FRL_MODE bit for PCON BW determination
+Date: Mon,  5 May 2025 18:34:34 -0400
+Message-Id: <20250505223922.2682012-198-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -71,43 +80,68 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Victor Lu <victorchengchi.lu@amd.com>
+From: George Shen <george.shen@amd.com>
 
-[ Upstream commit 057fef20b8401110a7bc1c2fe9d804a8a0bf0d24 ]
+[ Upstream commit 0584bbcf0c53c133081100e4f4c9fe41e598d045 ]
 
-SRIOV VF does not have write access to AGP BAR regs.
-Skip the writes to avoid a dmesg warning.
+[Why/How]
+Certain PCON will clear the FRL_MODE bit despite supporting the link BW
+indicated in the other bits.
 
-Signed-off-by: Victor Lu <victorchengchi.lu@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Thus, skip checking the FRL_MODE bit when interpreting the
+hdmi_encoded_link_bw struct.
+
+Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
+Signed-off-by: George Shen <george.shen@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ .../dc/link/protocols/link_dp_capability.c    | 30 +++++++++----------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c b/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c
-index 0e3ddea7b8e0f..a7bfc9f41d0e3 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfxhub_v1_0.c
-@@ -92,12 +92,12 @@ static void gfxhub_v1_0_init_system_aperture_regs(struct amdgpu_device *adev)
+diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
+index 885e749cdc6e9..23e650e39910e 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_capability.c
+@@ -250,21 +250,21 @@ static uint32_t intersect_frl_link_bw_support(
  {
- 	uint64_t value;
+ 	uint32_t supported_bw_in_kbps = max_supported_frl_bw_in_kbps;
  
--	/* Program the AGP BAR */
--	WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_BASE, 0);
--	WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_BOT, adev->gmc.agp_start >> 24);
--	WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_TOP, adev->gmc.agp_end >> 24);
--
- 	if (!amdgpu_sriov_vf(adev) || adev->asic_type <= CHIP_VEGA10) {
-+		/* Program the AGP BAR */
-+		WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_BASE, 0);
-+		WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_BOT, adev->gmc.agp_start >> 24);
-+		WREG32_SOC15_RLC(GC, 0, mmMC_VM_AGP_TOP, adev->gmc.agp_end >> 24);
-+
- 		/* Program the system aperture low logical page number. */
- 		WREG32_SOC15_RLC(GC, 0, mmMC_VM_SYSTEM_APERTURE_LOW_ADDR,
- 			min(adev->gmc.fb_start, adev->gmc.agp_start) >> 18);
+-	// HDMI_ENCODED_LINK_BW bits are only valid if HDMI Link Configuration bit is 1 (FRL mode)
+-	if (hdmi_encoded_link_bw.bits.FRL_MODE) {
+-		if (hdmi_encoded_link_bw.bits.BW_48Gbps)
+-			supported_bw_in_kbps = 48000000;
+-		else if (hdmi_encoded_link_bw.bits.BW_40Gbps)
+-			supported_bw_in_kbps = 40000000;
+-		else if (hdmi_encoded_link_bw.bits.BW_32Gbps)
+-			supported_bw_in_kbps = 32000000;
+-		else if (hdmi_encoded_link_bw.bits.BW_24Gbps)
+-			supported_bw_in_kbps = 24000000;
+-		else if (hdmi_encoded_link_bw.bits.BW_18Gbps)
+-			supported_bw_in_kbps = 18000000;
+-		else if (hdmi_encoded_link_bw.bits.BW_9Gbps)
+-			supported_bw_in_kbps = 9000000;
+-	}
++	/* Skip checking FRL_MODE bit, as certain PCON will clear
++	 * it despite supporting the link BW indicated in the other bits.
++	 */
++	if (hdmi_encoded_link_bw.bits.BW_48Gbps)
++		supported_bw_in_kbps = 48000000;
++	else if (hdmi_encoded_link_bw.bits.BW_40Gbps)
++		supported_bw_in_kbps = 40000000;
++	else if (hdmi_encoded_link_bw.bits.BW_32Gbps)
++		supported_bw_in_kbps = 32000000;
++	else if (hdmi_encoded_link_bw.bits.BW_24Gbps)
++		supported_bw_in_kbps = 24000000;
++	else if (hdmi_encoded_link_bw.bits.BW_18Gbps)
++		supported_bw_in_kbps = 18000000;
++	else if (hdmi_encoded_link_bw.bits.BW_9Gbps)
++		supported_bw_in_kbps = 9000000;
+ 
+ 	return supported_bw_in_kbps;
+ }
 -- 
 2.39.5
 
