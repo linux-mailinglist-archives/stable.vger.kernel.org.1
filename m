@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-141299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96F3AAAB274
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:21:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15555AAB23E
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:16:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 159603AEB46
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:16:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFBA64C15CA
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:16:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E685425E27;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DE9F425E26;
 	Tue,  6 May 2025 00:29:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sBpRC/tI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GkMVA4g3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8FAC2D7ADC;
-	Mon,  5 May 2025 22:55:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C83F22D7AE0;
+	Mon,  5 May 2025 22:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746485723; cv=none; b=bSoVzjFb5q7TQZ4CMj9XpEwJK1WyGX/ZxrWNu3P9JVl0+AQLTe4gGdmSgKQaAIUS9AbOIIW/JINzjJurj74aU1+TNomtbv/Vd42+6XGNCnf3BnvGmwE09MXUbtwlhR3QXWNw332mIckP9RSA5VNvt8X4UMO2l6EdGn2LcOs+uJU=
+	t=1746485725; cv=none; b=hDNxpNW74S+mjfqfyLz6q9CbPiILcVxhd8hu80XZYXdFQ2DQDKFy15oT5D0Mp5hQfdCqLezYxUbD66b2SQhcSRVv7F5bRs+5A6CyemnTradzMN2yc3Jn1ZFfj5Wx7OYL4nSAKqWsd7JbUoXkJSkQmv8UDcwTJZvk79U7DQulPk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746485723; c=relaxed/simple;
-	bh=u4M2ri7s0pD3GKep1Ohl7DW42zCEi08RdWR3N8ij7v4=;
+	s=arc-20240116; t=1746485725; c=relaxed/simple;
+	bh=AacAX110S5z2tG92wMAN89b1mrxBDeQr+V5y2E7kQ7w=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pr7Ji9ccMPfX25MlHfWxlGz5SRobChhBDnKSIX6u2x389p8TG2U+h7TLh6toaCnWNEl+thYl+mbN/ON8+mfeph3XFDZCVZHhtXgTfoVv46JN0qwlnM/ijWbgXo3WJQdm2rRE4vS8Zz0fAQXrxzVKpIEgMhwqzQEPR5nFubUsHio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sBpRC/tI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6578C4CEEE;
-	Mon,  5 May 2025 22:55:21 +0000 (UTC)
+	 MIME-Version; b=Fn2iFII++XEsg+R4a9RHaa4jMKVHp4Y/Z9o22U2O6JkuWvmau0lrCnpw2nltegCypqJolq2bLLnvSGpQSJ5hiTumXa5fhjNtgUkKD7dLuYOGwjjd4Quibz8q/ZaUbCiLpFeFnNabx7CT8N+D6c9aLXmhqeskxcTUno/CCouMbNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GkMVA4g3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23A2BC4CEF1;
+	Mon,  5 May 2025 22:55:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746485722;
-	bh=u4M2ri7s0pD3GKep1Ohl7DW42zCEi08RdWR3N8ij7v4=;
+	s=k20201202; t=1746485724;
+	bh=AacAX110S5z2tG92wMAN89b1mrxBDeQr+V5y2E7kQ7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sBpRC/tIRNlXDMXER/D4v9QfG/vugQaz4sLYwW+UeOQBAKoVu5+y1l05V3glIS1MK
-	 nZtkZmeJ1B3yJC/jUXyS0Tg+IYvI9c++Cu51GY0CMcVAlZfVbPIZL8SDpTtWLmBvKp
-	 Oq3E6gNU/yL9U32NEa8hcBCBOsopi4Fzl22f5Urb+3GpYjKD8OdxJEX0U2/2EUiEMm
-	 d2GkELN+Ly8l+skttc7Z1Kgkpm1pItwl6xf7RlDakP9uM39wAWrNl+h5oE1bsa8Xon
-	 ZAznKcttxoz1uYBezK06qIRBMrIkY3W7NXVhfxojnuRAhT0R19BYvVpuWsMQSMEkWe
-	 Ib13Tt0AAoyfw==
+	b=GkMVA4g31jvFTM7h3iqHWumElU3hWDwYODlMfHww3esDOoG8yYLHlMhzbL/xjvIyl
+	 8W2lh/12eG8f1u6lz+e9mKYUjvUymZv8ZMXAd8NYuEC3s0W+p90Sn81B2IRwLVIlgJ
+	 tc+35pdILDYtaNu5UMLcN1ZY67fM47BHvK20OEPiIkq1GwAIdwpjIiV66PFqgUJcdh
+	 TUGLu7WTMEP4fsxbs/OI8tvYLQFVlh/2xsL8liqUGuMppvhS4BWuaFrA+JPE8MBVpK
+	 dSYD2tnHym8vxq0V8yLi1DLHIbju5rogl179/fV50ohH4DMJpfEnPZLcNQQXwzsA3/
+	 viXSOhgX7XBBw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Kai=20M=C3=A4kisara?= <Kai.Makisara@kolumbus.fi>,
-	John Meneghini <jmeneghi@redhat.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
+Cc: Avula Sri Charan <quic_asrichar@quicinc.com>,
+	Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>,
+	Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	James.Bottomley@HansenPartnership.com,
-	linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 444/486] scsi: st: Restore some drive settings after reset
-Date: Mon,  5 May 2025 18:38:40 -0400
-Message-Id: <20250505223922.2682012-444-sashal@kernel.org>
+	jjohnson@kernel.org,
+	linux-wireless@vger.kernel.org,
+	ath12k@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.12 445/486] wifi: ath12k: Avoid napi_sync() before napi_enable()
+Date: Mon,  5 May 2025 18:38:41 -0400
+Message-Id: <20250505223922.2682012-445-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505223922.2682012-1-sashal@kernel.org>
 References: <20250505223922.2682012-1-sashal@kernel.org>
@@ -62,114 +64,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.26
 Content-Transfer-Encoding: 8bit
 
-From: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
+From: Avula Sri Charan <quic_asrichar@quicinc.com>
 
-[ Upstream commit 7081dc75df79696d8322d01821c28e53416c932c ]
+[ Upstream commit 268c73d470a5790a492a2fc2ded084b909d144f3 ]
 
-Some of the allowed operations put the tape into a known position to
-continue operation assuming only the tape position has changed.  But reset
-sets partition, density and block size to drive default values. These
-should be restored to the values before reset.
+In case of MHI error a reset work will be queued which will try
+napi_disable() after napi_synchronize().
 
-Normally the current block size and density are stored by the drive.  If
-the settings have been changed, the changed values have to be saved by the
-driver across reset.
+As the napi will be only enabled after qmi_firmware_ready event,
+trying napi_synchronize() before napi_enable() will result in
+indefinite sleep in case of a firmware crash in QMI init sequence.
 
-Signed-off-by: Kai Mäkisara <Kai.Makisara@kolumbus.fi>
-Link: https://lore.kernel.org/r/20250120194925.44432-2-Kai.Makisara@kolumbus.fi
-Reviewed-by: John Meneghini <jmeneghi@redhat.com>
-Tested-by: John Meneghini <jmeneghi@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+To avoid this, introduce napi_enabled flag to check if napi is enabled
+or not before calling napi_synchronize().
+
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Avula Sri Charan <quic_asrichar@quicinc.com>
+Signed-off-by: Tamizh Chelvam Raja <quic_tamizhr@quicinc.com>
+Reviewed-by: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250124090058.3194299-1-quic_tamizhr@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/st.c | 24 +++++++++++++++++++++---
- drivers/scsi/st.h |  2 ++
- 2 files changed, 23 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath12k/core.h |  1 +
+ drivers/net/wireless/ath/ath12k/pci.c  | 13 ++++++++++---
+ 2 files changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/scsi/st.c b/drivers/scsi/st.c
-index 1cfd7e71dcdde..3e982c166baf9 100644
---- a/drivers/scsi/st.c
-+++ b/drivers/scsi/st.c
-@@ -952,7 +952,6 @@ static void reset_state(struct scsi_tape *STp)
- 		STp->partition = find_partition(STp);
- 		if (STp->partition < 0)
- 			STp->partition = 0;
--		STp->new_partition = STp->partition;
+diff --git a/drivers/net/wireless/ath/ath12k/core.h b/drivers/net/wireless/ath/ath12k/core.h
+index 7f2e9a9b40977..3faf3430effb9 100644
+--- a/drivers/net/wireless/ath/ath12k/core.h
++++ b/drivers/net/wireless/ath/ath12k/core.h
+@@ -148,6 +148,7 @@ struct ath12k_ext_irq_grp {
+ 	u32 num_irq;
+ 	u32 grp_id;
+ 	u64 timestamp;
++	bool napi_enabled;
+ 	struct napi_struct napi;
+ 	struct net_device *napi_ndev;
+ };
+diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
+index 2ff866e1d7d5b..45d537066345a 100644
+--- a/drivers/net/wireless/ath/ath12k/pci.c
++++ b/drivers/net/wireless/ath/ath12k/pci.c
+@@ -481,8 +481,11 @@ static void __ath12k_pci_ext_irq_disable(struct ath12k_base *ab)
+ 
+ 		ath12k_pci_ext_grp_disable(irq_grp);
+ 
+-		napi_synchronize(&irq_grp->napi);
+-		napi_disable(&irq_grp->napi);
++		if (irq_grp->napi_enabled) {
++			napi_synchronize(&irq_grp->napi);
++			napi_disable(&irq_grp->napi);
++			irq_grp->napi_enabled = false;
++		}
  	}
  }
- 
-@@ -2926,14 +2925,17 @@ static int st_int_ioctl(struct scsi_tape *STp, unsigned int cmd_in, unsigned lon
- 		if (cmd_in == MTSETDENSITY) {
- 			(STp->buffer)->b_data[4] = arg;
- 			STp->density_changed = 1;	/* At least we tried ;-) */
-+			STp->changed_density = arg;
- 		} else if (cmd_in == SET_DENS_AND_BLK)
- 			(STp->buffer)->b_data[4] = arg >> 24;
- 		else
- 			(STp->buffer)->b_data[4] = STp->density;
- 		if (cmd_in == MTSETBLK || cmd_in == SET_DENS_AND_BLK) {
- 			ltmp = arg & MT_ST_BLKSIZE_MASK;
--			if (cmd_in == MTSETBLK)
-+			if (cmd_in == MTSETBLK) {
- 				STp->blksize_changed = 1; /* At least we tried ;-) */
-+				STp->changed_blksize = arg;
-+			}
- 		} else
- 			ltmp = STp->block_size;
- 		(STp->buffer)->b_data[9] = (ltmp >> 16);
-@@ -3634,9 +3636,25 @@ static long st_ioctl(struct file *file, unsigned int cmd_in, unsigned long arg)
- 				retval = (-EIO);
- 				goto out;
- 			}
--			reset_state(STp);
-+			reset_state(STp); /* Clears pos_unknown */
- 			/* remove this when the midlevel properly clears was_reset */
- 			STp->device->was_reset = 0;
-+
-+			/* Fix the device settings after reset, ignore errors */
-+			if (mtc.mt_op == MTREW || mtc.mt_op == MTSEEK ||
-+				mtc.mt_op == MTEOM) {
-+				if (STp->can_partitions) {
-+					/* STp->new_partition contains the
-+					 *  latest partition set
-+					 */
-+					STp->partition = 0;
-+					switch_partition(STp);
-+				}
-+				if (STp->density_changed)
-+					st_int_ioctl(STp, MTSETDENSITY, STp->changed_density);
-+				if (STp->blksize_changed)
-+					st_int_ioctl(STp, MTSETBLK, STp->changed_blksize);
-+			}
- 		}
  
- 		if (mtc.mt_op != MTNOP && mtc.mt_op != MTSETBLK &&
-diff --git a/drivers/scsi/st.h b/drivers/scsi/st.h
-index 1aaaf5369a40f..6d31b894ee84c 100644
---- a/drivers/scsi/st.h
-+++ b/drivers/scsi/st.h
-@@ -165,6 +165,7 @@ struct scsi_tape {
- 	unsigned char compression_changed;
- 	unsigned char drv_buffer;
- 	unsigned char density;
-+	unsigned char changed_density;
- 	unsigned char door_locked;
- 	unsigned char autorew_dev;   /* auto-rewind device */
- 	unsigned char rew_at_close;  /* rewind necessary at close */
-@@ -172,6 +173,7 @@ struct scsi_tape {
- 	unsigned char cleaning_req;  /* cleaning requested? */
- 	unsigned char first_tur;     /* first TEST UNIT READY */
- 	int block_size;
-+	int changed_blksize;
- 	int min_block;
- 	int max_block;
- 	int recover_count;     /* From tape opening */
+@@ -1112,7 +1115,11 @@ void ath12k_pci_ext_irq_enable(struct ath12k_base *ab)
+ 	for (i = 0; i < ATH12K_EXT_IRQ_GRP_NUM_MAX; i++) {
+ 		struct ath12k_ext_irq_grp *irq_grp = &ab->ext_irq_grp[i];
+ 
+-		napi_enable(&irq_grp->napi);
++		if (!irq_grp->napi_enabled) {
++			napi_enable(&irq_grp->napi);
++			irq_grp->napi_enabled = true;
++		}
++
+ 		ath12k_pci_ext_grp_enable(irq_grp);
+ 	}
+ 
 -- 
 2.39.5
 
