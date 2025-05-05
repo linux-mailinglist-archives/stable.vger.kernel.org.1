@@ -1,65 +1,62 @@
-Return-Path: <stable+bounces-141566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19495AAB48D
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:09:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E20B4AAB4D5
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:16:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7EA2E1BC739D
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:05:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6146A3AC256
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:06:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 340DF343166;
-	Tue,  6 May 2025 00:42:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 801E847ED6F;
+	Tue,  6 May 2025 00:42:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d+QmuSal"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JwwZf7P9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17FD52F15F9;
-	Mon,  5 May 2025 23:12:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D0D12F0BB5;
+	Mon,  5 May 2025 23:12:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486735; cv=none; b=p4lfXxl23yXHoR1E/JuPmQtR5gsg6lumv9Xwmr7Kt9nczmz4OF97+KGl71BUJsrp/t/s3ZemuZ/MNWHWV9DZhct0hrsU/YhtfqZyoUfrpZSwOE9CWSh7i+YbhDSpSQcj/RdQu430vLgfxM4BpmlBDT+dSOsbmOVPsE6C7+gvv7w=
+	t=1746486759; cv=none; b=FNy8oWkQbIfMXJFzgSaNbxtyMVj+rA8Xojh46iFCwqSWUi/3jJX7bnGOZxgpVbO/9XfP0gptUsJo2Yj3GEEuz4R0k45GiyMqhjc2Tb0eRKvZamt0gBJm0OXTfRlTCBeTXg/9108rMGUSnv3I2K1PgKvTX8kGaTRpiy7CpnLQItM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486735; c=relaxed/simple;
-	bh=fozbL4ARgGVcyBRnHM/0p/+P3J3KrYx0j2BVNXpNOgA=;
+	s=arc-20240116; t=1746486759; c=relaxed/simple;
+	bh=2MhPMJolL3bzf0hpny7AO0Glle1RNAMi1eEnNaXcDZs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=hQ6lc6pcCzhVDvHT2y8P4BMv2J9KYkHLGkCdp9n2Lzac6WrtPrChvhqGycM/UeIsNPX60+dvOPgH6JyZfUb4zpnJS0NCKa1BEt0Sm9BrjKcgqPujYgqJ2za7bGqaTa2EfSVtY5DgPOhh4abdXq5C2M+RJfZ/aBBIKv8+U2C8pDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d+QmuSal; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5506C4CEEE;
-	Mon,  5 May 2025 23:12:12 +0000 (UTC)
+	 MIME-Version; b=c8mpPRiy1SyLxd/gWEGivK21BkzAQsJD8Q87GcsfZ1nQba1eEWLQgymlK8MAqHqcIiAZbRiqRRoVKWt6Av1dgg8a9IBZSzp7aJrC/e1wJZ4aBBwpdSC1d/yojbXPjenBA1+FOYpkPmywDXUg60WCwndyivmZ6Kei+sA02pH3Hw4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JwwZf7P9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F84CC4CEEE;
+	Mon,  5 May 2025 23:12:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486734;
-	bh=fozbL4ARgGVcyBRnHM/0p/+P3J3KrYx0j2BVNXpNOgA=;
+	s=k20201202; t=1746486759;
+	bh=2MhPMJolL3bzf0hpny7AO0Glle1RNAMi1eEnNaXcDZs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d+QmuSalCwC5qYANEhVkdl/EgEor0zI5+X4wKU4ZhS/+7FgBX/A8oCr/CA7AA7wPc
-	 pGmUYw+4yYBTImixIQz2y+TqZhX9sXwhtIaC3NFz0aCbomBkWvzLSDn3/O9GpXqXA9
-	 g/kYs6H1T5qQw2SFNQs61FjPI308jQz25JAS2F862toQ5iY9L6NLMvmxkXC4YNbuG/
-	 FUnluxrjiYAh5LJrWopN/tCZLVX5m2bJpLBbTGVV/kx9J+qd/l9RamekudVZIzbJ3i
-	 uwRdGVXE8NBZ8oo/8H8RzJNfGWh/VJhOq9mfXQviRf3jABFUpKdtXnBLFP37Ybqx5z
-	 IKvp8d1TyMX8g==
+	b=JwwZf7P9smrhSyYQxigbdDOObpT/rDs4oTcKaU6yI/8OnE6WlD5CZxs/GgEmcC5M2
+	 Uyc0iSRV1bMlsfY251IUilzaaqI8otmgZMqyeZNMQEAEFVBzfCxpbzyg4cIPp2x1yO
+	 8vyhxzWoG+lBggIhMwc8A/jVNxqaEywl4IWLWkHXYijyrnZnDhsiBRgaoS8D9Zppv8
+	 V+35DrbEuAC91O8O4jak8TmMng0NBziIXjfJgU9f1uaXSaKrD4EjVALZJeV0+GTRff
+	 elY2+6I9kVhsu/MA4r6w3eKWDf9Pv/ak4juke4bvWDefOewltqQP7DlpHFjeS64de+
+	 phQfxev2wpi7Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: William Tu <witu@nvidia.com>,
-	Daniel Jurgens <danielj@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+Cc: Heiner Kallweit <hkallweit1@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	saeedm@nvidia.com,
+	nic_swsd@realtek.com,
 	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
 	edumazet@google.com,
 	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 175/212] net/mlx5e: set the tx_queue_len for pfifo_fast
-Date: Mon,  5 May 2025 19:05:47 -0400
-Message-Id: <20250505230624.2692522-175-sashal@kernel.org>
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 188/212] r8169: don't scan PHY addresses > 0
+Date: Mon,  5 May 2025 19:06:00 -0400
+Message-Id: <20250505230624.2692522-188-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -74,42 +71,34 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: William Tu <witu@nvidia.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit a38cc5706fb9f7dc4ee3a443f61de13ce1e410ed ]
+[ Upstream commit faac69a4ae5abb49e62c79c66b51bb905c9aa5ec ]
 
-By default, the mq netdev creates a pfifo_fast qdisc. On a
-system with 16 core, the pfifo_fast with 3 bands consumes
-16 * 3 * 8 (size of pointer) * 1024 (default tx queue len)
-= 393KB. The patch sets the tx qlen to representor default
-value, 128 (1<<MLX5E_REP_PARAMS_DEF_LOG_SQ_SIZE), which
-consumes 16 * 3 * 8 * 128 = 49KB, saving 344KB for each
-representor at ECPF.
+The PHY address is a dummy, because r8169 PHY access registers
+don't support a PHY address. Therefore scan address 0 only.
 
-Signed-off-by: William Tu <witu@nvidia.com>
-Reviewed-by: Daniel Jurgens <danielj@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Link: https://patch.msgid.link/20250209101716.112774-9-tariqt@nvidia.com
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/830637dd-4016-4a68-92b3-618fcac6589d@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_rep.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/realtek/r8169_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-index 5aeca9534f15a..837524d1d2258 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-@@ -726,6 +726,8 @@ static void mlx5e_build_rep_netdev(struct net_device *netdev,
- 	netdev->ethtool_ops = &mlx5e_rep_ethtool_ops;
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
+index 4b461e93ffe9d..6346821d480bd 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -5156,6 +5156,7 @@ static int r8169_mdio_register(struct rtl8169_private *tp)
+ 	new_bus->priv = tp;
+ 	new_bus->parent = &pdev->dev;
+ 	new_bus->irq[0] = PHY_MAC_INTERRUPT;
++	new_bus->phy_mask = GENMASK(31, 1);
+ 	snprintf(new_bus->id, MII_BUS_ID_SIZE, "r8169-%x-%x",
+ 		 pci_domain_nr(pdev->bus), pci_dev_id(pdev));
  
- 	netdev->watchdog_timeo    = 15 * HZ;
-+	if (mlx5_core_is_ecpf(mdev))
-+		netdev->tx_queue_len = 1 << MLX5E_REP_PARAMS_DEF_LOG_SQ_SIZE;
- 
- #if IS_ENABLED(CONFIG_MLX5_CLS_ACT)
- 	netdev->hw_features    |= NETIF_F_HW_TC;
 -- 
 2.39.5
 
