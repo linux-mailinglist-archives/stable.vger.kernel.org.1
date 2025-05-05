@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-140961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD1A1AAACC9
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:23:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51488AAAD02
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:27:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A666216CA5B
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:21:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E11E9A14B8
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:21:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E83942FFC70;
-	Mon,  5 May 2025 23:28:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EE35300299;
+	Mon,  5 May 2025 23:28:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nEZixrKL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a+MTLqcG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99213284693;
-	Mon,  5 May 2025 23:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B6B32E6866;
+	Mon,  5 May 2025 23:17:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487027; cv=none; b=DbcCijp5RsNea/ZFpXFuZpuuaiUoiKE8Vbdl+OLufpuSnFElMBtC0XJbUu8O7gmhWI5moEfSETk/X23Yl8Y/vt3+e3rXbCUO+YlV9yl5gjzHH6aAufnh8d0wykHrdEENkVMMECawY4Hk+Ch7/VrLuux6B1xf7gfz0SSEnpPSnwU=
+	t=1746487030; cv=none; b=KJfgIOjk6Ymhy4p2p7Jdrokell9Ps0m33emUiB1DwSZJuBW4mn1I7ZZEE1v5M/pVPhBqpp7k+Fu5Oa5teNQ/roSPrioUZwPPb/fZr/Aa3WLxb9oDAi9CcIj5KLYRqNBIhXY+h8uMY8XtHE+po3lPwi3QPYIod1u9fx7KnQBX96s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487027; c=relaxed/simple;
-	bh=W2RIqzMqc3RTHkG4HiBFh6YguAn8M0Nu5SSkWxbQdkY=;
+	s=arc-20240116; t=1746487030; c=relaxed/simple;
+	bh=mtJZe148ds/7SXixYCWlYPriawhd+rrZbac0kHfAhtQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=JlCWIpYW4Jd79D6IlRN1ogCE5gQLqMCCvr9UJrwKL1HA15WkYCfrQKh1fMpg6KaLaSaPH3KEaTcu32T9VFTpyl2pK2cwIPgfQwoSv1cKd7T0PhfatNvV/mChf5BmclQ7zaVALtTg4fzjV7sMw8kik52YNpyTWV09alTW69hgKZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nEZixrKL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84FF3C4CEEE;
-	Mon,  5 May 2025 23:17:05 +0000 (UTC)
+	 MIME-Version; b=uaSEokcMLTnl09KmVruEDEB7jfEDyi7onC2tyscoujBrB5C6Iv910XQ+XbEvAGhI6oXnrW150N6zEkoNTf7Yf0nIP+JWg041ISacRJppJ+HaampLR6IB06KKd9s52gJVbVsUaGgXpxu/5fLuonrr9MjZyl2QXwlGI1VRWXXieyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a+MTLqcG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9FF6C4CEE4;
+	Mon,  5 May 2025 23:17:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487026;
-	bh=W2RIqzMqc3RTHkG4HiBFh6YguAn8M0Nu5SSkWxbQdkY=;
+	s=k20201202; t=1746487029;
+	bh=mtJZe148ds/7SXixYCWlYPriawhd+rrZbac0kHfAhtQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nEZixrKLgT+f+Kptak3sdiJzFs7esKk3fVWiHHdImciFrrdvYb937Pnx6LtcEf5QP
-	 /yQNTTR8jMvuroSheI3nvx6SFuJzvsyvYV8YgXBcr7PKjF5RpsNCNZea0awNo5hdkj
-	 9zElGfbXGBFnD+7XmMrSQoYXY96UZkhv9a4qpeP9s3nEl+LT5Sm6+eL85I42zBqm9T
-	 AzKprBLXOIwI6fkirprkmzfSrxtAPAkA5BcK5Gdfg3CW8gelq/J/VW69JHjmRMvV0m
-	 xmw9QCmr4U95HsQ6xoy/sRaMpmISCfYQd92ulfuSDmVECYrGziVewwf5ktcV4P22ul
-	 yRtcbZx4XiTkg==
+	b=a+MTLqcGW5gZJqsNf8qPl+LEWJSymfu7QHCLyu+gwKGsZAkWjc6XyIpHLdi6j2JDf
+	 Nj/thGG17hHmKCBKrOF7RdQRfgVxpVsrTdbcNF2xL4lyXeXwQXvlRNV5VLP+H9abq+
+	 tSqRyScsl/oJE5aTcHRPPYAsanFaAQmt6gbRbjCUW0vKXco5JFpNxz2awmCbGo6ykr
+	 0eDgCShdYQ6yu05NMf6DM0h7mZ6V5Fw/2uWiRaQVmAcP38hS5SJ+g3FpBwhWrT3wkY
+	 3+lEXAkOGbOUH6knkgxHb393P9TMFTVmxCfmy/QdM3mjoalNNg1zBTZSwLsBmEglVR
+	 B0EQ5hY2d1qhQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Konstantin Andreev <andreev@swemel.ru>,
-	Casey Schaufler <casey@schaufler-ca.com>,
+Cc: Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>,
-	paul@paul-moore.com,
-	jmorris@namei.org,
-	serge@hallyn.com,
-	linux-security-module@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 116/153] smack: recognize ipv4 CIPSO w/o categories
-Date: Mon,  5 May 2025 19:12:43 -0400
-Message-Id: <20250505231320.2695319-116-sashal@kernel.org>
+	mchehab@kernel.org,
+	laurent.pinchart+renesas@ideasonboard.com,
+	umang.jain@ideasonboard.com,
+	prabhakar.mahadev-lad.rj@bp.renesas.com,
+	tomm.merciai@gmail.com,
+	linux-media@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 117/153] media: v4l: Memset argument to 0 before calling get_mbus_config pad op
+Date: Mon,  5 May 2025 19:12:44 -0400
+Message-Id: <20250505231320.2695319-117-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231320.2695319-1-sashal@kernel.org>
 References: <20250505231320.2695319-1-sashal@kernel.org>
@@ -68,73 +71,52 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.181
 Content-Transfer-Encoding: 8bit
 
-From: Konstantin Andreev <andreev@swemel.ru>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit a158a937d864d0034fea14913c1f09c6d5f574b8 ]
+[ Upstream commit 91d6a99acfa5ce9f95ede775074b80f7193bd717 ]
 
-If SMACK label has CIPSO representation w/o categories, e.g.:
+Memset the config argument to get_mbus_config V4L2 sub-device pad
+operation to zero before calling the operation. This ensures the callers
+don't need to bother with it nor the implementations need to set all
+fields that may not be relevant to them.
 
-| # cat /smack/cipso2
-| foo  10
-| @ 250/2
-| ...
-
-then SMACK does not recognize such CIPSO in input ipv4 packets
-and substitues '*' label instead. Audit records may look like
-
-| lsm=SMACK fn=smack_socket_sock_rcv_skb action=denied
-|   subject="*" object="_" requested=w pid=0 comm="swapper/1" ...
-
-This happens in two steps:
-
-1) security/smack/smackfs.c`smk_set_cipso
-   does not clear NETLBL_SECATTR_MLS_CAT
-   from (struct smack_known *)skp->smk_netlabel.flags
-   on assigning CIPSO w/o categories:
-
-| rcu_assign_pointer(skp->smk_netlabel.attr.mls.cat, ncats.attr.mls.cat);
-| skp->smk_netlabel.attr.mls.lvl = ncats.attr.mls.lvl;
-
-2) security/smack/smack_lsm.c`smack_from_secattr
-   can not match skp->smk_netlabel with input packet's
-   struct netlbl_lsm_secattr *sap
-   because sap->flags have not NETLBL_SECATTR_MLS_CAT (what is correct)
-   but skp->smk_netlabel.flags have (what is incorrect):
-
-| if ((sap->flags & NETLBL_SECATTR_MLS_CAT) == 0) {
-| 	if ((skp->smk_netlabel.flags &
-| 		 NETLBL_SECATTR_MLS_CAT) == 0)
-| 		found = 1;
-| 	break;
-| }
-
-This commit sets/clears NETLBL_SECATTR_MLS_CAT in
-skp->smk_netlabel.flags according to the presense of CIPSO categories.
-The update of smk_netlabel is not atomic, so input packets processing
-still may be incorrect during short time while update proceeds.
-
-Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/smack/smackfs.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/media/v4l2-core/v4l2-subdev.c | 2 ++
+ include/media/v4l2-subdev.h           | 4 +++-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/security/smack/smackfs.c b/security/smack/smackfs.c
-index f6961a8895296..0feaa29cc0243 100644
---- a/security/smack/smackfs.c
-+++ b/security/smack/smackfs.c
-@@ -921,6 +921,10 @@ static ssize_t smk_set_cipso(struct file *file, const char __user *buf,
- 	if (rc >= 0) {
- 		old_cat = skp->smk_netlabel.attr.mls.cat;
- 		rcu_assign_pointer(skp->smk_netlabel.attr.mls.cat, ncats.attr.mls.cat);
-+		if (ncats.attr.mls.cat)
-+			skp->smk_netlabel.flags |= NETLBL_SECATTR_MLS_CAT;
-+		else
-+			skp->smk_netlabel.flags &= ~(u32)NETLBL_SECATTR_MLS_CAT;
- 		skp->smk_netlabel.attr.mls.lvl = ncats.attr.mls.lvl;
- 		synchronize_rcu();
- 		netlbl_catmap_free(old_cat);
+diff --git a/drivers/media/v4l2-core/v4l2-subdev.c b/drivers/media/v4l2-core/v4l2-subdev.c
+index 5d27a27cc2f24..6f2267625c7ea 100644
+--- a/drivers/media/v4l2-core/v4l2-subdev.c
++++ b/drivers/media/v4l2-core/v4l2-subdev.c
+@@ -314,6 +314,8 @@ static int call_enum_dv_timings(struct v4l2_subdev *sd,
+ static int call_get_mbus_config(struct v4l2_subdev *sd, unsigned int pad,
+ 				struct v4l2_mbus_config *config)
+ {
++	memset(config, 0, sizeof(*config));
++
+ 	return check_pad(sd, pad) ? :
+ 	       sd->ops->pad->get_mbus_config(sd, pad, config);
+ }
+diff --git a/include/media/v4l2-subdev.h b/include/media/v4l2-subdev.h
+index 9a476f902c425..262b5e5cebc4c 100644
+--- a/include/media/v4l2-subdev.h
++++ b/include/media/v4l2-subdev.h
+@@ -714,7 +714,9 @@ struct v4l2_subdev_state {
+  *		     possible configuration from the remote end, likely calling
+  *		     this operation as close as possible to stream on time. The
+  *		     operation shall fail if the pad index it has been called on
+- *		     is not valid or in case of unrecoverable failures.
++ *		     is not valid or in case of unrecoverable failures. The
++ *		     config argument has been memset to 0 just before calling
++ *		     the op.
+  *
+  * @set_mbus_config: set the media bus configuration of a remote sub-device.
+  *		     This operations is intended to allow, in combination with
 -- 
 2.39.5
 
