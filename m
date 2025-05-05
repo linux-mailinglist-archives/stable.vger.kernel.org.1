@@ -1,62 +1,63 @@
-Return-Path: <stable+bounces-140858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79D60AAAC3A
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:12:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4554DAAAC12
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:08:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0DBA13AFC2F
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:04:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 485EA1BA1F5C
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:05:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4984C2FAEB4;
-	Mon,  5 May 2025 23:23:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 133F2321AE4;
+	Mon,  5 May 2025 23:23:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B4cIbzG0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="G2Jo3sLC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EDBE3839AD;
-	Mon,  5 May 2025 23:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 529D83839B2;
+	Mon,  5 May 2025 23:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746486591; cv=none; b=o52l7Z4V9z/S3s3YwG/ysLJ8x8/SFSuUtU6nVl70ywJVgiee5tYmjmSznnEBWR8tOqATtvuSu91t/enGhQMy6pOY5X4VrccRsJeo//HVrnkibSl0EF56iivOOLo0vAPjedQ7zyHO3RvKZj1r0dGhxxx7Be3kMxEidvZNST7aW3g=
+	t=1746486592; cv=none; b=Mh+yzFwtAmWmOALDrSQhnTgU2nbUx7moWBNcvlnWuqAmH3Pw6TKbI5vGVqr3NKWkvtg6bVSL+qiKnULncarem6P1izMu6TESNu78qBNjG/aFi/KeAm6qTB983TUaRvzRgNQ165Urfq4H+hJOxW8gNp0oHURGUXEVgBA4AmnLuBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746486591; c=relaxed/simple;
-	bh=kdgouvIuSf+MepR2cgLgP4/YpNyYF3lj0hkGQS+dlvA=;
+	s=arc-20240116; t=1746486592; c=relaxed/simple;
+	bh=Be4GReE/g1z05i5QPUuyha8uEEyp4SlEvIx2eE1o4SU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pBd+Xqsz3EBSjoPcHJ76gIcY/ZB6RjaHozSfrEkc2qlKIWEEqVYhXxm3E85oqE81bWX+UBkAx+c4OaJaNMVpu8L4lnX5ZDHkPVVRl8FQrHU1fTV6924fgQD77YXfiqbU4qyEDUnk2Fm2EO3eSwO35K03yv5lPnrCPhrdRSp3rNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B4cIbzG0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A8AEC4CEED;
-	Mon,  5 May 2025 23:09:49 +0000 (UTC)
+	 MIME-Version; b=EW841jajSB32lfpm1M8IZvr2XvC17f9of7BDxnsHU+dOxhlwSePW14wBqQVTQAPJG8H3DNRicelns3S26AcVIB6J6fCFS1ynF4c5eC4qagqPDIw+cQcjxhZDRQTpnLBSLYuPvrBm7nRbEqrTQNDcH0Xrp90YVNO0hM8c4BHZapE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=G2Jo3sLC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0A12C4CEE4;
+	Mon,  5 May 2025 23:09:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746486590;
-	bh=kdgouvIuSf+MepR2cgLgP4/YpNyYF3lj0hkGQS+dlvA=;
+	s=k20201202; t=1746486592;
+	bh=Be4GReE/g1z05i5QPUuyha8uEEyp4SlEvIx2eE1o4SU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B4cIbzG0tSTtq3iLJjIBYa2bBqtPdR/p88UEUjP1fbm3JSCNUgy3IAsPH9Vm2BBwd
-	 L/YRhuBm2Z5MXcNdd1np7f4XaPlCvQfbxrE9F1saHQk7BykjJ9y8Ftng+hAK/wU+tI
-	 EhpFyUNpSG2EVTck7g5wEUqAYXaE539nXrvjsFYTNwsmnALJVySThJTwvgIXZ2XHz+
-	 hXJUPQ1+cclodkq87Cue8TXzYqZyYOSALpzfpKM4bcQufxN8TIyaTvVBq2ucL3r42P
-	 CLiCORvfgzfc6HvWLRgBiI0uQTZ0ocTQOuCVXwWGMhLcYs0CshWk9VQoAT1ek1awT6
-	 iHaubibCcIYpQ==
+	b=G2Jo3sLCy2stjLd5AzSFvZ5zjHnG4WuhnGjKiIVV7qRmPVaAiIVDkeFhrDeO6wJIB
+	 +Wq13SMCup4WvUwXjrVmL689F+jxBDd1+5oL6DIVAIld6seJmwTQOzsteOlC6mv7gm
+	 62mCrFadG2pFZZudO6i8QSH1V03YPj5WIrC5uG28+pnKAe8P0fkJ7nRtu51k7M/7yS
+	 eHpO0OI+4fTcH814dweQOCuoENAtpuqbYOr2yhqqaSesjE/FIOIdDIwcfvhiybo77T
+	 qbS0DT0wad+UufvBy5GgnydCbjsOKUjt1lN7uJ+sXQ18QLZ9m907PMRe+CsShGx5Ev
+	 2mhxGOwRLoYEQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Li Bin <bin.li@microchip.com>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Ryan Wanner <Ryan.Wanner@microchip.com>,
-	Durai Manickam KR <durai.manickamkr@microchip.com>,
-	Andrei Simion <andrei.simion@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	CK Hu <ck.hu@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux@armlinux.org.uk,
-	alexandre.belloni@bootlin.com,
+	p.zabel@pengutronix.de,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	matthias.bgg@gmail.com,
+	dri-devel@lists.freedesktop.org,
+	linux-mediatek@lists.infradead.org,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.1 105/212] ARM: at91: pm: fix at91_suspend_finish for ZQ calibration
-Date: Mon,  5 May 2025 19:04:37 -0400
-Message-Id: <20250505230624.2692522-105-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 106/212] drm/mediatek: mtk_dpi: Add checks for reg_h_fre_con existence
+Date: Mon,  5 May 2025 19:04:38 -0400
+Message-Id: <20250505230624.2692522-106-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505230624.2692522-1-sashal@kernel.org>
 References: <20250505230624.2692522-1-sashal@kernel.org>
@@ -71,88 +72,49 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.136
 Content-Transfer-Encoding: 8bit
 
-From: Li Bin <bin.li@microchip.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit bc4722c3598d0e2c2dbf9609a3d3198993093e2b ]
+[ Upstream commit 8c9da7cd0bbcc90ab444454fecf535320456a312 ]
 
-For sama7g5 and sama7d65 backup mode, we encountered a "ZQ calibrate error"
-during recalibrating the impedance in BootStrap.
-We found that the impedance value saved in at91_suspend_finish() before
-the DDR entered self-refresh mode did not match the resistor values. The
-ZDATA field in the DDR3PHY_ZQ0CR0 register uses a modified gray code to
-select the different impedance setting.
-But these gray code are incorrect, a workaournd from design team fixed the
-bug in the calibration logic. The ZDATA contains four independent impedance
-elements, but the algorithm combined the four elements into one. The elements
-were fixed using properly shifted offsets.
+In preparation for adding support for newer DPI instances which
+do support direct-pin but do not have any H_FRE_CON register,
+like the one found in MT8195 and MT8188, add a branch to check
+if the reg_h_fre_con variable was declared in the mtk_dpi_conf
+structure for the probed SoC DPI version.
 
-Signed-off-by: Li Bin <bin.li@microchip.com>
-[nicolas.ferre@microchip.com: fix indentation and combine 2 patches]
-Signed-off-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-Tested-by: Ryan Wanner <Ryan.Wanner@microchip.com>
-Tested-by: Durai Manickam KR <durai.manickamkr@microchip.com>
-Tested-by: Andrei Simion <andrei.simion@microchip.com>
-Signed-off-by: Ryan Wanner <Ryan.Wanner@microchip.com>
-Link: https://lore.kernel.org/r/28b33f9bcd0ca60ceba032969fe054d38f2b9577.1740671156.git.Ryan.Wanner@microchip.com
-Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+As a note, this is useful specifically only for cases in which
+the support_direct_pin variable is true, so mt8195-dpintf is
+not affected by any issue.
+
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20250217154836.108895-6-angelogioacchino.delregno@collabora.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-at91/pm.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_dpi.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-at91/pm.c b/arch/arm/mach-at91/pm.c
-index 4d0d0d49a7442..77aec670f635c 100644
---- a/arch/arm/mach-at91/pm.c
-+++ b/arch/arm/mach-at91/pm.c
-@@ -537,11 +537,12 @@ extern u32 at91_pm_suspend_in_sram_sz;
+diff --git a/drivers/gpu/drm/mediatek/mtk_dpi.c b/drivers/gpu/drm/mediatek/mtk_dpi.c
+index 1fa958e8c40a1..5ad9c384046cb 100644
+--- a/drivers/gpu/drm/mediatek/mtk_dpi.c
++++ b/drivers/gpu/drm/mediatek/mtk_dpi.c
+@@ -406,12 +406,13 @@ static void mtk_dpi_config_swap_input(struct mtk_dpi *dpi, bool enable)
  
- static int at91_suspend_finish(unsigned long val)
+ static void mtk_dpi_config_2n_h_fre(struct mtk_dpi *dpi)
  {
--	unsigned char modified_gray_code[] = {
--		0x00, 0x01, 0x02, 0x03, 0x06, 0x07, 0x04, 0x05, 0x0c, 0x0d,
--		0x0e, 0x0f, 0x0a, 0x0b, 0x08, 0x09, 0x18, 0x19, 0x1a, 0x1b,
--		0x1e, 0x1f, 0x1c, 0x1d, 0x14, 0x15, 0x16, 0x17, 0x12, 0x13,
--		0x10, 0x11,
-+	/* SYNOPSYS workaround to fix a bug in the calibration logic */
-+	unsigned char modified_fix_code[] = {
-+		0x00, 0x01, 0x01, 0x06, 0x07, 0x0c, 0x06, 0x07, 0x0b, 0x18,
-+		0x0a, 0x0b, 0x0c, 0x0d, 0x0d, 0x0a, 0x13, 0x13, 0x12, 0x13,
-+		0x14, 0x15, 0x15, 0x12, 0x18, 0x19, 0x19, 0x1e, 0x1f, 0x14,
-+		0x1e, 0x1f,
- 	};
- 	unsigned int tmp, index;
- 	int i;
-@@ -552,25 +553,25 @@ static int at91_suspend_finish(unsigned long val)
- 		 * restore the ZQ0SR0 with the value saved here. But the
- 		 * calibration is buggy and restoring some values from ZQ0SR0
- 		 * is forbidden and risky thus we need to provide processed
--		 * values for these (modified gray code values).
-+		 * values for these.
- 		 */
- 		tmp = readl(soc_pm.data.ramc_phy + DDR3PHY_ZQ0SR0);
+-	mtk_dpi_mask(dpi, dpi->conf->reg_h_fre_con, H_FRE_2N, H_FRE_2N);
++	if (dpi->conf->reg_h_fre_con)
++		mtk_dpi_mask(dpi, dpi->conf->reg_h_fre_con, H_FRE_2N, H_FRE_2N);
+ }
  
- 		/* Store pull-down output impedance select. */
- 		index = (tmp >> DDR3PHY_ZQ0SR0_PDO_OFF) & 0x1f;
--		soc_pm.bu->ddr_phy_calibration[0] = modified_gray_code[index];
-+		soc_pm.bu->ddr_phy_calibration[0] = modified_fix_code[index] << DDR3PHY_ZQ0SR0_PDO_OFF;
+ static void mtk_dpi_config_disable_edge(struct mtk_dpi *dpi)
+ {
+-	if (dpi->conf->edge_sel_en)
++	if (dpi->conf->edge_sel_en && dpi->conf->reg_h_fre_con)
+ 		mtk_dpi_mask(dpi, dpi->conf->reg_h_fre_con, 0, EDGE_SEL_EN);
+ }
  
- 		/* Store pull-up output impedance select. */
- 		index = (tmp >> DDR3PHY_ZQ0SR0_PUO_OFF) & 0x1f;
--		soc_pm.bu->ddr_phy_calibration[0] |= modified_gray_code[index];
-+		soc_pm.bu->ddr_phy_calibration[0] |= modified_fix_code[index] << DDR3PHY_ZQ0SR0_PUO_OFF;
- 
- 		/* Store pull-down on-die termination impedance select. */
- 		index = (tmp >> DDR3PHY_ZQ0SR0_PDODT_OFF) & 0x1f;
--		soc_pm.bu->ddr_phy_calibration[0] |= modified_gray_code[index];
-+		soc_pm.bu->ddr_phy_calibration[0] |= modified_fix_code[index] << DDR3PHY_ZQ0SR0_PDODT_OFF;
- 
- 		/* Store pull-up on-die termination impedance select. */
- 		index = (tmp >> DDR3PHY_ZQ0SRO_PUODT_OFF) & 0x1f;
--		soc_pm.bu->ddr_phy_calibration[0] |= modified_gray_code[index];
-+		soc_pm.bu->ddr_phy_calibration[0] |= modified_fix_code[index] << DDR3PHY_ZQ0SRO_PUODT_OFF;
- 
- 		/*
- 		 * The 1st 8 words of memory might get corrupted in the process
 -- 
 2.39.5
 
