@@ -1,65 +1,61 @@
-Return-Path: <stable+bounces-141034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141035-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC8E1AAAD97
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:38:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2134AAAD77
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 04:36:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 867FE3AD93B
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:33:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E16ED4A1CA6
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:33:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CF813F1560;
-	Mon,  5 May 2025 23:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C2EA3F1563;
+	Mon,  5 May 2025 23:38:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GvHlgstg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="us2Fncd2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F6623B5B59;
-	Mon,  5 May 2025 23:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF4513B5B5F;
+	Mon,  5 May 2025 23:21:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487280; cv=none; b=oRmSKX5vCGDMq2Reb7O6VSixGNW1+ZihQNiYMomIv12KUSilZIHaqBEdFqJi2jNCntsRUZ2EalXWtzaxRWTDPcttdhNhBNCCGMfh1XEn/dzR8+gn+wCeru/51Cvzz7XgvIENT19zaFvBK/BskK6hFOiKpV9OZPUXdC27J9dn7Q8=
+	t=1746487280; cv=none; b=AfuyG0w35HxKZx+m0havpYVQDjU5Mf3YavX5i5RAvVdW9ic2O1MqqvYQJTDL+iyofZEupHlmLkDcn/j1GlLJuwkj/vKHMkuRUcBNspLqBr3ySlukWcDqHnBAnnF/qO90S/wrOC3Gz/yAa0eB6fkU6A0CMkUEaJ42tqnEhJOSmDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1746487280; c=relaxed/simple;
-	bh=V+QMDN4nBjakEPlDHbBLIwjxtAKx1PMWrpTzFFXt1k0=;
+	bh=Jx4qvGcPOrBYb8FpQiMhZO8yKo4tpF233BxSMQOtssM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=LICf9GWSWYD2KrETm8ywQVNvfdwtaCvoIcJqVQT+mBvzol0eXhX2c6Cfb0rQYtEF79JMGtnbTpPuDsrVCEOMMawUDRUHsduIbJKFTxZoOhuH5r/00noTnyG0WpyhbebimEjgnbdcR2mElanw5/JfxUF2j+v9u3KQ04QrE1d86DU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GvHlgstg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79243C4CEEE;
-	Mon,  5 May 2025 23:21:17 +0000 (UTC)
+	 MIME-Version; b=boaEv25iJKK2l6/HrwIGKdehD6BYwuR6+9F4eAnOwjFloD1vP9sSV8sr2rAI/DM6TabClcIzn+3wsb/tRGhF99uArXfNgEfcbX6ZG4Pl6Z+ioG7tyAQRgySpsie+4JWzOAKnwUZStPEy9jSDcT1+i87KVknatpFuWYSc9odlCbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=us2Fncd2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D995C4CEE4;
+	Mon,  5 May 2025 23:21:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487279;
-	bh=V+QMDN4nBjakEPlDHbBLIwjxtAKx1PMWrpTzFFXt1k0=;
+	s=k20201202; t=1746487280;
+	bh=Jx4qvGcPOrBYb8FpQiMhZO8yKo4tpF233BxSMQOtssM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GvHlgstgOoUOPsFPWV5ZjLRKprmIkWx1ofY1jRlRVYwKg70hZs6MwkUxUt9OA3yUN
-	 eY58zDwRzA2yGS8LLWOBwho2b8lWhkit0icttfqkGjst4TaYGH6AYvO/pp9Cs8M1zt
-	 FhEe3SB5/MHxqz0lyAX5YgNI0092zRGARTCoWVDxyo9iX6tX0HxYX1Cwasd58K5LrH
-	 6zcc+cxI+WxlixnC8Jk7uF6SjJLiNoRvkOoGd+5SeISMTKMVdT5iN82Pz8Gb/INfut
-	 +vVXksP2sHDkPL4i54FNoE8zbHcJPmuZVwtr2PXwJE2JH1+Xf0YbbKlFyyNvACfrdZ
-	 DLKlyRKgMVhUQ==
+	b=us2Fncd2uist1oA+6eE5/KQDi8fWhWS9TAxwVp3Ss1oxaj5f6hhPJBUO4bvIJb9EM
+	 ca6uexe+FwjYnaXJZpQ77Fv525ORC47aLTIgLx94zxSKq01AXzUgCib1uzrHomLiiV
+	 6lZiQpKU0qPS4s1rFFo41nlazAcyI+KTF5bI9OleG+YcTUgune/HNluWmpfSQSEVbR
+	 2HZkt0N5g6KlXqjnhoHisrAnCNpo5WJ0O2TDwTFXgWRn7MTA4M1rnfNax2stcrYsaC
+	 Cx6TYdwHzfvnQm+ITqcuWqAPtigP7EdztWuIWub+gr0jeJwn0v0QqIpssPpCtCwP9k
+	 8h9liUA99zMBQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: William Tu <witu@nvidia.com>,
-	Bodong Wang <bodong@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+Cc: Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Ido Schimmel <idosch@nvidia.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	andrew+netdev@lunn.ch,
 	davem@davemloft.net,
-	edumazet@google.com,
+	dsahern@kernel.org,
 	pabeni@redhat.com,
-	netdev@vger.kernel.org,
-	linux-rdma@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 095/114] net/mlx5e: reduce rep rxq depth to 256 for ECPF
-Date: Mon,  5 May 2025 19:17:58 -0400
-Message-Id: <20250505231817.2697367-95-sashal@kernel.org>
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 096/114] ip: fib_rules: Fetch net from fib_rule in fib[46]_rule_configure().
+Date: Mon,  5 May 2025 19:17:59 -0400
+Message-Id: <20250505231817.2697367-96-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505231817.2697367-1-sashal@kernel.org>
 References: <20250505231817.2697367-1-sashal@kernel.org>
@@ -74,73 +70,59 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.237
 Content-Transfer-Encoding: 8bit
 
-From: William Tu <witu@nvidia.com>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit b9cc8f9d700867aaa77aedddfea85e53d5e5d584 ]
+[ Upstream commit 5a1ccffd30a08f5a2428cd5fbb3ab03e8eb6c66d ]
 
-By experiments, a single queue representor netdev consumes kernel
-memory around 2.8MB, and 1.8MB out of the 2.8MB is due to page
-pool for the RXQ. Scaling to a thousand representors consumes 2.8GB,
-which becomes a memory pressure issue for embedded devices such as
-BlueField-2 16GB / BlueField-3 32GB memory.
+The following patch will not set skb->sk from VRF path.
 
-Since representor netdevs mostly handles miss traffic, and ideally,
-most of the traffic will be offloaded, reduce the default non-uplink
-rep netdev's RXQ default depth from 1024 to 256 if mdev is ecpf eswitch
-manager. This saves around 1MB of memory per regular RQ,
-(1024 - 256) * 2KB, allocated from page pool.
+Let's fetch net from fib_rule->fr_net instead of sock_net(skb->sk)
+in fib[46]_rule_configure().
 
-With rxq depth of 256, the netlink page pool tool reports
-$./tools/net/ynl/cli.py --spec Documentation/netlink/specs/netdev.yaml \
-	 --dump page-pool-get
- {'id': 277,
-  'ifindex': 9,
-  'inflight': 128,
-  'inflight-mem': 786432,
-  'napi-id': 775}]
-
-This is due to mtu 1500 + headroom consumes half pages, so 256 rxq
-entries consumes around 128 pages (thus create a page pool with
-size 128), shown above at inflight.
-
-Note that each netdev has multiple types of RQs, including
-Regular RQ, XSK, PTP, Drop, Trap RQ. Since non-uplink representor
-only supports regular rq, this patch only changes the regular RQ's
-default depth.
-
-Signed-off-by: William Tu <witu@nvidia.com>
-Reviewed-by: Bodong Wang <bodong@nvidia.com>
-Reviewed-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Link: https://patch.msgid.link/20250209101716.112774-8-tariqt@nvidia.com
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Tested-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20250207072502.87775-5-kuniyu@amazon.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_rep.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/ipv4/fib_rules.c  | 4 ++--
+ net/ipv6/fib6_rules.c | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-index 8eb7288f820a4..2fb1fe9a8eee1 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_rep.c
-@@ -53,6 +53,7 @@
- #define MLX5E_REP_PARAMS_DEF_LOG_SQ_SIZE \
-         max(0x7, MLX5E_PARAMS_MINIMUM_LOG_SQ_SIZE)
- #define MLX5E_REP_PARAMS_DEF_NUM_CHANNELS 1
-+#define MLX5E_REP_PARAMS_DEF_LOG_RQ_SIZE 0x8
+diff --git a/net/ipv4/fib_rules.c b/net/ipv4/fib_rules.c
+index d279cb8ac1584..a270951386e19 100644
+--- a/net/ipv4/fib_rules.c
++++ b/net/ipv4/fib_rules.c
+@@ -226,9 +226,9 @@ static int fib4_rule_configure(struct fib_rule *rule, struct sk_buff *skb,
+ 			       struct nlattr **tb,
+ 			       struct netlink_ext_ack *extack)
+ {
+-	struct net *net = sock_net(skb->sk);
++	struct fib4_rule *rule4 = (struct fib4_rule *)rule;
++	struct net *net = rule->fr_net;
+ 	int err = -EINVAL;
+-	struct fib4_rule *rule4 = (struct fib4_rule *) rule;
  
- static const char mlx5e_rep_driver_name[] = "mlx5e_rep";
+ 	if (frh->tos & ~IPTOS_TOS_MASK) {
+ 		NL_SET_ERR_MSG(extack, "Invalid tos");
+diff --git a/net/ipv6/fib6_rules.c b/net/ipv6/fib6_rules.c
+index cf9a44fb8243d..0d4e82744921f 100644
+--- a/net/ipv6/fib6_rules.c
++++ b/net/ipv6/fib6_rules.c
+@@ -353,9 +353,9 @@ static int fib6_rule_configure(struct fib_rule *rule, struct sk_buff *skb,
+ 			       struct nlattr **tb,
+ 			       struct netlink_ext_ack *extack)
+ {
++	struct fib6_rule *rule6 = (struct fib6_rule *)rule;
++	struct net *net = rule->fr_net;
+ 	int err = -EINVAL;
+-	struct net *net = sock_net(skb->sk);
+-	struct fib6_rule *rule6 = (struct fib6_rule *) rule;
  
-@@ -702,6 +703,8 @@ static void mlx5e_build_rep_params(struct net_device *netdev)
- 
- 	/* RQ */
- 	mlx5e_build_rq_params(mdev, params);
-+	if (!mlx5e_is_uplink_rep(priv) && mlx5_core_is_ecpf(mdev))
-+		params->log_rq_mtu_frames = MLX5E_REP_PARAMS_DEF_LOG_RQ_SIZE;
- 
- 	/* CQ moderation params */
- 	params->rx_dim_enabled = MLX5_CAP_GEN(mdev, cq_moderation);
+ 	if (rule->action == FR_ACT_TO_TBL && !rule->l3mdev) {
+ 		if (rule->table == RT6_TABLE_UNSPEC) {
 -- 
 2.39.5
 
