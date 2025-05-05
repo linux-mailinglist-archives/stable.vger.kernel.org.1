@@ -1,63 +1,55 @@
-Return-Path: <stable+bounces-141062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E724FAAB085
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:39:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5A70AAB081
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 05:39:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6093A3A2C22
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:35:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB69D3A5D53
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 03:35:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BFB330CC09;
-	Mon,  5 May 2025 23:42:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 005D43F6CCF;
+	Mon,  5 May 2025 23:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CWib3jlR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="plw+gtMj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F27F3BB681;
-	Mon,  5 May 2025 23:22:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAD053BB6B6;
+	Mon,  5 May 2025 23:22:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487355; cv=none; b=rFZqYBIk407A7dg5V9DlSKDOkC/TYlXBp/OLcEgINJe1bI++WkLQPXZ6RPMwdDjquw8kB925y3O+T/0EPzlXhE3gsRvt7aYGO923QJjh9+1fwW9TgI/hKxR9mGwMDAawQyRUlJLKFExBWIAeo8q8/MZvtZvRzkx4q+vmCPj2TMQ=
+	t=1746487359; cv=none; b=o+IqpOQf5mcN/C05Oh8yHYyRQ3QHIEfsSSiz6ulpEaKTsyis7Kik36Feke2n/6io2r8uxGoLGPTPtnxSn6lTg2V+KjNCmH2ZI00NPhwTOdPJGyKoawnDPtRsluvF160vCXz7I6gyyHfT3K6qoWUv7785WADLQ67fRLMpjkM/OJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487355; c=relaxed/simple;
-	bh=33fKuR8xSXXrYYpGa+BSRpBI1AmNXITApsh+Wb6LxWI=;
+	s=arc-20240116; t=1746487359; c=relaxed/simple;
+	bh=qnEKhE/uU6APP+KlY0+51pC2imB0DVcSaADx09MWxiA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=HsSjveUZ32yspzLN5j2UN0xCxyjmsPqlwxsxPYayXcIn03XgBuUwamKcvn8yE3CS0CD87rxzUMu7EkM+VF4OZSMUzJab7N8fNhk2DXomtw4eE/I69KLXPjIqs9jYDeGlHIRhHnTWwqtvq9FDGwstA4dg3k2oTp3XIkM39IJTaI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CWib3jlR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87B68C4CEF2;
-	Mon,  5 May 2025 23:22:32 +0000 (UTC)
+	 MIME-Version; b=ZrcoIPA6zk3/LJzeqnMH8EYqfNXBz7PL2U0Au3yzTW6rsk57LjiF2kpJP7ucQegiqsJPlmJJ9w/QlD75BHq/lFBM/hJa2Rq8n1zurjG0StdcDkc3EUH+VhOcSLTar+EPOvmoqHbLMnw0YOPkTFyaj69LJ2GtVT03AndtGAkp/eI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=plw+gtMj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 036BEC4CEED;
+	Mon,  5 May 2025 23:22:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487354;
-	bh=33fKuR8xSXXrYYpGa+BSRpBI1AmNXITApsh+Wb6LxWI=;
+	s=k20201202; t=1746487358;
+	bh=qnEKhE/uU6APP+KlY0+51pC2imB0DVcSaADx09MWxiA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CWib3jlRTj8QtOwbPvpLNmL+yBmN+XTpLkFZNCP9nBMn2V0vNdso5e65bM3wEacrR
-	 177ssZdoXLxDgXCtWuFrASIld4TFaRF9UmK8TRXj9otveIl1w5pE8dhvdXZLsGdvrG
-	 4Lr6Rp8yZZwxVo66uLCebUrf9c81ahlDz/dYWRgkHW9RnSbs221yCNcMHD0vrZc80/
-	 vsqhVNQXW5lin+WCHiaCYyV9UFGTlm16PuS057lLCuwcOOVO/t6yDBh4Iwt3keU/jz
-	 3B5YLSBJorixAS9pF9UwraDbO0in76792tRvNbjXMff+OjJA0GBYFlzGdC5TVq7KIQ
-	 usR2uXxV/hTJQ==
+	b=plw+gtMjMEaQhpfEu8m2NNjOWEoBOtYqzIRHCzlvs5F41WYws7E9DzHxMmgnzAdVU
+	 Y80dFaQfLO0TlPxAyd45EqhumdXrdZ6SBnbKIk32ImSjDuU5MwTQLg4Y0fS3B1Tb/n
+	 cztr/C2skmyHRaj+1s7xwTVQsjd7iI8qen6hykLM8D+9T2/Zwd+7nQ/dXrFUIa49/Y
+	 y7PmBVSpSjjZMXmpGDujqZmhPSf8I5W2Hi9PUMnCGuOH+wwfY3POUGcpZF9zsfkVzb
+	 or5iiaeQCfT1vMZffMDUgLt4Khr4EtmJtmVcxX6Sgcr5jGTN14E5F3DAM2Q/mqBiTG
+	 rGazd9c2bjwRA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>,
-	kadlec@netfilter.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 25/79] netfilter: conntrack: Bound nf_conntrack sysctl writes
-Date: Mon,  5 May 2025 19:20:57 -0400
-Message-Id: <20250505232151.2698893-25-sashal@kernel.org>
+	linux-rtc@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 28/79] rtc: ds1307: stop disabling alarms on probe
+Date: Mon,  5 May 2025 19:21:00 -0400
+Message-Id: <20250505232151.2698893-28-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505232151.2698893-1-sashal@kernel.org>
 References: <20250505232151.2698893-1-sashal@kernel.org>
@@ -72,83 +64,36 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.4.293
 Content-Transfer-Encoding: 8bit
 
-From: Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>
+From: Alexandre Belloni <alexandre.belloni@bootlin.com>
 
-[ Upstream commit 8b6861390ffee6b8ed78b9395e3776c16fec6579 ]
+[ Upstream commit dcec12617ee61beed928e889607bf37e145bf86b ]
 
-nf_conntrack_max and nf_conntrack_expect_max sysctls were authorized to
-be written any negative value, which would then be stored in the
-unsigned int variables nf_conntrack_max and nf_ct_expect_max variables.
+It is a bad practice to disable alarms on probe or remove as this will
+prevent alarms across reboots.
 
-While the do_proc_dointvec_conv function is supposed to limit writing
-handled by proc_dointvec proc_handler to INT_MAX. Such a negative value
-being written in an unsigned int leads to a very high value, exceeding
-this limit.
-
-Moreover, the nf_conntrack_expect_max sysctl documentation specifies the
-minimum value is 1.
-
-The proc_handlers have thus been updated to proc_dointvec_minmax in
-order to specify the following write bounds :
-
-* Bound nf_conntrack_max sysctl writings between SYSCTL_ZERO
-  and SYSCTL_INT_MAX.
-
-* Bound nf_conntrack_expect_max sysctl writings between SYSCTL_ONE
-  and SYSCTL_INT_MAX as defined in the sysctl documentation.
-
-With this patch applied, sysctl writes outside the defined in the bound
-will thus lead to a write error :
-
-```
-sysctl -w net.netfilter.nf_conntrack_expect_max=-1
-sysctl: setting key "net.netfilter.nf_conntrack_expect_max": Invalid argument
-```
-
-Signed-off-by: Nicolas Bouchinet <nicolas.bouchinet@ssi.gouv.fr>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Link: https://lore.kernel.org/r/20250303223744.1135672-1-alexandre.belloni@bootlin.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conntrack_standalone.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/rtc/rtc-ds1307.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/net/netfilter/nf_conntrack_standalone.c b/net/netfilter/nf_conntrack_standalone.c
-index 1e3dbed9d7840..de330dffa0a28 100644
---- a/net/netfilter/nf_conntrack_standalone.c
-+++ b/net/netfilter/nf_conntrack_standalone.c
-@@ -608,7 +608,9 @@ static struct ctl_table nf_ct_sysctl_table[] = {
- 		.data		= &nf_conntrack_max,
- 		.maxlen		= sizeof(int),
- 		.mode		= 0644,
--		.proc_handler	= proc_dointvec,
-+		.proc_handler	= proc_dointvec_minmax,
-+		.extra1		= SYSCTL_ZERO,
-+		.extra2		= SYSCTL_INT_MAX,
- 	},
- 	[NF_SYSCTL_CT_COUNT] = {
- 		.procname	= "nf_conntrack_count",
-@@ -647,7 +649,9 @@ static struct ctl_table nf_ct_sysctl_table[] = {
- 		.data		= &nf_ct_expect_max,
- 		.maxlen		= sizeof(int),
- 		.mode		= 0644,
--		.proc_handler	= proc_dointvec,
-+		.proc_handler	= proc_dointvec_minmax,
-+		.extra1		= SYSCTL_ONE,
-+		.extra2		= SYSCTL_INT_MAX,
- 	},
- 	[NF_SYSCTL_CT_ACCT] = {
- 		.procname	= "nf_conntrack_acct",
-@@ -926,7 +930,9 @@ static struct ctl_table nf_ct_netfilter_table[] = {
- 		.data		= &nf_conntrack_max,
- 		.maxlen		= sizeof(int),
- 		.mode		= 0644,
--		.proc_handler	= proc_dointvec,
-+		.proc_handler	= proc_dointvec_minmax,
-+		.extra1		= SYSCTL_ZERO,
-+		.extra2		= SYSCTL_INT_MAX,
- 	},
- 	{ }
- };
+diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
+index 99b93f56a2d50..40532a36ae67c 100644
+--- a/drivers/rtc/rtc-ds1307.c
++++ b/drivers/rtc/rtc-ds1307.c
+@@ -1680,10 +1680,8 @@ static int ds1307_probe(struct i2c_client *client,
+ 		 * For some variants, be sure alarms can trigger when we're
+ 		 * running on Vbackup (BBSQI/BBSQW)
+ 		 */
+-		if (want_irq || ds1307_can_wakeup_device) {
++		if (want_irq || ds1307_can_wakeup_device)
+ 			regs[0] |= DS1337_BIT_INTCN | chip->bbsqi_bit;
+-			regs[0] &= ~(DS1337_BIT_A2IE | DS1337_BIT_A1IE);
+-		}
+ 
+ 		regmap_write(ds1307->regmap, DS1337_REG_CONTROL,
+ 			     regs[0]);
 -- 
 2.39.5
 
