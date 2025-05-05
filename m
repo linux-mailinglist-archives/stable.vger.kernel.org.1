@@ -1,68 +1,63 @@
-Return-Path: <stable+bounces-140260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-140261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E03AAAA6B8
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:19:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A093AAA6BD
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 02:19:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 219B4189B22C
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:17:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA58C1885596
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 00:18:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EA9D297112;
-	Mon,  5 May 2025 22:35:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47ABE29713C;
+	Mon,  5 May 2025 22:35:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cHljladf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s0TT+32z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F742297109;
-	Mon,  5 May 2025 22:35:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6D2929711C;
+	Mon,  5 May 2025 22:35:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746484520; cv=none; b=Q1P3M/jIy92bkAIlfUrwYM0TNdyQlDr/L+z3ou7jTAoyMzlOflUeRiD2exoxuWdLdkHAvqxKgIpVBhhIdRjIH01RXrGJrq1NV3vKou4eKxfJZYyvuYM+QeFCPmoSoMk6odnQoRTfjpc3H3BNNCrJlHsDlEG5JqKmAm26QvWEZxI=
+	t=1746484523; cv=none; b=qily6+AFg1H8Gkf/kppA8dCn/vb3PdwTqvAS1QpTbz/KzFOK3Pj+YJ1aCXMu8rsEdCI8+Ynh6fvv7MerX2ZNUZl3xBMlOxNZ7jikNiFg2E2SgPRp/nB3QzuwYq0C01neO+PPKymcE/qYg25isZ50jy/hT0s6RIE8b6FqfW7oaL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746484520; c=relaxed/simple;
-	bh=efAAsusLpliVA+wnEyoY/khXhi125dU5XM0uCV+wq7k=;
+	s=arc-20240116; t=1746484523; c=relaxed/simple;
+	bh=U1ridXpLRTNZDBkHjEBPQb0jeOdaoyd2hB9o89KazIU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=i2TLkpweIl/LUhBuvjHj3xvNdEbNMik/y32n1NWiZfXjdvHKepUV2a37m9Q4apXs6s13he8ZpzV2d1fBc2EUC6SlxLC5l3y1XBU038KselIJIF6cKnvHIn5DjeHYJDf+E90UH4WxfwoqW7kDPAcCubYNu/3rpKtnnPOFV3mtelU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cHljladf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33C9FC4CEE4;
-	Mon,  5 May 2025 22:35:18 +0000 (UTC)
+	 MIME-Version; b=X2SIX+bhQm1e89tt2MOgypQEtqoAVAMLAnkfAR+HIUULEryhconH/M6UEcNX8dYmU9e/wh0ZXC19EZGLfd1w2k4WZr9F7RGNxgVRl2JO8SvfjZuJI7nLu1d8vfsm+Ekufc7As5F3Cr73yTxMtsA1S+axBwJClrxQtrVr7helc+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s0TT+32z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10FB2C4CEE4;
+	Mon,  5 May 2025 22:35:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746484520;
-	bh=efAAsusLpliVA+wnEyoY/khXhi125dU5XM0uCV+wq7k=;
+	s=k20201202; t=1746484522;
+	bh=U1ridXpLRTNZDBkHjEBPQb0jeOdaoyd2hB9o89KazIU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cHljladfDZcuZAG1y5W0NXqyJ9Q1NMXbKek4Q18EF9/sp8zk1kb6/DsL+lkLgz+Ne
-	 AVF9IOP/hNR6YnphSKixfYdIqA2OkyX1hdWb85D4WqCreVKBxifNIttzQVxCaFfb4m
-	 O6WcW6Kmxmy63I3oZCr9jbNwfkWQlE/uIM5RGdx7T9iW9pxLUtaTsbs44SrXzbDSYJ
-	 fLWyKqSZm5WR01NhSvIBLJ0YPTVbE0yEAJJwRnxdVyQWtzHwMEE55qX9mL33yIDOJU
-	 ZqUOHiBiDasGphijMVAaDWJMLXMbz/LaakwnnSewYybgCztoVAQ4ouyMblC4Xp5UOQ
-	 lG2ofpuvPhy6w==
+	b=s0TT+32zlz1R2JM7KPrCKI6GaQ6BcxgRVs2L6IbhDV8bdn/jbiHnt5wGacE8sVF2d
+	 KzVTXqR3DZeAzd+6w3U3ObF62vd4MXl6hghkxB/plhvQc3pskc8xDWmNpS8Gx3SDt8
+	 47EAoJmwlQ5BS8LTdh2NXQ9ngmeOaBDK5SMsY6hoGpOxWAO5cKy4/EY2HZ/lvOeIN0
+	 M1dXSsqPqsa5oxXOkGsTw1Qgs23a8Qorp71SM+OkWd0Gw9IPQ6zIy7owzjrk7zHuXs
+	 ela3E9XJXcbj8tGrS1wQDwTecxQsH4gGHUkn4XeoIAAvrYqCOgdrn9L5ddslpG4rLY
+	 jdry83iCYoSMQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Aleksander Jan Bajkowski <olek2@wp.pl>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Dave Martin <Dave.Martin@arm.com>,
+	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	gregkh@linuxfoundation.org,
-	hayeswang@realtek.com,
-	horms@kernel.org,
-	dianders@chromium.org,
-	gmazyland@gmail.com,
-	ste3ls@gmail.com,
-	phahn-oss@avm.de,
-	linux-usb@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 512/642] r8152: add vendor/device ID pair for Dell Alienware AW1022z
-Date: Mon,  5 May 2025 18:12:08 -0400
-Message-Id: <20250505221419.2672473-512-sashal@kernel.org>
+	gor@linux.ibm.com,
+	agordeev@linux.ibm.com,
+	david@redhat.com,
+	zaslonko@linux.ibm.com,
+	guoweikang.kernel@gmail.com,
+	linux-s390@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 513/642] s390/crash: Use note name macros
+Date: Mon,  5 May 2025 18:12:09 -0400
+Message-Id: <20250505221419.2672473-513-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250505221419.2672473-1-sashal@kernel.org>
 References: <20250505221419.2672473-1-sashal@kernel.org>
@@ -77,48 +72,139 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
 
-From: Aleksander Jan Bajkowski <olek2@wp.pl>
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
 
-[ Upstream commit 848b09d53d923b4caee5491f57a5c5b22d81febc ]
+[ Upstream commit d4a760fb77fdac07efa3da4fa4a18f49f178d048 ]
 
-The Dell AW1022z is an RTL8156B based 2.5G Ethernet controller.
+Use note name macros to match with the userspace's expectation.
 
-Add the vendor and product ID values to the driver. This makes Ethernet
-work with the adapter.
-
-Signed-off-by: Aleksander Jan Bajkowski <olek2@wp.pl>
-Link: https://patch.msgid.link/20250206224033.980115-1-olek2@wp.pl
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
+Reviewed-by: Dave Martin <Dave.Martin@arm.com>
+Link: https://lore.kernel.org/r/20250115-elf-v5-5-0f9e55bbb2fc@daynix.com
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/r8152.c   | 1 +
- include/linux/usb/r8152.h | 1 +
- 2 files changed, 2 insertions(+)
+ arch/s390/kernel/crash_dump.c | 62 +++++++++++++----------------------
+ 1 file changed, 23 insertions(+), 39 deletions(-)
 
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index 96fa3857d8e25..2cab046749a92 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -10085,6 +10085,7 @@ static const struct usb_device_id rtl8152_table[] = {
- 	{ USB_DEVICE(VENDOR_ID_NVIDIA,  0x09ff) },
- 	{ USB_DEVICE(VENDOR_ID_TPLINK,  0x0601) },
- 	{ USB_DEVICE(VENDOR_ID_DLINK,   0xb301) },
-+	{ USB_DEVICE(VENDOR_ID_DELL,    0xb097) },
- 	{ USB_DEVICE(VENDOR_ID_ASUS,    0x1976) },
- 	{}
- };
-diff --git a/include/linux/usb/r8152.h b/include/linux/usb/r8152.h
-index 33a4c146dc19c..2ca60828f28bb 100644
---- a/include/linux/usb/r8152.h
-+++ b/include/linux/usb/r8152.h
-@@ -30,6 +30,7 @@
- #define VENDOR_ID_NVIDIA		0x0955
- #define VENDOR_ID_TPLINK		0x2357
- #define VENDOR_ID_DLINK			0x2001
-+#define VENDOR_ID_DELL			0x413c
- #define VENDOR_ID_ASUS			0x0b05
+diff --git a/arch/s390/kernel/crash_dump.c b/arch/s390/kernel/crash_dump.c
+index 276cb4c1e11be..4a981266b4833 100644
+--- a/arch/s390/kernel/crash_dump.c
++++ b/arch/s390/kernel/crash_dump.c
+@@ -246,15 +246,6 @@ bool is_kdump_kernel(void)
+ }
+ EXPORT_SYMBOL_GPL(is_kdump_kernel);
  
- #if IS_REACHABLE(CONFIG_USB_RTL8152)
+-static const char *nt_name(Elf64_Word type)
+-{
+-	const char *name = "LINUX";
+-
+-	if (type == NT_PRPSINFO || type == NT_PRSTATUS || type == NT_PRFPREG)
+-		name = KEXEC_CORE_NOTE_NAME;
+-	return name;
+-}
+-
+ /*
+  * Initialize ELF note
+  */
+@@ -279,10 +270,8 @@ static void *nt_init_name(void *buf, Elf64_Word type, void *desc, int d_len,
+ 	return PTR_ADD(buf, len);
+ }
+ 
+-static inline void *nt_init(void *buf, Elf64_Word type, void *desc, int d_len)
+-{
+-	return nt_init_name(buf, type, desc, d_len, nt_name(type));
+-}
++#define nt_init(buf, type, desc) \
++	nt_init_name(buf, NT_ ## type, &(desc), sizeof(desc), NN_ ## type)
+ 
+ /*
+  * Calculate the size of ELF note
+@@ -298,10 +287,7 @@ static size_t nt_size_name(int d_len, const char *name)
+ 	return size;
+ }
+ 
+-static inline size_t nt_size(Elf64_Word type, int d_len)
+-{
+-	return nt_size_name(d_len, nt_name(type));
+-}
++#define nt_size(type, desc) nt_size_name(sizeof(desc), NN_ ## type)
+ 
+ /*
+  * Fill ELF notes for one CPU with save area registers
+@@ -322,18 +308,16 @@ static void *fill_cpu_elf_notes(void *ptr, int cpu, struct save_area *sa)
+ 	memcpy(&nt_fpregset.fpc, &sa->fpc, sizeof(sa->fpc));
+ 	memcpy(&nt_fpregset.fprs, &sa->fprs, sizeof(sa->fprs));
+ 	/* Create ELF notes for the CPU */
+-	ptr = nt_init(ptr, NT_PRSTATUS, &nt_prstatus, sizeof(nt_prstatus));
+-	ptr = nt_init(ptr, NT_PRFPREG, &nt_fpregset, sizeof(nt_fpregset));
+-	ptr = nt_init(ptr, NT_S390_TIMER, &sa->timer, sizeof(sa->timer));
+-	ptr = nt_init(ptr, NT_S390_TODCMP, &sa->todcmp, sizeof(sa->todcmp));
+-	ptr = nt_init(ptr, NT_S390_TODPREG, &sa->todpreg, sizeof(sa->todpreg));
+-	ptr = nt_init(ptr, NT_S390_CTRS, &sa->ctrs, sizeof(sa->ctrs));
+-	ptr = nt_init(ptr, NT_S390_PREFIX, &sa->prefix, sizeof(sa->prefix));
++	ptr = nt_init(ptr, PRSTATUS, nt_prstatus);
++	ptr = nt_init(ptr, PRFPREG, nt_fpregset);
++	ptr = nt_init(ptr, S390_TIMER, sa->timer);
++	ptr = nt_init(ptr, S390_TODCMP, sa->todcmp);
++	ptr = nt_init(ptr, S390_TODPREG, sa->todpreg);
++	ptr = nt_init(ptr, S390_CTRS, sa->ctrs);
++	ptr = nt_init(ptr, S390_PREFIX, sa->prefix);
+ 	if (cpu_has_vx()) {
+-		ptr = nt_init(ptr, NT_S390_VXRS_HIGH,
+-			      &sa->vxrs_high, sizeof(sa->vxrs_high));
+-		ptr = nt_init(ptr, NT_S390_VXRS_LOW,
+-			      &sa->vxrs_low, sizeof(sa->vxrs_low));
++		ptr = nt_init(ptr, S390_VXRS_HIGH, sa->vxrs_high);
++		ptr = nt_init(ptr, S390_VXRS_LOW, sa->vxrs_low);
+ 	}
+ 	return ptr;
+ }
+@@ -346,16 +330,16 @@ static size_t get_cpu_elf_notes_size(void)
+ 	struct save_area *sa = NULL;
+ 	size_t size;
+ 
+-	size =	nt_size(NT_PRSTATUS, sizeof(struct elf_prstatus));
+-	size +=  nt_size(NT_PRFPREG, sizeof(elf_fpregset_t));
+-	size +=  nt_size(NT_S390_TIMER, sizeof(sa->timer));
+-	size +=  nt_size(NT_S390_TODCMP, sizeof(sa->todcmp));
+-	size +=  nt_size(NT_S390_TODPREG, sizeof(sa->todpreg));
+-	size +=  nt_size(NT_S390_CTRS, sizeof(sa->ctrs));
+-	size +=  nt_size(NT_S390_PREFIX, sizeof(sa->prefix));
++	size =	nt_size(PRSTATUS, struct elf_prstatus);
++	size += nt_size(PRFPREG, elf_fpregset_t);
++	size += nt_size(S390_TIMER, sa->timer);
++	size += nt_size(S390_TODCMP, sa->todcmp);
++	size += nt_size(S390_TODPREG, sa->todpreg);
++	size += nt_size(S390_CTRS, sa->ctrs);
++	size += nt_size(S390_PREFIX, sa->prefix);
+ 	if (cpu_has_vx()) {
+-		size += nt_size(NT_S390_VXRS_HIGH, sizeof(sa->vxrs_high));
+-		size += nt_size(NT_S390_VXRS_LOW, sizeof(sa->vxrs_low));
++		size += nt_size(S390_VXRS_HIGH, sa->vxrs_high);
++		size += nt_size(S390_VXRS_LOW, sa->vxrs_low);
+ 	}
+ 
+ 	return size;
+@@ -371,7 +355,7 @@ static void *nt_prpsinfo(void *ptr)
+ 	memset(&prpsinfo, 0, sizeof(prpsinfo));
+ 	prpsinfo.pr_sname = 'R';
+ 	strcpy(prpsinfo.pr_fname, "vmlinux");
+-	return nt_init(ptr, NT_PRPSINFO, &prpsinfo, sizeof(prpsinfo));
++	return nt_init(ptr, PRPSINFO, prpsinfo);
+ }
+ 
+ /*
+@@ -610,7 +594,7 @@ static size_t get_elfcorehdr_size(int phdr_count)
+ 	/* PT_NOTES */
+ 	size += sizeof(Elf64_Phdr);
+ 	/* nt_prpsinfo */
+-	size += nt_size(NT_PRPSINFO, sizeof(struct elf_prpsinfo));
++	size += nt_size(PRPSINFO, struct elf_prpsinfo);
+ 	/* regsets */
+ 	size += get_cpu_cnt() * get_cpu_elf_notes_size();
+ 	/* nt_vmcoreinfo */
 -- 
 2.39.5
 
