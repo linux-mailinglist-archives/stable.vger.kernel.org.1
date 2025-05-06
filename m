@@ -1,63 +1,38 @@
-Return-Path: <stable+bounces-141847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E953CAACAAD
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 18:15:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F0E4AACB0D
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 18:33:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09A311C42FDD
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 16:15:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D06C718921D2
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 16:32:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C20B02528EF;
-	Tue,  6 May 2025 16:15:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="NbQlOyCH"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47D3F284B5B;
+	Tue,  6 May 2025 16:31:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from 003.mia.mailroute.net (003.mia.mailroute.net [199.89.3.6])
+Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D1101863E;
-	Tue,  6 May 2025 16:15:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.3.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AA7F284B3B;
+	Tue,  6 May 2025 16:31:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746548135; cv=none; b=A1yr8XuepL+429V5ztgjZIP3QlFXMpvcfXF4ji95A990bpxmbmG6TbbrAMMjOMY5wpM4aKzyN5+4neK4qFbHNKMmZeyt/K9xNBWGW0bGaT/EKFHN/SjR+AGswd+OXcbIEMei9qVNHoQ4LiLSoY20Hc/IAzZlIba4vZ85sGZD98Y=
+	t=1746549112; cv=none; b=PIPOdoHJ1Sk43UZOYbRp6b2+MUUH03AhbnPqLCViKuNRKDunYBRUlCXN6yrk3/edSSZ6tqplNoNCSRGHetQ7zLJLVTh4NwAZKsICAn6u41Cjr0k8+ykksR2axbYBbb5EEjltn31+7LG8I9Qs17tNtofpOPBqUkyQp4ZvFSaBHzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746548135; c=relaxed/simple;
-	bh=IMwNfLGm9juQH4lPnt2AR3LxjJ4sPAsvNvdRxYIrgLk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=B1/njVZc2KUv7yhtTqS9JQg0U4gOMAaJAOvwFlgFkYasGlTkkKsZfiYfnqrVi+EmiJZ2opyrWUXbvIP0fgr+KAq3mY0ifY1FcYK2njgDs2BniuPYmghW7slyaya125NRMB29nxew/uxZQO5vYFmk0g9cNA6673ke1yzC+Qt3z/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=NbQlOyCH; arc=none smtp.client-ip=199.89.3.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 003.mia.mailroute.net (Postfix) with ESMTP id 4ZsNlw5NBWzlvBXp;
-	Tue,  6 May 2025 16:15:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1746548120; x=1749140121; bh=oEjLAJ5MJCR9DXyM0kDJC2DJ
-	T9WpoekiwyCg7+L54VM=; b=NbQlOyCH1zKMZNJ2xEg57lzteu1dW07WpzdiUOgP
-	CtxlrnVRj8P3LL4VXMP9JXD5JSu/uw84jetEEm1EJFWtZPslsdNRa7TNWlUvb9Dl
-	CQ9OB7m72raomLLBa37CxkTl0NttuVArdb+VBqZmdMTKMMXTyzmslD1i49ox0yTE
-	0PCFtKhL2YwWvRWYiD680Gjq03CCiIlovHObuOA4PoWQSQjT0YFKqCHWRslyIw9f
-	NyX9Ai7KO7MxT9H9BeQYfc3O5dnjdMoo8yxUnEmQpGYrlHkFCq2GxpvCKnfvx+Oy
-	hgHNDhBsxLT1kgnpIHBhw/4wlE/HHwxjQ+6qlnHIIyT8Ow==
-X-Virus-Scanned: by MailRoute
-Received: from 003.mia.mailroute.net ([127.0.0.1])
- by localhost (003.mia [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id LiH4KEfXhywU; Tue,  6 May 2025 16:15:20 +0000 (UTC)
-Received: from [100.66.154.22] (unknown [104.135.204.82])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 003.mia.mailroute.net (Postfix) with ESMTPSA id 4ZsNlX3lBgzlvBXV;
-	Tue,  6 May 2025 16:15:03 +0000 (UTC)
-Message-ID: <04fc1549-0fa6-4956-b522-df5fbc26100c@acm.org>
-Date: Tue, 6 May 2025 09:15:02 -0700
+	s=arc-20240116; t=1746549112; c=relaxed/simple;
+	bh=PHoTVTfZ1ZEwEICE2WqavS02UFhuhVT/TKmdSzWLQiM=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=MsAgpv9+Tvv+tFy+ijxplfP/MRnIv4aCfS+ptoFg3nD8eQsSQYCd4eKi2lk9iCWkiOrTK7f+0L2rtAe+n8baVvsM9GMpmX/bHWVORsGsX6bXrIWTBWoG+jWUfxVZEEZjXCNd57MvBN+Pf7Ue5+ccWDKNFV1sD8uHD0d7xMiqWkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr; spf=pass smtp.mailfrom=ghiti.fr; arc=none smtp.client-ip=217.70.183.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ghiti.fr
+Received: by mail.gandi.net (Postfix) with ESMTPSA id CFBBB43B1A;
+	Tue,  6 May 2025 16:31:42 +0000 (UTC)
+Message-ID: <570ce61a-00ca-446f-ae89-7ab7c340828f@ghiti.fr>
+Date: Tue, 6 May 2025 18:31:41 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,59 +40,97 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] ufs: core: fix hwq_id type and value
-To: peter.wang@mediatek.com, linux-scsi@vger.kernel.org,
- martin.petersen@oracle.com, avri.altman@wdc.com, alim.akhtar@samsung.com,
- jejb@linux.ibm.com
-Cc: wsd_upstream@mediatek.com, linux-mediatek@lists.infradead.org,
- chun-hung.wu@mediatek.com, alice.chao@mediatek.com, cc.chou@mediatek.com,
- chaotian.jing@mediatek.com, jiajie.hao@mediatek.com,
- yi-fan.peng@mediatek.com, qilin.tan@mediatek.com, lin.gui@mediatek.com,
- tun-yu.yu@mediatek.com, eddie.huang@mediatek.com, naomi.chu@mediatek.com,
- ed.tsai@mediatek.com, quic_ziqichen@quicinc.com, stable@vger.kernel.org
-References: <20250506124038.4071609-1-peter.wang@mediatek.com>
+Subject: Re: [PATCH] riscv: Fix kernel crash due to PR_SET_TAGGED_ADDR_CTRL
 Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <20250506124038.4071609-1-peter.wang@mediatek.com>
+From: Alexandre Ghiti <alex@ghiti.fr>
+To: Nam Cao <namcao@linutronix.de>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Samuel Holland <samuel.holland@sifive.com>, linux-riscv@lists.infradead.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20250504101920.3393053-1-namcao@linutronix.de>
+ <c59f2632-d96f-43c6-869d-5e5f743f2dbd@ghiti.fr>
+ <20250505160722.s_w3u1pd@linutronix.de>
+ <d7232e99-e899-4e50-b60f-2527be709d2c@ghiti.fr>
+In-Reply-To: <d7232e99-e899-4e50-b60f-2527be709d2c@ghiti.fr>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvkeeggeejucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuhffvvehfjggtgfesthekredttddvjeenucfhrhhomheptehlvgigrghnughrvgcuifhhihhtihcuoegrlhgvgiesghhhihhtihdrfhhrqeenucggtffrrghtthgvrhhnpeffudduledvfeehvdefueduveffkedugeetjeetveduvddtudehieduudehtdfhueenucffohhmrghinhepmhgrnhhgohhpihdrohhrghdpihhnfhhrrgguvggrugdrohhrghenucfkphepvddttddumeekiedumeeffeekvdemvghfledtmegstdgvieemhehfgehfmeefugejrgemrgdvfhdtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddttddumeekiedumeeffeekvdemvghfledtmegstdgvieemhehfgehfmeefugejrgemrgdvfhdtpdhhvghloheplgfkrfggieemvddttddumeekiedumeeffeekvdemvghfledtmegstdgvieemhehfgehfmeefugejrgemrgdvfhdtngdpmhgrihhlfhhrohhmpegrlhgvgiesghhhihhtihdrfhhrpdhnsggprhgtphhtthhopeekpdhrtghpthhtohepnhgrmhgtrghosehlihhnuhhtrhhonhhigidruggvpdhrtghpthhtohepphgruhhlrdifrghlmhhslhgvhiesshhif
+ hhivhgvrdgtohhmpdhrtghpthhtohepphgrlhhmvghrsegurggssggvlhhtrdgtohhmpdhrtghpthhtoheprghouhesvggvtghsrdgsvghrkhgvlhgvhidrvgguuhdprhgtphhtthhopehsrghmuhgvlhdrhhholhhlrghnugesshhifhhivhgvrdgtohhmpdhrtghpthhtoheplhhinhhugidqrhhishgtvheslhhishhtshdrihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-GND-Sasl: alex@ghiti.fr
 
-On 5/6/25 5:39 AM, peter.wang@mediatek.com wrote:
-> From: Peter Wang <peter.wang@mediatek.com>
-> 
-> Because the member id of struct ufs_hw_queue is u32 (hwq->id) and
-> the trace entry hwq_id is also u32, the type should be changed to u32.
-> If mcq is not supported, SDB mode only supports one hardware queue,
-> for which setting the hwq_id to 0 is more suitable.
-> 
-> Fixes: 4a52338bf288 ("scsi: ufs: core: Add trace event for MCQ")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Peter Wang <peter.wang@mediatek.com>
-> ---
->   drivers/ufs/core/ufshcd.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-> index 7735421e3991..14e4cfbcb9eb 100644
-> --- a/drivers/ufs/core/ufshcd.c
-> +++ b/drivers/ufs/core/ufshcd.c
-> @@ -432,7 +432,7 @@ static void ufshcd_add_command_trace(struct ufs_hba *hba, unsigned int tag,
->   	u8 opcode = 0, group_id = 0;
->   	u32 doorbell = 0;
->   	u32 intr;
-> -	int hwq_id = -1;
-> +	u32 hwq_id = 0;
->   	struct ufshcd_lrb *lrbp = &hba->lrb[tag];
->   	struct scsi_cmnd *cmd = lrbp->cmd;
->   	struct request *rq = scsi_cmd_to_rq(cmd);
+On 05/05/2025 21:27, Alexandre Ghiti wrote:
+> On 05/05/2025 18:07, Nam Cao wrote:
+>> Hi Alex,
+>>
+>> On Mon, May 05, 2025 at 06:02:26PM +0200, Alexandre Ghiti wrote:
+>>> On 04/05/2025 12:19, Nam Cao wrote:
+>>>> When userspace does PR_SET_TAGGED_ADDR_CTRL, but Supm extension is not
+>>>> available, the kernel crashes:
+>>>>
+>>>> Oops - illegal instruction [#1]
+>>>>       [snip]
+>>>> epc : set_tagged_addr_ctrl+0x112/0x15a
+>>>>    ra : set_tagged_addr_ctrl+0x74/0x15a
+>>>> epc : ffffffff80011ace ra : ffffffff80011a30 sp : ffffffc60039be10
+>>>>       [snip]
+>>>> status: 0000000200000120 badaddr: 0000000010a79073 cause: 
+>>>> 0000000000000002
+>>>>       set_tagged_addr_ctrl+0x112/0x15a
+>>>>       __riscv_sys_prctl+0x352/0x73c
+>>>>       do_trap_ecall_u+0x17c/0x20c
+>>>>       andle_exception+0x150/0x15c
+>>>
+>>> It seems like the csr write is triggering this illegal instruction, 
+>>> can you
+>>> confirm it is?
+>> Yes, it is the "csr_write(CSR_ENVCFG, envcfg);" in envcfg_update_bits().
+>>
+>>> If so, I can't find in the specification that an implementation 
+>>> should do
+>>> that when writing envcfg and I can't reproduce it on qemu. Where did 
+>>> you
+>>> see this oops?
+>> I can't find it in the spec either. I think it is up to the 
+>> implementation.
+>
+>
+> The reserved fields of senvcfg are WPRI and contrary to WLRL, it does 
+> not explicitly "permit" to raise an illegal instruction so I'd say it 
+> is not up to the implementation, I'll ask around.
 
-Is this change really necessary? I like the current behavior because it
-makes it easy to figure out whether or not MCQ has been enabled. Even if
-others would agree with this change, I think that the "Fixes:" and "Cc:
-stable" tags are overkill because I don't see this as a bug fix but
-rather as a behavior change that is not a bug fix.
+
+So I had confirmation that WPRI should not raise an illegal instruction 
+so that's an issue with the platform. Your patch is not wrong but I'd 
+rather have an explicit errata, what do you think?
 
 Thanks,
 
-Bart.
+Alex
+
+
+>
+> Thanks,
+>
+> Alex
+>
+>
+>>
+>> I got this crash on the MangoPI board:
+>> https://mangopi.org/mqpro
+>>
+>> Best regards,
+>> Nam
+>>
+>> _______________________________________________
+>> linux-riscv mailing list
+>> linux-riscv@lists.infradead.org
+>> http://lists.infradead.org/mailman/listinfo/linux-riscv
+>
+> _______________________________________________
+> linux-riscv mailing list
+> linux-riscv@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-riscv
 
