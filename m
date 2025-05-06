@@ -1,138 +1,143 @@
-Return-Path: <stable+bounces-141737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12249AAB7CE
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:19:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AB55AAB887
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:36:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B31BF4C6440
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:18:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B8CB3BA2D0
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:28:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A22A934EC58;
-	Tue,  6 May 2025 00:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77791272E7F;
+	Tue,  6 May 2025 03:09:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lcbL4Xbu"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="N63aY4LC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 734562FC0EC;
-	Mon,  5 May 2025 23:24:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 501DB34D2B3;
+	Tue,  6 May 2025 00:52:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746487451; cv=none; b=rt/bGVFNLv8dvd+U5vk4VGzgMT51TdbxbYDX0Z28iUvcmhH06QGOR+BUYu7OJp2EjdEUYcnz8ydVDhzASPpdezo3fRUvBxFFvMuVXZg9NgieEBljlOlh1HHbN/uxLpf6/gO3f/H4ClrsmddJr2gWC7xttNmFvfBK826NSp1/1Bg=
+	t=1746492741; cv=none; b=bt7/yE0G8SJN28FR13y3T5cuIueTBdsk9YOTY7/BA8mW7FOu2keSkFBrLDq52PS0TKJKL5cREcQ28fKrT+68MqBnPHLo71YEXqO/UEin4ATzdYVoHDN4txMW+mjzpq8SKEWVhp3CdtpT0F+Z4HIX+mjd+bx56ATJ+Ey29nn2PPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746487451; c=relaxed/simple;
-	bh=i22rMXdaaCX2nMsxb00wU60TfhaQ8tXx58+iF125btM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=HgY+JZGBtI5xKeLY45om7PSC74NQy7Hu3LcTy4Mww7o5LvhVZWNvnKTAT6h3VAM2bBbQw1q9l0bYkyYFwSsgkidoCofBRgydf5Skq6FOzDzuSb7WH+1lm/Tr4F/5wLhITsDDE2WeyFoKCGZ+J6X/UUqfYCaUyELnSoOvPpK5NbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lcbL4Xbu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B75AAC4CEED;
-	Mon,  5 May 2025 23:24:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746487449;
-	bh=i22rMXdaaCX2nMsxb00wU60TfhaQ8tXx58+iF125btM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lcbL4Xbu8lplE07+huzT2WmvCwbcY3pQZUxLur9IhDyeZxHeR7E4wJToUPm7jkk+s
-	 YwKeyd9BExFgV0xiX1sKKiRT59zgPNrwssgeqspUxpMoV+J01t3/4cFYkA2T2x4V2I
-	 t6phRrXDy1bZtWAJnY25Ju/nLcZpOWxEyA0KbQdb5QWUWui0+AaD/v5ybQGqPqlths
-	 uBmGCduXiK0CcXgGVUgjfJOkpRzirWrGVNdatwjx0s0CYwV9/daxIF9p0EO9xVtDCa
-	 WJ0Lf/47US8/m0hoXHlwTtBAzvDBXXF1gZ74ebKxG/um2b+vp3RlYA2BD1kHYqpwvq
-	 Hq23glDoxz6+A==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Jessica Zhang <quic_jesszhan@quicinc.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Sasha Levin <sashal@kernel.org>,
-	maarten.lankhorst@linux.intel.com,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	simona@ffwll.ch,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 5.4 79/79] drm: Add valid clones check
-Date: Mon,  5 May 2025 19:21:51 -0400
-Message-Id: <20250505232151.2698893-79-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250505232151.2698893-1-sashal@kernel.org>
-References: <20250505232151.2698893-1-sashal@kernel.org>
+	s=arc-20240116; t=1746492741; c=relaxed/simple;
+	bh=EqFsCWOwjwAUcIHJxhy1ULIGTniQIjjShStO0nXv03U=;
+	h=Date:To:From:Subject:Message-Id; b=GFyM2qkrbB6zxHwP/SiUlergwZw6nTX+4JkCRvPXWGeRZskhXZXrVVnqfoqyBuGxc3vBkjmw3CWv//YeKw/B3pE34Agrq8KzKqcg8cyeJoc4RZ/o6sDpa+uHOA3yXGOKCJ+39bQlyYNcw5K9h3iTCOfMZviwIRb0AskeQEo7sKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=N63aY4LC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD82BC4CEE4;
+	Tue,  6 May 2025 00:52:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1746492739;
+	bh=EqFsCWOwjwAUcIHJxhy1ULIGTniQIjjShStO0nXv03U=;
+	h=Date:To:From:Subject:From;
+	b=N63aY4LC6+zlKgBQEexax7m/i8bY3W8HnVCtwKR9GbDeQyOC2MR+gDW7hoLRzfG4O
+	 Yyo4a0S9xDa41d3LYlE8abTLuiKD5x0U4dP9hcA7nAXNWA7Nvra/Q+40QXcGGqERxc
+	 +u29wKPTDH0zLkSBEq9lLWU9Oa+/meDYFEx++Rtw=
+Date: Mon, 05 May 2025 17:52:19 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,minchan@kernel.org,igor.b@beldev.am,senozhatsky@chromium.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + zsmalloc-dont-underflow-size-calculation-in-zs_obj_write.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250506005219.AD82BC4CEE4@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.293
-Content-Transfer-Encoding: 8bit
 
-From: Jessica Zhang <quic_jesszhan@quicinc.com>
 
-[ Upstream commit 41b4b11da02157c7474caf41d56baae0e941d01a ]
+The patch titled
+     Subject: zsmalloc: don't underflow size calculation in zs_obj_write()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     zsmalloc-dont-underflow-size-calculation-in-zs_obj_write.patch
 
-Check that all encoders attached to a given CRTC are valid
-possible_clones of each other.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/zsmalloc-dont-underflow-size-calculation-in-zs_obj_write.patch
 
-Signed-off-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20241216-concurrent-wb-v4-3-fe220297a7f0@quicinc.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+Subject: zsmalloc: don't underflow size calculation in zs_obj_write()
+Date: Sun, 4 May 2025 20:00:22 +0900
+
+Do not mix class->size and object size during offsets/sizes calculation in
+zs_obj_write().  Size classes can merge into clusters, based on
+objects-per-zspage and pages-per-zspage characteristics, so some size
+classes can store objects smaller than class->size.  This becomes
+problematic when object size is much smaller than class->size - we can
+determine that object spans two physical pages, because we use a larger
+class->size for this, while the actual object is much smaller and fits one
+physical page, so there is nothing to write to the second page and
+memcpy() size calculation underflows.
+
+We always know the exact size in bytes of the object that we are about to
+write (store), so use it instead of class->size.
+
+Link: https://lkml.kernel.org/r/20250504110650.2783619-1-senozhatsky@chromium.org
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Reported-by: Igor Belousov <igor.b@beldev.am>
+Tested-by: Igor Belousov <igor.b@beldev.am>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- drivers/gpu/drm/drm_atomic_helper.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
 
-diff --git a/drivers/gpu/drm/drm_atomic_helper.c b/drivers/gpu/drm/drm_atomic_helper.c
-index 70d97a7fc6864..678dba387d838 100644
---- a/drivers/gpu/drm/drm_atomic_helper.c
-+++ b/drivers/gpu/drm/drm_atomic_helper.c
-@@ -561,6 +561,30 @@ mode_valid(struct drm_atomic_state *state)
- 	return 0;
- }
+ mm/zsmalloc.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+--- a/mm/zsmalloc.c~zsmalloc-dont-underflow-size-calculation-in-zs_obj_write
++++ a/mm/zsmalloc.c
+@@ -1243,19 +1243,19 @@ void zs_obj_write(struct zs_pool *pool,
+ 	class = zspage_class(pool, zspage);
+ 	off = offset_in_page(class->size * obj_idx);
  
-+static int drm_atomic_check_valid_clones(struct drm_atomic_state *state,
-+					 struct drm_crtc *crtc)
-+{
-+	struct drm_encoder *drm_enc;
-+	struct drm_crtc_state *crtc_state = drm_atomic_get_new_crtc_state(state,
-+									  crtc);
+-	if (off + class->size <= PAGE_SIZE) {
++	if (!ZsHugePage(zspage))
++		off += ZS_HANDLE_SIZE;
 +
-+	drm_for_each_encoder_mask(drm_enc, crtc->dev, crtc_state->encoder_mask) {
-+		if (!drm_enc->possible_clones) {
-+			DRM_DEBUG("enc%d possible_clones is 0\n", drm_enc->base.id);
-+			continue;
-+		}
-+
-+		if ((crtc_state->encoder_mask & drm_enc->possible_clones) !=
-+		    crtc_state->encoder_mask) {
-+			DRM_DEBUG("crtc%d failed valid clone check for mask 0x%x\n",
-+				  crtc->base.id, crtc_state->encoder_mask);
-+			return -EINVAL;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
- /**
-  * drm_atomic_helper_check_modeset - validate state object for modeset changes
-  * @dev: DRM device
-@@ -724,6 +748,10 @@ drm_atomic_helper_check_modeset(struct drm_device *dev,
- 		ret = drm_atomic_add_affected_planes(state, crtc);
- 		if (ret != 0)
- 			return ret;
-+
-+		ret = drm_atomic_check_valid_clones(state, crtc);
-+		if (ret != 0)
-+			return ret;
- 	}
++	if (off + mem_len <= PAGE_SIZE) {
+ 		/* this object is contained entirely within a page */
+ 		void *dst = kmap_local_zpdesc(zpdesc);
  
- 	/*
--- 
-2.39.5
+-		if (!ZsHugePage(zspage))
+-			off += ZS_HANDLE_SIZE;
+ 		memcpy(dst + off, handle_mem, mem_len);
+ 		kunmap_local(dst);
+ 	} else {
+ 		/* this object spans two pages */
+ 		size_t sizes[2];
+ 
+-		off += ZS_HANDLE_SIZE;
+ 		sizes[0] = PAGE_SIZE - off;
+ 		sizes[1] = mem_len - sizes[0];
+ 
+_
+
+Patches currently in -mm which might be from senozhatsky@chromium.org are
+
+zsmalloc-dont-underflow-size-calculation-in-zs_obj_write.patch
+zsmalloc-prefer-the-the-original-pages-node-for-compressed-data-fix.patch
+zram-modernize-writeback-interface.patch
+zram-modernize-writeback-interface-v3.patch
+zram-modernize-writeback-interface-v4.patch
+zsmalloc-cleanup-headers-includes.patch
+documentation-zram-update-idle-pages-tracking-documentation.patch
 
 
