@@ -1,76 +1,79 @@
-Return-Path: <stable+bounces-141798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65E26AAC265
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 13:21:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 988DAAAC26A
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 13:23:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F09693A57AB
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 11:21:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B7943B766A
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 11:23:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9448627A45F;
-	Tue,  6 May 2025 11:21:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F2DC27A923;
+	Tue,  6 May 2025 11:23:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HMBd3cc6"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Rswc+1X3"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADEFE2798EC
-	for <stable@vger.kernel.org>; Tue,  6 May 2025 11:21:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC17282EE;
+	Tue,  6 May 2025 11:23:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746530505; cv=none; b=k99RYkLRYYfx8afPe8wJL+F7ji3wHMMICAGC3tXYmGahYHAGscTkkPQ51BmlFCxZ7zvnBiVERC+0VPZukLdEkM1SfQ8IYfKgHJ99M7Xw7JVw+8S2ykZjhfUoTVGpA+OSJ5Tb8FQ2UwH+YpSg/UyjWrxS/pGheo14hP7qHU+Ddh0=
+	t=1746530610; cv=none; b=KLXlRLRN5ShwHfbj6LKi1OA/Bg/yvasuO1HywMoOHa7h4Hn5FUU9/bawjuPc8eV0KA4uzabtB46gojIxkGY7k027Dvdv4A3ZY4Gg9K8heXlu6OAxWLdpO7/NhS+3d7qJjm5DRyxXfBKxbJ6sZQDbXWSeCsZ0OnMl4wDAQ6KW8V4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746530505; c=relaxed/simple;
-	bh=s1Ixm6WMboKTsvNooKb2pfTDDOcMCS2D4cfDtbIsAKs=;
+	s=arc-20240116; t=1746530610; c=relaxed/simple;
+	bh=JfGn9n7xtXq88oIfWghwV1vxPHFWWIwsPGpPzWmnofo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JapxTO5gzp8kqXQhdJSq9SJy2LGaVRd6dE5q6nO637OuNxYR113sui8Bukm4fiIQbERnj6Kwy3aXxtW70F822RX6JMTDEOWBSHuKoS6V1eZnKVWh2ioh42ZUwUsnz+xxEKSOGr05Txmcy37McMum3n/0GuieXkZwmdLEoNSz6BQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HMBd3cc6; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1746530501;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QOvRLaP63gYOR03XxNVBF5K4WBSkpnVksFuYLM7tkcI=;
-	b=HMBd3cc6jUxzrCjb4oeC9WU4KngJTtXDz/1f6UDpRNvSUCA00ynu2cNVaRHIIwIolJBR6k
-	hO16RQKqUI/UtR0g6E0xM+oZb3HToKNxhSSWu+hL7DegELOcPEVSpJMsLDYxhUTO1I3xrT
-	RioFpogs5MLTMLskUAp9CGE81epvPVs=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-687-3ONevib6Nti5-C1YLuD3Ow-1; Tue,
- 06 May 2025 07:21:36 -0400
-X-MC-Unique: 3ONevib6Nti5-C1YLuD3Ow-1
-X-Mimecast-MFC-AGG-ID: 3ONevib6Nti5-C1YLuD3Ow_1746530494
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8D44718009A1;
-	Tue,  6 May 2025 11:21:33 +0000 (UTC)
-Received: from fedora (unknown [10.44.33.231])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 24E85180045B;
-	Tue,  6 May 2025 11:21:28 +0000 (UTC)
-Received: by fedora (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Tue,  6 May 2025 13:21:33 +0200 (CEST)
-Date: Tue, 6 May 2025 13:21:27 +0200
-From: Oleg Nesterov <oleg@redhat.com>
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Christian Brauner <brauner@kernel.org>, akpm@linux-foundation.org,
-	mhocko@suse.com, Liam.Howlett@oracle.com, mjguzik@gmail.com,
-	pasha.tatashin@soleen.com, alexjlzheng@tencent.com
-Subject: Re: [PATCH AUTOSEL 5.4 66/79] exit: change the release_task() paths
- to call flush_sigqueue() lockless
-Message-ID: <aBnwt9cbww5R6TnN@redhat.com>
-References: <20250505232151.2698893-1-sashal@kernel.org>
- <20250505232151.2698893-66-sashal@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=uN+JVV7APY9WqjCslmp6JcZZ+FkqmwX4FOOOs0kxYpzeX5QbY6U9aLZoliEZVNlHge2gSARJ7e8DXVMYHa0TDncFAo1/AsQieD2rwisgIWosNLwG+FTuD6RqpJY8pRTQGFO2WlNwWHin51qvnyWmA7gX1UaguMHXJJFRuCffCT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Rswc+1X3; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1746530608; x=1778066608;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=JfGn9n7xtXq88oIfWghwV1vxPHFWWIwsPGpPzWmnofo=;
+  b=Rswc+1X3HR8PqhDJ68ICBhcRuxk2O+jMEIeau8SQxFfrmws0h9oZATJ2
+   4lBSBz97pfSFqfgaMyMfqZYzGp0xgDvolPWeUrUaEx77fZmxpA/7ukAie
+   FGly1uGdKWszulI83qCMhmcW5V9r/vfGsvI9pa6PlBSYEF1Ntn6gi1jsr
+   SIkDQOe7+fw8yd/Grza/0qtizBxYlPXQVzv95A7CDUKf7DL94V3+Xt7dc
+   +ZL7d9By1phcBUVdL/7+pkXx7cTnOOXbPGC8uPHEzsVjIXg5aTdpzDIK9
+   VCMwpU66QYwplernOsPXwPdd1640K+iXpHQzIOAlHwoXN96UOhxgxd0Tl
+   A==;
+X-CSE-ConnectionGUID: AMk/xE5ARzSrHOZJYIcOBg==
+X-CSE-MsgGUID: dUb85tSpSz2yIhk4pWODeQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11424"; a="65727957"
+X-IronPort-AV: E=Sophos;i="6.15,266,1739865600"; 
+   d="scan'208";a="65727957"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2025 04:23:28 -0700
+X-CSE-ConnectionGUID: soCurtFTT0aPgSHSckSn6g==
+X-CSE-MsgGUID: z91GLQMBQGSUBRLmZSjGyQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,266,1739865600"; 
+   d="scan'208";a="139646881"
+Received: from kuha.fi.intel.com ([10.237.72.152])
+  by fmviesa003.fm.intel.com with SMTP; 06 May 2025 04:23:24 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Tue, 06 May 2025 14:23:22 +0300
+Date: Tue, 6 May 2025 14:23:22 +0300
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: amitsd@google.com
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Badhri Jagan Sridharan <badhri@google.com>,
+	=?iso-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	RD Babiera <rdbabiera@google.com>, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Kyle Tso <kyletso@google.com>
+Subject: Re: [PATCH] usb: typec: tcpm/tcpci_maxim: Fix bounds check in
+ process_rx()
+Message-ID: <aBnxKrVxurLZ_7k9@kuha.fi.intel.com>
+References: <20250502-b4-new-fix-pd-rx-count-v1-1-e5711ed09b3d@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -79,93 +82,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250505232151.2698893-66-sashal@kernel.org>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+In-Reply-To: <20250502-b4-new-fix-pd-rx-count-v1-1-e5711ed09b3d@google.com>
 
-I'm on PTO until May 15, can't read the code.
+On Fri, May 02, 2025 at 04:57:03PM -0700, Amit Sunil Dhamne via B4 Relay wrote:
+> From: Amit Sunil Dhamne <amitsd@google.com>
+> 
+> Register read of TCPC_RX_BYTE_CNT returns the total size consisting of:
+> 
+>   PD message (pending read) size + 1 Byte for Frame Type (SOP*)
+> 
+> This is validated against the max PD message (`struct pd_message`) size
+> without accounting for the extra byte for the frame type. Note that the
+> struct pd_message does not contain a field for the frame_type. This
+> results in false negatives when the "PD message (pending read)" is equal
+> to the max PD message size.
+> 
+> Fixes: 6f413b559f86 ("usb: typec: tcpci_maxim: Chip level TCPC driver")
+> Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
+> Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
+> Reviewed-by: Kyle Tso <kyletso@google.com>
 
-Did you verify that 5.14 has all the necessary "recent" posixtimer changes?
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-Oleg.
-
-On 05/05, Sasha Levin wrote:
->
-> From: Oleg Nesterov <oleg@redhat.com>
-> 
-> [ Upstream commit fb3bbcfe344e64a46574a638b051ffd78762c12d ]
-> 
-> A task can block a signal, accumulate up to RLIMIT_SIGPENDING sigqueues,
-> and exit. In this case __exit_signal()->flush_sigqueue() called with irqs
-> disabled can trigger a hard lockup, see
-> https://lore.kernel.org/all/20190322114917.GC28876@redhat.com/
-> 
-> Fortunately, after the recent posixtimer changes sys_timer_delete() paths
-> no longer try to clear SIGQUEUE_PREALLOC and/or free tmr->sigq, and after
-> the exiting task passes __exit_signal() lock_task_sighand() can't succeed
-> and pid_task(tmr->it_pid) will return NULL.
-> 
-> This means that after __exit_signal(tsk) nobody can play with tsk->pending
-> or (if group_dead) with tsk->signal->shared_pending, so release_task() can
-> safely call flush_sigqueue() after write_unlock_irq(&tasklist_lock).
-> 
-> TODO:
-> 	- we can probably shift posix_cpu_timers_exit() as well
-> 	- do_sigaction() can hit the similar problem
-> 
-> Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-> Link: https://lore.kernel.org/r/20250206152314.GA14620@redhat.com
-> Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-> Signed-off-by: Christian Brauner <brauner@kernel.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
 > ---
->  kernel/exit.c | 19 +++++++++++--------
->  1 file changed, 11 insertions(+), 8 deletions(-)
+>  drivers/usb/typec/tcpm/tcpci_maxim_core.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> diff --git a/kernel/exit.c b/kernel/exit.c
-> index 5015ecdda6d95..69deb2901ec55 100644
-> --- a/kernel/exit.c
-> +++ b/kernel/exit.c
-> @@ -204,20 +204,13 @@ static void __exit_signal(struct task_struct *tsk)
->  	__unhash_process(tsk, group_dead);
->  	write_sequnlock(&sig->stats_lock);
+> diff --git a/drivers/usb/typec/tcpm/tcpci_maxim_core.c b/drivers/usb/typec/tcpm/tcpci_maxim_core.c
+> index fd1b80593367641a6f997da2fb97a2b7238f6982..648311f5e3cf135f23b5cc0668001d2f177b9edd 100644
+> --- a/drivers/usb/typec/tcpm/tcpci_maxim_core.c
+> +++ b/drivers/usb/typec/tcpm/tcpci_maxim_core.c
+> @@ -166,7 +166,8 @@ static void process_rx(struct max_tcpci_chip *chip, u16 status)
+>  		return;
+>  	}
 >  
-> -	/*
-> -	 * Do this under ->siglock, we can race with another thread
-> -	 * doing sigqueue_free() if we have SIGQUEUE_PREALLOC signals.
-> -	 */
-> -	flush_sigqueue(&tsk->pending);
->  	tsk->sighand = NULL;
->  	spin_unlock(&sighand->siglock);
->  
->  	__cleanup_sighand(sighand);
->  	clear_tsk_thread_flag(tsk, TIF_SIGPENDING);
-> -	if (group_dead) {
-> -		flush_sigqueue(&sig->shared_pending);
-> +	if (group_dead)
->  		tty_kref_put(tty);
-> -	}
->  }
->  
->  static void delayed_put_task_struct(struct rcu_head *rhp)
-> @@ -277,6 +270,16 @@ void release_task(struct task_struct *p)
->  
->  	write_unlock_irq(&tasklist_lock);
->  	release_thread(p);
-> +	/*
-> +	 * This task was already removed from the process/thread/pid lists
-> +	 * and lock_task_sighand(p) can't succeed. Nobody else can touch
-> +	 * ->pending or, if group dead, signal->shared_pending. We can call
-> +	 * flush_sigqueue() lockless.
-> +	 */
-> +	flush_sigqueue(&p->pending);
-> +	if (thread_group_leader(p))
-> +		flush_sigqueue(&p->signal->shared_pending);
-> +
->  	put_task_struct_rcu_user(p);
->  
->  	p = leader;
+> -	if (count > sizeof(struct pd_message) || count + 1 > TCPC_RECEIVE_BUFFER_LEN) {
+> +	if (count > sizeof(struct pd_message) + 1 ||
+> +	    count + 1 > TCPC_RECEIVE_BUFFER_LEN) {
+>  		dev_err(chip->dev, "Invalid TCPC_RX_BYTE_CNT %d\n", count);
+>  		return;
+>  	}
+> 
+> ---
+> base-commit: ebd297a2affadb6f6f4d2e5d975c1eda18ac762d
+> change-id: 20250421-b4-new-fix-pd-rx-count-79297ba619b7
+> 
+> Best regards,
 > -- 
-> 2.39.5
+> Amit Sunil Dhamne <amitsd@google.com>
 > 
 
+-- 
+heikki
 
