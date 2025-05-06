@@ -1,136 +1,110 @@
-Return-Path: <stable+bounces-141848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F0E4AACB0D
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 18:33:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0CEFAACC96
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 19:57:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D06C718921D2
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 16:32:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D754350816C
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 17:57:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47D3F284B5B;
-	Tue,  6 May 2025 16:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96FC8286402;
+	Tue,  6 May 2025 17:57:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sTIrEd/B"
 X-Original-To: stable@vger.kernel.org
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f180.google.com (mail-il1-f180.google.com [209.85.166.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AA7F284B3B;
-	Tue,  6 May 2025 16:31:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A4028151D
+	for <stable@vger.kernel.org>; Tue,  6 May 2025 17:57:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746549112; cv=none; b=PIPOdoHJ1Sk43UZOYbRp6b2+MUUH03AhbnPqLCViKuNRKDunYBRUlCXN6yrk3/edSSZ6tqplNoNCSRGHetQ7zLJLVTh4NwAZKsICAn6u41Cjr0k8+ykksR2axbYBbb5EEjltn31+7LG8I9Qs17tNtofpOPBqUkyQp4ZvFSaBHzA=
+	t=1746554244; cv=none; b=ip/vvW/zZqGr4otNQMp2ORl/76TsFgHlCFQL/gsnUk2RiDIPLcItl9H2HmBP5d2JEQdijhowBQ8oZOdjvydKrbkvaOyovA5oPdB7igaB4NjZckbw5ttMhN2QLRMDYk1CbObg8qeZi2cEpANIPsDcE749kNnuND9Zz0r+oHaCvPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746549112; c=relaxed/simple;
-	bh=PHoTVTfZ1ZEwEICE2WqavS02UFhuhVT/TKmdSzWLQiM=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=MsAgpv9+Tvv+tFy+ijxplfP/MRnIv4aCfS+ptoFg3nD8eQsSQYCd4eKi2lk9iCWkiOrTK7f+0L2rtAe+n8baVvsM9GMpmX/bHWVORsGsX6bXrIWTBWoG+jWUfxVZEEZjXCNd57MvBN+Pf7Ue5+ccWDKNFV1sD8uHD0d7xMiqWkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr; spf=pass smtp.mailfrom=ghiti.fr; arc=none smtp.client-ip=217.70.183.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ghiti.fr
-Received: by mail.gandi.net (Postfix) with ESMTPSA id CFBBB43B1A;
-	Tue,  6 May 2025 16:31:42 +0000 (UTC)
-Message-ID: <570ce61a-00ca-446f-ae89-7ab7c340828f@ghiti.fr>
-Date: Tue, 6 May 2025 18:31:41 +0200
+	s=arc-20240116; t=1746554244; c=relaxed/simple;
+	bh=TDEQButXfv1aj9Q3tzx/qG6tDTloS2yb4zcY8iQPhTM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hif3HxRGkXz2aOYZ8Wgf76yeVRniXRYMkTIvh9IXw+gRgsyXAhK3cyejwMkrmkMa+O8w93fl+oxk2XCP2k08qryFHK6XySR7uRotY3liEbfq9hfMe/j9Xu0Q38+zhpYfguRAuU/Y8hGJcxz9mdYqRO+3m30C4mVXKzL+/tFdRT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sTIrEd/B; arc=none smtp.client-ip=209.85.166.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-il1-f180.google.com with SMTP id e9e14a558f8ab-3d57143ee39so53629255ab.1
+        for <stable@vger.kernel.org>; Tue, 06 May 2025 10:57:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1746554242; x=1747159042; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TDEQButXfv1aj9Q3tzx/qG6tDTloS2yb4zcY8iQPhTM=;
+        b=sTIrEd/Bwk6PNc3kO3RMrStHbr+fodTJnq+BaSySmXqiIwkmJHIMq1TwwU5GtPcd3e
+         wN8FAZS3NfrdvbzGabCfupbzpsBa7NkTQaa/Q45+b/Qsm9J1lci95RAlBKLyRToL1LB4
+         lvo9JKp1MaRAhdcvR1Tfds47uXGuAKYKpABD7eRDzLXo1E6GsKD2vjECXfivpPOxaogY
+         oIwZXr/9Cbroe8CgCvtFOBFUCAG3E9JlqKeVbxtZq6cAlaWQHiGkAY9ZuCtc6l6q7vIX
+         DIhZNJb7BEIXNLStNIrH/Flkv5HRHY1b+8WpDGIGWVO+vwhSPCfhxSAuL4jZpHfcj0U4
+         i1UA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746554242; x=1747159042;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TDEQButXfv1aj9Q3tzx/qG6tDTloS2yb4zcY8iQPhTM=;
+        b=gBleF44V/Fzj6S2cjIBU3/RGDTAzSPgMqOBYVYFS5K83pt2nLf4YvxmJH6sQ1noB60
+         x3mUt7yNjfJbpEfU0pvTbK8qFOOdri7C4aVwK94D7Xrtvv3DORXTuW3e0MG2fx2VLdht
+         ZiLSRNLDSEbeWlmmYaTDgQmGfwjQv3QX1KLez6OFuradY6jtfS+V0Ina221xM/nvvGkS
+         cexH0u8R2y2pkZ0rzDs5cK0bPranWyRBDImORY4WUryb4iUI9Jg6KDQ4qN+OQrQGJSgc
+         2WjxuBE0fj4ZTasQS/DcTA/7s8eZN+RZaR2NaKrzfMT50ny7HNprytR/ifaSvqXHxaz9
+         Vysw==
+X-Forwarded-Encrypted: i=1; AJvYcCXi1IAkWWpcBJilLH1LcA7fppg4Di6K6A4+RnxyMO2O5OakwUnhxoaTb4RXrsGfzCHQ9GVGg5M=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8fWLZXpmB+moT0OgqFFLonU5mJEhZvdMNHWjCws8VuhI9VvxG
+	SEoxwwXwanvV0rk+pLVFGn8nO16r12yImhY6cCP+QnKTz0M7F6eaHS7DsZpvwC6yq7RPZBLh52U
+	NlpVloos6pregy5TiqopJnefoY78ffjmFw3eD
+X-Gm-Gg: ASbGnctuZj4E7W2A7Xs7Rdsx2BwwDsgeRCHikFhaWj7Feq+RfKDLCj6WU/0Z8w+4E9L
+	XsJC49WQhyfFrHIxYJBQhD5l7yk3ZCCWv6VEvfaZPG11ww/wi01ZmhVdVEqbpwFz/rbUP2R0yjC
+	qiNihE/LVgemQ7enmII7WhrtCIhQ5xjRqafWEZbgxLibFXXZbegCjOoK+fHS1IJQ==
+X-Google-Smtp-Source: AGHT+IGCZXgSSxGtX94Coy1Z7IBGImew8w0745inbqWEWkS+WvQgI3CPhCa8c6/8PGm2TCC4kwU0DgyogxMbp6nZpA8=
+X-Received: by 2002:a05:6e02:1445:b0:3d8:2187:5cea with SMTP id
+ e9e14a558f8ab-3da738ed70cmr108085ab.1.1746554241759; Tue, 06 May 2025
+ 10:57:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] riscv: Fix kernel crash due to PR_SET_TAGGED_ADDR_CTRL
-Content-Language: en-US
-From: Alexandre Ghiti <alex@ghiti.fr>
-To: Nam Cao <namcao@linutronix.de>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>,
- Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Samuel Holland <samuel.holland@sifive.com>, linux-riscv@lists.infradead.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20250504101920.3393053-1-namcao@linutronix.de>
- <c59f2632-d96f-43c6-869d-5e5f743f2dbd@ghiti.fr>
- <20250505160722.s_w3u1pd@linutronix.de>
- <d7232e99-e899-4e50-b60f-2527be709d2c@ghiti.fr>
-In-Reply-To: <d7232e99-e899-4e50-b60f-2527be709d2c@ghiti.fr>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvkeeggeejucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefkffggfgfuhffvvehfjggtgfesthekredttddvjeenucfhrhhomheptehlvgigrghnughrvgcuifhhihhtihcuoegrlhgvgiesghhhihhtihdrfhhrqeenucggtffrrghtthgvrhhnpeffudduledvfeehvdefueduveffkedugeetjeetveduvddtudehieduudehtdfhueenucffohhmrghinhepmhgrnhhgohhpihdrohhrghdpihhnfhhrrgguvggrugdrohhrghenucfkphepvddttddumeekiedumeeffeekvdemvghfledtmegstdgvieemhehfgehfmeefugejrgemrgdvfhdtnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddttddumeekiedumeeffeekvdemvghfledtmegstdgvieemhehfgehfmeefugejrgemrgdvfhdtpdhhvghloheplgfkrfggieemvddttddumeekiedumeeffeekvdemvghfledtmegstdgvieemhehfgehfmeefugejrgemrgdvfhdtngdpmhgrihhlfhhrohhmpegrlhgvgiesghhhihhtihdrfhhrpdhnsggprhgtphhtthhopeekpdhrtghpthhtohepnhgrmhgtrghosehlihhnuhhtrhhonhhigidruggvpdhrtghpthhtohepphgruhhlrdifrghlmhhslhgvhiesshhif
- hhivhgvrdgtohhmpdhrtghpthhtohepphgrlhhmvghrsegurggssggvlhhtrdgtohhmpdhrtghpthhtoheprghouhesvggvtghsrdgsvghrkhgvlhgvhidrvgguuhdprhgtphhtthhopehsrghmuhgvlhdrhhholhhlrghnugesshhifhhivhgvrdgtohhmpdhrtghpthhtoheplhhinhhugidqrhhishgtvheslhhishhtshdrihhnfhhrrgguvggrugdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-GND-Sasl: alex@ghiti.fr
+References: <20250429234743.3749129-2-rdbabiera@google.com> <2025050116-hardy-twins-913e@gregkh>
+In-Reply-To: <2025050116-hardy-twins-913e@gregkh>
+From: RD Babiera <rdbabiera@google.com>
+Date: Tue, 6 May 2025 10:57:10 -0700
+X-Gm-Features: ATxdqUGhlDS5VHX3V_2l33LFj1BJLYgPbYIcE7-K8YutfklngATcqul4qM_jfcQ
+Message-ID: <CALzBnUF7zb6F2iq_1xaF=1vbSkrpvPkPd0Ses0iWDG-n4fxHQQ@mail.gmail.com>
+Subject: Re: [PATCH v1] usb: typec: tcpm: apply vbus before data bringup in tcpm_src_attach
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: heikki.krogerus@linux.intel.com, badhri@google.com, 
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 05/05/2025 21:27, Alexandre Ghiti wrote:
-> On 05/05/2025 18:07, Nam Cao wrote:
->> Hi Alex,
->>
->> On Mon, May 05, 2025 at 06:02:26PM +0200, Alexandre Ghiti wrote:
->>> On 04/05/2025 12:19, Nam Cao wrote:
->>>> When userspace does PR_SET_TAGGED_ADDR_CTRL, but Supm extension is not
->>>> available, the kernel crashes:
->>>>
->>>> Oops - illegal instruction [#1]
->>>>       [snip]
->>>> epc : set_tagged_addr_ctrl+0x112/0x15a
->>>>    ra : set_tagged_addr_ctrl+0x74/0x15a
->>>> epc : ffffffff80011ace ra : ffffffff80011a30 sp : ffffffc60039be10
->>>>       [snip]
->>>> status: 0000000200000120 badaddr: 0000000010a79073 cause: 
->>>> 0000000000000002
->>>>       set_tagged_addr_ctrl+0x112/0x15a
->>>>       __riscv_sys_prctl+0x352/0x73c
->>>>       do_trap_ecall_u+0x17c/0x20c
->>>>       andle_exception+0x150/0x15c
->>>
->>> It seems like the csr write is triggering this illegal instruction, 
->>> can you
->>> confirm it is?
->> Yes, it is the "csr_write(CSR_ENVCFG, envcfg);" in envcfg_update_bits().
->>
->>> If so, I can't find in the specification that an implementation 
->>> should do
->>> that when writing envcfg and I can't reproduce it on qemu. Where did 
->>> you
->>> see this oops?
->> I can't find it in the spec either. I think it is up to the 
->> implementation.
->
->
-> The reserved fields of senvcfg are WPRI and contrary to WLRL, it does 
-> not explicitly "permit" to raise an illegal instruction so I'd say it 
-> is not up to the implementation, I'll ask around.
+On Thu, May 1, 2025 at 8:41=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org>=
+ wrote:
 
+> Does not apply to my tree, can you rebase against usb-next and resend?
 
-So I had confirmation that WPRI should not raise an illegal instruction 
-so that's an issue with the platform. Your patch is not wrong but I'd 
-rather have an explicit errata, what do you think?
+This patch is rebased against usb-next/usb-next, but I think I do need to r=
+ebase
+against usb-linus. commit 8a50da849151e7e12b43c1d8fe7ad302223aef6b is
+present in usb-next but not usb-linus, and my patch as it is now is
+dependent on it.
 
-Thanks,
+Would you prefer that I rebase against usb-linus and resubmit given
+I'm submitting
+as a stable fix? It looks like the conflicting patch would be up for
+the 6.16 merge
+window.
 
-Alex
-
-
->
-> Thanks,
->
-> Alex
->
->
->>
->> I got this crash on the MangoPI board:
->> https://mangopi.org/mqpro
->>
->> Best regards,
->> Nam
->>
->> _______________________________________________
->> linux-riscv mailing list
->> linux-riscv@lists.infradead.org
->> http://lists.infradead.org/mailman/listinfo/linux-riscv
->
-> _______________________________________________
-> linux-riscv mailing list
-> linux-riscv@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-riscv
+Thanks in advance,
+RD
 
