@@ -1,137 +1,257 @@
-Return-Path: <stable+bounces-141799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 988DAAAC26A
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 13:23:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 049A2AAC282
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 13:26:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B7943B766A
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 11:23:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4381E4E8497
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 11:26:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F2DC27A923;
-	Tue,  6 May 2025 11:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5A2427C141;
+	Tue,  6 May 2025 11:25:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Rswc+1X3"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dbMlKw6H"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC17282EE;
-	Tue,  6 May 2025 11:23:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C866327B519;
+	Tue,  6 May 2025 11:25:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746530610; cv=none; b=KLXlRLRN5ShwHfbj6LKi1OA/Bg/yvasuO1HywMoOHa7h4Hn5FUU9/bawjuPc8eV0KA4uzabtB46gojIxkGY7k027Dvdv4A3ZY4Gg9K8heXlu6OAxWLdpO7/NhS+3d7qJjm5DRyxXfBKxbJ6sZQDbXWSeCsZ0OnMl4wDAQ6KW8V4=
+	t=1746530731; cv=none; b=EG93y23PdF5j/boXvh9q9i/7o1HIDngDmLnhyJj1qoLS6Ep3Has6QJnlFd+iyWpeSGXK5WMoALkOSjtkGsTzqEU6GdOIjlJIV60HftYOTVm3GvqPnkiHtLZrR6oCOeC+ixJqYFFdEx1Mhucqj9vl6v9CWlkvd5j4Lk/Sl8O1fTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746530610; c=relaxed/simple;
-	bh=JfGn9n7xtXq88oIfWghwV1vxPHFWWIwsPGpPzWmnofo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uN+JVV7APY9WqjCslmp6JcZZ+FkqmwX4FOOOs0kxYpzeX5QbY6U9aLZoliEZVNlHge2gSARJ7e8DXVMYHa0TDncFAo1/AsQieD2rwisgIWosNLwG+FTuD6RqpJY8pRTQGFO2WlNwWHin51qvnyWmA7gX1UaguMHXJJFRuCffCT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Rswc+1X3; arc=none smtp.client-ip=192.198.163.8
+	s=arc-20240116; t=1746530731; c=relaxed/simple;
+	bh=oXur4Wa3aEbvmoV3UNsrr0MuBXzZJ8WsH/NJWAQ29h8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=WLPyTKoOODZCeC2tk86UW9JBiUnBuD+cgPQsfFhWdX1o8McPm6VEwQTH47DPnfCQSd5Q5NliElybVw+uOZJOFXSQvc0VRC2zKWbZ094wzay96T8QofVm/ZWFhXoa2l2J5BpHswYRKOE3BVtqxFVPqPW14FIulddn3kpq07Xaw3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dbMlKw6H; arc=none smtp.client-ip=192.198.163.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746530608; x=1778066608;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=JfGn9n7xtXq88oIfWghwV1vxPHFWWIwsPGpPzWmnofo=;
-  b=Rswc+1X3HR8PqhDJ68ICBhcRuxk2O+jMEIeau8SQxFfrmws0h9oZATJ2
-   4lBSBz97pfSFqfgaMyMfqZYzGp0xgDvolPWeUrUaEx77fZmxpA/7ukAie
-   FGly1uGdKWszulI83qCMhmcW5V9r/vfGsvI9pa6PlBSYEF1Ntn6gi1jsr
-   SIkDQOe7+fw8yd/Grza/0qtizBxYlPXQVzv95A7CDUKf7DL94V3+Xt7dc
-   +ZL7d9By1phcBUVdL/7+pkXx7cTnOOXbPGC8uPHEzsVjIXg5aTdpzDIK9
-   VCMwpU66QYwplernOsPXwPdd1640K+iXpHQzIOAlHwoXN96UOhxgxd0Tl
-   A==;
-X-CSE-ConnectionGUID: AMk/xE5ARzSrHOZJYIcOBg==
-X-CSE-MsgGUID: dUb85tSpSz2yIhk4pWODeQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11424"; a="65727957"
+  t=1746530729; x=1778066729;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=oXur4Wa3aEbvmoV3UNsrr0MuBXzZJ8WsH/NJWAQ29h8=;
+  b=dbMlKw6HRgKPshfDOEgUT8FqBPmsmyD1Ouku+Fa+0eIAESYJmExJ8mB9
+   bQk+zPVHmxzplvW5TFyacBljBJGYgIVkupnI1Hy4xkHwCOBWk8uCmKL1y
+   lqHRzS3N8uf0rW5E43m0DaEFdYGBqLsI2lRV5X6H5Jws9Mr3u3ouIhP8R
+   u+jcCMzq7quXx1j8BJb0fq3gTRPyvSM7mjP0qN/LWtVkTAXLkqFRaetUa
+   9xWmqS+LzybD/hlvQ97E7eoKcKAvPaslXPVs/GVoqf3j/mSQ4bGN8YaJW
+   L2I76+9AOchlwKtkgA5AcotaQJmtWU1ObvIgux7Svk1l2bMfL5fEJBRIJ
+   g==;
+X-CSE-ConnectionGUID: iZ5cIwlCTwiMamx/CkX7QQ==
+X-CSE-MsgGUID: pPoq4G9gTBGQfRsotySFcA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11424"; a="58822081"
 X-IronPort-AV: E=Sophos;i="6.15,266,1739865600"; 
-   d="scan'208";a="65727957"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2025 04:23:28 -0700
-X-CSE-ConnectionGUID: soCurtFTT0aPgSHSckSn6g==
-X-CSE-MsgGUID: z91GLQMBQGSUBRLmZSjGyQ==
+   d="scan'208";a="58822081"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2025 04:25:27 -0700
+X-CSE-ConnectionGUID: cawen2x7ShiyupqRUM1VmQ==
+X-CSE-MsgGUID: Meh+IAYzRCax8TTEJbe1vg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,266,1739865600"; 
-   d="scan'208";a="139646881"
-Received: from kuha.fi.intel.com ([10.237.72.152])
-  by fmviesa003.fm.intel.com with SMTP; 06 May 2025 04:23:24 -0700
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Tue, 06 May 2025 14:23:22 +0300
-Date: Tue, 6 May 2025 14:23:22 +0300
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To: amitsd@google.com
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Badhri Jagan Sridharan <badhri@google.com>,
-	=?iso-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	RD Babiera <rdbabiera@google.com>, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Kyle Tso <kyletso@google.com>
-Subject: Re: [PATCH] usb: typec: tcpm/tcpci_maxim: Fix bounds check in
- process_rx()
-Message-ID: <aBnxKrVxurLZ_7k9@kuha.fi.intel.com>
-References: <20250502-b4-new-fix-pd-rx-count-v1-1-e5711ed09b3d@google.com>
+   d="scan'208";a="166517110"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa002.jf.intel.com with ESMTP; 06 May 2025 04:25:23 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 651161BC; Tue, 06 May 2025 14:25:22 +0300 (EEST)
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: akpm@linux-foundation.org,
+	vbabka@suse.cz,
+	surenb@google.com,
+	mhocko@suse.com,
+	jackmanb@google.com,
+	hannes@cmpxchg.org,
+	bp@alien8.de,
+	tglx@linutronix.de,
+	david@redhat.com
+Cc: ast@kernel.org,
+	linux-mm@kvack.org,
+	linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 2/2] mm/page_alloc: Fix race condition in unaccepted memory handling
+Date: Tue,  6 May 2025 14:25:09 +0300
+Message-ID: <20250506112509.905147-3-kirill.shutemov@linux.intel.com>
+X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250506112509.905147-1-kirill.shutemov@linux.intel.com>
+References: <20250506112509.905147-1-kirill.shutemov@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250502-b4-new-fix-pd-rx-count-v1-1-e5711ed09b3d@google.com>
+Content-Transfer-Encoding: 8bit
 
-On Fri, May 02, 2025 at 04:57:03PM -0700, Amit Sunil Dhamne via B4 Relay wrote:
-> From: Amit Sunil Dhamne <amitsd@google.com>
-> 
-> Register read of TCPC_RX_BYTE_CNT returns the total size consisting of:
-> 
->   PD message (pending read) size + 1 Byte for Frame Type (SOP*)
-> 
-> This is validated against the max PD message (`struct pd_message`) size
-> without accounting for the extra byte for the frame type. Note that the
-> struct pd_message does not contain a field for the frame_type. This
-> results in false negatives when the "PD message (pending read)" is equal
-> to the max PD message size.
-> 
-> Fixes: 6f413b559f86 ("usb: typec: tcpci_maxim: Chip level TCPC driver")
-> Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
-> Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
-> Reviewed-by: Kyle Tso <kyletso@google.com>
+The page allocator tracks the number of zones that have unaccepted
+memory using static_branch_enc/dec() and uses that static branch in hot
+paths to determine if it needs to deal with unaccepted memory.
 
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Borisal and Thomas pointed out that the tracking is racy operations on
+static_branch are not serialized against adding/removing unaccepted pages
+to/from the zone.
 
-> ---
->  drivers/usb/typec/tcpm/tcpci_maxim_core.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/usb/typec/tcpm/tcpci_maxim_core.c b/drivers/usb/typec/tcpm/tcpci_maxim_core.c
-> index fd1b80593367641a6f997da2fb97a2b7238f6982..648311f5e3cf135f23b5cc0668001d2f177b9edd 100644
-> --- a/drivers/usb/typec/tcpm/tcpci_maxim_core.c
-> +++ b/drivers/usb/typec/tcpm/tcpci_maxim_core.c
-> @@ -166,7 +166,8 @@ static void process_rx(struct max_tcpci_chip *chip, u16 status)
->  		return;
->  	}
->  
-> -	if (count > sizeof(struct pd_message) || count + 1 > TCPC_RECEIVE_BUFFER_LEN) {
-> +	if (count > sizeof(struct pd_message) + 1 ||
-> +	    count + 1 > TCPC_RECEIVE_BUFFER_LEN) {
->  		dev_err(chip->dev, "Invalid TCPC_RX_BYTE_CNT %d\n", count);
->  		return;
->  	}
-> 
-> ---
-> base-commit: ebd297a2affadb6f6f4d2e5d975c1eda18ac762d
-> change-id: 20250421-b4-new-fix-pd-rx-count-79297ba619b7
-> 
-> Best regards,
-> -- 
-> Amit Sunil Dhamne <amitsd@google.com>
-> 
+The effect of this static_branch optimization is only visible on
+microbenchmark.
 
+Instead of adding more complexity around it, remove it altogether.
+
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Fixes: dcdfdd40fa82 ("mm: Add support for unaccepted memory")
+Link: https://lore.kernel.org/all/20250506092445.GBaBnVXXyvnazly6iF@fat_crate.local
+Reported-by: Borislav Petkov <bp@alien8.de>
+Reported-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org # v6.5+
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Brendan Jackman <jackmanb@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+---
+ mm/internal.h   |  1 -
+ mm/mm_init.c    |  1 -
+ mm/page_alloc.c | 47 -----------------------------------------------
+ 3 files changed, 49 deletions(-)
+
+diff --git a/mm/internal.h b/mm/internal.h
+index e9695baa5922..50c2f590b2d0 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -1595,7 +1595,6 @@ unsigned long move_page_tables(struct pagetable_move_control *pmc);
+ 
+ #ifdef CONFIG_UNACCEPTED_MEMORY
+ void accept_page(struct page *page);
+-void unaccepted_cleanup_work(struct work_struct *work);
+ #else /* CONFIG_UNACCEPTED_MEMORY */
+ static inline void accept_page(struct page *page)
+ {
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index 9659689b8ace..84f14fa12d0d 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -1441,7 +1441,6 @@ static void __meminit zone_init_free_lists(struct zone *zone)
+ 
+ #ifdef CONFIG_UNACCEPTED_MEMORY
+ 	INIT_LIST_HEAD(&zone->unaccepted_pages);
+-	INIT_WORK(&zone->unaccepted_cleanup, unaccepted_cleanup_work);
+ #endif
+ }
+ 
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 5fccf5fce084..a4a4df2daedb 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -7175,16 +7175,8 @@ bool has_managed_dma(void)
+ 
+ #ifdef CONFIG_UNACCEPTED_MEMORY
+ 
+-/* Counts number of zones with unaccepted pages. */
+-static DEFINE_STATIC_KEY_FALSE(zones_with_unaccepted_pages);
+-
+ static bool lazy_accept = true;
+ 
+-void unaccepted_cleanup_work(struct work_struct *work)
+-{
+-	static_branch_dec(&zones_with_unaccepted_pages);
+-}
+-
+ static int __init accept_memory_parse(char *p)
+ {
+ 	if (!strcmp(p, "lazy")) {
+@@ -7209,11 +7201,7 @@ static bool page_contains_unaccepted(struct page *page, unsigned int order)
+ static void __accept_page(struct zone *zone, unsigned long *flags,
+ 			  struct page *page)
+ {
+-	bool last;
+-
+ 	list_del(&page->lru);
+-	last = list_empty(&zone->unaccepted_pages);
+-
+ 	account_freepages(zone, -MAX_ORDER_NR_PAGES, MIGRATE_MOVABLE);
+ 	__mod_zone_page_state(zone, NR_UNACCEPTED, -MAX_ORDER_NR_PAGES);
+ 	__ClearPageUnaccepted(page);
+@@ -7222,28 +7210,6 @@ static void __accept_page(struct zone *zone, unsigned long *flags,
+ 	accept_memory(page_to_phys(page), PAGE_SIZE << MAX_PAGE_ORDER);
+ 
+ 	__free_pages_ok(page, MAX_PAGE_ORDER, FPI_TO_TAIL);
+-
+-	if (last) {
+-		/*
+-		 * There are two corner cases:
+-		 *
+-		 * - If allocation occurs during the CPU bring up,
+-		 *   static_branch_dec() cannot be used directly as
+-		 *   it causes a deadlock on cpu_hotplug_lock.
+-		 *
+-		 *   Instead, use schedule_work() to prevent deadlock.
+-		 *
+-		 * - If allocation occurs before workqueues are initialized,
+-		 *   static_branch_dec() should be called directly.
+-		 *
+-		 *   Workqueues are initialized before CPU bring up, so this
+-		 *   will not conflict with the first scenario.
+-		 */
+-		if (system_wq)
+-			schedule_work(&zone->unaccepted_cleanup);
+-		else
+-			unaccepted_cleanup_work(&zone->unaccepted_cleanup);
+-	}
+ }
+ 
+ void accept_page(struct page *page)
+@@ -7280,20 +7246,12 @@ static bool try_to_accept_memory_one(struct zone *zone)
+ 	return true;
+ }
+ 
+-static inline bool has_unaccepted_memory(void)
+-{
+-	return static_branch_unlikely(&zones_with_unaccepted_pages);
+-}
+-
+ static bool cond_accept_memory(struct zone *zone, unsigned int order,
+ 			       int alloc_flags)
+ {
+ 	long to_accept, wmark;
+ 	bool ret = false;
+ 
+-	if (!has_unaccepted_memory())
+-		return false;
+-
+ 	if (list_empty(&zone->unaccepted_pages))
+ 		return false;
+ 
+@@ -7331,22 +7289,17 @@ static bool __free_unaccepted(struct page *page)
+ {
+ 	struct zone *zone = page_zone(page);
+ 	unsigned long flags;
+-	bool first = false;
+ 
+ 	if (!lazy_accept)
+ 		return false;
+ 
+ 	spin_lock_irqsave(&zone->lock, flags);
+-	first = list_empty(&zone->unaccepted_pages);
+ 	list_add_tail(&page->lru, &zone->unaccepted_pages);
+ 	account_freepages(zone, MAX_ORDER_NR_PAGES, MIGRATE_MOVABLE);
+ 	__mod_zone_page_state(zone, NR_UNACCEPTED, MAX_ORDER_NR_PAGES);
+ 	__SetPageUnaccepted(page);
+ 	spin_unlock_irqrestore(&zone->lock, flags);
+ 
+-	if (first)
+-		static_branch_inc(&zones_with_unaccepted_pages);
+-
+ 	return true;
+ }
+ 
 -- 
-heikki
+2.47.2
+
 
