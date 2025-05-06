@@ -1,330 +1,109 @@
-Return-Path: <stable+bounces-141864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25E00AACF59
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 23:09:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18079AACF7F
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 23:35:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6995C4A522E
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 21:09:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3472D1BA79A6
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 21:35:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EFD3192D6B;
-	Tue,  6 May 2025 21:09:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3026C21882F;
+	Tue,  6 May 2025 21:35:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="VuHQH+aT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CV0IYFxE"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2084.outbound.protection.outlook.com [40.107.93.84])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E598139E;
-	Tue,  6 May 2025 21:09:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.84
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746565772; cv=fail; b=VRSPmOOuIxYE4OaYY1LWpkGCRdD14wChOOMoDNcd9IYhWWR+U6ZXanHPxUJutXV44LJMZRzUCppkhMghp0OYoHdz+/yzAwCRgrJNotjuQNwK0qE3eiCyo/+FuIAgUzoI6emAhKAVePAKVzFwKyfAhFpAe/qinolJJG1Gxtq4i8w=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746565772; c=relaxed/simple;
-	bh=U+cRqdPlX+3Y3Ulrv6GmhMdbUXNNGGlfrIlMWKvvKho=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=X9/Qdsdw8s78erdVvkFuY7sEMJtpfb30MW+ckI+ltOw3e1luZHQc8My2asgg8Fdr6GwtdYo7f2Al/kkyxsBrdtTyKDAi5uqbj4Q+f+xKDBZZ5t+M2OjJRIqsDkz5HXyaqol3g8qnHkbgKydNKg/z5pO/d/VLaj9gSL1DbQUAGes=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=VuHQH+aT; arc=fail smtp.client-ip=40.107.93.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JkM98pa5bLac5LeVj+T/abpH51hVU/ad1FMWkzbjhZatvdh2FQ9v7ksZEgSssViDnBuapZkp8Zbx7iT+ANSfS+hRNsZgz30bnOhuPeX4tl0FvRK6JR3rrtLwbFmgRixPV3oVV5lcWAbQ732tbnnpZS5ZDAo1kHyByFkuTqWt/VUhFO5JLdnSLfjJDaNXbBecHvFUad4cVaQK++ORHrulMmFZ03EQo/SUpT/M2e8eiGec6iG9MgpKvxMYzvwJ+nNhvPXdSskkeIuoZI5t1ZPXsQrZXLgP1CMMPWmmosL8UbvNIRXHWCLLaYTrX4kEqY/7bs2QGCAJ5FjmcbMoq8qVTg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LexVX8ApKvljcmQ19kTQlqapvR2rrjJA4xi625UdRDk=;
- b=Mt5kc/zo726CZLgjjKAyhgX+FjX+f1Qlo2xAaIiRj/CTnwFO8BK8QITULfNI3Ei4eOBCUsjnSQ6c3SL68HNBsO0/khay1CNk3z9W4RogJ4dXlmXpDQ81nzmsZCjAtvaB2OdVacDBxXHi7Ovxl8Z2bsBD1n4JWkIQAohXNjA1jM88cYRVqt98QSCqakM21RIBTu99T/L7kw5+j2If4vaCdjlEKW7uSc//hTNxVEgSvtoCTXOJtWIeGOzQqKuqBDwqHV+KCNfAvpMuovae7sYJZjn9RVuWRlM0k5S8u6zqY8G7UpEMd5h0A+5MJmhN7z/uYKBLW9/ftIWcqJ3KdRQ1xQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=suse.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LexVX8ApKvljcmQ19kTQlqapvR2rrjJA4xi625UdRDk=;
- b=VuHQH+aTQNiDh1JEIWS1hKYNrsguHV82/Jbrp9GvzIgfhLAsRSxgjZ9qJ2fA5JmGoyekF6YjC9AxwPQaA+YykvxnMc8DwQ7QsAV/Fl9Asfw58l6vb/zfW2bzd+Srv5GNQrw50bfsHQfNe+1YB7i2aVj5xlV7oavZTRmVkwwBDac=
-Received: from MW4PR04CA0355.namprd04.prod.outlook.com (2603:10b6:303:8a::30)
- by SA1PR12MB8945.namprd12.prod.outlook.com (2603:10b6:806:375::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.26; Tue, 6 May
- 2025 21:09:25 +0000
-Received: from SJ1PEPF00002321.namprd03.prod.outlook.com
- (2603:10b6:303:8a:cafe::ca) by MW4PR04CA0355.outlook.office365.com
- (2603:10b6:303:8a::30) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8699.26 via Frontend Transport; Tue,
- 6 May 2025 21:09:25 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SJ1PEPF00002321.mail.protection.outlook.com (10.167.242.91) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8722.18 via Frontend Transport; Tue, 6 May 2025 21:09:24 +0000
-Received: from SATLEXMB05.amd.com (10.181.40.146) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 6 May
- 2025 16:09:23 -0500
-Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB05.amd.com
- (10.181.40.146) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 6 May
- 2025 16:09:23 -0500
-Received: from amd-BIRMANPLUS.mshome.net (10.180.168.240) by
- SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39
- via Frontend Transport; Tue, 6 May 2025 16:09:22 -0500
-From: Jason Andryuk <jason.andryuk@amd.com>
-To: Juergen Gross <jgross@suse.com>, Stefano Stabellini
-	<sstabellini@kernel.org>, Oleksandr Tyshchenko
-	<oleksandr_tyshchenko@epam.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>
-CC: Jason Andryuk <jason.andryuk@amd.com>,
-	=?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?=
-	<marmarek@invisiblethingslab.com>, <stable@vger.kernel.org>,
-	<xen-devel@lists.xenproject.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH] xenbus: Use kref to track req lifetime
-Date: Tue, 6 May 2025 17:09:33 -0400
-Message-ID: <20250506210935.5607-1-jason.andryuk@amd.com>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5D351ACEAC;
+	Tue,  6 May 2025 21:35:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746567330; cv=none; b=UsZbGMaF7okIi12q9tiZEUmee2paaVsOhl9k4FNCgVweAP7hySCVmv26+JUSqMNjfUASd1RR7gdBpnOZvxTVLuk2wme7gOjzGnJICt5FwxCZs28rEUQDr+eieGrl3BWbQudVqi+MvySX4mpwpw26VC6hh5lIAWGRgQz2PAkm4Fs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746567330; c=relaxed/simple;
+	bh=TKtp1XPzEnz0nV/IHJfa7zuMDZxO8VXjrfb3mToz8VE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZCZP1DRnFfoAA4mSSowZOjXA0WW99hQoGqv0cQ4qFuPPjFPTKzG6RkAgj+rJDK6yfljDtNpQk1JXgA0mYSat6xnvdaEqlSx1FYSYmg5noUrxeBeNtgagFnfKaSv6kLPjUDGoYcqm5Jx0yBZ4IfQyVR755zKUTLI90xgsw/wDTKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CV0IYFxE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 512D8C4CEE4;
+	Tue,  6 May 2025 21:35:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746567329;
+	bh=TKtp1XPzEnz0nV/IHJfa7zuMDZxO8VXjrfb3mToz8VE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=CV0IYFxEGG3ggtbFUnwPZLVjTKIO7or7fTpnCNZtuLVBAoENhSCQ+NeDR95PU4s53
+	 JYd5MDy5T8UqM7Cdl65/pNb28ZEZd4wNyYmP9uky9ecK8uXp2U5eG/dNTvUVwbcUXs
+	 gF4gnwPQE5imHi1UT1L5m6Lv8Bs3vdzHqxLOs8EKa3wkBTJ7436sLdf3oFOVVB/Spf
+	 SOeqr73xkw8iSUULpqYI7hRsnsrusx9G9yrarLU09r36tSVGcm8F+id/jrr8axyKRk
+	 PHFA7SxUW5Mge0tKAagVbXNDtQlj68O+UBVnmeXYw/DrsbuVlbluQt0LbHj44EGkAx
+	 gqlRRnkk3Dufg==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Chenyuan Yang <chenyuan0y@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	shengjiu.wang@gmail.com,
+	Xiubo.Lee@gmail.com,
+	lgirdwood@gmail.com,
+	perex@perex.cz,
+	tiwai@suse.com,
+	shawnguo@kernel.org,
+	linux-sound@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 01/20] ASoC: imx-card: Adjust over allocation of memory in imx_card_parse_of()
+Date: Tue,  6 May 2025 17:35:04 -0400
+Message-Id: <20250506213523.2982756-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.14.5
 Content-Transfer-Encoding: 8bit
-Received-SPF: None (SATLEXMB05.amd.com: jason.andryuk@amd.com does not
- designate permitted sender hosts)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PEPF00002321:EE_|SA1PR12MB8945:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1a3ed70f-39bd-49f0-e110-08dd8ce247af
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|1800799024|82310400026|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?eXZQNGtuRnM1bnppMDJ1ZU40SGh2M2ZsNDU5VEVpczQ2eisyNHIwdVVSL1ZY?=
- =?utf-8?B?Y0dOQVZTQUlrU2FaY21GQmg1RXJCb3ZpMExHb0VxbENzMk53RGZHQzNqSnha?=
- =?utf-8?B?N3Z2elVEZCtCOHlrR0lQZXYzb1JjQkFZQnZSdjhwQ1FxTGhEYStMRjhMMjB4?=
- =?utf-8?B?K1dac3cwMld0TWNkOWtrU1FYT1dQUm5RMVlTcmphcG4rQ0h0YjdpZy9Tek1E?=
- =?utf-8?B?dlBVdU1PUTV5aVU3Q3U0eXpDWGd5L0FxU2xnTTQxMytNeHZna1pDNUFqV1E3?=
- =?utf-8?B?Z1hsNUxjb1FPenpSdkw4VllvNFJCLy82Nmk0U2ZtelhJbzFyWGVlVnkwSzFD?=
- =?utf-8?B?aVBpd0YySFVuOUM4U1Q3Ry9ZeTh5NkVwR09JclNUeitvT3dxRTM1cjQrdzh5?=
- =?utf-8?B?TjJSVDcycDlhTTNaNnl2NGdRRndrSW43bm15MVVnUTZuQ20xVFJyYkkwWXVw?=
- =?utf-8?B?ZzhqTTVKb3hrTlg3UHZEVk8wWVE0QWoyS0pqbkVvNnd6dzBGZSs5NjdEbzky?=
- =?utf-8?B?dG5yY0Qxa1JPdW9VSU5rQ1FnTDNTYUhHcW5VYU1GMkZreW92U1N0RGIxSWE2?=
- =?utf-8?B?dzdTYnhCR0lwOG8zSEowUnRoaU8xL2ZDMjRpbExHcHJpTDVBTGU2MmxWWnFH?=
- =?utf-8?B?ejRZS3VoR0Mvd2RPZUlVaEF3YktSKy8xM2R0ejVkYkRoNnFQbFZvQzdtVy9E?=
- =?utf-8?B?cTE0MXB4cW4xWGNEMU5rQ05qMUdmTXRzeEpqUmxnTFRMVVBBMlNHVWE5RlZS?=
- =?utf-8?B?ZGtlZzhvVndmL3IvbFQxV3ZvVmFsOUprRUxnSnE2RUtoWmFHOTZXcVVLR0Ns?=
- =?utf-8?B?ZjZIWTgvTURtREFjRHhJU0lBd1lDVStlaThHYW9xZzRHVVFQSUkweGVLSTNF?=
- =?utf-8?B?MW5YeDJGaWdxQ2JsMGNGK0Nla01UVEp0YjNtY0E2dDdBdFoxenRkUHdBSEdV?=
- =?utf-8?B?NGhDMHlJZDd0MkJrVW5pNHdSYnhQRkhOeSsvZHk5eU9HeThvblNUbGpqcnVK?=
- =?utf-8?B?S282dHZsNWdSRVhTODlHVXl5Qjh0SzJKdS9WYlZMNWYvL2pKd3EvZk8vSlNQ?=
- =?utf-8?B?amtjYmw3bmtjeEJGYkcveDFZNnZ2ZVpCdThCcjZ2T2lFNDFCcDBmT1RLMVFB?=
- =?utf-8?B?S1V4VEwyQW9JV2JoMC81Z1ovdkp3VWJBWVIzNmYzOG1mSkQ4L3JQMGNUQjl4?=
- =?utf-8?B?MUxPZjErUmc3WERHVnVJVGExekYzcmNsM1R4ckxUVldKQmxxcTl3SXRxVlhJ?=
- =?utf-8?B?aks5V0RsSkNVdFY1ZEtzUE5FOWZyODZxN0l4elZGTHF5WDd0TExiMnNkVEhr?=
- =?utf-8?B?Q0RTWG9wYndBelFRL1R3cmxFMVlyeHJTNkEvb2JwcjhYR01JTDNCS3RWVStP?=
- =?utf-8?B?VzlYNU4yTi9ydGxyTkRyMTZWZHdNTmI0dEZjVmlWcmpUUHJwN01PMmhLQmJC?=
- =?utf-8?B?MTRpWVpYYUdOdXFhS1BOVCtTc0xwM29BcjhJd3hNUXRObXYzRWdNcU95ZG5K?=
- =?utf-8?B?RGlPbWxhaGVJeGNXdGZOb2FWekxmdnBYbkY5WllIODFFWUJxa3dDb1B2cXFu?=
- =?utf-8?B?SUZUWGJhOEUwZ2hLcDlXQnpTRUVpdlJPb0pMQmlaY1k1bGc2QWcvTjgxYTZU?=
- =?utf-8?B?a3RHOUJwTUE3N3lVbjVlTDM0ZjNBS2ZqdGVOS09lbjZkUng5L3grV3JTQlRX?=
- =?utf-8?B?UDJlVTZUVmNQTFcxZTBMRGZNUzRhemZZSC9nZzREaUl5MTkzU0M1NWtFc3NW?=
- =?utf-8?B?b01jMnFtb1JrMldoeG02dVRwMHArcjVOZUlEenZrdTA5TW5lM2ZUTE9UTVhT?=
- =?utf-8?B?MThEUEg0VEFIOGhkcWpvUnkrRWFXWWVxdHl2dVhxbjJJNG03bS9aMmJCTkRi?=
- =?utf-8?B?eUlmR291SXV0STVFRlc3VmdEVGI1ZkhGSkFIQUlqT29FNFVqRnVwVHZhVEN5?=
- =?utf-8?B?VktTRnh2dTJmd3dNb1RYY0NGSllmemNFcHRBcjdJc0dQZHgrU1JrRWxnc04w?=
- =?utf-8?B?SFp0L2gyZnl4elZOa05pNjE4L3VJQy9ZWUhrbEU4eHBoTFJlUE53am1IR1Qy?=
- =?utf-8?B?MUtFMFVIN0JiVkNxZlk2SWt2ZEkrVkRHdXhkQT09?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(82310400026)(376014);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 May 2025 21:09:24.8239
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1a3ed70f-39bd-49f0-e110-08dd8ce247af
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ1PEPF00002321.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8945
 
-Marek reported seeing a NULL pointer fault in the xenbus_thread
-callstack:
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-RIP: e030:__wake_up_common+0x4c/0x180
-Call Trace:
- <TASK>
- __wake_up_common_lock+0x82/0xd0
- process_msg+0x18e/0x2f0
- xenbus_thread+0x165/0x1c0
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-process_msg+0x18e is req->cb(req).  req->cb is set to xs_wake_up(), a
-thin wrapper around wake_up(), or xenbus_dev_queue_reply().  It seems
-like it was xs_wake_up() in this case.
+[ Upstream commit a9a69c3b38c89d7992fb53db4abb19104b531d32 ]
 
-It seems like req may have woken up the xs_wait_for_reply(), which
-kfree()ed the req.  When xenbus_thread resumes, it faults on the zero-ed
-data.
+Incorrect types are used as sizeof() arguments in devm_kcalloc().
+It should be sizeof(dai_link_data) for link_data instead of
+sizeof(snd_soc_dai_link).
 
-Linux Device Drivers 2nd edition states:
-"Normally, a wake_up call can cause an immediate reschedule to happen,
-meaning that other processes might run before wake_up returns."
-... which would match the behaviour observed.
+This is found by our static analysis tool.
 
-Change to keeping two krefs on each request.  One for the caller, and
-one for xenbus_thread.  Each will kref_put() when finished, and the last
-will free it.
-
-This use of kref matches the description in
-Documentation/core-api/kref.rst
-
-Link: https://lore.kernel.org/xen-devel/ZO0WrR5J0xuwDIxW@mail-itl/
-Reported-by: "Marek Marczykowski-Górecki" <marmarek@invisiblethingslab.com>
-Fixes: fd8aa9095a95 ("xen: optimize xenbus driver for multiple concurrent xenstore accesses")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Link: https://patch.msgid.link/20250406210854.149316-1-chenyuan0y@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-Kinda RFC-ish as I don't know if it fixes Marek's issue.  This does seem
-like the correct approach if we are seeing req free()ed out from under
-xenbus_thread.
+ sound/soc/fsl/imx-card.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
- drivers/xen/xenbus/xenbus.h              |  2 ++
- drivers/xen/xenbus/xenbus_comms.c        |  9 ++++-----
- drivers/xen/xenbus/xenbus_dev_frontend.c |  2 +-
- drivers/xen/xenbus/xenbus_xs.c           | 18 ++++++++++++++++--
- 4 files changed, 23 insertions(+), 8 deletions(-)
-
-diff --git a/drivers/xen/xenbus/xenbus.h b/drivers/xen/xenbus/xenbus.h
-index 13821e7e825e..9ac0427724a3 100644
---- a/drivers/xen/xenbus/xenbus.h
-+++ b/drivers/xen/xenbus/xenbus.h
-@@ -77,6 +77,7 @@ enum xb_req_state {
- struct xb_req_data {
- 	struct list_head list;
- 	wait_queue_head_t wq;
-+	struct kref kref;
- 	struct xsd_sockmsg msg;
- 	uint32_t caller_req_id;
- 	enum xsd_sockmsg_type type;
-@@ -103,6 +104,7 @@ int xb_init_comms(void);
- void xb_deinit_comms(void);
- int xs_watch_msg(struct xs_watch_event *event);
- void xs_request_exit(struct xb_req_data *req);
-+void xs_free_req(struct kref *kref);
+diff --git a/sound/soc/fsl/imx-card.c b/sound/soc/fsl/imx-card.c
+index 21f617f6f9fa8..566214cb3d60c 100644
+--- a/sound/soc/fsl/imx-card.c
++++ b/sound/soc/fsl/imx-card.c
+@@ -543,7 +543,7 @@ static int imx_card_parse_of(struct imx_card_data *data)
+ 	if (!card->dai_link)
+ 		return -ENOMEM;
  
- int xenbus_match(struct device *_dev, const struct device_driver *_drv);
- int xenbus_dev_probe(struct device *_dev);
-diff --git a/drivers/xen/xenbus/xenbus_comms.c b/drivers/xen/xenbus/xenbus_comms.c
-index e5fda0256feb..82df2da1b880 100644
---- a/drivers/xen/xenbus/xenbus_comms.c
-+++ b/drivers/xen/xenbus/xenbus_comms.c
-@@ -309,8 +309,8 @@ static int process_msg(void)
- 			virt_wmb();
- 			req->state = xb_req_state_got_reply;
- 			req->cb(req);
--		} else
--			kfree(req);
-+		}
-+		kref_put(&req->kref, xs_free_req);
- 	}
+-	data->link_data = devm_kcalloc(dev, num_links, sizeof(*link), GFP_KERNEL);
++	data->link_data = devm_kcalloc(dev, num_links, sizeof(*link_data), GFP_KERNEL);
+ 	if (!data->link_data)
+ 		return -ENOMEM;
  
- 	mutex_unlock(&xs_response_mutex);
-@@ -386,14 +386,13 @@ static int process_writes(void)
- 	state.req->msg.type = XS_ERROR;
- 	state.req->err = err;
- 	list_del(&state.req->list);
--	if (state.req->state == xb_req_state_aborted)
--		kfree(state.req);
--	else {
-+	if (state.req->state != xb_req_state_aborted) {
- 		/* write err, then update state */
- 		virt_wmb();
- 		state.req->state = xb_req_state_got_reply;
- 		wake_up(&state.req->wq);
- 	}
-+	kref_put(&state.req->kref, xs_free_req);
- 
- 	mutex_unlock(&xb_write_mutex);
- 
-diff --git a/drivers/xen/xenbus/xenbus_dev_frontend.c b/drivers/xen/xenbus/xenbus_dev_frontend.c
-index 46f8916597e5..f5c21ba64df5 100644
---- a/drivers/xen/xenbus/xenbus_dev_frontend.c
-+++ b/drivers/xen/xenbus/xenbus_dev_frontend.c
-@@ -406,7 +406,7 @@ void xenbus_dev_queue_reply(struct xb_req_data *req)
- 	mutex_unlock(&u->reply_mutex);
- 
- 	kfree(req->body);
--	kfree(req);
-+	kref_put(&req->kref, xs_free_req);
- 
- 	kref_put(&u->kref, xenbus_file_free);
- 
-diff --git a/drivers/xen/xenbus/xenbus_xs.c b/drivers/xen/xenbus/xenbus_xs.c
-index d32c726f7a12..dcf9182c8451 100644
---- a/drivers/xen/xenbus/xenbus_xs.c
-+++ b/drivers/xen/xenbus/xenbus_xs.c
-@@ -112,6 +112,12 @@ static void xs_suspend_exit(void)
- 	wake_up_all(&xs_state_enter_wq);
- }
- 
-+void xs_free_req(struct kref *kref)
-+{
-+	struct xb_req_data *req = container_of(kref, struct xb_req_data, kref);
-+	kfree(req);
-+}
-+
- static uint32_t xs_request_enter(struct xb_req_data *req)
- {
- 	uint32_t rq_id;
-@@ -237,6 +243,12 @@ static void xs_send(struct xb_req_data *req, struct xsd_sockmsg *msg)
- 	req->caller_req_id = req->msg.req_id;
- 	req->msg.req_id = xs_request_enter(req);
- 
-+	/*
-+	 * Take 2nd ref.  One for this thread, and the second for the
-+	 * xenbus_thread.
-+	 */
-+	kref_get(&req->kref);
-+
- 	mutex_lock(&xb_write_mutex);
- 	list_add_tail(&req->list, &xb_write_list);
- 	notify = list_is_singular(&xb_write_list);
-@@ -261,8 +273,8 @@ static void *xs_wait_for_reply(struct xb_req_data *req, struct xsd_sockmsg *msg)
- 	if (req->state == xb_req_state_queued ||
- 	    req->state == xb_req_state_wait_reply)
- 		req->state = xb_req_state_aborted;
--	else
--		kfree(req);
-+
-+	kref_put(&req->kref, xs_free_req);
- 	mutex_unlock(&xb_write_mutex);
- 
- 	return ret;
-@@ -291,6 +303,7 @@ int xenbus_dev_request_and_reply(struct xsd_sockmsg *msg, void *par)
- 	req->cb = xenbus_dev_queue_reply;
- 	req->par = par;
- 	req->user_req = true;
-+	kref_init(&req->kref);
- 
- 	xs_send(req, msg);
- 
-@@ -319,6 +332,7 @@ static void *xs_talkv(struct xenbus_transaction t,
- 	req->num_vecs = num_vecs;
- 	req->cb = xs_wake_up;
- 	req->user_req = false;
-+	kref_init(&req->kref);
- 
- 	msg.req_id = 0;
- 	msg.tx_id = t.id;
 -- 
-2.34.1
+2.39.5
 
 
