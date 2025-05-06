@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-141842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 691E5AAC980
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 17:28:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A9EAAAC9C0
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 17:43:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84B443BA817
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 15:28:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D06E13B1DEF
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 15:41:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD85D2820DC;
-	Tue,  6 May 2025 15:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89E0F284662;
+	Tue,  6 May 2025 15:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="3ViS0R0r"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="lm37oZMx"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2079.outbound.protection.outlook.com [40.107.223.79])
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2055.outbound.protection.outlook.com [40.107.243.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49A0327FB08
-	for <stable@vger.kernel.org>; Tue,  6 May 2025 15:28:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.79
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90184283FF3
+	for <stable@vger.kernel.org>; Tue,  6 May 2025 15:41:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.55
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746545330; cv=fail; b=ml1bQZ4NYMcM9nNDTqym/vU0BzgZiC4UkqNASG9OWqIX5+ntytoO1h3DNWoAcrG9y31kBp+067Si85S5GUx/CfQipm64VY7PzvtecVTXpyC7heT8+6fI3+EXSwWVmocb33whKkYDegJZFoXAp/53RBukOc6hWzl1ILN2mXEQiXQ=
+	t=1746546111; cv=fail; b=O1/pBLMlcUJgVOuDQzJ19LRqa5E6iKqfIYaQt8XeQYVb5ScWZTNsn/gAuqNHQ4jhYtzqP9EXHd/v+tv9hwRPvmSwNc/srtPHiiqhkktni7MEcmnliMhAqF64uKticC36jwkwPdIsdTIYNLWAfaq48fxmLbNEVKKOyOVW60ZBV3I=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746545330; c=relaxed/simple;
-	bh=I6WTwrLjWcP6lRZiR3WL2zW0cj1/dzRvfii1p38SAfE=;
+	s=arc-20240116; t=1746546111; c=relaxed/simple;
+	bh=V6u9DMQ7ItCfaRNJ+CHD2LbE3qKBxCx0ghsjzQ7fbkk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=a3eBkRa3bQyfPP9LytWNYpJHI9L1Tp2SQL8Lsdv7b3TDSSTtyHC4JysgNQL8UxoQFxHYBmB6RiFXteqqwS1JJpFO70eCDcAQ5jV1A3BGKsE4Xh3ph90iuiEm8Jh8XwVPCeEpJMxNHtmwcNR6Uxlf+GTGDTosZzGMXRfe2AimVsg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=3ViS0R0r; arc=fail smtp.client-ip=40.107.223.79
+	 In-Reply-To:Content-Type; b=edJUOqLiLshmQs75IO7D4WFI3xjlJxAX2LIYH7Gy/+mxq5iIGYW9sFDIGWPHpwdckWAUGOTHB4DPqGO6THOU5p9XX2Y0Cd+zXFj7ML+Th4eVHzpvMz6LSn2zaTCMIAT+4CISvb37xTHb2tkDn/xnMSydW5Ad1boyRgcwxyc7Yc8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=lm37oZMx; arc=fail smtp.client-ip=40.107.243.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=zJAY8pGC+bJb2iqPNkQrK/e87GleGWaCu0oe7mXN7QBNY+zxIAIdFdJetJnK1ginnVfx4S07uNZqVQJ+Z/MGL6Ktmk2FFovyO+tlmrp18cx4bHl+rzZd3sEdWoVrEz17ztxW8TQ/nyAJVOlLiqeAELORLR7JaETNt4sgJzur/jAoLgkysTT2PcMWisCVZkEi7IN97x0F7K/HiKxvzOOI6H024P/Kk9JJIR4U3zinmNJur1QGeQqG+/lca5sCVn0PQY3eBZZ0zffH37QjGkdooa4xJCjXvjlG7T+G+E36qGRK/hRzPNw5VLDwaqSPmgVo2V1taU56/T4WxcJmRhKDNA==
+ b=x6j1+cLKumuNuylyk+kDay5WRqDUPBdEwD6kktY8dir3VqavkvfI9F9FlaVqQ9+FeTs/E+nV1tFqg5fw0B5UQRDYORd9v8e91185yt3I/o7z69dLNXxNILcduQksLiWPPQ7xlIIhdx3zVdN706l16JTpyFHo3YVRrru6adJdE3aVZdeiAdtgsWKLPT72gjbRtSGfxWNSqNRSEqBrNVGJfRzNekk6gm8+jOB5jvguP/EwgLbI53g8azY41KOuO5Qynt2s5mkTBubuAq373SPdL56v/w4+WXA3AMpwuG0lWnzqn6uREC17H6G7RcGwOjg/jBTh8ceYe+7Zi5b8NHklaw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=qDXBP7V9qt9ODM4ezPfUc3cEwBVKclch7/6IDjVMfNE=;
- b=b54j8c731D4SrcHwtzCeCgfojZMN9RXoY7V475kfLXZnWWZWFKx06bEI2C2ON+wgXwXRZcvGpBlAtVX0MLsA1/VOUfDdgIQsAf19XEUXH04U7TePKPkZhCvw5Na9f6fIEfHzm0QZIyfyEXdhMgSXb5HKZ7zHt9txmSZ3F8fgtOIdtT/aHvgHMTJqfPp72nEc3aL+HKcjdEeKo7sgroTdpb6h/QvpCjJt4qCC/b6s/sTrOglYWnyEZ3K8qOmIIdt9WK/k496PfGFNELlR+eabBqBNTxTO8FbUpyjln3WHvWnYevvafxXfFkknZz2CwAf3i8AiE87avBA8KN8/FTh5nA==
+ bh=MAil9ctgXV55VeBNVqCzVGE1hAqDxoxRxEc2kBa580k=;
+ b=DSdC3ha88b2/jnjUn+OZS/zKv/2yQO/2YQdIw6oxgqLoQbAhFIohcN6gOVLuUmPV8OqARuPm0fkJYiBKNM3AET/XlOUdPjvYfvSEc+o9dSYledYCWaN7sIxY0ktSsSJA7peMbKeaQdjeBCjRVuasZd1p6ZmdyyccEqL20vSQo6QAAF8Mu+ZvbYYYxB2HAmAgi1Sf8MWsqAAKEYysZSnwttuS7pjHQWdsxZLk2hcbuggb4qYFBfudS8OvnmVujn/vxXnEv/kY8fuLobt1nDObd69cVYMzJ4UyKTRuCFbkvj18EI2M1IGBrTqfnRyDt2DO2pXdkww5MxFZXwRk2AcLLA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=linux.intel.com smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=qDXBP7V9qt9ODM4ezPfUc3cEwBVKclch7/6IDjVMfNE=;
- b=3ViS0R0r3X9xcCFxiIiueJdsgH/8vtcGhLxHvmcSUGXjhyLF/bH047BNXyFH+UnHaIa/5DSz1GUNnA2ufkKEFp7EN3nyE8QSVRiUz9VAScrQjvqEI4+8+Y3YYoTjt7+uH+l3yUvLEqMgE1FYrGtKCo4lKmb74HMlThiW4/4DJ/g=
-Received: from BLAPR03CA0013.namprd03.prod.outlook.com (2603:10b6:208:32b::18)
- by SA5PPF0EB7D076B.namprd12.prod.outlook.com (2603:10b6:80f:fc04::8c5) with
+ bh=MAil9ctgXV55VeBNVqCzVGE1hAqDxoxRxEc2kBa580k=;
+ b=lm37oZMxeeOktD1HH/zzg17idwVj3OhtpBZAkfNjDnDOSsWtzEeeGdxcVeJrqWdRw8jtH7bxqtubYdx7VJQp2TISHo/al5w3Zi/gc0tpT017OMy9Mr2p8kAFQ+NSX8/tinWiXoZnyosCCVzya52LXTRstSTLid8ijGkzZFMtgVk=
+Received: from SA9PR03CA0022.namprd03.prod.outlook.com (2603:10b6:806:20::27)
+ by MW6PR12MB8958.namprd12.prod.outlook.com (2603:10b6:303:240::15) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.27; Tue, 6 May
- 2025 15:28:39 +0000
-Received: from BL02EPF0002992B.namprd02.prod.outlook.com
- (2603:10b6:208:32b:cafe::4a) by BLAPR03CA0013.outlook.office365.com
- (2603:10b6:208:32b::18) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8699.31 via Frontend Transport; Tue,
- 6 May 2025 15:28:39 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.20; Tue, 6 May
+ 2025 15:41:44 +0000
+Received: from SA2PEPF0000150B.namprd04.prod.outlook.com
+ (2603:10b6:806:20:cafe::cc) by SA9PR03CA0022.outlook.office365.com
+ (2603:10b6:806:20::27) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8699.29 via Frontend Transport; Tue,
+ 6 May 2025 15:41:44 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -63,18 +63,18 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
 Received: from SATLEXMB03.amd.com (165.204.84.17) by
- BL02EPF0002992B.mail.protection.outlook.com (10.167.249.56) with Microsoft
+ SA2PEPF0000150B.mail.protection.outlook.com (10.167.242.43) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8722.18 via Frontend Transport; Tue, 6 May 2025 15:28:38 +0000
-Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB03.amd.com
+ 15.20.8722.18 via Frontend Transport; Tue, 6 May 2025 15:41:44 +0000
+Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB03.amd.com
  (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 6 May
- 2025 10:28:38 -0500
-Received: from [172.19.71.207] (10.180.168.240) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
- Transport; Tue, 6 May 2025 10:28:37 -0500
-Message-ID: <351a1bba-0b2e-a4bf-f2f6-50b1810cda95@amd.com>
-Date: Tue, 6 May 2025 08:28:32 -0700
+ 2025 10:41:43 -0500
+Received: from [172.19.71.207] (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
+ Transport; Tue, 6 May 2025 10:41:43 -0500
+Message-ID: <abf77771-ca6a-3b29-f5e7-fbb11c53844a@amd.com>
+Date: Tue, 6 May 2025 08:41:42 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,204 +83,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.11.0
-Subject: Re: [PATCH] accel/ivpu: Improve buffer object logging
+Subject: Re: [PATCH] accel/ivpu: Use firmware names from upstream repo
 Content-Language: en-US
 To: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
 	<dri-devel@lists.freedesktop.org>
 CC: <jeff.hugo@oss.qualcomm.com>, <stable@vger.kernel.org>
-References: <20250506091303.262034-1-jacek.lawrynowicz@linux.intel.com>
+References: <20250506092030.280276-1-jacek.lawrynowicz@linux.intel.com>
 From: Lizhi Hou <lizhi.hou@amd.com>
-In-Reply-To: <20250506091303.262034-1-jacek.lawrynowicz@linux.intel.com>
+In-Reply-To: <20250506092030.280276-1-jacek.lawrynowicz@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
 Received-SPF: None (SATLEXMB03.amd.com: lizhi.hou@amd.com does not designate
  permitted sender hosts)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0002992B:EE_|SA5PPF0EB7D076B:EE_
-X-MS-Office365-Filtering-Correlation-Id: 47f70373-1010-4844-5a15-08dd8cb2acd5
+X-MS-TrafficTypeDiagnostic: SA2PEPF0000150B:EE_|MW6PR12MB8958:EE_
+X-MS-Office365-Filtering-Correlation-Id: e9252e40-1bc1-4f27-4f66-08dd8cb480e4
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|82310400026|36860700013|376014|7053199007;
+	BCL:0;ARA:13230040|1800799024|376014|82310400026|36860700013|7053199007;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?TjJ6ekc3clNNVTd0Y3BicVdSMTg4ZDBMR3Y1TE1rZVZKM3E5bnZHRkl4N2Fr?=
- =?utf-8?B?VDl1bUtVRDZSUU1TSXlQQXc1TktLNkJBZ0t5V09OWnJOMVZkRzJLZWdUZ3o4?=
- =?utf-8?B?ckpKa1g1WWpXdHNDZDI0Kzh2QWFmVGYxamR4STBRRWdyRGVhQTdoWnp1RXRQ?=
- =?utf-8?B?dXlNcjdEWEZmY0FSc2RJU2ZaaFJWU1hVTTh5RDBJWGgxZU1ZaDhxWllWTWxF?=
- =?utf-8?B?WHJxYmcvRzV5a3F6RVhkeXg2NUl0SlVNTTc3bmc2Q3FITHJoNUtaRXFJenBw?=
- =?utf-8?B?U3IxQ3RDOXBIWHlXRkVIVzFiUXB6MFBuakpPRHdscUFwdjgwV1NOOGRGZHVp?=
- =?utf-8?B?TSs5R2xTdnlFSnpncEY2d2JxRzdCcGtlU2JFbVJZYXN6di9MK0lucS85T3Bj?=
- =?utf-8?B?bU9tZVhXMTVVVTFPN2JHSjJ2ekxyTlV6VFZVY2RMUzV1RVBDaVUza1NQNlFO?=
- =?utf-8?B?eXZDL1FLZ3NYeXZtUnBPTnlWcGRnWnVqblRzdDN4YzhGSDNqN05DbktpRG5w?=
- =?utf-8?B?TDQveE5wQStTNjlDTlhlUStrZ1ByakdnTlJTRnJRVUM2YWF6WEwvaWdmVWZq?=
- =?utf-8?B?NWQ0K3dzaTJHVGJ3OWRRaVdDWlk5L0EyRWw2Q0tSMEFwUUp0Zld2Mjc3S21Q?=
- =?utf-8?B?RzNWOW5NQU5oVEc1VWZKZHJxV21XaEZTTkZOanlTaFhjb2N5NEd4ME1GTHpY?=
- =?utf-8?B?L1l1UjJzZzh3U0htODhEU0hOSGhxVG9wV2NOK0pRMTI1dGNzQ1RPTXp6dWdX?=
- =?utf-8?B?cDNpTDRmYjlyWUhzb2hSMklLZGdKMlpISTAxbWRhS0NaMWVBYVB0S2pvMG9y?=
- =?utf-8?B?N0xNdmhKS1lhMThTQW12dVZlbVd2cnhKWUpaRE45TXorQmNYcEFvM2dDVWxu?=
- =?utf-8?B?RjR0YUV1Vk9JWnd3R3pmUGdQVnFTdXNKUktyVmRzZXZPODAwV0VKOURoVEpF?=
- =?utf-8?B?RnpyOTllRjRUNHVqQjVHNXAxZjlzVFJxNC9sT3hCSzRTcnFweDNxMFE1N0FV?=
- =?utf-8?B?bDdwU1Z6NkZ2alBnUEowaTRwZ1VaL0JudnF6REYvdER3SXJNRnR2cUJ0MExi?=
- =?utf-8?B?MWdCeUJFZ1NoSGxkVUpjRGpxdk9SWjFoQkg3cmNNVU1QbFJaQ3EwejNyNVpx?=
- =?utf-8?B?cml3UUwrV2JTcENPdjlPVzhHK2pVRXR6N3dtNzFTYjFEMDdkM1Z0SllJbTUr?=
- =?utf-8?B?bTZBZlQ4QWNsbjJROXpoZFl4Z0RyQ2tZL3Z0bTNPK294NVlCdEVuaTVKNzVT?=
- =?utf-8?B?UHVpQjljd094aW1MRzR3T1Z0ZXRFT2pqS2JwZUJYdTVaL0QvSDNxZDRPQjlU?=
- =?utf-8?B?SEdXQXVycHo4NVFYdzN1d0FjTVo1ZlZzOHRJT0V3bUxhR25pbExNWHZiRG9V?=
- =?utf-8?B?MUdybTluRFNwb3dES1MwNkNqa1VaQW9JT0dkUGVFY0dwVWV5R3lSYnB1cEQ5?=
- =?utf-8?B?ZE5NK2xMQVl2ZlhPUmRubHI3UWdWQXJuVDFmeHZFOG10OGRRWWVzZEc2aHgw?=
- =?utf-8?B?TDVRUVZxSEM1UEIyTkVUdGRRNXhmd3BpRzdlY1Y2VHU1RGRrVnR6cEJtVXBM?=
- =?utf-8?B?YU0wSzlWNU1KLzJFL004bkVIQmJITlppNENXK1RGYlpSeXdMYzc1ZG9Lc2ha?=
- =?utf-8?B?eWh2aUY4M05ta3J5YkFtU1RoVEN4WklpVFZ1Ly9HVnN5WWxHOXFOYjVlMFBN?=
- =?utf-8?B?SzA2bG9aZEFNWWd6RzBITlk3dXFDUEdZVlVhcWJ4S2V5NGsrdWk2M2F4LytO?=
- =?utf-8?B?NWoxbGtaVzl6U3FkOVIzVW1ZQmo5N2ZSanBoRXlTT3J3RnB0WmYzWFdWYWN3?=
- =?utf-8?B?YmRwbkxEN0E0dWg3TmlYS0VmRGxJdkpMNjkwK3F2b3F4aktJaGxQajkwRE1B?=
- =?utf-8?B?TFdoaytnenY5VTZadEZvRUZrNmp5eERuMjhSZEhNTitVTHREL1Zic05NWGR5?=
- =?utf-8?B?V29zbGJWR3Z1MXVxeTNLNU5JZXFoSGpTTnhzc0FQYXN3Y0lBKzlKYUxJVWVX?=
- =?utf-8?B?Rk1Rc1RUc2FYRDBrcmloNUlHdHVBV3BJVkQ3TVovOXJjc21KMzlLMkVUUmR2?=
- =?utf-8?Q?9jaiuo?=
+	=?utf-8?B?R3k0UFkvUHhxa1JuOUxuelVKcm9MUlROT3Z5c3NvODJWdmxwUWFUZ3pybTY0?=
+ =?utf-8?B?OEZ4VUcyR2kwUi83QXUxaUF5TS9PUWlMdmFNTzhwWXkzUkl4MG1nUzJWWEtK?=
+ =?utf-8?B?clZwY2wwZzFMS0E1d0R2UHAxOHhNUTRMTjJRV1hqTEFhSkZFQ3RpeS9rL2hK?=
+ =?utf-8?B?VklRZGJLdTBkNXZQOEZieXFqZUlrcEhWL3hPclJOWUFvYkUvbVo5ZVFLRk9y?=
+ =?utf-8?B?ZE1mRVcwT3ljRUZQSDRnNGl6UVAyYytwSEtjNXpxbkZXRHZDVjVkZjFBUHRh?=
+ =?utf-8?B?bXp2bW5QN0p2OWZHaEhWd2t2djFjRFBpUmNCWXp2bkVPL1dTZE12dng4OVhL?=
+ =?utf-8?B?cGlwTjVsM2xkYXYwODZGb2lJb2pxZk1rMnhpdzF3bkRMZTRMdENsMmc3ZndB?=
+ =?utf-8?B?Rlh4LzEzQXJXQXpTUFYyOTB0SEZESHl5V0liOStQUzZDaUJnakg1YVZ3YW4r?=
+ =?utf-8?B?QmJieTdXTllxalc1cWlTYk4xcDJKN1pBZDkxZzZHMjAvdmdXUFVzYUpDa3Rk?=
+ =?utf-8?B?YlBNcnViSERqWUZNT1o4eXl2aGlKbitBSjh2Vm02M1RIUlRQUTVmV3IxbTJo?=
+ =?utf-8?B?Tm5NOFBBc2orWGtMcmRJcFF6WXdBa3B5VXhMZjk2aENqekRBaVowMlVhQ0V2?=
+ =?utf-8?B?VW0vUmZ0T3FPR1VienJJKzd2SElESVc3OWU1QytBSS9aeHJSL1RERXhIVGdH?=
+ =?utf-8?B?STduVDR6Y0V5TlZqRlp1SmpGRjZUNkNaTG5hZmdjNGpzeG9ZSEhWWFV6bHRQ?=
+ =?utf-8?B?eHFjWlRkbGlweUozTGF1RUp6M3JIVk8zMDR6bVVLRFVCWitLeHhFVHBHQzRt?=
+ =?utf-8?B?YjBiWm5WUW42WlJ0WFlMQ0JpclMrNkNRSll2eFYyeTVaczE4eEdwZTZ0MXNw?=
+ =?utf-8?B?b2t0N3ErYlg3aFJIelRWa2pLd1hocHNIdWhVZ0UwcElQSWFYQ2pVMmpiaERv?=
+ =?utf-8?B?RVBIS29Qc2pzYyt0ajhFWThqM09GYjBGQ2NSOUh0QmhkYWFJaFU2L3V6cHZ6?=
+ =?utf-8?B?ZEtSK3pHRFNKWFA5dDRrZVV3THphblRZYmErUUZ5TEhUVDNFVlVjcGg1UVov?=
+ =?utf-8?B?SjlmOUh5ME9xU043Vjl5VytjUERZQm1sL2ZwQW1zdGFUWExLaEJpMUhtWXlh?=
+ =?utf-8?B?WGhZK2oyQk5jck1DQytpVU8zWW5BdWhxV29rd2Q2bDJzWGpzdmpSK1BRYk1i?=
+ =?utf-8?B?VDMwd3pJRjNGaEVkODhWeGlWNkFZbFFTTzdqNjR0MjhGOEdzWWhhcWV6RTIw?=
+ =?utf-8?B?Z2NiaHl6ZjNQbmFHeGNqZ2FwbkNsTTVyT1B4UFFOTHZDbDZwejBqN3JiMk9p?=
+ =?utf-8?B?MkxtQUZoKzM1MU9SOWx6V3NCWFNFczJsQmpwYVRqYUEwSkJOWS9kaTlLTGFw?=
+ =?utf-8?B?RWkwaFlEMysxWm9ockIya3ova29VbDVzZU13eHgydDNCdWVHYjJXcDBCQ0VP?=
+ =?utf-8?B?SVFQdnRqWlRvaHR3RlFzNytNanhnYXpidndZaHRXS1Uvb1pnZjNIaHlwSzMv?=
+ =?utf-8?B?WVIvY0NzcnpYcVhBbmQrWU8rcGRRdzJLOXZSWmJETE9sNjVJR25JWEhQY1Mv?=
+ =?utf-8?B?M3RFTzN5bnl6Sk1wUFcxem9aZE0weTJSUExLdDVPSE9zVmZpL29GS3MxSU5N?=
+ =?utf-8?B?WlE1Z2J0Y3owaGFDeE5SbnlJWFh1UkxkYXlWSHZUZGVaUHRyU1FIS0hod210?=
+ =?utf-8?B?U2REWXJHOTBnbFhkZzdxRng0dTYvdzdaYzZqTkxiRm5xVEZZQ0ZBa2Y1VVNl?=
+ =?utf-8?B?bm5abDhXLzR0aUk0aEtNRVF1S0ZlOFpxaU5yZFJZL1A3MlBDT1ZpUXV5ak5w?=
+ =?utf-8?B?b2JxcEsyZ0djcDh2dXNSSVFvaXJmZFhON2RLSk9ia0J0WUVwdHNFOXRtcDNk?=
+ =?utf-8?B?eDlDNkxBaHF2WmdBV1ZPaEkvTVZWUnZqaGo1b21IejZiTC92d2FRZ2hxUTFX?=
+ =?utf-8?B?WTE0U1VONnhjdy8vWE56YjZrVUdXb3MzR3lueFlLQnhKSGgzZnd4ZGM1M3Y3?=
+ =?utf-8?B?enJvUTFyMXRqdXhJekt2eGkvYWJrVFBseGE1QlVYcmVLOGkrT0tRQ2s5clN0?=
+ =?utf-8?Q?+uSTwH?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700013)(376014)(7053199007);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(82310400026)(36860700013)(7053199007);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 May 2025 15:28:38.7766
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 May 2025 15:41:44.0332
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 47f70373-1010-4844-5a15-08dd8cb2acd5
+X-MS-Exchange-CrossTenant-Network-Message-Id: e9252e40-1bc1-4f27-4f66-08dd8cb480e4
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF0002992B.namprd02.prod.outlook.com
+	SA2PEPF0000150B.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA5PPF0EB7D076B
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB8958
 
-On 5/6/25 02:13, Jacek Lawrynowicz wrote:
-> - Fix missing alloc log when drm_gem_handle_create() fails in
->    drm_vma_node_allow() and open callback is not called
-> - Add ivpu_bo->ctx_id that enables to log the actual context
->    id instead of using 0 as default
-> - Add couple WARNs and errors so we can catch more memory
->    corruption issues
+
+On 5/6/25 02:20, Jacek Lawrynowicz wrote:
+> Use FW names from linux-firmware repo instead of deprecated ones.
 >
-> Fixes: 37dee2a2f433 ("accel/ivpu: Improve buffer object debug logs")
-> Cc: <stable@vger.kernel.org> # v6.8+
+> Fixes: c140244f0cfb ("accel/ivpu: Add initial Panther Lake support")
+> Cc: <stable@vger.kernel.org> # v6.13+
 > Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
 > ---
->   drivers/accel/ivpu/ivpu_gem.c | 25 +++++++++++++++++--------
->   drivers/accel/ivpu/ivpu_gem.h |  1 +
->   2 files changed, 18 insertions(+), 8 deletions(-)
+>   drivers/accel/ivpu/ivpu_fw.c | 12 ++++++------
+>   1 file changed, 6 insertions(+), 6 deletions(-)
 >
-> diff --git a/drivers/accel/ivpu/ivpu_gem.c b/drivers/accel/ivpu/ivpu_gem.c
-> index e0d242d9f3e50..a76cbf4761f8c 100644
-> --- a/drivers/accel/ivpu/ivpu_gem.c
-> +++ b/drivers/accel/ivpu/ivpu_gem.c
-> @@ -28,7 +28,7 @@ static inline void ivpu_dbg_bo(struct ivpu_device *vdev, struct ivpu_bo *bo, con
->   {
->   	ivpu_dbg(vdev, BO,
->   		 "%6s: bo %8p vpu_addr %9llx size %8zu ctx %d has_pages %d dma_mapped %d mmu_mapped %d wc %d imported %d\n",
-> -		 action, bo, bo->vpu_addr, ivpu_bo_size(bo), bo->ctx ? bo->ctx->id : 0,
-> +		 action, bo, bo->vpu_addr, ivpu_bo_size(bo), bo->ctx_id,
->   		 (bool)bo->base.pages, (bool)bo->base.sgt, bo->mmu_mapped, bo->base.map_wc,
->   		 (bool)drm_gem_is_imported(&bo->base.base));
->   }
-> @@ -94,8 +94,6 @@ ivpu_bo_alloc_vpu_addr(struct ivpu_bo *bo, struct ivpu_mmu_context *ctx,
->   		ivpu_err(vdev, "Failed to add BO to context %u: %d\n", ctx->id, ret);
->   	}
->   
-> -	ivpu_dbg_bo(vdev, bo, "alloc");
-> -
->   	mutex_unlock(&bo->lock);
->   
->   	drm_dev_exit(idx);
-> @@ -215,7 +213,7 @@ struct drm_gem_object *ivpu_gem_prime_import(struct drm_device *dev,
->   	return ERR_PTR(ret);
->   }
->   
-> -static struct ivpu_bo *ivpu_bo_alloc(struct ivpu_device *vdev, u64 size, u32 flags)
-> +static struct ivpu_bo *ivpu_bo_alloc(struct ivpu_device *vdev, u64 size, u32 flags, u32 ctx_id)
->   {
->   	struct drm_gem_shmem_object *shmem;
->   	struct ivpu_bo *bo;
-> @@ -233,6 +231,7 @@ static struct ivpu_bo *ivpu_bo_alloc(struct ivpu_device *vdev, u64 size, u32 fla
->   		return ERR_CAST(shmem);
->   
->   	bo = to_ivpu_bo(&shmem->base);
-> +	bo->ctx_id = ctx_id;
->   	bo->base.map_wc = flags & DRM_IVPU_BO_WC;
->   	bo->flags = flags;
->   
-> @@ -240,6 +239,8 @@ static struct ivpu_bo *ivpu_bo_alloc(struct ivpu_device *vdev, u64 size, u32 fla
->   	list_add_tail(&bo->bo_list_node, &vdev->bo_list);
->   	mutex_unlock(&vdev->bo_list_lock);
->   
-> +	ivpu_dbg_bo(vdev, bo, "alloc");
-> +
->   	return bo;
->   }
->   
-> @@ -278,8 +279,13 @@ static void ivpu_gem_bo_free(struct drm_gem_object *obj)
->   	mutex_unlock(&vdev->bo_list_lock);
->   
->   	drm_WARN_ON(&vdev->drm, !dma_resv_test_signaled(obj->resv, DMA_RESV_USAGE_READ));
-> +	drm_WARN_ON(&vdev->drm, ivpu_bo_size(bo) == 0);
-> +	drm_WARN_ON(&vdev->drm, bo->base.vaddr);
->   
->   	ivpu_bo_unbind_locked(bo);
-> +	drm_WARN_ON(&vdev->drm, bo->mmu_mapped);
-> +	drm_WARN_ON(&vdev->drm, bo->ctx);
-> +
->   	mutex_destroy(&bo->lock);
->   
->   	drm_WARN_ON(obj->dev, refcount_read(&bo->base.pages_use_count) > 1);
-> @@ -314,7 +320,7 @@ int ivpu_bo_create_ioctl(struct drm_device *dev, void *data, struct drm_file *fi
->   	if (size == 0)
->   		return -EINVAL;
->   
-> -	bo = ivpu_bo_alloc(vdev, size, args->flags);
-> +	bo = ivpu_bo_alloc(vdev, size, args->flags, file_priv->ctx.id);
->   	if (IS_ERR(bo)) {
->   		ivpu_err(vdev, "Failed to allocate BO: %pe (ctx %u size %llu flags 0x%x)",
->   			 bo, file_priv->ctx.id, args->size, args->flags);
-> @@ -322,7 +328,10 @@ int ivpu_bo_create_ioctl(struct drm_device *dev, void *data, struct drm_file *fi
->   	}
->   
->   	ret = drm_gem_handle_create(file, &bo->base.base, &args->handle);
-> -	if (!ret)
-> +	if (ret)
-> +		ivpu_err(vdev, "Failed to create handle for BO: %pe (ctx %u size %llu flags 0x%x)",
-> +			 bo, file_priv->ctx.id, args->size, args->flags);
-> +	else
->   		args->vpu_addr = bo->vpu_addr;
->   
->   	drm_gem_object_put(&bo->base.base);
-> @@ -345,7 +354,7 @@ ivpu_bo_create(struct ivpu_device *vdev, struct ivpu_mmu_context *ctx,
->   	drm_WARN_ON(&vdev->drm, !PAGE_ALIGNED(range->end));
->   	drm_WARN_ON(&vdev->drm, !PAGE_ALIGNED(size));
->   
-> -	bo = ivpu_bo_alloc(vdev, size, flags);
-> +	bo = ivpu_bo_alloc(vdev, size, flags, IVPU_GLOBAL_CONTEXT_MMU_SSID);
->   	if (IS_ERR(bo)) {
->   		ivpu_err(vdev, "Failed to allocate BO: %pe (vpu_addr 0x%llx size %llu flags 0x%x)",
->   			 bo, range->start, size, flags);
-> @@ -452,7 +461,7 @@ static void ivpu_bo_print_info(struct ivpu_bo *bo, struct drm_printer *p)
->   	mutex_lock(&bo->lock);
->   
->   	drm_printf(p, "%-9p %-3u 0x%-12llx %-10lu 0x%-8x %-4u",
-> -		   bo, bo->ctx ? bo->ctx->id : 0, bo->vpu_addr, bo->base.base.size,
-> +		   bo, bo->ctx_id, bo->vpu_addr, bo->base.base.size,
->   		   bo->flags, kref_read(&bo->base.base.refcount));
->   
->   	if (bo->base.pages)
-> diff --git a/drivers/accel/ivpu/ivpu_gem.h b/drivers/accel/ivpu/ivpu_gem.h
-> index a222a9ec9d611..0c93118c85bd3 100644
-> --- a/drivers/accel/ivpu/ivpu_gem.h
-> +++ b/drivers/accel/ivpu/ivpu_gem.h
-> @@ -21,6 +21,7 @@ struct ivpu_bo {
->   	u64 vpu_addr;
->   	u32 flags;
->   	u32 job_status; /* Valid only for command buffer */
-> +	u32 ctx_id;
-Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
->   	bool mmu_mapped;
+> diff --git a/drivers/accel/ivpu/ivpu_fw.c b/drivers/accel/ivpu/ivpu_fw.c
+> index ccaaf6c100c02..9db741695401e 100644
+> --- a/drivers/accel/ivpu/ivpu_fw.c
+> +++ b/drivers/accel/ivpu/ivpu_fw.c
+> @@ -55,18 +55,18 @@ static struct {
+>   	int gen;
+>   	const char *name;
+>   } fw_names[] = {
+> -	{ IVPU_HW_IP_37XX, "vpu_37xx.bin" },
+> +	{ IVPU_HW_IP_37XX, "intel/vpu/vpu_37xx_v1.bin" },
+
+What if old only vpu_37xx.bin is installed but not intel/vpu/vpu_37xx_v1?
+
+Maybe just put *_v1 line in front without removing { ..., "vpu_37xx.bin"} ?
+
+
+Thanks,
+
+Lizhi
+
+>   	{ IVPU_HW_IP_37XX, "intel/vpu/vpu_37xx_v0.0.bin" },
+> -	{ IVPU_HW_IP_40XX, "vpu_40xx.bin" },
+> +	{ IVPU_HW_IP_40XX, "intel/vpu/vpu_40xx_v1.bin" },
+>   	{ IVPU_HW_IP_40XX, "intel/vpu/vpu_40xx_v0.0.bin" },
+> -	{ IVPU_HW_IP_50XX, "vpu_50xx.bin" },
+> +	{ IVPU_HW_IP_50XX, "intel/vpu/vpu_50xx_v1.bin" },
+>   	{ IVPU_HW_IP_50XX, "intel/vpu/vpu_50xx_v0.0.bin" },
 >   };
 >   
+>   /* Production fw_names from the table above */
+> -MODULE_FIRMWARE("intel/vpu/vpu_37xx_v0.0.bin");
+> -MODULE_FIRMWARE("intel/vpu/vpu_40xx_v0.0.bin");
+> -MODULE_FIRMWARE("intel/vpu/vpu_50xx_v0.0.bin");
+> +MODULE_FIRMWARE("intel/vpu/vpu_37xx_v1.bin");
+> +MODULE_FIRMWARE("intel/vpu/vpu_40xx_v1.bin");
+> +MODULE_FIRMWARE("intel/vpu/vpu_50xx_v1.bin");
+>   
+>   static int ivpu_fw_request(struct ivpu_device *vdev)
+>   {
 
