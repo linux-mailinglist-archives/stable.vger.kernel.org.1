@@ -1,150 +1,193 @@
-Return-Path: <stable+bounces-141811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32ACFAAC58A
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 15:16:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88C2DAAC5A2
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 15:19:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FC221BA28BA
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 13:13:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 03C737B6FE2
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 13:18:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFFB627FD78;
-	Tue,  6 May 2025 13:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71F2A281365;
+	Tue,  6 May 2025 13:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amazon.de header.i=@amazon.de header.b="bob6YepX"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="hIpoj2cL";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="czMkkcc4";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="hIpoj2cL";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="czMkkcc4"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-2101.amazon.com (smtp-fw-2101.amazon.com [72.21.196.25])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0B3C21773D;
-	Tue,  6 May 2025 13:13:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=72.21.196.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19F74281358
+	for <stable@vger.kernel.org>; Tue,  6 May 2025 13:19:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746537190; cv=none; b=U51dffdaLG5gL95KSftsBB41RDZdUaRxmOQaLRrp++j7daB6ufGCOCHoRQgfI0BIUqDA0xip3brgTwoXkm5Hh3OWCU9uvWVE21PCYJgcBfOJn5vCF1X+M/82yWM9HMFaICLXk5uro/SJFCaPJFZfRIkY0EixjT/RhzHaA59+7ac=
+	t=1746537559; cv=none; b=Y854b3C5NoB5DQ7U/wyNgwbhcb3bUtwCC6FJgLaMSqwZuR03qfhuzeQtD6/QOzLtnHnpkwmGODv2H6jF6NiMZjcCcdQm88nXwuyXXyoytdpsT5czqIiUwVDVsU1GUspFEaWUkVX4uHPg9dbn2r8w9f2Nkz77wia28AJbHYSQrpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746537190; c=relaxed/simple;
-	bh=YMI0vj0OrGpE/eP6t8dJ6R2e/dntMlSP+AkMjMPh4h4=;
-	h=From:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=NgJjdsxdJHiTWiqfBXQhi+WrO4GKjfs5snC0g+E4LgzcC/LRinDOx+EfW1cpH9tRufZSa6gNYbt1E/LOVIWmmM1m603y5woZBJK6wKpeEKPfJ8qG3D4HozuNcx2hkz7EOwLRYjEmKeDk7CGKxARHQMC+XDrx6LWil67xYCSErWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (1024-bit key) header.d=amazon.de header.i=@amazon.de header.b=bob6YepX; arc=none smtp.client-ip=72.21.196.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazon201209;
-  t=1746537189; x=1778073189;
-  h=from:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=eroNId8QJzKeQKmRo8q0ozQ4Sy0oITvhszR0rqprBLQ=;
-  b=bob6YepXO5zQMZ9M8G1aoivh0yzGLDI841vQ0llDoypVSIq+M7HYhIES
-   87+uJeb9puJlZ35mw84aIJ9DgWHgLJjZuSilZlDfC2M8O1FREwp4i3anU
-   +k04HtjrXClbsuzfSXReRpEYAee7GZaNjdoOCF7vCNitHPcQL8wzwn9Dj
-   Y=;
-X-IronPort-AV: E=Sophos;i="6.15,266,1739836800"; 
-   d="scan'208";a="489596055"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.43.8.6])
-  by smtp-border-fw-2101.iad2.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2025 13:13:05 +0000
-Received: from EX19MTAEUC002.ant.amazon.com [10.0.17.79:30777]
- by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.36.85:2525] with esmtp (Farcaster)
- id 11723db5-b7e5-4450-80c2-cb2f93ea780e; Tue, 6 May 2025 13:13:02 +0000 (UTC)
-X-Farcaster-Flow-ID: 11723db5-b7e5-4450-80c2-cb2f93ea780e
-Received: from EX19D008EUC003.ant.amazon.com (10.252.51.205) by
- EX19MTAEUC002.ant.amazon.com (10.252.51.181) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Tue, 6 May 2025 13:13:02 +0000
-Received: from EX19D008EUC001.ant.amazon.com (10.252.51.165) by
- EX19D008EUC003.ant.amazon.com (10.252.51.205) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Tue, 6 May 2025 13:13:02 +0000
-Received: from EX19D008EUC001.ant.amazon.com ([fe80::9611:c62b:a7ba:aee1]) by
- EX19D008EUC001.ant.amazon.com ([fe80::9611:c62b:a7ba:aee1%3]) with mapi id
- 15.02.1544.014; Tue, 6 May 2025 13:13:02 +0000
-From: "Heyne, Maximilian" <mheyne@amazon.de>
-CC: "Heyne, Maximilian" <mheyne@amazon.de>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown
-	<lenb@kernel.org>, Sudeep Holla <sudeep.holla@arm.com>, Ard Biesheuvel
-	<ardb@kernel.org>, Jeremy Linton <jeremy.linton@arm.com>, Catalin Marinas
-	<catalin.marinas@arm.com>, "linux-acpi@vger.kernel.org"
-	<linux-acpi@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: [PATCH] ACPI/PPTT: fix off-by-one error
-Thread-Topic: [PATCH] ACPI/PPTT: fix off-by-one error
-Thread-Index: AQHbvoiY1LpDnn/Xs0e1Rmh//GxC4g==
-Date: Tue, 6 May 2025 13:13:02 +0000
-Message-ID: <20250506-draco-taped-15f475cd@mheyne-amazon>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Content-Type: text/plain; charset="iso-8859-1"
+	s=arc-20240116; t=1746537559; c=relaxed/simple;
+	bh=kIHdzZUWaPSLTucHGZ4qp7MHA4evJhh6qsl6uhhy/YA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hmUzVSrcTm/RU/qc1Ka5+sE0XXCTWZLUgEOapPANgQeVZ9lUEAC/KyT8HQF8XgXtmkwBRvqrD5RpbRlrqb654h6PuqRGpBujxe3htbOOLSR4cW15EG6e004UqdNGTLRc4jEN09E7f8PInTcS/nycLwqdTu49sE8hc64XvNiA0cE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=hIpoj2cL; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=czMkkcc4; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=hIpoj2cL; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=czMkkcc4; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 3FA29211BF;
+	Tue,  6 May 2025 13:19:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1746537555;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1mabCLK1CTWLb6dTp8UKgjcLgS2EFRv+m63UaRzr+4k=;
+	b=hIpoj2cLeneGAz9bfBIcqJ+ksPzEyQOlvl8h8g5NnAaq2xDQSSFsW7L0w5nGnUS2DQqDxd
+	QQgcSGL4P9PLhJGjQwQ2XRuyv8s6fjKiBYSjs/siDQGjX5Zf8ZIpsu0Nw4Lt7/vQAr2iNt
+	64xH40FSNDDezrY8xycVWBm6kd6d/fk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1746537555;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1mabCLK1CTWLb6dTp8UKgjcLgS2EFRv+m63UaRzr+4k=;
+	b=czMkkcc4aCrr9X5Mcd6OpopnaecCpIOpGEGePcxXfzuf68ozuhr+8ESODe1pIVcQcOQ7ni
+	5t1SNzBos5altNAQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1746537555;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1mabCLK1CTWLb6dTp8UKgjcLgS2EFRv+m63UaRzr+4k=;
+	b=hIpoj2cLeneGAz9bfBIcqJ+ksPzEyQOlvl8h8g5NnAaq2xDQSSFsW7L0w5nGnUS2DQqDxd
+	QQgcSGL4P9PLhJGjQwQ2XRuyv8s6fjKiBYSjs/siDQGjX5Zf8ZIpsu0Nw4Lt7/vQAr2iNt
+	64xH40FSNDDezrY8xycVWBm6kd6d/fk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1746537555;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1mabCLK1CTWLb6dTp8UKgjcLgS2EFRv+m63UaRzr+4k=;
+	b=czMkkcc4aCrr9X5Mcd6OpopnaecCpIOpGEGePcxXfzuf68ozuhr+8ESODe1pIVcQcOQ7ni
+	5t1SNzBos5altNAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0C6D8137CF;
+	Tue,  6 May 2025 13:19:15 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id ou1ZAlMMGmjwOQAAD6G6ig
+	(envelope-from <dsterba@suse.cz>); Tue, 06 May 2025 13:19:15 +0000
+Date: Tue, 6 May 2025 15:19:13 +0200
+From: David Sterba <dsterba@suse.cz>
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Qu Wenruo <wqu@suse.com>, Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>, clm@fb.com, josef@toxicpanda.com,
+	linux-btrfs@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.14 099/642] btrfs: prevent inline data extents
+ read from touching blocks beyond its range
+Message-ID: <20250506131913.GD9140@twin.jikos.cz>
+Reply-To: dsterba@suse.cz
+References: <20250505221419.2672473-1-sashal@kernel.org>
+ <20250505221419.2672473-99-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250505221419.2672473-99-sashal@kernel.org>
+User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.00 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	HAS_REPLYTO(0.30)[dsterba@suse.cz];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	REPLYTO_ADDR_EQ_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.cz:replyto];
+	RCVD_COUNT_TWO(0.00)[2];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[]
+X-Spam-Score: -4.00
+X-Spam-Flag: NO
 
-Commit 7ab4f0e37a0f ("ACPI PPTT: Fix coding mistakes in a couple of
-sizeof() calls") corrects the processer entry size but unmasked a longer
-standing bug where the last entry in the structure can get skipped due
-to an off-by-one mistake if the last entry ends exactly at the end of
-the ACPI subtable.
+On Mon, May 05, 2025 at 06:05:15PM -0400, Sasha Levin wrote:
+> From: Qu Wenruo <wqu@suse.com>
+> 
+> [ Upstream commit 1a5b5668d711d3d1ef447446beab920826decec3 ]
+> 
+> Currently reading an inline data extent will zero out the remaining
+> range in the page.
+> 
+> This is not yet causing problems even for block size < page size
+> (subpage) cases because:
+> 
+> 1) An inline data extent always starts at file offset 0
+>    Meaning at page read, we always read the inline extent first, before
+>    any other blocks in the page. Then later blocks are properly read out
+>    and re-fill the zeroed out ranges.
+> 
+> 2) Currently btrfs will read out the whole page if a buffered write is
+>    not page aligned
+>    So a page is either fully uptodate at buffered write time (covers the
+>    whole page), or we will read out the whole page first.
+>    Meaning there is nothing to lose for such an inline extent read.
+> 
+> But it's still not ideal:
+> 
+> - We're zeroing out the page twice
+>   Once done by read_inline_extent()/uncompress_inline(), once done by
+>   btrfs_do_readpage() for ranges beyond i_size.
+> 
+> - We're touching blocks that don't belong to the inline extent
+>   In the incoming patches, we can have a partial uptodate folio, of
+>   which some dirty blocks can exist while the page is not fully uptodate:
+> 
+>   The page size is 16K and block size is 4K:
+> 
+>   0         4K        8K        12K        16K
+>   |         |         |/////////|          |
+> 
+>   And range [8K, 12K) is dirtied by a buffered write, the remaining
+>   blocks are not uptodate.
+> 
+>   If range [0, 4K) contains an inline data extent, and we try to read
+>   the whole page, the current behavior will overwrite range [8K, 12K)
+>   with zero and cause data loss.
+> 
+> So to make the behavior more consistent and in preparation for future
+> changes, limit the inline data extents read to only zero out the range
+> inside the first block, not the whole page.
+> 
+> Reviewed-by: Filipe Manana <fdmanana@suse.com>
+> Signed-off-by: Qu Wenruo <wqu@suse.com>
+> Signed-off-by: David Sterba <dsterba@suse.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-The error manifests for instance on EC2 Graviton Metal instances with
-
-  ACPI PPTT: PPTT table found, but unable to locate core 63 (63)
-  [...]
-  ACPI: SPE must be homogeneous
-
-Fixes: 2bd00bcd73e5 ("ACPI/PPTT: Add Processor Properties Topology Table pa=
-rsing")
-Cc: stable@vger.kernel.org
-Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
----
- drivers/acpi/pptt.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
-index f73ce6e13065d..4364da90902e5 100644
---- a/drivers/acpi/pptt.c
-+++ b/drivers/acpi/pptt.c
-@@ -231,7 +231,7 @@ static int acpi_pptt_leaf_node(struct acpi_table_header=
- *table_hdr,
- 			     sizeof(struct acpi_table_pptt));
- 	proc_sz =3D sizeof(struct acpi_pptt_processor);
- =
-
--	while ((unsigned long)entry + proc_sz < table_end) {
-+	while ((unsigned long)entry + proc_sz <=3D table_end) {
- 		cpu_node =3D (struct acpi_pptt_processor *)entry;
- 		if (entry->type =3D=3D ACPI_PPTT_TYPE_PROCESSOR &&
- 		    cpu_node->parent =3D=3D node_entry)
-@@ -273,7 +273,7 @@ static struct acpi_pptt_processor *acpi_find_processor_=
-node(struct acpi_table_he
- 	proc_sz =3D sizeof(struct acpi_pptt_processor);
- =
-
- 	/* find the processor structure associated with this cpuid */
--	while ((unsigned long)entry + proc_sz < table_end) {
-+	while ((unsigned long)entry + proc_sz <=3D table_end) {
- 		cpu_node =3D (struct acpi_pptt_processor *)entry;
- =
-
- 		if (entry->length =3D=3D 0) {
--- =
-
-2.47.1
-
-
-
-
-Amazon Web Services Development Center Germany GmbH
-Tamara-Danz-Str. 13
-10243 Berlin
-Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
-Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
-Sitz: Berlin
-Ust-ID: DE 365 538 597
-
+This is not a stable dependency and the patch is not fixing anything
+but a preparation so this does not make much sense for stable backports,
+please drop it. Thanks.
 
