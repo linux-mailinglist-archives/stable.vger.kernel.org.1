@@ -1,143 +1,146 @@
-Return-Path: <stable+bounces-141739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AB55AAB887
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:36:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38CC4AAB881
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:36:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B8CB3BA2D0
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:28:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4D5F97ABEAC
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:35:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77791272E7F;
-	Tue,  6 May 2025 03:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A73B32AB8E;
+	Tue,  6 May 2025 03:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="N63aY4LC"
+	dkim=pass (1024-bit key) header.d=linuxonhyperv.com header.i=@linuxonhyperv.com header.b="QzMDCDaS"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 501DB34D2B3;
-	Tue,  6 May 2025 00:52:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FAAC34FB19;
+	Tue,  6 May 2025 00:56:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746492741; cv=none; b=bt7/yE0G8SJN28FR13y3T5cuIueTBdsk9YOTY7/BA8mW7FOu2keSkFBrLDq52PS0TKJKL5cREcQ28fKrT+68MqBnPHLo71YEXqO/UEin4ATzdYVoHDN4txMW+mjzpq8SKEWVhp3CdtpT0F+Z4HIX+mjd+bx56ATJ+Ey29nn2PPw=
+	t=1746493011; cv=none; b=pvqETdVqjFkBXWW6TVYe0QqbFa6EQsKY+DamQS1XvPv/ez05U4DNniVDiDzvH4v89+K7hvfDfX80McJ1sWd3NJnqfwA5cF/2kF6L2vuQBLw3/2G0OQhpFPH94acu/59N3Ymb47z/rwFD3SjdduTcKyWcWQa3MLxma5Sgimpshd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746492741; c=relaxed/simple;
-	bh=EqFsCWOwjwAUcIHJxhy1ULIGTniQIjjShStO0nXv03U=;
-	h=Date:To:From:Subject:Message-Id; b=GFyM2qkrbB6zxHwP/SiUlergwZw6nTX+4JkCRvPXWGeRZskhXZXrVVnqfoqyBuGxc3vBkjmw3CWv//YeKw/B3pE34Agrq8KzKqcg8cyeJoc4RZ/o6sDpa+uHOA3yXGOKCJ+39bQlyYNcw5K9h3iTCOfMZviwIRb0AskeQEo7sKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=N63aY4LC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD82BC4CEE4;
-	Tue,  6 May 2025 00:52:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1746492739;
-	bh=EqFsCWOwjwAUcIHJxhy1ULIGTniQIjjShStO0nXv03U=;
-	h=Date:To:From:Subject:From;
-	b=N63aY4LC6+zlKgBQEexax7m/i8bY3W8HnVCtwKR9GbDeQyOC2MR+gDW7hoLRzfG4O
-	 Yyo4a0S9xDa41d3LYlE8abTLuiKD5x0U4dP9hcA7nAXNWA7Nvra/Q+40QXcGGqERxc
-	 +u29wKPTDH0zLkSBEq9lLWU9Oa+/meDYFEx++Rtw=
-Date: Mon, 05 May 2025 17:52:19 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,minchan@kernel.org,igor.b@beldev.am,senozhatsky@chromium.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + zsmalloc-dont-underflow-size-calculation-in-zs_obj_write.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250506005219.AD82BC4CEE4@smtp.kernel.org>
+	s=arc-20240116; t=1746493011; c=relaxed/simple;
+	bh=KXhn6Y28CWw7SHrD0L20soN5/9bptpnT4a0FcY/qBd4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=Uq842eRTzE47FatH8+EpL+9fFHtNPfdiwuQgXo0YEEC0tc7yXMCsV1wxooguZjPul/bxpDjTu0TiNqz2qCAwjoxv3J8PbCujjKBeKkmD4RHNMYtnUOIUv6vQxyUvXVNsypy/R7BsecrXNzsY2h3i0QWhYD2u3Ourg6zQu7V9Iz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxonhyperv.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linuxonhyperv.com header.i=@linuxonhyperv.com header.b=QzMDCDaS; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxonhyperv.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1202)
+	id 53D592115DC2; Mon,  5 May 2025 17:56:44 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 53D592115DC2
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linuxonhyperv.com;
+	s=default; t=1746493004;
+	bh=t61EzT3XMgXNN1USOK5BwI5jrOfGuZzmM3tXBa1w7Cc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=QzMDCDaS+do82auib7/8d/X+ARpIQnf2bRJjFyEVjoX34FJE5WAHAKFyeGfxkvtjT
+	 XyZKiunbVLtCJe697+riB264id8qBNJ+1oqOo1FZt5apXHEsNRcr4VUCarE5RzyVz3
+	 5vskgQtf5Od5igujU/Javho4JFluwxnMSgnavbG4=
+From: longli@linuxonhyperv.com
+To: "K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-hyperv@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Long Li <longli@microsoft.com>,
+	stable@vger.kernel.org
+Subject: [Patch v3 1/5] Drivers: hv: Allocate interrupt and monitor pages aligned to system page boundary
+Date: Mon,  5 May 2025 17:56:33 -0700
+Message-Id: <1746492997-4599-2-git-send-email-longli@linuxonhyperv.com>
+X-Mailer: git-send-email 1.8.3.1
+In-Reply-To: <1746492997-4599-1-git-send-email-longli@linuxonhyperv.com>
+References: <1746492997-4599-1-git-send-email-longli@linuxonhyperv.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
+From: Long Li <longli@microsoft.com>
 
-The patch titled
-     Subject: zsmalloc: don't underflow size calculation in zs_obj_write()
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     zsmalloc-dont-underflow-size-calculation-in-zs_obj_write.patch
+There are use cases that interrupt and monitor pages are mapped to
+user-mode through UIO, so they need to be system page aligned. Some
+Hyper-V allocation APIs introduced earlier broke those requirements.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/zsmalloc-dont-underflow-size-calculation-in-zs_obj_write.patch
+Fix this by using page allocation functions directly for interrupt
+and monitor pages.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: zsmalloc: don't underflow size calculation in zs_obj_write()
-Date: Sun, 4 May 2025 20:00:22 +0900
-
-Do not mix class->size and object size during offsets/sizes calculation in
-zs_obj_write().  Size classes can merge into clusters, based on
-objects-per-zspage and pages-per-zspage characteristics, so some size
-classes can store objects smaller than class->size.  This becomes
-problematic when object size is much smaller than class->size - we can
-determine that object spans two physical pages, because we use a larger
-class->size for this, while the actual object is much smaller and fits one
-physical page, so there is nothing to write to the second page and
-memcpy() size calculation underflows.
-
-We always know the exact size in bytes of the object that we are about to
-write (store), so use it instead of class->size.
-
-Link: https://lkml.kernel.org/r/20250504110650.2783619-1-senozhatsky@chromium.org
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Reported-by: Igor Belousov <igor.b@beldev.am>
-Tested-by: Igor Belousov <igor.b@beldev.am>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: ca48739e59df ("Drivers: hv: vmbus: Move Hyper-V page allocator to arch neutral code")
+Signed-off-by: Long Li <longli@microsoft.com>
 ---
+ drivers/hv/connection.c | 23 +++++++++++++++++------
+ 1 file changed, 17 insertions(+), 6 deletions(-)
 
- mm/zsmalloc.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
---- a/mm/zsmalloc.c~zsmalloc-dont-underflow-size-calculation-in-zs_obj_write
-+++ a/mm/zsmalloc.c
-@@ -1243,19 +1243,19 @@ void zs_obj_write(struct zs_pool *pool,
- 	class = zspage_class(pool, zspage);
- 	off = offset_in_page(class->size * obj_idx);
+diff --git a/drivers/hv/connection.c b/drivers/hv/connection.c
+index 8351360bba16..be490c598785 100644
+--- a/drivers/hv/connection.c
++++ b/drivers/hv/connection.c
+@@ -206,11 +206,20 @@ int vmbus_connect(void)
+ 	INIT_LIST_HEAD(&vmbus_connection.chn_list);
+ 	mutex_init(&vmbus_connection.channel_mutex);
  
--	if (off + class->size <= PAGE_SIZE) {
-+	if (!ZsHugePage(zspage))
-+		off += ZS_HANDLE_SIZE;
++	/*
++	 * The following Hyper-V interrupt and monitor pages can be used by
++	 * UIO for mapping to user-space, so they should always be allocated on
++	 * system page boundaries. The system page size must be >= the Hyper-V
++	 * page size.
++	 */
++	BUILD_BUG_ON(PAGE_SIZE < HV_HYP_PAGE_SIZE);
 +
-+	if (off + mem_len <= PAGE_SIZE) {
- 		/* this object is contained entirely within a page */
- 		void *dst = kmap_local_zpdesc(zpdesc);
+ 	/*
+ 	 * Setup the vmbus event connection for channel interrupt
+ 	 * abstraction stuff
+ 	 */
+-	vmbus_connection.int_page = hv_alloc_hyperv_zeroed_page();
++	vmbus_connection.int_page =
++		(void *)__get_free_page(GFP_KERNEL | __GFP_ZERO);
+ 	if (vmbus_connection.int_page == NULL) {
+ 		ret = -ENOMEM;
+ 		goto cleanup;
+@@ -225,8 +234,8 @@ int vmbus_connect(void)
+ 	 * Setup the monitor notification facility. The 1st page for
+ 	 * parent->child and the 2nd page for child->parent
+ 	 */
+-	vmbus_connection.monitor_pages[0] = hv_alloc_hyperv_page();
+-	vmbus_connection.monitor_pages[1] = hv_alloc_hyperv_page();
++	vmbus_connection.monitor_pages[0] = (void *)__get_free_page(GFP_KERNEL);
++	vmbus_connection.monitor_pages[1] = (void *)__get_free_page(GFP_KERNEL);
+ 	if ((vmbus_connection.monitor_pages[0] == NULL) ||
+ 	    (vmbus_connection.monitor_pages[1] == NULL)) {
+ 		ret = -ENOMEM;
+@@ -342,21 +351,23 @@ void vmbus_disconnect(void)
+ 		destroy_workqueue(vmbus_connection.work_queue);
  
--		if (!ZsHugePage(zspage))
--			off += ZS_HANDLE_SIZE;
- 		memcpy(dst + off, handle_mem, mem_len);
- 		kunmap_local(dst);
- 	} else {
- 		/* this object spans two pages */
- 		size_t sizes[2];
+ 	if (vmbus_connection.int_page) {
+-		hv_free_hyperv_page(vmbus_connection.int_page);
++		free_page((unsigned long)vmbus_connection.int_page);
+ 		vmbus_connection.int_page = NULL;
+ 	}
  
--		off += ZS_HANDLE_SIZE;
- 		sizes[0] = PAGE_SIZE - off;
- 		sizes[1] = mem_len - sizes[0];
+ 	if (vmbus_connection.monitor_pages[0]) {
+ 		if (!set_memory_encrypted(
+ 			(unsigned long)vmbus_connection.monitor_pages[0], 1))
+-			hv_free_hyperv_page(vmbus_connection.monitor_pages[0]);
++			free_page((unsigned long)
++				vmbus_connection.monitor_pages[0]);
+ 		vmbus_connection.monitor_pages[0] = NULL;
+ 	}
  
-_
-
-Patches currently in -mm which might be from senozhatsky@chromium.org are
-
-zsmalloc-dont-underflow-size-calculation-in-zs_obj_write.patch
-zsmalloc-prefer-the-the-original-pages-node-for-compressed-data-fix.patch
-zram-modernize-writeback-interface.patch
-zram-modernize-writeback-interface-v3.patch
-zram-modernize-writeback-interface-v4.patch
-zsmalloc-cleanup-headers-includes.patch
-documentation-zram-update-idle-pages-tracking-documentation.patch
+ 	if (vmbus_connection.monitor_pages[1]) {
+ 		if (!set_memory_encrypted(
+ 			(unsigned long)vmbus_connection.monitor_pages[1], 1))
+-			hv_free_hyperv_page(vmbus_connection.monitor_pages[1]);
++			free_page((unsigned long)
++				vmbus_connection.monitor_pages[1]);
+ 		vmbus_connection.monitor_pages[1] = NULL;
+ 	}
+ }
+-- 
+2.34.1
 
 
