@@ -1,161 +1,155 @@
-Return-Path: <stable+bounces-141750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E344AAB927
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:51:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E3DBAAB9F1
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 09:09:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCF451C26F32
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:46:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69F32162075
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:06:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99DD728643A;
-	Tue,  6 May 2025 04:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 797EF22D9FA;
+	Tue,  6 May 2025 04:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GbWo8vOG"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iS4XINEN"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F25302039
-	for <stable@vger.kernel.org>; Tue,  6 May 2025 01:57:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746496676; cv=none; b=TZERUg3LgUqcG2LckD8E1Z5ZNF35OOeXWFUkkSxWD0f2AzAAH8R1PztHHpkI3q98ck9uJ0MU3IBu6dPqeNnbz6C0xVgnvQEn+1SM2UEhnSEdwdcm/1alRqjxPxtJ8h4+pqnXjgOzf2KguBBWuI/IhEruoJ+0pxBxgKA8zjYjQc4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746496676; c=relaxed/simple;
-	bh=3s7Hp5cIAh2gzAdflFBnqXwP/wo95uEvSqq+OEM9wOg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FqhW/RNRIi/ai8Qk26eP2E0O75fi5GHpzs3zxYEO50gf4q/rhy9Bl7Ly1hVx82ZKpAr2/QnOZ6KCnoNRznvqNLdy4M+tWBwOILNgnlzBhKwy0TChd8XaxTW9ppsJWKH0uFSnGq1AFqz3lGWiUjJCoKRwqpKNpvQsPKgW1yFA7So=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GbWo8vOG; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1746496672;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xMLcPl3iKBUpkeNrh92Lo4eyOS4pTDnll1BJ+NR3yFc=;
-	b=GbWo8vOGws3vDcPygZZdQsJoGW9U96Mt1DGPsmzT2zcvSvOnDA/wrgv1tNe84Gc+3BqGPH
-	WB3ZEhi8bi/r8kxJOO2vseblEVJwENhDybzRa7WyY3M1r08gIUJCw1RSPMlhWd1OGDUoAS
-	avvVew9ls2ZNNZVbvK0acxmwYie46Xg=
-Received: from mail-il1-f198.google.com (mail-il1-f198.google.com
- [209.85.166.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-622-hgTSLUC-Pl29w3CT06OXdg-1; Mon, 05 May 2025 21:57:51 -0400
-X-MC-Unique: hgTSLUC-Pl29w3CT06OXdg-1
-X-Mimecast-MFC-AGG-ID: hgTSLUC-Pl29w3CT06OXdg_1746496670
-Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-3d586b968cfso102078595ab.1
-        for <stable@vger.kernel.org>; Mon, 05 May 2025 18:57:51 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746496670; x=1747101470;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xMLcPl3iKBUpkeNrh92Lo4eyOS4pTDnll1BJ+NR3yFc=;
-        b=qH+j/OZ+LmANiDWvXchuPhCCZmmBUshufjaOSXmKV3j1rSWoha9o65nUV9/sTfP003
-         gUonO40BPkfX3gaghShY4vZgpMZ0jGCYi0xOwG5wb6BuQPXNuguq4ikdsAGsrEyE0ayD
-         wxNQbfwX5VWMcl8IPjSHpF4y84vTdgtrebtVyCIiAA5iFFTAA6RRA0PnhktGjmySRx3c
-         vqc28l6Wbt88FxEIgrpScLbhTGn6diVViJ+DeTTOb88VhUjWfOf8m45c8qUWsOSOh6vy
-         4cgfRsmS+zSYkel1dzBPexfa7s85M+BkdnJcKxEn6Yk5R3ZkdtqB3BMvcQComRjgOtpX
-         dsJA==
-X-Forwarded-Encrypted: i=1; AJvYcCV0Cu5RrZdTPib36js2YS6lQqRcXhsuICgGTBcjEGwh4+pG1sWdnFP9SlFGrp+cfBrdNuqUGxc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzzoZDTp/CfAZSHpZSm4JLeqRpd/MA4PzZ+gY+pn93y24QC2LTF
-	8BgDFgJQYNF4pCpkrCyCq7NSs47n9YClGB2Y24053d3Y2VOuPhay4ZfK82QJCaEKMipyT58exwe
-	VZN4sXl5HHGLFP2SVYt/5IQhl1rra14i6CYwkZAYHpLamrz1G6EozsZeNBMAr1GUP
-X-Gm-Gg: ASbGncvuo4kS0+4sLTxCa/dLTUeYBpkZJXCBoCDdgxrJ32C3Av/4uDAVIoCJaE4M5Uq
-	WfiNPaI/HJGSvdyFaAsNYbNPHIE1ygGxRr2tawrnvRzGE7QOU9zm8U30894M3bQ69oE7GFnLC1y
-	K52LZ+fC7KFHxRAZGS3q5lKbqisTdz+kicZSbKPjqbT6y00ZrycgSoQLV7c5nYKpNIkjYeZ9Bwg
-	bVr5fWPplxT86UHkxggCtIH3OT9EmOFk9YEavzC593agNUrOD6FkX+Ml3NFAb99+yPNSYTBstCi
-	YFYiogF1Boz3XL1VTqiKYaAxwT9POoWlRRjuef/yI46E9P1kWQ==
-X-Received: by 2002:a05:6e02:3486:b0:3d8:2023:d057 with SMTP id e9e14a558f8ab-3da6cde18c2mr16092345ab.11.1746496670318;
-        Mon, 05 May 2025 18:57:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG0rAJvKFUUhFhbgbTRiDocZ8gkc3d2s5yO8VLR73Cn1xBSmtzwyXjRkJ3Ch72ghFkrMJrr6Q==
-X-Received: by 2002:a05:6e02:3486:b0:3d8:2023:d057 with SMTP id e9e14a558f8ab-3da6cde18c2mr16092185ab.11.1746496670048;
-        Mon, 05 May 2025 18:57:50 -0700 (PDT)
-Received: from [10.0.0.82] (97-116-169-14.mpls.qwest.net. [97.116.169.14])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4f88aa93f35sm2003005173.126.2025.05.05.18.57.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 05 May 2025 18:57:49 -0700 (PDT)
-Message-ID: <2102fabb-bde3-4eaa-ad38-18eb79281e0b@redhat.com>
-Date: Mon, 5 May 2025 20:57:48 -0500
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FDFB2BF97D;
+	Tue,  6 May 2025 04:13:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.10
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746504837; cv=fail; b=L4KLSKplGqTnvLhsjOYXcaIlIitui91CMYnmTuDBu1i6dkC8FbJ97jSBU1N22bwDxlgN0C/1f8lHvrloG2Jt0EXQGCKzY8984Ck1RbS5/XLlVjUhC/V/tnFba0faYjd1zcLr/j5+bZZ6sAtXUGx5HeMH7sZ2k/QGMwqX3L+4YrE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746504837; c=relaxed/simple;
+	bh=eJcUHHaHjWCCL6LBz0oirxq4qmZTuD7LLFZCXf4Wkro=;
+	h=From:Date:Subject:Message-ID:To:CC:MIME-Version:Content-Type; b=IbmUIBsbBYUEg08B5F1sBT8CN1E9TDzg4tBFk+TuBroWCSGNm0HyKwSx681HWVVBGeDbL4Fd6qHEGQp/z9KaG6aRWAk6STkdXqfmf9bpORzBq9JfR2XUEvVKFPL5CfWCNYix8r7O4wyV0MhnEqMkwcSTdhd7h89jfFJC+5Wb9io=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iS4XINEN; arc=fail smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1746504836; x=1778040836;
+  h=from:date:subject:message-id:to:cc:mime-version;
+  bh=eJcUHHaHjWCCL6LBz0oirxq4qmZTuD7LLFZCXf4Wkro=;
+  b=iS4XINEN0KxqEwhpMfe7Src4gnEC+4M4KJMasm+3ZJeutSuADHwLJTBK
+   VzYPMaJKpWzApytjfJF7+MDlGIL7lC9ltWG7lPntdkrfcPuMzUDgf+h/F
+   xz/Ew6+xvMC1EJz/UBVUrCK1q3tI/Fij3NLLHcTE+hXOsMhday77qrXlM
+   pAKZyhQ55uzFj3RVM3mTVgXHer1B0Al5XIsXiP1myNnCPb+8CoC2BuYMr
+   S1BTQ5esdINBGBYztlfNRQ0uD//m/WzsROBqEkfqYdjjaqLSL7wCQJXq0
+   26M0Yua6lhzfCSuGmKIu4I69BPqWIstYi+y9KriHI3QMLK1nNJfEgG9JS
+   Q==;
+X-CSE-ConnectionGUID: XSa3m7nVSPK2LcuVyycWnQ==
+X-CSE-MsgGUID: MfaHs6pOQb6DXoZSzVyiEw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11424"; a="59502869"
+X-IronPort-AV: E=Sophos;i="6.15,265,1739865600"; 
+   d="scan'208";a="59502869"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2025 21:13:54 -0700
+X-CSE-ConnectionGUID: eN86ExlgRkOptcIQ+tr5Aw==
+X-CSE-MsgGUID: 7Nkx3qTCSmCmSses6qwiSA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,265,1739865600"; 
+   d="scan'208";a="135997159"
+Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
+  by fmviesa010.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2025 21:13:54 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Mon, 5 May 2025 21:13:53 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14 via Frontend Transport; Mon, 5 May 2025 21:13:53 -0700
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.46) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Mon, 5 May 2025 21:13:51 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PCTjCtc3+b4HJ2l+qjSWBV2MfmCQMyYX/TWgiX0VJzwf2aDRsfLzXickxNjuJEstEh67HS5kMINRHYIgQyvXaivZ0xYM7qFEwBE15KdQ9KzgHHZQsQkGZidBKmekU5xWO4cUjFHENKAJIRQ567dgJvGRODbNyiawD+9QbgnY02gZDQAXZWnWjEn7qEQjVLq8qMmzDhrk/Fow3WsU4DqIr82tYX3vFwzNYreIw/IscmOcLqDdLUFTfUDkZAc0qVSca1UVzfQUAYQcTBdo8PblUwQViJK5iGTsvQun05/RNvl4EtQl0o/Rn3oOO0HaqQyEIP2HSvWrcHaM4SbYJvpmBA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=eJcUHHaHjWCCL6LBz0oirxq4qmZTuD7LLFZCXf4Wkro=;
+ b=b2UhGvbvyv84oIOJKXgGly8GK/m7E9MqOH+FEd+NX98H0Ff/2CjWHCxtKOQCDrpp0QqKVN6YvmOIhsocVeNsDHNreu0S7JGOkCNUviAlrIK8+ZWevw7NHgRx9zb3CGEwgp0HYksGgGwVVwjHOhBFhtUoSrlUqzR4DY1pn0/QiRXdBCUOLu3iz7o/Pq7T7DkhyikTaqZ7UUPKGyjLZCU9dQc6fxV3GL3LQeqtWlqgirDy05LZI75S5N2nnRWOIHx67PwMqysExrSI0uZu8JY0DkhbCf0DsPS0kV+qZTfF8ceVi9Ifd9TCfaolPxuIeNpiwcsTlcmjKBHptcXUg/F8mw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+Received: from substrate-int.office.com (2603:10b6:a03:539::19) by
+ SJ2PR11MB8401.namprd11.prod.outlook.com with HTTP via
+ DS7P220CA0039.NAMP220.PROD.OUTLOOK.COM; Tue, 6 May 2025 04:13:04 +0000
+From: "Yan, Dongcheng" <dongcheng.yan@intel.com>
+Date: Tue, 6 May 2025 04:13:01 +0000
+Subject: Recall: Re: [PATCH v3 1/2] platform/x86: int3472: add hpd pin support
+Message-ID: <LGGMF9F53QU4.FAW81U31YUFP@mn0pr11mb6085>
+To: <sakari.ailus@linux.intel.com>
+CC: <linux-kernel@vger.kernel.org>, <linux-media@vger.kernel.org>,
+	<hverkuil@xs4all.nl>, <andriy.shevchenko@linux.intel.com>,
+	<hdegoede@redhat.com>, <u.kleine-koenig@baylibre.com>,
+	<ricardo.ribalda@gmail.com>, <bingbu.cao@linux.intel.com>,
+	<stable@vger.kernel.org>, <dongcheng.yan@linux.intel.com>,
+	<hao.yao@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH AUTOSEL 6.14 156/642] f2fs: defer readonly check vs
- norecovery
-To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Cc: Chao Yu <chao@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>,
- linux-f2fs-devel@lists.sourceforge.net
-References: <20250505221419.2672473-1-sashal@kernel.org>
- <20250505221419.2672473-156-sashal@kernel.org>
-Content-Language: en-US
-From: Eric Sandeen <sandeen@redhat.com>
-In-Reply-To: <20250505221419.2672473-156-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+X-MS-PublicTrafficType: Email
+client-request-id: e1301f60-0d65-705f-d22e-e749aced98fa
+request-id: e1301f60-0d65-705f-d22e-e749aced98fa
+X-MS-TrafficTypeDiagnostic: SJ2PR11MB8401:EE_MessageRecallEmail
+X-MS-Exchange-RecallReportGenerated: true
+X-MS-Exchange-RecallReportCfmGenerated: true
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014;
+X-Microsoft-Antispam-Message-Info: =?utf-8?B?cS9nV053T2N6VEh1c2x4M214Zk9BR29Rb2Rrcklia01ueS9sUXZDMk03dUxF?=
+ =?utf-8?B?RTE3UEdGb3NkM3FsQnBSVjFvaU1meXVuVjNqc2NXUHpMeEZUQTJxZ0tYZkdp?=
+ =?utf-8?B?SXJlaEd1S3k1c0VoVGxNVVR0KzN1VzVJeGhnOTErcjQ5WHFQRER3TUNXa3JZ?=
+ =?utf-8?B?L2ZyWG13TzdmOEpYR1FKbE5XZkkwT2tUa0RDK3lzRXJRcTE3d0taRy9XWE1K?=
+ =?utf-8?B?c2VhN2J6NndpSWU2bFoyWUEzZTArSXBVNkZWRU9SRjlaR2xTZXZidFVqM2hU?=
+ =?utf-8?B?V2tIVlhvTGRpNVZ5U0xHMW9LMzFCeFhZbmRiVXAzdkM1VTVTb2RGaTFwMzFV?=
+ =?utf-8?B?TnpyWU43bGRUc2drMUZDMUM2eGJPTUxsUnZHMHRwOGlkVTRiSTRVc1ZWU2Jy?=
+ =?utf-8?B?MzlXOFJkVFVEUmY5U29QVTNCN3FEMXBwOE5sRXVMZVNLZWVlYzJuTi9SSldt?=
+ =?utf-8?B?TTdLQ3VTeFRIVGk5aFNtWTlNWWlDOXhiVXd5bmpOZHlhMlBhUHVFSnVVTnNF?=
+ =?utf-8?B?disyUFNLWFRSWThZb3cwcHBLSFRvUWc4VnRaNzlvclQwa1N5MFMrdDFLcUt5?=
+ =?utf-8?B?VlB2TU5xa2UzeTRGT0RLcHU4NHN5bnhpNGpURlExVUp3UUxOU2pXWE1TNVZ2?=
+ =?utf-8?B?R1loV1kyV2tUbkJsU0NOL3FWTVVNRXFXK01xU0tXOHJURGwyRjNGUkdEYlM2?=
+ =?utf-8?B?cE5VZW5NNWh4Mm5SeFJJS2JzakI4czlIa1lRUVEyOHFuQTdHV2NXcG9MdDEz?=
+ =?utf-8?B?d1d6UE9HR2hEOVI3ZkpoSllqanFFYS9Db1pCUEp3MHRGUXdtbitSWC92aXJJ?=
+ =?utf-8?B?RmFWbmdvWlVabTk5UU5LbmVkbXJtdFE3cmVDL0tVdndZOU1jZHVZK1JFaFZ6?=
+ =?utf-8?B?VkxnNXNQek5BdHBXOXRNMEh1OWlheUoxdlkydVJHZG1LM09Wc2lINU05bFF3?=
+ =?utf-8?B?RHVkN28wQ25zOWZPL3BkNG9QTnl3OHZFWEZnaXQxNDJmT0FXTmV4QjliZHY5?=
+ =?utf-8?B?TUZQeEdRd3FQQ1BJNGFFRnJHdnlteks4d0NMVmF6Tkk5dkdkK2ZtQmk3Y3N5?=
+ =?utf-8?B?dGJGaTFDMFZXWUFodktRSnk3UEZmbHlaTkFFU05wMG1aMmhHNTJwLytJYUVu?=
+ =?utf-8?B?cHU1V1AreU1pTTFXTGFuNEtZcTQwbTlleGJweURMdUNZYk9vc1RPcnBxa2xV?=
+ =?utf-8?B?UjR0WElXSmN3ZTlSRWZGaHNhV3dkWnlRZWFrYUl5RHppS0MzNm9NOG14S2tE?=
+ =?utf-8?B?K2xZd0dSMFpZcWNEa1h3eFM3UUtMQnYvUmlmMlkyTjBzcTJIUWpIRWZZeCta?=
+ =?utf-8?B?a0JKNEJNd25sUW5NRlo1WC9LTTZKVDdHYUplV0dPNXhMYnVVWjV0YVBNeXN6?=
+ =?utf-8?B?RHd4aUhmdnpCajZHMmR0MEFhMkp0SFllNnVLUUNhQW9LNEd1THN2WlRGVk01?=
+ =?utf-8?B?VVJDdmY4RjRwSHdHdEFsSFZoU2xjc0VJcmpzZUwvSWdaRVJWUU5pT1NGRk0y?=
+ =?utf-8?B?b25oTFFUK2FRcThoalFvV21SRkVLOFN2Z2p0cTBvcGtZdTVNMFhEY2NUT1NZ?=
+ =?utf-8?B?M1RCT2t2aTRmY2xxWFZkUDFtdzhaUXVLQWVzMzA5OEp3d1RvWkJ1QWFKR2tM?=
+ =?utf-8?B?QmZKbnl2SUk4UHd4NkJZSzM4SFllak5GeHZIS3VLNTVRWlJHeU5lUmlMclFC?=
+ =?utf-8?B?RVhpZ0xoeHNTZ2VSL0FJVEhOZ2xKaHZmSlY4UThzUnBmZG5HMlpLQ0FiZko0?=
+ =?utf-8?B?TUk3WmRERTlhSGdFaUpEZWExV3JCWEhPaTRKaGtLMVBhOGc0ZmlGdW9UTTNK?=
+ =?utf-8?B?QlhQSVRGVDUwZW90VGo4NENDVnhXMDI2M0lmK3o1Q3Awb09MdFl5d0NGQkh5?=
+ =?utf-8?B?VXJsYW5TNHg4L0N6dzZPcFFkNWZJVUFaMXNtZEhEU05vNDk4VUdveDVyUjlv?=
+ =?utf-8?Q?wv1+NJHLWhw=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: bI36/skVFBvNwMuCRVj7R8y0Fkv+XqxmBnL4wSURs2+Q6rZ+6FVYB0Y0X/9P+IaXaXc5XeWjpy5+A8nAX8Solb4S/AQNvrYn6WexXnGHVN+vyl7rkMlzVTAiZmSM+rJtr/9QpJZigR7pRMjkXE/wZQK0tCoXdFqxZMpT+SXLJW5rVkRUrxJ1yrGiQR1bZZXEnsREOqIckP7Sj4TeRohvhG1/hNpYYV5Uyy65Mucqn+wHqVlEvvdc9Wz4dZSsuH5+7fcKSMN+a7ENN1Fmv8Xzi0gfmj0XBa7/u43qx6KFGmScSNqa/KkQ0eUgSairjOXdmCkMtPwyz6rStc2mx4bSsBwLuVGUrb5LH1GsX/75upAM/B0V+vrcA4DC20gAOjO4SjifchWOfP9k8N/eePqB8N3CUANOlw1Qw4yu0GhUp/U=
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: HttpSubmission-SJ2PR11MB8401
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 May 2025 04:13:01.7106 (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2a603ee9-9138-4b20-78b7-08dd8c544c4b
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR11MB8401
+X-OriginatorOrg: intel.com
 
-This commit is in no way a bugfix and I don't see any reason to
-backport it to stable kernels.
-
-Thanks,
--Eric
-
-On 5/5/25 5:06 PM, Sasha Levin wrote:
-> From: Eric Sandeen <sandeen@redhat.com>
-> 
-> [ Upstream commit 9cca49875997a1a7e92800a828a62bacb0f577b9 ]
-> 
-> Defer the readonly-vs-norecovery check until after option parsing is done
-> so that option parsing does not require an active superblock for the test.
-> Add a helpful message, while we're at it.
-> 
-> (I think could be moved back into parsing after we switch to the new mount
-> API if desired, as the fs context will have RO state available.)
-> 
-> Signed-off-by: Eric Sandeen <sandeen@redhat.com>
-> Reviewed-by: Chao Yu <chao@kernel.org>
-> Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  fs/f2fs/super.c | 10 +++++++---
->  1 file changed, 7 insertions(+), 3 deletions(-)
-> 
-> diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-> index b8a0e925a4011..d3b04a589b525 100644
-> --- a/fs/f2fs/super.c
-> +++ b/fs/f2fs/super.c
-> @@ -728,10 +728,8 @@ static int parse_options(struct super_block *sb, char *options, bool is_remount)
->  			set_opt(sbi, DISABLE_ROLL_FORWARD);
->  			break;
->  		case Opt_norecovery:
-> -			/* this option mounts f2fs with ro */
-> +			/* requires ro mount, checked in f2fs_default_check */
->  			set_opt(sbi, NORECOVERY);
-> -			if (!f2fs_readonly(sb))
-> -				return -EINVAL;
->  			break;
->  		case Opt_discard:
->  			if (!f2fs_hw_support_discard(sbi)) {
-> @@ -1418,6 +1416,12 @@ static int parse_options(struct super_block *sb, char *options, bool is_remount)
->  		f2fs_err(sbi, "Allow to mount readonly mode only");
->  		return -EROFS;
->  	}
-> +
-> +	if (test_opt(sbi, NORECOVERY) && !f2fs_readonly(sbi->sb)) {
-> +		f2fs_err(sbi, "norecovery requires readonly mount");
-> +		return -EINVAL;
-> +	}
-> +
->  	return 0;
->  }
->  
-
+dongcheng.yan@intel.com would like to recall the message, "Re: [PATCH v3 1/2] platform/x86: int3472: add hpd pin support".
 
