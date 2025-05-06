@@ -1,69 +1,68 @@
-Return-Path: <stable+bounces-141937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A1D3AAD0B4
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 00:03:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAEA8AAD0B9
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 00:04:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D0C01C4115C
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 22:03:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1FA61C41413
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 22:04:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B83F9273F9;
-	Tue,  6 May 2025 22:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3E4D21A440;
+	Tue,  6 May 2025 22:04:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Yd8+hpfk"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="uF9lnMym"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2081.outbound.protection.outlook.com [40.107.244.81])
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2055.outbound.protection.outlook.com [40.107.223.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99AC82B9BC
-	for <stable@vger.kernel.org>; Tue,  6 May 2025 22:03:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0EA21A434
+	for <stable@vger.kernel.org>; Tue,  6 May 2025 22:03:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.55
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746569017; cv=fail; b=JHxrzn6i/DRK0jqoq24obye+wAoaV/sLvcDG2Su/SVJzvVd6diw8pIllffd9S6C5gAIHRj3qq/ZdhTJDSm3jqRGnz278SfRwXNfnWbBta2wK6qMbkZEVPZ6F1WmTpI0z9SBgTIPAJDZNxdnb3gIB/egIt0CffhBmXO7SYEqhC24=
+	t=1746569041; cv=fail; b=ou3kflpYR6+UrDV94bnirxK04/5HCpmtNgCOa/xsSo9nYHo2jr51NpkfP6CHg0In2ZzKtscPTS7lClOtbDFcWUdkY76MIdpqDOVOZH8TIOJut6cW0wicQBngKKcDWW0t9DGkl1AhvPdAsTVtiydZ1IilMtuVOvYkRLrVyLGpxEQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746569017; c=relaxed/simple;
-	bh=uQUR4TaNESUQgu456qF2hf6EHktk9Ezo6P5ucBTMnbc=;
+	s=arc-20240116; t=1746569041; c=relaxed/simple;
+	bh=6vO1u0hWWKP60zd+UJB0Dw5Cxo6VDbJbAUKs2rOOCYI=;
 	h=Message-ID:Date:From:Subject:References:To:Cc:In-Reply-To:
-	 Content-Type:MIME-Version; b=NJR3QELTW6gMM0JthjmAWSGTP7icCq3RzX+2wD5T7D3DX4aZtZjx3pF0EUfWwAVm2scLMcJKTTQ/TVeEKD7x0kcbyjxdKucs4K0HcfaqDfLL41+TiyfuljUbZGQogp0EwfvMIIxVxenSsIpahxzASwtmbWzMYBUWIjGOAKLIK0I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Yd8+hpfk; arc=fail smtp.client-ip=40.107.244.81
+	 Content-Type:MIME-Version; b=fEQSwZbacHYbKee2sTIgopwI428TEaxNuRKhzAPXmrkHM98mMaZwAGciUI9u/SonhiA+7XiRrjW888s3rAd5uHVHoB08WgYLpmuw6nPm7K406IRfiK6WRC4s8OYfroTnSRFGBnv0ibswxqjz1qpumfd4BT7caEoQmW+cq+zvQV8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=uF9lnMym; arc=fail smtp.client-ip=40.107.223.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vvpHsanVRQtS+eC3SIds2eh4GNXpjOVN1Z8Ov7FKTZt3Jc2Nmbbz7YUma/k9yCTpeAJEifl8SznpWpTgFdI5+mSB5sHz+/FHO3+gXiVbPC6mJa6R6ywTCxH0NRQLscF34Ot0BG9TE565AxWB8IYtrtEYvrifRjqKjSUHAghvdENr8qzPaSbFLVBjOEeMFCd8UinJwwS04BiJpu6u9KsUWnNxbYT5aC3MiZzCFTY+mNwPAAngFmB7Iz/abS3RNIdrMi3uBpN0oYy2kPMD63inh4uG+CaxaUU/jX/aD7fiC884rOvn6sDG3CLblS7mz3Y0XMi3r9sbVxx87YVwDOldow==
+ b=gAvQC3sl+SS7frPMR+ZqlStNFfdLpVJHzZubYr1hBROlLayJYVWK2DYoTW3Gt11KT1+ugzpnZ85rMfHDRV3z0jQyegzEPmzIcaRfQDli0Xe70hnnetVOkKE7+LqJ75Yd+auMtGKdd/ThntvjfoI1AxD1LdxhZALxbqnAwAruZmmRq+ST5mybDfs+zj5NdV1rS4lcgvNRfIy47Wkz0gnWVKrgA6xC5EhDRqN1LIWxcLvVoQmusS0Uk3oQYkIzGcojQXESuZIjNR4Z2S+NjZxoG1XVQqcyTzjQRihx3of55MmzQqG88GSkUtbltMy3lPkJUDYqdjmfoyz89ppG+OlJKg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=H3izSPtlakGxlLYL7voruCZXyCFPYeMDUtkHJpXSlcI=;
- b=ZdkZM2++Bef26IdTnpIV/vxAN7OwuEnZH4kwCb/19mdWgBn391vWUDAasZVY9+UxNp4bHRfHRDeD7dVwrR81vMVk76ZDkNuN0HTYHGUZz94yHAYneV+7nOuAGiDff2IbsnA1Rj3MTczsGjrNHhz3fbVBpkvuEcptCDJEb5sCe0T/vLNu7LR1wfu2QwrX5a1QFCHRtmSnao+SdgTuunvOKKmMUPR+Z2ifIu3tRECcc4BsmSPBCjJvYadtpu1UPUvtyOYADtWT1IchOu9Sj3Gbd+6DoqSQGH2dxyseWbW76Od9cZW/rPTPJagbn1ZfSh4Rf7pF90IFaLLcgzZ6m+VbsQ==
+ bh=ToYHkaqlBH3vCzgextXRrFdqzvDFmSpTjXar1HiGxUY=;
+ b=ZkAE/SMcy7p6odwVxeq9F/M/sOndLqB7Wvvtw4HvIeUykcPil5+Qcr9Wf1Z0x6oxw1nwULiH2KWcScRjUCYuviQ2b9zmb/MONNBZGFb2JlmObqMBTfJ5oKcd5Eh9uv03YG4UM5UE17XseMAP/eZcZPPMc8CwmjTjiWOeB8pyAGFZ9yhbzieP1uLU1OBNUZeBLbfOo459NAUN90ddt3SvubeQzdq0h4KsdgxP75FAwIT2GoDU6YQ10hVXJbLGTC/F852e6+swYFkiu4VE0veuzfIzFsBWhqOHPuTo3gCcDRsZe8sp7k08JRNBpOuI7hDmx7r39eti5SoWSoTqs3VVFw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=H3izSPtlakGxlLYL7voruCZXyCFPYeMDUtkHJpXSlcI=;
- b=Yd8+hpfkoNNlYGj3zs4iBhSLVHMsUHcuKycD+pKaNNEgcm3BDGQunz1z/5uwRVXM2OvSO+HoqYjIl0qcJgdrFRivFC37ooP6IQJf7ly85UNUUUIw5OjBbM9x/gHzJx1oFigdOcGqaUWw5o2v449EQLMlYwZabzY052nqiL4vPQa19toBbrNNfTOvWfv0J5mYD9wtyciW54lAFR/K056WpMlZzvgC5STQXS1JZAUx74gzJeSFSI4+ZZbwklpO3gZvJ/DDZBoQTNUUAUNeIB/tgfrkOQiGDRkKTTp28QETFKCituulM4kCvcfQfg9NaHjGnOSl1BkOe1ChWTtF7CzGRQ==
+ bh=ToYHkaqlBH3vCzgextXRrFdqzvDFmSpTjXar1HiGxUY=;
+ b=uF9lnMymwLI4nqaf/tiJVmrn0ATZDyZmBlS3OZlogzPJT6zTlJmAuctJTQjjBqi84j16fZsdlEyK8tNjRKvYxjULrPrB065qWTlvlXLO4YFQeNtrfcp6kr7vo3ZYNjQoZyayoGABqYuvQVNIOhtmPn8JVJfCR5vcD92qutXnLcK4okYGC8xpcphEswDefVA/+xZr603/LJN83cJxTjFcQj4AaR34vFe+23JmQPdAz4LIsauU/NuuiF97MRll250A4Po18zneE4JLda+5Q3rbsJIhRlXq3t+JHUViSNZgoSF21DZIoU1updh6EVD3pBzDe3jY+ER8KdhD6IKmSol0aw==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from SJ1PR12MB6363.namprd12.prod.outlook.com (2603:10b6:a03:453::9)
  by PH0PR12MB7079.namprd12.prod.outlook.com (2603:10b6:510:21d::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.20; Tue, 6 May
- 2025 22:03:29 +0000
+ 2025 22:03:51 +0000
 Received: from SJ1PR12MB6363.namprd12.prod.outlook.com
  ([fe80::bec3:4521:c231:d03b]) by SJ1PR12MB6363.namprd12.prod.outlook.com
  ([fe80::bec3:4521:c231:d03b%5]) with mapi id 15.20.8699.026; Tue, 6 May 2025
- 22:03:28 +0000
-Message-ID: <bfde1b49-2296-4d39-bef5-b1e1591fefc7@nvidia.com>
-Date: Wed, 7 May 2025 01:03:23 +0300
+ 22:03:51 +0000
+Message-ID: <14b9dd6f-7467-47f5-8db0-61e6cefc3fec@nvidia.com>
+Date: Wed, 7 May 2025 01:03:45 +0300
 User-Agent: Mozilla Thunderbird
 From: Jared Holzman <jholzman@nvidia.com>
-Subject: [PATCH v1 4/7] ublk: improve detection and handling of ublk server
- exit
-References: <20250506215511.4126251-5-jholzman@nvidia.com>
+Subject: [PATCH v1 5/7] ublk: remove __ublk_quiesce_dev()
+References: <20250506215511.4126251-6-jholzman@nvidia.com>
 Reply-To: Jared Holzman <jholzman@nvidia.com>
 Content-Language: en-US
 To: stable@vger.kernel.org
@@ -71,12 +70,11 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  Ming Lei <ming.lei@redhat.com>, Jens Axboe <axboe@kernel.dk>,
  Uday Shankar <ushankar@purestorage.com>
 Organization: NVIDIA
-In-Reply-To: <20250506215511.4126251-5-jholzman@nvidia.com>
+In-Reply-To: <20250506215511.4126251-6-jholzman@nvidia.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: TLZP290CA0004.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:9::15) To SJ1PR12MB6363.namprd12.prod.outlook.com
- (2603:10b6:a03:453::9)
+X-ClientProxiedBy: TLZP290CA0013.ISRP290.PROD.OUTLOOK.COM (2603:1096:950:9::6)
+ To SJ1PR12MB6363.namprd12.prod.outlook.com (2603:10b6:a03:453::9)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -85,548 +83,162 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: SJ1PR12MB6363:EE_|PH0PR12MB7079:EE_
-X-MS-Office365-Filtering-Correlation-Id: e36e2ac7-60f7-493b-d587-08dd8ce9d521
+X-MS-Office365-Filtering-Correlation-Id: c76b9a48-bd35-4a50-54b0-08dd8ce9e240
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|10070799003|376014|366016;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?WUN3UHhuTFFGT0xNQmVYa1oyQVNpSmdsL0g5cEdRTExvdWZGdWdzeHNSY1dC?=
- =?utf-8?B?eTRoeWdOR01rWTdDcFI0d0lTanljQ1Z4aEozVUp4RWFRRVlSNnBjOE5KMytF?=
- =?utf-8?B?dUZOTS9QSkhkTlhRaDFRSW1PdGNYaTV6dGdMMTdjeStnTVIwZUVYNXk0UUJu?=
- =?utf-8?B?ZW0yTFlJOVFsdUtWOEFYMVNQeWYyVjBxNG1wWFl0a20vN0FnVEhHSXpNRmxJ?=
- =?utf-8?B?VVQ5d29aQU5hODVoKzlSdXZpSmc4Vk8rQXNMOVVjZnJzdmF3WXR2YVlPYm91?=
- =?utf-8?B?dzVCaUMwazZxRjJPMDlIUzhmUUZxbithSkpBZUNYZTY2SHNUaUZnRldoa0JT?=
- =?utf-8?B?VDVaemJ5WitWY1NGZitrdjRocVBYN2ZnR25RSUY3WkhJalBPNm4rckFLRkRN?=
- =?utf-8?B?dEhrZFc5dU9kVGcreVZhOFFoYXM2TEloUWwxU0RBRnNUQ1lOZHNSOGZkV1BR?=
- =?utf-8?B?OXdpMytHSnRBQWlvRzBDVDFVc0FDb0hCdGNpbG1iSG93U2liVW02Uk9SVTNp?=
- =?utf-8?B?TDlOcTB5ZWdFU0ZsZHlUQjFhWkFuZFNneGg4NVI0TlVNdjlNaVZKOUFieFpC?=
- =?utf-8?B?MlFxamoyWmUzUTJRSDRVSUZtcHQrTzJGQnAydDFQSXpXckdFM2Q0Skhibllp?=
- =?utf-8?B?RC9RS3E4UUZKZUhFRTVvTmJJaXNXWGlXaDduNEdkcmZyQlhnaC9EczBlMStE?=
- =?utf-8?B?eVYvTjBuRU5EbU1uRmNaT0loNEluNGU1bnlISVRaZjRoalRXcFZWZVNVYjBY?=
- =?utf-8?B?Z1FnNzJpREF5ZmtvNGhXeGJKQWZ2Z0lyVUJFaDcxU3MxQTVneUxYWmtsbUpE?=
- =?utf-8?B?azBNYVFaalJvbFU0aFRkL3JXOXh4eXdONkU3VDlWTFk0ZStQY1MwRUFlUjht?=
- =?utf-8?B?UjFTZUtkL0RZNXZLbGdYUG50REk3dWJRSlI1SFVHemlFR21iMEFMeEs4eXpK?=
- =?utf-8?B?S3ZoSHQzSTh5R2Y3OThENkdWUWRpMk9NclRJczFMQ09OdWM5OFRkVk5ib3di?=
- =?utf-8?B?VDhYZm1GMC80RExDWU1USGttaXY5OGdZT25vMytYSnBmcnlzdlRwUWtKcUV5?=
- =?utf-8?B?Q1F2N25McStzZFBIODRyUXZFTms4SENjRTdvRmJOVkYrNFZaWTJaOTRnQWRn?=
- =?utf-8?B?THo2ekVXKzBQZkQ1ME9jZzhEeXpwUXZaRWhUTTlnNG0wWFREY2MzQk9nZnc0?=
- =?utf-8?B?YmthLzE1N2pYQUNyUEJ2dE9XV1JtRUJINVJ1dXc2aFNYeVhEcU1iRnAvQ0RZ?=
- =?utf-8?B?Q1hXR1NLbWxmRWlxclFONTVVb1FUVDh0TlowYTVGMVRnbnRVcGhQaXd6WVJs?=
- =?utf-8?B?VE5DRzZ2QnV6NE50SEpaUm9aVmpoN0ZHbWEwL0ZiTkpEUTlMOWJ2K1VjdkUv?=
- =?utf-8?B?Q0pySUMyU0M0Um1wTDFISDRQV3VDazlCTmw5LzB2NUNFVnhhSTFJMzdTYkdn?=
- =?utf-8?B?S0VvR1ZuOUc4TWpuY0xvc1VKMkpiZ0Z5aDh6OHRtRHN4d0FPanYrKzZGNVE4?=
- =?utf-8?B?Um9OVlRtRi80QzhPaTBZNEo2QlVBajhnZy8xWE9mWUlCb0poZHhRcHhPcUpC?=
- =?utf-8?B?R1Njc1ZUbXZReUNhSy9jQTQxOGkyZExqRDZIQkxkUU5tQU53TEtGeERyK3VX?=
- =?utf-8?B?clhtT0JRYzlCbFV3TmZ0cDdSdzJuRENmZStZUlA0MHBqd3dVYllrYk50ZytW?=
- =?utf-8?B?NnFHOHBhWStOa2ZkV3pPOHNKd1QyQWRFa3hjSFhIVy9UU1AydFlVaHIwdGxW?=
- =?utf-8?B?QUlXQktqUUhIZzU0czVlNWZLNkl4Q1U5TDhRVC9XL3o4VG1xQmprcUJGTWNq?=
- =?utf-8?B?cE8xYXB4Y296dFlpNUFTMEkrZnd3UEkwT1ROcE9odVFVenQ5TTNuM0xrSTdH?=
- =?utf-8?B?ME9zTGRiYUtpV25FUUNNK2xVODBWYWpTVE1keTVSV21hUXl0UzQ0TUR0MFg0?=
- =?utf-8?Q?i629nVkTvpg=3D?=
+	=?utf-8?B?WHcrc3Q1OTQ3K1k0U1FRVzZ4VnV2a0VlOEo1TWpJZk9KeHk0dnVwbHhmcEcr?=
+ =?utf-8?B?R09IU1g1dy9STmFjTm5hanFCV1dhWlFLUzRmS1I4M09JcXhMYml1Z2FtbS83?=
+ =?utf-8?B?c1JIOGxad2J6bHc5dW84ZVhnK0UrYTRraHJVYitwUDNOZW1TendxKzE5WDNy?=
+ =?utf-8?B?Y2hRTy9vRXFKdkUzVHJWYlQ3MUVCM0lUK3Z3TWs2SS9Wc1JpY1lqS25sNVVO?=
+ =?utf-8?B?ZDhqRU5iS1E0UktCN0JONHVBcGVlSXB1YVBlOFdpcERGVUhpZkc0Rncvck1x?=
+ =?utf-8?B?ekFISTZ2N0FkYks1b0ZxcWR6cHZRUmUrMXAzYlpHRFFZcUZUVE8xTy9remdr?=
+ =?utf-8?B?RnA1WW55Uk1qdkR5b0lGZEVhOTBRNVRlYnk1amtxbW1ZcnV6bjdjK0ZkMEdK?=
+ =?utf-8?B?NXNZNTBSSHNVaTk0VFdyQlhkSjU2ZXFjckg2WW1iVTZlQkpuNkRWc1VsN0Nz?=
+ =?utf-8?B?dGxKeEluOFdsQU1BYng2Y2w2RGF2VjNxWHByWUJ2S1VJNFBVVHdBQjZZK3Bm?=
+ =?utf-8?B?c21XcmIzY3FDMFlxNE5sd01ZdlNpRFpQTEpJUFJSY2tIb0szMUFhK05WTG1n?=
+ =?utf-8?B?eHliemQxYWZLREVZWnJxSVc4dEpEZmFKd2F1ZndDck5JZi9FVyt5K25pbW5r?=
+ =?utf-8?B?U0VYNkh1QjFZbytJUHJmRFIwSG1iVGJoMzdtaGx4eStmSGQ3a0hxNFVFWGlW?=
+ =?utf-8?B?dU5qZ1RJbUREU0Z1UTNxbldZanZSdXUxaWlkU2tWbG4zdDZXdHgxdTd1aWJW?=
+ =?utf-8?B?L2QycjRpWU1pcWxRRCs1TGJ0eTVGc05ZSDBaVnI4aXJqcUNOSkdDa2RraWZi?=
+ =?utf-8?B?QU1xdkFKVUJjc21vQjBVdkFjT1FaRU5TVXR2M21DbEx5S0t0eHdsS3FHMzRy?=
+ =?utf-8?B?MEJoeFNHclBpSm9CcTNLenFJNFVUdHVuaFM0K3lZZWpwVmdIRE5KVERubFkr?=
+ =?utf-8?B?bW9LNW91dFdMN3NNSTY1MytrU2c0dm1BUjdKZHFaUjc2aW5XcDVrUzJIRUJs?=
+ =?utf-8?B?VUVBOGZXQlNUc2NaQ0ViUXZ3MjUybFR2WTRiank2RWN3dW9UZ2l3WlpqZUZX?=
+ =?utf-8?B?WEUwWWFXM2g3d1pnc2d0UFNjeU5ZV1RyeHNRNjBvWjg4Q01xbnAyeDllQUdl?=
+ =?utf-8?B?VjA2WCtxcWNhSmorTSthMDNFRm9DTHZrbUtSZlNjMnlOU0RMamxZTXdIUXVX?=
+ =?utf-8?B?YmVqQlEwK1ZHRHo5aXZsZzk0UU55eFp4TlBxWUhVVmVQeVhrS3VyRXR6c1RO?=
+ =?utf-8?B?bGNjaTF1dUFzYk9tNEZFSVBpYXRCVDE4QVRCZlM1M3B6OEVLNlU4S3VSNGw5?=
+ =?utf-8?B?bkZhK3NwelJiRzFaL29vV3VVSnZGZWJ5WjBvOUM3Rk4vY3BKd0dUSWFkaDdn?=
+ =?utf-8?B?S0pmV3pWdWlWNFR5S3VwaG1zMFprUlRaQ1Q1aEF4dk1kbGJva2lDMU9XWU5B?=
+ =?utf-8?B?OENUcmM2clhuM1F5T1drMm80UTJ1bVZSL05nbzl1TGFVd3krN0VQSU9HdEJv?=
+ =?utf-8?B?djNFUDBlbW1JVXp3dmV2U1lKY3NNQkhtNzF3cEFHcHU4cms5VjlKR0dYVUtT?=
+ =?utf-8?B?Rldjb3A5QzNjWlVLdnZaa1RYRTh2ZU9oNGhRL0g3QjMzZ01TTXlFVndUOXRa?=
+ =?utf-8?B?Rkx3K25nQ3ZSR3JseEQxcXdUMnQ1dmJhTVRvYnkvcWV6bjBRd3R5bS9QMlJy?=
+ =?utf-8?B?L1NYbTRSTlMzSWNJR1B1MkVHek5QbXdkSTlSdFQ3eU1ISVhxcUdhSCticEhH?=
+ =?utf-8?B?TmkvbjB3bUV1MWF2YVU4cytFbnJrSUJtZEwyemF0MWNVRzcraThaTUtYeEdx?=
+ =?utf-8?B?anFnSlo0a0NsTXFmeWt0YnhtTlNzZVVNdGEzS0FHY2xieEJTdXZCSE93czIy?=
+ =?utf-8?B?emJTMGJ2VlVqQldYSHpPcllsc0lXZnJvL2FTQU9nZnVucVJ0dEQ0cmEyM3Ax?=
+ =?utf-8?Q?BW9cug28Sog=3D?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ1PR12MB6363.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(376014)(366016);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?ck9EdEIrazlJQTliSDMvc0ZvL3RnanZwSnMzak0xM1ZFU3h0NnpSZnNuSUlt?=
- =?utf-8?B?UXAyR0NtdmpNNHFrd0h1K2oxb3V1Y2hoQUNtNEJJUzZpWjBZWjM1K3pGMkNP?=
- =?utf-8?B?UEkybVoycytaZ0FYWmtISE5vYXBpeFMxRFZUVFFzOUUwM2N2eVFLL1RuQ1Ru?=
- =?utf-8?B?T1dtaEJHRTBrU2JwY0hKc2lVeDVwb29GdkIvUEhkR2JXSzY3MFNUM2MxZCs2?=
- =?utf-8?B?S1hIN1NVanBHZnNmWFIwemhta3ZVa0ZYZ3NPK1FpcjU4cytPZGpYVjlBUUVN?=
- =?utf-8?B?NXhCS2h2di91eUhkQnhXbXA3ZHIvbERCUk5Bb1lJcnBFOUIzNnlyeWtGYUM5?=
- =?utf-8?B?TkFnNGRVZTRSLzBidDlDQmxvR3FMM0xsMVVaRjUvNjVLbmVLSDZCbEdYZ1ky?=
- =?utf-8?B?ay9YbUxvL1IyQUpWc1V5cGFVa052WGFyZ3lEaUE5cVB0dDMxMTI1M2Z0ZDNB?=
- =?utf-8?B?UEhWRXJBeC9uTzV0OHhHeFpwMEwvbnh2blM3NUtkQUU3aTdTeldxY1ZjWE5S?=
- =?utf-8?B?a1BSbWppMkhZU0ltQlZjYTFLU1FraThoWnpiR1d6WENkaWNLaGtVQnV4MDhB?=
- =?utf-8?B?RWFwNzlPbHpLWWdnSmZ6YjRwdVhHSUMrcnc0bkxIdXArTlZVRWxUdTFFTG5s?=
- =?utf-8?B?Mnlmbm5rM0xUeFA1TllINEx6UzFrYU5FakMxcHV5YjVXSDJ4VzNJbXRqRmJX?=
- =?utf-8?B?LzQxWTF4R2hpSFFJUXl0dVNMd3U4Ykt1QXFTYy9Hbm8vRzliTWN3SEhiV0tz?=
- =?utf-8?B?NGt5c2tWWTFOaEtDazh5THlkZE5FVG5adkVaek96dnlzTEZYNTVCMlh2V0to?=
- =?utf-8?B?L3dzM2Z2dG9BZUh5bHRhZU4zaURObVM4YjJCbkc3T3ozK3o5TUR6eDdXTjA0?=
- =?utf-8?B?ZEpGQjd4UStyUFI5aXQvRFZjeGtHR1dkdktuREZxUFFmTy9nQnFFTFlVcEdu?=
- =?utf-8?B?a2hyKzBHOThLTCsvTUJxRzM5aXlDRHhNQ3NtUENEbnVDanRuZW9PazMyZ29I?=
- =?utf-8?B?anM3NTN0enQvM2RGL3d1VkdXQmVMTkczYk8zSUJaOXdreXB6emQxWFVieHlp?=
- =?utf-8?B?VHlDM2IxdlFCTGIxRWlCaWRUa0FqOFI4SzVvU05ONjYvd0hOM3A1c2R2UVFP?=
- =?utf-8?B?QVZ1aXVwU244N3lLa1VTZHdDeVRMbEtuRktVeDZFYkRlcXRNekt0M1Rhb0pE?=
- =?utf-8?B?YTM4eVRnaEU3dmxQVUJqdFh0ODY0TVpKeWYwSVpWT2tKbkxhVXNVTm1lK1dU?=
- =?utf-8?B?b3NwZnpUT1phR2VTak1uTEk5Zy9Bd3AvSDB5NGtwZ2FqYzJJZjBmbTFIVVBN?=
- =?utf-8?B?aWR6bmJSWitOYjVCajJiNGJrYjdIc3hmTElHM2dCMGZCRGRtYldVajhXRXpM?=
- =?utf-8?B?TTJtVzIzRHUya3BETUhzbTB4QTcvUTBXUEl3aGFMTTBNSW5vT1pNa05Tc1o4?=
- =?utf-8?B?R3ZsQjUwUXAyc3RGeUQ3S1RiL09uSWFSSWtzNGVVT0JxTkZuZ0tVSnc2dGVH?=
- =?utf-8?B?SGRKOWhrQUxaNzNkSE16djJDZnBaSW1hRjhNQ2ZJTDhnb0RzMEgydHM5bGtE?=
- =?utf-8?B?TU5EckdnSHV2cENNT0NsNUsrc2dxUkZOR09KVjV0SC9NSTFYTkxwTkdhZkNX?=
- =?utf-8?B?NzhUTmNkQWtMWTdlcjJXakpKazV1OWQvOWxIWGNOQXowNWYrblpjS2VScWg2?=
- =?utf-8?B?Tit2Vm9jNFJCRFJNbWFhK3cxekhDeXlaRVA1b2xLNzNkSlUvdkhKc1pVeUJC?=
- =?utf-8?B?WWJGeU52QlBDckplZERkNmk0RTNuWDczNitrWk9ueWlSZ0psRk9uRTY2R2p4?=
- =?utf-8?B?TUE1ZmdjMm5DUHZLd0RVTHpBL05ISG9oU2RYSkJ3WkNkd05ZRWN6UXJXSUVz?=
- =?utf-8?B?VldrcXFyWUF1Vi9tUi9rMjhuSGNhdXVrUlRkTVVYQWx2Ym5Sb01saEFRMlVn?=
- =?utf-8?B?cDhpeWZVUzNPMXFZN1FRVlc2ejR0YWhxZW1Xdjdna1Fid0xoZ2ZRdkpwYmpB?=
- =?utf-8?B?V1pBUmE2RXplUCtwOFI5UllXbzJmWGE3MzE0ZWM5Q2w4WHpoQTk4QTVuYUNh?=
- =?utf-8?B?SXYzaGR5dW5zZWFmOFdmZVhhK0FZaExITitTUzJiTWZQWUdyUTZLN08wRFcy?=
- =?utf-8?B?WjNFRWRWY1RGZWkrQnNoUE1nSS9rVUpZMUExYWxKSkp1S29FSUNxZHVMTm9S?=
- =?utf-8?Q?fG5ulgIPjRrqNAYWtBUMXOEOG6dGBhYCJaf3gUBlQeg8?=
+	=?utf-8?B?OXk2elRZcDJkRGIrSUlBeDE0ZzZoL2lZeUZVOU1vNis1aGMrSCtwZXArdnlx?=
+ =?utf-8?B?ODVHV3hrdmI2c0RtRWRzcStWcjBHQ3RKUkVldEhFakFyRW1yNVlyTzR5bGVX?=
+ =?utf-8?B?UGV5eTNMY0hHSmtpMGxvNFBpUzloRVAzMng1bXlTZHh3YkRXd0ZCakhJTVlq?=
+ =?utf-8?B?UitCcEhCUm5DbEFKdy9ydkM1bTJmWmZLSEh0MzROLzZ4d2RlNDRtdFR4Vlk3?=
+ =?utf-8?B?aEF0bHhYZmFwQTlPLzcvKzUxVFJSL0o3dFJ6MnhLZ3ZqUi92cFlNUlFvdXEw?=
+ =?utf-8?B?aWI2QW9Bd2poMU1HNkFxRmRvejMzRU1XTVM3UDNWM3dhM09VL0x1SFcxdTlU?=
+ =?utf-8?B?MnlneXNlV0pwM0ZNRnNRR0VvMDNIVmN4ajk0VUl4ZEc3N3lOQVJSQ1ZmRGVR?=
+ =?utf-8?B?Vy8yTjQxSlo1YmRxcFJvQmVERzZscDd0YkdGZXRJY25YbjM1ZktxejBGNzBY?=
+ =?utf-8?B?STE5cWdraXUxajBJQ0ZWS1liSnV3VlgwZHBpeGVmcm5VTEdHTGRRQjR3L1Vs?=
+ =?utf-8?B?VjAwTTBJU0ZxMVNTYUY0aEo1S3VWdS9VRGM3clA2RmoyRlpzWksrWDhsSmRp?=
+ =?utf-8?B?ZS92MXdCcG9OV1FpK0t5eGVzZWR4SDVTZHZtcW9OdDJWNkFSclFGT2VUZ0JF?=
+ =?utf-8?B?czFGVlY4TTV2UUREWGkvdmhlWGNoSzJEOFBNWEI4aDlFdEZLdmJGMW1LOU9W?=
+ =?utf-8?B?czJ1em90UXFkMW04ekM1QUlKUlBBNmZjd2pEN3A4MGpDcTUrTytJbjBBbXMv?=
+ =?utf-8?B?aEM0YzEydTljMGVCWE1UR2RDc1NLQkNpU2RYSHhndW0xdXhDaCs0VU1EWTI3?=
+ =?utf-8?B?TUVsVDV3L2Iza1hzdzJYK2J5d0Y4akxvdnNhNXlrWUxBZVBLbGExM3FpRVlz?=
+ =?utf-8?B?L0NBMUhWNURrTUdBUGZjUE8rZXo0ZXlReXlXa2xDYTlaOVNmOTIrN1NQRi9h?=
+ =?utf-8?B?ZmUzdkZ5K2NmWjlFN3lyN2V1NmJ0RGVkenJpTG00bWltK3FreWc3R1JZRGth?=
+ =?utf-8?B?d2d6d0JtSUd2WlQ3NEJMV3FGSVpEV1ZrTkpXOTlPZlJsRnJlZGQyckFvMXFJ?=
+ =?utf-8?B?a1I3ZklBSHRqbTlSNWJtOTNLVzROZE04UkZSVDVoR3ZNaGc2VTJtc1JDczIz?=
+ =?utf-8?B?NlBhc0ZPWW91QUhxbFgyK1lMZUNFK2lPUGYwOU9HWFRYYVNWT0dDT3EveUtt?=
+ =?utf-8?B?OWlzeGo2WXhLMVAzS1Mvazg4VVA5dzJ6NGJDTVpRK1lraGh1TUlFVzFMU2Y3?=
+ =?utf-8?B?VVYweEVxOVpoY1BpUHY3ZllNU2Uwc3lVMzkzdjB2T0dRY29Xb1ZyMDlBMVhK?=
+ =?utf-8?B?eXJ2K2F4ajZFYzZFcnNKMUlIWW0wVlVIKzZlbHBsZ1BpYlg5Ri9LK0tZUkhx?=
+ =?utf-8?B?M01IQ2RRSDEwR3hhZlRyaVlYWVdCdlN0b29POE9VbWhQajU5M0pGbDk4VUFx?=
+ =?utf-8?B?dkVkQ0JXeDhCMkxHbSs5T1gzbmlVQm1Ebml3S2w5aSt3a1Z1RDZLc1JLdyt0?=
+ =?utf-8?B?ZkFENUZVekRnM0xzM2hkUTF5MCtvL0Y3UWQzSjNXVXZDdFltTzBONVhtbzdh?=
+ =?utf-8?B?OFB2SzNQK3Y1RGc3TjN0M1NyL291bTZtQVRJYlcxZXVFeElzYWgyMkM3bU81?=
+ =?utf-8?B?YmFQdkd0VTRySjBjemJQT2kyancvQVJvT01KazdYbnJYazV0WkhVUEVCZ3pK?=
+ =?utf-8?B?cnNROEQ1MTk5L2V0aWh6UGlPbW1mMmhZV254SXFCVW5GZlFCVjM1Ni9rcFp0?=
+ =?utf-8?B?ZTVmTEk4bkF3MlVlOVRJQzFUTUF6eVlJNHJpMVN2MVl4b2dtZnBCdXdwcTJ0?=
+ =?utf-8?B?MFlqVEt3dUxMdTd5eDJETHNxMDhFVk9aSFl0eWoyMXhhT3FuK2lsTWV0MUJV?=
+ =?utf-8?B?NEFvV3YwbWNxTFVhS2p1d3owNk5aTTNHdzB5anBXY0hvOXdWZjdQeTMvRmFI?=
+ =?utf-8?B?YVRuSFFRUkh5K1dtRk5Ebjc1amc3OHV4aTlhR1NpRU5CNGZFV0NleVBsZVVY?=
+ =?utf-8?B?ZHpZWEZrS2F3eXFRMUdETkhSOWozVVI4UlZSYndYMXpHS2hlZEJuekVaUSsv?=
+ =?utf-8?B?UGhVTVZMS2VjL0lZMUpVaHdjZ3o2WjJFQmxsSWRKVUZUV3pFZGpsSFRUY0hq?=
+ =?utf-8?B?U1ZZZ3BlNmp4MXl4ZEVvaWhNZDBwaWNpVkJoMThIKzBETWhPZkJLUjF4Q1J0?=
+ =?utf-8?Q?429x1dDQI9XliP386eWrIZgPAeMtSnggfLYRp2o8Lagg?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e36e2ac7-60f7-493b-d587-08dd8ce9d521
+X-MS-Exchange-CrossTenant-Network-Message-Id: c76b9a48-bd35-4a50-54b0-08dd8ce9e240
 X-MS-Exchange-CrossTenant-AuthSource: SJ1PR12MB6363.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 May 2025 22:03:28.8873
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 May 2025 22:03:51.1125
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: R0gIYb3CPdAb+5gHn5jQh4hkcfEDOgBJugwj762JtpduAlE9bzLpYFquPFB57SWTXw8FAMjpPyI1iFpEAAb4CQ==
+X-MS-Exchange-CrossTenant-UserPrincipalName: ImMSZdVQzsX5S2TGbvib1NfV2yus36bdXWUZRCH1NhxWljcdQxE5OKFOWTPRlUb4+hsB4ca+r3C2lBl3mch57A==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7079
 
 
-From: Uday Shankar <ushankar@purestorage.com>
+From: Ming Lei <ming.lei@redhat.com>
 
-There are currently two ways in which ublk server exit is detected by
-ublk_drv:
+Remove __ublk_quiesce_dev() and open code for updating device state as
+QUIESCED.
 
-1. uring_cmd cancellation. If there are any outstanding uring_cmds which
-   have not been completed to the ublk server when it exits, io_uring
-   calls the uring_cmd callback with a special cancellation flag as the
-   issuing task is exiting.
-2. I/O timeout. This is needed in addition to the above to handle the
-   "saturated queue" case, when all I/Os for a given queue are in the
-   ublk server, and therefore there are no outstanding uring_cmds to
-   cancel when the ublk server exits.
+We needn't to drain inflight requests in __ublk_quiesce_dev() any more,
+because all inflight requests are aborted in ublk char device release
+handler.
 
-There are a couple of issues with this approach:
+Also we needn't to set ->canceling in __ublk_quiesce_dev() any more
+because it is done unconditionally now in ublk_ch_release().
 
-- It is complex and inelegant to have two methods to detect the same
-  condition
-- The second method detects ublk server exit only after a long delay
-  (~30s, the default timeout assigned by the block layer). This delays
-  the nosrv behavior from kicking in and potential subsequent recovery
-  of the device.
-
-The second issue is brought to light with the new test_generic_06 which
-will be added in following patch. It fails before this fix:
-
-selftests: ublk: test_generic_06.sh
-dev id is 0
-dd: error writing '/dev/ublkb0': Input/output error
-1+0 records in
-0+0 records out
-0 bytes copied, 30.0611 s, 0.0 kB/s
-DEAD
-dd took 31 seconds to exit (>= 5s tolerance)!
-generic_06 : [FAIL]
-
-Fix this by instead detecting and handling ublk server exit in the
-character file release callback. This has several advantages:
-
-- This one place can handle both saturated and unsaturated queues. Thus,
-  it replaces both preexisting methods of detecting ublk server exit.
-- It runs quickly on ublk server exit - there is no 30s delay.
-- It starts the process of removing task references in ublk_drv. This is
-  needed if we want to relax restrictions in the driver like letting
-  only one thread serve each queue
-
-There is also the disadvantage that the character file release callback
-can also be triggered by intentional close of the file, which is a
-significant behavior change. Preexisting ublk servers (libublksrv) are
-dependent on the ability to open/close the file multiple times. To
-address this, only transition to a nosrv state if the file is released
-while the ublk device is live. This allows for programs to open/close
-the file multiple times during setup. It is still a behavior change if a
-ublk server decides to close/reopen the file while the device is LIVE
-(i.e. while it is responsible for serving I/O), but that would be highly
-unusual. This behavior is in line with what is done by FUSE, which is
-very similar to ublk in that a userspace daemon is providing services
-traditionally provided by the kernel.
-
-With this change in, the new test (and all other selftests, and all
-ublksrv tests) pass:
-
-selftests: ublk: test_generic_06.sh
-dev id is 0
-dd: error writing '/dev/ublkb0': Input/output error
-1+0 records in
-0+0 records out
-0 bytes copied, 0.0376731 s, 0.0 kB/s
-DEAD
-generic_04 : [PASS]
-
-Signed-off-by: Uday Shankar <ushankar@purestorage.com>
+Reviewed-by: Uday Shankar <ushankar@purestorage.com>
 Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20250416035444.99569-6-ming.lei@redhat.com
+Link: https://lore.kernel.org/r/20250416035444.99569-7-ming.lei@redhat.com
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 ---
- drivers/block/ublk_drv.c | 223 ++++++++++++++++++++++-----------------
- 1 file changed, 124 insertions(+), 99 deletions(-)
+ drivers/block/ublk_drv.c | 19 ++-----------------
+ 1 file changed, 2 insertions(+), 17 deletions(-)
 
 diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
-index c619df880c72..652742db0396 100644
+index 652742db0396..c3f576a9dbf2 100644
 --- a/drivers/block/ublk_drv.c
 +++ b/drivers/block/ublk_drv.c
-@@ -194,8 +194,6 @@ struct ublk_device {
- 	struct completion	completion;
- 	unsigned int		nr_queues_ready;
- 	unsigned int		nr_privileged_daemon;
--
--	struct work_struct	nosrv_work;
- };
+@@ -205,7 +205,6 @@ struct ublk_params_header {
  
- /* header of ublk_params */
-@@ -204,7 +202,10 @@ struct ublk_params_header {
- 	__u32	types;
- };
- 
--static bool ublk_abort_requests(struct ublk_device *ub, struct ublk_queue *ubq);
-+
-+static void ublk_stop_dev_unlocked(struct ublk_device *ub);
-+static void ublk_abort_queue(struct ublk_device *ub, struct ublk_queue *ubq);
-+static void __ublk_quiesce_dev(struct ublk_device *ub);
+ static void ublk_stop_dev_unlocked(struct ublk_device *ub);
+ static void ublk_abort_queue(struct ublk_device *ub, struct ublk_queue *ubq);
+-static void __ublk_quiesce_dev(struct ublk_device *ub);
  
  static inline unsigned int ublk_req_build_flags(struct request *req);
  static inline struct ublksrv_io_desc *ublk_get_iod(struct ublk_queue *ubq,
-@@ -1306,8 +1307,6 @@ static void ublk_queue_cmd_list(struct ublk_queue *ubq, struct rq_list *l)
- static enum blk_eh_timer_return ublk_timeout(struct request *rq)
- {
- 	struct ublk_queue *ubq = rq->mq_hctx->driver_data;
--	unsigned int nr_inflight = 0;
--	int i;
- 
- 	if (ubq->flags & UBLK_F_UNPRIVILEGED_DEV) {
- 		if (!ubq->timeout) {
-@@ -1318,26 +1317,6 @@ static enum blk_eh_timer_return ublk_timeout(struct request *rq)
- 		return BLK_EH_DONE;
+@@ -1558,7 +1557,8 @@ static int ublk_ch_release(struct inode *inode, struct file *filp)
+ 		ublk_stop_dev_unlocked(ub);
+ 	} else {
+ 		if (ublk_nosrv_dev_should_queue_io(ub)) {
+-			__ublk_quiesce_dev(ub);
++			/* ->canceling is set and all requests are aborted */
++			ub->dev_info.state = UBLK_S_DEV_QUIESCED;
+ 		} else {
+ 			ub->dev_info.state = UBLK_S_DEV_FAIL_IO;
+ 			for (i = 0; i < ub->dev_info.nr_hw_queues; i++)
+@@ -1804,21 +1804,6 @@ static void ublk_wait_tagset_rqs_idle(struct ublk_device *ub)
  	}
- 
--	if (!ubq_daemon_is_dying(ubq))
--		return BLK_EH_RESET_TIMER;
--
--	for (i = 0; i < ubq->q_depth; i++) {
--		struct ublk_io *io = &ubq->ios[i];
--
--		if (!(io->flags & UBLK_IO_FLAG_ACTIVE))
--			nr_inflight++;
--	}
--
--	/* cancelable uring_cmd can't help us if all commands are in-flight */
--	if (nr_inflight == ubq->q_depth) {
--		struct ublk_device *ub = ubq->dev;
--
--		if (ublk_abort_requests(ub, ubq)) {
--			schedule_work(&ub->nosrv_work);
--		}
--		return BLK_EH_DONE;
--	}
--
- 	return BLK_EH_RESET_TIMER;
  }
  
-@@ -1495,13 +1474,105 @@ static void ublk_reset_ch_dev(struct ublk_device *ub)
- 	ub->nr_privileged_daemon = 0;
- }
- 
-+static struct gendisk *ublk_get_disk(struct ublk_device *ub)
-+{
-+	struct gendisk *disk;
-+
-+	spin_lock(&ub->lock);
-+	disk = ub->ub_disk;
-+	if (disk)
-+		get_device(disk_to_dev(disk));
-+	spin_unlock(&ub->lock);
-+
-+	return disk;
-+}
-+
-+static void ublk_put_disk(struct gendisk *disk)
-+{
-+	if (disk)
-+		put_device(disk_to_dev(disk));
-+}
-+
- static int ublk_ch_release(struct inode *inode, struct file *filp)
- {
- 	struct ublk_device *ub = filp->private_data;
-+	struct gendisk *disk;
-+	int i;
-+
-+	/*
-+	 * disk isn't attached yet, either device isn't live, or it has
-+	 * been removed already, so we needn't to do anything
-+	 */
-+	disk = ublk_get_disk(ub);
-+	if (!disk)
-+		goto out;
-+
-+	/*
-+	 * All uring_cmd are done now, so abort any request outstanding to
-+	 * the ublk server
-+	 *
-+	 * This can be done in lockless way because ublk server has been
-+	 * gone
-+	 *
-+	 * More importantly, we have to provide forward progress guarantee
-+	 * without holding ub->mutex, otherwise control task grabbing
-+	 * ub->mutex triggers deadlock
-+	 *
-+	 * All requests may be inflight, so ->canceling may not be set, set
-+	 * it now.
-+	 */
-+	for (i = 0; i < ub->dev_info.nr_hw_queues; i++) {
-+		struct ublk_queue *ubq = ublk_get_queue(ub, i);
-+
-+		ubq->canceling = true;
-+		ublk_abort_queue(ub, ubq);
-+	}
-+	blk_mq_kick_requeue_list(disk->queue);
-+
-+	/*
-+	 * All infligh requests have been completed or requeued and any new
-+	 * request will be failed or requeued via `->canceling` now, so it is
-+	 * fine to grab ub->mutex now.
-+	 */
-+	mutex_lock(&ub->mutex);
-+
-+	/* double check after grabbing lock */
-+	if (!ub->ub_disk)
-+		goto unlock;
-+
-+	/*
-+	 * Transition the device to the nosrv state. What exactly this
-+	 * means depends on the recovery flags
-+	 */
-+	blk_mq_quiesce_queue(disk->queue);
-+	if (ublk_nosrv_should_stop_dev(ub)) {
-+		/*
-+		 * Allow any pending/future I/O to pass through quickly
-+		 * with an error. This is needed because del_gendisk
-+		 * waits for all pending I/O to complete
-+		 */
-+		for (i = 0; i < ub->dev_info.nr_hw_queues; i++)
-+			ublk_get_queue(ub, i)->force_abort = true;
-+		blk_mq_unquiesce_queue(disk->queue);
-+
-+		ublk_stop_dev_unlocked(ub);
-+	} else {
-+		if (ublk_nosrv_dev_should_queue_io(ub)) {
-+			__ublk_quiesce_dev(ub);
-+		} else {
-+			ub->dev_info.state = UBLK_S_DEV_FAIL_IO;
-+			for (i = 0; i < ub->dev_info.nr_hw_queues; i++)
-+				ublk_get_queue(ub, i)->fail_io = true;
-+		}
-+		blk_mq_unquiesce_queue(disk->queue);
-+	}
-+unlock:
-+	mutex_unlock(&ub->mutex);
-+	ublk_put_disk(disk);
- 
- 	/* all uring_cmd has been done now, reset device & ubq */
- 	ublk_reset_ch_dev(ub);
--
-+out:
- 	clear_bit(UB_STATE_OPEN, &ub->state);
- 	return 0;
- }
-@@ -1597,37 +1668,22 @@ static void ublk_abort_queue(struct ublk_device *ub, struct ublk_queue *ubq)
- }
- 
- /* Must be called when queue is frozen */
--static bool ublk_mark_queue_canceling(struct ublk_queue *ubq)
-+static void ublk_mark_queue_canceling(struct ublk_queue *ubq)
- {
--	bool canceled;
--
- 	spin_lock(&ubq->cancel_lock);
--	canceled = ubq->canceling;
--	if (!canceled)
-+	if (!ubq->canceling)
- 		ubq->canceling = true;
- 	spin_unlock(&ubq->cancel_lock);
--
--	return canceled;
- }
- 
--static bool ublk_abort_requests(struct ublk_device *ub, struct ublk_queue *ubq)
-+static void ublk_start_cancel(struct ublk_queue *ubq)
- {
--	bool was_canceled = ubq->canceling;
--	struct gendisk *disk;
--
--	if (was_canceled)
--		return false;
--
--	spin_lock(&ub->lock);
--	disk = ub->ub_disk;
--	if (disk)
--		get_device(disk_to_dev(disk));
--	spin_unlock(&ub->lock);
-+	struct ublk_device *ub = ubq->dev;
-+	struct gendisk *disk = ublk_get_disk(ub);
- 
- 	/* Our disk has been dead */
- 	if (!disk)
--		return false;
--
-+		return;
- 	/*
- 	 * Now we are serialized with ublk_queue_rq()
- 	 *
-@@ -1636,15 +1692,9 @@ static bool ublk_abort_requests(struct ublk_device *ub, struct ublk_queue *ubq)
- 	 * touch completed uring_cmd
- 	 */
- 	blk_mq_quiesce_queue(disk->queue);
--	was_canceled = ublk_mark_queue_canceling(ubq);
--	if (!was_canceled) {
--		/* abort queue is for making forward progress */
--		ublk_abort_queue(ub, ubq);
--	}
-+	ublk_mark_queue_canceling(ubq);
- 	blk_mq_unquiesce_queue(disk->queue);
--	put_device(disk_to_dev(disk));
--
--	return !was_canceled;
-+	ublk_put_disk(disk);
- }
- 
- static void ublk_cancel_cmd(struct ublk_queue *ubq, struct ublk_io *io,
-@@ -1668,6 +1718,17 @@ static void ublk_cancel_cmd(struct ublk_queue *ubq, struct ublk_io *io,
- /*
-  * The ublk char device won't be closed when calling cancel fn, so both
-  * ublk device and queue are guaranteed to be live
-+ *
-+ * Two-stage cancel:
-+ *
-+ * - make every active uring_cmd done in ->cancel_fn()
-+ *
-+ * - aborting inflight ublk IO requests in ublk char device release handler,
-+ *   which depends on 1st stage because device can only be closed iff all
-+ *   uring_cmd are done
-+ *
-+ * Do _not_ try to acquire ub->mutex before all inflight requests are
-+ * aborted, otherwise deadlock may be caused.
-  */
- static void ublk_uring_cmd_cancel_fn(struct io_uring_cmd *cmd,
- 		unsigned int issue_flags)
-@@ -1675,8 +1736,6 @@ static void ublk_uring_cmd_cancel_fn(struct io_uring_cmd *cmd,
- 	struct ublk_uring_cmd_pdu *pdu = ublk_get_uring_cmd_pdu(cmd);
- 	struct ublk_queue *ubq = pdu->ubq;
- 	struct task_struct *task;
--	struct ublk_device *ub;
--	bool need_schedule;
- 	struct ublk_io *io;
- 
- 	if (WARN_ON_ONCE(!ubq))
-@@ -1689,16 +1748,12 @@ static void ublk_uring_cmd_cancel_fn(struct io_uring_cmd *cmd,
- 	if (WARN_ON_ONCE(task && task != ubq->ubq_daemon))
- 		return;
- 
--	ub = ubq->dev;
--	need_schedule = ublk_abort_requests(ub, ubq);
-+	if (!ubq->canceling)
-+		ublk_start_cancel(ubq);
- 
- 	io = &ubq->ios[pdu->tag];
- 	WARN_ON_ONCE(io->cmd != cmd);
- 	ublk_cancel_cmd(ubq, io, issue_flags);
--
--	if (need_schedule) {
--		schedule_work(&ub->nosrv_work);
--	}
- }
- 
- static inline bool ublk_queue_ready(struct ublk_queue *ubq)
-@@ -1757,13 +1812,11 @@ static void __ublk_quiesce_dev(struct ublk_device *ub)
- 			__func__, ub->dev_info.dev_id,
- 			ub->dev_info.state == UBLK_S_DEV_LIVE ?
- 			"LIVE" : "QUIESCED");
--	blk_mq_quiesce_queue(ub->ub_disk->queue);
- 	/* mark every queue as canceling */
- 	for (i = 0; i < ub->dev_info.nr_hw_queues; i++)
- 		ublk_get_queue(ub, i)->canceling = true;
- 	ublk_wait_tagset_rqs_idle(ub);
- 	ub->dev_info.state = UBLK_S_DEV_QUIESCED;
--	blk_mq_unquiesce_queue(ub->ub_disk->queue);
- }
- 
- static void ublk_force_abort_dev(struct ublk_device *ub)
-@@ -1800,50 +1853,25 @@ static struct gendisk *ublk_detach_disk(struct ublk_device *ub)
- 	return disk;
- }
- 
--static void ublk_stop_dev(struct ublk_device *ub)
-+static void ublk_stop_dev_unlocked(struct ublk_device *ub)
-+	__must_hold(&ub->mutex)
- {
- 	struct gendisk *disk;
- 
--	mutex_lock(&ub->mutex);
- 	if (ub->dev_info.state == UBLK_S_DEV_DEAD)
--		goto unlock;
-+		return;
-+
- 	if (ublk_nosrv_dev_should_queue_io(ub))
- 		ublk_force_abort_dev(ub);
- 	del_gendisk(ub->ub_disk);
- 	disk = ublk_detach_disk(ub);
- 	put_disk(disk);
-- unlock:
--	mutex_unlock(&ub->mutex);
--	ublk_cancel_dev(ub);
- }
- 
--static void ublk_nosrv_work(struct work_struct *work)
-+static void ublk_stop_dev(struct ublk_device *ub)
- {
--	struct ublk_device *ub =
--		container_of(work, struct ublk_device, nosrv_work);
+-static void __ublk_quiesce_dev(struct ublk_device *ub)
+-{
 -	int i;
 -
--	if (ublk_nosrv_should_stop_dev(ub)) {
--		ublk_stop_dev(ub);
--		return;
--	}
+-	pr_devel("%s: quiesce ub: dev_id %d state %s\n",
+-			__func__, ub->dev_info.dev_id,
+-			ub->dev_info.state == UBLK_S_DEV_LIVE ?
+-			"LIVE" : "QUIESCED");
+-	/* mark every queue as canceling */
+-	for (i = 0; i < ub->dev_info.nr_hw_queues; i++)
+-		ublk_get_queue(ub, i)->canceling = true;
+-	ublk_wait_tagset_rqs_idle(ub);
+-	ub->dev_info.state = UBLK_S_DEV_QUIESCED;
+-}
 -
- 	mutex_lock(&ub->mutex);
--	if (ub->dev_info.state != UBLK_S_DEV_LIVE)
--		goto unlock;
--
--	if (ublk_nosrv_dev_should_queue_io(ub)) {
--		__ublk_quiesce_dev(ub);
--	} else {
--		blk_mq_quiesce_queue(ub->ub_disk->queue);
--		ub->dev_info.state = UBLK_S_DEV_FAIL_IO;
--		for (i = 0; i < ub->dev_info.nr_hw_queues; i++) {
--			ublk_get_queue(ub, i)->fail_io = true;
--		}
--		blk_mq_unquiesce_queue(ub->ub_disk->queue);
--	}
--
-- unlock:
-+	ublk_stop_dev_unlocked(ub);
- 	mutex_unlock(&ub->mutex);
- 	ublk_cancel_dev(ub);
- }
-@@ -2419,7 +2447,6 @@ static int ublk_add_tag_set(struct ublk_device *ub)
- static void ublk_remove(struct ublk_device *ub)
+ static void ublk_force_abort_dev(struct ublk_device *ub)
  {
- 	ublk_stop_dev(ub);
--	cancel_work_sync(&ub->nosrv_work);
- 	cdev_device_del(&ub->cdev, &ub->cdev_dev);
- 	ublk_put_device(ub);
- 	ublks_added--;
-@@ -2693,7 +2720,6 @@ static int ublk_ctrl_add_dev(struct io_uring_cmd *cmd)
- 		goto out_unlock;
- 	mutex_init(&ub->mutex);
- 	spin_lock_init(&ub->lock);
--	INIT_WORK(&ub->nosrv_work, ublk_nosrv_work);
- 
- 	ret = ublk_alloc_dev_number(ub, header->dev_id);
- 	if (ret < 0)
-@@ -2828,7 +2854,6 @@ static inline void ublk_ctrl_cmd_dump(struct io_uring_cmd *cmd)
- static int ublk_ctrl_stop_dev(struct ublk_device *ub)
- {
- 	ublk_stop_dev(ub);
--	cancel_work_sync(&ub->nosrv_work);
- 	return 0;
- }
- 
+ 	int i;
 -- 
 2.43.0
 
