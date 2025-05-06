@@ -1,162 +1,125 @@
-Return-Path: <stable+bounces-141802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67D13AAC2B6
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 13:32:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46956AAC335
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 13:59:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88E583B0272
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 11:32:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04A363B1D74
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 11:56:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5371327AC20;
-	Tue,  6 May 2025 11:31:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3945C27C85C;
+	Tue,  6 May 2025 11:56:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="btJjgamw"
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="eTCfCT8f"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3013C27AC27
-	for <stable@vger.kernel.org>; Tue,  6 May 2025 11:31:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68CE427C153;
+	Tue,  6 May 2025 11:56:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746531119; cv=none; b=Y9PaIXayAtK0jGexPAsQlIcEIanl4/+C2hk4oQOtJ0+OP1xLm2gUYddq0bNXcBOfBeeRmP/7RDvVkAEmL1Uibz0rWKAKf1lprsu/aCzzU5cf9GE8zJeSCZRfpkYunJaVVZi96if0tbUAGf90nMSulGwZWnUyF4+zS4eC65132TE=
+	t=1746532612; cv=none; b=t+opY2Aehvzb6m4kmJE9YVncBgyChfz80eDWhob7tEYG+SOhdQgdPj6N7JrbPiZ4VNQ/jI2huWV+jNqYGOOiar07PN+bXgUhbglvg4up3KLPePM6mmod/mAm0BLIg+3Yn9vZd/TZLq4HnYEeOMdKsKFRUjjFU7T7fhlQPm24eDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746531119; c=relaxed/simple;
-	bh=dZOxThEKY/19fDb1atsCAd4vX2SSIiVfbJuNFdfhc6g=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=k3M3StzKz1PrFOKWCfymLz/Stz2qqZXa1lCw0OS0VkRkJz+Is7yRVilds6O+dUjgFrI0dRtdTbPbhLKf1j2/Tg7sr6zjoPfrCbF65LEDVGUjm1MhMX+bL4zRqdqomwtw9fYFns/ArOzCYiR0ry9up2YxBChXz+yVBWnXKSrktDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=btJjgamw; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-43ede096d73so33190765e9.2
-        for <stable@vger.kernel.org>; Tue, 06 May 2025 04:31:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1746531115; x=1747135915; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=xVYMaT82isRrkpK15HHVNBbc3e0novaLvbWmbpyFIOE=;
-        b=btJjgamwaPMIkqoGeqCUwJxMbsrXe+ax6aHgMu1gvdxjoxNrTHRXu1FnVN+FJi9ey5
-         E8Z2aufoTkRU4xRYBPSuOKve/r+gimZ23CbWOANicn6eSfFSw4xzNxTlDvtil0bVSwIM
-         tkhwVOnry/pEjBbZQkfRoNosxJVcIy6tClo9OnVm9rWWOKDOT/zDe2psEs0TRc8N5zFJ
-         wUKU/lJ+owD72z/r0DDhK3rTtn7iIQwA9zKrdRcqtQ1EINLJjqYyPSUqnW3fzUwULrsk
-         z0s+UsqDSkOojUN2bZvvuV7eVWAIigIiKmodnSmpiXuFCCPNZLENAacoEsI5THfcPytZ
-         PZYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746531115; x=1747135915;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xVYMaT82isRrkpK15HHVNBbc3e0novaLvbWmbpyFIOE=;
-        b=OIGFY/nxVE/DE9/gYEvcQCpJKgBzUNjLoAO/JuIrBDtSu5egWue43GOKHnH/htfpoX
-         0k27AknspkHuAjHoDUplDhyLjdahdwrdV7a7G4KE4Hy1xvJai6CMiOHEY2kDGXcanRQj
-         UxxLNUd8vgRn/lnSEWSoR1eTZW+ycxbR9+KAP5XmvkriTKdX78sSSOD3On0ZRxudvPMH
-         CrTqZH1vHgnjcPHzL6lanwsIbdn4ifdoUZA71IBfBrOI7dhH8zeShDgmEd2Ef0gpZXzk
-         lLGlEbVHZuReLepnOxPA7yQHg0/U62qJIDWwqiRbCNeC5WYsuo7OfePxmBA5ecQ54ell
-         pNZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXnrIF483Ozas/mZ7hz57VrQD02a/0QNq6yVLt3BTHaTuypQkKlhlPFsHfO1wypvQtnmFew2Kg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyhjJ/8qHVJ+akKjCW1mmmuAfcOd3sCoZn7S4dnhdjJi/km5Y35
-	j3T8T7ibt3QmvajC5UvVXbdyJXc4IMbOys0LV3rRQgOGOfAh09zdzVDWxEkyytQ=
-X-Gm-Gg: ASbGncssDIQjs4iRZFkz6DOu4LGsqkJrfrYYgt1NWzdSsXAtp10oTGgqmZaBWBSL3X/
-	VGtsFD/pxikPYsG+sRV8/+z89Yx6OW3ZExy1gxN1gYe8dnQZECn58aK5XJ2AENbiOAkcaXUl7ei
-	lyspqnfIVolvE+p1zZB7HKO8gkpDnaQgUUKe2B1MKgHYZKs7l0mf1xCr9vq+YbaPlKK3DmrlYi5
-	29Y9ojxxkqRz2W2M4yBAUW8Vtu0SmZcYTWYSsu+7SdnjPvyIqQAcWSW5Iqa66uIao4gCyG5cblR
-	1iTcZ2KljgSHh8HuVKDKi2dCFvkYrvpfVwM31+OaI4iSdzBVGbEfHFavEzOM2bmDjRIkujmwQ8Z
-	2owyxL/UC/jNyj/0lDzx/
-X-Google-Smtp-Source: AGHT+IFB+/2+pwJwZIBD0b2yLu++CXDbSzQgzqM1gVS70tv5Bksn6acNtQIMSaKWzYmIjz1xXAmFYA==
-X-Received: by 2002:a05:600c:8012:b0:434:fa55:eb56 with SMTP id 5b1f17b1804b1-441c48b05cdmr93122945e9.7.1746531115575;
-        Tue, 06 May 2025 04:31:55 -0700 (PDT)
-Received: from ta2.c.googlers.com (92.221.190.35.bc.googleusercontent.com. [35.190.221.92])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-441b2aecedcsm213723495e9.15.2025.05.06.04.31.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 May 2025 04:31:54 -0700 (PDT)
-From: Tudor Ambarus <tudor.ambarus@linaro.org>
-Date: Tue, 06 May 2025 11:31:50 +0000
-Subject: [PATCH] dm: fix copying after src array boundaries
+	s=arc-20240116; t=1746532612; c=relaxed/simple;
+	bh=wEwUv++zHwmlk3siwS63rhWQRc7vYZ9kaT/NCb8Ytcw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dGkSsaJledvNPWi4QUujO3jMLYs5d7mU/ST1awr0Qd5yWTzw98+Gx+wFhnojnmNRwpWvEGvW7epbC2GoeFlr4qbfieMBMW9bfvUSTHj0mhV8LtPkghsaD1wY6Pma5SBSEYabb1R4/36aBl8AcfeHb9Y/O6MuQ1InY1EuzNF9ZXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=eTCfCT8f; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+Received: from fedora.intra.ispras.ru (unknown [10.10.165.23])
+	by mail.ispras.ru (Postfix) with ESMTPSA id 78F8A4076186;
+	Tue,  6 May 2025 11:56:40 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 78F8A4076186
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1746532600;
+	bh=CdKhF1dz8le1BxUGeNhnXLgthKYZanVP+D2h7mGr3gs=;
+	h=From:To:Cc:Subject:Date:From;
+	b=eTCfCT8fjeYYEb7Sg7xO68w3ygdO+aRNtTSnkV8u9DFbD1ndgqqpYgp7Nhtln5+bS
+	 fNJo+TT+RocYX+O+0X4eUWok1gHeDxcrLGo7g9v/IKbS1q2Oz5hJBKvqgWLTOXETiE
+	 3jjysTAqCXftL/AA08mnxqgvdICd52qpvp5JdenM=
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+To: Felix Fietkau <nbd@nbd.name>,
+	Lorenzo Bianconi <lorenzo@kernel.org>
+Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
+	Ryder Lee <ryder.lee@mediatek.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Sean Wang <sean.wang@mediatek.com>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	Joe Damato <jdamato@fastly.com>,
+	Eric Dumazet <edumazet@google.com>,
+	lvc-project@linuxtesting.org,
+	stable@vger.kernel.org
+Subject: [PATCH] wifi: mt76: disable napi on driver removal
+Date: Tue,  6 May 2025 14:55:39 +0300
+Message-ID: <20250506115540.19045-1-pchelkin@ispras.ru>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250506-dm-past-array-boundaries-v1-1-b5b1bb8b2b34@linaro.org>
-X-B4-Tracking: v=1; b=H4sIACXzGWgC/x3MMQ6DMAxA0asgz7XkpAoDV0Ed3MYBDwTkFARC3
- L0p4xv+P6GIqRTomhNMNi065wr3aOAzch4ENVaDJx8oUItxwoXLF9mMD3zPa478P6BL4lNgR09
- KUPPFJOl+r/vXdf0A3b3cymoAAAA=
-X-Change-ID: 20250506-dm-past-array-boundaries-1fe2f5a1030f
-To: Alasdair Kergon <agk@redhat.com>, Mike Snitzer <snitzer@kernel.org>, 
- Mikulas Patocka <mpatocka@redhat.com>, 
- Benjamin Marzinski <bmarzins@redhat.com>
-Cc: dm-devel@lists.linux.dev, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Tudor Ambarus <tudor.ambarus@linaro.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1746531114; l=2250;
- i=tudor.ambarus@linaro.org; s=20241212; h=from:subject:message-id;
- bh=dZOxThEKY/19fDb1atsCAd4vX2SSIiVfbJuNFdfhc6g=;
- b=zmVLAtKGrgYT4MKv8fchYAAkjBVI+UyBexEDHXyQc+1hENewYZaxjQ/O7Yyxoc9/n9JVBYPEH
- CQGMUpu2v34AhJlKIfbHG/UUXKSDuWiMsqKYs7NhYIRppYDE2xyBeFm
-X-Developer-Key: i=tudor.ambarus@linaro.org; a=ed25519;
- pk=uQzE0NXo3dIjeowMTOPCpIiPHEz12IA/MbyzrZVh9WI=
+Content-Transfer-Encoding: 8bit
 
-The blammed commit copied to argv the size of the reallocated argv,
-instead of the size of the old_argv, thus reading and copying from
-past the old_argv allocated memory.
+A warning on driver removal started occurring after commit 9dd05df8403b
+("net: warn if NAPI instance wasn't shut down"). Disable tx napi before
+deleting it in mt76_dma_cleanup().
 
-Following BUG_ON was hit:
-[    3.038929][    T1] kernel BUG at lib/string_helpers.c:1040!
-[    3.039147][    T1] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
-...
-[    3.056489][    T1] Call trace:
-[    3.056591][    T1]  __fortify_panic+0x10/0x18 (P)
-[    3.056773][    T1]  dm_split_args+0x20c/0x210
-[    3.056942][    T1]  dm_table_add_target+0x13c/0x360
-[    3.057132][    T1]  table_load+0x110/0x3ac
-[    3.057292][    T1]  dm_ctl_ioctl+0x424/0x56c
-[    3.057457][    T1]  __arm64_sys_ioctl+0xa8/0xec
-[    3.057634][    T1]  invoke_syscall+0x58/0x10c
-[    3.057804][    T1]  el0_svc_common+0xa8/0xdc
-[    3.057970][    T1]  do_el0_svc+0x1c/0x28
-[    3.058123][    T1]  el0_svc+0x50/0xac
-[    3.058266][    T1]  el0t_64_sync_handler+0x60/0xc4
-[    3.058452][    T1]  el0t_64_sync+0x1b0/0x1b4
-[    3.058620][    T1] Code: f800865e a9bf7bfd 910003fd 941f48aa (d4210000)
-[    3.058897][    T1] ---[ end trace 0000000000000000 ]---
-[    3.059083][    T1] Kernel panic - not syncing: Oops - BUG: Fatal exception
+ WARNING: CPU: 4 PID: 18828 at net/core/dev.c:7288 __netif_napi_del_locked+0xf0/0x100
+ CPU: 4 UID: 0 PID: 18828 Comm: modprobe Not tainted 6.15.0-rc4 #4 PREEMPT(lazy)
+ Hardware name: ASUS System Product Name/PRIME X670E-PRO WIFI, BIOS 3035 09/05/2024
+ RIP: 0010:__netif_napi_del_locked+0xf0/0x100
+ Call Trace:
+ <TASK>
+ mt76_dma_cleanup+0x54/0x2f0 [mt76]
+ mt7921_pci_remove+0xd5/0x190 [mt7921e]
+ pci_device_remove+0x47/0xc0
+ device_release_driver_internal+0x19e/0x200
+ driver_detach+0x48/0x90
+ bus_remove_driver+0x6d/0xf0
+ pci_unregister_driver+0x2e/0xb0
+ __do_sys_delete_module.isra.0+0x197/0x2e0
+ do_syscall_64+0x7b/0x160
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Fix it by copying the size of src, and not the size of dst, as it was.
+Tested with mt7921e but the same pattern can be actually applied to other
+mt76 drivers calling mt76_dma_cleanup() during removal. Tx napi is enabled
+in their *_dma_init() functions and only toggled off and on again inside
+their suspend/resume/reset paths. So it should be okay to disable tx
+napi in such a generic way.
 
-Fixes: 5a2a6c428190 ("dm: always update the array size in realloc_argv on success")
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: 2ac515a5d74f ("mt76: mt76x02: use napi polling for tx cleanup")
 Cc: stable@vger.kernel.org
-Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
 ---
- drivers/md/dm-table.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/dma.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/md/dm-table.c b/drivers/md/dm-table.c
-index 9e175c5e0634b49b990436898f63c2b1e696febb..6dae73ee49dbb36d89341ff09556876d0973c4ff 100644
---- a/drivers/md/dm-table.c
-+++ b/drivers/md/dm-table.c
-@@ -524,9 +524,9 @@ static char **realloc_argv(unsigned int *size, char **old_argv)
- 	}
- 	argv = kmalloc_array(new_size, sizeof(*argv), gfp);
- 	if (argv) {
--		*size = new_size;
- 		if (old_argv)
- 			memcpy(argv, old_argv, *size * sizeof(*argv));
-+		*size = new_size;
- 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/dma.c b/drivers/net/wireless/mediatek/mt76/dma.c
+index 844af16ee551..35b4ec91979e 100644
+--- a/drivers/net/wireless/mediatek/mt76/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/dma.c
+@@ -1011,6 +1011,7 @@ void mt76_dma_cleanup(struct mt76_dev *dev)
+ 	int i;
  
- 	kfree(old_argv);
-
----
-base-commit: 92a09c47464d040866cf2b4cd052bc60555185fb
-change-id: 20250506-dm-past-array-boundaries-1fe2f5a1030f
-
-Best regards,
+ 	mt76_worker_disable(&dev->tx_worker);
++	napi_disable(&dev->tx_napi);
+ 	netif_napi_del(&dev->tx_napi);
+ 
+ 	for (i = 0; i < ARRAY_SIZE(dev->phys); i++) {
 -- 
-Tudor Ambarus <tudor.ambarus@linaro.org>
+2.49.0
 
 
