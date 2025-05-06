@@ -1,174 +1,161 @@
-Return-Path: <stable+bounces-141748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D82C3AAB969
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:57:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E344AAB927
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:51:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 324253A82C0
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:42:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCF451C26F32
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 06:46:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68B671C07F6;
-	Tue,  6 May 2025 03:59:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99DD728643A;
+	Tue,  6 May 2025 04:01:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GbWo8vOG"
 X-Original-To: stable@vger.kernel.org
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99F71CAA76
-	for <stable@vger.kernel.org>; Tue,  6 May 2025 01:25:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F25302039
+	for <stable@vger.kernel.org>; Tue,  6 May 2025 01:57:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746494760; cv=none; b=JD/nyRvpRE3AQ3AmkXkDorJlCrAjUO8ElpdUraaEt7dHSNUYo+c9PPS61q1xxtGee000xafAk24P4Qtb0897olPBUfK4JcAiXtQTamn+DnWMNQojO56q/Hdrtg7h1UXRK3ijupEM1YxxT2bds5BMxQc0USwHvCcTULpIJfzNNpo=
+	t=1746496676; cv=none; b=TZERUg3LgUqcG2LckD8E1Z5ZNF35OOeXWFUkkSxWD0f2AzAAH8R1PztHHpkI3q98ck9uJ0MU3IBu6dPqeNnbz6C0xVgnvQEn+1SM2UEhnSEdwdcm/1alRqjxPxtJ8h4+pqnXjgOzf2KguBBWuI/IhEruoJ+0pxBxgKA8zjYjQc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746494760; c=relaxed/simple;
-	bh=Bq96aD6+ZjgA4RCTUXaYtsQk/AzJO03m72VagKdV+Ro=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=p0K699q93Ko5+4hLbkDiG72cAmtQ2GLU/yDRMk9JPMyN0weeW90Xlge3UMuvKjhSa3SryCQtW/UYJEqwU7ISN8RykZgGHlDYF0CqaSaYvr4NFjvSyyzbySxOQKRMJrZDtyHCFlD4YffEg+yLbuuel5HQRHHY7MOOoCbjATH4CC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.93.142])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4Zs11c25wVzYQtdT
-	for <stable@vger.kernel.org>; Tue,  6 May 2025 09:25:56 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id A36DC1A018D
-	for <stable@vger.kernel.org>; Tue,  6 May 2025 09:25:55 +0800 (CST)
-Received: from [10.174.179.143] (unknown [10.174.179.143])
-	by APP4 (Coremail) with SMTP id gCh0CgD3W2AeZRloUqM_Lg--.29436S3;
-	Tue, 06 May 2025 09:25:52 +0800 (CST)
-Subject: Re: Bug#1104460: [regression 6.1.y] discard/TRIM through RAID10
- blocking
-To: =?UTF-8?Q?Antoine_Beaupr=c3=a9?= <anarcat@debian.org>,
- Salvatore Bonaccorso <carnil@debian.org>, 1104460@bugs.debian.org
-Cc: =?UTF-8?Q?Moritz_M=c3=bchlenhoff?= <jmm@inutil.org>,
- Melvin Vermeeren <vermeeren@vermwa.re>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Coly Li
- <colyli@kernel.org>, Sasha Levin <sashal@kernel.org>,
- stable <stable@vger.kernel.org>, regressions@lists.linux.dev,
- "yukuai (C)" <yukuai3@huawei.com>
-References: <174602441004.174814.6400502946223473449.reportbug@talos.vermwa.re>
- <aBJH6Nsh-7Zj55nN@eldamar.lan> <aBilQxLZ4MA4Tg8e@pisco.westfalen.local>
- <aBjEf5R7X9GaJg2T@eldamar.lan>
- <174602441004.174814.6400502946223473449.reportbug@talos.vermwa.re>
- <aBjhHUjtXRotZUVa@eldamar.lan>
- <174602441004.174814.6400502946223473449.reportbug@talos.vermwa.re>
- <875xiex56v.fsf@angela.anarc.at> <aBkhNwVVs_KwgQ1a@eldamar.lan>
- <87zffqvknw.fsf@angela.anarc.at>
-From: Yu Kuai <yukuai1@huaweicloud.com>
-Message-ID: <4762cbe1-30a2-e5cd-52e1-f2de7714da1e@huaweicloud.com>
-Date: Tue, 6 May 2025 09:25:50 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
- Thunderbird/60.9.1
+	s=arc-20240116; t=1746496676; c=relaxed/simple;
+	bh=3s7Hp5cIAh2gzAdflFBnqXwP/wo95uEvSqq+OEM9wOg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FqhW/RNRIi/ai8Qk26eP2E0O75fi5GHpzs3zxYEO50gf4q/rhy9Bl7Ly1hVx82ZKpAr2/QnOZ6KCnoNRznvqNLdy4M+tWBwOILNgnlzBhKwy0TChd8XaxTW9ppsJWKH0uFSnGq1AFqz3lGWiUjJCoKRwqpKNpvQsPKgW1yFA7So=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GbWo8vOG; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1746496672;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xMLcPl3iKBUpkeNrh92Lo4eyOS4pTDnll1BJ+NR3yFc=;
+	b=GbWo8vOGws3vDcPygZZdQsJoGW9U96Mt1DGPsmzT2zcvSvOnDA/wrgv1tNe84Gc+3BqGPH
+	WB3ZEhi8bi/r8kxJOO2vseblEVJwENhDybzRa7WyY3M1r08gIUJCw1RSPMlhWd1OGDUoAS
+	avvVew9ls2ZNNZVbvK0acxmwYie46Xg=
+Received: from mail-il1-f198.google.com (mail-il1-f198.google.com
+ [209.85.166.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-622-hgTSLUC-Pl29w3CT06OXdg-1; Mon, 05 May 2025 21:57:51 -0400
+X-MC-Unique: hgTSLUC-Pl29w3CT06OXdg-1
+X-Mimecast-MFC-AGG-ID: hgTSLUC-Pl29w3CT06OXdg_1746496670
+Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-3d586b968cfso102078595ab.1
+        for <stable@vger.kernel.org>; Mon, 05 May 2025 18:57:51 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746496670; x=1747101470;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xMLcPl3iKBUpkeNrh92Lo4eyOS4pTDnll1BJ+NR3yFc=;
+        b=qH+j/OZ+LmANiDWvXchuPhCCZmmBUshufjaOSXmKV3j1rSWoha9o65nUV9/sTfP003
+         gUonO40BPkfX3gaghShY4vZgpMZ0jGCYi0xOwG5wb6BuQPXNuguq4ikdsAGsrEyE0ayD
+         wxNQbfwX5VWMcl8IPjSHpF4y84vTdgtrebtVyCIiAA5iFFTAA6RRA0PnhktGjmySRx3c
+         vqc28l6Wbt88FxEIgrpScLbhTGn6diVViJ+DeTTOb88VhUjWfOf8m45c8qUWsOSOh6vy
+         4cgfRsmS+zSYkel1dzBPexfa7s85M+BkdnJcKxEn6Yk5R3ZkdtqB3BMvcQComRjgOtpX
+         dsJA==
+X-Forwarded-Encrypted: i=1; AJvYcCV0Cu5RrZdTPib36js2YS6lQqRcXhsuICgGTBcjEGwh4+pG1sWdnFP9SlFGrp+cfBrdNuqUGxc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzzoZDTp/CfAZSHpZSm4JLeqRpd/MA4PzZ+gY+pn93y24QC2LTF
+	8BgDFgJQYNF4pCpkrCyCq7NSs47n9YClGB2Y24053d3Y2VOuPhay4ZfK82QJCaEKMipyT58exwe
+	VZN4sXl5HHGLFP2SVYt/5IQhl1rra14i6CYwkZAYHpLamrz1G6EozsZeNBMAr1GUP
+X-Gm-Gg: ASbGncvuo4kS0+4sLTxCa/dLTUeYBpkZJXCBoCDdgxrJ32C3Av/4uDAVIoCJaE4M5Uq
+	WfiNPaI/HJGSvdyFaAsNYbNPHIE1ygGxRr2tawrnvRzGE7QOU9zm8U30894M3bQ69oE7GFnLC1y
+	K52LZ+fC7KFHxRAZGS3q5lKbqisTdz+kicZSbKPjqbT6y00ZrycgSoQLV7c5nYKpNIkjYeZ9Bwg
+	bVr5fWPplxT86UHkxggCtIH3OT9EmOFk9YEavzC593agNUrOD6FkX+Ml3NFAb99+yPNSYTBstCi
+	YFYiogF1Boz3XL1VTqiKYaAxwT9POoWlRRjuef/yI46E9P1kWQ==
+X-Received: by 2002:a05:6e02:3486:b0:3d8:2023:d057 with SMTP id e9e14a558f8ab-3da6cde18c2mr16092345ab.11.1746496670318;
+        Mon, 05 May 2025 18:57:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG0rAJvKFUUhFhbgbTRiDocZ8gkc3d2s5yO8VLR73Cn1xBSmtzwyXjRkJ3Ch72ghFkrMJrr6Q==
+X-Received: by 2002:a05:6e02:3486:b0:3d8:2023:d057 with SMTP id e9e14a558f8ab-3da6cde18c2mr16092185ab.11.1746496670048;
+        Mon, 05 May 2025 18:57:50 -0700 (PDT)
+Received: from [10.0.0.82] (97-116-169-14.mpls.qwest.net. [97.116.169.14])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4f88aa93f35sm2003005173.126.2025.05.05.18.57.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 05 May 2025 18:57:49 -0700 (PDT)
+Message-ID: <2102fabb-bde3-4eaa-ad38-18eb79281e0b@redhat.com>
+Date: Mon, 5 May 2025 20:57:48 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <87zffqvknw.fsf@angela.anarc.at>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgD3W2AeZRloUqM_Lg--.29436S3
-X-Coremail-Antispam: 1UD129KBjvJXoWxJw13Jr4kZF48GFyftFykAFb_yoW5Zw4fpr
-	W5ta1Ykrs8tF97Aryqqr40vFWUtw4fJryrXrs5Jr1UAayqyryrJr4Igay5ua9rXw18Kw1j
-	qry8Xa47XFWDAaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9Ib4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7Mxk0xIA0c2IE
-	e2xFo4CEbIxvr21lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4I
-	kC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWU
-	WwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr
-	0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWU
-	JVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJb
-	IYCTnIWIevJa73UjIFyTuYvjxUrsqXDUUUU
-X-CM-SenderInfo: 51xn3trlr6x35dzhxuhorxvhhfrp/
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH AUTOSEL 6.14 156/642] f2fs: defer readonly check vs
+ norecovery
+To: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Cc: Chao Yu <chao@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>,
+ linux-f2fs-devel@lists.sourceforge.net
+References: <20250505221419.2672473-1-sashal@kernel.org>
+ <20250505221419.2672473-156-sashal@kernel.org>
+Content-Language: en-US
+From: Eric Sandeen <sandeen@redhat.com>
+In-Reply-To: <20250505221419.2672473-156-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi,
-
-在 2025/05/06 4:59, Antoine Beaupré 写道:
-> On 2025-05-05 22:36:07, Salvatore Bonaccorso wrote:
->> Hi Antoine,
->>
->> On Mon, May 05, 2025 at 02:50:32PM -0400, Antoine Beaupré wrote:
->>> On 2025-05-05 18:02:37, Salvatore Bonaccorso wrote:
->>>> On Mon, May 05, 2025 at 04:00:31PM +0200, Salvatore Bonaccorso wrote:
->>>>> Hi Moritz,
->>>>>
->>>>> On Mon, May 05, 2025 at 01:47:15PM +0200, Moritz Mühlenhoff wrote:
->>>>>> Am Wed, Apr 30, 2025 at 05:55:20PM +0200 schrieb Salvatore Bonaccorso:
->>>>>>> Hi
->>>>>>>
->>>>>>> We got a regression report in Debian after the update from 6.1.133 to
->>>>>>> 6.1.135. Melvin is reporting that discard/trimm trhough a RAID10 array
->>>>>>> stalls idefintively. The full report is inlined below and originates
->>>>>>> from https://bugs.debian.org/1104460 .
->>>>>>
->>>>>> JFTR, we ran into the same problem with a few Wikimedia servers running
->>>>>> 6.1.135 and RAID 10: The servers started to lock up once fstrim.service
->>>>>> got started. Full oops messages are available at
->>>>>> https://phabricator.wikimedia.org/P75746
->>>>>
->>>>> Thanks for this aditional datapoints. Assuming you wont be able to
->>>>> thest the other stable series where the commit d05af90d6218
->>>>> ("md/raid10: fix missing discard IO accounting") went in, might you at
->>>>> least be able to test the 6.1.y branch with the commit reverted again
->>>>> and manually trigger the issue?
->>>>>
->>>>> If needed I can provide a test Debian package of 6.1.135 (or 6.1.137)
->>>>> with the patch reverted.
->>>>
->>>> So one additional data point as several Debian users were reporting
->>>> back beeing affected: One user did upgrade to 6.12.25 (where the
->>>> commit was backported as well) and is not able to reproduce the issue
->>>> there.
->>>
->>> That would be me.
->>>
->>> I can reproduce the issue as outlined by Moritz above fairly reliably in
->>> 6.1.135 (debian package 6.1.0-34-amd64). The reproducer is simple, on a
->>> RAID-10 host:
->>>
->>>   1. reboot
->>>   2. systemctl start fstrim.service
->>>
->>> We're tracking the issue internally in:
->>>
->>> https://gitlab.torproject.org/tpo/tpa/team/-/issues/42146
->>>
->>> I've managed to workaround the issue by upgrading to the Debian package
->>> from testing/unstable (6.12.25), as Salvatore indicated above. There,
->>> fstrim doesn't cause any crash and completes successfully. In stable, it
->>> just hangs there forever. The kernel doesn't completely panic and the
->>> machine is otherwise somewhat still functional: my existing SSH
->>> connection keeps working, for example, but new ones fail. And an `apt
->>> install` of another kernel hangs forever.
->>
->> So likely at least in 6.1.y there are missing pre-requisites causing
->> the behaviour.
->>
->> If you can test 6.1.135-1 with the commit
->> 4a05f7ae33716d996c5ce56478a36a3ede1d76f2 reverted then you can fetch
->> built packages at:
->>
->> https://people.debian.org/~carnil/tmp/linux/1104460/
-
-Can you also test with 4a05f7ae33716d996c5ce56478a36a3ede1d76f2 not
-reverted, and also cherry-pick c567c86b90d4715081adfe5eb812141a5b6b4883?
+This commit is in no way a bugfix and I don't see any reason to
+backport it to stable kernels.
 
 Thanks,
-Kuai
+-Eric
 
+On 5/5/25 5:06 PM, Sasha Levin wrote:
+> From: Eric Sandeen <sandeen@redhat.com>
 > 
-> I can confirm this kernel does not crash when running fstrim.service,
-> which seems to confirm the bisect.
+> [ Upstream commit 9cca49875997a1a7e92800a828a62bacb0f577b9 ]
 > 
-> A.
+> Defer the readonly-vs-norecovery check until after option parsing is done
+> so that option parsing does not require an active superblock for the test.
+> Add a helpful message, while we're at it.
 > 
+> (I think could be moved back into parsing after we switch to the new mount
+> API if desired, as the fs context will have RO state available.)
+> 
+> Signed-off-by: Eric Sandeen <sandeen@redhat.com>
+> Reviewed-by: Chao Yu <chao@kernel.org>
+> Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  fs/f2fs/super.c | 10 +++++++---
+>  1 file changed, 7 insertions(+), 3 deletions(-)
+> 
+> diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+> index b8a0e925a4011..d3b04a589b525 100644
+> --- a/fs/f2fs/super.c
+> +++ b/fs/f2fs/super.c
+> @@ -728,10 +728,8 @@ static int parse_options(struct super_block *sb, char *options, bool is_remount)
+>  			set_opt(sbi, DISABLE_ROLL_FORWARD);
+>  			break;
+>  		case Opt_norecovery:
+> -			/* this option mounts f2fs with ro */
+> +			/* requires ro mount, checked in f2fs_default_check */
+>  			set_opt(sbi, NORECOVERY);
+> -			if (!f2fs_readonly(sb))
+> -				return -EINVAL;
+>  			break;
+>  		case Opt_discard:
+>  			if (!f2fs_hw_support_discard(sbi)) {
+> @@ -1418,6 +1416,12 @@ static int parse_options(struct super_block *sb, char *options, bool is_remount)
+>  		f2fs_err(sbi, "Allow to mount readonly mode only");
+>  		return -EROFS;
+>  	}
+> +
+> +	if (test_opt(sbi, NORECOVERY) && !f2fs_readonly(sbi->sb)) {
+> +		f2fs_err(sbi, "norecovery requires readonly mount");
+> +		return -EINVAL;
+> +	}
+> +
+>  	return 0;
+>  }
+>  
 
 
