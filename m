@@ -1,178 +1,146 @@
-Return-Path: <stable+bounces-141805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E2AFAAC36B
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 14:09:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8F6AAAC42D
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 14:32:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6EF8F3B7DD8
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 12:08:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BDA416A415
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 12:32:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE5CB27F19E;
-	Tue,  6 May 2025 12:08:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 355B927FD5A;
+	Tue,  6 May 2025 12:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="AnlQGKiu"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PGcgRDnF"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2074.outbound.protection.outlook.com [40.107.93.74])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F54927F190;
-	Tue,  6 May 2025 12:08:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.74
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746533336; cv=fail; b=EBMLMrC4IDcm2hoEm5S6mWV/5cW8j7YF1QSZiDbUgyjMDc9z17/EnTnNh4oe8FOPQWjIDQ+hxSr4q2x9XvOyxb0iuZdP4C30cg44JoNykcEqkj866qpAQHK4jDjcZllZac5Px3Q1IzGDZHgfJEUVtW6KBxiPp6lgPc4tNrnMalY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746533336; c=relaxed/simple;
-	bh=m2KmdCjkH6IMhlQK/s2s/KdlRQ8ni6CeQvvMSf0sc9Y=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ej4XZbji9tH6n2EAKEybLCQQeFU1iC/VVi6J4tENwwKJl3no1w2tu/sUVwr3pHX9gvcXgU49OKyZeMzgAtLU/v6nr41IZesPRI7sO9UIsUV77PMZKGMPO6Cve9KojzT9YQ4Wk5E4/J4+4c6vIVvLkAasuCX/BR2xqkckIeZZC2c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=AnlQGKiu; arc=fail smtp.client-ip=40.107.93.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=pgg7PThJQgXyS8Ieq3lxT7wqoNrZT/c9wRZi2AHj9wNT6W0YL3UTGTxtP31bEyJp+clVJrxMyzV0qzPT//eUfQrU/KLHRSZ5rnMRUmloDcfpIj6BcAMJjty3Ld5CAaVQh0YaTz3OPkn7B9e6oMcdlC5kC3b3RkRQaPws3ZBwl3AvZEr93pnxVvrM/w+kCLHsaM32+MvOruKbeqBzQcUhzTdMQuZ+YDZm/CpRFde7jhimaqMmGCSpwlxl3eIhzZT7qk3IrXWlD9Z9KDs4j0+pBuFoBiVi6Fo1CrpV6b7HHqPJmnvJO6EehB8rFEWXVX5FkYGos1TToLovexVEF7cu4w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=4XjYgHBg/u3WyCUGO1xH422al5bf5Xs80Ub4kYTv6G4=;
- b=DJk22vQGqavyBec/pv2Nf/mHctZ/ZfPnBaQWLyoMKcj+wOXbQjvkmeeUWENs7PFqy8Iesiy5hCbXbavYU3WeOTOFJ7MfnzDM6ew9OadqC2Tu8gOE/xQ9mXhMQVxEZPUqLA+68OBuRC70WANPAUo4ZKNzc+3Ls3mAVkySCLeAFe+QlIrXvcQWaqVyPJ9QXfua7JpbVga+yytS2POJ8JDLMG3wSQV/ZUBLvYm6831u1HeL9RWMnA1v43OJvMAvo+JjsGvBCD+hB3+HzFoDW2gJNQXZEww9qP2qjGM8654Nu97LLwvsOi5P5Unw5e8wbJCAM5LjsggWW4sQ05KMMRhDDQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=4XjYgHBg/u3WyCUGO1xH422al5bf5Xs80Ub4kYTv6G4=;
- b=AnlQGKiu6KYIAnnHtvWJt4obbQthbC2YdjDEMem0W9vam/xdrqqcf0DWonXFCIBS/yfAzkAdMwtr9CjAKVaQzyCmLzt6BbB3xvgfJ0kYutp5ZEDqS1bTWRf/iEgEOSKaT/Ylf4PnY/lY1WrhWgjmoHh2WGoCFvrhxfb6NSpxJP0=
-Received: from MW4PR03CA0352.namprd03.prod.outlook.com (2603:10b6:303:dc::27)
- by SA1PR12MB6970.namprd12.prod.outlook.com (2603:10b6:806:24d::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.26; Tue, 6 May
- 2025 12:08:44 +0000
-Received: from CO1PEPF000075EF.namprd03.prod.outlook.com
- (2603:10b6:303:dc:cafe::ac) by MW4PR03CA0352.outlook.office365.com
- (2603:10b6:303:dc::27) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8699.30 via Frontend Transport; Tue,
- 6 May 2025 12:08:44 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CO1PEPF000075EF.mail.protection.outlook.com (10.167.249.38) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8722.18 via Frontend Transport; Tue, 6 May 2025 12:08:44 +0000
-Received: from vijendar-linux.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 6 May
- 2025 07:08:39 -0500
-From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
-To: <broonie@kernel.org>
-CC: <alsa-devel@alsa-project.org>, <lgirdwood@gmail.com>, <perex@perex.cz>,
-	<tiwai@suse.com>, <yung-chuan.liao@linux.intel.com>,
-	<ranjani.sridharan@linux.intel.com>, <pierre-louis.bossart@linux.dev>,
-	<Basavaraj.Hiregoudar@amd.com>, <Sunil-kumar.Dommati@amd.com>,
-	<venkataprasad.potturu@amd.com>, <Mario.Limonciello@amd.com>,
-	<linux-sound@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Vijendar
- Mukunda" <Vijendar.Mukunda@amd.com>, <stable@vger.kernel.org>
-Subject: [PATCH 2/3] ASoC: amd: sof_amd_sdw: Fix unlikely uninitialized variable use in create_sdw_dailinks()
-Date: Tue, 6 May 2025 17:37:23 +0530
-Message-ID: <20250506120823.3621604-2-Vijendar.Mukunda@amd.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20250506120823.3621604-1-Vijendar.Mukunda@amd.com>
-References: <20250506120823.3621604-1-Vijendar.Mukunda@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E554A280313
+	for <stable@vger.kernel.org>; Tue,  6 May 2025 12:28:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746534514; cv=none; b=slKzydHTgGM/23i98TyXJL9Hb2z1pZujZ8XxFjQxg72xyabrByYb5vBIiuST955Lj4IxTfW64altfgDNVvxjiw8c2KkuUOWXtzFvYPnupBJaeXAPJs0Y3NAhAZ77CF62/nnulnQ/zFJa01M+sckoprVHOAMe2kP+MnnoAeH9Oq4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746534514; c=relaxed/simple;
+	bh=svjgCeA4okvl7uFO2WfawpA/ktNJ2XCIYkBBNa1uT1k=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=ZikXkhZEVCra8KAmXXwQkFaXvckY8QnrTIS/MC5RBwiuAUL0+ASs+21LQLDauPP2ovhVn5j9DNMSbcJIM+Eaj5kPzD/su2FuEKyP/p+pcQhc52AoCg2Y3wsH6FmLHc+kGnxW3Rlm9C3HOKUkW3BxZGDKJo+WZFj1eQkPjdYvFlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PGcgRDnF; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1746534510;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4RqHIHWGcV5oq3BR6dRROKyVGbZDU2ZQtpUE9Q3QM1c=;
+	b=PGcgRDnFWTsLr/iuOFn4qTuxlY08r2ctMaG/sb6+GfqUarUWACRxF1bXFdNv2lQFjsiKyT
+	xk6bgmFpTN3RrMBRw9BrRhg1uwjpL182EkLizRGWwlOhN2i2maxnKUQmE1DOGypzoM/31i
+	9XxezwhKZFYZUAlJgeyQk0ImBc5Fumg=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-176-9m9TwKlAPGe_uChjA179IQ-1; Tue,
+ 06 May 2025 08:28:27 -0400
+X-MC-Unique: 9m9TwKlAPGe_uChjA179IQ-1
+X-Mimecast-MFC-AGG-ID: 9m9TwKlAPGe_uChjA179IQ_1746534506
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A2B33186A72A;
+	Tue,  6 May 2025 12:28:18 +0000 (UTC)
+Received: from [10.22.80.45] (unknown [10.22.80.45])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 44F4519560AF;
+	Tue,  6 May 2025 12:28:16 +0000 (UTC)
+Date: Tue, 6 May 2025 14:28:13 +0200 (CEST)
+From: Mikulas Patocka <mpatocka@redhat.com>
+To: Tudor Ambarus <tudor.ambarus@linaro.org>
+cc: Alasdair Kergon <agk@redhat.com>, Mike Snitzer <snitzer@kernel.org>, 
+    Benjamin Marzinski <bmarzins@redhat.com>, dm-devel@lists.linux.dev, 
+    linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] dm: fix copying after src array boundaries
+In-Reply-To: <20250506-dm-past-array-boundaries-v1-1-b5b1bb8b2b34@linaro.org>
+Message-ID: <f9f3b82e-dd37-eff8-3718-1b71746e8c01@redhat.com>
+References: <20250506-dm-past-array-boundaries-v1-1-b5b1bb8b2b34@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PEPF000075EF:EE_|SA1PR12MB6970:EE_
-X-MS-Office365-Filtering-Correlation-Id: cfbe0afb-570d-408f-8aad-08dd8c96bf92
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|1800799024|376014|82310400026|36860700013;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?oj/pctRKr7Wzm3tvEW6kb8MUx7qA7Majv18iV/SWzFjm//Z8US33+DY6m4MQ?=
- =?us-ascii?Q?DgSHrI13SqAIu/OBRw/muRpC1ztyQW/aNkV8cMHWB7e2SbNZCgZ0CFuzFf+w?=
- =?us-ascii?Q?hyrqKVgSWd6qFhDartdjcQjyTFzKPTvzBWqVfPxX0oGjI8IdysYtCo2E49EF?=
- =?us-ascii?Q?+dr8UT9DH5FD8V7trX97fhCOlP0jJOIwRcGgTvD111FrMBk/l9gGDZUbkF66?=
- =?us-ascii?Q?KD917x4firXjtZyXWXEfwleLFCVc7Qh4WJCKz09d/Np1r66h2fQky3IieLaq?=
- =?us-ascii?Q?+AODNHLlgKOLQLxOUcS+Xp5TGXDWZ+vKWzCC1E1xWhOMJCWV94k/olm0N9Ek?=
- =?us-ascii?Q?JnycxAgMft2HUGfXZu2vUhKo7GKB1xf3YV1QKHGGfFsWgvjto9AfqQxNaFJn?=
- =?us-ascii?Q?556DV2k43MGy9S8KCMmPv/f1/uLxBwCuS2qGn7mlSdWs7EmJhDuvQEcgQi4G?=
- =?us-ascii?Q?cnrzHdbAzO1fv8//tudYq84kpSb5DaFqKziwgaw0NwMMIfpMwuYR87fbKiSh?=
- =?us-ascii?Q?jmX8e4tgp/U9RkGBvnvkeajgc6FS8QTPlvx+cERuxmUmlde7pq3fq6OOBToD?=
- =?us-ascii?Q?8cTMBZs5vez9X6Kh2yEGcLxOgn6dK+jAYgbNavitlBL+iIvSgt5YdULT3Lmw?=
- =?us-ascii?Q?4koldGJTrX1OpRIRIQ31gD6ls1FVHoCvC+KmaeQIUFKTX8n7502jk83AMQ9Q?=
- =?us-ascii?Q?ZKNd/RxJHo9aLYNb7RINMk8X/4aWL8S1jYRZkQIPS4Kk/fN/MiCGrMwoWSGX?=
- =?us-ascii?Q?d68PILDv6Q+HfYqzDdEUCbi8MTyso8jVkm8GBS/a37rwKMw6eymlU9u4L+ii?=
- =?us-ascii?Q?kAqFHJ/3JDzwhc5p0Vcdz7dRrv2+bo7n/GXXD1KjDPDT2CT+K3L34cQn4j3F?=
- =?us-ascii?Q?e+QTZNU5jjeYU9bK0TXmZ6mYoHsGA6jlVyYPNiCcWyfTeAPqzem/eQ4QEtjM?=
- =?us-ascii?Q?nnHfhi3eroWg7r/wL2kMAj2KXwpA34vZsrFmxqnOJFYdK4CqNPEb66gXORPz?=
- =?us-ascii?Q?9ugbsmr53YxOC/HpGcfLu+uy/TFiK6CpDZ+EEI6hwD5+bR1cW4medPkQ539P?=
- =?us-ascii?Q?DbXfT3hzHT0htlPNi+0tBThrYdGO11fq82UHKDE0UlpfXgkhwYsP86J9CVdg?=
- =?us-ascii?Q?Dj92gmF22TX65dh9c8W+B8+IyOK45uokx0l9ZvjCgfJSaGjRvYt0mMWfyMs1?=
- =?us-ascii?Q?My1JA1qL2+3rfVZbZm5lSN9iT/GlEurc4jNJqDFydsZjg8MhpvH/kX9ovhlT?=
- =?us-ascii?Q?Zoajoq+cTtJM5wCmfhac0nZzvwTOUsZxOgKaZ0RZvk53CvZKoXtqkL3RhFS0?=
- =?us-ascii?Q?J196vuKfbCstIzfSsv+KNhuP9E9ke8TPSDfl6RqLHQB2BVkvW3c8oODi2nbY?=
- =?us-ascii?Q?un6KZ9EcE2tq/1seU81oBb1utl1zYOk/VOnv+Z8AeEorAQ3l9TlmArZshWQK?=
- =?us-ascii?Q?BEnahd3J+rgL9NCWPkjiHfsXxMFK2pHYsgipJlcdPbserAeRMB8YFSckchWW?=
- =?us-ascii?Q?G73wW+uDJtEC8NhjxVRFrkfqtMlFgSgLvgOz?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(82310400026)(36860700013);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 May 2025 12:08:44.2066
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: cfbe0afb-570d-408f-8aad-08dd8c96bf92
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CO1PEPF000075EF.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6970
+Content-Type: text/plain; charset=US-ASCII
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-Initialize current_be_id to 0 in SOF based AMD generic SoundWire machine
-driver to handle the unlikely case when there are no devices connected to
-a DAI.
-In this case create_sdw_dailink() would return without touching the passed
-pointer to current_be_id.
 
-Found by gcc -fanalyzer
 
-Cc: stable@vger.kernel.org
-Fixes: 6d8348ddc56ed ("ASoC: amd: acp: refactor SoundWire machine driver code")
-Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
----
- sound/soc/amd/acp/acp-sdw-sof-mach.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Tue, 6 May 2025, Tudor Ambarus wrote:
 
-diff --git a/sound/soc/amd/acp/acp-sdw-sof-mach.c b/sound/soc/amd/acp/acp-sdw-sof-mach.c
-index c09b1f118a6c..75bdd843ca36 100644
---- a/sound/soc/amd/acp/acp-sdw-sof-mach.c
-+++ b/sound/soc/amd/acp/acp-sdw-sof-mach.c
-@@ -219,7 +219,7 @@ static int create_sdw_dailinks(struct snd_soc_card *card,
- 
- 	/* generate DAI links by each sdw link */
- 	while (sof_dais->initialised) {
--		int current_be_id;
-+		int current_be_id = 0;
- 
- 		ret = create_sdw_dailink(card, sof_dais, dai_links,
- 					 &current_be_id, codec_conf);
--- 
-2.45.2
+> The blammed commit copied to argv the size of the reallocated argv,
+> instead of the size of the old_argv, thus reading and copying from
+> past the old_argv allocated memory.
+> 
+> Following BUG_ON was hit:
+> [    3.038929][    T1] kernel BUG at lib/string_helpers.c:1040!
+> [    3.039147][    T1] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
+> ...
+> [    3.056489][    T1] Call trace:
+> [    3.056591][    T1]  __fortify_panic+0x10/0x18 (P)
+> [    3.056773][    T1]  dm_split_args+0x20c/0x210
+> [    3.056942][    T1]  dm_table_add_target+0x13c/0x360
+> [    3.057132][    T1]  table_load+0x110/0x3ac
+> [    3.057292][    T1]  dm_ctl_ioctl+0x424/0x56c
+> [    3.057457][    T1]  __arm64_sys_ioctl+0xa8/0xec
+> [    3.057634][    T1]  invoke_syscall+0x58/0x10c
+> [    3.057804][    T1]  el0_svc_common+0xa8/0xdc
+> [    3.057970][    T1]  do_el0_svc+0x1c/0x28
+> [    3.058123][    T1]  el0_svc+0x50/0xac
+> [    3.058266][    T1]  el0t_64_sync_handler+0x60/0xc4
+> [    3.058452][    T1]  el0t_64_sync+0x1b0/0x1b4
+> [    3.058620][    T1] Code: f800865e a9bf7bfd 910003fd 941f48aa (d4210000)
+> [    3.058897][    T1] ---[ end trace 0000000000000000 ]---
+> [    3.059083][    T1] Kernel panic - not syncing: Oops - BUG: Fatal exception
+> 
+> Fix it by copying the size of src, and not the size of dst, as it was.
+> 
+> Fixes: 5a2a6c428190 ("dm: always update the array size in realloc_argv on success")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+> ---
+>  drivers/md/dm-table.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/md/dm-table.c b/drivers/md/dm-table.c
+> index 9e175c5e0634b49b990436898f63c2b1e696febb..6dae73ee49dbb36d89341ff09556876d0973c4ff 100644
+> --- a/drivers/md/dm-table.c
+> +++ b/drivers/md/dm-table.c
+> @@ -524,9 +524,9 @@ static char **realloc_argv(unsigned int *size, char **old_argv)
+>  	}
+>  	argv = kmalloc_array(new_size, sizeof(*argv), gfp);
+>  	if (argv) {
+> -		*size = new_size;
+>  		if (old_argv)
+>  			memcpy(argv, old_argv, *size * sizeof(*argv));
+> +		*size = new_size;
+>  	}
+>  
+>  	kfree(old_argv);
+> 
+> ---
+> base-commit: 92a09c47464d040866cf2b4cd052bc60555185fb
+> change-id: 20250506-dm-past-array-boundaries-1fe2f5a1030f
+> 
+> Best regards,
+> -- 
+> Tudor Ambarus <tudor.ambarus@linaro.org>
+
+Thanks
+
+I sent a pull request to Linus that includes this patch.
+
+Mikulas
 
 
