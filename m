@@ -1,193 +1,277 @@
-Return-Path: <stable+bounces-141812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88C2DAAC5A2
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 15:19:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22B5BAAC66A
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 15:35:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 03C737B6FE2
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 13:18:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D97931BC2721
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 13:34:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71F2A281365;
-	Tue,  6 May 2025 13:19:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1AF028136C;
+	Tue,  6 May 2025 13:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="hIpoj2cL";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="czMkkcc4";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="hIpoj2cL";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="czMkkcc4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TxaT0/ca"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19F74281358
-	for <stable@vger.kernel.org>; Tue,  6 May 2025 13:19:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E21D527FD58;
+	Tue,  6 May 2025 13:32:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746537559; cv=none; b=Y854b3C5NoB5DQ7U/wyNgwbhcb3bUtwCC6FJgLaMSqwZuR03qfhuzeQtD6/QOzLtnHnpkwmGODv2H6jF6NiMZjcCcdQm88nXwuyXXyoytdpsT5czqIiUwVDVsU1GUspFEaWUkVX4uHPg9dbn2r8w9f2Nkz77wia28AJbHYSQrpo=
+	t=1746538339; cv=none; b=KsvnUClGygBIfDpVu5N1PVbijxiNzlZxIj1GQXmBAUXjTG/HJLbplEU4hn0q8HfF85cP3wL2p/Tb8n+TnsFV3gPny/BTN2nE/tsjspsY0WmYrSucf30mUL/4LN0pobHoWTFlQRvFbvL0HwXGFhPNvkSmj+xrniayuqCvOxaHGII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746537559; c=relaxed/simple;
-	bh=kIHdzZUWaPSLTucHGZ4qp7MHA4evJhh6qsl6uhhy/YA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hmUzVSrcTm/RU/qc1Ka5+sE0XXCTWZLUgEOapPANgQeVZ9lUEAC/KyT8HQF8XgXtmkwBRvqrD5RpbRlrqb654h6PuqRGpBujxe3htbOOLSR4cW15EG6e004UqdNGTLRc4jEN09E7f8PInTcS/nycLwqdTu49sE8hc64XvNiA0cE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=hIpoj2cL; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=czMkkcc4; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=hIpoj2cL; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=czMkkcc4; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 3FA29211BF;
-	Tue,  6 May 2025 13:19:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1746537555;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1mabCLK1CTWLb6dTp8UKgjcLgS2EFRv+m63UaRzr+4k=;
-	b=hIpoj2cLeneGAz9bfBIcqJ+ksPzEyQOlvl8h8g5NnAaq2xDQSSFsW7L0w5nGnUS2DQqDxd
-	QQgcSGL4P9PLhJGjQwQ2XRuyv8s6fjKiBYSjs/siDQGjX5Zf8ZIpsu0Nw4Lt7/vQAr2iNt
-	64xH40FSNDDezrY8xycVWBm6kd6d/fk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1746537555;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1mabCLK1CTWLb6dTp8UKgjcLgS2EFRv+m63UaRzr+4k=;
-	b=czMkkcc4aCrr9X5Mcd6OpopnaecCpIOpGEGePcxXfzuf68ozuhr+8ESODe1pIVcQcOQ7ni
-	5t1SNzBos5altNAQ==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1746537555;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1mabCLK1CTWLb6dTp8UKgjcLgS2EFRv+m63UaRzr+4k=;
-	b=hIpoj2cLeneGAz9bfBIcqJ+ksPzEyQOlvl8h8g5NnAaq2xDQSSFsW7L0w5nGnUS2DQqDxd
-	QQgcSGL4P9PLhJGjQwQ2XRuyv8s6fjKiBYSjs/siDQGjX5Zf8ZIpsu0Nw4Lt7/vQAr2iNt
-	64xH40FSNDDezrY8xycVWBm6kd6d/fk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1746537555;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1mabCLK1CTWLb6dTp8UKgjcLgS2EFRv+m63UaRzr+4k=;
-	b=czMkkcc4aCrr9X5Mcd6OpopnaecCpIOpGEGePcxXfzuf68ozuhr+8ESODe1pIVcQcOQ7ni
-	5t1SNzBos5altNAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0C6D8137CF;
-	Tue,  6 May 2025 13:19:15 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id ou1ZAlMMGmjwOQAAD6G6ig
-	(envelope-from <dsterba@suse.cz>); Tue, 06 May 2025 13:19:15 +0000
-Date: Tue, 6 May 2025 15:19:13 +0200
-From: David Sterba <dsterba@suse.cz>
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Qu Wenruo <wqu@suse.com>, Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>, clm@fb.com, josef@toxicpanda.com,
-	linux-btrfs@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.14 099/642] btrfs: prevent inline data extents
- read from touching blocks beyond its range
-Message-ID: <20250506131913.GD9140@twin.jikos.cz>
-Reply-To: dsterba@suse.cz
-References: <20250505221419.2672473-1-sashal@kernel.org>
- <20250505221419.2672473-99-sashal@kernel.org>
+	s=arc-20240116; t=1746538339; c=relaxed/simple;
+	bh=lsc3eUoKvFKPzNR9orxqXQOQOwzxYCdjulF2UbsE9LE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jKvQ99yOJfLvjDSMBvHYTz/2H/eSoxJ4XrncstXo2Jtnm+kuNlX8BCI9P4koKfaBK9F8eFtgOW4g/O9MqNiTI5GSZAh+vaB+5CpVHe7btRk8P9mxgMWzz5pPGzWN45pBqNJOMXAsLeb5YfjMwGfpNeLEHt9yPuOu1PBnFrtOaDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.helo=mgamail.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TxaT0/ca; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.helo=mgamail.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1746538337; x=1778074337;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=lsc3eUoKvFKPzNR9orxqXQOQOwzxYCdjulF2UbsE9LE=;
+  b=TxaT0/ca769RXH9qyvq7KVU5UHxHRA0NFv3P2CSetzGRJXYKe3ljABod
+   hR1j4rxpkfW4ia/Yu4mH6cziKM4whjix+t8PKa83uicYcjVbeQE/VBveO
+   ixXwvSxBHL7we1GB2cBY62xfGjgrq6aIzOHmq5t+ZcE0645VdZSBKtpqS
+   aZqHFb/PdRU5J7tNtOy7rtw17mBfbAfcoiDavaicpjYLSHzjvaxwbdHfH
+   nb1UYjl1Uay+yr34OzmAJCGJjK7/8baTYyHRJuL6USeXlegdXh8K0+95P
+   bQOeRSXCO0XjIoeV8I4qku3yA9nyzKpNSfzFcywvluIi0rx3iyjXlmXGs
+   g==;
+X-CSE-ConnectionGUID: FnGMPQqMRji31liEFSfu8A==
+X-CSE-MsgGUID: 1YYAf4jWQGa+RgXYH/yWBA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11425"; a="48340775"
+X-IronPort-AV: E=Sophos;i="6.15,266,1739865600"; 
+   d="scan'208";a="48340775"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2025 06:32:16 -0700
+X-CSE-ConnectionGUID: 1xyVPh6iSv6MJoXWIGvdcg==
+X-CSE-MsgGUID: rRGbgryYQ7yjJYAG7YmzcQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,266,1739865600"; 
+   d="scan'208";a="140740965"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa005.jf.intel.com with ESMTP; 06 May 2025 06:32:12 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id 98CFF172; Tue, 06 May 2025 16:32:10 +0300 (EEST)
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: bp@alien8.de
+Cc: akpm@linux-foundation.org,
+	ast@kernel.org,
+	david@redhat.com,
+	hannes@cmpxchg.org,
+	jackmanb@google.com,
+	kirill.shutemov@linux.intel.com,
+	linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	mhocko@suse.com,
+	stable@vger.kernel.org,
+	surenb@google.com,
+	tglx@linutronix.de,
+	vbabka@suse.cz
+Subject: [PATCHv2] mm/page_alloc: Fix race condition in unaccepted memory handling
+Date: Tue,  6 May 2025 16:32:07 +0300
+Message-ID: <20250506133207.1009676-1-kirill.shutemov@linux.intel.com>
+X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250506124341.GDaBoD_cYkXsnTmRdj@fat_crate.local>
+References: <20250506124341.GDaBoD_cYkXsnTmRdj@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250505221419.2672473-99-sashal@kernel.org>
-User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.00 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	HAS_REPLYTO(0.30)[dsterba@suse.cz];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	REPLYTO_ADDR_EQ_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.cz:replyto];
-	RCVD_COUNT_TWO(0.00)[2];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[]
-X-Spam-Score: -4.00
-X-Spam-Flag: NO
+Content-Transfer-Encoding: 8bit
 
-On Mon, May 05, 2025 at 06:05:15PM -0400, Sasha Levin wrote:
-> From: Qu Wenruo <wqu@suse.com>
-> 
-> [ Upstream commit 1a5b5668d711d3d1ef447446beab920826decec3 ]
-> 
-> Currently reading an inline data extent will zero out the remaining
-> range in the page.
-> 
-> This is not yet causing problems even for block size < page size
-> (subpage) cases because:
-> 
-> 1) An inline data extent always starts at file offset 0
->    Meaning at page read, we always read the inline extent first, before
->    any other blocks in the page. Then later blocks are properly read out
->    and re-fill the zeroed out ranges.
-> 
-> 2) Currently btrfs will read out the whole page if a buffered write is
->    not page aligned
->    So a page is either fully uptodate at buffered write time (covers the
->    whole page), or we will read out the whole page first.
->    Meaning there is nothing to lose for such an inline extent read.
-> 
-> But it's still not ideal:
-> 
-> - We're zeroing out the page twice
->   Once done by read_inline_extent()/uncompress_inline(), once done by
->   btrfs_do_readpage() for ranges beyond i_size.
-> 
-> - We're touching blocks that don't belong to the inline extent
->   In the incoming patches, we can have a partial uptodate folio, of
->   which some dirty blocks can exist while the page is not fully uptodate:
-> 
->   The page size is 16K and block size is 4K:
-> 
->   0         4K        8K        12K        16K
->   |         |         |/////////|          |
-> 
->   And range [8K, 12K) is dirtied by a buffered write, the remaining
->   blocks are not uptodate.
-> 
->   If range [0, 4K) contains an inline data extent, and we try to read
->   the whole page, the current behavior will overwrite range [8K, 12K)
->   with zero and cause data loss.
-> 
-> So to make the behavior more consistent and in preparation for future
-> changes, limit the inline data extents read to only zero out the range
-> inside the first block, not the whole page.
-> 
-> Reviewed-by: Filipe Manana <fdmanana@suse.com>
-> Signed-off-by: Qu Wenruo <wqu@suse.com>
-> Signed-off-by: David Sterba <dsterba@suse.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+The page allocator tracks the number of zones that have unaccepted
+memory using static_branch_enc/dec() and uses that static branch in hot
+paths to determine if it needs to deal with unaccepted memory.
 
-This is not a stable dependency and the patch is not fixing anything
-but a preparation so this does not make much sense for stable backports,
-please drop it. Thanks.
+Borislav and Thomas pointed out that the tracking is racy: operations on
+static_branch are not serialized against adding/removing unaccepted pages
+to/from the zone.
+
+Sanity checks inside static_branch machinery detects it:
+
+WARNING: CPU: 0 PID: 10 at kernel/jump_label.c:276 __static_key_slow_dec_cpuslocked+0x8e/0xa0
+
+The comment around the WARN() explains the problem:
+
+	/*
+	 * Warn about the '-1' case though; since that means a
+	 * decrement is concurrent with a first (0->1) increment. IOW
+	 * people are trying to disable something that wasn't yet fully
+	 * enabled. This suggests an ordering problem on the user side.
+	 */
+
+The effect of this static_branch optimization is only visible on
+microbenchmark.
+
+Instead of adding more complexity around it, remove it altogether.
+
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Fixes: dcdfdd40fa82 ("mm: Add support for unaccepted memory")
+Link: https://lore.kernel.org/all/20250506092445.GBaBnVXXyvnazly6iF@fat_crate.local
+Reported-by: Borislav Petkov <bp@alien8.de>
+Tested-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reported-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org # v6.5+
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Brendan Jackman <jackmanb@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+---
+
+ v2:
+   - Update commit message;
+   - Apply Borislav's Tested-by tag;
+
+---
+ mm/internal.h   |  1 -
+ mm/mm_init.c    |  1 -
+ mm/page_alloc.c | 47 -----------------------------------------------
+ 3 files changed, 49 deletions(-)
+
+diff --git a/mm/internal.h b/mm/internal.h
+index e9695baa5922..50c2f590b2d0 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -1595,7 +1595,6 @@ unsigned long move_page_tables(struct pagetable_move_control *pmc);
+ 
+ #ifdef CONFIG_UNACCEPTED_MEMORY
+ void accept_page(struct page *page);
+-void unaccepted_cleanup_work(struct work_struct *work);
+ #else /* CONFIG_UNACCEPTED_MEMORY */
+ static inline void accept_page(struct page *page)
+ {
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index 9659689b8ace..84f14fa12d0d 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -1441,7 +1441,6 @@ static void __meminit zone_init_free_lists(struct zone *zone)
+ 
+ #ifdef CONFIG_UNACCEPTED_MEMORY
+ 	INIT_LIST_HEAD(&zone->unaccepted_pages);
+-	INIT_WORK(&zone->unaccepted_cleanup, unaccepted_cleanup_work);
+ #endif
+ }
+ 
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 5fccf5fce084..a4a4df2daedb 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -7175,16 +7175,8 @@ bool has_managed_dma(void)
+ 
+ #ifdef CONFIG_UNACCEPTED_MEMORY
+ 
+-/* Counts number of zones with unaccepted pages. */
+-static DEFINE_STATIC_KEY_FALSE(zones_with_unaccepted_pages);
+-
+ static bool lazy_accept = true;
+ 
+-void unaccepted_cleanup_work(struct work_struct *work)
+-{
+-	static_branch_dec(&zones_with_unaccepted_pages);
+-}
+-
+ static int __init accept_memory_parse(char *p)
+ {
+ 	if (!strcmp(p, "lazy")) {
+@@ -7209,11 +7201,7 @@ static bool page_contains_unaccepted(struct page *page, unsigned int order)
+ static void __accept_page(struct zone *zone, unsigned long *flags,
+ 			  struct page *page)
+ {
+-	bool last;
+-
+ 	list_del(&page->lru);
+-	last = list_empty(&zone->unaccepted_pages);
+-
+ 	account_freepages(zone, -MAX_ORDER_NR_PAGES, MIGRATE_MOVABLE);
+ 	__mod_zone_page_state(zone, NR_UNACCEPTED, -MAX_ORDER_NR_PAGES);
+ 	__ClearPageUnaccepted(page);
+@@ -7222,28 +7210,6 @@ static void __accept_page(struct zone *zone, unsigned long *flags,
+ 	accept_memory(page_to_phys(page), PAGE_SIZE << MAX_PAGE_ORDER);
+ 
+ 	__free_pages_ok(page, MAX_PAGE_ORDER, FPI_TO_TAIL);
+-
+-	if (last) {
+-		/*
+-		 * There are two corner cases:
+-		 *
+-		 * - If allocation occurs during the CPU bring up,
+-		 *   static_branch_dec() cannot be used directly as
+-		 *   it causes a deadlock on cpu_hotplug_lock.
+-		 *
+-		 *   Instead, use schedule_work() to prevent deadlock.
+-		 *
+-		 * - If allocation occurs before workqueues are initialized,
+-		 *   static_branch_dec() should be called directly.
+-		 *
+-		 *   Workqueues are initialized before CPU bring up, so this
+-		 *   will not conflict with the first scenario.
+-		 */
+-		if (system_wq)
+-			schedule_work(&zone->unaccepted_cleanup);
+-		else
+-			unaccepted_cleanup_work(&zone->unaccepted_cleanup);
+-	}
+ }
+ 
+ void accept_page(struct page *page)
+@@ -7280,20 +7246,12 @@ static bool try_to_accept_memory_one(struct zone *zone)
+ 	return true;
+ }
+ 
+-static inline bool has_unaccepted_memory(void)
+-{
+-	return static_branch_unlikely(&zones_with_unaccepted_pages);
+-}
+-
+ static bool cond_accept_memory(struct zone *zone, unsigned int order,
+ 			       int alloc_flags)
+ {
+ 	long to_accept, wmark;
+ 	bool ret = false;
+ 
+-	if (!has_unaccepted_memory())
+-		return false;
+-
+ 	if (list_empty(&zone->unaccepted_pages))
+ 		return false;
+ 
+@@ -7331,22 +7289,17 @@ static bool __free_unaccepted(struct page *page)
+ {
+ 	struct zone *zone = page_zone(page);
+ 	unsigned long flags;
+-	bool first = false;
+ 
+ 	if (!lazy_accept)
+ 		return false;
+ 
+ 	spin_lock_irqsave(&zone->lock, flags);
+-	first = list_empty(&zone->unaccepted_pages);
+ 	list_add_tail(&page->lru, &zone->unaccepted_pages);
+ 	account_freepages(zone, MAX_ORDER_NR_PAGES, MIGRATE_MOVABLE);
+ 	__mod_zone_page_state(zone, NR_UNACCEPTED, MAX_ORDER_NR_PAGES);
+ 	__SetPageUnaccepted(page);
+ 	spin_unlock_irqrestore(&zone->lock, flags);
+ 
+-	if (first)
+-		static_branch_inc(&zones_with_unaccepted_pages);
+-
+ 	return true;
+ }
+ 
+-- 
+2.47.2
+
 
