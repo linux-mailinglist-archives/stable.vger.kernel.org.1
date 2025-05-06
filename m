@@ -1,100 +1,126 @@
-Return-Path: <stable+bounces-141818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26D3CAAC6F4
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 15:51:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76A49AAC737
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 16:00:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E8C84A35F6
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 13:51:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48A0C506493
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 14:00:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF4A227FB1C;
-	Tue,  6 May 2025 13:51:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fJl28nR7"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40A78280A4B;
+	Tue,  6 May 2025 13:59:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 763B5208CA;
-	Tue,  6 May 2025 13:51:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C82B278745
+	for <stable@vger.kernel.org>; Tue,  6 May 2025 13:59:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746539511; cv=none; b=s5GUQDVvZxcRprGDkarSDSWiYB9yi8k1zLsp2wmHzfDe/l0Zy3YGl0aa96M5eQpeHd5KzBK1xTlEGEetSh8oJl9BjfO3YLrkUNDLleIlOBQZ9tTtnLxCHWQlxqxR6AKdABscDx2/uKjZ7MxzJ0AYrs0AIiG7iLxAu7J/8KO1dqk=
+	t=1746539988; cv=none; b=R4POOWzHizzwGSZgAxEYstuzWCwjL3+lpTWIeOcdNuGkh0QAi5X438eJAoXr0WxsB0yEQXdgZw0ScVGd1rydZD9kmFt2uLGPbdO59/iumuUd7sTWj6beJL4Q93St1ke0ZksCpUsuX3mU6S8lxcfy3MFPdPgeiScn9IJaLF1iTgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746539511; c=relaxed/simple;
-	bh=kOu+LL3zjg0TPwi96MyHYxoid3IjGnXwNv+/5apGPu8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HOT6H5xVoHnEXYk1VfpO/mEk/ZAV4DDSIZJhTqhFM1RP44T6pzBOzVw8Mg/6r03dlRKvqZT5rvMWp1hIpEP5oImODvr1+cTNprrM2trLhCUzhJp+6Nnb98YY1e73/y4C3pW/yMZ00ABdg0nyDqraynOzZV5UuEP3QNKZICExGhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fJl28nR7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BB72C4CEE4;
-	Tue,  6 May 2025 13:51:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746539511;
-	bh=kOu+LL3zjg0TPwi96MyHYxoid3IjGnXwNv+/5apGPu8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fJl28nR72rfmuk2s98JB1ZSX0+S6O28XoA3j92AfT7OtwbvpbF9LwWPtUcV6gBfdT
-	 aRANHjba9zvbGfkzGJgXxQ+wfU2+qHBCYqyoXDmQWKtqmKYvsHfawYMstuMH1kRsYU
-	 n4VDSXikvmAG0o5SGTcI8UPuabNre4pguxgfGvOz1OKRoc8tzRHnpcHSfUKt5vtUCj
-	 puQXh0ibnZ9Mh/sWUzzeIJLfVSxLITm2jfr/YwRxuPKrIHmbnW7PMRHy0UMgpqHbra
-	 E41dcjJ3w6Kok+XOL0FQMofTdUxXhYDi4SE5bjbVQdeF8To/vcgJI6ovtAfZZrls5T
-	 Av1htu2/EdoRw==
-Date: Tue, 6 May 2025 09:51:47 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: Luis Chamberlain <mcgrof@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Hannes Reinecke <hare@kernel.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Hannes Reinecke <hare@suse.de>,
-	Christian Brauner <brauner@kernel.org>, viro@zeniv.linux.org.uk,
-	linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.14 342/642] fs/mpage: avoid negative shift for
- large blocksize
-Message-ID: <aBoT89awjNjboEe8@lappy>
-References: <20250505221419.2672473-1-sashal@kernel.org>
- <20250505221419.2672473-342-sashal@kernel.org>
- <aBlfg8tuWY1_GVPJ@bombadil.infradead.org>
+	s=arc-20240116; t=1746539988; c=relaxed/simple;
+	bh=cta3bzS1XTVIfbIL5FcYJcsjIz0efDBPxfUHdm3xAXA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=oxMPVcIgYdvl8JmbtqHAUKfKDdt0qwVJ6C1Hsn7ANe4aZXa5qhDHy3Lw7IAs4e3YdqznklwS2UQ7u8eixwSY3+2pElYUqY4Zs6k396+Ibljmwk3QTfJd0T/6UTFsNSsnRSo2ZYzYI5t2RuNmxa8ZP/8M0YoBD4KgnyU4FLqVuwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1uCIpk-0007pu-Mf
+	for stable@vger.kernel.org; Tue, 06 May 2025 15:59:44 +0200
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1uCIpk-001P8v-0J
+	for stable@vger.kernel.org;
+	Tue, 06 May 2025 15:59:44 +0200
+Received: from dspam.blackshift.org (localhost [127.0.0.1])
+	by bjornoya.blackshift.org (Postfix) with SMTP id BC9C8408F5D
+	for <stable@vger.kernel.org>; Tue, 06 May 2025 13:59:43 +0000 (UTC)
+Received: from hardanger.blackshift.org (unknown [172.20.34.65])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id 062A8408F36;
+	Tue, 06 May 2025 13:59:42 +0000 (UTC)
+Received: from blackshift.org (localhost [::1])
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 39534146;
+	Tue, 6 May 2025 13:59:41 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	linux-can@vger.kernel.org,
+	kernel@pengutronix.de,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	stable@vger.kernel.org
+Subject: [PATCH net 3/6] can: mcp251xfd: mcp251xfd_remove(): fix order of unregistration calls
+Date: Tue,  6 May 2025 15:56:19 +0200
+Message-ID: <20250506135939.652543-4-mkl@pengutronix.de>
+X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250506135939.652543-1-mkl@pengutronix.de>
+References: <20250506135939.652543-1-mkl@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <aBlfg8tuWY1_GVPJ@bombadil.infradead.org>
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
-On Mon, May 05, 2025 at 06:01:55PM -0700, Luis Chamberlain wrote:
->On Mon, May 05, 2025 at 06:09:18PM -0400, Sasha Levin wrote:
->> From: Hannes Reinecke <hare@kernel.org>
->>
->> [ Upstream commit 86c60efd7c0ede43bd677f2eee1d84200528df1e ]
->>
->> For large blocksizes the number of block bits is larger than PAGE_SHIFT,
->> so calculate the sector number from the byte offset instead. This is
->> required to enable large folios with buffer-heads.
->>
->> Reviewed-by: "Matthew Wilcox (Oracle)" <willy@infradead.org>
->> Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
->> Signed-off-by: Hannes Reinecke <hare@kernel.org>
->> Link: https://lore.kernel.org/r/20250221223823.1680616-4-mcgrof@kernel.org
->> Reviewed-by: Hannes Reinecke <hare@suse.de>
->> Signed-off-by: Christian Brauner <brauner@kernel.org>
->> Signed-off-by: Sasha Levin <sashal@kernel.org>
->
->This is not relevant to older kernels as we had no buffer-head usage of
->large folios before v6.15. So this is just creating noise / drama for
->older kernels.
+If a driver is removed, the driver framework invokes the driver's
+remove callback. A CAN driver's remove function calls
+unregister_candev(), which calls net_device_ops::ndo_stop further down
+in the call stack for interfaces which are in the "up" state.
 
-Sure, I'll drop it.
+With the mcp251xfd driver the removal of the module causes the
+following warning:
 
->Where's that code for  auto-sel again?
+| WARNING: CPU: 0 PID: 352 at net/core/dev.c:7342 __netif_napi_del_locked+0xc8/0xd8
 
-https://git.sr.ht/~sashal/autosel :)
+as can_rx_offload_del() deletes the NAPI, while it is still active,
+because the interface is still up.
 
+To fix the warning, first unregister the network interface, which
+calls net_device_ops::ndo_stop, which disables the NAPI, and then call
+can_rx_offload_del().
+
+Fixes: 55e5b97f003e ("can: mcp25xxfd: add driver for Microchip MCP25xxFD SPI CAN")
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250502-can-rx-offload-del-v1-1-59a9b131589d@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
+index 064d81c724f4..c30b04f8fc0d 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
+@@ -2198,8 +2198,8 @@ static void mcp251xfd_remove(struct spi_device *spi)
+ 	struct mcp251xfd_priv *priv = spi_get_drvdata(spi);
+ 	struct net_device *ndev = priv->ndev;
+ 
+-	can_rx_offload_del(&priv->offload);
+ 	mcp251xfd_unregister(priv);
++	can_rx_offload_del(&priv->offload);
+ 	spi->max_speed_hz = priv->spi_max_speed_hz_orig;
+ 	free_candev(ndev);
+ }
 -- 
-Thanks,
-Sasha
+2.47.2
+
+
 
