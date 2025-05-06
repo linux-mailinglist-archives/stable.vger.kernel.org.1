@@ -1,274 +1,162 @@
-Return-Path: <stable+bounces-141801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F318DAAC29B
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 13:29:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67D13AAC2B6
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 13:32:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 98EDC7B8CA9
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 11:26:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88E583B0272
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 11:32:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E277E27A471;
-	Tue,  6 May 2025 11:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5371327AC20;
+	Tue,  6 May 2025 11:31:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SN8dQJpX"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="btJjgamw"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE57872627;
-	Tue,  6 May 2025 11:27:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3013C27AC27
+	for <stable@vger.kernel.org>; Tue,  6 May 2025 11:31:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746530834; cv=none; b=Vf9qO1rCLXL7+WISW5BjZJL5l5kTC3UYn/RQLYvJGcCUMDFYBQPc4eF4/om6dv5P4RS/60uvcXjvtvI5weOFwOC1VRRoK2C6IZJb7EK/zV+yBBKUmyHm26dkKiEnLVH3o7bFTLovLk4fyVEarPQWAFYcPA83ZBVmqwRs+67RCH0=
+	t=1746531119; cv=none; b=Y9PaIXayAtK0jGexPAsQlIcEIanl4/+C2hk4oQOtJ0+OP1xLm2gUYddq0bNXcBOfBeeRmP/7RDvVkAEmL1Uibz0rWKAKf1lprsu/aCzzU5cf9GE8zJeSCZRfpkYunJaVVZi96if0tbUAGf90nMSulGwZWnUyF4+zS4eC65132TE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746530834; c=relaxed/simple;
-	bh=9EF9UJoz/+dWUP5w1cdIK76VhKZ6qJwu09x9cqS8els=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=F24dJMJsmbJl4Xn0AsKuIZFA0HI00z4WqhJB48//699G5R0S2E3mQe2fDA64FY3qUtqpRHM4dWXRQ290an/VYUgquZ/Rq/TQt96o+j6RQwRT/Mem/r6UwO+Mfcu3rnummKmtlbMejt0F+547g7Ac2OA57Npb0wADFxaSwuq1ROI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SN8dQJpX; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746530833; x=1778066833;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=9EF9UJoz/+dWUP5w1cdIK76VhKZ6qJwu09x9cqS8els=;
-  b=SN8dQJpXMcqV7VlyS8m8NYnNM3ajBy+L0P/MOniUF/BzpvvXNZ4srcMb
-   ozNxQXYe1Ze/kWNRjh1xS+uX1UlqzR+We0VG0GCLmi/n95AZn1duDO78J
-   di8m9FN77jIVlvUZvuJ+lhiG7Q3dKLTtlM4doXUrwSbhclhU3vR9BX5gv
-   3BCYJ1P+xbMBYVO9O9inom+8k65yJWQg7WJv9vERSvrOwJEZbfvia1+Pf
-   qYgg2df6GZd9JtJV10SOUFsGDfw1h/fI1c9moqcVHZGBojrnL/IIK4ykP
-   6/Byemv8TGE6mKRJdz4AJ74D/YoKsXVaADquIn0eQHdzDyWMv6EjFgNJM
-   g==;
-X-CSE-ConnectionGUID: J8ztO2xeRjKY54p06e24og==
-X-CSE-MsgGUID: M4G/8qfqQ6SU8qM7UM8JRQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11424"; a="48064398"
-X-IronPort-AV: E=Sophos;i="6.15,266,1739865600"; 
-   d="scan'208";a="48064398"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2025 04:27:13 -0700
-X-CSE-ConnectionGUID: uVjdQnw7Rui1qGxHDP0Gag==
-X-CSE-MsgGUID: YywYDH9EThSPC4tzV73gzw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,266,1739865600"; 
-   d="scan'208";a="136087280"
-Received: from kuha.fi.intel.com ([10.237.72.152])
-  by orviesa007.jf.intel.com with SMTP; 06 May 2025 04:27:09 -0700
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Tue, 06 May 2025 14:27:08 +0300
-Date: Tue, 6 May 2025 14:27:08 +0300
-From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To: RD Babiera <rdbabiera@google.com>
-Cc: badhri@google.com, gregkh@linuxfoundation.org,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v1] usb: typec: tcpm: move tcpm_queue_vdm_unlocked to
- asynchronous work
-Message-ID: <aBnyDL-GK9WFFXzs@kuha.fi.intel.com>
-References: <20250429234908.3751116-2-rdbabiera@google.com>
+	s=arc-20240116; t=1746531119; c=relaxed/simple;
+	bh=dZOxThEKY/19fDb1atsCAd4vX2SSIiVfbJuNFdfhc6g=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=k3M3StzKz1PrFOKWCfymLz/Stz2qqZXa1lCw0OS0VkRkJz+Is7yRVilds6O+dUjgFrI0dRtdTbPbhLKf1j2/Tg7sr6zjoPfrCbF65LEDVGUjm1MhMX+bL4zRqdqomwtw9fYFns/ArOzCYiR0ry9up2YxBChXz+yVBWnXKSrktDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=btJjgamw; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-43ede096d73so33190765e9.2
+        for <stable@vger.kernel.org>; Tue, 06 May 2025 04:31:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1746531115; x=1747135915; darn=vger.kernel.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=xVYMaT82isRrkpK15HHVNBbc3e0novaLvbWmbpyFIOE=;
+        b=btJjgamwaPMIkqoGeqCUwJxMbsrXe+ax6aHgMu1gvdxjoxNrTHRXu1FnVN+FJi9ey5
+         E8Z2aufoTkRU4xRYBPSuOKve/r+gimZ23CbWOANicn6eSfFSw4xzNxTlDvtil0bVSwIM
+         tkhwVOnry/pEjBbZQkfRoNosxJVcIy6tClo9OnVm9rWWOKDOT/zDe2psEs0TRc8N5zFJ
+         wUKU/lJ+owD72z/r0DDhK3rTtn7iIQwA9zKrdRcqtQ1EINLJjqYyPSUqnW3fzUwULrsk
+         z0s+UsqDSkOojUN2bZvvuV7eVWAIigIiKmodnSmpiXuFCCPNZLENAacoEsI5THfcPytZ
+         PZYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746531115; x=1747135915;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xVYMaT82isRrkpK15HHVNBbc3e0novaLvbWmbpyFIOE=;
+        b=OIGFY/nxVE/DE9/gYEvcQCpJKgBzUNjLoAO/JuIrBDtSu5egWue43GOKHnH/htfpoX
+         0k27AknspkHuAjHoDUplDhyLjdahdwrdV7a7G4KE4Hy1xvJai6CMiOHEY2kDGXcanRQj
+         UxxLNUd8vgRn/lnSEWSoR1eTZW+ycxbR9+KAP5XmvkriTKdX78sSSOD3On0ZRxudvPMH
+         CrTqZH1vHgnjcPHzL6lanwsIbdn4ifdoUZA71IBfBrOI7dhH8zeShDgmEd2Ef0gpZXzk
+         lLGlEbVHZuReLepnOxPA7yQHg0/U62qJIDWwqiRbCNeC5WYsuo7OfePxmBA5ecQ54ell
+         pNZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXnrIF483Ozas/mZ7hz57VrQD02a/0QNq6yVLt3BTHaTuypQkKlhlPFsHfO1wypvQtnmFew2Kg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyhjJ/8qHVJ+akKjCW1mmmuAfcOd3sCoZn7S4dnhdjJi/km5Y35
+	j3T8T7ibt3QmvajC5UvVXbdyJXc4IMbOys0LV3rRQgOGOfAh09zdzVDWxEkyytQ=
+X-Gm-Gg: ASbGncssDIQjs4iRZFkz6DOu4LGsqkJrfrYYgt1NWzdSsXAtp10oTGgqmZaBWBSL3X/
+	VGtsFD/pxikPYsG+sRV8/+z89Yx6OW3ZExy1gxN1gYe8dnQZECn58aK5XJ2AENbiOAkcaXUl7ei
+	lyspqnfIVolvE+p1zZB7HKO8gkpDnaQgUUKe2B1MKgHYZKs7l0mf1xCr9vq+YbaPlKK3DmrlYi5
+	29Y9ojxxkqRz2W2M4yBAUW8Vtu0SmZcYTWYSsu+7SdnjPvyIqQAcWSW5Iqa66uIao4gCyG5cblR
+	1iTcZ2KljgSHh8HuVKDKi2dCFvkYrvpfVwM31+OaI4iSdzBVGbEfHFavEzOM2bmDjRIkujmwQ8Z
+	2owyxL/UC/jNyj/0lDzx/
+X-Google-Smtp-Source: AGHT+IFB+/2+pwJwZIBD0b2yLu++CXDbSzQgzqM1gVS70tv5Bksn6acNtQIMSaKWzYmIjz1xXAmFYA==
+X-Received: by 2002:a05:600c:8012:b0:434:fa55:eb56 with SMTP id 5b1f17b1804b1-441c48b05cdmr93122945e9.7.1746531115575;
+        Tue, 06 May 2025 04:31:55 -0700 (PDT)
+Received: from ta2.c.googlers.com (92.221.190.35.bc.googleusercontent.com. [35.190.221.92])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-441b2aecedcsm213723495e9.15.2025.05.06.04.31.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 May 2025 04:31:54 -0700 (PDT)
+From: Tudor Ambarus <tudor.ambarus@linaro.org>
+Date: Tue, 06 May 2025 11:31:50 +0000
+Subject: [PATCH] dm: fix copying after src array boundaries
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250429234908.3751116-2-rdbabiera@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250506-dm-past-array-boundaries-v1-1-b5b1bb8b2b34@linaro.org>
+X-B4-Tracking: v=1; b=H4sIACXzGWgC/x3MMQ6DMAxA0asgz7XkpAoDV0Ed3MYBDwTkFARC3
+ L0p4xv+P6GIqRTomhNMNi065wr3aOAzch4ENVaDJx8oUItxwoXLF9mMD3zPa478P6BL4lNgR09
+ KUPPFJOl+r/vXdf0A3b3cymoAAAA=
+X-Change-ID: 20250506-dm-past-array-boundaries-1fe2f5a1030f
+To: Alasdair Kergon <agk@redhat.com>, Mike Snitzer <snitzer@kernel.org>, 
+ Mikulas Patocka <mpatocka@redhat.com>, 
+ Benjamin Marzinski <bmarzins@redhat.com>
+Cc: dm-devel@lists.linux.dev, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, Tudor Ambarus <tudor.ambarus@linaro.org>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1746531114; l=2250;
+ i=tudor.ambarus@linaro.org; s=20241212; h=from:subject:message-id;
+ bh=dZOxThEKY/19fDb1atsCAd4vX2SSIiVfbJuNFdfhc6g=;
+ b=zmVLAtKGrgYT4MKv8fchYAAkjBVI+UyBexEDHXyQc+1hENewYZaxjQ/O7Yyxoc9/n9JVBYPEH
+ CQGMUpu2v34AhJlKIfbHG/UUXKSDuWiMsqKYs7NhYIRppYDE2xyBeFm
+X-Developer-Key: i=tudor.ambarus@linaro.org; a=ed25519;
+ pk=uQzE0NXo3dIjeowMTOPCpIiPHEz12IA/MbyzrZVh9WI=
 
-On Tue, Apr 29, 2025 at 11:49:08PM +0000, RD Babiera wrote:
-> A state check was previously added to tcpm_queue_vdm_unlocked to
-> prevent a deadlock where the DisplayPort Alt Mode driver would be
-> executing work and attempting to grab the tcpm_lock while the TCPM
-> was holding the lock and attempting to unregister the altmode, blocking
-> on the altmode driver's cancel_work_sync call.
-> 
-> Because the state check isn't protected, there is a small window
-> where the Alt Mode driver could determine that the TCPM is
-> in a ready state and attempt to grab the lock while the
-> TCPM grabs the lock and changes the TCPM state to one that
-> causes the deadlock.
-> 
-> Change tcpm_queue_vdm_unlocked to queue for tcpm_queue_vdm_work,
-> which can perform the state check while holding the TCPM lock
-> while the Alt Mode lock is no longer held. This requires a new
-> struct to hold the vdm data, altmode_vdm_event.
-> 
-> Fixes: cdc9946ea637 ("usb: typec: tcpm: enforce ready state when queueing alt mode vdm")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: RD Babiera <rdbabiera@google.com>
+The blammed commit copied to argv the size of the reallocated argv,
+instead of the size of the old_argv, thus reading and copying from
+past the old_argv allocated memory.
 
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Following BUG_ON was hit:
+[    3.038929][    T1] kernel BUG at lib/string_helpers.c:1040!
+[    3.039147][    T1] Internal error: Oops - BUG: 00000000f2000800 [#1]  SMP
+...
+[    3.056489][    T1] Call trace:
+[    3.056591][    T1]  __fortify_panic+0x10/0x18 (P)
+[    3.056773][    T1]  dm_split_args+0x20c/0x210
+[    3.056942][    T1]  dm_table_add_target+0x13c/0x360
+[    3.057132][    T1]  table_load+0x110/0x3ac
+[    3.057292][    T1]  dm_ctl_ioctl+0x424/0x56c
+[    3.057457][    T1]  __arm64_sys_ioctl+0xa8/0xec
+[    3.057634][    T1]  invoke_syscall+0x58/0x10c
+[    3.057804][    T1]  el0_svc_common+0xa8/0xdc
+[    3.057970][    T1]  do_el0_svc+0x1c/0x28
+[    3.058123][    T1]  el0_svc+0x50/0xac
+[    3.058266][    T1]  el0t_64_sync_handler+0x60/0xc4
+[    3.058452][    T1]  el0t_64_sync+0x1b0/0x1b4
+[    3.058620][    T1] Code: f800865e a9bf7bfd 910003fd 941f48aa (d4210000)
+[    3.058897][    T1] ---[ end trace 0000000000000000 ]---
+[    3.059083][    T1] Kernel panic - not syncing: Oops - BUG: Fatal exception
 
-> ---
->  drivers/usb/typec/tcpm/tcpm.c | 91 +++++++++++++++++++++++++++--------
->  1 file changed, 71 insertions(+), 20 deletions(-)
-> 
-> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-> index 784fa23102f9..9b8d98328ddb 100644
-> --- a/drivers/usb/typec/tcpm/tcpm.c
-> +++ b/drivers/usb/typec/tcpm/tcpm.c
-> @@ -597,6 +597,15 @@ struct pd_rx_event {
->  	enum tcpm_transmit_type rx_sop_type;
->  };
->  
-> +struct altmode_vdm_event {
-> +	struct kthread_work work;
-> +	struct tcpm_port *port;
-> +	u32 header;
-> +	u32 *data;
-> +	int cnt;
-> +	enum tcpm_transmit_type tx_sop_type;
-> +};
-> +
->  static const char * const pd_rev[] = {
->  	[PD_REV10]		= "rev1",
->  	[PD_REV20]		= "rev2",
-> @@ -1610,18 +1619,68 @@ static void tcpm_queue_vdm(struct tcpm_port *port, const u32 header,
->  	mod_vdm_delayed_work(port, 0);
->  }
->  
-> -static void tcpm_queue_vdm_unlocked(struct tcpm_port *port, const u32 header,
-> -				    const u32 *data, int cnt, enum tcpm_transmit_type tx_sop_type)
-> +static void tcpm_queue_vdm_work(struct kthread_work *work)
->  {
-> -	if (port->state != SRC_READY && port->state != SNK_READY &&
-> -	    port->state != SRC_VDM_IDENTITY_REQUEST)
-> -		return;
-> +	struct altmode_vdm_event *event = container_of(work,
-> +						       struct altmode_vdm_event,
-> +						       work);
-> +	struct tcpm_port *port = event->port;
->  
->  	mutex_lock(&port->lock);
-> -	tcpm_queue_vdm(port, header, data, cnt, tx_sop_type);
-> +	if (port->state != SRC_READY && port->state != SNK_READY &&
-> +	    port->state != SRC_VDM_IDENTITY_REQUEST) {
-> +		tcpm_log_force(port, "dropping altmode_vdm_event");
-> +		goto port_unlock;
-> +	}
-> +
-> +	tcpm_queue_vdm(port, event->header, event->data, event->cnt, event->tx_sop_type);
-> +
-> +port_unlock:
-> +	kfree(event->data);
-> +	kfree(event);
->  	mutex_unlock(&port->lock);
->  }
->  
-> +static int tcpm_queue_vdm_unlocked(struct tcpm_port *port, const u32 header,
-> +				   const u32 *data, int cnt, enum tcpm_transmit_type tx_sop_type)
-> +{
-> +	struct altmode_vdm_event *event;
-> +	u32 *data_cpy;
-> +	int ret = -ENOMEM;
-> +
-> +	event = kzalloc(sizeof(*event), GFP_KERNEL);
-> +	if (!event)
-> +		goto err_event;
-> +
-> +	data_cpy = kcalloc(cnt, sizeof(u32), GFP_KERNEL);
-> +	if (!data_cpy)
-> +		goto err_data;
-> +
-> +	kthread_init_work(&event->work, tcpm_queue_vdm_work);
-> +	event->port = port;
-> +	event->header = header;
-> +	memcpy(data_cpy, data, sizeof(u32) * cnt);
-> +	event->data = data_cpy;
-> +	event->cnt = cnt;
-> +	event->tx_sop_type = tx_sop_type;
-> +
-> +	ret = kthread_queue_work(port->wq, &event->work);
-> +	if (!ret) {
-> +		ret = -EBUSY;
-> +		goto err_queue;
-> +	}
-> +
-> +	return 0;
-> +
-> +err_queue:
-> +	kfree(data_cpy);
-> +err_data:
-> +	kfree(event);
-> +err_event:
-> +	tcpm_log_force(port, "failed to queue altmode vdm, err:%d", ret);
-> +	return ret;
-> +}
-> +
->  static void svdm_consume_identity(struct tcpm_port *port, const u32 *p, int cnt)
->  {
->  	u32 vdo = p[VDO_INDEX_IDH];
-> @@ -2832,8 +2891,7 @@ static int tcpm_altmode_enter(struct typec_altmode *altmode, u32 *vdo)
->  	header = VDO(altmode->svid, vdo ? 2 : 1, svdm_version, CMD_ENTER_MODE);
->  	header |= VDO_OPOS(altmode->mode);
->  
-> -	tcpm_queue_vdm_unlocked(port, header, vdo, vdo ? 1 : 0, TCPC_TX_SOP);
-> -	return 0;
-> +	return tcpm_queue_vdm_unlocked(port, header, vdo, vdo ? 1 : 0, TCPC_TX_SOP);
->  }
->  
->  static int tcpm_altmode_exit(struct typec_altmode *altmode)
-> @@ -2849,8 +2907,7 @@ static int tcpm_altmode_exit(struct typec_altmode *altmode)
->  	header = VDO(altmode->svid, 1, svdm_version, CMD_EXIT_MODE);
->  	header |= VDO_OPOS(altmode->mode);
->  
-> -	tcpm_queue_vdm_unlocked(port, header, NULL, 0, TCPC_TX_SOP);
-> -	return 0;
-> +	return tcpm_queue_vdm_unlocked(port, header, NULL, 0, TCPC_TX_SOP);
->  }
->  
->  static int tcpm_altmode_vdm(struct typec_altmode *altmode,
-> @@ -2858,9 +2915,7 @@ static int tcpm_altmode_vdm(struct typec_altmode *altmode,
->  {
->  	struct tcpm_port *port = typec_altmode_get_drvdata(altmode);
->  
-> -	tcpm_queue_vdm_unlocked(port, header, data, count - 1, TCPC_TX_SOP);
-> -
-> -	return 0;
-> +	return tcpm_queue_vdm_unlocked(port, header, data, count - 1, TCPC_TX_SOP);
->  }
->  
->  static const struct typec_altmode_ops tcpm_altmode_ops = {
-> @@ -2884,8 +2939,7 @@ static int tcpm_cable_altmode_enter(struct typec_altmode *altmode, enum typec_pl
->  	header = VDO(altmode->svid, vdo ? 2 : 1, svdm_version, CMD_ENTER_MODE);
->  	header |= VDO_OPOS(altmode->mode);
->  
-> -	tcpm_queue_vdm_unlocked(port, header, vdo, vdo ? 1 : 0, TCPC_TX_SOP_PRIME);
-> -	return 0;
-> +	return tcpm_queue_vdm_unlocked(port, header, vdo, vdo ? 1 : 0, TCPC_TX_SOP_PRIME);
->  }
->  
->  static int tcpm_cable_altmode_exit(struct typec_altmode *altmode, enum typec_plug_index sop)
-> @@ -2901,8 +2955,7 @@ static int tcpm_cable_altmode_exit(struct typec_altmode *altmode, enum typec_plu
->  	header = VDO(altmode->svid, 1, svdm_version, CMD_EXIT_MODE);
->  	header |= VDO_OPOS(altmode->mode);
->  
-> -	tcpm_queue_vdm_unlocked(port, header, NULL, 0, TCPC_TX_SOP_PRIME);
-> -	return 0;
-> +	return tcpm_queue_vdm_unlocked(port, header, NULL, 0, TCPC_TX_SOP_PRIME);
->  }
->  
->  static int tcpm_cable_altmode_vdm(struct typec_altmode *altmode, enum typec_plug_index sop,
-> @@ -2910,9 +2963,7 @@ static int tcpm_cable_altmode_vdm(struct typec_altmode *altmode, enum typec_plug
->  {
->  	struct tcpm_port *port = typec_altmode_get_drvdata(altmode);
->  
-> -	tcpm_queue_vdm_unlocked(port, header, data, count - 1, TCPC_TX_SOP_PRIME);
-> -
-> -	return 0;
-> +	return tcpm_queue_vdm_unlocked(port, header, data, count - 1, TCPC_TX_SOP_PRIME);
->  }
->  
->  static const struct typec_cable_ops tcpm_cable_ops = {
-> 
-> base-commit: 615dca38c2eae55aff80050275931c87a812b48c
-> -- 
-> 2.49.0.967.g6a0df3ecc3-goog
+Fix it by copying the size of src, and not the size of dst, as it was.
 
+Fixes: 5a2a6c428190 ("dm: always update the array size in realloc_argv on success")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+---
+ drivers/md/dm-table.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/md/dm-table.c b/drivers/md/dm-table.c
+index 9e175c5e0634b49b990436898f63c2b1e696febb..6dae73ee49dbb36d89341ff09556876d0973c4ff 100644
+--- a/drivers/md/dm-table.c
++++ b/drivers/md/dm-table.c
+@@ -524,9 +524,9 @@ static char **realloc_argv(unsigned int *size, char **old_argv)
+ 	}
+ 	argv = kmalloc_array(new_size, sizeof(*argv), gfp);
+ 	if (argv) {
+-		*size = new_size;
+ 		if (old_argv)
+ 			memcpy(argv, old_argv, *size * sizeof(*argv));
++		*size = new_size;
+ 	}
+ 
+ 	kfree(old_argv);
+
+---
+base-commit: 92a09c47464d040866cf2b4cd052bc60555185fb
+change-id: 20250506-dm-past-array-boundaries-1fe2f5a1030f
+
+Best regards,
 -- 
-heikki
+Tudor Ambarus <tudor.ambarus@linaro.org>
+
 
