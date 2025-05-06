@@ -1,121 +1,108 @@
-Return-Path: <stable+bounces-141855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5B27AACD64
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 20:37:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8638AACDAA
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 21:02:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50C514A7AF0
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 18:37:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CAF9503EDE
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 19:02:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39E0928643E;
-	Tue,  6 May 2025 18:37:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C71DB142E86;
+	Tue,  6 May 2025 19:02:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZXyl2JuC"
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="Xei9OplX"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF9CB1D5ADC;
-	Tue,  6 May 2025 18:37:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00CC1179A7;
+	Tue,  6 May 2025 19:02:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746556626; cv=none; b=PWZ6KXT1cynquRER573sMLF6U7EOHx0GFzBLiy8+6srp3sc5LPWZUawdWmdoWuIO3DS/jF33a6QLb6EzWmRLL7yrX47pj9HDMV3J9YCkG8fGgskxRXAFITp/ahSbwuditLJ/ZJEYSqBmufb9JQ633Aor64Q6eLokfQAGWxYlAe0=
+	t=1746558159; cv=none; b=SzaahI+dhU5Ty+9LOgNmW7/TfftTlfA3qY1ZjEx3Z5PSSBWSGzRvD132xUBHSOiguM7xBJCqe5BctnqJPbbkKUHq4rCePh2ZzS4NPIIxy0khI7wA9B8gsYvkVmcqNtT7/9NobcFgXAvDMdoDznD3D4T45nZqippaZIKIyJWSkEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746556626; c=relaxed/simple;
-	bh=VPN3CYOPSJElSKB5YL3erOKXcLAZVNE6IXlCcyuNueA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=S+2kwQ0vgokAIfKSDvsPsuOQvNF1V+/rwi7A1/3g+m1yj9I3Gy4LJtEEjlQ0KZNGMS5LeUcLA1gCd8JeD5mQeAq4PLAKJInVOZlSM7XdRuBNEK3qvCFHgJ+hHPZkWTdRs699jtW8zc+38kvArZc13zP9/mIyFNjeo3WwUOPNT9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZXyl2JuC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5A84BC4CEEF;
-	Tue,  6 May 2025 18:37:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746556625;
-	bh=VPN3CYOPSJElSKB5YL3erOKXcLAZVNE6IXlCcyuNueA=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=ZXyl2JuCaoRm/k8vqvz+FWYtutFwBh+AeejLzveDiEUxSU10Qz3UrDLGDO1Y7Bw4s
-	 EnEJOTcvCIKiUhyh6aaiPQAtPGdUuT7ouS0I4YBocz2RjeI8PK6MeC0y6vtUAFRAGV
-	 g1gHr142uHDKu6GW30Pq5ifvdgD/35AuAmHjbeD9c/uLY3l8+P0PMw9skkF9/VoWyC
-	 x7JCxyGr07t8zuLTtYukmU80KRPPAxlbAPstmo7ihvUH3soNvGU5bkgWKr6vxxDbKR
-	 p/D8gSYGyMhyLo+VZCyaWLYsin2SDj0flVcYRKK331TJAHE6bc1MQBx/F5zSAITqUt
-	 4I/OZfOWjLzKw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4B961C3ABBC;
-	Tue,  6 May 2025 18:37:05 +0000 (UTC)
-From: Aaron Kling via B4 Relay <devnull+webgeek1234.gmail.com@kernel.org>
-Date: Tue, 06 May 2025 13:36:59 -0500
-Subject: [PATCH] spi: tegra114: Use value to check for invalid delays
+	s=arc-20240116; t=1746558159; c=relaxed/simple;
+	bh=PswShjgN6Rszgz9uyGjrC76Ws2kV3BczGDl7Z32YkD8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IrqhJ66/b7AfX/OgrALsSA0JOP457i9EaSBH1+cBgHtBYBeyLXh/cgpdtMUuEiGxlQJmIgIEjnWES8IQdWAqtkmkFL5dpaLuEwNDBZk2djX2WjDcRw90L1+hAdwhoLrfwjjjj/0ACB7kEIu5s621pN5hlI5VKQYe2ggXJUf52NY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=Xei9OplX; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=bDTAGv7oRiMJeLUnclRB63EHqXZhIX5RyFl4xNg4aaA=; b=Xei9OplXgWfccuSLrRkj3fR8qH
+	wMLAUlTYWHm/JllhBzwLEGWWOkE86zc0G0dB0aZDahq2PD3lH5zlrwVOCfqTkpJJqPVOLjfAaHC6P
+	qOYqZjVYXD7np/5D0sqDqkgMra1gJ16Ppqa177iusR2zf2t4AKcXqE4QT/p0EbYuTxBevM/A+Za4r
+	KffhzqVVl13US1ZPfgdL5ptQe6MAVoiARLA9uewTn1INOnNy7mQ04tbdozEJhoHa+o4lEUoyPR89Q
+	Jas6z/BcAASjCYctn0GcaGnZCt7F25UJs1QDDlknyqFLsPJM30WzmJNpq4jsbJQp7gHJPT5edm7hv
+	Uu3TEQAg==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.94.2)
+	(envelope-from <carnil@debian.org>)
+	id 1uCNYa-0052Yu-Ri; Tue, 06 May 2025 19:02:21 +0000
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id 3BE19BE2DE0; Tue, 06 May 2025 21:02:20 +0200 (CEST)
+Date: Tue, 6 May 2025 21:02:20 +0200
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: Pasi Kallinen <paxed@alt.org>, 1104796@bugs.debian.org,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>
+Cc: linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, regressions@lists.linux.dev,
+	Debian Bug Tracking System <submit@bugs.debian.org>
+Subject: perf r5101c4 counter regression
+Message-ID: <aBpcvG2yBtrrTie-@eldamar.lan>
+References: <174654831962.2704.6099474499200154093.reportbug@deveel>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250506-spi-tegra114-fixup-v1-1-136dc2f732f3@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAMtWGmgC/x2MQQ5AMBAAv9Ls2SbbohVfEQd0sReaFpGIv2scJ
- 5OZBxJH4QSteiDyJUn2LYMuFEzrsC2M4jODIVNTTRZTEDx4iYPWFc5ynwH9OFtXkh+pcZDDEDm
- Lf9r17/sBsguP3GQAAAA=
-X-Change-ID: 20250506-spi-tegra114-fixup-dbf6730db087
-To: Laxman Dewangan <ldewangan@nvidia.com>, Mark Brown <broonie@kernel.org>, 
- Thierry Reding <thierry.reding@gmail.com>, 
- Jonathan Hunter <jonathanh@nvidia.com>
-Cc: linux-spi@vger.kernel.org, linux-tegra@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- Aaron Kling <webgeek1234@gmail.com>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1746556624; l=1451;
- i=webgeek1234@gmail.com; s=20250217; h=from:subject:message-id;
- bh=Hw03YaXk/WZ6EX96VNFe6W5UJoy0p3RB6GhwI2lDOas=;
- b=CEGKjV7XRxmWJqtCmKGXcQ1HRrEygIotyDIVa2P8UldIcnnCCRRgM51WuUQ6TYSNQoHyZ0ZnP
- mzcTFoaFAUQCEtiHeb0NckUCgy8uofM8thOYzVHLVLhG2C2EQN9sG7r
-X-Developer-Key: i=webgeek1234@gmail.com; a=ed25519;
- pk=TQwd6q26txw7bkK7B8qtI/kcAohZc7bHHGSD7domdrU=
-X-Endpoint-Received: by B4 Relay for webgeek1234@gmail.com/20250217 with
- auth_id=342
-X-Original-From: Aaron Kling <webgeek1234@gmail.com>
-Reply-To: webgeek1234@gmail.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <174654831962.2704.6099474499200154093.reportbug@deveel>
+X-Debian-User: carnil
 
-From: Aaron Kling <webgeek1234@gmail.com>
+Hi,
 
-A delay unit of 0 is a valid entry, thus it is not valid to check for
-unused delays. Instead, check the value field; if that is zero, the
-given delay is unset.
+Pasi Kallinen reported in Debian a regression with perf r5101c4
+counter, initially it was found in
+https://github.com/rr-debugger/rr/issues/3949 but said to be a kernel
+problem.
 
-Fixes: 4426e6b4ecf6 ("spi: tegra114: Don't fail set_cs_timing when delays are zero")
-Cc: stable@vger.kernel.org
-Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
----
- drivers/spi/spi-tegra114.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+On Tue, May 06, 2025 at 07:18:39PM +0300, Pasi Kallinen wrote:
+> Package: src:linux
+> Version: 6.12.25-1
+> Severity: normal
+> X-Debbugs-Cc: debian-amd64@lists.debian.org, paxed@alt.org
+> User: debian-amd64@lists.debian.org
+> Usertags: amd64
+> 
+> Dear Maintainer,
+> 
+> perf stat -e r5101c4 true
+> 
+> reports "not supported".
+> 
+> The counters worked in kernel 6.11.10.
+> 
+> I first noticed this not working when updating to 6.12.22.
+> Booting back to 6.11.10, the counters work correctly.
 
-diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
-index 2a8bb798e95b954fe573f1c50445ed2e7fcbfd78..795a8482c2c700c3768bd50bf59971256893a486 100644
---- a/drivers/spi/spi-tegra114.c
-+++ b/drivers/spi/spi-tegra114.c
-@@ -728,9 +728,9 @@ static int tegra_spi_set_hw_cs_timing(struct spi_device *spi)
- 	u32 inactive_cycles;
- 	u8 cs_state;
- 
--	if ((setup->unit && setup->unit != SPI_DELAY_UNIT_SCK) ||
--	    (hold->unit && hold->unit != SPI_DELAY_UNIT_SCK) ||
--	    (inactive->unit && inactive->unit != SPI_DELAY_UNIT_SCK)) {
-+	if ((setup->value && setup->unit != SPI_DELAY_UNIT_SCK) ||
-+	    (hold->value && hold->unit != SPI_DELAY_UNIT_SCK) ||
-+	    (inactive->value && inactive->unit != SPI_DELAY_UNIT_SCK)) {
- 		dev_err(&spi->dev,
- 			"Invalid delay unit %d, should be SPI_DELAY_UNIT_SCK\n",
- 			SPI_DELAY_UNIT_SCK);
+Does this ring a bell?
 
----
-base-commit: 0d8d44db295ccad20052d6301ef49ff01fb8ae2d
-change-id: 20250506-spi-tegra114-fixup-dbf6730db087
+Would you be able to bisect the changes to identify where the
+behaviour changed?
 
-Best regards,
--- 
-Aaron Kling <webgeek1234@gmail.com>
-
-
+Regards,
+Salvatore
 
