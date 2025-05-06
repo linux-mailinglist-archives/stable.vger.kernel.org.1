@@ -1,165 +1,173 @@
-Return-Path: <stable+bounces-141756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DF62AABB0C
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 09:33:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A223BAABB5B
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 09:39:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0E304C7E95
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:30:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C69B5A0885
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 07:32:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91391297B95;
-	Tue,  6 May 2025 05:44:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D05420FAAB;
+	Tue,  6 May 2025 06:00:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b="fcYnrrD5";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="i3ZbgFFb"
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="mSi1HaHN"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
+Received: from stravinsky.debian.org (stravinsky.debian.org [82.195.75.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48065296D38;
-	Tue,  6 May 2025 05:44:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 402D922171F;
+	Tue,  6 May 2025 06:00:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746510264; cv=none; b=BvLURyKuPYHoqTnZCq9kJoUamoaJ3gwvfG1E1Ez9ALtskg3lndjuynwDPzzh43ghfyJUw1YB7c9xA5kl4aS6znyXYVoSUmQKMNmjLkZlWo8SFY1iPVtMqyEHff+zFbruWLAPIKh3KVFOoZ+d9mlsMMbxujItGSj0DUwZWeXHK1c=
+	t=1746511255; cv=none; b=huCXG6sfWZyoxKTaVjQ+E9fRUZx9Z/5+GrNgAMLlDGu1j0oiqA2JhANoywBXe6lA8sseJogwFUZ4m8i4JyJA+Lg5haV0Pj9OAtOJUXO83/83T1NqxGYNu145U2LsPadugliXOa+dUIhv3WmRvI8xSXZZiNZ5m6IlEU81qgN6ndg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746510264; c=relaxed/simple;
-	bh=d0I5KRmaORUOIir0Bgzzoebklxsq3c6+LDEGa9FxNWA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mrIpTzNHBVkJQCP3lekSK+HD3kCZ4FPaWxPAKdKwdXPIEaPtI50tps84OxRJDikZwwv47ex8OSoM/I2dq54eh9j4TGIGnx+ti7W4+1TpF+HZ8/MYmajqILw/G7ElPXEBcYZ4hjypHRcnfRVZV2i6hhhAoi5P8gKXeb3gM6YHJYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com; spf=pass smtp.mailfrom=fastmail.com; dkim=pass (2048-bit key) header.d=fastmail.com header.i=@fastmail.com header.b=fcYnrrD5; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=i3ZbgFFb; arc=none smtp.client-ip=202.12.124.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fastmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fastmail.com
-Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 0682325401F1;
-	Tue,  6 May 2025 01:44:21 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Tue, 06 May 2025 01:44:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.com; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1746510260;
-	 x=1746596660; bh=Fanrrjrhf5q3I2hQvI1PLFZkTUJuSGR3rIM+6zfely0=; b=
-	fcYnrrD5ubrbuF+2bZD23uKUgQJ2nDtLw1dkFfyJSuLBHWH1XaMKSopeF8rYPer7
-	CySY1eV019wIVanYBLU+2suRfmsSUe2TDzou3medXPLhxXnC0v0a2ayz/8PSC/f/
-	KdzDvN0pocwH2O1Y68O/lYtxm61436Pkf+Zf+3jwel8pZvExjSJOHJEPuFTL/3TA
-	z8uTIMAvcwMRBgc4Fj0iz8g+p2EqYyhRHyHZFsE+aQdiPbsp0RYKxeesq8/N/3QN
-	0ptirqZ08QofO78/VHHLR7H8ufvH3JNi/Fb3RAoKx7CofJpMt/HcUlD4mFsxLCKJ
-	3pqF6PZb3fzoZuYH2a3LMA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1746510260; x=
-	1746596660; bh=Fanrrjrhf5q3I2hQvI1PLFZkTUJuSGR3rIM+6zfely0=; b=i
-	3ZbgFFbD6XdT98vB38QErPrjMohDDJVqnpW5VjBmHCalwWGaO14LPwSdyn0bKjdf
-	zHEGtEDtIDbkR7u9WwyO/6m/4QN/xzIk5tyohFk5R4JVYe0EmcuFq9+e9ss5eFu+
-	IAb0Lxo8mPEY8TFthZrWsARU+1x4DHeFPyTXUH1K0AUXtU1g8hMyYpP9KNpyftjG
-	VcL+jIJA+AXy5a2VBdPbyk3WWt0h/AQ1ZtlE9hExIT7eaqLcHvCFoseIznk5I7vt
-	6plDsE1QdGPIg54/SdfaymCOTkafztcSGDWfuoxBxurXxAQna1150vW/g22iP4Dn
-	LZIiL69VA7EexMiBLuj6Q==
-X-ME-Sender: <xms:tKEZaGPIj0jn-rwcgVgO01g6h-MI9vJT8YV0FCtitDQkZLZMHN4LvQ>
-    <xme:tKEZaE9ge_AbxJoGzqTnsTF94QcG-7adAg0k444C0oDJoHPQ7Z-n3HXqu8tXbl1dE
-    qTf94rcj8VoSz6ixSw>
-X-ME-Received: <xmr:tKEZaNRTQ39EgVlWqkZ4r3NFl_PnAW5w1B009-Y1Zto3NYt5pTNKFeja9Kex_xehwyogmk-GIaBD6yp1RuZdYnMMve5R2Zk06oYO2PjMfPw5CROLGTYgjXYdzdefZ8c>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvkeefudejucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhephffvvefufffkofgjfhggtgfgsehtkeertder
-    tdejnecuhfhrohhmpefthigrnhcuofgrthhthhgvfihsuceorhihrghnmhgrthhthhgvfi
-    hssehfrghsthhmrghilhdrtghomheqnecuggftrfgrthhtvghrnhephffhieeijeevfffg
-    veelhefhvedutdelkeeuvdelteefveekleekuedtgeehffejnecuffhomhgrihhnpehkvg
-    hrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedunecurfgrrhgrmhepmhgrihhl
-    fhhrohhmpehrhigrnhhmrghtthhhvgifshesfhgrshhtmhgrihhlrdgtohhmpdhnsggprh
-    gtphhtthhopedutddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepghhrvghgkhhh
-    sehlihhnuhigfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohephhhonhhggihinh
-    hgrdiihhhusehngihprdgtohhmpdhrtghpthhtoheplhdrshhtrggthhesphgvnhhguhht
-    rhhonhhigidruggvpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrd
-    horhhgpdhrtghpthhtoheplhhinhhugidqphgtihesvhhgvghrrdhkvghrnhgvlhdrohhr
-    ghdprhgtphhtthhopehrhigrnhhmrghtthhhvgifshesfhgrshhtmhgrihhlrdgtohhmpd
-    hrtghpthhtohepkhifihhltgiihihnshhkiheskhgvrhhnvghlrdhorhhgpdhrtghpthht
-    ohepsghhvghlghgrrghssehgohhoghhlvgdrtghomhdprhgtphhtthhopehmrghnihhvrg
-    hnnhgrnhdrshgrughhrghsihhvrghmsehlihhnrghrohdrohhrgh
-X-ME-Proxy: <xmx:tKEZaGuVThH8Rpd9BZA3ZDKDtWvhN0cAmmgzq-KhUVy-4r6RZ_atRw>
-    <xmx:tKEZaOeEm73xzJv61DMfXT96LGODM3pd_hchf34zArLTUGihzDmgYA>
-    <xmx:tKEZaK28ecz_vcwttsZ3mxkMMwZNAVck_9ZtXHlZhHL0EjtcFPmMvg>
-    <xmx:tKEZaC9Vcte7ZH2lxTnouUNIWzIeEGBIH6BcPezrF3uOOgm7wClMtQ>
-    <xmx:tKEZaMPr14w1iMVibW1cq8E6CcBzWUPOCZx-g_m2F0er3DadbS1F1mIn>
-Feedback-ID: i179149b7:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 6 May 2025 01:44:20 -0400 (EDT)
-From: Ryan Matthews <ryanmatthews@fastmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Richard Zhu <hongxing.zhu@nxp.com>,
-	Lucas Stach <l.stach@pengutronix.de>,
-	stable@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	Ryan Matthews <ryanmatthews@fastmail.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Frank Li <Frank.Li@nxp.com>
-Subject: [PATCH 5.4 1/1] PCI: imx6: Skip controller_id generation logic for i.MX7D
-Date: Tue,  6 May 2025 01:44:06 -0400
-Message-ID: <20250506054406.4961-2-ryanmatthews@fastmail.com>
-X-Mailer: git-send-email 2.45.3
-In-Reply-To: <20250506054406.4961-1-ryanmatthews@fastmail.com>
-References: <2025050512-dice-brick-529d@gregkh>
- <20250506054406.4961-1-ryanmatthews@fastmail.com>
+	s=arc-20240116; t=1746511255; c=relaxed/simple;
+	bh=GROdywZ8YBRec/AsJMZZfsoIODdMnN2FHFKBcooazy0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gEUbpjhjoAus0A/HKrTS0s4o3uk5zkXzKKOtmnS6Erfk2A+ZFf8TRlwuuGxeU/t1OJILR4yYnN0Upez9hdxFB8ug8iLYl6yMEOEq+ivQs7O8olIGWoM0/fsreJ9Ji3qHvsDXOlSheT7Z68LW8D5Q94LxPU4/PBZ4fx/MFvHfnHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=mSi1HaHN; arc=none smtp.client-ip=82.195.75.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.stravinsky; h=X-Debian-User:In-Reply-To:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
+	Reply-To:Content-ID:Content-Description;
+	bh=0FNgazr5MCaOSM1jI/t90vOh6eJipsy8lWu0RtaYTUY=; b=mSi1HaHNSp8h4lKzvEQvG4FYqN
+	I3V07E0JZTpLwCNJ0mdHKw/5Lzw3C8CTHfF44UeWa46co95AttuSwXC1eDP5YqYDIZRrxlvRmbIU0
+	zhSVHQoRFFD49iglQMN4pVbHpa32n3fUuTbYNN5HVx8J8IXTfimM6GW5TIFPNEIt0T9WSaXLebKtO
+	MvASGay82CcLLetqPVkIVrPDZlTisjP+GHCx3UGDZ6hRlGEei4jnXCqoT3BYPKcWVj7YG1ACdb4BA
+	fDHuLYm5j9VxUUPreClMNGmex5NBSVDJBeqzNuUI4T14z7vUFu+Qwkyt74pPUSbcv1cq8t0IuuZlr
+	OV2R4o7g==;
+Received: from authenticated user
+	by stravinsky.debian.org with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.94.2)
+	(envelope-from <carnil@debian.org>)
+	id 1uCBM3-004R2F-D0; Tue, 06 May 2025 06:00:36 +0000
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id 3876EBE2DE0; Tue, 06 May 2025 08:00:34 +0200 (CEST)
+Date: Tue, 6 May 2025 08:00:34 +0200
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: Yu Kuai <yukuai1@huaweicloud.com>, 1104460@bugs.debian.org
+Cc: Antoine =?iso-8859-1?Q?Beaupr=E9?= <anarcat@debian.org>,
+	Moritz =?iso-8859-1?Q?M=FChlenhoff?= <jmm@inutil.org>,
+	Melvin Vermeeren <vermeeren@vermwa.re>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Coly Li <colyli@kernel.org>, Sasha Levin <sashal@kernel.org>,
+	stable <stable@vger.kernel.org>, regressions@lists.linux.dev,
+	"yukuai (C)" <yukuai3@huawei.com>
+Subject: Re: Bug#1104460: [regression 6.1.y] discard/TRIM through RAID10
+ blocking
+Message-ID: <aBmlgkHrbTYzwjj4@eldamar.lan>
+References: <aBilQxLZ4MA4Tg8e@pisco.westfalen.local>
+ <aBjEf5R7X9GaJg2T@eldamar.lan>
+ <174602441004.174814.6400502946223473449.reportbug@talos.vermwa.re>
+ <aBjhHUjtXRotZUVa@eldamar.lan>
+ <174602441004.174814.6400502946223473449.reportbug@talos.vermwa.re>
+ <875xiex56v.fsf@angela.anarc.at>
+ <aBkhNwVVs_KwgQ1a@eldamar.lan>
+ <87zffqvknw.fsf@angela.anarc.at>
+ <174602441004.174814.6400502946223473449.reportbug@talos.vermwa.re>
+ <4762cbe1-30a2-e5cd-52e1-f2de7714da1e@huaweicloud.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <4762cbe1-30a2-e5cd-52e1-f2de7714da1e@huaweicloud.com>
+X-Debian-User: carnil
 
-From: Richard Zhu <hongxing.zhu@nxp.com>
+Hi Yu,
 
-[ Upstream commit f068ffdd034c93f0c768acdc87d4d2d7023c1379 ]
+Thanks for your followups.
 
-The i.MX7D only has one PCIe controller, so controller_id should always be
-0. The previous code is incorrect although yielding the correct result.
+On Tue, May 06, 2025 at 09:25:50AM +0800, Yu Kuai wrote:
+> Hi,
+> 
+> 在 2025/05/06 4:59, Antoine Beaupré 写道:
+> > On 2025-05-05 22:36:07, Salvatore Bonaccorso wrote:
+> > > Hi Antoine,
+> > > 
+> > > On Mon, May 05, 2025 at 02:50:32PM -0400, Antoine Beaupré wrote:
+> > > > On 2025-05-05 18:02:37, Salvatore Bonaccorso wrote:
+> > > > > On Mon, May 05, 2025 at 04:00:31PM +0200, Salvatore Bonaccorso wrote:
+> > > > > > Hi Moritz,
+> > > > > > 
+> > > > > > On Mon, May 05, 2025 at 01:47:15PM +0200, Moritz Mühlenhoff wrote:
+> > > > > > > Am Wed, Apr 30, 2025 at 05:55:20PM +0200 schrieb Salvatore Bonaccorso:
+> > > > > > > > Hi
+> > > > > > > > 
+> > > > > > > > We got a regression report in Debian after the update from 6.1.133 to
+> > > > > > > > 6.1.135. Melvin is reporting that discard/trimm trhough a RAID10 array
+> > > > > > > > stalls idefintively. The full report is inlined below and originates
+> > > > > > > > from https://bugs.debian.org/1104460 .
+> > > > > > > 
+> > > > > > > JFTR, we ran into the same problem with a few Wikimedia servers running
+> > > > > > > 6.1.135 and RAID 10: The servers started to lock up once fstrim.service
+> > > > > > > got started. Full oops messages are available at
+> > > > > > > https://phabricator.wikimedia.org/P75746
+> > > > > > 
+> > > > > > Thanks for this aditional datapoints. Assuming you wont be able to
+> > > > > > thest the other stable series where the commit d05af90d6218
+> > > > > > ("md/raid10: fix missing discard IO accounting") went in, might you at
+> > > > > > least be able to test the 6.1.y branch with the commit reverted again
+> > > > > > and manually trigger the issue?
+> > > > > > 
+> > > > > > If needed I can provide a test Debian package of 6.1.135 (or 6.1.137)
+> > > > > > with the patch reverted.
+> > > > > 
+> > > > > So one additional data point as several Debian users were reporting
+> > > > > back beeing affected: One user did upgrade to 6.12.25 (where the
+> > > > > commit was backported as well) and is not able to reproduce the issue
+> > > > > there.
+> > > > 
+> > > > That would be me.
+> > > > 
+> > > > I can reproduce the issue as outlined by Moritz above fairly reliably in
+> > > > 6.1.135 (debian package 6.1.0-34-amd64). The reproducer is simple, on a
+> > > > RAID-10 host:
+> > > > 
+> > > >   1. reboot
+> > > >   2. systemctl start fstrim.service
+> > > > 
+> > > > We're tracking the issue internally in:
+> > > > 
+> > > > https://gitlab.torproject.org/tpo/tpa/team/-/issues/42146
+> > > > 
+> > > > I've managed to workaround the issue by upgrading to the Debian package
+> > > > from testing/unstable (6.12.25), as Salvatore indicated above. There,
+> > > > fstrim doesn't cause any crash and completes successfully. In stable, it
+> > > > just hangs there forever. The kernel doesn't completely panic and the
+> > > > machine is otherwise somewhat still functional: my existing SSH
+> > > > connection keeps working, for example, but new ones fail. And an `apt
+> > > > install` of another kernel hangs forever.
+> > > 
+> > > So likely at least in 6.1.y there are missing pre-requisites causing
+> > > the behaviour.
+> > > 
+> > > If you can test 6.1.135-1 with the commit
+> > > 4a05f7ae33716d996c5ce56478a36a3ede1d76f2 reverted then you can fetch
+> > > built packages at:
+> > > 
+> > > https://people.debian.org/~carnil/tmp/linux/1104460/
+> 
+> Can you also test with 4a05f7ae33716d996c5ce56478a36a3ede1d76f2 not
+> reverted, and also cherry-pick c567c86b90d4715081adfe5eb812141a5b6b4883?
 
-Fix by removing "IMX7D" from the switch case branch.
+Thank you.
 
-Fixes: 2d8ed461dbc9 ("PCI: imx6: Add support for i.MX8MQ")
-Link: https://lore.kernel.org/r/20241126075702.4099164-5-hongxing.zhu@nxp.com
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-[Because this switch case does more than just controller_id
- logic, move the "IMX7D" case label instead of removing it entirely.]
-Signed-off-by: Ryan Matthews <ryanmatthews@fastmail.com>
----
- drivers/pci/controller/dwc/pci-imx6.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+Antoine, Moritz,
+https://people.debian.org/~carnil/tmp/linux/1104460-2/ contains a
+build with 4a05f7ae33716d996c5ce56478a36a3ede1d76f2 *not* reverted and
+with c567c86b90d4715081adfe5eb812141a5b6b4883 cherry-picked, can you
+test this one as well?
 
-diff --git a/drivers/pci/controller/dwc/pci-imx6.c b/drivers/pci/controller/dwc/pci-imx6.c
-index 30c259f63239..86cdd27cdd3b 100644
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -1112,11 +1112,10 @@ static int imx6_pcie_probe(struct platform_device *pdev)
- 			dev_err(dev, "pcie_aux clock source missing or invalid\n");
- 			return PTR_ERR(imx6_pcie->pcie_aux);
- 		}
--		/* fall through */
--	case IMX7D:
- 		if (dbi_base->start == IMX8MQ_PCIE2_BASE_ADDR)
- 			imx6_pcie->controller_id = 1;
--
-+		/* fall through */
-+	case IMX7D:
- 		imx6_pcie->pciephy_reset = devm_reset_control_get_exclusive(dev,
- 									    "pciephy");
- 		if (IS_ERR(imx6_pcie->pciephy_reset)) {
--- 
-2.47.2
-
+Regards,
+Salvatore
 
