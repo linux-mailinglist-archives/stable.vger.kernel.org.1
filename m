@@ -1,320 +1,184 @@
-Return-Path: <stable+bounces-141944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8A93AAD187
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 01:29:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCF03AAD195
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 01:38:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3AA31B64302
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 23:29:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1C0E4A6878
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 23:38:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17CF021CC61;
-	Tue,  6 May 2025 23:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39A90217F46;
+	Tue,  6 May 2025 23:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NP0Q/voc"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="dxalgQcM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2052.outbound.protection.outlook.com [40.107.236.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35FD021CA13
-	for <stable@vger.kernel.org>; Tue,  6 May 2025 23:29:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746574152; cv=none; b=T1w0T17c9xnEK2ndIhDRG94EMAeQnWW1z0FG0TWUvCr3e+9UKDsOPxYodpGfjikISFl23gep6W4Pf8pqPJM+E2NhuSpi1ceXDfh2glaET3vgs5XpAHP2acQqQxdYkiHgjEhTU83DLbZnAqjjmt2OOhVTrfe+wJsGHXJw76iH24g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746574152; c=relaxed/simple;
-	bh=CkAJNZGsqN+wKRqe2YfEbZgDdJl4391xwfv4kVcDbYo=;
-	h=Date:Mime-Version:Message-ID:Subject:From:Cc:Content-Type; b=Ld3KLJvLo7/ZSK4o53mM60EAAluYxErgJiacoRBtyblmFGKocHWQ+Z2cL5mQpZxPSHDWuASpuYRZos0rq5erHKsYGb5+9w1C73aajUfdlINLSowQKSQJfYxc5VC+45X3nih7i+8T+VCSv1qaJq8mdzyvGe++kV8h0pRpoFTGBn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--rdbabiera.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NP0Q/voc; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--rdbabiera.bounces.google.com
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-22e327ff362so12892795ad.3
-        for <stable@vger.kernel.org>; Tue, 06 May 2025 16:29:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746574150; x=1747178950; darn=vger.kernel.org;
-        h=cc:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=PTmyf01T3gAbd8nVlWRowa1nLpLLaQXyEZs3lGMVO5A=;
-        b=NP0Q/vocZKPrgXaDV1PptHwRy6m5/VOhfko1gZ9F3PfAucZdKUSuCsV3eNPISXktU0
-         kg8RUFoFA9JWyv0hmLwtPnCmpkH1XgY1aEy9cxgrRFqy0By0Oc7+aQNLK54+w1HrxBeQ
-         XR5xqRbiJVpiS1zYiaCC9b61r2cn016YW+YVk96JQgy7iK3X2XusuIsLkCDE/3vr92uD
-         oaFgDwrT/tIjKBaR9YQLOKXdLjY0mpY83Jek32/8u7PsIBo0fzoly4Xo8won+IR+iWuJ
-         ThMoZLEY0tS4BCFvlqxg0nLf7eVltH/iBSe4qX4+pjUxLd4/FMQNL7E07mG/OePT4BXV
-         +tTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746574150; x=1747178950;
-        h=cc:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=PTmyf01T3gAbd8nVlWRowa1nLpLLaQXyEZs3lGMVO5A=;
-        b=bhh8ghQ9Z5vPCnlcqTPwF5105vftVvlZIU+5U6ESpzmuQBhtGQ/CMQkT2ABIaPs3UT
-         iJUdcnzCp0Fvc757Lwyl41WsjvcXcoDsJ1P8ZOE7dUOIQTdJ12pLYm79LT8LGwfiFbmq
-         fqFV/Oa+paL6hvG5Ud1GLuv1H0JBdObWyAp58hpKeGhqx8P8znYCWlCtcLEO6WFCV2nN
-         NOcVGRxXGX8P3pFCj4apkWvP9nZZBEz5U3SYdgh23YFuvuTio6X1mwCZ2n82mFda7mBX
-         tk8v15VupPdQfgReDDAkvKm79HaCgu6qcdRZ+Vj+LsHB9cwGBldekTjJNS8Ak/D8bgek
-         rfcg==
-X-Forwarded-Encrypted: i=1; AJvYcCWnWe2fEiVrQzTMpu4H4epzqyKodxNzP3FJmV1T/oLbsJQ+M6YplvX1poox/XYIpPScxqzwVgo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYx6E/MhJj9bSARGncUXrv5CC32pcQ3i5jqpOkuB18O+VNg5Rz
-	/8ueq1Wn/hDbg3Mj4QvoRmt73jTtaM+w5xFmMZXfFwKW6NG3KoRqZw2bX7UUvNQCiydZi0onZ5t
-	961kpno3IfHXJSQ==
-X-Google-Smtp-Source: AGHT+IFQY5HUx0oa7l2vrt+vRSs5i6+wkH7b7/riSmc0WOaH6CUV5IpCXY0O4Zv4ruVzyyOy+ltJtS2lqzxtZsM=
-X-Received: from plbkn8.prod.google.com ([2002:a17:903:788:b0:22e:42e5:9666])
- (user=rdbabiera job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:ecd1:b0:224:191d:8a87 with SMTP id d9443c01a7336-22e5ea8a2f6mr14693045ad.26.1746574150482;
- Tue, 06 May 2025 16:29:10 -0700 (PDT)
-Date: Tue,  6 May 2025 23:28:53 +0000
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 419A97263F
+	for <stable@vger.kernel.org>; Tue,  6 May 2025 23:38:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746574689; cv=fail; b=HLVFHbqGjfF2zOyysMP7ajDZ1MZvHxBDLdvfofA1pzIpX3Xvzx3nDrlE1+MM93vddKtwemim9FgliiR5Fa4h1/wJ4NbEgQoV8Oy/qhVB8SSwbKcWtUx/i6tqZzyNdjw4pcz/DoeOtv8aOt5zu+z1Drc5UQlran47H3vmmOgflgg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746574689; c=relaxed/simple;
+	bh=Agog5KyjtbssmijT404q/ZulrT9Yq1yVJuuz9U6dfQs=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=NygHN4h/MelzyzHcLqKZYh3G3Kpq0Sbzf7BiclZucEkezSymoulotjKMYzpMGYRTmDaU1dSBEji2oeLdRH+4vYh3UetwR/HiwHu+m+cwvCqvyj4kBNpIu67ObcOGdiiEwOxDhuoY16e/i2tXzQ+1Z5kKRz2vmckNPVH2Rzr+krI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=dxalgQcM; arc=fail smtp.client-ip=40.107.236.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fvFhW5x5FmND6wdwgpaObPeHS9/g12CleLC00DD/RQ3G0rI2i5AakbwqLa4atY2vq3SdH5EsVJRDdW3fGQBoGQJeL3mwYEApS0Nu7qsNrKuAjvLUxJ8dPMQywugEEhD6P4gXeO7JeT/bfYMXE1Wz5yTNWjmkYUqvZ8JFqwzOjsKRwPsAaa9tWfb3roRGSnev7wSTAackBCE8fxPpscQHJHMpUQvQzUz+Ror2jwIZ9Tcqgy3urZLrenGFk7tAUtDuGsn9h9/nZvo6EW0H6p+WqohGpho8bDQSMUFq12d24n/AZCEq8fgV9jYJTxsP+IY5MzXVEOZuuR/HnkLW+sytVQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DKDGuOIWfF5SRLNf9mKFh2d9NQztY+aFTmMFHU9gMbs=;
+ b=vF1cJC5H31WSH1/kXim8UJgftMRHoy59TP7N62jPaBvSg0hgijwC9Izj/PQzluTwB//nEUF50/i57iEWZaH94r4U3DdYqc1bodtIZkfGWDNkm89g2G/2yAl1QHy0kdugMUygyZpi9Z/+BIcpuAMO5pfyXXpuAi6Gp33tecDgXfsPO/8oj4Kw49yGE90JR9uyvq/XAE2xeTT3rMFUiNyOmh5tDceTgrZlGxntanwoYZrYUy7uZLtFDkPhO/8Sv3cvY2bhEY3Vzado17OPfNpIPnilOCrKybQYNXf5ZNmx8ivwk9PcH7gHj9orEksqvVvZMK7kKE53KsLDOTvM816C6w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DKDGuOIWfF5SRLNf9mKFh2d9NQztY+aFTmMFHU9gMbs=;
+ b=dxalgQcM1R7ETPIffl9YTjZTIIxR1Y9Q83vIgwmMAFNG3JkBjNSKap6QfF4VdlmLP26OForfZvNrNaqWGpMukLOvk6IsOmYFWPz4z7YMu6pQ2PGNoXacViZzhPBFCcr7w6ZYDKJIlSlV8wIonRKr7ceQ905Df1gX9TGHw1elAt0as7O7P2PvYchKhn6patdeAJuc7u8/aMI2j7rpQIf1+0M5zNkJLPH9a6gGdRLFV5MI6iAdVIyYzLC+WTVp/Z8VqcJJqkxe00pXxLcPOvuXNUfT4NMu3dCK2iodOiz6N/rZ+gJj27kFUKHn4iieakFBXS78/Cn0AJfuMZYFoSvlrw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SJ1PR12MB6363.namprd12.prod.outlook.com (2603:10b6:a03:453::9)
+ by SA0PR12MB4399.namprd12.prod.outlook.com (2603:10b6:806:98::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.26; Tue, 6 May
+ 2025 23:38:00 +0000
+Received: from SJ1PR12MB6363.namprd12.prod.outlook.com
+ ([fe80::bec3:4521:c231:d03b]) by SJ1PR12MB6363.namprd12.prod.outlook.com
+ ([fe80::bec3:4521:c231:d03b%5]) with mapi id 15.20.8699.026; Tue, 6 May 2025
+ 23:38:00 +0000
+From: Jared Holzman <jholzman@nvidia.com>
+To: stable@vger.kernel.org
+Cc: ming.lei@redhat.com,
+	axboe@kernel.dk,
+	ushankar@purestorage.com,
+	gregkh@linuxfoundation.org,
+	jholzman@nvidia.com
+Subject: [PATCH v1 0/7] ublk: Backport to 6.14-stable: fix race between io_uring_cmd_complete_in_task and ublk_cancel_cmd
+Date: Wed,  7 May 2025 02:37:48 +0300
+Message-ID: <20250506233755.4146156-1-jholzman@nvidia.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: TL2P290CA0029.ISRP290.PROD.OUTLOOK.COM
+ (2603:1096:950:3::19) To SJ1PR12MB6363.namprd12.prod.outlook.com
+ (2603:10b6:a03:453::9)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Developer-Key: i=rdbabiera@google.com; a=openpgp; fpr=639A331F1A21D691815CE090416E17CA2BBBD5C8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=8802; i=rdbabiera@google.com;
- h=from:subject; bh=CkAJNZGsqN+wKRqe2YfEbZgDdJl4391xwfv4kVcDbYo=;
- b=owGbwMvMwCFW0bfok0KS4TbG02pJDBlSs02/qkj/aH77aKoq/yXHUyLeZQwpYWGCa6U3TJhsf
- LF/7wOOjlIWBjEOBlkxRRZd/zyDG1dSt8zhrDGGmcPKBDKEgYtTACaiMY/hr8zim/VfJ4aybbyf
- 08jh6xtS3PPZ+tqVlVpylbwFWfIJKxkZWrYx1tXrey86dfSw9voVT4w/H2B1r3Twm9XStdxtl34 qKwA=
-X-Mailer: git-send-email 2.49.0.967.g6a0df3ecc3-goog
-Message-ID: <20250506232853.1968304-2-rdbabiera@google.com>
-Subject: [PATCH v2] usb: typec: tcpm: move tcpm_queue_vdm_unlocked to
- asynchronous work
-From: RD Babiera <rdbabiera@google.com>
-Cc: heikki.krogerus@linux.intel.com, badhri@google.com, 
-	gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, RD Babiera <rdbabiera@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PR12MB6363:EE_|SA0PR12MB4399:EE_
+X-MS-Office365-Filtering-Correlation-Id: 44be7467-1705-4644-59cc-08dd8cf709be
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|10070799003|1800799024|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?Luy73BvMSDSe25qkC9AtUco6VpRE//fHdFVOjYJC5YFPTytq1eUBFIX9X69V?=
+ =?us-ascii?Q?pRHDcvewrQuk5bOH+rE94T5j79H8P+SA63l5V8dUeNEgQuDmkx/AEkRpNW7u?=
+ =?us-ascii?Q?zWGzGKd1PQNWMqlVW2OD/THjWQ2oYlgZTxjUokSZpb5pweODkFUvXlSKbXsk?=
+ =?us-ascii?Q?tghNsNQe9tZrat85Px/nPuM2Ig5GRhpQlQrB+xhx69i9Zabs6pUYaXteKHgg?=
+ =?us-ascii?Q?cIzOhnR3Gim+W47a5ZFL6OzZEzLi7bovRwjh6Qrn5pc1dqawflky7ZEkouEt?=
+ =?us-ascii?Q?Mp+92WfnHczlWulLuwQopzA0zx0++FFyjV8375VBa0e1d9AxNLmrbyVy5tVR?=
+ =?us-ascii?Q?LyD0SuXjdi0prFy1nwIsRXjtddEG93Vh7o66ECaqL8tIoic0YJ97P7+6HOxd?=
+ =?us-ascii?Q?VgCfNEOhiItDXmyS+E7LCbQlig670haqqiHaWYZjRUvVuJe6Q8EhjmlW3Fwb?=
+ =?us-ascii?Q?UT8sMLDjjX6JvuyOiStZbPfk76l+YZX7/vsWxfGij2os/0gI/ohuZ+QGbvnB?=
+ =?us-ascii?Q?NPPgLEDyM4uEeI4j1E9gGm2Tk3NPDoVfZUqa5g7SyvC9TGR0tfOD2vdYB87B?=
+ =?us-ascii?Q?dYY85GLfjjeoKY7/z6R1YXwVgiisab06vV8hq0h+MtbymSSZXMHdIBSgLkRz?=
+ =?us-ascii?Q?N6YQgMFEnxjKs7NbnvBGd0Ye7OABhus6GGpStIFYLXroT90lTZNjPATkXTFk?=
+ =?us-ascii?Q?2x91YNsXUUiWd+PEKmLiI6WCKTkOU9qfGpajIE1yrO8P+qCE+BtUgqXxsrtC?=
+ =?us-ascii?Q?hNVueH9zbVUjZ07710SRaK9Yr4PhM6M6CRZeKb76frQZ3LVVBsoR685jdRMZ?=
+ =?us-ascii?Q?XadnlfOMiXfkpG3vzWPe5Q5skuGT4b7lRqv/LLIeaM0OWPv2ky1ne9mbSwtw?=
+ =?us-ascii?Q?biVOswJbomMn5y3xqaKAEMOVSLscHohi90ZkR1KVqN45ytVNzs1bxE5ZN1GA?=
+ =?us-ascii?Q?a52m3a3doXXzEcrQXirtCq6t9xZs1vjpuBMxG8QNAqj8b5gGHpseL1B1Z2es?=
+ =?us-ascii?Q?t8rl9dckGBO5qBvqGBy2wE//7Q9C2NYDesDdFDwZ9Y8b9QjRSrzP54CzvyqM?=
+ =?us-ascii?Q?XUl4sujdKFCvWdlkAhOONMEZgkCRIG5Wi/K1LxNQ5W2V49slMccZHUMYnguI?=
+ =?us-ascii?Q?MmkqTjDUrAW/bMDYL9/FgFAkWkHebJUAE9+fm4uUUI9KmacmySFq9/+zBSni?=
+ =?us-ascii?Q?A68qsmfZH665HJKGEs0Bujkcl2PyARFFzUkv1XTtDyzM8DG4GeoIFXwT2v6X?=
+ =?us-ascii?Q?AQ8MrWv0VuBSDBY8DE8D6l0+rwm5bP/j3phv8bZ0TLQPDD4LCSfVvfULDxuS?=
+ =?us-ascii?Q?JYQJRMIFn08QybSpPZ2AbjB+DWXzacfCIXLxMd6KZB47IAGkVfjMcNE4D60+?=
+ =?us-ascii?Q?hNrEI3Orguwnx29egcYxwz0YoEynT5fYjVETm3GH0o1MNs+8Qpgk6yaKCtGX?=
+ =?us-ascii?Q?IArSyjayURc=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ1PR12MB6363.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?OoZb45gggSiGyf8yT0ydBBHbyVcncT2axDpOce46jNF+ITjzDvEtix54dWUK?=
+ =?us-ascii?Q?vRSPvXa04G3It9hntulXZIkCamuiT3iDxpTJmu9lgxUFZ5iH8YqTLF4WMwix?=
+ =?us-ascii?Q?m9wf37qR58/caqdPAMZQtqB/gyDPQuxnDFI0giXHeAcnzLR/tIJM/UVUkCHG?=
+ =?us-ascii?Q?MytWGM/ag8NIE2obDkr5E0CHA/+RYe8/gc+WVBGMzjEOOWCalCOuidqC/Kfv?=
+ =?us-ascii?Q?dDoZrR1bJLeO6s/32zkZFvnz0HgTGAw0xxJ1gKrivz0xQhxJiPY1dyj1jjCk?=
+ =?us-ascii?Q?dLWBKa2PuNZ/75rTB3ByHGN7gLE4dH+kDP4ZcbpI6o7cj8T81YseJviwj+ru?=
+ =?us-ascii?Q?7m1c7uN6jKi3plUjEik0HTuFiBTDyBNWmeJ+l9NrUp+Pk/VgbIk71VSKHJXP?=
+ =?us-ascii?Q?ODVdTYEUTt0/wyXUt6/DRmxbVe/fNkwp/38cxbk/XkSkxYO9bOvISce64YYH?=
+ =?us-ascii?Q?rePSV7WZIG1773KT6grSxhvWmP/X1waTV0MmvxdqaGQARritd7GCr+eRe9BT?=
+ =?us-ascii?Q?LXIFqrBCVus3YUfWMqrGiRFs1mqODJfufDygZkucWoOiM8s37f/fx7mRF3O+?=
+ =?us-ascii?Q?DM6fRXQH+ocaaxyS9YnPJeQ/XlF7aukFm3KKylg+KebHI+byMFWgGKkr3teK?=
+ =?us-ascii?Q?ZyYB2R/pyrDM2SUAgyECiDq4KZZtWSaeVZm+iBghUYmty9AcyTHlXkerwm3g?=
+ =?us-ascii?Q?5VExprc7Wmn/KflQEKAnVTUbcTaEBzrc5dMQ584LOmLnMIRC4FxWQ2LRVsIC?=
+ =?us-ascii?Q?U8dD1ANNsoaI65RXJeG4KOikrk47oHzkPh5aAl+tDluZpoc9C4QZM4n7In3S?=
+ =?us-ascii?Q?KjOfG++EZ6k6ULY4AAvc61rKCxfrMjETZGYJSozWPSwzDwBmKwST4jyqcwWl?=
+ =?us-ascii?Q?gaxxuRREhOeOUUZl4Mqyfy7S/UNLMhxVgVyUaeTB/p1A0S6yd59tIBMI7N74?=
+ =?us-ascii?Q?Dlbomw+ZNfTOPtCoofKamO3EVwayezEBFropb27d+G/tN91agmeRnZncvqK0?=
+ =?us-ascii?Q?pcZxSIEA9E3hO5L8GF29HkwH46VFNnpv+Gf3kzEkcuE8hm49BlQePPqfH15P?=
+ =?us-ascii?Q?iPyDiqzWpiPyvs+hEbKK7hxhSAfCcYzUd0g8XTq6oKxl1ZswyKsqrz7e//Q0?=
+ =?us-ascii?Q?h95q1G8Wmh4TdIDVlKH7lkzzVVYA+fl+QpKgsc8dEoKsS78+5eJY5utGm5O/?=
+ =?us-ascii?Q?q6QTK2zSh1GFaV+0dioTx5WKHqKEOE3MjgNxZ6uzrk1cZamdugyyBUV4EARj?=
+ =?us-ascii?Q?H+DohYzrD3F64FmngW9BPsmbkjAA0UN9lme0cyhAeFZ7VrZlOaHsiBYN/hw5?=
+ =?us-ascii?Q?oWOjrn3Y9miJFjioogeLf3/xFoC4O90ygAm8BEpntPlHS0KD93f8CswEfLY5?=
+ =?us-ascii?Q?uFB+hD4pyb8ayKKKRmxEeazFvp2x+rOpd2cUtpBKrSssccqJfOJipk9Ly0AU?=
+ =?us-ascii?Q?tsgiPJvB2K6lZeI58vk6QsB1hOH+VIgdsmuScChgXneagUSWKEOrBGNeBi7t?=
+ =?us-ascii?Q?oLRuZONk5k6RirvmuRm1YH7tSvgRjyaChr+T+FP3CP0P2qMyasCuQLAzk8AO?=
+ =?us-ascii?Q?kN6GwqtELPQzN3Vc/3LaGdmMfi0cAqrH3mwZACPjBgGhsEm4n8ZMEw15U6tP?=
+ =?us-ascii?Q?PFWR1wmqj1eDqimLdBw1ENCEKB53UxmXQxCs2kLQ0Htb?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 44be7467-1705-4644-59cc-08dd8cf709be
+X-MS-Exchange-CrossTenant-AuthSource: SJ1PR12MB6363.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 May 2025 23:38:00.7023
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: oWdo4+RUTqeWWqIRDIyT7M1VXXyVMut/KKZU/zXH4dofkrSY0qsXOsAVbasGu68UOBgT3x2wQ3dmdrSNYxj31g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4399
 
-A state check was previously added to tcpm_queue_vdm_unlocked to
-prevent a deadlock where the DisplayPort Alt Mode driver would be
-executing work and attempting to grab the tcpm_lock while the TCPM
-was holding the lock and attempting to unregister the altmode, blocking
-on the altmode driver's cancel_work_sync call.
+This patchset backports a series of ublk fixes from upstream to 6.14-stable.
 
-Because the state check isn't protected, there is a small window
-where the Alt Mode driver could determine that the TCPM is
-in a ready state and attempt to grab the lock while the
-TCPM grabs the lock and changes the TCPM state to one that
-causes the deadlock. The callstack is provided below:
+Patch 7 fixes the race that can cause kernel panic when ublk server daemon is exiting.
 
-[110121.667392][    C7] Call trace:
-[110121.667396][    C7]  __switch_to+0x174/0x338
-[110121.667406][    C7]  __schedule+0x608/0x9f0
-[110121.667414][    C7]  schedule+0x7c/0xe8
-[110121.667423][    C7]  kernfs_drain+0xb0/0x114
-[110121.667431][    C7]  __kernfs_remove+0x16c/0x20c
-[110121.667436][    C7]  kernfs_remove_by_name_ns+0x74/0xe8
-[110121.667442][    C7]  sysfs_remove_group+0x84/0xe8
-[110121.667450][    C7]  sysfs_remove_groups+0x34/0x58
-[110121.667458][    C7]  device_remove_groups+0x10/0x20
-[110121.667464][    C7]  device_release_driver_internal+0x164/0x2e4
-[110121.667475][    C7]  device_release_driver+0x18/0x28
-[110121.667484][    C7]  bus_remove_device+0xec/0x118
-[110121.667491][    C7]  device_del+0x1e8/0x4ac
-[110121.667498][    C7]  device_unregister+0x18/0x38
-[110121.667504][    C7]  typec_unregister_altmode+0x30/0x44
-[110121.667515][    C7]  tcpm_reset_port+0xac/0x370
-[110121.667523][    C7]  tcpm_snk_detach+0x84/0xb8
-[110121.667529][    C7]  run_state_machine+0x4c0/0x1b68
-[110121.667536][    C7]  tcpm_state_machine_work+0x94/0xe4
-[110121.667544][    C7]  kthread_worker_fn+0x10c/0x244
-[110121.667552][    C7]  kthread+0x104/0x1d4
-[110121.667557][    C7]  ret_from_fork+0x10/0x20
+It depends on patches 1-6 which simplifies & improves IO canceling when ublk server daemon
+is exiting as described here:
 
-[110121.667689][    C7] Workqueue: events dp_altmode_work
-[110121.667697][    C7] Call trace:
-[110121.667701][    C7]  __switch_to+0x174/0x338
-[110121.667710][    C7]  __schedule+0x608/0x9f0
-[110121.667717][    C7]  schedule+0x7c/0xe8
-[110121.667725][    C7]  schedule_preempt_disabled+0x24/0x40
-[110121.667733][    C7]  __mutex_lock+0x408/0xdac
-[110121.667741][    C7]  __mutex_lock_slowpath+0x14/0x24
-[110121.667748][    C7]  mutex_lock+0x40/0xec
-[110121.667757][    C7]  tcpm_altmode_enter+0x78/0xb4
-[110121.667764][    C7]  typec_altmode_enter+0xdc/0x10c
-[110121.667769][    C7]  dp_altmode_work+0x68/0x164
-[110121.667775][    C7]  process_one_work+0x1e4/0x43c
-[110121.667783][    C7]  worker_thread+0x25c/0x430
-[110121.667789][    C7]  kthread+0x104/0x1d4
-[110121.667794][    C7]  ret_from_fork+0x10/0x20
+https://lore.kernel.org/linux-block/20250416035444.99569-1-ming.lei@redhat.com/
 
-Change tcpm_queue_vdm_unlocked to queue for tcpm_queue_vdm_work,
-which can perform the state check while holding the TCPM lock
-while the Alt Mode lock is no longer held. This requires a new
-struct to hold the vdm data, altmode_vdm_event.
+Ming Lei (5):
+  ublk: add helper of ublk_need_map_io()
+  ublk: move device reset into ublk_ch_release()
+  ublk: remove __ublk_quiesce_dev()
+  ublk: simplify aborting ublk request
+  ublk: fix race between io_uring_cmd_complete_in_task and
+    ublk_cancel_cmd
 
-Fixes: cdc9946ea637 ("usb: typec: tcpm: enforce ready state when queueing alt mode vdm")
-Cc: stable@vger.kernel.org
-Signed-off-by: RD Babiera <rdbabiera@google.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
----
-Changes from v1:
-* modified commit message to include call stack
----
- drivers/usb/typec/tcpm/tcpm.c | 91 +++++++++++++++++++++++++++--------
- 1 file changed, 71 insertions(+), 20 deletions(-)
+Uday Shankar (2):
+  ublk: properly serialize all FETCH_REQs
+  ublk: improve detection and handling of ublk server exit
 
-diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-index 784fa23102f9..9b8d98328ddb 100644
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -597,6 +597,15 @@ struct pd_rx_event {
- 	enum tcpm_transmit_type rx_sop_type;
- };
- 
-+struct altmode_vdm_event {
-+	struct kthread_work work;
-+	struct tcpm_port *port;
-+	u32 header;
-+	u32 *data;
-+	int cnt;
-+	enum tcpm_transmit_type tx_sop_type;
-+};
-+
- static const char * const pd_rev[] = {
- 	[PD_REV10]		= "rev1",
- 	[PD_REV20]		= "rev2",
-@@ -1610,18 +1619,68 @@ static void tcpm_queue_vdm(struct tcpm_port *port, const u32 header,
- 	mod_vdm_delayed_work(port, 0);
- }
- 
--static void tcpm_queue_vdm_unlocked(struct tcpm_port *port, const u32 header,
--				    const u32 *data, int cnt, enum tcpm_transmit_type tx_sop_type)
-+static void tcpm_queue_vdm_work(struct kthread_work *work)
- {
--	if (port->state != SRC_READY && port->state != SNK_READY &&
--	    port->state != SRC_VDM_IDENTITY_REQUEST)
--		return;
-+	struct altmode_vdm_event *event = container_of(work,
-+						       struct altmode_vdm_event,
-+						       work);
-+	struct tcpm_port *port = event->port;
- 
- 	mutex_lock(&port->lock);
--	tcpm_queue_vdm(port, header, data, cnt, tx_sop_type);
-+	if (port->state != SRC_READY && port->state != SNK_READY &&
-+	    port->state != SRC_VDM_IDENTITY_REQUEST) {
-+		tcpm_log_force(port, "dropping altmode_vdm_event");
-+		goto port_unlock;
-+	}
-+
-+	tcpm_queue_vdm(port, event->header, event->data, event->cnt, event->tx_sop_type);
-+
-+port_unlock:
-+	kfree(event->data);
-+	kfree(event);
- 	mutex_unlock(&port->lock);
- }
- 
-+static int tcpm_queue_vdm_unlocked(struct tcpm_port *port, const u32 header,
-+				   const u32 *data, int cnt, enum tcpm_transmit_type tx_sop_type)
-+{
-+	struct altmode_vdm_event *event;
-+	u32 *data_cpy;
-+	int ret = -ENOMEM;
-+
-+	event = kzalloc(sizeof(*event), GFP_KERNEL);
-+	if (!event)
-+		goto err_event;
-+
-+	data_cpy = kcalloc(cnt, sizeof(u32), GFP_KERNEL);
-+	if (!data_cpy)
-+		goto err_data;
-+
-+	kthread_init_work(&event->work, tcpm_queue_vdm_work);
-+	event->port = port;
-+	event->header = header;
-+	memcpy(data_cpy, data, sizeof(u32) * cnt);
-+	event->data = data_cpy;
-+	event->cnt = cnt;
-+	event->tx_sop_type = tx_sop_type;
-+
-+	ret = kthread_queue_work(port->wq, &event->work);
-+	if (!ret) {
-+		ret = -EBUSY;
-+		goto err_queue;
-+	}
-+
-+	return 0;
-+
-+err_queue:
-+	kfree(data_cpy);
-+err_data:
-+	kfree(event);
-+err_event:
-+	tcpm_log_force(port, "failed to queue altmode vdm, err:%d", ret);
-+	return ret;
-+}
-+
- static void svdm_consume_identity(struct tcpm_port *port, const u32 *p, int cnt)
- {
- 	u32 vdo = p[VDO_INDEX_IDH];
-@@ -2832,8 +2891,7 @@ static int tcpm_altmode_enter(struct typec_altmode *altmode, u32 *vdo)
- 	header = VDO(altmode->svid, vdo ? 2 : 1, svdm_version, CMD_ENTER_MODE);
- 	header |= VDO_OPOS(altmode->mode);
- 
--	tcpm_queue_vdm_unlocked(port, header, vdo, vdo ? 1 : 0, TCPC_TX_SOP);
--	return 0;
-+	return tcpm_queue_vdm_unlocked(port, header, vdo, vdo ? 1 : 0, TCPC_TX_SOP);
- }
- 
- static int tcpm_altmode_exit(struct typec_altmode *altmode)
-@@ -2849,8 +2907,7 @@ static int tcpm_altmode_exit(struct typec_altmode *altmode)
- 	header = VDO(altmode->svid, 1, svdm_version, CMD_EXIT_MODE);
- 	header |= VDO_OPOS(altmode->mode);
- 
--	tcpm_queue_vdm_unlocked(port, header, NULL, 0, TCPC_TX_SOP);
--	return 0;
-+	return tcpm_queue_vdm_unlocked(port, header, NULL, 0, TCPC_TX_SOP);
- }
- 
- static int tcpm_altmode_vdm(struct typec_altmode *altmode,
-@@ -2858,9 +2915,7 @@ static int tcpm_altmode_vdm(struct typec_altmode *altmode,
- {
- 	struct tcpm_port *port = typec_altmode_get_drvdata(altmode);
- 
--	tcpm_queue_vdm_unlocked(port, header, data, count - 1, TCPC_TX_SOP);
--
--	return 0;
-+	return tcpm_queue_vdm_unlocked(port, header, data, count - 1, TCPC_TX_SOP);
- }
- 
- static const struct typec_altmode_ops tcpm_altmode_ops = {
-@@ -2884,8 +2939,7 @@ static int tcpm_cable_altmode_enter(struct typec_altmode *altmode, enum typec_pl
- 	header = VDO(altmode->svid, vdo ? 2 : 1, svdm_version, CMD_ENTER_MODE);
- 	header |= VDO_OPOS(altmode->mode);
- 
--	tcpm_queue_vdm_unlocked(port, header, vdo, vdo ? 1 : 0, TCPC_TX_SOP_PRIME);
--	return 0;
-+	return tcpm_queue_vdm_unlocked(port, header, vdo, vdo ? 1 : 0, TCPC_TX_SOP_PRIME);
- }
- 
- static int tcpm_cable_altmode_exit(struct typec_altmode *altmode, enum typec_plug_index sop)
-@@ -2901,8 +2955,7 @@ static int tcpm_cable_altmode_exit(struct typec_altmode *altmode, enum typec_plu
- 	header = VDO(altmode->svid, 1, svdm_version, CMD_EXIT_MODE);
- 	header |= VDO_OPOS(altmode->mode);
- 
--	tcpm_queue_vdm_unlocked(port, header, NULL, 0, TCPC_TX_SOP_PRIME);
--	return 0;
-+	return tcpm_queue_vdm_unlocked(port, header, NULL, 0, TCPC_TX_SOP_PRIME);
- }
- 
- static int tcpm_cable_altmode_vdm(struct typec_altmode *altmode, enum typec_plug_index sop,
-@@ -2910,9 +2963,7 @@ static int tcpm_cable_altmode_vdm(struct typec_altmode *altmode, enum typec_plug
- {
- 	struct tcpm_port *port = typec_altmode_get_drvdata(altmode);
- 
--	tcpm_queue_vdm_unlocked(port, header, data, count - 1, TCPC_TX_SOP_PRIME);
--
--	return 0;
-+	return tcpm_queue_vdm_unlocked(port, header, data, count - 1, TCPC_TX_SOP_PRIME);
- }
- 
- static const struct typec_cable_ops tcpm_cable_ops = {
+ drivers/block/ublk_drv.c | 550 +++++++++++++++++++++------------------
+ 1 file changed, 291 insertions(+), 259 deletions(-)
 
-base-commit: 588d032e9e566997db3213dee145dbe3bda297b6
 -- 
-2.49.0.967.g6a0df3ecc3-goog
+2.43.0
 
 
