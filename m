@@ -1,283 +1,673 @@
-Return-Path: <stable+bounces-141764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26735AABCA5
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 10:10:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41417AABCF2
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 10:21:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FD93507119
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:10:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38A753A5042
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 08:12:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DCF0221FD8;
-	Tue,  6 May 2025 08:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 109EA22DA01;
+	Tue,  6 May 2025 08:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="OX70gsuY";
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="OX70gsuY"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NrdODHxa"
 X-Original-To: stable@vger.kernel.org
-Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2076.outbound.protection.outlook.com [40.107.105.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 653D121D3CD;
-	Tue,  6 May 2025 08:09:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.105.76
-ARC-Seal:i=3; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746518999; cv=fail; b=kRyjpc5tLdjtFNL+CzPMK9qRQlF2y/paCnxXBctkPry5WHPgcqNz2klEDpGnHJAmxHHvJgiiFMuuqm8DBnZ31p7oPAV8ON5bXfuiJkyh73JwqJ6WGxV9NKRh6mt2oQ6DZjNSlQeFrWS8Uwm/PwsPNaQoN46+5rRsBhXUImTKAh8=
-ARC-Message-Signature:i=3; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746518999; c=relaxed/simple;
-	bh=3e8wD6RBi4Xm4WMxqUj0lmwyNeBIdtyc2FtOqmXATqQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=CR9NQ4j/qSCOREe7bh1U00q2bm+UULUC61ERIMYlh//1GnINYqbqyI5jZwcd67T5w+HcsZixrOFAPQsr6EjpnoUjYPJ5brqBrYQOGQvFvF+nDy1Jzu/7rtKw6h00p8o8QsMyn+nuuN6n5zGpuzi+8N8e0k7HhSufRXGWIe49gYw=
-ARC-Authentication-Results:i=3; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=OX70gsuY; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=OX70gsuY; arc=fail smtp.client-ip=40.107.105.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
- b=c4xskPSNzKoA430gJT3k+booKZx+8DzJfz2EIWGUHxO9hfe9aToec2sTSTAyAizAIOKkQjMzNw1cq/Z/aJLWggrNRk6GsE8bPAEdFtttJjBAIhPqJ2SiMNTm5qlfwYDNf84mVt8BvR9Dzi6ePXUY1aS1q/Z3QkBAQXjKYJMEzNXfPFZYABuPtCsbQsH8pLqri5EhpDUAcvD4hz7OJ3+qlFXiEF3z/ELOQq+eNUKmG4IV7bTcXJm+XubO/FmLl0523vSgaRKs3147CPPhvTq1YSH+ywr6pd3mLcAptceu9lDFjkhc6bqsNaOF0/TEtei9ykrtDtyqz7+D7bL0SmKeHg==
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eByDabczTQvQbK9y2hBzV1ba4lOjKntsq/GoOyJ8ci8=;
- b=XM7Grq2HwiuFwBnAWzoxBtzz8mxGp2h5EsghsUsbrnEzG+ddkZONxrSsrJ1xNcedClDkBkJq3iJhuhFGmEaZQrMXTnWWfH1RB8dm6PsjOXju9oi0SFCATkPJyTqs709iSS9FhZIrLJBcayw0jK2WBDGJpaPLBQ2n5bpPHbUCex1rhDfKmEdebF8AaEZ01yCqR0EzhNTTILnm3FRyR/N65d4K904v+E7coPW7Oq3JLaeGf+OrXFk1jwC2ZuKC8E3uvcZKrIzMstLA0LAlZ05XKZjE2Tsv2MC4ZgkNgi1V5HAGXrHjK9vXTLse810uYQNDJjZdWigBxflyGPylzCvPbQ==
-ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
- 4.158.2.129) smtp.rcpttodomain=kernel.org smtp.mailfrom=arm.com; dmarc=pass
- (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
- (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
- spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
- dmarc=[1,1,header.from=arm.com])
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eByDabczTQvQbK9y2hBzV1ba4lOjKntsq/GoOyJ8ci8=;
- b=OX70gsuYWoOQS8Oi4se/Rq8ZWSh7xIqYLH9PZcsafctuXCCj+Q6UwMWYIWC9XH9nEmOW9Qxz96Kdj5qEfG0lZgKCpolGe/reMuiwpU24WeofTWpDr0sAaN2nAMhdeAV4BtWDAlibGGoRVVpMc5gikq6nkDuK8Uaqeu0zMKlnMpc=
-Received: from DUZPR01CA0249.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:4b5::10) by DU2PR08MB10037.eurprd08.prod.outlook.com
- (2603:10a6:10:49a::20) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.23; Tue, 6 May
- 2025 08:09:50 +0000
-Received: from DU2PEPF00028CFC.eurprd03.prod.outlook.com
- (2603:10a6:10:4b5:cafe::71) by DUZPR01CA0249.outlook.office365.com
- (2603:10a6:10:4b5::10) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8699.31 via Frontend Transport; Tue,
- 6 May 2025 08:10:06 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 4.158.2.129)
- smtp.mailfrom=arm.com; dkim=pass (signature was verified)
- header.d=arm.com;dmarc=pass action=none header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
- client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com; pr=C
-Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
- DU2PEPF00028CFC.mail.protection.outlook.com (10.167.242.180) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.8722.18
- via Frontend Transport; Tue, 6 May 2025 08:09:50 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QI/aIUH26UXpgHPh+VlqgnTWiJZk76PMw386c/BZ2nPX4fG0L1KFhDje3wev+R9c8seXbr2fppNc2d+xJ49eNdfhs8pVVmkEKrtYw2JzZElo+svzH5wiUseZjLVr+A/OsmhEm4qJIq4MeXXNMCfimbgbZiSzl5xt6JR5Ya97m8OqJ1aEnRAVredmW0jgU0pnWI92qmRLZcDCLK1Ev9UuUMP1SqT90JQ0ZlbF7+8sHy1wyT79/BH1WC0BczZtPOIY8lyWmfY2i33X+/B97YvkVPU/bJ7Lwl/NE8zXJqXxSeKP6MoX/cP30Z7TcxmuSjfZcTbXIr9l9UL6jg8BBw/WWQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eByDabczTQvQbK9y2hBzV1ba4lOjKntsq/GoOyJ8ci8=;
- b=KkvsncUyt3V5KtVWduFxVcppcWJzy6tHgdYuANpnw79r0fxFizlpa20RorgjYwXNnDvUTrdM7LR2plWRn5aKoNqygxX20ZOpkMT8/L6BArB77g0kPPCIjE5fpVIHUzDiLFjIngakDG/i6U7OfRNiHAIi0MBFV3oLieSUXdSrXETL4r8Ybaf8uD+yxAy/aDI40/rgFc7dCpOedq8aTnmSdu13eRsgQmeB/b8cycSglAsRwgtI3I7M2JW0adEBMs1nx79ZreECcj5VlG1oHCc1rW6ubVyf89AN3jZ76SvT4MoKLME0ODsv7gZfHWzfS7fOSPZ81qEm3UYYHlS2UyPteQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eByDabczTQvQbK9y2hBzV1ba4lOjKntsq/GoOyJ8ci8=;
- b=OX70gsuYWoOQS8Oi4se/Rq8ZWSh7xIqYLH9PZcsafctuXCCj+Q6UwMWYIWC9XH9nEmOW9Qxz96Kdj5qEfG0lZgKCpolGe/reMuiwpU24WeofTWpDr0sAaN2nAMhdeAV4BtWDAlibGGoRVVpMc5gikq6nkDuK8Uaqeu0zMKlnMpc=
-Authentication-Results-Original: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=arm.com;
-Received: from GV1PR08MB10521.eurprd08.prod.outlook.com
- (2603:10a6:150:163::20) by AS8PR08MB10245.eurprd08.prod.outlook.com
- (2603:10a6:20b:639::9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.26; Tue, 6 May
- 2025 08:09:18 +0000
-Received: from GV1PR08MB10521.eurprd08.prod.outlook.com
- ([fe80::d430:4ef9:b30b:c739]) by GV1PR08MB10521.eurprd08.prod.outlook.com
- ([fe80::d430:4ef9:b30b:c739%4]) with mapi id 15.20.8699.024; Tue, 6 May 2025
- 08:09:17 +0000
-Date: Tue, 6 May 2025 09:09:14 +0100
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: will@kernel.org, nathan@kernel.org, nick.desaulniers+lkml@gmail.com,
-	morbo@google.com, justinstitt@google.com, broonie@kernel.org,
-	maz@kernel.org, oliver.upton@linux.dev, joey.gouly@arm.com,
-	shameerali.kolothum.thodi@huawei.com, james.morse@arm.com,
-	hardevsinh.palaniya@siliconsignals.io, ardb@kernel.org,
-	ryan.roberts@arm.com, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] arm64/cpufeature: annotate arm64_use_ng_mappings with
- ro_after_init to prevent wrong idmap generation
-Message-ID: <aBnDqvY5c6a3qQ4H@e129823.arm.com>
-References: <20250502180412.3774883-1-yeoreum.yun@arm.com>
- <174626735218.2189871.10298017577558632540.b4-ty@arm.com>
- <aBYkGJmfWDZHBEzp@arm.com>
- <aBZ7P3/dUfSjB0oV@e129823.arm.com>
- <aBkL-zUpbg7_gCEp@arm.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aBkL-zUpbg7_gCEp@arm.com>
-X-ClientProxiedBy: LO4P123CA0093.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:191::8) To GV1PR08MB10521.eurprd08.prod.outlook.com
- (2603:10a6:150:163::20)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30FA022CBC4
+	for <stable@vger.kernel.org>; Tue,  6 May 2025 08:12:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746519149; cv=none; b=uX2Wlb3y822jBUGsR7wY64uUJyYBnLjCyuCdwh/9jasnvnDLr0RjMaYAYPDlyvGC2+2OMkErcHWBadqn3dBPjPqKYc0ZSEGSQCBWqsGsLX4hdPO8YFEd1STNddYBGGVbgR86wWR+/uDY1LmDJw3QA6WhXmkbwD1fMlxAYcvjDLw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746519149; c=relaxed/simple;
+	bh=gxvShTntgtd1ROWzULpMcg7qontjSpPC+vJYBzG+jqg=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=SQae1JcRn9ahTWDTMDTcCiTTH4cnQr+RgFJJH/llRrmzoZPhmebe+xrsaXqzpXuPFAC4CPuWDA0C1nmcUfaS6UscdnfZg1LqBhLKZtuoxFGcz61x0M0qq8w0uU1ARkq9Zu2BuylcaCTTbrPMXLD6FnwZFDuRFYfwHRMAfLdUzXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NrdODHxa; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-43cfebc343dso35233335e9.2
+        for <stable@vger.kernel.org>; Tue, 06 May 2025 01:12:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1746519144; x=1747123944; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=p1NfPFzMGGWANKR2FIDDvyij7GJ60icSzlYqfQo89ZQ=;
+        b=NrdODHxaPK5OlfCb0zDLwPVhZmTvSn6Gkl59/Lz5F2umNOd3W8+tsl00jqOrjIN4wV
+         G1gzUDimFJtuJAnUYXSNf1fpfRWjbpWWEgv0+NEnxzvYsx8nUTeyfPW8keSVjsXIqd8O
+         LhQeLkZ4Ef1einQvom9IPHFsm46Rek9dhuYjmlaS7bvkxlQvERtFDhFD7hXKvfh0lGZE
+         6HZQgsDywJzUwbRok/LuX+YTyjZFxz/VBE+ODqIEOIukEBv93zhKK/ZJgQRH0heAievO
+         xf9XYwjIlB617u8VaPrm4Js5sIc5LkIglOtx9v+EfBbjolcrW1zcV9GPcoNxqXl+SY1Q
+         jeAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746519144; x=1747123944;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=p1NfPFzMGGWANKR2FIDDvyij7GJ60icSzlYqfQo89ZQ=;
+        b=pFbs9a+C/ixboFYzSzMDJOLyzUwY6l4+sCIzZK0aysV690WlpthW1Ay8o2zW1SEv2I
+         GdB1uOImnIreOYBcWseMk0vFHZRYL5Xk5IAbUCuZPAuN7mAnwJBzrgOCHFYF3RoDlLxD
+         oqxAUvQOf+UGeOc00Uu4H5OTp1h2JAbY8cD/37je3JHjTbviXECk/L4JpSwwjdGos4L6
+         5xYgK6gjo/WQO6EY/jb0UHY6hdwoTmcICFHzoVg+WnOtjEfkpdTNbXKdQCkeBjo1FI/1
+         7ReK5l2GJpGQssLMTyqoTbiIZ7bxHz28UBhED14DCnJvMCrBkVLy0chP1X4798UFZNB+
+         z9OQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUeGA1hcZpT3ZWPH7LClfiR/1rbQmnUznTD68yPFQfu9BpvQJkqJpDrL7RDUZLQGAbAi0Od67Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzR0qSg9/YBXanpWu95Tey+hO80norEGfqFhNvDfh1N7Nq/mi/9
+	6BYpzuY68T9fuYUEo4UjgLld5DzpRxgVt/4uvgKF1jF4WTKJdxQd9w+MZZNOxcw=
+X-Gm-Gg: ASbGncu/eR9+8EHRJJ1XI93fKPcWkvrFqkKPM6lqA0HiyyYCSFx0VxR14jyyBI0muru
+	PT775MEwD8wUQiq0yMI5q3LFgFtK1aOnO6BD6FG+3AuceR41qliIJ8Dh5ag2uo8IwKBZJoVoIX6
+	rd8sfwXs6WtT3zKPB1jARAn2G7dl0g97iGyZuG0YTEOHYeNfX4j0W0zRJe1XjDAKLC6E04ruGPQ
+	zBsDyljB2rtsHG1macOB9N9VlxLqH0UWHmxMfNSCSFKz/rdLbPtizzEZ8HodsgDLqK5cXrBbnfM
+	v3iI678BOfSAt8rs/5j1KICx0B9WQ78rEHwjbH8g3cqFy/rR8Ac7Nr/v+TOsenaOEWw6p2kNtd1
+	tLsyBV7VDpYb20cRye26yitC3wCN3
+X-Google-Smtp-Source: AGHT+IHgAIkuRQ9gfDJ8rmMWZjqJoR7TrRoMkh0txh19+PRVuE7mPK9FVTCfJDlDWsz8PKx6/MAAqg==
+X-Received: by 2002:a05:600c:5246:b0:43c:ec4c:25b4 with SMTP id 5b1f17b1804b1-441bbec23e8mr154922425e9.10.1746519144277;
+        Tue, 06 May 2025 01:12:24 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:3d9:2080:127a:7a9e:6ba7:152f? ([2a01:e0a:3d9:2080:127a:7a9e:6ba7:152f])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-441b2aecb54sm203836545e9.10.2025.05.06.01.12.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 06 May 2025 01:12:23 -0700 (PDT)
+Message-ID: <66f52fdc-ec64-4631-b4ad-1573fee08dd2@linaro.org>
+Date: Tue, 6 May 2025 10:12:22 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-TrafficTypeDiagnostic:
-	GV1PR08MB10521:EE_|AS8PR08MB10245:EE_|DU2PEPF00028CFC:EE_|DU2PR08MB10037:EE_
-X-MS-Office365-Filtering-Correlation-Id: 34dc50db-d79b-41c0-a8c3-08dd8c756007
-x-checkrecipientrouted: true
-NoDisclaimer: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted:
- BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
-X-Microsoft-Antispam-Message-Info-Original:
- =?us-ascii?Q?aNe/JwsENoT2MSzHRTwrhml0lMrFJ/5TyKByZgHJcOD3lrshswVbuXitUdp7?=
- =?us-ascii?Q?m6AmVEoTcHtvNnPpko9nZxC5HFgBaJeX9LHsAdkDtNgEmQTfbwGtLQfNbvEq?=
- =?us-ascii?Q?g3qIpif4F1hDDcq/BJwJpLlfKZ4NwxzcwTp4teYQBSeeEKIAvFqwOVx+Dvuw?=
- =?us-ascii?Q?x1u4OCLuFA3fbIdlY0SyCCx5GD/BkwG8x4g/VjQRmmske7GlW024GHdJDMIz?=
- =?us-ascii?Q?IJdXDD4Kt+czcKRHDmKjwVRluH6ZaEPv+FoS4HlLkFUtmKrOLzBOWpFe2N0u?=
- =?us-ascii?Q?ntB9BF6wKa7xqwlhDguaMSpRniMiP7bjJ8NsBPcmqH/9mZ96iNPgHYsFuVx9?=
- =?us-ascii?Q?RG8CT8PXGVfiZ/SBqNbCyVCs/AbY64lR4EZxPzM3H+edkWXvCgMZ70+qEd9U?=
- =?us-ascii?Q?83zirKhfC/HChYIPTeszadOUeyVhFxZGDq+BJAJY94RyfD9sQPezgssYkFP1?=
- =?us-ascii?Q?WVq95o+4+pPB4rC/7TMAzBKxqEKMVm1F37r6PGURcb6NrqPOlX+56E0Arxph?=
- =?us-ascii?Q?Z++MB5kYPGk3pKcK4uGoe5nBUsp0n7smy1AZBtCqQ7VOpLcr1Y64APK+cqSJ?=
- =?us-ascii?Q?hJ5oKSZiSD609jMeIoQMVzRcHWGR4PKj29ynMFqDT/caGQVdyaF4UZgd4LOb?=
- =?us-ascii?Q?4pZZf1f8HXxs6ZRBoblhMwmWdoSmS6rInVifyFs/j5M+cKYgGvkVP6+PFk8o?=
- =?us-ascii?Q?+l6FwDDjqca854d68EHjadea8Qa3BKUT3Uzn68d2oQAU9mDUAJftYR7tRmWk?=
- =?us-ascii?Q?tPZSJi78IDRaE57YQkWTJ8NAVfnToD5FmSOJuFN6nPYuB8UiM3NCw16fZrj6?=
- =?us-ascii?Q?BBkPEw98P5O2sGtQVWxwFSrTGZ5qimUDpMap2A+aYCebu900m5nqg7uh/ki3?=
- =?us-ascii?Q?+vKq6dSDVgm9kr7n/PE7nkHKG2b+/RmOsVPrzxCoHu5+3s+lRHcV6QUfgcr1?=
- =?us-ascii?Q?ZJgaQ4fD/P2zR/72g/SWUr96Dx+gFTHa2ZtcozaF+MR+cF8FKPdF0iK1R6s5?=
- =?us-ascii?Q?DSHiiz9Amt5IIALpBIvn7caZ1lL+BEdZygyT9rdhKkiVqfI0rQzSNUan6oef?=
- =?us-ascii?Q?83XoQXXTQv8Mx+DvK6HviftZJ8HFlefzOY04FWvwRpsoEAeYvEmyitGiWbc6?=
- =?us-ascii?Q?AyrLEsTHq52gU1CZ2pZqwd6huLhXLmDCPV2QvpJ0iNu3Cbb29899cnrqyz6d?=
- =?us-ascii?Q?UzUOAhH1SAP4Dr8nRpXd+qmLLGeunHTiHNbTycec5QN/+hm08xD4uU2PbUMQ?=
- =?us-ascii?Q?51kcODi92wK1gZfu+jYJRAwL8vXJDQaca0G35q5zdb7vOkchLXIfH+uQQATq?=
- =?us-ascii?Q?hFeqI+i1/br150QLHtt28F5xpYrjl8mcvlGJQuLhNS21265R+NO3EMtEyYon?=
- =?us-ascii?Q?Iyxeswg=3D?=
-X-Forefront-Antispam-Report-Untrusted:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1PR08MB10521.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR08MB10245
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped:
- DU2PEPF00028CFC.eurprd03.prod.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs:
-	7f858eff-32f4-406b-a09c-08dd8c754bfe
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|35042699022|82310400026|14060799003|1800799024|7416014|376014|36860700013;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?teRhQPkAsVHHyt9A7nun/RoF/76FiPauUV9EVAXqv3zTMlCMjimSVCGfW2yp?=
- =?us-ascii?Q?EfO62Wn0DtRATxRZx9c7R24BcY6twpTOUcvf47EoIiEp3GEdY5zjxH7TNxvM?=
- =?us-ascii?Q?grI3UVha3k7yuQMSrPw+WrkJXR4KRcJP57AThYslDC5VJzVvQJ9f3BqrPqhh?=
- =?us-ascii?Q?BgLR1f+H1tBhYgEkGMLWxwR826dkimGuYf7XuHHm7vTCS0C0akTMYMIoLM0Q?=
- =?us-ascii?Q?FMjRYqSZhNacWl88e1iZBMvKEzSd0RMCnonqUJgRzmAvFPNUTpOdQhImYj6f?=
- =?us-ascii?Q?RLcaqLdN03t14d4uo6jA9V90h/0Uxgc9p1XPfZy7e/Q8HtkkXCIz/gcGpYgm?=
- =?us-ascii?Q?d8Ve/nPp/dkIV87euFDFB8wKovT9QRBnyBXH1tLflHkNYnZwFV/Ptp1g+Gi1?=
- =?us-ascii?Q?rqcJGBsocsHRG0dm7jRCPcHKnvqrxP/ksm24uVbRy56WACje9tzEWekL8B6s?=
- =?us-ascii?Q?t0NcGlAgCS1F3ql1l62bxWkTmzLBp1N7Z6taOkIw3WOoetm/eyJqNHI+4Bi9?=
- =?us-ascii?Q?8WV1oLrnQKQVYBWpC0Yn7TrbEUIgenataqnbKjy4Bf8w1V1Zq4Z/TtCMGthR?=
- =?us-ascii?Q?gjpzZyV2Qh0veHgykcIA21QbYHPaHux5gDY2ufeBzBreAi75FiUwLS8OWVtq?=
- =?us-ascii?Q?IyU9NwEYhdHzMZ1/X8KIXYNtmYyBXGT1r+Wm62iNUp5aHcv++BBe9f7ieCij?=
- =?us-ascii?Q?PW1CAkDnslwpw/zLsfb6rwsHrYBGEjZZTJIin4OKvfjodkozQCSs0GG4x0ir?=
- =?us-ascii?Q?bteK+8MxdUt8a5J0DrPHLK662uFBSQGQfc7Nq2/n6pv7E03s8dpwdDxVUCO7?=
- =?us-ascii?Q?HHIJBEW6z3PQ1hdsJQhq9cBlqrH7iDElfxuvWULi9S6pZEwrKnXA2RYYLwX0?=
- =?us-ascii?Q?aodZiwlFjfWxhmQxvZAleR4+r13QF2IZH6ki3sNvyVOCeLUPhZmdXHneU/ZC?=
- =?us-ascii?Q?uMF8t3BTzSn215klpvQvy6vvQnwcoPuLKCARrmW4e+mnHXgPyC/Y3eE287S2?=
- =?us-ascii?Q?VjGvLTpD1Qbg6cJuXiOofZW/biY3tvO3AFfV9AYCmF1i2IbLlsMEAr8tJFne?=
- =?us-ascii?Q?ouXtKrZQJGPs/UQoS4Kc8pZpP8BnSUUxqN9mJIl+z2VSPp4F9c5QZQx7Lo2P?=
- =?us-ascii?Q?HTfFN1OwVwo8CTFqXAHzlGW89jOyHSXMGfbHj8XLfqvYXg/ZBp3ITBvdKjpD?=
- =?us-ascii?Q?moXeqEYFAhzjeUa4V3mLLcRE7CxfZnWsfVEtj1EHcFHhW+8KclOKiUI0khEu?=
- =?us-ascii?Q?V9lybW0cHlWLdWTro17zKp5RVqKwbyhNoVpaG9g9aoKayKVkb4JCCETqCsCS?=
- =?us-ascii?Q?MrA+2PW2WqqMP+lNEhdkUiHbNpy8kzw5KhJO25MTRjqLMwBoNkmwxEitXbkh?=
- =?us-ascii?Q?7tWg9WDfbL2kILFoGWP9+IOE0X+EaYMDGj7AqQW28yYo0MgMFVm+zCB6gs1q?=
- =?us-ascii?Q?JNFIc2jFpSL6FiyvhxdvxI18OP0ARjZx1FPGIbAYTjQF0QXIuQodxA=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(35042699022)(82310400026)(14060799003)(1800799024)(7416014)(376014)(36860700013);DIR:OUT;SFP:1101;
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 May 2025 08:09:50.5706
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 34dc50db-d79b-41c0-a8c3-08dd8c756007
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DU2PEPF00028CFC.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR08MB10037
+User-Agent: Mozilla Thunderbird
+From: Neil Armstrong <neil.armstrong@linaro.org>
+Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
+Subject: Re: [PATCH v3 00/23] Add support for HEVC and VP9 codecs in decoder
+To: Dikshita Agarwal <quic_dikshita@quicinc.com>,
+ Vikash Garodia <quic_vgarodia@quicinc.com>,
+ Abhinav Kumar <quic_abhinavk@quicinc.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Stefan Schmidt <stefan.schmidt@linaro.org>, Hans Verkuil
+ <hverkuil@xs4all.nl>, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>
+Cc: Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+ Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+ Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+ linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, devicetree@vger.kernel.org,
+ 20250417-topic-sm8x50-iris-v10-v7-0-f020cb1d0e98@linaro.org,
+ 20250424-qcs8300_iris-v5-0-f118f505c300@quicinc.com, stable@vger.kernel.org,
+ Dan Carpenter <dan.carpenter@linaro.org>
+References: <20250502-qcom-iris-hevc-vp9-v3-0-552158a10a7d@quicinc.com>
+ <a8de4886-4a18-46a2-9130-9c48d7eb1f83@linaro.org>
+ <f519fc86-3a38-9a32-722e-9672746ff81a@quicinc.com>
+ <ccf7f0db-2495-48d5-8780-f1122a24e22e@linaro.org>
+ <a1053beb-c2b8-54de-75fa-3dca1896e30f@quicinc.com>
+Content-Language: en-US, fr
+Autocrypt: addr=neil.armstrong@linaro.org; keydata=
+ xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
+ GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
+ BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
+ qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
+ 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
+ AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
+ OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
+ Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
+ YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
+ GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
+ UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
+ GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
+ yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
+ QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
+ SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
+ 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
+ Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
+ oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
+ M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
+ 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
+ KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
+ 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
+ QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
+Organization: Linaro
+In-Reply-To: <a1053beb-c2b8-54de-75fa-3dca1896e30f@quicinc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi Catalin,
+On 06/05/2025 10:06, Dikshita Agarwal wrote:
+> 
+> 
+> On 5/5/2025 10:10 PM, neil.armstrong@linaro.org wrote:
+>> On 02/05/2025 09:34, Dikshita Agarwal wrote:
+>>>
+>>>
+>>> On 5/2/2025 12:55 PM, Neil Armstrong wrote:
+>>>> Hi,
+>>>>
+>>>> On 01/05/2025 21:13, Dikshita Agarwal wrote:
+>>>>> Hi All,
+>>>>>
+>>>>> This patch series adds initial support for the HEVC(H.265) and VP9
+>>>>> codecs in iris decoder. The objective of this work is to extend the
+>>>>> decoder's capabilities to handle HEVC and VP9 codec streams,
+>>>>> including necessary format handling and buffer management.
+>>>>> In addition, the series also includes a set of fixes to address issues
+>>>>> identified during testing of these additional codecs.
+>>>>>
+>>>>> These patches also address the comments and feedback received from the
+>>>>> RFC patches previously sent. I have made the necessary improvements
+>>>>> based on the community's suggestions.
+>>>>>
+>>>>> Changes in v3:
+>>>>> - Introduced two wrappers with explicit names to handle destroy internal
+>>>>> buffers (Nicolas)
+>>>>> - Used sub state check instead of introducing new boolean (Vikash)
+>>>>> - Addressed other comments (Vikash)
+>>>>> - Reorderd patches to have all fixes patches first (Dmitry)
+>>>>> - Link to v2:
+>>>>> https://lore.kernel.org/r/20250428-qcom-iris-hevc-vp9-v2-0-3a6013ecb8a5@quicinc.com
+>>>>>
+>>>>> Changes in v2:
+>>>>> - Added Changes to make sure all buffers are released in session close
+>>>>> (bryna)
+>>>>> - Added tracking for flush responses to fix a timing issue.
+>>>>> - Added a handling to fix timing issue in reconfig
+>>>>> - Splitted patch 06/20 in two patches (Bryan)
+>>>>> - Added missing fixes tag (bryan)
+>>>>> - Updated fluster report (Nicolas)
+>>>>> - Link to v1:
+>>>>> https://lore.kernel.org/r/20250408-iris-dec-hevc-vp9-v1-0-acd258778bd6@quicinc.com
+>>>>>
+>>>>> Changes sinces RFC:
+>>>>> - Added additional fixes to address issues identified during further
+>>>>> testing.
+>>>>> - Moved typo fix to a seperate patch [Neil]
+>>>>> - Reordered the patches for better logical flow and clarity [Neil,
+>>>>> Dmitry]
+>>>>> - Added fixes tag wherever applicable [Neil, Dmitry]
+>>>>> - Removed the default case in the switch statement for codecs [Bryan]
+>>>>> - Replaced if-else statements with switch-case [Bryan]
+>>>>> - Added comments for mbpf [Bryan]
+>>>>> - RFC:
+>>>>> https://lore.kernel.org/linux-media/20250305104335.3629945-1-quic_dikshita@quicinc.com/
+>>>>>
+>>>>> This patch series depends on [1] & [2]
+>>>>> [1]
+>>>>> https://lore.kernel.org/linux-media/20250417-topic-sm8x50-iris-v10-v7-0-f020cb1d0e98@linaro.org/
+>>>>> [2]
+>>>>> https://lore.kernel.org/linux-media/20250424-qcs8300_iris-v5-0-f118f505c300@quicinc.com/
+>>>>>
+>>>>> These patches are tested on SM8250 and SM8550 with v4l2-ctl and
+>>>>> Gstreamer for HEVC and VP9 decoders, at the same time ensured that
+>>>>> the existing H264 decoder functionality remains uneffected.
+>>>>>
+>>>>> Note: 1 of the fluster compliance test is fixed with firmware [3]
+>>>>> [3]:
+>>>>> https://lore.kernel.org/linux-firmware/1a511921-446d-cdc4-0203-084c88a5dc1e@quicinc.com/T/#u
+>>>>>
+>>>>> The result of fluster test on SM8550:
+>>>>>     131/147 testcases passed while testing JCT-VC-HEVC_V1 with
+>>>>>     GStreamer-H.265-V4L2-Gst1.0.
+>>>>>     The failing test case:
+>>>>>     - 10 testcases failed due to unsupported 10 bit format.
+>>>>>       - DBLK_A_MAIN10_VIXS_4
+>>>>>       - INITQP_B_Main10_Sony_1
+>>>>>       - TSUNEQBD_A_MAIN10_Technicolor_2
+>>>>>       - WP_A_MAIN10_Toshiba_3
+>>>>>       - WP_MAIN10_B_Toshiba_3
+>>>>>       - WPP_A_ericsson_MAIN10_2
+>>>>>       - WPP_B_ericsson_MAIN10_2
+>>>>>       - WPP_C_ericsson_MAIN10_2
+>>>>>       - WPP_E_ericsson_MAIN10_2
+>>>>>       - WPP_F_ericsson_MAIN10_2
+>>>>>     - 4 testcase failed due to unsupported resolution
+>>>>>       - PICSIZE_A_Bossen_1
+>>>>>       - PICSIZE_B_Bossen_1
+>>>>>       - WPP_D_ericsson_MAIN10_2
+>>>>>       - WPP_D_ericsson_MAIN_2
+>>>>>     - 2 testcase failed due to CRC mismatch
+>>>>>       - RAP_A_docomo_6
+>>>>>       - RAP_B_Bossen_2
+>>>>>       - BUG reported:
+>>>>> https://gitlab.freedesktop.org/gstreamer/gstreamer/-/issues/4392
+>>>>>         Analysis - First few frames in this discarded by firmware and are
+>>>>>         sent to driver with 0 filled length. Driver send such buffers to
+>>>>>         client with timestamp 0 and payload set to 0 and
+>>>>>         make buf state to VB2_BUF_STATE_ERROR. Such buffers should be
+>>>>>         dropped by GST. But instead, the first frame displayed as green
+>>>>>         frame and when a valid buffer is sent to client later with same 0
+>>>>>         timestamp, its dropped, leading to CRC mismatch for first frame.
+>>>>>
+>>>>>     235/305 testcases passed while testing VP9-TEST-VECTORS with
+>>>>>     GStreamer-VP9-V4L2-Gst1.0.
+>>>>>     The failing test case:
+>>>>>     - 64 testcases failed due to unsupported resolution
+>>>>>       - vp90-2-02-size-08x08.webm
+>>>>>       - vp90-2-02-size-08x10.webm
+>>>>>       - vp90-2-02-size-08x16.webm
+>>>>>       - vp90-2-02-size-08x18.webm
+>>>>>       - vp90-2-02-size-08x32.webm
+>>>>>       - vp90-2-02-size-08x34.webm
+>>>>>       - vp90-2-02-size-08x64.webm
+>>>>>       - vp90-2-02-size-08x66.webm
+>>>>>       - vp90-2-02-size-10x08.webm
+>>>>>       - vp90-2-02-size-10x10.webm
+>>>>>       - vp90-2-02-size-10x16.webm
+>>>>>       - vp90-2-02-size-10x18.webm
+>>>>>       - vp90-2-02-size-10x32.webm
+>>>>>       - vp90-2-02-size-10x34.webm
+>>>>>       - vp90-2-02-size-10x64.webm
+>>>>>       - vp90-2-02-size-10x66.webm
+>>>>>       - vp90-2-02-size-16x08.webm
+>>>>>       - vp90-2-02-size-16x10.webm
+>>>>>       - vp90-2-02-size-16x16.webm
+>>>>>       - vp90-2-02-size-16x18.webm
+>>>>>       - vp90-2-02-size-16x32.webm
+>>>>>       - vp90-2-02-size-16x34.webm
+>>>>>       - vp90-2-02-size-16x64.webm
+>>>>>       - vp90-2-02-size-16x66.webm
+>>>>>       - vp90-2-02-size-18x08.webm
+>>>>>       - vp90-2-02-size-18x10.webm
+>>>>>       - vp90-2-02-size-18x16.webm
+>>>>>       - vp90-2-02-size-18x18.webm
+>>>>>       - vp90-2-02-size-18x32.webm
+>>>>>       - vp90-2-02-size-18x34.webm
+>>>>>       - vp90-2-02-size-18x64.webm
+>>>>>       - vp90-2-02-size-18x66.webm
+>>>>>       - vp90-2-02-size-32x08.webm
+>>>>>       - vp90-2-02-size-32x10.webm
+>>>>>       - vp90-2-02-size-32x16.webm
+>>>>>       - vp90-2-02-size-32x18.webm
+>>>>>       - vp90-2-02-size-32x32.webm
+>>>>>       - vp90-2-02-size-32x34.webm
+>>>>>       - vp90-2-02-size-32x64.webm
+>>>>>       - vp90-2-02-size-32x66.webm
+>>>>>       - vp90-2-02-size-34x08.webm
+>>>>>       - vp90-2-02-size-34x10.webm
+>>>>>       - vp90-2-02-size-34x16.webm
+>>>>>       - vp90-2-02-size-34x18.webm
+>>>>>       - vp90-2-02-size-34x32.webm
+>>>>>       - vp90-2-02-size-34x34.webm
+>>>>>       - vp90-2-02-size-34x64.webm
+>>>>>       - vp90-2-02-size-34x66.webm
+>>>>>       - vp90-2-02-size-64x08.webm
+>>>>>       - vp90-2-02-size-64x10.webm
+>>>>>       - vp90-2-02-size-64x16.webm
+>>>>>       - vp90-2-02-size-64x18.webm
+>>>>>       - vp90-2-02-size-64x32.webm
+>>>>>       - vp90-2-02-size-64x34.webm
+>>>>>       - vp90-2-02-size-64x64.webm
+>>>>>       - vp90-2-02-size-64x66.webm
+>>>>>       - vp90-2-02-size-66x08.webm
+>>>>>       - vp90-2-02-size-66x10.webm
+>>>>>       - vp90-2-02-size-66x16.webm
+>>>>>       - vp90-2-02-size-66x18.webm
+>>>>>       - vp90-2-02-size-66x32.webm
+>>>>>       - vp90-2-02-size-66x34.webm
+>>>>>       - vp90-2-02-size-66x64.webm
+>>>>>       - vp90-2-02-size-66x66.webm
+>>>>>     - 2 testcases failed due to unsupported format
+>>>>>       - vp91-2-04-yuv422.webm
+>>>>>       - vp91-2-04-yuv444.webm
+>>>>>     - 1 testcase failed with CRC mismatch
+>>>>>       - vp90-2-22-svc_1280x720_3.ivf
+>>>>>       - Bug reported:
+>>>>> https://gitlab.freedesktop.org/gstreamer/gstreamer/-/issues/4371
+>>>>>     - 2 testcase failed due to unsupported resolution after sequence change
+>>>>>       - vp90-2-21-resize_inter_320x180_5_1-2.webm
+>>>>>       - vp90-2-21-resize_inter_320x180_7_1-2.webm
+>>>>>     - 1 testcase failed due to unsupported stream
+>>>>>       - vp90-2-16-intra-only.webm
+>>>>>
+>>>>> The result of fluster test on SM8250:
+>>>>>     133/147 testcases passed while testing JCT-VC-HEVC_V1 with
+>>>>>     GStreamer-H.265-V4L2-Gst1.0.
+>>>>>     The failing test case:
+>>>>>     - 10 testcases failed due to unsupported 10 bit format.
+>>>>>       - DBLK_A_MAIN10_VIXS_4
+>>>>>       - INITQP_B_Main10_Sony_1
+>>>>>       - TSUNEQBD_A_MAIN10_Technicolor_2
+>>>>>       - WP_A_MAIN10_Toshiba_3
+>>>>>       - WP_MAIN10_B_Toshiba_3
+>>>>>       - WPP_A_ericsson_MAIN10_2
+>>>>>       - WPP_B_ericsson_MAIN10_2
+>>>>>       - WPP_C_ericsson_MAIN10_2
+>>>>>       - WPP_E_ericsson_MAIN10_2
+>>>>>       - WPP_F_ericsson_MAIN10_2
+>>>>>     - 4 testcase failed due to unsupported resolution
+>>>>>       - PICSIZE_A_Bossen_1
+>>>>>       - PICSIZE_B_Bossen_1
+>>>>>       - WPP_D_ericsson_MAIN10_2
+>>>>>       - WPP_D_ericsson_MAIN_2
+>>>>>
+>>>>>     232/305 testcases passed while testing VP9-TEST-VECTORS with
+>>>>>     GStreamer-VP9-V4L2-Gst1.0.
+>>>>>     The failing test case:
+>>>>>     - 64 testcases failed due to unsupported resolution
+>>>>>       - vp90-2-02-size-08x08.webm
+>>>>>       - vp90-2-02-size-08x10.webm
+>>>>>       - vp90-2-02-size-08x16.webm
+>>>>>       - vp90-2-02-size-08x18.webm
+>>>>>       - vp90-2-02-size-08x32.webm
+>>>>>       - vp90-2-02-size-08x34.webm
+>>>>>       - vp90-2-02-size-08x64.webm
+>>>>>       - vp90-2-02-size-08x66.webm
+>>>>>       - vp90-2-02-size-10x08.webm
+>>>>>       - vp90-2-02-size-10x10.webm
+>>>>>       - vp90-2-02-size-10x16.webm
+>>>>>       - vp90-2-02-size-10x18.webm
+>>>>>       - vp90-2-02-size-10x32.webm
+>>>>>       - vp90-2-02-size-10x34.webm
+>>>>>       - vp90-2-02-size-10x64.webm
+>>>>>       - vp90-2-02-size-10x66.webm
+>>>>>       - vp90-2-02-size-16x08.webm
+>>>>>       - vp90-2-02-size-16x10.webm
+>>>>>       - vp90-2-02-size-16x16.webm
+>>>>>       - vp90-2-02-size-16x18.webm
+>>>>>       - vp90-2-02-size-16x32.webm
+>>>>>       - vp90-2-02-size-16x34.webm
+>>>>>       - vp90-2-02-size-16x64.webm
+>>>>>       - vp90-2-02-size-16x66.webm
+>>>>>       - vp90-2-02-size-18x08.webm
+>>>>>       - vp90-2-02-size-18x10.webm
+>>>>>       - vp90-2-02-size-18x16.webm
+>>>>>       - vp90-2-02-size-18x18.webm
+>>>>>       - vp90-2-02-size-18x32.webm
+>>>>>       - vp90-2-02-size-18x34.webm
+>>>>>       - vp90-2-02-size-18x64.webm
+>>>>>       - vp90-2-02-size-18x66.webm
+>>>>>       - vp90-2-02-size-32x08.webm
+>>>>>       - vp90-2-02-size-32x10.webm
+>>>>>       - vp90-2-02-size-32x16.webm
+>>>>>       - vp90-2-02-size-32x18.webm
+>>>>>       - vp90-2-02-size-32x32.webm
+>>>>>       - vp90-2-02-size-32x34.webm
+>>>>>       - vp90-2-02-size-32x64.webm
+>>>>>       - vp90-2-02-size-32x66.webm
+>>>>>       - vp90-2-02-size-34x08.webm
+>>>>>       - vp90-2-02-size-34x10.webm
+>>>>>       - vp90-2-02-size-34x16.webm
+>>>>>       - vp90-2-02-size-34x18.webm
+>>>>>       - vp90-2-02-size-34x32.webm
+>>>>>       - vp90-2-02-size-34x34.webm
+>>>>>       - vp90-2-02-size-34x64.webm
+>>>>>       - vp90-2-02-size-34x66.webm
+>>>>>       - vp90-2-02-size-64x08.webm
+>>>>>       - vp90-2-02-size-64x10.webm
+>>>>>       - vp90-2-02-size-64x16.webm
+>>>>>       - vp90-2-02-size-64x18.webm
+>>>>>       - vp90-2-02-size-64x32.webm
+>>>>>       - vp90-2-02-size-64x34.webm
+>>>>>       - vp90-2-02-size-64x64.webm
+>>>>>       - vp90-2-02-size-64x66.webm
+>>>>>       - vp90-2-02-size-66x08.webm
+>>>>>       - vp90-2-02-size-66x10.webm
+>>>>>       - vp90-2-02-size-66x16.webm
+>>>>>       - vp90-2-02-size-66x18.webm
+>>>>>       - vp90-2-02-size-66x32.webm
+>>>>>       - vp90-2-02-size-66x34.webm
+>>>>>       - vp90-2-02-size-66x64.webm
+>>>>>       - vp90-2-02-size-66x66.webm
+>>>>>     - 2 testcases failed due to unsupported format
+>>>>>       - vp91-2-04-yuv422.webm
+>>>>>       - vp91-2-04-yuv444.webm
+>>>>>     - 1 testcase failed with CRC mismatch
+>>>>>       - vp90-2-22-svc_1280x720_3.ivf
+>>>>>       - Bug raised:
+>>>>> https://gitlab.freedesktop.org/gstreamer/gstreamer/-/issues/4371
+>>>>>     - 5 testcase failed due to unsupported resolution after sequence change
+>>>>>       - vp90-2-21-resize_inter_320x180_5_1-2.webm
+>>>>>       - vp90-2-21-resize_inter_320x180_7_1-2.webm
+>>>>>       - vp90-2-21-resize_inter_320x240_5_1-2.webm
+>>>>>       - vp90-2-21-resize_inter_320x240_7_1-2.webm
+>>>>>       - vp90-2-18-resize.ivf
+>>>>>     - 1 testcase failed with CRC mismatch
+>>>>>       - vp90-2-16-intra-only.webm
+>>>>>       Analysis: First few frames are marked by firmware as NO_SHOW frame.
+>>>>>       Driver make buf state to VB2_BUF_STATE_ERROR for such frames.
+>>>>>       Such buffers should be dropped by GST. But instead, the first frame
+>>>>>       is being displayed and when a valid buffer is sent to client later
+>>>>>       with same timestamp, its dropped, leading to CRC mismatch for first
+>>>>>       frame.
+>>>>>
+>>>>> Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+>>>>> ---
+>>>>> Dikshita Agarwal (23):
+>>>>>          media: iris: Skip destroying internal buffer if not dequeued
+>>>>>          media: iris: Update CAPTURE format info based on OUTPUT format
+>>>>>          media: iris: Avoid updating frame size to firmware during reconfig
+>>>>>          media: iris: Drop port check for session property response
+>>>>>          media: iris: Prevent HFI queue writes when core is in deinit state
+>>>>>          media: iris: Remove deprecated property setting to firmware
+>>>>>          media: iris: Fix missing function pointer initialization
+>>>>>          media: iris: Fix NULL pointer dereference
+>>>>>          media: iris: Fix typo in depth variable
+>>>>>          media: iris: Track flush responses to prevent premature completion
+>>>>>          media: iris: Fix buffer preparation failure during resolution
+>>>>> change
+>>>>>          media: iris: Add handling for corrupt and drop frames
+>>>>>          media: iris: Send V4L2_BUF_FLAG_ERROR for buffers with 0 filled
+>>>>> length
+>>>>>          media: iris: Add handling for no show frames
+>>>>>          media: iris: Improve last flag handling
+>>>>>          media: iris: Skip flush on first sequence change
+>>>>>          media: iris: Remove redundant buffer count check in stream off
+>>>>>          media: iris: Add a comment to explain usage of MBPS
+>>>>>          media: iris: Add HEVC and VP9 formats for decoder
+>>>>>          media: iris: Add platform capabilities for HEVC and VP9 decoders
+>>>>>          media: iris: Set mandatory properties for HEVC and VP9 decoders.
+>>>>>          media: iris: Add internal buffer calculation for HEVC and VP9
+>>>>> decoders
+>>>>>          media: iris: Add codec specific check for VP9 decoder drain
+>>>>> handling
+>>>>>
+>>>>>     drivers/media/platform/qcom/iris/iris_buffer.c     |  35 +-
+>>>>>     drivers/media/platform/qcom/iris/iris_buffer.h     |   3 +-
+>>>>>     drivers/media/platform/qcom/iris/iris_ctrls.c      |  35 +-
+>>>>>     drivers/media/platform/qcom/iris/iris_hfi_common.h |   1 +
+>>>>>     .../platform/qcom/iris/iris_hfi_gen1_command.c     |  48 ++-
+>>>>>     .../platform/qcom/iris/iris_hfi_gen1_defines.h     |   5 +-
+>>>>>     .../platform/qcom/iris/iris_hfi_gen1_response.c    |  37 +-
+>>>>>     .../platform/qcom/iris/iris_hfi_gen2_command.c     | 143 +++++++-
+>>>>>     .../platform/qcom/iris/iris_hfi_gen2_defines.h     |   5 +
+>>>>>     .../platform/qcom/iris/iris_hfi_gen2_response.c    |  57 ++-
+>>>>>     drivers/media/platform/qcom/iris/iris_hfi_queue.c  |   2 +-
+>>>>>     drivers/media/platform/qcom/iris/iris_instance.h   |   6 +
+>>>>>     .../platform/qcom/iris/iris_platform_common.h      |  28 +-
+>>>>>     .../media/platform/qcom/iris/iris_platform_gen2.c  | 198 ++++++++--
+>>>>>     .../platform/qcom/iris/iris_platform_qcs8300.h     | 126 +++++--
+>>>>>     .../platform/qcom/iris/iris_platform_sm8250.c      |  15 +-
+>>>>>     drivers/media/platform/qcom/iris/iris_state.c      |   2 +-
+>>>>>     drivers/media/platform/qcom/iris/iris_state.h      |   1 +
+>>>>>     drivers/media/platform/qcom/iris/iris_vb2.c        |  18 +-
+>>>>>     drivers/media/platform/qcom/iris/iris_vdec.c       | 116 +++---
+>>>>>     drivers/media/platform/qcom/iris/iris_vdec.h       |  11 +
+>>>>>     drivers/media/platform/qcom/iris/iris_vidc.c       |  36 +-
+>>>>>     drivers/media/platform/qcom/iris/iris_vpu_buffer.c | 397
+>>>>> ++++++++++++++++++++-
+>>>>>     drivers/media/platform/qcom/iris/iris_vpu_buffer.h |  46 ++-
+>>>>>     24 files changed, 1160 insertions(+), 211 deletions(-)
+>>>>> ---
+>>>>> base-commit: 398a1b33f1479af35ca915c5efc9b00d6204f8fa
+>>>>> change-id: 20250428-qcom-iris-hevc-vp9-eb31f30c3390
+>>>>> prerequisite-message-id:
+>>>>> <20250417-topic-sm8x50-iris-v10-v7-0-f020cb1d0e98@linaro.org>
+>>>>> prerequisite-patch-id: 35f8dae1416977e88c2db7c767800c01822e266e
+>>>>> prerequisite-patch-id: 2bba98151ca103aa62a513a0fbd0df7ae64d9868
+>>>>> prerequisite-patch-id: 0e43a6d758b5fa5ab921c6aa3c19859e312b47d0
+>>>>> prerequisite-patch-id: b7b50aa1657be59fd51c3e53d73382a1ee75a08e
+>>>>> prerequisite-patch-id: 30960743105a36f20b3ec4a9ff19e7bca04d6add
+>>>>> prerequisite-patch-id: b93c37dc7e09d1631b75387dc1ca90e3066dce17
+>>>>> prerequisite-patch-id: afffe7096c8e110a8da08c987983bc4441d39578
+>>>>> prerequisite-message-id:
+>>>>> <20250424-qcs8300_iris-v5-0-f118f505c300@quicinc.com>
+>>>>> prerequisite-patch-id: 2e72fe4d11d264db3d42fa450427d30171303c6f
+>>>>> prerequisite-patch-id: 3398937a7fabb45934bb98a530eef73252231132
+>>>>> prerequisite-patch-id: feda620f147ca14a958c92afdc85a1dc507701ac
+>>>>> prerequisite-patch-id: 07ba0745c7d72796567e0a57f5c8e5355a8d2046
+>>>>> prerequisite-patch-id: e35b05c527217206ae871aef0d7b0261af0319ea
+>>>>>
+>>>>> Best regards,
+>>>>
+>>>> HEVC & VP9 works fine on HDK8550.
+>>>>
+>>>> But on SM8650-QRD & SM8650-HDK while decoding HEVC, I get:
+>>>> [   44.741670] qcom-iris aa00000.video-codec: session error received
+>>>> 0x1000005: unknown
+>>>> [   44.755724] qcom-iris aa00000.video-codec: session error received
+>>>> 0x4000005: insufficient resources
+>>>> [   44.776462] qcom-iris aa00000.video-codec: session error received
+>>>> 0x4000005: insufficient resources
+>>>> [   44.797179] qcom-iris aa00000.video-codec: session error received
+>>>> 0x1000005: unknown
+>>>> [   44.816630] qcom-iris aa00000.video-codec: session error received
+>>>> 0x4000005: insufficient resources
+>>>> [   44.837387] qcom-iris aa00000.video-codec: session error received
+>>>> 0x1000005: unknown
+>>>> [   44.856812] qcom-iris aa00000.video-codec: session error received
+>>>> 0x4000005: insufficient resources
+>>>> [   44.877576] qcom-iris aa00000.video-codec: session error received
+>>>> 0x1000005: unknown
+>>>> [   44.897000] qcom-iris aa00000.video-codec: session error received
+>>>> 0x4000005: insufficient resources
+>>>> [   44.917801] qcom-iris aa00000.video-codec: session error received
+>>>> 0x1000009: unknown
+>>>> [   44.937254] qcom-iris aa00000.video-codec: session error received
+>>>> 0x4000004: invalid operation for current state
+>>>> [   44.959128] qcom-iris aa00000.video-codec: session error received
+>>>> 0x4000004: invalid operation for current state
+>>>> [   44.981025] qcom-iris aa00000.video-codec: session error received
+>>>> 0x1000009: unknown
+>>>> [   45.000459] qcom-iris aa00000.video-codec: session error received
+>>>> 0x4000004: invalid operation for current state
+>>>> [   45.022376] qcom-iris aa00000.video-codec: session error received
+>>>> 0x1000009: unknown
+>>>> [   45.041816] qcom-iris aa00000.video-codec: session error received
+>>>> 0x4000004: invalid operation for current state
+>>>> [   45.063736] qcom-iris aa00000.video-codec: session error received
+>>>> 0x1000009: unknown
+>>>> [   45.083167] qcom-iris aa00000.video-codec: session error received
+>>>> 0x4000004: invalid operation for current state
+>>>> [   45.105459] ------------[ cut here ]------------
+>>>> [   45.121152] WARNING: CPU: 6 PID: 573 at
+>>>> drivers/media/common/videobuf2/videobuf2-core.c:1827
+>>>> vb2_start_streaming+0x100/0x178 [videobuf2_common]
+>>>> while VP9 works fine.
+>>>>
+>>>> Is it a firmware issue ?
+>>>>
+>>> Looks like resources set to firmware are not sufficient.
+>>> I suspect, internal buffers set to firmware are less than what it requires,
+>>> this can change for different VPUs. Pls check if there is any difference in
+>>> internal buffer calculations between vpu3 and vpu33.
+>>
+>> I found the fix, it was a difference in buffer calculation, but not for vpu33,
+>> but a typo since v2 was right:
+>>
+>> ========================================><======================================
+>> diff --git a/drivers/media/platform/qcom/iris/iris_vpu_buffer.h
+>> b/drivers/media/platform/qcom/iris/iris_vpu_buffer.h
+>> index 2272f0c21683..ee95fd20b794 100644
+>> --- a/drivers/media/platform/qcom/iris/iris_vpu_buffer.h
+>> +++ b/drivers/media/platform/qcom/iris/iris_vpu_buffer.h
+>> @@ -33,7 +33,7 @@ struct iris_inst;
+>>   #define H264_DISPLAY_BUF_SIZE          3328
+>>   #define H264_NUM_FRM_INFO              66
+>>   #define H265_NUM_TILE_COL 32
+>> -#define H265_NUM_TILE_ROW 12
+>> +#define H265_NUM_TILE_ROW 128
+>>   #define H265_NUM_TILE (H265_NUM_TILE_ROW * H265_NUM_TILE_COL + 1)
+>>   #define SIZE_H265D_BSE_CMD_PER_BUF (16 * sizeof(u32))
+>> ========================================><======================================
+>>
+>> This fixes HEVC on SM8650, so with this change VP9 and HEVC works fine, I'm
+>> suprised
+>> this still works on SM8550 !
+>>
+> Thanks for checking this.
+> but this value has been the same since v1
+> https://lore.kernel.org/linux-media/20250408-iris-dec-hevc-vp9-v1-19-acd258778bd6@quicinc.com/\
 
-> On Sat, May 03, 2025 at 09:23:27PM +0100, Yeoreum Yun wrote:
-> > Hi Catalin,
-> >
-> > > On Sat, May 03, 2025 at 11:16:12AM +0100, Catalin Marinas wrote:
-> > > > On Fri, 02 May 2025 19:04:12 +0100, Yeoreum Yun wrote:
-> > > > > create_init_idmap() could be called before .bss section initialization
-> > > > > which is done in early_map_kernel().
-> > > > > Therefore, data/test_prot could be set incorrectly by PTE_MAYBE_NG macro.
-> > > > >
-> > > > > PTE_MAYBE_NG macro set NG bit according to value of "arm64_use_ng_mappings".
-> > > > > and this variable places in .bss section.
-> > > > >
-> > > > > [...]
-> > > >
-> > > > Applied to arm64 (for-next/fixes), with some slight tweaking of the
-> > > > comment, thanks!
-> > > >
-> > > > [1/1] arm64/cpufeature: annotate arm64_use_ng_mappings with ro_after_init to prevent wrong idmap generation
-> > > >       https://git.kernel.org/arm64/c/12657bcd1835
-> > >
-> > > I'm going to drop this for now. The kernel compiled with a clang 19.1.5
-> > > version I have around (Debian sid) fails to boot, gets stuck early on:
-> > >
-> > > $ clang --version
-> > > Debian clang version 19.1.5 (1)
-> > > Target: aarch64-unknown-linux-gnu
-> > > Thread model: posix
-> > > InstalledDir: /usr/lib/llvm-19/bin
-> > >
-> > > I didn't have time to investigate, disassemble etc. I'll have a look
-> > > next week.
-> >
-> > Just for your information.
-> > When I see the debian package, clang 19.1.5-1 doesn't supply anymore:
-> >  - https://ftp.debian.org/debian/pool/main/l/llvm-toolchain-19/
-> >
-> > and the default version for sid is below:
-> >
-> > $ clang-19 --version
-> > Debian clang version 19.1.7 (3)
-> > Target: aarch64-unknown-linux-gnu
-> > Thread model: posix
-> > InstalledDir: /usr/lib/llvm-19/bin
-> >
-> > When I tested with above version with arm64-linux's for-next/fixes
-> > including this patch. it works well.
->
-> It doesn't seem to be toolchain related. It fails with gcc as well from
-> Debian stable but you'd need some older CPU (even if emulated, e.g.
-> qemu). It fails with Cortex-A72 (guest on Raspberry Pi 4) but not
-> Neoverse-N2. Also changing the annotation from __ro_after_init to
-> __read_mostly also works.
+Yeah indeed I found that in v2 of iris patchset patch 20 the value is right:
+https://lore.kernel.org/all/1702899149-21321-21-git-send-email-quic_dikshita@quicinc.com/
 
-Thanks to let me know. But still I've failed to reproduce this
-on Cortex-a72 and any older cpu on qeum.
-If you don't mind, would you share your Kconfig?
+Seems the typo appeared on the vp9 & hevc patchset.
 
-> I haven't debugged it yet but I wonder whether something wants to write
-> this variable after it was made read-only (well, I couldn't find any by
-> grep'ing the code, so it needs some step-by-step debugging).
->
-[...]
+> And yes, it works on SM8550, I believe you also tested v3 and confirmed the
+> same.
+> But anyways, the correct value should be 128 and I confirmed that SM8550
+> works with the fix as well.
+
+Good !
+
+> 
+>> So please keep VP9 and HEVC enabled on v4.
+> Ok
+
 
 Thanks!
+Neil
+> 
+> Thanks,
+> Dikshita
+>>
+>> Thanks,
+>> Neil
+>>>
+>>> Thanks,
+>>> Dikshita
+>>>> I've added:
+>>>> ========================================><======================================
+>>>> diff --git a/drivers/media/platform/qcom/iris/iris_platform_gen2.c
+>>>> b/drivers/media/platform/qcom/iris/iris_platform_gen2.c
+>>>> index d3026b2bcb70..8c0ab00ab435 100644
+>>>> --- a/drivers/media/platform/qcom/iris/iris_platform_gen2.c
+>>>> +++ b/drivers/media/platform/qcom/iris/iris_platform_gen2.c
+>>>> @@ -400,7 +400,7 @@ struct iris_platform_data sm8650_data = {
+>>>>           .init_hfi_command_ops = iris_hfi_gen2_command_ops_init,
+>>>>           .init_hfi_response_ops = iris_hfi_gen2_response_ops_init,
+>>>>           .vpu_ops = &iris_vpu33_ops,
+>>>> -       .set_preset_registers = iris_set_sm8550_preset_registers,
+>>>> +       .set_preset_registers = iris_set_sm8650_preset_registers,
+>>>>           .icc_tbl = sm8550_icc_table,
+>>>>           .icc_tbl_size = ARRAY_SIZE(sm8550_icc_table),
+>>>>           .clk_rst_tbl = sm8650_clk_reset_table,
+>>>> diff --git a/drivers/media/platform/qcom/iris/iris_platform_sm8650.h
+>>>> b/drivers/media/platform/qcom/iris/iris_platform_sm8650.h
+>>>> index 75e9d572e788..9e2d23f12f75 100644
+>>>> --- a/drivers/media/platform/qcom/iris/iris_platform_sm8650.h
+>>>> +++ b/drivers/media/platform/qcom/iris/iris_platform_sm8650.h
+>>>> @@ -10,4 +10,20 @@ static const char * const sm8650_clk_reset_table[] = {
+>>>> "bus", "core" };
+>>>>
+>>>>    static const char * const sm8650_controller_reset_table[] = { "xo" };
+>>>>
+>>>> +static void iris_set_sm8650_preset_registers(struct iris_core *core)
+>>>> +{
+>>>> +       writel(0x0, core->reg_base + 0xB0088);
+>>>> +       writel(0x33332222, core->reg_base + 0x13030);
+>>>> +       writel(0x44444444, core->reg_base + 0x13034);
+>>>> +       writel(0x1022, core->reg_base + 0x13038);
+>>>> +       writel(0x0, core->reg_base + 0x13040);
+>>>> +       writel(0xFFFF, core->reg_base + 0x13048);
+>>>> +       writel(0x33332222, core->reg_base + 0x13430);
+>>>> +       writel(0x44444444, core->reg_base + 0x13434);
+>>>> +       writel(0x1022, core->reg_base + 0x13438);
+>>>> +       writel(0x0, core->reg_base + 0x13440);
+>>>> +       writel(0xFFFF, core->reg_base + 0x13448);
+>>>> +       writel(0x99, core->reg_base + 0xA013C);
+>>>> +}
+>>>> +
+>>>>    #endif
+>>>> ========================================><======================================
+>>>> and no change, error still occurs with HEVC decoding.
+>>>>
+>>>> Thanks,
+>>>> Neil
+>>
 
---
-Sincerely,
-Yeoreum Yun
 
