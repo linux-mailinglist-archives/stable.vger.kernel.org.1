@@ -1,195 +1,330 @@
-Return-Path: <stable+bounces-141863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9A1FAACF41
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 23:07:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25E00AACF59
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 23:09:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6236F4A7101
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 21:07:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6995C4A522E
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 21:09:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE4C22165EA;
-	Tue,  6 May 2025 21:06:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EFD3192D6B;
+	Tue,  6 May 2025 21:09:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aVl+SE4T"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="VuHQH+aT"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2084.outbound.protection.outlook.com [40.107.93.84])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AD7019AA63;
-	Tue,  6 May 2025 21:06:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746565594; cv=none; b=e584S1sf13TAX3RmP3elSrbzKIIBPxPdStLg5ivkqkZStpwFO2QtyxRLn0TKCvTu5Vuvr05T5zFMBDU/vWmYSv2mNi7vW2QnS97Gvcl46gMAL7hhMaq3GtJIHecqHaRbV+BOJwiDnNQX0w7iW81xdTNPVkVd0ZwN/eR7fRE69zI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746565594; c=relaxed/simple;
-	bh=74lje376FlTSuXCICkSnr8qOkLged5xjB5xPmh1n+yc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=X2J3wRhGWt6f655dEY/1GoAwSM3frx0tvzGXug/UBmA+J7CMkU/HyfBv4pJD2EIQ5/4oCGVHthSKdRsugzfgk0TPmUbqQ6a3+ckjZBKuiB9iUgXoV0eK1Ol37jj11eilIZxOStMnI4yjFbD3Q5YPjsLed9uSSrSZ38lFdQIyD3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aVl+SE4T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CAF1C4CEE4;
-	Tue,  6 May 2025 21:06:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746565593;
-	bh=74lje376FlTSuXCICkSnr8qOkLged5xjB5xPmh1n+yc=;
-	h=From:Date:Subject:To:Cc:From;
-	b=aVl+SE4TL/+aQ4RxUww9NntBllXCHmZe2GcxFp1ljeqowgPN7Wue3GOb+J/bndWNZ
-	 Pox0FmI+TlEN6PEeQjzjedMI6kRLJZMj7pDK0J2yw1GItskOI2cIt35pvlIdNQazgZ
-	 nnJYdHPhEEFHVIkRCXNvwEaOd8mG47+yvE2XzZrzkf8loaPPBGmMvX1CjX/EyRpZJB
-	 OXAXKDjqKQ9KTvzp4gijrXrk09lWY7Um+bTYvn1StVp6t+e0ya9FUyOlrDYpWlJmWZ
-	 DPQSuGPOlL7ZuqwjexXQO6csbMBePfW9d8a4sv0bqPPRg4Dcm5UxktiLXWpJn9/qfa
-	 6nf4BMfYHtlBg==
-From: Nathan Chancellor <nathan@kernel.org>
-Date: Tue, 06 May 2025 14:02:01 -0700
-Subject: [PATCH v2] kbuild: Disable -Wdefault-const-init-unsafe
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E598139E;
+	Tue,  6 May 2025 21:09:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.84
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746565772; cv=fail; b=VRSPmOOuIxYE4OaYY1LWpkGCRdD14wChOOMoDNcd9IYhWWR+U6ZXanHPxUJutXV44LJMZRzUCppkhMghp0OYoHdz+/yzAwCRgrJNotjuQNwK0qE3eiCyo/+FuIAgUzoI6emAhKAVePAKVzFwKyfAhFpAe/qinolJJG1Gxtq4i8w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746565772; c=relaxed/simple;
+	bh=U+cRqdPlX+3Y3Ulrv6GmhMdbUXNNGGlfrIlMWKvvKho=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=X9/Qdsdw8s78erdVvkFuY7sEMJtpfb30MW+ckI+ltOw3e1luZHQc8My2asgg8Fdr6GwtdYo7f2Al/kkyxsBrdtTyKDAi5uqbj4Q+f+xKDBZZ5t+M2OjJRIqsDkz5HXyaqol3g8qnHkbgKydNKg/z5pO/d/VLaj9gSL1DbQUAGes=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=VuHQH+aT; arc=fail smtp.client-ip=40.107.93.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JkM98pa5bLac5LeVj+T/abpH51hVU/ad1FMWkzbjhZatvdh2FQ9v7ksZEgSssViDnBuapZkp8Zbx7iT+ANSfS+hRNsZgz30bnOhuPeX4tl0FvRK6JR3rrtLwbFmgRixPV3oVV5lcWAbQ732tbnnpZS5ZDAo1kHyByFkuTqWt/VUhFO5JLdnSLfjJDaNXbBecHvFUad4cVaQK++ORHrulMmFZ03EQo/SUpT/M2e8eiGec6iG9MgpKvxMYzvwJ+nNhvPXdSskkeIuoZI5t1ZPXsQrZXLgP1CMMPWmmosL8UbvNIRXHWCLLaYTrX4kEqY/7bs2QGCAJ5FjmcbMoq8qVTg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LexVX8ApKvljcmQ19kTQlqapvR2rrjJA4xi625UdRDk=;
+ b=Mt5kc/zo726CZLgjjKAyhgX+FjX+f1Qlo2xAaIiRj/CTnwFO8BK8QITULfNI3Ei4eOBCUsjnSQ6c3SL68HNBsO0/khay1CNk3z9W4RogJ4dXlmXpDQ81nzmsZCjAtvaB2OdVacDBxXHi7Ovxl8Z2bsBD1n4JWkIQAohXNjA1jM88cYRVqt98QSCqakM21RIBTu99T/L7kw5+j2If4vaCdjlEKW7uSc//hTNxVEgSvtoCTXOJtWIeGOzQqKuqBDwqHV+KCNfAvpMuovae7sYJZjn9RVuWRlM0k5S8u6zqY8G7UpEMd5h0A+5MJmhN7z/uYKBLW9/ftIWcqJ3KdRQ1xQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=suse.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LexVX8ApKvljcmQ19kTQlqapvR2rrjJA4xi625UdRDk=;
+ b=VuHQH+aTQNiDh1JEIWS1hKYNrsguHV82/Jbrp9GvzIgfhLAsRSxgjZ9qJ2fA5JmGoyekF6YjC9AxwPQaA+YykvxnMc8DwQ7QsAV/Fl9Asfw58l6vb/zfW2bzd+Srv5GNQrw50bfsHQfNe+1YB7i2aVj5xlV7oavZTRmVkwwBDac=
+Received: from MW4PR04CA0355.namprd04.prod.outlook.com (2603:10b6:303:8a::30)
+ by SA1PR12MB8945.namprd12.prod.outlook.com (2603:10b6:806:375::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.26; Tue, 6 May
+ 2025 21:09:25 +0000
+Received: from SJ1PEPF00002321.namprd03.prod.outlook.com
+ (2603:10b6:303:8a:cafe::ca) by MW4PR04CA0355.outlook.office365.com
+ (2603:10b6:303:8a::30) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8699.26 via Frontend Transport; Tue,
+ 6 May 2025 21:09:25 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SJ1PEPF00002321.mail.protection.outlook.com (10.167.242.91) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8722.18 via Frontend Transport; Tue, 6 May 2025 21:09:24 +0000
+Received: from SATLEXMB05.amd.com (10.181.40.146) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 6 May
+ 2025 16:09:23 -0500
+Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB05.amd.com
+ (10.181.40.146) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 6 May
+ 2025 16:09:23 -0500
+Received: from amd-BIRMANPLUS.mshome.net (10.180.168.240) by
+ SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39
+ via Frontend Transport; Tue, 6 May 2025 16:09:22 -0500
+From: Jason Andryuk <jason.andryuk@amd.com>
+To: Juergen Gross <jgross@suse.com>, Stefano Stabellini
+	<sstabellini@kernel.org>, Oleksandr Tyshchenko
+	<oleksandr_tyshchenko@epam.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>
+CC: Jason Andryuk <jason.andryuk@amd.com>,
+	=?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?=
+	<marmarek@invisiblethingslab.com>, <stable@vger.kernel.org>,
+	<xen-devel@lists.xenproject.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH] xenbus: Use kref to track req lifetime
+Date: Tue, 6 May 2025 17:09:33 -0400
+Message-ID: <20250506210935.5607-1-jason.andryuk@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250506-default-const-init-clang-v2-1-fcfb69703264@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAMh4GmgC/3WNyw6CMBBFf4XM2jF9CCGu/A/CgrYDTCStaZFoS
- P/dimt3c27uPbNDosiU4FrtEGnjxMEXUKcK7Dz4iZBdYVBC1eKiBToah+eyog0+rciey7mUIpq
- GlDStE9o0UOaPSCO/DnXXF545rSG+j0+b/KY/aS3kf+kmUaB2yjZWtrUz5nan6Gk5hzhBn3P+A
- P1JxFLBAAAA
-X-Change-ID: 20250430-default-const-init-clang-b6e21b8d03b6
-To: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Nicolas Schier <nicolas.schier@linux.dev>, 
- Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
- Linus Torvalds <torvalds@linux-foundation.org>, 
- linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
- llvm@lists.linux.dev, patches@lists.linux.dev, stable@vger.kernel.org, 
- Linux Kernel Functional Testing <lkft@linaro.org>, 
- Marcus Seyfarth <m.seyfarth@gmail.com>, 
- Nathan Chancellor <nathan@kernel.org>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6468; i=nathan@kernel.org;
- h=from:subject:message-id; bh=74lje376FlTSuXCICkSnr8qOkLged5xjB5xPmh1n+yc=;
- b=owGbwMvMwCUmm602sfCA1DTG02pJDBlSlddEjFj3Top9qLKz+JuF2bVnW4yWNRUvtF/qnr4vc
- bLpNN9dHaUsDGJcDLJiiizVj1WPGxrOOct449QkmDmsTCBDGLg4BWAiDnKMDIv81zbtfiQ2Wb2E
- Lc1V/df79pNTnO4/r71TdnEnY49W2n2G/xFMhfnaF6ZP0e7QftXdNqsw/eGJ/sTInkPnU6z0bjy
- 0YwAA
-X-Developer-Key: i=nathan@kernel.org; a=openpgp;
- fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Received-SPF: None (SATLEXMB05.amd.com: jason.andryuk@amd.com does not
+ designate permitted sender hosts)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF00002321:EE_|SA1PR12MB8945:EE_
+X-MS-Office365-Filtering-Correlation-Id: 1a3ed70f-39bd-49f0-e110-08dd8ce247af
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|1800799024|82310400026|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?eXZQNGtuRnM1bnppMDJ1ZU40SGh2M2ZsNDU5VEVpczQ2eisyNHIwdVVSL1ZY?=
+ =?utf-8?B?Y0dOQVZTQUlrU2FaY21GQmg1RXJCb3ZpMExHb0VxbENzMk53RGZHQzNqSnha?=
+ =?utf-8?B?N3Z2elVEZCtCOHlrR0lQZXYzb1JjQkFZQnZSdjhwQ1FxTGhEYStMRjhMMjB4?=
+ =?utf-8?B?K1dac3cwMld0TWNkOWtrU1FYT1dQUm5RMVlTcmphcG4rQ0h0YjdpZy9Tek1E?=
+ =?utf-8?B?dlBVdU1PUTV5aVU3Q3U0eXpDWGd5L0FxU2xnTTQxMytNeHZna1pDNUFqV1E3?=
+ =?utf-8?B?Z1hsNUxjb1FPenpSdkw4VllvNFJCLy82Nmk0U2ZtelhJbzFyWGVlVnkwSzFD?=
+ =?utf-8?B?aVBpd0YySFVuOUM4U1Q3Ry9ZeTh5NkVwR09JclNUeitvT3dxRTM1cjQrdzh5?=
+ =?utf-8?B?TjJSVDcycDlhTTNaNnl2NGdRRndrSW43bm15MVVnUTZuQ20xVFJyYkkwWXVw?=
+ =?utf-8?B?ZzhqTTVKb3hrTlg3UHZEVk8wWVE0QWoyS0pqbkVvNnd6dzBGZSs5NjdEbzky?=
+ =?utf-8?B?dG5yY0Qxa1JPdW9VSU5rQ1FnTDNTYUhHcW5VYU1GMkZreW92U1N0RGIxSWE2?=
+ =?utf-8?B?dzdTYnhCR0lwOG8zSEowUnRoaU8xL2ZDMjRpbExHcHJpTDVBTGU2MmxWWnFH?=
+ =?utf-8?B?ejRZS3VoR0Mvd2RPZUlVaEF3YktSKy8xM2R0ejVkYkRoNnFQbFZvQzdtVy9E?=
+ =?utf-8?B?cTE0MXB4cW4xWGNEMU5rQ05qMUdmTXRzeEpqUmxnTFRMVVBBMlNHVWE5RlZS?=
+ =?utf-8?B?ZGtlZzhvVndmL3IvbFQxV3ZvVmFsOUprRUxnSnE2RUtoWmFHOTZXcVVLR0Ns?=
+ =?utf-8?B?ZjZIWTgvTURtREFjRHhJU0lBd1lDVStlaThHYW9xZzRHVVFQSUkweGVLSTNF?=
+ =?utf-8?B?MW5YeDJGaWdxQ2JsMGNGK0Nla01UVEp0YjNtY0E2dDdBdFoxenRkUHdBSEdV?=
+ =?utf-8?B?NGhDMHlJZDd0MkJrVW5pNHdSYnhQRkhOeSsvZHk5eU9HeThvblNUbGpqcnVK?=
+ =?utf-8?B?S282dHZsNWdSRVhTODlHVXl5Qjh0SzJKdS9WYlZMNWYvL2pKd3EvZk8vSlNQ?=
+ =?utf-8?B?amtjYmw3bmtjeEJGYkcveDFZNnZ2ZVpCdThCcjZ2T2lFNDFCcDBmT1RLMVFB?=
+ =?utf-8?B?S1V4VEwyQW9JV2JoMC81Z1ovdkp3VWJBWVIzNmYzOG1mSkQ4L3JQMGNUQjl4?=
+ =?utf-8?B?MUxPZjErUmc3WERHVnVJVGExekYzcmNsM1R4ckxUVldKQmxxcTl3SXRxVlhJ?=
+ =?utf-8?B?aks5V0RsSkNVdFY1ZEtzUE5FOWZyODZxN0l4elZGTHF5WDd0TExiMnNkVEhr?=
+ =?utf-8?B?Q0RTWG9wYndBelFRL1R3cmxFMVlyeHJTNkEvb2JwcjhYR01JTDNCS3RWVStP?=
+ =?utf-8?B?VzlYNU4yTi9ydGxyTkRyMTZWZHdNTmI0dEZjVmlWcmpUUHJwN01PMmhLQmJC?=
+ =?utf-8?B?MTRpWVpYYUdOdXFhS1BOVCtTc0xwM29BcjhJd3hNUXRObXYzRWdNcU95ZG5K?=
+ =?utf-8?B?RGlPbWxhaGVJeGNXdGZOb2FWekxmdnBYbkY5WllIODFFWUJxa3dDb1B2cXFu?=
+ =?utf-8?B?SUZUWGJhOEUwZ2hLcDlXQnpTRUVpdlJPb0pMQmlaY1k1bGc2QWcvTjgxYTZU?=
+ =?utf-8?B?a3RHOUJwTUE3N3lVbjVlTDM0ZjNBS2ZqdGVOS09lbjZkUng5L3grV3JTQlRX?=
+ =?utf-8?B?UDJlVTZUVmNQTFcxZTBMRGZNUzRhemZZSC9nZzREaUl5MTkzU0M1NWtFc3NW?=
+ =?utf-8?B?b01jMnFtb1JrMldoeG02dVRwMHArcjVOZUlEenZrdTA5TW5lM2ZUTE9UTVhT?=
+ =?utf-8?B?MThEUEg0VEFIOGhkcWpvUnkrRWFXWWVxdHl2dVhxbjJJNG03bS9aMmJCTkRi?=
+ =?utf-8?B?eUlmR291SXV0STVFRlc3VmdEVGI1ZkhGSkFIQUlqT29FNFVqRnVwVHZhVEN5?=
+ =?utf-8?B?VktTRnh2dTJmd3dNb1RYY0NGSllmemNFcHRBcjdJc0dQZHgrU1JrRWxnc04w?=
+ =?utf-8?B?SFp0L2gyZnl4elZOa05pNjE4L3VJQy9ZWUhrbEU4eHBoTFJlUE53am1IR1Qy?=
+ =?utf-8?B?MUtFMFVIN0JiVkNxZlk2SWt2ZEkrVkRHdXhkQT09?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(82310400026)(376014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 May 2025 21:09:24.8239
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1a3ed70f-39bd-49f0-e110-08dd8ce247af
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF00002321.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8945
 
-A new on by default warning in clang [1] aims to flags instances where
-const variables without static or thread local storage or const members
-in aggregate types are not initialized because it can lead to an
-indeterminate value. This is quite noisy for the kernel due to
-instances originating from header files such as:
+Marek reported seeing a NULL pointer fault in the xenbus_thread
+callstack:
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+RIP: e030:__wake_up_common+0x4c/0x180
+Call Trace:
+ <TASK>
+ __wake_up_common_lock+0x82/0xd0
+ process_msg+0x18e/0x2f0
+ xenbus_thread+0x165/0x1c0
 
-  drivers/gpu/drm/i915/gt/intel_ring.h:62:2: error: default initialization of an object of type 'typeof (ring->size)' (aka 'const unsigned int') leaves the object uninitialized [-Werror,-Wdefault-const-init-var-unsafe]
-     62 |         typecheck(typeof(ring->size), next);
-        |         ^
-  include/linux/typecheck.h:10:9: note: expanded from macro 'typecheck'
-     10 | ({      type __dummy; \
-        |              ^
+process_msg+0x18e is req->cb(req).  req->cb is set to xs_wake_up(), a
+thin wrapper around wake_up(), or xenbus_dev_queue_reply().  It seems
+like it was xs_wake_up() in this case.
 
-  include/net/ip.h:478:14: error: default initialization of an object of type 'typeof (rt->dst.expires)' (aka 'const unsigned long') leaves the object uninitialized [-Werror,-Wdefault-const-init-var-unsafe]
-    478 |                 if (mtu && time_before(jiffies, rt->dst.expires))
-        |                            ^
-  include/linux/jiffies.h:138:26: note: expanded from macro 'time_before'
-    138 | #define time_before(a,b)        time_after(b,a)
-        |                                 ^
-  include/linux/jiffies.h:128:3: note: expanded from macro 'time_after'
-    128 |         (typecheck(unsigned long, a) && \
-        |          ^
-  include/linux/typecheck.h:11:12: note: expanded from macro 'typecheck'
-     11 |         typeof(x) __dummy2; \
-        |                   ^
+It seems like req may have woken up the xs_wait_for_reply(), which
+kfree()ed the req.  When xenbus_thread resumes, it faults on the zero-ed
+data.
 
-  include/linux/list.h:409:27: warning: default initialization of an object of type 'union (unnamed union at include/linux/list.h:409:27)' with const member leaves the object uninitialized [-Wdefault-const-init-field-unsafe]
-    409 |         struct list_head *next = smp_load_acquire(&head->next);
-        |                                  ^
-  include/asm-generic/barrier.h:176:29: note: expanded from macro 'smp_load_acquire'
-    176 | #define smp_load_acquire(p) __smp_load_acquire(p)
-        |                             ^
-  arch/arm64/include/asm/barrier.h:164:59: note: expanded from macro '__smp_load_acquire'
-    164 |         union { __unqual_scalar_typeof(*p) __val; char __c[1]; } __u;   \
-        |                                                                  ^
-  include/linux/list.h:409:27: note: member '__val' declared 'const' here
+Linux Device Drivers 2nd edition states:
+"Normally, a wake_up call can cause an immediate reschedule to happen,
+meaning that other processes might run before wake_up returns."
+... which would match the behaviour observed.
 
-  crypto/scatterwalk.c:66:22: error: default initialization of an object of type 'struct scatter_walk' with const member leaves the object uninitialized [-Werror,-Wdefault-const-init-field-unsafe]
-     66 |         struct scatter_walk walk;
-        |                             ^
-  include/crypto/algapi.h:112:15: note: member 'addr' declared 'const' here
-    112 |                 void *const addr;
-        |                             ^
+Change to keeping two krefs on each request.  One for the caller, and
+one for xenbus_thread.  Each will kref_put() when finished, and the last
+will free it.
 
-  fs/hugetlbfs/inode.c:733:24: error: default initialization of an object of type 'struct vm_area_struct' with const member leaves the object uninitialized [-Werror,-Wdefault-const-init-field-unsafe]
-    733 |         struct vm_area_struct pseudo_vma;
-        |                               ^
-  include/linux/mm_types.h:803:20: note: member 'vm_flags' declared 'const' here
-    803 |                 const vm_flags_t vm_flags;
-        |                                  ^
+This use of kref matches the description in
+Documentation/core-api/kref.rst
 
-Silencing the instances from typecheck.h is difficult because '= {}' is
-not available in older but supported compilers and '= {0}' would cause
-warnings about a literal 0 being treated as NULL. While it might be
-possible to come up with a local hack to silence the warning for
-clang-21+, it may not be worth it since -Wuninitialized will still
-trigger if an uninitialized const variable is actually used.
-
-In all audited cases of the "field" variant of the warning, the members
-are either not used in the particular call path, modified through other
-means such as memset() / memcpy() because the containing object is not
-const, or are within a union with other non-const members.
-
-Since this warning does not appear to have a high signal to noise ratio,
-just disable it.
-
+Link: https://lore.kernel.org/xen-devel/ZO0WrR5J0xuwDIxW@mail-itl/
+Reported-by: "Marek Marczykowski-Górecki" <marmarek@invisiblethingslab.com>
+Fixes: fd8aa9095a95 ("xen: optimize xenbus driver for multiple concurrent xenstore accesses")
 Cc: stable@vger.kernel.org
-Link: https://github.com/llvm/llvm-project/commit/576161cb6069e2c7656a8ef530727a0f4aefff30 [1]
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Closes: https://lore.kernel.org/CA+G9fYuNjKcxFKS_MKPRuga32XbndkLGcY-PVuoSwzv6VWbY=w@mail.gmail.com/
-Reported-by: Marcus Seyfarth <m.seyfarth@gmail.com>
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2088
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
 ---
-Changes in v2:
-- Disable -Wdefault-const-init-var-unsafe as well, as '= {}' does not
-  work in typecheck() for all supported compilers and it may not be
-  worth a local hack.
-- Link to v1: https://lore.kernel.org/r/20250501-default-const-init-clang-v1-0-3d2c6c185dbb@kernel.org
----
- scripts/Makefile.extrawarn | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+Kinda RFC-ish as I don't know if it fixes Marek's issue.  This does seem
+like the correct approach if we are seeing req free()ed out from under
+xenbus_thread.
 
-diff --git a/scripts/Makefile.extrawarn b/scripts/Makefile.extrawarn
-index d88acdf40855..fd649c68e198 100644
---- a/scripts/Makefile.extrawarn
-+++ b/scripts/Makefile.extrawarn
-@@ -37,6 +37,18 @@ KBUILD_CFLAGS += -Wno-gnu
- # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=111219
- KBUILD_CFLAGS += $(call cc-disable-warning, format-overflow-non-kprintf)
- KBUILD_CFLAGS += $(call cc-disable-warning, format-truncation-non-kprintf)
-+
-+# Clang may emit a warning when a const variable, such as the dummy variables
-+# in typecheck(), or const member of an aggregate type are not initialized,
-+# which can result in unexpected behavior. However, in many audited cases of
-+# the "field" variant of the warning, this is intentional because the field is
-+# never used within a particular call path, the field is within a union with
-+# other non-const members, or the containing object is not const so the field
-+# can be modified via memcpy() / memset(). While the variable warning also gets
-+# disabled with this same switch, there should not be too much coverage lost
-+# because -Wuninitialized will still flag when an uninitialized const variable
-+# is used.
-+KBUILD_CFLAGS += $(call cc-disable-warning, default-const-init-unsafe)
- else
+ drivers/xen/xenbus/xenbus.h              |  2 ++
+ drivers/xen/xenbus/xenbus_comms.c        |  9 ++++-----
+ drivers/xen/xenbus/xenbus_dev_frontend.c |  2 +-
+ drivers/xen/xenbus/xenbus_xs.c           | 18 ++++++++++++++++--
+ 4 files changed, 23 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/xen/xenbus/xenbus.h b/drivers/xen/xenbus/xenbus.h
+index 13821e7e825e..9ac0427724a3 100644
+--- a/drivers/xen/xenbus/xenbus.h
++++ b/drivers/xen/xenbus/xenbus.h
+@@ -77,6 +77,7 @@ enum xb_req_state {
+ struct xb_req_data {
+ 	struct list_head list;
+ 	wait_queue_head_t wq;
++	struct kref kref;
+ 	struct xsd_sockmsg msg;
+ 	uint32_t caller_req_id;
+ 	enum xsd_sockmsg_type type;
+@@ -103,6 +104,7 @@ int xb_init_comms(void);
+ void xb_deinit_comms(void);
+ int xs_watch_msg(struct xs_watch_event *event);
+ void xs_request_exit(struct xb_req_data *req);
++void xs_free_req(struct kref *kref);
  
- # gcc inanely warns about local variables called 'main'
-
----
-base-commit: 92a09c47464d040866cf2b4cd052bc60555185fb
-change-id: 20250430-default-const-init-clang-b6e21b8d03b6
-
-Best regards,
+ int xenbus_match(struct device *_dev, const struct device_driver *_drv);
+ int xenbus_dev_probe(struct device *_dev);
+diff --git a/drivers/xen/xenbus/xenbus_comms.c b/drivers/xen/xenbus/xenbus_comms.c
+index e5fda0256feb..82df2da1b880 100644
+--- a/drivers/xen/xenbus/xenbus_comms.c
++++ b/drivers/xen/xenbus/xenbus_comms.c
+@@ -309,8 +309,8 @@ static int process_msg(void)
+ 			virt_wmb();
+ 			req->state = xb_req_state_got_reply;
+ 			req->cb(req);
+-		} else
+-			kfree(req);
++		}
++		kref_put(&req->kref, xs_free_req);
+ 	}
+ 
+ 	mutex_unlock(&xs_response_mutex);
+@@ -386,14 +386,13 @@ static int process_writes(void)
+ 	state.req->msg.type = XS_ERROR;
+ 	state.req->err = err;
+ 	list_del(&state.req->list);
+-	if (state.req->state == xb_req_state_aborted)
+-		kfree(state.req);
+-	else {
++	if (state.req->state != xb_req_state_aborted) {
+ 		/* write err, then update state */
+ 		virt_wmb();
+ 		state.req->state = xb_req_state_got_reply;
+ 		wake_up(&state.req->wq);
+ 	}
++	kref_put(&state.req->kref, xs_free_req);
+ 
+ 	mutex_unlock(&xb_write_mutex);
+ 
+diff --git a/drivers/xen/xenbus/xenbus_dev_frontend.c b/drivers/xen/xenbus/xenbus_dev_frontend.c
+index 46f8916597e5..f5c21ba64df5 100644
+--- a/drivers/xen/xenbus/xenbus_dev_frontend.c
++++ b/drivers/xen/xenbus/xenbus_dev_frontend.c
+@@ -406,7 +406,7 @@ void xenbus_dev_queue_reply(struct xb_req_data *req)
+ 	mutex_unlock(&u->reply_mutex);
+ 
+ 	kfree(req->body);
+-	kfree(req);
++	kref_put(&req->kref, xs_free_req);
+ 
+ 	kref_put(&u->kref, xenbus_file_free);
+ 
+diff --git a/drivers/xen/xenbus/xenbus_xs.c b/drivers/xen/xenbus/xenbus_xs.c
+index d32c726f7a12..dcf9182c8451 100644
+--- a/drivers/xen/xenbus/xenbus_xs.c
++++ b/drivers/xen/xenbus/xenbus_xs.c
+@@ -112,6 +112,12 @@ static void xs_suspend_exit(void)
+ 	wake_up_all(&xs_state_enter_wq);
+ }
+ 
++void xs_free_req(struct kref *kref)
++{
++	struct xb_req_data *req = container_of(kref, struct xb_req_data, kref);
++	kfree(req);
++}
++
+ static uint32_t xs_request_enter(struct xb_req_data *req)
+ {
+ 	uint32_t rq_id;
+@@ -237,6 +243,12 @@ static void xs_send(struct xb_req_data *req, struct xsd_sockmsg *msg)
+ 	req->caller_req_id = req->msg.req_id;
+ 	req->msg.req_id = xs_request_enter(req);
+ 
++	/*
++	 * Take 2nd ref.  One for this thread, and the second for the
++	 * xenbus_thread.
++	 */
++	kref_get(&req->kref);
++
+ 	mutex_lock(&xb_write_mutex);
+ 	list_add_tail(&req->list, &xb_write_list);
+ 	notify = list_is_singular(&xb_write_list);
+@@ -261,8 +273,8 @@ static void *xs_wait_for_reply(struct xb_req_data *req, struct xsd_sockmsg *msg)
+ 	if (req->state == xb_req_state_queued ||
+ 	    req->state == xb_req_state_wait_reply)
+ 		req->state = xb_req_state_aborted;
+-	else
+-		kfree(req);
++
++	kref_put(&req->kref, xs_free_req);
+ 	mutex_unlock(&xb_write_mutex);
+ 
+ 	return ret;
+@@ -291,6 +303,7 @@ int xenbus_dev_request_and_reply(struct xsd_sockmsg *msg, void *par)
+ 	req->cb = xenbus_dev_queue_reply;
+ 	req->par = par;
+ 	req->user_req = true;
++	kref_init(&req->kref);
+ 
+ 	xs_send(req, msg);
+ 
+@@ -319,6 +332,7 @@ static void *xs_talkv(struct xenbus_transaction t,
+ 	req->num_vecs = num_vecs;
+ 	req->cb = xs_wake_up;
+ 	req->user_req = false;
++	kref_init(&req->kref);
+ 
+ 	msg.req_id = 0;
+ 	msg.tx_id = t.id;
 -- 
-Nathan Chancellor <nathan@kernel.org>
+2.34.1
 
 
