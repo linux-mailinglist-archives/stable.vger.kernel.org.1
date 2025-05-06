@@ -1,214 +1,147 @@
-Return-Path: <stable+bounces-141780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4403AAC0E7
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 12:07:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9B53AAC0EE
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 12:08:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC2E13B25F6
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 10:06:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D68A23A18CE
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 10:08:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F2712701BD;
-	Tue,  6 May 2025 10:06:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="cE1w5ep6"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B14927467C;
+	Tue,  6 May 2025 10:08:47 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2065.outbound.protection.outlook.com [40.107.96.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 976802472A6;
-	Tue,  6 May 2025 10:06:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.96.65
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746526006; cv=fail; b=HPA6JcxqsxxPeYHV4Nssr2wvPXFXZX6nXMmc0qDsDdCR/9yRGF4mO18nhYUOGUzMWRWhhCA6mGyaj7n9jaPMZJxlARZbVB9ZcBy0TPsgCaPbfTUenC8Jn4Tj+2ZDEUslSVbvkDH4C+5lohpNNZPM8qJtCpq3abJjSEX6kd5BwIk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746526006; c=relaxed/simple;
-	bh=P7w3jPXnhZiwpDh31rAtJDOQ010X3EIUV4QokANwNgU=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=ueIUhW0osf582W98Qpv618Dt+9tzWGCz7KrUfPRrGQ6+Vgfxmrg9rtPYvYWZlAKnk/R9pKQG1TfNBz0QTh1200KGRaqaQggaM+BSekeyeXMpSuwG05dJ3L3VxWD60tyYc7xdHutfa41n1nj/O8NiWu81tyjPEv/uQvBWOKc8r9s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=cE1w5ep6; arc=fail smtp.client-ip=40.107.96.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fA5k1WvWSTCtBmaLTFyIbHUwP0KHOGcYzp6PZTjd82gmIG59+RLe+ymQFA13L0OjRo9aWuaonMw0EVn+5L8B03ZaVjctnn2zqEgNwfENj6V+qpmM256scwVeUYe7hvTOPoGTwawY7fOB//Cs2KQmbKRjPenAm9hhER08smBOM2/Nk5v9qS+wEqjD7lKmIOLy+mO3iUOLUahVMDLrVmC/8l5pM8wtZJq1ExU6g8RDgnrAGO3HJ3yjRXISNYgrwsXreTuLLakzlQVvZyHwq2WXvat2oCk5yxTc8QyAQ4HDpFn3Cmmf/gf56josd8ziwhHi3udF5zDrLUhM6SytIzsjoA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2lBmNv72cl8UOXpMXnWCBM1bG+FONmJJEvZOP8ivuXk=;
- b=JLhlBdltJ8QV2eLLyBnGOnGLF2xiZNFn243j0njK8x/dz3E6rBivuAOJzhLWJ7yf67BWnVANo2t9dX+4Me4Wbtmr9JnpEWPIaeeQ5zIqX+gaXzhIONaQme9KPXyQ6oHN3N8wmFNKnrasFNpSJNPN41LFVybNpnuyi9uRX4o0b3ggHdUVPi/Uo5TbUTL/zvs6IyQzpIx8k6HxHBs3BMMYp530hKWBKURTSIljUVzBKoXvR7pLoFn6S/AhHKlQ0SmpjxA8XYVEPEnLgvgxPB/lgy+kn4/3JERSop3laAn2zFLZUrIroS3duWlMDWrFHrsuy43pGY3z7p9f8k5hiSe4gQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2lBmNv72cl8UOXpMXnWCBM1bG+FONmJJEvZOP8ivuXk=;
- b=cE1w5ep6f1Hm8+MO5d/lv1OCkkjjOJzc+ar3tf6muDMZ/Gy2gSd9jSfsKh4BoBdIULjQ2hUzEd479KFhDpc4wlndgmplUtbUVOwtf9hQZo4EFJwGB4NDZpHyBUCTl/LXt620FWkVuDGYMulSbwtKb975GI75zQcSvCenvq6jFj5GitniWWzrmAv8V/lFcJz2uUvyYzl7hWKh0cR48ok4JITpMwhEEbMECv4sIyBGLsGo0r1gQXz0sOXLo/ApxaIyjGoJCveTCo/VAiIQ93bHNrhckC5DlgLsjRzkfBr8t+VmyCLucJFw+tVDftWcmJS59dNZYIidZcBodWYo1VZqLA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SJ2PR12MB8784.namprd12.prod.outlook.com (2603:10b6:a03:4d0::11)
- by SJ0PR12MB8115.namprd12.prod.outlook.com (2603:10b6:a03:4e3::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.24; Tue, 6 May
- 2025 10:06:40 +0000
-Received: from SJ2PR12MB8784.namprd12.prod.outlook.com
- ([fe80::1660:3173:eef6:6cd9]) by SJ2PR12MB8784.namprd12.prod.outlook.com
- ([fe80::1660:3173:eef6:6cd9%3]) with mapi id 15.20.8699.022; Tue, 6 May 2025
- 10:06:40 +0000
-Message-ID: <ea5f8416-64da-4a26-8706-bc7ace502ad1@nvidia.com>
-Date: Tue, 6 May 2025 11:06:35 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] spi: tegra114: Don't fail set_cs_timing when delays are
- zero
-To: Aaron Kling <webgeek1234@gmail.com>
-Cc: Laxman Dewangan <ldewangan@nvidia.com>, Mark Brown <broonie@kernel.org>,
- Thierry Reding <thierry.reding@gmail.com>,
- Mason Zhang <Mason.Zhang@mediatek.com>, linux-spi@vger.kernel.org,
- linux-tegra@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20250423-spi-tegra114-v1-1-2d608bcc12f9@gmail.com>
- <00b119fb-1cbb-432d-a884-5b33696461e6@nvidia.com>
- <CALHNRZ928KN6ZBDzdGWyabSQw4Hny6F5RdqZ4hBUZosPZtni1A@mail.gmail.com>
-From: Jon Hunter <jonathanh@nvidia.com>
-Content-Language: en-US
-In-Reply-To: <CALHNRZ928KN6ZBDzdGWyabSQw4Hny6F5RdqZ4hBUZosPZtni1A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P123CA0208.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:1a5::15) To SJ2PR12MB8784.namprd12.prod.outlook.com
- (2603:10b6:a03:4d0::11)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B6641F4E34;
+	Tue,  6 May 2025 10:08:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746526126; cv=none; b=sTfuxzsSsaselJfbgxzSuU/g3Quaw2bGxzZMSUmq7WUyQ9dfPO6ajN7N4mSK6t9bUejugZR9nULvN1kas1522dikKdb8Y+qHzeys1+XUtVErCl5a8t32qacfIUDUrH8w9D+k6yk3YJPdpq9/mHNhvg9w/mP68g2QPX1ray5iDNk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746526126; c=relaxed/simple;
+	bh=U/sHJ0rllBZTo4yrsxKaCC6IiisHumKHo3x1yJ7lEeI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ir9NA/mYm+/c9sOQOJHWd3DhI7kXBHBM/anU1fn/Jr/nmqp5r9KhkhcMIMrk9y3wIcimP1v0vxlzuMK6RPvQI4NIQPZs/e1LnWGdkq3pU8aAxxCx0PidmotJpUJi8tYk21ojeNBQYPhBnWw73K6UIzkiOF5ImsBaMTAHO/4ZExA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3F4E2113E;
+	Tue,  6 May 2025 03:08:34 -0700 (PDT)
+Received: from [10.57.93.118] (unknown [10.57.93.118])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 799073F5A1;
+	Tue,  6 May 2025 03:08:40 -0700 (PDT)
+Message-ID: <aa4241ce-02ea-4931-b60c-5ad0deba202d@arm.com>
+Date: Tue, 6 May 2025 11:08:38 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR12MB8784:EE_|SJ0PR12MB8115:EE_
-X-MS-Office365-Filtering-Correlation-Id: a283c9ce-f527-4b74-24fa-08dd8c85b1fb
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|10070799003|366016|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?elE2UzZSdGxJYXNxbmowTEpZOHdBdjEwNVpVL2p1aWI0bnpKRjBaMlhoWWpI?=
- =?utf-8?B?dUVTUkRXRmNmK1dDa1pTS1pobGRsUlJmZ3hiZUV0clRUb0FBTU51YkpUMThO?=
- =?utf-8?B?T0ZVT2cvbThOZkJ3MTRLaVdReTlSN2ZtVjBLaWRTNFJOVisrMEJYR2J6WmlH?=
- =?utf-8?B?cTNzL0RLcjdLM2F4Zkp0TDFwRXVhZFpHNmc2bmJscS93VzA3MHczd2Raamtw?=
- =?utf-8?B?ckZBcVlLNXBZdUtWUWNsa2Ria1IzY2dwQWpSbWR2NWxQYkt1UFJYcGhFeVQ5?=
- =?utf-8?B?djZERG9GMEtoTWoxeXBRc2F2d3JRYk1odHo3bU5jbmJzbWFwdk9idlhxZjVi?=
- =?utf-8?B?WEcrTVRMRHRzZ2hBQlBQT2ZOWXhjaTAybEpqU1VzVHRFMC8zZ2tSV1dJNWRv?=
- =?utf-8?B?dWNlcTM2OVJvTUMwdm1vVVlzaElOTVFxL1NybS8zanRYSjdRZEJEc1ExR2Nh?=
- =?utf-8?B?Wmt2MnNwTjdIZC9nK0tsRzBuTkNSMjhZL1dnWXREekU2Y1VQUlZ4bm51YkQx?=
- =?utf-8?B?Ly9GZU4yRVg1MUMvZk9tTmFVaFkvK3RPREk5VzhtMWpNTndlL1pGcGxHS1hr?=
- =?utf-8?B?L1lYNTVkTHRjUjFCRklIOXV5S2hRV1h1VDFyemQzT1p3dlJLTjAybzNZTnk1?=
- =?utf-8?B?VEs5Ulk0dlJaT1RMaFY3RDlNWmtybWdZeGVvT0F3b1FxUzRPNUVNU3ZoS0NZ?=
- =?utf-8?B?QzFTcVFSM01MVTcvbllKNFpTdGVETy8wM08wdWVIR2FWUEw0S3ZYL2VxTFF5?=
- =?utf-8?B?Rm1IN0xMSGIyYUQ1RVYzejY1bjhyNThadFJjaWZsVzRmejVsalgxam13YzVJ?=
- =?utf-8?B?a2pWRzE4dkpqTmZRdVJ1VStWNDZwbVdHclBtdjdaZjRtQVZEWXNOQnBsVSt3?=
- =?utf-8?B?UlNxeW00dnNpRENhOWJ4dmthZEE4dnh5T005VXNvVERJYTlMMlR1UDd4bUh1?=
- =?utf-8?B?WlZKazY1aXUyeXhiY2tIalhuanM3RkZWV0xpNE1ic2J2TlNrempabmNSZDQz?=
- =?utf-8?B?cktNL2tEL0E0a0xDK1laaGpGT1BkajJjR0VTajhPdnpqM1IwVEgzdWN1ekps?=
- =?utf-8?B?ekZhZWNoN2doNHZhbzRYNFZ5VGNjdVFIY09pRlBmNUJoMTBWYVFWQjlmU0Jw?=
- =?utf-8?B?Q25VMjF2bnMzUldHKzdHVUp3TW01SlNrcGdVcTFRdklxNUhkTGRxREE2WHdi?=
- =?utf-8?B?TGQwRVk4YlI3SGEzV21nalpIek1XNnJZNHgxK3pwMi9lT2RTdEZVbmRvWWVI?=
- =?utf-8?B?YWNtak1ZVnNJZC8xZEVFSkRrTVJhaE4zbTlka0hrRjhLNUVvSHVCZ3YwdDFK?=
- =?utf-8?B?K243Nml1RzVVVkZ4aHFId2tJYytOMzQwTXM1bGNYVlZhMElqYlhURFFyMytF?=
- =?utf-8?B?cTFla1dIZGFSaTJxaWV1RXhVOUdra2xuZjBReGNPRHR3Z1NzRlliU1NWcmdi?=
- =?utf-8?B?TmVaYUFjaCtnQXhibTg0dCtRUU5ZWWFoSkJiVDQxalJ1WENvS3BlY1J1ZzJy?=
- =?utf-8?B?N2pkVFRueng5NjE2TkVQa1pTR0xIZzRZMUFCTWE5Z0NGUHF2MjlaN1F5VmpZ?=
- =?utf-8?B?dmlHZlZIdjBUVWYwRGxKS2xjWFFhOTdFOVVSajJqWHZsUFJ6VXlpTytJM1Fz?=
- =?utf-8?B?aXc1WkpHbGF2OHl6ajVYSEZEVU9oZkpzWEJrbk13UWw4RzNReGloZ0o1eHRp?=
- =?utf-8?B?VkF6UThzeFZLZVFqTWNoN2pYWGd2bzQ1NkYzZVRONGxlWUNjQUc5ZytSN3la?=
- =?utf-8?B?allzVHZnRXJqKzRocTNKUXlCeldnaXc3WktwVjlUayt6NFNyZEdqQURkVEhL?=
- =?utf-8?B?L24xZmtabDVteFJaY0w2OEV4aFpyQmlQNEYwWHJwMjlqcXRiVUhXOVVlSGVZ?=
- =?utf-8?B?d3hmWXhpbmIrUXI1akM2ejZqMDhwNnRZNGR6Z1REQ3VaYWc9PQ==?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR12MB8784.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(366016)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UFFDSUhueVhZOEFyM0ttenltWDJSN3N4ZHV5T0NVcHc3NndMUHdBYjNDSERa?=
- =?utf-8?B?S3RkWHBBeTJYU08zbk05U2ZRM0ZFTkppWlNqV0VmcDF5RDEyVTlaWllVUFFR?=
- =?utf-8?B?Ykl1RGhFVFk5QUtwOGQzK0pURlh3bUh3NVJNT2sxZkhJWktVeGNkUXd1VWxR?=
- =?utf-8?B?d0c3dm1SaDJ0NDFhNmYyeHJxYWxFNEJiL2M3OVJ2R1lyVERsWlNobndZdDRp?=
- =?utf-8?B?UzZrUzZaOFM2V3JxWUkzYW56SUlMdGJYZUtlYytMZ3UvUXR2M0VhMmpidUds?=
- =?utf-8?B?cDVuYkw5dmNHQ0sxUzBiUWRmRk5rWVBsSUV0NndrS3VYM0x6cUgzUXlwWHpR?=
- =?utf-8?B?aHh1R2Q5VU5vTVB0bGFsMWozaGZHbmRzRWpvdTU1UGxJb1p6YWVGbndZSmNP?=
- =?utf-8?B?MnRCMGMyaVdJdUd6WjJGU3ZPbFFRN25ud2ZKbnZhZGcyL01Vc0s5b0tNV0Q2?=
- =?utf-8?B?NTBEUmJTSjZTUlBtcnlieENwcjVCOWtiZVVVYVlVQmlYNDg5Z2YwbUZkMlha?=
- =?utf-8?B?WjJDT05RMzRHbUVXbC8zQVZZYjJZQ2M5SUQreDNJWklpSUJNSzdPUXhGUzBM?=
- =?utf-8?B?SURyVFU4dlpYNHRZSEo3WUdxS1hxa3FncFkzZEdxQ3N5a0FTaUdvQjR6NVpv?=
- =?utf-8?B?UjNBL29NKzB1RURxSllrbGwyamtGa0NSNjVmOGlwWmN6UkRNMklHQzZqck5D?=
- =?utf-8?B?RHFGbHo0NTcydTFsamJYdHRhNDhIbTlyeGVWT2xBSERwUU1qemNNYXlmRlY2?=
- =?utf-8?B?S3l4Y1U4bjYrT1NHY0c4bVVSYmRDNi9sVGdFMFpNbGkvaW5XSEhFWFl5UEhB?=
- =?utf-8?B?SnBFNmFJTlhmeDVTZXNoYmhBQVJkRVd2RXpRdDk3MjRUa3JNVjM4d3lFOUlq?=
- =?utf-8?B?b3pXbjY2T1FTL01TVytDdXhlV0Zlb3p2RnpzeDg5QTl6RFhKYzMyWGU2QndO?=
- =?utf-8?B?bWppT0NHTFRmbDZ2RmJ0WlNMRlJDeGF2eWlxTU5vL0Nudy9TRktUQVozN0g3?=
- =?utf-8?B?NXVJN3BoMHJwbEZ4VWNKelREZ1h3cnR3UXFzQ0tINHlBeVBBOU9nSldvS3B6?=
- =?utf-8?B?cmgxenY4WWhZUGlUK0FvSnN4ZGtNSm43dnQ3cEZiNjF2NUk3U2diYVNtQ2dG?=
- =?utf-8?B?SjBYQy9QWGdVeEFhSFdCbXJoMGVlZ09CRDJvV2hpZDFYc3BVTDRlaVpGNWVY?=
- =?utf-8?B?Ulc4OWVQRjZjcXFnUjJZbVQxeElqTnFPTS9qVjRSRnNrYUUxNHk0Y1cwODZD?=
- =?utf-8?B?QkFiSy9KMDVoZHpUT1B5Z0VpTU5PNW9GcEIvaUZsOEpZS3IzKzlVWko3YmNC?=
- =?utf-8?B?MG1oUTlhbEpoL05vWVdacDNHQ25GNnVrLy9wc2tTQXBQSXlyaSsrbnJ0aFRQ?=
- =?utf-8?B?TzljOHkyRzBtUi9tM1NVMEllUzhIVFVTallwUzdyWEt4aitIWHlKSUhvb0lK?=
- =?utf-8?B?ZytLODFFOVYzY1BFY2FGTkV4c1hOUlYvaE1aWGRtaUdRbkdkU2xlcTY3eEhD?=
- =?utf-8?B?b2lHVnRPVTNKZWxKNUxjb1FxeEdTMnE1ZlJKNmFaSk9lMStQQ3hGdml0QWg1?=
- =?utf-8?B?Z0FCOTV6b0xYUUtuZEFDWG1zTUc3N25ZdlNCODROSStWd0ora3BtYS9MUjRy?=
- =?utf-8?B?VVNTMmlkRkx1OTRLK01Mci8vcTc3MXJ5Vm1KZDF1ZTJYK1FxN1FiT3ZQSHpt?=
- =?utf-8?B?WDNOU25IQzJmMENCUHV0L1dUNjJqMm9LbmxiRkpvdTRYNmNCU09QMDVraUI1?=
- =?utf-8?B?WG5SK2NUWnIwMndsWUNPb1RSNi95bWlFQVIvMnNGOGhwWmhacWdpM1E1cVVt?=
- =?utf-8?B?akNrY1MxakRyT0hReHRTL29vUVdEVm12c2lNRjF2NlFOcVQ4bWc1Q0g5VVpj?=
- =?utf-8?B?Z0Vkcm5xdnpMYjhEcFYvWXVIczRJYjlybDhmSUVTcEZUNVNpQWVVVWJTcUFT?=
- =?utf-8?B?ZlB4ZmVIcWNZRVJtOTBYNHJsbTlMRFp0eERiSk5QUXQ0dHZRdkU0YzhURVgv?=
- =?utf-8?B?ek9iSmhENjlFdHBTZVFqOWZhQ3YzUE84OE9SY0pmNEtnSGMyK0NYNTVQOGg5?=
- =?utf-8?B?cWFYZ3ZJdmlZM1BLZmo2eTFaVzFUOERjY29zOHU5SUQ2SHlJR1RuVXBZb1I0?=
- =?utf-8?B?T1dReXRTVStqQzNYRGNYc3hZUVpUM1JqMjBtWlRVV3NDcE9RQVFCOVh0anN1?=
- =?utf-8?Q?4k80ricdtgoATbl/zFRUp9v5LzZsRggKBvZRcL9wkiIe?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a283c9ce-f527-4b74-24fa-08dd8c85b1fb
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR12MB8784.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 May 2025 10:06:40.3703
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: PRkiRHP6GT7cjD0p4lfgadboHpxa3cB7lRBcjBHiqriyPFYab3EGVxDW1MLWGBUqnVdn/8lPnNecbQd8qplogQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB8115
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] arm64/cpufeature: annotate arm64_use_ng_mappings with
+ ro_after_init to prevent wrong idmap generation
+Content-Language: en-GB
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, will@kernel.org,
+ nathan@kernel.org, nick.desaulniers+lkml@gmail.com, morbo@google.com,
+ justinstitt@google.com, broonie@kernel.org, maz@kernel.org,
+ oliver.upton@linux.dev, joey.gouly@arm.com,
+ shameerali.kolothum.thodi@huawei.com, james.morse@arm.com,
+ hardevsinh.palaniya@siliconsignals.io, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, llvm@lists.linux.dev, stable@vger.kernel.org
+References: <20250502180412.3774883-1-yeoreum.yun@arm.com>
+ <174626735218.2189871.10298017577558632540.b4-ty@arm.com>
+ <aBYkGJmfWDZHBEzp@arm.com> <aBZ7P3/dUfSjB0oV@e129823.arm.com>
+ <aBkL-zUpbg7_gCEp@arm.com> <aBnDqvY5c6a3qQ4H@e129823.arm.com>
+ <fbfded61-cfe2-4416-9098-ef39ef3e2b62@arm.com>
+ <CAMj1kXFAYDeCgtPspQubkY688tcqwCMzCD+jEXb6Ea=9mBcdcQ@mail.gmail.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <CAMj1kXFAYDeCgtPspQubkY688tcqwCMzCD+jEXb6Ea=9mBcdcQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-
-On 06/05/2025 10:50, Aaron Kling wrote:
-
-...
-
->>> -     if (setup->unit != SPI_DELAY_UNIT_SCK ||
->>> -         hold->unit != SPI_DELAY_UNIT_SCK ||
->>> -         inactive->unit != SPI_DELAY_UNIT_SCK) {
->>> +     if ((setup->unit && setup->unit != SPI_DELAY_UNIT_SCK) ||
->>> +         (hold->unit && hold->unit != SPI_DELAY_UNIT_SCK) ||
->>> +         (inactive->unit && inactive->unit != SPI_DELAY_UNIT_SCK)) {
+On 06/05/2025 10:41, Ard Biesheuvel wrote:
+> On Tue, 6 May 2025 at 10:16, Ryan Roberts <ryan.roberts@arm.com> wrote:
 >>
->> The above does not look correct to me. For example, if 'setup->unit' is
->> 0, this means that the unit is 'SPI_DELAY_UNIT_USECS' and does not
->> indicate that the delay is 0.
+>> On 06/05/2025 09:09, Yeoreum Yun wrote:
+>>> Hi Catalin,
+>>>
+>>>> On Sat, May 03, 2025 at 09:23:27PM +0100, Yeoreum Yun wrote:
+>>>>> Hi Catalin,
+>>>>>
+>>>>>> On Sat, May 03, 2025 at 11:16:12AM +0100, Catalin Marinas wrote:
+>>>>>>> On Fri, 02 May 2025 19:04:12 +0100, Yeoreum Yun wrote:
+>>>>>>>> create_init_idmap() could be called before .bss section initialization
+>>>>>>>> which is done in early_map_kernel().
+>>>>>>>> Therefore, data/test_prot could be set incorrectly by PTE_MAYBE_NG macro.
+>>>>>>>>
+>>>>>>>> PTE_MAYBE_NG macro set NG bit according to value of "arm64_use_ng_mappings".
+>>>>>>>> and this variable places in .bss section.
+>>>>>>>>
+>>>>>>>> [...]
+>>>>>>>
+>>>>>>> Applied to arm64 (for-next/fixes), with some slight tweaking of the
+>>>>>>> comment, thanks!
+>>>>>>>
+>>>>>>> [1/1] arm64/cpufeature: annotate arm64_use_ng_mappings with ro_after_init to prevent wrong idmap generation
+>>>>>>>       https://git.kernel.org/arm64/c/12657bcd1835
+>>>>>>
+>>>>>> I'm going to drop this for now. The kernel compiled with a clang 19.1.5
+>>>>>> version I have around (Debian sid) fails to boot, gets stuck early on:
+>>>>>>
+>>>>>> $ clang --version
+>>>>>> Debian clang version 19.1.5 (1)
+>>>>>> Target: aarch64-unknown-linux-gnu
+>>>>>> Thread model: posix
+>>>>>> InstalledDir: /usr/lib/llvm-19/bin
+>>>>>>
+>>>>>> I didn't have time to investigate, disassemble etc. I'll have a look
+>>>>>> next week.
+>>>>>
+>>>>> Just for your information.
+>>>>> When I see the debian package, clang 19.1.5-1 doesn't supply anymore:
+>>>>>  - https://ftp.debian.org/debian/pool/main/l/llvm-toolchain-19/
+>>>>>
+>>>>> and the default version for sid is below:
+>>>>>
+>>>>> $ clang-19 --version
+>>>>> Debian clang version 19.1.7 (3)
+>>>>> Target: aarch64-unknown-linux-gnu
+>>>>> Thread model: posix
+>>>>> InstalledDir: /usr/lib/llvm-19/bin
+>>>>>
+>>>>> When I tested with above version with arm64-linux's for-next/fixes
+>>>>> including this patch. it works well.
+>>>>
+>>>> It doesn't seem to be toolchain related. It fails with gcc as well from
+>>>> Debian stable but you'd need some older CPU (even if emulated, e.g.
+>>>> qemu). It fails with Cortex-A72 (guest on Raspberry Pi 4) but not
+>>>> Neoverse-N2. Also changing the annotation from __ro_after_init to
+>>>> __read_mostly also works.
 >>
->> Shouldn't the above be ...
+>> I think this is likely because __ro_after_init is also "ro before init" - i.e.
+>> if you try to write to it in the PI code an exception is generated due to it
+>> being mapped RO. Looks like early_map_kernel() is writiing to it.
 >>
->>    if ((setup && setup->unit != SPI_DELAY_UNIT_SCK) ||
->>        (hold && hold->unit != SPI_DELAY_UNIT_SCK) ||
->>        (inactive && inactive->unit != SPI_DELAY_UNIT_SCK)) {
 > 
-> This is what the code looked like before 373c36b [0], which dropped
-> that check because the pointers can never be NULL. Should this check
-> if ->value is not 0 instead?
+> Indeed.
+> 
+>> I've noticed a similar problem in the past and it would be nice to fix it so
+>> that PI code maps __ro_after_init RW.
+>>
+> 
+> The issue is that the store occurs via the ID map, which only consists
+> of one R-X and one RW- section. I'm not convinced that it's worth the
+> hassle to relax this.
+> 
+> If moving the variable to .data works, then let's just do that.
 
-What the code does now does not match what you describe and does not 
-appear to be correct. Yes checking ->value is not 0 would make sense.
+Yeah, fair enough.
 
-Jon
-
--- 
-nvpublic
 
 
