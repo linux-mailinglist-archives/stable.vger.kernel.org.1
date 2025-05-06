@@ -1,124 +1,131 @@
-Return-Path: <stable+bounces-141819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC4F2AAC715
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 15:56:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95347AAC7B3
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 16:19:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E68C43AC154
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 13:56:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A02FE4C250D
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 14:19:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E74CF280333;
-	Tue,  6 May 2025 13:56:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5731280CD5;
+	Tue,  6 May 2025 14:19:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cmpxchg-org.20230601.gappssmtp.com header.i=@cmpxchg-org.20230601.gappssmtp.com header.b="xiv0V3pp"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dJ6es0rA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 403E627585E
-	for <stable@vger.kernel.org>; Tue,  6 May 2025 13:56:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D54AA32
+	for <stable@vger.kernel.org>; Tue,  6 May 2025 14:19:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746539815; cv=none; b=M4NLM+fX6MMiIF4otlb7477KjwLSkPRsSjUHOs/a4MbvI2mF66Otq1kNtPlOJ2RqlESvcSmcrbKCflH92ADmTTxJgHXnF7yixlfQ8Ss70UbAi5WgMTSq/3yB5VGcqJmlt1htzHMXn8eODQ7UxZIlioXyUcqbv3/jGiYlpqCI2gc=
+	t=1746541169; cv=none; b=r3UORQmu0cuNnfJ/RVgbbiTlkr9TTqbr6h5pNr7pSlXcZ6mmrb1fvhyg7We31cVav3FApanqQ+RflLScsPo1aXdG+7yYqXoEsrkGlwMO58R4TwIfD/rv8hFfV5COnzmaHilOJxm4Htww1F0XUqHwkiH6ueeA9qPQD2SvS3F8vjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746539815; c=relaxed/simple;
-	bh=diuTHdg9wH86je35PAf/oPFW74sGs6JKnCKwxE06PsI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FDn8jdORNw9HKk9DGdzPNh1h5lp549nBypRiWlGNtWnhZyBJmt4Q/Apwekn0CNDRTv9ewDhBHmOVeX9bQp0QEilm1BAqa0mXk3TiLnoIQqV7hilKKVBwlFRzoTWZw5NMqaWJLtwuXGAOkAOlO6+iLXr7i8C091Jh3nNMaHAq71c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmpxchg.org; spf=pass smtp.mailfrom=cmpxchg.org; dkim=pass (2048-bit key) header.d=cmpxchg-org.20230601.gappssmtp.com header.i=@cmpxchg-org.20230601.gappssmtp.com header.b=xiv0V3pp; arc=none smtp.client-ip=209.85.160.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmpxchg.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmpxchg.org
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-4775ce8a4b0so38828261cf.1
-        for <stable@vger.kernel.org>; Tue, 06 May 2025 06:56:52 -0700 (PDT)
+	s=arc-20240116; t=1746541169; c=relaxed/simple;
+	bh=P5cWlcqMe7sqwFBe093l1POkMV++OgREl9gU7mM1e/E=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=WnH5jHzMrHVOZGwFnP1VWcl/YnUmPV7crsODHiugd4yKATrQ9wVfLRyEXB0LaZ8u3GXV4H33Fu35XNPm6AXwDvQ7xARNsNbzAcjm6zl2pswWN2yg6N4VzhF6SViy3DvK90JnoD0hWPEerXOD+n3pOLKjYmYkqYtEBFUmPXstnaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dJ6es0rA; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2ff784dc055so5161142a91.1
+        for <stable@vger.kernel.org>; Tue, 06 May 2025 07:19:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1746539812; x=1747144612; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=aN2vCmnMOiTJRd2NcNvbHVRm+Ax5/gKsVJUXvhmTYu8=;
-        b=xiv0V3pp0l/1/UgPQaNQXiGsXnKvvgJ14lIIF1YxYa+blDzmEonvgWuC7fw7FdRA2O
-         l0K57/DMpbJs9jNNp1DlgTXF3MuqZJhNO599cYfhpdj9Hj4eM+E7xs72M8KpErz9DFV8
-         FbNgPc83/9YQuncqvCvMcjvEO5I5qs2Fuaqntdjeuc4MIruAGx4giiPxKrLC+avFvZHl
-         gha1Ww+MP11r29vK4pIzXkNsHfhDGNH+4nmqgblgdITSZMWaa5R+mFsi/TKPZSUsENG6
-         59BcYKnRjLbEnmBP3h9TFZJqRiNuLLDwfDZlArnGw+5vHe4QEQOMeB9xZj3RSDPTQBom
-         JuSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746539812; x=1747144612;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1746541167; x=1747145967; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=aN2vCmnMOiTJRd2NcNvbHVRm+Ax5/gKsVJUXvhmTYu8=;
-        b=qjLerfaIC2VpGvGCj1t+dN7ZhApcslW/a3F+FPn41S9UDEk62IMeOqt4J5oXrbD6h7
-         snYsWMSYwd99qHX6eBIvvSvIiA6xb5f0ps4d0JGZIFfzBAJ4B4w2jhFGVAtvya4Yuyof
-         ysnk00dcfHHFIDqLW1Cqf12O5bwm05122P4N3caRP7p15dlfc+r16h11jHsH+MttPhrJ
-         DFExel+xEdOtzPYIVyJ2mi+DtxLmtLrpezjGeI2jWRI4j2FEQliPM8MyTGPMFjsF9SmN
-         gIM8R8X1dzg6tib3WZrPE2OftaL+4wmv5jnYEWdWizSdV9mNPIBOTmnCWB2tQnVrXT2d
-         go2A==
-X-Forwarded-Encrypted: i=1; AJvYcCXOLDOHm/BFoqF+Rk/flQ4dZDrDlSoVI7rXAz0ezBtdPGTSt79GuR9Fgq+na4GPaxpqFIlAkyI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxViamr1qXagYK/L4pv2nbMhYP2tcrbEF1PdLh1T9PmZehJ3bH6
-	UpFt065RcCyf30qh33z4u2+tSYDMB46x7YUgf6CfffP+ZcoSuDGcvBseGlKk7Dg=
-X-Gm-Gg: ASbGncuy63CZNY8Nm+5mENpn7Czf4HcnUteN+z5V6GzstqfgFex6DvcUFWIMXTfLckt
-	Zt7YecnnyIVOu8WSRpjwbfolI3I0pqG9rb0TBh+SNjjlsoPBblYLk9ahm/RaY0c6vfcruB9AXut
-	JQ25QIqPBQDV0J7APOMJOUDsYJj6mMKpH58i19QI7l/MNQq6uJIy2WPunRyqbHNv7YDIZGGYicv
-	GQs0gE+ncfZQR/k10emBjLiapMM11n4DexO4MWXXQNWhLhb3FMY40WLG4tJrnoWEgA665WzDOin
-	/+DldkaESPbiRrbFaDMnGVP2bMnWtUPXBdILQnI=
-X-Google-Smtp-Source: AGHT+IEf4MiWHFWj8hzchKZtX+h2HhYFuraa3E7oJqsE/qGwLNoxGmCiP394t/DNB9Ph3/h3uXyTVg==
-X-Received: by 2002:ac8:5dca:0:b0:476:add4:d2c0 with SMTP id d75a77b69052e-48e00e67234mr190077851cf.35.1746539811949;
-        Tue, 06 May 2025 06:56:51 -0700 (PDT)
-Received: from localhost ([2603:7000:c01:2716:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with UTF8SMTPSA id d75a77b69052e-48b98721c92sm73164021cf.55.2025.05.06.06.56.51
+        bh=Wpwk/YLvaNxDwtsILY3CxEERY5II1nagDQSEwVYT72g=;
+        b=dJ6es0rA0brsesx+PQqZY55sMfkNEBY2CvNo9fBFUUP1J2VKOwdKNQNHRDbAPEbys5
+         zgjy+64az5op+wYNpi2SyfeSj0jY3tPTqAg/ZSc/U1hzEBsR3ssULB+52E6scvvA+cHa
+         S32vLFlDV2vVWFw8ECOd++GzJK0okXTwy5LE/vmLdGUh23kP/69YlX8+kZFFBPP3QjNX
+         +oJQV+klmXcCYpKHksw2sh12+TGXJLFPnCqOH4qZKVqdFbV57jVxkDxRxpH1y4KEBzU4
+         1ovMdCcXDbt1SVN/p5R10uqxi2f1HdFozeWwcB64NJhb8xoVpvf7GuMEJMu2L9oBdD3L
+         iX9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746541167; x=1747145967;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Wpwk/YLvaNxDwtsILY3CxEERY5II1nagDQSEwVYT72g=;
+        b=JshaZnX5Ag+yQbnmaFU+BSGR2ZWvcjTwDiXSwF444+97/ZosjA/PAroAybq88BqgmU
+         jarSCgE7QOumxxRMUfXMlK4szgbze+6Kxh00Mb+JeVIWDfEgB9C+1gtdWt9UXDDf+d28
+         FKQVwVvEIL02mAnY+2/65JMryOA+LATWndFiNkliozP3YRrOuu5ele88zVGAESWNO4sF
+         n+y3g7Xzq64fcqtk16HM0vVWdqBFHr4x6wXPI/17fU6+KB4tV+5v3TMuG9YBypEk6L2H
+         Bg2XRzRuSuQUbLp0gisJmg4Z7d+cW+8V5zpcfAXEACYqN9tNHEEhN8sTcJBRJLE3l307
+         NYiw==
+X-Gm-Message-State: AOJu0YwJAHSBK880QEM5vIGFlpPfyFgPJakUCv6yDYTrrzxiaa5ADIPA
+	b+fuywmI/Lf9aubCUNKtnUFV6upSrhskoko7DwckreQd4sCGKiUNZLQF8g==
+X-Gm-Gg: ASbGncvNhVpcOxnJpdWYZXlkLmETZg3tq6AncrllXmgxOCYBICO8dNefAG0m84xg5Gu
+	jGV/mFhVOqU+VjtdqbTJ+kdYof8hCwTO77gV2iUmt+1nG3Lu+QXIn6Tx4sgM5vYZj+LKxexUZAa
+	XlviMxa8h+BqsrUjp4ldoXjV/7VOngtLzo7LkUfGeTRfoNGXfMcA8CXRN/OKs+zLmA9KceM/KXZ
+	2AGY10jA1yayq7kydXgwnGFks0R3iycU0wbQCKkmk3Fmx3nZdJNx1KNWc3zXoQ1klPy8qOpbBCN
+	kgfhO0NwkLzadaPyFymxFFr1QGvRdD+b4lhuuUdy6NVDL3bcyQ==
+X-Google-Smtp-Source: AGHT+IGaE2D3hfr3dqRSADUvmJmrXHhYUhcFCuT0rtk4W2ZciVf31ps3aVj8dt+VWb6cykQAHNxh9A==
+X-Received: by 2002:a17:90b:1e4b:b0:2ff:4a8d:74f8 with SMTP id 98e67ed59e1d1-30a7dabd631mr4010020a91.6.1746541166863;
+        Tue, 06 May 2025 07:19:26 -0700 (PDT)
+Received: from localhost.localdomain ([181.91.133.137])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-30a81015002sm1266750a91.0.2025.05.06.07.19.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 May 2025 06:56:51 -0700 (PDT)
-Date: Tue, 6 May 2025 09:56:50 -0400
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Minchan Kim <minchan@kernel.org>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	Vitaly Wool <vitaly.wool@konsulko.se>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, Igor Belousov <igor.b@beldev.am>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] zsmalloc: don't underflow size calculation in
- zs_obj_write()
-Message-ID: <20250506135650.GA276050@cmpxchg.org>
-References: <20250504110650.2783619-1-senozhatsky@chromium.org>
+        Tue, 06 May 2025 07:19:26 -0700 (PDT)
+From: Kurt Borja <kuurtb@gmail.com>
+To: stable@vger.kernel.org
+Cc: Kurt Borja <kuurtb@gmail.com>,
+	Romain THERY <romain.thery@ik.me>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.14.y] platform/x86: alienware-wmi-wmax: Add support for Alienware m15 R7
+Date: Tue,  6 May 2025 11:19:21 -0300
+Message-ID: <20250506141921.19467-1-kuurtb@gmail.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <2025050557-trousers-boogeyman-3f93@gregkh>
+References: <2025050557-trousers-boogeyman-3f93@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250504110650.2783619-1-senozhatsky@chromium.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Sun, May 04, 2025 at 08:00:22PM +0900, Sergey Senozhatsky wrote:
-> Do not mix class->size and object size during offsets/sizes
-> calculation in zs_obj_write().  Size classes can merge into
-> clusters, based on objects-per-zspage and pages-per-zspage
-> characteristics, so some size classes can store objects
-> smaller than class->size.  This becomes problematic when
-> object size is much smaller than class->size - we can determine
-> that object spans two physical pages, because we use a larger
-> class->size for this, while the actual object is much smaller
-> and fits one physical page, so there is nothing to write to
-> the second page and memcpy() size calculation underflows.
-> 
-> We always know the exact size in bytes of the object
-> that we are about to write (store), so use it instead of
-> class->size.
-> 
-> Reported-by: Igor Belousov <igor.b@beldev.am>
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Extend thermal control support to Alienware m15 R7.
 
-Could you please include user-visible effects and circumstances that
-Igor reported? Crash, backtrace etc, 16k pages etc. in the changelog?
+Cc: stable@vger.kernel.org
+Tested-by: Romain THERY <romain.thery@ik.me>
+Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+Link: https://lore.kernel.org/r/20250419-m15-r7-v1-1-18c6eaa27e25@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+(cherry picked from commit 246f9bb62016c423972ea7f2335a8e0ed3521cde)
+Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+---
+ drivers/platform/x86/dell/alienware-wmi.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-This type of information helps tremendously with backports, or finding
-this patch when encountering the issue in the wild.
+diff --git a/drivers/platform/x86/dell/alienware-wmi.c b/drivers/platform/x86/dell/alienware-wmi.c
+index 1426ea8e4f19..1a711d395d2d 100644
+--- a/drivers/platform/x86/dell/alienware-wmi.c
++++ b/drivers/platform/x86/dell/alienware-wmi.c
+@@ -250,6 +250,15 @@ static const struct dmi_system_id alienware_quirks[] __initconst = {
+ 		},
+ 		.driver_data = &quirk_asm201,
+ 	},
++	{
++		.callback = dmi_matched,
++		.ident = "Alienware m15 R7",
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Alienware"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware m15 R7"),
++		},
++		.driver_data = &quirk_x_series,
++	},
+ 	{
+ 		.callback = dmi_matched,
+ 		.ident = "Alienware m16 R1",
+-- 
+2.49.0
 
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
 
