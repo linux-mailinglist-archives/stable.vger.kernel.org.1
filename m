@@ -1,173 +1,169 @@
-Return-Path: <stable+bounces-141829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDC39AAC8B8
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 16:52:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B7A5AAC8D1
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 16:56:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1644981360
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 14:52:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E6CE3AEB63
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 14:56:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CAAD2836A0;
-	Tue,  6 May 2025 14:52:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEE5B28315A;
+	Tue,  6 May 2025 14:56:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ps6v2G2y"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FODUeyIm"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ABFF283C94;
-	Tue,  6 May 2025 14:51:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC83281500;
+	Tue,  6 May 2025 14:56:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746543120; cv=none; b=Q5EPnU2txge/QWPSwRC3QeNcnGb4Dv74ttvRt8KPxToofaNIZc0ewDbDB3oPV1l491/rJdY0dr5b+IEwshLRLfTLW8tJK1U19xccA24pyBzW8pEe3ViOi+xiTfNDg3DXAP/Eweatbli0un84juElxs/Cg7IAy+cor3l8LaCRXrU=
+	t=1746543400; cv=none; b=kRQr7R1uVle233j4J9Z2fbfk6/v5BDa9Yie4+qtJAAL9gKcNddF2QrRjpsBZHaOqxdzq9RB7tNApibyZ7NI+pyjuKSUizGJFOzrQ6px1N8SBP5Y121/Dj+jgpmCrYW+kAx7LuLSrGyXt3zKt1PNp92/brRVypvK69IC/CgHGKLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746543120; c=relaxed/simple;
-	bh=Hb4Vesw8ac4tapJfkHAXpZUAAz58TBZuC75dUD0W7ZU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gEdB/CMZdavYQCm/TyOiowR6uPThw6fdnZZ6elIpgb6sethHfEfjXwYcobTS3YuntlbbHCRmO+MPWQsT6gYixV82yg0fqgqDE1slrmVKLr11HsaMdcqYt23JigCRfd8KBwLkrdGWjBkDtHuMF0FG91wB2DiLGFFRYarTGhEfZss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ps6v2G2y; arc=none smtp.client-ip=209.85.216.41
+	s=arc-20240116; t=1746543400; c=relaxed/simple;
+	bh=xRXc4wu/bRY/Kf07/sLHF46eWd3sAL/KwF1CNA0EQoM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hLKtzaFHLtd8WcQpL2PjnLniJeKcrJlZf6Yfagagh2hvRc79uHeUPbYILRO6/5n8MnXi8STxK+2hXIKx3dMS62QMBq+Sh+jLZTU2oMoZHFJLBZwl0ToobahHcHN0kx/t1y+vVa/Y4xis8lhTGMxKEVgIgaZF4El4Qztdoi5v41Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FODUeyIm; arc=none smtp.client-ip=209.85.167.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-3054e2d13a7so414175a91.2;
-        Tue, 06 May 2025 07:51:57 -0700 (PDT)
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5499cca5ddbso765511e87.1;
+        Tue, 06 May 2025 07:56:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746543117; x=1747147917; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hrvQLl0wy1XN7F1KXa2GtXnCc3OPj79LA4bOD8IjDg4=;
-        b=Ps6v2G2yBtsq4OrlJ3Brw2haaiS0trd8PNe+/3JuFAuBI9gIF7Qq/YKuYLgiJk6dlX
-         6CCNj5dAZa28ltHXaP04wCDVhbCi8CK48LiDTvItsYE8wWyitx1vMsfhWY+VoUeWbK4R
-         TJ80/EHqDcjLdO9Sa5RS3XetL5EBFU0eCHpaM4PK92Uf9Rg6/QkOWR79zO1h0boEJt8H
-         SsD70XH42xCufP5uHX0XGp8J0jVt5B5KJ7vscyhT/LmKe57shELudfXxSIX2gMeYfjWe
-         C76o/NcbopKNEzJO2rY5l1cJPBSESSPaBBtKY6A5+EQSe9BFIGDRaFYqvpZkRVtSGyDw
-         DmCw==
+        d=gmail.com; s=20230601; t=1746543397; x=1747148197; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=zGl6sg7j0zxSLThVkHoNmDxdriQ/RPO7fP3JuwQs5eI=;
+        b=FODUeyImSfmTywq6d08n426ChkyidgezkWq2/y3OQEyfaWrlEDHf4zaRQ7qPIf2Go9
+         eXPVI2lBdoTKhCfX2L1WJASCAm5ZBSNqFntVjUQQaPGh1SoW4a7BefCVsVI26/Unx4/t
+         toQjFOjgnH6dnwHYyGoAEy8qqkzEORdYrKRmrGeYrgghMHhxI9OTNP0t5F2Tly5WRN2O
+         uRnYxc323dmRybyIiHoKtHEi79BSuHF+/gY4xsQR8R3CKamE78TGM2tAWTTjvWUUYMoh
+         DGO1BD3LKUgG96aMFK6j+wHrDkxC3Ca3+CTo+IrgNS9X7bh7Bui4q2IIUsutAqhEKFVQ
+         STUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746543117; x=1747147917;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hrvQLl0wy1XN7F1KXa2GtXnCc3OPj79LA4bOD8IjDg4=;
-        b=IJfPKl7OfZkb3fc4mfc9etA+jBKUDK9PDbvbRQ5tyMco8pbKdyJOKA47KUOca1ZmE7
-         UTidOb/kMLJYS/wh5pAcuzkVxnU5QG5d7Uy5HlZw3GiRTnCdmhVfdh9y9HP80SVcWPKm
-         kHTVbICTYnfLHusvHzoi8mDmpEyuCTnWAKz7kkgQ/Myxpd81k6YdyEadAFHgdEAaQpRd
-         sNMZKRMUwpBIQOdoxT5LVZkpMhcEgT9nwptrxD0AAV0kfSQq7Vl8U2TWuJrUx3q0M33h
-         p0fTUGYtKAEfTBQI0b34DZfMeb/k/Bnb220sm15TLhwwEmyqxKdpDV18UPjeWprQOGGB
-         WUsw==
-X-Forwarded-Encrypted: i=1; AJvYcCVXe66hEnNT7BuIKsQ9M35LbCoUZA7t+8OSBKiPNOYIKDd7Sws265xeeVXDKfobmk77Uv4E1Jk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxhnKy6b9qVpI+Yaka+DQzrX5xUrzvRuSLfnVLFvaQsAJadB6/K
-	is8UQqGZNifsXXlZ98jgo4kOBSi7wz6wEyp7jbboqgjVez9KQuI0ed04+S/W7kUVRSLsWghAUkc
-	xq78Asr8xyABUKUDIb4mQ+zn/NWo=
-X-Gm-Gg: ASbGncsjqw78wtw5vgIISdF53DfAB+FReDZ51xw6Kac3WE1dLNnA98pSJ+fe/8bYddN
-	zpbDTmzWZ78xWem03YYgIE9iwup6OpOjPpat2+dbtF6oD+CUeqBui9NHbZUzX9VovS7BLmPkIrG
-	ucHroYhhFx65fCmIKNra5NyQ==
-X-Google-Smtp-Source: AGHT+IEXSCTDToZhh1jFM95PCZ0I/E206Rg+MKBboqgunyBsE/pFYw40iBWN2ZEpR0s0+75jhOyYC81tR+CvcVK4+P8=
-X-Received: by 2002:a17:90b:1d8b:b0:2ff:7970:d2bd with SMTP id
- 98e67ed59e1d1-30a4e6913e8mr9498552a91.5.1746543116650; Tue, 06 May 2025
- 07:51:56 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1746543397; x=1747148197;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zGl6sg7j0zxSLThVkHoNmDxdriQ/RPO7fP3JuwQs5eI=;
+        b=xENFWIhW8WUlgtIhMZ5eSdGq9W8lF1DCLHUBpV3g0wObEo6Ikl/oETzTnczhxygKWT
+         ZKPs4/3gifLSV+njp9mfgvZClAGJ5sxVeiTdm76tfPQf9BwVAgugr8mEIxKJXtom6LZ1
+         lzHYHaNI9zmHea15fcerQhQ8dE/C1GisqbjgdQzBsuJd6PqUfpJX+Jb2jWN6jJJRUSVQ
+         nvahaN/W2kVALiWmuQFpb1+EpLJKeKlNz1F5WMz3g26luewT9KnqfAgT+5B9lkz7/b3x
+         qh7ib1uj069TJAHBUykqzmYz+n4wynXRd03M6WkTgszQhrqCZFLnJZLokXCHlKLPhKXo
+         om7g==
+X-Forwarded-Encrypted: i=1; AJvYcCVNUCtfSre6U2vZbf42KdWr4oI0NRBObr+Hcz9JFoDoIcicOKXwi/oQwdkPHq1L6zkt/7illWZx@vger.kernel.org, AJvYcCVW1diNtKxAwNtXYYSJ0Y2v6gpI1vSUxxPP4grRck/uU7Q2q7I6kCPL/Jz0S5w9heYbYsosV257zvJNXSc=@vger.kernel.org, AJvYcCVaQSpSVO6J2/kdXAIbKehPzE9Zm0gH4W65hw2kuXXnIgqXz6uY2lOge8aigWNi2NsR3aLkZMB32mFs/Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyaVj5dSsg4uN68jOhp7BHEP5KrBWQp8x7Ld24qf5V4E/dBdHSY
+	NOytddh1PswV0a+vSqHDM9+sJb4j1yN783R41l12JYvCXmvAqQNh
+X-Gm-Gg: ASbGnctoMP13PF3cbHghjxRKPPdTo7hbQpbLp+qWOc5DdHSD/EoUH8YTfeEltfmd/oS
+	Fe8mLl+Q5uuccp6/n7IiHyXmvCH0GzNiQG2ay9oN7h46vm0PSkYVzCvR6cepH3P92ktmKOyYGBK
+	6tjzJqFBHp5rUY20jAvyezYSEtnRDGTsIuqRo5vu4w0XAPJAQyyHQgDxhjDUnEvG5aj52o+gX8H
+	hZGwfpUyhmJWbXHRSt2uttlcl3ux+7gLKqdcUrXR2e/3blybtIZFRPZU8AmaBveWxnuuha3/E4v
+	knjl/UFKD0pLtamYyxuu8QU1jFIJvDVvKaEPVFD3cKmMk2k=
+X-Google-Smtp-Source: AGHT+IHIniqK0Dw2iKq/2KeW3kBL4LRttdpuvsbiEa+Br6r8BEN70vWNoWz8zaAHodNkwnZWIPSYvA==
+X-Received: by 2002:a05:6512:159a:b0:549:8f39:3e63 with SMTP id 2adb3069b0e04-54eac20dcbdmr1776226e87.9.1746543396571;
+        Tue, 06 May 2025 07:56:36 -0700 (PDT)
+Received: from [10.214.35.248] ([80.93.240.68])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54ea94b16b6sm2071820e87.12.2025.05.06.07.56.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 06 May 2025 07:56:35 -0700 (PDT)
+Message-ID: <d77f4afd-5d4e-4bd0-9c83-126e8ef5c4ed@gmail.com>
+Date: Tue, 6 May 2025 16:55:20 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250505221419.2672473-1-sashal@kernel.org> <20250505221419.2672473-483-sashal@kernel.org>
-In-Reply-To: <20250505221419.2672473-483-sashal@kernel.org>
-From: Alex Deucher <alexdeucher@gmail.com>
-Date: Tue, 6 May 2025 10:51:44 -0400
-X-Gm-Features: ATxdqUHNIz2XY7_fK65CkP4RU9ZYclbCYI52nxG7JH7RRQaFM7OP72dHJwqOZKo
-Message-ID: <CADnq5_MHZSO6aRTKuZ_NJUiDCDfxkUCGQzg9fRwEhcMo5goQww@mail.gmail.com>
-Subject: Re: [PATCH AUTOSEL 6.14 483/642] drm/amd/display/dc: enable oem i2c
- support for DCE 12.x
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Alex Deucher <alexander.deucher@amd.com>, Harry Wentland <harry.wentland@amd.com>, sunpeng.li@amd.com, 
-	christian.koenig@amd.com, airlied@gmail.com, simona@ffwll.ch, 
-	roman.li@amd.com, srinivasan.shanmugam@amd.com, amd-gfx@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/1] kasan: Avoid sleepable page allocation from atomic
+ context
+To: Alexander Gordeev <agordeev@linux.ibm.com>,
+ Harry Yoo <harry.yoo@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Daniel Axtens
+ <dja@axtens.net>, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ kasan-dev@googlegroups.com, linux-s390@vger.kernel.org,
+ stable@vger.kernel.org
+References: <cover.1745940843.git.agordeev@linux.ibm.com>
+ <573a823565734e1eac3aa128fb9d3506ec918a72.1745940843.git.agordeev@linux.ibm.com>
+ <aBFbCP9TqNN0bGpB@harry>
+ <aBoGFr5EaHFfxuON@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
+Content-Language: en-US
+From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+In-Reply-To: <aBoGFr5EaHFfxuON@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, May 5, 2025 at 6:34=E2=80=AFPM Sasha Levin <sashal@kernel.org> wrot=
-e:
->
-> From: Alex Deucher <alexander.deucher@amd.com>
->
-> [ Upstream commit 2ed83f2cc41e8f7ced1c0610ec2b0821c5522ed5 ]
->
-> Use the value pulled from the vbios just like newer chips.
->
-> Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
 
-This isn't a bug fix.  This is a new feature and depends on other
-changes to actually utilize.
 
-Alex
+On 5/6/25 2:52 PM, Alexander Gordeev wrote:
+> On Wed, Apr 30, 2025 at 08:04:40AM +0900, Harry Yoo wrote:
+> 
 
-> ---
->  .../dc/resource/dce120/dce120_resource.c        | 17 +++++++++++++++++
->  1 file changed, 17 insertions(+)
->
-> diff --git a/drivers/gpu/drm/amd/display/dc/resource/dce120/dce120_resour=
-ce.c b/drivers/gpu/drm/amd/display/dc/resource/dce120/dce120_resource.c
-> index c63c596234333..eb1e158d34361 100644
-> --- a/drivers/gpu/drm/amd/display/dc/resource/dce120/dce120_resource.c
-> +++ b/drivers/gpu/drm/amd/display/dc/resource/dce120/dce120_resource.c
-> @@ -67,6 +67,7 @@
->  #include "reg_helper.h"
->
->  #include "dce100/dce100_resource.h"
-> +#include "link.h"
->
->  #ifndef mmDP0_DP_DPHY_INTERNAL_CTRL
->         #define mmDP0_DP_DPHY_INTERNAL_CTRL             0x210f
-> @@ -659,6 +660,12 @@ static void dce120_resource_destruct(struct dce110_r=
-esource_pool *pool)
->
->         if (pool->base.dmcu !=3D NULL)
->                 dce_dmcu_destroy(&pool->base.dmcu);
-> +
-> +       if (pool->base.oem_device !=3D NULL) {
-> +               struct dc *dc =3D pool->base.oem_device->ctx->dc;
-> +
-> +               dc->link_srv->destroy_ddc_service(&pool->base.oem_device)=
-;
-> +       }
->  }
->
->  static void read_dce_straps(
-> @@ -1054,6 +1061,7 @@ static bool dce120_resource_construct(
->         struct dc *dc,
->         struct dce110_resource_pool *pool)
->  {
-> +       struct ddc_service_init_data ddc_init_data =3D {0};
->         unsigned int i;
->         int j;
->         struct dc_context *ctx =3D dc->ctx;
-> @@ -1257,6 +1265,15 @@ static bool dce120_resource_construct(
->
->         bw_calcs_data_update_from_pplib(dc);
->
-> +       if (dc->ctx->dc_bios->fw_info.oem_i2c_present) {
-> +               ddc_init_data.ctx =3D dc->ctx;
-> +               ddc_init_data.link =3D NULL;
-> +               ddc_init_data.id.id =3D dc->ctx->dc_bios->fw_info.oem_i2c=
-_obj_id;
-> +               ddc_init_data.id.enum_id =3D 0;
-> +               ddc_init_data.id.type =3D OBJECT_TYPE_GENERIC;
-> +               pool->base.oem_device =3D dc->link_srv->create_ddc_servic=
-e(&ddc_init_data);
-> +       }
-> +
->         return true;
->
->  irqs_create_fail:
-> --
-> 2.39.5
->
+>>>  
+>>> +struct vmalloc_populate_data {
+>>> +	unsigned long start;
+>>> +	struct page **pages;
+>>> +};
+>>> +
+>>>  static int kasan_populate_vmalloc_pte(pte_t *ptep, unsigned long addr,
+>>> -				      void *unused)
+>>> +				      void *_data)
+>>>  {
+>>> -	unsigned long page;
+>>> +	struct vmalloc_populate_data *data = _data;
+>>> +	struct page *page;
+>>> +	unsigned long pfn;
+>>>  	pte_t pte;
+>>>  
+>>>  	if (likely(!pte_none(ptep_get(ptep))))
+>>>  		return 0;
+>>>  
+>>> -	page = __get_free_page(GFP_KERNEL);
+>>> -	if (!page)
+>>> -		return -ENOMEM;
+>>> -
+>>> -	__memset((void *)page, KASAN_VMALLOC_INVALID, PAGE_SIZE);
+>>> -	pte = pfn_pte(PFN_DOWN(__pa(page)), PAGE_KERNEL);
+>>> +	page = data->pages[PFN_DOWN(addr - data->start)];
+>>> +	pfn = page_to_pfn(page);
+>>> +	__memset(pfn_to_virt(pfn), KASAN_VMALLOC_INVALID, PAGE_SIZE);
+>>> +	pte = pfn_pte(pfn, PAGE_KERNEL);
+>>>  
+>>>  	spin_lock(&init_mm.page_table_lock);
+>>> -	if (likely(pte_none(ptep_get(ptep)))) {
+>>> +	if (likely(pte_none(ptep_get(ptep))))
+>>>  		set_pte_at(&init_mm, addr, ptep, pte);
+>>> -		page = 0;
+>>
+>> With this patch, now if the pte is already set, the page is leaked?
+> 
+> Yes. But currently it is leaked for previously allocated pages anyway,
+> so no change in behaviour (unless I misread the code).
+
+Current code doesn't even allocate page if pte set, and if set pte discovered only after
+taking spinlock, the page will be freed, not leaked.
+
+Whereas, this patch leaks page for every single !pte_none case. This will build up over time
+as long as vmalloc called.
+
+> 
+>> Should we set data->pages[PFN_DOWN(addr - data->start)] = NULL 
+>> and free non-null elements later in __kasan_populate_vmalloc()?
+> 
+> Should the allocation fail on boot, the kernel would not fly anyway.
+
+This is not boot code, it's called from vmalloc() code path.
+
+> If for whatever reason we want to free, that should be a follow-up
+> change, as far as I am concerned.
+> 
+We want to free it, because we don't want unbound memory leak.
+
+
 
