@@ -1,152 +1,156 @@
-Return-Path: <stable+bounces-141836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FE14AAC919
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 17:08:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E609AAC92A
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 17:12:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8571468CB9
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 15:08:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 418553AC02B
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 15:12:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04CC02836A0;
-	Tue,  6 May 2025 15:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B41E283159;
+	Tue,  6 May 2025 15:12:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="IBGWaweE"
 X-Original-To: stable@vger.kernel.org
-Received: from unicorn.mansr.com (unicorn.mansr.com [81.2.72.234])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B4E427B4F8;
-	Tue,  6 May 2025 15:08:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.2.72.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2993EA32;
+	Tue,  6 May 2025 15:12:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746544084; cv=none; b=EmZ2PCaHTZ7/ip8oCIWsvro7CZaMRs66q9T/RA/I5TNKm3UtbB/m1aaXs33USmnRVNVd27c5mnkBTwvvcA2vshRmXHcDa0+5pFbR6hkPzSA2zslyz4ZglMut60tPQaTdH/MOhdhPixPgGC+rK8vba74SRkKjybP9o7vIoBceHEI=
+	t=1746544342; cv=none; b=kGAgPbbbPYnX74ee4FmMLatl7A9VnEjpg9ey4aTYKa6A1qd/CgHirSKhipzzLenQVLS8WN9HJeFyEEixOmpoIF1owa5N/qnC4iBO1MjOFUrQ/PPwAp8N1GyFnerHGLxk2J8BKxZBSJmg6OOS2wWPPlkaEGQiQ1WWSzcfdZxFKNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746544084; c=relaxed/simple;
-	bh=V0Qnd7XGUYL4VJVx/NNGZxOFnfryDun38SvbJqd1K94=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hpiGaqOFBDs+ZeOWPUPhlBoXHDXb70UXCqorDjf2WbPjEOvh/HFJw+JTTSygQWUpBfq/LurdU+Bva/MalnNGLV3uKvkpp7acx2L7KYp2HkarodMV7b9TBf8ubHz37V6MfsvXLI9MDPgQPY/vG4utzak3zdTr2oLI6vZZT7/G+PA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mansr.com; spf=pass smtp.mailfrom=mansr.com; arc=none smtp.client-ip=81.2.72.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mansr.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mansr.com
-Received: from raven.mansr.com (raven.mansr.com [IPv6:2001:8b0:ca0d:1::3])
-	by unicorn.mansr.com (Postfix) with ESMTPS id 6213715380;
-	Tue, 06 May 2025 16:07:55 +0100 (BST)
-Received: by raven.mansr.com (Postfix, from userid 51770)
-	id 4BAE821A3DA; Tue, 06 May 2025 16:07:55 +0100 (BST)
-From: Mans Rullgard <mans@mansr.com>
-To: jirislaby@kernel.org
-Cc: gregkh@linuxfoundation.org,
-	linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	linux-omap@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v2 1/2] tty: serial: 8250_omap: fix tx with dma
-Date: Tue,  6 May 2025 16:07:29 +0100
-Message-ID: <20250506150748.3162-1-mans@mansr.com>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1746544342; c=relaxed/simple;
+	bh=bl7NXRPrjzhZaD4kmbaD1MUm7yIwDx4c2piFZWFMp3M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eTJWFQoTLwXBgB64PryoyLXBgolq56Mu4vg3YqATiBrMxn2XHOtIQ/2xTfcEXpXbGvJd0zcsGwmsofzYHoKCk1ABZ4thp8ebW59/JEEW4kBKh9KCoeFwX3Ijm4jo4B7ZWYmGWcHt3xiPbxr+rgOZCcFxxBWRL02KU81/W1reoMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=IBGWaweE; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5465gaaF006476;
+	Tue, 6 May 2025 15:12:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=DptX2UeZwcMMuIu3rqeAdS+aATNzHG
+	t6NJTQ/66uAY0=; b=IBGWaweEygUEgjspn+NlOD05m16ZQ7NXtU/XUDgur97chj
+	vPlotgnxZ7WaG09nGEnfZE6pvPp3hJ2VQxufXv8zZ5tcbFNvgm+wfqB6fsPpvb9c
+	e85O0gX4X21MSJ8uZGs6no9iZ0S+aKfmtxdWhVYXUttgCNkb+spdi78lVuH2muJk
+	LefkFW/zpGLSKM/ucFqi72Zd62MwA7tfDprlSNPgI+E8PdyGnpoi4Wn/flpo5Dd3
+	amXaGS5TWtbRkPqttcLBi9tG9CTIfbxZb5Ko1wggL7zE9qPIQI025Mj/u73PPm76
+	I5OvxQ9b0fCk5lhHjZx91jk23MXACPw6/zaRKTMg==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46fcgy2kc5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 06 May 2025 15:12:13 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 546F7FdA009118;
+	Tue, 6 May 2025 15:12:13 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46fcgy2ka0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 06 May 2025 15:12:13 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 546EK3eN013770;
+	Tue, 6 May 2025 15:11:31 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 46e062bqn0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 06 May 2025 15:11:31 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 546FBUK835717386
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 6 May 2025 15:11:30 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2A02820043;
+	Tue,  6 May 2025 15:11:30 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DD0BB20040;
+	Tue,  6 May 2025 15:11:29 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.155.204.135])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue,  6 May 2025 15:11:29 +0000 (GMT)
+Date: Tue, 6 May 2025 17:11:28 +0200
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Cc: Harry Yoo <harry.yoo@oracle.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Daniel Axtens <dja@axtens.net>, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, kasan-dev@googlegroups.com,
+        linux-s390@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/1] kasan: Avoid sleepable page allocation from
+ atomic context
+Message-ID: <aBomoDkNgiEAJjgX@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
+References: <cover.1745940843.git.agordeev@linux.ibm.com>
+ <573a823565734e1eac3aa128fb9d3506ec918a72.1745940843.git.agordeev@linux.ibm.com>
+ <aBFbCP9TqNN0bGpB@harry>
+ <aBoGFr5EaHFfxuON@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
+ <d77f4afd-5d4e-4bd0-9c83-126e8ef5c4ed@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d77f4afd-5d4e-4bd0-9c83-126e8ef5c4ed@gmail.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: gCu2k3kzWhwCVIxf2DSXQrISTGR2DThe
+X-Authority-Analysis: v=2.4 cv=Pa7/hjhd c=1 sm=1 tr=0 ts=681a26ce cx=c_pps a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17 a=kj9zAlcOel0A:10 a=dt9VzEwgFbYA:10 a=7FHASCDaF61PvbNbS9YA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-ORIG-GUID: Gu4J50MXSzFrSjYitZme6bowNsEc1S8i
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA2MDE0NiBTYWx0ZWRfX63DfIGolAsmI wti07+s8BO9WtAzNDxvGO/1dKf56kvZ6IKPlQVij7HSGJUZxblTqIpVA1OcoyMOxWDrrJwEwvJs RcdN5hLk36bh1CGsIDPnMpf3bDmhJtWMt5hcvZ4F3BlD7gorA/t0S7yjvwFeHfYPr6SYppkvqWn
+ 3OEf4hDBbauqcJC5kjVGAdx7E2bDtvz6V/onIhQaU0TJmlcRkjUvVGAhMmW0MNYTYu3Xga1jcv2 zTG2PvOWegkCwo7Fmtr2u3E1LHxcSSd8mPJ0FVCdp+04X6/8yEAN165+5mHdqH8gBMy29N4mV8e Ya8VxBIuqa5kan5L91dB46ryq0d+SKGfEk03sPs6p0IDka6wSBQiq/9Z5qPx4gWLM3I1/+jBI94
+ YF41ALJMF9Vtf4hZDH5yGEqzQhNpCtQQ/5hqk15VGTb2jnQcNvQIEdtlPxevPQLukJ7tbKJX
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-06_07,2025-05-05_01,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
+ priorityscore=1501 suspectscore=0 spamscore=0 bulkscore=0 mlxlogscore=852
+ adultscore=0 impostorscore=0 lowpriorityscore=0 malwarescore=0 mlxscore=0
+ phishscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
+ definitions=main-2505060146
 
-Commit 1788cf6a91d9 ("tty: serial: switch from circ_buf to kfifo")
-introduced an error in the TX DMA handling for 8250_omap.
+On Tue, May 06, 2025 at 04:55:20PM +0200, Andrey Ryabinin wrote:
+> >>> -	if (likely(pte_none(ptep_get(ptep)))) {
+> >>> +	if (likely(pte_none(ptep_get(ptep))))
+> >>>  		set_pte_at(&init_mm, addr, ptep, pte);
+> >>> -		page = 0;
+> >>
+> >> With this patch, now if the pte is already set, the page is leaked?
+> > 
+> > Yes. But currently it is leaked for previously allocated pages anyway,
+> > so no change in behaviour (unless I misread the code).
+> 
+> Current code doesn't even allocate page if pte set, and if set pte discovered only after
+> taking spinlock, the page will be freed, not leaked.
 
-When the OMAP_DMA_TX_KICK flag is set, one byte is pulled from the
-kfifo and emitted directly in order to start the DMA.  This is done
-without updating DMA tx_size which leads to uart_xmit_advance() called
-in the DMA complete callback advancing the kfifo by one too much.
+Oh, right. I rather meant pages that are leaked in case of a failure. My bad.
 
-In practice, transmitting N bytes has been seen to result in the last
-N-1 bytes being sent repeatedly.
+> Whereas, this patch leaks page for every single !pte_none case. This will build up over time
+> as long as vmalloc called.
+> 
+> > 
+> >> Should we set data->pages[PFN_DOWN(addr - data->start)] = NULL 
+> >> and free non-null elements later in __kasan_populate_vmalloc()?
+> > 
+> > Should the allocation fail on boot, the kernel would not fly anyway.
+> 
+> This is not boot code, it's called from vmalloc() code path.
 
-This change fixes the problem by moving all of the dma setup after
-the OMAP_DMA_TX_KICK handling and using kfifo_len() instead of the
-dma size for the 4-byte cutoff check. This slightly changes the
-behaviour at buffer wraparound, but it still transmits the correct
-bytes somehow. At the point kfifo_dma_out_prepare_mapped is called,
-at least one byte is guaranteed to be in the fifo, so checking the
-return value is not necessary.
+FWIW, it is called from rest_init() too.
 
-Fixes: 1788cf6a91d9 ("tty: serial: switch from circ_buf to kfifo")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mans Rullgard <mans@mansr.com>
----
-v2: split patch in two
----
- drivers/tty/serial/8250/8250_omap.c | 24 +++++++++---------------
- 1 file changed, 9 insertions(+), 15 deletions(-)
+> > If for whatever reason we want to free, that should be a follow-up
+> > change, as far as I am concerned.
+> > 
+> We want to free it, because we don't want unbound memory leak.
 
-diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
-index f1aee915bc02..180466e09605 100644
---- a/drivers/tty/serial/8250/8250_omap.c
-+++ b/drivers/tty/serial/8250/8250_omap.c
-@@ -1173,16 +1173,6 @@ static int omap_8250_tx_dma(struct uart_8250_port *p)
- 		return 0;
- 	}
- 
--	sg_init_table(&sg, 1);
--	ret = kfifo_dma_out_prepare_mapped(&tport->xmit_fifo, &sg, 1,
--					   UART_XMIT_SIZE, dma->tx_addr);
--	if (ret != 1) {
--		serial8250_clear_THRI(p);
--		return 0;
--	}
--
--	dma->tx_size = sg_dma_len(&sg);
--
- 	if (priv->habit & OMAP_DMA_TX_KICK) {
- 		unsigned char c;
- 		u8 tx_lvl;
-@@ -1207,7 +1197,7 @@ static int omap_8250_tx_dma(struct uart_8250_port *p)
- 			ret = -EBUSY;
- 			goto err;
- 		}
--		if (dma->tx_size < 4) {
-+		if (kfifo_len(&tport->xmit_fifo) < 4) {
- 			ret = -EINVAL;
- 			goto err;
- 		}
-@@ -1216,11 +1206,12 @@ static int omap_8250_tx_dma(struct uart_8250_port *p)
- 			goto err;
- 		}
- 		skip_byte = c;
--		/* now we need to recompute due to kfifo_get */
--		kfifo_dma_out_prepare_mapped(&tport->xmit_fifo, &sg, 1,
--				UART_XMIT_SIZE, dma->tx_addr);
- 	}
- 
-+	sg_init_table(&sg, 1);
-+	kfifo_dma_out_prepare_mapped(&tport->xmit_fifo, &sg, 1,
-+				     UART_XMIT_SIZE, dma->tx_addr);
-+
- 	desc = dmaengine_prep_slave_sg(dma->txchan, &sg, 1, DMA_MEM_TO_DEV,
- 			DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
- 	if (!desc) {
-@@ -1228,6 +1219,7 @@ static int omap_8250_tx_dma(struct uart_8250_port *p)
- 		goto err;
- 	}
- 
-+	dma->tx_size = sg_dma_len(&sg);
- 	dma->tx_running = 1;
- 
- 	desc->callback = omap_8250_dma_tx_complete;
-@@ -1248,8 +1240,10 @@ static int omap_8250_tx_dma(struct uart_8250_port *p)
- err:
- 	dma->tx_err = 1;
- out_skip:
--	if (skip_byte >= 0)
-+	if (skip_byte >= 0) {
- 		serial_out(p, UART_TX, skip_byte);
-+		p->port.icount.tx++;
-+	}
- 	return ret;
- }
- 
--- 
-2.49.0
+Will send v5.
 
+Thanks!
 
