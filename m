@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-141950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF790AAD19A
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 01:38:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBE0DAAD19B
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 01:38:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7BBD1B65EA8
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 23:38:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC79E1B65E1F
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 23:38:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AF9121CC61;
-	Tue,  6 May 2025 23:38:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCF11217F46;
+	Tue,  6 May 2025 23:38:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="GrzXVyY+"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="eG86Pjgb"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on2047.outbound.protection.outlook.com [40.107.95.47])
+Received: from NAM02-SN1-obe.outbound.protection.outlook.com (mail-sn1nam02on2053.outbound.protection.outlook.com [40.107.96.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A719217F46
-	for <stable@vger.kernel.org>; Tue,  6 May 2025 23:38:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.95.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F08C01FBC92
+	for <stable@vger.kernel.org>; Tue,  6 May 2025 23:38:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.96.53
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746574711; cv=fail; b=uNXbMk2oUXEhiqQYTq75i23MFbTuRhJApQYgaeJpoC7Y0nh/q5ngeUHYCzeTdhEoqJya4Y3lX8KavWSyV/kLipDagOdU0Hv5Bjk38E5vRIJY53j/29c3IXH6C3Dgnm4Da35V4EHlEhhky2oUjgOTe+Km6Y5KoKD2r1MEkv0C5YM=
+	t=1746574716; cv=fail; b=c1GLc11nC5en+VLT1DC1XPqpHVwy405hZkf53ZHEF60BV3T9lu1H1koKjx6sS4RkbDfzwUWsr+s5Z3bjtnAbmoKWYgSNyGarKoclu/L94nXAVl8Mt6KOWmYAuzsFswZFUALdvby4mWyTNJmV3NNGdK+z1euB/bKK7DaedjY2+VQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746574711; c=relaxed/simple;
-	bh=SJSgIJOgDj5cXSi/PWGMzYlEu4uGbIgf1grnd/UBDNk=;
+	s=arc-20240116; t=1746574716; c=relaxed/simple;
+	bh=txxv/516S8fa4cmnfTG97i2coU1vZShednlk7HPTcdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=rWyls2V+he//yZH3xdmY9GU+uO/iFR+Sfoq/5z2AacRM9L4nKqPNNub9SIcYsWWrAoxbZ3naxofdvEmBp7s7LNe2kyyRQAS2mR+Kl0xAK5Bm5On5tTzBAWDqHSv5Bh/poSe1kII0qU1zKpfIl1gIglkYZ08dHhkXffDnB6yLnlg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=GrzXVyY+; arc=fail smtp.client-ip=40.107.95.47
+	 Content-Type:MIME-Version; b=Fe2jC8qJfJcGOaeMyf3NWyWN8A/Tr4lAUBlKQOE8TbnDFGCd8krFuB56hPnAQtd04GenBPqFl49jcKLXevS6vLJcAfoasdam4QO7Tnq/0yYELSYNJR+yHLlVXpKVLy7oSeChJbZEgR5TGxNEiqU9kSEp1twK7G2+9+CVhYkr8Yg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=eG86Pjgb; arc=fail smtp.client-ip=40.107.96.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mx8X0j4n15CHlXP2ihoZcPWLW9Y1ZTmDtIsjmd17rfVnFZt91dUFKSklgLYWgxxupez831/s3pIjnQxGGhwYwOODQvK8usClTaV9Vbq6279K+oJzj5HaeTCxVUFEaXmlEMIHXFvYwY9797ePh6ZePJ3ggRq2iNeyuSXbEpTJzAXplGfE1i0l9FMXjw6CNKtEqvr/WI9VRc//as17a7UGcqZroFC4mdQZyqvO4rCbS0eI8tlwbUjj2SMDd2HlWoNX0os4HbqfGIlWWumV+NGK9W8a7jrI+XzSt1VEaQFL3Up56gOhcPiqrdNu1H6Eav9YrnXdzAQLQl9COH0NL8yHfA==
+ b=xwMDsizJfKVhORq8sgONu2dchwVtrmavkyKMxV0pp/tr2LRWvupaCR6Ip2QxYtDOo7UOIemAOlpnORgXYDt/dwCAGoFu7W7SmmSey3dUbmKPrBf+hOWvai15OkTKDjTfyIV0Jugsbf+La5J//6RBmNWTGZCwWaZ6BLhjb+boCieQGHpDxHEc/m49t6UkoQmoqZCWSUpGxBcMAG+Kn+ODfFPRkX2u2Ovg9TVzyIg1h/q4D9t/MR727Z8RjqhHU2nJYM3cGeQUDp94+ejJ1TbEX3Q4yZkSfDEnGcSzqP/FoRCX2xC9ZIJ8vK407aid8sLzs+c9cRo0Qs8r1XVpPOt1IQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SDVCiXSEXY2jNCJ3UehXKr0OgLxHW5hJo/yAsNDC3nU=;
- b=FMqC8fbOvtkI438ZzRZP3ECDT183fbJrkXmvKy9D+MugdxYbxoAqFuadr0oGEZ8px91wx+mJrXsrDCIYnRvE+QdUob8Hj639NkCQGNouasrCZTsWzuejxE1Jaj/tHuZ/NBkSas1k9fh+oTEDjxjYltjcAsNHi9wLdwHeaIwqGKCQ/s++iRfQz5vL6O+TQzglTfY1c+213lG/QGN4q97dzngc/9yZ0YS5zdiNEF4j8TXG7lo0BrmTTcP7xCsyJGkvHexJlC9fDzSOKWM1DiMZBXSNxY5QTGnOcEd/1VgQXsQnWwB4GAhrJIMa/9llx5NVESZnrtBnvk11CoGEsmIo7Q==
+ bh=mQZ/ChAU1Ux5SoZNhV5cohc2W2Bwy0IfQQ7fQ7Qo2RM=;
+ b=NEGNbWja/0PGEl2QP4GYInd/V9ErSsK9wi0UchRoojGfTJ61fRL8Th3xzlQLfOWt0Uuna765WLMmtMzTufIeqPBTI2qtk9hLJAHnUxyQf5hoboWZM+3pdKbUrINtc6GBJW99oeVUvvpLsM9FomovzIwHNLV0MyC2wWv3HFOnK3DayfeLZ9OrbOfeQdfkpbxsNclaQGNRrcUPj+o44xRzHpzy03EVmRG5OhAz+kzaql9pFHKH29LCjX0whDkkKc3ZDTe8Eczgq4bZdErE2BTGKaa9pcsnZFfIaRD4zLp1Ceoov35GNLQh6wkYePOn4XHQ5foj6eUKHGckXZVbthg4CQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SDVCiXSEXY2jNCJ3UehXKr0OgLxHW5hJo/yAsNDC3nU=;
- b=GrzXVyY+5lcZ82h803lf6A3++8tci+ia7qm/vqSYUdg+wiFqVM90bDZw0LRAguEPsMuo0mC6xrbm7ySORH9YSGWMITnUuRpa0KFrjB5uMxlsgs38Cc2iNpJwz5DqpHN6bNniQhevIbnJ30lPguc5TgkAAGNBnkOzmltqCGOH+hX7oqF7XXJTAz71ik9fVEfL6AePmvEWW/NttN7+ZkPPPfW/RBrR8jLLLc7bKaUMXmX4lRaod4F05wS9LHcedg293kPer8fqIsAmEEqIukfq1NRU3vH5ElSRyD+P3sdVRG4zckTThnJtK6wAWuB5WMWbpJDQPhT19VUOv1DeslY5XQ==
+ bh=mQZ/ChAU1Ux5SoZNhV5cohc2W2Bwy0IfQQ7fQ7Qo2RM=;
+ b=eG86PjgbgLOAxWsxbbsw0BasQU8wKCNp8gtF+U4Cv9DwspTiO1LOmHL/Iwa9Yp8IJ/nQufvvP/KV8FYgRq/AqQMoZ4GxCr+L0urhUIEteUF/wqmeMFLISr8F+IxYAnfe+XOhLNbKHo1OTnrnSzt6n99woCfyNjNb/B6zczUgdKKJjb29qbCIysVne3NjsWtf4GiXAyQQuaEFLvb/xWcTaZj8wnIj7TLgLY7Nn2JtKq/E6+OCqQJuM+K7ED3FJ5W/YkiIvyJWY4SnKZBidAwYsBOz3g1Mn8hnZA6fkYTS6QtmKLgv+YGBS+073IktvgDFpMrBufZURt2dfHAH3oUojQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from SJ1PR12MB6363.namprd12.prod.outlook.com (2603:10b6:a03:453::9)
  by SA0PR12MB4399.namprd12.prod.outlook.com (2603:10b6:806:98::17) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.26; Tue, 6 May
- 2025 23:38:23 +0000
+ 2025 23:38:28 +0000
 Received: from SJ1PR12MB6363.namprd12.prod.outlook.com
  ([fe80::bec3:4521:c231:d03b]) by SJ1PR12MB6363.namprd12.prod.outlook.com
  ([fe80::bec3:4521:c231:d03b%5]) with mapi id 15.20.8699.026; Tue, 6 May 2025
- 23:38:23 +0000
+ 23:38:28 +0000
 From: Jared Holzman <jholzman@nvidia.com>
 To: stable@vger.kernel.org
 Cc: ming.lei@redhat.com,
@@ -64,17 +64,16 @@ Cc: ming.lei@redhat.com,
 	ushankar@purestorage.com,
 	gregkh@linuxfoundation.org,
 	jholzman@nvidia.com
-Subject: [PATCH v1 5/7] ublk: remove __ublk_quiesce_dev()
-Date: Wed,  7 May 2025 02:37:53 +0300
-Message-ID: <20250506233755.4146156-6-jholzman@nvidia.com>
+Subject: [PATCH v1 6/7] ublk: simplify aborting ublk request
+Date: Wed,  7 May 2025 02:37:54 +0300
+Message-ID: <20250506233755.4146156-7-jholzman@nvidia.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20250506233755.4146156-1-jholzman@nvidia.com>
 References: <20250506233755.4146156-1-jholzman@nvidia.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: TL2P290CA0003.ISRP290.PROD.OUTLOOK.COM
- (2603:1096:950:2::20) To SJ1PR12MB6363.namprd12.prod.outlook.com
- (2603:10b6:a03:453::9)
+X-ClientProxiedBy: TL2P290CA0010.ISRP290.PROD.OUTLOOK.COM (2603:1096:950:2::8)
+ To SJ1PR12MB6363.namprd12.prod.outlook.com (2603:10b6:a03:453::9)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -83,144 +82,224 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: SJ1PR12MB6363:EE_|SA0PR12MB4399:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3e200dd4-0aba-4a49-f831-08dd8cf71769
+X-MS-Office365-Filtering-Correlation-Id: cfec9346-73ed-4ff0-d924-08dd8cf71a40
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|10070799003|1800799024|376014|366016;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?2koCO4XjCtxuG5wczZcQlozhN46Pb27WcxmxS708FYOFiSBZIiIDUPxURYDV?=
- =?us-ascii?Q?KezideZtMJNatimcktlJfSuAH32uvhZSKTgTy89LsCC9xriXPHT16+/JDkOT?=
- =?us-ascii?Q?cW9TQ9J58xMkudE05CEe8NeZAw4C2aFkEK9Fi8qmjXBm5xUxS0wOEesa643E?=
- =?us-ascii?Q?9UUMg4GlXidxWQh/HO4jh8UctUvhAg0xL9DW84AOVY0mXus4oN3U+3dlQj16?=
- =?us-ascii?Q?l6yr/uTKwB6u8zXyRi5R+sfUtbivTYktQMyQLgXr1J0Akw5APe1SP/IJzfrr?=
- =?us-ascii?Q?XPWjq+QyfSzRkiPQMDn/UlSr/3Jp2jinWwrKso6WLxTiemRUanE/cEWQsXof?=
- =?us-ascii?Q?IgmglyoMfWDOpF/RQKrZsk1rFNL5rhqCgOe3FCM1ClgDxu9HH4eHRRVMIahN?=
- =?us-ascii?Q?GdPZE2S5j/km1IYLo/yXb94iz3XbJeD2tzTlD1QxuY4/VrZebgG8vfLJGiLh?=
- =?us-ascii?Q?dhH/za1Op2ATViu7GPGS+9xMh0BTSndu6QLhfLmFgQThY69NXzjF8fSU334r?=
- =?us-ascii?Q?a0KIjlQhVEtV/GJGfknnfuxsvKOHIB1Lxy3YWj8m8xOH/+PERFkkLnJ6EoCs?=
- =?us-ascii?Q?6QjnKFe/aQe7YGZa6mKpamPx9dFfsVuZVcBPP6oer3Bj0OMqoTs3Q3XAWjXm?=
- =?us-ascii?Q?o1MpNNe+n3CLS3FXqCXMpoAJmqm/7zW2jgl4coKW2FLHDnzCjnYL/NYon5G8?=
- =?us-ascii?Q?PrTS1hdlg70yTxo0wS2e6YwakwC7dIInFi5q5MhY0FJMS3hjRo6kXynl2EES?=
- =?us-ascii?Q?eh2G+sT5ZhkE0yijMatKDBA+twdwk6goJh9Hidvx4lTEZu4ov6qytJY6kplY?=
- =?us-ascii?Q?GnNcv3yj/yRa4dCoq8K/mXWMJr1bg5EVSP1SwqoTvGY5TDwOB1ILyT45s75S?=
- =?us-ascii?Q?xnN8NvkC/7LWL8TYycXNNi5jwpFXKkJEamBwM7GV+X+00Kewqx1W+U46EPyo?=
- =?us-ascii?Q?TFeMpGwG6WiZDejU2DML1wjLFU+fYldCOxJk6ymmWNnR2z9vCei+J2V7AGiA?=
- =?us-ascii?Q?F9Iot8g8fghtgpXfEu+qiCE5oqqaWy++rhuV2wj2plZa8KVrXn/4siXMl/PL?=
- =?us-ascii?Q?Rdd8ld2qP/1KvAPicJgHxH7uYwHKXNUF775mD4mx0Sj0lz9VKZozZjxP1Flb?=
- =?us-ascii?Q?83d9eacj9G+pNYQtN3uNMA2wh/0WaE/zkep9mwzD+VnvVcOK0lZRtZRVhX+2?=
- =?us-ascii?Q?S/4NNmehOp52ylVOTe1w9dcPh3RquxPCd1Z6FVdyGua0HfxCA6GoXpcTn+hY?=
- =?us-ascii?Q?970+BR3AYoEvLUct6WFlTD3IxnTmcY4HJHvmjaMb1ZbKLdD8dXhLtfIAQRUk?=
- =?us-ascii?Q?KOlANcgY87EazaY4pkselHfvehCfi5gToS7Wc/ItvGg6Cjl/DHvMovrsk0Z5?=
- =?us-ascii?Q?MjfQiOXtcsMxtBGhjEzz4o1pVoZHl+KOz/k2Q9M7LH5BlM8eSGcVLOPB8CGZ?=
- =?us-ascii?Q?daqaBJh23ME=3D?=
+	=?us-ascii?Q?Z/tgFHXs0eBUW5QdG4PqQ4I2x/vckQZ6TKahBO/3jxOheQHN8CwXxqtB6LaV?=
+ =?us-ascii?Q?1u8hOwSqBr8sWUuCuzfxK3HtbZ0vGE2hIq99IY/G1PETXtDLmzhzL2ZmxAHt?=
+ =?us-ascii?Q?L8UWtkOvU0UzfknE3ayqIyC4DtMx9lSX49ou1vEQO6dRsqBV7uXwT1k200UZ?=
+ =?us-ascii?Q?/fDmUFyD45zHALXzeoS01ixRKCOK8i95s9cQ0zzk2BT/2x59CcI2x8iiS5Zb?=
+ =?us-ascii?Q?WbcWjY7Gx1f3iialHWu582xRC0UtMOi2pRm+tfTuo7sSErxnrau0WZqH4PcC?=
+ =?us-ascii?Q?f1MdOvfduqJ/5Ba1CjJ/ErWT0ee4XowXLqcesROSKXYErJksNTsJYMbTjxDB?=
+ =?us-ascii?Q?wcPsLbOnSFZwVAW9I5f2xcccVzcf1M2nGbM83b04Phzg2xpdgxfHh7WcB4Os?=
+ =?us-ascii?Q?Mq9SBWgpQ3fRDOYYXBj+A12+dHeGil7Q/6DMUQZpSVnjBaUucdIHony0gCjA?=
+ =?us-ascii?Q?lo4VP1WiUaUkbXMjrrPeVcoZQ3CkowSOlG3o05ktYtYRMcxl1XjjBhzvqNYM?=
+ =?us-ascii?Q?+ynEnRaaDDvKYPo+fdgLPTUOoyViXX6SKvddSlfNCU7bhfqXPkwTHv0l8uOy?=
+ =?us-ascii?Q?B6c+vavi0AN69fQGhOD1MRztShyW06osPV020Q50TluUoGQL47hagILjU3wc?=
+ =?us-ascii?Q?kRD11Vtn3hRK5gCZQTKW0xqNS7WiCc4vP9u1gRir3wtvvpk/1/Sk2N4QS7sR?=
+ =?us-ascii?Q?P5R52RlOpZz0ma7WbsUaGM0iU4orN6JpHytImlhd9yHSD51H1Wqu4KDQAKWu?=
+ =?us-ascii?Q?CWvCgG9dYBbhgO5nfS+PWAacHT1C/VUv2lcpfcQuuc+9OVJbla2guA1jNJaX?=
+ =?us-ascii?Q?AxLu6eIjc8BQve9gWEq0R7B9pW0fj3ZZWhmdBqQe89eEbBY5D6GaXAvDgMge?=
+ =?us-ascii?Q?XK1fJeoOULlhHtk6UM1WKhqGUlGbwOSqsmJHBPkFMutoO1pQCryLIiEOF6yV?=
+ =?us-ascii?Q?E9wIwv57agzbda9k7izOGr5oxYnzbqOdM4pkWbAlJc9Mu6V6zHWhnywjCknD?=
+ =?us-ascii?Q?h7i/qjtTbbr13TSoHGw9RsgVym5briXjUoZq9X9kq0zsNkM8IDeAjl8b1N0h?=
+ =?us-ascii?Q?14/jWj4oNgG532ZCeR/riKfttAr0e1V6B+MbNea6PMI3iEuyIFA+jWExUUoV?=
+ =?us-ascii?Q?boHcn8Qh43k6Ibz6nJvSR61LSlh9IbDokwB1tfB+aWIbIzV9vyYGvs/CqDP3?=
+ =?us-ascii?Q?QwHKkx1+SXNB0rchRp9ZAgoMn94P90OGjLCkdr13w5ib+4XkjfikF8navlXd?=
+ =?us-ascii?Q?uBvxTte0B0jb6La2sL6ptPFGtoZPh6VhW4m5W3Vqz6qC2blaqxh+/8vzv8/y?=
+ =?us-ascii?Q?QPGtlVIjnwDybb7aroJUZMikKmfuy6sK4MwrC1Rzo0AxCvNsnKCJdJLEwd5a?=
+ =?us-ascii?Q?PkIYlrkY+bWj4S7xz0tcEMgZTEqJYRrKA/8/rrh7Z+D61Nz8sEeY16M8+ZBR?=
+ =?us-ascii?Q?jTqdZuP450o=3D?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ1PR12MB6363.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?FUhbiZzGGdGGuX+UxDDSEdOaQkK4ls6E/NYG9/6V9ab6qUaoIOAkhGwvliag?=
- =?us-ascii?Q?wyquv2JjnLLEY4EAGaAD0WhFkdhEgztZI4bGScFKDJu6FoVNl4A1ndebGBfH?=
- =?us-ascii?Q?QaDfQDkrpEhss4Uj39EeJxuKc4vYnZkHkpOucShTZpXWcbKxpKEGus1WQZkG?=
- =?us-ascii?Q?s6+h+U3w/o8NY2saeyAaabnnmZhTQGZsu2A7Gvz2QEOfZ7ha4WeCbbnEd5Gf?=
- =?us-ascii?Q?UnlzpWK1M7SV+O17RkV7Zt8o6wjCSer55/erbXh9zbDbocqLnwR8bcxhEqKp?=
- =?us-ascii?Q?xFnNhpF166kuH98sbhvz4wO4kMq4BxzWdhqLFOsn4zDGVxsXxujjADg7ypOf?=
- =?us-ascii?Q?cJThqKcLdn4MpsEUbJsWtXiWLlwSsDmRoaTKXJ5IgEWdWE9jPenQXyqEdFXT?=
- =?us-ascii?Q?1HeQk2zPupFOBq33enZTrOkb7UCTyZukoK7gwgmLRRjfvsqz3ZlMbc3itgkj?=
- =?us-ascii?Q?zKGYYFxPVywBCGCl8r25o5oUAgvPy8+g3Mz+HXOHY4p4Ji+XZ4aefCRCyj8k?=
- =?us-ascii?Q?3GVYK6XCYyIBhxutPuHD/BkRtijP7PLXOa29lu07g73+UJRWH0ngQxuBQ+rW?=
- =?us-ascii?Q?ho9P7fNvg/tr9ljX0ve5Z54ezqXeNLeAImM/BHiB3l1wE5CLl16MCiq1kwKu?=
- =?us-ascii?Q?pfJZHmCLtZQ3gZ2qwHDNOBpTYJy+QbEsGsR8oVsYB/wS8WyPwHD6GB+KP7Te?=
- =?us-ascii?Q?kle0hBHbo8VjIFMXRtki5GA+ossMoTnXHH+4ptNDZZrrHly7bzqOKJvCEqoK?=
- =?us-ascii?Q?xNkFVQwVzCxMAFJFInSyxeo/3OoaTX/ibuDiVoLv4RVSxiudwpp8pqs8M6mS?=
- =?us-ascii?Q?3OVvthldNioS4bn4JYR/yNfCDwfMJyKc8TOQNbYF/tkBjQChH4x/yi+oA2ga?=
- =?us-ascii?Q?NX62Cbo0VtdaiVKu3NilHWdA9c3msBb3DtAS2lNX4eWzTJbVnD3vLuVqAdOv?=
- =?us-ascii?Q?uQidY7b4htXpUF1BoCOSb8asF2v1mix91vH8JJa/3rq6uJQPd3JXY5gjfaGh?=
- =?us-ascii?Q?OHdok35pz3nML727zpCF1BcgrwnH237BHjHN8kuxs7c/Sq6jvH7/ix/z2hoB?=
- =?us-ascii?Q?GaUq/7GfsV/yb5eUBw543Ha+hhxbKFsJrwLem0hnsTGeXZxZWaxUKXUQwN6p?=
- =?us-ascii?Q?IEnqoYPODTLzvy8r0U/1a1acKTca8WnTgj5FfURyc+oTzxIi1NB/k07lEXin?=
- =?us-ascii?Q?lIpbwnf0U3b5Qn8PJskR1RcaYTiifGERGtIAz4MTtY0bPNhKScvaby/WgdKR?=
- =?us-ascii?Q?lcGUPAJfSVy3Ze/lZcwe9paVhn0FxfEOZ8fUvXr6lGWH78TjMPeY14qQCAsV?=
- =?us-ascii?Q?KV+1AlyIw3sN4NNrOD+JvoqvEpEO7FjM1WLjSMXWdBAIg0VzUCPKyBa7NFML?=
- =?us-ascii?Q?owcECBbRAUt44vmm8cwBJF0xOokP/jXifKDnw9oOubaJV8tAL/TugCY5M4mw?=
- =?us-ascii?Q?3uAu+qQQfwhpHbvbA/JsDSLb+XM1d1GzinZEFC0OugRj03bhG7Q96K9MJWFe?=
- =?us-ascii?Q?/820peny/7gMi7DGlP0Y6v/shh6lAYB7nZFnEksits/A965x11umNoMVMgUw?=
- =?us-ascii?Q?JHoMhrCvKuOgi8JfHXFZcZOKZ6p+dw0FWSGqAkqiGB+CWrFh4DtO6jVbjHnX?=
- =?us-ascii?Q?eUk2O+pworsYcarW47mIL8vPNetuqgC6jj6GtqAOgrPc?=
+	=?us-ascii?Q?oczFF2NoZ+8pS/y18sVqy22jzGyr3ipmlX5mYBwEmuMO86Go9yhHLe3FA6PQ?=
+ =?us-ascii?Q?DnGmdIiG1j4+xoI9iEPQELDZYdzJIzWVL38k/SL8LZoP2AnLwWtY2p8Da/Jw?=
+ =?us-ascii?Q?P2YRwEqsr1efTNwM6tvmwfTXY4koLkytIMiUHj5Gyc+vfmyuGZO6dPXWyHpm?=
+ =?us-ascii?Q?eMjqIDWmupPE7DUyPzuuG+C2qIwMSSNBMQbgIbJiRXet4UgbmB62AroDZtHl?=
+ =?us-ascii?Q?66QEmhBtS+GoR8LIxsYSGY6mU7JFK28yuSomYYF31sT5/1RT5yTcwSAv3q/i?=
+ =?us-ascii?Q?5yKCnfE3A+Xz7L9pZFaSuaLGsVijzLmVbTL59DbbVDHERuDEAcLBJpol/mom?=
+ =?us-ascii?Q?Lh5exKrRUGDHeFJ/Gvn2FyLml3NjHWBae5psWn4tikOKPabbA1F98iZ+6+vy?=
+ =?us-ascii?Q?xjkgRfWfR5Jd8Kce+4cADnoeg/AIjgr0Wy/AKGKe3IekvSZ62xr/7mJ15haA?=
+ =?us-ascii?Q?5JFFwUDYdMm32diA6hgZcf+cG9s4sBFST3JiUQwK25EUpBLlbdBN0U6X27Jc?=
+ =?us-ascii?Q?EOHXIhAC2bfXC/AB3BDfF4JUhB1Its9TOF4ZBRz+JyVXRhXYAe3LGp1495Aq?=
+ =?us-ascii?Q?oYnpBy9ta6fomnSb/neb2Rb+RwRYkH1p3LMOhXFgNC2hvn7d2eGjxjAnewGk?=
+ =?us-ascii?Q?Sj8BNDG9sx/9SGuOZM54dKnB9no/UXsHUaSnZc5jPL6r1tURsqk5g8mgGUCX?=
+ =?us-ascii?Q?XHG9M7u/GO3x2LfVpZAkfW5RpJLFm2RgTFPEAeqhEpZJ4d/YHtWBqgI5fxrj?=
+ =?us-ascii?Q?W7WpUKRHoFXCOG8CxG4eePJtzLZupYEBhIlGp3Q7IG0n2q4dB0OVOqGMGP6P?=
+ =?us-ascii?Q?Y/ovaT5TK/BVx4t8RxlNs2xsvJNEROSmyIH06VeeLyCj9aifjG1woULe/6zR?=
+ =?us-ascii?Q?a3X3t6lA2umweCAY/Uw4EIFxblF5rJJAYkr2SBER5lzeaKiUa6FOTBPqIs/n?=
+ =?us-ascii?Q?0uVQNnMhUz9ErH/v9JYFDaLLuqBNEzsEZZpnoKpKSWMZy4MoZII30t/9Ftka?=
+ =?us-ascii?Q?A43zjABlVI+zxFLZXUFBypDANhPlzZM+kprqMpSKHVr78/qWPIuGFOEHoLnw?=
+ =?us-ascii?Q?Ek0TSFI3wjMK66RuV22OtNrpwXteBmxcyeAPi2sviRwisSg9N3LRYumzO5OO?=
+ =?us-ascii?Q?mb7z36cORH5EiAR5aUv29fXCOLr8ZFWtB9f50A0pKxfD8/XfeMbZCeJsFCi5?=
+ =?us-ascii?Q?T1HTO/3pk6c7GqBbh0QGnm73q5sT512hfDfkGkP+KwyWADuNjWWZyHfyqMXU?=
+ =?us-ascii?Q?2Ldznn7lqHeTR48dM3qW1oUKNqoOk3AWsdwH0kgZrLC0uRgabuDXsN0eGqKY?=
+ =?us-ascii?Q?B8vjuKTWErne+EPQVs0eote33DMqhTdRUz0AgOa+WCOMu6CPJwguldDcCsbh?=
+ =?us-ascii?Q?JBu0T1R84v3PNlCHpubKH3nfn5s29EUdL3jS7Fe8FU+L/5jVnELiB2jLI251?=
+ =?us-ascii?Q?dEBd8sUK+5wVXv6C+GTxpDrmMaXNxi1LDLjI3W4vm+EZRMkbYCwhbqTL8RV5?=
+ =?us-ascii?Q?VxXxqgc7xfAJdOpLzw0Z92woBtE7KRH4E0OUZJmWr81KUVrwJWw7BR8yNOtO?=
+ =?us-ascii?Q?zDnn0zDBwZnsuWrWBFrd1hv3n0NY75qGy3uUqbcA1lsKz4h1BIOg4nk3OFcn?=
+ =?us-ascii?Q?Zc8RR/uWLskS0a5BX5dD8sj02+Ae5O2nG7kyjCyQsjiV?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3e200dd4-0aba-4a49-f831-08dd8cf71769
+X-MS-Exchange-CrossTenant-Network-Message-Id: cfec9346-73ed-4ff0-d924-08dd8cf71a40
 X-MS-Exchange-CrossTenant-AuthSource: SJ1PR12MB6363.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 May 2025 23:38:23.5616
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 May 2025 23:38:28.5729
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 20bRMTxi56A7X1L/PhVJQkNz2ho1r7j6CJ9SiQFQx1eIJsMln2FX3p2bgY/lKIUt4CiooM6oK4JDQLw25zRwfw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: FOl5h1BsIZeMU/GrDZovqTr5ZcSUpe/CbOaNyxDBTgOiIp08rCi+8L4FWDvd5h91Q3rJuDjvdAqdJbG4X6Y+YA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4399
 
 From: Ming Lei <ming.lei@redhat.com>
 
-Remove __ublk_quiesce_dev() and open code for updating device state as
-QUIESCED.
+Now ublk_abort_queue() is moved to ublk char device release handler,
+meantime our request queue is "quiesced" because either ->canceling was
+set from uring_cmd cancel function or all IOs are inflight and can't be
+completed by ublk server, things becomes easy much:
 
-We needn't to drain inflight requests in __ublk_quiesce_dev() any more,
-because all inflight requests are aborted in ublk char device release
-handler.
+- all uring_cmd are done, so we needn't to mark io as UBLK_IO_FLAG_ABORTED
+for handling completion from uring_cmd
 
-Also we needn't to set ->canceling in __ublk_quiesce_dev() any more
-because it is done unconditionally now in ublk_ch_release().
+- ublk char device is closed, no one can hold IO request reference any more,
+so we can simply complete this request or requeue it for ublk_nosrv_should_reissue_outstanding.
 
 Reviewed-by: Uday Shankar <ushankar@purestorage.com>
 Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20250416035444.99569-7-ming.lei@redhat.com
+Link: https://lore.kernel.org/r/20250416035444.99569-8-ming.lei@redhat.com
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 ---
- drivers/block/ublk_drv.c | 19 ++-----------------
- 1 file changed, 2 insertions(+), 17 deletions(-)
+ drivers/block/ublk_drv.c | 82 ++++++++++------------------------------
+ 1 file changed, 20 insertions(+), 62 deletions(-)
 
 diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
-index 652742db0396..c3f576a9dbf2 100644
+index c3f576a9dbf2..6000147ac2a5 100644
 --- a/drivers/block/ublk_drv.c
 +++ b/drivers/block/ublk_drv.c
-@@ -205,7 +205,6 @@ struct ublk_params_header {
+@@ -115,15 +115,6 @@ struct ublk_uring_cmd_pdu {
+  */
+ #define UBLK_IO_FLAG_OWNED_BY_SRV 0x02
  
- static void ublk_stop_dev_unlocked(struct ublk_device *ub);
- static void ublk_abort_queue(struct ublk_device *ub, struct ublk_queue *ubq);
--static void __ublk_quiesce_dev(struct ublk_device *ub);
+-/*
+- * IO command is aborted, so this flag is set in case of
+- * !UBLK_IO_FLAG_ACTIVE.
+- *
+- * After this flag is observed, any pending or new incoming request
+- * associated with this io command will be failed immediately
+- */
+-#define UBLK_IO_FLAG_ABORTED 0x04
+-
+ /*
+  * UBLK_IO_FLAG_NEED_GET_DATA is set because IO command requires
+  * get data buffer address from ublksrv.
+@@ -1054,12 +1045,6 @@ static inline void __ublk_complete_rq(struct request *req)
+ 	unsigned int unmapped_bytes;
+ 	blk_status_t res = BLK_STS_OK;
  
- static inline unsigned int ublk_req_build_flags(struct request *req);
- static inline struct ublksrv_io_desc *ublk_get_iod(struct ublk_queue *ubq,
-@@ -1558,7 +1557,8 @@ static int ublk_ch_release(struct inode *inode, struct file *filp)
- 		ublk_stop_dev_unlocked(ub);
- 	} else {
- 		if (ublk_nosrv_dev_should_queue_io(ub)) {
--			__ublk_quiesce_dev(ub);
-+			/* ->canceling is set and all requests are aborted */
-+			ub->dev_info.state = UBLK_S_DEV_QUIESCED;
- 		} else {
- 			ub->dev_info.state = UBLK_S_DEV_FAIL_IO;
- 			for (i = 0; i < ub->dev_info.nr_hw_queues; i++)
-@@ -1804,21 +1804,6 @@ static void ublk_wait_tagset_rqs_idle(struct ublk_device *ub)
- 	}
+-	/* called from ublk_abort_queue() code path */
+-	if (io->flags & UBLK_IO_FLAG_ABORTED) {
+-		res = BLK_STS_IOERR;
+-		goto exit;
+-	}
+-
+ 	/* failed read IO if nothing is read */
+ 	if (!io->res && req_op(req) == REQ_OP_READ)
+ 		io->res = -EIO;
+@@ -1109,47 +1094,6 @@ static void ublk_complete_rq(struct kref *ref)
+ 	__ublk_complete_rq(req);
  }
  
--static void __ublk_quiesce_dev(struct ublk_device *ub)
+-static void ublk_do_fail_rq(struct request *req)
 -{
--	int i;
+-	struct ublk_queue *ubq = req->mq_hctx->driver_data;
 -
--	pr_devel("%s: quiesce ub: dev_id %d state %s\n",
--			__func__, ub->dev_info.dev_id,
--			ub->dev_info.state == UBLK_S_DEV_LIVE ?
--			"LIVE" : "QUIESCED");
--	/* mark every queue as canceling */
--	for (i = 0; i < ub->dev_info.nr_hw_queues; i++)
--		ublk_get_queue(ub, i)->canceling = true;
--	ublk_wait_tagset_rqs_idle(ub);
--	ub->dev_info.state = UBLK_S_DEV_QUIESCED;
+-	if (ublk_nosrv_should_reissue_outstanding(ubq->dev))
+-		blk_mq_requeue_request(req, false);
+-	else
+-		__ublk_complete_rq(req);
 -}
 -
- static void ublk_force_abort_dev(struct ublk_device *ub)
+-static void ublk_fail_rq_fn(struct kref *ref)
+-{
+-	struct ublk_rq_data *data = container_of(ref, struct ublk_rq_data,
+-			ref);
+-	struct request *req = blk_mq_rq_from_pdu(data);
+-
+-	ublk_do_fail_rq(req);
+-}
+-
+-/*
+- * Since ublk_rq_task_work_cb always fails requests immediately during
+- * exiting, __ublk_fail_req() is only called from abort context during
+- * exiting. So lock is unnecessary.
+- *
+- * Also aborting may not be started yet, keep in mind that one failed
+- * request may be issued by block layer again.
+- */
+-static void __ublk_fail_req(struct ublk_queue *ubq, struct ublk_io *io,
+-		struct request *req)
+-{
+-	WARN_ON_ONCE(io->flags & UBLK_IO_FLAG_ACTIVE);
+-
+-	if (ublk_need_req_ref(ubq)) {
+-		struct ublk_rq_data *data = blk_mq_rq_to_pdu(req);
+-
+-		kref_put(&data->ref, ublk_fail_rq_fn);
+-	} else {
+-		ublk_do_fail_rq(req);
+-	}
+-}
+-
+ static void ubq_complete_io_cmd(struct ublk_io *io, int res,
+ 				unsigned issue_flags)
  {
- 	int i;
+@@ -1639,10 +1583,26 @@ static void ublk_commit_completion(struct ublk_device *ub,
+ 		ublk_put_req_ref(ubq, req);
+ }
+ 
++static void __ublk_fail_req(struct ublk_queue *ubq, struct ublk_io *io,
++		struct request *req)
++{
++	WARN_ON_ONCE(io->flags & UBLK_IO_FLAG_ACTIVE);
++
++	if (ublk_nosrv_should_reissue_outstanding(ubq->dev))
++		blk_mq_requeue_request(req, false);
++	else {
++		io->res = -EIO;
++		__ublk_complete_rq(req);
++	}
++}
++
+ /*
+- * Called from ubq_daemon context via cancel fn, meantime quiesce ublk
+- * blk-mq queue, so we are called exclusively with blk-mq and ubq_daemon
+- * context, so everything is serialized.
++ * Called from ublk char device release handler, when any uring_cmd is
++ * done, meantime request queue is "quiesced" since all inflight requests
++ * can't be completed because ublk server is dead.
++ *
++ * So no one can hold our request IO reference any more, simply ignore the
++ * reference, and complete the request immediately
+  */
+ static void ublk_abort_queue(struct ublk_device *ub, struct ublk_queue *ubq)
+ {
+@@ -1659,10 +1619,8 @@ static void ublk_abort_queue(struct ublk_device *ub, struct ublk_queue *ubq)
+ 			 * will do it
+ 			 */
+ 			rq = blk_mq_tag_to_rq(ub->tag_set.tags[ubq->q_id], i);
+-			if (rq && blk_mq_request_started(rq)) {
+-				io->flags |= UBLK_IO_FLAG_ABORTED;
++			if (rq && blk_mq_request_started(rq))
+ 				__ublk_fail_req(ubq, io, rq);
+-			}
+ 		}
+ 	}
+ }
 -- 
 2.43.0
 
