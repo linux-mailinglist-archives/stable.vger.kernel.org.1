@@ -1,206 +1,123 @@
-Return-Path: <stable+bounces-141846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BB66AACA95
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 18:12:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E953CAACAAD
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 18:15:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7EAA6188A63C
-	for <lists+stable@lfdr.de>; Tue,  6 May 2025 16:12:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09A311C42FDD
+	for <lists+stable@lfdr.de>; Tue,  6 May 2025 16:15:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4048284667;
-	Tue,  6 May 2025 16:12:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C20B02528EF;
+	Tue,  6 May 2025 16:15:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="usNB21Kz"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="NbQlOyCH"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from 003.mia.mailroute.net (003.mia.mailroute.net [199.89.3.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 848BC1A76D0;
-	Tue,  6 May 2025 16:12:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D1101863E;
+	Tue,  6 May 2025 16:15:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.3.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746547940; cv=none; b=S7KkFtYzmXo3S5IrH4XLd/ZrX+vMiZ/TJjWPuU8FCu3AWWkTZGorlj3vvfTzsobnSQwgAc7T8K7eOYAx821DTUNw2MmtG0B0FuGNphqGP/vqcUvGPQp4EC1nSL+oE/Ds8HMApQVgCTI3OGgCHhCh76fIhW3BqY8rFO8mTo/DwTI=
+	t=1746548135; cv=none; b=A1yr8XuepL+429V5ztgjZIP3QlFXMpvcfXF4ji95A990bpxmbmG6TbbrAMMjOMY5wpM4aKzyN5+4neK4qFbHNKMmZeyt/K9xNBWGW0bGaT/EKFHN/SjR+AGswd+OXcbIEMei9qVNHoQ4LiLSoY20Hc/IAzZlIba4vZ85sGZD98Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746547940; c=relaxed/simple;
-	bh=Ja8R6PBJOP3kiBaQRzBM/QTYmWLJfq8Yv0MlEpMcSDc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fivFLhiOFczAvxmDSJ8RpgyHlyGALtnXmR7r2WIuefPi4F9mupAIg7ZMZlS2uD35lY4KDYXZWwsIV6UDPMeqp9aMDllVCdXiGNCRvglW1OrDnAXPiyzGo1EaS+3Q5+zog+oQXkSpoJYwhj14dSev0DozQ7d40WpKq5Y00W3MNOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=usNB21Kz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48242C4CEE4;
-	Tue,  6 May 2025 16:12:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746547938;
-	bh=Ja8R6PBJOP3kiBaQRzBM/QTYmWLJfq8Yv0MlEpMcSDc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=usNB21KzlaAT93voU8Gmgs63ZOm7Lti5kJB6ISZ4hOtvYWIji+eZfZCEQLuIOVxcj
-	 H4ILlWe4jG+1gesv5mWakpP8JdB5UYXnu0fQs6n9PeG5uumNdcxC80K3xT1j3FpN38
-	 G7vHQI7tGKNBakUKznhdGA31FXgfdDCmMEz1ajQY=
-Date: Tue, 6 May 2025 18:12:15 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Jared Holzman <jholzman@nvidia.com>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Ming Lei <ming.lei@redhat.com>, Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.14 092/311] ublk: call ublk_dispatch_req() for handling
- UBLK_U_IO_NEED_GET_DATA
-Message-ID: <2025050646-glitch-carpentry-017e@gregkh>
-References: <20250429161124.815951989@linuxfoundation.org>
- <830759ad-243a-4fd5-9fa1-a106e6e6bb0d@nvidia.com>
- <2025050455-reconvene-denial-e291@gregkh>
- <744b4d9b-24f3-487c-805f-5aa02eaa093b@nvidia.com>
- <2025050509-impending-uranium-ccba@gregkh>
- <c5022682-52e7-4340-995c-7d3d84bb77aa@nvidia.com>
- <2025050537-flaring-wolverine-c3fd@gregkh>
- <843866f8-059a-4e5d-8316-19c92ae25a82@nvidia.com>
- <2025050524-turmoil-garden-66b3@gregkh>
- <922ba351-2b17-4b92-94d2-8a1fef390cd5@nvidia.com>
+	s=arc-20240116; t=1746548135; c=relaxed/simple;
+	bh=IMwNfLGm9juQH4lPnt2AR3LxjJ4sPAsvNvdRxYIrgLk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=B1/njVZc2KUv7yhtTqS9JQg0U4gOMAaJAOvwFlgFkYasGlTkkKsZfiYfnqrVi+EmiJZ2opyrWUXbvIP0fgr+KAq3mY0ifY1FcYK2njgDs2BniuPYmghW7slyaya125NRMB29nxew/uxZQO5vYFmk0g9cNA6673ke1yzC+Qt3z/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=NbQlOyCH; arc=none smtp.client-ip=199.89.3.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 003.mia.mailroute.net (Postfix) with ESMTP id 4ZsNlw5NBWzlvBXp;
+	Tue,  6 May 2025 16:15:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1746548120; x=1749140121; bh=oEjLAJ5MJCR9DXyM0kDJC2DJ
+	T9WpoekiwyCg7+L54VM=; b=NbQlOyCH1zKMZNJ2xEg57lzteu1dW07WpzdiUOgP
+	CtxlrnVRj8P3LL4VXMP9JXD5JSu/uw84jetEEm1EJFWtZPslsdNRa7TNWlUvb9Dl
+	CQ9OB7m72raomLLBa37CxkTl0NttuVArdb+VBqZmdMTKMMXTyzmslD1i49ox0yTE
+	0PCFtKhL2YwWvRWYiD680Gjq03CCiIlovHObuOA4PoWQSQjT0YFKqCHWRslyIw9f
+	NyX9Ai7KO7MxT9H9BeQYfc3O5dnjdMoo8yxUnEmQpGYrlHkFCq2GxpvCKnfvx+Oy
+	hgHNDhBsxLT1kgnpIHBhw/4wlE/HHwxjQ+6qlnHIIyT8Ow==
+X-Virus-Scanned: by MailRoute
+Received: from 003.mia.mailroute.net ([127.0.0.1])
+ by localhost (003.mia [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id LiH4KEfXhywU; Tue,  6 May 2025 16:15:20 +0000 (UTC)
+Received: from [100.66.154.22] (unknown [104.135.204.82])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 003.mia.mailroute.net (Postfix) with ESMTPSA id 4ZsNlX3lBgzlvBXV;
+	Tue,  6 May 2025 16:15:03 +0000 (UTC)
+Message-ID: <04fc1549-0fa6-4956-b522-df5fbc26100c@acm.org>
+Date: Tue, 6 May 2025 09:15:02 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <922ba351-2b17-4b92-94d2-8a1fef390cd5@nvidia.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] ufs: core: fix hwq_id type and value
+To: peter.wang@mediatek.com, linux-scsi@vger.kernel.org,
+ martin.petersen@oracle.com, avri.altman@wdc.com, alim.akhtar@samsung.com,
+ jejb@linux.ibm.com
+Cc: wsd_upstream@mediatek.com, linux-mediatek@lists.infradead.org,
+ chun-hung.wu@mediatek.com, alice.chao@mediatek.com, cc.chou@mediatek.com,
+ chaotian.jing@mediatek.com, jiajie.hao@mediatek.com,
+ yi-fan.peng@mediatek.com, qilin.tan@mediatek.com, lin.gui@mediatek.com,
+ tun-yu.yu@mediatek.com, eddie.huang@mediatek.com, naomi.chu@mediatek.com,
+ ed.tsai@mediatek.com, quic_ziqichen@quicinc.com, stable@vger.kernel.org
+References: <20250506124038.4071609-1-peter.wang@mediatek.com>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <20250506124038.4071609-1-peter.wang@mediatek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, May 06, 2025 at 05:31:50PM +0300, Jared Holzman wrote:
-> On 05/05/2025 11:50, Greg Kroah-Hartman wrote:
-> > On Mon, May 05, 2025 at 11:25:24AM +0300, Jared Holzman wrote:
-> >> On 05/05/2025 10:54, Greg Kroah-Hartman wrote:
-> >>> On Mon, May 05, 2025 at 10:47:03AM +0300, Jared Holzman wrote:
-> >>>> On 05/05/2025 8:51, Greg Kroah-Hartman wrote:
-> >>>>> On Sun, May 04, 2025 at 04:47:20PM +0300, Jared Holzman wrote:
-> >>>>>> On 04/05/2025 15:39, Greg Kroah-Hartman wrote:
-> >>>>>>> On Sun, May 04, 2025 at 02:55:00PM +0300, Jared Holzman wrote:
-> >>>>>>>> On 29/04/2025 19:38, Greg Kroah-Hartman wrote:
-> >>>>>>>>> 6.14-stable review patch.  If anyone has any objections, please let me know.
-> >>>>>>>>>
-> >>>>>>>>> ------------------
-> >>>>>>>>>
-> >>>>>>>>> From: Ming Lei <ming.lei@redhat.com>
-> >>>>>>>>>
-> >>>>>>>>> [ Upstream commit d6aa0c178bf81f30ae4a780b2bca653daa2eb633 ]
-> >>>>>>>>>
-> >>>>>>>>> We call io_uring_cmd_complete_in_task() to schedule task_work for handling
-> >>>>>>>>> UBLK_U_IO_NEED_GET_DATA.
-> >>>>>>>>>
-> >>>>>>>>> This way is really not necessary because the current context is exactly
-> >>>>>>>>> the ublk queue context, so call ublk_dispatch_req() directly for handling
-> >>>>>>>>> UBLK_U_IO_NEED_GET_DATA.
-> >>>>>>>>>
-> >>>>>>>>> Fixes: 216c8f5ef0f2 ("ublk: replace monitor with cancelable uring_cmd")
-> >>>>>>>>> Tested-by: Jared Holzman <jholzman@nvidia.com>
-> >>>>>>>>> Signed-off-by: Ming Lei <ming.lei@redhat.com>
-> >>>>>>>>> Link: https://lore.kernel.org/r/20250425013742.1079549-2-ming.lei@redhat.com
-> >>>>>>>>> Signed-off-by: Jens Axboe <axboe@kernel.dk>
-> >>>>>>>>> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> >>>>>>>>> ---
-> >>>>>>>>>  drivers/block/ublk_drv.c | 14 +++-----------
-> >>>>>>>>>  1 file changed, 3 insertions(+), 11 deletions(-)
-> >>>>>>>>>
-> >>>>>>>>> diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
-> >>>>>>>>> index 437297022dcfa..c7761a5cfeec0 100644
-> >>>>>>>>> --- a/drivers/block/ublk_drv.c
-> >>>>>>>>> +++ b/drivers/block/ublk_drv.c
-> >>>>>>>>> @@ -1812,15 +1812,6 @@ static void ublk_mark_io_ready(struct ublk_device *ub, struct ublk_queue *ubq)
-> >>>>>>>>>  	mutex_unlock(&ub->mutex);
-> >>>>>>>>>  }
-> >>>>>>>>>  
-> >>>>>>>>> -static void ublk_handle_need_get_data(struct ublk_device *ub, int q_id,
-> >>>>>>>>> -		int tag)
-> >>>>>>>>> -{
-> >>>>>>>>> -	struct ublk_queue *ubq = ublk_get_queue(ub, q_id);
-> >>>>>>>>> -	struct request *req = blk_mq_tag_to_rq(ub->tag_set.tags[q_id], tag);
-> >>>>>>>>> -
-> >>>>>>>>> -	ublk_queue_cmd(ubq, req);
-> >>>>>>>>> -}
-> >>>>>>>>> -
-> >>>>>>>>>  static inline int ublk_check_cmd_op(u32 cmd_op)
-> >>>>>>>>>  {
-> >>>>>>>>>  	u32 ioc_type = _IOC_TYPE(cmd_op);
-> >>>>>>>>> @@ -1967,8 +1958,9 @@ static int __ublk_ch_uring_cmd(struct io_uring_cmd *cmd,
-> >>>>>>>>>  		if (!(io->flags & UBLK_IO_FLAG_OWNED_BY_SRV))
-> >>>>>>>>>  			goto out;
-> >>>>>>>>>  		ublk_fill_io_cmd(io, cmd, ub_cmd->addr);
-> >>>>>>>>> -		ublk_handle_need_get_data(ub, ub_cmd->q_id, ub_cmd->tag);
-> >>>>>>>>> -		break;
-> >>>>>>>>> +		req = blk_mq_tag_to_rq(ub->tag_set.tags[ub_cmd->q_id], tag);
-> >>>>>>>>> +		ublk_dispatch_req(ubq, req, issue_flags);
-> >>>>>>>>> +		return -EIOCBQUEUED;
-> >>>>>>>>>  	default:
-> >>>>>>>>>  		goto out;
-> >>>>>>>>>  	}
-> >>>>>>>>
-> >>>>>>>> Hi Greg,
-> >>>>>>>>
-> >>>>>>>> Will you also be backporting "ublk: fix race between io_uring_cmd_complete_in_task and ublk_cancel_cmd" to 6.14-stable?
-> >>>>>>>
-> >>>>>>> What is the git commit id you are referring to?  And was it asked to be
-> >>>>>>> included in a stable release?
-> >>>>>>>
-> >>>>>>> thanks,
-> >>>>>>>
-> >>>>>>> greg k-h
-> >>>>>>
-> >>>>>> Hi Greg,
-> >>>>>>
-> >>>>>> The commit is: f40139fde527
-> >>>>>>
-> >>>>>> It is Part 2 of the same patch series.
-> >>>>>
-> >>>>> It does not apply to the stable tree at all, so no, we will not be
-> >>>>> adding it unless someone provides a working version of it.
-> >>>>>
-> >>>>> thanks,
-> >>>>>
-> >>>>> greg k-h
-> >>>>
-> >>>> Hi Greg,
-> >>>>
-> >>>> Happy to provide a version that will apply. I just need to know where to get your working branch to base it on.
-> >>>
-> >>> The latest stable release tree.
-> >>>
-> >>> thanks,
-> >>>
-> >>> greg k-h
-> >>
-> >> Hi Greg,
-> >>
-> >> I tried branch linux-6.14.y of repo: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/
-> >>
-> >> But I can't apply any of the previous patches in the series [PATCH 6.14 000/311] to get to the point
-> >> where I can create my version of the patch.
-> > 
-> > All of those changes are already in that branch, right?  So no need to
-> > apply them again :)
-> > 
-> > thanks,
-> > 
-> > greg k-h
+On 5/6/25 5:39 AM, peter.wang@mediatek.com wrote:
+> From: Peter Wang <peter.wang@mediatek.com>
 > 
-> Hi Greg,
+> Because the member id of struct ufs_hw_queue is u32 (hwq->id) and
+> the trace entry hwq_id is also u32, the type should be changed to u32.
+> If mcq is not supported, SDB mode only supports one hardware queue,
+> for which setting the hwq_id to 0 is more suitable.
 > 
-> Thanks, I figured it out finally. Sorry for the noise.
+> Fixes: 4a52338bf288 ("scsi: ufs: core: Add trace event for MCQ")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Peter Wang <peter.wang@mediatek.com>
+> ---
+>   drivers/ufs/core/ufshcd.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> I needed some help with the patch, so I consulted with the maintainer (Ming Lei).
-> 
-> He has provided me with a branch based stable/linux-6.14.y, containing several commits that are needed to get to the point where the patch can be applied.
-> 
-> I've tested it and it works and he has given me the go-ahead to send you a pull request.
-> 
-> I've never done that before so I'd prefer to just send a patch series to the mailing-list.
-> 
-> Let me know if that's okay.
+> diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+> index 7735421e3991..14e4cfbcb9eb 100644
+> --- a/drivers/ufs/core/ufshcd.c
+> +++ b/drivers/ufs/core/ufshcd.c
+> @@ -432,7 +432,7 @@ static void ufshcd_add_command_trace(struct ufs_hba *hba, unsigned int tag,
+>   	u8 opcode = 0, group_id = 0;
+>   	u32 doorbell = 0;
+>   	u32 intr;
+> -	int hwq_id = -1;
+> +	u32 hwq_id = 0;
+>   	struct ufshcd_lrb *lrbp = &hba->lrb[tag];
+>   	struct scsi_cmnd *cmd = lrbp->cmd;
+>   	struct request *rq = scsi_cmd_to_rq(cmd);
 
-Please do, we can not take pull request for stable patches as we require
-them to be in individual patches for our tools to process.
+Is this change really necessary? I like the current behavior because it
+makes it easy to figure out whether or not MCQ has been enabled. Even if
+others would agree with this change, I think that the "Fixes:" and "Cc:
+stable" tags are overkill because I don't see this as a bug fix but
+rather as a behavior change that is not a bug fix.
 
-thanks,
+Thanks,
 
-greg k-h
+Bart.
 
