@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-142453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27790AAEAB3
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:58:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94566AAEBCB
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:10:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A1B61C4453E
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:58:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54D9E52346A
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:10:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26D131482F5;
-	Wed,  7 May 2025 18:58:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B18EA21504D;
+	Wed,  7 May 2025 19:09:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C/lLAHqS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lMTmJiZV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DABBD24E4CE;
-	Wed,  7 May 2025 18:58:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E4022144C1;
+	Wed,  7 May 2025 19:09:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644300; cv=none; b=aeAsPSzkOupsZOTBr+C1OsC+f64AEitIkW2aWI7Azz1683zKPu/oDU7YJoCIWcC+9Q91BotyMY6O6QE9XYLDkzcCM6/uG0gDZwQL9rqfLNQXbJuZqDVeicN7EPse8nTtg2zPFy4bySK9RwrShDYT9HMAikypG4R1k1va/XS1WiU=
+	t=1746644996; cv=none; b=OA00gIA3ysycIMhYQPVdHPgOpwi/oeDzBUqZ/GJA8vwIsOgHq30dTpf17K+ci+/koeIAvyg6Bd/Gbf8zNCr6G8vx0fDNCP/u3384KiKzIVEG9s+MtbD/GKUY8rUxGEq5UzRVv/SHapdxmjk++Zu2GeGLlCFSfYKdk5RWxfXComc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644300; c=relaxed/simple;
-	bh=LtlXRditCIBqF9QFvXzjHlQlad8a/Rxy9gjY+gzbglc=;
+	s=arc-20240116; t=1746644996; c=relaxed/simple;
+	bh=gizyoxVcXEd7l5YoAeo83HtQ3CXVackkXPPF5G3Z92w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KfQAOI8tz0WyxjXCp55s49XhSSzrxF4ZJQmsPPKNnDSZag3aOASQ0ZkkuewarpC0ouSZzxRrbUuOadeUhVjBnDKnChvcLAd/CbVqawkWd0SEcCeqjgLnV/okOIqPy1VfXcgd4dZgb9ABzU8wafjU6x9qR4RPzRPeb+evlfhflyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C/lLAHqS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9EC9C4CEE2;
-	Wed,  7 May 2025 18:58:16 +0000 (UTC)
+	 MIME-Version; b=AVKFPh1f/c4OSIToGUp1IvvuBb7JCYaj1B+dL/7xznozP5BPk/Dw1zzUZaXjPBBCdBi0wELmNti6pQce3byo0mD82fh57oQCdSGIrUUowuDYUJKQug58j5Ute/lunb4RflIhGnZHU+P11xCgnTy7KxZ6f8s81zDZbTY+SePRbhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lMTmJiZV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2E50C4CEE2;
+	Wed,  7 May 2025 19:09:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644297;
-	bh=LtlXRditCIBqF9QFvXzjHlQlad8a/Rxy9gjY+gzbglc=;
+	s=korg; t=1746644996;
+	bh=gizyoxVcXEd7l5YoAeo83HtQ3CXVackkXPPF5G3Z92w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C/lLAHqSdlNLXuvKLOXvmE9M1DRANB0lWVuFuvm77rjD6HRUxIocxDFHiJT/Z614F
-	 bbyplKtcg6evikH0r1rTf1wduTsVBnyVUEnk24fUc8gXxxr7QJ7+jv3OSvqtLTBrPT
-	 0qFLy7tL5r7+/LsVIftqpDUtnsIwNbChAjflUMz0=
+	b=lMTmJiZVlELuFVnMTmVtXoRlUykn1L5TBD3HJNOrE+t2LICc/djhDgQ84b37BSVf0
+	 YG2krZafF+yo3gn4A6UCCZQ/gdURcuERDnW7IT2dFou/XrYl3oLt+ZuP2OiQ7ydwq5
+	 tBLLbwth72dhJy429k99VCoMnsE9syOxrRh0o0V0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kenneth Graunke <kenneth@whitecape.org>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH 6.14 152/183] drm/xe: Invalidate L3 read-only cachelines for geometry streams too
+	Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 061/129] net: ethernet: mtk-star-emac: fix spinlock recursion issues on rx/tx poll
 Date: Wed,  7 May 2025 20:39:57 +0200
-Message-ID: <20250507183831.020270149@linuxfoundation.org>
+Message-ID: <20250507183815.999866248@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,101 +64,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kenneth Graunke <kenneth@whitecape.org>
+From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
 
-commit e775278cd75f24a2758c28558c4e41b36c935740 upstream.
+[ Upstream commit 6fe0866014486736cc3ba1c6fd4606d3dbe55c9c ]
 
-Historically, the Vertex Fetcher unit has not been an L3 client.  That
-meant that, when a buffer containing vertex data was written to, it was
-necessary to issue a PIPE_CONTROL::VF Cache Invalidate to invalidate any
-VF L2 cachelines associated with that buffer, so the new value would be
-properly read from memory.
+Use spin_lock_irqsave and spin_unlock_irqrestore instead of spin_lock
+and spin_unlock in mtk_star_emac driver to avoid spinlock recursion
+occurrence that can happen when enabling the DMA interrupts again in
+rx/tx poll.
 
-Since Tigerlake and later, VERTEX_BUFFER_STATE and 3DSTATE_INDEX_BUFFER
-have included an "L3 Bypass Enable" bit which userspace drivers can set
-to request that the vertex fetcher unit snoop L3.  However, unlike most
-true L3 clients, the "VF Cache Invalidate" bit continues to only
-invalidate the VF L2 cache - and not any associated L3 lines.
+```
+BUG: spinlock recursion on CPU#0, swapper/0/0
+ lock: 0xffff00000db9cf20, .magic: dead4ead, .owner: swapper/0/0,
+    .owner_cpu: 0
+CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted
+    6.15.0-rc2-next-20250417-00001-gf6a27738686c-dirty #28 PREEMPT
+Hardware name: MediaTek MT8365 Open Platform EVK (DT)
+Call trace:
+ show_stack+0x18/0x24 (C)
+ dump_stack_lvl+0x60/0x80
+ dump_stack+0x18/0x24
+ spin_dump+0x78/0x88
+ do_raw_spin_lock+0x11c/0x120
+ _raw_spin_lock+0x20/0x2c
+ mtk_star_handle_irq+0xc0/0x22c [mtk_star_emac]
+ __handle_irq_event_percpu+0x48/0x140
+ handle_irq_event+0x4c/0xb0
+ handle_fasteoi_irq+0xa0/0x1bc
+ handle_irq_desc+0x34/0x58
+ generic_handle_domain_irq+0x1c/0x28
+ gic_handle_irq+0x4c/0x120
+ do_interrupt_handler+0x50/0x84
+ el1_interrupt+0x34/0x68
+ el1h_64_irq_handler+0x18/0x24
+ el1h_64_irq+0x6c/0x70
+ regmap_mmio_read32le+0xc/0x20 (P)
+ _regmap_bus_reg_read+0x6c/0xac
+ _regmap_read+0x60/0xdc
+ regmap_read+0x4c/0x80
+ mtk_star_rx_poll+0x2f4/0x39c [mtk_star_emac]
+ __napi_poll+0x38/0x188
+ net_rx_action+0x164/0x2c0
+ handle_softirqs+0x100/0x244
+ __do_softirq+0x14/0x20
+ ____do_softirq+0x10/0x20
+ call_on_irq_stack+0x24/0x64
+ do_softirq_own_stack+0x1c/0x40
+ __irq_exit_rcu+0xd4/0x10c
+ irq_exit_rcu+0x10/0x1c
+ el1_interrupt+0x38/0x68
+ el1h_64_irq_handler+0x18/0x24
+ el1h_64_irq+0x6c/0x70
+ cpuidle_enter_state+0xac/0x320 (P)
+ cpuidle_enter+0x38/0x50
+ do_idle+0x1e4/0x260
+ cpu_startup_entry+0x34/0x3c
+ rest_init+0xdc/0xe0
+ console_on_rootfs+0x0/0x6c
+ __primary_switched+0x88/0x90
+```
 
-To handle that, PIPE_CONTROL has a new "L3 Read Only Cache Invalidation
-Bit", which according to the docs, "controls the invalidation of the
-Geometry streams cached in L3 cache at the top of the pipe."  In other
-words, the vertex and index buffer data that gets cached in L3 when
-"L3 Bypass Disable" is set.
-
-Mesa always sets L3 Bypass Disable so that the VF unit snoops L3, and
-whenever it issues a VF Cache Invalidate, it also issues a L3 Read Only
-Cache Invalidate so that both L2 and L3 vertex data is invalidated.
-
-xe is issuing VF cache invalidates too (which handles cases like CPU
-writes to a buffer between GPU batches).  Because userspace may enable
-L3 snooping, it needs to issue an L3 Read Only Cache Invalidate as well.
-
-Fixes significant flickering in Firefox on Meteorlake, which was writing
-to vertex buffers via the CPU between batches; the missing L3 Read Only
-invalidates were causing the vertex fetcher to read stale data from L3.
-
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/4460
-Fixes: 6ef3bb60557d ("drm/xe: enable lite restore")
-Cc: stable@vger.kernel.org # v6.13+
-Signed-off-by: Kenneth Graunke <kenneth@whitecape.org>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Link: https://lore.kernel.org/r/20250330165923.56410-1-rodrigo.vivi@intel.com
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-(cherry picked from commit 61672806b579dd5a150a042ec9383be2bbc2ae7e)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Signed-off-by: Kenneth Graunke <kenneth@whitecape.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0a8bd81fd6aa ("net: ethernet: mtk-star-emac: separate tx/rx handling with two NAPIs")
+Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Link: https://patch.msgid.link/20250424-mtk_star_emac-fix-spinlock-recursion-issue-v2-1-f3fde2e529d8@collabora.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/instructions/xe_gpu_commands.h |    1 +
- drivers/gpu/drm/xe/xe_ring_ops.c                  |   13 +++++++++----
- 2 files changed, 10 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/mediatek/mtk_star_emac.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/xe/instructions/xe_gpu_commands.h
-+++ b/drivers/gpu/drm/xe/instructions/xe_gpu_commands.h
-@@ -41,6 +41,7 @@
+diff --git a/drivers/net/ethernet/mediatek/mtk_star_emac.c b/drivers/net/ethernet/mediatek/mtk_star_emac.c
+index 25989c79c92e6..47a00e02365a2 100644
+--- a/drivers/net/ethernet/mediatek/mtk_star_emac.c
++++ b/drivers/net/ethernet/mediatek/mtk_star_emac.c
+@@ -1163,6 +1163,7 @@ static int mtk_star_tx_poll(struct napi_struct *napi, int budget)
+ 	struct net_device *ndev = priv->ndev;
+ 	unsigned int head = ring->head;
+ 	unsigned int entry = ring->tail;
++	unsigned long flags;
  
- #define GFX_OP_PIPE_CONTROL(len)	((0x3<<29)|(0x3<<27)|(0x2<<24)|((len)-2))
+ 	while (entry != head && count < (MTK_STAR_RING_NUM_DESCS - 1)) {
+ 		ret = mtk_star_tx_complete_one(priv);
+@@ -1182,9 +1183,9 @@ static int mtk_star_tx_poll(struct napi_struct *napi, int budget)
+ 		netif_wake_queue(ndev);
  
-+#define	  PIPE_CONTROL0_L3_READ_ONLY_CACHE_INVALIDATE	BIT(10)	/* gen12 */
- #define	  PIPE_CONTROL0_HDC_PIPELINE_FLUSH		BIT(9)	/* gen12 */
+ 	if (napi_complete(napi)) {
+-		spin_lock(&priv->lock);
++		spin_lock_irqsave(&priv->lock, flags);
+ 		mtk_star_enable_dma_irq(priv, false, true);
+-		spin_unlock(&priv->lock);
++		spin_unlock_irqrestore(&priv->lock, flags);
+ 	}
  
- #define   PIPE_CONTROL_COMMAND_CACHE_INVALIDATE		(1<<29)
---- a/drivers/gpu/drm/xe/xe_ring_ops.c
-+++ b/drivers/gpu/drm/xe/xe_ring_ops.c
-@@ -141,7 +141,8 @@ emit_pipe_control(u32 *dw, int i, u32 bi
- static int emit_pipe_invalidate(u32 mask_flags, bool invalidate_tlb, u32 *dw,
- 				int i)
+ 	return 0;
+@@ -1341,6 +1342,7 @@ static int mtk_star_rx(struct mtk_star_priv *priv, int budget)
+ static int mtk_star_rx_poll(struct napi_struct *napi, int budget)
  {
--	u32 flags = PIPE_CONTROL_CS_STALL |
-+	u32 flags0 = 0;
-+	u32 flags1 = PIPE_CONTROL_CS_STALL |
- 		PIPE_CONTROL_COMMAND_CACHE_INVALIDATE |
- 		PIPE_CONTROL_INSTRUCTION_CACHE_INVALIDATE |
- 		PIPE_CONTROL_TEXTURE_CACHE_INVALIDATE |
-@@ -152,11 +153,15 @@ static int emit_pipe_invalidate(u32 mask
- 		PIPE_CONTROL_STORE_DATA_INDEX;
+ 	struct mtk_star_priv *priv;
++	unsigned long flags;
+ 	int work_done = 0;
  
- 	if (invalidate_tlb)
--		flags |= PIPE_CONTROL_TLB_INVALIDATE;
-+		flags1 |= PIPE_CONTROL_TLB_INVALIDATE;
+ 	priv = container_of(napi, struct mtk_star_priv, rx_napi);
+@@ -1348,9 +1350,9 @@ static int mtk_star_rx_poll(struct napi_struct *napi, int budget)
+ 	work_done = mtk_star_rx(priv, budget);
+ 	if (work_done < budget) {
+ 		napi_complete_done(napi, work_done);
+-		spin_lock(&priv->lock);
++		spin_lock_irqsave(&priv->lock, flags);
+ 		mtk_star_enable_dma_irq(priv, true, false);
+-		spin_unlock(&priv->lock);
++		spin_unlock_irqrestore(&priv->lock, flags);
+ 	}
  
--	flags &= ~mask_flags;
-+	flags1 &= ~mask_flags;
- 
--	return emit_pipe_control(dw, i, 0, flags, LRC_PPHWSP_SCRATCH_ADDR, 0);
-+	if (flags1 & PIPE_CONTROL_VF_CACHE_INVALIDATE)
-+		flags0 |= PIPE_CONTROL0_L3_READ_ONLY_CACHE_INVALIDATE;
-+
-+	return emit_pipe_control(dw, i, flags0, flags1,
-+				 LRC_PPHWSP_SCRATCH_ADDR, 0);
- }
- 
- static int emit_store_imm_ppgtt_posted(u64 addr, u64 value,
+ 	return work_done;
+-- 
+2.39.5
+
 
 
 
