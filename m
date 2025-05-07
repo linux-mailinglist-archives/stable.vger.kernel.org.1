@@ -1,63 +1,55 @@
-Return-Path: <stable+bounces-142250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9FECAAE9C6
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:48:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC055AAEB28
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:04:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A664985DD2
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:47:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 264DE1C0680B
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:04:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFCA1202C2B;
-	Wed,  7 May 2025 18:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32C1428AAE9;
+	Wed,  7 May 2025 19:04:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cnylGMm2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d3js6PRW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B7A81C84D7;
-	Wed,  7 May 2025 18:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E40D829A0;
+	Wed,  7 May 2025 19:04:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643675; cv=none; b=d40vXoxAGkd8386zcW4Mvc1rn59BY5HYcTQtcS+r1PEASpG7O/3YMCQtF7rPiiLpk+ZYyEf4+BbgdYXhrNw7IPuYvpZDsucEeXVUpMWnEk6ZJuXjFUxYq8SeWzk6OVaLwgNeNBsE4b27i3mZNufkSnakzHgAgfb4rDQ0OqT2xU8=
+	t=1746644645; cv=none; b=Ahk0JrBJo/tuJ0uEuUa35QR9iejTKJC+xYVd9lw4oobGQYosS2Q8JqbxfTJj2nSHTKt0fYKNcKOR2k8l9V4F2JdQ2AxPajXe9hKBkytp/fqeepJJKkPpY8D9rGkvGf27g1hT7RMizdaRoDH/2QUQjfn6N8pcb3z9XNQKS3zSgo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643675; c=relaxed/simple;
-	bh=62Z7ClMJG+mguJvzk5WK0qVFQkn/EUrPzh3fppBsf8w=;
+	s=arc-20240116; t=1746644645; c=relaxed/simple;
+	bh=rx+pH816IasEjIoohzMoPTrWKvWowZP/YbHc42Nb/tU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HDePKXAZHGQSolWqc+lquyIPpQUu7DwrYuA3PSeaeNdzcRVXZU4F2e6vK4d/rXYQTm2ifLLHdu8sVbNtUDFD17heeDhu92eCZMVj6aZsEHX7v4QTXfXc+/hGSuqWCaVGU/c4KS2HzsUqu9a44nIQXIKO1HvIsdsvLEdR3Gl2cH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cnylGMm2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 022CAC4CEE2;
-	Wed,  7 May 2025 18:47:54 +0000 (UTC)
+	 MIME-Version; b=E4sCFW0TxPZNzNnITWK9BWCs22eMYLnrEBVgT5ukwY4nn9X1m009kpaH559funKW66QWw77GYUicvkudxGm28Tm2oJ0xJNYncD2PxvAbemmIq/9cJLrvjXfKd/9HA9S8AaEVmLWzUtKAGXGiIdvl7Z8/kAlIbskp8QrmAGaCK8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d3js6PRW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C267C4CEE2;
+	Wed,  7 May 2025 19:04:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643675;
-	bh=62Z7ClMJG+mguJvzk5WK0qVFQkn/EUrPzh3fppBsf8w=;
+	s=korg; t=1746644644;
+	bh=rx+pH816IasEjIoohzMoPTrWKvWowZP/YbHc42Nb/tU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cnylGMm2a5cIbPADTrPuMwClsHr3ViQE0fIcDz1PgFmtk7XjeWZgaDTjQKejL8Mgw
-	 XPYUTmNBhVqWeR8FwScN/RJx6iMuCUHU3l+zLahpbnMoVkfCAF3o7Y/ECJbXuMih0i
-	 uuOdZM+IyvVuY1dzUl4hFkOhBjqYI9mJGuqwuC2k=
+	b=d3js6PRW3w+k7a/eTZs8VCnakrdWdWO+L5BVhJlFtCGkT4AKE2V7UW0+Qcq354j9j
+	 ETuJpXW993o/rjq97ET5e1MVCMEIRoDDu/SGGKQaHyurHP05jiA36cS03qIZgFZgCr
+	 H4+6wZLycGM+C53HaO32YG4iJUR7hnIrnLoqEO2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Hagberg <ehagberg@janestreet.com>,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Ingo Molnar <mingo@kernel.org>,
-	Baoquan He <bhe@redhat.com>,
-	Vivek Goyal <vgoyal@redhat.com>,
-	Dave Young <dyoung@redhat.com>,
-	Eric Biederman <ebiederm@xmission.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"H. Peter Anvin" <hpa@zytor.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 79/97] Revert "x86/kexec: Allocate PGD for x86_64 transition page tables separately"
-Date: Wed,  7 May 2025 20:39:54 +0200
-Message-ID: <20250507183810.160807716@linuxfoundation.org>
+Subject: [PATCH 6.12 110/164] ALSA: hda/realtek: Fix built-mic regression on other ASUS models
+Date: Wed,  7 May 2025 20:39:55 +0200
+Message-ID: <20250507183825.431757835@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
-References: <20250507183806.987408728@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,218 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-This reverts commit 6821918f451942aa79759f29677a22f2d4ff4cbe which is
-commit 4b5bc2ec9a239bce261ffeafdd63571134102323 upstream.
+[ Upstream commit 4d5b71b487291da9f92e352c0a7e39f256d60db8 ]
 
-The patch it relies on is not in the 6.1.y tree, and has been reported
-to cause problems, so let's revert it for now.
+A few ASUS models use the ALC256_FIXUP_ASUS_HEADSET_MODE although they
+have no built-in mic pin on NID 0x13, as found in the commit
+c1732ede5e80 ("ALSA: hda/realtek - Fix headset and mic on several Asus
+laptops with ALC256").  This was relatively harmless in the past as
+NID 0x13 was assigned as the secondary mic.  But since the fix for the
+pin sort order, this pin became the primary one, hence user started
+noticing the broken input, and we've fixed already for a few ASUS
+models to switch to ALC256_FIXUP_ASUS_MIC_NO_PRESENCE.
 
-Reported-by: Eric Hagberg <ehagberg@janestreet.com>
-Link: https://lore.kernel.org/r/CAAH4uRBxJ_XvYjCpgYXHqrKSNj6x9pA7X6NBPNTekeQ90DQSJA@mail.gmail.com
-Cc: David Woodhouse <dwmw@amazon.co.uk>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Baoquan He <bhe@redhat.com>
-Cc: Vivek Goyal <vgoyal@redhat.com>
-Cc: Dave Young <dyoung@redhat.com>
-Cc: Eric Biederman <ebiederm@xmission.com>
-Cc: Ard Biesheuvel <ardb@kernel.org>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch corrects the other ASUS models to use the right quirk entry
+for fixing the built-in mic regression.  Here we cover X541SA
+(1043:12e0), X541UV (1043:12f0), Z550SA (1043:13bf0) and X555UB
+(1043:1ccd).
+
+Fixes: 3b4309546b48 ("ALSA: hda: Fix headset detection failure due to unstable sort")
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220058
+Link: https://patch.msgid.link/20250430053210.31776-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/kexec.h       |   18 +++-----------
- arch/x86/kernel/machine_kexec_64.c |   45 +++++++++++++++++--------------------
- 2 files changed, 25 insertions(+), 38 deletions(-)
+ sound/pci/hda/patch_realtek.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/x86/include/asm/kexec.h
-+++ b/arch/x86/include/asm/kexec.h
-@@ -16,7 +16,6 @@
- # define PAGES_NR		4
- #endif
- 
--# define KEXEC_CONTROL_PAGE_SIZE	4096
- # define KEXEC_CONTROL_CODE_MAX_SIZE	2048
- 
- #ifndef __ASSEMBLY__
-@@ -45,6 +44,7 @@ struct kimage;
- /* Maximum address we can use for the control code buffer */
- # define KEXEC_CONTROL_MEMORY_LIMIT TASK_SIZE
- 
-+# define KEXEC_CONTROL_PAGE_SIZE	4096
- 
- /* The native architecture */
- # define KEXEC_ARCH KEXEC_ARCH_386
-@@ -59,6 +59,9 @@ struct kimage;
- /* Maximum address we can use for the control pages */
- # define KEXEC_CONTROL_MEMORY_LIMIT     (MAXMEM-1)
- 
-+/* Allocate one page for the pdp and the second for the code */
-+# define KEXEC_CONTROL_PAGE_SIZE  (4096UL + 4096UL)
-+
- /* The native architecture */
- # define KEXEC_ARCH KEXEC_ARCH_X86_64
- #endif
-@@ -143,19 +146,6 @@ struct kimage_arch {
- };
- #else
- struct kimage_arch {
--	/*
--	 * This is a kimage control page, as it must not overlap with either
--	 * source or destination address ranges.
--	 */
--	pgd_t *pgd;
--	/*
--	 * The virtual mapping of the control code page itself is used only
--	 * during the transition, while the current kernel's pages are all
--	 * in place. Thus the intermediate page table pages used to map it
--	 * are not control pages, but instead just normal pages obtained
--	 * with get_zeroed_page(). And have to be tracked (below) so that
--	 * they can be freed.
--	 */
- 	p4d_t *p4d;
- 	pud_t *pud;
- 	pmd_t *pmd;
---- a/arch/x86/kernel/machine_kexec_64.c
-+++ b/arch/x86/kernel/machine_kexec_64.c
-@@ -149,8 +149,7 @@ static void free_transition_pgtable(stru
- 	image->arch.pte = NULL;
- }
- 
--static int init_transition_pgtable(struct kimage *image, pgd_t *pgd,
--				   unsigned long control_page)
-+static int init_transition_pgtable(struct kimage *image, pgd_t *pgd)
- {
- 	pgprot_t prot = PAGE_KERNEL_EXEC_NOENC;
- 	unsigned long vaddr, paddr;
-@@ -161,7 +160,7 @@ static int init_transition_pgtable(struc
- 	pte_t *pte;
- 
- 	vaddr = (unsigned long)relocate_kernel;
--	paddr = control_page;
-+	paddr = __pa(page_address(image->control_code_page)+PAGE_SIZE);
- 	pgd += pgd_index(vaddr);
- 	if (!pgd_present(*pgd)) {
- 		p4d = (p4d_t *)get_zeroed_page(GFP_KERNEL);
-@@ -220,7 +219,7 @@ static void *alloc_pgt_page(void *data)
- 	return p;
- }
- 
--static int init_pgtable(struct kimage *image, unsigned long control_page)
-+static int init_pgtable(struct kimage *image, unsigned long start_pgtable)
- {
- 	struct x86_mapping_info info = {
- 		.alloc_pgt_page	= alloc_pgt_page,
-@@ -229,12 +228,12 @@ static int init_pgtable(struct kimage *i
- 		.kernpg_flag	= _KERNPG_TABLE_NOENC,
- 	};
- 	unsigned long mstart, mend;
-+	pgd_t *level4p;
- 	int result;
- 	int i;
- 
--	image->arch.pgd = alloc_pgt_page(image);
--	if (!image->arch.pgd)
--		return -ENOMEM;
-+	level4p = (pgd_t *)__va(start_pgtable);
-+	clear_page(level4p);
- 
- 	if (cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT)) {
- 		info.page_flag   |= _PAGE_ENC;
-@@ -248,8 +247,8 @@ static int init_pgtable(struct kimage *i
- 		mstart = pfn_mapped[i].start << PAGE_SHIFT;
- 		mend   = pfn_mapped[i].end << PAGE_SHIFT;
- 
--		result = kernel_ident_mapping_init(&info, image->arch.pgd,
--						   mstart, mend);
-+		result = kernel_ident_mapping_init(&info,
-+						 level4p, mstart, mend);
- 		if (result)
- 			return result;
- 	}
-@@ -264,8 +263,8 @@ static int init_pgtable(struct kimage *i
- 		mstart = image->segment[i].mem;
- 		mend   = mstart + image->segment[i].memsz;
- 
--		result = kernel_ident_mapping_init(&info, image->arch.pgd,
--						   mstart, mend);
-+		result = kernel_ident_mapping_init(&info,
-+						 level4p, mstart, mend);
- 
- 		if (result)
- 			return result;
-@@ -275,19 +274,15 @@ static int init_pgtable(struct kimage *i
- 	 * Prepare EFI systab and ACPI tables for kexec kernel since they are
- 	 * not covered by pfn_mapped.
- 	 */
--	result = map_efi_systab(&info, image->arch.pgd);
-+	result = map_efi_systab(&info, level4p);
- 	if (result)
- 		return result;
- 
--	result = map_acpi_tables(&info, image->arch.pgd);
-+	result = map_acpi_tables(&info, level4p);
- 	if (result)
- 		return result;
- 
--	/*
--	 * This must be last because the intermediate page table pages it
--	 * allocates will not be control pages and may overlap the image.
--	 */
--	return init_transition_pgtable(image, image->arch.pgd, control_page);
-+	return init_transition_pgtable(image, level4p);
- }
- 
- static void load_segments(void)
-@@ -304,14 +299,14 @@ static void load_segments(void)
- 
- int machine_kexec_prepare(struct kimage *image)
- {
--	unsigned long control_page;
-+	unsigned long start_pgtable;
- 	int result;
- 
- 	/* Calculate the offsets */
--	control_page = page_to_pfn(image->control_code_page) << PAGE_SHIFT;
-+	start_pgtable = page_to_pfn(image->control_code_page) << PAGE_SHIFT;
- 
- 	/* Setup the identity mapped 64bit page table */
--	result = init_pgtable(image, control_page);
-+	result = init_pgtable(image, start_pgtable);
- 	if (result)
- 		return result;
- 
-@@ -358,12 +353,13 @@ void machine_kexec(struct kimage *image)
- #endif
- 	}
- 
--	control_page = page_address(image->control_code_page);
-+	control_page = page_address(image->control_code_page) + PAGE_SIZE;
- 	__memcpy(control_page, relocate_kernel, KEXEC_CONTROL_CODE_MAX_SIZE);
- 
- 	page_list[PA_CONTROL_PAGE] = virt_to_phys(control_page);
- 	page_list[VA_CONTROL_PAGE] = (unsigned long)control_page;
--	page_list[PA_TABLE_PAGE] = (unsigned long)__pa(image->arch.pgd);
-+	page_list[PA_TABLE_PAGE] =
-+	  (unsigned long)__pa(page_address(image->control_code_page));
- 
- 	if (image->type == KEXEC_TYPE_DEFAULT)
- 		page_list[PA_SWAP_PAGE] = (page_to_pfn(image->swap_page)
-@@ -582,7 +578,8 @@ static void kexec_mark_crashkres(bool pr
- 
- 	/* Don't touch the control code page used in crash_kexec().*/
- 	control = PFN_PHYS(page_to_pfn(kexec_crash_image->control_code_page));
--	kexec_mark_range(crashk_res.start, control - 1, protect);
-+	/* Control code page is located in the 2nd page. */
-+	kexec_mark_range(crashk_res.start, control + PAGE_SIZE - 1, protect);
- 	control += KEXEC_CONTROL_PAGE_SIZE;
- 	kexec_mark_range(control, crashk_res.end, protect);
- }
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 5a36cb2969b08..db72c5fce9d18 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10723,10 +10723,10 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x12a3, "Asus N7691ZM", ALC269_FIXUP_ASUS_N7601ZM),
+ 	SND_PCI_QUIRK(0x1043, 0x12af, "ASUS UX582ZS", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x12b4, "ASUS B3405CCA / P3405CCA", ALC294_FIXUP_ASUS_CS35L41_SPI_2),
+-	SND_PCI_QUIRK(0x1043, 0x12e0, "ASUS X541SA", ALC256_FIXUP_ASUS_MIC),
+-	SND_PCI_QUIRK(0x1043, 0x12f0, "ASUS X541UV", ALC256_FIXUP_ASUS_MIC),
++	SND_PCI_QUIRK(0x1043, 0x12e0, "ASUS X541SA", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
++	SND_PCI_QUIRK(0x1043, 0x12f0, "ASUS X541UV", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1043, 0x1313, "Asus K42JZ", ALC269VB_FIXUP_ASUS_MIC_NO_PRESENCE),
+-	SND_PCI_QUIRK(0x1043, 0x13b0, "ASUS Z550SA", ALC256_FIXUP_ASUS_MIC),
++	SND_PCI_QUIRK(0x1043, 0x13b0, "ASUS Z550SA", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1043, 0x1427, "Asus Zenbook UX31E", ALC269VB_FIXUP_ASUS_ZENBOOK),
+ 	SND_PCI_QUIRK(0x1043, 0x1433, "ASUS GX650PY/PZ/PV/PU/PYV/PZV/PIV/PVV", ALC285_FIXUP_ASUS_I2C_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x1460, "Asus VivoBook 15", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
+@@ -10780,7 +10780,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x1043, 0x1c92, "ASUS ROG Strix G15", ALC285_FIXUP_ASUS_G533Z_PINS),
+ 	SND_PCI_QUIRK(0x1043, 0x1c9f, "ASUS G614JU/JV/JI", ALC285_FIXUP_ASUS_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x1caf, "ASUS G634JY/JZ/JI/JG", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
+-	SND_PCI_QUIRK(0x1043, 0x1ccd, "ASUS X555UB", ALC256_FIXUP_ASUS_MIC),
++	SND_PCI_QUIRK(0x1043, 0x1ccd, "ASUS X555UB", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1043, 0x1ccf, "ASUS G814JU/JV/JI", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x1cdf, "ASUS G814JY/JZ/JG", ALC245_FIXUP_CS35L41_SPI_2),
+ 	SND_PCI_QUIRK(0x1043, 0x1cef, "ASUS G834JY/JZ/JI/JG", ALC285_FIXUP_ASUS_HEADSET_MIC),
+-- 
+2.39.5
+
 
 
 
