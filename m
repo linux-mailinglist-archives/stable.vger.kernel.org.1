@@ -1,131 +1,114 @@
-Return-Path: <stable+bounces-142758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B071CAAEC2C
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:27:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3A0EAAECBC
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 22:15:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4606C1897224
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:27:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18AC5506907
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:15:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36C7128E56D;
-	Wed,  7 May 2025 19:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05BB21CAA87;
+	Wed,  7 May 2025 20:15:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="pMTCjJd4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kpN3QFBC"
 X-Original-To: stable@vger.kernel.org
-Received: from 004.mia.mailroute.net (004.mia.mailroute.net [199.89.3.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DC8728B4FE;
-	Wed,  7 May 2025 19:27:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.3.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90614207A
+	for <stable@vger.kernel.org>; Wed,  7 May 2025 20:15:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746646048; cv=none; b=FVt6lB6LZNE3GO++6oVsR7oBPpCYlhnHESCGwAZx1AhUZzxQVDptJOpcQ8eKA3Dldzv/YB2PVmT8FtWNm7jzObNJuycwNsDgGnszURZ5KB0vsHXWyyl37OZg1WFf51/eU5aBNsIrRPVpp54QiE44xjTCGX11y/gOcmuLRdTNpSU=
+	t=1746648915; cv=none; b=E0HUyN0uNJeurIl8iQGBniiKXcMusZoldVmS+2kLtKUkqEM/3WsqApf9epwMKcEDBhsu9/xcgepiZxxfiQZpSLs/9c0e8AMP7/x32Y3Ajy3e7oDUF8V14gUX5sJfpY8gUtsUI6kcfaAJdYKCHMdBE0jnQ9/N/jVh/oTibngBoW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746646048; c=relaxed/simple;
-	bh=MevCUtC29kmg79Osqbp+iLHaV5bIefjb1T+Q1ufLpCI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MzUSv3yD58yjAOX6lq/kfUJOveMNA4CoGTTE0xzkyqwC2UjxBBZSJT3Cy90cvhT2EnQjKIx9osz8+bTuMOng660w4yk4x+xO44oyWYL3MU5D7KJ3FUc4xl3lhbb5qNHEMV0bJjAMfXXQwb5J1B9SbzRAxltw7l8mxgiTRQQj0A4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=pMTCjJd4; arc=none smtp.client-ip=199.89.3.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 004.mia.mailroute.net (Postfix) with ESMTP id 4Zt4yv2T13zm0yTm;
-	Wed,  7 May 2025 19:27:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1746646035; x=1749238036; bh=MevCUtC29kmg79Osqbp+iLHa
-	V5bIefjb1T+Q1ufLpCI=; b=pMTCjJd4UP3qHHqV5FR4Dd3wbLC20/Do4ZF3qgu6
-	i5Mm+C44DLrlXtwuOiJz1JpwZWRFo6joSytrhNucbIdRj5cuhvoj9DQFWA595Wgi
-	6o0Pbg4kv/hMOFWvr0Tlx9vbJ1AEEhO1090Sv/Y/AX76RJnx60EiwMn9QAMHy5Sd
-	Q1itCsQmZ1TRBjxblO/upiI93JYb3HPKKh+k11StpAR9rIpVbKaTY2+8L3YCPDTw
-	MLqgdb3qsl4IIYo6uzBpj7r+1l/kQFISbxyqTU2F+A8BawNFmn05RQs1wbW5AfhT
-	oE9E9E+984O0/GoAfAOJHxfQG2d4yVFSZBfETdpYdCITOQ==
-X-Virus-Scanned: by MailRoute
-Received: from 004.mia.mailroute.net ([127.0.0.1])
- by localhost (004.mia [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id JAJxBvassQb1; Wed,  7 May 2025 19:27:15 +0000 (UTC)
-Received: from [100.66.154.22] (unknown [104.135.204.82])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 004.mia.mailroute.net (Postfix) with ESMTPSA id 4Zt4yT3vTKzm0yTR;
-	Wed,  7 May 2025 19:26:55 +0000 (UTC)
-Message-ID: <95235015-270d-451e-989c-9fddcbfcb97e@acm.org>
-Date: Wed, 7 May 2025 12:26:54 -0700
+	s=arc-20240116; t=1746648915; c=relaxed/simple;
+	bh=5PXX+yJCizZQfEoLgdvazWRPp3WDM4BhZliaoCBpzOU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=p5OaJ03Uxmgx8F0A64C6wVSDBFj6mmCgAZOHXkTKds8HKILYn52V2YJZqcn1iV9GkLv6W/3lTBh5UWehq6hnpQnBwKR/wYulMDyiVz8aERvAgq/Mlr4Nf5nSVn7amaV0ZF90Soma8DV7OJYqujJze9lBa49XfEDIdKY7T1RQLO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kpN3QFBC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA79FC4CEE2;
+	Wed,  7 May 2025 20:15:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746648914;
+	bh=5PXX+yJCizZQfEoLgdvazWRPp3WDM4BhZliaoCBpzOU=;
+	h=From:Date:Subject:To:Cc:From;
+	b=kpN3QFBCniCzznMMIvpqGBEGbvLC/4h/Fr9JW5m9725UZK420//kRWfKtnCoNkSgC
+	 dGH309hn2RuFIQi1D+Qh1KeI/baFAsLyZMEmErUhotwKwVP7/rrt6CvL7WvUxN4EEI
+	 fB0BT/iOfP2A9Hl2K/cGozmPG+sdt+gbGAf6ovifSd/HKIerD/R0MOPeiVfe1aGzUs
+	 gmQz63onwNy0Y4u2ubdOsYxnU6HJv8Djgo0UmftNJdfaEuUct2rtaVlFCWJ9AkG1uP
+	 +acoUum1kKFBkgEMXR4dyQQV7eYdblN1IMgzxMeLteo9bjQEMvdI4yKrvABSPuRBJk
+	 Q4CjUxhz46QeA==
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Wed, 07 May 2025 21:14:52 +0100
+Subject: [PATCH net] net: qede: Initialize qede_ll_ops with designated
+ initializer
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] ufs: core: fix hwq_id type and value
-To: =?UTF-8?B?UGV0ZXIgV2FuZyAo546L5L+h5Y+LKQ==?= <peter.wang@mediatek.com>,
- "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
- "jejb@linux.ibm.com" <jejb@linux.ibm.com>,
- "avri.altman@wdc.com" <avri.altman@wdc.com>,
- "martin.petersen@oracle.com" <martin.petersen@oracle.com>,
- "alim.akhtar@samsung.com" <alim.akhtar@samsung.com>
-Cc: =?UTF-8?B?Q0MgQ2hvdSAo5ZGo5b+X5p2wKQ==?= <cc.chou@mediatek.com>,
- "quic_ziqichen@quicinc.com" <quic_ziqichen@quicinc.com>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- =?UTF-8?B?RWRkaWUgSHVhbmcgKOm7g+aZuuWCkSk=?= <eddie.huang@mediatek.com>,
- "linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>,
- =?UTF-8?B?Q2hhb3RpYW4gSmluZyAo5LqV5pyd5aSpKQ==?=
- <Chaotian.Jing@mediatek.com>, =?UTF-8?B?UWlsaW4gVGFuICjosK3pupLpup8p?=
- <Qilin.Tan@mediatek.com>, =?UTF-8?B?TGluIEd1aSAo5qGC5p6XKQ==?=
- <Lin.Gui@mediatek.com>, =?UTF-8?B?WWktZmFuIFBlbmcgKOW9ree+v+WHoSk=?=
- <Yi-fan.Peng@mediatek.com>, =?UTF-8?B?SmlhamllIEhhbyAo6YOd5Yqg6IqCKQ==?=
- <jiajie.hao@mediatek.com>, =?UTF-8?B?TmFvbWkgQ2h1ICjmnLHoqaDnlLAp?=
- <Naomi.Chu@mediatek.com>, =?UTF-8?B?QWxpY2UgQ2hhbyAo6LaZ54+u5Z2HKQ==?=
- <Alice.Chao@mediatek.com>, =?UTF-8?B?RWQgVHNhaSAo6JSh5a6X6LuSKQ==?=
- <Ed.Tsai@mediatek.com>, wsd_upstream <wsd_upstream@mediatek.com>,
- =?UTF-8?B?Q2h1bi1IdW5nIFd1ICjlt6vpp7/lro8p?= <Chun-hung.Wu@mediatek.com>,
- =?UTF-8?B?VHVuLXl1IFl1ICjmuLjmlabogb8p?= <Tun-yu.Yu@mediatek.com>
-References: <20250506124038.4071609-1-peter.wang@mediatek.com>
- <04fc1549-0fa6-4956-b522-df5fbc26100c@acm.org>
- <6c9e983154ff8d9b4a1e63eb503e8b147303eb68.camel@mediatek.com>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <6c9e983154ff8d9b4a1e63eb503e8b147303eb68.camel@mediatek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250507-qede-fix-clang-randstruct-v1-1-939a4ba09d94@kernel.org>
+X-B4-Tracking: v=1; b=H4sIADu/G2gC/x2M0QqDMAxFf0XyvECj1DF/RfZQ2qiB0Wlax0D8d
+ 4OPh3vuOaCwChcYmgOUf1Lkmw3o0UBcQp4ZJRlD61rvvHvixolxkj/Gj82oIadSdY8VHVHoiF6
+ TTz3Yf1U2726PkLnC+zwvQIVsj3AAAAA=
+X-Change-ID: 20250507-qede-fix-clang-randstruct-011a3119f5d6
+To: 
+Cc: stable@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1518; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=5PXX+yJCizZQfEoLgdvazWRPp3WDM4BhZliaoCBpzOU=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDBnS+wM3+tfYXIvnatZYa7a1I6mGX97987Z9FSu9b55Zk
+ Z5yVexGRykLgxgXg6yYIkv1Y9XjhoZzzjLeODUJZg4rE8gQBi5OAZjIi1SG/6kK59NYuGbmR28T
+ WbV2ilUiz1/rWS9+5DUzf5Ozel9qkM3IcJdtrUwC6+pvjZJ/929s2ijc5WFSa3mIM+7u7CWT+u5
+ +ZAUA
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 
-On 5/6/25 9:03 PM, Peter Wang (=E7=8E=8B=E4=BF=A1=E5=8F=8B) wrote:
-> Whether it is necessary or not depends on how we define 'necessary.'
-> If the criterion is simply to avoid errors, then indeed, this patch
-> is not necessary. However, if we are addressing the warning caused
-> by incorrect behavior (assigning int to u32), then it is necessary
-> to fix it. After all, we shouldn't just be satisfied with avoiding
-> errors, we should strive to make the Linux kernel as perfect as
-> possible, shouldn't we?
+After a recent change [1] in clang's randstruct implementation to
+randomize structures that only contain function pointers, there is an
+error because qede_ll_ops get randomized but does not use a designated
+initializer for the first member:
 
-Errors? Which errors? Using -1 instead of UINT_MAX is common in C code.
-Assigning variables of signed integer type to unsigned variables is also
-widespread. Using %d to format a negative number, although dubious, is
-also common in C code. Several years ago gcc warned about using %d to
-format unsigned integers. That warning was disabled again because there
-is too much existing code that follows this practice.
+  drivers/net/ethernet/qlogic/qede/qede_main.c:206:2: error: a randomized struct can only be initialized with a designated initializer
+    206 |         {
+        |         ^
 
-> Additionally, there are many ways to determine whether MCQ is enabled,
-> including reading the host capability or checking hba->mcq_enabled,
-> etc.
-> Moreover, MCQ is not a feature that trun on and off at runtime.
-> It is at the end of the UFS initialization that the status of MCQ
-> is determined, so it shouldn't be necessary to rely on this to
-> determine whether MCQ is enabled, right?
+Explicitly initialize the common member using a designated initializer
+to fix the build.
 
-If you want to proceed with this patch, please make it clear in the
-patch description that this patch is a behavior change and not a bug
-fix.
+Cc: stable@vger.kernel.org
+Fixes: 035f7f87b729 ("randstruct: Enable Clang support")
+Link: https://github.com/llvm/llvm-project/commit/04364fb888eea6db9811510607bed4b200bcb082 [1]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+ drivers/net/ethernet/qlogic/qede/qede_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks,
+diff --git a/drivers/net/ethernet/qlogic/qede/qede_main.c b/drivers/net/ethernet/qlogic/qede/qede_main.c
+index 99df00c30b8c..b5d744d2586f 100644
+--- a/drivers/net/ethernet/qlogic/qede/qede_main.c
++++ b/drivers/net/ethernet/qlogic/qede/qede_main.c
+@@ -203,7 +203,7 @@ static struct pci_driver qede_pci_driver = {
+ };
+ 
+ static struct qed_eth_cb_ops qede_ll_ops = {
+-	{
++	.common = {
+ #ifdef CONFIG_RFS_ACCEL
+ 		.arfs_filter_op = qede_arfs_filter_op,
+ #endif
 
-Bart.
+---
+base-commit: 9540984da649d46f699c47f28c68bbd3c9d99e4c
+change-id: 20250507-qede-fix-clang-randstruct-011a3119f5d6
+
+Best regards,
+-- 
+Nathan Chancellor <nathan@kernel.org>
+
 
