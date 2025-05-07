@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-142692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1719AAAEBC3
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:10:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 85F77AAEA98
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:57:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1234D9E3B03
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:10:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F6369C2104
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:57:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 747FF28C845;
-	Wed,  7 May 2025 19:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0FE128D836;
+	Wed,  7 May 2025 18:57:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pvFRebfX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GFkZO5as"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 303592144C1;
-	Wed,  7 May 2025 19:10:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB3B528BA9D;
+	Wed,  7 May 2025 18:57:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746645037; cv=none; b=ZPlkPSJBzsSsPWEK1OfPMgES24mk7kfHDHedE1gc7wgq1U+bPMjznRkzA6QqaytTIDNvXaQ7CL1Q3ku6eFT6RZpYqhRBsbcHD50Ss+TErwHlvJtVvMVzBvuLS6tIjiR9Sp32mjG0PyUzoAdXjTibjizs58hoOT9tgR5gpaYko08=
+	t=1746644238; cv=none; b=KKdbHVnKHYw/fe0ZPzHW1N21lsQDvOF2SnBS/+maEx55o/dbJWh5y1QiIV0tLfnzl+eYQOm34Lrx9oXTt5hyuc+PbyAWB6c8NKhVJ83tgA0lYud1ZlWiy9rqcXLQAkjUiwpEJq2DrYipCzS5P3pkdZg5OzoxD6f++95NOcDWp8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746645037; c=relaxed/simple;
-	bh=FxrEd1Q/v2ON7hWtsbeTt8Oq5JdZDMvylJvFAEK9y1c=;
+	s=arc-20240116; t=1746644238; c=relaxed/simple;
+	bh=wj7vyevrlhh3xdOwOcqmqhNe0d6RGPwyNRjcu/UcOGc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fh0r8l14QsPxpgurq0LgYIKsqR/ww1OC5uqxUpBOZX0uNs5r8OWofEXCIzWc2HQ3Lpl1kaHrYxNwwkNA3UB/TRHJw0yfGv9tN14AI/F4wcw2qhtdSmJ7H52PhAUxkBHVyZaTLI7Wnz34+HdHyfk3HlM0rrc2WG5U9WA2sL6hYKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pvFRebfX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50512C4CEEB;
-	Wed,  7 May 2025 19:10:36 +0000 (UTC)
+	 MIME-Version; b=JyFx6ZOwaLc5AyOmVhlHCKCDMALcp+ygD0lObXM3WnKbymGHe9xZ3LAg94tP01lAY8g7pJk/Em0E+DRj+ELsktschae3zyVk8/rh1sWB/Z0OdoQrx7QLo0n6CB1ZdnT4TnuJSzNH2bOb8TbPhM2wGWD32Rh5kyy8jVH+bimf6+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GFkZO5as; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28EBCC4CEE2;
+	Wed,  7 May 2025 18:57:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746645036;
-	bh=FxrEd1Q/v2ON7hWtsbeTt8Oq5JdZDMvylJvFAEK9y1c=;
+	s=korg; t=1746644238;
+	bh=wj7vyevrlhh3xdOwOcqmqhNe0d6RGPwyNRjcu/UcOGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pvFRebfXtKwzNiAOLfyOlYT85RJV6YsG37anWKxTyDRA7rmxv0Fu5H83cXVqRytsM
-	 Z6KuzwvUxWZsX2n8X/6/L+VKAolO67yF0nKOyU7VC6jiCrB1G90RPvI8JAmPJmzz9z
-	 hB6FFxC+KUIQ/3+L6U8AymqZ6mZlrqwR9h5UN9lw=
+	b=GFkZO5as0pj75yZHiV88GnAnjg6iC8rH8txhATquMzJnBNxZdI2nXAudezSeRc6Pc
+	 au42BqG9dcRCHWHbDIb6rLkiCkUZIn7MOWVYadte6u83Hl1cFDP6SbbbomONRcvISj
+	 viAvbcFJqYX81sjbY+Zd/io2yjOtBFVUI6HtfwP4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xuanqiang Luo <luoxuanqiang@kylinos.cn>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Gerrard Tai <gerrard.tai@starlabs.sg>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
 	Simon Horman <horms@kernel.org>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 072/129] ice: Check VF VSI Pointer Value in ice_vc_add_fdir_fltr()
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.14 163/183] sch_hfsc: make hfsc_qlen_notify() idempotent
 Date: Wed,  7 May 2025 20:40:08 +0200
-Message-ID: <20250507183816.437779392@linuxfoundation.org>
+Message-ID: <20250507183831.473191807@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
-References: <20250507183813.500572371@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,49 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-[ Upstream commit 425c5f266b2edeee0ce16fedd8466410cdcfcfe3 ]
+commit 51eb3b65544c9efd6a1026889ee5fb5aa62da3bb upstream.
 
-As mentioned in the commit baeb705fd6a7 ("ice: always check VF VSI
-pointer values"), we need to perform a null pointer check on the return
-value of ice_get_vf_vsi() before using it.
+hfsc_qlen_notify() is not idempotent either and not friendly
+to its callers, like fq_codel_dequeue(). Let's make it idempotent
+to ease qdisc_tree_reduce_backlog() callers' life:
 
-Fixes: 6ebbe97a4881 ("ice: Add a per-VF limit on number of FDIR filters")
-Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+1. update_vf() decreases cl->cl_nactive, so we can check whether it is
+non-zero before calling it.
+
+2. eltree_remove() always removes RB node cl->el_node, but we can use
+   RB_EMPTY_NODE() + RB_CLEAR_NODE() to make it safe.
+
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://patch.msgid.link/20250425222636.3188441-3-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://patch.msgid.link/20250403211033.166059-4-xiyou.wangcong@gmail.com
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ net/sched/sch_hfsc.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c b/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
-index 3ca5f44dea26e..88c1acd5e8f05 100644
---- a/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
-+++ b/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
-@@ -1824,6 +1824,11 @@ int ice_vc_add_fdir_fltr(struct ice_vf *vf, u8 *msg)
- 	pf = vf->pf;
- 	dev = ice_pf_to_dev(pf);
- 	vf_vsi = ice_get_vf_vsi(vf);
-+	if (!vf_vsi) {
-+		dev_err(dev, "Can not get FDIR vf_vsi for VF %u\n", vf->vf_id);
-+		v_ret = VIRTCHNL_STATUS_ERR_PARAM;
-+		goto err_exit;
+--- a/net/sched/sch_hfsc.c
++++ b/net/sched/sch_hfsc.c
+@@ -203,7 +203,10 @@ eltree_insert(struct hfsc_class *cl)
+ static inline void
+ eltree_remove(struct hfsc_class *cl)
+ {
+-	rb_erase(&cl->el_node, &cl->sched->eligible);
++	if (!RB_EMPTY_NODE(&cl->el_node)) {
++		rb_erase(&cl->el_node, &cl->sched->eligible);
++		RB_CLEAR_NODE(&cl->el_node);
 +	}
+ }
  
- #define ICE_VF_MAX_FDIR_FILTERS	128
- 	if (!ice_fdir_num_avail_fltr(&pf->hw, vf_vsi) ||
--- 
-2.39.5
-
+ static inline void
+@@ -1225,7 +1228,8 @@ hfsc_qlen_notify(struct Qdisc *sch, unsi
+ 	/* vttree is now handled in update_vf() so that update_vf(cl, 0, 0)
+ 	 * needs to be called explicitly to remove a class from vttree.
+ 	 */
+-	update_vf(cl, 0, 0);
++	if (cl->cl_nactive)
++		update_vf(cl, 0, 0);
+ 	if (cl->cl_flags & HFSC_RSC)
+ 		eltree_remove(cl);
+ }
 
 
 
