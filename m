@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-142693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4342AAEBC4
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:10:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78734AAE9D9
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:48:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08FEB1C45991
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:10:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1697D506AA5
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:48:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B466428DF4C;
-	Wed,  7 May 2025 19:10:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 361712116E9;
+	Wed,  7 May 2025 18:48:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zYf2Hlq+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jOZBmVky"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 708F62144C1;
-	Wed,  7 May 2025 19:10:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E752D1DDC23;
+	Wed,  7 May 2025 18:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746645039; cv=none; b=VlvbOpdfV8bJOhC1yKxYqVdOvL9pp19Q+8AyEP48C2Z1xWOULdGXu8nL89Dx7jRpyIMd7kL3K0pZxdkd/Q3aDFgU0hqDPmFPfwjG+wL8YQo3wDOz15yqrJ6Hm580CM+uOf+mEDHKHB1a9ymDqm494aHIjSwBr9ZkMOsR+TA+D2E=
+	t=1746643720; cv=none; b=WIfozmdUauBw5yClsK516Duf+wT2xSSz0yis25V/i0aMtHYOULHceJUAj7R8jV29n1+u5Xv31hlVyAuuDkGhawWChYoYXf70wVXKj7W2HVegvIZFIuyHyyRpgqdrmEU4A3kpTERTUrxSWrwaoRu05B4OyavkxVXW/yOOlE1IyvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746645039; c=relaxed/simple;
-	bh=A6fc5Uv5Ctv3dCj7SxNESX+w0cbbVJlX1qdK209XW/0=;
+	s=arc-20240116; t=1746643720; c=relaxed/simple;
+	bh=KWipJT4aRvV6VPrH6V8g4UsomJabpaHYZ2e3FHVHMRU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cum454npexcHeG5VNKJsHQ4WsUKdtds4dHV8VNUBTCFg8iT/mkhRnVEpLUn6s91XuZPmOBVKcvaggJ/S6MwjydpEzHInR44NMtqB67B5J4NHlLGS2cpW0SlW+1hrRuV+jdgegJYn5zPoysnZ5JLLwWnPIg8Bj2iN2arocrrf45Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zYf2Hlq+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF578C4CEE2;
-	Wed,  7 May 2025 19:10:38 +0000 (UTC)
+	 MIME-Version; b=lXdZhanFZNlB8YUr/AglSkP1pqV8YhAWGAdNBoqIAwakL81DOvWYFwddHQcqRVDTrxZT8nbdBWvkZ5bIzwO4qA0MWzaYS2h3t1R2YAtrfAyOJ2UNBEAeh4PGaWEpt9JxAUMrPEqRUEag/E6rsIbv/fKfxRXkeubX0LCBtpzF/w4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jOZBmVky; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA64AC4CEEB;
+	Wed,  7 May 2025 18:48:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746645039;
-	bh=A6fc5Uv5Ctv3dCj7SxNESX+w0cbbVJlX1qdK209XW/0=;
+	s=korg; t=1746643719;
+	bh=KWipJT4aRvV6VPrH6V8g4UsomJabpaHYZ2e3FHVHMRU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zYf2Hlq+zglX9JsODqhA8SeOg56uxt3Qc0Z6z34HWecI9RrrOS2RIH6JlvS8ssZgC
-	 Ff8N6o13OL8QOU9ubsSKSab9HwO+hYXl6N9/g7MXQNST/g4OF8PkmGY8CMQ0GlcJBl
-	 1kVrQRPpDpuLhADDmi090NPtu8FL0o3TQCqGbJ7g=
+	b=jOZBmVkyvOVSdEjBCa9HFRY4iOcXCei6xHEofQt+W2XYhk0XhJ9Vt6T32rwPVPEko
+	 rpdX8dseJKf7WgqsJZQCstpzHLeoQ8k0XJhOS6oBI1n6XxQtiuoUcCwvqDdO62ZxXL
+	 1wKdERJcTWShAiAjMJzqvHyV5sFYMD/FW4W2aVlo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Argusee <vr@darknavy.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Alex Hung <alex.hung@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 073/129] ALSA: ump: Fix buffer overflow at UMP SysEx message conversion
+Subject: [PATCH 6.1 94/97] drm/amd/display: Add scoped mutexes for amdgpu_dm_dhcp
 Date: Wed,  7 May 2025 20:40:09 +0200
-Message-ID: <20250507183816.477602108@linuxfoundation.org>
+Message-ID: <20250507183810.759887812@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
-References: <20250507183813.500572371@linuxfoundation.org>
+In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
+References: <20250507183806.987408728@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +65,207 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 56f1f30e6795b890463d9b20b11e576adf5a2f77 ]
+[ Upstream commit 6b675ab8efbf2bcee25be29e865455c56e246401 ]
 
-The conversion function from MIDI 1.0 to UMP packet contains an
-internal buffer to keep the incoming MIDI bytes, and its size is 4, as
-it was supposed to be the max size for a MIDI1 UMP packet data.
-However, the implementation overlooked that SysEx is handled in a
-different format, and it can be up to 6 bytes, as found in
-do_convert_to_ump().  It leads eventually to a buffer overflow, and
-may corrupt the memory when a longer SysEx message is received.
+[Why]
+Guards automatically release mutex when it goes out of scope making
+code easier to follow.
 
-The fix is simply to extend the buffer size to 6 to fit with the SysEx
-UMP message.
+[How]
+Replace all use of mutex_lock()/mutex_unlock() with guard(mutex).
 
-Fixes: 0b5288f5fe63 ("ALSA: ump: Add legacy raw MIDI support")
-Reported-by: Argusee <vr@darknavy.com>
-Link: https://patch.msgid.link/20250429124845.25128-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: be593d9d91c5 ("drm/amd/display: Fix slab-use-after-free in hdcp")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/sound/ump_convert.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../amd/display/amdgpu_dm/amdgpu_dm_hdcp.c    | 37 +++++--------------
+ 1 file changed, 10 insertions(+), 27 deletions(-)
 
-diff --git a/include/sound/ump_convert.h b/include/sound/ump_convert.h
-index d099ae27f8491..682499b871eac 100644
---- a/include/sound/ump_convert.h
-+++ b/include/sound/ump_convert.h
-@@ -19,7 +19,7 @@ struct ump_cvt_to_ump_bank {
- /* context for converting from MIDI1 byte stream to UMP packet */
- struct ump_cvt_to_ump {
- 	/* MIDI1 intermediate buffer */
--	unsigned char buf[4];
-+	unsigned char buf[6]; /* up to 6 bytes for SysEx */
- 	int len;
- 	int cmd_bytes;
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c
+index 7c67bb771f996..6222d5a168832 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c
+@@ -172,7 +172,7 @@ void hdcp_update_display(struct hdcp_workqueue *hdcp_work,
+ 	struct mod_hdcp_display_adjustment display_adjust;
+ 	unsigned int conn_index = aconnector->base.index;
  
+-	mutex_lock(&hdcp_w->mutex);
++	guard(mutex)(&hdcp_w->mutex);
+ 	hdcp_w->aconnector[conn_index] = aconnector;
+ 
+ 	memset(&link_adjust, 0, sizeof(link_adjust));
+@@ -209,7 +209,6 @@ void hdcp_update_display(struct hdcp_workqueue *hdcp_work,
+ 	mod_hdcp_update_display(&hdcp_w->hdcp, conn_index, &link_adjust, &display_adjust, &hdcp_w->output);
+ 
+ 	process_output(hdcp_w);
+-	mutex_unlock(&hdcp_w->mutex);
+ }
+ 
+ static void hdcp_remove_display(struct hdcp_workqueue *hdcp_work,
+@@ -220,7 +219,7 @@ static void hdcp_remove_display(struct hdcp_workqueue *hdcp_work,
+ 	struct drm_connector_state *conn_state = aconnector->base.state;
+ 	unsigned int conn_index = aconnector->base.index;
+ 
+-	mutex_lock(&hdcp_w->mutex);
++	guard(mutex)(&hdcp_w->mutex);
+ 	hdcp_w->aconnector[conn_index] = aconnector;
+ 
+ 	/* the removal of display will invoke auth reset -> hdcp destroy and
+@@ -239,7 +238,6 @@ static void hdcp_remove_display(struct hdcp_workqueue *hdcp_work,
+ 	mod_hdcp_remove_display(&hdcp_w->hdcp, aconnector->base.index, &hdcp_w->output);
+ 
+ 	process_output(hdcp_w);
+-	mutex_unlock(&hdcp_w->mutex);
+ }
+ 
+ void hdcp_reset_display(struct hdcp_workqueue *hdcp_work, unsigned int link_index)
+@@ -247,7 +245,7 @@ void hdcp_reset_display(struct hdcp_workqueue *hdcp_work, unsigned int link_inde
+ 	struct hdcp_workqueue *hdcp_w = &hdcp_work[link_index];
+ 	unsigned int conn_index;
+ 
+-	mutex_lock(&hdcp_w->mutex);
++	guard(mutex)(&hdcp_w->mutex);
+ 
+ 	mod_hdcp_reset_connection(&hdcp_w->hdcp,  &hdcp_w->output);
+ 
+@@ -259,8 +257,6 @@ void hdcp_reset_display(struct hdcp_workqueue *hdcp_work, unsigned int link_inde
+ 	}
+ 
+ 	process_output(hdcp_w);
+-
+-	mutex_unlock(&hdcp_w->mutex);
+ }
+ 
+ void hdcp_handle_cpirq(struct hdcp_workqueue *hdcp_work, unsigned int link_index)
+@@ -277,7 +273,7 @@ static void event_callback(struct work_struct *work)
+ 	hdcp_work = container_of(to_delayed_work(work), struct hdcp_workqueue,
+ 				 callback_dwork);
+ 
+-	mutex_lock(&hdcp_work->mutex);
++	guard(mutex)(&hdcp_work->mutex);
+ 
+ 	cancel_delayed_work(&hdcp_work->callback_dwork);
+ 
+@@ -285,8 +281,6 @@ static void event_callback(struct work_struct *work)
+ 			       &hdcp_work->output);
+ 
+ 	process_output(hdcp_work);
+-
+-	mutex_unlock(&hdcp_work->mutex);
+ }
+ 
+ static void event_property_update(struct work_struct *work)
+@@ -326,7 +320,7 @@ static void event_property_update(struct work_struct *work)
+ 			continue;
+ 
+ 		drm_modeset_lock(&dev->mode_config.connection_mutex, NULL);
+-		mutex_lock(&hdcp_work->mutex);
++		guard(mutex)(&hdcp_work->mutex);
+ 
+ 		if (conn_state->commit) {
+ 			ret = wait_for_completion_interruptible_timeout(&conn_state->commit->hw_done,
+@@ -358,7 +352,6 @@ static void event_property_update(struct work_struct *work)
+ 			drm_hdcp_update_content_protection(connector,
+ 							   DRM_MODE_CONTENT_PROTECTION_DESIRED);
+ 		}
+-		mutex_unlock(&hdcp_work->mutex);
+ 		drm_modeset_unlock(&dev->mode_config.connection_mutex);
+ 	}
+ }
+@@ -371,7 +364,7 @@ static void event_property_validate(struct work_struct *work)
+ 	struct amdgpu_dm_connector *aconnector;
+ 	unsigned int conn_index;
+ 
+-	mutex_lock(&hdcp_work->mutex);
++	guard(mutex)(&hdcp_work->mutex);
+ 
+ 	for (conn_index = 0; conn_index < AMDGPU_DM_MAX_DISPLAY_INDEX;
+ 	     conn_index++) {
+@@ -415,8 +408,6 @@ static void event_property_validate(struct work_struct *work)
+ 			schedule_work(&hdcp_work->property_update_work);
+ 		}
+ 	}
+-
+-	mutex_unlock(&hdcp_work->mutex);
+ }
+ 
+ static void event_watchdog_timer(struct work_struct *work)
+@@ -427,7 +418,7 @@ static void event_watchdog_timer(struct work_struct *work)
+ 				 struct hdcp_workqueue,
+ 				      watchdog_timer_dwork);
+ 
+-	mutex_lock(&hdcp_work->mutex);
++	guard(mutex)(&hdcp_work->mutex);
+ 
+ 	cancel_delayed_work(&hdcp_work->watchdog_timer_dwork);
+ 
+@@ -436,8 +427,6 @@ static void event_watchdog_timer(struct work_struct *work)
+ 			       &hdcp_work->output);
+ 
+ 	process_output(hdcp_work);
+-
+-	mutex_unlock(&hdcp_work->mutex);
+ }
+ 
+ static void event_cpirq(struct work_struct *work)
+@@ -446,13 +435,11 @@ static void event_cpirq(struct work_struct *work)
+ 
+ 	hdcp_work = container_of(work, struct hdcp_workqueue, cpirq_work);
+ 
+-	mutex_lock(&hdcp_work->mutex);
++	guard(mutex)(&hdcp_work->mutex);
+ 
+ 	mod_hdcp_process_event(&hdcp_work->hdcp, MOD_HDCP_EVENT_CPIRQ, &hdcp_work->output);
+ 
+ 	process_output(hdcp_work);
+-
+-	mutex_unlock(&hdcp_work->mutex);
+ }
+ 
+ void hdcp_destroy(struct kobject *kobj, struct hdcp_workqueue *hdcp_work)
+@@ -486,7 +473,7 @@ static bool enable_assr(void *handle, struct dc_link *link)
+ 
+ 	dtm_cmd = (struct ta_dtm_shared_memory *)psp->dtm_context.context.mem_context.shared_buf;
+ 
+-	mutex_lock(&psp->dtm_context.mutex);
++	guard(mutex)(&psp->dtm_context.mutex);
+ 	memset(dtm_cmd, 0, sizeof(struct ta_dtm_shared_memory));
+ 
+ 	dtm_cmd->cmd_id = TA_DTM_COMMAND__TOPOLOGY_ASSR_ENABLE;
+@@ -501,8 +488,6 @@ static bool enable_assr(void *handle, struct dc_link *link)
+ 		res = false;
+ 	}
+ 
+-	mutex_unlock(&psp->dtm_context.mutex);
+-
+ 	return res;
+ }
+ 
+@@ -563,13 +548,11 @@ static void update_config(void *handle, struct cp_psp_stream_config *config)
+ 			 (!!aconnector->base.state) ?
+ 			 aconnector->base.state->hdcp_content_type : -1);
+ 
+-	mutex_lock(&hdcp_w->mutex);
++	guard(mutex)(&hdcp_w->mutex);
+ 
+ 	mod_hdcp_add_display(&hdcp_w->hdcp, link, display, &hdcp_w->output);
+ 
+ 	process_output(hdcp_w);
+-	mutex_unlock(&hdcp_w->mutex);
+-
+ }
+ 
+ /**
 -- 
 2.39.5
 
