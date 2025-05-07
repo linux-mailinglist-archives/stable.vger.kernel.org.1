@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-142516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79FEBAAEAF5
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:01:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6CC5AAEA35
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:52:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7462A9C2268
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:01:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 603715082A8
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:52:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF4AF289348;
-	Wed,  7 May 2025 19:01:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63EB5289348;
+	Wed,  7 May 2025 18:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LAQoIHkh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g1fERJzD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A814023DE;
-	Wed,  7 May 2025 19:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 215281FF5EC;
+	Wed,  7 May 2025 18:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644496; cv=none; b=oXfDf7Q4bQ7oKAttVK539KlJsMrdXzWtsjuL8aSkmLRarn3lAxscykCBExZfIjTzyLsI6ac150lRTPaad3Sq2bvvAEsN+nk4XaG5deO2uUAXFAWC9ZlIRvix3Uzl3Tz75zJE5TO4BYS338thaW+QqDCi8JoOd6kPdQRPHx0XNdM=
+	t=1746643953; cv=none; b=SSNjlfDdn82L+zVOtHBLfJbyOt0C2VfMHIkGOH0PTU7+gcgy1BVRPBt/4kTiMbLfofM9hCJ0Ua+ONvjgtuvGaQJfQc/VambyViViJtke2+qfmeVghGHL5l+eYiN2b0Gp+58olj/sQj1Ts0L8yZWi6S+J780iGtYK8oF+T6+BRk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644496; c=relaxed/simple;
-	bh=qApTuw0KaFOfFwOLfYdhFSLL855BdDb7yLbFcvMi3gg=;
+	s=arc-20240116; t=1746643953; c=relaxed/simple;
+	bh=7OSIKhD9Cca0LZih3qbWSPNgkbu3gAcKir+g/e+vCns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ffyU7q5Nr+z+SqeJU+vSEGq1X5VQJK4gz5+h6yyVYHfy6YnD1HZLFszxnpSgQaOkNLE3sn0cmmYusgDlhN+e+RB/S5RPT3pQnczuAeno8NSsSZldcndKkqDm3xQBJ5bBitgaH+gZ7wQ8ACUpJbLVYKZeofdw+tdyl8jD1VjAzAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LAQoIHkh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 721C4C4CEE2;
-	Wed,  7 May 2025 19:01:33 +0000 (UTC)
+	 MIME-Version; b=N+4Nxg7oKW9sdPBavXQn9pDAmpxCAsWUsaUyu7efplsUDrAIVhCcO3c7RsUfsCJSjxwVJudtxSSgGgzzpwq2vY+CKb65XM0VIEzYXLQm40v3USeWi5/b2jl6SF1zoqvjcBPefk+xU4D0g3w+S+H8xHVGARYl72MTjn56iCBz8Ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g1fERJzD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E0CDC4CEE2;
+	Wed,  7 May 2025 18:52:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644493;
-	bh=qApTuw0KaFOfFwOLfYdhFSLL855BdDb7yLbFcvMi3gg=;
+	s=korg; t=1746643953;
+	bh=7OSIKhD9Cca0LZih3qbWSPNgkbu3gAcKir+g/e+vCns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LAQoIHkh1sosgXs8USEYa+ulD20T3WMFps1FZHycFREQz2GcUAm8hGaOyO9KtCwjO
-	 0X28Z1r7quS3N1g+yzUxngA7xSpy4oewViG0SvpQjeqWse4OTISiuxrymRcXPtZB07
-	 zv1sr+M3I/rEq8DmpJTcTDGDYCbULWmhTooKX0gE=
+	b=g1fERJzDHjQ7a+fId0hW7GGdd9srRwwQmzSg6tXzXnrnMJX0wqB3D7RlPyCYw2DkG
+	 hx6TN1GtYywzYftri2zi7WtgK9kLS8ij4bLCfBhqeDNGJqMeumBzOxgtI2ZTstWjpT
+	 optX3inWBtIUQl45aRFKPHSMwNuQDMr5TAZvug0I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Dionna Amalie Glaze <dionnaglaze@google.com>,
-	Kevin Loughlin <kevinloughlin@google.com>,
-	linux-efi@vger.kernel.org
-Subject: [PATCH 6.12 031/164] x86/boot/sev: Support memory acceptance in the EFI stub under SVSM
+	Jianbo Liu <jianbol@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 071/183] net/mlx5e: TC, Continue the attr process even if encap entry is invalid
 Date: Wed,  7 May 2025 20:38:36 +0200
-Message-ID: <20250507183822.137222559@linuxfoundation.org>
+Message-ID: <20250507183827.571823199@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,128 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Jianbo Liu <jianbol@nvidia.com>
 
-commit 8ed12ab1319b2d8e4a529504777aacacf71371e4 upstream.
+[ Upstream commit 172c034264c894518c012387f2de2f9d6443505d ]
 
-Commit:
+Previously the offload of the rule with header rewrite and mirror to
+both internal and external destinations is skipped if the encap entry
+is not valid. But it shouldn't because driver will try to offload it
+again if neighbor is updated and encap entry is valid, to replace the
+old FTE added for slow path. But the extra split attr doesn't exist at
+that time as the process is skipped, driver then fails to offload it.
+To fix this issue, remove the checking and continue the attr process
+if encap entry is invalid.
 
-  d54d610243a4 ("x86/boot/sev: Avoid shared GHCB page for early memory acceptance")
-
-provided a fix for SEV-SNP memory acceptance from the EFI stub when
-running at VMPL #0. However, that fix was insufficient for SVSM SEV-SNP
-guests running at VMPL >0, as those rely on a SVSM calling area, which
-is a shared buffer whose address is programmed into a SEV-SNP MSR, and
-the SEV init code that sets up this calling area executes much later
-during the boot.
-
-Given that booting via the EFI stub at VMPL >0 implies that the firmware
-has configured this calling area already, reuse it for performing memory
-acceptance in the EFI stub.
-
-Fixes: fcd042e86422 ("x86/sev: Perform PVALIDATE using the SVSM when not at VMPL0")
-Tested-by: Tom Lendacky <thomas.lendacky@amd.com>
-Co-developed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: <stable@vger.kernel.org>
-Cc: Dionna Amalie Glaze <dionnaglaze@google.com>
-Cc: Kevin Loughlin <kevinloughlin@google.com>
-Cc: linux-efi@vger.kernel.org
-Link: https://lore.kernel.org/r/20250428174322.2780170-2-ardb+git@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b11bde56246e ("net/mlx5e: TC, Offload rewrite and mirror to both internal and external dests")
+Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://patch.msgid.link/20250423083611.324567-4-mbloch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/boot/compressed/mem.c |    5 +----
- arch/x86/boot/compressed/sev.c |   40 ++++++++++++++++++++++++++++++++++++++++
- arch/x86/boot/compressed/sev.h |    2 ++
- 3 files changed, 43 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_tc.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/arch/x86/boot/compressed/mem.c
-+++ b/arch/x86/boot/compressed/mem.c
-@@ -34,14 +34,11 @@ static bool early_is_tdx_guest(void)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
+index 9ba99609999f4..f1d908f611349 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
+@@ -1750,9 +1750,6 @@ extra_split_attr_dests_needed(struct mlx5e_tc_flow *flow, struct mlx5_flow_attr
+ 	    !list_is_first(&attr->list, &flow->attrs))
+ 		return 0;
  
- void arch_accept_memory(phys_addr_t start, phys_addr_t end)
- {
--	static bool sevsnp;
+-	if (flow_flag_test(flow, SLOW))
+-		return 0;
 -
- 	/* Platform-specific memory-acceptance call goes here */
- 	if (early_is_tdx_guest()) {
- 		if (!tdx_accept_memory(start, end))
- 			panic("TDX: Failed to accept memory\n");
--	} else if (sevsnp || (sev_get_status() & MSR_AMD64_SEV_SNP_ENABLED)) {
--		sevsnp = true;
-+	} else if (early_is_sevsnp_guest()) {
- 		snp_accept_memory(start, end);
- 	} else {
- 		error("Cannot accept memory: unknown platform\n");
---- a/arch/x86/boot/compressed/sev.c
-+++ b/arch/x86/boot/compressed/sev.c
-@@ -644,3 +644,43 @@ void sev_prep_identity_maps(unsigned lon
- 
- 	sev_verify_cbit(top_level_pgt);
- }
-+
-+bool early_is_sevsnp_guest(void)
-+{
-+	static bool sevsnp;
-+
-+	if (sevsnp)
-+		return true;
-+
-+	if (!(sev_get_status() & MSR_AMD64_SEV_SNP_ENABLED))
-+		return false;
-+
-+	sevsnp = true;
-+
-+	if (!snp_vmpl) {
-+		unsigned int eax, ebx, ecx, edx;
-+
-+		/*
-+		 * CPUID Fn8000_001F_EAX[28] - SVSM support
-+		 */
-+		eax = 0x8000001f;
-+		ecx = 0;
-+		native_cpuid(&eax, &ebx, &ecx, &edx);
-+		if (eax & BIT(28)) {
-+			struct msr m;
-+
-+			/* Obtain the address of the calling area to use */
-+			boot_rdmsr(MSR_SVSM_CAA, &m);
-+			boot_svsm_caa = (void *)m.q;
-+			boot_svsm_caa_pa = m.q;
-+
-+			/*
-+			 * The real VMPL level cannot be discovered, but the
-+			 * memory acceptance routines make no use of that so
-+			 * any non-zero value suffices here.
-+			 */
-+			snp_vmpl = U8_MAX;
-+		}
-+	}
-+	return true;
-+}
---- a/arch/x86/boot/compressed/sev.h
-+++ b/arch/x86/boot/compressed/sev.h
-@@ -13,12 +13,14 @@
- bool sev_snp_enabled(void);
- void snp_accept_memory(phys_addr_t start, phys_addr_t end);
- u64 sev_get_status(void);
-+bool early_is_sevsnp_guest(void);
- 
- #else
- 
- static inline bool sev_snp_enabled(void) { return false; }
- static inline void snp_accept_memory(phys_addr_t start, phys_addr_t end) { }
- static inline u64 sev_get_status(void) { return 0; }
-+static inline bool early_is_sevsnp_guest(void) { return false; }
- 
- #endif
- 
+ 	esw_attr = attr->esw_attr;
+ 	if (!esw_attr->split_count ||
+ 	    esw_attr->split_count == esw_attr->out_count - 1)
+@@ -1766,7 +1763,7 @@ extra_split_attr_dests_needed(struct mlx5e_tc_flow *flow, struct mlx5_flow_attr
+ 	for (i = esw_attr->split_count; i < esw_attr->out_count; i++) {
+ 		/* external dest with encap is considered as internal by firmware */
+ 		if (esw_attr->dests[i].vport == MLX5_VPORT_UPLINK &&
+-		    !(esw_attr->dests[i].flags & MLX5_ESW_DEST_ENCAP_VALID))
++		    !(esw_attr->dests[i].flags & MLX5_ESW_DEST_ENCAP))
+ 			ext_dest = true;
+ 		else
+ 			int_dest = true;
+-- 
+2.39.5
+
 
 
 
