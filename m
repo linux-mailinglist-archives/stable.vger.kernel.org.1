@@ -1,145 +1,87 @@
-Return-Path: <stable+bounces-142080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F3B2AAE3A1
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 16:57:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31600AAE3E3
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 17:07:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C6594E5F1C
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 14:57:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26B391C03DDC
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 15:07:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACD52289E34;
-	Wed,  7 May 2025 14:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C33D728A1EA;
+	Wed,  7 May 2025 15:07:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SdLHoRYl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D0A289829;
-	Wed,  7 May 2025 14:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 704112874E7;
+	Wed,  7 May 2025 15:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746629822; cv=none; b=LzxBWyTE9P7UfcALOooeocuW5mLBIHf2tU7erfVZU+9US4MJdwbNb0k1KP/i0uk40bDFmwMsdNDmK1Dcuu+DV6BCx84EZDy1qC3LSd1+sAgj0s4OD48wQIFJVBMauIrsrv3JO10xP9KLka+j97IIe4j+US98HUhBcNQWw5WmDhA=
+	t=1746630421; cv=none; b=jzSclV1BJX6bEUL8DcxY8w5OyUxBTsd9pJbnku4d8JUET44QmTfW8EFulFwctM6+DLrBQIhfkhLUokAr4si7T+dOJ37iFcJ3mix9OU9assUrkOrE00SFZ4BLLYWjQWBen0NxMWyVUpfOEeCKnVzhooz60JCiVghd63yaiINiqcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746629822; c=relaxed/simple;
-	bh=yN0KClTjUJUyN0+Uj96I/9OYrcm+olgHB/dVcrhHQi0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nSOr2oZ7GW9sx+UegYpOmlxfnbRlPQU5XSl2F1tDb9Y2avg9hnvgFMZM+ISYnYSpiSOGFhXVeh5d3c6xvNP+PXizwMn+pShHmqVGPfzw3z+OXpLN7gtafO9EIovza/xsbDo51ls6G3IKfZtwTLYbDv0MbLbqY2Vaqlm9k6GPFLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34415C4CEE2;
-	Wed,  7 May 2025 14:56:59 +0000 (UTC)
-Message-ID: <a7bd8630-a125-4f43-a27d-f8dada24cc6a@xs4all.nl>
-Date: Wed, 7 May 2025 16:56:57 +0200
+	s=arc-20240116; t=1746630421; c=relaxed/simple;
+	bh=9ZZ2X1Mi6G4gFWYgh4j686d6a5w6iHjtZ8hC17rBTzk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cQVp68nmRBcR5W42L/6kaITkGf0kN4NtzHpwSTq/+eIrsdP1/wfVvhswlOrhKwtQqT92Sx+NfJwAqlVgjG1pWXIBRrzKacx/FHZ1x2ByaIwechlG4dRfwZQjhXIzjlOFWddtOYBJMac9lcnfAFoHuRa9kkY4+eq7TyLZadNjiyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SdLHoRYl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C710C4CEE2;
+	Wed,  7 May 2025 15:07:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746630420;
+	bh=9ZZ2X1Mi6G4gFWYgh4j686d6a5w6iHjtZ8hC17rBTzk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SdLHoRYlghBpr0RdkdaxwGml6tM9dyVDQUyOdtA8f88fWnG6q1jfWeXmRu+/mApgU
+	 qlGDdJ1UdEGhSWcN/33Mu9sBc/znRQOjoH6Leh+w7+1NvigLu9PpkPcTnBz0OPBk8y
+	 evWjz6y+34t3BfUwDBrPU34xXWlYeTpHNyDU0sVdhTFdC/aAAuCB1pGRSSqNOPQWDA
+	 ehkG7Cc+iLdxcIONEswZKlFcnDNz4ei7PhGHG9bnRYZE476HAktzYFyhBslvkoutG6
+	 TNfP4KA/Vf5lAOr9cDQl3hsS76r1Z/zKU8KE3NsXaSLz9sVjj9JQQ3lix7gC3RNwGx
+	 g5X+SyMzRYB5g==
+Date: Wed, 7 May 2025 11:06:55 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org, workflows@vger.kernel.org
+Subject: Re: [ANNOUNCE] AUTOSEL: Modern AI-powered Linux Kernel Stable
+ Backport Classifier
+Message-ID: <aBt3D3z0Ayn6R_YO@lappy>
+References: <aBj_SEgFTXfrPVuj@lappy>
+ <20250506072159.520ff0d5@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] media: videobuf2: use sgtable-based scatterlist
- wrappers
-To: Marek Szyprowski <m.szyprowski@samsung.com>, linux-media@vger.kernel.org,
- linaro-mm-sig@lists.linaro.org, iommu@lists.linux.dev
-Cc: Tomasz Figa <tfiga@chromium.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>,
- Sergey Senozhatsky <senozhatsky@chromium.org>,
- Robin Murphy <robin.murphy@arm.com>, stable@vger.kernel.org
-References: <20250507144203.2081756-1-m.szyprowski@samsung.com>
- <CGME20250507144242eucas1p11523dca9f94c6e10fee75ca340076303@eucas1p1.samsung.com>
- <20250507144203.2081756-2-m.szyprowski@samsung.com>
-Content-Language: en-US, nl
-From: Hans Verkuil <hverkuil@xs4all.nl>
-Autocrypt: addr=hverkuil@xs4all.nl; keydata=
- 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
-In-Reply-To: <20250507144203.2081756-2-m.szyprowski@samsung.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20250506072159.520ff0d5@kernel.org>
 
-On 07/05/2025 16:42, Marek Szyprowski wrote:
-> Use common wrappers operating directly on the struct sg_table objects to
-> fix incorrect use of scatterlists sync calls. dma_sync_sg_for_*()
-> functions have to be called with the number of elements originally passed
-> to dma_map_sg_*() function, not the one returned in sgt->nents.
-> 
-> Fixes: d4db5eb57cab ("media: videobuf2: add begin/end cpu_access callbacks to dma-sg")
+On Tue, May 06, 2025 at 07:21:59AM -0700, Jakub Kicinski wrote:
+>On Mon, 5 May 2025 14:11:20 -0400 Sasha Levin wrote:
+>> - Detailed explanations of backporting decisions
+>
+>Are those available publicly or just to the person running the tool?
+>I was scratching my hard quite a bit on the latest batch.
 
-Ah, the Cc to stable should be here, after the Fixes tag :-) E.g.:
+Yup, it presents it to the person running the tool. In theory you can
+always go back and re-run whatever commit you'd like with the same query
+and get a very similar explanation, so I didn't consider storing the
+results.
 
-Cc: stable@vger.kernel.org
+>> - Extensive test coverage and validation
+>
+>Would be great to hear more. My very subjective feeling is that
+>the last batch of AUTOSEL is much worse than the previous.
+>Easily 50% of false positives.
 
-Regards,
+"last batch" as in the big one I've sent out on Monday, or the small one
+I sent on Tuesday?
 
-	Hans
-
-> Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-> ---
->  drivers/media/common/videobuf2/videobuf2-dma-sg.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/media/common/videobuf2/videobuf2-dma-sg.c b/drivers/media/common/videobuf2/videobuf2-dma-sg.c
-> index c6ddf2357c58..b3bf2173c14e 100644
-> --- a/drivers/media/common/videobuf2/videobuf2-dma-sg.c
-> +++ b/drivers/media/common/videobuf2/videobuf2-dma-sg.c
-> @@ -469,7 +469,7 @@ vb2_dma_sg_dmabuf_ops_begin_cpu_access(struct dma_buf *dbuf,
->  	struct vb2_dma_sg_buf *buf = dbuf->priv;
->  	struct sg_table *sgt = buf->dma_sgt;
->  
-> -	dma_sync_sg_for_cpu(buf->dev, sgt->sgl, sgt->nents, buf->dma_dir);
-> +	dma_sync_sgtable_for_cpu(buf->dev, sgt, buf->dma_dir);
->  	return 0;
->  }
->  
-> @@ -480,7 +480,7 @@ vb2_dma_sg_dmabuf_ops_end_cpu_access(struct dma_buf *dbuf,
->  	struct vb2_dma_sg_buf *buf = dbuf->priv;
->  	struct sg_table *sgt = buf->dma_sgt;
->  
-> -	dma_sync_sg_for_device(buf->dev, sgt->sgl, sgt->nents, buf->dma_dir);
-> +	dma_sync_sgtable_for_device(buf->dev, sgt, buf->dma_dir);
->  	return 0;
->  }
->  
-
+-- 
+Thanks,
+Sasha
 
