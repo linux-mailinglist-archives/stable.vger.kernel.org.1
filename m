@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-142446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142588-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19436AAEAAD
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:58:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEA51AAEB4E
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:06:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 453B11C00B79
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:58:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 750A1522E4D
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:05:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 817B728B4F0;
-	Wed,  7 May 2025 18:57:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 443A728E582;
+	Wed,  7 May 2025 19:05:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="08cMmnEy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OH3Of7qc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DE8519AD5C;
-	Wed,  7 May 2025 18:57:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F259828E57B;
+	Wed,  7 May 2025 19:05:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644278; cv=none; b=nLvz101ppNRoV8Ddf6oJfpy5MeDysuFzE6kWcIXwUWn9scnoJ0yDcMXoh1y9+8E2oKsy6Zz+pOwyZ2F6N4Z586R9tKdnR/fLA/Nbwr+8WjOYP8hb8ySpj417tA10W7ObVyEkxCJTeG9v+GQ5MUJT5uhIzTWYA3OCWw42k/qkGe0=
+	t=1746644716; cv=none; b=AnQPwWwkWIXXSPKaRU89dq6T7W37PxM4/l1OeADHECa6dFS0Kq+BkeQC1CdYxSLLeT+EZY2rzgHzvJ4c4lLiFST2yT19Xj1SmxqJ7zzDOI3270kZjCQNCWzsy5F1KG15YGcEyURQMKlJ/9B4Djg8xjSiD7wpQwfizMSPxSx4S0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644278; c=relaxed/simple;
-	bh=BoKTwrcRBuV80Ns9TtmaeMdyF1TTOosJMhAd4ZiZYII=;
+	s=arc-20240116; t=1746644716; c=relaxed/simple;
+	bh=FxT/MWIfdlo6PF13jGkUVUrNjL0YCfvINRIoBazPH4U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HxdCP2kvNd5G4X1+EL5fyKahBjC/snES5FhytRfSfJ4LZSPgR5evKeLTDgZHyY0wsnf0Rp27tRhMKJ9Sf5qjY1kgUJn8TXaFHnG9hQ9LffO+Sf3sJnC8zPFNYVQDjftgdUhcgXmws1BR8kIIxUc3YNg0iVXcd8y9a5z5GLJf4bM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=08cMmnEy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38A10C4CEE2;
-	Wed,  7 May 2025 18:57:56 +0000 (UTC)
+	 MIME-Version; b=d5Cl+Leu8+9KWONkDaG65/dAG9a7UX61uA+CNmH/XhClDX2Ph0pNvdivGwPly0q2xSfdZPHB5JkGqb21SSijHcdd8Dj4l4IpI/jreII6Djz6r5FickYqHq1OPm9ZUb65KxrdWp9d6J4rQtCx7VGy5wtw/llZ3j3iBNVlp1O0TaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OH3Of7qc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6500BC4CEEB;
+	Wed,  7 May 2025 19:05:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644278;
-	bh=BoKTwrcRBuV80Ns9TtmaeMdyF1TTOosJMhAd4ZiZYII=;
+	s=korg; t=1746644715;
+	bh=FxT/MWIfdlo6PF13jGkUVUrNjL0YCfvINRIoBazPH4U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=08cMmnEycTLrhHHeNQT8mOdey+enQ6U8TOrT5ucbN7Uc6QGstn5ZJNBSZBBSHwrDL
-	 j5znirisBVuHXko5bRkwdSS2BqXm5+G7vl9iciis/coYIFNRCtJtdmhjAo3Qhd9LBC
-	 lePFHrA6+AMLDXkOOSIYsPtQe8o8OJ0h4xHzyYJc=
+	b=OH3Of7qcOyZ3ohVvcpfHhH9ap5HKIpRn0uPDd9t7K4cvQrZVxOMwc1HJicXBDqZXU
+	 TbpHmyUQ+ZfAuG9Ii9PbOGRfMh2sbiXk49MCUic0BH2BUvq5XXueQk16ca6il764ur
+	 FSs4L9OYyn01XdE+LeuceK+ZjJXJMn0hVtYT7kSE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Shyam Saini <shyamsaini@linux.microsoft.com>,
-	Petr Pavlu <petr.pavlu@suse.com>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 174/183] kernel: param: rename locate_module_kobject
+Subject: [PATCH 6.12 134/164] net: vertexcom: mse102x: Add range check for CMD_RTS
 Date: Wed,  7 May 2025 20:40:19 +0200
-Message-ID: <20250507183831.907841301@linuxfoundation.org>
+Message-ID: <20250507183826.400618927@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Saini <shyamsaini@linux.microsoft.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit bbc9462f0cb0c8917a4908e856731708f0cee910 ]
+[ Upstream commit d4dda902dac194e3231a1ed0f76c6c3b6340ba8a ]
 
-The locate_module_kobject() function looks up an existing
-module_kobject for a given module name. If it cannot find the
-corresponding module_kobject, it creates one for the given name.
+Since there is no protection in the SPI protocol against electrical
+interferences, the driver shouldn't blindly trust the length payload
+of CMD_RTS. So introduce a bounds check for incoming frames.
 
-This commit renames locate_module_kobject() to
-lookup_or_create_module_kobject() to better describe its operations.
-
-This doesn't change anything functionality wise.
-
-Suggested-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Signed-off-by: Shyam Saini <shyamsaini@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20250227184930.34163-2-shyamsaini@linux.microsoft.com
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Stable-dep-of: f95bbfe18512 ("drivers: base: handle module_kobject creation")
+Fixes: 2f207cbf0dd4 ("net: vertexcom: Add MSE102x SPI support")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250430133043.7722-4-wahrenst@gmx.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/params.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/vertexcom/mse102x.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/params.c b/kernel/params.c
-index 0074d29c9b80c..de1e64cc202b9 100644
---- a/kernel/params.c
-+++ b/kernel/params.c
-@@ -763,7 +763,7 @@ void destroy_params(const struct kernel_param *params, unsigned num)
- 			params[i].ops->free(params[i].arg);
- }
+diff --git a/drivers/net/ethernet/vertexcom/mse102x.c b/drivers/net/ethernet/vertexcom/mse102x.c
+index 3edf2c3753f0e..2c06d1d05164f 100644
+--- a/drivers/net/ethernet/vertexcom/mse102x.c
++++ b/drivers/net/ethernet/vertexcom/mse102x.c
+@@ -6,6 +6,7 @@
  
--static struct module_kobject * __init locate_module_kobject(const char *name)
-+static struct module_kobject * __init lookup_or_create_module_kobject(const char *name)
- {
- 	struct module_kobject *mk;
- 	struct kobject *kobj;
-@@ -805,7 +805,7 @@ static void __init kernel_add_sysfs_param(const char *name,
- 	struct module_kobject *mk;
- 	int err;
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
  
--	mk = locate_module_kobject(name);
-+	mk = lookup_or_create_module_kobject(name);
- 	if (!mk)
++#include <linux/if_vlan.h>
+ #include <linux/interrupt.h>
+ #include <linux/module.h>
+ #include <linux/kernel.h>
+@@ -337,8 +338,9 @@ static void mse102x_rx_pkt_spi(struct mse102x_net *mse)
+ 	}
+ 
+ 	rxlen = cmd_resp & LEN_MASK;
+-	if (!rxlen) {
+-		net_dbg_ratelimited("%s: No frame length defined\n", __func__);
++	if (rxlen < ETH_ZLEN || rxlen > VLAN_ETH_FRAME_LEN) {
++		net_dbg_ratelimited("%s: Invalid frame length: %d\n", __func__,
++				    rxlen);
+ 		mse->stats.invalid_len++;
  		return;
- 
-@@ -876,7 +876,7 @@ static void __init version_sysfs_builtin(void)
- 	int err;
- 
- 	for (vattr = __start___modver; vattr < __stop___modver; vattr++) {
--		mk = locate_module_kobject(vattr->module_name);
-+		mk = lookup_or_create_module_kobject(vattr->module_name);
- 		if (mk) {
- 			err = sysfs_create_file(&mk->kobj, &vattr->mattr.attr);
- 			WARN_ON_ONCE(err);
+ 	}
 -- 
 2.39.5
 
