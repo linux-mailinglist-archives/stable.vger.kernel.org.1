@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-142369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04CC2AAEA52
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:54:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D879AAE937
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:42:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 542BF7BE041
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:52:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A76C1C26ABF
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:42:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC6F621E0BB;
-	Wed,  7 May 2025 18:53:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62D6828B7D6;
+	Wed,  7 May 2025 18:42:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hvd07H8P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WAsSmO8m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994301FF5EC;
-	Wed,  7 May 2025 18:53:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B99314A4C7;
+	Wed,  7 May 2025 18:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644039; cv=none; b=sxObAwNDP6aazOUgp6OFejONr7jQKn4skLjMit1lmaVRYot8fhcqfGHHTQmvK3hiXJlYVtZ3dKHNZSR7h3L0EdZzbvQuQKmC8gKdSbhgVglEgzN02CpYTZTmd+wAvQDDDTCzB3QVu5zInVm02ICWMajZsNHIx6DSbQ9D1ms3Zf8=
+	t=1746643333; cv=none; b=m3hoeL1FABq/iUFBr+B7FW9+lB3Tc0orgbR/0QquNXwRKwwd+tiTf2LsZuyIU2VbiVthOxcAMuqZJ5uf98xL+F8dDDTOpjMLSobCKaBfcuqyyEi4zxmsYLoP4KGHxc6trzQRQn8vQzJCZi31zmaL4LGHxeNsgk6oxzg04HUDj8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644039; c=relaxed/simple;
-	bh=JE6mRwvTrxNNkty+ax5L4nZnnyoDI8hkGjhykdzDDzk=;
+	s=arc-20240116; t=1746643333; c=relaxed/simple;
+	bh=zRMbQVAlc/LmM08T2h4P0JkV9haAKnjaqBwhDrnwjas=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AOaAJwDdh5NgXABKLuYAr+70Rnc6Nt/5R1YJo613ld9ba1UZ9OQxvhrcBvaYDa4MPELoHPks1sPsnfYYLFOz9/K6XWvuLUVH/WUqV/EJvBPyyQcKF8LStoAK9vulHASV+y2fdYGVJLi3jJHzTF6jqrsaRrItvnWOmKxw6Ieczj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hvd07H8P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B7DCC4CEE2;
-	Wed,  7 May 2025 18:53:58 +0000 (UTC)
+	 MIME-Version; b=jPRdEGvFP7VUrdmvURHgM35Z504j3kPLfSBud55RBw9qLSqUZAnullIvfI0nL1AKIYP8wTVfQvQsjRJUKeTQ2cpBQtxwvr3UrURYydKWhm6YlSJnaMmknsZIKCkOiYZuAVbDEAHY5zIHl5jMglTLVCldNz5mt7wkKa99buD8yDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WAsSmO8m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45272C4CEE2;
+	Wed,  7 May 2025 18:42:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644039;
-	bh=JE6mRwvTrxNNkty+ax5L4nZnnyoDI8hkGjhykdzDDzk=;
+	s=korg; t=1746643332;
+	bh=zRMbQVAlc/LmM08T2h4P0JkV9haAKnjaqBwhDrnwjas=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hvd07H8PrHtkSDawATRO2JHbUazYjZ6ROGbYq9lAhN+xeJKVoQBtvOpLV51M8RkhH
-	 OGZBEACTZe+vgD0lgZkRdSrvUmujUOEvtBozcuI2YUCcqN4QvYCg251l1yzgD6A92F
-	 VwPZofPz+vYfKogVeK1Ujj/DpUHvcANiZ/hmBJyM=
+	b=WAsSmO8m2mmtjXW2/pAhlKDQlHLIfIHR6QS+cUku9gwoszeMZ5VZ1XUyQi3yzl1XW
+	 xt7DtD965a8pnohAKODHaEfVqlYSTcpTyRvl6gjkwwzrsuvSH4dpSE0AKZuEVg3JSb
+	 vkEI8MT6Ou1mq4ty6kYVpOvxMfpFHJv1UP6VuMgE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 099/183] net_sched: qfq: Fix double list add in class with netem as child qdisc
+	Niravkumar L Rabara <niravkumar.l.rabara@altera.com>,
+	Matthew Gerlach <matthew.gerlach@altera.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	stable@kernel.org
+Subject: [PATCH 5.15 03/55] EDAC/altera: Test the correct error reg offset
 Date: Wed,  7 May 2025 20:39:04 +0200
-Message-ID: <20250507183828.831950783@linuxfoundation.org>
+Message-ID: <20250507183759.192695994@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
+References: <20250507183759.048732653@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Nogueira <victor@mojatatu.com>
+From: Niravkumar L Rabara <niravkumar.l.rabara@altera.com>
 
-[ Upstream commit f139f37dcdf34b67f5bf92bc8e0f7f6b3ac63aa4 ]
+commit 4fb7b8fceb0beebbe00712c3daf49ade0386076a upstream.
 
-As described in Gerrard's report [1], there are use cases where a netem
-child qdisc will make the parent qdisc's enqueue callback reentrant.
-In the case of qfq, there won't be a UAF, but the code will add the same
-classifier to the list twice, which will cause memory corruption.
+Test correct structure member, ecc_cecnt_offset, before using it.
 
-This patch checks whether the class was already added to the agg->active
-list (cl_is_active) before doing the addition to cater for the reentrant
-case.
+  [ bp: Massage commit message. ]
 
-[1] https://lore.kernel.org/netdev/CAHcdcOm+03OD2j6R0=YHKqmy=VgJ8xEOKuP6c7mSgnp-TEJJbw@mail.gmail.com/
-
-Fixes: 37d9cf1a3ce3 ("sched: Fix detection of empty queues in child qdiscs")
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
-Link: https://patch.msgid.link/20250425220710.3964791-5-victor@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 73bcc942f427 ("EDAC, altera: Add Arria10 EDAC support")
+Signed-off-by: Niravkumar L Rabara <niravkumar.l.rabara@altera.com>
+Signed-off-by: Matthew Gerlach <matthew.gerlach@altera.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Dinh Nguyen <dinguyen@kernel.org>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/20250425142640.33125-2-matthew.gerlach@altera.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_qfq.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/edac/altera_edac.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
-index 6a07cdbdb9e12..faba1501ac2fa 100644
---- a/net/sched/sch_qfq.c
-+++ b/net/sched/sch_qfq.c
-@@ -202,6 +202,11 @@ struct qfq_sched {
-  */
- enum update_reason {enqueue, requeue};
- 
-+static bool cl_is_active(struct qfq_class *cl)
-+{
-+	return !list_empty(&cl->alist);
-+}
-+
- static struct qfq_class *qfq_find_class(struct Qdisc *sch, u32 classid)
- {
- 	struct qfq_sched *q = qdisc_priv(sch);
-@@ -1214,7 +1219,6 @@ static int qfq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	struct qfq_class *cl;
- 	struct qfq_aggregate *agg;
- 	int err = 0;
--	bool first;
- 
- 	cl = qfq_classify(skb, sch, &err);
- 	if (cl == NULL) {
-@@ -1236,7 +1240,6 @@ static int qfq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	}
- 
- 	gso_segs = skb_is_gso(skb) ? skb_shinfo(skb)->gso_segs : 1;
--	first = !cl->qdisc->q.qlen;
- 	err = qdisc_enqueue(skb, cl->qdisc, to_free);
- 	if (unlikely(err != NET_XMIT_SUCCESS)) {
- 		pr_debug("qfq_enqueue: enqueue failed %d\n", err);
-@@ -1252,8 +1255,8 @@ static int qfq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	++sch->q.qlen;
- 
- 	agg = cl->agg;
--	/* if the queue was not empty, then done here */
--	if (!first) {
-+	/* if the class is active, then done here */
-+	if (cl_is_active(cl)) {
- 		if (unlikely(skb == cl->qdisc->ops->peek(cl->qdisc)) &&
- 		    list_first_entry(&agg->active, struct qfq_class, alist)
- 		    == cl && cl->deficit < len)
--- 
-2.39.5
-
+--- a/drivers/edac/altera_edac.c
++++ b/drivers/edac/altera_edac.c
+@@ -98,7 +98,7 @@ static irqreturn_t altr_sdram_mc_err_han
+ 	if (status & priv->ecc_stat_ce_mask) {
+ 		regmap_read(drvdata->mc_vbase, priv->ecc_saddr_offset,
+ 			    &err_addr);
+-		if (priv->ecc_uecnt_offset)
++		if (priv->ecc_cecnt_offset)
+ 			regmap_read(drvdata->mc_vbase,  priv->ecc_cecnt_offset,
+ 				    &err_count);
+ 		edac_mc_handle_error(HW_EVENT_ERR_CORRECTED, mci, err_count,
 
 
 
