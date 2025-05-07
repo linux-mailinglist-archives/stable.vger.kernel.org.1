@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-142335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57B16AAEA2F
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:52:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C3D1AAEA3A
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:52:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BFFFF5080C7
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:52:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8409C5084B6
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:52:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4FC1289348;
-	Wed,  7 May 2025 18:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A429524E4CE;
+	Wed,  7 May 2025 18:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UMJEUBgv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="efPYzzrC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CB1B211A2A;
-	Wed,  7 May 2025 18:52:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 616481FF5EC;
+	Wed,  7 May 2025 18:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643934; cv=none; b=Xx4ATbJ4nGmRLcHWup4Iq/ME7as5pVKuPfoLwdcHUCLcNQUJglm7/4/lu6gY0/yoNlHxiGFLQCB2sy2FcEPRxAAaIs7z+DOwDWGvuuKo5a07jdIV1ZB9EKMTw+UK0Uj5vr6WlVw2KqllrRMoX6q8K9u+/ABfLmCheHSKmhyH5NE=
+	t=1746643968; cv=none; b=U6uY5mX5vfsXGAc6C0CE0X5wgKdPjXW0Z41NnAuVFCTEiJIsQ+Wy5h5kfIRfaeaXSf8SBqspn+xdRQR6XbVrb7J8VBhSe9+hS0IraPOPkWlvZwagR6FdRh562sc8sg4g6bwXLQWJOqJNU6UDZ//VGlWZqf1i+/WuSNawkb+SaiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643934; c=relaxed/simple;
-	bh=/kd9QQj1QI2vCXkGmIL8zt5rZAOKwQFdwLiPLHgCWOQ=;
+	s=arc-20240116; t=1746643968; c=relaxed/simple;
+	bh=f7oudhlV0NYP/7IRibubh3ObkMZDmWkAno0UtUnw1Mo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W7qdhOTtyqUTZIiQ0Y3ATbLE+EbCDAOX4brFk9sMzyofR/l/a9/9ZtHdBxEYn9zR6GzmzzGzUUEwam3BogS6xFbChz3JOQ8BLxBsJZWiWsHNlOe7VvDUId/c76GFTDchVJgl6pt2Xr2ixFqxdK8xyKytMRAePkPF0lfhxiuLLJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UMJEUBgv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFAC7C4CEE2;
-	Wed,  7 May 2025 18:52:13 +0000 (UTC)
+	 MIME-Version; b=WLnkYqoHo8LmCFrr1QxfO+b9+6VpBBFQ3/YWB//wLzP9KSXKD3f1yJfi69V1eFRF7iR5NkRHcO3aXaJObTGyZ3yRMhB8hbUNxvPyOeD4MPKmYd6ecu9Nbdg/Ba2fcZyaVBp7tdUpkgV0kZKLy1tB3ttgQB01B3DYKdAn0pie/6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=efPYzzrC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4A11C4CEE2;
+	Wed,  7 May 2025 18:52:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643934;
-	bh=/kd9QQj1QI2vCXkGmIL8zt5rZAOKwQFdwLiPLHgCWOQ=;
+	s=korg; t=1746643968;
+	bh=f7oudhlV0NYP/7IRibubh3ObkMZDmWkAno0UtUnw1Mo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UMJEUBgvZhtglv99yJc4IExhJJIXgvzK7jqDZQCxz0FJSgUyFavN5RZDP7+FlPJ4y
-	 XDp2me/RgS5hjZOCCaAdjGevpRXy2b7Cc3UvVKBWbd+UCY2Fc3f9tLvT7aBEE/aIlz
-	 9a4hb2gFf8OxfLFIxSLSfbam05aHHkMxes1Fn+Iw=
+	b=efPYzzrCiLT+4fath5tDYPEWXVgbQPLr7+W76Y4hLQZpU1Sq84Jjgmbz7/6+2a7Kd
+	 3KmvNDn9etZPd7+hRouLZudZDUY0iKHOOGCXGpC1iKB65c0TFhcXMb29wOfB5Bajqk
+	 K7eCyQR/0Nb0XPHUaePNtzdEKxHEDwIvbVOu0SRw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Leo Li <sunpeng.li@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
-	Mark Broadworth <mark.broadworth@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.14 048/183] drm/amd/display: Default IPS to RCG_IN_ACTIVE_IPS2_IN_OFF
-Date: Wed,  7 May 2025 20:38:13 +0200
-Message-ID: <20250507183826.640193638@linuxfoundation.org>
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.14 049/183] ASoC: soc-core: Stop using of_property_read_bool() for non-boolean properties
+Date: Wed,  7 May 2025 20:38:14 +0200
+Message-ID: <20250507183826.679568607@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
 References: <20250507183824.682671926@linuxfoundation.org>
@@ -68,66 +65,96 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Leo Li <sunpeng.li@amd.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-commit 6ed0dc3fd39558f48119daf8f99f835deb7d68da upstream.
+commit 6eab7034579917f207ca6d8e3f4e11e85e0ab7d5 upstream.
 
-[Why]
+On R-Car:
 
-Recent findings show negligible power savings between IPS2 and RCG
-during static desktop. In fact, DCN related clocks are higher
-when IPS2 is enabled vs RCG.
+    OF: /sound: Read of boolean property 'simple-audio-card,bitclock-master' with a value.
+    OF: /sound: Read of boolean property 'simple-audio-card,frame-master' with a value.
 
-RCG_IN_ACTIVE is also the default policy for another OS supported by
-DC, and it has faster entry/exit.
+or:
 
-[How]
+    OF: /soc/sound@ec500000/ports/port@0/endpoint: Read of boolean property 'bitclock-master' with a value.
+    OF: /soc/sound@ec500000/ports/port@0/endpoint: Read of boolean property 'frame-master' with a value.
 
-Remove previous logic that checked for IPS2 support, and just default
-to `DMUB_IPS_RCG_IN_ACTIVE_IPS2_IN_OFF`.
+The use of of_property_read_bool() for non-boolean properties is
+deprecated in favor of of_property_present() when testing for property
+presence.
 
-Fixes: 199888aa25b3 ("drm/amd/display: Update IPS default mode for DCN35/DCN351")
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Leo Li <sunpeng.li@amd.com>
-Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Tested-by: Mark Broadworth <mark.broadworth@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 8f772d79ef39b463ead00ef6f009bebada3a9d49)
-Cc: stable@vger.kernel.org
+Replace testing for presence before calling of_property_read_u32() by
+testing for an -EINVAL return value from the latter, to simplify the
+code.
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/db10e96fbda121e7456d70e97a013cbfc9755f4d.1737533954.git.geert+renesas@glider.be
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   20 --------------------
- 1 file changed, 20 deletions(-)
+ sound/soc/soc-core.c |   32 +++++++++++++-------------------
+ 1 file changed, 13 insertions(+), 19 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -1912,26 +1912,6 @@ static enum dmub_ips_disable_type dm_get
+--- a/sound/soc/soc-core.c
++++ b/sound/soc/soc-core.c
+@@ -3046,7 +3046,7 @@ int snd_soc_of_parse_pin_switches(struct
+ 	unsigned int i, nb_controls;
+ 	int ret;
  
- 	switch (amdgpu_ip_version(adev, DCE_HWIP, 0)) {
- 	case IP_VERSION(3, 5, 0):
--		/*
--		 * On DCN35 systems with Z8 enabled, it's possible for IPS2 + Z8 to
--		 * cause a hard hang. A fix exists for newer PMFW.
--		 *
--		 * As a workaround, for non-fixed PMFW, force IPS1+RCG as the deepest
--		 * IPS state in all cases, except for s0ix and all displays off (DPMS),
--		 * where IPS2 is allowed.
--		 *
--		 * When checking pmfw version, use the major and minor only.
--		 */
--		if ((adev->pm.fw_version & 0x00FFFF00) < 0x005D6300)
--			ret = DMUB_IPS_RCG_IN_ACTIVE_IPS2_IN_OFF;
--		else if (amdgpu_ip_version(adev, GC_HWIP, 0) > IP_VERSION(11, 5, 0))
--			/*
--			 * Other ASICs with DCN35 that have residency issues with
--			 * IPS2 in idle.
--			 * We want them to use IPS2 only in display off cases.
--			 */
--			ret =  DMUB_IPS_RCG_IN_ACTIVE_IPS2_IN_OFF;
--		break;
- 	case IP_VERSION(3, 5, 1):
- 		ret =  DMUB_IPS_RCG_IN_ACTIVE_IPS2_IN_OFF;
- 		break;
+-	if (!of_property_read_bool(dev->of_node, prop))
++	if (!of_property_present(dev->of_node, prop))
+ 		return 0;
+ 
+ 	strings = devm_kcalloc(dev, nb_controls_max,
+@@ -3120,23 +3120,17 @@ int snd_soc_of_parse_tdm_slot(struct dev
+ 	if (rx_mask)
+ 		snd_soc_of_get_slot_mask(np, "dai-tdm-slot-rx-mask", rx_mask);
+ 
+-	if (of_property_read_bool(np, "dai-tdm-slot-num")) {
+-		ret = of_property_read_u32(np, "dai-tdm-slot-num", &val);
+-		if (ret)
+-			return ret;
+-
+-		if (slots)
+-			*slots = val;
+-	}
+-
+-	if (of_property_read_bool(np, "dai-tdm-slot-width")) {
+-		ret = of_property_read_u32(np, "dai-tdm-slot-width", &val);
+-		if (ret)
+-			return ret;
++	ret = of_property_read_u32(np, "dai-tdm-slot-num", &val);
++	if (ret && ret != -EINVAL)
++		return ret;
++	if (!ret && slots)
++		*slots = val;
+ 
+-		if (slot_width)
+-			*slot_width = val;
+-	}
++	ret = of_property_read_u32(np, "dai-tdm-slot-width", &val);
++	if (ret && ret != -EINVAL)
++		return ret;
++	if (!ret && slot_width)
++		*slot_width = val;
+ 
+ 	return 0;
+ }
+@@ -3403,12 +3397,12 @@ unsigned int snd_soc_daifmt_parse_clock_
+ 	 * check "[prefix]frame-master"
+ 	 */
+ 	snprintf(prop, sizeof(prop), "%sbitclock-master", prefix);
+-	bit = of_property_read_bool(np, prop);
++	bit = of_property_present(np, prop);
+ 	if (bit && bitclkmaster)
+ 		*bitclkmaster = of_parse_phandle(np, prop, 0);
+ 
+ 	snprintf(prop, sizeof(prop), "%sframe-master", prefix);
+-	frame = of_property_read_bool(np, prop);
++	frame = of_property_present(np, prop);
+ 	if (frame && framemaster)
+ 		*framemaster = of_parse_phandle(np, prop, 0);
+ 
 
 
 
