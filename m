@@ -1,94 +1,99 @@
-Return-Path: <stable+bounces-142042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88F83AADFA9
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 14:48:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C22AAADFB9
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 14:51:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8BE477BCBD8
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 12:47:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 308B79C0660
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 12:50:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25429283FEE;
-	Wed,  7 May 2025 12:48:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8055A281525;
+	Wed,  7 May 2025 12:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="HecTc2/N"
+	dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b="LmAJzbDI"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BCE9281375;
-	Wed,  7 May 2025 12:48:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 770FB280039
+	for <stable@vger.kernel.org>; Wed,  7 May 2025 12:50:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746622097; cv=none; b=hNhHDwAbtNE4jovSD8z00pQFpB4AVR2dli59DNScQ0T8KAcPYvAK/1x32GmFvnWifkZNhTPEtAgBjSVohEgYFTXC+4Y+rB17B0cSQdYqtplG4Ua3Nwmfp1mO6DhGAgK1tp9MZ0g7RA46xD9H3NQeJXcnpZvj36r/54dVYMtf0aU=
+	t=1746622241; cv=none; b=ZHPITW/tBFiKRDFjHS2goC17KJUc+bnOksoBazw7pGznxNFCXJZgDh12T9ofpiNmsIQHqIqHFuCzLL5t17WZqakm6bKwp0iATQwjWxdMSLmvi9wSic5XFtiojSMlm6GyIXSOXuLrTXq8kiHKWTMod+bwIfVibIQKMHQHhSbvwh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746622097; c=relaxed/simple;
-	bh=YiKcNwPNNMVFO3y7RF2CWj+EMibd9DO9NwQZNjUa2pc=;
+	s=arc-20240116; t=1746622241; c=relaxed/simple;
+	bh=L+7igWmrzB3MXXLwtuLEyjoA6CAq6ItWg62jIUmYSgc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VtSOCCakJMuBNmQz1OgRkS2EN/0aw4KCwL4TssR7rHMaapjHMrlzaAyBsSDs1OEK7z7y+e3kcdc9gBaWO34wv/XFGfOMr27Ss6asQtWWXUJJH6KTmpET6JJDOOVetbyC0wHbb9tChGWozzpS6vyK1UwLK4rS5v0TfWz2mnyA3hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=HecTc2/N; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 547AY9og007250;
-	Wed, 7 May 2025 12:48:07 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=ATE+TVfvA/Vz6alaY
-	aJMjHxO6SwwaW8miGELtbRP2SI=; b=HecTc2/N6sIiEezvI4r9Khx+Zl39rfeee
-	hsEjtZZmKsGd7yVAtDPVDqBaE4LddhbXf9BwAdGtU3fSmzYiruN/fLhHZm02ljqI
-	7xuvXBXexcTLkwN/SPvAxdW/XC9/HxHw9x4K/PpRpdq3lUfRRkTc/ZXo6pDFeCz5
-	NVK10K02iHr2n7j/mNlKXtrcx9dhmV/9TMr7TMETPfvHTSd8LXBx5KMuAyxt1FO9
-	X6sgTG66XS0dZgl+FgNnRj7MuuSGVuvuxpzZ5fdyRn2NeQ6v9AZMasx7NRy4yYOb
-	q8XDxGn3r6EkHe7Qed74WLIWwsbRzs3DzUZ7tLU5pznz5YMLWc+iw==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46fth8bgpb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 07 May 2025 12:48:07 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 547Cm6OZ016838;
-	Wed, 7 May 2025 12:48:07 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46fth8bgp7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 07 May 2025 12:48:06 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5478tVsp002826;
-	Wed, 7 May 2025 12:48:05 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46dxfp0pf3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 07 May 2025 12:48:05 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 547Cm3Ir53215582
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 7 May 2025 12:48:03 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A5DF62004F;
-	Wed,  7 May 2025 12:48:03 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8D2972004B;
-	Wed,  7 May 2025 12:48:03 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed,  7 May 2025 12:48:03 +0000 (GMT)
-Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55669)
-	id 38933E0126; Wed, 07 May 2025 14:48:03 +0200 (CEST)
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-        Daniel Axtens <dja@axtens.net>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        kasan-dev@googlegroups.com, linux-s390@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: [PATCH v5 1/1] kasan: Avoid sleepable page allocation from atomic context
-Date: Wed,  7 May 2025 14:48:03 +0200
-Message-ID: <0388739e3a8aacdf9b9f7b11d5522b7934aea196.1746604607.git.agordeev@linux.ibm.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <cover.1746604607.git.agordeev@linux.ibm.com>
-References: <cover.1746604607.git.agordeev@linux.ibm.com>
+	 MIME-Version; b=Tc++nyl6je1Krg89Dh+SgBIgMaT48C0eLV7eD1hB47woUyi5SbeWFjBRoOGcCTrI6vcozH+AJ9oq8kw8miOZPKGGrxNfTyVlLyLzGtuc7gHI6Io+DmRPPFM709Sea1zLv+CYRjtC0h+ee07Zar/Snpu81uraS7WneOCTHX2/E50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev; spf=pass smtp.mailfrom=tuxon.dev; dkim=pass (2048-bit key) header.d=tuxon.dev header.i=@tuxon.dev header.b=LmAJzbDI; arc=none smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuxon.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuxon.dev
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-ac2a81e41e3so1278441966b.1
+        for <stable@vger.kernel.org>; Wed, 07 May 2025 05:50:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=tuxon.dev; s=google; t=1746622238; x=1747227038; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gjhb9oVUG8lj7hYYtmkJhzYs0Q2lzrIfIpH+FDRUtb4=;
+        b=LmAJzbDIIa6oQleSKu2dT59bkNrULYd7Vie3PIRvVLpls+UNL/P15VzZZKSseq8h7/
+         QPIvNEQ5zNylT2yaxv6u9l/mc6Hyqpnjd4x1drItDQbjzqg+FqMokz45VESYtD9zcqEx
+         dCDfpOYuLG02nZiqRcXibDAsfU5NHuVu2bqLBMHXK8ZEAPCiUq2bk+BB8cUW3hXHbdN1
+         8eRAFkUiVVoGvQOfCPDpnIvlySTK616NkRb1QHdSHRCfjThrhjPcjnXQyhNHE0DrR05r
+         9MbuCzB87AGhDWSZ97z1cOVr9OSDXIc3bMOAYsNJGhKUwNcxI8Z/PiKpJr2kozm/nxLg
+         rJpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746622238; x=1747227038;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gjhb9oVUG8lj7hYYtmkJhzYs0Q2lzrIfIpH+FDRUtb4=;
+        b=TaBFClxjP1BK/hx0wgpcwYX68WCHkQMxoiH8C1+BGPi9lhmY7J9PI0rN7YDdR+zmCm
+         U84TgYVyLOW4crHDKxfmBBujO/Ms/0aBgyHiZXE3BeQ0fz0S+8mM6eXN713QvRvEVqTs
+         7XsynTvgUVA9vZ57LOhV+P703dutK8+h+5UcDTdSUs1uGHcyoOm/yfCXF89jDZ397+Dx
+         FUOHUGEoNbHJKe1z9M8cM5x3EOZ1/Oz6/MAdibh3eOdomWjbvyy0jYuysSnCwpH5vS1O
+         ogYoMGNLkhMu5FjS8uJV74D5fncXgmFvNQV5Eaew3RdHtB8+sVgmCWYsxhxVcbHqda/Y
+         brUA==
+X-Forwarded-Encrypted: i=1; AJvYcCXb2ZFCa89zXBLCS/Pu8mDqRgNKpnWRKGKA1cc8wKgQBvoRzQagKuYdohTz91kL2DvrPpa2gNU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNPQxIc4Xahe07p1f1QTV5M7puPByhBtJJVEFYNXeLwagorq9B
+	PxGlCphY156qjrb6A1FvDL3nX/2vu7U8VRAmfnWGkknPiUXkC4GiaMTRzn72pFE=
+X-Gm-Gg: ASbGncuyETd1sROd9isr6hfhKrhmDcMIYO4uHmwutNQA6njUSKI8z9/qhe7HD2R0wuE
+	lHzY2Alzo23M8Yafd61VTgB2z9Y5Mq1jO22U6JEUumGyjEoWiaGbGjzkaHeDfFufqZAqS+avias
+	aVJFZyisVSVxIVmvS8LTgLmKaluyAgptAXzf4XgkYKM46e2II2ph8RH5hdp9xoJ4r/1k5zKOZs6
+	p9J4G5j/D814zrWdt80xXAd4ydJTvxdQnFlnzlaEVtgzooRBrEC002i1Gb9Rj6rNx4xb/lfkDt1
+	pu30F9z5DB3B1XZqkjgDzPvSsqabiTt9OF1sF+nBYbqQwl/IrhugPh/kiOVxeZxVgF9Q/MA=
+X-Google-Smtp-Source: AGHT+IGeR56fcf3ibbnLTGP7y2GNB5PTnIKgbVR+VbLAq/tWAyDh+kKlVjb4q2s7LL9nLtMZbmFZAA==
+X-Received: by 2002:a17:907:6ea6:b0:ac7:e5c4:1187 with SMTP id a640c23a62f3a-ad1e8bc319emr239738466b.11.1746622237574;
+        Wed, 07 May 2025 05:50:37 -0700 (PDT)
+Received: from claudiu-X670E-Pro-RS.. ([82.78.167.147])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad189146fb4sm913182766b.10.2025.05.07.05.50.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 May 2025 05:50:37 -0700 (PDT)
+From: Claudiu <claudiu.beznea@tuxon.dev>
+X-Google-Original-From: Claudiu <claudiu.beznea.uj@bp.renesas.com>
+To: yoshihiro.shimoda.uh@renesas.com,
+	vkoul@kernel.org,
+	kishon@kernel.org,
+	geert+renesas@glider.be,
+	magnus.damm@gmail.com,
+	horms+renesas@verge.net.au,
+	fabrizio.castro@bp.renesas.com
+Cc: claudiu.beznea@tuxon.dev,
+	linux-renesas-soc@vger.kernel.org,
+	linux-phy@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	stable@vger.kernel.org,
+	Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Subject: [PATCH RESEND v3 1/5] phy: renesas: rcar-gen3-usb2: Fix role detection on unbind/bind
+Date: Wed,  7 May 2025 15:50:28 +0300
+Message-ID: <20250507125032.565017-2-claudiu.beznea.uj@bp.renesas.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20250507125032.565017-1-claudiu.beznea.uj@bp.renesas.com>
+References: <20250507125032.565017-1-claudiu.beznea.uj@bp.renesas.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -96,183 +101,129 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: pVWMKYbZEyw2181c1bTTvK43aZskAEH7
-X-Proofpoint-ORIG-GUID: hX6cycSgroZu4hLcRJQRahMCIvMXjD4y
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA3MDExOSBTYWx0ZWRfXwzS0DU99voB0 DUdkEcnzrLPuEpcFmM3cBCcJSTCF04Q5q0YQKRp7NxA2DN2sqZyOSDNnGyLMBgAVFRxguf7FsZA vH9ck7xIs1vpPGuE/5xGIdT4hkK9UnaQ2JalU4cOHvjvrf5XjO96WsZHdjRZf9uuV9Zlu1fBqLW
- reu+hFA6nbzQk/dnlO1X3wjeg8TqDT9me+niYt3ngPXMRAWnLFNWRPwc7KojxIDjUlcljpvFglt rgggo+W7UWT9vJolJrB0ZnQeGVvqKeBe1QxvFuUfZxTBknlFdmTV20HZ6NSQNRDfi9Z91lmFIWL dYH4rdEz5ZONgu0EWVbByfi2VH//Ppox6m8JdyvqnyVQFVbVe/SNQFPWjKhUShla5LANrkrFUQ9
- Fa3tZNRGw//ePxBPs4oUVpR0d/G6PogNe9uFYsQMnOh6bR80/noPqv1p8McDYcWEEzQZoJ0F
-X-Authority-Analysis: v=2.4 cv=KOlaDEFo c=1 sm=1 tr=0 ts=681b5687 cx=c_pps a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17 a=dt9VzEwgFbYA:10 a=pGLkceISAAAA:8 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=5xA_3oZvIydUEubUgb0A:9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-07_04,2025-05-06_01,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 impostorscore=0
- bulkscore=0 priorityscore=1501 malwarescore=0 suspectscore=0
- mlxlogscore=384 clxscore=1015 spamscore=0 lowpriorityscore=0 phishscore=0
- adultscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
- definitions=main-2505070119
 
-apply_to_pte_range() enters the lazy MMU mode and then invokes
-kasan_populate_vmalloc_pte() callback on each page table walk
-iteration. However, the callback can go into sleep when trying
-to allocate a single page, e.g. if an architecutre disables
-preemption on lazy MMU mode enter.
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-On s390 if make arch_enter_lazy_mmu_mode() -> preempt_enable()
-and arch_leave_lazy_mmu_mode() -> preempt_disable(), such crash
-occurs:
+It has been observed on the Renesas RZ/G3S SoC that unbinding and binding
+the PHY driver leads to role autodetection failures. This issue occurs when
+PHY 3 is the first initialized PHY. PHY 3 does not have an interrupt
+associated with the USB2_INT_ENABLE register (as
+rcar_gen3_int_enable[3] = 0). As a result, rcar_gen3_init_otg() is called
+to initialize OTG without enabling PHY interrupts.
 
-    [  553.332108] preempt_count: 1, expected: 0
-    [  553.332117] no locks held by multipathd/2116.
-    [  553.332128] CPU: 24 PID: 2116 Comm: multipathd Kdump: loaded Tainted:
-    [  553.332139] Hardware name: IBM 3931 A01 701 (LPAR)
-    [  553.332146] Call Trace:
-    [  553.332152]  [<00000000158de23a>] dump_stack_lvl+0xfa/0x150
-    [  553.332167]  [<0000000013e10d12>] __might_resched+0x57a/0x5e8
-    [  553.332178]  [<00000000144eb6c2>] __alloc_pages+0x2ba/0x7c0
-    [  553.332189]  [<00000000144d5cdc>] __get_free_pages+0x2c/0x88
-    [  553.332198]  [<00000000145663f6>] kasan_populate_vmalloc_pte+0x4e/0x110
-    [  553.332207]  [<000000001447625c>] apply_to_pte_range+0x164/0x3c8
-    [  553.332218]  [<000000001448125a>] apply_to_pmd_range+0xda/0x318
-    [  553.332226]  [<000000001448181c>] __apply_to_page_range+0x384/0x768
-    [  553.332233]  [<0000000014481c28>] apply_to_page_range+0x28/0x38
-    [  553.332241]  [<00000000145665da>] kasan_populate_vmalloc+0x82/0x98
-    [  553.332249]  [<00000000144c88d0>] alloc_vmap_area+0x590/0x1c90
-    [  553.332257]  [<00000000144ca108>] __get_vm_area_node.constprop.0+0x138/0x260
-    [  553.332265]  [<00000000144d17fc>] __vmalloc_node_range+0x134/0x360
-    [  553.332274]  [<0000000013d5dbf2>] alloc_thread_stack_node+0x112/0x378
-    [  553.332284]  [<0000000013d62726>] dup_task_struct+0x66/0x430
-    [  553.332293]  [<0000000013d63962>] copy_process+0x432/0x4b80
-    [  553.332302]  [<0000000013d68300>] kernel_clone+0xf0/0x7d0
-    [  553.332311]  [<0000000013d68bd6>] __do_sys_clone+0xae/0xc8
-    [  553.332400]  [<0000000013d68dee>] __s390x_sys_clone+0xd6/0x118
-    [  553.332410]  [<0000000013c9d34c>] do_syscall+0x22c/0x328
-    [  553.332419]  [<00000000158e7366>] __do_syscall+0xce/0xf0
-    [  553.332428]  [<0000000015913260>] system_call+0x70/0x98
+To resolve this, add rcar_gen3_is_any_otg_rphy_initialized() and call it in
+role_store(), role_show(), and rcar_gen3_init_otg(). At the same time,
+rcar_gen3_init_otg() is only called when initialization for a PHY with
+interrupt bits is in progress. As a result, the
+struct rcar_gen3_phy::otg_initialized is no longer needed.
 
-Instead of allocating single pages per-PTE, bulk-allocate the
-shadow memory prior to applying kasan_populate_vmalloc_pte()
-callback on a page range.
-
-Suggested-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Fixes: 549b6b55b005 ("phy: renesas: rcar-gen3-usb2: enable/disable independent irqs")
 Cc: stable@vger.kernel.org
-Fixes: 3c5c3cfb9ef4 ("kasan: support backing vmalloc space with real shadow memory")
-
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 ---
- mm/kasan/shadow.c | 77 ++++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 63 insertions(+), 14 deletions(-)
 
-diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
-index 88d1c9dcb507..660cc2148575 100644
---- a/mm/kasan/shadow.c
-+++ b/mm/kasan/shadow.c
-@@ -292,30 +292,81 @@ void __init __weak kasan_populate_early_vm_area_shadow(void *start,
- {
+Changes in v3:
+- collected tags
+
+Changes in v2:
+- collected tags
+
+ drivers/phy/renesas/phy-rcar-gen3-usb2.c | 33 ++++++++++--------------
+ 1 file changed, 14 insertions(+), 19 deletions(-)
+
+diff --git a/drivers/phy/renesas/phy-rcar-gen3-usb2.c b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
+index 775f4f973a6c..46afba2fe0dc 100644
+--- a/drivers/phy/renesas/phy-rcar-gen3-usb2.c
++++ b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
+@@ -107,7 +107,6 @@ struct rcar_gen3_phy {
+ 	struct rcar_gen3_chan *ch;
+ 	u32 int_enable_bits;
+ 	bool initialized;
+-	bool otg_initialized;
+ 	bool powered;
+ };
+ 
+@@ -320,16 +319,15 @@ static bool rcar_gen3_is_any_rphy_initialized(struct rcar_gen3_chan *ch)
+ 	return false;
  }
  
-+struct vmalloc_populate_data {
-+	unsigned long start;
-+	struct page **pages;
-+};
-+
- static int kasan_populate_vmalloc_pte(pte_t *ptep, unsigned long addr,
--				      void *unused)
-+				      void *_data)
+-static bool rcar_gen3_needs_init_otg(struct rcar_gen3_chan *ch)
++static bool rcar_gen3_is_any_otg_rphy_initialized(struct rcar_gen3_chan *ch)
  {
--	unsigned long page;
-+	struct vmalloc_populate_data *data = _data;
-+	struct page *page;
- 	pte_t pte;
-+	int index;
- 
- 	if (likely(!pte_none(ptep_get(ptep))))
- 		return 0;
- 
--	page = __get_free_page(GFP_KERNEL);
--	if (!page)
--		return -ENOMEM;
+-	int i;
 -
--	__memset((void *)page, KASAN_VMALLOC_INVALID, PAGE_SIZE);
--	pte = pfn_pte(PFN_DOWN(__pa(page)), PAGE_KERNEL);
-+	index = PFN_DOWN(addr - data->start);
-+	page = data->pages[index];
-+	__memset(page_to_virt(page), KASAN_VMALLOC_INVALID, PAGE_SIZE);
-+	pte = pfn_pte(page_to_pfn(page), PAGE_KERNEL);
- 
- 	spin_lock(&init_mm.page_table_lock);
- 	if (likely(pte_none(ptep_get(ptep)))) {
- 		set_pte_at(&init_mm, addr, ptep, pte);
--		page = 0;
-+		data->pages[index] = NULL;
+-	for (i = 0; i < NUM_OF_PHYS; i++) {
+-		if (ch->rphys[i].otg_initialized)
+-			return false;
++	for (enum rcar_gen3_phy_index i = PHY_INDEX_BOTH_HC; i <= PHY_INDEX_EHCI;
++	     i++) {
++		if (ch->rphys[i].initialized)
++			return true;
  	}
- 	spin_unlock(&init_mm.page_table_lock);
--	if (page)
--		free_page(page);
-+
-+	return 0;
-+}
-+
-+static inline void free_pages_bulk(struct page **pages, int nr_pages)
-+{
-+	int i;
-+
-+	for (i = 0; i < nr_pages; i++) {
-+		if (pages[i]) {
-+			__free_pages(pages[i], 0);
-+			pages[i] = NULL;
-+		}
-+	}
-+}
-+
-+static int __kasan_populate_vmalloc(unsigned long start, unsigned long end)
-+{
-+	unsigned long nr_populated, nr_pages, nr_total = PFN_UP(end - start);
-+	struct vmalloc_populate_data data;
-+	int ret;
-+
-+	data.pages = (struct page **)__get_free_page(GFP_KERNEL | __GFP_ZERO);
-+	if (!data.pages)
-+		return -ENOMEM;
-+
-+	while (nr_total) {
-+		nr_pages = min(nr_total, PAGE_SIZE / sizeof(data.pages[0]));
-+		nr_populated = alloc_pages_bulk(GFP_KERNEL, nr_pages, data.pages);
-+		if (nr_populated != nr_pages) {
-+			free_pages_bulk(data.pages, nr_populated);
-+			free_page((unsigned long)data.pages);
-+			return -ENOMEM;
-+		}
-+
-+		data.start = start;
-+		ret = apply_to_page_range(&init_mm, start, nr_pages * PAGE_SIZE,
-+					  kasan_populate_vmalloc_pte, &data);
-+		free_pages_bulk(data.pages, nr_pages);
-+		if (ret)
-+			return ret;
-+
-+		start += nr_pages * PAGE_SIZE;
-+		nr_total -= nr_pages;
-+	}
-+
-+	free_page((unsigned long)data.pages);
-+
- 	return 0;
+ 
+-	return true;
++	return false;
  }
  
-@@ -348,9 +399,7 @@ int kasan_populate_vmalloc(unsigned long addr, unsigned long size)
- 	shadow_start = PAGE_ALIGN_DOWN(shadow_start);
- 	shadow_end = PAGE_ALIGN(shadow_end);
+ static bool rcar_gen3_are_all_rphys_power_off(struct rcar_gen3_chan *ch)
+@@ -351,7 +349,7 @@ static ssize_t role_store(struct device *dev, struct device_attribute *attr,
+ 	bool is_b_device;
+ 	enum phy_mode cur_mode, new_mode;
  
--	ret = apply_to_page_range(&init_mm, shadow_start,
--				  shadow_end - shadow_start,
--				  kasan_populate_vmalloc_pte, NULL);
-+	ret = __kasan_populate_vmalloc(shadow_start, shadow_end);
- 	if (ret)
- 		return ret;
+-	if (!ch->is_otg_channel || !rcar_gen3_is_any_rphy_initialized(ch))
++	if (!ch->is_otg_channel || !rcar_gen3_is_any_otg_rphy_initialized(ch))
+ 		return -EIO;
  
+ 	if (sysfs_streq(buf, "host"))
+@@ -389,7 +387,7 @@ static ssize_t role_show(struct device *dev, struct device_attribute *attr,
+ {
+ 	struct rcar_gen3_chan *ch = dev_get_drvdata(dev);
+ 
+-	if (!ch->is_otg_channel || !rcar_gen3_is_any_rphy_initialized(ch))
++	if (!ch->is_otg_channel || !rcar_gen3_is_any_otg_rphy_initialized(ch))
+ 		return -EIO;
+ 
+ 	return sprintf(buf, "%s\n", rcar_gen3_is_host(ch) ? "host" :
+@@ -402,6 +400,9 @@ static void rcar_gen3_init_otg(struct rcar_gen3_chan *ch)
+ 	void __iomem *usb2_base = ch->base;
+ 	u32 val;
+ 
++	if (!ch->is_otg_channel || rcar_gen3_is_any_otg_rphy_initialized(ch))
++		return;
++
+ 	/* Should not use functions of read-modify-write a register */
+ 	val = readl(usb2_base + USB2_LINECTRL1);
+ 	val = (val & ~USB2_LINECTRL1_DP_RPD) | USB2_LINECTRL1_DPRPD_EN |
+@@ -465,12 +466,9 @@ static int rcar_gen3_phy_usb2_init(struct phy *p)
+ 	writel(USB2_SPD_RSM_TIMSET_INIT, usb2_base + USB2_SPD_RSM_TIMSET);
+ 	writel(USB2_OC_TIMSET_INIT, usb2_base + USB2_OC_TIMSET);
+ 
+-	/* Initialize otg part */
+-	if (channel->is_otg_channel) {
+-		if (rcar_gen3_needs_init_otg(channel))
+-			rcar_gen3_init_otg(channel);
+-		rphy->otg_initialized = true;
+-	}
++	/* Initialize otg part (only if we initialize a PHY with IRQs). */
++	if (rphy->int_enable_bits)
++		rcar_gen3_init_otg(channel);
+ 
+ 	rphy->initialized = true;
+ 
+@@ -486,9 +484,6 @@ static int rcar_gen3_phy_usb2_exit(struct phy *p)
+ 
+ 	rphy->initialized = false;
+ 
+-	if (channel->is_otg_channel)
+-		rphy->otg_initialized = false;
+-
+ 	val = readl(usb2_base + USB2_INT_ENABLE);
+ 	val &= ~rphy->int_enable_bits;
+ 	if (!rcar_gen3_is_any_rphy_initialized(channel))
 -- 
-2.45.2
+2.43.0
 
 
