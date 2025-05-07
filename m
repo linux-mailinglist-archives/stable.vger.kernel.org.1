@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-142171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D77E3AAE95B
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:43:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6639AAEB97
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:08:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E34AD7BB4BB
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:42:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F57D9E351D
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:08:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53D6D28DF1B;
-	Wed,  7 May 2025 18:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FE8128E575;
+	Wed,  7 May 2025 19:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oSJIofXv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lkA+r4Id"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1139C14A4C7;
-	Wed,  7 May 2025 18:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C00E1EB5DD;
+	Wed,  7 May 2025 19:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643431; cv=none; b=Vg9QRjEHC0Mu79ZHfmG/al5ggSTORiAr95n5n1DsSkre4u55Kz0skv8VZBhZXjQkTU15NnSDj/7gOy62OuAS8xjNZ2r1cTgDLrzlWjf1TwL/Mdxc+Vaib4IqyWzepYmEm0UcWFScY2bqSE7HSLBVV2DYO/iunx3Dfh9yRCoIv0o=
+	t=1746644911; cv=none; b=omP1QJ4ahKtZJDkHduHDKyhgs48y3wojLx3GdY0rwa/mjIKp9luCvwTRpBlI4UwWRAVUP3bkViAz9jSBVtraIafGgDC0SBO/z39cUjL1RHTINGYU89KASviuwPNZmjx3GJ1zmQqlu+XpLIIKJg5Qo6sI/oAqtblkZU98be5q8vE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643431; c=relaxed/simple;
-	bh=LT5JdDQQSfk9ElAvQez00u6dVsW7y+tKKP9rGJ3aVGw=;
+	s=arc-20240116; t=1746644911; c=relaxed/simple;
+	bh=Y4cOgea+4IYOx9nWsujrTkNopxO9onSTTHs1/okRwoA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z/7LEzFQAKsD4Zo0Q9N/ywWQIUNykic07stI4N5FZ6ekcaqKA9UjEIUW6SWA+KBWuJQQ0k2u4JSBH1Ep+S0vBev7bc7V17sRDMSlYCv+gJiHDjtJ7fKKwgRb8cV2ONAi7y/+c+UAByRoJrymioAy3/++WKiCqaRObksBdTg4Yrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oSJIofXv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73DFCC4CEE9;
-	Wed,  7 May 2025 18:43:50 +0000 (UTC)
+	 MIME-Version; b=mWBAHEJybtqDeSdke7oNJq9ccDkIJdQtbGqIPNI8IbOF1oC5xclzANcVa+FmKNnyCKVxz0Y3S66PSI3UAEObpfR6QpMd6WLJwrzfjRuKxAq3NahOeFhCkILIpl57Pua92owli7bscJWNl8t0A7m1IxK2IitsqCoO76kycY/XvX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lkA+r4Id; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF53DC4CEE2;
+	Wed,  7 May 2025 19:08:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643430;
-	bh=LT5JdDQQSfk9ElAvQez00u6dVsW7y+tKKP9rGJ3aVGw=;
+	s=korg; t=1746644911;
+	bh=Y4cOgea+4IYOx9nWsujrTkNopxO9onSTTHs1/okRwoA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oSJIofXvzsI8vmiDf8mgj7CRYfkR4qTaAEEtSg84uo7oVOU3Nr923bN3zC+2qmkuB
-	 632/Mo7q7A3ixaqE3q9yae4yLmgFamjjoxW6lgTxTMNR9RTPAt0YsNb6W+gD2lHAUa
-	 qJWEEEygsQAN7Zj++SR6Av/hbDVcMyOSRxg+krK0=
+	b=lkA+r4IdZv+SLOi7DKtXdlqV9E2GKdaNj8eZKnqEMu6vT+UAfK2HskkU0r46EmWDG
+	 O2Lkm9YxBKC+n7QKJVuBAK3KyCYt3uxFQq9IBby40vsBzRj5ddhRJJu0tyujYhbxkf
+	 /tGUHXprvVoNTLgeMx/0AI8ee6WaDsPLMTgCThMA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xuanqiang Luo <luoxuanqiang@kylinos.cn>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 28/55] ice: Check VF VSI Pointer Value in ice_vc_add_fdir_fltr()
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Subject: [PATCH 6.6 033/129] bpf: add find_containing_subprog() utility function
 Date: Wed,  7 May 2025 20:39:29 +0200
-Message-ID: <20250507183800.175332154@linuxfoundation.org>
+Message-ID: <20250507183814.867444795@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
-References: <20250507183759.048732653@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,49 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+From: Eduard Zingerman <eddyz87@gmail.com>
 
-[ Upstream commit 425c5f266b2edeee0ce16fedd8466410cdcfcfe3 ]
+commit 27e88bc4df1d80888fe1aaca786a7cc6e69587e2 upstream.
 
-As mentioned in the commit baeb705fd6a7 ("ice: always check VF VSI
-pointer values"), we need to perform a null pointer check on the return
-value of ice_get_vf_vsi() before using it.
+Add a utility function, looking for a subprogram containing a given
+instruction index, rewrite find_subprog() to use this function.
 
-Fixes: 6ebbe97a4881 ("ice: Add a per-VF limit on number of FDIR filters")
-Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Link: https://patch.msgid.link/20250425222636.3188441-3-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20241210041100.1898468-2-eddyz87@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ kernel/bpf/verifier.c |   28 ++++++++++++++++++++++++----
+ 1 file changed, 24 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c b/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
-index 2ca8102e8f36e..3b87cc9dfd46e 100644
---- a/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
-+++ b/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
-@@ -2079,6 +2079,11 @@ int ice_vc_add_fdir_fltr(struct ice_vf *vf, u8 *msg)
- 	pf = vf->pf;
- 	dev = ice_pf_to_dev(pf);
- 	vf_vsi = ice_get_vf_vsi(vf);
-+	if (!vf_vsi) {
-+		dev_err(dev, "Can not get FDIR vf_vsi for VF %u\n", vf->vf_id);
-+		v_ret = VIRTCHNL_STATUS_ERR_PARAM;
-+		goto err_exit;
-+	}
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -2636,16 +2636,36 @@ static int cmp_subprogs(const void *a, c
+ 	       ((struct bpf_subprog_info *)b)->start;
+ }
  
- #define ICE_VF_MAX_FDIR_FILTERS	128
- 	if (!ice_fdir_num_avail_fltr(&pf->hw, vf_vsi) ||
--- 
-2.39.5
-
++/* Find subprogram that contains instruction at 'off' */
++static struct bpf_subprog_info *find_containing_subprog(struct bpf_verifier_env *env, int off)
++{
++	struct bpf_subprog_info *vals = env->subprog_info;
++	int l, r, m;
++
++	if (off >= env->prog->len || off < 0 || env->subprog_cnt == 0)
++		return NULL;
++
++	l = 0;
++	r = env->subprog_cnt - 1;
++	while (l < r) {
++		m = l + (r - l + 1) / 2;
++		if (vals[m].start <= off)
++			l = m;
++		else
++			r = m - 1;
++	}
++	return &vals[l];
++}
++
++/* Find subprogram that starts exactly at 'off' */
+ static int find_subprog(struct bpf_verifier_env *env, int off)
+ {
+ 	struct bpf_subprog_info *p;
+ 
+-	p = bsearch(&off, env->subprog_info, env->subprog_cnt,
+-		    sizeof(env->subprog_info[0]), cmp_subprogs);
+-	if (!p)
++	p = find_containing_subprog(env, off);
++	if (!p || p->start != off)
+ 		return -ENOENT;
+ 	return p - env->subprog_info;
+-
+ }
+ 
+ static int add_subprog(struct bpf_verifier_env *env, int off)
 
 
 
