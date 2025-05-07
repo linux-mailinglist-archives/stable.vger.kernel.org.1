@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-142497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D902AAEADF
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:00:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F798AAE965
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:44:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F429524F17
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:00:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6DA183A8F9E
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:44:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E78AE23DE;
-	Wed,  7 May 2025 19:00:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A17B028DF1B;
+	Wed,  7 May 2025 18:44:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v+Q4z7dS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mihhDsIM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A313D29A0;
-	Wed,  7 May 2025 19:00:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C98E14A4C7;
+	Wed,  7 May 2025 18:44:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644436; cv=none; b=KpBlq/zwk+XAsvBCMGUeEmGOlDcULcPOK3cKrxse0kimW3kJJABE6ArtdSagYLqbaKXSlCdJRjtn5sWbFWFMpQhLPe5j8DBipNLHk7M0JSFN+4DO8G86OSKHkWTu+ONWflrwlRODwmPweRzWvcf8CA6v0HEPGNML7AwS/985TnM=
+	t=1746643461; cv=none; b=GcfraKL1rSF+EKaint21eK066uEWYl4IZDAqvyCVsaYYzaovKSWfI4bsY4cA80HiECg1s/GY8NWruEYDF80FzLtOMN4EjwNGQXUg4Z2J1djr/pSFtPGMVZ51tVHog9Gj5eYUvdKb0vOsOAewYr/Ajjm4WXSH0o4M3gvQBdL0mNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644436; c=relaxed/simple;
-	bh=zSgq2HVl0YhS/OSjJlLsb3Sj+uas3sj4B8Dh0ZEOW2c=;
+	s=arc-20240116; t=1746643461; c=relaxed/simple;
+	bh=evhziQh+tlDnOP99huLH8+wbi8B5jR1xRUHJBNDAcmg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NgRmTRdTdoC2tssveQ20qHsufHs/QCb5DEy839IT4qZ8DrWt6oiB6hrj//FpCKTqkzz4gHQyc6PRB02OKLFHzDH2BVebcvGycqm2xBAWDIlxYhy232WQtHGrjyKQThS/vmKsipt3UAQoxRSIWRbXKnQONZFzMeE8zjj/4aof3cM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v+Q4z7dS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B86E1C4CEE2;
-	Wed,  7 May 2025 19:00:35 +0000 (UTC)
+	 MIME-Version; b=WfXfESPhASAe6YOUeudZO+uoZc3zPKXr3bDZYVUP+rvm4DctFwJGH9w+zrj7zOgQD0LZIDPHwBpJehZ4LqOJXa7ugqE90jV1x7rdp6LIVneKq1HCp5psqPolSqiXRouW5FAAwi+pkLWgFj1fnalSE8Yl7wCAAqZxMyJj+itWq5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mihhDsIM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF967C4CEE2;
+	Wed,  7 May 2025 18:44:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644436;
-	bh=zSgq2HVl0YhS/OSjJlLsb3Sj+uas3sj4B8Dh0ZEOW2c=;
+	s=korg; t=1746643461;
+	bh=evhziQh+tlDnOP99huLH8+wbi8B5jR1xRUHJBNDAcmg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v+Q4z7dSgS8Y+cp1Tr7U4MpB7ribjLafpuRqSZlmqYB2QZPDW5Zy70pCLqHKOeslZ
-	 /2FHHRHl3LApVW5E5omxwyaXZonaTNWkSYpxKSXMNjSSoNGmtllk3LZjOXMnEcEXEj
-	 2vmNNKmUeuFaAXrvxkTzsPds6u7HalGyK5jfdQk4=
+	b=mihhDsIMwRatX2i5NN5JOSxvQUGeiPbzwZk0HZHHYeagSqGamfLhYbA9Z8cQzUO1K
+	 +EZ4vTwTTe1cJDo00vLW3XJ15xlF1DcN9lI9a/KbRDiJ4Dl0nCG0npaEbBgfbK6xLf
+	 bW39kFBm2Rf753ww/G0K6w4t1PmtTV4LzcRCqa4Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.12 042/164] platform/x86/amd: pmc: Require at least 2.5 seconds between HW sleep cycles
+	Ihar Salauyou <salauyou.ihar@gmail.com>,
+	Ruslan Piasetskyi <ruslan.piasetskyi@gmail.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 12/97] mmc: renesas_sdhi: Fix error handling in renesas_sdhi_probe
 Date: Wed,  7 May 2025 20:38:47 +0200
-Message-ID: <20250507183822.587025176@linuxfoundation.org>
+Message-ID: <20250507183807.486566193@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
+References: <20250507183806.987408728@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +62,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Ruslan Piasetskyi <ruslan.piasetskyi@gmail.com>
 
-commit 9f5595d5f03fd4dc640607a71e89a1daa68fd19d upstream.
+commit 649b50a82f09fa44c2f7a65618e4584072145ab7 upstream.
 
-When an APU exits HW sleep with no active wake sources the Linux kernel will
-rapidly assert that the APU can enter back into HW sleep. This happens in a
-few ms. Contrasting this to Windows, Windows can take 10s of seconds to
-enter back into the resiliency phase for Modern Standby.
+After moving tmio_mmc_host_probe down, error handling has to be
+adjusted.
 
-For some situations this can be problematic because it can cause leakage
-from VDDCR_SOC to VDD_MISC and force VDD_MISC outside of the electrical
-design guide specifications. On some designs this will trip the over
-voltage protection feature (OVP) of the voltage regulator module, but it
-could cause APU damage as well.
-
-To prevent this risk, add an explicit sleep call so that future attempts
-to enter into HW sleep will have enough time to settle. This will occur
-while the screen is dark and only on cases that the APU should enter HW
-sleep again, so it shouldn't be noticeable to any user.
-
+Fixes: 74f45de394d9 ("mmc: renesas_sdhi: register irqs before registering controller")
+Reviewed-by: Ihar Salauyou <salauyou.ihar@gmail.com>
+Signed-off-by: Ruslan Piasetskyi <ruslan.piasetskyi@gmail.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Tested-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Acked-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
-Link: https://lore.kernel.org/r/20250414162446.3853194-1-superm1@kernel.org
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20250326220638.460083-1-ruslan.piasetskyi@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/amd/pmc/pmc.c |    7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/mmc/host/renesas_sdhi_core.c |   10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
---- a/drivers/platform/x86/amd/pmc/pmc.c
-+++ b/drivers/platform/x86/amd/pmc/pmc.c
-@@ -892,10 +892,9 @@ static void amd_pmc_s2idle_check(void)
- 	struct smu_metrics table;
- 	int rc;
+--- a/drivers/mmc/host/renesas_sdhi_core.c
++++ b/drivers/mmc/host/renesas_sdhi_core.c
+@@ -1109,26 +1109,26 @@ int renesas_sdhi_probe(struct platform_d
+ 	num_irqs = platform_irq_count(pdev);
+ 	if (num_irqs < 0) {
+ 		ret = num_irqs;
+-		goto eirq;
++		goto edisclk;
+ 	}
  
--	/* CZN: Ensure that future s0i3 entry attempts at least 10ms passed */
--	if (pdev->cpu_id == AMD_CPU_ID_CZN && !get_metrics_table(pdev, &table) &&
--	    table.s0i3_last_entry_status)
--		usleep_range(10000, 20000);
-+	/* Avoid triggering OVP */
-+	if (!get_metrics_table(pdev, &table) && table.s0i3_last_entry_status)
-+		msleep(2500);
+ 	/* There must be at least one IRQ source */
+ 	if (!num_irqs) {
+ 		ret = -ENXIO;
+-		goto eirq;
++		goto edisclk;
+ 	}
  
- 	/* Dump the IdleMask before we add to the STB */
- 	amd_pmc_idlemask_read(pdev, pdev->dev, NULL);
+ 	for (i = 0; i < num_irqs; i++) {
+ 		irq = platform_get_irq(pdev, i);
+ 		if (irq < 0) {
+ 			ret = irq;
+-			goto eirq;
++			goto edisclk;
+ 		}
+ 
+ 		ret = devm_request_irq(&pdev->dev, irq, tmio_mmc_irq, 0,
+ 				       dev_name(&pdev->dev), host);
+ 		if (ret)
+-			goto eirq;
++			goto edisclk;
+ 	}
+ 
+ 	ret = tmio_mmc_host_probe(host);
+@@ -1140,8 +1140,6 @@ int renesas_sdhi_probe(struct platform_d
+ 
+ 	return ret;
+ 
+-eirq:
+-	tmio_mmc_host_remove(host);
+ edisclk:
+ 	renesas_sdhi_clk_disable(host);
+ efree:
 
 
 
