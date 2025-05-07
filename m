@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-142362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14E18AAEA4A
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:53:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E84BEAAEAED
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:01:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 830FE508735
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:53:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9044B3A7510
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:00:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 437B328AAE9;
-	Wed,  7 May 2025 18:53:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E040028C2A5;
+	Wed,  7 May 2025 19:01:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qFFBYrcl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cSc7zZ7X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0066A1FF5EC;
-	Wed,  7 May 2025 18:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BDF02144BF;
+	Wed,  7 May 2025 19:01:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644017; cv=none; b=Uutgrn/WGHoG7qE1Jc042cj+zBU6t1CuXg1JJjzU5u9a4oppZvJzkumA0RJUchX4dS0sPox0WUbWNLwZ5rFmCpTWEztINYabbrgfUD3rRphMsx3jDCj31Le40LbxUlRFENaOsKZqoF6M7laIzGP6JHofzKim8RvPeXLedoyYBlY=
+	t=1746644475; cv=none; b=i6n8wEk/6Jcfy1u7E5fgqzC5vK8/47iGRaS23fdVyLHLxozdbTMBhHRhqSPAE08mQoPInA+kppO8LvN8ct3KGplE0WG1ozpX9ZnWOwnLISSouxg2686m5mjT+Wtl/W97mN1ZF0NxRqotfEqLDwFglXJsSqCNOI1GkX+pJq1y/Fw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644017; c=relaxed/simple;
-	bh=0Auyg0+csm/ZQtnuu6zI/buvYshZ2J7fI1celgfnROU=;
+	s=arc-20240116; t=1746644475; c=relaxed/simple;
+	bh=cq7+mUz3uSU7YzTc7idC4tqntGSzVNcBgIzWQdHIMUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qbULp6paG0514bsJB5DrQ9IwZ4qG5dAkCA4cmg2y1EXudcmyfgIZGn2JtZBRaNSK4f/6Tzu4GembugDH8/EjayNAFyzX29re+6egvghuoVQRf1Y93ue9tOgHtr8aqsKzf58Mx5qWoM1Ilk7jGHGTwr15+OmtAWTflJYESvByhG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qFFBYrcl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82BBDC4CEE9;
-	Wed,  7 May 2025 18:53:36 +0000 (UTC)
+	 MIME-Version; b=PEHsnktIDYYXrQMjaKLlTalRO8cw7eTw/O8kX0g+eusoPoQaxy/zlyx44GE5f3sqTfJqRrZq5C4o7mQUg82BUaIr9bQekBbUKH+dCjIooxxky9uaQaEtf36yHGZStmbgf1DcBbGGGszB6QQuz5WSzx8n2VXI/vrk0mBlxSlTmuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cSc7zZ7X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BE78C4CEE2;
+	Wed,  7 May 2025 19:01:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644016;
-	bh=0Auyg0+csm/ZQtnuu6zI/buvYshZ2J7fI1celgfnROU=;
+	s=korg; t=1746644475;
+	bh=cq7+mUz3uSU7YzTc7idC4tqntGSzVNcBgIzWQdHIMUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qFFBYrclTH6INukOen/Q6maRmO28mCfN2wUHHbbzKQW90U+o872QKSrtAnewBRIKw
-	 YB67JS/fQ9CRFeWaqrMjxbScKGd4cf61qu5r9JU2PODYwtoY4H6PLJxIBU5vdQdgwW
-	 azT9m+E8CRRXS9Q1VF+Xzaqpp4U8oW7UavonMqOo=
+	b=cSc7zZ7XARFVUyDtw2JVq9bG+XXH0HtgLdZa8t7FVpYbtjaHKG2M0wIN09XMNsGkf
+	 IlxreIKfDp6iinwSJIrWbAK+fbtnndw7ue6qF/5CWyQz+aZJYRbzBWpnCmob3ReF9h
+	 uK8oAB5saONHpYFsT1YXUCAFiO0AuNlQSiucxlzk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Sheetal <sheetal@nvidia.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 093/183] pds_core: make pdsc_auxbus_dev_del() void
-Date: Wed,  7 May 2025 20:38:58 +0200
-Message-ID: <20250507183828.592911640@linuxfoundation.org>
+Subject: [PATCH 6.12 054/164] ASoC: soc-pcm: Fix hw_params() and DAPM widget sequence
+Date: Wed,  7 May 2025 20:38:59 +0200
+Message-ID: <20250507183823.124077427@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,89 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shannon Nelson <shannon.nelson@amd.com>
+From: Sheetal <sheetal@nvidia.com>
 
-[ Upstream commit e8562da829432d04a0de1830146984c89844f35e ]
+[ Upstream commit 9aff2e8df240e84a36f2607f98a0a9924a24e65d ]
 
-Since there really is no useful return, advertising a return value
-is rather misleading.  Make pdsc_auxbus_dev_del() a void function.
+Issue:
+ When multiple audio streams share a common BE DAI, the BE DAI
+ widget can be powered up before its hardware parameters are configured.
+ This incorrect sequence leads to intermittent pcm_write errors.
 
-Link: https://patch.msgid.link/r/20250320194412.67983-2-shannon.nelson@amd.com
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Stable-dep-of: dfd76010f8e8 ("pds_core: remove write-after-free of client_id")
+ For example, the below Tegra use-case throws an error:
+  aplay(2 streams) -> AMX(mux) -> ADX(demux) -> arecord(2 streams),
+  here, 'AMX TX' and 'ADX RX' are common BE DAIs.
+
+For above usecase when failure happens below sequence is observed:
+ aplay(1) FE open()
+  - BE DAI callbacks added to the list
+  - BE DAI state = SND_SOC_DPCM_STATE_OPEN
+ aplay(2) FE open()
+  - BE DAI callbacks are not added to the list as the state is
+    already SND_SOC_DPCM_STATE_OPEN during aplay(1) FE open().
+ aplay(2) FE hw_params()
+  - BE DAI hw_params() callback ignored
+ aplay(2) FE prepare()
+  - Widget is powered ON without BE DAI hw_params() call
+ aplay(1) FE hw_params()
+  - BE DAI hw_params() is now called
+
+Fix:
+ Add BE DAIs in the list if its state is either SND_SOC_DPCM_STATE_OPEN
+ or SND_SOC_DPCM_STATE_HW_PARAMS as well.
+
+It ensures the widget is powered ON after BE DAI hw_params() callback.
+
+Fixes: 0c25db3f7621 ("ASoC: soc-pcm: Don't reconnect an already active BE")
+Signed-off-by: Sheetal <sheetal@nvidia.com>
+Link: https://patch.msgid.link/20250404105953.2784819-1-sheetal@nvidia.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/pds_core/auxbus.c  | 7 +------
- drivers/net/ethernet/amd/pds_core/core.h    | 2 +-
- drivers/net/ethernet/amd/pds_core/devlink.c | 6 ++++--
- 3 files changed, 6 insertions(+), 9 deletions(-)
+ sound/soc/soc-pcm.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/amd/pds_core/auxbus.c b/drivers/net/ethernet/amd/pds_core/auxbus.c
-index b76a9b7e0aed6..d53b2124b1498 100644
---- a/drivers/net/ethernet/amd/pds_core/auxbus.c
-+++ b/drivers/net/ethernet/amd/pds_core/auxbus.c
-@@ -172,13 +172,9 @@ static struct pds_auxiliary_dev *pdsc_auxbus_dev_register(struct pdsc *cf,
- 	return padev;
- }
+diff --git a/sound/soc/soc-pcm.c b/sound/soc/soc-pcm.c
+index 1102599403c53..0e21ff9f7b74e 100644
+--- a/sound/soc/soc-pcm.c
++++ b/sound/soc/soc-pcm.c
+@@ -1633,10 +1633,13 @@ static int dpcm_add_paths(struct snd_soc_pcm_runtime *fe, int stream,
+ 		/*
+ 		 * Filter for systems with 'component_chaining' enabled.
+ 		 * This helps to avoid unnecessary re-configuration of an
+-		 * already active BE on such systems.
++		 * already active BE on such systems and ensures the BE DAI
++		 * widget is powered ON after hw_params() BE DAI callback.
+ 		 */
+ 		if (fe->card->component_chaining &&
+ 		    (be->dpcm[stream].state != SND_SOC_DPCM_STATE_NEW) &&
++		    (be->dpcm[stream].state != SND_SOC_DPCM_STATE_OPEN) &&
++		    (be->dpcm[stream].state != SND_SOC_DPCM_STATE_HW_PARAMS) &&
+ 		    (be->dpcm[stream].state != SND_SOC_DPCM_STATE_CLOSE))
+ 			continue;
  
--int pdsc_auxbus_dev_del(struct pdsc *cf, struct pdsc *pf)
-+void pdsc_auxbus_dev_del(struct pdsc *cf, struct pdsc *pf)
- {
- 	struct pds_auxiliary_dev *padev;
--	int err = 0;
--
--	if (!cf)
--		return -ENODEV;
- 
- 	mutex_lock(&pf->config_lock);
- 
-@@ -192,7 +188,6 @@ int pdsc_auxbus_dev_del(struct pdsc *cf, struct pdsc *pf)
- 	pf->vfs[cf->vf_id].padev = NULL;
- 
- 	mutex_unlock(&pf->config_lock);
--	return err;
- }
- 
- int pdsc_auxbus_dev_add(struct pdsc *cf, struct pdsc *pf)
-diff --git a/drivers/net/ethernet/amd/pds_core/core.h b/drivers/net/ethernet/amd/pds_core/core.h
-index ec637dc4327a5..08b8280437dcf 100644
---- a/drivers/net/ethernet/amd/pds_core/core.h
-+++ b/drivers/net/ethernet/amd/pds_core/core.h
-@@ -304,7 +304,7 @@ int pdsc_register_notify(struct notifier_block *nb);
- void pdsc_unregister_notify(struct notifier_block *nb);
- void pdsc_notify(unsigned long event, void *data);
- int pdsc_auxbus_dev_add(struct pdsc *cf, struct pdsc *pf);
--int pdsc_auxbus_dev_del(struct pdsc *cf, struct pdsc *pf);
-+void pdsc_auxbus_dev_del(struct pdsc *cf, struct pdsc *pf);
- 
- void pdsc_process_adminq(struct pdsc_qcq *qcq);
- void pdsc_work_thread(struct work_struct *work);
-diff --git a/drivers/net/ethernet/amd/pds_core/devlink.c b/drivers/net/ethernet/amd/pds_core/devlink.c
-index ca23cde385e67..48a7c22fe3320 100644
---- a/drivers/net/ethernet/amd/pds_core/devlink.c
-+++ b/drivers/net/ethernet/amd/pds_core/devlink.c
-@@ -56,8 +56,10 @@ int pdsc_dl_enable_set(struct devlink *dl, u32 id,
- 	for (vf_id = 0; vf_id < pdsc->num_vfs; vf_id++) {
- 		struct pdsc *vf = pdsc->vfs[vf_id].vf;
- 
--		err = ctx->val.vbool ? pdsc_auxbus_dev_add(vf, pdsc) :
--				       pdsc_auxbus_dev_del(vf, pdsc);
-+		if (ctx->val.vbool)
-+			err = pdsc_auxbus_dev_add(vf, pdsc);
-+		else
-+			pdsc_auxbus_dev_del(vf, pdsc);
- 	}
- 
- 	return err;
 -- 
 2.39.5
 
