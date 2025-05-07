@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-142153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76DD1AAE945
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:43:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45FF4AAEBAB
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:09:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DED7650542B
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:43:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C0199E382F
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:08:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DB8228DF50;
-	Wed,  7 May 2025 18:42:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 879B028AAE9;
+	Wed,  7 May 2025 19:09:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h7NBb9Ze"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XTP7x5Tm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B571A28DF1B;
-	Wed,  7 May 2025 18:42:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 447E22144C1;
+	Wed,  7 May 2025 19:09:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643378; cv=none; b=ZX7Q5D3M9ObEUVVTA7IX0q0sNxIqOE83Mj/SFMJZpbh8vBFw2N31rFA48vkx5+8BhmbT3daQBR1JY8QkuJHrBXu1j98wyi4JOvlD2NH+OqR4xLIjEBx2oouZhc6aoZRUSODvFDiihsUw3mGLPp3z+/slzN08gfMFbX15WEKANAc=
+	t=1746644954; cv=none; b=Kr8ImuNf4oxgx4wS24VG1L0xCPLq6NQmkUtQ5yCSAkU3fSdF4BFK07PaLZV9zTpkb4odP5GnxcGNu2YYMJpjKlnmJHxSloVEro8etG+3he68WwlCaXnNxagYF6O4gkBoxAkIcGiaMSYbbA8pyfTu847yAZFUdIQP9ec9ZV0E6FE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643378; c=relaxed/simple;
-	bh=puAUILlyKoWXSSQuTQM8FCMyI0z3b405GI9Vztxwg9E=;
+	s=arc-20240116; t=1746644954; c=relaxed/simple;
+	bh=L+0qLxX0Phso5ZrUsELYM1FCnnYuS98Vx8AgNaRkMU8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JPpFuNMCHZYoOmR3MkzbvCx02PBxVT5o4VHbpktbRqBO8rLXBAsXMxR4QetBJmWa2ImnXiWyiIVPuiw9aYBXfC7HAjwz01cHnUUCRGJ+K144jDLqk421TcAYFr3imEpDI8/b77Nwv1VMqzSF/AFsDnsN5WewbKY47KolW2hwZLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h7NBb9Ze; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEB4DC4CEE2;
-	Wed,  7 May 2025 18:42:57 +0000 (UTC)
+	 MIME-Version; b=HAy6b6LJoQapKxA22SEKXQz7DFIt1VEkXIx/TMFr1/oY7E4Ul9G2FHBMsq+QHURfqJgq8IYzDAd6dVqVIHj9lUum7zr8QukOMVboBl6eYrMcZx+HVRD3zltHafyLrqu644177Y+kZByAUZuzVylIgchcPT7lfFbhg3c4wcB1OgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XTP7x5Tm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9BABC4CEE2;
+	Wed,  7 May 2025 19:09:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643378;
-	bh=puAUILlyKoWXSSQuTQM8FCMyI0z3b405GI9Vztxwg9E=;
+	s=korg; t=1746644954;
+	bh=L+0qLxX0Phso5ZrUsELYM1FCnnYuS98Vx8AgNaRkMU8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h7NBb9ZeIe4lrZQZ9tUhPII6HVfZw6csUVR2v1WpBkwurUkloglBaqLCCFQgNFmje
-	 GS9vxnK+YGIbqdzkOgeQXs7MXvRCW3r/Ui5ll72VV3WZ5CgaLt5OQoy3PCWe+ruc6F
-	 XHVfg6MO4Uytzc+id0xv30gpuev7YoGAgzyM4VPU=
+	b=XTP7x5TmMRlPRSCsn30PnzbpF6clFF7QQORaMHjmjO3m/P9etYU5yG+SAXxr40J4m
+	 8XMw0cYXSS0itisTE0o1bv008iJL0zg4/87c1jQwBkbujftzVjrVGt1aRLUGp0Zo06
+	 9nnrGXpnT3xa212GjoYB9cCdH/vYQ4WGMuMyYKck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hao Lan <lanhao@huawei.com>,
-	Peiyang Wang <wangpeiyang1@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 40/55] net: hns3: fixed debugfs tm_qset size
-Date: Wed,  7 May 2025 20:39:41 +0200
-Message-ID: <20250507183800.661117915@linuxfoundation.org>
+	Charan Teja Kalla <quic_charante@quicinc.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Joerg Roedel <jroedel@suse.de>
+Subject: [PATCH 6.6 046/129] iommu: Handle race with default domain setup
+Date: Wed,  7 May 2025 20:39:42 +0200
+Message-ID: <20250507183815.404972824@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
-References: <20250507183759.048732653@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hao Lan <lanhao@huawei.com>
+From: Robin Murphy <robin.murphy@arm.com>
 
-[ Upstream commit e317aebeefcb3b0c71f2305af3c22871ca6b3833 ]
+commit b46064a18810bad3aea089a79993ca5ea7a3d2b2 upstream.
 
-The size of the tm_qset file of debugfs is limited to 64 KB,
-which is too small in the scenario with 1280 qsets.
-The size needs to be expanded to 1 MB.
+It turns out that deferred default domain creation leaves a subtle
+race window during iommu_device_register() wherein a client driver may
+asynchronously probe in parallel and get as far as performing DMA API
+operations with dma-direct, only to be switched to iommu-dma underfoot
+once the default domain attachment finally happens, with obviously
+disastrous consequences. Even the wonky of_iommu_configure() path is at
+risk, since iommu_fwspec_init() will no longer defer client probe as the
+instance ops are (necessarily) already registered, and the "replay"
+iommu_probe_device() call can see dev->iommu_group already set and so
+think there's nothing to do either.
 
-Fixes: 5e69ea7ee2a6 ("net: hns3: refactor the debugfs process")
-Signed-off-by: Hao Lan <lanhao@huawei.com>
-Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Link: https://patch.msgid.link/20250430093052.2400464-4-shaojijie@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fortunately we already have the right tool in the right place in the
+form of iommu_device_use_default_domain(), which just needs to ensure
+that said default domain is actually ready to *be* used. Deferring the
+client probe shouldn't have too much impact, given that this only
+happens while the IOMMU driver is probing, and thus due to kick the
+deferred probe list again once it finishes.
+
+Reported-by: Charan Teja Kalla <quic_charante@quicinc.com>
+Fixes: 98ac73f99bc4 ("iommu: Require a default_domain for all iommu drivers")
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+Link: https://lore.kernel.org/r/e88b94c9b575034a2c98a48b3d383654cbda7902.1740753261.git.robin.murphy@arm.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/iommu.c |   18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
-index bd801e35d51ea..d6fe09ca03d27 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
-@@ -60,7 +60,7 @@ static struct hns3_dbg_cmd_info hns3_dbg_cmd[] = {
- 		.name = "tm_qset",
- 		.cmd = HNAE3_DBG_CMD_TM_QSET,
- 		.dentry = HNS3_DBG_DENTRY_TM,
--		.buf_len = HNS3_DBG_READ_LEN,
-+		.buf_len = HNS3_DBG_READ_LEN_1MB,
- 		.init = hns3_dbg_common_file_init,
- 	},
- 	{
--- 
-2.39.5
-
+--- a/drivers/iommu/iommu.c
++++ b/drivers/iommu/iommu.c
+@@ -566,6 +566,18 @@ int iommu_probe_device(struct device *de
+ 	mutex_lock(&iommu_probe_device_lock);
+ 	ret = __iommu_probe_device(dev, NULL);
+ 	mutex_unlock(&iommu_probe_device_lock);
++
++	/*
++	 * The dma_configure replay paths need bus_iommu_probe() to
++	 * finish before they can call arch_setup_dma_ops()
++	 */
++	if (IS_ENABLED(CONFIG_IOMMU_DMA) && !ret && dev->iommu_group) {
++		mutex_lock(&dev->iommu_group->mutex);
++		if (!dev->iommu_group->default_domain &&
++		    !dev_iommu_ops(dev)->set_platform_dma_ops)
++			ret = -EPROBE_DEFER;
++		mutex_unlock(&dev->iommu_group->mutex);
++	}
+ 	if (ret)
+ 		return ret;
+ 
+@@ -3149,6 +3161,12 @@ int iommu_device_use_default_domain(stru
+ 		return 0;
+ 
+ 	mutex_lock(&group->mutex);
++	/* We may race against bus_iommu_probe() finalising groups here */
++	if (IS_ENABLED(CONFIG_IOMMU_DMA) && !group->default_domain &&
++	    !dev_iommu_ops(dev)->set_platform_dma_ops) {
++		ret = -EPROBE_DEFER;
++		goto unlock_out;
++	}
+ 	if (group->owner_cnt) {
+ 		if (group->owner || !iommu_is_default_domain(group) ||
+ 		    !xa_empty(&group->pasid_array)) {
 
 
 
