@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-142513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C0B9AAEAF1
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:01:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4C7BAAEA32
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:52:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38CA1525566
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:01:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E477B98163A
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:52:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70EE028C845;
-	Wed,  7 May 2025 19:01:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5340821E0BB;
+	Wed,  7 May 2025 18:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K5x+nKxW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qKzxhw8F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EFB9288A8;
-	Wed,  7 May 2025 19:01:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F26D1FF5EC;
+	Wed,  7 May 2025 18:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644485; cv=none; b=mfR/VET2SWyJQpc9rXSjBxA4e+0Di7I75ubC8SvqDOiJth2Q68bvhxL1bkRVPjYhN8C3MQXEmDZNsFNd/6cfc/D60Npmq9dtiKbqVEvNPP6fS/H5Tah2ZOBIewg5gRPypKWmYYJUUOZ54O8gUC9OJ49VZjLclS+bgxyGdKFtVlg=
+	t=1746643947; cv=none; b=EbuhOvvCejCS3+AQVnzORTqJs42rB0H6R9BBVzqHaLlCccBxJa+FxJP5vp7OwKqcxCW2ZfzMNEGLzBlezJgO1MVeLumtUsU8q3sQKe6zXEsQ4Ov6LenJ/B6+VheN9o405iMDG2ZWFgqMJVwB9O8E/+ZvHv4D3pleNHwzrn/atJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644485; c=relaxed/simple;
-	bh=EC3EaA8M8nTw6wuXfYWK3VYRgCQSkPRObd1g7zJilGs=;
+	s=arc-20240116; t=1746643947; c=relaxed/simple;
+	bh=7CGlNSeE1S8cJILkb1r3+1raKdzO6eZMmHbHZnGIJ3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E86gJXHTiGLfYKiTJhsmaRSuevbYKY50bRMAVU3jpOxWO3NLqllPc/OIAGw1+d7dAW0KEa9F8NKeoGlZ7n/IctavDwEUT1NP3+JUe8prYqfQf4hG9Fn/gpW1qPZZDs0oM8TBhn6NFY8qqXlqYgZ1DSN987P4Hgky4jvmBQCzsOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K5x+nKxW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46391C4CEE2;
-	Wed,  7 May 2025 19:01:24 +0000 (UTC)
+	 MIME-Version; b=B82+55IXkh/N0aZsPq0IOlii7dzmywQD+Iao+g0K044G5ddqJrwTMXy9lrrhyuEtGVezsKoe3SlyJcpJtJIX2JfufMRaN5bAXnfOHJNN+MFXbuw/EtCgqRWhFbApfBL5dUpbR4IMIn++/AM22001+5A2WUzqGfzmM0yDajl/3vQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qKzxhw8F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 882A3C4CEE2;
+	Wed,  7 May 2025 18:52:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644484;
-	bh=EC3EaA8M8nTw6wuXfYWK3VYRgCQSkPRObd1g7zJilGs=;
+	s=korg; t=1746643946;
+	bh=7CGlNSeE1S8cJILkb1r3+1raKdzO6eZMmHbHZnGIJ3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K5x+nKxW3mb8YRH7IvO5S9R/io6xwT+M8HHSccJgNzUQyGnSg9HtYyKAiEmIIRiqt
-	 Q9Q32S4uXrxmBqWD9vcNkwFilpVwqqY7Tgr5nENl1DnpizBTCUsUmKyP+eZWTJ+FvP
-	 6UZOrzN5DJ6XvaDbGn3cP/IsEvZjBHUbyQJ1hHgI=
+	b=qKzxhw8FIjlqE28Xm8PsK363yThFdmGN7gIQaqXvPJbGMrS9nc73KZihpwfzqjpHT
+	 FEl+1OUFCA5VwbValo9Ie0oIRGbLyxrs1G4jbSWALMNiT8fjqhmXKkPieOKY+neCfc
+	 6cIbEx8ABiqtHfqx/t21fT9gUl5W03kXk+GqSqTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaron Kling <webgeek1234@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 028/164] spi: tegra114: Dont fail set_cs_timing when delays are zero
-Date: Wed,  7 May 2025 20:38:33 +0200
-Message-ID: <20250507183822.006055486@linuxfoundation.org>
+	Vlad Dogaru <vdogaru@nvidia.com>,
+	Yevgeny Kliteynik <kliteyn@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 069/183] net/mlx5e: Use custom tunnel header for vxlan gbp
+Date: Wed,  7 May 2025 20:38:34 +0200
+Message-ID: <20250507183827.484461838@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +65,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaron Kling <webgeek1234@gmail.com>
+From: Vlad Dogaru <vdogaru@nvidia.com>
 
-commit 4426e6b4ecf632bb75d973051e1179b8bfac2320 upstream.
+[ Upstream commit eacc77a73275895eca0e3655dc6c671853500e2e ]
 
-The original code would skip null delay pointers, but when the pointers
-were converted to point within the spi_device struct, the check was not
-updated to skip delays of zero. Hence all spi devices that didn't set
-delays would fail to probe.
+Symbolic (e.g. "vxlan") and custom (e.g. "tunnel_header_0") tunnels
+cannot be combined, but the match params interface does not have fields
+for matching on vxlan gbp. To match vxlan bgp, the tc_tun layer uses
+tunnel_header_0.
 
-Fixes: 04e6bb0d6bb1 ("spi: modify set_cs_timing parameter")
-Cc: stable@vger.kernel.org
-Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
-Link: https://patch.msgid.link/20250423-spi-tegra114-v1-1-2d608bcc12f9@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Allow matching on both VNI and GBP by matching the VNI with a custom
+tunnel header instead of the symbolic field name.
+
+Matching solely on the VNI continues to use the symbolic field name.
+
+Fixes: 74a778b4a63f ("net/mlx5: HWS, added definers handling")
+Signed-off-by: Vlad Dogaru <vdogaru@nvidia.com>
+Reviewed-by: Yevgeny Kliteynik <kliteyn@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Link: https://patch.msgid.link/20250423083611.324567-2-mbloch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-tegra114.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ .../mellanox/mlx5/core/en/tc_tun_vxlan.c      | 32 +++++++++++++++++--
+ 1 file changed, 29 insertions(+), 3 deletions(-)
 
---- a/drivers/spi/spi-tegra114.c
-+++ b/drivers/spi/spi-tegra114.c
-@@ -728,9 +728,9 @@ static int tegra_spi_set_hw_cs_timing(st
- 	u32 inactive_cycles;
- 	u8 cs_state;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_vxlan.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_vxlan.c
+index e4e487c8431b8..b9cf79e271244 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_vxlan.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_vxlan.c
+@@ -165,9 +165,6 @@ static int mlx5e_tc_tun_parse_vxlan(struct mlx5e_priv *priv,
+ 	struct flow_match_enc_keyid enc_keyid;
+ 	void *misc_c, *misc_v;
  
--	if (setup->unit != SPI_DELAY_UNIT_SCK ||
--	    hold->unit != SPI_DELAY_UNIT_SCK ||
--	    inactive->unit != SPI_DELAY_UNIT_SCK) {
-+	if ((setup->unit && setup->unit != SPI_DELAY_UNIT_SCK) ||
-+	    (hold->unit && hold->unit != SPI_DELAY_UNIT_SCK) ||
-+	    (inactive->unit && inactive->unit != SPI_DELAY_UNIT_SCK)) {
- 		dev_err(&spi->dev,
- 			"Invalid delay unit %d, should be SPI_DELAY_UNIT_SCK\n",
- 			SPI_DELAY_UNIT_SCK);
+-	misc_c = MLX5_ADDR_OF(fte_match_param, spec->match_criteria, misc_parameters);
+-	misc_v = MLX5_ADDR_OF(fte_match_param, spec->match_value, misc_parameters);
+-
+ 	if (!flow_rule_match_key(rule, FLOW_DISSECTOR_KEY_ENC_KEYID))
+ 		return 0;
+ 
+@@ -182,6 +179,30 @@ static int mlx5e_tc_tun_parse_vxlan(struct mlx5e_priv *priv,
+ 		err = mlx5e_tc_tun_parse_vxlan_gbp_option(priv, spec, f);
+ 		if (err)
+ 			return err;
++
++		/* We can't mix custom tunnel headers with symbolic ones and we
++		 * don't have a symbolic field name for GBP, so we use custom
++		 * tunnel headers in this case. We need hardware support to
++		 * match on custom tunnel headers, but we already know it's
++		 * supported because the previous call successfully checked for
++		 * that.
++		 */
++		misc_c = MLX5_ADDR_OF(fte_match_param, spec->match_criteria,
++				      misc_parameters_5);
++		misc_v = MLX5_ADDR_OF(fte_match_param, spec->match_value,
++				      misc_parameters_5);
++
++		/* Shift by 8 to account for the reserved bits in the vxlan
++		 * header after the VNI.
++		 */
++		MLX5_SET(fte_match_set_misc5, misc_c, tunnel_header_1,
++			 be32_to_cpu(enc_keyid.mask->keyid) << 8);
++		MLX5_SET(fte_match_set_misc5, misc_v, tunnel_header_1,
++			 be32_to_cpu(enc_keyid.key->keyid) << 8);
++
++		spec->match_criteria_enable |= MLX5_MATCH_MISC_PARAMETERS_5;
++
++		return 0;
+ 	}
+ 
+ 	/* match on VNI is required */
+@@ -195,6 +216,11 @@ static int mlx5e_tc_tun_parse_vxlan(struct mlx5e_priv *priv,
+ 		return -EOPNOTSUPP;
+ 	}
+ 
++	misc_c = MLX5_ADDR_OF(fte_match_param, spec->match_criteria,
++			      misc_parameters);
++	misc_v = MLX5_ADDR_OF(fte_match_param, spec->match_value,
++			      misc_parameters);
++
+ 	MLX5_SET(fte_match_set_misc, misc_c, vxlan_vni,
+ 		 be32_to_cpu(enc_keyid.mask->keyid));
+ 	MLX5_SET(fte_match_set_misc, misc_v, vxlan_vni,
+-- 
+2.39.5
+
 
 
 
