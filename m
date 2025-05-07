@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-142671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0927AAEBB0
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:09:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DFEDAAEA81
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:56:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA67B9E387D
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:09:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23CD85233C5
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:56:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18B0B28DF3C;
-	Wed,  7 May 2025 19:09:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F435289823;
+	Wed,  7 May 2025 18:56:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2OXxYiRA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Afa0oMiG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9D9F21504D;
-	Wed,  7 May 2025 19:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0640214813;
+	Wed,  7 May 2025 18:56:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644968; cv=none; b=jZkTW7x+K/GOBC/fVdtXdULlEtOZHIq1fRKwsMhnWxMXtGXjRRgBW/Iw5J+EdFjJI25yr4gQGQDElmowgcMeUPtsXO7ahrpl47gh6T54Wo+qzkLLpAyFYeBBowicn3ULRAnlicbudzDHAJc85aBpXkDcIstkBUxr4quBCCZIX0U=
+	t=1746644166; cv=none; b=YOcYsp2ADv595LHKYF36imQrG3BYk1SkSmUvVjkeUfO9w07ZH3T+P8yIFWBIxg2IkiWCFOVT0JjkvoPebZC4XKHFYLAEXVf8KPwu9WlVhxoY5QU6IxIqImXoyoYLZIMl1isOfezy/D05/6D8vPMYy9b1sXdgv4lRxe8QL0P3l2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644968; c=relaxed/simple;
-	bh=mCXczVHXL50Wu6CpsWvzK0k8INyRIahJrNUm7O9t1qA=;
+	s=arc-20240116; t=1746644166; c=relaxed/simple;
+	bh=bbHFcL1BLWRoDcJ9a/IGyPBlePqtecCk8jgpbAKaXSE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s6CsFzb9A/DChcMgG/I2MrM+r5w9FACBXmgXug2xGjDbA3ymYKyPmQQTmrr4+aNW0JdpQ7fXlHQWkBOth2DyNDV36EOAHnonWgugCyBrhSUjC6T5LGOqZFrNerI0ACDTUi+EtClF/ohu7aZgeu5CzEhQ0YRA/kPc4zQFfx8ixv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2OXxYiRA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52D53C4CEE2;
-	Wed,  7 May 2025 19:09:28 +0000 (UTC)
+	 MIME-Version; b=oWmYe0H3M+Klyoi8sBLePTcfHJzEDrwjXSh6mI2LyvXgv+XtdysgC3HyHUiLUpTjxH0KmpKJKGVL8wlqPDTh6S/ZaFlyTQyBc5eKEAiL06LGaYyidjlxnLTUS8u6mdyRygyaye9K31XuWfARfK6U3vq2MDGlH42SpcOSPdpfdkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Afa0oMiG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6CE3C4CEE2;
+	Wed,  7 May 2025 18:56:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644968;
-	bh=mCXczVHXL50Wu6CpsWvzK0k8INyRIahJrNUm7O9t1qA=;
+	s=korg; t=1746644165;
+	bh=bbHFcL1BLWRoDcJ9a/IGyPBlePqtecCk8jgpbAKaXSE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2OXxYiRA/qglAfb0GW7uI0cMgIjVCV/wsEMGnuw5DwZLHijoWv5sANeyP11hNP8Zh
-	 sdLMmt9zkvyupZq19js8NYYNKhBV7CTiaTOHPzca2zSmxonxEc81AlwhARp01t66Yj
-	 ptIhUgW+I+9ECqJN7lN+2BoMt+DvOJrzwp6lKZb8=
+	b=Afa0oMiGKYKa8d5F8Ex9+OlzXhR7usu8bg5AzTTPBU82ufNJe0gsjnSAaF+3hp0sI
+	 KdJ30mJiGLyeGGq1UjOpQ0bkRhMF+HeUONGQYLJd0Ra6OFxWINO/0JwKggxZDVEoR1
+	 MMDWEoczoZAVocDnQ2mEKEkMy7USiQIUf57F4oRk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 6.6 022/129] dm-integrity: fix a warning on invalid table line
+	Da Xue <da@libre.computer>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 113/183] net: mdio: mux-meson-gxl: set reversed bit when using internal phy
 Date: Wed,  7 May 2025 20:39:18 +0200
-Message-ID: <20250507183814.432409292@linuxfoundation.org>
+Message-ID: <20250507183829.403467104@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
-References: <20250507183813.500572371@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,36 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Da Xue <da@libre.computer>
 
-commit 0a533c3e4246c29d502a7e0fba0e86d80a906b04 upstream.
+[ Upstream commit b23285e93bef729e67519a5209d5b7fde3b4af50 ]
 
-If we use the 'B' mode and we have an invalit table line,
-cancel_delayed_work_sync would trigger a warning. This commit avoids the
-warning.
+This bit is necessary to receive packets from the internal PHY.
+Without this bit set, no activity occurs on the interface.
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Normally u-boot sets this bit, but if u-boot is compiled without
+net support, the interface will be up but without any activity.
+If bit is set once, it will work until the IP is powered down or reset.
+
+The vendor SDK sets this bit along with the PHY_ID bits.
+
+Signed-off-by: Da Xue <da@libre.computer>
+Fixes: 9a24e1ff4326 ("net: mdio: add amlogic gxl mdio mux support")
+Link: https://patch.msgid.link/20250425192009.1439508-1-da@libre.computer
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-integrity.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/mdio/mdio-mux-meson-gxl.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/md/dm-integrity.c
-+++ b/drivers/md/dm-integrity.c
-@@ -4687,7 +4687,7 @@ static void dm_integrity_dtr(struct dm_t
- 	BUG_ON(!RB_EMPTY_ROOT(&ic->in_progress));
- 	BUG_ON(!list_empty(&ic->wait_list));
+diff --git a/drivers/net/mdio/mdio-mux-meson-gxl.c b/drivers/net/mdio/mdio-mux-meson-gxl.c
+index 00c66240136b1..3dd12a8c8b03e 100644
+--- a/drivers/net/mdio/mdio-mux-meson-gxl.c
++++ b/drivers/net/mdio/mdio-mux-meson-gxl.c
+@@ -17,6 +17,7 @@
+ #define  REG2_LEDACT		GENMASK(23, 22)
+ #define  REG2_LEDLINK		GENMASK(25, 24)
+ #define  REG2_DIV4SEL		BIT(27)
++#define  REG2_REVERSED		BIT(28)
+ #define  REG2_ADCBYPASS		BIT(30)
+ #define  REG2_CLKINSEL		BIT(31)
+ #define ETH_REG3		0x4
+@@ -65,7 +66,7 @@ static void gxl_enable_internal_mdio(struct gxl_mdio_mux *priv)
+ 	 * The only constraint is that it must match the one in
+ 	 * drivers/net/phy/meson-gxl.c to properly match the PHY.
+ 	 */
+-	writel(FIELD_PREP(REG2_PHYID, EPHY_GXL_ID),
++	writel(REG2_REVERSED | FIELD_PREP(REG2_PHYID, EPHY_GXL_ID),
+ 	       priv->regs + ETH_REG2);
  
--	if (ic->mode == 'B')
-+	if (ic->mode == 'B' && ic->bitmap_flush_work.work.func)
- 		cancel_delayed_work_sync(&ic->bitmap_flush_work);
- 	if (ic->metadata_wq)
- 		destroy_workqueue(ic->metadata_wq);
+ 	/* Enable the internal phy */
+-- 
+2.39.5
+
 
 
 
