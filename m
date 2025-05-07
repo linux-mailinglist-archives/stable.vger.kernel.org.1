@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-142656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77DC4AAEBB6
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:09:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11623AAE9D5
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:48:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 327635273D7
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:08:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC47A507469
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:48:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFB2F28C2B3;
-	Wed,  7 May 2025 19:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B82E28980D;
+	Wed,  7 May 2025 18:48:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rQZgu2UU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CM5tX4Fb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A26E1E22E9;
-	Wed,  7 May 2025 19:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AAB11FF5EC;
+	Wed,  7 May 2025 18:48:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644923; cv=none; b=f7Dnknu9dC6nBatMNOpS/gWcmpiYCWsaPYgpbnpZlKhwT3KxOKVeFr2o9QCiIMqDD0Vjw3YlLmBkzxa6RskmOJ6wU5T38Y2xtT48beGHrPekvi0AfkeaivgAg+0/gg5QcohSLniVd11/5uYWEArTGM4p1AM99yVRiQSDseUFV8o=
+	t=1746643704; cv=none; b=SR/vpBQxoTbjU0zwr/cvXRFwb1F/v6vTgATOJxDVhHI6HN0QmldZVnXyxI8bHQBXH+/uer20JeZje8Wyxq4m5mVmqv8mMQmuOd7ggEvhUxohJSsXxl592tdRsllo3SH1WfBlY7C1WHpVgdMjqbqA9poB1Tge8oRItY+eVPJaM+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644923; c=relaxed/simple;
-	bh=0Wv1vGOsmF5/vICAvM+NzSJBOYQx+sP5znVRPtom7ok=;
+	s=arc-20240116; t=1746643704; c=relaxed/simple;
+	bh=1ZV/7Yqw6G/3gnKCjvKn4HqZqg/SLPnGQr6FleXNAHk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QNGJYoGnVgk6zf68pNYxzMLCSv29eTZ2UHoGnlugigttObt+5PQ3SxutRxFbJ/3JakeQ1dStGGu+f/Cwgb9L6OsAy4JgBiP0Ws64lPxSXIeLUAxVo/hhdZEcsu+xtO33BxnIE6lRFl+pZX4bRSkHOrQa0VVnP/gy0LN8MT/wst4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rQZgu2UU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 084E5C4CEE2;
-	Wed,  7 May 2025 19:08:42 +0000 (UTC)
+	 MIME-Version; b=kHRQm6eX+MRfv9Q8IrUubUSrhvKlHRkAJcFfr/yL87Yay4PZACL8qwaTs4yN1HD1ftWDpxQZrV5nudSjnaxz4rzfmkLobD9T+3D5USoC1dzUlliw0oBMvo8FbOqbfE2o0X2MCdG6KqQ2he8AK3WrX6Z0TQct2hh2hSsM853HxjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CM5tX4Fb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF4BBC4CEE2;
+	Wed,  7 May 2025 18:48:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644923;
-	bh=0Wv1vGOsmF5/vICAvM+NzSJBOYQx+sP5znVRPtom7ok=;
+	s=korg; t=1746643704;
+	bh=1ZV/7Yqw6G/3gnKCjvKn4HqZqg/SLPnGQr6FleXNAHk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rQZgu2UUOmzIjtfkNiQlnjsM8lyfOxhl2Ex0sLcivjgEPNaJYoRsCXeeJBusoqJyq
-	 pU42X736rroSz7oBqCPvQy4AEyt0bI862dA5yW6zpQfc2YnFVoVXqpLbwwGWrGYpdR
-	 rkXm6QVaoTx/qRRPeth0Ol7sKu+j95vc1ub03eR0=
+	b=CM5tX4Fbj9JR4G38mjB3hZFIu5o5F0zva8UJcMjG/ceE/swkp512HHVLRK3GIg5jb
+	 VpsQYkWlzWBQ3aCpxwvTwCZi91xukd9nuMh8zQbwly2YEnKdTwjJprysf0Yv3KEOzp
+	 QEGZ+ZKt4D3CM2Wm2RPPhoCyS3RvYva0/Zs7dEjg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH 6.6 037/129] bpf: check changes_pkt_data property for extension programs
+	Michael Chan <michael.chan@broadcom.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Shruti Parab <shruti.parab@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 58/97] bnxt_en: Fix coredump logic to free allocated buffer
 Date: Wed,  7 May 2025 20:39:33 +0200
-Message-ID: <20250507183815.040571850@linuxfoundation.org>
+Message-ID: <20250507183809.335116846@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
-References: <20250507183813.500572371@linuxfoundation.org>
+In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
+References: <20250507183806.987408728@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,131 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eduard Zingerman <eddyz87@gmail.com>
+From: Shruti Parab <shruti.parab@broadcom.com>
 
-commit 81f6d0530ba031b5f038a091619bf2ff29568852 upstream.
+[ Upstream commit ea9376cf68230e05492f22ca45d329f16e262c7b ]
 
-When processing calls to global sub-programs, verifier decides whether
-to invalidate all packet pointers in current state depending on the
-changes_pkt_data property of the global sub-program.
+When handling HWRM_DBG_COREDUMP_LIST FW command in
+bnxt_hwrm_dbg_dma_data(), the allocated buffer info->dest_buf is
+not freed in the error path.  In the normal path, info->dest_buf
+is assigned to coredump->data and it will eventually be freed after
+the coredump is collected.
 
-Because of this, an extension program replacing a global sub-program
-must be compatible with changes_pkt_data property of the sub-program
-being replaced.
+Free info->dest_buf immediately inside bnxt_hwrm_dbg_dma_data() in
+the error path.
 
-This commit:
-- adds changes_pkt_data flag to struct bpf_prog_aux:
-  - this flag is set in check_cfg() for main sub-program;
-  - in jit_subprogs() for other sub-programs;
-- modifies bpf_check_attach_btf_id() to check changes_pkt_data flag;
-- moves call to check_attach_btf_id() after the call to check_cfg(),
-  because it needs changes_pkt_data flag to be set:
-
-    bpf_check:
-      ...                             ...
-    - check_attach_btf_id             resolve_pseudo_ldimm64
-      resolve_pseudo_ldimm64   -->    bpf_prog_is_offloaded
-      bpf_prog_is_offloaded           check_cfg
-      check_cfg                     + check_attach_btf_id
-      ...                             ...
-
-The following fields are set by check_attach_btf_id():
-- env->ops
-- prog->aux->attach_btf_trace
-- prog->aux->attach_func_name
-- prog->aux->attach_func_proto
-- prog->aux->dst_trampoline
-- prog->aux->mod
-- prog->aux->saved_dst_attach_type
-- prog->aux->saved_dst_prog_type
-- prog->expected_attach_type
-
-Neither of these fields are used by resolve_pseudo_ldimm64() or
-bpf_prog_offload_verifier_prep() (for netronome and netdevsim
-drivers), so the reordering is safe.
-
-Suggested-by: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20241210041100.1898468-6-eddyz87@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-[ shung-hsi.yu: adapt to missing fields in "struct bpf_prog_aux". Context
-difference in jit_subprogs() because BPF Exception is not supported. Context
-difference in bpf_check() because commit 5b5f51bff1b6 "bpf:
-no_caller_saved_registers attribute for helper calls" is not present. ]
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c74751f4c392 ("bnxt_en: Return error if FW returns more data than dump length")
+Reported-by: Michael Chan <michael.chan@broadcom.com>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Shruti Parab <shruti.parab@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bpf.h   |    1 +
- kernel/bpf/verifier.c |   16 ++++++++++++----
- 2 files changed, 13 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt_coredump.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -1430,6 +1430,7 @@ struct bpf_prog_aux {
- 	bool sleepable;
- 	bool tail_call_reachable;
- 	bool xdp_has_frags;
-+	bool changes_pkt_data;
- 	/* BTF_KIND_FUNC_PROTO for valid attach_btf_id */
- 	const struct btf_type *attach_func_proto;
- 	/* function name for valid attach_btf_id */
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -15462,6 +15462,7 @@ static int check_cfg(struct bpf_verifier
- 		}
- 	}
- 	ret = 0; /* cfg looks good */
-+	env->prog->aux->changes_pkt_data = env->subprog_info[0].changes_pkt_data;
- 
- err_free:
- 	kvfree(insn_state);
-@@ -18622,6 +18623,7 @@ static int jit_subprogs(struct bpf_verif
- 		}
- 		func[i]->aux->num_exentries = num_exentries;
- 		func[i]->aux->tail_call_reachable = env->subprog_info[i].tail_call_reachable;
-+		func[i]->aux->changes_pkt_data = env->subprog_info[i].changes_pkt_data;
- 		func[i] = bpf_int_jit_compile(func[i]);
- 		if (!func[i]->jited) {
- 			err = -ENOTSUPP;
-@@ -19934,6 +19936,12 @@ int bpf_check_attach_target(struct bpf_v
- 					"Extension programs should be JITed\n");
- 				return -EINVAL;
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_coredump.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_coredump.c
+index c067898820360..b57d2a25ae276 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_coredump.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_coredump.c
+@@ -72,6 +72,11 @@ static int bnxt_hwrm_dbg_dma_data(struct bnxt *bp, void *msg,
+ 				memcpy(info->dest_buf + off, dma_buf, len);
+ 			} else {
+ 				rc = -ENOBUFS;
++				if (cmn_req->req_type ==
++				    cpu_to_le16(HWRM_DBG_COREDUMP_LIST)) {
++					kfree(info->dest_buf);
++					info->dest_buf = NULL;
++				}
+ 				break;
  			}
-+			if (prog->aux->changes_pkt_data &&
-+			    !aux->func[subprog]->aux->changes_pkt_data) {
-+				bpf_log(log,
-+					"Extension program changes packet data, while original does not\n");
-+				return -EINVAL;
-+			}
  		}
- 		if (!tgt_prog->jited) {
- 			bpf_log(log, "Can attach to only JITed progs\n");
-@@ -20393,10 +20401,6 @@ int bpf_check(struct bpf_prog **prog, un
- 	if (ret < 0)
- 		goto skip_full_check;
- 
--	ret = check_attach_btf_id(env);
--	if (ret)
--		goto skip_full_check;
--
- 	ret = resolve_pseudo_ldimm64(env);
- 	if (ret < 0)
- 		goto skip_full_check;
-@@ -20411,6 +20415,10 @@ int bpf_check(struct bpf_prog **prog, un
- 	if (ret < 0)
- 		goto skip_full_check;
- 
-+	ret = check_attach_btf_id(env);
-+	if (ret)
-+		goto skip_full_check;
-+
- 	ret = do_check_subprogs(env);
- 	ret = ret ?: do_check_main(env);
- 
+-- 
+2.39.5
+
 
 
 
