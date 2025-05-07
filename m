@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-142403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7FF8AAEA77
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:55:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67C46AAEB36
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:04:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31597522F3D
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:55:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6702B9E2AE9
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:04:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C8C02116E9;
-	Wed,  7 May 2025 18:55:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D400528DF1F;
+	Wed,  7 May 2025 19:04:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gcBUqJMe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tC+x2LcA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDC322153C6;
-	Wed,  7 May 2025 18:55:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 808C52144BF;
+	Wed,  7 May 2025 19:04:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644141; cv=none; b=M5DJPRFye5c/yddhRNsJC9OFk/6DHWB2Gls6235rULf0jqjYssje9Mzfue3s7SyOq8scMAFHOuLZxn5yeZE2EeHyJxc5TdLFqApRIiqx6kxrM8gYuEzhJ3uaesGHuqbG/rl0mqbNgSd52aytnixF1ZqjMd9ESTJmTmDkmgszVgo=
+	t=1746644684; cv=none; b=ssp5qB+qMqrI4pABzrQIlYzXqE4rallQyf/WcWkPZ55aqCL6YIliBf6pZLnqWCojoojoyEPCZ2kExveqvVP0kvdvhaDsDiMTk0SeoF4WXS1zr0teo1jcxtGgP7uBJT8lzAkX8ii15rSmLptTD60lb+QWbT0Aixpx2EH8X6N7JQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644141; c=relaxed/simple;
-	bh=d9vbSsftGXX3Jr4xyw94EFO+6G3a5oJHc9L4f6ziuJY=;
+	s=arc-20240116; t=1746644684; c=relaxed/simple;
+	bh=RsB+zi3NO07NntiSg4reANZZPQx3uSJ+g8rQGSZBeXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KON9P7/kzYYNfljmn7Jj4bi76MJiZGMBlAjINJ1zrQHO17JcO1AH6UB6BxfiunF3EGsAHYj/7B6jsuPoMd9s9+10NomjXQvkBNq0rDdcc97T+/2EbGUDKbbg6EyrfyJTnu+o7pFWHZAlSsbJkHWEVB3QaV/xroiSukp70wDEmug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gcBUqJMe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 358A5C4CEE2;
-	Wed,  7 May 2025 18:55:40 +0000 (UTC)
+	 MIME-Version; b=C1o7SXkV3FRaWeNcc2OLCw5PP3LWneCrsWMc+yvxYXQhbGMZ8FdPtRCPEfHk9GGpj30xZnsx+9wdol9b5odIZ3XLuTp1XvvRtU7PiBzvlq1oJ+VhnJCgKVQ6GKT4L/UVSUxR0uifex2DAtki9kTseayIDZYUAqTMqF8rJv5Cg/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tC+x2LcA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3785C4CEE2;
+	Wed,  7 May 2025 19:04:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644140;
-	bh=d9vbSsftGXX3Jr4xyw94EFO+6G3a5oJHc9L4f6ziuJY=;
+	s=korg; t=1746644684;
+	bh=RsB+zi3NO07NntiSg4reANZZPQx3uSJ+g8rQGSZBeXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gcBUqJMeCYuLUTLrTmbXwn7dOMpw/mWzxBGoWLvEyjE0+R41iKP+ORXkDSh/NDnxS
-	 hCLM3oeLOBvsAN/eBgFu25eMB0gtVL/ew8iBYbioh3cXW6hi/KhrxC4FJ+UEfSOR8x
-	 6NO7iIlXeVyQQPbO6k86rdwwnvaYdkRdW06kmzd4=
+	b=tC+x2LcAlH3kbY4w4SrrRmUSdkGtqnJK1B/dv0+ul5WlFIdl8fsIX4jDsM7bu1QD3
+	 JgmOhGm/s07sw+DzKNH1VFxuUSY1QjgdtjY5LGCEyKh0zdrsuClZZ9y4BteMyLcxvx
+	 WXh1QMTS9G720xbG/jyAeA3WKvpAautqvlq+pyKY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Mark Brown <broonie@kernel.org>,
+	Gerrard Tai <gerrard.tai@starlabs.sg>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 132/183] ASoC: stm32: sai: add a check on minimal kernel frequency
+Subject: [PATCH 6.12 092/164] net_sched: hfsc: Fix a UAF vulnerability in class with netem as child qdisc
 Date: Wed,  7 May 2025 20:39:37 +0200
-Message-ID: <20250507183830.171069332@linuxfoundation.org>
+Message-ID: <20250507183824.689768851@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olivier Moysan <olivier.moysan@foss.st.com>
+From: Victor Nogueira <victor@mojatatu.com>
 
-[ Upstream commit cce34d113e2a592806abcdc02c7f8513775d8b20 ]
+[ Upstream commit 141d34391abbb315d68556b7c67ad97885407547 ]
 
-On MP2 SoCs SAI kernel clock rate is managed through
-stm32_sai_set_parent_rate() function.
-If the kernel clock rate was set previously to a low frequency, this
-frequency may be too low to support the newly requested audio stream rate.
-However the stm32_sai_rate_accurate() will only check accuracy against
-the maximum kernel clock rate. The function will return leaving the kernel
-clock rate unchanged.
-Add a check on minimal frequency requirement, to avoid this.
+As described in Gerrard's report [1], we have a UAF case when an hfsc class
+has a netem child qdisc. The crux of the issue is that hfsc is assuming
+that checking for cl->qdisc->q.qlen == 0 guarantees that it hasn't inserted
+the class in the vttree or eltree (which is not true for the netem
+duplicate case).
 
-Fixes: 2cfe1ff22555 ("ASoC: stm32: sai: add stm32mp25 support")
-Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
-Link: https://patch.msgid.link/20250430165210.321273-3-olivier.moysan@foss.st.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This patch checks the n_active class variable to make sure that the code
+won't insert the class in the vttree or eltree twice, catering for the
+reentrant case.
+
+[1] https://lore.kernel.org/netdev/CAHcdcOm+03OD2j6R0=YHKqmy=VgJ8xEOKuP6c7mSgnp-TEJJbw@mail.gmail.com/
+
+Fixes: 37d9cf1a3ce3 ("sched: Fix detection of empty queues in child qdiscs")
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+Link: https://patch.msgid.link/20250425220710.3964791-3-victor@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/stm/stm32_sai_sub.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/sched/sch_hfsc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/stm/stm32_sai_sub.c b/sound/soc/stm/stm32_sai_sub.c
-index 5a5acc67569fe..d9c4266c8150d 100644
---- a/sound/soc/stm/stm32_sai_sub.c
-+++ b/sound/soc/stm/stm32_sai_sub.c
-@@ -447,7 +447,10 @@ static int stm32_sai_set_parent_rate(struct stm32_sai_sub_data *sai,
- 	 * return immediately.
- 	 */
- 	sai_curr_rate = clk_get_rate(sai->sai_ck);
--	if (stm32_sai_rate_accurate(sai_ck_max_rate, sai_curr_rate))
-+	dev_dbg(&pdev->dev, "kernel clock rate: min [%u], max [%u], current [%u]",
-+		sai_ck_min_rate, sai_ck_max_rate, sai_curr_rate);
-+	if (stm32_sai_rate_accurate(sai_ck_max_rate, sai_curr_rate) &&
-+	    sai_curr_rate >= sai_ck_min_rate)
- 		return 0;
+diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
+index 5bb4ab9941d6e..1c857dc95e4f3 100644
+--- a/net/sched/sch_hfsc.c
++++ b/net/sched/sch_hfsc.c
+@@ -1565,7 +1565,7 @@ hfsc_enqueue(struct sk_buff *skb, struct Qdisc *sch, struct sk_buff **to_free)
+ 		return err;
+ 	}
  
- 	/*
+-	if (first) {
++	if (first && !cl->cl_nactive) {
+ 		if (cl->cl_flags & HFSC_RSC)
+ 			init_ed(cl, len);
+ 		if (cl->cl_flags & HFSC_FSC)
 -- 
 2.39.5
 
