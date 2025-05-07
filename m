@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-142511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0E5DAAEAEE
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:01:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E680AAEA30
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:52:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE8C71C2849F
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:01:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3F8750817F
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:52:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B4D929A0;
-	Wed,  7 May 2025 19:01:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFAC928937F;
+	Wed,  7 May 2025 18:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ec54N2mN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TGZU87hK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A401E22E9;
-	Wed,  7 May 2025 19:01:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E3FD1FF5EC;
+	Wed,  7 May 2025 18:52:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644481; cv=none; b=g5gqklU51GSBN+UAO82pbeOJxuSyqoefXvVQ4qaYC2+gLnt5kZz31mMs29N3O+EW4AX0ECh08ouKg4pUfdAZivyKUFD5EDbkUe3w7hF3fFRGXqi6bC/xBQ51rVEmoI5sAsm/Dk4KYPj1Y5u4up4NUeAc05B5FmLc95hDqqS15uc=
+	t=1746643937; cv=none; b=khOuwUn0RIN0I8mVIHwR99YeTt2VjsrKb5j1SQjTeKOMPOPNK+Du13rwZZ0MxYwXXxOYIOud8yegK0+z3WOku7V0ZeYoOAc9Mia1rdRmPbzPbEhKl36m8RlDmztme4amwr7vXcDTpUc5yLtIGhRkcYXUHympbSr2IlZw6ZUsr/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644481; c=relaxed/simple;
-	bh=W/MDSvhMkZcKvUfPjFP3Q3vkibbJR7cp1/3zW5HLx/w=;
+	s=arc-20240116; t=1746643937; c=relaxed/simple;
+	bh=AOMcZn9rIMae6KxqQgrbezgqNGYaiLZxgxbwr8IGI9I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NK/GsclYdOmEeBuddWTmRSBY8NhkI+eTTdFvaHGzz0WLiZNiwhY+OVRf3j7IrHckrMi35X7WwfCAKRHd8gFtV9vraPC/r6XLliFJk6XdCw7ZXRt7DC5eKdqBpJQboJH3LAAbFd4+CRXuQYXbAbc1NoAIAPYvLcQFeEBPXS48u5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ec54N2mN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE38BC4CEE2;
-	Wed,  7 May 2025 19:01:17 +0000 (UTC)
+	 MIME-Version; b=N0SGYccIwrmgUCwN0qme26rI1+VLTd9oFPjNreu2UfA4AsxIXIhIm+eRyS6oQVX5p7MKI7MZ7L2I6go5e2cMtFJDKWZM6oOrO9iv3yEUt6oIqAMJqLNRsg8n/PE2rGRPAku9WkxamJUldhiFNydj2YsKCaKSynY/0FaLJ2zGz50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TGZU87hK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C1A7C4CEE2;
+	Wed,  7 May 2025 18:52:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644478;
-	bh=W/MDSvhMkZcKvUfPjFP3Q3vkibbJR7cp1/3zW5HLx/w=;
+	s=korg; t=1746643937;
+	bh=AOMcZn9rIMae6KxqQgrbezgqNGYaiLZxgxbwr8IGI9I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ec54N2mNY9L/j8XvKmx7PG9t2BoTEd52s8VlDhVrwsZ/QI0xJjUJqs/y3VDWX0QHh
-	 RSD6/kUv6tJ9rbiRi5DAAs/wzol1er4RZzNRW1tbAieMQXnoUUz5IHffaGQ+7xIe05
-	 MBvkeGvdXKI+Sa0TsNW5GCmLOLZp2aDup+18Or1I=
+	b=TGZU87hKQPu8849hyNf/Y+lom2vPDNSq7bHgCQ03w6ZM9AOsfSR02jwt2ICgG1PUl
+	 XIC5xt5KM66pWN7d4LsnXlP+tXnPqiLblTWATZgGmhY3xa8fLo2lpa3GoXUuVpFc4N
+	 AsyU8QXxPbBJR3otUOVeepSZ6BPoHReq0KgYa76o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Yajun Deng <yajun.deng@linux.dev>
-Subject: [PATCH 6.12 026/164] mm/memblock: repeat setting reserved region nid if array is doubled
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 066/183] vxlan: vnifilter: Fix unlocked deletion of default FDB entry
 Date: Wed,  7 May 2025 20:38:31 +0200
-Message-ID: <20250507183821.928003093@linuxfoundation.org>
+Message-ID: <20250507183827.365416447@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +63,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Yang <richard.weiyang@gmail.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit eac8ea8736ccc09513152d970eb2a42ed78e87e8 upstream.
+[ Upstream commit 087a9eb9e5978e3ba362e1163691e41097e8ca20 ]
 
-Commit 61167ad5fecd ("mm: pass nid to reserve_bootmem_region()") introduce
-a way to set nid to all reserved region.
+When a VNI is deleted from a VXLAN device in 'vnifilter' mode, the FDB
+entry associated with the default remote (assuming one was configured)
+is deleted without holding the hash lock. This is wrong and will result
+in a warning [1] being generated by the lockdep annotation that was
+added by commit ebe642067455 ("vxlan: Create wrappers for FDB lookup").
 
-But there is a corner case it will leave some region with invalid nid.
-When memblock_set_node() doubles the array of memblock.reserved, it may
-lead to a new reserved region before current position. The new region
-will be left with an invalid node id.
+Reproducer:
 
-Repeat the process when detecting it.
+ # ip link add vx0 up type vxlan dstport 4789 external vnifilter local 192.0.2.1
+ # bridge vni add vni 10010 remote 198.51.100.1 dev vx0
+ # bridge vni del vni 10010 dev vx0
 
-Fixes: 61167ad5fecd ("mm: pass nid to reserve_bootmem_region()")
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-CC: Mike Rapoport <rppt@kernel.org>
-CC: Yajun Deng <yajun.deng@linux.dev>
-CC: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250318071948.23854-3-richard.weiyang@gmail.com
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix by acquiring the hash lock before the deletion and releasing it
+afterwards. Blame the original commit that introduced the issue rather
+than the one that exposed it.
+
+[1]
+WARNING: CPU: 3 PID: 392 at drivers/net/vxlan/vxlan_core.c:417 vxlan_find_mac+0x17f/0x1a0
+[...]
+RIP: 0010:vxlan_find_mac+0x17f/0x1a0
+[...]
+Call Trace:
+ <TASK>
+ __vxlan_fdb_delete+0xbe/0x560
+ vxlan_vni_delete_group+0x2ba/0x940
+ vxlan_vni_del.isra.0+0x15f/0x580
+ vxlan_process_vni_filter+0x38b/0x7b0
+ vxlan_vnifilter_process+0x3bb/0x510
+ rtnetlink_rcv_msg+0x2f7/0xb70
+ netlink_rcv_skb+0x131/0x360
+ netlink_unicast+0x426/0x710
+ netlink_sendmsg+0x75a/0xc20
+ __sock_sendmsg+0xc1/0x150
+ ____sys_sendmsg+0x5aa/0x7b0
+ ___sys_sendmsg+0xfc/0x180
+ __sys_sendmsg+0x121/0x1b0
+ do_syscall_64+0xbb/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x4b/0x53
+
+Fixes: f9c4bb0b245c ("vxlan: vni filtering support on collect metadata device")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20250423145131.513029-1-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/memblock.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/net/vxlan/vxlan_vnifilter.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/mm/memblock.c
-+++ b/mm/memblock.c
-@@ -2160,11 +2160,14 @@ static void __init memmap_init_reserved_
- 	struct memblock_region *region;
- 	phys_addr_t start, end;
- 	int nid;
-+	unsigned long max_reserved;
- 
- 	/*
- 	 * set nid on all reserved pages and also treat struct
- 	 * pages for the NOMAP regions as PageReserved
+diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
+index 6e6e9f05509ab..06d19e90eadb5 100644
+--- a/drivers/net/vxlan/vxlan_vnifilter.c
++++ b/drivers/net/vxlan/vxlan_vnifilter.c
+@@ -627,7 +627,11 @@ static void vxlan_vni_delete_group(struct vxlan_dev *vxlan,
+ 	 * default dst remote_ip previously added for this vni
  	 */
-+repeat:
-+	max_reserved = memblock.reserved.max;
- 	for_each_mem_region(region) {
- 		nid = memblock_get_region_node(region);
- 		start = region->base;
-@@ -2175,6 +2178,13 @@ static void __init memmap_init_reserved_
+ 	if (!vxlan_addr_any(&vninode->remote_ip) ||
+-	    !vxlan_addr_any(&dst->remote_ip))
++	    !vxlan_addr_any(&dst->remote_ip)) {
++		u32 hash_index = fdb_head_index(vxlan, all_zeros_mac,
++						vninode->vni);
++
++		spin_lock_bh(&vxlan->hash_lock[hash_index]);
+ 		__vxlan_fdb_delete(vxlan, all_zeros_mac,
+ 				   (vxlan_addr_any(&vninode->remote_ip) ?
+ 				   dst->remote_ip : vninode->remote_ip),
+@@ -635,6 +639,8 @@ static void vxlan_vni_delete_group(struct vxlan_dev *vxlan,
+ 				   vninode->vni, vninode->vni,
+ 				   dst->remote_ifindex,
+ 				   true);
++		spin_unlock_bh(&vxlan->hash_lock[hash_index]);
++	}
  
- 		memblock_set_node(start, region->size, &memblock.reserved, nid);
- 	}
-+	/*
-+	 * 'max' is changed means memblock.reserved has been doubled its
-+	 * array, which may result a new reserved region before current
-+	 * 'start'. Now we should repeat the procedure to set its node id.
-+	 */
-+	if (max_reserved != memblock.reserved.max)
-+		goto repeat;
- 
- 	/*
- 	 * initialize struct pages for reserved regions that don't have
+ 	if (vxlan->dev->flags & IFF_UP) {
+ 		if (vxlan_addr_multicast(&vninode->remote_ip) &&
+-- 
+2.39.5
+
 
 
 
