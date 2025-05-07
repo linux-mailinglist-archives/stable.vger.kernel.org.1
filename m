@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-142241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 956EDAAE9BA
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:48:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7CEDAAEA6D
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:55:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D660986857
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:47:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32018522C45
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:55:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B01E11C84D7;
-	Wed,  7 May 2025 18:47:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FEF424E4CE;
+	Wed,  7 May 2025 18:55:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1I9AiYen"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WEpXLb6u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BD971B414A;
-	Wed,  7 May 2025 18:47:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CC222116E9;
+	Wed,  7 May 2025 18:55:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643647; cv=none; b=f9tsT2HJsOo9DES2Zs0QMdFl5rlMypuP1+CTZ4g8Yp56y6BMYgCVk2DD9AxRztjrsNFlCcwzYo/82DQ7tS8v139yT4TVTbyn34nZZ+0HoRH3kQ4JE9bMI2n8V21oNlRu3CRFgAS99vNIQM63IYVF/MA21dpA80s0r28APnKHPsE=
+	t=1746644113; cv=none; b=ZnhyYNJqK1ih/4bpabQko73ZllkQ69ZBQF1CEBkzu74woI07oyErGsWqkVzOE9VMNaSGqC9ticQpjqvJ/6w0gAXa0icOVd0yjygRdYSno3p6+Mo0MqnYtAY2nSMrv3jph8tv2jx6nXzjjwRKNr32wocS6Nk01Phl87QiqFCUanA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643647; c=relaxed/simple;
-	bh=RC5SRQiA3kRHsa1MdDraq93o4UW89BFwPHzsxIuNHUA=;
+	s=arc-20240116; t=1746644113; c=relaxed/simple;
+	bh=9RZ9t9C9+EjaDLEqSm7xZ6jVVVljjHzsnloH0Y30ju8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DSZI3G4hdLdLIpqYDJpjIVxy1LNCzoVGDi0vQ5bXM1/lQnABxxWNiy0eVyMD+HMu3t8U9A6Kg/xOYJzzy1PIyJJQcutOXAYN1QhDzTfmiEamBEpepVZAQR6hDGjTs05X4+HKO45UeYSxHTWm24Z1oq6kxRd75c9xfoAbESXezYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1I9AiYen; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF649C4CEE2;
-	Wed,  7 May 2025 18:47:26 +0000 (UTC)
+	 MIME-Version; b=h+3BmcARyCfHlvhyUhxFbWpbAu9GRjrJhQ5rtgS5Wkfs6YI/NOySVhXNbMAyTsS5MQFYBe8NHyKd1uz/v/2MlPCzctkoJsA9j43I3OjmJKyqYnf2XAyub7pkoVj/0MmcRER2Fj2poaww9ibPRG4v+AgcBBeNB5zzWPHUwWSL9N0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WEpXLb6u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BF59C4CEE2;
+	Wed,  7 May 2025 18:55:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643647;
-	bh=RC5SRQiA3kRHsa1MdDraq93o4UW89BFwPHzsxIuNHUA=;
+	s=korg; t=1746644112;
+	bh=9RZ9t9C9+EjaDLEqSm7xZ6jVVVljjHzsnloH0Y30ju8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1I9AiYenaCYE70ajF+sexJVLvO1J36vObQqQFk++LOUQzh7wYJoNhtxvMUeSMiJCe
-	 xRTfkP1K9eWRuMRYbpq43SoEGEjL7UMaqIzH6Q/s7iJof+ey7CnzK19ZhIi3RIk5tw
-	 Vjg4g74VF4hTQTofiSz7FbfvxJlgu10u6YEyLXoY=
+	b=WEpXLb6uZJ/To88/ySRVRDqJYTEtn7UMTKwQambFw2fzlteiufjgp0A+P0OS+e0ql
+	 RFSyGBtXqiBnSN4rVn2SNoBr0KaCxJ/DhvOntYZfsczi+eqaEVn0mvVzvTN5GnOM8h
+	 AbHigiOVx7uQy5ZsyiSSy9yORPiMoG29Hx7IPKYo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Kashyap Desai <kashyap.desai@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 53/97] net_sched: qfq: Fix double list add in class with netem as child qdisc
-Date: Wed,  7 May 2025 20:39:28 +0200
-Message-ID: <20250507183809.132882146@linuxfoundation.org>
+Subject: [PATCH 6.14 124/183] bnxt_en: call pci_alloc_irq_vectors() after bnxt_reserve_rings()
+Date: Wed,  7 May 2025 20:39:29 +0200
+Message-ID: <20250507183829.843428945@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
-References: <20250507183806.987408728@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Nogueira <victor@mojatatu.com>
+From: Kashyap Desai <kashyap.desai@broadcom.com>
 
-[ Upstream commit f139f37dcdf34b67f5bf92bc8e0f7f6b3ac63aa4 ]
+[ Upstream commit 1ae04e489dd757e1e61999362f33e7c554c3b9e3 ]
 
-As described in Gerrard's report [1], there are use cases where a netem
-child qdisc will make the parent qdisc's enqueue callback reentrant.
-In the case of qfq, there won't be a UAF, but the code will add the same
-classifier to the list twice, which will cause memory corruption.
+On some architectures (e.g. ARM), calling pci_alloc_irq_vectors()
+will immediately cause the MSIX table to be written.  This will not
+work if we haven't called bnxt_reserve_rings() to properly map
+the MSIX table to the MSIX vectors reserved by FW.
 
-This patch checks whether the class was already added to the agg->active
-list (cl_is_active) before doing the addition to cater for the reentrant
-case.
+Fix the FW error recovery path to delay the bnxt_init_int_mode() ->
+pci_alloc_irq_vectors() call by removing it from bnxt_hwrm_if_change().
+bnxt_request_irq() later in the code path will call it and by then the
+MSIX table is properly mapped.
 
-[1] https://lore.kernel.org/netdev/CAHcdcOm+03OD2j6R0=YHKqmy=VgJ8xEOKuP6c7mSgnp-TEJJbw@mail.gmail.com/
-
-Fixes: 37d9cf1a3ce3 ("sched: Fix detection of empty queues in child qdiscs")
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
-Link: https://patch.msgid.link/20250425220710.3964791-5-victor@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 4343838ca5eb ("bnxt_en: Replace deprecated PCI MSIX APIs")
+Suggested-by: Michael Chan <michael.chan@broadcom.com>
+Signed-off-by: Kashyap Desai <kashyap.desai@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_qfq.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
-index ed01634af82c2..e6743e17408b2 100644
---- a/net/sched/sch_qfq.c
-+++ b/net/sched/sch_qfq.c
-@@ -204,6 +204,11 @@ struct qfq_sched {
-  */
- enum update_reason {enqueue, requeue};
- 
-+static bool cl_is_active(struct qfq_class *cl)
-+{
-+	return !list_empty(&cl->alist);
-+}
-+
- static struct qfq_class *qfq_find_class(struct Qdisc *sch, u32 classid)
- {
- 	struct qfq_sched *q = qdisc_priv(sch);
-@@ -1216,7 +1221,6 @@ static int qfq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	struct qfq_class *cl;
- 	struct qfq_aggregate *agg;
- 	int err = 0;
--	bool first;
- 
- 	cl = qfq_classify(skb, sch, &err);
- 	if (cl == NULL) {
-@@ -1238,7 +1242,6 @@ static int qfq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 174bb33432d13..a414d7d721b20 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -12172,13 +12172,8 @@ static int bnxt_hwrm_if_change(struct bnxt *bp, bool up)
+ 				set_bit(BNXT_STATE_ABORT_ERR, &bp->state);
+ 				return rc;
+ 			}
++			/* IRQ will be initialized later in bnxt_request_irq()*/
+ 			bnxt_clear_int_mode(bp);
+-			rc = bnxt_init_int_mode(bp);
+-			if (rc) {
+-				clear_bit(BNXT_STATE_FW_RESET_DET, &bp->state);
+-				netdev_err(bp->dev, "init int mode failed\n");
+-				return rc;
+-			}
+ 		}
+ 		rc = bnxt_cancel_reservations(bp, fw_reset);
  	}
- 
- 	gso_segs = skb_is_gso(skb) ? skb_shinfo(skb)->gso_segs : 1;
--	first = !cl->qdisc->q.qlen;
- 	err = qdisc_enqueue(skb, cl->qdisc, to_free);
- 	if (unlikely(err != NET_XMIT_SUCCESS)) {
- 		pr_debug("qfq_enqueue: enqueue failed %d\n", err);
-@@ -1254,8 +1257,8 @@ static int qfq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	++sch->q.qlen;
- 
- 	agg = cl->agg;
--	/* if the queue was not empty, then done here */
--	if (!first) {
-+	/* if the class is active, then done here */
-+	if (cl_is_active(cl)) {
- 		if (unlikely(skb == cl->qdisc->ops->peek(cl->qdisc)) &&
- 		    list_first_entry(&agg->active, struct qfq_class, alist)
- 		    == cl && cl->deficit < len)
 -- 
 2.39.5
 
