@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-142640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E529AAEB87
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:08:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EE54AAEA50
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:54:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4EACCB20E50
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:06:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB2B59C540D
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:53:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCD952144BF;
-	Wed,  7 May 2025 19:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A775289823;
+	Wed,  7 May 2025 18:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QDbPnYoS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AFJ80L6E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98CFE1E1DF6;
-	Wed,  7 May 2025 19:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E031FF5EC;
+	Wed,  7 May 2025 18:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644874; cv=none; b=pDNUMAixPzPxc3igmgO3bV9LMfcvz55BUJmFaYpnCcGs84eBcxHoFLQCgw6cwIuRAU/jwneUO5vuWa/N+02NUq6XvZ9qMhAz68ZqWSpKDu4yOcCZONC9xiX9lhj4azGIRbO4o/eDE/9xm0+14ue8PAk9YTpu7FpLUGavrMUIJ7s=
+	t=1746644026; cv=none; b=ZNBQM5UxfB3Osyll3aMMnYJc0MIh6+H4LNHLihDHDqrEeLEjyopm1wheFO54+BFpAZ5hZnUwPWkcbxcAaKSPM5hdKZOAvLk02isiJY/Fb3YV5ATVk8NWCocYeZnB8Sju6FZXs7UH0c/U2fW1EcGEuvfRwGOkr+MP0DkIIdtFa+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644874; c=relaxed/simple;
-	bh=OileND7weJx1KL0H2FOAgYQh7bwqx9oPkE66zoZnEyo=;
+	s=arc-20240116; t=1746644026; c=relaxed/simple;
+	bh=Sakcz5K4/nzFFMt7m2qV3/2SLRK4NnQTd6SPP12du98=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UTtMk8u1Rmcc9Wi5WeD6ud0Qs1RHSBL7cmkRUOHnBrV1A7hva+IO8uDCd7L5PnwZhmLfE2poE8JBdYxSZjk13BNqjSGHVRxfQHsqhNjTmmsQp8eq68nT5LuqvSOEPr5z+7RxGxw5uQwAglthBzmoh+bbOk1t01QjjJjDgzrwjVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QDbPnYoS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06120C4CEE2;
-	Wed,  7 May 2025 19:07:53 +0000 (UTC)
+	 MIME-Version; b=RPNVKwEnzKN/njsYhmkky7DCm4P1K8Ua3QvqRrH7/pAOEEl0DWNbF51AqRYUepkvSKiC9E4kyKS66XqQWHcbbPYK8Uvv8BHESQd0LwRjkvB98tzdskJeEFDLhM4PmLGSgE1dhhjvkKwmBuzEeJqVW8uEHp41PVD94CBuXOyYUNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AFJ80L6E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2D08C4CEEB;
+	Wed,  7 May 2025 18:53:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644874;
-	bh=OileND7weJx1KL0H2FOAgYQh7bwqx9oPkE66zoZnEyo=;
+	s=korg; t=1746644026;
+	bh=Sakcz5K4/nzFFMt7m2qV3/2SLRK4NnQTd6SPP12du98=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QDbPnYoSQbBwZ4x3gfQpggj8hYEXuFzjK9zaZH0RktH5R1KckpDC0lBEM6bqB5W98
-	 1dif3rMWOZfBts9d7PUQO81X7P371pbaim+hEOm9F4RREuGReYDXQzev5ygMuiZS/i
-	 2FGClv4gqVnHTfL9JEUir8jIUzEQYfKd534Mh5Kw=
+	b=AFJ80L6EV+MAIeWI9X4uGJSvJzy2YafkPgJQRmQe+3qoKMSSxdeU9DSQ4+PTeItc8
+	 UzPv03ldEAnTYS2RbhiA+IG1Pp33sOoAXaFi7lWcRWj0PWCcVZOCMHR3REwwYoatU7
+	 m77qL4NfAUHriz0ozYKtC/Fi47AVhKNSBcQed6PQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Subject: [PATCH 6.6 005/129] drm/fdinfo: Protect against driver unbind
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 096/183] net_sched: drr: Fix double list add in class with netem as child qdisc
 Date: Wed,  7 May 2025 20:39:01 +0200
-Message-ID: <20250507183813.744381554@linuxfoundation.org>
+Message-ID: <20250507183828.712794134@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
-References: <20250507183813.500572371@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +61,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+From: Victor Nogueira <victor@mojatatu.com>
 
-commit 5b1834d6202f86180e451ad1a2a8a193a1da18fc upstream.
+[ Upstream commit f99a3fbf023e20b626be4b0f042463d598050c9a ]
 
-If we unbind a driver from the PCI device with an active DRM client,
-subsequent read of the fdinfo data associated with the file descriptor in
-question will not end well.
+As described in Gerrard's report [1], there are use cases where a netem
+child qdisc will make the parent qdisc's enqueue callback reentrant.
+In the case of drr, there won't be a UAF, but the code will add the same
+classifier to the list twice, which will cause memory corruption.
 
-Protect the path with a drm_dev_enter/exit() pair.
+In addition to checking for qlen being zero, this patch checks whether the
+class was already added to the active_list (cl_is_active) before adding
+to the list to cover for the reentrant case.
 
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Cc: Christian König <christian.koenig@amd.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Fixes: 3f09a0cd4ea3 ("drm: Add common fdinfo helper")
-Cc: <stable@vger.kernel.org> # v6.5+
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Link: https://lore.kernel.org/r/20250418162512.72324-1-tvrtko.ursulin@igalia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[1] https://lore.kernel.org/netdev/CAHcdcOm+03OD2j6R0=YHKqmy=VgJ8xEOKuP6c7mSgnp-TEJJbw@mail.gmail.com/
+
+Fixes: 37d9cf1a3ce3 ("sched: Fix detection of empty queues in child qdiscs")
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+Link: https://patch.msgid.link/20250425220710.3964791-2-victor@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_file.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ net/sched/sch_drr.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/drm_file.c
-+++ b/drivers/gpu/drm/drm_file.c
-@@ -1015,6 +1015,10 @@ void drm_show_fdinfo(struct seq_file *m,
- 	struct drm_file *file = f->private_data;
- 	struct drm_device *dev = file->minor->dev;
- 	struct drm_printer p = drm_seq_file_printer(m);
-+	int idx;
+diff --git a/net/sched/sch_drr.c b/net/sched/sch_drr.c
+index c69b999fae171..25b77ed0c1f28 100644
+--- a/net/sched/sch_drr.c
++++ b/net/sched/sch_drr.c
+@@ -35,6 +35,11 @@ struct drr_sched {
+ 	struct Qdisc_class_hash		clhash;
+ };
+ 
++static bool cl_is_active(struct drr_class *cl)
++{
++	return !list_empty(&cl->alist);
++}
 +
-+	if (!drm_dev_enter(dev, &idx))
-+		return;
+ static struct drr_class *drr_find_class(struct Qdisc *sch, u32 classid)
+ {
+ 	struct drr_sched *q = qdisc_priv(sch);
+@@ -336,7 +341,6 @@ static int drr_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	struct drr_sched *q = qdisc_priv(sch);
+ 	struct drr_class *cl;
+ 	int err = 0;
+-	bool first;
  
- 	drm_printf(&p, "drm-driver:\t%s\n", dev->driver->name);
- 	drm_printf(&p, "drm-client-id:\t%llu\n", file->client_id);
-@@ -1029,6 +1033,8 @@ void drm_show_fdinfo(struct seq_file *m,
+ 	cl = drr_classify(skb, sch, &err);
+ 	if (cl == NULL) {
+@@ -346,7 +350,6 @@ static int drr_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		return err;
+ 	}
  
- 	if (dev->driver->show_fdinfo)
- 		dev->driver->show_fdinfo(&p, file);
-+
-+	drm_dev_exit(idx);
- }
- EXPORT_SYMBOL(drm_show_fdinfo);
+-	first = !cl->qdisc->q.qlen;
+ 	err = qdisc_enqueue(skb, cl->qdisc, to_free);
+ 	if (unlikely(err != NET_XMIT_SUCCESS)) {
+ 		if (net_xmit_drop_count(err)) {
+@@ -356,7 +359,7 @@ static int drr_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		return err;
+ 	}
  
+-	if (first) {
++	if (!cl_is_active(cl)) {
+ 		list_add_tail(&cl->alist, &q->active);
+ 		cl->deficit = cl->quantum;
+ 	}
+-- 
+2.39.5
+
 
 
 
