@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-142185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9625CAAE969
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:44:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77839AAEAE3
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:01:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C412B1C27381
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:44:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AFB09C844A
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:00:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4F9128DF1B;
-	Wed,  7 May 2025 18:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F4AC29A0;
+	Wed,  7 May 2025 19:00:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="exn6REtE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fE4NV+Hm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 715F914A4C7;
-	Wed,  7 May 2025 18:44:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D559B28AAE9;
+	Wed,  7 May 2025 19:00:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643473; cv=none; b=TUPivpExsOuyfSei1VO+al0ZnzAAl3Q1vJyQbmajMMPj+dNIQnZrdSR9rCkeazJvrjZkd3ScwZtSWRT3JKr+qkJ7ZBUgexMU0HcuWI8RwU9W3Ov6vRzKwu5RtVo6eOJO4By14tEbJHoBcGVrinbhvRGGZl+15yTl5ZBhAIeS2J8=
+	t=1746644448; cv=none; b=bj5zJrQcGjXbuzI2QpazG3UbH72OEMVWvBt7RlMZjoSpaBB0Or/GwAW+w2tCSGD5wc1wi6hBYpiLVJI/cfbfOloZ9h9Mc9R7t034p9ru6eO8j+hgOd5brcuABLaLFFardm5xegeDwynGPgKr9uYUNc9JAop0JM/Mc/fC1+LdFF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643473; c=relaxed/simple;
-	bh=FCeKJ/Hm5vZsF9h5LUVTtkL94gMaMbv/M+4nTD4/IHM=;
+	s=arc-20240116; t=1746644448; c=relaxed/simple;
+	bh=ulB93sMs/WLB/Sfmc6HMHy53gVf3hhaK/F4ch+univE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hUZnWrPbO4JbczhbygiRBHbS7Br4Tfh5I7ieqYoBraPQCQXM/F9gyzegFlCb+vyTV2fzuWd/jsjLd5A2adwi5RKhkJdI7TgTzfBqgqXd8zmqjhJmhxgXapxQNa6S9gx46FdwLhn6T9MHdsOW7/8nFdMacs176HeCGaCB1mqQvVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=exn6REtE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2D83C4CEE2;
-	Wed,  7 May 2025 18:44:32 +0000 (UTC)
+	 MIME-Version; b=ss1DLVDAhL7efIzC1m+20bARb8t4T5+IPzXIBGClArZxKsygB5NGpegS5p8PCmsx5oeYmxT/AoqZU1ZpeOr6+7q9AkmiPkr5QiyvWpRf5u3hnjOIaXRKooMxPsQDd5unEQQwlN7qgpa7VDSFgW0Dg3aoAzuAYL1pPB9s9k2s1b8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fE4NV+Hm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03131C4CEE2;
+	Wed,  7 May 2025 19:00:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643473;
-	bh=FCeKJ/Hm5vZsF9h5LUVTtkL94gMaMbv/M+4nTD4/IHM=;
+	s=korg; t=1746644448;
+	bh=ulB93sMs/WLB/Sfmc6HMHy53gVf3hhaK/F4ch+univE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=exn6REtEqRz+cRa3lN3UXTRmTBeWCpoSOf8DKVWRedJZZEfZbPB/ANMQM1zC3wan3
-	 wJ05ZxpsvUNIcR4xDTxTRgvUz0SNhnFsRIyI3X13kB4e8paIe/6XXzui9KReIP4fVL
-	 VW3M0XZFL52hBJM17ptySvtZ+h9hvXVO46cFpuEw=
+	b=fE4NV+HmKiPcyOti9nKTEWPtZJqfHrNNc3AkI7+qoYasDkXiLUFAX8/QFUUlBBgcN
+	 AQEBwHFgh2VN20lq2JCi3v908KiaA5eAhyJhDMH7NV2brCydAXhlNCffLEx+Ghc8B8
+	 uxyzx+FyGhSSB/Yc8a7mnLAN7WINcMNUCW6eIr7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Paklov <Pavel.Paklov@cyberprotect.ru>,
-	Joerg Roedel <jroedel@suse.de>
-Subject: [PATCH 6.1 16/97] iommu/amd: Fix potential buffer overflow in parse_ivrs_acpihid
+	Sean Heelan <seanheelan@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 046/164] ksmbd: fix use-after-free in session logoff
 Date: Wed,  7 May 2025 20:38:51 +0200
-Message-ID: <20250507183807.641944031@linuxfoundation.org>
+Message-ID: <20250507183822.747054515@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
-References: <20250507183806.987408728@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Paklov <Pavel.Paklov@cyberprotect.ru>
+From: Sean Heelan <seanheelan@gmail.com>
 
-commit 8dee308e4c01dea48fc104d37f92d5b58c50b96c upstream.
+commit 2fc9feff45d92a92cd5f96487655d5be23fb7e2b upstream.
 
-There is a string parsing logic error which can lead to an overflow of hid
-or uid buffers. Comparing ACPIID_LEN against a total string length doesn't
-take into account the lengths of individual hid and uid buffers so the
-check is insufficient in some cases. For example if the length of hid
-string is 4 and the length of the uid string is 260, the length of str
-will be equal to ACPIID_LEN + 1 but uid string will overflow uid buffer
-which size is 256.
+The sess->user object can currently be in use by another thread, for
+example if another connection has sent a session setup request to
+bind to the session being free'd. The handler for that connection could
+be in the smb2_sess_setup function which makes use of sess->user.
 
-The same applies to the hid string with length 13 and uid string with
-length 250.
-
-Check the length of hid and uid strings separately to prevent
-buffer overflow.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: ca3bf5d47cec ("iommu/amd: Introduces ivrs_acpihid kernel parameter")
 Cc: stable@vger.kernel.org
-Signed-off-by: Pavel Paklov <Pavel.Paklov@cyberprotect.ru>
-Link: https://lore.kernel.org/r/20250325092259.392844-1-Pavel.Paklov@cyberprotect.ru
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Sean Heelan <seanheelan@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/amd/init.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/smb/server/smb2pdu.c |    4 ----
+ 1 file changed, 4 deletions(-)
 
---- a/drivers/iommu/amd/init.c
-+++ b/drivers/iommu/amd/init.c
-@@ -3610,6 +3610,14 @@ found:
- 	while (*uid == '0' && *(uid + 1))
- 		uid++;
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -2240,10 +2240,6 @@ int smb2_session_logoff(struct ksmbd_wor
+ 	sess->state = SMB2_SESSION_EXPIRED;
+ 	up_write(&conn->session_lock);
  
-+	if (strlen(hid) >= ACPIHID_HID_LEN) {
-+		pr_err("Invalid command line: hid is too long\n");
-+		return 1;
-+	} else if (strlen(uid) >= ACPIHID_UID_LEN) {
-+		pr_err("Invalid command line: uid is too long\n");
-+		return 1;
-+	}
-+
- 	i = early_acpihid_map_size++;
- 	memcpy(early_acpihid_map[i].hid, hid, strlen(hid));
- 	memcpy(early_acpihid_map[i].uid, uid, strlen(uid));
+-	if (sess->user) {
+-		ksmbd_free_user(sess->user);
+-		sess->user = NULL;
+-	}
+ 	ksmbd_all_conn_set_status(sess_id, KSMBD_SESS_NEED_SETUP);
+ 
+ 	rsp->StructureSize = cpu_to_le16(4);
 
 
 
