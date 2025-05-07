@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-142655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31DEEAAEBB5
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:09:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B9ACAAE9CE
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:48:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 105C35273AC
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:08:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E4781C41E71
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:48:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA9D128AAE9;
-	Wed,  7 May 2025 19:08:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58CBA1DDC23;
+	Wed,  7 May 2025 18:48:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TrFg3Gtd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qhMJzGy9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775DF1EB5DD;
-	Wed,  7 May 2025 19:08:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 151E21FF5EC;
+	Wed,  7 May 2025 18:48:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644920; cv=none; b=SsXfhKqM3/qYE+wh9tjIJq97VEUlM8BU/2vbqS1bkkwmVSnakcC9uBp8XFjG1xgRdcun36FQAKq2LBHSSZ9fxAbzeXo6Md8FiuvFnjWbK/7T5NTsR5MPITfImXw23eG55YutnsHbaofKm+xEwQ0E+tYWYVNR2zYsvQ1TxU3Fq2w=
+	t=1746643701; cv=none; b=Wz0Vq7fGjQMqnouq6aLemMi21XHI0EPoTzl9L89kWZEV01N6Q7JfZxT31D2JsGVoIo1pNzXQFRGKwu3LK6P43aa/hCg25G1uFRWyhiqCwDCUKIuxUD5He4YLciveU1u0tT62/eaie2gf5/rx1y78itOEdGc9C+DL/DMcaySeha0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644920; c=relaxed/simple;
-	bh=9KSSKpSVTTaSpzc4gpqZR61Tnt5plZekX/L0nIJ7QgM=;
+	s=arc-20240116; t=1746643701; c=relaxed/simple;
+	bh=fm9oJFvJUSdj8QFBPOcJfbDt9pVs0vuLvtxi7gVTjDk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qc+Up1aIHbqkXiebKG2XP+mRiCgmkUueLorKE1UGoa/zq3wOhY4P2cWXebNYgBnJATE4HVoAgr9FkJgTIqyQzLSs4PqXaL0TZze9vnpcOpd5sFx3BJeGXpJxDLknjH6z9v76mUjjPSWQn9M5nznG3HI1y5z1juMZ2sMTgDqQ0Vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TrFg3Gtd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBEB1C4CEE2;
-	Wed,  7 May 2025 19:08:39 +0000 (UTC)
+	 MIME-Version; b=WI/cN2qqr7a70lIjFz0i7zf4jjpvHdKwh2zjVETPs4UiMagaxkWiZbitepjGmrKcfJjKucPXm/taszMTuiVKpkH0kwEgEv/acANmxsJoTLmBeeIvHwCCHsU3OZu1qB4a78DYoLm+Gsyn/jfavEiXEMtKhtuHrCl1b0kuiKpMhto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qhMJzGy9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B2F0C4CEE2;
+	Wed,  7 May 2025 18:48:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644920;
-	bh=9KSSKpSVTTaSpzc4gpqZR61Tnt5plZekX/L0nIJ7QgM=;
+	s=korg; t=1746643701;
+	bh=fm9oJFvJUSdj8QFBPOcJfbDt9pVs0vuLvtxi7gVTjDk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TrFg3GtdGvtLjr80O901vl+jcLZSk+dmDYDS0pHyDDELX9fMUSxVh9Lt+kXfgF4Ud
-	 jruXo6SagibUQEhl2afHf1X55Xy4FJepf+EYmLoM1uaJoF/kTdnOzr1smyv0OJYz2q
-	 iC3ox35tObxj6sLjhV0F0EMPHQVnE13PLgDMKAhk=
+	b=qhMJzGy9YpbXpBQdg0NwGxoK7mLigDAbZsxC6nBrX+vYdy8Y5G5EbLZmobeWyb7BP
+	 43pi4Zkus8n+9gHgw3TXof4Tgbae6qD35rWQtdNpTLP4RNl0/FvOlIKnN8LlAPPaAv
+	 iTLQb3PQhffRYDcjBChgWdD0XiUnOcPhLt46N/M8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nick Zavaritsky <mejedi@gmail.com>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH 6.6 036/129] selftests/bpf: test for changing packet data from global functions
+	Felix Fietkau <nbd@nbd.name>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 57/97] net: ipv6: fix UDPv6 GSO segmentation with NAT
 Date: Wed,  7 May 2025 20:39:32 +0200
-Message-ID: <20250507183814.998795348@linuxfoundation.org>
+Message-ID: <20250507183809.290394861@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
-References: <20250507183813.500572371@linuxfoundation.org>
+In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
+References: <20250507183806.987408728@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +63,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eduard Zingerman <eddyz87@gmail.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-commit 3f23ee5590d9605dbde9a5e1d4b97637a4803329 upstream.
+[ Upstream commit b936a9b8d4a585ccb6d454921c36286bfe63e01d ]
 
-Check if verifier is aware of packet pointers invalidation done in
-global functions. Based on a test shared by Nick Zavaritsky in [0].
+If any address or port is changed, update it in all packets and recalculate
+checksum.
 
-[0] https://lore.kernel.org/bpf/0498CA22-5779-4767-9C0C-A9515CEA711F@gmail.com/
-
-Suggested-by: Nick Zavaritsky <mejedi@gmail.com>
-Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20241210041100.1898468-5-eddyz87@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9fd1ff5d2ac7 ("udp: Support UDP fraglist GRO/GSO.")
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20250426153210.14044-1-nbd@nbd.name
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/progs/verifier_sock.c |   28 ++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ net/ipv4/udp_offload.c | 61 +++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 60 insertions(+), 1 deletion(-)
 
---- a/tools/testing/selftests/bpf/progs/verifier_sock.c
-+++ b/tools/testing/selftests/bpf/progs/verifier_sock.c
-@@ -977,4 +977,32 @@ l1_%=:	r0 = *(u8*)(r7 + 0);				\
- 	: __clobber_all);
+diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
+index 2f1f038b0dc1b..d415b4fb2f1f4 100644
+--- a/net/ipv4/udp_offload.c
++++ b/net/ipv4/udp_offload.c
+@@ -246,6 +246,62 @@ static struct sk_buff *__udpv4_gso_segment_list_csum(struct sk_buff *segs)
+ 	return segs;
  }
  
-+__noinline
-+long skb_pull_data2(struct __sk_buff *sk, __u32 len)
++static void __udpv6_gso_segment_csum(struct sk_buff *seg,
++				     struct in6_addr *oldip,
++				     const struct in6_addr *newip,
++				     __be16 *oldport, __be16 newport)
 +{
-+	return bpf_skb_pull_data(sk, len);
++	struct udphdr *uh = udp_hdr(seg);
++
++	if (ipv6_addr_equal(oldip, newip) && *oldport == newport)
++		return;
++
++	if (uh->check) {
++		inet_proto_csum_replace16(&uh->check, seg, oldip->s6_addr32,
++					  newip->s6_addr32, true);
++
++		inet_proto_csum_replace2(&uh->check, seg, *oldport, newport,
++					 false);
++		if (!uh->check)
++			uh->check = CSUM_MANGLED_0;
++	}
++
++	*oldip = *newip;
++	*oldport = newport;
 +}
 +
-+__noinline
-+long skb_pull_data1(struct __sk_buff *sk, __u32 len)
++static struct sk_buff *__udpv6_gso_segment_list_csum(struct sk_buff *segs)
 +{
-+	return skb_pull_data2(sk, len);
++	const struct ipv6hdr *iph;
++	const struct udphdr *uh;
++	struct ipv6hdr *iph2;
++	struct sk_buff *seg;
++	struct udphdr *uh2;
++
++	seg = segs;
++	uh = udp_hdr(seg);
++	iph = ipv6_hdr(seg);
++	uh2 = udp_hdr(seg->next);
++	iph2 = ipv6_hdr(seg->next);
++
++	if (!(*(const u32 *)&uh->source ^ *(const u32 *)&uh2->source) &&
++	    ipv6_addr_equal(&iph->saddr, &iph2->saddr) &&
++	    ipv6_addr_equal(&iph->daddr, &iph2->daddr))
++		return segs;
++
++	while ((seg = seg->next)) {
++		uh2 = udp_hdr(seg);
++		iph2 = ipv6_hdr(seg);
++
++		__udpv6_gso_segment_csum(seg, &iph2->saddr, &iph->saddr,
++					 &uh2->source, uh->source);
++		__udpv6_gso_segment_csum(seg, &iph2->daddr, &iph->daddr,
++					 &uh2->dest, uh->dest);
++	}
++
++	return segs;
 +}
 +
-+/* global function calls bpf_skb_pull_data(), which invalidates packet
-+ * pointers established before global function call.
-+ */
-+SEC("tc")
-+__failure __msg("invalid mem access")
-+int invalidate_pkt_pointers_from_global_func(struct __sk_buff *sk)
-+{
-+	int *p = (void *)(long)sk->data;
-+
-+	if ((void *)(p + 1) > (void *)(long)sk->data_end)
-+		return TCX_DROP;
-+	skb_pull_data1(sk, 0);
-+	*p = 42; /* this is unsafe */
-+	return TCX_PASS;
-+}
-+
- char _license[] SEC("license") = "GPL";
+ static struct sk_buff *__udp_gso_segment_list(struct sk_buff *skb,
+ 					      netdev_features_t features,
+ 					      bool is_ipv6)
+@@ -258,7 +314,10 @@ static struct sk_buff *__udp_gso_segment_list(struct sk_buff *skb,
+ 
+ 	udp_hdr(skb)->len = htons(sizeof(struct udphdr) + mss);
+ 
+-	return is_ipv6 ? skb : __udpv4_gso_segment_list_csum(skb);
++	if (is_ipv6)
++		return __udpv6_gso_segment_list_csum(skb);
++	else
++		return __udpv4_gso_segment_list_csum(skb);
+ }
+ 
+ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
+-- 
+2.39.5
+
 
 
 
