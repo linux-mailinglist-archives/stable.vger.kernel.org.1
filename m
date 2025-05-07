@@ -1,250 +1,189 @@
-Return-Path: <stable+bounces-142111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8983DAAE74B
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:01:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 748DAAAE768
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:07:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FB4E1892B66
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 17:01:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E0971BA52E1
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 17:07:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 509E028B7E2;
-	Wed,  7 May 2025 17:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C008C28C020;
+	Wed,  7 May 2025 17:07:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rwAs/lJs"
+	dkim=pass (2048-bit key) header.d=live.com header.i=@live.com header.b="csXHIJbi"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from PNZPR01CU001.outbound.protection.outlook.com (mail-centralindiaazolkn19011035.outbound.protection.outlook.com [52.103.68.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01E9E10F9;
-	Wed,  7 May 2025 17:01:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746637293; cv=none; b=cA0fcXMJI7IWg1mubl6zJHUKaf1LdY9rXusVFyxkBbnv0ef8oYrKW4VM5LIS2iXn21TNzpB0q9A1PYXUYafohGWrjNYYTErg09VgG0ao/WytanUnke0LKiuTvPm291JXJzTWcV/LevdQEH8GMAg08slZ7jv+GxOFXP4fHIkcWLA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746637293; c=relaxed/simple;
-	bh=WWF4HysMWVfjRQkCh0ajdFTLwnPc+5TrfLe/aMyFw5Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=utHPSZtU6jFSNF8pdn4Fh033gc9PRekavuPH5meZPKWdHgCzC83hNOhe2PvOLt9XBQTB8wbir+wEXnPUYV1VgTDnl3p0jxggeM7RpunhHUep2VGQ4C/QUAVsF/6lpeBVFzKu57rOfBOGJliossNmi9sowhy+To9ePXcoA0pAKBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rwAs/lJs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F567C4CEE2;
-	Wed,  7 May 2025 17:01:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746637292;
-	bh=WWF4HysMWVfjRQkCh0ajdFTLwnPc+5TrfLe/aMyFw5Y=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=rwAs/lJsP3feSK41EI/+IJrKoBq3J0paf1KGCtW0KFqkjUrpAO86owcoVFlaDIi3R
-	 M7QTbO37SgTBJYXaPsd1no3k+ST6CvLOcOKoKUCdmP7NEQoaH/pEuETCAGXYyBPcUC
-	 Q3pazwOqPKRB9w1R4ziKZAXlYs2DpCuFlYaW/619ueGe/9OQEaibUBLmlK97FrwvIp
-	 NyB7RkPMaCgqE2X1DCyjovgKki/fGb8QF/rcH8ymkP4kT3BgQqi492eN5tysKRkjtq
-	 6vwzPtBKfO0qKGUvZM26PShE5wHo5saWKTE98V5ITpHfuyU0WsCroV2mzkViR0bhuQ
-	 JCwcQDYp5o0Ow==
-Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-60657f417c4so63435eaf.0;
-        Wed, 07 May 2025 10:01:32 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWVwLl6E16N5QiEZVcpxD/C20Nn+KfM7Ah/LcAlN1Xwk9Wd6raU9C7D8zL1dXloj/ALDNZI4NIJeNDs@vger.kernel.org, AJvYcCX3rWtGHB1XexOHD7PuSaWzEGzyXNd2bUDsnCy8x+L1wFAhIUS1vwfAerfC8RpYZyrsRjcfguUkHW9iMNdN@vger.kernel.org, AJvYcCX7rAsNHWQ6FphUzspP87LTTfvrPWHZZZHrFWBVXYUaOmFekNeeRqaBPByLLZt7hRNrdWTPygwr@vger.kernel.org
-X-Gm-Message-State: AOJu0YwSBts/x5kaS80atJaN4mT9CvnfgTYE1PHYHdGEqb9eNmciyrUz
-	ZF5ptXrYvwi7mnRORyLjvLOVFD1f1h25rKmG18KzxNwgAlr//YMQ/BMFYhHxjse7+5E0SL5uIao
-	bxWUtQYWXkbNKsoMKcjvNRuK2X6s=
-X-Google-Smtp-Source: AGHT+IEyp/1fcrvYo1wiJbYwnxAXqyA1M8IBw+kq9UcquXiy2i3G2TRZtYTxsV5Li6WT+9Jw754gnHQZ+F4nHbzRwE8=
-X-Received: by 2002:a05:6820:198e:b0:602:5856:255c with SMTP id
- 006d021491bc7-608339b7e25mr51774eaf.8.1746637291743; Wed, 07 May 2025
- 10:01:31 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C993610F9;
+	Wed,  7 May 2025 17:07:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.103.68.35
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746637643; cv=fail; b=efpyCqcyfiFbGy9ZN4uBqsVud9lXbjUMgG0/tCvImXiradrT9hIRiBOowI9Kyl56ZD31uxErGdxxoi8c6bbYGGReu5ht9CIhyZttRyg4zxD2GqUrcLH1TzX+/8l+ZoPrpd/ZWkZP3ZzEj6HIKvmsXYecgKEpwi9ZO5e+A694bME=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746637643; c=relaxed/simple;
+	bh=5rtpvuqEaxEqYLuSX1Uu8rUKQkNiPZ+nLBZ3U6Zd6zo=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=MZ/0Nks1ae62V7HwwgFH1Why8X/xvGOST3h/0bgHmS6ft8YHIeG9Zt/tBjlt3EdBJ3apf27yfdZCyy+fzjzZc2MOHcsigMZQsaNMZZLU4yaSwiOOeGDniKzL3bp5zp2vGUeqVDQsQlHyIIywZSaJPJkElghpLKEDLjiSgKuMFhY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.com; spf=pass smtp.mailfrom=live.com; dkim=pass (2048-bit key) header.d=live.com header.i=@live.com header.b=csXHIJbi; arc=fail smtp.client-ip=52.103.68.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=live.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=jW4nihuJTOcCpajWVOX4bNBXMuVRzH8uQEbXJC9fXtzgLGi4FzLavOnVIj+6yR1rq5dmDzBUNPFKOmIiVEEfT2vqrKS/YAMA5h4pNo+vI9IsHFdNCtPydal6LY0CbW3AYBpJNA8K/hYU0Ng2CrEfSn81m9uMuc4155tEC47lYispIhoQpX9UgSARovYuNWVERJkS1zhWCMgbcU+wCBBiEdwpiMJ3NF3k5J+ymRu9BElFBCEDIeb56pun9X7tby/QL+UPV5JL1HgdXoXM9wk8c5+fL+Hf6NKcXwoKFKdhdcenDPIXZs7jh47R9cJcDYtJkkHpQlkb6IB0SHf8vMZgWA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=tjSMRWazf2qSh7NkIaKWJh3DRNIIiRNjRDmTdjtxxf0=;
+ b=j4lwWxIJumP7MFYBj9p17OIjndtRBP0AyAbyfKaZa3f0GLijRU2DOpcJDFtfpqEe7+a0LngT1uzHaCQvdMhmHdX3liPqn8mRENW5EE5wx/TY3LEI3sahgxgrDdnUDpOv5BekkQc2TAde91NZlYsfAXPfQyAYraec5PsOWFbvjMk58+nt6HiX19Fx3+lrWImi9glxGifDM0hDyyxxgOtaZRnV0ALzEdBU3veLrjLWJ7ghymTa8v3IC0ZpZQObW4S2mjgJTx+Z1wWKIZnVK4W0FLsWi4rOyGlLRSC8HiYtYvD3ocbhaS/pUgWwlDMy7etxcwhFr/Kpl27A9uL2ofYhNQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=live.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=tjSMRWazf2qSh7NkIaKWJh3DRNIIiRNjRDmTdjtxxf0=;
+ b=csXHIJbi8oSB3fhDpJJ5lSentyZXL+JI+1B4Hl+oujq2n+E/CtAnAamDX43a6QhPpwyQQRySEOokfhYwWc9aY6d9z5wqFmJOeHBXEHgn725Yxm7g6r2/pZTSwZkZ58Jw6puuPvXsUFBdcA2auT9NeYUqh7+DX30KzhqAnFBgzKfrbmP7FUzTqigtob1AaqJfr+R7ww9FTsxjVvYSt0dA87xzVQuX/ZutB/r+vQPdRxS0mBCL6uufLxSrVvk+hXy3Jvm6dBYT2Sqd3EQdZ7xLMooePqvelaOUyc+GQZzrGgOqRGvy0ZNVNcaYLRxWrbGttP6mua1xfff6hn90r55QBw==
+Received: from PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM (2603:1096:c01:f7::14)
+ by PN2PR01MB8902.INDPRD01.PROD.OUTLOOK.COM (2603:1096:c01:115::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.26; Wed, 7 May
+ 2025 17:07:14 +0000
+Received: from PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM
+ ([fe80::324:c085:10c8:4e77]) by PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM
+ ([fe80::324:c085:10c8:4e77%5]) with mapi id 15.20.8699.030; Wed, 7 May 2025
+ 17:07:14 +0000
+Message-ID:
+ <PN3PR01MB9597D8E327CC7910673849D3B888A@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM>
+Date: Wed, 7 May 2025 22:37:11 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] applespi from 6.12 onwards
+To: =?UTF-8?Q?Berkel_J=C3=B6rg?= <joerg.berkel@bfh.ch>,
+ linux-input@vger.kernel.org
+Cc: dmitry.torokhov@gmail.com, stable@vger.kernel.org,
+ regressions@lists.linux.dev, linux-spi@vger.kernel.org, lukas@wunner.de,
+ David Woodhouse <dwmw2@infradead.org>, Lu Baolu <baolu.lu@linux.intel.com>,
+ iommu@lists.linux.dev, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>
+References: <4dada48a-c5dd-4c30-9c85-5b03b0aa01f0@bfh.ch>
+Content-Language: en-US
+From: Aditya Garg <gargaditya08@live.com>
+In-Reply-To: <4dada48a-c5dd-4c30-9c85-5b03b0aa01f0@bfh.ch>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: PN4P287CA0121.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:c01:2b2::8) To PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM
+ (2603:1096:c01:f7::14)
+X-Microsoft-Original-Message-ID:
+ <817302ad-1f79-4bac-87b3-7006ff9c0ade@live.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250506-draco-taped-15f475cd@mheyne-amazon> <214c2a2d-e0ea-4ec6-9925-05e39319e813@arm.com>
- <CAJZ5v0jvWXDQQ++4wmWJ+i=jds+MZ68bRB9+26WM4tAPHFxALw@mail.gmail.com>
- <1911d3b6-f328-40a6-aa03-cde3d79554de@arm.com> <CAJZ5v0ii9HLfqfgcp=1qRRX6M1yThf7ZPNkSLVc5GGFhv=N-Lg@mail.gmail.com>
- <ad04d07b-d610-4355-bd47-1d2fb49711f3@arm.com> <fb2e3c60-1171-4f5c-852d-a5bfdc4f9c2a@arm.com>
- <25aa77b9-0077-4021-b55c-e94327b7847b@arm.com>
-In-Reply-To: <25aa77b9-0077-4021-b55c-e94327b7847b@arm.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Wed, 7 May 2025 19:01:20 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0hTiJSp9q4iWu_EHB47X3Bf9LFY+ZZoqm7aN0cD8Jnjvg@mail.gmail.com>
-X-Gm-Features: ATxdqUFO6gzxkrZPQ3np8CtDAhbK6am2XgaSiVd7edj5CqwnaeVom0pEB4NLGNg
-Message-ID: <CAJZ5v0hTiJSp9q4iWu_EHB47X3Bf9LFY+ZZoqm7aN0cD8Jnjvg@mail.gmail.com>
-Subject: Re: [PATCH] ACPI/PPTT: fix off-by-one error
-To: Jeremy Linton <jeremy.linton@arm.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, "Heyne, Maximilian" <mheyne@amazon.de>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>, Len Brown <lenb@kernel.org>, 
-	Sudeep Holla <sudeep.holla@arm.com>, Ard Biesheuvel <ardb@kernel.org>, 
-	Catalin Marinas <catalin.marinas@arm.com>, 
-	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PN3PR01MB9597:EE_|PN2PR01MB8902:EE_
+X-MS-Office365-Filtering-Correlation-Id: c0f7b116-9823-4a8d-ff2e-08dd8d899d38
+X-MS-Exchange-SLBlob-MailProps:
+	Vs63Iqe4sQlVobdhjoRt/HQUSkoYJhJh8nllm098J3h7Cgpl5qLB6ZNCTXqbUowPML5V05mgX8t8WZpD3z3Jrz8Sff8f5MK7i4vmF1hL2j0nxcCC6Up449lqj65vPnfJ+A6OImby+5T6NG6+kMgnFYxlfDkdH3t1b905wMNsEP6esmbDJ5riZffxMbwqavyE5Bcop7DOcTwYkSijQt770G09rfB+5nNowLbWWpPW2EaMZnozN+oOQdZIAfbdOxnGicb0aU+EYGXmlYNJ9EUyO66yZetCkDVHeipn9szYS8Q6lbg/l5v7zJw8nFE4W5VJimSkf5EXrKgOBq6JbeYtKi9W2/r8+CcKBpVnQ/5BFi3JxSldde+LVL2d7EIJlcf6L9bAr85unRYWwYyh6ORT8V3J6kkqpUq+1R4L/G1vnje/14hrz5ayul5R64t5UVbEdjMMX1zVqkJ+Gj7cqRlqzHUUspKg+5a9EeD3Xt38e07LBIvI6SEfc7Or1DdO6omj83QOh+WNtd6x+KNI1OggqFIdIrEsiVAv6OnDbc1ouHIXb+S1zibmYs4A7qiv32mNL9xxx8N7czFbM5ppsyTgsmGlpfG3jtL7QEpR+65PTdw4erD7JLxcro3wYweAmyJwzvYU6Yd9NrjiMXGR83NG+tJ9uMhrZkjvsbLmLZzV2QqvEuximpwwPqwvkk9fvGVsrj7c28wErhNOJGbfFj156JaIvwWy2IaDYoQ7kv4IInk=
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|6090799003|15080799009|8060799009|7092599006|19110799006|461199028|5072599009|10035399007|440099028|3412199025|34005399003;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?QjFiWDFTM2svZnF2eEtLbU5Ka1o0VUplaTB3azJTREt4bTZEWmt6RVFFTVhl?=
+ =?utf-8?B?Z0c2T3lEUnJEdnMzTEgzdVphR2wyUUR3Q1RLVURDNk90TG5UQldpQ25PdFA4?=
+ =?utf-8?B?QUtSS1pFeEFjRHhJQk01b2d0VE5hQnAyT1RIK05Jb0ZpQnNPYnVpZjJoRURa?=
+ =?utf-8?B?NnlCVHFYN1FEb1NjaE1pSXBKN0t3N21wYUZud0NaNmRSUVhDZnJvL3dNWGRu?=
+ =?utf-8?B?dTRaTjMvcDdNNFFMZ29jY1JuV0Voanl6MVpFMHdJZjFXNnpmeDh5YzhJYy9P?=
+ =?utf-8?B?WC84ZlN0MlZ5UG1YY25kazR3amEveGtqamtFZlA5YW96bGdiTUZQNU5qREVs?=
+ =?utf-8?B?MWxQc0xLZTlPQ2lQdkZXeGFBTWRYNUIwdmdCdnd6bmhtU2lKaitqaEtVVUpL?=
+ =?utf-8?B?UHY5cWFNbExHZ2M1OWJGeWRiVjFHYUNGWjcxT1YrbHhFM3RMQWtVRHpoOXJR?=
+ =?utf-8?B?bnpxY3c0eGhZNnJBd1ljdDhXOTN6cUdSak5yNjN5cFQrVVRlUzF4NG1BTDJW?=
+ =?utf-8?B?cE41Ly8wcnE3SGFyUnNGdWFOZ3RsMVE2bkZpUVQ3NUNNYldDOVdvVjYvNGZ2?=
+ =?utf-8?B?c2kwRnhGdlArVS91Q0k3aWdIaEt4OTZhQUJBaEdNRkp6WCticWpFTmkyTHhX?=
+ =?utf-8?B?NmJZRjM2UHE3cWt2dEdpUHVYRjFlY1J2RWVjdlhGT0ZXVjZUS1V1STRXYnoz?=
+ =?utf-8?B?S2Yxei9sK0VRdXVvN21hVCtaVGsyaTlDcHRYUXdsejkwNFQrT2kxblVTbm5s?=
+ =?utf-8?B?TnNDZEJrMjBGSVhEdUVqaS9QRWNGY1V5cUtnbHE3OFVWaDVGckFHVmFhb21p?=
+ =?utf-8?B?b3JoUW1UK1BLTzJ5WG50NGZxTUkycnBGUGEvamd4ODV5TFBGK3VCYWlOUC9Y?=
+ =?utf-8?B?cXZZV1h4bHJaQU5kTWwwbnVJeDBxcVRTYkZadGJ4QU8vcE1xV3NaeDZRL2lh?=
+ =?utf-8?B?QWtZd3p4R2ZiM1BhK1JOZ1VKYnJwODU2T20wWTBPYkg4TVAwdUdwMVN0elE1?=
+ =?utf-8?B?d3lRN2FKREJLY29hUitxMXArdFdsRnBnZVlHQlpNaTF1c21jUWdweDMvQW5o?=
+ =?utf-8?B?bVp0THFhZ2l2dTdoalJUVVlmWjhoQjNEak04SU1NWVJuWGkzVVlMTExXMXNQ?=
+ =?utf-8?B?T3lhNnFkb3NhS2c4bEJuYm13NDlSMXhGUXhFQVdlVVNtUkpBbmRPZGgwOEx4?=
+ =?utf-8?B?WnErdTNXTnlKa0VxMzR5NnRtZlU0TmdzMUs3amtRZEJHWnBMWlhBK3RkbVBU?=
+ =?utf-8?B?UjRBUWpKNVYvZmp5b25QSUZKSFBhMCtxSENLYVFQaUJnZ0lnMVlCdFJ2b3N3?=
+ =?utf-8?B?bWlzUFdndm84ZWZ2V3MxVnZwYk5vdUl1QW5uN3FTY0YvM0ZjRzEwNjRwQURO?=
+ =?utf-8?B?ZmxsMmc2Wkh0TGVqcTdiQU4wYWoxR1ZzMkNXRHZKNnB1dytwSUt5cHhuWUZR?=
+ =?utf-8?B?MnA4QmsybjlpeDZCUUZVRmU2RTZBZC9RK3FxRksvcjFhYjdPTXRhN05wbSt6?=
+ =?utf-8?B?U3dveFNXTDdlTjFIWTN4ek9EaFQraDhrZ2o0TkVoSUphSUZGa2FOelo4MFhw?=
+ =?utf-8?B?YnFPd3g5Ny9uV1QxRkN0R2JOQkRFRGtyVnhBRnRsWnJVQTc0dEhqWkdYbm9a?=
+ =?utf-8?B?OFRKaTRiZVc4Z1hhTksycFNUUkh1V2c9PQ==?=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?djRVbGJ5c0JOcXRTVG1rZWI2YnFhZGhKOWpmQmNDQ0Z6cytQaElma0x1MVV4?=
+ =?utf-8?B?TUllWkFLaC9jLzhydERrWEQ3NFdVS1hxbmNEZHA4TTVlM3FoamQ0SjZ6dXB5?=
+ =?utf-8?B?QndjNE93VE5JNDJLb3Axc0FLWXY0cWtKQ05qdjVxN3c5dzQ0Q0RvZGl2TkE1?=
+ =?utf-8?B?akt2MVR4S3J4VjJQRFlPaFE0QzZXa2RucjBQSkY0SVQ5SmwrekVuMTRBcStU?=
+ =?utf-8?B?NHZHZ2lZRmY4dm9WR2ZYTWMyWHBsNTRiU1pvSkkrczgwVXNVeENqd2RSb2No?=
+ =?utf-8?B?Mkx6US9Sa1ZPcTdJdURSdXZXS2tYY1F5c3YzcmtHeEFnMmVSbG9jRFJYei9V?=
+ =?utf-8?B?R2FJSTNoYzJjNzA1K0ovTXBDTWxsRGpaRDVPNUJDTmxtQTMyY2YvdE9PSlJX?=
+ =?utf-8?B?OVI3VmFYcjY5Yk8zRXBmaGlWY0szSWFEaXVFbnhINXZmZUZXbnJGWUNPbTdW?=
+ =?utf-8?B?ZTgwWVMyc1dvZGd1MXVLbGRLWG5TTmRJcy9vaHFYdm5TWmlMK3h3ZUw0U21n?=
+ =?utf-8?B?TUZlUjdHcjZaY0YrTGdJbWc0RnZEVW5wMTdEOExHR3ozTXQwakRWa2NLaVRR?=
+ =?utf-8?B?TGpqa1RWUHRUelVFaEtzZEdNekNvM25CS2RmcncwdDNUY0Y4QmEwRzlrUU5i?=
+ =?utf-8?B?MzF5RkRLeDZSZ01EZlVQeFJBaHRwU29zd04zVE5tMEVETFZZdHBmUHdmYjls?=
+ =?utf-8?B?SzMxSkN5NnRqYlJmZlNaOWlaRmZ1Qlh4a01iY3JXUktoQkZTQVI1S2Y4QnBB?=
+ =?utf-8?B?UjJWekw1QUZHWS9iUThBcHJSTWgvcVdJblNJSDNHS0RyVTdFWXBYVkxYNTJP?=
+ =?utf-8?B?ZGJVVEoxQ0FxVzFLRnBGTXVSUlRZNTB4UzJvaWg4SEl3WE44c0lGSmZLNmE0?=
+ =?utf-8?B?eStFeUM5VHRYN3pIWFJtK1Y5UlJ6dVFOVnZNcVFHM0lhQTNqaW4xTG1SSVF6?=
+ =?utf-8?B?Z3hId2V6Q0s2b05uMkl2emRYY01pRTJsbkdOcjIxUk10M1VpUEFCSXFXdUtF?=
+ =?utf-8?B?ejRzWGIxQ2Nnc2ZhcmtuaWNldlhhU0ZhS1dNK1FMZDRITnF6RjJ2bm9aRGQx?=
+ =?utf-8?B?OVZ5SENMVUNhVEs1N2h6NDRLRGM3Sm5TeUZDNEdQTE9SVWwxZ256M1AxTTJV?=
+ =?utf-8?B?ZGJva2NaVVdiS3IyODBtSTE0VE1aaElWWXA0NHFnazFYMlU1MFExaGtIaXF4?=
+ =?utf-8?B?cnZvcXdwMVZFUkRNanJ2eXhRRUFBWEhpTzBGVWFjaW1YaDd1dUZnWUNsVGNl?=
+ =?utf-8?B?VVpXb2ZSdHBDUXpUUStvZEpFaGo1S3ozMldJc1hXeHA2NnNnbkpMc1ZNeFdh?=
+ =?utf-8?B?RzlnRzRwYitocFRYdm15Vjk1MWw3a3FiRUNWOUgrMTJSYy9sSlh1ckpOeSto?=
+ =?utf-8?B?dzB3TS8vTWVCTlU5MVplR1pCNmkvVU04RExZejMvVEQ4QTd6dzUrRUE3c1Ey?=
+ =?utf-8?B?U2YybWpIOGVlMkJMSzNuVEZndWdud2lvNTVNdEQraTZWendtMHg5UjFNQ1Az?=
+ =?utf-8?B?SnBqNWRPencvM2dHaitCTzR3WFhvcmlFSFhzSloyNkVoYWE4WGFMMFJGMk04?=
+ =?utf-8?B?TUgyYkNSVXZYZUd5Qy9vMGpxRWdnbVY5UUxMajl2bFVrOWx2YmVudDZpRmhq?=
+ =?utf-8?B?M0xMREYyWjJDeVhGMHNZbXdoa3VzYm5rWGs2OS9XQ05ESTliWTd6UXZTc0FE?=
+ =?utf-8?B?a3B2c1AwY1BEazRmUy81Q0tlN1d1WDFXbXZKTDQzaHFDOTd5MGNycVZYMG5q?=
+ =?utf-8?Q?cGnQncjaZRKmy6Far8JLw93opmEPDjI4ndoVKsV?=
+X-OriginatorOrg: sct-15-20-7719-20-msonline-outlook-ae5c4.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: c0f7b116-9823-4a8d-ff2e-08dd8d899d38
+X-MS-Exchange-CrossTenant-AuthSource: PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2025 17:07:14.6430
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PN2PR01MB8902
 
-On Wed, May 7, 2025 at 6:41=E2=80=AFPM Jeremy Linton <jeremy.linton@arm.com=
-> wrote:
->
-> On 5/7/25 11:38 AM, Jeremy Linton wrote:
-> > On 5/7/25 11:31 AM, Jeremy Linton wrote:
-> >> On 5/7/25 11:12 AM, Rafael J. Wysocki wrote:
-> >>> On Wed, May 7, 2025 at 5:51=E2=80=AFPM Jeremy Linton <jeremy.linton@a=
-rm.com>
-> >>> wrote:
-> >>>>
-> >>>> On 5/7/25 10:42 AM, Rafael J. Wysocki wrote:
-> >>>>> On Wed, May 7, 2025 at 5:25=E2=80=AFPM Jeremy Linton
-> >>>>> <jeremy.linton@arm.com> wrote:
-> >>>>>>
-> >>>>>> Hi,
-> >>>>>>
-> >>>>>> On 5/6/25 8:13 AM, Heyne, Maximilian wrote:
-> >>>>>>> Commit 7ab4f0e37a0f ("ACPI PPTT: Fix coding mistakes in a couple =
-of
-> >>>>>>> sizeof() calls") corrects the processer entry size but unmasked a
-> >>>>>>> longer
-> >>>>>>> standing bug where the last entry in the structure can get
-> >>>>>>> skipped due
-> >>>>>>> to an off-by-one mistake if the last entry ends exactly at the
-> >>>>>>> end of
-> >>>>>>> the ACPI subtable.
-> >>>>>>>
-> >>>>>>> The error manifests for instance on EC2 Graviton Metal instances
-> >>>>>>> with
-> >>>>>>>
-> >>>>>>>      ACPI PPTT: PPTT table found, but unable to locate core 63 (6=
-3)
-> >>>>>>>      [...]
-> >>>>>>>      ACPI: SPE must be homogeneous
-> >>>>>>>
-> >>>>>>> Fixes: 2bd00bcd73e5 ("ACPI/PPTT: Add Processor Properties
-> >>>>>>> Topology Table parsing")
-> >>>>>>> Cc: stable@vger.kernel.org
-> >>>>>>> Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
-> >>>>>>> ---
-> >>>>>>>     drivers/acpi/pptt.c | 4 ++--
-> >>>>>>>     1 file changed, 2 insertions(+), 2 deletions(-)
-> >>>>>>>
-> >>>>>>> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
-> >>>>>>> index f73ce6e13065d..4364da90902e5 100644
-> >>>>>>> --- a/drivers/acpi/pptt.c
-> >>>>>>> +++ b/drivers/acpi/pptt.c
-> >>>>>>> @@ -231,7 +231,7 @@ static int acpi_pptt_leaf_node(struct
-> >>>>>>> acpi_table_header *table_hdr,
-> >>>>>>>                              sizeof(struct acpi_table_pptt));
-> >>>>>>>         proc_sz =3D sizeof(struct acpi_pptt_processor);
-> >>>>>>
-> >>>>>> This isn't really right, it should be struct acpi_subtable_header,
-> >>>>>> then
-> >>>>>> once the header is safe, pull the length from it.
-> >>>>>>
-> >>>>>> But then, really if we are trying to fix the original bug that the
-> >>>>>> table
-> >>>>>> could be shorter than the data in it suggests, the struct
-> >>>>>> acpi_pptt_processor length plus its resources needs to be checked
-> >>>>>> once
-> >>>>>> the subtype is known to be a processor node.
-> >>>>>>
-> >>>>>> Otherwise the original sizeof * change isn't really fixing anythin=
-g.
-> >>>>>
-> >>>>> Sorry, what sense did it make to do
-> >>>>>
-> >>>>> proc_sz =3D sizeof(struct acpi_pptt_processor *);
-> >>>>>
-> >>>>> here?  As much as proc_sz =3D 0 I suppose?
-> >>>>
-> >>>> No, I agree, I think the original checks were simplified along the w=
-ay
-> >>>> to that. It wasn't 'right' either.
-> >>>>
-> >>>> The problem is that there are three subtypes of which processor is o=
-nly
-> >>>> one, and that struct acpi_pptt_processor doesn't necessarily reflect
-> >>>> the
-> >>>> actual size of the processor structure in the table because it has
-> >>>> optional private resources tagged onto the end.
-> >>>
-> >>> Right.
-> >>>
-> >>>> So if the bug being fixed is that the length check is validating tha=
-t
-> >>>> the table length is less than the data in the table, that's still a
-> >>>> problem because its only validating the processor node without
-> >>>> resources.
-> >>>
-> >>> Admittedly, it is not my code, but I understand this check as a
-> >>> termination condition for the loop: If there's not enough space in th=
-e
-> >>> table to hold a thing that I'm looking for, I may as well bail out.
-> >>>
-> >>>> AKA the return is still potentially returning a pointer to a structu=
-re
-> >>>> which may not be entirely contained in the table.
-> >>>
-> >>> Right, but this check should be made anyway before comparing
-> >>> cpu_node->parent to node_entry, when it is known to be a CPU entry
-> >>> because otherwise why bother.
-> >>
-> >> Right, but then there is a clarity because really its walking the
-> >> table+subtypes looking for the cpu node. Exiting early because its not
-> >> big enough for a cpu node makes sense but you still need the cpu node
-> >> check to avoid a variation on the original bug.
-> >>
-> >>
-> >>
-> >>>
-> >>> Roughly something like this:
-> >>>
-> >>> proc_sz =3D sizeof(struct acpi_pptt_processor);
-> >>>
-> >>> while ((unsigned long)entry + entry->length <=3D table_end) {
-> >>
-> >> Here your reading the entry, without knowing its long enough. For the
-> >> leaf check just using struct acpi_pptt_processor is fine, but for the
-> >> acpi_find_processor_node():
-> >>
-> >> proc_sz =3D sizeof(struct acpi_subtable_type);
-> >
-> > Although, maybe I just wrote code that justifies using
-> > acpi_pptt_processor here because the entry->num_of_priv_resources lengt=
-h
-> > check isn't being made without it. So ok, use proc_sz =3D sizeof(struct
-> > acpi_subtable_type) and assume that we don't care if the subtable type
-> > is less than proc_sz.
->
-> Sorry for the noise, scratch that, a better solution is just to swap the
-> length checking in the 'if' statement. Then its clear its iterating
-> subtable types not processor nodes.
 
-Do you mean something like this (modulo GMail-induced whitespace damage):
 
---- a/drivers/acpi/pptt.c
-+++ b/drivers/acpi/pptt.c
-@@ -231,16 +231,22 @@
-                  sizeof(struct acpi_table_pptt));
-     proc_sz =3D sizeof(struct acpi_pptt_processor);
+> Keyboard and touchpad stopped working on several Apple Macbooks from the year 2017 using kernel 6.12.xx . Until now I could only find this discussion affirming the bug on Debian and Fedora: https://github.com/Dunedan/mbp-2016-linux/issues/202
+> 
+> On siduction I also tried the more recent kernels 6.14.5 and mainline 6.15-rc4 (from Ubuntu) and the issue persisted with my testdevice MacBookPro14,1 -- see the relevant output:
+> 
+> kernel: platform pxa2xx-spi.3: Adding to iommu group 20
+> kernel: input: Apple SPI Keyboard as /devices/pci0000:00/0000:00:1e.3/pxa2xx-spi.3/spi_master/spi2/spi-APP000D:00/input/input0
+> kernel: DMAR: DRHD: handling fault status reg 3
+> kernel: DMAR: [DMA Read NO_PASID] Request device [00:1e.3] fault addr 0xffffa000 [fault reason 0x06] PTE Read access is not set
+> kernel: DMAR: DRHD: handling fault status reg 3
+> kernel: DMAR: [DMA Read NO_PASID] Request device [00:1e.3] fault addr 0xffffa000 [fault reason 0x06] PTE Read access is not set
+> kernel: applespi spi-APP000D:00: Error writing to device: 01 0e 00 00
+> kernel: DMAR: DRHD: handling fault status reg 3
+> kernel: DMAR: [DMA Read NO_PASID] Request device [00:1e.3] fault addr 0xffffa000 [fault reason 0x06] PTE Read access is not set
+> kernel: DMAR: DRHD: handling fault status reg 3
+> kernel: applespi spi-APP000D:00: Error writing to device: 01 0e 00 00
+> 
+> Many thanks,
+> 
+> Jörg Berkel
 
--    while ((unsigned long)entry + proc_sz < table_end) {
--        cpu_node =3D (struct acpi_pptt_processor *)entry;
--        if (entry->type =3D=3D ACPI_PPTT_TYPE_PROCESSOR &&
--            cpu_node->parent =3D=3D node_entry)
--            return 0;
-+    while ((unsigned long)entry + proc_sz <=3D table_end) {
-+        if ((unsigned long)entry + entry->length <=3D table_end &&
-+            entry->type =3D=3D ACPI_PPTT_TYPE_PROCESSOR &&
-+            entry->length =3D=3D proc_sz +
-+                    entry->number_of_priv_resources * sizeof(u32)) {
-+            cpu_node =3D (struct acpi_pptt_processor *)entry;
-+
-+            if (cpu_node->parent =3D=3D node_entry)
-+                return 0;
-+        }
-+
-         if (entry->length =3D=3D 0)
-             return 0;
-+
-         entry =3D ACPI_ADD_PTR(struct acpi_subtable_header, entry,
-                      entry->length);
--
-     }
-     return 1;
- }
+Ccing Lukas and IOMMU devs
 
