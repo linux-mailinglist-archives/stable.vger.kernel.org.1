@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-142422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41290AAEA8B
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:56:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 294F4AAE952
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:43:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A934B5234C4
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:56:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 433389835A1
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:43:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99495244693;
-	Wed,  7 May 2025 18:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95CC828DF50;
+	Wed,  7 May 2025 18:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uRvnXp0D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hv2haN8W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 570A01482F5;
-	Wed,  7 May 2025 18:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5058914A4C7;
+	Wed,  7 May 2025 18:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644201; cv=none; b=FCdPq5QlXh2TNlPmKIi7pcH93idH2KexfKaBfojn0d1Q0b0YSz7jPu2sYSXtshM/nxXQUu4bmPbg/vgwBKyXFNxazvmasN1LjN06M0902t3FZvSemAvBYM2TlwfCKCiGUSvUAko5Q++ZzL96L7LrbXav4ut2nkADGMGvX5ChsT4=
+	t=1746643404; cv=none; b=EXVrpMaCp8fc7ZST6lTkDhgno7WrgMGb/wmt5IVAUJk3qDykhfSwGuofTOTeqAIlCrqpfA3nJU8ZCIkCU3ih7qdqMct75yDll1YWsf8b9Xrw8bxQF+iRugUlOY+TWPVHaZo2C3UzsdRpf+08giDExxciYatoIyiBEke7vRbb/dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644201; c=relaxed/simple;
-	bh=k36pJw46zdcFIa8PbqsfVQ2gaqDeKYiNmQvtnuceJ0I=;
+	s=arc-20240116; t=1746643404; c=relaxed/simple;
+	bh=fBNzt0aAmVcuvfQlq8FuAd9Waxi/t/t9cC5vMbcSGk8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UZSWKzMSmhmZyeHHW/6lxKUJ5ywqgy9SJyFRT44g/p/R+qYZpFE9w+rl9t2abvo99Wu8TGG5OreRLT9aJAsR9M7EXM9L4t1tiSX9372jNn84aIo2MxDF6k2oRSAlCynJWxwsR6p3ZJZ2eTKV+tHl2gamtzCXYaGSeHzlXWzH09I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uRvnXp0D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ABCEC4CEE2;
-	Wed,  7 May 2025 18:56:40 +0000 (UTC)
+	 MIME-Version; b=W8W943ABcvWBtDZ3xUEk7cJ7aI774rT6D+rWMf76JWIA+cPlJYFjab+Sh7ka2O3N066Lx9z+QqY41uTpw2viL3asC6n4HxjP2lqtUjafuYF128E6gRJ/U6zi7HRQfWruSRrvvXcFGvBIpsHsXXj7uIzpazA8bN9i4MdIh/KSQlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hv2haN8W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C61BBC4CEE2;
+	Wed,  7 May 2025 18:43:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644201;
-	bh=k36pJw46zdcFIa8PbqsfVQ2gaqDeKYiNmQvtnuceJ0I=;
+	s=korg; t=1746643404;
+	bh=fBNzt0aAmVcuvfQlq8FuAd9Waxi/t/t9cC5vMbcSGk8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uRvnXp0DBpkClPs/uK1EFJH1xObFozEIhYlRjkNZc/NY0UTvzg2zu5I92QPrWxN3L
-	 5RSZa2imM3HWoIEqtkqtKWvbPv8MNRfG5TKT4FZ57AXFRotc1OBAcKbt0lzm5mXMSJ
-	 qTP50TgQ+OyqZq+VNh5k+5MiqqSZva/qUns+Cxas=
+	b=Hv2haN8WkKKVHOmdh1bpjzwTC92chCqWqvwdeSyvoiOx9f75lR28LGjhHdifqq75/
+	 hUvkj/tu6ArHrk+n7Nqs3Ejjyx8f0iBGkvT1W4dzcuQNfnGMTs2NaqHO7FM5ZHi9ek
+	 2coBLm3iOZ4NcxM3t5AYJ4nKlbwMSd6rhhU1MI9g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Christian Hewitt <christianshewitt@gmail.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 144/183] net: vertexcom: mse102x: Fix possible stuck of SPI interrupt
+Subject: [PATCH 5.15 48/55] Revert "drm/meson: vclk: fix calculation of 59.94 fractional rates"
 Date: Wed,  7 May 2025 20:39:49 +0200
-Message-ID: <20250507183830.701646873@linuxfoundation.org>
+Message-ID: <20250507183800.982629614@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
+References: <20250507183759.048732653@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Christian Hewitt <christianshewitt@gmail.com>
 
-[ Upstream commit 55f362885951b2d00fd7fbb02ef0227deea572c2 ]
+[ Upstream commit f37bb5486ea536c1d61df89feeaeff3f84f0b560 ]
 
-The MSE102x doesn't provide any SPI commands for interrupt handling.
-So in case the interrupt fired before the driver requests the IRQ,
-the interrupt will never fire again. In order to fix this always poll
-for pending packets after opening the interface.
+This reverts commit bfbc68e.
 
-Fixes: 2f207cbf0dd4 ("net: vertexcom: Add MSE102x SPI support")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250430133043.7722-2-wahrenst@gmx.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The patch does permit the offending YUV420 @ 59.94 phy_freq and
+vclk_freq mode to match in calculations. It also results in all
+fractional rates being unavailable for use. This was unintended
+and requires the patch to be reverted.
+
+Fixes: bfbc68e4d869 ("drm/meson: vclk: fix calculation of 59.94 fractional rates")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian Hewitt <christianshewitt@gmail.com>
+Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250421201300.778955-2-martin.blumenstingl@googlemail.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250421201300.778955-2-martin.blumenstingl@googlemail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/vertexcom/mse102x.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/gpu/drm/meson/meson_vclk.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/vertexcom/mse102x.c b/drivers/net/ethernet/vertexcom/mse102x.c
-index 89dc4c401a8de..92ebf16331598 100644
---- a/drivers/net/ethernet/vertexcom/mse102x.c
-+++ b/drivers/net/ethernet/vertexcom/mse102x.c
-@@ -509,6 +509,7 @@ static irqreturn_t mse102x_irq(int irq, void *_mse)
- static int mse102x_net_open(struct net_device *ndev)
- {
- 	struct mse102x_net *mse = netdev_priv(ndev);
-+	struct mse102x_net_spi *mses = to_mse102x_spi(mse);
- 	int ret;
+diff --git a/drivers/gpu/drm/meson/meson_vclk.c b/drivers/gpu/drm/meson/meson_vclk.c
+index 2a942dc6a6dc2..2a82119eb58ed 100644
+--- a/drivers/gpu/drm/meson/meson_vclk.c
++++ b/drivers/gpu/drm/meson/meson_vclk.c
+@@ -790,13 +790,13 @@ meson_vclk_vic_supported_freq(struct meson_drm *priv, unsigned int phy_freq,
+ 				 FREQ_1000_1001(params[i].pixel_freq));
+ 		DRM_DEBUG_DRIVER("i = %d phy_freq = %d alt = %d\n",
+ 				 i, params[i].phy_freq,
+-				 FREQ_1000_1001(params[i].phy_freq/1000)*1000);
++				 FREQ_1000_1001(params[i].phy_freq/10)*10);
+ 		/* Match strict frequency */
+ 		if (phy_freq == params[i].phy_freq &&
+ 		    vclk_freq == params[i].vclk_freq)
+ 			return MODE_OK;
+ 		/* Match 1000/1001 variant */
+-		if (phy_freq == (FREQ_1000_1001(params[i].phy_freq/1000)*1000) &&
++		if (phy_freq == (FREQ_1000_1001(params[i].phy_freq/10)*10) &&
+ 		    vclk_freq == FREQ_1000_1001(params[i].vclk_freq))
+ 			return MODE_OK;
+ 	}
+@@ -1070,7 +1070,7 @@ void meson_vclk_setup(struct meson_drm *priv, unsigned int target,
  
- 	ret = request_threaded_irq(ndev->irq, NULL, mse102x_irq, IRQF_ONESHOT,
-@@ -524,6 +525,13 @@ static int mse102x_net_open(struct net_device *ndev)
- 
- 	netif_carrier_on(ndev);
- 
-+	/* The SPI interrupt can stuck in case of pending packet(s).
-+	 * So poll for possible packet(s) to re-arm the interrupt.
-+	 */
-+	mutex_lock(&mses->lock);
-+	mse102x_rx_pkt_spi(mse);
-+	mutex_unlock(&mses->lock);
-+
- 	netif_dbg(mse, ifup, ndev, "network device up\n");
- 
- 	return 0;
+ 	for (freq = 0 ; params[freq].pixel_freq ; ++freq) {
+ 		if ((phy_freq == params[freq].phy_freq ||
+-		     phy_freq == FREQ_1000_1001(params[freq].phy_freq/1000)*1000) &&
++		     phy_freq == FREQ_1000_1001(params[freq].phy_freq/10)*10) &&
+ 		    (vclk_freq == params[freq].vclk_freq ||
+ 		     vclk_freq == FREQ_1000_1001(params[freq].vclk_freq))) {
+ 			if (vclk_freq != params[freq].vclk_freq)
 -- 
 2.39.5
 
