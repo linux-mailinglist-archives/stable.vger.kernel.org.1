@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-142207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB2F0AAE988
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:45:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 511EFAAEB7C
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:07:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 728B61C27A68
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:46:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 810003BC982
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:07:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A798D1B414A;
-	Wed,  7 May 2025 18:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEFF41E22E9;
+	Wed,  7 May 2025 19:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BLFDKD7X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NIcbdDKI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634AF19007D;
-	Wed,  7 May 2025 18:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69ECA19AD5C;
+	Wed,  7 May 2025 19:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643545; cv=none; b=gtEFfqZ62hyscNekq95OHg0g0/IowgqmS2hEl989ikVJkbAo+CYLUjXCD6g3vuMVpQD+RsalUnj83ul756dB9Zd6/foI4raYlgPS/TkOc5N6ch5to9Yp+HnSlHzEpP0m6Pl3EkFxZZfuwdaE1YXGP9O1/9Sy4MhSMc4x/8vga6g=
+	t=1746644862; cv=none; b=nHLxgmdDeD/YwCkOcSFqdj1aj0XlHpnAw7leQRcNrT2B9W/ZUrH5mX6NpGJfIsLY8wp7lVuH9mtzq6JiOFj770ZrmS5/AZKspPXPGxcSOPvYN+GbarVM9ME5Fj0cXh0i5KzIIT8s1t7QFt97NjI0CIdT2OnOIc7EPPFbvc1cZRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643545; c=relaxed/simple;
-	bh=41V3owcb126VQrpPK8nou+upk5AOrfLd2j3BEZETqUU=;
+	s=arc-20240116; t=1746644862; c=relaxed/simple;
+	bh=1c45j/KIe6jPzMiUvbTHu/iEQDeGt7H2yGAEqPbj4FY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VKAwGwsViydEBJf2/rrSbNH+jTnVySUi2uVGNh5uQ5f32kowSxtACCXkx1WApElBoTUCbNYkFkhop354CckDA/zUcO5128O3SX847AIa3Y5WL9wTdLPap7Q+dSbsDTDeHFcduBXPbbpq1jMP4xLAhnkBNG5PyrAzw9i3Xksyvv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BLFDKD7X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E40FDC4CEE2;
-	Wed,  7 May 2025 18:45:44 +0000 (UTC)
+	 MIME-Version; b=ojmMB+nSnj9vu/72Yv0E/ZXPSDFWbxs4ETSjF0zfSvQYQTy0o9OBJNbhyq1osmjvIMa8BfvGoXTJ04hpxRt5KU/bWY8zwXougBYnQXgH5QA+LFOiOq9zlOiNYPZlTOpn1zVfaXPMnoGlWyVGCk1ECVkLMHQ+TPszi2dfuYeEOl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NIcbdDKI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD9D5C4CEE2;
+	Wed,  7 May 2025 19:07:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643545;
-	bh=41V3owcb126VQrpPK8nou+upk5AOrfLd2j3BEZETqUU=;
+	s=korg; t=1746644862;
+	bh=1c45j/KIe6jPzMiUvbTHu/iEQDeGt7H2yGAEqPbj4FY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BLFDKD7X8rLtVuE18J3TeUAIeybeWkvYgxvI1HJBzlLJBB5jmdLaWizAHDyOZhg6a
-	 J65L+308/TpZY0Pev92NWt7tvjzKlIF/vagXU7dyv7mZavJOj7Z+FMNjzY3IWyw1ex
-	 Q5qwY/HgINzLA5danTAvCxI6p81USDrmF+KsuBX8=
+	b=NIcbdDKIL17exbqKNII9jU1DpdgC4nPLJhse7wOuj/McDTfFSor+yOm6YR1MBLMNR
+	 vkOxNCCbjll9Iwx+2x0vFKbTTvWMqF7X8OP70dBJvyCh/D/FoKa7YaehXcNevf7iQI
+	 6bxgNjdcdz1NV7aTQw3FryEFK4fGobORE+cNg3K8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 38/97] xfs: restrict when we try to align cow fork delalloc to cowextsz hints
+	Ihar Salauyou <salauyou.ihar@gmail.com>,
+	Ruslan Piasetskyi <ruslan.piasetskyi@gmail.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.6 017/129] mmc: renesas_sdhi: Fix error handling in renesas_sdhi_probe
 Date: Wed,  7 May 2025 20:39:13 +0200
-Message-ID: <20250507183808.526382076@linuxfoundation.org>
+Message-ID: <20250507183814.233857569@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
-References: <20250507183806.987408728@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,177 +64,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+From: Ruslan Piasetskyi <ruslan.piasetskyi@gmail.com>
 
-[ Upstream commit 288e1f693f04e66be99f27e7cbe4a45936a66745 ]
+commit 649b50a82f09fa44c2f7a65618e4584072145ab7 upstream.
 
-xfs/205 produces the following failure when always_cow is enabled:
+After moving tmio_mmc_host_probe down, error handling has to be
+adjusted.
 
-#  --- a/tests/xfs/205.out	2024-02-28 16:20:24.437887970 -0800
-#  +++ b/tests/xfs/205.out.bad	2024-06-03 21:13:40.584000000 -0700
-#  @@ -1,4 +1,5 @@
-#   QA output created by 205
-#   *** one file
-#  +   !!! disk full (expected)
-#   *** one file, a few bytes at a time
-#   *** done
-
-This is the result of overly aggressive attempts to align cow fork
-delalloc reservations to the CoW extent size hint.  Looking at the trace
-data, we're trying to append a single fsblock to the "fred" file.
-Trying to create a speculative post-eof reservation fails because
-there's not enough space.
-
-We then set @prealloc_blocks to zero and try again, but the cowextsz
-alignment code triggers, which expands our request for a 1-fsblock
-reservation into a 39-block reservation.  There's not enough space for
-that, so the whole write fails with ENOSPC even though there's
-sufficient space in the filesystem to allocate the single block that we
-need to land the write.
-
-There are two things wrong here -- first, we shouldn't be attempting
-speculative preallocations beyond what was requested when we're low on
-space.  Second, if we've already computed a posteof preallocation, we
-shouldn't bother trying to align that to the cowextsize hint.
-
-Fix both of these problems by adding a flag that only enables the
-expansion of the delalloc reservation to the cowextsize if we're doing a
-non-extending write, and only if we're not doing an ENOSPC retry.  This
-requires us to move the ENOSPC retry logic to xfs_bmapi_reserve_delalloc.
-
-I probably should have caught this six years ago when 6ca30729c206d was
-being reviewed, but oh well.  Update the comments to reflect what the
-code does now.
-
-Fixes: 6ca30729c206d ("xfs: bmap code cleanup")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: "Darrick J. Wong" <djwong@kernel.org>
+Fixes: 74f45de394d9 ("mmc: renesas_sdhi: register irqs before registering controller")
+Reviewed-by: Ihar Salauyou <salauyou.ihar@gmail.com>
+Signed-off-by: Ruslan Piasetskyi <ruslan.piasetskyi@gmail.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Tested-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250326220638.460083-1-ruslan.piasetskyi@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/libxfs/xfs_bmap.c |   31 +++++++++++++++++++++++++++----
- fs/xfs/xfs_iomap.c       |   34 ++++++++++++----------------------
- 2 files changed, 39 insertions(+), 26 deletions(-)
+ drivers/mmc/host/renesas_sdhi_core.c |   10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
---- a/fs/xfs/libxfs/xfs_bmap.c
-+++ b/fs/xfs/libxfs/xfs_bmap.c
-@@ -3959,20 +3959,32 @@ xfs_bmapi_reserve_delalloc(
- 	xfs_extlen_t		alen;
- 	xfs_extlen_t		indlen;
- 	int			error;
--	xfs_fileoff_t		aoff = off;
-+	xfs_fileoff_t		aoff;
-+	bool			use_cowextszhint =
-+					whichfork == XFS_COW_FORK && !prealloc;
+--- a/drivers/mmc/host/renesas_sdhi_core.c
++++ b/drivers/mmc/host/renesas_sdhi_core.c
+@@ -1107,26 +1107,26 @@ int renesas_sdhi_probe(struct platform_d
+ 	num_irqs = platform_irq_count(pdev);
+ 	if (num_irqs < 0) {
+ 		ret = num_irqs;
+-		goto eirq;
++		goto edisclk;
+ 	}
  
-+retry:
- 	/*
- 	 * Cap the alloc length. Keep track of prealloc so we know whether to
- 	 * tag the inode before we return.
- 	 */
-+	aoff = off;
- 	alen = XFS_FILBLKS_MIN(len + prealloc, XFS_MAX_BMBT_EXTLEN);
- 	if (!eof)
- 		alen = XFS_FILBLKS_MIN(alen, got->br_startoff - aoff);
- 	if (prealloc && alen >= len)
- 		prealloc = alen - len;
+ 	/* There must be at least one IRQ source */
+ 	if (!num_irqs) {
+ 		ret = -ENXIO;
+-		goto eirq;
++		goto edisclk;
+ 	}
  
--	/* Figure out the extent size, adjust alen */
--	if (whichfork == XFS_COW_FORK) {
-+	/*
-+	 * If we're targetting the COW fork but aren't creating a speculative
-+	 * posteof preallocation, try to expand the reservation to align with
-+	 * the COW extent size hint if there's sufficient free space.
-+	 *
-+	 * Unlike the data fork, the CoW cancellation functions will free all
-+	 * the reservations at inactivation, so we don't require that every
-+	 * delalloc reservation have a dirty pagecache.
-+	 */
-+	if (use_cowextszhint) {
- 		struct xfs_bmbt_irec	prev;
- 		xfs_extlen_t		extsz = xfs_get_cowextsz_hint(ip);
- 
-@@ -3991,7 +4003,7 @@ xfs_bmapi_reserve_delalloc(
- 	 */
- 	error = xfs_quota_reserve_blkres(ip, alen);
- 	if (error)
--		return error;
-+		goto out;
- 
- 	/*
- 	 * Split changing sb for alen and indlen since they could be coming
-@@ -4036,6 +4048,17 @@ out_unreserve_blocks:
- out_unreserve_quota:
- 	if (XFS_IS_QUOTA_ON(mp))
- 		xfs_quota_unreserve_blkres(ip, alen);
-+out:
-+	if (error == -ENOSPC || error == -EDQUOT) {
-+		trace_xfs_delalloc_enospc(ip, off, len);
-+
-+		if (prealloc || use_cowextszhint) {
-+			/* retry without any preallocation */
-+			use_cowextszhint = false;
-+			prealloc = 0;
-+			goto retry;
-+		}
-+	}
- 	return error;
- }
- 
---- a/fs/xfs/xfs_iomap.c
-+++ b/fs/xfs/xfs_iomap.c
-@@ -1115,33 +1115,23 @@ xfs_buffered_write_iomap_begin(
+ 	for (i = 0; i < num_irqs; i++) {
+ 		irq = platform_get_irq(pdev, i);
+ 		if (irq < 0) {
+ 			ret = irq;
+-			goto eirq;
++			goto edisclk;
  		}
+ 
+ 		ret = devm_request_irq(&pdev->dev, irq, tmio_mmc_irq, 0,
+ 				       dev_name(&pdev->dev), host);
+ 		if (ret)
+-			goto eirq;
++			goto edisclk;
  	}
  
--retry:
--	error = xfs_bmapi_reserve_delalloc(ip, allocfork, offset_fsb,
--			end_fsb - offset_fsb, prealloc_blocks,
--			allocfork == XFS_DATA_FORK ? &imap : &cmap,
--			allocfork == XFS_DATA_FORK ? &icur : &ccur,
--			allocfork == XFS_DATA_FORK ? eof : cow_eof);
--	switch (error) {
--	case 0:
--		break;
--	case -ENOSPC:
--	case -EDQUOT:
--		/* retry without any preallocation */
--		trace_xfs_delalloc_enospc(ip, offset, count);
--		if (prealloc_blocks) {
--			prealloc_blocks = 0;
--			goto retry;
--		}
--		fallthrough;
--	default:
--		goto out_unlock;
--	}
--
- 	if (allocfork == XFS_COW_FORK) {
-+		error = xfs_bmapi_reserve_delalloc(ip, allocfork, offset_fsb,
-+				end_fsb - offset_fsb, prealloc_blocks, &cmap,
-+				&ccur, cow_eof);
-+		if (error)
-+			goto out_unlock;
-+
- 		trace_xfs_iomap_alloc(ip, offset, count, allocfork, &cmap);
- 		goto found_cow;
- 	}
+ 	ret = tmio_mmc_host_probe(host);
+@@ -1138,8 +1138,6 @@ int renesas_sdhi_probe(struct platform_d
  
-+	error = xfs_bmapi_reserve_delalloc(ip, allocfork, offset_fsb,
-+			end_fsb - offset_fsb, prealloc_blocks, &imap, &icur,
-+			eof);
-+	if (error)
-+		goto out_unlock;
-+
- 	/*
- 	 * Flag newly allocated delalloc blocks with IOMAP_F_NEW so we punch
- 	 * them out if the write happens to fail.
+ 	return ret;
+ 
+-eirq:
+-	tmio_mmc_host_remove(host);
+ edisclk:
+ 	renesas_sdhi_clk_disable(host);
+ efree:
 
 
 
