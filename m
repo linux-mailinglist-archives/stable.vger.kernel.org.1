@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-142423-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 348BAAAEA92
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:57:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A61C8AAEB2A
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:04:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99C6C1B6501E
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:57:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1B4A57BF8E4
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:03:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C48C628B4F0;
-	Wed,  7 May 2025 18:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1B4B28BA9F;
+	Wed,  7 May 2025 19:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F+onCYb5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z1uGXrID"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80FB61CF5C6;
-	Wed,  7 May 2025 18:56:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FB6F29A0;
+	Wed,  7 May 2025 19:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644205; cv=none; b=sWqE5nQcd3UGHkUe5FYN6wCuW9gq0ItdezbnN9e0fVxpkOzt+h8hvLvj8UcjwT8IBxuAnRCKBv1A4Xj0tJ6+7Mu1wXBuVg6zrGPrJ0/Cf8Ur0iYKauubt755l8q+Gvk6+RGQsYA9ugy37RHTABaBp5bHkr9bpmSlpD1TsdaWwhI=
+	t=1746644654; cv=none; b=kZklfnPQq3Wepas6LTpTYRjc9w2TH+cXl/8SAsiSglN5+vttMsa8+3uJzsGIeWRab82bva1fVowPzFfqz9iHcg5mdvunKBlHLGU2yFEEu9R91gHpJMjmlRLjBwYwSUUzee8zHlsn20CSWQzeA3zPCqIBw9+FSInW11SpCOuTgoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644205; c=relaxed/simple;
-	bh=4NHqLvFL1t7fGOpRLFx/UOq6OzK/i2qWQNkLJKX1Sh4=;
+	s=arc-20240116; t=1746644654; c=relaxed/simple;
+	bh=GYQO1ja9UWWb9GRBCMznRTM9Qnd9FPtzaLxCmJMD0dg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J3qSFPBo1ACBH9BA/h8LODbu+CJS3WcLJF8uxv3ycrvavNyrjE1Bvp8mKoiXVzY9mEoZ3WIMxEa4RYLgJDceCMUJdF/f27ZBu4bjziRwGzJIQoDYUd2cXBisbBz4MD+3rDywFrJrrV+vXFwfDOE7SVuA1K6HdxiLYRp3WMKnZbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F+onCYb5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12EF2C4CEE2;
-	Wed,  7 May 2025 18:56:44 +0000 (UTC)
+	 MIME-Version; b=cI5mysrQ1CoJ1swrf9s//9nOR+jGLdTkM50Em5NFlFuTOb7oyXdpi99HGYgheKiGVMpSJRmbn1YWm+4y18AFy8F+kdOPupu7cT7hBcLS2ytgP8KL2Gkaoo9cTsxpNGd17V5wuFsbqlQkKfqoZn/tb5zR4tUXbFYx2GUzcw7vDpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z1uGXrID; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2C2BC4CEE2;
+	Wed,  7 May 2025 19:04:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644205;
-	bh=4NHqLvFL1t7fGOpRLFx/UOq6OzK/i2qWQNkLJKX1Sh4=;
+	s=korg; t=1746644654;
+	bh=GYQO1ja9UWWb9GRBCMznRTM9Qnd9FPtzaLxCmJMD0dg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F+onCYb5ktYOITyodvnjm/tY7i8eHH2FTjZoaod8WV4UCNoFCzhpLHstavYJ4UysU
-	 EWsa8Z3nWNEVQXhigLFLN/cKpNvl0K11Z3PqYlNrAT9Ec+M1slki1kykP8ObnQM7i8
-	 gfQsLDuIuyv9BEaYzcozLmVbTRGXN9+dHpBFnLDk=
+	b=z1uGXrIDt0ZrZ36ZH/BhGhCvY4Eemhmb7CtW6m/NtsV6BEBcdA0K97eQLCwWGAuv1
+	 zKYgVCBLMwa6cqnCnS4+Ak9JdScZhjSeiKEHuS8CY/auu44ZECau9jOzFJeko04ht+
+	 Cw5fK+/+V6rMg1S6ZQqEQvHbMVXfi9Rb54S7G6BY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Romain THERY <romain.thery@ik.me>,
-	Kurt Borja <kuurtb@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.14 153/183] platform/x86: alienware-wmi-wmax: Add support for Alienware m15 R7
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 113/164] bnxt_en: Add missing skb_mark_for_recycle() in bnxt_rx_vlan()
 Date: Wed,  7 May 2025 20:39:58 +0200
-Message-ID: <20250507183831.062630419@linuxfoundation.org>
+Message-ID: <20250507183825.550386786@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +63,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kurt Borja <kuurtb@gmail.com>
+From: Somnath Kotur <somnath.kotur@broadcom.com>
 
-commit 246f9bb62016c423972ea7f2335a8e0ed3521cde upstream.
+[ Upstream commit a63db07e4ecd45b027718168faf7d798bb47bf58 ]
 
-Extend thermal control support to Alienware m15 R7.
+If bnxt_rx_vlan() fails because the VLAN protocol ID is invalid,
+the SKB is freed but we're missing the call to recycle it.  This
+may cause the warning:
 
-Cc: stable@vger.kernel.org
-Tested-by: Romain THERY <romain.thery@ik.me>
-Signed-off-by: Kurt Borja <kuurtb@gmail.com>
-Link: https://lore.kernel.org/r/20250419-m15-r7-v1-1-18c6eaa27e25@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Kurt Borja <kuurtb@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+"page_pool_release_retry() stalled pool shutdown"
+
+Add the missing skb_mark_for_recycle() in bnxt_rx_vlan().
+
+Fixes: 86b05508f775 ("bnxt_en: Use the unified RX page pool buffers for XDP and non-XDP")
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Signed-off-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/dell/alienware-wmi.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/platform/x86/dell/alienware-wmi.c
-+++ b/drivers/platform/x86/dell/alienware-wmi.c
-@@ -252,6 +252,15 @@ static const struct dmi_system_id alienw
- 	},
- 	{
- 		.callback = dmi_matched,
-+		.ident = "Alienware m15 R7",
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Alienware"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware m15 R7"),
-+		},
-+		.driver_data = &quirk_x_series,
-+	},
-+	{
-+		.callback = dmi_matched,
- 		.ident = "Alienware m16 R1",
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Alienware"),
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 026f0d7569e1c..74be0dd6f7a53 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -1986,6 +1986,7 @@ static struct sk_buff *bnxt_rx_vlan(struct sk_buff *skb, u8 cmp_type,
+ 	}
+ 	return skb;
+ vlan_err:
++	skb_mark_for_recycle(skb);
+ 	dev_kfree_skb(skb);
+ 	return NULL;
+ }
+-- 
+2.39.5
+
 
 
 
