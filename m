@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-142666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45FF4AAEBAB
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:09:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF386AAEB1A
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:03:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3C0199E382F
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:08:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 058D91C064D0
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:03:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 879B028AAE9;
-	Wed,  7 May 2025 19:09:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8BB228AAE9;
+	Wed,  7 May 2025 19:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XTP7x5Tm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B25qZcYz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 447E22144C1;
-	Wed,  7 May 2025 19:09:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84AD929A0;
+	Wed,  7 May 2025 19:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644954; cv=none; b=Kr8ImuNf4oxgx4wS24VG1L0xCPLq6NQmkUtQ5yCSAkU3fSdF4BFK07PaLZV9zTpkb4odP5GnxcGNu2YYMJpjKlnmJHxSloVEro8etG+3he68WwlCaXnNxagYF6O4gkBoxAkIcGiaMSYbbA8pyfTu847yAZFUdIQP9ec9ZV0E6FE=
+	t=1746644602; cv=none; b=jm/Mp+qSqWuIwUdP6u5XyUFQWIQaU8NOd+FRgCNRcOTAOT5fuCQsAqIhnxJQ+Zs5nclrSj/okPW6xAk+WU0dpKvedkWT9oy2I0bx68YG6GxDK4tU1LHZTbOHnD8BKuOBmlsCAdVyZf1vpRJDqsf40X0MqOe0nEIKhWt9RP4DxsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644954; c=relaxed/simple;
-	bh=L+0qLxX0Phso5ZrUsELYM1FCnnYuS98Vx8AgNaRkMU8=;
+	s=arc-20240116; t=1746644602; c=relaxed/simple;
+	bh=XKM8gnlNLi+tW84AjYzgGo0Du6iECWV/SxhBX08JCks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HAy6b6LJoQapKxA22SEKXQz7DFIt1VEkXIx/TMFr1/oY7E4Ul9G2FHBMsq+QHURfqJgq8IYzDAd6dVqVIHj9lUum7zr8QukOMVboBl6eYrMcZx+HVRD3zltHafyLrqu644177Y+kZByAUZuzVylIgchcPT7lfFbhg3c4wcB1OgQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XTP7x5Tm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9BABC4CEE2;
-	Wed,  7 May 2025 19:09:13 +0000 (UTC)
+	 MIME-Version; b=YMuyNfloG3ZaKUcgNHwI+kwAhWWafQq0JkPv11bz3rY3tfPPL6h3IUKST+myuGqlJebRVnxikTA+7ESXzeOs4ixJZ4t1S6OVrQ+km/c35LFY2zyHJR8UZ0dYSlJ2FBf0/P743cGNYT6eekj8FRHMY4q6bLSX1joVwBcvn+iWJGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B25qZcYz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7EFEC4CEE2;
+	Wed,  7 May 2025 19:03:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644954;
-	bh=L+0qLxX0Phso5ZrUsELYM1FCnnYuS98Vx8AgNaRkMU8=;
+	s=korg; t=1746644602;
+	bh=XKM8gnlNLi+tW84AjYzgGo0Du6iECWV/SxhBX08JCks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XTP7x5TmMRlPRSCsn30PnzbpF6clFF7QQORaMHjmjO3m/P9etYU5yG+SAXxr40J4m
-	 8XMw0cYXSS0itisTE0o1bv008iJL0zg4/87c1jQwBkbujftzVjrVGt1aRLUGp0Zo06
-	 9nnrGXpnT3xa212GjoYB9cCdH/vYQ4WGMuMyYKck=
+	b=B25qZcYz4gkPnowFBf45bXcawDt3NKeDSaqPkvrZyB0Hm7LwbES39iPiLCJzmYqCE
+	 ALJ/Xo4CkdXzrJUFOZn5RdtAk4AinZgK4+gaWKVRqFTMGCZMHbCT8+D4O7vwLt8I3u
+	 fQiGqBhfO8NEV0T8l2MvtEt4HTJ0OOl5Zk9nMOV0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charan Teja Kalla <quic_charante@quicinc.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Joerg Roedel <jroedel@suse.de>
-Subject: [PATCH 6.6 046/129] iommu: Handle race with default domain setup
+	Keoseong Park <keosung.park@samsung.com>,
+	Avri Altman <avri.altman@sandisk.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 097/164] scsi: ufs: core: Remove redundant query_complete trace
 Date: Wed,  7 May 2025 20:39:42 +0200
-Message-ID: <20250507183815.404972824@linuxfoundation.org>
+Message-ID: <20250507183824.903248528@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
-References: <20250507183813.500572371@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robin Murphy <robin.murphy@arm.com>
+From: Keoseong Park <keosung.park@samsung.com>
 
-commit b46064a18810bad3aea089a79993ca5ea7a3d2b2 upstream.
+[ Upstream commit 0e9693b97a0eee1df7bae33aec207c975fbcbdb8 ]
 
-It turns out that deferred default domain creation leaves a subtle
-race window during iommu_device_register() wherein a client driver may
-asynchronously probe in parallel and get as far as performing DMA API
-operations with dma-direct, only to be switched to iommu-dma underfoot
-once the default domain attachment finally happens, with obviously
-disastrous consequences. Even the wonky of_iommu_configure() path is at
-risk, since iommu_fwspec_init() will no longer defer client probe as the
-instance ops are (necessarily) already registered, and the "replay"
-iommu_probe_device() call can see dev->iommu_group already set and so
-think there's nothing to do either.
+The query_complete trace was not removed after ufshcd_issue_dev_cmd() was
+called from the bsg path, resulting in duplicate output.
 
-Fortunately we already have the right tool in the right place in the
-form of iommu_device_use_default_domain(), which just needs to ensure
-that said default domain is actually ready to *be* used. Deferring the
-client probe shouldn't have too much impact, given that this only
-happens while the IOMMU driver is probing, and thus due to kick the
-deferred probe list again once it finishes.
+Below is an example of the trace:
 
-Reported-by: Charan Teja Kalla <quic_charante@quicinc.com>
-Fixes: 98ac73f99bc4 ("iommu: Require a default_domain for all iommu drivers")
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-Link: https://lore.kernel.org/r/e88b94c9b575034a2c98a48b3d383654cbda7902.1740753261.git.robin.murphy@arm.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+ ufs-utils-773     [000] .....   218.176933: ufshcd_upiu: query_send: 0000:00:04.0: HDR:16 00 00 1f 00 01 00 00 00 00 00 00, OSF:03 07 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ ufs-utils-773     [000] .....   218.177145: ufshcd_upiu: query_complete: 0000:00:04.0: HDR:36 00 00 1f 00 01 00 00 00 00 00 00, OSF:03 07 00 00 00 00 00 00 00 00 00 08 00 00 00 00
+ ufs-utils-773     [000] .....   218.177146: ufshcd_upiu: query_complete: 0000:00:04.0: HDR:36 00 00 1f 00 01 00 00 00 00 00 00, OSF:03 07 00 00 00 00 00 00 00 00 00 08 00 00 00 00
+
+Remove the redundant trace call in the bsg path, preventing duplication.
+
+Signed-off-by: Keoseong Park <keosung.park@samsung.com>
+Link: https://lore.kernel.org/r/20250425010605epcms2p67e89b351398832fe0fd547404d3afc65@epcms2p6
+Fixes: 71aabb747d5f ("scsi: ufs: core: Reuse exec_dev_cmd")
+Reviewed-by: Avri Altman <avri.altman@sandisk.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/iommu.c |   18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/ufs/core/ufshcd.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/iommu/iommu.c
-+++ b/drivers/iommu/iommu.c
-@@ -566,6 +566,18 @@ int iommu_probe_device(struct device *de
- 	mutex_lock(&iommu_probe_device_lock);
- 	ret = __iommu_probe_device(dev, NULL);
- 	mutex_unlock(&iommu_probe_device_lock);
-+
-+	/*
-+	 * The dma_configure replay paths need bus_iommu_probe() to
-+	 * finish before they can call arch_setup_dma_ops()
-+	 */
-+	if (IS_ENABLED(CONFIG_IOMMU_DMA) && !ret && dev->iommu_group) {
-+		mutex_lock(&dev->iommu_group->mutex);
-+		if (!dev->iommu_group->default_domain &&
-+		    !dev_iommu_ops(dev)->set_platform_dma_ops)
-+			ret = -EPROBE_DEFER;
-+		mutex_unlock(&dev->iommu_group->mutex);
-+	}
- 	if (ret)
- 		return ret;
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 8d4a5b8371b63..a9b032d2f4a8d 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -7256,8 +7256,6 @@ static int ufshcd_issue_devman_upiu_cmd(struct ufs_hba *hba,
+ 			err = -EINVAL;
+ 		}
+ 	}
+-	ufshcd_add_query_upiu_trace(hba, err ? UFS_QUERY_ERR : UFS_QUERY_COMP,
+-				    (struct utp_upiu_req *)lrbp->ucd_rsp_ptr);
  
-@@ -3149,6 +3161,12 @@ int iommu_device_use_default_domain(stru
- 		return 0;
- 
- 	mutex_lock(&group->mutex);
-+	/* We may race against bus_iommu_probe() finalising groups here */
-+	if (IS_ENABLED(CONFIG_IOMMU_DMA) && !group->default_domain &&
-+	    !dev_iommu_ops(dev)->set_platform_dma_ops) {
-+		ret = -EPROBE_DEFER;
-+		goto unlock_out;
-+	}
- 	if (group->owner_cnt) {
- 		if (group->owner || !iommu_is_default_domain(group) ||
- 		    !xa_empty(&group->pasid_array)) {
+ 	return err;
+ }
+-- 
+2.39.5
+
 
 
 
