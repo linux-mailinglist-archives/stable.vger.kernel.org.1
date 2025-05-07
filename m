@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-142541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BA0FAAEB10
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:02:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1B51AAE95C
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:43:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C5FD9E289F
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:02:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFE789C6A06
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:43:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8FA828BA9F;
-	Wed,  7 May 2025 19:02:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F45C28DF45;
+	Wed,  7 May 2025 18:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KpmHyhGt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dbOcoBuW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9649429A0;
-	Wed,  7 May 2025 19:02:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E03AC14A4C7;
+	Wed,  7 May 2025 18:43:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644571; cv=none; b=pISfuOzN15B3eY3NKoHbyvs8IsMd/Yntr/ZeKXKn1QU0SyBs1jvbQ/UXhtL20b1Ly8jbDWDvvmQltWlKGoyod+8w1AFrA8ohcPfdDP2gb6mwmi+FHsH+WSkkuc4FQ1O71aJfY0TFN2MHOnkJkclMk7xDuj2oVBMnhGp4dBSOBj8=
+	t=1746643434; cv=none; b=ED0lqfcElRa5BPifUUNW6QOVKBwNAjuO2hiP9r4v8Atr6vbyESiYZfbBaLNTn79priIGd/B4VIxNBhy8d+lyAHKePycNqsETklEuf66IWnrbWv7bDym1AvPWw04W/I+MTI+F4e1aao53xXlXsegu2t3yKDD5p5HvnumdqS0ELNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644571; c=relaxed/simple;
-	bh=2USXQwdUTYR+KH5cBYaIn2Mx5+W3FkZ6tkq+pQSrg8Q=;
+	s=arc-20240116; t=1746643434; c=relaxed/simple;
+	bh=qVUvPd4praeyV6Hbw6HIHJtLmncbu6qhzJtUOGIYUXQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XoS7GOwKMP6hw81vg20juBG+yhpo0nWOG1x4A2v/nNfq7rYrtXvGGz3tQc4c7oST1EmccVSogEOR9jEXBi5PfYUoitsbsN+SAdVF/tr1KOxFR4rU2AOcndbYhcSPaV2TutmAk0ZhMmqDT19RVUdHvMvGdvBB7isrrdcnnDJt/+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KpmHyhGt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0595AC4CEE2;
-	Wed,  7 May 2025 19:02:50 +0000 (UTC)
+	 MIME-Version; b=KFh1JG/AQAJDFVZ1ZbaTlBiKeHdLMUbRcHlt8czpGGUTx4PEZbA36DdTDAQmL8piMygbxNGy+o/WVWQvkM1rDnuGzRywnVCJ/hKsSWyd2PPiSUs8MzVSIMOEvgoK/MArHDLxSQ/pezMrDIiLjdYXfBCr1uzFIe3nbukl+rIVEBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dbOcoBuW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7089EC4CEE2;
+	Wed,  7 May 2025 18:43:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644571;
-	bh=2USXQwdUTYR+KH5cBYaIn2Mx5+W3FkZ6tkq+pQSrg8Q=;
+	s=korg; t=1746643433;
+	bh=qVUvPd4praeyV6Hbw6HIHJtLmncbu6qhzJtUOGIYUXQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KpmHyhGtaU+YY2B58RH1H199h2AQj/+p+mhagcwXibjXxIv5tDQdvATT8etUWfo3U
-	 /gIT/6UTPazREG08cmm954ll/SPy6VQ/DnIQPInRZehBNuGZEyysjMowaTm2nQE8R/
-	 HU5RttS1CNZymznJJ9w7ATF7eyEfAW0uYO7qHfT0=
+	b=dbOcoBuW7WiORbqBPgzEcb3q/xgmUEv3R1yujtc7hv0TFGuTFqpeKZED1rHDjOrFh
+	 dhvi5QqhrhilfMO0D+53PKhhLjsAMIRoAbazO6H73cPCPBbc3jtWwfXe4fZWo8jK9W
+	 gLpW9j7x3iDsow9Dk+m3RippQIa4SSerfJS1dL78=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 085/164] net: ethernet: mtk-star-emac: fix spinlock recursion issues on rx/tx poll
+Subject: [PATCH 5.15 29/55] net: dlink: Correct endianness handling of led_mode
 Date: Wed,  7 May 2025 20:39:30 +0200
-Message-ID: <20250507183824.406102173@linuxfoundation.org>
+Message-ID: <20250507183800.213552531@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
+References: <20250507183759.048732653@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,125 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+From: Simon Horman <horms@kernel.org>
 
-[ Upstream commit 6fe0866014486736cc3ba1c6fd4606d3dbe55c9c ]
+[ Upstream commit e7e5ae71831c44d58627a991e603845a2fed2cab ]
 
-Use spin_lock_irqsave and spin_unlock_irqrestore instead of spin_lock
-and spin_unlock in mtk_star_emac driver to avoid spinlock recursion
-occurrence that can happen when enabling the DMA interrupts again in
-rx/tx poll.
+As it's name suggests, parse_eeprom() parses EEPROM data.
 
-```
-BUG: spinlock recursion on CPU#0, swapper/0/0
- lock: 0xffff00000db9cf20, .magic: dead4ead, .owner: swapper/0/0,
-    .owner_cpu: 0
-CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted
-    6.15.0-rc2-next-20250417-00001-gf6a27738686c-dirty #28 PREEMPT
-Hardware name: MediaTek MT8365 Open Platform EVK (DT)
-Call trace:
- show_stack+0x18/0x24 (C)
- dump_stack_lvl+0x60/0x80
- dump_stack+0x18/0x24
- spin_dump+0x78/0x88
- do_raw_spin_lock+0x11c/0x120
- _raw_spin_lock+0x20/0x2c
- mtk_star_handle_irq+0xc0/0x22c [mtk_star_emac]
- __handle_irq_event_percpu+0x48/0x140
- handle_irq_event+0x4c/0xb0
- handle_fasteoi_irq+0xa0/0x1bc
- handle_irq_desc+0x34/0x58
- generic_handle_domain_irq+0x1c/0x28
- gic_handle_irq+0x4c/0x120
- do_interrupt_handler+0x50/0x84
- el1_interrupt+0x34/0x68
- el1h_64_irq_handler+0x18/0x24
- el1h_64_irq+0x6c/0x70
- regmap_mmio_read32le+0xc/0x20 (P)
- _regmap_bus_reg_read+0x6c/0xac
- _regmap_read+0x60/0xdc
- regmap_read+0x4c/0x80
- mtk_star_rx_poll+0x2f4/0x39c [mtk_star_emac]
- __napi_poll+0x38/0x188
- net_rx_action+0x164/0x2c0
- handle_softirqs+0x100/0x244
- __do_softirq+0x14/0x20
- ____do_softirq+0x10/0x20
- call_on_irq_stack+0x24/0x64
- do_softirq_own_stack+0x1c/0x40
- __irq_exit_rcu+0xd4/0x10c
- irq_exit_rcu+0x10/0x1c
- el1_interrupt+0x38/0x68
- el1h_64_irq_handler+0x18/0x24
- el1h_64_irq+0x6c/0x70
- cpuidle_enter_state+0xac/0x320 (P)
- cpuidle_enter+0x38/0x50
- do_idle+0x1e4/0x260
- cpu_startup_entry+0x34/0x3c
- rest_init+0xdc/0xe0
- console_on_rootfs+0x0/0x6c
- __primary_switched+0x88/0x90
-```
+This is done by reading data, 16 bits at a time as follows:
 
-Fixes: 0a8bd81fd6aa ("net: ethernet: mtk-star-emac: separate tx/rx handling with two NAPIs")
-Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Link: https://patch.msgid.link/20250424-mtk_star_emac-fix-spinlock-recursion-issue-v2-1-f3fde2e529d8@collabora.com
+	for (i = 0; i < 128; i++)
+                ((__le16 *) sromdata)[i] = cpu_to_le16(read_eeprom(np, i));
+
+sromdata is at the same memory location as psrom.
+And the type of psrom is a pointer to struct t_SROM.
+
+As can be seen in the loop above, data is stored in sromdata, and thus psrom,
+as 16-bit little-endian values.
+
+However, the integer fields of t_SROM are host byte order integers.
+And in the case of led_mode this leads to a little endian value
+being incorrectly treated as host byte order.
+
+Looking at rio_set_led_mode, this does appear to be a bug as that code
+masks led_mode with 0x1, 0x2 and 0x8. Logic that would be effected by a
+reversed byte order.
+
+This problem would only manifest on big endian hosts.
+
+Found by inspection while investigating a sparse warning
+regarding the crc field of t_SROM.
+
+I believe that warning is a false positive. And although I plan
+to send a follow-up to use little-endian types for other the integer
+fields of PSROM_t I do not believe that will involve any bug fixes.
+
+Compile tested only.
+
+Fixes: c3f45d322cbd ("dl2k: Add support for IP1000A-based cards")
+Signed-off-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250425-dlink-led-mode-v1-1-6bae3c36e736@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mediatek/mtk_star_emac.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/dlink/dl2k.c | 2 +-
+ drivers/net/ethernet/dlink/dl2k.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_star_emac.c b/drivers/net/ethernet/mediatek/mtk_star_emac.c
-index 25989c79c92e6..47a00e02365a2 100644
---- a/drivers/net/ethernet/mediatek/mtk_star_emac.c
-+++ b/drivers/net/ethernet/mediatek/mtk_star_emac.c
-@@ -1163,6 +1163,7 @@ static int mtk_star_tx_poll(struct napi_struct *napi, int budget)
- 	struct net_device *ndev = priv->ndev;
- 	unsigned int head = ring->head;
- 	unsigned int entry = ring->tail;
-+	unsigned long flags;
+diff --git a/drivers/net/ethernet/dlink/dl2k.c b/drivers/net/ethernet/dlink/dl2k.c
+index 993bba0ffb161..af0b6fa296e56 100644
+--- a/drivers/net/ethernet/dlink/dl2k.c
++++ b/drivers/net/ethernet/dlink/dl2k.c
+@@ -353,7 +353,7 @@ parse_eeprom (struct net_device *dev)
+ 		dev->dev_addr[i] = psrom->mac_addr[i];
  
- 	while (entry != head && count < (MTK_STAR_RING_NUM_DESCS - 1)) {
- 		ret = mtk_star_tx_complete_one(priv);
-@@ -1182,9 +1183,9 @@ static int mtk_star_tx_poll(struct napi_struct *napi, int budget)
- 		netif_wake_queue(ndev);
- 
- 	if (napi_complete(napi)) {
--		spin_lock(&priv->lock);
-+		spin_lock_irqsave(&priv->lock, flags);
- 		mtk_star_enable_dma_irq(priv, false, true);
--		spin_unlock(&priv->lock);
-+		spin_unlock_irqrestore(&priv->lock, flags);
+ 	if (np->chip_id == CHIP_IP1000A) {
+-		np->led_mode = psrom->led_mode;
++		np->led_mode = le16_to_cpu(psrom->led_mode);
+ 		return 0;
  	}
  
- 	return 0;
-@@ -1341,6 +1342,7 @@ static int mtk_star_rx(struct mtk_star_priv *priv, int budget)
- static int mtk_star_rx_poll(struct napi_struct *napi, int budget)
- {
- 	struct mtk_star_priv *priv;
-+	unsigned long flags;
- 	int work_done = 0;
- 
- 	priv = container_of(napi, struct mtk_star_priv, rx_napi);
-@@ -1348,9 +1350,9 @@ static int mtk_star_rx_poll(struct napi_struct *napi, int budget)
- 	work_done = mtk_star_rx(priv, budget);
- 	if (work_done < budget) {
- 		napi_complete_done(napi, work_done);
--		spin_lock(&priv->lock);
-+		spin_lock_irqsave(&priv->lock, flags);
- 		mtk_star_enable_dma_irq(priv, true, false);
--		spin_unlock(&priv->lock);
-+		spin_unlock_irqrestore(&priv->lock, flags);
- 	}
- 
- 	return work_done;
+diff --git a/drivers/net/ethernet/dlink/dl2k.h b/drivers/net/ethernet/dlink/dl2k.h
+index 195dc6cfd8955..0e33e2eaae960 100644
+--- a/drivers/net/ethernet/dlink/dl2k.h
++++ b/drivers/net/ethernet/dlink/dl2k.h
+@@ -335,7 +335,7 @@ typedef struct t_SROM {
+ 	u16 sub_system_id;	/* 0x06 */
+ 	u16 pci_base_1;		/* 0x08 (IP1000A only) */
+ 	u16 pci_base_2;		/* 0x0a (IP1000A only) */
+-	u16 led_mode;		/* 0x0c (IP1000A only) */
++	__le16 led_mode;	/* 0x0c (IP1000A only) */
+ 	u16 reserved1[9];	/* 0x0e-0x1f */
+ 	u8 mac_addr[6];		/* 0x20-0x25 */
+ 	u8 reserved2[10];	/* 0x26-0x2f */
 -- 
 2.39.5
 
