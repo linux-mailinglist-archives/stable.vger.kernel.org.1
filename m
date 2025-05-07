@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-142242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57FDEAAE9B0
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:47:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3066BAAEB1F
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:03:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DBBD506558
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:47:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99418525CFF
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:03:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAA47155389;
-	Wed,  7 May 2025 18:47:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 296B928DF1B;
+	Wed,  7 May 2025 19:03:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PVfFHvul"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T0w5UJku"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A0273451;
-	Wed,  7 May 2025 18:47:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB33729A0;
+	Wed,  7 May 2025 19:03:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643650; cv=none; b=eJig6px8ojgpECRLHD6vYV8RK0E4dCApuPseXb92vxprO2oHeZGOfA+rhA5tVRJhMpvVZGsEbBQEy4gPDoU8FiRH9X+wc8DqCBXp3VEAnJYwwHZ75cE0faJoWL/w3xZ8fvH9ZVLL2w72ruyqdGlYByTbgSlLkujmLAtRrJiaMOM=
+	t=1746644617; cv=none; b=FelfIsgut4I6tc1mmEZ7zZ8VV2f6ykq6SrrCRhXU7ZHwhJww0iMBBEyFVw26YaF1TsLmAr9Ub3Vr/WLFM9Mp2dxHCPU7LoEZ6x52tquhpTbyHNtYi6W+2KyPK+0bGeKRXJFBskIJnB4Qc2TM9x99QPswgCR6DmEElIKoM53lCXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643650; c=relaxed/simple;
-	bh=AH+NJ0Mq8no7ZhlqiIsmz2OiwFzPIVFk1GdwNTCzlJ0=;
+	s=arc-20240116; t=1746644617; c=relaxed/simple;
+	bh=p1guZmSKc5mGOmhOJtf0cRwD8o7yGIR6DMl8ofVrdqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k7nm5vkusPcJr3CGNhVeTjWSBkhPl0/hrdy+rsGAXk0dudtIXN++Um6U48H59R0htdwGfEYaI3RDfgtfKo5wb+17Q4bheb+tTDUzYaGxEHiOJnUHQPJDbNLJEe/LS+gHpGPATyP2b5ttAj+Xrslg9wA17Aw90FWk8Lw1Vr6nka0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PVfFHvul; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0021C4CEE2;
-	Wed,  7 May 2025 18:47:29 +0000 (UTC)
+	 MIME-Version; b=SeU5ZlSriehmKhRTbWd7Eifvn9Roe5sKNwXQ6K0xgnRPikzTZWclXlCG2TM5Eotx31Uqq8LfsEmI+YLd8iFx9b6Nt4iTGRQ12Cu53qhyt70yVN74wM5KK5xsK8FiNv7gVVbBJs0AR8VOWbPHDZNh4yPMf+SYFaQVGHsIB/v1qQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T0w5UJku; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63B42C4CEE2;
+	Wed,  7 May 2025 19:03:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643650;
-	bh=AH+NJ0Mq8no7ZhlqiIsmz2OiwFzPIVFk1GdwNTCzlJ0=;
+	s=korg; t=1746644617;
+	bh=p1guZmSKc5mGOmhOJtf0cRwD8o7yGIR6DMl8ofVrdqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PVfFHvuld5aXgiB4w7nrfy+Nce+ejxov5TRjfg3t18+jnPt45KYN6xbh5bmtcag4H
-	 x8VE9hMi0/LuqPKgX7fVE7aCwBSvXYftobT0yRCMXUazsOjDXw+HWXmuq0ANwa9hk2
-	 k/jP8IxTr/11CZBXQ3hL9krfm46xLkIAF/SPfvVU=
+	b=T0w5UJkuQpockP6Ijr15rZNpvkM26jcMIANBFk4koewf8FJ+is1mkT57tZnEw+hBh
+	 9/Rd77NDN24RMl324RNdpsiavgYd/O0Ap1cXTu0P54gWOc4kWQkcWqQbHIOHQXqt9u
+	 ycDamKlSBZVAMrk1Pc4+ec+I15WOghNY1LI14i8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Andrew Lunn <andrew@lunn.ch>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 71/97] net: vertexcom: mse102x: Fix RX error handling
-Date: Wed,  7 May 2025 20:39:46 +0200
-Message-ID: <20250507183809.847788223@linuxfoundation.org>
+Subject: [PATCH 6.12 102/164] net: dlink: Correct endianness handling of led_mode
+Date: Wed,  7 May 2025 20:39:47 +0200
+Message-ID: <20250507183825.105986435@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
-References: <20250507183806.987408728@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,97 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Simon Horman <horms@kernel.org>
 
-[ Upstream commit ee512922ddd7d64afe2b28830a88f19063217649 ]
+[ Upstream commit e7e5ae71831c44d58627a991e603845a2fed2cab ]
 
-In case the CMD_RTS got corrupted by interferences, the MSE102x
-doesn't allow a retransmission of the command. Instead the Ethernet
-frame must be shifted out of the SPI FIFO. Since the actual length is
-unknown, assume the maximum possible value.
+As it's name suggests, parse_eeprom() parses EEPROM data.
 
-Fixes: 2f207cbf0dd4 ("net: vertexcom: Add MSE102x SPI support")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250430133043.7722-5-wahrenst@gmx.net
+This is done by reading data, 16 bits at a time as follows:
+
+	for (i = 0; i < 128; i++)
+                ((__le16 *) sromdata)[i] = cpu_to_le16(read_eeprom(np, i));
+
+sromdata is at the same memory location as psrom.
+And the type of psrom is a pointer to struct t_SROM.
+
+As can be seen in the loop above, data is stored in sromdata, and thus psrom,
+as 16-bit little-endian values.
+
+However, the integer fields of t_SROM are host byte order integers.
+And in the case of led_mode this leads to a little endian value
+being incorrectly treated as host byte order.
+
+Looking at rio_set_led_mode, this does appear to be a bug as that code
+masks led_mode with 0x1, 0x2 and 0x8. Logic that would be effected by a
+reversed byte order.
+
+This problem would only manifest on big endian hosts.
+
+Found by inspection while investigating a sparse warning
+regarding the crc field of t_SROM.
+
+I believe that warning is a false positive. And although I plan
+to send a follow-up to use little-endian types for other the integer
+fields of PSROM_t I do not believe that will involve any bug fixes.
+
+Compile tested only.
+
+Fixes: c3f45d322cbd ("dl2k: Add support for IP1000A-based cards")
+Signed-off-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250425-dlink-led-mode-v1-1-6bae3c36e736@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/vertexcom/mse102x.c | 20 ++++++++++++++++----
- 1 file changed, 16 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/dlink/dl2k.c | 2 +-
+ drivers/net/ethernet/dlink/dl2k.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/vertexcom/mse102x.c b/drivers/net/ethernet/vertexcom/mse102x.c
-index 2b1aac72601d0..060a566bc6aae 100644
---- a/drivers/net/ethernet/vertexcom/mse102x.c
-+++ b/drivers/net/ethernet/vertexcom/mse102x.c
-@@ -263,7 +263,7 @@ static int mse102x_tx_frame_spi(struct mse102x_net *mse, struct sk_buff *txp,
- }
+diff --git a/drivers/net/ethernet/dlink/dl2k.c b/drivers/net/ethernet/dlink/dl2k.c
+index d0ea926078706..6bf8a7aeef908 100644
+--- a/drivers/net/ethernet/dlink/dl2k.c
++++ b/drivers/net/ethernet/dlink/dl2k.c
+@@ -352,7 +352,7 @@ parse_eeprom (struct net_device *dev)
+ 	eth_hw_addr_set(dev, psrom->mac_addr);
  
- static int mse102x_rx_frame_spi(struct mse102x_net *mse, u8 *buff,
--				unsigned int frame_len)
-+				unsigned int frame_len, bool drop)
- {
- 	struct mse102x_net_spi *mses = to_mse102x_spi(mse);
- 	struct spi_transfer *xfer = &mses->spi_xfer;
-@@ -281,6 +281,9 @@ static int mse102x_rx_frame_spi(struct mse102x_net *mse, u8 *buff,
- 		netdev_err(mse->ndev, "%s: spi_sync() failed: %d\n",
- 			   __func__, ret);
- 		mse->stats.xfer_err++;
-+	} else if (drop) {
-+		netdev_dbg(mse->ndev, "%s: Drop frame\n", __func__);
-+		ret = -EINVAL;
- 	} else if (*sof != cpu_to_be16(DET_SOF)) {
- 		netdev_dbg(mse->ndev, "%s: SPI start of frame is invalid (0x%04x)\n",
- 			   __func__, *sof);
-@@ -308,6 +311,7 @@ static void mse102x_rx_pkt_spi(struct mse102x_net *mse)
- 	struct sk_buff *skb;
- 	unsigned int rxalign;
- 	unsigned int rxlen;
-+	bool drop = false;
- 	__be16 rx = 0;
- 	u16 cmd_resp;
- 	u8 *rxpkt;
-@@ -330,7 +334,8 @@ static void mse102x_rx_pkt_spi(struct mse102x_net *mse)
- 			net_dbg_ratelimited("%s: Unexpected response (0x%04x)\n",
- 					    __func__, cmd_resp);
- 			mse->stats.invalid_rts++;
--			return;
-+			drop = true;
-+			goto drop;
- 		}
- 
- 		net_dbg_ratelimited("%s: Unexpected response to first CMD\n",
-@@ -342,9 +347,16 @@ static void mse102x_rx_pkt_spi(struct mse102x_net *mse)
- 		net_dbg_ratelimited("%s: Invalid frame length: %d\n", __func__,
- 				    rxlen);
- 		mse->stats.invalid_len++;
--		return;
-+		drop = true;
+ 	if (np->chip_id == CHIP_IP1000A) {
+-		np->led_mode = psrom->led_mode;
++		np->led_mode = le16_to_cpu(psrom->led_mode);
+ 		return 0;
  	}
  
-+	/* In case of a invalid CMD_RTS, the frame must be consumed anyway.
-+	 * So assume the maximum possible frame length.
-+	 */
-+drop:
-+	if (drop)
-+		rxlen = VLAN_ETH_FRAME_LEN;
-+
- 	rxalign = ALIGN(rxlen + DET_SOF_LEN + DET_DFT_LEN, 4);
- 	skb = netdev_alloc_skb_ip_align(mse->ndev, rxalign);
- 	if (!skb)
-@@ -355,7 +367,7 @@ static void mse102x_rx_pkt_spi(struct mse102x_net *mse)
- 	 * They are copied, but ignored.
- 	 */
- 	rxpkt = skb_put(skb, rxlen) - DET_SOF_LEN;
--	if (mse102x_rx_frame_spi(mse, rxpkt, rxlen)) {
-+	if (mse102x_rx_frame_spi(mse, rxpkt, rxlen, drop)) {
- 		mse->ndev->stats.rx_errors++;
- 		dev_kfree_skb(skb);
- 		return;
+diff --git a/drivers/net/ethernet/dlink/dl2k.h b/drivers/net/ethernet/dlink/dl2k.h
+index 195dc6cfd8955..0e33e2eaae960 100644
+--- a/drivers/net/ethernet/dlink/dl2k.h
++++ b/drivers/net/ethernet/dlink/dl2k.h
+@@ -335,7 +335,7 @@ typedef struct t_SROM {
+ 	u16 sub_system_id;	/* 0x06 */
+ 	u16 pci_base_1;		/* 0x08 (IP1000A only) */
+ 	u16 pci_base_2;		/* 0x0a (IP1000A only) */
+-	u16 led_mode;		/* 0x0c (IP1000A only) */
++	__le16 led_mode;	/* 0x0c (IP1000A only) */
+ 	u16 reserved1[9];	/* 0x0e-0x1f */
+ 	u8 mac_addr[6];		/* 0x20-0x25 */
+ 	u8 reserved2[10];	/* 0x26-0x2f */
 -- 
 2.39.5
 
