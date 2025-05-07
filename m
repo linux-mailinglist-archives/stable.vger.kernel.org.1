@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-142214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01065AAE994
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:46:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B767AAEAFE
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:02:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 399A59E0DC8
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:45:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E97DF525249
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:02:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F7AA20E6;
-	Wed,  7 May 2025 18:46:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 140801E22E9;
+	Wed,  7 May 2025 19:02:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G/WHxDID"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZbnhfQKP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0EAC29A0;
-	Wed,  7 May 2025 18:46:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB49329A0;
+	Wed,  7 May 2025 19:02:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643564; cv=none; b=dzYhJNuJ9JPhwzaF4tOviWKPsAIdqTLbMITGoSo2GiaxwuwYlfyGrYY0aQDyNeqSXeEYubdbstaDy7RhwiTAfP5RIyu/c7IrteoLvuGbzLkztSgUlKru1NkZs5AhvllVBF4Xi9yj4NnCZSUqFgIA+IujBf1GRhOT/H6UrVwC7Gc=
+	t=1746644527; cv=none; b=Q1CpZQu8a94J5y9Ecj8QeeaEL239lNPSuCuvXxSzxBhRk7IxuYai9TNQiH+2UmSB1YlIpv93NsZEXt2TdP1+H4ZJVInyWilUWW8Ohm2SIthS6dX2x3l77+YUBcllHN9TUuTAPt5HMW+h/UwF2Nb1a96ljDFx/rQaeusPYGvA+qw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643564; c=relaxed/simple;
-	bh=KFUJYSSLLN8to2H/MiWBfjB229i+cSMVE8eGUiq7j5s=;
+	s=arc-20240116; t=1746644527; c=relaxed/simple;
+	bh=A8tySBSIWSgCa42SuslNbqp9njFXEtAoX6XLaaS2bEQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UhIfZNcdtmGIwV3hNXhL21NT9gG9E7WdISgzAQEsZAI/tkZ3s1JB5FkJqpTJDyijkNi6BGnMUodyKOLW8GoobBM7CQ1NutnS3KBOxu8jED2CY+/hSBs59PeTY0/+13wgD6GFVGGvWawiKpSAmI+RGLHToDrocJ25LPX0cO5M/bs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G/WHxDID; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F179C4CEE2;
-	Wed,  7 May 2025 18:46:03 +0000 (UTC)
+	 MIME-Version; b=DJQM6f6lJZro/tbDhlxfRIrkib7lY6+MQF5rSWcvNj7r1Ubkg6St0sxAd5iZdx78W/EpUaSMuFQKUffHK3tD0vxVEdK9mFPmJ8LmOma8HPaFPB7Xq3wzBk385yT3bUHdlLA73KPPaq7XEOW9eu07rimXFRjdfl0U4XQVeKIY2zE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZbnhfQKP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47FA3C4CEE2;
+	Wed,  7 May 2025 19:02:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643563;
-	bh=KFUJYSSLLN8to2H/MiWBfjB229i+cSMVE8eGUiq7j5s=;
+	s=korg; t=1746644527;
+	bh=A8tySBSIWSgCa42SuslNbqp9njFXEtAoX6XLaaS2bEQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G/WHxDIDl8Xf3QR5LEyJ5/1NThMkcVzlMlOw4Z5qZYAZv2oKZxb56bVwd+sdLRHEO
-	 iZwdybX+m/1Uzh8NAytQGoi7W6Z+DzqoUxKoFEsKDgrNWOGrzU2h3a/tUEs1jzy4sq
-	 QzKuAgNZLzwfjxdXxdJK79ZQulbKMYUwjtAJkzvk=
+	b=ZbnhfQKPKoBGJiLcfwG9+37N8CR3LaZRB5r7iXXzibXtpv49nPPg0y8LOtDh8+osZ
+	 gfZ11gC/mg2Rm8MyAV4tPTVppDpwvVPM+ADv8TYsSadY3jLQft4FNx/6Wj/V6fRNCC
+	 lQJTZINluMxSF1lYtzhkDrVgScr15CgiDza3hW0g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Venkata Prasad Potturu <venkataprasad.potturu@amd.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 43/97] vxlan: vnifilter: Fix unlocked deletion of default FDB entry
+Subject: [PATCH 6.12 073/164] ASoC: amd: acp: Fix NULL pointer deref in acp_i2s_set_tdm_slot
 Date: Wed,  7 May 2025 20:39:18 +0200
-Message-ID: <20250507183808.723537108@linuxfoundation.org>
+Message-ID: <20250507183823.921241159@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
-References: <20250507183806.987408728@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
 
-[ Upstream commit 087a9eb9e5978e3ba362e1163691e41097e8ca20 ]
+[ Upstream commit 6d9b64156d849e358cb49b6b899fb0b7d262bda8 ]
 
-When a VNI is deleted from a VXLAN device in 'vnifilter' mode, the FDB
-entry associated with the default remote (assuming one was configured)
-is deleted without holding the hash lock. This is wrong and will result
-in a warning [1] being generated by the lockdep annotation that was
-added by commit ebe642067455 ("vxlan: Create wrappers for FDB lookup").
+Update chip data using dev_get_drvdata(dev->parent) to fix
+NULL pointer deref in acp_i2s_set_tdm_slot.
 
-Reproducer:
+Fixes: cd60dec8994c ("ASoC: amd: acp: Refactor TDM slots selction based on acp revision id")
 
- # ip link add vx0 up type vxlan dstport 4789 external vnifilter local 192.0.2.1
- # bridge vni add vni 10010 remote 198.51.100.1 dev vx0
- # bridge vni del vni 10010 dev vx0
-
-Fix by acquiring the hash lock before the deletion and releasing it
-afterwards. Blame the original commit that introduced the issue rather
-than the one that exposed it.
-
-[1]
-WARNING: CPU: 3 PID: 392 at drivers/net/vxlan/vxlan_core.c:417 vxlan_find_mac+0x17f/0x1a0
-[...]
-RIP: 0010:vxlan_find_mac+0x17f/0x1a0
-[...]
-Call Trace:
- <TASK>
- __vxlan_fdb_delete+0xbe/0x560
- vxlan_vni_delete_group+0x2ba/0x940
- vxlan_vni_del.isra.0+0x15f/0x580
- vxlan_process_vni_filter+0x38b/0x7b0
- vxlan_vnifilter_process+0x3bb/0x510
- rtnetlink_rcv_msg+0x2f7/0xb70
- netlink_rcv_skb+0x131/0x360
- netlink_unicast+0x426/0x710
- netlink_sendmsg+0x75a/0xc20
- __sock_sendmsg+0xc1/0x150
- ____sys_sendmsg+0x5aa/0x7b0
- ___sys_sendmsg+0xfc/0x180
- __sys_sendmsg+0x121/0x1b0
- do_syscall_64+0xbb/0x1d0
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-Fixes: f9c4bb0b245c ("vxlan: vni filtering support on collect metadata device")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20250423145131.513029-1-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Venkata Prasad Potturu <venkataprasad.potturu@amd.com>
+Link: https://patch.msgid.link/20250425060144.1773265-2-venkataprasad.potturu@amd.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/vxlan/vxlan_vnifilter.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ sound/soc/amd/acp/acp-i2s.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
-index 1ffc00e270802..c6d4fae958ca8 100644
---- a/drivers/net/vxlan/vxlan_vnifilter.c
-+++ b/drivers/net/vxlan/vxlan_vnifilter.c
-@@ -627,7 +627,11 @@ static void vxlan_vni_delete_group(struct vxlan_dev *vxlan,
- 	 * default dst remote_ip previously added for this vni
- 	 */
- 	if (!vxlan_addr_any(&vninode->remote_ip) ||
--	    !vxlan_addr_any(&dst->remote_ip))
-+	    !vxlan_addr_any(&dst->remote_ip)) {
-+		u32 hash_index = fdb_head_index(vxlan, all_zeros_mac,
-+						vninode->vni);
-+
-+		spin_lock_bh(&vxlan->hash_lock[hash_index]);
- 		__vxlan_fdb_delete(vxlan, all_zeros_mac,
- 				   (vxlan_addr_any(&vninode->remote_ip) ?
- 				   dst->remote_ip : vninode->remote_ip),
-@@ -635,6 +639,8 @@ static void vxlan_vni_delete_group(struct vxlan_dev *vxlan,
- 				   vninode->vni, vninode->vni,
- 				   dst->remote_ifindex,
- 				   true);
-+		spin_unlock_bh(&vxlan->hash_lock[hash_index]);
-+	}
+diff --git a/sound/soc/amd/acp/acp-i2s.c b/sound/soc/amd/acp/acp-i2s.c
+index 92c5ff0deea2c..607a3eaeb6da8 100644
+--- a/sound/soc/amd/acp/acp-i2s.c
++++ b/sound/soc/amd/acp/acp-i2s.c
+@@ -101,7 +101,7 @@ static int acp_i2s_set_tdm_slot(struct snd_soc_dai *dai, u32 tx_mask, u32 rx_mas
+ 	struct acp_stream *stream;
+ 	int slot_len, no_of_slots;
  
- 	if (vxlan->dev->flags & IFF_UP) {
- 		if (vxlan_addr_multicast(&vninode->remote_ip) &&
+-	chip = dev_get_platdata(dev);
++	chip = dev_get_drvdata(dev->parent);
+ 	switch (slot_width) {
+ 	case SLOT_WIDTH_8:
+ 		slot_len = 8;
 -- 
 2.39.5
 
