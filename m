@@ -1,203 +1,155 @@
-Return-Path: <stable+bounces-142094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 822A7AAE58A
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 17:54:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DABABAAE595
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 17:56:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78F317BE3A4
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 15:52:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95C2C18896B0
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 15:54:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B861A28C021;
-	Wed,  7 May 2025 15:50:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="bPhXRsE6"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DA6428BAA9;
+	Wed,  7 May 2025 15:51:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2086.outbound.protection.outlook.com [40.107.220.86])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8EC28C01C;
-	Wed,  7 May 2025 15:50:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.86
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746633040; cv=fail; b=QL3yueClQGAwFW3lNobNexbtwA3kEwuIHmCfYtKvN1EedkzlSZXS2A3t6MLfqKxaUW8fcO28Qnz6zwivNC+qVz0LtX2HxPefY8oTQM3famKSxy52xxF0Hk6FCXJ1ksBNnBEEcFUT5eL3aRv9lh4sSl1s5ca9Xy9Dcy4Fu5OLUUY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746633040; c=relaxed/simple;
-	bh=+zzM9CHAcJM2rCZnJwBrIeWpTybxyKmoCDiUDCsZ2q8=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=YTyBQQVkUXDXCJ082cTAfkxKeCB7JEmONyDFGKg2YemUas3ApY6Q+Eye8zkjSf+cZVOqGdhWztU7oKuynaEptbahtipgLj8qfK4XJG/kSFC3at6Pr1B40FQ2Rej/Ohe8uwXJ4U8nrmZfl+AnFhvr1belCNJjG4bo0ZXf13g8Ieo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=bPhXRsE6; arc=fail smtp.client-ip=40.107.220.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Rz6IfPS/ff64AFjxOa+M9vHPdElaOE7BzXO6z5pyYJWDR+4JToW6WyhPGPeJYvL/d/LYfmRX+L/C33IvsH0PtVksNYGhsJoumP8JttBLasoSYHIBSWa+aT0W7V6e0R/w1tpGUOXogYzSqpLbos/fzNIkI2Z8WmWxCuKb+qvXYyQ802FDN9PONnx/SWTSDpa6ckwG5Ohi0pbYgcj1tjt8u1g3xnXupHYcqII9YxmKTGTy73Qh78RsAhArbN4BQbVDxTvlcWrU/ToxUpBaq46VgtNA2/X89i/gHKfkYMFIli5jXKG2Bh5wVd3Aa/XG1oma8cvT1m7QlZA338xh56Pkbw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aN5Dwn+EzPsypNIbTlATqtMVBUssiqryh6kQzikDyT4=;
- b=FfQzKU8sRyHg6bfxGe74v4SbOQFGO6CSAF2bgQBz2F/dCzaQN9d175WOX8JwpLcdklLJ1aFFDI4RniIpQQnMonv9/DhRL1KzoM04D1WwAdJ9yD+QIgtUO8Pm8kSyEhLY6idI5ESMBoeps7lV58DR+/vkWQMt471unwSfD7Lu7/upJaWDSuir4czAp1WMbjROhSefnwTdt8V4L7yaKx1CbsjBASwrmdXIv9+PCVqajOI8FZ+Fnm1ANtxRg9hNYEXOfwQY/cLG8gEJFMaQGSh7qox4hpV0tMGfcmhF7KgYH7Ni6YFAxz3o+Pv7T4eTW532b9lxD+gHzxvDE4K6WfSCjA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aN5Dwn+EzPsypNIbTlATqtMVBUssiqryh6kQzikDyT4=;
- b=bPhXRsE69TF3QkTvuFhwwnfNyLzpTEeoXNIh6kXkZxVX6vR+XVZbr3Umiibh8tOpcauyuP+6xRjZImxD8uNIUNsia64DgqYhmi02x1MPz7wFN+A/C/iMU4WxvL0Aw64ejvezBKleE8H3rNjlm0b+IuflSfKYyePAZOBWSY5cXg7Af2R4BOWteUQWPKI/WiPIyA+myW3ZFNqPMIY+oOHqsiv/dgSt/FsIwDwtYOxcFFxiA7NSthWykMZumaJMaBXejH34r03RyOQKc4Bq2mmgniVRXfcSzhDpv17jcbOkGHHy0RAotzBTfI8G6HTllAuRz+x8/rkAXHif9aE+SD7DMA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SJ2PR12MB8784.namprd12.prod.outlook.com (2603:10b6:a03:4d0::11)
- by PH7PR12MB8106.namprd12.prod.outlook.com (2603:10b6:510:2ba::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.19; Wed, 7 May
- 2025 15:50:31 +0000
-Received: from SJ2PR12MB8784.namprd12.prod.outlook.com
- ([fe80::1660:3173:eef6:6cd9]) by SJ2PR12MB8784.namprd12.prod.outlook.com
- ([fe80::1660:3173:eef6:6cd9%3]) with mapi id 15.20.8699.022; Wed, 7 May 2025
- 15:50:31 +0000
-Message-ID: <2928a808-c4c0-4ef2-a6d7-79e7053c6915@nvidia.com>
-Date: Wed, 7 May 2025 16:50:26 +0100
-User-Agent: Mozilla Thunderbird
-Subject: Re: Patch "spi: tegra114: Don't fail set_cs_timing when delays are
- zero" has been added to the 6.1-stable tree
-To: stable@vger.kernel.org, stable-commits@vger.kernel.org,
- webgeek1234@gmail.com
-Cc: Laxman Dewangan <ldewangan@nvidia.com>, Mark Brown <broonie@kernel.org>,
- Thierry Reding <thierry.reding@gmail.com>
-References: <20250507154327.3165360-1-sashal@kernel.org>
-From: Jon Hunter <jonathanh@nvidia.com>
-Content-Language: en-US
-In-Reply-To: <20250507154327.3165360-1-sashal@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO0P123CA0011.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:354::15) To SJ2PR12MB8784.namprd12.prod.outlook.com
- (2603:10b6:a03:4d0::11)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6421A28C2A2;
+	Wed,  7 May 2025 15:51:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746633105; cv=none; b=mJ5wVxLBBiGcw4i9rX+FIE+JBhFMgnNHnCwATfoGV7hJD1MTTQpuvgjqYfPM8jOTSSt07RjvoPp3YYG0Z532FPLAwet6/jrdAY85FnuhPTnM0PWeXUeoVPqF/tm1g9+9HnYZJDwt+OMyewQ6ruxXfA5tJlcgVut2D3guRtGRnsQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746633105; c=relaxed/simple;
+	bh=GJtTcPXw7UlSwrjmMBiZBJnv4ziGu/CqEtxw+6R/cS8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aR3FoEAfOc0W+aVhfk/OX2+t1jKfm8j2GFqJMVnSwgXyD7PMh3BzkD5g6I6Gq+HKBruda51JOaohG3unCJwb/sBO3KfqmOp+Qwn1EKMzjuKbvxl8g4Bl0wT+1kntGTb3Q0j/AcLiLK3BQxljzlEtu+EVkyvvVRTysZbDBortop4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7986816F2;
+	Wed,  7 May 2025 08:51:32 -0700 (PDT)
+Received: from [192.168.20.57] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2D7103F58B;
+	Wed,  7 May 2025 08:51:39 -0700 (PDT)
+Message-ID: <1911d3b6-f328-40a6-aa03-cde3d79554de@arm.com>
+Date: Wed, 7 May 2025 10:51:38 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR12MB8784:EE_|PH7PR12MB8106:EE_
-X-MS-Office365-Filtering-Correlation-Id: 86473df8-f127-479b-46dc-08dd8d7ee577
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|1800799024|10070799003|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?SFZBODgyK2FtQTJpMjhPdlMvaHE5akpMMG1hT1l5amdVYXpqOXdWWldBM3NO?=
- =?utf-8?B?OU54TWNaRElwUmRXT2t4eE5xS0JDamZFdWdBcjVvSzJPb1hBYmxIcGtyTFpS?=
- =?utf-8?B?NVdBY3pHbUNDa0pEN1kreXEwVnRaNEo1QTU4Z2kwTDI5SWZnT3ZlUXVCcld4?=
- =?utf-8?B?KzlGbXVVRk9DdGlNM2I2TzhJNjRsb3lJRy9LUFNielZuT2twRnU4NjUyM0hm?=
- =?utf-8?B?bEVKd0hUOEFaMUZkUHhGK0VKT29SbGU1YXdlUmcvNkh1ZEJiMjY5dUt4MGVX?=
- =?utf-8?B?LzJiL0tSVDBMc3ZqK3BVUmFMdXFxcnNkelY1K01ydHNibHJHOS95V3lWK1dT?=
- =?utf-8?B?enFFUE40Unh5aU5tNHg1bExFWWZPdDQ4YWM1MGRMRE9KK3IwbDRBNTRLWVcz?=
- =?utf-8?B?bEJrNHhnbFFmeTdLMTlCNXFyMjdFYlpoN0lVa0diRGEvSjhpQkl0K3pVU3VL?=
- =?utf-8?B?NzlrNi96REIvMjFobHFqSWwxTGU5UER4eXR1WmFPSm9FTThqMzZoa0JYQUtQ?=
- =?utf-8?B?S1Q3RDh3WTYrR0hMK1RneDEzOXNWejh6UUl4VDZicis1Y0ZHTEdYUEYvQk1v?=
- =?utf-8?B?aDViL3VZQThQSU9LQ2tiNGpKbVBZYUVZM3FxT0FmbXdiN2NzS21nL3QrQUdY?=
- =?utf-8?B?bHlIQUdKb0s4eFc4dU14RUVEVVhzdDlOSWI5MmMvQ2FRZEtONTEybWZ2VE5X?=
- =?utf-8?B?QmRpMHBFdWR3WTRaeUUrY3Y0bHEvYTkzeVRvRWtBenFNU3g0aHF5TUpIa3B3?=
- =?utf-8?B?QndhNGZML0d3dlM1K3dYNDdCcWVHRTdDbEJLZ3ZKY3Z6QnlpN3JpaXhOTDhM?=
- =?utf-8?B?MEtOVkVqSEwxT05oS0ttSlBYK2JaUHM1N1M5RFU5d1VZeHE5bnEzYTNnRnFS?=
- =?utf-8?B?bEFsMzdjK2cyQkRoeFU3RWRaTlg0S3VrQ3RTNTN3UVlEOHhuZnNldDhianU0?=
- =?utf-8?B?eHBYQWFkR2N4WUUxSEgwZ25hdHoxajNsMldjT1ora1hlcXNEc1ZTSEFlNDl2?=
- =?utf-8?B?OVBGd2o3dTFMVWs1M2ltNFBHVDlJM1pqRWg5eFpRdFBxd041aEhQNTFhUXFS?=
- =?utf-8?B?dm1IRVdKalVvQmxnSkZJallRWHk2S2sxaXNDZWhFNjhsbEtMWTFCSkU1Mjgv?=
- =?utf-8?B?M2xoNE1rS3llSkJJZUtReTVTZWVEUE5ZOExjQzR5OFk1MHlVSUIrNzJBM1Qv?=
- =?utf-8?B?VXZuMU5TZ0tydzZQN0dScW5YWDVDQUJZWkhEOUkwYlNvMGczaHhPMG1aZnVu?=
- =?utf-8?B?eWpDMUMwbjArcjVWZHRGQUUzNDRpV0NkSmV1TDVqcTJlWmN1OUlweERyeU1q?=
- =?utf-8?B?dW9tSlExR2RPdzNKOHk0UWxRWTdxUkJpUGNET3dKQUdzYndmQzFySCtTWG4z?=
- =?utf-8?B?cXNHVUl0ZDZKOWxnS0lhdGhmbTVRSHRWUWprQWZmYTNGaFNIc3RCblMzc011?=
- =?utf-8?B?QzJqeWJUcWdzYlR4ZVVVVDZybjJ6WmJtVmlVU2hRNlg2OHlDRDRpY0w2NUU1?=
- =?utf-8?B?SEQrZXN3ajdQUGZ1eDFEZlJyREpIb2tNbEZOQmY2NzM5YWlLT3p2U3NZRklD?=
- =?utf-8?B?SmhyckpHVDV3eTlYaVFKdHZscm1kV3dpc1BhQkJaQm82TCtJVklodWI0WUtV?=
- =?utf-8?B?Z3lSbkRlTkh1WWZ6aUlLb2U4R1lsUVpLakpnUkcyNTdMNU1aMXVsMnpQdWJE?=
- =?utf-8?B?bDhmYWNhWnBrVzRLWnNVSG5SYWdPQlN1L0dRemQ3UkYxWS9wQjZsT0pvQ2x3?=
- =?utf-8?B?S3F0cHBkamJYS2krOWhmMXE0bkJDKzhBUFhQTFpGOUUzOXFjbktQc2JGcGxs?=
- =?utf-8?B?a1o0c3hBVXhZYXRPTDBCeDFOTjVtY3FySmFFaEV1akMwSVppeFNEMy9ZMGIx?=
- =?utf-8?B?QnlDOVo3S1BuSG5zMTBvUGo2N2M2Q21LK0FLSCtiMHZvOUdhOXBUNTRPa2tv?=
- =?utf-8?Q?33gEMXlxBt0=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR12MB8784.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(10070799003)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Q05lUk9vb0hrM2MwRmNCa21VR0J2R3UvUXVzbkk4MWNzWjVSeTd1aWswZ0h6?=
- =?utf-8?B?VXhVSSs4b3VwYkhORGpNeGhoc2tldWI2YVBsOHVKNWlFRjdjS0lDbzNDbnoz?=
- =?utf-8?B?amRJK3RQZEZVSVRnMVFGOUV2VG9vZjU1ZFRubTBaNDhHNTBYUXN1ZkZtQkth?=
- =?utf-8?B?dk9QM09Na3VOd3JYcjFCYnV1VVNKTDI1VHpqWVE4RFhuUHJTVVBDbFd1NTNI?=
- =?utf-8?B?T09VZ1FpZ1JvQk5LM2VOY2hoNlRER0k4OG93dldxNTBGSC9xM2Y5NzY4Mnpa?=
- =?utf-8?B?Vk9VUnNDMG1aaS94UVIrczhTSWxPdnQxU0ZXTFEyNEdWM2VnYlBod21RVkQ5?=
- =?utf-8?B?LzQ3S0FKNXRzeTJQNUNsWHd3b0Zaa1Ewdmx6REFZdmtKQktWVVpQR1QraTdx?=
- =?utf-8?B?cGtEQy9FbkxKbUZhQS9mbW04RmlDUVFKMWhrSXhINTUxUExSWVROMHo2Vm9s?=
- =?utf-8?B?UjFyNHFTZ09qMkd6NWJ3MlF3OEwxODE2UWlBdCszRitWajhLTGxpbUxseWwv?=
- =?utf-8?B?OXUvc0ZpdVArQkJ6bnBnZFJMRVFoaG5QT2VJZ0xGOW5NdGtzT2E5S0lEWXRs?=
- =?utf-8?B?ZVpvYzhxaVBsUTVPUEUwT1EwSnlSSDQ4a1hmOVk3MHBTT0lvaXZua08yR3NQ?=
- =?utf-8?B?T0YwUGFZZlV4eVNkU0NrM2RVbXF5RFJIQ1lSQjIwd0NYVGR6WW0wV2tTSkcx?=
- =?utf-8?B?ZkRQaTljS1hYYVpuck1SNG1rWjlTb21hQVh3MzVsNE1TOXlZNGNpWUlhcktZ?=
- =?utf-8?B?dEprdi9HbjlEVk1ndW9jYkRwSzBMOU9kdVVWb1BGN3NjK3pncy8wbU1obTlv?=
- =?utf-8?B?T1lmQ1pYZ3IwbzJndWxRMW8yekMycUdJd0p3M256SlFMNTZZdXc5UkZQclVj?=
- =?utf-8?B?MjdQQ0NCeWp5TjFCb1VCYWFwd2hGY1d1c3krYjZVd2wvZG8zR3lWUGlnejZK?=
- =?utf-8?B?dFRJUGpqajFXUi9kZHEvUXByaDhCRGRvbkRKcjNxWHMzQkhRbHBCUTZ5QXE5?=
- =?utf-8?B?Mm56L0x4aDRvT09pM0VUOTRsemJZeDRNeWt0RkFDTUs2ekN0YlNwbWNxemM2?=
- =?utf-8?B?cGo0VG04MXArSlc5RHFSQlhyUjFVeGx1ZFNtdkJLc3ZNOGFNb01FVkx1ayt5?=
- =?utf-8?B?YUdQUW5hRitlZGIyWkxRM1VBbFphTlNPcjdFUStSdXZrUGxNcWROVmlONk5M?=
- =?utf-8?B?NnRPZGg0WDY1OGtjL293SUtZMDFScGN2VXFWaWhhaC9nNFRyamhuUVpqZUZ6?=
- =?utf-8?B?MW1JVmpWM0dNNW5vYlBIazZXa0pqVFE3cDZtL29xL0w2QUJzTnNJVGJKOHlx?=
- =?utf-8?B?Ukg2ZlkrOWJyMVEwRThyTFRwS1Q2eWZWUHljTFdFRGw4SWswMEpQTExVSjZz?=
- =?utf-8?B?K0Fod1d4eWVJM2FuNWlremlUbWhqVWlPSHNFTHh5b2Jma2IrRytRVFl6NjhH?=
- =?utf-8?B?YmlaZDJJM1NndGZIbWdHYi9xNzFuRmNmZVU3UEFHM3dRSGVqZWM0djk3d1dn?=
- =?utf-8?B?YjZISUg4dUIwbDVZSU1DanBOUG5vM0w2UWduWDdERUlGdlc5aWRYSm1aUDl3?=
- =?utf-8?B?QW5Ib042VDA0SVZpaDNPaXl3c0ppSUM4aDQyaEdFd3l4RkUrTHA3czQ0ZXV5?=
- =?utf-8?B?bDMyUlc5TFZ3L3dGQjVmZTBmVWZ3eGcrblgzdFlXOExXYWlFaUp0N21jdVBD?=
- =?utf-8?B?ZVYwaHkwSXk2ZEo0VUJnM2pwUDkyK3EvQloyTFlpVGdxNjFXY1lHN2RCQTRj?=
- =?utf-8?B?QkQraElQNFlyQ09OV2FSOWJuVjlIZngwOFNEdTlqNktDUG1zbjJyb0hrYzdY?=
- =?utf-8?B?ZXVaSzlYT0xyNXFzZjFTWCtlZnVqSWNUSnN2NTNLb1B4OHlURGppV1hyTXVU?=
- =?utf-8?B?YUtmMHBYVmdEWUw3T3RYMU1MSDhCYllOekhYYVpXVjhza1M1dUh2VlpHbmtD?=
- =?utf-8?B?eGFGUlI5RVdTSitMYk5lY3RYNGEzSGlqSmVKZnVpN0htZWhtRFg2SXhyT3dK?=
- =?utf-8?B?SnF5N2Y3Wk5FMFo5azd4dnhDQ0dZUkxrYXRMdkF5Mm8zaDBBdGg0UmpCTkdZ?=
- =?utf-8?B?b0p6c2JiQ1Y4U1V6aFNVL3JiY1UyNzc4dm5wUEhWN1Aya2xBSVNHYkhTRnpZ?=
- =?utf-8?B?RXJEMGlFSFlxTGYwODBhTEEvcUdBelpldlNSTjM4d3ZBU2xiZ2grRExRazUr?=
- =?utf-8?Q?00U9jquiqfrv3umNsWWsw8Ic4RyM9iTCoQzMge+6KYd9?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 86473df8-f127-479b-46dc-08dd8d7ee577
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR12MB8784.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2025 15:50:31.4472
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: E00sRn2E8tUQkrxBIzkSXzbcOE7vXg1fscwp9AU4WhWU3qfLllPn/09+P88gqHA75B7S/ukh/WCb9UGmblKIVA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB8106
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ACPI/PPTT: fix off-by-one error
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: "Heyne, Maximilian" <mheyne@amazon.de>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ Len Brown <lenb@kernel.org>, Sudeep Holla <sudeep.holla@arm.com>,
+ Ard Biesheuvel <ardb@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
+ "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20250506-draco-taped-15f475cd@mheyne-amazon>
+ <214c2a2d-e0ea-4ec6-9925-05e39319e813@arm.com>
+ <CAJZ5v0jvWXDQQ++4wmWJ+i=jds+MZ68bRB9+26WM4tAPHFxALw@mail.gmail.com>
+Content-Language: en-US
+From: Jeremy Linton <jeremy.linton@arm.com>
+In-Reply-To: <CAJZ5v0jvWXDQQ++4wmWJ+i=jds+MZ68bRB9+26WM4tAPHFxALw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-
-
-On 07/05/2025 16:43, Sasha Levin wrote:
-> This is a note to let you know that I've just added the patch titled
+On 5/7/25 10:42 AM, Rafael J. Wysocki wrote:
+> On Wed, May 7, 2025 at 5:25 PM Jeremy Linton <jeremy.linton@arm.com> wrote:
+>>
+>> Hi,
+>>
+>> On 5/6/25 8:13 AM, Heyne, Maximilian wrote:
+>>> Commit 7ab4f0e37a0f ("ACPI PPTT: Fix coding mistakes in a couple of
+>>> sizeof() calls") corrects the processer entry size but unmasked a longer
+>>> standing bug where the last entry in the structure can get skipped due
+>>> to an off-by-one mistake if the last entry ends exactly at the end of
+>>> the ACPI subtable.
+>>>
+>>> The error manifests for instance on EC2 Graviton Metal instances with
+>>>
+>>>     ACPI PPTT: PPTT table found, but unable to locate core 63 (63)
+>>>     [...]
+>>>     ACPI: SPE must be homogeneous
+>>>
+>>> Fixes: 2bd00bcd73e5 ("ACPI/PPTT: Add Processor Properties Topology Table parsing")
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
+>>> ---
+>>>    drivers/acpi/pptt.c | 4 ++--
+>>>    1 file changed, 2 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
+>>> index f73ce6e13065d..4364da90902e5 100644
+>>> --- a/drivers/acpi/pptt.c
+>>> +++ b/drivers/acpi/pptt.c
+>>> @@ -231,7 +231,7 @@ static int acpi_pptt_leaf_node(struct acpi_table_header *table_hdr,
+>>>                             sizeof(struct acpi_table_pptt));
+>>>        proc_sz = sizeof(struct acpi_pptt_processor);
+>>
+>> This isn't really right, it should be struct acpi_subtable_header, then
+>> once the header is safe, pull the length from it.
+>>
+>> But then, really if we are trying to fix the original bug that the table
+>> could be shorter than the data in it suggests, the struct
+>> acpi_pptt_processor length plus its resources needs to be checked once
+>> the subtype is known to be a processor node.
+>>
+>> Otherwise the original sizeof * change isn't really fixing anything.
 > 
->      spi: tegra114: Don't fail set_cs_timing when delays are zero
+> Sorry, what sense did it make to do
 > 
-> to the 6.1-stable tree which can be found at:
->      http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> proc_sz = sizeof(struct acpi_pptt_processor *);
 > 
-> The filename of the patch is:
->       spi-tegra114-don-t-fail-set_cs_timing-when-delays-ar.patch
-> and it can be found in the queue-6.1 subdirectory.
+> here?  As much as proc_sz = 0 I suppose?
+
+No, I agree, I think the original checks were simplified along the way 
+to that. It wasn't 'right' either.
+
+The problem is that there are three subtypes of which processor is only 
+one, and that struct acpi_pptt_processor doesn't necessarily reflect the 
+actual size of the processor structure in the table because it has 
+optional private resources tagged onto the end.
+
+So if the bug being fixed is that the length check is validating that 
+the table length is less than the data in the table, that's still a 
+problem because its only validating the processor node without resources.
+
+AKA the return is still potentially returning a pointer to a structure 
+which may not be entirely contained in the table.
+
+
 > 
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
-
-Please don't queue this up for stable yet. This fix is not correct and 
-there is another change pending to correct this change.
-
-Jon
-
--- 
-nvpublic
+>>>
+>>> -     while ((unsigned long)entry + proc_sz < table_end) {
+>>> +     while ((unsigned long)entry + proc_sz <= table_end) {
+>>>                cpu_node = (struct acpi_pptt_processor *)entry;
+>>>                if (entry->type == ACPI_PPTT_TYPE_PROCESSOR &&
+> 
+> And this checks if the current entry is a CPU one and goes to the next
+> one otherwise, so it clearly looks for a CPU entry.
+> 
+> So the size check is logically correct now: It checks if there's
+> enough space in the table to hold a CPU entry that's being looked for.
+> The only problem with it is the assumption that the size of a CPU
+> entry must be greater than sizeof(struct acpi_pptt_processor).
+> 
+> Previously, it didn't make sense at all.
+> 
+>>>                    cpu_node->parent == node_entry)
+>>> @@ -273,7 +273,7 @@ static struct acpi_pptt_processor *acpi_find_processor_node(struct acpi_table_he
+>>>        proc_sz = sizeof(struct acpi_pptt_processor);
+>>>
+>>>        /* find the processor structure associated with this cpuid */
+>>> -     while ((unsigned long)entry + proc_sz < table_end) {
+>>> +     while ((unsigned long)entry + proc_sz <= table_end) {
+>>>                cpu_node = (struct acpi_pptt_processor *)entry;
+>>>
+>>>                if (entry->length == 0) {
 
 
