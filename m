@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-142566-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C7DCAAEB2E
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:04:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95E37AAEBBA
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:09:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40A8E52136D
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:04:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90C229E3997
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:09:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BCD228BA9F;
-	Wed,  7 May 2025 19:04:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE69728DF3C;
+	Wed,  7 May 2025 19:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kIMi6KDP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="am8QpmW6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD69529A0;
-	Wed,  7 May 2025 19:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1CC2144C1;
+	Wed,  7 May 2025 19:09:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644648; cv=none; b=GkFAMfX0Yh6pidLg9N9Mm3w1Di3VJmtHvUQKI5dASxXhSVOrcxQgdeMJAZN4aqWyfaCVhnRsRmc1qcDaldVO3JjIF4NaKhJMORW46MOsoxef3nTb9rDe+zAnAA8s9FepoYnNlfp63RWEa6qrvMMXT7X7vVGujrzPti2vF60k8/M=
+	t=1746644993; cv=none; b=m6kzfICdb4y88AD6nocbCaVUS9nPsFna48wWBpubN5TMytFT1u9NlzvqHtZ56BzslMsgxRmArQ0Ko2Pniacla0YkjVg0hdHL99/pNVq9iHHRN+zORoINkezuXnUHdPyxR2cAklpK/KSsQBqHdHTMfNNpAuNd3+6Z/hRXRLfqmAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644648; c=relaxed/simple;
-	bh=7KNNa4pXd5RvHHAXaw6Et9pHjYnz3vJTZcRo4XitRhI=;
+	s=arc-20240116; t=1746644993; c=relaxed/simple;
+	bh=gB39WgfEQd9hORj6usEgQ/penBaC+ShCdTaq0P5RfGM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T4LE0GUFg/AQAs+MrCkFugiJEODR3eoB+4BBdp1ueCqoQSRfnr1DrWSrLAOJUtpevdUFGkjF6HC66/GsiYJ8U/yqLSRRq1Hz1ww/cyNbaA+Y5UxJuaLw1F62eX269sBQNCggWF9YakXsdSX93+/H8ampS5eWxfqYWXxaEE/gbFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kIMi6KDP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6431BC4CEE2;
-	Wed,  7 May 2025 19:04:07 +0000 (UTC)
+	 MIME-Version; b=FUnhMx/0ZpsCFANlHhPKksikWBc5C1hqY1+ARqt5TIAvMWB/yehRHC/gCOwaSBiqDuC7Ae/gjUhVPZ3E+7NJGOqCwOVgUbIvRP1BZW4VblNAv2WJG89H/KYQ13t1pJ3eMnQXk0NFPk2TeTLzbW6ZOzVY+QIoNtIr18/+qK5z0K4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=am8QpmW6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3060AC4CEE2;
+	Wed,  7 May 2025 19:09:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644647;
-	bh=7KNNa4pXd5RvHHAXaw6Et9pHjYnz3vJTZcRo4XitRhI=;
+	s=korg; t=1746644993;
+	bh=gB39WgfEQd9hORj6usEgQ/penBaC+ShCdTaq0P5RfGM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kIMi6KDPbeqDVvBAYP0RYZpIE1jIeVoeZTmPpUgjqMuM8TUo+f0TgBrbw8vE3DWsa
-	 n2K02ijptJ94RhiyLpl+tuEKQCZz0bdrdbgzprBl/+0eD3/d5l7u7bQMRRufGaQ22s
-	 KfnzQ1qjLgLGcSW8Cxix3GyTJ4cSd/o1Wusn2i8A=
+	b=am8QpmW6xz95+vYDSGQylbTLaDbugCaLSiadxW1HQGikTIOBmp2/Byqv0DCw8LFkg
+	 V5C77bGvBq/blD0fs19fiV6uLZwuEhCgs4BtEuZ6F27ZhULSbXGg3rLLN3By1nK0Lr
+	 8AWUs5Lzqlti9+JuK6TNwQ8Jh4QBUZzL37/8eYgk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Somnath Kotur <somnath.kotur@broadcom.com>,
-	Shravya KN <shravya.k-n@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 111/164] bnxt_en: Fix error handling path in bnxt_init_chip()
+Subject: [PATCH 6.6 060/129] net: mscc: ocelot: delete PVID VLAN when readding it as non-PVID
 Date: Wed,  7 May 2025 20:39:56 +0200
-Message-ID: <20250507183825.470720575@linuxfoundation.org>
+Message-ID: <20250507183815.960325790@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shravya KN <shravya.k-n@broadcom.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 9ab7a709c926c16b4433cf02d04fcbcf35aaab2b ]
+[ Upstream commit 5ec6d7d737a491256cd37e33910f7ac1978db591 ]
 
-WARN_ON() is triggered in __flush_work() if bnxt_init_chip() fails
-because we call cancel_work_sync() on dim work that has not been
-initialized.
+The following set of commands:
 
-WARNING: CPU: 37 PID: 5223 at kernel/workqueue.c:4201 __flush_work.isra.0+0x212/0x230
+ip link add br0 type bridge vlan_filtering 1 # vlan_default_pvid 1 is implicit
+ip link set swp0 master br0
+bridge vlan add dev swp0 vid 1
 
-The driver relies on the BNXT_STATE_NAPI_DISABLED bit to check if dim
-work has already been cancelled.  But in the bnxt_open() path,
-BNXT_STATE_NAPI_DISABLED is not set and this causes the error
-path to think that it needs to cancel the uninitalized dim work.
-Fix it by setting BNXT_STATE_NAPI_DISABLED during initialization.
-The bit will be cleared when we enable NAPI and initialize dim work.
+should result in the dropping of untagged and 802.1p-tagged traffic, but
+we see that it continues to be accepted. Whereas, had we deleted VID 1
+instead, the aforementioned dropping would have worked
 
-Fixes: 40452969a506 ("bnxt_en: Fix DIM shutdown")
-Suggested-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Signed-off-by: Shravya KN <shravya.k-n@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+This is because the ANA_PORT_DROP_CFG update logic doesn't run, because
+ocelot_vlan_add() only calls ocelot_port_set_pvid() if the new VLAN has
+the BRIDGE_VLAN_INFO_PVID flag.
+
+Similar to other drivers like mt7530_port_vlan_add() which handle this
+case correctly, we need to test whether the VLAN we're changing used to
+have the BRIDGE_VLAN_INFO_PVID flag, but lost it now. That amounts to a
+PVID deletion and should be treated as such.
+
+Regarding blame attribution: this never worked properly since the
+introduction of bridge VLAN filtering in commit 7142529f1688 ("net:
+mscc: ocelot: add VLAN filtering"). However, there was a significant
+paradigm shift which aligned the ANA_PORT_DROP_CFG register with the
+PVID concept rather than with the native VLAN concept, and that change
+wasn't targeted for 'stable'. Realistically, that is as far as this fix
+needs to be propagated to.
+
+Fixes: be0576fed6d3 ("net: mscc: ocelot: move the logic to drop 802.1p traffic to the pvid deletion")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20250424223734.3096202-1-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/mscc/ocelot.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 874a15f33bc5b..026f0d7569e1c 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -11079,6 +11079,9 @@ static void bnxt_init_napi(struct bnxt *bp)
- 		poll_fn = bnxt_poll_p5;
- 	else if (BNXT_CHIP_TYPE_NITRO_A0(bp))
- 		cp_nr_rings--;
-+
-+	set_bit(BNXT_STATE_NAPI_DISABLED, &bp->state);
-+
- 	for (i = 0; i < cp_nr_rings; i++) {
- 		bnapi = bp->bnapi[i];
- 		netif_napi_add(bp->dev, &bnapi->napi, poll_fn);
+diff --git a/drivers/net/ethernet/mscc/ocelot.c b/drivers/net/ethernet/mscc/ocelot.c
+index d3e7aff5a794a..252d8e6f18c3c 100644
+--- a/drivers/net/ethernet/mscc/ocelot.c
++++ b/drivers/net/ethernet/mscc/ocelot.c
+@@ -830,6 +830,7 @@ EXPORT_SYMBOL(ocelot_vlan_prepare);
+ int ocelot_vlan_add(struct ocelot *ocelot, int port, u16 vid, bool pvid,
+ 		    bool untagged)
+ {
++	struct ocelot_port *ocelot_port = ocelot->ports[port];
+ 	int err;
+ 
+ 	/* Ignore VID 0 added to our RX filter by the 8021q module, since
+@@ -849,6 +850,11 @@ int ocelot_vlan_add(struct ocelot *ocelot, int port, u16 vid, bool pvid,
+ 					   ocelot_bridge_vlan_find(ocelot, vid));
+ 		if (err)
+ 			return err;
++	} else if (ocelot_port->pvid_vlan &&
++		   ocelot_bridge_vlan_find(ocelot, vid) == ocelot_port->pvid_vlan) {
++		err = ocelot_port_set_pvid(ocelot, port, NULL);
++		if (err)
++			return err;
+ 	}
+ 
+ 	/* Untagged egress vlan clasification */
 -- 
 2.39.5
 
