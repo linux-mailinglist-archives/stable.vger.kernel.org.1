@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-142128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CC19AAE92D
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:41:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECAAFAAEB9F
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:09:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E54C55051A6
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:41:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E7279E35AE
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:08:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBF8428DF4F;
-	Wed,  7 May 2025 18:41:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DCBA28C2B3;
+	Wed,  7 May 2025 19:08:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="noEYA8QC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hDTAL+Pu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C2C14A4C7;
-	Wed,  7 May 2025 18:41:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 581501EB5DD;
+	Wed,  7 May 2025 19:08:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643303; cv=none; b=hv0tvPWppBlrxKsIwpcgIB7hENrFk+78702t3cXibSFfhDmgSDa4kIjXHIAVtWHI1hnN/kYlqvytkonjZsr+z8n4QLRw58XW9BqDeZ1RPnVxUFqyln5+Ccs+uCjwgV8mSh+buPKRegTKtdKFf9WX3c7kxxHGsdg4CpzHu5QkFQc=
+	t=1746644926; cv=none; b=Hdjj5MB8D9h3P3y6Q29mP96cY5+mpqs8BKFjJrDcuxN2cwtt3fIjsxIr2+Ic8cu0lCcZgg4aEZubu1Pl27YnXNJjr4UGsUq1aBIS2IBvcU8FhAHG9Y+5a89nVRgR+UXQ9PNZ2UebxwJdIAxRwc6nLyt8VJGCRJ1FyZdaqGI1EP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643303; c=relaxed/simple;
-	bh=SKtF0CscO2/80M/nqZmPwaKQOEDy9L/Uasno7/yKMdA=;
+	s=arc-20240116; t=1746644926; c=relaxed/simple;
+	bh=ZX2r/XpM2Docb3aTnto6kz9mfPYVuqi4V9slKLnBd0Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PAL1JZCFz9IWNjZFq01+ZqAW4eeFmSCtEPe/RH9rhmi9CFwPQSUBGFgOGcBwfHKRhQ3bajvgPqEG8wm89t+5CeGuRlD532j7IlKDxAojnPLdbT+OJvYtJSYggVr+YHNaDavMzFHYPDrqp6aGL/vF2GGVYcVimIdd/ojBR5cnmjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=noEYA8QC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC2DAC4CEE2;
-	Wed,  7 May 2025 18:41:42 +0000 (UTC)
+	 MIME-Version; b=TkhI2ltDFa9GJDi8gEDp5t4E79ymAA/LaqLARFK2lQMr80x3MW/vecWmIPX1xN/FwA6rK3be4CcP3XcZ7MDYFHRTWljo4cBGAJsZ6bcMtzI21gYbI8W/+clYEy/A71RQ890GiHw3C+sd91xhwXibHtgOm5oDZEACo3rw/slc6kY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hDTAL+Pu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1B24C4CEF1;
+	Wed,  7 May 2025 19:08:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643303;
-	bh=SKtF0CscO2/80M/nqZmPwaKQOEDy9L/Uasno7/yKMdA=;
+	s=korg; t=1746644926;
+	bh=ZX2r/XpM2Docb3aTnto6kz9mfPYVuqi4V9slKLnBd0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=noEYA8QCFzUOqii8bKYZsqP+EwJ8Fp6mpcfFA+uGmJIItSbyKiVLZ7M43t7B9MANj
-	 QhnMXOaPXqX9wuU44bDcBdZ53lPgfWtZ4i5/M2YmBr+91BDBaTxupsSbO3GRQ0cIFl
-	 Olm0dPzWAk81LOig6cCHGoo4IkSw6faiSw49Msc4=
+	b=hDTAL+PuLx17lUIJGBEhY4dkoq+aYmF90gSd/6E+McqnDPejCYnNhfSryUa/DChiw
+	 HDkPYvgQMgt5VWfEwFPajJpKwzVir/9LJ5XvGahhe3GNLTVpC8RVbNJhfizFIHG5yW
+	 JcwvLkmVNrW+kAaemPHQZdUVUxk15ZEGVcXx/yRo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c8cd2d2c412b868263fb@syzkaller.appspotmail.com,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Jeongjun Park <aha310510@gmail.com>
-Subject: [PATCH 5.15 15/55] tracing: Fix oob write in trace_seq_to_buffer()
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.6 020/129] wifi: brcm80211: fmac: Add error handling for brcmf_usb_dl_writeimage()
 Date: Wed,  7 May 2025 20:39:16 +0200
-Message-ID: <20250507183759.663353891@linuxfoundation.org>
+Message-ID: <20250507183814.351188581@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
-References: <20250507183759.048732653@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-commit f5178c41bb43444a6008150fe6094497135d07cb upstream.
+commit 8e089e7b585d95122c8122d732d1d5ef8f879396 upstream.
 
-syzbot reported this bug:
-==================================================================
-BUG: KASAN: slab-out-of-bounds in trace_seq_to_buffer kernel/trace/trace.c:1830 [inline]
-BUG: KASAN: slab-out-of-bounds in tracing_splice_read_pipe+0x6be/0xdd0 kernel/trace/trace.c:6822
-Write of size 4507 at addr ffff888032b6b000 by task syz.2.320/7260
+The function brcmf_usb_dl_writeimage() calls the function
+brcmf_usb_dl_cmd() but dose not check its return value. The
+'state.state' and the 'state.bytes' are uninitialized if the
+function brcmf_usb_dl_cmd() fails. It is dangerous to use
+uninitialized variables in the conditions.
 
-CPU: 1 UID: 0 PID: 7260 Comm: syz.2.320 Not tainted 6.15.0-rc1-syzkaller-00301-g3bde70a2c827 #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:408 [inline]
- print_report+0xc3/0x670 mm/kasan/report.c:521
- kasan_report+0xe0/0x110 mm/kasan/report.c:634
- check_region_inline mm/kasan/generic.c:183 [inline]
- kasan_check_range+0xef/0x1a0 mm/kasan/generic.c:189
- __asan_memcpy+0x3c/0x60 mm/kasan/shadow.c:106
- trace_seq_to_buffer kernel/trace/trace.c:1830 [inline]
- tracing_splice_read_pipe+0x6be/0xdd0 kernel/trace/trace.c:6822
- ....
-==================================================================
+Add error handling for brcmf_usb_dl_cmd() to jump to error
+handling path if the brcmf_usb_dl_cmd() fails and the
+'state.state' and the 'state.bytes' are uninitialized.
 
-It has been reported that trace_seq_to_buffer() tries to copy more data
-than PAGE_SIZE to buf. Therefore, to prevent this, we should use the
-smaller of trace_seq_used(&iter->seq) and PAGE_SIZE as an argument.
+Improve the error message to report more detailed error
+information.
 
-Link: https://lore.kernel.org/20250422113026.13308-1-aha310510@gmail.com
-Reported-by: syzbot+c8cd2d2c412b868263fb@syzkaller.appspotmail.com
-Fixes: 3c56819b14b0 ("tracing: splice support for tracing_pipe")
-Suggested-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 71bb244ba2fd ("brcm80211: fmac: add USB support for bcm43235/6/8 chipsets")
+Cc: stable@vger.kernel.org # v3.4+
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Link: https://patch.msgid.link/20250422042203.2259-1-vulab@iscas.ac.cn
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -7034,13 +7034,14 @@ static ssize_t tracing_splice_read_pipe(
- 		/* Copy the data into the page, so we can start over. */
- 		ret = trace_seq_to_buffer(&iter->seq,
- 					  page_address(spd.pages[i]),
--					  trace_seq_used(&iter->seq));
-+					  min((size_t)trace_seq_used(&iter->seq),
-+						  PAGE_SIZE));
- 		if (ret < 0) {
- 			__free_page(spd.pages[i]);
- 			break;
- 		}
- 		spd.partial[i].offset = 0;
--		spd.partial[i].len = trace_seq_used(&iter->seq);
-+		spd.partial[i].len = ret;
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
+@@ -903,14 +903,16 @@ brcmf_usb_dl_writeimage(struct brcmf_usb
+ 	}
  
- 		trace_seq_init(&iter->seq);
+ 	/* 1) Prepare USB boot loader for runtime image */
+-	brcmf_usb_dl_cmd(devinfo, DL_START, &state, sizeof(state));
++	err = brcmf_usb_dl_cmd(devinfo, DL_START, &state, sizeof(state));
++	if (err)
++		goto fail;
+ 
+ 	rdlstate = le32_to_cpu(state.state);
+ 	rdlbytes = le32_to_cpu(state.bytes);
+ 
+ 	/* 2) Check we are in the Waiting state */
+ 	if (rdlstate != DL_WAITING) {
+-		brcmf_err("Failed to DL_START\n");
++		brcmf_err("Invalid DL state: %u\n", rdlstate);
+ 		err = -EINVAL;
+ 		goto fail;
  	}
 
 
