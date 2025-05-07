@@ -1,121 +1,258 @@
-Return-Path: <stable+bounces-142763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142764-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D60CAAED5A
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 22:48:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9AFFAAED74
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 22:52:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3EDB1BC41A1
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:48:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 431A1B22896
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:50:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5651628FAAB;
-	Wed,  7 May 2025 20:47:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4C8D28FAAA;
+	Wed,  7 May 2025 20:51:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SmO5wMf2"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="edCtGUZJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0623B28FA9A;
-	Wed,  7 May 2025 20:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2580A1C54A2;
+	Wed,  7 May 2025 20:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746650876; cv=none; b=YQ64Pmbw9Ot1yAdoh+nsgnQrBOQTeg+acr+sbA1pXNt5ginPe8DSZRlij0bMwXZNDwoTThZuJ46BfWk9AWCNUBfBiPAkes8Ne5FOj74y4wxwub22Ca/iVlV4KX9WquOlzk/5/Tu1O4YCnHuX54AaGDo/iFa5aOPThGIYZF2hJ14=
+	t=1746651098; cv=none; b=NAwdEfAHYKLbVdFRTTjrPhJVpIQecL5U4oy3HnYCRox5K9o1vVInRjWEjK9DvsiazTIajCVlQpFdYu+KM5XbxOPYDNTIrvVsqTG+/6/rtjJUrwMn5HYGHS1d12WXyBG+y48imAdxg7DUEoG3FKlDfUnkKPjWyy6P5h0oWko6h5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746650876; c=relaxed/simple;
-	bh=ErbIIg8tFdaFpJqMqrCwmVzq5QfpdM9matIuxyQO7IU=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=HuslQsrBQnzxbUjoQ6TmF/siqeHJH+ijmU3rO0m0sD3egjJMuGUlhjtWSaTVAAT0msE38Ic2yKUiu9hNetpRsUuo3rTc8LhguBYOpTIRoJxKa6lVKZu19EnTiRQswd0HcsQ/VDfa+Bx8smKy3Db3zK7lmU2FgMt4hPynYDYItHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SmO5wMf2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF80AC4CEE7;
-	Wed,  7 May 2025 20:47:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746650875;
-	bh=ErbIIg8tFdaFpJqMqrCwmVzq5QfpdM9matIuxyQO7IU=;
-	h=From:Date:Subject:To:Cc:From;
-	b=SmO5wMf20L521OhV4fbfgBID3lGNlu/rTKRiN574Gcs4ADnbwRsoScZzUzZYPMSMp
-	 AY2M2tfmSxIzFLr5qJywqkNxlDGFWVU4UG8/TUT/ucqH4JzP/1GUbVN5aGFewKXJh9
-	 uVBbTlfopPuDuGz66M86xbGonMjd9qdKjk+A320+g49z98cIbNzH3gcp40Knkb0+dd
-	 9XfmBdEvwJRqgYclSMLrG6SHpUh/dWoXlxlQeqwQ1Z52J60avek9xWn4ZTyTxuK9yK
-	 +kBN/VfW6PDtD2Ep0CGKRAnY8bVlDXqCOSu9upGis0sm+5WuHl/QDASQjZoIfkmU+j
-	 08uWc7+cI5+4Q==
-From: Nathan Chancellor <nathan@kernel.org>
-Date: Wed, 07 May 2025 21:47:45 +0100
-Subject: [PATCH net] net: qede: Initialize qede_ll_ops with designated
- initializer
+	s=arc-20240116; t=1746651098; c=relaxed/simple;
+	bh=49uI3NCatv+Pg7zw/gjti7iKg2CycLAoxiN1rFKj6yo=;
+	h=Date:To:From:Subject:Message-Id; b=Y7x1cXe1HWZozFjaXY4jdlq3HILHDDHMxE6tGMGVSE7msr9KHAXcwFWMSLlu//d0vpeZlUEWN1V50SY0s0hgz+ZjclHOKP/c4aRJ034lgj2mR3IcTA9zYtsv4TNSYX46/U/pRvuLFI+Cp+c8DXzN01//0+UKEvTXfhnAW7MjAE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=edCtGUZJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 862E1C4CEE2;
+	Wed,  7 May 2025 20:51:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1746651097;
+	bh=49uI3NCatv+Pg7zw/gjti7iKg2CycLAoxiN1rFKj6yo=;
+	h=Date:To:From:Subject:From;
+	b=edCtGUZJ32uMPI9sH3CWZtyNJIx3rnrsG9RPdgsOrFffSPdh4vi/cY2taqhqe4EnQ
+	 aKeGrpz/kwh22rbhxLV6NN1PcZN9h/BfstCepfLiHxoJVRZMAxDvJl0YCJ40f/H9+4
+	 TiqPoxLYFH6BAGR3cO9ppBQB6u22/Y95BUtFyztA=
+Date: Wed, 07 May 2025 13:51:36 -0700
+To: mm-commits@vger.kernel.org,vbabka@suse.cz,tglx@linutronix.de,surenb@google.com,stable@vger.kernel.org,mhocko@suse.com,jackmanb@google.com,hannes@cmpxchg.org,bp@alien8.de,kirill.shutemov@linux.intel.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-page_alloc-fix-race-condition-in-unaccepted-memory-handling.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250507205137.862E1C4CEE2@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250507-qede-fix-clang-randstruct-v1-1-5ccc15626fba@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAPDGG2gC/x2MQQqEMAxFryJZT6AqRcerDLPQNGpAOk5aRRDvb
- nD5+O+/ExKrcIKuOEF5lyS/aFC+CqC5jxOjBGOoXOWddw3+OTCOciAtNqP2MaSsG2Us69CSf9c
- 0+Bbsvyqb97Q/EDnD97puhzeF7XAAAAA=
-X-Change-ID: 20250507-qede-fix-clang-randstruct-13d8c593cb58
-To: Manish Chopra <manishc@marvell.com>, 
- Andrew Lunn <andrew+netdev@lunn.ch>, 
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
- Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
- Kees Cook <kees@kernel.org>
-Cc: Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
- Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
- stable@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1518; i=nathan@kernel.org;
- h=from:subject:message-id; bh=ErbIIg8tFdaFpJqMqrCwmVzq5QfpdM9matIuxyQO7IU=;
- b=owGbwMvMwCUmm602sfCA1DTG02pJDBnSx35cjmb/GXoui+vDpzDlY38mXClU/MsUuricIWrb5
- riFzVvfdZSyMIhxMciKKbJUP1Y9bmg45yzjjVOTYOawMoEMYeDiFICJGM9mZNjy6vqtDRNKinha
- dkvdOpSbkMEdV2X7RPZiWrb68YLp8XEM/1MWz7FdWPH987GdF9u33eAtTZVbVvrBeIbFI09WnZh
- n7/gB
-X-Developer-Key: i=nathan@kernel.org; a=openpgp;
- fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 
-After a recent change [1] in clang's randstruct implementation to
-randomize structures that only contain function pointers, there is an
-error because qede_ll_ops get randomized but does not use a designated
-initializer for the first member:
 
-  drivers/net/ethernet/qlogic/qede/qede_main.c:206:2: error: a randomized struct can only be initialized with a designated initializer
-    206 |         {
-        |         ^
+The patch titled
+     Subject: mm/page_alloc: fix race condition in unaccepted memory handling
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-page_alloc-fix-race-condition-in-unaccepted-memory-handling.patch
 
-Explicitly initialize the common member using a designated initializer
-to fix the build.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-page_alloc-fix-race-condition-in-unaccepted-memory-handling.patch
 
-Cc: stable@vger.kernel.org
-Fixes: 035f7f87b729 ("randstruct: Enable Clang support")
-Link: https://github.com/llvm/llvm-project/commit/04364fb888eea6db9811510607bed4b200bcb082 [1]
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: mm/page_alloc: fix race condition in unaccepted memory handling
+Date: Tue, 6 May 2025 16:32:07 +0300
+
+The page allocator tracks the number of zones that have unaccepted memory
+using static_branch_enc/dec() and uses that static branch in hot paths to
+determine if it needs to deal with unaccepted memory.
+
+Borislav and Thomas pointed out that the tracking is racy: operations on
+static_branch are not serialized against adding/removing unaccepted pages
+to/from the zone.
+
+Sanity checks inside static_branch machinery detects it:
+
+WARNING: CPU: 0 PID: 10 at kernel/jump_label.c:276 __static_key_slow_dec_cpuslocked+0x8e/0xa0
+
+The comment around the WARN() explains the problem:
+
+	/*
+	 * Warn about the '-1' case though; since that means a
+	 * decrement is concurrent with a first (0->1) increment. IOW
+	 * people are trying to disable something that wasn't yet fully
+	 * enabled. This suggests an ordering problem on the user side.
+	 */
+
+The effect of this static_branch optimization is only visible on
+microbenchmark.
+
+Instead of adding more complexity around it, remove it altogether.
+
+Link: https://lkml.kernel.org/r/20250506133207.1009676-1-kirill.shutemov@linux.intel.com
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Fixes: dcdfdd40fa82 ("mm: Add support for unaccepted memory")
+Link: https://lore.kernel.org/all/20250506092445.GBaBnVXXyvnazly6iF@fat_crate.local
+Reported-by: Borislav Petkov <bp@alien8.de>
+Tested-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reported-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Brendan Jackman <jackmanb@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: <stable@vger.kernel.org>	[6.5+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- drivers/net/ethernet/qlogic/qede/qede_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/qlogic/qede/qede_main.c b/drivers/net/ethernet/qlogic/qede/qede_main.c
-index 99df00c30b8c..b5d744d2586f 100644
---- a/drivers/net/ethernet/qlogic/qede/qede_main.c
-+++ b/drivers/net/ethernet/qlogic/qede/qede_main.c
-@@ -203,7 +203,7 @@ static struct pci_driver qede_pci_driver = {
- };
+ mm/internal.h   |    1 
+ mm/mm_init.c    |    1 
+ mm/page_alloc.c |   47 ----------------------------------------------
+ 3 files changed, 49 deletions(-)
+
+--- a/mm/internal.h~mm-page_alloc-fix-race-condition-in-unaccepted-memory-handling
++++ a/mm/internal.h
+@@ -1590,7 +1590,6 @@ unsigned long move_page_tables(struct pa
  
- static struct qed_eth_cb_ops qede_ll_ops = {
--	{
-+	.common = {
- #ifdef CONFIG_RFS_ACCEL
- 		.arfs_filter_op = qede_arfs_filter_op,
+ #ifdef CONFIG_UNACCEPTED_MEMORY
+ void accept_page(struct page *page);
+-void unaccepted_cleanup_work(struct work_struct *work);
+ #else /* CONFIG_UNACCEPTED_MEMORY */
+ static inline void accept_page(struct page *page)
+ {
+--- a/mm/mm_init.c~mm-page_alloc-fix-race-condition-in-unaccepted-memory-handling
++++ a/mm/mm_init.c
+@@ -1441,7 +1441,6 @@ static void __meminit zone_init_free_lis
+ 
+ #ifdef CONFIG_UNACCEPTED_MEMORY
+ 	INIT_LIST_HEAD(&zone->unaccepted_pages);
+-	INIT_WORK(&zone->unaccepted_cleanup, unaccepted_cleanup_work);
  #endif
+ }
+ 
+--- a/mm/page_alloc.c~mm-page_alloc-fix-race-condition-in-unaccepted-memory-handling
++++ a/mm/page_alloc.c
+@@ -7180,16 +7180,8 @@ bool has_managed_dma(void)
+ 
+ #ifdef CONFIG_UNACCEPTED_MEMORY
+ 
+-/* Counts number of zones with unaccepted pages. */
+-static DEFINE_STATIC_KEY_FALSE(zones_with_unaccepted_pages);
+-
+ static bool lazy_accept = true;
+ 
+-void unaccepted_cleanup_work(struct work_struct *work)
+-{
+-	static_branch_dec(&zones_with_unaccepted_pages);
+-}
+-
+ static int __init accept_memory_parse(char *p)
+ {
+ 	if (!strcmp(p, "lazy")) {
+@@ -7214,11 +7206,7 @@ static bool page_contains_unaccepted(str
+ static void __accept_page(struct zone *zone, unsigned long *flags,
+ 			  struct page *page)
+ {
+-	bool last;
+-
+ 	list_del(&page->lru);
+-	last = list_empty(&zone->unaccepted_pages);
+-
+ 	account_freepages(zone, -MAX_ORDER_NR_PAGES, MIGRATE_MOVABLE);
+ 	__mod_zone_page_state(zone, NR_UNACCEPTED, -MAX_ORDER_NR_PAGES);
+ 	__ClearPageUnaccepted(page);
+@@ -7227,28 +7215,6 @@ static void __accept_page(struct zone *z
+ 	accept_memory(page_to_phys(page), PAGE_SIZE << MAX_PAGE_ORDER);
+ 
+ 	__free_pages_ok(page, MAX_PAGE_ORDER, FPI_TO_TAIL);
+-
+-	if (last) {
+-		/*
+-		 * There are two corner cases:
+-		 *
+-		 * - If allocation occurs during the CPU bring up,
+-		 *   static_branch_dec() cannot be used directly as
+-		 *   it causes a deadlock on cpu_hotplug_lock.
+-		 *
+-		 *   Instead, use schedule_work() to prevent deadlock.
+-		 *
+-		 * - If allocation occurs before workqueues are initialized,
+-		 *   static_branch_dec() should be called directly.
+-		 *
+-		 *   Workqueues are initialized before CPU bring up, so this
+-		 *   will not conflict with the first scenario.
+-		 */
+-		if (system_wq)
+-			schedule_work(&zone->unaccepted_cleanup);
+-		else
+-			unaccepted_cleanup_work(&zone->unaccepted_cleanup);
+-	}
+ }
+ 
+ void accept_page(struct page *page)
+@@ -7285,20 +7251,12 @@ static bool try_to_accept_memory_one(str
+ 	return true;
+ }
+ 
+-static inline bool has_unaccepted_memory(void)
+-{
+-	return static_branch_unlikely(&zones_with_unaccepted_pages);
+-}
+-
+ static bool cond_accept_memory(struct zone *zone, unsigned int order,
+ 			       int alloc_flags)
+ {
+ 	long to_accept, wmark;
+ 	bool ret = false;
+ 
+-	if (!has_unaccepted_memory())
+-		return false;
+-
+ 	if (list_empty(&zone->unaccepted_pages))
+ 		return false;
+ 
+@@ -7336,22 +7294,17 @@ static bool __free_unaccepted(struct pag
+ {
+ 	struct zone *zone = page_zone(page);
+ 	unsigned long flags;
+-	bool first = false;
+ 
+ 	if (!lazy_accept)
+ 		return false;
+ 
+ 	spin_lock_irqsave(&zone->lock, flags);
+-	first = list_empty(&zone->unaccepted_pages);
+ 	list_add_tail(&page->lru, &zone->unaccepted_pages);
+ 	account_freepages(zone, MAX_ORDER_NR_PAGES, MIGRATE_MOVABLE);
+ 	__mod_zone_page_state(zone, NR_UNACCEPTED, MAX_ORDER_NR_PAGES);
+ 	__SetPageUnaccepted(page);
+ 	spin_unlock_irqrestore(&zone->lock, flags);
+ 
+-	if (first)
+-		static_branch_inc(&zones_with_unaccepted_pages);
+-
+ 	return true;
+ }
+ 
+_
 
----
-base-commit: 9540984da649d46f699c47f28c68bbd3c9d99e4c
-change-id: 20250507-qede-fix-clang-randstruct-13d8c593cb58
+Patches currently in -mm which might be from kirill.shutemov@linux.intel.com are
 
-Best regards,
--- 
-Nathan Chancellor <nathan@kernel.org>
+mm-page_alloc-ensure-try_alloc_pages-plays-well-with-unaccepted-memory.patch
+mm-page_alloc-fix-race-condition-in-unaccepted-memory-handling.patch
 
 
