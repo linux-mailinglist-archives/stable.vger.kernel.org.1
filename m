@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-142216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D39F5AAE995
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:46:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4EB6AAEBB3
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:09:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D78F53A1C35
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:45:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 917C77B75C2
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:08:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 326141A00E7;
-	Wed,  7 May 2025 18:46:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAB8228DF1F;
+	Wed,  7 May 2025 19:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YmAsIyHN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1RUTyEL5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E31B773451;
-	Wed,  7 May 2025 18:46:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5FBE21504D;
+	Wed,  7 May 2025 19:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643570; cv=none; b=kQgU5ivm0pB+Dj1qHnNGWNJc+zvHKG4DaiG5eiUhxZP+W1vvWHEeGoECedtLzNqlxXaNjYWiAtl362vJTPecwMeoGKhHr3e8k/xAlveoVzoUdKut4unOQfL4xlgBFnop1zUzZeasj/Zt3uY4rG+7YFlKgGlRvnIJv8I5QX2ysKU=
+	t=1746644974; cv=none; b=U9LsN6sfnVF5JuS9nDIDI5QhqR11fysqB4Dd8bFUk/aUeP6JjYoQ5aOhh+2hbrL/OWKlbsm863Ey/ClB4+NfnwBKCCgoXwy5NWIFVPzNlUm8DJWIR3Z8xJWnHADHRfKzrU8q1lzQ5NnoJ4fd4uB1ireFWHNsWH+07Bgrlbu2Zy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643570; c=relaxed/simple;
-	bh=UtYkqTS8JRVpPCWKj9qRc3TJJ1ybqlHsDAZ4CR6OxCQ=;
+	s=arc-20240116; t=1746644974; c=relaxed/simple;
+	bh=supyRvM0b/vzwurIriEgCDpZmH1KqLtAsqTmArMYIJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DLL1yvAIXCUP7/ZrSjA0kyPtAHLN+Z+4SCS1It8IuPzgrVdbUMU+r07NIsDbnQ4RoydVo6a5/2jLsRs0xDlnoapmzNEeOMrKd5VFpDy3HVoyRfsIXUj07Nqzkur2zjF70v0m1vYLkysp0micexabgeNll+06QWw9odqzL9PpSAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YmAsIyHN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50E07C4CEE9;
-	Wed,  7 May 2025 18:46:09 +0000 (UTC)
+	 MIME-Version; b=D6K0q7u5BxIHKTDzXMGdycKMhNL5DATdmqC3E1bKY/VU8dkpaeYgRVA3cbA0Ik/OXBtSUMoTlHQcXpxKwwe1RdKDk8C4nSAJv8Babzx1LZUed8P8t5Out2EUkSYej3oDqJe6BZHi1sWGCJ0/2SWN5q28Zl55pQUxBIvVHabDvpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1RUTyEL5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35BFEC4CEE2;
+	Wed,  7 May 2025 19:09:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643569;
-	bh=UtYkqTS8JRVpPCWKj9qRc3TJJ1ybqlHsDAZ4CR6OxCQ=;
+	s=korg; t=1746644974;
+	bh=supyRvM0b/vzwurIriEgCDpZmH1KqLtAsqTmArMYIJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YmAsIyHNxMH2kmnmYJrFuVP7LHa3d9qU2MAGY6vwKz6Qt3f6Ln8vI944p0zxuP3Xg
-	 yNEb1mJjQe76pWZIgglLyzthRb59EvmoGX3+Sfw2kh4zlmHSshv2yyDvt895GO9GTJ
-	 PdmvNhnRh7BGgvd6XPLGn60qiuhfhVEonXsqsSR8=
+	b=1RUTyEL5TlidUQnTA/hXstVXWe0mE2PvO6NbUncIsxUdZsLrnoT5Mxhd0Uy/r+lLj
+	 U9+m4+Qe3udlQKTO4VmBJy3Ao4FIId9WIArbFGIKUqKl4UqgjyxQkY+t7R8w0vlQla
+	 J7EbaQmaRoQmAAvCJ8M/wZQmpXAewGyDiACCYLAs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Mi <cmi@nvidia.com>,
-	Roi Dayan <roid@nvidia.com>,
-	Maor Gottlieb <maorg@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 45/97] net/mlx5: E-switch, Fix error handling for enabling roce
+	Pavel Paklov <Pavel.Paklov@cyberprotect.ru>,
+	Joerg Roedel <jroedel@suse.de>
+Subject: [PATCH 6.6 024/129] iommu/amd: Fix potential buffer overflow in parse_ivrs_acpihid
 Date: Wed,  7 May 2025 20:39:20 +0200
-Message-ID: <20250507183808.809178292@linuxfoundation.org>
+Message-ID: <20250507183814.508995203@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
-References: <20250507183806.987408728@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,115 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Mi <cmi@nvidia.com>
+From: Pavel Paklov <Pavel.Paklov@cyberprotect.ru>
 
-[ Upstream commit 90538d23278a981e344d364e923162fce752afeb ]
+commit 8dee308e4c01dea48fc104d37f92d5b58c50b96c upstream.
 
-The cited commit assumes enabling roce always succeeds. But it is
-not true. Add error handling for it.
+There is a string parsing logic error which can lead to an overflow of hid
+or uid buffers. Comparing ACPIID_LEN against a total string length doesn't
+take into account the lengths of individual hid and uid buffers so the
+check is insufficient in some cases. For example if the length of hid
+string is 4 and the length of the uid string is 260, the length of str
+will be equal to ACPIID_LEN + 1 but uid string will overflow uid buffer
+which size is 256.
 
-Fixes: 80f09dfc237f ("net/mlx5: Eswitch, enable RoCE loopback traffic")
-Signed-off-by: Chris Mi <cmi@nvidia.com>
-Reviewed-by: Roi Dayan <roid@nvidia.com>
-Reviewed-by: Maor Gottlieb <maorg@nvidia.com>
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Link: https://patch.msgid.link/20250423083611.324567-6-mbloch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The same applies to the hid string with length 13 and uid string with
+length 250.
+
+Check the length of hid and uid strings separately to prevent
+buffer overflow.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: ca3bf5d47cec ("iommu/amd: Introduces ivrs_acpihid kernel parameter")
+Cc: stable@vger.kernel.org
+Signed-off-by: Pavel Paklov <Pavel.Paklov@cyberprotect.ru>
+Link: https://lore.kernel.org/r/20250325092259.392844-1-Pavel.Paklov@cyberprotect.ru
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/eswitch_offloads.c   | 5 ++++-
- drivers/net/ethernet/mellanox/mlx5/core/rdma.c           | 9 +++++----
- drivers/net/ethernet/mellanox/mlx5/core/rdma.h           | 4 ++--
- 3 files changed, 11 insertions(+), 7 deletions(-)
+ drivers/iommu/amd/init.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-index 433cdd0a2cf34..5237abbdcda11 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
-@@ -3320,7 +3320,9 @@ int esw_offloads_enable(struct mlx5_eswitch *esw)
- 	int err;
+--- a/drivers/iommu/amd/init.c
++++ b/drivers/iommu/amd/init.c
+@@ -3682,6 +3682,14 @@ found:
+ 	while (*uid == '0' && *(uid + 1))
+ 		uid++;
  
- 	mutex_init(&esw->offloads.termtbl_mutex);
--	mlx5_rdma_enable_roce(esw->dev);
-+	err = mlx5_rdma_enable_roce(esw->dev);
-+	if (err)
-+		goto err_roce;
- 
- 	err = mlx5_esw_host_number_init(esw);
- 	if (err)
-@@ -3378,6 +3380,7 @@ int esw_offloads_enable(struct mlx5_eswitch *esw)
- 	esw_offloads_metadata_uninit(esw);
- err_metadata:
- 	mlx5_rdma_disable_roce(esw->dev);
-+err_roce:
- 	mutex_destroy(&esw->offloads.termtbl_mutex);
- 	return err;
- }
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/rdma.c b/drivers/net/ethernet/mellanox/mlx5/core/rdma.c
-index ab5afa6c5e0fd..e61a4fa46d772 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/rdma.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/rdma.c
-@@ -152,17 +152,17 @@ void mlx5_rdma_disable_roce(struct mlx5_core_dev *dev)
- 	mlx5_nic_vport_disable_roce(dev);
- }
- 
--void mlx5_rdma_enable_roce(struct mlx5_core_dev *dev)
-+int mlx5_rdma_enable_roce(struct mlx5_core_dev *dev)
- {
- 	int err;
- 
- 	if (!MLX5_CAP_GEN(dev, roce))
--		return;
-+		return 0;
- 
- 	err = mlx5_nic_vport_enable_roce(dev);
- 	if (err) {
- 		mlx5_core_err(dev, "Failed to enable RoCE: %d\n", err);
--		return;
-+		return err;
- 	}
- 
- 	err = mlx5_rdma_add_roce_addr(dev);
-@@ -177,10 +177,11 @@ void mlx5_rdma_enable_roce(struct mlx5_core_dev *dev)
- 		goto del_roce_addr;
- 	}
- 
--	return;
-+	return err;
- 
- del_roce_addr:
- 	mlx5_rdma_del_roce_addr(dev);
- disable_roce:
- 	mlx5_nic_vport_disable_roce(dev);
-+	return err;
- }
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/rdma.h b/drivers/net/ethernet/mellanox/mlx5/core/rdma.h
-index 750cff2a71a4b..3d9e76c3d42fb 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/rdma.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/rdma.h
-@@ -8,12 +8,12 @@
- 
- #ifdef CONFIG_MLX5_ESWITCH
- 
--void mlx5_rdma_enable_roce(struct mlx5_core_dev *dev);
-+int mlx5_rdma_enable_roce(struct mlx5_core_dev *dev);
- void mlx5_rdma_disable_roce(struct mlx5_core_dev *dev);
- 
- #else /* CONFIG_MLX5_ESWITCH */
- 
--static inline void mlx5_rdma_enable_roce(struct mlx5_core_dev *dev) {}
-+static inline int mlx5_rdma_enable_roce(struct mlx5_core_dev *dev) { return 0; }
- static inline void mlx5_rdma_disable_roce(struct mlx5_core_dev *dev) {}
- 
- #endif /* CONFIG_MLX5_ESWITCH */
--- 
-2.39.5
-
++	if (strlen(hid) >= ACPIHID_HID_LEN) {
++		pr_err("Invalid command line: hid is too long\n");
++		return 1;
++	} else if (strlen(uid) >= ACPIHID_UID_LEN) {
++		pr_err("Invalid command line: uid is too long\n");
++		return 1;
++	}
++
+ 	i = early_acpihid_map_size++;
+ 	memcpy(early_acpihid_map[i].hid, hid, strlen(hid));
+ 	memcpy(early_acpihid_map[i].uid, uid, strlen(uid));
 
 
 
