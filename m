@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-142437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDEABAAEA9C
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:57:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74CC6AAEBC6
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:10:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BB0797BE520
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:56:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5A7277AB0A8
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:09:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53C7128B4F0;
-	Wed,  7 May 2025 18:57:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F5A628DF3C;
+	Wed,  7 May 2025 19:10:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BZM8Pt5O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Asf1DOpC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E8A01CF5C6;
-	Wed,  7 May 2025 18:57:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3C128BA9F;
+	Wed,  7 May 2025 19:10:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644248; cv=none; b=EcA9EwMiJ2UWzSF5iaHnreiyomqAwmC90vtvt7L+khBmxBCtXCv7TsoyBitz31szCgBHvGSsyWbBfV0HdAInK/VWrsIBzeldvXgLl+eXE+neDvbbUBc4ojHXj0wsCqzbxySPuvIVyvCbyPuQgerMag9zuiY9beIW2SgJ4ACuKCY=
+	t=1746645046; cv=none; b=ljFIViH50u+lPirw+9vm5U6LNTSEcNHqSajUK6Wbiuubfm9CgphHx/HU7k9DAMD5f5iSuTU9Y0IJqljbj4CMEsapXt4oEDLx/4Ns3cdaQfvc1L2uhsRqRSUrelz0tIGi7i19/K4hToWqsvgzf4iBudvC6e21Hv6tD6GDXa7zN6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644248; c=relaxed/simple;
-	bh=U5MRMQyJd5zFRlrgxzwI7Ea0EPvBYTIvTkmkmDPJxLg=;
+	s=arc-20240116; t=1746645046; c=relaxed/simple;
+	bh=v2lg4pfQLPnFzF8QU0GaxazkUXjna2lI0MZ8YWG1h7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JkVRJOX4uDKcSVy7r3tZHbbdRKGx5zoR1hoA4Sh8607J7pOA+1r9hkQTnry7wEZ0TmVCltnNa422NfnRlcwtEVc0cSShehQZyfMcuYv0XV4RQZkfC24ZgQ8dkUa1WgkvO/aQL7eTdBxYLM4x1pln2EZoXfnjJVZoYCw0cOv4AXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BZM8Pt5O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A9F9C4CEE2;
-	Wed,  7 May 2025 18:57:27 +0000 (UTC)
+	 MIME-Version; b=K5k5SZgnr5EKFwSvV8ZPPsE0nOK71bUMFE2cE1Typ1dVHlvojenrKny41ZuHWSCbm86fyJ7Ms6+Y7hvC0sDy1wi3bT4A0mPjEueRgxVYd5Req7aYh3iut9aQ3MzY2yj294BLUgBqGQ2H/q/8ObJjgchVKCdgXqdHS+x9ymYYRis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Asf1DOpC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CB42C4CEE2;
+	Wed,  7 May 2025 19:10:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644247;
-	bh=U5MRMQyJd5zFRlrgxzwI7Ea0EPvBYTIvTkmkmDPJxLg=;
+	s=korg; t=1746645045;
+	bh=v2lg4pfQLPnFzF8QU0GaxazkUXjna2lI0MZ8YWG1h7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BZM8Pt5O5tU42gjUHNq1q0iKtwe1PHvxsPmzIMLVlgUSft7b8naUEVuVskQfOpcUS
-	 /h3JErGmOweKieWPeAtdh2de7UvWdAaslUn9l+inhGtSK5uLNnbmZJBKMdlfsLtkNs
-	 PiRMPuFVL4HG2y25LAk5dJfvfxrFQOl7jwGzynP0=
+	b=Asf1DOpCavGekGbh3bBtPwJmwaPFd2TOs0E9v2aRskGQGppXoL5wKMbEM3mINYVAL
+	 Xa95Ds+r0wp51tN3yoJyBDpd8lPa8c0/TFcVS1AdcW20i574/yFIquvrG8CJ8A3/fI
+	 +c8m3YQyjraypigAqf5b/6D0r9rgYIx1KhF7Xp+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 166/183] firmware: arm_scmi: Balance device refcount when destroying devices
+Subject: [PATCH 6.6 075/129] net: dlink: Correct endianness handling of led_mode
 Date: Wed,  7 May 2025 20:40:11 +0200
-Message-ID: <20250507183831.591307693@linuxfoundation.org>
+Message-ID: <20250507183816.555924869@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,88 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cristian Marussi <cristian.marussi@arm.com>
+From: Simon Horman <horms@kernel.org>
 
-[ Upstream commit 9ca67840c0ddf3f39407339624cef824a4f27599 ]
+[ Upstream commit e7e5ae71831c44d58627a991e603845a2fed2cab ]
 
-Using device_find_child() to lookup the proper SCMI device to destroy
-causes an unbalance in device refcount, since device_find_child() calls an
-implicit get_device(): this, in turns, inhibits the call of the provided
-release methods upon devices destruction.
+As it's name suggests, parse_eeprom() parses EEPROM data.
 
-As a consequence, one of the structures that is not freed properly upon
-destruction is the internal struct device_private dev->p populated by the
-drivers subsystem core.
+This is done by reading data, 16 bits at a time as follows:
 
-KMemleak detects this situation since loading/unloding some SCMI driver
-causes related devices to be created/destroyed without calling any
-device_release method.
+	for (i = 0; i < 128; i++)
+                ((__le16 *) sromdata)[i] = cpu_to_le16(read_eeprom(np, i));
 
-unreferenced object 0xffff00000f583800 (size 512):
-  comm "insmod", pid 227, jiffies 4294912190
-  hex dump (first 32 bytes):
-    00 00 00 00 ad 4e ad de ff ff ff ff 00 00 00 00  .....N..........
-    ff ff ff ff ff ff ff ff 60 36 1d 8a 00 80 ff ff  ........`6......
-  backtrace (crc 114e2eed):
-    kmemleak_alloc+0xbc/0xd8
-    __kmalloc_cache_noprof+0x2dc/0x398
-    device_add+0x954/0x12d0
-    device_register+0x28/0x40
-    __scmi_device_create.part.0+0x1bc/0x380
-    scmi_device_create+0x2d0/0x390
-    scmi_create_protocol_devices+0x74/0xf8
-    scmi_device_request_notifier+0x1f8/0x2a8
-    notifier_call_chain+0x110/0x3b0
-    blocking_notifier_call_chain+0x70/0xb0
-    scmi_driver_register+0x350/0x7f0
-    0xffff80000a3b3038
-    do_one_initcall+0x12c/0x730
-    do_init_module+0x1dc/0x640
-    load_module+0x4b20/0x5b70
-    init_module_from_file+0xec/0x158
+sromdata is at the same memory location as psrom.
+And the type of psrom is a pointer to struct t_SROM.
 
-$ ./scripts/faddr2line ./vmlinux device_add+0x954/0x12d0
-device_add+0x954/0x12d0:
-kmalloc_noprof at include/linux/slab.h:901
-(inlined by) kzalloc_noprof at include/linux/slab.h:1037
-(inlined by) device_private_init at drivers/base/core.c:3510
-(inlined by) device_add at drivers/base/core.c:3561
+As can be seen in the loop above, data is stored in sromdata, and thus psrom,
+as 16-bit little-endian values.
 
-Balance device refcount by issuing a put_device() on devices found via
-device_find_child().
+However, the integer fields of t_SROM are host byte order integers.
+And in the case of led_mode this leads to a little endian value
+being incorrectly treated as host byte order.
 
-Reported-by: Alice Ryhl <aliceryhl@google.com>
-Closes: https://lore.kernel.org/linux-arm-kernel/Z8nK3uFkspy61yjP@arm.com/T/#mc1f73a0ea5e41014fa145147b7b839fc988ada8f
-CC: Sudeep Holla <sudeep.holla@arm.com>
-CC: Catalin Marinas <catalin.marinas@arm.com>
-Fixes: d4f9dddd21f3 ("firmware: arm_scmi: Add dynamic scmi devices creation")
-Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
-Tested-by: Alice Ryhl <aliceryhl@google.com>
-Message-Id: <20250306185447.2039336-1-cristian.marussi@arm.com>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Looking at rio_set_led_mode, this does appear to be a bug as that code
+masks led_mode with 0x1, 0x2 and 0x8. Logic that would be effected by a
+reversed byte order.
+
+This problem would only manifest on big endian hosts.
+
+Found by inspection while investigating a sparse warning
+regarding the crc field of t_SROM.
+
+I believe that warning is a false positive. And although I plan
+to send a follow-up to use little-endian types for other the integer
+fields of PSROM_t I do not believe that will involve any bug fixes.
+
+Compile tested only.
+
+Fixes: c3f45d322cbd ("dl2k: Add support for IP1000A-based cards")
+Signed-off-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250425-dlink-led-mode-v1-1-6bae3c36e736@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_scmi/bus.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/dlink/dl2k.c | 2 +-
+ drivers/net/ethernet/dlink/dl2k.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/firmware/arm_scmi/bus.c b/drivers/firmware/arm_scmi/bus.c
-index a3386bf36de50..7d7af2262c013 100644
---- a/drivers/firmware/arm_scmi/bus.c
-+++ b/drivers/firmware/arm_scmi/bus.c
-@@ -260,6 +260,9 @@ static struct scmi_device *scmi_child_dev_find(struct device *parent,
- 	if (!dev)
- 		return NULL;
+diff --git a/drivers/net/ethernet/dlink/dl2k.c b/drivers/net/ethernet/dlink/dl2k.c
+index db6615aa921b1..ce46f3ac3b5a1 100644
+--- a/drivers/net/ethernet/dlink/dl2k.c
++++ b/drivers/net/ethernet/dlink/dl2k.c
+@@ -352,7 +352,7 @@ parse_eeprom (struct net_device *dev)
+ 	eth_hw_addr_set(dev, psrom->mac_addr);
  
-+	/* Drop the refcnt bumped implicitly by device_find_child */
-+	put_device(dev);
-+
- 	return to_scmi_dev(dev);
- }
+ 	if (np->chip_id == CHIP_IP1000A) {
+-		np->led_mode = psrom->led_mode;
++		np->led_mode = le16_to_cpu(psrom->led_mode);
+ 		return 0;
+ 	}
  
+diff --git a/drivers/net/ethernet/dlink/dl2k.h b/drivers/net/ethernet/dlink/dl2k.h
+index 195dc6cfd8955..0e33e2eaae960 100644
+--- a/drivers/net/ethernet/dlink/dl2k.h
++++ b/drivers/net/ethernet/dlink/dl2k.h
+@@ -335,7 +335,7 @@ typedef struct t_SROM {
+ 	u16 sub_system_id;	/* 0x06 */
+ 	u16 pci_base_1;		/* 0x08 (IP1000A only) */
+ 	u16 pci_base_2;		/* 0x0a (IP1000A only) */
+-	u16 led_mode;		/* 0x0c (IP1000A only) */
++	__le16 led_mode;	/* 0x0c (IP1000A only) */
+ 	u16 reserved1[9];	/* 0x0e-0x1f */
+ 	u8 mac_addr[6];		/* 0x20-0x25 */
+ 	u8 reserved2[10];	/* 0x26-0x2f */
 -- 
 2.39.5
 
