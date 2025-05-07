@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-142621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3766AAEB91
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:08:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4F49AAEBED
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:12:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17B445270DD
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:07:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E61D52733B
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:12:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D02B028DF1F;
-	Wed,  7 May 2025 19:06:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C95D28DF4C;
+	Wed,  7 May 2025 19:12:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q2elBUCh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IAXNcAOI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CF0C1CF5C6;
-	Wed,  7 May 2025 19:06:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0823A214813;
+	Wed,  7 May 2025 19:12:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644817; cv=none; b=JuvqX0I8IQf8VXY0F1XeEBXsqinznmgcumxiV4X9X6cNWWQTbVV1ElGpDjiKwH6XmgAQeMML54nrtEPa5UiDQl5B/o+3CR7C03cv2Yi4IRcsaSat1q/JgTg5balieaUZCmiku8RZROHuo5QZt0BQEyktJKnbFWGY5XTv18TXEPM=
+	t=1746645139; cv=none; b=neHWlwzRgBhDEABWcPe/pzCinXlJTqiwzkQAnflAKAxSR94UCOVrnhVwCAmAbKxEy0IcmBBc0D74mwqjoCFUPEDK85htVCp1WTviDaKvTtR3SJdBI3uPMr7Ne5MzlDFo2p2OvKmvRxuxEMdcl+VdUpWR6abQVNSyDwGn/xlod9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644817; c=relaxed/simple;
-	bh=gXD+uJ7JjgEQfzYxv1rrItH9u3wBaCJrZCCunlH9rqE=;
+	s=arc-20240116; t=1746645139; c=relaxed/simple;
+	bh=QDRDB61KkhlKSDo8YlrE2vh5rVfH5kowM9aIbH6+X1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sNEIkqzFzdy9X4cCspFAf7R8z8FQl/R6l1rLPpUFaCTebbvH2oblq/v3nUI6I2zGjmoD3d0K7sYd/+Z3my5APDIyaEH0FLvuoz3ZFPbZfSHQLVI0uwpd8xoOXUO9v+lDJ1Hn3rdzsTor8O42OsuufzBrlWj2dy2ip9TfLHVkKEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q2elBUCh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1743DC4CEE2;
-	Wed,  7 May 2025 19:06:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VVhN20yUz86Acs0U0QsbTFh2XhfEk1KxToKL37JAjvuYCMncJV+40mlx/epxZrfU1q9AFJ4T8rr5JbZxWHkPRE36zZ9H5b5xfA6i2RwqrITrDvCNhRwSJgYi1hn3LuVcKRJsx2eHuP3UyHQItFLZX1K5aWk0Q66ihOfRtIQFcsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IAXNcAOI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E2F2C4CEE2;
+	Wed,  7 May 2025 19:12:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644817;
-	bh=gXD+uJ7JjgEQfzYxv1rrItH9u3wBaCJrZCCunlH9rqE=;
+	s=korg; t=1746645137;
+	bh=QDRDB61KkhlKSDo8YlrE2vh5rVfH5kowM9aIbH6+X1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q2elBUChT3/owQNVCbhMaOALhG1XytIEv5LcJ6JXAmAKgtB/3+1qkYJ2eLWCwn5pY
-	 JBg6D3MvXAAumcw4FLtFQsWHn0YR2IQf6cDKouFRd2Dz1W8utRpkfEfi9aNAW555Ez
-	 QraDOofPu8qkeVhsFxnKHYWVG4omAshY8c5nxK9Q=
+	b=IAXNcAOIGcTPoOwnAVo0seUzxPyLlGaK7dETJ9X5O3zpdviBIx6F9/U46jymU3Lau
+	 gID2c5TACl0IRxAumo61hLI95y62d5/Y+wrl6u8b4VolM0wimy94KCB4lvLtmTZh6d
+	 QFQqftqJSMq1xbpzWsRqSrUKDcVerf1ZGSa1AD88=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?S=C3=A9bastien=20Szymanski?= <sebastien.szymanski@armadeus.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Sudeep Holla <sudeep.holla@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 156/164] ARM: dts: opos6ul: add ksz8081 phy properties
+Subject: [PATCH 6.6 105/129] firmware: arm_ffa: Skip Rx buffer ownership release if not acquired
 Date: Wed,  7 May 2025 20:40:41 +0200
-Message-ID: <20250507183827.281978710@linuxfoundation.org>
+Message-ID: <20250507183817.750780450@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +62,51 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sébastien Szymanski <sebastien.szymanski@armadeus.com>
+From: Sudeep Holla <sudeep.holla@arm.com>
 
-[ Upstream commit 6e1a7bc8382b0d4208258f7d2a4474fae788dd90 ]
+[ Upstream commit 4567bdaaaaa1744da3d7da07d9aca2f941f5b4e5 ]
 
-Commit c7e73b5051d6 ("ARM: imx: mach-imx6ul: remove 14x14 EVK specific
-PHY fixup") removed a PHY fixup that setted the clock mode and the LED
-mode.
-Make the Ethernet interface work again by doing as advised in the
-commit's log, set clock mode and the LED mode in the device tree.
+Completion of the FFA_PARTITION_INFO_GET ABI transfers the ownership of
+the caller’s Rx buffer from the producer(typically partition mnager) to
+the consumer(this driver/OS). FFA_RX_RELEASE transfers the ownership
+from the consumer back to the producer.
 
-Fixes: c7e73b5051d6 ("ARM: imx: mach-imx6ul: remove 14x14 EVK specific PHY fixup")
-Signed-off-by: Sébastien Szymanski <sebastien.szymanski@armadeus.com>
-Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+However, when we set the flag to just return the count of partitions
+deployed in the system corresponding to the specified UUID while
+invoking FFA_PARTITION_INFO_GET, the Rx buffer ownership shouldn't be
+transferred to this driver. We must be able to skip transferring back
+the ownership to the partition manager when we request just to get the
+count of the partitions as the buffers are not acquired in this case.
+
+Firmware may return FFA_RET_DENIED or other error for the ffa_rx_release()
+in such cases.
+
+Fixes: bb1be7498500 ("firmware: arm_ffa: Add v1.1 get_partition_info support")
+Message-Id: <20250321115700.3525197-1-sudeep.holla@arm.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-opos6ul.dtsi | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/firmware/arm_ffa/driver.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-opos6ul.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-opos6ul.dtsi
-index f2386dcb9ff2c..dda4fa91b2f2c 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-opos6ul.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6ul-imx6ull-opos6ul.dtsi
-@@ -40,6 +40,9 @@
- 			reg = <1>;
- 			interrupt-parent = <&gpio4>;
- 			interrupts = <16 IRQ_TYPE_LEVEL_LOW>;
-+			micrel,led-mode = <1>;
-+			clocks = <&clks IMX6UL_CLK_ENET_REF>;
-+			clock-names = "rmii-ref";
- 			status = "okay";
- 		};
- 	};
+diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
+index 7cd6b1564e801..7c2db3f017651 100644
+--- a/drivers/firmware/arm_ffa/driver.c
++++ b/drivers/firmware/arm_ffa/driver.c
+@@ -225,7 +225,8 @@ __ffa_partition_info_get(u32 uuid0, u32 uuid1, u32 uuid2, u32 uuid3,
+ 			memcpy(buffer + idx, drv_info->rx_buffer + idx * sz,
+ 			       buf_sz);
+ 
+-	ffa_rx_release();
++	if (!(flags & PARTITION_INFO_GET_RETURN_COUNT_ONLY))
++		ffa_rx_release();
+ 
+ 	mutex_unlock(&drv_info->rx_lock);
+ 
 -- 
 2.39.5
 
