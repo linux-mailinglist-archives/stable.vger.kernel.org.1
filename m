@@ -1,59 +1,54 @@
-Return-Path: <stable+bounces-142130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05976AAE92F
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:41:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0927AAEBB0
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:09:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA78D1C08651
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:42:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA67B9E387D
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:09:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C268714A4C7;
-	Wed,  7 May 2025 18:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18B0B28DF3C;
+	Wed,  7 May 2025 19:09:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tbvj+w8e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2OXxYiRA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775DE288CB0;
-	Wed,  7 May 2025 18:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9D9F21504D;
+	Wed,  7 May 2025 19:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643309; cv=none; b=uoRLpzXrOr254DeuaMYPLDG8et5Aoff7bld63UY65951vunjyHREaam3qz6TcaomZ8jrtrZAdi86Laion4Tk9QRujBacC697WnuMS8TIaG2bPMxqKFSxLQK1ZlrJ5LlUdyxbxWBKtnAOKqYKBEou5WIl/G8gLxjjVP40CAhu2Zw=
+	t=1746644968; cv=none; b=jZkTW7x+K/GOBC/fVdtXdULlEtOZHIq1fRKwsMhnWxMXtGXjRRgBW/Iw5J+EdFjJI25yr4gQGQDElmowgcMeUPtsXO7ahrpl47gh6T54Wo+qzkLLpAyFYeBBowicn3ULRAnlicbudzDHAJc85aBpXkDcIstkBUxr4quBCCZIX0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643309; c=relaxed/simple;
-	bh=pvA7Bmlgw1Fm9wOxjyRWn5oYTxEg9KmZRAqyHXfOhRk=;
+	s=arc-20240116; t=1746644968; c=relaxed/simple;
+	bh=mCXczVHXL50Wu6CpsWvzK0k8INyRIahJrNUm7O9t1qA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MHUXyL5xRvcsyFU1+YOnsmPrdSFms2FI/HkPm+nyFnjIKqDEZ4Z250Zb12xfPEANgmV3V9xVCqV5Dzu00YTcOya0XiWGi0veRXvgxlXQ5T5cqfTGZVnaj324iM496Wk/b/QVi9hdIXn/mYE1Fj+SJJb1K33YCGXs2q1MMyjbIuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tbvj+w8e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CC4EC4CEE2;
-	Wed,  7 May 2025 18:41:48 +0000 (UTC)
+	 MIME-Version; b=s6CsFzb9A/DChcMgG/I2MrM+r5w9FACBXmgXug2xGjDbA3ymYKyPmQQTmrr4+aNW0JdpQ7fXlHQWkBOth2DyNDV36EOAHnonWgugCyBrhSUjC6T5LGOqZFrNerI0ACDTUi+EtClF/ohu7aZgeu5CzEhQ0YRA/kPc4zQFfx8ixv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2OXxYiRA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52D53C4CEE2;
+	Wed,  7 May 2025 19:09:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643309;
-	bh=pvA7Bmlgw1Fm9wOxjyRWn5oYTxEg9KmZRAqyHXfOhRk=;
+	s=korg; t=1746644968;
+	bh=mCXczVHXL50Wu6CpsWvzK0k8INyRIahJrNUm7O9t1qA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tbvj+w8eWV6bq1rNLFo5c8fcRopN+y3W/PsH0dzalIsbDwh4gOQVU6h7A2cWgCAsr
-	 qRPvIF8lNDznWcfiiV/lU3SXfNRMVtOF35lNCM3NN8urA6I8+kjE43C8Wlmrs7Y5J3
-	 NAPj7Ab/POARGq+uDuXq6q+GNeL5lLmXjyS5X4rQ=
+	b=2OXxYiRA/qglAfb0GW7uI0cMgIjVCV/wsEMGnuw5DwZLHijoWv5sANeyP11hNP8Zh
+	 sdLMmt9zkvyupZq19js8NYYNKhBV7CTiaTOHPzca2zSmxonxEc81AlwhARp01t66Yj
+	 ptIhUgW+I+9ECqJN7lN+2BoMt+DvOJrzwp6lKZb8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jianqi Ren <jianqi.ren.cn@windriver.com>,
-	He Zhe <zhe.he@windriver.com>
-Subject: [PATCH 5.15 17/55] net/sched: act_mirred: dont override retval if we already lost the skb
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 6.6 022/129] dm-integrity: fix a warning on invalid table line
 Date: Wed,  7 May 2025 20:39:18 +0200
-Message-ID: <20250507183759.743449830@linuxfoundation.org>
+Message-ID: <20250507183814.432409292@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
-References: <20250507183759.048732653@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,94 +60,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-commit 166c2c8a6a4dc2e4ceba9e10cfe81c3e469e3210 upstream.
+commit 0a533c3e4246c29d502a7e0fba0e86d80a906b04 upstream.
 
-If we're redirecting the skb, and haven't called tcf_mirred_forward(),
-yet, we need to tell the core to drop the skb by setting the retcode
-to SHOT. If we have called tcf_mirred_forward(), however, the skb
-is out of our hands and returning SHOT will lead to UaF.
+If we use the 'B' mode and we have an invalit table line,
+cancel_delayed_work_sync would trigger a warning. This commit avoids the
+warning.
 
-Move the retval override to the error path which actually need it.
-
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Fixes: e5cf1baf92cb ("act_mirred: use TC_ACT_REINSERT when possible")
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-[Minor conflict resolved due to code context change.]
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/act_mirred.c |   22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
+ drivers/md/dm-integrity.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/sched/act_mirred.c
-+++ b/net/sched/act_mirred.c
-@@ -254,31 +254,31 @@ static int tcf_mirred_act(struct sk_buff
+--- a/drivers/md/dm-integrity.c
++++ b/drivers/md/dm-integrity.c
+@@ -4687,7 +4687,7 @@ static void dm_integrity_dtr(struct dm_t
+ 	BUG_ON(!RB_EMPTY_ROOT(&ic->in_progress));
+ 	BUG_ON(!list_empty(&ic->wait_list));
  
- 	m_mac_header_xmit = READ_ONCE(m->tcfm_mac_header_xmit);
- 	m_eaction = READ_ONCE(m->tcfm_eaction);
-+	is_redirect = tcf_mirred_is_act_redirect(m_eaction);
- 	retval = READ_ONCE(m->tcf_action);
- 	dev = rcu_dereference_bh(m->tcfm_dev);
- 	if (unlikely(!dev)) {
- 		pr_notice_once("tc mirred: target device is gone\n");
--		goto out;
-+		goto err_cant_do;
- 	}
- 
- 	if (unlikely(!(dev->flags & IFF_UP)) || !netif_carrier_ok(dev)) {
- 		net_notice_ratelimited("tc mirred to Houston: device %s is down\n",
- 				       dev->name);
--		goto out;
-+		goto err_cant_do;
- 	}
- 
- 	/* we could easily avoid the clone only if called by ingress and clsact;
- 	 * since we can't easily detect the clsact caller, skip clone only for
- 	 * ingress - that covers the TC S/W datapath.
- 	 */
--	is_redirect = tcf_mirred_is_act_redirect(m_eaction);
- 	at_ingress = skb_at_tc_ingress(skb);
- 	use_reinsert = at_ingress && is_redirect &&
- 		       tcf_mirred_can_reinsert(retval);
- 	if (!use_reinsert) {
- 		skb2 = skb_clone(skb, GFP_ATOMIC);
- 		if (!skb2)
--			goto out;
-+			goto err_cant_do;
- 	}
- 
- 	want_ingress = tcf_mirred_act_wants_ingress(m_eaction);
-@@ -321,12 +321,16 @@ static int tcf_mirred_act(struct sk_buff
- 	}
- 
- 	err = tcf_mirred_forward(want_ingress, skb2);
--	if (err) {
--out:
-+	if (err)
- 		tcf_action_inc_overlimit_qstats(&m->common);
--		if (tcf_mirred_is_act_redirect(m_eaction))
--			retval = TC_ACT_SHOT;
--	}
-+	__this_cpu_dec(mirred_nest_level);
-+
-+	return retval;
-+
-+err_cant_do:
-+	if (is_redirect)
-+		retval = TC_ACT_SHOT;
-+	tcf_action_inc_overlimit_qstats(&m->common);
- 	__this_cpu_dec(mirred_nest_level);
- 
- 	return retval;
+-	if (ic->mode == 'B')
++	if (ic->mode == 'B' && ic->bitmap_flush_work.work.func)
+ 		cancel_delayed_work_sync(&ic->bitmap_flush_work);
+ 	if (ic->metadata_wq)
+ 		destroy_workqueue(ic->metadata_wq);
 
 
 
