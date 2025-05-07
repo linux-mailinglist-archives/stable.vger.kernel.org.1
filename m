@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-142200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27AD5AAE979
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:45:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1634CAAEB14
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:03:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B68FE1C2761A
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:45:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B5539E28B4
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:02:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 309FB212FBE;
-	Wed,  7 May 2025 18:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2740928D834;
+	Wed,  7 May 2025 19:03:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MuGdQTc0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g4zmzM8u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBFC11A2390;
-	Wed,  7 May 2025 18:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBBAB288A8;
+	Wed,  7 May 2025 19:03:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643518; cv=none; b=PQacOIUvQq5lNxgFT0HwYWrjtY876VncWyP4nVkam+FmEKQDjNMaRZqK+JdwUAYR9Uc6c8Xlj2KIXJgNqyfz3YDzBRbZ2zrBQlBfg4lQvjkeHUXe058cZav8NcyCrWW6SMxpD29OE4TMz8QYSBIDUuCgbhIBSmHrBfjq8saJ84Y=
+	t=1746644583; cv=none; b=nX8u5P5cLLvEHT7u4uGBOhMMjGak8/HikaWP9PDaYYNdryr6n3IizsBLgGsCi1nRdcuagh0mSRTJost4JuoR+uMCBTv3vuzLgBydGOOKdo6KlLRPo5VHcDjSh/NdPiPRsJlzsGMDELD63cJSpkMjPeUvuVHKQxefk9ja2GmDVAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643518; c=relaxed/simple;
-	bh=CUhTA9VIwuoasC9Ja1zyVQYnY8OFh0ZQtnOwTk0TTP8=;
+	s=arc-20240116; t=1746644583; c=relaxed/simple;
+	bh=6frX9PzzD4l+aNOJOEybdj4zZ7C9qhHQDenZqRPXG0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h28IBGgRfE3PiNGU9mc3tjeBc4NSd2nhZ78lma1ZblDhOeCjmMUqA4SmMeEtDoXcwKQysdqDEtfuVjw7zr4ODw2aEf3Hd/vODD4gOFc11uECBK+Zl+KlEY3yd+tFVVuhA3PEvr/NUDkEU1ow4ki+W1ccrdmjr97Q0lRRH6/6yHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MuGdQTc0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68E94C4CEE2;
-	Wed,  7 May 2025 18:45:17 +0000 (UTC)
+	 MIME-Version; b=YLlP3X39dToANiAGHa9hbet2TuefcFkswA2GC69cJelUyi0pipGSQvqkEnHNM+PfJNe2tYWN9S+YWHDwY50ruPP/KwdM815/sVA+Q57B91Bms55eJSgTvO8wPOh97Y+TQlinSel/ZaD68/7EmqUUxGMaq+QKgLmUpPfeghRcvC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g4zmzM8u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65022C4CEE2;
+	Wed,  7 May 2025 19:03:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643517;
-	bh=CUhTA9VIwuoasC9Ja1zyVQYnY8OFh0ZQtnOwTk0TTP8=;
+	s=korg; t=1746644583;
+	bh=6frX9PzzD4l+aNOJOEybdj4zZ7C9qhHQDenZqRPXG0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MuGdQTc0snvJRNrK/VCIVS2ChmnwxB2y/VYRiw36pSX/7NzqiyoEqFBNs4vhuFy98
-	 W0SZ3gdClPXw7A1S3O6YgMmqMFs3gsBflvPACKPUEo16itu94iZIRJiHVsp3nmQxT9
-	 wJG5RzIDK1GsRavJMQ/k2NfNYoXwWxxLDniXIVsA=
+	b=g4zmzM8uYUfZOyvmSPmX0llBvmZRNJckOsZ3oWVzkV46YWKgqqQnlMya0gc7Hbb5J
+	 ZXV9H2yT5meZsfUpiKi0SUZQDIJPxzWKHCzYFCM75mH2eoNFkxlYhqui8IqFyqBdVV
+	 ZOWyL4lUZk5nZ0YyL447VcAjCnZ1TV8GX1PyHDtU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 31/97] xfs: make the seq argument to xfs_bmapi_convert_delalloc() optional
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 061/164] wifi: iwlwifi: dont warn if the NIC is gone in resume
 Date: Wed,  7 May 2025 20:39:06 +0200
-Message-ID: <20250507183808.245535159@linuxfoundation.org>
+Message-ID: <20250507183823.411299815@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
-References: <20250507183806.987408728@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +63,176 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-[ Upstream commit fc8d0ba0ff5fe4700fa02008b7751ec6b84b7677 ]
+[ Upstream commit 15220a257319ffe3bf95796326dfe0aacdbeb1c4 ]
 
-Allow callers to pass a NULLL seq argument if they don't care about
-the fork sequence number.
+Some BIOSes decide to power gate the WLAN device during S3. Since
+iwlwifi doesn't expect this, it gets very noisy reporting that the
+device is no longer available. Wifi is still available because iwlwifi
+recovers, but it spews scary prints in the log.
 
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix that by failing gracefully.
+
+Fixes: e8bb19c1d590 ("wifi: iwlwifi: support fast resume")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219597
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250420095642.d8d58146c829.I569ca15eaaa774d633038a749cc6ec7448419714@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/libxfs/xfs_bmap.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ .../net/wireless/intel/iwlwifi/iwl-trans.c    |  1 -
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 20 ++++++++++++++++---
+ .../wireless/intel/iwlwifi/pcie/internal.h    |  9 +++++----
+ .../net/wireless/intel/iwlwifi/pcie/trans.c   | 13 +++++++++---
+ drivers/net/wireless/intel/iwlwifi/pcie/tx.c  |  2 +-
+ 5 files changed, 33 insertions(+), 12 deletions(-)
 
---- a/fs/xfs/libxfs/xfs_bmap.c
-+++ b/fs/xfs/libxfs/xfs_bmap.c
-@@ -4580,7 +4580,8 @@ xfs_bmapi_convert_delalloc(
- 	if (!isnullstartblock(bma.got.br_startblock)) {
- 		xfs_bmbt_to_iomap(ip, iomap, &bma.got, 0, flags,
- 				xfs_iomap_inode_sequence(ip, flags));
--		*seq = READ_ONCE(ifp->if_seq);
-+		if (seq)
-+			*seq = READ_ONCE(ifp->if_seq);
- 		goto out_trans_cancel;
- 	}
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
+index 3c9d91496c826..3b3dcaf33c9d9 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
+@@ -347,7 +347,6 @@ void __releases(nic_access)
+ iwl_trans_release_nic_access(struct iwl_trans *trans)
+ {
+ 	iwl_trans_pcie_release_nic_access(trans);
+-	__release(nic_access);
+ }
+ IWL_EXPORT_SYMBOL(iwl_trans_release_nic_access);
  
-@@ -4626,7 +4627,8 @@ xfs_bmapi_convert_delalloc(
- 	ASSERT(!isnullstartblock(bma.got.br_startblock));
- 	xfs_bmbt_to_iomap(ip, iomap, &bma.got, 0, flags,
- 				xfs_iomap_inode_sequence(ip, flags));
--	*seq = READ_ONCE(ifp->if_seq);
-+	if (seq)
-+		*seq = READ_ONCE(ifp->if_seq);
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+index 9dd0e0a51ce5c..a3cabee35d471 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+@@ -1652,10 +1652,24 @@ static int _iwl_pci_resume(struct device *device, bool restore)
+ 	 * need to reset it completely.
+ 	 * Note: MAC (bits 0:7) will be cleared upon suspend even with wowlan,
+ 	 * so assume that any bits there mean that the device is usable.
++	 * For older devices, just try silently to grab the NIC.
+ 	 */
+-	if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_BZ &&
+-	    !iwl_read32(trans, CSR_FUNC_SCRATCH))
+-		device_was_powered_off = true;
++	if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_BZ) {
++		if (!iwl_read32(trans, CSR_FUNC_SCRATCH))
++			device_was_powered_off = true;
++	} else {
++		/*
++		 * bh are re-enabled by iwl_trans_pcie_release_nic_access,
++		 * so re-enable them if _iwl_trans_pcie_grab_nic_access fails.
++		 */
++		local_bh_disable();
++		if (_iwl_trans_pcie_grab_nic_access(trans, true)) {
++			iwl_trans_pcie_release_nic_access(trans);
++		} else {
++			device_was_powered_off = true;
++			local_bh_enable();
++		}
++	}
  
- 	if (whichfork == XFS_COW_FORK)
- 		xfs_refcount_alloc_cow_extent(tp, bma.blkno, bma.length);
+ 	if (restore || device_was_powered_off) {
+ 		trans->state = IWL_TRANS_NO_FW;
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
+index ebe9b25cc53a9..6019114a5d1aa 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
+@@ -558,10 +558,10 @@ void iwl_trans_pcie_free(struct iwl_trans *trans);
+ void iwl_trans_pcie_free_pnvm_dram_regions(struct iwl_dram_regions *dram_regions,
+ 					   struct device *dev);
+ 
+-bool __iwl_trans_pcie_grab_nic_access(struct iwl_trans *trans);
+-#define _iwl_trans_pcie_grab_nic_access(trans)			\
++bool __iwl_trans_pcie_grab_nic_access(struct iwl_trans *trans, bool silent);
++#define _iwl_trans_pcie_grab_nic_access(trans, silent)		\
+ 	__cond_lock(nic_access_nobh,				\
+-		    likely(__iwl_trans_pcie_grab_nic_access(trans)))
++		    likely(__iwl_trans_pcie_grab_nic_access(trans, silent)))
+ 
+ /*****************************************************
+ * RX
+@@ -1102,7 +1102,8 @@ void iwl_trans_pcie_set_bits_mask(struct iwl_trans *trans, u32 reg,
+ int iwl_trans_pcie_read_config32(struct iwl_trans *trans, u32 ofs,
+ 				 u32 *val);
+ bool iwl_trans_pcie_grab_nic_access(struct iwl_trans *trans);
+-void iwl_trans_pcie_release_nic_access(struct iwl_trans *trans);
++void __releases(nic_access_nobh)
++iwl_trans_pcie_release_nic_access(struct iwl_trans *trans);
+ 
+ /* transport gen 1 exported functions */
+ void iwl_trans_pcie_fw_alive(struct iwl_trans *trans, u32 scd_addr);
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+index d19b3bd0866bd..18d7d59ae5814 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+@@ -2191,7 +2191,7 @@ EXPORT_SYMBOL(iwl_trans_pcie_remove);
+  * This version doesn't disable BHs but rather assumes they're
+  * already disabled.
+  */
+-bool __iwl_trans_pcie_grab_nic_access(struct iwl_trans *trans)
++bool __iwl_trans_pcie_grab_nic_access(struct iwl_trans *trans, bool silent)
+ {
+ 	int ret;
+ 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
+@@ -2243,6 +2243,11 @@ bool __iwl_trans_pcie_grab_nic_access(struct iwl_trans *trans)
+ 	if (unlikely(ret < 0)) {
+ 		u32 cntrl = iwl_read32(trans, CSR_GP_CNTRL);
+ 
++		if (silent) {
++			spin_unlock(&trans_pcie->reg_lock);
++			return false;
++		}
++
+ 		WARN_ONCE(1,
+ 			  "Timeout waiting for hardware access (CSR_GP_CNTRL 0x%08x)\n",
+ 			  cntrl);
+@@ -2273,7 +2278,7 @@ bool iwl_trans_pcie_grab_nic_access(struct iwl_trans *trans)
+ 	bool ret;
+ 
+ 	local_bh_disable();
+-	ret = __iwl_trans_pcie_grab_nic_access(trans);
++	ret = __iwl_trans_pcie_grab_nic_access(trans, false);
+ 	if (ret) {
+ 		/* keep BHs disabled until iwl_trans_pcie_release_nic_access */
+ 		return ret;
+@@ -2282,7 +2287,8 @@ bool iwl_trans_pcie_grab_nic_access(struct iwl_trans *trans)
+ 	return false;
+ }
+ 
+-void iwl_trans_pcie_release_nic_access(struct iwl_trans *trans)
++void __releases(nic_access_nobh)
++iwl_trans_pcie_release_nic_access(struct iwl_trans *trans)
+ {
+ 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
+ 
+@@ -2309,6 +2315,7 @@ void iwl_trans_pcie_release_nic_access(struct iwl_trans *trans)
+ 	 * scheduled on different CPUs (after we drop reg_lock).
+ 	 */
+ out:
++	__release(nic_access_nobh);
+ 	spin_unlock_bh(&trans_pcie->reg_lock);
+ }
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
+index 9fcdd06e126ae..f0213a6b8cf53 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
+@@ -1021,7 +1021,7 @@ static int iwl_pcie_set_cmd_in_flight(struct iwl_trans *trans,
+ 	 * returned. This needs to be done only on NICs that have
+ 	 * apmg_wake_up_wa set (see above.)
+ 	 */
+-	if (!_iwl_trans_pcie_grab_nic_access(trans))
++	if (!_iwl_trans_pcie_grab_nic_access(trans, false))
+ 		return -EIO;
+ 
+ 	/*
+-- 
+2.39.5
+
 
 
 
