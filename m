@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-142247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0F07AAE9B4
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:47:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02DECAAE955
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:43:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15B11506155
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:47:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C21C1C26F5B
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:43:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04DA5155389;
-	Wed,  7 May 2025 18:47:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DECB28DF45;
+	Wed,  7 May 2025 18:43:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wQx4K77l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xj4ykAEE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3FFC1B414A;
-	Wed,  7 May 2025 18:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A7B114A4C7;
+	Wed,  7 May 2025 18:43:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643666; cv=none; b=kzMH7t+KfVtJk3okbsnWZeHKPC6IVn+tv54lAjXMWkE7rwicOqLWOAfZD9ejMDWHJRGcVBvWdGpYPwtUyhwQAAXGL0bQVWMl9R6eTdhlGnaMuMv8Bs4xXAUu0prrMiS85uPSfjPiAE5FTGhu0nyL8zJT6/SF2XzVTLN5YTqDI8E=
+	t=1746643413; cv=none; b=R0RnEP975TW5n9Brx4f0NGSiHL10hWSXvUuywWNCaC/YLnM390U8sJE2Vzq112WLASbdJNrF7qqD8ic1/QaKDodrK5eVfIOZSzyWhJZ1ASj3dU5pXGmFfH4iR8HfMtfzmmZEyHvliDVwNE2YnYwwChK3H9z/UnMX/M6ZMOFgviA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643666; c=relaxed/simple;
-	bh=GCCwl1xVBsQcSpvihlilgNMnlucmUALF+z2+6kBr000=;
+	s=arc-20240116; t=1746643413; c=relaxed/simple;
+	bh=7tPN2LFneCPZtyAm6g6ttERY3XOQuqzVh5c4b86qKV8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nxBztaWTyoTXOgfooT1KZEi6tAdz6VCgtmWgEW+yXLilqhnSzFs/u0WVivFePiH1+9X7NsrX8ss1HzQWFtu/fIzs6DhyolvR3W0kuyW5o6uzpkdgLxP/71g3yU+7KjL/KxxTvNWE62ANdKh1VaeEoUl0IU6rAHUMxUOH8ypE0m4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wQx4K77l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8FDBC4CEE2;
-	Wed,  7 May 2025 18:47:45 +0000 (UTC)
+	 MIME-Version; b=fEYM9nrSkeD7iKD8e3Y0zgXJ4a7vS49Hiez2aE88EjEQkN2nn/A1TQIz1/BDZ2EERuTiflKkGUP9NDmvAzfOgrYei++cISIDi8pK6++A7fMmqkyYVGFvXPHa6pFo5bByBC76z6x4+682It9fmXoV+WNYjePHTaS4Q+yRhcDoKR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xj4ykAEE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D95EC4CEE2;
+	Wed,  7 May 2025 18:43:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643666;
-	bh=GCCwl1xVBsQcSpvihlilgNMnlucmUALF+z2+6kBr000=;
+	s=korg; t=1746643412;
+	bh=7tPN2LFneCPZtyAm6g6ttERY3XOQuqzVh5c4b86qKV8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wQx4K77lg4eH7njd0We0Lu41u6QBC+dGeIJkfXOPu0rPEJ+Lay0Qk31oct2SpYFr0
-	 71OH7DDOE1JbiBtQ9WsRwMKwne2LnsvvYmZ0B678WQrXeBhW+wh9GR8z2sal0t2EQT
-	 otGo+kOQgv3AKe/isjNGlqdsKB3BXr32Vw68rmJs=
+	b=Xj4ykAEEP+P3r1YMU82en1v9TqaQlzLgarHABWCFuYn1R2nTMQYZh9RN6eib+5kUr
+	 lVxX8K3/pbKz23A/2+3FtedfVc/zmCq6PNuhMPuvg0BTYKp/zbmdhIs83IOs7DHE4U
+	 skg8P1mv4kkfPpm0IFRCx4r8+Tj+BD9Lk6B+Z37M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1 76/97] sch_hfsc: make hfsc_qlen_notify() idempotent
-Date: Wed,  7 May 2025 20:39:51 +0200
-Message-ID: <20250507183810.043046008@linuxfoundation.org>
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 51/55] irqchip/gic-v2m: Prevent use after free of gicv2m_get_fwnode()
+Date: Wed,  7 May 2025 20:39:52 +0200
+Message-ID: <20250507183801.096181179@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
-References: <20250507183806.987408728@linuxfoundation.org>
+In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
+References: <20250507183759.048732653@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <xiyou.wangcong@gmail.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
 
-commit 51eb3b65544c9efd6a1026889ee5fb5aa62da3bb upstream.
+[ Upstream commit 3318dc299b072a0511d6dfd8367f3304fb6d9827 ]
 
-hfsc_qlen_notify() is not idempotent either and not friendly
-to its callers, like fq_codel_dequeue(). Let's make it idempotent
-to ease qdisc_tree_reduce_backlog() callers' life:
+With ACPI in place, gicv2m_get_fwnode() is registered with the pci
+subsystem as pci_msi_get_fwnode_cb(), which may get invoked at runtime
+during a PCI host bridge probe. But, the call back is wrongly marked as
+__init, causing it to be freed, while being registered with the PCI
+subsystem and could trigger:
 
-1. update_vf() decreases cl->cl_nactive, so we can check whether it is
-non-zero before calling it.
+ Unable to handle kernel paging request at virtual address ffff8000816c0400
+  gicv2m_get_fwnode+0x0/0x58 (P)
+  pci_set_bus_msi_domain+0x74/0x88
+  pci_register_host_bridge+0x194/0x548
 
-2. eltree_remove() always removes RB node cl->el_node, but we can use
-   RB_EMPTY_NODE() + RB_CLEAR_NODE() to make it safe.
+This is easily reproducible on a Juno board with ACPI boot.
 
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250403211033.166059-4-xiyou.wangcong@gmail.com
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Retain the function for later use.
+
+Fixes: 0644b3daca28 ("irqchip/gic-v2m: acpi: Introducing GICv2m ACPI support")
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_hfsc.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/irqchip/irq-gic-v2m.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/sched/sch_hfsc.c
-+++ b/net/sched/sch_hfsc.c
-@@ -204,7 +204,10 @@ eltree_insert(struct hfsc_class *cl)
- static inline void
- eltree_remove(struct hfsc_class *cl)
- {
--	rb_erase(&cl->el_node, &cl->sched->eligible);
-+	if (!RB_EMPTY_NODE(&cl->el_node)) {
-+		rb_erase(&cl->el_node, &cl->sched->eligible);
-+		RB_CLEAR_NODE(&cl->el_node);
-+	}
- }
+diff --git a/drivers/irqchip/irq-gic-v2m.c b/drivers/irqchip/irq-gic-v2m.c
+index 6790a621a9324..9d99b19cd21b6 100644
+--- a/drivers/irqchip/irq-gic-v2m.c
++++ b/drivers/irqchip/irq-gic-v2m.c
+@@ -455,7 +455,7 @@ static int __init gicv2m_of_init(struct fwnode_handle *parent_handle,
+ #ifdef CONFIG_ACPI
+ static int acpi_num_msi;
  
- static inline void
-@@ -1222,7 +1225,8 @@ hfsc_qlen_notify(struct Qdisc *sch, unsi
- 	/* vttree is now handled in update_vf() so that update_vf(cl, 0, 0)
- 	 * needs to be called explicitly to remove a class from vttree.
- 	 */
--	update_vf(cl, 0, 0);
-+	if (cl->cl_nactive)
-+		update_vf(cl, 0, 0);
- 	if (cl->cl_flags & HFSC_RSC)
- 		eltree_remove(cl);
- }
+-static __init struct fwnode_handle *gicv2m_get_fwnode(struct device *dev)
++static struct fwnode_handle *gicv2m_get_fwnode(struct device *dev)
+ {
+ 	struct v2m_data *data;
+ 
+-- 
+2.39.5
+
 
 
 
