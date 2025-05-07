@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-142587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F4030AAEB46
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:05:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19436AAEAAD
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:58:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84B541C08D6F
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:05:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 453B11C00B79
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:58:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48B2428E563;
-	Wed,  7 May 2025 19:05:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 817B728B4F0;
+	Wed,  7 May 2025 18:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JpnBxomO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="08cMmnEy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06CE92144BF;
-	Wed,  7 May 2025 19:05:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DE8519AD5C;
+	Wed,  7 May 2025 18:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644713; cv=none; b=A2vW01kz4BJt4CThT557FaI4LQbBG86iGdwFzKduMDDLvSgSPa3HITg/QAYB7vTHY/vRNZMYqU/sRZM9ROg/gidnD0T8ulMxr6OE9LHO+CO7B0jUZh0EPqX/uQcJFAwFOxD7LJhsT/FDdM7azF24tf+BgHrDmAU9M3XjhgGCrp8=
+	t=1746644278; cv=none; b=nLvz101ppNRoV8Ddf6oJfpy5MeDysuFzE6kWcIXwUWn9scnoJ0yDcMXoh1y9+8E2oKsy6Zz+pOwyZ2F6N4Z586R9tKdnR/fLA/Nbwr+8WjOYP8hb8ySpj417tA10W7ObVyEkxCJTeG9v+GQ5MUJT5uhIzTWYA3OCWw42k/qkGe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644713; c=relaxed/simple;
-	bh=uKg8vyBpmflQJqSqjT3i22kT2s1iE/TBqL7gLzuN5Xo=;
+	s=arc-20240116; t=1746644278; c=relaxed/simple;
+	bh=BoKTwrcRBuV80Ns9TtmaeMdyF1TTOosJMhAd4ZiZYII=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lB38qtJ7S4cI6+L5I/MABrlpSRDxnQHfL5HCoeKlfiWt+O0hRh9pYoUgfVdJXmK34de9pno3d3tdDqmjdjdkOmQP7ZG+ol6q/OYjhFntOatV+bXwMNRTe3Cyhdk3LwomvGK9LkzUwQj0RQ4qIS9g+AyBB3GonSYOcZr2zpUQeTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JpnBxomO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B0E3C4CEE2;
-	Wed,  7 May 2025 19:05:12 +0000 (UTC)
+	 MIME-Version; b=HxdCP2kvNd5G4X1+EL5fyKahBjC/snES5FhytRfSfJ4LZSPgR5evKeLTDgZHyY0wsnf0Rp27tRhMKJ9Sf5qjY1kgUJn8TXaFHnG9hQ9LffO+Sf3sJnC8zPFNYVQDjftgdUhcgXmws1BR8kIIxUc3YNg0iVXcd8y9a5z5GLJf4bM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=08cMmnEy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38A10C4CEE2;
+	Wed,  7 May 2025 18:57:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644712;
-	bh=uKg8vyBpmflQJqSqjT3i22kT2s1iE/TBqL7gLzuN5Xo=;
+	s=korg; t=1746644278;
+	bh=BoKTwrcRBuV80Ns9TtmaeMdyF1TTOosJMhAd4ZiZYII=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JpnBxomOBuXb+KBESHVkhGNg6U5czTklOW9mFzurk8N4R0D2+UhyMsahjUKpRkDnW
-	 UcR2QHEn3oqMyHo5qcd7LQo3kZLLZuHY5gYHs3LC0z8kLx+jHsXgLWAtDrLneuT8NO
-	 rjcTPNbfnIOlwzLZRrrw0INmx1xpXvY2YbnfSEtE=
+	b=08cMmnEycTLrhHHeNQT8mOdey+enQ6U8TOrT5ucbN7Uc6QGstn5ZJNBSZBBSHwrDL
+	 j5znirisBVuHXko5bRkwdSS2BqXm5+G7vl9iciis/coYIFNRCtJtdmhjAo3Qhd9LBC
+	 lePFHrA6+AMLDXkOOSIYsPtQe8o8OJ0h4xHzyYJc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Shyam Saini <shyamsaini@linux.microsoft.com>,
+	Petr Pavlu <petr.pavlu@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 133/164] net: vertexcom: mse102x: Fix LEN_MASK
-Date: Wed,  7 May 2025 20:40:18 +0200
-Message-ID: <20250507183826.359581280@linuxfoundation.org>
+Subject: [PATCH 6.14 174/183] kernel: param: rename locate_module_kobject
+Date: Wed,  7 May 2025 20:40:19 +0200
+Message-ID: <20250507183831.907841301@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Shyam Saini <shyamsaini@linux.microsoft.com>
 
-[ Upstream commit 74987089ec678b4018dba0a609e9f4bf6ef7f4ad ]
+[ Upstream commit bbc9462f0cb0c8917a4908e856731708f0cee910 ]
 
-The LEN_MASK for CMD_RTS doesn't cover the whole parameter mask.
-The Bit 11 is reserved, so adjust LEN_MASK accordingly.
+The locate_module_kobject() function looks up an existing
+module_kobject for a given module name. If it cannot find the
+corresponding module_kobject, it creates one for the given name.
 
-Fixes: 2f207cbf0dd4 ("net: vertexcom: Add MSE102x SPI support")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250430133043.7722-3-wahrenst@gmx.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This commit renames locate_module_kobject() to
+lookup_or_create_module_kobject() to better describe its operations.
+
+This doesn't change anything functionality wise.
+
+Suggested-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Signed-off-by: Shyam Saini <shyamsaini@linux.microsoft.com>
+Link: https://lore.kernel.org/r/20250227184930.34163-2-shyamsaini@linux.microsoft.com
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Stable-dep-of: f95bbfe18512 ("drivers: base: handle module_kobject creation")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/vertexcom/mse102x.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/params.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/vertexcom/mse102x.c b/drivers/net/ethernet/vertexcom/mse102x.c
-index 92ebf16331598..3edf2c3753f0e 100644
---- a/drivers/net/ethernet/vertexcom/mse102x.c
-+++ b/drivers/net/ethernet/vertexcom/mse102x.c
-@@ -33,7 +33,7 @@
- #define CMD_CTR		(0x2 << CMD_SHIFT)
+diff --git a/kernel/params.c b/kernel/params.c
+index 0074d29c9b80c..de1e64cc202b9 100644
+--- a/kernel/params.c
++++ b/kernel/params.c
+@@ -763,7 +763,7 @@ void destroy_params(const struct kernel_param *params, unsigned num)
+ 			params[i].ops->free(params[i].arg);
+ }
  
- #define CMD_MASK	GENMASK(15, CMD_SHIFT)
--#define LEN_MASK	GENMASK(CMD_SHIFT - 1, 0)
-+#define LEN_MASK	GENMASK(CMD_SHIFT - 2, 0)
+-static struct module_kobject * __init locate_module_kobject(const char *name)
++static struct module_kobject * __init lookup_or_create_module_kobject(const char *name)
+ {
+ 	struct module_kobject *mk;
+ 	struct kobject *kobj;
+@@ -805,7 +805,7 @@ static void __init kernel_add_sysfs_param(const char *name,
+ 	struct module_kobject *mk;
+ 	int err;
  
- #define DET_CMD_LEN	4
- #define DET_SOF_LEN	2
+-	mk = locate_module_kobject(name);
++	mk = lookup_or_create_module_kobject(name);
+ 	if (!mk)
+ 		return;
+ 
+@@ -876,7 +876,7 @@ static void __init version_sysfs_builtin(void)
+ 	int err;
+ 
+ 	for (vattr = __start___modver; vattr < __stop___modver; vattr++) {
+-		mk = locate_module_kobject(vattr->module_name);
++		mk = lookup_or_create_module_kobject(vattr->module_name);
+ 		if (mk) {
+ 			err = sysfs_create_file(&mk->kobj, &vattr->mattr.attr);
+ 			WARN_ON_ONCE(err);
 -- 
 2.39.5
 
