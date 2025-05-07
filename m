@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-142409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBAB2AAEA7D
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:56:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E096AAEBBF
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:10:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E497522FF9
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:56:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19603464167
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:09:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 171B228B4F0;
-	Wed,  7 May 2025 18:55:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 603642144C1;
+	Wed,  7 May 2025 19:09:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rp+2ckS9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HacdPea/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C96DD2153C6;
-	Wed,  7 May 2025 18:55:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C93621504D;
+	Wed,  7 May 2025 19:09:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644158; cv=none; b=MS7YhckCRwMOUCYnAgKLjAdxp7LZ1LGXduAKLDzjDsenvFFAPn9IRRZKH7n8zYbV1e6VH23sgcFJE1eFrdCjrgAmEUxLSrwSGE7DULYk2iDYgQ9UAdHSjb7i5DpgDypkv39QP+a6RNRdFhao/6djS34EwAfL5JAYG4mSg4DFqM0=
+	t=1746644957; cv=none; b=rpuEQm602g75NOIuAqVpstpdei93nMsQ/po5pyGTuRfLZy1cO60Rlo9Ov/kcEncu5SdxYuCyDl08vtY5hTkNkk5PAuDiTyBwNnJb6XLPo5JMmXpby4aRsgU1ToPZSCpp6OD7D/WUigk/jXLSXMnGqvRMhOYXewHyt0gRnsHr9GQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644158; c=relaxed/simple;
-	bh=1GAspSXPgK+oJGd3CrACq4azQq+d0QJJUz472UXB0V8=;
+	s=arc-20240116; t=1746644957; c=relaxed/simple;
+	bh=3N8D5S5C5hPdUxfWhUKdQl2Tg5AQ+LZg/s6Vaw897DI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BldbRDpZXaq2t38s1SyLgPXQg90+hsGG9xQ7Ox9uogDPg8FQSolGz4ucHrDwAfi/w/zyAneD+woZUxNb1pcKVG+VP3X6aQ3OQ1KHRpE69kmOQStdMF7vKLvKBWLyjX7u33Tl2mmL8JvZwDNa29C7CV+rYoxb5oGoX0EYK8vOFjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rp+2ckS9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59386C4CEE2;
-	Wed,  7 May 2025 18:55:58 +0000 (UTC)
+	 MIME-Version; b=Qz4FmzNW1v0aOxpbf73hC87kUz0PaakpYtBkgyBVZeS2jmpYZ+gaMqWKXhW1HsZ/tRWCdkXa0E2mJwiRHhGQyp4eixyyM8Bnvor9izb6JRP2bucKa71dJln0d1obTifOX25tfeav03Gy3ZP/YJurED3UjGD/7z+1zAnyBQ5I5i0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HacdPea/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A27DCC4CEE2;
+	Wed,  7 May 2025 19:09:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644158;
-	bh=1GAspSXPgK+oJGd3CrACq4azQq+d0QJJUz472UXB0V8=;
+	s=korg; t=1746644957;
+	bh=3N8D5S5C5hPdUxfWhUKdQl2Tg5AQ+LZg/s6Vaw897DI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rp+2ckS9LRxyfj/peQwA4PsYag/Qxg6aT5U/exfmT50PLQUDGduuYqG3ghHIPrFQ0
-	 gKu4iot88+XU6n7YvHqySiZ5KhZjsaPJFr2cemJfO/6hEWMYzixfVoHvzClQWUbCJv
-	 HpvjUANDqn22uIoNfGeVoCbMloTPnD6GWJMC+PkQ=
+	b=HacdPea/6z7/chi8+L+Mk25mHyB+hMKvFhKw/mGnu+fBmmUuL5/rPRAD+fSAmtus+
+	 0MGlVSt3VHE7IJwnYdZndANN85cuP4nwNsDggHfcRJI4EIqSIBYDd3j/btGGq0YoMy
+	 oGOSSeD3DtoSW7vxzoIM6AK62cUN+yS036177Rj8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mattias Barthel <mattias.barthel@atlascopco.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sheetal <sheetal@nvidia.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 138/183] net: fec: ERR007885 Workaround for conventional TX
+Subject: [PATCH 6.6 047/129] ASoC: soc-pcm: Fix hw_params() and DAPM widget sequence
 Date: Wed,  7 May 2025 20:39:43 +0200
-Message-ID: <20250507183830.432544623@linuxfoundation.org>
+Message-ID: <20250507183815.445441317@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mattias Barthel <mattias.barthel@atlascopco.com>
+From: Sheetal <sheetal@nvidia.com>
 
-[ Upstream commit a179aad12badc43201cbf45d1e8ed2c1383c76b9 ]
+[ Upstream commit 9aff2e8df240e84a36f2607f98a0a9924a24e65d ]
 
-Activate TX hang workaround also in
-fec_enet_txq_submit_skb() when TSO is not enabled.
+Issue:
+ When multiple audio streams share a common BE DAI, the BE DAI
+ widget can be powered up before its hardware parameters are configured.
+ This incorrect sequence leads to intermittent pcm_write errors.
 
-Errata: ERR007885
+ For example, the below Tegra use-case throws an error:
+  aplay(2 streams) -> AMX(mux) -> ADX(demux) -> arecord(2 streams),
+  here, 'AMX TX' and 'ADX RX' are common BE DAIs.
 
-Symptoms: NETDEV WATCHDOG: eth0 (fec): transmit queue 0 timed out
+For above usecase when failure happens below sequence is observed:
+ aplay(1) FE open()
+  - BE DAI callbacks added to the list
+  - BE DAI state = SND_SOC_DPCM_STATE_OPEN
+ aplay(2) FE open()
+  - BE DAI callbacks are not added to the list as the state is
+    already SND_SOC_DPCM_STATE_OPEN during aplay(1) FE open().
+ aplay(2) FE hw_params()
+  - BE DAI hw_params() callback ignored
+ aplay(2) FE prepare()
+  - Widget is powered ON without BE DAI hw_params() call
+ aplay(1) FE hw_params()
+  - BE DAI hw_params() is now called
 
-commit 37d6017b84f7 ("net: fec: Workaround for imx6sx enet tx hang when enable three queues")
-There is a TDAR race condition for mutliQ when the software sets TDAR
-and the UDMA clears TDAR simultaneously or in a small window (2-4 cycles).
-This will cause the udma_tx and udma_tx_arbiter state machines to hang.
+Fix:
+ Add BE DAIs in the list if its state is either SND_SOC_DPCM_STATE_OPEN
+ or SND_SOC_DPCM_STATE_HW_PARAMS as well.
 
-So, the Workaround is checking TDAR status four time, if TDAR cleared by
-    hardware and then write TDAR, otherwise don't set TDAR.
+It ensures the widget is powered ON after BE DAI hw_params() callback.
 
-Fixes: 53bb20d1faba ("net: fec: add variable reg_desc_active to speed things up")
-Signed-off-by: Mattias Barthel <mattias.barthel@atlascopco.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250429090826.3101258-1-mattiasbarthel@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 0c25db3f7621 ("ASoC: soc-pcm: Don't reconnect an already active BE")
+Signed-off-by: Sheetal <sheetal@nvidia.com>
+Link: https://patch.msgid.link/20250404105953.2784819-1-sheetal@nvidia.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ sound/soc/soc-pcm.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index f7c4ce8e9a265..c5d5fa8d7dfdd 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -714,7 +714,12 @@ static int fec_enet_txq_submit_skb(struct fec_enet_priv_tx_q *txq,
- 	txq->bd.cur = bdp;
+diff --git a/sound/soc/soc-pcm.c b/sound/soc/soc-pcm.c
+index 60248a6820aac..30e93f9aad762 100644
+--- a/sound/soc/soc-pcm.c
++++ b/sound/soc/soc-pcm.c
+@@ -1534,10 +1534,13 @@ static int dpcm_add_paths(struct snd_soc_pcm_runtime *fe, int stream,
+ 		/*
+ 		 * Filter for systems with 'component_chaining' enabled.
+ 		 * This helps to avoid unnecessary re-configuration of an
+-		 * already active BE on such systems.
++		 * already active BE on such systems and ensures the BE DAI
++		 * widget is powered ON after hw_params() BE DAI callback.
+ 		 */
+ 		if (fe->card->component_chaining &&
+ 		    (be->dpcm[stream].state != SND_SOC_DPCM_STATE_NEW) &&
++		    (be->dpcm[stream].state != SND_SOC_DPCM_STATE_OPEN) &&
++		    (be->dpcm[stream].state != SND_SOC_DPCM_STATE_HW_PARAMS) &&
+ 		    (be->dpcm[stream].state != SND_SOC_DPCM_STATE_CLOSE))
+ 			continue;
  
- 	/* Trigger transmission start */
--	writel(0, txq->bd.reg_desc_active);
-+	if (!(fep->quirks & FEC_QUIRK_ERR007885) ||
-+	    !readl(txq->bd.reg_desc_active) ||
-+	    !readl(txq->bd.reg_desc_active) ||
-+	    !readl(txq->bd.reg_desc_active) ||
-+	    !readl(txq->bd.reg_desc_active))
-+		writel(0, txq->bd.reg_desc_active);
- 
- 	return 0;
- }
 -- 
 2.39.5
 
