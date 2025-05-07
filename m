@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-142597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CCF4AAEB6B
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:07:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2DF6AAEBDC
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:11:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B97FE526A6A
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:06:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0A0C1C45B69
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:11:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEBFD28E58C;
-	Wed,  7 May 2025 19:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D81AC28DF1F;
+	Wed,  7 May 2025 19:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jKwE+UVf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BQmakYj3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B6F728E584;
-	Wed,  7 May 2025 19:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 949F221504D;
+	Wed,  7 May 2025 19:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644744; cv=none; b=N/xTBVxph74FyFij9gsQMjKmGzOy51P36EYgLuMcohHogyhaKXzBQ9F1oZrb4sV9/jWlblY7pwp/EZsvNGQ2bkoUhbjL4CxlatipRPLR2reLuTeoDshgMyCivI/IsO9YLAliGiEJOcJkc5qnVHDphWUcpVRIQ9nUCslEYUYEM1w=
+	t=1746645094; cv=none; b=d0xopY9p4uFm0HkZRgYcdUFK3LWKoTyB42puSSSYmU5F4zsL9u2RhTHnQ4k5QoWfQFepR+lL+Oe+2z8Q9Nu9Tt/TyA+/UhofjjnHlRY4KRmWo9jW0W+YqAmyhfvmwjfD9U/p1fjMwvpml1XPdtKVMerlJdC8eW1r6th6MxzGa/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644744; c=relaxed/simple;
-	bh=pOK5QgJN8nMBP7bsiDFqAz6ShAWDdjRywHb6Z18R640=;
+	s=arc-20240116; t=1746645094; c=relaxed/simple;
+	bh=Qk5tQnWfj0C5QdgcWKjRJ62BSGcGLMmNrjPnxtS2U7E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pIOM67YkkJZnWq0aPspqDvHeX7D7pNUZO8Ex4+9c2AH48IR0/gNOK2OX7i4dVATHmc6kNUTI6D1XcT6Lmk1O/1zX4eXF1qUIqOyk6hFAlRkr46ZwBTgqNwZjDtQNzjvfSDLkFr0Tltx2CCYXivPlUVRV1scbgRBm9Rd/0X+iSYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jKwE+UVf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF1A3C4CEE2;
-	Wed,  7 May 2025 19:05:43 +0000 (UTC)
+	 MIME-Version; b=ic8ICL/4r9HMWJPkfBTilvvIyR4AByCTkkkrwy28h1GHzNgJPcWPvA1JfEO8axim8u9xti5ZqIYcXibwPc4eWhgKSuvaKEvIB34jeTRNMbJQW8wCmmevFG/cnEwZIL0vttLvtlcJlIw+LbxCeMkq7s7QgOfYGznC3Laas9ZvkQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BQmakYj3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2529C4CEE2;
+	Wed,  7 May 2025 19:11:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644744;
-	bh=pOK5QgJN8nMBP7bsiDFqAz6ShAWDdjRywHb6Z18R640=;
+	s=korg; t=1746645094;
+	bh=Qk5tQnWfj0C5QdgcWKjRJ62BSGcGLMmNrjPnxtS2U7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jKwE+UVfsTzzcJ5ejG1CssXcd0xBqz7lWaQsmYVzj7e6qMekpIaU6REVqCZ1kQMpf
-	 B4ZClq/gJUwNNdzS4MUZ57au7rEW/Lkc9paXsCOGeKx1p5oT94AlABo7XJldsC/v7W
-	 lEdL0wy3miRKiWKX2z0jBm91SPhboBzP9JQUwIF4=
+	b=BQmakYj3LF01I2kTQqeBDYh0FDvUw0PgI70iMaRv4gadcoHOwbOcSE6ArDQl212oW
+	 bdQkq0cOHTCeCuafa91ArWRbfOzodGCFCc8q7qtoeamJPOHrTZWcm25WKSbu3MBxim
+	 t8yDslfaCkwtdM6LGm8mOxh/67fm5VVl3MTobwHM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Wilcox <willy@infradead.org>,
-	Andrew Kreimer <algonell@gmail.com>,
-	Simona Vetter <simona.vetter@ffwll.ch>
-Subject: [PATCH 6.12 142/164] accel/ivpu: Fix a typo
-Date: Wed,  7 May 2025 20:40:27 +0200
-Message-ID: <20250507183826.719448872@linuxfoundation.org>
+	Stefan Wahren <wahrenst@gmx.net>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 092/129] net: vertexcom: mse102x: Fix possible stuck of SPI interrupt
+Date: Wed,  7 May 2025 20:40:28 +0200
+Message-ID: <20250507183817.227157133@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,36 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Kreimer <algonell@gmail.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-commit 284a8908f5ec25355a831e3e2d87975d748e98dc upstream.
+[ Upstream commit 55f362885951b2d00fd7fbb02ef0227deea572c2 ]
 
-Fix a typo in comments.
+The MSE102x doesn't provide any SPI commands for interrupt handling.
+So in case the interrupt fired before the driver requests the IRQ,
+the interrupt will never fire again. In order to fix this always poll
+for pending packets after opening the interface.
 
-Reported-by: Matthew Wilcox <willy@infradead.org>
-Signed-off-by: Andrew Kreimer <algonell@gmail.com>
-Signed-off-by: Simona Vetter <simona.vetter@ffwll.ch>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240909135655.45938-1-algonell@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2f207cbf0dd4 ("net: vertexcom: Add MSE102x SPI support")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250430133043.7722-2-wahrenst@gmx.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/ivpu/vpu_boot_api.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/vertexcom/mse102x.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/accel/ivpu/vpu_boot_api.h
-+++ b/drivers/accel/ivpu/vpu_boot_api.h
-@@ -8,7 +8,7 @@
+diff --git a/drivers/net/ethernet/vertexcom/mse102x.c b/drivers/net/ethernet/vertexcom/mse102x.c
+index 8f67c39f479ee..45f4d2cb5b31a 100644
+--- a/drivers/net/ethernet/vertexcom/mse102x.c
++++ b/drivers/net/ethernet/vertexcom/mse102x.c
+@@ -509,6 +509,7 @@ static irqreturn_t mse102x_irq(int irq, void *_mse)
+ static int mse102x_net_open(struct net_device *ndev)
+ {
+ 	struct mse102x_net *mse = netdev_priv(ndev);
++	struct mse102x_net_spi *mses = to_mse102x_spi(mse);
+ 	int ret;
  
- /*
-  * =========== FW API version information beginning ================
-- *  The bellow values will be used to construct the version info this way:
-+ *  The below values will be used to construct the version info this way:
-  *  fw_bin_header->api_version[VPU_BOOT_API_VER_ID] = (VPU_BOOT_API_VER_MAJOR << 16) |
-  *  VPU_BOOT_API_VER_MINOR;
-  *  VPU_BOOT_API_VER_PATCH will be ignored. KMD and compatibility is not affected if this changes
+ 	ret = request_threaded_irq(ndev->irq, NULL, mse102x_irq, IRQF_ONESHOT,
+@@ -524,6 +525,13 @@ static int mse102x_net_open(struct net_device *ndev)
+ 
+ 	netif_carrier_on(ndev);
+ 
++	/* The SPI interrupt can stuck in case of pending packet(s).
++	 * So poll for possible packet(s) to re-arm the interrupt.
++	 */
++	mutex_lock(&mses->lock);
++	mse102x_rx_pkt_spi(mse);
++	mutex_unlock(&mses->lock);
++
+ 	netif_dbg(mse, ifup, ndev, "network device up\n");
+ 
+ 	return 0;
+-- 
+2.39.5
+
 
 
 
