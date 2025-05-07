@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-142139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C623AAE939
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:42:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 150FBAAEB13
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:03:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D3D877BAC14
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:41:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E0E41C055D4
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:03:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FF1B28B7D6;
-	Wed,  7 May 2025 18:42:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AC9E28C2A5;
+	Wed,  7 May 2025 19:03:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kM8E6JTI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZWXr44tJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 087B014A4C7;
-	Wed,  7 May 2025 18:42:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 082AB29A0;
+	Wed,  7 May 2025 19:03:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643336; cv=none; b=TrFfpvWtSi/5g9bdFBw3TQsMSxuCEcemBu1+h5uG3sB7YlOz4clBhEHNDCmtjdReHnSqQQTuDaHokjt7odeY3zBIjn7NexWB25pgZSI1ieft6wFkbBOdGp2YDwJl+LobtLQXsgimWc5Nuna7TSPbKYxMDa4LkCX8c03yF3taS1I=
+	t=1746644581; cv=none; b=N3woAETygJrBSVCaBThoBoCw9LzMqKIpaCc1GwBKtAuYdLpnzc9WWKNf00xKxDhXHsg39iTaMT4oNTCoVLv9tsshx+ppu2GwUvsUAVltDvMubmMQBP71NT+qz5jDq3JTrnFrbLvskEWLFQs+RJlAjashlt8O98SZA75PoJ08n50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643336; c=relaxed/simple;
-	bh=FvZEHKjCa/Ub/TfOIOHTU8jffG5IOAsvRqYo4AB6lfQ=;
+	s=arc-20240116; t=1746644581; c=relaxed/simple;
+	bh=hg25BLaBwZzhTZGLs6OTKnPMeKAWdAui3Oo120RlZgQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OeHHpI6lMT42SIQcpTifyJ/77ZlR2kZBXqyiP+cbQhnSGEsXKrHk/mr+TPh/2sRbQAARChhTwqrGX+i7tESZSOWPYfnQ/pyyK2GgrP2Gsp02NqYF7+3PcBSGCpY6W/2fm5sb1QU7r7MC3MZIyqNm7a9TdqcHrAG6zcQEV00hKx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kM8E6JTI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CB82C4CEE2;
-	Wed,  7 May 2025 18:42:15 +0000 (UTC)
+	 MIME-Version; b=tmhukqOB2u95Y+Y+Cne2/BAlceFz13XJOio2TpKb82L8Aphf5eF7YkgIlYYxDOdyYF+vKlCxJELbs4yo636W4AuXGrr1GexmOrEH3mOX6eWtD9FXC5NBLoQhb4vaThQyUtZaUca5UbuURQjjMPYMviKaTb25fjqQFS1fJLGvOL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZWXr44tJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EC5FC4CEE2;
+	Wed,  7 May 2025 19:03:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643335;
-	bh=FvZEHKjCa/Ub/TfOIOHTU8jffG5IOAsvRqYo4AB6lfQ=;
+	s=korg; t=1746644580;
+	bh=hg25BLaBwZzhTZGLs6OTKnPMeKAWdAui3Oo120RlZgQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kM8E6JTIbn6XVGOS7lBQOVnf0isMRkZo+5GDGg1YbD7oqmt2NCaf70Ws1tBdri95P
-	 cmcEBWHNKgIvz8S3ykjGt6wqh8B0XpfzNvUPQ59Y2dQtbfQDnCwYsKiitgnKRLh6kK
-	 83+eLD/NQReP2vOGgQP8Fi6u3f+nJg6TewcgcN+Y=
+	b=ZWXr44tJuGfr090+qEs0n62sK7vugxFUINKBBh0IMtmRMLnxKOZUnsJXwOFWK6t4e
+	 OqKL3xC0ZzjK3f+zeIhwzACtcDUuU8PxNz3ckLAhOkM64OLxeCvoOwHmppmKGAsXT5
+	 SsHS+qq23jyZldXPH0ztqMyH8A9dAzWOct0E4BBc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niravkumar L Rabara <niravkumar.l.rabara@altera.com>,
-	Matthew Gerlach <matthew.gerlach@altera.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	stable@kernel.org
-Subject: [PATCH 5.15 04/55] EDAC/altera: Set DDR and SDMMC interrupt mask before registration
+	Chen Linxuan <chenlinxuan@uniontech.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 060/164] drm/i915/pxp: fix undefined reference to `intel_pxp_gsccs_is_ready_for_sessions
 Date: Wed,  7 May 2025 20:39:05 +0200
-Message-ID: <20250507183759.231174288@linuxfoundation.org>
+Message-ID: <20250507183823.370209716@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
-References: <20250507183759.048732653@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niravkumar L Rabara <niravkumar.l.rabara@altera.com>
+From: Chen Linxuan <chenlinxuan@uniontech.com>
 
-commit 6dbe3c5418c4368e824bff6ae4889257dd544892 upstream.
+[ Upstream commit 7e21ea8149a0e41c3666ee52cc063a6f797a7a2a ]
 
-Mask DDR and SDMMC in probe function to avoid spurious interrupts before
-registration.  Removed invalid register write to system manager.
+On x86_64 with gcc version 13.3.0, I compile kernel with:
 
-Fixes: 1166fde93d5b ("EDAC, altera: Add Arria10 ECC memory init functions")
-Signed-off-by: Niravkumar L Rabara <niravkumar.l.rabara@altera.com>
-Signed-off-by: Matthew Gerlach <matthew.gerlach@altera.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Dinh Nguyen <dinguyen@kernel.org>
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/20250425142640.33125-3-matthew.gerlach@altera.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  make defconfig
+  ./scripts/kconfig/merge_config.sh .config <(
+    echo CONFIG_COMPILE_TEST=y
+  )
+  make KCFLAGS="-fno-inline-functions -fno-inline-small-functions -fno-inline-functions-called-once"
+
+Then I get a linker error:
+
+  ld: vmlinux.o: in function `pxp_fw_dependencies_completed':
+  kintel_pxp.c:(.text+0x95728f): undefined reference to `intel_pxp_gsccs_is_ready_for_sessions'
+
+This is caused by not having a intel_pxp_gsccs_is_ready_for_sessions()
+header stub for CONFIG_DRM_I915_PXP=n. Add it.
+
+Signed-off-by: Chen Linxuan <chenlinxuan@uniontech.com>
+Fixes: 99afb7cc8c44 ("drm/i915/pxp: Add ARB session creation and cleanup")
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://lore.kernel.org/r/20250415090616.2649889-1-jani.nikula@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit b484c1e225a6a582fc78c4d7af7b286408bb7d41)
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/altera_edac.c |    7 ++++---
- drivers/edac/altera_edac.h |    2 ++
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/i915/pxp/intel_pxp_gsccs.h | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/edac/altera_edac.c
-+++ b/drivers/edac/altera_edac.c
-@@ -1015,9 +1015,6 @@ altr_init_a10_ecc_block(struct device_no
- 		}
- 	}
+diff --git a/drivers/gpu/drm/i915/pxp/intel_pxp_gsccs.h b/drivers/gpu/drm/i915/pxp/intel_pxp_gsccs.h
+index 9aae779c4da31..4969d3de2bac3 100644
+--- a/drivers/gpu/drm/i915/pxp/intel_pxp_gsccs.h
++++ b/drivers/gpu/drm/i915/pxp/intel_pxp_gsccs.h
+@@ -23,6 +23,7 @@ int intel_pxp_gsccs_init(struct intel_pxp *pxp);
  
--	/* Interrupt mode set to every SBERR */
--	regmap_write(ecc_mgr_map, ALTR_A10_ECC_INTMODE_OFST,
--		     ALTR_A10_ECC_INTMODE);
- 	/* Enable ECC */
- 	ecc_set_bits(ecc_ctrl_en_mask, (ecc_block_base +
- 					ALTR_A10_ECC_CTRL_OFST));
-@@ -2100,6 +2097,10 @@ static int altr_edac_a10_probe(struct pl
- 		return PTR_ERR(edac->ecc_mgr_map);
- 	}
+ int intel_pxp_gsccs_create_session(struct intel_pxp *pxp, int arb_session_id);
+ void intel_pxp_gsccs_end_arb_fw_session(struct intel_pxp *pxp, u32 arb_session_id);
++bool intel_pxp_gsccs_is_ready_for_sessions(struct intel_pxp *pxp);
  
-+	/* Set irq mask for DDR SBE to avoid any pending irq before registration */
-+	regmap_write(edac->ecc_mgr_map, A10_SYSMGR_ECC_INTMASK_SET_OFST,
-+		     (A10_SYSMGR_ECC_INTMASK_SDMMCB | A10_SYSMGR_ECC_INTMASK_DDR0));
-+
- 	edac->irq_chip.name = pdev->dev.of_node->name;
- 	edac->irq_chip.irq_mask = a10_eccmgr_irq_mask;
- 	edac->irq_chip.irq_unmask = a10_eccmgr_irq_unmask;
---- a/drivers/edac/altera_edac.h
-+++ b/drivers/edac/altera_edac.h
-@@ -249,6 +249,8 @@ struct altr_sdram_mc_data {
- #define A10_SYSMGR_ECC_INTMASK_SET_OFST   0x94
- #define A10_SYSMGR_ECC_INTMASK_CLR_OFST   0x98
- #define A10_SYSMGR_ECC_INTMASK_OCRAM      BIT(1)
-+#define A10_SYSMGR_ECC_INTMASK_SDMMCB     BIT(16)
-+#define A10_SYSMGR_ECC_INTMASK_DDR0       BIT(17)
+ #else
+ static inline void intel_pxp_gsccs_fini(struct intel_pxp *pxp)
+@@ -34,8 +35,11 @@ static inline int intel_pxp_gsccs_init(struct intel_pxp *pxp)
+ 	return 0;
+ }
  
- #define A10_SYSMGR_ECC_INTSTAT_SERR_OFST  0x9C
- #define A10_SYSMGR_ECC_INTSTAT_DERR_OFST  0xA0
+-#endif
++static inline bool intel_pxp_gsccs_is_ready_for_sessions(struct intel_pxp *pxp)
++{
++	return false;
++}
+ 
+-bool intel_pxp_gsccs_is_ready_for_sessions(struct intel_pxp *pxp);
++#endif
+ 
+ #endif /*__INTEL_PXP_GSCCS_H__ */
+-- 
+2.39.5
+
 
 
 
