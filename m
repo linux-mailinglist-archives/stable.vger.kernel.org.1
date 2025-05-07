@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-142721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A0CDAAEBE9
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:12:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAE28AAEB53
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:06:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A2929E2DC8
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:11:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EAFC525FDA
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:05:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDD82214813;
-	Wed,  7 May 2025 19:12:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A6B628E5E1;
+	Wed,  7 May 2025 19:05:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yMKW7fKw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EqaXWi4Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AADF128C024;
-	Wed,  7 May 2025 19:12:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCBB928E5E7;
+	Wed,  7 May 2025 19:05:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746645125; cv=none; b=r/B2PLojcaTIOwP+1x79en112Ad1DJKItCJau/ZVZCWAXPtpncnnDGi+BlrZ50W4Yi15dTBORVTwbaxjwhEz4KyE82aW6Uf12SmSjxQD+TZNWtLTL+nD4AgM9lZxz8kBTaalbYf4mlE9cmdzBj7PQUgHuWSQbYbj/Y8KQugrOwM=
+	t=1746644718; cv=none; b=UwC1AeVXxoibBPe2IKcDqa4JZgCYqneWRnVUF/UjRjz/P5wn8ciqCFQ0GsBQUMamL2cCwnVjPGkycMo/Q2Ir2gjCS60Y+xEiIXd5ivwrrsMQYjm5R/+18Z2vlbQU2NXNNgnZq5jOfcx4k00gzgsOUl5IreDfK5B8RYcHAdrytbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746645125; c=relaxed/simple;
-	bh=VhLoNZzzs8h18eEfkY4nKm/62bRoy+nctMqNNuMQG64=;
+	s=arc-20240116; t=1746644718; c=relaxed/simple;
+	bh=N2UGUdft2jYUq8SE3p9dYtaRkZBuMYG0WTklzge4TP8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dskNqjG+7JCaaob4qWksXFxfj4Qz/HsE1BYmHioCL+XLaCPahwS7zqjuIYv6f8GYVQ+cEbp/nRKXGNJANNeL5LFWRfyTFGC2eas0Uvn+47mw65v2PTb6la7J4qZQ4gOtFMgNMPnyePGGho4AoIzYFWg3wGPmX4V/+fOu5FMJ6Fg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yMKW7fKw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC909C4CEE2;
-	Wed,  7 May 2025 19:12:04 +0000 (UTC)
+	 MIME-Version; b=pZZuVuZkZ2H7ZSn1cHo45BSrHVfstPEv0Hsnxj9lhk1h3Iv6hcVpq/T0rMCH8qdP8cYGQ8G8daD2/gW1UkpvXPY+T1zUUfdddu/uiacNUS4lWgYDZzmUbk7xAG4wMg7BjDNZ8pvNuV2Vu/yo/0PP7KcfEfHQTrERdXfRYYDvmBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EqaXWi4Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FE2BC4CEE9;
+	Wed,  7 May 2025 19:05:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746645125;
-	bh=VhLoNZzzs8h18eEfkY4nKm/62bRoy+nctMqNNuMQG64=;
+	s=korg; t=1746644718;
+	bh=N2UGUdft2jYUq8SE3p9dYtaRkZBuMYG0WTklzge4TP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yMKW7fKwpKzq6BE2W7Uzp1AfliSNTG0H4f+HZX2FaOdnFus/Mo1KBQHAN1FFjQFkh
-	 x3G8yHpGLwafTpg/b8lT61YJClvQsvtd1cyzIS4OOx4FCpVbANDabiG7oE2K+bFCzY
-	 OHaXacPg4EmdVJQh/miSWdyrIGPZywxBb1ukB/fY=
+	b=EqaXWi4QT6Hn8Mr3USpO4VJujGuCfF2syEMRf9U7OCEi5j/6i9dKjSCjcyrHBazJv
+	 gTNJWnwerZRWvHlXbsSiEPSfW5Jx94gcLkvgkE5DfOMS8KbvZM9/FVxMq9mSge/Pgc
+	 4nPtcYMvkrLFixyRBnwwvrGszDkAYcTTHGnDsQ0U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Liang <mliang@purestorage.com>,
-	Mohamed Khalfella <mkhalfella@purestorage.com>,
-	Randy Jennings <randyj@purestorage.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Christoph Hellwig <hch@lst.de>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 084/129] nvme-tcp: fix premature queue removal and I/O failover
+Subject: [PATCH 6.12 135/164] net: vertexcom: mse102x: Fix RX error handling
 Date: Wed,  7 May 2025 20:40:20 +0200
-Message-ID: <20250507183816.911651818@linuxfoundation.org>
+Message-ID: <20250507183826.440135726@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
-References: <20250507183813.500572371@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,114 +61,99 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Liang <mliang@purestorage.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit 77e40bbce93059658aee02786a32c5c98a240a8a ]
+[ Upstream commit ee512922ddd7d64afe2b28830a88f19063217649 ]
 
-This patch addresses a data corruption issue observed in nvme-tcp during
-testing.
+In case the CMD_RTS got corrupted by interferences, the MSE102x
+doesn't allow a retransmission of the command. Instead the Ethernet
+frame must be shifted out of the SPI FIFO. Since the actual length is
+unknown, assume the maximum possible value.
 
-In an NVMe native multipath setup, when an I/O timeout occurs, all
-inflight I/Os are canceled almost immediately after the kernel socket is
-shut down. These canceled I/Os are reported as host path errors,
-triggering a failover that succeeds on a different path.
-
-However, at this point, the original I/O may still be outstanding in the
-host's network transmission path (e.g., the NIC’s TX queue). From the
-user-space app's perspective, the buffer associated with the I/O is
-considered completed since they're acked on the different path and may
-be reused for new I/O requests.
-
-Because nvme-tcp enables zero-copy by default in the transmission path,
-this can lead to corrupted data being sent to the original target,
-ultimately causing data corruption.
-
-We can reproduce this data corruption by injecting delay on one path and
-triggering i/o timeout.
-
-To prevent this issue, this change ensures that all inflight
-transmissions are fully completed from host's perspective before
-returning from queue stop. To handle concurrent I/O timeout from multiple
-namespaces under the same controller, always wait in queue stop
-regardless of queue's state.
-
-This aligns with the behavior of queue stopping in other NVMe fabric
-transports.
-
-Fixes: 3f2304f8c6d6 ("nvme-tcp: add NVMe over TCP host driver")
-Signed-off-by: Michael Liang <mliang@purestorage.com>
-Reviewed-by: Mohamed Khalfella <mkhalfella@purestorage.com>
-Reviewed-by: Randy Jennings <randyj@purestorage.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Fixes: 2f207cbf0dd4 ("net: vertexcom: Add MSE102x SPI support")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250430133043.7722-5-wahrenst@gmx.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/tcp.c | 31 +++++++++++++++++++++++++++++--
- 1 file changed, 29 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/vertexcom/mse102x.c | 20 ++++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
-index 84db7f4f861cb..5b76670f34be2 100644
---- a/drivers/nvme/host/tcp.c
-+++ b/drivers/nvme/host/tcp.c
-@@ -1710,7 +1710,7 @@ static void __nvme_tcp_stop_queue(struct nvme_tcp_queue *queue)
- 	cancel_work_sync(&queue->io_work);
+diff --git a/drivers/net/ethernet/vertexcom/mse102x.c b/drivers/net/ethernet/vertexcom/mse102x.c
+index 2c06d1d05164f..e4d993f313740 100644
+--- a/drivers/net/ethernet/vertexcom/mse102x.c
++++ b/drivers/net/ethernet/vertexcom/mse102x.c
+@@ -263,7 +263,7 @@ static int mse102x_tx_frame_spi(struct mse102x_net *mse, struct sk_buff *txp,
  }
  
--static void nvme_tcp_stop_queue(struct nvme_ctrl *nctrl, int qid)
-+static void nvme_tcp_stop_queue_nowait(struct nvme_ctrl *nctrl, int qid)
+ static int mse102x_rx_frame_spi(struct mse102x_net *mse, u8 *buff,
+-				unsigned int frame_len)
++				unsigned int frame_len, bool drop)
  {
- 	struct nvme_tcp_ctrl *ctrl = to_tcp_ctrl(nctrl);
- 	struct nvme_tcp_queue *queue = &ctrl->queues[qid];
-@@ -1724,6 +1724,31 @@ static void nvme_tcp_stop_queue(struct nvme_ctrl *nctrl, int qid)
- 	mutex_unlock(&queue->queue_lock);
- }
+ 	struct mse102x_net_spi *mses = to_mse102x_spi(mse);
+ 	struct spi_transfer *xfer = &mses->spi_xfer;
+@@ -281,6 +281,9 @@ static int mse102x_rx_frame_spi(struct mse102x_net *mse, u8 *buff,
+ 		netdev_err(mse->ndev, "%s: spi_sync() failed: %d\n",
+ 			   __func__, ret);
+ 		mse->stats.xfer_err++;
++	} else if (drop) {
++		netdev_dbg(mse->ndev, "%s: Drop frame\n", __func__);
++		ret = -EINVAL;
+ 	} else if (*sof != cpu_to_be16(DET_SOF)) {
+ 		netdev_dbg(mse->ndev, "%s: SPI start of frame is invalid (0x%04x)\n",
+ 			   __func__, *sof);
+@@ -308,6 +311,7 @@ static void mse102x_rx_pkt_spi(struct mse102x_net *mse)
+ 	struct sk_buff *skb;
+ 	unsigned int rxalign;
+ 	unsigned int rxlen;
++	bool drop = false;
+ 	__be16 rx = 0;
+ 	u16 cmd_resp;
+ 	u8 *rxpkt;
+@@ -330,7 +334,8 @@ static void mse102x_rx_pkt_spi(struct mse102x_net *mse)
+ 			net_dbg_ratelimited("%s: Unexpected response (0x%04x)\n",
+ 					    __func__, cmd_resp);
+ 			mse->stats.invalid_rts++;
+-			return;
++			drop = true;
++			goto drop;
+ 		}
  
-+static void nvme_tcp_wait_queue(struct nvme_ctrl *nctrl, int qid)
-+{
-+	struct nvme_tcp_ctrl *ctrl = to_tcp_ctrl(nctrl);
-+	struct nvme_tcp_queue *queue = &ctrl->queues[qid];
-+	int timeout = 100;
-+
-+	while (timeout > 0) {
-+		if (!test_bit(NVME_TCP_Q_ALLOCATED, &queue->flags) ||
-+		    !sk_wmem_alloc_get(queue->sock->sk))
-+			return;
-+		msleep(2);
-+		timeout -= 2;
-+	}
-+	dev_warn(nctrl->device,
-+		 "qid %d: timeout draining sock wmem allocation expired\n",
-+		 qid);
-+}
-+
-+static void nvme_tcp_stop_queue(struct nvme_ctrl *nctrl, int qid)
-+{
-+	nvme_tcp_stop_queue_nowait(nctrl, qid);
-+	nvme_tcp_wait_queue(nctrl, qid);
-+}
-+
-+
- static void nvme_tcp_setup_sock_ops(struct nvme_tcp_queue *queue)
- {
- 	write_lock_bh(&queue->sock->sk->sk_callback_lock);
-@@ -1790,7 +1815,9 @@ static void nvme_tcp_stop_io_queues(struct nvme_ctrl *ctrl)
- 	int i;
+ 		net_dbg_ratelimited("%s: Unexpected response to first CMD\n",
+@@ -342,9 +347,16 @@ static void mse102x_rx_pkt_spi(struct mse102x_net *mse)
+ 		net_dbg_ratelimited("%s: Invalid frame length: %d\n", __func__,
+ 				    rxlen);
+ 		mse->stats.invalid_len++;
+-		return;
++		drop = true;
+ 	}
  
- 	for (i = 1; i < ctrl->queue_count; i++)
--		nvme_tcp_stop_queue(ctrl, i);
-+		nvme_tcp_stop_queue_nowait(ctrl, i);
-+	for (i = 1; i < ctrl->queue_count; i++)
-+		nvme_tcp_wait_queue(ctrl, i);
- }
- 
- static int nvme_tcp_start_io_queues(struct nvme_ctrl *ctrl,
++	/* In case of a invalid CMD_RTS, the frame must be consumed anyway.
++	 * So assume the maximum possible frame length.
++	 */
++drop:
++	if (drop)
++		rxlen = VLAN_ETH_FRAME_LEN;
++
+ 	rxalign = ALIGN(rxlen + DET_SOF_LEN + DET_DFT_LEN, 4);
+ 	skb = netdev_alloc_skb_ip_align(mse->ndev, rxalign);
+ 	if (!skb)
+@@ -355,7 +367,7 @@ static void mse102x_rx_pkt_spi(struct mse102x_net *mse)
+ 	 * They are copied, but ignored.
+ 	 */
+ 	rxpkt = skb_put(skb, rxlen) - DET_SOF_LEN;
+-	if (mse102x_rx_frame_spi(mse, rxpkt, rxlen)) {
++	if (mse102x_rx_frame_spi(mse, rxpkt, rxlen, drop)) {
+ 		mse->ndev->stats.rx_errors++;
+ 		dev_kfree_skb(skb);
+ 		return;
 -- 
 2.39.5
 
