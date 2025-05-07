@@ -1,180 +1,121 @@
-Return-Path: <stable+bounces-142762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EF0DAAED29
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 22:39:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D60CAAED5A
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 22:48:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6537E1C42A93
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:39:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3EDB1BC41A1
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:48:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D4F521ABA3;
-	Wed,  7 May 2025 20:38:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5651628FAAB;
+	Wed,  7 May 2025 20:47:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b="K6hUY1K0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SmO5wMf2"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EFAF1DE3DB
-	for <stable@vger.kernel.org>; Wed,  7 May 2025 20:38:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0623B28FA9A;
+	Wed,  7 May 2025 20:47:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746650339; cv=none; b=h/EYW24ZTktl083W1Cov2+rCREOonFgb64iBZ9VNSmuJo08481FCY0pzBqwmYxktRQOR3/Hf6pDf3TlQ/aK4kyJAboae6b1//8zr2nw5JeG04nR3tXVXuormnBnIAAwamH0XRKXTgbkP7C9yXUpFT+fdxr0OlORDP8El8LPy3AY=
+	t=1746650876; cv=none; b=YQ64Pmbw9Ot1yAdoh+nsgnQrBOQTeg+acr+sbA1pXNt5ginPe8DSZRlij0bMwXZNDwoTThZuJ46BfWk9AWCNUBfBiPAkes8Ne5FOj74y4wxwub22Ca/iVlV4KX9WquOlzk/5/Tu1O4YCnHuX54AaGDo/iFa5aOPThGIYZF2hJ14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746650339; c=relaxed/simple;
-	bh=H12n5G79M55nGs6asZ/phHaUJuYGkuHa1wBE5cwU54g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=g+YON1kjT7jMvKrb6PpwRkM2+fpPb2vAJFbYlGPHjUY9ZX8u9hZfJcHOrOgtk4X9roPHHuPE5P1MhimKmgsTx+R5FhRkW9rP39zp5yNLzu1TSD6IEhHRZJkSHkcQDXdBBGbdYQ+xf4Hvu9HqjWEZk4y2bZdaW+edtyncgBxyNQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com; spf=none smtp.mailfrom=osandov.com; dkim=pass (2048-bit key) header.d=osandov-com.20230601.gappssmtp.com header.i=@osandov-com.20230601.gappssmtp.com header.b=K6hUY1K0; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=osandov.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=osandov.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-22de5af5e14so396085ad.1
-        for <stable@vger.kernel.org>; Wed, 07 May 2025 13:38:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=osandov-com.20230601.gappssmtp.com; s=20230601; t=1746650336; x=1747255136; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y5G5S/7oUYe6KsPk0KKPv1/CSdjYHqfwdHXoMpV5Do4=;
-        b=K6hUY1K06BnaPyB2Rbly7ihrG4O3MWKXNO7LqHanh+Kv9rVeq/DMBTQ7VAPt2FR6oU
-         0Zwq/T5HuOro2E5PXXPMOPSnaTJ3iWgpJj64vkPT4EKsDz4x6OyQ1XfM5jBdOFKOjFLh
-         Knd9tv3QHBD8Mvi9GyebRaM2Ge1mY7iWMktVhB8Fr5o6ZC9vmvbLt2fFxkAtNtZpsi7q
-         mKtvbaVs46mJnfq5tFeAsMqfAozrFh/ltqDv/+C7zrTw0XhwRuUjjUxfhbVmbgLBm7kf
-         rF8gYdPl92D2+TAfBigHTCFRS6TgapOGXygNL6Ia+mbUDolkFmz/xLhnQJvjE0pbSqfc
-         TIDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746650336; x=1747255136;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Y5G5S/7oUYe6KsPk0KKPv1/CSdjYHqfwdHXoMpV5Do4=;
-        b=WLXI4jvv7E3zA2RDmu/GKUX5ZpXNYjTaG6QEqnuaDjmR7ilpVYMwFCQzRbj/lHX8/H
-         ZOVn9up2NiKBdpQiakOewNJHYFsR137MLbMdpegaAeznw3WBGnIk3aIWH9QmspO3UpXI
-         sldj888qjDMwINhj9w8oP2/7MCYOV4oTdlgKK7ibS4KBeSaxUhgKbp6WqYqKtlft24aw
-         hEcDQ4QrFkq3hIJKdzkcx8prcPMzm4fkfJyOZTkd269Ss3OezpJV47TyzOj+gQwPamRf
-         9Wl2DF2Tkz1iRMjtUr1YaiEskhr5tDIvMnC5ofCYLjSnK11x8Lx54VkMVOUazuV/G2ST
-         J1ZQ==
-X-Gm-Message-State: AOJu0Yzq5TabR2Drlfce5zX9kYAIAvlffqv3DX0Iqk4Sj9muiKcdR+/d
-	lBl3ETzTmosU2tXWZvHCSI2OfH1GHRE+rmHR2U8admSC++2l+kmjDc5bMOPcKdHnH6x6N9kKPHR
-	r
-X-Gm-Gg: ASbGncuy6iwMeR0MK/KGZ4hAEb4fVZWRCx2JJaMoXRgBoyo0qISjZ5QC/zlq79jRKqs
-	feHOdkuIkd+1LiVX76XYzfnofIdV5beyY2PaAhK5sHow2g2sKaxeqxKIaorf5MXBLQSMwNFP+lZ
-	MX3mpAPajvxUzel0n9ymWBwCLRzcASzlZp11poUY0sOn4OazX4yQlkCMKaND2T7cFR+afDHnqxM
-	10I0wuCaQWJ5zLgJ9I3vI+j0IvQPApYHaU4vs6GiVooqGf1FteWr5zBb8cLCgXXUgdwHXCcTaqA
-	XlsD4ei5radSFVzZSqvrdF57DPQ6QWKJrrdmIV6fxHrLycCUWQ==
-X-Google-Smtp-Source: AGHT+IHvsOegA0k5mpHdmlaycml4Y6XtPZ9lnlT5iYoZ6jIxmcrGtEq0tImlFTKyRYFDUe2nCpM5ug==
-X-Received: by 2002:a17:903:990:b0:223:28a8:610b with SMTP id d9443c01a7336-22e5ee1cb10mr21923945ad.14.1746650336104;
-        Wed, 07 May 2025 13:38:56 -0700 (PDT)
-Received: from telecaster.hsd1.wa.comcast.net ([2620:10d:c090:400::5:2b0b])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22e3b99dce9sm39562915ad.6.2025.05.07.13.38.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 May 2025 13:38:55 -0700 (PDT)
-From: Omar Sandoval <osandov@osandov.com>
-To: stable@vger.kernel.org
-Cc: Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH 6.12] sched/eevdf: Fix se->slice being set to U64_MAX and resulting crash
-Date: Wed,  7 May 2025 13:38:37 -0700
-Message-ID: <9c0ce2024e862b3ee99bda8c16fbe9d863a9b918.1746650111.git.osandov@fb.com>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1746650876; c=relaxed/simple;
+	bh=ErbIIg8tFdaFpJqMqrCwmVzq5QfpdM9matIuxyQO7IU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=HuslQsrBQnzxbUjoQ6TmF/siqeHJH+ijmU3rO0m0sD3egjJMuGUlhjtWSaTVAAT0msE38Ic2yKUiu9hNetpRsUuo3rTc8LhguBYOpTIRoJxKa6lVKZu19EnTiRQswd0HcsQ/VDfa+Bx8smKy3Db3zK7lmU2FgMt4hPynYDYItHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SmO5wMf2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF80AC4CEE7;
+	Wed,  7 May 2025 20:47:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746650875;
+	bh=ErbIIg8tFdaFpJqMqrCwmVzq5QfpdM9matIuxyQO7IU=;
+	h=From:Date:Subject:To:Cc:From;
+	b=SmO5wMf20L521OhV4fbfgBID3lGNlu/rTKRiN574Gcs4ADnbwRsoScZzUzZYPMSMp
+	 AY2M2tfmSxIzFLr5qJywqkNxlDGFWVU4UG8/TUT/ucqH4JzP/1GUbVN5aGFewKXJh9
+	 uVBbTlfopPuDuGz66M86xbGonMjd9qdKjk+A320+g49z98cIbNzH3gcp40Knkb0+dd
+	 9XfmBdEvwJRqgYclSMLrG6SHpUh/dWoXlxlQeqwQ1Z52J60avek9xWn4ZTyTxuK9yK
+	 +kBN/VfW6PDtD2Ep0CGKRAnY8bVlDXqCOSu9upGis0sm+5WuHl/QDASQjZoIfkmU+j
+	 08uWc7+cI5+4Q==
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Wed, 07 May 2025 21:47:45 +0100
+Subject: [PATCH net] net: qede: Initialize qede_ll_ops with designated
+ initializer
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250507-qede-fix-clang-randstruct-v1-1-5ccc15626fba@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAPDGG2gC/x2MQQqEMAxFryJZT6AqRcerDLPQNGpAOk5aRRDvb
+ nD5+O+/ExKrcIKuOEF5lyS/aFC+CqC5jxOjBGOoXOWddw3+OTCOciAtNqP2MaSsG2Us69CSf9c
+ 0+Bbsvyqb97Q/EDnD97puhzeF7XAAAAA=
+X-Change-ID: 20250507-qede-fix-clang-randstruct-13d8c593cb58
+To: Manish Chopra <manishc@marvell.com>, 
+ Andrew Lunn <andrew+netdev@lunn.ch>, 
+ "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+ Kees Cook <kees@kernel.org>
+Cc: Nick Desaulniers <nick.desaulniers+lkml@gmail.com>, 
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, llvm@lists.linux.dev, 
+ stable@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1518; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=ErbIIg8tFdaFpJqMqrCwmVzq5QfpdM9matIuxyQO7IU=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDBnSx35cjmb/GXoui+vDpzDlY38mXClU/MsUuricIWrb5
+ riFzVvfdZSyMIhxMciKKbJUP1Y9bmg45yzjjVOTYOawMoEMYeDiFICJGM9mZNjy6vqtDRNKinha
+ dkvdOpSbkMEdV2X7RPZiWrb68YLp8XEM/1MWz7FdWPH987GdF9u33eAtTZVbVvrBeIbFI09WnZh
+ n7/gB
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 
-From: Omar Sandoval <osandov@fb.com>
+After a recent change [1] in clang's randstruct implementation to
+randomize structures that only contain function pointers, there is an
+error because qede_ll_ops get randomized but does not use a designated
+initializer for the first member:
 
-commit bbce3de72be56e4b5f68924b7da9630cc89aa1a8 upstream.
+  drivers/net/ethernet/qlogic/qede/qede_main.c:206:2: error: a randomized struct can only be initialized with a designated initializer
+    206 |         {
+        |         ^
 
-There is a code path in dequeue_entities() that can set the slice of a
-sched_entity to U64_MAX, which sometimes results in a crash.
+Explicitly initialize the common member using a designated initializer
+to fix the build.
 
-The offending case is when dequeue_entities() is called to dequeue a
-delayed group entity, and then the entity's parent's dequeue is delayed.
-In that case:
-
-1. In the if (entity_is_task(se)) else block at the beginning of
-   dequeue_entities(), slice is set to
-   cfs_rq_min_slice(group_cfs_rq(se)). If the entity was delayed, then
-   it has no queued tasks, so cfs_rq_min_slice() returns U64_MAX.
-2. The first for_each_sched_entity() loop dequeues the entity.
-3. If the entity was its parent's only child, then the next iteration
-   tries to dequeue the parent.
-4. If the parent's dequeue needs to be delayed, then it breaks from the
-   first for_each_sched_entity() loop _without updating slice_.
-5. The second for_each_sched_entity() loop sets the parent's ->slice to
-   the saved slice, which is still U64_MAX.
-
-This throws off subsequent calculations with potentially catastrophic
-results. A manifestation we saw in production was:
-
-6. In update_entity_lag(), se->slice is used to calculate limit, which
-   ends up as a huge negative number.
-7. limit is used in se->vlag = clamp(vlag, -limit, limit). Because limit
-   is negative, vlag > limit, so se->vlag is set to the same huge
-   negative number.
-8. In place_entity(), se->vlag is scaled, which overflows and results in
-   another huge (positive or negative) number.
-9. The adjusted lag is subtracted from se->vruntime, which increases or
-   decreases se->vruntime by a huge number.
-10. pick_eevdf() calls entity_eligible()/vruntime_eligible(), which
-    incorrectly returns false because the vruntime is so far from the
-    other vruntimes on the queue, causing the
-    (vruntime - cfs_rq->min_vruntime) * load calulation to overflow.
-11. Nothing appears to be eligible, so pick_eevdf() returns NULL.
-12. pick_next_entity() tries to dereference the return value of
-    pick_eevdf() and crashes.
-
-Dumping the cfs_rq states from the core dumps with drgn showed tell-tale
-huge vruntime ranges and bogus vlag values, and I also traced se->slice
-being set to U64_MAX on live systems (which was usually "benign" since
-the rest of the runqueue needed to be in a particular state to crash).
-
-Fix it in dequeue_entities() by always setting slice from the first
-non-empty cfs_rq.
-
-Fixes: aef6987d8954 ("sched/eevdf: Propagate min_slice up the cgroup hierarchy")
-Signed-off-by: Omar Sandoval <osandov@fb.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lkml.kernel.org/r/f0c2d1072be229e1bdddc73c0703919a8b00c652.1745570998.git.osandov@fb.com
+Cc: stable@vger.kernel.org
+Fixes: 035f7f87b729 ("randstruct: Enable Clang support")
+Link: https://github.com/llvm/llvm-project/commit/04364fb888eea6db9811510607bed4b200bcb082 [1]
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 ---
-Stable backport to 6.12.y resolving a trivial conflict in the patch
-context.
+ drivers/net/ethernet/qlogic/qede/qede_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Thanks,
-Omar
+diff --git a/drivers/net/ethernet/qlogic/qede/qede_main.c b/drivers/net/ethernet/qlogic/qede/qede_main.c
+index 99df00c30b8c..b5d744d2586f 100644
+--- a/drivers/net/ethernet/qlogic/qede/qede_main.c
++++ b/drivers/net/ethernet/qlogic/qede/qede_main.c
+@@ -203,7 +203,7 @@ static struct pci_driver qede_pci_driver = {
+ };
+ 
+ static struct qed_eth_cb_ops qede_ll_ops = {
+-	{
++	.common = {
+ #ifdef CONFIG_RFS_ACCEL
+ 		.arfs_filter_op = qede_arfs_filter_op,
+ #endif
 
- kernel/sched/fair.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+---
+base-commit: 9540984da649d46f699c47f28c68bbd3c9d99e4c
+change-id: 20250507-qede-fix-clang-randstruct-13d8c593cb58
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index ceb023629d48..990d0828bf2a 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -7182,9 +7182,6 @@ static int dequeue_entities(struct rq *rq, struct sched_entity *se, int flags)
- 		idle_h_nr_running = task_has_idle_policy(p);
- 		if (!task_sleep && !task_delayed)
- 			h_nr_delayed = !!se->sched_delayed;
--	} else {
--		cfs_rq = group_cfs_rq(se);
--		slice = cfs_rq_min_slice(cfs_rq);
- 	}
- 
- 	for_each_sched_entity(se) {
-@@ -7194,6 +7191,7 @@ static int dequeue_entities(struct rq *rq, struct sched_entity *se, int flags)
- 			if (p && &p->se == se)
- 				return -1;
- 
-+			slice = cfs_rq_min_slice(cfs_rq);
- 			break;
- 		}
- 
+Best regards,
 -- 
-2.49.0
+Nathan Chancellor <nathan@kernel.org>
 
 
