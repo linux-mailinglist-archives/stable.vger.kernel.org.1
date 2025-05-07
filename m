@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-142301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDF67AAEA0D
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:50:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9BB7AAEA11
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:51:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C87259E251A
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:50:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 301705205A9
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:50:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 380C72144CC;
-	Wed,  7 May 2025 18:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 219472144CC;
+	Wed,  7 May 2025 18:50:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w4yt6Gt7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sngYlE1E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9B95211A2A;
-	Wed,  7 May 2025 18:50:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D31CB2116E9;
+	Wed,  7 May 2025 18:50:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643832; cv=none; b=lrWf+7yuDCJBE/Y7VvuVds6o1IWycZT7dlLBGfZ3NmM5EYLFAU9VPitoDXuplLo3GL3/Yy4ar7GzdGJb+peFeCqj3rYzFNwby+NaOeKQbMYw3Iya0Vb1LeXlz+PeGmOYlm0QJoRgvDYB2bdd5HIjSddUa76iu7tdXKfSIIveX60=
+	t=1746643837; cv=none; b=PS+Su9oRhK4lN2Xa336l0a5Tf3auyVyXXvaghWgv0zkwCes4mmfNWbacacgy3d3Hpmuqsviz4YXw+2UjQod6qofMIvzocx10ZRxQYMKGqLRsLZTLwZLZZ+KWzLv3koN7qdPMTfAed7Z0LkejBQ+oQK9mh8+wodqT6T+uDh2O9mA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643832; c=relaxed/simple;
-	bh=zw6BhxrWK8nR1aX9vZHwDaOwNZF9QP/rKL1ChgbQ01Q=;
+	s=arc-20240116; t=1746643837; c=relaxed/simple;
+	bh=IFEYx/D20qTcFiq8YlDuBIC7iY4mUTBR+DRwChf8IeU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kC7eLTFkeSxxlahxmhvmexYvv7aUVlhBS0pmgxb5DMmK7Zdpf/SMv4KWI2btmmejPYc1n4VL40SBUTHUhSf5zr+hMiVXsCuEmtDvRhkSXNNA420vXTLSVlLrZut3zsgqWxNsNzBLGjIp7DqusjDwsGpmC6e1Pbaq6BcqeW5/wOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w4yt6Gt7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78182C4CEE2;
-	Wed,  7 May 2025 18:50:31 +0000 (UTC)
+	 MIME-Version; b=tYntG0EgpObWHRcP3buKTz2huIwzkph113uGoTv8WuRoAA7wb3neC/1pHlIud7Gne9bJFWcZFojEYKp4igZxMQ0cQpxHFBvZaURxyh8M6ulqo8NDJ+oE2N0oilvNlEstf+LhdgrymXIc1VfX8VwQzl5S+ztvLIID2Qb7t0I/o6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sngYlE1E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 662F7C4CEE2;
+	Wed,  7 May 2025 18:50:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643831;
-	bh=zw6BhxrWK8nR1aX9vZHwDaOwNZF9QP/rKL1ChgbQ01Q=;
+	s=korg; t=1746643837;
+	bh=IFEYx/D20qTcFiq8YlDuBIC7iY4mUTBR+DRwChf8IeU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w4yt6Gt7TJuvs+qL0jCDtzAn/jfFRUhus0+wGxxziLj1UZYfL7YC4O6vOQtjoqzX1
-	 s6dG/KQT2r2lPtZQJGWiXhrohz2plkmocvWKDfFIGpJe+Y9x6RnLgpqFbKd4a9lpx8
-	 1afGgvJQkDMtNTriZAR/vO7oPqZh7DrLlNWv19Uc=
+	b=sngYlE1EpD4CjM1y0640VD3NjtymjfHTmF+NKoy3Vfttj9+JCTGusMA7rxzZa7+Ys
+	 qWNAHuD8iGn4npovmYBjrK97l4uk6L+GOImq5aRII8nHCmbZibAtlvDWn37cZNDNMU
+	 kMwVtK6tzbT4gz5ba6V0dur3FPeWfN0IJo0u0wJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Janne Grunau <j@jannau.net>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Alyssa Rosenzweig <alyssa@rosenzweig.io>
-Subject: [PATCH 6.14 032/183] drm: Select DRM_KMS_HELPER from DRM_DEBUG_DP_MST_TOPOLOGY_REFS
-Date: Wed,  7 May 2025 20:37:57 +0200
-Message-ID: <20250507183825.990577037@linuxfoundation.org>
+	Pavel Paklov <Pavel.Paklov@cyberprotect.ru>,
+	Joerg Roedel <jroedel@suse.de>
+Subject: [PATCH 6.14 033/183] iommu/amd: Fix potential buffer overflow in parse_ivrs_acpihid
+Date: Wed,  7 May 2025 20:37:58 +0200
+Message-ID: <20250507183826.029891035@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
 References: <20250507183824.682671926@linuxfoundation.org>
@@ -66,55 +65,53 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Janne Grunau <j@jannau.net>
+From: Pavel Paklov <Pavel.Paklov@cyberprotect.ru>
 
-commit 32dce6b1949a696dc7abddc04de8cbe35c260217 upstream.
+commit 8dee308e4c01dea48fc104d37f92d5b58c50b96c upstream.
 
-Using "depends on" and "select" for the same Kconfig symbol is known to
-cause circular dependencies (cmp. "Kconfig recursive dependency
-limitations" in Documentation/kbuild/kconfig-language.rst.
-DRM drivers are selecting drm helpers so do the same for
-DRM_DEBUG_DP_MST_TOPOLOGY_REFS.
-Fixes following circular dependency reported on x86 for the downstream
-Asahi Linux tree:
+There is a string parsing logic error which can lead to an overflow of hid
+or uid buffers. Comparing ACPIID_LEN against a total string length doesn't
+take into account the lengths of individual hid and uid buffers so the
+check is insufficient in some cases. For example if the length of hid
+string is 4 and the length of the uid string is 260, the length of str
+will be equal to ACPIID_LEN + 1 but uid string will overflow uid buffer
+which size is 256.
 
-error: recursive dependency detected!
-  symbol DRM_KMS_HELPER is selected by DRM_GEM_SHMEM_HELPER
-  symbol DRM_GEM_SHMEM_HELPER is selected by RUST_DRM_GEM_SHMEM_HELPER
-  symbol RUST_DRM_GEM_SHMEM_HELPER is selected by DRM_ASAHI
-  symbol DRM_ASAHI depends on RUST
-  symbol RUST depends on CALL_PADDING
-  symbol CALL_PADDING depends on OBJTOOL
-  symbol OBJTOOL is selected by STACK_VALIDATION
-  symbol STACK_VALIDATION depends on UNWINDER_FRAME_POINTER
-  symbol UNWINDER_FRAME_POINTER is part of choice block at arch/x86/Kconfig.debug:224
-  symbol <choice> unknown is visible depending on UNWINDER_GUESS
-  symbol UNWINDER_GUESS prompt is visible depending on STACKDEPOT
-  symbol STACKDEPOT is selected by DRM_DEBUG_DP_MST_TOPOLOGY_REFS
-  symbol DRM_DEBUG_DP_MST_TOPOLOGY_REFS depends on DRM_KMS_HELPER
+The same applies to the hid string with length 13 and uid string with
+length 250.
 
-Fixes: 12a280c72868 ("drm/dp_mst: Add topology ref history tracking for debugging")
+Check the length of hid and uid strings separately to prevent
+buffer overflow.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: ca3bf5d47cec ("iommu/amd: Introduces ivrs_acpihid kernel parameter")
 Cc: stable@vger.kernel.org
-Signed-off-by: Janne Grunau <j@jannau.net>
-Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://lore.kernel.org/r/20250304-drm_debug_dp_mst_topo_kconfig-v1-1-e16fd152f258@jannau.net
-Signed-off-by: Alyssa Rosenzweig <alyssa@rosenzweig.io>
+Signed-off-by: Pavel Paklov <Pavel.Paklov@cyberprotect.ru>
+Link: https://lore.kernel.org/r/20250325092259.392844-1-Pavel.Paklov@cyberprotect.ru
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/Kconfig |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/amd/init.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/gpu/drm/Kconfig
-+++ b/drivers/gpu/drm/Kconfig
-@@ -188,7 +188,7 @@ config DRM_DEBUG_DP_MST_TOPOLOGY_REFS
-         bool "Enable refcount backtrace history in the DP MST helpers"
- 	depends on STACKTRACE_SUPPORT
-         select STACKDEPOT
--        depends on DRM_KMS_HELPER
-+        select DRM_KMS_HELPER
-         depends on DEBUG_KERNEL
-         depends on EXPERT
-         help
+--- a/drivers/iommu/amd/init.c
++++ b/drivers/iommu/amd/init.c
+@@ -3677,6 +3677,14 @@ found:
+ 	while (*uid == '0' && *(uid + 1))
+ 		uid++;
+ 
++	if (strlen(hid) >= ACPIHID_HID_LEN) {
++		pr_err("Invalid command line: hid is too long\n");
++		return 1;
++	} else if (strlen(uid) >= ACPIHID_UID_LEN) {
++		pr_err("Invalid command line: uid is too long\n");
++		return 1;
++	}
++
+ 	i = early_acpihid_map_size++;
+ 	memcpy(early_acpihid_map[i].hid, hid, strlen(hid));
+ 	memcpy(early_acpihid_map[i].uid, uid, strlen(uid));
 
 
 
