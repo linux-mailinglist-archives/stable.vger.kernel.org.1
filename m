@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-142418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C211CAAEA8C
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:56:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4539BAAE997
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:46:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D4233B4E8D
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:56:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79A5F3A3ADE
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:46:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F9F421E0BB;
-	Wed,  7 May 2025 18:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64C3B1FECCD;
+	Wed,  7 May 2025 18:46:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DLqz+f5a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f9wWc268"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4C41482F5;
-	Wed,  7 May 2025 18:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21CA8155389;
+	Wed,  7 May 2025 18:46:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644189; cv=none; b=pfXnjEN0ehwJ/RSGRt19RMnOo5Q1b10qd6GASkgX1j5b1NzjJR3UfwTA0fDeDhHXo+GZFeQNJxi/XgXRYJryWqu/wjPHhihTV6Vj9hprdp9AH9o4ntgVHglzjl0rkLtTiYI0LOqgsCQL7SkSm4NKsDg6dPw+Gc0UzN4pBXMy52o=
+	t=1746643579; cv=none; b=Pj1ecbKcdnkQlg+zjygHNcoAezhNoPDb3n91WtL9Gf1KmAeohgVpC9THkgJJfNTD+cf8EREYlnNUCPRC/ikdVSW6OYEd0ezTcd6tbOjHoXHb/5Hrb8nU4LqeTMorRjLdjy2Arxi5qWi+nWqiVpGaaGjpgDm5zqeQndAFaHlcai0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644189; c=relaxed/simple;
-	bh=Ep4miOLBSDfMaCH/lSw5+OkjqcmFAvNXAWDkzm69wn4=;
+	s=arc-20240116; t=1746643579; c=relaxed/simple;
+	bh=SlCTdepoirw9nwgPS7BqxmHgj19dEFZNR29OEIdYisI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pzLfBLP9tgbzLQGz2CmzL93R7ppObTADaWBq8/MbV7ZE5zpFl297QNSKOuve7y5G6pSR/wTESLmEMhqnXbxhfJ3+d0zu8qirpEOKa4IRegTw5iix9kRxMsp/lsmMgVLdBDyfVlJ1dMmRAOimoTDxOOnXsV0eoqgAI1X9jS6U9qE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DLqz+f5a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2953C4CEE2;
-	Wed,  7 May 2025 18:56:28 +0000 (UTC)
+	 MIME-Version; b=MkvAJFNdWCD3clYySEPJMeGPQMXnnH25B+f7c8ke/M73WU9wm99AI27PDD5flO53WVJOYMSdk4UVX5HevJ/ML6tchgkOnHszqKIq2INqzm41RxZKFLW560yLHdtzUmCChsmz2Ck4cqud5KaUUhX7lq2q20d0lDEEVVmr8lOVyV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f9wWc268; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F79BC4CEE2;
+	Wed,  7 May 2025 18:46:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644189;
-	bh=Ep4miOLBSDfMaCH/lSw5+OkjqcmFAvNXAWDkzm69wn4=;
+	s=korg; t=1746643579;
+	bh=SlCTdepoirw9nwgPS7BqxmHgj19dEFZNR29OEIdYisI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DLqz+f5ak/fSIuU4b3NZU6sroWxd98pbV2hiPmu+v//mrsai08pJgADesmmjyuoLv
-	 oTKAXzcgMp8KtrzyceJmRgN77BQhjG+sOWthnB7U7CTNWM4cs73b3gV+txO/2kYPXy
-	 aWRma7QV/aZ5xZTzyc8Efcjt/lkJTCUNpcTHuy+k=
+	b=f9wWc268zvtHLMdCEd3ZZO1QRNEPNQL6viesl7IXHL1dB/nLQVPCJx5Pnt2aY/qcy
+	 /x9tm8SvBT8YsYyCOJ+kFAobnm+cGs7g7IeBlhIe5KMxVthXP/jdEtlVnowXbTCOG8
+	 jJPQwBdlW4/OnZCzCROKu2xF6HpiPwwG/3dZchN8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chad Monroe <chad@monroe.io>,
+	Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 117/183] net: ethernet: mtk_eth_soc: fix SER panic with 4GB+ RAM
-Date: Wed,  7 May 2025 20:39:22 +0200
-Message-ID: <20250507183829.560093183@linuxfoundation.org>
+Subject: [PATCH 6.1 48/97] net: ethernet: mtk-star-emac: fix spinlock recursion issues on rx/tx poll
+Date: Wed,  7 May 2025 20:39:23 +0200
+Message-ID: <20250507183808.932270467@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
+References: <20250507183806.987408728@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +64,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chad Monroe <chad@monroe.io>
+From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
 
-[ Upstream commit 6e0490fc36cdac696f96e57b61d93b9ae32e0f4c ]
+[ Upstream commit 6fe0866014486736cc3ba1c6fd4606d3dbe55c9c ]
 
-If the mtk_poll_rx() function detects the MTK_RESETTING flag, it will
-jump to release_desc and refill the high word of the SDP on the 4GB RFB.
-Subsequently, mtk_rx_clean will process an incorrect SDP, leading to a
-panic.
+Use spin_lock_irqsave and spin_unlock_irqrestore instead of spin_lock
+and spin_unlock in mtk_star_emac driver to avoid spinlock recursion
+occurrence that can happen when enabling the DMA interrupts again in
+rx/tx poll.
 
-Add patch from MediaTek's SDK to resolve this.
+```
+BUG: spinlock recursion on CPU#0, swapper/0/0
+ lock: 0xffff00000db9cf20, .magic: dead4ead, .owner: swapper/0/0,
+    .owner_cpu: 0
+CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted
+    6.15.0-rc2-next-20250417-00001-gf6a27738686c-dirty #28 PREEMPT
+Hardware name: MediaTek MT8365 Open Platform EVK (DT)
+Call trace:
+ show_stack+0x18/0x24 (C)
+ dump_stack_lvl+0x60/0x80
+ dump_stack+0x18/0x24
+ spin_dump+0x78/0x88
+ do_raw_spin_lock+0x11c/0x120
+ _raw_spin_lock+0x20/0x2c
+ mtk_star_handle_irq+0xc0/0x22c [mtk_star_emac]
+ __handle_irq_event_percpu+0x48/0x140
+ handle_irq_event+0x4c/0xb0
+ handle_fasteoi_irq+0xa0/0x1bc
+ handle_irq_desc+0x34/0x58
+ generic_handle_domain_irq+0x1c/0x28
+ gic_handle_irq+0x4c/0x120
+ do_interrupt_handler+0x50/0x84
+ el1_interrupt+0x34/0x68
+ el1h_64_irq_handler+0x18/0x24
+ el1h_64_irq+0x6c/0x70
+ regmap_mmio_read32le+0xc/0x20 (P)
+ _regmap_bus_reg_read+0x6c/0xac
+ _regmap_read+0x60/0xdc
+ regmap_read+0x4c/0x80
+ mtk_star_rx_poll+0x2f4/0x39c [mtk_star_emac]
+ __napi_poll+0x38/0x188
+ net_rx_action+0x164/0x2c0
+ handle_softirqs+0x100/0x244
+ __do_softirq+0x14/0x20
+ ____do_softirq+0x10/0x20
+ call_on_irq_stack+0x24/0x64
+ do_softirq_own_stack+0x1c/0x40
+ __irq_exit_rcu+0xd4/0x10c
+ irq_exit_rcu+0x10/0x1c
+ el1_interrupt+0x38/0x68
+ el1h_64_irq_handler+0x18/0x24
+ el1h_64_irq+0x6c/0x70
+ cpuidle_enter_state+0xac/0x320 (P)
+ cpuidle_enter+0x38/0x50
+ do_idle+0x1e4/0x260
+ cpu_startup_entry+0x34/0x3c
+ rest_init+0xdc/0xe0
+ console_on_rootfs+0x0/0x6c
+ __primary_switched+0x88/0x90
+```
 
-Fixes: 2d75891ebc09 ("net: ethernet: mtk_eth_soc: support 36-bit DMA addressing on MT7988")
-Link: https://git01.mediatek.com/plugins/gitiles/openwrt/feeds/mtk-openwrt-feeds/+/71f47ea785699c6aa3b922d66c2bdc1a43da25b1
-Signed-off-by: Chad Monroe <chad@monroe.io>
-Link: https://patch.msgid.link/4adc2aaeb0fb1b9cdc56bf21cf8e7fa328daa345.1745715843.git.daniel@makrotopia.org
+Fixes: 0a8bd81fd6aa ("net: ethernet: mtk-star-emac: separate tx/rx handling with two NAPIs")
+Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Link: https://patch.msgid.link/20250424-mtk_star_emac-fix-spinlock-recursion-issue-v2-1-f3fde2e529d8@collabora.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mediatek/mtk_eth_soc.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/mediatek/mtk_star_emac.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-index 1365888a4be11..c6d60f1d4f77a 100644
---- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-+++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-@@ -2202,14 +2202,18 @@ static int mtk_poll_rx(struct napi_struct *napi, int budget,
- 		ring->data[idx] = new_data;
- 		rxd->rxd1 = (unsigned int)dma_addr;
- release_desc:
-+		if (MTK_HAS_CAPS(eth->soc->caps, MTK_36BIT_DMA)) {
-+			if (unlikely(dma_addr == DMA_MAPPING_ERROR))
-+				addr64 = FIELD_GET(RX_DMA_ADDR64_MASK,
-+						   rxd->rxd2);
-+			else
-+				addr64 = RX_DMA_PREP_ADDR64(dma_addr);
-+		}
-+
- 		if (MTK_HAS_CAPS(eth->soc->caps, MTK_SOC_MT7628))
- 			rxd->rxd2 = RX_DMA_LSO;
- 		else
--			rxd->rxd2 = RX_DMA_PREP_PLEN0(ring->buf_size);
--
--		if (MTK_HAS_CAPS(eth->soc->caps, MTK_36BIT_DMA) &&
--		    likely(dma_addr != DMA_MAPPING_ERROR))
--			rxd->rxd2 |= RX_DMA_PREP_ADDR64(dma_addr);
-+			rxd->rxd2 = RX_DMA_PREP_PLEN0(ring->buf_size) | addr64;
+diff --git a/drivers/net/ethernet/mediatek/mtk_star_emac.c b/drivers/net/ethernet/mediatek/mtk_star_emac.c
+index ad27749c0931c..fd729469b29f4 100644
+--- a/drivers/net/ethernet/mediatek/mtk_star_emac.c
++++ b/drivers/net/ethernet/mediatek/mtk_star_emac.c
+@@ -1164,6 +1164,7 @@ static int mtk_star_tx_poll(struct napi_struct *napi, int budget)
+ 	struct net_device *ndev = priv->ndev;
+ 	unsigned int head = ring->head;
+ 	unsigned int entry = ring->tail;
++	unsigned long flags;
  
- 		ring->calc_idx = idx;
- 		done++;
+ 	while (entry != head && count < (MTK_STAR_RING_NUM_DESCS - 1)) {
+ 		ret = mtk_star_tx_complete_one(priv);
+@@ -1183,9 +1184,9 @@ static int mtk_star_tx_poll(struct napi_struct *napi, int budget)
+ 		netif_wake_queue(ndev);
+ 
+ 	if (napi_complete(napi)) {
+-		spin_lock(&priv->lock);
++		spin_lock_irqsave(&priv->lock, flags);
+ 		mtk_star_enable_dma_irq(priv, false, true);
+-		spin_unlock(&priv->lock);
++		spin_unlock_irqrestore(&priv->lock, flags);
+ 	}
+ 
+ 	return 0;
+@@ -1342,6 +1343,7 @@ static int mtk_star_rx(struct mtk_star_priv *priv, int budget)
+ static int mtk_star_rx_poll(struct napi_struct *napi, int budget)
+ {
+ 	struct mtk_star_priv *priv;
++	unsigned long flags;
+ 	int work_done = 0;
+ 
+ 	priv = container_of(napi, struct mtk_star_priv, rx_napi);
+@@ -1349,9 +1351,9 @@ static int mtk_star_rx_poll(struct napi_struct *napi, int budget)
+ 	work_done = mtk_star_rx(priv, budget);
+ 	if (work_done < budget) {
+ 		napi_complete_done(napi, work_done);
+-		spin_lock(&priv->lock);
++		spin_lock_irqsave(&priv->lock, flags);
+ 		mtk_star_enable_dma_irq(priv, true, false);
+-		spin_unlock(&priv->lock);
++		spin_unlock_irqrestore(&priv->lock, flags);
+ 	}
+ 
+ 	return work_done;
 -- 
 2.39.5
 
