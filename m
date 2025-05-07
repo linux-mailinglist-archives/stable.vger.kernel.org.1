@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-142495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 143CEAAEADE
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:00:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1F8DAAEA60
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:54:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E73A1524C8C
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:00:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC1671BC41D0
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:54:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E32D288A8;
-	Wed,  7 May 2025 19:00:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C3F721E0BB;
+	Wed,  7 May 2025 18:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lymVMHYe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yVNQfoEf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B8B821146F;
-	Wed,  7 May 2025 19:00:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48DCA214813;
+	Wed,  7 May 2025 18:54:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644430; cv=none; b=KQ+Fp9EE+vkAOYwxEvpvtKlB4EYgxGnu6LXH25HTTMt3cH4g8IDR1HW3LyxAARzjwpnj2KtO9iza4WKiIcFMMf+gFbIs4nYpyczPtUwwg2XcYRu4JUNo8uRKfoT2C6c9xMJFC+isAZLAMCDEJq4LX4+2Fiw8geTq6r7aZ6SJmb0=
+	t=1746644076; cv=none; b=tddYnj1y2ZRbjRSur69kmAo0bHvTUc9nYWyoAz53XBf12u9rlBRBz+34Qkc9Om2Z6lkqSlO0GfYV7QmOIZJ8G+n72ZmPTMUUo+B5N76k/+MPcZJ501rfkPPuVVIouNhNccs9UHKsMdVbUSoXGyvbKX2zTR2Y4bi6pTruK/VNQig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644430; c=relaxed/simple;
-	bh=HFUJH1itM5qB6zwcr4XqIOKTkneQH4TgMtn7WjL/oBY=;
+	s=arc-20240116; t=1746644076; c=relaxed/simple;
+	bh=EL3w0A2qk+hxgp6R9/SBDaxStiF3RNQozcOG1BAO/Og=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kvq0/WIIQb9tNOwd2/V7XhcK7FYu7pZjW9Lk62OoIS+4SdK96eR4YQ27+f41nGiXtdIlzihemPwtcOvCVnph6IGffzPoVpb6q2Qs7N7Aw3hM6F8gSMUkoA/c7noeC0hQybRHTO+ljOGX6+cSjuITM4ECTIWrvL6k0eZgRTE7Ggo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lymVMHYe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61F0BC4CEEB;
-	Wed,  7 May 2025 19:00:29 +0000 (UTC)
+	 MIME-Version; b=Uu0XnYlAq9lkJwjCehRfRzkDlW6ee3n3GTmorAdkXGdguD/pUplAUKdNFpn0ryaQHqygSHcsX5iZpnvQvRscVCtaA/fy0o8xX18Lw88TPbF3rjL44o2Ks/Lqe5S5teZMB+NyIYWcSr/cRabCNLs79Z6aZbb4FLZA8kJft0M8+Sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yVNQfoEf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C276AC4CEE2;
+	Wed,  7 May 2025 18:54:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644429;
-	bh=HFUJH1itM5qB6zwcr4XqIOKTkneQH4TgMtn7WjL/oBY=;
+	s=korg; t=1746644076;
+	bh=EL3w0A2qk+hxgp6R9/SBDaxStiF3RNQozcOG1BAO/Og=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lymVMHYeb2zueA+sdcKgZrGugvIQUyY2O54KJJvWbS2J7ZkUJKWluzTEGgsH87Jpq
-	 f2ghzI8DRxbKobT79ctR/8jsWkdz0tyvnvQQnR2nVO/zrNhkbpVeLeaFF3E117QvLY
-	 jaIjdawxqhIcmvzXy0xXxPD57h5i8gLxI/+P+/HE=
+	b=yVNQfoEfvDDhfUpTy3g42oh1fqJtasraxKc45vUWgIwWTlt0accPzB1glU+erhVo/
+	 ixd78P/j69fB2BM3BPnIgOa+BLmZQGeF8pQEXRUVooITQJDX0c0VYmax7RDparje7K
+	 pb5of2v2++lY+Xi8/a4KNGBQv5ZxevglFN3R0cqg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	"Matthew R. Ochs" <mochs@nvidia.com>,
-	Joerg Roedel <jroedel@suse.de>
-Subject: [PATCH 6.12 041/164] iommu: Fix two issues in iommu_copy_struct_from_user()
-Date: Wed,  7 May 2025 20:38:46 +0200
-Message-ID: <20250507183822.547336141@linuxfoundation.org>
+	Kiran K <kiran.k@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 082/183] Bluetooth: btintel_pcie: Avoid redundant buffer allocation
+Date: Wed,  7 May 2025 20:38:47 +0200
+Message-ID: <20250507183828.156278688@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +63,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolin Chen <nicolinc@nvidia.com>
+From: Kiran K <kiran.k@intel.com>
 
-commit 30a3f2f3e4bd6335b727c83c08a982d969752bc1 upstream.
+[ Upstream commit d1af1f02ef8653dea4573e444136c8331189cd59 ]
 
-In the review for iommu_copy_struct_to_user() helper, Matt pointed out that
-a NULL pointer should be rejected prior to dereferencing it:
-https://lore.kernel.org/all/86881827-8E2D-461C-BDA3-FA8FD14C343C@nvidia.com
+Reuse the skb buffer provided by the PCIe driver to pass it onto the
+stack, instead of copying it to a new skb.
 
-And Alok pointed out a typo at the same time:
-https://lore.kernel.org/all/480536af-6830-43ce-a327-adbd13dc3f1d@oracle.com
-
-Since both issues were copied from iommu_copy_struct_from_user(), fix them
-first in the current header.
-
-Fixes: e9d36c07bb78 ("iommu: Add iommu_copy_struct_from_user helper")
-Cc: stable@vger.kernel.org
-Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Acked-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Reviewed-by: Matthew R. Ochs <mochs@nvidia.com>
-Link: https://lore.kernel.org/r/20250414191635.450472-1-nicolinc@nvidia.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c2b636b3f788 ("Bluetooth: btintel_pcie: Add support for PCIe transport")
+Signed-off-by: Kiran K <kiran.k@intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/iommu.h |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/bluetooth/btintel_pcie.c | 33 ++++++++++++--------------------
+ 1 file changed, 12 insertions(+), 21 deletions(-)
 
---- a/include/linux/iommu.h
-+++ b/include/linux/iommu.h
-@@ -423,10 +423,10 @@ static inline int __iommu_copy_struct_fr
- 	void *dst_data, const struct iommu_user_data *src_data,
- 	unsigned int data_type, size_t data_len, size_t min_len)
- {
--	if (src_data->type != data_type)
--		return -EINVAL;
- 	if (WARN_ON(!dst_data || !src_data))
- 		return -EINVAL;
-+	if (src_data->type != data_type)
-+		return -EINVAL;
- 	if (src_data->len < min_len || data_len < src_data->len)
- 		return -EINVAL;
- 	return copy_struct_from_user(dst_data, data_len, src_data->uptr,
-@@ -439,8 +439,8 @@ static inline int __iommu_copy_struct_fr
-  *        include/uapi/linux/iommufd.h
-  * @user_data: Pointer to a struct iommu_user_data for user space data info
-  * @data_type: The data type of the @kdst. Must match with @user_data->type
-- * @min_last: The last memember of the data structure @kdst points in the
-- *            initial version.
-+ * @min_last: The last member of the data structure @kdst points in the initial
-+ *            version.
-  * Return 0 for success, otherwise -error.
-  */
- #define iommu_copy_struct_from_user(kdst, user_data, data_type, min_last) \
+diff --git a/drivers/bluetooth/btintel_pcie.c b/drivers/bluetooth/btintel_pcie.c
+index 6130854b6658a..ea9b137b1491c 100644
+--- a/drivers/bluetooth/btintel_pcie.c
++++ b/drivers/bluetooth/btintel_pcie.c
+@@ -595,8 +595,10 @@ static int btintel_pcie_recv_event(struct hci_dev *hdev, struct sk_buff *skb)
+ 		/* This is a debug event that comes from IML and OP image when it
+ 		 * starts execution. There is no need pass this event to stack.
+ 		 */
+-		if (skb->data[2] == 0x97)
++		if (skb->data[2] == 0x97) {
++			hci_recv_diag(hdev, skb);
+ 			return 0;
++		}
+ 	}
+ 
+ 	return hci_recv_frame(hdev, skb);
+@@ -612,7 +614,6 @@ static int btintel_pcie_recv_frame(struct btintel_pcie_data *data,
+ 	u8 pkt_type;
+ 	u16 plen;
+ 	u32 pcie_pkt_type;
+-	struct sk_buff *new_skb;
+ 	void *pdata;
+ 	struct hci_dev *hdev = data->hdev;
+ 
+@@ -689,24 +690,20 @@ static int btintel_pcie_recv_frame(struct btintel_pcie_data *data,
+ 
+ 	bt_dev_dbg(hdev, "pkt_type: 0x%2.2x len: %u", pkt_type, plen);
+ 
+-	new_skb = bt_skb_alloc(plen, GFP_ATOMIC);
+-	if (!new_skb) {
+-		bt_dev_err(hdev, "Failed to allocate memory for skb of len: %u",
+-			   skb->len);
+-		ret = -ENOMEM;
+-		goto exit_error;
+-	}
+-
+-	hci_skb_pkt_type(new_skb) = pkt_type;
+-	skb_put_data(new_skb, skb->data, plen);
++	hci_skb_pkt_type(skb) = pkt_type;
+ 	hdev->stat.byte_rx += plen;
++	skb_trim(skb, plen);
+ 
+ 	if (pcie_pkt_type == BTINTEL_PCIE_HCI_EVT_PKT)
+-		ret = btintel_pcie_recv_event(hdev, new_skb);
++		ret = btintel_pcie_recv_event(hdev, skb);
+ 	else
+-		ret = hci_recv_frame(hdev, new_skb);
++		ret = hci_recv_frame(hdev, skb);
++	skb = NULL; /* skb is freed in the callee  */
+ 
+ exit_error:
++	if (skb)
++		kfree_skb(skb);
++
+ 	if (ret)
+ 		hdev->stat.err_rx++;
+ 
+@@ -720,16 +717,10 @@ static void btintel_pcie_rx_work(struct work_struct *work)
+ 	struct btintel_pcie_data *data = container_of(work,
+ 					struct btintel_pcie_data, rx_work);
+ 	struct sk_buff *skb;
+-	int err;
+-	struct hci_dev *hdev = data->hdev;
+ 
+ 	/* Process the sk_buf in queue and send to the HCI layer */
+ 	while ((skb = skb_dequeue(&data->rx_skb_q))) {
+-		err = btintel_pcie_recv_frame(data, skb);
+-		if (err)
+-			bt_dev_err(hdev, "Failed to send received frame: %d",
+-				   err);
+-		kfree_skb(skb);
++		btintel_pcie_recv_frame(data, skb);
+ 	}
+ }
+ 
+-- 
+2.39.5
+
 
 
 
