@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-142237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9856BAAE9A9
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:47:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBAB2AAEA7D
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:56:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DE6C50673F
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:47:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E497522FF9
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:56:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64E9B20B7FD;
-	Wed,  7 May 2025 18:47:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 171B228B4F0;
+	Wed,  7 May 2025 18:55:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qiwepQt+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rp+2ckS9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21AAC29A0;
-	Wed,  7 May 2025 18:47:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C96DD2153C6;
+	Wed,  7 May 2025 18:55:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643635; cv=none; b=TeS1fXsf1r68Kt2dbe2wWVCLD+lNGNn4kSA2NuNFjXqYJG9nV3/pMTUIiBuy4JKGUbmfI5817fA6pq5SVc2ajioNHOl/o8ouxCOKEhmhbA8+cEtuA/G6V3P9DNVgTH7O1D/jHJQgD4Tog/xceAjpxQ5anJfK9eKKONk1kiEUUPc=
+	t=1746644158; cv=none; b=MS7YhckCRwMOUCYnAgKLjAdxp7LZ1LGXduAKLDzjDsenvFFAPn9IRRZKH7n8zYbV1e6VH23sgcFJE1eFrdCjrgAmEUxLSrwSGE7DULYk2iDYgQ9UAdHSjb7i5DpgDypkv39QP+a6RNRdFhao/6djS34EwAfL5JAYG4mSg4DFqM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643635; c=relaxed/simple;
-	bh=u5I0WxRp3+gSYhpQlxAByfnrLOgpgBdVKOZ0HadreII=;
+	s=arc-20240116; t=1746644158; c=relaxed/simple;
+	bh=1GAspSXPgK+oJGd3CrACq4azQq+d0QJJUz472UXB0V8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ceR5zdVeL06EUtdtfJ5R27wSNnk6cm4UiZkrqhzzB4URmLIa0exq2T4xGZPAemTP8+Z11bME3jzTIy1pN6SmMsYsskqy0K+WpPugL3aLGEbJyO7yXYY6GW1fIXd9xrcP93B+X2KQkT0Fd4NeEDGajRYTR2MPC7HfKTTrxW1MdS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qiwepQt+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EB08C4CEE2;
-	Wed,  7 May 2025 18:47:14 +0000 (UTC)
+	 MIME-Version; b=BldbRDpZXaq2t38s1SyLgPXQg90+hsGG9xQ7Ox9uogDPg8FQSolGz4ucHrDwAfi/w/zyAneD+woZUxNb1pcKVG+VP3X6aQ3OQ1KHRpE69kmOQStdMF7vKLvKBWLyjX7u33Tl2mmL8JvZwDNa29C7CV+rYoxb5oGoX0EYK8vOFjU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rp+2ckS9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59386C4CEE2;
+	Wed,  7 May 2025 18:55:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643635;
-	bh=u5I0WxRp3+gSYhpQlxAByfnrLOgpgBdVKOZ0HadreII=;
+	s=korg; t=1746644158;
+	bh=1GAspSXPgK+oJGd3CrACq4azQq+d0QJJUz472UXB0V8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qiwepQt+AU22aWReKN9CkKw3NaEM34IndLhCjy7NRpUenE4PWTNbYLmbOKRaYNoqf
-	 7vipMQElXLr8EUCabxJUolZajqFcYtWodmdGESabmmYc+Rtag8qZyGd6wLMmK0nL1g
-	 OYMQiUvpRRdBj2sW3OqYAt7enDCw/xnXLsn+Xc78=
+	b=Rp+2ckS9LRxyfj/peQwA4PsYag/Qxg6aT5U/exfmT50PLQUDGduuYqG3ghHIPrFQ0
+	 gKu4iot88+XU6n7YvHqySiZ5KhZjsaPJFr2cemJfO/6hEWMYzixfVoHvzClQWUbCJv
+	 HpvjUANDqn22uIoNfGeVoCbMloTPnD6GWJMC+PkQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian Shen <shenjian15@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Mattias Barthel <mattias.barthel@atlascopco.com>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 67/97] net: hns3: defer calling ptp_clock_register()
-Date: Wed,  7 May 2025 20:39:42 +0200
-Message-ID: <20250507183809.690875515@linuxfoundation.org>
+Subject: [PATCH 6.14 138/183] net: fec: ERR007885 Workaround for conventional TX
+Date: Wed,  7 May 2025 20:39:43 +0200
+Message-ID: <20250507183830.432544623@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
-References: <20250507183806.987408728@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jian Shen <shenjian15@huawei.com>
+From: Mattias Barthel <mattias.barthel@atlascopco.com>
 
-[ Upstream commit 4971394d9d624f91689d766f31ce668d169d9959 ]
+[ Upstream commit a179aad12badc43201cbf45d1e8ed2c1383c76b9 ]
 
-Currently the ptp_clock_register() is called before relative
-ptp resource ready. It may cause unexpected result when upper
-layer called the ptp API during the timewindow. Fix it by
-moving the ptp_clock_register() to the function end.
+Activate TX hang workaround also in
+fec_enet_txq_submit_skb() when TSO is not enabled.
 
-Fixes: 0bf5eb788512 ("net: hns3: add support for PTP")
-Signed-off-by: Jian Shen <shenjian15@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Link: https://patch.msgid.link/20250430093052.2400464-5-shaojijie@huawei.com
+Errata: ERR007885
+
+Symptoms: NETDEV WATCHDOG: eth0 (fec): transmit queue 0 timed out
+
+commit 37d6017b84f7 ("net: fec: Workaround for imx6sx enet tx hang when enable three queues")
+There is a TDAR race condition for mutliQ when the software sets TDAR
+and the UDMA clears TDAR simultaneously or in a small window (2-4 cycles).
+This will cause the udma_tx and udma_tx_arbiter state machines to hang.
+
+So, the Workaround is checking TDAR status four time, if TDAR cleared by
+    hardware and then write TDAR, otherwise don't set TDAR.
+
+Fixes: 53bb20d1faba ("net: fec: add variable reg_desc_active to speed things up")
+Signed-off-by: Mattias Barthel <mattias.barthel@atlascopco.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250429090826.3101258-1-mattiasbarthel@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c  | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/freescale/fec_main.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c
-index 4d4cea1f50157..b7cf9fbf97183 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_ptp.c
-@@ -452,6 +452,13 @@ static int hclge_ptp_create_clock(struct hclge_dev *hdev)
- 	ptp->info.settime64 = hclge_ptp_settime;
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index f7c4ce8e9a265..c5d5fa8d7dfdd 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -714,7 +714,12 @@ static int fec_enet_txq_submit_skb(struct fec_enet_priv_tx_q *txq,
+ 	txq->bd.cur = bdp;
  
- 	ptp->info.n_alarm = 0;
-+
-+	spin_lock_init(&ptp->lock);
-+	ptp->io_base = hdev->hw.hw.io_base + HCLGE_PTP_REG_OFFSET;
-+	ptp->ts_cfg.rx_filter = HWTSTAMP_FILTER_NONE;
-+	ptp->ts_cfg.tx_type = HWTSTAMP_TX_OFF;
-+	hdev->ptp = ptp;
-+
- 	ptp->clock = ptp_clock_register(&ptp->info, &hdev->pdev->dev);
- 	if (IS_ERR(ptp->clock)) {
- 		dev_err(&hdev->pdev->dev,
-@@ -463,12 +470,6 @@ static int hclge_ptp_create_clock(struct hclge_dev *hdev)
- 		return -ENODEV;
- 	}
+ 	/* Trigger transmission start */
+-	writel(0, txq->bd.reg_desc_active);
++	if (!(fep->quirks & FEC_QUIRK_ERR007885) ||
++	    !readl(txq->bd.reg_desc_active) ||
++	    !readl(txq->bd.reg_desc_active) ||
++	    !readl(txq->bd.reg_desc_active) ||
++	    !readl(txq->bd.reg_desc_active))
++		writel(0, txq->bd.reg_desc_active);
  
--	spin_lock_init(&ptp->lock);
--	ptp->io_base = hdev->hw.hw.io_base + HCLGE_PTP_REG_OFFSET;
--	ptp->ts_cfg.rx_filter = HWTSTAMP_FILTER_NONE;
--	ptp->ts_cfg.tx_type = HWTSTAMP_TX_OFF;
--	hdev->ptp = ptp;
--
  	return 0;
  }
- 
 -- 
 2.39.5
 
