@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-142690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5FCAAAEBD3
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:11:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1862AAEAA2
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:58:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22EAF16BC72
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:10:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4421C1C27056
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:57:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37E6F28DF3C;
-	Wed,  7 May 2025 19:10:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 337E7289823;
+	Wed,  7 May 2025 18:57:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XI5Esivi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S0PiwfaM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F052144C1;
-	Wed,  7 May 2025 19:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43E01482F5;
+	Wed,  7 May 2025 18:57:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746645025; cv=none; b=MEvOCwxbTSr667dEXesbITuhtMlqfnS4ei6xXnKu4wj0u0dgGek1wcrYZ0cWyEFu/LpBCCVdXIzDSpcfx8EFMJdkypkuW7ERlwMb0fXw02Lkw5OWlXrLfpfVElfV8Cu6YtkC/LRWhYsMEQqanvLHZnMdVXOVIbcvyCY7o0RuEWI=
+	t=1746644233; cv=none; b=aeeegB4Azci12cGT2P3H0EbywSRmJf+159cFnJxFmwSK4yRMQlRp0nqR0q70M88pYqOy+2Psi71pFN3oLbogV2tOQD2IycwEy1BEMmmrKA2puUQTNg7ve71hllNUndD3HabG1GAhG34zjuA3Dba0kUUD59Q+UWMGjVdhGkwrng4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746645025; c=relaxed/simple;
-	bh=BI3bty+ulRHINAXhaehLIHsZbTO3w2cWVWRpggtYnNs=;
+	s=arc-20240116; t=1746644233; c=relaxed/simple;
+	bh=w58Fa7LCnqrHobBCLv2HbjojGPPf54Jkg2iTw20YJOE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eA6BgO1r++//Ak9k6GQeeeSOmgrC7skvnqNZrJDzNiA9FWSl8XvUtYO/z+VOt492F62Utm/oUdH2Nqd+aHwMhF0fd58Wl0T/ZflBzUOHz+DIjicOroV+3wiIPtRvCW20xsO8znjY7V62IKbVPWblQmMCdUeYJRNfidwWiQ8URDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XI5Esivi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BE2CC4CEE2;
-	Wed,  7 May 2025 19:10:24 +0000 (UTC)
+	 MIME-Version; b=IxHSzEfQpOWuCpxufziPXlGBRzPib3F7N1ElWIkJWKO1mwo5MlfF+1rXz7Og/lCvPgjmPkWKKqp3l0AccS5H+An5nrNw98TNXaHrq7rqpgoT05hkwxK/Hsag/N5rPxiopojrSjdYKJu5+QvQRjgs8thBfj66l9Ce1wBYtAJf9Jk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S0PiwfaM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F3C2C4CEE2;
+	Wed,  7 May 2025 18:57:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746645024;
-	bh=BI3bty+ulRHINAXhaehLIHsZbTO3w2cWVWRpggtYnNs=;
+	s=korg; t=1746644232;
+	bh=w58Fa7LCnqrHobBCLv2HbjojGPPf54Jkg2iTw20YJOE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XI5EsiviJadJVEnw7jR8jSMXZArdHP63PzdEs6V01NNje2wLuKhqSlq7IVYIU8wBM
-	 r3O6fDdT0I6R0vAChf6+eVeE+qwI0sfepmkRbGSOb03zyJSMIwq40DyzzNCD24NdnX
-	 SCasmSlHZmlI1p9uKkL0iQCa11zwU/9/QE2DlC+A=
+	b=S0PiwfaM+GAHcDtIFWL8CHDV5IM12K9soJ/9173keMxCyKa4oOPHYgLCShQYwpSnl
+	 nrFLKbM4hF4uDPcGThAOKO+DAsZFdlCQ8E8SaPbSubdWgy4NRe4rh84DmkmNe9NQtF
+	 DZflLiC3ug/+PJEOGHYerMUk5HhufTD088IEZjQY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Gerrard Tai <gerrard.tai@starlabs.sg>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Simon Horman <horms@kernel.org>,
 	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 070/129] net_sched: ets: Fix double list add in class with netem as child qdisc
-Date: Wed,  7 May 2025 20:40:06 +0200
-Message-ID: <20250507183816.358343570@linuxfoundation.org>
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.14 162/183] sch_drr: make drr_qlen_notify() idempotent
+Date: Wed,  7 May 2025 20:40:07 +0200
+Message-ID: <20250507183831.430560950@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
-References: <20250507183813.500572371@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +64,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Nogueira <victor@mojatatu.com>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-[ Upstream commit 1a6d0c00fa07972384b0c308c72db091d49988b6 ]
+commit df008598b3a00be02a8051fde89ca0fbc416bd55 upstream.
 
-As described in Gerrard's report [1], there are use cases where a netem
-child qdisc will make the parent qdisc's enqueue callback reentrant.
-In the case of ets, there won't be a UAF, but the code will add the same
-classifier to the list twice, which will cause memory corruption.
+drr_qlen_notify() always deletes the DRR class from its active list
+with list_del(), therefore, it is not idempotent and not friendly
+to its callers, like fq_codel_dequeue().
 
-In addition to checking for qlen being zero, this patch checks whether
-the class was already added to the active_list (cl_is_active) before
-doing the addition to cater for the reentrant case.
+Let's make it idempotent to ease qdisc_tree_reduce_backlog() callers'
+life. Also change other list_del()'s to list_del_init() just to be
+extra safe.
 
-[1] https://lore.kernel.org/netdev/CAHcdcOm+03OD2j6R0=YHKqmy=VgJ8xEOKuP6c7mSgnp-TEJJbw@mail.gmail.com/
-
-Fixes: 37d9cf1a3ce3 ("sched: Fix detection of empty queues in child qdiscs")
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250403211033.166059-3-xiyou.wangcong@gmail.com
 Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
-Link: https://patch.msgid.link/20250425220710.3964791-4-victor@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_ets.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ net/sched/sch_drr.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/net/sched/sch_ets.c b/net/sched/sch_ets.c
-index 9fd70462b41d5..18269f86d21ef 100644
---- a/net/sched/sch_ets.c
-+++ b/net/sched/sch_ets.c
-@@ -74,6 +74,11 @@ static const struct nla_policy ets_class_policy[TCA_ETS_MAX + 1] = {
- 	[TCA_ETS_QUANTA_BAND] = { .type = NLA_U32 },
- };
+--- a/net/sched/sch_drr.c
++++ b/net/sched/sch_drr.c
+@@ -110,6 +110,7 @@ static int drr_change_class(struct Qdisc
+ 		return -ENOBUFS;
  
-+static bool cl_is_active(struct ets_class *cl)
-+{
-+	return !list_empty(&cl->alist);
-+}
-+
- static int ets_quantum_parse(struct Qdisc *sch, const struct nlattr *attr,
- 			     unsigned int *quantum,
- 			     struct netlink_ext_ack *extack)
-@@ -416,7 +421,6 @@ static int ets_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	struct ets_sched *q = qdisc_priv(sch);
- 	struct ets_class *cl;
- 	int err = 0;
--	bool first;
+ 	gnet_stats_basic_sync_init(&cl->bstats);
++	INIT_LIST_HEAD(&cl->alist);
+ 	cl->common.classid = classid;
+ 	cl->quantum	   = quantum;
+ 	cl->qdisc	   = qdisc_create_dflt(sch->dev_queue,
+@@ -234,7 +235,7 @@ static void drr_qlen_notify(struct Qdisc
+ {
+ 	struct drr_class *cl = (struct drr_class *)arg;
  
- 	cl = ets_classify(skb, sch, &err);
- 	if (!cl) {
-@@ -426,7 +430,6 @@ static int ets_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		return err;
+-	list_del(&cl->alist);
++	list_del_init(&cl->alist);
+ }
+ 
+ static int drr_dump_class(struct Qdisc *sch, unsigned long arg,
+@@ -393,7 +394,7 @@ static struct sk_buff *drr_dequeue(struc
+ 			if (unlikely(skb == NULL))
+ 				goto out;
+ 			if (cl->qdisc->q.qlen == 0)
+-				list_del(&cl->alist);
++				list_del_init(&cl->alist);
+ 
+ 			bstats_update(&cl->bstats, skb);
+ 			qdisc_bstats_update(sch, skb);
+@@ -434,7 +435,7 @@ static void drr_reset_qdisc(struct Qdisc
+ 	for (i = 0; i < q->clhash.hashsize; i++) {
+ 		hlist_for_each_entry(cl, &q->clhash.hash[i], common.hnode) {
+ 			if (cl->qdisc->q.qlen)
+-				list_del(&cl->alist);
++				list_del_init(&cl->alist);
+ 			qdisc_reset(cl->qdisc);
+ 		}
  	}
- 
--	first = !cl->qdisc->q.qlen;
- 	err = qdisc_enqueue(skb, cl->qdisc, to_free);
- 	if (unlikely(err != NET_XMIT_SUCCESS)) {
- 		if (net_xmit_drop_count(err)) {
-@@ -436,7 +439,7 @@ static int ets_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		return err;
- 	}
- 
--	if (first && !ets_class_is_strict(q, cl)) {
-+	if (!cl_is_active(cl) && !ets_class_is_strict(q, cl)) {
- 		list_add_tail(&cl->alist, &q->active);
- 		cl->deficit = cl->quantum;
- 	}
--- 
-2.39.5
-
 
 
 
