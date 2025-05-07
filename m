@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-142261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3950AAE9D8
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:48:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB2C0AAE948
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:43:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15C5250702C
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:48:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C513980990
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:42:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5E65212B3F;
-	Wed,  7 May 2025 18:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45BDF28E584;
+	Wed,  7 May 2025 18:42:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x2jcjaUb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w/wj98a/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 822CB1FF5EC;
-	Wed,  7 May 2025 18:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0100414A4C7;
+	Wed,  7 May 2025 18:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643710; cv=none; b=hTnhtQ6dNZ7aaXb4eIS/X9knQCG/2EcbD7Nqy27j2dX06kzi5M08SJH+mg78E72SLOWv8nHcFmW8naTLafMm92EBDFIiLq3xti7pWccsSbb5TcpsIuukelAM82wogE2/snfsHe2Be4jAK7vYsVqPglPhkXjKoQm/QH32SN2Ehh4=
+	t=1746643360; cv=none; b=U32zQuE/ffIgmLVKjCySVCRZy78KGhrX5Ei/U3DZ6WzgT/MQTbopHYEIK+h4mwvtwhRwCrCx5arJkPefMhJyPEA1GsVU5dNy7utLhxPGzx5lnHn7og+QGSPxYVkEtkvtA1RY8E4Dv7OFU4GGCqJSmOjS5aK9Hdt687EFUTzexb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643710; c=relaxed/simple;
-	bh=BTeIE5E6w78sHHOej7p90v8GEjZZBAK2h+WGIr4SbaQ=;
+	s=arc-20240116; t=1746643360; c=relaxed/simple;
+	bh=odkkV6ENEsRNDk8YRZPUnrt2eMhlbZSJBG1HUYd5eTA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WAK2xnHJnK2g+Jtz3+jaECUBDkKfyNEkiaFeLQF4y/06BmMYzlVKIeAqPNqyz9TskCo2Gor1xxnr8lo0rKugZrZaAAqbuoua8cf4FJFEGIPkPi07R1jHJiuxJ+ACPfLEDxtCBvJfFAUXuWHlzLc2vpBG3unAwycvw3LHgrVmyE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x2jcjaUb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F24FBC4CEE2;
-	Wed,  7 May 2025 18:48:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aCPgIhdL84+WhhNZe3zfzYGyitAqwawvjBB2+TVmnG5uUAmF4yyGP+/CSB1Qwn7JEcFgJLt3eRMZIHKNe/0SbqjAOP387UMJezB0P+efpSD8OQopBclfwzVlYENwza6NKKsnYRSBXEleIghsZl8Z/jIfffDK7Efx/ehsEzFlboM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w/wj98a/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 638EEC4CEE2;
+	Wed,  7 May 2025 18:42:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643710;
-	bh=BTeIE5E6w78sHHOej7p90v8GEjZZBAK2h+WGIr4SbaQ=;
+	s=korg; t=1746643359;
+	bh=odkkV6ENEsRNDk8YRZPUnrt2eMhlbZSJBG1HUYd5eTA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x2jcjaUbHNveuf7i+9zcruzrreR5/E2+iiMROy6k5Y0g1gtg+3GQds0C1VE9L9CAb
-	 eud4Rm1Eu7Ka8OLeMp+XYr9k/b8D9YIjqvmDh/q4fwKuESZcfiId2AsY78FehHU2G8
-	 Y5oCwDdr4PZMnzi/6Ykqq3IsXKU42OF3VFseh4nI=
+	b=w/wj98a/nlEQRFDs0SlDpLCH535h5jzS3q8nKgRRTfYAIQzBwz1qLwxA2T6Xul7nt
+	 STX3wEYj+UiLYPezFQTdmxZgbTAJf25RtAr68Yuit3Q8mFKUfV2OUjgM9Uc/hDq6Uk
+	 V4K373kZnXZ5dz8Lm75YyNMKJZWmN5HBDtJj169g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shruti Parab <shruti.parab@broadcom.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Michael Liang <mliang@purestorage.com>,
+	Mohamed Khalfella <mkhalfella@purestorage.com>,
+	Randy Jennings <randyj@purestorage.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 60/97] bnxt_en: Fix ethtool -d byte order for 32-bit values
+Subject: [PATCH 5.15 34/55] nvme-tcp: fix premature queue removal and I/O failover
 Date: Wed,  7 May 2025 20:39:35 +0200
-Message-ID: <20250507183809.412375343@linuxfoundation.org>
+Message-ID: <20250507183800.413811673@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
-References: <20250507183806.987408728@linuxfoundation.org>
+In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
+References: <20250507183759.048732653@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +63,114 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Chan <michael.chan@broadcom.com>
+From: Michael Liang <mliang@purestorage.com>
 
-[ Upstream commit 02e8be5a032cae0f4ca33c6053c44d83cf4acc93 ]
+[ Upstream commit 77e40bbce93059658aee02786a32c5c98a240a8a ]
 
-For version 1 register dump that includes the PCIe stats, the existing
-code incorrectly assumes that all PCIe stats are 64-bit values.  Fix it
-by using an array containing the starting and ending index of the 32-bit
-values.  The loop in bnxt_get_regs() will use the array to do proper
-endian swap for the 32-bit values.
+This patch addresses a data corruption issue observed in nvme-tcp during
+testing.
 
-Fixes: b5d600b027eb ("bnxt_en: Add support for 'ethtool -d'")
-Reviewed-by: Shruti Parab <shruti.parab@broadcom.com>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Reviewed-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+In an NVMe native multipath setup, when an I/O timeout occurs, all
+inflight I/Os are canceled almost immediately after the kernel socket is
+shut down. These canceled I/Os are reported as host path errors,
+triggering a failover that succeeds on a different path.
+
+However, at this point, the original I/O may still be outstanding in the
+host's network transmission path (e.g., the NIC’s TX queue). From the
+user-space app's perspective, the buffer associated with the I/O is
+considered completed since they're acked on the different path and may
+be reused for new I/O requests.
+
+Because nvme-tcp enables zero-copy by default in the transmission path,
+this can lead to corrupted data being sent to the original target,
+ultimately causing data corruption.
+
+We can reproduce this data corruption by injecting delay on one path and
+triggering i/o timeout.
+
+To prevent this issue, this change ensures that all inflight
+transmissions are fully completed from host's perspective before
+returning from queue stop. To handle concurrent I/O timeout from multiple
+namespaces under the same controller, always wait in queue stop
+regardless of queue's state.
+
+This aligns with the behavior of queue stopping in other NVMe fabric
+transports.
+
+Fixes: 3f2304f8c6d6 ("nvme-tcp: add NVMe over TCP host driver")
+Signed-off-by: Michael Liang <mliang@purestorage.com>
+Reviewed-by: Mohamed Khalfella <mkhalfella@purestorage.com>
+Reviewed-by: Randy Jennings <randyj@purestorage.com>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/broadcom/bnxt/bnxt_ethtool.c | 38 ++++++++++++++++---
- 1 file changed, 32 insertions(+), 6 deletions(-)
+ drivers/nvme/host/tcp.c | 31 +++++++++++++++++++++++++++++--
+ 1 file changed, 29 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-index 799adba0034a4..7daaed4520ace 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-@@ -1392,6 +1392,17 @@ static int bnxt_get_regs_len(struct net_device *dev)
- 	return reg_len;
+diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
+index 0fc5aba88bc15..99bf17f2dcfca 100644
+--- a/drivers/nvme/host/tcp.c
++++ b/drivers/nvme/host/tcp.c
+@@ -1602,7 +1602,7 @@ static void __nvme_tcp_stop_queue(struct nvme_tcp_queue *queue)
+ 	cancel_work_sync(&queue->io_work);
  }
  
-+#define BNXT_PCIE_32B_ENTRY(start, end)			\
-+	 { offsetof(struct pcie_ctx_hw_stats, start),	\
-+	   offsetof(struct pcie_ctx_hw_stats, end) }
-+
-+static const struct {
-+	u16 start;
-+	u16 end;
-+} bnxt_pcie_32b_entries[] = {
-+	BNXT_PCIE_32B_ENTRY(pcie_ltssm_histogram[0], pcie_ltssm_histogram[3]),
-+};
-+
- static void bnxt_get_regs(struct net_device *dev, struct ethtool_regs *regs,
- 			  void *_p)
+-static void nvme_tcp_stop_queue(struct nvme_ctrl *nctrl, int qid)
++static void nvme_tcp_stop_queue_nowait(struct nvme_ctrl *nctrl, int qid)
  {
-@@ -1423,12 +1434,27 @@ static void bnxt_get_regs(struct net_device *dev, struct ethtool_regs *regs,
- 	req->pcie_stat_host_addr = cpu_to_le64(hw_pcie_stats_addr);
- 	rc = hwrm_req_send(bp, req);
- 	if (!rc) {
--		__le64 *src = (__le64 *)hw_pcie_stats;
--		u64 *dst = (u64 *)(_p + BNXT_PXP_REG_LEN);
--		int i;
--
--		for (i = 0; i < sizeof(*hw_pcie_stats) / sizeof(__le64); i++)
--			dst[i] = le64_to_cpu(src[i]);
-+		u8 *dst = (u8 *)(_p + BNXT_PXP_REG_LEN);
-+		u8 *src = (u8 *)hw_pcie_stats;
-+		int i, j;
-+
-+		for (i = 0, j = 0; i < sizeof(*hw_pcie_stats); ) {
-+			if (i >= bnxt_pcie_32b_entries[j].start &&
-+			    i <= bnxt_pcie_32b_entries[j].end) {
-+				u32 *dst32 = (u32 *)(dst + i);
-+
-+				*dst32 = le32_to_cpu(*(__le32 *)(src + i));
-+				i += 4;
-+				if (i > bnxt_pcie_32b_entries[j].end &&
-+				    j < ARRAY_SIZE(bnxt_pcie_32b_entries) - 1)
-+					j++;
-+			} else {
-+				u64 *dst64 = (u64 *)(dst + i);
-+
-+				*dst64 = le64_to_cpu(*(__le64 *)(src + i));
-+				i += 8;
-+			}
-+		}
- 	}
- 	hwrm_req_drop(bp, req);
+ 	struct nvme_tcp_ctrl *ctrl = to_tcp_ctrl(nctrl);
+ 	struct nvme_tcp_queue *queue = &ctrl->queues[qid];
+@@ -1613,6 +1613,31 @@ static void nvme_tcp_stop_queue(struct nvme_ctrl *nctrl, int qid)
+ 	mutex_unlock(&queue->queue_lock);
  }
+ 
++static void nvme_tcp_wait_queue(struct nvme_ctrl *nctrl, int qid)
++{
++	struct nvme_tcp_ctrl *ctrl = to_tcp_ctrl(nctrl);
++	struct nvme_tcp_queue *queue = &ctrl->queues[qid];
++	int timeout = 100;
++
++	while (timeout > 0) {
++		if (!test_bit(NVME_TCP_Q_ALLOCATED, &queue->flags) ||
++		    !sk_wmem_alloc_get(queue->sock->sk))
++			return;
++		msleep(2);
++		timeout -= 2;
++	}
++	dev_warn(nctrl->device,
++		 "qid %d: timeout draining sock wmem allocation expired\n",
++		 qid);
++}
++
++static void nvme_tcp_stop_queue(struct nvme_ctrl *nctrl, int qid)
++{
++	nvme_tcp_stop_queue_nowait(nctrl, qid);
++	nvme_tcp_wait_queue(nctrl, qid);
++}
++
++
+ static void nvme_tcp_setup_sock_ops(struct nvme_tcp_queue *queue)
+ {
+ 	write_lock_bh(&queue->sock->sk->sk_callback_lock);
+@@ -1720,7 +1745,9 @@ static void nvme_tcp_stop_io_queues(struct nvme_ctrl *ctrl)
+ 	int i;
+ 
+ 	for (i = 1; i < ctrl->queue_count; i++)
+-		nvme_tcp_stop_queue(ctrl, i);
++		nvme_tcp_stop_queue_nowait(ctrl, i);
++	for (i = 1; i < ctrl->queue_count; i++)
++		nvme_tcp_wait_queue(ctrl, i);
+ }
+ 
+ static int nvme_tcp_start_io_queues(struct nvme_ctrl *ctrl)
 -- 
 2.39.5
 
