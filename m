@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-142126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B504DAAE92C
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:41:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE232AAEBAC
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:09:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E5DA50512A
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:41:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D174A526E7C
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:08:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D80EE28DF50;
-	Wed,  7 May 2025 18:41:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04D6428DF5A;
+	Wed,  7 May 2025 19:08:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QuVywNID"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wvKLg5kd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA5C28B7D6;
-	Wed,  7 May 2025 18:41:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C6628DF5B;
+	Wed,  7 May 2025 19:08:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643297; cv=none; b=c0aQ0sqGH0ExO8UpHZqvti+sjxogU644Eu5tcgPZD1vXlgfQcQnGwjBRqeBTdJQJSmyMP4YBI0DX9IAwzGp67ZpUCXnN6MqD5q6DO0AiNCMacH5qzt1muUrwDVHA+4vaIve9k81vRBSAt9AP+TBfbV6hxCRk1eoFfOb3nuwjWlE=
+	t=1746644892; cv=none; b=blrt7MbWPJxQYcUOOazcM4s0qa45nloZDVTK47jJqY4AJuEY1dnENFov/a0En2UGTa8j5uZlpd6DQubdivvQNa6Au77A7WZQGVSkLuMLTLfVW5h2TGzo+N1o4U9isJsQYB5emeF5uE16gEAG9IgD60iTBE5W9xTv3cEc6bgXpfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643297; c=relaxed/simple;
-	bh=oy6EfjFJd/XEUByuV4uGLBlskjZPesAYLVLu0HICF+w=;
+	s=arc-20240116; t=1746644892; c=relaxed/simple;
+	bh=II/AlEKDuOJ3ZGS0/CADNjegc5TUTmOTR72rJjDzekg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gbM9+XJiPgfJ0qB8WDWYyk0JgUYmJky0WNHKvGvwEfx35SsiA+ughiEZxCZhdLHSYu6oJ+k+SHYNKAlki/IYA5kdojyS/Q2J45Xq+a4BgrL3x6y+GlyAcjGofoUK2IE0BEQNwO7wQgkdzLV78J0/stuMDgNIdtJejlGx4XrAHbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QuVywNID; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B42B3C4CEE2;
-	Wed,  7 May 2025 18:41:36 +0000 (UTC)
+	 MIME-Version; b=T7xJlnA/TwbKuWTKHYqpnkcherzqjz9S8EuVo75uLJfEZM6mFysLBubZjVXWhqeJImfoLULmwW729TNMlp0t7z5+Vjo3oLdCoKEnSwTMbDCCoroD4i4bwfoxOvob01bOPRCFd6VM4keVVJJhv1C0WmPSblBe0pf9BkAeorLVIuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wvKLg5kd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E68FC4CEE2;
+	Wed,  7 May 2025 19:08:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643297;
-	bh=oy6EfjFJd/XEUByuV4uGLBlskjZPesAYLVLu0HICF+w=;
+	s=korg; t=1746644892;
+	bh=II/AlEKDuOJ3ZGS0/CADNjegc5TUTmOTR72rJjDzekg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QuVywNIDuZ+8OmP27yRHUT9UZHJ0tV0xd1jLy1tRs57SxM6KU5EqoSx1lfYc412qv
-	 ckQE5cXYykkK9gF8etFRCOFQilvAM6UVjdYriMuEdGR53LPRY6U3hSXOZ8KhsVg2Su
-	 y2+hBQwQrErl4GmWOF4tfO68WEx0G5Y6QJPg6B6M=
+	b=wvKLg5kdzZo721C/9dTrpkQ/pxqLmQW0txoTVn4bHjLQ/lvkrgbVDyvD9PlduhdTS
+	 k9S8zJ7/nNSOnx/i/HOSWccMiNfEBsDQE9n+3z4odqr+kYmYZCfDOcxsG+n24En5Gq
+	 CvuckpXcMIf1hYO8hStnri/HVeIA9z7gsUfI14Vc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Paklov <Pavel.Paklov@cyberprotect.ru>,
-	Joerg Roedel <jroedel@suse.de>
-Subject: [PATCH 5.15 13/55] iommu/amd: Fix potential buffer overflow in parse_ivrs_acpihid
-Date: Wed,  7 May 2025 20:39:14 +0200
-Message-ID: <20250507183759.585715426@linuxfoundation.org>
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	syzbot+441582c1592938fccf09@syzkaller.appspotmail.com,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 019/129] tracing: Do not take trace_event_sem in print_event_fields()
+Date: Wed,  7 May 2025 20:39:15 +0200
+Message-ID: <20250507183814.312509557@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
-References: <20250507183759.048732653@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Paklov <Pavel.Paklov@cyberprotect.ru>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit 8dee308e4c01dea48fc104d37f92d5b58c50b96c upstream.
+commit 0a8f11f8569e7ed16cbcedeb28c4350f6378fea6 upstream.
 
-There is a string parsing logic error which can lead to an overflow of hid
-or uid buffers. Comparing ACPIID_LEN against a total string length doesn't
-take into account the lengths of individual hid and uid buffers so the
-check is insufficient in some cases. For example if the length of hid
-string is 4 and the length of the uid string is 260, the length of str
-will be equal to ACPIID_LEN + 1 but uid string will overflow uid buffer
-which size is 256.
+On some paths in print_event_fields() it takes the trace_event_sem for
+read, even though it should always be held when the function is called.
 
-The same applies to the hid string with length 13 and uid string with
-length 250.
+Remove the taking of that mutex and add a lockdep_assert_held_read() to
+make sure the trace_event_sem is held when print_event_fields() is called.
 
-Check the length of hid and uid strings separately to prevent
-buffer overflow.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: ca3bf5d47cec ("iommu/amd: Introduces ivrs_acpihid kernel parameter")
 Cc: stable@vger.kernel.org
-Signed-off-by: Pavel Paklov <Pavel.Paklov@cyberprotect.ru>
-Link: https://lore.kernel.org/r/20250325092259.392844-1-Pavel.Paklov@cyberprotect.ru
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://lore.kernel.org/20250501224128.0b1f0571@batman.local.home
+Fixes: 80a76994b2d88 ("tracing: Add "fields" option to show raw trace event fields")
+Reported-by: syzbot+441582c1592938fccf09@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/6813ff5e.050a0220.14dd7d.001b.GAE@google.com/
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/amd/init.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ kernel/trace/trace_output.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/iommu/amd/init.c
-+++ b/drivers/iommu/amd/init.c
-@@ -3343,6 +3343,14 @@ found:
- 	while (*uid == '0' && *(uid + 1))
- 		uid++;
+--- a/kernel/trace/trace_output.c
++++ b/kernel/trace/trace_output.c
+@@ -950,11 +950,12 @@ enum print_line_t print_event_fields(str
+ 	struct trace_event_call *call;
+ 	struct list_head *head;
  
-+	if (strlen(hid) >= ACPIHID_HID_LEN) {
-+		pr_err("Invalid command line: hid is too long\n");
-+		return 1;
-+	} else if (strlen(uid) >= ACPIHID_UID_LEN) {
-+		pr_err("Invalid command line: uid is too long\n");
-+		return 1;
-+	}
++	lockdep_assert_held_read(&trace_event_sem);
 +
- 	i = early_acpihid_map_size++;
- 	memcpy(early_acpihid_map[i].hid, hid, strlen(hid));
- 	memcpy(early_acpihid_map[i].uid, uid, strlen(uid));
+ 	/* ftrace defined events have separate call structures */
+ 	if (event->type <= __TRACE_LAST_TYPE) {
+ 		bool found = false;
+ 
+-		down_read(&trace_event_sem);
+ 		list_for_each_entry(call, &ftrace_events, list) {
+ 			if (call->event.type == event->type) {
+ 				found = true;
+@@ -964,7 +965,6 @@ enum print_line_t print_event_fields(str
+ 			if (call->event.type > __TRACE_LAST_TYPE)
+ 				break;
+ 		}
+-		up_read(&trace_event_sem);
+ 		if (!found) {
+ 			trace_seq_printf(&iter->seq, "UNKNOWN TYPE %d\n", event->type);
+ 			goto out;
 
 
 
