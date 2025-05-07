@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-142611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7219FAAEB7A
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:07:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C39CAAEAA5
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:58:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C21C1B65E53
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:07:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6EF41C4434E
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:57:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FAC128E5E3;
-	Wed,  7 May 2025 19:06:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 741F51CF5C6;
+	Wed,  7 May 2025 18:57:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PMcMq9T/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NCzPrOOc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A0128BA9F;
-	Wed,  7 May 2025 19:06:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30C521482F5;
+	Wed,  7 May 2025 18:57:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644786; cv=none; b=Wb4iA+DOm/Wkzr1V+5zFgHrH7XB9aet8iVTMvXYegz5mIp8szXRc1eSTuDxGjeZr6D8WjSDr+5hiHASua7kxNHxBM1sFY22OGQQNiP4LvugeulgzTc3Sa25KdzwehrgAqmzsovZjY4OBGJunO2Vf828WjhQmoUbjsWztNsxwzC0=
+	t=1746644251; cv=none; b=Kh/RIIxFLpzo0CF2OJmdGsIy2tlbFsIELeabp1sjx/x58RiMSv6QCSVkKTft5PtF9nNQDGsUzzVWBNHQyUBt7NQ4HztxGYBuPZnn4DMORL6mXuWaI/8/l42kB43jChJHEAheQwMZzvrzM4GT/pd1PsYm1l+3MRW3aBFYE4NTNJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644786; c=relaxed/simple;
-	bh=Y97ikOv9fCaNCMhOwhPJssvqqzzWsSPK9SsDl1u10Aw=;
+	s=arc-20240116; t=1746644251; c=relaxed/simple;
+	bh=D+85v+96x3lK9bFuMP0YcU7yEQ5OjZD8E9SUOXLxgx8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kptu5eyOaw71sgL6mptRDFQiUoH23vSuphS6n8XBOFkvJtSnuE1/UWVQ8RrAaIXLr8TGCj342EhKqiCjDA/ScWvdhC/WF0tTmfA1jkE3Bfi9XUoy7GDRUdMPmRsiodZltDsLIs2F1GEPQuO4G6Ho84rfnHHJqXXjNU0DWd+PC0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PMcMq9T/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7F48C4CEE2;
-	Wed,  7 May 2025 19:06:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kg8VL+si68ierhmB1asrF5s6cmhXfodIdI7475alIMwrw2XDj6zDimp600iG0sYHh83P4QBRxq4ufaLxet+KQYgkLUcAMpskS7WKZLh9oeR4jneVEgE4IsdtTCUs+O9SVz5kDM1SG6Mb1HipdGpkcAzlJgT1FMNY+leW4D+s/Yg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NCzPrOOc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9419BC4CEE2;
+	Wed,  7 May 2025 18:57:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644786;
-	bh=Y97ikOv9fCaNCMhOwhPJssvqqzzWsSPK9SsDl1u10Aw=;
+	s=korg; t=1746644251;
+	bh=D+85v+96x3lK9bFuMP0YcU7yEQ5OjZD8E9SUOXLxgx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PMcMq9T/MalsWwKIgC/WLTB/K9vq+LgQCofXDurYUIjp9toLxpD98/kfFbcCn/egF
-	 myDZPxBNJ5qgGbM/2AJO2htUOfPRUSJZ0OO3xCMB9WHqHdYVR7+lFAfHP22j/4JJxx
-	 JeJv4rzY17cjSsyZ1ew7D/LWPJ/eREh56+a5FNbM=
+	b=NCzPrOOctdj9Canb7Hmg2lEs8kh58G6rMlkaq5OQ/KIMMm39nlmny5zWPZ7a/MYpF
+	 P06nvlVqRaz/GXKoV7L/W+xGw9XAFGF/ap/315r6RfFEHa4IDj2ysS9MXH0xiXpd8R
+	 vLAVAtoZ7UO4y51PTL8Xp5tQbakvnn00iTvZJNQw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sathesh B Edara <sedara@marvell.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sudeep Holla <sudeep.holla@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 127/164] octeon_ep: Fix host hang issue during device reboot
+Subject: [PATCH 6.14 167/183] firmware: arm_ffa: Skip Rx buffer ownership release if not acquired
 Date: Wed,  7 May 2025 20:40:12 +0200
-Message-ID: <20250507183826.109610086@linuxfoundation.org>
+Message-ID: <20250507183831.630826920@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +59,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sathesh B Edara <sedara@marvell.com>
+From: Sudeep Holla <sudeep.holla@arm.com>
 
-[ Upstream commit 34f42736b325287a7b2ce37e415838f539767bda ]
+[ Upstream commit 4567bdaaaaa1744da3d7da07d9aca2f941f5b4e5 ]
 
-When the host loses heartbeat messages from the device,
-the driver calls the device-specific ndo_stop function,
-which frees the resources. If the driver is unloaded in
-this scenario, it calls ndo_stop again, attempting to free
-resources that have already been freed, leading to a host
-hang issue. To resolve this, dev_close should be called
-instead of the device-specific stop function.dev_close
-internally calls ndo_stop to stop the network interface
-and performs additional cleanup tasks. During the driver
-unload process, if the device is already down, ndo_stop
-is not called.
+Completion of the FFA_PARTITION_INFO_GET ABI transfers the ownership of
+the caller’s Rx buffer from the producer(typically partition mnager) to
+the consumer(this driver/OS). FFA_RX_RELEASE transfers the ownership
+from the consumer back to the producer.
 
-Fixes: 5cb96c29aa0e ("octeon_ep: add heartbeat monitor")
-Signed-off-by: Sathesh B Edara <sedara@marvell.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250429114624.19104-1-sedara@marvell.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+However, when we set the flag to just return the count of partitions
+deployed in the system corresponding to the specified UUID while
+invoking FFA_PARTITION_INFO_GET, the Rx buffer ownership shouldn't be
+transferred to this driver. We must be able to skip transferring back
+the ownership to the partition manager when we request just to get the
+count of the partitions as the buffers are not acquired in this case.
+
+Firmware may return FFA_RET_DENIED or other error for the ffa_rx_release()
+in such cases.
+
+Fixes: bb1be7498500 ("firmware: arm_ffa: Add v1.1 get_partition_info support")
+Message-Id: <20250321115700.3525197-1-sudeep.holla@arm.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeon_ep/octep_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/firmware/arm_ffa/driver.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_main.c b/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
-index a89f80bac39b8..1b2f5cae06449 100644
---- a/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
-+++ b/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
-@@ -1184,7 +1184,7 @@ static void octep_hb_timeout_task(struct work_struct *work)
- 		miss_cnt);
- 	rtnl_lock();
- 	if (netif_running(oct->netdev))
--		octep_stop(oct->netdev);
-+		dev_close(oct->netdev);
- 	rtnl_unlock();
- }
+diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
+index 655672a880959..03d22cbb2ad47 100644
+--- a/drivers/firmware/arm_ffa/driver.c
++++ b/drivers/firmware/arm_ffa/driver.c
+@@ -280,7 +280,8 @@ __ffa_partition_info_get(u32 uuid0, u32 uuid1, u32 uuid2, u32 uuid3,
+ 			memcpy(buffer + idx, drv_info->rx_buffer + idx * sz,
+ 			       buf_sz);
+ 
+-	ffa_rx_release();
++	if (!(flags & PARTITION_INFO_GET_RETURN_COUNT_ONLY))
++		ffa_rx_release();
+ 
+ 	mutex_unlock(&drv_info->rx_lock);
  
 -- 
 2.39.5
