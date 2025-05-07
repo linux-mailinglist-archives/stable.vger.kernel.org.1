@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-142391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05948AAEA6A
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:55:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31ED2AAE944
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:43:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 006ED9C7A51
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:54:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C27D8980118
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:42:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 335BE21E0BB;
-	Wed,  7 May 2025 18:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56A5128E57D;
+	Wed,  7 May 2025 18:42:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j7sODoOf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dxfarznK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56742116E9;
-	Wed,  7 May 2025 18:55:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F1DF28E578;
+	Wed,  7 May 2025 18:42:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644104; cv=none; b=jz++1ZTyjnVFdTK/BqdSwAuZ9SBHdLj3bvA9FXhZtFR/HR2wJia2Ja5RsdiUqFHRnSoecWZJDdFpvaAcWZT3fvLxPVrvxahGUrWGF/DBbb5yPmEXKoVwh8agB+7ZnQ5g1XUer6gHtdwdp2/j4PMJISedh0DwWP/iH2rRTUUopi0=
+	t=1746643357; cv=none; b=sL7AzfbdVpX+xCFpYnv7L+ZAMzNNOm7m/V3dzJHhTlnP5BjDX0PGsWSZzt9qUtmbfFCGDqU8FJnqOVt5JssGNRs5sTZdqgE0VpjyKlG/+OerfZm2dDGLKAXj+czJ4nhHkOC59ib4xawx4wIXm4aBr2K7DSLUH5/4VEDkmJVUodY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644104; c=relaxed/simple;
-	bh=hWqfumIyIJa5fKCmTqN4h9PCDlo9nvG0OJaqd/5YU9M=;
+	s=arc-20240116; t=1746643357; c=relaxed/simple;
+	bh=438xf4lWWYKDwjyIUC0wz8QsNd3PBzBLqygQHNJV3Rg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NgXPmKIkpBSC/6Wf5A4pB+YdZs/4djKzCnCMKLPJE+Ln4XHZvX9mA2PbLOwMzzSeUy3M73L9i3kjRhyJ0ZaQVFkP7ZL9N0z/aSE6ToF6DdYSMije+i+I98qb1skNOK05U2eIjMZuCdCgXYBOC6FCYE1jMZ94un3WSKGnEop6ZBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j7sODoOf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6570EC4CEE2;
-	Wed,  7 May 2025 18:55:03 +0000 (UTC)
+	 MIME-Version; b=XbuwU70MHLijfEv2+XRBB0aS2FIlbG0zdHBRgNNYh6W27e22RlwEDZsfQOsBAEQiF6BT2HCp6MHI3qcXXeFLq2pTabD6+yAIP2UeIHjkDFXLCA3o5M8lcJRyWgh32xKZgVM22L6jwWA1JLgJGEPacQZT4iZ/TNdFKgYJklxMTtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dxfarznK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93DBDC4CEE2;
+	Wed,  7 May 2025 18:42:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644103;
-	bh=hWqfumIyIJa5fKCmTqN4h9PCDlo9nvG0OJaqd/5YU9M=;
+	s=korg; t=1746643356;
+	bh=438xf4lWWYKDwjyIUC0wz8QsNd3PBzBLqygQHNJV3Rg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j7sODoOfrC47flGpNBWbos4ejV8w2rEYpkRm+30UADPNLR1Q7fz2q7N+WnnOCoofa
-	 A9DynzrXB8t+Md0ikzUcvh+KYm4GCyD9vFfbOVbrYbsGDX0HaOeAF0YSnMM0rKZEJF
-	 QJfa48/1QWKem6j9GRp0BJjCt2bkQhwyUu4SFIqc=
+	b=dxfarznKo/8KU5O+XFUEVuOXZPNURkiABIcHmjKT9o5J23noeXlwFousJjDbylPze
+	 jnXdaxosvam3u25gsrjbh7aDnk2iTJzxdeWW0dGnRNNUfKh8WlIMs59hH1dAYR1/Nf
+	 lxw8lDhRRcnFbIFqR2ybMFiBx7lMDc9ENVoXLevU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Somnath Kotur <somnath.kotur@broadcom.com>,
-	Shravya KN <shravya.k-n@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 121/183] bnxt_en: Fix error handling path in bnxt_init_chip()
+Subject: [PATCH 5.15 25/55] net_sched: ets: Fix double list add in class with netem as child qdisc
 Date: Wed,  7 May 2025 20:39:26 +0200
-Message-ID: <20250507183829.726716729@linuxfoundation.org>
+Message-ID: <20250507183800.054481205@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
+References: <20250507183759.048732653@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shravya KN <shravya.k-n@broadcom.com>
+From: Victor Nogueira <victor@mojatatu.com>
 
-[ Upstream commit 9ab7a709c926c16b4433cf02d04fcbcf35aaab2b ]
+[ Upstream commit 1a6d0c00fa07972384b0c308c72db091d49988b6 ]
 
-WARN_ON() is triggered in __flush_work() if bnxt_init_chip() fails
-because we call cancel_work_sync() on dim work that has not been
-initialized.
+As described in Gerrard's report [1], there are use cases where a netem
+child qdisc will make the parent qdisc's enqueue callback reentrant.
+In the case of ets, there won't be a UAF, but the code will add the same
+classifier to the list twice, which will cause memory corruption.
 
-WARNING: CPU: 37 PID: 5223 at kernel/workqueue.c:4201 __flush_work.isra.0+0x212/0x230
+In addition to checking for qlen being zero, this patch checks whether
+the class was already added to the active_list (cl_is_active) before
+doing the addition to cater for the reentrant case.
 
-The driver relies on the BNXT_STATE_NAPI_DISABLED bit to check if dim
-work has already been cancelled.  But in the bnxt_open() path,
-BNXT_STATE_NAPI_DISABLED is not set and this causes the error
-path to think that it needs to cancel the uninitalized dim work.
-Fix it by setting BNXT_STATE_NAPI_DISABLED during initialization.
-The bit will be cleared when we enable NAPI and initialize dim work.
+[1] https://lore.kernel.org/netdev/CAHcdcOm+03OD2j6R0=YHKqmy=VgJ8xEOKuP6c7mSgnp-TEJJbw@mail.gmail.com/
 
-Fixes: 40452969a506 ("bnxt_en: Fix DIM shutdown")
-Suggested-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Signed-off-by: Shravya KN <shravya.k-n@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 37d9cf1a3ce3 ("sched: Fix detection of empty queues in child qdiscs")
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+Link: https://patch.msgid.link/20250425220710.3964791-4-victor@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/sched/sch_ets.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index e44f9692dc2ee..da837866c02f8 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -11379,6 +11379,9 @@ static void bnxt_init_napi(struct bnxt *bp)
- 		poll_fn = bnxt_poll_p5;
- 	else if (BNXT_CHIP_TYPE_NITRO_A0(bp))
- 		cp_nr_rings--;
+diff --git a/net/sched/sch_ets.c b/net/sched/sch_ets.c
+index d686ea7e8db49..07fae45f58732 100644
+--- a/net/sched/sch_ets.c
++++ b/net/sched/sch_ets.c
+@@ -74,6 +74,11 @@ static const struct nla_policy ets_class_policy[TCA_ETS_MAX + 1] = {
+ 	[TCA_ETS_QUANTA_BAND] = { .type = NLA_U32 },
+ };
+ 
++static bool cl_is_active(struct ets_class *cl)
++{
++	return !list_empty(&cl->alist);
++}
 +
-+	set_bit(BNXT_STATE_NAPI_DISABLED, &bp->state);
-+
- 	for (i = 0; i < cp_nr_rings; i++) {
- 		bnapi = bp->bnapi[i];
- 		netif_napi_add_config(bp->dev, &bnapi->napi, poll_fn,
+ static int ets_quantum_parse(struct Qdisc *sch, const struct nlattr *attr,
+ 			     unsigned int *quantum,
+ 			     struct netlink_ext_ack *extack)
+@@ -424,7 +429,6 @@ static int ets_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	struct ets_sched *q = qdisc_priv(sch);
+ 	struct ets_class *cl;
+ 	int err = 0;
+-	bool first;
+ 
+ 	cl = ets_classify(skb, sch, &err);
+ 	if (!cl) {
+@@ -434,7 +438,6 @@ static int ets_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		return err;
+ 	}
+ 
+-	first = !cl->qdisc->q.qlen;
+ 	err = qdisc_enqueue(skb, cl->qdisc, to_free);
+ 	if (unlikely(err != NET_XMIT_SUCCESS)) {
+ 		if (net_xmit_drop_count(err)) {
+@@ -444,7 +447,7 @@ static int ets_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		return err;
+ 	}
+ 
+-	if (first && !ets_class_is_strict(q, cl)) {
++	if (!cl_is_active(cl) && !ets_class_is_strict(q, cl)) {
+ 		list_add_tail(&cl->alist, &q->active);
+ 		cl->deficit = cl->quantum;
+ 	}
 -- 
 2.39.5
 
