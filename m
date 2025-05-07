@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-142157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA2CCAAE94D
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:43:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CA5AAAEB0C
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:02:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3EFE87A8BD7
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:41:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36D0F7BF21F
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:01:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D58C7288CB0;
-	Wed,  7 May 2025 18:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA3C328BA9F;
+	Wed,  7 May 2025 19:02:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NYkSY7l0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y9KoeqUq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 901EF1DE4C4;
-	Wed,  7 May 2025 18:43:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8669429A0;
+	Wed,  7 May 2025 19:02:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643389; cv=none; b=Kx96HvradTK6Mpk8dNChP4wN1trjwveH0mhNLQujQHilOf/PbStJQCflIDDQQAwVYJTUnlca2VZZbLHbYwkXBz82Mhu7/7oPe+W+hvL9w0w+lpEvE+IK7kWE2bPNiaXre0DeGNyWSZFOX7/UpAncUCklnt3VH09AvTd6BLzjDfY=
+	t=1746644559; cv=none; b=tnd+dAkBF+C1LvUzfqnlSy+0MDXw+NGpKPpqJi2W8wEuVLiHwx0k3tXSI3I0N+1MCKnMVBwkplPArRAO46mj+SuNbkCBchOLu3x4/vKTCV/2Ot+vjyZ2htWLO5YZYWK2h4JBzvNm24dhMdwa3U8poZKzUBWzIfjmy9fHp9fMurE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643389; c=relaxed/simple;
-	bh=+6XCn/GY6AryQwCiUfpYQGxt6flsBLhVIfLOpmQAIoY=;
+	s=arc-20240116; t=1746644559; c=relaxed/simple;
+	bh=0NFJsDPIKdpSQg9Cuf39ZRZN5OZaX2TClAy2mP/TKUs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QWrst/+6eoPdR1ms/b2+XmnH+Nfg4JIhtEjpNstb6WyyWVsCatXteDd9K5X4NhwpynPX77pkM0TDE+UoE8dVerU525AB7k3zCE5Z5hjRbJIilr+i7v+uahibedjJNwtgshbQYk5IgCbKtphrBRoKvtD8nsE6oPqvjCJzTCli958=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NYkSY7l0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F052C4CEE2;
-	Wed,  7 May 2025 18:43:08 +0000 (UTC)
+	 MIME-Version; b=NtG3umTl623MKZzqZBC2tEzCdsK7Km+R516/efho7VT1H8T+L5XaBmWP8ewa7/5qmswv3ULe8SNv0QDaVKlFVV/VVFZ0tAJ8lb0X8dc0ND/l/CyvNP6a2NUiezaMkn4zR3i7u5xiY5g3KiueVO8U/FLu6rbCmz1XbxDLoD2xl6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y9KoeqUq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9992EC4CEE2;
+	Wed,  7 May 2025 19:02:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643389;
-	bh=+6XCn/GY6AryQwCiUfpYQGxt6flsBLhVIfLOpmQAIoY=;
+	s=korg; t=1746644559;
+	bh=0NFJsDPIKdpSQg9Cuf39ZRZN5OZaX2TClAy2mP/TKUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NYkSY7l0F55L//ozKzaLmqqtKnOKnCj+0kCoXVu76OgMzuIsyQ3ks1yrl63niKhMF
-	 S+pEuRvJ3Q9Vhlq8s51p19Qdhppy8msqERZWzbggc3ILyld4t4uZDn1XqM5J+KEB4u
-	 MQfWPaG4q94Og2+4D/yhmuGmiC6xICofYHXf0Uqs=
+	b=Y9KoeqUqhvPPtmtzra20ql4VsyAEqxeHjWiuY1o6IHfw7evvhZVyYgpVTt1GGact5
+	 JQMblpCN/mETGDbFUkyBatahVypE1aJx/UUGR7VaKBb/uJaaAFT8lU9AC0UG9Qbw6j
+	 uhYDYdWcH43iVeDdAptrfphk9xFDPEkCrrUd36Yg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Victor Nogueira <victor@mojatatu.com>,
+	Sathesh B Edara <sedara@marvell.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 26/55] net_sched: qfq: Fix double list add in class with netem as child qdisc
+Subject: [PATCH 6.12 082/164] octeon_ep_vf: Resolve netdevice usage count issue
 Date: Wed,  7 May 2025 20:39:27 +0200
-Message-ID: <20250507183800.095202856@linuxfoundation.org>
+Message-ID: <20250507183824.283715824@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
-References: <20250507183759.048732653@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Nogueira <victor@mojatatu.com>
+From: Sathesh B Edara <sedara@marvell.com>
 
-[ Upstream commit f139f37dcdf34b67f5bf92bc8e0f7f6b3ac63aa4 ]
+[ Upstream commit 8548c84c004be3da4ffbe35ed0589041a4050c03 ]
 
-As described in Gerrard's report [1], there are use cases where a netem
-child qdisc will make the parent qdisc's enqueue callback reentrant.
-In the case of qfq, there won't be a UAF, but the code will add the same
-classifier to the list twice, which will cause memory corruption.
+The netdevice usage count increases during transmit queue timeouts
+because netdev_hold is called in ndo_tx_timeout, scheduling a task
+to reinitialize the card. Although netdev_put is called at the end
+of the scheduled work, rtnl_unlock checks the reference count during
+cleanup. This could cause issues if transmit timeout is called on
+multiple queues.
 
-This patch checks whether the class was already added to the agg->active
-list (cl_is_active) before doing the addition to cater for the reentrant
-case.
-
-[1] https://lore.kernel.org/netdev/CAHcdcOm+03OD2j6R0=YHKqmy=VgJ8xEOKuP6c7mSgnp-TEJJbw@mail.gmail.com/
-
-Fixes: 37d9cf1a3ce3 ("sched: Fix detection of empty queues in child qdiscs")
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
-Link: https://patch.msgid.link/20250425220710.3964791-5-victor@mojatatu.com
+Fixes: cb7dd712189f ("octeon_ep_vf: Add driver framework and device initialization")
+Signed-off-by: Sathesh B Edara <sedara@marvell.com>
+Link: https://patch.msgid.link/20250424133944.28128-1-sedara@marvell.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_qfq.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
-index b1dbe03dde1b5..a198145f1251f 100644
---- a/net/sched/sch_qfq.c
-+++ b/net/sched/sch_qfq.c
-@@ -204,6 +204,11 @@ struct qfq_sched {
-  */
- enum update_reason {enqueue, requeue};
+diff --git a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c
+index 18c922dd5fc64..ccb69bc5c9529 100644
+--- a/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c
++++ b/drivers/net/ethernet/marvell/octeon_ep_vf/octep_vf_main.c
+@@ -835,7 +835,9 @@ static void octep_vf_tx_timeout(struct net_device *netdev, unsigned int txqueue)
+ 	struct octep_vf_device *oct = netdev_priv(netdev);
  
-+static bool cl_is_active(struct qfq_class *cl)
-+{
-+	return !list_empty(&cl->alist);
-+}
+ 	netdev_hold(netdev, NULL, GFP_ATOMIC);
+-	schedule_work(&oct->tx_timeout_task);
++	if (!schedule_work(&oct->tx_timeout_task))
++		netdev_put(netdev, NULL);
 +
- static struct qfq_class *qfq_find_class(struct Qdisc *sch, u32 classid)
- {
- 	struct qfq_sched *q = qdisc_priv(sch);
-@@ -1223,7 +1228,6 @@ static int qfq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	struct qfq_class *cl;
- 	struct qfq_aggregate *agg;
- 	int err = 0;
--	bool first;
+ }
  
- 	cl = qfq_classify(skb, sch, &err);
- 	if (cl == NULL) {
-@@ -1245,7 +1249,6 @@ static int qfq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	}
- 
- 	gso_segs = skb_is_gso(skb) ? skb_shinfo(skb)->gso_segs : 1;
--	first = !cl->qdisc->q.qlen;
- 	err = qdisc_enqueue(skb, cl->qdisc, to_free);
- 	if (unlikely(err != NET_XMIT_SUCCESS)) {
- 		pr_debug("qfq_enqueue: enqueue failed %d\n", err);
-@@ -1262,8 +1265,8 @@ static int qfq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	++sch->q.qlen;
- 
- 	agg = cl->agg;
--	/* if the queue was not empty, then done here */
--	if (!first) {
-+	/* if the class is active, then done here */
-+	if (cl_is_active(cl)) {
- 		if (unlikely(skb == cl->qdisc->ops->peek(cl->qdisc)) &&
- 		    list_first_entry(&agg->active, struct qfq_class, alist)
- 		    == cl && cl->deficit < len)
+ static int octep_vf_set_mac(struct net_device *netdev, void *p)
 -- 
 2.39.5
 
