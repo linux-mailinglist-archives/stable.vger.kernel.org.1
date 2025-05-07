@@ -1,145 +1,131 @@
-Return-Path: <stable+bounces-142373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 240A2AAEA56
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:54:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B071CAAEC2C
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:27:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 523891BC412F
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:54:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4606C1897224
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:27:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C8F228937F;
-	Wed,  7 May 2025 18:54:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36C7128E56D;
+	Wed,  7 May 2025 19:27:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="a5YfppQs"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="pMTCjJd4"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from 004.mia.mailroute.net (004.mia.mailroute.net [199.89.3.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4169F28B4F0;
-	Wed,  7 May 2025 18:54:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DC8728B4FE;
+	Wed,  7 May 2025 19:27:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.3.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644050; cv=none; b=HF1lY0Ttm8b5yGWCvY3jaquA9S7H+f+xtGdIIYexhIYHhME4liA3tS0fUqGYfQxAWSGwtircrI+if39NU9f6fivJdZ86BisDoTMXNTqAyn4wgnrn3HoOY9kPJk7WqW5YzNpQk4YpQlQgNuFhX8CSrnfxdzuk7LfrNoLZTAQRIzA=
+	t=1746646048; cv=none; b=FVt6lB6LZNE3GO++6oVsR7oBPpCYlhnHESCGwAZx1AhUZzxQVDptJOpcQ8eKA3Dldzv/YB2PVmT8FtWNm7jzObNJuycwNsDgGnszURZ5KB0vsHXWyyl37OZg1WFf51/eU5aBNsIrRPVpp54QiE44xjTCGX11y/gOcmuLRdTNpSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644050; c=relaxed/simple;
-	bh=4HKpOBJtT9Knd8yHFCVLaU8ixVr4lTJ1SeumRrcVqw4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FTQQOzKShfGYUN417ukBmraWkOWaHNYkKMiSVC0mvAOE2jxHCJ4dHMTVFr7EtDzcbmNopiSSb5dgyX+QSbZK0gqX5Dj6MgH+ZT/hTF7au5g1jbWhvNDahnwM6ev8uLaDJjlc74QD9ZQhbludFHmzU/WHbcNg5E9TWpM1DilViJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=a5YfppQs; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from pendragon.ideasonboard.com (static-176-133-119-130.ftth.abo.bbox.fr [176.133.119.130])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id BDACE6D5;
-	Wed,  7 May 2025 20:53:55 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1746644035;
-	bh=4HKpOBJtT9Knd8yHFCVLaU8ixVr4lTJ1SeumRrcVqw4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=a5YfppQsqevzz/DMRtGjjdbEW9ziRNKHDPWqIm3PIuPGPyf+Pd0EukV43zV25uwpE
-	 FvxM4Ef0dESs1lmsMsGGjU/f4IPbYwTk2C/wvi62o6wzPKBh+JzzmxnRsBLJzQsOnD
-	 gg5DkNh7IEPpZ/QZ9m9LaudG6hj0z8rmgmJhbWtc=
-Date: Wed, 7 May 2025 20:53:58 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-	iommu@lists.linux.dev, Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Robin Murphy <robin.murphy@arm.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v3 3/3] media: omap3isp: use sgtable-based scatterlist
- wrappers
-Message-ID: <20250507185358.GB28125@pendragon.ideasonboard.com>
-References: <20250507160913.2084079-1-m.szyprowski@samsung.com>
- <CGME20250507160923eucas1p1a344e74759410b49143e2be42ef43ded@eucas1p1.samsung.com>
- <20250507160913.2084079-4-m.szyprowski@samsung.com>
+	s=arc-20240116; t=1746646048; c=relaxed/simple;
+	bh=MevCUtC29kmg79Osqbp+iLHaV5bIefjb1T+Q1ufLpCI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MzUSv3yD58yjAOX6lq/kfUJOveMNA4CoGTTE0xzkyqwC2UjxBBZSJT3Cy90cvhT2EnQjKIx9osz8+bTuMOng660w4yk4x+xO44oyWYL3MU5D7KJ3FUc4xl3lhbb5qNHEMV0bJjAMfXXQwb5J1B9SbzRAxltw7l8mxgiTRQQj0A4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=pMTCjJd4; arc=none smtp.client-ip=199.89.3.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 004.mia.mailroute.net (Postfix) with ESMTP id 4Zt4yv2T13zm0yTm;
+	Wed,  7 May 2025 19:27:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1746646035; x=1749238036; bh=MevCUtC29kmg79Osqbp+iLHa
+	V5bIefjb1T+Q1ufLpCI=; b=pMTCjJd4UP3qHHqV5FR4Dd3wbLC20/Do4ZF3qgu6
+	i5Mm+C44DLrlXtwuOiJz1JpwZWRFo6joSytrhNucbIdRj5cuhvoj9DQFWA595Wgi
+	6o0Pbg4kv/hMOFWvr0Tlx9vbJ1AEEhO1090Sv/Y/AX76RJnx60EiwMn9QAMHy5Sd
+	Q1itCsQmZ1TRBjxblO/upiI93JYb3HPKKh+k11StpAR9rIpVbKaTY2+8L3YCPDTw
+	MLqgdb3qsl4IIYo6uzBpj7r+1l/kQFISbxyqTU2F+A8BawNFmn05RQs1wbW5AfhT
+	oE9E9E+984O0/GoAfAOJHxfQG2d4yVFSZBfETdpYdCITOQ==
+X-Virus-Scanned: by MailRoute
+Received: from 004.mia.mailroute.net ([127.0.0.1])
+ by localhost (004.mia [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id JAJxBvassQb1; Wed,  7 May 2025 19:27:15 +0000 (UTC)
+Received: from [100.66.154.22] (unknown [104.135.204.82])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 004.mia.mailroute.net (Postfix) with ESMTPSA id 4Zt4yT3vTKzm0yTR;
+	Wed,  7 May 2025 19:26:55 +0000 (UTC)
+Message-ID: <95235015-270d-451e-989c-9fddcbfcb97e@acm.org>
+Date: Wed, 7 May 2025 12:26:54 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250507160913.2084079-4-m.szyprowski@samsung.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] ufs: core: fix hwq_id type and value
+To: =?UTF-8?B?UGV0ZXIgV2FuZyAo546L5L+h5Y+LKQ==?= <peter.wang@mediatek.com>,
+ "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+ "jejb@linux.ibm.com" <jejb@linux.ibm.com>,
+ "avri.altman@wdc.com" <avri.altman@wdc.com>,
+ "martin.petersen@oracle.com" <martin.petersen@oracle.com>,
+ "alim.akhtar@samsung.com" <alim.akhtar@samsung.com>
+Cc: =?UTF-8?B?Q0MgQ2hvdSAo5ZGo5b+X5p2wKQ==?= <cc.chou@mediatek.com>,
+ "quic_ziqichen@quicinc.com" <quic_ziqichen@quicinc.com>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ =?UTF-8?B?RWRkaWUgSHVhbmcgKOm7g+aZuuWCkSk=?= <eddie.huang@mediatek.com>,
+ "linux-mediatek@lists.infradead.org" <linux-mediatek@lists.infradead.org>,
+ =?UTF-8?B?Q2hhb3RpYW4gSmluZyAo5LqV5pyd5aSpKQ==?=
+ <Chaotian.Jing@mediatek.com>, =?UTF-8?B?UWlsaW4gVGFuICjosK3pupLpup8p?=
+ <Qilin.Tan@mediatek.com>, =?UTF-8?B?TGluIEd1aSAo5qGC5p6XKQ==?=
+ <Lin.Gui@mediatek.com>, =?UTF-8?B?WWktZmFuIFBlbmcgKOW9ree+v+WHoSk=?=
+ <Yi-fan.Peng@mediatek.com>, =?UTF-8?B?SmlhamllIEhhbyAo6YOd5Yqg6IqCKQ==?=
+ <jiajie.hao@mediatek.com>, =?UTF-8?B?TmFvbWkgQ2h1ICjmnLHoqaDnlLAp?=
+ <Naomi.Chu@mediatek.com>, =?UTF-8?B?QWxpY2UgQ2hhbyAo6LaZ54+u5Z2HKQ==?=
+ <Alice.Chao@mediatek.com>, =?UTF-8?B?RWQgVHNhaSAo6JSh5a6X6LuSKQ==?=
+ <Ed.Tsai@mediatek.com>, wsd_upstream <wsd_upstream@mediatek.com>,
+ =?UTF-8?B?Q2h1bi1IdW5nIFd1ICjlt6vpp7/lro8p?= <Chun-hung.Wu@mediatek.com>,
+ =?UTF-8?B?VHVuLXl1IFl1ICjmuLjmlabogb8p?= <Tun-yu.Yu@mediatek.com>
+References: <20250506124038.4071609-1-peter.wang@mediatek.com>
+ <04fc1549-0fa6-4956-b522-df5fbc26100c@acm.org>
+ <6c9e983154ff8d9b4a1e63eb503e8b147303eb68.camel@mediatek.com>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <6c9e983154ff8d9b4a1e63eb503e8b147303eb68.camel@mediatek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
 
-Hi Marek,
+On 5/6/25 9:03 PM, Peter Wang (=E7=8E=8B=E4=BF=A1=E5=8F=8B) wrote:
+> Whether it is necessary or not depends on how we define 'necessary.'
+> If the criterion is simply to avoid errors, then indeed, this patch
+> is not necessary. However, if we are addressing the warning caused
+> by incorrect behavior (assigning int to u32), then it is necessary
+> to fix it. After all, we shouldn't just be satisfied with avoiding
+> errors, we should strive to make the Linux kernel as perfect as
+> possible, shouldn't we?
 
-Thank you for the patch.
+Errors? Which errors? Using -1 instead of UINT_MAX is common in C code.
+Assigning variables of signed integer type to unsigned variables is also
+widespread. Using %d to format a negative number, although dubious, is
+also common in C code. Several years ago gcc warned about using %d to
+format unsigned integers. That warning was disabled again because there
+is too much existing code that follows this practice.
 
-On Wed, May 07, 2025 at 06:09:13PM +0200, Marek Szyprowski wrote:
-> Use common wrappers operating directly on the struct sg_table objects to
-> fix incorrect use of scatterlists sync calls. dma_sync_sg_for_*()
-> functions have to be called with the number of elements originally passed
-> to dma_map_sg_*() function, not the one returned in sgtable's nents.
-> 
-> Fixes: d33186d0be18 ("[media] omap3isp: ccdc: Use the DMA API for LSC")
-> Fixes: 0e24e90f2ca7 ("[media] omap3isp: stat: Use the DMA API")
-> CC: stable@vger.kernel.org
-> Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+> Additionally, there are many ways to determine whether MCQ is enabled,
+> including reading the host capability or checking hba->mcq_enabled,
+> etc.
+> Moreover, MCQ is not a feature that trun on and off at runtime.
+> It is at the end of the UFS initialization that the status of MCQ
+> is determined, so it shouldn't be necessary to rely on this to
+> determine whether MCQ is enabled, right?
 
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+If you want to proceed with this patch, please make it clear in the
+patch description that this patch is a behavior change and not a bug
+fix.
 
-> ---
->  drivers/media/platform/ti/omap3isp/ispccdc.c | 8 ++++----
->  drivers/media/platform/ti/omap3isp/ispstat.c | 6 ++----
->  2 files changed, 6 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/media/platform/ti/omap3isp/ispccdc.c b/drivers/media/platform/ti/omap3isp/ispccdc.c
-> index dd375c4e180d..7d0c723dcd11 100644
-> --- a/drivers/media/platform/ti/omap3isp/ispccdc.c
-> +++ b/drivers/media/platform/ti/omap3isp/ispccdc.c
-> @@ -446,8 +446,8 @@ static int ccdc_lsc_config(struct isp_ccdc_device *ccdc,
->  		if (ret < 0)
->  			goto done;
->  
-> -		dma_sync_sg_for_cpu(isp->dev, req->table.sgt.sgl,
-> -				    req->table.sgt.nents, DMA_TO_DEVICE);
-> +		dma_sync_sgtable_for_cpu(isp->dev, &req->table.sgt,
-> +					 DMA_TO_DEVICE);
->  
->  		if (copy_from_user(req->table.addr, config->lsc,
->  				   req->config.size)) {
-> @@ -455,8 +455,8 @@ static int ccdc_lsc_config(struct isp_ccdc_device *ccdc,
->  			goto done;
->  		}
->  
-> -		dma_sync_sg_for_device(isp->dev, req->table.sgt.sgl,
-> -				       req->table.sgt.nents, DMA_TO_DEVICE);
-> +		dma_sync_sgtable_for_device(isp->dev, &req->table.sgt,
-> +					    DMA_TO_DEVICE);
->  	}
->  
->  	spin_lock_irqsave(&ccdc->lsc.req_lock, flags);
-> diff --git a/drivers/media/platform/ti/omap3isp/ispstat.c b/drivers/media/platform/ti/omap3isp/ispstat.c
-> index 359a846205b0..d3da68408ecb 100644
-> --- a/drivers/media/platform/ti/omap3isp/ispstat.c
-> +++ b/drivers/media/platform/ti/omap3isp/ispstat.c
-> @@ -161,8 +161,7 @@ static void isp_stat_buf_sync_for_device(struct ispstat *stat,
->  	if (ISP_STAT_USES_DMAENGINE(stat))
->  		return;
->  
-> -	dma_sync_sg_for_device(stat->isp->dev, buf->sgt.sgl,
-> -			       buf->sgt.nents, DMA_FROM_DEVICE);
-> +	dma_sync_sgtable_for_device(stat->isp->dev, &buf->sgt, DMA_FROM_DEVICE);
->  }
->  
->  static void isp_stat_buf_sync_for_cpu(struct ispstat *stat,
-> @@ -171,8 +170,7 @@ static void isp_stat_buf_sync_for_cpu(struct ispstat *stat,
->  	if (ISP_STAT_USES_DMAENGINE(stat))
->  		return;
->  
-> -	dma_sync_sg_for_cpu(stat->isp->dev, buf->sgt.sgl,
-> -			    buf->sgt.nents, DMA_FROM_DEVICE);
-> +	dma_sync_sgtable_for_cpu(stat->isp->dev, &buf->sgt, DMA_FROM_DEVICE);
->  }
->  
->  static void isp_stat_buf_clear(struct ispstat *stat)
+Thanks,
 
--- 
-Regards,
-
-Laurent Pinchart
+Bart.
 
