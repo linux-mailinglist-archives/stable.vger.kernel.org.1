@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-142648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACB84AAEB96
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:08:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93D56AAEB07
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:02:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC2111C457D0
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:08:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DBC4525764
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:02:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71A8D289E37;
-	Wed,  7 May 2025 19:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 349ED21146F;
+	Wed,  7 May 2025 19:02:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y6b9oq57"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WkmU90+o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E1711E22E9;
-	Wed,  7 May 2025 19:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E533729A0;
+	Wed,  7 May 2025 19:02:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644899; cv=none; b=jlq1senj5+zypLIXtKCcZwIUyz0Yz/1GTMciPZ8dRGOuEckgCRshdyLCMzAeVQ+K5FuvIkBFahMP5RpBOfL450bctA93IJzQmuxFiBqGn6OvWCu36qdSsBdMIkZH4PXmUzqOxXp/5STZxF5/z8Pe4Y8hneVWPaiOT84tPfiQfCc=
+	t=1746644553; cv=none; b=O1/cM9uRe4XPvxrAs0MurfRkKxkE0ccwiX3aEXpDA8Sx470jenzNz5zNzLXR4xMEoNAXsGOs5neJP6UgjHsBOMsyi9/5ND099xyNJgnPPcxPI8OPswv2lMnxzH1kOVyzywY3ahDMC2DeMD+Fk8fnQU6hrF9fZGioiDEsdK/O1oU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644899; c=relaxed/simple;
-	bh=3SK/jtf/zwgmqIo6scVF8M31VOZ+urbHIzKCNTVBd3E=;
+	s=arc-20240116; t=1746644553; c=relaxed/simple;
+	bh=wx5eTAPKebNDaq26kRNfNeXRvYr8Gqv8Anfe+6lN4CI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cFSeI3F7dSahtHSmpgFIS6ny2nVD1HUg0AvX4xvb5FY1WeN2VgNMYsmBVEdA7u+om6atQBNZcPeeFOnN/87IBKJ0gG3dSHuYJqgOPqTDmzqWGL/ihOwhhJUhiWumbEX9iTJ6+n7o/hLzAFuuoYStClcgyBf4bitcQJljq9sAqGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y6b9oq57; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92A93C4CEE2;
-	Wed,  7 May 2025 19:08:18 +0000 (UTC)
+	 MIME-Version; b=vFAHMD534KBAfT2x6uYTdZAxdZUPfwnvQQw0mGTyTSDgMo25yiQaAFpj06XZiDUPcBg5Xjf00TKBC7PwjuEfpwL2ko3htuWmrh+eBjIm1zPnlImR0J9KEXdQbXHR+XGEr1TAjM0JgI4ZjK+H/UkWxNuF9hhtADolAvEJlgGOuK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WkmU90+o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C923C4CEE2;
+	Wed,  7 May 2025 19:02:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644899;
-	bh=3SK/jtf/zwgmqIo6scVF8M31VOZ+urbHIzKCNTVBd3E=;
+	s=korg; t=1746644552;
+	bh=wx5eTAPKebNDaq26kRNfNeXRvYr8Gqv8Anfe+6lN4CI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y6b9oq57dHSXYdFryQOtQlt/lt/FH9jDnhhgEf5tynV2tOEH7BAkI2IuOAM+O0qCI
-	 bi1Po760x/rjWVGQ2d52WaoJs0/sujgQ8ci+Exh2oqw8RpKeRGeULbRL+tlJ1H+pyw
-	 JQLVUHHLFlAUcwd0KQ77NguDVTcgeN8/15kL62sQ=
+	b=WkmU90+otfKrHOqGwMaQaSPqOcijT2d/xMjqUlgg/+TbQ7b3stBxHduk9G5yPNydL
+	 RD9gkBxWgi1678l7ixlB8gAYDjQLW/QUzIU+MlJdRMaLNfZ3usE9ucyrEymUc8vuEN
+	 sPyQgJ6Fnhiph7bJKdTj45AWF6xhGaRGHyx5lYkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jethro Donaldson <devel@jro.nz>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 029/129] smb: client: fix zero length for mkdir POSIX create context
+	Pauli Virtanen <pav@iki.fi>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 080/164] Bluetooth: L2CAP: copy RX timestamp to new fragments
 Date: Wed,  7 May 2025 20:39:25 +0200
-Message-ID: <20250507183814.708888097@linuxfoundation.org>
+Message-ID: <20250507183824.200276786@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
-References: <20250507183813.500572371@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jethro Donaldson <devel@jro.nz>
+From: Pauli Virtanen <pav@iki.fi>
 
-commit 74c72419ec8da5cbc9c49410d3c44bb954538bdd upstream.
+[ Upstream commit 3908feb1bd7f319a10e18d84369a48163264cc7d ]
 
-SMB create requests issued via smb311_posix_mkdir() have an incorrect
-length of zero bytes for the POSIX create context data. ksmbd server
-rejects such requests and logs "cli req too short" causing mkdir to fail
-with "invalid argument" on the client side.  It also causes subsequent
-rmmod to crash in cifs_destroy_request_bufs()
+Copy timestamp too when allocating new skb for received fragment.
+Fixes missing RX timestamps with fragmentation.
 
-Inspection of packets sent by cifs.ko using wireshark show valid data for
-the SMB2_POSIX_CREATE_CONTEXT is appended with the correct offset, but
-with an incorrect length of zero bytes. Fails with ksmbd+cifs.ko only as
-Windows server/client does not use POSIX extensions.
-
-Fix smb311_posix_mkdir() to set req->CreateContextsLength as part of
-appending the POSIX creation context to the request.
-
-Signed-off-by: Jethro Donaldson <devel@jro.nz>
-Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Reviewed-by: Namjae Jeon <linkinjeon@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4d7ea8ee90e4 ("Bluetooth: L2CAP: Fix handling fragmented length")
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2pdu.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/bluetooth/l2cap_core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -2932,6 +2932,7 @@ replay_again:
- 		req->CreateContextsOffset = cpu_to_le32(
- 			sizeof(struct smb2_create_req) +
- 			iov[1].iov_len);
-+		le32_add_cpu(&req->CreateContextsLength, iov[n_iov-1].iov_len);
- 		pc_buf = iov[n_iov-1].iov_base;
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index a55388fbf07c8..c219a8c596d3e 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -7380,6 +7380,9 @@ static int l2cap_recv_frag(struct l2cap_conn *conn, struct sk_buff *skb,
+ 			return -ENOMEM;
+ 		/* Init rx_len */
+ 		conn->rx_len = len;
++
++		skb_set_delivery_time(conn->rx_skb, skb->tstamp,
++				      skb->tstamp_type);
  	}
  
+ 	/* Copy as much as the rx_skb can hold */
+-- 
+2.39.5
+
 
 
 
