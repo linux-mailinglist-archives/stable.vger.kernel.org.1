@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-142455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D638AAEAB7
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:58:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9822BAAEB5D
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:06:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D08691C446CF
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:58:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97567525E21
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:06:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BC7828B4F0;
-	Wed,  7 May 2025 18:58:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AD8428E5FF;
+	Wed,  7 May 2025 19:05:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b1BCEekN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="liiFsiXm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC46019AD5C;
-	Wed,  7 May 2025 18:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB92828E5FB;
+	Wed,  7 May 2025 19:05:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644306; cv=none; b=f3C4oodqp5taxihiAU0/tCYOtqWSlDQwrQa4LC1+quVLawkeIGOsjR1tl5udbdhj41/MoXAUFzFQ2GrdLKY9SNdAIRPMqNKYVl/CVzFRegku4S6eyLleow06YA6t3rzi7J43V4OfXWAAdxroMZ9zeOt9DjNU8aO0TtuaOuaZdR0=
+	t=1746644727; cv=none; b=AHmT8OkylSnWRz8LsFXg3g4JZrF4cnOaJpvG/iq4YqeSe1v3uWYqg1SX6mji2WKziRo2APr1cw6CqkCDCxYPll08g2FQVNlsBtJAFPtl5yenV54/7rpyrED+C3kSHgp9T2NyLIClXjTW65DJEK9cO8+CGgHs76aO0maI5TuBuFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644306; c=relaxed/simple;
-	bh=3a0O+bzpYRvvEbrny02xHMEenRd6TA7TAZJ7o4XZo/M=;
+	s=arc-20240116; t=1746644727; c=relaxed/simple;
+	bh=joyG/6ZbOOkXZNr/mRTYBFo7Ac4Ka4xrobT4p/Oo0ZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=giqC4ZQ4fQfMElSVTxY/DuOr26Cy3w5Ra/Oill/LU3EfPGWI1IKphtDx+JYatuSEJaU0ayXrNyyQisIYdiwuO/0G+6F5kj5yEAwI3xFm+8y9Fe0oxCsN0d49ExtNQCmBjCgl8Ait7FRm9oQvgDkm964KIcofIMJdQsVVIdIrsgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b1BCEekN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33A2DC4CEE2;
-	Wed,  7 May 2025 18:58:25 +0000 (UTC)
+	 MIME-Version; b=jXCSgN0NeRS/ACI2vsWsfEs4LijAjEQWCRcLZpS1NJjAzEIhuUmsZ928FgagcrBCF/aYqpqya7Y67XmuUplntAwXY95JWDd/m3mfMbAnzqWF5g1PhYld6lqIVmSNBPZcPCsPB2jzwtxJ/A867Q1fF13ziVrJyAoOxYsMKKmD59g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=liiFsiXm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5A3BC4CEEE;
+	Wed,  7 May 2025 19:05:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644306;
-	bh=3a0O+bzpYRvvEbrny02xHMEenRd6TA7TAZJ7o4XZo/M=;
+	s=korg; t=1746644727;
+	bh=joyG/6ZbOOkXZNr/mRTYBFo7Ac4Ka4xrobT4p/Oo0ZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b1BCEekNV2CGwll/qHLAIxBqSlpR8upcdglJHSTilfirQ71crJbaL0wm6K8f/kll3
-	 MFK7aLiq92lZQe4udY/jxyU2x1rGoB5/drIEWy+Ml3XLuGE8wx3FYY1TnB+zf1XHsR
-	 C0eirsVRoGw9CfD7F3OeITxyxZzrXTMuIdQy7chg=
+	b=liiFsiXmt9g7aT8B7gVJHyGLIIJvg/AdsBgtLG7r/8lMiRnCJit6uBJfDRfMUTuWc
+	 SbvjP0A/cFbtrovqFlknI56nlX42hbH/keXeJD6GQDY/DxP8x4+Qp12NZDgkJDvkYz
+	 DiuBVn0ZiGJfDnR/LCWStf8CyEK6z1i1paTgXU5w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 177/183] btrfs: expose per-inode stable writes flag
-Date: Wed,  7 May 2025 20:40:22 +0200
-Message-ID: <20250507183832.028367502@linuxfoundation.org>
+	Alan Huang <mmpgouride@gmail.com>,
+	Kent Overstreet <kent.overstreet@linux.dev>
+Subject: [PATCH 6.12 138/164] bcachefs: Remove incorrect __counted_by annotation
+Date: Wed,  7 May 2025 20:40:23 +0200
+Message-ID: <20250507183826.560526336@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,119 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Alan Huang <mmpgouride@gmail.com>
 
-[ Upstream commit ecde48a1a6b3256bd49db8780bf37556b157783c ]
+commit 6846100b00d97d3d6f05766ae86a0d821d849e78 upstream.
 
-The address space flag AS_STABLE_WRITES determine if FGP_STABLE for will
-wait for the folio to finish its writeback.
+This actually reverts 86e92eeeb237 ("bcachefs: Annotate struct bch_xattr
+with __counted_by()").
 
-For btrfs, due to the default data checksum behavior, if we modify the
-folio while it's still under writeback, it will cause data checksum
-mismatch.  Thus for quite some call sites we manually call
-folio_wait_writeback() to prevent such problem from happening.
+After the x_name, there is a value. According to the disscussion[1],
+__counted_by assumes that the flexible array member contains exactly
+the amount of elements that are specified. Now there are users came across
+a false positive detection of an out of bounds write caused by
+the __counted_by here[2], so revert that.
 
-Currently there is only one call site inside btrfs really utilizing
-FGP_STABLE, and in that case we also manually call folio_wait_writeback()
-to do the waiting.
+[1] https://lore.kernel.org/lkml/Zv8VDKWN1GzLRT-_@archlinux/T/#m0ce9541c5070146320efd4f928cc1ff8de69e9b2
+[2] https://privatebin.net/?a0d4e97d590d71e1#9bLmp2Kb5NU6X6cZEucchDcu88HzUQwHUah8okKPReEt
 
-But it's better to properly expose the stable writes flag to a per-inode
-basis, to allow call sites to fully benefit from FGP_STABLE flag.
-E.g. for inodes with NODATASUM allowing beginning dirtying the page
-without waiting for writeback.
-
-This involves:
-
-- Update the mapping's stable write flag when setting/clearing NODATASUM
-  inode flag using ioctl
-  This only works for empty files, so it should be fine.
-
-- Update the mapping's stable write flag when reading an inode from disk
-
-- Remove the explicit folio_wait_writeback() for FGP_BEGINWRITE call
-  site
-
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: 48c1d1bb525b ("btrfs: fix the inode leak in btrfs_iget()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Alan Huang <mmpgouride@gmail.com>
+Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/btrfs_inode.h | 8 ++++++++
- fs/btrfs/file.c        | 1 -
- fs/btrfs/inode.c       | 2 ++
- fs/btrfs/ioctl.c       | 1 +
- 4 files changed, 11 insertions(+), 1 deletion(-)
+ fs/bcachefs/xattr_format.h |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/btrfs_inode.h b/fs/btrfs/btrfs_inode.h
-index b2fa33911c280..029fba82b81da 100644
---- a/fs/btrfs/btrfs_inode.h
-+++ b/fs/btrfs/btrfs_inode.h
-@@ -516,6 +516,14 @@ static inline void btrfs_assert_inode_locked(struct btrfs_inode *inode)
- 	lockdep_assert_held(&inode->vfs_inode.i_rwsem);
- }
+--- a/fs/bcachefs/xattr_format.h
++++ b/fs/bcachefs/xattr_format.h
+@@ -13,7 +13,13 @@ struct bch_xattr {
+ 	__u8			x_type;
+ 	__u8			x_name_len;
+ 	__le16			x_val_len;
+-	__u8			x_name[] __counted_by(x_name_len);
++	/*
++	 * x_name contains the name and value counted by
++	 * x_name_len + x_val_len. The introduction of
++	 * __counted_by(x_name_len) caused a false positive
++	 * detection of an out of bounds write.
++	 */
++	__u8			x_name[];
+ } __packed __aligned(8);
  
-+static inline void btrfs_update_inode_mapping_flags(struct btrfs_inode *inode)
-+{
-+	if (inode->flags & BTRFS_INODE_NODATASUM)
-+		mapping_clear_stable_writes(inode->vfs_inode.i_mapping);
-+	else
-+		mapping_set_stable_writes(inode->vfs_inode.i_mapping);
-+}
-+
- /* Array of bytes with variable length, hexadecimal format 0x1234 */
- #define CSUM_FMT				"0x%*phN"
- #define CSUM_FMT_VALUE(size, bytes)		size, bytes
-diff --git a/fs/btrfs/file.c b/fs/btrfs/file.c
-index a92997a583bd2..cd4e40a719186 100644
---- a/fs/btrfs/file.c
-+++ b/fs/btrfs/file.c
-@@ -874,7 +874,6 @@ static noinline int prepare_one_folio(struct inode *inode, struct folio **folio_
- 			ret = PTR_ERR(folio);
- 		return ret;
- 	}
--	folio_wait_writeback(folio);
- 	/* Only support page sized folio yet. */
- 	ASSERT(folio_order(folio) == 0);
- 	ret = set_folio_extent_mapped(folio);
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index 0db50d19b9a1f..90782fd9f37b8 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -3925,6 +3925,7 @@ static int btrfs_read_locked_inode(struct inode *inode, struct btrfs_path *path)
- 
- 	btrfs_inode_split_flags(btrfs_inode_flags(leaf, inode_item),
- 				&BTRFS_I(inode)->flags, &BTRFS_I(inode)->ro_flags);
-+	btrfs_update_inode_mapping_flags(BTRFS_I(inode));
- 
- cache_index:
- 	/*
-@@ -6340,6 +6341,7 @@ int btrfs_create_new_inode(struct btrfs_trans_handle *trans,
- 		if (btrfs_test_opt(fs_info, NODATACOW))
- 			BTRFS_I(inode)->flags |= BTRFS_INODE_NODATACOW |
- 				BTRFS_INODE_NODATASUM;
-+		btrfs_update_inode_mapping_flags(BTRFS_I(inode));
- 	}
- 
- 	ret = btrfs_insert_inode_locked(inode);
-diff --git a/fs/btrfs/ioctl.c b/fs/btrfs/ioctl.c
-index e666c141cae0b..10a97f0af8d4b 100644
---- a/fs/btrfs/ioctl.c
-+++ b/fs/btrfs/ioctl.c
-@@ -393,6 +393,7 @@ int btrfs_fileattr_set(struct mnt_idmap *idmap,
- 
- update_flags:
- 	binode->flags = binode_flags;
-+	btrfs_update_inode_mapping_flags(binode);
- 	btrfs_sync_inode_flags_to_i_flags(inode);
- 	inode_inc_iversion(inode);
- 	inode_set_ctime_current(inode);
--- 
-2.39.5
-
+ #endif /* _BCACHEFS_XATTR_FORMAT_H */
 
 
 
