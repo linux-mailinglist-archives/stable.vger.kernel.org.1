@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-142534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35EAFAAEB06
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:02:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA124AAEA88
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:56:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9156E7A97C1
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:01:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 547725231D7
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:56:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC0D328AAE9;
-	Wed,  7 May 2025 19:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ADFA244693;
+	Wed,  7 May 2025 18:56:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v1L6RwDd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qzH9d+hV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 985C829A0;
-	Wed,  7 May 2025 19:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 184601482F5;
+	Wed,  7 May 2025 18:56:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644549; cv=none; b=KQ3yuc3jSm/UEG92j4c7tnclHAYe8VZVQG9ik4HdZmpstUCVD8E/vdwCx/BwMzyiGSdxuNsTJGIARg/uvIj5+zYgGQ72d6GnMTPgRfXvDjFoSE0o+XdrHCWJ4AjrTo8HrUYdLUve5RfZgVzHahlGrcsz5/J5uEup/cBmGcbH4Xk=
+	t=1746644195; cv=none; b=UQ1+AybTleXSnpEns2bCJGvdebB+unrRoQ4MwN8vS62YQ0yN4Cv+GWW8WNnG0JYh/h8bYfzV2YVFgVAIdhIkqfIadrWYBE8WSHvQIxBvu55TmIndDihHj7nbkMhiXEpsB2egcQNZ7kIwJm2e708NCN+l/1x+AHe9tst5AkspRWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644549; c=relaxed/simple;
-	bh=NqgCnTppeOUBLPQCDgSHdBvng0o4WIZJH9ZKdpbYwLI=;
+	s=arc-20240116; t=1746644195; c=relaxed/simple;
+	bh=EoKxVJQTQm6TSwN08oIn6yyjqmdOPaTb0rWiyL4yj9k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iHXg/LeEK2u3+gkH8F4DAgDNzmdadarpOy6UtVnO6kLtdIiNf8QVYTwGCRmZ/zKzmwD1Hv+leGdFMXE0e1lftB4HEs06dAVYnDP2zVcb4xmVuLYAkh628jndVMYPui4A3pTGWYCRfkbF5yxjOAMMVxr+piK6D6Ruvm9aQltNebA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v1L6RwDd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00978C4CEE2;
-	Wed,  7 May 2025 19:02:28 +0000 (UTC)
+	 MIME-Version; b=C0utXq6Om85rv+kfRoqZ1RYA1/dtmUJZ9gzAMTS+taqW43kU+o7C38G9tFu37FpT6fRKA4I+yFtnX4j/sRjDNqbf5gm1SoDVlBHKgvVc43uvSHK+UC7w4f6b9r8IjpqzsrXOeHS8BsLHyJ2c+qxHcqOtgUFWlYtN2w4YH11VuR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qzH9d+hV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FFA2C4CEE2;
+	Wed,  7 May 2025 18:56:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644549;
-	bh=NqgCnTppeOUBLPQCDgSHdBvng0o4WIZJH9ZKdpbYwLI=;
+	s=korg; t=1746644195;
+	bh=EoKxVJQTQm6TSwN08oIn6yyjqmdOPaTb0rWiyL4yj9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v1L6RwDdTBMqIj2D5begqgMJMNd5ziscUFwwN4MCMSJAmnIXOIxEi8DpT3fv/6UTg
-	 9GTVoBEjxlxycsbxsEOrm8anpZrWCx4io+w0n4iIpSzWMLWaBRgtEw2pRmIS5nBA0b
-	 0KXL4MTr4lYqpUPz3FkFSImOpN/cMF/9jrHYEWcQ=
+	b=qzH9d+hVtMBBajpMbG/3QY4b5Cke12d/OgebKMzoMRwiqanKZo6R13sas4W6GvKfd
+	 O7PiAvl9R6dsOtVoWc1AHE6MlQSbLkTrcULcDsf5KNq6T61YdQAMdYwbJx+y7zXmjx
+	 WAB2NKeriRGfA8QMCoqsC9CiOYecSF9Pjnyz7o6g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>,
-	Kiran K <kiran.k@intel.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Felix Fietkau <nbd@nbd.name>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 079/164] Bluetooth: btintel_pcie: Add additional to checks to clear TX/RX paths
+Subject: [PATCH 6.14 119/183] net: ipv6: fix UDPv6 GSO segmentation with NAT
 Date: Wed,  7 May 2025 20:39:24 +0200
-Message-ID: <20250507183824.161026068@linuxfoundation.org>
+Message-ID: <20250507183829.640072183@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +63,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kiran K <kiran.k@intel.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit 1c7664957e4edb234c69de2db4be1f740d2df564 ]
+[ Upstream commit b936a9b8d4a585ccb6d454921c36286bfe63e01d ]
 
-Due to a hardware issue, there is a possibility that the driver may miss
-an MSIx interrupt on the RX/TX data path. Since the TX and RX paths are
-independent, when a TX MSIx interrupt occurs, the driver can check the
-RX queue for any pending data and process it if present. The same
-approach applies to the RX path.
+If any address or port is changed, update it in all packets and recalculate
+checksum.
 
-Fixes: c2b636b3f788 ("Bluetooth: btintel_pcie: Add support for PCIe transport")
-Signed-off-by: Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>
-Signed-off-by: Kiran K <kiran.k@intel.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 9fd1ff5d2ac7 ("udp: Support UDP fraglist GRO/GSO.")
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20250426153210.14044-1-nbd@nbd.name
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btintel_pcie.c | 24 +++++++++++++++++++-----
- 1 file changed, 19 insertions(+), 5 deletions(-)
+ net/ipv4/udp_offload.c | 61 +++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 60 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/bluetooth/btintel_pcie.c b/drivers/bluetooth/btintel_pcie.c
-index 3d6067927f7ea..d225f0a37f985 100644
---- a/drivers/bluetooth/btintel_pcie.c
-+++ b/drivers/bluetooth/btintel_pcie.c
-@@ -761,10 +761,8 @@ static void btintel_pcie_msix_rx_handle(struct btintel_pcie_data *data)
- 	bt_dev_dbg(hdev, "RXQ: cr_hia: %u  cr_tia: %u", cr_hia, cr_tia);
- 
- 	/* Check CR_TIA and CR_HIA for change */
--	if (cr_tia == cr_hia) {
--		bt_dev_warn(hdev, "RXQ: no new CD found");
-+	if (cr_tia == cr_hia)
- 		return;
--	}
- 
- 	rxq = &data->rxq;
- 
-@@ -800,6 +798,16 @@ static irqreturn_t btintel_pcie_msix_isr(int irq, void *data)
- 	return IRQ_WAKE_THREAD;
+diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
+index ecfca59f31f13..da5d4aea1b591 100644
+--- a/net/ipv4/udp_offload.c
++++ b/net/ipv4/udp_offload.c
+@@ -247,6 +247,62 @@ static struct sk_buff *__udpv4_gso_segment_list_csum(struct sk_buff *segs)
+ 	return segs;
  }
  
-+static inline bool btintel_pcie_is_rxq_empty(struct btintel_pcie_data *data)
++static void __udpv6_gso_segment_csum(struct sk_buff *seg,
++				     struct in6_addr *oldip,
++				     const struct in6_addr *newip,
++				     __be16 *oldport, __be16 newport)
 +{
-+	return data->ia.cr_hia[BTINTEL_PCIE_RXQ_NUM] == data->ia.cr_tia[BTINTEL_PCIE_RXQ_NUM];
++	struct udphdr *uh = udp_hdr(seg);
++
++	if (ipv6_addr_equal(oldip, newip) && *oldport == newport)
++		return;
++
++	if (uh->check) {
++		inet_proto_csum_replace16(&uh->check, seg, oldip->s6_addr32,
++					  newip->s6_addr32, true);
++
++		inet_proto_csum_replace2(&uh->check, seg, *oldport, newport,
++					 false);
++		if (!uh->check)
++			uh->check = CSUM_MANGLED_0;
++	}
++
++	*oldip = *newip;
++	*oldport = newport;
 +}
 +
-+static inline bool btintel_pcie_is_txackq_empty(struct btintel_pcie_data *data)
++static struct sk_buff *__udpv6_gso_segment_list_csum(struct sk_buff *segs)
 +{
-+	return data->ia.cr_tia[BTINTEL_PCIE_TXQ_NUM] == data->ia.cr_hia[BTINTEL_PCIE_TXQ_NUM];
++	const struct ipv6hdr *iph;
++	const struct udphdr *uh;
++	struct ipv6hdr *iph2;
++	struct sk_buff *seg;
++	struct udphdr *uh2;
++
++	seg = segs;
++	uh = udp_hdr(seg);
++	iph = ipv6_hdr(seg);
++	uh2 = udp_hdr(seg->next);
++	iph2 = ipv6_hdr(seg->next);
++
++	if (!(*(const u32 *)&uh->source ^ *(const u32 *)&uh2->source) &&
++	    ipv6_addr_equal(&iph->saddr, &iph2->saddr) &&
++	    ipv6_addr_equal(&iph->daddr, &iph2->daddr))
++		return segs;
++
++	while ((seg = seg->next)) {
++		uh2 = udp_hdr(seg);
++		iph2 = ipv6_hdr(seg);
++
++		__udpv6_gso_segment_csum(seg, &iph2->saddr, &iph->saddr,
++					 &uh2->source, uh->source);
++		__udpv6_gso_segment_csum(seg, &iph2->daddr, &iph->daddr,
++					 &uh2->dest, uh->dest);
++	}
++
++	return segs;
 +}
 +
- static irqreturn_t btintel_pcie_irq_msix_handler(int irq, void *dev_id)
- {
- 	struct msix_entry *entry = dev_id;
-@@ -827,12 +835,18 @@ static irqreturn_t btintel_pcie_irq_msix_handler(int irq, void *dev_id)
- 		btintel_pcie_msix_gp0_handler(data);
+ static struct sk_buff *__udp_gso_segment_list(struct sk_buff *skb,
+ 					      netdev_features_t features,
+ 					      bool is_ipv6)
+@@ -259,7 +315,10 @@ static struct sk_buff *__udp_gso_segment_list(struct sk_buff *skb,
  
- 	/* For TX */
--	if (intr_fh & BTINTEL_PCIE_MSIX_FH_INT_CAUSES_0)
-+	if (intr_fh & BTINTEL_PCIE_MSIX_FH_INT_CAUSES_0) {
- 		btintel_pcie_msix_tx_handle(data);
-+		if (!btintel_pcie_is_rxq_empty(data))
-+			btintel_pcie_msix_rx_handle(data);
-+	}
+ 	udp_hdr(skb)->len = htons(sizeof(struct udphdr) + mss);
  
- 	/* For RX */
--	if (intr_fh & BTINTEL_PCIE_MSIX_FH_INT_CAUSES_1)
-+	if (intr_fh & BTINTEL_PCIE_MSIX_FH_INT_CAUSES_1) {
- 		btintel_pcie_msix_rx_handle(data);
-+		if (!btintel_pcie_is_txackq_empty(data))
-+			btintel_pcie_msix_tx_handle(data);
-+	}
+-	return is_ipv6 ? skb : __udpv4_gso_segment_list_csum(skb);
++	if (is_ipv6)
++		return __udpv6_gso_segment_list_csum(skb);
++	else
++		return __udpv4_gso_segment_list_csum(skb);
+ }
  
- 	/*
- 	 * Before sending the interrupt the HW disables it to prevent a nested
+ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
 -- 
 2.39.5
 
