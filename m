@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-142150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8612AAE94B
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:43:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D156AAEA76
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:55:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A0D8981060
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:42:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 188649C2C85
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:55:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA35828DF50;
-	Wed,  7 May 2025 18:42:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D517289348;
+	Wed,  7 May 2025 18:55:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jinaMU0T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0OKHL3tJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 833ED288CB0;
-	Wed,  7 May 2025 18:42:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF38214813;
+	Wed,  7 May 2025 18:55:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643369; cv=none; b=f6L8Oz4TJVNO/HBLlOHWh+OEvm2vIwM8xUitamGBNhjYUmU9mX9CMbY4t+hYyjZGAWfTK+4eMqdvkDyrrcDtViMHtgkrZx7aknuHTyGdUFbhBwCuJ4cSQUsysOHI7DV0IHqiI98iq/XdSvhTlaKGbQtowP8BoCczUqnxOhFozHE=
+	t=1746644144; cv=none; b=QOKEov6OUOEjDs0TLNyHc4hmNxjxoZd11/cYV5cax3ukZGSHliN1/AKgX9xXQZooW0ya7poJuTa67PXdvrgXuWBmk98FN0GrO/u2+S+0XrIw8jIZUdEzNCDbW7A3/oDhnAx9+nPe8RV3PaX5i7W/bjFFOCYIayP1QZzEKIljmPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643369; c=relaxed/simple;
-	bh=HNRh4j7OXKFoyxrcn34cgTdWtBgzMy6QtM7iKz+PUx8=;
+	s=arc-20240116; t=1746644144; c=relaxed/simple;
+	bh=Vui2QwIJ1aOuUs3FaB75p1Br7V8f4JdD87C5uFz1ibI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uBDkCcQpOeBMngenrrV/IQI4smLMJ601aKA5rJ7ie9B9gp1jVBSTPBNBhvJBzFuPtE1PFVrBJYMIaC0+uXu78IbpoauvAnRse85ur6DaNzZvq8yDXxW+lvaxl7aMfBbqP3or8Q5pFuMcNDp10YT4yENBpe1EWjUDY22HjRM1LSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jinaMU0T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1415C4CEE2;
-	Wed,  7 May 2025 18:42:48 +0000 (UTC)
+	 MIME-Version; b=gE6c3Hndn9ppqlrLLn9Ad7gIA1+aSZlY8PDj6YkZ5Ldu3a/4fNZZKc2V5Nlave3AyLgVBuV61RL+NL8Vo6EtMV8sJA71Dequ5Nk3mRYho/FV1jciLfaE6orrhVefy9zIGTfNvTnHUj1S+X0LfsaEkW7VX7eP/mutIWGMjqdEU4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0OKHL3tJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6346AC4CEE9;
+	Wed,  7 May 2025 18:55:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643369;
-	bh=HNRh4j7OXKFoyxrcn34cgTdWtBgzMy6QtM7iKz+PUx8=;
+	s=korg; t=1746644144;
+	bh=Vui2QwIJ1aOuUs3FaB75p1Br7V8f4JdD87C5uFz1ibI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jinaMU0Te/B1a4UIuLPPQH1W/vvwl6v8i+C0ScozDnjCiw0yCgxhiIzHwCTxx8G32
-	 2vCtFCWo5iIqjfSPqjURfcZB+gM1iBG9Ds+oAztpNH1p1gfc+osA3i3rzYe/kTyxUn
-	 8BfSK9fbTtT+SHooKgujU2K3VVsQ2/v07wF8fdm8=
+	b=0OKHL3tJAP/jR3Wrcs3/xdNO7oGkSUJAt+Hj8jFeHviRgSi5WbgYWYcnMqr4YnEqx
+	 uuu7E+7opmScSc6KrPZIZ5RM+vkM6HDC02085VVga+z35SIs7Be+GC4sjgOj9t78jz
+	 OVkjEL/kt2JZlFYAJJuHsIUzWzKVew9jXd3VYy+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian Shen <shenjian15@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 37/55] net: hns3: store rx VLAN tag offload state for VF
+Subject: [PATCH 6.14 133/183] ASoC: simple-card-utils: Fix pointer check in graph_util_parse_link_direction
 Date: Wed,  7 May 2025 20:39:38 +0200
-Message-ID: <20250507183800.532295617@linuxfoundation.org>
+Message-ID: <20250507183830.208843281@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
-References: <20250507183759.048732653@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,115 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jian Shen <shenjian15@huawei.com>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit ef2383d078edcbe3055032436b16cdf206f26de2 ]
+[ Upstream commit 3cc393d2232ec770b5f79bf0673d67702a3536c3 ]
 
-The VF driver missed to store the rx VLAN tag strip state when
-user change the rx VLAN tag offload state. And it will default
-to enable the rx vlan tag strip when re-init VF device after
-reset. So if user disable rx VLAN tag offload, and trig reset,
-then the HW will still strip the VLAN tag from packet nad fill
-into RX BD, but the VF driver will ignore it for rx VLAN tag
-offload disabled. It may cause the rx VLAN tag dropped.
+Actually check if the passed pointers are valid, before writing to them.
+This also fixes a USBAN warning:
+UBSAN: invalid-load in ../sound/soc/fsl/imx-card.c:687:25
+load of value 255 is not a valid value for type '_Bool'
 
-Fixes: b2641e2ad456 ("net: hns3: Add support of hardware rx-vlan-offload to HNS3 VF driver")
-Signed-off-by: Jian Shen <shenjian15@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250430093052.2400464-2-shaojijie@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This is because playback_only is uninitialized and is not written to, as
+the playback-only property is absent.
+
+Fixes: 844de7eebe97 ("ASoC: audio-graph-card2: expand dai_link property part")
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Link: https://patch.msgid.link/20250429094910.1150970-1-alexander.stein@ew.tq-group.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../hisilicon/hns3/hns3vf/hclgevf_main.c      | 25 ++++++++++++++-----
- .../hisilicon/hns3/hns3vf/hclgevf_main.h      |  1 +
- 2 files changed, 20 insertions(+), 6 deletions(-)
+ sound/soc/generic/simple-card-utils.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
-index 7bb01eafba745..628d5c5ad75de 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
-@@ -1761,9 +1761,8 @@ static void hclgevf_sync_vlan_filter(struct hclgevf_dev *hdev)
- 	rtnl_unlock();
+diff --git a/sound/soc/generic/simple-card-utils.c b/sound/soc/generic/simple-card-utils.c
+index 32efb30c55d69..8bd5b93f34576 100644
+--- a/sound/soc/generic/simple-card-utils.c
++++ b/sound/soc/generic/simple-card-utils.c
+@@ -1146,9 +1146,9 @@ void graph_util_parse_link_direction(struct device_node *np,
+ 	bool is_playback_only = of_property_read_bool(np, "playback-only");
+ 	bool is_capture_only  = of_property_read_bool(np, "capture-only");
+ 
+-	if (is_playback_only)
++	if (playback_only)
+ 		*playback_only = is_playback_only;
+-	if (is_capture_only)
++	if (capture_only)
+ 		*capture_only = is_capture_only;
  }
- 
--static int hclgevf_en_hw_strip_rxvtag(struct hnae3_handle *handle, bool enable)
-+static int hclgevf_en_hw_strip_rxvtag_cmd(struct hclgevf_dev *hdev, bool enable)
- {
--	struct hclgevf_dev *hdev = hclgevf_ae_get_hdev(handle);
- 	struct hclge_vf_to_pf_msg send_msg;
- 
- 	hclgevf_build_send_msg(&send_msg, HCLGE_MBX_SET_VLAN,
-@@ -1772,6 +1771,19 @@ static int hclgevf_en_hw_strip_rxvtag(struct hnae3_handle *handle, bool enable)
- 	return hclgevf_send_mbx_msg(hdev, &send_msg, false, NULL, 0);
- }
- 
-+static int hclgevf_en_hw_strip_rxvtag(struct hnae3_handle *handle, bool enable)
-+{
-+	struct hclgevf_dev *hdev = hclgevf_ae_get_hdev(handle);
-+	int ret;
-+
-+	ret = hclgevf_en_hw_strip_rxvtag_cmd(hdev, enable);
-+	if (ret)
-+		return ret;
-+
-+	hdev->rxvtag_strip_en = enable;
-+	return 0;
-+}
-+
- static int hclgevf_reset_tqp(struct hnae3_handle *handle)
- {
- #define HCLGEVF_RESET_ALL_QUEUE_DONE	1U
-@@ -2684,12 +2696,13 @@ static int hclgevf_rss_init_hw(struct hclgevf_dev *hdev)
- 	return hclgevf_set_rss_tc_mode(hdev, rss_cfg->rss_size);
- }
- 
--static int hclgevf_init_vlan_config(struct hclgevf_dev *hdev)
-+static int hclgevf_init_vlan_config(struct hclgevf_dev *hdev,
-+				    bool rxvtag_strip_en)
- {
- 	struct hnae3_handle *nic = &hdev->nic;
- 	int ret;
- 
--	ret = hclgevf_en_hw_strip_rxvtag(nic, true);
-+	ret = hclgevf_en_hw_strip_rxvtag(nic, rxvtag_strip_en);
- 	if (ret) {
- 		dev_err(&hdev->pdev->dev,
- 			"failed to enable rx vlan offload, ret = %d\n", ret);
-@@ -3359,7 +3372,7 @@ static int hclgevf_reset_hdev(struct hclgevf_dev *hdev)
- 	if (ret)
- 		return ret;
- 
--	ret = hclgevf_init_vlan_config(hdev);
-+	ret = hclgevf_init_vlan_config(hdev, hdev->rxvtag_strip_en);
- 	if (ret) {
- 		dev_err(&hdev->pdev->dev,
- 			"failed(%d) to initialize VLAN config\n", ret);
-@@ -3472,7 +3485,7 @@ static int hclgevf_init_hdev(struct hclgevf_dev *hdev)
- 		goto err_config;
- 	}
- 
--	ret = hclgevf_init_vlan_config(hdev);
-+	ret = hclgevf_init_vlan_config(hdev, true);
- 	if (ret) {
- 		dev_err(&hdev->pdev->dev,
- 			"failed(%d) to initialize VLAN config\n", ret);
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.h b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.h
-index 2b216ac96914c..a6468fe2ec326 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.h
-@@ -315,6 +315,7 @@ struct hclgevf_dev {
- 	int *vector_irq;
- 
- 	bool gro_en;
-+	bool rxvtag_strip_en;
- 
- 	unsigned long vlan_del_fail_bmap[BITS_TO_LONGS(VLAN_N_VID)];
- 
+ EXPORT_SYMBOL_GPL(graph_util_parse_link_direction);
 -- 
 2.39.5
 
