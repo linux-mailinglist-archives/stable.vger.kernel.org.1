@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-142626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65BCBAAEB83
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:08:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 03B15AAEBF3
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:12:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6048C1B684B3
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:07:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 329761C21A41
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:12:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C5071E1DF6;
-	Wed,  7 May 2025 19:07:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AC5E28D839;
+	Wed,  7 May 2025 19:12:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWPG47qx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rautck9C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC3D1CF5C6;
-	Wed,  7 May 2025 19:07:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC9CF214813;
+	Wed,  7 May 2025 19:12:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644832; cv=none; b=g4vJizmyCZGpfWK9uu2bWBXqTg4k+svS7JzQIaNqnpkMgDSA3i2N2ywPmXE3v/w9f8BBcrxgfmB2KuFVHrUbccPcmVghRQGTkTcmtfyk4IjPLHVNVJDloHyF+XpxjplNJowZnqekKXmY0UkGHqCmDnoLk01MX82nl3jAFT0FKIo=
+	t=1746645155; cv=none; b=SPHCUxRiEGUYH7RMZa6QCYyqy1rt/z93fxubmamHGmv7RnNB1dhCcjxQnGX4UROpRKYIItHl/5KwbWXjIiHOydMA87m7PXtHhLuk6X4VEiCwajWSMsCGqto3P1i5TczZVx+fpDRbQhwNeItGFhgjT8BOuJ0KJ/Fhopm+9V83JiA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644832; c=relaxed/simple;
-	bh=kn/Sjphatso3aWa6kQGTWjCl8sLdfyepkVHzRXoQoJY=;
+	s=arc-20240116; t=1746645155; c=relaxed/simple;
+	bh=jpb8c7riOmR8h9D1XCkeFxefrp4HVgaLXnpGcDDE1xM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qiLf0L9Q0JCGZnfzIkCHGR1nS4vdgJ8k7UKzoJyu+l7adh/G0687pkTWIlkC7yqiAyg1fi9+fUEzUpxo6N0Ou2rhZ1kspT5OTJEUTregq6v8dpgrvcWubmgEe5ZiHQRhMOYhNQg3clW5t7XrVWTRc6zlTm7Ya9pPgrvDXnjx+eA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWPG47qx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AA60C4CEE2;
-	Wed,  7 May 2025 19:07:11 +0000 (UTC)
+	 MIME-Version; b=J0lScqJKhc3iYtRv6Afd1gnLoVSauyV+0xXvs44uyNUzoLS7Xe7l5YWf2bhMpx03Shjbh4XKZK7WZiB2b2Ggukt+9B3Ulb1fDYFd/gyqGqihRkBPaRoCbZ0xswULmDCObdPZV4yyX3bJmbx6hj7l9JgKNHgvBBzdNs/hkLQCmoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rautck9C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35F4AC4CEE2;
+	Wed,  7 May 2025 19:12:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644832;
-	bh=kn/Sjphatso3aWa6kQGTWjCl8sLdfyepkVHzRXoQoJY=;
+	s=korg; t=1746645155;
+	bh=jpb8c7riOmR8h9D1XCkeFxefrp4HVgaLXnpGcDDE1xM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sWPG47qxKQrGq4rug3nM8izE6ROXY6P+OQN6KfpVXVhvyR9bDA5PY3sUsJqnfQoe/
-	 d6GgO7r0I9lFAhMZbinGnctlO+b2pemud3EoNt2408abPdzNyIG7DXPBY+NFtEllEz
-	 M+pwQVSczgfYEnGiU1sFZwIwP0zlfkpCybq8HJGs=
+	b=Rautck9CxMQ9TSBA0NzT4sMT3Ti72RCFJIzTqUIsyJaXxJErvZLbV4Fpp4URQQATX
+	 9p1LbtY6Zsdp6U7PhAdlGF1VirVdJImZ80Uww6oTpUZ0LFIqe6M5JAk5Nh+/TZwYW7
+	 1QEdaJVlzEl7GMpQXjLkNiLgMfg1pO5+b3Hu0lPg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Shyam Saini <shyamsaini@linux.microsoft.com>,
-	Petr Pavlu <petr.pavlu@suse.com>,
+	Jonathan Bell <jonathan@raspberrypi.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 161/164] kernel: globalize lookup_or_create_module_kobject()
-Date: Wed,  7 May 2025 20:40:46 +0200
-Message-ID: <20250507183827.482637469@linuxfoundation.org>
+Subject: [PATCH 6.6 111/129] xhci: Use more than one Event Ring segment
+Date: Wed,  7 May 2025 20:40:47 +0200
+Message-ID: <20250507183817.989811986@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Saini <shyamsaini@linux.microsoft.com>
+From: Jonathan Bell <jonathan@raspberrypi.com>
 
-[ Upstream commit 7c76c813cfc42a7376378a0c4b7250db2eebab81 ]
+[ Upstream commit 28084d3fcc3c8445542917f32e382c45b5343cc2 ]
 
-lookup_or_create_module_kobject() is marked as static and __init,
-to make it global drop static keyword.
-Since this function can be called from non-init code, use __modinit
-instead of __init, __modinit marker will make it __init if
-CONFIG_MODULES is not defined.
+Users have reported log spam created by "Event Ring Full" xHC event
+TRBs.  These are caused by interrupt latency in conjunction with a very
+busy set of devices on the bus.  The errors are benign, but throughput
+will suffer as the xHC will pause processing of transfers until the
+Event Ring is drained by the kernel.
 
-Suggested-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Signed-off-by: Shyam Saini <shyamsaini@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20250227184930.34163-4-shyamsaini@linux.microsoft.com
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Stable-dep-of: f95bbfe18512 ("drivers: base: handle module_kobject creation")
+Commit dc0ffbea5729 ("usb: host: xhci: update event ring dequeue pointer
+on purpose") mitigated the issue by advancing the Event Ring Dequeue
+Pointer already after half a segment has been processed.  Nevertheless,
+providing a larger Event Ring would be useful to cope with load peaks.
+
+Expand the number of event TRB slots available by increasing the number
+of Event Ring segments in the ERST.
+
+Controllers have a hardware-defined limit as to the number of ERST
+entries they can process, but with up to 32k it can be excessively high
+(sec 5.3.4).  So cap the actual number at 2 (configurable through the
+ERST_MAX_SEGS macro), which seems like a reasonable quantity.  It is
+supported by any xHC because the limit in the HCSPARAMS2 register is
+defined as a power of 2.  Renesas uPD720201 and VIA VL805 controllers
+do not support more than 2 ERST entries.
+
+An alternative to increasing the number of Event Ring segments would be
+an increase of the segment size.  But that requires allocating multiple
+contiguous pages, which may be impossible if memory is fragmented.
+
+Signed-off-by: Jonathan Bell <jonathan@raspberrypi.com>
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20231019102924.2797346-6-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: bea5892d0ed2 ("xhci: Limit time spent with xHC interrupts disabled during bus resume")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/module.h | 2 ++
- kernel/params.c        | 2 +-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ drivers/usb/host/xhci-mem.c | 10 +++++++---
+ drivers/usb/host/xhci.h     |  5 +++--
+ 2 files changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/module.h b/include/linux/module.h
-index 88ecc5e9f5230..82a9527d43c76 100644
---- a/include/linux/module.h
-+++ b/include/linux/module.h
-@@ -162,6 +162,8 @@ extern void cleanup_module(void);
- #define __INITRODATA_OR_MODULE __INITRODATA
- #endif /*CONFIG_MODULES*/
- 
-+struct module_kobject *lookup_or_create_module_kobject(const char *name);
-+
- /* Generic info of form tag = "info" */
- #define MODULE_INFO(tag, info) __MODULE_INFO(tag, tag, info)
- 
-diff --git a/kernel/params.c b/kernel/params.c
-index d62a116918cd0..33b2985b31c7f 100644
---- a/kernel/params.c
-+++ b/kernel/params.c
-@@ -763,7 +763,7 @@ void destroy_params(const struct kernel_param *params, unsigned num)
- 			params[i].ops->free(params[i].arg);
- }
- 
--static struct module_kobject * __init lookup_or_create_module_kobject(const char *name)
-+struct module_kobject __modinit * lookup_or_create_module_kobject(const char *name)
+diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
+index f236fba5cd248..45240299fa171 100644
+--- a/drivers/usb/host/xhci-mem.c
++++ b/drivers/usb/host/xhci-mem.c
+@@ -2237,14 +2237,18 @@ xhci_alloc_interrupter(struct xhci_hcd *xhci, gfp_t flags)
  {
- 	struct module_kobject *mk;
- 	struct kobject *kobj;
+ 	struct device *dev = xhci_to_hcd(xhci)->self.sysdev;
+ 	struct xhci_interrupter *ir;
++	unsigned int num_segs;
+ 	int ret;
+ 
+ 	ir = kzalloc_node(sizeof(*ir), flags, dev_to_node(dev));
+ 	if (!ir)
+ 		return NULL;
+ 
+-	ir->event_ring = xhci_ring_alloc(xhci, ERST_NUM_SEGS, 1, TYPE_EVENT,
+-					0, flags);
++	num_segs = min_t(unsigned int, 1 << HCS_ERST_MAX(xhci->hcs_params2),
++			 ERST_MAX_SEGS);
++
++	ir->event_ring = xhci_ring_alloc(xhci, num_segs, 1, TYPE_EVENT, 0,
++					 flags);
+ 	if (!ir->event_ring) {
+ 		xhci_warn(xhci, "Failed to allocate interrupter event ring\n");
+ 		kfree(ir);
+@@ -2280,7 +2284,7 @@ xhci_add_interrupter(struct xhci_hcd *xhci, struct xhci_interrupter *ir,
+ 	/* set ERST count with the number of entries in the segment table */
+ 	erst_size = readl(&ir->ir_set->erst_size);
+ 	erst_size &= ERST_SIZE_MASK;
+-	erst_size |= ERST_NUM_SEGS;
++	erst_size |= ir->event_ring->num_segs;
+ 	writel(erst_size, &ir->ir_set->erst_size);
+ 
+ 	erst_base = xhci_read_64(xhci, &ir->ir_set->erst_base);
+diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
+index 0325fccfaa2a4..76a3010b8b74a 100644
+--- a/drivers/usb/host/xhci.h
++++ b/drivers/usb/host/xhci.h
+@@ -1427,8 +1427,9 @@ struct urb_priv {
+  * Each segment table entry is 4*32bits long.  1K seems like an ok size:
+  * (1K bytes * 8bytes/bit) / (4*32 bits) = 64 segment entries in the table,
+  * meaning 64 ring segments.
+- * Initial allocated size of the ERST, in number of entries */
+-#define	ERST_NUM_SEGS	1
++ * Reasonable limit for number of Event Ring segments (spec allows 32k)
++ */
++#define	ERST_MAX_SEGS	2
+ /* Poll every 60 seconds */
+ #define	POLL_TIMEOUT	60
+ /* Stop endpoint command timeout (secs) for URB cancellation watchdog timer */
 -- 
 2.39.5
 
