@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-142588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEA51AAEB4E
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:06:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05844AAEBDA
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:11:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 750A1522E4D
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:05:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 004EC9E1EC0
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:11:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 443A728E582;
-	Wed,  7 May 2025 19:05:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 562B428C2B3;
+	Wed,  7 May 2025 19:11:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OH3Of7qc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1f/2e4h3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F259828E57B;
-	Wed,  7 May 2025 19:05:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 123D32144C1;
+	Wed,  7 May 2025 19:11:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644716; cv=none; b=AnQPwWwkWIXXSPKaRU89dq6T7W37PxM4/l1OeADHECa6dFS0Kq+BkeQC1CdYxSLLeT+EZY2rzgHzvJ4c4lLiFST2yT19Xj1SmxqJ7zzDOI3270kZjCQNCWzsy5F1KG15YGcEyURQMKlJ/9B4Djg8xjSiD7wpQwfizMSPxSx4S0I=
+	t=1746645091; cv=none; b=M3MOqj1r1ZhD2zwNG1jGezWQaihBzy9NY/tLbLD72/URnhw68AvMTAtLrXzWb12oqs2Wvw+7DmUwR5Z6yRtTrdUfT6EltX3xNENlmE+R7HYjcDrGdupr+/3gFkee8DBVODwPYAW0Gz7pgWn1ntT1ibTEAGiYcj8LFaW2eX1H8KQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644716; c=relaxed/simple;
-	bh=FxT/MWIfdlo6PF13jGkUVUrNjL0YCfvINRIoBazPH4U=;
+	s=arc-20240116; t=1746645091; c=relaxed/simple;
+	bh=dO0RxWdjCpuh3ntIuAJLRHgPGfaJzkUYOyTUmeeFUVA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d5Cl+Leu8+9KWONkDaG65/dAG9a7UX61uA+CNmH/XhClDX2Ph0pNvdivGwPly0q2xSfdZPHB5JkGqb21SSijHcdd8Dj4l4IpI/jreII6Djz6r5FickYqHq1OPm9ZUb65KxrdWp9d6J4rQtCx7VGy5wtw/llZ3j3iBNVlp1O0TaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OH3Of7qc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6500BC4CEEB;
-	Wed,  7 May 2025 19:05:15 +0000 (UTC)
+	 MIME-Version; b=ud85JSFpDE0Rd5dWNt5YjKpl02c1ekYsTMcBn4b9foHF3jE5nqUsGozFqAKlD+y2qgRgXa70A3Wjr5YnvwbV+migRtG4KqHFaMN75MIAFUK7Eoqd2jJa8vEg526lakr8aAfgAQcVgQMYC0IMpy8PEO+uFzHwM+oZpx2LLZA2k/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1f/2e4h3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BD48C4CEE2;
+	Wed,  7 May 2025 19:11:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644715;
-	bh=FxT/MWIfdlo6PF13jGkUVUrNjL0YCfvINRIoBazPH4U=;
+	s=korg; t=1746645091;
+	bh=dO0RxWdjCpuh3ntIuAJLRHgPGfaJzkUYOyTUmeeFUVA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OH3Of7qcOyZ3ohVvcpfHhH9ap5HKIpRn0uPDd9t7K4cvQrZVxOMwc1HJicXBDqZXU
-	 TbpHmyUQ+ZfAuG9Ii9PbOGRfMh2sbiXk49MCUic0BH2BUvq5XXueQk16ca6il764ur
-	 FSs4L9OYyn01XdE+LeuceK+ZjJXJMn0hVtYT7kSE=
+	b=1f/2e4h3E+mkYDD+1BrBvmKzTzZ32orlTTznvyYPybw8/g7jcqscfWh4e4x9S1bMO
+	 uLYTcEC0fsJTXD6XenZa+ZCtq+yfRK0xpkdGTwP8HQFiMAEWpLWsuoISJ6o+I4nv2N
+	 PBGFSQwbKYLRMoZugl/NeTzrpLZt4LH1/GFTI0wY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Shruti Parab <shruti.parab@broadcom.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 134/164] net: vertexcom: mse102x: Add range check for CMD_RTS
+Subject: [PATCH 6.6 083/129] bnxt_en: Fix ethtool -d byte order for 32-bit values
 Date: Wed,  7 May 2025 20:40:19 +0200
-Message-ID: <20250507183826.400618927@linuxfoundation.org>
+Message-ID: <20250507183816.871675052@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +65,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Michael Chan <michael.chan@broadcom.com>
 
-[ Upstream commit d4dda902dac194e3231a1ed0f76c6c3b6340ba8a ]
+[ Upstream commit 02e8be5a032cae0f4ca33c6053c44d83cf4acc93 ]
 
-Since there is no protection in the SPI protocol against electrical
-interferences, the driver shouldn't blindly trust the length payload
-of CMD_RTS. So introduce a bounds check for incoming frames.
+For version 1 register dump that includes the PCIe stats, the existing
+code incorrectly assumes that all PCIe stats are 64-bit values.  Fix it
+by using an array containing the starting and ending index of the 32-bit
+values.  The loop in bnxt_get_regs() will use the array to do proper
+endian swap for the 32-bit values.
 
-Fixes: 2f207cbf0dd4 ("net: vertexcom: Add MSE102x SPI support")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250430133043.7722-4-wahrenst@gmx.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: b5d600b027eb ("bnxt_en: Add support for 'ethtool -d'")
+Reviewed-by: Shruti Parab <shruti.parab@broadcom.com>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Reviewed-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/vertexcom/mse102x.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ .../net/ethernet/broadcom/bnxt/bnxt_ethtool.c | 38 ++++++++++++++++---
+ 1 file changed, 32 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/vertexcom/mse102x.c b/drivers/net/ethernet/vertexcom/mse102x.c
-index 3edf2c3753f0e..2c06d1d05164f 100644
---- a/drivers/net/ethernet/vertexcom/mse102x.c
-+++ b/drivers/net/ethernet/vertexcom/mse102x.c
-@@ -6,6 +6,7 @@
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
+index 2e7ddbca9d53b..dcedafa4d2e14 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
+@@ -1393,6 +1393,17 @@ static int bnxt_get_regs_len(struct net_device *dev)
+ 	return reg_len;
+ }
  
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
- 
-+#include <linux/if_vlan.h>
- #include <linux/interrupt.h>
- #include <linux/module.h>
- #include <linux/kernel.h>
-@@ -337,8 +338,9 @@ static void mse102x_rx_pkt_spi(struct mse102x_net *mse)
++#define BNXT_PCIE_32B_ENTRY(start, end)			\
++	 { offsetof(struct pcie_ctx_hw_stats, start),	\
++	   offsetof(struct pcie_ctx_hw_stats, end) }
++
++static const struct {
++	u16 start;
++	u16 end;
++} bnxt_pcie_32b_entries[] = {
++	BNXT_PCIE_32B_ENTRY(pcie_ltssm_histogram[0], pcie_ltssm_histogram[3]),
++};
++
+ static void bnxt_get_regs(struct net_device *dev, struct ethtool_regs *regs,
+ 			  void *_p)
+ {
+@@ -1424,12 +1435,27 @@ static void bnxt_get_regs(struct net_device *dev, struct ethtool_regs *regs,
+ 	req->pcie_stat_host_addr = cpu_to_le64(hw_pcie_stats_addr);
+ 	rc = hwrm_req_send(bp, req);
+ 	if (!rc) {
+-		__le64 *src = (__le64 *)hw_pcie_stats;
+-		u64 *dst = (u64 *)(_p + BNXT_PXP_REG_LEN);
+-		int i;
+-
+-		for (i = 0; i < sizeof(*hw_pcie_stats) / sizeof(__le64); i++)
+-			dst[i] = le64_to_cpu(src[i]);
++		u8 *dst = (u8 *)(_p + BNXT_PXP_REG_LEN);
++		u8 *src = (u8 *)hw_pcie_stats;
++		int i, j;
++
++		for (i = 0, j = 0; i < sizeof(*hw_pcie_stats); ) {
++			if (i >= bnxt_pcie_32b_entries[j].start &&
++			    i <= bnxt_pcie_32b_entries[j].end) {
++				u32 *dst32 = (u32 *)(dst + i);
++
++				*dst32 = le32_to_cpu(*(__le32 *)(src + i));
++				i += 4;
++				if (i > bnxt_pcie_32b_entries[j].end &&
++				    j < ARRAY_SIZE(bnxt_pcie_32b_entries) - 1)
++					j++;
++			} else {
++				u64 *dst64 = (u64 *)(dst + i);
++
++				*dst64 = le64_to_cpu(*(__le64 *)(src + i));
++				i += 8;
++			}
++		}
  	}
- 
- 	rxlen = cmd_resp & LEN_MASK;
--	if (!rxlen) {
--		net_dbg_ratelimited("%s: No frame length defined\n", __func__);
-+	if (rxlen < ETH_ZLEN || rxlen > VLAN_ETH_FRAME_LEN) {
-+		net_dbg_ratelimited("%s: Invalid frame length: %d\n", __func__,
-+				    rxlen);
- 		mse->stats.invalid_len++;
- 		return;
- 	}
+ 	hwrm_req_drop(bp, req);
+ }
 -- 
 2.39.5
 
