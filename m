@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-142610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D135AAEB73
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:07:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 757DBAAE9E7
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:49:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66B67189F664
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:06:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 291BE9C106E
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:48:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9278228E591;
-	Wed,  7 May 2025 19:06:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6042D2144CC;
+	Wed,  7 May 2025 18:48:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cq//EF5k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fTDEMBtR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DDA128E582;
-	Wed,  7 May 2025 19:06:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E8931DDC23;
+	Wed,  7 May 2025 18:48:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644783; cv=none; b=XqY9fIO4Xs9IDoVvzI//ji3IuZkFvPf0FmWjuGmHTa0pjU5GALdBgZm7G62Z/BwG6AAw1Um48VODkCFqh6weTlVhF912uycAt0PFI6HxSdXLoZ6TB2z6erEiQpGHp4JQ3yMKsQa6c5dFQ7Lc0/J/igDODGRYccuLkyDVot7I5q0=
+	t=1746643726; cv=none; b=TsUU8L6/YWZDo7gapYAduofxhfggUcPVL7YWN6RXwoTnyY6iFMR2BataT3SAWLXzmTr6z053GQRBOOO9seb7CB82EXi20dXG6HriSqH5j/Ogb0KzAD7n5MTH77LvbOAlgzp7GxbWgEQ9cXtJUeY3BmUhnrCpgS1iCmh77wAMZ40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644783; c=relaxed/simple;
-	bh=H28PrMFCFJx6lSwqDZkQNISsGjbmBDM9miqf+Zy7vbQ=;
+	s=arc-20240116; t=1746643726; c=relaxed/simple;
+	bh=RsTFy/kLqbKwIgWpyZZ3BgMpIBONR4QMnBa6FSBGtI8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kA7jUhB2B7V8CgL4cysJC3hvqsKhN3UIsmvJpQ6hFU0x/3dPFRk0+/vu8z1jVfWer8dAVXBKC0+iLQ0Q7OxYosORtsykOooT4w9ESJXjBN2Hpgql6/1NCYO2I4hfkaixXYXAmowX3Qmu+0a4saHIgwNd28EkVu50cZqKpdy++7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cq//EF5k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8EBBC4CEE2;
-	Wed,  7 May 2025 19:06:22 +0000 (UTC)
+	 MIME-Version; b=kau8b4EchfnsDnvGwc3cjq9BbgjuIXnesk4GQsMu8XEiIQA0yeh/eDD9on4Rci4yStKCtzSum+nx9Xv4YfJgJrADFb4+2xZERGjEqfLGsfg48qgBm5O6zr2rDPSgjpssEL/zk1b1qDOTKM4Bc3C5ZqHziCOGO2Y/vvDyRuV/nds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fTDEMBtR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7875EC4CEE2;
+	Wed,  7 May 2025 18:48:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644783;
-	bh=H28PrMFCFJx6lSwqDZkQNISsGjbmBDM9miqf+Zy7vbQ=;
+	s=korg; t=1746643726;
+	bh=RsTFy/kLqbKwIgWpyZZ3BgMpIBONR4QMnBa6FSBGtI8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cq//EF5khEKmV75ljQN1AXLGfOZDeVxPan/TEKZVkH0xlb81qaItsSEfx0ap1z5iK
-	 ZNAXtk31Chc5InSA2iyDvAzaV4fSYuHvnlF+cNaJZQuHWHZE166PZKCIfQ9qzYjE7Q
-	 2pnqpPyQm5u/dUVckN1EcB9D4vpCAbKN3LlvqfRs=
+	b=fTDEMBtRHyQS3TI6qEVXomP5Hil5IbCeMaPNeSb7hStoGHdvXwNQCoej9ipM3pZAw
+	 fDtoqfcWA47jRRDQBrvEXy6wkyop2qerBHVR03lf+0FJzzZQlTwfoXOQeJV5SLsIih
+	 RFydO7aqRg5wjm83Z7cw4XU6fC3TjxuyiQXf3DAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mattias Barthel <mattias.barthel@atlascopco.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 126/164] net: fec: ERR007885 Workaround for conventional TX
+Subject: [PATCH 6.1 96/97] ASoC: Use of_property_read_bool()
 Date: Wed,  7 May 2025 20:40:11 +0200
-Message-ID: <20250507183826.069882410@linuxfoundation.org>
+Message-ID: <20250507183810.841684350@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
+References: <20250507183806.987408728@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mattias Barthel <mattias.barthel@atlascopco.com>
+From: Rob Herring (Arm) <robh@kernel.org>
 
-[ Upstream commit a179aad12badc43201cbf45d1e8ed2c1383c76b9 ]
+[ Upstream commit 69dd15a8ef0ae494179fd15023aa8172188db6b7 ]
 
-Activate TX hang workaround also in
-fec_enet_txq_submit_skb() when TSO is not enabled.
+Use of_property_read_bool() to read boolean properties rather than
+of_get_property(). This is part of a larger effort to remove callers
+of of_get_property() and similar functions. of_get_property() leaks
+the DT property data pointer which is a problem for dynamically
+allocated nodes which may be freed.
 
-Errata: ERR007885
-
-Symptoms: NETDEV WATCHDOG: eth0 (fec): transmit queue 0 timed out
-
-commit 37d6017b84f7 ("net: fec: Workaround for imx6sx enet tx hang when enable three queues")
-There is a TDAR race condition for mutliQ when the software sets TDAR
-and the UDMA clears TDAR simultaneously or in a small window (2-4 cycles).
-This will cause the udma_tx and udma_tx_arbiter state machines to hang.
-
-So, the Workaround is checking TDAR status four time, if TDAR cleared by
-    hardware and then write TDAR, otherwise don't set TDAR.
-
-Fixes: 53bb20d1faba ("net: fec: add variable reg_desc_active to speed things up")
-Signed-off-by: Mattias Barthel <mattias.barthel@atlascopco.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250429090826.3101258-1-mattiasbarthel@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Link: https://patch.msgid.link/20240731191312.1710417-20-robh@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 6eab70345799 ("ASoC: soc-core: Stop using of_property_read_bool() for non-boolean properties")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ sound/soc/codecs/ak4613.c | 4 ++--
+ sound/soc/soc-core.c      | 8 ++++----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index 2b05d9c6c21a4..04906897615d8 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -714,7 +714,12 @@ static int fec_enet_txq_submit_skb(struct fec_enet_priv_tx_q *txq,
- 	txq->bd.cur = bdp;
+diff --git a/sound/soc/codecs/ak4613.c b/sound/soc/codecs/ak4613.c
+index f75c19ef35511..3f790d1f11a94 100644
+--- a/sound/soc/codecs/ak4613.c
++++ b/sound/soc/codecs/ak4613.c
+@@ -840,14 +840,14 @@ static void ak4613_parse_of(struct ak4613_priv *priv,
+ 	/* Input 1 - 2 */
+ 	for (i = 0; i < 2; i++) {
+ 		snprintf(prop, sizeof(prop), "asahi-kasei,in%d-single-end", i + 1);
+-		if (!of_get_property(np, prop, NULL))
++		if (!of_property_read_bool(np, prop))
+ 			priv->ic |= 1 << i;
+ 	}
  
- 	/* Trigger transmission start */
--	writel(0, txq->bd.reg_desc_active);
-+	if (!(fep->quirks & FEC_QUIRK_ERR007885) ||
-+	    !readl(txq->bd.reg_desc_active) ||
-+	    !readl(txq->bd.reg_desc_active) ||
-+	    !readl(txq->bd.reg_desc_active) ||
-+	    !readl(txq->bd.reg_desc_active))
-+		writel(0, txq->bd.reg_desc_active);
+ 	/* Output 1 - 6 */
+ 	for (i = 0; i < 6; i++) {
+ 		snprintf(prop, sizeof(prop), "asahi-kasei,out%d-single-end", i + 1);
+-		if (!of_get_property(np, prop, NULL))
++		if (!of_property_read_bool(np, prop))
+ 			priv->oc |= 1 << i;
+ 	}
  
- 	return 0;
- }
+diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
+index 6a4101dc15a54..58e07296144e0 100644
+--- a/sound/soc/soc-core.c
++++ b/sound/soc/soc-core.c
+@@ -3143,10 +3143,10 @@ unsigned int snd_soc_daifmt_parse_format(struct device_node *np,
+ 	 * SND_SOC_DAIFMT_INV_MASK area
+ 	 */
+ 	snprintf(prop, sizeof(prop), "%sbitclock-inversion", prefix);
+-	bit = !!of_get_property(np, prop, NULL);
++	bit = of_property_read_bool(np, prop);
+ 
+ 	snprintf(prop, sizeof(prop), "%sframe-inversion", prefix);
+-	frame = !!of_get_property(np, prop, NULL);
++	frame = of_property_read_bool(np, prop);
+ 
+ 	switch ((bit << 4) + frame) {
+ 	case 0x11:
+@@ -3183,12 +3183,12 @@ unsigned int snd_soc_daifmt_parse_clock_provider_raw(struct device_node *np,
+ 	 * check "[prefix]frame-master"
+ 	 */
+ 	snprintf(prop, sizeof(prop), "%sbitclock-master", prefix);
+-	bit = !!of_get_property(np, prop, NULL);
++	bit = of_property_read_bool(np, prop);
+ 	if (bit && bitclkmaster)
+ 		*bitclkmaster = of_parse_phandle(np, prop, 0);
+ 
+ 	snprintf(prop, sizeof(prop), "%sframe-master", prefix);
+-	frame = !!of_get_property(np, prop, NULL);
++	frame = of_property_read_bool(np, prop);
+ 	if (frame && framemaster)
+ 		*framemaster = of_parse_phandle(np, prop, 0);
+ 
 -- 
 2.39.5
 
