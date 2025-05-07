@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-142691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72A74AAEBC2
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:10:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68445AAEB56
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:06:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D181F7A0429
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:09:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C6E5B206ED
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:05:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CD3528C2B3;
-	Wed,  7 May 2025 19:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADE7928E56F;
+	Wed,  7 May 2025 19:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bQQmJs+0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m25VCuy7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB7862144C1;
-	Wed,  7 May 2025 19:10:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 675BE28DF4F;
+	Wed,  7 May 2025 19:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746645030; cv=none; b=BYhM4igHSi8PQbiFdQojlv1sHnbXtTNFkqVuQeIUmlpGFIQPIfvwsnfmVheSzLvF/we85DOL8aUH5pYu2IwlCn6JuQwYf5AajGhFAEECYM4ik8wdlWO1JA+vwPEjbXo7nKRiYh/1HxI58CbDGg284OhCPUcWfUzjnyTkwiCse/Q=
+	t=1746644768; cv=none; b=lXJFDMQosvCQ0Nr/7qGntvVUpR8VGFfHDKXEyjKrXBllj58M8lOTXTl1vP3z9SJM+MC4wZqdB8lkIVYxfNU3ilFC91yw/41Weu+05fl7VUNNggrz5YyxIULbnrsXxXOP3qopAN1g05WSzF8ruPPUZtiODsvRpwA6omABKCumx0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746645030; c=relaxed/simple;
-	bh=bTPKQNUbq2LvG18zHyTZcIeW/TiOVsFB/QtFruL0zfA=;
+	s=arc-20240116; t=1746644768; c=relaxed/simple;
+	bh=DG4ofd+BWGh1QmYDzQ7xvDWQ45Kr47JChk2Ro0jjYbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HYjCeminJcxlOgLfTUW2jtV+UAmj5mPc2k3Wa9Ydge0K0JsH2qkKi5wy+I8QeRwuj+/e3iQqFULvjblK8eiXnZ3wUOXcli2kuO38yP6GroCzOmtXfhQGryPcXWInOKS8G+k7705LXyCVjgu+fht9R12PC9HHSZiH8pl/hIlZnsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bQQmJs+0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CABBC4CEE2;
-	Wed,  7 May 2025 19:10:29 +0000 (UTC)
+	 MIME-Version; b=hCPX/7lGpSlnGhNyyoHcFuWrBx8ddJ9mREkMDAem5RCnDq0G1C+mKg92A8M4lkGBV6sn++3fwW1Bai8M4iPA24C7CVe+S81DG+TuGyv/wrG/hgoLqvbFGeijopCA3PDSQLmGlqwBHT2Fc1e4EpRhSgyj3pPTLNi4NoX53QBuXGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m25VCuy7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD5FDC4CEE2;
+	Wed,  7 May 2025 19:06:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746645029;
-	bh=bTPKQNUbq2LvG18zHyTZcIeW/TiOVsFB/QtFruL0zfA=;
+	s=korg; t=1746644768;
+	bh=DG4ofd+BWGh1QmYDzQ7xvDWQ45Kr47JChk2Ro0jjYbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bQQmJs+0Tz9ritXC6CG+dHa4qEBPoGyu6Pq6xyhekC3zN2ywWAOEAS78UKgap7YXv
-	 qaHIXZD44BBG5VABptiBEadJ/AQ42ThA1I73C8ahPDNcpnWY4qbDicqIOUVTPZO0NY
-	 IPoXBahro8Jxte/m0nG3VSRM6jtPw7g8hIauDoy8=
+	b=m25VCuy7ZKCtrVT7HasjLZ/NAobGQzw8JSExDPoiAC0Hoyevt7hXW1v2oJvdq15SN
+	 EfPpHWZIXgLcKs5tJOGbSV2OZohGBaiFsgQzppee1jeTA6FM9buour7OUEmkRCU6Ej
+	 Sss1T0Kv/kPEJriCX1dPHcgaLcOxgQU8KmEyTaEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Victor Nogueira <victor@mojatatu.com>,
+	Jibin Zhang <jibin.zhang@mediatek.com>,
+	Shiming Cheng <shiming.cheng@mediatek.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 071/129] net_sched: qfq: Fix double list add in class with netem as child qdisc
-Date: Wed,  7 May 2025 20:40:07 +0200
-Message-ID: <20250507183816.398145305@linuxfoundation.org>
+Subject: [PATCH 6.12 123/164] net: use sock_gen_put() when sk_state is TCP_TIME_WAIT
+Date: Wed,  7 May 2025 20:40:08 +0200
+Message-ID: <20250507183825.951897263@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
-References: <20250507183813.500572371@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +64,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Nogueira <victor@mojatatu.com>
+From: Jibin Zhang <jibin.zhang@mediatek.com>
 
-[ Upstream commit f139f37dcdf34b67f5bf92bc8e0f7f6b3ac63aa4 ]
+[ Upstream commit f920436a44295ca791ebb6dae3f4190142eec703 ]
 
-As described in Gerrard's report [1], there are use cases where a netem
-child qdisc will make the parent qdisc's enqueue callback reentrant.
-In the case of qfq, there won't be a UAF, but the code will add the same
-classifier to the list twice, which will cause memory corruption.
+It is possible for a pointer of type struct inet_timewait_sock to be
+returned from the functions __inet_lookup_established() and
+__inet6_lookup_established(). This can cause a crash when the
+returned pointer is of type struct inet_timewait_sock and
+sock_put() is called on it. The following is a crash call stack that
+shows sk->sk_wmem_alloc being accessed in sk_free() during the call to
+sock_put() on a struct inet_timewait_sock pointer. To avoid this issue,
+use sock_gen_put() instead of sock_put() when sk->sk_state
+is TCP_TIME_WAIT.
 
-This patch checks whether the class was already added to the agg->active
-list (cl_is_active) before doing the addition to cater for the reentrant
-case.
+mrdump.ko        ipanic() + 120
+vmlinux          notifier_call_chain(nr_to_call=-1, nr_calls=0) + 132
+vmlinux          atomic_notifier_call_chain(val=0) + 56
+vmlinux          panic() + 344
+vmlinux          add_taint() + 164
+vmlinux          end_report() + 136
+vmlinux          kasan_report(size=0) + 236
+vmlinux          report_tag_fault() + 16
+vmlinux          do_tag_recovery() + 16
+vmlinux          __do_kernel_fault() + 88
+vmlinux          do_bad_area() + 28
+vmlinux          do_tag_check_fault() + 60
+vmlinux          do_mem_abort() + 80
+vmlinux          el1_abort() + 56
+vmlinux          el1h_64_sync_handler() + 124
+vmlinux        > 0xFFFFFFC080011294()
+vmlinux          __lse_atomic_fetch_add_release(v=0xF2FFFF82A896087C)
+vmlinux          __lse_atomic_fetch_sub_release(v=0xF2FFFF82A896087C)
+vmlinux          arch_atomic_fetch_sub_release(i=1, v=0xF2FFFF82A896087C)
++ 8
+vmlinux          raw_atomic_fetch_sub_release(i=1, v=0xF2FFFF82A896087C)
++ 8
+vmlinux          atomic_fetch_sub_release(i=1, v=0xF2FFFF82A896087C) + 8
+vmlinux          __refcount_sub_and_test(i=1, r=0xF2FFFF82A896087C,
+oldp=0) + 8
+vmlinux          __refcount_dec_and_test(r=0xF2FFFF82A896087C, oldp=0) + 8
+vmlinux          refcount_dec_and_test(r=0xF2FFFF82A896087C) + 8
+vmlinux          sk_free(sk=0xF2FFFF82A8960700) + 28
+vmlinux          sock_put() + 48
+vmlinux          tcp6_check_fraglist_gro() + 236
+vmlinux          tcp6_gro_receive() + 624
+vmlinux          ipv6_gro_receive() + 912
+vmlinux          dev_gro_receive() + 1116
+vmlinux          napi_gro_receive() + 196
+ccmni.ko         ccmni_rx_callback() + 208
+ccmni.ko         ccmni_queue_recv_skb() + 388
+ccci_dpmaif.ko   dpmaif_rxq_push_thread() + 1088
+vmlinux          kthread() + 268
+vmlinux          0xFFFFFFC08001F30C()
 
-[1] https://lore.kernel.org/netdev/CAHcdcOm+03OD2j6R0=YHKqmy=VgJ8xEOKuP6c7mSgnp-TEJJbw@mail.gmail.com/
-
-Fixes: 37d9cf1a3ce3 ("sched: Fix detection of empty queues in child qdiscs")
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
-Link: https://patch.msgid.link/20250425220710.3964791-5-victor@mojatatu.com
+Fixes: c9d1d23e5239 ("net: add heuristic for enabling TCP fraglist GRO")
+Signed-off-by: Jibin Zhang <jibin.zhang@mediatek.com>
+Signed-off-by: Shiming Cheng <shiming.cheng@mediatek.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20250429020412.14163-1-shiming.cheng@mediatek.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_qfq.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ net/ipv4/tcp_offload.c   | 2 +-
+ net/ipv6/tcpv6_offload.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
-index 546c10adcacde..c7d4ee8cedff0 100644
---- a/net/sched/sch_qfq.c
-+++ b/net/sched/sch_qfq.c
-@@ -202,6 +202,11 @@ struct qfq_sched {
-  */
- enum update_reason {enqueue, requeue};
+diff --git a/net/ipv4/tcp_offload.c b/net/ipv4/tcp_offload.c
+index 2dfac79dc78b8..e04ebe651c334 100644
+--- a/net/ipv4/tcp_offload.c
++++ b/net/ipv4/tcp_offload.c
+@@ -435,7 +435,7 @@ static void tcp4_check_fraglist_gro(struct list_head *head, struct sk_buff *skb,
+ 				       iif, sdif);
+ 	NAPI_GRO_CB(skb)->is_flist = !sk;
+ 	if (sk)
+-		sock_put(sk);
++		sock_gen_put(sk);
+ }
  
-+static bool cl_is_active(struct qfq_class *cl)
-+{
-+	return !list_empty(&cl->alist);
-+}
-+
- static struct qfq_class *qfq_find_class(struct Qdisc *sch, u32 classid)
- {
- 	struct qfq_sched *q = qdisc_priv(sch);
-@@ -1217,7 +1222,6 @@ static int qfq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	struct qfq_class *cl;
- 	struct qfq_aggregate *agg;
- 	int err = 0;
--	bool first;
+ INDIRECT_CALLABLE_SCOPE
+diff --git a/net/ipv6/tcpv6_offload.c b/net/ipv6/tcpv6_offload.c
+index ae2da28f9dfb1..5ab509a5fbdfc 100644
+--- a/net/ipv6/tcpv6_offload.c
++++ b/net/ipv6/tcpv6_offload.c
+@@ -42,7 +42,7 @@ static void tcp6_check_fraglist_gro(struct list_head *head, struct sk_buff *skb,
+ 					iif, sdif);
+ 	NAPI_GRO_CB(skb)->is_flist = !sk;
+ 	if (sk)
+-		sock_put(sk);
++		sock_gen_put(sk);
+ #endif /* IS_ENABLED(CONFIG_IPV6) */
+ }
  
- 	cl = qfq_classify(skb, sch, &err);
- 	if (cl == NULL) {
-@@ -1239,7 +1243,6 @@ static int qfq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	}
- 
- 	gso_segs = skb_is_gso(skb) ? skb_shinfo(skb)->gso_segs : 1;
--	first = !cl->qdisc->q.qlen;
- 	err = qdisc_enqueue(skb, cl->qdisc, to_free);
- 	if (unlikely(err != NET_XMIT_SUCCESS)) {
- 		pr_debug("qfq_enqueue: enqueue failed %d\n", err);
-@@ -1255,8 +1258,8 @@ static int qfq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	++sch->q.qlen;
- 
- 	agg = cl->agg;
--	/* if the queue was not empty, then done here */
--	if (!first) {
-+	/* if the class is active, then done here */
-+	if (cl_is_active(cl)) {
- 		if (unlikely(skb == cl->qdisc->ops->peek(cl->qdisc)) &&
- 		    list_first_entry(&agg->active, struct qfq_class, alist)
- 		    == cl && cl->deficit < len)
 -- 
 2.39.5
 
