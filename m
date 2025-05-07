@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-142565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC055AAEB28
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:04:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3114AAE9BB
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:48:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 264DE1C0680B
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:04:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D00F5067CC
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:48:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32C1428AAE9;
-	Wed,  7 May 2025 19:04:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE56F215766;
+	Wed,  7 May 2025 18:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d3js6PRW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0gY8eEN/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E40D829A0;
-	Wed,  7 May 2025 19:04:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AA5420B7FD;
+	Wed,  7 May 2025 18:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644645; cv=none; b=Ahk0JrBJo/tuJ0uEuUa35QR9iejTKJC+xYVd9lw4oobGQYosS2Q8JqbxfTJj2nSHTKt0fYKNcKOR2k8l9V4F2JdQ2AxPajXe9hKBkytp/fqeepJJKkPpY8D9rGkvGf27g1hT7RMizdaRoDH/2QUQjfn6N8pcb3z9XNQKS3zSgo8=
+	t=1746643678; cv=none; b=Gfl5iy4bvrzGkaMBwMPpG6YnRawn0Z6HcJv24GkEKM2VvV4Ue6QduN6i8XWotEv6fLoLQpq8OkxR/kaRwaCXSnETf3uMib09a+OGIQv2bgE16bH0dUcVq9P95uLHiWWEPNfHX7RrX1QDPxJM41hvkYBtdTLm9G6Q2mYzhPNENQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644645; c=relaxed/simple;
-	bh=rx+pH816IasEjIoohzMoPTrWKvWowZP/YbHc42Nb/tU=;
+	s=arc-20240116; t=1746643678; c=relaxed/simple;
+	bh=wXjt2BEZ3rMVtIolYpZNzLXfUArAEs9F5gJnVvPbSro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E4sCFW0TxPZNzNnITWK9BWCs22eMYLnrEBVgT5ukwY4nn9X1m009kpaH559funKW66QWw77GYUicvkudxGm28Tm2oJ0xJNYncD2PxvAbemmIq/9cJLrvjXfKd/9HA9S8AaEVmLWzUtKAGXGiIdvl7Z8/kAlIbskp8QrmAGaCK8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d3js6PRW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C267C4CEE2;
-	Wed,  7 May 2025 19:04:04 +0000 (UTC)
+	 MIME-Version; b=jfc6C8oaAi3T4JKtJOrMrFyPon/nffJWOaabovelIl4WHifhGPBxUuAr9hxAuhsWlehNG6M8rULMHNUzj1e7Pq7OzMCWbxC5l0riuxLNXsPQx5EEu02Cmo9KUhp7NSX13EWeMjIgnrz60LrT2S91nlk/AS7JROUXZqWLySE0MsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0gY8eEN/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D0B6C4CEE2;
+	Wed,  7 May 2025 18:47:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644644;
-	bh=rx+pH816IasEjIoohzMoPTrWKvWowZP/YbHc42Nb/tU=;
+	s=korg; t=1746643678;
+	bh=wXjt2BEZ3rMVtIolYpZNzLXfUArAEs9F5gJnVvPbSro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d3js6PRW3w+k7a/eTZs8VCnakrdWdWO+L5BVhJlFtCGkT4AKE2V7UW0+Qcq354j9j
-	 ETuJpXW993o/rjq97ET5e1MVCMEIRoDDu/SGGKQaHyurHP05jiA36cS03qIZgFZgCr
-	 H4+6wZLycGM+C53HaO32YG4iJUR7hnIrnLoqEO2Q=
+	b=0gY8eEN/SWOjpqktjj1GypM8xvl010tS5dXr5SdsZtt6e0sI9saS4eNIjkeIRufLP
+	 Vkx9y0UG+Q4Ro72jtds4Heybq3YIhIzUfa0U/vUHruR5p+wdWML2/IeZGZQpOFbH4U
+	 9pBSPZ2FmBp8g7JmQpDIW/fGP6bLLcPLEnELuOhQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 110/164] ALSA: hda/realtek: Fix built-mic regression on other ASUS models
+Subject: [PATCH 6.1 80/97] firmware: arm_scmi: Balance device refcount when destroying devices
 Date: Wed,  7 May 2025 20:39:55 +0200
-Message-ID: <20250507183825.431757835@linuxfoundation.org>
+Message-ID: <20250507183810.198513785@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
+References: <20250507183806.987408728@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +64,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Cristian Marussi <cristian.marussi@arm.com>
 
-[ Upstream commit 4d5b71b487291da9f92e352c0a7e39f256d60db8 ]
+[ Upstream commit 9ca67840c0ddf3f39407339624cef824a4f27599 ]
 
-A few ASUS models use the ALC256_FIXUP_ASUS_HEADSET_MODE although they
-have no built-in mic pin on NID 0x13, as found in the commit
-c1732ede5e80 ("ALSA: hda/realtek - Fix headset and mic on several Asus
-laptops with ALC256").  This was relatively harmless in the past as
-NID 0x13 was assigned as the secondary mic.  But since the fix for the
-pin sort order, this pin became the primary one, hence user started
-noticing the broken input, and we've fixed already for a few ASUS
-models to switch to ALC256_FIXUP_ASUS_MIC_NO_PRESENCE.
+Using device_find_child() to lookup the proper SCMI device to destroy
+causes an unbalance in device refcount, since device_find_child() calls an
+implicit get_device(): this, in turns, inhibits the call of the provided
+release methods upon devices destruction.
 
-This patch corrects the other ASUS models to use the right quirk entry
-for fixing the built-in mic regression.  Here we cover X541SA
-(1043:12e0), X541UV (1043:12f0), Z550SA (1043:13bf0) and X555UB
-(1043:1ccd).
+As a consequence, one of the structures that is not freed properly upon
+destruction is the internal struct device_private dev->p populated by the
+drivers subsystem core.
 
-Fixes: 3b4309546b48 ("ALSA: hda: Fix headset detection failure due to unstable sort")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=220058
-Link: https://patch.msgid.link/20250430053210.31776-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+KMemleak detects this situation since loading/unloding some SCMI driver
+causes related devices to be created/destroyed without calling any
+device_release method.
+
+unreferenced object 0xffff00000f583800 (size 512):
+  comm "insmod", pid 227, jiffies 4294912190
+  hex dump (first 32 bytes):
+    00 00 00 00 ad 4e ad de ff ff ff ff 00 00 00 00  .....N..........
+    ff ff ff ff ff ff ff ff 60 36 1d 8a 00 80 ff ff  ........`6......
+  backtrace (crc 114e2eed):
+    kmemleak_alloc+0xbc/0xd8
+    __kmalloc_cache_noprof+0x2dc/0x398
+    device_add+0x954/0x12d0
+    device_register+0x28/0x40
+    __scmi_device_create.part.0+0x1bc/0x380
+    scmi_device_create+0x2d0/0x390
+    scmi_create_protocol_devices+0x74/0xf8
+    scmi_device_request_notifier+0x1f8/0x2a8
+    notifier_call_chain+0x110/0x3b0
+    blocking_notifier_call_chain+0x70/0xb0
+    scmi_driver_register+0x350/0x7f0
+    0xffff80000a3b3038
+    do_one_initcall+0x12c/0x730
+    do_init_module+0x1dc/0x640
+    load_module+0x4b20/0x5b70
+    init_module_from_file+0xec/0x158
+
+$ ./scripts/faddr2line ./vmlinux device_add+0x954/0x12d0
+device_add+0x954/0x12d0:
+kmalloc_noprof at include/linux/slab.h:901
+(inlined by) kzalloc_noprof at include/linux/slab.h:1037
+(inlined by) device_private_init at drivers/base/core.c:3510
+(inlined by) device_add at drivers/base/core.c:3561
+
+Balance device refcount by issuing a put_device() on devices found via
+device_find_child().
+
+Reported-by: Alice Ryhl <aliceryhl@google.com>
+Closes: https://lore.kernel.org/linux-arm-kernel/Z8nK3uFkspy61yjP@arm.com/T/#mc1f73a0ea5e41014fa145147b7b839fc988ada8f
+CC: Sudeep Holla <sudeep.holla@arm.com>
+CC: Catalin Marinas <catalin.marinas@arm.com>
+Fixes: d4f9dddd21f3 ("firmware: arm_scmi: Add dynamic scmi devices creation")
+Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
+Tested-by: Alice Ryhl <aliceryhl@google.com>
+Message-Id: <20250306185447.2039336-1-cristian.marussi@arm.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/firmware/arm_scmi/bus.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 5a36cb2969b08..db72c5fce9d18 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10723,10 +10723,10 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x12a3, "Asus N7691ZM", ALC269_FIXUP_ASUS_N7601ZM),
- 	SND_PCI_QUIRK(0x1043, 0x12af, "ASUS UX582ZS", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x12b4, "ASUS B3405CCA / P3405CCA", ALC294_FIXUP_ASUS_CS35L41_SPI_2),
--	SND_PCI_QUIRK(0x1043, 0x12e0, "ASUS X541SA", ALC256_FIXUP_ASUS_MIC),
--	SND_PCI_QUIRK(0x1043, 0x12f0, "ASUS X541UV", ALC256_FIXUP_ASUS_MIC),
-+	SND_PCI_QUIRK(0x1043, 0x12e0, "ASUS X541SA", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
-+	SND_PCI_QUIRK(0x1043, 0x12f0, "ASUS X541UV", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1043, 0x1313, "Asus K42JZ", ALC269VB_FIXUP_ASUS_MIC_NO_PRESENCE),
--	SND_PCI_QUIRK(0x1043, 0x13b0, "ASUS Z550SA", ALC256_FIXUP_ASUS_MIC),
-+	SND_PCI_QUIRK(0x1043, 0x13b0, "ASUS Z550SA", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1043, 0x1427, "Asus Zenbook UX31E", ALC269VB_FIXUP_ASUS_ZENBOOK),
- 	SND_PCI_QUIRK(0x1043, 0x1433, "ASUS GX650PY/PZ/PV/PU/PYV/PZV/PIV/PVV", ALC285_FIXUP_ASUS_I2C_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x1460, "Asus VivoBook 15", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
-@@ -10780,7 +10780,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x1c92, "ASUS ROG Strix G15", ALC285_FIXUP_ASUS_G533Z_PINS),
- 	SND_PCI_QUIRK(0x1043, 0x1c9f, "ASUS G614JU/JV/JI", ALC285_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x1caf, "ASUS G634JY/JZ/JI/JG", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
--	SND_PCI_QUIRK(0x1043, 0x1ccd, "ASUS X555UB", ALC256_FIXUP_ASUS_MIC),
-+	SND_PCI_QUIRK(0x1043, 0x1ccd, "ASUS X555UB", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1043, 0x1ccf, "ASUS G814JU/JV/JI", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1cdf, "ASUS G814JY/JZ/JG", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1cef, "ASUS G834JY/JZ/JI/JG", ALC285_FIXUP_ASUS_HEADSET_MIC),
+diff --git a/drivers/firmware/arm_scmi/bus.c b/drivers/firmware/arm_scmi/bus.c
+index 35bb70724d44b..8c6f99d15f22f 100644
+--- a/drivers/firmware/arm_scmi/bus.c
++++ b/drivers/firmware/arm_scmi/bus.c
+@@ -73,6 +73,9 @@ struct scmi_device *scmi_child_dev_find(struct device *parent,
+ 	if (!dev)
+ 		return NULL;
+ 
++	/* Drop the refcnt bumped implicitly by device_find_child */
++	put_device(dev);
++
+ 	return to_scmi_dev(dev);
+ }
+ 
 -- 
 2.39.5
 
