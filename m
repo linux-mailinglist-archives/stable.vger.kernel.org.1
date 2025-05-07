@@ -1,215 +1,119 @@
-Return-Path: <stable+bounces-142086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142087-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75426AAE494
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 17:25:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B239AAE4A1
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 17:26:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4AC089C3236
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 15:24:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 041FA523205
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 15:25:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A32928A72C;
-	Wed,  7 May 2025 15:24:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="0eSppIxy"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2286A28A721;
+	Wed,  7 May 2025 15:25:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2069.outbound.protection.outlook.com [40.107.92.69])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A45B51FDA61
-	for <stable@vger.kernel.org>; Wed,  7 May 2025 15:24:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.69
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746631492; cv=fail; b=FmGrZFCdBeLY3QRbNzJgY8gWcUlRq5G8PlToHWHbaTsBP1ynrzqtKRuy51OtrzfixeoK7Cu2PRsmTuaZQPujAIRDFIfLKxdbIFzZUzyo8YPKZI1GGPnXrEBWsuDHWQyk3iCaGTlahZo8m63V0OYh4m2huAZt6g5LwpBzrn8dTWo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746631492; c=relaxed/simple;
-	bh=gXBd6LEp4Dx5ggom8/A/pDE4s0Rq8hKbZrXSpbUUPLI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=XoWDDFC4iOFBqjLCBoEhkefOXBLlV3M0PAKUNueIPuuaMdFJMtk//ymkCUnbvm5CwFCEdVuVbf4PDAPqCWPdgxfbPWzLWfFjpWwwqTD8mPTK573DtVBwvZ9Z5eeIRx3K/N8BklGQTBhNowUsKTgC9EX5VVzciIpAodk573IdfEI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=0eSppIxy; arc=fail smtp.client-ip=40.107.92.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QEHeUeQtdLE+BYhKQCCweHjlUEIEi7pswKcoDtTdFQndhYn5eBiso+wS5IplE+59sbsBx5Wh/aky6+ooWTMA598fckpYZihL9PEV47JHKXbX0f1IrFLiUjtba/Tjp1cd0Xz/G3MquEKI3c2fj305axc1xB8Aemcgkz//auKi/9Ey7SKM/eX/aRzqmphAi2DXqErJUw4yPM15/nAg+k89dTKJFimkZ0R7JWV/VE5jWLA9edoW9ZcxT6F2oeSnTS6VJ4lf/zH6DNWM607S1hclUD7xWtnMVlj/ZA9woY4FC9Z/t2mb0naR6eHuXH/qqdRvbSNbixSuHu1UfmniKrRHHQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sGbgyzGFRT/U/W4KCzlyXkwlqEmfYo70eLmDQh0xqqQ=;
- b=XFLKLkypNa5NoRtac4i5+p0ptIuC0NHbpSPMI9TuYdhPvKnhoPogA9Z02Oj7iuyV2uY+kA1+4pIQQ6piRbqu8VMm/B9fZahtE13ICmj3rXcVkQHMXMoylpEmDUIJAuVGq5FxP6ImRKH+oYiAy3BCqNgh9d76QvJcUimDCCbR1cSIWUZ8XJBPPN4ygLAFlWTk83AfyVNPUz/R7zB7opb7R/2cVKsjts6iT2Es1Lu9pfL5jwiomFfsOxP07SwfdjEbF6Yk4wkcHhenkSYIEO3kOF5wFbYSnZHDRAAi/Lho+QKJFnxwgkiEdttN3lRmxXbz7Db9L+N8gHWK514AWz9UpQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=linux.intel.com smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sGbgyzGFRT/U/W4KCzlyXkwlqEmfYo70eLmDQh0xqqQ=;
- b=0eSppIxyHmykVHoJBHsBbrsPyt9JHq1tKxptTXEyvYze7SfIzhoPyHCwom9epa+ZbMQ7fTfzYQxYhVWlhdMw3dKCuvGIP5w0MJc+eTto57OWRYNt4zBNDaXg/bowQlP+M+Mb/KRDoJk2c36/kbSO9rpnzbsL9cm5ZXLUFBW5JBU=
-Received: from BL6PEPF0001641B.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:22e:400:0:1004:0:10) by DS2PR12MB9663.namprd12.prod.outlook.com
- (2603:10b6:8:27a::13) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.26; Wed, 7 May
- 2025 15:24:43 +0000
-Received: from BL02EPF0002992C.namprd02.prod.outlook.com
- (2a01:111:f403:f901::7) by BL6PEPF0001641B.outlook.office365.com
- (2603:1036:903:4::a) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8699.30 via Frontend Transport; Wed,
- 7 May 2025 15:24:43 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BL02EPF0002992C.mail.protection.outlook.com (10.167.249.57) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8722.18 via Frontend Transport; Wed, 7 May 2025 15:24:42 +0000
-Received: from SATLEXMB05.amd.com (10.181.40.146) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 7 May
- 2025 10:24:42 -0500
-Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB05.amd.com
- (10.181.40.146) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 7 May
- 2025 10:24:42 -0500
-Received: from [172.19.71.207] (10.180.168.240) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
- Transport; Wed, 7 May 2025 10:24:41 -0500
-Message-ID: <08a17170-b991-f520-6aca-0690a28917a4@amd.com>
-Date: Wed, 7 May 2025 08:24:36 -0700
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47FFB28AB03;
+	Wed,  7 May 2025 15:25:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746631531; cv=none; b=Mv0t4nMnbHCdFkpqi8Cvexme+gVxcDAeRNMmdTMn0Cf5V3mGvzMkSwzgNs4O8QWV33S9w9L3vmGXwOeMKK0yqrXO9gZpJyl9jkvV9mJvDiV+TMfvkKlMRZiTos+uf9/urBxOgd1pDL4hf4eRunlGob3rMpWYnsxYHiExGvkm6I8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746631531; c=relaxed/simple;
+	bh=CLGuly61z6pxnXMpY7OtXp7nCpQcfXJ9VrfOuwL8JdM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HSyTl1pNq2xKXjgj0fDW3vqNS5BfYQFGEhwyFMO6SaYBmfyB128Ul/gGdiICeK1I3IKGSIN1xPS3/3zxM3IT27LBznFbI3jZ6BizqH2zR5XEslAjLo8qMf7/UpWTqHQNMuLAyXCUib7saeLDsnj74z8xrYAOX10p9gHdWtxEgkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8166D339;
+	Wed,  7 May 2025 08:25:19 -0700 (PDT)
+Received: from [192.168.20.57] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3AA5D3F58B;
+	Wed,  7 May 2025 08:25:27 -0700 (PDT)
+Message-ID: <214c2a2d-e0ea-4ec6-9925-05e39319e813@arm.com>
+Date: Wed, 7 May 2025 10:25:25 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.11.0
-Subject: Re: [PATCH] accel/ivpu: Use firmware names from upstream repo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ACPI/PPTT: fix off-by-one error
+To: "Heyne, Maximilian" <mheyne@amazon.de>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ Sudeep Holla <sudeep.holla@arm.com>, Ard Biesheuvel <ardb@kernel.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20250506-draco-taped-15f475cd@mheyne-amazon>
 Content-Language: en-US
-To: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
-	<dri-devel@lists.freedesktop.org>
-CC: <jeff.hugo@oss.qualcomm.com>, <stable@vger.kernel.org>
-References: <20250506092030.280276-1-jacek.lawrynowicz@linux.intel.com>
- <abf77771-ca6a-3b29-f5e7-fbb11c53844a@amd.com>
- <35f0d2b1-e958-44db-b4d2-978cd741c3ab@linux.intel.com>
-From: Lizhi Hou <lizhi.hou@amd.com>
-In-Reply-To: <35f0d2b1-e958-44db-b4d2-978cd741c3ab@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-Received-SPF: None (SATLEXMB05.amd.com: lizhi.hou@amd.com does not designate
- permitted sender hosts)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0002992C:EE_|DS2PR12MB9663:EE_
-X-MS-Office365-Filtering-Correlation-Id: 887d6a09-6ff4-4b3c-65cd-08dd8d7b4aa8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|82310400026|376014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?YnhnNnRSKzRTTy92b1A1SEg3T0FvOUppOHZYSk9ib0lVeUg3ck5kVGxhTVcr?=
- =?utf-8?B?NEFRNnJkUHBVSmNlRnlxT0haMFVtSU9pNEF2eVM0bTliMnllY1NiblI4UVVH?=
- =?utf-8?B?UytKeEpLTVh4WkxOOGhmTUpBM2tNTENrV1hTR3Qya3N3cjU2WE5mU3g4WFA5?=
- =?utf-8?B?eVlmK0hXN0J6YnVVTlN4c3R1cndVNlJpQmFFanlpK1Uzenc4S3M1enVKRkVv?=
- =?utf-8?B?dFQ4VlZscktPL2tRaitOb2kySjBLNEorZGY1UHl2UTVjOFI0NFlSUHlGZzA3?=
- =?utf-8?B?Tjhma1JjRXc3UWVTTkNKQXNOZU9YS0xJV08xd09YUUVnMG53VWFmVElhRndx?=
- =?utf-8?B?NGpGTE4vRVNNOGs2UVllZGJDYnhkNGJHK2toY0J4SEpmQzJrd3YxTU9GY1JQ?=
- =?utf-8?B?MjZCRWJLQmUzanBUMWx5dWFaSFdmeHEwUGluVUR1dFU3M1pFSDBadUJpeGJ0?=
- =?utf-8?B?NSs1U0xrT2dnZmV2TTRSMVVZWDdHbnJMR1k1QmluT1VvcDAzNjdnZXVGYzk4?=
- =?utf-8?B?c0ZKaUp3UVd1bWtsMUNoN1FseS94TXdwY1VVdUpHaDM3MVZzc0NIMmZMNWdH?=
- =?utf-8?B?ZzRnRHJ5ay83RGJtZVJFOVcwaWVxREtJN0FwV0tWdEdvUjhWTjZnYmNvSFZx?=
- =?utf-8?B?QzVSR0pRTjRjVUtBMkl2ejROUmtoWDJtYlZ1L1Foc1NZU3BnY0xhQlNmNEtE?=
- =?utf-8?B?bFRuaXgzV3lkUzZOSUFNL0N6MkhvWDVwL1oxMHlSeC9INXVCaGJmcUN2dG5r?=
- =?utf-8?B?NWpEWVFSeU1HWmRCUTR0ZFVINDVSOTVQcFBkRzluZnUzSHUwWlRkSHVSUzRp?=
- =?utf-8?B?WXhid1NDbVdpcXVZKzIvT0VCc2NoUkFPekNyYlNHSHh1Q05uK1FZV3FoMlM4?=
- =?utf-8?B?d281aFhMNFBBQnA1QzYydFRtRnoxUmE2L3J1TkhYMUtsdm9kcEdKZEFkNkhn?=
- =?utf-8?B?U3Z3Zy9aNFR4WU1jTitRS3RJeGZQWDVPcmJXQTNmTFJadm0rdnNIRzFjcXF4?=
- =?utf-8?B?anhQZFBLN0xjODB6TmFuZXRhZ2FqSEVUR0dISjNpcm8wYWtSanNnekNyRUlW?=
- =?utf-8?B?QUFyZGt1TXZNcmxjZHF4NU0vZmd1cXdVd2N5WG8wWndERmZqZ3BvVDNua25w?=
- =?utf-8?B?ZndtMG04U2VRemswTzBNM2pnb1ZJNEZzMW93OXFqOWpSdEthbDNSeTh6RXFS?=
- =?utf-8?B?R0NJaE5BYWh3a0x4VnZRSVZVdStQTlppK1ZYcnFnV0s1S2hQWFhDQWM4Z1ZD?=
- =?utf-8?B?UzZObU5oWjJ1bVFhdksvS2RrR3JieTdWUzlLR3EzOWh6RmpHOUVvK3Q4blhY?=
- =?utf-8?B?cHZJYWM2bng5U2N4NmJLb1hmWmpQSlNFaE56NHY1SDdITWhlNlcvRk5EVm5H?=
- =?utf-8?B?N1Azc3ViVU5pVzFLS2FtOFovY0syYjN4Ykw3N1F0UzJ0NkZrRWYvaSsydU53?=
- =?utf-8?B?UXVKRkxCcDRwMTdJWDVEVmhNQzM1ZEJ2VStmNlhrV29rUXVSN2hGM1NjQUJv?=
- =?utf-8?B?UDFDTjcwSVcrU2NFVUczbXBvbURURER6Y00zaTExVk5uS3VvNEFBYldBZnRZ?=
- =?utf-8?B?enNUb0pzRktyQVEwQmd6d3d2YU1hMmxlMUhBb3JDbnAwaW9hU1kvWHA3OU0v?=
- =?utf-8?B?cW8ySThId1RvYWlRbFNnSmJ3dGFuOXdxOWhVaThFU002SW5CTHlpVlAzai9V?=
- =?utf-8?B?SVhKUmsyQVl2THBxV1l1aXVPelJZckVlVy93bG0yczhRNWNDMnE2eVRhNEtT?=
- =?utf-8?B?T3RZNnl2ZmphVGNjQ1Y2UUVBL21nQURRV0hDV09odkpHdHZmVnJYRGpJUXpk?=
- =?utf-8?B?NEU5dlhvWlU5SUJucC9CYjR0RitLQWprMlpuYTNMTU9lSmlrT0lJMUQyemJo?=
- =?utf-8?B?OFQrTUpUOWV2NXRJdEI2SEZJQ21lVjVad25LL0pTdlpzOFdrQit3c3pOQ1lQ?=
- =?utf-8?B?dGNhZ2pzRG9WK2czNjdvTXNYMmpvQUJjY1B0Um5GZVc5K1ZFRmZjb1ZHY0Nr?=
- =?utf-8?B?cDFqNVZSUkpTNFVmZ2FkYzBOZ0ZtOWZudlhrcUtTdkJkd1dYV3pNVUZDOUUv?=
- =?utf-8?Q?7embbp?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2025 15:24:42.9064
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 887d6a09-6ff4-4b3c-65cd-08dd8d7b4aa8
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF0002992C.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS2PR12MB9663
+From: Jeremy Linton <jeremy.linton@arm.com>
+In-Reply-To: <20250506-draco-taped-15f475cd@mheyne-amazon>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+
+Hi,
+
+On 5/6/25 8:13 AM, Heyne, Maximilian wrote:
+> Commit 7ab4f0e37a0f ("ACPI PPTT: Fix coding mistakes in a couple of
+> sizeof() calls") corrects the processer entry size but unmasked a longer
+> standing bug where the last entry in the structure can get skipped due
+> to an off-by-one mistake if the last entry ends exactly at the end of
+> the ACPI subtable.
+> 
+> The error manifests for instance on EC2 Graviton Metal instances with
+> 
+>    ACPI PPTT: PPTT table found, but unable to locate core 63 (63)
+>    [...]
+>    ACPI: SPE must be homogeneous
+> 
+> Fixes: 2bd00bcd73e5 ("ACPI/PPTT: Add Processor Properties Topology Table parsing")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
+> ---
+>   drivers/acpi/pptt.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
+> index f73ce6e13065d..4364da90902e5 100644
+> --- a/drivers/acpi/pptt.c
+> +++ b/drivers/acpi/pptt.c
+> @@ -231,7 +231,7 @@ static int acpi_pptt_leaf_node(struct acpi_table_header *table_hdr,
+>   			     sizeof(struct acpi_table_pptt));
+>   	proc_sz = sizeof(struct acpi_pptt_processor);
+
+This isn't really right, it should be struct acpi_subtable_header, then 
+once the header is safe, pull the length from it.
+
+But then, really if we are trying to fix the original bug that the table 
+could be shorter than the data in it suggests, the struct 
+acpi_pptt_processor length plus its resources needs to be checked once 
+the subtype is known to be a processor node.
+
+Otherwise the original sizeof * change isn't really fixing anything.
 
 
-On 5/6/25 23:59, Jacek Lawrynowicz wrote:
-> Hi,
->
-> On 5/6/2025 5:41 PM, Lizhi Hou wrote:
->> On 5/6/25 02:20, Jacek Lawrynowicz wrote:
->>> Use FW names from linux-firmware repo instead of deprecated ones.
->>>
->>> Fixes: c140244f0cfb ("accel/ivpu: Add initial Panther Lake support")
->>> Cc: <stable@vger.kernel.org> # v6.13+
->>> Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
->>> ---
->>>    drivers/accel/ivpu/ivpu_fw.c | 12 ++++++------
->>>    1 file changed, 6 insertions(+), 6 deletions(-)
->>>
->>> diff --git a/drivers/accel/ivpu/ivpu_fw.c b/drivers/accel/ivpu/ivpu_fw.c
->>> index ccaaf6c100c02..9db741695401e 100644
->>> --- a/drivers/accel/ivpu/ivpu_fw.c
->>> +++ b/drivers/accel/ivpu/ivpu_fw.c
->>> @@ -55,18 +55,18 @@ static struct {
->>>        int gen;
->>>        const char *name;
->>>    } fw_names[] = {
->>> -    { IVPU_HW_IP_37XX, "vpu_37xx.bin" },
->>> +    { IVPU_HW_IP_37XX, "intel/vpu/vpu_37xx_v1.bin" },
->> What if old only vpu_37xx.bin is installed but not intel/vpu/vpu_37xx_v1?
->>
->> Maybe just put *_v1 line in front without removing { ..., "vpu_37xx.bin"} ?
->>
-> The vpu_37xx.bin style names were never released. This was only for developer convenience but it turns out that developers don't use this anymore, so it is safe to remove. Maybe it make sense to mention this in commit message :)
 
-Sounds great.
 
-Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
+>   
+> -	while ((unsigned long)entry + proc_sz < table_end) {
+> +	while ((unsigned long)entry + proc_sz <= table_end) {
+>   		cpu_node = (struct acpi_pptt_processor *)entry;
+>   		if (entry->type == ACPI_PPTT_TYPE_PROCESSOR &&
+>   		    cpu_node->parent == node_entry)
+> @@ -273,7 +273,7 @@ static struct acpi_pptt_processor *acpi_find_processor_node(struct acpi_table_he
+>   	proc_sz = sizeof(struct acpi_pptt_processor);
+>   
+>   	/* find the processor structure associated with this cpuid */
+> -	while ((unsigned long)entry + proc_sz < table_end) {
+> +	while ((unsigned long)entry + proc_sz <= table_end) {
+>   		cpu_node = (struct acpi_pptt_processor *)entry;
+>   
+>   		if (entry->length == 0) {
 
->
->>>        { IVPU_HW_IP_37XX, "intel/vpu/vpu_37xx_v0.0.bin" },
->>> -    { IVPU_HW_IP_40XX, "vpu_40xx.bin" },
->>> +    { IVPU_HW_IP_40XX, "intel/vpu/vpu_40xx_v1.bin" },
->>>        { IVPU_HW_IP_40XX, "intel/vpu/vpu_40xx_v0.0.bin" },
->>> -    { IVPU_HW_IP_50XX, "vpu_50xx.bin" },
->>> +    { IVPU_HW_IP_50XX, "intel/vpu/vpu_50xx_v1.bin" },
->>>        { IVPU_HW_IP_50XX, "intel/vpu/vpu_50xx_v0.0.bin" },
->>>    };
->>>      /* Production fw_names from the table above */
->>> -MODULE_FIRMWARE("intel/vpu/vpu_37xx_v0.0.bin");
->>> -MODULE_FIRMWARE("intel/vpu/vpu_40xx_v0.0.bin");
->>> -MODULE_FIRMWARE("intel/vpu/vpu_50xx_v0.0.bin");
->>> +MODULE_FIRMWARE("intel/vpu/vpu_37xx_v1.bin");
->>> +MODULE_FIRMWARE("intel/vpu/vpu_40xx_v1.bin");
->>> +MODULE_FIRMWARE("intel/vpu/vpu_50xx_v1.bin");
->>>      static int ivpu_fw_request(struct ivpu_device *vdev)
->>>    {
 
