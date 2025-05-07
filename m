@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-142184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A677AAE968
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:44:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0465AAEA66
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:54:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 727E43ADB2E
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:44:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 945055211A6
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:54:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D123128DF47;
-	Wed,  7 May 2025 18:44:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A13C28AAE9;
+	Wed,  7 May 2025 18:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dJUffbJ6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X650ysmc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE6E1DE4C4;
-	Wed,  7 May 2025 18:44:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5914A2116E9;
+	Wed,  7 May 2025 18:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643470; cv=none; b=ktQ22rZh+wzluiLuoZWJltYjt/AQCo30sb0kTdurzETWHVGZff9+X+64USYrNId4U918tFLYQm7XgL2Shx7wDjhzr+Y+FC/zGwBs+tbaqFhoPVFkeJomJQparMmAkjF3v/TbhsgyUo0mOuBsvxnQ1Ek0kcCvIfaANZbuHSf46qE=
+	t=1746644085; cv=none; b=WDxJVxf94MS1emQ37vGbCPb8q35xOy0jyuI7Vsh0VvXUSik0uE0wu9KkQy/10qZmWy1F/ac0W0LorQ60czsoB+x0Tts7n/txv2QlbLZT6PG8KyU4NypbYPKeACe7k8K1wYEq/St6X7P61OhhHmvKXuY7emOH4qwuTK6zu3IzcBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643470; c=relaxed/simple;
-	bh=yNlzM0a8qzw31Q1j9nei2fTBjhJ98ooWcfMZFxHTkBI=;
+	s=arc-20240116; t=1746644085; c=relaxed/simple;
+	bh=MAkh9KMvDcLoqtxYgotNC4lVhhLdteP8lVSZI+2wcIk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sW199Y1zxZhcugR+u5ccs4Y2jEChuBZyuK37apRDpjFhWm04xLe8E6DErLAvqSc+x5c9Gf4sZu1G0f/QrSl9r2qVC7dV0NPTOykgnAZ3FykqbEfJTQ9sZZRVcN+GG4G6x+9eztRpjpGSayCUETXB8P5wDFM6erL6LPjKXLbfMSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dJUffbJ6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E637C4CEE2;
-	Wed,  7 May 2025 18:44:29 +0000 (UTC)
+	 MIME-Version; b=B88ll16SvV7MfS50CliGvZfcCqcUIePHejuMh8b9uNxXRfLNAdnrcpbglE3pfU+rTdonSrMT5J6firxLFYVT1kEJw0yo/7L6TYT/gUW/lx6qcyez/qdgiHjVRTDl5Nj7ny+PrCCOv6J4xd/x66WB3a5iJT+aU7v6Pmtd3dbKs8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X650ysmc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0F2AC4CEE2;
+	Wed,  7 May 2025 18:54:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643470;
-	bh=yNlzM0a8qzw31Q1j9nei2fTBjhJ98ooWcfMZFxHTkBI=;
+	s=korg; t=1746644085;
+	bh=MAkh9KMvDcLoqtxYgotNC4lVhhLdteP8lVSZI+2wcIk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dJUffbJ6PQpnOZqs6x6DQt3+oTM7TyukUf9H0NE3nHFCCFM4wao/H+IlQwuUXS/by
-	 iaStl7pDQwUPMrQYDS4lcwHaY47HVUxuzYzs/+U5VAjgDcalNodRBuJQ2MmvdoHfo4
-	 gMpROCBWdA5L2p7e0bCE08HYrlHCTbmoksMe7rWs=
+	b=X650ysmcEDZXsNDmPSyL24+HGl3vxffPepaaNx+f063EBYUr5Ck8bfEhD4Ugz2MJ4
+	 jnNfg4bgrWsn55hTD490l23iH2yj3fhMDppCqIv4R/8lPlZU6EOs/z9BGiGUJS0aT5
+	 M82tnJDytuoAqzWHJINqtD0n1GAqCuIwpJGtTekA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Marzinski <bmarzins@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 6.1 15/97] dm: always update the array size in realloc_argv on success
+	Pauli Virtanen <pav@iki.fi>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 085/183] Bluetooth: L2CAP: copy RX timestamp to new fragments
 Date: Wed,  7 May 2025 20:38:50 +0200
-Message-ID: <20250507183807.602111045@linuxfoundation.org>
+Message-ID: <20250507183828.274504823@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
-References: <20250507183806.987408728@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Marzinski <bmarzins@redhat.com>
+From: Pauli Virtanen <pav@iki.fi>
 
-commit 5a2a6c428190f945c5cbf5791f72dbea83e97f66 upstream.
+[ Upstream commit 3908feb1bd7f319a10e18d84369a48163264cc7d ]
 
-realloc_argv() was only updating the array size if it was called with
-old_argv already allocated. The first time it was called to create an
-argv array, it would allocate the array but return the array size as
-zero. dm_split_args() would think that it couldn't store any arguments
-in the array and would call realloc_argv() again, causing it to
-reallocate the initial slots (this time using GPF_KERNEL) and finally
-return a size. Aside from being wasteful, this could cause deadlocks on
-targets that need to process messages without starting new IO. Instead,
-realloc_argv should always update the allocated array size on success.
+Copy timestamp too when allocating new skb for received fragment.
+Fixes missing RX timestamps with fragmentation.
 
-Fixes: a0651926553c ("dm table: don't copy from a NULL pointer in realloc_argv()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4d7ea8ee90e4 ("Bluetooth: L2CAP: Fix handling fragmented length")
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-table.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/bluetooth/l2cap_core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/md/dm-table.c
-+++ b/drivers/md/dm-table.c
-@@ -502,9 +502,10 @@ static char **realloc_argv(unsigned int
- 		gfp = GFP_NOIO;
- 	}
- 	argv = kmalloc_array(new_size, sizeof(*argv), gfp);
--	if (argv && old_argv) {
--		memcpy(argv, old_argv, *size * sizeof(*argv));
-+	if (argv) {
- 		*size = new_size;
-+		if (old_argv)
-+			memcpy(argv, old_argv, *size * sizeof(*argv));
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index a55388fbf07c8..c219a8c596d3e 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -7380,6 +7380,9 @@ static int l2cap_recv_frag(struct l2cap_conn *conn, struct sk_buff *skb,
+ 			return -ENOMEM;
+ 		/* Init rx_len */
+ 		conn->rx_len = len;
++
++		skb_set_delivery_time(conn->rx_skb, skb->tstamp,
++				      skb->tstamp_type);
  	}
  
- 	kfree(old_argv);
+ 	/* Copy as much as the rx_skb can hold */
+-- 
+2.39.5
+
 
 
 
