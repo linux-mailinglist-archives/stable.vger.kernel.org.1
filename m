@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-142432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1862AAEAA2
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:58:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BE85AAEB54
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:06:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4421C1C27056
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:57:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CD623AF968
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:05:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 337E7289823;
-	Wed,  7 May 2025 18:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77E0928E586;
+	Wed,  7 May 2025 19:05:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S0PiwfaM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cxMD6iRj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43E01482F5;
-	Wed,  7 May 2025 18:57:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 348421CF5C6;
+	Wed,  7 May 2025 19:05:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644233; cv=none; b=aeeegB4Azci12cGT2P3H0EbywSRmJf+159cFnJxFmwSK4yRMQlRp0nqR0q70M88pYqOy+2Psi71pFN3oLbogV2tOQD2IycwEy1BEMmmrKA2puUQTNg7ve71hllNUndD3HabG1GAhG34zjuA3Dba0kUUD59Q+UWMGjVdhGkwrng4=
+	t=1746644735; cv=none; b=NDjk2RxiqSLHCE3h0DN2DsKEpc8eXZMmMS9MIkkTJGuUtcIHKJZhyFSFysktzN5aIQ45nQP83Q5JycztHEeORzTtzh8+WVguuF7AQHjivuLlVJG52Fj5k/y9/+yKTLLzL0eey20jjOXp+vcoYDUWn//R2gyJA8VFLf6oAwJEyng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644233; c=relaxed/simple;
-	bh=w58Fa7LCnqrHobBCLv2HbjojGPPf54Jkg2iTw20YJOE=;
+	s=arc-20240116; t=1746644735; c=relaxed/simple;
+	bh=ux1aD0B6Tx4xP39ef+4IQ4WNl3kljlWy1nTIOP0A4dw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IxHSzEfQpOWuCpxufziPXlGBRzPib3F7N1ElWIkJWKO1mwo5MlfF+1rXz7Og/lCvPgjmPkWKKqp3l0AccS5H+An5nrNw98TNXaHrq7rqpgoT05hkwxK/Hsag/N5rPxiopojrSjdYKJu5+QvQRjgs8thBfj66l9Ce1wBYtAJf9Jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S0PiwfaM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F3C2C4CEE2;
-	Wed,  7 May 2025 18:57:12 +0000 (UTC)
+	 MIME-Version; b=PBDkKKdXwWwh2iuHbIZRGZdJQoAg/eTaHHrT5kCjmQ9ZSDGlkgpVA8C2GMhQnvQnCtoj7I6oRQz+EE/zycRpYt9B6CWZP6aiqDROwZDfvaRk8I5eRlup3FYruTzCbLtzn5Wr6sY8pnpist5uVIErikbp0jVmT142h2CJI9rI2vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cxMD6iRj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA0D4C4CEE9;
+	Wed,  7 May 2025 19:05:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644232;
-	bh=w58Fa7LCnqrHobBCLv2HbjojGPPf54Jkg2iTw20YJOE=;
+	s=korg; t=1746644735;
+	bh=ux1aD0B6Tx4xP39ef+4IQ4WNl3kljlWy1nTIOP0A4dw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S0PiwfaM+GAHcDtIFWL8CHDV5IM12K9soJ/9173keMxCyKa4oOPHYgLCShQYwpSnl
-	 nrFLKbM4hF4uDPcGThAOKO+DAsZFdlCQ8E8SaPbSubdWgy4NRe4rh84DmkmNe9NQtF
-	 DZflLiC3ug/+PJEOGHYerMUk5HhufTD088IEZjQY=
+	b=cxMD6iRjjQzstq0ff9Fn/n4JUZiXyPzK/EZMlmAHp8Pgod1Ur+OTUM09L9piQR8FV
+	 SxwT+NomY1YFNuC2PeTLwuJYC/PTk8pvkJzMwkUz79JGazC4GmWIBN/8eCVjXvaErY
+	 TPyenxPdSUq1RZRfI7y7ERRxG8jSuzbRFrlZKAN0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.14 162/183] sch_drr: make drr_qlen_notify() idempotent
+	Taehee Yoo <ap420073@gmail.com>,
+	Vadim Fedorenko <vadfed@meta.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 122/164] bnxt_en: fix module unload sequence
 Date: Wed,  7 May 2025 20:40:07 +0200
-Message-ID: <20250507183831.430560950@linuxfoundation.org>
+Message-ID: <20250507183825.912106458@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +65,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <xiyou.wangcong@gmail.com>
+From: Vadim Fedorenko <vadfed@meta.com>
 
-commit df008598b3a00be02a8051fde89ca0fbc416bd55 upstream.
+[ Upstream commit 927069d5c40c1cfa7b2d13cfc6d7d58bc6f85c50 ]
 
-drr_qlen_notify() always deletes the DRR class from its active list
-with list_del(), therefore, it is not idempotent and not friendly
-to its callers, like fq_codel_dequeue().
+Recent updates to the PTP part of bnxt changed the way PTP FIFO is
+cleared, skbs waiting for TX timestamps are now cleared during
+ndo_close() call. To do clearing procedure, the ptp structure must
+exist and point to a valid address. Module destroy sequence had ptp
+clear code running before netdev close causing invalid memory access and
+kernel crash. Change the sequence to destroy ptp structure after device
+close.
 
-Let's make it idempotent to ease qdisc_tree_reduce_backlog() callers'
-life. Also change other list_del()'s to list_del_init() just to be
-extra safe.
-
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250403211033.166059-3-xiyou.wangcong@gmail.com
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8f7ae5a85137 ("bnxt_en: improve TX timestamping FIFO configuration")
+Reported-by: Taehee Yoo <ap420073@gmail.com>
+Closes: https://lore.kernel.org/netdev/CAMArcTWDe2cd41=ub=zzvYifaYcYv-N-csxfqxUvejy_L0D6UQ@mail.gmail.com/
+Signed-off-by: Vadim Fedorenko <vadfed@meta.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Michael Chan <michael.chan@broadcom.com>
+Tested-by: Taehee Yoo <ap420073@gmail.com>
+Link: https://patch.msgid.link/20250430170343.759126-1-vadfed@meta.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_drr.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/sched/sch_drr.c
-+++ b/net/sched/sch_drr.c
-@@ -110,6 +110,7 @@ static int drr_change_class(struct Qdisc
- 		return -ENOBUFS;
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index e4d5bd30cf319..12b61a6fcda42 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -15421,8 +15421,8 @@ static void bnxt_remove_one(struct pci_dev *pdev)
  
- 	gnet_stats_basic_sync_init(&cl->bstats);
-+	INIT_LIST_HEAD(&cl->alist);
- 	cl->common.classid = classid;
- 	cl->quantum	   = quantum;
- 	cl->qdisc	   = qdisc_create_dflt(sch->dev_queue,
-@@ -234,7 +235,7 @@ static void drr_qlen_notify(struct Qdisc
- {
- 	struct drr_class *cl = (struct drr_class *)arg;
+ 	bnxt_rdma_aux_device_del(bp);
  
--	list_del(&cl->alist);
-+	list_del_init(&cl->alist);
- }
+-	bnxt_ptp_clear(bp);
+ 	unregister_netdev(dev);
++	bnxt_ptp_clear(bp);
  
- static int drr_dump_class(struct Qdisc *sch, unsigned long arg,
-@@ -393,7 +394,7 @@ static struct sk_buff *drr_dequeue(struc
- 			if (unlikely(skb == NULL))
- 				goto out;
- 			if (cl->qdisc->q.qlen == 0)
--				list_del(&cl->alist);
-+				list_del_init(&cl->alist);
+ 	bnxt_rdma_aux_device_uninit(bp);
  
- 			bstats_update(&cl->bstats, skb);
- 			qdisc_bstats_update(sch, skb);
-@@ -434,7 +435,7 @@ static void drr_reset_qdisc(struct Qdisc
- 	for (i = 0; i < q->clhash.hashsize; i++) {
- 		hlist_for_each_entry(cl, &q->clhash.hash[i], common.hnode) {
- 			if (cl->qdisc->q.qlen)
--				list_del(&cl->alist);
-+				list_del_init(&cl->alist);
- 			qdisc_reset(cl->qdisc);
- 		}
- 	}
+-- 
+2.39.5
+
 
 
 
