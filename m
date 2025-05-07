@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-142674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 074FFAAEBC5
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:10:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBEC4AAEB09
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:02:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2177C468034
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:09:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46D631C02D3F
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:02:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25EED28BA9F;
-	Wed,  7 May 2025 19:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 083FC28D85C;
+	Wed,  7 May 2025 19:02:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sZ0eDAMt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zHMEm8jg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D68212144C1;
-	Wed,  7 May 2025 19:09:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D9629A0;
+	Wed,  7 May 2025 19:02:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644977; cv=none; b=fw04xEXmnnAVTfMUywfWx4/KrEvuNuyU49TmIiqthPDqIBiLVsLkFqdneUeOOoGlHIRXGSoofiJuL6zOzMCOsH9h/3S6mx9XspYopes0gUWRcFjXQLGocbXT/6GssAdnncgaFkkBD70OWBks0AdeHu+40QfXK8Emnb7dpAHkoa4=
+	t=1746644543; cv=none; b=sZAY6Y5u7oRQR6eV5gPdrywy57DdPgdKMJv1SU50jWKeLhqUG++Ht2HEsnsSq/S7ysHvy5xpJd3Icj7Fxsr+kWY12HviJOB6HTcoz5X1vviRF89R996xRsCIrWK6UTA0Kx+qqPvYPEYbNR7MkSgWgqOO1pIenyDzUgepeZvM4MA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644977; c=relaxed/simple;
-	bh=Heef7IGnAWEpWAvIfM4ldllRRweS3+mAsqAffyvz/zk=;
+	s=arc-20240116; t=1746644543; c=relaxed/simple;
+	bh=fism3zIP+Rw8HSM5uU5O2/VhTtFTVNGYVNhdPp5WxMY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZA+bpNgxYJSnG2N8jGGnVCLv3ZHHAAHCMBXI0Q1LWpfJkDY/vlO6zpr5hy19/FDiD9tmiqssePz/XhMwN4YDxJ4bfSG9fY7ONBGh9zWIjbKFw+cUXf8lMd54I5Yp5i/FWjVqaVMhGVPdTuEPT+PP0dGxU/ghEqEcj4YxGuZNRAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sZ0eDAMt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60618C4CEE2;
-	Wed,  7 May 2025 19:09:37 +0000 (UTC)
+	 MIME-Version; b=CcZYGy5Z4u4vY5yRlA/O4ZzggYpcGsvg7bcIVpJnyvnCj4EKvQLFeAs9JFWqssjJP2JxXJu0bx0UFNybQg068x1W0/L6BiQ6qdBc4t2KJdJ0KbXAFVqsStdjlCfcdXs7RYX/2i3onAvzqcToyvZgmsObOqRusDYKxIYM+8fzGx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zHMEm8jg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B920CC4CEE2;
+	Wed,  7 May 2025 19:02:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644977;
-	bh=Heef7IGnAWEpWAvIfM4ldllRRweS3+mAsqAffyvz/zk=;
+	s=korg; t=1746644543;
+	bh=fism3zIP+Rw8HSM5uU5O2/VhTtFTVNGYVNhdPp5WxMY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sZ0eDAMtHV00Ngfrh4SO3WRtw+ZTn+1yVYyxleGJtp1EBgEAYhPfCNcmkN+XTqtgr
-	 N3x769THmPR/6N04eFTPf62tPOBX3r17jcKZiYvHhwAUI0//8ceILap6kEE6hANu2I
-	 iLcJvyg4xUmfFyYxxHMKRuOy/UmTRHFXmVGyEM1A=
+	b=zHMEm8jgFB/JvRFFVXR94Bp0oNKM1HhiXW88eXrdyDaTOGpe2GrlFMN68cjN/sjv2
+	 0VD0zR+RP7yiaxf/PNYWx+WRq4iBfO7gBiQQdm838yEs7JWwXK7nlj7laQ/U7nWmhV
+	 U9JRZPq02RGH32O+fdC7B90qVwS4SOZo09v0xm/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenhao Sun <weiguangtwk@outlook.com>,
-	Mingcong Bai <jeffbai@aosc.io>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <jroedel@suse.de>
-Subject: [PATCH 6.6 025/129] iommu/vt-d: Apply quirk_iommu_igfx for 8086:0044 (QM57/QS57)
-Date: Wed,  7 May 2025 20:39:21 +0200
-Message-ID: <20250507183814.548324793@linuxfoundation.org>
+	Kiran K <kiran.k@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 077/164] Bluetooth: btintel_pcie: Avoid redundant buffer allocation
+Date: Wed,  7 May 2025 20:39:22 +0200
+Message-ID: <20250507183824.080516662@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
-References: <20250507183813.500572371@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +63,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingcong Bai <jeffbai@aosc.io>
+From: Kiran K <kiran.k@intel.com>
 
-commit 2c8a7c66c90832432496616a9a3c07293f1364f3 upstream.
+[ Upstream commit d1af1f02ef8653dea4573e444136c8331189cd59 ]
 
-On the Lenovo ThinkPad X201, when Intel VT-d is enabled in the BIOS, the
-kernel boots with errors related to DMAR, the graphical interface appeared
-quite choppy, and the system resets erratically within a minute after it
-booted:
+Reuse the skb buffer provided by the PCIe driver to pass it onto the
+stack, instead of copying it to a new skb.
 
-DMAR: DRHD: handling fault status reg 3
-DMAR: [DMA Write NO_PASID] Request device [00:02.0] fault addr 0xb97ff000
-[fault reason 0x05] PTE Write access is not set
-
-Upon comparing boot logs with VT-d on/off, I found that the Intel Calpella
-quirk (`quirk_calpella_no_shadow_gtt()') correctly applied the igfx IOMMU
-disable/quirk correctly:
-
-pci 0000:00:00.0: DMAR: BIOS has allocated no shadow GTT; disabling IOMMU
-for graphics
-
-Whereas with VT-d on, it went into the "else" branch, which then
-triggered the DMAR handling fault above:
-
-... else if (!disable_igfx_iommu) {
-	/* we have to ensure the gfx device is idle before we flush */
-	pci_info(dev, "Disabling batched IOTLB flush on Ironlake\n");
-	iommu_set_dma_strict();
-}
-
-Now, this is not exactly scientific, but moving 0x0044 to quirk_iommu_igfx
-seems to have fixed the aforementioned issue. Running a few `git blame'
-runs on the function, I have found that the quirk was originally
-introduced as a fix specific to ThinkPad X201:
-
-commit 9eecabcb9a92 ("intel-iommu: Abort IOMMU setup for igfx if BIOS gave
-no shadow GTT space")
-
-Which was later revised twice to the "else" branch we saw above:
-
-- 2011: commit 6fbcfb3e467a ("intel-iommu: Workaround IOTLB hang on
-  Ironlake GPU")
-- 2024: commit ba00196ca41c ("iommu/vt-d: Decouple igfx_off from graphic
-  identity mapping")
-
-I'm uncertain whether further testings on this particular laptops were
-done in 2011 and (honestly I'm not sure) 2024, but I would be happy to do
-some distro-specific testing if that's what would be required to verify
-this patch.
-
-P.S., I also see IDs 0x0040, 0x0062, and 0x006a listed under the same
-`quirk_calpella_no_shadow_gtt()' quirk, but I'm not sure how similar these
-chipsets are (if they share the same issue with VT-d or even, indeed, if
-this issue is specific to a bug in the Lenovo BIOS). With regards to
-0x0062, it seems to be a Centrino wireless card, but not a chipset?
-
-I have also listed a couple (distro and kernel) bug reports below as
-references (some of them are from 7-8 years ago!), as they seem to be
-similar issue found on different Westmere/Ironlake, Haswell, and Broadwell
-hardware setups.
-
-Cc: stable@vger.kernel.org
-Fixes: 6fbcfb3e467a ("intel-iommu: Workaround IOTLB hang on Ironlake GPU")
-Fixes: ba00196ca41c ("iommu/vt-d: Decouple igfx_off from graphic identity mapping")
-Link: https://groups.google.com/g/qubes-users/c/4NP4goUds2c?pli=1
-Link: https://bugs.archlinux.org/task/65362
-Link: https://bbs.archlinux.org/viewtopic.php?id=230323
-Reported-by: Wenhao Sun <weiguangtwk@outlook.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=197029
-Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
-Link: https://lore.kernel.org/r/20250415133330.12528-1-jeffbai@aosc.io
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c2b636b3f788 ("Bluetooth: btintel_pcie: Add support for PCIe transport")
+Signed-off-by: Kiran K <kiran.k@intel.com>
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/intel/iommu.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/bluetooth/btintel_pcie.c | 33 ++++++++++++--------------------
+ 1 file changed, 12 insertions(+), 21 deletions(-)
 
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -4855,6 +4855,9 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_I
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x2e40, quirk_iommu_igfx);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x2e90, quirk_iommu_igfx);
+diff --git a/drivers/bluetooth/btintel_pcie.c b/drivers/bluetooth/btintel_pcie.c
+index ab465e13c1f60..3d6067927f7ea 100644
+--- a/drivers/bluetooth/btintel_pcie.c
++++ b/drivers/bluetooth/btintel_pcie.c
+@@ -581,8 +581,10 @@ static int btintel_pcie_recv_event(struct hci_dev *hdev, struct sk_buff *skb)
+ 		/* This is a debug event that comes from IML and OP image when it
+ 		 * starts execution. There is no need pass this event to stack.
+ 		 */
+-		if (skb->data[2] == 0x97)
++		if (skb->data[2] == 0x97) {
++			hci_recv_diag(hdev, skb);
+ 			return 0;
++		}
+ 	}
  
-+/* QM57/QS57 integrated gfx malfunctions with dmar */
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x0044, quirk_iommu_igfx);
+ 	return hci_recv_frame(hdev, skb);
+@@ -598,7 +600,6 @@ static int btintel_pcie_recv_frame(struct btintel_pcie_data *data,
+ 	u8 pkt_type;
+ 	u16 plen;
+ 	u32 pcie_pkt_type;
+-	struct sk_buff *new_skb;
+ 	void *pdata;
+ 	struct hci_dev *hdev = data->hdev;
+ 
+@@ -675,24 +676,20 @@ static int btintel_pcie_recv_frame(struct btintel_pcie_data *data,
+ 
+ 	bt_dev_dbg(hdev, "pkt_type: 0x%2.2x len: %u", pkt_type, plen);
+ 
+-	new_skb = bt_skb_alloc(plen, GFP_ATOMIC);
+-	if (!new_skb) {
+-		bt_dev_err(hdev, "Failed to allocate memory for skb of len: %u",
+-			   skb->len);
+-		ret = -ENOMEM;
+-		goto exit_error;
+-	}
+-
+-	hci_skb_pkt_type(new_skb) = pkt_type;
+-	skb_put_data(new_skb, skb->data, plen);
++	hci_skb_pkt_type(skb) = pkt_type;
+ 	hdev->stat.byte_rx += plen;
++	skb_trim(skb, plen);
+ 
+ 	if (pcie_pkt_type == BTINTEL_PCIE_HCI_EVT_PKT)
+-		ret = btintel_pcie_recv_event(hdev, new_skb);
++		ret = btintel_pcie_recv_event(hdev, skb);
+ 	else
+-		ret = hci_recv_frame(hdev, new_skb);
++		ret = hci_recv_frame(hdev, skb);
++	skb = NULL; /* skb is freed in the callee  */
+ 
+ exit_error:
++	if (skb)
++		kfree_skb(skb);
 +
- /* Broadwell igfx malfunctions with dmar */
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x1606, quirk_iommu_igfx);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x160B, quirk_iommu_igfx);
-@@ -4932,7 +4935,6 @@ static void quirk_calpella_no_shadow_gtt
+ 	if (ret)
+ 		hdev->stat.err_rx++;
+ 
+@@ -706,16 +703,10 @@ static void btintel_pcie_rx_work(struct work_struct *work)
+ 	struct btintel_pcie_data *data = container_of(work,
+ 					struct btintel_pcie_data, rx_work);
+ 	struct sk_buff *skb;
+-	int err;
+-	struct hci_dev *hdev = data->hdev;
+ 
+ 	/* Process the sk_buf in queue and send to the HCI layer */
+ 	while ((skb = skb_dequeue(&data->rx_skb_q))) {
+-		err = btintel_pcie_recv_frame(data, skb);
+-		if (err)
+-			bt_dev_err(hdev, "Failed to send received frame: %d",
+-				   err);
+-		kfree_skb(skb);
++		btintel_pcie_recv_frame(data, skb);
  	}
  }
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x0040, quirk_calpella_no_shadow_gtt);
--DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x0044, quirk_calpella_no_shadow_gtt);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x0062, quirk_calpella_no_shadow_gtt);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x006a, quirk_calpella_no_shadow_gtt);
  
+-- 
+2.39.5
+
 
 
 
