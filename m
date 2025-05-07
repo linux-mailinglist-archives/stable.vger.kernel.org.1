@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-142730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22334AAEBF2
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:12:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65BCBAAEB83
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:08:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E0C59E3D32
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:12:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6048C1B684B3
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:07:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5157E28C845;
-	Wed,  7 May 2025 19:12:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C5071E1DF6;
+	Wed,  7 May 2025 19:07:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vuvTZxqp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWPG47qx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CE71214813;
-	Wed,  7 May 2025 19:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC3D1CF5C6;
+	Wed,  7 May 2025 19:07:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746645153; cv=none; b=lME9Qa5q5EPIOQimvvtQbDYWnuXy7DlLYIxD99yUPtxoy/9nVP2XfuuFTvgiDsZoAAUsJ8Ds672t4sGDP8abHeGNUPOoUOQtWxalWaOLVPI00w3ZEOCsoy3bq5vxcjptdQLOnR6FXejtioFgHFNV/uGpQIlDAxqMTqstuykcGsk=
+	t=1746644832; cv=none; b=g4vJizmyCZGpfWK9uu2bWBXqTg4k+svS7JzQIaNqnpkMgDSA3i2N2ywPmXE3v/w9f8BBcrxgfmB2KuFVHrUbccPcmVghRQGTkTcmtfyk4IjPLHVNVJDloHyF+XpxjplNJowZnqekKXmY0UkGHqCmDnoLk01MX82nl3jAFT0FKIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746645153; c=relaxed/simple;
-	bh=WzzEUXnxg1uaa0RdEeEf/MpCJ2R3O6SvhMl5uRJz5TM=;
+	s=arc-20240116; t=1746644832; c=relaxed/simple;
+	bh=kn/Sjphatso3aWa6kQGTWjCl8sLdfyepkVHzRXoQoJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DoPNbANKeJcZmT6268PxkycOXY+3oltAIoVJQXjzYXWls7+7a3BpQG58oJc5hhAdqrfbFZ7rfjG4etwna/Cv+O/GU4DJA4lMMeX9pV/NGFB9mlZwaJTjknZfO887U1jAxq5hfBfAq4vsZf+WbipQQrImdDaXT/LB6dBvjjG6nYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vuvTZxqp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C9B2C4CEE2;
-	Wed,  7 May 2025 19:12:31 +0000 (UTC)
+	 MIME-Version; b=qiLf0L9Q0JCGZnfzIkCHGR1nS4vdgJ8k7UKzoJyu+l7adh/G0687pkTWIlkC7yqiAyg1fi9+fUEzUpxo6N0Ou2rhZ1kspT5OTJEUTregq6v8dpgrvcWubmgEe5ZiHQRhMOYhNQg3clW5t7XrVWTRc6zlTm7Ya9pPgrvDXnjx+eA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWPG47qx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AA60C4CEE2;
+	Wed,  7 May 2025 19:07:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746645152;
-	bh=WzzEUXnxg1uaa0RdEeEf/MpCJ2R3O6SvhMl5uRJz5TM=;
+	s=korg; t=1746644832;
+	bh=kn/Sjphatso3aWa6kQGTWjCl8sLdfyepkVHzRXoQoJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vuvTZxqp3B8J2kchSaplz4b8zPRdCH/zlhw0gL5DgOM9gs12rW5xiSa9A6gSOzUc+
-	 mTwfKcrnAw53iSoe63j4mdQNdRb97QFSfQIxI3LFFSrOPAA8LqBu6OSBY9C0O+fVIg
-	 a2po/U6d9i3eGnnWUEZxpKs0ENWtTmDE1+0Gth+c=
+	b=sWPG47qxKQrGq4rug3nM8izE6ROXY6P+OQN6KfpVXVhvyR9bDA5PY3sUsJqnfQoe/
+	 d6GgO7r0I9lFAhMZbinGnctlO+b2pemud3EoNt2408abPdzNyIG7DXPBY+NFtEllEz
+	 M+pwQVSczgfYEnGiU1sFZwIwP0zlfkpCybq8HJGs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukas Wunner <lukas@wunner.de>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Shyam Saini <shyamsaini@linux.microsoft.com>,
+	Petr Pavlu <petr.pavlu@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 110/129] xhci: Set DESI bits in ERDP register correctly
+Subject: [PATCH 6.12 161/164] kernel: globalize lookup_or_create_module_kobject()
 Date: Wed,  7 May 2025 20:40:46 +0200
-Message-ID: <20250507183817.950661455@linuxfoundation.org>
+Message-ID: <20250507183827.482637469@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
-References: <20250507183813.500572371@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,178 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Shyam Saini <shyamsaini@linux.microsoft.com>
 
-[ Upstream commit 044818a6cd808b38a5d179a5fb9940417de4ba24 ]
+[ Upstream commit 7c76c813cfc42a7376378a0c4b7250db2eebab81 ]
 
-When using more than one Event Ring segment (ERSTSZ > 1), software shall
-set the DESI bits in the ERDP register to the number of the segment to
-which the upper ERDP bits are pointing.  The xHC may use the DESI bits
-as a shortcut to determine whether it needs to check for an Event Ring
-Full condition:  If it's enqueueing events in a different segment, it
-need not compare its internal Enqueue Pointer with the Dequeue Pointer
-in the upper bits of the ERDP register (sec 5.5.2.3.3).
+lookup_or_create_module_kobject() is marked as static and __init,
+to make it global drop static keyword.
+Since this function can be called from non-init code, use __modinit
+instead of __init, __modinit marker will make it __init if
+CONFIG_MODULES is not defined.
 
-Not setting the DESI bits correctly can result in the xHC enqueueing
-events past the Dequeue Pointer.  On Renesas uPD720201 host controllers,
-incorrect DESI bits cause an interrupt storm.  For comparison, VIA VL805
-host controllers do not exhibit such problems.  Perhaps they do not take
-advantage of the optimization afforded by the DESI bits.
-
-To fix the issue, assign the segment number to each struct xhci_segment
-in xhci_segment_alloc().  When advancing the Dequeue Pointer in
-xhci_update_erst_dequeue(), write the segment number to the DESI bits.
-
-On driver probe, set the DESI bits to zero in xhci_set_hc_event_deq() as
-processing starts in segment 0.  Likewise on driver teardown, clear the
-DESI bits to zero in xhci_free_interrupter() when clearing the upper
-bits of the ERDP register.  Previously those functions (incorrectly)
-treated the DESI bits as if they're declared RsvdP.
-
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20231019102924.2797346-5-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: bea5892d0ed2 ("xhci: Limit time spent with xHC interrupts disabled during bus resume")
+Suggested-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Signed-off-by: Shyam Saini <shyamsaini@linux.microsoft.com>
+Link: https://lore.kernel.org/r/20250227184930.34163-4-shyamsaini@linux.microsoft.com
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Stable-dep-of: f95bbfe18512 ("drivers: base: handle module_kobject creation")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-mem.c  | 25 +++++++++++--------------
- drivers/usb/host/xhci-ring.c |  2 +-
- drivers/usb/host/xhci.h      |  1 +
- 3 files changed, 13 insertions(+), 15 deletions(-)
+ include/linux/module.h | 2 ++
+ kernel/params.c        | 2 +-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
-index fbc486546b853..f236fba5cd248 100644
---- a/drivers/usb/host/xhci-mem.c
-+++ b/drivers/usb/host/xhci-mem.c
-@@ -29,6 +29,7 @@
- static struct xhci_segment *xhci_segment_alloc(struct xhci_hcd *xhci,
- 					       unsigned int cycle_state,
- 					       unsigned int max_packet,
-+					       unsigned int num,
- 					       gfp_t flags)
- {
- 	struct xhci_segment *seg;
-@@ -60,6 +61,7 @@ static struct xhci_segment *xhci_segment_alloc(struct xhci_hcd *xhci,
- 		for (i = 0; i < TRBS_PER_SEGMENT; i++)
- 			seg->trbs[i].link.control = cpu_to_le32(TRB_CYCLE);
- 	}
-+	seg->num = num;
- 	seg->dma = dma;
- 	seg->next = NULL;
+diff --git a/include/linux/module.h b/include/linux/module.h
+index 88ecc5e9f5230..82a9527d43c76 100644
+--- a/include/linux/module.h
++++ b/include/linux/module.h
+@@ -162,6 +162,8 @@ extern void cleanup_module(void);
+ #define __INITRODATA_OR_MODULE __INITRODATA
+ #endif /*CONFIG_MODULES*/
  
-@@ -324,6 +326,7 @@ static int xhci_alloc_segments_for_ring(struct xhci_hcd *xhci,
- 		enum xhci_ring_type type, unsigned int max_packet, gfp_t flags)
- {
- 	struct xhci_segment *prev;
-+	unsigned int num = 0;
- 	bool chain_links;
++struct module_kobject *lookup_or_create_module_kobject(const char *name);
++
+ /* Generic info of form tag = "info" */
+ #define MODULE_INFO(tag, info) __MODULE_INFO(tag, tag, info)
  
- 	/* Set chain bit for 0.95 hosts, and for isoc rings on AMD 0.96 host */
-@@ -331,16 +334,17 @@ static int xhci_alloc_segments_for_ring(struct xhci_hcd *xhci,
- 			 (type == TYPE_ISOC &&
- 			  (xhci->quirks & XHCI_AMD_0x96_HOST)));
- 
--	prev = xhci_segment_alloc(xhci, cycle_state, max_packet, flags);
-+	prev = xhci_segment_alloc(xhci, cycle_state, max_packet, num, flags);
- 	if (!prev)
- 		return -ENOMEM;
--	num_segs--;
-+	num++;
- 
- 	*first = prev;
--	while (num_segs > 0) {
-+	while (num < num_segs) {
- 		struct xhci_segment	*next;
- 
--		next = xhci_segment_alloc(xhci, cycle_state, max_packet, flags);
-+		next = xhci_segment_alloc(xhci, cycle_state, max_packet, num,
-+					  flags);
- 		if (!next) {
- 			prev = *first;
- 			while (prev) {
-@@ -353,7 +357,7 @@ static int xhci_alloc_segments_for_ring(struct xhci_hcd *xhci,
- 		xhci_link_segments(prev, next, type, chain_links);
- 
- 		prev = next;
--		num_segs--;
-+		num++;
- 	}
- 	xhci_link_segments(prev, *first, type, chain_links);
- 	*last = prev;
-@@ -1803,7 +1807,6 @@ xhci_free_interrupter(struct xhci_hcd *xhci, struct xhci_interrupter *ir)
- {
- 	struct device *dev = xhci_to_hcd(xhci)->self.sysdev;
- 	size_t erst_size;
--	u64 tmp64;
- 	u32 tmp;
- 
- 	if (!ir)
-@@ -1826,9 +1829,7 @@ xhci_free_interrupter(struct xhci_hcd *xhci, struct xhci_interrupter *ir)
- 		tmp &= ERST_SIZE_MASK;
- 		writel(tmp, &ir->ir_set->erst_size);
- 
--		tmp64 = xhci_read_64(xhci, &ir->ir_set->erst_dequeue);
--		tmp64 &= (u64) ERST_PTR_MASK;
--		xhci_write_64(xhci, tmp64, &ir->ir_set->erst_dequeue);
-+		xhci_write_64(xhci, ERST_EHB, &ir->ir_set->erst_dequeue);
- 	}
- 
- 	/* free interrrupter event ring */
-@@ -1935,7 +1936,6 @@ void xhci_mem_cleanup(struct xhci_hcd *xhci)
- 
- static void xhci_set_hc_event_deq(struct xhci_hcd *xhci, struct xhci_interrupter *ir)
- {
--	u64 temp;
- 	dma_addr_t deq;
- 
- 	deq = xhci_trb_virt_to_dma(ir->event_ring->deq_seg,
-@@ -1943,15 +1943,12 @@ static void xhci_set_hc_event_deq(struct xhci_hcd *xhci, struct xhci_interrupter
- 	if (!deq)
- 		xhci_warn(xhci, "WARN something wrong with SW event ring dequeue ptr.\n");
- 	/* Update HC event ring dequeue pointer */
--	temp = xhci_read_64(xhci, &ir->ir_set->erst_dequeue);
--	temp &= ERST_PTR_MASK;
- 	/* Don't clear the EHB bit (which is RW1C) because
- 	 * there might be more events to service.
- 	 */
--	temp &= ~ERST_EHB;
- 	xhci_dbg_trace(xhci, trace_xhci_dbg_init,
- 		       "// Write event ring dequeue pointer, preserving EHB bit");
--	xhci_write_64(xhci, ((u64) deq & (u64) ~ERST_PTR_MASK) | temp,
-+	xhci_write_64(xhci, ((u64) deq & (u64) ~ERST_PTR_MASK),
- 			&ir->ir_set->erst_dequeue);
+diff --git a/kernel/params.c b/kernel/params.c
+index d62a116918cd0..33b2985b31c7f 100644
+--- a/kernel/params.c
++++ b/kernel/params.c
+@@ -763,7 +763,7 @@ void destroy_params(const struct kernel_param *params, unsigned num)
+ 			params[i].ops->free(params[i].arg);
  }
  
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index cb94439629451..884a668cca367 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -3167,7 +3167,7 @@ static void xhci_update_erst_dequeue(struct xhci_hcd *xhci,
- 			return;
- 
- 		/* Update HC event ring dequeue pointer */
--		temp_64 &= ERST_DESI_MASK;
-+		temp_64 = ir->event_ring->deq_seg->num & ERST_DESI_MASK;
- 		temp_64 |= ((u64) deq & (u64) ~ERST_PTR_MASK);
- 	}
- 
-diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
-index df87e8bcb7d24..0325fccfaa2a4 100644
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1293,6 +1293,7 @@ struct xhci_segment {
- 	union xhci_trb		*trbs;
- 	/* private to HCD */
- 	struct xhci_segment	*next;
-+	unsigned int		num;
- 	dma_addr_t		dma;
- 	/* Max packet sized bounce buffer for td-fragmant alignment */
- 	dma_addr_t		bounce_dma;
+-static struct module_kobject * __init lookup_or_create_module_kobject(const char *name)
++struct module_kobject __modinit * lookup_or_create_module_kobject(const char *name)
+ {
+ 	struct module_kobject *mk;
+ 	struct kobject *kobj;
 -- 
 2.39.5
 
