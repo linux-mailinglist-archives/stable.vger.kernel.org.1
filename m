@@ -1,120 +1,130 @@
-Return-Path: <stable+bounces-142083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AFE4AAE3ED
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 17:09:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09AA7AAE407
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 17:13:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BA4D1C03990
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 15:10:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E8FD987853
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 15:12:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E5B228A405;
-	Wed,  7 May 2025 15:09:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Ix9Caeri"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6875328A1C6;
+	Wed,  7 May 2025 15:12:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5610014A639
-	for <stable@vger.kernel.org>; Wed,  7 May 2025 15:09:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8B86280325;
+	Wed,  7 May 2025 15:12:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746630575; cv=none; b=cY0Y0fuRB7/i4A/EAd65jKaU68z9/T2l9VJhxZQ+XyFEyabQLb/Fy1/Ace7Kn0I+OW2KWDrdHVWf3kB9KpyyyDhGfEncfKYbqIJu3hTPDKSuBK7Z1RzPLxEoF5gcpVgCxxl2STpNY73MOs9IJEZzBg1eAF2yWp+/84/q/gmzQ6w=
+	t=1746630749; cv=none; b=UdJRiShh+521Gr3KssbTeGUk5BbSTrGXuXmE3sWKI1ahI3Q6gQQQqksqbV7KhVFXE0aeozDKDjR3wfDXrIM0IJiyvfNmxWxMYDXMFZgqZfW6FmGWy1xQ3Hfspv4dIsxrL8I7cBfZeXftDELLGejz51eBQhyO/VdM9YkRrUovsTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746630575; c=relaxed/simple;
-	bh=rGwdD2sL/1x9KvXY/1Ekk6DKMc0m0UXZv2Ekf1BRjnU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lf0tWVALor5jDar2PG1gwQ61bkgtaOjPtIrqjFTjQwVLtO8C48fjNSOtqCAPB4rx1ZUAYq+gFA21Fcb0yhDRf4cFW2iXvrbzcr0eMBwK6rrSq5P2m6kDLjEPOs/9djIQrIaNsHWKQNYgJWzeZXc+AAsveXoPkILarmgBfPXon/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Ix9Caeri; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-43ede096d73so43345725e9.2
-        for <stable@vger.kernel.org>; Wed, 07 May 2025 08:09:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1746630570; x=1747235370; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=gnGxO/UH5ZtoslCnotoWi6A0EHXwJ/OCE7nrpX3PLMY=;
-        b=Ix9CaeriSAx19CJBPP6Jzx4tLiQ/f0K6bJWuJ1/35K96Gij1Eu2F9xtHSHMlk36vKQ
-         GbZovms3ag/1WgKXTP/PMl4ktqPLekLPk711syDUf5IZDrYLMlitu7o4LCH9q5QhgLkD
-         SLHQbHtEY/Q8kr9yhA1n66oz1y7URjFEIeMc2oebaE3imddo+d1AxbQLZ6SnYIq90cBZ
-         bnCOVlT9zsDJSnoTz5GRZH4ZSKly9GsF2ZWca51/+BsMBVc39XmhlTeWNFIC+Wpe6147
-         IxfAmWFIrxWiTKzYEFxiVhRG53kxHE19Hd4GMM+78gt2piVg+PB6sqHGvdxMuImV3Lcn
-         KEcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746630570; x=1747235370;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gnGxO/UH5ZtoslCnotoWi6A0EHXwJ/OCE7nrpX3PLMY=;
-        b=DAJo62S+aci1wrsxDjFbHXCNzjU0o/uvpAYru3hXeDYLJn5oLHvYdU4+XYza2mUi6F
-         JEdgz5QKdQmHBV0gVYB0lUz4qzWhM7U8aq2x0wRnAHTyYX98FZPK3djwo8YocJiQagby
-         kMCgEKRpJIa6DdTtlIYk/vaIPC4FvYa4fQvHu3fEcspMoh0hKCe0gUhP1PytLnLSqAOM
-         NZOrprQHbN///6duVxZsuWFcO5oHhAgw7omxjX6zMLbehXwYjuYYo1CIK3U8ZEkSgQ8M
-         TdYyc/RSPpOklToJWmvVs2hnR+4vj59R+hXR83mn1z9PwlWzui4/40XJbiVFYuMY8jVR
-         v2nw==
-X-Forwarded-Encrypted: i=1; AJvYcCUeRBaavkX3D6puJOjxisCCG0FTYvjNETbhGq6SoXwZBpXUjWLme3uxJSZ36j6YgayRmO8iLYs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzXTWuie40goDNjETHrNvs2DQKt5nfj28xZxfnsZ2CUBCIYErNT
-	ua9aBPA5SrasXq97crzHCHlaO7Q+jxggnjKn5vjeGyuNcN78XYGhNIdwgTwqnqM=
-X-Gm-Gg: ASbGncsrmQxpX8oFpFM6PiACl6yZ34utGQZW54TZuSGvA0zJgMRT8ZraJK7e1fR6BR8
-	DqtJC0L8TEcXd0pYF5Jn4YztZVShHZdMATApZBHiKkg9oNuzJlvF0yqb4CTZOl4ZA+KQGV314vh
-	MDkUgKETmBg0V67WxMA3kOGpQA3hmvCfYRffQPpeiJA8U/nwkl6v9mTrmSklWthKHZbQgEQpDCn
-	iV0l3JJnrOXBO1hUTaBTx9Ks9GeREIGrkF64oKOEiGuTV0pIx15h+wahlSiDkONQoczxRYYiS74
-	BecISsoSZPoRdL/FXXutXE3Z5SU6YMPSMoNdSRwq8Rw6YhSVnuARcml7hmPVlUu64I6D9cvspKE
-	SiGuSaA==
-X-Google-Smtp-Source: AGHT+IFdOXDNLQbnntxisuU2JZEe9tB63IzkZJVxK0ls3MwqsOC6APZxiRH/YqCeXjmchonVq6rCWA==
-X-Received: by 2002:a05:600c:1f1b:b0:43c:f597:d589 with SMTP id 5b1f17b1804b1-441d44e07bbmr32485765e9.27.1746630569703;
-        Wed, 07 May 2025 08:09:29 -0700 (PDT)
-Received: from [192.168.0.34] (188-141-3-146.dynamic.upc.ie. [188.141.3.146])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a099b1702dsm16875169f8f.88.2025.05.07.08.09.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 May 2025 08:09:29 -0700 (PDT)
-Message-ID: <bcc8251a-3bad-4eaa-8dc8-cc63619a6365@linaro.org>
-Date: Wed, 7 May 2025 16:09:27 +0100
+	s=arc-20240116; t=1746630749; c=relaxed/simple;
+	bh=AO4d0aQ0NxeQWXjmRYoCiD1HqBivQ1em8dNKjTse1U0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QjzfH1/uXQuYhvr2meOriYbBUKY+LofZwrcB9uqRscaQx8VGRmxq66dQM9AJH+z3AvWdoaYARE5ZBLa8vgBmSGcA0Bzol2bKaha5I2KTRvZypxVEXtR4L1WIw1AAJ1pvLjcC6Nlfs3A+cykW7mrgr8BZ6tf4R85baMusS7ziRlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C12CF339;
+	Wed,  7 May 2025 08:12:16 -0700 (PDT)
+Received: from bogus (e133711.arm.com [10.1.196.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 17CB93F58B;
+	Wed,  7 May 2025 08:12:24 -0700 (PDT)
+Date: Wed, 7 May 2025 16:12:22 +0100
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: "Heyne, Maximilian" <mheyne@amazon.de>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+	Jeremy Linton <jeremy.linton@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] ACPI/PPTT: fix off-by-one error
+Message-ID: <20250507-singing-shrewd-stallion-ee2481@sudeepholla>
+References: <20250506-draco-taped-15f475cd@mheyne-amazon>
+ <20250506-shapeless-merciful-inchworm-7bfdb4@sudeepholla>
+ <20250506-dialog-57th-c4e70064@mheyne-amazon>
+ <20250507-mysterious-emu-of-fertility-951c69@sudeepholla>
+ <20250507-blend-revel-3d94099b@mheyne-amazon>
+ <20250507-quantum-solid-ibex-218f1b@sudeepholla>
+ <20250507-autumn-phrase-4a1eddef@mheyne-amazon>
+ <20250507-divergent-lori-from-pluto-71daee@sudeepholla>
+ <20250507-petit-capri-debaa30d@mheyne-amazon>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 03/25] media: iris: Avoid updating frame size to
- firmware during reconfig
-To: Dikshita Agarwal <quic_dikshita@quicinc.com>,
- Vikash Garodia <quic_vgarodia@quicinc.com>,
- Abhinav Kumar <quic_abhinavk@quicinc.com>,
- Mauro Carvalho Chehab <mchehab@kernel.org>, Hans Verkuil
- <hverkuil@xs4all.nl>, Stefan Schmidt <stefan.schmidt@linaro.org>
-Cc: linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
- Neil Armstrong <neil.armstrong@linaro.org>,
- Nicolas Dufresne <nicolas.dufresne@collabora.com>,
- Dan Carpenter <dan.carpenter@linaro.org>, stable@vger.kernel.org
-References: <20250507-video-iris-hevc-vp9-v4-0-58db3660ac61@quicinc.com>
- <20250507-video-iris-hevc-vp9-v4-3-58db3660ac61@quicinc.com>
-Content-Language: en-US
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <20250507-video-iris-hevc-vp9-v4-3-58db3660ac61@quicinc.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250507-petit-capri-debaa30d@mheyne-amazon>
 
-On 07/05/2025 08:39, Dikshita Agarwal wrote:
-> During reconfig, the firmware sends the resolution aligned to 8 bytes.
-> If the driver sends the same resolution back to the firmware the resolution
-> will be aligned to 16 bytes not 8.
+On Wed, May 07, 2025 at 02:29:17PM +0000, Heyne, Maximilian wrote:
+> On Wed, May 07, 2025 at 01:56:53PM +0100, Sudeep Holla wrote:
+> > 
+> > That is fine but you must have reference to those caches in the processor
+> > node and the length of the node won't be 0x14 in that case and you shouldn't
+> > hit this issue. So if this is real platform, then yes I am must say you
+> > PPTT is wrong especially if there are caches in the table as you say just
+> > that processor nodes are not pointing to them correctly then ?
 > 
-> The alignment mismatch would then subsequently cause the firmware to
-> send another redundant sequence change event.
+> The ACPI tables in our case describe a core first which references the
+> cache as private resource and then a thread whose parent is the core but
+> this doesn't have a private resource. This is how it looks like:
 > 
-> Fix this by not setting the resolution property during reconfig.
+
+Ah, right I clearly missed considering multithreaded systems in my mind.
+I think SMTs processor nodes might have no private resource which I didn't
+consider before. However, your example made me open the spec and read about
+SMT and PPTT. There are couple of things I still don't follow below.
+
+> [C8Eh 3214   1]                Subtable Type : 00 [Processor Hierarchy Node]
+> [C8Fh 3215   1]                       Length : 1C
+> [C90h 3216   2]                     Reserved : 0000
+> [C92h 3218   4]        Flags (decoded below) : 00000002
+>                             Physical package : 0
+>                      ACPI Processor ID valid : 1
+>                        Processor is a thread : 0
+>                               Node is a leaf : 0
+>                     Identical Implementation : 0
+> [C96h 3222   4]                       Parent : 000000A2
+> [C9Ah 3226   4]            ACPI Processor ID : 0000003F
+> [C9Eh 3230   4]      Private Resource Number : 00000002
+> [CA2h 3234   4]             Private Resource : 00000072
+> [CA6h 3238   4]             Private Resource : 0000008A
+>
+
+Does the above node represent the container node for the threads within
+the core ? I assumes so.
+
+> [CAAh 3242   1]                Subtable Type : 00 [Processor Hierarchy Node]
+> [CABh 3243   1]                       Length : 14
+> [CACh 3244   2]                     Reserved : 0000
+> [CAEh 3246   4]        Flags (decoded below) : 0000000E
+>                             Physical package : 0
+>                      ACPI Processor ID valid : 1
+>                        Processor is a thread : 1
+>                               Node is a leaf : 1
+>                     Identical Implementation : 0
+> [CB2h 3250   4]                       Parent : 00000C8E
+> [CB6h 3254   4]            ACPI Processor ID : 0000003F
+> [CBAh 3258   4]      Private Resource Number : 00000000
 > 
-> Cc: stable@vger.kernel.org
-> Fixes: 3a19d7b9e08b ("media: iris: implement set properties to firmware during streamon")
-> Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+
+Is this the only thread as you mentioned the table ends here ? So it
+is single threaded core ? Just working what is the point in representing
+it in this way ? Also the ACPI Processor ID is unique, so I hope you have
+same number of container nodes as the threads. IOW, they ACPI Processor ID
+for the thread and the container node match only because it is single
+threaded core.
+
+-- 
+Regards,
+Sudeep
 
