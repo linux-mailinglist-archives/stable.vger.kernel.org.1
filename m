@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-142208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BB35AAE987
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:45:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FADCAAEA48
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:53:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB884505C6A
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:45:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CABA1BC3B96
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:53:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FFE71CF5C6;
-	Wed,  7 May 2025 18:45:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 367F321E0BB;
+	Wed,  7 May 2025 18:53:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mQjZ/27k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="egSVm1ub"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BAC41A2390;
-	Wed,  7 May 2025 18:45:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E95511FF5EC;
+	Wed,  7 May 2025 18:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643548; cv=none; b=kZpI0Ef+ddLrzfoGWncwWz9GktC9AYiu8YbU0aJK8h+1xTeV770wlsUEurUCcYZRyyOdY1mT8hyq6eJV451LsL/aOpuTNU+r2zjrrfnK5xglURKOETGEmpvskiKwk3QgS9ZBK9ZFJNk+vG2NIQQ8wqck1/UEXe0SPblohQtVpEA=
+	t=1746644011; cv=none; b=oLfdYavv9OuIy9EHQ7gNUwsWltJhl5zwmgb2MqgIMCdj5lYzMXyAyNxJq1NLb0fIevx8xvEV09ZHDLbr3QuUcPng756TQCfA6Ggj2hM+KcGpi1tI/8r317brhofTPpJjJ1Cr7nf/QJjtwHWUv6LlnR4DO1qfeZiyW4mscJ0QjjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643548; c=relaxed/simple;
-	bh=LXRUoogXz0LB076E4+7n2vhZ2Oj0nISAq28F+3E3nk8=;
+	s=arc-20240116; t=1746644011; c=relaxed/simple;
+	bh=1edMPcRlKn0npp3DeVIe3jsxmqZfBwXFr0rcHo60wic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G5AMMVe7orhA7UFajTrQ2TnnhYbOVWqcmDfcvpsQ+dpHADqVY43YhBMaIHldm70m5jd8ifKwDslGyQ7MqAnKVF7rqTInvxzxfNpGtny3tjkgpe1a15b/y/7BFW2juVH1VDqDxBvSkVdSII9Am3PBJkqusX5xPeZqgSNBJwlqtKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mQjZ/27k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC433C4CEE2;
-	Wed,  7 May 2025 18:45:47 +0000 (UTC)
+	 MIME-Version; b=fU8kETv8qWabKh9muDwaLT0DLi8ysFcnl1B4Jx1r4mzJ7xAXjY9ElipimGvZvJcr0QKxwB2Hr+JjBWQB0t8zOesxbq4hDzehCgSaEdtHDz5dwaTPUzIqNeDTTEuQZ3Lu6XNevv9UXNPaC62G78nqApZIJeeMnOAdGy3hcSpNVK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=egSVm1ub; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B6F8C4CEE9;
+	Wed,  7 May 2025 18:53:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643548;
-	bh=LXRUoogXz0LB076E4+7n2vhZ2Oj0nISAq28F+3E3nk8=;
+	s=korg; t=1746644010;
+	bh=1edMPcRlKn0npp3DeVIe3jsxmqZfBwXFr0rcHo60wic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mQjZ/27kMIlvP3gYvaRw8kP1HlOpUyWuxnLEyfUIX3DNGdxTW5ogcitNYN6ZfLtxx
-	 ASkoVb+GaW4/BbWNdGfppIfGUMLF+0dJTqAcRd95IrytAldcaSOL425IfWnW3PQ3kR
-	 W2HNIFI57B8rL+eK1Cc6Ym12PZh0XBm8naYT50vQ=
+	b=egSVm1ub+iQEvQJk7xzO/e2hgTQfYJ5ItXy1XLuksdi4FbnQBzx+e9GzLth3lZQPi
+	 fWc3KrlcwapNjH5vovbAadIQDEVsJ7K1UB6F18t+S/qJ70tc5qInlIzOomdfhUMkw8
+	 VYSzWvGrdhAZNe98htNFzcqtoW0hJlHnGHCBXAs0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Lifeng Zheng <zhenglifeng1@huawei.com>
-Subject: [PATCH 6.1 21/97] cpufreq: Fix setting policy limits when frequency tables are used
+	Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 091/183] net: ethernet: mtk-star-emac: rearm interrupts in rx_poll only when advised
 Date: Wed,  7 May 2025 20:38:56 +0200
-Message-ID: <20250507183807.834562711@linuxfoundation.org>
+Message-ID: <20250507183828.511747358@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
-References: <20250507183806.987408728@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,300 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
 
-commit b79028039f440e7d2c4df6ab243060c4e3803e84 upstream.
+[ Upstream commit e54b4db35e201a9173da9cb7abc8377e12abaf87 ]
 
-Commit 7491cdf46b5c ("cpufreq: Avoid using inconsistent policy->min and
-policy->max") overlooked the fact that policy->min and policy->max were
-accessed directly in cpufreq_frequency_table_target() and in the
-functions called by it.  Consequently, the changes made by that commit
-led to problems with setting policy limits.
+In mtk_star_rx_poll function, on event processing completion, the
+mtk_star_emac driver calls napi_complete_done but ignores its return
+code and enable RX DMA interrupts inconditionally. This return code
+gives the info if a device should avoid rearming its interrupts or not,
+so fix this behaviour by taking it into account.
 
-Address this by passing the target frequency limits to __resolve_freq()
-and cpufreq_frequency_table_target() and propagating them to the
-functions called by the latter.
-
-Fixes: 7491cdf46b5c ("cpufreq: Avoid using inconsistent policy->min and policy->max")
-Cc: 5.16+ <stable@vger.kernel.org> # 5.16+
-Closes: https://lore.kernel.org/linux-pm/aAplED3IA_J0eZN0@linaro.org/
-Reported-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Tested-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Reviewed-by: Lifeng Zheng <zhenglifeng1@huawei.com>
-Link: https://patch.msgid.link/5896780.DvuYhMxLoT@rjwysocki.net
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8c7bd5a454ff ("net: ethernet: mtk-star-emac: new driver")
+Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Link: https://patch.msgid.link/20250424-mtk_star_emac-fix-spinlock-recursion-issue-v2-2-f3fde2e529d8@collabora.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cpufreq.c          |   22 ++++++---
- drivers/cpufreq/cpufreq_ondemand.c |    3 -
- drivers/cpufreq/freq_table.c       |    6 +-
- include/linux/cpufreq.h            |   83 ++++++++++++++++++++++++-------------
- 4 files changed, 73 insertions(+), 41 deletions(-)
+ drivers/net/ethernet/mediatek/mtk_star_emac.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -528,14 +528,18 @@ void cpufreq_disable_fast_switch(struct
- EXPORT_SYMBOL_GPL(cpufreq_disable_fast_switch);
+diff --git a/drivers/net/ethernet/mediatek/mtk_star_emac.c b/drivers/net/ethernet/mediatek/mtk_star_emac.c
+index 47a00e02365a2..c2ab87828d858 100644
+--- a/drivers/net/ethernet/mediatek/mtk_star_emac.c
++++ b/drivers/net/ethernet/mediatek/mtk_star_emac.c
+@@ -1348,8 +1348,7 @@ static int mtk_star_rx_poll(struct napi_struct *napi, int budget)
+ 	priv = container_of(napi, struct mtk_star_priv, rx_napi);
  
- static unsigned int __resolve_freq(struct cpufreq_policy *policy,
--		unsigned int target_freq, unsigned int relation)
-+				   unsigned int target_freq,
-+				   unsigned int min, unsigned int max,
-+				   unsigned int relation)
- {
- 	unsigned int idx;
- 
-+	target_freq = clamp_val(target_freq, min, max);
-+
- 	if (!policy->freq_table)
- 		return target_freq;
- 
--	idx = cpufreq_frequency_table_target(policy, target_freq, relation);
-+	idx = cpufreq_frequency_table_target(policy, target_freq, min, max, relation);
- 	policy->cached_resolved_idx = idx;
- 	policy->cached_target_freq = target_freq;
- 	return policy->freq_table[idx].frequency;
-@@ -569,8 +573,7 @@ unsigned int cpufreq_driver_resolve_freq
- 	if (unlikely(min > max))
- 		min = max;
- 
--	return __resolve_freq(policy, clamp_val(target_freq, min, max),
--			      CPUFREQ_RELATION_LE);
-+	return __resolve_freq(policy, target_freq, min, max, CPUFREQ_RELATION_LE);
- }
- EXPORT_SYMBOL_GPL(cpufreq_driver_resolve_freq);
- 
-@@ -2296,8 +2299,8 @@ int __cpufreq_driver_target(struct cpufr
- 	if (cpufreq_disabled())
- 		return -ENODEV;
- 
--	target_freq = clamp_val(target_freq, policy->min, policy->max);
--	target_freq = __resolve_freq(policy, target_freq, relation);
-+	target_freq = __resolve_freq(policy, target_freq, policy->min,
-+				     policy->max, relation);
- 
- 	pr_debug("target for CPU %u: %u kHz, relation %u, requested %u kHz\n",
- 		 policy->cpu, target_freq, relation, old_target_freq);
-@@ -2592,8 +2595,11 @@ static int cpufreq_set_policy(struct cpu
- 	 * compiler optimizations around them because they may be accessed
- 	 * concurrently by cpufreq_driver_resolve_freq() during the update.
- 	 */
--	WRITE_ONCE(policy->max, __resolve_freq(policy, new_data.max, CPUFREQ_RELATION_H));
--	new_data.min = __resolve_freq(policy, new_data.min, CPUFREQ_RELATION_L);
-+	WRITE_ONCE(policy->max, __resolve_freq(policy, new_data.max,
-+					       new_data.min, new_data.max,
-+					       CPUFREQ_RELATION_H));
-+	new_data.min = __resolve_freq(policy, new_data.min, new_data.min,
-+				      new_data.max, CPUFREQ_RELATION_L);
- 	WRITE_ONCE(policy->min, new_data.min > policy->max ? policy->max : new_data.min);
- 
- 	trace_cpu_frequency_limits(policy);
---- a/drivers/cpufreq/cpufreq_ondemand.c
-+++ b/drivers/cpufreq/cpufreq_ondemand.c
-@@ -77,7 +77,8 @@ static unsigned int generic_powersave_bi
- 		return freq_next;
- 	}
- 
--	index = cpufreq_frequency_table_target(policy, freq_next, relation);
-+	index = cpufreq_frequency_table_target(policy, freq_next, policy->min,
-+					       policy->max, relation);
- 	freq_req = freq_table[index].frequency;
- 	freq_reduc = freq_req * od_tuners->powersave_bias / 1000;
- 	freq_avg = freq_req - freq_reduc;
---- a/drivers/cpufreq/freq_table.c
-+++ b/drivers/cpufreq/freq_table.c
-@@ -116,8 +116,8 @@ int cpufreq_generic_frequency_table_veri
- EXPORT_SYMBOL_GPL(cpufreq_generic_frequency_table_verify);
- 
- int cpufreq_table_index_unsorted(struct cpufreq_policy *policy,
--				 unsigned int target_freq,
--				 unsigned int relation)
-+				 unsigned int target_freq, unsigned int min,
-+				 unsigned int max, unsigned int relation)
- {
- 	struct cpufreq_frequency_table optimal = {
- 		.driver_data = ~0,
-@@ -148,7 +148,7 @@ int cpufreq_table_index_unsorted(struct
- 	cpufreq_for_each_valid_entry_idx(pos, table, i) {
- 		freq = pos->frequency;
- 
--		if ((freq < policy->min) || (freq > policy->max))
-+		if (freq < min || freq > max)
- 			continue;
- 		if (freq == target_freq) {
- 			optimal.driver_data = i;
---- a/include/linux/cpufreq.h
-+++ b/include/linux/cpufreq.h
-@@ -789,8 +789,8 @@ int cpufreq_frequency_table_verify(struc
- int cpufreq_generic_frequency_table_verify(struct cpufreq_policy_data *policy);
- 
- int cpufreq_table_index_unsorted(struct cpufreq_policy *policy,
--				 unsigned int target_freq,
--				 unsigned int relation);
-+				 unsigned int target_freq, unsigned int min,
-+				 unsigned int max, unsigned int relation);
- int cpufreq_frequency_table_get_index(struct cpufreq_policy *policy,
- 		unsigned int freq);
- 
-@@ -855,12 +855,12 @@ static inline int cpufreq_table_find_ind
- 	return best;
- }
- 
--/* Works only on sorted freq-tables */
--static inline int cpufreq_table_find_index_l(struct cpufreq_policy *policy,
--					     unsigned int target_freq,
--					     bool efficiencies)
-+static inline int find_index_l(struct cpufreq_policy *policy,
-+			       unsigned int target_freq,
-+			       unsigned int min, unsigned int max,
-+			       bool efficiencies)
- {
--	target_freq = clamp_val(target_freq, policy->min, policy->max);
-+	target_freq = clamp_val(target_freq, min, max);
- 
- 	if (policy->freq_table_sorted == CPUFREQ_TABLE_SORTED_ASCENDING)
- 		return cpufreq_table_find_index_al(policy, target_freq,
-@@ -870,6 +870,14 @@ static inline int cpufreq_table_find_ind
- 						   efficiencies);
- }
- 
-+/* Works only on sorted freq-tables */
-+static inline int cpufreq_table_find_index_l(struct cpufreq_policy *policy,
-+					     unsigned int target_freq,
-+					     bool efficiencies)
-+{
-+	return find_index_l(policy, target_freq, policy->min, policy->max, efficiencies);
-+}
-+
- /* Find highest freq at or below target in a table in ascending order */
- static inline int cpufreq_table_find_index_ah(struct cpufreq_policy *policy,
- 					      unsigned int target_freq,
-@@ -923,12 +931,12 @@ static inline int cpufreq_table_find_ind
- 	return best;
- }
- 
--/* Works only on sorted freq-tables */
--static inline int cpufreq_table_find_index_h(struct cpufreq_policy *policy,
--					     unsigned int target_freq,
--					     bool efficiencies)
-+static inline int find_index_h(struct cpufreq_policy *policy,
-+			       unsigned int target_freq,
-+			       unsigned int min, unsigned int max,
-+			       bool efficiencies)
- {
--	target_freq = clamp_val(target_freq, policy->min, policy->max);
-+	target_freq = clamp_val(target_freq, min, max);
- 
- 	if (policy->freq_table_sorted == CPUFREQ_TABLE_SORTED_ASCENDING)
- 		return cpufreq_table_find_index_ah(policy, target_freq,
-@@ -938,6 +946,14 @@ static inline int cpufreq_table_find_ind
- 						   efficiencies);
- }
- 
-+/* Works only on sorted freq-tables */
-+static inline int cpufreq_table_find_index_h(struct cpufreq_policy *policy,
-+					     unsigned int target_freq,
-+					     bool efficiencies)
-+{
-+	return find_index_h(policy, target_freq, policy->min, policy->max, efficiencies);
-+}
-+
- /* Find closest freq to target in a table in ascending order */
- static inline int cpufreq_table_find_index_ac(struct cpufreq_policy *policy,
- 					      unsigned int target_freq,
-@@ -1008,12 +1024,12 @@ static inline int cpufreq_table_find_ind
- 	return best;
- }
- 
--/* Works only on sorted freq-tables */
--static inline int cpufreq_table_find_index_c(struct cpufreq_policy *policy,
--					     unsigned int target_freq,
--					     bool efficiencies)
-+static inline int find_index_c(struct cpufreq_policy *policy,
-+			       unsigned int target_freq,
-+			       unsigned int min, unsigned int max,
-+			       bool efficiencies)
- {
--	target_freq = clamp_val(target_freq, policy->min, policy->max);
-+	target_freq = clamp_val(target_freq, min, max);
- 
- 	if (policy->freq_table_sorted == CPUFREQ_TABLE_SORTED_ASCENDING)
- 		return cpufreq_table_find_index_ac(policy, target_freq,
-@@ -1023,7 +1039,17 @@ static inline int cpufreq_table_find_ind
- 						   efficiencies);
- }
- 
--static inline bool cpufreq_is_in_limits(struct cpufreq_policy *policy, int idx)
-+/* Works only on sorted freq-tables */
-+static inline int cpufreq_table_find_index_c(struct cpufreq_policy *policy,
-+					     unsigned int target_freq,
-+					     bool efficiencies)
-+{
-+	return find_index_c(policy, target_freq, policy->min, policy->max, efficiencies);
-+}
-+
-+static inline bool cpufreq_is_in_limits(struct cpufreq_policy *policy,
-+					unsigned int min, unsigned int max,
-+					int idx)
- {
- 	unsigned int freq;
- 
-@@ -1032,11 +1058,13 @@ static inline bool cpufreq_is_in_limits(
- 
- 	freq = policy->freq_table[idx].frequency;
- 
--	return freq == clamp_val(freq, policy->min, policy->max);
-+	return freq == clamp_val(freq, min, max);
- }
- 
- static inline int cpufreq_frequency_table_target(struct cpufreq_policy *policy,
- 						 unsigned int target_freq,
-+						 unsigned int min,
-+						 unsigned int max,
- 						 unsigned int relation)
- {
- 	bool efficiencies = policy->efficiencies_available &&
-@@ -1047,29 +1075,26 @@ static inline int cpufreq_frequency_tabl
- 	relation &= ~CPUFREQ_RELATION_E;
- 
- 	if (unlikely(policy->freq_table_sorted == CPUFREQ_TABLE_UNSORTED))
--		return cpufreq_table_index_unsorted(policy, target_freq,
--						    relation);
-+		return cpufreq_table_index_unsorted(policy, target_freq, min,
-+						    max, relation);
- retry:
- 	switch (relation) {
- 	case CPUFREQ_RELATION_L:
--		idx = cpufreq_table_find_index_l(policy, target_freq,
--						 efficiencies);
-+		idx = find_index_l(policy, target_freq, min, max, efficiencies);
- 		break;
- 	case CPUFREQ_RELATION_H:
--		idx = cpufreq_table_find_index_h(policy, target_freq,
--						 efficiencies);
-+		idx = find_index_h(policy, target_freq, min, max, efficiencies);
- 		break;
- 	case CPUFREQ_RELATION_C:
--		idx = cpufreq_table_find_index_c(policy, target_freq,
--						 efficiencies);
-+		idx = find_index_c(policy, target_freq, min, max, efficiencies);
- 		break;
- 	default:
- 		WARN_ON_ONCE(1);
- 		return 0;
- 	}
- 
--	/* Limit frequency index to honor policy->min/max */
--	if (!cpufreq_is_in_limits(policy, idx) && efficiencies) {
-+	/* Limit frequency index to honor min and max */
-+	if (!cpufreq_is_in_limits(policy, min, max, idx) && efficiencies) {
- 		efficiencies = false;
- 		goto retry;
- 	}
+ 	work_done = mtk_star_rx(priv, budget);
+-	if (work_done < budget) {
+-		napi_complete_done(napi, work_done);
++	if (work_done < budget && napi_complete_done(napi, work_done)) {
+ 		spin_lock_irqsave(&priv->lock, flags);
+ 		mtk_star_enable_dma_irq(priv, true, false);
+ 		spin_unlock_irqrestore(&priv->lock, flags);
+-- 
+2.39.5
+
 
 
 
