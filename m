@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-142172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1B51AAE95C
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:43:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDA90AAE9DC
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:48:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFE789C6A06
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:43:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F6789C16E0
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:48:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F45C28DF45;
-	Wed,  7 May 2025 18:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF5BD28B4FE;
+	Wed,  7 May 2025 18:48:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dbOcoBuW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vTXZYt2E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E03AC14A4C7;
-	Wed,  7 May 2025 18:43:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CEAA1FF5EC;
+	Wed,  7 May 2025 18:48:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643434; cv=none; b=ED0lqfcElRa5BPifUUNW6QOVKBwNAjuO2hiP9r4v8Atr6vbyESiYZfbBaLNTn79priIGd/B4VIxNBhy8d+lyAHKePycNqsETklEuf66IWnrbWv7bDym1AvPWw04W/I+MTI+F4e1aao53xXlXsegu2t3yKDD5p5HvnumdqS0ELNs=
+	t=1746643694; cv=none; b=be6Bjc+8huJ0IKmtcJ5K+8JCGnLIjjgRxB0xHLEmjwMVhD2V2/khNWsjAkwLaHt4xiNKiyIPFt0MlV3+8B6/jblID5iGLE8qDBvBTntsRcYjp9GkM5aQCUmunpOZNw388cKM0q6eY+XEOqnSJMlQ4mnuPG+oqMEkcpSwP3DVDHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643434; c=relaxed/simple;
-	bh=qVUvPd4praeyV6Hbw6HIHJtLmncbu6qhzJtUOGIYUXQ=;
+	s=arc-20240116; t=1746643694; c=relaxed/simple;
+	bh=tjKaabpV/HwugREu3IZZXvl8lmUEhiaxIktx/m8OFG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KFh1JG/AQAJDFVZ1ZbaTlBiKeHdLMUbRcHlt8czpGGUTx4PEZbA36DdTDAQmL8piMygbxNGy+o/WVWQvkM1rDnuGzRywnVCJ/hKsSWyd2PPiSUs8MzVSIMOEvgoK/MArHDLxSQ/pezMrDIiLjdYXfBCr1uzFIe3nbukl+rIVEBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dbOcoBuW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7089EC4CEE2;
-	Wed,  7 May 2025 18:43:53 +0000 (UTC)
+	 MIME-Version; b=SVIz94m8oUyIrgX5oL5bVmW4HZctpMalHW9oPXzC7WRiykPHl/RQGL7ylJDbYrCNevXMADg2QjmjhHEqK2m3I8l3Juur9l6FWNYBg/zdpZcNCrKfEVm3rqQ+FyoTjnB62j/Eb+Ck0ux3H7bLdxYcaIT9Poma0wZonCJXj/tYI5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vTXZYt2E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0A20C4CEF5;
+	Wed,  7 May 2025 18:48:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643433;
-	bh=qVUvPd4praeyV6Hbw6HIHJtLmncbu6qhzJtUOGIYUXQ=;
+	s=korg; t=1746643694;
+	bh=tjKaabpV/HwugREu3IZZXvl8lmUEhiaxIktx/m8OFG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dbOcoBuW7WiORbqBPgzEcb3q/xgmUEv3R1yujtc7hv0TFGuTFqpeKZED1rHDjOrFh
-	 dhvi5QqhrhilfMO0D+53PKhhLjsAMIRoAbazO6H73cPCPBbc3jtWwfXe4fZWo8jK9W
-	 gLpW9j7x3iDsow9Dk+m3RippQIa4SSerfJS1dL78=
+	b=vTXZYt2EY4u0Fnh4Co9K74kS4oT7f/KjxC8kxORlE1i1+vw8hW+NqnRKityblPqzy
+	 qfMFIyTgvnvjcRgU0D2SWNC97WtgzZDXYGXN4r9wKLR7mvrTJpwYhkUE5Mqt9v5Pp2
+	 +DmCGROuZ5XRXsipgsRbsqsRCZnLCbY/bYR9jupU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 29/55] net: dlink: Correct endianness handling of led_mode
+Subject: [PATCH 6.1 55/97] net: dlink: Correct endianness handling of led_mode
 Date: Wed,  7 May 2025 20:39:30 +0200
-Message-ID: <20250507183800.213552531@linuxfoundation.org>
+Message-ID: <20250507183809.213183094@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
-References: <20250507183759.048732653@linuxfoundation.org>
+In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
+References: <20250507183806.987408728@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -113,11 +113,11 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/net/ethernet/dlink/dl2k.c b/drivers/net/ethernet/dlink/dl2k.c
-index 993bba0ffb161..af0b6fa296e56 100644
+index 2c67a857a42ff..71cb7fe63de3c 100644
 --- a/drivers/net/ethernet/dlink/dl2k.c
 +++ b/drivers/net/ethernet/dlink/dl2k.c
-@@ -353,7 +353,7 @@ parse_eeprom (struct net_device *dev)
- 		dev->dev_addr[i] = psrom->mac_addr[i];
+@@ -352,7 +352,7 @@ parse_eeprom (struct net_device *dev)
+ 	eth_hw_addr_set(dev, psrom->mac_addr);
  
  	if (np->chip_id == CHIP_IP1000A) {
 -		np->led_mode = psrom->led_mode;
