@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-142366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E24D5AAEA51
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:54:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30A50AAEB88
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:08:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB4519C5401
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:53:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 95B4EB20EF9
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:06:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C4B128AAE9;
-	Wed,  7 May 2025 18:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D615228980D;
+	Wed,  7 May 2025 19:07:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kcu15Lq6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rBO0AcdZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCB3D1FF5EC;
-	Wed,  7 May 2025 18:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E9A21504D;
+	Wed,  7 May 2025 19:07:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644029; cv=none; b=FmqL4KzPKuaHNSmTkBaF+FisA+TijV2WL0TksNr/pbo8U9NRu+wyg1a2Kg1FhVcHEPoqQgi1GyTY0RhSiSItE3TF/SufNn4Lt6dqC0beqzQUu2Al80jC2yOpgoqqIO8d+xM0fwIaSBSgERtRKgcMQfbs5Bdkrlx1p7Puk8FDc4Y=
+	t=1746644877; cv=none; b=W9v65buOHACcQMjUatxArWA9QkjMc2y2O4To8q+UB8DaxCsPhWT0zP9lzeMEBtZ+jeL98c110e5mg45qSpYBGI3OXyxJMS5HLTGstIreSgbHIWl551vgTF/0RW/+XlFuxVrNToGPkLmh2eVBrPPtyYKNFcdqsqJdNFz3JX0mwtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644029; c=relaxed/simple;
-	bh=l4J0y2Z8F4SE6Rp0JGX7Vaf6lWA/3jm4SFmYM2kFYEU=;
+	s=arc-20240116; t=1746644877; c=relaxed/simple;
+	bh=2mUzCwbiuY0xjeRWhch/Jbz3R7+WtjChz7BhgjM8aF0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=unyDM/21GH5f9oHB1C6b22Xw91a14uCyNJgYGlR+o9iHzPtvyZH02ZdX9mLrisoPvib6kH5rXi0SpRdvtIPJUPPMZURHVYXUtI2iXRb91yaHkqIjPKCIWeNmfCg7o6ov3V3W2xxhmfVXNB/jmm+lDn0v2VwOw7OvLslr8HImrIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kcu15Lq6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDCACC4CEE2;
-	Wed,  7 May 2025 18:53:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hSTdHQrGLOGzv7uofSjBNNl9gK9BP/6yeDL9RQ3T4DPA4j3tGx2rKye2F2JseS8DioScSl0IE0hMwoC7niDahykBACm/h1ofZaTEGYHxrdQi4Fd1pr/9hI9QqNh85Liy6LfwtH7/X4nKKq6nls0u/lN9FbGIu0u/pGBFt4L8kvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rBO0AcdZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04114C4CEE2;
+	Wed,  7 May 2025 19:07:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644029;
-	bh=l4J0y2Z8F4SE6Rp0JGX7Vaf6lWA/3jm4SFmYM2kFYEU=;
+	s=korg; t=1746644877;
+	bh=2mUzCwbiuY0xjeRWhch/Jbz3R7+WtjChz7BhgjM8aF0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kcu15Lq6jVrmjBShCmw+1Ybl/91IAMqxNzI9Z7tbcsyy6jgONcEvjnCBBpj8hey1D
-	 RVB3WNQNTMrfDAsACdy31/nmdZ1lGtUUG5JnvWztVO8nO+tAei4Fs18H5hAtgOup48
-	 NYPlUweLMXrZOr1jS9hI03lYoytTsA5ortATmoOw=
+	b=rBO0AcdZw/9rNYWX3nR1MbQfMFfVQ/RYszh7MAPoqO6CLMiNOK3r9kQuf2hacxqUH
+	 9nZf+Xbm6C9YZIISFNuhzKLqhLhkpIG+WAM65skCRhpVPreFgh4EojMLLRurXPlN0x
+	 h0HJSRXqHYQAo1b8EWO/6yrOPLRRdxwI6WcegW+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 097/183] net_sched: hfsc: Fix a UAF vulnerability in class with netem as child qdisc
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Philipp Stanner <phasta@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 6.6 006/129] drm/nouveau: Fix WARN_ON in nouveau_fence_context_kill()
 Date: Wed,  7 May 2025 20:39:02 +0200
-Message-ID: <20250507183828.750912421@linuxfoundation.org>
+Message-ID: <20250507183813.785972558@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Nogueira <victor@mojatatu.com>
+From: Philipp Stanner <phasta@kernel.org>
 
-[ Upstream commit 141d34391abbb315d68556b7c67ad97885407547 ]
+commit bbe5679f30d7690a9b6838a583b9690ea73fe0e9 upstream.
 
-As described in Gerrard's report [1], we have a UAF case when an hfsc class
-has a netem child qdisc. The crux of the issue is that hfsc is assuming
-that checking for cl->qdisc->q.qlen == 0 guarantees that it hasn't inserted
-the class in the vttree or eltree (which is not true for the netem
-duplicate case).
+Nouveau is mostly designed in a way that it's expected that fences only
+ever get signaled through nouveau_fence_signal(). However, in at least
+one other place, nouveau_fence_done(), can signal fences, too. If that
+happens (race) a signaled fence remains in the pending list for a while,
+until it gets removed by nouveau_fence_update().
 
-This patch checks the n_active class variable to make sure that the code
-won't insert the class in the vttree or eltree twice, catering for the
-reentrant case.
+Should nouveau_fence_context_kill() run in the meantime, this would be
+a bug because the function would attempt to set an error code on an
+already signaled fence.
 
-[1] https://lore.kernel.org/netdev/CAHcdcOm+03OD2j6R0=YHKqmy=VgJ8xEOKuP6c7mSgnp-TEJJbw@mail.gmail.com/
+Have nouveau_fence_context_kill() check for a fence being signaled.
 
-Fixes: 37d9cf1a3ce3 ("sched: Fix detection of empty queues in child qdiscs")
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
-Link: https://patch.msgid.link/20250425220710.3964791-3-victor@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # v5.10+
+Fixes: ea13e5abf807 ("drm/nouveau: signal pending fences when channel has been killed")
+Suggested-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Philipp Stanner <phasta@kernel.org>
+Link: https://lore.kernel.org/r/20250415121900.55719-3-phasta@kernel.org
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_hfsc.c | 2 +-
+ drivers/gpu/drm/nouveau/nouveau_fence.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
-index 5bb4ab9941d6e..1c857dc95e4f3 100644
---- a/net/sched/sch_hfsc.c
-+++ b/net/sched/sch_hfsc.c
-@@ -1565,7 +1565,7 @@ hfsc_enqueue(struct sk_buff *skb, struct Qdisc *sch, struct sk_buff **to_free)
- 		return err;
- 	}
+--- a/drivers/gpu/drm/nouveau/nouveau_fence.c
++++ b/drivers/gpu/drm/nouveau/nouveau_fence.c
+@@ -90,7 +90,7 @@ nouveau_fence_context_kill(struct nouvea
+ 	while (!list_empty(&fctx->pending)) {
+ 		fence = list_entry(fctx->pending.next, typeof(*fence), head);
  
--	if (first) {
-+	if (first && !cl->cl_nactive) {
- 		if (cl->cl_flags & HFSC_RSC)
- 			init_ed(cl, len);
- 		if (cl->cl_flags & HFSC_FSC)
--- 
-2.39.5
-
+-		if (error)
++		if (error && !dma_fence_is_signaled_locked(&fence->base))
+ 			dma_fence_set_error(&fence->base, error);
+ 
+ 		if (nouveau_fence_signal(fence))
 
 
 
