@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-142249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 896B4AAE9B6
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:47:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCD17AAE956
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:43:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7B631C41D85
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:48:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 564A55054FC
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:43:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A8291A29A;
-	Wed,  7 May 2025 18:47:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 680A928DF50;
+	Wed,  7 May 2025 18:43:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G3y7joQP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="he1tcrBh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56AE01B414A;
-	Wed,  7 May 2025 18:47:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2466114A4C7;
+	Wed,  7 May 2025 18:43:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643672; cv=none; b=mbuW7flWcN7adHRA9XVhLg4vfCTmkQf1YSGYqC5CGe+Z8tklcYm9KqlJHiYgMBgFbl4w8opHd3sKv36/1vDGIOk2LeWkVs75VVg1iHHA+6dSh9cIYZzU7kiR2XFNtuQOV0vKs1x+G17LLvhzJdQ3qr5Q8zZDuyRV+q7Wgwf5Ddc=
+	t=1746643416; cv=none; b=jwPqkoGRU8kdUwt8xMhBVYA1kiNDL4eUKUP9mvJe3/ZtIOil5SOZiwjvuIeXwzgoBAOB0q4Za/FnU7mzbe6KxSsp6CbZhGlUlQvfOnmDyAK489PEZO4/oBIs4WdZMWgSvQRVWVdcQAYnDvLOC7goYzYK2Wn48586HkhNhRcg6/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643672; c=relaxed/simple;
-	bh=O/UolIC9mI4SeA8NTxh2SDjWyHSuqi5PmNqeA/AG8Gw=;
+	s=arc-20240116; t=1746643416; c=relaxed/simple;
+	bh=dh+HlsJwDhAxXvnJ0ejUwtoDaz53WdvMlPvJ2VJtkxk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bCN4M6R+cA1CedWUSjIQ6fp4o3TvvA31GnjSuBRQdFKUTSLlxh/9px/p481OUChuARuLkA9APGneZMMuF6ltQpMGlMBGXLyIBwV8/01HXl9kP84H9gABNumHLAdueREKe7n45I6PWF+77SWmfNVt9Y9RHpWYeOY/ib0pr7XywI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G3y7joQP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC5F1C4CEE2;
-	Wed,  7 May 2025 18:47:51 +0000 (UTC)
+	 MIME-Version; b=fsqVWV7OJhmtTY2DwZmrpPpXvFKBhKcij0yNrMYUQgrvAZBGtVTAYEiDGGUDkAqY+Yvtg5k5LpMgEfZ+/TRNXa4wlsf8K8s8ZPU2qy7Ff24v/EdiL45FU6AMlgg2Ndhm6TjvTEcvwSU8dz9wfFxI3J2XYuKjA58W75yxVXsjPQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=he1tcrBh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1066C4CEE2;
+	Wed,  7 May 2025 18:43:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643672;
-	bh=O/UolIC9mI4SeA8NTxh2SDjWyHSuqi5PmNqeA/AG8Gw=;
+	s=korg; t=1746643416;
+	bh=dh+HlsJwDhAxXvnJ0ejUwtoDaz53WdvMlPvJ2VJtkxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G3y7joQPxz8DFsp/wOirqZHN2U0SpfI/r5qWOpXpTyX8He4MZMNOqMQLMc4hsrFMJ
-	 OZzf+myuRlTS3mkolOCg0ETDOlfQqXtzeiK6Bxd9WJ0yvF+N8BRMjRw1Wsa6xeUB5C
-	 Pb9qzzEdwQCGpS03ehh7P9ZQwnDn3WA10V/TAVTU=
+	b=he1tcrBhz/DbMUEbOkQmuX6V1gIuAcb4/M2hR8oPhGS5dsK9A3Sr8eKMRjUuxFLoT
+	 xg1vT/R51fyNf23FPQyPd57X0zp2CvrawDlW5wNskr0C3u+rKlhQpe4W4BETT2gYb1
+	 RSYZ/uoANlrTfwqf4H6KA5fEnG1DceQ6kgqADUYo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1 78/97] sch_ets: make est_qlen_notify() idempotent
+	stable <stable@kernel.org>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 52/55] serial: msm: Configure correct working mode before starting earlycon
 Date: Wed,  7 May 2025 20:39:53 +0200
-Message-ID: <20250507183810.122058083@linuxfoundation.org>
+Message-ID: <20250507183801.137268867@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
-References: <20250507183806.987408728@linuxfoundation.org>
+In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
+References: <20250507183759.048732653@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <xiyou.wangcong@gmail.com>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-commit a7a15f39c682ac4268624da2abdb9114bdde96d5 upstream.
+[ Upstream commit 7094832b5ac861b0bd7ed8866c93cb15ef619996 ]
 
-est_qlen_notify() deletes its class from its active list with
-list_del() when qlen is 0, therefore, it is not idempotent and
-not friendly to its callers, like fq_codel_dequeue().
+The MSM UART DM controller supports different working modes, e.g. DMA or
+the "single-character mode", where all reads/writes operate on a single
+character rather than 4 chars (32-bit) at once. When using earlycon,
+__msm_console_write() always writes 4 characters at a time, but we don't
+know which mode the bootloader was using and we don't set the mode either.
 
-Let's make it idempotent to ease qdisc_tree_reduce_backlog() callers'
-life. Also change other list_del()'s to list_del_init() just to be
-extra safe.
+This causes garbled output if the bootloader was using the single-character
+mode, because only every 4th character appears in the serial console, e.g.
 
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
-Link: https://patch.msgid.link/20250403211033.166059-6-xiyou.wangcong@gmail.com
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+  "[ 00oni pi  000xf0[ 00i s 5rm9(l)l s 1  1 SPMTA 7:C 5[ 00A ade k d[
+   00ano:ameoi .Q1B[ 00ac _idaM00080oo'"
+
+If the bootloader was using the DMA ("DM") mode, output would likely fail
+entirely. Later, when the full serial driver probes, the port is
+re-initialized and output works as expected.
+
+Fix this also for earlycon by clearing the DMEN register and
+reset+re-enable the transmitter to apply the change. This ensures the
+transmitter is in the expected state before writing any output.
+
+Cc: stable <stable@kernel.org>
+Fixes: 0efe72963409 ("tty: serial: msm: Add earlycon support")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250408-msm-serial-earlycon-v1-1-429080127530@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_ets.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/tty/serial/msm_serial.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/net/sched/sch_ets.c
-+++ b/net/sched/sch_ets.c
-@@ -298,7 +298,7 @@ static void ets_class_qlen_notify(struct
- 	 * to remove them.
- 	 */
- 	if (!ets_class_is_strict(q, cl) && sch->q.qlen)
--		list_del(&cl->alist);
-+		list_del_init(&cl->alist);
+diff --git a/drivers/tty/serial/msm_serial.c b/drivers/tty/serial/msm_serial.c
+index 03ff63438e772..9740bc301cc27 100644
+--- a/drivers/tty/serial/msm_serial.c
++++ b/drivers/tty/serial/msm_serial.c
+@@ -1732,6 +1732,12 @@ msm_serial_early_console_setup_dm(struct earlycon_device *device,
+ 	if (!device->port.membase)
+ 		return -ENODEV;
+ 
++	/* Disable DM / single-character modes */
++	msm_write(&device->port, 0, UARTDM_DMEN);
++	msm_write(&device->port, MSM_UART_CR_CMD_RESET_RX, MSM_UART_CR);
++	msm_write(&device->port, MSM_UART_CR_CMD_RESET_TX, MSM_UART_CR);
++	msm_write(&device->port, MSM_UART_CR_TX_ENABLE, MSM_UART_CR);
++
+ 	device->con->write = msm_serial_early_write_dm;
+ 	return 0;
  }
- 
- static int ets_class_dump(struct Qdisc *sch, unsigned long arg,
-@@ -491,7 +491,7 @@ static struct sk_buff *ets_qdisc_dequeue
- 			if (unlikely(!skb))
- 				goto out;
- 			if (cl->qdisc->q.qlen == 0)
--				list_del(&cl->alist);
-+				list_del_init(&cl->alist);
- 			return ets_qdisc_dequeue_skb(sch, skb);
- 		}
- 
-@@ -660,7 +660,7 @@ static int ets_qdisc_change(struct Qdisc
- 	}
- 	for (i = q->nbands; i < oldbands; i++) {
- 		if (i >= q->nstrict && q->classes[i].qdisc->q.qlen)
--			list_del(&q->classes[i].alist);
-+			list_del_init(&q->classes[i].alist);
- 		qdisc_tree_flush_backlog(q->classes[i].qdisc);
- 	}
- 	q->nstrict = nstrict;
-@@ -716,7 +716,7 @@ static void ets_qdisc_reset(struct Qdisc
- 
- 	for (band = q->nstrict; band < q->nbands; band++) {
- 		if (q->classes[band].qdisc->q.qlen)
--			list_del(&q->classes[band].alist);
-+			list_del_init(&q->classes[band].alist);
- 	}
- 	for (band = 0; band < q->nbands; band++)
- 		qdisc_reset(q->classes[band].qdisc);
+-- 
+2.39.5
+
 
 
 
