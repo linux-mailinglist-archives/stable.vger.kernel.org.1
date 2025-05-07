@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-142233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142578-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01F97AAE99D
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:47:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED225AAEB37
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:04:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D04D188D6E1
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:47:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B6871C08B10
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:05:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70EAB1B414A;
-	Wed,  7 May 2025 18:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D519928DF5D;
+	Wed,  7 May 2025 19:04:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kxjcRGUG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2aBftl4q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D8A229A0;
-	Wed,  7 May 2025 18:47:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9165F28DF4C;
+	Wed,  7 May 2025 19:04:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643622; cv=none; b=FqLShksDlnH+e/9ddrZjnTu6+ojN/VIyb8mV4InF912JQzdoYGTLAqhnVHZXODZGIkcChRjIrbyqnwVUqImU5ys9RV1J3w/8OLItYC6JfhKckkeDGFLNBP6iZkrEK9O7JkxIUa+a5hXNQykpSB7D5Lgoflauxf4ctVNpV2FqoN0=
+	t=1746644687; cv=none; b=X2DV6rpP8L7uFVv4flUkpU157hMF22fCR7iFiivsMUfkuZbVDeYrdmcUzUXv7X2pDS6jfKKCWG+sjpYeGNkeFzbuyyEMhXwHv9DjpG3RPwNJEncVvOGIm6wk5oh4dY+j2Scpo8ydXZedXQ9T1wlWYpQVW+pWVu2HKyNeyU4Q93U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643622; c=relaxed/simple;
-	bh=DhJWh1ih1MV5ICyhqwV8oSWDnIZAsVLA7wGG3DsMF70=;
+	s=arc-20240116; t=1746644687; c=relaxed/simple;
+	bh=iVapUoviE0gQIpM3dtL5k6z+YlAq6cl/HIOWYHeD5pI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CkRPb79SkN+c7IGhkNzjI3ZQ15QlSRl1jF5uatbsZ4ski7oPHvoW+kSm8R4qrc/PR8k1czQ/lpSOqvbk4ndT0asfDtkrBbBsnyJylsvjNEUnOQ5WZgp+vJDp/lDo92zZ3N/ZUb08Qa5q1eTYqv53UEWApD8Tb9Lxly9x7Vy3CBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kxjcRGUG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55DE6C4CEE2;
-	Wed,  7 May 2025 18:47:01 +0000 (UTC)
+	 MIME-Version; b=AlEyydHCpr2vR83UNeehwNna4aswGcti9yw9z4tFVGoLBs/3KVse6x/nVvnW22vUGJ9Kz9jJwt1bHYyuJewkUGmw2oM7jZMdkoD+IZwrTFSBHCEVR0Fa8/XOz2gfIzwWZXmla6i8U3BQeQcbHf8jjtLG6L9Z5ok9sn34GDwqfyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2aBftl4q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F9A8C4CEE2;
+	Wed,  7 May 2025 19:04:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643622;
-	bh=DhJWh1ih1MV5ICyhqwV8oSWDnIZAsVLA7wGG3DsMF70=;
+	s=korg; t=1746644687;
+	bh=iVapUoviE0gQIpM3dtL5k6z+YlAq6cl/HIOWYHeD5pI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kxjcRGUGQtiwhSzojgtodBuYeledgIIMfBDD38+AoeQ8HzwymJ4ZicBCZZUVP/LWw
-	 wq6oabIeiMTXGMvHxO7WWGClqPhwVCYthqr0tSnH/3ah18tf1rvzOfqe3luOQH5LRG
-	 o6pGkIatyApdxBYZET6wtP/730DpgmxtXLefvvB0=
+	b=2aBftl4qi34XMGvDD+u96RyhW/zWeSBujpKcal8BTxd3mRU+cZvCKl74u0x9axfb8
+	 2MznFr6ARPTX9mIv7s05eG/wXCLuEnQ+gHKss4mQjQEmvCE40TMPIGjcdTwU/L+F/Q
+	 LshLPhvHlinKy1M/NEVfJJfHZqr2RWmrEdA2K4J8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mattias Barthel <mattias.barthel@atlascopco.com>,
-	Andrew Lunn <andrew@lunn.ch>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Victor Nogueira <victor@mojatatu.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 63/97] net: fec: ERR007885 Workaround for conventional TX
+Subject: [PATCH 6.12 093/164] net_sched: ets: Fix double list add in class with netem as child qdisc
 Date: Wed,  7 May 2025 20:39:38 +0200
-Message-ID: <20250507183809.531613372@linuxfoundation.org>
+Message-ID: <20250507183824.737231158@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
-References: <20250507183806.987408728@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mattias Barthel <mattias.barthel@atlascopco.com>
+From: Victor Nogueira <victor@mojatatu.com>
 
-[ Upstream commit a179aad12badc43201cbf45d1e8ed2c1383c76b9 ]
+[ Upstream commit 1a6d0c00fa07972384b0c308c72db091d49988b6 ]
 
-Activate TX hang workaround also in
-fec_enet_txq_submit_skb() when TSO is not enabled.
+As described in Gerrard's report [1], there are use cases where a netem
+child qdisc will make the parent qdisc's enqueue callback reentrant.
+In the case of ets, there won't be a UAF, but the code will add the same
+classifier to the list twice, which will cause memory corruption.
 
-Errata: ERR007885
+In addition to checking for qlen being zero, this patch checks whether
+the class was already added to the active_list (cl_is_active) before
+doing the addition to cater for the reentrant case.
 
-Symptoms: NETDEV WATCHDOG: eth0 (fec): transmit queue 0 timed out
+[1] https://lore.kernel.org/netdev/CAHcdcOm+03OD2j6R0=YHKqmy=VgJ8xEOKuP6c7mSgnp-TEJJbw@mail.gmail.com/
 
-commit 37d6017b84f7 ("net: fec: Workaround for imx6sx enet tx hang when enable three queues")
-There is a TDAR race condition for mutliQ when the software sets TDAR
-and the UDMA clears TDAR simultaneously or in a small window (2-4 cycles).
-This will cause the udma_tx and udma_tx_arbiter state machines to hang.
-
-So, the Workaround is checking TDAR status four time, if TDAR cleared by
-    hardware and then write TDAR, otherwise don't set TDAR.
-
-Fixes: 53bb20d1faba ("net: fec: add variable reg_desc_active to speed things up")
-Signed-off-by: Mattias Barthel <mattias.barthel@atlascopco.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250429090826.3101258-1-mattiasbarthel@gmail.com
+Fixes: 37d9cf1a3ce3 ("sched: Fix detection of empty queues in child qdiscs")
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+Link: https://patch.msgid.link/20250425220710.3964791-4-victor@mojatatu.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/sched/sch_ets.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index 018ce4f4be6f3..4a513dba8f53e 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -692,7 +692,12 @@ static int fec_enet_txq_submit_skb(struct fec_enet_priv_tx_q *txq,
- 	txq->bd.cur = bdp;
+diff --git a/net/sched/sch_ets.c b/net/sched/sch_ets.c
+index 516038a441638..9e4cd2cefa8c6 100644
+--- a/net/sched/sch_ets.c
++++ b/net/sched/sch_ets.c
+@@ -74,6 +74,11 @@ static const struct nla_policy ets_class_policy[TCA_ETS_MAX + 1] = {
+ 	[TCA_ETS_QUANTA_BAND] = { .type = NLA_U32 },
+ };
  
- 	/* Trigger transmission start */
--	writel(0, txq->bd.reg_desc_active);
-+	if (!(fep->quirks & FEC_QUIRK_ERR007885) ||
-+	    !readl(txq->bd.reg_desc_active) ||
-+	    !readl(txq->bd.reg_desc_active) ||
-+	    !readl(txq->bd.reg_desc_active) ||
-+	    !readl(txq->bd.reg_desc_active))
-+		writel(0, txq->bd.reg_desc_active);
++static bool cl_is_active(struct ets_class *cl)
++{
++	return !list_empty(&cl->alist);
++}
++
+ static int ets_quantum_parse(struct Qdisc *sch, const struct nlattr *attr,
+ 			     unsigned int *quantum,
+ 			     struct netlink_ext_ack *extack)
+@@ -416,7 +421,6 @@ static int ets_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	struct ets_sched *q = qdisc_priv(sch);
+ 	struct ets_class *cl;
+ 	int err = 0;
+-	bool first;
  
- 	return 0;
- }
+ 	cl = ets_classify(skb, sch, &err);
+ 	if (!cl) {
+@@ -426,7 +430,6 @@ static int ets_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		return err;
+ 	}
+ 
+-	first = !cl->qdisc->q.qlen;
+ 	err = qdisc_enqueue(skb, cl->qdisc, to_free);
+ 	if (unlikely(err != NET_XMIT_SUCCESS)) {
+ 		if (net_xmit_drop_count(err)) {
+@@ -436,7 +439,7 @@ static int ets_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		return err;
+ 	}
+ 
+-	if (first && !ets_class_is_strict(q, cl)) {
++	if (!cl_is_active(cl) && !ets_class_is_strict(q, cl)) {
+ 		list_add_tail(&cl->alist, &q->active);
+ 		cl->deficit = cl->quantum;
+ 	}
 -- 
 2.39.5
 
