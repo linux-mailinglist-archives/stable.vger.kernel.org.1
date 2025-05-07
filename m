@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-142143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DE1BAAE93F
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:42:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A1C0AAE98A
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:45:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 738933BE9C1
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:42:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CA06980E6E
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:45:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BC6428DF1B;
-	Wed,  7 May 2025 18:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AD4B28DEF7;
+	Wed,  7 May 2025 18:45:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vGaibMwV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="waTPfFRF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5690114A4C7;
-	Wed,  7 May 2025 18:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA83429A0;
+	Wed,  7 May 2025 18:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643348; cv=none; b=XFvbfRqe1kvZRasCkKiPnlVVnDvmZA8+Yxno9LWeVonqHipUT/hZ1xuwpanL4UYZJ8xmTvALQYK4+8HLz1JaFXw11eQVOiTx2G0AMKzvED7IwOoWQGyMtZ9vzcGprebt6ZHilFECsl8i+eFC3LxeKbIR6cjeuhcmDKTreAV4jFs=
+	t=1746643528; cv=none; b=uFLDVoOUHno1rPbfAasCwauni2CLJXwUXISgdL5oNk9YJOQwGYoJIC7YDCoK8UP7PreWHprS22xybeaYG54pHP3pdjMiTsJP6UYKDUw8Dq3Uw/AXjo3NxrgeP6Gw2qy04Tywe4ZQSuYu0uBCF0tL+Ro60v8+GwhOmECGioIGsIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643348; c=relaxed/simple;
-	bh=BueU3FKqskq8pN/s7Clb4r8qqT+MI/Hqw6uumAuxQKs=;
+	s=arc-20240116; t=1746643528; c=relaxed/simple;
+	bh=ROiSxJj6Dyk+CfD2KcsFWmBFRnPRCADvnBo+rsE20+Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PNUbySyJEwBNCtijjG9z7MLb+5fMJ7qbumGvzXjUszYhql587lsUHaclamF4GlN3pE19+/hXrpa41mESLab8vbtLq+nOaONtgmsO+An99aBCSd8uEjq/eQCaDcB/n9sG9O8UtvJp6P7OBpufgx+CprIxhZAJrByVA1FI+dLhZPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vGaibMwV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AA42C4CEE2;
-	Wed,  7 May 2025 18:42:27 +0000 (UTC)
+	 MIME-Version; b=m06pRk8tJI4aA639wz5CervBlGRGTjERtW86WYUBTCOoUd2/Mpeca3BX86OjYXS1x5ChL4CJ4QX9NthHGBB/3WKh5XHiRMByfu+O2NuaesAqBaqypNDGy9qoYsicQ1xe5GE4mdbZeldFCqrNtAamlzVTJ+5CB5YFCJ1D6xUMlS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=waTPfFRF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8E66C4CEEB;
+	Wed,  7 May 2025 18:45:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643347;
-	bh=BueU3FKqskq8pN/s7Clb4r8qqT+MI/Hqw6uumAuxQKs=;
+	s=korg; t=1746643528;
+	bh=ROiSxJj6Dyk+CfD2KcsFWmBFRnPRCADvnBo+rsE20+Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vGaibMwV9T8InHM1lmFtrKpQaiubH3JelP+BvrmGkz6iQRMtoAJUYm508dszV5RHX
-	 0WF14HRj07TFroF6LV+9FuhGalNHuhAIVmLl9u6dOXnBQyR3q34lhPKG440jjxARQe
-	 SNxOGEz+P4lAzb7h5ubo6mAKgLFvSDPAUZ6CZk08=
+	b=waTPfFRFQE0EeCRtm+A9Q2bCbZc5zvQEQNho/0EdquDxnErb678liOqdIbZwkRxAN
+	 CWJN2s8aIzhEcHqg7VkB9XCI6RT7YJfF0mYkdonBd4tt8QIDz0nMBi0tSxuTHbM4Be
+	 6IvxEivbXk6eBDESFRUF6i9Q/vxgEQ/rcq/28SXE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vishal Badole <Vishal.Badole@amd.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 08/55] amd-xgbe: Fix to ensure dependent features are toggled with RX checksum offload
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Chandan Babu R <chandanbabu@kernel.org>,
+	Leah Rumancik <leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 34/97] xfs: allow symlinks with short remote targets
 Date: Wed,  7 May 2025 20:39:09 +0200
-Message-ID: <20250507183759.388942332@linuxfoundation.org>
+Message-ID: <20250507183808.366708706@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
-References: <20250507183759.048732653@linuxfoundation.org>
+In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
+References: <20250507183806.987408728@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,140 +63,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vishal Badole <Vishal.Badole@amd.com>
+From: "Darrick J. Wong" <djwong@kernel.org>
 
-commit f04dd30f1bef1ed2e74a4050af6e5e5e3869bac3 upstream.
+[ Upstream commit 38de567906d95c397d87f292b892686b7ec6fbc3 ]
 
-According to the XGMAC specification, enabling features such as Layer 3
-and Layer 4 Packet Filtering, Split Header and Virtualized Network support
-automatically selects the IPC Full Checksum Offload Engine on the receive
-side.
+An internal user complained about log recovery failing on a symlink
+("Bad dinode after recovery") with the following (excerpted) format:
 
-When RX checksum offload is disabled, these dependent features must also
-be disabled to prevent abnormal behavior caused by mismatched feature
-dependencies.
+core.magic = 0x494e
+core.mode = 0120777
+core.version = 3
+core.format = 2 (extents)
+core.nlinkv2 = 1
+core.nextents = 1
+core.size = 297
+core.nblocks = 1
+core.naextents = 0
+core.forkoff = 0
+core.aformat = 2 (extents)
+u3.bmx[0] = [startoff,startblock,blockcount,extentflag]
+0:[0,12,1,0]
 
-Ensure that toggling RX checksum offload (disabling or enabling) properly
-disables or enables all dependent features, maintaining consistent and
-expected behavior in the network device.
+This is a symbolic link with a 297-byte target stored in a disk block,
+which is to say this is a symlink with a remote target.  The forkoff is
+0, which is to say that there's 512 - 176 == 336 bytes in the inode core
+to store the data fork.
 
-Cc: stable@vger.kernel.org
-Fixes: 1a510ccf5869 ("amd-xgbe: Add support for VXLAN offload capabilities")
-Signed-off-by: Vishal Badole <Vishal.Badole@amd.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250424130248.428865-1-Vishal.Badole@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Eventually, testing of generic/388 failed with the same inode corruption
+message during inode recovery.  In writing a debugging patch to call
+xfs_dinode_verify on dirty inode log items when we're committing
+transactions, I observed that xfs/298 can reproduce the problem quite
+quickly.
+
+xfs/298 creates a symbolic link, adds some extended attributes, then
+deletes them all.  The test failure occurs when the final removexattr
+also deletes the attr fork because that does not convert the remote
+symlink back into a shortform symlink.  That is how we trip this test.
+The only reason why xfs/298 only triggers with the debug patch added is
+that it deletes the symlink, so the final iflush shows the inode as
+free.
+
+I wrote a quick fstest to emulate the behavior of xfs/298, except that
+it leaves the symlinks on the filesystem after inducing the "corrupt"
+state.  Kernels going back at least as far as 4.18 have written out
+symlink inodes in this manner and prior to 1eb70f54c445f they did not
+object to reading them back in.
+
+Because we've been writing out inodes this way for quite some time, the
+only way to fix this is to relax the check for symbolic links.
+Directories don't have this problem because di_size is bumped to
+blocksize during the sf->data conversion.
+
+Fixes: 1eb70f54c445f ("xfs: validate inode fork size against fork format")
+Signed-off-by: "Darrick J. Wong" <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: "Darrick J. Wong" <djwong@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/amd/xgbe/xgbe-desc.c |    9 +++++++--
- drivers/net/ethernet/amd/xgbe/xgbe-dev.c  |   24 ++++++++++++++++++++++--
- drivers/net/ethernet/amd/xgbe/xgbe-drv.c  |   11 +++++++++--
- drivers/net/ethernet/amd/xgbe/xgbe.h      |    4 ++++
- 4 files changed, 42 insertions(+), 6 deletions(-)
+ fs/xfs/libxfs/xfs_inode_buf.c |   28 ++++++++++++++++++++++++----
+ 1 file changed, 24 insertions(+), 4 deletions(-)
 
---- a/drivers/net/ethernet/amd/xgbe/xgbe-desc.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-desc.c
-@@ -373,8 +373,13 @@ static int xgbe_map_rx_buffer(struct xgb
- 	}
+--- a/fs/xfs/libxfs/xfs_inode_buf.c
++++ b/fs/xfs/libxfs/xfs_inode_buf.c
+@@ -365,17 +365,37 @@ xfs_dinode_verify_fork(
+ 	/*
+ 	 * For fork types that can contain local data, check that the fork
+ 	 * format matches the size of local data contained within the fork.
+-	 *
+-	 * For all types, check that when the size says the should be in extent
+-	 * or btree format, the inode isn't claiming it is in local format.
+ 	 */
+ 	if (whichfork == XFS_DATA_FORK) {
+-		if (S_ISDIR(mode) || S_ISLNK(mode)) {
++		/*
++		 * A directory small enough to fit in the inode must be stored
++		 * in local format.  The directory sf <-> extents conversion
++		 * code updates the directory size accordingly.
++		 */
++		if (S_ISDIR(mode)) {
+ 			if (be64_to_cpu(dip->di_size) <= fork_size &&
+ 			    fork_format != XFS_DINODE_FMT_LOCAL)
+ 				return __this_address;
+ 		}
  
- 	/* Set up the header page info */
--	xgbe_set_buffer_data(&rdata->rx.hdr, &ring->rx_hdr_pa,
--			     XGBE_SKB_ALLOC_SIZE);
-+	if (pdata->netdev->features & NETIF_F_RXCSUM) {
-+		xgbe_set_buffer_data(&rdata->rx.hdr, &ring->rx_hdr_pa,
-+				     XGBE_SKB_ALLOC_SIZE);
-+	} else {
-+		xgbe_set_buffer_data(&rdata->rx.hdr, &ring->rx_hdr_pa,
-+				     pdata->rx_buf_size);
-+	}
- 
- 	/* Set up the buffer page info */
- 	xgbe_set_buffer_data(&rdata->rx.buf, &ring->rx_buf_pa,
---- a/drivers/net/ethernet/amd/xgbe/xgbe-dev.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-dev.c
-@@ -320,6 +320,18 @@ static void xgbe_config_sph_mode(struct
- 	XGMAC_IOWRITE_BITS(pdata, MAC_RCR, HDSMS, XGBE_SPH_HDSMS_SIZE);
- }
- 
-+static void xgbe_disable_sph_mode(struct xgbe_prv_data *pdata)
-+{
-+	unsigned int i;
++		/*
++		 * A symlink with a target small enough to fit in the inode can
++		 * be stored in extents format if xattrs were added (thus
++		 * converting the data fork from shortform to remote format)
++		 * and then removed.
++		 */
++		if (S_ISLNK(mode)) {
++			if (be64_to_cpu(dip->di_size) <= fork_size &&
++			    fork_format != XFS_DINODE_FMT_EXTENTS &&
++			    fork_format != XFS_DINODE_FMT_LOCAL)
++				return __this_address;
++		}
 +
-+	for (i = 0; i < pdata->channel_count; i++) {
-+		if (!pdata->channel[i]->rx_ring)
-+			break;
-+
-+		XGMAC_DMA_IOWRITE_BITS(pdata->channel[i], DMA_CH_CR, SPH, 0);
-+	}
-+}
-+
- static int xgbe_write_rss_reg(struct xgbe_prv_data *pdata, unsigned int type,
- 			      unsigned int index, unsigned int val)
- {
-@@ -3495,8 +3507,12 @@ static int xgbe_init(struct xgbe_prv_dat
- 	xgbe_config_tx_coalesce(pdata);
- 	xgbe_config_rx_buffer_size(pdata);
- 	xgbe_config_tso_mode(pdata);
--	xgbe_config_sph_mode(pdata);
--	xgbe_config_rss(pdata);
-+
-+	if (pdata->netdev->features & NETIF_F_RXCSUM) {
-+		xgbe_config_sph_mode(pdata);
-+		xgbe_config_rss(pdata);
-+	}
-+
- 	desc_if->wrapper_tx_desc_init(pdata);
- 	desc_if->wrapper_rx_desc_init(pdata);
- 	xgbe_enable_dma_interrupts(pdata);
-@@ -3650,5 +3666,9 @@ void xgbe_init_function_ptrs_dev(struct
- 	hw_if->disable_vxlan = xgbe_disable_vxlan;
- 	hw_if->set_vxlan_id = xgbe_set_vxlan_id;
- 
-+	/* For Split Header*/
-+	hw_if->enable_sph = xgbe_config_sph_mode;
-+	hw_if->disable_sph = xgbe_disable_sph_mode;
-+
- 	DBGPR("<--xgbe_init_function_ptrs\n");
- }
---- a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-@@ -2264,10 +2264,17 @@ static int xgbe_set_features(struct net_
- 	if (ret)
- 		return ret;
- 
--	if ((features & NETIF_F_RXCSUM) && !rxcsum)
-+	if ((features & NETIF_F_RXCSUM) && !rxcsum) {
-+		hw_if->enable_sph(pdata);
-+		hw_if->enable_vxlan(pdata);
- 		hw_if->enable_rx_csum(pdata);
--	else if (!(features & NETIF_F_RXCSUM) && rxcsum)
-+		schedule_work(&pdata->restart_work);
-+	} else if (!(features & NETIF_F_RXCSUM) && rxcsum) {
-+		hw_if->disable_sph(pdata);
-+		hw_if->disable_vxlan(pdata);
- 		hw_if->disable_rx_csum(pdata);
-+		schedule_work(&pdata->restart_work);
-+	}
- 
- 	if ((features & NETIF_F_HW_VLAN_CTAG_RX) && !rxvlan)
- 		hw_if->enable_rx_vlan_stripping(pdata);
---- a/drivers/net/ethernet/amd/xgbe/xgbe.h
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe.h
-@@ -833,6 +833,10 @@ struct xgbe_hw_if {
- 	void (*enable_vxlan)(struct xgbe_prv_data *);
- 	void (*disable_vxlan)(struct xgbe_prv_data *);
- 	void (*set_vxlan_id)(struct xgbe_prv_data *);
-+
-+	/* For Split Header */
-+	void (*enable_sph)(struct xgbe_prv_data *pdata);
-+	void (*disable_sph)(struct xgbe_prv_data *pdata);
- };
- 
- /* This structure represents implementation specific routines for an
++		/*
++		 * For all types, check that when the size says the fork should
++		 * be in extent or btree format, the inode isn't claiming to be
++		 * in local format.
++		 */
+ 		if (be64_to_cpu(dip->di_size) > fork_size &&
+ 		    fork_format == XFS_DINODE_FMT_LOCAL)
+ 			return __this_address;
 
 
 
