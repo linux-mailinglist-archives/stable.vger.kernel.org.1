@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-142466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75954AAEABB
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:59:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F0CFAAEA3F
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:53:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 766D49C7E10
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:58:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D28591BC3562
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:53:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A799E289823;
-	Wed,  7 May 2025 18:59:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDFB928937F;
+	Wed,  7 May 2025 18:53:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AN/WJfTq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JynN1gst"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 662771482F5;
-	Wed,  7 May 2025 18:59:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3641FF5EC;
+	Wed,  7 May 2025 18:53:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644340; cv=none; b=RjHmvELSFbDVQeZ+a4DiW5NgscUArX/L7P17+9iZ59TZ5luvTrev1F32H0l2jhD5fvkNAnxg7B7IcyYefafeCPNKBtFbZRCMuCldC3/WieKeO9j+PyhvYHI2LaWEASBR+u5L9gHyPpJqdJfSgVF7TQw8hcYSZb632cPytInU52w=
+	t=1746643983; cv=none; b=FvT8tF/H9SQxvSZG49VPfHukspSCPrcxxEXsJMog+h4JluJK97n27vz5RdMvnWGaIrm757APYmkthPKOMWiB3b5s15zqznQBDSO312bD0MINxLxAl8HCnOXfxsL3JJGdTXFQvskxZAYgZuFY+xdm30yET2nHHuAun53cTkHGmF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644340; c=relaxed/simple;
-	bh=MVM/cf301tx3eHUhFLKG7cFgwZ3to+FnjlqtjSkAqhI=;
+	s=arc-20240116; t=1746643983; c=relaxed/simple;
+	bh=cdtzGWrYujYyjjGQbL8nEXOALBUN8vovDuS6PJVC358=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CYJ6wfoVHvHz8dsTATVczmnHIVnXMYEovwNIdKX35rCVGQa2TWzW/pBFO9YsyvUmyZAGpgt43DfLuLCJqXYOQt0q8mWTm9FwfSvcrD7omF1IhGJQ00IiBjomO5tEnmvIQR3uVU28Qr7zyJQvVT7Jo9fVKSoGsJSTrm6dRng/e3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AN/WJfTq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2745C4CEE2;
-	Wed,  7 May 2025 18:58:59 +0000 (UTC)
+	 MIME-Version; b=pSQMAkLaTpAbkkFR9kyfREr4owRDgoT/T4U8/xGryq5sH41ng3GqkpERCr/Ngac9pb6VpQOPKfhXBFhMEG5Cu/dRV5sqbox5NolvBvBZvSMqfGEm8Gop9WdWLlQ1vkE1lTSzuRnVIQryh3C/ky1LtGuiAXX5ddwPuxaf6MwgWo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JynN1gst; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07EC2C4CEE2;
+	Wed,  7 May 2025 18:53:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644340;
-	bh=MVM/cf301tx3eHUhFLKG7cFgwZ3to+FnjlqtjSkAqhI=;
+	s=korg; t=1746643983;
+	bh=cdtzGWrYujYyjjGQbL8nEXOALBUN8vovDuS6PJVC358=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AN/WJfTq1Rt9hD/KAzdhc/4e6H2TrBK+Vv1BZeriETA7pNDgX/SEw/vIb2rhc6Wv/
-	 gUUqEbzu8mjRCR3FgVQsW7LCLhXTgtbo+yp/8hqbYCa91fctZh3KjZQdoydq5STrwg
-	 acbOk6pZv9De6o1SE6OrfFdwseuCaMeQMC307oI4=
+	b=JynN1gstC4Yw9gKWxSOJAtTCvO8314R22MTsjVCtsRZG03fMKbFszNxhTG5/uguAK
+	 /HbmzTQfgGDCkknWa+yxwmuuQ12382btSl4KAeglzOYw8ZOXnD97Dq05/dio+/JyJ1
+	 dbobH5Rpc+yDBsAUjyIzfH3UQ2xGGoXd/atRNIX4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Dave Chen <davechen@synology.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.12 012/164] btrfs: fix COW handling in run_delalloc_nocow()
+	Sheetal <sheetal@nvidia.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 052/183] ASoC: soc-pcm: Fix hw_params() and DAPM widget sequence
 Date: Wed,  7 May 2025 20:38:17 +0200
-Message-ID: <20250507183821.335963033@linuxfoundation.org>
+Message-ID: <20250507183826.798381628@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Chen <davechen@synology.com>
+From: Sheetal <sheetal@nvidia.com>
 
-commit be3f1938d3e6ea8186f0de3dd95245dda4f22c1e upstream.
+[ Upstream commit 9aff2e8df240e84a36f2607f98a0a9924a24e65d ]
 
-In run_delalloc_nocow(), when the found btrfs_key's offset > cur_offset,
-it indicates a gap between the current processing region and
-the next file extent. The original code would directly jump to
-the "must_cow" label, which increments the slot and forces a fallback
-to COW. This behavior might skip an extent item and result in an
-overestimated COW fallback range.
+Issue:
+ When multiple audio streams share a common BE DAI, the BE DAI
+ widget can be powered up before its hardware parameters are configured.
+ This incorrect sequence leads to intermittent pcm_write errors.
 
-This patch modifies the logic so that when a gap is detected:
+ For example, the below Tegra use-case throws an error:
+  aplay(2 streams) -> AMX(mux) -> ADX(demux) -> arecord(2 streams),
+  here, 'AMX TX' and 'ADX RX' are common BE DAIs.
 
-- If no COW range is already being recorded (cow_start is unset),
-  cow_start is set to cur_offset.
+For above usecase when failure happens below sequence is observed:
+ aplay(1) FE open()
+  - BE DAI callbacks added to the list
+  - BE DAI state = SND_SOC_DPCM_STATE_OPEN
+ aplay(2) FE open()
+  - BE DAI callbacks are not added to the list as the state is
+    already SND_SOC_DPCM_STATE_OPEN during aplay(1) FE open().
+ aplay(2) FE hw_params()
+  - BE DAI hw_params() callback ignored
+ aplay(2) FE prepare()
+  - Widget is powered ON without BE DAI hw_params() call
+ aplay(1) FE hw_params()
+  - BE DAI hw_params() is now called
 
-- cur_offset is then advanced to the beginning of the next extent.
+Fix:
+ Add BE DAIs in the list if its state is either SND_SOC_DPCM_STATE_OPEN
+ or SND_SOC_DPCM_STATE_HW_PARAMS as well.
 
-- Instead of jumping to "must_cow", control flows directly to
-  "next_slot" so that the same extent item can be reexamined properly.
+It ensures the widget is powered ON after BE DAI hw_params() callback.
 
-The change ensures that we accurately account for the extent gap and
-avoid accidentally extending the range that needs to fallback to COW.
-
-CC: stable@vger.kernel.org # 6.6+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Dave Chen <davechen@synology.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0c25db3f7621 ("ASoC: soc-pcm: Don't reconnect an already active BE")
+Signed-off-by: Sheetal <sheetal@nvidia.com>
+Link: https://patch.msgid.link/20250404105953.2784819-1-sheetal@nvidia.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/inode.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ sound/soc/soc-pcm.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -2155,12 +2155,13 @@ next_slot:
- 
+diff --git a/sound/soc/soc-pcm.c b/sound/soc/soc-pcm.c
+index 88b3ad5a25520..53b0ea68b939f 100644
+--- a/sound/soc/soc-pcm.c
++++ b/sound/soc/soc-pcm.c
+@@ -1618,10 +1618,13 @@ static int dpcm_add_paths(struct snd_soc_pcm_runtime *fe, int stream,
  		/*
- 		 * If the found extent starts after requested offset, then
--		 * adjust extent_end to be right before this extent begins
-+		 * adjust cur_offset to be right before this extent begins.
+ 		 * Filter for systems with 'component_chaining' enabled.
+ 		 * This helps to avoid unnecessary re-configuration of an
+-		 * already active BE on such systems.
++		 * already active BE on such systems and ensures the BE DAI
++		 * widget is powered ON after hw_params() BE DAI callback.
  		 */
- 		if (found_key.offset > cur_offset) {
--			extent_end = found_key.offset;
--			extent_type = 0;
--			goto must_cow;
-+			if (cow_start == (u64)-1)
-+				cow_start = cur_offset;
-+			cur_offset = found_key.offset;
-+			goto next_slot;
- 		}
+ 		if (fe->card->component_chaining &&
+ 		    (be->dpcm[stream].state != SND_SOC_DPCM_STATE_NEW) &&
++		    (be->dpcm[stream].state != SND_SOC_DPCM_STATE_OPEN) &&
++		    (be->dpcm[stream].state != SND_SOC_DPCM_STATE_HW_PARAMS) &&
+ 		    (be->dpcm[stream].state != SND_SOC_DPCM_STATE_CLOSE))
+ 			continue;
  
- 		/*
+-- 
+2.39.5
+
 
 
 
