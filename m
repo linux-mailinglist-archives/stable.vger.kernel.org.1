@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-142698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6350FAAEBCA
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:10:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B5DAAAEB3F
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:05:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 910E21C45A3C
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:11:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6590A9E2CC6
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:05:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C777821504D;
-	Wed,  7 May 2025 19:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F42E28DF4C;
+	Wed,  7 May 2025 19:05:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yGwpf0gr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2EmebFQi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 823C828BA9F;
-	Wed,  7 May 2025 19:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA5428DF1F;
+	Wed,  7 May 2025 19:05:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746645054; cv=none; b=DJNZ9Pp9gsfgJzhtuTNRIbB1WEWA4sn9GIu4nc5eLHisWMzNv/HxWW3oeSRo51lAhJteFM+hRXgUKjr3UUYUyBS2ANCVKUnjXrIYuuGxSTjjJYLJwRLQnjnEUQ9D54s6z7vYOqp1tUGIqQAlx54mFtnJbLBFpCdez4v2SlG3Bao=
+	t=1746644704; cv=none; b=OYv7fF4DyoDw4Kw1CIgtZTTuPhJLReTeE1y424yW9Afmg2vdF8+i/ZGtrZfHfAMIyWwbNeBsNJ4ap0B2NegBdbaJRFej8cBzUMX6vQHrNritdFAEZGSwvxpW5Si4qUA7rjEd2PGrefnJyg4ZFVrajvu47MES+srfWj/5FsnoYOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746645054; c=relaxed/simple;
-	bh=QQL+XrPmdqDtsXmDZZHhEUlzFW0mxQ4yDBIN/O66fuk=;
+	s=arc-20240116; t=1746644704; c=relaxed/simple;
+	bh=3V8QwIneci6PyWVD8ap17SCbT8yNPOE9Cz3yoI4ye/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JXDHeJDUpT7utZu3OpDcq3u9NhFacq2yxHkXcH7tGuq1+CzdxNnqWs4FIU43oG86/7zCNWyPETjTW7VEwMXi8yhvzbx3kjD1aIRc3hfBsi4w9naretK0kO/ayJ7X5o8YFFqmng5nEzwZWsvXpK7E0AaSHm457gRkaQolpqneO9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yGwpf0gr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1065DC4CEE2;
-	Wed,  7 May 2025 19:10:53 +0000 (UTC)
+	 MIME-Version; b=bsY8StoRFaY0vWg6nZUvolhrPZ5Q2k5rEPkkct93Vrw3wThD9uZ4HYfO4EhQWm3DlLdgvAYv3SB4ZGnK7ROxuBj2AC0MdrX+Vo4CwQlLBhMLUquP6IR1XHej3weIHLqXFI9BeogoWD17ScwUJ55h9b8UQpHihMEgPQyWjADgOGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2EmebFQi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3A3FC4CEE2;
+	Wed,  7 May 2025 19:05:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746645054;
-	bh=QQL+XrPmdqDtsXmDZZHhEUlzFW0mxQ4yDBIN/O66fuk=;
+	s=korg; t=1746644704;
+	bh=3V8QwIneci6PyWVD8ap17SCbT8yNPOE9Cz3yoI4ye/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yGwpf0grIUo7VfPrOlrxt0/SBBiNecZay06OHMSYRzMImv+AseaUc5wTvfzyX9a5v
-	 D2jqaUX067Yo3t20MH/Ojz8PXJwYzIV5O+f/P6Bl6GQf6m1RJLCd6pVZ7yiDJJ1RBA
-	 gmBxoKHzeDv0dD+CtvWHpmoRY15TYUA7crEnrJoU=
+	b=2EmebFQiTH3x41DvoRu/2XqturmzRVOH8hexuuvl2B0q3vuQbroguFKyAj4AXTnk+
+	 q1tTBof+erf+lCv+kLmpNxtlWaiunoG7IPtpBdslweAY6EWcQS09i9mskJa27xlfqD
+	 bIzhPpmUgp4/X7g8eGHDsIaZZ68iu6hNeF4/H7+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chad Monroe <chad@monroe.io>,
+	Hao Lan <lanhao@huawei.com>,
+	Peiyang Wang <wangpeiyang1@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 078/129] net: ethernet: mtk_eth_soc: fix SER panic with 4GB+ RAM
-Date: Wed,  7 May 2025 20:40:14 +0200
-Message-ID: <20250507183816.671717638@linuxfoundation.org>
+Subject: [PATCH 6.12 130/164] net: hns3: fixed debugfs tm_qset size
+Date: Wed,  7 May 2025 20:40:15 +0200
+Message-ID: <20250507183826.233360556@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
-References: <20250507183813.500572371@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chad Monroe <chad@monroe.io>
+From: Hao Lan <lanhao@huawei.com>
 
-[ Upstream commit 6e0490fc36cdac696f96e57b61d93b9ae32e0f4c ]
+[ Upstream commit e317aebeefcb3b0c71f2305af3c22871ca6b3833 ]
 
-If the mtk_poll_rx() function detects the MTK_RESETTING flag, it will
-jump to release_desc and refill the high word of the SDP on the 4GB RFB.
-Subsequently, mtk_rx_clean will process an incorrect SDP, leading to a
-panic.
+The size of the tm_qset file of debugfs is limited to 64 KB,
+which is too small in the scenario with 1280 qsets.
+The size needs to be expanded to 1 MB.
 
-Add patch from MediaTek's SDK to resolve this.
-
-Fixes: 2d75891ebc09 ("net: ethernet: mtk_eth_soc: support 36-bit DMA addressing on MT7988")
-Link: https://git01.mediatek.com/plugins/gitiles/openwrt/feeds/mtk-openwrt-feeds/+/71f47ea785699c6aa3b922d66c2bdc1a43da25b1
-Signed-off-by: Chad Monroe <chad@monroe.io>
-Link: https://patch.msgid.link/4adc2aaeb0fb1b9cdc56bf21cf8e7fa328daa345.1745715843.git.daniel@makrotopia.org
+Fixes: 5e69ea7ee2a6 ("net: hns3: refactor the debugfs process")
+Signed-off-by: Hao Lan <lanhao@huawei.com>
+Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Link: https://patch.msgid.link/20250430093052.2400464-4-shaojijie@huawei.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mediatek/mtk_eth_soc.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-index dc89dbc13b251..d2ec8f642c2fa 100644
---- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-+++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-@@ -2180,14 +2180,18 @@ static int mtk_poll_rx(struct napi_struct *napi, int budget,
- 		ring->data[idx] = new_data;
- 		rxd->rxd1 = (unsigned int)dma_addr;
- release_desc:
-+		if (MTK_HAS_CAPS(eth->soc->caps, MTK_36BIT_DMA)) {
-+			if (unlikely(dma_addr == DMA_MAPPING_ERROR))
-+				addr64 = FIELD_GET(RX_DMA_ADDR64_MASK,
-+						   rxd->rxd2);
-+			else
-+				addr64 = RX_DMA_PREP_ADDR64(dma_addr);
-+		}
-+
- 		if (MTK_HAS_CAPS(eth->soc->caps, MTK_SOC_MT7628))
- 			rxd->rxd2 = RX_DMA_LSO;
- 		else
--			rxd->rxd2 = RX_DMA_PREP_PLEN0(ring->buf_size);
--
--		if (MTK_HAS_CAPS(eth->soc->caps, MTK_36BIT_DMA) &&
--		    likely(dma_addr != DMA_MAPPING_ERROR))
--			rxd->rxd2 |= RX_DMA_PREP_ADDR64(dma_addr);
-+			rxd->rxd2 = RX_DMA_PREP_PLEN0(ring->buf_size) | addr64;
- 
- 		ring->calc_idx = idx;
- 		done++;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
+index 9bbece25552b1..3d70c97a0bedf 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
+@@ -60,7 +60,7 @@ static struct hns3_dbg_cmd_info hns3_dbg_cmd[] = {
+ 		.name = "tm_qset",
+ 		.cmd = HNAE3_DBG_CMD_TM_QSET,
+ 		.dentry = HNS3_DBG_DENTRY_TM,
+-		.buf_len = HNS3_DBG_READ_LEN,
++		.buf_len = HNS3_DBG_READ_LEN_1MB,
+ 		.init = hns3_dbg_common_file_init,
+ 	},
+ 	{
 -- 
 2.39.5
 
