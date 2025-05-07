@@ -1,228 +1,173 @@
-Return-Path: <stable+bounces-142025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B1FEAADBDB
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 11:50:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36073AADC16
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 12:02:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9AA721C00CDA
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 09:50:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23D7A520804
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 10:00:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4A3D1BD9D0;
-	Wed,  7 May 2025 09:50:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B637207A27;
+	Wed,  7 May 2025 10:00:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GVrtC8Ux"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="Z0TtpOiE";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="MQTeTpIf";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="Z0TtpOiE";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="MQTeTpIf"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB5DA1BC099
-	for <stable@vger.kernel.org>; Wed,  7 May 2025 09:50:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CC2D202969
+	for <stable@vger.kernel.org>; Wed,  7 May 2025 10:00:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746611425; cv=none; b=YLiFMz+Z0f5pI2hACfHinbKSjBPwHWkcwNQOshyiAD5opmDbxjZM4FxIbzmvenSH1tNNg44dVqzRUDpTeoZL+LX8xtkgm0yCQs31skcXiczI38qxcYhK48JW/+RG87qtMnKSTmSYhIiS8yfiLR5y+LlyLH5lZqXX9Pm5YXMjh+s=
+	t=1746612035; cv=none; b=AVhOHTidRgzNm2+GXzXCQkUV5Ott5L6uFyQW0iLPb2oKQgEBRFToZpjVpN8XS6pB6ng9g44vbJn7+34kjRgw7cmTJ+mTCGKKzsFXOUZM1dh0h28ydoFeol7nwoFShBQdCqvfZBmryqAmz9fgLt2fcTy5JXyqce9swXCPqtdDBAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746611425; c=relaxed/simple;
-	bh=Ocq0P3HOIZlDwZjP6yOr1+JTI+qxP/IRYm7s7N1B3e8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=p8Ujd/m2HNpV1pWPD9vOH42lL88E7cEUyCTxUcK01z5D0yoeYi1U+DKnH1IAdxDSgpHcaBYMorx+ph763yg5lu9EBxw/U3BqnJRoA1/Hg6bpOypgFJc4khbO8lwAZPPoDfpWfSG/oRIYqpcUPzWxAfU+DGfQfOFriwG/hwa0FF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GVrtC8Ux; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1746611422;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=WVKm+prTo91mCK4sWi9nK8ro46xY5ZiQCNeKWZ2n6iY=;
-	b=GVrtC8UxVXNpmlz+3QXUO9gp5EkjdSNVeB8k+7ReFua5nwZZ0vKPB7qrI1ZMZsy6Oyk3AZ
-	5NgOcm4kWLu2oGI81OVy3XM4vAIW4SEVeVM31JtbNHjHVX5l55OKRSo1NA3JRGqHQ/0ADX
-	rDptin1DeCgh5TAH97lMsGUS+yL6Hgo=
-Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
- [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-653-XxAkNUmLMjKPdwMG9yeUbw-1; Wed, 07 May 2025 05:50:21 -0400
-X-MC-Unique: XxAkNUmLMjKPdwMG9yeUbw-1
-X-Mimecast-MFC-AGG-ID: XxAkNUmLMjKPdwMG9yeUbw_1746611420
-Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-7394792f83cso5166366b3a.3
-        for <stable@vger.kernel.org>; Wed, 07 May 2025 02:50:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746611420; x=1747216220;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=WVKm+prTo91mCK4sWi9nK8ro46xY5ZiQCNeKWZ2n6iY=;
-        b=W5NAi6APqp6PfuYYN4T5NNMb33z9W9IHKPDTazjnsbUEuEucEJBBjWLHFarxxFnioN
-         B3fW2xVfPSU7x7TYHyk0jKUZrgYHg6qwY5lDExAlhyPKIbPTKvgPOcvrLxdGiYw9Elhd
-         ttLLgJA9TADS9rKRiUlNzbckQsMJ2tF5PSIberm4WKh6YXHNtu386WGFlndij+9nVFT3
-         dPl2DCOM+jZ/7P6PUgdgnpHkcIpggd+qaiDeCZbQOnA1IB1fnM+HcudeusJjesIrkfqk
-         ivtVYP+Rf+k8oMlRdRXWlVoCnpCPItJqFHsnjKVtmlsNLbjdTiIL8T5IRRHNXg2qUBtx
-         IHhQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXZC76TDKDELKHoV5au76h5fM3Srj/Ec2lT9myPgDiLfm93bf0HTG63zmi17LwSt/9wy7tGByg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzkWlZ8pciDsIEmegKVzf6LSQubzF3W3xuJ+DeyGBJMfmN6/UrD
-	kuXIeoVhihLdc8w7eRYDkdvD7AyC7F3r38sgcEohrkDWnIvWbY6SOrr46ObZyS0K40B0+UhqNS6
-	vbgoESuxcQBycyI3xij6chMVThwYreKU+wXN3sF9hElYOXg4kEaegwg==
-X-Gm-Gg: ASbGncsti4R00VbSbfJ0eak3/WFIi/FmVzbkIQoh4WCf+DHrio5BXvW9iu2DcQNexiN
-	kxEH1xpLloG2UNanMEsTLWEwtw0YtptEvNtthDYmpD3yZN1c6fHxqwEXnUyir7Fc37aE4OI2F0E
-	LYm2Pt5x6tceHJS0O1cOmK8E4jR2Epc92xAHh2iPx6xnbObS+0RvI3P3mKKlSWr6IFaykBaNKTQ
-	2rbwI9buL8N7IyHXkS9tPkCM9X8fL+JGT60Pq53avm29v5pXPpSmo3j4IikOF5kHYl961tbz4xm
-	YWi9hLSY/uGrsIa3d6Na1x5R8r1S8iZwEZXMoWxGOfe21/dG5L275DIgfADBfmeX1j6VGdb7QRi
-	JP3KfXc/ukN1UNIOEK/BeNUKmqokLu7BFyMX7qyk=
-X-Received: by 2002:a05:6a00:2a06:b0:73e:2dc5:a93c with SMTP id d2e1a72fcca58-7409cf0f945mr3319250b3a.11.1746611420399;
-        Wed, 07 May 2025 02:50:20 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHVA37Uyq+XuIDleGXUMxF5Rlx1CmJawsIQUf6ZGk0Jxt0AkI56K7rfY3hb7Ni+UPjopi5iAA==
-X-Received: by 2002:a05:6a00:2a06:b0:73e:2dc5:a93c with SMTP id d2e1a72fcca58-7409cf0f945mr3319224b3a.11.1746611419983;
-        Wed, 07 May 2025 02:50:19 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f12:d400:ed3c:fb0c:1ec0:c628? (p200300d82f12d400ed3cfb0c1ec0c628.dip0.t-ipconnect.de. [2003:d8:2f12:d400:ed3c:fb0c:1ec0:c628])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74058db8befsm10590578b3a.40.2025.05.07.02.50.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 May 2025 02:50:19 -0700 (PDT)
-Message-ID: <0ec57b2e-0a1c-443f-89e1-608d5bccbf26@redhat.com>
-Date: Wed, 7 May 2025 11:50:15 +0200
+	s=arc-20240116; t=1746612035; c=relaxed/simple;
+	bh=x6yWmoo6qPjvrZFDG+GfNt4k4ft48EnihqDbNQG/sRc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ggBjef6RXfYrzViGj9qREkt+9dPLCF8hWuEYxL2t5e6f02zdQzzLswYvDaGZHGGS3Wim/5KrsfNQc0mf9iJMzpz0vse/i0EX1ZVJzRbzvw0e96MiB7pYP5T5huq2YouVvrXv9kSi4A/0e+QP0g/p/57E3jJXIcpPiQLgdo2JEEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=Z0TtpOiE; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=MQTeTpIf; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=Z0TtpOiE; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=MQTeTpIf; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 2A9832118C;
+	Wed,  7 May 2025 10:00:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1746612032; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=FwFmgELbtw8nVecCPlwuYtq6ecmWR15BEDPQfyNbLfs=;
+	b=Z0TtpOiExeSK8uvMJgf90DofLqXv6O0X1hCugvPhDl9CyUCRQ3ShB3KJ2+zhNfeZvqn49f
+	PKO6oK89EWkcYMpqR8lxlE9RLNFDLgmJ51B+Yc1OBr83pAha85u1t7BOyEb55cZDef/Qrs
+	Xno0KG27PV65Ogvys+Rx7NnKd+g7inI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1746612032;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=FwFmgELbtw8nVecCPlwuYtq6ecmWR15BEDPQfyNbLfs=;
+	b=MQTeTpIfNIbXbr/iKzstnMDieizDStceCRPfOxIjZ3PxJLzzrlRaP0BID1htK89yZlaNmC
+	shEh5VK65XzZ5QAQ==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Z0TtpOiE;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=MQTeTpIf
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1746612032; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=FwFmgELbtw8nVecCPlwuYtq6ecmWR15BEDPQfyNbLfs=;
+	b=Z0TtpOiExeSK8uvMJgf90DofLqXv6O0X1hCugvPhDl9CyUCRQ3ShB3KJ2+zhNfeZvqn49f
+	PKO6oK89EWkcYMpqR8lxlE9RLNFDLgmJ51B+Yc1OBr83pAha85u1t7BOyEb55cZDef/Qrs
+	Xno0KG27PV65Ogvys+Rx7NnKd+g7inI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1746612032;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=FwFmgELbtw8nVecCPlwuYtq6ecmWR15BEDPQfyNbLfs=;
+	b=MQTeTpIfNIbXbr/iKzstnMDieizDStceCRPfOxIjZ3PxJLzzrlRaP0BID1htK89yZlaNmC
+	shEh5VK65XzZ5QAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1A56A139D9;
+	Wed,  7 May 2025 10:00:32 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id TLxqBkAvG2gdBgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Wed, 07 May 2025 10:00:32 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 9A43BA09BE; Wed,  7 May 2025 12:00:27 +0200 (CEST)
+From: Jan Kara <jack@suse.cz>
+To: <linux-fsdevel@vger.kernel.org>
+Cc: Jan Kara <jack@suse.cz>,
+	stable@vger.kernel.org
+Subject: [PATCH] udf: Make sure i_lenExtents is uptodate on inode eviction
+Date: Wed,  7 May 2025 12:00:17 +0200
+Message-ID: <20250507100016.19586-2-jack@suse.cz>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] mm: mmap: map MAP_STACK to VM_NOHUGEPAGE only if THP
- is enabled
-To: Ignacio.MorenoGonzalez@kuka.com, lorenzo.stoakes@oracle.com
-Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org,
- yang@os.amperecomputing.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20250507-map-map_stack-to-vm_nohugepage-only-if-thp-is-enabled-v3-1-80929f30df7f@kuka.com>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <20250507-map-map_stack-to-vm_nohugepage-only-if-thp-is-enabled-v3-1-80929f30df7f@kuka.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1444; i=jack@suse.cz; h=from:subject; bh=x6yWmoo6qPjvrZFDG+GfNt4k4ft48EnihqDbNQG/sRc=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBoGy8w2vjrDkNDtqPzj02VjNcYAjCv4Jb4giVzp8mD wNVK4EWJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCaBsvMAAKCRCcnaoHP2RA2dmSB/ 9JyzYCCk6UJs4Tpt9qRaElodq6U8Ctau9sdTqlr7BaPGQ+lCNXGpRKuk9pB6Q+CaBL6M0jjRJ8Asf8 pWuWFeC4HH2y92rKOREyztNYPEgH1fkFDFY/YoTlDCa2E++R8Gyzf59/iTYuU61doZb5aWe4IrP8Gk aQhwFsrQ7LWuVoIKrBJNAyPJyqybZaw82D4bVETsWdJ0V9sQJkTMwvxIk+0KniFxaBYDtoDsHWYCso v6GhapxDZXsbIWonUKF3+boXBt3/IVQmDzYJw/ACzAZSBv694wy9qdVpuvdLj4gYS0cJd7RuOwwhMj PdsnapKT0GwbK4MzedNRacYUGeLw04
+X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 2A9832118C
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	ARC_NA(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	MIME_TRACE(0.00)[0:+];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	TO_DN_SOME(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCVD_TLS_LAST(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	FROM_HAS_DN(0.00)[];
+	DKIM_TRACE(0.00)[suse.cz:+];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[epos.bh:url,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.cz:email,suse.cz:dkim,suse.cz:mid]
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Spam-Score: -3.01
+X-Spam-Flag: NO
 
-On 07.05.25 11:11, Ignacio Moreno Gonzalez via B4 Relay wrote:
-> From: Ignacio Moreno Gonzalez <Ignacio.MorenoGonzalez@kuka.com>
-> 
-> commit c4608d1bf7c6 ("mm: mmap: map MAP_STACK to VM_NOHUGEPAGE") maps
-> the mmap option MAP_STACK to VM_NOHUGEPAGE. This is also done if
-> CONFIG_TRANSPARENT_HUGETABLES is not defined. But in that case, the
-> VM_NOHUGEPAGE does not make sense.
-> 
-> Fixes: c4608d1bf7c6 ("mm: mmap: map MAP_STACK to VM_NOHUGEPAGE")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Reviewed-by: Yang Shi <yang@os.amperecomputing.com>
-> Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-> Signed-off-by: Ignacio Moreno Gonzalez <Ignacio.MorenoGonzalez@kuka.com>
-> ---
-> I discovered this issue when trying to use the tool CRIU to checkpoint
-> and restore a container. Our running kernel is compiled without
-> CONFIG_TRANSPARENT_HUGETABLES. CRIU parses the output of
+UDF maintains total length of all extents in i_lenExtents. Generally we
+keep extent lengths (and thus i_lenExtents) block aligned because it
+makes the file appending logic simpler. However the standard mandates
+that the inode size must match the length of all extents and thus we
+trim the last extent when closing the file. To catch possible bugs we
+also verify that i_lenExtents matches i_size when evicting inode from
+memory. Commit b405c1e58b73 ("udf: refactor udf_next_aext() to handle
+error") however broke the code updating i_lenExtents and thus
+udf_evict_inode() ended up spewing lots of errors about incorrectly
+sized extents although the extents were actually sized properly. Fix the
+updating of i_lenExtents to silence the errors.
 
-I'm sure you mean CONFIG_TRANSPARENT_HUGEPAGE ?
+Fixes: b405c1e58b73 ("udf: refactor udf_next_aext() to handle error")
+CC: stable@vger.kernel.org
+Signed-off-by: Jan Kara <jack@suse.cz>
+---
+ fs/udf/truncate.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> /proc/<pid>/smaps and saves the "nh" flag. When trying to restore the
-> container, CRIU fails to restore the "nh" mappings, since madvise()
-> MADV_NOHUGEPAGE always returns an error because
-> CONFIG_TRANSPARENT_HUGETABLES is not defined.
+I plan to merge this fix to my tree.
 
-This should go into the patch description; it explains how this is 
-actually causing issues.
-
-> 
-> The mapping MAP_STACK -> VM_NOHUGEPAGE was introduced by commit
-> c4608d1bf7c6 ("mm: mmap: map MAP_STACK to VM_NOHUGEPAGE") in order to
-> fix a regression introduced by commit efa7df3e3bb5 ("mm: align larger
-> anonymous mappings on THP boundaries"). The change introducing the
-> regression (efa7df3e3bb5) was limited to THP kernels, but its fix
-> (c4608d1bf7c6) is applied without checking if THP is set.
-> 
-> The mapping MAP_STACK -> VM_NOHUGEPAGE should only be applied if THP is
-> enabled.
-> ---
-> Changes in v3:
-> - Exclude non-stable patch (for huge_mm.h) from this series to avoid mixing stable and non-stable patches, as suggested by Andrew.
-> - Extend description in cover letter.
-> - Link to v2: https://lore.kernel.org/r/20250506-map-map_stack-to-vm_nohugepage-only-if-thp-is-enabled-v2-0-f11f0c794872@kuka.com
-> 
-> Changes in v2:
-> - [Patch 1/2] Use '#ifdef' instead of '#if defined(...)'
-> - [Patch 1/2] Add 'Fixes: c4608d1bf7c6...'
-> - Create [Patch 2/2]
-> 
-> - Link to v1: https://lore.kernel.org/r/20250502-map-map_stack-to-vm_nohugepage-only-if-thp-is-enabled-v1-1-113cc634cd51@kuka.com
-> ---
->   include/linux/mman.h | 2 ++
->   1 file changed, 2 insertions(+)
-> 
-> diff --git a/include/linux/mman.h b/include/linux/mman.h
-> index bce214fece16b9af3791a2baaecd6063d0481938..f4c6346a8fcd29b08d43f7cd9158c3eddc3383e1 100644
-> --- a/include/linux/mman.h
-> +++ b/include/linux/mman.h
-> @@ -155,7 +155,9 @@ calc_vm_flag_bits(struct file *file, unsigned long flags)
->   	return _calc_vm_trans(flags, MAP_GROWSDOWN,  VM_GROWSDOWN ) |
->   	       _calc_vm_trans(flags, MAP_LOCKED,     VM_LOCKED    ) |
->   	       _calc_vm_trans(flags, MAP_SYNC,	     VM_SYNC      ) |
-> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
->   	       _calc_vm_trans(flags, MAP_STACK,	     VM_NOHUGEPAGE) |
-> +#endif
->   	       arch_calc_vm_flag_bits(file, flags);
->   }
-
-LGTM. I'm surprise we even have VM_NOHUGEPAGE on kernels ... without 
-THP. I mean, as you say, even setting MADV_NOHUGEPAGE does not wrok.
-
+diff --git a/fs/udf/truncate.c b/fs/udf/truncate.c
+index 4f33a4a48886..b4071c9cf8c9 100644
+--- a/fs/udf/truncate.c
++++ b/fs/udf/truncate.c
+@@ -115,7 +115,7 @@ void udf_truncate_tail_extent(struct inode *inode)
+ 	}
+ 	/* This inode entry is in-memory only and thus we don't have to mark
+ 	 * the inode dirty */
+-	if (ret == 0)
++	if (ret >= 0)
+ 		iinfo->i_lenExtents = inode->i_size;
+ 	brelse(epos.bh);
+ }
 -- 
-Cheers,
-
-David / dhildenb
+2.43.0
 
 
