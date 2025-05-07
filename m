@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-142462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55650AAEAB6
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:58:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53999AAEB4B
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:05:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 473B29C7DC0
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:58:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F9049E2DA5
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:05:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A4A7289823;
-	Wed,  7 May 2025 18:58:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE0EB28E5F1;
+	Wed,  7 May 2025 19:05:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T3wwa8hS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xAXUPISL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361981482F5;
-	Wed,  7 May 2025 18:58:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B5C428E59A;
+	Wed,  7 May 2025 19:05:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644328; cv=none; b=qCMyZXTBXmmJECfD/u1Lf0d+7+59RIsrm8cmhwFUubRLF7hn5FC+9qmGFTbj9AaraqDFPew0BbdALRpO9OrfbIlcQ4gSdXbLsBynLPAj05HVNDhM3MKBZeeJrzJqGCfyW1+Iqg7GWatcVX+NOUj9IvAm7CAuF9AO210ywQS/HJ4=
+	t=1746644721; cv=none; b=pvqmQJeGg1L2m1PzIm9A0Yzr0s7CqEgZASrQqMBS/9PP5MNiqCJATtR2iKjkdVLis43Lm6mT93ZUBleTQCObUKl2GOg1Os9515LXjUS0V1+MIePErwHyr5zdMOynPR4j0KABl3oGUbr0wNjaE9bdaIAlulPYAuiNnQypuPTfJJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644328; c=relaxed/simple;
-	bh=OBuoHEyXB3RMe5pgH9CtYgLZZyt7pfjTKvkpvdUPjAg=;
+	s=arc-20240116; t=1746644721; c=relaxed/simple;
+	bh=BAVYrHt/SK5T6261OVEzoTTGLJs5rWo5gp5wijMVb9s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mY8QlTvHprEBZXKqGPkoxbIpKSRBAUzB8WdHj/teJEV/KxCcRD9S2zKeklfYRckBD9N5qdloGdE0UIBrMDLD7GuGMa/J8Uwkf0T/suHqKSNH5PGWBtMdiSYAKldV0VVERZW1nckjR6jQdSQQqJeKq1CbBCWFfCm2fizEd79OGAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T3wwa8hS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFF09C4CEE2;
-	Wed,  7 May 2025 18:58:47 +0000 (UTC)
+	 MIME-Version; b=nGA2i8aLsqKAzZPfvypz7bng/1NeFQxaenLpe0rAiV+On0GYrF8bgUzVzseLoo2+yFRngvmXHUM1uSag6KQzj7iIPIVCAwHRIqPQtPAtYwkAtYDfp5CtwdsaO+CmNzi72UOvH5e5e5zW85AQTDPfQytxMXKkxp0I21+JWX6Gqb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xAXUPISL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09CD8C4CEE2;
+	Wed,  7 May 2025 19:05:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644328;
-	bh=OBuoHEyXB3RMe5pgH9CtYgLZZyt7pfjTKvkpvdUPjAg=;
+	s=korg; t=1746644721;
+	bh=BAVYrHt/SK5T6261OVEzoTTGLJs5rWo5gp5wijMVb9s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T3wwa8hSQxzxdoYly+Ww7F4SZKNFwmjdfg8XB2yT5FMFJaWJR/knwe8510DyFQzkd
-	 cUp9tDSbJGembhbM21kIMbR8GU8eMfG3iWOKw4yzU2setVQ75jcd2MJ0IBgQ+kiUYQ
-	 T9oj7YOzdURlNwhhjyJUo6MPYVxioYRjSy4tKWI8=
+	b=xAXUPISLodEwExLeCVOvjOO6lAQCIGUPlx12xEzWTKMmouhyI0ilJpPERIg9xZAxj
+	 9ldTSK2GEn+l4JCrn8FQEWSMD5uSyJKGcCvXSJe39RbgQg4vs+Ru+yVnWIxHI+WnfQ
+	 VX33JYkTTXVNs6HTOkAWh+x6Jmqba4bcaUtrhJ4w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Shyam Saini <shyamsaini@linux.microsoft.com>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 175/183] kernel: globalize lookup_or_create_module_kobject()
-Date: Wed,  7 May 2025 20:40:20 +0200
-Message-ID: <20250507183831.947236920@linuxfoundation.org>
+	Steven Rostedt <rostedt@goodmis.org>,
+	Daniel Wagner <wagi@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 136/164] blk-mq: create correct map for fallback case
+Date: Wed,  7 May 2025 20:40:21 +0200
+Message-ID: <20250507183826.480841395@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Saini <shyamsaini@linux.microsoft.com>
+From: Daniel Wagner <wagi@kernel.org>
 
-[ Upstream commit 7c76c813cfc42a7376378a0c4b7250db2eebab81 ]
+commit a9ae6fe1c319c4776c2b11e85e15109cd3f04076 upstream.
 
-lookup_or_create_module_kobject() is marked as static and __init,
-to make it global drop static keyword.
-Since this function can be called from non-init code, use __modinit
-instead of __init, __modinit marker will make it __init if
-CONFIG_MODULES is not defined.
+The fallback code in blk_mq_map_hw_queues is original from
+blk_mq_pci_map_queues and was added to handle the case where
+pci_irq_get_affinity will return NULL for !SMP configuration.
 
-Suggested-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Signed-off-by: Shyam Saini <shyamsaini@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20250227184930.34163-4-shyamsaini@linux.microsoft.com
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Stable-dep-of: f95bbfe18512 ("drivers: base: handle module_kobject creation")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+blk_mq_map_hw_queues replaces besides blk_mq_pci_map_queues also
+blk_mq_virtio_map_queues which used to use blk_mq_map_queues for the
+fallback.
+
+It's possible to use blk_mq_map_queues for both cases though.
+blk_mq_map_queues creates the same map as blk_mq_clear_mq_map for !SMP
+that is CPU 0 will be mapped to hctx 0.
+
+The WARN_ON_ONCE has to be dropped for virtio as the fallback is also
+taken for certain configuration on default. Though there is still a
+WARN_ON_ONCE check in lib/group_cpus.c:
+
+       WARN_ON(nr_present + nr_others < numgrps);
+
+which will trigger if the caller tries to create more hardware queues
+than CPUs. It tests the same as the WARN_ON_ONCE in
+blk_mq_pci_map_queues did.
+
+Fixes: a5665c3d150c ("virtio: blk/scsi: replace blk_mq_virtio_map_queues with blk_mq_map_hw_queues")
+Reported-by: Steven Rostedt <rostedt@goodmis.org>
+Closes: https://lore.kernel.org/all/20250122093020.6e8a4e5b@gandalf.local.home/
+Signed-off-by: Daniel Wagner <wagi@kernel.org>
+Link: https://lore.kernel.org/r/20250123-fix-blk_mq_map_hw_queues-v1-1-08dbd01f2c39@kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/module.h | 2 ++
- kernel/params.c        | 2 +-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ block/blk-mq-cpumap.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/include/linux/module.h b/include/linux/module.h
-index 30e5b19bafa98..ba33bba3cc742 100644
---- a/include/linux/module.h
-+++ b/include/linux/module.h
-@@ -162,6 +162,8 @@ extern void cleanup_module(void);
- #define __INITRODATA_OR_MODULE __INITRODATA
- #endif /*CONFIG_MODULES*/
+--- a/block/blk-mq-cpumap.c
++++ b/block/blk-mq-cpumap.c
+@@ -87,7 +87,6 @@ void blk_mq_map_hw_queues(struct blk_mq_
+ 	return;
  
-+struct module_kobject *lookup_or_create_module_kobject(const char *name);
-+
- /* Generic info of form tag = "info" */
- #define MODULE_INFO(tag, info) __MODULE_INFO(tag, tag, info)
- 
-diff --git a/kernel/params.c b/kernel/params.c
-index de1e64cc202b9..c417d28bc1dfb 100644
---- a/kernel/params.c
-+++ b/kernel/params.c
-@@ -763,7 +763,7 @@ void destroy_params(const struct kernel_param *params, unsigned num)
- 			params[i].ops->free(params[i].arg);
+ fallback:
+-	WARN_ON_ONCE(qmap->nr_queues > 1);
+-	blk_mq_clear_mq_map(qmap);
++	blk_mq_map_queues(qmap);
  }
- 
--static struct module_kobject * __init lookup_or_create_module_kobject(const char *name)
-+struct module_kobject __modinit * lookup_or_create_module_kobject(const char *name)
- {
- 	struct module_kobject *mk;
- 	struct kobject *kobj;
--- 
-2.39.5
-
+ EXPORT_SYMBOL_GPL(blk_mq_map_hw_queues);
 
 
 
