@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-142315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DE5AAAEA1B
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:51:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DC5FAAEAC6
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:59:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74E483A431F
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:50:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B73731C22F34
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:59:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7CEB214813;
-	Wed,  7 May 2025 18:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70DB4289348;
+	Wed,  7 May 2025 18:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eRZEplSJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HTpDANta"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65D3F42A83;
-	Wed,  7 May 2025 18:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F84E1482F5;
+	Wed,  7 May 2025 18:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643873; cv=none; b=K5BUieoV+VthhTEI1a05lVaiooEszWJh06//Salv1fDlVix7WxfJlUQx+OAy1kkc00EYivdgagnIRPbGWz3uQMX72wPnXQ+Ro1EWJWxIYIonirfhzr0mgbUGfqaWl5DUHO4n0OOOG+RbRnMHqV8GSs+Npc9qfu7NLXN5VqcpCEQ=
+	t=1746644377; cv=none; b=HF6kzLXXpayZxetx89W+aEmXCad0PFG5V3Ac2csfRTNkE6kYLqiRL71jpSxyj0pJe1sH0OGU0sUg9JrgI6yYlz3cTtZZKLQKDt/y+7SS9uWiqi5mK09hYnbg1Cp5CRoVyM0A/heNL8PawdGfs4r1Q3ls2aoWmW340VJaeo0T09c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643873; c=relaxed/simple;
-	bh=xRKc71TJ6jvXwgJZHlEE47sjfe5laQPf/SkJFU6OL8k=;
+	s=arc-20240116; t=1746644377; c=relaxed/simple;
+	bh=7WtcGGnfF2EcR7UoG+Y+sbnjztqrv5BISvuzAumkaro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uzCc+rPotI7k87gKpyc0B6mLiOQsoIgXHSYWho4opSvDee+FCpy33ht9Bpq+R+VH0zARupnhGS59KvfPKXFB3kqSoXAJtJHD3eQGiDdKLO4IawiUq1rDYLHFG5CNbRdI+dQVIZKdy2Mh64BcufZFeV3tSwhSjzZML5j9aeqQa3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eRZEplSJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70024C4CEE2;
-	Wed,  7 May 2025 18:51:12 +0000 (UTC)
+	 MIME-Version; b=s6JFW5PPTYGaGIvg72A5FwlYCl7H98auFtbD77jyB4mBWczjSVYcrl2aJ3tMskmLAEzuOWkc9GXv5OaAsuGo32lV24WcUGuUo3L9Sxm/4+d3HTbmyC47Z93vCF3bXp9l18NIy/HUFdnM3r5Zxg2TtTyiF55xdMb9TN2dlajTwns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HTpDANta; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89839C4CEE2;
+	Wed,  7 May 2025 18:59:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643872;
-	bh=xRKc71TJ6jvXwgJZHlEE47sjfe5laQPf/SkJFU6OL8k=;
+	s=korg; t=1746644377;
+	bh=7WtcGGnfF2EcR7UoG+Y+sbnjztqrv5BISvuzAumkaro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eRZEplSJlg9NuWsUV3Y5//AbABzyuxUcII8mo0u26DNvM5t7Umk531HP7Yg8vABos
-	 /prqK8x0lw5o4nJ/VNHqOs/er5amDKErd19GL8hnlZtw0Kr/rFyiTkuBDMZz22dmk4
-	 tiOxMoO0WrerlAVreArFxUYqIJYbSeq5qkesRsqQ=
+	b=HTpDANtaFXaz0BzDCR+/FFcQYuFxSXAkwwssg5JY/pj0s6ICnBCxLLL3ZGg3IrVUd
+	 aTjIJGkwdnEkT0+WOV4y9bSea8tcmdfzYAxfAHW1IwkKpIc/7TAdyiRdbHskVGUij4
+	 sOutaxK3aANlW1puxjdmCygi6T4F/8RzdtUs7kSM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Christian Loehle <christian.loehle@arm.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>
-Subject: [PATCH 6.14 044/183] cpufreq: Avoid using inconsistent policy->min and policy->max
+	Mark Dietzer <git@doridian.net>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Alexander Tsoy <alexander@tsoy.me>
+Subject: [PATCH 6.12 004/164] Bluetooth: btusb: Add ID 0x2c7c:0x0130 for Qualcomm WCN785x
 Date: Wed,  7 May 2025 20:38:09 +0200
-Message-ID: <20250507183826.477009250@linuxfoundation.org>
+Message-ID: <20250507183820.985677840@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Mark Dietzer <git@doridian.net>
 
-commit 7491cdf46b5cbdf123fc84fbe0a07e9e3d7b7620 upstream.
+[ Upstream commit a6587d7ed2cd8341f8a92112ac772f2c44f09824 ]
 
-Since cpufreq_driver_resolve_freq() can run in parallel with
-cpufreq_set_policy() and there is no synchronization between them,
-the former may access policy->min and policy->max while the latter
-is updating them and it may see intermediate values of them due
-to the way the update is carried out.  Also the compiler is free
-to apply any optimizations it wants both to the stores in
-cpufreq_set_policy() and to the loads in cpufreq_driver_resolve_freq()
-which may result in additional inconsistencies.
+Adds a new entry with VID 0x2c7c and PID 0x0130 to the btusb quirks table as it uses a Qualcomm WCN785x chipset
 
-To address this, use WRITE_ONCE() when updating policy->min and
-policy->max in cpufreq_set_policy() and use READ_ONCE() for reading
-them in cpufreq_driver_resolve_freq().  Moreover, rearrange the update
-in cpufreq_set_policy() to avoid storing intermediate values in
-policy->min and policy->max with the help of the observation that
-their new values are expected to be properly ordered upfront.
+The device information from /sys/kernel/debug/usb/devices is provided below:
+T:  Bus=01 Lev=01 Prnt=01 Port=04 Cnt=05 Dev#=  7 Spd=12   MxCh= 0
+D:  Ver= 1.10 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=2c7c ProdID=0130 Rev= 0.01
+C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=100mA
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+I:  If#= 1 Alt= 6 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  63 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  63 Ivl=1ms
+I:  If#= 1 Alt= 7 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  65 Ivl=1ms
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  65 Ivl=1ms
 
-Also modify cpufreq_driver_resolve_freq() to take the possible reverse
-ordering of policy->min and policy->max, which may happen depending on
-the ordering of operations when this function and cpufreq_set_policy()
-run concurrently, into account by always honoring the max when it
-turns out to be less than the min (in case it comes from thermal
-throttling or similar).
-
-Fixes: 151717690694 ("cpufreq: Make policy min/max hard requirements")
-Cc: 5.16+ <stable@vger.kernel.org> # 5.16+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Link: https://patch.msgid.link/5907080.DvuYhMxLoT@rjwysocki.net
+Signed-off-by: Mark Dietzer <git@doridian.net>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Alexander Tsoy <alexander@tsoy.me>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/cpufreq.c |   32 +++++++++++++++++++++++++-------
- 1 file changed, 25 insertions(+), 7 deletions(-)
+ drivers/bluetooth/btusb.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -539,8 +539,6 @@ static unsigned int __resolve_freq(struc
- {
- 	unsigned int idx;
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -377,6 +377,8 @@ static const struct usb_device_id quirks
+ 						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x13d3, 0x3623), .driver_info = BTUSB_QCA_WCN6855 |
+ 						     BTUSB_WIDEBAND_SPEECH },
++	{ USB_DEVICE(0x2c7c, 0x0130), .driver_info = BTUSB_QCA_WCN6855 |
++						     BTUSB_WIDEBAND_SPEECH },
  
--	target_freq = clamp_val(target_freq, policy->min, policy->max);
--
- 	if (!policy->freq_table)
- 		return target_freq;
- 
-@@ -564,7 +562,22 @@ static unsigned int __resolve_freq(struc
- unsigned int cpufreq_driver_resolve_freq(struct cpufreq_policy *policy,
- 					 unsigned int target_freq)
- {
--	return __resolve_freq(policy, target_freq, CPUFREQ_RELATION_LE);
-+	unsigned int min = READ_ONCE(policy->min);
-+	unsigned int max = READ_ONCE(policy->max);
-+
-+	/*
-+	 * If this function runs in parallel with cpufreq_set_policy(), it may
-+	 * read policy->min before the update and policy->max after the update
-+	 * or the other way around, so there is no ordering guarantee.
-+	 *
-+	 * Resolve this by always honoring the max (in case it comes from
-+	 * thermal throttling or similar).
-+	 */
-+	if (unlikely(min > max))
-+		min = max;
-+
-+	return __resolve_freq(policy, clamp_val(target_freq, min, max),
-+			      CPUFREQ_RELATION_LE);
- }
- EXPORT_SYMBOL_GPL(cpufreq_driver_resolve_freq);
- 
-@@ -2337,6 +2350,7 @@ int __cpufreq_driver_target(struct cpufr
- 	if (cpufreq_disabled())
- 		return -ENODEV;
- 
-+	target_freq = clamp_val(target_freq, policy->min, policy->max);
- 	target_freq = __resolve_freq(policy, target_freq, relation);
- 
- 	pr_debug("target for CPU %u: %u kHz, relation %u, requested %u kHz\n",
-@@ -2661,11 +2675,15 @@ static int cpufreq_set_policy(struct cpu
- 	 * Resolve policy min/max to available frequencies. It ensures
- 	 * no frequency resolution will neither overshoot the requested maximum
- 	 * nor undershoot the requested minimum.
-+	 *
-+	 * Avoid storing intermediate values in policy->max or policy->min and
-+	 * compiler optimizations around them because they may be accessed
-+	 * concurrently by cpufreq_driver_resolve_freq() during the update.
- 	 */
--	policy->min = new_data.min;
--	policy->max = new_data.max;
--	policy->min = __resolve_freq(policy, policy->min, CPUFREQ_RELATION_L);
--	policy->max = __resolve_freq(policy, policy->max, CPUFREQ_RELATION_H);
-+	WRITE_ONCE(policy->max, __resolve_freq(policy, new_data.max, CPUFREQ_RELATION_H));
-+	new_data.min = __resolve_freq(policy, new_data.min, CPUFREQ_RELATION_L);
-+	WRITE_ONCE(policy->min, new_data.min > policy->max ? policy->max : new_data.min);
-+
- 	trace_cpu_frequency_limits(policy);
- 
- 	cpufreq_update_pressure(policy);
+ 	/* Broadcom BCM2035 */
+ 	{ USB_DEVICE(0x0a5c, 0x2009), .driver_info = BTUSB_BCM92035 },
 
 
 
