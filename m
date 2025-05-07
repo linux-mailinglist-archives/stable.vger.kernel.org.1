@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-142625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD450AAEB76
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:07:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88250AAEBF1
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:12:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DE8B3A53AF
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:06:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01AFC527430
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:12:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71FE021504D;
-	Wed,  7 May 2025 19:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 095ED28D839;
+	Wed,  7 May 2025 19:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kOUm9NBL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C3aJFfF5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25E371CF5C6;
-	Wed,  7 May 2025 19:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB5BC214813;
+	Wed,  7 May 2025 19:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644829; cv=none; b=IFu0JMIXOAV1dEtL1LhQtlEcSPH4Kt7lkgFQr3yc4lYioeuPzoSOOgvi5tJyutUaYlNFW7mHWkgt5N5m33WzilXWMQJiu6YZbEhaLvV98YL0jKEkLFOPEzN8GyPuFX1dDRkiz21iMcj1dnBgQsrxNfBvCdw7gJvCT0LibD2FKnk=
+	t=1746645149; cv=none; b=YSJUFJNakaVBviOt4pafAftjoGGkVR/u7U4vr9fx5bcx3vMIcIypBzRXMLUPAoia4oSLKnZrtKBvxhi0JIiRCJk/5rT1/xIM///7I8rPti+Yyo2s4yv5VT5UQhQusUkBsaztGcye9X5EC8XPunr3lELsENzhpypldSwTazQkoeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644829; c=relaxed/simple;
-	bh=oGP8apt2dECYp7qKBt5H4OhNQIGnhMHgPeQjykqldIU=;
+	s=arc-20240116; t=1746645149; c=relaxed/simple;
+	bh=aKA/92AR95tCU/XFHdnicOJ1ByKWpKx5LcER6TmpG8Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j2E8P34LSOLlFiw8Wt5OOxCKJib5k0rdEfS3i/eHca2c3h+TS3VQpz8wp9DzlCi1Hm8eKkM6qMMVqs2tcA0CvDTnkQqtKp+DMg7exIZBx+hY+LAFw9iWPaHkePkOI9nCub6P2lCS7JBuVcldo7a/8daguNWzoaLqDmBeCq/I8Wc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kOUm9NBL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1CA6C4CEE2;
-	Wed,  7 May 2025 19:07:08 +0000 (UTC)
+	 MIME-Version; b=h598bCHToR2VWS1cbuMSgSUfQVZZP2UpnsddM5MHVgKxyJjudvj89AYYrrMpaC28Z7iCHNupaSEsNkAuEDr15GG/q9xekrcIxHXpMJffI6SaAHCbnqRKYEqWWwDMav370gcvm3dxKYhiGPp7+tlGYBwGkznrfOM18/j6G15iJRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C3aJFfF5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3391DC4CEE2;
+	Wed,  7 May 2025 19:12:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644829;
-	bh=oGP8apt2dECYp7qKBt5H4OhNQIGnhMHgPeQjykqldIU=;
+	s=korg; t=1746645149;
+	bh=aKA/92AR95tCU/XFHdnicOJ1ByKWpKx5LcER6TmpG8Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kOUm9NBLnn//Re8x0Oht8gytTNNYiEjYh7YO++BFa+XsM9AUYjXEB6xCdrk9DzJTu
-	 iPWhlvVBSAQXWX5B5Eg1b6JUQWTsjHHD2yIBEIkRvZeUsqwgC6X7uiVioYAti5fBe0
-	 l2SLF8lEf3eP57dmT6IycYZQzgWpw5nceU7f2QR4=
+	b=C3aJFfF5F9c5aRlJrJ5HOnn7zuC6vTvIJNVVuBmcH7rlWI5Wce3TFcvi9FFWFwjla
+	 m0SKthHK7RIbBeP7GARCDXk8hDHVwSMWyF/VFwFxpFSqB1gfkLKzjcNIhPcOAuG1oZ
+	 Rf+xesiHhMF1LO4d3c/Lq9mgZFncblNFPfNfAA/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Shyam Saini <shyamsaini@linux.microsoft.com>,
-	Petr Pavlu <petr.pavlu@suse.com>,
+	Christian Hewitt <christianshewitt@gmail.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 160/164] kernel: param: rename locate_module_kobject
+Subject: [PATCH 6.6 109/129] Revert "drm/meson: vclk: fix calculation of 59.94 fractional rates"
 Date: Wed,  7 May 2025 20:40:45 +0200
-Message-ID: <20250507183827.441287573@linuxfoundation.org>
+Message-ID: <20250507183817.910132993@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Saini <shyamsaini@linux.microsoft.com>
+From: Christian Hewitt <christianshewitt@gmail.com>
 
-[ Upstream commit bbc9462f0cb0c8917a4908e856731708f0cee910 ]
+[ Upstream commit f37bb5486ea536c1d61df89feeaeff3f84f0b560 ]
 
-The locate_module_kobject() function looks up an existing
-module_kobject for a given module name. If it cannot find the
-corresponding module_kobject, it creates one for the given name.
+This reverts commit bfbc68e.
 
-This commit renames locate_module_kobject() to
-lookup_or_create_module_kobject() to better describe its operations.
+The patch does permit the offending YUV420 @ 59.94 phy_freq and
+vclk_freq mode to match in calculations. It also results in all
+fractional rates being unavailable for use. This was unintended
+and requires the patch to be reverted.
 
-This doesn't change anything functionality wise.
-
-Suggested-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Signed-off-by: Shyam Saini <shyamsaini@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20250227184930.34163-2-shyamsaini@linux.microsoft.com
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Stable-dep-of: f95bbfe18512 ("drivers: base: handle module_kobject creation")
+Fixes: bfbc68e4d869 ("drm/meson: vclk: fix calculation of 59.94 fractional rates")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian Hewitt <christianshewitt@gmail.com>
+Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250421201300.778955-2-martin.blumenstingl@googlemail.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250421201300.778955-2-martin.blumenstingl@googlemail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/params.c | 6 +++---
+ drivers/gpu/drm/meson/meson_vclk.c | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/params.c b/kernel/params.c
-index 2e447f8ae183e..d62a116918cd0 100644
---- a/kernel/params.c
-+++ b/kernel/params.c
-@@ -763,7 +763,7 @@ void destroy_params(const struct kernel_param *params, unsigned num)
- 			params[i].ops->free(params[i].arg);
- }
+diff --git a/drivers/gpu/drm/meson/meson_vclk.c b/drivers/gpu/drm/meson/meson_vclk.c
+index 2a942dc6a6dc2..2a82119eb58ed 100644
+--- a/drivers/gpu/drm/meson/meson_vclk.c
++++ b/drivers/gpu/drm/meson/meson_vclk.c
+@@ -790,13 +790,13 @@ meson_vclk_vic_supported_freq(struct meson_drm *priv, unsigned int phy_freq,
+ 				 FREQ_1000_1001(params[i].pixel_freq));
+ 		DRM_DEBUG_DRIVER("i = %d phy_freq = %d alt = %d\n",
+ 				 i, params[i].phy_freq,
+-				 FREQ_1000_1001(params[i].phy_freq/1000)*1000);
++				 FREQ_1000_1001(params[i].phy_freq/10)*10);
+ 		/* Match strict frequency */
+ 		if (phy_freq == params[i].phy_freq &&
+ 		    vclk_freq == params[i].vclk_freq)
+ 			return MODE_OK;
+ 		/* Match 1000/1001 variant */
+-		if (phy_freq == (FREQ_1000_1001(params[i].phy_freq/1000)*1000) &&
++		if (phy_freq == (FREQ_1000_1001(params[i].phy_freq/10)*10) &&
+ 		    vclk_freq == FREQ_1000_1001(params[i].vclk_freq))
+ 			return MODE_OK;
+ 	}
+@@ -1070,7 +1070,7 @@ void meson_vclk_setup(struct meson_drm *priv, unsigned int target,
  
--static struct module_kobject * __init locate_module_kobject(const char *name)
-+static struct module_kobject * __init lookup_or_create_module_kobject(const char *name)
- {
- 	struct module_kobject *mk;
- 	struct kobject *kobj;
-@@ -805,7 +805,7 @@ static void __init kernel_add_sysfs_param(const char *name,
- 	struct module_kobject *mk;
- 	int err;
- 
--	mk = locate_module_kobject(name);
-+	mk = lookup_or_create_module_kobject(name);
- 	if (!mk)
- 		return;
- 
-@@ -876,7 +876,7 @@ static void __init version_sysfs_builtin(void)
- 	int err;
- 
- 	for (vattr = __start___modver; vattr < __stop___modver; vattr++) {
--		mk = locate_module_kobject(vattr->module_name);
-+		mk = lookup_or_create_module_kobject(vattr->module_name);
- 		if (mk) {
- 			err = sysfs_create_file(&mk->kobj, &vattr->mattr.attr);
- 			WARN_ON_ONCE(err);
+ 	for (freq = 0 ; params[freq].pixel_freq ; ++freq) {
+ 		if ((phy_freq == params[freq].phy_freq ||
+-		     phy_freq == FREQ_1000_1001(params[freq].phy_freq/1000)*1000) &&
++		     phy_freq == FREQ_1000_1001(params[freq].phy_freq/10)*10) &&
+ 		    (vclk_freq == params[freq].vclk_freq ||
+ 		     vclk_freq == FREQ_1000_1001(params[freq].vclk_freq))) {
+ 			if (vclk_freq != params[freq].vclk_freq)
 -- 
 2.39.5
 
