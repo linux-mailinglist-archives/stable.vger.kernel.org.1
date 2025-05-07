@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-142657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECAAFAAEB9F
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:09:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC4FEAAEAFD
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:02:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E7279E35AE
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:08:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C74E13A39C7
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:01:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DCBA28C2B3;
-	Wed,  7 May 2025 19:08:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7DA028BA9F;
+	Wed,  7 May 2025 19:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hDTAL+Pu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jueYtOtq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 581501EB5DD;
-	Wed,  7 May 2025 19:08:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 831D823DE;
+	Wed,  7 May 2025 19:02:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644926; cv=none; b=Hdjj5MB8D9h3P3y6Q29mP96cY5+mpqs8BKFjJrDcuxN2cwtt3fIjsxIr2+Ic8cu0lCcZgg4aEZubu1Pl27YnXNJjr4UGsUq1aBIS2IBvcU8FhAHG9Y+5a89nVRgR+UXQ9PNZ2UebxwJdIAxRwc6nLyt8VJGCRJ1FyZdaqGI1EP4=
+	t=1746644521; cv=none; b=fmspY6o+W1vyB3LPZOZ4SPf14ZXqoerQ6RdMzx25Moj+mON82ftqeq0IDpqL1QUN9O2t+NX+oessJ0zNaoQiimi/tywYE59NvZXR8HaYL/P0e6q5Hd9d1cj8YGd2E9M+VUht/IZg5NEPazR3vbyk3zBzg3y5TvRGUMtnmg2Y73Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644926; c=relaxed/simple;
-	bh=ZX2r/XpM2Docb3aTnto6kz9mfPYVuqi4V9slKLnBd0Y=;
+	s=arc-20240116; t=1746644521; c=relaxed/simple;
+	bh=GdhY7GWfVHtFjxF5UBVPOaWNXg1uqrbGq2AAT7+HYKQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TkhI2ltDFa9GJDi8gEDp5t4E79ymAA/LaqLARFK2lQMr80x3MW/vecWmIPX1xN/FwA6rK3be4CcP3XcZ7MDYFHRTWljo4cBGAJsZ6bcMtzI21gYbI8W/+clYEy/A71RQ890GiHw3C+sd91xhwXibHtgOm5oDZEACo3rw/slc6kY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hDTAL+Pu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1B24C4CEF1;
-	Wed,  7 May 2025 19:08:45 +0000 (UTC)
+	 MIME-Version; b=Gg5qtmH1k+FqkdFYfpaqee5ESHKUY5J7Mr+OT27T8/q9NEkOD6asD1FPfzJM0Y/uXnr/Le+N+ox/yNwrljV4Tvz5Kj7nszHKXl2sPFFVDt4B3LUkV7ZU0Xq2gw/dZsdX3jOYAx1hlEIY2oAP1p1wXJGpwy3wMChn5XJMqjIRaTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jueYtOtq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09699C4CEE2;
+	Wed,  7 May 2025 19:02:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644926;
-	bh=ZX2r/XpM2Docb3aTnto6kz9mfPYVuqi4V9slKLnBd0Y=;
+	s=korg; t=1746644521;
+	bh=GdhY7GWfVHtFjxF5UBVPOaWNXg1uqrbGq2AAT7+HYKQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hDTAL+PuLx17lUIJGBEhY4dkoq+aYmF90gSd/6E+McqnDPejCYnNhfSryUa/DChiw
-	 HDkPYvgQMgt5VWfEwFPajJpKwzVir/9LJ5XvGahhe3GNLTVpC8RVbNJhfizFIHG5yW
-	 JcwvLkmVNrW+kAaemPHQZdUVUxk15ZEGVcXx/yRo=
+	b=jueYtOtqJgKLabQe1TviGQEewEZTFxomjWHPrJxHuM+PoZfZzCGtX6VbBRVxm58x7
+	 bMP6a9KW46zAtO2OMTq6MOYDSOg6SUNf5yJgLj5uV0M/AgDqBlwFalgj7ni6Qig+Jv
+	 fwEU5qeP1hstCUiSnsfEwH8qU7PUTVGsi75ay5Yg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.6 020/129] wifi: brcm80211: fmac: Add error handling for brcmf_usb_dl_writeimage()
+	Chris Mi <cmi@nvidia.com>,
+	Roi Dayan <roid@nvidia.com>,
+	Maor Gottlieb <maorg@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 071/164] net/mlx5: E-switch, Fix error handling for enabling roce
 Date: Wed,  7 May 2025 20:39:16 +0200
-Message-ID: <20250507183814.351188581@linuxfoundation.org>
+Message-ID: <20250507183823.834710141@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
-References: <20250507183813.500572371@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +66,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Chris Mi <cmi@nvidia.com>
 
-commit 8e089e7b585d95122c8122d732d1d5ef8f879396 upstream.
+[ Upstream commit 90538d23278a981e344d364e923162fce752afeb ]
 
-The function brcmf_usb_dl_writeimage() calls the function
-brcmf_usb_dl_cmd() but dose not check its return value. The
-'state.state' and the 'state.bytes' are uninitialized if the
-function brcmf_usb_dl_cmd() fails. It is dangerous to use
-uninitialized variables in the conditions.
+The cited commit assumes enabling roce always succeeds. But it is
+not true. Add error handling for it.
 
-Add error handling for brcmf_usb_dl_cmd() to jump to error
-handling path if the brcmf_usb_dl_cmd() fails and the
-'state.state' and the 'state.bytes' are uninitialized.
-
-Improve the error message to report more detailed error
-information.
-
-Fixes: 71bb244ba2fd ("brcm80211: fmac: add USB support for bcm43235/6/8 chipsets")
-Cc: stable@vger.kernel.org # v3.4+
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Link: https://patch.msgid.link/20250422042203.2259-1-vulab@iscas.ac.cn
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 80f09dfc237f ("net/mlx5: Eswitch, enable RoCE loopback traffic")
+Signed-off-by: Chris Mi <cmi@nvidia.com>
+Reviewed-by: Roi Dayan <roid@nvidia.com>
+Reviewed-by: Maor Gottlieb <maorg@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Link: https://patch.msgid.link/20250423083611.324567-6-mbloch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ .../net/ethernet/mellanox/mlx5/core/eswitch_offloads.c   | 5 ++++-
+ drivers/net/ethernet/mellanox/mlx5/core/rdma.c           | 9 +++++----
+ drivers/net/ethernet/mellanox/mlx5/core/rdma.h           | 4 ++--
+ 3 files changed, 11 insertions(+), 7 deletions(-)
 
---- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/usb.c
-@@ -903,14 +903,16 @@ brcmf_usb_dl_writeimage(struct brcmf_usb
- 	}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
+index 3950b1d4b3d8e..988df7047b01d 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/eswitch_offloads.c
+@@ -3514,7 +3514,9 @@ int esw_offloads_enable(struct mlx5_eswitch *esw)
+ 	int err;
  
- 	/* 1) Prepare USB boot loader for runtime image */
--	brcmf_usb_dl_cmd(devinfo, DL_START, &state, sizeof(state));
-+	err = brcmf_usb_dl_cmd(devinfo, DL_START, &state, sizeof(state));
+ 	mutex_init(&esw->offloads.termtbl_mutex);
+-	mlx5_rdma_enable_roce(esw->dev);
++	err = mlx5_rdma_enable_roce(esw->dev);
 +	if (err)
-+		goto fail;
++		goto err_roce;
  
- 	rdlstate = le32_to_cpu(state.state);
- 	rdlbytes = le32_to_cpu(state.bytes);
+ 	err = mlx5_esw_host_number_init(esw);
+ 	if (err)
+@@ -3575,6 +3577,7 @@ int esw_offloads_enable(struct mlx5_eswitch *esw)
+ 	esw_offloads_metadata_uninit(esw);
+ err_metadata:
+ 	mlx5_rdma_disable_roce(esw->dev);
++err_roce:
+ 	mutex_destroy(&esw->offloads.termtbl_mutex);
+ 	return err;
+ }
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/rdma.c b/drivers/net/ethernet/mellanox/mlx5/core/rdma.c
+index f585ef5a34243..5c552b71e371c 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/rdma.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/rdma.c
+@@ -140,17 +140,17 @@ void mlx5_rdma_disable_roce(struct mlx5_core_dev *dev)
+ 	mlx5_nic_vport_disable_roce(dev);
+ }
  
- 	/* 2) Check we are in the Waiting state */
- 	if (rdlstate != DL_WAITING) {
--		brcmf_err("Failed to DL_START\n");
-+		brcmf_err("Invalid DL state: %u\n", rdlstate);
- 		err = -EINVAL;
- 		goto fail;
+-void mlx5_rdma_enable_roce(struct mlx5_core_dev *dev)
++int mlx5_rdma_enable_roce(struct mlx5_core_dev *dev)
+ {
+ 	int err;
+ 
+ 	if (!MLX5_CAP_GEN(dev, roce))
+-		return;
++		return 0;
+ 
+ 	err = mlx5_nic_vport_enable_roce(dev);
+ 	if (err) {
+ 		mlx5_core_err(dev, "Failed to enable RoCE: %d\n", err);
+-		return;
++		return err;
  	}
+ 
+ 	err = mlx5_rdma_add_roce_addr(dev);
+@@ -165,10 +165,11 @@ void mlx5_rdma_enable_roce(struct mlx5_core_dev *dev)
+ 		goto del_roce_addr;
+ 	}
+ 
+-	return;
++	return err;
+ 
+ del_roce_addr:
+ 	mlx5_rdma_del_roce_addr(dev);
+ disable_roce:
+ 	mlx5_nic_vport_disable_roce(dev);
++	return err;
+ }
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/rdma.h b/drivers/net/ethernet/mellanox/mlx5/core/rdma.h
+index 750cff2a71a4b..3d9e76c3d42fb 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/rdma.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/rdma.h
+@@ -8,12 +8,12 @@
+ 
+ #ifdef CONFIG_MLX5_ESWITCH
+ 
+-void mlx5_rdma_enable_roce(struct mlx5_core_dev *dev);
++int mlx5_rdma_enable_roce(struct mlx5_core_dev *dev);
+ void mlx5_rdma_disable_roce(struct mlx5_core_dev *dev);
+ 
+ #else /* CONFIG_MLX5_ESWITCH */
+ 
+-static inline void mlx5_rdma_enable_roce(struct mlx5_core_dev *dev) {}
++static inline int mlx5_rdma_enable_roce(struct mlx5_core_dev *dev) { return 0; }
+ static inline void mlx5_rdma_disable_roce(struct mlx5_core_dev *dev) {}
+ 
+ #endif /* CONFIG_MLX5_ESWITCH */
+-- 
+2.39.5
+
 
 
 
