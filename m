@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-142147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB2C0AAE948
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:43:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D69C2AAEA75
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:55:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C513980990
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:42:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1B069C06CF
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:55:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45BDF28E584;
-	Wed,  7 May 2025 18:42:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4053B289348;
+	Wed,  7 May 2025 18:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w/wj98a/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ltGKdXJQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0100414A4C7;
-	Wed,  7 May 2025 18:42:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0B252116E9;
+	Wed,  7 May 2025 18:55:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643360; cv=none; b=U32zQuE/ffIgmLVKjCySVCRZy78KGhrX5Ei/U3DZ6WzgT/MQTbopHYEIK+h4mwvtwhRwCrCx5arJkPefMhJyPEA1GsVU5dNy7utLhxPGzx5lnHn7og+QGSPxYVkEtkvtA1RY8E4Dv7OFU4GGCqJSmOjS5aK9Hdt687EFUTzexb0=
+	t=1746644137; cv=none; b=atl6CgWg67xfPSEeFz1OH9NxI5WwlsvWyccWPIgwu165CIplI+WUnqbOOyAT4GU9x62yIoTBJQoVMOuTjFLzRcKRf7HBR89nuDcbwP/ZN5ksOpeVKFkpd1oi0CP/4T+0Td2KBYjtP06JV2H7Cv2MRbw207nMAddBip0vqdO2pyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643360; c=relaxed/simple;
-	bh=odkkV6ENEsRNDk8YRZPUnrt2eMhlbZSJBG1HUYd5eTA=;
+	s=arc-20240116; t=1746644137; c=relaxed/simple;
+	bh=qXtGjBZfBmmB9PZ0HBrgRsUgt9AEvjwcC1fSvIIwAus=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aCPgIhdL84+WhhNZe3zfzYGyitAqwawvjBB2+TVmnG5uUAmF4yyGP+/CSB1Qwn7JEcFgJLt3eRMZIHKNe/0SbqjAOP387UMJezB0P+efpSD8OQopBclfwzVlYENwza6NKKsnYRSBXEleIghsZl8Z/jIfffDK7Efx/ehsEzFlboM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w/wj98a/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 638EEC4CEE2;
-	Wed,  7 May 2025 18:42:39 +0000 (UTC)
+	 MIME-Version; b=rzoe9I2hRqOws8v832UBlBys/UUTHDWxFsl3yxGRM2Ts6hQKmRsjp2Tqyb99iN/WvPLuxLNEx9jD1PcpF9eZpyoDsC0N3ETl5TI72i8ZpNIRmydNGDjQEBRh49cou6Sr6ZkZ8PjX2xj5hnatd3drFExnUcEAHlXR7kS3qgY2dYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ltGKdXJQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 770CBC4CEE2;
+	Wed,  7 May 2025 18:55:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643359;
-	bh=odkkV6ENEsRNDk8YRZPUnrt2eMhlbZSJBG1HUYd5eTA=;
+	s=korg; t=1746644136;
+	bh=qXtGjBZfBmmB9PZ0HBrgRsUgt9AEvjwcC1fSvIIwAus=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w/wj98a/nlEQRFDs0SlDpLCH535h5jzS3q8nKgRRTfYAIQzBwz1qLwxA2T6Xul7nt
-	 STX3wEYj+UiLYPezFQTdmxZgbTAJf25RtAr68Yuit3Q8mFKUfV2OUjgM9Uc/hDq6Uk
-	 V4K373kZnXZ5dz8Lm75YyNMKJZWmN5HBDtJj169g=
+	b=ltGKdXJQBIvLXsoH9MJfDZYuT80DoCgRtw+PAiXANdL1xf2v3EMwthMloUZl5kdJQ
+	 EbV1qQ1xEwZvrFxX75TrtQqiboC9e2D5Nv2Wr5SHjBD5zc7fegVeIYSPoZKPz+w63b
+	 zLkyN1vK/ZKPMD2cEmaVCso6hI/JSebB3imRA0yM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Liang <mliang@purestorage.com>,
-	Mohamed Khalfella <mkhalfella@purestorage.com>,
-	Randy Jennings <randyj@purestorage.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Christoph Hellwig <hch@lst.de>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 34/55] nvme-tcp: fix premature queue removal and I/O failover
-Date: Wed,  7 May 2025 20:39:35 +0200
-Message-ID: <20250507183800.413811673@linuxfoundation.org>
+Subject: [PATCH 6.14 131/183] ASoC: stm32: sai: skip useless iterations on kernel rate loop
+Date: Wed,  7 May 2025 20:39:36 +0200
+Message-ID: <20250507183830.126304668@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
-References: <20250507183759.048732653@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,114 +60,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Liang <mliang@purestorage.com>
+From: Olivier Moysan <olivier.moysan@foss.st.com>
 
-[ Upstream commit 77e40bbce93059658aee02786a32c5c98a240a8a ]
+[ Upstream commit edea92770a3b6454dc796fc5436a3315bb402181 ]
 
-This patch addresses a data corruption issue observed in nvme-tcp during
-testing.
+the frequency of the kernel clock must be greater than or equal to the
+bitclock rate. When searching for a convenient kernel clock rate in
+stm32_sai_set_parent_rate() function, it is useless to continue the loop
+below bitclock rate, as it will result in a invalid kernel clock rate.
+Change the loop output condition.
 
-In an NVMe native multipath setup, when an I/O timeout occurs, all
-inflight I/Os are canceled almost immediately after the kernel socket is
-shut down. These canceled I/Os are reported as host path errors,
-triggering a failover that succeeds on a different path.
-
-However, at this point, the original I/O may still be outstanding in the
-host's network transmission path (e.g., the NIC’s TX queue). From the
-user-space app's perspective, the buffer associated with the I/O is
-considered completed since they're acked on the different path and may
-be reused for new I/O requests.
-
-Because nvme-tcp enables zero-copy by default in the transmission path,
-this can lead to corrupted data being sent to the original target,
-ultimately causing data corruption.
-
-We can reproduce this data corruption by injecting delay on one path and
-triggering i/o timeout.
-
-To prevent this issue, this change ensures that all inflight
-transmissions are fully completed from host's perspective before
-returning from queue stop. To handle concurrent I/O timeout from multiple
-namespaces under the same controller, always wait in queue stop
-regardless of queue's state.
-
-This aligns with the behavior of queue stopping in other NVMe fabric
-transports.
-
-Fixes: 3f2304f8c6d6 ("nvme-tcp: add NVMe over TCP host driver")
-Signed-off-by: Michael Liang <mliang@purestorage.com>
-Reviewed-by: Mohamed Khalfella <mkhalfella@purestorage.com>
-Reviewed-by: Randy Jennings <randyj@purestorage.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Fixes: 2cfe1ff22555 ("ASoC: stm32: sai: add stm32mp25 support")
+Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
+Link: https://patch.msgid.link/20250430165210.321273-2-olivier.moysan@foss.st.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/tcp.c | 31 +++++++++++++++++++++++++++++--
- 1 file changed, 29 insertions(+), 2 deletions(-)
+ sound/soc/stm/stm32_sai_sub.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
-index 0fc5aba88bc15..99bf17f2dcfca 100644
---- a/drivers/nvme/host/tcp.c
-+++ b/drivers/nvme/host/tcp.c
-@@ -1602,7 +1602,7 @@ static void __nvme_tcp_stop_queue(struct nvme_tcp_queue *queue)
- 	cancel_work_sync(&queue->io_work);
- }
- 
--static void nvme_tcp_stop_queue(struct nvme_ctrl *nctrl, int qid)
-+static void nvme_tcp_stop_queue_nowait(struct nvme_ctrl *nctrl, int qid)
+diff --git a/sound/soc/stm/stm32_sai_sub.c b/sound/soc/stm/stm32_sai_sub.c
+index 3efbf4aaf9654..5a5acc67569fe 100644
+--- a/sound/soc/stm/stm32_sai_sub.c
++++ b/sound/soc/stm/stm32_sai_sub.c
+@@ -409,11 +409,11 @@ static int stm32_sai_set_parent_rate(struct stm32_sai_sub_data *sai,
+ 				     unsigned int rate)
  {
- 	struct nvme_tcp_ctrl *ctrl = to_tcp_ctrl(nctrl);
- 	struct nvme_tcp_queue *queue = &ctrl->queues[qid];
-@@ -1613,6 +1613,31 @@ static void nvme_tcp_stop_queue(struct nvme_ctrl *nctrl, int qid)
- 	mutex_unlock(&queue->queue_lock);
- }
+ 	struct platform_device *pdev = sai->pdev;
+-	unsigned int sai_ck_rate, sai_ck_max_rate, sai_curr_rate, sai_new_rate;
++	unsigned int sai_ck_rate, sai_ck_max_rate, sai_ck_min_rate, sai_curr_rate, sai_new_rate;
+ 	int div, ret;
  
-+static void nvme_tcp_wait_queue(struct nvme_ctrl *nctrl, int qid)
-+{
-+	struct nvme_tcp_ctrl *ctrl = to_tcp_ctrl(nctrl);
-+	struct nvme_tcp_queue *queue = &ctrl->queues[qid];
-+	int timeout = 100;
-+
-+	while (timeout > 0) {
-+		if (!test_bit(NVME_TCP_Q_ALLOCATED, &queue->flags) ||
-+		    !sk_wmem_alloc_get(queue->sock->sk))
-+			return;
-+		msleep(2);
-+		timeout -= 2;
+ 	/*
+-	 * Set maximum expected kernel clock frequency
++	 * Set minimum and maximum expected kernel clock frequency
+ 	 * - mclk on or spdif:
+ 	 *   f_sai_ck = MCKDIV * mclk-fs * fs
+ 	 *   Here typical 256 ratio is assumed for mclk-fs
+@@ -423,13 +423,16 @@ static int stm32_sai_set_parent_rate(struct stm32_sai_sub_data *sai,
+ 	 *   Set constraint MCKDIV * FRL <= 256, to ensure MCKDIV is in available range
+ 	 *   f_sai_ck = sai_ck_max_rate * pow_of_two(FRL) / 256
+ 	 */
++	sai_ck_min_rate = rate * 256;
+ 	if (!(rate % SAI_RATE_11K))
+ 		sai_ck_max_rate = SAI_MAX_SAMPLE_RATE_11K * 256;
+ 	else
+ 		sai_ck_max_rate = SAI_MAX_SAMPLE_RATE_8K * 256;
+ 
+-	if (!sai->sai_mclk && !STM_SAI_PROTOCOL_IS_SPDIF(sai))
++	if (!sai->sai_mclk && !STM_SAI_PROTOCOL_IS_SPDIF(sai)) {
++		sai_ck_min_rate = rate * sai->fs_length;
+ 		sai_ck_max_rate /= DIV_ROUND_CLOSEST(256, roundup_pow_of_two(sai->fs_length));
 +	}
-+	dev_warn(nctrl->device,
-+		 "qid %d: timeout draining sock wmem allocation expired\n",
-+		 qid);
-+}
-+
-+static void nvme_tcp_stop_queue(struct nvme_ctrl *nctrl, int qid)
-+{
-+	nvme_tcp_stop_queue_nowait(nctrl, qid);
-+	nvme_tcp_wait_queue(nctrl, qid);
-+}
-+
-+
- static void nvme_tcp_setup_sock_ops(struct nvme_tcp_queue *queue)
- {
- 	write_lock_bh(&queue->sock->sk->sk_callback_lock);
-@@ -1720,7 +1745,9 @@ static void nvme_tcp_stop_io_queues(struct nvme_ctrl *ctrl)
- 	int i;
  
- 	for (i = 1; i < ctrl->queue_count; i++)
--		nvme_tcp_stop_queue(ctrl, i);
-+		nvme_tcp_stop_queue_nowait(ctrl, i);
-+	for (i = 1; i < ctrl->queue_count; i++)
-+		nvme_tcp_wait_queue(ctrl, i);
- }
+ 	/*
+ 	 * Request exclusivity, as the clock is shared by SAI sub-blocks and by
+@@ -472,7 +475,7 @@ static int stm32_sai_set_parent_rate(struct stm32_sai_sub_data *sai,
+ 		/* Try a lower frequency */
+ 		div++;
+ 		sai_ck_rate = sai_ck_max_rate / div;
+-	} while (sai_ck_rate > rate);
++	} while (sai_ck_rate >= sai_ck_min_rate);
  
- static int nvme_tcp_start_io_queues(struct nvme_ctrl *ctrl)
+ 	/* No accurate rate found */
+ 	dev_err(&pdev->dev, "Failed to find an accurate rate");
 -- 
 2.39.5
 
