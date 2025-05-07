@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-142619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57676AAEB80
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:08:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D16CAAEBEB
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:12:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8D291B67D7B
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:07:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAB09527274
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:12:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AB7628C2B3;
-	Wed,  7 May 2025 19:06:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E747C28D839;
+	Wed,  7 May 2025 19:12:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pNkQNRJu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p/Fc8D/i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1626C1CF5C6;
-	Wed,  7 May 2025 19:06:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D5BB214813;
+	Wed,  7 May 2025 19:12:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644811; cv=none; b=TfQZCI/kbi933R3m9CUSQ8GnLU5LsktIuiyFduGwsAHxbrsUd9bcnbPikbddS+tFUzrdko59EcdPJz1pR9oTFuky6OUNsD4lfNKseC/U6vwQx5JJDV7AlnftjUuJo6arlscn1wNQ0VyKhAFksNOVJczvOLUTVVNxB1nTeq+AZN4=
+	t=1746645131; cv=none; b=oa9PVbCviWgM5AKPzGw9PFO8zvBAsxUOj6vEC+HhtWuzoJn4x3vFzRq9ZmqwiUW5dbWHL9viwcZy/kIAM0BG5jYQrLaNNn3UZIK5pmDFINCsFsAAeKBp1ehXu+N82xdmOu3W1bBbUQVaIE0r4rt+PaOivbpTdoDcTWA24zgR15Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644811; c=relaxed/simple;
-	bh=gE+Z9ZgOMPdUCGyZZFp6v2kBBPWtGNr8BtijQEtazxg=;
+	s=arc-20240116; t=1746645131; c=relaxed/simple;
+	bh=jVEqo1XzsG6bajWvWIqWyJX94iF94wrDKZ9uKxtHi3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=l6dvKealfCaPH7hFKjpzDscbAKPVg6WW1dLC6EdZNTxvMYhzRjDTmCn57N/uUur/11oTciyNoD4iD4MHt9NRpgX1lvl2XXrUyUpCETTjSVRzsJPlAd6yVmfq42fK7xZReV7txSQ6Tqbd1jMdAdJyDWNH3X00ZlOHAc8580AasWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pNkQNRJu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CE46C4CEE2;
-	Wed,  7 May 2025 19:06:50 +0000 (UTC)
+	 MIME-Version; b=J3PZY3i2m1kTGl2aA6iXBz70iRUMLcqzrDEgzVaTrLD7UU43EfTVzePQQAFSrAf+Y+1FXSgz72OXLn5bvqlkFL27ZL2+pgr+u/APCllYjpTF1nRjw2jXMeA9vSW6B2bcgL/4tN43h7u0JTZ6f2CF0ozAiFfF9IoHJeTya0ZCxjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p/Fc8D/i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26974C4CEE2;
+	Wed,  7 May 2025 19:12:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644811;
-	bh=gE+Z9ZgOMPdUCGyZZFp6v2kBBPWtGNr8BtijQEtazxg=;
+	s=korg; t=1746645131;
+	bh=jVEqo1XzsG6bajWvWIqWyJX94iF94wrDKZ9uKxtHi3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pNkQNRJun0K5B6lQFRKoPLFXJhREcATR79JiZJFqqnMcP+yTJUfxJdaOb5dvpo7fh
-	 mTXn7XSB+prbqRFBIIHExpibWJ3Dd2U1vApUxhyroM9tAjxWvhSaSnxlAJ8FlvfpI5
-	 3ULsSeQvI5lh0LhXIA17fAasrwdd/djKTBytYEsU=
+	b=p/Fc8D/iks4tmiuW0rUlQ++8U/xn3nvx1ihqkNev8FLYVjUZnnHd5lSXc9wlsHg19
+	 xwG02Ko6cvr/rBEaxTI/bj2ap5PsF9tW7YhQjLjJyN5tEah9nO5ark9+E/VJQHKOuk
+	 N8e2PxEQZsFbtSEeF031yUSKl+v9f0OEBFHPVsZ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 154/164] firmware: arm_ffa: Skip Rx buffer ownership release if not acquired
+	Gerrard Tai <gerrard.tai@starlabs.sg>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 103/129] sch_ets: make est_qlen_notify() idempotent
 Date: Wed,  7 May 2025 20:40:39 +0200
-Message-ID: <20250507183827.202623427@linuxfoundation.org>
+Message-ID: <20250507183817.671577376@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,57 +61,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sudeep Holla <sudeep.holla@arm.com>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-[ Upstream commit 4567bdaaaaa1744da3d7da07d9aca2f941f5b4e5 ]
+commit a7a15f39c682ac4268624da2abdb9114bdde96d5 upstream.
 
-Completion of the FFA_PARTITION_INFO_GET ABI transfers the ownership of
-the caller’s Rx buffer from the producer(typically partition mnager) to
-the consumer(this driver/OS). FFA_RX_RELEASE transfers the ownership
-from the consumer back to the producer.
+est_qlen_notify() deletes its class from its active list with
+list_del() when qlen is 0, therefore, it is not idempotent and
+not friendly to its callers, like fq_codel_dequeue().
 
-However, when we set the flag to just return the count of partitions
-deployed in the system corresponding to the specified UUID while
-invoking FFA_PARTITION_INFO_GET, the Rx buffer ownership shouldn't be
-transferred to this driver. We must be able to skip transferring back
-the ownership to the partition manager when we request just to get the
-count of the partitions as the buffers are not acquired in this case.
+Let's make it idempotent to ease qdisc_tree_reduce_backlog() callers'
+life. Also change other list_del()'s to list_del_init() just to be
+extra safe.
 
-Firmware may return FFA_RET_DENIED or other error for the ffa_rx_release()
-in such cases.
-
-Fixes: bb1be7498500 ("firmware: arm_ffa: Add v1.1 get_partition_info support")
-Message-Id: <20250321115700.3525197-1-sudeep.holla@arm.com>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Link: https://patch.msgid.link/20250403211033.166059-6-xiyou.wangcong@gmail.com
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/arm_ffa/driver.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/sched/sch_ets.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
-index 2c2ec3c35f156..dce448687e28e 100644
---- a/drivers/firmware/arm_ffa/driver.c
-+++ b/drivers/firmware/arm_ffa/driver.c
-@@ -280,7 +280,8 @@ __ffa_partition_info_get(u32 uuid0, u32 uuid1, u32 uuid2, u32 uuid3,
- 			memcpy(buffer + idx, drv_info->rx_buffer + idx * sz,
- 			       buf_sz);
+--- a/net/sched/sch_ets.c
++++ b/net/sched/sch_ets.c
+@@ -298,7 +298,7 @@ static void ets_class_qlen_notify(struct
+ 	 * to remove them.
+ 	 */
+ 	if (!ets_class_is_strict(q, cl) && sch->q.qlen)
+-		list_del(&cl->alist);
++		list_del_init(&cl->alist);
+ }
  
--	ffa_rx_release();
-+	if (!(flags & PARTITION_INFO_GET_RETURN_COUNT_ONLY))
-+		ffa_rx_release();
+ static int ets_class_dump(struct Qdisc *sch, unsigned long arg,
+@@ -491,7 +491,7 @@ static struct sk_buff *ets_qdisc_dequeue
+ 			if (unlikely(!skb))
+ 				goto out;
+ 			if (cl->qdisc->q.qlen == 0)
+-				list_del(&cl->alist);
++				list_del_init(&cl->alist);
+ 			return ets_qdisc_dequeue_skb(sch, skb);
+ 		}
  
- 	mutex_unlock(&drv_info->rx_lock);
+@@ -660,7 +660,7 @@ static int ets_qdisc_change(struct Qdisc
+ 	}
+ 	for (i = q->nbands; i < oldbands; i++) {
+ 		if (i >= q->nstrict && q->classes[i].qdisc->q.qlen)
+-			list_del(&q->classes[i].alist);
++			list_del_init(&q->classes[i].alist);
+ 		qdisc_tree_flush_backlog(q->classes[i].qdisc);
+ 	}
+ 	q->nstrict = nstrict;
+@@ -716,7 +716,7 @@ static void ets_qdisc_reset(struct Qdisc
  
--- 
-2.39.5
-
+ 	for (band = q->nstrict; band < q->nbands; band++) {
+ 		if (q->classes[band].qdisc->q.qlen)
+-			list_del(&q->classes[band].alist);
++			list_del_init(&q->classes[band].alist);
+ 	}
+ 	for (band = 0; band < q->nbands; band++)
+ 		qdisc_reset(q->classes[band].qdisc);
 
 
 
