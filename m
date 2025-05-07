@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-142583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AF98AAEB4A
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:05:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5FCAAAEBD3
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:11:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E435525CA3
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:05:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22EAF16BC72
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:10:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4E0728E59A;
-	Wed,  7 May 2025 19:05:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37E6F28DF3C;
+	Wed,  7 May 2025 19:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J1LklG/5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XI5Esivi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81F9928E596;
-	Wed,  7 May 2025 19:05:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7F052144C1;
+	Wed,  7 May 2025 19:10:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644701; cv=none; b=m2wKAAU/bH5FcE21WnAs5s3+TRBS+XrvBK8kGq63aguMMt05JkVZE/NXAKRVOOFwM2vrFA7VzhD+ZRUxRKg8yWAecSuzWXDkrZo3w8Ubf4ee3XO7UQllQRzCCs4Tbyus5z2BnK7LyQ5svmh1fuquU9pgkL+/ucvL4NRnG7nWIwY=
+	t=1746645025; cv=none; b=MEvOCwxbTSr667dEXesbITuhtMlqfnS4ei6xXnKu4wj0u0dgGek1wcrYZ0cWyEFu/LpBCCVdXIzDSpcfx8EFMJdkypkuW7ERlwMb0fXw02Lkw5OWlXrLfpfVElfV8Cu6YtkC/LRWhYsMEQqanvLHZnMdVXOVIbcvyCY7o0RuEWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644701; c=relaxed/simple;
-	bh=OjBu5Xp60UNFrapSqpe1dtMrAoecNpd6o/hYSckzYiM=;
+	s=arc-20240116; t=1746645025; c=relaxed/simple;
+	bh=BI3bty+ulRHINAXhaehLIHsZbTO3w2cWVWRpggtYnNs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K4QXv2EJTFoeNUGxZ8ZBaZ4+X9U1tFuuro8UOCXVVfos3EpJV5ZPeLu6Gqz0ZJKRQxbIIUEu1wbAbW/Gm0oQs9seEQg/ypxY+7AERBtCPqH0DRmNL293yfvjf0RgFSXfcjTK2EtSX7+Nv3qI5sV+QZ3xfAu1q23Cs6/ZDkPb728=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J1LklG/5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13119C4CEE2;
-	Wed,  7 May 2025 19:05:00 +0000 (UTC)
+	 MIME-Version; b=eA6BgO1r++//Ak9k6GQeeeSOmgrC7skvnqNZrJDzNiA9FWSl8XvUtYO/z+VOt492F62Utm/oUdH2Nqd+aHwMhF0fd58Wl0T/ZflBzUOHz+DIjicOroV+3wiIPtRvCW20xsO8znjY7V62IKbVPWblQmMCdUeYJRNfidwWiQ8URDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XI5Esivi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BE2CC4CEE2;
+	Wed,  7 May 2025 19:10:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644701;
-	bh=OjBu5Xp60UNFrapSqpe1dtMrAoecNpd6o/hYSckzYiM=;
+	s=korg; t=1746645024;
+	bh=BI3bty+ulRHINAXhaehLIHsZbTO3w2cWVWRpggtYnNs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J1LklG/5SrLUR3718n2vMh05moc0WBEdoq8Fg9z4r/Xt9vYDF6VEAZzQJr7sMTZOP
-	 LjKiM7PdWiLf9cbh1s5UgHzk35zyniLSQntGtIsfq3O6RZg2Xf9RM31dmc24KkOC/d
-	 EsVQ4FKLRwM/iAWwnZa5NCGB7CbwoHauxFDcSbac=
+	b=XI5EsiviJadJVEnw7jR8jSMXZArdHP63PzdEs6V01NNje2wLuKhqSlq7IVYIU8wBM
+	 r3O6fDdT0I6R0vAChf6+eVeE+qwI0sfepmkRbGSOb03zyJSMIwq40DyzzNCD24NdnX
+	 SCasmSlHZmlI1p9uKkL0iQCa11zwU/9/QE2DlC+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Mark Brown <broonie@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 121/164] ASoC: simple-card-utils: Fix pointer check in graph_util_parse_link_direction
+Subject: [PATCH 6.6 070/129] net_sched: ets: Fix double list add in class with netem as child qdisc
 Date: Wed,  7 May 2025 20:40:06 +0200
-Message-ID: <20250507183825.872516100@linuxfoundation.org>
+Message-ID: <20250507183816.358343570@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Victor Nogueira <victor@mojatatu.com>
 
-[ Upstream commit 3cc393d2232ec770b5f79bf0673d67702a3536c3 ]
+[ Upstream commit 1a6d0c00fa07972384b0c308c72db091d49988b6 ]
 
-Actually check if the passed pointers are valid, before writing to them.
-This also fixes a USBAN warning:
-UBSAN: invalid-load in ../sound/soc/fsl/imx-card.c:687:25
-load of value 255 is not a valid value for type '_Bool'
+As described in Gerrard's report [1], there are use cases where a netem
+child qdisc will make the parent qdisc's enqueue callback reentrant.
+In the case of ets, there won't be a UAF, but the code will add the same
+classifier to the list twice, which will cause memory corruption.
 
-This is because playback_only is uninitialized and is not written to, as
-the playback-only property is absent.
+In addition to checking for qlen being zero, this patch checks whether
+the class was already added to the active_list (cl_is_active) before
+doing the addition to cater for the reentrant case.
 
-Fixes: 844de7eebe97 ("ASoC: audio-graph-card2: expand dai_link property part")
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Link: https://patch.msgid.link/20250429094910.1150970-1-alexander.stein@ew.tq-group.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+[1] https://lore.kernel.org/netdev/CAHcdcOm+03OD2j6R0=YHKqmy=VgJ8xEOKuP6c7mSgnp-TEJJbw@mail.gmail.com/
+
+Fixes: 37d9cf1a3ce3 ("sched: Fix detection of empty queues in child qdiscs")
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+Link: https://patch.msgid.link/20250425220710.3964791-4-victor@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/generic/simple-card-utils.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/sched/sch_ets.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/generic/simple-card-utils.c b/sound/soc/generic/simple-card-utils.c
-index 975ffd2cad292..809dbb9ded365 100644
---- a/sound/soc/generic/simple-card-utils.c
-+++ b/sound/soc/generic/simple-card-utils.c
-@@ -1150,9 +1150,9 @@ void graph_util_parse_link_direction(struct device_node *np,
- 	bool is_playback_only = of_property_read_bool(np, "playback-only");
- 	bool is_capture_only  = of_property_read_bool(np, "capture-only");
+diff --git a/net/sched/sch_ets.c b/net/sched/sch_ets.c
+index 9fd70462b41d5..18269f86d21ef 100644
+--- a/net/sched/sch_ets.c
++++ b/net/sched/sch_ets.c
+@@ -74,6 +74,11 @@ static const struct nla_policy ets_class_policy[TCA_ETS_MAX + 1] = {
+ 	[TCA_ETS_QUANTA_BAND] = { .type = NLA_U32 },
+ };
  
--	if (is_playback_only)
-+	if (playback_only)
- 		*playback_only = is_playback_only;
--	if (is_capture_only)
-+	if (capture_only)
- 		*capture_only = is_capture_only;
- }
- EXPORT_SYMBOL_GPL(graph_util_parse_link_direction);
++static bool cl_is_active(struct ets_class *cl)
++{
++	return !list_empty(&cl->alist);
++}
++
+ static int ets_quantum_parse(struct Qdisc *sch, const struct nlattr *attr,
+ 			     unsigned int *quantum,
+ 			     struct netlink_ext_ack *extack)
+@@ -416,7 +421,6 @@ static int ets_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	struct ets_sched *q = qdisc_priv(sch);
+ 	struct ets_class *cl;
+ 	int err = 0;
+-	bool first;
+ 
+ 	cl = ets_classify(skb, sch, &err);
+ 	if (!cl) {
+@@ -426,7 +430,6 @@ static int ets_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		return err;
+ 	}
+ 
+-	first = !cl->qdisc->q.qlen;
+ 	err = qdisc_enqueue(skb, cl->qdisc, to_free);
+ 	if (unlikely(err != NET_XMIT_SUCCESS)) {
+ 		if (net_xmit_drop_count(err)) {
+@@ -436,7 +439,7 @@ static int ets_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		return err;
+ 	}
+ 
+-	if (first && !ets_class_is_strict(q, cl)) {
++	if (!cl_is_active(cl) && !ets_class_is_strict(q, cl)) {
+ 		list_add_tail(&cl->alist, &q->active);
+ 		cl->deficit = cl->quantum;
+ 	}
 -- 
 2.39.5
 
