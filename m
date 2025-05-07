@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-142378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8246FAAEA5D
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:54:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0270AAEB9C
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:09:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3D8C9C70C9
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:54:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFFC5526011
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:07:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 907B028937F;
-	Wed,  7 May 2025 18:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A55F289E37;
+	Wed,  7 May 2025 19:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pTXvlUP3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E6y2QgU/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2C1214813;
-	Wed,  7 May 2025 18:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 265E819AD5C;
+	Wed,  7 May 2025 19:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644064; cv=none; b=OsHGyZJ8mGOQ3U8FA+PCC+rQvYA8GXP/blxaAB8+YHfN2GoLG7iDUSLmXejgOJXwzJlZTTHXjGiEmLZY+qlgMFVToT6ITIUsvvB+JoEIHmSPTerjk83Su68WgwvfBvQP+i7VLOwm78P0OitoMlf4u7pHjaTfniMUFzQ349BlcBs=
+	t=1746644859; cv=none; b=ZAZu/Cyia771P8z0k0hU7Wg+jv7PaR+GBjTdufFwLYSnu2XGObr4Bhb81RAcXSGpLX2xPcDWd2mba4oh2EwYTvmFXZuIbd0GPRGPavKZyzgT4C5prZK1klk7AXu9q1yx5PFNT8wL4KdGRrzEPXayZXp8m2U5jUN9Zjpav5eK+Ww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644064; c=relaxed/simple;
-	bh=VKxuNaNpx/BRXGFJjI5ZeX/hyH0guYBNn92WpprXAsM=;
+	s=arc-20240116; t=1746644859; c=relaxed/simple;
+	bh=mXkXdeKcNdrnxmZ1kh5Wv7rOjiddH7XVQKp863EKCHM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bprA0mVsavJtni7/wWMO2HbAtbGQkal0uK4BDtCJaaSAXTLVPjHayCrwiQfL006wrmt2Wulb3mfAahkvS1wPpT6/oQSWqkZAT294fvdBfDxQ/zQTGbb0NAUP899tm8jYHr15FfraaCAl1DmmLYAn65QGn+EU2RfBhQTKiub3WU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pTXvlUP3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA3D8C4CEE2;
-	Wed,  7 May 2025 18:54:23 +0000 (UTC)
+	 MIME-Version; b=pXSWRPHqv1tb+9Htosxeva6QxcjKJ6yHATt4qGvLSFSQgydtvNbYg6TdTL3W3CLN8sH5HGOuzL+jsABr5N/o919NdkxJdwprkVCRN7JSxaZQAKGZeIxcmAuxeOheU2qy9z7usGzwAFaGb3Ms2pMqipQrgSNWoJ8eAywLXPcVj/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E6y2QgU/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A10DAC4CEE2;
+	Wed,  7 May 2025 19:07:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644064;
-	bh=VKxuNaNpx/BRXGFJjI5ZeX/hyH0guYBNn92WpprXAsM=;
+	s=korg; t=1746644859;
+	bh=mXkXdeKcNdrnxmZ1kh5Wv7rOjiddH7XVQKp863EKCHM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pTXvlUP3VVLduOEUqYdiWK51cYhO9TAkDrHdw/mnw3H/z24jCieq923raoDu4TG18
-	 239M/WI8CRc+kDUiSxSc7wwiQMLJzyWw/Q0nhVOexoAzBpMaT0ePVovxIqQffuYxht
-	 jvwnbFzpUvuhm4cM8gM7EXs9CjwrFYZf4Qj1cKvg=
+	b=E6y2QgU/rZE45J+v2vnfE/zqnVEFnrKSTiRcbHbSWy5m4LXMi7eXfL4DAw+Q+TpO6
+	 JPYjfuRsWxYL1A2ERBi2Fm/AVXAeDUQacFZ0irDN46kIzAZ/+nTofcjmFu/TCyqHFa
+	 r5QJoUyd3ZZ8EvqP8v8PRQRKiT+npdao1x46eEZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maulik Shah <maulik.shah@oss.qualcomm.com>,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Melody Olvera <melody.olvera@oss.qualcomm.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 107/183] pinctrl: qcom: Fix PINGROUP definition for sm8750
+	Wei Yang <richard.weiyang@gmail.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Yajun Deng <yajun.deng@linux.dev>
+Subject: [PATCH 6.6 016/129] mm/memblock: repeat setting reserved region nid if array is doubled
 Date: Wed,  7 May 2025 20:39:12 +0200
-Message-ID: <20250507183829.164635438@linuxfoundation.org>
+Message-ID: <20250507183814.194696070@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,49 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maulik Shah <maulik.shah@oss.qualcomm.com>
+From: Wei Yang <richard.weiyang@gmail.com>
 
-[ Upstream commit 12b8a672d2aa053064151659f49e7310674d42d3 ]
+commit eac8ea8736ccc09513152d970eb2a42ed78e87e8 upstream.
 
-On newer SoCs intr_target_bit position is at 8 instead of 5. Fix it.
+Commit 61167ad5fecd ("mm: pass nid to reserve_bootmem_region()") introduce
+a way to set nid to all reserved region.
 
-Also add missing intr_wakeup_present_bit and intr_wakeup_enable_bit which
-enables forwarding of GPIO interrupts to parent PDC interrupt controller.
+But there is a corner case it will leave some region with invalid nid.
+When memblock_set_node() doubles the array of memblock.reserved, it may
+lead to a new reserved region before current position. The new region
+will be left with an invalid node id.
 
-Fixes: afe9803e3b82 ("pinctrl: qcom: Add sm8750 pinctrl driver")
-Signed-off-by: Maulik Shah <maulik.shah@oss.qualcomm.com>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Melody Olvera <melody.olvera@oss.qualcomm.com>
-Link: https://lore.kernel.org/20250429-pinctrl_sm8750-v2-1-87d45dd3bd82@oss.qualcomm.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Repeat the process when detecting it.
+
+Fixes: 61167ad5fecd ("mm: pass nid to reserve_bootmem_region()")
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+CC: Mike Rapoport <rppt@kernel.org>
+CC: Yajun Deng <yajun.deng@linux.dev>
+CC: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250318071948.23854-3-richard.weiyang@gmail.com
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/qcom/pinctrl-sm8750.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ mm/memblock.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/pinctrl/qcom/pinctrl-sm8750.c b/drivers/pinctrl/qcom/pinctrl-sm8750.c
-index 1af11cd95fb0e..b94fb4ee0ec38 100644
---- a/drivers/pinctrl/qcom/pinctrl-sm8750.c
-+++ b/drivers/pinctrl/qcom/pinctrl-sm8750.c
-@@ -46,7 +46,9 @@
- 		.out_bit = 1,                                         \
- 		.intr_enable_bit = 0,                                 \
- 		.intr_status_bit = 0,                                 \
--		.intr_target_bit = 5,                                 \
-+		.intr_wakeup_present_bit = 6,                         \
-+		.intr_wakeup_enable_bit = 7,                          \
-+		.intr_target_bit = 8,                                 \
- 		.intr_target_kpss_val = 3,                            \
- 		.intr_raw_status_bit = 4,                             \
- 		.intr_polarity_bit = 1,                               \
--- 
-2.39.5
-
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -2122,11 +2122,14 @@ static void __init memmap_init_reserved_
+ 	struct memblock_region *region;
+ 	phys_addr_t start, end;
+ 	int nid;
++	unsigned long max_reserved;
+ 
+ 	/*
+ 	 * set nid on all reserved pages and also treat struct
+ 	 * pages for the NOMAP regions as PageReserved
+ 	 */
++repeat:
++	max_reserved = memblock.reserved.max;
+ 	for_each_mem_region(region) {
+ 		nid = memblock_get_region_node(region);
+ 		start = region->base;
+@@ -2137,6 +2140,13 @@ static void __init memmap_init_reserved_
+ 
+ 		memblock_set_node(start, region->size, &memblock.reserved, nid);
+ 	}
++	/*
++	 * 'max' is changed means memblock.reserved has been doubled its
++	 * array, which may result a new reserved region before current
++	 * 'start'. Now we should repeat the procedure to set its node id.
++	 */
++	if (max_reserved != memblock.reserved.max)
++		goto repeat;
+ 
+ 	/* initialize struct pages for the reserved regions */
+ 	for_each_reserved_mem_region(region) {
 
 
 
