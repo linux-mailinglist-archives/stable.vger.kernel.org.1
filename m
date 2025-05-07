@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-142385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0465AAEA66
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:54:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D792FAAEAE5
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:01:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 945055211A6
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:54:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A44D1C28748
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:01:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A13C28AAE9;
-	Wed,  7 May 2025 18:54:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36248288A8;
+	Wed,  7 May 2025 19:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X650ysmc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dv/6VQpO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5914A2116E9;
-	Wed,  7 May 2025 18:54:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E50D228C024;
+	Wed,  7 May 2025 19:00:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644085; cv=none; b=WDxJVxf94MS1emQ37vGbCPb8q35xOy0jyuI7Vsh0VvXUSik0uE0wu9KkQy/10qZmWy1F/ac0W0LorQ60czsoB+x0Tts7n/txv2QlbLZT6PG8KyU4NypbYPKeACe7k8K1wYEq/St6X7P61OhhHmvKXuY7emOH4qwuTK6zu3IzcBc=
+	t=1746644446; cv=none; b=kmk3OPh1dU6KIJBsi3QyWu1PFJpQl923VvId369h6xz9EtfXCCRZDaU7imX35YY4flbzzaAURXTNh9BfY75qF40Hvwo9Mx5qpENhufPTYtB/08NQ/uxeqCY7bgtvS+4TsO77xCnPSbHEtk6xCiKOlbGhoXrWOs6TMvW8BSyEl8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644085; c=relaxed/simple;
-	bh=MAkh9KMvDcLoqtxYgotNC4lVhhLdteP8lVSZI+2wcIk=;
+	s=arc-20240116; t=1746644446; c=relaxed/simple;
+	bh=/DTsuprGGI7Cloxfwb1pT1dqfMqVD1bQeG7jGoq0y4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B88ll16SvV7MfS50CliGvZfcCqcUIePHejuMh8b9uNxXRfLNAdnrcpbglE3pfU+rTdonSrMT5J6firxLFYVT1kEJw0yo/7L6TYT/gUW/lx6qcyez/qdgiHjVRTDl5Nj7ny+PrCCOv6J4xd/x66WB3a5iJT+aU7v6Pmtd3dbKs8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X650ysmc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0F2AC4CEE2;
-	Wed,  7 May 2025 18:54:44 +0000 (UTC)
+	 MIME-Version; b=gqDc2ztZRUas2N+MJ1Qci4dymvMCs18wnZ/tqQ9mJk3XUh0yuELH3vxVD+zsUReF5Bypoj1ExpscOI4t7Bo6K6xOFXayjRyA3XHUS4cG6JttcCT3B3A1QVVvW0wseoaY6THb1Q9G7h9D+QbjvR03zLORGDZZzU3yzyfW7iOLnyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dv/6VQpO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 107BEC4CEE2;
+	Wed,  7 May 2025 19:00:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644085;
-	bh=MAkh9KMvDcLoqtxYgotNC4lVhhLdteP8lVSZI+2wcIk=;
+	s=korg; t=1746644445;
+	bh=/DTsuprGGI7Cloxfwb1pT1dqfMqVD1bQeG7jGoq0y4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X650ysmcEDZXsNDmPSyL24+HGl3vxffPepaaNx+f063EBYUr5Ck8bfEhD4Ugz2MJ4
-	 jnNfg4bgrWsn55hTD490l23iH2yj3fhMDppCqIv4R/8lPlZU6EOs/z9BGiGUJS0aT5
-	 M82tnJDytuoAqzWHJINqtD0n1GAqCuIwpJGtTekA=
+	b=Dv/6VQpOvw3C/ir8vSgQiKShsNFKcRT756EwNPjFteCJUU4/AodZ6FQEtVJVctxx9
+	 Xa2cqWxGz3gc6xvI6dmzWKAiF39YX40Z8xn/aNm2tu1Vg91xp1fGyIs0owuDVYUgb0
+	 Y0YdI2ZKE0vxVJXlw8Rxgkpi6GXOS8+nl4gcnP4Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pauli Virtanen <pav@iki.fi>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 085/183] Bluetooth: L2CAP: copy RX timestamp to new fragments
+	Sean Heelan <seanheelan@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 045/164] ksmbd: fix use-after-free in kerberos authentication
 Date: Wed,  7 May 2025 20:38:50 +0200
-Message-ID: <20250507183828.274504823@linuxfoundation.org>
+Message-ID: <20250507183822.708051894@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pauli Virtanen <pav@iki.fi>
+From: Sean Heelan <seanheelan@gmail.com>
 
-[ Upstream commit 3908feb1bd7f319a10e18d84369a48163264cc7d ]
+commit e86e9134e1d1c90a960dd57f59ce574d27b9a124 upstream.
 
-Copy timestamp too when allocating new skb for received fragment.
-Fixes missing RX timestamps with fragmentation.
+Setting sess->user = NULL was introduced to fix the dangling pointer
+created by ksmbd_free_user. However, it is possible another thread could
+be operating on the session and make use of sess->user after it has been
+passed to ksmbd_free_user but before sess->user is set to NULL.
 
-Fixes: 4d7ea8ee90e4 ("Bluetooth: L2CAP: Fix handling fragmented length")
-Signed-off-by: Pauli Virtanen <pav@iki.fi>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Heelan <seanheelan@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/l2cap_core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/smb/server/auth.c    |   14 +++++++++++++-
+ fs/smb/server/smb2pdu.c |    5 -----
+ 2 files changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index a55388fbf07c8..c219a8c596d3e 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -7380,6 +7380,9 @@ static int l2cap_recv_frag(struct l2cap_conn *conn, struct sk_buff *skb,
- 			return -ENOMEM;
- 		/* Init rx_len */
- 		conn->rx_len = len;
-+
-+		skb_set_delivery_time(conn->rx_skb, skb->tstamp,
-+				      skb->tstamp_type);
+--- a/fs/smb/server/auth.c
++++ b/fs/smb/server/auth.c
+@@ -550,7 +550,19 @@ int ksmbd_krb5_authenticate(struct ksmbd
+ 		retval = -ENOMEM;
+ 		goto out;
  	}
+-	sess->user = user;
++
++	if (!sess->user) {
++		/* First successful authentication */
++		sess->user = user;
++	} else {
++		if (!ksmbd_compare_user(sess->user, user)) {
++			ksmbd_debug(AUTH, "different user tried to reuse session\n");
++			retval = -EPERM;
++			ksmbd_free_user(user);
++			goto out;
++		}
++		ksmbd_free_user(user);
++	}
  
- 	/* Copy as much as the rx_skb can hold */
--- 
-2.39.5
-
+ 	memcpy(sess->sess_key, resp->payload, resp->session_key_len);
+ 	memcpy(out_blob, resp->payload + resp->session_key_len,
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -1600,11 +1600,6 @@ static int krb5_authenticate(struct ksmb
+ 	if (prev_sess_id && prev_sess_id != sess->id)
+ 		destroy_previous_session(conn, sess->user, prev_sess_id);
+ 
+-	if (sess->state == SMB2_SESSION_VALID) {
+-		ksmbd_free_user(sess->user);
+-		sess->user = NULL;
+-	}
+-
+ 	retval = ksmbd_krb5_authenticate(sess, in_blob, in_len,
+ 					 out_blob, &out_len);
+ 	if (retval) {
 
 
 
