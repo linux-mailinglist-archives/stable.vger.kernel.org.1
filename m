@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-142651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF663AAEBAF
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:09:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15BCEAAEB0B
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:02:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 035B2526950
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:08:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83FD35258D3
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:02:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9996E28BA9F;
-	Wed,  7 May 2025 19:08:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E11228AAE9;
+	Wed,  7 May 2025 19:02:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0RVvWxIn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kKmv63lX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5163828980D;
-	Wed,  7 May 2025 19:08:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47ADB29A0;
+	Wed,  7 May 2025 19:02:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644908; cv=none; b=mgWS9pWMRry2JeyKBGL8JEKBvs3cnnpGaDwaT1vimb+edGSaICUrO1NJkoAVhotSvOJV1f2xHbaxsbCfaaK6mShzcAPdasKn1zy0IKwkuv917Q0pulasLacBCLGLtEzqmOtyO44EMiTyPvj1J2/pOBR0UVG6hkp7JzyJ+a5xiMg=
+	t=1746644562; cv=none; b=WUwmfv/aj/eexd0JGI4sSOT+JA9t9AqmS729iO80ImjesboWjcVwhopQP7TQ5XZKOJOysKVjzfC95VBse5J9kMD+6i5zLOoANMtdLOv/5hYbdwVQ7lo5kLCHfzI+rHHRR8B1aSE1lH3VBL7OVzxADL/2XuA9D0RaP4XV4gF8rlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644908; c=relaxed/simple;
-	bh=n1EqzErsrx6JdiczuZm2wwZf5SktkZm2/U60JqwEHCA=;
+	s=arc-20240116; t=1746644562; c=relaxed/simple;
+	bh=ni0+uLCBN4rHDbPG/YHi61ehwfgmviaglKzsaG3ka3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ORmf7AuMPS7FbD/6en0RIJlbUQD323iZdtHudcm1FpOu/hwfpeFwHzV430Ai9K/1SZEcwAuCb3XMTS1zm6Upx0uXLtvam9uaYq4+VLkBji/OisuftUHSTKW82KlZIvvA05daMcVDQg8FipnbSlD0aFM9Bva9zg6u7ya8m5RZWJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0RVvWxIn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C753AC4CEF3;
-	Wed,  7 May 2025 19:08:27 +0000 (UTC)
+	 MIME-Version; b=ansy8vBBX2hpPYnjeydlBOBPXTTnnpoxuVTt34JnjktaD3AIiuIu+M8FiaZjymQW/x45AJMzU0HLRB0hWV5A7I51NlFrCzep4ZdiB6kyiPgAwl4rYnmmVyaXFu3zjWQbt80wl7+OJbeARcGRACf06voJpt1mJtrr3ZvdK7EMtns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kKmv63lX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB4BCC4CEE2;
+	Wed,  7 May 2025 19:02:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644908;
-	bh=n1EqzErsrx6JdiczuZm2wwZf5SktkZm2/U60JqwEHCA=;
+	s=korg; t=1746644562;
+	bh=ni0+uLCBN4rHDbPG/YHi61ehwfgmviaglKzsaG3ka3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0RVvWxInlWK5C/fDdYpU+++VRUJTRa5LfckOGIyqzDTvK6WlfyNH9RQNZiYxO65oU
-	 k0yc9XS4AuQqfgBPROEAysojgXwIX/i03n/tNnNKxZwOARXg7gBEfLVV3a+ruqslcl
-	 1X6ErBzrZOp67Krl6mZxKyJrNn9Zs/Fs7B2jS+JA=
+	b=kKmv63lXguZvh00jcpUfVkzPuw4PJOCD1sWNf8MUE5WxTYvIwBUj3Oeg5slJF9kyM
+	 yxSM5CBPbyrJh/iut6jX0N1feiH4XB8e5tiVRZSb5ULvx4NPG9T6FFRVE3keZWwHwl
+	 h5wF/yumBb5mPL5EdWBOSpsGlt7VhJFypwIePYY0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c8cd2d2c412b868263fb@syzkaller.appspotmail.com,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Jeongjun Park <aha310510@gmail.com>
-Subject: [PATCH 6.6 032/129] tracing: Fix oob write in trace_seq_to_buffer()
+	Michael Chan <michael.chan@broadcom.com>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Vadim Fedorenko <vadfed@meta.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 083/164] bnxt_en: improve TX timestamping FIFO configuration
 Date: Wed,  7 May 2025 20:39:28 +0200
-Message-ID: <20250507183814.828508744@linuxfoundation.org>
+Message-ID: <20250507183824.323841038@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
-References: <20250507183813.500572371@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +64,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Vadim Fedorenko <vadfed@meta.com>
 
-commit f5178c41bb43444a6008150fe6094497135d07cb upstream.
+[ Upstream commit 8f7ae5a85137b913cb97e2d24409d36548d0bab1 ]
 
-syzbot reported this bug:
-==================================================================
-BUG: KASAN: slab-out-of-bounds in trace_seq_to_buffer kernel/trace/trace.c:1830 [inline]
-BUG: KASAN: slab-out-of-bounds in tracing_splice_read_pipe+0x6be/0xdd0 kernel/trace/trace.c:6822
-Write of size 4507 at addr ffff888032b6b000 by task syz.2.320/7260
+Reconfiguration of netdev may trigger close/open procedure which can
+break FIFO status by adjusting the amount of empty slots for TX
+timestamps. But it is not really needed because timestamps for the
+packets sent over the wire still can be retrieved. On the other side,
+during netdev close procedure any skbs waiting for TX timestamps can be
+leaked because there is no cleaning procedure called. Free skbs waiting
+for TX timestamps when closing netdev.
 
-CPU: 1 UID: 0 PID: 7260 Comm: syz.2.320 Not tainted 6.15.0-rc1-syzkaller-00301-g3bde70a2c827 #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:408 [inline]
- print_report+0xc3/0x670 mm/kasan/report.c:521
- kasan_report+0xe0/0x110 mm/kasan/report.c:634
- check_region_inline mm/kasan/generic.c:183 [inline]
- kasan_check_range+0xef/0x1a0 mm/kasan/generic.c:189
- __asan_memcpy+0x3c/0x60 mm/kasan/shadow.c:106
- trace_seq_to_buffer kernel/trace/trace.c:1830 [inline]
- tracing_splice_read_pipe+0x6be/0xdd0 kernel/trace/trace.c:6822
- ....
-==================================================================
-
-It has been reported that trace_seq_to_buffer() tries to copy more data
-than PAGE_SIZE to buf. Therefore, to prevent this, we should use the
-smaller of trace_seq_used(&iter->seq) and PAGE_SIZE as an argument.
-
-Link: https://lore.kernel.org/20250422113026.13308-1-aha310510@gmail.com
-Reported-by: syzbot+c8cd2d2c412b868263fb@syzkaller.appspotmail.com
-Fixes: 3c56819b14b0 ("tracing: splice support for tracing_pipe")
-Suggested-by: Steven Rostedt <rostedt@goodmis.org>
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8aa2a79e9b95 ("bnxt_en: Increase the max total outstanding PTP TX packets to 4")
+Reviewed-by: Michael Chan <michael.chan@broadcom.com>
+Reviewed-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Signed-off-by: Vadim Fedorenko <vadfed@meta.com>
+Link: https://patch.msgid.link/20250424125547.460632-1-vadfed@meta.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c     |  5 ++--
+ drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c | 29 ++++++++++++++-----
+ drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h |  1 +
+ 3 files changed, 25 insertions(+), 10 deletions(-)
 
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -7027,13 +7027,14 @@ static ssize_t tracing_splice_read_pipe(
- 		/* Copy the data into the page, so we can start over. */
- 		ret = trace_seq_to_buffer(&iter->seq,
- 					  page_address(spd.pages[i]),
--					  trace_seq_used(&iter->seq));
-+					  min((size_t)trace_seq_used(&iter->seq),
-+						  PAGE_SIZE));
- 		if (ret < 0) {
- 			__free_page(spd.pages[i]);
- 			break;
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 016dcfec8d496..874a15f33bc5b 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -3320,6 +3320,9 @@ static void bnxt_free_tx_skbs(struct bnxt *bp)
  		}
- 		spd.partial[i].offset = 0;
--		spd.partial[i].len = trace_seq_used(&iter->seq);
-+		spd.partial[i].len = ret;
- 
- 		trace_seq_init(&iter->seq);
+ 		netdev_tx_reset_queue(netdev_get_tx_queue(bp->dev, i));
  	}
++
++	if (bp->ptp_cfg && !(bp->fw_cap & BNXT_FW_CAP_TX_TS_CMP))
++		bnxt_ptp_free_txts_skbs(bp->ptp_cfg);
+ }
+ 
+ static void bnxt_free_one_rx_ring(struct bnxt *bp, struct bnxt_rx_ring_info *rxr)
+@@ -12249,8 +12252,6 @@ static int __bnxt_open_nic(struct bnxt *bp, bool irq_re_init, bool link_re_init)
+ 	/* VF-reps may need to be re-opened after the PF is re-opened */
+ 	if (BNXT_PF(bp))
+ 		bnxt_vf_reps_open(bp);
+-	if (bp->ptp_cfg && !(bp->fw_cap & BNXT_FW_CAP_TX_TS_CMP))
+-		WRITE_ONCE(bp->ptp_cfg->tx_avail, BNXT_MAX_TX_TS);
+ 	bnxt_ptp_init_rtc(bp, true);
+ 	bnxt_ptp_cfg_tstamp_filters(bp);
+ 	if (BNXT_SUPPORTS_MULTI_RSS_CTX(bp))
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
+index 781225d3ba8ff..650034a4bb46d 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.c
+@@ -777,6 +777,27 @@ static long bnxt_ptp_ts_aux_work(struct ptp_clock_info *ptp_info)
+ 	return HZ;
+ }
+ 
++void bnxt_ptp_free_txts_skbs(struct bnxt_ptp_cfg *ptp)
++{
++	struct bnxt_ptp_tx_req *txts_req;
++	u16 cons = ptp->txts_cons;
++
++	/* make sure ptp aux worker finished with
++	 * possible BNXT_STATE_OPEN set
++	 */
++	ptp_cancel_worker_sync(ptp->ptp_clock);
++
++	ptp->tx_avail = BNXT_MAX_TX_TS;
++	while (cons != ptp->txts_prod) {
++		txts_req = &ptp->txts_req[cons];
++		if (!IS_ERR_OR_NULL(txts_req->tx_skb))
++			dev_kfree_skb_any(txts_req->tx_skb);
++		cons = NEXT_TXTS(cons);
++	}
++	ptp->txts_cons = cons;
++	ptp_schedule_worker(ptp->ptp_clock, 0);
++}
++
+ int bnxt_ptp_get_txts_prod(struct bnxt_ptp_cfg *ptp, u16 *prod)
+ {
+ 	spin_lock_bh(&ptp->ptp_tx_lock);
+@@ -1095,7 +1116,6 @@ int bnxt_ptp_init(struct bnxt *bp)
+ void bnxt_ptp_clear(struct bnxt *bp)
+ {
+ 	struct bnxt_ptp_cfg *ptp = bp->ptp_cfg;
+-	int i;
+ 
+ 	if (!ptp)
+ 		return;
+@@ -1107,12 +1127,5 @@ void bnxt_ptp_clear(struct bnxt *bp)
+ 	kfree(ptp->ptp_info.pin_config);
+ 	ptp->ptp_info.pin_config = NULL;
+ 
+-	for (i = 0; i < BNXT_MAX_TX_TS; i++) {
+-		if (ptp->txts_req[i].tx_skb) {
+-			dev_kfree_skb_any(ptp->txts_req[i].tx_skb);
+-			ptp->txts_req[i].tx_skb = NULL;
+-		}
+-	}
+-
+ 	bnxt_unmap_ptp_regs(bp);
+ }
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h
+index 61e89bb2d2690..999b497990bce 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ptp.h
+@@ -174,6 +174,7 @@ int bnxt_ptp_cfg_tstamp_filters(struct bnxt *bp);
+ void bnxt_ptp_reapply_pps(struct bnxt *bp);
+ int bnxt_hwtstamp_set(struct net_device *dev, struct ifreq *ifr);
+ int bnxt_hwtstamp_get(struct net_device *dev, struct ifreq *ifr);
++void bnxt_ptp_free_txts_skbs(struct bnxt_ptp_cfg *ptp);
+ int bnxt_ptp_get_txts_prod(struct bnxt_ptp_cfg *ptp, u16 *prod);
+ void bnxt_get_tx_ts_p5(struct bnxt *bp, struct sk_buff *skb, u16 prod);
+ int bnxt_get_rx_ts_p5(struct bnxt *bp, u64 *ts, u32 pkt_ts);
+-- 
+2.39.5
+
 
 
 
