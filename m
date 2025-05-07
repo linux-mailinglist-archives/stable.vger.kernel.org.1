@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-142504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E713AAEAE6
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:01:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 487B4AAE9A7
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:47:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F34C47BEC23
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:59:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAC873A70CF
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:46:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C63328DF01;
-	Wed,  7 May 2025 19:00:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 246DB1F4629;
+	Wed,  7 May 2025 18:46:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sSlrCqH/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m91sS6Ra"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA89821146F;
-	Wed,  7 May 2025 19:00:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C127219007D;
+	Wed,  7 May 2025 18:46:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644458; cv=none; b=I9X0Kegqx7hA6Lsd63yVqDJ+fIIl0Zk5zZT4kIRcF0ztoIIt3bdDUn8iIDhrKLOVVFtfdRN5OQOx/omNX+5URQC+kA4nTQKhnk1zzL8fyl0kkcaANI1lpCh3ITV5zXoxBvSQa061WBChw/tQXC54z0UsWnpjXFbhFjvAM8jb8mY=
+	t=1746643609; cv=none; b=MH/8gxfIc/PokFrzX7uZMts5og4D1h9r/MFzSjqcSoBscTSZgALf2jb1wsAnDbyMva7FvSFXvGxh5yhkBivDhhl117wfXNlyUuiK2wSypKSsPPecNb5bR7JgI8b0Qr0BR+wq4aAbU9DUWAKwBrmacixISBtY0cQRpS9I1Kk73Kg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644458; c=relaxed/simple;
-	bh=2KUgpYDvJ4nx6vcsCq564i5N50KJMGrf4kNSk/tVAfo=;
+	s=arc-20240116; t=1746643609; c=relaxed/simple;
+	bh=AsB23T4UufhKBxKplbKOKBFNU+G7B2YagUQTBcpPEug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aeAiLNpja1IQZe0rg3itCn/Rd/ZtuGRSdUrJxCnU1ngdMh2Dm9pwZPCc36zP8I+VYsiCTExddLs0bo1YC8NVLdyp7rReE31kb61Kgt0+RnJoarPVCBP9A6CiYnDWwd+81AQFO0LMDdqwHnyyGpowJKQzhsOqdJlyVwU/9JFg/Ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sSlrCqH/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE512C4CEEE;
-	Wed,  7 May 2025 19:00:56 +0000 (UTC)
+	 MIME-Version; b=SlScpRQLRcdJkFrinOnFEMAiSGVyvqmVj7Tmk1HhFSPIv8ssIk/NVNxIhfLJEQspq5Y6kJ5JXp8SFIJt55CW1jOsxX+Ad/T3ihAxWDy228Nghbgkh8w/K/pYz2TqVJNmtuubrxTUc06FCp3iNNdfqCiGJpmWLMS0jSHBk6o3Cb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m91sS6Ra; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 408E7C4CEE2;
+	Wed,  7 May 2025 18:46:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644457;
-	bh=2KUgpYDvJ4nx6vcsCq564i5N50KJMGrf4kNSk/tVAfo=;
+	s=korg; t=1746643609;
+	bh=AsB23T4UufhKBxKplbKOKBFNU+G7B2YagUQTBcpPEug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sSlrCqH/AdIAXkDFofundEk4QhD1jlCDgfrkfaRDjM7qzBj3x+66ITPQa8Js0Xqpz
-	 2zcApA0bwdfnmHIthrqwV7KU7xFynJzBZkbSF1wpodqDNFATANRDpHY9ihak7DfDzE
-	 qFQQFrQlC3u62EWYZQ6EJHtbg12JS3nrBieusXwA=
+	b=m91sS6Rao7QwRf2ILQ/87dT7gStAOiXcCXaOTQ2ZJkMoj9KIrNRFF3iZpYAFZzcZa
+	 ZLouktU45NTVssa6dZCg7LXCzpUkcsy0alD95cWkwUgtWvQHQhj7rRpkkrYu9TbDBQ
+	 UNGrWbc3WE/dgn/VtyMCIK/KsWFdnUWkU1luhZx4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Lifeng Zheng <zhenglifeng1@huawei.com>
-Subject: [PATCH 6.12 049/164] cpufreq: Fix setting policy limits when frequency tables are used
+	Sean Heelan <seanheelan@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 19/97] ksmbd: fix use-after-free in kerberos authentication
 Date: Wed,  7 May 2025 20:38:54 +0200
-Message-ID: <20250507183822.869195446@linuxfoundation.org>
+Message-ID: <20250507183807.755950373@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
+References: <20250507183806.987408728@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,300 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Sean Heelan <seanheelan@gmail.com>
 
-commit b79028039f440e7d2c4df6ab243060c4e3803e84 upstream.
+commit e86e9134e1d1c90a960dd57f59ce574d27b9a124 upstream.
 
-Commit 7491cdf46b5c ("cpufreq: Avoid using inconsistent policy->min and
-policy->max") overlooked the fact that policy->min and policy->max were
-accessed directly in cpufreq_frequency_table_target() and in the
-functions called by it.  Consequently, the changes made by that commit
-led to problems with setting policy limits.
+Setting sess->user = NULL was introduced to fix the dangling pointer
+created by ksmbd_free_user. However, it is possible another thread could
+be operating on the session and make use of sess->user after it has been
+passed to ksmbd_free_user but before sess->user is set to NULL.
 
-Address this by passing the target frequency limits to __resolve_freq()
-and cpufreq_frequency_table_target() and propagating them to the
-functions called by the latter.
-
-Fixes: 7491cdf46b5c ("cpufreq: Avoid using inconsistent policy->min and policy->max")
-Cc: 5.16+ <stable@vger.kernel.org> # 5.16+
-Closes: https://lore.kernel.org/linux-pm/aAplED3IA_J0eZN0@linaro.org/
-Reported-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Tested-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Reviewed-by: Lifeng Zheng <zhenglifeng1@huawei.com>
-Link: https://patch.msgid.link/5896780.DvuYhMxLoT@rjwysocki.net
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Heelan <seanheelan@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/cpufreq.c          |   22 ++++++---
- drivers/cpufreq/cpufreq_ondemand.c |    3 -
- drivers/cpufreq/freq_table.c       |    6 +-
- include/linux/cpufreq.h            |   83 ++++++++++++++++++++++++-------------
- 4 files changed, 73 insertions(+), 41 deletions(-)
+ fs/smb/server/auth.c    |   14 +++++++++++++-
+ fs/smb/server/smb2pdu.c |    5 -----
+ 2 files changed, 13 insertions(+), 6 deletions(-)
 
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -534,14 +534,18 @@ void cpufreq_disable_fast_switch(struct
- EXPORT_SYMBOL_GPL(cpufreq_disable_fast_switch);
- 
- static unsigned int __resolve_freq(struct cpufreq_policy *policy,
--		unsigned int target_freq, unsigned int relation)
-+				   unsigned int target_freq,
-+				   unsigned int min, unsigned int max,
-+				   unsigned int relation)
- {
- 	unsigned int idx;
- 
-+	target_freq = clamp_val(target_freq, min, max);
-+
- 	if (!policy->freq_table)
- 		return target_freq;
- 
--	idx = cpufreq_frequency_table_target(policy, target_freq, relation);
-+	idx = cpufreq_frequency_table_target(policy, target_freq, min, max, relation);
- 	policy->cached_resolved_idx = idx;
- 	policy->cached_target_freq = target_freq;
- 	return policy->freq_table[idx].frequency;
-@@ -575,8 +579,7 @@ unsigned int cpufreq_driver_resolve_freq
- 	if (unlikely(min > max))
- 		min = max;
- 
--	return __resolve_freq(policy, clamp_val(target_freq, min, max),
--			      CPUFREQ_RELATION_LE);
-+	return __resolve_freq(policy, target_freq, min, max, CPUFREQ_RELATION_LE);
- }
- EXPORT_SYMBOL_GPL(cpufreq_driver_resolve_freq);
- 
-@@ -2336,8 +2339,8 @@ int __cpufreq_driver_target(struct cpufr
- 	if (cpufreq_disabled())
- 		return -ENODEV;
- 
--	target_freq = clamp_val(target_freq, policy->min, policy->max);
--	target_freq = __resolve_freq(policy, target_freq, relation);
-+	target_freq = __resolve_freq(policy, target_freq, policy->min,
-+				     policy->max, relation);
- 
- 	pr_debug("target for CPU %u: %u kHz, relation %u, requested %u kHz\n",
- 		 policy->cpu, target_freq, relation, old_target_freq);
-@@ -2666,8 +2669,11 @@ static int cpufreq_set_policy(struct cpu
- 	 * compiler optimizations around them because they may be accessed
- 	 * concurrently by cpufreq_driver_resolve_freq() during the update.
- 	 */
--	WRITE_ONCE(policy->max, __resolve_freq(policy, new_data.max, CPUFREQ_RELATION_H));
--	new_data.min = __resolve_freq(policy, new_data.min, CPUFREQ_RELATION_L);
-+	WRITE_ONCE(policy->max, __resolve_freq(policy, new_data.max,
-+					       new_data.min, new_data.max,
-+					       CPUFREQ_RELATION_H));
-+	new_data.min = __resolve_freq(policy, new_data.min, new_data.min,
-+				      new_data.max, CPUFREQ_RELATION_L);
- 	WRITE_ONCE(policy->min, new_data.min > policy->max ? policy->max : new_data.min);
- 
- 	trace_cpu_frequency_limits(policy);
---- a/drivers/cpufreq/cpufreq_ondemand.c
-+++ b/drivers/cpufreq/cpufreq_ondemand.c
-@@ -76,7 +76,8 @@ static unsigned int generic_powersave_bi
- 		return freq_next;
+--- a/fs/smb/server/auth.c
++++ b/fs/smb/server/auth.c
+@@ -544,7 +544,19 @@ int ksmbd_krb5_authenticate(struct ksmbd
+ 		retval = -ENOMEM;
+ 		goto out;
  	}
- 
--	index = cpufreq_frequency_table_target(policy, freq_next, relation);
-+	index = cpufreq_frequency_table_target(policy, freq_next, policy->min,
-+					       policy->max, relation);
- 	freq_req = freq_table[index].frequency;
- 	freq_reduc = freq_req * od_tuners->powersave_bias / 1000;
- 	freq_avg = freq_req - freq_reduc;
---- a/drivers/cpufreq/freq_table.c
-+++ b/drivers/cpufreq/freq_table.c
-@@ -116,8 +116,8 @@ int cpufreq_generic_frequency_table_veri
- EXPORT_SYMBOL_GPL(cpufreq_generic_frequency_table_verify);
- 
- int cpufreq_table_index_unsorted(struct cpufreq_policy *policy,
--				 unsigned int target_freq,
--				 unsigned int relation)
-+				 unsigned int target_freq, unsigned int min,
-+				 unsigned int max, unsigned int relation)
- {
- 	struct cpufreq_frequency_table optimal = {
- 		.driver_data = ~0,
-@@ -148,7 +148,7 @@ int cpufreq_table_index_unsorted(struct
- 	cpufreq_for_each_valid_entry_idx(pos, table, i) {
- 		freq = pos->frequency;
- 
--		if ((freq < policy->min) || (freq > policy->max))
-+		if (freq < min || freq > max)
- 			continue;
- 		if (freq == target_freq) {
- 			optimal.driver_data = i;
---- a/include/linux/cpufreq.h
-+++ b/include/linux/cpufreq.h
-@@ -770,8 +770,8 @@ int cpufreq_frequency_table_verify(struc
- int cpufreq_generic_frequency_table_verify(struct cpufreq_policy_data *policy);
- 
- int cpufreq_table_index_unsorted(struct cpufreq_policy *policy,
--				 unsigned int target_freq,
--				 unsigned int relation);
-+				 unsigned int target_freq, unsigned int min,
-+				 unsigned int max, unsigned int relation);
- int cpufreq_frequency_table_get_index(struct cpufreq_policy *policy,
- 		unsigned int freq);
- 
-@@ -836,12 +836,12 @@ static inline int cpufreq_table_find_ind
- 	return best;
- }
- 
--/* Works only on sorted freq-tables */
--static inline int cpufreq_table_find_index_l(struct cpufreq_policy *policy,
--					     unsigned int target_freq,
--					     bool efficiencies)
-+static inline int find_index_l(struct cpufreq_policy *policy,
-+			       unsigned int target_freq,
-+			       unsigned int min, unsigned int max,
-+			       bool efficiencies)
- {
--	target_freq = clamp_val(target_freq, policy->min, policy->max);
-+	target_freq = clamp_val(target_freq, min, max);
- 
- 	if (policy->freq_table_sorted == CPUFREQ_TABLE_SORTED_ASCENDING)
- 		return cpufreq_table_find_index_al(policy, target_freq,
-@@ -851,6 +851,14 @@ static inline int cpufreq_table_find_ind
- 						   efficiencies);
- }
- 
-+/* Works only on sorted freq-tables */
-+static inline int cpufreq_table_find_index_l(struct cpufreq_policy *policy,
-+					     unsigned int target_freq,
-+					     bool efficiencies)
-+{
-+	return find_index_l(policy, target_freq, policy->min, policy->max, efficiencies);
-+}
+-	sess->user = user;
 +
- /* Find highest freq at or below target in a table in ascending order */
- static inline int cpufreq_table_find_index_ah(struct cpufreq_policy *policy,
- 					      unsigned int target_freq,
-@@ -904,12 +912,12 @@ static inline int cpufreq_table_find_ind
- 	return best;
- }
++	if (!sess->user) {
++		/* First successful authentication */
++		sess->user = user;
++	} else {
++		if (!ksmbd_compare_user(sess->user, user)) {
++			ksmbd_debug(AUTH, "different user tried to reuse session\n");
++			retval = -EPERM;
++			ksmbd_free_user(user);
++			goto out;
++		}
++		ksmbd_free_user(user);
++	}
  
--/* Works only on sorted freq-tables */
--static inline int cpufreq_table_find_index_h(struct cpufreq_policy *policy,
--					     unsigned int target_freq,
--					     bool efficiencies)
-+static inline int find_index_h(struct cpufreq_policy *policy,
-+			       unsigned int target_freq,
-+			       unsigned int min, unsigned int max,
-+			       bool efficiencies)
- {
--	target_freq = clamp_val(target_freq, policy->min, policy->max);
-+	target_freq = clamp_val(target_freq, min, max);
+ 	memcpy(sess->sess_key, resp->payload, resp->session_key_len);
+ 	memcpy(out_blob, resp->payload + resp->session_key_len,
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -1615,11 +1615,6 @@ static int krb5_authenticate(struct ksmb
+ 	if (prev_sess_id && prev_sess_id != sess->id)
+ 		destroy_previous_session(conn, sess->user, prev_sess_id);
  
- 	if (policy->freq_table_sorted == CPUFREQ_TABLE_SORTED_ASCENDING)
- 		return cpufreq_table_find_index_ah(policy, target_freq,
-@@ -919,6 +927,14 @@ static inline int cpufreq_table_find_ind
- 						   efficiencies);
- }
- 
-+/* Works only on sorted freq-tables */
-+static inline int cpufreq_table_find_index_h(struct cpufreq_policy *policy,
-+					     unsigned int target_freq,
-+					     bool efficiencies)
-+{
-+	return find_index_h(policy, target_freq, policy->min, policy->max, efficiencies);
-+}
-+
- /* Find closest freq to target in a table in ascending order */
- static inline int cpufreq_table_find_index_ac(struct cpufreq_policy *policy,
- 					      unsigned int target_freq,
-@@ -989,12 +1005,12 @@ static inline int cpufreq_table_find_ind
- 	return best;
- }
- 
--/* Works only on sorted freq-tables */
--static inline int cpufreq_table_find_index_c(struct cpufreq_policy *policy,
--					     unsigned int target_freq,
--					     bool efficiencies)
-+static inline int find_index_c(struct cpufreq_policy *policy,
-+			       unsigned int target_freq,
-+			       unsigned int min, unsigned int max,
-+			       bool efficiencies)
- {
--	target_freq = clamp_val(target_freq, policy->min, policy->max);
-+	target_freq = clamp_val(target_freq, min, max);
- 
- 	if (policy->freq_table_sorted == CPUFREQ_TABLE_SORTED_ASCENDING)
- 		return cpufreq_table_find_index_ac(policy, target_freq,
-@@ -1004,7 +1020,17 @@ static inline int cpufreq_table_find_ind
- 						   efficiencies);
- }
- 
--static inline bool cpufreq_is_in_limits(struct cpufreq_policy *policy, int idx)
-+/* Works only on sorted freq-tables */
-+static inline int cpufreq_table_find_index_c(struct cpufreq_policy *policy,
-+					     unsigned int target_freq,
-+					     bool efficiencies)
-+{
-+	return find_index_c(policy, target_freq, policy->min, policy->max, efficiencies);
-+}
-+
-+static inline bool cpufreq_is_in_limits(struct cpufreq_policy *policy,
-+					unsigned int min, unsigned int max,
-+					int idx)
- {
- 	unsigned int freq;
- 
-@@ -1013,11 +1039,13 @@ static inline bool cpufreq_is_in_limits(
- 
- 	freq = policy->freq_table[idx].frequency;
- 
--	return freq == clamp_val(freq, policy->min, policy->max);
-+	return freq == clamp_val(freq, min, max);
- }
- 
- static inline int cpufreq_frequency_table_target(struct cpufreq_policy *policy,
- 						 unsigned int target_freq,
-+						 unsigned int min,
-+						 unsigned int max,
- 						 unsigned int relation)
- {
- 	bool efficiencies = policy->efficiencies_available &&
-@@ -1028,29 +1056,26 @@ static inline int cpufreq_frequency_tabl
- 	relation &= ~CPUFREQ_RELATION_E;
- 
- 	if (unlikely(policy->freq_table_sorted == CPUFREQ_TABLE_UNSORTED))
--		return cpufreq_table_index_unsorted(policy, target_freq,
--						    relation);
-+		return cpufreq_table_index_unsorted(policy, target_freq, min,
-+						    max, relation);
- retry:
- 	switch (relation) {
- 	case CPUFREQ_RELATION_L:
--		idx = cpufreq_table_find_index_l(policy, target_freq,
--						 efficiencies);
-+		idx = find_index_l(policy, target_freq, min, max, efficiencies);
- 		break;
- 	case CPUFREQ_RELATION_H:
--		idx = cpufreq_table_find_index_h(policy, target_freq,
--						 efficiencies);
-+		idx = find_index_h(policy, target_freq, min, max, efficiencies);
- 		break;
- 	case CPUFREQ_RELATION_C:
--		idx = cpufreq_table_find_index_c(policy, target_freq,
--						 efficiencies);
-+		idx = find_index_c(policy, target_freq, min, max, efficiencies);
- 		break;
- 	default:
- 		WARN_ON_ONCE(1);
- 		return 0;
- 	}
- 
--	/* Limit frequency index to honor policy->min/max */
--	if (!cpufreq_is_in_limits(policy, idx) && efficiencies) {
-+	/* Limit frequency index to honor min and max */
-+	if (!cpufreq_is_in_limits(policy, min, max, idx) && efficiencies) {
- 		efficiencies = false;
- 		goto retry;
- 	}
+-	if (sess->state == SMB2_SESSION_VALID) {
+-		ksmbd_free_user(sess->user);
+-		sess->user = NULL;
+-	}
+-
+ 	retval = ksmbd_krb5_authenticate(sess, in_blob, in_len,
+ 					 out_blob, &out_len);
+ 	if (retval) {
 
 
 
