@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-142358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA997AAEA46
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:53:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 654A2AAE976
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:45:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EA4350863C
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:53:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68AB61C275DF
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:45:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AD4E21E0BB;
-	Wed,  7 May 2025 18:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E21C28DF59;
+	Wed,  7 May 2025 18:45:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SMo47RPh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="voGlZGi8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA5051FF5EC;
-	Wed,  7 May 2025 18:53:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 472C428E572;
+	Wed,  7 May 2025 18:45:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644004; cv=none; b=ONnEFhISfNx4/9TLHGeSthni1nrP+IxrQ5cb8uMStY5/qYI6RoJ9501820hkMkAyLqSb2vWgaVeN2K+R0O6y4w4ohzLEmyJR4nCx0siwFfZ234MsiIKMr6zCfxH8yYoF2Vx/IslpLetaX4TYneMS3HoKAbegIu72bpE4zJCJoSA=
+	t=1746643509; cv=none; b=adbdv9eOrAvBttgKa0AnEgXCr3FeVDJTFwlC8mSsJYmLGnNSsYLAl49i/Hha9E0pCoBM97U86UgMXfiLGvWQEB3e4/FPzUmzBhdJKqjTdLgy1e9HGxpviAxPIE7nBajvRrh9mpeey5Kp4GoR/8qhoUSKd6zKKxOvK8+FMVyzXOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644004; c=relaxed/simple;
-	bh=DHWPukoH2pJ04nAcLk7rzKMeUZpcoup+m+3erVyhVHI=;
+	s=arc-20240116; t=1746643509; c=relaxed/simple;
+	bh=NqT8dQQ5IamaIkZqXGU/AZgo8s/u0mOpuIfuR/VKlrc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fhgRHClGFbuBCrlB3ZXLC2sYJE5GdQBWzzwsPB+NQjryiNokUVq/xa1FesCSpQPqoAJBgs24yflGtIkcjb+QEcY8MWLvNL2EHeEWHKC6pbtFTqq8G1p8/mgpP3oSbxBYmdZpGE5Ae6qRYYnzs3Ag80LXIsnF0OF9N73g94cUU2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SMo47RPh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F638C4CEE2;
-	Wed,  7 May 2025 18:53:23 +0000 (UTC)
+	 MIME-Version; b=K1M7Y7OZKMhkPSkIRibp/bk3IVvuDpxoiUmK6MKOePTHOqFnzNWN9yNUEVRbR+pyREYDt6kCSIeZ1J3W8ZtA2NVexIIL8zT+SxryzawLegFG4lmfyfsUwGgcI7YF68l1+hq8DRxOB+hv2O/aQ/HGrcC3UTBu2ND30AXHeSmYKYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=voGlZGi8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD481C4CEE2;
+	Wed,  7 May 2025 18:45:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644004;
-	bh=DHWPukoH2pJ04nAcLk7rzKMeUZpcoup+m+3erVyhVHI=;
+	s=korg; t=1746643509;
+	bh=NqT8dQQ5IamaIkZqXGU/AZgo8s/u0mOpuIfuR/VKlrc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SMo47RPhgskvKZtU3hbbWuzwWJTpauhKTh34ifVb7bsG8kLBPO0iZUxDKBEWqn0d3
-	 SF53Q14RjdBys+sskyP3hSPDINQaY9Nm14hK+a4EevBhsUxLzoDUtJUg/jJYQhZKVu
-	 ARiSZAxkMYrPMqU68fH04JezqY1YWNmKUVr7OAHE=
+	b=voGlZGi8fFBqcJsRzJlPD7/b6qZco/1iwgjGSdTgT1gaM4yoFVsEDHDlX8k33jgud
+	 hdwgNtDSk0JV+ivDIxVXrlQdZpgFVGnH3S6Ka5TLVFUgvLK/NyM2UkKkv4skT9Mnc9
+	 e7G4mhVs8adbT7F0LyxgM5E4AmC9zPTslNKT8auU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Justin Lai <justinlai0215@realtek.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 089/183] rtase: Modify the condition used to detect overflow in rtase_calc_time_mitigation
-Date: Wed,  7 May 2025 20:38:54 +0200
-Message-ID: <20250507183828.431970777@linuxfoundation.org>
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Christian Loehle <christian.loehle@arm.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>
+Subject: [PATCH 6.1 20/97] cpufreq: Avoid using inconsistent policy->min and policy->max
+Date: Wed,  7 May 2025 20:38:55 +0200
+Message-ID: <20250507183807.795168733@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
+References: <20250507183806.987408728@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +62,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Lai <justinlai0215@realtek.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 68f9d8974b545668e1be2422240b25a92e304b14 ]
+commit 7491cdf46b5cbdf123fc84fbe0a07e9e3d7b7620 upstream.
 
-Fix the following compile error reported by the kernel test
-robot by modifying the condition used to detect overflow in
-rtase_calc_time_mitigation.
+Since cpufreq_driver_resolve_freq() can run in parallel with
+cpufreq_set_policy() and there is no synchronization between them,
+the former may access policy->min and policy->max while the latter
+is updating them and it may see intermediate values of them due
+to the way the update is carried out.  Also the compiler is free
+to apply any optimizations it wants both to the stores in
+cpufreq_set_policy() and to the loads in cpufreq_driver_resolve_freq()
+which may result in additional inconsistencies.
 
-In file included from include/linux/mdio.h:10:0,
-                  from drivers/net/ethernet/realtek/rtase/rtase_main.c:58:
- In function 'u16_encode_bits',
-     inlined from 'rtase_calc_time_mitigation.constprop' at drivers/net/
-     ethernet/realtek/rtase/rtase_main.c:1915:13,
-     inlined from 'rtase_init_software_variable.isra.41' at drivers/net/
-     ethernet/realtek/rtase/rtase_main.c:1961:13,
-     inlined from 'rtase_init_one' at drivers/net/ethernet/realtek/
-     rtase/rtase_main.c:2111:2:
->> include/linux/bitfield.h:178:3: error: call to '__field_overflow'
-      declared with attribute error: value doesn't fit into mask
-    __field_overflow();     \
-    ^~~~~~~~~~~~~~~~~~
- include/linux/bitfield.h:198:2: note: in expansion of macro
- '____MAKE_OP'
-   ____MAKE_OP(u##size,u##size,,)
-   ^~~~~~~~~~~
- include/linux/bitfield.h:200:1: note: in expansion of macro
- '__MAKE_OP'
-  __MAKE_OP(16)
-  ^~~~~~~~~
+To address this, use WRITE_ONCE() when updating policy->min and
+policy->max in cpufreq_set_policy() and use READ_ONCE() for reading
+them in cpufreq_driver_resolve_freq().  Moreover, rearrange the update
+in cpufreq_set_policy() to avoid storing intermediate values in
+policy->min and policy->max with the help of the observation that
+their new values are expected to be properly ordered upfront.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202503182158.nkAlbJWX-lkp@intel.com/
-Fixes: a36e9f5cfe9e ("rtase: Add support for a pci table in this module")
-Signed-off-by: Justin Lai <justinlai0215@realtek.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250424040444.5530-1-justinlai0215@realtek.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Also modify cpufreq_driver_resolve_freq() to take the possible reverse
+ordering of policy->min and policy->max, which may happen depending on
+the ordering of operations when this function and cpufreq_set_policy()
+run concurrently, into account by always honoring the max when it
+turns out to be less than the min (in case it comes from thermal
+throttling or similar).
+
+Fixes: 151717690694 ("cpufreq: Make policy min/max hard requirements")
+Cc: 5.16+ <stable@vger.kernel.org> # 5.16+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Christian Loehle <christian.loehle@arm.com>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Link: https://patch.msgid.link/5907080.DvuYhMxLoT@rjwysocki.net
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/realtek/rtase/rtase_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/cpufreq/cpufreq.c |   32 +++++++++++++++++++++++++-------
+ 1 file changed, 25 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/realtek/rtase/rtase_main.c b/drivers/net/ethernet/realtek/rtase/rtase_main.c
-index 2aacc1996796d..55b8d36661530 100644
---- a/drivers/net/ethernet/realtek/rtase/rtase_main.c
-+++ b/drivers/net/ethernet/realtek/rtase/rtase_main.c
-@@ -1925,8 +1925,8 @@ static u16 rtase_calc_time_mitigation(u32 time_us)
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -532,8 +532,6 @@ static unsigned int __resolve_freq(struc
+ {
+ 	unsigned int idx;
  
- 	time_us = min_t(int, time_us, RTASE_MITI_MAX_TIME);
+-	target_freq = clamp_val(target_freq, policy->min, policy->max);
+-
+ 	if (!policy->freq_table)
+ 		return target_freq;
  
--	msb = fls(time_us);
--	if (msb >= RTASE_MITI_COUNT_BIT_NUM) {
-+	if (time_us > RTASE_MITI_TIME_COUNT_MASK) {
-+		msb = fls(time_us);
- 		time_unit = msb - RTASE_MITI_COUNT_BIT_NUM;
- 		time_count = time_us >> (msb - RTASE_MITI_COUNT_BIT_NUM);
- 	} else {
--- 
-2.39.5
-
+@@ -557,7 +555,22 @@ static unsigned int __resolve_freq(struc
+ unsigned int cpufreq_driver_resolve_freq(struct cpufreq_policy *policy,
+ 					 unsigned int target_freq)
+ {
+-	return __resolve_freq(policy, target_freq, CPUFREQ_RELATION_LE);
++	unsigned int min = READ_ONCE(policy->min);
++	unsigned int max = READ_ONCE(policy->max);
++
++	/*
++	 * If this function runs in parallel with cpufreq_set_policy(), it may
++	 * read policy->min before the update and policy->max after the update
++	 * or the other way around, so there is no ordering guarantee.
++	 *
++	 * Resolve this by always honoring the max (in case it comes from
++	 * thermal throttling or similar).
++	 */
++	if (unlikely(min > max))
++		min = max;
++
++	return __resolve_freq(policy, clamp_val(target_freq, min, max),
++			      CPUFREQ_RELATION_LE);
+ }
+ EXPORT_SYMBOL_GPL(cpufreq_driver_resolve_freq);
+ 
+@@ -2283,6 +2296,7 @@ int __cpufreq_driver_target(struct cpufr
+ 	if (cpufreq_disabled())
+ 		return -ENODEV;
+ 
++	target_freq = clamp_val(target_freq, policy->min, policy->max);
+ 	target_freq = __resolve_freq(policy, target_freq, relation);
+ 
+ 	pr_debug("target for CPU %u: %u kHz, relation %u, requested %u kHz\n",
+@@ -2573,11 +2587,15 @@ static int cpufreq_set_policy(struct cpu
+ 	 * Resolve policy min/max to available frequencies. It ensures
+ 	 * no frequency resolution will neither overshoot the requested maximum
+ 	 * nor undershoot the requested minimum.
++	 *
++	 * Avoid storing intermediate values in policy->max or policy->min and
++	 * compiler optimizations around them because they may be accessed
++	 * concurrently by cpufreq_driver_resolve_freq() during the update.
+ 	 */
+-	policy->min = new_data.min;
+-	policy->max = new_data.max;
+-	policy->min = __resolve_freq(policy, policy->min, CPUFREQ_RELATION_L);
+-	policy->max = __resolve_freq(policy, policy->max, CPUFREQ_RELATION_H);
++	WRITE_ONCE(policy->max, __resolve_freq(policy, new_data.max, CPUFREQ_RELATION_H));
++	new_data.min = __resolve_freq(policy, new_data.min, CPUFREQ_RELATION_L);
++	WRITE_ONCE(policy->min, new_data.min > policy->max ? policy->max : new_data.min);
++
+ 	trace_cpu_frequency_limits(policy);
+ 
+ 	policy->cached_target_freq = UINT_MAX;
 
 
 
