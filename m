@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-142582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA60AAAEB3C
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:05:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31DEEAAEBB5
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:09:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED23D1C08B65
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:05:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 105C35273AC
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:08:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F38DA28E565;
-	Wed,  7 May 2025 19:04:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA9D128AAE9;
+	Wed,  7 May 2025 19:08:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EK8wMPO1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TrFg3Gtd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B04C228DF3C;
-	Wed,  7 May 2025 19:04:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775DF1EB5DD;
+	Wed,  7 May 2025 19:08:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644698; cv=none; b=DkslyQrFBrA435lkNLzj2sR+57QvfnCUWGWKg1WCInurDtYjlfqh31ECimBpJE+sGaL2FU+TwA4z58frN4wysLBqmYL83eJ64ADY010CRC2BvKRmT9uhfUmfIwHedbOo+8Ww56DrWArzBjV8wFqF6JgdCKbpqMT7zZHXQsS469E=
+	t=1746644920; cv=none; b=SsXfhKqM3/qYE+wh9tjIJq97VEUlM8BU/2vbqS1bkkwmVSnakcC9uBp8XFjG1xgRdcun36FQAKq2LBHSSZ9fxAbzeXo6Md8FiuvFnjWbK/7T5NTsR5MPITfImXw23eG55YutnsHbaofKm+xEwQ0E+tYWYVNR2zYsvQ1TxU3Fq2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644698; c=relaxed/simple;
-	bh=RIdfq6LQa7/SDKSSSwtdjhc1TC6O5yS9gQyN541zSGY=;
+	s=arc-20240116; t=1746644920; c=relaxed/simple;
+	bh=9KSSKpSVTTaSpzc4gpqZR61Tnt5plZekX/L0nIJ7QgM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MbKIqW37RW6oIt13Wpkl/sFSrZzQ2B6/AO06SEGr50k4ca0BXWrfkoUZXkHBvLrUXCTndFJmS5MWqQpZZNV7h1e++V2WBGR5f3fMx/pwUxbHpjKSmyS64/U/enfEXzrfCFvBDX/jEzvDSOaECyIFx2oOdTt9a0vqPdYZFxJrHvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EK8wMPO1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 426C5C4CEEE;
-	Wed,  7 May 2025 19:04:58 +0000 (UTC)
+	 MIME-Version; b=Qc+Up1aIHbqkXiebKG2XP+mRiCgmkUueLorKE1UGoa/zq3wOhY4P2cWXebNYgBnJATE4HVoAgr9FkJgTIqyQzLSs4PqXaL0TZze9vnpcOpd5sFx3BJeGXpJxDLknjH6z9v76mUjjPSWQn9M5nznG3HI1y5z1juMZ2sMTgDqQ0Vc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TrFg3Gtd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBEB1C4CEE2;
+	Wed,  7 May 2025 19:08:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644698;
-	bh=RIdfq6LQa7/SDKSSSwtdjhc1TC6O5yS9gQyN541zSGY=;
+	s=korg; t=1746644920;
+	bh=9KSSKpSVTTaSpzc4gpqZR61Tnt5plZekX/L0nIJ7QgM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EK8wMPO1M5NO7mICOZEFa1W2MTELdLskp2IDBtK87d9ENIrcrhLcKJEf5fyR0id2d
-	 1rZwfKhJjJtOTwOMBf0/Et8mJE0tuvxHfG0AAbLiiM7ETn1ekfDm4qRd2iodwirjMH
-	 k0MaIxA0PhyrH9w7apGsPXyrCOdr3t/D1gqiLVRg=
+	b=TrFg3GtdGvtLjr80O901vl+jcLZSk+dmDYDS0pHyDDELX9fMUSxVh9Lt+kXfgF4Ud
+	 jruXo6SagibUQEhl2afHf1X55Xy4FJepf+EYmLoM1uaJoF/kTdnOzr1smyv0OJYz2q
+	 iC3ox35tObxj6sLjhV0F0EMPHQVnE13PLgDMKAhk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Golle <daniel@makrotopia.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 087/164] net: ethernet: mtk_eth_soc: sync mtk_clks_source_name array
+	Nick Zavaritsky <mejedi@gmail.com>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Subject: [PATCH 6.6 036/129] selftests/bpf: test for changing packet data from global functions
 Date: Wed,  7 May 2025 20:39:32 +0200
-Message-ID: <20250507183824.486019533@linuxfoundation.org>
+Message-ID: <20250507183814.998795348@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Golle <daniel@makrotopia.org>
+From: Eduard Zingerman <eddyz87@gmail.com>
 
-[ Upstream commit 8c47d5753a119f1c986bc3ed92e9178d2624e1e8 ]
+commit 3f23ee5590d9605dbde9a5e1d4b97637a4803329 upstream.
 
-When removing the clock bits for clocks which aren't used by the
-Ethernet driver their names should also have been removed from the
-mtk_clks_source_name array.
+Check if verifier is aware of packet pointers invalidation done in
+global functions. Based on a test shared by Nick Zavaritsky in [0].
 
-Remove them now as enum mtk_clks_map needs to match the
-mtk_clks_source_name array so the driver can make sure that all required
-clocks are present and correctly name missing clocks.
+[0] https://lore.kernel.org/bpf/0498CA22-5779-4767-9C0C-A9515CEA711F@gmail.com/
 
-Fixes: 887b1d1adb2e ("net: ethernet: mtk_eth_soc: drop clocks unused by Ethernet driver")
-Signed-off-by: Daniel Golle <daniel@makrotopia.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/d075e706ff1cebc07f9ec666736d0b32782fd487.1745555321.git.daniel@makrotopia.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Suggested-by: Nick Zavaritsky <mejedi@gmail.com>
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20241210041100.1898468-5-eddyz87@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mediatek/mtk_eth_soc.c | 4 ----
- 1 file changed, 4 deletions(-)
+ tools/testing/selftests/bpf/progs/verifier_sock.c |   28 ++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-index 223aee1af4430..5e7280479ca1c 100644
---- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-+++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
-@@ -269,12 +269,8 @@ static const char * const mtk_clks_source_name[] = {
- 	"ethwarp_wocpu2",
- 	"ethwarp_wocpu1",
- 	"ethwarp_wocpu0",
--	"top_usxgmii0_sel",
--	"top_usxgmii1_sel",
- 	"top_sgm0_sel",
- 	"top_sgm1_sel",
--	"top_xfi_phy0_xtal_sel",
--	"top_xfi_phy1_xtal_sel",
- 	"top_eth_gmii_sel",
- 	"top_eth_refck_50m_sel",
- 	"top_eth_sys_200m_sel",
--- 
-2.39.5
-
+--- a/tools/testing/selftests/bpf/progs/verifier_sock.c
++++ b/tools/testing/selftests/bpf/progs/verifier_sock.c
+@@ -977,4 +977,32 @@ l1_%=:	r0 = *(u8*)(r7 + 0);				\
+ 	: __clobber_all);
+ }
+ 
++__noinline
++long skb_pull_data2(struct __sk_buff *sk, __u32 len)
++{
++	return bpf_skb_pull_data(sk, len);
++}
++
++__noinline
++long skb_pull_data1(struct __sk_buff *sk, __u32 len)
++{
++	return skb_pull_data2(sk, len);
++}
++
++/* global function calls bpf_skb_pull_data(), which invalidates packet
++ * pointers established before global function call.
++ */
++SEC("tc")
++__failure __msg("invalid mem access")
++int invalidate_pkt_pointers_from_global_func(struct __sk_buff *sk)
++{
++	int *p = (void *)(long)sk->data;
++
++	if ((void *)(p + 1) > (void *)(long)sk->data_end)
++		return TCX_DROP;
++	skb_pull_data1(sk, 0);
++	*p = 42; /* this is unsafe */
++	return TCX_PASS;
++}
++
+ char _license[] SEC("license") = "GPL";
 
 
 
