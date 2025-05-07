@@ -1,290 +1,140 @@
-Return-Path: <stable+bounces-142117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142118-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2150AAE84D
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:59:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 656CFAAE850
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:00:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4CC93ACB59
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 17:59:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A8E6520CF4
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:00:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA5F128DB5E;
-	Wed,  7 May 2025 17:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41D161DE3C0;
+	Wed,  7 May 2025 18:00:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vIL2Z/MT"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26CEB28A40A;
-	Wed,  7 May 2025 17:59:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEDA828C862;
+	Wed,  7 May 2025 18:00:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746640777; cv=none; b=hpDCalbHNJebB53IsMSv/ZQga4TQfSbJsed2mQXYBNcyolGiZfK5xDub1Vrt8ToaD/zrtF0cuxXDX8lH5Gxc7Vhc+ssPb0nY4Rq2FWAhz7CkSJ+XkTX1jOOWoCwlUohjGZuDfaFxrg6qK5Vr9lwl9oX1G485hlgrVFjA3EA+/sw=
+	t=1746640812; cv=none; b=GQycDtgl1/TiTG4CCaBMUt7jKflDZGBLC5TZa/wuykSwRJOxLb4jjPq69vHLAcVIH57eHUtLcqALNPnuLBOs8vAelJvo6YJprK9HZkJg1TWGGL9GLem1FMMK3kTHX5aREt3i4c7+irA4/DSKAxvH1PPfXF4AtMByCbj6jKwP2sU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746640777; c=relaxed/simple;
-	bh=wX6INNBRrr2KfnOIS/teo1Q4349z3OUlylBu9eFj/iE=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=ll/N9iEgbXLl2Kil8i0z0oQ0oKDDm2LMOOl4XQttPNgniM4VL3guEyPE+7XUBZsVjxBy2DYLGpo8O8HPAce7Gt+MuCtgSvX3LifNn1gdvrVNFT0fw7CbAQ0PGtmauhdvSBl2KFXvzdXc2UzER+wp91cZ642r18FM3Re+4cMCtnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 36EFD16F2;
-	Wed,  7 May 2025 10:59:24 -0700 (PDT)
-Received: from [192.168.20.57] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 86CA83F5A1;
-	Wed,  7 May 2025 10:59:32 -0700 (PDT)
-Message-ID: <89d1df2f-29d7-4442-9d92-9c29e7276b08@arm.com>
-Date: Wed, 7 May 2025 12:59:30 -0500
+	s=arc-20240116; t=1746640812; c=relaxed/simple;
+	bh=O9c4zHMMjar77PSV4nlSZq5tG5VfvUp5AHlm0Gab6vY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cn9hgsHlKZ5MAnJtaJfhtUhDyCzb6Durya/wPt/mi+KKnOLYECjeEajdPEtk3dAGYv2MNZbzZd/8+HXTh1n4t+Gqa2iTfIeOtBzWIU6qnSBDOZmnOlSE8SStkXe5Tkplzeg4+xtIlZVJMfDS2cqPXLeK3Nw34Rb1nGZvnP+mY14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vIL2Z/MT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF14C4CEE2;
+	Wed,  7 May 2025 18:00:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1746640810;
+	bh=O9c4zHMMjar77PSV4nlSZq5tG5VfvUp5AHlm0Gab6vY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=vIL2Z/MTTBN5AA+dfj/e5vNshsFvg/TvI3i/9hlDaVgujU3F76WXM/KdCs1DCG2TY
+	 WXIN2AwyRBvzpfOk9g7vKXLCBqLMsuEW6P+Hs5CuNtlSIj3GEHzkc8Ho5+zsuh9v5U
+	 TeQynncMmxg8hT4OTJEJlJun4Qq4l5QwxfUicsGk=
+Date: Wed, 7 May 2025 20:00:07 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Omar Sandoval <osandov@osandov.com>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Omar Sandoval <osandov@fb.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.14 102/311] sched/eevdf: Fix se->slice being set to
+ U64_MAX and resulting crash
+Message-ID: <2025050749-refill-overfill-20cb@gregkh>
+References: <20250429161121.011111832@linuxfoundation.org>
+ <20250429161125.215831187@linuxfoundation.org>
+ <aBubqcsiWmEK0NRg@telecaster>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ACPI/PPTT: fix off-by-one error
-From: Jeremy Linton <jeremy.linton@arm.com>
-To: "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: "Heyne, Maximilian" <mheyne@amazon.de>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- Len Brown <lenb@kernel.org>, Sudeep Holla <sudeep.holla@arm.com>,
- Ard Biesheuvel <ardb@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
- "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <20250506-draco-taped-15f475cd@mheyne-amazon>
- <214c2a2d-e0ea-4ec6-9925-05e39319e813@arm.com>
- <CAJZ5v0jvWXDQQ++4wmWJ+i=jds+MZ68bRB9+26WM4tAPHFxALw@mail.gmail.com>
- <1911d3b6-f328-40a6-aa03-cde3d79554de@arm.com>
- <CAJZ5v0ii9HLfqfgcp=1qRRX6M1yThf7ZPNkSLVc5GGFhv=N-Lg@mail.gmail.com>
- <ad04d07b-d610-4355-bd47-1d2fb49711f3@arm.com>
- <fb2e3c60-1171-4f5c-852d-a5bfdc4f9c2a@arm.com>
- <25aa77b9-0077-4021-b55c-e94327b7847b@arm.com>
- <CAJZ5v0hTiJSp9q4iWu_EHB47X3Bf9LFY+ZZoqm7aN0cD8Jnjvg@mail.gmail.com>
- <4d449d83-8b86-4933-8584-bdcbd4db88e8@arm.com>
-Content-Language: en-US
-In-Reply-To: <4d449d83-8b86-4933-8584-bdcbd4db88e8@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aBubqcsiWmEK0NRg@telecaster>
 
-On 5/7/25 12:35 PM, Jeremy Linton wrote:
+On Wed, May 07, 2025 at 10:43:05AM -0700, Omar Sandoval wrote:
+> On Tue, Apr 29, 2025 at 06:38:59PM +0200, Greg Kroah-Hartman wrote:
+> > 6.14-stable review patch.  If anyone has any objections, please let me know.
+> > 
+> > ------------------
+> > 
+> > From: Omar Sandoval <osandov@fb.com>
+> > 
+> > [ Upstream commit bbce3de72be56e4b5f68924b7da9630cc89aa1a8 ]
+> > 
+> > There is a code path in dequeue_entities() that can set the slice of a
+> > sched_entity to U64_MAX, which sometimes results in a crash.
+> > 
+> > The offending case is when dequeue_entities() is called to dequeue a
+> > delayed group entity, and then the entity's parent's dequeue is delayed.
+> > In that case:
+> > 
+> > 1. In the if (entity_is_task(se)) else block at the beginning of
+> >    dequeue_entities(), slice is set to
+> >    cfs_rq_min_slice(group_cfs_rq(se)). If the entity was delayed, then
+> >    it has no queued tasks, so cfs_rq_min_slice() returns U64_MAX.
+> > 2. The first for_each_sched_entity() loop dequeues the entity.
+> > 3. If the entity was its parent's only child, then the next iteration
+> >    tries to dequeue the parent.
+> > 4. If the parent's dequeue needs to be delayed, then it breaks from the
+> >    first for_each_sched_entity() loop _without updating slice_.
+> > 5. The second for_each_sched_entity() loop sets the parent's ->slice to
+> >    the saved slice, which is still U64_MAX.
+> > 
+> > This throws off subsequent calculations with potentially catastrophic
+> > results. A manifestation we saw in production was:
+> > 
+> > 6. In update_entity_lag(), se->slice is used to calculate limit, which
+> >    ends up as a huge negative number.
+> > 7. limit is used in se->vlag = clamp(vlag, -limit, limit). Because limit
+> >    is negative, vlag > limit, so se->vlag is set to the same huge
+> >    negative number.
+> > 8. In place_entity(), se->vlag is scaled, which overflows and results in
+> >    another huge (positive or negative) number.
+> > 9. The adjusted lag is subtracted from se->vruntime, which increases or
+> >    decreases se->vruntime by a huge number.
+> > 10. pick_eevdf() calls entity_eligible()/vruntime_eligible(), which
+> >     incorrectly returns false because the vruntime is so far from the
+> >     other vruntimes on the queue, causing the
+> >     (vruntime - cfs_rq->min_vruntime) * load calulation to overflow.
+> > 11. Nothing appears to be eligible, so pick_eevdf() returns NULL.
+> > 12. pick_next_entity() tries to dereference the return value of
+> >     pick_eevdf() and crashes.
+> > 
+> > Dumping the cfs_rq states from the core dumps with drgn showed tell-tale
+> > huge vruntime ranges and bogus vlag values, and I also traced se->slice
+> > being set to U64_MAX on live systems (which was usually "benign" since
+> > the rest of the runqueue needed to be in a particular state to crash).
+> > 
+> > Fix it in dequeue_entities() by always setting slice from the first
+> > non-empty cfs_rq.
+> > 
+> > Fixes: aef6987d8954 ("sched/eevdf: Propagate min_slice up the cgroup hierarchy")
+> > Signed-off-by: Omar Sandoval <osandov@fb.com>
+> > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> > Signed-off-by: Ingo Molnar <mingo@kernel.org>
+> > Link: https://lkml.kernel.org/r/f0c2d1072be229e1bdddc73c0703919a8b00c652.1745570998.git.osandov@fb.com
+> > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > ---
+> >  kernel/sched/fair.c | 4 +---
+> >  1 file changed, 1 insertion(+), 3 deletions(-)
+> 
 > Hi,
 > 
-> On 5/7/25 12:01 PM, Rafael J. Wysocki wrote:
->> On Wed, May 7, 2025 at 6:41 PM Jeremy Linton <jeremy.linton@arm.com> 
->> wrote:
->>>
->>> On 5/7/25 11:38 AM, Jeremy Linton wrote:
->>>> On 5/7/25 11:31 AM, Jeremy Linton wrote:
->>>>> On 5/7/25 11:12 AM, Rafael J. Wysocki wrote:
->>>>>> On Wed, May 7, 2025 at 5:51 PM Jeremy Linton <jeremy.linton@arm.com>
->>>>>> wrote:
->>>>>>>
->>>>>>> On 5/7/25 10:42 AM, Rafael J. Wysocki wrote:
->>>>>>>> On Wed, May 7, 2025 at 5:25 PM Jeremy Linton
->>>>>>>> <jeremy.linton@arm.com> wrote:
->>>>>>>>>
->>>>>>>>> Hi,
->>>>>>>>>
->>>>>>>>> On 5/6/25 8:13 AM, Heyne, Maximilian wrote:
->>>>>>>>>> Commit 7ab4f0e37a0f ("ACPI PPTT: Fix coding mistakes in a 
->>>>>>>>>> couple of
->>>>>>>>>> sizeof() calls") corrects the processer entry size but unmasked a
->>>>>>>>>> longer
->>>>>>>>>> standing bug where the last entry in the structure can get
->>>>>>>>>> skipped due
->>>>>>>>>> to an off-by-one mistake if the last entry ends exactly at the
->>>>>>>>>> end of
->>>>>>>>>> the ACPI subtable.
->>>>>>>>>>
->>>>>>>>>> The error manifests for instance on EC2 Graviton Metal instances
->>>>>>>>>> with
->>>>>>>>>>
->>>>>>>>>>       ACPI PPTT: PPTT table found, but unable to locate core 
->>>>>>>>>> 63 (63)
->>>>>>>>>>       [...]
->>>>>>>>>>       ACPI: SPE must be homogeneous
->>>>>>>>>>
->>>>>>>>>> Fixes: 2bd00bcd73e5 ("ACPI/PPTT: Add Processor Properties
->>>>>>>>>> Topology Table parsing")
->>>>>>>>>> Cc: stable@vger.kernel.org
->>>>>>>>>> Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
->>>>>>>>>> ---
->>>>>>>>>>      drivers/acpi/pptt.c | 4 ++--
->>>>>>>>>>      1 file changed, 2 insertions(+), 2 deletions(-)
->>>>>>>>>>
->>>>>>>>>> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
->>>>>>>>>> index f73ce6e13065d..4364da90902e5 100644
->>>>>>>>>> --- a/drivers/acpi/pptt.c
->>>>>>>>>> +++ b/drivers/acpi/pptt.c
->>>>>>>>>> @@ -231,7 +231,7 @@ static int acpi_pptt_leaf_node(struct
->>>>>>>>>> acpi_table_header *table_hdr,
->>>>>>>>>>                               sizeof(struct acpi_table_pptt));
->>>>>>>>>>          proc_sz = sizeof(struct acpi_pptt_processor);
->>>>>>>>>
->>>>>>>>> This isn't really right, it should be struct acpi_subtable_header,
->>>>>>>>> then
->>>>>>>>> once the header is safe, pull the length from it.
->>>>>>>>>
->>>>>>>>> But then, really if we are trying to fix the original bug that the
->>>>>>>>> table
->>>>>>>>> could be shorter than the data in it suggests, the struct
->>>>>>>>> acpi_pptt_processor length plus its resources needs to be checked
->>>>>>>>> once
->>>>>>>>> the subtype is known to be a processor node.
->>>>>>>>>
->>>>>>>>> Otherwise the original sizeof * change isn't really fixing 
->>>>>>>>> anything.
->>>>>>>>
->>>>>>>> Sorry, what sense did it make to do
->>>>>>>>
->>>>>>>> proc_sz = sizeof(struct acpi_pptt_processor *);
->>>>>>>>
->>>>>>>> here?  As much as proc_sz = 0 I suppose?
->>>>>>>
->>>>>>> No, I agree, I think the original checks were simplified along 
->>>>>>> the way
->>>>>>> to that. It wasn't 'right' either.
->>>>>>>
->>>>>>> The problem is that there are three subtypes of which processor 
->>>>>>> is only
->>>>>>> one, and that struct acpi_pptt_processor doesn't necessarily reflect
->>>>>>> the
->>>>>>> actual size of the processor structure in the table because it has
->>>>>>> optional private resources tagged onto the end.
->>>>>>
->>>>>> Right.
->>>>>>
->>>>>>> So if the bug being fixed is that the length check is validating 
->>>>>>> that
->>>>>>> the table length is less than the data in the table, that's still a
->>>>>>> problem because its only validating the processor node without
->>>>>>> resources.
->>>>>>
->>>>>> Admittedly, it is not my code, but I understand this check as a
->>>>>> termination condition for the loop: If there's not enough space in 
->>>>>> the
->>>>>> table to hold a thing that I'm looking for, I may as well bail out.
->>>>>>
->>>>>>> AKA the return is still potentially returning a pointer to a 
->>>>>>> structure
->>>>>>> which may not be entirely contained in the table.
->>>>>>
->>>>>> Right, but this check should be made anyway before comparing
->>>>>> cpu_node->parent to node_entry, when it is known to be a CPU entry
->>>>>> because otherwise why bother.
->>>>>
->>>>> Right, but then there is a clarity because really its walking the
->>>>> table+subtypes looking for the cpu node. Exiting early because its not
->>>>> big enough for a cpu node makes sense but you still need the cpu node
->>>>> check to avoid a variation on the original bug.
->>>>>
->>>>>
->>>>>
->>>>>>
->>>>>> Roughly something like this:
->>>>>>
->>>>>> proc_sz = sizeof(struct acpi_pptt_processor);
->>>>>>
->>>>>> while ((unsigned long)entry + entry->length <= table_end) {
->>>>>
->>>>> Here your reading the entry, without knowing its long enough. For the
->>>>> leaf check just using struct acpi_pptt_processor is fine, but for the
->>>>> acpi_find_processor_node():
->>>>>
->>>>> proc_sz = sizeof(struct acpi_subtable_type);
->>>>
->>>> Although, maybe I just wrote code that justifies using
->>>> acpi_pptt_processor here because the entry->num_of_priv_resources 
->>>> length
->>>> check isn't being made without it. So ok, use proc_sz = sizeof(struct
->>>> acpi_subtable_type) and assume that we don't care if the subtable type
->>>> is less than proc_sz.
->>>
->>> Sorry for the noise, scratch that, a better solution is just to swap the
->>> length checking in the 'if' statement. Then its clear its iterating
->>> subtable types not processor nodes.
->>
->> Do you mean something like this (modulo GMail-induced whitespace damage):
->>
->> --- a/drivers/acpi/pptt.c
->> +++ b/drivers/acpi/pptt.c
->> @@ -231,16 +231,22 @@
->>                    sizeof(struct acpi_table_pptt));
->>       proc_sz = sizeof(struct acpi_pptt_processor);
->>
->> -    while ((unsigned long)entry + proc_sz < table_end) {
->> -        cpu_node = (struct acpi_pptt_processor *)entry;
->> -        if (entry->type == ACPI_PPTT_TYPE_PROCESSOR &&
->> -            cpu_node->parent == node_entry)
->> -            return 0;
->> +    while ((unsigned long)entry + proc_sz <= table_end) {
->> +        if ((unsigned long)entry + entry->length <= table_end &&
->> +            entry->type == ACPI_PPTT_TYPE_PROCESSOR &&
->> +            entry->length == proc_sz +
->> +                    entry->number_of_priv_resources * sizeof(u32)) {
->> +            cpu_node = (struct acpi_pptt_processor *)entry;
->> +
->> +            if (cpu_node->parent == node_entry)
->> +                return 0;
->> +        }
->> +
->>           if (entry->length == 0)
->>               return 0;
->> +
->>           entry = ACPI_ADD_PTR(struct acpi_subtable_header, entry,
->>                        entry->length);
->> -
->>       }
->>       return 1;
->>   }
->>
-> 
-> 
-> Right, I think we are largely on the same page, I flipflopped around 
-> about using subtable vs processor but the processor size assumption does 
-> remove an extra check. The version that compiles that I was about to 
-> test (and this will take me hours) looks like:
-> 
-> 
-> @@ -231,7 +231,8 @@ static int acpi_pptt_leaf_node(struct 
-> acpi_table_header *table_hdr,
->                               sizeof(struct acpi_table_pptt));
->          proc_sz = sizeof(struct acpi_pptt_processor);
-> 
-> -       while ((unsigned long)entry + proc_sz < table_end) {
-> +       /* ignore sub-table types that are smaller than a processor node */
-> +       while ((unsigned long)entry + proc_sz <= table_end) {
->                  cpu_node = (struct acpi_pptt_processor *)entry;
->                  if (entry->type == ACPI_PPTT_TYPE_PROCESSOR &&
->                      cpu_node->parent == node_entry)
-> @@ -273,15 +274,18 @@ static struct acpi_pptt_processor 
-> *acpi_find_processor_node(struct acpi_table_he
->          proc_sz = sizeof(struct acpi_pptt_processor);
-> 
->          /* find the processor structure associated with this cpuid */
-> -       while ((unsigned long)entry + proc_sz < table_end) {
-> +       while ((unsigned long)entry + proc_sz <= table_end) {
->                  cpu_node = (struct acpi_pptt_processor *)entry;
-> 
->                  if (entry->length == 0) {
->                          pr_warn("Invalid zero length subtable\n");
->                          break;
->                  }
-> +               /* entry->length may not equal proc_sz, revalidate the 
-> processor structure length */
->                  if (entry->type == ACPI_PPTT_TYPE_PROCESSOR &&
->                      acpi_cpu_id == cpu_node->acpi_processor_id &&
-> +                   (unsigned long)entry + entry->length <= table_end &&
-> +                   entry->length == proc_sz + cpu_node- 
->  >acpi_processor_id * sizeof(u32) &&
+> I believe this fix should go in 6.12, too.
 
-s/acpi_processor_id/number_of_priv_resources.
+Great, can you submit a version that applies to 6.12.y?
 
->                       acpi_pptt_leaf_node(table_hdr, cpu_node)) {
->                          return (struct acpi_pptt_processor *)entry;
->                  }
-> 
-> 
-> 
+thanks,
 
+greg k-h
 
