@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-142709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B99DBAAEBD9
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:11:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA2D0AAEB1E
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:03:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 519267AAF8D
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:10:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3126C1C065B5
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:03:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B0D28DF4F;
-	Wed,  7 May 2025 19:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12F0E28D834;
+	Wed,  7 May 2025 19:03:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="duYHvOu3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kHGfK43+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 602B42144C1;
-	Wed,  7 May 2025 19:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4D9C29A0;
+	Wed,  7 May 2025 19:03:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746645088; cv=none; b=oD3ayqQkfRMO9TNqB9sKJScdI0moLhu/2G5NMaqIoUO0Jmqz4NBMVXfUE6HGu9CoHt3JQQnf+OiagCBQwrFhPROe4v6H/mFtGA6s1RcNL82NFw1iHjrI9L4u3qS2rwnfcO38r6YL2ogKo8tErL9YSC43c554IfjeSgLOZJh+udk=
+	t=1746644614; cv=none; b=szZzHWAsOluSLhAjNtMdFt5BmhDfcSoMH4GLwofPjvmnW38kAKo6NH+6IVihXRC3P6NS4/nt8tfpeEr2eBFB4+u4d0KHfjjer46GRSdq+playzd9ytoZ4NFXCGn9nADW435roazwrwJnvyAVbH9eU6k9KG/MUeO/H6Q7sy/4XGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746645088; c=relaxed/simple;
-	bh=qAz1E8er0nD020c3Gakm8w5bhTFkiUMJtdH7z86E+Mk=;
+	s=arc-20240116; t=1746644614; c=relaxed/simple;
+	bh=26eTC2p2ZrAJtfWHA1+yE61usq+5vaabwMxfMAzUyes=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BYAhDkshdbazCPeApLr88w+2TIAHcSNETGEjFZizcbMdiEyOJ9ov70Lb+NYkRx38bAEO+oZTgCf74j6QRZmzEq+7LSUE/W/cEqzm7CNhDJWY2BZtuiZvIXzFjyt1duSl85nv4/Ey2LcFfOGk84yldN904OrHxU8UqCr6lbfLEyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=duYHvOu3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8ED0C4CEE2;
-	Wed,  7 May 2025 19:11:27 +0000 (UTC)
+	 MIME-Version; b=ab3OwNb9utL0IB6eRvkuOlPHxWlTNE3f2ykkUfGIP/jhX8bscRQd3rCU0OFol3Anq44wqt+4iovaDk0iqMgjnwKX+dDKliUhYoXLL3lRUj4IaJSg3h40CxzgCvpQTeB5X0s0vsQaJrjfGTAOe0kwFdQ/APEo/heUVkn2nI1satA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kHGfK43+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 390FAC4CEE2;
+	Wed,  7 May 2025 19:03:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746645088;
-	bh=qAz1E8er0nD020c3Gakm8w5bhTFkiUMJtdH7z86E+Mk=;
+	s=korg; t=1746644614;
+	bh=26eTC2p2ZrAJtfWHA1+yE61usq+5vaabwMxfMAzUyes=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=duYHvOu3a3vCkm7v/SzvyRMGmqvOAk/itCbQJyTn19/kfLHrWtFjHIHb0Np22m3J5
-	 kAJpOs8lFbqXwtHgK2sD/Yc+9GcVKEsSfUH6Pfw83j2A8JocqNdKz+JY63OXu4mxhI
-	 Qv75oxdS0xS0WGj1/I32CAH+mMROTVQGUGSOVMPk=
+	b=kHGfK43+yP1fdnScbBfQHdOGXFqeJuG0vDUW1tJJpzfg+WcTUqdtBDOh7ZEHdkzwz
+	 nFMVqO1yy0VF2m77a1MaAo3mHWOFx8A3yecFg7QpHuwZp/q9mxS1VSScYdKe6eQnPx
+	 gEY/qQptMMibb8cZnuMWRO4TzPn4bPavpEsN46gw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Linxuan <chenlinxuan@uniontech.com>,
-	Jani Nikula <jani.nikula@intel.com>,
+	Russell Cloran <rcloran@gmail.com>,
+	Maxime Ripard <mripard@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 050/129] drm/i915/pxp: fix undefined reference to `intel_pxp_gsccs_is_ready_for_sessions
+Subject: [PATCH 6.12 101/164] drm/mipi-dbi: Fix blanking for non-16 bit formats
 Date: Wed,  7 May 2025 20:39:46 +0200
-Message-ID: <20250507183815.565611089@linuxfoundation.org>
+Message-ID: <20250507183825.064618278@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
-References: <20250507183813.500572371@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Linxuan <chenlinxuan@uniontech.com>
+From: Russell Cloran <rcloran@gmail.com>
 
-[ Upstream commit 7e21ea8149a0e41c3666ee52cc063a6f797a7a2a ]
+[ Upstream commit 1a8bc0fe8039e1e57f68c4a588f0403d98bfeb1f ]
 
-On x86_64 with gcc version 13.3.0, I compile kernel with:
+On r6x2b6x2g6x2 displays not enough blank data is sent to blank the
+entire screen. When support for these displays was added, the dirty
+function was updated to handle the different amount of data, but
+blanking was not, and remained hardcoded as 2 bytes per pixel.
 
-  make defconfig
-  ./scripts/kconfig/merge_config.sh .config <(
-    echo CONFIG_COMPILE_TEST=y
-  )
-  make KCFLAGS="-fno-inline-functions -fno-inline-small-functions -fno-inline-functions-called-once"
+This change applies almost the same algorithm used in the dirty function
+to the blank function, but there is no fb available at that point, and
+no concern about having to transform any data, so the dbidev pixel
+format is always used for calculating the length.
 
-Then I get a linker error:
-
-  ld: vmlinux.o: in function `pxp_fw_dependencies_completed':
-  kintel_pxp.c:(.text+0x95728f): undefined reference to `intel_pxp_gsccs_is_ready_for_sessions'
-
-This is caused by not having a intel_pxp_gsccs_is_ready_for_sessions()
-header stub for CONFIG_DRM_I915_PXP=n. Add it.
-
-Signed-off-by: Chen Linxuan <chenlinxuan@uniontech.com>
-Fixes: 99afb7cc8c44 ("drm/i915/pxp: Add ARB session creation and cleanup")
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://lore.kernel.org/r/20250415090616.2649889-1-jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit b484c1e225a6a582fc78c4d7af7b286408bb7d41)
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Fixes: 4aebb79021f3 ("drm/mipi-dbi: Add support for DRM_FORMAT_RGB888")
+Signed-off-by: Russell Cloran <rcloran@gmail.com>
+Link: https://lore.kernel.org/r/20250415053259.79572-1-rcloran@gmail.com
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/pxp/intel_pxp_gsccs.h | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/drm_mipi_dbi.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/pxp/intel_pxp_gsccs.h b/drivers/gpu/drm/i915/pxp/intel_pxp_gsccs.h
-index 298ad38e6c7df..c36d956b9b824 100644
---- a/drivers/gpu/drm/i915/pxp/intel_pxp_gsccs.h
-+++ b/drivers/gpu/drm/i915/pxp/intel_pxp_gsccs.h
-@@ -25,6 +25,7 @@ int intel_pxp_gsccs_init(struct intel_pxp *pxp);
+diff --git a/drivers/gpu/drm/drm_mipi_dbi.c b/drivers/gpu/drm/drm_mipi_dbi.c
+index 34bca75675766..3ea9f23b4f67a 100644
+--- a/drivers/gpu/drm/drm_mipi_dbi.c
++++ b/drivers/gpu/drm/drm_mipi_dbi.c
+@@ -404,12 +404,16 @@ static void mipi_dbi_blank(struct mipi_dbi_dev *dbidev)
+ 	u16 height = drm->mode_config.min_height;
+ 	u16 width = drm->mode_config.min_width;
+ 	struct mipi_dbi *dbi = &dbidev->dbi;
+-	size_t len = width * height * 2;
++	const struct drm_format_info *dst_format;
++	size_t len;
+ 	int idx;
  
- int intel_pxp_gsccs_create_session(struct intel_pxp *pxp, int arb_session_id);
- void intel_pxp_gsccs_end_arb_fw_session(struct intel_pxp *pxp, u32 arb_session_id);
-+bool intel_pxp_gsccs_is_ready_for_sessions(struct intel_pxp *pxp);
+ 	if (!drm_dev_enter(drm, &idx))
+ 		return;
  
- #else
- static inline void intel_pxp_gsccs_fini(struct intel_pxp *pxp)
-@@ -36,8 +37,11 @@ static inline int intel_pxp_gsccs_init(struct intel_pxp *pxp)
- 	return 0;
- }
++	dst_format = drm_format_info(dbidev->pixel_format);
++	len = drm_format_info_min_pitch(dst_format, 0, width) * height;
++
+ 	memset(dbidev->tx_buf, 0, len);
  
--#endif
-+static inline bool intel_pxp_gsccs_is_ready_for_sessions(struct intel_pxp *pxp)
-+{
-+	return false;
-+}
- 
--bool intel_pxp_gsccs_is_ready_for_sessions(struct intel_pxp *pxp);
-+#endif
- 
- #endif /*__INTEL_PXP_GSCCS_H__ */
+ 	mipi_dbi_set_window_address(dbidev, 0, width - 1, 0, height - 1);
 -- 
 2.39.5
 
