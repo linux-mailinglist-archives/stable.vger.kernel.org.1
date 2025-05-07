@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-142727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B317AAEBEF
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:12:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56B90AAEB7E
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:08:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9CCB7B217D8
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:11:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FAC61B683E6
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:07:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0721928DF4F;
-	Wed,  7 May 2025 19:12:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D464214813;
+	Wed,  7 May 2025 19:07:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lIp61qpC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Z9eqjYd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B858C214813;
-	Wed,  7 May 2025 19:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3001E1E1DF6;
+	Wed,  7 May 2025 19:07:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746645143; cv=none; b=BPCmwH8XiBWMnmrxAm951N1G4sW/U9ovDwXJwVNZ4mNM2K9P47C6jK2QL2+bFeD6Pd4+mWaY/MAdZ0sXcg4VuOtxS+ehfI0KcNDESrCGlNeS9k9L9Fk5yNoRB+qcLh5oYsFuhe+sifviCdXUJrAb5QwpzeCr9+EcPcnp1D1crnE=
+	t=1746644823; cv=none; b=h3WqfockBl1/RaT95LM5zcYKRQgHEcxVeLT4IKsExnEWDw75nK5jC1x3vnaE4+6zxcuYqZd3/tUR4AEiPRFnlaHrO9SZMugVs8HocHo0N9MfpI7+iOXjZd+pAZHzP1hVpdvoKnmiQQCz4IvwRCxZDHchvKsE/CZll2C5vnXwlMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746645143; c=relaxed/simple;
-	bh=UZK5fAWU9oErdsqou8j1auVdvsPt+YEcIHv0gFzt79U=;
+	s=arc-20240116; t=1746644823; c=relaxed/simple;
+	bh=r4wdhBHAOtVRSsyrqtBA4xat4rBd50eIE0ydHORCXkg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iddC4TkfPtKdi4ZI0NnK2Dxz06kcs0rrPxIBo+p1QVmUmlv97tjSh89eqeRW6qHAZ+6xzgLOHpooA0oY9JmskbRrFYgF5kRxYQnTapFpf/P/fOHTs+/MAHcgort2ZrpJryKQRi1pei2WlAlVCvDfUmsrAp2F0d6hR0ZJxkQWtiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lIp61qpC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21F69C4CEEB;
-	Wed,  7 May 2025 19:12:22 +0000 (UTC)
+	 MIME-Version; b=dVVq3cycJ8SrD9Kxqdvhh0gnSaV7eELuWAKOwS5SXJIfQM8aD40roaq3tBG+LB6XKwCLNOq+333KIG82pX8lt50pD2au4itW5LPXFnZPxe5ER6nVAC7ZweKNMw3YJX1g4WC138KXuYf3uzDKMlaHAeGPtZE9y8Wq/N0L5XarZmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Z9eqjYd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE9D9C4CEE2;
+	Wed,  7 May 2025 19:07:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746645143;
-	bh=UZK5fAWU9oErdsqou8j1auVdvsPt+YEcIHv0gFzt79U=;
+	s=korg; t=1746644823;
+	bh=r4wdhBHAOtVRSsyrqtBA4xat4rBd50eIE0ydHORCXkg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lIp61qpCYOuMigcFtfsgcXfdtVCX1qXzSCemY1l+oJ5Lx6dckK6mxWIqGCpM/22RK
-	 lIldF1V1mNmdVTxX42lOKa49mJPkT1cDETtJGfsauJIQa332zK9CNRaFDFtb1Gy/R+
-	 pUjqzBegadJfvFXli7nB0wzHFuRitB5sq1R02JLY=
+	b=0Z9eqjYd02Hrv0SLPfxrqfqlhSZvCYeg2DJyDm68wDAE8KPrlKyr5PRsyhydB/mwz
+	 lO4zLrWowzTGqKrH20svUJGGdM9eCi+jUaPP+yVuFtIqYoeI+Yqx2K17Pv9g+F8YLI
+	 VqU/zz+1ugIEb5vY3kYjeJgglYA4i9O7eY0Pbf0g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Marc Zyngier <maz@kernel.org>,
 	Christian Bruel <christian.bruel@foss.st.com>,
 	Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 107/129] arm64: dts: st: Adjust interrupt-controller for stm32mp25 SoCs
+Subject: [PATCH 6.12 158/164] arm64: dts: st: Use 128kB size for aliased GIC400 register access on stm32mp25 SoCs
 Date: Wed,  7 May 2025 20:40:43 +0200
-Message-ID: <20250507183817.829718576@linuxfoundation.org>
+Message-ID: <20250507183827.361193454@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
-References: <20250507183813.500572371@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Christian Bruel <christian.bruel@foss.st.com>
 
-[ Upstream commit de2b2107d5a41a91ab603e135fb6e408abbee28e ]
+[ Upstream commit 06c231fe953a26f4bc9d7a37ba1b9b288a59c7c2 ]
 
-Use gic-400 compatible and remove address-cells = <1> on aarch64
+Adjust the size of 8kB GIC regions to 128kB so that each 4kB is mapped 16
+times over a 64kB region.
+The offset is then adjusted in the irq-gic driver.
+
+see commit 12e14066f4835 ("irqchip/GIC: Add workaround for aliased GIC400")
 
 Fixes: 5d30d03aaf785 ("arm64: dts: st: introduce stm32mp25 SoCs family")
+Suggested-by: Marc Zyngier <maz@kernel.org>
 Signed-off-by: Christian Bruel <christian.bruel@foss.st.com>
-Link: https://lore.kernel.org/r/20250415111654.2103767-2-christian.bruel@foss.st.com
+Acked-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20250415111654.2103767-3-christian.bruel@foss.st.com
 Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/st/stm32mp251.dtsi | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/arm64/boot/dts/st/stm32mp251.dtsi | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/arch/arm64/boot/dts/st/stm32mp251.dtsi b/arch/arm64/boot/dts/st/stm32mp251.dtsi
-index 5268a43218415..3219a8ea1e6a7 100644
+index 896d92032284b..cd9b92144a42c 100644
 --- a/arch/arm64/boot/dts/st/stm32mp251.dtsi
 +++ b/arch/arm64/boot/dts/st/stm32mp251.dtsi
-@@ -73,9 +73,8 @@
- 	};
- 
- 	intc: interrupt-controller@4ac00000 {
--		compatible = "arm,cortex-a7-gic";
-+		compatible = "arm,gic-400";
+@@ -118,9 +118,9 @@
  		#interrupt-cells = <3>;
--		#address-cells = <1>;
  		interrupt-controller;
  		reg = <0x0 0x4ac10000 0x0 0x1000>,
- 		      <0x0 0x4ac20000 0x0 0x2000>,
+-		      <0x0 0x4ac20000 0x0 0x2000>,
+-		      <0x0 0x4ac40000 0x0 0x2000>,
+-		      <0x0 0x4ac60000 0x0 0x2000>;
++		      <0x0 0x4ac20000 0x0 0x20000>,
++		      <0x0 0x4ac40000 0x0 0x20000>,
++		      <0x0 0x4ac60000 0x0 0x20000>;
+ 	};
+ 
+ 	psci {
 -- 
 2.39.5
 
