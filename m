@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-142345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E60AAAEA39
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:52:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99E59AAEAD5
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:00:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CBBB1BC329D
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:52:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 136635248AC
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:00:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A615921E0BB;
-	Wed,  7 May 2025 18:52:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3AAE28E570;
+	Wed,  7 May 2025 19:00:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bAyzYBF4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gs1Fh+yQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 617EC1FF5EC;
-	Wed,  7 May 2025 18:52:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1E6428C024;
+	Wed,  7 May 2025 19:00:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643965; cv=none; b=mailcpxcyNGSAQSPhFSVejK1KeP7R57OHybalFg6SW+T3ZNkkbZ7yZgaQGs4emOn73/c4GIlC9Jxgsi3Pej3D/B1vCHZD4NEV7aG7R2KyPu/oJOGCimXjwhL2dz3Va0Y5YazzIngDzhWMq6ta47UZNl4i81zJhxJngHE98n6vGA=
+	t=1746644411; cv=none; b=D175zjLWxtUygaR2hbiHXYwSLIfIIypG0F+CSxprc+JwvKqoEswl0NiIO9OuAC+riOX3xpkssbVkGz4ny0/dtcZOS7bHwk0dZFxx3AkYg2r4/6Od9dtRq+4EJ4Dc1I/ndO0C9HayHJCyzHQg/B87ALy7+QunpsBqb8ob8D2Jd0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643965; c=relaxed/simple;
-	bh=ImsVPsMY2BUe4Wy3plp/RrI6Fk7oeSZ1kOD8xrUsoFU=;
+	s=arc-20240116; t=1746644411; c=relaxed/simple;
+	bh=XdZBWymM8zTLllOxbbWw9XhouC9uEvcnGx/HKLEAFbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t2mBJwpfWiZH0CRsPv2M0hpl05gZg53Wq/5m7CRTjehyGvGI8oKBIGy0Z6ERMGmm/60iDkGDBSZui3uz+agKh08fxYqVVa+J5WLYFEhb6Bp8t4a0HiI4wUR3Zp0Jz/bEHudMc/kSgo4/Ki8vUsLbsn7QoZMfLKdfdy/3/SEXqPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bAyzYBF4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4470C4CEE2;
-	Wed,  7 May 2025 18:52:44 +0000 (UTC)
+	 MIME-Version; b=u+ZrJX/5ZIAbCWv4wQfVDGUL3G9L1m25RZIuJefBrmOZESeLrE/dR1Qsg/GigJQaypiMGUpd1fPMZoa8aRUi9Av2lZ9HtMg0A6giBQ+2YGczjVKb0oWNu9fxRxE4h6JlSvbRR0ugvnFiJmhANz2BCzG9Yf2f4wja043viK5JAMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gs1Fh+yQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA3A2C4CEE2;
+	Wed,  7 May 2025 19:00:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643965;
-	bh=ImsVPsMY2BUe4Wy3plp/RrI6Fk7oeSZ1kOD8xrUsoFU=;
+	s=korg; t=1746644411;
+	bh=XdZBWymM8zTLllOxbbWw9XhouC9uEvcnGx/HKLEAFbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bAyzYBF4WlfsUWrAIho/Av1neZy+No3tHRLYNneh4/0d2qVEG9q9+yiVpNjaUl4l9
-	 u+WfKhORTPtZLIo8goipVRj4+V5rL1QDR7XhcbP/MlnSv6usreO2jhLUpbnOjR2/tC
-	 N3KCXTQd2rUElzOOy/fRh/enTUk17Mp92oNdsgw0=
+	b=Gs1Fh+yQpXM82WyPUV1xWSZVUSbWlwpDw1MrKDLzIWJ85RHTt7lF0zPWeZzDU1p9Y
+	 tfI+rwUvqankL19T0mdr0jywnwUrzM6gFP466VVAPkmZ4ObbAfXmmKm9J+lIle+vza
+	 zQB7DhiB0DkkUQvfkGqZxsIngJf8qB5OqUWPeras=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krishnamoorthi M <krishnamoorthi.m@amd.com>,
-	Akshata MukundShetty <akshata.mukundshetty@amd.com>,
-	Raju Rangoju <Raju.Rangoju@amd.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 075/183] spi: spi-mem: Add fix to avoid divide error
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 035/164] drm/amdgpu: Fix offset for HDP remap in nbio v7.11
 Date: Wed,  7 May 2025 20:38:40 +0200
-Message-ID: <20250507183827.728743318@linuxfoundation.org>
+Message-ID: <20250507183822.296544211@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,76 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raju Rangoju <Raju.Rangoju@amd.com>
+From: Lijo Lazar <lijo.lazar@amd.com>
 
-[ Upstream commit 8e4d3d8a5e51e07bd0d6cdd81b5e4af79f796927 ]
+commit 79af0604eb80ca1f86a1f265a0b1f9d4fccbc18f upstream.
 
-For some SPI flash memory operations, dummy bytes are not mandatory. For
-example, in Winbond SPINAND flash memory devices, the `write_cache` and
-`update_cache` operation variants have zero dummy bytes. Calculating the
-duration for SPI memory operations with zero dummy bytes causes
-a divide error when `ncycles` is calculated in the
-spi_mem_calc_op_duration().
+APUs in passthrough mode use HDP flush. 0x7F000 offset used for
+remapping HDP flush is mapped to VPE space which could get power gated.
+Use another unused offset in BIF space.
 
-Add changes to skip the 'ncylcles' calculation for zero dummy bytes.
-
-Following divide error is fixed by this change:
-
- Oops: divide error: 0000 [#1] PREEMPT SMP NOPTI
-...
-
-  ? do_trap+0xdb/0x100
-  ? do_error_trap+0x75/0xb0
-  ? spi_mem_calc_op_duration+0x56/0xb0
-  ? exc_divide_error+0x3b/0x70
-  ? spi_mem_calc_op_duration+0x56/0xb0
-  ? asm_exc_divide_error+0x1b/0x20
-  ? spi_mem_calc_op_duration+0x56/0xb0
-  ? spinand_select_op_variant+0xee/0x190 [spinand]
-  spinand_match_and_init+0x13e/0x1a0 [spinand]
-  spinand_manufacturer_match+0x6e/0xa0 [spinand]
-  spinand_probe+0x357/0x7f0 [spinand]
-  ? kernfs_activate+0x87/0xd0
-  spi_mem_probe+0x7a/0xb0
-  spi_probe+0x7d/0x130
-
-Fixes: 226d6cb3cb79 ("spi: spi-mem: Estimate the time taken by operations")
-Suggested-by: Krishnamoorthi M <krishnamoorthi.m@amd.com>
-Co-developed-by: Akshata MukundShetty <akshata.mukundshetty@amd.com>
-Signed-off-by: Akshata MukundShetty <akshata.mukundshetty@amd.com>
-Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
-Link: https://patch.msgid.link/20250424121333.417372-1-Raju.Rangoju@amd.com
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit d8116a32cdbe456c7f511183eb9ab187e3d590fb)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-mem.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/nbio_v7_11.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-mem.c b/drivers/spi/spi-mem.c
-index a9f0f47f4759b..74b013c41601d 100644
---- a/drivers/spi/spi-mem.c
-+++ b/drivers/spi/spi-mem.c
-@@ -585,7 +585,11 @@ u64 spi_mem_calc_op_duration(struct spi_mem_op *op)
- 	ns_per_cycles = 1000000000 / op->max_freq;
- 	ncycles += ((op->cmd.nbytes * 8) / op->cmd.buswidth) / (op->cmd.dtr ? 2 : 1);
- 	ncycles += ((op->addr.nbytes * 8) / op->addr.buswidth) / (op->addr.dtr ? 2 : 1);
--	ncycles += ((op->dummy.nbytes * 8) / op->dummy.buswidth) / (op->dummy.dtr ? 2 : 1);
-+
-+	/* Dummy bytes are optional for some SPI flash memory operations */
-+	if (op->dummy.nbytes)
-+		ncycles += ((op->dummy.nbytes * 8) / op->dummy.buswidth) / (op->dummy.dtr ? 2 : 1);
-+
- 	ncycles += ((op->data.nbytes * 8) / op->data.buswidth) / (op->data.dtr ? 2 : 1);
+--- a/drivers/gpu/drm/amd/amdgpu/nbio_v7_11.c
++++ b/drivers/gpu/drm/amd/amdgpu/nbio_v7_11.c
+@@ -361,7 +361,7 @@ static void nbio_v7_11_get_clockgating_s
+ 		*flags |= AMD_CG_SUPPORT_BIF_LS;
+ }
  
- 	return ncycles * ns_per_cycles;
--- 
-2.39.5
-
+-#define MMIO_REG_HOLE_OFFSET (0x80000 - PAGE_SIZE)
++#define MMIO_REG_HOLE_OFFSET 0x44000
+ 
+ static void nbio_v7_11_set_reg_remap(struct amdgpu_device *adev)
+ {
 
 
 
