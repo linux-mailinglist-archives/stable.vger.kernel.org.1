@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-142680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94566AAEBCB
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:10:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7803FAAE9C9
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:48:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54D9E52346A
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:10:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B12411C420C5
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:48:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B18EA21504D;
-	Wed,  7 May 2025 19:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78BB521E0BB;
+	Wed,  7 May 2025 18:48:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lMTmJiZV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OFUUxDKP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E4022144C1;
-	Wed,  7 May 2025 19:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3516D215766;
+	Wed,  7 May 2025 18:48:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644996; cv=none; b=OA00gIA3ysycIMhYQPVdHPgOpwi/oeDzBUqZ/GJA8vwIsOgHq30dTpf17K+ci+/koeIAvyg6Bd/Gbf8zNCr6G8vx0fDNCP/u3384KiKzIVEG9s+MtbD/GKUY8rUxGEq5UzRVv/SHapdxmjk++Zu2GeGLlCFSfYKdk5RWxfXComc=
+	t=1746643691; cv=none; b=EKI30lZMvqcWnyltRDnovAtrntrToI6VvQGP92vI3gMdKthfM+QEvFZfCvxjWdKrgqwlS1hkqhQ6zPhFm9EXi5P1Oy5fx9dS6CtQRO/xf88vTuQeig854LdSKW4ycQXOs/xtFshmW0IqTOE/6q7CpRaGQJc/eEfQsLhrEMgMtR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644996; c=relaxed/simple;
-	bh=gizyoxVcXEd7l5YoAeo83HtQ3CXVackkXPPF5G3Z92w=;
+	s=arc-20240116; t=1746643691; c=relaxed/simple;
+	bh=2AZJLiwHUhn2ou3gaWTK1/d/tJ684NDodbfOCOTMF8w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AVKFPh1f/c4OSIToGUp1IvvuBb7JCYaj1B+dL/7xznozP5BPk/Dw1zzUZaXjPBBCdBi0wELmNti6pQce3byo0mD82fh57oQCdSGIrUUowuDYUJKQug58j5Ute/lunb4RflIhGnZHU+P11xCgnTy7KxZ6f8s81zDZbTY+SePRbhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lMTmJiZV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2E50C4CEE2;
-	Wed,  7 May 2025 19:09:55 +0000 (UTC)
+	 MIME-Version; b=Z65a39QQCLFMifNO80tPwkSiJBX/3BgsE2PqS5l5VoL+fI1nHf2vTwPy4LaIxuatv6I4I4sfTrbZuQkngyDmReOdZjcCBZLd1kulpg2E9P0AqWCP7uq+OdE+yPsKv2OUx3d+F1Yueijo9GYkugZ5lH6ga8NRqb3blsDrWADa2Gc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OFUUxDKP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADF7DC4CEE2;
+	Wed,  7 May 2025 18:48:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644996;
-	bh=gizyoxVcXEd7l5YoAeo83HtQ3CXVackkXPPF5G3Z92w=;
+	s=korg; t=1746643691;
+	bh=2AZJLiwHUhn2ou3gaWTK1/d/tJ684NDodbfOCOTMF8w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lMTmJiZVlELuFVnMTmVtXoRlUykn1L5TBD3HJNOrE+t2LICc/djhDgQ84b37BSVf0
-	 YG2krZafF+yo3gn4A6UCCZQ/gdURcuERDnW7IT2dFou/XrYl3oLt+ZuP2OiQ7ydwq5
-	 tBLLbwth72dhJy429k99VCoMnsE9syOxrRh0o0V0=
+	b=OFUUxDKPgSkjRfxoHbCN7IGczQtkHIJVgvUz+4riSzjx+UZAtLGZ8joLzz1ZzYMQ8
+	 N/Hve2G500jCzUYAnj/vvLBsqc8qmVsHIjjMdib9FveDyYXwp4A+KNxxFWHQUpEPnT
+	 LP97XEE+5Ez5sCGjNKfQvApqnYBkRV/bYLUqLBKE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Fiona Klute <fiona.klute@gmx.de>,
+	kernel-list@raspberrypi.com,
+	Andrew Lunn <andrew@lunn.ch>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 061/129] net: ethernet: mtk-star-emac: fix spinlock recursion issues on rx/tx poll
-Date: Wed,  7 May 2025 20:39:57 +0200
-Message-ID: <20250507183815.999866248@linuxfoundation.org>
+Subject: [PATCH 6.1 83/97] net: phy: microchip: force IRQ polling mode for lan88xx
+Date: Wed,  7 May 2025 20:39:58 +0200
+Message-ID: <20250507183810.318613379@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
-References: <20250507183813.500572371@linuxfoundation.org>
+In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
+References: <20250507183806.987408728@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,125 +64,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+From: Fiona Klute <fiona.klute@gmx.de>
 
-[ Upstream commit 6fe0866014486736cc3ba1c6fd4606d3dbe55c9c ]
+[ Upstream commit 30a41ed32d3088cd0d682a13d7f30b23baed7e93 ]
 
-Use spin_lock_irqsave and spin_unlock_irqrestore instead of spin_lock
-and spin_unlock in mtk_star_emac driver to avoid spinlock recursion
-occurrence that can happen when enabling the DMA interrupts again in
-rx/tx poll.
+With lan88xx based devices the lan78xx driver can get stuck in an
+interrupt loop while bringing the device up, flooding the kernel log
+with messages like the following:
 
-```
-BUG: spinlock recursion on CPU#0, swapper/0/0
- lock: 0xffff00000db9cf20, .magic: dead4ead, .owner: swapper/0/0,
-    .owner_cpu: 0
-CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Not tainted
-    6.15.0-rc2-next-20250417-00001-gf6a27738686c-dirty #28 PREEMPT
-Hardware name: MediaTek MT8365 Open Platform EVK (DT)
-Call trace:
- show_stack+0x18/0x24 (C)
- dump_stack_lvl+0x60/0x80
- dump_stack+0x18/0x24
- spin_dump+0x78/0x88
- do_raw_spin_lock+0x11c/0x120
- _raw_spin_lock+0x20/0x2c
- mtk_star_handle_irq+0xc0/0x22c [mtk_star_emac]
- __handle_irq_event_percpu+0x48/0x140
- handle_irq_event+0x4c/0xb0
- handle_fasteoi_irq+0xa0/0x1bc
- handle_irq_desc+0x34/0x58
- generic_handle_domain_irq+0x1c/0x28
- gic_handle_irq+0x4c/0x120
- do_interrupt_handler+0x50/0x84
- el1_interrupt+0x34/0x68
- el1h_64_irq_handler+0x18/0x24
- el1h_64_irq+0x6c/0x70
- regmap_mmio_read32le+0xc/0x20 (P)
- _regmap_bus_reg_read+0x6c/0xac
- _regmap_read+0x60/0xdc
- regmap_read+0x4c/0x80
- mtk_star_rx_poll+0x2f4/0x39c [mtk_star_emac]
- __napi_poll+0x38/0x188
- net_rx_action+0x164/0x2c0
- handle_softirqs+0x100/0x244
- __do_softirq+0x14/0x20
- ____do_softirq+0x10/0x20
- call_on_irq_stack+0x24/0x64
- do_softirq_own_stack+0x1c/0x40
- __irq_exit_rcu+0xd4/0x10c
- irq_exit_rcu+0x10/0x1c
- el1_interrupt+0x38/0x68
- el1h_64_irq_handler+0x18/0x24
- el1h_64_irq+0x6c/0x70
- cpuidle_enter_state+0xac/0x320 (P)
- cpuidle_enter+0x38/0x50
- do_idle+0x1e4/0x260
- cpu_startup_entry+0x34/0x3c
- rest_init+0xdc/0xe0
- console_on_rootfs+0x0/0x6c
- __primary_switched+0x88/0x90
-```
+lan78xx 2-3:1.0 enp1s0u3: kevent 4 may have been dropped
 
-Fixes: 0a8bd81fd6aa ("net: ethernet: mtk-star-emac: separate tx/rx handling with two NAPIs")
-Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Link: https://patch.msgid.link/20250424-mtk_star_emac-fix-spinlock-recursion-issue-v2-1-f3fde2e529d8@collabora.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Removing interrupt support from the lan88xx PHY driver forces the
+driver to use polling instead, which avoids the problem.
+
+The issue has been observed with Raspberry Pi devices at least since
+4.14 (see [1], bug report for their downstream kernel), as well as
+with Nvidia devices [2] in 2020, where disabling interrupts was the
+vendor-suggested workaround (together with the claim that phylib
+changes in 4.9 made the interrupt handling in lan78xx incompatible).
+
+Iperf reports well over 900Mbits/sec per direction with client in
+--dualtest mode, so there does not seem to be a significant impact on
+throughput (lan88xx device connected via switch to the peer).
+
+[1] https://github.com/raspberrypi/linux/issues/2447
+[2] https://forums.developer.nvidia.com/t/jetson-xavier-and-lan7800-problem/142134/11
+
+Link: https://lore.kernel.org/0901d90d-3f20-4a10-b680-9c978e04ddda@lunn.ch
+Fixes: 792aec47d59d ("add microchip LAN88xx phy driver")
+Signed-off-by: Fiona Klute <fiona.klute@gmx.de>
+Cc: kernel-list@raspberrypi.com
+Cc: stable@vger.kernel.org
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250416102413.30654-1-fiona.klute@gmx.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mediatek/mtk_star_emac.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/net/phy/microchip.c | 46 +++----------------------------------
+ 1 file changed, 3 insertions(+), 43 deletions(-)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_star_emac.c b/drivers/net/ethernet/mediatek/mtk_star_emac.c
-index 25989c79c92e6..47a00e02365a2 100644
---- a/drivers/net/ethernet/mediatek/mtk_star_emac.c
-+++ b/drivers/net/ethernet/mediatek/mtk_star_emac.c
-@@ -1163,6 +1163,7 @@ static int mtk_star_tx_poll(struct napi_struct *napi, int budget)
- 	struct net_device *ndev = priv->ndev;
- 	unsigned int head = ring->head;
- 	unsigned int entry = ring->tail;
-+	unsigned long flags;
+diff --git a/drivers/net/phy/microchip.c b/drivers/net/phy/microchip.c
+index 0b88635f4fbca..623607fd2cefd 100644
+--- a/drivers/net/phy/microchip.c
++++ b/drivers/net/phy/microchip.c
+@@ -31,47 +31,6 @@ static int lan88xx_write_page(struct phy_device *phydev, int page)
+ 	return __phy_write(phydev, LAN88XX_EXT_PAGE_ACCESS, page);
+ }
  
- 	while (entry != head && count < (MTK_STAR_RING_NUM_DESCS - 1)) {
- 		ret = mtk_star_tx_complete_one(priv);
-@@ -1182,9 +1183,9 @@ static int mtk_star_tx_poll(struct napi_struct *napi, int budget)
- 		netif_wake_queue(ndev);
- 
- 	if (napi_complete(napi)) {
--		spin_lock(&priv->lock);
-+		spin_lock_irqsave(&priv->lock, flags);
- 		mtk_star_enable_dma_irq(priv, false, true);
--		spin_unlock(&priv->lock);
-+		spin_unlock_irqrestore(&priv->lock, flags);
- 	}
- 
- 	return 0;
-@@ -1341,6 +1342,7 @@ static int mtk_star_rx(struct mtk_star_priv *priv, int budget)
- static int mtk_star_rx_poll(struct napi_struct *napi, int budget)
+-static int lan88xx_phy_config_intr(struct phy_device *phydev)
+-{
+-	int rc;
+-
+-	if (phydev->interrupts == PHY_INTERRUPT_ENABLED) {
+-		/* unmask all source and clear them before enable */
+-		rc = phy_write(phydev, LAN88XX_INT_MASK, 0x7FFF);
+-		rc = phy_read(phydev, LAN88XX_INT_STS);
+-		rc = phy_write(phydev, LAN88XX_INT_MASK,
+-			       LAN88XX_INT_MASK_MDINTPIN_EN_ |
+-			       LAN88XX_INT_MASK_LINK_CHANGE_);
+-	} else {
+-		rc = phy_write(phydev, LAN88XX_INT_MASK, 0);
+-		if (rc)
+-			return rc;
+-
+-		/* Ack interrupts after they have been disabled */
+-		rc = phy_read(phydev, LAN88XX_INT_STS);
+-	}
+-
+-	return rc < 0 ? rc : 0;
+-}
+-
+-static irqreturn_t lan88xx_handle_interrupt(struct phy_device *phydev)
+-{
+-	int irq_status;
+-
+-	irq_status = phy_read(phydev, LAN88XX_INT_STS);
+-	if (irq_status < 0) {
+-		phy_error(phydev);
+-		return IRQ_NONE;
+-	}
+-
+-	if (!(irq_status & LAN88XX_INT_STS_LINK_CHANGE_))
+-		return IRQ_NONE;
+-
+-	phy_trigger_machine(phydev);
+-
+-	return IRQ_HANDLED;
+-}
+-
+ static int lan88xx_suspend(struct phy_device *phydev)
  {
- 	struct mtk_star_priv *priv;
-+	unsigned long flags;
- 	int work_done = 0;
+ 	struct lan88xx_priv *priv = phydev->priv;
+@@ -392,8 +351,9 @@ static struct phy_driver microchip_phy_driver[] = {
+ 	.config_aneg	= lan88xx_config_aneg,
+ 	.link_change_notify = lan88xx_link_change_notify,
  
- 	priv = container_of(napi, struct mtk_star_priv, rx_napi);
-@@ -1348,9 +1350,9 @@ static int mtk_star_rx_poll(struct napi_struct *napi, int budget)
- 	work_done = mtk_star_rx(priv, budget);
- 	if (work_done < budget) {
- 		napi_complete_done(napi, work_done);
--		spin_lock(&priv->lock);
-+		spin_lock_irqsave(&priv->lock, flags);
- 		mtk_star_enable_dma_irq(priv, true, false);
--		spin_unlock(&priv->lock);
-+		spin_unlock_irqrestore(&priv->lock, flags);
- 	}
+-	.config_intr	= lan88xx_phy_config_intr,
+-	.handle_interrupt = lan88xx_handle_interrupt,
++	/* Interrupt handling is broken, do not define related
++	 * functions to force polling.
++	 */
  
- 	return work_done;
+ 	.suspend	= lan88xx_suspend,
+ 	.resume		= genphy_resume,
 -- 
 2.39.5
 
