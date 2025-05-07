@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-142705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4B93AAEBD5
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:11:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 141EFAAEB26
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:03:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6BE91C45AB7
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:11:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F6329E2A57
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:03:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F344C28DF4C;
-	Wed,  7 May 2025 19:11:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FA9E28D834;
+	Wed,  7 May 2025 19:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PN5ei7Yr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dvysstBf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E932144C1;
-	Wed,  7 May 2025 19:11:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C89F29A0;
+	Wed,  7 May 2025 19:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746645075; cv=none; b=KMmRa58iFuvBvOUlcqLA9w1ykqW00mqzJSByKviARwyFAj+dIDqpiTxSOxdSxHptoe634kMrKuoEyXmFY6fRDnrDqxnr0Jj+rqV0ExKTM+LFu+hT8U+lFKmuMKkIFQr/VEmyrkN3kneacHhB41WWEQTS6ipw76EQGJ9ninsHJIM=
+	t=1746644636; cv=none; b=SGwMASvT7rajyJxaHxnt0JJFVQRxFqINduQCD9NZ08O9/StBB8fqzopDqLnqqrocK6blwqLc/hrfEc6sAzcMQlBiD5g043cfsBtv/kWcf0u7UIJPUWYuQ8/OnzF4/oXnHvW89uFZpY2Qy0+SKKfSHT5/hDQTvMcM97bXCGQhXpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746645075; c=relaxed/simple;
-	bh=V22rfBX6YptZ8WCaj9oidSuabuyRGAzScSFmHMXgsxc=;
+	s=arc-20240116; t=1746644636; c=relaxed/simple;
+	bh=Oq0ygEmSLGsPjDZ0Ga1dYvTrU9b2E8aTh35hSOE/eo8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DUO/diMt/v1j+P6k/ECwa2mVk4j+cYTACFjofpY0GsZeXmZQtn6Cfnyc8gF7v4On+y+dqjCGwtLaoMV/I8WenwS0j945fybT499oPVRWOY2nap8olOZS5NfZ65gvks36dpcqNO77c/PPKH8kUJ26Ggj2VylVOgpzvPQrQP8kCAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PN5ei7Yr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BD3BC4CEE2;
-	Wed,  7 May 2025 19:11:15 +0000 (UTC)
+	 MIME-Version; b=brYleSDqaPFYH3btUp4fQBwysqG7B8ngwcx6eOzys0nGv9wOBWFSmMwxmFzaSFQYvWlZLAiOnXtMnFdCUpaxfYaeB0+milsZQ2ZSeH3h/Te3EwOm3PGDv8D2y4euWvMtZbk6NNCBDF1GIuOyZu4sQ60SUQsO8z3lqZabgKtezdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dvysstBf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B1F5C4CEE2;
+	Wed,  7 May 2025 19:03:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746645075;
-	bh=V22rfBX6YptZ8WCaj9oidSuabuyRGAzScSFmHMXgsxc=;
+	s=korg; t=1746644636;
+	bh=Oq0ygEmSLGsPjDZ0Ga1dYvTrU9b2E8aTh35hSOE/eo8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PN5ei7Yr7gHfrxypnamMAtMmopWwkoizGJMIBYYOMKn7s5yQ8SqKOAXAqyHtVMhYY
-	 8q58ogDpM0BJzMEWAVjLLhcNqTLn4N64DC6l49K/eqOxrVNh+jqp3l1OCb6shqEM9P
-	 hU47LlLaLWiK1s5idiCROzeCIsQQiHjv+XFbOy4A=
+	b=dvysstBfnmcDVHQkomhZ5c4GyABoKA9Y1gP7Jm73IfW+V3r2rR4rTNPBylwoEefvc
+	 muTzlQ7pBdthak9n7t4TK+Y3vfJigeuOmuvhbOw6F4CE0czkBVA6LP3A+UW21BVb0h
+	 cCRrnT8hCZYTUjXYuWmnb3ycQqxljjmlYPrmwJQk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	En-Wei Wu <en-wei.wu@canonical.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Chad Monroe <chad@monroe.io>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 056/129] Bluetooth: btusb: avoid NULL pointer dereference in skb_dequeue()
+Subject: [PATCH 6.12 107/164] net: ethernet: mtk_eth_soc: fix SER panic with 4GB+ RAM
 Date: Wed,  7 May 2025 20:39:52 +0200
-Message-ID: <20250507183815.802915625@linuxfoundation.org>
+Message-ID: <20250507183825.313191211@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
-References: <20250507183813.500572371@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,199 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: En-Wei Wu <en-wei.wu@canonical.com>
+From: Chad Monroe <chad@monroe.io>
 
-[ Upstream commit 0317b033abcd1d8dd2798f0e2de5e84543d0bd22 ]
+[ Upstream commit 6e0490fc36cdac696f96e57b61d93b9ae32e0f4c ]
 
-A NULL pointer dereference can occur in skb_dequeue() when processing a
-QCA firmware crash dump on WCN7851 (0489:e0f3).
+If the mtk_poll_rx() function detects the MTK_RESETTING flag, it will
+jump to release_desc and refill the high word of the SDP on the 4GB RFB.
+Subsequently, mtk_rx_clean will process an incorrect SDP, leading to a
+panic.
 
-[ 93.672166] Bluetooth: hci0: ACL memdump size(589824)
+Add patch from MediaTek's SDK to resolve this.
 
-[ 93.672475] BUG: kernel NULL pointer dereference, address: 0000000000000008
-[ 93.672517] Workqueue: hci0 hci_devcd_rx [bluetooth]
-[ 93.672598] RIP: 0010:skb_dequeue+0x50/0x80
-
-The issue stems from handle_dump_pkt_qca() returning 0 even when a dump
-packet is successfully processed. This is because it incorrectly
-forwards the return value of hci_devcd_init() (which returns 0 on
-success). As a result, the caller (btusb_recv_acl_qca() or
-btusb_recv_evt_qca()) assumes the packet was not handled and passes it
-to hci_recv_frame(), leading to premature kfree() of the skb.
-
-Later, hci_devcd_rx() attempts to dequeue the same skb from the dump
-queue, resulting in a NULL pointer dereference.
-
-Fix this by:
-1. Making handle_dump_pkt_qca() return 0 on success and negative errno
-   on failure, consistent with kernel conventions.
-2. Splitting dump packet detection into separate functions for ACL
-   and event packets for better structure and readability.
-
-This ensures dump packets are properly identified and consumed, avoiding
-double handling and preventing NULL pointer access.
-
-Fixes: 20981ce2d5a5 ("Bluetooth: btusb: Add WCN6855 devcoredump support")
-Signed-off-by: En-Wei Wu <en-wei.wu@canonical.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: 2d75891ebc09 ("net: ethernet: mtk_eth_soc: support 36-bit DMA addressing on MT7988")
+Link: https://git01.mediatek.com/plugins/gitiles/openwrt/feeds/mtk-openwrt-feeds/+/71f47ea785699c6aa3b922d66c2bdc1a43da25b1
+Signed-off-by: Chad Monroe <chad@monroe.io>
+Link: https://patch.msgid.link/4adc2aaeb0fb1b9cdc56bf21cf8e7fa328daa345.1745715843.git.daniel@makrotopia.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 101 +++++++++++++++++++++++++++-----------
- 1 file changed, 73 insertions(+), 28 deletions(-)
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index bc3f63f1ccd86..d6195565ef7ae 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -3521,22 +3521,16 @@ static void btusb_coredump_qca(struct hci_dev *hdev)
- 		bt_dev_err(hdev, "%s: triggle crash failed (%d)", __func__, err);
- }
- 
--/*
-- * ==0: not a dump pkt.
-- * < 0: fails to handle a dump pkt
-- * > 0: otherwise.
-- */
-+/* Return: 0 on success, negative errno on failure. */
- static int handle_dump_pkt_qca(struct hci_dev *hdev, struct sk_buff *skb)
- {
--	int ret = 1;
-+	int ret = 0;
- 	u8 pkt_type;
- 	u8 *sk_ptr;
- 	unsigned int sk_len;
- 	u16 seqno;
- 	u32 dump_size;
- 
--	struct hci_event_hdr *event_hdr;
--	struct hci_acl_hdr *acl_hdr;
- 	struct qca_dump_hdr *dump_hdr;
- 	struct btusb_data *btdata = hci_get_drvdata(hdev);
- 	struct usb_device *udev = btdata->udev;
-@@ -3546,30 +3540,14 @@ static int handle_dump_pkt_qca(struct hci_dev *hdev, struct sk_buff *skb)
- 	sk_len = skb->len;
- 
- 	if (pkt_type == HCI_ACLDATA_PKT) {
--		acl_hdr = hci_acl_hdr(skb);
--		if (le16_to_cpu(acl_hdr->handle) != QCA_MEMDUMP_ACL_HANDLE)
--			return 0;
- 		sk_ptr += HCI_ACL_HDR_SIZE;
- 		sk_len -= HCI_ACL_HDR_SIZE;
--		event_hdr = (struct hci_event_hdr *)sk_ptr;
--	} else {
--		event_hdr = hci_event_hdr(skb);
- 	}
- 
--	if ((event_hdr->evt != HCI_VENDOR_PKT)
--		|| (event_hdr->plen != (sk_len - HCI_EVENT_HDR_SIZE)))
--		return 0;
+diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+index 5e7280479ca1c..c5d5b9ff8bc42 100644
+--- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
++++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+@@ -2202,14 +2202,18 @@ static int mtk_poll_rx(struct napi_struct *napi, int budget,
+ 		ring->data[idx] = new_data;
+ 		rxd->rxd1 = (unsigned int)dma_addr;
+ release_desc:
++		if (MTK_HAS_CAPS(eth->soc->caps, MTK_36BIT_DMA)) {
++			if (unlikely(dma_addr == DMA_MAPPING_ERROR))
++				addr64 = FIELD_GET(RX_DMA_ADDR64_MASK,
++						   rxd->rxd2);
++			else
++				addr64 = RX_DMA_PREP_ADDR64(dma_addr);
++		}
++
+ 		if (MTK_HAS_CAPS(eth->soc->caps, MTK_SOC_MT7628))
+ 			rxd->rxd2 = RX_DMA_LSO;
+ 		else
+-			rxd->rxd2 = RX_DMA_PREP_PLEN0(ring->buf_size);
 -
- 	sk_ptr += HCI_EVENT_HDR_SIZE;
- 	sk_len -= HCI_EVENT_HDR_SIZE;
+-		if (MTK_HAS_CAPS(eth->soc->caps, MTK_36BIT_DMA) &&
+-		    likely(dma_addr != DMA_MAPPING_ERROR))
+-			rxd->rxd2 |= RX_DMA_PREP_ADDR64(dma_addr);
++			rxd->rxd2 = RX_DMA_PREP_PLEN0(ring->buf_size) | addr64;
  
- 	dump_hdr = (struct qca_dump_hdr *)sk_ptr;
--	if ((sk_len < offsetof(struct qca_dump_hdr, data))
--		|| (dump_hdr->vse_class != QCA_MEMDUMP_VSE_CLASS)
--	    || (dump_hdr->msg_type != QCA_MEMDUMP_MSG_TYPE))
--		return 0;
--
--	/*it is dump pkt now*/
- 	seqno = le16_to_cpu(dump_hdr->seqno);
- 	if (seqno == 0) {
- 		set_bit(BTUSB_HW_SSR_ACTIVE, &btdata->flags);
-@@ -3643,17 +3621,84 @@ static int handle_dump_pkt_qca(struct hci_dev *hdev, struct sk_buff *skb)
- 	return ret;
- }
- 
-+/* Return: true if the ACL packet is a dump packet, false otherwise. */
-+static bool acl_pkt_is_dump_qca(struct hci_dev *hdev, struct sk_buff *skb)
-+{
-+	u8 *sk_ptr;
-+	unsigned int sk_len;
-+
-+	struct hci_event_hdr *event_hdr;
-+	struct hci_acl_hdr *acl_hdr;
-+	struct qca_dump_hdr *dump_hdr;
-+
-+	sk_ptr = skb->data;
-+	sk_len = skb->len;
-+
-+	acl_hdr = hci_acl_hdr(skb);
-+	if (le16_to_cpu(acl_hdr->handle) != QCA_MEMDUMP_ACL_HANDLE)
-+		return false;
-+
-+	sk_ptr += HCI_ACL_HDR_SIZE;
-+	sk_len -= HCI_ACL_HDR_SIZE;
-+	event_hdr = (struct hci_event_hdr *)sk_ptr;
-+
-+	if ((event_hdr->evt != HCI_VENDOR_PKT) ||
-+	    (event_hdr->plen != (sk_len - HCI_EVENT_HDR_SIZE)))
-+		return false;
-+
-+	sk_ptr += HCI_EVENT_HDR_SIZE;
-+	sk_len -= HCI_EVENT_HDR_SIZE;
-+
-+	dump_hdr = (struct qca_dump_hdr *)sk_ptr;
-+	if ((sk_len < offsetof(struct qca_dump_hdr, data)) ||
-+	    (dump_hdr->vse_class != QCA_MEMDUMP_VSE_CLASS) ||
-+	    (dump_hdr->msg_type != QCA_MEMDUMP_MSG_TYPE))
-+		return false;
-+
-+	return true;
-+}
-+
-+/* Return: true if the event packet is a dump packet, false otherwise. */
-+static bool evt_pkt_is_dump_qca(struct hci_dev *hdev, struct sk_buff *skb)
-+{
-+	u8 *sk_ptr;
-+	unsigned int sk_len;
-+
-+	struct hci_event_hdr *event_hdr;
-+	struct qca_dump_hdr *dump_hdr;
-+
-+	sk_ptr = skb->data;
-+	sk_len = skb->len;
-+
-+	event_hdr = hci_event_hdr(skb);
-+
-+	if ((event_hdr->evt != HCI_VENDOR_PKT)
-+	    || (event_hdr->plen != (sk_len - HCI_EVENT_HDR_SIZE)))
-+		return false;
-+
-+	sk_ptr += HCI_EVENT_HDR_SIZE;
-+	sk_len -= HCI_EVENT_HDR_SIZE;
-+
-+	dump_hdr = (struct qca_dump_hdr *)sk_ptr;
-+	if ((sk_len < offsetof(struct qca_dump_hdr, data)) ||
-+	    (dump_hdr->vse_class != QCA_MEMDUMP_VSE_CLASS) ||
-+	    (dump_hdr->msg_type != QCA_MEMDUMP_MSG_TYPE))
-+		return false;
-+
-+	return true;
-+}
-+
- static int btusb_recv_acl_qca(struct hci_dev *hdev, struct sk_buff *skb)
- {
--	if (handle_dump_pkt_qca(hdev, skb))
--		return 0;
-+	if (acl_pkt_is_dump_qca(hdev, skb))
-+		return handle_dump_pkt_qca(hdev, skb);
- 	return hci_recv_frame(hdev, skb);
- }
- 
- static int btusb_recv_evt_qca(struct hci_dev *hdev, struct sk_buff *skb)
- {
--	if (handle_dump_pkt_qca(hdev, skb))
--		return 0;
-+	if (evt_pkt_is_dump_qca(hdev, skb))
-+		return handle_dump_pkt_qca(hdev, skb);
- 	return hci_recv_frame(hdev, skb);
- }
- 
+ 		ring->calc_idx = idx;
+ 		done++;
 -- 
 2.39.5
 
