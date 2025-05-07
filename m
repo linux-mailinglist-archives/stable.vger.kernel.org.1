@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-142469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BED3AAEABE
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:59:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D2CDAAEA42
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:53:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75BB79C7E3A
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:58:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB02A5086D1
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:53:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA73628AAE9;
-	Wed,  7 May 2025 18:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBC84214813;
+	Wed,  7 May 2025 18:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yCHCvPZE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aHd3RHJk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 967FB1A00E7;
-	Wed,  7 May 2025 18:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A49A1FF5EC;
+	Wed,  7 May 2025 18:53:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644349; cv=none; b=P8zKO8ZXJXeaUm4pd+Acf9S+f3PKLhmB/qk12hNTEqrNm8rbOpdRs+UKaYa8O6b5h1G/NXz5/vSuFtmyModps2LIzpc8ByNdbnCeC6lvTHARNYu04pmDsSk17Vzb6RLyqPlhGN18UtMhl0EHO2Kct5z6XI5JMHtNDZiANilMYKI=
+	t=1746643992; cv=none; b=P+B3JlG8fPqp6g3hjX7egSwpm4jLwAW6RIL9RZrwz3UWtySGc8zI2t9el/euQmWGQI0dgORYJwG1/iKcfdm+VRkL37hsOqLrCxGOB5R4CDzvLpu3WtmSPDAGS34ArotMNFnmJGO0lpj31bI1ZHuqkX/liqeMA1YA3eroYUYrrnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644349; c=relaxed/simple;
-	bh=GEHLw7DovaZnarvyTutIxhJDfYGU4ElQwhwAIPFPVo0=;
+	s=arc-20240116; t=1746643992; c=relaxed/simple;
+	bh=62sgjDuFORhnBSiv3adfWUEQPugu2Qm7W6dWxP39/a4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EbfqASU0vrSBO7xotMthXIN0JH5A+XmzYTtZiFThp9Du3UfSYNuEnSliQiqyEPSoQYW3KcOiGJE/5ISMC95ZtEFBGDUcyaY1ra6qQrFTjfWukgXblYUXHCqGXnHjle8JBb2s4YiZmKTlGNYS2gRn6tTPeUqcpq5dK9GEKi+MBVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yCHCvPZE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C7BEC4CEE2;
-	Wed,  7 May 2025 18:59:08 +0000 (UTC)
+	 MIME-Version; b=UzuYvFMYge1gFZItQIHq/+pTcwN/b8QYodZOLMwFUWLQvuoDGXCBbIT56W3nUe1es/jep+aqCrJ5SvH3/b9SgVfDriJcSeyadlT4wqKDNRXTSd7tjtFfA4w3hUNfRuffWOaUMLRTXH7A8vAFtlt/8DKwCAoymX0eBwKp5vP2lVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aHd3RHJk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19935C4CEE2;
+	Wed,  7 May 2025 18:53:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644349;
-	bh=GEHLw7DovaZnarvyTutIxhJDfYGU4ElQwhwAIPFPVo0=;
+	s=korg; t=1746643992;
+	bh=62sgjDuFORhnBSiv3adfWUEQPugu2Qm7W6dWxP39/a4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yCHCvPZEwz+bYh/+Jlay85LH2eKnZfeFS5ooujQYU9joO6yCkU901v32uLmU/1oPy
-	 kCR+4HozZbadLu3UAwPTxsP61KXxAQKVn6SlZZfQONwN8Kj4xqVzHFihaX0pPEhHUL
-	 rBZtf2/oVcS34Kn4rdqUyvR4gFGP3aB54DTE5pgY=
+	b=aHd3RHJk65RuRSuOPb9dxBWP+1c/KPJzVRvZ9184Rineh2CSadZL56lW5Gbh/c79x
+	 WiHU3xMZn6qwlqJKSJ8NyORj4peeQePbUNu6a/5OlkSNQkM52ae+6OBf1xwe3nfQOk
+	 OiFY7u3HYaN8V/xUFp0rL+L1JRWgojz0pK6tpRR8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Philipp Stanner <phasta@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 6.12 015/164] drm/nouveau: Fix WARN_ON in nouveau_fence_context_kill()
+	Hui Wang <hui.wang@canonical.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 055/183] pinctrl: imx: Return NULL if no group is matched and found
 Date: Wed,  7 May 2025 20:38:20 +0200
-Message-ID: <20250507183821.461566932@linuxfoundation.org>
+Message-ID: <20250507183826.916207216@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philipp Stanner <phasta@kernel.org>
+From: Hui Wang <hui.wang@canonical.com>
 
-commit bbe5679f30d7690a9b6838a583b9690ea73fe0e9 upstream.
+[ Upstream commit e64c0ff0d5d85791fbcd126ee558100a06a24a97 ]
 
-Nouveau is mostly designed in a way that it's expected that fences only
-ever get signaled through nouveau_fence_signal(). However, in at least
-one other place, nouveau_fence_done(), can signal fences, too. If that
-happens (race) a signaled fence remains in the pending list for a while,
-until it gets removed by nouveau_fence_update().
+Currently if no group is matched and found, this function will return
+the last grp to the caller, this is not expected, it is supposed to
+return NULL in this case.
 
-Should nouveau_fence_context_kill() run in the meantime, this would be
-a bug because the function would attempt to set an error code on an
-already signaled fence.
-
-Have nouveau_fence_context_kill() check for a fence being signaled.
-
-Cc: stable@vger.kernel.org # v5.10+
-Fixes: ea13e5abf807 ("drm/nouveau: signal pending fences when channel has been killed")
-Suggested-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Philipp Stanner <phasta@kernel.org>
-Link: https://lore.kernel.org/r/20250415121900.55719-3-phasta@kernel.org
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e566fc11ea76 ("pinctrl: imx: use generic pinctrl helpers for managing groups")
+Signed-off-by: Hui Wang <hui.wang@canonical.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/20250327031600.99723-1-hui.wang@canonical.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_fence.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pinctrl/freescale/pinctrl-imx.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/nouveau/nouveau_fence.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_fence.c
-@@ -90,7 +90,7 @@ nouveau_fence_context_kill(struct nouvea
- 	while (!list_empty(&fctx->pending)) {
- 		fence = list_entry(fctx->pending.next, typeof(*fence), head);
+diff --git a/drivers/pinctrl/freescale/pinctrl-imx.c b/drivers/pinctrl/freescale/pinctrl-imx.c
+index 842a1e6cbfc41..18de313285404 100644
+--- a/drivers/pinctrl/freescale/pinctrl-imx.c
++++ b/drivers/pinctrl/freescale/pinctrl-imx.c
+@@ -37,16 +37,16 @@ static inline const struct group_desc *imx_pinctrl_find_group_by_name(
+ 				struct pinctrl_dev *pctldev,
+ 				const char *name)
+ {
+-	const struct group_desc *grp = NULL;
++	const struct group_desc *grp;
+ 	int i;
  
--		if (error)
-+		if (error && !dma_fence_is_signaled_locked(&fence->base))
- 			dma_fence_set_error(&fence->base, error);
+ 	for (i = 0; i < pctldev->num_groups; i++) {
+ 		grp = pinctrl_generic_get_group(pctldev, i);
+ 		if (grp && !strcmp(grp->grp.name, name))
+-			break;
++			return grp;
+ 	}
  
- 		if (nouveau_fence_signal(fence))
+-	return grp;
++	return NULL;
+ }
+ 
+ static void imx_pin_dbg_show(struct pinctrl_dev *pctldev, struct seq_file *s,
+-- 
+2.39.5
+
 
 
 
