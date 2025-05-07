@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-142149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ACE3AAE94A
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:43:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7FF8AAEA77
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:55:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7197D3A4348
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:42:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31597522F3D
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:55:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E7B528E564;
-	Wed,  7 May 2025 18:42:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C8C02116E9;
+	Wed,  7 May 2025 18:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K2jVeetP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gcBUqJMe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED9A914A4C7;
-	Wed,  7 May 2025 18:42:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDC322153C6;
+	Wed,  7 May 2025 18:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643366; cv=none; b=CbRFeXBCmVKGIM435vYCnO9Y5qqRvURVD+PnFLsrsNvM6+4a5L7l2zzzaq+iOVgZmTVTCs3Y/R1MXJvWtawg9kRkizYh3keEaYHKJiJ7qtebcNMfgFcFw4PAnm3PrPisZeRvNJ35/5st0CsYWWIrRczzvQ7kL92MdFEAe8ua0Lk=
+	t=1746644141; cv=none; b=M5DJPRFye5c/yddhRNsJC9OFk/6DHWB2Gls6235rULf0jqjYssje9Mzfue3s7SyOq8scMAFHOuLZxn5yeZE2EeHyJxc5TdLFqApRIiqx6kxrM8gYuEzhJ3uaesGHuqbG/rl0mqbNgSd52aytnixF1ZqjMd9ESTJmTmDkmgszVgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643366; c=relaxed/simple;
-	bh=lTfiaaPAXjo/1nii0kBLiMc1ItUe2ULfFX65xttx/PY=;
+	s=arc-20240116; t=1746644141; c=relaxed/simple;
+	bh=d9vbSsftGXX3Jr4xyw94EFO+6G3a5oJHc9L4f6ziuJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LIs9imOZznO2zQRkxdEi3KSEhCHFGeOpq+14srrL4K6DPrcRdVH9DYKhogiYBoW1R0E/Q/8pv/sIdOwZj/kvlD5S71K1WY/qraWWhbs0GQMQEe+8HDOtyusQKTraQ0MU8pkdFMbpPNQKDaTwJfcOKsSo3GEgC/j8YhXN4tFJseg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K2jVeetP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CFA8C4CEE2;
-	Wed,  7 May 2025 18:42:45 +0000 (UTC)
+	 MIME-Version; b=KON9P7/kzYYNfljmn7Jj4bi76MJiZGMBlAjINJ1zrQHO17JcO1AH6UB6BxfiunF3EGsAHYj/7B6jsuPoMd9s9+10NomjXQvkBNq0rDdcc97T+/2EbGUDKbbg6EyrfyJTnu+o7pFWHZAlSsbJkHWEVB3QaV/xroiSukp70wDEmug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gcBUqJMe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 358A5C4CEE2;
+	Wed,  7 May 2025 18:55:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643365;
-	bh=lTfiaaPAXjo/1nii0kBLiMc1ItUe2ULfFX65xttx/PY=;
+	s=korg; t=1746644140;
+	bh=d9vbSsftGXX3Jr4xyw94EFO+6G3a5oJHc9L4f6ziuJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K2jVeetPu9E66Q2sDvwdzuPCJUK3mYQ0UaXwGGpHFmxfd4p3hJidDlGn+e2zQnfZf
-	 k9soGFKo70fO9wM2eIPyuwnsQmeYUPxfyRjGYsN1j7RTEBJVbSBfL4iEcPNBQ81U83
-	 0Ay8nKp/BDJb5RYdHgqlhjETzYtvvwbDphDGIyAY=
+	b=gcBUqJMeCYuLUTLrTmbXwn7dOMpw/mWzxBGoWLvEyjE0+R41iKP+ORXkDSh/NDnxS
+	 hCLM3oeLOBvsAN/eBgFu25eMB0gtVL/ew8iBYbioh3cXW6hi/KhrxC4FJ+UEfSOR8x
+	 6NO7iIlXeVyQQPbO6k86rdwwnvaYdkRdW06kmzd4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mattias Barthel <mattias.barthel@atlascopco.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Olivier Moysan <olivier.moysan@foss.st.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 36/55] net: fec: ERR007885 Workaround for conventional TX
+Subject: [PATCH 6.14 132/183] ASoC: stm32: sai: add a check on minimal kernel frequency
 Date: Wed,  7 May 2025 20:39:37 +0200
-Message-ID: <20250507183800.492969108@linuxfoundation.org>
+Message-ID: <20250507183830.171069332@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
-References: <20250507183759.048732653@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mattias Barthel <mattias.barthel@atlascopco.com>
+From: Olivier Moysan <olivier.moysan@foss.st.com>
 
-[ Upstream commit a179aad12badc43201cbf45d1e8ed2c1383c76b9 ]
+[ Upstream commit cce34d113e2a592806abcdc02c7f8513775d8b20 ]
 
-Activate TX hang workaround also in
-fec_enet_txq_submit_skb() when TSO is not enabled.
+On MP2 SoCs SAI kernel clock rate is managed through
+stm32_sai_set_parent_rate() function.
+If the kernel clock rate was set previously to a low frequency, this
+frequency may be too low to support the newly requested audio stream rate.
+However the stm32_sai_rate_accurate() will only check accuracy against
+the maximum kernel clock rate. The function will return leaving the kernel
+clock rate unchanged.
+Add a check on minimal frequency requirement, to avoid this.
 
-Errata: ERR007885
-
-Symptoms: NETDEV WATCHDOG: eth0 (fec): transmit queue 0 timed out
-
-commit 37d6017b84f7 ("net: fec: Workaround for imx6sx enet tx hang when enable three queues")
-There is a TDAR race condition for mutliQ when the software sets TDAR
-and the UDMA clears TDAR simultaneously or in a small window (2-4 cycles).
-This will cause the udma_tx and udma_tx_arbiter state machines to hang.
-
-So, the Workaround is checking TDAR status four time, if TDAR cleared by
-    hardware and then write TDAR, otherwise don't set TDAR.
-
-Fixes: 53bb20d1faba ("net: fec: add variable reg_desc_active to speed things up")
-Signed-off-by: Mattias Barthel <mattias.barthel@atlascopco.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250429090826.3101258-1-mattiasbarthel@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 2cfe1ff22555 ("ASoC: stm32: sai: add stm32mp25 support")
+Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
+Link: https://patch.msgid.link/20250430165210.321273-3-olivier.moysan@foss.st.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ sound/soc/stm/stm32_sai_sub.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index 7b5585bc21d8f..5c860eef03007 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -635,7 +635,12 @@ static int fec_enet_txq_submit_skb(struct fec_enet_priv_tx_q *txq,
- 	txq->bd.cur = bdp;
+diff --git a/sound/soc/stm/stm32_sai_sub.c b/sound/soc/stm/stm32_sai_sub.c
+index 5a5acc67569fe..d9c4266c8150d 100644
+--- a/sound/soc/stm/stm32_sai_sub.c
++++ b/sound/soc/stm/stm32_sai_sub.c
+@@ -447,7 +447,10 @@ static int stm32_sai_set_parent_rate(struct stm32_sai_sub_data *sai,
+ 	 * return immediately.
+ 	 */
+ 	sai_curr_rate = clk_get_rate(sai->sai_ck);
+-	if (stm32_sai_rate_accurate(sai_ck_max_rate, sai_curr_rate))
++	dev_dbg(&pdev->dev, "kernel clock rate: min [%u], max [%u], current [%u]",
++		sai_ck_min_rate, sai_ck_max_rate, sai_curr_rate);
++	if (stm32_sai_rate_accurate(sai_ck_max_rate, sai_curr_rate) &&
++	    sai_curr_rate >= sai_ck_min_rate)
+ 		return 0;
  
- 	/* Trigger transmission start */
--	writel(0, txq->bd.reg_desc_active);
-+	if (!(fep->quirks & FEC_QUIRK_ERR007885) ||
-+	    !readl(txq->bd.reg_desc_active) ||
-+	    !readl(txq->bd.reg_desc_active) ||
-+	    !readl(txq->bd.reg_desc_active) ||
-+	    !readl(txq->bd.reg_desc_active))
-+		writel(0, txq->bd.reg_desc_active);
- 
- 	return 0;
- }
+ 	/*
 -- 
 2.39.5
 
