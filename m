@@ -1,132 +1,106 @@
-Return-Path: <stable+bounces-142765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CF71AAED81
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 22:58:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66A38AAEDB2
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 23:14:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2E6C4648DE
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:58:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 809B37BBA07
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:13:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E57B28F93B;
-	Wed,  7 May 2025 20:58:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36A4C28FFC0;
+	Wed,  7 May 2025 21:13:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="WuuGgEbx"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="0f4ldn5q"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6ACF17E4;
-	Wed,  7 May 2025 20:58:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E57EF28FAA6;
+	Wed,  7 May 2025 21:13:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746651506; cv=none; b=WkZsZts+T4sY5vVLBJvOOuxXvePIb4YDtOFCsddgo0yWnBtD0aB3lOWxmwTN9IdpGjF/GRS1MtlM/FRPIZEyN05XMxl1H2HJaaKDYYlylUMoZfVG7GHkEVQBP1QetLRmPuXKgl47hKmnQbRrUn8Fz8kPbDn2M/Cvuk/nCUgQxAQ=
+	t=1746652438; cv=none; b=j8xBG9zdMBr1OdDq2/I7Ru4cs0C8m2ZiRTg0GwS0BwrVuAUoeZOCOlTxM+Javl0iGSgNmsCBzsEAqFZigTH4yGKwswzNlNNDGJNohuuoUIHbgiVr01UEbwbrGZFuIylgsMnSjkzEYD+SRipOeu5YVIqR4f2naXxzZ7ZTlPOjT08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746651506; c=relaxed/simple;
-	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nCr2ZqociS0tTx3tPkuukNhl8cnnf/fN2bv6RRWEZ0sdl8hhuZesHsaKusCz4LH10ztvehwNIFUC9O4ytXNMGya31klQjdMPr/B8Pj4GbD+0530QoRC73gN/f5wXE5E1fDo3TmVvRiiN74XycLntksetfHZmtpkPIBeUF/y+bX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=WuuGgEbx; arc=none smtp.client-ip=212.227.15.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1746651496; x=1747256296; i=rwarsow@gmx.de;
-	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=WuuGgEbxK6eW47+i4u9bdSVdWyPdfMmMgY900vSNdsu/LeG/qJH2/85qP/MiC2v2
-	 KlE6EaxjYMF0huVxFgieAjk7mdgSlR5Uvh9YuIdbs893FjCi+W5ZcmdRUYQr9M8T3
-	 OseLgonYwEdwTIZZAtFT7x/byrzCJGuPYzswXXhXrDtcqfxLaD+1ar4cUeLVnvkwy
-	 vFq04TPxfhOOSWboYtsujX+bMweooZcZ7Dl7DHyButCKwJVhoGlSnSSCK7LV+8keT
-	 SFnNzRg1U2UV77LRgnzEppTRheBjNV/+FgpTHBkDkwlDzMTTcOOrcQj9J07ty2C+Y
-	 Tzmm8dSJQNDG5jb0OQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.200.20] ([46.142.34.53]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MYvY2-1uYkfY0bWS-00VQGH; Wed, 07
- May 2025 22:58:16 +0200
-Message-ID: <b1f3a530-e409-44a6-afcd-94810bffc347@gmx.de>
-Date: Wed, 7 May 2025 22:58:14 +0200
+	s=arc-20240116; t=1746652438; c=relaxed/simple;
+	bh=qMfIrLi6wiBHeC5gOBiAAqCa4IN1viIWWbgrU4pB68U=;
+	h=Date:To:From:Subject:Message-Id; b=I3X8VqiubGw1FEteJaJG1usd9I9VV3tAk0ksESD64xsp1t0dhnjrEJYS0fXAnrBsUoqHQKL523X4isNd498HXolS97V4A24ctumDXjTS/Sg0oPtjC6SZRfuqyjw7kbcBih+rqpE88ovb1jipirSFF15Arft/IEdsFHrKUdPC1HI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=0f4ldn5q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E36BC4CEE7;
+	Wed,  7 May 2025 21:13:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1746652437;
+	bh=qMfIrLi6wiBHeC5gOBiAAqCa4IN1viIWWbgrU4pB68U=;
+	h=Date:To:From:Subject:From;
+	b=0f4ldn5q3kAifA8L/WN8wrwJGND5313surI2OtdqVSqXtS00TCcuPgl/3gXBoI31M
+	 fU6bSZz1XCMTGkHsFp6P1uAOcEYes7q3cv46r/SWGNgFqjcMuVdtJoCB4WDAuqPLDc
+	 CrbGOEXxteKccB3FnPR7ixksv8H6c//R9H1uQVQE=
+Date: Wed, 07 May 2025 14:13:56 -0700
+To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,david.laight.linux@gmail.com,wangyuli@uniontech.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [to-be-updated] mm-vmscan-avoid-signedness-error-for-gcc-54.patch removed from -mm tree
+Message-Id: <20250507211357.6E36BC4CEE7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.14 000/183] 6.14.6-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250507183824.682671926@linuxfoundation.org>
-From: Ronald Warsow <rwarsow@gmx.de>
-Content-Language: de-DE, en-US
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:1C2B/l1POeCqXlGcOcZ6PspWZE1x5i37JhwY4B6QEOMA0Msd1ru
- seVOLvWt/dZA3rYPcc56MAVhQ+9R/epVwwMua8gRDvodSzt815QUS60cJ/A7XiXxIPR5vJ7
- 2zvOnOYsXTuqHagyp1YI5ZQU66LQeEm2JU89/snhieEbu9b/Oka0OhXg82DldxbcCk/G8kK
- 6Qt1bc5QBo0CQSQkIWb7w==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:cBXX96OWt3I=;WIbHqEggykxn1cSdRIPHCVv6k7c
- NVhF4sp0bi4EZEfjVQg7tWhS5PkT3NBTV4g56BlIyaMo+lPNQSeE4KSZywvwrYUdqEF3SDHXv
- /Jk8bJk3j7RCExBye6ZIcmxJDprcg/fSHClkq88EFpHsQdpGAocqroNIMnmN87V9ux1OqZ5uv
- US5I5HRZIb0/2DEWozmk7F5g3CDRg5GYrutQr1AHj1OvB/LnQgqKB5JXPSdsRjmqJBODU44G3
- ek0ymqiS3C/xkN60xCyevE6bzYxxPA8fke0eodwFFpyG9pP+HeMgEwEobMTAGYwtBobrHRhA7
- dEpQjXM5TXTJglEEpsNLPQSBclIuLh5zoZCmdqmfjbWuhc9CUmt+QuqelWmoagQH8ePGlvO3D
- kWPRd50VpkQVkBNxRNR5roj7Zw1PA6SD/et4U3WIwA3QBhVvhd4EDILbA7+K6RnMqm7woZAbH
- TgfrVkgdTTGhFYBK6CJ7ap+ndXyvsBdPAcpzm9hUIG8H04dB6w8HZ5I+5VL3FxnKb3ubNlxt6
- ekYrtTaCfZlZ2FHXh7TfZtU3exYLGcjuSwidfaugMNGib93QfjnsyUxt2NevMiZXbumSVB3W5
- WrT+AnCIvIb/ZrYlMZmhf8jRlTdhHGZbWjyGQfndeJ4UK0H0fMzGIlFl8tS+szREjbJNb1tji
- 03GpNfCmhkig1Ud03LmxU9NbsUWq74pBLZM4mx4d/5xpo/hHPyvf5RsH0ZD3f9gz91ukY56xX
- UvCuuaP6Qba94pa/sL7hkhcXh8Mt0pTX9oW6nxKmInJrvx5pNIy7WrjHrrDAowcBHLT21xk79
- Aydh068vMOB2SpMRRuFkcoSiZG5ML/PADDe2bwm68+4uVdwTbiySdWbAdSJiK2lubojYo0ug+
- 2AMAhdDRJ0JjnhQqf9aimy8oq156USFK9lOhrXcVO8ouO0QspCtqdsvGt87RcGYgBdqn6pw2f
- xDsyludqgHnQYTucYykcaYPWrgYyze5ddko5PFDx3lFna+W2uBvm7Gymj+1tmhFBDttRS6uyS
- Vouum/bmqow2qgN+Hcz2ujJxINB9bvift8JPNtU6qbO3RTB9Shnzah+v7jdGhXG3awztgszmM
- 6tGO8Asar17zFE+DjH01cZpCJIhCVYY9gj8ovLsQeIu6OA3CWunsqQ0fOfaN6q14i2KCTYYFK
- yH5y0Ns103ykstAwXWC7zq5z6lnpoIvm1Sx1sudO310eIANkhcXer5+v1ZdIrSVQGM8gyvBXJ
- QJefZNSuV8WXTfDjhHiLnwpXUffW0iF+XlxZUm/X5ct6aXxQ5B4VRrfl2tIVS7jtdTkyV3PhA
- Y9+mMbD4HTjvtjqdEOIh5FdU4Xbp4V/7bgFzM6qNDWxWVy8+0FLJINn0D5GPucFYovuWjVFz1
- klVvJeH7drcteHbVPd57+IZT20v/TC0e5zRJszERkhh6nGxoIlcCAx+xJIuH3gpAV4ayR8gAG
- 7yTW7fkVKBqA/shTARszQefGiR6Iuqe6eq+sugz4eeVcf32Ls6ZMwgzFREM0XHZkxy02VRrLM
- jaKzVx9Li0KQpqmw2pmcwIVrHnBxMOoESJZnco8Jhm1CEey1EC72cwafpBdwPpw8azBrbvCzc
- z3AbEvRDdl38h/rpWhMAnaaxL7NKAD3H8XLVvnNOL3sFdoZjm1joJLEfFfPx1FWUg+oj+qhkc
- VwVDVF5tJt3yrFxVyPNHoFNt0EGwcL6r/oubD9qHqpvUuervrUoOq966CzoDwSlHx9rySTZuP
- HFKdf5YikOyN07O5agTfHQAdJ2EK2bRYsqTNM7+yzqmGSisP/beZLiyxxNSK59NVgC/XvLj+R
- /cMe561fzxw7lHynQnPB96Fqnq9d81zRBuNEl1kuBOFcRxauuuOhHGFY0ud64662SI505WNkE
- SNKv1PaDl5RPhxXjit8c2O+59wQWxMvXDe7FwnbcraK0AN9ipb/VAVdUD8Ol45Jj0xLJRUlG9
- vu3fOT202gB5WEf9k6Uf0Vs+hrpGEem23LLS6HdkxsAyL+pUEFoTB45XMaq6sGTri6y+H2uYh
- pddcUVoaLMxv14AEZPaNU7Xohj6Eyt9bp52G2KHIRixwJHX3LfQ1VFgG6SRZe5ne2CoTnwNTv
- yt4eQ9lVtmKNNNLBYVQp7HuLJxVabLZL/3Dk6ou1ihMTB/+l8jrzAePgkbKvJ25SgGG4+Y6Mw
- Eycm08wCBCvZ914HmT/rP35YRSufalqLfZqjOmvSojT72o/759T2qcZ8RDN4bHE6ltPETZONO
- XyRK3gp+5qBY+AEwQ8fqUKbkim149fI7ECEUDVNswPHLvM4OSONQyJz/uZa6G6yHSpWjblSWE
- zqeRo7gujC4ULipAKGQHmsvQ5nYwNjawYa8r2ldqaf2m967QC1tNDR89PRg/LHFrcSZdvphYY
- SP2AfrXA3ynn/VvHehYPGDbECS5UbnzcskTMTK9TuoJ7IWtsOSV9YH3RT2MtSq+jOdj48q1FU
- yFRQ6dqDrEDy+ZzllGJ105ypdneaR6HtGlZRW7hH77lpzDAG5Kd1MnkiErqeimH6Bj5Dtd/E3
- rbSWAqcJbpAiSCVsCJk0XcdDYREhtDCSCQGiA3Bs1iGtQp38VROfBk6ENt6pM4sGg129HPHGy
- ZzOLQ4xpeXT6UyBbNmQPR8YSeFTO6Medgntlh0a5CF7y5vhnDO8xowLyuQnb0y8BQcFHLV6mw
- gLuHDWW/Wk49HNtRmy/fRrfwMxrMyXRCgtjzPnj60qh679iBGykzFtrQrtDatSCVNcEU7NRDa
- 3wkJjIuQ14DOSY0111PDDZ+WFShM6pSLTSDugpPEAwGpQWBZ7zz7dJNvqY0/q2TKT4FNHtcoo
- H//Gg0WbVUmKpR4GkYxBgssZWzku4ToPH+bEFwfywP0ppf01j/um0sqBWfxhnGMO1/TCGS4Xm
- yrwVFrDuHLf9BHq3jcstJxC+M79gjzdmIGTuBrLtND4C74Qs40maVdSSCLAEcAN/yz6nlY1cu
- BEnhA5AHVe/McM+wfKJgktu3p15BXAaBQ7+sjmTldG6232tw3MA2F8PaqQDhR0/3YsPCnkHSg
- PB96n09jkhvzBKiFORmim4Xm+dlDRyYWj86ysJ4Ksxq
 
-Hi Greg
 
-no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
+The quilt patch titled
+     Subject: mm: vmscan: avoid signedness error for GCC 5.4
+has been removed from the -mm tree.  Its filename was
+     mm-vmscan-avoid-signedness-error-for-gcc-54.patch
 
-Thanks
+This patch was dropped because an updated version will be issued
 
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+------------------------------------------------------
+From: WangYuli <wangyuli@uniontech.com>
+Subject: mm: vmscan: avoid signedness error for GCC 5.4
+Date: Wed, 7 May 2025 12:08:27 +0800
+
+To the GCC 5.4 compiler, (MAX_NR_TIERS - 1) (i.e., (4U - 1)) is unsigned,
+whereas tier is a signed integer.
+
+Then, the __types_ok check within the __careful_cmp_once macro failed,
+triggered BUILD_BUG_ON.
+
+Use min_t instead of min to circumvent this compiler error.
+
+Fix follow error with gcc 5.4:
+  mm/vmscan.c: In function `read_ctrl_pos':
+  mm/vmscan.c:3166:728: error: call to `__compiletime_assert_887' declared with attribute error: min(tier, 4U - 1) signedness error
+
+Link: https://lkml.kernel.org/r/62726950F697595A+20250507040827.1147510-1-wangyuli@uniontech.com
+Fixes: 37a260870f2c ("mm/mglru: rework type selection")
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: David Laight <david.laight.linux@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/vmscan.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/mm/vmscan.c~mm-vmscan-avoid-signedness-error-for-gcc-54
++++ a/mm/vmscan.c
+@@ -3163,7 +3163,7 @@ static void read_ctrl_pos(struct lruvec
+ 	pos->gain = gain;
+ 	pos->refaulted = pos->total = 0;
+ 
+-	for (i = tier % MAX_NR_TIERS; i <= min(tier, MAX_NR_TIERS - 1); i++) {
++	for (i = tier % MAX_NR_TIERS; i <= min_t(int, tier, MAX_NR_TIERS - 1); i++) {
+ 		pos->refaulted += lrugen->avg_refaulted[type][i] +
+ 				  atomic_long_read(&lrugen->refaulted[hist][type][i]);
+ 		pos->total += lrugen->avg_total[type][i] +
+_
+
+Patches currently in -mm which might be from wangyuli@uniontech.com are
+
+ocfs2-o2net_idle_timer-rename-del_timer_sync-in-comment.patch
+treewide-fix-typo-previlege.patch
+
 
