@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-142127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98333AAE92E
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:41:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66371AAE98D
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:46:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 63BBC7B2012
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:40:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7819F505B9D
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:46:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF28228DF47;
-	Wed,  7 May 2025 18:41:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBC3F211283;
+	Wed,  7 May 2025 18:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DJL4+piA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LHc//xPF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A3CC28B7D6;
-	Wed,  7 May 2025 18:41:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F641A2390;
+	Wed,  7 May 2025 18:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643300; cv=none; b=ln9tCxugAtm2ixPoOzNvkczS3AtoNyp7GItrGsgdTUNYOKWmGMAwfWrsWaeVQVJALKU34aZ7xjSrXHHTBuMF8FlSxpJFs4tclzATcFe6BI+513/KOPkr9AWbppJbGQVj6PqqkRDri6yjfdWXsbYYSGqJ+UnP8uUMbMArTRBn7Ik=
+	t=1746643557; cv=none; b=plDTZWDXL+wS026xA1X9EA6drQAy7Zg6K2g/+mvp/EjvWqgVzdH6wbrbpTy3yN1O4XORIxhltki0/Ur2t11AY0L5oKHJ2eXSPQRxX2UgNpurNlC5nYJEIcUZ1sMH4DZoWSTUTg5T10487nyQ1KleAo298UPCb9SPj0rLsFeALQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643300; c=relaxed/simple;
-	bh=OJnsfStJJvpz701L+eBTaiO8bD4UCz7ot4uFq2vGMwM=;
+	s=arc-20240116; t=1746643557; c=relaxed/simple;
+	bh=6ph1Bi1sgNxiY/fMdeVVaDCheUOi06ryLNlhgKMAIQU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sq+jyl9GvSVYaJYH/v3H8FZr5+OA83K96QXMQnn+CvG5ScuGAV1NPl5xssZmNkAc+ZfIDaNRrkHLFWJ7fueA0XuOOg+9O9M7F267l8grY1zQYjB7I7Ec+kcZVuFGqFd6Il6yZ8iBdVBriZFWHy72kGGF8sBgnndTMWR4Y+k2nn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DJL4+piA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 935A9C4CEE2;
-	Wed,  7 May 2025 18:41:39 +0000 (UTC)
+	 MIME-Version; b=XpvZXaln/l8X1diVmAUbjG0JU4gPtn1I8M7Hrp6GP8ZC6RCVL/yC54J8Fgau+lxwj/0KjTGw2M19PbcbNwc8Jw3kq6XoZmSV5rTltQPHyim9CQf8rRuaPkYU6ohs7WZ5fPkxJnpSNs9lxe3aaYJSufrT5I/bSJy7ouXZ9Wr0cpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LHc//xPF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E568DC4CEE2;
+	Wed,  7 May 2025 18:45:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643300;
-	bh=OJnsfStJJvpz701L+eBTaiO8bD4UCz7ot4uFq2vGMwM=;
+	s=korg; t=1746643557;
+	bh=6ph1Bi1sgNxiY/fMdeVVaDCheUOi06ryLNlhgKMAIQU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DJL4+piAIE1lTEDjVXwYrYILvE6cExBlgBtKNBv/GseXzKvY5uSlulM2+y0YQYjXk
-	 gKFyk94xQTXJpTlDMBuwNWi0/XD2Zr9bde5t2cS+jli0tbx1L5ch/XcnQOkG/SzA/4
-	 +ok1gEEN3BNa0MfvLQlywK/gMCN80oFtjGeRt5tc=
+	b=LHc//xPFTIIjxye7sdl5g+VrGpRJKSxTGgQMVNcwEnm+bs+/4onlndjP+5MaUErMR
+	 //cN3bqkYcoI/Ddr0E156q31NhtanAdZqEo/f6kL2/IpQfbPgHlMym+NcbhKHg3qQH
+	 XXD3bzln+scthxeqkEopqEfCJUX8sCqmoChqw9DI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenhao Sun <weiguangtwk@outlook.com>,
-	Mingcong Bai <jeffbai@aosc.io>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <jroedel@suse.de>
-Subject: [PATCH 5.15 14/55] iommu/vt-d: Apply quirk_iommu_igfx for 8086:0044 (QM57/QS57)
-Date: Wed,  7 May 2025 20:39:15 +0200
-Message-ID: <20250507183759.625450353@linuxfoundation.org>
+	Sheetal <sheetal@nvidia.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 41/97] ASoC: soc-pcm: Fix hw_params() and DAPM widget sequence
+Date: Wed,  7 May 2025 20:39:16 +0200
+Message-ID: <20250507183808.645374397@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
-References: <20250507183759.048732653@linuxfoundation.org>
+In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
+References: <20250507183806.987408728@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingcong Bai <jeffbai@aosc.io>
+From: Sheetal <sheetal@nvidia.com>
 
-commit 2c8a7c66c90832432496616a9a3c07293f1364f3 upstream.
+[ Upstream commit 9aff2e8df240e84a36f2607f98a0a9924a24e65d ]
 
-On the Lenovo ThinkPad X201, when Intel VT-d is enabled in the BIOS, the
-kernel boots with errors related to DMAR, the graphical interface appeared
-quite choppy, and the system resets erratically within a minute after it
-booted:
+Issue:
+ When multiple audio streams share a common BE DAI, the BE DAI
+ widget can be powered up before its hardware parameters are configured.
+ This incorrect sequence leads to intermittent pcm_write errors.
 
-DMAR: DRHD: handling fault status reg 3
-DMAR: [DMA Write NO_PASID] Request device [00:02.0] fault addr 0xb97ff000
-[fault reason 0x05] PTE Write access is not set
+ For example, the below Tegra use-case throws an error:
+  aplay(2 streams) -> AMX(mux) -> ADX(demux) -> arecord(2 streams),
+  here, 'AMX TX' and 'ADX RX' are common BE DAIs.
 
-Upon comparing boot logs with VT-d on/off, I found that the Intel Calpella
-quirk (`quirk_calpella_no_shadow_gtt()') correctly applied the igfx IOMMU
-disable/quirk correctly:
+For above usecase when failure happens below sequence is observed:
+ aplay(1) FE open()
+  - BE DAI callbacks added to the list
+  - BE DAI state = SND_SOC_DPCM_STATE_OPEN
+ aplay(2) FE open()
+  - BE DAI callbacks are not added to the list as the state is
+    already SND_SOC_DPCM_STATE_OPEN during aplay(1) FE open().
+ aplay(2) FE hw_params()
+  - BE DAI hw_params() callback ignored
+ aplay(2) FE prepare()
+  - Widget is powered ON without BE DAI hw_params() call
+ aplay(1) FE hw_params()
+  - BE DAI hw_params() is now called
 
-pci 0000:00:00.0: DMAR: BIOS has allocated no shadow GTT; disabling IOMMU
-for graphics
+Fix:
+ Add BE DAIs in the list if its state is either SND_SOC_DPCM_STATE_OPEN
+ or SND_SOC_DPCM_STATE_HW_PARAMS as well.
 
-Whereas with VT-d on, it went into the "else" branch, which then
-triggered the DMAR handling fault above:
+It ensures the widget is powered ON after BE DAI hw_params() callback.
 
-... else if (!disable_igfx_iommu) {
-	/* we have to ensure the gfx device is idle before we flush */
-	pci_info(dev, "Disabling batched IOTLB flush on Ironlake\n");
-	iommu_set_dma_strict();
-}
-
-Now, this is not exactly scientific, but moving 0x0044 to quirk_iommu_igfx
-seems to have fixed the aforementioned issue. Running a few `git blame'
-runs on the function, I have found that the quirk was originally
-introduced as a fix specific to ThinkPad X201:
-
-commit 9eecabcb9a92 ("intel-iommu: Abort IOMMU setup for igfx if BIOS gave
-no shadow GTT space")
-
-Which was later revised twice to the "else" branch we saw above:
-
-- 2011: commit 6fbcfb3e467a ("intel-iommu: Workaround IOTLB hang on
-  Ironlake GPU")
-- 2024: commit ba00196ca41c ("iommu/vt-d: Decouple igfx_off from graphic
-  identity mapping")
-
-I'm uncertain whether further testings on this particular laptops were
-done in 2011 and (honestly I'm not sure) 2024, but I would be happy to do
-some distro-specific testing if that's what would be required to verify
-this patch.
-
-P.S., I also see IDs 0x0040, 0x0062, and 0x006a listed under the same
-`quirk_calpella_no_shadow_gtt()' quirk, but I'm not sure how similar these
-chipsets are (if they share the same issue with VT-d or even, indeed, if
-this issue is specific to a bug in the Lenovo BIOS). With regards to
-0x0062, it seems to be a Centrino wireless card, but not a chipset?
-
-I have also listed a couple (distro and kernel) bug reports below as
-references (some of them are from 7-8 years ago!), as they seem to be
-similar issue found on different Westmere/Ironlake, Haswell, and Broadwell
-hardware setups.
-
-Cc: stable@vger.kernel.org
-Fixes: 6fbcfb3e467a ("intel-iommu: Workaround IOTLB hang on Ironlake GPU")
-Fixes: ba00196ca41c ("iommu/vt-d: Decouple igfx_off from graphic identity mapping")
-Link: https://groups.google.com/g/qubes-users/c/4NP4goUds2c?pli=1
-Link: https://bugs.archlinux.org/task/65362
-Link: https://bbs.archlinux.org/viewtopic.php?id=230323
-Reported-by: Wenhao Sun <weiguangtwk@outlook.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=197029
-Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
-Link: https://lore.kernel.org/r/20250415133330.12528-1-jeffbai@aosc.io
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0c25db3f7621 ("ASoC: soc-pcm: Don't reconnect an already active BE")
+Signed-off-by: Sheetal <sheetal@nvidia.com>
+Link: https://patch.msgid.link/20250404105953.2784819-1-sheetal@nvidia.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/intel/iommu.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ sound/soc/soc-pcm.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -5660,6 +5660,9 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_I
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x2e40, quirk_iommu_igfx);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x2e90, quirk_iommu_igfx);
+diff --git a/sound/soc/soc-pcm.c b/sound/soc/soc-pcm.c
+index 3f998a09fc42e..5a0fec90ae259 100644
+--- a/sound/soc/soc-pcm.c
++++ b/sound/soc/soc-pcm.c
+@@ -1499,10 +1499,13 @@ static int dpcm_add_paths(struct snd_soc_pcm_runtime *fe, int stream,
+ 		/*
+ 		 * Filter for systems with 'component_chaining' enabled.
+ 		 * This helps to avoid unnecessary re-configuration of an
+-		 * already active BE on such systems.
++		 * already active BE on such systems and ensures the BE DAI
++		 * widget is powered ON after hw_params() BE DAI callback.
+ 		 */
+ 		if (fe->card->component_chaining &&
+ 		    (be->dpcm[stream].state != SND_SOC_DPCM_STATE_NEW) &&
++		    (be->dpcm[stream].state != SND_SOC_DPCM_STATE_OPEN) &&
++		    (be->dpcm[stream].state != SND_SOC_DPCM_STATE_HW_PARAMS) &&
+ 		    (be->dpcm[stream].state != SND_SOC_DPCM_STATE_CLOSE))
+ 			continue;
  
-+/* QM57/QS57 integrated gfx malfunctions with dmar */
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x0044, quirk_iommu_igfx);
-+
- /* Broadwell igfx malfunctions with dmar */
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x1606, quirk_iommu_igfx);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x160B, quirk_iommu_igfx);
-@@ -5737,7 +5740,6 @@ static void quirk_calpella_no_shadow_gtt
- 	}
- }
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x0040, quirk_calpella_no_shadow_gtt);
--DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x0044, quirk_calpella_no_shadow_gtt);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x0062, quirk_calpella_no_shadow_gtt);
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x006a, quirk_calpella_no_shadow_gtt);
- 
+-- 
+2.39.5
+
 
 
 
