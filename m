@@ -1,155 +1,215 @@
-Return-Path: <stable+bounces-142085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86EA6AAE484
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 17:23:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75426AAE494
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 17:25:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6A504E7FB7
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 15:23:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4AC089C3236
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 15:24:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ACC028A417;
-	Wed,  7 May 2025 15:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A32928A72C;
+	Wed,  7 May 2025 15:24:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cMvmVCCn"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="0eSppIxy"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2069.outbound.protection.outlook.com [40.107.92.69])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A30B7289E3E;
-	Wed,  7 May 2025 15:23:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746631410; cv=none; b=L7ZKoCEj1SGC/1DfYkEmnpjvDgrfK+o7HKwdNyNKrHiLbSJ3z4RtpSn6D0Z3jTEFpvws49PD7AV0ukNKHLJpap+P/CsVRAk394bftedmm0W7DScMkgHXG7BzL4Cqe1eEvG6bt476ukRSdMb//qYVvbM52HkaM/hCjKMg2ch1wxg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746631410; c=relaxed/simple;
-	bh=h36C8gizKwyGSI3YJ2TR+N9OhKaR+u1FY/uS9APPblc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tTHdbGeLjOOO89/hZay8muGTxL2GcQa1n1sayrKFJKjPv+gK8fPOSal6/rq2fSgLgOgV5sP4Ymcubpig48H2HISTLH6tv8wlO3/KbY7bh84jYOg0mtP9hzgslzrWGmSnYTAVIQ+ecq7K8wNuCFUwdIlWAGExeT00y6BQU0fXQRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cMvmVCCn; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5f5bef591d6so14235941a12.1;
-        Wed, 07 May 2025 08:23:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746631407; x=1747236207; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Bu+V95WZmuevBWrYtl8nXKNY0WPBNalcqPNhN8Y1Gbc=;
-        b=cMvmVCCn6KyilzSe5d8lfITUeUdKSpCTuFQhoOCc1Ay7gh3j1ys6db6MpBDh8Psb4v
-         s5xXeTO0CGCpF8PdYE1QG6DTj3ZoGJmsuZDk344v4prz2Fy/5+eQRDmlToIhA9tWZlY0
-         op+v7zldKxYkrmdo6Djs0SDZ8bg+GjhGVMcjuu+6OjNq2eu+FFonfF5wYDvGnjvXn8Rb
-         Qv9m2YPjhqkIDHJZThj+zroR1ZOYnbZkUuHYU43AnXGIIx+OsXDbxgIVD8XoOJ7a8dLt
-         N6iXEONtOAjnGxgeRMcRmp6VdaPD30K5MUVhlzor2JkgvhfuZwQsVRinJcXUvKGimFby
-         rzTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746631407; x=1747236207;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Bu+V95WZmuevBWrYtl8nXKNY0WPBNalcqPNhN8Y1Gbc=;
-        b=p8OVzzGUiMnywbBNpJYmdHiyh1a6IXp2Uvge8DczHQUVMnCafXEZVgCPmcfe/zTzXy
-         tMod6i4PVekiZh2eZX+S6+i3GijX3nVnAoPOWdfgkZsk8O/twosLZuyf5FM69mbF8Ln+
-         2xmWPYWhl43TyHu/F3G2m+8BdMnENMA/SH/E+8MiXvfx0nOgE+p/5rzW/fS/GYi+us86
-         Ou2BO00W2Cp5rN6issRhl0txnr3b+xMLKnLIbn1+ZL0Uzj4xh8OuNo3ZjVcKjbM5j2js
-         kYHtK6rxiqMAIWFG7VlMEiLcWDB6JW8E1bD0FlQS5/T4A7nlXSdN52EcmpgdjYoDImtJ
-         8aHA==
-X-Forwarded-Encrypted: i=1; AJvYcCUxuJt2q7eAWN6+oZE4iUUik10TW2NiNOBftq9g14iIsszfMomErxC6rN+XWfdRSeKPJewPKMpr@vger.kernel.org, AJvYcCWDBGupNSm4ZzePu+5SW6v0CvRZ7OzOWw1irkQJocQdLz8Pp5flacEB+h/oyqXITj1qoJWwNQwG0E2bUvE=@vger.kernel.org, AJvYcCWidy56Wz367HMkziso8ajBy6ciIyyYIipQDTxRg7cufzmIn71jfz/tKDdIjBDUham7TJyD0xfXVHbRYnM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxsgn1IUveDTTYzH+eOCiElTT7QmfFzhXAbtf+oFwBJ1OGhI2wE
-	HyR24oKGSwvzx52D75y/Vf/l0i+PItf0HlrV8IiSUpumXEhubEWTtQcY2g==
-X-Gm-Gg: ASbGncvWhXPGLOCTOzz/qumhjZVdaKRbuQ1cY0o0yUGwkXKhuI9YqdsBVkv/cm5E0VT
-	L0gtVVxmvE2veUDFh5OtXU6MTd/YcXiRckcv5X/FFJz1MFDB/89ZM3ZVnILEmfDlYYbI5eX7hde
-	L2qk4W5CMi7pnNHBTjI53CkZckuVPdlOaXaI8UTRkqTF3d06DoYSBcehAXuUlEW1Di92bOC9HEz
-	O2GSMTYAVPLEFKpHKmL72gQk5UuLc3WL6QN5N+nENhECF/+sSXtOV5gzLvwBgp09n0L8+FivESz
-	Qih6K22ByAMcahJVvHtZDO5QI/RAPaOSLA9mSDugDksKZuHMlLlIwfdUKYR5hidDsbISYwHYNWk
-	5OyPUbtR423Htor8DQgn2LUjUHOE=
-X-Google-Smtp-Source: AGHT+IGjfHXnrpEUYevTUWlZNdlZY2K76cUxolllBKTvZC9lPWbiy+bz6X7MHwmtyPjAegiT6kqLtg==
-X-Received: by 2002:a5d:5887:0:b0:3a0:9fe1:c298 with SMTP id ffacd0b85a97d-3a0b4a161b7mr3182648f8f.18.1746630987926;
-        Wed, 07 May 2025 08:16:27 -0700 (PDT)
-Received: from orome (p200300e41f281b00f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f28:1b00:f22f:74ff:fe1f:3a53])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a099b0f125sm17160004f8f.72.2025.05.07.08.16.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 May 2025 08:16:26 -0700 (PDT)
-Date: Wed, 7 May 2025 17:16:24 +0200
-From: Thierry Reding <thierry.reding@gmail.com>
-To: webgeek1234@gmail.com
-Cc: Mikko Perttunen <mperttunen@nvidia.com>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
-	Jonathan Hunter <jonathanh@nvidia.com>, dri-devel@lists.freedesktop.org, linux-tegra@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Thierry Reding <treding@nvidia.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v2] drm/tegra: Assign plane type before registration
-Message-ID: <6nnklsiik7cwgmul2ygy7zayenybarmikfgl2hogryo7r2vtd3@vgksl6swjrxm>
-References: <20250421-tegra-drm-primary-v2-1-7f740c4c2121@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A45B51FDA61
+	for <stable@vger.kernel.org>; Wed,  7 May 2025 15:24:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.69
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746631492; cv=fail; b=FmGrZFCdBeLY3QRbNzJgY8gWcUlRq5G8PlToHWHbaTsBP1ynrzqtKRuy51OtrzfixeoK7Cu2PRsmTuaZQPujAIRDFIfLKxdbIFzZUzyo8YPKZI1GGPnXrEBWsuDHWQyk3iCaGTlahZo8m63V0OYh4m2huAZt6g5LwpBzrn8dTWo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746631492; c=relaxed/simple;
+	bh=gXBd6LEp4Dx5ggom8/A/pDE4s0Rq8hKbZrXSpbUUPLI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=XoWDDFC4iOFBqjLCBoEhkefOXBLlV3M0PAKUNueIPuuaMdFJMtk//ymkCUnbvm5CwFCEdVuVbf4PDAPqCWPdgxfbPWzLWfFjpWwwqTD8mPTK573DtVBwvZ9Z5eeIRx3K/N8BklGQTBhNowUsKTgC9EX5VVzciIpAodk573IdfEI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=0eSppIxy; arc=fail smtp.client-ip=40.107.92.69
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=QEHeUeQtdLE+BYhKQCCweHjlUEIEi7pswKcoDtTdFQndhYn5eBiso+wS5IplE+59sbsBx5Wh/aky6+ooWTMA598fckpYZihL9PEV47JHKXbX0f1IrFLiUjtba/Tjp1cd0Xz/G3MquEKI3c2fj305axc1xB8Aemcgkz//auKi/9Ey7SKM/eX/aRzqmphAi2DXqErJUw4yPM15/nAg+k89dTKJFimkZ0R7JWV/VE5jWLA9edoW9ZcxT6F2oeSnTS6VJ4lf/zH6DNWM607S1hclUD7xWtnMVlj/ZA9woY4FC9Z/t2mb0naR6eHuXH/qqdRvbSNbixSuHu1UfmniKrRHHQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sGbgyzGFRT/U/W4KCzlyXkwlqEmfYo70eLmDQh0xqqQ=;
+ b=XFLKLkypNa5NoRtac4i5+p0ptIuC0NHbpSPMI9TuYdhPvKnhoPogA9Z02Oj7iuyV2uY+kA1+4pIQQ6piRbqu8VMm/B9fZahtE13ICmj3rXcVkQHMXMoylpEmDUIJAuVGq5FxP6ImRKH+oYiAy3BCqNgh9d76QvJcUimDCCbR1cSIWUZ8XJBPPN4ygLAFlWTk83AfyVNPUz/R7zB7opb7R/2cVKsjts6iT2Es1Lu9pfL5jwiomFfsOxP07SwfdjEbF6Yk4wkcHhenkSYIEO3kOF5wFbYSnZHDRAAi/Lho+QKJFnxwgkiEdttN3lRmxXbz7Db9L+N8gHWK514AWz9UpQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=linux.intel.com smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sGbgyzGFRT/U/W4KCzlyXkwlqEmfYo70eLmDQh0xqqQ=;
+ b=0eSppIxyHmykVHoJBHsBbrsPyt9JHq1tKxptTXEyvYze7SfIzhoPyHCwom9epa+ZbMQ7fTfzYQxYhVWlhdMw3dKCuvGIP5w0MJc+eTto57OWRYNt4zBNDaXg/bowQlP+M+Mb/KRDoJk2c36/kbSO9rpnzbsL9cm5ZXLUFBW5JBU=
+Received: from BL6PEPF0001641B.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:22e:400:0:1004:0:10) by DS2PR12MB9663.namprd12.prod.outlook.com
+ (2603:10b6:8:27a::13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.26; Wed, 7 May
+ 2025 15:24:43 +0000
+Received: from BL02EPF0002992C.namprd02.prod.outlook.com
+ (2a01:111:f403:f901::7) by BL6PEPF0001641B.outlook.office365.com
+ (2603:1036:903:4::a) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8699.30 via Frontend Transport; Wed,
+ 7 May 2025 15:24:43 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BL02EPF0002992C.mail.protection.outlook.com (10.167.249.57) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8722.18 via Frontend Transport; Wed, 7 May 2025 15:24:42 +0000
+Received: from SATLEXMB05.amd.com (10.181.40.146) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 7 May
+ 2025 10:24:42 -0500
+Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB05.amd.com
+ (10.181.40.146) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 7 May
+ 2025 10:24:42 -0500
+Received: from [172.19.71.207] (10.180.168.240) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
+ Transport; Wed, 7 May 2025 10:24:41 -0500
+Message-ID: <08a17170-b991-f520-6aca-0690a28917a4@amd.com>
+Date: Wed, 7 May 2025 08:24:36 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="yzkzi6i556e7c47u"
-Content-Disposition: inline
-In-Reply-To: <20250421-tegra-drm-primary-v2-1-7f740c4c2121@gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.11.0
+Subject: Re: [PATCH] accel/ivpu: Use firmware names from upstream repo
+Content-Language: en-US
+To: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
+	<dri-devel@lists.freedesktop.org>
+CC: <jeff.hugo@oss.qualcomm.com>, <stable@vger.kernel.org>
+References: <20250506092030.280276-1-jacek.lawrynowicz@linux.intel.com>
+ <abf77771-ca6a-3b29-f5e7-fbb11c53844a@amd.com>
+ <35f0d2b1-e958-44db-b4d2-978cd741c3ab@linux.intel.com>
+From: Lizhi Hou <lizhi.hou@amd.com>
+In-Reply-To: <35f0d2b1-e958-44db-b4d2-978cd741c3ab@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: None (SATLEXMB05.amd.com: lizhi.hou@amd.com does not designate
+ permitted sender hosts)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL02EPF0002992C:EE_|DS2PR12MB9663:EE_
+X-MS-Office365-Filtering-Correlation-Id: 887d6a09-6ff4-4b3c-65cd-08dd8d7b4aa8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|82310400026|376014|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?YnhnNnRSKzRTTy92b1A1SEg3T0FvOUppOHZYSk9ib0lVeUg3ck5kVGxhTVcr?=
+ =?utf-8?B?NEFRNnJkUHBVSmNlRnlxT0haMFVtSU9pNEF2eVM0bTliMnllY1NiblI4UVVH?=
+ =?utf-8?B?UytKeEpLTVh4WkxOOGhmTUpBM2tNTENrV1hTR3Qya3N3cjU2WE5mU3g4WFA5?=
+ =?utf-8?B?eVlmK0hXN0J6YnVVTlN4c3R1cndVNlJpQmFFanlpK1Uzenc4S3M1enVKRkVv?=
+ =?utf-8?B?dFQ4VlZscktPL2tRaitOb2kySjBLNEorZGY1UHl2UTVjOFI0NFlSUHlGZzA3?=
+ =?utf-8?B?Tjhma1JjRXc3UWVTTkNKQXNOZU9YS0xJV08xd09YUUVnMG53VWFmVElhRndx?=
+ =?utf-8?B?NGpGTE4vRVNNOGs2UVllZGJDYnhkNGJHK2toY0J4SEpmQzJrd3YxTU9GY1JQ?=
+ =?utf-8?B?MjZCRWJLQmUzanBUMWx5dWFaSFdmeHEwUGluVUR1dFU3M1pFSDBadUJpeGJ0?=
+ =?utf-8?B?NSs1U0xrT2dnZmV2TTRSMVVZWDdHbnJMR1k1QmluT1VvcDAzNjdnZXVGYzk4?=
+ =?utf-8?B?c0ZKaUp3UVd1bWtsMUNoN1FseS94TXdwY1VVdUpHaDM3MVZzc0NIMmZMNWdH?=
+ =?utf-8?B?ZzRnRHJ5ay83RGJtZVJFOVcwaWVxREtJN0FwV0tWdEdvUjhWTjZnYmNvSFZx?=
+ =?utf-8?B?QzVSR0pRTjRjVUtBMkl2ejROUmtoWDJtYlZ1L1Foc1NZU3BnY0xhQlNmNEtE?=
+ =?utf-8?B?bFRuaXgzV3lkUzZOSUFNL0N6MkhvWDVwL1oxMHlSeC9INXVCaGJmcUN2dG5r?=
+ =?utf-8?B?NWpEWVFSeU1HWmRCUTR0ZFVINDVSOTVQcFBkRzluZnUzSHUwWlRkSHVSUzRp?=
+ =?utf-8?B?WXhid1NDbVdpcXVZKzIvT0VCc2NoUkFPekNyYlNHSHh1Q05uK1FZV3FoMlM4?=
+ =?utf-8?B?d281aFhMNFBBQnA1QzYydFRtRnoxUmE2L3J1TkhYMUtsdm9kcEdKZEFkNkhn?=
+ =?utf-8?B?U3Z3Zy9aNFR4WU1jTitRS3RJeGZQWDVPcmJXQTNmTFJadm0rdnNIRzFjcXF4?=
+ =?utf-8?B?anhQZFBLN0xjODB6TmFuZXRhZ2FqSEVUR0dISjNpcm8wYWtSanNnekNyRUlW?=
+ =?utf-8?B?QUFyZGt1TXZNcmxjZHF4NU0vZmd1cXdVd2N5WG8wWndERmZqZ3BvVDNua25w?=
+ =?utf-8?B?ZndtMG04U2VRemswTzBNM2pnb1ZJNEZzMW93OXFqOWpSdEthbDNSeTh6RXFS?=
+ =?utf-8?B?R0NJaE5BYWh3a0x4VnZRSVZVdStQTlppK1ZYcnFnV0s1S2hQWFhDQWM4Z1ZD?=
+ =?utf-8?B?UzZObU5oWjJ1bVFhdksvS2RrR3JieTdWUzlLR3EzOWh6RmpHOUVvK3Q4blhY?=
+ =?utf-8?B?cHZJYWM2bng5U2N4NmJLb1hmWmpQSlNFaE56NHY1SDdITWhlNlcvRk5EVm5H?=
+ =?utf-8?B?N1Azc3ViVU5pVzFLS2FtOFovY0syYjN4Ykw3N1F0UzJ0NkZrRWYvaSsydU53?=
+ =?utf-8?B?UXVKRkxCcDRwMTdJWDVEVmhNQzM1ZEJ2VStmNlhrV29rUXVSN2hGM1NjQUJv?=
+ =?utf-8?B?UDFDTjcwSVcrU2NFVUczbXBvbURURER6Y00zaTExVk5uS3VvNEFBYldBZnRZ?=
+ =?utf-8?B?enNUb0pzRktyQVEwQmd6d3d2YU1hMmxlMUhBb3JDbnAwaW9hU1kvWHA3OU0v?=
+ =?utf-8?B?cW8ySThId1RvYWlRbFNnSmJ3dGFuOXdxOWhVaThFU002SW5CTHlpVlAzai9V?=
+ =?utf-8?B?SVhKUmsyQVl2THBxV1l1aXVPelJZckVlVy93bG0yczhRNWNDMnE2eVRhNEtT?=
+ =?utf-8?B?T3RZNnl2ZmphVGNjQ1Y2UUVBL21nQURRV0hDV09odkpHdHZmVnJYRGpJUXpk?=
+ =?utf-8?B?NEU5dlhvWlU5SUJucC9CYjR0RitLQWprMlpuYTNMTU9lSmlrT0lJMUQyemJo?=
+ =?utf-8?B?OFQrTUpUOWV2NXRJdEI2SEZJQ21lVjVad25LL0pTdlpzOFdrQit3c3pOQ1lQ?=
+ =?utf-8?B?dGNhZ2pzRG9WK2czNjdvTXNYMmpvQUJjY1B0Um5GZVc5K1ZFRmZjb1ZHY0Nr?=
+ =?utf-8?B?cDFqNVZSUkpTNFVmZ2FkYzBOZ0ZtOWZudlhrcUtTdkJkd1dYV3pNVUZDOUUv?=
+ =?utf-8?Q?7embbp?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2025 15:24:42.9064
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 887d6a09-6ff4-4b3c-65cd-08dd8d7b4aa8
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL02EPF0002992C.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS2PR12MB9663
 
 
---yzkzi6i556e7c47u
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH v2] drm/tegra: Assign plane type before registration
-MIME-Version: 1.0
+On 5/6/25 23:59, Jacek Lawrynowicz wrote:
+> Hi,
+>
+> On 5/6/2025 5:41 PM, Lizhi Hou wrote:
+>> On 5/6/25 02:20, Jacek Lawrynowicz wrote:
+>>> Use FW names from linux-firmware repo instead of deprecated ones.
+>>>
+>>> Fixes: c140244f0cfb ("accel/ivpu: Add initial Panther Lake support")
+>>> Cc: <stable@vger.kernel.org> # v6.13+
+>>> Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+>>> ---
+>>>    drivers/accel/ivpu/ivpu_fw.c | 12 ++++++------
+>>>    1 file changed, 6 insertions(+), 6 deletions(-)
+>>>
+>>> diff --git a/drivers/accel/ivpu/ivpu_fw.c b/drivers/accel/ivpu/ivpu_fw.c
+>>> index ccaaf6c100c02..9db741695401e 100644
+>>> --- a/drivers/accel/ivpu/ivpu_fw.c
+>>> +++ b/drivers/accel/ivpu/ivpu_fw.c
+>>> @@ -55,18 +55,18 @@ static struct {
+>>>        int gen;
+>>>        const char *name;
+>>>    } fw_names[] = {
+>>> -    { IVPU_HW_IP_37XX, "vpu_37xx.bin" },
+>>> +    { IVPU_HW_IP_37XX, "intel/vpu/vpu_37xx_v1.bin" },
+>> What if old only vpu_37xx.bin is installed but not intel/vpu/vpu_37xx_v1?
+>>
+>> Maybe just put *_v1 line in front without removing { ..., "vpu_37xx.bin"} ?
+>>
+> The vpu_37xx.bin style names were never released. This was only for developer convenience but it turns out that developers don't use this anymore, so it is safe to remove. Maybe it make sense to mention this in commit message :)
 
-On Mon, Apr 21, 2025 at 11:13:05AM -0500, Aaron Kling via B4 Relay wrote:
-> From: Thierry Reding <treding@nvidia.com>
->=20
-> Changes to a plane's type after it has been registered aren't propagated
-> to userspace automatically. This could possibly be achieved by updating
-> the property, but since we can already determine which type this should
-> be before the registration, passing in the right type from the start is
-> a much better solution.
->=20
-> Suggested-by: Aaron Kling <webgeek1234@gmail.com>
-> Signed-off-by: Thierry Reding <treding@nvidia.com>
-> Cc: stable@vger.kernel.org
-> Fixes: 473079549f27 ("drm/tegra: dc: Add Tegra186 support")
-> Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
-> ---
-> Changes in v2:
-> - Fixed signoff in commit message
-> - Added fixes to commit message
-> - Link to v1: https://lore.kernel.org/r/20250419-tegra-drm-primary-v1-1-b=
-91054fb413f@gmail.com
-> ---
->  drivers/gpu/drm/tegra/dc.c  | 12 ++++++++----
->  drivers/gpu/drm/tegra/hub.c |  4 ++--
->  drivers/gpu/drm/tegra/hub.h |  3 ++-
->  3 files changed, 12 insertions(+), 7 deletions(-)
+Sounds great.
 
-Applied to drm-misc-next, thanks.
+Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
 
-Thierry
-
---yzkzi6i556e7c47u
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEiOrDCAFJzPfAjcif3SOs138+s6EFAmgbeUgACgkQ3SOs138+
-s6E8shAAimUEuugWp3icnj7eXRj2vOg3BUz/p6I7LDUlHLc1/oumW7zSeXpRUMpb
-o9tfQ7CDoApO3BOBxWjJh1g5Me8nKoQwWxANkJ0O/QGqYcKOdNaeeeHLjN3veQEe
-E/LfkIpFTEuSIV56GypmQUjp10+lgU/BcgKu3uw8lEoHJdR8RYZqdtjpRRT3ey8D
-pNMFQJ6CgruF5VqVSS1Z1xcE7hBTuLnqJmZ1w1v+r2klt3uiivpxE8zbOOiHjyoR
-XERgg+wWM5MLVjRvPdkdNOXlOMO85quLmr8WeV0SE6plBOSQAETgqATj4BchuBkc
-cvN1pYwtghCKLD/Z9xikAxxfh+p+W87+bZY4TUdr7QzQ62S7SyHKwye0ORtUdZnC
-XP0+fHXVb2qOmSpGVtlP53MWGbLCVsy1vjb1sg1N/J5CIHprgTeGRWJVCqgUPjZS
-jQLrKV3Y54MDV4XAA5HpzmbaFhABZ1H/PdAy08mwPsc/shHbD+p/6m26NR0elNRS
-CaDicCDmX6oIE3sEYRBjKNcAkW9DqDrJWIaNH+qDpywO/JVa4Khb2W0CNyw4UY74
-qY+YttsGD2/M6Ym3/yZRQ5zzgVn81nkD38RHIFQUvhgt0Moarp9zDMeBKBlHzjeG
-L8A+IW7WldrGcxMDWkmXArTyZeSbkpnDGisHNvr/CbZ7PH9AsTg=
-=NqSH
------END PGP SIGNATURE-----
-
---yzkzi6i556e7c47u--
+>
+>>>        { IVPU_HW_IP_37XX, "intel/vpu/vpu_37xx_v0.0.bin" },
+>>> -    { IVPU_HW_IP_40XX, "vpu_40xx.bin" },
+>>> +    { IVPU_HW_IP_40XX, "intel/vpu/vpu_40xx_v1.bin" },
+>>>        { IVPU_HW_IP_40XX, "intel/vpu/vpu_40xx_v0.0.bin" },
+>>> -    { IVPU_HW_IP_50XX, "vpu_50xx.bin" },
+>>> +    { IVPU_HW_IP_50XX, "intel/vpu/vpu_50xx_v1.bin" },
+>>>        { IVPU_HW_IP_50XX, "intel/vpu/vpu_50xx_v0.0.bin" },
+>>>    };
+>>>      /* Production fw_names from the table above */
+>>> -MODULE_FIRMWARE("intel/vpu/vpu_37xx_v0.0.bin");
+>>> -MODULE_FIRMWARE("intel/vpu/vpu_40xx_v0.0.bin");
+>>> -MODULE_FIRMWARE("intel/vpu/vpu_50xx_v0.0.bin");
+>>> +MODULE_FIRMWARE("intel/vpu/vpu_37xx_v1.bin");
+>>> +MODULE_FIRMWARE("intel/vpu/vpu_40xx_v1.bin");
+>>> +MODULE_FIRMWARE("intel/vpu/vpu_50xx_v1.bin");
+>>>      static int ivpu_fw_request(struct ivpu_device *vdev)
+>>>    {
 
