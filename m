@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-142244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C143BAAE9C0
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:48:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A79EEAAEBBE
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:10:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92BD8986F33
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:47:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DDED87A172E
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:09:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06A011C84D7;
-	Wed,  7 May 2025 18:47:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79BD728DF4C;
+	Wed,  7 May 2025 19:10:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NKaK/O9M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="snFonUBX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B011A29A;
-	Wed,  7 May 2025 18:47:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3707C2144C1;
+	Wed,  7 May 2025 19:10:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643656; cv=none; b=b7/bfTIjmQeweVARW7UWOILzrZlVG+o8rIlSATt2EX5Ly2A5qzlbGYRsdrAhAI3odWGylpivc3ye6QBRIplsNMJJtmIU212hslxymKvcbRFe3PSb5fHHqQJEI1IZNkmZ0opFY3doGn68wDyWo+JEw7d0IozBJPb/fOWab3aZY8U=
+	t=1746645022; cv=none; b=Sb/LnaiFVmQU3zcQ79yv5/irNnrxBQAhv+kFciDJbj/FcdyHA9EJGLHeqTJYQgJabOKqLor9FWEQvJdA/W4EvCWPE+3mA4PmYq2Dr9efO26VSp8SuWzwxTHqCRd3a8jpFjzqGRyFVeFYLK1Y5Px142klpgmT8A+iVuod0tPTrQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643656; c=relaxed/simple;
-	bh=JMayWtIKxoJTD5ZJOl7vDXPCPoqK8cftIK2PiKnejmw=;
+	s=arc-20240116; t=1746645022; c=relaxed/simple;
+	bh=/y1i7yewZkHk/KyZnZl3kaA8la84BNf1BAPuec+0/LI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pja/c8R3/8y+1T1v+9Fmv36aZr3QnLiwuYIA+cPY+b/CbB3wop0/6DFCWPj95dSLQTLjlxF7wyng/7werZW/yKMEJk0TB7l/SMilxEx837kQHruk8LQgi5QMAuAipeEkT3XTUa1+5q6ndnqqrImVKS6IF15xkHO3lHXzYYyMRZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NKaK/O9M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 284DCC4CEE2;
-	Wed,  7 May 2025 18:47:35 +0000 (UTC)
+	 MIME-Version; b=W2ALJTYw3aEEfjxNOp/ZoCsnBP482p4Yf3YWCIqf3p5LM7ra7sq6jDRt0KzRSGYCWSRlBTlKnBXBrwUhGOIRpnCz8KzA70DzBW9/lGxhRWdrFSq+ouZGXpnJgJnxDC3J09O/gTFBu6MKXyrwQ6a6BMmJm3yvAAZowy2kpIyqfKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=snFonUBX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE96DC4CEE2;
+	Wed,  7 May 2025 19:10:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643656;
-	bh=JMayWtIKxoJTD5ZJOl7vDXPCPoqK8cftIK2PiKnejmw=;
+	s=korg; t=1746645022;
+	bh=/y1i7yewZkHk/KyZnZl3kaA8la84BNf1BAPuec+0/LI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NKaK/O9M27bXQPKYaRhR4JsOhfUCS21/6KpJ7B2oUi1KbaVqQBLCOlQTJ9JBEhL/s
-	 ZNWCMoPFBucx4AryNxNIF2V/fQScLhka1Xotqp0lYIKGZkAorn+iHAHWiJyCcYhdFm
-	 LPZpHoQtUxJhYC3vq/Xwx/Uy+VoY2miirOIdVtXI=
+	b=snFonUBXBkXwyRhVTe5UE5wnVuOmaZpbSXBV+t13kEA7RX8OBFiUTwF+7+GNVHauD
+	 eD1g9GyBi/0/yvki7rvRPgczT6sJZzfxselvS6SnaugCV1k/h3swhbUanOufGelIbo
+	 gXR8IrcQz0fH1ogK3Q2Qeh2hrHb9hRunkaupGvX8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Frank Li <Frank.Li@nxp.com>,
-	Ryan Matthews <ryanmatthews@fastmail.com>
-Subject: [PATCH 6.1 73/97] PCI: imx6: Skip controller_id generation logic for i.MX7D
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 052/129] powerpc/boot: Fix dash warning
 Date: Wed,  7 May 2025 20:39:48 +0200
-Message-ID: <20250507183809.926851989@linuxfoundation.org>
+Message-ID: <20250507183815.645458260@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
-References: <20250507183806.987408728@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +61,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Zhu <hongxing.zhu@nxp.com>
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
 
-commit f068ffdd034c93f0c768acdc87d4d2d7023c1379 upstream.
+[ Upstream commit e3f506b78d921e48a00d005bea5c45ec36a99240 ]
 
-The i.MX7D only has one PCIe controller, so controller_id should always be
-0. The previous code is incorrect although yielding the correct result.
+'commit b2accfe7ca5b ("powerpc/boot: Check for ld-option support")' suppressed
+linker warnings, but the expressed used did not go well with POSIX shell (dash)
+resulting with this warning
 
-Fix by removing "IMX7D" from the switch case branch.
+arch/powerpc/boot/wrapper: 237: [: 0: unexpected operator
+ld: warning: arch/powerpc/boot/zImage.epapr has a LOAD segment with RWX permissions
 
-Fixes: 2d8ed461dbc9 ("PCI: imx6: Add support for i.MX8MQ")
-Link: https://lore.kernel.org/r/20241126075702.4099164-5-hongxing.zhu@nxp.com
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-[Because this switch case does more than just controller_id
- logic, move the "IMX7D" case label instead of removing it entirely.]
-Signed-off-by: Ryan Matthews <ryanmatthews@fastmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix the check to handle the reported warning. Patch also fixes
+couple of shellcheck reported errors for the same line.
+
+In arch/powerpc/boot/wrapper line 237:
+if [ $(${CROSS}ld -v --no-warn-rwx-segments &>/dev/null; echo $?) -eq 0 ]; then
+     ^-- SC2046 (warning): Quote this to prevent word splitting.
+       ^------^ SC2086 (info): Double quote to prevent globbing and word splitting.
+                                            ^---------^ SC3020 (warning): In POSIX sh, &> is undefined.
+
+Fixes: b2accfe7ca5b ("powerpc/boot: Check for ld-option support")
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Suggested-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Reviewed-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250423082154.30625-1-maddy@linux.ibm.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pci-imx6.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ arch/powerpc/boot/wrapper | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -1172,11 +1172,10 @@ static int imx6_pcie_probe(struct platfo
- 		if (IS_ERR(imx6_pcie->pcie_aux))
- 			return dev_err_probe(dev, PTR_ERR(imx6_pcie->pcie_aux),
- 					     "pcie_aux clock source missing or invalid\n");
--		fallthrough;
--	case IMX7D:
- 		if (dbi_base->start == IMX8MQ_PCIE2_BASE_ADDR)
- 			imx6_pcie->controller_id = 1;
--
-+		fallthrough;
-+	case IMX7D:
- 		imx6_pcie->pciephy_reset = devm_reset_control_get_exclusive(dev,
- 									    "pciephy");
- 		if (IS_ERR(imx6_pcie->pciephy_reset)) {
+diff --git a/arch/powerpc/boot/wrapper b/arch/powerpc/boot/wrapper
+index fea9694f1047e..ddb02cf0caaf5 100755
+--- a/arch/powerpc/boot/wrapper
++++ b/arch/powerpc/boot/wrapper
+@@ -234,7 +234,7 @@ fi
+ 
+ # suppress some warnings in recent ld versions
+ nowarn="-z noexecstack"
+-if [ $(${CROSS}ld -v --no-warn-rwx-segments &>/dev/null; echo $?) -eq 0 ]; then
++if "${CROSS}ld" -v --no-warn-rwx-segments >/dev/null 2>&1; then
+ 	nowarn="$nowarn --no-warn-rwx-segments"
+ fi
+ 
+-- 
+2.39.5
+
 
 
 
