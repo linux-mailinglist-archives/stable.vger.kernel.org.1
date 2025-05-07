@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-142576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7243AAEB35
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:04:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F00DAAE942
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:42:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D5561C08AC9
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:05:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85B781C26E87
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:43:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0C9C28DF2A;
-	Wed,  7 May 2025 19:04:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 564CE28DF47;
+	Wed,  7 May 2025 18:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y7wHcpgD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r6wmoO9M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D50D28D85C;
-	Wed,  7 May 2025 19:04:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1348614A4C7;
+	Wed,  7 May 2025 18:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644681; cv=none; b=ElUokyfnOxXwwLBU9d+H5GaW1cDeyCtUmZTACYUQVwiFpeAWt2i1sapzqVUctHjEvP9l235qgMsvjRcUEUIu9I0rPqL4+TYpny/5KnICP0covc59xXMGyvl2irhFWwHU0uzHjcf59QzvtULd0T0XqBzt8faZt57kvJ8W8fu0Aps=
+	t=1746643363; cv=none; b=i6kjw+05yyxUYN+Ld8lzGuzPnUkq62uBrOqktI/0IwypOzxX3sSO6lIybVBAG100LKcHOadiSIq5l1wEs/YNkeoJzRP6NasQsgAGeeCStrjXk9scaJnTBJYLNrhSI/nrSlf0K5Hnbvich/7N2ZCeoC+EagijWAAogHGlEwN04sI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644681; c=relaxed/simple;
-	bh=AfETqXnraX9sJprixurqhEJ27Okd506WGfeCK2AUGeA=;
+	s=arc-20240116; t=1746643363; c=relaxed/simple;
+	bh=Dh8IDuRap5z8DTE1I54tQyHady2wEgiig//+R3hX6eA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YhHb6+igzoE+msPAQi0kRilpW8p0pwUOqAv2BIIpewHMgNlLS1XSHgezSBbRdhWwqFIMsQBnr34kYhdJg6BwLncQJDhGVVlTU3ej0Co6NO5ciE81aOd2qN2KYGe/UPwsQFhyhrK3f17FBvxWYLEBgJHBgH7DnwbM8LZPE4buRQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y7wHcpgD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10D80C4CEE2;
-	Wed,  7 May 2025 19:04:40 +0000 (UTC)
+	 MIME-Version; b=BXFuuoaDl9Ojd+pEUS7J1wcR1rPS1+gPbgopM91W80hrFs7q5lj7aRL2fH4Yr7kTIbE2lxmUtYMiYwev5LEcb6LoMmOTP8bjrivixqU60k+bAjSsWoarFYQP4J47NrVWhmVoXi248P84DIGP0lATj0qtCeBZr6igZ2n6VuO8yFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r6wmoO9M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75986C4CEE2;
+	Wed,  7 May 2025 18:42:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644681;
-	bh=AfETqXnraX9sJprixurqhEJ27Okd506WGfeCK2AUGeA=;
+	s=korg; t=1746643362;
+	bh=Dh8IDuRap5z8DTE1I54tQyHady2wEgiig//+R3hX6eA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y7wHcpgDWvV6czZhje+bz6Q+bgXp6uLwazy0xc2Uot/gc7MZbyab8JJpxZThUbit7
-	 nH5fHI7TEPhmQ8Zu200QIJAwyLEM5Ouf35ZdU/PBmWW/1H6i9XNtkDJ6xaUfu1YM8d
-	 ywnnMJlF1z94YiAc08ipIuu+P0C64b7LQj+nt9fM=
+	b=r6wmoO9MbHeDS9rROiBjz4pdggoWTS3hvBYQVfdOM1o1w5tdZJJUMrsIj7GcRdku8
+	 JiJ/ib8552QTxc8Ah7x4WOOcmg71okFu12ucZPntq5+rHOhgL+YeFL3vnkH4nzvVzP
+	 ZmnDFrAk9wI6w8EXLTJ3giHQCtZghJPdWFWfWeEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Victor Nogueira <victor@mojatatu.com>,
+	Thangaraj Samynathan <thangaraj.s@microchip.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 091/164] net_sched: drr: Fix double list add in class with netem as child qdisc
+Subject: [PATCH 5.15 35/55] net: lan743x: Fix memleak issue when GSO enabled
 Date: Wed,  7 May 2025 20:39:36 +0200
-Message-ID: <20250507183824.649103902@linuxfoundation.org>
+Message-ID: <20250507183800.452743985@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
+References: <20250507183759.048732653@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Nogueira <victor@mojatatu.com>
+From: Thangaraj Samynathan <thangaraj.s@microchip.com>
 
-[ Upstream commit f99a3fbf023e20b626be4b0f042463d598050c9a ]
+[ Upstream commit 2d52e2e38b85c8b7bc00dca55c2499f46f8c8198 ]
 
-As described in Gerrard's report [1], there are use cases where a netem
-child qdisc will make the parent qdisc's enqueue callback reentrant.
-In the case of drr, there won't be a UAF, but the code will add the same
-classifier to the list twice, which will cause memory corruption.
+Always map the `skb` to the LS descriptor. Previously skb was
+mapped to EXT descriptor when the number of fragments is zero with
+GSO enabled. Mapping the skb to EXT descriptor prevents it from
+being freed, leading to a memory leak
 
-In addition to checking for qlen being zero, this patch checks whether the
-class was already added to the active_list (cl_is_active) before adding
-to the list to cover for the reentrant case.
-
-[1] https://lore.kernel.org/netdev/CAHcdcOm+03OD2j6R0=YHKqmy=VgJ8xEOKuP6c7mSgnp-TEJJbw@mail.gmail.com/
-
-Fixes: 37d9cf1a3ce3 ("sched: Fix detection of empty queues in child qdiscs")
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
-Link: https://patch.msgid.link/20250425220710.3964791-2-victor@mojatatu.com
+Fixes: 23f0703c125b ("lan743x: Add main source files for new lan743x driver")
+Signed-off-by: Thangaraj Samynathan <thangaraj.s@microchip.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20250429052527.10031-1-thangaraj.s@microchip.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_drr.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/microchip/lan743x_main.c | 8 ++++++--
+ drivers/net/ethernet/microchip/lan743x_main.h | 1 +
+ 2 files changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/sch_drr.c b/net/sched/sch_drr.c
-index c69b999fae171..25b77ed0c1f28 100644
---- a/net/sched/sch_drr.c
-+++ b/net/sched/sch_drr.c
-@@ -35,6 +35,11 @@ struct drr_sched {
- 	struct Qdisc_class_hash		clhash;
- };
- 
-+static bool cl_is_active(struct drr_class *cl)
-+{
-+	return !list_empty(&cl->alist);
-+}
-+
- static struct drr_class *drr_find_class(struct Qdisc *sch, u32 classid)
- {
- 	struct drr_sched *q = qdisc_priv(sch);
-@@ -336,7 +341,6 @@ static int drr_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	struct drr_sched *q = qdisc_priv(sch);
- 	struct drr_class *cl;
- 	int err = 0;
--	bool first;
- 
- 	cl = drr_classify(skb, sch, &err);
- 	if (cl == NULL) {
-@@ -346,7 +350,6 @@ static int drr_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		return err;
+diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
+index a3392c74372a8..fe919c1974505 100644
+--- a/drivers/net/ethernet/microchip/lan743x_main.c
++++ b/drivers/net/ethernet/microchip/lan743x_main.c
+@@ -1448,6 +1448,7 @@ static void lan743x_tx_frame_add_lso(struct lan743x_tx *tx,
+ 	if (nr_frags <= 0) {
+ 		tx->frame_data0 |= TX_DESC_DATA0_LS_;
+ 		tx->frame_data0 |= TX_DESC_DATA0_IOC_;
++		tx->frame_last = tx->frame_first;
+ 	}
+ 	tx_descriptor = &tx->ring_cpu_ptr[tx->frame_tail];
+ 	tx_descriptor->data0 = cpu_to_le32(tx->frame_data0);
+@@ -1517,6 +1518,7 @@ static int lan743x_tx_frame_add_fragment(struct lan743x_tx *tx,
+ 		tx->frame_first = 0;
+ 		tx->frame_data0 = 0;
+ 		tx->frame_tail = 0;
++		tx->frame_last = 0;
+ 		return -ENOMEM;
  	}
  
--	first = !cl->qdisc->q.qlen;
- 	err = qdisc_enqueue(skb, cl->qdisc, to_free);
- 	if (unlikely(err != NET_XMIT_SUCCESS)) {
- 		if (net_xmit_drop_count(err)) {
-@@ -356,7 +359,7 @@ static int drr_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		return err;
+@@ -1557,16 +1559,18 @@ static void lan743x_tx_frame_end(struct lan743x_tx *tx,
+ 	    TX_DESC_DATA0_DTYPE_DATA_) {
+ 		tx->frame_data0 |= TX_DESC_DATA0_LS_;
+ 		tx->frame_data0 |= TX_DESC_DATA0_IOC_;
++		tx->frame_last = tx->frame_tail;
  	}
  
--	if (first) {
-+	if (!cl_is_active(cl)) {
- 		list_add_tail(&cl->alist, &q->active);
- 		cl->deficit = cl->quantum;
- 	}
+-	tx_descriptor = &tx->ring_cpu_ptr[tx->frame_tail];
+-	buffer_info = &tx->buffer_info[tx->frame_tail];
++	tx_descriptor = &tx->ring_cpu_ptr[tx->frame_last];
++	buffer_info = &tx->buffer_info[tx->frame_last];
+ 	buffer_info->skb = skb;
+ 	if (time_stamp)
+ 		buffer_info->flags |= TX_BUFFER_INFO_FLAG_TIMESTAMP_REQUESTED;
+ 	if (ignore_sync)
+ 		buffer_info->flags |= TX_BUFFER_INFO_FLAG_IGNORE_SYNC;
+ 
++	tx_descriptor = &tx->ring_cpu_ptr[tx->frame_tail];
+ 	tx_descriptor->data0 = cpu_to_le32(tx->frame_data0);
+ 	tx->frame_tail = lan743x_tx_next_index(tx, tx->frame_tail);
+ 	tx->last_tail = tx->frame_tail;
+diff --git a/drivers/net/ethernet/microchip/lan743x_main.h b/drivers/net/ethernet/microchip/lan743x_main.h
+index 6080028c1df2c..a1226ab0fb421 100644
+--- a/drivers/net/ethernet/microchip/lan743x_main.h
++++ b/drivers/net/ethernet/microchip/lan743x_main.h
+@@ -658,6 +658,7 @@ struct lan743x_tx {
+ 	u32		frame_first;
+ 	u32		frame_data0;
+ 	u32		frame_tail;
++	u32		frame_last;
+ 
+ 	struct lan743x_tx_buffer_info *buffer_info;
+ 
 -- 
 2.39.5
 
