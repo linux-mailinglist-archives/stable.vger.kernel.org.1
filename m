@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-142766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66A38AAEDB2
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 23:14:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E746AAEEC5
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 00:42:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 809B37BBA07
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:13:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54D25987C12
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 22:42:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36A4C28FFC0;
-	Wed,  7 May 2025 21:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9BDA21018F;
+	Wed,  7 May 2025 22:42:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="0f4ldn5q"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="MJZydtHa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E57EF28FAA6;
-	Wed,  7 May 2025 21:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D43C4B1E74;
+	Wed,  7 May 2025 22:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746652438; cv=none; b=j8xBG9zdMBr1OdDq2/I7Ru4cs0C8m2ZiRTg0GwS0BwrVuAUoeZOCOlTxM+Javl0iGSgNmsCBzsEAqFZigTH4yGKwswzNlNNDGJNohuuoUIHbgiVr01UEbwbrGZFuIylgsMnSjkzEYD+SRipOeu5YVIqR4f2naXxzZ7ZTlPOjT08=
+	t=1746657747; cv=none; b=ggvKyZaxk9G3FjWUGEUYFpWlJ0cgJ2CBNKuJtGvSmxCJvPUbeh9uXGYGuCWOsMrg4LIH7ghTaSB5a7Z5ISTJQ7s5KITpGeNUeSlCZJ3YcF10ecp0ezAL7L6eWqTc/Fn19kFnqlFWTdEGKekkjWSEQHB5VdIiPdE5/jV6IBaSdzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746652438; c=relaxed/simple;
-	bh=qMfIrLi6wiBHeC5gOBiAAqCa4IN1viIWWbgrU4pB68U=;
-	h=Date:To:From:Subject:Message-Id; b=I3X8VqiubGw1FEteJaJG1usd9I9VV3tAk0ksESD64xsp1t0dhnjrEJYS0fXAnrBsUoqHQKL523X4isNd498HXolS97V4A24ctumDXjTS/Sg0oPtjC6SZRfuqyjw7kbcBih+rqpE88ovb1jipirSFF15Arft/IEdsFHrKUdPC1HI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=0f4ldn5q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E36BC4CEE7;
-	Wed,  7 May 2025 21:13:57 +0000 (UTC)
+	s=arc-20240116; t=1746657747; c=relaxed/simple;
+	bh=fg2PAE2ekeo321a9d69zV9FpPzlg99TlqM6ImeaQViw=;
+	h=Date:To:From:Subject:Message-Id; b=eQQ3HqeBSaaQqwZnGUQzHSZq8LyRn+xsvuiMBeHaZKoMqI/BmlQ7O1GWHI/HaGUlEl0bD1ip+LbtF+UpNT+Skx9ANfWDY2Zjl1HDCdk8xAhnNFSdH35FIgElw7mTgrROy4EEsOdRijyD6MJEnj2LuwkrQZDnfUUA044lcktrYR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=MJZydtHa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8702AC4CEE2;
+	Wed,  7 May 2025 22:42:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1746652437;
-	bh=qMfIrLi6wiBHeC5gOBiAAqCa4IN1viIWWbgrU4pB68U=;
+	s=korg; t=1746657746;
+	bh=fg2PAE2ekeo321a9d69zV9FpPzlg99TlqM6ImeaQViw=;
 	h=Date:To:From:Subject:From;
-	b=0f4ldn5q3kAifA8L/WN8wrwJGND5313surI2OtdqVSqXtS00TCcuPgl/3gXBoI31M
-	 fU6bSZz1XCMTGkHsFp6P1uAOcEYes7q3cv46r/SWGNgFqjcMuVdtJoCB4WDAuqPLDc
-	 CrbGOEXxteKccB3FnPR7ixksv8H6c//R9H1uQVQE=
-Date: Wed, 07 May 2025 14:13:56 -0700
-To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,david.laight.linux@gmail.com,wangyuli@uniontech.com,akpm@linux-foundation.org
+	b=MJZydtHaPHix/u+an9ROhgp87392hY3Bg0+i7/gqtC0DBtXefkWOkdGNRqpvNkPGr
+	 0c632acJZTe2y3mJe1dGpO6r0+I9JhuE0TS+3fvh17ogD8T8T3woSoQWQhSbgy101J
+	 tbE3jl699B/AcEZXu8uyIKbKdnDVkvUdudALVIFs=
+Date: Wed, 07 May 2025 15:42:25 -0700
+To: mm-commits@vger.kernel.org,yang@os.amperecomputing.com,stable@vger.kernel.org,lorenzo.stoakes@oracle.com,Liam.Howlett@oracle.com,david@redhat.com,Ignacio.MorenoGonzalez@kuka.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [to-be-updated] mm-vmscan-avoid-signedness-error-for-gcc-54.patch removed from -mm tree
-Message-Id: <20250507211357.6E36BC4CEE7@smtp.kernel.org>
+Subject: + mm-mmap-map-map_stack-to-vm_nohugepage-only-if-thp-is-enabled.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250507224226.8702AC4CEE2@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -49,58 +49,76 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
-The quilt patch titled
-     Subject: mm: vmscan: avoid signedness error for GCC 5.4
-has been removed from the -mm tree.  Its filename was
-     mm-vmscan-avoid-signedness-error-for-gcc-54.patch
+The patch titled
+     Subject: mm: mmap: map MAP_STACK to VM_NOHUGEPAGE only if THP is enabled
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-mmap-map-map_stack-to-vm_nohugepage-only-if-thp-is-enabled.patch
 
-This patch was dropped because an updated version will be issued
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-mmap-map-map_stack-to-vm_nohugepage-only-if-thp-is-enabled.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: WangYuli <wangyuli@uniontech.com>
-Subject: mm: vmscan: avoid signedness error for GCC 5.4
-Date: Wed, 7 May 2025 12:08:27 +0800
+From: Ignacio Moreno Gonzalez <Ignacio.MorenoGonzalez@kuka.com>
+Subject: mm: mmap: map MAP_STACK to VM_NOHUGEPAGE only if THP is enabled
+Date: Wed, 07 May 2025 15:28:06 +0200
 
-To the GCC 5.4 compiler, (MAX_NR_TIERS - 1) (i.e., (4U - 1)) is unsigned,
-whereas tier is a signed integer.
+commit c4608d1bf7c6 ("mm: mmap: map MAP_STACK to VM_NOHUGEPAGE") maps the
+mmap option MAP_STACK to VM_NOHUGEPAGE.  This is also done if
+CONFIG_TRANSPARENT_HUGEPAGE is not defined.  But in that case, the
+VM_NOHUGEPAGE does not make sense.
 
-Then, the __types_ok check within the __careful_cmp_once macro failed,
-triggered BUILD_BUG_ON.
+I discovered this issue when trying to use the tool CRIU to checkpoint and
+restore a container.  Our running kernel is compiled without
+CONFIG_TRANSPARENT_HUGEPAGE.  CRIU parses the output of /proc/<pid>/smaps
+and saves the "nh" flag.  When trying to restore the container, CRIU fails
+to restore the "nh" mappings, since madvise() MADV_NOHUGEPAGE always
+returns an error because CONFIG_TRANSPARENT_HUGEPAGE is not defined.
 
-Use min_t instead of min to circumvent this compiler error.
-
-Fix follow error with gcc 5.4:
-  mm/vmscan.c: In function `read_ctrl_pos':
-  mm/vmscan.c:3166:728: error: call to `__compiletime_assert_887' declared with attribute error: min(tier, 4U - 1) signedness error
-
-Link: https://lkml.kernel.org/r/62726950F697595A+20250507040827.1147510-1-wangyuli@uniontech.com
-Fixes: 37a260870f2c ("mm/mglru: rework type selection")
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: David Laight <david.laight.linux@gmail.com>
+Link: https://lkml.kernel.org/r/20250507-map-map_stack-to-vm_nohugepage-only-if-thp-is-enabled-v5-1-c6c38cfefd6e@kuka.com
+Fixes: c4608d1bf7c6 ("mm: mmap: map MAP_STACK to VM_NOHUGEPAGE")
+Signed-off-by: Ignacio Moreno Gonzalez <Ignacio.MorenoGonzalez@kuka.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reviewed-by: Yang Shi <yang@os.amperecomputing.com>
+Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/vmscan.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/mman.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/mm/vmscan.c~mm-vmscan-avoid-signedness-error-for-gcc-54
-+++ a/mm/vmscan.c
-@@ -3163,7 +3163,7 @@ static void read_ctrl_pos(struct lruvec
- 	pos->gain = gain;
- 	pos->refaulted = pos->total = 0;
+--- a/include/linux/mman.h~mm-mmap-map-map_stack-to-vm_nohugepage-only-if-thp-is-enabled
++++ a/include/linux/mman.h
+@@ -155,7 +155,9 @@ calc_vm_flag_bits(struct file *file, uns
+ 	return _calc_vm_trans(flags, MAP_GROWSDOWN,  VM_GROWSDOWN ) |
+ 	       _calc_vm_trans(flags, MAP_LOCKED,     VM_LOCKED    ) |
+ 	       _calc_vm_trans(flags, MAP_SYNC,	     VM_SYNC      ) |
++#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ 	       _calc_vm_trans(flags, MAP_STACK,	     VM_NOHUGEPAGE) |
++#endif
+ 	       arch_calc_vm_flag_bits(file, flags);
+ }
  
--	for (i = tier % MAX_NR_TIERS; i <= min(tier, MAX_NR_TIERS - 1); i++) {
-+	for (i = tier % MAX_NR_TIERS; i <= min_t(int, tier, MAX_NR_TIERS - 1); i++) {
- 		pos->refaulted += lrugen->avg_refaulted[type][i] +
- 				  atomic_long_read(&lrugen->refaulted[hist][type][i]);
- 		pos->total += lrugen->avg_total[type][i] +
 _
 
-Patches currently in -mm which might be from wangyuli@uniontech.com are
+Patches currently in -mm which might be from Ignacio.MorenoGonzalez@kuka.com are
 
-ocfs2-o2net_idle_timer-rename-del_timer_sync-in-comment.patch
-treewide-fix-typo-previlege.patch
+mm-mmap-map-map_stack-to-vm_nohugepage-only-if-thp-is-enabled.patch
 
 
