@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-142593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC260AAEB64
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:07:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2BFEAAEAB8
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:58:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19D72522E3D
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:06:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9D151C44829
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:58:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10DF628E570;
-	Wed,  7 May 2025 19:05:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 583CD28AAE9;
+	Wed,  7 May 2025 18:58:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E/qFkoDZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xb1UD39Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5B0628E60E;
-	Wed,  7 May 2025 19:05:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C491482F5;
+	Wed,  7 May 2025 18:58:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644730; cv=none; b=MGwFUQ4a04uaVS9dkNCEL5RyS1IXysL8mt/XXLJrONyunUBDnOwmc/lhnvhxS8U5IvnqNd/qTrp+c5V2gMV5QvVjozq1dXj0VSiVvq9n+yEXigZAX+7WSYZpGaNnFXeCFzKmCel6c7PsbHT0y9gMXWdxcWlE1ECzdfAaf4u+wlY=
+	t=1746644313; cv=none; b=tQLppXqggumAt1SzJvpij0MzPhPtCoHl997DX5mNqmgk2S3kUBOm6F5DRIBJKtq1JQqkTd9fXxxpZd8U+RjZZ7GdqnblazFcmBS+iRJ2ILFn52XRqugrcBQ/82NMCR52CunuU5Jy1vONSuvMikukTO3/jrEJFdNM83kMUjpCj4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644730; c=relaxed/simple;
-	bh=EvHApb6Mm+pYMx5HvYAvSZqKkuqAKWzR1QsZR6VbvpM=;
+	s=arc-20240116; t=1746644313; c=relaxed/simple;
+	bh=kv4s2jPId6SPRf+c/UEOiHgKWvYS3Tcs5Jcjix5rzq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VGnu4EIonFoRHS3hltqPhucXiiJj8mkNorVpohyDDA29W+IW3zjx7IPBeNdE036DT4gQRGo84UXGiLeK1ebOUqblx2iuIVkig1nhBvb/dVYR9h49OJUup0OxY6oqlyttDMkHM/TM81ySqAb5cT2vh9SG+l7V5O7o+yKbbt8rk7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E/qFkoDZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E5D0C4CEE9;
-	Wed,  7 May 2025 19:05:30 +0000 (UTC)
+	 MIME-Version; b=b9h6E34h5sY+B4VUoDGxx/QosRM76IlKAn+GkZm8cHZhpXSdmnSkMP+Qb5ZTDzTMOnxVnPW7Sudw0TFhGek7KJp0fSYE2OWESDLR5ztDYJN/eo6xa9ELouxUzWUhckUfqDIFU4JMUgiAnxz4nbVnXWOvwKDOW1dXlk70MLEE6RQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xb1UD39Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F945C4CEE2;
+	Wed,  7 May 2025 18:58:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644730;
-	bh=EvHApb6Mm+pYMx5HvYAvSZqKkuqAKWzR1QsZR6VbvpM=;
+	s=korg; t=1746644312;
+	bh=kv4s2jPId6SPRf+c/UEOiHgKWvYS3Tcs5Jcjix5rzq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E/qFkoDZFfsy+PTWD2YDCg9qjhBIHAgVAz4LY7ahg9GcuJM6hRihODbV1ousoqHti
-	 VX+BZM0nEH9HmFH7QF06dT9ntYHAcrmQSxhFe7WLQceympeZXo++RuPrfgkQllLZa/
-	 mgsZtCfJnEOLFgYlmU3RpMPxoornJvXpvvGNbhdw=
+	b=xb1UD39Zh+MAv2c3+o9lFgmT7rVvttjy4qoGTR9mGB8XKnzULUbhhIIdQRb7vciO4
+	 CaFld3amcPKiQ1qhms2g9/84d3974ewcnceKBoZ9jCFko2GMsS1QK/tcf+xNBj5vUZ
+	 t1WfMI9nJzzXuzyro5m6W4y5HIo7+GBeKJq+k4p4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pranjal Shrivastava <praan@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Mina Almasry <almasrymina@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.12 139/164] net: Fix the devmem sock opts and msgs for parisc
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 179/183] btrfs: pass struct btrfs_inode to btrfs_iget_locked()
 Date: Wed,  7 May 2025 20:40:24 +0200
-Message-ID: <20250507183826.600557992@linuxfoundation.org>
+Message-ID: <20250507183832.113666517@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,64 +62,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pranjal Shrivastava <praan@google.com>
+From: David Sterba <dsterba@suse.com>
 
-commit fd87b7783802b45cdd261b273e6b2b792823064d upstream.
+[ Upstream commit 4ea2fb9c628b55929bbc380d8c18733d1d027f1d ]
 
-The devmem socket options and socket control message definitions
-introduced in the TCP devmem series[1] incorrectly continued the socket
-definitions for arch/parisc.
+Pass a struct btrfs_inode to btrfs_inode() as it's an internal
+interface, allowing to remove some use of BTRFS_I.
 
-The UAPI change seems safe as there are currently no drivers that
-declare support for devmem TCP RX via PP_FLAG_ALLOW_UNREADABLE_NETMEM.
-Hence, fixing this UAPI should be safe.
-
-Fix the devmem socket options and socket control message definitions to
-reflect the series followed by arch/parisc.
-
-[1]
-https://lore.kernel.org/lkml/20240910171458.219195-10-almasrymina@google.com/
-
-Fixes: 8f0b3cc9a4c10 ("tcp: RX path for devmem TCP")
-Signed-off-by: Pranjal Shrivastava <praan@google.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
-Reviewed-by: Mina Almasry <almasrymina@google.com>
-Link: https://patch.msgid.link/20250324074228.3139088-1-praan@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Pranjal Shrivastava <praan@google.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: 48c1d1bb525b ("btrfs: fix the inode leak in btrfs_iget()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/include/uapi/asm/socket.h |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ fs/btrfs/inode.c | 30 ++++++++++++++++--------------
+ 1 file changed, 16 insertions(+), 14 deletions(-)
 
---- a/arch/parisc/include/uapi/asm/socket.h
-+++ b/arch/parisc/include/uapi/asm/socket.h
-@@ -132,11 +132,15 @@
- #define SO_PASSPIDFD		0x404A
- #define SO_PEERPIDFD		0x404B
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index 6d9d1c255285d..f6fc4c9ace28c 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -5601,7 +5601,7 @@ static int btrfs_find_actor(struct inode *inode, void *opaque)
+ 		args->root == BTRFS_I(inode)->root;
+ }
  
--#define SO_DEVMEM_LINEAR	78
-+#define SCM_TS_OPT_ID		0x404C
-+
-+#define SO_RCVPRIORITY		0x404D
-+
-+#define SO_DEVMEM_LINEAR	0x404E
- #define SCM_DEVMEM_LINEAR	SO_DEVMEM_LINEAR
--#define SO_DEVMEM_DMABUF	79
-+#define SO_DEVMEM_DMABUF	0x404F
- #define SCM_DEVMEM_DMABUF	SO_DEVMEM_DMABUF
--#define SO_DEVMEM_DONTNEED	80
-+#define SO_DEVMEM_DONTNEED	0x4050
+-static struct inode *btrfs_iget_locked(u64 ino, struct btrfs_root *root)
++static struct btrfs_inode *btrfs_iget_locked(u64 ino, struct btrfs_root *root)
+ {
+ 	struct inode *inode;
+ 	struct btrfs_iget_args args;
+@@ -5613,7 +5613,9 @@ static struct inode *btrfs_iget_locked(u64 ino, struct btrfs_root *root)
+ 	inode = iget5_locked_rcu(root->fs_info->sb, hashval, btrfs_find_actor,
+ 			     btrfs_init_locked_inode,
+ 			     (void *)&args);
+-	return inode;
++	if (!inode)
++		return NULL;
++	return BTRFS_I(inode);
+ }
  
- #if !defined(__KERNEL__)
+ /*
+@@ -5623,22 +5625,22 @@ static struct inode *btrfs_iget_locked(u64 ino, struct btrfs_root *root)
+ struct inode *btrfs_iget_path(u64 ino, struct btrfs_root *root,
+ 			      struct btrfs_path *path)
+ {
+-	struct inode *inode;
++	struct btrfs_inode *inode;
+ 	int ret;
  
+ 	inode = btrfs_iget_locked(ino, root);
+ 	if (!inode)
+ 		return ERR_PTR(-ENOMEM);
+ 
+-	if (!(inode->i_state & I_NEW))
+-		return inode;
++	if (!(inode->vfs_inode.i_state & I_NEW))
++		return &inode->vfs_inode;
+ 
+-	ret = btrfs_read_locked_inode(BTRFS_I(inode), path);
++	ret = btrfs_read_locked_inode(inode, path);
+ 	if (ret)
+ 		return ERR_PTR(ret);
+ 
+-	unlock_new_inode(inode);
+-	return inode;
++	unlock_new_inode(&inode->vfs_inode);
++	return &inode->vfs_inode;
+ }
+ 
+ /*
+@@ -5646,7 +5648,7 @@ struct inode *btrfs_iget_path(u64 ino, struct btrfs_root *root,
+  */
+ struct inode *btrfs_iget(u64 ino, struct btrfs_root *root)
+ {
+-	struct inode *inode;
++	struct btrfs_inode *inode;
+ 	struct btrfs_path *path;
+ 	int ret;
+ 
+@@ -5654,20 +5656,20 @@ struct inode *btrfs_iget(u64 ino, struct btrfs_root *root)
+ 	if (!inode)
+ 		return ERR_PTR(-ENOMEM);
+ 
+-	if (!(inode->i_state & I_NEW))
+-		return inode;
++	if (!(inode->vfs_inode.i_state & I_NEW))
++		return &inode->vfs_inode;
+ 
+ 	path = btrfs_alloc_path();
+ 	if (!path)
+ 		return ERR_PTR(-ENOMEM);
+ 
+-	ret = btrfs_read_locked_inode(BTRFS_I(inode), path);
++	ret = btrfs_read_locked_inode(inode, path);
+ 	btrfs_free_path(path);
+ 	if (ret)
+ 		return ERR_PTR(ret);
+ 
+-	unlock_new_inode(inode);
+-	return inode;
++	unlock_new_inode(&inode->vfs_inode);
++	return &inode->vfs_inode;
+ }
+ 
+ static struct inode *new_simple_dir(struct inode *dir,
+-- 
+2.39.5
+
 
 
 
