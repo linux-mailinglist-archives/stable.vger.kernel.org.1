@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-142618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3F59AAEB8D
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:08:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C67F4AAEBF7
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:12:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BB75527072
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:07:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3237552751E
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:12:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6827F28DF21;
-	Wed,  7 May 2025 19:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53C9028C2B3;
+	Wed,  7 May 2025 19:12:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gHOJ9FRI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2RSqJDYO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2665619AD5C;
-	Wed,  7 May 2025 19:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FDE4211278;
+	Wed,  7 May 2025 19:12:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644808; cv=none; b=XPZv75fyfakgHJyqApQhFLoI2/U3KRvj5Sjuh1DLXbmdRZw8nm/gybIhyGjiOpS3aAXFLTIk0iA8pNNeam82H3al0CTYwoKdnMbcIpLn+HNZqcJquM04n+6IC6R+ox91W8opqn1rhuiPAN3C9wN2q2Vn+9mBY+TBre074Xl7LYE=
+	t=1746645168; cv=none; b=LFBOsHB207k0T9KTXPtim+dhE3D+lu9WDe1pFg1o6u5FZ+cWQcg4zzZlUMYcXESyCi92eUgK9HZ5b08CwtA7zuGlASPUj0nENzN/MMk2tZBSEbNy6RAMvu6AnS0jkxuC6yMAkhUIvind++w3F69t07CxveEtBVRXT7QL2mcBgh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644808; c=relaxed/simple;
-	bh=gezXnGHZGQmDZ2dJrgq7a0jI3bzuprw1UI+hmV3SnTk=;
+	s=arc-20240116; t=1746645168; c=relaxed/simple;
+	bh=5s85lvBc3vwGbCvieBPLnBPTIlSkQDebIhepD7FVx8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G+GmX0Or1zdq+UxPHx1siz76FN25fliRlkwlfNZ1Hm9gj3iF7KvqgXYmQWdunWTDnrSRyQYBqcxcQM7gK/ehwnODlP649gPr5EntaNCiPkcR+Yao1mnicVq7rMIMXPD9oYAHWAYdIDDNuI23CYqk1oGN6S0xC6Cxlx0sp4CyQPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gHOJ9FRI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A992AC4CEE2;
-	Wed,  7 May 2025 19:06:47 +0000 (UTC)
+	 MIME-Version; b=TMGZjDfoIwU/VatYqsLauaOMdSvB3PXBb366NrzI8Prt4NbKTxjNBsJAXeiEg2M6f/kxtiFJdrtxgo4mdNHxUJsH4ou3X1arwz3k+gdGyIU46RwC+ORKL66b/lQHGbBE+GAb8teDhJM2xtQBdFRa0l2EBiB5tQQrIxqAqQGqerI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2RSqJDYO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CBAEC4CEE9;
+	Wed,  7 May 2025 19:12:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644808;
-	bh=gezXnGHZGQmDZ2dJrgq7a0jI3bzuprw1UI+hmV3SnTk=;
+	s=korg; t=1746645167;
+	bh=5s85lvBc3vwGbCvieBPLnBPTIlSkQDebIhepD7FVx8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gHOJ9FRIymBX85b2MnjSx7mAMpsU+G6dn5duj3k8fHv/zFuTXIogt/OZ8gqAqGUrX
-	 TkI/zF7WwJad78EXp1wRwRDIAqYwtzbunzvS/oXVoHGnyAVob3tL4ZAbaDOSku65QO
-	 WY8FTNNOMzBtInxgiDBjoIAi9lUeZTbFpEgjA5m8=
+	b=2RSqJDYOM8zauscFMluGRA29hwk957dJWXlVneIkhfogK0EPD0NCNLH8laKF7hRhu
+	 +mVcWrISR5tgkQM593zjikjB5Pll3bH9QT2RnCw5xUaQ2fyCo8iLGNqjaNEcNhYoZH
+	 yQP6LC5d0hR0uMOQR5GW+YzkSFB66gwYhCXGgp5E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chris Bainbridge <chris.bainbridge@gmail.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Wesley Cheng <quic_wcheng@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 164/164] drm/amd/display: Fix slab-use-after-free in hdcp
-Date: Wed,  7 May 2025 20:40:49 +0200
-Message-ID: <20250507183827.602021886@linuxfoundation.org>
+Subject: [PATCH 6.6 114/129] xhci: add support to allocate several interrupters
+Date: Wed,  7 May 2025 20:40:50 +0200
+Message-ID: <20250507183818.212896041@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,179 +62,382 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chris Bainbridge <chris.bainbridge@gmail.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-[ Upstream commit be593d9d91c5a3a363d456b9aceb71029aeb3f1d ]
+[ Upstream commit c99b38c412343053e9af187e595793c8805bb9b8 ]
 
-The HDCP code in amdgpu_dm_hdcp.c copies pointers to amdgpu_dm_connector
-objects without incrementing the kref reference counts. When using a
-USB-C dock, and the dock is unplugged, the corresponding
-amdgpu_dm_connector objects are freed, creating dangling pointers in the
-HDCP code. When the dock is plugged back, the dangling pointers are
-dereferenced, resulting in a slab-use-after-free:
+Modify the XHCI drivers to accommodate for handling multiple event rings in
+case there are multiple interrupters.  Add the required APIs so clients are
+able to allocate/request for an interrupter ring, and pass this information
+back to the client driver.  This allows for users to handle the resource
+accordingly, such as passing the event ring base address to an audio DSP.
+There is no actual support for multiple MSI/MSI-X vectors.
 
-[   66.775837] BUG: KASAN: slab-use-after-free in event_property_validate+0x42f/0x6c0 [amdgpu]
-[   66.776171] Read of size 4 at addr ffff888127804120 by task kworker/0:1/10
+[export xhci_initialize_ring_info() -wcheng]
 
-[   66.776179] CPU: 0 UID: 0 PID: 10 Comm: kworker/0:1 Not tainted 6.14.0-rc7-00180-g54505f727a38-dirty #233
-[   66.776183] Hardware name: HP HP Pavilion Aero Laptop 13-be0xxx/8916, BIOS F.17 12/18/2024
-[   66.776186] Workqueue: events event_property_validate [amdgpu]
-[   66.776494] Call Trace:
-[   66.776496]  <TASK>
-[   66.776497]  dump_stack_lvl+0x70/0xa0
-[   66.776504]  print_report+0x175/0x555
-[   66.776507]  ? __virt_addr_valid+0x243/0x450
-[   66.776510]  ? kasan_complete_mode_report_info+0x66/0x1c0
-[   66.776515]  kasan_report+0xeb/0x1c0
-[   66.776518]  ? event_property_validate+0x42f/0x6c0 [amdgpu]
-[   66.776819]  ? event_property_validate+0x42f/0x6c0 [amdgpu]
-[   66.777121]  __asan_report_load4_noabort+0x14/0x20
-[   66.777124]  event_property_validate+0x42f/0x6c0 [amdgpu]
-[   66.777342]  ? __lock_acquire+0x6b40/0x6b40
-[   66.777347]  ? enable_assr+0x250/0x250 [amdgpu]
-[   66.777571]  process_one_work+0x86b/0x1510
-[   66.777575]  ? pwq_dec_nr_in_flight+0xcf0/0xcf0
-[   66.777578]  ? assign_work+0x16b/0x280
-[   66.777580]  ? lock_is_held_type+0xa3/0x130
-[   66.777583]  worker_thread+0x5c0/0xfa0
-[   66.777587]  ? process_one_work+0x1510/0x1510
-[   66.777588]  kthread+0x3a2/0x840
-[   66.777591]  ? kthread_is_per_cpu+0xd0/0xd0
-[   66.777594]  ? trace_hardirqs_on+0x4f/0x60
-[   66.777597]  ? _raw_spin_unlock_irq+0x27/0x60
-[   66.777599]  ? calculate_sigpending+0x77/0xa0
-[   66.777602]  ? kthread_is_per_cpu+0xd0/0xd0
-[   66.777605]  ret_from_fork+0x40/0x90
-[   66.777607]  ? kthread_is_per_cpu+0xd0/0xd0
-[   66.777609]  ret_from_fork_asm+0x11/0x20
-[   66.777614]  </TASK>
-
-[   66.777643] Allocated by task 10:
-[   66.777646]  kasan_save_stack+0x39/0x60
-[   66.777649]  kasan_save_track+0x14/0x40
-[   66.777652]  kasan_save_alloc_info+0x37/0x50
-[   66.777655]  __kasan_kmalloc+0xbb/0xc0
-[   66.777658]  __kmalloc_cache_noprof+0x1c8/0x4b0
-[   66.777661]  dm_dp_add_mst_connector+0xdd/0x5c0 [amdgpu]
-[   66.777880]  drm_dp_mst_port_add_connector+0x47e/0x770 [drm_display_helper]
-[   66.777892]  drm_dp_send_link_address+0x1554/0x2bf0 [drm_display_helper]
-[   66.777901]  drm_dp_check_and_send_link_address+0x187/0x1f0 [drm_display_helper]
-[   66.777909]  drm_dp_mst_link_probe_work+0x2b8/0x410 [drm_display_helper]
-[   66.777917]  process_one_work+0x86b/0x1510
-[   66.777919]  worker_thread+0x5c0/0xfa0
-[   66.777922]  kthread+0x3a2/0x840
-[   66.777925]  ret_from_fork+0x40/0x90
-[   66.777927]  ret_from_fork_asm+0x11/0x20
-
-[   66.777932] Freed by task 1713:
-[   66.777935]  kasan_save_stack+0x39/0x60
-[   66.777938]  kasan_save_track+0x14/0x40
-[   66.777940]  kasan_save_free_info+0x3b/0x60
-[   66.777944]  __kasan_slab_free+0x52/0x70
-[   66.777946]  kfree+0x13f/0x4b0
-[   66.777949]  dm_dp_mst_connector_destroy+0xfa/0x150 [amdgpu]
-[   66.778179]  drm_connector_free+0x7d/0xb0
-[   66.778184]  drm_mode_object_put.part.0+0xee/0x160
-[   66.778188]  drm_mode_object_put+0x37/0x50
-[   66.778191]  drm_atomic_state_default_clear+0x220/0xd60
-[   66.778194]  __drm_atomic_state_free+0x16e/0x2a0
-[   66.778197]  drm_mode_atomic_ioctl+0x15ed/0x2ba0
-[   66.778200]  drm_ioctl_kernel+0x17a/0x310
-[   66.778203]  drm_ioctl+0x584/0xd10
-[   66.778206]  amdgpu_drm_ioctl+0xd2/0x1c0 [amdgpu]
-[   66.778375]  __x64_sys_ioctl+0x139/0x1a0
-[   66.778378]  x64_sys_call+0xee7/0xfb0
-[   66.778381]  do_syscall_64+0x87/0x140
-[   66.778385]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-Fix this by properly incrementing and decrementing the reference counts
-when making and deleting copies of the amdgpu_dm_connector pointers.
-
-(Mario: rebase on current code and update fixes tag)
-
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4006
-Signed-off-by: Chris Bainbridge <chris.bainbridge@gmail.com>
-Fixes: da3fd7ac0bcf3 ("drm/amd/display: Update CP property based on HW query")
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Link: https://lore.kernel.org/r/20250417215005.37964-1-mario.limonciello@amd.com
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit d4673f3c3b3dcb74e36e53cdfc880baa7a87b330)
-Cc: stable@vger.kernel.org
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
+Link: https://lore.kernel.org/r/20240102214549.22498-2-quic_wcheng@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: bea5892d0ed2 ("xhci: Limit time spent with xHC interrupts disabled during bus resume")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../amd/display/amdgpu_dm/amdgpu_dm_hdcp.c    | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ drivers/usb/host/xhci-debugfs.c |   2 +-
+ drivers/usb/host/xhci-mem.c     | 108 ++++++++++++++++++++++++++++----
+ drivers/usb/host/xhci-ring.c    |   2 +-
+ drivers/usb/host/xhci.c         |  51 +++++++++------
+ drivers/usb/host/xhci.h         |   6 +-
+ 5 files changed, 137 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c
-index 53796a74b7a65..10ba4d7bf6325 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c
-@@ -173,6 +173,9 @@ void hdcp_update_display(struct hdcp_workqueue *hdcp_work,
- 	unsigned int conn_index = aconnector->base.index;
+diff --git a/drivers/usb/host/xhci-debugfs.c b/drivers/usb/host/xhci-debugfs.c
+index 99baa60ef50fe..15a8402ee8a17 100644
+--- a/drivers/usb/host/xhci-debugfs.c
++++ b/drivers/usb/host/xhci-debugfs.c
+@@ -693,7 +693,7 @@ void xhci_debugfs_init(struct xhci_hcd *xhci)
+ 				     "command-ring",
+ 				     xhci->debugfs_root);
  
- 	guard(mutex)(&hdcp_w->mutex);
-+	drm_connector_get(&aconnector->base);
-+	if (hdcp_w->aconnector[conn_index])
-+		drm_connector_put(&hdcp_w->aconnector[conn_index]->base);
- 	hdcp_w->aconnector[conn_index] = aconnector;
+-	xhci_debugfs_create_ring_dir(xhci, &xhci->interrupter->event_ring,
++	xhci_debugfs_create_ring_dir(xhci, &xhci->interrupters[0]->event_ring,
+ 				     "event-ring",
+ 				     xhci->debugfs_root);
  
- 	memset(&link_adjust, 0, sizeof(link_adjust));
-@@ -220,7 +223,6 @@ static void hdcp_remove_display(struct hdcp_workqueue *hdcp_work,
- 	unsigned int conn_index = aconnector->base.index;
+diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
+index f00e96c9ca57a..3ab547a6e4ce9 100644
+--- a/drivers/usb/host/xhci-mem.c
++++ b/drivers/usb/host/xhci-mem.c
+@@ -318,6 +318,7 @@ void xhci_initialize_ring_info(struct xhci_ring *ring,
+ 	 */
+ 	ring->num_trbs_free = ring->num_segs * (TRBS_PER_SEGMENT - 1) - 1;
+ }
++EXPORT_SYMBOL_GPL(xhci_initialize_ring_info);
  
- 	guard(mutex)(&hdcp_w->mutex);
--	hdcp_w->aconnector[conn_index] = aconnector;
- 
- 	/* the removal of display will invoke auth reset -> hdcp destroy and
- 	 * we'd expect the Content Protection (CP) property changed back to
-@@ -236,7 +238,10 @@ static void hdcp_remove_display(struct hdcp_workqueue *hdcp_work,
- 	}
- 
- 	mod_hdcp_remove_display(&hdcp_w->hdcp, aconnector->base.index, &hdcp_w->output);
--
-+	if (hdcp_w->aconnector[conn_index]) {
-+		drm_connector_put(&hdcp_w->aconnector[conn_index]->base);
-+		hdcp_w->aconnector[conn_index] = NULL;
-+	}
- 	process_output(hdcp_w);
+ /* Allocate segments and link them for a ring */
+ static int xhci_alloc_segments_for_ring(struct xhci_hcd *xhci,
+@@ -1849,6 +1850,31 @@ xhci_free_interrupter(struct xhci_hcd *xhci, struct xhci_interrupter *ir)
+ 	kfree(ir);
  }
  
-@@ -254,6 +259,10 @@ void hdcp_reset_display(struct hdcp_workqueue *hdcp_work, unsigned int link_inde
- 	for (conn_index = 0; conn_index < AMDGPU_DM_MAX_DISPLAY_INDEX; conn_index++) {
- 		hdcp_w->encryption_status[conn_index] =
- 			MOD_HDCP_ENCRYPTION_STATUS_HDCP_OFF;
-+		if (hdcp_w->aconnector[conn_index]) {
-+			drm_connector_put(&hdcp_w->aconnector[conn_index]->base);
-+			hdcp_w->aconnector[conn_index] = NULL;
++void xhci_remove_secondary_interrupter(struct usb_hcd *hcd, struct xhci_interrupter *ir)
++{
++	struct xhci_hcd *xhci = hcd_to_xhci(hcd);
++	unsigned int intr_num;
++
++	/* interrupter 0 is primary interrupter, don't touch it */
++	if (!ir || !ir->intr_num || ir->intr_num >= xhci->max_interrupters)
++		xhci_dbg(xhci, "Invalid secondary interrupter, can't remove\n");
++
++	/* fixme, should we check xhci->interrupter[intr_num] == ir */
++	/* fixme locking */
++
++	spin_lock_irq(&xhci->lock);
++
++	intr_num = ir->intr_num;
++
++	xhci_remove_interrupter(xhci, ir);
++	xhci->interrupters[intr_num] = NULL;
++
++	spin_unlock_irq(&xhci->lock);
++
++	xhci_free_interrupter(xhci, ir);
++}
++EXPORT_SYMBOL_GPL(xhci_remove_secondary_interrupter);
++
+ void xhci_mem_cleanup(struct xhci_hcd *xhci)
+ {
+ 	struct device	*dev = xhci_to_hcd(xhci)->self.sysdev;
+@@ -1856,10 +1882,14 @@ void xhci_mem_cleanup(struct xhci_hcd *xhci)
+ 
+ 	cancel_delayed_work_sync(&xhci->cmd_timer);
+ 
+-	xhci_remove_interrupter(xhci, xhci->interrupter);
+-	xhci_free_interrupter(xhci, xhci->interrupter);
+-	xhci->interrupter = NULL;
+-	xhci_dbg_trace(xhci, trace_xhci_dbg_init, "Freed primary event ring");
++	for (i = 0; i < xhci->max_interrupters; i++) {
++		if (xhci->interrupters[i]) {
++			xhci_remove_interrupter(xhci, xhci->interrupters[i]);
++			xhci_free_interrupter(xhci, xhci->interrupters[i]);
++			xhci->interrupters[i] = NULL;
 +		}
- 	}
++	}
++	xhci_dbg_trace(xhci, trace_xhci_dbg_init, "Freed interrupters");
  
- 	process_output(hdcp_w);
-@@ -489,6 +498,7 @@ static void update_config(void *handle, struct cp_psp_stream_config *config)
- 	struct hdcp_workqueue *hdcp_work = handle;
- 	struct amdgpu_dm_connector *aconnector = config->dm_stream_ctx;
- 	int link_index = aconnector->dc_link->link_index;
-+	unsigned int conn_index = aconnector->base.index;
- 	struct mod_hdcp_display *display = &hdcp_work[link_index].display;
- 	struct mod_hdcp_link *link = &hdcp_work[link_index].link;
- 	struct hdcp_workqueue *hdcp_w = &hdcp_work[link_index];
-@@ -545,7 +555,10 @@ static void update_config(void *handle, struct cp_psp_stream_config *config)
- 	guard(mutex)(&hdcp_w->mutex);
+ 	if (xhci->cmd_ring)
+ 		xhci_ring_free(xhci, xhci->cmd_ring);
+@@ -1929,6 +1959,7 @@ void xhci_mem_cleanup(struct xhci_hcd *xhci)
+ 	for (i = 0; i < xhci->num_port_caps; i++)
+ 		kfree(xhci->port_caps[i].psi);
+ 	kfree(xhci->port_caps);
++	kfree(xhci->interrupters);
+ 	xhci->num_port_caps = 0;
  
- 	mod_hdcp_add_display(&hdcp_w->hdcp, link, display, &hdcp_w->output);
--
-+	drm_connector_get(&aconnector->base);
-+	if (hdcp_w->aconnector[conn_index])
-+		drm_connector_put(&hdcp_w->aconnector[conn_index]->base);
-+	hdcp_w->aconnector[conn_index] = aconnector;
- 	process_output(hdcp_w);
+ 	xhci->usb2_rhub.ports = NULL;
+@@ -1937,6 +1968,7 @@ void xhci_mem_cleanup(struct xhci_hcd *xhci)
+ 	xhci->rh_bw = NULL;
+ 	xhci->ext_caps = NULL;
+ 	xhci->port_caps = NULL;
++	xhci->interrupters = NULL;
+ 
+ 	xhci->page_size = 0;
+ 	xhci->page_shift = 0;
+@@ -2243,18 +2275,20 @@ static int xhci_setup_port_arrays(struct xhci_hcd *xhci, gfp_t flags)
  }
  
+ static struct xhci_interrupter *
+-xhci_alloc_interrupter(struct xhci_hcd *xhci, gfp_t flags)
++xhci_alloc_interrupter(struct xhci_hcd *xhci, int segs, gfp_t flags)
+ {
+ 	struct device *dev = xhci_to_hcd(xhci)->self.sysdev;
+ 	struct xhci_interrupter *ir;
+-	unsigned int num_segs;
++	unsigned int num_segs = segs;
+ 	int ret;
+ 
+ 	ir = kzalloc_node(sizeof(*ir), flags, dev_to_node(dev));
+ 	if (!ir)
+ 		return NULL;
+ 
+-	num_segs = min_t(unsigned int, 1 << HCS_ERST_MAX(xhci->hcs_params2),
++	/* number of ring segments should be greater than 0 */
++	if (segs <= 0)
++		num_segs = min_t(unsigned int, 1 << HCS_ERST_MAX(xhci->hcs_params2),
+ 			 ERST_MAX_SEGS);
+ 
+ 	ir->event_ring = xhci_ring_alloc(xhci, num_segs, 1, TYPE_EVENT, 0,
+@@ -2289,6 +2323,13 @@ xhci_add_interrupter(struct xhci_hcd *xhci, struct xhci_interrupter *ir,
+ 		return -EINVAL;
+ 	}
+ 
++	if (xhci->interrupters[intr_num]) {
++		xhci_warn(xhci, "Interrupter %d\n already set up", intr_num);
++		return -EINVAL;
++	}
++
++	xhci->interrupters[intr_num] = ir;
++	ir->intr_num = intr_num;
+ 	ir->ir_set = &xhci->run_regs->ir_set[intr_num];
+ 
+ 	/* set ERST count with the number of entries in the segment table */
+@@ -2311,10 +2352,52 @@ xhci_add_interrupter(struct xhci_hcd *xhci, struct xhci_interrupter *ir,
+ 	return 0;
+ }
+ 
++struct xhci_interrupter *
++xhci_create_secondary_interrupter(struct usb_hcd *hcd, int num_seg)
++{
++	struct xhci_hcd *xhci = hcd_to_xhci(hcd);
++	struct xhci_interrupter *ir;
++	unsigned int i;
++	int err = -ENOSPC;
++
++	if (!xhci->interrupters || xhci->max_interrupters <= 1)
++		return NULL;
++
++	ir = xhci_alloc_interrupter(xhci, num_seg, GFP_KERNEL);
++	if (!ir)
++		return NULL;
++
++	spin_lock_irq(&xhci->lock);
++
++	/* Find available secondary interrupter, interrupter 0 is reserved for primary */
++	for (i = 1; i < xhci->max_interrupters; i++) {
++		if (xhci->interrupters[i] == NULL) {
++			err = xhci_add_interrupter(xhci, ir, i);
++			break;
++		}
++	}
++
++	spin_unlock_irq(&xhci->lock);
++
++	if (err) {
++		xhci_warn(xhci, "Failed to add secondary interrupter, max interrupters %d\n",
++			  xhci->max_interrupters);
++		xhci_free_interrupter(xhci, ir);
++		return NULL;
++	}
++
++	xhci_dbg(xhci, "Add secondary interrupter %d, max interrupters %d\n",
++		 i, xhci->max_interrupters);
++
++	return ir;
++}
++EXPORT_SYMBOL_GPL(xhci_create_secondary_interrupter);
++
+ int xhci_mem_init(struct xhci_hcd *xhci, gfp_t flags)
+ {
+-	dma_addr_t	dma;
++	struct xhci_interrupter *ir;
+ 	struct device	*dev = xhci_to_hcd(xhci)->self.sysdev;
++	dma_addr_t	dma;
+ 	unsigned int	val, val2;
+ 	u64		val_64;
+ 	u32		page_size, temp;
+@@ -2439,11 +2522,14 @@ int xhci_mem_init(struct xhci_hcd *xhci, gfp_t flags)
+ 	/* Allocate and set up primary interrupter 0 with an event ring. */
+ 	xhci_dbg_trace(xhci, trace_xhci_dbg_init,
+ 		       "Allocating primary event ring");
+-	xhci->interrupter = xhci_alloc_interrupter(xhci, flags);
+-	if (!xhci->interrupter)
++	xhci->interrupters = kcalloc_node(xhci->max_interrupters, sizeof(*xhci->interrupters),
++					  flags, dev_to_node(dev));
++
++	ir = xhci_alloc_interrupter(xhci, 0, flags);
++	if (!ir)
+ 		goto fail;
+ 
+-	if (xhci_add_interrupter(xhci, xhci->interrupter, 0))
++	if (xhci_add_interrupter(xhci, ir, 0))
+ 		goto fail;
+ 
+ 	xhci->isoc_bei_interval = AVOID_BEI_INTERVAL_MAX;
+diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
+index 884a668cca367..5a53280fa2edf 100644
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -3225,7 +3225,7 @@ irqreturn_t xhci_irq(struct usb_hcd *hcd)
+ 	writel(status, &xhci->op_regs->status);
+ 
+ 	/* This is the handler of the primary interrupter */
+-	ir = xhci->interrupter;
++	ir = xhci->interrupters[0];
+ 	if (!hcd->msi_enabled) {
+ 		u32 irq_pending;
+ 		irq_pending = readl(&ir->ir_set->irq_pending);
+diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
+index 70e6c240a5409..5c3250989047e 100644
+--- a/drivers/usb/host/xhci.c
++++ b/drivers/usb/host/xhci.c
+@@ -457,7 +457,7 @@ static int xhci_init(struct usb_hcd *hcd)
+ 
+ static int xhci_run_finished(struct xhci_hcd *xhci)
+ {
+-	struct xhci_interrupter *ir = xhci->interrupter;
++	struct xhci_interrupter *ir = xhci->interrupters[0];
+ 	unsigned long	flags;
+ 	u32		temp;
+ 
+@@ -509,7 +509,7 @@ int xhci_run(struct usb_hcd *hcd)
+ 	u64 temp_64;
+ 	int ret;
+ 	struct xhci_hcd *xhci = hcd_to_xhci(hcd);
+-	struct xhci_interrupter *ir = xhci->interrupter;
++	struct xhci_interrupter *ir = xhci->interrupters[0];
+ 	/* Start the xHCI host controller running only after the USB 2.0 roothub
+ 	 * is setup.
+ 	 */
+@@ -573,7 +573,7 @@ void xhci_stop(struct usb_hcd *hcd)
+ {
+ 	u32 temp;
+ 	struct xhci_hcd *xhci = hcd_to_xhci(hcd);
+-	struct xhci_interrupter *ir = xhci->interrupter;
++	struct xhci_interrupter *ir = xhci->interrupters[0];
+ 
+ 	mutex_lock(&xhci->mutex);
+ 
+@@ -669,36 +669,51 @@ EXPORT_SYMBOL_GPL(xhci_shutdown);
+ #ifdef CONFIG_PM
+ static void xhci_save_registers(struct xhci_hcd *xhci)
+ {
+-	struct xhci_interrupter *ir = xhci->interrupter;
++	struct xhci_interrupter *ir;
++	unsigned int i;
+ 
+ 	xhci->s3.command = readl(&xhci->op_regs->command);
+ 	xhci->s3.dev_nt = readl(&xhci->op_regs->dev_notification);
+ 	xhci->s3.dcbaa_ptr = xhci_read_64(xhci, &xhci->op_regs->dcbaa_ptr);
+ 	xhci->s3.config_reg = readl(&xhci->op_regs->config_reg);
+ 
+-	if (!ir)
+-		return;
++	/* save both primary and all secondary interrupters */
++	/* fixme, shold we lock  to prevent race with remove secondary interrupter? */
++	for (i = 0; i < xhci->max_interrupters; i++) {
++		ir = xhci->interrupters[i];
++		if (!ir)
++			continue;
+ 
+-	ir->s3_erst_size = readl(&ir->ir_set->erst_size);
+-	ir->s3_erst_base = xhci_read_64(xhci, &ir->ir_set->erst_base);
+-	ir->s3_erst_dequeue = xhci_read_64(xhci, &ir->ir_set->erst_dequeue);
+-	ir->s3_irq_pending = readl(&ir->ir_set->irq_pending);
+-	ir->s3_irq_control = readl(&ir->ir_set->irq_control);
++		ir->s3_erst_size = readl(&ir->ir_set->erst_size);
++		ir->s3_erst_base = xhci_read_64(xhci, &ir->ir_set->erst_base);
++		ir->s3_erst_dequeue = xhci_read_64(xhci, &ir->ir_set->erst_dequeue);
++		ir->s3_irq_pending = readl(&ir->ir_set->irq_pending);
++		ir->s3_irq_control = readl(&ir->ir_set->irq_control);
++	}
+ }
+ 
+ static void xhci_restore_registers(struct xhci_hcd *xhci)
+ {
+-	struct xhci_interrupter *ir = xhci->interrupter;
++	struct xhci_interrupter *ir;
++	unsigned int i;
+ 
+ 	writel(xhci->s3.command, &xhci->op_regs->command);
+ 	writel(xhci->s3.dev_nt, &xhci->op_regs->dev_notification);
+ 	xhci_write_64(xhci, xhci->s3.dcbaa_ptr, &xhci->op_regs->dcbaa_ptr);
+ 	writel(xhci->s3.config_reg, &xhci->op_regs->config_reg);
+-	writel(ir->s3_erst_size, &ir->ir_set->erst_size);
+-	xhci_write_64(xhci, ir->s3_erst_base, &ir->ir_set->erst_base);
+-	xhci_write_64(xhci, ir->s3_erst_dequeue, &ir->ir_set->erst_dequeue);
+-	writel(ir->s3_irq_pending, &ir->ir_set->irq_pending);
+-	writel(ir->s3_irq_control, &ir->ir_set->irq_control);
++
++	/* FIXME should we lock to protect against freeing of interrupters */
++	for (i = 0; i < xhci->max_interrupters; i++) {
++		ir = xhci->interrupters[i];
++		if (!ir)
++			continue;
++
++		writel(ir->s3_erst_size, &ir->ir_set->erst_size);
++		xhci_write_64(xhci, ir->s3_erst_base, &ir->ir_set->erst_base);
++		xhci_write_64(xhci, ir->s3_erst_dequeue, &ir->ir_set->erst_dequeue);
++		writel(ir->s3_irq_pending, &ir->ir_set->irq_pending);
++		writel(ir->s3_irq_control, &ir->ir_set->irq_control);
++	}
+ }
+ 
+ static void xhci_set_cmd_ring_deq(struct xhci_hcd *xhci)
+@@ -1061,7 +1076,7 @@ int xhci_resume(struct xhci_hcd *xhci, pm_message_t msg)
+ 		xhci_dbg(xhci, "// Disabling event ring interrupts\n");
+ 		temp = readl(&xhci->op_regs->status);
+ 		writel((temp & ~0x1fff) | STS_EINT, &xhci->op_regs->status);
+-		xhci_disable_interrupter(xhci->interrupter);
++		xhci_disable_interrupter(xhci->interrupters[0]);
+ 
+ 		xhci_dbg(xhci, "cleaning up memory\n");
+ 		xhci_mem_cleanup(xhci);
+diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
+index a49560145d78b..9d2cf11cef846 100644
+--- a/drivers/usb/host/xhci.h
++++ b/drivers/usb/host/xhci.h
+@@ -1549,7 +1549,7 @@ struct xhci_hcd {
+ 	struct reset_control *reset;
+ 	/* data structures */
+ 	struct xhci_device_context_array *dcbaa;
+-	struct xhci_interrupter *interrupter;
++	struct xhci_interrupter **interrupters;
+ 	struct xhci_ring	*cmd_ring;
+ 	unsigned int            cmd_ring_state;
+ #define CMD_RING_STATE_RUNNING         (1 << 0)
+@@ -1866,6 +1866,10 @@ struct xhci_container_ctx *xhci_alloc_container_ctx(struct xhci_hcd *xhci,
+ 		int type, gfp_t flags);
+ void xhci_free_container_ctx(struct xhci_hcd *xhci,
+ 		struct xhci_container_ctx *ctx);
++struct xhci_interrupter *
++xhci_create_secondary_interrupter(struct usb_hcd *hcd, int num_seg);
++void xhci_remove_secondary_interrupter(struct usb_hcd
++				       *hcd, struct xhci_interrupter *ir);
+ 
+ /* xHCI host controller glue */
+ typedef void (*xhci_get_quirks_t)(struct device *, struct xhci_hcd *);
 -- 
 2.39.5
 
