@@ -1,150 +1,174 @@
-Return-Path: <stable+bounces-142102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24DDFAAE636
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:14:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCCEDAAE62E
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:12:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5AD5B188D945
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 16:09:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3639F172604
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 16:13:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3B4228BABB;
-	Wed,  7 May 2025 16:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FE6628B7FB;
+	Wed,  7 May 2025 16:12:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="SOXVt8LF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lOmvey8V"
 X-Original-To: stable@vger.kernel.org
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E20E828B7EF
-	for <stable@vger.kernel.org>; Wed,  7 May 2025 16:09:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46F9E215197;
+	Wed,  7 May 2025 16:12:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746634166; cv=none; b=s68eu0CiaAou+fU+QbN/kJgTAJODevU+/oxTJdO1MGeV7a9SFp4XcFwlT4A3gVSie5YIUPHIX1WxuSx7A+Kle/QQqQoIEC2QsOhYlTtfacQc2EvDVxUca0SrCmi4bLObuEU/w36M+rKbz+1V8vZ46YAgElhjFwhyfUjZbMmiW6A=
+	t=1746634372; cv=none; b=TwdTe6YzX4L+IW0vLQqUPkjd4IH3964bRMxKqQOdRB7vyCIFi3vZg3aU0GQxQy/RzFhkGEqOpLr2D79+AGKcvQolo3BR2mOTFo3fs9AUOn0NFi+PSuFokF9CJtNTri2/wbqEwCDh+d5EQMl/HIB1oBeTuUwqX3i9FV4akpJHXnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746634166; c=relaxed/simple;
-	bh=C1Zh/oHyK0/BfwolEQN5DbNFpAIruxrpIIoT/GoBXv0=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:MIME-Version:
-	 Content-Type:References; b=BniD+cOvgHAXBJG4j9UCfmnUmUOHSRTQfDULSh8ndfaBu+2sAVEqjY3U1Pir5O681gPU8RBGLpC0ujuDP+dZ1GOOqlnJHM7mSM5lnAtcobVvjPxPJqWGfGbjXZWhxqz1fslBavQSUB00UsJ/if6WMIYnaPD/GpiUsvzOIO2IFpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=SOXVt8LF; arc=none smtp.client-ip=210.118.77.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20250507160923euoutp015d62082a883928be9cb039384f2912dd~9SoR57AJP3224232242euoutp01d
-	for <stable@vger.kernel.org>; Wed,  7 May 2025 16:09:23 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20250507160923euoutp015d62082a883928be9cb039384f2912dd~9SoR57AJP3224232242euoutp01d
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1746634163;
-	bh=B5ofrGVzRIMScS1uJ8Qx33aDiHf23TB+5NVMssxdhR4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SOXVt8LFUL47GUo0HIBkrFfvL9tI7H8zyXyJ+MTkVhxxXQra/1X34O9MEf5yC8Hzc
-	 fIMiTZY+7YJeiJ9JRkEX7SNRDLKTPPQiRqWjkk0Zgf6KikBweKEoHp08+ix8Bm8uSX
-	 2fCx640ipYBp6emzIsGydEykX0wbPCdCQrq5ye9U=
-Received: from eusmtip1.samsung.com (unknown [203.254.199.221]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20250507160923eucas1p1a344e74759410b49143e2be42ef43ded~9SoRm5WVO0255402554eucas1p1m;
-	Wed,  7 May 2025 16:09:23 +0000 (GMT)
-Received: from AMDC4653.digital.local (unknown [106.120.51.32]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20250507160922eusmtip1108f8ea3c7b457c173c3fe5b53ef5572~9SoRJFrVq0592705927eusmtip1Z;
-	Wed,  7 May 2025 16:09:22 +0000 (GMT)
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-To: linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-	iommu@lists.linux.dev
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>, Laurent Pinchart
-	<laurent.pinchart@ideasonboard.com>, Sakari Ailus
-	<sakari.ailus@linux.intel.com>, Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>, Robin Murphy <robin.murphy@arm.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v3 3/3] media: omap3isp: use sgtable-based scatterlist
- wrappers
-Date: Wed,  7 May 2025 18:09:13 +0200
-Message-Id: <20250507160913.2084079-4-m.szyprowski@samsung.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250507160913.2084079-1-m.szyprowski@samsung.com>
+	s=arc-20240116; t=1746634372; c=relaxed/simple;
+	bh=NgV9gb3MNcWqBiGv30nVf8yM/e0HQuZamzPRZKopGGI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pqlcRTCbZdZJWo7xReDSpnIxsCmJwEUGn4lJjepBW33bcWw+j8UQgV+l8tdTr+gE5WNnrMqneshSbjstIfiCnpdUTGfL5MEF5w6Z6M9r6c8wmP6YszP8Y8dPeY80jA7CDtbSPuDN2ji02U8TJSh9OSOR4GRkznv5JTcRyKhSCGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lOmvey8V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C214BC4CEE9;
+	Wed,  7 May 2025 16:12:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746634371;
+	bh=NgV9gb3MNcWqBiGv30nVf8yM/e0HQuZamzPRZKopGGI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=lOmvey8VjmjQoujhNZkrb14agia0kvhIP9ruSrUvMM5ASWt/Zn8KlrQAwtOqHjeal
+	 quV7IRSqlaV9dyn+bCcDYjbGxE9yscC2A/PlQC0QiwEuEHF2rX1h2v6PTw4chrjhfq
+	 fECSiGDc7hmDbjrrCfsnaps0CtXVxViZKKQs6BsyD8+pMRcAZ1oKA89QHWw2QK/PVq
+	 tIe/H1YnEcVAtuIksL9m8xYvXzTN/IqGKbkK9sDXt9eDgu7370Z0DPpKoVUVcRVHoi
+	 4/S6fXP5P2PkDBYehvT8qsSwLERwBYybVcl1sFWd7mG6D3BuwEYA9WPPYjZsTigxTP
+	 HOU0Vl5JDpf+A==
+Received: by mail-oo1-f44.google.com with SMTP id 006d021491bc7-601a8b6c133so608898eaf.1;
+        Wed, 07 May 2025 09:12:51 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVTgU2Y1iahtQF7JkvNVNBYBKhBX6kLYKZ5/YaRIuDyJPHodLUod1QXo2K00gRH/IF1HogkJ8FNjrN2@vger.kernel.org, AJvYcCVVQMSWlUJz01Jc7GjYjtx1MwntFp4Tx39iTADb5+R+H1Vx3lhVEqUc6+P2boM8fY7NrEm32weHmt2c8uJx@vger.kernel.org, AJvYcCVxtJOdoYYVUEtuAyeugql8NGGa/6ZVo95Pt3cUJej5w7FcJzV8N6Jyi++oT6Zm5341Zi/Szj14@vger.kernel.org
+X-Gm-Message-State: AOJu0YxLg2+cLXbjsOBkF6Qkgp2JIEbhd7P0dXr30gOGM8xnyErIJmjk
+	fMHaMIcrJR3b5BUNrN5QbJnM0fyr6D4jFZU6OZs1XrAJV6KRP8sxPNQsm/0cdjNzXAVEmv15yun
+	kPDJl/s8ykPaHD+NLoO4C847s2SU=
+X-Google-Smtp-Source: AGHT+IFm2G7vMhkwbbCVl7L4A5NTpNVPjzGsw1lgYvvaLpUxiMXb372fR+bbyzJEB78MqSgLhSYc5SbazdWLqRY5pyY=
+X-Received: by 2002:a4a:d18e:0:b0:604:ac85:abe2 with SMTP id
+ 006d021491bc7-6083346b675mr58870eaf.3.1746634371080; Wed, 07 May 2025
+ 09:12:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20250507160923eucas1p1a344e74759410b49143e2be42ef43ded
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20250507160923eucas1p1a344e74759410b49143e2be42ef43ded
-X-EPHeader: CA
-X-CMS-RootMailID: 20250507160923eucas1p1a344e74759410b49143e2be42ef43ded
-References: <20250507160913.2084079-1-m.szyprowski@samsung.com>
-	<CGME20250507160923eucas1p1a344e74759410b49143e2be42ef43ded@eucas1p1.samsung.com>
+References: <20250506-draco-taped-15f475cd@mheyne-amazon> <214c2a2d-e0ea-4ec6-9925-05e39319e813@arm.com>
+ <CAJZ5v0jvWXDQQ++4wmWJ+i=jds+MZ68bRB9+26WM4tAPHFxALw@mail.gmail.com> <1911d3b6-f328-40a6-aa03-cde3d79554de@arm.com>
+In-Reply-To: <1911d3b6-f328-40a6-aa03-cde3d79554de@arm.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Wed, 7 May 2025 18:12:40 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0ii9HLfqfgcp=1qRRX6M1yThf7ZPNkSLVc5GGFhv=N-Lg@mail.gmail.com>
+X-Gm-Features: ATxdqUFz_G-xumrMaH9DthfVtj9CaPWWuEm7JWekOadO-oye5lvECoLE0lOwrj0
+Message-ID: <CAJZ5v0ii9HLfqfgcp=1qRRX6M1yThf7ZPNkSLVc5GGFhv=N-Lg@mail.gmail.com>
+Subject: Re: [PATCH] ACPI/PPTT: fix off-by-one error
+To: Jeremy Linton <jeremy.linton@arm.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, "Heyne, Maximilian" <mheyne@amazon.de>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, Len Brown <lenb@kernel.org>, 
+	Sudeep Holla <sudeep.holla@arm.com>, Ard Biesheuvel <ardb@kernel.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, 
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Use common wrappers operating directly on the struct sg_table objects to
-fix incorrect use of scatterlists sync calls. dma_sync_sg_for_*()
-functions have to be called with the number of elements originally passed
-to dma_map_sg_*() function, not the one returned in sgtable's nents.
+On Wed, May 7, 2025 at 5:51=E2=80=AFPM Jeremy Linton <jeremy.linton@arm.com=
+> wrote:
+>
+> On 5/7/25 10:42 AM, Rafael J. Wysocki wrote:
+> > On Wed, May 7, 2025 at 5:25=E2=80=AFPM Jeremy Linton <jeremy.linton@arm=
+.com> wrote:
+> >>
+> >> Hi,
+> >>
+> >> On 5/6/25 8:13 AM, Heyne, Maximilian wrote:
+> >>> Commit 7ab4f0e37a0f ("ACPI PPTT: Fix coding mistakes in a couple of
+> >>> sizeof() calls") corrects the processer entry size but unmasked a lon=
+ger
+> >>> standing bug where the last entry in the structure can get skipped du=
+e
+> >>> to an off-by-one mistake if the last entry ends exactly at the end of
+> >>> the ACPI subtable.
+> >>>
+> >>> The error manifests for instance on EC2 Graviton Metal instances with
+> >>>
+> >>>     ACPI PPTT: PPTT table found, but unable to locate core 63 (63)
+> >>>     [...]
+> >>>     ACPI: SPE must be homogeneous
+> >>>
+> >>> Fixes: 2bd00bcd73e5 ("ACPI/PPTT: Add Processor Properties Topology Ta=
+ble parsing")
+> >>> Cc: stable@vger.kernel.org
+> >>> Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
+> >>> ---
+> >>>    drivers/acpi/pptt.c | 4 ++--
+> >>>    1 file changed, 2 insertions(+), 2 deletions(-)
+> >>>
+> >>> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
+> >>> index f73ce6e13065d..4364da90902e5 100644
+> >>> --- a/drivers/acpi/pptt.c
+> >>> +++ b/drivers/acpi/pptt.c
+> >>> @@ -231,7 +231,7 @@ static int acpi_pptt_leaf_node(struct acpi_table_=
+header *table_hdr,
+> >>>                             sizeof(struct acpi_table_pptt));
+> >>>        proc_sz =3D sizeof(struct acpi_pptt_processor);
+> >>
+> >> This isn't really right, it should be struct acpi_subtable_header, the=
+n
+> >> once the header is safe, pull the length from it.
+> >>
+> >> But then, really if we are trying to fix the original bug that the tab=
+le
+> >> could be shorter than the data in it suggests, the struct
+> >> acpi_pptt_processor length plus its resources needs to be checked once
+> >> the subtype is known to be a processor node.
+> >>
+> >> Otherwise the original sizeof * change isn't really fixing anything.
+> >
+> > Sorry, what sense did it make to do
+> >
+> > proc_sz =3D sizeof(struct acpi_pptt_processor *);
+> >
+> > here?  As much as proc_sz =3D 0 I suppose?
+>
+> No, I agree, I think the original checks were simplified along the way
+> to that. It wasn't 'right' either.
+>
+> The problem is that there are three subtypes of which processor is only
+> one, and that struct acpi_pptt_processor doesn't necessarily reflect the
+> actual size of the processor structure in the table because it has
+> optional private resources tagged onto the end.
 
-Fixes: d33186d0be18 ("[media] omap3isp: ccdc: Use the DMA API for LSC")
-Fixes: 0e24e90f2ca7 ("[media] omap3isp: stat: Use the DMA API")
-CC: stable@vger.kernel.org
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
----
- drivers/media/platform/ti/omap3isp/ispccdc.c | 8 ++++----
- drivers/media/platform/ti/omap3isp/ispstat.c | 6 ++----
- 2 files changed, 6 insertions(+), 8 deletions(-)
+Right.
 
-diff --git a/drivers/media/platform/ti/omap3isp/ispccdc.c b/drivers/media/platform/ti/omap3isp/ispccdc.c
-index dd375c4e180d..7d0c723dcd11 100644
---- a/drivers/media/platform/ti/omap3isp/ispccdc.c
-+++ b/drivers/media/platform/ti/omap3isp/ispccdc.c
-@@ -446,8 +446,8 @@ static int ccdc_lsc_config(struct isp_ccdc_device *ccdc,
- 		if (ret < 0)
- 			goto done;
- 
--		dma_sync_sg_for_cpu(isp->dev, req->table.sgt.sgl,
--				    req->table.sgt.nents, DMA_TO_DEVICE);
-+		dma_sync_sgtable_for_cpu(isp->dev, &req->table.sgt,
-+					 DMA_TO_DEVICE);
- 
- 		if (copy_from_user(req->table.addr, config->lsc,
- 				   req->config.size)) {
-@@ -455,8 +455,8 @@ static int ccdc_lsc_config(struct isp_ccdc_device *ccdc,
- 			goto done;
- 		}
- 
--		dma_sync_sg_for_device(isp->dev, req->table.sgt.sgl,
--				       req->table.sgt.nents, DMA_TO_DEVICE);
-+		dma_sync_sgtable_for_device(isp->dev, &req->table.sgt,
-+					    DMA_TO_DEVICE);
- 	}
- 
- 	spin_lock_irqsave(&ccdc->lsc.req_lock, flags);
-diff --git a/drivers/media/platform/ti/omap3isp/ispstat.c b/drivers/media/platform/ti/omap3isp/ispstat.c
-index 359a846205b0..d3da68408ecb 100644
---- a/drivers/media/platform/ti/omap3isp/ispstat.c
-+++ b/drivers/media/platform/ti/omap3isp/ispstat.c
-@@ -161,8 +161,7 @@ static void isp_stat_buf_sync_for_device(struct ispstat *stat,
- 	if (ISP_STAT_USES_DMAENGINE(stat))
- 		return;
- 
--	dma_sync_sg_for_device(stat->isp->dev, buf->sgt.sgl,
--			       buf->sgt.nents, DMA_FROM_DEVICE);
-+	dma_sync_sgtable_for_device(stat->isp->dev, &buf->sgt, DMA_FROM_DEVICE);
- }
- 
- static void isp_stat_buf_sync_for_cpu(struct ispstat *stat,
-@@ -171,8 +170,7 @@ static void isp_stat_buf_sync_for_cpu(struct ispstat *stat,
- 	if (ISP_STAT_USES_DMAENGINE(stat))
- 		return;
- 
--	dma_sync_sg_for_cpu(stat->isp->dev, buf->sgt.sgl,
--			    buf->sgt.nents, DMA_FROM_DEVICE);
-+	dma_sync_sgtable_for_cpu(stat->isp->dev, &buf->sgt, DMA_FROM_DEVICE);
- }
- 
- static void isp_stat_buf_clear(struct ispstat *stat)
--- 
-2.34.1
+> So if the bug being fixed is that the length check is validating that
+> the table length is less than the data in the table, that's still a
+> problem because its only validating the processor node without resources.
 
+Admittedly, it is not my code, but I understand this check as a
+termination condition for the loop: If there's not enough space in the
+table to hold a thing that I'm looking for, I may as well bail out.
+
+> AKA the return is still potentially returning a pointer to a structure
+> which may not be entirely contained in the table.
+
+Right, but this check should be made anyway before comparing
+cpu_node->parent to node_entry, when it is known to be a CPU entry
+because otherwise why bother.
+
+Roughly something like this:
+
+proc_sz =3D sizeof(struct acpi_pptt_processor);
+
+while ((unsigned long)entry + entry->length <=3D table_end) {
+        if (entry->type =3D=3D ACPI_PPTT_TYPE_PROCESSOR &&
+            entry->length >=3D proc_sz &&
+            cpu_node->parent =3D=3D node_entry)
+                return 0;
+...
+}
 
