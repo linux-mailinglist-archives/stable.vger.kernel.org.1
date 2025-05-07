@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-142479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91535AAEAC7
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:59:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72498AAEA43
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:53:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAD041C22F34
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:59:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73C169C13BB
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:52:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92D5828BA9F;
-	Wed,  7 May 2025 18:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D158E289823;
+	Wed,  7 May 2025 18:53:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fV0mQRLc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZeIFJ0Q8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 501DB1482F5;
-	Wed,  7 May 2025 18:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4791FF5EC;
+	Wed,  7 May 2025 18:53:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644380; cv=none; b=PZpxyngWN9qSZFaueVQ7/IMWGD9sSpdZUZGJcY5MuMwL2gDOR+KnAc1Ua6ustxoE1ZDLFgLCnW7YND7bfUfVgr1mzlqEK+Fr5bYgl5A1vPv2gIc3F6wCP4qsyuiMdh8eU9J2B1CP9n8x9AgRoPC22k6/owX3dDwHtN24+a5vuXc=
+	t=1746643995; cv=none; b=UVb89em/84o4ic5MaIkxRei6cGIzCf7751++t/scnc4DEeCK21JjGtgZIHbI5UBZRt89LemHDQegUVr/qd0htVHdkkmeAcZNg/usc9YqHHbnoBdYymDt159OOFwm1BufSKTbWjeaqMVIphHcZPOIr+KzBRUuAv7/tiyNJP2aY+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644380; c=relaxed/simple;
-	bh=z6rkEHEFI0fSRUvdxdreKEu/Av9Zg3TDBHoS/MuPmzY=;
+	s=arc-20240116; t=1746643995; c=relaxed/simple;
+	bh=/3lGFrr0L8jp1aaVmAi+NavMdGLQghSMcaunZegGoRA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SapJSh9SBaUiM5HgNij4H9WbEwH23o1dKuEuBvjsSa1mkQHvgdTHMuCVX64Iw0Qpqn6R80CkD5V8emq8AaVENbQM43MB9L48aEYcz9KDPPS0bGcujs3swuIWPYirWmfZbM7DMXV7cKoAiplvNNXK8BoEvsGebTBU8Ssi2OmDjTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fV0mQRLc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBEA7C4CEE2;
-	Wed,  7 May 2025 18:59:39 +0000 (UTC)
+	 MIME-Version; b=KxCooeUdYyOYU0rrK3jdGFHR1cDPF2rch16juC/MVkyHSBxdOeKpw6myR5JM5RIKSM/ntIlUCATvq5lHHozlaiIN1ZEL3x93JV4jD6TKxlGjIXbr4uyRfLpKiqLeekMOVyWBbyrGiYq3S1sTh8Sq6KHoOIA0ZJKebjF8BZFnR7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZeIFJ0Q8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 204AEC4CEE2;
+	Wed,  7 May 2025 18:53:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644380;
-	bh=z6rkEHEFI0fSRUvdxdreKEu/Av9Zg3TDBHoS/MuPmzY=;
+	s=korg; t=1746643995;
+	bh=/3lGFrr0L8jp1aaVmAi+NavMdGLQghSMcaunZegGoRA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fV0mQRLcYSTLIWUlZXx9HZYr+fmaZnJigvQoRO8L2ny0l5Ej+bWey39rrb0qZJRqY
-	 zpaAH3MMoAHtKPQ/SkFd0fVPfMC5uGDXKhH+EzlAnvNcD6DVP8ZmzoJ7p2DZFCaAnE
-	 2DMSMTbgBR1pNxmkojMcbtBUzpTRuAvycVlhKExs=
+	b=ZeIFJ0Q8x0/HdZJsL69BcVzelEEb1++t2NZsG64kEIqaKTKekrub9gUh2D8Bya8n9
+	 M2MLRB31SA58HPz6Bdy7IsQTF3z3aW2+3USpkJXlcw7yBAmbKi4GqtAhSyskEyArzP
+	 h2p6iT01TdPdsz3R5auzqcjydmnj8SerXYHniLNQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dorian Cruveiller <doriancruveiller@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Alexander Tsoy <alexander@tsoy.me>
-Subject: [PATCH 6.12 005/164] Bluetooth: btusb: Add new VID/PID for WCN785x
-Date: Wed,  7 May 2025 20:38:10 +0200
-Message-ID: <20250507183821.034638657@linuxfoundation.org>
+	syzbot+c8cd2d2c412b868263fb@syzkaller.appspotmail.com,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Jeongjun Park <aha310510@gmail.com>
+Subject: [PATCH 6.14 046/183] tracing: Fix oob write in trace_seq_to_buffer()
+Date: Wed,  7 May 2025 20:38:11 +0200
+Message-ID: <20250507183826.558682038@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dorian Cruveiller <doriancruveiller@gmail.com>
+From: Jeongjun Park <aha310510@gmail.com>
 
-[ Upstream commit c7629ccfa175e16bb44a60c469214e1a6051f63d ]
+commit f5178c41bb43444a6008150fe6094497135d07cb upstream.
 
-Add VID 0489 & PID e10d for Qualcomm WCN785x USB Bluetooth chip.
+syzbot reported this bug:
+==================================================================
+BUG: KASAN: slab-out-of-bounds in trace_seq_to_buffer kernel/trace/trace.c:1830 [inline]
+BUG: KASAN: slab-out-of-bounds in tracing_splice_read_pipe+0x6be/0xdd0 kernel/trace/trace.c:6822
+Write of size 4507 at addr ffff888032b6b000 by task syz.2.320/7260
 
-The information in /sys/kernel/debug/usb/devices about the Bluetooth
-device is listed as the below.
+CPU: 1 UID: 0 PID: 7260 Comm: syz.2.320 Not tainted 6.15.0-rc1-syzkaller-00301-g3bde70a2c827 #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:408 [inline]
+ print_report+0xc3/0x670 mm/kasan/report.c:521
+ kasan_report+0xe0/0x110 mm/kasan/report.c:634
+ check_region_inline mm/kasan/generic.c:183 [inline]
+ kasan_check_range+0xef/0x1a0 mm/kasan/generic.c:189
+ __asan_memcpy+0x3c/0x60 mm/kasan/shadow.c:106
+ trace_seq_to_buffer kernel/trace/trace.c:1830 [inline]
+ tracing_splice_read_pipe+0x6be/0xdd0 kernel/trace/trace.c:6822
+ ....
+==================================================================
 
-T:  Bus=01 Lev=01 Prnt=01 Port=03 Cnt=03 Dev#=  4 Spd=12   MxCh= 0
-D:  Ver= 1.10 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=0489 ProdID=e10d Rev= 0.01
-C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=100mA
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-I:  If#= 1 Alt= 6 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  63 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  63 Ivl=1ms
-I:  If#= 1 Alt= 7 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  65 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  65 Ivl=1ms
+It has been reported that trace_seq_to_buffer() tries to copy more data
+than PAGE_SIZE to buf. Therefore, to prevent this, we should use the
+smaller of trace_seq_used(&iter->seq) and PAGE_SIZE as an argument.
 
-Signed-off-by: Dorian Cruveiller <doriancruveiller@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Alexander Tsoy <alexander@tsoy.me>
+Link: https://lore.kernel.org/20250422113026.13308-1-aha310510@gmail.com
+Reported-by: syzbot+c8cd2d2c412b868263fb@syzkaller.appspotmail.com
+Fixes: 3c56819b14b0 ("tracing: splice support for tracing_pipe")
+Suggested-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btusb.c |    2 ++
- 1 file changed, 2 insertions(+)
+ kernel/trace/trace.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -375,6 +375,8 @@ static const struct usb_device_id quirks
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x0489, 0xe0f3), .driver_info = BTUSB_QCA_WCN6855 |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x0489, 0xe10d), .driver_info = BTUSB_QCA_WCN6855 |
-+						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x13d3, 0x3623), .driver_info = BTUSB_QCA_WCN6855 |
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x2c7c, 0x0130), .driver_info = BTUSB_QCA_WCN6855 |
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -6682,13 +6682,14 @@ static ssize_t tracing_splice_read_pipe(
+ 		/* Copy the data into the page, so we can start over. */
+ 		ret = trace_seq_to_buffer(&iter->seq,
+ 					  page_address(spd.pages[i]),
+-					  trace_seq_used(&iter->seq));
++					  min((size_t)trace_seq_used(&iter->seq),
++						  PAGE_SIZE));
+ 		if (ret < 0) {
+ 			__free_page(spd.pages[i]);
+ 			break;
+ 		}
+ 		spd.partial[i].offset = 0;
+-		spd.partial[i].len = trace_seq_used(&iter->seq);
++		spd.partial[i].len = ret;
+ 
+ 		trace_seq_init(&iter->seq);
+ 	}
 
 
 
