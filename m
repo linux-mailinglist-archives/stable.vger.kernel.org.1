@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-142517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96BE7AAEAF6
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:01:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30B34AAEA2B
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:52:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 943DC9C2E1F
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:01:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 374BF1BC2B5D
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:52:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DE3A28C845;
-	Wed,  7 May 2025 19:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46A9B289348;
+	Wed,  7 May 2025 18:52:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iq37rEIJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uCVat27C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03EE288A8;
-	Wed,  7 May 2025 19:01:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 025EC1FF5EC;
+	Wed,  7 May 2025 18:52:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644496; cv=none; b=XqnMC3iB3/DZ8ym8iMJdnIjU5RClNWfudVq1KAhv52Cbajq19mC6Eu7dn+zXPJ2uiiwWl3rjQ+YQDe4K2lncP1aURilLRIeO9x4cTX2ePFlcDNaxYTDn4aGoTSqRNgl5yNZATD6m32zQg+QcZRZmiGxTVuPdvadKI0pssDJfyWA=
+	t=1746643922; cv=none; b=TXcfkAqdL6K6wX+0KpcsODli5aFOKfYLefbqTHYFK6KG669V/DCGgbxeD+URudjIG8uxVjKf0oxPQZ4mHiHi1Sq+3p3lsKXxVSA1LmJ3PvYYa2cSm6QP00qlHVMqkW172+WQw5vh97vm/nUMpGQkuknWoNQaHM7R4E4tJdouZYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644496; c=relaxed/simple;
-	bh=lb91iK+bdFkmmHjXhTOKeQ5JqBGax9fk6xmvZ3TGtjg=;
+	s=arc-20240116; t=1746643922; c=relaxed/simple;
+	bh=4gSwpihJSKKZvH2r+TuXsC3p84Cs6u6dCn4mSFNlXZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t4opu1Tu65qgSF7UM3rsMMWxMc4wiHAk+mU6DIQiu+YmiH5XLoCwZA6+oqGN4yDkmQv4lhsmMWmUIoeKqxsUiJiAam2I6etXDC6CpA/7ShhCYWmI6EeLqzhJ3ekOGC0TOZCF8JyR748AJUbHcUfZaVcM0qvPMZpo4nqq9a++pcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iq37rEIJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BC5BC4CEE9;
-	Wed,  7 May 2025 19:01:36 +0000 (UTC)
+	 MIME-Version; b=jRP9scNTwo9yWkSe3MhbN9/eKiDpBN+Z8ggVvzop2Aw3drolevGBmnJhgEqTbC5OIGmPp5SBiPopmf1Mb9mxm/BUzZdsjVT0bu8A+I0Qlt7mXGNDNfUKK6GXAFYExH/Ou+q41uZJVBf0ih8kMegYnTRmuNb6viLhn57jVvWrcg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uCVat27C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E68CC4CEE2;
+	Wed,  7 May 2025 18:52:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644496;
-	bh=lb91iK+bdFkmmHjXhTOKeQ5JqBGax9fk6xmvZ3TGtjg=;
+	s=korg; t=1746643921;
+	bh=4gSwpihJSKKZvH2r+TuXsC3p84Cs6u6dCn4mSFNlXZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iq37rEIJ96Q/3Uu2KffcHw9iQc3H5c6Lvszz+HKzhxA4sFe2jHidMCrqOa1LduvbV
-	 tcHQBWI2LHbSo3vnbvsKG9YKLVZ+yPswuprm3ui5DkYLURLcncSWXdXfcFnxVhsVOU
-	 TnE0ujIl9UQzZk3Uof4S/3PZAmPUVGFQ5DmFy/3I=
+	b=uCVat27CR1giK4oTivNEG88qw3T0EzMBWhZy6d4OoxdqzHqxGRgkE7hJCuYHrxqh5
+	 0YkLmlJ0CDEdeacwsHRrixBWt1q2HUYz5KYiPNsRD9QcEp19LTbKHuZE+4tRH3Dvss
+	 pUpjoamguqLe0CzZKTGQEqrUH2gNtKXHwUj6yJgg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Seth Forshee <sforshee@kernel.org>,
-	Sean Christopherson <seanjc@google.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>
-Subject: [PATCH 6.12 022/164] perf/x86/intel: KVM: Mask PEBS_ENABLE loaded for guest with vCPUs value.
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 062/183] wifi: iwlwifi: dont warn if the NIC is gone in resume
 Date: Wed,  7 May 2025 20:38:27 +0200
-Message-ID: <20250507183821.767298229@linuxfoundation.org>
+Message-ID: <20250507183827.198954270@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +63,176 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-commit 58f6217e5d0132a9f14e401e62796916aa055c1b upstream.
+[ Upstream commit 15220a257319ffe3bf95796326dfe0aacdbeb1c4 ]
 
-When generating the MSR_IA32_PEBS_ENABLE value that will be loaded on
-VM-Entry to a KVM guest, mask the value with the vCPU's desired PEBS_ENABLE
-value.  Consulting only the host kernel's host vs. guest masks results in
-running the guest with PEBS enabled even when the guest doesn't want to use
-PEBS.  Because KVM uses perf events to proxy the guest virtual PMU, simply
-looking at exclude_host can't differentiate between events created by host
-userspace, and events created by KVM on behalf of the guest.
+Some BIOSes decide to power gate the WLAN device during S3. Since
+iwlwifi doesn't expect this, it gets very noisy reporting that the
+device is no longer available. Wifi is still available because iwlwifi
+recovers, but it spews scary prints in the log.
 
-Running the guest with PEBS unexpectedly enabled typically manifests as
-crashes due to a near-infinite stream of #PFs.  E.g. if the guest hasn't
-written MSR_IA32_DS_AREA, the CPU will hit page faults on address '0' when
-trying to record PEBS events.
+Fix that by failing gracefully.
 
-The issue is most easily reproduced by running `perf kvm top` from before
-commit 7b100989b4f6 ("perf evlist: Remove __evlist__add_default") (after
-which, `perf kvm top` effectively stopped using PEBS).	The userspace side
-of perf creates a guest-only PEBS event, which intel_guest_get_msrs()
-misconstrues a guest-*owned* PEBS event.
-
-Arguably, this is a userspace bug, as enabling PEBS on guest-only events
-simply cannot work, and userspace can kill VMs in many other ways (there
-is no danger to the host).  However, even if this is considered to be bad
-userspace behavior, there's zero downside to perf/KVM restricting PEBS to
-guest-owned events.
-
-Note, commit 854250329c02 ("KVM: x86/pmu: Disable guest PEBS temporarily
-in two rare situations") fixed the case where host userspace is profiling
-KVM *and* userspace, but missed the case where userspace is profiling only
-KVM.
-
-Fixes: c59a1f106f5c ("KVM: x86/pmu: Add IA32_PEBS_ENABLE MSR emulation for extended PEBS")
-Closes: https://lore.kernel.org/all/Z_VUswFkWiTYI0eD@do-x1carbon
-Reported-by: Seth Forshee <sforshee@kernel.org>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Tested-by: "Seth Forshee (DigitalOcean)" <sforshee@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250426001355.1026530-1-seanjc@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e8bb19c1d590 ("wifi: iwlwifi: support fast resume")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219597
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20250420095642.d8d58146c829.I569ca15eaaa774d633038a749cc6ec7448419714@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/intel/core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../net/wireless/intel/iwlwifi/iwl-trans.c    |  1 -
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 20 ++++++++++++++++---
+ .../wireless/intel/iwlwifi/pcie/internal.h    |  9 +++++----
+ .../net/wireless/intel/iwlwifi/pcie/trans.c   | 13 +++++++++---
+ drivers/net/wireless/intel/iwlwifi/pcie/tx.c  |  2 +-
+ 5 files changed, 33 insertions(+), 12 deletions(-)
 
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -4333,7 +4333,7 @@ static struct perf_guest_switch_msr *int
- 	arr[pebs_enable] = (struct perf_guest_switch_msr){
- 		.msr = MSR_IA32_PEBS_ENABLE,
- 		.host = cpuc->pebs_enabled & ~cpuc->intel_ctrl_guest_mask,
--		.guest = pebs_mask & ~cpuc->intel_ctrl_host_mask,
-+		.guest = pebs_mask & ~cpuc->intel_ctrl_host_mask & kvm_pmu->pebs_enable,
- 	};
+diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
+index 8ad2bd64dbd3d..ced8261c725f8 100644
+--- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
+@@ -555,7 +555,6 @@ void __releases(nic_access)
+ iwl_trans_release_nic_access(struct iwl_trans *trans)
+ {
+ 	iwl_trans_pcie_release_nic_access(trans);
+-	__release(nic_access);
+ }
+ IWL_EXPORT_SYMBOL(iwl_trans_release_nic_access);
  
- 	if (arr[pebs_enable].host) {
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+index e0b657b2f74b0..89a28e42975cb 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+@@ -1703,10 +1703,24 @@ static int _iwl_pci_resume(struct device *device, bool restore)
+ 	 * need to reset it completely.
+ 	 * Note: MAC (bits 0:7) will be cleared upon suspend even with wowlan,
+ 	 * so assume that any bits there mean that the device is usable.
++	 * For older devices, just try silently to grab the NIC.
+ 	 */
+-	if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_BZ &&
+-	    !iwl_read32(trans, CSR_FUNC_SCRATCH))
+-		device_was_powered_off = true;
++	if (trans->trans_cfg->device_family >= IWL_DEVICE_FAMILY_BZ) {
++		if (!iwl_read32(trans, CSR_FUNC_SCRATCH))
++			device_was_powered_off = true;
++	} else {
++		/*
++		 * bh are re-enabled by iwl_trans_pcie_release_nic_access,
++		 * so re-enable them if _iwl_trans_pcie_grab_nic_access fails.
++		 */
++		local_bh_disable();
++		if (_iwl_trans_pcie_grab_nic_access(trans, true)) {
++			iwl_trans_pcie_release_nic_access(trans);
++		} else {
++			device_was_powered_off = true;
++			local_bh_enable();
++		}
++	}
+ 
+ 	if (restore || device_was_powered_off) {
+ 		trans->state = IWL_TRANS_NO_FW;
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
+index 45460f93d24ad..114a9195ad7f7 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/internal.h
+@@ -558,10 +558,10 @@ void iwl_trans_pcie_free(struct iwl_trans *trans);
+ void iwl_trans_pcie_free_pnvm_dram_regions(struct iwl_dram_regions *dram_regions,
+ 					   struct device *dev);
+ 
+-bool __iwl_trans_pcie_grab_nic_access(struct iwl_trans *trans);
+-#define _iwl_trans_pcie_grab_nic_access(trans)			\
++bool __iwl_trans_pcie_grab_nic_access(struct iwl_trans *trans, bool silent);
++#define _iwl_trans_pcie_grab_nic_access(trans, silent)		\
+ 	__cond_lock(nic_access_nobh,				\
+-		    likely(__iwl_trans_pcie_grab_nic_access(trans)))
++		    likely(__iwl_trans_pcie_grab_nic_access(trans, silent)))
+ 
+ void iwl_trans_pcie_check_product_reset_status(struct pci_dev *pdev);
+ void iwl_trans_pcie_check_product_reset_mode(struct pci_dev *pdev);
+@@ -1105,7 +1105,8 @@ void iwl_trans_pcie_set_bits_mask(struct iwl_trans *trans, u32 reg,
+ int iwl_trans_pcie_read_config32(struct iwl_trans *trans, u32 ofs,
+ 				 u32 *val);
+ bool iwl_trans_pcie_grab_nic_access(struct iwl_trans *trans);
+-void iwl_trans_pcie_release_nic_access(struct iwl_trans *trans);
++void __releases(nic_access_nobh)
++iwl_trans_pcie_release_nic_access(struct iwl_trans *trans);
+ 
+ /* transport gen 1 exported functions */
+ void iwl_trans_pcie_fw_alive(struct iwl_trans *trans, u32 scd_addr);
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+index b1ccace7377fb..102a6123bba0e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+@@ -2406,7 +2406,7 @@ EXPORT_SYMBOL(iwl_trans_pcie_reset);
+  * This version doesn't disable BHs but rather assumes they're
+  * already disabled.
+  */
+-bool __iwl_trans_pcie_grab_nic_access(struct iwl_trans *trans)
++bool __iwl_trans_pcie_grab_nic_access(struct iwl_trans *trans, bool silent)
+ {
+ 	int ret;
+ 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
+@@ -2458,6 +2458,11 @@ bool __iwl_trans_pcie_grab_nic_access(struct iwl_trans *trans)
+ 	if (unlikely(ret < 0)) {
+ 		u32 cntrl = iwl_read32(trans, CSR_GP_CNTRL);
+ 
++		if (silent) {
++			spin_unlock(&trans_pcie->reg_lock);
++			return false;
++		}
++
+ 		WARN_ONCE(1,
+ 			  "Timeout waiting for hardware access (CSR_GP_CNTRL 0x%08x)\n",
+ 			  cntrl);
+@@ -2489,7 +2494,7 @@ bool iwl_trans_pcie_grab_nic_access(struct iwl_trans *trans)
+ 	bool ret;
+ 
+ 	local_bh_disable();
+-	ret = __iwl_trans_pcie_grab_nic_access(trans);
++	ret = __iwl_trans_pcie_grab_nic_access(trans, false);
+ 	if (ret) {
+ 		/* keep BHs disabled until iwl_trans_pcie_release_nic_access */
+ 		return ret;
+@@ -2498,7 +2503,8 @@ bool iwl_trans_pcie_grab_nic_access(struct iwl_trans *trans)
+ 	return false;
+ }
+ 
+-void iwl_trans_pcie_release_nic_access(struct iwl_trans *trans)
++void __releases(nic_access_nobh)
++iwl_trans_pcie_release_nic_access(struct iwl_trans *trans)
+ {
+ 	struct iwl_trans_pcie *trans_pcie = IWL_TRANS_GET_PCIE_TRANS(trans);
+ 
+@@ -2525,6 +2531,7 @@ void iwl_trans_pcie_release_nic_access(struct iwl_trans *trans)
+ 	 * scheduled on different CPUs (after we drop reg_lock).
+ 	 */
+ out:
++	__release(nic_access_nobh);
+ 	spin_unlock_bh(&trans_pcie->reg_lock);
+ }
+ 
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
+index 7c1dd5cc084ac..83c6fcafcf1a4 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/tx.c
+@@ -1021,7 +1021,7 @@ static int iwl_pcie_set_cmd_in_flight(struct iwl_trans *trans,
+ 	 * returned. This needs to be done only on NICs that have
+ 	 * apmg_wake_up_wa set (see above.)
+ 	 */
+-	if (!_iwl_trans_pcie_grab_nic_access(trans))
++	if (!_iwl_trans_pcie_grab_nic_access(trans, false))
+ 		return -EIO;
+ 
+ 	/*
+-- 
+2.39.5
+
 
 
 
