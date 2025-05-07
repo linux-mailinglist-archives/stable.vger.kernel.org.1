@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-142529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE83EAAEB04
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:02:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6432AAE928
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:41:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 635B11C44C27
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:02:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 449BB7B79B6
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:40:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C0811E22E9;
-	Wed,  7 May 2025 19:02:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D23128C016;
+	Wed,  7 May 2025 18:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FNja1Ski"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IzTvRk64"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A7A529A0;
-	Wed,  7 May 2025 19:02:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CD5628DF1B;
+	Wed,  7 May 2025 18:41:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644534; cv=none; b=YwRqBteGd0mxt3qnz2NybcnPq5jsjrsDhG5QEkGSuthz6tMUMUeD2u7TIya8a4VMowsm0s22RwYMqsc/Ad0la1m/OnKF+t+BNczrWIw6IO8Wlg2rFnzfDKg68RycpyaTQP9VJJK+3USxF921pgiDfX1coWZiuBwHx7JurvAljrk=
+	t=1746643285; cv=none; b=jbbFjHAY1M2tC7FYM8kiO6wAghyylT/z8iNzvx0vJkbmdl02HpADgovAS5s/2ukI3/6YmKiFKNbJHfUz7aRxcCIicCcrzlBEIXp8ko3Cxwo/mcH+CPo+9/JtTFwwRgw5/NylBt4A6OeybIbpcSKIEf+SnkXfUaXFGEbyqzSYz5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644534; c=relaxed/simple;
-	bh=pSb9mby11niLs9pwTRIoLfKrhwYonMw65ORpjqrWv1s=;
+	s=arc-20240116; t=1746643285; c=relaxed/simple;
+	bh=iO0bKtEsGPZbYFH0Hg4rL+BK0ex7cYz7G4lT2o9tPxw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RvglGQGlxy11fWZeuwV0wHaRPNt0yvEAphtK7uF/bKAlSUG+nGLHyUfFOWczFsKAYkUP4+j/Z3/95QuZqpmhdNjM3IgtrJdgs+ah83MamimB0/6N3UKTY6hleMcFqfIMNx3HGbR50VLupH8Aj0x7COE4T9u2VE48Fj9fVjSxaPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FNja1Ski; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B7C3C4CEE2;
-	Wed,  7 May 2025 19:02:13 +0000 (UTC)
+	 MIME-Version; b=H6lwPiVl87KF+uZ+HVhRsZ3dCapbvh8dF6PKHc2+Y4hhTURCj61g7++zFmbIJDT/OF5HHdy7zto8bGhcouih4U/TKaiNjaI9WBI5MSPgKVBeqPdhKU//IzTpapZoC0mYXqh3GabYBb4aPBujfUYdXA0co3RwV79pOPaxfHeEweI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IzTvRk64; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8664CC4CEE2;
+	Wed,  7 May 2025 18:41:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644533;
-	bh=pSb9mby11niLs9pwTRIoLfKrhwYonMw65ORpjqrWv1s=;
+	s=korg; t=1746643285;
+	bh=iO0bKtEsGPZbYFH0Hg4rL+BK0ex7cYz7G4lT2o9tPxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FNja1SkiRLyM4XmMDfO5eJJlYm2hjIuCa25bk5kD1xr9jIRo5dHL1CoOxfxIPHNcP
-	 8gBpgYARcDpwLkWiISKOzlcGiI7tEZB/F7pZwVIhwjgHtq5jHd6exu4kmIx6ialM6X
-	 rvUF4sQUuhAxQgP+XobF+KImXasySvTliVIy8yAU=
+	b=IzTvRk64+jVNNc4tjmFg02+0+WNHNpSEbBhJlc0UBEu+eNmljVO0mewiZ0UcfBJbn
+	 l4QxI/XRs8UvOlHmlvqJ0co3HCAHxxTUQbUkyLDGQ8fMoY++/VypPRjF+RUUwaT2Gp
+	 qHm4YKFzzZDMC+9Mqccqdfmcwg3uQ0TtjIH+7YE8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 057/164] powerpc/boot: Check for ld-option support
+	Joachim Priesner <joachim.priesner@web.de>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 01/55] ALSA: usb-audio: Add second USB ID for Jabra Evolve 65 headset
 Date: Wed,  7 May 2025 20:39:02 +0200
-Message-ID: <20250507183823.244228831@linuxfoundation.org>
+Message-ID: <20250507183759.109735334@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
+References: <20250507183759.048732653@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
+From: Joachim Priesner <joachim.priesner@web.de>
 
-[ Upstream commit b2accfe7ca5bc9f9af28e603b79bdd5ad8df5c0b ]
+commit 1149719442d28c96dc63cad432b5a6db7c300e1a upstream.
 
-Commit 579aee9fc594 ("powerpc: suppress some linker warnings in recent linker versions")
-enabled support to add linker option "--no-warn-rwx-segments",
-if the version is greater than 2.39. Similar build warning were
-reported recently from linker version 2.35.2.
+There seem to be multiple USB device IDs used for these;
+the one I have reports as 0b0e:030c when powered on.
+(When powered off, it reports as 0b0e:0311.)
 
-ld: warning: arch/powerpc/boot/zImage.epapr has a LOAD segment with RWX permissions
-ld: warning: arch/powerpc/boot/zImage.pseries has a LOAD segment with RWX permissions
-
-Fix the warning by checking for "--no-warn-rwx-segments"
-option support in linker to enable it, instead of checking
-for the version range.
-
-Fixes: 579aee9fc594 ("powerpc: suppress some linker warnings in recent linker versions")
-Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Closes: https://lore.kernel.org/linuxppc-dev/61cf556c-4947-4bd6-af63-892fc0966dad@linux.ibm.com/
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250401004218.24869-1-maddy@linux.ibm.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Joachim Priesner <joachim.priesner@web.de>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250428053606.9237-1-joachim.priesner@web.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/boot/wrapper | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ sound/usb/format.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/boot/wrapper b/arch/powerpc/boot/wrapper
-index b1f5549a3c9c4..08f7a1386e8e0 100755
---- a/arch/powerpc/boot/wrapper
-+++ b/arch/powerpc/boot/wrapper
-@@ -234,10 +234,8 @@ fi
+--- a/sound/usb/format.c
++++ b/sound/usb/format.c
+@@ -263,7 +263,8 @@ static int parse_audio_format_rates_v1(s
+ 	}
  
- # suppress some warnings in recent ld versions
- nowarn="-z noexecstack"
--if ! ld_is_lld; then
--	if [ "$LD_VERSION" -ge "$(echo 2.39 | ld_version)" ]; then
--		nowarn="$nowarn --no-warn-rwx-segments"
--	fi
-+if [ $(${CROSS}ld -v --no-warn-rwx-segments &>/dev/null; echo $?) -eq 0 ]; then
-+	nowarn="$nowarn --no-warn-rwx-segments"
- fi
- 
- platformo=$object/"$platform".o
--- 
-2.39.5
-
+ 	/* Jabra Evolve 65 headset */
+-	if (chip->usb_id == USB_ID(0x0b0e, 0x030b)) {
++	if (chip->usb_id == USB_ID(0x0b0e, 0x030b) ||
++	    chip->usb_id == USB_ID(0x0b0e, 0x030c)) {
+ 		/* only 48kHz for playback while keeping 16kHz for capture */
+ 		if (fp->nr_rates != 1)
+ 			return set_fixed_rate(fp, 48000, SNDRV_PCM_RATE_48000);
 
 
 
