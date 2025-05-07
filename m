@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-142739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B763FAAEBFB
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:13:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB9EDAAEAAF
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:58:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D8445275B9
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:13:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1D7FB524280
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:58:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED25828C2B3;
-	Wed,  7 May 2025 19:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6008D28BAA1;
+	Wed,  7 May 2025 18:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tw3Wna/c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z9d3f5Q6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9893214813;
-	Wed,  7 May 2025 19:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA992144C1;
+	Wed,  7 May 2025 18:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746645180; cv=none; b=cixGybQLTnpg6AiM1rzQbVyP4+wd2YgKLT+Py6dcFHLB+QDmT1fFYeE5/1WUYr0CAjSm57NVfxv+ZTZhYOPPi0nzhRxbd799Riwzh62sp18MDODATjgp5GjOi1fIERufHgGPEMYxQK+zJ6IGy4hO0tB4baHAic9EctylKAfi1jg=
+	t=1746644316; cv=none; b=sMGhjQ5TZC8dKeazTIOF9QYF+1Wh0tkfeKtSdcLepYbNTEc5EWitnaHGiXH9p6dU57jhLmU2Jfoytzm6nhvGgPun+psAjw+CqF5DLHy/YRg9cJLWyesSWDjExlVIiddZ7BFBApzXJ7rFN5P6dUWHtsNQhGbTihuBfsV/wXCu0CQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746645180; c=relaxed/simple;
-	bh=ksdHCm0dVIDfkGz2e12oj6qLdI/e1S9CU68Oz9iByVY=;
+	s=arc-20240116; t=1746644316; c=relaxed/simple;
+	bh=eN6mUbaj0eUyJtQcWeRL54ZXrMwnlmlzPdKAfKktX+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sig46gEXJJvRBp3fBqyLamtzOfkcqsnz4KzD4EgSABfQRFmG40AMpg2WOOIHnyE113NNNO2kySfFvPN9KFkvxsnMZMlv6NS6E8MK5xG8X1zu/aIT7co71Y02Gt+4Z91+bME5neXGEBHKarogdRObhrVgZRmkahvbMpeEWJiLbVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tw3Wna/c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3973C4CEE2;
-	Wed,  7 May 2025 19:12:59 +0000 (UTC)
+	 MIME-Version; b=avnNEZzXhSgIFhDI+6z+P+bnSb+40qJOAijV27gsKeUPkPDkvJTSGYbixobShhEOMs6t0GEwEzyXO6SjjnY/Y8a1uonL4WvJJlpq+ZuXmwYAI6dNwzBVPUiiE+Vqws7jp4gWtDEdZKc18CPwjZcQ0/Sl8bpdnqTWNt+M9mSc7bU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z9d3f5Q6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 809C2C4CEE2;
+	Wed,  7 May 2025 18:58:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746645180;
-	bh=ksdHCm0dVIDfkGz2e12oj6qLdI/e1S9CU68Oz9iByVY=;
+	s=korg; t=1746644316;
+	bh=eN6mUbaj0eUyJtQcWeRL54ZXrMwnlmlzPdKAfKktX+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tw3Wna/cCitlP3OVVyFmt3u0JnmrBJtNvOlPgRPNl7fYXzxETAMBOouqkrbAmZ4PG
-	 tznvYucICDMlfqMYrJ9XitnSEqErWcGhhLfgqfXhnFNZalsKOwKvg4WJRLE+c4Xojr
-	 ax9ESO2yTgtnyR94n259BF9QaJ+7t4eyRfPaFoRg=
+	b=z9d3f5Q6gxH6v11C9TI23IzKWhiakTKeTuIPYS/JK4L0/QmMaU7TqvrSNgwNav4ps
+	 wkhgujZUpu5XLMurqgQfTDgK7rTWH2sUc7cdozgYl6SeqSa1P4LAD1IXt5vkSQQ4Pp
+	 UHiF17jyWyIKBFgw3FX73kKemHGFVLow+byjb2WU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonglong Liu <liuyonglong@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Penglei Jiang <superman.xpt@gmail.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 089/129] net: hns3: fix an interrupt residual problem
+Subject: [PATCH 6.14 180/183] btrfs: fix the inode leak in btrfs_iget()
 Date: Wed,  7 May 2025 20:40:25 +0200
-Message-ID: <20250507183817.109945511@linuxfoundation.org>
+Message-ID: <20250507183832.152633368@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
-References: <20250507183813.500572371@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,194 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonglong Liu <liuyonglong@huawei.com>
+From: Penglei Jiang <superman.xpt@gmail.com>
 
-[ Upstream commit 8e6b9c6ea5a55045eed6526d8ee49e93192d1a58 ]
+[ Upstream commit 48c1d1bb525b1c44b8bdc8e7ec5629cb6c2b9fc4 ]
 
-When a VF is passthrough to a VM, and the VM is killed, the reported
-interrupt may not been handled, it will remain, and won't be clear by
-the nic engine even with a flr or tqp reset. When the VM restart, the
-interrupt of the first vector may be dropped by the second enable_irq
-in vfio, see the issue below:
-https://gitlab.com/qemu-project/qemu/-/issues/2884#note_2423361621
+[BUG]
+There is a bug report that a syzbot reproducer can lead to the following
+busy inode at unmount time:
 
-We notice that the vfio has always behaved this way, and the interrupt
-is a residue of the nic engine, so we fix the problem by moving the
-vector enable process out of the enable_irq loop.
+  BTRFS info (device loop1): last unmount of filesystem 1680000e-3c1e-4c46-84b6-56bd3909af50
+  VFS: Busy inodes after unmount of loop1 (btrfs)
+  ------------[ cut here ]------------
+  kernel BUG at fs/super.c:650!
+  Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+  CPU: 0 UID: 0 PID: 48168 Comm: syz-executor Not tainted 6.15.0-rc2-00471-g119009db2674 #2 PREEMPT(full)
+  Hardware name: QEMU Ubuntu 24.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+  RIP: 0010:generic_shutdown_super+0x2e9/0x390 fs/super.c:650
+  Call Trace:
+   <TASK>
+   kill_anon_super+0x3a/0x60 fs/super.c:1237
+   btrfs_kill_super+0x3b/0x50 fs/btrfs/super.c:2099
+   deactivate_locked_super+0xbe/0x1a0 fs/super.c:473
+   deactivate_super fs/super.c:506 [inline]
+   deactivate_super+0xe2/0x100 fs/super.c:502
+   cleanup_mnt+0x21f/0x440 fs/namespace.c:1435
+   task_work_run+0x14d/0x240 kernel/task_work.c:227
+   resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
+   exit_to_user_mode_loop kernel/entry/common.c:114 [inline]
+   exit_to_user_mode_prepare include/linux/entry-common.h:329 [inline]
+   __syscall_exit_to_user_mode_work kernel/entry/common.c:207 [inline]
+   syscall_exit_to_user_mode+0x269/0x290 kernel/entry/common.c:218
+   do_syscall_64+0xd4/0x250 arch/x86/entry/syscall_64.c:100
+   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+   </TASK>
 
-Fixes: 08a100689d4b ("net: hns3: re-organize vector handle")
-Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Link: https://patch.msgid.link/20250430093052.2400464-3-shaojijie@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[CAUSE]
+When btrfs_alloc_path() failed, btrfs_iget() directly returned without
+releasing the inode already allocated by btrfs_iget_locked().
+
+This results the above busy inode and trigger the kernel BUG.
+
+[FIX]
+Fix it by calling iget_failed() if btrfs_alloc_path() failed.
+
+If we hit error inside btrfs_read_locked_inode(), it will properly call
+iget_failed(), so nothing to worry about.
+
+Although the iget_failed() cleanup inside btrfs_read_locked_inode() is a
+break of the normal error handling scheme, let's fix the obvious bug
+and backport first, then rework the error handling later.
+
+Reported-by: Penglei Jiang <superman.xpt@gmail.com>
+Link: https://lore.kernel.org/linux-btrfs/20250421102425.44431-1-superman.xpt@gmail.com/
+Fixes: 7c855e16ab72 ("btrfs: remove conditional path allocation in btrfs_read_locked_inode()")
+CC: stable@vger.kernel.org # 6.13+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Penglei Jiang <superman.xpt@gmail.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/hisilicon/hns3/hns3_enet.c   | 82 +++++++++----------
- 1 file changed, 39 insertions(+), 43 deletions(-)
+ fs/btrfs/inode.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-index 801801e8803e9..0ed01f4d68061 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-@@ -473,20 +473,14 @@ static void hns3_mask_vector_irq(struct hns3_enet_tqp_vector *tqp_vector,
- 	writel(mask_en, tqp_vector->mask_addr);
- }
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index f6fc4c9ace28c..3be6f8e8e157d 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -5660,8 +5660,10 @@ struct inode *btrfs_iget(u64 ino, struct btrfs_root *root)
+ 		return &inode->vfs_inode;
  
--static void hns3_vector_enable(struct hns3_enet_tqp_vector *tqp_vector)
-+static void hns3_irq_enable(struct hns3_enet_tqp_vector *tqp_vector)
- {
- 	napi_enable(&tqp_vector->napi);
- 	enable_irq(tqp_vector->vector_irq);
--
--	/* enable vector */
--	hns3_mask_vector_irq(tqp_vector, 1);
- }
+ 	path = btrfs_alloc_path();
+-	if (!path)
++	if (!path) {
++		iget_failed(&inode->vfs_inode);
+ 		return ERR_PTR(-ENOMEM);
++	}
  
--static void hns3_vector_disable(struct hns3_enet_tqp_vector *tqp_vector)
-+static void hns3_irq_disable(struct hns3_enet_tqp_vector *tqp_vector)
- {
--	/* disable vector */
--	hns3_mask_vector_irq(tqp_vector, 0);
--
- 	disable_irq(tqp_vector->vector_irq);
- 	napi_disable(&tqp_vector->napi);
- 	cancel_work_sync(&tqp_vector->rx_group.dim.work);
-@@ -707,11 +701,42 @@ static int hns3_set_rx_cpu_rmap(struct net_device *netdev)
- 	return 0;
- }
- 
-+static void hns3_enable_irqs_and_tqps(struct net_device *netdev)
-+{
-+	struct hns3_nic_priv *priv = netdev_priv(netdev);
-+	struct hnae3_handle *h = priv->ae_handle;
-+	u16 i;
-+
-+	for (i = 0; i < priv->vector_num; i++)
-+		hns3_irq_enable(&priv->tqp_vector[i]);
-+
-+	for (i = 0; i < priv->vector_num; i++)
-+		hns3_mask_vector_irq(&priv->tqp_vector[i], 1);
-+
-+	for (i = 0; i < h->kinfo.num_tqps; i++)
-+		hns3_tqp_enable(h->kinfo.tqp[i]);
-+}
-+
-+static void hns3_disable_irqs_and_tqps(struct net_device *netdev)
-+{
-+	struct hns3_nic_priv *priv = netdev_priv(netdev);
-+	struct hnae3_handle *h = priv->ae_handle;
-+	u16 i;
-+
-+	for (i = 0; i < h->kinfo.num_tqps; i++)
-+		hns3_tqp_disable(h->kinfo.tqp[i]);
-+
-+	for (i = 0; i < priv->vector_num; i++)
-+		hns3_mask_vector_irq(&priv->tqp_vector[i], 0);
-+
-+	for (i = 0; i < priv->vector_num; i++)
-+		hns3_irq_disable(&priv->tqp_vector[i]);
-+}
-+
- static int hns3_nic_net_up(struct net_device *netdev)
- {
- 	struct hns3_nic_priv *priv = netdev_priv(netdev);
- 	struct hnae3_handle *h = priv->ae_handle;
--	int i, j;
- 	int ret;
- 
- 	ret = hns3_nic_reset_all_ring(h);
-@@ -720,23 +745,13 @@ static int hns3_nic_net_up(struct net_device *netdev)
- 
- 	clear_bit(HNS3_NIC_STATE_DOWN, &priv->state);
- 
--	/* enable the vectors */
--	for (i = 0; i < priv->vector_num; i++)
--		hns3_vector_enable(&priv->tqp_vector[i]);
--
--	/* enable rcb */
--	for (j = 0; j < h->kinfo.num_tqps; j++)
--		hns3_tqp_enable(h->kinfo.tqp[j]);
-+	hns3_enable_irqs_and_tqps(netdev);
- 
- 	/* start the ae_dev */
- 	ret = h->ae_algo->ops->start ? h->ae_algo->ops->start(h) : 0;
- 	if (ret) {
- 		set_bit(HNS3_NIC_STATE_DOWN, &priv->state);
--		while (j--)
--			hns3_tqp_disable(h->kinfo.tqp[j]);
--
--		for (j = i - 1; j >= 0; j--)
--			hns3_vector_disable(&priv->tqp_vector[j]);
-+		hns3_disable_irqs_and_tqps(netdev);
- 	}
- 
- 	return ret;
-@@ -823,17 +838,9 @@ static void hns3_reset_tx_queue(struct hnae3_handle *h)
- static void hns3_nic_net_down(struct net_device *netdev)
- {
- 	struct hns3_nic_priv *priv = netdev_priv(netdev);
--	struct hnae3_handle *h = hns3_get_handle(netdev);
- 	const struct hnae3_ae_ops *ops;
--	int i;
- 
--	/* disable vectors */
--	for (i = 0; i < priv->vector_num; i++)
--		hns3_vector_disable(&priv->tqp_vector[i]);
--
--	/* disable rcb */
--	for (i = 0; i < h->kinfo.num_tqps; i++)
--		hns3_tqp_disable(h->kinfo.tqp[i]);
-+	hns3_disable_irqs_and_tqps(netdev);
- 
- 	/* stop ae_dev */
- 	ops = priv->ae_handle->ae_algo->ops;
-@@ -5870,8 +5877,6 @@ int hns3_set_channels(struct net_device *netdev,
- void hns3_external_lb_prepare(struct net_device *ndev, bool if_running)
- {
- 	struct hns3_nic_priv *priv = netdev_priv(ndev);
--	struct hnae3_handle *h = priv->ae_handle;
--	int i;
- 
- 	if (!if_running)
- 		return;
-@@ -5882,11 +5887,7 @@ void hns3_external_lb_prepare(struct net_device *ndev, bool if_running)
- 	netif_carrier_off(ndev);
- 	netif_tx_disable(ndev);
- 
--	for (i = 0; i < priv->vector_num; i++)
--		hns3_vector_disable(&priv->tqp_vector[i]);
--
--	for (i = 0; i < h->kinfo.num_tqps; i++)
--		hns3_tqp_disable(h->kinfo.tqp[i]);
-+	hns3_disable_irqs_and_tqps(ndev);
- 
- 	/* delay ring buffer clearing to hns3_reset_notify_uninit_enet
- 	 * during reset process, because driver may not be able
-@@ -5902,7 +5903,6 @@ void hns3_external_lb_restore(struct net_device *ndev, bool if_running)
- {
- 	struct hns3_nic_priv *priv = netdev_priv(ndev);
- 	struct hnae3_handle *h = priv->ae_handle;
--	int i;
- 
- 	if (!if_running)
- 		return;
-@@ -5918,11 +5918,7 @@ void hns3_external_lb_restore(struct net_device *ndev, bool if_running)
- 
- 	clear_bit(HNS3_NIC_STATE_DOWN, &priv->state);
- 
--	for (i = 0; i < priv->vector_num; i++)
--		hns3_vector_enable(&priv->tqp_vector[i]);
--
--	for (i = 0; i < h->kinfo.num_tqps; i++)
--		hns3_tqp_enable(h->kinfo.tqp[i]);
-+	hns3_enable_irqs_and_tqps(ndev);
- 
- 	netif_tx_wake_all_queues(ndev);
- 
+ 	ret = btrfs_read_locked_inode(inode, path);
+ 	btrfs_free_path(path);
 -- 
 2.39.5
 
