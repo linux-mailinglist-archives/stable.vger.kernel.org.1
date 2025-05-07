@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-142539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26BD2AAEB0E
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:02:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D77E3AAE95B
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:43:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 797131C04247
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:02:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E34AD7BB4BB
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:42:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83E8928C2A5;
-	Wed,  7 May 2025 19:02:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53D6D28DF1B;
+	Wed,  7 May 2025 18:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cfytvBKF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oSJIofXv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 400A61E22E9;
-	Wed,  7 May 2025 19:02:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1139C14A4C7;
+	Wed,  7 May 2025 18:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644565; cv=none; b=Rygn5kwRc5+t4v0f4rl169F5gODWPDqgtE4RBLDUXTWnca+SINnYJQypz7RIQFKvDqhmkoJlfzVttX5+w61WEdPm7akF8jBhWl42imxCAx37kG52bAT8TcR7uCr7m86iuWdWaOb7ZmpaAbTbogodyQFrYsf5I2oDR6x0RVz83RU=
+	t=1746643431; cv=none; b=Vg9QRjEHC0Mu79ZHfmG/al5ggSTORiAr95n5n1DsSkre4u55Kz0skv8VZBhZXjQkTU15NnSDj/7gOy62OuAS8xjNZ2r1cTgDLrzlWjf1TwL/Mdxc+Vaib4IqyWzepYmEm0UcWFScY2bqSE7HSLBVV2DYO/iunx3Dfh9yRCoIv0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644565; c=relaxed/simple;
-	bh=9/btidaj0r97E6khCpRANVcYhB+xFk1Yq8fzEfdVtWg=;
+	s=arc-20240116; t=1746643431; c=relaxed/simple;
+	bh=LT5JdDQQSfk9ElAvQez00u6dVsW7y+tKKP9rGJ3aVGw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RmG1HshcvyF/+C36II9pH8LLdeonorLtNhbPAFxM+vhcXqwXVUbJohHCUUvorXDb2DTdCAts9y1PrNGTAB60bygNeSPTHtaVvzntceXV+9QyxpYw6SItdZ9VVJ1P/SydyqaeWRTtiEf/9qODpI8aDCHsGGNA7eywmB4x11k8laY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cfytvBKF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C455EC4CEE2;
-	Wed,  7 May 2025 19:02:44 +0000 (UTC)
+	 MIME-Version; b=Z/7LEzFQAKsD4Zo0Q9N/ywWQIUNykic07stI4N5FZ6ekcaqKA9UjEIUW6SWA+KBWuJQQ0k2u4JSBH1Ep+S0vBev7bc7V17sRDMSlYCv+gJiHDjtJ7fKKwgRb8cV2ONAi7y/+c+UAByRoJrymioAy3/++WKiCqaRObksBdTg4Yrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oSJIofXv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73DFCC4CEE9;
+	Wed,  7 May 2025 18:43:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644565;
-	bh=9/btidaj0r97E6khCpRANVcYhB+xFk1Yq8fzEfdVtWg=;
+	s=korg; t=1746643430;
+	bh=LT5JdDQQSfk9ElAvQez00u6dVsW7y+tKKP9rGJ3aVGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cfytvBKFmsyH2UgSbsDZjuQgGv1SUFRigqTzCK1v2LSNT1LIeayrnOuSsP8kPKNhC
-	 6lolJpt/mlP87s6IkM1ZYvsupFVePOIv4u+GUoDkPruh2gHfuqy1w/NBmsAB935Te/
-	 4b6Lo+bfiXVjbNKPZfIQVv/QjiSEr6FZZlkuhUec=
+	b=oSJIofXvzsI8vmiDf8mgj7CRYfkR4qTaAEEtSg84uo7oVOU3Nr923bN3zC+2qmkuB
+	 632/Mo7q7A3ixaqE3q9yae4yLmgFamjjoxW6lgTxTMNR9RTPAt0YsNb6W+gD2lHAUa
+	 qJWEEEygsQAN7Zj++SR6Av/hbDVcMyOSRxg+krK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Justin Lai <justinlai0215@realtek.com>,
+	Xuanqiang Luo <luoxuanqiang@kylinos.cn>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
 	Simon Horman <horms@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 084/164] rtase: Modify the condition used to detect overflow in rtase_calc_time_mitigation
+Subject: [PATCH 5.15 28/55] ice: Check VF VSI Pointer Value in ice_vc_add_fdir_fltr()
 Date: Wed,  7 May 2025 20:39:29 +0200
-Message-ID: <20250507183824.363112467@linuxfoundation.org>
+Message-ID: <20250507183800.175332154@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
+References: <20250507183759.048732653@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +65,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Lai <justinlai0215@realtek.com>
+From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 
-[ Upstream commit 68f9d8974b545668e1be2422240b25a92e304b14 ]
+[ Upstream commit 425c5f266b2edeee0ce16fedd8466410cdcfcfe3 ]
 
-Fix the following compile error reported by the kernel test
-robot by modifying the condition used to detect overflow in
-rtase_calc_time_mitigation.
+As mentioned in the commit baeb705fd6a7 ("ice: always check VF VSI
+pointer values"), we need to perform a null pointer check on the return
+value of ice_get_vf_vsi() before using it.
 
-In file included from include/linux/mdio.h:10:0,
-                  from drivers/net/ethernet/realtek/rtase/rtase_main.c:58:
- In function 'u16_encode_bits',
-     inlined from 'rtase_calc_time_mitigation.constprop' at drivers/net/
-     ethernet/realtek/rtase/rtase_main.c:1915:13,
-     inlined from 'rtase_init_software_variable.isra.41' at drivers/net/
-     ethernet/realtek/rtase/rtase_main.c:1961:13,
-     inlined from 'rtase_init_one' at drivers/net/ethernet/realtek/
-     rtase/rtase_main.c:2111:2:
->> include/linux/bitfield.h:178:3: error: call to '__field_overflow'
-      declared with attribute error: value doesn't fit into mask
-    __field_overflow();     \
-    ^~~~~~~~~~~~~~~~~~
- include/linux/bitfield.h:198:2: note: in expansion of macro
- '____MAKE_OP'
-   ____MAKE_OP(u##size,u##size,,)
-   ^~~~~~~~~~~
- include/linux/bitfield.h:200:1: note: in expansion of macro
- '__MAKE_OP'
-  __MAKE_OP(16)
-  ^~~~~~~~~
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202503182158.nkAlbJWX-lkp@intel.com/
-Fixes: a36e9f5cfe9e ("rtase: Add support for a pci table in this module")
-Signed-off-by: Justin Lai <justinlai0215@realtek.com>
+Fixes: 6ebbe97a4881 ("ice: Add a per-VF limit on number of FDIR filters")
+Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250424040444.5530-1-justinlai0215@realtek.com
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://patch.msgid.link/20250425222636.3188441-3-anthony.l.nguyen@intel.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/realtek/rtase/rtase_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/ethernet/realtek/rtase/rtase_main.c b/drivers/net/ethernet/realtek/rtase/rtase_main.c
-index 86dd034fdddc5..3a588aaa89c58 100644
---- a/drivers/net/ethernet/realtek/rtase/rtase_main.c
-+++ b/drivers/net/ethernet/realtek/rtase/rtase_main.c
-@@ -1924,8 +1924,8 @@ static u16 rtase_calc_time_mitigation(u32 time_us)
+diff --git a/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c b/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
+index 2ca8102e8f36e..3b87cc9dfd46e 100644
+--- a/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
++++ b/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
+@@ -2079,6 +2079,11 @@ int ice_vc_add_fdir_fltr(struct ice_vf *vf, u8 *msg)
+ 	pf = vf->pf;
+ 	dev = ice_pf_to_dev(pf);
+ 	vf_vsi = ice_get_vf_vsi(vf);
++	if (!vf_vsi) {
++		dev_err(dev, "Can not get FDIR vf_vsi for VF %u\n", vf->vf_id);
++		v_ret = VIRTCHNL_STATUS_ERR_PARAM;
++		goto err_exit;
++	}
  
- 	time_us = min_t(int, time_us, RTASE_MITI_MAX_TIME);
- 
--	msb = fls(time_us);
--	if (msb >= RTASE_MITI_COUNT_BIT_NUM) {
-+	if (time_us > RTASE_MITI_TIME_COUNT_MASK) {
-+		msb = fls(time_us);
- 		time_unit = msb - RTASE_MITI_COUNT_BIT_NUM;
- 		time_count = time_us >> (msb - RTASE_MITI_COUNT_BIT_NUM);
- 	} else {
+ #define ICE_VF_MAX_FDIR_FILTERS	128
+ 	if (!ice_fdir_num_avail_fltr(&pf->hw, vf_vsi) ||
 -- 
 2.39.5
 
