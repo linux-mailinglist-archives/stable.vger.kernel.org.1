@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-142256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142653-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDA90AAE9DC
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:48:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48CC8AAEB99
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:08:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F6789C16E0
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:48:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 496589E34E1
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:08:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF5BD28B4FE;
-	Wed,  7 May 2025 18:48:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 162FE28DF3C;
+	Wed,  7 May 2025 19:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vTXZYt2E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ocTjrkZx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CEAA1FF5EC;
-	Wed,  7 May 2025 18:48:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C706E28BA9F;
+	Wed,  7 May 2025 19:08:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643694; cv=none; b=be6Bjc+8huJ0IKmtcJ5K+8JCGnLIjjgRxB0xHLEmjwMVhD2V2/khNWsjAkwLaHt4xiNKiyIPFt0MlV3+8B6/jblID5iGLE8qDBvBTntsRcYjp9GkM5aQCUmunpOZNw388cKM0q6eY+XEOqnSJMlQ4mnuPG+oqMEkcpSwP3DVDHo=
+	t=1746644915; cv=none; b=Kxzimt5g3Rh0yOigMJNJi4YSMiOayGAoD83k1k2m8r8Dktt1FgIEdedzcC0A6ZwHLOv1Z5WAhIfFMrCKtezAwFvjQa/yOJ1WV41rzGJyUOih90ljUhP/2678R38gS1QDcYVk5d1vMeliBt0Pv8+WwoAJxdLWqLjcSFn4v5fNPm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643694; c=relaxed/simple;
-	bh=tjKaabpV/HwugREu3IZZXvl8lmUEhiaxIktx/m8OFG4=;
+	s=arc-20240116; t=1746644915; c=relaxed/simple;
+	bh=n6pCJKxegKGSpZR5yA5gbOA1jRZ67Q+SmR3ViptnOEo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SVIz94m8oUyIrgX5oL5bVmW4HZctpMalHW9oPXzC7WRiykPHl/RQGL7ylJDbYrCNevXMADg2QjmjhHEqK2m3I8l3Juur9l6FWNYBg/zdpZcNCrKfEVm3rqQ+FyoTjnB62j/Eb+Ck0ux3H7bLdxYcaIT9Poma0wZonCJXj/tYI5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vTXZYt2E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0A20C4CEF5;
-	Wed,  7 May 2025 18:48:13 +0000 (UTC)
+	 MIME-Version; b=eTYrZU6CFKnzlD80ex8fFLJibNI7QHIPnOuwcmr9n+SYZrFIChS4R8n6JfVZ1kiszVbmQ9trxvTXGiETVe4ruePMzQPW28wwtNkTtU7qTBlG4a2ofHlgQHc+JJTwDQWvA/JrSOiMUTRwr/Lv3ZET1UhugC9Rk+EOAC4KwnQrBuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ocTjrkZx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1B3FC4CEE2;
+	Wed,  7 May 2025 19:08:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643694;
-	bh=tjKaabpV/HwugREu3IZZXvl8lmUEhiaxIktx/m8OFG4=;
+	s=korg; t=1746644914;
+	bh=n6pCJKxegKGSpZR5yA5gbOA1jRZ67Q+SmR3ViptnOEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vTXZYt2EY4u0Fnh4Co9K74kS4oT7f/KjxC8kxORlE1i1+vw8hW+NqnRKityblPqzy
-	 qfMFIyTgvnvjcRgU0D2SWNC97WtgzZDXYGXN4r9wKLR7mvrTJpwYhkUE5Mqt9v5Pp2
-	 +DmCGROuZ5XRXsipgsRbsqsRCZnLCbY/bYR9jupU=
+	b=ocTjrkZx4u30wsYdQmUGtuoEn57IelTpeHCxK04vd03cQyXx+iQqmGisnuNF97XXG
+	 d6TlZoWhJBJqC8w/9pU98IquWIdg9HHVPF6PWMqcpGUQ5qLsSaTb7tWJFCEAjn3cUD
+	 H6SDLf9wlscwUCqWzKUWZdFTzrohs3m5m2dDpqLk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 55/97] net: dlink: Correct endianness handling of led_mode
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Subject: [PATCH 6.6 034/129] bpf: refactor bpf_helper_changes_pkt_data to use helper number
 Date: Wed,  7 May 2025 20:39:30 +0200
-Message-ID: <20250507183809.213183094@linuxfoundation.org>
+Message-ID: <20250507183814.907269021@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
-References: <20250507183806.987408728@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +62,137 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Horman <horms@kernel.org>
+From: Eduard Zingerman <eddyz87@gmail.com>
 
-[ Upstream commit e7e5ae71831c44d58627a991e603845a2fed2cab ]
+commit b238e187b4a2d3b54d80aec05a9cab6466b79dde upstream.
 
-As it's name suggests, parse_eeprom() parses EEPROM data.
+Use BPF helper number instead of function pointer in
+bpf_helper_changes_pkt_data(). This would simplify usage of this
+function in verifier.c:check_cfg() (in a follow-up patch),
+where only helper number is easily available and there is no real need
+to lookup helper proto.
 
-This is done by reading data, 16 bits at a time as follows:
-
-	for (i = 0; i < 128; i++)
-                ((__le16 *) sromdata)[i] = cpu_to_le16(read_eeprom(np, i));
-
-sromdata is at the same memory location as psrom.
-And the type of psrom is a pointer to struct t_SROM.
-
-As can be seen in the loop above, data is stored in sromdata, and thus psrom,
-as 16-bit little-endian values.
-
-However, the integer fields of t_SROM are host byte order integers.
-And in the case of led_mode this leads to a little endian value
-being incorrectly treated as host byte order.
-
-Looking at rio_set_led_mode, this does appear to be a bug as that code
-masks led_mode with 0x1, 0x2 and 0x8. Logic that would be effected by a
-reversed byte order.
-
-This problem would only manifest on big endian hosts.
-
-Found by inspection while investigating a sparse warning
-regarding the crc field of t_SROM.
-
-I believe that warning is a false positive. And although I plan
-to send a follow-up to use little-endian types for other the integer
-fields of PSROM_t I do not believe that will involve any bug fixes.
-
-Compile tested only.
-
-Fixes: c3f45d322cbd ("dl2k: Add support for IP1000A-based cards")
-Signed-off-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250425-dlink-led-mode-v1-1-6bae3c36e736@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20241210041100.1898468-3-eddyz87@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/dlink/dl2k.c | 2 +-
- drivers/net/ethernet/dlink/dl2k.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ include/linux/filter.h |    2 -
+ kernel/bpf/core.c      |    2 -
+ kernel/bpf/verifier.c  |    2 -
+ net/core/filter.c      |   61 +++++++++++++++++++++----------------------------
+ 4 files changed, 30 insertions(+), 37 deletions(-)
 
-diff --git a/drivers/net/ethernet/dlink/dl2k.c b/drivers/net/ethernet/dlink/dl2k.c
-index 2c67a857a42ff..71cb7fe63de3c 100644
---- a/drivers/net/ethernet/dlink/dl2k.c
-+++ b/drivers/net/ethernet/dlink/dl2k.c
-@@ -352,7 +352,7 @@ parse_eeprom (struct net_device *dev)
- 	eth_hw_addr_set(dev, psrom->mac_addr);
+--- a/include/linux/filter.h
++++ b/include/linux/filter.h
+@@ -915,7 +915,7 @@ bool bpf_jit_needs_zext(void);
+ bool bpf_jit_supports_subprog_tailcalls(void);
+ bool bpf_jit_supports_kfunc_call(void);
+ bool bpf_jit_supports_far_kfunc_call(void);
+-bool bpf_helper_changes_pkt_data(void *func);
++bool bpf_helper_changes_pkt_data(enum bpf_func_id func_id);
  
- 	if (np->chip_id == CHIP_IP1000A) {
--		np->led_mode = psrom->led_mode;
-+		np->led_mode = le16_to_cpu(psrom->led_mode);
- 		return 0;
+ static inline bool bpf_dump_raw_ok(const struct cred *cred)
+ {
+--- a/kernel/bpf/core.c
++++ b/kernel/bpf/core.c
+@@ -2893,7 +2893,7 @@ void __weak bpf_jit_compile(struct bpf_p
+ {
+ }
+ 
+-bool __weak bpf_helper_changes_pkt_data(void *func)
++bool __weak bpf_helper_changes_pkt_data(enum bpf_func_id func_id)
+ {
+ 	return false;
+ }
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -10007,7 +10007,7 @@ static int check_helper_call(struct bpf_
  	}
  
-diff --git a/drivers/net/ethernet/dlink/dl2k.h b/drivers/net/ethernet/dlink/dl2k.h
-index 195dc6cfd8955..0e33e2eaae960 100644
---- a/drivers/net/ethernet/dlink/dl2k.h
-+++ b/drivers/net/ethernet/dlink/dl2k.h
-@@ -335,7 +335,7 @@ typedef struct t_SROM {
- 	u16 sub_system_id;	/* 0x06 */
- 	u16 pci_base_1;		/* 0x08 (IP1000A only) */
- 	u16 pci_base_2;		/* 0x0a (IP1000A only) */
--	u16 led_mode;		/* 0x0c (IP1000A only) */
-+	__le16 led_mode;	/* 0x0c (IP1000A only) */
- 	u16 reserved1[9];	/* 0x0e-0x1f */
- 	u8 mac_addr[6];		/* 0x20-0x25 */
- 	u8 reserved2[10];	/* 0x26-0x2f */
--- 
-2.39.5
-
+ 	/* With LD_ABS/IND some JITs save/restore skb from r1. */
+-	changes_data = bpf_helper_changes_pkt_data(fn->func);
++	changes_data = bpf_helper_changes_pkt_data(func_id);
+ 	if (changes_data && fn->arg1_type != ARG_PTR_TO_CTX) {
+ 		verbose(env, "kernel subsystem misconfigured func %s#%d: r1 != ctx\n",
+ 			func_id_name(func_id), func_id);
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -7868,42 +7868,35 @@ static const struct bpf_func_proto bpf_t
+ 
+ #endif /* CONFIG_INET */
+ 
+-bool bpf_helper_changes_pkt_data(void *func)
++bool bpf_helper_changes_pkt_data(enum bpf_func_id func_id)
+ {
+-	if (func == bpf_skb_vlan_push ||
+-	    func == bpf_skb_vlan_pop ||
+-	    func == bpf_skb_store_bytes ||
+-	    func == bpf_skb_change_proto ||
+-	    func == bpf_skb_change_head ||
+-	    func == sk_skb_change_head ||
+-	    func == bpf_skb_change_tail ||
+-	    func == sk_skb_change_tail ||
+-	    func == bpf_skb_adjust_room ||
+-	    func == sk_skb_adjust_room ||
+-	    func == bpf_skb_pull_data ||
+-	    func == sk_skb_pull_data ||
+-	    func == bpf_clone_redirect ||
+-	    func == bpf_l3_csum_replace ||
+-	    func == bpf_l4_csum_replace ||
+-	    func == bpf_xdp_adjust_head ||
+-	    func == bpf_xdp_adjust_meta ||
+-	    func == bpf_msg_pull_data ||
+-	    func == bpf_msg_push_data ||
+-	    func == bpf_msg_pop_data ||
+-	    func == bpf_xdp_adjust_tail ||
+-#if IS_ENABLED(CONFIG_IPV6_SEG6_BPF)
+-	    func == bpf_lwt_seg6_store_bytes ||
+-	    func == bpf_lwt_seg6_adjust_srh ||
+-	    func == bpf_lwt_seg6_action ||
+-#endif
+-#ifdef CONFIG_INET
+-	    func == bpf_sock_ops_store_hdr_opt ||
+-#endif
+-	    func == bpf_lwt_in_push_encap ||
+-	    func == bpf_lwt_xmit_push_encap)
++	switch (func_id) {
++	case BPF_FUNC_clone_redirect:
++	case BPF_FUNC_l3_csum_replace:
++	case BPF_FUNC_l4_csum_replace:
++	case BPF_FUNC_lwt_push_encap:
++	case BPF_FUNC_lwt_seg6_action:
++	case BPF_FUNC_lwt_seg6_adjust_srh:
++	case BPF_FUNC_lwt_seg6_store_bytes:
++	case BPF_FUNC_msg_pop_data:
++	case BPF_FUNC_msg_pull_data:
++	case BPF_FUNC_msg_push_data:
++	case BPF_FUNC_skb_adjust_room:
++	case BPF_FUNC_skb_change_head:
++	case BPF_FUNC_skb_change_proto:
++	case BPF_FUNC_skb_change_tail:
++	case BPF_FUNC_skb_pull_data:
++	case BPF_FUNC_skb_store_bytes:
++	case BPF_FUNC_skb_vlan_pop:
++	case BPF_FUNC_skb_vlan_push:
++	case BPF_FUNC_store_hdr_opt:
++	case BPF_FUNC_xdp_adjust_head:
++	case BPF_FUNC_xdp_adjust_meta:
++	case BPF_FUNC_xdp_adjust_tail:
+ 		return true;
+-
+-	return false;
++	default:
++		return false;
++	}
+ }
+ 
+ const struct bpf_func_proto bpf_event_output_data_proto __weak;
 
 
 
