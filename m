@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-142424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72DFCAAEA93
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:57:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D136AAE9F3
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:50:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15FBC1B665BA
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:57:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 740E14C0C68
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:49:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD2E828BA9D;
-	Wed,  7 May 2025 18:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 218EA216E01;
+	Wed,  7 May 2025 18:49:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VNTem74k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J2gKZz8J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A50E1CF5C6;
-	Wed,  7 May 2025 18:56:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D194E1DDC23;
+	Wed,  7 May 2025 18:49:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644208; cv=none; b=SnTJb6gYsSIh3lvkrcGGSTBveoXrQ6Sa972HZEv5GDH8dH6NHDy4nfycs4ZY1lfbKJ1BZ1zYg2PRByrN3JxZpsWq/sc4QSduhWcQcLdoLSXjyuldDQFBHx1oYzkm4ddNokAPMcuMmY8C0FjpAVB6GtgILJA+7qkUtV2FiXSMxVU=
+	t=1746643757; cv=none; b=btT1uHqkA+YYKsVea8E03Kg5g/GP5phdH6LJMkycVIa79g/iRJYI/hp0UlqGuyDziDFtr+JqHHaXEC0VfhkACBWZwrvq/uZ6J8GC2mLHS59PX1E00PZd9D2bYrWXSZMrcEKsRNujqTUcYWMGU8LrGJmp5hVNtwVk2t3c0DlLSsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644208; c=relaxed/simple;
-	bh=wzBIWoru3KETX3qKua7/D7bXTvc4HCwYdSp4KqYMYl0=;
+	s=arc-20240116; t=1746643757; c=relaxed/simple;
+	bh=1HKv9Q9g1CP0bVizhABm5eeOj2mzzh6c8lysHRmQjzY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N8jMOWX6gC7QLEwdwjayRpR435JR+olfxpQfHVeFX/73/l4xvEarAfk1aEWSHf7I0m459IC1qcK+vJRCusUydV7NORN4EoCRBdRxq2jPmybc5N4/PkNn3fSB+B8nDudMpo4q1d4r4pEfZZrMCmX7dOBpyYZ62Ah0wuL8/teV7D0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VNTem74k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2766C4CEE2;
-	Wed,  7 May 2025 18:56:47 +0000 (UTC)
+	 MIME-Version; b=mxYSDFXplRxjKvIoWJCGlBMvak968SFPus8pPwNF4dM0N1ratGZOCa+iF7poqCbc8g9+aT2QyVE2sQa0kijQCpgACydu0cXt4uK+5bHpwMTo+rgjmLQVQoCBO1p49YmKoxLtVnNVaNdfKoblijFOQIUYnujzgbQV3SILUgB0gm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J2gKZz8J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA6D8C4CEE2;
+	Wed,  7 May 2025 18:49:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644208;
-	bh=wzBIWoru3KETX3qKua7/D7bXTvc4HCwYdSp4KqYMYl0=;
+	s=korg; t=1746643757;
+	bh=1HKv9Q9g1CP0bVizhABm5eeOj2mzzh6c8lysHRmQjzY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VNTem74kH9fQDziWRhA/9ipSOddjYbMi5ApHcDbV0kZ4hJcZy7veeUhPJEGj8YCRk
-	 QeuWEW1Uw4rUy10vtpthm5Ip/unE/4HffgyL74BhFCfHLsw5/kUnnA7ph5yGbuAO3b
-	 puVnHq24LZpVhABpmm+Os6BPFVqiGwao7ni2Fu2c=
+	b=J2gKZz8JMysgfDRbMFs3mH4/XWJjsvm3P4I/NgYmBTR7/0OgVw1wAUq/yr1i5rsZg
+	 hZ5VFRsN6kkYOYE1oxKyBRYksUBn7CDX4JdaSOiIyiju41gs6f0+rRTGma1+4Ymfsk
+	 uS/5iZWDjWypfHbjIUWxj7gGBXI6udANVMLf661I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Caleb Sander Mateos <csander@purestorage.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.14 154/183] ublk: add helper of ublk_need_map_io()
+	Christian Hewitt <christianshewitt@gmail.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 84/97] Revert "drm/meson: vclk: fix calculation of 59.94 fractional rates"
 Date: Wed,  7 May 2025 20:39:59 +0200
-Message-ID: <20250507183831.101596870@linuxfoundation.org>
+Message-ID: <20250507183810.358014757@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
+References: <20250507183806.987408728@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Christian Hewitt <christianshewitt@gmail.com>
 
-[ Upstream commit 1d781c0de08c0b35948ad4aaf609a4cc9995d9f6 ]
+[ Upstream commit f37bb5486ea536c1d61df89feeaeff3f84f0b560 ]
 
-ublk_need_map_io() is more readable.
+This reverts commit bfbc68e.
 
-Reviewed-by: Caleb Sander Mateos <csander@purestorage.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20250327095123.179113-5-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The patch does permit the offending YUV420 @ 59.94 phy_freq and
+vclk_freq mode to match in calculations. It also results in all
+fractional rates being unavailable for use. This was unintended
+and requires the patch to be reverted.
+
+Fixes: bfbc68e4d869 ("drm/meson: vclk: fix calculation of 59.94 fractional rates")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian Hewitt <christianshewitt@gmail.com>
+Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250421201300.778955-2-martin.blumenstingl@googlemail.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250421201300.778955-2-martin.blumenstingl@googlemail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/ublk_drv.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/meson/meson_vclk.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/block/ublk_drv.c
-+++ b/drivers/block/ublk_drv.c
-@@ -594,6 +594,11 @@ static inline bool ublk_support_user_cop
- 	return ubq->flags & UBLK_F_USER_COPY;
- }
+diff --git a/drivers/gpu/drm/meson/meson_vclk.c b/drivers/gpu/drm/meson/meson_vclk.c
+index 2a942dc6a6dc2..2a82119eb58ed 100644
+--- a/drivers/gpu/drm/meson/meson_vclk.c
++++ b/drivers/gpu/drm/meson/meson_vclk.c
+@@ -790,13 +790,13 @@ meson_vclk_vic_supported_freq(struct meson_drm *priv, unsigned int phy_freq,
+ 				 FREQ_1000_1001(params[i].pixel_freq));
+ 		DRM_DEBUG_DRIVER("i = %d phy_freq = %d alt = %d\n",
+ 				 i, params[i].phy_freq,
+-				 FREQ_1000_1001(params[i].phy_freq/1000)*1000);
++				 FREQ_1000_1001(params[i].phy_freq/10)*10);
+ 		/* Match strict frequency */
+ 		if (phy_freq == params[i].phy_freq &&
+ 		    vclk_freq == params[i].vclk_freq)
+ 			return MODE_OK;
+ 		/* Match 1000/1001 variant */
+-		if (phy_freq == (FREQ_1000_1001(params[i].phy_freq/1000)*1000) &&
++		if (phy_freq == (FREQ_1000_1001(params[i].phy_freq/10)*10) &&
+ 		    vclk_freq == FREQ_1000_1001(params[i].vclk_freq))
+ 			return MODE_OK;
+ 	}
+@@ -1070,7 +1070,7 @@ void meson_vclk_setup(struct meson_drm *priv, unsigned int target,
  
-+static inline bool ublk_need_map_io(const struct ublk_queue *ubq)
-+{
-+	return !ublk_support_user_copy(ubq);
-+}
-+
- static inline bool ublk_need_req_ref(const struct ublk_queue *ubq)
- {
- 	/*
-@@ -921,7 +926,7 @@ static int ublk_map_io(const struct ublk
- {
- 	const unsigned int rq_bytes = blk_rq_bytes(req);
- 
--	if (ublk_support_user_copy(ubq))
-+	if (!ublk_need_map_io(ubq))
- 		return rq_bytes;
- 
- 	/*
-@@ -945,7 +950,7 @@ static int ublk_unmap_io(const struct ub
- {
- 	const unsigned int rq_bytes = blk_rq_bytes(req);
- 
--	if (ublk_support_user_copy(ubq))
-+	if (!ublk_need_map_io(ubq))
- 		return rq_bytes;
- 
- 	if (ublk_need_unmap_req(req)) {
-@@ -1914,7 +1919,7 @@ static int __ublk_ch_uring_cmd(struct io
- 		if (io->flags & UBLK_IO_FLAG_OWNED_BY_SRV)
- 			goto out;
- 
--		if (!ublk_support_user_copy(ubq)) {
-+		if (ublk_need_map_io(ubq)) {
- 			/*
- 			 * FETCH_RQ has to provide IO buffer if NEED GET
- 			 * DATA is not enabled
-@@ -1936,7 +1941,7 @@ static int __ublk_ch_uring_cmd(struct io
- 		if (!(io->flags & UBLK_IO_FLAG_OWNED_BY_SRV))
- 			goto out;
- 
--		if (!ublk_support_user_copy(ubq)) {
-+		if (ublk_need_map_io(ubq)) {
- 			/*
- 			 * COMMIT_AND_FETCH_REQ has to provide IO buffer if
- 			 * NEED GET DATA is not enabled or it is Read IO.
+ 	for (freq = 0 ; params[freq].pixel_freq ; ++freq) {
+ 		if ((phy_freq == params[freq].phy_freq ||
+-		     phy_freq == FREQ_1000_1001(params[freq].phy_freq/1000)*1000) &&
++		     phy_freq == FREQ_1000_1001(params[freq].phy_freq/10)*10) &&
+ 		    (vclk_freq == params[freq].vclk_freq ||
+ 		     vclk_freq == FREQ_1000_1001(params[freq].vclk_freq))) {
+ 			if (vclk_freq != params[freq].vclk_freq)
+-- 
+2.39.5
+
 
 
 
