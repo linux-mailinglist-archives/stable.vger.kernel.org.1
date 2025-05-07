@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-142225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9810AAE99A
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:46:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D04FAAAEB9D
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:09:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 476981893741
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:46:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE443526BC4
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:07:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C673E211A2A;
-	Wed,  7 May 2025 18:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0E3928980D;
+	Wed,  7 May 2025 19:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tL6gFBFG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cYpVkjyY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE281F4629;
-	Wed,  7 May 2025 18:46:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CC051E1DF6;
+	Wed,  7 May 2025 19:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643597; cv=none; b=jXDZYy0uuvwLpIQP3XDFdAH0d8+B/1rh8EfUpQVF7g69eOLZpHzfZG1eOLMskk05xvRDM0olXz/0tIZH5pLeH523NtkT/ngYruUrD49+ZNuMQrSNecflqkBAwXKTshdyVk+C7pmp2lw62m5ucaO567eOGRL+tF7UFuqhGMNusuc=
+	t=1746644871; cv=none; b=dDsdCRk895jRzPj5x/MTzhp1bCN+QbnpPEiX4qpNDf7Uc+UX+0i4Y7wenXakCefK6CSymXmZiAIDqWx1iIIxP7AnObkunX2BLnh0sOhWQnLoCqK2QROedv8Ijjck6qvRM4uQXunJLTVGujM03vUkd1foRw/O024JMFgC5gZVxew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643597; c=relaxed/simple;
-	bh=4auQwhttyekaJKrfq86RhCOSZ4xWqws/l8PAzF057x8=;
+	s=arc-20240116; t=1746644871; c=relaxed/simple;
+	bh=K3K9sDxhE8+LqJliPEEXYLGq5IrtA2HmAvaOrh5IzSY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hLaliBtdL8RZLOdAyUb4dyj/1vo+ztqXkNZlEJu+iCIjTlmkpDHsfCuBv2Ba2ebd5NxuQzXTGDdVVDKdk+st2m3ncGB+Cs/V3QhBECuQXmQc/zvs/Ts391iPJqRUOtfZ0H5COKei1UHruu4TrxjkCQe5+3EtXpBxC4ZAS12V95E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tL6gFBFG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEF29C4CEE2;
-	Wed,  7 May 2025 18:46:36 +0000 (UTC)
+	 MIME-Version; b=X/Cfd7flPODGd+FQHQjrgToO6tTtBaYQPLi52rvVHrUDacce6GHjSQcJsYScxX72cJOowU+SvYK517uUEVc+KzQXGtT0pxbrZVGvRYeiUocZQn96mbsuv7PbzqcRyQ0LidqI8ZsDEARDr7hZbNBXsqBqTGkTPYm5Ny4HG61lRFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cYpVkjyY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDF7BC4CEE2;
+	Wed,  7 May 2025 19:07:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643597;
-	bh=4auQwhttyekaJKrfq86RhCOSZ4xWqws/l8PAzF057x8=;
+	s=korg; t=1746644871;
+	bh=K3K9sDxhE8+LqJliPEEXYLGq5IrtA2HmAvaOrh5IzSY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tL6gFBFG7pWLh/Pjf6DmlMLsyuH3/2rIISIw5ii21RmTMr5vynd2v5ZFSfhvD7Tc9
-	 QXLegu64L+GCM5Ce9GS8G45rReH48trcXBGlk+kBdcptKfsPxUILUnz13Lud6lA7H2
-	 jMyym5U5Jnz5vEIjVVc1OHqne4rZxs0rZcPAUC6c=
+	b=cYpVkjyYeHMeEaL7CezIQJNKsdpY0W2YNAEZwML56CqMtJV4r0xQk63p+xIMbfnTw
+	 UQetqAYeQuMVTtK3LHzlItagZ0Jpv/a5xnPlUBdtXboD4dhrREhKHJeoIXDiHn91Hm
+	 lUzXBXbXKR2jivQIzWxgy37eM/iR2UtUlxBDGIqE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 25/97] xfs: remove a racy if_bytes check in xfs_reflink_end_cow_extent
+	Filipe Manana <fdmanana@suse.com>,
+	Dave Chen <davechen@synology.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.6 004/129] btrfs: fix COW handling in run_delalloc_nocow()
 Date: Wed,  7 May 2025 20:39:00 +0200
-Message-ID: <20250507183808.000939840@linuxfoundation.org>
+Message-ID: <20250507183813.704738907@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
-References: <20250507183806.987408728@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Dave Chen <davechen@synology.com>
 
-[ Upstream commit 86de848403abda05bf9c16dcdb6bef65a8d88c41 ]
+commit be3f1938d3e6ea8186f0de3dd95245dda4f22c1e upstream.
 
-Accessing if_bytes without the ilock is racy.  Remove the initial
-if_bytes == 0 check in xfs_reflink_end_cow_extent and let
-ext_iext_lookup_extent fail for this case after we've taken the ilock.
+In run_delalloc_nocow(), when the found btrfs_key's offset > cur_offset,
+it indicates a gap between the current processing region and
+the next file extent. The original code would directly jump to
+the "must_cow" label, which increments the slot and forces a fallback
+to COW. This behavior might skip an extent item and result in an
+overestimated COW fallback range.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: "Darrick J. Wong" <djwong@kernel.org>
+This patch modifies the logic so that when a gap is detected:
+
+- If no COW range is already being recorded (cow_start is unset),
+  cow_start is set to cur_offset.
+
+- cur_offset is then advanced to the beginning of the next extent.
+
+- Instead of jumping to "must_cow", control flows directly to
+  "next_slot" so that the same extent item can be reexamined properly.
+
+The change ensures that we accurately account for the extent gap and
+avoid accidentally extending the range that needs to fallback to COW.
+
+CC: stable@vger.kernel.org # 6.6+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Dave Chen <davechen@synology.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_reflink.c |    6 ------
- 1 file changed, 6 deletions(-)
+ fs/btrfs/inode.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/fs/xfs/xfs_reflink.c
-+++ b/fs/xfs/xfs_reflink.c
-@@ -718,12 +718,6 @@ xfs_reflink_end_cow_extent(
- 	int			nmaps;
- 	int			error;
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -2058,12 +2058,13 @@ next_slot:
  
--	/* No COW extents?  That's easy! */
--	if (ifp->if_bytes == 0) {
--		*offset_fsb = end_fsb;
--		return 0;
--	}
--
- 	resblks = XFS_EXTENTADD_SPACE_RES(mp, XFS_DATA_FORK);
- 	error = xfs_trans_alloc(mp, &M_RES(mp)->tr_write, resblks, 0,
- 			XFS_TRANS_RESERVE, &tp);
+ 		/*
+ 		 * If the found extent starts after requested offset, then
+-		 * adjust extent_end to be right before this extent begins
++		 * adjust cur_offset to be right before this extent begins.
+ 		 */
+ 		if (found_key.offset > cur_offset) {
+-			extent_end = found_key.offset;
+-			extent_type = 0;
+-			goto must_cow;
++			if (cow_start == (u64)-1)
++				cow_start = cur_offset;
++			cur_offset = found_key.offset;
++			goto next_slot;
+ 		}
+ 
+ 		/*
 
 
 
