@@ -1,161 +1,194 @@
-Return-Path: <stable+bounces-141969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F086AAD566
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 07:45:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EC34AAD5A5
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 08:05:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F6E83B6749
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 05:44:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED770501E8E
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 06:05:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAA971E9B04;
-	Wed,  7 May 2025 05:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C92D61F8BCB;
+	Wed,  7 May 2025 06:05:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AMCrJBwn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xydg6riZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 801271E7C34;
-	Wed,  7 May 2025 05:44:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75A513209;
+	Wed,  7 May 2025 06:05:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746596692; cv=none; b=iCftFI3+hdb+ZWKw2fR4ALxoMACw6AT8wIrG7j68YDzolxSvGgGAMccvoy258E1nWgrWifpBO49UWABXFIBrLKc/WJfArSlOGHlmj4UN8FOaGfS7BY6Nb2cMsfM6BCIJceMKAug1Hb/7FFxC9PnNuSYW+MsMFs/NjpY33r2mICo=
+	t=1746597939; cv=none; b=pC8hmZo1kE22gs9lcDn8dHxSthmKYPNTczEHAakJVtU7JsjZx20oPdU1KOJd4uAa3y2/tjOwaoKlNtmd9KgYZMGXNuF3W8LX41S7Y5qO7ep+AN1buzxROazPDnmWCmBoGFgyXU6mEqP2vtTIizrgtDmQSymAICMBX7IMxArNOOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746596692; c=relaxed/simple;
-	bh=dET57/3w7AB13kQwYH18hcOd/6ONv+xqKFslnB4Aw1E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gdfMC87jIEbXjLAGTAvPBExX07WDbUvt1SyHmBrVyjK0++2MRkcuv/tEHlXn2g/zHvU+hH/WU+NyFmDxqf5LE2knKXtZa/fWLkfSHspPbxV+B53yqkt0HahbRZsc7pafdSLldyDg9aJGV1orDnmqI77n1Sdleyo5mmKd0K6jtsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AMCrJBwn; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746596689; x=1778132689;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=dET57/3w7AB13kQwYH18hcOd/6ONv+xqKFslnB4Aw1E=;
-  b=AMCrJBwnMSAEhfknUhieo041xJqbDWHJhQlCWGK4dfu3cj8rBvYtDqmH
-   yWtBXGhxcczZZSF8koCvFnT7O66lntACHcj8MMWi1ZwL5vU0WWKSxYMmV
-   sbdh4dptULT1BsG0I13ifQY0XKMidfMogpjZgP/1t65CNYjt4QBnLWBDU
-   qQk4XZJd0b3FFsm77kuM+fIC3JMOX/eDTG7CW5mhJD24zV5jn7rat6iHu
-   1vVVsGX39iXXwBmShAdf3kYiIrO3J+MoffNW7sS3gEUfwN0ugaSBC91oo
-   BmzkcebN2bmbmIzKvGLvI1xvQQ59ILwaG3TbJTOhpXo0G0+k81AaQY4JM
-   w==;
-X-CSE-ConnectionGUID: CdNASeqrTZaH2BfvljYAdg==
-X-CSE-MsgGUID: vyxluEeTS7ChrUJ3Tdtb6A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11425"; a="35932877"
-X-IronPort-AV: E=Sophos;i="6.15,268,1739865600"; 
-   d="scan'208";a="35932877"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2025 22:44:49 -0700
-X-CSE-ConnectionGUID: c4D2Ws4lRaymkTlaqFHm/g==
-X-CSE-MsgGUID: ocnwfwJRR2WLdCgnFPKUdg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,268,1739865600"; 
-   d="scan'208";a="140959206"
-Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
-  by orviesa005.jf.intel.com with ESMTP; 06 May 2025 22:44:46 -0700
-Received: from kbuild by 1992f890471c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uCXaF-000769-1E;
-	Wed, 07 May 2025 05:44:43 +0000
-Date: Wed, 7 May 2025 13:44:34 +0800
-From: kernel test robot <lkp@intel.com>
-To: Dan Williams <dan.j.williams@intel.com>, dave.hansen@linux.intel.com
-Cc: oe-kbuild-all@lists.linux.dev, x86@kernel.org,
-	Kees Cook <kees@kernel.org>, Ingo Molnar <mingo@kernel.org>,
-	Naveen N Rao <naveen@kernel.org>,
-	Vishal Annapurve <vannapurve@google.com>,
-	Kirill Shutemov <kirill.shutemov@linux.intel.com>,
-	Nikolay Borisov <nik.borisov@suse.com>, stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev
-Subject: Re: [PATCH v3 2/2] x86/devmem: Drop /dev/mem access for confidential
- guests
-Message-ID: <202505071309.Aa4vRJxa-lkp@intel.com>
-References: <174491712829.1395340.5054725417641299524.stgit@dwillia2-xfh.jf.intel.com>
+	s=arc-20240116; t=1746597939; c=relaxed/simple;
+	bh=MxaitG3CeVKWMYfeMyrLf5dhe0p3NY2WKRP6bXurY4A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=J/Cjk0PkbzCpFolxhI+/ucO1Tnz6uuo8t88jUjJCuaTqYNysfYc3x1cGWaFWnX4yS6srNK2pvaujPYBXlIRUP9aGxt/PXwZDqau8Y1wfc3vUfawqRXRI/xl13Wu8azj6lQWYO75PlNcIyoufd9f5gV8KndvmuXCmahqWsbWdDxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xydg6riZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 927D5C4CEE7;
+	Wed,  7 May 2025 06:05:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746597938;
+	bh=MxaitG3CeVKWMYfeMyrLf5dhe0p3NY2WKRP6bXurY4A=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Xydg6riZZiopOfjrEFs9cFM5vjxkDdxaMx26gHeyNlsv+htBqzNyK7TVu8UV47g/W
+	 FyiB8SBP7pt7G4J8OkZgHtZmi96TDgsuoZAouple+rlD9GrEqkguTWHMr2DbhbSxX4
+	 9gAxC2ZFcu4W783A17jlYjR/ObGNRnbN0QZ0S1BN3qRHsZa3YxFFBTiOwHlYxoGPyr
+	 t41ThI81r1N88XNZ6lUB1DJp6DQxNkv6LxFKj77YtSa7H8gWLPG+ANoy04+v4wukif
+	 C1jtgshJvfUr5cTyxig5zIyf/uRaD40LVREPv1kz+Wm8qi+E6BnD7uZuOXzSnAcPlv
+	 DzZXeYATjqonA==
+Message-ID: <d51b4422-0c46-4b03-840b-302603b3136f@kernel.org>
+Date: Wed, 7 May 2025 08:05:35 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <174491712829.1395340.5054725417641299524.stgit@dwillia2-xfh.jf.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] tty: serial: 8250_omap: fix tx with dma
+To: Mans Rullgard <mans@mansr.com>
+Cc: gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
+ linux-serial@vger.kernel.org, linux-omap@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20250506150748.3162-1-mans@mansr.com>
+Content-Language: en-US
+From: Jiri Slaby <jirislaby@kernel.org>
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ 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
+In-Reply-To: <20250506150748.3162-1-mans@mansr.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Dan,
+On 06. 05. 25, 17:07, Mans Rullgard wrote:
+> Commit 1788cf6a91d9 ("tty: serial: switch from circ_buf to kfifo")
+> introduced an error in the TX DMA handling for 8250_omap.
+> 
+> When the OMAP_DMA_TX_KICK flag is set, one byte is pulled from the
+> kfifo and emitted directly in order to start the DMA.  This is done
+> without updating DMA tx_size which leads to uart_xmit_advance() called
+> in the DMA complete callback advancing the kfifo by one too much.
+> 
+> In practice, transmitting N bytes has been seen to result in the last
+> N-1 bytes being sent repeatedly.
+> 
+> This change fixes the problem by moving all of the dma setup after
+> the OMAP_DMA_TX_KICK handling and using kfifo_len() instead of the
+> dma size for the 4-byte cutoff check. This slightly changes the
+> behaviour at buffer wraparound, but it still transmits the correct
+> bytes somehow. At the point kfifo_dma_out_prepare_mapped is called,
+> at least one byte is guaranteed to be in the fifo, so checking the
+> return value is not necessary.
+> 
+> Fixes: 1788cf6a91d9 ("tty: serial: switch from circ_buf to kfifo")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Mans Rullgard <mans@mansr.com>
+> ---
+> v2: split patch in two
+> ---
+>   drivers/tty/serial/8250/8250_omap.c | 24 +++++++++---------------
+>   1 file changed, 9 insertions(+), 15 deletions(-)
+> 
+> diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
+> index f1aee915bc02..180466e09605 100644
+> --- a/drivers/tty/serial/8250/8250_omap.c
+> +++ b/drivers/tty/serial/8250/8250_omap.c
+> @@ -1173,16 +1173,6 @@ static int omap_8250_tx_dma(struct uart_8250_port *p)
+>   		return 0;
+>   	}
+>   
+> -	sg_init_table(&sg, 1);
+> -	ret = kfifo_dma_out_prepare_mapped(&tport->xmit_fifo, &sg, 1,
+> -					   UART_XMIT_SIZE, dma->tx_addr);
+> -	if (ret != 1) {
+> -		serial8250_clear_THRI(p);
+> -		return 0;
+> -	}
+> -
+> -	dma->tx_size = sg_dma_len(&sg);
+> -
+>   	if (priv->habit & OMAP_DMA_TX_KICK) {
+>   		unsigned char c;
+>   		u8 tx_lvl;
+...
+> @@ -1216,11 +1206,12 @@ static int omap_8250_tx_dma(struct uart_8250_port *p)
+>   			goto err;
+>   		}
+>   		skip_byte = c;
+> -		/* now we need to recompute due to kfifo_get */
+> -		kfifo_dma_out_prepare_mapped(&tport->xmit_fifo, &sg, 1,
+> -				UART_XMIT_SIZE, dma->tx_addr);
+>   	}
+>   
+> +	sg_init_table(&sg, 1);
+> +	kfifo_dma_out_prepare_mapped(&tport->xmit_fifo, &sg, 1,
+> +				     UART_XMIT_SIZE, dma->tx_addr);
 
-kernel test robot noticed the following build errors:
+This can fail (note the first call to this was checked). The latter 
+(deliberately) not.
 
-[auto build test ERROR on 0af2f6be1b4281385b618cb86ad946eded089ac8]
+> +
+>   	desc = dmaengine_prep_slave_sg(dma->txchan, &sg, 1, DMA_MEM_TO_DEV,
+>   			DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+>   	if (!desc) {
+...
+> @@ -1248,8 +1240,10 @@ static int omap_8250_tx_dma(struct uart_8250_port *p)
+>   err:
+>   	dma->tx_err = 1;
+>   out_skip:
+> -	if (skip_byte >= 0)
+> +	if (skip_byte >= 0) {
+>   		serial_out(p, UART_TX, skip_byte);
+> +		p->port.icount.tx++;
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Dan-Williams/x86-devmem-Remove-duplicate-range_is_allowed-definition/20250419-080713
-base:   0af2f6be1b4281385b618cb86ad946eded089ac8
-patch link:    https://lore.kernel.org/r/174491712829.1395340.5054725417641299524.stgit%40dwillia2-xfh.jf.intel.com
-patch subject: [PATCH v3 2/2] x86/devmem: Drop /dev/mem access for confidential guests
-config: openrisc-randconfig-r073-20250428 (https://download.01.org/0day-ci/archive/20250507/202505071309.Aa4vRJxa-lkp@intel.com/config)
-compiler: or1k-linux-gcc (GCC) 10.5.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250507/202505071309.Aa4vRJxa-lkp@intel.com/reproduce)
+This is still unrelated.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202505071309.Aa4vRJxa-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   drivers/char/mem.c: In function 'open_port':
->> drivers/char/mem.c:604:6: error: implicit declaration of function 'cc_platform_has' [-Werror=implicit-function-declaration]
-     604 |      cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
-         |      ^~~~~~~~~~~~~~~
->> drivers/char/mem.c:604:22: error: 'CC_ATTR_GUEST_MEM_ENCRYPT' undeclared (first use in this function)
-     604 |      cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
-         |                      ^~~~~~~~~~~~~~~~~~~~~~~~~
-   drivers/char/mem.c:604:22: note: each undeclared identifier is reported only once for each function it appears in
-   cc1: some warnings being treated as errors
-
-
-vim +/cc_platform_has +604 drivers/char/mem.c
-
-   586	
-   587	static int open_port(struct inode *inode, struct file *filp)
-   588	{
-   589		int rc;
-   590	
-   591		if (!capable(CAP_SYS_RAWIO))
-   592			return -EPERM;
-   593	
-   594		rc = security_locked_down(LOCKDOWN_DEV_MEM);
-   595		if (rc)
-   596			return rc;
-   597	
-   598		/*
-   599		 * Enforce encrypted mapping consistency and avoid unaccepted
-   600		 * memory conflicts, "lockdown" /dev/mem for confidential
-   601		 * guests.
-   602		 */
-   603		if (IS_ENABLED(CONFIG_STRICT_DEVMEM) &&
- > 604		    cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT))
-   605			return -EPERM;
-   606	
-   607		if (iminor(inode) != DEVMEM_MINOR)
-   608			return 0;
-   609	
-   610		/*
-   611		 * Use a unified address space to have a single point to manage
-   612		 * revocations when drivers want to take over a /dev/mem mapped
-   613		 * range.
-   614		 */
-   615		filp->f_mapping = iomem_get_mapping();
-   616	
-   617		return 0;
-   618	}
-   619	
-
+thanks,
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+js
+suse labs
 
