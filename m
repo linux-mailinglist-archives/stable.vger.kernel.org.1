@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-142238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 105E2AAE9A4
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:47:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1238AAAE947
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:43:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5B461C41BE1
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:47:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F0AF1C26E3E
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:43:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85866155389;
-	Wed,  7 May 2025 18:47:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52E4228DF4F;
+	Wed,  7 May 2025 18:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vcVyNNvm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aK/ei0FU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4309729A0;
-	Wed,  7 May 2025 18:47:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102DA288CB0;
+	Wed,  7 May 2025 18:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643638; cv=none; b=mxWvGnrFtwpWFZB0xtfUFcgm1kjb8N3nm7cd5a9tfLye17gioxdYXNgHXGS4OmgzZcxe30DNv3MSBEyqySzNDHxtWcYHsu8t4FZCp1qzksT6crl6SX8D3hlS4dgQZina+mnxkDOvicgT2z381KhKodACYyfUC+wDN1e1hFPpoOQ=
+	t=1746643384; cv=none; b=gla6Jo1t8R2uegiyo2Qioon4iCglq4gP+TBLAiS1gmAg9N+3BeASyuDy00WOEpR5IhHbljlLKb7ggDqetKF9vtSwshvj5xVz2bEwaacBeKXy9IIyJsqNQHoRY40bNmUJ9x3yL/j4k9Q+fNyxvC1pNxTFAF7uWF+32IPkNJHbtmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643638; c=relaxed/simple;
-	bh=G690tvvv2yhWktKexfRkltwL5Z7hH++Vd7o0z4d+N8Y=;
+	s=arc-20240116; t=1746643384; c=relaxed/simple;
+	bh=rWGb8EnwQxwu/sHWp8nNpoliZzexxqmRQ6AFtS+mhfI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nfPaMiWphoKnAdZO+A6CWnfRM1gHqzTBP9topzDpYFKsM9ZbR3VdEu4HOPis9QXpQf8LTx3BgwF4gP/aMjoiWIv9qG12AcX6saT9olatU3qB9LJ16Qo7QAsi/Q6xmu+SgOOQMcih8jU7IGzeIr2MAyIHmcn87UMXFhQ6FIDzOrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vcVyNNvm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D7BAC4CEE2;
-	Wed,  7 May 2025 18:47:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GzRKpKsbfnwSuJ30bBUHjKp6HVBA1Prik+VsmSl+b1yArrWUzaVZMREMyMpPV5G2/pio8oz/Cu9X0Cnd/b+cGSVZyxShPmFwd7GYgUi6VUgqjc3V/73JgEcj62i1yUbPMHBCv8EfTJLecS+AfbMm0y/iG3NNPlvxUumNbJcIA3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aK/ei0FU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72C12C4CEE2;
+	Wed,  7 May 2025 18:43:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643637;
-	bh=G690tvvv2yhWktKexfRkltwL5Z7hH++Vd7o0z4d+N8Y=;
+	s=korg; t=1746643383;
+	bh=rWGb8EnwQxwu/sHWp8nNpoliZzexxqmRQ6AFtS+mhfI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vcVyNNvmZZI8o8qh/Bg61jQ2mn4WELinpnvJM0bjIfmrnYtvOFVwHLRcysd/Z6dy6
-	 xed1FZ1QFpjtiVFZAYnTuEaPVgVklzMAOFpf2xHl60kzzJ92RhFy+eZXtY8ZhGyxNZ
-	 aHh5jbILoYAwL93nUwgGpfyuj9irYUJTwi9doRT8=
+	b=aK/ei0FUDahyPuk1DfIFQFNL410G7LyH1S2FntjmFZB7AiK35GDprTkYryFpOrw5y
+	 AOwzSuq54zhUDXkcnKf3GCIshno+qhXmxe16/zPIpjGrImTd/7NMvPVYjeZsqIUp12
+	 a1pwHgLq9NcKy0gZCkUZWyHXSP3YTY7yrPG3KWTU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 68/97] net: vertexcom: mse102x: Fix possible stuck of SPI interrupt
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Ryan Matthews <ryanmatthews@fastmail.com>
+Subject: [PATCH 5.15 42/55] PCI: imx6: Skip controller_id generation logic for i.MX7D
 Date: Wed,  7 May 2025 20:39:43 +0200
-Message-ID: <20250507183809.730568742@linuxfoundation.org>
+Message-ID: <20250507183800.737373628@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
-References: <20250507183806.987408728@linuxfoundation.org>
+In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
+References: <20250507183759.048732653@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +63,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Richard Zhu <hongxing.zhu@nxp.com>
 
-[ Upstream commit 55f362885951b2d00fd7fbb02ef0227deea572c2 ]
+commit f068ffdd034c93f0c768acdc87d4d2d7023c1379 upstream.
 
-The MSE102x doesn't provide any SPI commands for interrupt handling.
-So in case the interrupt fired before the driver requests the IRQ,
-the interrupt will never fire again. In order to fix this always poll
-for pending packets after opening the interface.
+The i.MX7D only has one PCIe controller, so controller_id should always be
+0. The previous code is incorrect although yielding the correct result.
 
-Fixes: 2f207cbf0dd4 ("net: vertexcom: Add MSE102x SPI support")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250430133043.7722-2-wahrenst@gmx.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix by removing "IMX7D" from the switch case branch.
+
+Fixes: 2d8ed461dbc9 ("PCI: imx6: Add support for i.MX8MQ")
+Link: https://lore.kernel.org/r/20241126075702.4099164-5-hongxing.zhu@nxp.com
+Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+[Because this switch case does more than just controller_id
+ logic, move the "IMX7D" case label instead of removing it entirely.]
+Signed-off-by: Ryan Matthews <ryanmatthews@fastmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/vertexcom/mse102x.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/pci/controller/dwc/pci-imx6.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/vertexcom/mse102x.c b/drivers/net/ethernet/vertexcom/mse102x.c
-index 8f67c39f479ee..45f4d2cb5b31a 100644
---- a/drivers/net/ethernet/vertexcom/mse102x.c
-+++ b/drivers/net/ethernet/vertexcom/mse102x.c
-@@ -509,6 +509,7 @@ static irqreturn_t mse102x_irq(int irq, void *_mse)
- static int mse102x_net_open(struct net_device *ndev)
- {
- 	struct mse102x_net *mse = netdev_priv(ndev);
-+	struct mse102x_net_spi *mses = to_mse102x_spi(mse);
- 	int ret;
- 
- 	ret = request_threaded_irq(ndev->irq, NULL, mse102x_irq, IRQF_ONESHOT,
-@@ -524,6 +525,13 @@ static int mse102x_net_open(struct net_device *ndev)
- 
- 	netif_carrier_on(ndev);
- 
-+	/* The SPI interrupt can stuck in case of pending packet(s).
-+	 * So poll for possible packet(s) to re-arm the interrupt.
-+	 */
-+	mutex_lock(&mses->lock);
-+	mse102x_rx_pkt_spi(mse);
-+	mutex_unlock(&mses->lock);
-+
- 	netif_dbg(mse, ifup, ndev, "network device up\n");
- 
- 	return 0;
--- 
-2.39.5
-
+--- a/drivers/pci/controller/dwc/pci-imx6.c
++++ b/drivers/pci/controller/dwc/pci-imx6.c
+@@ -1070,11 +1070,10 @@ static int imx6_pcie_probe(struct platfo
+ 		if (IS_ERR(imx6_pcie->pcie_aux))
+ 			return dev_err_probe(dev, PTR_ERR(imx6_pcie->pcie_aux),
+ 					     "pcie_aux clock source missing or invalid\n");
+-		fallthrough;
+-	case IMX7D:
+ 		if (dbi_base->start == IMX8MQ_PCIE2_BASE_ADDR)
+ 			imx6_pcie->controller_id = 1;
+-
++		fallthrough;
++	case IMX7D:
+ 		imx6_pcie->pciephy_reset = devm_reset_control_get_exclusive(dev,
+ 									    "pciephy");
+ 		if (IS_ERR(imx6_pcie->pciephy_reset)) {
 
 
 
