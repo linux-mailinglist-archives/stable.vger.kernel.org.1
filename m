@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-142420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA124AAEA88
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:56:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3DA9AAE936
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:42:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 547725231D7
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:56:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 670F0505271
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:42:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ADFA244693;
-	Wed,  7 May 2025 18:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8779628DF4F;
+	Wed,  7 May 2025 18:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qzH9d+hV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TRaecKNX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 184601482F5;
-	Wed,  7 May 2025 18:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4367714A4C7;
+	Wed,  7 May 2025 18:42:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644195; cv=none; b=UQ1+AybTleXSnpEns2bCJGvdebB+unrRoQ4MwN8vS62YQ0yN4Cv+GWW8WNnG0JYh/h8bYfzV2YVFgVAIdhIkqfIadrWYBE8WSHvQIxBvu55TmIndDihHj7nbkMhiXEpsB2egcQNZ7kIwJm2e708NCN+l/1x+AHe9tst5AkspRWo=
+	t=1746643330; cv=none; b=L76gAsuyrUxwVt/ET6ol3UbpgD/npcl9tmFsS+dOxo/tgEtWnD5w6xAqx+oYxta3V1xaTqteRqcSjxD0IW3/03AngqLExbpgRHTDA1nohwz+6AzreUpHB3l8OEs/4QoJl8PO1+4GuureLdBVNLOWhZhA5FdMyKHRXT5G6ggytaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644195; c=relaxed/simple;
-	bh=EoKxVJQTQm6TSwN08oIn6yyjqmdOPaTb0rWiyL4yj9k=;
+	s=arc-20240116; t=1746643330; c=relaxed/simple;
+	bh=w7JHTz5UQAP2ILkAnSBv9saO77GCZ4BWAacaM5aHgGw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C0utXq6Om85rv+kfRoqZ1RYA1/dtmUJZ9gzAMTS+taqW43kU+o7C38G9tFu37FpT6fRKA4I+yFtnX4j/sRjDNqbf5gm1SoDVlBHKgvVc43uvSHK+UC7w4f6b9r8IjpqzsrXOeHS8BsLHyJ2c+qxHcqOtgUFWlYtN2w4YH11VuR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qzH9d+hV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FFA2C4CEE2;
-	Wed,  7 May 2025 18:56:34 +0000 (UTC)
+	 MIME-Version; b=UgvxSYyrFFmzgzVx7CZ7vDkupBkMl4kHWa6DGFSqsPP6nCEvkgU0CbvQK4WARc78m1NsN/45FnMJbe8aIEXVVdymaLBk6S6vxA5Qeh8xWxMh37k+RaRwixHfLSJMzeQiNXiwYcj49goWgVkkm8wZNpk4JJR5R1IFsMjweu8XrEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TRaecKNX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62184C4CEE2;
+	Wed,  7 May 2025 18:42:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644195;
-	bh=EoKxVJQTQm6TSwN08oIn6yyjqmdOPaTb0rWiyL4yj9k=;
+	s=korg; t=1746643329;
+	bh=w7JHTz5UQAP2ILkAnSBv9saO77GCZ4BWAacaM5aHgGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qzH9d+hVtMBBajpMbG/3QY4b5Cke12d/OgebKMzoMRwiqanKZo6R13sas4W6GvKfd
-	 O7PiAvl9R6dsOtVoWc1AHE6MlQSbLkTrcULcDsf5KNq6T61YdQAMdYwbJx+y7zXmjx
-	 WAB2NKeriRGfA8QMCoqsC9CiOYecSF9Pjnyz7o6g=
+	b=TRaecKNXQfxLX+IlpsvNQ6Cvwr62W1j8fAyoPsfaHjR1rvAogOztGJjHeDOzo9jq6
+	 VHg27o28lzgty29orYj+CZg7E30/6ZQwDmkkAVdo0tse7WftSIjOyy/cpHZPg7TbaJ
+	 TM8s5TLr5LkjInCv5T5K4yM+XCSWIeT+ly+ovqgk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	Willem de Bruijn <willemb@google.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Victor Nogueira <victor@mojatatu.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 119/183] net: ipv6: fix UDPv6 GSO segmentation with NAT
+Subject: [PATCH 5.15 23/55] net_sched: drr: Fix double list add in class with netem as child qdisc
 Date: Wed,  7 May 2025 20:39:24 +0200
-Message-ID: <20250507183829.640072183@linuxfoundation.org>
+Message-ID: <20250507183759.975180461@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
+References: <20250507183759.048732653@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,106 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Victor Nogueira <victor@mojatatu.com>
 
-[ Upstream commit b936a9b8d4a585ccb6d454921c36286bfe63e01d ]
+[ Upstream commit f99a3fbf023e20b626be4b0f042463d598050c9a ]
 
-If any address or port is changed, update it in all packets and recalculate
-checksum.
+As described in Gerrard's report [1], there are use cases where a netem
+child qdisc will make the parent qdisc's enqueue callback reentrant.
+In the case of drr, there won't be a UAF, but the code will add the same
+classifier to the list twice, which will cause memory corruption.
 
-Fixes: 9fd1ff5d2ac7 ("udp: Support UDP fraglist GRO/GSO.")
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20250426153210.14044-1-nbd@nbd.name
+In addition to checking for qlen being zero, this patch checks whether the
+class was already added to the active_list (cl_is_active) before adding
+to the list to cover for the reentrant case.
+
+[1] https://lore.kernel.org/netdev/CAHcdcOm+03OD2j6R0=YHKqmy=VgJ8xEOKuP6c7mSgnp-TEJJbw@mail.gmail.com/
+
+Fixes: 37d9cf1a3ce3 ("sched: Fix detection of empty queues in child qdiscs")
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+Link: https://patch.msgid.link/20250425220710.3964791-2-victor@mojatatu.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/udp_offload.c | 61 +++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 60 insertions(+), 1 deletion(-)
+ net/sched/sch_drr.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
-index ecfca59f31f13..da5d4aea1b591 100644
---- a/net/ipv4/udp_offload.c
-+++ b/net/ipv4/udp_offload.c
-@@ -247,6 +247,62 @@ static struct sk_buff *__udpv4_gso_segment_list_csum(struct sk_buff *segs)
- 	return segs;
- }
+diff --git a/net/sched/sch_drr.c b/net/sched/sch_drr.c
+index 80a88e208d2bc..e33a72c356c87 100644
+--- a/net/sched/sch_drr.c
++++ b/net/sched/sch_drr.c
+@@ -36,6 +36,11 @@ struct drr_sched {
+ 	struct Qdisc_class_hash		clhash;
+ };
  
-+static void __udpv6_gso_segment_csum(struct sk_buff *seg,
-+				     struct in6_addr *oldip,
-+				     const struct in6_addr *newip,
-+				     __be16 *oldport, __be16 newport)
++static bool cl_is_active(struct drr_class *cl)
 +{
-+	struct udphdr *uh = udp_hdr(seg);
-+
-+	if (ipv6_addr_equal(oldip, newip) && *oldport == newport)
-+		return;
-+
-+	if (uh->check) {
-+		inet_proto_csum_replace16(&uh->check, seg, oldip->s6_addr32,
-+					  newip->s6_addr32, true);
-+
-+		inet_proto_csum_replace2(&uh->check, seg, *oldport, newport,
-+					 false);
-+		if (!uh->check)
-+			uh->check = CSUM_MANGLED_0;
-+	}
-+
-+	*oldip = *newip;
-+	*oldport = newport;
++	return !list_empty(&cl->alist);
 +}
 +
-+static struct sk_buff *__udpv6_gso_segment_list_csum(struct sk_buff *segs)
-+{
-+	const struct ipv6hdr *iph;
-+	const struct udphdr *uh;
-+	struct ipv6hdr *iph2;
-+	struct sk_buff *seg;
-+	struct udphdr *uh2;
-+
-+	seg = segs;
-+	uh = udp_hdr(seg);
-+	iph = ipv6_hdr(seg);
-+	uh2 = udp_hdr(seg->next);
-+	iph2 = ipv6_hdr(seg->next);
-+
-+	if (!(*(const u32 *)&uh->source ^ *(const u32 *)&uh2->source) &&
-+	    ipv6_addr_equal(&iph->saddr, &iph2->saddr) &&
-+	    ipv6_addr_equal(&iph->daddr, &iph2->daddr))
-+		return segs;
-+
-+	while ((seg = seg->next)) {
-+		uh2 = udp_hdr(seg);
-+		iph2 = ipv6_hdr(seg);
-+
-+		__udpv6_gso_segment_csum(seg, &iph2->saddr, &iph->saddr,
-+					 &uh2->source, uh->source);
-+		__udpv6_gso_segment_csum(seg, &iph2->daddr, &iph->daddr,
-+					 &uh2->dest, uh->dest);
-+	}
-+
-+	return segs;
-+}
-+
- static struct sk_buff *__udp_gso_segment_list(struct sk_buff *skb,
- 					      netdev_features_t features,
- 					      bool is_ipv6)
-@@ -259,7 +315,10 @@ static struct sk_buff *__udp_gso_segment_list(struct sk_buff *skb,
+ static struct drr_class *drr_find_class(struct Qdisc *sch, u32 classid)
+ {
+ 	struct drr_sched *q = qdisc_priv(sch);
+@@ -345,7 +350,6 @@ static int drr_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	struct drr_sched *q = qdisc_priv(sch);
+ 	struct drr_class *cl;
+ 	int err = 0;
+-	bool first;
  
- 	udp_hdr(skb)->len = htons(sizeof(struct udphdr) + mss);
+ 	cl = drr_classify(skb, sch, &err);
+ 	if (cl == NULL) {
+@@ -355,7 +359,6 @@ static int drr_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		return err;
+ 	}
  
--	return is_ipv6 ? skb : __udpv4_gso_segment_list_csum(skb);
-+	if (is_ipv6)
-+		return __udpv6_gso_segment_list_csum(skb);
-+	else
-+		return __udpv4_gso_segment_list_csum(skb);
- }
+-	first = !cl->qdisc->q.qlen;
+ 	err = qdisc_enqueue(skb, cl->qdisc, to_free);
+ 	if (unlikely(err != NET_XMIT_SUCCESS)) {
+ 		if (net_xmit_drop_count(err)) {
+@@ -365,7 +368,7 @@ static int drr_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		return err;
+ 	}
  
- struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
+-	if (first) {
++	if (!cl_is_active(cl)) {
+ 		list_add_tail(&cl->alist, &q->active);
+ 		cl->deficit = cl->quantum;
+ 	}
 -- 
 2.39.5
 
