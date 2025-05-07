@@ -1,111 +1,161 @@
-Return-Path: <stable+bounces-141966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58975AAD4E1
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 07:12:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AC12AAD555
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 07:38:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BFEA24C1B5A
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 05:12:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7D4E7AFE92
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 05:37:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D74FD1DF247;
-	Wed,  7 May 2025 05:11:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95BE31E2843;
+	Wed,  7 May 2025 05:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FhdBIQxe"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dnE4mIzB"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f194.google.com (mail-pg1-f194.google.com [209.85.215.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F6311DED5F;
-	Wed,  7 May 2025 05:11:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8340199237;
+	Wed,  7 May 2025 05:38:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746594719; cv=none; b=UmA4z+u5e+dWBSs+NriQEW+K6bMIbRY9XOB0b3f5Jv2pwVMX5svUfTcAnxAuPKleCOLFMlgRW8Q6uELrQBzwTAzqESSo8ZiemWsoj87tyZpgkfdLrhsqjNBJPIzBnHM/Boz1Q035WVUBeymy7E4/Vilap/pw1xpYA5+CY12k50o=
+	t=1746596285; cv=none; b=vFQ+YgJqidFgRO4PtJ+rv3TI2EHnWFqod1dzL8ZtuYBOpNRK+MfhBzC74CBTW5askcO3s9AVRabJatKtm8aw4G0nAJR6orqauFHh0KXDsJlpSSXkskuBdli14SETIg/vIaoQMyjzrVwfixSjI5K1vpYItfs+IbLqVMErZubMdiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746594719; c=relaxed/simple;
-	bh=y46Bo0fq6ATx2ZWFjSMtCL1bTyU6UOGHBJIa/IU+dcw=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=k80vodRld+HFycVOAKuSLB6QxVo3OG1+Oe+uL9YMHNLzT5qG5DFulgGJCArPBqrZ2p2pr024UPkFnGJVKwVOG7lrIdRnmbtSBCYFiH8lPgxGT6Vl9Yvp+5/JcOibW5wDuIztiMUMqipy/nSbVXBnGvLESLODsjn/kEAliWOR7ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FhdBIQxe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C19D1C4CEE9;
-	Wed,  7 May 2025 05:11:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746594719;
-	bh=y46Bo0fq6ATx2ZWFjSMtCL1bTyU6UOGHBJIa/IU+dcw=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=FhdBIQxe2yJ13wbwHq8QLKv67Lz2kqORJMPgRHRwl6Lm9AUg+PK0cYHP9IIeDzDfH
-	 j6Zl9bHFdzxepXb7ZRnxAVJc2EuF9BtWIZ5/uAOFXRWtD9rQylZxDkM5aCzvUUWyz2
-	 wXx77UDCMPtU2JTzlDC/sPpQMegvuIlerXYIJq+pTTRFj+VtbhvLo2grUr4egFywta
-	 cqnhb3J6oRSqYghOXsqHzHXAyQtOkPeSWr0Ckfn8T1Qucl1tFueYsd3WZJLPDegjD6
-	 8wUy2gpE0yEuRtC1AzafOCVRVAmFcMz4BIlh8zOBQNO1e6Pd21YE4FpAV8rQsYNFee
-	 riySWWjX85Bwg==
-From: Mark Brown <broonie@kernel.org>
-To: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
-Cc: alsa-devel@alsa-project.org, lgirdwood@gmail.com, perex@perex.cz, 
- tiwai@suse.com, yung-chuan.liao@linux.intel.com, 
- ranjani.sridharan@linux.intel.com, pierre-louis.bossart@linux.dev, 
- Basavaraj.Hiregoudar@amd.com, Sunil-kumar.Dommati@amd.com, 
- venkataprasad.potturu@amd.com, Mario.Limonciello@amd.com, 
- linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org
-In-Reply-To: <20250506120823.3621604-1-Vijendar.Mukunda@amd.com>
-References: <20250506120823.3621604-1-Vijendar.Mukunda@amd.com>
-Subject: Re: [PATCH 1/3] ASoC: amd: amd_sdw: Fix unlikely uninitialized
- variable use in create_sdw_dailinks()
-Message-Id: <174659471540.4169088.2896331168566981958.b4-ty@kernel.org>
-Date: Wed, 07 May 2025 14:11:55 +0900
+	s=arc-20240116; t=1746596285; c=relaxed/simple;
+	bh=wP8clbZR3wtgF2UvmFT+vgUtvGorLi06y2emXwfbX4A=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=TYeyIL4Rx+b8qMlUEHEaWQxygRRMNLKnQ/WDxzHBoBhZfYftb/88j2sxPQ3tSpHpKvsYpPbQURlV6GdL9tUqN3FM5CnjJUuU1R248NacaUjndH7/qp6KHcydZEM3Ge41U3drAG9qJbeikGVQOwDfTf+u5YF4o+sZkq8aJA+1IpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dnE4mIzB; arc=none smtp.client-ip=209.85.215.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pg1-f194.google.com with SMTP id 41be03b00d2f7-af6a315b491so5897677a12.1;
+        Tue, 06 May 2025 22:38:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746596283; x=1747201083; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=2wnNtboDgAN3l0RxBXJ7GpvEaa0XgYy7m1/m7BgIkhc=;
+        b=dnE4mIzB5vx8I+oD10gOE3Bx8uXqi6KftC+pj9XfWQRNck2cUshLe5QCpi21/qu58B
+         bP5i44BW+n/sz76Gs+j0NjTr0UfTKBk8GHZYtsIlpHGS2AYZgcf1tqYDAk78DGlF6j0T
+         +ojwSpLe2Crr7tBsuCCdZQsmIXN0A/2nkkfQCiFV8MP4pUgkzLvWpduKHqXMasdQgSid
+         U3pTJtsYTKDmTmCo6CTPatGu0Xvubcb8TYsHJO78uwZu1Oa4ZJZ0aOXx+JTCWLz0vKBs
+         wih8LtAcNK34beYGHoyzvTIGyLmGa8u9cyqiiU/a15eKPShbk1wwQThuhepkdGI5wPFZ
+         gzBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746596283; x=1747201083;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2wnNtboDgAN3l0RxBXJ7GpvEaa0XgYy7m1/m7BgIkhc=;
+        b=qbl9pIJFV+1Q0NFnmCrWXfCZbTTDBocCUkmfsZ94iMJEvyaLIH4lhlEnth1W2GHsB/
+         BWnpainhVRwcirmVJzuwd8eNoVkO4/VS2ry5NH073AcC2SqWQTIgTfHBsWTzokLrS43d
+         8SWiqHtDHPEA/0JmXNGhJ1GES2ln2ZwxhGB0axYoDfxeG9WNIYdK3SRckgkqgOKDJXa5
+         1u9wZ2KsdGcPJnamAgWvLN7s+vI6v5HFjt/pf9ELxo2MSrWYGyMlnr6wXJnV3spLNbCT
+         yIgsgr2PERiwGeiL0pJvQLMSi+3SO3lCKKP/ZLXdmYarfWiZgCinWrh4kZsmfdpsi58w
+         yrGw==
+X-Forwarded-Encrypted: i=1; AJvYcCVC5DK6v0a+QRro1jS2uDN6l0LGwlL4xqAwgIHSD/G2Ht8ZnfNN/X1oSW0eblVEgknGs7Ri90ol@vger.kernel.org, AJvYcCWiql+oi03mVLxJnCALIGakkECKwSQENup+vfWT3H0JWBVtQKsnDOFzZ/xSfECWNUV6ULS0ypZn/gYdsYQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxYzzu88cG7RY9yXJM4ffOz7mKa9LiZQIj6q2BwywPDOEE25BWr
+	qSm0pCm/cMQBiDFu574fJq4jiLgMUCxZs8tlEFEchTGqayHUzA+v
+X-Gm-Gg: ASbGnctx4u9vnLz+dItwb8N9tHl+tdDmhFldPqJMUjlwzhMDK3lvLhbCVDAGsW+Fv6Q
+	B2AYJ8fz2UECKbDcZzV0u+AcxwlvdhH9/aJvxyhDULnUOgIBFrtW4/2WPVR615HmAvHf72nPyP8
+	rRCCnz9A40R4CpLyl8YLOWbGLO+G6WTQQ4phncueWsPqm/w4rWQKdnT4IiCKdixJ4cHSNi7h7BA
+	lAmYfivewajPen0Vqawu76NWTdqYoRbe9glLKCdNI5N2rUGqvTSu2qYn3i5DncdYdB6PPsur4D5
+	FPLEuar2rJsDhZuddkERx6wIrTziAGEBGG56Rw97ioQCModJoA54w1x57Js=
+X-Google-Smtp-Source: AGHT+IHym5Q+YAPg3jYRVQT1AbcSKrkylIIVQ0nly23ygpo9eo5af0TuH69Syh4K6QEhZQ2OLe4vKA==
+X-Received: by 2002:a05:6a21:3385:b0:1f5:9175:2596 with SMTP id adf61e73a8af0-2148b81ec6amr3152869637.13.1746596282841;
+        Tue, 06 May 2025 22:38:02 -0700 (PDT)
+Received: from tom-QiTianM540-A739.. ([124.127.236.130])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b1fb3b52759sm8714315a12.19.2025.05.06.22.37.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 May 2025 22:38:02 -0700 (PDT)
+From: Qiu-ji Chen <chenqiuji666@gmail.com>
+To: sean.wang@mediatek.com,
+	vkoul@kernel.org,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com
+Cc: dmaengine@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	baijiaju1990@gmail.com,
+	Qiu-ji Chen <chenqiuji666@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] dmaengine: mediatek: Fix a possible deadlock error in mtk_cqdma_tx_status()
+Date: Wed,  7 May 2025 13:37:36 +0800
+Message-Id: <20250507053736.47220-1-chenqiuji666@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-c25d1
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, 06 May 2025 17:37:22 +0530, Vijendar Mukunda wrote:
-> Initialize current_be_id to 0 in AMD legacy stack(NO DSP enabled) SoundWire
-> generic machine driver code to handle the unlikely case when there are no
-> devices connected to a DAI.
-> 
-> In this case create_sdw_dailink() would return without touching the passed
-> pointer to current_be_id.
-> 
-> [...]
+This patch fixes a potential deadlock bug. We observed that in the
+mtk-cqdma.c file, most functions like mtk_cqdma_issue_pending() and
+mtk_cqdma_free_active_desc() follow the correct locking sequence by
+acquiring the pc lock first before taking the vc lock when handling the vc
+and pc fields. However, in mtk_cqdma_tx_status(), the function incorrectly
+acquires the vc lock first before calling mtk_cqdma_find_active_desc(),
+which subsequently acquires the pc lock. This reversed lock acquisition
+order (vc → pc) violates the established sequence (pc → vc) and could
+potentially trigger deadlock scenarios.
 
-Applied to
+To resolve this issue, we have moved the vc lock acquisition code from
+mtk_cqdma_tx_status() into the mtk_cqdma_find_active_desc() function.
+This adjustment ensures proper lock ordering while maintaining
+functionality. Since mtk_cqdma_find_active_desc() is a static function
+with only one call site in mtk_cqdma_tx_status(), this fix effectively
+addresses the deadlock risk without introducing unintended side effects
+to other components.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+This possible bug is found by an experimental static analysis tool
+developed by our team. This tool analyzes the locking APIs to extract
+function pairs that can be concurrently executed, and then analyzes the
+instructions in the paired functions to identify possible concurrency bugs
+including data races and atomicity violations.
 
-Thanks!
+Fixes: b1f01e48df5a ("dmaengine: mediatek: Add MediaTek Command-Queue DMA controller for MT6765 SoC")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
+---
+ drivers/dma/mediatek/mtk-cqdma.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-[1/3] ASoC: amd: amd_sdw: Fix unlikely uninitialized variable use in create_sdw_dailinks()
-      commit: 4d87ae7508cb7ff58fd0bcecc6e9491f42f987f8
-[2/3] ASoC: amd: sof_amd_sdw: Fix unlikely uninitialized variable use in create_sdw_dailinks()
-      commit: 6b83ba4bc3ecb915476d688c9f00f3be57b49a0c
-[3/3] ASoC: amd: sof_amd_sdw: add logic to get cpu_pin_id for ACP7.0/ACP7.1 platforms
-      commit: ad6d689e776478113aeef7bfb0e4222b1ff2a986
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+diff --git a/drivers/dma/mediatek/mtk-cqdma.c b/drivers/dma/mediatek/mtk-cqdma.c
+index d5ddb4e30e71..656354bccb44 100644
+--- a/drivers/dma/mediatek/mtk-cqdma.c
++++ b/drivers/dma/mediatek/mtk-cqdma.c
+@@ -423,11 +423,14 @@ static struct virt_dma_desc *mtk_cqdma_find_active_desc(struct dma_chan *c,
+ 	unsigned long flags;
+ 
+ 	spin_lock_irqsave(&cvc->pc->lock, flags);
++	spin_lock_irqsave(&cvc->vc.lock, flags);
+ 	list_for_each_entry(vd, &cvc->pc->queue, node)
+ 		if (vd->tx.cookie == cookie) {
++			spin_unlock_irqrestore(&cvc->vc.lock, flags);
+ 			spin_unlock_irqrestore(&cvc->pc->lock, flags);
+ 			return vd;
+ 		}
++	spin_unlock_irqrestore(&cvc->vc.lock, flags);
+ 	spin_unlock_irqrestore(&cvc->pc->lock, flags);
+ 
+ 	list_for_each_entry(vd, &cvc->vc.desc_issued, node)
+@@ -452,9 +455,7 @@ static enum dma_status mtk_cqdma_tx_status(struct dma_chan *c,
+ 	if (ret == DMA_COMPLETE || !txstate)
+ 		return ret;
+ 
+-	spin_lock_irqsave(&cvc->vc.lock, flags);
+ 	vd = mtk_cqdma_find_active_desc(c, cookie);
+-	spin_unlock_irqrestore(&cvc->vc.lock, flags);
+ 
+ 	if (vd) {
+ 		cvd = to_cqdma_vdesc(vd);
+-- 
+2.34.1
 
 
