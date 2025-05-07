@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-142542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 150B6AAEB11
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:02:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2475CAAE95D
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:44:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7DDBB525A4E
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:02:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 120199C6C87
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:43:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FC4C1E22E9;
-	Wed,  7 May 2025 19:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7505228DF1B;
+	Wed,  7 May 2025 18:43:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MxYZ3gPR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BCtHusC8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B62D21146F;
-	Wed,  7 May 2025 19:02:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 330E514A4C7;
+	Wed,  7 May 2025 18:43:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644576; cv=none; b=Ix70KhnVD5ii2XUQz+qzp415hnbBEULP+P/cHKf8k4xbKotCFHT/1Hv60G1EmgO+1XHSqSPr1RTqPlVlm1IaZog3AZgjM+rlKRFQGZh5NIyaX4eBDuWMqNC3kcZ5fwVz3v+DqPOkpr3NlmO8gkCELJr2fhlFxkt+liksIvJ/BME=
+	t=1746643437; cv=none; b=IzLMSJ79bTffXeZQUArHqqo+Pccrbb6BvpMzls9CdKybRvDKRxVFYTOrysiNZtklXsosJ3hDYBBmY2d/m6yEfIpynt42dv3MDdmrhjsWwDP9BEEsbJ4muMSei/kKovTYDAMv/LAffcW4pefYuxA9HFisADWStsB+G+15GCQpp3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644576; c=relaxed/simple;
-	bh=QLspojp2eLMzYfp4njPAAjyLQsWk710CR5splNb9uec=;
+	s=arc-20240116; t=1746643437; c=relaxed/simple;
+	bh=sCtEkEQJQd2xYDr0PzkmhwqI0bPLH2x/6CfJxp49u5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IhLzMvUgh70t/CvqZRwCGWmVH82WgTj0JBl27kxpA0oYZmixj5SQ0Cs5j+uawL0azBflYjmqBEWwfi9qOQXSBqW7GGocVapjeSCGP8eWQRPSphOmi+CUVYqvHIetYrCdSiAFmkBu/53uw8bOB5VfgvTuCGPyPFVWt+aqpXfCA4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MxYZ3gPR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30449C4CEE2;
-	Wed,  7 May 2025 19:02:53 +0000 (UTC)
+	 MIME-Version; b=msI//K5tuDJUw/GG8rkTxbiIchz5griA1bqoFF5ua6ZtF7klrwKLaBZDqs4fKCe7eHbtugFuidO0hd4KO5+jWeFqQ3iLES+JFyA/VmH6AfhUhv2qU83TqgS/E94ccxDTIVus2i/SfA0Mv/N/mtOEssHISbnz379oYfehpVZR9Nw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BCtHusC8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 972E2C4CEE2;
+	Wed,  7 May 2025 18:43:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644574;
-	bh=QLspojp2eLMzYfp4njPAAjyLQsWk710CR5splNb9uec=;
+	s=korg; t=1746643437;
+	bh=sCtEkEQJQd2xYDr0PzkmhwqI0bPLH2x/6CfJxp49u5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MxYZ3gPRAbGVCW5j2pZ0uWGWVEOlHMUcMC9XrHE0vKaxVjX7jNlGBTt4Sm3C/M2VR
-	 WEaMreGlNMSXeI/p/qP5kIBbGsxqoHeIie6YO9JlvDJZTFubV+fhAeXeA/w90DdC9D
-	 vqFyX/FSx2aWvBw/bQ1dbb5zbcyfnILTuaKtNJG4=
+	b=BCtHusC8MqUNzDUOpXTxPoSq3arWT3AHGR6Nfc7LP4huvR9lkc2ktUdDsF7htcF0d
+	 gX2INrpehR5Shz0ANGNJsBfNRie/L3YZKj0bJUk19oAESW1vyPnYb0K7fLAqNBVUfS
+	 oUqWTmqnZlYG2lSwwCqNK4hRDGZZtQVECiWPd58k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Felix Fietkau <nbd@nbd.name>,
+	Willem de Bruijn <willemb@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 086/164] net: ethernet: mtk-star-emac: rearm interrupts in rx_poll only when advised
+Subject: [PATCH 5.15 30/55] net: ipv6: fix UDPv6 GSO segmentation with NAT
 Date: Wed,  7 May 2025 20:39:31 +0200
-Message-ID: <20250507183824.446077487@linuxfoundation.org>
+Message-ID: <20250507183800.253477596@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
+References: <20250507183759.048732653@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit e54b4db35e201a9173da9cb7abc8377e12abaf87 ]
+[ Upstream commit b936a9b8d4a585ccb6d454921c36286bfe63e01d ]
 
-In mtk_star_rx_poll function, on event processing completion, the
-mtk_star_emac driver calls napi_complete_done but ignores its return
-code and enable RX DMA interrupts inconditionally. This return code
-gives the info if a device should avoid rearming its interrupts or not,
-so fix this behaviour by taking it into account.
+If any address or port is changed, update it in all packets and recalculate
+checksum.
 
-Fixes: 8c7bd5a454ff ("net: ethernet: mtk-star-emac: new driver")
-Signed-off-by: Louis-Alexis Eyraud <louisalexis.eyraud@collabora.com>
-Acked-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Link: https://patch.msgid.link/20250424-mtk_star_emac-fix-spinlock-recursion-issue-v2-2-f3fde2e529d8@collabora.com
+Fixes: 9fd1ff5d2ac7 ("udp: Support UDP fraglist GRO/GSO.")
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20250426153210.14044-1-nbd@nbd.name
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mediatek/mtk_star_emac.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/ipv4/udp_offload.c | 61 +++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 60 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_star_emac.c b/drivers/net/ethernet/mediatek/mtk_star_emac.c
-index 47a00e02365a2..c2ab87828d858 100644
---- a/drivers/net/ethernet/mediatek/mtk_star_emac.c
-+++ b/drivers/net/ethernet/mediatek/mtk_star_emac.c
-@@ -1348,8 +1348,7 @@ static int mtk_star_rx_poll(struct napi_struct *napi, int budget)
- 	priv = container_of(napi, struct mtk_star_priv, rx_napi);
+diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
+index 1a57dd8aa513b..612da8ec1081c 100644
+--- a/net/ipv4/udp_offload.c
++++ b/net/ipv4/udp_offload.c
+@@ -245,6 +245,62 @@ static struct sk_buff *__udpv4_gso_segment_list_csum(struct sk_buff *segs)
+ 	return segs;
+ }
  
- 	work_done = mtk_star_rx(priv, budget);
--	if (work_done < budget) {
--		napi_complete_done(napi, work_done);
-+	if (work_done < budget && napi_complete_done(napi, work_done)) {
- 		spin_lock_irqsave(&priv->lock, flags);
- 		mtk_star_enable_dma_irq(priv, true, false);
- 		spin_unlock_irqrestore(&priv->lock, flags);
++static void __udpv6_gso_segment_csum(struct sk_buff *seg,
++				     struct in6_addr *oldip,
++				     const struct in6_addr *newip,
++				     __be16 *oldport, __be16 newport)
++{
++	struct udphdr *uh = udp_hdr(seg);
++
++	if (ipv6_addr_equal(oldip, newip) && *oldport == newport)
++		return;
++
++	if (uh->check) {
++		inet_proto_csum_replace16(&uh->check, seg, oldip->s6_addr32,
++					  newip->s6_addr32, true);
++
++		inet_proto_csum_replace2(&uh->check, seg, *oldport, newport,
++					 false);
++		if (!uh->check)
++			uh->check = CSUM_MANGLED_0;
++	}
++
++	*oldip = *newip;
++	*oldport = newport;
++}
++
++static struct sk_buff *__udpv6_gso_segment_list_csum(struct sk_buff *segs)
++{
++	const struct ipv6hdr *iph;
++	const struct udphdr *uh;
++	struct ipv6hdr *iph2;
++	struct sk_buff *seg;
++	struct udphdr *uh2;
++
++	seg = segs;
++	uh = udp_hdr(seg);
++	iph = ipv6_hdr(seg);
++	uh2 = udp_hdr(seg->next);
++	iph2 = ipv6_hdr(seg->next);
++
++	if (!(*(const u32 *)&uh->source ^ *(const u32 *)&uh2->source) &&
++	    ipv6_addr_equal(&iph->saddr, &iph2->saddr) &&
++	    ipv6_addr_equal(&iph->daddr, &iph2->daddr))
++		return segs;
++
++	while ((seg = seg->next)) {
++		uh2 = udp_hdr(seg);
++		iph2 = ipv6_hdr(seg);
++
++		__udpv6_gso_segment_csum(seg, &iph2->saddr, &iph->saddr,
++					 &uh2->source, uh->source);
++		__udpv6_gso_segment_csum(seg, &iph2->daddr, &iph->daddr,
++					 &uh2->dest, uh->dest);
++	}
++
++	return segs;
++}
++
+ static struct sk_buff *__udp_gso_segment_list(struct sk_buff *skb,
+ 					      netdev_features_t features,
+ 					      bool is_ipv6)
+@@ -257,7 +313,10 @@ static struct sk_buff *__udp_gso_segment_list(struct sk_buff *skb,
+ 
+ 	udp_hdr(skb)->len = htons(sizeof(struct udphdr) + mss);
+ 
+-	return is_ipv6 ? skb : __udpv4_gso_segment_list_csum(skb);
++	if (is_ipv6)
++		return __udpv6_gso_segment_list_csum(skb);
++	else
++		return __udpv4_gso_segment_list_csum(skb);
+ }
+ 
+ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
 -- 
 2.39.5
 
