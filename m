@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-142543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79616AAEB12
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:03:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04CC2AAEA52
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:54:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6F49525B6E
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:03:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 542BF7BE041
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:52:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5242A28D834;
-	Wed,  7 May 2025 19:02:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC6F621E0BB;
+	Wed,  7 May 2025 18:53:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hV4TrmNn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hvd07H8P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EB7929A0;
-	Wed,  7 May 2025 19:02:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994301FF5EC;
+	Wed,  7 May 2025 18:53:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644578; cv=none; b=qa6hELHSW/txY0OWCeq/8viHBHX3ia0MI2oEh7+qaLALfLy3USyJbqAI1G2/N/J7YzPHpOB5NXTcvRPIfXy89RJr+yMw7mtWAEffwl9tan7kMPnn1ukw9H21ACCTubdadfvmIyqiE0i1j3vBSnHYBiI2lKuqOez660oZJjE6Al0=
+	t=1746644039; cv=none; b=sxObAwNDP6aazOUgp6OFejONr7jQKn4skLjMit1lmaVRYot8fhcqfGHHTQmvK3hiXJlYVtZ3dKHNZSR7h3L0EdZzbvQuQKmC8gKdSbhgVglEgzN02CpYTZTmd+wAvQDDDTCzB3QVu5zInVm02ICWMajZsNHIx6DSbQ9D1ms3Zf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644578; c=relaxed/simple;
-	bh=M1p2vb/OAs+UC5KPRJQgT1DdLwtbznCdxvy3Wm8r14I=;
+	s=arc-20240116; t=1746644039; c=relaxed/simple;
+	bh=JE6mRwvTrxNNkty+ax5L4nZnnyoDI8hkGjhykdzDDzk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oxXh8pFiO9ApEelUHlmqZjnlFuy51eu/zwZUo5z9GrXvwZmv/SZr7PS/8UKS+k19zrdscpHLKoTBMlQpYpMTeY6W/cGsPefUnGv6IPb/eVRq7Il/Wc4fUQ3gtAVnqe3/rikSVQbX/oAv3dKtVAUyyHPqPv2K2i0oDVrq75Eq//0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hV4TrmNn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73298C4CEE2;
-	Wed,  7 May 2025 19:02:57 +0000 (UTC)
+	 MIME-Version; b=AOaAJwDdh5NgXABKLuYAr+70Rnc6Nt/5R1YJo613ld9ba1UZ9OQxvhrcBvaYDa4MPELoHPks1sPsnfYYLFOz9/K6XWvuLUVH/WUqV/EJvBPyyQcKF8LStoAK9vulHASV+y2fdYGVJLi3jJHzTF6jqrsaRrItvnWOmKxw6Ieczj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hvd07H8P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B7DCC4CEE2;
+	Wed,  7 May 2025 18:53:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644577;
-	bh=M1p2vb/OAs+UC5KPRJQgT1DdLwtbznCdxvy3Wm8r14I=;
+	s=korg; t=1746644039;
+	bh=JE6mRwvTrxNNkty+ax5L4nZnnyoDI8hkGjhykdzDDzk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hV4TrmNnc4KHQR5jcYugsRqKtyhuV+ijKDHleCa048VIWfaQeeNUmPTHA7cQVRwpi
-	 J7KBUmCVcF9BH88hjYFn6AEUhU64hMkdK8LUrgH+apioKx6QgdwK47ue5nobe1eisM
-	 rXJOpqU4OLZubmmo/SQbgkw3JmPn6R0/GHO0iorQ=
+	b=Hvd07H8PrHtkSDawATRO2JHbUazYjZ6ROGbYq9lAhN+xeJKVoQBtvOpLV51M8RkhH
+	 OGZBEACTZe+vgD0lgZkRdSrvUmujUOEvtBozcuI2YUCcqN4QvYCg251l1yzgD6A92F
+	 VwPZofPz+vYfKogVeK1Ujj/DpUHvcANiZ/hmBJyM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 059/164] ALSA: hda/realtek - Enable speaker for HP platform
+Subject: [PATCH 6.14 099/183] net_sched: qfq: Fix double list add in class with netem as child qdisc
 Date: Wed,  7 May 2025 20:39:04 +0200
-Message-ID: <20250507183823.329266258@linuxfoundation.org>
+Message-ID: <20250507183828.831950783@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Victor Nogueira <victor@mojatatu.com>
 
-[ Upstream commit 494d0939b1bda4d4ddca7d52a6ce6f808ff2c9a5 ]
+[ Upstream commit f139f37dcdf34b67f5bf92bc8e0f7f6b3ac63aa4 ]
 
-The speaker doesn't mute when plugged headphone.
-This platform support 4ch speakers.
-The speaker pin 0x14 wasn't fill verb table.
-After assigned model ALC245_FIXUP_HP_SPECTRE_X360_EU0XXX.
-The speaker can mute when headphone was plugged.
+As described in Gerrard's report [1], there are use cases where a netem
+child qdisc will make the parent qdisc's enqueue callback reentrant.
+In the case of qfq, there won't be a UAF, but the code will add the same
+classifier to the list twice, which will cause memory corruption.
 
-Fixes: aa8e3ef4fe53 ("ALSA: hda/realtek: Add quirks for various HP ENVY models")
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Link: https://lore.kernel.org/eb4c14a4d85740069c909e756bbacb0e@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+This patch checks whether the class was already added to the agg->active
+list (cl_is_active) before doing the addition to cater for the reentrant
+case.
+
+[1] https://lore.kernel.org/netdev/CAHcdcOm+03OD2j6R0=YHKqmy=VgJ8xEOKuP6c7mSgnp-TEJJbw@mail.gmail.com/
+
+Fixes: 37d9cf1a3ce3 ("sched: Fix detection of empty queues in child qdiscs")
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+Link: https://patch.msgid.link/20250425220710.3964791-5-victor@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ net/sched/sch_qfq.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 4171aa22747c3..5a36cb2969b08 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -440,6 +440,10 @@ static void alc_fill_eapd_coef(struct hda_codec *codec)
- 		alc_update_coef_idx(codec, 0x67, 0xf000, 0x3000);
- 		fallthrough;
- 	case 0x10ec0215:
-+	case 0x10ec0236:
-+	case 0x10ec0245:
-+	case 0x10ec0256:
-+	case 0x10ec0257:
- 	case 0x10ec0285:
- 	case 0x10ec0289:
- 		alc_update_coef_idx(codec, 0x36, 1<<13, 0);
-@@ -447,12 +451,8 @@ static void alc_fill_eapd_coef(struct hda_codec *codec)
- 	case 0x10ec0230:
- 	case 0x10ec0233:
- 	case 0x10ec0235:
--	case 0x10ec0236:
--	case 0x10ec0245:
- 	case 0x10ec0255:
--	case 0x10ec0256:
- 	case 0x19e58326:
--	case 0x10ec0257:
- 	case 0x10ec0282:
- 	case 0x10ec0283:
- 	case 0x10ec0286:
-@@ -10687,8 +10687,8 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x103c, 0x8ca7, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8caf, "HP Elite mt645 G8 Mobile Thin Client", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
- 	SND_PCI_QUIRK(0x103c, 0x8cbd, "HP Pavilion Aero Laptop 13-bg0xxx", ALC245_FIXUP_HP_X360_MUTE_LEDS),
--	SND_PCI_QUIRK(0x103c, 0x8cdd, "HP Spectre", ALC287_FIXUP_CS35L41_I2C_2),
--	SND_PCI_QUIRK(0x103c, 0x8cde, "HP Spectre", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x103c, 0x8cdd, "HP Spectre", ALC245_FIXUP_HP_SPECTRE_X360_EU0XXX),
-+	SND_PCI_QUIRK(0x103c, 0x8cde, "HP OmniBook Ultra Flip Laptop 14t", ALC245_FIXUP_HP_SPECTRE_X360_EU0XXX),
- 	SND_PCI_QUIRK(0x103c, 0x8cdf, "HP SnowWhite", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8ce0, "HP SnowWhite", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8cf5, "HP ZBook Studio 16", ALC245_FIXUP_CS35L41_SPI_4_HP_GPIO_LED),
+diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
+index 6a07cdbdb9e12..faba1501ac2fa 100644
+--- a/net/sched/sch_qfq.c
++++ b/net/sched/sch_qfq.c
+@@ -202,6 +202,11 @@ struct qfq_sched {
+  */
+ enum update_reason {enqueue, requeue};
+ 
++static bool cl_is_active(struct qfq_class *cl)
++{
++	return !list_empty(&cl->alist);
++}
++
+ static struct qfq_class *qfq_find_class(struct Qdisc *sch, u32 classid)
+ {
+ 	struct qfq_sched *q = qdisc_priv(sch);
+@@ -1214,7 +1219,6 @@ static int qfq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	struct qfq_class *cl;
+ 	struct qfq_aggregate *agg;
+ 	int err = 0;
+-	bool first;
+ 
+ 	cl = qfq_classify(skb, sch, &err);
+ 	if (cl == NULL) {
+@@ -1236,7 +1240,6 @@ static int qfq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	}
+ 
+ 	gso_segs = skb_is_gso(skb) ? skb_shinfo(skb)->gso_segs : 1;
+-	first = !cl->qdisc->q.qlen;
+ 	err = qdisc_enqueue(skb, cl->qdisc, to_free);
+ 	if (unlikely(err != NET_XMIT_SUCCESS)) {
+ 		pr_debug("qfq_enqueue: enqueue failed %d\n", err);
+@@ -1252,8 +1255,8 @@ static int qfq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	++sch->q.qlen;
+ 
+ 	agg = cl->agg;
+-	/* if the queue was not empty, then done here */
+-	if (!first) {
++	/* if the class is active, then done here */
++	if (cl_is_active(cl)) {
+ 		if (unlikely(skb == cl->qdisc->ops->peek(cl->qdisc)) &&
+ 		    list_first_entry(&agg->active, struct qfq_class, alist)
+ 		    == cl && cl->deficit < len)
 -- 
 2.39.5
 
