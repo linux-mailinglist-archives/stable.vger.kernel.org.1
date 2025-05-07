@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-142377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5723AAEA5C
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:54:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8680DAAE986
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:45:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C94479C707E
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:54:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E06CE505B72
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:45:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD0E121E0BB;
-	Wed,  7 May 2025 18:54:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9D04202C2B;
+	Wed,  7 May 2025 18:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YdaL5F2P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="avDUVcuN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2392116E9;
-	Wed,  7 May 2025 18:54:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A50A91FF5EC;
+	Wed,  7 May 2025 18:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644061; cv=none; b=i2dKhhhAjwA/6Hjnepxtm4TyxWeE4kp5mC1rMN7hOPOlnoLhT6c055Qv8RUXTsRSdj3p5o0rfEn9Ymtw8ncnx36EFeIN6ISakcH1lqpfmmq9/IWqogQUeauq/Yb7UBI3f6tr+FaFTtmSjOjE/Og9Y+swASaxis1KpUEtaxXES5c=
+	t=1746643535; cv=none; b=eOj287skI/GvySd3cyNYzj1BbFdZOyr4kx02mFN4QVCvLrWyQ16jDY+Xaeo5TcJSl7mdzr2QuaZqFHY4VYaER1Ir08Mei7e7n1Eb1pW6Rtv6aINMeurSjbcOFzpxemVn5gJQs1KOpu+K9ro6nUbPWzWCF8v7ii5H3OoipZBRcIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644061; c=relaxed/simple;
-	bh=I3BgfFWv6nRbBxo8SCVXmZI1IVfH7Fna5hnaDPc8cMU=;
+	s=arc-20240116; t=1746643535; c=relaxed/simple;
+	bh=dMZq3b9s1bHjS7fzzsSaktzvoWdFv41bXoa9owDKMeY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CAkvO2bam0UOzuBCm+n7YamwFxat3FlpcDxq48aeX0xxkkvMEETaVw/AjrA5drojP9zCMrzBE9JsmXmf9XK6nKJJx6wqaHMMbb96jVgQO9ejIFxe/WeyroC0L+C9F68yreRFuGBpZP/HGzxbDFupjd+D9KEQZDFeLAuN6ghrN2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YdaL5F2P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D7EBC4CEE2;
-	Wed,  7 May 2025 18:54:20 +0000 (UTC)
+	 MIME-Version; b=STdVTOSRk5WCp9/Oma22J6epTRJL3JsCLmHnaAoFm8RWN2v9v5cdd9q/D+8RI2lsPAj7f2dkoErXX9d1T9F9tN00dMK3Wq6rEZRPYrxhmZh46avYJiQeDVUlRVxBKRTtSrJrpGte2LuL5feGZiCMmTV5y8IZWTOb/yhz7NFtc0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=avDUVcuN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A353C4CEE2;
+	Wed,  7 May 2025 18:45:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644061;
-	bh=I3BgfFWv6nRbBxo8SCVXmZI1IVfH7Fna5hnaDPc8cMU=;
+	s=korg; t=1746643534;
+	bh=dMZq3b9s1bHjS7fzzsSaktzvoWdFv41bXoa9owDKMeY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YdaL5F2PqBmKmYVsL+kh6cXKSSpSdcVwDaR/Qle3HKhGdN28wlkDaRuBpZx0iUH7Z
-	 NPeV1OM0YD+1cOx2E9hqimJqPvKZ/+MSr5qMAub9RUmo4Zyr72gdcD+1LTvJqtqs/F
-	 u0W4etOg2/gCq+qnGfgFwmKHVLTALFgQ/QYOkA+A=
+	b=avDUVcuNg/y1n54+8jJNvNpnlvil/7Td42uqNJtufhDMAeZ+0ecoz2dQM3puDtLwx
+	 frI2UGCyCTXE4jP48OHEXuMf2j6oAKamDEVDy657dNmN7qL805ArrcvmzLlG07EVGJ
+	 W1DmQj3Vj+iXXbwOtFU9DB6QS6qU8ye/q+Kpao54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhanjun Dong <zhanjun.dong@intel.com>,
-	Alan Previn <alan.previn.teres.alexis@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	intel-xe@lists.freedesktop.org,
-	John Harrison <John.C.Harrison@Intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 106/183] drm/xe/guc: Fix capture of steering registers
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Chandan Babu R <chandanbabu@kernel.org>,
+	Leah Rumancik <leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 36/97] xfs: fix freeing speculative preallocations for preallocated files
 Date: Wed,  7 May 2025 20:39:11 +0200
-Message-ID: <20250507183829.125831907@linuxfoundation.org>
+Message-ID: <20250507183808.446128039@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
+References: <20250507183806.987408728@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,58 +61,173 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Harrison <John.C.Harrison@Intel.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 5e639707ddb8f080fbde805a1bfa6668a1b45298 ]
+[ Upstream commit 610b29161b0aa9feb59b78dc867553274f17fb01 ]
 
-The list of registers to capture on a GPU hang includes some that
-require steering. Unfortunately, the flag to say this was being wiped
-to due a missing OR on the assignment of the next flag field.
+xfs_can_free_eofblocks returns false for files that have persistent
+preallocations unless the force flag is passed and there are delayed
+blocks.  This means it won't free delalloc reservations for files
+with persistent preallocations unless the force flag is set, and it
+will also free the persistent preallocations if the force flag is
+set and the file happens to have delayed allocations.
 
-Fix that.
+Both of these are bad, so do away with the force flag and always free
+only post-EOF delayed allocations for files with the XFS_DIFLAG_PREALLOC
+or APPEND flags set.
 
-Fixes: b170d696c1e2 ("drm/xe/guc: Add XE_LP steered register lists")
-Cc: Zhanjun Dong <zhanjun.dong@intel.com>
-Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: "Thomas Hellström" <thomas.hellstrom@linux.intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: intel-xe@lists.freedesktop.org
-Signed-off-by: John Harrison <John.C.Harrison@Intel.com>
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
-Reviewed-by: Zhanjun Dong <zhanjun.dong@intel.com>
-Link: https://lore.kernel.org/r/20250417195215.3002210-2-John.C.Harrison@Intel.com
-(cherry picked from commit 532da44b54a10d50ebad14a8a02bd0b78ec23e8b)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: "Darrick J. Wong" <djwong@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_guc_capture.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/xfs/xfs_bmap_util.c |   30 ++++++++++++++++++++++--------
+ fs/xfs/xfs_bmap_util.h |    2 +-
+ fs/xfs/xfs_icache.c    |    2 +-
+ fs/xfs/xfs_inode.c     |   14 ++++----------
+ 4 files changed, 28 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_guc_capture.c b/drivers/gpu/drm/xe/xe_guc_capture.c
-index f6d523e4c5feb..9095618648bcb 100644
---- a/drivers/gpu/drm/xe/xe_guc_capture.c
-+++ b/drivers/gpu/drm/xe/xe_guc_capture.c
-@@ -359,7 +359,7 @@ static void __fill_ext_reg(struct __guc_mmio_reg_descr *ext,
+--- a/fs/xfs/xfs_bmap_util.c
++++ b/fs/xfs/xfs_bmap_util.c
+@@ -636,13 +636,11 @@ out_unlock:
  
- 	ext->reg = XE_REG(extlist->reg.__reg.addr);
- 	ext->flags = FIELD_PREP(GUC_REGSET_STEERING_NEEDED, 1);
--	ext->flags = FIELD_PREP(GUC_REGSET_STEERING_GROUP, slice_id);
-+	ext->flags |= FIELD_PREP(GUC_REGSET_STEERING_GROUP, slice_id);
- 	ext->flags |= FIELD_PREP(GUC_REGSET_STEERING_INSTANCE, subslice_id);
- 	ext->regname = extlist->name;
+ /*
+  * Test whether it is appropriate to check an inode for and free post EOF
+- * blocks. The 'force' parameter determines whether we should also consider
+- * regular files that are marked preallocated or append-only.
++ * blocks.
+  */
+ bool
+ xfs_can_free_eofblocks(
+-	struct xfs_inode	*ip,
+-	bool			force)
++	struct xfs_inode	*ip)
+ {
+ 	struct xfs_bmbt_irec	imap;
+ 	struct xfs_mount	*mp = ip->i_mount;
+@@ -676,11 +674,11 @@ xfs_can_free_eofblocks(
+ 		return false;
+ 
+ 	/*
+-	 * Do not free real preallocated or append-only files unless the file
+-	 * has delalloc blocks and we are forced to remove them.
++	 * Only free real extents for inodes with persistent preallocations or
++	 * the append-only flag.
+ 	 */
+ 	if (ip->i_diflags & (XFS_DIFLAG_PREALLOC | XFS_DIFLAG_APPEND))
+-		if (!force || ip->i_delayed_blks == 0)
++		if (ip->i_delayed_blks == 0)
+ 			return false;
+ 
+ 	/*
+@@ -734,6 +732,22 @@ xfs_free_eofblocks(
+ 	/* Wait on dio to ensure i_size has settled. */
+ 	inode_dio_wait(VFS_I(ip));
+ 
++	/*
++	 * For preallocated files only free delayed allocations.
++	 *
++	 * Note that this means we also leave speculative preallocations in
++	 * place for preallocated files.
++	 */
++	if (ip->i_diflags & (XFS_DIFLAG_PREALLOC | XFS_DIFLAG_APPEND)) {
++		if (ip->i_delayed_blks) {
++			xfs_bmap_punch_delalloc_range(ip,
++				round_up(XFS_ISIZE(ip), mp->m_sb.sb_blocksize),
++				LLONG_MAX);
++		}
++		xfs_inode_clear_eofblocks_tag(ip);
++		return 0;
++	}
++
+ 	error = xfs_trans_alloc(mp, &M_RES(mp)->tr_itruncate, 0, 0, 0, &tp);
+ 	if (error) {
+ 		ASSERT(xfs_is_shutdown(mp));
+@@ -1048,7 +1062,7 @@ xfs_prepare_shift(
+ 	 * Trim eofblocks to avoid shifting uninitialized post-eof preallocation
+ 	 * into the accessible region of the file.
+ 	 */
+-	if (xfs_can_free_eofblocks(ip, true)) {
++	if (xfs_can_free_eofblocks(ip)) {
+ 		error = xfs_free_eofblocks(ip);
+ 		if (error)
+ 			return error;
+--- a/fs/xfs/xfs_bmap_util.h
++++ b/fs/xfs/xfs_bmap_util.h
+@@ -63,7 +63,7 @@ int	xfs_insert_file_space(struct xfs_ino
+ 				xfs_off_t len);
+ 
+ /* EOF block manipulation functions */
+-bool	xfs_can_free_eofblocks(struct xfs_inode *ip, bool force);
++bool	xfs_can_free_eofblocks(struct xfs_inode *ip);
+ int	xfs_free_eofblocks(struct xfs_inode *ip);
+ 
+ int	xfs_swap_extents(struct xfs_inode *ip, struct xfs_inode *tip,
+--- a/fs/xfs/xfs_icache.c
++++ b/fs/xfs/xfs_icache.c
+@@ -1186,7 +1186,7 @@ xfs_inode_free_eofblocks(
+ 	}
+ 	*lockflags |= XFS_IOLOCK_EXCL;
+ 
+-	if (xfs_can_free_eofblocks(ip, false))
++	if (xfs_can_free_eofblocks(ip))
+ 		return xfs_free_eofblocks(ip);
+ 
+ 	/* inode could be preallocated or append-only */
+--- a/fs/xfs/xfs_inode.c
++++ b/fs/xfs/xfs_inode.c
+@@ -1459,7 +1459,7 @@ xfs_release(
+ 	if (!xfs_ilock_nowait(ip, XFS_IOLOCK_EXCL))
+ 		return 0;
+ 
+-	if (xfs_can_free_eofblocks(ip, false)) {
++	if (xfs_can_free_eofblocks(ip)) {
+ 		/*
+ 		 * Check if the inode is being opened, written and closed
+ 		 * frequently and we have delayed allocation blocks outstanding
+@@ -1675,15 +1675,13 @@ xfs_inode_needs_inactive(
+ 
+ 	/*
+ 	 * This file isn't being freed, so check if there are post-eof blocks
+-	 * to free.  @force is true because we are evicting an inode from the
+-	 * cache.  Post-eof blocks must be freed, lest we end up with broken
+-	 * free space accounting.
++	 * to free.
+ 	 *
+ 	 * Note: don't bother with iolock here since lockdep complains about
+ 	 * acquiring it in reclaim context. We have the only reference to the
+ 	 * inode at this point anyways.
+ 	 */
+-	return xfs_can_free_eofblocks(ip, true);
++	return xfs_can_free_eofblocks(ip);
  }
--- 
-2.39.5
-
+ 
+ /*
+@@ -1734,15 +1732,11 @@ xfs_inactive(
+ 
+ 	if (VFS_I(ip)->i_nlink != 0) {
+ 		/*
+-		 * force is true because we are evicting an inode from the
+-		 * cache. Post-eof blocks must be freed, lest we end up with
+-		 * broken free space accounting.
+-		 *
+ 		 * Note: don't bother with iolock here since lockdep complains
+ 		 * about acquiring it in reclaim context. We have the only
+ 		 * reference to the inode at this point anyways.
+ 		 */
+-		if (xfs_can_free_eofblocks(ip, true))
++		if (xfs_can_free_eofblocks(ip))
+ 			error = xfs_free_eofblocks(ip);
+ 
+ 		goto out;
 
 
 
