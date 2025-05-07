@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-142179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4705CAAE963
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:44:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1908AAAEADA
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:00:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74FDA1C271D2
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:44:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7B9B1C28517
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:00:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7165B28DF1B;
-	Wed,  7 May 2025 18:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A512F28E57F;
+	Wed,  7 May 2025 19:00:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pRQ8uamm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N9mdM78D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F30B14A4C7;
-	Wed,  7 May 2025 18:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ACA528E57E;
+	Wed,  7 May 2025 19:00:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643455; cv=none; b=AzBxrfK+UuVlfL7i8WduIogMqWPIJTl2C1f39+uTI5QtjpXtq3PTjMqKOi+O3pyS6SIG11+ucXSF0AweC8pH/3q3XMNx9eRfKAqIhmCp54fkMu03MGIPpgA+AtnYK53e8+JzIxmorJzZQ3LUodv16Q0vjRPfdEJ1tlL/bVPFVZk=
+	t=1746644426; cv=none; b=Ayb0eZJRDtnMq0bZFtfWGPzS1YIYmltoUReJY90xcCGXG6fiRo6UkFfHhjzr2MyXbCkDh6sS735liemH/33DTfBVe37E7CCx8rfrQo9zRYUyiJVz6wcy1ObzInnMZgSs4sa9b/o7hxpd5Uo7tdUqkz2CE/vsGQ8IZxm5F0oi6fM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643455; c=relaxed/simple;
-	bh=RceNX41FhXWfYDs/STT3w6IeVPw4A6eqKNEcLcQkbyg=;
+	s=arc-20240116; t=1746644426; c=relaxed/simple;
+	bh=S13P6Zu9V74iigruQHD/uG2PaSaM65leWXaY10FGq/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pvPaEVyf+jRqoad+fJ2QfHHDupQrp4aTJ1WuI6UM69iErhHuGrvjkgJW4dTqdklO/32+8FlocsT7fCkY/eJmVVh6P5D/5jQcRFSdPhED866bl8SVi+9TXtOTTKR1G3keRRWN0zXQhb1c71XMS4jbnKcn/Kgxt5MdlKpRtmAyabA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pRQ8uamm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4EBDC4CEE2;
-	Wed,  7 May 2025 18:44:14 +0000 (UTC)
+	 MIME-Version; b=jTP+PivcH7huRUd/ZyHrRffXbmkRjZZ4Bom2Nrfyq+9aNNQBGKw3Pl9QbM6FK9yJRUAmPu5JxVHU+/TkuwJzj6RMbQ8ck2QtFijezs1fvE//jH6HWiv5jcUE+1D6PsqiCoydwwMybLfaMdwcJZ6Ee0WJadDrIiZ/8Su3QJp7eFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N9mdM78D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D614C4CEE2;
+	Wed,  7 May 2025 19:00:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643455;
-	bh=RceNX41FhXWfYDs/STT3w6IeVPw4A6eqKNEcLcQkbyg=;
+	s=korg; t=1746644425;
+	bh=S13P6Zu9V74iigruQHD/uG2PaSaM65leWXaY10FGq/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pRQ8uammvlsQfI0icUPeBQ4WcmXyx7aVJQGVj9JwR3pbFXJLTSjD0MPIWAzOKU3+i
-	 zvnEvI7AZbZePpP6b1DRUMx2NVYp+vBBOmCEM4vodCx+ZxYjIsVFQAJXP9uG+bg3lx
-	 C0gdxkSF2kD3u8TDRtUDQcRyNRN95PmaYRHtNtbI=
+	b=N9mdM78D/GHH4bnmXYTuWwabITfkCelWgLotlWsVoDl+VVI/9KQ1JNXOiXtSEY2xr
+	 giaxYt4gakoTDpdh4LnzDumx/+ET4SCDw1YiGoaZeLR/2OzoukoK2tQW6hqrd3ywe8
+	 A1e8d6YIVUAZjCZj6Q8SEVCzEyhMhuyFkWLgtdro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vishal Badole <Vishal.Badole@amd.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 10/97] amd-xgbe: Fix to ensure dependent features are toggled with RX checksum offload
+	Wenhao Sun <weiguangtwk@outlook.com>,
+	Mingcong Bai <jeffbai@aosc.io>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <jroedel@suse.de>
+Subject: [PATCH 6.12 040/164] iommu/vt-d: Apply quirk_iommu_igfx for 8086:0044 (QM57/QS57)
 Date: Wed,  7 May 2025 20:38:45 +0200
-Message-ID: <20250507183807.410575237@linuxfoundation.org>
+Message-ID: <20250507183822.507476664@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
-References: <20250507183806.987408728@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,140 +63,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vishal Badole <Vishal.Badole@amd.com>
+From: Mingcong Bai <jeffbai@aosc.io>
 
-commit f04dd30f1bef1ed2e74a4050af6e5e5e3869bac3 upstream.
+commit 2c8a7c66c90832432496616a9a3c07293f1364f3 upstream.
 
-According to the XGMAC specification, enabling features such as Layer 3
-and Layer 4 Packet Filtering, Split Header and Virtualized Network support
-automatically selects the IPC Full Checksum Offload Engine on the receive
-side.
+On the Lenovo ThinkPad X201, when Intel VT-d is enabled in the BIOS, the
+kernel boots with errors related to DMAR, the graphical interface appeared
+quite choppy, and the system resets erratically within a minute after it
+booted:
 
-When RX checksum offload is disabled, these dependent features must also
-be disabled to prevent abnormal behavior caused by mismatched feature
-dependencies.
+DMAR: DRHD: handling fault status reg 3
+DMAR: [DMA Write NO_PASID] Request device [00:02.0] fault addr 0xb97ff000
+[fault reason 0x05] PTE Write access is not set
 
-Ensure that toggling RX checksum offload (disabling or enabling) properly
-disables or enables all dependent features, maintaining consistent and
-expected behavior in the network device.
+Upon comparing boot logs with VT-d on/off, I found that the Intel Calpella
+quirk (`quirk_calpella_no_shadow_gtt()') correctly applied the igfx IOMMU
+disable/quirk correctly:
+
+pci 0000:00:00.0: DMAR: BIOS has allocated no shadow GTT; disabling IOMMU
+for graphics
+
+Whereas with VT-d on, it went into the "else" branch, which then
+triggered the DMAR handling fault above:
+
+... else if (!disable_igfx_iommu) {
+	/* we have to ensure the gfx device is idle before we flush */
+	pci_info(dev, "Disabling batched IOTLB flush on Ironlake\n");
+	iommu_set_dma_strict();
+}
+
+Now, this is not exactly scientific, but moving 0x0044 to quirk_iommu_igfx
+seems to have fixed the aforementioned issue. Running a few `git blame'
+runs on the function, I have found that the quirk was originally
+introduced as a fix specific to ThinkPad X201:
+
+commit 9eecabcb9a92 ("intel-iommu: Abort IOMMU setup for igfx if BIOS gave
+no shadow GTT space")
+
+Which was later revised twice to the "else" branch we saw above:
+
+- 2011: commit 6fbcfb3e467a ("intel-iommu: Workaround IOTLB hang on
+  Ironlake GPU")
+- 2024: commit ba00196ca41c ("iommu/vt-d: Decouple igfx_off from graphic
+  identity mapping")
+
+I'm uncertain whether further testings on this particular laptops were
+done in 2011 and (honestly I'm not sure) 2024, but I would be happy to do
+some distro-specific testing if that's what would be required to verify
+this patch.
+
+P.S., I also see IDs 0x0040, 0x0062, and 0x006a listed under the same
+`quirk_calpella_no_shadow_gtt()' quirk, but I'm not sure how similar these
+chipsets are (if they share the same issue with VT-d or even, indeed, if
+this issue is specific to a bug in the Lenovo BIOS). With regards to
+0x0062, it seems to be a Centrino wireless card, but not a chipset?
+
+I have also listed a couple (distro and kernel) bug reports below as
+references (some of them are from 7-8 years ago!), as they seem to be
+similar issue found on different Westmere/Ironlake, Haswell, and Broadwell
+hardware setups.
 
 Cc: stable@vger.kernel.org
-Fixes: 1a510ccf5869 ("amd-xgbe: Add support for VXLAN offload capabilities")
-Signed-off-by: Vishal Badole <Vishal.Badole@amd.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250424130248.428865-1-Vishal.Badole@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 6fbcfb3e467a ("intel-iommu: Workaround IOTLB hang on Ironlake GPU")
+Fixes: ba00196ca41c ("iommu/vt-d: Decouple igfx_off from graphic identity mapping")
+Link: https://groups.google.com/g/qubes-users/c/4NP4goUds2c?pli=1
+Link: https://bugs.archlinux.org/task/65362
+Link: https://bbs.archlinux.org/viewtopic.php?id=230323
+Reported-by: Wenhao Sun <weiguangtwk@outlook.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=197029
+Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
+Link: https://lore.kernel.org/r/20250415133330.12528-1-jeffbai@aosc.io
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/amd/xgbe/xgbe-desc.c |    9 +++++++--
- drivers/net/ethernet/amd/xgbe/xgbe-dev.c  |   24 ++++++++++++++++++++++--
- drivers/net/ethernet/amd/xgbe/xgbe-drv.c  |   11 +++++++++--
- drivers/net/ethernet/amd/xgbe/xgbe.h      |    4 ++++
- 4 files changed, 42 insertions(+), 6 deletions(-)
+ drivers/iommu/intel/iommu.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/amd/xgbe/xgbe-desc.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-desc.c
-@@ -373,8 +373,13 @@ static int xgbe_map_rx_buffer(struct xgb
+--- a/drivers/iommu/intel/iommu.c
++++ b/drivers/iommu/intel/iommu.c
+@@ -4666,6 +4666,9 @@ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_I
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x2e40, quirk_iommu_igfx);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x2e90, quirk_iommu_igfx);
+ 
++/* QM57/QS57 integrated gfx malfunctions with dmar */
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x0044, quirk_iommu_igfx);
++
+ /* Broadwell igfx malfunctions with dmar */
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x1606, quirk_iommu_igfx);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x160B, quirk_iommu_igfx);
+@@ -4743,7 +4746,6 @@ static void quirk_calpella_no_shadow_gtt
  	}
- 
- 	/* Set up the header page info */
--	xgbe_set_buffer_data(&rdata->rx.hdr, &ring->rx_hdr_pa,
--			     XGBE_SKB_ALLOC_SIZE);
-+	if (pdata->netdev->features & NETIF_F_RXCSUM) {
-+		xgbe_set_buffer_data(&rdata->rx.hdr, &ring->rx_hdr_pa,
-+				     XGBE_SKB_ALLOC_SIZE);
-+	} else {
-+		xgbe_set_buffer_data(&rdata->rx.hdr, &ring->rx_hdr_pa,
-+				     pdata->rx_buf_size);
-+	}
- 
- 	/* Set up the buffer page info */
- 	xgbe_set_buffer_data(&rdata->rx.buf, &ring->rx_buf_pa,
---- a/drivers/net/ethernet/amd/xgbe/xgbe-dev.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-dev.c
-@@ -320,6 +320,18 @@ static void xgbe_config_sph_mode(struct
- 	XGMAC_IOWRITE_BITS(pdata, MAC_RCR, HDSMS, XGBE_SPH_HDSMS_SIZE);
  }
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x0040, quirk_calpella_no_shadow_gtt);
+-DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x0044, quirk_calpella_no_shadow_gtt);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x0062, quirk_calpella_no_shadow_gtt);
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x006a, quirk_calpella_no_shadow_gtt);
  
-+static void xgbe_disable_sph_mode(struct xgbe_prv_data *pdata)
-+{
-+	unsigned int i;
-+
-+	for (i = 0; i < pdata->channel_count; i++) {
-+		if (!pdata->channel[i]->rx_ring)
-+			break;
-+
-+		XGMAC_DMA_IOWRITE_BITS(pdata->channel[i], DMA_CH_CR, SPH, 0);
-+	}
-+}
-+
- static int xgbe_write_rss_reg(struct xgbe_prv_data *pdata, unsigned int type,
- 			      unsigned int index, unsigned int val)
- {
-@@ -3495,8 +3507,12 @@ static int xgbe_init(struct xgbe_prv_dat
- 	xgbe_config_tx_coalesce(pdata);
- 	xgbe_config_rx_buffer_size(pdata);
- 	xgbe_config_tso_mode(pdata);
--	xgbe_config_sph_mode(pdata);
--	xgbe_config_rss(pdata);
-+
-+	if (pdata->netdev->features & NETIF_F_RXCSUM) {
-+		xgbe_config_sph_mode(pdata);
-+		xgbe_config_rss(pdata);
-+	}
-+
- 	desc_if->wrapper_tx_desc_init(pdata);
- 	desc_if->wrapper_rx_desc_init(pdata);
- 	xgbe_enable_dma_interrupts(pdata);
-@@ -3650,5 +3666,9 @@ void xgbe_init_function_ptrs_dev(struct
- 	hw_if->disable_vxlan = xgbe_disable_vxlan;
- 	hw_if->set_vxlan_id = xgbe_set_vxlan_id;
- 
-+	/* For Split Header*/
-+	hw_if->enable_sph = xgbe_config_sph_mode;
-+	hw_if->disable_sph = xgbe_disable_sph_mode;
-+
- 	DBGPR("<--xgbe_init_function_ptrs\n");
- }
---- a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-@@ -2257,10 +2257,17 @@ static int xgbe_set_features(struct net_
- 	if (ret)
- 		return ret;
- 
--	if ((features & NETIF_F_RXCSUM) && !rxcsum)
-+	if ((features & NETIF_F_RXCSUM) && !rxcsum) {
-+		hw_if->enable_sph(pdata);
-+		hw_if->enable_vxlan(pdata);
- 		hw_if->enable_rx_csum(pdata);
--	else if (!(features & NETIF_F_RXCSUM) && rxcsum)
-+		schedule_work(&pdata->restart_work);
-+	} else if (!(features & NETIF_F_RXCSUM) && rxcsum) {
-+		hw_if->disable_sph(pdata);
-+		hw_if->disable_vxlan(pdata);
- 		hw_if->disable_rx_csum(pdata);
-+		schedule_work(&pdata->restart_work);
-+	}
- 
- 	if ((features & NETIF_F_HW_VLAN_CTAG_RX) && !rxvlan)
- 		hw_if->enable_rx_vlan_stripping(pdata);
---- a/drivers/net/ethernet/amd/xgbe/xgbe.h
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe.h
-@@ -859,6 +859,10 @@ struct xgbe_hw_if {
- 	void (*enable_vxlan)(struct xgbe_prv_data *);
- 	void (*disable_vxlan)(struct xgbe_prv_data *);
- 	void (*set_vxlan_id)(struct xgbe_prv_data *);
-+
-+	/* For Split Header */
-+	void (*enable_sph)(struct xgbe_prv_data *pdata);
-+	void (*disable_sph)(struct xgbe_prv_data *pdata);
- };
- 
- /* This structure represents implementation specific routines for an
 
 
 
