@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-142339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4C7BAAEA32
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:52:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B3E0AAEAF2
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:01:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E477B98163A
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:52:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A46855249C4
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:01:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5340821E0BB;
-	Wed,  7 May 2025 18:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 987C823DE;
+	Wed,  7 May 2025 19:01:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qKzxhw8F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AJ5dqxGk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F26D1FF5EC;
-	Wed,  7 May 2025 18:52:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54CC429A0;
+	Wed,  7 May 2025 19:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643947; cv=none; b=EbuhOvvCejCS3+AQVnzORTqJs42rB0H6R9BBVzqHaLlCccBxJa+FxJP5vp7OwKqcxCW2ZfzMNEGLzBlezJgO1MVeLumtUsU8q3sQKe6zXEsQ4Ov6LenJ/B6+VheN9o405iMDG2ZWFgqMJVwB9O8E/+ZvHv4D3pleNHwzrn/atJY=
+	t=1746644488; cv=none; b=L/XqeNo3wnl9QlTr3E433GoeN4OHVkl0143icKupToUVVQKLmq8+dMfRRkJW0fYJJpoIH0qwRkkIMmHm3UfhoIoKs3E3SKTEM0JocwcUy5MN5Fq2mbEXwilJhje+oYLaFJIvh9wZlVD3aL+m+jh4cgoCbPNuv/HxQdcuLrQuBaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643947; c=relaxed/simple;
-	bh=7CGlNSeE1S8cJILkb1r3+1raKdzO6eZMmHbHZnGIJ3k=;
+	s=arc-20240116; t=1746644488; c=relaxed/simple;
+	bh=2MgdHd5LIDeG1PM5jtATOfXXtb/u+CWXG3DKpCWXtlo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B82+55IXkh/N0aZsPq0IOlii7dzmywQD+Iao+g0K044G5ddqJrwTMXy9lrrhyuEtGVezsKoe3SlyJcpJtJIX2JfufMRaN5bAXnfOHJNN+MFXbuw/EtCgqRWhFbApfBL5dUpbR4IMIn++/AM22001+5A2WUzqGfzmM0yDajl/3vQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qKzxhw8F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 882A3C4CEE2;
-	Wed,  7 May 2025 18:52:26 +0000 (UTC)
+	 MIME-Version; b=t1mQE68TTL2LQKdF3Ez3mj76uN/Y0LLI5Hb2lTOOfN7Cn2xIviRdjZNA05OLNbtrC7ix4YLlZAGfsj1IU++qIJzUfvDsIIKPGc4RPfHRXXIDNJVU3X2tuBWe7LIXee71q7n6ozuyRqQ1FzUuQ44YWybl0q+Ic4hXqpNTKIEupqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AJ5dqxGk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 712BAC4CEE2;
+	Wed,  7 May 2025 19:01:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643946;
-	bh=7CGlNSeE1S8cJILkb1r3+1raKdzO6eZMmHbHZnGIJ3k=;
+	s=korg; t=1746644487;
+	bh=2MgdHd5LIDeG1PM5jtATOfXXtb/u+CWXG3DKpCWXtlo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qKzxhw8FIjlqE28Xm8PsK363yThFdmGN7gIQaqXvPJbGMrS9nc73KZihpwfzqjpHT
-	 FEl+1OUFCA5VwbValo9Ie0oIRGbLyxrs1G4jbSWALMNiT8fjqhmXKkPieOKY+neCfc
-	 6cIbEx8ABiqtHfqx/t21fT9gUl5W03kXk+GqSqTk=
+	b=AJ5dqxGk8/eHGzHNftF/DoB0RPxS/5EjWgyT/hw0dVuseUHGXhJrqRdHKPvwynkGS
+	 +1vXGfbmDRmj1vNxfq1NsKbQ6XfNHEcOOMU/akAG+G1e6g8tucHUXmKAOIgrlKOf+R
+	 kHNijIbr1bSdVc8vsLKCx90HhCDz9VOf1ZdQe+TM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vlad Dogaru <vdogaru@nvidia.com>,
-	Yevgeny Kliteynik <kliteyn@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 069/183] net/mlx5e: Use custom tunnel header for vxlan gbp
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	syzbot+441582c1592938fccf09@syzkaller.appspotmail.com,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.12 029/164] tracing: Do not take trace_event_sem in print_event_fields()
 Date: Wed,  7 May 2025 20:38:34 +0200
-Message-ID: <20250507183827.484461838@linuxfoundation.org>
+Message-ID: <20250507183822.048963072@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,96 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vlad Dogaru <vdogaru@nvidia.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit eacc77a73275895eca0e3655dc6c671853500e2e ]
+commit 0a8f11f8569e7ed16cbcedeb28c4350f6378fea6 upstream.
 
-Symbolic (e.g. "vxlan") and custom (e.g. "tunnel_header_0") tunnels
-cannot be combined, but the match params interface does not have fields
-for matching on vxlan gbp. To match vxlan bgp, the tc_tun layer uses
-tunnel_header_0.
+On some paths in print_event_fields() it takes the trace_event_sem for
+read, even though it should always be held when the function is called.
 
-Allow matching on both VNI and GBP by matching the VNI with a custom
-tunnel header instead of the symbolic field name.
+Remove the taking of that mutex and add a lockdep_assert_held_read() to
+make sure the trace_event_sem is held when print_event_fields() is called.
 
-Matching solely on the VNI continues to use the symbolic field name.
-
-Fixes: 74a778b4a63f ("net/mlx5: HWS, added definers handling")
-Signed-off-by: Vlad Dogaru <vdogaru@nvidia.com>
-Reviewed-by: Yevgeny Kliteynik <kliteyn@nvidia.com>
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Link: https://patch.msgid.link/20250423083611.324567-2-mbloch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://lore.kernel.org/20250501224128.0b1f0571@batman.local.home
+Fixes: 80a76994b2d88 ("tracing: Add "fields" option to show raw trace event fields")
+Reported-by: syzbot+441582c1592938fccf09@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/6813ff5e.050a0220.14dd7d.001b.GAE@google.com/
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../mellanox/mlx5/core/en/tc_tun_vxlan.c      | 32 +++++++++++++++++--
- 1 file changed, 29 insertions(+), 3 deletions(-)
+ kernel/trace/trace_output.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_vxlan.c b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_vxlan.c
-index e4e487c8431b8..b9cf79e271244 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_vxlan.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/tc_tun_vxlan.c
-@@ -165,9 +165,6 @@ static int mlx5e_tc_tun_parse_vxlan(struct mlx5e_priv *priv,
- 	struct flow_match_enc_keyid enc_keyid;
- 	void *misc_c, *misc_v;
+--- a/kernel/trace/trace_output.c
++++ b/kernel/trace/trace_output.c
+@@ -950,11 +950,12 @@ enum print_line_t print_event_fields(str
+ 	struct trace_event_call *call;
+ 	struct list_head *head;
  
--	misc_c = MLX5_ADDR_OF(fte_match_param, spec->match_criteria, misc_parameters);
--	misc_v = MLX5_ADDR_OF(fte_match_param, spec->match_value, misc_parameters);
--
- 	if (!flow_rule_match_key(rule, FLOW_DISSECTOR_KEY_ENC_KEYID))
- 		return 0;
++	lockdep_assert_held_read(&trace_event_sem);
++
+ 	/* ftrace defined events have separate call structures */
+ 	if (event->type <= __TRACE_LAST_TYPE) {
+ 		bool found = false;
  
-@@ -182,6 +179,30 @@ static int mlx5e_tc_tun_parse_vxlan(struct mlx5e_priv *priv,
- 		err = mlx5e_tc_tun_parse_vxlan_gbp_option(priv, spec, f);
- 		if (err)
- 			return err;
-+
-+		/* We can't mix custom tunnel headers with symbolic ones and we
-+		 * don't have a symbolic field name for GBP, so we use custom
-+		 * tunnel headers in this case. We need hardware support to
-+		 * match on custom tunnel headers, but we already know it's
-+		 * supported because the previous call successfully checked for
-+		 * that.
-+		 */
-+		misc_c = MLX5_ADDR_OF(fte_match_param, spec->match_criteria,
-+				      misc_parameters_5);
-+		misc_v = MLX5_ADDR_OF(fte_match_param, spec->match_value,
-+				      misc_parameters_5);
-+
-+		/* Shift by 8 to account for the reserved bits in the vxlan
-+		 * header after the VNI.
-+		 */
-+		MLX5_SET(fte_match_set_misc5, misc_c, tunnel_header_1,
-+			 be32_to_cpu(enc_keyid.mask->keyid) << 8);
-+		MLX5_SET(fte_match_set_misc5, misc_v, tunnel_header_1,
-+			 be32_to_cpu(enc_keyid.key->keyid) << 8);
-+
-+		spec->match_criteria_enable |= MLX5_MATCH_MISC_PARAMETERS_5;
-+
-+		return 0;
- 	}
- 
- 	/* match on VNI is required */
-@@ -195,6 +216,11 @@ static int mlx5e_tc_tun_parse_vxlan(struct mlx5e_priv *priv,
- 		return -EOPNOTSUPP;
- 	}
- 
-+	misc_c = MLX5_ADDR_OF(fte_match_param, spec->match_criteria,
-+			      misc_parameters);
-+	misc_v = MLX5_ADDR_OF(fte_match_param, spec->match_value,
-+			      misc_parameters);
-+
- 	MLX5_SET(fte_match_set_misc, misc_c, vxlan_vni,
- 		 be32_to_cpu(enc_keyid.mask->keyid));
- 	MLX5_SET(fte_match_set_misc, misc_v, vxlan_vni,
--- 
-2.39.5
-
+-		down_read(&trace_event_sem);
+ 		list_for_each_entry(call, &ftrace_events, list) {
+ 			if (call->event.type == event->type) {
+ 				found = true;
+@@ -964,7 +965,6 @@ enum print_line_t print_event_fields(str
+ 			if (call->event.type > __TRACE_LAST_TYPE)
+ 				break;
+ 		}
+-		up_read(&trace_event_sem);
+ 		if (!found) {
+ 			trace_seq_printf(&iter->seq, "UNKNOWN TYPE %d\n", event->type);
+ 			goto out;
 
 
 
