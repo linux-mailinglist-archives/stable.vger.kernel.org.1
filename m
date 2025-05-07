@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-142636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 511EFAAEB7C
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:07:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2277AAAE934
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:42:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 810003BC982
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:07:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 571B73A2D5B
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:41:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEFF41E22E9;
-	Wed,  7 May 2025 19:07:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 987CE28C016;
+	Wed,  7 May 2025 18:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NIcbdDKI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zv6Kan62"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69ECA19AD5C;
-	Wed,  7 May 2025 19:07:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5237A14A4C7;
+	Wed,  7 May 2025 18:41:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644862; cv=none; b=nHLxgmdDeD/YwCkOcSFqdj1aj0XlHpnAw7leQRcNrT2B9W/ZUrH5mX6NpGJfIsLY8wp7lVuH9mtzq6JiOFj770ZrmS5/AZKspPXPGxcSOPvYN+GbarVM9ME5Fj0cXh0i5KzIIT8s1t7QFt97NjI0CIdT2OnOIc7EPPFbvc1cZRg=
+	t=1746643294; cv=none; b=fAzOjEoOZhoJTueQ/NZpXY+5pnhJOpUcnZ49mb8sr8ijMuUGOs5L+5HCqjpX3pakKOBh25gn2KRQrkrXaZ+3t3PjB5SKO6mg4SgR+btMP8K3HnLR2WvTvCv8gozKffaFtYTEfnsRM3ynDxmRpsV8xzpA6enUPt/21Tz1Ff2Ca68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644862; c=relaxed/simple;
-	bh=1c45j/KIe6jPzMiUvbTHu/iEQDeGt7H2yGAEqPbj4FY=;
+	s=arc-20240116; t=1746643294; c=relaxed/simple;
+	bh=Gkol26yOtbVvxLxfoS9aQT61LPnM+mna36oouhoUmHw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ojmMB+nSnj9vu/72Yv0E/ZXPSDFWbxs4ETSjF0zfSvQYQTy0o9OBJNbhyq1osmjvIMa8BfvGoXTJ04hpxRt5KU/bWY8zwXougBYnQXgH5QA+LFOiOq9zlOiNYPZlTOpn1zVfaXPMnoGlWyVGCk1ECVkLMHQ+TPszi2dfuYeEOl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NIcbdDKI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD9D5C4CEE2;
-	Wed,  7 May 2025 19:07:41 +0000 (UTC)
+	 MIME-Version; b=Kmgr0K8vK8xWJOaojDWYomFuGRmkBfoaHHAatOFu/3UZkz0gEbVAtMnR6VX9TE3KlEUkxl/aeUc70IV824HhDiebYQfb+8m+KYDXnFeOk+lK+w5pyaOdN9tXVOlepRmKuygYJUjrJbys+p/sRFCw3c/UuQkuoN+yVf2tZzyKoUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zv6Kan62; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2C4EC4CEE2;
+	Wed,  7 May 2025 18:41:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644862;
-	bh=1c45j/KIe6jPzMiUvbTHu/iEQDeGt7H2yGAEqPbj4FY=;
+	s=korg; t=1746643294;
+	bh=Gkol26yOtbVvxLxfoS9aQT61LPnM+mna36oouhoUmHw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NIcbdDKIL17exbqKNII9jU1DpdgC4nPLJhse7wOuj/McDTfFSor+yOm6YR1MBLMNR
-	 vkOxNCCbjll9Iwx+2x0vFKbTTvWMqF7X8OP70dBJvyCh/D/FoKa7YaehXcNevf7iQI
-	 6bxgNjdcdz1NV7aTQw3FryEFK4fGobORE+cNg3K8=
+	b=zv6Kan62PEbY3WH8MdoP72Mnm/k2ykJiIY3MCsfTBJI/OpmxxaaFBlyx8IzEWh5de
+	 TC7Dc4PH4ViXphRy37S5MTr0u/hwjD4nthRu6KJii59IHqNkQX/UiC/bvTlWUIE8J4
+	 pZenmqcz7MH685V556ot94AXcZVFYajOe/3Ynypc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ihar Salauyou <salauyou.ihar@gmail.com>,
-	Ruslan Piasetskyi <ruslan.piasetskyi@gmail.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 017/129] mmc: renesas_sdhi: Fix error handling in renesas_sdhi_probe
+	Benjamin Marzinski <bmarzins@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 5.15 12/55] dm: always update the array size in realloc_argv on success
 Date: Wed,  7 May 2025 20:39:13 +0200
-Message-ID: <20250507183814.233857569@linuxfoundation.org>
+Message-ID: <20250507183759.545237645@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
-References: <20250507183813.500572371@linuxfoundation.org>
+In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
+References: <20250507183759.048732653@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ruslan Piasetskyi <ruslan.piasetskyi@gmail.com>
+From: Benjamin Marzinski <bmarzins@redhat.com>
 
-commit 649b50a82f09fa44c2f7a65618e4584072145ab7 upstream.
+commit 5a2a6c428190f945c5cbf5791f72dbea83e97f66 upstream.
 
-After moving tmio_mmc_host_probe down, error handling has to be
-adjusted.
+realloc_argv() was only updating the array size if it was called with
+old_argv already allocated. The first time it was called to create an
+argv array, it would allocate the array but return the array size as
+zero. dm_split_args() would think that it couldn't store any arguments
+in the array and would call realloc_argv() again, causing it to
+reallocate the initial slots (this time using GPF_KERNEL) and finally
+return a size. Aside from being wasteful, this could cause deadlocks on
+targets that need to process messages without starting new IO. Instead,
+realloc_argv should always update the allocated array size on success.
 
-Fixes: 74f45de394d9 ("mmc: renesas_sdhi: register irqs before registering controller")
-Reviewed-by: Ihar Salauyou <salauyou.ihar@gmail.com>
-Signed-off-by: Ruslan Piasetskyi <ruslan.piasetskyi@gmail.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Tested-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Fixes: a0651926553c ("dm table: don't copy from a NULL pointer in realloc_argv()")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250326220638.460083-1-ruslan.piasetskyi@gmail.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/renesas_sdhi_core.c |   10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/md/dm-table.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/mmc/host/renesas_sdhi_core.c
-+++ b/drivers/mmc/host/renesas_sdhi_core.c
-@@ -1107,26 +1107,26 @@ int renesas_sdhi_probe(struct platform_d
- 	num_irqs = platform_irq_count(pdev);
- 	if (num_irqs < 0) {
- 		ret = num_irqs;
--		goto eirq;
-+		goto edisclk;
+--- a/drivers/md/dm-table.c
++++ b/drivers/md/dm-table.c
+@@ -492,9 +492,10 @@ static char **realloc_argv(unsigned *siz
+ 		gfp = GFP_NOIO;
+ 	}
+ 	argv = kmalloc_array(new_size, sizeof(*argv), gfp);
+-	if (argv && old_argv) {
+-		memcpy(argv, old_argv, *size * sizeof(*argv));
++	if (argv) {
+ 		*size = new_size;
++		if (old_argv)
++			memcpy(argv, old_argv, *size * sizeof(*argv));
  	}
  
- 	/* There must be at least one IRQ source */
- 	if (!num_irqs) {
- 		ret = -ENXIO;
--		goto eirq;
-+		goto edisclk;
- 	}
- 
- 	for (i = 0; i < num_irqs; i++) {
- 		irq = platform_get_irq(pdev, i);
- 		if (irq < 0) {
- 			ret = irq;
--			goto eirq;
-+			goto edisclk;
- 		}
- 
- 		ret = devm_request_irq(&pdev->dev, irq, tmio_mmc_irq, 0,
- 				       dev_name(&pdev->dev), host);
- 		if (ret)
--			goto eirq;
-+			goto edisclk;
- 	}
- 
- 	ret = tmio_mmc_host_probe(host);
-@@ -1138,8 +1138,6 @@ int renesas_sdhi_probe(struct platform_d
- 
- 	return ret;
- 
--eirq:
--	tmio_mmc_host_remove(host);
- edisclk:
- 	renesas_sdhi_clk_disable(host);
- efree:
+ 	kfree(old_argv);
 
 
 
