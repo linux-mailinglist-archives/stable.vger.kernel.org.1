@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-142334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9337AAEA2E
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:52:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2B43AAEAE9
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:01:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51A05508038
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:52:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 359B01C286B5
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:01:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A42BC1FF5EC;
-	Wed,  7 May 2025 18:52:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AD9428C024;
+	Wed,  7 May 2025 19:01:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RUzP+Bi/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qQkntTYF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6224D211A2A;
-	Wed,  7 May 2025 18:52:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48DA421146F;
+	Wed,  7 May 2025 19:01:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643931; cv=none; b=Z2BI5SfMGo9q2h/GMnR8YeQct+adWO2wnAKD09KUpYAENXsURcz0zgGVqbquzkLnfDqS16VR2NrMoZEvlkrmqjXKurt63G/ybFI3uFStT/nSHb+Fv7HCvyJyTkTUycLc8QVoyBrZP6Cn5b5Vf1yJvpO8RZ48mUS5AYOir7wYBlE=
+	t=1746644467; cv=none; b=kZrnkMBwRv847qRW1R+zlhkD15gI/0t2MzECDRqQbtiyvlSfLo2TCV2RMtfI64nMR8lBucOFD/agIsKzDdPLHQAFhEZBzEmGCx6dcGUColMTLQcNdiFpZDAKwVuePeNebtNpNIo/yrFk6HJc9Xw05xkoXqCTMEElRYbigRpX2vE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643931; c=relaxed/simple;
-	bh=KetDZUCirod2W1v+aZdVqfpKCGcknLM8dV6FoOc01Iw=;
+	s=arc-20240116; t=1746644467; c=relaxed/simple;
+	bh=uAWDI7ETt4w36o80ZongQMMMDe1SQLz3vjcvBD+c754=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZQpXAkbIdHusG0YuO+ZXMVoIKlc8QM8RhIymzp77rbavgmMLeo/Lk2DpFfeqO0MjmhVJNgoJC/G7hs2UmjNsj2cPhph15+r+rKejNTSax6l1VfvnJ1oaO39PvLU9pVs9GK/P/vXHe2uE4ESyQNtR5KJeDWAvUhNtz48142VeL+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RUzP+Bi/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C482EC4CEE2;
-	Wed,  7 May 2025 18:52:10 +0000 (UTC)
+	 MIME-Version; b=dExIUAlwogOAnR1bEVGRCUb0mTKdIcJija6YXE4r+FRsAR8xbfCcv5TbzcGw46SUhbTUKhzvWHbqnIehnDi1SZ002+80X7ybU1wqFFX9pWgjPVcK+UWufmRkqkl4qPj0cLC2LPhq+rhdxN62ZM2CEx2Wkk0g6AKD+OVBwPm8sa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qQkntTYF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59C8FC4CEE2;
+	Wed,  7 May 2025 19:01:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643931;
-	bh=KetDZUCirod2W1v+aZdVqfpKCGcknLM8dV6FoOc01Iw=;
+	s=korg; t=1746644466;
+	bh=uAWDI7ETt4w36o80ZongQMMMDe1SQLz3vjcvBD+c754=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RUzP+Bi/Kyw4HhGt8lRniQgwipVm0UFSVgezYrYZ9Brv+uHLKRjSgCvNtpdsutlJp
-	 L5rdG6K3Xna3DfHyd6bTYuV12B+g6llk2Yy+JRVrYjx2wlM7nF0wZQCeTWVAEXe8rg
-	 2WspuKJC0ibcqU9Mf61tX1bKzlw/+6nwGDxvfsxU=
+	b=qQkntTYFh5CGzqY3vCy14FmQBizQqnSMcLRmtssMvTldE9N97bMrXejJTTpjvulir
+	 wSkOFXTEKH8dwPHc1ccv8MkiA+AwKomVS5i2D9/mZiJf3Yu+Af2fh5Eo0c9HfGBuhL
+	 fjj8wf1KXMPXDl63x0eBzlBG8caWbg+HLExRqeXw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 065/183] powerpc/boot: Fix dash warning
+	Wei Yang <richard.weiyang@gmail.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Yajun Deng <yajun.deng@linux.dev>,
+	Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: [PATCH 6.12 025/164] mm/memblock: pass size instead of end to memblock_set_node()
 Date: Wed,  7 May 2025 20:38:30 +0200
-Message-ID: <20250507183827.326868914@linuxfoundation.org>
+Message-ID: <20250507183821.887915880@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
+From: Wei Yang <richard.weiyang@gmail.com>
 
-[ Upstream commit e3f506b78d921e48a00d005bea5c45ec36a99240 ]
+commit 06eaa824fd239edd1eab2754f29b2d03da313003 upstream.
 
-'commit b2accfe7ca5b ("powerpc/boot: Check for ld-option support")' suppressed
-linker warnings, but the expressed used did not go well with POSIX shell (dash)
-resulting with this warning
+The second parameter of memblock_set_node() is size instead of end.
 
-arch/powerpc/boot/wrapper: 237: [: 0: unexpected operator
-ld: warning: arch/powerpc/boot/zImage.epapr has a LOAD segment with RWX permissions
+Since it iterates from lower address to higher address, finally the node
+id is correct. But during the process, some of them are wrong.
 
-Fix the check to handle the reported warning. Patch also fixes
-couple of shellcheck reported errors for the same line.
+Pass size instead of end.
 
-In arch/powerpc/boot/wrapper line 237:
-if [ $(${CROSS}ld -v --no-warn-rwx-segments &>/dev/null; echo $?) -eq 0 ]; then
-     ^-- SC2046 (warning): Quote this to prevent word splitting.
-       ^------^ SC2086 (info): Double quote to prevent globbing and word splitting.
-                                            ^---------^ SC3020 (warning): In POSIX sh, &> is undefined.
-
-Fixes: b2accfe7ca5b ("powerpc/boot: Check for ld-option support")
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Suggested-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Reviewed-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250423082154.30625-1-maddy@linux.ibm.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 61167ad5fecd ("mm: pass nid to reserve_bootmem_region()")
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+CC: Mike Rapoport <rppt@kernel.org>
+CC: Yajun Deng <yajun.deng@linux.dev>
+CC: stable@vger.kernel.org
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Link: https://lore.kernel.org/r/20250318071948.23854-2-richard.weiyang@gmail.com
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/boot/wrapper | 2 +-
+ mm/memblock.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/boot/wrapper b/arch/powerpc/boot/wrapper
-index 267ca6d4d9b38..3d8dc822282ac 100755
---- a/arch/powerpc/boot/wrapper
-+++ b/arch/powerpc/boot/wrapper
-@@ -234,7 +234,7 @@ fi
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -2173,7 +2173,7 @@ static void __init memmap_init_reserved_
+ 		if (memblock_is_nomap(region))
+ 			reserve_bootmem_region(start, end, nid);
  
- # suppress some warnings in recent ld versions
- nowarn="-z noexecstack"
--if [ $(${CROSS}ld -v --no-warn-rwx-segments &>/dev/null; echo $?) -eq 0 ]; then
-+if "${CROSS}ld" -v --no-warn-rwx-segments >/dev/null 2>&1; then
- 	nowarn="$nowarn --no-warn-rwx-segments"
- fi
+-		memblock_set_node(start, end, &memblock.reserved, nid);
++		memblock_set_node(start, region->size, &memblock.reserved, nid);
+ 	}
  
--- 
-2.39.5
-
+ 	/*
 
 
 
