@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-142695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74CC6AAEBC6
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:10:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7219FAAEB7A
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:07:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5A7277AB0A8
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:09:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C21C1B65E53
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:07:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F5A628DF3C;
-	Wed,  7 May 2025 19:10:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FAC128E5E3;
+	Wed,  7 May 2025 19:06:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Asf1DOpC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PMcMq9T/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3C128BA9F;
-	Wed,  7 May 2025 19:10:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A0128BA9F;
+	Wed,  7 May 2025 19:06:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746645046; cv=none; b=ljFIViH50u+lPirw+9vm5U6LNTSEcNHqSajUK6Wbiuubfm9CgphHx/HU7k9DAMD5f5iSuTU9Y0IJqljbj4CMEsapXt4oEDLx/4Ns3cdaQfvc1L2uhsRqRSUrelz0tIGi7i19/K4hToWqsvgzf4iBudvC6e21Hv6tD6GDXa7zN6E=
+	t=1746644786; cv=none; b=Wb4iA+DOm/Wkzr1V+5zFgHrH7XB9aet8iVTMvXYegz5mIp8szXRc1eSTuDxGjeZr6D8WjSDr+5hiHASua7kxNHxBM1sFY22OGQQNiP4LvugeulgzTc3Sa25KdzwehrgAqmzsovZjY4OBGJunO2Vf828WjhQmoUbjsWztNsxwzC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746645046; c=relaxed/simple;
-	bh=v2lg4pfQLPnFzF8QU0GaxazkUXjna2lI0MZ8YWG1h7w=;
+	s=arc-20240116; t=1746644786; c=relaxed/simple;
+	bh=Y97ikOv9fCaNCMhOwhPJssvqqzzWsSPK9SsDl1u10Aw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K5k5SZgnr5EKFwSvV8ZPPsE0nOK71bUMFE2cE1Typ1dVHlvojenrKny41ZuHWSCbm86fyJ7Ms6+Y7hvC0sDy1wi3bT4A0mPjEueRgxVYd5Req7aYh3iut9aQ3MzY2yj294BLUgBqGQ2H/q/8ObJjgchVKCdgXqdHS+x9ymYYRis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Asf1DOpC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CB42C4CEE2;
-	Wed,  7 May 2025 19:10:45 +0000 (UTC)
+	 MIME-Version; b=Kptu5eyOaw71sgL6mptRDFQiUoH23vSuphS6n8XBOFkvJtSnuE1/UWVQ8RrAaIXLr8TGCj342EhKqiCjDA/ScWvdhC/WF0tTmfA1jkE3Bfi9XUoy7GDRUdMPmRsiodZltDsLIs2F1GEPQuO4G6Ho84rfnHHJqXXjNU0DWd+PC0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PMcMq9T/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7F48C4CEE2;
+	Wed,  7 May 2025 19:06:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746645045;
-	bh=v2lg4pfQLPnFzF8QU0GaxazkUXjna2lI0MZ8YWG1h7w=;
+	s=korg; t=1746644786;
+	bh=Y97ikOv9fCaNCMhOwhPJssvqqzzWsSPK9SsDl1u10Aw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Asf1DOpCavGekGbh3bBtPwJmwaPFd2TOs0E9v2aRskGQGppXoL5wKMbEM3mINYVAL
-	 Xa95Ds+r0wp51tN3yoJyBDpd8lPa8c0/TFcVS1AdcW20i574/yFIquvrG8CJ8A3/fI
-	 +c8m3YQyjraypigAqf5b/6D0r9rgYIx1KhF7Xp+4=
+	b=PMcMq9T/MalsWwKIgC/WLTB/K9vq+LgQCofXDurYUIjp9toLxpD98/kfFbcCn/egF
+	 myDZPxBNJ5qgGbM/2AJO2htUOfPRUSJZ0OO3xCMB9WHqHdYVR7+lFAfHP22j/4JJxx
+	 JeJv4rzY17cjSsyZ1ew7D/LWPJ/eREh56+a5FNbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Sathesh B Edara <sedara@marvell.com>,
 	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 075/129] net: dlink: Correct endianness handling of led_mode
-Date: Wed,  7 May 2025 20:40:11 +0200
-Message-ID: <20250507183816.555924869@linuxfoundation.org>
+Subject: [PATCH 6.12 127/164] octeon_ep: Fix host hang issue during device reboot
+Date: Wed,  7 May 2025 20:40:12 +0200
+Message-ID: <20250507183826.109610086@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
-References: <20250507183813.500572371@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Horman <horms@kernel.org>
+From: Sathesh B Edara <sedara@marvell.com>
 
-[ Upstream commit e7e5ae71831c44d58627a991e603845a2fed2cab ]
+[ Upstream commit 34f42736b325287a7b2ce37e415838f539767bda ]
 
-As it's name suggests, parse_eeprom() parses EEPROM data.
+When the host loses heartbeat messages from the device,
+the driver calls the device-specific ndo_stop function,
+which frees the resources. If the driver is unloaded in
+this scenario, it calls ndo_stop again, attempting to free
+resources that have already been freed, leading to a host
+hang issue. To resolve this, dev_close should be called
+instead of the device-specific stop function.dev_close
+internally calls ndo_stop to stop the network interface
+and performs additional cleanup tasks. During the driver
+unload process, if the device is already down, ndo_stop
+is not called.
 
-This is done by reading data, 16 bits at a time as follows:
-
-	for (i = 0; i < 128; i++)
-                ((__le16 *) sromdata)[i] = cpu_to_le16(read_eeprom(np, i));
-
-sromdata is at the same memory location as psrom.
-And the type of psrom is a pointer to struct t_SROM.
-
-As can be seen in the loop above, data is stored in sromdata, and thus psrom,
-as 16-bit little-endian values.
-
-However, the integer fields of t_SROM are host byte order integers.
-And in the case of led_mode this leads to a little endian value
-being incorrectly treated as host byte order.
-
-Looking at rio_set_led_mode, this does appear to be a bug as that code
-masks led_mode with 0x1, 0x2 and 0x8. Logic that would be effected by a
-reversed byte order.
-
-This problem would only manifest on big endian hosts.
-
-Found by inspection while investigating a sparse warning
-regarding the crc field of t_SROM.
-
-I believe that warning is a false positive. And although I plan
-to send a follow-up to use little-endian types for other the integer
-fields of PSROM_t I do not believe that will involve any bug fixes.
-
-Compile tested only.
-
-Fixes: c3f45d322cbd ("dl2k: Add support for IP1000A-based cards")
-Signed-off-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250425-dlink-led-mode-v1-1-6bae3c36e736@kernel.org
+Fixes: 5cb96c29aa0e ("octeon_ep: add heartbeat monitor")
+Signed-off-by: Sathesh B Edara <sedara@marvell.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250429114624.19104-1-sedara@marvell.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/dlink/dl2k.c | 2 +-
- drivers/net/ethernet/dlink/dl2k.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/marvell/octeon_ep/octep_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/dlink/dl2k.c b/drivers/net/ethernet/dlink/dl2k.c
-index db6615aa921b1..ce46f3ac3b5a1 100644
---- a/drivers/net/ethernet/dlink/dl2k.c
-+++ b/drivers/net/ethernet/dlink/dl2k.c
-@@ -352,7 +352,7 @@ parse_eeprom (struct net_device *dev)
- 	eth_hw_addr_set(dev, psrom->mac_addr);
+diff --git a/drivers/net/ethernet/marvell/octeon_ep/octep_main.c b/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
+index a89f80bac39b8..1b2f5cae06449 100644
+--- a/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
++++ b/drivers/net/ethernet/marvell/octeon_ep/octep_main.c
+@@ -1184,7 +1184,7 @@ static void octep_hb_timeout_task(struct work_struct *work)
+ 		miss_cnt);
+ 	rtnl_lock();
+ 	if (netif_running(oct->netdev))
+-		octep_stop(oct->netdev);
++		dev_close(oct->netdev);
+ 	rtnl_unlock();
+ }
  
- 	if (np->chip_id == CHIP_IP1000A) {
--		np->led_mode = psrom->led_mode;
-+		np->led_mode = le16_to_cpu(psrom->led_mode);
- 		return 0;
- 	}
- 
-diff --git a/drivers/net/ethernet/dlink/dl2k.h b/drivers/net/ethernet/dlink/dl2k.h
-index 195dc6cfd8955..0e33e2eaae960 100644
---- a/drivers/net/ethernet/dlink/dl2k.h
-+++ b/drivers/net/ethernet/dlink/dl2k.h
-@@ -335,7 +335,7 @@ typedef struct t_SROM {
- 	u16 sub_system_id;	/* 0x06 */
- 	u16 pci_base_1;		/* 0x08 (IP1000A only) */
- 	u16 pci_base_2;		/* 0x0a (IP1000A only) */
--	u16 led_mode;		/* 0x0c (IP1000A only) */
-+	__le16 led_mode;	/* 0x0c (IP1000A only) */
- 	u16 reserved1[9];	/* 0x0e-0x1f */
- 	u8 mac_addr[6];		/* 0x20-0x25 */
- 	u8 reserved2[10];	/* 0x26-0x2f */
 -- 
 2.39.5
 
