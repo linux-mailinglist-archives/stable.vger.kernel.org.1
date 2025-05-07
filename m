@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-142263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A07FAAE9E5
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:49:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEA52AAEB2D
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:04:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D57C9C0CDC
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:48:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA3319E2AB5
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:04:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A78262153C6;
-	Wed,  7 May 2025 18:48:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 370052144BF;
+	Wed,  7 May 2025 19:04:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2mUItf0p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TyC9Dkb8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65CA41DDC23;
-	Wed,  7 May 2025 18:48:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E836129A0;
+	Wed,  7 May 2025 19:04:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643716; cv=none; b=C5eNoLOm9t6I5npewx/YLUsoA7K8q/hc+28mpCzwdUKx89oOvdukihP7E07sbumNypXFKWANl5ZJW88shVWRIHfU6v0xwvcMGenGLAtYx5RucUVKtb2QSeHjvjEDsU4E5yjmGKzH5PeAn8SCPdcZLmmtUL1/L8xw1WfMwrrRnMc=
+	t=1746644663; cv=none; b=vCi4tR8hFrAtgMyow/ks0S7FmRpbHGdwOEoibqPNLS2FwEe2noN7cG81+JebQ16OlNtZQhQ5H5Kk0mruB5PpUxwz3r3wf6kcJHfRaM2DdGkX/Czix/f7tu6OvRUEhgv6nHL2l29xLFXYnkIoDEGPfVuRngq4Nl+m+5TTec4m1vI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643716; c=relaxed/simple;
-	bh=RHEzQ4H6kEh2Vo5smBm6kZ7miV76Le7/PEHn9FjqibQ=;
+	s=arc-20240116; t=1746644663; c=relaxed/simple;
+	bh=BNJ8b+ky+yw/ZUMfFL8wJzn3yZr1vSXY3g58FjvSZ1U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HsW9h0VCHidIpNIXdsYc28Ya0EiYvmxN74KKFV5tvpN8FrzWmxnB4ZQ/CkOqRZkvQqgkir0DH6oP+FY7f4XbmEAGn+cMZPODKayFf9wjjuOK3u82tQ/vxsiS0XelOag+m2E0pRwbU/Edotkxz2Hs2tr4aMu40VIfIZqjiLs3qbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2mUItf0p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E521FC4CEE2;
-	Wed,  7 May 2025 18:48:35 +0000 (UTC)
+	 MIME-Version; b=oRRHwHCEQ7E3Frh0/7/0bGMrCOR0e2P0djdEgJ4Aj6ucdcgumng+jd1JZVPm1reSzdebjTBJuvpIQWcAYtr7WZ4VSM9M7EHqjA26XnO9QA4A7UStqkfNO7Lzy/Ys62T2TtOfteiRb6DWuHCI68I0sOHcfo6R3cv4IN6TvqjWACw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TyC9Dkb8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 607CAC4CEE2;
+	Wed,  7 May 2025 19:04:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643716;
-	bh=RHEzQ4H6kEh2Vo5smBm6kZ7miV76Le7/PEHn9FjqibQ=;
+	s=korg; t=1746644662;
+	bh=BNJ8b+ky+yw/ZUMfFL8wJzn3yZr1vSXY3g58FjvSZ1U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2mUItf0p7lDTWm8h2oiT5ecFn2M+aHNZJeJUFf9gzUxYQdCD8pl1lL/Y167H9ykfC
-	 ytOBKnewj3v59qGhtQr8nODy2DxtEVc6S9LK88+STX5xeW93ROXPMt1JUlOjNwOdzS
-	 Z6Vqj3AtezWBQ4udbYPyvcCoh6unNhYBnI5CMW0U=
+	b=TyC9Dkb8troCba0B5ktUnZisrgzIADVKHf8GvjmwDxdOoTnzxycFyIyeVr+G3n+CG
+	 nOAnAvf9WJ2Uz4rgGIdBHBIovidKQRFvjObjW6zgJgdpA/axk8eXfa0s/u+98s5ixA
+	 FVfMfWuc6aE/hSTy0jKmqsQNsrX9k39EkIxRgF2c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Marc Zyngier <maz@kernel.org>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Shruti Parab <shruti.parab@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 85/97] irqchip/gic-v2m: Mark a few functions __init
+Subject: [PATCH 6.12 115/164] bnxt_en: Fix coredump logic to free allocated buffer
 Date: Wed,  7 May 2025 20:40:00 +0200
-Message-ID: <20250507183810.396962869@linuxfoundation.org>
+Message-ID: <20250507183825.628588947@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
-References: <20250507183806.987408728@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Shruti Parab <shruti.parab@broadcom.com>
 
-[ Upstream commit d51a15af37ce8cf59e73de51dcdce3c9f4944974 ]
+[ Upstream commit ea9376cf68230e05492f22ca45d329f16e262c7b ]
 
-They are all part of the init sequence.
+When handling HWRM_DBG_COREDUMP_LIST FW command in
+bnxt_hwrm_dbg_dma_data(), the allocated buffer info->dest_buf is
+not freed in the error path.  In the normal path, info->dest_buf
+is assigned to coredump->data and it will eventually be freed after
+the coredump is collected.
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20221121140048.534395323@linutronix.de
-Stable-dep-of: 3318dc299b07 ("irqchip/gic-v2m: Prevent use after free of gicv2m_get_fwnode()")
+Free info->dest_buf immediately inside bnxt_hwrm_dbg_dma_data() in
+the error path.
+
+Fixes: c74751f4c392 ("bnxt_en: Return error if FW returns more data than dump length")
+Reported-by: Michael Chan <michael.chan@broadcom.com>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Shruti Parab <shruti.parab@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-gic-v2m.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt_coredump.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/irqchip/irq-gic-v2m.c b/drivers/irqchip/irq-gic-v2m.c
-index 414cd925064f4..c2e52c9a38546 100644
---- a/drivers/irqchip/irq-gic-v2m.c
-+++ b/drivers/irqchip/irq-gic-v2m.c
-@@ -262,7 +262,7 @@ static struct msi_domain_info gicv2m_pmsi_domain_info = {
- 	.chip	= &gicv2m_pmsi_irq_chip,
- };
- 
--static void gicv2m_teardown(void)
-+static void __init gicv2m_teardown(void)
- {
- 	struct v2m_data *v2m, *tmp;
- 
-@@ -277,7 +277,7 @@ static void gicv2m_teardown(void)
- 	}
- }
- 
--static int gicv2m_allocate_domains(struct irq_domain *parent)
-+static __init int gicv2m_allocate_domains(struct irq_domain *parent)
- {
- 	struct irq_domain *inner_domain, *pci_domain, *plat_domain;
- 	struct v2m_data *v2m;
-@@ -404,7 +404,7 @@ static int __init gicv2m_init_one(struct fwnode_handle *fwnode,
- 	return ret;
- }
- 
--static const struct of_device_id gicv2m_device_id[] = {
-+static __initconst struct of_device_id gicv2m_device_id[] = {
- 	{	.compatible	= "arm,gic-v2m-frame",	},
- 	{},
- };
-@@ -454,7 +454,7 @@ static int __init gicv2m_of_init(struct fwnode_handle *parent_handle,
- #ifdef CONFIG_ACPI
- static int acpi_num_msi;
- 
--static struct fwnode_handle *gicv2m_get_fwnode(struct device *dev)
-+static __init struct fwnode_handle *gicv2m_get_fwnode(struct device *dev)
- {
- 	struct v2m_data *data;
- 
-@@ -469,7 +469,7 @@ static struct fwnode_handle *gicv2m_get_fwnode(struct device *dev)
- 	return data->fwnode;
- }
- 
--static bool acpi_check_amazon_graviton_quirks(void)
-+static __init bool acpi_check_amazon_graviton_quirks(void)
- {
- 	static struct acpi_table_madt *madt;
- 	acpi_status status;
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_coredump.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_coredump.c
+index 4e2b938ed1f7e..651d3b1d153e0 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_coredump.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_coredump.c
+@@ -72,6 +72,11 @@ static int bnxt_hwrm_dbg_dma_data(struct bnxt *bp, void *msg,
+ 				memcpy(info->dest_buf + off, dma_buf, len);
+ 			} else {
+ 				rc = -ENOBUFS;
++				if (cmn_req->req_type ==
++				    cpu_to_le16(HWRM_DBG_COREDUMP_LIST)) {
++					kfree(info->dest_buf);
++					info->dest_buf = NULL;
++				}
+ 				break;
+ 			}
+ 		}
 -- 
 2.39.5
 
