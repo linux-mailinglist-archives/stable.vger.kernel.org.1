@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-142338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8D88AAEA33
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:52:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C0B9AAEAF1
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:01:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 11A2C7BD9E0
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:51:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38CA1525566
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:01:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92DD521E0BB;
-	Wed,  7 May 2025 18:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70EE028C845;
+	Wed,  7 May 2025 19:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pfP3B52S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K5x+nKxW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DFA01FF5EC;
-	Wed,  7 May 2025 18:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EFB9288A8;
+	Wed,  7 May 2025 19:01:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643944; cv=none; b=PXsl/WS7GjjJwJXS+YJ4vvbM7A/Tn2yBWQlq6YJuJHAnArSjNosKziV/rXH67No2CEbX25BzMUowQon0VRpmL5LkyqpzqewOe4V7OEXbY5nRqs//Mzy7XAAvuD4CkiwC7hUIx9/wPxx6uZqDHH9Zofg9gwvEIW+Im+pb0N7YFtc=
+	t=1746644485; cv=none; b=mfR/VET2SWyJQpc9rXSjBxA4e+0Di7I75ubC8SvqDOiJth2Q68bvhxL1bkRVPjYhN8C3MQXEmDZNsFNd/6cfc/D60Npmq9dtiKbqVEvNPP6fS/H5Tah2ZOBIewg5gRPypKWmYYJUUOZ54O8gUC9OJ49VZjLclS+bgxyGdKFtVlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643944; c=relaxed/simple;
-	bh=Rn7w+AWFR12QbpFoANpQU9mr6d63Do8ymlefkiBBSto=;
+	s=arc-20240116; t=1746644485; c=relaxed/simple;
+	bh=EC3EaA8M8nTw6wuXfYWK3VYRgCQSkPRObd1g7zJilGs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LvPG2FTN0rBHTuN/SRYTkfoVjze81tafI8K5aAzqHU/LqGoll4MgMov1QFIEgjd9cjlahvP1Iqp0E3Cz52USOp/b7OMTbm+otlyPzJnxT2jbHycrEXNE5//P3+TuOhLuFgHMUcJTlLHPSIlywo4qCrEJHOkos2srtYvw2+gzJwI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pfP3B52S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48DF7C4CEE2;
-	Wed,  7 May 2025 18:52:23 +0000 (UTC)
+	 MIME-Version; b=E86gJXHTiGLfYKiTJhsmaRSuevbYKY50bRMAVU3jpOxWO3NLqllPc/OIAGw1+d7dAW0KEa9F8NKeoGlZ7n/IctavDwEUT1NP3+JUe8prYqfQf4hG9Fn/gpW1qPZZDs0oM8TBhn6NFY8qqXlqYgZ1DSN987P4Hgky4jvmBQCzsOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K5x+nKxW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46391C4CEE2;
+	Wed,  7 May 2025 19:01:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643943;
-	bh=Rn7w+AWFR12QbpFoANpQU9mr6d63Do8ymlefkiBBSto=;
+	s=korg; t=1746644484;
+	bh=EC3EaA8M8nTw6wuXfYWK3VYRgCQSkPRObd1g7zJilGs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pfP3B52SDlmBkzRj3j8tsIK7tT6jBiAclFGSZbzewbO61llOLymifsUuB8FQidvqe
-	 XxuHlyzubDYEBKJBVX9EcX4HDbPIolLV12urvHQhXKY2owulcNexaOflrhN//V4She
-	 mhHVI+psNUROqM9weH62ezHLK1bXmArEWUWTCQeY=
+	b=K5x+nKxW3mb8YRH7IvO5S9R/io6xwT+M8HHSccJgNzUQyGnSg9HtYyKAiEmIIRiqt
+	 Q9Q32S4uXrxmBqWD9vcNkwFilpVwqqY7Tgr5nENl1DnpizBTCUsUmKyP+eZWTJ+FvP
+	 6UZOrzN5DJ6XvaDbGn3cP/IsEvZjBHUbyQJ1hHgI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eryk Kubanski <e.kubanski@partner.samsung.com>,
-	Magnus Karlsson <magnus.karlsson@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 068/183] xsk: Fix offset calculation in unaligned mode
+	Aaron Kling <webgeek1234@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.12 028/164] spi: tegra114: Dont fail set_cs_timing when delays are zero
 Date: Wed,  7 May 2025 20:38:33 +0200
-Message-ID: <20250507183827.444135255@linuxfoundation.org>
+Message-ID: <20250507183822.006055486@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: e.kubanski <e.kubanski@partner.samsung.com>
+From: Aaron Kling <webgeek1234@gmail.com>
 
-[ Upstream commit bf20af07909925ec0ae6cd4f3b7be0279dfa8768 ]
+commit 4426e6b4ecf632bb75d973051e1179b8bfac2320 upstream.
 
-Bring back previous offset calculation behaviour
-in AF_XDP unaligned umem mode.
+The original code would skip null delay pointers, but when the pointers
+were converted to point within the spi_device struct, the check was not
+updated to skip delays of zero. Hence all spi devices that didn't set
+delays would fail to probe.
 
-In unaligned mode, upper 16 bits should contain
-data offset, lower 48 bits should contain
-only specific chunk location without offset.
-
-Remove pool->headroom duplication into 48bit address.
-
-Signed-off-by: Eryk Kubanski <e.kubanski@partner.samsung.com>
-Fixes: bea14124bacb ("xsk: Get rid of xdp_buff_xsk::orig_addr")
-Acked-by: Magnus Karlsson <magnus.karlsson@intel.com>
-Link: https://patch.msgid.link/20250416112925.7501-1-e.kubanski@partner.samsung.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 04e6bb0d6bb1 ("spi: modify set_cs_timing parameter")
+Cc: stable@vger.kernel.org
+Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
+Link: https://patch.msgid.link/20250423-spi-tegra114-v1-1-2d608bcc12f9@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/xsk_buff_pool.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-tegra114.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/net/xsk_buff_pool.h b/include/net/xsk_buff_pool.h
-index 7f0a75d6563d8..b3699a8488444 100644
---- a/include/net/xsk_buff_pool.h
-+++ b/include/net/xsk_buff_pool.h
-@@ -232,8 +232,8 @@ static inline u64 xp_get_handle(struct xdp_buff_xsk *xskb,
- 		return orig_addr;
+--- a/drivers/spi/spi-tegra114.c
++++ b/drivers/spi/spi-tegra114.c
+@@ -728,9 +728,9 @@ static int tegra_spi_set_hw_cs_timing(st
+ 	u32 inactive_cycles;
+ 	u8 cs_state;
  
- 	offset = xskb->xdp.data - xskb->xdp.data_hard_start;
--	orig_addr -= offset;
- 	offset += pool->headroom;
-+	orig_addr -= offset;
- 	return orig_addr + (offset << XSK_UNALIGNED_BUF_OFFSET_SHIFT);
- }
- 
--- 
-2.39.5
-
+-	if (setup->unit != SPI_DELAY_UNIT_SCK ||
+-	    hold->unit != SPI_DELAY_UNIT_SCK ||
+-	    inactive->unit != SPI_DELAY_UNIT_SCK) {
++	if ((setup->unit && setup->unit != SPI_DELAY_UNIT_SCK) ||
++	    (hold->unit && hold->unit != SPI_DELAY_UNIT_SCK) ||
++	    (inactive->unit && inactive->unit != SPI_DELAY_UNIT_SCK)) {
+ 		dev_err(&spi->dev,
+ 			"Invalid delay unit %d, should be SPI_DELAY_UNIT_SCK\n",
+ 			SPI_DELAY_UNIT_SCK);
 
 
 
