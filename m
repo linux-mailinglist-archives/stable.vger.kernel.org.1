@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-142632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B66C3AAEB98
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:08:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62529AAEA58
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:54:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8164B52639E
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:07:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1B871BC4388
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:54:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C7B22144BF;
-	Wed,  7 May 2025 19:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 943A228B4F0;
+	Wed,  7 May 2025 18:54:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J39d2pbK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0t8pM4dD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED77319AD5C;
-	Wed,  7 May 2025 19:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5204C1FF5EC;
+	Wed,  7 May 2025 18:54:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644850; cv=none; b=PE5zJziTKLCN+SYrRCi7p95/u3Zl1aBj/VC++fWP+TaBgXaSCoyuZDReGctzW8a8KAjj6NqKzpYUqmlcxu1cFe2bSyVfOSELhGsCtPNUjtHbIm3BZQX/JGGC1N8x1BZLDHgrefaumQzGQ4dWO2b8mFG1+uMBud8iMmyIo/yyo1s=
+	t=1746644055; cv=none; b=RyWyfGXAR4z6njM56eLy04puqqVYeucuiGP8YqPNYezkxDVlMNhKEbkV7FiMk+fZewtkHqB6OD+IJClKZ0pcQH/NYcBQ0O40OsDajJJuQPfmeMW4xZB3xusjJ048+1Y2WAWvlds/ISoex9rfqNpK8H0SuOFAu3Y6Z1ZTT8zrKt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644850; c=relaxed/simple;
-	bh=MDwenpOcm47qQBe586DeUeJe6p4QvjYJYmr5LPpVJ7A=;
+	s=arc-20240116; t=1746644055; c=relaxed/simple;
+	bh=5+JBaMI1UwP7pVtfpCxjfaWg9kJWeqXiB4Sn/tfVLL0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mVME8J39kqUiADXrFUyU2reWgaDUXAYwrBjqfbFgIZUb7uYUCjb0FL1TdjWqbUEAvbew1iQfGg1NI7/IFgFqi5BmmDQKzwEzgNrOOjG8bqn8wH9j4BCtdqmc9ohiBEl4bevlkxw7XNaPkiLAOrNO46eutGqs2EOQbU3na3mUL24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J39d2pbK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54C38C4CEE2;
-	Wed,  7 May 2025 19:07:29 +0000 (UTC)
+	 MIME-Version; b=FN3U9w/8RiKZgT9avV1AU1osxzS5HMIkky0B4E/kgZg+2Cx/y18EDY5M/7UOxZgBwTpCS7hFW4hOClAzGXjvfUbZLSOdPEOsYqht2nBpriQH9Uk7H7yrmgwuQ1WQpu3Q/ARZCQPMg44oos74uN9iOiMakniBDA5/2vEPapqKR6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0t8pM4dD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7170C4CEE2;
+	Wed,  7 May 2025 18:54:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644849;
-	bh=MDwenpOcm47qQBe586DeUeJe6p4QvjYJYmr5LPpVJ7A=;
+	s=korg; t=1746644055;
+	bh=5+JBaMI1UwP7pVtfpCxjfaWg9kJWeqXiB4Sn/tfVLL0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J39d2pbKskv8Rz6MwQchy6Gjr0zYpWEyQrudZ3x1H2+FnvkrDAObPXh7xS9ErbIkr
-	 LkJw3tC98Goc+dbruLpiuzd08zAzwKhSRjukaCuOlmMzoIzLgTpMIHVlWs3/6l4HXL
-	 DoWI4wvOn+UJoR6+vPBPldHO1j7KCjcMvRCTPnJw=
+	b=0t8pM4dDhz8oZkf2L5yxjiAIYOcB48SalmK8JckgpNyxyz0jEJnLjHDC7Oh0ooHO3
+	 +IIsjEQLNsz4/Pqz6sG3aSGpi0aXhd11yWghIdrWreKCR6KkAPZL9v8jMvyMid0M4U
+	 XZRgrCGDu6FvMFN/suZH1ApV5uvskwk6bPapR7zg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vishal Badole <Vishal.Badole@amd.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 013/129] amd-xgbe: Fix to ensure dependent features are toggled with RX checksum offload
+	Sridhar Samudrala <sridhar.samudrala@intel.com>,
+	Madhu Chittim <madhu.chittim@intel.com>,
+	Zachary Goldstein <zachmgoldstein@google.com>,
+	Samuel Salin <Samuel.salin@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 104/183] idpf: fix offloads support for encapsulated packets
 Date: Wed,  7 May 2025 20:39:09 +0200
-Message-ID: <20250507183814.076658063@linuxfoundation.org>
+Message-ID: <20250507183829.045906287@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
-References: <20250507183813.500572371@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,140 +67,167 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vishal Badole <Vishal.Badole@amd.com>
+From: Madhu Chittim <madhu.chittim@intel.com>
 
-commit f04dd30f1bef1ed2e74a4050af6e5e5e3869bac3 upstream.
+[ Upstream commit 713dd6c2deca88cba0596b1e2576f7b7a8e5c59e ]
 
-According to the XGMAC specification, enabling features such as Layer 3
-and Layer 4 Packet Filtering, Split Header and Virtualized Network support
-automatically selects the IPC Full Checksum Offload Engine on the receive
-side.
+Split offloads into csum, tso and other offloads so that tunneled
+packets do not by default have all the offloads enabled.
 
-When RX checksum offload is disabled, these dependent features must also
-be disabled to prevent abnormal behavior caused by mismatched feature
-dependencies.
+Stateless offloads for encapsulated packets are not yet supported in
+firmware/software but in the driver we were setting the features same as
+non encapsulated features.
 
-Ensure that toggling RX checksum offload (disabling or enabling) properly
-disables or enables all dependent features, maintaining consistent and
-expected behavior in the network device.
+Fixed naming to clarify CSUM bits are being checked for Tx.
 
-Cc: stable@vger.kernel.org
-Fixes: 1a510ccf5869 ("amd-xgbe: Add support for VXLAN offload capabilities")
-Signed-off-by: Vishal Badole <Vishal.Badole@amd.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250424130248.428865-1-Vishal.Badole@amd.com
+Inherit netdev features to VLAN interfaces as well.
+
+Fixes: 0fe45467a104 ("idpf: add create vport and netdev configuration")
+Reviewed-by: Sridhar Samudrala <sridhar.samudrala@intel.com>
+Signed-off-by: Madhu Chittim <madhu.chittim@intel.com>
+Tested-by: Zachary Goldstein <zachmgoldstein@google.com>
+Tested-by: Samuel Salin <Samuel.salin@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20250425222636.3188441-4-anthony.l.nguyen@intel.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/xgbe/xgbe-desc.c |    9 +++++++--
- drivers/net/ethernet/amd/xgbe/xgbe-dev.c  |   24 ++++++++++++++++++++++--
- drivers/net/ethernet/amd/xgbe/xgbe-drv.c  |   11 +++++++++--
- drivers/net/ethernet/amd/xgbe/xgbe.h      |    4 ++++
- 4 files changed, 42 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/intel/idpf/idpf.h     | 18 +++----
+ drivers/net/ethernet/intel/idpf/idpf_lib.c | 57 ++++++++--------------
+ 2 files changed, 27 insertions(+), 48 deletions(-)
 
---- a/drivers/net/ethernet/amd/xgbe/xgbe-desc.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-desc.c
-@@ -373,8 +373,13 @@ static int xgbe_map_rx_buffer(struct xgb
- 	}
+diff --git a/drivers/net/ethernet/intel/idpf/idpf.h b/drivers/net/ethernet/intel/idpf/idpf.h
+index 66544faab710a..aef0e9775a330 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf.h
++++ b/drivers/net/ethernet/intel/idpf/idpf.h
+@@ -629,13 +629,13 @@ bool idpf_is_capability_ena(struct idpf_adapter *adapter, bool all,
+ 	VIRTCHNL2_CAP_RX_HSPLIT_AT_L4V4	|\
+ 	VIRTCHNL2_CAP_RX_HSPLIT_AT_L4V6)
  
- 	/* Set up the header page info */
--	xgbe_set_buffer_data(&rdata->rx.hdr, &ring->rx_hdr_pa,
--			     XGBE_SKB_ALLOC_SIZE);
-+	if (pdata->netdev->features & NETIF_F_RXCSUM) {
-+		xgbe_set_buffer_data(&rdata->rx.hdr, &ring->rx_hdr_pa,
-+				     XGBE_SKB_ALLOC_SIZE);
-+	} else {
-+		xgbe_set_buffer_data(&rdata->rx.hdr, &ring->rx_hdr_pa,
-+				     pdata->rx_buf_size);
-+	}
+-#define IDPF_CAP_RX_CSUM_L4V4 (\
+-	VIRTCHNL2_CAP_RX_CSUM_L4_IPV4_TCP	|\
+-	VIRTCHNL2_CAP_RX_CSUM_L4_IPV4_UDP)
++#define IDPF_CAP_TX_CSUM_L4V4 (\
++	VIRTCHNL2_CAP_TX_CSUM_L4_IPV4_TCP	|\
++	VIRTCHNL2_CAP_TX_CSUM_L4_IPV4_UDP)
  
- 	/* Set up the buffer page info */
- 	xgbe_set_buffer_data(&rdata->rx.buf, &ring->rx_buf_pa,
---- a/drivers/net/ethernet/amd/xgbe/xgbe-dev.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-dev.c
-@@ -320,6 +320,18 @@ static void xgbe_config_sph_mode(struct
- 	XGMAC_IOWRITE_BITS(pdata, MAC_RCR, HDSMS, XGBE_SPH_HDSMS_SIZE);
- }
+-#define IDPF_CAP_RX_CSUM_L4V6 (\
+-	VIRTCHNL2_CAP_RX_CSUM_L4_IPV6_TCP	|\
+-	VIRTCHNL2_CAP_RX_CSUM_L4_IPV6_UDP)
++#define IDPF_CAP_TX_CSUM_L4V6 (\
++	VIRTCHNL2_CAP_TX_CSUM_L4_IPV6_TCP	|\
++	VIRTCHNL2_CAP_TX_CSUM_L4_IPV6_UDP)
  
-+static void xgbe_disable_sph_mode(struct xgbe_prv_data *pdata)
-+{
-+	unsigned int i;
-+
-+	for (i = 0; i < pdata->channel_count; i++) {
-+		if (!pdata->channel[i]->rx_ring)
-+			break;
-+
-+		XGMAC_DMA_IOWRITE_BITS(pdata->channel[i], DMA_CH_CR, SPH, 0);
-+	}
-+}
-+
- static int xgbe_write_rss_reg(struct xgbe_prv_data *pdata, unsigned int type,
- 			      unsigned int index, unsigned int val)
+ #define IDPF_CAP_RX_CSUM (\
+ 	VIRTCHNL2_CAP_RX_CSUM_L3_IPV4		|\
+@@ -644,11 +644,9 @@ bool idpf_is_capability_ena(struct idpf_adapter *adapter, bool all,
+ 	VIRTCHNL2_CAP_RX_CSUM_L4_IPV6_TCP	|\
+ 	VIRTCHNL2_CAP_RX_CSUM_L4_IPV6_UDP)
+ 
+-#define IDPF_CAP_SCTP_CSUM (\
++#define IDPF_CAP_TX_SCTP_CSUM (\
+ 	VIRTCHNL2_CAP_TX_CSUM_L4_IPV4_SCTP	|\
+-	VIRTCHNL2_CAP_TX_CSUM_L4_IPV6_SCTP	|\
+-	VIRTCHNL2_CAP_RX_CSUM_L4_IPV4_SCTP	|\
+-	VIRTCHNL2_CAP_RX_CSUM_L4_IPV6_SCTP)
++	VIRTCHNL2_CAP_TX_CSUM_L4_IPV6_SCTP)
+ 
+ #define IDPF_CAP_TUNNEL_TX_CSUM (\
+ 	VIRTCHNL2_CAP_TX_CSUM_L3_SINGLE_TUNNEL	|\
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+index a055a47449f12..78951d62f6171 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+@@ -703,8 +703,10 @@ static int idpf_cfg_netdev(struct idpf_vport *vport)
  {
-@@ -3545,8 +3557,12 @@ static int xgbe_init(struct xgbe_prv_dat
- 	xgbe_config_tx_coalesce(pdata);
- 	xgbe_config_rx_buffer_size(pdata);
- 	xgbe_config_tso_mode(pdata);
--	xgbe_config_sph_mode(pdata);
--	xgbe_config_rss(pdata);
-+
-+	if (pdata->netdev->features & NETIF_F_RXCSUM) {
-+		xgbe_config_sph_mode(pdata);
-+		xgbe_config_rss(pdata);
-+	}
-+
- 	desc_if->wrapper_tx_desc_init(pdata);
- 	desc_if->wrapper_rx_desc_init(pdata);
- 	xgbe_enable_dma_interrupts(pdata);
-@@ -3702,5 +3718,9 @@ void xgbe_init_function_ptrs_dev(struct
- 	hw_if->disable_vxlan = xgbe_disable_vxlan;
- 	hw_if->set_vxlan_id = xgbe_set_vxlan_id;
+ 	struct idpf_adapter *adapter = vport->adapter;
+ 	struct idpf_vport_config *vport_config;
++	netdev_features_t other_offloads = 0;
++	netdev_features_t csum_offloads = 0;
++	netdev_features_t tso_offloads = 0;
+ 	netdev_features_t dflt_features;
+-	netdev_features_t offloads = 0;
+ 	struct idpf_netdev_priv *np;
+ 	struct net_device *netdev;
+ 	u16 idx = vport->idx;
+@@ -766,53 +768,32 @@ static int idpf_cfg_netdev(struct idpf_vport *vport)
  
-+	/* For Split Header*/
-+	hw_if->enable_sph = xgbe_config_sph_mode;
-+	hw_if->disable_sph = xgbe_disable_sph_mode;
-+
- 	DBGPR("<--xgbe_init_function_ptrs\n");
- }
---- a/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe-drv.c
-@@ -2257,10 +2257,17 @@ static int xgbe_set_features(struct net_
- 	if (ret)
- 		return ret;
+ 	if (idpf_is_cap_ena_all(adapter, IDPF_RSS_CAPS, IDPF_CAP_RSS))
+ 		dflt_features |= NETIF_F_RXHASH;
+-	if (idpf_is_cap_ena_all(adapter, IDPF_CSUM_CAPS, IDPF_CAP_RX_CSUM_L4V4))
+-		dflt_features |= NETIF_F_IP_CSUM;
+-	if (idpf_is_cap_ena_all(adapter, IDPF_CSUM_CAPS, IDPF_CAP_RX_CSUM_L4V6))
+-		dflt_features |= NETIF_F_IPV6_CSUM;
++	if (idpf_is_cap_ena_all(adapter, IDPF_CSUM_CAPS, IDPF_CAP_TX_CSUM_L4V4))
++		csum_offloads |= NETIF_F_IP_CSUM;
++	if (idpf_is_cap_ena_all(adapter, IDPF_CSUM_CAPS, IDPF_CAP_TX_CSUM_L4V6))
++		csum_offloads |= NETIF_F_IPV6_CSUM;
+ 	if (idpf_is_cap_ena(adapter, IDPF_CSUM_CAPS, IDPF_CAP_RX_CSUM))
+-		dflt_features |= NETIF_F_RXCSUM;
+-	if (idpf_is_cap_ena_all(adapter, IDPF_CSUM_CAPS, IDPF_CAP_SCTP_CSUM))
+-		dflt_features |= NETIF_F_SCTP_CRC;
++		csum_offloads |= NETIF_F_RXCSUM;
++	if (idpf_is_cap_ena_all(adapter, IDPF_CSUM_CAPS, IDPF_CAP_TX_SCTP_CSUM))
++		csum_offloads |= NETIF_F_SCTP_CRC;
  
--	if ((features & NETIF_F_RXCSUM) && !rxcsum)
-+	if ((features & NETIF_F_RXCSUM) && !rxcsum) {
-+		hw_if->enable_sph(pdata);
-+		hw_if->enable_vxlan(pdata);
- 		hw_if->enable_rx_csum(pdata);
--	else if (!(features & NETIF_F_RXCSUM) && rxcsum)
-+		schedule_work(&pdata->restart_work);
-+	} else if (!(features & NETIF_F_RXCSUM) && rxcsum) {
-+		hw_if->disable_sph(pdata);
-+		hw_if->disable_vxlan(pdata);
- 		hw_if->disable_rx_csum(pdata);
-+		schedule_work(&pdata->restart_work);
-+	}
+ 	if (idpf_is_cap_ena(adapter, IDPF_SEG_CAPS, VIRTCHNL2_CAP_SEG_IPV4_TCP))
+-		dflt_features |= NETIF_F_TSO;
++		tso_offloads |= NETIF_F_TSO;
+ 	if (idpf_is_cap_ena(adapter, IDPF_SEG_CAPS, VIRTCHNL2_CAP_SEG_IPV6_TCP))
+-		dflt_features |= NETIF_F_TSO6;
++		tso_offloads |= NETIF_F_TSO6;
+ 	if (idpf_is_cap_ena_all(adapter, IDPF_SEG_CAPS,
+ 				VIRTCHNL2_CAP_SEG_IPV4_UDP |
+ 				VIRTCHNL2_CAP_SEG_IPV6_UDP))
+-		dflt_features |= NETIF_F_GSO_UDP_L4;
++		tso_offloads |= NETIF_F_GSO_UDP_L4;
+ 	if (idpf_is_cap_ena_all(adapter, IDPF_RSC_CAPS, IDPF_CAP_RSC))
+-		offloads |= NETIF_F_GRO_HW;
+-	/* advertise to stack only if offloads for encapsulated packets is
+-	 * supported
+-	 */
+-	if (idpf_is_cap_ena(vport->adapter, IDPF_SEG_CAPS,
+-			    VIRTCHNL2_CAP_SEG_TX_SINGLE_TUNNEL)) {
+-		offloads |= NETIF_F_GSO_UDP_TUNNEL	|
+-			    NETIF_F_GSO_GRE		|
+-			    NETIF_F_GSO_GRE_CSUM	|
+-			    NETIF_F_GSO_PARTIAL		|
+-			    NETIF_F_GSO_UDP_TUNNEL_CSUM	|
+-			    NETIF_F_GSO_IPXIP4		|
+-			    NETIF_F_GSO_IPXIP6		|
+-			    0;
+-
+-		if (!idpf_is_cap_ena_all(vport->adapter, IDPF_CSUM_CAPS,
+-					 IDPF_CAP_TUNNEL_TX_CSUM))
+-			netdev->gso_partial_features |=
+-				NETIF_F_GSO_UDP_TUNNEL_CSUM;
+-
+-		netdev->gso_partial_features |= NETIF_F_GSO_GRE_CSUM;
+-		offloads |= NETIF_F_TSO_MANGLEID;
+-	}
++		other_offloads |= NETIF_F_GRO_HW;
+ 	if (idpf_is_cap_ena(adapter, IDPF_OTHER_CAPS, VIRTCHNL2_CAP_LOOPBACK))
+-		offloads |= NETIF_F_LOOPBACK;
++		other_offloads |= NETIF_F_LOOPBACK;
  
- 	if ((features & NETIF_F_HW_VLAN_CTAG_RX) && !rxvlan)
- 		hw_if->enable_rx_vlan_stripping(pdata);
---- a/drivers/net/ethernet/amd/xgbe/xgbe.h
-+++ b/drivers/net/ethernet/amd/xgbe/xgbe.h
-@@ -865,6 +865,10 @@ struct xgbe_hw_if {
- 	void (*enable_vxlan)(struct xgbe_prv_data *);
- 	void (*disable_vxlan)(struct xgbe_prv_data *);
- 	void (*set_vxlan_id)(struct xgbe_prv_data *);
-+
-+	/* For Split Header */
-+	void (*enable_sph)(struct xgbe_prv_data *pdata);
-+	void (*disable_sph)(struct xgbe_prv_data *pdata);
- };
+-	netdev->features |= dflt_features;
+-	netdev->hw_features |= dflt_features | offloads;
+-	netdev->hw_enc_features |= dflt_features | offloads;
++	netdev->features |= dflt_features | csum_offloads | tso_offloads;
++	netdev->hw_features |=  netdev->features | other_offloads;
++	netdev->vlan_features |= netdev->features | other_offloads;
++	netdev->hw_enc_features |= dflt_features | other_offloads;
+ 	idpf_set_ethtool_ops(netdev);
+ 	SET_NETDEV_DEV(netdev, &adapter->pdev->dev);
  
- /* This structure represents implementation specific routines for an
+-- 
+2.39.5
+
 
 
 
