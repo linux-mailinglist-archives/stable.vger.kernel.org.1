@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-142676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6642CAAEBB8
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:09:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC1F1AAEB0A
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:02:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D34727A69FC
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:08:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DFFB1C04F15
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:02:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63CB228C845;
-	Wed,  7 May 2025 19:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADC7D28C2A5;
+	Wed,  7 May 2025 19:02:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JfiC8AQp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZOT0cZDh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 214B128BA9F;
-	Wed,  7 May 2025 19:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 680D929A0;
+	Wed,  7 May 2025 19:02:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644984; cv=none; b=nud1CSELfuTUr3xgSQhBM++Fe2fmTH3HYP3cgKV0mMJcvAw4TE+mIiiSQh4qncEu3Nv21H3/G0/4wR6GoR9C13dhT4/r7wuqatqq5VELU4yunqEmvF7qPZ/kdh3IUK0nonSAzEAp7b+a5aqxJMDRPgEU52YgrycAy09G59ljRW0=
+	t=1746644546; cv=none; b=qYtjfUtDr5vxKfZTVuVqKS3StFmz6n/Mq1hfPPgfZTNdXMrKO6Lef4sBcDeOrTFSrQ9iuueLovkqNrPM5iPviyjJPSpoYZ+1IL2cQ3wPLDhAqwgzGd+TC8UrHRclk2mUWmXkFd29kLgV9s2zRjc5FXLZtoh9FYBKTx/CguMNT9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644984; c=relaxed/simple;
-	bh=g85t3Q8VUpqpp6V+nYDDNyqYr8iGTEeHOIihr86tAIc=;
+	s=arc-20240116; t=1746644546; c=relaxed/simple;
+	bh=EadIyELre1jRbCRwTm8P38BkApaAYy5KpgB3Uf0GpzU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jcckv7cEOqwRyxG9zJmBUAbxm/n6UHvXqBla78mbLVEdQ1sxrG0kVNku0QDsbzoFLeVBmNpLQk1NvT5jozDI3mHjKEOusaPxGfXuq8BQ0t/goqXn7m3kx6fn/yZgCdsbkF+0Vij3LaSDrpqufb+Q2VuHxC6EoTCtGROCgnuXk7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JfiC8AQp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F1C2C4CEE2;
-	Wed,  7 May 2025 19:09:43 +0000 (UTC)
+	 MIME-Version; b=Vc2Wb/iVRqMty5VTHroLEtq+1k4tmPg1LiKS7Wh+N03S+IxNmGB4Q5AGPL3xvf9aaZ3ZAZ3nAl4ER3oP+6qz0MHs0Qht4X28GTwKbJHeGCGjbPeJ6y7PSpxcSZVXgMEaooP3q/mSfACE3luoSPgcEmLml0NwTC3kLZySM5oYSI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZOT0cZDh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DED69C4CEE9;
+	Wed,  7 May 2025 19:02:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644984;
-	bh=g85t3Q8VUpqpp6V+nYDDNyqYr8iGTEeHOIihr86tAIc=;
+	s=korg; t=1746644546;
+	bh=EadIyELre1jRbCRwTm8P38BkApaAYy5KpgB3Uf0GpzU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JfiC8AQpltnpHYt3Vr/Cr8KGflhI82lavxFQO7gBYqakSxZFbUMGJqf2FhhPtA9bR
-	 OV3uKpRc+ZmOhqp8UBWtdLpYNgM/YIeDRDbLGD/pGAxhJMuU9JKq24XLcp5Jlz+FlF
-	 zJYd6xAsQYi632nvEWby90deOKw6XieP245ZtavQ=
+	b=ZOT0cZDhZ0Tyj0aMP10M8vtv0FyK+7w0C4krDkbMW+0RsSkICbhuf9fTslj2QQKhc
+	 6K85u4ljqXZ59Zz7M2iSTvSnou8g8h4S32/Up3tFvbMiNsVRYetuApjnwCg4WPDySi
+	 m3pb2FSdSBLNBR8ZRgzIeYG4qTSF8I+VXNAUL9sQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shouye Liu <shouyeliu@tencent.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.6 027/129] platform/x86/intel-uncore-freq: Fix missing uncore sysfs during CPU hotplug
+	En-Wei Wu <en-wei.wu@canonical.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 078/164] Bluetooth: btusb: avoid NULL pointer dereference in skb_dequeue()
 Date: Wed,  7 May 2025 20:39:23 +0200
-Message-ID: <20250507183814.630070361@linuxfoundation.org>
+Message-ID: <20250507183824.120991083@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
-References: <20250507183813.500572371@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,78 +60,204 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shouye Liu <shouyeliu@tencent.com>
+From: En-Wei Wu <en-wei.wu@canonical.com>
 
-commit 8d6955ed76e8a47115f2ea1d9c263ee6f505d737 upstream.
+[ Upstream commit 0317b033abcd1d8dd2798f0e2de5e84543d0bd22 ]
 
-In certain situations, the sysfs for uncore may not be present when all
-CPUs in a package are offlined and then brought back online after boot.
+A NULL pointer dereference can occur in skb_dequeue() when processing a
+QCA firmware crash dump on WCN7851 (0489:e0f3).
 
-This issue can occur if there is an error in adding the sysfs entry due
-to a memory allocation failure. Retrying to bring the CPUs online will
-not resolve the issue, as the uncore_cpu_mask is already set for the
-package before the failure condition occurs.
+[ 93.672166] Bluetooth: hci0: ACL memdump size(589824)
 
-This issue does not occur if the failure happens during module
-initialization, as the module will fail to load in the event of any
-error.
+[ 93.672475] BUG: kernel NULL pointer dereference, address: 0000000000000008
+[ 93.672517] Workqueue: hci0 hci_devcd_rx [bluetooth]
+[ 93.672598] RIP: 0010:skb_dequeue+0x50/0x80
 
-To address this, ensure that the uncore_cpu_mask is not set until the
-successful return of uncore_freq_add_entry().
+The issue stems from handle_dump_pkt_qca() returning 0 even when a dump
+packet is successfully processed. This is because it incorrectly
+forwards the return value of hci_devcd_init() (which returns 0 on
+success). As a result, the caller (btusb_recv_acl_qca() or
+btusb_recv_evt_qca()) assumes the packet was not handled and passes it
+to hci_recv_frame(), leading to premature kfree() of the skb.
 
-Fixes: dbce412a7733 ("platform/x86/intel-uncore-freq: Split common and enumeration part")
-Signed-off-by: Shouye Liu <shouyeliu@tencent.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250417032321.75580-1-shouyeliu@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Later, hci_devcd_rx() attempts to dequeue the same skb from the dump
+queue, resulting in a NULL pointer dereference.
+
+Fix this by:
+1. Making handle_dump_pkt_qca() return 0 on success and negative errno
+   on failure, consistent with kernel conventions.
+2. Splitting dump packet detection into separate functions for ACL
+   and event packets for better structure and readability.
+
+This ensures dump packets are properly identified and consumed, avoiding
+double handling and preventing NULL pointer access.
+
+Fixes: 20981ce2d5a5 ("Bluetooth: btusb: Add WCN6855 devcoredump support")
+Signed-off-by: En-Wei Wu <en-wei.wu@canonical.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/uncore-frequency/uncore-frequency.c |   13 ++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/bluetooth/btusb.c | 101 +++++++++++++++++++++++++++-----------
+ 1 file changed, 73 insertions(+), 28 deletions(-)
 
---- a/drivers/platform/x86/intel/uncore-frequency/uncore-frequency.c
-+++ b/drivers/platform/x86/intel/uncore-frequency/uncore-frequency.c
-@@ -121,15 +121,13 @@ static int uncore_event_cpu_online(unsig
- {
- 	struct uncore_data *data;
- 	int target;
-+	int ret;
- 
- 	/* Check if there is an online cpu in the package for uncore MSR */
- 	target = cpumask_any_and(&uncore_cpu_mask, topology_die_cpumask(cpu));
- 	if (target < nr_cpu_ids)
- 		return 0;
- 
--	/* Use this CPU on this die as a control CPU */
--	cpumask_set_cpu(cpu, &uncore_cpu_mask);
--
- 	data = uncore_get_instance(cpu);
- 	if (!data)
- 		return 0;
-@@ -138,7 +136,14 @@ static int uncore_event_cpu_online(unsig
- 	data->die_id = topology_die_id(cpu);
- 	data->domain_id = UNCORE_DOMAIN_ID_INVALID;
- 
--	return uncore_freq_add_entry(data, cpu);
-+	ret = uncore_freq_add_entry(data, cpu);
-+	if (ret)
-+		return ret;
-+
-+	/* Use this CPU on this die as a control CPU */
-+	cpumask_set_cpu(cpu, &uncore_cpu_mask);
-+
-+	return 0;
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index f784daaa6b528..7e1f03231b4c9 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -2975,22 +2975,16 @@ static void btusb_coredump_qca(struct hci_dev *hdev)
+ 		bt_dev_err(hdev, "%s: triggle crash failed (%d)", __func__, err);
  }
  
- static int uncore_event_cpu_offline(unsigned int cpu)
+-/*
+- * ==0: not a dump pkt.
+- * < 0: fails to handle a dump pkt
+- * > 0: otherwise.
+- */
++/* Return: 0 on success, negative errno on failure. */
+ static int handle_dump_pkt_qca(struct hci_dev *hdev, struct sk_buff *skb)
+ {
+-	int ret = 1;
++	int ret = 0;
+ 	u8 pkt_type;
+ 	u8 *sk_ptr;
+ 	unsigned int sk_len;
+ 	u16 seqno;
+ 	u32 dump_size;
+ 
+-	struct hci_event_hdr *event_hdr;
+-	struct hci_acl_hdr *acl_hdr;
+ 	struct qca_dump_hdr *dump_hdr;
+ 	struct btusb_data *btdata = hci_get_drvdata(hdev);
+ 	struct usb_device *udev = btdata->udev;
+@@ -3000,30 +2994,14 @@ static int handle_dump_pkt_qca(struct hci_dev *hdev, struct sk_buff *skb)
+ 	sk_len = skb->len;
+ 
+ 	if (pkt_type == HCI_ACLDATA_PKT) {
+-		acl_hdr = hci_acl_hdr(skb);
+-		if (le16_to_cpu(acl_hdr->handle) != QCA_MEMDUMP_ACL_HANDLE)
+-			return 0;
+ 		sk_ptr += HCI_ACL_HDR_SIZE;
+ 		sk_len -= HCI_ACL_HDR_SIZE;
+-		event_hdr = (struct hci_event_hdr *)sk_ptr;
+-	} else {
+-		event_hdr = hci_event_hdr(skb);
+ 	}
+ 
+-	if ((event_hdr->evt != HCI_VENDOR_PKT)
+-		|| (event_hdr->plen != (sk_len - HCI_EVENT_HDR_SIZE)))
+-		return 0;
+-
+ 	sk_ptr += HCI_EVENT_HDR_SIZE;
+ 	sk_len -= HCI_EVENT_HDR_SIZE;
+ 
+ 	dump_hdr = (struct qca_dump_hdr *)sk_ptr;
+-	if ((sk_len < offsetof(struct qca_dump_hdr, data))
+-		|| (dump_hdr->vse_class != QCA_MEMDUMP_VSE_CLASS)
+-	    || (dump_hdr->msg_type != QCA_MEMDUMP_MSG_TYPE))
+-		return 0;
+-
+-	/*it is dump pkt now*/
+ 	seqno = le16_to_cpu(dump_hdr->seqno);
+ 	if (seqno == 0) {
+ 		set_bit(BTUSB_HW_SSR_ACTIVE, &btdata->flags);
+@@ -3097,17 +3075,84 @@ static int handle_dump_pkt_qca(struct hci_dev *hdev, struct sk_buff *skb)
+ 	return ret;
+ }
+ 
++/* Return: true if the ACL packet is a dump packet, false otherwise. */
++static bool acl_pkt_is_dump_qca(struct hci_dev *hdev, struct sk_buff *skb)
++{
++	u8 *sk_ptr;
++	unsigned int sk_len;
++
++	struct hci_event_hdr *event_hdr;
++	struct hci_acl_hdr *acl_hdr;
++	struct qca_dump_hdr *dump_hdr;
++
++	sk_ptr = skb->data;
++	sk_len = skb->len;
++
++	acl_hdr = hci_acl_hdr(skb);
++	if (le16_to_cpu(acl_hdr->handle) != QCA_MEMDUMP_ACL_HANDLE)
++		return false;
++
++	sk_ptr += HCI_ACL_HDR_SIZE;
++	sk_len -= HCI_ACL_HDR_SIZE;
++	event_hdr = (struct hci_event_hdr *)sk_ptr;
++
++	if ((event_hdr->evt != HCI_VENDOR_PKT) ||
++	    (event_hdr->plen != (sk_len - HCI_EVENT_HDR_SIZE)))
++		return false;
++
++	sk_ptr += HCI_EVENT_HDR_SIZE;
++	sk_len -= HCI_EVENT_HDR_SIZE;
++
++	dump_hdr = (struct qca_dump_hdr *)sk_ptr;
++	if ((sk_len < offsetof(struct qca_dump_hdr, data)) ||
++	    (dump_hdr->vse_class != QCA_MEMDUMP_VSE_CLASS) ||
++	    (dump_hdr->msg_type != QCA_MEMDUMP_MSG_TYPE))
++		return false;
++
++	return true;
++}
++
++/* Return: true if the event packet is a dump packet, false otherwise. */
++static bool evt_pkt_is_dump_qca(struct hci_dev *hdev, struct sk_buff *skb)
++{
++	u8 *sk_ptr;
++	unsigned int sk_len;
++
++	struct hci_event_hdr *event_hdr;
++	struct qca_dump_hdr *dump_hdr;
++
++	sk_ptr = skb->data;
++	sk_len = skb->len;
++
++	event_hdr = hci_event_hdr(skb);
++
++	if ((event_hdr->evt != HCI_VENDOR_PKT)
++	    || (event_hdr->plen != (sk_len - HCI_EVENT_HDR_SIZE)))
++		return false;
++
++	sk_ptr += HCI_EVENT_HDR_SIZE;
++	sk_len -= HCI_EVENT_HDR_SIZE;
++
++	dump_hdr = (struct qca_dump_hdr *)sk_ptr;
++	if ((sk_len < offsetof(struct qca_dump_hdr, data)) ||
++	    (dump_hdr->vse_class != QCA_MEMDUMP_VSE_CLASS) ||
++	    (dump_hdr->msg_type != QCA_MEMDUMP_MSG_TYPE))
++		return false;
++
++	return true;
++}
++
+ static int btusb_recv_acl_qca(struct hci_dev *hdev, struct sk_buff *skb)
+ {
+-	if (handle_dump_pkt_qca(hdev, skb))
+-		return 0;
++	if (acl_pkt_is_dump_qca(hdev, skb))
++		return handle_dump_pkt_qca(hdev, skb);
+ 	return hci_recv_frame(hdev, skb);
+ }
+ 
+ static int btusb_recv_evt_qca(struct hci_dev *hdev, struct sk_buff *skb)
+ {
+-	if (handle_dump_pkt_qca(hdev, skb))
+-		return 0;
++	if (evt_pkt_is_dump_qca(hdev, skb))
++		return handle_dump_pkt_qca(hdev, skb);
+ 	return hci_recv_frame(hdev, skb);
+ }
+ 
+-- 
+2.39.5
+
 
 
 
