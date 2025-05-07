@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-142467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D748AAEABD
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:59:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A13A0AAEA40
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:53:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07D5B9C7C8F
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:58:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CE735086A0
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:53:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90A1928B4F0;
-	Wed,  7 May 2025 18:59:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1087B24E4CE;
+	Wed,  7 May 2025 18:53:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AH5yeO+P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sOeVP9q2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B1E81482F5;
-	Wed,  7 May 2025 18:59:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C14DD1FF5EC;
+	Wed,  7 May 2025 18:53:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644343; cv=none; b=Tpt9F4/MYt2sYH+0G14M3NFp/GYBN5YkzWSUMQm//up4QxNuRjh9PKZvy+weNUwcwvUDW4M5AJW5QVtZdmIBZAIaJYTYjVQl2+mWUh35D7U1GDMKEsZJxFDf75Xu3+p9tk9wZNIKHDsevmAHGZxM06u52TZdBEp3GFZ4rq8PhG0=
+	t=1746643986; cv=none; b=Mj8v5yy0l1McARUiIH4NhkSAYXixkAuPzcK4yCMV1SpOjJVC5HD3lZfP1Fov6smo72whuRhwOvuyRTPxQvzxqc/DRego9DnX6gpTLkQfBnRdUpzQuHUM0n3Sm5OxFO+PAgZum1fIvY6g2t7nSKp4I6+l+qDS8fEW1ELWiN6qOhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644343; c=relaxed/simple;
-	bh=7zH2hmRfsuH9LoLVK2cSDNGGjFOg3VfCwlDUUVr2mfY=;
+	s=arc-20240116; t=1746643986; c=relaxed/simple;
+	bh=lxW+RcMt76uT49lEtuLBqAdZAAF16FaqpcvPWq0Odo8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KHdZWhOLmK+/J9m8N20sJM3h81lemliclrGKSb7Acy20dv4nsLZ7a3xazXXo2C2akfSX8/JatI8GAG54kAP9PaP2avP91JNDUSGbZJ4N3TQyck7Mx6A+y9FmL+1HUgVLG5/9w474QcjGinocQo9OUOQf5sDyHPRROMQkppfJp+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AH5yeO+P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE7B7C4CEE2;
-	Wed,  7 May 2025 18:59:02 +0000 (UTC)
+	 MIME-Version; b=J2KUYH539PGfoAkMAoUk76bBPQSoR1VCTe87e7A5LD2mEIJXZ+PS8hOe/qtQKVpyKgy+Kv17I2Va1u/dr9zGPqTU4YJnH4MueDWrzsTL8XSoXR+2Qk7kMW6YyppA9VgE6HHHYsmNcKUrZ3yt5sG7ry5c3D6qDfHdDkk3OUHyknw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sOeVP9q2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32954C4CEE2;
+	Wed,  7 May 2025 18:53:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644343;
-	bh=7zH2hmRfsuH9LoLVK2cSDNGGjFOg3VfCwlDUUVr2mfY=;
+	s=korg; t=1746643986;
+	bh=lxW+RcMt76uT49lEtuLBqAdZAAF16FaqpcvPWq0Odo8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AH5yeO+PN1d+1EQT806nj+QYIWZhvWY41l65oiW6eFpFDEZtPhhwGAWm1jN+1DhND
-	 EqV0kchpogjhsyujTlgO5rWKCGzMDyJg/kZXNMWuklzJGp3IyHu58EPVUFH8ODAkyG
-	 UWd9tUJaAfRdFwJ3VUue8ec8GHrnMmMK1qXfwX8s=
+	b=sOeVP9q2KvBTiaDVizVjcL2+BXAOg5SgkGarkLvYAHY9gpi8Pw/NaYQJFZixzTVyN
+	 uJW8IPQzvdUy7eIjh9wVsKOqdsZgldNh3UkosA52/tol91Y4pOv/SZRNqh15eWcUP9
+	 4QwrQ5/oAG+KdLjELBspe5F6YSdpNwp8RilbfppM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.12 013/164] cpufreq: intel_pstate: Unchecked MSR aceess in legacy mode
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Donet Tom <donettom@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 053/183] book3s64/radix : Align section vmemmap start address to PAGE_SIZE
 Date: Wed,  7 May 2025 20:38:18 +0200
-Message-ID: <20250507183821.380451420@linuxfoundation.org>
+Message-ID: <20250507183826.838178384@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +63,165 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+From: Donet Tom <donettom@linux.ibm.com>
 
-commit ac4e04d9e378f5aa826c2406ad7871ae1b6a6fb9 upstream.
+[ Upstream commit 9cf7e13fecbab0894f6986fc6986ab2eba8de52e ]
 
-When turbo mode is unavailable on a Skylake-X system, executing the
-command:
+A vmemmap altmap is a device-provided region used to provide
+backing storage for struct pages. For each namespace, the altmap
+should belong to that same namespace. If the namespaces are
+created unaligned, there is a chance that the section vmemmap
+start address could also be unaligned. If the section vmemmap
+start address is unaligned, the altmap page allocated from the
+current namespace might be used by the previous namespace also.
+During the free operation, since the altmap is shared between two
+namespaces, the previous namespace may detect that the page does
+not belong to its altmap and incorrectly assume that the page is a
+normal page. It then attempts to free the normal page, which leads
+to a kernel crash.
 
- # echo 1 > /sys/devices/system/cpu/intel_pstate/no_turbo
+Kernel attempted to read user page (18) - exploit attempt? (uid: 0)
+BUG: Kernel NULL pointer dereference on read at 0x00000018
+Faulting instruction address: 0xc000000000530c7c
+Oops: Kernel access of bad area, sig: 11 [#1]
+LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA pSeries
+CPU: 32 PID: 2104 Comm: ndctl Kdump: loaded Tainted: G        W
+NIP:  c000000000530c7c LR: c000000000530e00 CTR: 0000000000007ffe
+REGS: c000000015e57040 TRAP: 0300   Tainted: G        W
+MSR:  800000000280b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 84482404
+CFAR: c000000000530dfc DAR: 0000000000000018 DSISR: 40000000 IRQMASK: 0
+GPR00: c000000000530e00 c000000015e572e0 c000000002c5cb00 c00c000101008040
+GPR04: 0000000000000000 0000000000000007 0000000000000001 000000000000001f
+GPR08: 0000000000000005 0000000000000000 0000000000000018 0000000000002000
+GPR12: c0000000001d2fb0 c0000060de6b0080 0000000000000000 c0000060dbf90020
+GPR16: c00c000101008000 0000000000000001 0000000000000000 c000000125b20f00
+GPR20: 0000000000000001 0000000000000000 ffffffffffffffff c00c000101007fff
+GPR24: 0000000000000001 0000000000000000 0000000000000000 0000000000000000
+GPR28: 0000000004040201 0000000000000001 0000000000000000 c00c000101008040
+NIP [c000000000530c7c] get_pfnblock_flags_mask+0x7c/0xd0
+LR [c000000000530e00] free_unref_page_prepare+0x130/0x4f0
+Call Trace:
+free_unref_page+0x50/0x1e0
+free_reserved_page+0x40/0x68
+free_vmemmap_pages+0x98/0xe0
+remove_pte_table+0x164/0x1e8
+remove_pmd_table+0x204/0x2c8
+remove_pud_table+0x1c4/0x288
+remove_pagetable+0x1c8/0x310
+vmemmap_free+0x24/0x50
+section_deactivate+0x28c/0x2a0
+__remove_pages+0x84/0x110
+arch_remove_memory+0x38/0x60
+memunmap_pages+0x18c/0x3d0
+devm_action_release+0x30/0x50
+release_nodes+0x68/0x140
+devres_release_group+0x100/0x190
+dax_pmem_compat_release+0x44/0x80 [dax_pmem_compat]
+device_for_each_child+0x8c/0x100
+[dax_pmem_compat_remove+0x2c/0x50 [dax_pmem_compat]
+nvdimm_bus_remove+0x78/0x140 [libnvdimm]
+device_remove+0x70/0xd0
 
-results in an unchecked MSR access error:
+Another issue is that if there is no altmap, a PMD-sized vmemmap
+page will be allocated from RAM, regardless of the alignment of
+the section start address. If the section start address is not
+aligned to the PMD size, a VM_BUG_ON will be triggered when
+setting the PMD-sized page to page table.
 
- WRMSR to 0x199 (attempted to write 0x0000000100001300).
+In this patch, we are aligning the section vmemmap start address
+to PAGE_SIZE. After alignment, the start address will not be
+part of the current namespace, and a normal page will be allocated
+for the vmemmap mapping of the current section. For the remaining
+sections, altmaps will be allocated. During the free operation,
+the normal page will be correctly freed.
 
-This issue was reproduced on an OEM (Original Equipment Manufacturer)
-system and is not a common problem across all Skylake-X systems.
+In the same way, a PMD_SIZE vmemmap page will be allocated only if
+the section start address is PMD_SIZE-aligned; otherwise, it will
+fall back to a PAGE-sized vmemmap allocation.
 
-This error occurs because the MSR 0x199 Turbo Engage Bit (bit 32) is set
-when turbo mode is disabled. The issue arises when intel_pstate fails to
-detect that turbo mode is disabled. Here intel_pstate relies on
-MSR_IA32_MISC_ENABLE bit 38 to determine the status of turbo mode.
-However, on this system, bit 38 is not set even when turbo mode is
-disabled.
+Without this patch
+==================
+NS1 start               NS2 start
+ _________________________________________________________
+|         NS1               |            NS2              |
+ ---------------------------------------------------------
+| Altmap| Altmap | .....|Altmap| Altmap | ...........
+|  NS1  |  NS1   |      | NS2  |  NS2   |
 
-According to the Intel Software Developer's Manual (SDM), the BIOS sets
-this bit during platform initialization to enable or disable
-opportunistic processor performance operations. Logically, this bit
-should be set in such cases. However, the SDM also specifies that "OS
-and applications must use CPUID leaf 06H to detect processors with
-opportunistic processor performance operations enabled."
+In the above scenario, NS1 and NS2 are two namespaces. The vmemmap
+for NS1 comes from Altmap NS1, which belongs to NS1, and the
+vmemmap for NS2 comes from Altmap NS2, which belongs to NS2.
 
-Therefore, in addition to checking MSR_IA32_MISC_ENABLE bit 38, verify
-that CPUID.06H:EAX[1] is 0 to accurately determine if turbo mode is
-disabled.
+The vmemmap start for NS2 is not aligned, so Altmap NS2 is shared
+by both NS1 and NS2. During the free operation in NS1, Altmap NS2
+is not part of NS1's altmap, causing it to attempt to free an
+invalid page.
 
-Fixes: 4521e1a0ce17 ("cpufreq: intel_pstate: Reflect current no_turbo state correctly")
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+With this patch
+===============
+NS1 start               NS2 start
+ _________________________________________________________
+|         NS1               |            NS2              |
+ ---------------------------------------------------------
+| Altmap| Altmap | .....| Normal | Altmap | Altmap |.......
+|  NS1  |  NS1   |      |  Page  |  NS2   |  NS2   |
+
+If the vmemmap start for NS2 is not aligned then we are allocating
+a normal page. NS1 and NS2 vmemmap will be freed correctly.
+
+Fixes: 368a0590d954 ("powerpc/book3s64/vmemmap: switch radix to use a different vmemmap handling function")
+Co-developed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/8f98ec2b442977c618f7256cec88eb17dde3f2b9.1741609795.git.donettom@linux.ibm.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/intel_pstate.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/powerpc/mm/book3s64/radix_pgtable.c | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
---- a/drivers/cpufreq/intel_pstate.c
-+++ b/drivers/cpufreq/intel_pstate.c
-@@ -600,6 +600,9 @@ static bool turbo_is_disabled(void)
- {
- 	u64 misc_en;
+diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+index 311e2112d782e..128c011afc481 100644
+--- a/arch/powerpc/mm/book3s64/radix_pgtable.c
++++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+@@ -1120,6 +1120,19 @@ int __meminit radix__vmemmap_populate(unsigned long start, unsigned long end, in
+ 	pmd_t *pmd;
+ 	pte_t *pte;
  
-+	if (!cpu_feature_enabled(X86_FEATURE_IDA))
-+		return true;
++	/*
++	 * Make sure we align the start vmemmap addr so that we calculate
++	 * the correct start_pfn in altmap boundary check to decided whether
++	 * we should use altmap or RAM based backing memory allocation. Also
++	 * the address need to be aligned for set_pte operation.
 +
- 	rdmsrl(MSR_IA32_MISC_ENABLE, misc_en);
++	 * If the start addr is already PMD_SIZE aligned we will try to use
++	 * a pmd mapping. We don't want to be too aggressive here beacause
++	 * that will cause more allocations in RAM. So only if the namespace
++	 * vmemmap start addr is PMD_SIZE aligned we will use PMD mapping.
++	 */
++
++	start = ALIGN_DOWN(start, PAGE_SIZE);
+ 	for (addr = start; addr < end; addr = next) {
+ 		next = pmd_addr_end(addr, end);
  
- 	return !!(misc_en & MSR_IA32_MISC_ENABLE_TURBO_DISABLE);
+@@ -1145,8 +1158,8 @@ int __meminit radix__vmemmap_populate(unsigned long start, unsigned long end, in
+ 			 * in altmap block allocation failures, in which case
+ 			 * we fallback to RAM for vmemmap allocation.
+ 			 */
+-			if (altmap && (!IS_ALIGNED(addr, PMD_SIZE) ||
+-				       altmap_cross_boundary(altmap, addr, PMD_SIZE))) {
++			if (!IS_ALIGNED(addr, PMD_SIZE) || (altmap &&
++			    altmap_cross_boundary(altmap, addr, PMD_SIZE))) {
+ 				/*
+ 				 * make sure we don't create altmap mappings
+ 				 * covering things outside the device.
+-- 
+2.39.5
+
 
 
 
