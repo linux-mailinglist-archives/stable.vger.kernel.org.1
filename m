@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-142131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24E8DAAE930
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:41:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 279B4AAEBB2
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:09:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 526FF1C265D4
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:42:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B7B61C45694
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:09:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA3DE28DF45;
-	Wed,  7 May 2025 18:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 114CF2144C1;
+	Wed,  7 May 2025 19:09:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uNiacLj+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q99wA0rC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E7C288CB0;
-	Wed,  7 May 2025 18:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1DD921504D;
+	Wed,  7 May 2025 19:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643312; cv=none; b=bQW4G6z8f73xRUGiHDXtESYrLA2z6z/gGGkUNJkhJoJjxHo6Kho8EYAZJ58ClThN3v65S7v065ZM80uGJT1iHsUiM2evAkiXAqUwH82InC+0g83jT3JmxLJ0E03zBifEmT6pUK/dv1EgzqTZYTk+DVi3kwQqCmSQ2FWHtyc9iEU=
+	t=1746644971; cv=none; b=OFMT+WbLAicAbOIc7BSEf48UnzhGJBN3EYn4jiQTUNkhdeLHcl8+46Zxix4HhpByR6CvHsvNMvCZi5z+7iPsHeQAugVpEmsokYadXHJg0V/f68GCJt50xwKa9CX/dDEbhgYvTxR35CLG39eQfcW14yjsSN5WNfFtVLimtkqJYTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643312; c=relaxed/simple;
-	bh=PS4PKuVRAFSJ+ZUI1vjW8DHug34ZBKyGTKMpZObyQts=;
+	s=arc-20240116; t=1746644971; c=relaxed/simple;
+	bh=/boOmsE+v4ZFhossTPNaGwLOKLjaItxUSeFtj4YLxps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LfubZm9vrakg532Su1aeHpICxJDh+U0Jlm+bnKg5gImMc5pbrZENT8rpdoX5DtTBbztb+CwYWA35aLRziEGpneIiL6KJ6ckyX3oeUTENQI/Ix81FWjIn0msUnrKY5xUPUD/VG9RZvYZn5oPWc8iUfp0vYL/KBNpfS2Jsx7gElFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uNiacLj+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFC55C4CEE2;
-	Wed,  7 May 2025 18:41:51 +0000 (UTC)
+	 MIME-Version; b=aKWo+ZRaAA5CSpCHa0K5O8V38hwzBz3iwGBOci4fOVR1p7L3RsT0fCKD/S3p7DIWtlOE/Py691H5iu7KC2/+vvEjVtjVIlcFO6I/hkYVuNRgkoZLqUsBjwiE0/LawYqp2uWzYb+X+vD72HIvChv/fbXsHmHJrLvtPasqNACerV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q99wA0rC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3209DC4CEE2;
+	Wed,  7 May 2025 19:09:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643312;
-	bh=PS4PKuVRAFSJ+ZUI1vjW8DHug34ZBKyGTKMpZObyQts=;
+	s=korg; t=1746644971;
+	bh=/boOmsE+v4ZFhossTPNaGwLOKLjaItxUSeFtj4YLxps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uNiacLj+FouXDnKq09IQZmUU4uve0HCxAEk+HAcOUSfDX7t4VyhEh2MhObn+jJCgR
-	 tA0EOi1xEUzyVVtX2alN3GYUjey0Kz8fKm2JR99Ih9sxaN9SI6EpE2ecCdAIrOUNV/
-	 KJx+Q31t43suEUttoXgcHcweYw4rtF8OyihvtCfw=
+	b=Q99wA0rC9h4gQstSnidBCe8MhLXqfsj179qfgcTAa7Yag9R0Ych77sjeXFfDm1/R/
+	 nOvEoOzyfYsR7fEWtsxH9xcwxxUD9XgNwQbdnePyKVUVp92+O5mQ1SVucZRVDO9HI6
+	 aMNbAiTdZxcYjHHa381ezWEDl7l6MgBz64FguYkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maor Gottlieb <maorg@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 18/55] net/mlx5: E-Switch, Initialize MAC Address for Default GID
+	Benjamin Marzinski <bmarzins@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 6.6 023/129] dm: always update the array size in realloc_argv on success
 Date: Wed,  7 May 2025 20:39:19 +0200
-Message-ID: <20250507183759.782097674@linuxfoundation.org>
+Message-ID: <20250507183814.470243951@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
-References: <20250507183759.048732653@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maor Gottlieb <maorg@nvidia.com>
+From: Benjamin Marzinski <bmarzins@redhat.com>
 
-[ Upstream commit 5d1a04f347e6cbf5ffe74da409a5d71fbe8c5f19 ]
+commit 5a2a6c428190f945c5cbf5791f72dbea83e97f66 upstream.
 
-Initialize the source MAC address when creating the default GID entry.
-Since this entry is used only for loopback traffic, it only needs to
-be a unicast address. A zeroed-out MAC address is sufficient for this
-purpose.
-Without this fix, random bits would be assigned as the source address.
-If these bits formed a multicast address, the firmware would return an
-error, preventing the user from switching to switchdev mode:
+realloc_argv() was only updating the array size if it was called with
+old_argv already allocated. The first time it was called to create an
+argv array, it would allocate the array but return the array size as
+zero. dm_split_args() would think that it couldn't store any arguments
+in the array and would call realloc_argv() again, causing it to
+reallocate the initial slots (this time using GPF_KERNEL) and finally
+return a size. Aside from being wasteful, this could cause deadlocks on
+targets that need to process messages without starting new IO. Instead,
+realloc_argv should always update the allocated array size on success.
 
-Error: mlx5_core: Failed setting eswitch to offloads.
-kernel answers: Invalid argument
-
-Fixes: 80f09dfc237f ("net/mlx5: Eswitch, enable RoCE loopback traffic")
-Signed-off-by: Maor Gottlieb <maorg@nvidia.com>
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Link: https://patch.msgid.link/20250423083611.324567-3-mbloch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a0651926553c ("dm table: don't copy from a NULL pointer in realloc_argv()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/rdma.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/dm-table.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/rdma.c b/drivers/net/ethernet/mellanox/mlx5/core/rdma.c
-index 540cf05f63739..ab5afa6c5e0fd 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/rdma.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/rdma.c
-@@ -130,8 +130,8 @@ static void mlx5_rdma_make_default_gid(struct mlx5_core_dev *dev, union ib_gid *
+--- a/drivers/md/dm-table.c
++++ b/drivers/md/dm-table.c
+@@ -500,9 +500,10 @@ static char **realloc_argv(unsigned int
+ 		gfp = GFP_NOIO;
+ 	}
+ 	argv = kmalloc_array(new_size, sizeof(*argv), gfp);
+-	if (argv && old_argv) {
+-		memcpy(argv, old_argv, *size * sizeof(*argv));
++	if (argv) {
+ 		*size = new_size;
++		if (old_argv)
++			memcpy(argv, old_argv, *size * sizeof(*argv));
+ 	}
  
- static int mlx5_rdma_add_roce_addr(struct mlx5_core_dev *dev)
- {
-+	u8 mac[ETH_ALEN] = {};
- 	union ib_gid gid;
--	u8 mac[ETH_ALEN];
- 
- 	mlx5_rdma_make_default_gid(dev, &gid);
- 	return mlx5_core_roce_gid_set(dev, 0,
--- 
-2.39.5
-
+ 	kfree(old_argv);
 
 
 
