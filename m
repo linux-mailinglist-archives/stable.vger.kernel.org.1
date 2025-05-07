@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-142168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3F7BAAE958
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:43:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF663AAEBAF
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:09:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 592EA5056C2
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:43:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 035B2526950
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:08:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F9AE28DF47;
-	Wed,  7 May 2025 18:43:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9996E28BA9F;
+	Wed,  7 May 2025 19:08:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xtgqdzIr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0RVvWxIn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E00214A4C7;
-	Wed,  7 May 2025 18:43:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5163828980D;
+	Wed,  7 May 2025 19:08:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643422; cv=none; b=H1gBr6ssAWOlrp24l3/+MHTMYEV+d/lvGNt0BR/fJMl0/7spzWMbuSRqh6YoYulf2J6SCjHTVlReD856/t6ESt0QTCn21uWynG5BhiKZZUkftAJKDrBokaJw7fNcIlPn/GXdk0JvobfdvflkmGd98leC0wKqdIfoYWxRh3Xhj0w=
+	t=1746644908; cv=none; b=mgWS9pWMRry2JeyKBGL8JEKBvs3cnnpGaDwaT1vimb+edGSaICUrO1NJkoAVhotSvOJV1f2xHbaxsbCfaaK6mShzcAPdasKn1zy0IKwkuv917Q0pulasLacBCLGLtEzqmOtyO44EMiTyPvj1J2/pOBR0UVG6hkp7JzyJ+a5xiMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643422; c=relaxed/simple;
-	bh=Y1BLRq3uPhOanrC/BkSRAaK37cUl1h8hu+wfhQqN2yc=;
+	s=arc-20240116; t=1746644908; c=relaxed/simple;
+	bh=n1EqzErsrx6JdiczuZm2wwZf5SktkZm2/U60JqwEHCA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X1+bSJ9GJI3FdmkERgbtujZqfHDhvsfQPTZbpvdExlvRHInL4Sp18Sp0dg3Nwkne53eDFhnVGeK/pAZ5HMRgtJI1VTW8bJEtRYT0Nwj4kU6UP9xRw6LGULLxm7XX5rmcoCT7uJANeyGO3lig5u0CQj1eH6nATUZ1InvHFH2JOps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xtgqdzIr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F4D6C4CEE2;
-	Wed,  7 May 2025 18:43:41 +0000 (UTC)
+	 MIME-Version; b=ORmf7AuMPS7FbD/6en0RIJlbUQD323iZdtHudcm1FpOu/hwfpeFwHzV430Ai9K/1SZEcwAuCb3XMTS1zm6Upx0uXLtvam9uaYq4+VLkBji/OisuftUHSTKW82KlZIvvA05daMcVDQg8FipnbSlD0aFM9Bva9zg6u7ya8m5RZWJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0RVvWxIn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C753AC4CEF3;
+	Wed,  7 May 2025 19:08:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643422;
-	bh=Y1BLRq3uPhOanrC/BkSRAaK37cUl1h8hu+wfhQqN2yc=;
+	s=korg; t=1746644908;
+	bh=n1EqzErsrx6JdiczuZm2wwZf5SktkZm2/U60JqwEHCA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xtgqdzIrHimk+KrDTwucU9BSmeJeb325usH82jvJ2V7bQSVg8x3m9NghN8ir6+Chx
-	 0CUhHGKE0DbNh9SIgoQ5BFNYoM1SYHrSbAnQ680CKl9ppKz1/s99KyGDuAw5RG+TSy
-	 3dzNMA95NyXPgNJeYvUJauoOjz7MYpy47EJfi74E=
+	b=0RVvWxInlWK5C/fDdYpU+++VRUJTRa5LfckOGIyqzDTvK6WlfyNH9RQNZiYxO65oU
+	 k0yc9XS4AuQqfgBPROEAysojgXwIX/i03n/tNnNKxZwOARXg7gBEfLVV3a+ruqslcl
+	 1X6ErBzrZOp67Krl6mZxKyJrNn9Zs/Fs7B2jS+JA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brett Creeley <brett.creeley@intel.com>,
-	Konrad Jankowski <konrad0.jankowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 27/55] ice: Refactor promiscuous functions
+	syzbot+c8cd2d2c412b868263fb@syzkaller.appspotmail.com,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Jeongjun Park <aha310510@gmail.com>
+Subject: [PATCH 6.6 032/129] tracing: Fix oob write in trace_seq_to_buffer()
 Date: Wed,  7 May 2025 20:39:28 +0200
-Message-ID: <20250507183800.135207201@linuxfoundation.org>
+Message-ID: <20250507183814.828508744@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
-References: <20250507183759.048732653@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,405 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brett Creeley <brett.creeley@intel.com>
+From: Jeongjun Park <aha310510@gmail.com>
 
-[ Upstream commit fabf480bf95d71c9cfe8a8d6307e0035df963a6a ]
+commit f5178c41bb43444a6008150fe6094497135d07cb upstream.
 
-Some of the promiscuous mode functions take a boolean to indicate
-set/clear, which affects readability. Refactor and provide an
-interface for the promiscuous mode code with explicit set and clear
-promiscuous mode operations.
+syzbot reported this bug:
+==================================================================
+BUG: KASAN: slab-out-of-bounds in trace_seq_to_buffer kernel/trace/trace.c:1830 [inline]
+BUG: KASAN: slab-out-of-bounds in tracing_splice_read_pipe+0x6be/0xdd0 kernel/trace/trace.c:6822
+Write of size 4507 at addr ffff888032b6b000 by task syz.2.320/7260
 
-Signed-off-by: Brett Creeley <brett.creeley@intel.com>
-Tested-by: Konrad Jankowski <konrad0.jankowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Stable-dep-of: 425c5f266b2e ("ice: Check VF VSI Pointer Value in ice_vc_add_fdir_fltr()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CPU: 1 UID: 0 PID: 7260 Comm: syz.2.320 Not tainted 6.15.0-rc1-syzkaller-00301-g3bde70a2c827 #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:408 [inline]
+ print_report+0xc3/0x670 mm/kasan/report.c:521
+ kasan_report+0xe0/0x110 mm/kasan/report.c:634
+ check_region_inline mm/kasan/generic.c:183 [inline]
+ kasan_check_range+0xef/0x1a0 mm/kasan/generic.c:189
+ __asan_memcpy+0x3c/0x60 mm/kasan/shadow.c:106
+ trace_seq_to_buffer kernel/trace/trace.c:1830 [inline]
+ tracing_splice_read_pipe+0x6be/0xdd0 kernel/trace/trace.c:6822
+ ....
+==================================================================
+
+It has been reported that trace_seq_to_buffer() tries to copy more data
+than PAGE_SIZE to buf. Therefore, to prevent this, we should use the
+smaller of trace_seq_used(&iter->seq) and PAGE_SIZE as an argument.
+
+Link: https://lore.kernel.org/20250422113026.13308-1-aha310510@gmail.com
+Reported-by: syzbot+c8cd2d2c412b868263fb@syzkaller.appspotmail.com
+Fixes: 3c56819b14b0 ("tracing: splice support for tracing_pipe")
+Suggested-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_fltr.c     |  58 ++++++++
- drivers/net/ethernet/intel/ice/ice_fltr.h     |  12 ++
- drivers/net/ethernet/intel/ice/ice_main.c     |  49 +++---
- .../net/ethernet/intel/ice/ice_virtchnl_pf.c  | 139 +++++++-----------
- 4 files changed, 156 insertions(+), 102 deletions(-)
+ kernel/trace/trace.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_fltr.c b/drivers/net/ethernet/intel/ice/ice_fltr.c
-index e27b4de7e7aa3..7536451cb09ef 100644
---- a/drivers/net/ethernet/intel/ice/ice_fltr.c
-+++ b/drivers/net/ethernet/intel/ice/ice_fltr.c
-@@ -46,6 +46,64 @@ ice_fltr_add_entry_to_list(struct device *dev, struct ice_fltr_info *info,
- 	return 0;
- }
- 
-+/**
-+ * ice_fltr_set_vlan_vsi_promisc
-+ * @hw: pointer to the hardware structure
-+ * @vsi: the VSI being configured
-+ * @promisc_mask: mask of promiscuous config bits
-+ *
-+ * Set VSI with all associated VLANs to given promiscuous mode(s)
-+ */
-+enum ice_status
-+ice_fltr_set_vlan_vsi_promisc(struct ice_hw *hw, struct ice_vsi *vsi,
-+			      u8 promisc_mask)
-+{
-+	return ice_set_vlan_vsi_promisc(hw, vsi->idx, promisc_mask, false);
-+}
-+
-+/**
-+ * ice_fltr_clear_vlan_vsi_promisc
-+ * @hw: pointer to the hardware structure
-+ * @vsi: the VSI being configured
-+ * @promisc_mask: mask of promiscuous config bits
-+ *
-+ * Clear VSI with all associated VLANs to given promiscuous mode(s)
-+ */
-+enum ice_status
-+ice_fltr_clear_vlan_vsi_promisc(struct ice_hw *hw, struct ice_vsi *vsi,
-+				u8 promisc_mask)
-+{
-+	return ice_set_vlan_vsi_promisc(hw, vsi->idx, promisc_mask, true);
-+}
-+
-+/**
-+ * ice_fltr_clear_vsi_promisc - clear specified promiscuous mode(s)
-+ * @hw: pointer to the hardware structure
-+ * @vsi_handle: VSI handle to clear mode
-+ * @promisc_mask: mask of promiscuous config bits to clear
-+ * @vid: VLAN ID to clear VLAN promiscuous
-+ */
-+enum ice_status
-+ice_fltr_clear_vsi_promisc(struct ice_hw *hw, u16 vsi_handle, u8 promisc_mask,
-+			   u16 vid)
-+{
-+	return ice_clear_vsi_promisc(hw, vsi_handle, promisc_mask, vid);
-+}
-+
-+/**
-+ * ice_fltr_set_vsi_promisc - set given VSI to given promiscuous mode(s)
-+ * @hw: pointer to the hardware structure
-+ * @vsi_handle: VSI handle to configure
-+ * @promisc_mask: mask of promiscuous config bits
-+ * @vid: VLAN ID to set VLAN promiscuous
-+ */
-+enum ice_status
-+ice_fltr_set_vsi_promisc(struct ice_hw *hw, u16 vsi_handle, u8 promisc_mask,
-+			 u16 vid)
-+{
-+	return ice_set_vsi_promisc(hw, vsi_handle, promisc_mask, vid);
-+}
-+
- /**
-  * ice_fltr_add_mac_list - add list of MAC filters
-  * @vsi: pointer to VSI struct
-diff --git a/drivers/net/ethernet/intel/ice/ice_fltr.h b/drivers/net/ethernet/intel/ice/ice_fltr.h
-index 361cb4da9b43b..a0e8226f64f61 100644
---- a/drivers/net/ethernet/intel/ice/ice_fltr.h
-+++ b/drivers/net/ethernet/intel/ice/ice_fltr.h
-@@ -6,6 +6,18 @@
- 
- void ice_fltr_free_list(struct device *dev, struct list_head *h);
- enum ice_status
-+ice_fltr_set_vlan_vsi_promisc(struct ice_hw *hw, struct ice_vsi *vsi,
-+			      u8 promisc_mask);
-+enum ice_status
-+ice_fltr_clear_vlan_vsi_promisc(struct ice_hw *hw, struct ice_vsi *vsi,
-+				u8 promisc_mask);
-+enum ice_status
-+ice_fltr_clear_vsi_promisc(struct ice_hw *hw, u16 vsi_handle, u8 promisc_mask,
-+			   u16 vid);
-+enum ice_status
-+ice_fltr_set_vsi_promisc(struct ice_hw *hw, u16 vsi_handle, u8 promisc_mask,
-+			 u16 vid);
-+enum ice_status
- ice_fltr_add_mac_to_list(struct ice_vsi *vsi, struct list_head *list,
- 			 const u8 *mac, enum ice_sw_fwd_act_type action);
- enum ice_status
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index 329bf24a3f0e5..735f8cef6bfa4 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -222,32 +222,45 @@ static bool ice_vsi_fltr_changed(struct ice_vsi *vsi)
- }
- 
- /**
-- * ice_cfg_promisc - Enable or disable promiscuous mode for a given PF
-+ * ice_set_promisc - Enable promiscuous mode for a given PF
-  * @vsi: the VSI being configured
-  * @promisc_m: mask of promiscuous config bits
-- * @set_promisc: enable or disable promisc flag request
-  *
-  */
--static int ice_cfg_promisc(struct ice_vsi *vsi, u8 promisc_m, bool set_promisc)
-+static int ice_set_promisc(struct ice_vsi *vsi, u8 promisc_m)
- {
--	struct ice_hw *hw = &vsi->back->hw;
--	enum ice_status status = 0;
-+	enum ice_status status;
- 
- 	if (vsi->type != ICE_VSI_PF)
- 		return 0;
- 
--	if (vsi->num_vlan > 1) {
--		status = ice_set_vlan_vsi_promisc(hw, vsi->idx, promisc_m,
--						  set_promisc);
--	} else {
--		if (set_promisc)
--			status = ice_set_vsi_promisc(hw, vsi->idx, promisc_m,
--						     0);
--		else
--			status = ice_clear_vsi_promisc(hw, vsi->idx, promisc_m,
--						       0);
--	}
-+	if (vsi->num_vlan > 1)
-+		status = ice_fltr_set_vlan_vsi_promisc(&vsi->back->hw, vsi, promisc_m);
-+	else
-+		status = ice_fltr_set_vsi_promisc(&vsi->back->hw, vsi->idx, promisc_m, 0);
-+	if (status)
-+		return -EIO;
-+
-+	return 0;
-+}
- 
-+/**
-+ * ice_clear_promisc - Disable promiscuous mode for a given PF
-+ * @vsi: the VSI being configured
-+ * @promisc_m: mask of promiscuous config bits
-+ *
-+ */
-+static int ice_clear_promisc(struct ice_vsi *vsi, u8 promisc_m)
-+{
-+	enum ice_status status;
-+
-+	if (vsi->type != ICE_VSI_PF)
-+		return 0;
-+
-+	if (vsi->num_vlan > 1)
-+		status = ice_fltr_clear_vlan_vsi_promisc(&vsi->back->hw, vsi, promisc_m);
-+	else
-+		status = ice_fltr_clear_vsi_promisc(&vsi->back->hw, vsi->idx, promisc_m, 0);
- 	if (status)
- 		return -EIO;
- 
-@@ -343,7 +356,7 @@ static int ice_vsi_sync_fltr(struct ice_vsi *vsi)
- 			else
- 				promisc_m = ICE_MCAST_PROMISC_BITS;
- 
--			err = ice_cfg_promisc(vsi, promisc_m, true);
-+			err = ice_set_promisc(vsi, promisc_m);
- 			if (err) {
- 				netdev_err(netdev, "Error setting Multicast promiscuous mode on VSI %i\n",
- 					   vsi->vsi_num);
-@@ -357,7 +370,7 @@ static int ice_vsi_sync_fltr(struct ice_vsi *vsi)
- 			else
- 				promisc_m = ICE_MCAST_PROMISC_BITS;
- 
--			err = ice_cfg_promisc(vsi, promisc_m, false);
-+			err = ice_clear_promisc(vsi, promisc_m);
- 			if (err) {
- 				netdev_err(netdev, "Error clearing Multicast promiscuous mode on VSI %i\n",
- 					   vsi->vsi_num);
-diff --git a/drivers/net/ethernet/intel/ice/ice_virtchnl_pf.c b/drivers/net/ethernet/intel/ice/ice_virtchnl_pf.c
-index 9d4d58757e040..e4e25f3ba8493 100644
---- a/drivers/net/ethernet/intel/ice/ice_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/ice/ice_virtchnl_pf.c
-@@ -286,37 +286,6 @@ static int ice_check_vf_init(struct ice_pf *pf, struct ice_vf *vf)
- 	return 0;
- }
- 
--/**
-- * ice_err_to_virt_err - translate errors for VF return code
-- * @ice_err: error return code
-- */
--static enum virtchnl_status_code ice_err_to_virt_err(enum ice_status ice_err)
--{
--	switch (ice_err) {
--	case ICE_SUCCESS:
--		return VIRTCHNL_STATUS_SUCCESS;
--	case ICE_ERR_BAD_PTR:
--	case ICE_ERR_INVAL_SIZE:
--	case ICE_ERR_DEVICE_NOT_SUPPORTED:
--	case ICE_ERR_PARAM:
--	case ICE_ERR_CFG:
--		return VIRTCHNL_STATUS_ERR_PARAM;
--	case ICE_ERR_NO_MEMORY:
--		return VIRTCHNL_STATUS_ERR_NO_MEMORY;
--	case ICE_ERR_NOT_READY:
--	case ICE_ERR_RESET_FAILED:
--	case ICE_ERR_FW_API_VER:
--	case ICE_ERR_AQ_ERROR:
--	case ICE_ERR_AQ_TIMEOUT:
--	case ICE_ERR_AQ_FULL:
--	case ICE_ERR_AQ_NO_WORK:
--	case ICE_ERR_AQ_EMPTY:
--		return VIRTCHNL_STATUS_ERR_ADMIN_QUEUE_ERROR;
--	default:
--		return VIRTCHNL_STATUS_ERR_NOT_SUPPORTED;
--	}
--}
--
- /**
-  * ice_vc_vf_broadcast - Broadcast a message to all VFs on PF
-  * @pf: pointer to the PF structure
-@@ -1301,45 +1270,50 @@ static void ice_clear_vf_reset_trigger(struct ice_vf *vf)
- 	ice_flush(hw);
- }
- 
--/**
-- * ice_vf_set_vsi_promisc - set given VF VSI to given promiscuous mode(s)
-- * @vf: pointer to the VF info
-- * @vsi: the VSI being configured
-- * @promisc_m: mask of promiscuous config bits
-- * @rm_promisc: promisc flag request from the VF to remove or add filter
-- *
-- * This function configures VF VSI promiscuous mode, based on the VF requests,
-- * for Unicast, Multicast and VLAN
-- */
--static enum ice_status
--ice_vf_set_vsi_promisc(struct ice_vf *vf, struct ice_vsi *vsi, u8 promisc_m,
--		       bool rm_promisc)
-+static int
-+ice_vf_set_vsi_promisc(struct ice_vf *vf, struct ice_vsi *vsi, u8 promisc_m)
- {
--	struct ice_pf *pf = vf->pf;
--	enum ice_status status = 0;
--	struct ice_hw *hw;
-+	struct ice_hw *hw = &vsi->back->hw;
-+	enum ice_status status;
- 
--	hw = &pf->hw;
--	if (vsi->num_vlan) {
--		status = ice_set_vlan_vsi_promisc(hw, vsi->idx, promisc_m,
--						  rm_promisc);
--	} else if (vf->port_vlan_info) {
--		if (rm_promisc)
--			status = ice_clear_vsi_promisc(hw, vsi->idx, promisc_m,
--						       vf->port_vlan_info);
--		else
--			status = ice_set_vsi_promisc(hw, vsi->idx, promisc_m,
--						     vf->port_vlan_info);
--	} else {
--		if (rm_promisc)
--			status = ice_clear_vsi_promisc(hw, vsi->idx, promisc_m,
--						       0);
--		else
--			status = ice_set_vsi_promisc(hw, vsi->idx, promisc_m,
--						     0);
-+	if (vf->port_vlan_info)
-+		status = ice_fltr_set_vsi_promisc(hw, vsi->idx, promisc_m,
-+						  vf->port_vlan_info & VLAN_VID_MASK);
-+	else if (vsi->num_vlan > 1)
-+		status = ice_fltr_set_vlan_vsi_promisc(hw, vsi, promisc_m);
-+	else
-+		status = ice_fltr_set_vsi_promisc(hw, vsi->idx, promisc_m, 0);
-+
-+	if (status && status != ICE_ERR_ALREADY_EXISTS) {
-+		dev_err(ice_pf_to_dev(vsi->back), "enable Tx/Rx filter promiscuous mode on VF-%u failed, error: %s\n",
-+			vf->vf_id, ice_stat_str(status));
-+		return ice_status_to_errno(status);
-+	}
-+
-+	return 0;
-+}
-+
-+static int
-+ice_vf_clear_vsi_promisc(struct ice_vf *vf, struct ice_vsi *vsi, u8 promisc_m)
-+{
-+	struct ice_hw *hw = &vsi->back->hw;
-+	enum ice_status status;
-+
-+	if (vf->port_vlan_info)
-+		status = ice_fltr_clear_vsi_promisc(hw, vsi->idx, promisc_m,
-+						    vf->port_vlan_info & VLAN_VID_MASK);
-+	else if (vsi->num_vlan > 1)
-+		status = ice_fltr_clear_vlan_vsi_promisc(hw, vsi, promisc_m);
-+	else
-+		status = ice_fltr_clear_vsi_promisc(hw, vsi->idx, promisc_m, 0);
-+
-+	if (status && status != ICE_ERR_DOES_NOT_EXIST) {
-+		dev_err(ice_pf_to_dev(vsi->back), "disable Tx/Rx filter promiscuous mode on VF-%u failed, error: %s\n",
-+			vf->vf_id, ice_stat_str(status));
-+		return ice_status_to_errno(status);
- 	}
- 
--	return status;
-+	return 0;
- }
- 
- static void ice_vf_clear_counters(struct ice_vf *vf)
-@@ -1700,7 +1674,7 @@ bool ice_reset_vf(struct ice_vf *vf, bool is_vflr)
- 		else
- 			promisc_m = ICE_UCAST_PROMISC_BITS;
- 
--		if (ice_vf_set_vsi_promisc(vf, vsi, promisc_m, true))
-+		if (ice_vf_clear_vsi_promisc(vf, vsi, promisc_m))
- 			dev_err(dev, "disabling promiscuous mode failed\n");
- 	}
- 
-@@ -2952,10 +2926,10 @@ bool ice_is_any_vf_in_promisc(struct ice_pf *pf)
- static int ice_vc_cfg_promiscuous_mode_msg(struct ice_vf *vf, u8 *msg)
- {
- 	enum virtchnl_status_code v_ret = VIRTCHNL_STATUS_SUCCESS;
--	enum ice_status mcast_status = 0, ucast_status = 0;
- 	bool rm_promisc, alluni = false, allmulti = false;
- 	struct virtchnl_promisc_info *info =
- 	    (struct virtchnl_promisc_info *)msg;
-+	int mcast_err = 0, ucast_err = 0;
- 	struct ice_pf *pf = vf->pf;
- 	struct ice_vsi *vsi;
- 	struct device *dev;
-@@ -3052,24 +3026,21 @@ static int ice_vc_cfg_promiscuous_mode_msg(struct ice_vf *vf, u8 *msg)
- 			ucast_m = ICE_UCAST_PROMISC_BITS;
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -7027,13 +7027,14 @@ static ssize_t tracing_splice_read_pipe(
+ 		/* Copy the data into the page, so we can start over. */
+ 		ret = trace_seq_to_buffer(&iter->seq,
+ 					  page_address(spd.pages[i]),
+-					  trace_seq_used(&iter->seq));
++					  min((size_t)trace_seq_used(&iter->seq),
++						  PAGE_SIZE));
+ 		if (ret < 0) {
+ 			__free_page(spd.pages[i]);
+ 			break;
  		}
+ 		spd.partial[i].offset = 0;
+-		spd.partial[i].len = trace_seq_used(&iter->seq);
++		spd.partial[i].len = ret;
  
--		ucast_status = ice_vf_set_vsi_promisc(vf, vsi, ucast_m,
--						      !alluni);
--		if (ucast_status) {
--			dev_err(dev, "%sable Tx/Rx filter promiscuous mode on VF-%d failed\n",
--				alluni ? "en" : "dis", vf->vf_id);
--			v_ret = ice_err_to_virt_err(ucast_status);
--		}
-+		if (alluni)
-+			ucast_err = ice_vf_set_vsi_promisc(vf, vsi, ucast_m);
-+		else
-+			ucast_err = ice_vf_clear_vsi_promisc(vf, vsi, ucast_m);
- 
--		mcast_status = ice_vf_set_vsi_promisc(vf, vsi, mcast_m,
--						      !allmulti);
--		if (mcast_status) {
--			dev_err(dev, "%sable Tx/Rx filter promiscuous mode on VF-%d failed\n",
--				allmulti ? "en" : "dis", vf->vf_id);
--			v_ret = ice_err_to_virt_err(mcast_status);
--		}
-+		if (allmulti)
-+			mcast_err = ice_vf_set_vsi_promisc(vf, vsi, mcast_m);
-+		else
-+			mcast_err = ice_vf_clear_vsi_promisc(vf, vsi, mcast_m);
-+
-+		if (ucast_err || mcast_err)
-+			v_ret = VIRTCHNL_STATUS_ERR_PARAM;
+ 		trace_seq_init(&iter->seq);
  	}
- 
--	if (!mcast_status) {
-+	if (!mcast_err) {
- 		if (allmulti &&
- 		    !test_and_set_bit(ICE_VF_STATE_MC_PROMISC, vf->vf_states))
- 			dev_info(dev, "VF %u successfully set multicast promiscuous mode\n",
-@@ -3079,7 +3050,7 @@ static int ice_vc_cfg_promiscuous_mode_msg(struct ice_vf *vf, u8 *msg)
- 				 vf->vf_id);
- 	}
- 
--	if (!ucast_status) {
-+	if (!ucast_err) {
- 		if (alluni && !test_and_set_bit(ICE_VF_STATE_UC_PROMISC, vf->vf_states))
- 			dev_info(dev, "VF %u successfully set unicast promiscuous mode\n",
- 				 vf->vf_id);
--- 
-2.39.5
-
 
 
 
