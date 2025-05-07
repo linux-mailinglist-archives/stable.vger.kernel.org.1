@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-142711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2DF6AAEBDC
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:11:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 753F1AAEAB4
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:58:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0A0C1C45B69
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:11:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 731349C7D57
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:58:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D81AC28DF1F;
-	Wed,  7 May 2025 19:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97FFF24E4CE;
+	Wed,  7 May 2025 18:58:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BQmakYj3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="obWP8yMc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 949F221504D;
-	Wed,  7 May 2025 19:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54DEF1482F5;
+	Wed,  7 May 2025 18:58:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746645094; cv=none; b=d0xopY9p4uFm0HkZRgYcdUFK3LWKoTyB42puSSSYmU5F4zsL9u2RhTHnQ4k5QoWfQFepR+lL+Oe+2z8Q9Nu9Tt/TyA+/UhofjjnHlRY4KRmWo9jW0W+YqAmyhfvmwjfD9U/p1fjMwvpml1XPdtKVMerlJdC8eW1r6th6MxzGa/Q=
+	t=1746644325; cv=none; b=VYXGj1xbG+XV+TpU1NVSNWviFKay+WhYiK69OiIwtcjEIVPlylnBZJFs+9R1CtrDwGZIuizAdLgbrAu8ynKEHX5RYT3Ju9s0ElwLRcOkyO6qBjpvvCL1qHGa9pXlIRyDpH0AqNKP5aNGHnDYboXAYInpCnEMUKBgAOGl7xk6r+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746645094; c=relaxed/simple;
-	bh=Qk5tQnWfj0C5QdgcWKjRJ62BSGcGLMmNrjPnxtS2U7E=;
+	s=arc-20240116; t=1746644325; c=relaxed/simple;
+	bh=rBqYelILdz8TQOr4iIvKt4b0SMv4GqHa/s6ZUiW+E5g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ic8ICL/4r9HMWJPkfBTilvvIyR4AByCTkkkrwy28h1GHzNgJPcWPvA1JfEO8axim8u9xti5ZqIYcXibwPc4eWhgKSuvaKEvIB34jeTRNMbJQW8wCmmevFG/cnEwZIL0vttLvtlcJlIw+LbxCeMkq7s7QgOfYGznC3Laas9ZvkQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BQmakYj3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2529C4CEE2;
-	Wed,  7 May 2025 19:11:33 +0000 (UTC)
+	 MIME-Version; b=S0rEnKpb//U9/G2zKR1Fobl4bqbbWaKEYEjsAQ4e+tNb3TV1mBZKcrGTTA6wM07lFiCcp3lTGk/F7ud7tw9ed9WsDflum3tFnEuBgurgegX7RFwGU9Q66wkvO+GrbZ+fsV+JUoEwla0FdpaO4HlYKfdjUqEJFyP0zDQdTBFcPjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=obWP8yMc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4319C4CEE2;
+	Wed,  7 May 2025 18:58:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746645094;
-	bh=Qk5tQnWfj0C5QdgcWKjRJ62BSGcGLMmNrjPnxtS2U7E=;
+	s=korg; t=1746644325;
+	bh=rBqYelILdz8TQOr4iIvKt4b0SMv4GqHa/s6ZUiW+E5g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BQmakYj3LF01I2kTQqeBDYh0FDvUw0PgI70iMaRv4gadcoHOwbOcSE6ArDQl212oW
-	 bdQkq0cOHTCeCuafa91ArWRbfOzodGCFCc8q7qtoeamJPOHrTZWcm25WKSbu3MBxim
-	 t8yDslfaCkwtdM6LGm8mOxh/67fm5VVl3MTobwHM=
+	b=obWP8yMcHc+/9plFoxSbXNbkpRq2jggyk8C9bwLc4FEKQXOzG42OJUGZwR2IUtfgh
+	 MWa+r2ZeGNoFVHFi7SgyQeejw0EVozk6gSasUEuDw39B4BJuabC4EmraMcAEFdkq8g
+	 7OPdjEzfwn9yCauzl+YW8ghyzQITrSy9nj91eow4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 092/129] net: vertexcom: mse102x: Fix possible stuck of SPI interrupt
+	Kent Overstreet <kent.overstreet@linux.dev>
+Subject: [PATCH 6.14 183/183] bcachefs: Change btree_insert_node() assertion to error
 Date: Wed,  7 May 2025 20:40:28 +0200
-Message-ID: <20250507183817.227157133@linuxfoundation.org>
+Message-ID: <20250507183832.277993777@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
-References: <20250507183813.500572371@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +60,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Kent Overstreet <kent.overstreet@linux.dev>
 
-[ Upstream commit 55f362885951b2d00fd7fbb02ef0227deea572c2 ]
+commit 63c3b8f616cc95bb1fcc6101c92485d41c535d7c upstream.
 
-The MSE102x doesn't provide any SPI commands for interrupt handling.
-So in case the interrupt fired before the driver requests the IRQ,
-the interrupt will never fire again. In order to fix this always poll
-for pending packets after opening the interface.
+Debug for https://github.com/koverstreet/bcachefs/issues/843
 
-Fixes: 2f207cbf0dd4 ("net: vertexcom: Add MSE102x SPI support")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250430133043.7722-2-wahrenst@gmx.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Print useful debug info and go emergency read-only.
+
+Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/vertexcom/mse102x.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/bcachefs/btree_update_interior.c |   17 ++++++++++++++++-
+ fs/bcachefs/error.c                 |    8 ++++++++
+ fs/bcachefs/error.h                 |    2 ++
+ 3 files changed, 26 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/vertexcom/mse102x.c b/drivers/net/ethernet/vertexcom/mse102x.c
-index 8f67c39f479ee..45f4d2cb5b31a 100644
---- a/drivers/net/ethernet/vertexcom/mse102x.c
-+++ b/drivers/net/ethernet/vertexcom/mse102x.c
-@@ -509,6 +509,7 @@ static irqreturn_t mse102x_irq(int irq, void *_mse)
- static int mse102x_net_open(struct net_device *ndev)
- {
- 	struct mse102x_net *mse = netdev_priv(ndev);
-+	struct mse102x_net_spi *mses = to_mse102x_spi(mse);
+--- a/fs/bcachefs/btree_update_interior.c
++++ b/fs/bcachefs/btree_update_interior.c
+@@ -35,6 +35,8 @@ static const char * const bch2_btree_upd
+ 	NULL
+ };
+ 
++static void bch2_btree_update_to_text(struct printbuf *, struct btree_update *);
++
+ static int bch2_btree_insert_node(struct btree_update *, struct btree_trans *,
+ 				  btree_path_idx_t, struct btree *, struct keylist *);
+ static void bch2_btree_update_add_new_node(struct btree_update *, struct btree *);
+@@ -1782,11 +1784,24 @@ static int bch2_btree_insert_node(struct
  	int ret;
  
- 	ret = request_threaded_irq(ndev->irq, NULL, mse102x_irq, IRQF_ONESHOT,
-@@ -524,6 +525,13 @@ static int mse102x_net_open(struct net_device *ndev)
+ 	lockdep_assert_held(&c->gc_lock);
+-	BUG_ON(!btree_node_intent_locked(path, b->c.level));
+ 	BUG_ON(!b->c.level);
+ 	BUG_ON(!as || as->b);
+ 	bch2_verify_keylist_sorted(keys);
  
- 	netif_carrier_on(ndev);
- 
-+	/* The SPI interrupt can stuck in case of pending packet(s).
-+	 * So poll for possible packet(s) to re-arm the interrupt.
-+	 */
-+	mutex_lock(&mses->lock);
-+	mse102x_rx_pkt_spi(mse);
-+	mutex_unlock(&mses->lock);
++	if (!btree_node_intent_locked(path, b->c.level)) {
++		struct printbuf buf = PRINTBUF;
++		bch2_log_msg_start(c, &buf);
++		prt_printf(&buf, "%s(): node not locked at level %u\n",
++			   __func__, b->c.level);
++		bch2_btree_update_to_text(&buf, as);
++		bch2_btree_path_to_text(&buf, trans, path_idx);
 +
- 	netif_dbg(mse, ifup, ndev, "network device up\n");
++		bch2_print_string_as_lines(KERN_ERR, buf.buf);
++		printbuf_exit(&buf);
++		bch2_fs_emergency_read_only(c);
++		return -EIO;
++	}
++
+ 	ret = bch2_btree_node_lock_write(trans, path, &b->c);
+ 	if (ret)
+ 		return ret;
+--- a/fs/bcachefs/error.c
++++ b/fs/bcachefs/error.c
+@@ -11,6 +11,14 @@
  
- 	return 0;
--- 
-2.39.5
-
+ #define FSCK_ERR_RATELIMIT_NR	10
+ 
++void bch2_log_msg_start(struct bch_fs *c, struct printbuf *out)
++{
++#ifdef BCACHEFS_LOG_PREFIX
++	prt_printf(out, bch2_log_msg(c, ""));
++#endif
++	printbuf_indent_add(out, 2);
++}
++
+ bool bch2_inconsistent_error(struct bch_fs *c)
+ {
+ 	set_bit(BCH_FS_error, &c->flags);
+--- a/fs/bcachefs/error.h
++++ b/fs/bcachefs/error.h
+@@ -18,6 +18,8 @@ struct work_struct;
+ 
+ /* Error messages: */
+ 
++void bch2_log_msg_start(struct bch_fs *, struct printbuf *);
++
+ /*
+  * Inconsistency errors: The on disk data is inconsistent. If these occur during
+  * initial recovery, they don't indicate a bug in the running code - we walk all
 
 
 
