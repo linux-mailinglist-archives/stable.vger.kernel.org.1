@@ -1,88 +1,84 @@
-Return-Path: <stable+bounces-142068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1253AAAE2BF
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 16:26:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31978AAE2C6
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 16:26:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E4BE528408
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 14:21:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 948741BC2553
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 14:23:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78AE228C2B8;
-	Wed,  7 May 2025 14:15:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C705279907;
+	Wed,  7 May 2025 14:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gw35g0YK"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="NLKDcr3K"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2077.outbound.protection.outlook.com [40.107.236.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6C6A28C2B5
-	for <stable@vger.kernel.org>; Wed,  7 May 2025 14:15:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746627321; cv=none; b=PhkNn6Aqf2l9ODvEUlzBX6LJ4FwU3kKsQvbnoGkWc1ZrNSNlXwwXZMHdtcw7tW73DmPx1lW9Cg4BJVFyRLWvS4547FQTukDE0vAan4DNqvw0QWkP5gjqEgr+za20VY9QmOGighQnDv6/n0urba3uUnK8vfV3ZKgpuw424r1Av5c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746627321; c=relaxed/simple;
-	bh=jvV8SAceXWq2LG1ocRLBnIabfhFhDm+ru/WXS6Y4/ro=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Y3HbEg/ekmZyWiIAm6Ub50fxkj9XR9VWtKHWJmebf/zmessZGrMyRtvTSoVDlA7Jsgk6D9ggDEktpNf/PMt//a2unJi9u6Ufo9SBBrBwT3hWmRyt8yFAH7biy+yHvl8Q5HaYZ/7VJXVRTDUT/grgxILZ1Drllv++zR+ZF1NyZk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gw35g0YK; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1746627318;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=IR4sYe4zuV+MgdFUj0SEQEMny2GtXp9mBqrR8ByAWsg=;
-	b=gw35g0YK12o4O44PNnLcsoK10pYUdgreyRE/6mujFG/6sGStrZFXAI2gxOpW5RYT8mLBCX
-	RY3hF5HPHXy4u5VlIcmGGcfWwch1zQAJeZ16QjLm+eqWR/yrXLBmpqAwqgBscOAG2mj1SQ
-	kauh1DtfITGkMAb1hj7x2fAYKzkicSY=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-5-exrJE0_ONnCxDgYZeSO1Sg-1; Wed, 07 May 2025 10:15:17 -0400
-X-MC-Unique: exrJE0_ONnCxDgYZeSO1Sg-1
-X-Mimecast-MFC-AGG-ID: exrJE0_ONnCxDgYZeSO1Sg_1746627316
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-43f405810b4so36166825e9.1
-        for <stable@vger.kernel.org>; Wed, 07 May 2025 07:15:17 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746627316; x=1747232116;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=IR4sYe4zuV+MgdFUj0SEQEMny2GtXp9mBqrR8ByAWsg=;
-        b=DZlduEv/fJ2d3xQn0S41Rur1UpTviJbSLjE/xrok3breB9RA2fqHsNGWgutYsIvL70
-         J9K+53cehzJRbhuN1cbFXcXMBzfdo/sn5a6Bx0Gt5q/jwz6Ipo1Tl7amx3zGdlcAyo/7
-         P3x1CRQRFRxH79Rxn8i09s7kZi/FRVJ786xx7DXKPIx+KEwXuhsbcTbFSvyvEJQMvPOE
-         drYEMehMVjbvuA2fZvAo8y8BZ/xMeR/GlajlZtT10l6T7UbUdvSUTjCGfI3+T+OFvHeh
-         BXpyQi18mOSlxYcRqm6abu/fOLv/j0aF48VZbs8YFz6Vn7fGAzmEp77FXa/e7v2IrVAV
-         NUYg==
-X-Forwarded-Encrypted: i=1; AJvYcCX3wo9IzfLnLMOSjGeVq0EM0g3OMRNug3y751sRn9qxhH+x2Aw2RIGTgp+WvoTdXGSJOZvF6E4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwMWCrQ3JMhLLgz3vUNvIFlBuAOhAyGUaXYIyLCvqj6g+e26iaj
-	iGdAvFxW6RHj6t29kk1ST9ALhigXvLo0FfXCKO3f16aecykygep0FObjNzqwiwXtk0NcneNWgse
-	1Pb+25ZVujX0eDzRrvUh/cNXDrlf2IeLMhIR9RZwjBUOx+X0jOHyerQ==
-X-Gm-Gg: ASbGnct4ZPLxfENKEh+IBx3PYC+rOG5XrVpq2o/kTSy+xSA+GlZPdqzkskr4+pANTsA
-	S0tdCP2IhtNSS1wN+Q8Z70wa5ARaRMS14ZAMn3rF80+USWpwL32HppnF0SJNxgFbTmxB+7rWdmL
-	JEkPzv3m7CxVYgWl03r8q3OgRZzVZoStJZ0q1ZvLcEhCitrHUjPmDtlYA9d/WzVGrTp1/WLnEw7
-	bpKXmkjMb+oM2NZE3Ml+xNs9WbrMT+BUdpgNKydoeoIlzzQgis9IX4oA/ywq4N6r1g8oH6mfiHa
-	SxasK+xG0aHvaj+84jnzZW+5crLzlbSDSkk3Zn/NNOLpQTd/b/As5bQ11qmpzboVKzxrTjN7ZLf
-	3LOSHKtJQs55V6jPMCZCtj3O48LNz1RNlHIhubA==
-X-Received: by 2002:a05:600c:4eca:b0:43d:563:6fef with SMTP id 5b1f17b1804b1-441d44dcd83mr25874215e9.21.1746627316024;
-        Wed, 07 May 2025 07:15:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEU0Dz+x4SiNUmlpqgxEkYcd0eKKNeptqhw2nJzZPcuY/oNAzsky9GpaxoI8b3MNp8F7/bkjA==
-X-Received: by 2002:a05:600c:4eca:b0:43d:563:6fef with SMTP id 5b1f17b1804b1-441d44dcd83mr25873895e9.21.1746627315648;
-        Wed, 07 May 2025 07:15:15 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f12:d400:ed3c:fb0c:1ec0:c628? (p200300d82f12d400ed3cfb0c1ec0c628.dip0.t-ipconnect.de. [2003:d8:2f12:d400:ed3c:fb0c:1ec0:c628])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-442cd3285e0sm2477015e9.5.2025.05.07.07.15.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 May 2025 07:15:15 -0700 (PDT)
-Message-ID: <b44ba934-cb95-4229-89da-06b1fc1f8683@redhat.com>
-Date: Wed, 7 May 2025 16:15:14 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81347289372;
+	Wed,  7 May 2025 14:16:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.77
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746627379; cv=fail; b=YpPGFW3vIo5bJ0a0rn2OrmjrJxMaB3VmIShQr3BeRnOscTxhsxaOIAFwOJIcYuqyCv8/3zKgXW76/GlanYoRRilC3bReGr4TKySk6pgoajEpqv+uCOlHUSB6uV7hlEXlWqNOO689N+m1LpmneZyScyNWJ1A6GAN5k7tf1BecPKk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746627379; c=relaxed/simple;
+	bh=UbNQDOpFDWiNHxTATPHFUZ/XOypXRpqMWdC2WrlLGXU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=bBPoWO2KG3kBXgngMUnaaCLmJwiteIETzSU8XK/V+jzQ9O37KX1+qMUppJZ2PFsAFvD6J7PkxJ0WnzZ9oH0Ce9kfnFlTKlHP0QLUU19B8SUOD63ycEKk4n1ukN+kJcuMQ+MRt3LdGIswNdRjxhs7VwpfeKP6kCN7Dz7E5wu5X8g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=NLKDcr3K; arc=fail smtp.client-ip=40.107.236.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=TyNUR+rcMnB+nOxbNkngNhvQcn1zTDbHg/VjNLdPzbarGylPj83x81hNgHajFj/qHeCyyEKUpm3e8NbPQFklrA0FwZU6qImnNk4kWwbS/eYVZ3eluofnKJYOPvrVuuXVHvsXZKTSiswdeN1fdEgVTZGvvVEwKEg/2eG0aqAaZA4vQc0U77QztUgMA8PD2p1jEKLi6/6FQkCeO/BkCrL2/ZpLau6g8to00hoUpo7flLIYXPC1XOGuCnfZksCeuxvnxAAgxN3m2IH2Amic3BUVGVKvxiX6Va8z9D+ztQ/aWir/CH/f97dy52p9n4a1omHPh3OCW80rrStLmyWkdEgOaQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=uXJ8CCsNS1QaMcsfn0m+y5P6NyFMLI02JABXfdkwrY0=;
+ b=JhW+UrIwO1H2jKbXvGi0HjIbxPplNl4f1l++FACt8Lk8W/0huqkY5REk98ZtKdZ4BskdOp9t4mQ0/jjElrZfi7tZAojKZyzkDRWAtyXNJ9RIcy1KU9GQZZHD+oXwTdwCEK1TAwUw3wdjze4jjKIbN8JXm2/pWGngVA0fuQJRTrI8V4qcxMTrMEzc9uZWGDtaQyEJa/u5xdUsZDadQ2Vo0Yx8P15Q4fzA3pPjLx/OhzRjHGT4UTwYVFHolhPxdwC/Yb9Mhl69Dwusk29yix8j3CBeDr8reotrbSFvYp3kBzLO+V1dPj1AWc3MrIM89WAOihcQLmDCHLmw3fbdtkA2yg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=suse.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=uXJ8CCsNS1QaMcsfn0m+y5P6NyFMLI02JABXfdkwrY0=;
+ b=NLKDcr3KGA9jkafoNrvDy7iLmh9RE6JWfDqjw43hbUzIWxOoDG4ZyU+nnGqItQ4O1kPLt7ZcT2qf4VnFADIyPjwhsfQ38t2UJGjpKx5GK9ayL3pjEb35XBPw+eysvKMjA6/wZsDSi9o9yvDHDPZF3nACRYZVPw4WegOvkBhO6/c=
+Received: from SJ0PR13CA0233.namprd13.prod.outlook.com (2603:10b6:a03:2c1::28)
+ by CY8PR12MB8265.namprd12.prod.outlook.com (2603:10b6:930:72::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.26; Wed, 7 May
+ 2025 14:16:05 +0000
+Received: from SA2PEPF000015C6.namprd03.prod.outlook.com
+ (2603:10b6:a03:2c1:cafe::ac) by SJ0PR13CA0233.outlook.office365.com
+ (2603:10b6:a03:2c1::28) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8722.19 via Frontend Transport; Wed,
+ 7 May 2025 14:16:05 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
+Received: from SATLEXMB03.amd.com (165.204.84.17) by
+ SA2PEPF000015C6.mail.protection.outlook.com (10.167.241.196) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8722.18 via Frontend Transport; Wed, 7 May 2025 14:16:05 +0000
+Received: from SATLEXMB05.amd.com (10.181.40.146) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 7 May
+ 2025 09:16:04 -0500
+Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB05.amd.com
+ (10.181.40.146) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 7 May
+ 2025 09:16:03 -0500
+Received: from [172.18.31.235] (10.180.168.240) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
+ Transport; Wed, 7 May 2025 09:16:03 -0500
+Message-ID: <6452909d-94f8-4df3-87fc-d8ee0bdba01a@amd.com>
+Date: Wed, 7 May 2025 10:16:03 -0400
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -90,92 +86,147 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5] mm: mmap: map MAP_STACK to VM_NOHUGEPAGE only if THP
- is enabled
-To: Ignacio.MorenoGonzalez@kuka.com, lorenzo.stoakes@oracle.com
-Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org,
- yang@os.amperecomputing.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20250507-map-map_stack-to-vm_nohugepage-only-if-thp-is-enabled-v5-1-c6c38cfefd6e@kuka.com>
-From: David Hildenbrand <david@redhat.com>
+Subject: Re: [PATCH] xenbus: Use kref to track req lifetime
+To: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>, Stefano Stabellini
+	<sstabellini@kernel.org>, Oleksandr Tyshchenko
+	<oleksandr_tyshchenko@epam.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>
+CC: =?UTF-8?Q?Marek_Marczykowski-G=C3=B3recki?=
+	<marmarek@invisiblethingslab.com>, <stable@vger.kernel.org>,
+	<xen-devel@lists.xenproject.org>, <linux-kernel@vger.kernel.org>
+References: <20250506210935.5607-1-jason.andryuk@amd.com>
+ <6b17cb41-a4f1-4055-966a-54301493085c@suse.com>
 Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <20250507-map-map_stack-to-vm_nohugepage-only-if-thp-is-enabled-v5-1-c6c38cfefd6e@kuka.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+From: Jason Andryuk <jason.andryuk@amd.com>
+In-Reply-To: <6b17cb41-a4f1-4055-966a-54301493085c@suse.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+Received-SPF: None (SATLEXMB05.amd.com: jason.andryuk@amd.com does not
+ designate permitted sender hosts)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA2PEPF000015C6:EE_|CY8PR12MB8265:EE_
+X-MS-Office365-Filtering-Correlation-Id: 782e647a-322d-42aa-67f2-08dd8d71b468
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|36860700013|1800799024|82310400026|13003099007|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?cGJnMnZ5S1dOeS9tMkhrcTA0WVBVS2xReHV5SXNwcTJCYXNpcHlEZ0tpY0p3?=
+ =?utf-8?B?ZkExMlhGeWJidlpOQS8rNmNsWjM3WUdaWitQVXpUUndQZG45MkdsVnd4Vlgw?=
+ =?utf-8?B?TGt6NXhLMEJEQ3hwamFlc01Jd0dXTTJ5Um5LM2xxQkhuMFBiUGY1QXJyWnho?=
+ =?utf-8?B?bXpqZnowaFUyUmtLUmlkY1lPREFHNnluM2lwZGRtQVd3NGFaZjYvRmM4Z1VY?=
+ =?utf-8?B?bEk4RXU3bjBNU2dKOUlFYUV4SWdmOEE0TjR2RTF4YVNZT2ltNm5ITi9SODhi?=
+ =?utf-8?B?N09lWGhIV0lpREVwRWY5NC92THNwMWtTUFoxMUtEQ25kenZ4dkJSM25MRFlC?=
+ =?utf-8?B?QTVwTXBFNG5YRk9HSVFLditTRGhnL3p0NFZxQzJLRmFyT0Ixc0MzdHptSkxp?=
+ =?utf-8?B?bTZnOUNHOWFEdEVVUjU1aDAvY2tqNDZKaTJUbHBMTXh5ZzhFNXJ1Ry9Odytr?=
+ =?utf-8?B?R3p0TmpQeWpXdVlPckgzM1BMT3JMQTlIbGVMUVRjNXdaK3JPS09JdS9VQVlp?=
+ =?utf-8?B?YmJoKzBiQ09pcGNlUzE0M2RaQkFRcy83ek1nbGNxbE5qRHZyMm90aXJJSEVK?=
+ =?utf-8?B?ZjFvQ05RRktGRGhYK0N0MzdGVGNIV0VwRlQ1ZDdrT0NGQ3VIT2o5Wm8yQ0s4?=
+ =?utf-8?B?L2M4OTJQZzQyRlJleUNlN2p2cjA5WGFJdnNjQ09FRTUxcDB4b05jSTdZZkNp?=
+ =?utf-8?B?VXUrbmlaVm90YUxtZkxDN2psMUNNWFBBTnhRckwzbmxHRXVDV2ppWHpiZk1n?=
+ =?utf-8?B?dm81a1hrdjljeVQvYzh6d2xNUnUzNmxhMEdxekwycDhjUEVmNStZTnJwa2tV?=
+ =?utf-8?B?NWpRNlBnSk5TVUFVQis3MHZGR09tMnozWWdKNXJ6ZUMwTTdtMmhoRU1ya3NF?=
+ =?utf-8?B?bHhkWGpPSENGaVdIYWV0QThrZmp3dFNhNG82alhmQTYrRDdQUC9VZm9OUlo1?=
+ =?utf-8?B?V3dXd2svSGpvNjNmWERLNlBsMGxYWUdyQlpYZmNnamxRamxCeGsrQlZNNW5U?=
+ =?utf-8?B?eXJHalNSVmtOWGQ5SnRDenBMRGlkaGdLTzh5THFPK0VCUmZFT21IZWJvQ3VB?=
+ =?utf-8?B?T2lkdE5abzZ3Nm1ZcmN6ek8ycVFMTjEyMCtYUk5DS2tYY0xVU2lqbmFRYnlm?=
+ =?utf-8?B?alRwckFhZ1hNWEZZQXNzM0szY2VQM01LN1NhVUtTbGdJcmgwN1ZZQ2RBMWZ2?=
+ =?utf-8?B?V1pOaHN5b21kc2daejNVcHVkWTh2U3RTWmxHbVFSTlFscUEvT0RhSllqTk9K?=
+ =?utf-8?B?LzNTZjVhY0cwTFJlNktvSVJMNmpzUnlJWk1DZ0ZxZzFSaTQ1bGFBRDgwYWh0?=
+ =?utf-8?B?WHBISEhVVlhienk5Y1ZOU2hwTjV6dlA5aTZyTThYNzU5S1JiQTZCekIwWHVC?=
+ =?utf-8?B?ZnNJZEpSRjIzYmhPTkJJNXdhVW83VVcrRnBCRFF1NTBOaWpBSEUrMUxtdEx5?=
+ =?utf-8?B?Ukg4WUVVMUtidko5K3JyZXYxVHIrSkhBUjd6ZmJsR3FuMnlNNmFFUzN2VW96?=
+ =?utf-8?B?MGJUcDhobjBhNW11ZTFraFNZdTBMSTlPRmh5Sm03L0c0T1NSQWhTZmluUVVW?=
+ =?utf-8?B?TUJJVVNDcVJrcFFva0U5MWVNVEpjOTB5RjRLQmE0QytkY2M3QStFN1hRTkR5?=
+ =?utf-8?B?L2NhNW9nKzNiU3dnbFRVRDdqRlNCelJkWDRDTkFWNWJSSUlKOFFuRUxyNVE5?=
+ =?utf-8?B?NjVZcTczNjVWUUdKeVBVdkt1NFNSYWYrU2FEQXMzSnJHN2taL092bno3SnI0?=
+ =?utf-8?B?YU1iaXg0UU42QVpJWUZ5T3hNbXJyRGZnWW1kOWZxVUlnUVZDYVFQVERmbEJL?=
+ =?utf-8?B?U21jWVF2RXc3Y1ExcUluTXFjU3JZQm1VZUJsZHNScjdVZkl5UUowNjFGeisy?=
+ =?utf-8?B?V21QZ2dBZUZ6T2Raa1czZTJNTnJRQklCbnRiZ1BKMDdHNEp1L2dYTWFHRmlM?=
+ =?utf-8?B?aWhOZ2VqcTFkVEJTZEtIVE4waHJwVVhISnhjMENLZ3VSeTk3OUcwaHlCNnI4?=
+ =?utf-8?B?bFJnWGUrYTVlaHR1QW4xdFpNaWtieUpzcEh0TTIrUGsrbEpqRStmemxDR1h3?=
+ =?utf-8?B?OHVFbElzUC9UTkdTcWFvU3puM3lGeEFOVkRaQT09?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(36860700013)(1800799024)(82310400026)(13003099007)(7053199007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2025 14:16:05.3321
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 782e647a-322d-42aa-67f2-08dd8d71b468
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SA2PEPF000015C6.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB8265
 
-On 07.05.25 15:28, Ignacio Moreno Gonzalez via B4 Relay wrote:
-> From: Ignacio Moreno Gonzalez <Ignacio.MorenoGonzalez@kuka.com>
+On 2025-05-07 05:27, Jürgen Groß wrote:
+> On 06.05.25 23:09, Jason Andryuk wrote:
+>> Marek reported seeing a NULL pointer fault in the xenbus_thread
+>> callstack:
+>> BUG: kernel NULL pointer dereference, address: 0000000000000000
+>> RIP: e030:__wake_up_common+0x4c/0x180
+>> Call Trace:
+>>   <TASK>
+>>   __wake_up_common_lock+0x82/0xd0
+>>   process_msg+0x18e/0x2f0
+>>   xenbus_thread+0x165/0x1c0
+>>
+>> process_msg+0x18e is req->cb(req).  req->cb is set to xs_wake_up(), a
+>> thin wrapper around wake_up(), or xenbus_dev_queue_reply().  It seems
+>> like it was xs_wake_up() in this case.
+>>
+>> It seems like req may have woken up the xs_wait_for_reply(), which
+>> kfree()ed the req.  When xenbus_thread resumes, it faults on the zero-ed
+>> data.
+>>
+>> Linux Device Drivers 2nd edition states:
+>> "Normally, a wake_up call can cause an immediate reschedule to happen,
+>> meaning that other processes might run before wake_up returns."
+>> ... which would match the behaviour observed.
+>>
+>> Change to keeping two krefs on each request.  One for the caller, and
+>> one for xenbus_thread.  Each will kref_put() when finished, and the last
+>> will free it.
+>>
+>> This use of kref matches the description in
+>> Documentation/core-api/kref.rst
+>>
+>> Link: https://lore.kernel.org/xen-devel/ZO0WrR5J0xuwDIxW@mail-itl/
+>> Reported-by: "Marek Marczykowski-Górecki" 
+>> <marmarek@invisiblethingslab.com>
+>> Fixes: fd8aa9095a95 ("xen: optimize xenbus driver for multiple 
+>> concurrent xenstore accesses")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
 > 
-> commit c4608d1bf7c6 ("mm: mmap: map MAP_STACK to VM_NOHUGEPAGE") maps
-> the mmap option MAP_STACK to VM_NOHUGEPAGE. This is also done if
-> CONFIG_TRANSPARENT_HUGEPAGE is not defined. But in that case, the
-> VM_NOHUGEPAGE does not make sense.
+> Reviewed-by: Juergen Gross <jgross@suse.com>
+
+Thanks
+
+>> ---
+>> Kinda RFC-ish as I don't know if it fixes Marek's issue.  This does seem
+>> like the correct approach if we are seeing req free()ed out from under
+>> xenbus_thread.
 > 
-> I discovered this issue when trying to use the tool CRIU to checkpoint
-> and restore a container. Our running kernel is compiled without
-> CONFIG_TRANSPARENT_HUGEPAGE. CRIU parses the output of
-> /proc/<pid>/smaps and saves the "nh" flag. When trying to restore the
-> container, CRIU fails to restore the "nh" mappings, since madvise()
-> MADV_NOHUGEPAGE always returns an error because
-> CONFIG_TRANSPARENT_HUGEPAGE is not defined.
-> 
-> Fixes: c4608d1bf7c6 ("mm: mmap: map MAP_STACK to VM_NOHUGEPAGE")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Reviewed-by: Yang Shi <yang@os.amperecomputing.com>
-> Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-> Signed-off-by: Ignacio Moreno Gonzalez <Ignacio.MorenoGonzalez@kuka.com>
+> I think your analysis is correct. When writing this code I didn't think
+> of wake_up() needing to access req->wq _after_ having woken up the waiter.
 
-Acked-by: David Hildenbrand <david@redhat.com>
+Yes, this was tricky.
 
--- 
-Cheers,
+One other thing that makes me think this is correct.  If this is the 
+same underlying issue: 
+https://lore.kernel.org/xen-devel/Z_lJTyVipJJEpWg2@mail-itl/
 
-David / dhildenb
+The failure is in the unlock:
 
+pvqspinlock: lock 0xffff8881029af110 has corrupted value 0x0!
+WARNING: CPU: 1 PID: 118 at kernel/locking/qspinlock_paravirt.h:504 
+__pv_queued_spin_unlock_slowpath+0xdc/0x120
+
+Which makes me think the req was fine entering wake_up(), and it's only 
+found to be corrupt on the way out.
+
+Regards,
+Jason
 
