@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-142402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D69C2AAEA75
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:55:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7243AAEB35
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:04:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1B069C06CF
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:55:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D5561C08AC9
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:05:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4053B289348;
-	Wed,  7 May 2025 18:55:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0C9C28DF2A;
+	Wed,  7 May 2025 19:04:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ltGKdXJQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y7wHcpgD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0B252116E9;
-	Wed,  7 May 2025 18:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D50D28D85C;
+	Wed,  7 May 2025 19:04:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644137; cv=none; b=atl6CgWg67xfPSEeFz1OH9NxI5WwlsvWyccWPIgwu165CIplI+WUnqbOOyAT4GU9x62yIoTBJQoVMOuTjFLzRcKRf7HBR89nuDcbwP/ZN5ksOpeVKFkpd1oi0CP/4T+0Td2KBYjtP06JV2H7Cv2MRbw207nMAddBip0vqdO2pyk=
+	t=1746644681; cv=none; b=ElUokyfnOxXwwLBU9d+H5GaW1cDeyCtUmZTACYUQVwiFpeAWt2i1sapzqVUctHjEvP9l235qgMsvjRcUEUIu9I0rPqL4+TYpny/5KnICP0covc59xXMGyvl2irhFWwHU0uzHjcf59QzvtULd0T0XqBzt8faZt57kvJ8W8fu0Aps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644137; c=relaxed/simple;
-	bh=qXtGjBZfBmmB9PZ0HBrgRsUgt9AEvjwcC1fSvIIwAus=;
+	s=arc-20240116; t=1746644681; c=relaxed/simple;
+	bh=AfETqXnraX9sJprixurqhEJ27Okd506WGfeCK2AUGeA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rzoe9I2hRqOws8v832UBlBys/UUTHDWxFsl3yxGRM2Ts6hQKmRsjp2Tqyb99iN/WvPLuxLNEx9jD1PcpF9eZpyoDsC0N3ETl5TI72i8ZpNIRmydNGDjQEBRh49cou6Sr6ZkZ8PjX2xj5hnatd3drFExnUcEAHlXR7kS3qgY2dYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ltGKdXJQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 770CBC4CEE2;
-	Wed,  7 May 2025 18:55:36 +0000 (UTC)
+	 MIME-Version; b=YhHb6+igzoE+msPAQi0kRilpW8p0pwUOqAv2BIIpewHMgNlLS1XSHgezSBbRdhWwqFIMsQBnr34kYhdJg6BwLncQJDhGVVlTU3ej0Co6NO5ciE81aOd2qN2KYGe/UPwsQFhyhrK3f17FBvxWYLEBgJHBgH7DnwbM8LZPE4buRQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y7wHcpgD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10D80C4CEE2;
+	Wed,  7 May 2025 19:04:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644136;
-	bh=qXtGjBZfBmmB9PZ0HBrgRsUgt9AEvjwcC1fSvIIwAus=;
+	s=korg; t=1746644681;
+	bh=AfETqXnraX9sJprixurqhEJ27Okd506WGfeCK2AUGeA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ltGKdXJQBIvLXsoH9MJfDZYuT80DoCgRtw+PAiXANdL1xf2v3EMwthMloUZl5kdJQ
-	 EbV1qQ1xEwZvrFxX75TrtQqiboC9e2D5Nv2Wr5SHjBD5zc7fegVeIYSPoZKPz+w63b
-	 zLkyN1vK/ZKPMD2cEmaVCso6hI/JSebB3imRA0yM=
+	b=Y7wHcpgDWvV6czZhje+bz6Q+bgXp6uLwazy0xc2Uot/gc7MZbyab8JJpxZThUbit7
+	 nH5fHI7TEPhmQ8Zu200QIJAwyLEM5Ouf35ZdU/PBmWW/1H6i9XNtkDJ6xaUfu1YM8d
+	 ywnnMJlF1z94YiAc08ipIuu+P0C64b7LQj+nt9fM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olivier Moysan <olivier.moysan@foss.st.com>,
-	Mark Brown <broonie@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Victor Nogueira <victor@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 131/183] ASoC: stm32: sai: skip useless iterations on kernel rate loop
+Subject: [PATCH 6.12 091/164] net_sched: drr: Fix double list add in class with netem as child qdisc
 Date: Wed,  7 May 2025 20:39:36 +0200
-Message-ID: <20250507183830.126304668@linuxfoundation.org>
+Message-ID: <20250507183824.649103902@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olivier Moysan <olivier.moysan@foss.st.com>
+From: Victor Nogueira <victor@mojatatu.com>
 
-[ Upstream commit edea92770a3b6454dc796fc5436a3315bb402181 ]
+[ Upstream commit f99a3fbf023e20b626be4b0f042463d598050c9a ]
 
-the frequency of the kernel clock must be greater than or equal to the
-bitclock rate. When searching for a convenient kernel clock rate in
-stm32_sai_set_parent_rate() function, it is useless to continue the loop
-below bitclock rate, as it will result in a invalid kernel clock rate.
-Change the loop output condition.
+As described in Gerrard's report [1], there are use cases where a netem
+child qdisc will make the parent qdisc's enqueue callback reentrant.
+In the case of drr, there won't be a UAF, but the code will add the same
+classifier to the list twice, which will cause memory corruption.
 
-Fixes: 2cfe1ff22555 ("ASoC: stm32: sai: add stm32mp25 support")
-Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
-Link: https://patch.msgid.link/20250430165210.321273-2-olivier.moysan@foss.st.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+In addition to checking for qlen being zero, this patch checks whether the
+class was already added to the active_list (cl_is_active) before adding
+to the list to cover for the reentrant case.
+
+[1] https://lore.kernel.org/netdev/CAHcdcOm+03OD2j6R0=YHKqmy=VgJ8xEOKuP6c7mSgnp-TEJJbw@mail.gmail.com/
+
+Fixes: 37d9cf1a3ce3 ("sched: Fix detection of empty queues in child qdiscs")
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Victor Nogueira <victor@mojatatu.com>
+Link: https://patch.msgid.link/20250425220710.3964791-2-victor@mojatatu.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/stm/stm32_sai_sub.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ net/sched/sch_drr.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/stm/stm32_sai_sub.c b/sound/soc/stm/stm32_sai_sub.c
-index 3efbf4aaf9654..5a5acc67569fe 100644
---- a/sound/soc/stm/stm32_sai_sub.c
-+++ b/sound/soc/stm/stm32_sai_sub.c
-@@ -409,11 +409,11 @@ static int stm32_sai_set_parent_rate(struct stm32_sai_sub_data *sai,
- 				     unsigned int rate)
+diff --git a/net/sched/sch_drr.c b/net/sched/sch_drr.c
+index c69b999fae171..25b77ed0c1f28 100644
+--- a/net/sched/sch_drr.c
++++ b/net/sched/sch_drr.c
+@@ -35,6 +35,11 @@ struct drr_sched {
+ 	struct Qdisc_class_hash		clhash;
+ };
+ 
++static bool cl_is_active(struct drr_class *cl)
++{
++	return !list_empty(&cl->alist);
++}
++
+ static struct drr_class *drr_find_class(struct Qdisc *sch, u32 classid)
  {
- 	struct platform_device *pdev = sai->pdev;
--	unsigned int sai_ck_rate, sai_ck_max_rate, sai_curr_rate, sai_new_rate;
-+	unsigned int sai_ck_rate, sai_ck_max_rate, sai_ck_min_rate, sai_curr_rate, sai_new_rate;
- 	int div, ret;
+ 	struct drr_sched *q = qdisc_priv(sch);
+@@ -336,7 +341,6 @@ static int drr_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	struct drr_sched *q = qdisc_priv(sch);
+ 	struct drr_class *cl;
+ 	int err = 0;
+-	bool first;
  
- 	/*
--	 * Set maximum expected kernel clock frequency
-+	 * Set minimum and maximum expected kernel clock frequency
- 	 * - mclk on or spdif:
- 	 *   f_sai_ck = MCKDIV * mclk-fs * fs
- 	 *   Here typical 256 ratio is assumed for mclk-fs
-@@ -423,13 +423,16 @@ static int stm32_sai_set_parent_rate(struct stm32_sai_sub_data *sai,
- 	 *   Set constraint MCKDIV * FRL <= 256, to ensure MCKDIV is in available range
- 	 *   f_sai_ck = sai_ck_max_rate * pow_of_two(FRL) / 256
- 	 */
-+	sai_ck_min_rate = rate * 256;
- 	if (!(rate % SAI_RATE_11K))
- 		sai_ck_max_rate = SAI_MAX_SAMPLE_RATE_11K * 256;
- 	else
- 		sai_ck_max_rate = SAI_MAX_SAMPLE_RATE_8K * 256;
+ 	cl = drr_classify(skb, sch, &err);
+ 	if (cl == NULL) {
+@@ -346,7 +350,6 @@ static int drr_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		return err;
+ 	}
  
--	if (!sai->sai_mclk && !STM_SAI_PROTOCOL_IS_SPDIF(sai))
-+	if (!sai->sai_mclk && !STM_SAI_PROTOCOL_IS_SPDIF(sai)) {
-+		sai_ck_min_rate = rate * sai->fs_length;
- 		sai_ck_max_rate /= DIV_ROUND_CLOSEST(256, roundup_pow_of_two(sai->fs_length));
-+	}
+-	first = !cl->qdisc->q.qlen;
+ 	err = qdisc_enqueue(skb, cl->qdisc, to_free);
+ 	if (unlikely(err != NET_XMIT_SUCCESS)) {
+ 		if (net_xmit_drop_count(err)) {
+@@ -356,7 +359,7 @@ static int drr_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		return err;
+ 	}
  
- 	/*
- 	 * Request exclusivity, as the clock is shared by SAI sub-blocks and by
-@@ -472,7 +475,7 @@ static int stm32_sai_set_parent_rate(struct stm32_sai_sub_data *sai,
- 		/* Try a lower frequency */
- 		div++;
- 		sai_ck_rate = sai_ck_max_rate / div;
--	} while (sai_ck_rate > rate);
-+	} while (sai_ck_rate >= sai_ck_min_rate);
- 
- 	/* No accurate rate found */
- 	dev_err(&pdev->dev, "Failed to find an accurate rate");
+-	if (first) {
++	if (!cl_is_active(cl)) {
+ 		list_add_tail(&cl->alist, &q->active);
+ 		cl->deficit = cl->quantum;
+ 	}
 -- 
 2.39.5
 
