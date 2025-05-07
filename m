@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-142622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78747AAEB69
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:07:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B317AAEBEF
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:12:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AF4117AFF34
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:05:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9CCB7B217D8
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:11:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D086C1CF5C6;
-	Wed,  7 May 2025 19:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0721928DF4F;
+	Wed,  7 May 2025 19:12:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N8vr0h/8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lIp61qpC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88971214813;
-	Wed,  7 May 2025 19:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B858C214813;
+	Wed,  7 May 2025 19:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644820; cv=none; b=B/VCIPk7rxawcL65jG3Ulp3HbQIuBnwv+fpVruSnRmkYYLAN1FZu4v55rHBC4KIum14hOrM/idnGaz/ZB9AG2tDVhqz8a2heEqrbCGmo2SD79aEtkS6A4XCTKiOT5aaOiI8Gc8QSf7Vj8rhtje101Gjde5VqgHOwDtXJgK+KpXE=
+	t=1746645143; cv=none; b=BPCmwH8XiBWMnmrxAm951N1G4sW/U9ovDwXJwVNZ4mNM2K9P47C6jK2QL2+bFeD6Pd4+mWaY/MAdZ0sXcg4VuOtxS+ehfI0KcNDESrCGlNeS9k9L9Fk5yNoRB+qcLh5oYsFuhe+sifviCdXUJrAb5QwpzeCr9+EcPcnp1D1crnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644820; c=relaxed/simple;
-	bh=7OoCjyuaRpMO9q4WzK0rCAoqOKy9pAW40UOm25Hdvzk=;
+	s=arc-20240116; t=1746645143; c=relaxed/simple;
+	bh=UZK5fAWU9oErdsqou8j1auVdvsPt+YEcIHv0gFzt79U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u52Gt4ENhZNqyYo8eqSjLis1uOs17a6S/lPdoCtwQcOvfSd1/MfbqYzjVNZfngz44iGL9T9R/BsXxMFybTpc/NzSWxFktR8d3IqaFgC7Epj5VjVX522w+v/pM4jn238NNZXg8EzdTdxZLYxSp7UJ9MXTWHeSgOVJ6iqCEVGJBjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N8vr0h/8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E81CC4CEE2;
-	Wed,  7 May 2025 19:06:59 +0000 (UTC)
+	 MIME-Version; b=iddC4TkfPtKdi4ZI0NnK2Dxz06kcs0rrPxIBo+p1QVmUmlv97tjSh89eqeRW6qHAZ+6xzgLOHpooA0oY9JmskbRrFYgF5kRxYQnTapFpf/P/fOHTs+/MAHcgort2ZrpJryKQRi1pei2WlAlVCvDfUmsrAp2F0d6hR0ZJxkQWtiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lIp61qpC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21F69C4CEEB;
+	Wed,  7 May 2025 19:12:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644820;
-	bh=7OoCjyuaRpMO9q4WzK0rCAoqOKy9pAW40UOm25Hdvzk=;
+	s=korg; t=1746645143;
+	bh=UZK5fAWU9oErdsqou8j1auVdvsPt+YEcIHv0gFzt79U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N8vr0h/8BhpefCSy6WsMIHMRmTjUVsIpuOCm8rQk2UCJvopeBpvuCJ43C9m20k6sk
-	 XZg2cnbRUfRepfefHLM5E6pmZqNi+iB8ew0WhCTcyxF7vUROClaaU9wNbp3wULOMwF
-	 Xh/3ofojtMJK7T4p8C3bo3t3ntYwObV0HwmUQqQQ=
+	b=lIp61qpCYOuMigcFtfsgcXfdtVCX1qXzSCemY1l+oJ5Lx6dckK6mxWIqGCpM/22RK
+	 lIldF1V1mNmdVTxX42lOKa49mJPkT1cDETtJGfsauJIQa332zK9CNRaFDFtb1Gy/R+
+	 pUjqzBegadJfvFXli7nB0wzHFuRitB5sq1R02JLY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Alexandre Torgue <alexandre.torgue@foss.st.com>,
 	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 157/164] arm64: dts: st: Adjust interrupt-controller for stm32mp25 SoCs
-Date: Wed,  7 May 2025 20:40:42 +0200
-Message-ID: <20250507183827.320517774@linuxfoundation.org>
+Subject: [PATCH 6.6 107/129] arm64: dts: st: Adjust interrupt-controller for stm32mp25 SoCs
+Date: Wed,  7 May 2025 20:40:43 +0200
+Message-ID: <20250507183817.829718576@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -84,10 +84,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/arch/arm64/boot/dts/st/stm32mp251.dtsi b/arch/arm64/boot/dts/st/stm32mp251.dtsi
-index 1167cf63d7e87..896d92032284b 100644
+index 5268a43218415..3219a8ea1e6a7 100644
 --- a/arch/arm64/boot/dts/st/stm32mp251.dtsi
 +++ b/arch/arm64/boot/dts/st/stm32mp251.dtsi
-@@ -114,9 +114,8 @@
+@@ -73,9 +73,8 @@
  	};
  
  	intc: interrupt-controller@4ac00000 {
