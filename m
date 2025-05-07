@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-142572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 103DCAAEB31
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:04:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED3E4AAEBA0
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:09:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 326AF7BF9A8
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:03:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7F6E9E358B
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:08:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42A1328DF5A;
-	Wed,  7 May 2025 19:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0D8A1E22E9;
+	Wed,  7 May 2025 19:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z+pBvvFW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lXXO3pYy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F22BD28DF2A;
-	Wed,  7 May 2025 19:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CF4D21504D;
+	Wed,  7 May 2025 19:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644669; cv=none; b=tDmOXGo4hOdS44Mm7zlQKKZxVYRDHV1kiWQFHOKe73IIwcKQ1o77BwmIEKe0Wl7Zml92qLvWggHs+RtWyPvOTrukgp51PMA7asuz2hf4k9hhAJ9y1f41rvr/mhu8fd5ZCRiVlan3rFeaxyxQm0QliEdeN7ANusucQWE/FacpNX4=
+	t=1746644932; cv=none; b=RX4yhyWX9Iv3weUlp41b6SmDuu2mw47dLH+PGWCw8uG2p1VhRMEMufyCEFu3kKPHLmvqPzS0bYm6zvl5PFMyg/xX427g1GMS/ELq7WR30G0AO1klHLb5k5JA1BM/QcNjy7fo93JAvH87iEO9BMA3kFDVhlpedVy8jcYYXOUjLdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644669; c=relaxed/simple;
-	bh=34beBP9m68sHVjO0ymGoIhjKTOaNxG9SUt9IycYCHEs=;
+	s=arc-20240116; t=1746644932; c=relaxed/simple;
+	bh=QYy1puwB4kpnzhrhhY92fVT05xfLetmc6XywLIA1l/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VHQXkor0W5y5b/qL/lg5ba0m8Z2fHvbQjyyudHn6qqGx6Z+NEoJT6Q7EZQXzBTxvEvtmggJBMRrvktO+zoSfAYOyFD4mCx4XFGSbt7CeB/MOuD/lyx4EOXO4IU5lKhvIVFQQQiP87TVLtHfmj/6/j+Sfn2eqLGuUlsf1OOXVaXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z+pBvvFW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C149C4CEE2;
-	Wed,  7 May 2025 19:04:28 +0000 (UTC)
+	 MIME-Version; b=d/4EaXhzpbI8fIe1u91dqt1zwI59Ph14Ovr2UEIwg1JN7vu7SibJcWJ8OPzFLuZ4UhfcnDh3Q838USgnrgbuZ2JzplbsrIE5MuBdGhE53uPDlLn0FkTqRF58UPG31gkshwbBVINjGtW+Ywh7+2BmnIkFK5mCgGj9U+QoBwltXh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lXXO3pYy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F07ADC4CEE2;
+	Wed,  7 May 2025 19:08:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644668;
-	bh=34beBP9m68sHVjO0ymGoIhjKTOaNxG9SUt9IycYCHEs=;
+	s=korg; t=1746644932;
+	bh=QYy1puwB4kpnzhrhhY92fVT05xfLetmc6XywLIA1l/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z+pBvvFWZ8qEMxIijOWXgNDAdy94J61c7ZK/3uxJoxErJFwlExn3EBFBUvl6aMVf0
-	 zWfAQERlWTIymdkAAmhZwJESDJ6U5IT88p2Ad16/Lba7ywoRjxP0Q6LyGAQJBVeE2Y
-	 iThm2QqRMDpOL801OB1TFXG+dpeCsN2PbeAuGyz0=
+	b=lXXO3pYycGYW7C+YNDkA9Tjx0R0VXMOLCh1WcqW/3Z22JzPmUHERQmcc+kdpn6574
+	 RdLFe7hk36IOgYCSXkAl7tdqiWXwtrrWSHPdtinPgPkRgRj0t9vySkKi95tFdk8E+h
+	 11H+COU6cen5aGhb551TZIERgcSXaN2bd1CDwVU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 090/164] pds_core: remove write-after-free of client_id
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Subject: [PATCH 6.6 039/129] bpf: consider that tail calls invalidate packet pointers
 Date: Wed,  7 May 2025 20:39:35 +0200
-Message-ID: <20250507183824.608082913@linuxfoundation.org>
+Message-ID: <20250507183815.119372997@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shannon Nelson <shannon.nelson@amd.com>
+From: Eduard Zingerman <eddyz87@gmail.com>
 
-[ Upstream commit dfd76010f8e821b66116dec3c7d90dd2403d1396 ]
+commit 1a4607ffba35bf2a630aab299e34dd3f6e658d70 upstream.
 
-A use-after-free error popped up in stress testing:
+Tail-called programs could execute any of the helpers that invalidate
+packet pointers. Hence, conservatively assume that each tail call
+invalidates packet pointers.
 
-[Mon Apr 21 21:21:33 2025] BUG: KFENCE: use-after-free write in pdsc_auxbus_dev_del+0xef/0x160 [pds_core]
-[Mon Apr 21 21:21:33 2025] Use-after-free write at 0x000000007013ecd1 (in kfence-#47):
-[Mon Apr 21 21:21:33 2025]  pdsc_auxbus_dev_del+0xef/0x160 [pds_core]
-[Mon Apr 21 21:21:33 2025]  pdsc_remove+0xc0/0x1b0 [pds_core]
-[Mon Apr 21 21:21:33 2025]  pci_device_remove+0x24/0x70
-[Mon Apr 21 21:21:33 2025]  device_release_driver_internal+0x11f/0x180
-[Mon Apr 21 21:21:33 2025]  driver_detach+0x45/0x80
-[Mon Apr 21 21:21:33 2025]  bus_remove_driver+0x83/0xe0
-[Mon Apr 21 21:21:33 2025]  pci_unregister_driver+0x1a/0x80
+Making the change in bpf_helper_changes_pkt_data() automatically makes
+use of check_cfg() logic that computes 'changes_pkt_data' effect for
+global sub-programs, such that the following program could be
+rejected:
 
-The actual device uninit usually happens on a separate thread
-scheduled after this code runs, but there is no guarantee of order
-of thread execution, so this could be a problem.  There's no
-actual need to clear the client_id at this point, so simply
-remove the offending code.
+    int tail_call(struct __sk_buff *sk)
+    {
+    	bpf_tail_call_static(sk, &jmp_table, 0);
+    	return 0;
+    }
 
-Fixes: 10659034c622 ("pds_core: add the aux client API")
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250425203857.71547-1-shannon.nelson@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    SEC("tc")
+    int not_safe(struct __sk_buff *sk)
+    {
+    	int *p = (void *)(long)sk->data;
+    	... make p valid ...
+    	tail_call(sk);
+    	*p = 42; /* this is unsafe */
+    	...
+    }
+
+The tc_bpf2bpf.c:subprog_tc() needs change: mark it as a function that
+can invalidate packet pointers. Otherwise, it can't be freplaced with
+tailcall_freplace.c:entry_freplace() that does a tail call.
+
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20241210041100.1898468-8-eddyz87@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+[ shung-hsi.yu: drop changes to tools/testing/selftests/bpf/progs/tc_bpf2bpf.c
+because it is not present. ]
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/amd/pds_core/auxbus.c | 1 -
- 1 file changed, 1 deletion(-)
+ net/core/filter.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/amd/pds_core/auxbus.c b/drivers/net/ethernet/amd/pds_core/auxbus.c
-index 4d3387bebe6a4..889a18962270a 100644
---- a/drivers/net/ethernet/amd/pds_core/auxbus.c
-+++ b/drivers/net/ethernet/amd/pds_core/auxbus.c
-@@ -186,7 +186,6 @@ void pdsc_auxbus_dev_del(struct pdsc *cf, struct pdsc *pf,
- 	pds_client_unregister(pf, padev->client_id);
- 	auxiliary_device_delete(&padev->aux_dev);
- 	auxiliary_device_uninit(&padev->aux_dev);
--	padev->client_id = 0;
- 	*pd_ptr = NULL;
- 
- 	mutex_unlock(&pf->config_lock);
--- 
-2.39.5
-
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -7893,6 +7893,8 @@ bool bpf_helper_changes_pkt_data(enum bp
+ 	case BPF_FUNC_xdp_adjust_head:
+ 	case BPF_FUNC_xdp_adjust_meta:
+ 	case BPF_FUNC_xdp_adjust_tail:
++	/* tail-called program could call any of the above */
++	case BPF_FUNC_tail_call:
+ 		return true;
+ 	default:
+ 		return false;
 
 
 
