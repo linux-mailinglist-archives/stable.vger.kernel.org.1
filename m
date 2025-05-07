@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-142463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7506DAAEABC
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:59:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADE7EAAEA15
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:51:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9D2B1C44652
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:59:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 627893BB8DA
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:50:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DD9328B4F0;
-	Wed,  7 May 2025 18:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1425C214813;
+	Wed,  7 May 2025 18:51:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RwW/VfMT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DvcdgYrh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39A381482F5;
-	Wed,  7 May 2025 18:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5C962116E9;
+	Wed,  7 May 2025 18:51:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644331; cv=none; b=IpOwPaztPu4t/YuSyASAFkIjQaolA0c3Z3CnVPAZmoqwp+Aao2FjtBOhX353UpdebpnQOPO0gyXTeHJXhc10CLeFtdkvBM3iDFkBK9b6MWnqFiXNXpYU7FrmeRAoR1AJn6CGP6O7Uf81g6qZaDnTD93sRmM+4u2MS0RnAeiTw6k=
+	t=1746643861; cv=none; b=LsOw7slzwts2Fsbm0ta6FFcF6jIkazHleT6iDcr4jSU156xv1zQL6ONMhtmN/yPWCKJ65hJVqvWf46r1+4s0un+Dv+56e2+s2jHmwUmfKxneIHDzxoTxjOVE43J844qO5DAYAisjTJbxdxiT5NUXYNJpyAFDURCZuXmP9KtvuQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644331; c=relaxed/simple;
-	bh=p0FH8Ulu1tIT68VGnbeYgvXQW7r3avB9WYKvi3iGh4o=;
+	s=arc-20240116; t=1746643861; c=relaxed/simple;
+	bh=9Frn/JvOAC4WOqsWcwEgq0L/TXa6RUf0xM+nszC5zwE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nIugXxTQsrodZ18Wino5iASUb4e1kcC8nEnZFk+LvOF68OC/UKBXrsuYDuWgHxS6dcuksBUUaYuAxTJCvFV5CpTNBkYGxETaWr+PM0vSS1U4O5zjx4Xu8TF8SZqhqKYYmqFGltOV6Ngg27qMjZTtZbUL8Hmxjp4yvkS9T9Es4Hw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RwW/VfMT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A760AC4CEE2;
-	Wed,  7 May 2025 18:58:50 +0000 (UTC)
+	 MIME-Version; b=YpialHCD0pUy+J9KW68XGDNCwXfmaczUNR5Q+fa0aUEpVORBYnMcIfq4bOfmfEkktFV9rTltIn1iRIIGeczUwOtd4QxY3YGkuOTpTqhosCjEqwoHQ6dPAKPSMg3+qKnoSbSa5uXYMlHx8dSYzlFXsQTxo9VcRz4+Ng+KUA1Lfck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DvcdgYrh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3CB2C4CEE2;
+	Wed,  7 May 2025 18:51:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644331;
-	bh=p0FH8Ulu1tIT68VGnbeYgvXQW7r3avB9WYKvi3iGh4o=;
+	s=korg; t=1746643861;
+	bh=9Frn/JvOAC4WOqsWcwEgq0L/TXa6RUf0xM+nszC5zwE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RwW/VfMTRKnOwzqTz4ZMI3oE4yOlXsa07U1JZLttIJIs3XcTzDyw8m07HtGhiDgAc
-	 nYB9FT7bJHWlspMn/f+l+XE8vd6ydU5LPWFyiq/RmW6p4tEMfR9W0zvOpZ9LkCBgg6
-	 FcnFXjCd5HAQ1KNsc+hlT3JdiYnqNqCnfp4HxEJQ=
+	b=DvcdgYrhczQKA3c60MjWK+O7joqw+jVTs1XD/1fMicKPm2+zay1yZGWBNZPQcEAsP
+	 OY9q/y+qkwnN28GaB/uL8pUo+pSMSAxVnQ/xCk4jf7hcRKCNLRQB41+b6Qrj+x9fcN
+	 McwjUZbZT1eiJnt/GkzOZM3054Xhf7/V5WjTuX2I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaron Ma <aaron.ma@canonical.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Alexander Tsoy <alexander@tsoy.me>
-Subject: [PATCH 6.12 001/164] Bluetooth: btusb: add Foxconn 0xe0fc for Qualcomm WCN785x
+	Sean Heelan <seanheelan@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.14 041/183] ksmbd: fix use-after-free in kerberos authentication
 Date: Wed,  7 May 2025 20:38:06 +0200
-Message-ID: <20250507183820.851428457@linuxfoundation.org>
+Message-ID: <20250507183826.358226489@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaron Ma <aaron.ma@canonical.com>
+From: Sean Heelan <seanheelan@gmail.com>
 
-[ Upstream commit add1b1656f909c41aa0186fe75e7a42e2c0d2188 ]
+commit e86e9134e1d1c90a960dd57f59ce574d27b9a124 upstream.
 
-Firmwares are already in upstream.
+Setting sess->user = NULL was introduced to fix the dangling pointer
+created by ksmbd_free_user. However, it is possible another thread could
+be operating on the session and make use of sess->user after it has been
+passed to ksmbd_free_user but before sess->user is set to NULL.
 
-kernel boot log as following:
-Bluetooth: hci0: using rampatch file: qca/rampatch_usb_00190200.bin
-Bluetooth: hci0: QCA: patch rome 0x190200 build 0x5656, firmware rome 0x190200 build 0x43fb
-Bluetooth: hci0: using NVM file: qca/nvm_usb_00190200.bin
-
-Paired BT headphone, output is good.
-
-T:  Bus=01 Lev=02 Prnt=02 Port=00 Cnt=01 Dev#=  4 Spd=12   MxCh= 0
-D:  Ver= 1.10 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=0489 ProdID=e0fc Rev= 0.01
-C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=100mA
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-I:  If#= 1 Alt= 6 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  63 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  63 Ivl=1ms
-I:  If#= 1 Alt= 7 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  65 Ivl=1ms
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  65 Ivl=1ms
-
-Signed-off-by: Aaron Ma <aaron.ma@canonical.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Alexander Tsoy <alexander@tsoy.me>
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Heelan <seanheelan@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btusb.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/smb/server/auth.c    |   14 +++++++++++++-
+ fs/smb/server/smb2pdu.c |    5 -----
+ 2 files changed, 13 insertions(+), 6 deletions(-)
 
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -371,6 +371,8 @@ static const struct usb_device_id quirks
- 	/* QCA WCN785x chipset */
- 	{ USB_DEVICE(0x0cf3, 0xe700), .driver_info = BTUSB_QCA_WCN6855 |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x0489, 0xe0fc), .driver_info = BTUSB_QCA_WCN6855 |
-+						     BTUSB_WIDEBAND_SPEECH },
+--- a/fs/smb/server/auth.c
++++ b/fs/smb/server/auth.c
+@@ -550,7 +550,19 @@ int ksmbd_krb5_authenticate(struct ksmbd
+ 		retval = -ENOMEM;
+ 		goto out;
+ 	}
+-	sess->user = user;
++
++	if (!sess->user) {
++		/* First successful authentication */
++		sess->user = user;
++	} else {
++		if (!ksmbd_compare_user(sess->user, user)) {
++			ksmbd_debug(AUTH, "different user tried to reuse session\n");
++			retval = -EPERM;
++			ksmbd_free_user(user);
++			goto out;
++		}
++		ksmbd_free_user(user);
++	}
  
- 	/* Broadcom BCM2035 */
- 	{ USB_DEVICE(0x0a5c, 0x2009), .driver_info = BTUSB_BCM92035 },
+ 	memcpy(sess->sess_key, resp->payload, resp->session_key_len);
+ 	memcpy(out_blob, resp->payload + resp->session_key_len,
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -1602,11 +1602,6 @@ static int krb5_authenticate(struct ksmb
+ 	if (prev_sess_id && prev_sess_id != sess->id)
+ 		destroy_previous_session(conn, sess->user, prev_sess_id);
+ 
+-	if (sess->state == SMB2_SESSION_VALID) {
+-		ksmbd_free_user(sess->user);
+-		sess->user = NULL;
+-	}
+-
+ 	retval = ksmbd_krb5_authenticate(sess, in_blob, in_len,
+ 					 out_blob, &out_len);
+ 	if (retval) {
 
 
 
