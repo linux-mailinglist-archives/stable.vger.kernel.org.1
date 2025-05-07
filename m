@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-142553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E41B4AAEB1B
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:03:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C78EAAE9AB
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:47:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 589F7525AF6
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:03:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D78E25065B3
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:47:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECA6628BA9F;
-	Wed,  7 May 2025 19:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36172202C2B;
+	Wed,  7 May 2025 18:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FzBgpPOA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bjkL/zdU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99EF29A0;
-	Wed,  7 May 2025 19:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E2073451;
+	Wed,  7 May 2025 18:47:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644608; cv=none; b=nHgx2ARVRWSCCX6z8E79wCrjPshBKvqcJGx3tMT3+vMRdkUaP1DgyaGLpNG7QCxR4zeISDEv32fizRPWT51gw+NoX6pO9WRVI83c/GTgAXTmaVDgNasW0qvWqTMHfJZU/SFY7J5fiSaNrLKR/uM8NtsN4BpbYbhu1W4egMpbxm8=
+	t=1746643641; cv=none; b=KyU5X/l0mPJna+eddLXv6iMg7ruZVCaXNOSI6UT0DzNjcaAd7Jvpel2kDMAgKqni4U606Jw3lzFmwolcvoBh8C4giEHVPpj76nTIKKf8gANX82A14J5Znyw1RvvG0ivcEn5WHJFVXPb60fG/5DXuuNBLrqd2L4S10W48w8QNQRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644608; c=relaxed/simple;
-	bh=XMjGgpPlllw7xkie+P1K6DsfOptBMYHVpwc4IrV520k=;
+	s=arc-20240116; t=1746643641; c=relaxed/simple;
+	bh=PSByi+6z2keFnjkvSh+tOrudEIJ/LGnWQc27Ki7JNNQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WMdSfxGsbiPQCbU89MMKHpwh1or61GKYA6QSaQPSFBx9NBE7N71OAqeZuFhJu7HtFEVTLqlYBLJGXfkIeSl9R0Vwb/C0gKJBM/eJAAe4GoofdcBLmmqhcUL+Y5YYMJdPIaraJOkA5pvkASRULVq5Ae2l9FmWRaiVIr2ME3LxXD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FzBgpPOA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17DC6C4CEE9;
-	Wed,  7 May 2025 19:03:27 +0000 (UTC)
+	 MIME-Version; b=Xte3a6g0nTSJcM4TTFXslXusywI8Hc2s90nd4l00kiTW40VMDBeyFhP2ahf6oZ7YkNuV+0cERxdC6F/PQqpXfpzrWoltMFfeonjwkixB6PNtQ+sod6XNQ4kcD2XoOxrMwgOxygHfVaDGdfq51HvnzYzZqdPrWxUz/EOyJdVHQYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bjkL/zdU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61197C4CEE2;
+	Wed,  7 May 2025 18:47:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644608;
-	bh=XMjGgpPlllw7xkie+P1K6DsfOptBMYHVpwc4IrV520k=;
+	s=korg; t=1746643640;
+	bh=PSByi+6z2keFnjkvSh+tOrudEIJ/LGnWQc27Ki7JNNQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FzBgpPOAhCAojde4QKh6rHunTqUlYLHzUUHX5GB1Ii2dRXAiN1Wi39iDQexSMpXxU
-	 pZSQHNTQfdMx1QqK6VGY6yGCOii4A2BBqWTAfb3lY/0B78rQY378h4OEkzlUA54T0N
-	 X6FXk7hwJ2fbHz3CgeEIO6zSIeC7HzZOURyke/oM=
+	b=bjkL/zdUw6OP1tyG7ArimfUC9DGakoBKrNWY+397qIh/sMp8mJdd05JEOhzHMxICu
+	 LXfMUI4AvDJXcEpYEG9AxMd0N+gmMlQwI4J31DByrxGgmCGmDXUDSGpPOLDM3NOEmF
+	 ROyJx7pX1Cc8xoKkBxZiE2VoLPRFOSeLOE6A1SjU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dhankaran Singh Ajravat <dhankaran@meta.com>,
-	Keith Busch <kbusch@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 099/164] nvme-pci: fix queue unquiesce check on slot_reset
+Subject: [PATCH 6.1 69/97] net: vertexcom: mse102x: Fix LEN_MASK
 Date: Wed,  7 May 2025 20:39:44 +0200
-Message-ID: <20250507183824.982360773@linuxfoundation.org>
+Message-ID: <20250507183809.769292114@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
+References: <20250507183806.987408728@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit a75401227eeb827b1a162df1aa9d5b33da921c43 ]
+[ Upstream commit 74987089ec678b4018dba0a609e9f4bf6ef7f4ad ]
 
-A zero return means the reset was successfully scheduled. We don't want
-to unquiesce the queues while the reset_work is pending, as that will
-just flush out requeued requests to a failed completion.
+The LEN_MASK for CMD_RTS doesn't cover the whole parameter mask.
+The Bit 11 is reserved, so adjust LEN_MASK accordingly.
 
-Fixes: 71a5bb153be104 ("nvme: ensure disabling pairs with unquiesce")
-Reported-by: Dhankaran Singh Ajravat <dhankaran@meta.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Fixes: 2f207cbf0dd4 ("net: vertexcom: Add MSE102x SPI support")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250430133043.7722-3-wahrenst@gmx.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 2 +-
+ drivers/net/ethernet/vertexcom/mse102x.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index e70618e8d35eb..83ee433b69415 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -3535,7 +3535,7 @@ static pci_ers_result_t nvme_slot_reset(struct pci_dev *pdev)
+diff --git a/drivers/net/ethernet/vertexcom/mse102x.c b/drivers/net/ethernet/vertexcom/mse102x.c
+index 45f4d2cb5b31a..55f34d9d111c4 100644
+--- a/drivers/net/ethernet/vertexcom/mse102x.c
++++ b/drivers/net/ethernet/vertexcom/mse102x.c
+@@ -33,7 +33,7 @@
+ #define CMD_CTR		(0x2 << CMD_SHIFT)
  
- 	dev_info(dev->ctrl.device, "restart after slot reset\n");
- 	pci_restore_state(pdev);
--	if (!nvme_try_sched_reset(&dev->ctrl))
-+	if (nvme_try_sched_reset(&dev->ctrl))
- 		nvme_unquiesce_io_queues(&dev->ctrl);
- 	return PCI_ERS_RESULT_RECOVERED;
- }
+ #define CMD_MASK	GENMASK(15, CMD_SHIFT)
+-#define LEN_MASK	GENMASK(CMD_SHIFT - 1, 0)
++#define LEN_MASK	GENMASK(CMD_SHIFT - 2, 0)
+ 
+ #define DET_CMD_LEN	4
+ #define DET_SOF_LEN	2
 -- 
 2.39.5
 
