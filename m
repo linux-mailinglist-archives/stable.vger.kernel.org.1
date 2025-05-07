@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-142365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EE54AAEA50
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:54:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BCCCAAE9A2
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:47:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB2B59C540D
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:53:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15CE83BBBA3
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:46:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A775289823;
-	Wed,  7 May 2025 18:53:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AADF29A0;
+	Wed,  7 May 2025 18:46:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AFJ80L6E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jzTATzjH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35E031FF5EC;
-	Wed,  7 May 2025 18:53:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 163C8155389;
+	Wed,  7 May 2025 18:46:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644026; cv=none; b=ZNBQM5UxfB3Osyll3aMMnYJc0MIh6+H4LNHLihDHDqrEeLEjyopm1wheFO54+BFpAZ5hZnUwPWkcbxcAaKSPM5hdKZOAvLk02isiJY/Fb3YV5ATVk8NWCocYeZnB8Sju6FZXs7UH0c/U2fW1EcGEuvfRwGOkr+MP0DkIIdtFa+Q=
+	t=1746643601; cv=none; b=l9SAEEhAOIaV2VTA2jHuN9aRPavGnOEJfh/iGN5rCMHOtpCAfwlTSsysKd0NmNotBgSzYpxiwO97dq9AJldf/FjlMRgNgfEMmpI/pg/UzzNCRPJSdoHaS5+hfG0b98lfSq+cqJz4sXP2gIMMLJjea5NzQiZasdnhDs8HFrfiEZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644026; c=relaxed/simple;
-	bh=Sakcz5K4/nzFFMt7m2qV3/2SLRK4NnQTd6SPP12du98=;
+	s=arc-20240116; t=1746643601; c=relaxed/simple;
+	bh=31ZHyVlk9zlhwsKsFOEyycfrhqt6YHR0k1wAouMqOFo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RPNVKwEnzKN/njsYhmkky7DCm4P1K8Ua3QvqRrH7/pAOEEl0DWNbF51AqRYUepkvSKiC9E4kyKS66XqQWHcbbPYK8Uvv8BHESQd0LwRjkvB98tzdskJeEFDLhM4PmLGSgE1dhhjvkKwmBuzEeJqVW8uEHp41PVD94CBuXOyYUNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AFJ80L6E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2D08C4CEEB;
-	Wed,  7 May 2025 18:53:45 +0000 (UTC)
+	 MIME-Version; b=ah/XhFUvRQhde8Nm4aob/FhWLdWLxs7wbphf1xEChNsAWTNowkK+xvPNfXnCAVnRYDTK3/lq9Ey2uLkKt0cfAryA1BZBuMPH4+nLy1EgFks4ApDQKjW4Z8i5PpxXRX996gPcDH+YkfZrIY53+p6wLUlbNjrI+uIhuz0nvG9dtNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jzTATzjH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C06CC4CEE2;
+	Wed,  7 May 2025 18:46:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644026;
-	bh=Sakcz5K4/nzFFMt7m2qV3/2SLRK4NnQTd6SPP12du98=;
+	s=korg; t=1746643600;
+	bh=31ZHyVlk9zlhwsKsFOEyycfrhqt6YHR0k1wAouMqOFo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AFJ80L6EV+MAIeWI9X4uGJSvJzy2YafkPgJQRmQe+3qoKMSSxdeU9DSQ4+PTeItc8
-	 UzPv03ldEAnTYS2RbhiA+IG1Pp33sOoAXaFi7lWcRWj0PWCcVZOCMHR3REwwYoatU7
-	 m77qL4NfAUHriz0ozYKtC/Fi47AVhKNSBcQed6PQ=
+	b=jzTATzjHq2e2qyPgZYNfbiP+uWgvFxddblAz4+G3pvPPl6yGeiVacIrg9Tl7ggmCV
+	 z7fpQ2v9v9See/XBLbi6AlYNRaqu2UfbAk8+P95IY+zMp8KR+6WX+f5doDKhFh8OSb
+	 ZTf815E3E3n4EW4uZKtSMpG/LWgt86YOiJllqinE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 096/183] net_sched: drr: Fix double list add in class with netem as child qdisc
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Leah Rumancik <leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 26/97] xfs: require XFS_SB_FEAT_INCOMPAT_LOG_XATTRS for attr log intent item recovery
 Date: Wed,  7 May 2025 20:39:01 +0200
-Message-ID: <20250507183828.712794134@linuxfoundation.org>
+Message-ID: <20250507183808.040408668@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
+References: <20250507183806.987408728@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Nogueira <victor@mojatatu.com>
+From: "Darrick J. Wong" <djwong@kernel.org>
 
-[ Upstream commit f99a3fbf023e20b626be4b0f042463d598050c9a ]
+[ Upstream commit 8ef1d96a985e4dc07ffbd71bd7fc5604a80cc644 ]
 
-As described in Gerrard's report [1], there are use cases where a netem
-child qdisc will make the parent qdisc's enqueue callback reentrant.
-In the case of drr, there won't be a UAF, but the code will add the same
-classifier to the list twice, which will cause memory corruption.
+The XFS_SB_FEAT_INCOMPAT_LOG_XATTRS feature bit protects a filesystem
+from old kernels that do not know how to recover extended attribute log
+intent items.  Make this check mandatory instead of a debugging assert.
 
-In addition to checking for qlen being zero, this patch checks whether the
-class was already added to the active_list (cl_is_active) before adding
-to the list to cover for the reentrant case.
-
-[1] https://lore.kernel.org/netdev/CAHcdcOm+03OD2j6R0=YHKqmy=VgJ8xEOKuP6c7mSgnp-TEJJbw@mail.gmail.com/
-
-Fixes: 37d9cf1a3ce3 ("sched: Fix detection of empty queues in child qdiscs")
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
-Link: https://patch.msgid.link/20250425220710.3964791-2-victor@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: fd920008784ea ("xfs: Set up infrastructure for log attribute replay")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: "Darrick J. Wong" <djwong@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_drr.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ fs/xfs/xfs_attr_item.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/sch_drr.c b/net/sched/sch_drr.c
-index c69b999fae171..25b77ed0c1f28 100644
---- a/net/sched/sch_drr.c
-+++ b/net/sched/sch_drr.c
-@@ -35,6 +35,11 @@ struct drr_sched {
- 	struct Qdisc_class_hash		clhash;
- };
+--- a/fs/xfs/xfs_attr_item.c
++++ b/fs/xfs/xfs_attr_item.c
+@@ -510,6 +510,9 @@ xfs_attri_validate(
+ 	unsigned int			op = attrp->alfi_op_flags &
+ 					     XFS_ATTRI_OP_FLAGS_TYPE_MASK;
  
-+static bool cl_is_active(struct drr_class *cl)
-+{
-+	return !list_empty(&cl->alist);
-+}
++	if (!xfs_sb_version_haslogxattrs(&mp->m_sb))
++		return false;
 +
- static struct drr_class *drr_find_class(struct Qdisc *sch, u32 classid)
- {
- 	struct drr_sched *q = qdisc_priv(sch);
-@@ -336,7 +341,6 @@ static int drr_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	struct drr_sched *q = qdisc_priv(sch);
- 	struct drr_class *cl;
- 	int err = 0;
--	bool first;
+ 	if (attrp->__pad != 0)
+ 		return false;
  
- 	cl = drr_classify(skb, sch, &err);
- 	if (cl == NULL) {
-@@ -346,7 +350,6 @@ static int drr_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		return err;
- 	}
+@@ -601,8 +604,6 @@ xfs_attri_item_recover(
+ 	args->op_flags = XFS_DA_OP_RECOVERY | XFS_DA_OP_OKNOENT |
+ 			 XFS_DA_OP_LOGGED;
  
--	first = !cl->qdisc->q.qlen;
- 	err = qdisc_enqueue(skb, cl->qdisc, to_free);
- 	if (unlikely(err != NET_XMIT_SUCCESS)) {
- 		if (net_xmit_drop_count(err)) {
-@@ -356,7 +359,7 @@ static int drr_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		return err;
- 	}
- 
--	if (first) {
-+	if (!cl_is_active(cl)) {
- 		list_add_tail(&cl->alist, &q->active);
- 		cl->deficit = cl->quantum;
- 	}
--- 
-2.39.5
-
+-	ASSERT(xfs_sb_version_haslogxattrs(&mp->m_sb));
+-
+ 	switch (attr->xattri_op_flags) {
+ 	case XFS_ATTRI_OP_FLAGS_SET:
+ 	case XFS_ATTRI_OP_FLAGS_REPLACE:
 
 
 
