@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-142134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0CD2AAE933
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:42:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 01AC0AAE991
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:46:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04CA21C2698C
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:42:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0986F1C27AA0
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:46:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D849B28DF4F;
-	Wed,  7 May 2025 18:42:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F312D187FE4;
+	Wed,  7 May 2025 18:46:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AnoP+/i4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2bqw5V+/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91E0114A4C7;
-	Wed,  7 May 2025 18:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0C2173451;
+	Wed,  7 May 2025 18:46:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643322; cv=none; b=KuL+PLJiQOEsRJmPDu8RnATRaNaDY/IRD1vQEwH26zbUdg3hrteumTQVfOEdhhUVzDncNMbtsI1Z3vh7NuXUhkVslC92nNH6sqrSvPoux3jCISQcBjHm+nxnbG+132ADDqDyqt98GJ6j6X6KEVFS2ixWcV/NMlQBJJqgswrkEHU=
+	t=1746643572; cv=none; b=IHr3n5BOmh0wDHcru5bmIpJmAN6UOZxVhZ/M/+U8oQi7X0q9qXSDc1q4nFtTaNRZp4m8aPw1XfYLrM/g20H9t4hUwNhMpT52rvpCGCRZzdTxnFIgd/jTuRyPc4//EEAGgRJ/DT7bvBzscUoAClrWiMhGcCJiL9nZA7jb+XX0HHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643322; c=relaxed/simple;
-	bh=0+XT94DZiYO6eyaQFFNP6kGQqNY17VegFLFf9uxhr8U=;
+	s=arc-20240116; t=1746643572; c=relaxed/simple;
+	bh=MOTZoVuOjD21WSA0KtbYYxWfrqkUP/g+eQ5iek0GpSc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Afz2EqJuQpBFOi9lmpFNxRJnazioz8pjGasLgIpdwVqwFolqcmfknoNfkC0XgKBjFtbhRYqxX6j6/naIyHu57iQsi4MIq7ciUPIy7ZdiMi+gS8g+4HTaDkSaMzhGkNDPSvi2TGgnlMvmPSBtgM49U13BzHT7Mgq973RLzfUpuQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AnoP+/i4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC5F9C4CEE2;
-	Wed,  7 May 2025 18:42:00 +0000 (UTC)
+	 MIME-Version; b=lSZDjnx/vMm2+UysPp3SCjcWPRX405bn5skZd0v/qGdzvmudxff2BZBC+0CMpLidXrxgSTZNMAQApJW6jJkLa9w2XAQxC43PxNxrbH6MdMSeeZWYxXSHiPRu9jfkFs900n86IiWuBvzdkORk1Vx9iSBpFMoxIYncxCcC2omTi8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2bqw5V+/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FC6EC4CEE2;
+	Wed,  7 May 2025 18:46:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643321;
-	bh=0+XT94DZiYO6eyaQFFNP6kGQqNY17VegFLFf9uxhr8U=;
+	s=korg; t=1746643572;
+	bh=MOTZoVuOjD21WSA0KtbYYxWfrqkUP/g+eQ5iek0GpSc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AnoP+/i4tR/xEkRzs6AtgOcnKoX2kGcsgkl4IIqUdciq5bH2TYk21630cWIJJ6AM+
-	 N/uO/pm3p5HcxlLGGYqSyA9fdP4DsSdP2V7itI+3Yq21Ar+k6U9fjIgKhIN1+xlo/v
-	 DxSIhzrScHrfT5gsIzvVMgQa11OhzXk3E9bh4rB8=
+	b=2bqw5V+/ljtittCR+MKwWVU3U9NZkChXIociLKnC4HRc6PZERinDN4JEqWFCa9JKr
+	 C6b9VtdHhfYKuZxtDZZOWv+l5CvZ8WrMwVBTYikEDrPD/e+wx+AXJ7e6ddViD58WFG
+	 3kgl7d84HmtcuPevz2xssBTisCNYOYNZSY3pmsrQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Biao Huang <biao.huang@mediatek.com>,
-	Yinghua Pan <ot_yinghua.pan@mediatek.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 20/55] net: ethernet: mtk-star-emac: separate tx/rx handling with two NAPIs
+Subject: [PATCH 6.1 46/97] net: mscc: ocelot: treat 802.1ad tagged traffic as 802.1Q-untagged
 Date: Wed,  7 May 2025 20:39:21 +0200
-Message-ID: <20250507183759.858831154@linuxfoundation.org>
+Message-ID: <20250507183808.854983430@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
-References: <20250507183759.048732653@linuxfoundation.org>
+In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
+References: <20250507183806.987408728@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,533 +62,326 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biao Huang <biao.huang@mediatek.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 0a8bd81fd6aaace14979152e0540da8ff158a00a ]
+[ Upstream commit 36dd1141be70b5966906919714dc504a24c65ddf ]
 
-Current driver may lost tx interrupts under bidirectional test with iperf3,
-which leads to some unexpected issues.
+I was revisiting the topic of 802.1ad treatment in the Ocelot switch [0]
+and realized that not only is its basic VLAN classification pipeline
+improper for offloading vlan_protocol 802.1ad bridges, but also improper
+for offloading regular 802.1Q bridges already.
 
-This patch let rx/tx interrupt enable/disable separately, and rx/tx are
-handled in different NAPIs.
+Namely, 802.1ad-tagged traffic should be treated as VLAN-untagged by
+bridged ports, but this switch treats it as if it was 802.1Q-tagged with
+the same VID as in the 802.1ad header. This is markedly different to
+what the Linux bridge expects; see the "other_tpid()" function in
+tools/testing/selftests/net/forwarding/bridge_vlan_aware.sh.
 
-Signed-off-by: Biao Huang <biao.huang@mediatek.com>
-Signed-off-by: Yinghua Pan <ot_yinghua.pan@mediatek.com>
+An idea came to me that the VCAP IS1 TCAM is more powerful than I'm
+giving it credit for, and that it actually overwrites the classified VID
+before the VLAN Table lookup takes place. In other words, it can be
+used even to save a packet from being dropped on ingress due to VLAN
+membership.
+
+Add a sophisticated TCAM rule hardcoded into the driver to force the
+switch to behave like a Linux bridge with vlan_filtering 1 vlan_protocol
+802.1Q.
+
+Regarding the lifetime of the filter: eventually the bridge will
+disappear, and vlan_filtering on the port will be restored to 0 for
+standalone mode. Then the filter will be deleted.
+
+[0]: https://lore.kernel.org/netdev/20201009122947.nvhye4hvcha3tljh@skbuf/
+
+Fixes: 7142529f1688 ("net: mscc: ocelot: add VLAN filtering")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: e54b4db35e20 ("net: ethernet: mtk-star-emac: rearm interrupts in rx_poll only when advised")
+Stable-dep-of: 5ec6d7d737a4 ("net: mscc: ocelot: delete PVID VLAN when readding it as non-PVID")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mediatek/mtk_star_emac.c | 340 ++++++++++--------
- 1 file changed, 199 insertions(+), 141 deletions(-)
+ drivers/net/ethernet/mscc/ocelot.c      | 188 ++++++++++++++++++++++--
+ drivers/net/ethernet/mscc/ocelot_vcap.c |   1 +
+ include/soc/mscc/ocelot_vcap.h          |   2 +
+ 3 files changed, 180 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/ethernet/mediatek/mtk_star_emac.c b/drivers/net/ethernet/mediatek/mtk_star_emac.c
-index 392648246d8f4..209e79f2c3e8c 100644
---- a/drivers/net/ethernet/mediatek/mtk_star_emac.c
-+++ b/drivers/net/ethernet/mediatek/mtk_star_emac.c
-@@ -32,6 +32,7 @@
- #define MTK_STAR_SKB_ALIGNMENT			16
- #define MTK_STAR_HASHTABLE_MC_LIMIT		256
- #define MTK_STAR_HASHTABLE_SIZE_MAX		512
-+#define MTK_STAR_DESC_NEEDED			(MAX_SKB_FRAGS + 4)
- 
- /* Normally we'd use NET_IP_ALIGN but on arm64 its value is 0 and it doesn't
-  * work for this controller.
-@@ -216,7 +217,8 @@ struct mtk_star_ring_desc_data {
- 	struct sk_buff *skb;
- };
- 
--#define MTK_STAR_RING_NUM_DESCS			128
-+#define MTK_STAR_RING_NUM_DESCS			512
-+#define MTK_STAR_TX_THRESH			(MTK_STAR_RING_NUM_DESCS / 4)
- #define MTK_STAR_NUM_TX_DESCS			MTK_STAR_RING_NUM_DESCS
- #define MTK_STAR_NUM_RX_DESCS			MTK_STAR_RING_NUM_DESCS
- #define MTK_STAR_NUM_DESCS_TOTAL		(MTK_STAR_RING_NUM_DESCS * 2)
-@@ -246,7 +248,8 @@ struct mtk_star_priv {
- 	struct mtk_star_ring rx_ring;
- 
- 	struct mii_bus *mii;
--	struct napi_struct napi;
-+	struct napi_struct tx_napi;
-+	struct napi_struct rx_napi;
- 
- 	struct device_node *phy_node;
- 	phy_interface_t phy_intf;
-@@ -357,19 +360,16 @@ mtk_star_ring_push_head_tx(struct mtk_star_ring *ring,
- 	mtk_star_ring_push_head(ring, desc_data, flags);
+diff --git a/drivers/net/ethernet/mscc/ocelot.c b/drivers/net/ethernet/mscc/ocelot.c
+index 71dbdac38020b..ec644a201b8e5 100644
+--- a/drivers/net/ethernet/mscc/ocelot.c
++++ b/drivers/net/ethernet/mscc/ocelot.c
+@@ -416,9 +416,158 @@ static u16 ocelot_vlan_unaware_pvid(struct ocelot *ocelot,
+ 	return VLAN_N_VID - bridge_num - 1;
  }
  
--static unsigned int mtk_star_ring_num_used_descs(struct mtk_star_ring *ring)
-+static unsigned int mtk_star_tx_ring_avail(struct mtk_star_ring *ring)
- {
--	return abs(ring->head - ring->tail);
--}
-+	u32 avail;
- 
--static bool mtk_star_ring_full(struct mtk_star_ring *ring)
--{
--	return mtk_star_ring_num_used_descs(ring) == MTK_STAR_RING_NUM_DESCS;
--}
-+	if (ring->tail > ring->head)
-+		avail = ring->tail - ring->head - 1;
-+	else
-+		avail = MTK_STAR_RING_NUM_DESCS - ring->head + ring->tail - 1;
- 
--static bool mtk_star_ring_descs_available(struct mtk_star_ring *ring)
--{
--	return mtk_star_ring_num_used_descs(ring) > 0;
-+	return avail;
- }
- 
- static dma_addr_t mtk_star_dma_map_rx(struct mtk_star_priv *priv,
-@@ -414,6 +414,36 @@ static void mtk_star_nic_disable_pd(struct mtk_star_priv *priv)
- 			  MTK_STAR_BIT_MAC_CFG_NIC_PD);
- }
- 
-+static void mtk_star_enable_dma_irq(struct mtk_star_priv *priv,
-+				    bool rx, bool tx)
-+{
-+	u32 value;
-+
-+	regmap_read(priv->regs, MTK_STAR_REG_INT_MASK, &value);
-+
-+	if (tx)
-+		value &= ~MTK_STAR_BIT_INT_STS_TNTC;
-+	if (rx)
-+		value &= ~MTK_STAR_BIT_INT_STS_FNRC;
-+
-+	regmap_write(priv->regs, MTK_STAR_REG_INT_MASK, value);
-+}
-+
-+static void mtk_star_disable_dma_irq(struct mtk_star_priv *priv,
-+				     bool rx, bool tx)
-+{
-+	u32 value;
-+
-+	regmap_read(priv->regs, MTK_STAR_REG_INT_MASK, &value);
-+
-+	if (tx)
-+		value |= MTK_STAR_BIT_INT_STS_TNTC;
-+	if (rx)
-+		value |= MTK_STAR_BIT_INT_STS_FNRC;
-+
-+	regmap_write(priv->regs, MTK_STAR_REG_INT_MASK, value);
-+}
-+
- /* Unmask the three interrupts we care about, mask all others. */
- static void mtk_star_intr_enable(struct mtk_star_priv *priv)
- {
-@@ -429,20 +459,11 @@ static void mtk_star_intr_disable(struct mtk_star_priv *priv)
- 	regmap_write(priv->regs, MTK_STAR_REG_INT_MASK, ~0);
- }
- 
--static unsigned int mtk_star_intr_read(struct mtk_star_priv *priv)
--{
--	unsigned int val;
--
--	regmap_read(priv->regs, MTK_STAR_REG_INT_STS, &val);
--
--	return val;
--}
--
- static unsigned int mtk_star_intr_ack_all(struct mtk_star_priv *priv)
- {
- 	unsigned int val;
- 
--	val = mtk_star_intr_read(priv);
-+	regmap_read(priv->regs, MTK_STAR_REG_INT_STS, &val);
- 	regmap_write(priv->regs, MTK_STAR_REG_INT_STS, val);
- 
- 	return val;
-@@ -714,25 +735,44 @@ static void mtk_star_free_tx_skbs(struct mtk_star_priv *priv)
- 	mtk_star_ring_free_skbs(priv, ring, mtk_star_dma_unmap_tx);
- }
- 
--/* All processing for TX and RX happens in the napi poll callback.
-- *
-- * FIXME: The interrupt handling should be more fine-grained with each
-- * interrupt enabled/disabled independently when needed. Unfortunatly this
-- * turned out to impact the driver's stability and until we have something
-- * working properly, we're disabling all interrupts during TX & RX processing
-- * or when resetting the counter registers.
-- */
 +/**
-+ * mtk_star_handle_irq - Interrupt Handler.
-+ * @irq: interrupt number.
-+ * @data: pointer to a network interface device structure.
-+ * Description : this is the driver interrupt service routine.
-+ * it mainly handles:
-+ *  1. tx complete interrupt for frame transmission.
-+ *  2. rx complete interrupt for frame reception.
-+ *  3. MAC Management Counter interrupt to avoid counter overflow.
-+ **/
- static irqreturn_t mtk_star_handle_irq(int irq, void *data)
- {
--	struct mtk_star_priv *priv;
--	struct net_device *ndev;
--
--	ndev = data;
--	priv = netdev_priv(ndev);
-+	struct net_device *ndev = data;
-+	struct mtk_star_priv *priv = netdev_priv(ndev);
-+	unsigned int intr_status = mtk_star_intr_ack_all(priv);
-+	bool rx, tx;
-+
-+	rx = (intr_status & MTK_STAR_BIT_INT_STS_FNRC) &&
-+	     napi_schedule_prep(&priv->rx_napi);
-+	tx = (intr_status & MTK_STAR_BIT_INT_STS_TNTC) &&
-+	     napi_schedule_prep(&priv->tx_napi);
-+
-+	if (rx || tx) {
-+		spin_lock(&priv->lock);
-+		/* mask Rx and TX Complete interrupt */
-+		mtk_star_disable_dma_irq(priv, rx, tx);
-+		spin_unlock(&priv->lock);
-+
-+		if (rx)
-+			__napi_schedule(&priv->rx_napi);
-+		if (tx)
-+			__napi_schedule(&priv->tx_napi);
-+	}
- 
--	if (netif_running(ndev)) {
--		mtk_star_intr_disable(priv);
--		napi_schedule(&priv->napi);
-+	/* interrupt is triggered once any counters reach 0x8000000 */
-+	if (intr_status & MTK_STAR_REG_INT_STS_MIB_CNT_TH) {
-+		mtk_star_update_stats(priv);
-+		mtk_star_reset_counters(priv);
- 	}
- 
- 	return IRQ_HANDLED;
-@@ -955,7 +995,8 @@ static int mtk_star_enable(struct net_device *ndev)
- 	if (ret)
- 		goto err_free_skbs;
- 
--	napi_enable(&priv->napi);
-+	napi_enable(&priv->tx_napi);
-+	napi_enable(&priv->rx_napi);
- 
- 	mtk_star_intr_ack_all(priv);
- 	mtk_star_intr_enable(priv);
-@@ -988,7 +1029,8 @@ static void mtk_star_disable(struct net_device *ndev)
- 	struct mtk_star_priv *priv = netdev_priv(ndev);
- 
- 	netif_stop_queue(ndev);
--	napi_disable(&priv->napi);
-+	napi_disable(&priv->tx_napi);
-+	napi_disable(&priv->rx_napi);
- 	mtk_star_intr_disable(priv);
- 	mtk_star_dma_disable(priv);
- 	mtk_star_intr_ack_all(priv);
-@@ -1020,13 +1062,45 @@ static int mtk_star_netdev_ioctl(struct net_device *ndev,
- 	return phy_mii_ioctl(ndev->phydev, req, cmd);
- }
- 
--static int mtk_star_netdev_start_xmit(struct sk_buff *skb,
--				      struct net_device *ndev)
-+static int __mtk_star_maybe_stop_tx(struct mtk_star_priv *priv, u16 size)
++ * ocelot_update_vlan_reclassify_rule() - Make switch aware only to bridge VLAN TPID
++ *
++ * @ocelot: Switch private data structure
++ * @port: Index of ingress port
++ *
++ * IEEE 802.1Q-2018 clauses "5.5 C-VLAN component conformance" and "5.6 S-VLAN
++ * component conformance" suggest that a C-VLAN component should only recognize
++ * and filter on C-Tags, and an S-VLAN component should only recognize and
++ * process based on C-Tags.
++ *
++ * In Linux, as per commit 1a0b20b25732 ("Merge branch 'bridge-next'"), C-VLAN
++ * components are largely represented by a bridge with vlan_protocol 802.1Q,
++ * and S-VLAN components by a bridge with vlan_protocol 802.1ad.
++ *
++ * Currently the driver only offloads vlan_protocol 802.1Q, but the hardware
++ * design is non-conformant, because the switch assigns each frame to a VLAN
++ * based on an entirely different question, as detailed in figure "Basic VLAN
++ * Classification Flow" from its manual and reproduced below.
++ *
++ * Set TAG_TYPE, PCP, DEI, VID to port-default values in VLAN_CFG register
++ * if VLAN_AWARE_ENA[port] and frame has outer tag then:
++ *   if VLAN_INNER_TAG_ENA[port] and frame has inner tag then:
++ *     TAG_TYPE = (Frame.InnerTPID <> 0x8100)
++ *     Set PCP, DEI, VID to values from inner VLAN header
++ *   else:
++ *     TAG_TYPE = (Frame.OuterTPID <> 0x8100)
++ *     Set PCP, DEI, VID to values from outer VLAN header
++ *   if VID == 0 then:
++ *     VID = VLAN_CFG.VLAN_VID
++ *
++ * Summarized, the switch will recognize both 802.1Q and 802.1ad TPIDs as VLAN
++ * "with equal rights", and just set the TAG_TYPE bit to 0 (if 802.1Q) or to 1
++ * (if 802.1ad). It will classify based on whichever of the tags is "outer", no
++ * matter what TPID that may have (or "inner", if VLAN_INNER_TAG_ENA[port]).
++ *
++ * In the VLAN Table, the TAG_TYPE information is not accessible - just the
++ * classified VID is - so it is as if each VLAN Table entry is for 2 VLANs:
++ * C-VLAN X, and S-VLAN X.
++ *
++ * Whereas the Linux bridge behavior is to only filter on frames with a TPID
++ * equal to the vlan_protocol, and treat everything else as VLAN-untagged.
++ *
++ * Consider an ingress packet tagged with 802.1ad VID=3 and 802.1Q VID=5,
++ * received on a bridge vlan_filtering=1 vlan_protocol=802.1Q port. This frame
++ * should be treated as 802.1Q-untagged, and classified to the PVID of that
++ * bridge port. Not to VID=3, and not to VID=5.
++ *
++ * The VCAP IS1 TCAM has everything we need to overwrite the choices made in
++ * the basic VLAN classification pipeline: it can match on TAG_TYPE in the key,
++ * and it can modify the classified VID in the action. Thus, for each port
++ * under a vlan_filtering bridge, we can insert a rule in VCAP IS1 lookup 0 to
++ * match on 802.1ad tagged frames and modify their classified VID to the 802.1Q
++ * PVID of the port. This effectively makes it appear to the outside world as
++ * if those packets were processed as VLAN-untagged.
++ *
++ * The rule needs to be updated each time the bridge PVID changes, and needs
++ * to be deleted if the bridge PVID is deleted, or if the port becomes
++ * VLAN-unaware.
++ */
++static int ocelot_update_vlan_reclassify_rule(struct ocelot *ocelot, int port)
 +{
-+	netif_stop_queue(priv->ndev);
++	unsigned long cookie = OCELOT_VCAP_IS1_VLAN_RECLASSIFY(ocelot, port);
++	struct ocelot_vcap_block *block_vcap_is1 = &ocelot->block[VCAP_IS1];
++	struct ocelot_port *ocelot_port = ocelot->ports[port];
++	const struct ocelot_bridge_vlan *pvid_vlan;
++	struct ocelot_vcap_filter *filter;
++	int err, val, pcp, dei;
++	bool vid_replace_ena;
++	u16 vid;
 +
-+	/* Might race with mtk_star_tx_poll, check again */
-+	smp_mb();
-+	if (likely(mtk_star_tx_ring_avail(&priv->tx_ring) < size))
-+		return -EBUSY;
++	pvid_vlan = ocelot_port->pvid_vlan;
++	vid_replace_ena = ocelot_port->vlan_aware && pvid_vlan;
 +
-+	netif_start_queue(priv->ndev);
++	filter = ocelot_vcap_block_find_filter_by_id(block_vcap_is1, cookie,
++						     false);
++	if (!vid_replace_ena) {
++		/* If the reclassification filter doesn't need to exist, delete
++		 * it if it was previously installed, and exit doing nothing
++		 * otherwise.
++		 */
++		if (filter)
++			return ocelot_vcap_filter_del(ocelot, filter);
 +
-+	return 0;
-+}
-+
-+static inline int mtk_star_maybe_stop_tx(struct mtk_star_priv *priv, u16 size)
-+{
-+	if (likely(mtk_star_tx_ring_avail(&priv->tx_ring) >= size))
 +		return 0;
++	}
 +
-+	return __mtk_star_maybe_stop_tx(priv, size);
++	/* The reclassification rule must apply. See if it already exists
++	 * or if it must be created.
++	 */
++
++	/* Treating as VLAN-untagged means using as classified VID equal to
++	 * the bridge PVID, and PCP/DEI set to the port default QoS values.
++	 */
++	vid = pvid_vlan->vid;
++	val = ocelot_read_gix(ocelot, ANA_PORT_QOS_CFG, port);
++	pcp = ANA_PORT_QOS_CFG_QOS_DEFAULT_VAL_X(val);
++	dei = !!(val & ANA_PORT_QOS_CFG_DP_DEFAULT_VAL);
++
++	if (filter) {
++		bool changed = false;
++
++		/* Filter exists, just update it */
++		if (filter->action.vid != vid) {
++			filter->action.vid = vid;
++			changed = true;
++		}
++		if (filter->action.pcp != pcp) {
++			filter->action.pcp = pcp;
++			changed = true;
++		}
++		if (filter->action.dei != dei) {
++			filter->action.dei = dei;
++			changed = true;
++		}
++
++		if (!changed)
++			return 0;
++
++		return ocelot_vcap_filter_replace(ocelot, filter);
++	}
++
++	/* Filter doesn't exist, create it */
++	filter = kzalloc(sizeof(*filter), GFP_KERNEL);
++	if (!filter)
++		return -ENOMEM;
++
++	filter->key_type = OCELOT_VCAP_KEY_ANY;
++	filter->ingress_port_mask = BIT(port);
++	filter->vlan.tpid = OCELOT_VCAP_BIT_1;
++	filter->prio = 1;
++	filter->id.cookie = cookie;
++	filter->id.tc_offload = false;
++	filter->block_id = VCAP_IS1;
++	filter->type = OCELOT_VCAP_FILTER_OFFLOAD;
++	filter->lookup = 0;
++	filter->action.vid_replace_ena = true;
++	filter->action.pcp_dei_ena = true;
++	filter->action.vid = vid;
++	filter->action.pcp = pcp;
++	filter->action.dei = dei;
++
++	err = ocelot_vcap_filter_add(ocelot, filter, NULL);
++	if (err)
++		kfree(filter);
++
++	return err;
 +}
 +
-+static netdev_tx_t mtk_star_netdev_start_xmit(struct sk_buff *skb,
-+					      struct net_device *ndev)
+ /* Default vlan to clasify for untagged frames (may be zero) */
+-static void ocelot_port_set_pvid(struct ocelot *ocelot, int port,
+-				 const struct ocelot_bridge_vlan *pvid_vlan)
++static int ocelot_port_set_pvid(struct ocelot *ocelot, int port,
++				const struct ocelot_bridge_vlan *pvid_vlan)
  {
- 	struct mtk_star_priv *priv = netdev_priv(ndev);
- 	struct mtk_star_ring *ring = &priv->tx_ring;
- 	struct device *dev = mtk_star_get_dev(priv);
- 	struct mtk_star_ring_desc_data desc_data;
-+	int nfrags = skb_shinfo(skb)->nr_frags;
+ 	struct ocelot_port *ocelot_port = ocelot->ports[port];
+ 	u16 pvid = ocelot_vlan_unaware_pvid(ocelot, ocelot_port->bridge);
+@@ -438,15 +587,23 @@ static void ocelot_port_set_pvid(struct ocelot *ocelot, int port,
+ 	 * happens automatically), but also 802.1p traffic which gets
+ 	 * classified to VLAN 0, but that is always in our RX filter, so it
+ 	 * would get accepted were it not for this setting.
++	 *
++	 * Also, we only support the bridge 802.1Q VLAN protocol, so
++	 * 802.1ad-tagged frames (carrying S-Tags) should be considered
++	 * 802.1Q-untagged, and also dropped.
+ 	 */
+ 	if (!pvid_vlan && ocelot_port->vlan_aware)
+ 		val = ANA_PORT_DROP_CFG_DROP_PRIO_S_TAGGED_ENA |
+-		      ANA_PORT_DROP_CFG_DROP_PRIO_C_TAGGED_ENA;
++		      ANA_PORT_DROP_CFG_DROP_PRIO_C_TAGGED_ENA |
++		      ANA_PORT_DROP_CFG_DROP_S_TAGGED_ENA;
+ 
+ 	ocelot_rmw_gix(ocelot, val,
+ 		       ANA_PORT_DROP_CFG_DROP_PRIO_S_TAGGED_ENA |
+-		       ANA_PORT_DROP_CFG_DROP_PRIO_C_TAGGED_ENA,
++		       ANA_PORT_DROP_CFG_DROP_PRIO_C_TAGGED_ENA |
++		       ANA_PORT_DROP_CFG_DROP_S_TAGGED_ENA,
+ 		       ANA_PORT_DROP_CFG, port);
 +
-+	if (unlikely(mtk_star_tx_ring_avail(ring) < nfrags + 1)) {
-+		if (!netif_queue_stopped(ndev)) {
-+			netif_stop_queue(ndev);
-+			/* This is a hard error, log it. */
-+			pr_err_ratelimited("Tx ring full when queue awake\n");
-+		}
-+		return NETDEV_TX_BUSY;
-+	}
- 
- 	desc_data.dma_addr = mtk_star_dma_map_tx(priv, skb);
- 	if (dma_mapping_error(dev, desc_data.dma_addr))
-@@ -1034,17 +1108,11 @@ static int mtk_star_netdev_start_xmit(struct sk_buff *skb,
- 
- 	desc_data.skb = skb;
- 	desc_data.len = skb->len;
--
--	spin_lock_bh(&priv->lock);
--
- 	mtk_star_ring_push_head_tx(ring, &desc_data);
- 
- 	netdev_sent_queue(ndev, skb->len);
- 
--	if (mtk_star_ring_full(ring))
--		netif_stop_queue(ndev);
--
--	spin_unlock_bh(&priv->lock);
-+	mtk_star_maybe_stop_tx(priv, MTK_STAR_DESC_NEEDED);
- 
- 	mtk_star_dma_resume_tx(priv);
- 
-@@ -1076,31 +1144,40 @@ static int mtk_star_tx_complete_one(struct mtk_star_priv *priv)
- 	return ret;
++	return ocelot_update_vlan_reclassify_rule(ocelot, port);
  }
  
--static void mtk_star_tx_complete_all(struct mtk_star_priv *priv)
-+static int mtk_star_tx_poll(struct napi_struct *napi, int budget)
- {
-+	struct mtk_star_priv *priv = container_of(napi, struct mtk_star_priv,
-+						  tx_napi);
-+	int ret = 0, pkts_compl = 0, bytes_compl = 0, count = 0;
- 	struct mtk_star_ring *ring = &priv->tx_ring;
- 	struct net_device *ndev = priv->ndev;
--	int ret, pkts_compl, bytes_compl;
--	bool wake = false;
--
--	spin_lock(&priv->lock);
--
--	for (pkts_compl = 0, bytes_compl = 0;;
--	     pkts_compl++, bytes_compl += ret, wake = true) {
--		if (!mtk_star_ring_descs_available(ring))
--			break;
-+	unsigned int head = ring->head;
-+	unsigned int entry = ring->tail;
+ static struct ocelot_bridge_vlan *ocelot_bridge_vlan_find(struct ocelot *ocelot,
+@@ -594,7 +751,10 @@ int ocelot_port_vlan_filtering(struct ocelot *ocelot, int port,
+ 		       ANA_PORT_VLAN_CFG_VLAN_POP_CNT_M,
+ 		       ANA_PORT_VLAN_CFG, port);
  
-+	while (entry != head && count < (MTK_STAR_RING_NUM_DESCS - 1)) {
- 		ret = mtk_star_tx_complete_one(priv);
- 		if (ret < 0)
- 			break;
+-	ocelot_port_set_pvid(ocelot, port, ocelot_port->pvid_vlan);
++	err = ocelot_port_set_pvid(ocelot, port, ocelot_port->pvid_vlan);
++	if (err)
++		return err;
 +
-+		count++;
-+		pkts_compl++;
-+		bytes_compl += ret;
-+		entry = ring->tail;
- 	}
+ 	ocelot_port_manage_port_tag(ocelot, port);
  
- 	netdev_completed_queue(ndev, pkts_compl, bytes_compl);
+ 	return 0;
+@@ -647,9 +807,12 @@ int ocelot_vlan_add(struct ocelot *ocelot, int port, u16 vid, bool pvid,
+ 		return err;
  
--	if (wake && netif_queue_stopped(ndev))
-+	if (unlikely(netif_queue_stopped(ndev)) &&
-+	    (mtk_star_tx_ring_avail(ring) > MTK_STAR_TX_THRESH))
- 		netif_wake_queue(ndev);
- 
--	spin_unlock(&priv->lock);
-+	if (napi_complete(napi)) {
-+		spin_lock(&priv->lock);
-+		mtk_star_enable_dma_irq(priv, false, true);
-+		spin_unlock(&priv->lock);
+ 	/* Default ingress vlan classification */
+-	if (pvid)
+-		ocelot_port_set_pvid(ocelot, port,
+-				     ocelot_bridge_vlan_find(ocelot, vid));
++	if (pvid) {
++		err = ocelot_port_set_pvid(ocelot, port,
++					   ocelot_bridge_vlan_find(ocelot, vid));
++		if (err)
++			return err;
 +	}
-+
-+	return 0;
- }
  
- static void mtk_star_netdev_get_stats64(struct net_device *ndev,
-@@ -1180,7 +1257,7 @@ static const struct ethtool_ops mtk_star_ethtool_ops = {
- 	.set_link_ksettings	= phy_ethtool_set_link_ksettings,
+ 	/* Untagged egress vlan clasification */
+ 	ocelot_port_manage_port_tag(ocelot, port);
+@@ -675,8 +838,11 @@ int ocelot_vlan_del(struct ocelot *ocelot, int port, u16 vid)
+ 		return err;
+ 
+ 	/* Ingress */
+-	if (del_pvid)
+-		ocelot_port_set_pvid(ocelot, port, NULL);
++	if (del_pvid) {
++		err = ocelot_port_set_pvid(ocelot, port, NULL);
++		if (err)
++			return err;
++	}
+ 
+ 	/* Egress */
+ 	ocelot_port_manage_port_tag(ocelot, port);
+@@ -2502,7 +2668,7 @@ int ocelot_port_set_default_prio(struct ocelot *ocelot, int port, u8 prio)
+ 		       ANA_PORT_QOS_CFG,
+ 		       port);
+ 
+-	return 0;
++	return ocelot_update_vlan_reclassify_rule(ocelot, port);
+ }
+ EXPORT_SYMBOL_GPL(ocelot_port_set_default_prio);
+ 
+diff --git a/drivers/net/ethernet/mscc/ocelot_vcap.c b/drivers/net/ethernet/mscc/ocelot_vcap.c
+index 73cdec5ca6a34..5734b86aed5b5 100644
+--- a/drivers/net/ethernet/mscc/ocelot_vcap.c
++++ b/drivers/net/ethernet/mscc/ocelot_vcap.c
+@@ -695,6 +695,7 @@ static void is1_entry_set(struct ocelot *ocelot, int ix,
+ 	vcap_key_bit_set(vcap, &data, VCAP_IS1_HK_L2_MC, filter->dmac_mc);
+ 	vcap_key_bit_set(vcap, &data, VCAP_IS1_HK_L2_BC, filter->dmac_bc);
+ 	vcap_key_bit_set(vcap, &data, VCAP_IS1_HK_VLAN_TAGGED, tag->tagged);
++	vcap_key_bit_set(vcap, &data, VCAP_IS1_HK_TPID, tag->tpid);
+ 	vcap_key_set(vcap, &data, VCAP_IS1_HK_VID,
+ 		     tag->vid.value, tag->vid.mask);
+ 	vcap_key_set(vcap, &data, VCAP_IS1_HK_PCP,
+diff --git a/include/soc/mscc/ocelot_vcap.h b/include/soc/mscc/ocelot_vcap.h
+index c601a4598b0da..eb19668a06db1 100644
+--- a/include/soc/mscc/ocelot_vcap.h
++++ b/include/soc/mscc/ocelot_vcap.h
+@@ -13,6 +13,7 @@
+  */
+ #define OCELOT_VCAP_ES0_TAG_8021Q_RXVLAN(ocelot, port, upstream) ((upstream) << 16 | (port))
+ #define OCELOT_VCAP_IS1_TAG_8021Q_TXVLAN(ocelot, port)		(port)
++#define OCELOT_VCAP_IS1_VLAN_RECLASSIFY(ocelot, port)		((ocelot)->num_phys_ports + (port))
+ #define OCELOT_VCAP_IS2_TAG_8021Q_TXVLAN(ocelot, port)		(port)
+ #define OCELOT_VCAP_IS2_MRP_REDIRECT(ocelot, port)		((ocelot)->num_phys_ports + (port))
+ #define OCELOT_VCAP_IS2_MRP_TRAP(ocelot)			((ocelot)->num_phys_ports * 2)
+@@ -499,6 +500,7 @@ struct ocelot_vcap_key_vlan {
+ 	struct ocelot_vcap_u8  pcp;    /* PCP (3 bit) */
+ 	enum ocelot_vcap_bit dei;    /* DEI */
+ 	enum ocelot_vcap_bit tagged; /* Tagged/untagged frame */
++	enum ocelot_vcap_bit tpid;
  };
  
--static int mtk_star_receive_packet(struct mtk_star_priv *priv)
-+static int mtk_star_rx(struct mtk_star_priv *priv, int budget)
- {
- 	struct mtk_star_ring *ring = &priv->rx_ring;
- 	struct device *dev = mtk_star_get_dev(priv);
-@@ -1188,107 +1265,85 @@ static int mtk_star_receive_packet(struct mtk_star_priv *priv)
- 	struct net_device *ndev = priv->ndev;
- 	struct sk_buff *curr_skb, *new_skb;
- 	dma_addr_t new_dma_addr;
--	int ret;
-+	int ret, count = 0;
- 
--	spin_lock(&priv->lock);
--	ret = mtk_star_ring_pop_tail(ring, &desc_data);
--	spin_unlock(&priv->lock);
--	if (ret)
--		return -1;
-+	while (count < budget) {
-+		ret = mtk_star_ring_pop_tail(ring, &desc_data);
-+		if (ret)
-+			return -1;
- 
--	curr_skb = desc_data.skb;
-+		curr_skb = desc_data.skb;
- 
--	if ((desc_data.flags & MTK_STAR_DESC_BIT_RX_CRCE) ||
--	    (desc_data.flags & MTK_STAR_DESC_BIT_RX_OSIZE)) {
--		/* Error packet -> drop and reuse skb. */
--		new_skb = curr_skb;
--		goto push_new_skb;
--	}
-+		if ((desc_data.flags & MTK_STAR_DESC_BIT_RX_CRCE) ||
-+		    (desc_data.flags & MTK_STAR_DESC_BIT_RX_OSIZE)) {
-+			/* Error packet -> drop and reuse skb. */
-+			new_skb = curr_skb;
-+			goto push_new_skb;
-+		}
- 
--	/* Prepare new skb before receiving the current one. Reuse the current
--	 * skb if we fail at any point.
--	 */
--	new_skb = mtk_star_alloc_skb(ndev);
--	if (!new_skb) {
--		ndev->stats.rx_dropped++;
--		new_skb = curr_skb;
--		goto push_new_skb;
--	}
-+		/* Prepare new skb before receiving the current one.
-+		 * Reuse the current skb if we fail at any point.
-+		 */
-+		new_skb = mtk_star_alloc_skb(ndev);
-+		if (!new_skb) {
-+			ndev->stats.rx_dropped++;
-+			new_skb = curr_skb;
-+			goto push_new_skb;
-+		}
- 
--	new_dma_addr = mtk_star_dma_map_rx(priv, new_skb);
--	if (dma_mapping_error(dev, new_dma_addr)) {
--		ndev->stats.rx_dropped++;
--		dev_kfree_skb(new_skb);
--		new_skb = curr_skb;
--		netdev_err(ndev, "DMA mapping error of RX descriptor\n");
--		goto push_new_skb;
--	}
-+		new_dma_addr = mtk_star_dma_map_rx(priv, new_skb);
-+		if (dma_mapping_error(dev, new_dma_addr)) {
-+			ndev->stats.rx_dropped++;
-+			dev_kfree_skb(new_skb);
-+			new_skb = curr_skb;
-+			netdev_err(ndev, "DMA mapping error of RX descriptor\n");
-+			goto push_new_skb;
-+		}
- 
--	/* We can't fail anymore at this point: it's safe to unmap the skb. */
--	mtk_star_dma_unmap_rx(priv, &desc_data);
-+		/* We can't fail anymore at this point:
-+		 * it's safe to unmap the skb.
-+		 */
-+		mtk_star_dma_unmap_rx(priv, &desc_data);
- 
--	skb_put(desc_data.skb, desc_data.len);
--	desc_data.skb->ip_summed = CHECKSUM_NONE;
--	desc_data.skb->protocol = eth_type_trans(desc_data.skb, ndev);
--	desc_data.skb->dev = ndev;
--	netif_receive_skb(desc_data.skb);
-+		skb_put(desc_data.skb, desc_data.len);
-+		desc_data.skb->ip_summed = CHECKSUM_NONE;
-+		desc_data.skb->protocol = eth_type_trans(desc_data.skb, ndev);
-+		desc_data.skb->dev = ndev;
-+		netif_receive_skb(desc_data.skb);
- 
--	/* update dma_addr for new skb */
--	desc_data.dma_addr = new_dma_addr;
-+		/* update dma_addr for new skb */
-+		desc_data.dma_addr = new_dma_addr;
- 
- push_new_skb:
--	desc_data.len = skb_tailroom(new_skb);
--	desc_data.skb = new_skb;
- 
--	spin_lock(&priv->lock);
--	mtk_star_ring_push_head_rx(ring, &desc_data);
--	spin_unlock(&priv->lock);
--
--	return 0;
--}
--
--static int mtk_star_process_rx(struct mtk_star_priv *priv, int budget)
--{
--	int received, ret;
-+		count++;
- 
--	for (received = 0, ret = 0; received < budget && ret == 0; received++)
--		ret = mtk_star_receive_packet(priv);
-+		desc_data.len = skb_tailroom(new_skb);
-+		desc_data.skb = new_skb;
-+		mtk_star_ring_push_head_rx(ring, &desc_data);
-+	}
- 
- 	mtk_star_dma_resume_rx(priv);
- 
--	return received;
-+	return count;
- }
- 
--static int mtk_star_poll(struct napi_struct *napi, int budget)
-+static int mtk_star_rx_poll(struct napi_struct *napi, int budget)
- {
- 	struct mtk_star_priv *priv;
--	unsigned int status;
--	int received = 0;
--
--	priv = container_of(napi, struct mtk_star_priv, napi);
--
--	status = mtk_star_intr_read(priv);
--	mtk_star_intr_ack_all(priv);
--
--	if (status & MTK_STAR_BIT_INT_STS_TNTC)
--		/* Clean-up all TX descriptors. */
--		mtk_star_tx_complete_all(priv);
-+	int work_done = 0;
- 
--	if (status & MTK_STAR_BIT_INT_STS_FNRC)
--		/* Receive up to $budget packets. */
--		received = mtk_star_process_rx(priv, budget);
-+	priv = container_of(napi, struct mtk_star_priv, rx_napi);
- 
--	if (unlikely(status & MTK_STAR_REG_INT_STS_MIB_CNT_TH)) {
--		mtk_star_update_stats(priv);
--		mtk_star_reset_counters(priv);
-+	work_done = mtk_star_rx(priv, budget);
-+	if (work_done < budget) {
-+		napi_complete_done(napi, work_done);
-+		spin_lock(&priv->lock);
-+		mtk_star_enable_dma_irq(priv, true, false);
-+		spin_unlock(&priv->lock);
- 	}
- 
--	if (received < budget)
--		napi_complete_done(napi, received);
--
--	mtk_star_intr_enable(priv);
--
--	return received;
-+	return work_done;
- }
- 
- static void mtk_star_mdio_rwok_clear(struct mtk_star_priv *priv)
-@@ -1551,7 +1606,10 @@ static int mtk_star_probe(struct platform_device *pdev)
- 	ndev->netdev_ops = &mtk_star_netdev_ops;
- 	ndev->ethtool_ops = &mtk_star_ethtool_ops;
- 
--	netif_napi_add(ndev, &priv->napi, mtk_star_poll, NAPI_POLL_WEIGHT);
-+	netif_napi_add(ndev, &priv->rx_napi, mtk_star_rx_poll,
-+		       NAPI_POLL_WEIGHT);
-+	netif_tx_napi_add(ndev, &priv->tx_napi, mtk_star_tx_poll,
-+			  NAPI_POLL_WEIGHT);
- 
- 	phydev = of_phy_find_device(priv->phy_node);
- 	if (phydev) {
+ struct ocelot_vcap_key_etype {
 -- 
 2.39.5
 
