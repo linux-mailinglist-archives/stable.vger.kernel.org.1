@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-142326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E35CAAEA25
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:51:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F150AAEAC1
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:59:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B4545204F0
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:51:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89E579C7E7B
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:59:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CEB124E4CE;
-	Wed,  7 May 2025 18:51:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD4A9289348;
+	Wed,  7 May 2025 18:59:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yy3pGF3B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MlmIBxzL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BAF51FF5EC;
-	Wed,  7 May 2025 18:51:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997041482F5;
+	Wed,  7 May 2025 18:59:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643906; cv=none; b=kpYhQL7ytQfjTVtfxlIOvGvznhokrOqR41nnho54ajybwyE9LnqP5H3i4qr40k4ejsmQv6v03yUqKloe+lQtHxujWrDSbolQMmtaMsTRs2bUCdLqpmGtVlrpJTp50cAzVGh6/asL7XovbZRCjmVIv+bYaXMKFPNVwXQibBrf4UE=
+	t=1746644358; cv=none; b=HuIZcIS6nDTdH2vvWPeAZnK3wMlKoRmsLQhkes4KZGKMaN6H0hUynRoRMiyJUlBI4Ov/gZtDjnu7WAhZ0sNI0gYofjrwZX2vN3/cWjBOKCvUeI3GmkbNXYzlpmERpIUn9x21Jbkdwymg8hEm3oYdhleS1uY6pPdqetzmRcBIZPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643906; c=relaxed/simple;
-	bh=Fc1hG6vPymAigVR+KsDZ0ixCdPycpgvi7vb7Gw0L6P0=;
+	s=arc-20240116; t=1746644358; c=relaxed/simple;
+	bh=hjeH7+HRDPAlDDiAhzLXsZ3zHQhzKq3nKjAE3pZVqi0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DyFrOjUNSCo44tdnKZanh3M9hUv2t7G3Hko899T9Xem8W6jrcWUst6hS+JIEXXKfU5HeqktMVSoFNvnkyAXGGOsphZq7nOdNeeQtdxSMamq78quS9Tf7mFHzLwAjR4frhUYcNFQ4U9ozQQW4BrlzTVfRvYKnPYuuROBTJKkesDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yy3pGF3B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AECBDC4CEE2;
-	Wed,  7 May 2025 18:51:45 +0000 (UTC)
+	 MIME-Version; b=P22KW7LQg7kdgvs78u5j2Fkdc4HoQ7nYPr5SKVUDYoEf7MPlOkN/VAs1/wYTtl/1RS05YwzGst6cotY5No1DE1NPU2X2t6HcFWI+RTmmuLrOfO+vChhtqkCAvu2d77KrIepp3paSaCx9DsInHSIiuQLGhQVNfLy8m5BWWfOYhBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MlmIBxzL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 165D1C4CEE2;
+	Wed,  7 May 2025 18:59:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643906;
-	bh=Fc1hG6vPymAigVR+KsDZ0ixCdPycpgvi7vb7Gw0L6P0=;
+	s=korg; t=1746644358;
+	bh=hjeH7+HRDPAlDDiAhzLXsZ3zHQhzKq3nKjAE3pZVqi0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yy3pGF3BBe6jPLslZA84Ywz+Vqdl6nCMTMat//GyeGKdwyNWA52g0ZJbv+GMDZBcg
-	 1QFjYb+XXltqGh3ydqebksbn8IRu3Gy99e2b6E7EEZcfHNF5EzyiYL1TSSt7ober1Z
-	 mZqINFOwajyCCWXil30GkYGOBvv3ENh2jnXIevsM=
+	b=MlmIBxzL2TaB8Si/kMV4EA7ufcFQolOW+a43cfDPzC1/ijwQ0xzt7DkD4cRJJaTWf
+	 c6UR3vKMe1bVX+EbFcGoWESl1S18pKBtxvbN1q+SrRc3zbjgzXZgSHfSS4HhU108Xw
+	 sNmF7R1vLfXbvwF/bE96/s7bikPovP4P3WJFUkhg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 057/183] ASoC: Intel: sof_sdw: Add NULL check in asoc_sdw_rt_dmic_rtd_init()
-Date: Wed,  7 May 2025 20:38:22 +0200
-Message-ID: <20250507183826.995608279@linuxfoundation.org>
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Carlos Song <carlos.song@nxp.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.12 018/164] i2c: imx-lpi2c: Fix clock count when probe defers
+Date: Wed,  7 May 2025 20:38:23 +0200
+Message-ID: <20250507183821.599944128@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenyuan Yang <chenyuan0y@gmail.com>
+From: Clark Wang <xiaoning.wang@nxp.com>
 
-[ Upstream commit 68715cb5c0e00284d93f976c6368809f64131b0b ]
+commit b1852c5de2f2a37dd4462f7837c9e3e678f9e546 upstream.
 
-mic_name returned by devm_kasprintf() could be NULL.
-Add a check for it.
+Deferred probe with pm_runtime_put() may delay clock disable, causing
+incorrect clock usage count. Use pm_runtime_put_sync() to ensure the
+clock is disabled immediately.
 
-Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Fixes: bee2fe44679f ("ASoC: Intel: sof_sdw: use generic rtd_init function for Realtek SDW DMICs")
-Link: https://patch.msgid.link/20250415194134.292830-1-chenyuan0y@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 13d6eb20fc79 ("i2c: imx-lpi2c: add runtime pm support")
+Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+Signed-off-by: Carlos Song <carlos.song@nxp.com>
+Cc: <stable@vger.kernel.org> # v4.16+
+Link: https://lore.kernel.org/r/20250421062341.2471922-1-carlos.song@nxp.com
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/sdw_utils/soc_sdw_rt_dmic.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/i2c/busses/i2c-imx-lpi2c.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/soc/sdw_utils/soc_sdw_rt_dmic.c b/sound/soc/sdw_utils/soc_sdw_rt_dmic.c
-index 46d917a99c51d..97be110a59b63 100644
---- a/sound/soc/sdw_utils/soc_sdw_rt_dmic.c
-+++ b/sound/soc/sdw_utils/soc_sdw_rt_dmic.c
-@@ -29,6 +29,8 @@ int asoc_sdw_rt_dmic_rtd_init(struct snd_soc_pcm_runtime *rtd, struct snd_soc_da
- 		mic_name = devm_kasprintf(card->dev, GFP_KERNEL, "rt715-sdca");
- 	else
- 		mic_name = devm_kasprintf(card->dev, GFP_KERNEL, "%s", component->name_prefix);
-+	if (!mic_name)
-+		return -ENOMEM;
+--- a/drivers/i2c/busses/i2c-imx-lpi2c.c
++++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
+@@ -652,9 +652,9 @@ static int lpi2c_imx_probe(struct platfo
+ 	return 0;
  
- 	card->components = devm_kasprintf(card->dev, GFP_KERNEL,
- 					  "%s mic:%s", card->components,
--- 
-2.39.5
-
+ rpm_disable:
+-	pm_runtime_put(&pdev->dev);
+-	pm_runtime_disable(&pdev->dev);
+ 	pm_runtime_dont_use_autosuspend(&pdev->dev);
++	pm_runtime_put_sync(&pdev->dev);
++	pm_runtime_disable(&pdev->dev);
+ 
+ 	return ret;
+ }
 
 
 
