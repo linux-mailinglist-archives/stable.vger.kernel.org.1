@@ -1,106 +1,113 @@
-Return-Path: <stable+bounces-142051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B74BDAAE05A
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 15:14:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E251AAE0AA
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 15:25:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C776161DFA
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 13:14:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E210A467523
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 13:25:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1E392165EA;
-	Wed,  7 May 2025 13:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30EAF205E3B;
+	Wed,  7 May 2025 13:25:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b="A3TMBgoC"
+	dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b="DiLa31Sn"
 X-Original-To: stable@vger.kernel.org
-Received: from layka.disroot.org (layka.disroot.org [178.21.23.139])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from master.debian.org (master.debian.org [82.195.75.110])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B37E0288C03
-	for <stable@vger.kernel.org>; Wed,  7 May 2025 13:10:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.21.23.139
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F76E25DB1A
+	for <stable@vger.kernel.org>; Wed,  7 May 2025 13:25:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=82.195.75.110
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746623457; cv=none; b=n9Rgn6ZtoRq4FOnfkZjH31XMLNorCghlOR96v2Z279TZGEIGoBdGTXlxdYeZ4BDg0nwgzPG5QUUflkgratFvk/yhn6ZsBHCamSjI8n7YwgZEZ+gQM0JZIdfnulC5Ny4a3y1gkMqqNpewO4Ph9XA2nmNwo3bF045iQJ5kHZdenu4=
+	t=1746624340; cv=none; b=cTMswMzU0Q7NhnTPwn1+c9dgbVoBDKI/yxMxCczMQXXh0lC8feHMg9c4vahwvy0ulnFhUus2J8oNqc4XyLoj9ijKBeJPY7tcaEyVd7Ix0akpFnanGxf41PjzPoWjOLcBqxhagANKcYTZvrkfUlnLpuji3m/FLNMvpzAY28lK0EM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746623457; c=relaxed/simple;
-	bh=WfOna0qgipSseGCor8cmqiZDQkKFDIjCxDAj9rUOqxo=;
-	h=MIME-Version:Date:From:To:Cc:Subject:Message-ID:Content-Type; b=DITn4gEp1PTerBSrRjqXxLmDUWRmhG4dOEulkcklhwNoy7IQoH3BrISRnB0hjtID6OheTsaS18aYQ+D1LvHHtvhIZKv1+w9PVxrOAtrdDIetlAMu8mhmV6GbNoe8GFRDsBNCySqJ3tTT63d8FS5DUqsU5/DUJ5tBuxA5EFmaVPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org; spf=pass smtp.mailfrom=disroot.org; dkim=pass (2048-bit key) header.d=disroot.org header.i=@disroot.org header.b=A3TMBgoC; arc=none smtp.client-ip=178.21.23.139
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=disroot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=disroot.org
-Received: from mail01.disroot.lan (localhost [127.0.0.1])
-	by disroot.org (Postfix) with ESMTP id C412525BEF;
-	Wed,  7 May 2025 15:10:53 +0200 (CEST)
-X-Virus-Scanned: SPAM Filter at disroot.org
-Received: from layka.disroot.org ([127.0.0.1])
- by localhost (disroot.org [127.0.0.1]) (amavis, port 10024) with ESMTP
- id k_f4BkDSiUgk; Wed,  7 May 2025 15:10:53 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=disroot.org; s=mail;
-	t=1746623453; bh=WfOna0qgipSseGCor8cmqiZDQkKFDIjCxDAj9rUOqxo=;
-	h=Date:From:To:Cc:Subject;
-	b=A3TMBgoCVyygCkWMdgP9DTqPuj45j7FovrgekqUkC8DBsuFcbE1QVG+k0aXPZBdmg
-	 kFaR/2Aa9+N3B4dH6sAxmGukQRn66bTh2iZsG3/qOJiIPLWyuVR5VKWX6MtAU0u5Ct
-	 DmtXwj2ZO6TWIOLJzsVDM+w2zTPNTWPpN37MXZYnigiXTdLxTswHMuC/NPCfJgfTs2
-	 gcFcqYVDBbGN7adqsYrPZdC7r1tE7bQx9ia+zHFIn249ytoxmNMFv0ZAj1sCLmGnTs
-	 YGbPVmigk4gJKQx+s+z125YMLG9N37f4uC/uX9EPlIX8tvD7XLCoPXyTVSFaOiFkbt
-	 bEYq5ur37jUbQ==
+	s=arc-20240116; t=1746624340; c=relaxed/simple;
+	bh=n4QtldqqpLlFI1Ss+X2x8D7uSg/XZ+yObh3NYYR+CrA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sUs+mSVfl5aZ7y/g1H0zGyYDTng3I9YF/wzCCMpuZGiKUQL9Rz/FHaJQZhLAZ6v1HOzSMgXaAd1BMvYVary1lqaC955uS6s86OOYg2ghqJHpn8uSEYU9feC7LADz3WTD5mFeEjOKngQHkVnswwXOdmt1AOvF37VDRYBuvFC7Pck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=none smtp.mailfrom=master.debian.org; dkim=pass (2048-bit key) header.d=debian.org header.i=@debian.org header.b=DiLa31Sn; arc=none smtp.client-ip=82.195.75.110
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=master.debian.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=debian.org;
+	s=smtpauto.master; h=Content-Transfer-Encoding:Content-Type:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:
+	In-Reply-To:References; bh=jcGf10D2efT+XD+0y/JSBweiknb2/SkN3k9kolk5nNs=; b=Di
+	La31SnoxRq2cJ0yjKhnpw/khJYKzU28a2WRkTGfLnb8r+sh+2KSkz8cCApTL46rj/lSmQbHLZKIWR
+	FGJKBe4eBKuwJjVS5CsxFl/wcy6rkjQRigu7TsRtg5U9oTIMWWhFCZNCX5janGAOrcC0e5oJMH7YV
+	ZU664kEEWBJ8lN/j2Je23aLl8baoH+hHB+fcFm/CX8zDrmDzKM+qk9eJTqVncPT7Aj6DH4pm84ROj
+	wz6iL/5KtKYb3GbzFyAZhKNTVE9w/VoARVAPT/d3dQ1bLHEaAjaTjX6FSCdNJ7lRwU+C9+h4MAtrJ
+	2LeC8ln6UWeDJn9628q83xe5figsvGVw==;
+Received: from ukleinek by master.debian.org with local (Exim 4.94.2)
+	(envelope-from <ukleinek@master.debian.org>)
+	id 1uCeYv-008eIx-LI; Wed, 07 May 2025 13:11:49 +0000
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@debian.org>
+To: stable@vger.kernel.org
+Cc: Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Rob Herring <robh@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: [PATCH 5.10.y] of: module: add buffer overflow check in of_modalias()
+Date: Wed,  7 May 2025 15:11:24 +0200
+Message-ID: <20250507131123.538166-4-ukleinek@debian.org>
+X-Mailer: git-send-email 2.47.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 07 May 2025 15:10:53 +0200
-From: machion@disroot.org
-To: stable@vger.kernel.org
-Cc: regressions@lists.linux.dev, amd-gfx@lists.freedesktop.org,
- alexander.deucher@amd.com, christian.koenig@amd.com
-Subject: Unplayable framerates in game but specific kernel versions work,
- maybe amdgpu problem
-Message-ID: <c415d9e0b08bcba068b01700225bf560@disroot.org>
-X-Sender: machion@disroot.org
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1713; i=ukleinek@debian.org; h=from:subject; bh=ggehUJJ1kBVZQHsYRq2OxsY6DL+vq56IItWccby2Cks=; b=kA0DAAoBj4D7WH0S/k4ByyZiAGgbW/vIerROrlFqfLuAJicyc3TdLDR4HUuGhRkEUp6XmVa2j okBMwQAAQoAHRYhBD+BrGk6eh5Zia3+04+A+1h9Ev5OBQJoG1v7AAoJEI+A+1h9Ev5OlfEH/jSw Ht2uOX54ukzp3KIn3cHn0JxvoZAqoHI3U1TEU8nbEl3meBom31HpBoE4xEfxhDkdGaEh4MGiKFD IxfTk+bpj8afHUJ7gx1EVzT8WazcKyhRB94g6kzCbAWfaSU7KWfMnv5L9zLyMZesJoHWZ4jgwlQ Rzhh2nfmXCumy0MXqCNvtaKid+pcbxkgkQk0D/n3qFcbRcEhmTMaq3AdG9tRLxNq7C/MK1tgzfx LMjQ/QUMCPqwgKabhvvOOheULHA/lRM55j0rCNsHdaEV+4M7n4qzj8KRfm+6oLlakBG1PKiMPsu 5LkROK/meO6MS8V4UK9Uml6I7jLYftBgq0o6Y1E=
+X-Developer-Key: i=ukleinek@debian.org; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
 
-Hello kernel/driver developers,
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
 
-I hope, with my information it's possible to find a bug/problem in the 
-kernel. Otherwise I am sorry, that I disturbed you.
-I only use LTS kernels, but I can narrow it down to a hand full of them, 
-where it works.
+commit cf7385cb26ac4f0ee6c7385960525ad534323252 upstream.
 
-The PC: Manjaro Stable/Cinnamon/X11/AMD Ryzen 5 2600/Radeon HD 7790/8GB 
-RAM
-I already asked the Manjaro community, but with no luck.
+In of_modalias(), if the buffer happens to be too small even for the 1st
+snprintf() call, the len parameter will become negative and str parameter
+(if not NULL initially) will point beyond the buffer's end. Add the buffer
+overflow check after the 1st snprintf() call and fix such check after the
+strlen() call (accounting for the terminating NUL char).
 
-The game: Hellpoint (GOG Linux latest version, Unity3D-Engine v2021), 
-uses vulkan
-
+Fixes: bc575064d688 ("of/device: use of_property_for_each_string to parse compatible strings")
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Link: https://lore.kernel.org/r/bbfc6be0-c687-62b6-d015-5141b93f313e@omp.ru
+Signed-off-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Uwe Kleine-König <ukleinek@debian.org>
 ---
+ drivers/of/device.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-I came a long road of kernels. I had many versions of 5.4, 5.10, 5.15, 
-6.1 and 6.6 and and the game was always unplayable, because the frames 
-where around 1fps (performance of PC is not the problem).
-I asked the mesa and cinnamon team for help in the past, but also with 
-no luck.
-It never worked, till on 2025-03-29 when I installed 6.12.19 for the 
-first time and it worked!
+diff --git a/drivers/of/device.c b/drivers/of/device.c
+index 3a547793135c..93f08f18f6b3 100644
+--- a/drivers/of/device.c
++++ b/drivers/of/device.c
+@@ -231,14 +231,15 @@ static ssize_t of_device_get_modalias(struct device *dev, char *str, ssize_t len
+ 	csize = snprintf(str, len, "of:N%pOFn%c%s", dev->of_node, 'T',
+ 			 of_node_get_device_type(dev->of_node));
+ 	tsize = csize;
++	if (csize >= len)
++		csize = len > 0 ? len - 1 : 0;
+ 	len -= csize;
+-	if (str)
+-		str += csize;
++	str += csize;
+ 
+ 	of_property_for_each_string(dev->of_node, "compatible", p, compat) {
+ 		csize = strlen(compat) + 1;
+ 		tsize += csize;
+-		if (csize > len)
++		if (csize >= len)
+ 			continue;
+ 
+ 		csize = snprintf(str, len, "C%s", compat);
 
-But it only worked with 6.12.19, 6.12.20 and 6.12.21
-When I updated to 6.12.25, it was back to unplayable.
+base-commit: 024a4a45fdf87218e3c0925475b05a27bcea103f
+-- 
+2.47.2
 
-For testing I installed 6.14.4 with the same result. It doesn't work.
-
-I also compared file /proc/config.gz of both kernels (6.12.21 <> 
-6.14.4), but can't seem to see drastic changes to the graphical part.
-
-I presume it has something to do with amdgpu.
-
-If you need more information, I would be happy to help.
-
-Kind regards,
-Marion
 
