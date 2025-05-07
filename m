@@ -1,187 +1,145 @@
-Return-Path: <stable+bounces-142287-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 952A2AAE9EF
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:49:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 240A2AAEA56
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:54:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E16E1C42715
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:50:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 523891BC412F
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:54:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D43E72116E9;
-	Wed,  7 May 2025 18:49:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C8F228937F;
+	Wed,  7 May 2025 18:54:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="V/K3SGPw"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="a5YfppQs"
 X-Original-To: stable@vger.kernel.org
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 502EB1DDC23;
-	Wed,  7 May 2025 18:49:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4169F28B4F0;
+	Wed,  7 May 2025 18:54:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643789; cv=none; b=jmSKogZ+eKNwVgP6seO3rTvOBUIc1FdHaPrkd3/BR+Wh3LB+W08Hoa8Rg0fBP2gSM6pR8aQTAtcGtn0qU+WhXn1KlUF3gUYG8OETAhACbSVh4uEojYMFHMdgxdNX9U9q/ATfug2kBIkTCtktxhg3qQih86OmmMb1uU5uvy08b+k=
+	t=1746644050; cv=none; b=HF1lY0Ttm8b5yGWCvY3jaquA9S7H+f+xtGdIIYexhIYHhME4liA3tS0fUqGYfQxAWSGwtircrI+if39NU9f6fivJdZ86BisDoTMXNTqAyn4wgnrn3HoOY9kPJk7WqW5YzNpQk4YpQlQgNuFhX8CSrnfxdzuk7LfrNoLZTAQRIzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643789; c=relaxed/simple;
-	bh=I+GGYYsWKZSflLnmf3EFQ4KgvFHjLw9fZeuwuQUiva0=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=cKOBH8eVo2HrgyURrCxKH+Y0y+/yQNIJPFdPCnSyTE6hWx4dmTmSB35XOF7MTyEBu+SYO8zebc8FWrh6Y8qwz3JoEqAUUxjMuMctg87v+butGH7mohVSMPLGi0Imqwl6v9GZEDebQWaXDLHd4tAAuH3qDytCuIyvI6ijpRX8iIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=V/K3SGPw; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=I+GGYYsWKZSflLnmf3EFQ4KgvFHjLw9fZeuwuQUiva0=; b=V/K3SGPwIHjgHRzYltql8o7mrT
-	I89Fycpixlx0u/agHyynMJM9CDXQDSPL3Hh2tyZ7TVjGrbtQQiu9LyUjxRf7hAVN44j13n4Pedea4
-	mqdj5Grmq1oRH6hjTwd4RnESz76seJKk3XM3oBvqFLY9a14i0h2mzgUoazBgub5QKx5ihzImnWGcV
-	6Rs97283VQgzBOnSygIaBx2LvlzQDdQcD204H5Du7ySjgEw4EBNfxMcKvVw3M/oG19IUD9E9BWWmW
-	wZyBJNsKbPXr1GaIks0umHHLDiVq+P+ynOL+gxYfa6s7tN2P5qZY01tR6AWEUV1t1ndDXUH62h8/y
-	ItGuAUFQ==;
-Received: from 67-130-182-136.dia.static.qwest.net ([67.130.182.136] helo=freeip.amazon.com)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.1 #2 (Red Hat Linux))
-	id 1uCjps-0000000Ftji-1xip;
-	Wed, 07 May 2025 18:49:41 +0000
-Message-ID: <13f0edfda0eb91a460cd29a85679fa5190189d9b.camel@infradead.org>
-Subject: Re: [PATCH 6.1 79/97] Revert "x86/kexec: Allocate PGD for x86_64
- transition page tables separately"
-From: David Woodhouse <dwmw2@infradead.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, Eric Hagberg <ehagberg@janestreet.com>, Ingo
- Molnar <mingo@kernel.org>, Baoquan He <bhe@redhat.com>, Vivek Goyal
- <vgoyal@redhat.com>, Dave Young <dyoung@redhat.com>, Eric Biederman
- <ebiederm@xmission.com>, Ard Biesheuvel <ardb@kernel.org>, "H. Peter Anvin"
- <hpa@zytor.com>, Sasha Levin <sashal@kernel.org>
-Date: Wed, 07 May 2025 11:49:36 -0700
-In-Reply-To: <20250507183810.160807716@linuxfoundation.org>
-References: <20250507183806.987408728@linuxfoundation.org>
-	 <20250507183810.160807716@linuxfoundation.org>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-oywqmPOgCWkjLt7JPPH2"
-User-Agent: Evolution 3.52.3-0ubuntu1 
+	s=arc-20240116; t=1746644050; c=relaxed/simple;
+	bh=4HKpOBJtT9Knd8yHFCVLaU8ixVr4lTJ1SeumRrcVqw4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FTQQOzKShfGYUN417ukBmraWkOWaHNYkKMiSVC0mvAOE2jxHCJ4dHMTVFr7EtDzcbmNopiSSb5dgyX+QSbZK0gqX5Dj6MgH+ZT/hTF7au5g1jbWhvNDahnwM6ev8uLaDJjlc74QD9ZQhbludFHmzU/WHbcNg5E9TWpM1DilViJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=a5YfppQs; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from pendragon.ideasonboard.com (static-176-133-119-130.ftth.abo.bbox.fr [176.133.119.130])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id BDACE6D5;
+	Wed,  7 May 2025 20:53:55 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1746644035;
+	bh=4HKpOBJtT9Knd8yHFCVLaU8ixVr4lTJ1SeumRrcVqw4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=a5YfppQsqevzz/DMRtGjjdbEW9ziRNKHDPWqIm3PIuPGPyf+Pd0EukV43zV25uwpE
+	 FvxM4Ef0dESs1lmsMsGGjU/f4IPbYwTk2C/wvi62o6wzPKBh+JzzmxnRsBLJzQsOnD
+	 gg5DkNh7IEPpZ/QZ9m9LaudG6hj0z8rmgmJhbWtc=
+Date: Wed, 7 May 2025 20:53:58 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+	iommu@lists.linux.dev, Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Robin Murphy <robin.murphy@arm.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v3 3/3] media: omap3isp: use sgtable-based scatterlist
+ wrappers
+Message-ID: <20250507185358.GB28125@pendragon.ideasonboard.com>
+References: <20250507160913.2084079-1-m.szyprowski@samsung.com>
+ <CGME20250507160923eucas1p1a344e74759410b49143e2be42ef43ded@eucas1p1.samsung.com>
+ <20250507160913.2084079-4-m.szyprowski@samsung.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250507160913.2084079-4-m.szyprowski@samsung.com>
 
+Hi Marek,
 
---=-oywqmPOgCWkjLt7JPPH2
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Thank you for the patch.
 
-On Wed, 2025-05-07 at 20:39 +0200, Greg Kroah-Hartman wrote:
->=20
-> From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->=20
-> This reverts commit 6821918f451942aa79759f29677a22f2d4ff4cbe which is
-> commit 4b5bc2ec9a239bce261ffeafdd63571134102323 upstream.
->=20
-> The patch it relies on is not in the 6.1.y tree, and has been reported
-> to cause problems, so let's revert it for now.
+On Wed, May 07, 2025 at 06:09:13PM +0200, Marek Szyprowski wrote:
+> Use common wrappers operating directly on the struct sg_table objects to
+> fix incorrect use of scatterlists sync calls. dma_sync_sg_for_*()
+> functions have to be called with the number of elements originally passed
+> to dma_map_sg_*() function, not the one returned in sgtable's nents.
+> 
+> Fixes: d33186d0be18 ("[media] omap3isp: ccdc: Use the DMA API for LSC")
+> Fixes: 0e24e90f2ca7 ("[media] omap3isp: stat: Use the DMA API")
+> CC: stable@vger.kernel.org
+> Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
 
-Acked-by: David Woodhouse <dwmw@amazon.co.uk>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
---=-oywqmPOgCWkjLt7JPPH2
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+> ---
+>  drivers/media/platform/ti/omap3isp/ispccdc.c | 8 ++++----
+>  drivers/media/platform/ti/omap3isp/ispstat.c | 6 ++----
+>  2 files changed, 6 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/media/platform/ti/omap3isp/ispccdc.c b/drivers/media/platform/ti/omap3isp/ispccdc.c
+> index dd375c4e180d..7d0c723dcd11 100644
+> --- a/drivers/media/platform/ti/omap3isp/ispccdc.c
+> +++ b/drivers/media/platform/ti/omap3isp/ispccdc.c
+> @@ -446,8 +446,8 @@ static int ccdc_lsc_config(struct isp_ccdc_device *ccdc,
+>  		if (ret < 0)
+>  			goto done;
+>  
+> -		dma_sync_sg_for_cpu(isp->dev, req->table.sgt.sgl,
+> -				    req->table.sgt.nents, DMA_TO_DEVICE);
+> +		dma_sync_sgtable_for_cpu(isp->dev, &req->table.sgt,
+> +					 DMA_TO_DEVICE);
+>  
+>  		if (copy_from_user(req->table.addr, config->lsc,
+>  				   req->config.size)) {
+> @@ -455,8 +455,8 @@ static int ccdc_lsc_config(struct isp_ccdc_device *ccdc,
+>  			goto done;
+>  		}
+>  
+> -		dma_sync_sg_for_device(isp->dev, req->table.sgt.sgl,
+> -				       req->table.sgt.nents, DMA_TO_DEVICE);
+> +		dma_sync_sgtable_for_device(isp->dev, &req->table.sgt,
+> +					    DMA_TO_DEVICE);
+>  	}
+>  
+>  	spin_lock_irqsave(&ccdc->lsc.req_lock, flags);
+> diff --git a/drivers/media/platform/ti/omap3isp/ispstat.c b/drivers/media/platform/ti/omap3isp/ispstat.c
+> index 359a846205b0..d3da68408ecb 100644
+> --- a/drivers/media/platform/ti/omap3isp/ispstat.c
+> +++ b/drivers/media/platform/ti/omap3isp/ispstat.c
+> @@ -161,8 +161,7 @@ static void isp_stat_buf_sync_for_device(struct ispstat *stat,
+>  	if (ISP_STAT_USES_DMAENGINE(stat))
+>  		return;
+>  
+> -	dma_sync_sg_for_device(stat->isp->dev, buf->sgt.sgl,
+> -			       buf->sgt.nents, DMA_FROM_DEVICE);
+> +	dma_sync_sgtable_for_device(stat->isp->dev, &buf->sgt, DMA_FROM_DEVICE);
+>  }
+>  
+>  static void isp_stat_buf_sync_for_cpu(struct ispstat *stat,
+> @@ -171,8 +170,7 @@ static void isp_stat_buf_sync_for_cpu(struct ispstat *stat,
+>  	if (ISP_STAT_USES_DMAENGINE(stat))
+>  		return;
+>  
+> -	dma_sync_sg_for_cpu(stat->isp->dev, buf->sgt.sgl,
+> -			    buf->sgt.nents, DMA_FROM_DEVICE);
+> +	dma_sync_sgtable_for_cpu(stat->isp->dev, &buf->sgt, DMA_FROM_DEVICE);
+>  }
+>  
+>  static void isp_stat_buf_clear(struct ispstat *stat)
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI1MDUwNzE4NDkz
-NlowLwYJKoZIhvcNAQkEMSIEIJuYowZMpK7xmDACEynm+TutkNqGQkn/hxKLvYkqZK/JMGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAtCbPLnneutUY
-J+hPx/ZyZgOIt4MrZw7EXVNrq5QYzcn8v1dZOZvDjoAqgDV2/jrrT+GSj7RlIb6r5LOnaEOMXWuT
-MoeOhEkNwzdjLVH9ipjSM8+A79kMyLh7D/8yYFxTkDdSM5v+fhnNfVv+16oHaD/F1JmxQmF2/2Tu
-rD77M384geBNr+DK8Onf50EXMoZdT3sifAYvKxIcXKxrgAWJrv8By33PkwelE/HDt57gR89ySRUC
-1Cga4AS2cAbdA5oOWuKa/TPh/acWacfqHQB/+nOvQvtBcB3ArFgOVSgvnhHelX8vXyCqISEyE1/h
-rUyrMxbaXV8MbgVYnA+bG+QBDXuGWAJFWFxzYoO1ZLYmrkuPJmRGUXK7vU5goN2zJWn6/hBTsAQ/
-nqUmifauC7gvdecVb/BaELMnnExRrJJ08rqACblhon/rxxVDZZyktgu3XYWg+vbZGmHhTCzzdrHL
-mnh3MnzUrOTtr2DJpFOW7GeEK71oVMM/+oAYMeKn+o+qQokGLOCa/GsMpr3GhPp76tgQeo6gwHwi
-WDgpgWuLuv0fVwure/ELJnJIjlxLfswChn/n+GJJbbZes0F3TFZGMi/51kF3iGdgtsI+wuS9bz+N
-F7gFSJ5KmbxUTvABCOhichDiVctzWc6hlhbVWx0QhrOPuH04aCVGIAGp1qBqOxUAAAAAAAA=
+-- 
+Regards,
 
-
---=-oywqmPOgCWkjLt7JPPH2--
+Laurent Pinchart
 
