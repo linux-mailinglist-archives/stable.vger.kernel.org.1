@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-142215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47058AAE98F
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:46:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E730AAAEA85
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:56:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 24346505CC1
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:46:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B1B4523312
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:56:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4194B1482F5;
-	Wed,  7 May 2025 18:46:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F385244693;
+	Wed,  7 May 2025 18:56:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SQJ3kmH3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="obvj2MWH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F061529A0;
-	Wed,  7 May 2025 18:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C6961CF5C6;
+	Wed,  7 May 2025 18:56:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643567; cv=none; b=F/LC/etbWcOz/fX6vJIsspMZn6oYUr84NAoGg0XtETO1YdEy7mpHBVmgisEAAawuhn6DOt7t7AT1dcutKxCmC19vVQbpOlWl6sKLku/mrFYPyvZ5ALZC6nWYFJcQMFXV9PGfkIiwwHss6ziWeDrX5nmvId6A2X4POEZLrCYVF1s=
+	t=1746644182; cv=none; b=W6VyxQ6kZweJ8NFwCu+mWFgSHKZGDkCfEzxAwa9rSvAmk5Xz2powKk5s2VbXvAJAfoMc/GAt5eZLUQyh0zj1EWeOivzuO3+ySoBzDxDhManibDil7NNjHPpUgqOfILT09rff0LpD4C4K7XmVPNfC3qdKaoCyIG0UB1VXBQFhzc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643567; c=relaxed/simple;
-	bh=Ka9BCblCzAJO5McXwRHXYXHW1DeuZERX2oUGelUoibo=;
+	s=arc-20240116; t=1746644182; c=relaxed/simple;
+	bh=q1w+9AjYB8OJIdsqj3j6jE+V8w9tfexaQSaSYOKcE2A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dMbHoC6eXM9HZw8ZXsbEIlxRX6ASWFs3Oc6MizqlLSsdwEU9MOSyWj2OA6DfO5cw9NFLdyWJablLh63EvIvl5MeTL0mOGuGKgusVL3l/ZCrLHQWn1uZv/kLmY/XZw3fjmw2ByrB9BslYsxJKuYMz0EBWRP05VEKWbkPXTGSa+3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SQJ3kmH3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67EA1C4CEE2;
-	Wed,  7 May 2025 18:46:06 +0000 (UTC)
+	 MIME-Version; b=lr1c4YKgxc6p1H0ZwAmdCdNThnkjbCPgszBmw8LxPtFlKNCQI5Wamd3BzC1FlYLcd3RZdLGE5GzuVQBdT8V8QiEZnZU23agcYwP1+uV+rgZFjy1nGRB4j39n5KAm9lB+npMku+KWk+ve7optN6Ktl6UUHk/17+EA/EfOfg+cjkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=obvj2MWH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAEDCC4CEE2;
+	Wed,  7 May 2025 18:56:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643566;
-	bh=Ka9BCblCzAJO5McXwRHXYXHW1DeuZERX2oUGelUoibo=;
+	s=korg; t=1746644182;
+	bh=q1w+9AjYB8OJIdsqj3j6jE+V8w9tfexaQSaSYOKcE2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SQJ3kmH3CLgGucJc0p1bWQI9xQJ5xu6rYBdxKIbKFqRv8njVXVMc3y/CqX/6S0qE/
-	 /UswU2v+iEVy4p7qIy6Lhw2JkkLB7iEUFSBvuohSfS0ujpSpVMBnbTmxPCIZcbvNd8
-	 vAPWompMDlXQiGJXb18sUdH1o6y9QdSSSNPkToxY=
+	b=obvj2MWHxjfQML1kYiXWurx6GplR2eFgdyM57pJlvgNUPE7terlwZSHNbTgJxajXr
+	 m4/tmeh67K3km4T2pkQ5eRh3sxpaPl5QMO06r1WKg8lCZOyJWnpxlO9myfL3hc1RYt
+	 WtRHl69qhFJnSLrVRWrm/iiVjpsf9Wly5Cnps2Qo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maor Gottlieb <maorg@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
 	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Larysa Zaremba <larysa.zaremba@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Emil Tantilov <emil.s.tantilov@intel.com>,
+	Samuel Salin <Samuel.salin@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 44/97] net/mlx5: E-Switch, Initialize MAC Address for Default GID
-Date: Wed,  7 May 2025 20:39:19 +0200
-Message-ID: <20250507183808.769839213@linuxfoundation.org>
+Subject: [PATCH 6.14 115/183] idpf: protect shutdown from reset
+Date: Wed,  7 May 2025 20:39:20 +0200
+Message-ID: <20250507183829.483356254@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
-References: <20250507183806.987408728@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +66,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maor Gottlieb <maorg@nvidia.com>
+From: Larysa Zaremba <larysa.zaremba@intel.com>
 
-[ Upstream commit 5d1a04f347e6cbf5ffe74da409a5d71fbe8c5f19 ]
+[ Upstream commit ed375b182140eeb9c73609b17939c8a29b27489e ]
 
-Initialize the source MAC address when creating the default GID entry.
-Since this entry is used only for loopback traffic, it only needs to
-be a unicast address. A zeroed-out MAC address is sufficient for this
-purpose.
-Without this fix, random bits would be assigned as the source address.
-If these bits formed a multicast address, the firmware would return an
-error, preventing the user from switching to switchdev mode:
+Before the referenced commit, the shutdown just called idpf_remove(),
+this way IDPF_REMOVE_IN_PROG was protecting us from the serv_task
+rescheduling reset. Without this flag set the shutdown process is
+vulnerable to HW reset or any other triggering conditions (such as
+default mailbox being destroyed).
 
-Error: mlx5_core: Failed setting eswitch to offloads.
-kernel answers: Invalid argument
+When one of conditions checked in idpf_service_task becomes true,
+vc_event_task can be rescheduled during shutdown, this leads to accessing
+freed memory e.g. idpf_req_rel_vector_indexes() trying to read
+vport->q_vector_idxs. This in turn causes the system to become defunct
+during e.g. systemctl kexec.
 
-Fixes: 80f09dfc237f ("net/mlx5: Eswitch, enable RoCE loopback traffic")
-Signed-off-by: Maor Gottlieb <maorg@nvidia.com>
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Considering using IDPF_REMOVE_IN_PROG would lead to more heavy shutdown
+process, instead just cancel the serv_task before cancelling
+adapter->serv_task before cancelling adapter->vc_event_task to ensure that
+reset will not be scheduled while we are doing a shutdown.
+
+Fixes: 4c9106f4906a ("idpf: fix adapter NULL pointer dereference on reboot")
 Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Link: https://patch.msgid.link/20250423083611.324567-3-mbloch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Emil Tantilov <emil.s.tantilov@intel.com>
+Tested-by: Samuel Salin <Samuel.salin@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/rdma.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/idpf/idpf_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/rdma.c b/drivers/net/ethernet/mellanox/mlx5/core/rdma.c
-index 540cf05f63739..ab5afa6c5e0fd 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/rdma.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/rdma.c
-@@ -130,8 +130,8 @@ static void mlx5_rdma_make_default_gid(struct mlx5_core_dev *dev, union ib_gid *
- 
- static int mlx5_rdma_add_roce_addr(struct mlx5_core_dev *dev)
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_main.c b/drivers/net/ethernet/intel/idpf/idpf_main.c
+index bec4a02c53733..b35713036a54a 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_main.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_main.c
+@@ -89,6 +89,7 @@ static void idpf_shutdown(struct pci_dev *pdev)
  {
-+	u8 mac[ETH_ALEN] = {};
- 	union ib_gid gid;
--	u8 mac[ETH_ALEN];
+ 	struct idpf_adapter *adapter = pci_get_drvdata(pdev);
  
- 	mlx5_rdma_make_default_gid(dev, &gid);
- 	return mlx5_core_roce_gid_set(dev, 0,
++	cancel_delayed_work_sync(&adapter->serv_task);
+ 	cancel_delayed_work_sync(&adapter->vc_event_task);
+ 	idpf_vc_core_deinit(adapter);
+ 	idpf_deinit_dflt_mbx(adapter);
 -- 
 2.39.5
 
