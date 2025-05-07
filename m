@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-142165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02DECAAE955
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:43:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09F5BAAEAA6
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:58:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C21C1C26F5B
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:43:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D697B7BE6CF
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:56:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DECB28DF45;
-	Wed,  7 May 2025 18:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 688A828B4FE;
+	Wed,  7 May 2025 18:58:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xj4ykAEE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gmk9EYt2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A7B114A4C7;
-	Wed,  7 May 2025 18:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282D9214813;
+	Wed,  7 May 2025 18:58:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643413; cv=none; b=R0RnEP975TW5n9Brx4f0NGSiHL10hWSXvUuywWNCaC/YLnM390U8sJE2Vzq112WLASbdJNrF7qqD8ic1/QaKDodrK5eVfIOZSzyWhJZ1ASj3dU5pXGmFfH4iR8HfMtfzmmZEyHvliDVwNE2YnYwwChK3H9z/UnMX/M6ZMOFgviA=
+	t=1746644282; cv=none; b=Yz9jfJH4CIkeOjpOhBKa65XOihQgcpNiBY8PJ50L4TVZ8HGaPcF/9MtxFdXXmnw+1DXyAalzjA+bDLfdTzVPgurcRFd6y9rfwT+HNyCsFjix4+SnaJFHb6fSfu/Db2VyOJPPgdOOwRR3TGDTfTlm4Nt4BAyUry3O2baoiW7if28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643413; c=relaxed/simple;
-	bh=7tPN2LFneCPZtyAm6g6ttERY3XOQuqzVh5c4b86qKV8=;
+	s=arc-20240116; t=1746644282; c=relaxed/simple;
+	bh=+DtuhmdZ5sYHQ75kLWdnKZBqIbouvje/vk00aUA3ZLc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fEYM9nrSkeD7iKD8e3Y0zgXJ4a7vS49Hiez2aE88EjEQkN2nn/A1TQIz1/BDZ2EERuTiflKkGUP9NDmvAzfOgrYei++cISIDi8pK6++A7fMmqkyYVGFvXPHa6pFo5bByBC76z6x4+682It9fmXoV+WNYjePHTaS4Q+yRhcDoKR8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xj4ykAEE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D95EC4CEE2;
-	Wed,  7 May 2025 18:43:32 +0000 (UTC)
+	 MIME-Version; b=UdcTS18JThpXSpP+IH+MsBBwlA6GfJQS0n1ZSb7YhhzrqYT7grXRAQ2nyjbGtap7UIHn4jphdaXgK/et4gWcUgvreJhJ/oFU+1NmCwmNlr2yCUEGstQryoP9RHblpUHcAf3jxwD7/OVJY/Xj4Qp/q8cBw7EeZda0A2ad5rqUlaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gmk9EYt2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3767FC4CEE2;
+	Wed,  7 May 2025 18:58:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643412;
-	bh=7tPN2LFneCPZtyAm6g6ttERY3XOQuqzVh5c4b86qKV8=;
+	s=korg; t=1746644281;
+	bh=+DtuhmdZ5sYHQ75kLWdnKZBqIbouvje/vk00aUA3ZLc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xj4ykAEEP+P3r1YMU82en1v9TqaQlzLgarHABWCFuYn1R2nTMQYZh9RN6eib+5kUr
-	 lVxX8K3/pbKz23A/2+3FtedfVc/zmCq6PNuhMPuvg0BTYKp/zbmdhIs83IOs7DHE4U
-	 skg8P1mv4kkfPpm0IFRCx4r8+Tj+BD9Lk6B+Z37M=
+	b=gmk9EYt2qDC9ZGUpHtWUAoyIubCynrd9EsA6BD4JE/S68TGhzFbZ52cALNK0Coq6E
+	 YSXaElqBt212Wb+31StLswWyGD/1xiMVTnh3Viv8sy2ytmaM+23pGM8q+gWnoxQwlK
+	 onQZ2k87fC2XGR8P5byHrqWlotTkTxC+kdmngfOI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@kernel.org>,
-	Marc Zyngier <maz@kernel.org>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 51/55] irqchip/gic-v2m: Prevent use after free of gicv2m_get_fwnode()
+Subject: [PATCH 6.14 147/183] net: vertexcom: mse102x: Fix RX error handling
 Date: Wed,  7 May 2025 20:39:52 +0200
-Message-ID: <20250507183801.096181179@linuxfoundation.org>
+Message-ID: <20250507183830.822499153@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
-References: <20250507183759.048732653@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +63,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit 3318dc299b072a0511d6dfd8367f3304fb6d9827 ]
+[ Upstream commit ee512922ddd7d64afe2b28830a88f19063217649 ]
 
-With ACPI in place, gicv2m_get_fwnode() is registered with the pci
-subsystem as pci_msi_get_fwnode_cb(), which may get invoked at runtime
-during a PCI host bridge probe. But, the call back is wrongly marked as
-__init, causing it to be freed, while being registered with the PCI
-subsystem and could trigger:
+In case the CMD_RTS got corrupted by interferences, the MSE102x
+doesn't allow a retransmission of the command. Instead the Ethernet
+frame must be shifted out of the SPI FIFO. Since the actual length is
+unknown, assume the maximum possible value.
 
- Unable to handle kernel paging request at virtual address ffff8000816c0400
-  gicv2m_get_fwnode+0x0/0x58 (P)
-  pci_set_bus_msi_domain+0x74/0x88
-  pci_register_host_bridge+0x194/0x548
-
-This is easily reproducible on a Juno board with ACPI boot.
-
-Retain the function for later use.
-
-Fixes: 0644b3daca28 ("irqchip/gic-v2m: acpi: Introducing GICv2m ACPI support")
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Cc: stable@vger.kernel.org
+Fixes: 2f207cbf0dd4 ("net: vertexcom: Add MSE102x SPI support")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250430133043.7722-5-wahrenst@gmx.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-gic-v2m.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/vertexcom/mse102x.c | 20 ++++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/irqchip/irq-gic-v2m.c b/drivers/irqchip/irq-gic-v2m.c
-index 6790a621a9324..9d99b19cd21b6 100644
---- a/drivers/irqchip/irq-gic-v2m.c
-+++ b/drivers/irqchip/irq-gic-v2m.c
-@@ -455,7 +455,7 @@ static int __init gicv2m_of_init(struct fwnode_handle *parent_handle,
- #ifdef CONFIG_ACPI
- static int acpi_num_msi;
+diff --git a/drivers/net/ethernet/vertexcom/mse102x.c b/drivers/net/ethernet/vertexcom/mse102x.c
+index 2c06d1d05164f..e4d993f313740 100644
+--- a/drivers/net/ethernet/vertexcom/mse102x.c
++++ b/drivers/net/ethernet/vertexcom/mse102x.c
+@@ -263,7 +263,7 @@ static int mse102x_tx_frame_spi(struct mse102x_net *mse, struct sk_buff *txp,
+ }
  
--static __init struct fwnode_handle *gicv2m_get_fwnode(struct device *dev)
-+static struct fwnode_handle *gicv2m_get_fwnode(struct device *dev)
+ static int mse102x_rx_frame_spi(struct mse102x_net *mse, u8 *buff,
+-				unsigned int frame_len)
++				unsigned int frame_len, bool drop)
  {
- 	struct v2m_data *data;
+ 	struct mse102x_net_spi *mses = to_mse102x_spi(mse);
+ 	struct spi_transfer *xfer = &mses->spi_xfer;
+@@ -281,6 +281,9 @@ static int mse102x_rx_frame_spi(struct mse102x_net *mse, u8 *buff,
+ 		netdev_err(mse->ndev, "%s: spi_sync() failed: %d\n",
+ 			   __func__, ret);
+ 		mse->stats.xfer_err++;
++	} else if (drop) {
++		netdev_dbg(mse->ndev, "%s: Drop frame\n", __func__);
++		ret = -EINVAL;
+ 	} else if (*sof != cpu_to_be16(DET_SOF)) {
+ 		netdev_dbg(mse->ndev, "%s: SPI start of frame is invalid (0x%04x)\n",
+ 			   __func__, *sof);
+@@ -308,6 +311,7 @@ static void mse102x_rx_pkt_spi(struct mse102x_net *mse)
+ 	struct sk_buff *skb;
+ 	unsigned int rxalign;
+ 	unsigned int rxlen;
++	bool drop = false;
+ 	__be16 rx = 0;
+ 	u16 cmd_resp;
+ 	u8 *rxpkt;
+@@ -330,7 +334,8 @@ static void mse102x_rx_pkt_spi(struct mse102x_net *mse)
+ 			net_dbg_ratelimited("%s: Unexpected response (0x%04x)\n",
+ 					    __func__, cmd_resp);
+ 			mse->stats.invalid_rts++;
+-			return;
++			drop = true;
++			goto drop;
+ 		}
  
+ 		net_dbg_ratelimited("%s: Unexpected response to first CMD\n",
+@@ -342,9 +347,16 @@ static void mse102x_rx_pkt_spi(struct mse102x_net *mse)
+ 		net_dbg_ratelimited("%s: Invalid frame length: %d\n", __func__,
+ 				    rxlen);
+ 		mse->stats.invalid_len++;
+-		return;
++		drop = true;
+ 	}
+ 
++	/* In case of a invalid CMD_RTS, the frame must be consumed anyway.
++	 * So assume the maximum possible frame length.
++	 */
++drop:
++	if (drop)
++		rxlen = VLAN_ETH_FRAME_LEN;
++
+ 	rxalign = ALIGN(rxlen + DET_SOF_LEN + DET_DFT_LEN, 4);
+ 	skb = netdev_alloc_skb_ip_align(mse->ndev, rxalign);
+ 	if (!skb)
+@@ -355,7 +367,7 @@ static void mse102x_rx_pkt_spi(struct mse102x_net *mse)
+ 	 * They are copied, but ignored.
+ 	 */
+ 	rxpkt = skb_put(skb, rxlen) - DET_SOF_LEN;
+-	if (mse102x_rx_frame_spi(mse, rxpkt, rxlen)) {
++	if (mse102x_rx_frame_spi(mse, rxpkt, rxlen, drop)) {
+ 		mse->ndev->stats.rx_errors++;
+ 		dev_kfree_skb(skb);
+ 		return;
 -- 
 2.39.5
 
