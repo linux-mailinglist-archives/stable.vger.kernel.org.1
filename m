@@ -1,250 +1,228 @@
-Return-Path: <stable+bounces-142024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCDDFAADBCE
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 11:47:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B1FEAADBDB
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 11:50:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A421170958
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 09:47:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9AA721C00CDA
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 09:50:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E439B1BD9D0;
-	Wed,  7 May 2025 09:47:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4A3D1BD9D0;
+	Wed,  7 May 2025 09:50:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="UPRJsuu0"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GVrtC8Ux"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2080.outbound.protection.outlook.com [40.107.236.80])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 239578248C
-	for <stable@vger.kernel.org>; Wed,  7 May 2025 09:47:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.80
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746611269; cv=fail; b=HuYQG5WeD5s0qJzjFkWo5EwSRAe5vkQT9zPTZ81FeuZiicrMEVRsXf2kAzU5Gy49mREyna93pJo1XUcULKQyAZzEa4VX4DUnOAVXDokafcoMSmb2CrXT90YUKdhUfkEp5O4lrHjes7sN2qyodrttdhzVSR0830lyPLPi0J3B5fY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746611269; c=relaxed/simple;
-	bh=7m8hQNQmO7Yko0lsvpaqdTNYbWbrI0o7Hl/5zsbVG5o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=GYXyjufQh8QYb2oSD6Ffv19zJLrDFK3LObcjqFNVN+QmfNkBmpdBQRZjBkth6FQioNCUFqtJOf2YhoTys8yS5J8qFmngvFzBkvLfjC3S5qfZ2GBQf9+s/SpYOhdryTa2g261wmZhh54LSi+ZK++4n8gkhYYvgey070Y+F1DsFUA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=UPRJsuu0; arc=fail smtp.client-ip=40.107.236.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kjb0e51Usk14R9V7BGUBeu1+LJ1JXiQ7LB2GnLLbym2j1MwqP4o57rfdCkuDS3dOEHgTwJYvqyA/JIxn4wF2Ohx0gZgJXG7dnq1Oo8XkX4Pbzj6w8BEKmHkKFuBd9wFTTvTK7Hk58vL+p68iEwhsR+X4HWVjbLBSzRvcV0/bGyTHmv5Bx8Mq+aHrVYZCyzwS19ptIdJ1cocY29oZ63zKWih+8vbbW4xW/kfRQe5xdeyUNreiZZEIfH68Y0XUHsANxGaNhEAHSuwnhiDsymY3BdqUudPEx2IISknOophlInsIeiFk2rfOcNEsXzKYGpo3MgMgBnyGrFsO5kUn/s+kUg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yGR71iICYIb1EIQ04klAe43nu0ExMzf2tX1AUmoyF24=;
- b=pQoMqjngfUaEGeXbEOGLqqPaZcSp+rLtMRRMOQsDSZTA6nRMlPhJvPWA2tknohIHlFRhcHY3Uce7mlxXKO29FrpcJxwex65gKtgrsXwRW81LYeMIWZ7pTC3ZPPi99fJjIfvTpP+Fce1GksfmvnHKZYzSQCcP/LZS8sOMqjj8pD2+OvZsPtofYfeRV1jqtyN/a7yiUN2/8OxaUA9+PEB/vf57WW8uoyndpQ9FVq7xf1z6+3sTUOUOiqSm9zeOD8qj8Fl154qNYXNJtmTziO/jeVnEF5boP30iOUNO7dCI0MPlZ2a9boGf1NjlDfU6XI8YAe7ZSmbtrMyLrCZ6PTai4w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yGR71iICYIb1EIQ04klAe43nu0ExMzf2tX1AUmoyF24=;
- b=UPRJsuu084dSwNdn28wXUnOP+wwKg/RjjzwGyMiKAuPKwasRhlNyNGQBGyFFCiwvORtJ3k15lds3k/KMyzuVEFaDIGuLwhq32i8/pw/gc5bs6pdNtlyFuDrZNAqYPAfEXDelEq72NmZ5O3htjPlpw16Lc1pMv4meJzJ+Tr5lKtHEq0lwk9Sjvx7VB30ZYRB1l1xqwIB4/RqJgwS1ahiKnPOiWGuLamwEtLgm2Qtbtm6QxQz16CpRMyFJemcq4O5gULzgPP+dWk/nLGB48RLZXUbpRrKSAX09NOFYqCptd+SmW87EJzgj/xF2lHHppuqx6Q9ttx0J6L7NsQD9SjMJBQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from SJ1PR12MB6363.namprd12.prod.outlook.com (2603:10b6:a03:453::9)
- by MN0PR12MB6293.namprd12.prod.outlook.com (2603:10b6:208:3c2::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.24; Wed, 7 May
- 2025 09:47:39 +0000
-Received: from SJ1PR12MB6363.namprd12.prod.outlook.com
- ([fe80::bec3:4521:c231:d03b]) by SJ1PR12MB6363.namprd12.prod.outlook.com
- ([fe80::bec3:4521:c231:d03b%5]) with mapi id 15.20.8699.026; Wed, 7 May 2025
- 09:47:39 +0000
-From: Jared Holzman <jholzman@nvidia.com>
-To: stable@vger.kernel.org
-Cc: ming.lei@redhat.com,
-	axboe@kernel.dk,
-	ushankar@purestorage.com,
-	gregkh@linuxfoundation.org,
-	jholzman@nvidia.com
-Subject: [PATCH 6.14.y v2 7/7] ublk: fix race between io_uring_cmd_complete_in_task and ublk_cancel_cmd
-Date: Wed,  7 May 2025 12:47:02 +0300
-Message-ID: <20250507094702.73459-8-jholzman@nvidia.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250507094702.73459-1-jholzman@nvidia.com>
-References: <20250507094702.73459-1-jholzman@nvidia.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: FR0P281CA0258.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:b5::10) To SJ1PR12MB6363.namprd12.prod.outlook.com
- (2603:10b6:a03:453::9)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB5DA1BC099
+	for <stable@vger.kernel.org>; Wed,  7 May 2025 09:50:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746611425; cv=none; b=YLiFMz+Z0f5pI2hACfHinbKSjBPwHWkcwNQOshyiAD5opmDbxjZM4FxIbzmvenSH1tNNg44dVqzRUDpTeoZL+LX8xtkgm0yCQs31skcXiczI38qxcYhK48JW/+RG87qtMnKSTmSYhIiS8yfiLR5y+LlyLH5lZqXX9Pm5YXMjh+s=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746611425; c=relaxed/simple;
+	bh=Ocq0P3HOIZlDwZjP6yOr1+JTI+qxP/IRYm7s7N1B3e8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=p8Ujd/m2HNpV1pWPD9vOH42lL88E7cEUyCTxUcK01z5D0yoeYi1U+DKnH1IAdxDSgpHcaBYMorx+ph763yg5lu9EBxw/U3BqnJRoA1/Hg6bpOypgFJc4khbO8lwAZPPoDfpWfSG/oRIYqpcUPzWxAfU+DGfQfOFriwG/hwa0FF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GVrtC8Ux; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1746611422;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=WVKm+prTo91mCK4sWi9nK8ro46xY5ZiQCNeKWZ2n6iY=;
+	b=GVrtC8UxVXNpmlz+3QXUO9gp5EkjdSNVeB8k+7ReFua5nwZZ0vKPB7qrI1ZMZsy6Oyk3AZ
+	5NgOcm4kWLu2oGI81OVy3XM4vAIW4SEVeVM31JtbNHjHVX5l55OKRSo1NA3JRGqHQ/0ADX
+	rDptin1DeCgh5TAH97lMsGUS+yL6Hgo=
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
+ [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-653-XxAkNUmLMjKPdwMG9yeUbw-1; Wed, 07 May 2025 05:50:21 -0400
+X-MC-Unique: XxAkNUmLMjKPdwMG9yeUbw-1
+X-Mimecast-MFC-AGG-ID: XxAkNUmLMjKPdwMG9yeUbw_1746611420
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-7394792f83cso5166366b3a.3
+        for <stable@vger.kernel.org>; Wed, 07 May 2025 02:50:21 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746611420; x=1747216220;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=WVKm+prTo91mCK4sWi9nK8ro46xY5ZiQCNeKWZ2n6iY=;
+        b=W5NAi6APqp6PfuYYN4T5NNMb33z9W9IHKPDTazjnsbUEuEucEJBBjWLHFarxxFnioN
+         B3fW2xVfPSU7x7TYHyk0jKUZrgYHg6qwY5lDExAlhyPKIbPTKvgPOcvrLxdGiYw9Elhd
+         ttLLgJA9TADS9rKRiUlNzbckQsMJ2tF5PSIberm4WKh6YXHNtu386WGFlndij+9nVFT3
+         dPl2DCOM+jZ/7P6PUgdgnpHkcIpggd+qaiDeCZbQOnA1IB1fnM+HcudeusJjesIrkfqk
+         ivtVYP+Rf+k8oMlRdRXWlVoCnpCPItJqFHsnjKVtmlsNLbjdTiIL8T5IRRHNXg2qUBtx
+         IHhQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXZC76TDKDELKHoV5au76h5fM3Srj/Ec2lT9myPgDiLfm93bf0HTG63zmi17LwSt/9wy7tGByg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzkWlZ8pciDsIEmegKVzf6LSQubzF3W3xuJ+DeyGBJMfmN6/UrD
+	kuXIeoVhihLdc8w7eRYDkdvD7AyC7F3r38sgcEohrkDWnIvWbY6SOrr46ObZyS0K40B0+UhqNS6
+	vbgoESuxcQBycyI3xij6chMVThwYreKU+wXN3sF9hElYOXg4kEaegwg==
+X-Gm-Gg: ASbGncsti4R00VbSbfJ0eak3/WFIi/FmVzbkIQoh4WCf+DHrio5BXvW9iu2DcQNexiN
+	kxEH1xpLloG2UNanMEsTLWEwtw0YtptEvNtthDYmpD3yZN1c6fHxqwEXnUyir7Fc37aE4OI2F0E
+	LYm2Pt5x6tceHJS0O1cOmK8E4jR2Epc92xAHh2iPx6xnbObS+0RvI3P3mKKlSWr6IFaykBaNKTQ
+	2rbwI9buL8N7IyHXkS9tPkCM9X8fL+JGT60Pq53avm29v5pXPpSmo3j4IikOF5kHYl961tbz4xm
+	YWi9hLSY/uGrsIa3d6Na1x5R8r1S8iZwEZXMoWxGOfe21/dG5L275DIgfADBfmeX1j6VGdb7QRi
+	JP3KfXc/ukN1UNIOEK/BeNUKmqokLu7BFyMX7qyk=
+X-Received: by 2002:a05:6a00:2a06:b0:73e:2dc5:a93c with SMTP id d2e1a72fcca58-7409cf0f945mr3319250b3a.11.1746611420399;
+        Wed, 07 May 2025 02:50:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHVA37Uyq+XuIDleGXUMxF5Rlx1CmJawsIQUf6ZGk0Jxt0AkI56K7rfY3hb7Ni+UPjopi5iAA==
+X-Received: by 2002:a05:6a00:2a06:b0:73e:2dc5:a93c with SMTP id d2e1a72fcca58-7409cf0f945mr3319224b3a.11.1746611419983;
+        Wed, 07 May 2025 02:50:19 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f12:d400:ed3c:fb0c:1ec0:c628? (p200300d82f12d400ed3cfb0c1ec0c628.dip0.t-ipconnect.de. [2003:d8:2f12:d400:ed3c:fb0c:1ec0:c628])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74058db8befsm10590578b3a.40.2025.05.07.02.50.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 07 May 2025 02:50:19 -0700 (PDT)
+Message-ID: <0ec57b2e-0a1c-443f-89e1-608d5bccbf26@redhat.com>
+Date: Wed, 7 May 2025 11:50:15 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ1PR12MB6363:EE_|MN0PR12MB6293:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0f804386-71eb-4f3b-2bfa-08dd8d4c3436
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?/zrBm7f91G9zddJ1utQzMYwVzojmfPOYDK4hLRiP89LWlveRvtb5YiodgvV1?=
- =?us-ascii?Q?3XRFlV+i1YXvhTnxEP6urSohOW1067h6kBGurAsN+UfJ0FxUJlfGc89ZiMCO?=
- =?us-ascii?Q?syoO/VbQ7mpwtJQ/n5aBFmQCgpjlPYT8ED91EyD0DPBy+TpBcg+7+oOOGpdv?=
- =?us-ascii?Q?57RpBKWvkmeSN7o5ccDjWWRYFdmRWaauI1yU1yikwZ8e8mzphsgYMLMwWKRO?=
- =?us-ascii?Q?8ZOPwy+uzq2URzv4dnsktVy0Wjv5KTzhz6T+y2cBE0HzM9FgSgDFopckvLtt?=
- =?us-ascii?Q?M9Cd+faXS0AAURv+Gm+XVnZpK77Eln/ORNQER2pJRMTT7751Et1RtbAXmNeF?=
- =?us-ascii?Q?u+A7JuENzncRs3/H6K/qkpd4Qs4yCG1Raj+tAReJhxyAvn/IG5sK1JwTZs7l?=
- =?us-ascii?Q?C240uOFOsX9Ao/s7Q5OEh+kILpx6OutVQfgT1WfROa3EHBBOlz7yziuOX9GN?=
- =?us-ascii?Q?VS7btSLCTTHlH/Se8rkhxLdrHXgmyg9a6IL4TEoUUddEFUNuhiQMAUChZ/Ob?=
- =?us-ascii?Q?3o117Ft3uwVAXTGt7FzcWZydsFozmZzgRGbZtKg8eGaY4S6b/MFTQ2eKLBKN?=
- =?us-ascii?Q?ETBRLlxuN+wD7bezdnHd5Waci7a3smdW7FKcTO3lGfg4ej2aQn4IbGj4Vfqc?=
- =?us-ascii?Q?bHn0YbdN2Eu57l0AkgypFlBwzd4HsspJOfYgmLa4eahDuzSMfWdfvfMdWmMG?=
- =?us-ascii?Q?yYWtQaHfbWpWXV0nP0s5vg89g0w6buFusnvEq7axAPWD5On5OkPHwwWnnoaL?=
- =?us-ascii?Q?RAbxd7L4uX1qdsGhJApJizKZ5XF+EL/lhLf2SoGV35tNqPFdQpQaTWMrfUlm?=
- =?us-ascii?Q?S/drxjMQEz1w2x6kpRDLTu3Xx3IH9qJEAqoPYZGyD80voa62XdC0aFBFpsGn?=
- =?us-ascii?Q?GWQEvrbiGEhcVkZBBy0yuYmsoLh/OcnfZj6ajZsqNS49okw89OCz+TbeYlZv?=
- =?us-ascii?Q?1hEFKAYPHIw+DyrZIu6MqM/eUverkBuEtgxMo9zZysxoIuQQRA0c9FHb6G53?=
- =?us-ascii?Q?tCdmdhUMBBJwbGfPuR2plaSyyCHo1FmW7s9lJa0CqEmhskn7oWymEu3UdedV?=
- =?us-ascii?Q?2QMNDgSVOiQQQ6rtmyYBDyN4vVTOOHsoXewY36uFtsPyA9xV/YwigD0YoaJ3?=
- =?us-ascii?Q?Il4dyQcGI61XIwNZlT8G0qI7vV34JDO7iRbiHP1EHZXA4OOlUUmB0b00HcWY?=
- =?us-ascii?Q?uc9X/q3dXC68EizZ3/SQZgX69Lued/OUEpjtgTkBYD0wI0RR1jKPR7ilY4H2?=
- =?us-ascii?Q?3U++hsIFYsSWHHfHhvQdL/er/W10p4xGm4oSfysBJzRuKNRlLVTuMiv/M9K+?=
- =?us-ascii?Q?SIhH2toyffqzgqgesZ5YM0YznctQs7lmhUbyAgML746b90pZsSRRJ874WmWU?=
- =?us-ascii?Q?UReatq/fm6A2ik36fr4Ie1KL2465IwgNHYPd84WlrR8aaQKynaIUczD/j2ji?=
- =?us-ascii?Q?pylKXwOzmFs=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ1PR12MB6363.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?1kRikb/vfXn5GcsvhYMaz4TKzM37ubxON7i1jDylQZ3z2Y4elzfwNl7xsbmA?=
- =?us-ascii?Q?Wg7EhdlZKYZVNxFJvjoCi0yfSxQ1a456XU6JGbse2YMBLGRyhsL3b6ZOPv8L?=
- =?us-ascii?Q?MGtjZhVRZ/FiFi7P0zfXIG4vqU4X/Grpm6wCnhu4MrTyOMTqJNAiHWoRp63U?=
- =?us-ascii?Q?fKhx3on/zgi9OfZaj+EahTKW1aYaLk1hLzGKXfDrNHTh56MCJNyu6ZepaVk6?=
- =?us-ascii?Q?4S2goS7w4ZlFejcPEnmKYuHI5r0A/ihD+uIWUaHIdyRjVARMo/05F9x6cJ0g?=
- =?us-ascii?Q?U23aA2MFIh/FwapybX+RtdV/cij4ic0ZPIijOrjNG+ZlA6dqq09P1fspkF3r?=
- =?us-ascii?Q?MJFKy3JqRt9FqKyTTgAgUe5vYs3/9Yq04HyHoZXr0AU+8yoyfgnPR+FAHPGD?=
- =?us-ascii?Q?m4YGDWQusMEeBrJQwzoenDGKYVzsJaEEwPAD4HfgNpzppkX7kNQNnTgW1GcC?=
- =?us-ascii?Q?B8Ssl4XouJHv586HbjmlnaBIMF+dwDC6Q1HZUwJs0tqn1wqWA2Mrym+9JiWw?=
- =?us-ascii?Q?g0rrPQN0OwAH2Ou+cwxlE6ZwKgGnBj+MyKaD8VOiLTo4teMT838+qgftFAfR?=
- =?us-ascii?Q?qoS+3OaZ0HwI0L15i3jMFCxL5CbLXq+rwX2i8HKntKQ8sB7nBgips8w+EJgd?=
- =?us-ascii?Q?lw0BMd7pJ8FGOAT3Yk60bW/eiR88/QLbE6MoF21WrzvRjL4QUziPNwMtp9Bn?=
- =?us-ascii?Q?tzlVqngXZ7E5cC357Kb9ZsF24olT1zmJPzebjv8sVv6Dax77Mpqe2maq8kOu?=
- =?us-ascii?Q?AQqC2m4/rE3QGvaPkONhKdnZPbleuxftQSE2ykNxq+xHDvZLlIN2Wz9CWgf6?=
- =?us-ascii?Q?BAyce+t3rE7D7xwJw6EazMq/U47AtnJGTOAgLefwz3a/9PC5IYCBSuNwrzNN?=
- =?us-ascii?Q?TrQC4vc6YCgAJYhILpHdLOvzlLNh3rhBQngn8wJ5yw4F1ucs5S5o1s8nJnE7?=
- =?us-ascii?Q?scGrkkULQPqOMvjcrRDNpWwqhS1Un797SQHYy0ic4NvkDbNpJT7era1yh+CN?=
- =?us-ascii?Q?kZhimgBBAx9qUit1KWeOUdGfLcBwAI1vu6OAjOoMCT8ixfW1DOyhdJ3uLEnc?=
- =?us-ascii?Q?wcpSde/4P4wO6wmuCK6UBfJa86/5yAUSzT/FP8XL5qae3Fc93RN5RTjT/H4D?=
- =?us-ascii?Q?EIFHGt9DDNFyww97MT1nWFQLSbtNK86ofSaMdhHydvk1n8+2nfWafChprDQv?=
- =?us-ascii?Q?EegdCE1YHG6NSBnU+43Xsckbhf/JZ01pawsWIZiITI1MTX+0e3lb7igpYLVp?=
- =?us-ascii?Q?ht2M8uEG3dnpEw3YcRBgFtBlNPeWhqz67oicjaYqua5ZcBGnl8qM9HkzH/lx?=
- =?us-ascii?Q?lyWQ/xXZ8JZMZ7wwwp4sODFhigbZQ9MF/jjaY3TVX4nHAby/TABK7X0n4gOQ?=
- =?us-ascii?Q?IhSnVM9fgS8ysm+RsgTNumwDh4z5VEbDVCmCi+11H3h73Y2rwJnbmKwfyVPl?=
- =?us-ascii?Q?KCV0Pwi3uFqQdDi0QG9IDWzz+IJAIKiU3cY3tFs5uUHeozHNCmL1HypB4GHB?=
- =?us-ascii?Q?3DKUIYlMsO0MkOHLns0oZ9ZLVEg4Q/RGErgVZLaLNMq1PsCiWUcx/MfFg5qV?=
- =?us-ascii?Q?WcbRV5WznJXysRmIWN34J3pycNWCNVl5FVMZYeb0?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0f804386-71eb-4f3b-2bfa-08dd8d4c3436
-X-MS-Exchange-CrossTenant-AuthSource: SJ1PR12MB6363.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2025 09:47:39.0981
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: h7ApI5WITanAK2Kvh+IWzUMN/ONevBjXI3Zd/QpUZFxYmkpzZkIKhKooZ2McfI8ROH9H8h8faJDEMANGZNVaPg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR12MB6293
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] mm: mmap: map MAP_STACK to VM_NOHUGEPAGE only if THP
+ is enabled
+To: Ignacio.MorenoGonzalez@kuka.com, lorenzo.stoakes@oracle.com
+Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org,
+ yang@os.amperecomputing.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20250507-map-map_stack-to-vm_nohugepage-only-if-thp-is-enabled-v3-1-80929f30df7f@kuka.com>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <20250507-map-map_stack-to-vm_nohugepage-only-if-thp-is-enabled-v3-1-80929f30df7f@kuka.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Ming Lei <ming.lei@redhat.com>
+On 07.05.25 11:11, Ignacio Moreno Gonzalez via B4 Relay wrote:
+> From: Ignacio Moreno Gonzalez <Ignacio.MorenoGonzalez@kuka.com>
+> 
+> commit c4608d1bf7c6 ("mm: mmap: map MAP_STACK to VM_NOHUGEPAGE") maps
+> the mmap option MAP_STACK to VM_NOHUGEPAGE. This is also done if
+> CONFIG_TRANSPARENT_HUGETABLES is not defined. But in that case, the
+> VM_NOHUGEPAGE does not make sense.
+> 
+> Fixes: c4608d1bf7c6 ("mm: mmap: map MAP_STACK to VM_NOHUGEPAGE")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Reviewed-by: Yang Shi <yang@os.amperecomputing.com>
+> Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+> Signed-off-by: Ignacio Moreno Gonzalez <Ignacio.MorenoGonzalez@kuka.com>
+> ---
+> I discovered this issue when trying to use the tool CRIU to checkpoint
+> and restore a container. Our running kernel is compiled without
+> CONFIG_TRANSPARENT_HUGETABLES. CRIU parses the output of
 
-[ Upstream commit f40139fde5278d81af3227444fd6e76a76b9506d ]
+I'm sure you mean CONFIG_TRANSPARENT_HUGEPAGE ?
 
-ublk_cancel_cmd() calls io_uring_cmd_done() to complete uring_cmd, but
-we may have scheduled task work via io_uring_cmd_complete_in_task() for
-dispatching request, then kernel crash can be triggered.
+> /proc/<pid>/smaps and saves the "nh" flag. When trying to restore the
+> container, CRIU fails to restore the "nh" mappings, since madvise()
+> MADV_NOHUGEPAGE always returns an error because
+> CONFIG_TRANSPARENT_HUGETABLES is not defined.
 
-Fix it by not trying to canceling the command if ublk block request is
-started.
+This should go into the patch description; it explains how this is 
+actually causing issues.
 
-Fixes: 216c8f5ef0f2 ("ublk: replace monitor with cancelable uring_cmd")
-Reported-by: Jared Holzman <jholzman@nvidia.com>
-Tested-by: Jared Holzman <jholzman@nvidia.com>
-Closes: https://lore.kernel.org/linux-block/d2179120-171b-47ba-b664-23242981ef19@nvidia.com/
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20250425013742.1079549-3-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
----
- drivers/block/ublk_drv.c | 27 +++++++++++++++++++++------
- 1 file changed, 21 insertions(+), 6 deletions(-)
+> 
+> The mapping MAP_STACK -> VM_NOHUGEPAGE was introduced by commit
+> c4608d1bf7c6 ("mm: mmap: map MAP_STACK to VM_NOHUGEPAGE") in order to
+> fix a regression introduced by commit efa7df3e3bb5 ("mm: align larger
+> anonymous mappings on THP boundaries"). The change introducing the
+> regression (efa7df3e3bb5) was limited to THP kernels, but its fix
+> (c4608d1bf7c6) is applied without checking if THP is set.
+> 
+> The mapping MAP_STACK -> VM_NOHUGEPAGE should only be applied if THP is
+> enabled.
+> ---
+> Changes in v3:
+> - Exclude non-stable patch (for huge_mm.h) from this series to avoid mixing stable and non-stable patches, as suggested by Andrew.
+> - Extend description in cover letter.
+> - Link to v2: https://lore.kernel.org/r/20250506-map-map_stack-to-vm_nohugepage-only-if-thp-is-enabled-v2-0-f11f0c794872@kuka.com
+> 
+> Changes in v2:
+> - [Patch 1/2] Use '#ifdef' instead of '#if defined(...)'
+> - [Patch 1/2] Add 'Fixes: c4608d1bf7c6...'
+> - Create [Patch 2/2]
+> 
+> - Link to v1: https://lore.kernel.org/r/20250502-map-map_stack-to-vm_nohugepage-only-if-thp-is-enabled-v1-1-113cc634cd51@kuka.com
+> ---
+>   include/linux/mman.h | 2 ++
+>   1 file changed, 2 insertions(+)
+> 
+> diff --git a/include/linux/mman.h b/include/linux/mman.h
+> index bce214fece16b9af3791a2baaecd6063d0481938..f4c6346a8fcd29b08d43f7cd9158c3eddc3383e1 100644
+> --- a/include/linux/mman.h
+> +++ b/include/linux/mman.h
+> @@ -155,7 +155,9 @@ calc_vm_flag_bits(struct file *file, unsigned long flags)
+>   	return _calc_vm_trans(flags, MAP_GROWSDOWN,  VM_GROWSDOWN ) |
+>   	       _calc_vm_trans(flags, MAP_LOCKED,     VM_LOCKED    ) |
+>   	       _calc_vm_trans(flags, MAP_SYNC,	     VM_SYNC      ) |
+> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>   	       _calc_vm_trans(flags, MAP_STACK,	     VM_NOHUGEPAGE) |
+> +#endif
+>   	       arch_calc_vm_flag_bits(file, flags);
+>   }
 
-diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
-index 6000147ac2a5..348c4feb7a2d 100644
---- a/drivers/block/ublk_drv.c
-+++ b/drivers/block/ublk_drv.c
-@@ -1655,14 +1655,31 @@ static void ublk_start_cancel(struct ublk_queue *ubq)
- 	ublk_put_disk(disk);
- }
- 
--static void ublk_cancel_cmd(struct ublk_queue *ubq, struct ublk_io *io,
-+static void ublk_cancel_cmd(struct ublk_queue *ubq, unsigned tag,
- 		unsigned int issue_flags)
- {
-+	struct ublk_io *io = &ubq->ios[tag];
-+	struct ublk_device *ub = ubq->dev;
-+	struct request *req;
- 	bool done;
- 
- 	if (!(io->flags & UBLK_IO_FLAG_ACTIVE))
- 		return;
- 
-+	/*
-+	 * Don't try to cancel this command if the request is started for
-+	 * avoiding race between io_uring_cmd_done() and
-+	 * io_uring_cmd_complete_in_task().
-+	 *
-+	 * Either the started request will be aborted via __ublk_abort_rq(),
-+	 * then this uring_cmd is canceled next time, or it will be done in
-+	 * task work function ublk_dispatch_req() because io_uring guarantees
-+	 * that ublk_dispatch_req() is always called
-+	 */
-+	req = blk_mq_tag_to_rq(ub->tag_set.tags[ubq->q_id], tag);
-+	if (req && blk_mq_request_started(req))
-+		return;
-+
- 	spin_lock(&ubq->cancel_lock);
- 	done = !!(io->flags & UBLK_IO_FLAG_CANCELED);
- 	if (!done)
-@@ -1694,7 +1711,6 @@ static void ublk_uring_cmd_cancel_fn(struct io_uring_cmd *cmd,
- 	struct ublk_uring_cmd_pdu *pdu = ublk_get_uring_cmd_pdu(cmd);
- 	struct ublk_queue *ubq = pdu->ubq;
- 	struct task_struct *task;
--	struct ublk_io *io;
- 
- 	if (WARN_ON_ONCE(!ubq))
- 		return;
-@@ -1709,9 +1725,8 @@ static void ublk_uring_cmd_cancel_fn(struct io_uring_cmd *cmd,
- 	if (!ubq->canceling)
- 		ublk_start_cancel(ubq);
- 
--	io = &ubq->ios[pdu->tag];
--	WARN_ON_ONCE(io->cmd != cmd);
--	ublk_cancel_cmd(ubq, io, issue_flags);
-+	WARN_ON_ONCE(ubq->ios[pdu->tag].cmd != cmd);
-+	ublk_cancel_cmd(ubq, pdu->tag, issue_flags);
- }
- 
- static inline bool ublk_queue_ready(struct ublk_queue *ubq)
-@@ -1724,7 +1739,7 @@ static void ublk_cancel_queue(struct ublk_queue *ubq)
- 	int i;
- 
- 	for (i = 0; i < ubq->q_depth; i++)
--		ublk_cancel_cmd(ubq, &ubq->ios[i], IO_URING_F_UNLOCKED);
-+		ublk_cancel_cmd(ubq, i, IO_URING_F_UNLOCKED);
- }
- 
- /* Cancel all pending commands, must be called after del_gendisk() returns */
+LGTM. I'm surprise we even have VM_NOHUGEPAGE on kernels ... without 
+THP. I mean, as you say, even setting MADV_NOHUGEPAGE does not wrok.
+
 -- 
-2.43.0
+Cheers,
+
+David / dhildenb
 
 
