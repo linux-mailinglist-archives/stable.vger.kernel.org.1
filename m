@@ -1,258 +1,132 @@
-Return-Path: <stable+bounces-142764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9AFFAAED74
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 22:52:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CF71AAED81
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 22:58:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 431A1B22896
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:50:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2E6C4648DE
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:58:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4C8D28FAAA;
-	Wed,  7 May 2025 20:51:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E57B28F93B;
+	Wed,  7 May 2025 20:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="edCtGUZJ"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="WuuGgEbx"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2580A1C54A2;
-	Wed,  7 May 2025 20:51:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6ACF17E4;
+	Wed,  7 May 2025 20:58:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746651098; cv=none; b=NAwdEfAHYKLbVdFRTTjrPhJVpIQecL5U4oy3HnYCRox5K9o1vVInRjWEjK9DvsiazTIajCVlQpFdYu+KM5XbxOPYDNTIrvVsqTG+/6/rtjJUrwMn5HYGHS1d12WXyBG+y48imAdxg7DUEoG3FKlDfUnkKPjWyy6P5h0oWko6h5Q=
+	t=1746651506; cv=none; b=WkZsZts+T4sY5vVLBJvOOuxXvePIb4YDtOFCsddgo0yWnBtD0aB3lOWxmwTN9IdpGjF/GRS1MtlM/FRPIZEyN05XMxl1H2HJaaKDYYlylUMoZfVG7GHkEVQBP1QetLRmPuXKgl47hKmnQbRrUn8Fz8kPbDn2M/Cvuk/nCUgQxAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746651098; c=relaxed/simple;
-	bh=49uI3NCatv+Pg7zw/gjti7iKg2CycLAoxiN1rFKj6yo=;
-	h=Date:To:From:Subject:Message-Id; b=Y7x1cXe1HWZozFjaXY4jdlq3HILHDDHMxE6tGMGVSE7msr9KHAXcwFWMSLlu//d0vpeZlUEWN1V50SY0s0hgz+ZjclHOKP/c4aRJ034lgj2mR3IcTA9zYtsv4TNSYX46/U/pRvuLFI+Cp+c8DXzN01//0+UKEvTXfhnAW7MjAE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=edCtGUZJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 862E1C4CEE2;
-	Wed,  7 May 2025 20:51:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1746651097;
-	bh=49uI3NCatv+Pg7zw/gjti7iKg2CycLAoxiN1rFKj6yo=;
-	h=Date:To:From:Subject:From;
-	b=edCtGUZJ32uMPI9sH3CWZtyNJIx3rnrsG9RPdgsOrFffSPdh4vi/cY2taqhqe4EnQ
-	 aKeGrpz/kwh22rbhxLV6NN1PcZN9h/BfstCepfLiHxoJVRZMAxDvJl0YCJ40f/H9+4
-	 TiqPoxLYFH6BAGR3cO9ppBQB6u22/Y95BUtFyztA=
-Date: Wed, 07 May 2025 13:51:36 -0700
-To: mm-commits@vger.kernel.org,vbabka@suse.cz,tglx@linutronix.de,surenb@google.com,stable@vger.kernel.org,mhocko@suse.com,jackmanb@google.com,hannes@cmpxchg.org,bp@alien8.de,kirill.shutemov@linux.intel.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-page_alloc-fix-race-condition-in-unaccepted-memory-handling.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250507205137.862E1C4CEE2@smtp.kernel.org>
+	s=arc-20240116; t=1746651506; c=relaxed/simple;
+	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nCr2ZqociS0tTx3tPkuukNhl8cnnf/fN2bv6RRWEZ0sdl8hhuZesHsaKusCz4LH10ztvehwNIFUC9O4ytXNMGya31klQjdMPr/B8Pj4GbD+0530QoRC73gN/f5wXE5E1fDo3TmVvRiiN74XycLntksetfHZmtpkPIBeUF/y+bX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=WuuGgEbx; arc=none smtp.client-ip=212.227.15.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1746651496; x=1747256296; i=rwarsow@gmx.de;
+	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=WuuGgEbxK6eW47+i4u9bdSVdWyPdfMmMgY900vSNdsu/LeG/qJH2/85qP/MiC2v2
+	 KlE6EaxjYMF0huVxFgieAjk7mdgSlR5Uvh9YuIdbs893FjCi+W5ZcmdRUYQr9M8T3
+	 OseLgonYwEdwTIZZAtFT7x/byrzCJGuPYzswXXhXrDtcqfxLaD+1ar4cUeLVnvkwy
+	 vFq04TPxfhOOSWboYtsujX+bMweooZcZ7Dl7DHyButCKwJVhoGlSnSSCK7LV+8keT
+	 SFnNzRg1U2UV77LRgnzEppTRheBjNV/+FgpTHBkDkwlDzMTTcOOrcQj9J07ty2C+Y
+	 Tzmm8dSJQNDG5jb0OQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.200.20] ([46.142.34.53]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1MYvY2-1uYkfY0bWS-00VQGH; Wed, 07
+ May 2025 22:58:16 +0200
+Message-ID: <b1f3a530-e409-44a6-afcd-94810bffc347@gmx.de>
+Date: Wed, 7 May 2025 22:58:14 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.14 000/183] 6.14.6-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250507183824.682671926@linuxfoundation.org>
+From: Ronald Warsow <rwarsow@gmx.de>
+Content-Language: de-DE, en-US
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:1C2B/l1POeCqXlGcOcZ6PspWZE1x5i37JhwY4B6QEOMA0Msd1ru
+ seVOLvWt/dZA3rYPcc56MAVhQ+9R/epVwwMua8gRDvodSzt815QUS60cJ/A7XiXxIPR5vJ7
+ 2zvOnOYsXTuqHagyp1YI5ZQU66LQeEm2JU89/snhieEbu9b/Oka0OhXg82DldxbcCk/G8kK
+ 6Qt1bc5QBo0CQSQkIWb7w==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:cBXX96OWt3I=;WIbHqEggykxn1cSdRIPHCVv6k7c
+ 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
 
+Hi Greg
 
-The patch titled
-     Subject: mm/page_alloc: fix race condition in unaccepted memory handling
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-page_alloc-fix-race-condition-in-unaccepted-memory-handling.patch
+no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-page_alloc-fix-race-condition-in-unaccepted-memory-handling.patch
+Thanks
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: mm/page_alloc: fix race condition in unaccepted memory handling
-Date: Tue, 6 May 2025 16:32:07 +0300
-
-The page allocator tracks the number of zones that have unaccepted memory
-using static_branch_enc/dec() and uses that static branch in hot paths to
-determine if it needs to deal with unaccepted memory.
-
-Borislav and Thomas pointed out that the tracking is racy: operations on
-static_branch are not serialized against adding/removing unaccepted pages
-to/from the zone.
-
-Sanity checks inside static_branch machinery detects it:
-
-WARNING: CPU: 0 PID: 10 at kernel/jump_label.c:276 __static_key_slow_dec_cpuslocked+0x8e/0xa0
-
-The comment around the WARN() explains the problem:
-
-	/*
-	 * Warn about the '-1' case though; since that means a
-	 * decrement is concurrent with a first (0->1) increment. IOW
-	 * people are trying to disable something that wasn't yet fully
-	 * enabled. This suggests an ordering problem on the user side.
-	 */
-
-The effect of this static_branch optimization is only visible on
-microbenchmark.
-
-Instead of adding more complexity around it, remove it altogether.
-
-Link: https://lkml.kernel.org/r/20250506133207.1009676-1-kirill.shutemov@linux.intel.com
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Fixes: dcdfdd40fa82 ("mm: Add support for unaccepted memory")
-Link: https://lore.kernel.org/all/20250506092445.GBaBnVXXyvnazly6iF@fat_crate.local
-Reported-by: Borislav Petkov <bp@alien8.de>
-Tested-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reported-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Brendan Jackman <jackmanb@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: <stable@vger.kernel.org>	[6.5+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/internal.h   |    1 
- mm/mm_init.c    |    1 
- mm/page_alloc.c |   47 ----------------------------------------------
- 3 files changed, 49 deletions(-)
-
---- a/mm/internal.h~mm-page_alloc-fix-race-condition-in-unaccepted-memory-handling
-+++ a/mm/internal.h
-@@ -1590,7 +1590,6 @@ unsigned long move_page_tables(struct pa
- 
- #ifdef CONFIG_UNACCEPTED_MEMORY
- void accept_page(struct page *page);
--void unaccepted_cleanup_work(struct work_struct *work);
- #else /* CONFIG_UNACCEPTED_MEMORY */
- static inline void accept_page(struct page *page)
- {
---- a/mm/mm_init.c~mm-page_alloc-fix-race-condition-in-unaccepted-memory-handling
-+++ a/mm/mm_init.c
-@@ -1441,7 +1441,6 @@ static void __meminit zone_init_free_lis
- 
- #ifdef CONFIG_UNACCEPTED_MEMORY
- 	INIT_LIST_HEAD(&zone->unaccepted_pages);
--	INIT_WORK(&zone->unaccepted_cleanup, unaccepted_cleanup_work);
- #endif
- }
- 
---- a/mm/page_alloc.c~mm-page_alloc-fix-race-condition-in-unaccepted-memory-handling
-+++ a/mm/page_alloc.c
-@@ -7180,16 +7180,8 @@ bool has_managed_dma(void)
- 
- #ifdef CONFIG_UNACCEPTED_MEMORY
- 
--/* Counts number of zones with unaccepted pages. */
--static DEFINE_STATIC_KEY_FALSE(zones_with_unaccepted_pages);
--
- static bool lazy_accept = true;
- 
--void unaccepted_cleanup_work(struct work_struct *work)
--{
--	static_branch_dec(&zones_with_unaccepted_pages);
--}
--
- static int __init accept_memory_parse(char *p)
- {
- 	if (!strcmp(p, "lazy")) {
-@@ -7214,11 +7206,7 @@ static bool page_contains_unaccepted(str
- static void __accept_page(struct zone *zone, unsigned long *flags,
- 			  struct page *page)
- {
--	bool last;
--
- 	list_del(&page->lru);
--	last = list_empty(&zone->unaccepted_pages);
--
- 	account_freepages(zone, -MAX_ORDER_NR_PAGES, MIGRATE_MOVABLE);
- 	__mod_zone_page_state(zone, NR_UNACCEPTED, -MAX_ORDER_NR_PAGES);
- 	__ClearPageUnaccepted(page);
-@@ -7227,28 +7215,6 @@ static void __accept_page(struct zone *z
- 	accept_memory(page_to_phys(page), PAGE_SIZE << MAX_PAGE_ORDER);
- 
- 	__free_pages_ok(page, MAX_PAGE_ORDER, FPI_TO_TAIL);
--
--	if (last) {
--		/*
--		 * There are two corner cases:
--		 *
--		 * - If allocation occurs during the CPU bring up,
--		 *   static_branch_dec() cannot be used directly as
--		 *   it causes a deadlock on cpu_hotplug_lock.
--		 *
--		 *   Instead, use schedule_work() to prevent deadlock.
--		 *
--		 * - If allocation occurs before workqueues are initialized,
--		 *   static_branch_dec() should be called directly.
--		 *
--		 *   Workqueues are initialized before CPU bring up, so this
--		 *   will not conflict with the first scenario.
--		 */
--		if (system_wq)
--			schedule_work(&zone->unaccepted_cleanup);
--		else
--			unaccepted_cleanup_work(&zone->unaccepted_cleanup);
--	}
- }
- 
- void accept_page(struct page *page)
-@@ -7285,20 +7251,12 @@ static bool try_to_accept_memory_one(str
- 	return true;
- }
- 
--static inline bool has_unaccepted_memory(void)
--{
--	return static_branch_unlikely(&zones_with_unaccepted_pages);
--}
--
- static bool cond_accept_memory(struct zone *zone, unsigned int order,
- 			       int alloc_flags)
- {
- 	long to_accept, wmark;
- 	bool ret = false;
- 
--	if (!has_unaccepted_memory())
--		return false;
--
- 	if (list_empty(&zone->unaccepted_pages))
- 		return false;
- 
-@@ -7336,22 +7294,17 @@ static bool __free_unaccepted(struct pag
- {
- 	struct zone *zone = page_zone(page);
- 	unsigned long flags;
--	bool first = false;
- 
- 	if (!lazy_accept)
- 		return false;
- 
- 	spin_lock_irqsave(&zone->lock, flags);
--	first = list_empty(&zone->unaccepted_pages);
- 	list_add_tail(&page->lru, &zone->unaccepted_pages);
- 	account_freepages(zone, MAX_ORDER_NR_PAGES, MIGRATE_MOVABLE);
- 	__mod_zone_page_state(zone, NR_UNACCEPTED, MAX_ORDER_NR_PAGES);
- 	__SetPageUnaccepted(page);
- 	spin_unlock_irqrestore(&zone->lock, flags);
- 
--	if (first)
--		static_branch_inc(&zones_with_unaccepted_pages);
--
- 	return true;
- }
- 
-_
-
-Patches currently in -mm which might be from kirill.shutemov@linux.intel.com are
-
-mm-page_alloc-ensure-try_alloc_pages-plays-well-with-unaccepted-memory.patch
-mm-page_alloc-fix-race-condition-in-unaccepted-memory-handling.patch
-
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
 
