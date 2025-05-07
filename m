@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-142324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1318AAAEA24
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:51:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1EDBAAEACC
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:59:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88D391B64B8E
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:51:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2B91502069
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:59:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94F3F28AAE9;
-	Wed,  7 May 2025 18:51:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CCD71482F5;
+	Wed,  7 May 2025 18:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HnTN7cbR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qw8I+ulc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 546EF214813;
-	Wed,  7 May 2025 18:51:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B151A00E7;
+	Wed,  7 May 2025 18:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643900; cv=none; b=NjRL+8mLHS6Dp+5SUfOKMUGgPvha51YIk4IrjGXOxPAzcCcDq3kB3BNmb5aBIKaiKOYNfK3Jf/4pGu0Etq8Z1crJV3P908rflag1TqNaW7X1+siO8yoF6Q10ivQVuv53212SW+ZxRmvmNw1X/kBnux4FxNPTC5nhuSigZC2J3f0=
+	t=1746644386; cv=none; b=Gulk8WaPORX92+VIXDeHee7sb8a3+WHVqwOWgi/wlBjdCnxThgXAH7KyqaNggXwHgLq7AITyeuvpoxpO2Ed9yDi8QoDUoSXIXe7v0a8xiVw47UkwkSjAsqocrwqyJpU7emKh/j85W9c2mO4tcaptVv98sJ/HG6xyQj563JtVDL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643900; c=relaxed/simple;
-	bh=/WvzxSC/autKE1PbIAnga3SW924c0KtTUkS9PX7vL9s=;
+	s=arc-20240116; t=1746644386; c=relaxed/simple;
+	bh=Jj0pgvVvBP2/kYumAkXf3iSy8EIEm1hDwrd79jt5Qq4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fK61AAPS4yV52v5wD3KlwrCU2LM35rv+C6VSTOuUFGDa6i8Qo7kCpQBDooxOyEuYSjbHQrv/cEhlnvRfeZm5FcYmIaJgYGYWjrFdBidQ/DfCc0S3YYWw92cPrmR6mJlj0EwLg7vxeZdQWNi5EDbPHajvWXgJqdR0f8YRXI+q2go=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HnTN7cbR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF0CCC4AF0B;
-	Wed,  7 May 2025 18:51:39 +0000 (UTC)
+	 MIME-Version; b=krStlJkLT65KuKchGK00hklovj7zEjWx81O+ricFvLOSS8on47MVnXwgkIkySL1ZCk36COjVJPimYyMXG00fKNPRghrgcPMncAPfE5iaLdwH/VJT54/WGohFzFR475pTudu+T/I7dakk+KGp23GaAPZU30EiKJEJEy0llUmGiqY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qw8I+ulc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8D21C4CEE2;
+	Wed,  7 May 2025 18:59:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643900;
-	bh=/WvzxSC/autKE1PbIAnga3SW924c0KtTUkS9PX7vL9s=;
+	s=korg; t=1746644386;
+	bh=Jj0pgvVvBP2/kYumAkXf3iSy8EIEm1hDwrd79jt5Qq4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HnTN7cbR1yjmMN8F4VenZV4zQK6PQYfooxwTvy/rkLvHfzDc/X5cdfQMKhenDYk7O
-	 1BFRwRa066bejb+dacChsb9TqAFkmy89fBIcA3Htw12zuc2bkU+TItYXjAs0U6AxDi
-	 X9U1Oc8ECuAvmVUdqOGnr+4dM5HYWRsoDxGUGwdY=
+	b=qw8I+ulcHFN530vZ3NXBUS5HihhqMNJk6BVFOCS4AvN7nYIflAnYoHe9oQ4zan+MT
+	 9R9oKn3TeY3I4PepUdh4rbnHN+ugoZCBXd1s+Hm86XrcxgSoR8UcNejWDYhOyf4noU
+	 vs1s7tbUdXfINgr+G34oZXkV92EKvtAYqZDiU9l0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Huang <mmpgouride@gmail.com>,
-	Kent Overstreet <kent.overstreet@linux.dev>
-Subject: [PATCH 6.14 047/183] bcachefs: Remove incorrect __counted_by annotation
+	Lubomir Rintel <lkundrak@v3.sk>,
+	Christian Heusel <christian@heusel.eu>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 007/164] Revert "rndis_host: Flag RNDIS modems as WWAN devices"
 Date: Wed,  7 May 2025 20:38:12 +0200
-Message-ID: <20250507183826.599950705@linuxfoundation.org>
+Message-ID: <20250507183821.118775910@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Huang <mmpgouride@gmail.com>
+From: Christian Heusel <christian@heusel.eu>
 
-commit 6846100b00d97d3d6f05766ae86a0d821d849e78 upstream.
+commit 765f253e28909f161b0211f85cf0431cfee7d6df upstream.
 
-This actually reverts 86e92eeeb237 ("bcachefs: Annotate struct bch_xattr
-with __counted_by()").
+This reverts commit 67d1a8956d2d62fe6b4c13ebabb57806098511d8. Since this
+commit has been proven to be problematic for the setup of USB-tethered
+ethernet connections and the related breakage is very noticeable for
+users it should be reverted until a fixed version of the change can be
+rolled out.
 
-After the x_name, there is a value. According to the disscussion[1],
-__counted_by assumes that the flexible array member contains exactly
-the amount of elements that are specified. Now there are users came across
-a false positive detection of an out of bounds write caused by
-the __counted_by here[2], so revert that.
-
-[1] https://lore.kernel.org/lkml/Zv8VDKWN1GzLRT-_@archlinux/T/#m0ce9541c5070146320efd4f928cc1ff8de69e9b2
-[2] https://privatebin.net/?a0d4e97d590d71e1#9bLmp2Kb5NU6X6cZEucchDcu88HzUQwHUah8okKPReEt
-
-Signed-off-by: Alan Huang <mmpgouride@gmail.com>
-Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
+Closes: https://lore.kernel.org/all/e0df2d85-1296-4317-b717-bd757e3ab928@heusel.eu/
+Link: https://chaos.social/@gromit/114377862699921553
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220002
+Link: https://bugs.gentoo.org/953555
+Link: https://bbs.archlinux.org/viewtopic.php?id=304892
+Cc: stable@vger.kernel.org
+Acked-by: Lubomir Rintel <lkundrak@v3.sk>
+Signed-off-by: Christian Heusel <christian@heusel.eu>
+Link: https://patch.msgid.link/20250424-usb-tethering-fix-v1-1-b65cf97c740e@heusel.eu
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/bcachefs/xattr_format.h |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/usb/rndis_host.c |   16 ++--------------
+ 1 file changed, 2 insertions(+), 14 deletions(-)
 
---- a/fs/bcachefs/xattr_format.h
-+++ b/fs/bcachefs/xattr_format.h
-@@ -13,7 +13,13 @@ struct bch_xattr {
- 	__u8			x_type;
- 	__u8			x_name_len;
- 	__le16			x_val_len;
--	__u8			x_name[] __counted_by(x_name_len);
-+	/*
-+	 * x_name contains the name and value counted by
-+	 * x_name_len + x_val_len. The introduction of
-+	 * __counted_by(x_name_len) caused a false positive
-+	 * detection of an out of bounds write.
-+	 */
-+	__u8			x_name[];
- } __packed __aligned(8);
+--- a/drivers/net/usb/rndis_host.c
++++ b/drivers/net/usb/rndis_host.c
+@@ -630,16 +630,6 @@ static const struct driver_info	zte_rndi
+ 	.tx_fixup =	rndis_tx_fixup,
+ };
  
- #endif /* _BCACHEFS_XATTR_FORMAT_H */
+-static const struct driver_info	wwan_rndis_info = {
+-	.description =	"Mobile Broadband RNDIS device",
+-	.flags =	FLAG_WWAN | FLAG_POINTTOPOINT | FLAG_FRAMING_RN | FLAG_NO_SETINT,
+-	.bind =		rndis_bind,
+-	.unbind =	rndis_unbind,
+-	.status =	rndis_status,
+-	.rx_fixup =	rndis_rx_fixup,
+-	.tx_fixup =	rndis_tx_fixup,
+-};
+-
+ /*-------------------------------------------------------------------------*/
+ 
+ static const struct usb_device_id	products [] = {
+@@ -676,11 +666,9 @@ static const struct usb_device_id	produc
+ 	USB_INTERFACE_INFO(USB_CLASS_WIRELESS_CONTROLLER, 1, 3),
+ 	.driver_info = (unsigned long) &rndis_info,
+ }, {
+-	/* Mobile Broadband Modem, seen in Novatel Verizon USB730L and
+-	 * Telit FN990A (RNDIS)
+-	 */
++	/* Novatel Verizon USB730L */
+ 	USB_INTERFACE_INFO(USB_CLASS_MISC, 4, 1),
+-	.driver_info = (unsigned long)&wwan_rndis_info,
++	.driver_info = (unsigned long) &rndis_info,
+ },
+ 	{ },		// END
+ };
 
 
 
