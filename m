@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-142603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC2FAAAEB70
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:07:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EF9EAAEB62
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:07:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A88B525FA8
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:06:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC9D61C09205
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:06:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6BF4214813;
-	Wed,  7 May 2025 19:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1F8A2144BF;
+	Wed,  7 May 2025 19:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aRAJCAAZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zsiESnIF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9234728DF4F;
-	Wed,  7 May 2025 19:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F1DC28DF2A;
+	Wed,  7 May 2025 19:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644762; cv=none; b=Px4QtEUzQbBs+VDCN1/AeN5fFdITxiE13jBfa+UKi5V8OAMySLmBVuhiPhAn01A3qIoKYobQzLdprv5lJcak6g3KZaH0K3GvWxEiC3Sem6AxDUyX6h08zE+PW0sSmzuoqRxfj/LsLLwPMCyAKsqHllvVYQQHlH/Cqqf9zE+aBsI=
+	t=1746644765; cv=none; b=JEwLetGuViKgm0xXbcEMKUZFGt1FcCW+dAOQPntQijxezFL6Dno2MCAbPfiIMoWYNgVBXR+8JMuguXfcnf6TrY2U6VLo+8NWtvr7vVAVt+s5VFNWORoQbZlL2BRrCHcu+hu56wnuholBzIy8RoK/m9vc96vOACg/7yAjVOXjQKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644762; c=relaxed/simple;
-	bh=8YXXn3Ha5eLbQRtxqLmWEpeXponJQqzNuX4+d5/x7HQ=;
+	s=arc-20240116; t=1746644765; c=relaxed/simple;
+	bh=9rWIiAqIFCyt/x/ZgnR+je6y9YvT7NXY+xFSDpXFhjs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ELEyVcej9jx+6M131Gw7ogRc0cheTdudVkJuw7f1gUOrS5MQixDM8ygMnO5ivOFzixkY60wZdE+HE8JGuFkdOVvdVnWZmHW4WkgnDNt0HiJBZZWwasK99aYN/Bxj0BFBm/Npv9nedtLcFiSHpfkpTX9dpjbfdNWifvWgquG88cs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aRAJCAAZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25A96C4CEE2;
-	Wed,  7 May 2025 19:06:01 +0000 (UTC)
+	 MIME-Version; b=iek4VJNeZMg/NjtD3gOXHzh7d8uzz3sNdCzeL70NmO0CGMkufDU11T1wGJbgHvRy+CcWpBPCjkCq1dqDfYXnYc4gaTEQyOx9OtEx4NshNLXvuDyRT8lK+c2PXwvpBjX/aQagmYgTH18dsntUtCZvAQ1sFTma2V1geXbeU+gTIPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zsiESnIF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3429C4CEE2;
+	Wed,  7 May 2025 19:06:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644762;
-	bh=8YXXn3Ha5eLbQRtxqLmWEpeXponJQqzNuX4+d5/x7HQ=;
+	s=korg; t=1746644765;
+	bh=9rWIiAqIFCyt/x/ZgnR+je6y9YvT7NXY+xFSDpXFhjs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aRAJCAAZFJTp1ZUGkX/5jS+RgFyAiY8g2ZsE8XVzKQ4wTsBtWZ+sOJtRhqmt5qKeF
-	 xHTV+sDg5YjaSs6JmZbXaQtiUKIKQJ4x3rLtKhuJIKdQJ68wFQHoCbu6OZrREPq9Gj
-	 LyES36w36jICg0ysJZV9XpOgp3S4o+ehWnykyo40=
+	b=zsiESnIFjRbH4V4NhPKj2jJSPIbfmxxGgB2YZjEdT7mjj/m0WaHnrohwsz4z2Ke28
+	 +XGU4ihiSGq4CGB0PdW/9dq028HDXhrJgradYs2VDRfP8ZnVnXnZTjtISNhZLoB0+4
+	 GfIeSLSe4eB6zIF7qbF29WJTBE2T1Mfc3osNe6pc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Simon Horman <horms@kernel.org>,
 	Jamal Hadi Salim <jhs@mojatatu.com>,
 	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.12 148/164] sch_drr: make drr_qlen_notify() idempotent
-Date: Wed,  7 May 2025 20:40:33 +0200
-Message-ID: <20250507183826.963204245@linuxfoundation.org>
+Subject: [PATCH 6.12 149/164] sch_hfsc: make hfsc_qlen_notify() idempotent
+Date: Wed,  7 May 2025 20:40:34 +0200
+Message-ID: <20250507183827.004283754@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
 References: <20250507183820.781599563@linuxfoundation.org>
@@ -70,64 +70,53 @@ Content-Transfer-Encoding: 8bit
 
 From: Cong Wang <xiyou.wangcong@gmail.com>
 
-commit df008598b3a00be02a8051fde89ca0fbc416bd55 upstream.
+commit 51eb3b65544c9efd6a1026889ee5fb5aa62da3bb upstream.
 
-drr_qlen_notify() always deletes the DRR class from its active list
-with list_del(), therefore, it is not idempotent and not friendly
-to its callers, like fq_codel_dequeue().
+hfsc_qlen_notify() is not idempotent either and not friendly
+to its callers, like fq_codel_dequeue(). Let's make it idempotent
+to ease qdisc_tree_reduce_backlog() callers' life:
 
-Let's make it idempotent to ease qdisc_tree_reduce_backlog() callers'
-life. Also change other list_del()'s to list_del_init() just to be
-extra safe.
+1. update_vf() decreases cl->cl_nactive, so we can check whether it is
+non-zero before calling it.
+
+2. eltree_remove() always removes RB node cl->el_node, but we can use
+   RB_EMPTY_NODE() + RB_CLEAR_NODE() to make it safe.
 
 Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
 Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250403211033.166059-3-xiyou.wangcong@gmail.com
+Link: https://patch.msgid.link/20250403211033.166059-4-xiyou.wangcong@gmail.com
 Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_drr.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ net/sched/sch_hfsc.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/net/sched/sch_drr.c
-+++ b/net/sched/sch_drr.c
-@@ -110,6 +110,7 @@ static int drr_change_class(struct Qdisc
- 		return -ENOBUFS;
- 
- 	gnet_stats_basic_sync_init(&cl->bstats);
-+	INIT_LIST_HEAD(&cl->alist);
- 	cl->common.classid = classid;
- 	cl->quantum	   = quantum;
- 	cl->qdisc	   = qdisc_create_dflt(sch->dev_queue,
-@@ -234,7 +235,7 @@ static void drr_qlen_notify(struct Qdisc
+--- a/net/sched/sch_hfsc.c
++++ b/net/sched/sch_hfsc.c
+@@ -203,7 +203,10 @@ eltree_insert(struct hfsc_class *cl)
+ static inline void
+ eltree_remove(struct hfsc_class *cl)
  {
- 	struct drr_class *cl = (struct drr_class *)arg;
- 
--	list_del(&cl->alist);
-+	list_del_init(&cl->alist);
+-	rb_erase(&cl->el_node, &cl->sched->eligible);
++	if (!RB_EMPTY_NODE(&cl->el_node)) {
++		rb_erase(&cl->el_node, &cl->sched->eligible);
++		RB_CLEAR_NODE(&cl->el_node);
++	}
  }
  
- static int drr_dump_class(struct Qdisc *sch, unsigned long arg,
-@@ -393,7 +394,7 @@ static struct sk_buff *drr_dequeue(struc
- 			if (unlikely(skb == NULL))
- 				goto out;
- 			if (cl->qdisc->q.qlen == 0)
--				list_del(&cl->alist);
-+				list_del_init(&cl->alist);
- 
- 			bstats_update(&cl->bstats, skb);
- 			qdisc_bstats_update(sch, skb);
-@@ -434,7 +435,7 @@ static void drr_reset_qdisc(struct Qdisc
- 	for (i = 0; i < q->clhash.hashsize; i++) {
- 		hlist_for_each_entry(cl, &q->clhash.hash[i], common.hnode) {
- 			if (cl->qdisc->q.qlen)
--				list_del(&cl->alist);
-+				list_del_init(&cl->alist);
- 			qdisc_reset(cl->qdisc);
- 		}
- 	}
+ static inline void
+@@ -1225,7 +1228,8 @@ hfsc_qlen_notify(struct Qdisc *sch, unsi
+ 	/* vttree is now handled in update_vf() so that update_vf(cl, 0, 0)
+ 	 * needs to be called explicitly to remove a class from vttree.
+ 	 */
+-	update_vf(cl, 0, 0);
++	if (cl->cl_nactive)
++		update_vf(cl, 0, 0);
+ 	if (cl->cl_flags & HFSC_RSC)
+ 		eltree_remove(cl);
+ }
 
 
 
