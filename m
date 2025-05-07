@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-142286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0F5DAAE9F9
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:50:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85029AAE9F6
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:50:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4F69507B84
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:49:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 50E8B9E2542
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:49:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C1C3289348;
-	Wed,  7 May 2025 18:49:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C80CA28B4F0;
+	Wed,  7 May 2025 18:49:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sz/TkrD1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pKciOqbZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39A34211283;
-	Wed,  7 May 2025 18:49:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 861E6211A2A;
+	Wed,  7 May 2025 18:49:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643788; cv=none; b=Or4UlPRddMYSWkm0sYJUzDqc1O/+TNcIFet+ZZC/idCKG6L1QXPc7IO2uAxRtg9u3VnGWZJLL7N9PP/Q8BMx2y2NtzLD1zosFGNpjZkwuUclwPo8RlkX37ve7+menVtOAzVMAFfAfqsHj+KOJyJG3q7a+iUXrpC+KTbQV82rPRM=
+	t=1746643791; cv=none; b=c9rE7y7mtOsXPWTggJZJJUtpMmDN9/vugG0azW1nMpyrFjSATzrqH5klLW34E7UGIYOB2gMRrvtcltY4PHZxttDYIDNrx54MLuu44rpWKmpXlbI2dwuO+4G8A6D+own9mMARBX3XeAxsS+bs5q9+iavV6PbMqZKQItEeEnZqOtU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643788; c=relaxed/simple;
-	bh=Dr9QEsxxaKzJ0T3IPVuFNl0RuJa4V6cG8FOVUozKoAY=;
+	s=arc-20240116; t=1746643791; c=relaxed/simple;
+	bh=JxGNxrk/PBUy3HpcHV/KXBR8MJdbuMNxDWMt9XeZPWo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tGxqXYqflEuwOCMeLU6gdtUYBj19vzJ9fMzWGjCPVxyYE0OkanErX/O0SZZPIS5dFSvgJBj42vM2S8cZONMWeGAo0yiewv2szEznonLx2Rb7kSx5/IhAI/ey6ZLmbVNBffYHGfiKXB+qiDi71tbdN2PWbfoddUt8Nvvl7yBy42o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sz/TkrD1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA019C4CEE9;
-	Wed,  7 May 2025 18:49:47 +0000 (UTC)
+	 MIME-Version; b=lMMjoR53L2GLG4moPOwwZgwex3ZTrsgWVs31E1w45XxMDnwA9xskMnylN/Fq+HYQajhIZ9yd5w8UAxeB/0o3e+iMVlZ3u213XTWVHNuh86jL0iZQgxVm3go7XN+UI1aIkT7eeAUwuq6KHZugGuG+KNh6TDAuGID8eQn0hicAMzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pKciOqbZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1D10C4CEE2;
+	Wed,  7 May 2025 18:49:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643788;
-	bh=Dr9QEsxxaKzJ0T3IPVuFNl0RuJa4V6cG8FOVUozKoAY=;
+	s=korg; t=1746643791;
+	bh=JxGNxrk/PBUy3HpcHV/KXBR8MJdbuMNxDWMt9XeZPWo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sz/TkrD1IkAcUM0+COZz0VVrY0XBZiwZ8GecX7NaCPoLRFnaM0I9bMzEF7LZHL/L1
-	 4MkgO2Qjw8lGnh9KI1CS+Ke7exPniQshVE5UvOAbQUoMDtM/gYW7UjA46jclg0r1uc
-	 r6uV9xvdLH3t7Mb6QchQYl76IrKuCbixhqEW5Wqg=
+	b=pKciOqbZBxbqdMT1L/fJ+5uD38cX4m/rWReryjkynHkb2DvUBXHtA0V0HYzVCAH39
+	 rMRG2v4IJIj9M0YZezfCXB3lL7Fva/yVU1LJ4NPvGdxMl7VMwF2L4MddW6rCgIqJx2
+	 TvqvmOBwJ1/zQvxh/e6NZehEZWu3PlB53BPeOs0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Dave Chen <davechen@synology.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.14 007/183] btrfs: fix COW handling in run_delalloc_nocow()
-Date: Wed,  7 May 2025 20:37:32 +0200
-Message-ID: <20250507183824.989772256@linuxfoundation.org>
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.14 008/183] cpufreq: intel_pstate: Unchecked MSR aceess in legacy mode
+Date: Wed,  7 May 2025 20:37:33 +0200
+Message-ID: <20250507183825.030149378@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
 References: <20250507183824.682671926@linuxfoundation.org>
@@ -66,59 +65,61 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dave Chen <davechen@synology.com>
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-commit be3f1938d3e6ea8186f0de3dd95245dda4f22c1e upstream.
+commit ac4e04d9e378f5aa826c2406ad7871ae1b6a6fb9 upstream.
 
-In run_delalloc_nocow(), when the found btrfs_key's offset > cur_offset,
-it indicates a gap between the current processing region and
-the next file extent. The original code would directly jump to
-the "must_cow" label, which increments the slot and forces a fallback
-to COW. This behavior might skip an extent item and result in an
-overestimated COW fallback range.
+When turbo mode is unavailable on a Skylake-X system, executing the
+command:
 
-This patch modifies the logic so that when a gap is detected:
+ # echo 1 > /sys/devices/system/cpu/intel_pstate/no_turbo
 
-- If no COW range is already being recorded (cow_start is unset),
-  cow_start is set to cur_offset.
+results in an unchecked MSR access error:
 
-- cur_offset is then advanced to the beginning of the next extent.
+ WRMSR to 0x199 (attempted to write 0x0000000100001300).
 
-- Instead of jumping to "must_cow", control flows directly to
-  "next_slot" so that the same extent item can be reexamined properly.
+This issue was reproduced on an OEM (Original Equipment Manufacturer)
+system and is not a common problem across all Skylake-X systems.
 
-The change ensures that we accurately account for the extent gap and
-avoid accidentally extending the range that needs to fallback to COW.
+This error occurs because the MSR 0x199 Turbo Engage Bit (bit 32) is set
+when turbo mode is disabled. The issue arises when intel_pstate fails to
+detect that turbo mode is disabled. Here intel_pstate relies on
+MSR_IA32_MISC_ENABLE bit 38 to determine the status of turbo mode.
+However, on this system, bit 38 is not set even when turbo mode is
+disabled.
 
-CC: stable@vger.kernel.org # 6.6+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Dave Chen <davechen@synology.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+According to the Intel Software Developer's Manual (SDM), the BIOS sets
+this bit during platform initialization to enable or disable
+opportunistic processor performance operations. Logically, this bit
+should be set in such cases. However, the SDM also specifies that "OS
+and applications must use CPUID leaf 06H to detect processors with
+opportunistic processor performance operations enabled."
+
+Therefore, in addition to checking MSR_IA32_MISC_ENABLE bit 38, verify
+that CPUID.06H:EAX[1] is 0 to accurately determine if turbo mode is
+disabled.
+
+Fixes: 4521e1a0ce17 ("cpufreq: intel_pstate: Reflect current no_turbo state correctly")
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/inode.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/cpufreq/intel_pstate.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -2083,12 +2083,13 @@ next_slot:
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -598,6 +598,9 @@ static bool turbo_is_disabled(void)
+ {
+ 	u64 misc_en;
  
- 		/*
- 		 * If the found extent starts after requested offset, then
--		 * adjust extent_end to be right before this extent begins
-+		 * adjust cur_offset to be right before this extent begins.
- 		 */
- 		if (found_key.offset > cur_offset) {
--			extent_end = found_key.offset;
--			extent_type = 0;
--			goto must_cow;
-+			if (cow_start == (u64)-1)
-+				cow_start = cur_offset;
-+			cur_offset = found_key.offset;
-+			goto next_slot;
- 		}
++	if (!cpu_feature_enabled(X86_FEATURE_IDA))
++		return true;
++
+ 	rdmsrl(MSR_IA32_MISC_ENABLE, misc_en);
  
- 		/*
+ 	return !!(misc_en & MSR_IA32_MISC_ENABLE_TURBO_DISABLE);
 
 
 
