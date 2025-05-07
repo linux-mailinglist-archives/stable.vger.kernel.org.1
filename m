@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-142161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 728F0AAE951
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:43:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADFEEAAEB21
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:03:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7428F7BB326
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:42:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28802525CE3
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:03:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7BD428DF47;
-	Wed,  7 May 2025 18:43:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E629E28BA9F;
+	Wed,  7 May 2025 19:03:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="prClQVEI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e3dKKGiM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73DD714A4C7;
-	Wed,  7 May 2025 18:43:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A274029A0;
+	Wed,  7 May 2025 19:03:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643401; cv=none; b=CdEBjzMFlH6Uot0udoMoj+u2Zr8pE285s+QOtTkGxHtaELPXcnQrwI92XFC8U6iUwxpnCal/PWnJQU9mChKTjTkDYt1JRy/8Ea09xBV2zuud8xuxSlT4Id/qlPLYAGtrPv3A5GGbrkX4d6Au8eaqt1NUhl2GQ++0TMel20olnnE=
+	t=1746644620; cv=none; b=AxNEhZRK6G3arSgf4Pfip4HeGQRtUsQpstRbtfDTsZTR7EM1SWQuH9yf7+7+HRUtwo1Ln+WATEn/4wUcKw3Lfk2fba1VPcK1x1sZzQWdZVopbY5pFzaUfpey8Erh8bSVYDyYppPsiV+cSTpovuf4xvrs6Bph3cGMA+cBDAkGVho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643401; c=relaxed/simple;
-	bh=50Qd1aiN/cypnTHQ7VJx7GYmVKC+d5nzFQ607LtuA7M=;
+	s=arc-20240116; t=1746644620; c=relaxed/simple;
+	bh=PRELH5o9NnMmpbnjxhlinkz1uPQgNphP5Xl4S2zCA4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WUucDIFO5dG7RODEApievR1LjVtB73atUb/jmOV+wEt8cUMTe2sYAUF5guz2Vnjlp3Vg6veHS4oZdrGcsva8rNYxZGKss0j9PCWuidE/zuFCWzt9EL7kdH9focVtyo0jD92wRvLlyo4exVMHAe2+BV7A6ZLaf2pmEMAgfcP2HT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=prClQVEI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD228C4CEE2;
-	Wed,  7 May 2025 18:43:20 +0000 (UTC)
+	 MIME-Version; b=UiSsjVd/RZSR7dytITH2nA4OStlqnaZk1bY8iDBIDquqEmgOKA9fcOTYdlr+NgDHXs9oTh6EAMUHwwFkZAbkpwbB5MIxzxe1Lt/u2vbaopWAm62Wva9cgMv8W2onS59LeUt8U4Y2kg1VhiwQaiHgg/yoWUPIwOAU68I/E6PFdU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e3dKKGiM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D3A4C4CEE2;
+	Wed,  7 May 2025 19:03:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643401;
-	bh=50Qd1aiN/cypnTHQ7VJx7GYmVKC+d5nzFQ607LtuA7M=;
+	s=korg; t=1746644620;
+	bh=PRELH5o9NnMmpbnjxhlinkz1uPQgNphP5Xl4S2zCA4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=prClQVEIQzS/X3c+SlQfX3GUbPsvo86GH/dBbbcj9gR1aShYVQlvCuLZyfaNN1CF6
-	 5FB0XF8Zxuy3nfS3WNDhaMSQ/hLApXAMJG1mwI07IRGaLmpEI/1057xAw3j1ybQCnf
-	 PRaPemsVdTnvxIOyMeq+VsSL9shL/3cf9Dw7X6YE=
+	b=e3dKKGiMd6Ta5OsEsyd5Opl1STkFOyn8IyX6yRZWqKjKQnk/ooNndufUl0meRYWtM
+	 GPQaJ5kPwWnufVcEVtBCD7unw3OI51VGbjBykHouSM8BH5klya7rvjhuI2rPlgOMob
+	 NqHl4OZbkFdj/ly0jnRH0Zr+neiqbN2HI3nO3n4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fiona Klute <fiona.klute@gmx.de>,
-	kernel-list@raspberrypi.com,
-	Andrew Lunn <andrew@lunn.ch>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Da Xue <da@libre.computer>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 47/55] net: phy: microchip: force IRQ polling mode for lan88xx
+Subject: [PATCH 6.12 103/164] net: mdio: mux-meson-gxl: set reversed bit when using internal phy
 Date: Wed,  7 May 2025 20:39:48 +0200
-Message-ID: <20250507183800.933331828@linuxfoundation.org>
+Message-ID: <20250507183825.144793246@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
-References: <20250507183759.048732653@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,113 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fiona Klute <fiona.klute@gmx.de>
+From: Da Xue <da@libre.computer>
 
-[ Upstream commit 30a41ed32d3088cd0d682a13d7f30b23baed7e93 ]
+[ Upstream commit b23285e93bef729e67519a5209d5b7fde3b4af50 ]
 
-With lan88xx based devices the lan78xx driver can get stuck in an
-interrupt loop while bringing the device up, flooding the kernel log
-with messages like the following:
+This bit is necessary to receive packets from the internal PHY.
+Without this bit set, no activity occurs on the interface.
 
-lan78xx 2-3:1.0 enp1s0u3: kevent 4 may have been dropped
+Normally u-boot sets this bit, but if u-boot is compiled without
+net support, the interface will be up but without any activity.
+If bit is set once, it will work until the IP is powered down or reset.
 
-Removing interrupt support from the lan88xx PHY driver forces the
-driver to use polling instead, which avoids the problem.
+The vendor SDK sets this bit along with the PHY_ID bits.
 
-The issue has been observed with Raspberry Pi devices at least since
-4.14 (see [1], bug report for their downstream kernel), as well as
-with Nvidia devices [2] in 2020, where disabling interrupts was the
-vendor-suggested workaround (together with the claim that phylib
-changes in 4.9 made the interrupt handling in lan78xx incompatible).
-
-Iperf reports well over 900Mbits/sec per direction with client in
---dualtest mode, so there does not seem to be a significant impact on
-throughput (lan88xx device connected via switch to the peer).
-
-[1] https://github.com/raspberrypi/linux/issues/2447
-[2] https://forums.developer.nvidia.com/t/jetson-xavier-and-lan7800-problem/142134/11
-
-Link: https://lore.kernel.org/0901d90d-3f20-4a10-b680-9c978e04ddda@lunn.ch
-Fixes: 792aec47d59d ("add microchip LAN88xx phy driver")
-Signed-off-by: Fiona Klute <fiona.klute@gmx.de>
-Cc: kernel-list@raspberrypi.com
-Cc: stable@vger.kernel.org
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250416102413.30654-1-fiona.klute@gmx.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Da Xue <da@libre.computer>
+Fixes: 9a24e1ff4326 ("net: mdio: add amlogic gxl mdio mux support")
+Link: https://patch.msgid.link/20250425192009.1439508-1-da@libre.computer
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/microchip.c | 46 +++----------------------------------
- 1 file changed, 3 insertions(+), 43 deletions(-)
+ drivers/net/mdio/mdio-mux-meson-gxl.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/microchip.c b/drivers/net/phy/microchip.c
-index 230f2fcf9c46a..7c8bcec0a8fab 100644
---- a/drivers/net/phy/microchip.c
-+++ b/drivers/net/phy/microchip.c
-@@ -31,47 +31,6 @@ static int lan88xx_write_page(struct phy_device *phydev, int page)
- 	return __phy_write(phydev, LAN88XX_EXT_PAGE_ACCESS, page);
- }
+diff --git a/drivers/net/mdio/mdio-mux-meson-gxl.c b/drivers/net/mdio/mdio-mux-meson-gxl.c
+index 89554021b5ccc..f9f02d3136492 100644
+--- a/drivers/net/mdio/mdio-mux-meson-gxl.c
++++ b/drivers/net/mdio/mdio-mux-meson-gxl.c
+@@ -17,6 +17,7 @@
+ #define  REG2_LEDACT		GENMASK(23, 22)
+ #define  REG2_LEDLINK		GENMASK(25, 24)
+ #define  REG2_DIV4SEL		BIT(27)
++#define  REG2_REVERSED		BIT(28)
+ #define  REG2_ADCBYPASS		BIT(30)
+ #define  REG2_CLKINSEL		BIT(31)
+ #define ETH_REG3		0x4
+@@ -65,7 +66,7 @@ static void gxl_enable_internal_mdio(struct gxl_mdio_mux *priv)
+ 	 * The only constraint is that it must match the one in
+ 	 * drivers/net/phy/meson-gxl.c to properly match the PHY.
+ 	 */
+-	writel(FIELD_PREP(REG2_PHYID, EPHY_GXL_ID),
++	writel(REG2_REVERSED | FIELD_PREP(REG2_PHYID, EPHY_GXL_ID),
+ 	       priv->regs + ETH_REG2);
  
--static int lan88xx_phy_config_intr(struct phy_device *phydev)
--{
--	int rc;
--
--	if (phydev->interrupts == PHY_INTERRUPT_ENABLED) {
--		/* unmask all source and clear them before enable */
--		rc = phy_write(phydev, LAN88XX_INT_MASK, 0x7FFF);
--		rc = phy_read(phydev, LAN88XX_INT_STS);
--		rc = phy_write(phydev, LAN88XX_INT_MASK,
--			       LAN88XX_INT_MASK_MDINTPIN_EN_ |
--			       LAN88XX_INT_MASK_LINK_CHANGE_);
--	} else {
--		rc = phy_write(phydev, LAN88XX_INT_MASK, 0);
--		if (rc)
--			return rc;
--
--		/* Ack interrupts after they have been disabled */
--		rc = phy_read(phydev, LAN88XX_INT_STS);
--	}
--
--	return rc < 0 ? rc : 0;
--}
--
--static irqreturn_t lan88xx_handle_interrupt(struct phy_device *phydev)
--{
--	int irq_status;
--
--	irq_status = phy_read(phydev, LAN88XX_INT_STS);
--	if (irq_status < 0) {
--		phy_error(phydev);
--		return IRQ_NONE;
--	}
--
--	if (!(irq_status & LAN88XX_INT_STS_LINK_CHANGE_))
--		return IRQ_NONE;
--
--	phy_trigger_machine(phydev);
--
--	return IRQ_HANDLED;
--}
--
- static int lan88xx_suspend(struct phy_device *phydev)
- {
- 	struct lan88xx_priv *priv = phydev->priv;
-@@ -388,8 +347,9 @@ static struct phy_driver microchip_phy_driver[] = {
- 	.config_aneg	= lan88xx_config_aneg,
- 	.link_change_notify = lan88xx_link_change_notify,
- 
--	.config_intr	= lan88xx_phy_config_intr,
--	.handle_interrupt = lan88xx_handle_interrupt,
-+	/* Interrupt handling is broken, do not define related
-+	 * functions to force polling.
-+	 */
- 
- 	.suspend	= lan88xx_suspend,
- 	.resume		= genphy_resume,
+ 	/* Enable the internal phy */
 -- 
 2.39.5
 
