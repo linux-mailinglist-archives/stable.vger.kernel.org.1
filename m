@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-142133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28C88AAE931
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:42:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4426EAAEB0F
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:02:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55C9D1C269C3
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:42:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ACE875259DE
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:02:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9212D28DF5B;
-	Wed,  7 May 2025 18:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E84B2144BF;
+	Wed,  7 May 2025 19:02:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AGWPwcCd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Vl17En0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F77314A4C7;
-	Wed,  7 May 2025 18:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C85329A0;
+	Wed,  7 May 2025 19:02:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643318; cv=none; b=tdBdJ30KR9NUgokh3SpguXpTxvQc4AuWWemrLWGDUOoWcxAMscvFZMALROXERxk3itBpnrOS9T9LYvORb5f8bYOYK9FWw5qAAnHDo8K6d2IUKDU1jeKHiqCLPoUSEaPC/RcGH+LHwEEYayv2ItBHbG5+kjoffQCZE4/mwYY8otc=
+	t=1746644568; cv=none; b=kp4eIKhvda+IG+WOVVMpvHjoSq/yEFnATIr5m8loIHIz1m5muo5P2y+yWG/SplxB1sF9jtBOnvcbLLBXQ6F2ibq18nzSJsJwfZC0zjUdI2Rc4BeHLZCizyt42yaVpNUVYR0wRhGQAI5p3OOheBpDYXsYkM2/N4E/TO/fPR9vWWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643318; c=relaxed/simple;
-	bh=BFHDSPk6S6lZ3DbiS0VGrPPstTq0ASsCu/I+koFKDSk=;
+	s=arc-20240116; t=1746644568; c=relaxed/simple;
+	bh=EDlQ+TBOTVlYRryWeZoD57IcA45iPFSx1gNIRMkW9y8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SVZzLvPdnxSOJOJ7Yau7CRAovcWdWC0YdzVOOEXxUgrl8+Yai9krOou9mtwmmXd0iKySt8hBo5D4EvE1ppWDY1k5bgIOwEcWqAoMM0Zof9g0sqA4a22fH6paAnt9OykMLY0yYdtzSFXrqj+JVc5D0zCSMZ7aegXI8nZqDwmgR/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AGWPwcCd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0DF4C4CEE2;
-	Wed,  7 May 2025 18:41:57 +0000 (UTC)
+	 MIME-Version; b=sSqjh/f6IenpL7U6e1f+edpbHnYoNonVK2UvMjqMbXqyd1yjQPVGA+ODDSG2VzGE12Q9fknkO+gAHnI5CT7UqwW2sbxEB7Sm2a1F/G5EGwONRs/SsT07IGjJ1u2YHM7gadGCBBrcBObyvJZG5PfXavCeMTuE7PnNtdHDXEh17ag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Vl17En0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B59FAC4CEE9;
+	Wed,  7 May 2025 19:02:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643318;
-	bh=BFHDSPk6S6lZ3DbiS0VGrPPstTq0ASsCu/I+koFKDSk=;
+	s=korg; t=1746644568;
+	bh=EDlQ+TBOTVlYRryWeZoD57IcA45iPFSx1gNIRMkW9y8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AGWPwcCdhFs5ASJnnBcYdIwo/KFhxpKVNAVBoofrUD/eZl+xIa8hKiFoe2WWma0h6
-	 5uc0goC2If8zA5+jkRW8Z2ZP2u4VcP7lxZyzkR1FApHfk0obg+j6Y8gruQ/E1gFWjQ
-	 AjcG68AP3Rbp5lIvy51Gww40bjbcwL5jK1eFvdPA=
+	b=0Vl17En07qtql8sy2/jl9ptZc+K6ibvjaPB7oQB4AQ+WZXge1Ea8zd+dOWUxqmtdm
+	 ZR2DOuJIJcc8yjQK//EegBkEHpBV1jMfqZULFlphj4PdO5pEE9n6njoCLEVCcw1LKX
+	 cUBwfVgLTpxEggqkjJZCO+ff3tbSbz+QLtv39Ii0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Philipp Stanner <phasta@kernel.org>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 5.15 02/55] drm/nouveau: Fix WARN_ON in nouveau_fence_context_kill()
+	Chenyuan Yang <chenyuan0y@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 058/164] ASoC: Intel: sof_sdw: Add NULL check in asoc_sdw_rt_dmic_rtd_init()
 Date: Wed,  7 May 2025 20:39:03 +0200
-Message-ID: <20250507183759.150982890@linuxfoundation.org>
+Message-ID: <20250507183823.283268061@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
-References: <20250507183759.048732653@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philipp Stanner <phasta@kernel.org>
+From: Chenyuan Yang <chenyuan0y@gmail.com>
 
-commit bbe5679f30d7690a9b6838a583b9690ea73fe0e9 upstream.
+[ Upstream commit 68715cb5c0e00284d93f976c6368809f64131b0b ]
 
-Nouveau is mostly designed in a way that it's expected that fences only
-ever get signaled through nouveau_fence_signal(). However, in at least
-one other place, nouveau_fence_done(), can signal fences, too. If that
-happens (race) a signaled fence remains in the pending list for a while,
-until it gets removed by nouveau_fence_update().
+mic_name returned by devm_kasprintf() could be NULL.
+Add a check for it.
 
-Should nouveau_fence_context_kill() run in the meantime, this would be
-a bug because the function would attempt to set an error code on an
-already signaled fence.
-
-Have nouveau_fence_context_kill() check for a fence being signaled.
-
-Cc: stable@vger.kernel.org # v5.10+
-Fixes: ea13e5abf807 ("drm/nouveau: signal pending fences when channel has been killed")
-Suggested-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Philipp Stanner <phasta@kernel.org>
-Link: https://lore.kernel.org/r/20250415121900.55719-3-phasta@kernel.org
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
+Fixes: bee2fe44679f ("ASoC: Intel: sof_sdw: use generic rtd_init function for Realtek SDW DMICs")
+Link: https://patch.msgid.link/20250415194134.292830-1-chenyuan0y@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_fence.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/sdw_utils/soc_sdw_rt_dmic.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/nouveau/nouveau_fence.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_fence.c
-@@ -95,7 +95,7 @@ nouveau_fence_context_kill(struct nouvea
- 	while (!list_empty(&fctx->pending)) {
- 		fence = list_entry(fctx->pending.next, typeof(*fence), head);
+diff --git a/sound/soc/sdw_utils/soc_sdw_rt_dmic.c b/sound/soc/sdw_utils/soc_sdw_rt_dmic.c
+index 7f24806d809d9..74bca3d04e4f1 100644
+--- a/sound/soc/sdw_utils/soc_sdw_rt_dmic.c
++++ b/sound/soc/sdw_utils/soc_sdw_rt_dmic.c
+@@ -29,6 +29,8 @@ int asoc_sdw_rt_dmic_rtd_init(struct snd_soc_pcm_runtime *rtd, struct snd_soc_da
+ 		mic_name = devm_kasprintf(card->dev, GFP_KERNEL, "rt715-sdca");
+ 	else
+ 		mic_name = devm_kasprintf(card->dev, GFP_KERNEL, "%s", component->name_prefix);
++	if (!mic_name)
++		return -ENOMEM;
  
--		if (error)
-+		if (error && !dma_fence_is_signaled_locked(&fence->base))
- 			dma_fence_set_error(&fence->base, error);
- 
- 		if (nouveau_fence_signal(fence))
+ 	card->components = devm_kasprintf(card->dev, GFP_KERNEL,
+ 					  "%s mic:%s", card->components,
+-- 
+2.39.5
+
 
 
 
