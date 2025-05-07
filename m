@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-142591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CA5DAAEB51
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:06:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EC07AAEBF8
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:12:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C3AF1C08F8F
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:06:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B84E51C460A0
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:13:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD38928E5F5;
-	Wed,  7 May 2025 19:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF2B6211278;
+	Wed,  7 May 2025 19:12:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mme267KL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S6UWoOnf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ACE81CF5C6;
-	Wed,  7 May 2025 19:05:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABF62214813;
+	Wed,  7 May 2025 19:12:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644724; cv=none; b=rd40HMaNtf+FQtDvOlhVrdlIhqZOqG0DPQCi2WzqYWMOvStaVhn7gYEVacptiXZjqWHffm9CPS7H4sGVXHycTwmcMkOD306PDtPtU/41e+PCykmDKjx7qskpJUfFIyVi1mDNSzypE2jVIAey6aUmVwvhCfvl0Ptvst0GaO12GDI=
+	t=1746645171; cv=none; b=KLXm5+Z9E7bwXPQ5PbFDpMzhuH7wJQ7Whkn5xuzScaVw7VJdQUgGenTCQ60AFC96PaAEjrzEXwG6bu9z88xVoLgvhz29Ml7Ko/ZviEwYT92q1LjxveXJT5/jWaXNdpYCXZQkJtxgWn5gSZPX/4IrwiP5HBqxVS7GsGFHmwOarCU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644724; c=relaxed/simple;
-	bh=TJUXeAejDKO7jrESi61OJ+6pHcjpMs5kA/vPU3oNSHA=;
+	s=arc-20240116; t=1746645171; c=relaxed/simple;
+	bh=JgPVN9ADLSe2zDOkL5Hv5OQ6x4x4sNpxVZcQTvI376Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C30J0nCdZ3KMBdObzTS8WmNyzZPYfrXoZBGF8uuLLxdJrPEeEIaeG6G0Cy198/S7KRYdDI4FqlGWPVpePiPMMkBzm+s6aCM2g5MFRf5SccCV09GKuAWkRSo8GQ9ic824yt5L0ZrX4q7CvyPzCz2G1+4X+oEZXBqWfXfkqLSsREs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mme267KL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0279CC4CEE2;
-	Wed,  7 May 2025 19:05:23 +0000 (UTC)
+	 MIME-Version; b=jPV6HgS7HOC3tfevlPT5kU+8I4u/8jAdngN87FiT05hQKDsNKoVpWVJLazF8T5yD0TWqT3FNyK/toAE2rFC9RfpIRh+m2FEFzobU5tPKdXDxHz2vu8Ayv78hk2ge8X1/mpYZaFP6vMdLGn49xhWpujVKiW6nbWP1BaG7qEhXKho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S6UWoOnf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFFC5C4CEE2;
+	Wed,  7 May 2025 19:12:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644724;
-	bh=TJUXeAejDKO7jrESi61OJ+6pHcjpMs5kA/vPU3oNSHA=;
+	s=korg; t=1746645171;
+	bh=JgPVN9ADLSe2zDOkL5Hv5OQ6x4x4sNpxVZcQTvI376Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mme267KLOihLm361pw7vrs0DYHxQCC5H4sw34MG2vguYpfCInIuWOy7mwwrIQ8psX
-	 ewG6AUyPgKGfQG+bbWxTwEnWbctpdgHnJuHZ5dATm45gMjZTfVtunbp89voHeXQyWw
-	 JL/DH9FEkAh8909s26r5OpS8mbnb0eF9BPnK97Gc=
+	b=S6UWoOnfHE2LkJuxAXBuLym6NtbiID/dIZNScQ/etcA1kQ1atfg0vgLDPMSASpzPe
+	 0Loyt4GrSI+cZFPZ3D8Ahybv94/o5hRaj17/MwCIdOOTR2Uj37l/QTuul4EkNO6Y8e
+	 pQBhgf66XyKN65pXPtZeX4YaEP2aNLEkS+P3piMc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhenhua Huang <quic_zhenhuah@quicinc.com>,
-	David Rientjes <rientjes@google.com>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>
-Subject: [PATCH 6.12 137/164] mm, slab: clean up slab->obj_exts always
+	Mattias Barthel <mattias.barthel@atlascopco.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 086/129] net: fec: ERR007885 Workaround for conventional TX
 Date: Wed,  7 May 2025 20:40:22 +0200
-Message-ID: <20250507183826.520321014@linuxfoundation.org>
+Message-ID: <20250507183816.992105124@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,100 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhenhua Huang <quic_zhenhuah@quicinc.com>
+From: Mattias Barthel <mattias.barthel@atlascopco.com>
 
-commit be8250786ca94952a19ce87f98ad9906448bc9ef upstream.
+[ Upstream commit a179aad12badc43201cbf45d1e8ed2c1383c76b9 ]
 
-When memory allocation profiling is disabled at runtime or due to an
-error, shutdown_mem_profiling() is called: slab->obj_exts which
-previously allocated remains.
-It won't be cleared by unaccount_slab() because of
-mem_alloc_profiling_enabled() not true. It's incorrect, slab->obj_exts
-should always be cleaned up in unaccount_slab() to avoid following error:
+Activate TX hang workaround also in
+fec_enet_txq_submit_skb() when TSO is not enabled.
 
-[...]BUG: Bad page state in process...
-..
-[...]page dumped because: page still charged to cgroup
+Errata: ERR007885
 
-[andriy.shevchenko@linux.intel.com: fold need_slab_obj_ext() into its only user]
-Fixes: 21c690a349ba ("mm: introduce slabobj_ext to support slab object extensions")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhenhua Huang <quic_zhenhuah@quicinc.com>
-Acked-by: David Rientjes <rientjes@google.com>
-Acked-by: Harry Yoo <harry.yoo@oracle.com>
-Tested-by: Harry Yoo <harry.yoo@oracle.com>
-Acked-by: Suren Baghdasaryan <surenb@google.com>
-Link: https://patch.msgid.link/20250421075232.2165527-1-quic_zhenhuah@quicinc.com
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-[surenb: fixed trivial merge conflict in alloc_tagging_slab_alloc_hook(),
-skipped inlining free_slab_obj_exts() as it's already inline in 6.12]
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Symptoms: NETDEV WATCHDOG: eth0 (fec): transmit queue 0 timed out
+
+commit 37d6017b84f7 ("net: fec: Workaround for imx6sx enet tx hang when enable three queues")
+There is a TDAR race condition for mutliQ when the software sets TDAR
+and the UDMA clears TDAR simultaneously or in a small window (2-4 cycles).
+This will cause the udma_tx and udma_tx_arbiter state machines to hang.
+
+So, the Workaround is checking TDAR status four time, if TDAR cleared by
+    hardware and then write TDAR, otherwise don't set TDAR.
+
+Fixes: 53bb20d1faba ("net: fec: add variable reg_desc_active to speed things up")
+Signed-off-by: Mattias Barthel <mattias.barthel@atlascopco.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250429090826.3101258-1-mattiasbarthel@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/slub.c |   27 +++++++--------------------
- 1 file changed, 7 insertions(+), 20 deletions(-)
+ drivers/net/ethernet/freescale/fec_main.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -2035,18 +2035,6 @@ static inline void free_slab_obj_exts(st
- 	slab->obj_exts = 0;
+diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
+index 2d6b50903c923..7261838a09db6 100644
+--- a/drivers/net/ethernet/freescale/fec_main.c
++++ b/drivers/net/ethernet/freescale/fec_main.c
+@@ -695,7 +695,12 @@ static int fec_enet_txq_submit_skb(struct fec_enet_priv_tx_q *txq,
+ 	txq->bd.cur = bdp;
+ 
+ 	/* Trigger transmission start */
+-	writel(0, txq->bd.reg_desc_active);
++	if (!(fep->quirks & FEC_QUIRK_ERR007885) ||
++	    !readl(txq->bd.reg_desc_active) ||
++	    !readl(txq->bd.reg_desc_active) ||
++	    !readl(txq->bd.reg_desc_active) ||
++	    !readl(txq->bd.reg_desc_active))
++		writel(0, txq->bd.reg_desc_active);
+ 
+ 	return 0;
  }
- 
--static inline bool need_slab_obj_ext(void)
--{
--	if (mem_alloc_profiling_enabled())
--		return true;
--
--	/*
--	 * CONFIG_MEMCG creates vector of obj_cgroup objects conditionally
--	 * inside memcg_slab_post_alloc_hook. No other users for now.
--	 */
--	return false;
--}
--
- #else /* CONFIG_SLAB_OBJ_EXT */
- 
- static inline void init_slab_obj_exts(struct slab *slab)
-@@ -2063,11 +2051,6 @@ static inline void free_slab_obj_exts(st
- {
- }
- 
--static inline bool need_slab_obj_ext(void)
--{
--	return false;
--}
--
- #endif /* CONFIG_SLAB_OBJ_EXT */
- 
- #ifdef CONFIG_MEM_ALLOC_PROFILING
-@@ -2099,7 +2082,7 @@ prepare_slab_obj_exts_hook(struct kmem_c
- static inline void
- alloc_tagging_slab_alloc_hook(struct kmem_cache *s, void *object, gfp_t flags)
- {
--	if (need_slab_obj_ext()) {
-+	if (mem_alloc_profiling_enabled()) {
- 		struct slabobj_ext *obj_exts;
- 
- 		obj_exts = prepare_slab_obj_exts_hook(s, flags, object);
-@@ -2577,8 +2560,12 @@ static __always_inline void account_slab
- static __always_inline void unaccount_slab(struct slab *slab, int order,
- 					   struct kmem_cache *s)
- {
--	if (memcg_kmem_online() || need_slab_obj_ext())
--		free_slab_obj_exts(slab);
-+	/*
-+	 * The slab object extensions should now be freed regardless of
-+	 * whether mem_alloc_profiling_enabled() or not because profiling
-+	 * might have been disabled after slab->obj_exts got allocated.
-+	 */
-+	free_slab_obj_exts(slab);
- 
- 	mod_node_page_state(slab_pgdat(slab), cache_vmstat_idx(s),
- 			    -(PAGE_SIZE << order));
+-- 
+2.39.5
+
 
 
 
