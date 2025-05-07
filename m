@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-142350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB91CAAEA3E
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:53:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40A20AAEABA
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:58:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6C21987CE4
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:52:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41A369C7E0B
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:58:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5234289348;
-	Wed,  7 May 2025 18:53:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1C7B28AAE9;
+	Wed,  7 May 2025 18:58:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q8ddQepS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BbEtioPU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0F161FF5EC;
-	Wed,  7 May 2025 18:53:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4E41482F5;
+	Wed,  7 May 2025 18:58:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643980; cv=none; b=IdT5+tSn4qcgtY5Q1iu6wkzK6B5UQGU6ypCQuyf4aiGcM+l+qSZ0nuSPgc/jQwohn0ETzXy6NwMTByJ1nF2VDIVKMeck7SfNPasgBH7XNStF+QO0w7x+HuyIel0hIeRx8TzmW1zhTWmNwr8NuLKCuCqzLibZBBydtXAWwmSEsHs=
+	t=1746644337; cv=none; b=F+VAo4tqrypBIJI1jCQ3lAoFCmtFShSAN1xQ4emGHNzYPxCpClf3OYtNx2MRSYUZEtTGu5/T7+ChA9YNIGwb1mZelyNUSJy0qqn2xIZo1U40l1iu/Byo2X4qt1WRzw/e9x7MFX3oaaEXYXXc9MeytVM/BqwkoStFl585TyMwlZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643980; c=relaxed/simple;
-	bh=5wPXc7uaUgRYr1Y9lF+McPK+SoYHav8eMxL8A4sVGas=;
+	s=arc-20240116; t=1746644337; c=relaxed/simple;
+	bh=WtL2nhYahoLO5to3Zsh86/Sg3VAEsbBQV1U/iKQu5lM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hBz1XdBBxkDgt+EBUpvwUZF+Onlf2Cvhe3v1U9GAowx759QFXjnZmtBrtQsxOuCWadlijZBA2CmV7jjRuSwKY04OBmnl8e1xd2cap8eh7Ybj0oeE6NSlIUyn2hL/2N5Duk2SKidfrPFPWipvmbZE1abBQZW9ipSZvLHhOO4fheM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q8ddQepS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EEFDC4CEE2;
-	Wed,  7 May 2025 18:52:59 +0000 (UTC)
+	 MIME-Version; b=pEnpsdDe5UofuCpxjpj0sAs5ho5ll6g9w86UJ8RTljSYjGA++0zH1+BNa2Eb7bB8eY7nKHAy+gvt3gbhGISAXE40fFhJ5deq1nuESbJFDqVOHPIJdD80P3UJWW57y0si1GsBZZgzAPDuTDKpO7t9elaKS4cDh8ncv5/FKgzNSkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BbEtioPU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9D21C4CEE2;
+	Wed,  7 May 2025 18:58:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643980;
-	bh=5wPXc7uaUgRYr1Y9lF+McPK+SoYHav8eMxL8A4sVGas=;
+	s=korg; t=1746644337;
+	bh=WtL2nhYahoLO5to3Zsh86/Sg3VAEsbBQV1U/iKQu5lM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q8ddQepS/5xm2nHvVwQXhxkIEodb5E2wT6WE13Zh6czSrEhrn6BNTEVgE9DrXXdA4
-	 bsTwO2QbxQylTf6gxBQ6dizSqmdZqCyyOIb0Ae8RRcETz2s6oFUn4CaA6xpRyTiPiY
-	 mJ51WmHThKjieTveU3GyBUzO/W8dtFEJXZFyA7xE=
+	b=BbEtioPUcFPc0fbBZuoIXqqvQH1oieoP0Rw/ndPNs4Yu86fcV+tf7zXYNnzuMxpXn
+	 oEkebjq9QpsGDaLUonfVaj78JLk+EJBiLbRx2AYsrkjX1w6tzvjoA4+D20FyKOk9QA
+	 Jfo1hnXgiNucekgdZjXcH8QOnW8QUvU/oboZJCMM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nico Pache <npache@redhat.com>,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	David Gow <davidgow@google.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 051/183] firmware: cs_dsp: tests: Depend on FW_CS_DSP rather then enabling it
+	Boris Burkov <boris@bur.io>,
+	Qu Wenruo <wqu@suse.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.12 011/164] btrfs: adjust subpage bit start based on sectorsize
 Date: Wed,  7 May 2025 20:38:16 +0200
-Message-ID: <20250507183826.758021166@linuxfoundation.org>
+Message-ID: <20250507183821.294069211@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nico Pache <npache@redhat.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit a0b887f6eb9a0d1be3c57d00b0f3ba8408d3018a ]
+commit e08e49d986f82c30f42ad0ed43ebbede1e1e3739 upstream.
 
-FW_CS_DSP gets enabled if KUNIT is enabled. The test should rather
-depend on if the feature is enabled. Fix this by moving FW_CS_DSP to the
-depends on clause.
+When running machines with 64k page size and a 16k nodesize we started
+seeing tree log corruption in production.  This turned out to be because
+we were not writing out dirty blocks sometimes, so this in fact affects
+all metadata writes.
 
-Fixes: dd0b6b1f29b9 ("firmware: cs_dsp: Add KUnit testing of bin file download")
-Signed-off-by: Nico Pache <npache@redhat.com>
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Link: https://patch.msgid.link/20250411123608.1676462-4-rf@opensource.cirrus.com
-Reviewed-by: David Gow <davidgow@google.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+When writing out a subpage EB we scan the subpage bitmap for a dirty
+range.  If the range isn't dirty we do
+
+	bit_start++;
+
+to move onto the next bit.  The problem is the bitmap is based on the
+number of sectors that an EB has.  So in this case, we have a 64k
+pagesize, 16k nodesize, but a 4k sectorsize.  This means our bitmap is 4
+bits for every node.  With a 64k page size we end up with 4 nodes per
+page.
+
+To make this easier this is how everything looks
+
+[0         16k       32k       48k     ] logical address
+[0         4         8         12      ] radix tree offset
+[               64k page               ] folio
+[ 16k eb ][ 16k eb ][ 16k eb ][ 16k eb ] extent buffers
+[ | | | |  | | | |   | | | |   | | | | ] bitmap
+
+Now we use all of our addressing based on fs_info->sectorsize_bits, so
+as you can see the above our 16k eb->start turns into radix entry 4.
+
+When we find a dirty range for our eb, we correctly do bit_start +=
+sectors_per_node, because if we start at bit 0, the next bit for the
+next eb is 4, to correspond to eb->start 16k.
+
+However if our range is clean, we will do bit_start++, which will now
+put us offset from our radix tree entries.
+
+In our case, assume that the first time we check the bitmap the block is
+not dirty, we increment bit_start so now it == 1, and then we loop
+around and check again.  This time it is dirty, and we go to find that
+start using the following equation
+
+	start = folio_start + bit_start * fs_info->sectorsize;
+
+so in the case above, eb->start 0 is now dirty, and we calculate start
+as
+
+	0 + 1 * fs_info->sectorsize = 4096
+	4096 >> 12 = 1
+
+Now we're looking up the radix tree for 1, and we won't find an eb.
+What's worse is now we're using bit_start == 1, so we do bit_start +=
+sectors_per_node, which is now 5.  If that eb is dirty we will run into
+the same thing, we will look at an offset that is not populated in the
+radix tree, and now we're skipping the writeout of dirty extent buffers.
+
+The best fix for this is to not use sectorsize_bits to address nodes,
+but that's a larger change.  Since this is a fs corruption problem fix
+it simply by always using sectors_per_node to increment the start bit.
+
+Fixes: c4aec299fa8f ("btrfs: introduce submit_eb_subpage() to submit a subpage metadata page")
+CC: stable@vger.kernel.org # 5.15+
+Reviewed-by: Boris Burkov <boris@bur.io>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/cirrus/Kconfig | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ fs/btrfs/extent_io.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/cirrus/Kconfig b/drivers/firmware/cirrus/Kconfig
-index 0a883091259a2..e3c2e38b746df 100644
---- a/drivers/firmware/cirrus/Kconfig
-+++ b/drivers/firmware/cirrus/Kconfig
-@@ -6,14 +6,11 @@ config FW_CS_DSP
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -1870,7 +1870,7 @@ static int submit_eb_subpage(struct foli
+ 			      subpage->bitmaps)) {
+ 			spin_unlock_irqrestore(&subpage->lock, flags);
+ 			spin_unlock(&folio->mapping->i_private_lock);
+-			bit_start++;
++			bit_start += sectors_per_node;
+ 			continue;
+ 		}
  
- config FW_CS_DSP_KUNIT_TEST_UTILS
- 	tristate
--	depends on KUNIT && REGMAP
--	select FW_CS_DSP
- 
- config FW_CS_DSP_KUNIT_TEST
- 	tristate "KUnit tests for Cirrus Logic cs_dsp" if !KUNIT_ALL_TESTS
--	depends on KUNIT && REGMAP
-+	depends on KUNIT && REGMAP && FW_CS_DSP
- 	default KUNIT_ALL_TESTS
--	select FW_CS_DSP
- 	select FW_CS_DSP_KUNIT_TEST_UTILS
- 	help
- 	  This builds KUnit tests for cs_dsp.
--- 
-2.39.5
-
 
 
 
