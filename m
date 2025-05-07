@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-142448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 322ACAAEAA3
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:58:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 896B4AAE9B6
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:47:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FB38523901
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:58:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7B631C41D85
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:48:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E78724E4CE;
-	Wed,  7 May 2025 18:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A8291A29A;
+	Wed,  7 May 2025 18:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zuQ5UICY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G3y7joQP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B69D1A00E7;
-	Wed,  7 May 2025 18:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56AE01B414A;
+	Wed,  7 May 2025 18:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644285; cv=none; b=oTeqDWQVNYpTPCP3QPNqnmkeLINn9nUOSLffOOemSnB0bZ7FqKCI0VVjbeZ4tpJ/2aJIGNHAqXMgrusH+2kysh/6aCkfzzy7ZMzT3wUHuKLz+FUDvLitUypAQyzyYr7vGKFJPvlDZDi9STTNuwfr/UeqM6ZYOxId9aP1nUVrkTs=
+	t=1746643672; cv=none; b=mbuW7flWcN7adHRA9XVhLg4vfCTmkQf1YSGYqC5CGe+Z8tklcYm9KqlJHiYgMBgFbl4w8opHd3sKv36/1vDGIOk2LeWkVs75VVg1iHHA+6dSh9cIYZzU7kiR2XFNtuQOV0vKs1x+G17LLvhzJdQ3qr5Q8zZDuyRV+q7Wgwf5Ddc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644285; c=relaxed/simple;
-	bh=cQt4amNLhz5+llWDGk7FC1I7cNPeSWpsNOWXciPMsn0=;
+	s=arc-20240116; t=1746643672; c=relaxed/simple;
+	bh=O/UolIC9mI4SeA8NTxh2SDjWyHSuqi5PmNqeA/AG8Gw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RdKWFDsCYBmlB9L2eblejVz9+g2L5kXmAJZz++TIkfXAvvSNRB9GQVmKhQ74FQOJn6NhwTvqRZQH4PjK+AJR68CJEX/9AyMTaZrTVSaJ3xW4nE+znW7nx7aTt81rH0La2PGUGHQPwExZiUrk/01GsFpOB2K4rhPm9W55gVooQuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zuQ5UICY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9366EC4CEE2;
-	Wed,  7 May 2025 18:58:04 +0000 (UTC)
+	 MIME-Version; b=bCN4M6R+cA1CedWUSjIQ6fp4o3TvvA31GnjSuBRQdFKUTSLlxh/9px/p481OUChuARuLkA9APGneZMMuF6ltQpMGlMBGXLyIBwV8/01HXl9kP84H9gABNumHLAdueREKe7n45I6PWF+77SWmfNVt9Y9RHpWYeOY/ib0pr7XywI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G3y7joQP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC5F1C4CEE2;
+	Wed,  7 May 2025 18:47:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644285;
-	bh=cQt4amNLhz5+llWDGk7FC1I7cNPeSWpsNOWXciPMsn0=;
+	s=korg; t=1746643672;
+	bh=O/UolIC9mI4SeA8NTxh2SDjWyHSuqi5PmNqeA/AG8Gw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zuQ5UICYnWD8CXuiWbMXaFgVxa1yBLl4iyM0xuCH3v3LSm+JtxgTN19il1Vo3NYoT
-	 8/+sO9N6jm+EpVMOT2dOF5awNP7WdioVhEJh9flku42XXbnc371hMKHTLyUvQqlhI7
-	 8gAFoZLCztf+octe7SbPSQzeQ9Q5ncN0DqZuhNTI=
+	b=G3y7joQPxz8DFsp/wOirqZHN2U0SpfI/r5qWOpXpTyX8He4MZMNOqMQLMc4hsrFMJ
+	 OZzf+myuRlTS3mkolOCg0ETDOlfQqXtzeiK6Bxd9WJ0yvF+N8BRMjRw1Wsa6xeUB5C
+	 Pb9qzzEdwQCGpS03ehh7P9ZQwnDn3WA10V/TAVTU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhenhua Huang <quic_zhenhuah@quicinc.com>,
-	David Rientjes <rientjes@google.com>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>
-Subject: [PATCH 6.14 148/183] mm, slab: clean up slab->obj_exts always
+	Gerrard Tai <gerrard.tai@starlabs.sg>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.1 78/97] sch_ets: make est_qlen_notify() idempotent
 Date: Wed,  7 May 2025 20:39:53 +0200
-Message-ID: <20250507183830.861450943@linuxfoundation.org>
+Message-ID: <20250507183810.122058083@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
+References: <20250507183806.987408728@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,100 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhenhua Huang <quic_zhenhuah@quicinc.com>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-commit be8250786ca94952a19ce87f98ad9906448bc9ef upstream.
+commit a7a15f39c682ac4268624da2abdb9114bdde96d5 upstream.
 
-When memory allocation profiling is disabled at runtime or due to an
-error, shutdown_mem_profiling() is called: slab->obj_exts which
-previously allocated remains.
-It won't be cleared by unaccount_slab() because of
-mem_alloc_profiling_enabled() not true. It's incorrect, slab->obj_exts
-should always be cleaned up in unaccount_slab() to avoid following error:
+est_qlen_notify() deletes its class from its active list with
+list_del() when qlen is 0, therefore, it is not idempotent and
+not friendly to its callers, like fq_codel_dequeue().
 
-[...]BUG: Bad page state in process...
-..
-[...]page dumped because: page still charged to cgroup
+Let's make it idempotent to ease qdisc_tree_reduce_backlog() callers'
+life. Also change other list_del()'s to list_del_init() just to be
+extra safe.
 
-[andriy.shevchenko@linux.intel.com: fold need_slab_obj_ext() into its only user]
-Fixes: 21c690a349ba ("mm: introduce slabobj_ext to support slab object extensions")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhenhua Huang <quic_zhenhuah@quicinc.com>
-Acked-by: David Rientjes <rientjes@google.com>
-Acked-by: Harry Yoo <harry.yoo@oracle.com>
-Tested-by: Harry Yoo <harry.yoo@oracle.com>
-Acked-by: Suren Baghdasaryan <surenb@google.com>
-Link: https://patch.msgid.link/20250421075232.2165527-1-quic_zhenhuah@quicinc.com
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-[surenb: fixed trivial merge conflict in alloc_tagging_slab_alloc_hook(),
-skipped inlining free_slab_obj_exts() as it's already inline in 6.14]
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Link: https://patch.msgid.link/20250403211033.166059-6-xiyou.wangcong@gmail.com
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/slub.c |   27 +++++++--------------------
- 1 file changed, 7 insertions(+), 20 deletions(-)
+ net/sched/sch_ets.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -2025,18 +2025,6 @@ static inline void free_slab_obj_exts(st
- 	slab->obj_exts = 0;
+--- a/net/sched/sch_ets.c
++++ b/net/sched/sch_ets.c
+@@ -298,7 +298,7 @@ static void ets_class_qlen_notify(struct
+ 	 * to remove them.
+ 	 */
+ 	if (!ets_class_is_strict(q, cl) && sch->q.qlen)
+-		list_del(&cl->alist);
++		list_del_init(&cl->alist);
  }
  
--static inline bool need_slab_obj_ext(void)
--{
--	if (mem_alloc_profiling_enabled())
--		return true;
--
--	/*
--	 * CONFIG_MEMCG creates vector of obj_cgroup objects conditionally
--	 * inside memcg_slab_post_alloc_hook. No other users for now.
--	 */
--	return false;
--}
--
- #else /* CONFIG_SLAB_OBJ_EXT */
+ static int ets_class_dump(struct Qdisc *sch, unsigned long arg,
+@@ -491,7 +491,7 @@ static struct sk_buff *ets_qdisc_dequeue
+ 			if (unlikely(!skb))
+ 				goto out;
+ 			if (cl->qdisc->q.qlen == 0)
+-				list_del(&cl->alist);
++				list_del_init(&cl->alist);
+ 			return ets_qdisc_dequeue_skb(sch, skb);
+ 		}
  
- static inline void init_slab_obj_exts(struct slab *slab)
-@@ -2053,11 +2041,6 @@ static inline void free_slab_obj_exts(st
- {
- }
+@@ -660,7 +660,7 @@ static int ets_qdisc_change(struct Qdisc
+ 	}
+ 	for (i = q->nbands; i < oldbands; i++) {
+ 		if (i >= q->nstrict && q->classes[i].qdisc->q.qlen)
+-			list_del(&q->classes[i].alist);
++			list_del_init(&q->classes[i].alist);
+ 		qdisc_tree_flush_backlog(q->classes[i].qdisc);
+ 	}
+ 	q->nstrict = nstrict;
+@@ -716,7 +716,7 @@ static void ets_qdisc_reset(struct Qdisc
  
--static inline bool need_slab_obj_ext(void)
--{
--	return false;
--}
--
- #endif /* CONFIG_SLAB_OBJ_EXT */
- 
- #ifdef CONFIG_MEM_ALLOC_PROFILING
-@@ -2089,7 +2072,7 @@ prepare_slab_obj_exts_hook(struct kmem_c
- static inline void
- alloc_tagging_slab_alloc_hook(struct kmem_cache *s, void *object, gfp_t flags)
- {
--	if (need_slab_obj_ext()) {
-+	if (mem_alloc_profiling_enabled()) {
- 		struct slabobj_ext *obj_exts;
- 
- 		obj_exts = prepare_slab_obj_exts_hook(s, flags, object);
-@@ -2565,8 +2548,12 @@ static __always_inline void account_slab
- static __always_inline void unaccount_slab(struct slab *slab, int order,
- 					   struct kmem_cache *s)
- {
--	if (memcg_kmem_online() || need_slab_obj_ext())
--		free_slab_obj_exts(slab);
-+	/*
-+	 * The slab object extensions should now be freed regardless of
-+	 * whether mem_alloc_profiling_enabled() or not because profiling
-+	 * might have been disabled after slab->obj_exts got allocated.
-+	 */
-+	free_slab_obj_exts(slab);
- 
- 	mod_node_page_state(slab_pgdat(slab), cache_vmstat_idx(s),
- 			    -(PAGE_SIZE << order));
+ 	for (band = q->nstrict; band < q->nbands; band++) {
+ 		if (q->classes[band].qdisc->q.qlen)
+-			list_del(&q->classes[band].alist);
++			list_del_init(&q->classes[band].alist);
+ 	}
+ 	for (band = 0; band < q->nbands; band++)
+ 		qdisc_reset(q->classes[band].qdisc);
 
 
 
