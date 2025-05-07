@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-142414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC860AAEA84
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:56:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3BA3AAE9AE
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:47:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E66A5231BA
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:56:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB8D11C41A7A
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:47:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 248E2244693;
-	Wed,  7 May 2025 18:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB5EE1F4629;
+	Wed,  7 May 2025 18:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yjOy9Wwt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PeQL/21P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77322144C1;
-	Wed,  7 May 2025 18:56:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75E9D1E9B04;
+	Wed,  7 May 2025 18:47:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644176; cv=none; b=svkdTUvRvwOPSXY6cpRN/f3KqyNVziTU7qTq0pVcyGytnVBzTR+BiJuI8c+a9P4xHpW/zsoe8NpAf+y8qdM9zkGEQ3TFvszAsT5D2ZOGgHXozNLEl0sEpqIxAPSleoK6d77D38LPrhdQEDIeFZjo5Et4Re08MVWw4zHKelXEiKo=
+	t=1746643653; cv=none; b=Ekl9bsu1RVCWvpnFOVq3qRWYsk9a0ltzT9MbNHsDPfbmXars4yueYAQzh1P1mhnPjy+D7ocGPYhpd6uv3kbUrihqjqET9lgKDQnIsiGl9vIu6J7iQ+DANe3TNjNb5Fu2ZcKQCVBpZoSAe7nE7G32VHv4G/9dClnM4wI9i0wPEFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644176; c=relaxed/simple;
-	bh=jXlDxNSau3lBwRSLqQh4Wk3q50OlGxOjt80qv/bA4XU=;
+	s=arc-20240116; t=1746643653; c=relaxed/simple;
+	bh=sA33oS3XhGsQm9r2/XB6W4gNVHN6PD8A5Tw8E28E4js=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GCJKWDu4C4xb8iN/bo3xYvGW8SuA1JLOIyDMICokreceSZAquW5+CmvKvphR7ue2tEZoqoLzsRbI2+yjTN3CidD5AxmmtuvRcSmoQqLN3JwYpvB1LqbD3ahFE5KEYlvnktAmOiUqBzHf4Vc7hHjOoXEbj9+q52XBvAmWyBbTAdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yjOy9Wwt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66D04C4CEE2;
-	Wed,  7 May 2025 18:56:16 +0000 (UTC)
+	 MIME-Version; b=m2zPF5pFxF83wZM9f4xYVq5XaF/2sT/Dhtcsk2h7tBeYolu8nmUGdH51zQ2De8jZo1Z1EEs6W3h6ow9m1qQlhEk2cpGXG6lqZDbfsJdr09J10nhcqY4OkXCPL6ymRUq+tQNAbTd61ylMS4XmybiVnWcdlNFuYoTxXIswjmj6qU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PeQL/21P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8D8FC4CEE2;
+	Wed,  7 May 2025 18:47:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644176;
-	bh=jXlDxNSau3lBwRSLqQh4Wk3q50OlGxOjt80qv/bA4XU=;
+	s=korg; t=1746643653;
+	bh=sA33oS3XhGsQm9r2/XB6W4gNVHN6PD8A5Tw8E28E4js=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yjOy9WwtbU41LQUuvZonFLZpRBUH8SxYwGcxuCpxtytXYjpfCVS8L+EYH736hLpKF
-	 XR01wtasM3aLZmQ0vuMeHrU6/QvoaZAmuLxlFpvmXwGDj5KXgFtLDhMv4kZkTVfOEa
-	 QHEnWj1V9unUca1Z6ejLZXdL/DfaaFmSMBjLbfQg=
+	b=PeQL/21PF5CLmhnSpHlLVFgTIheXb65ggVhJygzkbQD8FIWlVxIP9hnjyb+SQj+nO
+	 XT+K6TsR1vNT2XbGh1VwNnkiXUhOJ8jIhWazrD6c9giUIGAcijVfGP45CNcIfBLyFB
+	 htLi2T2x0IcFmFTovcBHSSP99WHPRMG93blkpqJc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hao Lan <lanhao@huawei.com>,
-	Peiyang Wang <wangpeiyang1@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 142/183] net: hns3: fixed debugfs tm_qset size
+	Yu Kuai <yukuai3@huawei.com>,
+	Xiao Ni <xni@redhat.com>,
+	Song Liu <song@kernel.org>
+Subject: [PATCH 6.1 72/97] md: move initialization and destruction of io_acct_set to md.c
 Date: Wed,  7 May 2025 20:39:47 +0200
-Message-ID: <20250507183830.622600538@linuxfoundation.org>
+Message-ID: <20250507183809.887762918@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
+References: <20250507183806.987408728@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +62,262 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hao Lan <lanhao@huawei.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit e317aebeefcb3b0c71f2305af3c22871ca6b3833 ]
+commit c567c86b90d4715081adfe5eb812141a5b6b4883 upstream.
 
-The size of the tm_qset file of debugfs is limited to 64 KB,
-which is too small in the scenario with 1280 qsets.
-The size needs to be expanded to 1 MB.
+'io_acct_set' is only used for raid0 and raid456, prepare to use it for
+raid1 and raid10, so that io accounting from different levels can be
+consistent.
 
-Fixes: 5e69ea7ee2a6 ("net: hns3: refactor the debugfs process")
-Signed-off-by: Hao Lan <lanhao@huawei.com>
-Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Link: https://patch.msgid.link/20250430093052.2400464-4-shaojijie@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+By the way, follow up patches will also use this io clone mechanism to
+make sure 'active_io' represents in flight io, not io that is dispatching,
+so that mddev_suspend will wait for io to be done as designed.
+
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Reviewed-by: Xiao Ni <xni@redhat.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20230621165110.1498313-2-yukuai1@huaweicloud.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/md.c    |   27 ++++++++++-----------------
+ drivers/md/md.h    |    2 --
+ drivers/md/raid0.c |   16 ++--------------
+ drivers/md/raid5.c |   41 +++++++++++------------------------------
+ 4 files changed, 23 insertions(+), 63 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
-index 9bbece25552b1..3d70c97a0bedf 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_debugfs.c
-@@ -60,7 +60,7 @@ static struct hns3_dbg_cmd_info hns3_dbg_cmd[] = {
- 		.name = "tm_qset",
- 		.cmd = HNAE3_DBG_CMD_TM_QSET,
- 		.dentry = HNS3_DBG_DENTRY_TM,
--		.buf_len = HNS3_DBG_READ_LEN,
-+		.buf_len = HNS3_DBG_READ_LEN_1MB,
- 		.init = hns3_dbg_common_file_init,
- 	},
- 	{
--- 
-2.39.5
-
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -5965,6 +5965,13 @@ int md_run(struct mddev *mddev)
+ 			goto exit_bio_set;
+ 	}
+ 
++	if (!bioset_initialized(&mddev->io_acct_set)) {
++		err = bioset_init(&mddev->io_acct_set, BIO_POOL_SIZE,
++				  offsetof(struct md_io_acct, bio_clone), 0);
++		if (err)
++			goto exit_sync_set;
++	}
++
+ 	spin_lock(&pers_lock);
+ 	pers = find_pers(mddev->level, mddev->clevel);
+ 	if (!pers || !try_module_get(pers->owner)) {
+@@ -6142,6 +6149,8 @@ bitmap_abort:
+ 	module_put(pers->owner);
+ 	md_bitmap_destroy(mddev);
+ abort:
++	bioset_exit(&mddev->io_acct_set);
++exit_sync_set:
+ 	bioset_exit(&mddev->sync_set);
+ exit_bio_set:
+ 	bioset_exit(&mddev->bio_set);
+@@ -6374,6 +6383,7 @@ static void __md_stop(struct mddev *mdde
+ 	percpu_ref_exit(&mddev->active_io);
+ 	bioset_exit(&mddev->bio_set);
+ 	bioset_exit(&mddev->sync_set);
++	bioset_exit(&mddev->io_acct_set);
+ }
+ 
+ void md_stop(struct mddev *mddev)
+@@ -8744,23 +8754,6 @@ void md_submit_discard_bio(struct mddev
+ }
+ EXPORT_SYMBOL_GPL(md_submit_discard_bio);
+ 
+-int acct_bioset_init(struct mddev *mddev)
+-{
+-	int err = 0;
+-
+-	if (!bioset_initialized(&mddev->io_acct_set))
+-		err = bioset_init(&mddev->io_acct_set, BIO_POOL_SIZE,
+-			offsetof(struct md_io_acct, bio_clone), 0);
+-	return err;
+-}
+-EXPORT_SYMBOL_GPL(acct_bioset_init);
+-
+-void acct_bioset_exit(struct mddev *mddev)
+-{
+-	bioset_exit(&mddev->io_acct_set);
+-}
+-EXPORT_SYMBOL_GPL(acct_bioset_exit);
+-
+ static void md_end_io_acct(struct bio *bio)
+ {
+ 	struct md_io_acct *md_io_acct = bio->bi_private;
+--- a/drivers/md/md.h
++++ b/drivers/md/md.h
+@@ -746,8 +746,6 @@ extern void md_error(struct mddev *mddev
+ extern void md_finish_reshape(struct mddev *mddev);
+ void md_submit_discard_bio(struct mddev *mddev, struct md_rdev *rdev,
+ 			struct bio *bio, sector_t start, sector_t size);
+-int acct_bioset_init(struct mddev *mddev);
+-void acct_bioset_exit(struct mddev *mddev);
+ void md_account_bio(struct mddev *mddev, struct bio **bio);
+ 
+ extern bool __must_check md_flush_request(struct mddev *mddev, struct bio *bio);
+--- a/drivers/md/raid0.c
++++ b/drivers/md/raid0.c
+@@ -377,7 +377,6 @@ static void raid0_free(struct mddev *mdd
+ 	struct r0conf *conf = priv;
+ 
+ 	free_conf(mddev, conf);
+-	acct_bioset_exit(mddev);
+ }
+ 
+ static int raid0_run(struct mddev *mddev)
+@@ -392,16 +391,11 @@ static int raid0_run(struct mddev *mddev
+ 	if (md_check_no_bitmap(mddev))
+ 		return -EINVAL;
+ 
+-	if (acct_bioset_init(mddev)) {
+-		pr_err("md/raid0:%s: alloc acct bioset failed.\n", mdname(mddev));
+-		return -ENOMEM;
+-	}
+-
+ 	/* if private is not null, we are here after takeover */
+ 	if (mddev->private == NULL) {
+ 		ret = create_strip_zones(mddev, &conf);
+ 		if (ret < 0)
+-			goto exit_acct_set;
++			return ret;
+ 		mddev->private = conf;
+ 	}
+ 	conf = mddev->private;
+@@ -432,15 +426,9 @@ static int raid0_run(struct mddev *mddev
+ 
+ 	ret = md_integrity_register(mddev);
+ 	if (ret)
+-		goto free;
++		free_conf(mddev, conf);
+ 
+ 	return ret;
+-
+-free:
+-	free_conf(mddev, conf);
+-exit_acct_set:
+-	acct_bioset_exit(mddev);
+-	return ret;
+ }
+ 
+ /*
+--- a/drivers/md/raid5.c
++++ b/drivers/md/raid5.c
+@@ -7770,19 +7770,12 @@ static int raid5_run(struct mddev *mddev
+ 	struct md_rdev *rdev;
+ 	struct md_rdev *journal_dev = NULL;
+ 	sector_t reshape_offset = 0;
+-	int i, ret = 0;
++	int i;
+ 	long long min_offset_diff = 0;
+ 	int first = 1;
+ 
+-	if (acct_bioset_init(mddev)) {
+-		pr_err("md/raid456:%s: alloc acct bioset failed.\n", mdname(mddev));
++	if (mddev_init_writes_pending(mddev) < 0)
+ 		return -ENOMEM;
+-	}
+-
+-	if (mddev_init_writes_pending(mddev) < 0) {
+-		ret = -ENOMEM;
+-		goto exit_acct_set;
+-	}
+ 
+ 	if (mddev->recovery_cp != MaxSector)
+ 		pr_notice("md/raid:%s: not clean -- starting background reconstruction\n",
+@@ -7813,8 +7806,7 @@ static int raid5_run(struct mddev *mddev
+ 	    (mddev->bitmap_info.offset || mddev->bitmap_info.file)) {
+ 		pr_notice("md/raid:%s: array cannot have both journal and bitmap\n",
+ 			  mdname(mddev));
+-		ret = -EINVAL;
+-		goto exit_acct_set;
++		return -EINVAL;
+ 	}
+ 
+ 	if (mddev->reshape_position != MaxSector) {
+@@ -7839,15 +7831,13 @@ static int raid5_run(struct mddev *mddev
+ 		if (journal_dev) {
+ 			pr_warn("md/raid:%s: don't support reshape with journal - aborting.\n",
+ 				mdname(mddev));
+-			ret = -EINVAL;
+-			goto exit_acct_set;
++			return -EINVAL;
+ 		}
+ 
+ 		if (mddev->new_level != mddev->level) {
+ 			pr_warn("md/raid:%s: unsupported reshape required - aborting.\n",
+ 				mdname(mddev));
+-			ret = -EINVAL;
+-			goto exit_acct_set;
++			return -EINVAL;
+ 		}
+ 		old_disks = mddev->raid_disks - mddev->delta_disks;
+ 		/* reshape_position must be on a new-stripe boundary, and one
+@@ -7863,8 +7853,7 @@ static int raid5_run(struct mddev *mddev
+ 		if (sector_div(here_new, chunk_sectors * new_data_disks)) {
+ 			pr_warn("md/raid:%s: reshape_position not on a stripe boundary\n",
+ 				mdname(mddev));
+-			ret = -EINVAL;
+-			goto exit_acct_set;
++			return -EINVAL;
+ 		}
+ 		reshape_offset = here_new * chunk_sectors;
+ 		/* here_new is the stripe we will write to */
+@@ -7886,8 +7875,7 @@ static int raid5_run(struct mddev *mddev
+ 			else if (mddev->ro == 0) {
+ 				pr_warn("md/raid:%s: in-place reshape must be started in read-only mode - aborting\n",
+ 					mdname(mddev));
+-				ret = -EINVAL;
+-				goto exit_acct_set;
++				return -EINVAL;
+ 			}
+ 		} else if (mddev->reshape_backwards
+ 		    ? (here_new * chunk_sectors + min_offset_diff <=
+@@ -7897,8 +7885,7 @@ static int raid5_run(struct mddev *mddev
+ 			/* Reading from the same stripe as writing to - bad */
+ 			pr_warn("md/raid:%s: reshape_position too early for auto-recovery - aborting.\n",
+ 				mdname(mddev));
+-			ret = -EINVAL;
+-			goto exit_acct_set;
++			return -EINVAL;
+ 		}
+ 		pr_debug("md/raid:%s: reshape will continue\n", mdname(mddev));
+ 		/* OK, we should be able to continue; */
+@@ -7922,10 +7909,8 @@ static int raid5_run(struct mddev *mddev
+ 	else
+ 		conf = mddev->private;
+ 
+-	if (IS_ERR(conf)) {
+-		ret = PTR_ERR(conf);
+-		goto exit_acct_set;
+-	}
++	if (IS_ERR(conf))
++		return PTR_ERR(conf);
+ 
+ 	if (test_bit(MD_HAS_JOURNAL, &mddev->flags)) {
+ 		if (!journal_dev) {
+@@ -8125,10 +8110,7 @@ abort:
+ 	free_conf(conf);
+ 	mddev->private = NULL;
+ 	pr_warn("md/raid:%s: failed to run raid set.\n", mdname(mddev));
+-	ret = -EIO;
+-exit_acct_set:
+-	acct_bioset_exit(mddev);
+-	return ret;
++	return -EIO;
+ }
+ 
+ static void raid5_free(struct mddev *mddev, void *priv)
+@@ -8136,7 +8118,6 @@ static void raid5_free(struct mddev *mdd
+ 	struct r5conf *conf = priv;
+ 
+ 	free_conf(conf);
+-	acct_bioset_exit(mddev);
+ 	mddev->to_remove = &raid5_attrs_group;
+ }
+ 
 
 
 
