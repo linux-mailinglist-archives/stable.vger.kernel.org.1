@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-142183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1143CAAE967
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:44:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A615AAEAE2
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:01:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 05EB87BB779
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:43:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 13ADA9C83AE
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:00:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F45A14A4C7;
-	Wed,  7 May 2025 18:44:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25DF928E581;
+	Wed,  7 May 2025 19:00:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pph16I5t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tvyw5eHm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ACE01DE4C4;
-	Wed,  7 May 2025 18:44:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D61DF28AAE9;
+	Wed,  7 May 2025 19:00:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643467; cv=none; b=TuPr4rA7PFB6R7kyPztDEsRQQTyLXn6794VYiwWVD549MCAdWpapVTfk+zjTCHkMOLqWSgLVmaIMaYF1J7Xz5jdxq8md/rQfcPOHWdKa3IJrOlHkyssGauaDU4dc9UTB+oaQfhxM2Kqs17LSqDVdJWI//J9dPKzc2J0/oclueQk=
+	t=1746644442; cv=none; b=ad7KqQZCr9aSoPfp4rk/ExEEMkx8KUliB0Py6POy0DUJtZMn+cjuxpH/XTIsuf7gZsiF51fTM/W1e3+7wcCvxYXmt0EyCrzPfRrPMS9O+koLUYKbD9tJKJO/cgCVQ4NxTHWduT7yWvdr5QKnS5DPopMr0fZtkpAY74j/ze+R3n0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643467; c=relaxed/simple;
-	bh=sdaIUi8FHgJTmAimLvfYoK6zeOU9s14gd02R1AfnCS8=;
+	s=arc-20240116; t=1746644442; c=relaxed/simple;
+	bh=X2QntmFpDC7+mDT49b8lz+eCFWmL2ddQ4w6shEoCRSk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lFLgQab1zkFO1AXXfGgaGFBWP9Lq6RP6jum5TW97kzwEdaDtrx36VT4HMGaEI46m7bL2gasxI8N29ifaar6+u70ESMPAlceD6J6AhTZyk9zD4dPBhswn4Ed4JY3aSSQZepiNW99ao9AZIj6obD8LWFCzJiR2aql6ZqIn3SUFv2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pph16I5t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C90F8C4CEE2;
-	Wed,  7 May 2025 18:44:26 +0000 (UTC)
+	 MIME-Version; b=P1ZLnYLBeN/kOtYLItc0eD3gvUAqhb5+rmPkH6je26fOREn+/wpdPb/+rIRcGgd2S69WmAJ1z5H1SXXcj3EmhbymmSRIJ9o3vRMJDvXSceKYYM3cWw1BL3LEnpHjuXs0ohOaVcUmJpRIgWZH8MLMKHgnDxQwBrTmN1Y2T5MC5cg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tvyw5eHm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE87EC4CEE2;
+	Wed,  7 May 2025 19:00:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643467;
-	bh=sdaIUi8FHgJTmAimLvfYoK6zeOU9s14gd02R1AfnCS8=;
+	s=korg; t=1746644442;
+	bh=X2QntmFpDC7+mDT49b8lz+eCFWmL2ddQ4w6shEoCRSk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pph16I5t9FS0OwY7apZYXcRUSNjOU/v3PTMYCw/pckkcYoCYpKgm+U3xxR09nL17Y
-	 k+ywnW6W0CyAA83jyOUsRimFUpxJ0ZGXBzVaj6SCvH+lGBLMYx9x+P8PLWQmTE1wfR
-	 H0EsolQxudULnWy3M+sn3u2xGoFnHb3tDmb2Xn9s=
+	b=tvyw5eHmZaX8nqFe9C/0VR0S62wFwrQwbgdbvqH2QwetlO6GAP17PLibzyc1JTXlt
+	 MUqul3KKIcTF+elpvdbEm5AL7DmfMoy3RnP1sLJJAm2ApWOJw4eQgrSqJdTjOODRaX
+	 ktlo35zh6X1OMyXTm82TeGMJrOKDiA1UvAcbqXbI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 6.1 14/97] dm-integrity: fix a warning on invalid table line
+	Norbert Szetei <norbert@doyensec.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 044/164] ksmbd: fix use-after-free in ksmbd_session_rpc_open
 Date: Wed,  7 May 2025 20:38:49 +0200
-Message-ID: <20250507183807.564119288@linuxfoundation.org>
+Message-ID: <20250507183822.668437777@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
-References: <20250507183806.987408728@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,36 +62,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 0a533c3e4246c29d502a7e0fba0e86d80a906b04 upstream.
+commit a1f46c99d9ea411f9bf30025b912d881d36fc709 upstream.
 
-If we use the 'B' mode and we have an invalit table line,
-cancel_delayed_work_sync would trigger a warning. This commit avoids the
-warning.
+A UAF issue can occur due to a race condition between
+ksmbd_session_rpc_open() and __session_rpc_close().
+Add rpc_lock to the session to protect it.
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Cc: stable@vger.kernel.org
+Reported-by: Norbert Szetei <norbert@doyensec.com>
+Tested-by: Norbert Szetei <norbert@doyensec.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-integrity.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/mgmt/user_session.c |   20 ++++++++++++++------
+ fs/smb/server/mgmt/user_session.h |    1 +
+ 2 files changed, 15 insertions(+), 6 deletions(-)
 
---- a/drivers/md/dm-integrity.c
-+++ b/drivers/md/dm-integrity.c
-@@ -4637,7 +4637,7 @@ static void dm_integrity_dtr(struct dm_t
- 	BUG_ON(!RB_EMPTY_ROOT(&ic->in_progress));
- 	BUG_ON(!list_empty(&ic->wait_list));
+--- a/fs/smb/server/mgmt/user_session.c
++++ b/fs/smb/server/mgmt/user_session.c
+@@ -59,10 +59,12 @@ static void ksmbd_session_rpc_clear_list
+ 	struct ksmbd_session_rpc *entry;
+ 	long index;
  
--	if (ic->mode == 'B')
-+	if (ic->mode == 'B' && ic->bitmap_flush_work.work.func)
- 		cancel_delayed_work_sync(&ic->bitmap_flush_work);
- 	if (ic->metadata_wq)
- 		destroy_workqueue(ic->metadata_wq);
++	down_write(&sess->rpc_lock);
+ 	xa_for_each(&sess->rpc_handle_list, index, entry) {
+ 		xa_erase(&sess->rpc_handle_list, index);
+ 		__session_rpc_close(sess, entry);
+ 	}
++	up_write(&sess->rpc_lock);
+ 
+ 	xa_destroy(&sess->rpc_handle_list);
+ }
+@@ -92,7 +94,7 @@ int ksmbd_session_rpc_open(struct ksmbd_
+ {
+ 	struct ksmbd_session_rpc *entry, *old;
+ 	struct ksmbd_rpc_command *resp;
+-	int method;
++	int method, id;
+ 
+ 	method = __rpc_method(rpc_name);
+ 	if (!method)
+@@ -102,26 +104,29 @@ int ksmbd_session_rpc_open(struct ksmbd_
+ 	if (!entry)
+ 		return -ENOMEM;
+ 
++	down_read(&sess->rpc_lock);
+ 	entry->method = method;
+-	entry->id = ksmbd_ipc_id_alloc();
+-	if (entry->id < 0)
++	entry->id = id = ksmbd_ipc_id_alloc();
++	if (id < 0)
+ 		goto free_entry;
+-	old = xa_store(&sess->rpc_handle_list, entry->id, entry, KSMBD_DEFAULT_GFP);
++	old = xa_store(&sess->rpc_handle_list, id, entry, KSMBD_DEFAULT_GFP);
+ 	if (xa_is_err(old))
+ 		goto free_id;
+ 
+-	resp = ksmbd_rpc_open(sess, entry->id);
++	resp = ksmbd_rpc_open(sess, id);
+ 	if (!resp)
+ 		goto erase_xa;
+ 
++	up_read(&sess->rpc_lock);
+ 	kvfree(resp);
+-	return entry->id;
++	return id;
+ erase_xa:
+ 	xa_erase(&sess->rpc_handle_list, entry->id);
+ free_id:
+ 	ksmbd_rpc_id_free(entry->id);
+ free_entry:
+ 	kfree(entry);
++	up_read(&sess->rpc_lock);
+ 	return -EINVAL;
+ }
+ 
+@@ -129,9 +134,11 @@ void ksmbd_session_rpc_close(struct ksmb
+ {
+ 	struct ksmbd_session_rpc *entry;
+ 
++	down_write(&sess->rpc_lock);
+ 	entry = xa_erase(&sess->rpc_handle_list, id);
+ 	if (entry)
+ 		__session_rpc_close(sess, entry);
++	up_write(&sess->rpc_lock);
+ }
+ 
+ int ksmbd_session_rpc_method(struct ksmbd_session *sess, int id)
+@@ -439,6 +446,7 @@ static struct ksmbd_session *__session_c
+ 	sess->sequence_number = 1;
+ 	rwlock_init(&sess->tree_conns_lock);
+ 	atomic_set(&sess->refcnt, 2);
++	init_rwsem(&sess->rpc_lock);
+ 
+ 	ret = __init_smb2_session(sess);
+ 	if (ret)
+--- a/fs/smb/server/mgmt/user_session.h
++++ b/fs/smb/server/mgmt/user_session.h
+@@ -63,6 +63,7 @@ struct ksmbd_session {
+ 	rwlock_t			tree_conns_lock;
+ 
+ 	atomic_t			refcnt;
++	struct rw_semaphore		rpc_lock;
+ };
+ 
+ static inline int test_session_flag(struct ksmbd_session *sess, int bit)
 
 
 
