@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-142257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A28E6AAE9CD
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:48:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E76EEAAEB9E
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:09:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C10587A46CB
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:47:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7034C9E335D
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:08:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC6D028C027;
-	Wed,  7 May 2025 18:48:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B320228980D;
+	Wed,  7 May 2025 19:08:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DgWQuYSL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xMJ5Qedv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A95CE28BA9D;
-	Wed,  7 May 2025 18:48:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DA7E28BA9F;
+	Wed,  7 May 2025 19:08:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643697; cv=none; b=A6ElFxhfuQvG0LlGBRVu7IsX9tMKwAhAlc4TaTG4v+ziH3v4QRAPQp4vrbU0ZnsBdJySzHAlp8CVZDZQPr8R/3awyuSMrwuSVzR2xURnElC6x+j8IcTFKFaeroGmcbFjqr0Ew6O3tYs+TPoxBi4dhPi4jCNyRa5j9ZSQiVyPd50=
+	t=1746644917; cv=none; b=oW+0gPZXLti3z1xqGgtfUuRy8fuVK8GHxfwd/ygxIMza9nTXPMZI3jb0nw5UoFF5yECmV4qPxtMscYwXE7f7Xa0ptuVJtA8uZEU9jexSte2RQH/XgnCB5tgXmg4QBDxakGFpm5eZ8fMVw+ExcRvDaaCxXhIqH10sLEoiQfSaXJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643697; c=relaxed/simple;
-	bh=is46+D9kXqMStoiAA5VfOqaiyuc9s3USuVx27SxWgGY=;
+	s=arc-20240116; t=1746644917; c=relaxed/simple;
+	bh=MFMGrS2+3YoGTrbJVbLYHUErg9yO6vSlBeT0HU5k4h4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fJ6b4M8GAyeg4GSfbN7x1Qvq5L/ttC3sU25TCmlZiWDwXPsZVo8qhcKBp2y9IonnanSUPfRrRHc4zARYePvQUrUJZgx+ZG2vdbOin8HGeNkW1W7gGdap0R+sZgZYuzeARnlpFB+t7LRFKh9oYLsk55T8gOkwOQOt7X8GmahvZbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DgWQuYSL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F06FC4CEEE;
-	Wed,  7 May 2025 18:48:16 +0000 (UTC)
+	 MIME-Version; b=eUnYGdyr8hedGUMljPIcP0HTyaufObfOeEWcWd8VYDXc/U1l5bd1iF5zSGJ55msWvthN0U8FTU80cRoPTESQ5m79jH2EEDlY69FFUqAfVLYUu0+iE+vBOmBgWH57UYvaxbCp4x+Hh+gKZZOTxtZJoxcUs4AcfYMsbIXfH84dvJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xMJ5Qedv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3335C4CEE2;
+	Wed,  7 May 2025 19:08:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643697;
-	bh=is46+D9kXqMStoiAA5VfOqaiyuc9s3USuVx27SxWgGY=;
+	s=korg; t=1746644917;
+	bh=MFMGrS2+3YoGTrbJVbLYHUErg9yO6vSlBeT0HU5k4h4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DgWQuYSL9HjFYGraoaFeTvaY2F12/1n6cWtJ3VRXTkId3c/jjEaFOzozpdPC1cGks
-	 D5PB/h5NoB8Dzk3Df+yLiDCItRb23+cHDPF+PEtoMWEfLc37+M8IBL5lH52fotfwWC
-	 xAfOsYZdyMlBGpW8Cv8XlTWWb4eb3lqTqx8TrfyU=
+	b=xMJ5QedvmWeFgqxJQ4GLrqau++wBtXrrehIUXmH4sWkx90dfhyebu3Ir/OWp/Ozj6
+	 kJtri5dt973CBZdhhKIA23U+rhtyfyC7ppFrFrvrxDNKJdqKSdQvbQCLSyWuY9FSUw
+	 JGTF3/4HwxnloBdKJj3pr763F3NIyhfYz8r3nC4c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richie Pearn <richard.pearn@nxp.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 56/97] net: dsa: felix: fix broken taprio gate states after clock jump
+	Nick Zavaritsky <mejedi@gmail.com>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Subject: [PATCH 6.6 035/129] bpf: track changes_pkt_data property for global functions
 Date: Wed,  7 May 2025 20:39:31 +0200
-Message-ID: <20250507183809.251987376@linuxfoundation.org>
+Message-ID: <20250507183814.951072893@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
-References: <20250507183806.987408728@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,202 +63,167 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Eduard Zingerman <eddyz87@gmail.com>
 
-[ Upstream commit 426d487bca38b34f39c483edfc6313a036446b33 ]
+commit 51081a3f25c742da5a659d7fc6fd77ebfdd555be upstream.
 
-Simplest setup to reproduce the issue: connect 2 ports of the
-LS1028A-RDB together (eno0 with swp0) and run:
+When processing calls to certain helpers, verifier invalidates all
+packet pointers in a current state. For example, consider the
+following program:
 
-$ ip link set eno0 up && ip link set swp0 up
-$ tc qdisc replace dev swp0 parent root handle 100 taprio num_tc 8 \
-	queues 1@0 1@1 1@2 1@3 1@4 1@5 1@6 1@7 map 0 1 2 3 4 5 6 7 \
-	base-time 0 sched-entry S 20 300000 sched-entry S 10 200000 \
-	sched-entry S 20 300000 sched-entry S 48 200000 \
-	sched-entry S 20 300000 sched-entry S 83 200000 \
-	sched-entry S 40 300000 sched-entry S 00 200000 flags 2
-$ ptp4l -i eno0 -f /etc/linuxptp/configs/gPTP.cfg -m &
-$ ptp4l -i swp0 -f /etc/linuxptp/configs/gPTP.cfg -m
+    __attribute__((__noinline__))
+    long skb_pull_data(struct __sk_buff *sk, __u32 len)
+    {
+        return bpf_skb_pull_data(sk, len);
+    }
 
-One will observe that the PTP state machine on swp0 starts
-synchronizing, then it attempts to do a clock step, and after that, it
-never fails to recover from the condition below.
+    SEC("tc")
+    int test_invalidate_checks(struct __sk_buff *sk)
+    {
+        int *p = (void *)(long)sk->data;
+        if ((void *)(p + 1) > (void *)(long)sk->data_end) return TCX_DROP;
+        skb_pull_data(sk, 0);
+        *p = 42;
+        return TCX_PASS;
+    }
 
-ptp4l[82.427]: selected best master clock 00049f.fffe.05f627
-ptp4l[82.428]: port 1 (swp0): MASTER to UNCALIBRATED on RS_SLAVE
-ptp4l[83.252]: port 1 (swp0): UNCALIBRATED to SLAVE on MASTER_CLOCK_SELECTED
-ptp4l[83.886]: rms 4537731277 max 9075462553 freq -18518 +/- 11467 delay   818 +/-   0
-ptp4l[84.170]: timed out while polling for tx timestamp
-ptp4l[84.171]: increasing tx_timestamp_timeout or increasing kworker priority may correct this issue, but a driver bug likely causes it
-ptp4l[84.172]: port 1 (swp0): send peer delay request failed
-ptp4l[84.173]: port 1 (swp0): clearing fault immediately
-ptp4l[84.269]: port 1 (swp0): SLAVE to LISTENING on INIT_COMPLETE
-ptp4l[85.303]: timed out while polling for tx timestamp
-ptp4l[84.171]: increasing tx_timestamp_timeout or increasing kworker priority may correct this issue, but a driver bug likely causes it
-ptp4l[84.172]: port 1 (swp0): send peer delay request failed
-ptp4l[84.173]: port 1 (swp0): clearing fault immediately
-ptp4l[84.269]: port 1 (swp0): SLAVE to LISTENING on INIT_COMPLETE
-ptp4l[85.303]: timed out while polling for tx timestamp
-ptp4l[85.304]: increasing tx_timestamp_timeout or increasing kworker priority may correct this issue, but a driver bug likely causes it
-ptp4l[85.305]: port 1 (swp0): send peer delay response failed
-ptp4l[85.306]: port 1 (swp0): clearing fault immediately
-ptp4l[86.304]: timed out while polling for tx timestamp
+After a call to bpf_skb_pull_data() the pointer 'p' can't be used
+safely. See function filter.c:bpf_helper_changes_pkt_data() for a list
+of such helpers.
 
-A hint is given by the non-zero statistics for dropped packets which
-were expecting hardware TX timestamps:
+At the moment verifier invalidates packet pointers when processing
+helper function calls, and does not traverse global sub-programs when
+processing calls to global sub-programs. This means that calls to
+helpers done from global sub-programs do not invalidate pointers in
+the caller state. E.g. the program above is unsafe, but is not
+rejected by verifier.
 
-$ ethtool --include-statistics -T swp0
-(...)
-Statistics:
-  tx_pkts: 30
-  tx_lost: 11
-  tx_err: 0
+This commit fixes the omission by computing field
+bpf_subprog_info->changes_pkt_data for each sub-program before main
+verification pass.
+changes_pkt_data should be set if:
+- subprogram calls helper for which bpf_helper_changes_pkt_data
+  returns true;
+- subprogram calls a global function,
+  for which bpf_subprog_info->changes_pkt_data should be set.
 
-We know that when PTP clock stepping takes place (from ocelot_ptp_settime64()
-or from ocelot_ptp_adjtime()), vsc9959_tas_clock_adjust() is called.
+The verifier.c:check_cfg() pass is modified to compute this
+information. The commit relies on depth first instruction traversal
+done by check_cfg() and absence of recursive function calls:
+- check_cfg() would eventually visit every call to subprogram S in a
+  state when S is fully explored;
+- when S is fully explored:
+  - every direct helper call within S is explored
+    (and thus changes_pkt_data is set if needed);
+  - every call to subprogram S1 called by S was visited with S1 fully
+    explored (and thus S inherits changes_pkt_data from S1).
 
-Another interesting hint is that placing an early return in
-vsc9959_tas_clock_adjust(), so as to neutralize this function, fixes the
-issue and TX timestamps are no longer dropped.
+The downside of such approach is that dead code elimination is not
+taken into account: if a helper call inside global function is dead
+because of current configuration, verifier would conservatively assume
+that the call occurs for the purpose of the changes_pkt_data
+computation.
 
-The debugging function written by me and included below is intended to
-read the GCL RAM, after the admin schedule became operational, through
-the two status registers available for this purpose:
-QSYS_GCL_STATUS_REG_1 and QSYS_GCL_STATUS_REG_2.
-
-static void vsc9959_print_tas_gcl(struct ocelot *ocelot)
-{
-	u32 val, list_length, interval, gate_state;
-	int i, err;
-
-	err = read_poll_timeout(ocelot_read, val,
-				!(val & QSYS_PARAM_STATUS_REG_8_CONFIG_PENDING),
-				10, 100000, false, ocelot, QSYS_PARAM_STATUS_REG_8);
-	if (err) {
-		dev_err(ocelot->dev,
-			"Failed to wait for TAS config pending bit to clear: %pe\n",
-			ERR_PTR(err));
-		return;
-	}
-
-	val = ocelot_read(ocelot, QSYS_PARAM_STATUS_REG_3);
-	list_length = QSYS_PARAM_STATUS_REG_3_LIST_LENGTH_X(val);
-
-	dev_info(ocelot->dev, "GCL length: %u\n", list_length);
-
-	for (i = 0; i < list_length; i++) {
-		ocelot_rmw(ocelot,
-			   QSYS_GCL_STATUS_REG_1_GCL_ENTRY_NUM(i),
-			   QSYS_GCL_STATUS_REG_1_GCL_ENTRY_NUM_M,
-			   QSYS_GCL_STATUS_REG_1);
-		interval = ocelot_read(ocelot, QSYS_GCL_STATUS_REG_2);
-		val = ocelot_read(ocelot, QSYS_GCL_STATUS_REG_1);
-		gate_state = QSYS_GCL_STATUS_REG_1_GATE_STATE_X(val);
-
-		dev_info(ocelot->dev, "GCL entry %d: states 0x%x interval %u\n",
-			 i, gate_state, interval);
-	}
-}
-
-Calling it from two places: after the initial QSYS_TAS_PARAM_CFG_CTRL_CONFIG_CHANGE
-performed by vsc9959_qos_port_tas_set(), and after the one done by
-vsc9959_tas_clock_adjust(), I notice the following difference.
-
->From the tc-taprio process context, where the schedule was initially
-configured, the GCL looks like this:
-
-mscc_felix 0000:00:00.5: GCL length: 8
-mscc_felix 0000:00:00.5: GCL entry 0: states 0x20 interval 300000
-mscc_felix 0000:00:00.5: GCL entry 1: states 0x10 interval 200000
-mscc_felix 0000:00:00.5: GCL entry 2: states 0x20 interval 300000
-mscc_felix 0000:00:00.5: GCL entry 3: states 0x48 interval 200000
-mscc_felix 0000:00:00.5: GCL entry 4: states 0x20 interval 300000
-mscc_felix 0000:00:00.5: GCL entry 5: states 0x83 interval 200000
-mscc_felix 0000:00:00.5: GCL entry 6: states 0x40 interval 300000
-mscc_felix 0000:00:00.5: GCL entry 7: states 0x0 interval 200000
-
-But from the ptp4l clock stepping process context, when the
-vsc9959_tas_clock_adjust() hook is called, the GCL RAM of the
-operational schedule now looks like this:
-
-mscc_felix 0000:00:00.5: GCL length: 8
-mscc_felix 0000:00:00.5: GCL entry 0: states 0x0 interval 0
-mscc_felix 0000:00:00.5: GCL entry 1: states 0x0 interval 0
-mscc_felix 0000:00:00.5: GCL entry 2: states 0x0 interval 0
-mscc_felix 0000:00:00.5: GCL entry 3: states 0x0 interval 0
-mscc_felix 0000:00:00.5: GCL entry 4: states 0x0 interval 0
-mscc_felix 0000:00:00.5: GCL entry 5: states 0x0 interval 0
-mscc_felix 0000:00:00.5: GCL entry 6: states 0x0 interval 0
-mscc_felix 0000:00:00.5: GCL entry 7: states 0x0 interval 0
-
-I do not have a formal explanation, just experimental conclusions.
-It appears that after triggering QSYS_TAS_PARAM_CFG_CTRL_CONFIG_CHANGE
-for a port's TAS, the GCL entry RAM is updated anyway, despite what the
-documentation claims: "Specify the time interval in
-QSYS::GCL_CFG_REG_2.TIME_INTERVAL. This triggers the actual RAM
-write with the gate state and the time interval for the entry number
-specified". We don't touch that register (through vsc9959_tas_gcl_set())
-from vsc9959_tas_clock_adjust(), yet the GCL RAM is updated anyway.
-
-It seems to be updated with effectively stale memory, which in my
-testing can hold a variety of things, including even pieces of the
-previously applied schedule, for particular schedule lengths.
-
-As such, in most circumstances it is very difficult to pinpoint this
-issue, because the newly updated schedule would "behave strangely",
-but ultimately might still pass traffic to some extent, due to some
-gate entries still being present in the stale GCL entry RAM. It is easy
-to miss.
-
-With the particular schedule given at the beginning, the GCL RAM
-"happens" to be reproducibly rewritten with all zeroes, and this is
-consistent with what we see: when the time-aware shaper has gate entries
-with all gates closed, traffic is dropped on TX, no wonder we can't
-retrieve TX timestamps.
-
-Rewriting the GCL entry RAM when reapplying the new base time fixes the
-observed issue.
-
-Fixes: 8670dc33f48b ("net: dsa: felix: update base time of time-aware shaper when adjusting PTP time")
-Reported-by: Richie Pearn <richard.pearn@nxp.com>
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250426144859.3128352-2-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Nick Zavaritsky <mejedi@gmail.com>
+Closes: https://lore.kernel.org/bpf/0498CA22-5779-4767-9C0C-A9515CEA711F@gmail.com/
+Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
+Link: https://lore.kernel.org/r/20241210041100.1898468-4-eddyz87@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+[shung-hsi.yu: do not use bitfield in "struct bpf_subprog_info" because commit
+406a6fa44bfb ("bpf: use bitfields for simple per-subprog bool flags") is not
+present and minor context difference in check_func_call() because commit
+491dd8edecbc ("bpf: Emit global subprog name in verifier logs") is not present. ]
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/ocelot/felix_vsc9959.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ include/linux/bpf_verifier.h |    1 +
+ kernel/bpf/verifier.c        |   32 +++++++++++++++++++++++++++++++-
+ 2 files changed, 32 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/ocelot/felix_vsc9959.c b/drivers/net/dsa/ocelot/felix_vsc9959.c
-index 391c4e3cb66f4..67af798686b8f 100644
---- a/drivers/net/dsa/ocelot/felix_vsc9959.c
-+++ b/drivers/net/dsa/ocelot/felix_vsc9959.c
-@@ -1517,7 +1517,7 @@ static void vsc9959_tas_clock_adjust(struct ocelot *ocelot)
- 	struct tc_taprio_qopt_offload *taprio;
- 	struct ocelot_port *ocelot_port;
- 	struct timespec64 base_ts;
--	int port;
-+	int i, port;
- 	u32 val;
+--- a/include/linux/bpf_verifier.h
++++ b/include/linux/bpf_verifier.h
+@@ -573,6 +573,7 @@ struct bpf_subprog_info {
+ 	bool tail_call_reachable;
+ 	bool has_ld_abs;
+ 	bool is_async_cb;
++	bool changes_pkt_data;
+ };
  
- 	mutex_lock(&ocelot->tas_lock);
-@@ -1549,6 +1549,9 @@ static void vsc9959_tas_clock_adjust(struct ocelot *ocelot)
- 			   QSYS_PARAM_CFG_REG_3_BASE_TIME_SEC_MSB_M,
- 			   QSYS_PARAM_CFG_REG_3);
+ struct bpf_verifier_env;
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -9364,6 +9364,8 @@ static int check_func_call(struct bpf_ve
  
-+		for (i = 0; i < taprio->num_entries; i++)
-+			vsc9959_tas_gcl_set(ocelot, i, &taprio->entries[i]);
+ 		if (env->log.level & BPF_LOG_LEVEL)
+ 			verbose(env, "Func#%d is global and valid. Skipping.\n", subprog);
++		if (env->subprog_info[subprog].changes_pkt_data)
++			clear_all_pkt_pointers(env);
+ 		clear_caller_saved_regs(env, caller->regs);
+ 
+ 		/* All global functions return a 64-bit SCALAR_VALUE */
+@@ -15114,6 +15116,29 @@ static int check_return_code(struct bpf_
+ 	return 0;
+ }
+ 
++static void mark_subprog_changes_pkt_data(struct bpf_verifier_env *env, int off)
++{
++	struct bpf_subprog_info *subprog;
 +
- 		ocelot_rmw(ocelot, QSYS_TAS_PARAM_CFG_CTRL_CONFIG_CHANGE,
- 			   QSYS_TAS_PARAM_CFG_CTRL_CONFIG_CHANGE,
- 			   QSYS_TAS_PARAM_CFG_CTRL);
--- 
-2.39.5
-
++	subprog = find_containing_subprog(env, off);
++	subprog->changes_pkt_data = true;
++}
++
++/* 't' is an index of a call-site.
++ * 'w' is a callee entry point.
++ * Eventually this function would be called when env->cfg.insn_state[w] == EXPLORED.
++ * Rely on DFS traversal order and absence of recursive calls to guarantee that
++ * callee's change_pkt_data marks would be correct at that moment.
++ */
++static void merge_callee_effects(struct bpf_verifier_env *env, int t, int w)
++{
++	struct bpf_subprog_info *caller, *callee;
++
++	caller = find_containing_subprog(env, t);
++	callee = find_containing_subprog(env, w);
++	caller->changes_pkt_data |= callee->changes_pkt_data;
++}
++
+ /* non-recursive DFS pseudo code
+  * 1  procedure DFS-iterative(G,v):
+  * 2      label v as discovered
+@@ -15247,6 +15272,7 @@ static int visit_func_call_insn(int t, s
+ 				bool visit_callee)
+ {
+ 	int ret, insn_sz;
++	int w;
+ 
+ 	insn_sz = bpf_is_ldimm64(&insns[t]) ? 2 : 1;
+ 	ret = push_insn(t, t + insn_sz, FALLTHROUGH, env);
+@@ -15258,8 +15284,10 @@ static int visit_func_call_insn(int t, s
+ 	mark_jmp_point(env, t + insn_sz);
+ 
+ 	if (visit_callee) {
++		w = t + insns[t].imm + 1;
+ 		mark_prune_point(env, t);
+-		ret = push_insn(t, t + insns[t].imm + 1, BRANCH, env);
++		merge_callee_effects(env, t, w);
++		ret = push_insn(t, w, BRANCH, env);
+ 	}
+ 	return ret;
+ }
+@@ -15311,6 +15339,8 @@ static int visit_insn(int t, struct bpf_
+ 			mark_prune_point(env, t);
+ 			mark_jmp_point(env, t);
+ 		}
++		if (bpf_helper_call(insn) && bpf_helper_changes_pkt_data(insn->imm))
++			mark_subprog_changes_pkt_data(env, t);
+ 		if (insn->src_reg == BPF_PSEUDO_KFUNC_CALL) {
+ 			struct bpf_kfunc_call_arg_meta meta;
+ 
 
 
 
