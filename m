@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-142398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C411BAAEA71
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:55:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C00B1AAEB19
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:03:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F35C51BC488E
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:55:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEBDE1C0649D
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:03:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 404DE214813;
-	Wed,  7 May 2025 18:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C4D928BA9F;
+	Wed,  7 May 2025 19:03:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ql8tp7kw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TveQS/WA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F712116E9;
-	Wed,  7 May 2025 18:55:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCADC29A0;
+	Wed,  7 May 2025 19:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644125; cv=none; b=jRYuI4leoaj/kDXph3oz7tWLVamd0E0ApBE9oRT1yiMjcCkvuMk/+x+SwclerT+mEa4mYGG7//wYnrwJemeMBD4pJkST2TcmMt5Sa9yVzAOsTB4YUumcqdfCXkT0I7wue4UhKC9uzjrSP7qaX1OP+agB5URRtmS4izk6ySHn/pY=
+	t=1746644599; cv=none; b=N0IN0C5CQ2uxubEO2t+KgnQuwEj8Q2yIiLAdcL59ielNq+Fog/0+jjNANJnzVC3MdxvrVCOndAKTPrtleBa/YJdHhZ17Y7KuVVJpne6wYc5b23J1RSYPjFmp57wCEu7Tyl8YF48hEWmAd+6mORNbyq7zomjxLBQXuSi9R8Sf9zM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644125; c=relaxed/simple;
-	bh=38QCQzUNKfqjOYKLdCV+eBAhdX7oJg/AZU0k5iNgvQ0=;
+	s=arc-20240116; t=1746644599; c=relaxed/simple;
+	bh=g/IfcBELyvLSgAYNm56umpOrumAJezdf88x59O5YgMY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NB3xx9itG7W6ZijYcJAGm6C6shrExTosLHjE2w6uqcc+c0BJIh+ieAO5/HPBmT9U1viL7Jq1v7p6JuU3bxuwkV6bajJmA60OXUS+V3MjqMept719ZRgNTzyU8lPWvpdSpYOdd+8vj/z5rTPkTjgOsTI1YaCiac5lzvanz6gevy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ql8tp7kw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79787C4CEE2;
-	Wed,  7 May 2025 18:55:24 +0000 (UTC)
+	 MIME-Version; b=mNWCBHxnCBexpn/BTdnF4NBiBDhsU5lWp8q65iAEtnDFb3lBAaBaFzj6x55AZEFBk1pkZJlbiO6AUyKf7Bo3tt0KCUOWOCaFVUsJEy+NVsJN3xDoK3gKRA4ikjh1upxq3RHiICWGcBRnwsYjVM23CKSXnlROQs4hQ4j9yYhHOmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TveQS/WA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4E2CC4CEE2;
+	Wed,  7 May 2025 19:03:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644124;
-	bh=38QCQzUNKfqjOYKLdCV+eBAhdX7oJg/AZU0k5iNgvQ0=;
+	s=korg; t=1746644599;
+	bh=g/IfcBELyvLSgAYNm56umpOrumAJezdf88x59O5YgMY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ql8tp7kwCE7LJZpBfP2B4n5lH1RW9jZS/YPmlRli/IfLkK3e/R0BRp4uKLY3XwECN
-	 yTbSM4+Sv1eyOM/2flDqFwqo/gFZw36rHiv1zMS5YFiEx//wDK+JHyU3hJrtRlQwEW
-	 UKyct53pln66StVmYWQZGoVr6SUKsbx0LB7qCsFQ=
+	b=TveQS/WAArhy9LmkGvqVsHklS/8fzV0n2aMsNEvqO4P3GyYSZv5W4CYhJ6eEyhafy
+	 iYDUOEYN331kPnlnuOVL9F47KQwAEN+0pS2r1Z9uru3g4/sI8DUU+qRSlf1Q9NZWZ2
+	 izzgCdT6AyA6+JUfddbrF7/c3QocACYUpRustcJg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Liang <mliang@purestorage.com>,
-	Mohamed Khalfella <mkhalfella@purestorage.com>,
-	Randy Jennings <randyj@purestorage.com>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Christoph Hellwig <hch@lst.de>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 128/183] nvme-tcp: fix premature queue removal and I/O failover
+Subject: [PATCH 6.12 088/164] pds_core: make pdsc_auxbus_dev_del() void
 Date: Wed,  7 May 2025 20:39:33 +0200
-Message-ID: <20250507183830.004136248@linuxfoundation.org>
+Message-ID: <20250507183824.526183746@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,114 +64,91 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Liang <mliang@purestorage.com>
+From: Shannon Nelson <shannon.nelson@amd.com>
 
-[ Upstream commit 77e40bbce93059658aee02786a32c5c98a240a8a ]
+[ Upstream commit e8562da829432d04a0de1830146984c89844f35e ]
 
-This patch addresses a data corruption issue observed in nvme-tcp during
-testing.
+Since there really is no useful return, advertising a return value
+is rather misleading.  Make pdsc_auxbus_dev_del() a void function.
 
-In an NVMe native multipath setup, when an I/O timeout occurs, all
-inflight I/Os are canceled almost immediately after the kernel socket is
-shut down. These canceled I/Os are reported as host path errors,
-triggering a failover that succeeds on a different path.
-
-However, at this point, the original I/O may still be outstanding in the
-host's network transmission path (e.g., the NIC’s TX queue). From the
-user-space app's perspective, the buffer associated with the I/O is
-considered completed since they're acked on the different path and may
-be reused for new I/O requests.
-
-Because nvme-tcp enables zero-copy by default in the transmission path,
-this can lead to corrupted data being sent to the original target,
-ultimately causing data corruption.
-
-We can reproduce this data corruption by injecting delay on one path and
-triggering i/o timeout.
-
-To prevent this issue, this change ensures that all inflight
-transmissions are fully completed from host's perspective before
-returning from queue stop. To handle concurrent I/O timeout from multiple
-namespaces under the same controller, always wait in queue stop
-regardless of queue's state.
-
-This aligns with the behavior of queue stopping in other NVMe fabric
-transports.
-
-Fixes: 3f2304f8c6d6 ("nvme-tcp: add NVMe over TCP host driver")
-Signed-off-by: Michael Liang <mliang@purestorage.com>
-Reviewed-by: Mohamed Khalfella <mkhalfella@purestorage.com>
-Reviewed-by: Randy Jennings <randyj@purestorage.com>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Link: https://patch.msgid.link/r/20250320194412.67983-2-shannon.nelson@amd.com
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Stable-dep-of: dfd76010f8e8 ("pds_core: remove write-after-free of client_id")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/tcp.c | 31 +++++++++++++++++++++++++++++--
- 1 file changed, 29 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/amd/pds_core/auxbus.c  | 7 +------
+ drivers/net/ethernet/amd/pds_core/core.h    | 2 +-
+ drivers/net/ethernet/amd/pds_core/devlink.c | 6 ++++--
+ 3 files changed, 6 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
-index 327f3f2f5399c..d991baa82a1c2 100644
---- a/drivers/nvme/host/tcp.c
-+++ b/drivers/nvme/host/tcp.c
-@@ -1944,7 +1944,7 @@ static void __nvme_tcp_stop_queue(struct nvme_tcp_queue *queue)
- 	cancel_work_sync(&queue->io_work);
+diff --git a/drivers/net/ethernet/amd/pds_core/auxbus.c b/drivers/net/ethernet/amd/pds_core/auxbus.c
+index b76a9b7e0aed6..d53b2124b1498 100644
+--- a/drivers/net/ethernet/amd/pds_core/auxbus.c
++++ b/drivers/net/ethernet/amd/pds_core/auxbus.c
+@@ -172,13 +172,9 @@ static struct pds_auxiliary_dev *pdsc_auxbus_dev_register(struct pdsc *cf,
+ 	return padev;
  }
  
--static void nvme_tcp_stop_queue(struct nvme_ctrl *nctrl, int qid)
-+static void nvme_tcp_stop_queue_nowait(struct nvme_ctrl *nctrl, int qid)
+-int pdsc_auxbus_dev_del(struct pdsc *cf, struct pdsc *pf)
++void pdsc_auxbus_dev_del(struct pdsc *cf, struct pdsc *pf)
  {
- 	struct nvme_tcp_ctrl *ctrl = to_tcp_ctrl(nctrl);
- 	struct nvme_tcp_queue *queue = &ctrl->queues[qid];
-@@ -1963,6 +1963,31 @@ static void nvme_tcp_stop_queue(struct nvme_ctrl *nctrl, int qid)
- 	mutex_unlock(&queue->queue_lock);
+ 	struct pds_auxiliary_dev *padev;
+-	int err = 0;
+-
+-	if (!cf)
+-		return -ENODEV;
+ 
+ 	mutex_lock(&pf->config_lock);
+ 
+@@ -192,7 +188,6 @@ int pdsc_auxbus_dev_del(struct pdsc *cf, struct pdsc *pf)
+ 	pf->vfs[cf->vf_id].padev = NULL;
+ 
+ 	mutex_unlock(&pf->config_lock);
+-	return err;
  }
  
-+static void nvme_tcp_wait_queue(struct nvme_ctrl *nctrl, int qid)
-+{
-+	struct nvme_tcp_ctrl *ctrl = to_tcp_ctrl(nctrl);
-+	struct nvme_tcp_queue *queue = &ctrl->queues[qid];
-+	int timeout = 100;
-+
-+	while (timeout > 0) {
-+		if (!test_bit(NVME_TCP_Q_ALLOCATED, &queue->flags) ||
-+		    !sk_wmem_alloc_get(queue->sock->sk))
-+			return;
-+		msleep(2);
-+		timeout -= 2;
-+	}
-+	dev_warn(nctrl->device,
-+		 "qid %d: timeout draining sock wmem allocation expired\n",
-+		 qid);
-+}
-+
-+static void nvme_tcp_stop_queue(struct nvme_ctrl *nctrl, int qid)
-+{
-+	nvme_tcp_stop_queue_nowait(nctrl, qid);
-+	nvme_tcp_wait_queue(nctrl, qid);
-+}
-+
-+
- static void nvme_tcp_setup_sock_ops(struct nvme_tcp_queue *queue)
- {
- 	write_lock_bh(&queue->sock->sk->sk_callback_lock);
-@@ -2030,7 +2055,9 @@ static void nvme_tcp_stop_io_queues(struct nvme_ctrl *ctrl)
- 	int i;
+ int pdsc_auxbus_dev_add(struct pdsc *cf, struct pdsc *pf)
+diff --git a/drivers/net/ethernet/amd/pds_core/core.h b/drivers/net/ethernet/amd/pds_core/core.h
+index ec637dc4327a5..08b8280437dcf 100644
+--- a/drivers/net/ethernet/amd/pds_core/core.h
++++ b/drivers/net/ethernet/amd/pds_core/core.h
+@@ -304,7 +304,7 @@ int pdsc_register_notify(struct notifier_block *nb);
+ void pdsc_unregister_notify(struct notifier_block *nb);
+ void pdsc_notify(unsigned long event, void *data);
+ int pdsc_auxbus_dev_add(struct pdsc *cf, struct pdsc *pf);
+-int pdsc_auxbus_dev_del(struct pdsc *cf, struct pdsc *pf);
++void pdsc_auxbus_dev_del(struct pdsc *cf, struct pdsc *pf);
  
- 	for (i = 1; i < ctrl->queue_count; i++)
--		nvme_tcp_stop_queue(ctrl, i);
-+		nvme_tcp_stop_queue_nowait(ctrl, i);
-+	for (i = 1; i < ctrl->queue_count; i++)
-+		nvme_tcp_wait_queue(ctrl, i);
- }
+ void pdsc_process_adminq(struct pdsc_qcq *qcq);
+ void pdsc_work_thread(struct work_struct *work);
+diff --git a/drivers/net/ethernet/amd/pds_core/devlink.c b/drivers/net/ethernet/amd/pds_core/devlink.c
+index ca23cde385e67..48a7c22fe3320 100644
+--- a/drivers/net/ethernet/amd/pds_core/devlink.c
++++ b/drivers/net/ethernet/amd/pds_core/devlink.c
+@@ -56,8 +56,10 @@ int pdsc_dl_enable_set(struct devlink *dl, u32 id,
+ 	for (vf_id = 0; vf_id < pdsc->num_vfs; vf_id++) {
+ 		struct pdsc *vf = pdsc->vfs[vf_id].vf;
  
- static int nvme_tcp_start_io_queues(struct nvme_ctrl *ctrl,
+-		err = ctx->val.vbool ? pdsc_auxbus_dev_add(vf, pdsc) :
+-				       pdsc_auxbus_dev_del(vf, pdsc);
++		if (ctx->val.vbool)
++			err = pdsc_auxbus_dev_add(vf, pdsc);
++		else
++			pdsc_auxbus_dev_del(vf, pdsc);
+ 	}
+ 
+ 	return err;
 -- 
 2.39.5
 
