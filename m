@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-142411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DFEDAAEA81
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:56:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01065AAE994
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:46:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23CD85233C5
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:56:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 399A59E0DC8
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:45:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F435289823;
-	Wed,  7 May 2025 18:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F7AA20E6;
+	Wed,  7 May 2025 18:46:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Afa0oMiG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G/WHxDID"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0640214813;
-	Wed,  7 May 2025 18:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0EAC29A0;
+	Wed,  7 May 2025 18:46:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644166; cv=none; b=YOcYsp2ADv595LHKYF36imQrG3BYk1SkSmUvVjkeUfO9w07ZH3T+P8yIFWBIxg2IkiWCFOVT0JjkvoPebZC4XKHFYLAEXVf8KPwu9WlVhxoY5QU6IxIqImXoyoYLZIMl1isOfezy/D05/6D8vPMYy9b1sXdgv4lRxe8QL0P3l2s=
+	t=1746643564; cv=none; b=dzYhJNuJ9JPhwzaF4tOviWKPsAIdqTLbMITGoSo2GiaxwuwYlfyGrYY0aQDyNeqSXeEYubdbstaDy7RhwiTAfP5RIyu/c7IrteoLvuGbzLkztSgUlKru1NkZs5AhvllVBF4Xi9yj4NnCZSUqFgIA+IujBf1GRhOT/H6UrVwC7Gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644166; c=relaxed/simple;
-	bh=bbHFcL1BLWRoDcJ9a/IGyPBlePqtecCk8jgpbAKaXSE=;
+	s=arc-20240116; t=1746643564; c=relaxed/simple;
+	bh=KFUJYSSLLN8to2H/MiWBfjB229i+cSMVE8eGUiq7j5s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oWmYe0H3M+Klyoi8sBLePTcfHJzEDrwjXSh6mI2LyvXgv+XtdysgC3HyHUiLUpTjxH0KmpKJKGVL8wlqPDTh6S/ZaFlyTQyBc5eKEAiL06LGaYyidjlxnLTUS8u6mdyRygyaye9K31XuWfARfK6U3vq2MDGlH42SpcOSPdpfdkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Afa0oMiG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6CE3C4CEE2;
-	Wed,  7 May 2025 18:56:04 +0000 (UTC)
+	 MIME-Version; b=UhIfZNcdtmGIwV3hNXhL21NT9gG9E7WdISgzAQEsZAI/tkZ3s1JB5FkJqpTJDyijkNi6BGnMUodyKOLW8GoobBM7CQ1NutnS3KBOxu8jED2CY+/hSBs59PeTY0/+13wgD6GFVGGvWawiKpSAmI+RGLHToDrocJ25LPX0cO5M/bs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G/WHxDID; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F179C4CEE2;
+	Wed,  7 May 2025 18:46:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644165;
-	bh=bbHFcL1BLWRoDcJ9a/IGyPBlePqtecCk8jgpbAKaXSE=;
+	s=korg; t=1746643563;
+	bh=KFUJYSSLLN8to2H/MiWBfjB229i+cSMVE8eGUiq7j5s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Afa0oMiGKYKa8d5F8Ex9+OlzXhR7usu8bg5AzTTPBU82ufNJe0gsjnSAaF+3hp0sI
-	 KdJ30mJiGLyeGGq1UjOpQ0bkRhMF+HeUONGQYLJd0Ra6OFxWINO/0JwKggxZDVEoR1
-	 MMDWEoczoZAVocDnQ2mEKEkMy7USiQIUf57F4oRk=
+	b=G/WHxDIDl8Xf3QR5LEyJ5/1NThMkcVzlMlOw4Z5qZYAZv2oKZxb56bVwd+sdLRHEO
+	 iZwdybX+m/1Uzh8NAytQGoi7W6Z+DzqoUxKoFEsKDgrNWOGrzU2h3a/tUEs1jzy4sq
+	 QzKuAgNZLzwfjxdXxdJK79ZQulbKMYUwjtAJkzvk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Da Xue <da@libre.computer>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 113/183] net: mdio: mux-meson-gxl: set reversed bit when using internal phy
+Subject: [PATCH 6.1 43/97] vxlan: vnifilter: Fix unlocked deletion of default FDB entry
 Date: Wed,  7 May 2025 20:39:18 +0200
-Message-ID: <20250507183829.403467104@linuxfoundation.org>
+Message-ID: <20250507183808.723537108@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
+References: <20250507183806.987408728@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Da Xue <da@libre.computer>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit b23285e93bef729e67519a5209d5b7fde3b4af50 ]
+[ Upstream commit 087a9eb9e5978e3ba362e1163691e41097e8ca20 ]
 
-This bit is necessary to receive packets from the internal PHY.
-Without this bit set, no activity occurs on the interface.
+When a VNI is deleted from a VXLAN device in 'vnifilter' mode, the FDB
+entry associated with the default remote (assuming one was configured)
+is deleted without holding the hash lock. This is wrong and will result
+in a warning [1] being generated by the lockdep annotation that was
+added by commit ebe642067455 ("vxlan: Create wrappers for FDB lookup").
 
-Normally u-boot sets this bit, but if u-boot is compiled without
-net support, the interface will be up but without any activity.
-If bit is set once, it will work until the IP is powered down or reset.
+Reproducer:
 
-The vendor SDK sets this bit along with the PHY_ID bits.
+ # ip link add vx0 up type vxlan dstport 4789 external vnifilter local 192.0.2.1
+ # bridge vni add vni 10010 remote 198.51.100.1 dev vx0
+ # bridge vni del vni 10010 dev vx0
 
-Signed-off-by: Da Xue <da@libre.computer>
-Fixes: 9a24e1ff4326 ("net: mdio: add amlogic gxl mdio mux support")
-Link: https://patch.msgid.link/20250425192009.1439508-1-da@libre.computer
+Fix by acquiring the hash lock before the deletion and releasing it
+afterwards. Blame the original commit that introduced the issue rather
+than the one that exposed it.
+
+[1]
+WARNING: CPU: 3 PID: 392 at drivers/net/vxlan/vxlan_core.c:417 vxlan_find_mac+0x17f/0x1a0
+[...]
+RIP: 0010:vxlan_find_mac+0x17f/0x1a0
+[...]
+Call Trace:
+ <TASK>
+ __vxlan_fdb_delete+0xbe/0x560
+ vxlan_vni_delete_group+0x2ba/0x940
+ vxlan_vni_del.isra.0+0x15f/0x580
+ vxlan_process_vni_filter+0x38b/0x7b0
+ vxlan_vnifilter_process+0x3bb/0x510
+ rtnetlink_rcv_msg+0x2f7/0xb70
+ netlink_rcv_skb+0x131/0x360
+ netlink_unicast+0x426/0x710
+ netlink_sendmsg+0x75a/0xc20
+ __sock_sendmsg+0xc1/0x150
+ ____sys_sendmsg+0x5aa/0x7b0
+ ___sys_sendmsg+0xfc/0x180
+ __sys_sendmsg+0x121/0x1b0
+ do_syscall_64+0xbb/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x4b/0x53
+
+Fixes: f9c4bb0b245c ("vxlan: vni filtering support on collect metadata device")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20250423145131.513029-1-idosch@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/mdio/mdio-mux-meson-gxl.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/vxlan/vxlan_vnifilter.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/mdio/mdio-mux-meson-gxl.c b/drivers/net/mdio/mdio-mux-meson-gxl.c
-index 00c66240136b1..3dd12a8c8b03e 100644
---- a/drivers/net/mdio/mdio-mux-meson-gxl.c
-+++ b/drivers/net/mdio/mdio-mux-meson-gxl.c
-@@ -17,6 +17,7 @@
- #define  REG2_LEDACT		GENMASK(23, 22)
- #define  REG2_LEDLINK		GENMASK(25, 24)
- #define  REG2_DIV4SEL		BIT(27)
-+#define  REG2_REVERSED		BIT(28)
- #define  REG2_ADCBYPASS		BIT(30)
- #define  REG2_CLKINSEL		BIT(31)
- #define ETH_REG3		0x4
-@@ -65,7 +66,7 @@ static void gxl_enable_internal_mdio(struct gxl_mdio_mux *priv)
- 	 * The only constraint is that it must match the one in
- 	 * drivers/net/phy/meson-gxl.c to properly match the PHY.
+diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
+index 1ffc00e270802..c6d4fae958ca8 100644
+--- a/drivers/net/vxlan/vxlan_vnifilter.c
++++ b/drivers/net/vxlan/vxlan_vnifilter.c
+@@ -627,7 +627,11 @@ static void vxlan_vni_delete_group(struct vxlan_dev *vxlan,
+ 	 * default dst remote_ip previously added for this vni
  	 */
--	writel(FIELD_PREP(REG2_PHYID, EPHY_GXL_ID),
-+	writel(REG2_REVERSED | FIELD_PREP(REG2_PHYID, EPHY_GXL_ID),
- 	       priv->regs + ETH_REG2);
+ 	if (!vxlan_addr_any(&vninode->remote_ip) ||
+-	    !vxlan_addr_any(&dst->remote_ip))
++	    !vxlan_addr_any(&dst->remote_ip)) {
++		u32 hash_index = fdb_head_index(vxlan, all_zeros_mac,
++						vninode->vni);
++
++		spin_lock_bh(&vxlan->hash_lock[hash_index]);
+ 		__vxlan_fdb_delete(vxlan, all_zeros_mac,
+ 				   (vxlan_addr_any(&vninode->remote_ip) ?
+ 				   dst->remote_ip : vninode->remote_ip),
+@@ -635,6 +639,8 @@ static void vxlan_vni_delete_group(struct vxlan_dev *vxlan,
+ 				   vninode->vni, vninode->vni,
+ 				   dst->remote_ifindex,
+ 				   true);
++		spin_unlock_bh(&vxlan->hash_lock[hash_index]);
++	}
  
- 	/* Enable the internal phy */
+ 	if (vxlan->dev->flags & IFF_UP) {
+ 		if (vxlan_addr_multicast(&vninode->remote_ip) &&
 -- 
 2.39.5
 
