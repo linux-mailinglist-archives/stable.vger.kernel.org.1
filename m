@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-142644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B23D3AAEB84
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:08:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C623AAE939
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:42:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 721559E2F01
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:07:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D3D877BAC14
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:41:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCD0C28980D;
-	Wed,  7 May 2025 19:08:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FF1B28B7D6;
+	Wed,  7 May 2025 18:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X/Wn4tz7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kM8E6JTI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 794B51E22E9;
-	Wed,  7 May 2025 19:08:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 087B014A4C7;
+	Wed,  7 May 2025 18:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644886; cv=none; b=V7v0q30zBhCAc0suK4Dv3tosQceJiOLxaEWGpHaiMNDHs3Sa+CUJoHQAkOTqsAYw5ondGkocHSRw428uknnUAnU0eqPYMxoKTAGHADnwQKrNx6e9TkbbDtlIfiAqQ7LaBKMHxsruiYTEoQ7Xr4ssD/oXin9P/kCI1JpeOcrTpek=
+	t=1746643336; cv=none; b=TrFfpvWtSi/5g9bdFBw3TQsMSxuCEcemBu1+h5uG3sB7YlOz4clBhEHNDCmtjdReHnSqQQTuDaHokjt7odeY3zBIjn7NexWB25pgZSI1ieft6wFkbBOdGp2YDwJl+LobtLQXsgimWc5Nuna7TSPbKYxMDa4LkCX8c03yF3taS1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644886; c=relaxed/simple;
-	bh=Uxx214dk3GKIIn0AlcgdlodijhwRg3afQ+BfPndaRO4=;
+	s=arc-20240116; t=1746643336; c=relaxed/simple;
+	bh=FvZEHKjCa/Ub/TfOIOHTU8jffG5IOAsvRqYo4AB6lfQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DPZVuyFjP/jTbbbhl+7K8NiYilfwiGvf7jjTZqnKELVgm0xL7L3a57XNTaBXwWuDva8gbNhVk3GOPUBfLqPVJjb03Sh4s0D2xgUnfWqgKV6GgzREQimiLxNWVwX++zDEVE2N7Shz/XUTvk6V4C75zWzArGkgcW/MqGP83XmeNb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X/Wn4tz7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09C92C4CEE2;
-	Wed,  7 May 2025 19:08:05 +0000 (UTC)
+	 MIME-Version; b=OeHHpI6lMT42SIQcpTifyJ/77ZlR2kZBXqyiP+cbQhnSGEsXKrHk/mr+TPh/2sRbQAARChhTwqrGX+i7tESZSOWPYfnQ/pyyK2GgrP2Gsp02NqYF7+3PcBSGCpY6W/2fm5sb1QU7r7MC3MZIyqNm7a9TdqcHrAG6zcQEV00hKx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kM8E6JTI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CB82C4CEE2;
+	Wed,  7 May 2025 18:42:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644886;
-	bh=Uxx214dk3GKIIn0AlcgdlodijhwRg3afQ+BfPndaRO4=;
+	s=korg; t=1746643335;
+	bh=FvZEHKjCa/Ub/TfOIOHTU8jffG5IOAsvRqYo4AB6lfQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X/Wn4tz7DCfZxnwuvk00MqdsCXFVwnmMXPYSxaOl/HLeobN3zAURWgA+ZHWR17ev6
-	 H2M0C/J39XohZ1SpT9RQxDN2dXe44frsk+aLfykVk2rjyHspfHlAJ5Y4RRzsDc51ov
-	 p6Kt3swPiHIvE6R82FhSdimXPOiqV//gXITSo58s=
+	b=kM8E6JTIbn6XVGOS7lBQOVnf0isMRkZo+5GDGg1YbD7oqmt2NCaf70Ws1tBdri95P
+	 cmcEBWHNKgIvz8S3ykjGt6wqh8B0XpfzNvUPQ59Y2dQtbfQDnCwYsKiitgnKRLh6kK
+	 83+eLD/NQReP2vOGgQP8Fi6u3f+nJg6TewcgcN+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	Carlos Song <carlos.song@nxp.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.6 009/129] i2c: imx-lpi2c: Fix clock count when probe defers
+	Niravkumar L Rabara <niravkumar.l.rabara@altera.com>,
+	Matthew Gerlach <matthew.gerlach@altera.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	stable@kernel.org
+Subject: [PATCH 5.15 04/55] EDAC/altera: Set DDR and SDMMC interrupt mask before registration
 Date: Wed,  7 May 2025 20:39:05 +0200
-Message-ID: <20250507183813.912663970@linuxfoundation.org>
+Message-ID: <20250507183759.231174288@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
-References: <20250507183813.500572371@linuxfoundation.org>
+In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
+References: <20250507183759.048732653@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Clark Wang <xiaoning.wang@nxp.com>
+From: Niravkumar L Rabara <niravkumar.l.rabara@altera.com>
 
-commit b1852c5de2f2a37dd4462f7837c9e3e678f9e546 upstream.
+commit 6dbe3c5418c4368e824bff6ae4889257dd544892 upstream.
 
-Deferred probe with pm_runtime_put() may delay clock disable, causing
-incorrect clock usage count. Use pm_runtime_put_sync() to ensure the
-clock is disabled immediately.
+Mask DDR and SDMMC in probe function to avoid spurious interrupts before
+registration.  Removed invalid register write to system manager.
 
-Fixes: 13d6eb20fc79 ("i2c: imx-lpi2c: add runtime pm support")
-Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-Signed-off-by: Carlos Song <carlos.song@nxp.com>
-Cc: <stable@vger.kernel.org> # v4.16+
-Link: https://lore.kernel.org/r/20250421062341.2471922-1-carlos.song@nxp.com
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Fixes: 1166fde93d5b ("EDAC, altera: Add Arria10 ECC memory init functions")
+Signed-off-by: Niravkumar L Rabara <niravkumar.l.rabara@altera.com>
+Signed-off-by: Matthew Gerlach <matthew.gerlach@altera.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Dinh Nguyen <dinguyen@kernel.org>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/20250425142640.33125-3-matthew.gerlach@altera.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-imx-lpi2c.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/edac/altera_edac.c |    7 ++++---
+ drivers/edac/altera_edac.h |    2 ++
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
---- a/drivers/i2c/busses/i2c-imx-lpi2c.c
-+++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
-@@ -616,9 +616,9 @@ static int lpi2c_imx_probe(struct platfo
- 	return 0;
+--- a/drivers/edac/altera_edac.c
++++ b/drivers/edac/altera_edac.c
+@@ -1015,9 +1015,6 @@ altr_init_a10_ecc_block(struct device_no
+ 		}
+ 	}
  
- rpm_disable:
--	pm_runtime_put(&pdev->dev);
--	pm_runtime_disable(&pdev->dev);
- 	pm_runtime_dont_use_autosuspend(&pdev->dev);
-+	pm_runtime_put_sync(&pdev->dev);
-+	pm_runtime_disable(&pdev->dev);
+-	/* Interrupt mode set to every SBERR */
+-	regmap_write(ecc_mgr_map, ALTR_A10_ECC_INTMODE_OFST,
+-		     ALTR_A10_ECC_INTMODE);
+ 	/* Enable ECC */
+ 	ecc_set_bits(ecc_ctrl_en_mask, (ecc_block_base +
+ 					ALTR_A10_ECC_CTRL_OFST));
+@@ -2100,6 +2097,10 @@ static int altr_edac_a10_probe(struct pl
+ 		return PTR_ERR(edac->ecc_mgr_map);
+ 	}
  
- 	return ret;
- }
++	/* Set irq mask for DDR SBE to avoid any pending irq before registration */
++	regmap_write(edac->ecc_mgr_map, A10_SYSMGR_ECC_INTMASK_SET_OFST,
++		     (A10_SYSMGR_ECC_INTMASK_SDMMCB | A10_SYSMGR_ECC_INTMASK_DDR0));
++
+ 	edac->irq_chip.name = pdev->dev.of_node->name;
+ 	edac->irq_chip.irq_mask = a10_eccmgr_irq_mask;
+ 	edac->irq_chip.irq_unmask = a10_eccmgr_irq_unmask;
+--- a/drivers/edac/altera_edac.h
++++ b/drivers/edac/altera_edac.h
+@@ -249,6 +249,8 @@ struct altr_sdram_mc_data {
+ #define A10_SYSMGR_ECC_INTMASK_SET_OFST   0x94
+ #define A10_SYSMGR_ECC_INTMASK_CLR_OFST   0x98
+ #define A10_SYSMGR_ECC_INTMASK_OCRAM      BIT(1)
++#define A10_SYSMGR_ECC_INTMASK_SDMMCB     BIT(16)
++#define A10_SYSMGR_ECC_INTMASK_DDR0       BIT(17)
+ 
+ #define A10_SYSMGR_ECC_INTSTAT_SERR_OFST  0x9C
+ #define A10_SYSMGR_ECC_INTSTAT_DERR_OFST  0xA0
 
 
 
