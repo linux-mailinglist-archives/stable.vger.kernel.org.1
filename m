@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-142390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5722AAEA69
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:55:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACB84AAEB96
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:08:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B3297A4AAC
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:53:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC2111C457D0
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:08:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B317B289823;
-	Wed,  7 May 2025 18:55:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71A8D289E37;
+	Wed,  7 May 2025 19:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GEaz7Rvz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y6b9oq57"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC532116E9;
-	Wed,  7 May 2025 18:55:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E1711E22E9;
+	Wed,  7 May 2025 19:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644101; cv=none; b=ofXS5wToeGEUWJrxMJkdgVSHu0gNE6B+xdRKnP+FAeTa4Hcfz67WUYsGL0/V0w0dT7xXuP+xNOdF8yldlkCSLigHVCaTEUIhysY3CLE3kdbWIpXr6vpqLnGaaqT4YJ+be5At0FcGAHhFOSzRQlagbgRl55TqLJfKss/SD3Zklyk=
+	t=1746644899; cv=none; b=jlq1senj5+zypLIXtKCcZwIUyz0Yz/1GTMciPZ8dRGOuEckgCRshdyLCMzAeVQ+K5FuvIkBFahMP5RpBOfL450bctA93IJzQmuxFiBqGn6OvWCu36qdSsBdMIkZH4PXmUzqOxXp/5STZxF5/z8Pe4Y8hneVWPaiOT84tPfiQfCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644101; c=relaxed/simple;
-	bh=TDiMTYrr6pU1UL0eaJqEd3St34xNUTQfOURU8baAP3Y=;
+	s=arc-20240116; t=1746644899; c=relaxed/simple;
+	bh=3SK/jtf/zwgmqIo6scVF8M31VOZ+urbHIzKCNTVBd3E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BIy8F+VlZudRwoCyoI7sTvHhsSqy+4fqjmiigk8NxZ4sBoB627XiXiSeK+PQFqYdzlln/6OHjgC3cZnZ5sXSR0oISflBfzP/Ux9l4u/I939CnddYpMUBWWxVRnJPI70ISr8lmrWyZ3NELc3R1j7KfdT3YKU4Qjy6eNt6ilZYGSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GEaz7Rvz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D1BFC4CEE2;
-	Wed,  7 May 2025 18:55:00 +0000 (UTC)
+	 MIME-Version; b=cFSeI3F7dSahtHSmpgFIS6ny2nVD1HUg0AvX4xvb5FY1WeN2VgNMYsmBVEdA7u+om6atQBNZcPeeFOnN/87IBKJ0gG3dSHuYJqgOPqTDmzqWGL/ihOwhhJUhiWumbEX9iTJ6+n7o/hLzAFuuoYStClcgyBf4bitcQJljq9sAqGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y6b9oq57; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92A93C4CEE2;
+	Wed,  7 May 2025 19:08:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644100;
-	bh=TDiMTYrr6pU1UL0eaJqEd3St34xNUTQfOURU8baAP3Y=;
+	s=korg; t=1746644899;
+	bh=3SK/jtf/zwgmqIo6scVF8M31VOZ+urbHIzKCNTVBd3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GEaz7RvzL0IfBYNl2sCULjGOQFWvQyXf0k9m5oRFf64pTHelrJ0S+d2OWppkLSBm9
-	 WU8ZV68NsIYZ0znRPa46iidrPfiJGkIIt0lE5tDV7ewRRUCaCutX+IvYS44tCbLI9x
-	 g91F+p8C2hH0QInV25UcRXyeU58nSzJ7uG0HVQQ8=
+	b=y6b9oq57dHSXYdFryQOtQlt/lt/FH9jDnhhgEf5tynV2tOEH7BAkI2IuOAM+O0qCI
+	 bi1Po760x/rjWVGQ2d52WaoJs0/sujgQ8ci+Exh2oqw8RpKeRGeULbRL+tlJ1H+pyw
+	 JQLVUHHLFlAUcwd0KQ77NguDVTcgeN8/15kL62sQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 120/183] ALSA: hda/realtek: Fix built-mic regression on other ASUS models
+	Jethro Donaldson <devel@jro.nz>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 029/129] smb: client: fix zero length for mkdir POSIX create context
 Date: Wed,  7 May 2025 20:39:25 +0200
-Message-ID: <20250507183829.686718875@linuxfoundation.org>
+Message-ID: <20250507183814.708888097@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,67 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Jethro Donaldson <devel@jro.nz>
 
-[ Upstream commit 4d5b71b487291da9f92e352c0a7e39f256d60db8 ]
+commit 74c72419ec8da5cbc9c49410d3c44bb954538bdd upstream.
 
-A few ASUS models use the ALC256_FIXUP_ASUS_HEADSET_MODE although they
-have no built-in mic pin on NID 0x13, as found in the commit
-c1732ede5e80 ("ALSA: hda/realtek - Fix headset and mic on several Asus
-laptops with ALC256").  This was relatively harmless in the past as
-NID 0x13 was assigned as the secondary mic.  But since the fix for the
-pin sort order, this pin became the primary one, hence user started
-noticing the broken input, and we've fixed already for a few ASUS
-models to switch to ALC256_FIXUP_ASUS_MIC_NO_PRESENCE.
+SMB create requests issued via smb311_posix_mkdir() have an incorrect
+length of zero bytes for the POSIX create context data. ksmbd server
+rejects such requests and logs "cli req too short" causing mkdir to fail
+with "invalid argument" on the client side.  It also causes subsequent
+rmmod to crash in cifs_destroy_request_bufs()
 
-This patch corrects the other ASUS models to use the right quirk entry
-for fixing the built-in mic regression.  Here we cover X541SA
-(1043:12e0), X541UV (1043:12f0), Z550SA (1043:13bf0) and X555UB
-(1043:1ccd).
+Inspection of packets sent by cifs.ko using wireshark show valid data for
+the SMB2_POSIX_CREATE_CONTEXT is appended with the correct offset, but
+with an incorrect length of zero bytes. Fails with ksmbd+cifs.ko only as
+Windows server/client does not use POSIX extensions.
 
-Fixes: 3b4309546b48 ("ALSA: hda: Fix headset detection failure due to unstable sort")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=220058
-Link: https://patch.msgid.link/20250430053210.31776-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix smb311_posix_mkdir() to set req->CreateContextsLength as part of
+appending the POSIX creation context to the request.
+
+Signed-off-by: Jethro Donaldson <devel@jro.nz>
+Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Reviewed-by: Namjae Jeon <linkinjeon@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/smb/client/smb2pdu.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 263c7be1d4e29..2ff02fb6f7e94 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10774,10 +10774,10 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x12a3, "Asus N7691ZM", ALC269_FIXUP_ASUS_N7601ZM),
- 	SND_PCI_QUIRK(0x1043, 0x12af, "ASUS UX582ZS", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x12b4, "ASUS B3405CCA / P3405CCA", ALC294_FIXUP_ASUS_CS35L41_SPI_2),
--	SND_PCI_QUIRK(0x1043, 0x12e0, "ASUS X541SA", ALC256_FIXUP_ASUS_MIC),
--	SND_PCI_QUIRK(0x1043, 0x12f0, "ASUS X541UV", ALC256_FIXUP_ASUS_MIC),
-+	SND_PCI_QUIRK(0x1043, 0x12e0, "ASUS X541SA", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
-+	SND_PCI_QUIRK(0x1043, 0x12f0, "ASUS X541UV", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1043, 0x1313, "Asus K42JZ", ALC269VB_FIXUP_ASUS_MIC_NO_PRESENCE),
--	SND_PCI_QUIRK(0x1043, 0x13b0, "ASUS Z550SA", ALC256_FIXUP_ASUS_MIC),
-+	SND_PCI_QUIRK(0x1043, 0x13b0, "ASUS Z550SA", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1043, 0x1427, "Asus Zenbook UX31E", ALC269VB_FIXUP_ASUS_ZENBOOK),
- 	SND_PCI_QUIRK(0x1043, 0x1433, "ASUS GX650PY/PZ/PV/PU/PYV/PZV/PIV/PVV", ALC285_FIXUP_ASUS_I2C_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x1460, "Asus VivoBook 15", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
-@@ -10831,7 +10831,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
- 	SND_PCI_QUIRK(0x1043, 0x1c92, "ASUS ROG Strix G15", ALC285_FIXUP_ASUS_G533Z_PINS),
- 	SND_PCI_QUIRK(0x1043, 0x1c9f, "ASUS G614JU/JV/JI", ALC285_FIXUP_ASUS_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1043, 0x1caf, "ASUS G634JY/JZ/JI/JG", ALC285_FIXUP_ASUS_SPI_REAR_SPEAKERS),
--	SND_PCI_QUIRK(0x1043, 0x1ccd, "ASUS X555UB", ALC256_FIXUP_ASUS_MIC),
-+	SND_PCI_QUIRK(0x1043, 0x1ccd, "ASUS X555UB", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1043, 0x1ccf, "ASUS G814JU/JV/JI", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1cdf, "ASUS G814JY/JZ/JG", ALC245_FIXUP_CS35L41_SPI_2),
- 	SND_PCI_QUIRK(0x1043, 0x1cef, "ASUS G834JY/JZ/JI/JG", ALC285_FIXUP_ASUS_HEADSET_MIC),
--- 
-2.39.5
-
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -2932,6 +2932,7 @@ replay_again:
+ 		req->CreateContextsOffset = cpu_to_le32(
+ 			sizeof(struct smb2_create_req) +
+ 			iov[1].iov_len);
++		le32_add_cpu(&req->CreateContextsLength, iov[n_iov-1].iov_len);
+ 		pc_buf = iov[n_iov-1].iov_base;
+ 	}
+ 
 
 
 
