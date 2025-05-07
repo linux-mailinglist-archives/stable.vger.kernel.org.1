@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-142556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3066BAAEB1F
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:03:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 249D4AAEBC8
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:10:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99418525CFF
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:03:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD5FB468737
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:09:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 296B928DF1B;
-	Wed,  7 May 2025 19:03:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E85E028DF1F;
+	Wed,  7 May 2025 19:09:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T0w5UJku"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m9WejvwA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB33729A0;
-	Wed,  7 May 2025 19:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A49E72144C1;
+	Wed,  7 May 2025 19:09:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644617; cv=none; b=FelfIsgut4I6tc1mmEZ7zZ8VV2f6ykq6SrrCRhXU7ZHwhJww0iMBBEyFVw26YaF1TsLmAr9Ub3Vr/WLFM9Mp2dxHCPU7LoEZ6x52tquhpTbyHNtYi6W+2KyPK+0bGeKRXJFBskIJnB4Qc2TM9x99QPswgCR6DmEElIKoM53lCXY=
+	t=1746644990; cv=none; b=bK7aFBHIv7BfAzsehmYB8eut0NgBpo86wIPI5YinsHOVwCnAe9ARmS51qUoqwoZ7HzRFdi+q1rBsjYtg5Sl5kyZL9GzCDx/wD+RmWDmS20+MMbX0T0bBS0D8WQVI9KaEhS2rRheei0k5NXpKNVzKZmzIFTPWcWqm3ZMaV3WfOKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644617; c=relaxed/simple;
-	bh=p1guZmSKc5mGOmhOJtf0cRwD8o7yGIR6DMl8ofVrdqw=;
+	s=arc-20240116; t=1746644990; c=relaxed/simple;
+	bh=eBtSFtlaTqbaVhQQY7JuZggXr1OUdcv/kBimSzhDPs8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SeU5ZlSriehmKhRTbWd7Eifvn9Roe5sKNwXQ6K0xgnRPikzTZWclXlCG2TM5Eotx31Uqq8LfsEmI+YLd8iFx9b6Nt4iTGRQ12Cu53qhyt70yVN74wM5KK5xsK8FiNv7gVVbBJs0AR8VOWbPHDZNh4yPMf+SYFaQVGHsIB/v1qQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T0w5UJku; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63B42C4CEE2;
-	Wed,  7 May 2025 19:03:37 +0000 (UTC)
+	 MIME-Version; b=UuFbn960Fd8+CUcmQknvFGycoMGl6f0lnDBaB104czyb+R2nx0RDNXq0IJuXhU1z+PUHC5650hC2MKD7Prqsb4dXzyLbOennjkcqUJ8MHzJ4F4vmi3f9KPajsMEauLTjrhssAAesfE8GcBVCJeFs1utuvz+i1YjlW7Q1ZRHrTiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m9WejvwA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36B60C4CEE2;
+	Wed,  7 May 2025 19:09:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644617;
-	bh=p1guZmSKc5mGOmhOJtf0cRwD8o7yGIR6DMl8ofVrdqw=;
+	s=korg; t=1746644990;
+	bh=eBtSFtlaTqbaVhQQY7JuZggXr1OUdcv/kBimSzhDPs8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T0w5UJkuQpockP6Ijr15rZNpvkM26jcMIANBFk4koewf8FJ+is1mkT57tZnEw+hBh
-	 9/Rd77NDN24RMl324RNdpsiavgYd/O0Ap1cXTu0P54gWOc4kWQkcWqQbHIOHQXqt9u
-	 ycDamKlSBZVAMrk1Pc4+ec+I15WOghNY1LI14i8I=
+	b=m9WejvwAyEeIpAjEr53hklXnXry+ytrXRwveyl/Sss7h/YDbe0nW8MoNoPbIQ9paU
+	 Flg+Yz7e40ju7c1wisHkR6g6VF4/c9+mgGKBrofCo4hln0usHKHDhUj9aOb8a5f5YQ
+	 a4p4Aid3JcBfj+xI40fZTEFohKsUcTQ5TzmelHVw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+7d4f142f6c288de8abfe@syzkaller.appspotmail.com,
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 102/164] net: dlink: Correct endianness handling of led_mode
+Subject: [PATCH 6.6 051/129] wifi: plfxlc: Remove erroneous assert in plfxlc_mac_release
 Date: Wed,  7 May 2025 20:39:47 +0200
-Message-ID: <20250507183825.105986435@linuxfoundation.org>
+Message-ID: <20250507183815.604305642@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Horman <horms@kernel.org>
+From: Murad Masimov <m.masimov@mt-integration.ru>
 
-[ Upstream commit e7e5ae71831c44d58627a991e603845a2fed2cab ]
+[ Upstream commit 0fb15ae3b0a9221be01715dac0335647c79f3362 ]
 
-As it's name suggests, parse_eeprom() parses EEPROM data.
+plfxlc_mac_release() asserts that mac->lock is held. This assertion is
+incorrect, because even if it was possible, it would not be the valid
+behaviour. The function is used when probe fails or after the device is
+disconnected. In both cases mac->lock can not be held as the driver is
+not working with the device at the moment. All functions that use mac->lock
+unlock it just after it was held. There is also no need to hold mac->lock
+for plfxlc_mac_release() itself, as mac data is not affected, except for
+mac->flags, which is modified atomically.
 
-This is done by reading data, 16 bits at a time as follows:
+This bug leads to the following warning:
+================================================================
+WARNING: CPU: 0 PID: 127 at drivers/net/wireless/purelifi/plfxlc/mac.c:106 plfxlc_mac_release+0x7d/0xa0
+Modules linked in:
+CPU: 0 PID: 127 Comm: kworker/0:2 Not tainted 6.1.124-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+Workqueue: usb_hub_wq hub_event
+RIP: 0010:plfxlc_mac_release+0x7d/0xa0 drivers/net/wireless/purelifi/plfxlc/mac.c:106
+Call Trace:
+ <TASK>
+ probe+0x941/0xbd0 drivers/net/wireless/purelifi/plfxlc/usb.c:694
+ usb_probe_interface+0x5c0/0xaf0 drivers/usb/core/driver.c:396
+ really_probe+0x2ab/0xcb0 drivers/base/dd.c:639
+ __driver_probe_device+0x1a2/0x3d0 drivers/base/dd.c:785
+ driver_probe_device+0x50/0x420 drivers/base/dd.c:815
+ __device_attach_driver+0x2cf/0x510 drivers/base/dd.c:943
+ bus_for_each_drv+0x183/0x200 drivers/base/bus.c:429
+ __device_attach+0x359/0x570 drivers/base/dd.c:1015
+ bus_probe_device+0xba/0x1e0 drivers/base/bus.c:489
+ device_add+0xb48/0xfd0 drivers/base/core.c:3696
+ usb_set_configuration+0x19dd/0x2020 drivers/usb/core/message.c:2165
+ usb_generic_driver_probe+0x84/0x140 drivers/usb/core/generic.c:238
+ usb_probe_device+0x130/0x260 drivers/usb/core/driver.c:293
+ really_probe+0x2ab/0xcb0 drivers/base/dd.c:639
+ __driver_probe_device+0x1a2/0x3d0 drivers/base/dd.c:785
+ driver_probe_device+0x50/0x420 drivers/base/dd.c:815
+ __device_attach_driver+0x2cf/0x510 drivers/base/dd.c:943
+ bus_for_each_drv+0x183/0x200 drivers/base/bus.c:429
+ __device_attach+0x359/0x570 drivers/base/dd.c:1015
+ bus_probe_device+0xba/0x1e0 drivers/base/bus.c:489
+ device_add+0xb48/0xfd0 drivers/base/core.c:3696
+ usb_new_device+0xbdd/0x18f0 drivers/usb/core/hub.c:2620
+ hub_port_connect drivers/usb/core/hub.c:5477 [inline]
+ hub_port_connect_change drivers/usb/core/hub.c:5617 [inline]
+ port_event drivers/usb/core/hub.c:5773 [inline]
+ hub_event+0x2efe/0x5730 drivers/usb/core/hub.c:5855
+ process_one_work+0x8a9/0x11d0 kernel/workqueue.c:2292
+ worker_thread+0xa47/0x1200 kernel/workqueue.c:2439
+ kthread+0x28d/0x320 kernel/kthread.c:376
+ ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:295
+ </TASK>
+================================================================
 
-	for (i = 0; i < 128; i++)
-                ((__le16 *) sromdata)[i] = cpu_to_le16(read_eeprom(np, i));
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 
-sromdata is at the same memory location as psrom.
-And the type of psrom is a pointer to struct t_SROM.
-
-As can be seen in the loop above, data is stored in sromdata, and thus psrom,
-as 16-bit little-endian values.
-
-However, the integer fields of t_SROM are host byte order integers.
-And in the case of led_mode this leads to a little endian value
-being incorrectly treated as host byte order.
-
-Looking at rio_set_led_mode, this does appear to be a bug as that code
-masks led_mode with 0x1, 0x2 and 0x8. Logic that would be effected by a
-reversed byte order.
-
-This problem would only manifest on big endian hosts.
-
-Found by inspection while investigating a sparse warning
-regarding the crc field of t_SROM.
-
-I believe that warning is a false positive. And although I plan
-to send a follow-up to use little-endian types for other the integer
-fields of PSROM_t I do not believe that will involve any bug fixes.
-
-Compile tested only.
-
-Fixes: c3f45d322cbd ("dl2k: Add support for IP1000A-based cards")
-Signed-off-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250425-dlink-led-mode-v1-1-6bae3c36e736@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 68d57a07bfe5 ("wireless: add plfxlc driver for pureLiFi X, XL, XC devices")
+Reported-by: syzbot+7d4f142f6c288de8abfe@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7d4f142f6c288de8abfe
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Link: https://patch.msgid.link/20250321185226.71-2-m.masimov@mt-integration.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/dlink/dl2k.c | 2 +-
- drivers/net/ethernet/dlink/dl2k.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/purelifi/plfxlc/mac.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/dlink/dl2k.c b/drivers/net/ethernet/dlink/dl2k.c
-index d0ea926078706..6bf8a7aeef908 100644
---- a/drivers/net/ethernet/dlink/dl2k.c
-+++ b/drivers/net/ethernet/dlink/dl2k.c
-@@ -352,7 +352,7 @@ parse_eeprom (struct net_device *dev)
- 	eth_hw_addr_set(dev, psrom->mac_addr);
+diff --git a/drivers/net/wireless/purelifi/plfxlc/mac.c b/drivers/net/wireless/purelifi/plfxlc/mac.c
+index 506d2f31efb5a..7ebc0df0944cb 100644
+--- a/drivers/net/wireless/purelifi/plfxlc/mac.c
++++ b/drivers/net/wireless/purelifi/plfxlc/mac.c
+@@ -103,7 +103,6 @@ int plfxlc_mac_init_hw(struct ieee80211_hw *hw)
+ void plfxlc_mac_release(struct plfxlc_mac *mac)
+ {
+ 	plfxlc_chip_release(&mac->chip);
+-	lockdep_assert_held(&mac->lock);
+ }
  
- 	if (np->chip_id == CHIP_IP1000A) {
--		np->led_mode = psrom->led_mode;
-+		np->led_mode = le16_to_cpu(psrom->led_mode);
- 		return 0;
- 	}
- 
-diff --git a/drivers/net/ethernet/dlink/dl2k.h b/drivers/net/ethernet/dlink/dl2k.h
-index 195dc6cfd8955..0e33e2eaae960 100644
---- a/drivers/net/ethernet/dlink/dl2k.h
-+++ b/drivers/net/ethernet/dlink/dl2k.h
-@@ -335,7 +335,7 @@ typedef struct t_SROM {
- 	u16 sub_system_id;	/* 0x06 */
- 	u16 pci_base_1;		/* 0x08 (IP1000A only) */
- 	u16 pci_base_2;		/* 0x0a (IP1000A only) */
--	u16 led_mode;		/* 0x0c (IP1000A only) */
-+	__le16 led_mode;	/* 0x0c (IP1000A only) */
- 	u16 reserved1[9];	/* 0x0e-0x1f */
- 	u8 mac_addr[6];		/* 0x20-0x25 */
- 	u8 reserved2[10];	/* 0x26-0x2f */
+ int plfxlc_op_start(struct ieee80211_hw *hw)
 -- 
 2.39.5
 
