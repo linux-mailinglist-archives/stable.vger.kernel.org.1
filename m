@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-142558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D958AAEB22
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:03:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 863BEAAE9B3
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:47:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BB771C06473
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:03:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F1297BC8D3
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:46:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03488288A8;
-	Wed,  7 May 2025 19:03:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2151E1E9B04;
+	Wed,  7 May 2025 18:47:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NT2pGNVo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ROLeBE7J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4FED29A0;
-	Wed,  7 May 2025 19:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2C681A29A;
+	Wed,  7 May 2025 18:47:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644623; cv=none; b=AlGm7CTZf6dyW1Ro6/68LDdDsty7QzlwgNks1NHn5qdKNdui+6MW6j757YhRWT2YlwoUkeMCqIMeoJM3ImVhnhhHYS8EsbIQyWF4Bg7jw43xnJHthS2/r6ItMf3M7VkE5VNYscei1kOMjoTIbeIA55HiZhTag5D5ZvNJaN9IyXk=
+	t=1746643659; cv=none; b=diDAqR3TPQ7jobL6RFc2AbJ/YyYzVwWhAtvp3nxA/g3auTIbZSscHPb/jr27RDTF+hQxCxkCX3UNGFkGR7s/cpHe1SZE4t65rcQlZd3iSIDmATX+HqyccHRas+lTxZ0MeWT/AsUv+yvMezlzmyMHct8p+Z8yfnZv0hFQLxVDOmA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644623; c=relaxed/simple;
-	bh=9knOvM9ar0pZTWL0rY4C6BKkhq5RkiMOp7ane6Hn7XI=;
+	s=arc-20240116; t=1746643659; c=relaxed/simple;
+	bh=Ml1Ls26j149o3cUDH0iPT0Ma6byKBnqz0AqndwPC5pE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nP0y6/Fb4fqYWj/yxBTNCsxTbjzNiMo2cSAQ4FEeJdE1mz6rPEOM3ehNItGtrkkCNtICbMYBwqrAC9vc7utRiVji6bMUX5BiVyAini2jtZZI0w9uDI1QsrdKXTsAICI4dhWjurdqRw3SNYlSfIlyyre3cbuCCTBJzqKiJFDBdPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NT2pGNVo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1763C4CEE2;
-	Wed,  7 May 2025 19:03:42 +0000 (UTC)
+	 MIME-Version; b=YvgltKdhzt8afyzm5iobDPuwb6s7kpo6zRQuPEn9KY6NpushXsUNCJCH/KXgfVkZ2+P0ejRMQQv/LYGrak+TpFyRbbWpLNyctFK8YbHqM136Tzt7YLvCgxJ1JsyW6L+J8RzYhfFzZ2IiDs/jE+E4zR/d/4Cbi+EVWJxLamfbcnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ROLeBE7J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53149C4CEE2;
+	Wed,  7 May 2025 18:47:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644623;
-	bh=9knOvM9ar0pZTWL0rY4C6BKkhq5RkiMOp7ane6Hn7XI=;
+	s=korg; t=1746643659;
+	bh=Ml1Ls26j149o3cUDH0iPT0Ma6byKBnqz0AqndwPC5pE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NT2pGNVoQ4QQuY0+mLG5x3GeN80L+de6cR02EdxnHZ5ZOf/OI/FQELwpzOlGSfKad
-	 2+ZiEh0GdPTIY3gMzmtoyOolVDVGJeGbNEi3B6F/srmxYXo6MOxaXF5UeI+ReC+iLN
-	 84Ib+jE8bhUv7DpOJFKOg8dFVwneD+JJhRxkHc1g=
+	b=ROLeBE7JrOr8KH+WtK5FmhIjip9hWyKb4uNqrx4+lW2gC0bbYZYFvhl1NEj3qQxVi
+	 jRgAhZe0iaFDnurI3HIA8XLmr8Jf1jZl1LLSlHBpmj5tcBUpBvtdMk6Kv84nPEqu1l
+	 VS+st+lJMaijbqhPHqQvfd3UjGvmWo+tCK96CRcQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavan Kumar Linga <pavan.kumar.linga@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Gerrard Tai <gerrard.tai@starlabs.sg>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
 	Simon Horman <horms@kernel.org>,
-	Samuel Salin <Samuel.salin@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 104/164] idpf: fix potential memory leak on kcalloc() failure
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.1 74/97] sch_htb: make htb_qlen_notify() idempotent
 Date: Wed,  7 May 2025 20:39:49 +0200
-Message-ID: <20250507183825.185383318@linuxfoundation.org>
+Message-ID: <20250507183809.966745014@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
+References: <20250507183806.987408728@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,81 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-[ Upstream commit 8a558cbda51bef09773c72bf74a32047479110c7 ]
+commit 5ba8b837b522d7051ef81bacf3d95383ff8edce5 upstream.
 
-In case of failing on rss_data->rss_key allocation the function is
-freeing vport without freeing earlier allocated q_vector_idxs. Fix it.
+htb_qlen_notify() always deactivates the HTB class and in fact could
+trigger a warning if it is already deactivated. Therefore, it is not
+idempotent and not friendly to its callers, like fq_codel_dequeue().
 
-Move from freeing in error branch to goto scheme.
+Let's make it idempotent to ease qdisc_tree_reduce_backlog() callers'
+life.
 
-Fixes: d4d558718266 ("idpf: initialize interrupts and enable vport")
-Reviewed-by: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Suggested-by: Pavan Kumar Linga <pavan.kumar.linga@intel.com>
-Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Samuel Salin <Samuel.salin@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://patch.msgid.link/20250403211033.166059-2-xiyou.wangcong@gmail.com
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/idpf/idpf_lib.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ net/sched/sch_htb.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-index 1c345a0e885b7..5ce663d04de00 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-@@ -1108,11 +1108,9 @@ static struct idpf_vport *idpf_vport_alloc(struct idpf_adapter *adapter,
+--- a/net/sched/sch_htb.c
++++ b/net/sched/sch_htb.c
+@@ -1482,6 +1482,8 @@ static void htb_qlen_notify(struct Qdisc
+ {
+ 	struct htb_class *cl = (struct htb_class *)arg;
  
- 	num_max_q = max(max_q->max_txq, max_q->max_rxq);
- 	vport->q_vector_idxs = kcalloc(num_max_q, sizeof(u16), GFP_KERNEL);
--	if (!vport->q_vector_idxs) {
--		kfree(vport);
-+	if (!vport->q_vector_idxs)
-+		goto free_vport;
- 
--		return NULL;
--	}
- 	idpf_vport_init(vport, max_q);
- 
- 	/* This alloc is done separate from the LUT because it's not strictly
-@@ -1122,11 +1120,9 @@ static struct idpf_vport *idpf_vport_alloc(struct idpf_adapter *adapter,
- 	 */
- 	rss_data = &adapter->vport_config[idx]->user_config.rss_data;
- 	rss_data->rss_key = kzalloc(rss_data->rss_key_size, GFP_KERNEL);
--	if (!rss_data->rss_key) {
--		kfree(vport);
-+	if (!rss_data->rss_key)
-+		goto free_vector_idxs;
- 
--		return NULL;
--	}
- 	/* Initialize default rss key */
- 	netdev_rss_key_fill((void *)rss_data->rss_key, rss_data->rss_key_size);
- 
-@@ -1139,6 +1135,13 @@ static struct idpf_vport *idpf_vport_alloc(struct idpf_adapter *adapter,
- 	adapter->next_vport = idpf_get_free_slot(adapter);
- 
- 	return vport;
-+
-+free_vector_idxs:
-+	kfree(vport->q_vector_idxs);
-+free_vport:
-+	kfree(vport);
-+
-+	return NULL;
++	if (!cl->prio_activity)
++		return;
+ 	htb_deactivate(qdisc_priv(sch), cl);
  }
  
- /**
--- 
-2.39.5
-
 
 
 
