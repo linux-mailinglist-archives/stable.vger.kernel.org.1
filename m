@@ -1,214 +1,118 @@
-Return-Path: <stable+bounces-142073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81FA8AAE318
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 16:35:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF5FDAAE360
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 16:43:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8AF435249A4
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 14:29:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F7251B6638C
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 14:43:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB95258CC1;
-	Wed,  7 May 2025 14:29:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CE38289E04;
+	Wed,  7 May 2025 14:42:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="R0BKhuGi"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="hrf3G/n/"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-9105.amazon.com (smtp-fw-9105.amazon.com [207.171.188.204])
+Received: from mailout2.w1.samsung.com (mailout2.w1.samsung.com [210.118.77.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 804F378F4F;
-	Wed,  7 May 2025 14:29:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.188.204
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8211C286D64
+	for <stable@vger.kernel.org>; Wed,  7 May 2025 14:42:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746628167; cv=none; b=DUwo91UmmwOCqUvzwSewsTQwwkRKaBt0VOUBvgrkURoYrzPd9UUsT0diyZPebn7ypqN8aIVo9UERnIRSgDBbv3p5xP03wBrBzRZSvKxMbUcbvy3SmrUSpSiV2KZsUs4gKunpr8obKjqDXbbgW4Cjjui8EWUbflGB+SpiWoTkVhc=
+	t=1746628966; cv=none; b=gWw7TQev2eGMp259Yu6sCBGMzNMwMq8TZq7z3XfnIksLEfXrd6kYUaJj00EXq2R6tpcnj9BCPNRomaKb+npywNng+4kn09IF9ErMeGkCKoOU+Yxh2tYlxKsUIT//aPKa33ZSl8rZ0MmgG1q/3TvX+iOLAsqnFzE0dFI4DYIJNYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746628167; c=relaxed/simple;
-	bh=0BSGCf5rfHlc987os0Fu9XcUHWkIO5jMgVdMg6PXn1Q=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Hk1A8aylYx5uMIv5ROo8KO03awZegMWxYo2rcS3NsZjPeq5+4TMqesCPbXaQsf4nb2pT4qZshcfPnmkyPe5FWpO8ImyqiT7u9apBVoEJS+ODnaHUsG0Bux2mzT6Gr6Gh8fPNqYK5vjl5MDoeMB5Nl+n4hpnPeC2uFxM7exBARwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=R0BKhuGi; arc=none smtp.client-ip=207.171.188.204
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
-  t=1746628166; x=1778164166;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:mime-version:
-   content-transfer-encoding;
-  bh=yWJ0HMmQPYJc2RhZj02CtJOJz39SjvXrMxOXkap3Ofo=;
-  b=R0BKhuGi8SUsHDx/e+840CU02N8udeMtQlv1ItpeMhmRe0xts8tzg3Rd
-   NI1EKA7rndNG7HPkvJ9Nrn7A98Snfcbwlhk9UP5FExjBeMWlgivzzYci7
-   6/2LsSXOkYn5+Tv/aqIz22DxGrdzeLYYsL32LuroHPAN86J+cdb0nsHMf
-   uiFkb8zs8x+etDhxXVBAaRGtTAok7i1+Z2t6JPLQUd0O4du4pf9riHPh3
-   hMeKoTXu1r6hBgGBZ2msQzLEuLdPu17ppTh/nABb4Aon2/TFICFBvYaF4
-   gIiG+uUh834SSUr7jr25mQ/4APycTQvPdZDi82eJrfQqyRiLYy4JOpcfy
-   w==;
-X-IronPort-AV: E=Sophos;i="6.15,269,1739836800"; 
-   d="scan'208";a="17449249"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-east-1.prod.farcaster.email.amazon.dev) ([10.25.36.210])
-  by smtp-border-fw-9105.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2025 14:29:20 +0000
-Received: from EX19MTAEUA002.ant.amazon.com [10.0.43.254:54720]
- by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.32.61:2525] with esmtp (Farcaster)
- id b8372dc8-17c1-4412-9dac-5ff4f0e25d03; Wed, 7 May 2025 14:29:18 +0000 (UTC)
-X-Farcaster-Flow-ID: b8372dc8-17c1-4412-9dac-5ff4f0e25d03
-Received: from EX19D008EUC003.ant.amazon.com (10.252.51.205) by
- EX19MTAEUA002.ant.amazon.com (10.252.50.124) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Wed, 7 May 2025 14:29:18 +0000
-Received: from EX19D008EUC001.ant.amazon.com (10.252.51.165) by
- EX19D008EUC003.ant.amazon.com (10.252.51.205) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Wed, 7 May 2025 14:29:17 +0000
-Received: from EX19D008EUC001.ant.amazon.com ([fe80::9611:c62b:a7ba:aee1]) by
- EX19D008EUC001.ant.amazon.com ([fe80::9611:c62b:a7ba:aee1%3]) with mapi id
- 15.02.1544.014; Wed, 7 May 2025 14:29:17 +0000
-From: "Heyne, Maximilian" <mheyne@amazon.de>
-To: Sudeep Holla <sudeep.holla@arm.com>
-CC: "stable@vger.kernel.org" <stable@vger.kernel.org>, "Rafael J. Wysocki"
-	<rafael@kernel.org>, Len Brown <lenb@kernel.org>, Ard Biesheuvel
-	<ardb@kernel.org>, Jeremy Linton <jeremy.linton@arm.com>, Catalin Marinas
-	<catalin.marinas@arm.com>, "linux-acpi@vger.kernel.org"
-	<linux-acpi@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] ACPI/PPTT: fix off-by-one error
-Thread-Topic: [PATCH] ACPI/PPTT: fix off-by-one error
-Thread-Index: AQHbv1xqHHdPuyThMkGwcKsDIcT/2Q==
-Date: Wed, 7 May 2025 14:29:17 +0000
-Message-ID: <20250507-petit-capri-debaa30d@mheyne-amazon>
-References: <20250506-draco-taped-15f475cd@mheyne-amazon>
- <20250506-shapeless-merciful-inchworm-7bfdb4@sudeepholla>
- <20250506-dialog-57th-c4e70064@mheyne-amazon>
- <20250507-mysterious-emu-of-fertility-951c69@sudeepholla>
- <20250507-blend-revel-3d94099b@mheyne-amazon>
- <20250507-quantum-solid-ibex-218f1b@sudeepholla>
- <20250507-autumn-phrase-4a1eddef@mheyne-amazon>
- <20250507-divergent-lori-from-pluto-71daee@sudeepholla>
-In-Reply-To: <20250507-divergent-lori-from-pluto-71daee@sudeepholla>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <4F4607C6B6FDBE46A5D43E61104AA72E@amazon.com>
+	s=arc-20240116; t=1746628966; c=relaxed/simple;
+	bh=R+3UWuBzA57ttcgNwILPDOqsoPLeiwfpTd+rT8R5Cbw=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:MIME-Version:
+	 Content-Type:References; b=ppmV4EXZq6q+RihjOiqSsLMvQN/WQD+AcsGe3Z894wzNFFewUAW95ImOi2vYs60zeQ0LNJ+XnjEhcYiqocgXgRKJXBOsQVVmFYKaa6OZQoZCmmV0/2bKrs+rnRIfH/bww3J4b2kHvjzvfzRnfMRmUWubWyL6GiHFDBWT4yyk8TE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=hrf3G/n/; arc=none smtp.client-ip=210.118.77.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
+	by mailout2.w1.samsung.com (KnoxPortal) with ESMTP id 20250507144242euoutp021690c1f05fda1426b79c3fd63208cac0~9RcmiQtGY0380803808euoutp02z
+	for <stable@vger.kernel.org>; Wed,  7 May 2025 14:42:42 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.w1.samsung.com 20250507144242euoutp021690c1f05fda1426b79c3fd63208cac0~9RcmiQtGY0380803808euoutp02z
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1746628962;
+	bh=Ect8ZweMR3H51tCeyLBNq6VsNn2cyH5WOnSmVn/wrAs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=hrf3G/n/Kjkrf7c97CUTDXz+VD8U58myY0jZBOlg2cNSePayVW9+we/C3+9QP4cAy
+	 sRr3E5UIiVD1kexkBTlQXtZpou1yVtQ5uIt1Zh9/4Cl8ALZT2FpM5On4siMaO8lKRT
+	 +cQtDr/zdWvaHJhyxdXFbnzhj6nw+Obh+mgilmsE=
+Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
+	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+	20250507144242eucas1p11523dca9f94c6e10fee75ca340076303~9RcmAYvGG0749607496eucas1p1d;
+	Wed,  7 May 2025 14:42:42 +0000 (GMT)
+Received: from AMDC4653.digital.local (unknown [106.120.51.32]) by
+	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20250507144241eusmtip2af1414558fdd6a0f9f652bc6979443b5~9Rcli2JaP0180601806eusmtip2D;
+	Wed,  7 May 2025 14:42:41 +0000 (GMT)
+From: Marek Szyprowski <m.szyprowski@samsung.com>
+To: linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+	iommu@lists.linux.dev
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>, Tomasz Figa
+	<tfiga@chromium.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, Sergey
+	Senozhatsky <senozhatsky@chromium.org>, Hans Verkuil <hverkuil@xs4all.nl>,
+	Robin Murphy <robin.murphy@arm.com>, stable@vger.kernel.org
+Subject: [PATCH v2 1/3] media: videobuf2: use sgtable-based scatterlist
+ wrappers
+Date: Wed,  7 May 2025 16:42:01 +0200
+Message-Id: <20250507144203.2081756-2-m.szyprowski@samsung.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250507144203.2081756-1-m.szyprowski@samsung.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CMS-MailID: 20250507144242eucas1p11523dca9f94c6e10fee75ca340076303
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20250507144242eucas1p11523dca9f94c6e10fee75ca340076303
+X-EPHeader: CA
+X-CMS-RootMailID: 20250507144242eucas1p11523dca9f94c6e10fee75ca340076303
+References: <20250507144203.2081756-1-m.szyprowski@samsung.com>
+	<CGME20250507144242eucas1p11523dca9f94c6e10fee75ca340076303@eucas1p1.samsung.com>
 
-On Wed, May 07, 2025 at 01:56:53PM +0100, Sudeep Holla wrote:
-> On Wed, May 07, 2025 at 12:42:14PM +0000, Heyne, Maximilian wrote:
-> > On Wed, May 07, 2025 at 01:30:53PM +0100, Sudeep Holla wrote:
-> > > On Wed, May 07, 2025 at 11:56:48AM +0000, Heyne, Maximilian wrote:
-> > > > On Wed, May 07, 2025 at 12:52:18PM +0100, Sudeep Holla wrote:
-> > > > > =
+Use common wrappers operating directly on the struct sg_table objects to
+fix incorrect use of scatterlists sync calls. dma_sync_sg_for_*()
+functions have to be called with the number of elements originally passed
+to dma_map_sg_*() function, not the one returned in sgt->nents.
 
-> > > > > Just to understand, this node is absolutely processor node with no
-> > > > > private resources ? I find it hard to trust this as most of the C=
-PUs
-> > > > > do have L1 I&D caches. If they were present the table can't abrup=
-tly end
-> > > > > like this.
-> > > > =
+Fixes: d4db5eb57cab ("media: videobuf2: add begin/end cpu_access callbacks to dma-sg")
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+---
+ drivers/media/common/videobuf2/videobuf2-dma-sg.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> > > > Yes looks like it. In our case the ACPI subtable has length 0x14 wh=
-ich is
-> > > > exactly sizeof(acpi_pptt_processor).
-> > > > =
-
-> > > =
-
-> > > OK, this seem like it is emulated platform with no private resources =
-as
-> > > it is specified in the other similar patch clearly(QEMU/VM). So this
-> > > doesn't match real platforms. Your PPTT is wrong if it is real hardwa=
-re
-> > > platform as you must have private resources.
-> > > =
-
-> > > Anyways if we allow emulation to present CPUs without private resourc=
-es
-> > > we may have to consider allowing this as the computed pointer will ma=
-tch
-> > > the table end.
-> > =
-
-> > Is there a need by the ACPI specification that the Cache information
-> > must come after the processor information? Because on our platform there
-> > is Cache and it's described but at a different location seemingly. It
-> > looks like caches are described first and then the CPUs.
-> >
-> =
-
-> That is fine but you must have reference to those caches in the processor
-> node and the length of the node won't be 0x14 in that case and you should=
-n't
-> hit this issue. So if this is real platform, then yes I am must say you
-> PPTT is wrong especially if there are caches in the table as you say just
-> that processor nodes are not pointing to them correctly then ?
-
-The ACPI tables in our case describe a core first which references the
-cache as private resource and then a thread whose parent is the core but
-this doesn't have a private resource. This is how it looks like:
-
-[C8Eh 3214   1]                Subtable Type : 00 [Processor Hierarchy Node]
-[C8Fh 3215   1]                       Length : 1C
-[C90h 3216   2]                     Reserved : 0000
-[C92h 3218   4]        Flags (decoded below) : 00000002
-                            Physical package : 0
-                     ACPI Processor ID valid : 1
-                       Processor is a thread : 0
-                              Node is a leaf : 0
-                    Identical Implementation : 0
-[C96h 3222   4]                       Parent : 000000A2
-[C9Ah 3226   4]            ACPI Processor ID : 0000003F
-[C9Eh 3230   4]      Private Resource Number : 00000002
-[CA2h 3234   4]             Private Resource : 00000072
-[CA6h 3238   4]             Private Resource : 0000008A
-
-[CAAh 3242   1]                Subtable Type : 00 [Processor Hierarchy Node]
-[CABh 3243   1]                       Length : 14
-[CACh 3244   2]                     Reserved : 0000
-[CAEh 3246   4]        Flags (decoded below) : 0000000E
-                            Physical package : 0
-                     ACPI Processor ID valid : 1
-                       Processor is a thread : 1
-                              Node is a leaf : 1
-                    Identical Implementation : 0
-[CB2h 3250   4]                       Parent : 00000C8E
-[CB6h 3254   4]            ACPI Processor ID : 0000003F
-[CBAh 3258   4]      Private Resource Number : 00000000
-
-> =
-
-> > I can try to drill even deeper here if you insist. As said I'm no
-> > subject matter expert here. But is there something obviously wrong with
-> > my patch or would it be ok to just take it?
-> >
-> =
-
-> Yes you much check your PPTT if it is real hardware platform. I am OK
-> with the change in terms of QEMU or VM. You may need to reword commit
-> message a bit. I will respond separately.
-> =
-
-> -- =
-
-> Regards,
-> Sudeep
-
-
-
-Amazon Web Services Development Center Germany GmbH
-Tamara-Danz-Str. 13
-10243 Berlin
-Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
-Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
-Sitz: Berlin
-Ust-ID: DE 365 538 597
+diff --git a/drivers/media/common/videobuf2/videobuf2-dma-sg.c b/drivers/media/common/videobuf2/videobuf2-dma-sg.c
+index c6ddf2357c58..b3bf2173c14e 100644
+--- a/drivers/media/common/videobuf2/videobuf2-dma-sg.c
++++ b/drivers/media/common/videobuf2/videobuf2-dma-sg.c
+@@ -469,7 +469,7 @@ vb2_dma_sg_dmabuf_ops_begin_cpu_access(struct dma_buf *dbuf,
+ 	struct vb2_dma_sg_buf *buf = dbuf->priv;
+ 	struct sg_table *sgt = buf->dma_sgt;
+ 
+-	dma_sync_sg_for_cpu(buf->dev, sgt->sgl, sgt->nents, buf->dma_dir);
++	dma_sync_sgtable_for_cpu(buf->dev, sgt, buf->dma_dir);
+ 	return 0;
+ }
+ 
+@@ -480,7 +480,7 @@ vb2_dma_sg_dmabuf_ops_end_cpu_access(struct dma_buf *dbuf,
+ 	struct vb2_dma_sg_buf *buf = dbuf->priv;
+ 	struct sg_table *sgt = buf->dma_sgt;
+ 
+-	dma_sync_sg_for_device(buf->dev, sgt->sgl, sgt->nents, buf->dma_dir);
++	dma_sync_sgtable_for_device(buf->dev, sgt, buf->dma_dir);
+ 	return 0;
+ }
+ 
+-- 
+2.34.1
 
 
