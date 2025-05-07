@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-142637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBD6DAAEB8B
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:08:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0F54AAEAEB
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:01:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC9351C4549B
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:07:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD2491C285DF
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:01:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA9B921504D;
-	Wed,  7 May 2025 19:07:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB4B123DE;
+	Wed,  7 May 2025 19:01:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rdJcf1Ls"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MN2BPke1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77EA019AD5C;
-	Wed,  7 May 2025 19:07:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A97FB1E22E9;
+	Wed,  7 May 2025 19:01:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644865; cv=none; b=S05SqWXjTT+sXAPagJZfAPSGS3MGPvlndTMPdWDwL85jHApoy55Xw1Uyj8fLS6fUh+3CABjy5DicVklA4rsnV72LkPySHTritMW6M/uK9SS+l+sG8R58bKeIMP7lAYSWmUktEgy2bVffK+sfefHqMa+5oVHyDgb+xO5HxYmh8PA=
+	t=1746644472; cv=none; b=rVVZli8+V83J+hLtbv2LnLudYbsmA5D5oAwZ0v+16v7dc2RHetXDf8gJZ1obwZVmWdIriyvgYkAdCZUqmGvF2u0UsmXgi19ANsY8BZY2G/8Qz4ia3QZTe3n0tYA+hOf1yvGHnkTjqMC+p0pKJ86AdWxu6tlJtEKT+mRryuyyGCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644865; c=relaxed/simple;
-	bh=T6JDUv4MLbhLahFIui9r1gnnnmShhpuYgH36b+ebGHc=;
+	s=arc-20240116; t=1746644472; c=relaxed/simple;
+	bh=UZgns7wcqi2swwqPzQ2PV3v+1mgQykza6zqckqJacjI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ng/rMoQOtkQ+7tpAI/GT1uM4V2bkl48Q5oY2+UIMJ8rbzR3mjV1Aev5lkF5Hbw+bAGc2C/duG2/j/KqL8VEQi/aY4fsjA4C/UAauL2uhhJwRhmgccdLD/cYi17oB4iCMlDeENIU77nJrzlQH1cTp8w1evOtIJOd/Q4XFlsgKj6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rdJcf1Ls; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A315C4CEE2;
-	Wed,  7 May 2025 19:07:44 +0000 (UTC)
+	 MIME-Version; b=ie1cUmlogmQYr0Q10Qu27Fj0ov86dEZJa5zUlKTrcCsCFvMY7zpOUblL2ss5SOMc1/M/ZmUeUqo5xaCG7PfW2TK9CcFnU2ISsGI/LEFYc4FTpt7MWBcdan0qcvIRnPjCJXvUZECLrr1MzDY2C4GdGhaIAXORN9NA0IUYrDtP9uI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MN2BPke1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2749FC4CEE2;
+	Wed,  7 May 2025 19:01:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644865;
-	bh=T6JDUv4MLbhLahFIui9r1gnnnmShhpuYgH36b+ebGHc=;
+	s=korg; t=1746644472;
+	bh=UZgns7wcqi2swwqPzQ2PV3v+1mgQykza6zqckqJacjI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rdJcf1LsJESGlhyubRctEiFAumL/85ggqazhogImdd3BdtnZ96WWGxrSyAkdg9IQ4
-	 QwPHjnGQqAnB6nP9u5688A/VgHlNubtvo8CKTd5biimHdyq1szg7EJK/IlP7dFtccH
-	 iF7Jw3VZfuuu3LLoUlTvgIqPW4D7mUX5ICWye4J8=
+	b=MN2BPke1JN4ozN2SMLABeQpQnG+JoHP4WXVWtUsYYaf0XC48CSdma3v2OvSPhCDXJ
+	 UMzJ98wo3PfbkOHhdU+JV7L+0pqrMYQvg2b+oxnIy2qqoDy/dosnk2eZorDNLZyIks
+	 a3pylF+lZ5abL0oKkCX5m2oMfTO4ys2PrCkUjeXo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Geoffrey D. Bennett" <g@b4.vu>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 002/129] ALSA: usb-audio: Add retry on -EPROTO from usb_set_interface()
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	David Gow <davidgow@google.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 053/164] ASoC: cs-amp-lib-test: Dont select SND_SOC_CS_AMP_LIB
 Date: Wed,  7 May 2025 20:38:58 +0200
-Message-ID: <20250507183813.605041824@linuxfoundation.org>
+Message-ID: <20250507183823.082018067@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
-References: <20250507183813.500572371@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geoffrey D. Bennett <g@b4.vu>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-commit f406005e162b660dc405b4f18bf7bcb93a515608 upstream.
+[ Upstream commit 96014d91cffb335d3b396771524ff2aba3549865 ]
 
-During initialisation of Focusrite USB audio interfaces, -EPROTO is
-sometimes returned from usb_set_interface(), which sometimes prevents
-the device from working: subsequent usb_set_interface() and
-uac_clock_source_is_valid() calls fail.
+Depend on SND_SOC_CS_AMP_LIB instead of selecting it.
 
-This patch adds up to 5 retries in endpoint_set_interface(), with a
-delay starting at 5ms and doubling each time. 5 retries was chosen to
-allow for longer than expected waits for the interface to start
-responding correctly; in testing, a single 5ms delay was sufficient to
-fix the issue.
+KUNIT_ALL_TESTS should only build tests for components that are
+already being built, it should not cause other stuff to be added
+to the build.
 
-Closes: https://github.com/geoffreybennett/fcp-support/issues/2
-Cc: stable@vger.kernel.org
-Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
-Link: https://patch.msgid.link/Z//7s9dKsmVxHzY2@m.b4.vu
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 177862317a98 ("ASoC: cs-amp-lib: Add KUnit test for calibration helpers")
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Link: https://patch.msgid.link/20250411123608.1676462-3-rf@opensource.cirrus.com
+Reviewed-by: David Gow <davidgow@google.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/endpoint.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ sound/soc/codecs/Kconfig | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/sound/usb/endpoint.c
-+++ b/sound/usb/endpoint.c
-@@ -926,14 +926,21 @@ static int endpoint_set_interface(struct
- {
- 	int altset = set ? ep->altsetting : 0;
- 	int err;
-+	int retries = 0;
-+	const int max_retries = 5;
+diff --git a/sound/soc/codecs/Kconfig b/sound/soc/codecs/Kconfig
+index 0d9d1d250f2b5..6a72561c4189b 100644
+--- a/sound/soc/codecs/Kconfig
++++ b/sound/soc/codecs/Kconfig
+@@ -746,10 +746,9 @@ config SND_SOC_CS_AMP_LIB
+ 	tristate
  
- 	if (ep->iface_ref->altset == altset)
- 		return 0;
- 
- 	usb_audio_dbg(chip, "Setting usb interface %d:%d for EP 0x%x\n",
- 		      ep->iface, altset, ep->ep_num);
-+retry:
- 	err = usb_set_interface(chip->dev, ep->iface, altset);
- 	if (err < 0) {
-+		if (err == -EPROTO && ++retries <= max_retries) {
-+			msleep(5 * (1 << (retries - 1)));
-+			goto retry;
-+		}
- 		usb_audio_err_ratelimited(
- 			chip, "%d:%d: usb_set_interface failed (%d)\n",
- 			ep->iface, altset, err);
+ config SND_SOC_CS_AMP_LIB_TEST
+-	tristate "KUnit test for Cirrus Logic cs-amp-lib"
+-	depends on KUNIT
++	tristate "KUnit test for Cirrus Logic cs-amp-lib" if !KUNIT_ALL_TESTS
++	depends on SND_SOC_CS_AMP_LIB && KUNIT
+ 	default KUNIT_ALL_TESTS
+-	select SND_SOC_CS_AMP_LIB
+ 	help
+ 	  This builds KUnit tests for the Cirrus Logic common
+ 	  amplifier library.
+-- 
+2.39.5
+
 
 
 
