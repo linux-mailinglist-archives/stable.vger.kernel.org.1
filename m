@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-142512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 066BEAAEAF0
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:01:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90CBFAAEA31
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:52:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 828DC7BEE91
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:00:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0AA9F508145
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:52:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAF4A28AAE9;
-	Wed,  7 May 2025 19:01:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31F05289348;
+	Wed,  7 May 2025 18:52:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M6uVdFVo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gHe3qrzN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A22F288A8;
-	Wed,  7 May 2025 19:01:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1DA51FF5EC;
+	Wed,  7 May 2025 18:52:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644481; cv=none; b=NbQWdO2UOOghRXATZpaHU1t2tP4paGX9O/BVwY9H/67V1oapi6XusWSLPp/AweB6Fk0BLrbDy4HgUV3m04e90t5pqs3903Amsqahrm+hr+t+Ex09x9lZ/lvf/wMgz5lM+T9/NVDVVjlrbkAwmYNTLpzBH6n0SIa4WIiHG8waDkk=
+	t=1746643941; cv=none; b=kfgRf6hzZPqPW/R5rGT+L9FTBCOkceSMAed0ifhhnDvuxbcQsgZu04Ua5svhJNiwEByhHZhjgtcUCxk8BHI7faWz9y6Osg+X2+JtthvJqmAjsFu9t10srxaM2U4ocOTYlGSIL4Mlm6HmrfuoI6rv7zwoR1eY2E65wXSDFFwl70I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644481; c=relaxed/simple;
-	bh=tih45WD9HL8kum2A/3si0srtAYWvUJOO9DTV+cWz5go=;
+	s=arc-20240116; t=1746643941; c=relaxed/simple;
+	bh=GY/vUtX9zMrIC3f847MLcjjpYv6tiEzf4NVL5AvzBHc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sWCTlJqXA4d3Il+6HtkIRZjij7zJ0aowp0CEuW9vljIWdl0/aPqfkPEJfTBMOlRvC2gxu//K8quWd4EoQ+ZVlEWySBWcv/KhbS5qwMtAh6/Jog9Yv2hmYF3yUFe1A6aJXjO49tF/qkxku2Whf4qyfqiKz3/qojhbo9yP4ktxv4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M6uVdFVo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B551C4CEE9;
-	Wed,  7 May 2025 19:01:20 +0000 (UTC)
+	 MIME-Version; b=MytoFll7OvCcfO7+d1uLEOblsH3sWqVjsqErKhHJCtEFS7GOWW8QNCHG0rfiopW1AHFk//44iPExKHJye+kU7eDEOJT8VLxPJXk5/xN7Qbq76oia/Zg8hO58TfNpJQaZDRxls7cT4fDov7mApG1+6YrnMePdbVcj/L3bgpI/T7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gHe3qrzN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50BCDC4CEE2;
+	Wed,  7 May 2025 18:52:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644481;
-	bh=tih45WD9HL8kum2A/3si0srtAYWvUJOO9DTV+cWz5go=;
+	s=korg; t=1746643940;
+	bh=GY/vUtX9zMrIC3f847MLcjjpYv6tiEzf4NVL5AvzBHc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M6uVdFVool91/5L3XaFpwOmT5qf8V0KVqPZkFKTKNFzpHJV6SXE37v9Zjd570chc2
-	 VzKmBDQQ0iFqhQnKY4hOZTbVUf4QZURM/fC70KhXGyYUrCpjNhD6RYHcCg4gwZUF04
-	 +LYfNHcRHlPSh7oqK0P7sIzbSGzFUxZ6SPB3nUS8=
+	b=gHe3qrzN0aiBXl7/ATAvkl4rq+MtXcPIgoX8mtCqedLYRWYPisnP6AgVOQJcjU95q
+	 VB42R23qp0kcHSfM2uAgmATZqN7c388Fo59vX/eAP8QQKGmsN/0nJI8h8xrsGSVssb
+	 nSdM5VOSkyTD38E7SkVcky3/q0qesPJQ8nNb+a00=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ihar Salauyou <salauyou.ihar@gmail.com>,
-	Ruslan Piasetskyi <ruslan.piasetskyi@gmail.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.12 027/164] mmc: renesas_sdhi: Fix error handling in renesas_sdhi_probe
+	Eryk Kubanski <e.kubanski@partner.samsung.com>,
+	Magnus Karlsson <magnus.karlsson@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 067/183] xsk: Fix race condition in AF_XDP generic RX path
 Date: Wed,  7 May 2025 20:38:32 +0200
-Message-ID: <20250507183821.967161964@linuxfoundation.org>
+Message-ID: <20250507183827.404719557@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +63,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ruslan Piasetskyi <ruslan.piasetskyi@gmail.com>
+From: e.kubanski <e.kubanski@partner.samsung.com>
 
-commit 649b50a82f09fa44c2f7a65618e4584072145ab7 upstream.
+[ Upstream commit a1356ac7749cafc4e27aa62c0c4604b5dca4983e ]
 
-After moving tmio_mmc_host_probe down, error handling has to be
-adjusted.
+Move rx_lock from xsk_socket to xsk_buff_pool.
+Fix synchronization for shared umem mode in
+generic RX path where multiple sockets share
+single xsk_buff_pool.
 
-Fixes: 74f45de394d9 ("mmc: renesas_sdhi: register irqs before registering controller")
-Reviewed-by: Ihar Salauyou <salauyou.ihar@gmail.com>
-Signed-off-by: Ruslan Piasetskyi <ruslan.piasetskyi@gmail.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Tested-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250326220638.460083-1-ruslan.piasetskyi@gmail.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+RX queue is exclusive to xsk_socket, while FILL
+queue can be shared between multiple sockets.
+This could result in race condition where two
+CPU cores access RX path of two different sockets
+sharing the same umem.
+
+Protect both queues by acquiring spinlock in shared
+xsk_buff_pool.
+
+Lock contention may be minimized in the future by some
+per-thread FQ buffering.
+
+It's safe and necessary to move spin_lock_bh(rx_lock)
+after xsk_rcv_check():
+* xs->pool and spinlock_init is synchronized by
+  xsk_bind() -> xsk_is_bound() memory barriers.
+* xsk_rcv_check() may return true at the moment
+  of xsk_release() or xsk_unbind_dev(),
+  however this will not cause any data races or
+  race conditions. xsk_unbind_dev() removes xdp
+  socket from all maps and waits for completion
+  of all outstanding rx operations. Packets in
+  RX path will either complete safely or drop.
+
+Signed-off-by: Eryk Kubanski <e.kubanski@partner.samsung.com>
+Fixes: bf0bdd1343efb ("xdp: fix race on generic receive path")
+Acked-by: Magnus Karlsson <magnus.karlsson@intel.com>
+Link: https://patch.msgid.link/20250416101908.10919-1-e.kubanski@partner.samsung.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/renesas_sdhi_core.c |   10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ include/net/xdp_sock.h      | 3 ---
+ include/net/xsk_buff_pool.h | 2 ++
+ net/xdp/xsk.c               | 6 +++---
+ net/xdp/xsk_buff_pool.c     | 1 +
+ 4 files changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/mmc/host/renesas_sdhi_core.c
-+++ b/drivers/mmc/host/renesas_sdhi_core.c
-@@ -1112,26 +1112,26 @@ int renesas_sdhi_probe(struct platform_d
- 	num_irqs = platform_irq_count(pdev);
- 	if (num_irqs < 0) {
- 		ret = num_irqs;
--		goto eirq;
-+		goto edisclk;
+diff --git a/include/net/xdp_sock.h b/include/net/xdp_sock.h
+index a58ae7589d121..e8bd6ddb7b127 100644
+--- a/include/net/xdp_sock.h
++++ b/include/net/xdp_sock.h
+@@ -71,9 +71,6 @@ struct xdp_sock {
+ 	 */
+ 	u32 tx_budget_spent;
+ 
+-	/* Protects generic receive. */
+-	spinlock_t rx_lock;
+-
+ 	/* Statistics */
+ 	u64 rx_dropped;
+ 	u64 rx_queue_full;
+diff --git a/include/net/xsk_buff_pool.h b/include/net/xsk_buff_pool.h
+index 50779406bc2d9..7f0a75d6563d8 100644
+--- a/include/net/xsk_buff_pool.h
++++ b/include/net/xsk_buff_pool.h
+@@ -53,6 +53,8 @@ struct xsk_buff_pool {
+ 	refcount_t users;
+ 	struct xdp_umem *umem;
+ 	struct work_struct work;
++	/* Protects generic receive in shared and non-shared umem mode. */
++	spinlock_t rx_lock;
+ 	struct list_head free_list;
+ 	struct list_head xskb_list;
+ 	u32 heads_cnt;
+diff --git a/net/xdp/xsk.c b/net/xdp/xsk.c
+index a373a7130d757..c13e13fa79fc0 100644
+--- a/net/xdp/xsk.c
++++ b/net/xdp/xsk.c
+@@ -337,13 +337,14 @@ int xsk_generic_rcv(struct xdp_sock *xs, struct xdp_buff *xdp)
+ 	u32 len = xdp_get_buff_len(xdp);
+ 	int err;
+ 
+-	spin_lock_bh(&xs->rx_lock);
+ 	err = xsk_rcv_check(xs, xdp, len);
+ 	if (!err) {
++		spin_lock_bh(&xs->pool->rx_lock);
+ 		err = __xsk_rcv(xs, xdp, len);
+ 		xsk_flush(xs);
++		spin_unlock_bh(&xs->pool->rx_lock);
  	}
+-	spin_unlock_bh(&xs->rx_lock);
++
+ 	return err;
+ }
  
- 	/* There must be at least one IRQ source */
- 	if (!num_irqs) {
- 		ret = -ENXIO;
--		goto eirq;
-+		goto edisclk;
- 	}
+@@ -1730,7 +1731,6 @@ static int xsk_create(struct net *net, struct socket *sock, int protocol,
+ 	xs = xdp_sk(sk);
+ 	xs->state = XSK_READY;
+ 	mutex_init(&xs->mutex);
+-	spin_lock_init(&xs->rx_lock);
  
- 	for (i = 0; i < num_irqs; i++) {
- 		irq = platform_get_irq(pdev, i);
- 		if (irq < 0) {
- 			ret = irq;
--			goto eirq;
-+			goto edisclk;
- 		}
- 
- 		ret = devm_request_irq(&pdev->dev, irq, tmio_mmc_irq, 0,
- 				       dev_name(&pdev->dev), host);
- 		if (ret)
--			goto eirq;
-+			goto edisclk;
- 	}
- 
- 	ret = tmio_mmc_host_probe(host);
-@@ -1143,8 +1143,6 @@ int renesas_sdhi_probe(struct platform_d
- 
- 	return ret;
- 
--eirq:
--	tmio_mmc_host_remove(host);
- edisclk:
- 	renesas_sdhi_clk_disable(host);
- efree:
+ 	INIT_LIST_HEAD(&xs->map_list);
+ 	spin_lock_init(&xs->map_list_lock);
+diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
+index d158cb6dd3919..63ae121d29e6c 100644
+--- a/net/xdp/xsk_buff_pool.c
++++ b/net/xdp/xsk_buff_pool.c
+@@ -87,6 +87,7 @@ struct xsk_buff_pool *xp_create_and_assign_umem(struct xdp_sock *xs,
+ 	pool->addrs = umem->addrs;
+ 	pool->tx_metadata_len = umem->tx_metadata_len;
+ 	pool->tx_sw_csum = umem->flags & XDP_UMEM_TX_SW_CSUM;
++	spin_lock_init(&pool->rx_lock);
+ 	INIT_LIST_HEAD(&pool->free_list);
+ 	INIT_LIST_HEAD(&pool->xskb_list);
+ 	INIT_LIST_HEAD(&pool->xsk_tx_list);
+-- 
+2.39.5
+
 
 
 
