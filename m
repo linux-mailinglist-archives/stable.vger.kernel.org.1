@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-142122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6432AAE928
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:41:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36285AAE9A5
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:47:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 449BB7B79B6
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:40:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A915F3BD8CD
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:46:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D23128C016;
-	Wed,  7 May 2025 18:41:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2A841A2390;
+	Wed,  7 May 2025 18:46:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IzTvRk64"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2WlI6N1z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CD5628DF1B;
-	Wed,  7 May 2025 18:41:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0C2A73451;
+	Wed,  7 May 2025 18:46:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643285; cv=none; b=jbbFjHAY1M2tC7FYM8kiO6wAghyylT/z8iNzvx0vJkbmdl02HpADgovAS5s/2ukI3/6YmKiFKNbJHfUz7aRxcCIicCcrzlBEIXp8ko3Cxwo/mcH+CPo+9/JtTFwwRgw5/NylBt4A6OeybIbpcSKIEf+SnkXfUaXFGEbyqzSYz5Y=
+	t=1746643606; cv=none; b=PRW5ujfeTEIAEQY4WjaD6sqHs0SXCoIr4UA1o4f/E3CCMt/q5nC8jkf5tMbMkzQSXplJ4NO5KKpQdltt0LiGA1ssNCBwk19gQk5NovI6Mm8VjVwO1xWNPzUkc2u/KSGUFu/LH40JqIcUIalLrC75XbO2I9DjVZa+wVhrgbIGmLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643285; c=relaxed/simple;
-	bh=iO0bKtEsGPZbYFH0Hg4rL+BK0ex7cYz7G4lT2o9tPxw=;
+	s=arc-20240116; t=1746643606; c=relaxed/simple;
+	bh=olb3GorI29rRv/46MGjvoAK0wlLcQje2JEbDWzrYBp4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H6lwPiVl87KF+uZ+HVhRsZ3dCapbvh8dF6PKHc2+Y4hhTURCj61g7++zFmbIJDT/OF5HHdy7zto8bGhcouih4U/TKaiNjaI9WBI5MSPgKVBeqPdhKU//IzTpapZoC0mYXqh3GabYBb4aPBujfUYdXA0co3RwV79pOPaxfHeEweI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IzTvRk64; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8664CC4CEE2;
-	Wed,  7 May 2025 18:41:24 +0000 (UTC)
+	 MIME-Version; b=Jch+VHVDEOXHmUcIN/caobZ2KoschKxx9SvjLsT9Vz04ueLBg3j0RFVNby1SKqC31Veh+jHyQDR3XPmhWRlychsC7Sa0wqtsIw4NVEgTPm4YoB4HpAHScU6e+zN4oySpDCinGenmIF6LtAVzR4rUM22Zr1fUrWaYIyDIzghcYTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2WlI6N1z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 161BAC4CEE2;
+	Wed,  7 May 2025 18:46:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643285;
-	bh=iO0bKtEsGPZbYFH0Hg4rL+BK0ex7cYz7G4lT2o9tPxw=;
+	s=korg; t=1746643606;
+	bh=olb3GorI29rRv/46MGjvoAK0wlLcQje2JEbDWzrYBp4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IzTvRk64+jVNNc4tjmFg02+0+WNHNpSEbBhJlc0UBEu+eNmljVO0mewiZ0UcfBJbn
-	 l4QxI/XRs8UvOlHmlvqJ0co3HCAHxxTUQbUkyLDGQ8fMoY++/VypPRjF+RUUwaT2Gp
-	 qHm4YKFzzZDMC+9Mqccqdfmcwg3uQ0TtjIH+7YE8=
+	b=2WlI6N1zZICuA5w87w9XWa3N3QKu96L5Ml0Ne3sll0HLFBndKhBLJKIigNY91MO1x
+	 p2qLIqENU/FIiYSazKXUoJ3xmmpd5x32N2pIQdGejvVMGoT5ksqOvBPTYzCkzyAvQx
+	 4rR6A6c1RYJ3dz6C01T/l+wmfEvgBS1ZTnRNzrSs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joachim Priesner <joachim.priesner@web.de>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 01/55] ALSA: usb-audio: Add second USB ID for Jabra Evolve 65 headset
-Date: Wed,  7 May 2025 20:39:02 +0200
-Message-ID: <20250507183759.109735334@linuxfoundation.org>
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Leah Rumancik <leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 28/97] xfs: validate recovered name buffers when recovering xattr items
+Date: Wed,  7 May 2025 20:39:03 +0200
+Message-ID: <20250507183808.122723382@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
-References: <20250507183759.048732653@linuxfoundation.org>
+In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
+References: <20250507183806.987408728@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +62,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joachim Priesner <joachim.priesner@web.de>
+From: "Darrick J. Wong" <djwong@kernel.org>
 
-commit 1149719442d28c96dc63cad432b5a6db7c300e1a upstream.
+[ Upstream commit 1c7f09d210aba2f2bb206e2e8c97c9f11a3fd880 ]
 
-There seem to be multiple USB device IDs used for these;
-the one I have reports as 0b0e:030c when powered on.
-(When powered off, it reports as 0b0e:0311.)
+Strengthen the xattri log item recovery code by checking that we
+actually have the required name and newname buffers for whatever
+operation we're replaying.
 
-Signed-off-by: Joachim Priesner <joachim.priesner@web.de>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250428053606.9237-1-joachim.priesner@web.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: "Darrick J. Wong" <djwong@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/format.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/xfs/xfs_attr_item.c |   58 +++++++++++++++++++++++++++++++++++++++----------
+ 1 file changed, 47 insertions(+), 11 deletions(-)
 
---- a/sound/usb/format.c
-+++ b/sound/usb/format.c
-@@ -263,7 +263,8 @@ static int parse_audio_format_rates_v1(s
+--- a/fs/xfs/xfs_attr_item.c
++++ b/fs/xfs/xfs_attr_item.c
+@@ -717,22 +717,20 @@ xlog_recover_attri_commit_pass2(
+ 	const void			*attr_value = NULL;
+ 	const void			*attr_name;
+ 	size_t				len;
+-	unsigned int			op;
+-
+-	attri_formatp = item->ri_buf[0].i_addr;
+-	attr_name = item->ri_buf[1].i_addr;
++	unsigned int			op, i = 0;
+ 
+ 	/* Validate xfs_attri_log_format before the large memory allocation */
+ 	len = sizeof(struct xfs_attri_log_format);
+-	if (item->ri_buf[0].i_len != len) {
++	if (item->ri_buf[i].i_len != len) {
+ 		XFS_CORRUPTION_ERROR(__func__, XFS_ERRLEVEL_LOW, mp,
+ 				item->ri_buf[0].i_addr, item->ri_buf[0].i_len);
+ 		return -EFSCORRUPTED;
  	}
  
- 	/* Jabra Evolve 65 headset */
--	if (chip->usb_id == USB_ID(0x0b0e, 0x030b)) {
-+	if (chip->usb_id == USB_ID(0x0b0e, 0x030b) ||
-+	    chip->usb_id == USB_ID(0x0b0e, 0x030c)) {
- 		/* only 48kHz for playback while keeping 16kHz for capture */
- 		if (fp->nr_rates != 1)
- 			return set_fixed_rate(fp, 48000, SNDRV_PCM_RATE_48000);
++	attri_formatp = item->ri_buf[i].i_addr;
+ 	if (!xfs_attri_validate(mp, attri_formatp)) {
+ 		XFS_CORRUPTION_ERROR(__func__, XFS_ERRLEVEL_LOW, mp,
+-				item->ri_buf[0].i_addr, item->ri_buf[0].i_len);
++				attri_formatp, len);
+ 		return -EFSCORRUPTED;
+ 	}
+ 
+@@ -761,31 +759,69 @@ xlog_recover_attri_commit_pass2(
+ 				     attri_formatp, len);
+ 		return -EFSCORRUPTED;
+ 	}
++	i++;
+ 
+ 	/* Validate the attr name */
+-	if (item->ri_buf[1].i_len !=
++	if (item->ri_buf[i].i_len !=
+ 			xlog_calc_iovec_len(attri_formatp->alfi_name_len)) {
+ 		XFS_CORRUPTION_ERROR(__func__, XFS_ERRLEVEL_LOW, mp,
+-				item->ri_buf[0].i_addr, item->ri_buf[0].i_len);
++				attri_formatp, len);
+ 		return -EFSCORRUPTED;
+ 	}
+ 
++	attr_name = item->ri_buf[i].i_addr;
+ 	if (!xfs_attr_namecheck(attr_name, attri_formatp->alfi_name_len)) {
+ 		XFS_CORRUPTION_ERROR(__func__, XFS_ERRLEVEL_LOW, mp,
+-				item->ri_buf[1].i_addr, item->ri_buf[1].i_len);
++				attri_formatp, len);
+ 		return -EFSCORRUPTED;
+ 	}
++	i++;
+ 
+ 	/* Validate the attr value, if present */
+ 	if (attri_formatp->alfi_value_len != 0) {
+-		if (item->ri_buf[2].i_len != xlog_calc_iovec_len(attri_formatp->alfi_value_len)) {
++		if (item->ri_buf[i].i_len != xlog_calc_iovec_len(attri_formatp->alfi_value_len)) {
+ 			XFS_CORRUPTION_ERROR(__func__, XFS_ERRLEVEL_LOW, mp,
+ 					item->ri_buf[0].i_addr,
+ 					item->ri_buf[0].i_len);
+ 			return -EFSCORRUPTED;
+ 		}
+ 
+-		attr_value = item->ri_buf[2].i_addr;
++		attr_value = item->ri_buf[i].i_addr;
++		i++;
++	}
++
++	/*
++	 * Make sure we got the correct number of buffers for the operation
++	 * that we just loaded.
++	 */
++	if (i != item->ri_total) {
++		XFS_CORRUPTION_ERROR(__func__, XFS_ERRLEVEL_LOW, mp,
++				attri_formatp, len);
++		return -EFSCORRUPTED;
++	}
++
++	switch (op) {
++	case XFS_ATTRI_OP_FLAGS_REMOVE:
++		/* Regular remove operations operate only on names. */
++		if (attr_value != NULL || attri_formatp->alfi_value_len != 0) {
++			XFS_CORRUPTION_ERROR(__func__, XFS_ERRLEVEL_LOW, mp,
++					     attri_formatp, len);
++			return -EFSCORRUPTED;
++		}
++		fallthrough;
++	case XFS_ATTRI_OP_FLAGS_SET:
++	case XFS_ATTRI_OP_FLAGS_REPLACE:
++		/*
++		 * Regular xattr set/remove/replace operations require a name
++		 * and do not take a newname.  Values are optional for set and
++		 * replace.
++		 */
++		if (attr_name == NULL || attri_formatp->alfi_name_len == 0) {
++			XFS_CORRUPTION_ERROR(__func__, XFS_ERRLEVEL_LOW, mp,
++					     attri_formatp, len);
++			return -EFSCORRUPTED;
++		}
++		break;
+ 	}
+ 
+ 	/*
 
 
 
