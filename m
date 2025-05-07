@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-142163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 694C3AAE953
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:43:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A7A8AAEA9D
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:57:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D805E7BB369
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:42:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0DB337B98F4
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:56:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C81228B7D6;
-	Wed,  7 May 2025 18:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2741328C5B0;
+	Wed,  7 May 2025 18:57:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ugVvsI+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I91YAe8M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19CE114A4C7;
-	Wed,  7 May 2025 18:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D144428BA9D;
+	Wed,  7 May 2025 18:57:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643407; cv=none; b=O+7jH8ixROA0Ste8sq/Tr92NjYRmhGhFrkhFjopDai6PSqb6aH0e8SL1OdKRgzfshaPSPmf7VQHN2IqaB3HybHOyE0AjkoaPU07j4zfaJFOVEa3Tf5rrBmzV9eoPVSQnQ8DeonlcNF+etaJh57PxvQfXL/GkgxHtAjNaOX/UL58=
+	t=1746644235; cv=none; b=L/9x3pqzj+ksnGe4cJuizlEJ5WWd4mCjz34XMtnpfS8SqhIcuZDpKCoCukY1edA+6bayum9ori0XsSgW3uWNFFE0paJzdBnbhOikVFxxxt5tjlBMeWSTUI4bzH4FyD6RU0bHBqem3xX2a+XRQj7TQctEjNLGqE7H8AwKz0ME3F8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643407; c=relaxed/simple;
-	bh=BygBvMjnd/thE0vCUYW/znt46lxIJ274cl/7BzDoGY8=;
+	s=arc-20240116; t=1746644235; c=relaxed/simple;
+	bh=DTPrmJkpdXVHEy+qiuO7YxQ+GZBV4W5Xq+PweEZKbIA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CRKD/w209dLnCdhP2PV80CnT5rl8yZomTSzXfcXX+btuWuTrpuPwecPVJ96z6qzkRphLdFE/df2fjCh+WHDJP2r25/yuuLl4df+Ibwl8QXUsiIciVDc+K00lYq9leXJVcMawjoiJg7CGSlNjD7Nl0lDltW56O2eAjtEVLa60yM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ugVvsI+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 957D9C4CEE2;
-	Wed,  7 May 2025 18:43:26 +0000 (UTC)
+	 MIME-Version; b=QkDUhgcNusRpkPPk3pzk4XtC7dThJhZKLzW1iFGqkU84+Ojx2uBEzUDdpZ9eQxXUAlq6CFYI7Ooc4MKcPfp1hnJr3hCCnzy42FA0ItohXEyFN4sCBg3iceGGf2ZTSuI0ZMHrhLtlbzjeFBfB8FCCgGC8MzRCaC1wvLkC4kTbHQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I91YAe8M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5818FC4CEEB;
+	Wed,  7 May 2025 18:57:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643407;
-	bh=BygBvMjnd/thE0vCUYW/znt46lxIJ274cl/7BzDoGY8=;
+	s=korg; t=1746644235;
+	bh=DTPrmJkpdXVHEy+qiuO7YxQ+GZBV4W5Xq+PweEZKbIA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1ugVvsI+rSiQlaYW0gAAkTDVE1/aMCfls1PYMQHpy1p++zcH7tNrdJcK8ezqxc4Uy
-	 SPNuluo7mWr2td9CP8ElESLFKXiqs5utMRatP0pBfin/n/LbQ/kChLcEBbf6dzqUI+
-	 A5LsUwcqZJDAyipgC12cRDskW8VDNwBEcnP+Bowc=
+	b=I91YAe8MT9mWtU+UQClZQd21h8B8ozL+5ByC/0+1Z987V/Up/Dx4hxy82oJXAOj4Y
+	 YcamqKIzV7rvIZPygoiY/RMSAbrv+jpj+8txsD/tIizgkb9qZa2j54bqnWXKydRQu9
+	 8jLlrTWnghQHd0szUDlzBYwGLgZ8sGDWQD2SqPBk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang wangx <wangxiang@cdjrlc.com>,
-	Marc Zyngier <maz@kernel.org>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 49/55] irqchip/gic-v2m: Add const to of_device_id
+Subject: [PATCH 6.14 145/183] net: vertexcom: mse102x: Fix LEN_MASK
 Date: Wed,  7 May 2025 20:39:50 +0200
-Message-ID: <20250507183801.020417502@linuxfoundation.org>
+Message-ID: <20250507183830.741849738@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
-References: <20250507183759.048732653@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiang wangx <wangxiang@cdjrlc.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit c10f2f8b5d8027c1ea77f777f2d16cb9043a6c09 ]
+[ Upstream commit 74987089ec678b4018dba0a609e9f4bf6ef7f4ad ]
 
-struct of_device_id should normally be const.
+The LEN_MASK for CMD_RTS doesn't cover the whole parameter mask.
+The Bit 11 is reserved, so adjust LEN_MASK accordingly.
 
-Signed-off-by: Xiang wangx <wangxiang@cdjrlc.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20211209132453.25623-1-wangxiang@cdjrlc.com
-Stable-dep-of: 3318dc299b07 ("irqchip/gic-v2m: Prevent use after free of gicv2m_get_fwnode()")
+Fixes: 2f207cbf0dd4 ("net: vertexcom: Add MSE102x SPI support")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250430133043.7722-3-wahrenst@gmx.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-gic-v2m.c | 2 +-
+ drivers/net/ethernet/vertexcom/mse102x.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/irqchip/irq-gic-v2m.c b/drivers/irqchip/irq-gic-v2m.c
-index 0e57c60681aab..48e2eed33f8fa 100644
---- a/drivers/irqchip/irq-gic-v2m.c
-+++ b/drivers/irqchip/irq-gic-v2m.c
-@@ -405,7 +405,7 @@ static int __init gicv2m_init_one(struct fwnode_handle *fwnode,
- 	return ret;
- }
+diff --git a/drivers/net/ethernet/vertexcom/mse102x.c b/drivers/net/ethernet/vertexcom/mse102x.c
+index 92ebf16331598..3edf2c3753f0e 100644
+--- a/drivers/net/ethernet/vertexcom/mse102x.c
++++ b/drivers/net/ethernet/vertexcom/mse102x.c
+@@ -33,7 +33,7 @@
+ #define CMD_CTR		(0x2 << CMD_SHIFT)
  
--static struct of_device_id gicv2m_device_id[] = {
-+static const struct of_device_id gicv2m_device_id[] = {
- 	{	.compatible	= "arm,gic-v2m-frame",	},
- 	{},
- };
+ #define CMD_MASK	GENMASK(15, CMD_SHIFT)
+-#define LEN_MASK	GENMASK(CMD_SHIFT - 1, 0)
++#define LEN_MASK	GENMASK(CMD_SHIFT - 2, 0)
+ 
+ #define DET_CMD_LEN	4
+ #define DET_SOF_LEN	2
 -- 
 2.39.5
 
