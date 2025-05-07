@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-142199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17288AAE978
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:45:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B23D3AAEB84
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:08:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FEB41C2783B
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:45:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 721559E2F01
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:07:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BDF11DED72;
-	Wed,  7 May 2025 18:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCD0C28980D;
+	Wed,  7 May 2025 19:08:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zx8Ab3Ct"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X/Wn4tz7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F7229A0;
-	Wed,  7 May 2025 18:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 794B51E22E9;
+	Wed,  7 May 2025 19:08:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643515; cv=none; b=j8xzOc6hVD5SnAF6wutWMNIpux2v+mXVMA4B8cfTC0ono3LF+Rk49jBEyqfm+Nl23f7NYMKCIeDQUYE3Xs8Fk0k7tMV7DxlAkaMF75ifZLETlglOt9Nydh+flYNbL5UmNuVl1flb8RPTq+gZJQTG8AU8xRyh7bOXiyemFBxNDi8=
+	t=1746644886; cv=none; b=V7v0q30zBhCAc0suK4Dv3tosQceJiOLxaEWGpHaiMNDHs3Sa+CUJoHQAkOTqsAYw5ondGkocHSRw428uknnUAnU0eqPYMxoKTAGHADnwQKrNx6e9TkbbDtlIfiAqQ7LaBKMHxsruiYTEoQ7Xr4ssD/oXin9P/kCI1JpeOcrTpek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643515; c=relaxed/simple;
-	bh=bFdW8/yZATfqsQ6/E9NSMNr794B7FgHtbRYaKulJAAg=;
+	s=arc-20240116; t=1746644886; c=relaxed/simple;
+	bh=Uxx214dk3GKIIn0AlcgdlodijhwRg3afQ+BfPndaRO4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sfmX8BL0YcTjLVFor/KWoNBuFRipvkP/6s1i4yLwmk42v5ZarKEiacdqw8MwkJFYyF1cSF0JXwqN41WwNz7xzZ4pPDYpn7QabmO5bIwuGveRNpodnw5QJC40DeFa6EkOfL9vogsR50xaROlOv9xVhVE8zOrdHhdSVQlO1UCx4ys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zx8Ab3Ct; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A55EC4CEE2;
-	Wed,  7 May 2025 18:45:14 +0000 (UTC)
+	 MIME-Version; b=DPZVuyFjP/jTbbbhl+7K8NiYilfwiGvf7jjTZqnKELVgm0xL7L3a57XNTaBXwWuDva8gbNhVk3GOPUBfLqPVJjb03Sh4s0D2xgUnfWqgKV6GgzREQimiLxNWVwX++zDEVE2N7Shz/XUTvk6V4C75zWzArGkgcW/MqGP83XmeNb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X/Wn4tz7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09C92C4CEE2;
+	Wed,  7 May 2025 19:08:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643515;
-	bh=bFdW8/yZATfqsQ6/E9NSMNr794B7FgHtbRYaKulJAAg=;
+	s=korg; t=1746644886;
+	bh=Uxx214dk3GKIIn0AlcgdlodijhwRg3afQ+BfPndaRO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zx8Ab3Cto+NcZkd4ysd0kn2GYFc4rT9oBBYTBJrJ3wUfpQGGMTgYkulgkG0XBAF1U
-	 oV5uE618UxolmrvEnm/0/GDcGFiDq/VaifQjqZnow6OeTeY0lfSD/KbngZ8+B/imvu
-	 k5cQoGPf3TtE354DTYHQ9Ukc08u1iBE+kq216aYs=
+	b=X/Wn4tz7DCfZxnwuvk00MqdsCXFVwnmMXPYSxaOl/HLeobN3zAURWgA+ZHWR17ev6
+	 H2M0C/J39XohZ1SpT9RQxDN2dXe44frsk+aLfykVk2rjyHspfHlAJ5Y4RRzsDc51ov
+	 p6Kt3swPiHIvE6R82FhSdimXPOiqV//gXITSo58s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 30/97] xfs: match lock mode in xfs_buffered_write_iomap_begin()
+	Clark Wang <xiaoning.wang@nxp.com>,
+	Carlos Song <carlos.song@nxp.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.6 009/129] i2c: imx-lpi2c: Fix clock count when probe defers
 Date: Wed,  7 May 2025 20:39:05 +0200
-Message-ID: <20250507183808.204379321@linuxfoundation.org>
+Message-ID: <20250507183813.912663970@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
-References: <20250507183806.987408728@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Clark Wang <xiaoning.wang@nxp.com>
 
-[ Upstream commit bb712842a85d595525e72f0e378c143e620b3ea2 ]
+commit b1852c5de2f2a37dd4462f7837c9e3e678f9e546 upstream.
 
-Commit 1aa91d9c9933 ("xfs: Add async buffered write support") replace
-xfs_ilock(XFS_ILOCK_EXCL) with xfs_ilock_for_iomap() when locking the
-writing inode, and a new variable lockmode is used to indicate the lock
-mode. Although the lockmode should always be XFS_ILOCK_EXCL, it's still
-better to use this variable instead of useing XFS_ILOCK_EXCL directly
-when unlocking the inode.
+Deferred probe with pm_runtime_put() may delay clock disable, causing
+incorrect clock usage count. Use pm_runtime_put_sync() to ensure the
+clock is disabled immediately.
 
-Fixes: 1aa91d9c9933 ("xfs: Add async buffered write support")
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: "Darrick J. Wong" <djwong@kernel.org>
+Fixes: 13d6eb20fc79 ("i2c: imx-lpi2c: add runtime pm support")
+Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
+Signed-off-by: Carlos Song <carlos.song@nxp.com>
+Cc: <stable@vger.kernel.org> # v4.16+
+Link: https://lore.kernel.org/r/20250421062341.2471922-1-carlos.song@nxp.com
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_iomap.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/i2c/busses/i2c-imx-lpi2c.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/xfs/xfs_iomap.c
-+++ b/fs/xfs/xfs_iomap.c
-@@ -1129,13 +1129,13 @@ retry:
- 	 * them out if the write happens to fail.
- 	 */
- 	seq = xfs_iomap_inode_sequence(ip, IOMAP_F_NEW);
--	xfs_iunlock(ip, XFS_ILOCK_EXCL);
-+	xfs_iunlock(ip, lockmode);
- 	trace_xfs_iomap_alloc(ip, offset, count, allocfork, &imap);
- 	return xfs_bmbt_to_iomap(ip, iomap, &imap, flags, IOMAP_F_NEW, seq);
+--- a/drivers/i2c/busses/i2c-imx-lpi2c.c
++++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
+@@ -616,9 +616,9 @@ static int lpi2c_imx_probe(struct platfo
+ 	return 0;
  
- found_imap:
- 	seq = xfs_iomap_inode_sequence(ip, 0);
--	xfs_iunlock(ip, XFS_ILOCK_EXCL);
-+	xfs_iunlock(ip, lockmode);
- 	return xfs_bmbt_to_iomap(ip, iomap, &imap, flags, 0, seq);
+ rpm_disable:
+-	pm_runtime_put(&pdev->dev);
+-	pm_runtime_disable(&pdev->dev);
+ 	pm_runtime_dont_use_autosuspend(&pdev->dev);
++	pm_runtime_put_sync(&pdev->dev);
++	pm_runtime_disable(&pdev->dev);
  
- found_cow:
-@@ -1145,17 +1145,17 @@ found_cow:
- 		if (error)
- 			goto out_unlock;
- 		seq = xfs_iomap_inode_sequence(ip, IOMAP_F_SHARED);
--		xfs_iunlock(ip, XFS_ILOCK_EXCL);
-+		xfs_iunlock(ip, lockmode);
- 		return xfs_bmbt_to_iomap(ip, iomap, &cmap, flags,
- 					 IOMAP_F_SHARED, seq);
- 	}
- 
- 	xfs_trim_extent(&cmap, offset_fsb, imap.br_startoff - offset_fsb);
--	xfs_iunlock(ip, XFS_ILOCK_EXCL);
-+	xfs_iunlock(ip, lockmode);
- 	return xfs_bmbt_to_iomap(ip, iomap, &cmap, flags, 0, seq);
- 
- out_unlock:
--	xfs_iunlock(ip, XFS_ILOCK_EXCL);
-+	xfs_iunlock(ip, lockmode);
- 	return error;
+ 	return ret;
  }
- 
 
 
 
