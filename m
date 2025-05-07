@@ -1,87 +1,209 @@
-Return-Path: <stable+bounces-142109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A5A6AAE6DD
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:38:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D355AAE6FB
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:42:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1E1E5217F0
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 16:38:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A36F87BDA09
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 16:40:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 991F628C2AB;
-	Wed,  7 May 2025 16:38:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="caAB/Uy5"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52FD628C001;
+	Wed,  7 May 2025 16:41:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4827028C011;
-	Wed,  7 May 2025 16:38:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 643C928B7EC;
+	Wed,  7 May 2025 16:41:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746635918; cv=none; b=uQDFuIaHO8tIwaulgEaoXc31xnNwNEUy1Xd89Ld7rvM0LE8B+dAsZNKBTSoOhAXzS4uLY2bPd0EUTx5mixrcUVuNMHHgy6YPlYutFRvyPQEe+kpWrCrPmV56HwS1RDabKuVgNW26wiiqPKdoBOGYQCKo+pnfbnl0wS/t+3MbZCU=
+	t=1746636116; cv=none; b=FyjxLvsrUZ0PGf9PdoQ0MXfM6xpuNgTbxJg33WMbQVAa5UTiuI2FSiQvbQ2HxgAnArPy0uWtNQHb/bgIwDtVbcjrBDHQYURDrxpX5yzWBM7xuZbn30EaB1MFk/vDbsb80Q187qCbxpj5+vLTPKga2Yhc0lPCuczUQ3wlZtBFjBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746635918; c=relaxed/simple;
-	bh=ddKz4iSS3BTmMNyzSI8tEVvSwXxAmFwTGYZSvOK/5VM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ci9fOm20uamVpOX5cGlEKNzqXZKtn9uMZ/apoI5jSGmKmzuCRzgoexB6ZUoTQMAHpIqDdwmwM/I/sJoDrRVXhZYgwezAuhpfvz4xACwBtsGtyr1m5vI17zyD00QgikuhwvXP7lTnTuft6vgQ6BFbzGW7pEmcsPqdyJCv0682XfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=caAB/Uy5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3FBCC4CEE2;
-	Wed,  7 May 2025 16:38:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746635917;
-	bh=ddKz4iSS3BTmMNyzSI8tEVvSwXxAmFwTGYZSvOK/5VM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=caAB/Uy5V+RzeUk4eR9bwjUsOIRZAMxSVsioXynskqzCfKMovlIx/2ItvNUUFMujA
-	 ApBP+tLs/Uvt8EfTJaxFJGBgdBekoqVgtoMvARe76yG6xAQLgp5w1ODNS2hzsSglxg
-	 3LGZDAlI8mlbiHwr8pnFqRicup/qKUa3yTfnafRKukr/+tGE0frDkKzZ2KD7u3RHFG
-	 Rmth+t9fcNc+RJhN+8QcjV2pztVgs065nQNxgZ1PXk1JHCGXYHug5fuLMy6muj/BnE
-	 RCh+EOy+jM+b3pzFQahwzY0OzEVXy0aCOwsjBg7taF/6y1CNSm76wNmuLbFryPzj3v
-	 I3EroYFZdSYkQ==
-From: Bjorn Andersson <andersson@kernel.org>
-To: Konrad Dybcio <konradybcio@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Qiang Yu <quic_qianyu@quicinc.com>,
-	Dmitry Baryshkov <lumag@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Abel Vesa <abel.vesa@linaro.org>
-Cc: linux-arm-msm@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] arm64: dts: qcom: x1e80100: Fix PCIe 3rd controller DBI size
-Date: Wed,  7 May 2025 09:38:32 -0700
-Message-ID: <174663591262.3531.5134996472032724831.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250422-x1e80100-dts-fix-pcie3-dbi-size-v1-1-c197701fd7e4@linaro.org>
-References: <20250422-x1e80100-dts-fix-pcie3-dbi-size-v1-1-c197701fd7e4@linaro.org>
+	s=arc-20240116; t=1746636116; c=relaxed/simple;
+	bh=Ogw0DFLSrTYjT3Ruuf+27tuiTdHS43qmK0Cb8CUCaZg=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=Lcf6/lpVYQC8QBhpWvEIUbUIdVWa512vXKqnDlA2iFnyWHX1KD7ZSkAmKON3E1Ussjn0YoADu+E7wZ7mn2dUN/raionBU2diIfZsu/LMC+9F6/NU8C3WApye0K8dLjFaA8FqcZfAtm97L7hZKAAwjcAOm9j4WUw9k0GVt6nAP04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9DFDC16F2;
+	Wed,  7 May 2025 09:41:43 -0700 (PDT)
+Received: from [192.168.20.57] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F30CE3F58B;
+	Wed,  7 May 2025 09:41:51 -0700 (PDT)
+Message-ID: <25aa77b9-0077-4021-b55c-e94327b7847b@arm.com>
+Date: Wed, 7 May 2025 11:41:47 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ACPI/PPTT: fix off-by-one error
+From: Jeremy Linton <jeremy.linton@arm.com>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: "Heyne, Maximilian" <mheyne@amazon.de>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ Len Brown <lenb@kernel.org>, Sudeep Holla <sudeep.holla@arm.com>,
+ Ard Biesheuvel <ardb@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
+ "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <20250506-draco-taped-15f475cd@mheyne-amazon>
+ <214c2a2d-e0ea-4ec6-9925-05e39319e813@arm.com>
+ <CAJZ5v0jvWXDQQ++4wmWJ+i=jds+MZ68bRB9+26WM4tAPHFxALw@mail.gmail.com>
+ <1911d3b6-f328-40a6-aa03-cde3d79554de@arm.com>
+ <CAJZ5v0ii9HLfqfgcp=1qRRX6M1yThf7ZPNkSLVc5GGFhv=N-Lg@mail.gmail.com>
+ <ad04d07b-d610-4355-bd47-1d2fb49711f3@arm.com>
+ <fb2e3c60-1171-4f5c-852d-a5bfdc4f9c2a@arm.com>
+Content-Language: en-US
+In-Reply-To: <fb2e3c60-1171-4f5c-852d-a5bfdc4f9c2a@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
+On 5/7/25 11:38 AM, Jeremy Linton wrote:
+> On 5/7/25 11:31 AM, Jeremy Linton wrote:
+>> On 5/7/25 11:12 AM, Rafael J. Wysocki wrote:
+>>> On Wed, May 7, 2025 at 5:51 PM Jeremy Linton <jeremy.linton@arm.com> 
+>>> wrote:
+>>>>
+>>>> On 5/7/25 10:42 AM, Rafael J. Wysocki wrote:
+>>>>> On Wed, May 7, 2025 at 5:25 PM Jeremy Linton 
+>>>>> <jeremy.linton@arm.com> wrote:
+>>>>>>
+>>>>>> Hi,
+>>>>>>
+>>>>>> On 5/6/25 8:13 AM, Heyne, Maximilian wrote:
+>>>>>>> Commit 7ab4f0e37a0f ("ACPI PPTT: Fix coding mistakes in a couple of
+>>>>>>> sizeof() calls") corrects the processer entry size but unmasked a 
+>>>>>>> longer
+>>>>>>> standing bug where the last entry in the structure can get 
+>>>>>>> skipped due
+>>>>>>> to an off-by-one mistake if the last entry ends exactly at the 
+>>>>>>> end of
+>>>>>>> the ACPI subtable.
+>>>>>>>
+>>>>>>> The error manifests for instance on EC2 Graviton Metal instances 
+>>>>>>> with
+>>>>>>>
+>>>>>>>      ACPI PPTT: PPTT table found, but unable to locate core 63 (63)
+>>>>>>>      [...]
+>>>>>>>      ACPI: SPE must be homogeneous
+>>>>>>>
+>>>>>>> Fixes: 2bd00bcd73e5 ("ACPI/PPTT: Add Processor Properties 
+>>>>>>> Topology Table parsing")
+>>>>>>> Cc: stable@vger.kernel.org
+>>>>>>> Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
+>>>>>>> ---
+>>>>>>>     drivers/acpi/pptt.c | 4 ++--
+>>>>>>>     1 file changed, 2 insertions(+), 2 deletions(-)
+>>>>>>>
+>>>>>>> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
+>>>>>>> index f73ce6e13065d..4364da90902e5 100644
+>>>>>>> --- a/drivers/acpi/pptt.c
+>>>>>>> +++ b/drivers/acpi/pptt.c
+>>>>>>> @@ -231,7 +231,7 @@ static int acpi_pptt_leaf_node(struct 
+>>>>>>> acpi_table_header *table_hdr,
+>>>>>>>                              sizeof(struct acpi_table_pptt));
+>>>>>>>         proc_sz = sizeof(struct acpi_pptt_processor);
+>>>>>>
+>>>>>> This isn't really right, it should be struct acpi_subtable_header, 
+>>>>>> then
+>>>>>> once the header is safe, pull the length from it.
+>>>>>>
+>>>>>> But then, really if we are trying to fix the original bug that the 
+>>>>>> table
+>>>>>> could be shorter than the data in it suggests, the struct
+>>>>>> acpi_pptt_processor length plus its resources needs to be checked 
+>>>>>> once
+>>>>>> the subtype is known to be a processor node.
+>>>>>>
+>>>>>> Otherwise the original sizeof * change isn't really fixing anything.
+>>>>>
+>>>>> Sorry, what sense did it make to do
+>>>>>
+>>>>> proc_sz = sizeof(struct acpi_pptt_processor *);
+>>>>>
+>>>>> here?  As much as proc_sz = 0 I suppose?
+>>>>
+>>>> No, I agree, I think the original checks were simplified along the way
+>>>> to that. It wasn't 'right' either.
+>>>>
+>>>> The problem is that there are three subtypes of which processor is only
+>>>> one, and that struct acpi_pptt_processor doesn't necessarily reflect 
+>>>> the
+>>>> actual size of the processor structure in the table because it has
+>>>> optional private resources tagged onto the end.
+>>>
+>>> Right.
+>>>
+>>>> So if the bug being fixed is that the length check is validating that
+>>>> the table length is less than the data in the table, that's still a
+>>>> problem because its only validating the processor node without 
+>>>> resources.
+>>>
+>>> Admittedly, it is not my code, but I understand this check as a
+>>> termination condition for the loop: If there's not enough space in the
+>>> table to hold a thing that I'm looking for, I may as well bail out.
+>>>
+>>>> AKA the return is still potentially returning a pointer to a structure
+>>>> which may not be entirely contained in the table.
+>>>
+>>> Right, but this check should be made anyway before comparing
+>>> cpu_node->parent to node_entry, when it is known to be a CPU entry
+>>> because otherwise why bother.
+>>
+>> Right, but then there is a clarity because really its walking the 
+>> table+subtypes looking for the cpu node. Exiting early because its not 
+>> big enough for a cpu node makes sense but you still need the cpu node 
+>> check to avoid a variation on the original bug.
+>>
+>>
+>>
+>>>
+>>> Roughly something like this:
+>>>
+>>> proc_sz = sizeof(struct acpi_pptt_processor);
+>>>
+>>> while ((unsigned long)entry + entry->length <= table_end) {
+>>
+>> Here your reading the entry, without knowing its long enough. For the 
+>> leaf check just using struct acpi_pptt_processor is fine, but for the 
+>> acpi_find_processor_node():
+>>
+>> proc_sz = sizeof(struct acpi_subtable_type);
+> 
+> Although, maybe I just wrote code that justifies using 
+> acpi_pptt_processor here because the entry->num_of_priv_resources length 
+> check isn't being made without it. So ok, use proc_sz = sizeof(struct 
+> acpi_subtable_type) and assume that we don't care if the subtable type 
+> is less than proc_sz.
 
-On Tue, 22 Apr 2025 14:03:16 +0300, Abel Vesa wrote:
-> According to documentation, the DBI range size is 0xf20. So fix it.
+Sorry for the noise, scratch that, a better solution is just to swap the 
+length checking in the 'if' statement. Then its clear its iterating 
+subtable types not processor nodes.
+
+
 > 
 > 
+>>
+>> while ((unsigned long)entry + proc_sz <= table_end) {
+>>   if (entry->type == ACPI_PPTT_TYPE_PROCESSOR &&
+>>   entry->length == sizeof(struct acpi_pptt_processor) +
+>>      entry->number_of_priv_resources * sizeof(u32) &&
+>>   entry + entry->length <= table_end &&
+>>   acpi_pptt_leaf_node(...))
+>>      return (...)entry;
+>>
+>>
+>> Although at this point the while loops entry + proc_sz could just be < 
+>> table_end under the assumption that entry->length will be > 0 but 
+>> whichever makes more sense.
+>>
+>>
+>>
+> 
 
-Applied, thanks!
-
-[1/1] arm64: dts: qcom: x1e80100: Fix PCIe 3rd controller DBI size
-      commit: 181faec4cc9d90dad0ec7f7c8124269c0ba2e107
-
-Best regards,
--- 
-Bjorn Andersson <andersson@kernel.org>
 
