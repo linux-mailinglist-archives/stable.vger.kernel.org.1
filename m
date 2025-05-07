@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-142348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D4BBAAEA3C
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:52:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90437AAEA67
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:54:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EAB4E50853B
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:52:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C0719C767F
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:54:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8B1F289823;
-	Wed,  7 May 2025 18:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB56324E4CE;
+	Wed,  7 May 2025 18:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FdUG3kNr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TVFa8PKZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9607C1FF5EC;
-	Wed,  7 May 2025 18:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 979C22116E9;
+	Wed,  7 May 2025 18:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643974; cv=none; b=EwL7wRor8VCpD+569ehOf0GsXH3ZKzb8vUSXiaJ8xEjq9g88cSfi5XwuzJDyyNtNclSKYVdRAe+C5qVZQkwkzVLkNVK4FqThQXpGFeCNvdjj5Ts9QPtsOGEe5+VgM4fK1FxMkBvX+UdnNshP2N2lBH11VySM/YQiFzQOCMNdX1w=
+	t=1746644094; cv=none; b=FSVST7wEvEKnk/LL2BIDYy3liMu4QxbsaABkTUkCnxptTPRBdBVbo7yQJyHtNoBNC5OHqZ4D82fn9giG5hyIYYu+SudHn24O4U1WmGeF+6wS4IzTE+m+yuXvdEKZnKqxDXOlrEARs/kISEFehUIB21jB8lFDoHNFlnu6Roivg9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643974; c=relaxed/simple;
-	bh=41LGJQvqxI5N3x86JGozd+uGpSE42mijvbwCGEKfdnM=;
+	s=arc-20240116; t=1746644094; c=relaxed/simple;
+	bh=PH6pBjr0TQPeYJrcgY65N0i7wxaVff+AMO/SDKvQwN8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YxaxJPnrPzNgAx86ti9eq/bExWv0OFW0lr6ht+bfypdlSHkMts9a11tTPzpAREa0/UXHNuGRsKCm5up1eeQTboAd4rHlEckKUL4bar5yGaiVjb7yPZ181mfHl/CyHis2Sihw/iBzMHp5usjtv64Lb36PNmjE2FulQrUiqx9dTv4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FdUG3kNr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 046C9C4CEE2;
-	Wed,  7 May 2025 18:52:53 +0000 (UTC)
+	 MIME-Version; b=RQptc5IHCASEhB3WiQCha44G1MKhBylZBgmiT7CkXWOG2MnV5WcK/G1e7plhSUzFnVEIv+5xBkIfY2eFni49/w/Xmm1xAhRAIaJNX/KwPtnDNx8EgCv6x+km/6D/HnmD0rNjnsMvXlCQQeLR++PrlkCRYTYlEzaoEI6V+he1ExM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TVFa8PKZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B2DCC4CEE2;
+	Wed,  7 May 2025 18:54:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643974;
-	bh=41LGJQvqxI5N3x86JGozd+uGpSE42mijvbwCGEKfdnM=;
+	s=korg; t=1746644094;
+	bh=PH6pBjr0TQPeYJrcgY65N0i7wxaVff+AMO/SDKvQwN8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FdUG3kNrc3VK5kUxLufnRk7KVGYk+AV3nUP81ndfpb1yGtXINqSLmZrs52mLQy+eS
-	 5MVF88QCcZh/OKHalTfF/cksHTMX1MIpsX4o63YEZM8UnCCJn9SwAKn6i6fr0zNH0w
-	 6rS0R5C2AGzmqEABR78ff8lxBe+6ps7g45XbhYw0=
+	b=TVFa8PKZ0YHJ9DA8wxnGyt3PwJzwoALpqNFqGBuh/D5D4WCWDuAsLE/FD017REtm7
+	 95ekMK8fdtvn03COeSIEmmZnMefCjDRg2NpEmt0OqadGbG55xSdkHST4Hbaw3pDanT
+	 PMYWPn+Tt2F1E5+PVTHfGgS/eLP+ezF0/NHmfDAk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 077/183] cpufreq: Introduce policy->boost_supported flag
-Date: Wed,  7 May 2025 20:38:42 +0200
-Message-ID: <20250507183827.807134068@linuxfoundation.org>
+Subject: [PATCH 6.14 078/183] cpufreq: acpi: Set policy->boost_supported
+Date: Wed,  7 May 2025 20:38:43 +0200
+Message-ID: <20250507183827.846596845@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
 References: <20250507183824.682671926@linuxfoundation.org>
@@ -67,58 +67,36 @@ Content-Transfer-Encoding: 8bit
 
 From: Viresh Kumar <viresh.kumar@linaro.org>
 
-[ Upstream commit 1f7d1bab50e6ae517f8b6699e56d709d61ae13e5 ]
+[ Upstream commit be6b8681a0e4c1477a2c1cb155f7b9188aa88acb ]
 
-It is possible to have a scenario where not all cpufreq policies support
-boost frequencies. And letting sysfs (or other parts of the kernel)
-enable boost feature for that policy isn't correct.
+With a later commit, the cpufreq core will call the ->set_boost()
+callback only if the policy supports boost frequency. The
+boost_supported flag is set by the cpufreq core if policy->freq_table is
+set and one or more boost frequencies are present.
 
-Add a new flag, boost_supported, which will be set to true by the
-cpufreq core only if the freq table contains valid boost frequencies.
-
-Some cpufreq drivers though don't have boost frequencies in the
-freq-table, they can set this flag from their ->init() callbacks.
-
-Once all the drivers are updated to set the flag correctly, we can check
-it before enabling boost feature for a policy.
+For other drivers, the flag must be set explicitly.
 
 Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Stable-dep-of: 3d59224947b0 ("cpufreq: ACPI: Re-sync CPU boost state on system resume")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/freq_table.c | 4 ++++
- include/linux/cpufreq.h      | 3 +++
- 2 files changed, 7 insertions(+)
+ drivers/cpufreq/acpi-cpufreq.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/cpufreq/freq_table.c b/drivers/cpufreq/freq_table.c
-index 178e17009a16e..9db21ffc11979 100644
---- a/drivers/cpufreq/freq_table.c
-+++ b/drivers/cpufreq/freq_table.c
-@@ -367,6 +367,10 @@ int cpufreq_table_validate_and_sort(struct cpufreq_policy *policy)
- 	if (ret)
- 		return ret;
+diff --git a/drivers/cpufreq/acpi-cpufreq.c b/drivers/cpufreq/acpi-cpufreq.c
+index 463b69a2dff52..ae0766b5a076b 100644
+--- a/drivers/cpufreq/acpi-cpufreq.c
++++ b/drivers/cpufreq/acpi-cpufreq.c
+@@ -909,6 +909,9 @@ static int acpi_cpufreq_cpu_init(struct cpufreq_policy *policy)
+ 	if (perf->states[0].core_frequency * 1000 != freq_table[0].frequency)
+ 		pr_warn(FW_WARN "P-state 0 is not max freq\n");
  
-+	/* Driver's may have set this field already */
-+	if (policy_has_boost_freq(policy))
++	if (acpi_cpufreq_driver.set_boost)
 +		policy->boost_supported = true;
 +
- 	return set_freq_table_sorted(policy);
- }
+ 	return result;
  
-diff --git a/include/linux/cpufreq.h b/include/linux/cpufreq.h
-index a604c54ae44da..73024830bd730 100644
---- a/include/linux/cpufreq.h
-+++ b/include/linux/cpufreq.h
-@@ -144,6 +144,9 @@ struct cpufreq_policy {
- 	/* Per policy boost enabled flag. */
- 	bool			boost_enabled;
- 
-+	/* Per policy boost supported flag. */
-+	bool			boost_supported;
-+
- 	 /* Cached frequency lookup from cpufreq_driver_resolve_freq. */
- 	unsigned int cached_target_freq;
- 	unsigned int cached_resolved_idx;
+ err_unreg:
 -- 
 2.39.5
 
