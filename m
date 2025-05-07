@@ -1,233 +1,219 @@
-Return-Path: <stable+bounces-141959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D70CAAD37B
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 04:43:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12F77AAD38C
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 04:48:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86B2B1BC880A
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 02:43:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8DB177A5E6E
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 02:47:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 838351482F5;
-	Wed,  7 May 2025 02:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CCBD172BD5;
+	Wed,  7 May 2025 02:48:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Do2tERx9"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="MwC4FtDu"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2057.outbound.protection.outlook.com [40.107.244.57])
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2076.outbound.protection.outlook.com [40.107.243.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5C3C2AE97
-	for <stable@vger.kernel.org>; Wed,  7 May 2025 02:43:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.57
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65187360;
+	Wed,  7 May 2025 02:48:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.76
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746585810; cv=fail; b=i9TjyVRROEbpx5dsG9+bvD2q5hPUYo3aNZrsVjJzz1ep0BXWfmMRlEfQT3tdLuNXRVEAE9Kr/y05L+dTLANuuugCZvD8WGAN03qgTLGe37PlOudEP3njrVXEh13Zykchopy8utT7wIsSj2sLNG7puJ38sWQ1ABGiQQgcbNdDhas=
+	t=1746586128; cv=fail; b=mlGN1z774S1FgTXQSHUIeREwLK8pimP9doc6eCmgmnHRrFJBdBiLHbpxpwKUDBX44L3UKgdFtQc3gpYhrGXEgBnqdFui2IIK5m9w4DDYw+hV9241H9TrA9Xv0G2ZcVSPdbUh63TEPstcxvsjYtZSsjimVMuVF1Ni/7CvjorVv60=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746585810; c=relaxed/simple;
-	bh=aDWrzPbyJWtwWNbGiRAyxBzW2CoSRgnng9QscE0wIW0=;
+	s=arc-20240116; t=1746586128; c=relaxed/simple;
+	bh=VipO+mmQMIpUKITrw8YNUW8h3MM3foKtX0ff96FPKP4=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=avpWeUgDYRvj4aVSXtoy5d1NSV8BQ+9/Z8aQPvLlEpbQ3pYRtYaKuyGmeic+Ybr3YHTNyOkqbr6hef6F0QNbDYs7OYzrX7jtMaHBr2Y7N092+IRYaVigPqNixrKH7G32UUUjoKQ21tNsSpa0L1zxUkV+90wwQsYoPwuGJG1fdig=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Do2tERx9; arc=fail smtp.client-ip=40.107.244.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	 MIME-Version:Content-Type; b=IoLd5oXg2puBpIbd/ZLgyP3YuRPtYTJrQ7XoJIW3BdVUgEf70eGo4wq4xn82z8M7oUdOvq69wx2+YVxlYHp8UIqvCKwAbCL4Pnjim0gM0WGL6+HHGzbIiLux9MT4NdPEbz9a1NpUSBlragy3iALZlTgaXO3Hn070Ft9aVT6R8YE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=MwC4FtDu; arc=fail smtp.client-ip=40.107.243.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WM+xTpE7EmimhTxWTUbZnCfvN9aRMrPTJy422Iz3ji1Z9f/jjiH3H+tztoFh2uGtMuzqi80lpPniQVS07av04LBKZXjsvDH/u00WqgOnTAxqaGVIcSMnq1CNWM3935htPSmFRvsPXgyeAxy1IAFdjR0joivY2psJylXMJh2e99rbS3SX1eiXuA/ZQa5JrGxW+nPRE+yuKfeV6XxtTmhz+tqOz0v+C/HDZ3V2ZVPfsRe0U301EHSTpunD3quCWH3rk/GY6sm1/8GaFlwC81weZ0JRYUmE9zf7yvko5whZsqgh+f8hFSr3dpdH1x7cg/trGcn/z+r2qPQx9UteDKXNTA==
+ b=H7Dr4aRuNbuLqgC63Bhj/Ne93fIg2ih2cEOMW1sybzGgkllPSiWOUUbvA51ndzIEfnUsFsj/39cfJ70OWZsBXqcsvlt3U/TpEurkL1jtYxTIi9RqCJJMsUANiHV/gJUHHJQMAbOoeiZZwRws9u67uKQQoi3q7i/zDBRe6ywuaAaLUH3cNfdzYF5dyvzLpEW5iuB2ugxG14sWDsCT05VxjzYNMEwvV4Wxem0JME46Fem3aAF6O3DyWN9H0nYXDPaiDD3AusVbPbfWmignd/oE46XHFKpsGIfnCviwy4NKUN7M6jZAHGl96fsD8o61Ub8xrNMnQjj/t7veX7Rs0Z2ugg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ISK3WO35HhgIKCJz/rOPLbtP/YipBZe3haWFcxtyrxM=;
- b=okPjnocwtxHRAEjU6tJbcQYZujh5JQIf7YJTKIwZr/ay1Jqk67HzRBKVrodTa7+1ArC1pAPQib8arKC0YDtR8vdSFSyL38ixWH+szClQABgomYcnLIWwvE44ka6EkGTkWIcQUCOzFemyiTMVXniH+gHoIaxulacORSx0pNneb9lHpvQeiIbBfpOtJjoJAgFls9sZhK1Z36euWgdvhnaV14Kql/HYSov6Kdd0sJYd80fnkDLpE4uR0de/XFC+1kzDmh5AjnMw4+VTQf+UNz+gEbz4lmUkeuKi+6bjz/FulEuaJOhctsyS3KCCPTwrQMDnu6SG4abNSGQs5+OdXR7PBA==
+ bh=Sy8gNXFAZcR3YBq07i1jmeIn7KhYOFFCjK0asDbRk7Y=;
+ b=SKCkTJNa/vCAEl1D7Mtg6oHjSCxGC7LldWaH9yQl7Ws9E6G3CwDgmSO8Z+v6puiP4l8nnHRVtmuJdUSOMFw8PSFMAqTIRtvxt7D98ikBzJ+1osBTXLg8etDEdXt5OIRbZojOGCeCkbSvNy0rSFuSOwI8tCCBmMYUf69bfXMVSiSW+JeBC/1XIuPRabSygF26oZMsRKRf5Wr8X0ZTm8BmDY1nH1eS6Zg3//CyIDeYR7jU357NyomEoUwHll6XfAYhCUFBEphmRAeMnbZ8Iu2SeWtuxYynQy+04Qz9imTtg7AG0QsGMXG34EQ+d2ACsdM5polyx1ILuGp2aCwMeDz4Eg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ 216.228.118.232) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ISK3WO35HhgIKCJz/rOPLbtP/YipBZe3haWFcxtyrxM=;
- b=Do2tERx9mAENR3/Tnz0EQIDMwQWJadskcQwJdzZzCuoo3MiYhfyDoFOGDKYGq6vC5zBm6icauAbS003ku+zRz83BSnnal7GwOWsPwfi0O8FJ/3RS4U+Z6Q5MJAnH2tU83vPJz8lF4HQ7fVD7KqdBFeXQf1KB5tpJEpDZRUjuL9k=
-Received: from BY3PR05CA0015.namprd05.prod.outlook.com (2603:10b6:a03:254::20)
- by IA0PPFFEC453979.namprd12.prod.outlook.com (2603:10b6:20f:fc04::beb) with
+ bh=Sy8gNXFAZcR3YBq07i1jmeIn7KhYOFFCjK0asDbRk7Y=;
+ b=MwC4FtDupkxinSl2DrN9X4X8UxJf6GAErMJW859QBsEsaEO4XUkywTyUhLaKAE37nirc4Zw5I9oy4U3gAZ3sKtQVvG0aBsjWH4rOZ64oymLwCy2blLS1qjlSL6ANHKuKWad/YDGJ59Ar7oIfXE+fgiUI4lv74lf2p7Zi7ytAAtpwzOoFYigf0q5DiABZMCwE/jU/yhrX1MlJEdkffcqIlb7nLAd7BFjw8Z8Oz/7lxHjfhNElWnt9Ez6Zx9Q4kYjzXwdRdhoE5PuH3io1oLCejiGlkMrkK4Dan3ZJ+bP3oWh4FCYCXCthQfgrTM6syz7xOdh8RUgGklxzLUoli00uQg==
+Received: from MN2PR12CA0021.namprd12.prod.outlook.com (2603:10b6:208:a8::34)
+ by LV2PR12MB5918.namprd12.prod.outlook.com (2603:10b6:408:174::21) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8678.29; Wed, 7 May
- 2025 02:43:22 +0000
-Received: from SJ5PEPF000001ED.namprd05.prod.outlook.com
- (2603:10b6:a03:254:cafe::c9) by BY3PR05CA0015.outlook.office365.com
- (2603:10b6:a03:254::20) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8722.18 via Frontend Transport; Wed,
- 7 May 2025 02:43:22 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB03.amd.com; pr=C
-Received: from SATLEXMB03.amd.com (165.204.84.17) by
- SJ5PEPF000001ED.mail.protection.outlook.com (10.167.242.201) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8722.18 via Frontend Transport; Wed, 7 May 2025 02:43:21 +0000
-Received: from SATLEXMB05.amd.com (10.181.40.146) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 6 May
- 2025 21:43:21 -0500
-Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB05.amd.com
- (10.181.40.146) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 6 May
- 2025 21:43:20 -0500
-Received: from ray-Ubuntu.amd.com (10.180.168.240) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
- Transport; Tue, 6 May 2025 21:43:12 -0500
-From: Ray Wu <ray.wu@amd.com>
-To: <amd-gfx@lists.freedesktop.org>
-CC: Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>, Roman Li <roman.li@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>, Tom Chung <chiahsuan.chung@amd.com>, "Fangzhi
- Zuo" <jerry.zuo@amd.com>, Zaeem Mohamed <zaeem.mohamed@amd.com>, "Daniel
- Wheeler" <daniel.wheeler@amd.com>, Alex Hung <alex.hung@amd.com>, Wayne Lin
-	<Wayne.Lin@amd.com>, <stable@vger.kernel.org>, Mario Limonciello
-	<mario.limonciello@amd.com>, Alex Deucher <alexander.deucher@amd.com>, Ray Wu
-	<ray.wu@amd.com>
-Subject: [PATCH 02/14] drm/amd/display: Correct the reply value when AUX write incomplete
-Date: Wed, 7 May 2025 10:34:46 +0800
-Message-ID: <20250507024242.1928299-3-ray.wu@amd.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20250507024242.1928299-1-ray.wu@amd.com>
-References: <20250507024242.1928299-1-ray.wu@amd.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.22; Wed, 7 May
+ 2025 02:48:42 +0000
+Received: from BL02EPF00021F6B.namprd02.prod.outlook.com
+ (2603:10b6:208:a8:cafe::32) by MN2PR12CA0021.outlook.office365.com
+ (2603:10b6:208:a8::34) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8699.29 via Frontend Transport; Wed,
+ 7 May 2025 02:48:42 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ BL02EPF00021F6B.mail.protection.outlook.com (10.167.249.7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8722.18 via Frontend Transport; Wed, 7 May 2025 02:48:42 +0000
+Received: from drhqmail201.nvidia.com (10.126.190.180) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Tue, 6 May 2025
+ 19:48:26 -0700
+Received: from drhqmail203.nvidia.com (10.126.190.182) by
+ drhqmail201.nvidia.com (10.126.190.180) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Tue, 6 May 2025 19:48:28 -0700
+Received: from waynec-Precision-5760.nvidia.com (10.127.8.13) by
+ mail.nvidia.com (10.126.190.182) with Microsoft SMTP Server id 15.2.1544.14
+ via Frontend Transport; Tue, 6 May 2025 19:48:26 -0700
+From: Wayne Chang <waynec@nvidia.com>
+To: <waynec@nvidia.com>, <jckuo@nvidia.com>, <vkoul@kernel.org>,
+	<kishon@kernel.org>, <thierry.reding@gmail.com>, <jonathanh@nvidia.com>
+CC: <linux-phy@lists.infradead.org>, <linux-tegra@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: [PATCH 1/2] phy: tegra: xusb: Decouple CYA_TRK_CODE_UPDATE_ON_IDLE from trk_hw_mode
+Date: Wed, 7 May 2025 10:48:19 +0800
+Message-ID: <20250507024820.1648733-2-waynec@nvidia.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20250507024820.1648733-1-waynec@nvidia.com>
+References: <20250507024820.1648733-1-waynec@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-NVConfidentiality: public
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-Received-SPF: None (SATLEXMB05.amd.com: ray.wu@amd.com does not designate
- permitted sender hosts)
+X-NV-OnPremToCloud: AnonymousSubmission
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF000001ED:EE_|IA0PPFFEC453979:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0382ea23-e8b5-4034-eca0-08dd8d10eec2
+X-MS-TrafficTypeDiagnostic: BL02EPF00021F6B:EE_|LV2PR12MB5918:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2c215162-fbde-4e3a-3e37-08dd8d11add1
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|376014|36860700013;
+	BCL:0;ARA:13230040|82310400026|36860700013|376014|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?HmBZ9zF1uW9TbgrS1gikJRVGV1ZSSl/cCO6JrFeR7baEJoiLdDlr2BWg8FT0?=
- =?us-ascii?Q?1vFLJtVNdwbWxsJb8g3yI7TlJzD2UwpZf3YhJ+2gJ7t+ggyIRB5QVyQNEyDv?=
- =?us-ascii?Q?Qy3dYJ9MM0CPxDTrKgIYR5tm0ha9oSUuXVNKvFujPm6QanJZEMt5Y5giVG1D?=
- =?us-ascii?Q?jV9wbQsWlIBy0SSZZQOat2EhNVGrhknVMJvNGUY4n8GlnHA5QRGfwivE2BJw?=
- =?us-ascii?Q?Kzl+GV61i7Yxz8jIHSY5eNr1a6l24RL2XmSg7/jm9LnDZCE17dfANtndnQT0?=
- =?us-ascii?Q?TgC1ElNinPWPtLdR3W94h7GfK6+g+T5YqT/6yJgHrLgE/6LvF5TgTQcaXlFX?=
- =?us-ascii?Q?v42QnnJShuZ89xWUjDFiUX8dGnsNvV0/73loy2pDa7/T2p7QU8jtLUhVwiZ6?=
- =?us-ascii?Q?RmjKEoYzSlUsdzsOThjM4UFeTuclXOT6LfK3+weN0uXRtd+kciaTDsikGrpu?=
- =?us-ascii?Q?5jb1f59kXR+6aMns0NztKIsaTUruwLSqFnge8gUQ6s6eiOAzHJR4RyIMUHHK?=
- =?us-ascii?Q?9Wyh7x5KGIlymjo1L37nNWVl9CW8E6mnTu38NWOnQGqBMAM3MNmQ4CUwTPV6?=
- =?us-ascii?Q?xe9EqpnZHSrDnqVmZI663h6jPgLe2a0EarlNTFBhkIhOHXA0ty7RoWyN3rvt?=
- =?us-ascii?Q?N73Lgis4MesblxpUgRVkl2xt4y9feBKetOehxOdm45jxKPiMWvs3zAqN1HXD?=
- =?us-ascii?Q?Der/nETnVZwJxzkTIBxaoNRDuOok9us5lKvPvPkBq4wAHZ35i0tj+QnSdmzx?=
- =?us-ascii?Q?lCWULOKxIwPgHL73A1Hexn6c+b/YoOADHhMjr/9pKepeELASX4iQb7IwxUia?=
- =?us-ascii?Q?Ww5U7o05M1VVzq5V7IHuRr1PTdCXElqtrtd4jUzFJcwiKx58oJaHYg1RloKD?=
- =?us-ascii?Q?2kcFjokIvXCPIi9nIYUJiuWkI5mpmdHv0XWZpBFMdUROlH7YrCXWDldt+B/U?=
- =?us-ascii?Q?CvpFN03Ys3Jkqb0KVnkY7PPJbbjscKHQi6hZBLYfLGHuJcqhoi9XEh1JiRAx?=
- =?us-ascii?Q?QOTgREQi1n8LipRiC0hXuigM0zVqLoDBeMEcP+ySZHV2IyG+Jx+jvdbv3ZxI?=
- =?us-ascii?Q?uofIw8B4BCoho8APXx5EmST8zqTSY1p6ayeVMlTxCZV7DcNX3VzCh2446NS+?=
- =?us-ascii?Q?tEPXz7CnNLAgxINMhIOBp2UO56WLjhUB/2xLOPWCeqUxGMPZx9cQ8AS1pVbQ?=
- =?us-ascii?Q?g/2rHGshrkVvquqNqVpl47HpVXGfAbKSHGE1kCrtFmZmFjuSe60I3xgxImF2?=
- =?us-ascii?Q?xmnvzBCL8IYqihq6NooZ41DT2ch25vd573j6qkR30w4RhMeeDO2M5e5xpLEG?=
- =?us-ascii?Q?O/XLwke+ppNisWOI33eiU07mi35eNcO+BuqQ0y1GKiClACANniRvcduRhLXW?=
- =?us-ascii?Q?9vOIN27mWJO8WJl9FQwtCHiCTvPqRetA2w3vcBAabW3jvr2/ovloCJKgzZLl?=
- =?us-ascii?Q?axmg+cBAiqaWx/zDRFidv9DhrrfOlEBj0iUdYOJ9XMkxRIh8TE7xitO0jwMN?=
- =?us-ascii?Q?68JyYmYAMbXVSV00xOw1xyg1MXzFaseOp10M?=
+	=?us-ascii?Q?RTZg/5tWWwKAb3BAQ4ULZ5O37H5HKtHwrCpODcmRpa2C9SRaU0R1eclVyj2E?=
+ =?us-ascii?Q?TQq7uprX+BH1WHLIaL0S8leLUKszyu05/PgaWECU9vTCxJj1ewdXF3l6By1p?=
+ =?us-ascii?Q?ESz06JBFdd/u0CdXSSQHOuDfsxVyEN0ApsHee/SMekcgsg1+RIVdhQg5l93x?=
+ =?us-ascii?Q?sXmU4rrI9UX70yFqGK8JNxd+4szPZSsPKJM9H9+0k6djFKHUslqmSfT6Na8j?=
+ =?us-ascii?Q?yZgRJETHOPnuZCL9WJbXFrPLiWCrp7ROyodRpiU69fzWXA5PVPFvN2kHKg6x?=
+ =?us-ascii?Q?D8ViYsw8yOVmfKEXCPyRRFJvQFZ8VK0Rqb8F/IC4yT453l2uJhfAF2c6cVy/?=
+ =?us-ascii?Q?ZPMZLYqhORdD2wwibQ2tA01LRHZPNllTPvFnU3mLaDyVyb6YJ1SDruUN7XDj?=
+ =?us-ascii?Q?Xj2wFwSDX2e6ukrOhXeDeaxetAhg2TUCiCSqFwJs+oOu9aX7Pg4H5RjWHnD+?=
+ =?us-ascii?Q?7r8JBbuHl0fIdQOWgGj2RdV7olAMFpJo8uq4vKwZ9wRDP/jrJoDPgdwDbUOm?=
+ =?us-ascii?Q?SdRPg+DRY/qh1H95tdYAz6u1Qfd5hKvIdK7rrnCw/6eqm/vvmc0RibP9yCxz?=
+ =?us-ascii?Q?kgj66Gdp58KYGUCAZy4Oa8lh015BTU0NYm6b4i2PE+fCrpuXSqDtUvAfWsGP?=
+ =?us-ascii?Q?RuDNrYloZNdkeiRQqMbPMAnon6tYOkMsPyGvZbbOUMKoSRFF52xGkGXn4KKC?=
+ =?us-ascii?Q?7yT7z28Xe2JTwNJ9hHOJP/B0dh2a5WnsS3KnOcdOHqH8PKcGIjh7gSPeoraj?=
+ =?us-ascii?Q?VRLutlX4MR8CyQWMRV/zk9EkP3Epqky3l/z2diqvnUHxLyYqEiU9zNCIde1b?=
+ =?us-ascii?Q?wb0KDBOO9nPqNCLkbszdbNxt8itXp7TFuw7y6h9Y3QIwlZ1WcH00WS/ydipq?=
+ =?us-ascii?Q?TAoDlwxSGJ6p9n0qdQtukP4wNlLaAy9f6wf54FnzwBDCOO12NuVxDtMqP2/A?=
+ =?us-ascii?Q?oLPkHgKVBsEUR3y6SuTh0sGX1FX3mCW3hktgGpGavbQ4WrR6sq9ImIKpCnHP?=
+ =?us-ascii?Q?6inw5IOxM6L26rLjuvq71/NUlv4Kd+sxs/DBDq0F/8yVPXo7RfmZVDtnLqEj?=
+ =?us-ascii?Q?HYhbbaXACrv9iOeSCaHXGRqXK+pFiqeMmgu1lLh55LGabLk9BOENLzy7RgUp?=
+ =?us-ascii?Q?0RArokQ7EWe8H+sjsHMQsI1c5jzZpDB/XSCU6l0Y8/+hDxb1Yznt0ZXrXDj0?=
+ =?us-ascii?Q?Rf883LjsYqldjMIWU+MDDOkHkvo+nXKAcElbZOrOdpOzJ/+Htg44aDfBS7ZF?=
+ =?us-ascii?Q?2wRHiXKODOFCm1IsnKGp9immQfe5Df6beql3PDOnuttW6Ml9YS8nlx0ozYGt?=
+ =?us-ascii?Q?CeDpuep8IFZ1YoN7ssr9Lb63Jlc9cyxDr7B804gEhjq02xAIGwrFQ+kqCruM?=
+ =?us-ascii?Q?AMTaVaWFWIPyUrKliheahjIkpI/hX7HscLTFngeMM+O6ZNiUfBSPXRnYcgZT?=
+ =?us-ascii?Q?xPEdA2oOIRLBI74XJNLr6KPDPlBIXuFu+UT3LXBbts6PK1OSmbkB/jf82etV?=
+ =?us-ascii?Q?tvf4n3yU3pl+o6828vRgpAb2oYlh7EDsscPm?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB03.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(376014)(36860700013);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2025 02:43:21.9819
+	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2025 02:48:42.5148
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0382ea23-e8b5-4034-eca0-08dd8d10eec2
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB03.amd.com]
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2c215162-fbde-4e3a-3e37-08dd8d11add1
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF000001ED.namprd05.prod.outlook.com
+	BL02EPF00021F6B.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PPFFEC453979
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB5918
 
-From: Wayne Lin <Wayne.Lin@amd.com>
+The logic that drives the pad calibration values resides in the
+controller reset domain and so the calibration values are only being
+captured when the controller is out of reset. However, by clearing the
+CYA_TRK_CODE_UPDATE_ON_IDLE bit, the calibration values can be set
+while the controller is in reset.
 
-[Why]
-Now forcing aux->transfer to return 0 when incomplete AUX write is
-inappropriate. It should return bytes have been transferred.
+The CYA_TRK_CODE_UPDATE_ON_IDLE bit was previously cleared based on the
+trk_hw_mode flag, but this dependency is not necessary. Instead,
+introduce a new flag, trk_update_on_idle, to independently control this
+bit.
 
-[How]
-aux->transfer is asked not to change original msg except reply field of
-drm_dp_aux_msg structure. Copy the msg->buffer when it's write request,
-and overwrite the first byte when sink reply 1 byte indicating partially
-written byte number. Then we can return the correct value without
-changing the original msg.
-
-Fixes: 6285f12bc54c ("drm/amd/display: Fix wrong handling for AUX_DEFER case")
+Fixes: d8163a32ca95 ("phy: tegra: xusb: Add Tegra234 support")
 Cc: stable@vger.kernel.org
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Ray Wu <ray.wu@amd.com>
-Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
-Signed-off-by: Ray Wu <ray.wu@amd.com>
+Signed-off-by: Wayne Chang <waynec@nvidia.com>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c      |  3 ++-
- .../drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c    | 10 ++++++++--
- 2 files changed, 10 insertions(+), 3 deletions(-)
+ drivers/phy/tegra/xusb-tegra186.c | 14 ++++++++------
+ drivers/phy/tegra/xusb.h          |  1 +
+ 2 files changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 8984e211dd1c..36c16030fca9 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -12853,7 +12853,8 @@ int amdgpu_dm_process_dmub_aux_transfer_sync(
- 		/* The reply is stored in the top nibble of the command. */
- 		payload->reply[0] = (adev->dm.dmub_notify->aux_reply.command >> 4) & 0xF;
+diff --git a/drivers/phy/tegra/xusb-tegra186.c b/drivers/phy/tegra/xusb-tegra186.c
+index fae6242aa730..dd0aaf305e90 100644
+--- a/drivers/phy/tegra/xusb-tegra186.c
++++ b/drivers/phy/tegra/xusb-tegra186.c
+@@ -650,14 +650,15 @@ static void tegra186_utmi_bias_pad_power_on(struct tegra_xusb_padctl *padctl)
+ 		udelay(100);
+ 	}
  
--	if (!payload->write && p_notify->aux_reply.length)
-+	/*write req may receive a byte indicating partially written number as well*/
-+	if (p_notify->aux_reply.length)
- 		memcpy(payload->data, p_notify->aux_reply.data,
- 				p_notify->aux_reply.length);
- 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-index d19aea595722..0d7b72c75802 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-@@ -62,6 +62,7 @@ static ssize_t dm_dp_aux_transfer(struct drm_dp_aux *aux,
- 	enum aux_return_code_type operation_result;
- 	struct amdgpu_device *adev;
- 	struct ddc_service *ddc;
-+	uint8_t copy[16];
- 
- 	if (WARN_ON(msg->size > 16))
- 		return -E2BIG;
-@@ -77,6 +78,11 @@ static ssize_t dm_dp_aux_transfer(struct drm_dp_aux *aux,
- 			(msg->request & DP_AUX_I2C_WRITE_STATUS_UPDATE) != 0;
- 	payload.defer_delay = 0;
- 
-+	if (payload.write) {
-+		memcpy(copy, msg->buffer, msg->size);
-+		payload.data = copy;
-+	}
+-	if (padctl->soc->trk_hw_mode) {
+-		value = padctl_readl(padctl, XUSB_PADCTL_USB2_BIAS_PAD_CTL2);
+-		value |= USB2_TRK_HW_MODE;
++	value = padctl_readl(padctl, XUSB_PADCTL_USB2_BIAS_PAD_CTL2);
++	if (padctl->soc->trk_update_on_idle)
+ 		value &= ~CYA_TRK_CODE_UPDATE_ON_IDLE;
+-		padctl_writel(padctl, value, XUSB_PADCTL_USB2_BIAS_PAD_CTL2);
+-	} else {
++	if (padctl->soc->trk_hw_mode)
++		value |= USB2_TRK_HW_MODE;
++	padctl_writel(padctl, value, XUSB_PADCTL_USB2_BIAS_PAD_CTL2);
 +
- 	result = dc_link_aux_transfer_raw(TO_DM_AUX(aux)->ddc_service, &payload,
- 				      &operation_result);
++	if (!padctl->soc->trk_hw_mode)
+ 		clk_disable_unprepare(priv->usb2_trk_clk);
+-	}
  
-@@ -100,9 +106,9 @@ static ssize_t dm_dp_aux_transfer(struct drm_dp_aux *aux,
- 	 */
- 	if (payload.write && result >= 0) {
- 		if (result) {
--			/*one byte indicating partially written bytes. Force 0 to retry*/
-+			/*one byte indicating partially written bytes*/
- 			drm_info(adev_to_drm(adev), "amdgpu: AUX partially written\n");
--			result = 0;
-+			result = payload.data[0];
- 		} else if (!payload.reply[0])
- 			/*I2C_ACK|AUX_ACK*/
- 			result = msg->size;
+ 	mutex_unlock(&padctl->lock);
+ }
+@@ -1703,6 +1704,7 @@ const struct tegra_xusb_padctl_soc tegra234_xusb_padctl_soc = {
+ 	.supports_gen2 = true,
+ 	.poll_trk_completed = true,
+ 	.trk_hw_mode = true,
++	.trk_update_on_idle = true,
+ 	.supports_lp_cfg_en = true,
+ };
+ EXPORT_SYMBOL_GPL(tegra234_xusb_padctl_soc);
+diff --git a/drivers/phy/tegra/xusb.h b/drivers/phy/tegra/xusb.h
+index 6e45d194c689..d2b5f9565132 100644
+--- a/drivers/phy/tegra/xusb.h
++++ b/drivers/phy/tegra/xusb.h
+@@ -434,6 +434,7 @@ struct tegra_xusb_padctl_soc {
+ 	bool need_fake_usb3_port;
+ 	bool poll_trk_completed;
+ 	bool trk_hw_mode;
++	bool trk_update_on_idle;
+ 	bool supports_lp_cfg_en;
+ };
+ 
 -- 
-2.43.0
+2.25.1
 
 
