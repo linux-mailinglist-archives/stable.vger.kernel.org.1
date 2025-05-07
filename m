@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-142276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142569-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D136AAE9F3
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:50:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A830AAEB2C
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:04:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 740E14C0C68
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:49:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38B861C068B7
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:04:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 218EA216E01;
-	Wed,  7 May 2025 18:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4314C28C2A5;
+	Wed,  7 May 2025 19:04:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J2gKZz8J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qCD/3tfs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D194E1DDC23;
-	Wed,  7 May 2025 18:49:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F29EC29A0;
+	Wed,  7 May 2025 19:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643757; cv=none; b=btT1uHqkA+YYKsVea8E03Kg5g/GP5phdH6LJMkycVIa79g/iRJYI/hp0UlqGuyDziDFtr+JqHHaXEC0VfhkACBWZwrvq/uZ6J8GC2mLHS59PX1E00PZd9D2bYrWXSZMrcEKsRNujqTUcYWMGU8LrGJmp5hVNtwVk2t3c0DlLSsk=
+	t=1746644660; cv=none; b=jkCjNoHUDSLzgZXQqQmN1tQBMUmCfI5/yC3ifrSaLjzffo5jGGz16HlHHBueTNeKnYyCclo+zcJAo0oRBYQoQyJzseEcaW6e4pdaG2vmSofOfVFjWOEhN+FGZOWhXyCyb/67JLMSochAFRLQA6q1WRsu16zML8vnl5srYVv3UsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643757; c=relaxed/simple;
-	bh=1HKv9Q9g1CP0bVizhABm5eeOj2mzzh6c8lysHRmQjzY=;
+	s=arc-20240116; t=1746644660; c=relaxed/simple;
+	bh=PiGNITFrU9rMS0Qk84O/gN1xmtX61gzfGi/Nww/RDrc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mxYSDFXplRxjKvIoWJCGlBMvak968SFPus8pPwNF4dM0N1ratGZOCa+iF7poqCbc8g9+aT2QyVE2sQa0kijQCpgACydu0cXt4uK+5bHpwMTo+rgjmLQVQoCBO1p49YmKoxLtVnNVaNdfKoblijFOQIUYnujzgbQV3SILUgB0gm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J2gKZz8J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA6D8C4CEE2;
-	Wed,  7 May 2025 18:49:16 +0000 (UTC)
+	 MIME-Version; b=JhysDUg21RBoWJ4+tPRmm+TcTx7GAXnl67I45nlQVaG3k0Z5TuSn28Kw/QEpuuYzLZnRq+9wIQxyX7PELfrHkYbIEzDLmwNmIYZ0C78yKu7zTzp1CYQ6LMRWz0Zj1VEQFsYzfTUqaM/MDZkN7puQVeZEXXZegYP85GY8Ey59C38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qCD/3tfs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60367C4CEE2;
+	Wed,  7 May 2025 19:04:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643757;
-	bh=1HKv9Q9g1CP0bVizhABm5eeOj2mzzh6c8lysHRmQjzY=;
+	s=korg; t=1746644659;
+	bh=PiGNITFrU9rMS0Qk84O/gN1xmtX61gzfGi/Nww/RDrc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J2gKZz8JMysgfDRbMFs3mH4/XWJjsvm3P4I/NgYmBTR7/0OgVw1wAUq/yr1i5rsZg
-	 hZ5VFRsN6kkYOYE1oxKyBRYksUBn7CDX4JdaSOiIyiju41gs6f0+rRTGma1+4Ymfsk
-	 uS/5iZWDjWypfHbjIUWxj7gGBXI6udANVMLf661I=
+	b=qCD/3tfsI1Dg5eHzFTh5Yyx5s+C6PDBQkZdAZx8a01cE9O64W5KrBpLUUDVJcWtwU
+	 2+rqrlprYoUnyFtldRIds4J1NEe3BEhhclmDHBRmbC1feiI9PMUv5uwHmToqa99KCy
+	 evtKLo94xUzzYfMlUDh9XRZAE6Qrow7cMRrcspxs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Hewitt <christianshewitt@gmail.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Kashyap Desai <kashyap.desai@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 84/97] Revert "drm/meson: vclk: fix calculation of 59.94 fractional rates"
+Subject: [PATCH 6.12 114/164] bnxt_en: call pci_alloc_irq_vectors() after bnxt_reserve_rings()
 Date: Wed,  7 May 2025 20:39:59 +0200
-Message-ID: <20250507183810.358014757@linuxfoundation.org>
+Message-ID: <20250507183825.590048994@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
-References: <20250507183806.987408728@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Hewitt <christianshewitt@gmail.com>
+From: Kashyap Desai <kashyap.desai@broadcom.com>
 
-[ Upstream commit f37bb5486ea536c1d61df89feeaeff3f84f0b560 ]
+[ Upstream commit 1ae04e489dd757e1e61999362f33e7c554c3b9e3 ]
 
-This reverts commit bfbc68e.
+On some architectures (e.g. ARM), calling pci_alloc_irq_vectors()
+will immediately cause the MSIX table to be written.  This will not
+work if we haven't called bnxt_reserve_rings() to properly map
+the MSIX table to the MSIX vectors reserved by FW.
 
-The patch does permit the offending YUV420 @ 59.94 phy_freq and
-vclk_freq mode to match in calculations. It also results in all
-fractional rates being unavailable for use. This was unintended
-and requires the patch to be reverted.
+Fix the FW error recovery path to delay the bnxt_init_int_mode() ->
+pci_alloc_irq_vectors() call by removing it from bnxt_hwrm_if_change().
+bnxt_request_irq() later in the code path will call it and by then the
+MSIX table is properly mapped.
 
-Fixes: bfbc68e4d869 ("drm/meson: vclk: fix calculation of 59.94 fractional rates")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christian Hewitt <christianshewitt@gmail.com>
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20250421201300.778955-2-martin.blumenstingl@googlemail.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20250421201300.778955-2-martin.blumenstingl@googlemail.com
+Fixes: 4343838ca5eb ("bnxt_en: Replace deprecated PCI MSIX APIs")
+Suggested-by: Michael Chan <michael.chan@broadcom.com>
+Signed-off-by: Kashyap Desai <kashyap.desai@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/meson/meson_vclk.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/meson/meson_vclk.c b/drivers/gpu/drm/meson/meson_vclk.c
-index 2a942dc6a6dc2..2a82119eb58ed 100644
---- a/drivers/gpu/drm/meson/meson_vclk.c
-+++ b/drivers/gpu/drm/meson/meson_vclk.c
-@@ -790,13 +790,13 @@ meson_vclk_vic_supported_freq(struct meson_drm *priv, unsigned int phy_freq,
- 				 FREQ_1000_1001(params[i].pixel_freq));
- 		DRM_DEBUG_DRIVER("i = %d phy_freq = %d alt = %d\n",
- 				 i, params[i].phy_freq,
--				 FREQ_1000_1001(params[i].phy_freq/1000)*1000);
-+				 FREQ_1000_1001(params[i].phy_freq/10)*10);
- 		/* Match strict frequency */
- 		if (phy_freq == params[i].phy_freq &&
- 		    vclk_freq == params[i].vclk_freq)
- 			return MODE_OK;
- 		/* Match 1000/1001 variant */
--		if (phy_freq == (FREQ_1000_1001(params[i].phy_freq/1000)*1000) &&
-+		if (phy_freq == (FREQ_1000_1001(params[i].phy_freq/10)*10) &&
- 		    vclk_freq == FREQ_1000_1001(params[i].vclk_freq))
- 			return MODE_OK;
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 74be0dd6f7a53..e4d5bd30cf319 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -11851,13 +11851,8 @@ static int bnxt_hwrm_if_change(struct bnxt *bp, bool up)
+ 				set_bit(BNXT_STATE_ABORT_ERR, &bp->state);
+ 				return rc;
+ 			}
++			/* IRQ will be initialized later in bnxt_request_irq()*/
+ 			bnxt_clear_int_mode(bp);
+-			rc = bnxt_init_int_mode(bp);
+-			if (rc) {
+-				clear_bit(BNXT_STATE_FW_RESET_DET, &bp->state);
+-				netdev_err(bp->dev, "init int mode failed\n");
+-				return rc;
+-			}
+ 		}
+ 		rc = bnxt_cancel_reservations(bp, fw_reset);
  	}
-@@ -1070,7 +1070,7 @@ void meson_vclk_setup(struct meson_drm *priv, unsigned int target,
- 
- 	for (freq = 0 ; params[freq].pixel_freq ; ++freq) {
- 		if ((phy_freq == params[freq].phy_freq ||
--		     phy_freq == FREQ_1000_1001(params[freq].phy_freq/1000)*1000) &&
-+		     phy_freq == FREQ_1000_1001(params[freq].phy_freq/10)*10) &&
- 		    (vclk_freq == params[freq].vclk_freq ||
- 		     vclk_freq == FREQ_1000_1001(params[freq].vclk_freq))) {
- 			if (vclk_freq != params[freq].vclk_freq)
 -- 
 2.39.5
 
