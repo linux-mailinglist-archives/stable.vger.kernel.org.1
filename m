@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-142659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED3E4AAEBA0
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:09:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C86B0AAEA74
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:55:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7F6E9E358B
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:08:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F269B7A60A8
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:54:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0D8A1E22E9;
-	Wed,  7 May 2025 19:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DEBD21E0BB;
+	Wed,  7 May 2025 18:55:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lXXO3pYy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F7uZv7ec"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CF4D21504D;
-	Wed,  7 May 2025 19:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B90A2116E9;
+	Wed,  7 May 2025 18:55:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644932; cv=none; b=RX4yhyWX9Iv3weUlp41b6SmDuu2mw47dLH+PGWCw8uG2p1VhRMEMufyCEFu3kKPHLmvqPzS0bYm6zvl5PFMyg/xX427g1GMS/ELq7WR30G0AO1klHLb5k5JA1BM/QcNjy7fo93JAvH87iEO9BMA3kFDVhlpedVy8jcYYXOUjLdw=
+	t=1746644134; cv=none; b=GyhldxMKAun+uE29cPuP52UU3qe3YKyv1xajHu/s+Ndv4vo3ZS7TymGq3ZNOP2zQGoxxlxkZs8+7A5YJ1mIRQe/D6lAMVlrrlXBaj1bfRpMMQygaU5D/5ZlrKug9h7m9BPAmpI2O1bc5YELzqtOPzJvbdfzXtAH0WftbH5m1gLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644932; c=relaxed/simple;
-	bh=QYy1puwB4kpnzhrhhY92fVT05xfLetmc6XywLIA1l/A=;
+	s=arc-20240116; t=1746644134; c=relaxed/simple;
+	bh=+bcWZVEahSHHPW27d2lkq3Zi6Kf2Jrv7Pq+M8AKfsLU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d/4EaXhzpbI8fIe1u91dqt1zwI59Ph14Ovr2UEIwg1JN7vu7SibJcWJ8OPzFLuZ4UhfcnDh3Q838USgnrgbuZ2JzplbsrIE5MuBdGhE53uPDlLn0FkTqRF58UPG31gkshwbBVINjGtW+Ywh7+2BmnIkFK5mCgGj9U+QoBwltXh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lXXO3pYy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F07ADC4CEE2;
-	Wed,  7 May 2025 19:08:51 +0000 (UTC)
+	 MIME-Version; b=KcHcG1yYNTWolDAWvafGc1Xoio+sMD180ddb9DeRO1hDDkAbiGry+c/Yv6HbqC8cn2knjwl7+VJImXAS3+BcorcrgnhOB1sAVNdNniyz+hAlT9Xoc38sOE2nH2pLNGuwHpKH0cGb5o7WHFavEGh1mRgvuMRzOoCt1W2IZMYHhpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F7uZv7ec; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45A94C4CEE2;
+	Wed,  7 May 2025 18:55:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644932;
-	bh=QYy1puwB4kpnzhrhhY92fVT05xfLetmc6XywLIA1l/A=;
+	s=korg; t=1746644133;
+	bh=+bcWZVEahSHHPW27d2lkq3Zi6Kf2Jrv7Pq+M8AKfsLU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lXXO3pYycGYW7C+YNDkA9Tjx0R0VXMOLCh1WcqW/3Z22JzPmUHERQmcc+kdpn6574
-	 RdLFe7hk36IOgYCSXkAl7tdqiWXwtrrWSHPdtinPgPkRgRj0t9vySkKi95tFdk8E+h
-	 11H+COU6cen5aGhb551TZIERgcSXaN2bd1CDwVU0=
+	b=F7uZv7ecQp2b9y3robgdGKEuj61ZlP454PdKuR7v0n1jzKsaW5jHbTvtXKotMZy9k
+	 gNyWJW8PPLQSmJzWQeEJ0/psstADiHc5uvBWLRsBifMDtGcWHrgYcFeTB3NNC/r5K8
+	 rULoywkFPOw440fheC0tirJifN582uqUlHTuiFUI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH 6.6 039/129] bpf: consider that tail calls invalidate packet pointers
+	Alistair Francis <alistair.francis@wdc.com>,
+	Hannes Reinecke <hare@suse.de>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 130/183] nvmet-tcp: select CONFIG_TLS from CONFIG_NVME_TARGET_TCP_TLS
 Date: Wed,  7 May 2025 20:39:35 +0200
-Message-ID: <20250507183815.119372997@linuxfoundation.org>
+Message-ID: <20250507183830.087331627@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
-References: <20250507183813.500572371@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eduard Zingerman <eddyz87@gmail.com>
+From: Alistair Francis <alistair.francis@wdc.com>
 
-commit 1a4607ffba35bf2a630aab299e34dd3f6e658d70 upstream.
+[ Upstream commit ac38b7ef704c0659568fd4b2c7e6c1255fc51798 ]
 
-Tail-called programs could execute any of the helpers that invalidate
-packet pointers. Hence, conservatively assume that each tail call
-invalidates packet pointers.
+Ensure that TLS support is enabled in the kernel when
+CONFIG_NVME_TARGET_TCP_TLS is enabled. Without this the code compiles,
+but does not actually work unless something else enables CONFIG_TLS.
 
-Making the change in bpf_helper_changes_pkt_data() automatically makes
-use of check_cfg() logic that computes 'changes_pkt_data' effect for
-global sub-programs, such that the following program could be
-rejected:
-
-    int tail_call(struct __sk_buff *sk)
-    {
-    	bpf_tail_call_static(sk, &jmp_table, 0);
-    	return 0;
-    }
-
-    SEC("tc")
-    int not_safe(struct __sk_buff *sk)
-    {
-    	int *p = (void *)(long)sk->data;
-    	... make p valid ...
-    	tail_call(sk);
-    	*p = 42; /* this is unsafe */
-    	...
-    }
-
-The tc_bpf2bpf.c:subprog_tc() needs change: mark it as a function that
-can invalidate packet pointers. Otherwise, it can't be freplaced with
-tailcall_freplace.c:entry_freplace() that does a tail call.
-
-Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20241210041100.1898468-8-eddyz87@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-[ shung-hsi.yu: drop changes to tools/testing/selftests/bpf/progs/tc_bpf2bpf.c
-because it is not present. ]
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 675b453e0241 ("nvmet-tcp: enable TLS handshake upcall")
+Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/filter.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/nvme/target/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -7893,6 +7893,8 @@ bool bpf_helper_changes_pkt_data(enum bp
- 	case BPF_FUNC_xdp_adjust_head:
- 	case BPF_FUNC_xdp_adjust_meta:
- 	case BPF_FUNC_xdp_adjust_tail:
-+	/* tail-called program could call any of the above */
-+	case BPF_FUNC_tail_call:
- 		return true;
- 	default:
- 		return false;
+diff --git a/drivers/nvme/target/Kconfig b/drivers/nvme/target/Kconfig
+index fb7446d6d6829..4c253b433bf78 100644
+--- a/drivers/nvme/target/Kconfig
++++ b/drivers/nvme/target/Kconfig
+@@ -98,6 +98,7 @@ config NVME_TARGET_TCP_TLS
+ 	bool "NVMe over Fabrics TCP target TLS encryption support"
+ 	depends on NVME_TARGET_TCP
+ 	select NET_HANDSHAKE
++	select TLS
+ 	help
+ 	  Enables TLS encryption for the NVMe TCP target using the netlink handshake API.
+ 
+-- 
+2.39.5
+
 
 
 
