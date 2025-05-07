@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-142262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B62E4AAE9E4
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:49:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EE5BAAEB0D
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:02:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97D823BEB4E
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:48:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9A321C03E44
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:02:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF008214813;
-	Wed,  7 May 2025 18:48:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F37732144BF;
+	Wed,  7 May 2025 19:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IJ7j1Wcu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NEckXFAy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C38C1DDC23;
-	Wed,  7 May 2025 18:48:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0A8329A0;
+	Wed,  7 May 2025 19:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643713; cv=none; b=Dwms3KbxhTcdH6fAy9olplJESgVuwi0MsmpVifVdZd0kODEt1kSDZ0LQtUzNvvn465cv+0TipGiaUe64i14v7O4rmeQhGpnN1wLSAMi89mCkf924CmYBacz8JuK2GEl+ECTJSsuGPaoK5ewI183eLQRlnR9phzVsDbUauaYK/4U=
+	t=1746644556; cv=none; b=pxCff6owMMqgxqeVPB7KEgEm0naymX0CVV5nTkQ/Lcmif9vRsmwFww7Bd0iFUJivnO/QKGvSs7wBZmmUEK8JqVjUtz9OHr3j98Rqm7j6CykHZ0/mJ81ie+yuFVsflFgtQnD6PFRFRqI0b0UoP9OcRU/OziXDZlH5/0NPOF9WDBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643713; c=relaxed/simple;
-	bh=mjtA3xYBHrfjqIFyVNWC9NgQUFD8/N8KBaZmXykPuAY=;
+	s=arc-20240116; t=1746644556; c=relaxed/simple;
+	bh=nluNkmT3FIxO+0mKun+/6PFmQSVdfTnTtwlF+MdzrqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fg7AQh0jbcqGlGwFg4NF/c+Wz3LgHb7qb/6rTYzJZXFVrTzlB46+OTkVtEWt7t5ey9JtIoAaKyKDjyiKWnEt29eOlXz2IiF/41ncUuOP5/FlzY/6OptPoo4b94t+YvS+IwKNCOmhViJimGNTSsWlac+IuHlikL6G8hHDuviO3zg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IJ7j1Wcu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAAF5C4CEF0;
-	Wed,  7 May 2025 18:48:32 +0000 (UTC)
+	 MIME-Version; b=mUTGbq4cc+yUen+OdCx+vm3MkXB/77cT4OUWU4TZVNQHRg8Orfx3Qcvs0bYQYzX3ET6chkRd7XirFJBiwtUc6GXHi19qS31Ixeb2Z+9HoWWyD/LLWEA1UqNJoMGgqGAj0HZgzFZjT4M3U7UDXMpA15YLSeoBi5TWeNPQMoGWQRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NEckXFAy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8895AC4CEE2;
+	Wed,  7 May 2025 19:02:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643713;
-	bh=mjtA3xYBHrfjqIFyVNWC9NgQUFD8/N8KBaZmXykPuAY=;
+	s=korg; t=1746644556;
+	bh=nluNkmT3FIxO+0mKun+/6PFmQSVdfTnTtwlF+MdzrqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IJ7j1WcuRTJQW3zkksPwYOqQuUOdIcSoBveJJhQzexU0wikn8aivPyEwprhS7kS4X
-	 x5mGJ+sr+b3s0zYO+38bH6yck9gJiCSj13mWP0TfFBRKkGOPQZ/Km3uQPOOoiWdirM
-	 3lBBsWP57PHBB+bLumoCsqPUFSxGO6GjgQqfoGgM=
+	b=NEckXFAyLEBzhJCWTxc+gCBWmfByAL4HLHNzdchyh7xmB1w+G7sAgWxSO4eN2IVk/
+	 3phHeBKaQAkrd+0zGloNXk5Kbx+CohS3qLaYn5JSdcqURdGd85T9gPI8mOsHFt0XNH
+	 oJeuxEghypjAZoTjf0wCoc5Hxr1bt+olCkPtHSQs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Victor Nogueira <victor@mojatatu.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 51/97] net_sched: hfsc: Fix a UAF vulnerability in class with netem as child qdisc
+Subject: [PATCH 6.12 081/164] net: mscc: ocelot: delete PVID VLAN when readding it as non-PVID
 Date: Wed,  7 May 2025 20:39:26 +0200
-Message-ID: <20250507183809.055726978@linuxfoundation.org>
+Message-ID: <20250507183824.240417851@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
-References: <20250507183806.987408728@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Nogueira <victor@mojatatu.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 141d34391abbb315d68556b7c67ad97885407547 ]
+[ Upstream commit 5ec6d7d737a491256cd37e33910f7ac1978db591 ]
 
-As described in Gerrard's report [1], we have a UAF case when an hfsc class
-has a netem child qdisc. The crux of the issue is that hfsc is assuming
-that checking for cl->qdisc->q.qlen == 0 guarantees that it hasn't inserted
-the class in the vttree or eltree (which is not true for the netem
-duplicate case).
+The following set of commands:
 
-This patch checks the n_active class variable to make sure that the code
-won't insert the class in the vttree or eltree twice, catering for the
-reentrant case.
+ip link add br0 type bridge vlan_filtering 1 # vlan_default_pvid 1 is implicit
+ip link set swp0 master br0
+bridge vlan add dev swp0 vid 1
 
-[1] https://lore.kernel.org/netdev/CAHcdcOm+03OD2j6R0=YHKqmy=VgJ8xEOKuP6c7mSgnp-TEJJbw@mail.gmail.com/
+should result in the dropping of untagged and 802.1p-tagged traffic, but
+we see that it continues to be accepted. Whereas, had we deleted VID 1
+instead, the aforementioned dropping would have worked
 
-Fixes: 37d9cf1a3ce3 ("sched: Fix detection of empty queues in child qdiscs")
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
-Link: https://patch.msgid.link/20250425220710.3964791-3-victor@mojatatu.com
+This is because the ANA_PORT_DROP_CFG update logic doesn't run, because
+ocelot_vlan_add() only calls ocelot_port_set_pvid() if the new VLAN has
+the BRIDGE_VLAN_INFO_PVID flag.
+
+Similar to other drivers like mt7530_port_vlan_add() which handle this
+case correctly, we need to test whether the VLAN we're changing used to
+have the BRIDGE_VLAN_INFO_PVID flag, but lost it now. That amounts to a
+PVID deletion and should be treated as such.
+
+Regarding blame attribution: this never worked properly since the
+introduction of bridge VLAN filtering in commit 7142529f1688 ("net:
+mscc: ocelot: add VLAN filtering"). However, there was a significant
+paradigm shift which aligned the ANA_PORT_DROP_CFG register with the
+PVID concept rather than with the native VLAN concept, and that change
+wasn't targeted for 'stable'. Realistically, that is as far as this fix
+needs to be propagated to.
+
+Fixes: be0576fed6d3 ("net: mscc: ocelot: move the logic to drop 802.1p traffic to the pvid deletion")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20250424223734.3096202-1-vladimir.oltean@nxp.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_hfsc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mscc/ocelot.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/sched/sch_hfsc.c b/net/sched/sch_hfsc.c
-index dbed490aafd3d..4b9f323845b91 100644
---- a/net/sched/sch_hfsc.c
-+++ b/net/sched/sch_hfsc.c
-@@ -1564,7 +1564,7 @@ hfsc_enqueue(struct sk_buff *skb, struct Qdisc *sch, struct sk_buff **to_free)
- 		return err;
+diff --git a/drivers/net/ethernet/mscc/ocelot.c b/drivers/net/ethernet/mscc/ocelot.c
+index ef93df5208871..08bee56aea35f 100644
+--- a/drivers/net/ethernet/mscc/ocelot.c
++++ b/drivers/net/ethernet/mscc/ocelot.c
+@@ -830,6 +830,7 @@ EXPORT_SYMBOL(ocelot_vlan_prepare);
+ int ocelot_vlan_add(struct ocelot *ocelot, int port, u16 vid, bool pvid,
+ 		    bool untagged)
+ {
++	struct ocelot_port *ocelot_port = ocelot->ports[port];
+ 	int err;
+ 
+ 	/* Ignore VID 0 added to our RX filter by the 8021q module, since
+@@ -849,6 +850,11 @@ int ocelot_vlan_add(struct ocelot *ocelot, int port, u16 vid, bool pvid,
+ 					   ocelot_bridge_vlan_find(ocelot, vid));
+ 		if (err)
+ 			return err;
++	} else if (ocelot_port->pvid_vlan &&
++		   ocelot_bridge_vlan_find(ocelot, vid) == ocelot_port->pvid_vlan) {
++		err = ocelot_port_set_pvid(ocelot, port, NULL);
++		if (err)
++			return err;
  	}
  
--	if (first) {
-+	if (first && !cl->cl_nactive) {
- 		if (cl->cl_flags & HFSC_RSC)
- 			init_ed(cl, len);
- 		if (cl->cl_flags & HFSC_FSC)
+ 	/* Untagged egress vlan clasification */
 -- 
 2.39.5
 
