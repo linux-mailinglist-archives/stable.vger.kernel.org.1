@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-142180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B764AAE964
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:44:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 143CEAAEADE
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:00:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CA523A837B
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:44:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E73A1524C8C
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:00:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 817EE28DF45;
-	Wed,  7 May 2025 18:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E32D288A8;
+	Wed,  7 May 2025 19:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ICSgfHbP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lymVMHYe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4006A14A4C7;
-	Wed,  7 May 2025 18:44:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B8B821146F;
+	Wed,  7 May 2025 19:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643458; cv=none; b=tc2fkJ+Sftnek0HFt2Sk6ElXYB0cqnlbapSClfJw8rQj75x2bg/9nHExF3k6TVkUISb0br3seOhvyfPz0fI1PlvYqVWRaUPnOCOpsdweGc6S7OPY9XDreHtrSFnS+6vmWIccryHKavM0CaZpYSVeb2xx5sFtHjcPgSyVhOFQj4I=
+	t=1746644430; cv=none; b=KQ+Fp9EE+vkAOYwxEvpvtKlB4EYgxGnu6LXH25HTTMt3cH4g8IDR1HW3LyxAARzjwpnj2KtO9iza4WKiIcFMMf+gFbIs4nYpyczPtUwwg2XcYRu4JUNo8uRKfoT2C6c9xMJFC+isAZLAMCDEJq4LX4+2Fiw8geTq6r7aZ6SJmb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643458; c=relaxed/simple;
-	bh=Lmtpe2zpC3Rdyr+LCEorlk1KM4Y/CtCKSxkn9wLmLzk=;
+	s=arc-20240116; t=1746644430; c=relaxed/simple;
+	bh=HFUJH1itM5qB6zwcr4XqIOKTkneQH4TgMtn7WjL/oBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gTWUkjrhn35JzESZ9nMQM+nObvTnY1buqomDF7kK+AryTaoVKxdbsmQY1AgV9mL3wIM4CyEPB6OIwRM+gJC8ofixg47i3Vcvm/2rKFWEsyC46ly6wuAxYQF9mm1pvfazS/lrFyj/xDtMxzRQjsHJM6psrZrzfru7hmYTLBzLD/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ICSgfHbP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6E71C4CEE2;
-	Wed,  7 May 2025 18:44:17 +0000 (UTC)
+	 MIME-Version; b=kvq0/WIIQb9tNOwd2/V7XhcK7FYu7pZjW9Lk62OoIS+4SdK96eR4YQ27+f41nGiXtdIlzihemPwtcOvCVnph6IGffzPoVpb6q2Qs7N7Aw3hM6F8gSMUkoA/c7noeC0hQybRHTO+ljOGX6+cSjuITM4ECTIWrvL6k0eZgRTE7Ggo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lymVMHYe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61F0BC4CEEB;
+	Wed,  7 May 2025 19:00:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643458;
-	bh=Lmtpe2zpC3Rdyr+LCEorlk1KM4Y/CtCKSxkn9wLmLzk=;
+	s=korg; t=1746644429;
+	bh=HFUJH1itM5qB6zwcr4XqIOKTkneQH4TgMtn7WjL/oBY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ICSgfHbPcLPE3vIurWRTtwMYtTTSZ5gB/X57MYk+STT+Wt99phlDFyZbNlxl8FNH9
-	 iWkdmCnvG/Um7kfJFjgKKvh5mq3rGrAbS/IPItSonrPpGey5ChcwT19EKNZWVd66Y4
-	 aM6ImE1HckBPIlaksQHKZtS9V7+3ADcHw0p/19wM=
+	b=lymVMHYeb2zueA+sdcKgZrGugvIQUyY2O54KJJvWbS2J7ZkUJKWluzTEGgsH87Jpq
+	 f2ghzI8DRxbKobT79ctR/8jsWkdz0tyvnvQQnR2nVO/zrNhkbpVeLeaFF3E117QvLY
+	 jaIjdawxqhIcmvzXy0xXxPD57h5i8gLxI/+P+/HE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.1 11/97] irqchip/qcom-mpm: Prevent crash when trying to handle non-wake GPIOs
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	"Matthew R. Ochs" <mochs@nvidia.com>,
+	Joerg Roedel <jroedel@suse.de>
+Subject: [PATCH 6.12 041/164] iommu: Fix two issues in iommu_copy_struct_from_user()
 Date: Wed,  7 May 2025 20:38:46 +0200
-Message-ID: <20250507183807.449179511@linuxfoundation.org>
+Message-ID: <20250507183822.547336141@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
-References: <20250507183806.987408728@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Nicolin Chen <nicolinc@nvidia.com>
 
-commit 38a05c0b87833f5b188ae43b428b1f792df2b384 upstream.
+commit 30a3f2f3e4bd6335b727c83c08a982d969752bc1 upstream.
 
-On Qualcomm chipsets not all GPIOs are wakeup capable. Those GPIOs do not
-have a corresponding MPM pin and should not be handled inside the MPM
-driver. The IRQ domain hierarchy is always applied, so it's required to
-explicitly disconnect the hierarchy for those. The pinctrl-msm driver marks
-these with GPIO_NO_WAKE_IRQ. qcom-pdc has a check for this, but
-irq-qcom-mpm is currently missing the check. This is causing crashes when
-setting up interrupts for non-wake GPIOs:
+In the review for iommu_copy_struct_to_user() helper, Matt pointed out that
+a NULL pointer should be rejected prior to dereferencing it:
+https://lore.kernel.org/all/86881827-8E2D-461C-BDA3-FA8FD14C343C@nvidia.com
 
- root@rb1:~# gpiomon -c gpiochip1 10
-   irq: IRQ159: trimming hierarchy from :soc@0:interrupt-controller@f200000-1
-   Unable to handle kernel paging request at virtual address ffff8000a1dc3820
-   Hardware name: Qualcomm Technologies, Inc. Robotics RB1 (DT)
-   pc : mpm_set_type+0x80/0xcc
-   lr : mpm_set_type+0x5c/0xcc
-   Call trace:
-    mpm_set_type+0x80/0xcc (P)
-    qcom_mpm_set_type+0x64/0x158
-    irq_chip_set_type_parent+0x20/0x38
-    msm_gpio_irq_set_type+0x50/0x530
-    __irq_set_trigger+0x60/0x184
-    __setup_irq+0x304/0x6bc
-    request_threaded_irq+0xc8/0x19c
-    edge_detector_setup+0x260/0x364
-    linereq_create+0x420/0x5a8
-    gpio_ioctl+0x2d4/0x6c0
+And Alok pointed out a typo at the same time:
+https://lore.kernel.org/all/480536af-6830-43ce-a327-adbd13dc3f1d@oracle.com
 
-Fix this by copying the check for GPIO_NO_WAKE_IRQ from qcom-pdc.c, so that
-MPM is removed entirely from the hierarchy for non-wake GPIOs.
+Since both issues were copied from iommu_copy_struct_from_user(), fix them
+first in the current header.
 
-Fixes: a6199bb514d8 ("irqchip: Add Qualcomm MPM controller driver")
-Reported-by: Alexey Klimov <alexey.klimov@linaro.org>
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Alexey Klimov <alexey.klimov@linaro.org>
-Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Fixes: e9d36c07bb78 ("iommu: Add iommu_copy_struct_from_user helper")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20250502-irq-qcom-mpm-fix-no-wake-v1-1-8a1eafcd28d4@linaro.org
+Signed-off-by: Nicolin Chen <nicolinc@nvidia.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Acked-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Reviewed-by: Matthew R. Ochs <mochs@nvidia.com>
+Link: https://lore.kernel.org/r/20250414191635.450472-1-nicolinc@nvidia.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-qcom-mpm.c |    3 +++
- 1 file changed, 3 insertions(+)
+ include/linux/iommu.h |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/irqchip/irq-qcom-mpm.c
-+++ b/drivers/irqchip/irq-qcom-mpm.c
-@@ -226,6 +226,9 @@ static int qcom_mpm_alloc(struct irq_dom
- 	if (ret)
- 		return ret;
- 
-+	if (pin == GPIO_NO_WAKE_IRQ)
-+		return irq_domain_disconnect_hierarchy(domain, virq);
-+
- 	ret = irq_domain_set_hwirq_and_chip(domain, virq, pin,
- 					    &qcom_mpm_chip, priv);
- 	if (ret)
+--- a/include/linux/iommu.h
++++ b/include/linux/iommu.h
+@@ -423,10 +423,10 @@ static inline int __iommu_copy_struct_fr
+ 	void *dst_data, const struct iommu_user_data *src_data,
+ 	unsigned int data_type, size_t data_len, size_t min_len)
+ {
+-	if (src_data->type != data_type)
+-		return -EINVAL;
+ 	if (WARN_ON(!dst_data || !src_data))
+ 		return -EINVAL;
++	if (src_data->type != data_type)
++		return -EINVAL;
+ 	if (src_data->len < min_len || data_len < src_data->len)
+ 		return -EINVAL;
+ 	return copy_struct_from_user(dst_data, data_len, src_data->uptr,
+@@ -439,8 +439,8 @@ static inline int __iommu_copy_struct_fr
+  *        include/uapi/linux/iommufd.h
+  * @user_data: Pointer to a struct iommu_user_data for user space data info
+  * @data_type: The data type of the @kdst. Must match with @user_data->type
+- * @min_last: The last memember of the data structure @kdst points in the
+- *            initial version.
++ * @min_last: The last member of the data structure @kdst points in the initial
++ *            version.
+  * Return 0 for success, otherwise -error.
+  */
+ #define iommu_copy_struct_from_user(kdst, user_data, data_type, min_last) \
 
 
 
