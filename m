@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-142500-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D792FAAEAE5
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:01:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66C92AAEA63
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:54:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A44D1C28748
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:01:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 678039C74B2
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:54:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36248288A8;
-	Wed,  7 May 2025 19:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8A0C24E4CE;
+	Wed,  7 May 2025 18:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dv/6VQpO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ToP5Rw1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E50D228C024;
-	Wed,  7 May 2025 19:00:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75DAF2116E9;
+	Wed,  7 May 2025 18:54:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644446; cv=none; b=kmk3OPh1dU6KIJBsi3QyWu1PFJpQl923VvId369h6xz9EtfXCCRZDaU7imX35YY4flbzzaAURXTNh9BfY75qF40Hvwo9Mx5qpENhufPTYtB/08NQ/uxeqCY7bgtvS+4TsO77xCnPSbHEtk6xCiKOlbGhoXrWOs6TMvW8BSyEl8U=
+	t=1746644088; cv=none; b=KZBuZAuBQ/A6KtfM1rysYne+6Fez8IqXNI65xqYTXtjmTiL1E+bYVaqSQyuW4kIhHPegFpUHs1SsvDCynV/1f89X/UJ/YjmVmQLpENZRWbP49mlW3f6OvFRLpOzxHd187M8Z+FonTs6WbLsWKDCBzfva52aXtex1kGi2lpwXYPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644446; c=relaxed/simple;
-	bh=/DTsuprGGI7Cloxfwb1pT1dqfMqVD1bQeG7jGoq0y4M=;
+	s=arc-20240116; t=1746644088; c=relaxed/simple;
+	bh=cQNzI+uBv3f2w/Q7CBHB9rZE8mIXLgGUHiXos2QIdfo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gqDc2ztZRUas2N+MJ1Qci4dymvMCs18wnZ/tqQ9mJk3XUh0yuELH3vxVD+zsUReF5Bypoj1ExpscOI4t7Bo6K6xOFXayjRyA3XHUS4cG6JttcCT3B3A1QVVvW0wseoaY6THb1Q9G7h9D+QbjvR03zLORGDZZzU3yzyfW7iOLnyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dv/6VQpO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 107BEC4CEE2;
-	Wed,  7 May 2025 19:00:44 +0000 (UTC)
+	 MIME-Version; b=FDgysN2hf3qIi3s7x3UWmu8KMGGHiDiHatBFKqyhmQC7AurpljKba9gFf2SZM+3j1WTpqBBye+GAhgZrBUriPZwcC0ihBMFkHHBHRNGxCWnHX2MnKkuX64eV1W2k5WSdyWY4Q3ijj9Uv9k5M2QACCdxZWuiEDMjs1AOTAjDppC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ToP5Rw1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9282C4CEE2;
+	Wed,  7 May 2025 18:54:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644445;
-	bh=/DTsuprGGI7Cloxfwb1pT1dqfMqVD1bQeG7jGoq0y4M=;
+	s=korg; t=1746644088;
+	bh=cQNzI+uBv3f2w/Q7CBHB9rZE8mIXLgGUHiXos2QIdfo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dv/6VQpOvw3C/ir8vSgQiKShsNFKcRT756EwNPjFteCJUU4/AodZ6FQEtVJVctxx9
-	 Xa2cqWxGz3gc6xvI6dmzWKAiF39YX40Z8xn/aNm2tu1Vg91xp1fGyIs0owuDVYUgb0
-	 Y0YdI2ZKE0vxVJXlw8Rxgkpi6GXOS8+nl4gcnP4Y=
+	b=1ToP5Rw1H6OkBNHXbgGHCpwwBL/14iLyI7ajU3mNdysjA2zHIIDIZJm7zgBzFb0xV
+	 ZQY7ikRfhenXJd61H+mkVGQC9zcvR+DgxKAAzr18p02ninMteIs6FsVFGil62aKge5
+	 R6ZhjADkNMeJcQTmzfULhPqqD/hsdrKXHLchSlZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Heelan <seanheelan@gmail.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 045/164] ksmbd: fix use-after-free in kerberos authentication
-Date: Wed,  7 May 2025 20:38:50 +0200
-Message-ID: <20250507183822.708051894@linuxfoundation.org>
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 086/183] net: mscc: ocelot: delete PVID VLAN when readding it as non-PVID
+Date: Wed,  7 May 2025 20:38:51 +0200
+Message-ID: <20250507183828.313750503@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Heelan <seanheelan@gmail.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-commit e86e9134e1d1c90a960dd57f59ce574d27b9a124 upstream.
+[ Upstream commit 5ec6d7d737a491256cd37e33910f7ac1978db591 ]
 
-Setting sess->user = NULL was introduced to fix the dangling pointer
-created by ksmbd_free_user. However, it is possible another thread could
-be operating on the session and make use of sess->user after it has been
-passed to ksmbd_free_user but before sess->user is set to NULL.
+The following set of commands:
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Sean Heelan <seanheelan@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ip link add br0 type bridge vlan_filtering 1 # vlan_default_pvid 1 is implicit
+ip link set swp0 master br0
+bridge vlan add dev swp0 vid 1
+
+should result in the dropping of untagged and 802.1p-tagged traffic, but
+we see that it continues to be accepted. Whereas, had we deleted VID 1
+instead, the aforementioned dropping would have worked
+
+This is because the ANA_PORT_DROP_CFG update logic doesn't run, because
+ocelot_vlan_add() only calls ocelot_port_set_pvid() if the new VLAN has
+the BRIDGE_VLAN_INFO_PVID flag.
+
+Similar to other drivers like mt7530_port_vlan_add() which handle this
+case correctly, we need to test whether the VLAN we're changing used to
+have the BRIDGE_VLAN_INFO_PVID flag, but lost it now. That amounts to a
+PVID deletion and should be treated as such.
+
+Regarding blame attribution: this never worked properly since the
+introduction of bridge VLAN filtering in commit 7142529f1688 ("net:
+mscc: ocelot: add VLAN filtering"). However, there was a significant
+paradigm shift which aligned the ANA_PORT_DROP_CFG register with the
+PVID concept rather than with the native VLAN concept, and that change
+wasn't targeted for 'stable'. Realistically, that is as far as this fix
+needs to be propagated to.
+
+Fixes: be0576fed6d3 ("net: mscc: ocelot: move the logic to drop 802.1p traffic to the pvid deletion")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20250424223734.3096202-1-vladimir.oltean@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/auth.c    |   14 +++++++++++++-
- fs/smb/server/smb2pdu.c |    5 -----
- 2 files changed, 13 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/mscc/ocelot.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/fs/smb/server/auth.c
-+++ b/fs/smb/server/auth.c
-@@ -550,7 +550,19 @@ int ksmbd_krb5_authenticate(struct ksmbd
- 		retval = -ENOMEM;
- 		goto out;
+diff --git a/drivers/net/ethernet/mscc/ocelot.c b/drivers/net/ethernet/mscc/ocelot.c
+index ef93df5208871..08bee56aea35f 100644
+--- a/drivers/net/ethernet/mscc/ocelot.c
++++ b/drivers/net/ethernet/mscc/ocelot.c
+@@ -830,6 +830,7 @@ EXPORT_SYMBOL(ocelot_vlan_prepare);
+ int ocelot_vlan_add(struct ocelot *ocelot, int port, u16 vid, bool pvid,
+ 		    bool untagged)
+ {
++	struct ocelot_port *ocelot_port = ocelot->ports[port];
+ 	int err;
+ 
+ 	/* Ignore VID 0 added to our RX filter by the 8021q module, since
+@@ -849,6 +850,11 @@ int ocelot_vlan_add(struct ocelot *ocelot, int port, u16 vid, bool pvid,
+ 					   ocelot_bridge_vlan_find(ocelot, vid));
+ 		if (err)
+ 			return err;
++	} else if (ocelot_port->pvid_vlan &&
++		   ocelot_bridge_vlan_find(ocelot, vid) == ocelot_port->pvid_vlan) {
++		err = ocelot_port_set_pvid(ocelot, port, NULL);
++		if (err)
++			return err;
  	}
--	sess->user = user;
-+
-+	if (!sess->user) {
-+		/* First successful authentication */
-+		sess->user = user;
-+	} else {
-+		if (!ksmbd_compare_user(sess->user, user)) {
-+			ksmbd_debug(AUTH, "different user tried to reuse session\n");
-+			retval = -EPERM;
-+			ksmbd_free_user(user);
-+			goto out;
-+		}
-+		ksmbd_free_user(user);
-+	}
  
- 	memcpy(sess->sess_key, resp->payload, resp->session_key_len);
- 	memcpy(out_blob, resp->payload + resp->session_key_len,
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -1600,11 +1600,6 @@ static int krb5_authenticate(struct ksmb
- 	if (prev_sess_id && prev_sess_id != sess->id)
- 		destroy_previous_session(conn, sess->user, prev_sess_id);
- 
--	if (sess->state == SMB2_SESSION_VALID) {
--		ksmbd_free_user(sess->user);
--		sess->user = NULL;
--	}
--
- 	retval = ksmbd_krb5_authenticate(sess, in_blob, in_len,
- 					 out_blob, &out_len);
- 	if (retval) {
+ 	/* Untagged egress vlan clasification */
+-- 
+2.39.5
+
 
 
 
