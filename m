@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-142327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4692AAEA27
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:51:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3D4BAAEAC2
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:59:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3AF43A30E1
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:51:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EC589C7E64
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:59:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3450214813;
-	Wed,  7 May 2025 18:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E31928B4F0;
+	Wed,  7 May 2025 18:59:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gY0NeuAR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yH1sU0cr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906271FF5EC;
-	Wed,  7 May 2025 18:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0B861482F5;
+	Wed,  7 May 2025 18:59:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643909; cv=none; b=unBQCEB+Xh+PgwvfokbgG1ZNw4ac0JMNa2pqPWz5F0R2Flm7IN9/vLJpt3/qmZru8ZJDSJ9cDyjg1yUAvgVfFmphBzHY3jy4umTk1v7dLW1VLagv7AP7lN52lz/Z53oJvKRYMTqqABEJ3FMlBZhYqitk1hQGbSuulhbgOxTCHH4=
+	t=1746644361; cv=none; b=n7ik4VWTqQW+WKRaXKJSANUORfyrpVpKai7MX3HsUegieVS7c5eSyDOALXeqj9TEBP98bi3ll4H1t3B9YEofs3LEOh7WU7PX+dXdZywGZoGXHyT8rr6TV1WqNN25R9+0V+2WngW8jKAmDDmxMoOJGzJxYE9cU87dOPDfOEGJBOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643909; c=relaxed/simple;
-	bh=t21PjLjAe9MuQQnVuVw2+8gZPJWarjSwe7SS4LJFKXA=;
+	s=arc-20240116; t=1746644361; c=relaxed/simple;
+	bh=5NvQedCnwmV/HFxR5GTd8cvmbWTqBwrH8tM+Kd0uuwY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gTZSzoGtDpr4/Zf8BjzXN0K7y3ixD4adbL8h30CUkW/xRAdBJxjgtzy2+1PjThhMZAl3QLf1zkOdBx3eLe5iJUfYQaVLCqsaIG3rnMiY4oohdf1bptYKOlTLOywXZ/noEPPbffiBV8OTmseFCBY74OHqo8jTxiPGM+71Xtt84+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gY0NeuAR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0F3DC4CEE2;
-	Wed,  7 May 2025 18:51:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Dvb4J+I+DoBvapAjGsQsFMn1NpItxeHKKAKd9pc6NiDsjYeXGwHy8exjcS8K4KkZmR9pSf893/8GDd3kMgcBy429ic9HEyU0MY8HVTCZ+Kv7D1RqHy+QrD/WIGSj5i9dU9Ed4E/3IsxQYswsjrfoKY+ml9sUUhridXSNpogncmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yH1sU0cr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17884C4CEE2;
+	Wed,  7 May 2025 18:59:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643909;
-	bh=t21PjLjAe9MuQQnVuVw2+8gZPJWarjSwe7SS4LJFKXA=;
+	s=korg; t=1746644361;
+	bh=5NvQedCnwmV/HFxR5GTd8cvmbWTqBwrH8tM+Kd0uuwY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gY0NeuARLkULFIAqIpySmoZz7KarXiaEs/RscfwpE4yq/A3Om9b3S9SSpoL6iVCqA
-	 g8n8RxuEh8WD2QtubgWLy8frpLTw7Y96v+ANcOE9Ia3cqWHKWTaiBinBSsCbkgNE+t
-	 O00gTPCWKzi6wh621PzR5s7Tqh3X6CqKfgekfgW0=
+	b=yH1sU0crilrtm2lSEUA6s0Z3sCG/spKcfB8Dm64KU5j16EN+1kj4y1KKaUOyIEN85
+	 /k0Fb8y1kqwcB7ormVU8P2vtX8tozdSOJeLIRPe21eTOYjtbK+HJGk221WOGi6esSB
+	 u1rSBzz4ApjrBR9LvK68K31YuJnymmbwMVLkNbYE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Pranjal Shrivastava <praan@google.com>,
+	Lee Jones <lee@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Doug Anderson <dianders@chromium.org>,
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
 	Will Deacon <will@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 058/183] iommu/arm-smmu-v3: Add missing S2FWB feature detection
-Date: Wed,  7 May 2025 20:38:23 +0200
-Message-ID: <20250507183827.038152927@linuxfoundation.org>
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.12 019/164] arm64: errata: Add missing sentinels to Spectre-BHB MIDR arrays
+Date: Wed,  7 May 2025 20:38:24 +0200
+Message-ID: <20250507183821.642435907@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +63,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+From: Will Deacon <will@kernel.org>
 
-[ Upstream commit 45e00e36718902d81bdaebb37b3a8244e685bc48 ]
+commit fee4d171451c1ad9e8aaf65fc0ab7d143a33bd72 upstream.
 
-Commit 67e4fe398513 ("iommu/arm-smmu-v3: Use S2FWB for NESTED domains")
-introduced S2FWB usage but omitted the corresponding feature detection.
-As a result, vIOMMU allocation fails on FVP in arm_vsmmu_alloc(), due to
-the following check:
+Commit a5951389e58d ("arm64: errata: Add newer ARM cores to the
+spectre_bhb_loop_affected() lists") added some additional CPUs to the
+Spectre-BHB workaround, including some new arrays for designs that
+require new 'k' values for the workaround to be effective.
 
-	if (!arm_smmu_master_canwbs(master) &&
-	    !(smmu->features & ARM_SMMU_FEAT_S2FWB))
-		return ERR_PTR(-EOPNOTSUPP);
+Unfortunately, the new arrays omitted the sentinel entry and so
+is_midr_in_range_list() will walk off the end when it doesn't find a
+match. With UBSAN enabled, this leads to a crash during boot when
+is_midr_in_range_list() is inlined (which was more common prior to
+c8c2647e69be ("arm64: Make  _midr_in_range_list() an exported
+function")):
 
-This patch adds the missing detection logic to prevent allocation
-failure when S2FWB is supported.
+ |  Internal error: aarch64 BRK: 00000000f2000001 [#1] PREEMPT SMP
+ |  pstate: 804000c5 (Nzcv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+ |  pc : spectre_bhb_loop_affected+0x28/0x30
+ |  lr : is_spectre_bhb_affected+0x170/0x190
+ | [...]
+ |  Call trace:
+ |   spectre_bhb_loop_affected+0x28/0x30
+ |   update_cpu_capabilities+0xc0/0x184
+ |   init_cpu_features+0x188/0x1a4
+ |   cpuinfo_store_boot_cpu+0x4c/0x60
+ |   smp_prepare_boot_cpu+0x38/0x54
+ |   start_kernel+0x8c/0x478
+ |   __primary_switched+0xc8/0xd4
+ |  Code: 6b09011f 54000061 52801080 d65f03c0 (d4200020)
+ |  ---[ end trace 0000000000000000 ]---
+ |  Kernel panic - not syncing: aarch64 BRK: Fatal exception
 
-Fixes: 67e4fe398513 ("iommu/arm-smmu-v3: Use S2FWB for NESTED domains")
-Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
-Reviewed-by: Pranjal Shrivastava <praan@google.com>
-Link: https://lore.kernel.org/r/20250408033351.1012411-1-aneesh.kumar@kernel.org
+Add the missing sentinel entries.
+
+Cc: Lee Jones <lee@kernel.org>
+Cc: James Morse <james.morse@arm.com>
+Cc: Doug Anderson <dianders@chromium.org>
+Cc: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+Cc: <stable@vger.kernel.org>
+Reported-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a5951389e58d ("arm64: errata: Add newer ARM cores to the spectre_bhb_loop_affected() lists")
 Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Lee Jones <lee@kernel.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20250501104747.28431-1-will@kernel.org
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 2 ++
+ arch/arm64/kernel/proton-pack.c |    2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-index ae803c64ae1ee..e495334d1c43a 100644
---- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-+++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-@@ -4416,6 +4416,8 @@ static int arm_smmu_device_hw_probe(struct arm_smmu_device *smmu)
- 	reg = readl_relaxed(smmu->base + ARM_SMMU_IDR3);
- 	if (FIELD_GET(IDR3_RIL, reg))
- 		smmu->features |= ARM_SMMU_FEAT_RANGE_INV;
-+	if (FIELD_GET(IDR3_FWB, reg))
-+		smmu->features |= ARM_SMMU_FEAT_S2FWB;
- 
- 	/* IDR5 */
- 	reg = readl_relaxed(smmu->base + ARM_SMMU_IDR5);
--- 
-2.39.5
-
+--- a/arch/arm64/kernel/proton-pack.c
++++ b/arch/arm64/kernel/proton-pack.c
+@@ -879,10 +879,12 @@ static u8 spectre_bhb_loop_affected(void
+ 	static const struct midr_range spectre_bhb_k132_list[] = {
+ 		MIDR_ALL_VERSIONS(MIDR_CORTEX_X3),
+ 		MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V2),
++		{},
+ 	};
+ 	static const struct midr_range spectre_bhb_k38_list[] = {
+ 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A715),
+ 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A720),
++		{},
+ 	};
+ 	static const struct midr_range spectre_bhb_k32_list[] = {
+ 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A78),
 
 
 
