@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-142438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C39CAAEAA5
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:58:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BBE5AAEBC7
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:10:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C6EF41C4434E
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:57:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BE109E3B77
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:10:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 741F51CF5C6;
-	Wed,  7 May 2025 18:57:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34F3D28E563;
+	Wed,  7 May 2025 19:10:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NCzPrOOc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rVE/Wya0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30C521482F5;
-	Wed,  7 May 2025 18:57:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E695428DF5A;
+	Wed,  7 May 2025 19:10:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644251; cv=none; b=Kh/RIIxFLpzo0CF2OJmdGsIy2tlbFsIELeabp1sjx/x58RiMSv6QCSVkKTft5PtF9nNQDGsUzzVWBNHQyUBt7NQ4HztxGYBuPZnn4DMORL6mXuWaI/8/l42kB43jChJHEAheQwMZzvrzM4GT/pd1PsYm1l+3MRW3aBFYE4NTNJc=
+	t=1746645049; cv=none; b=egRZNma7d2Aip4qDPl8N8NaumoC4DsxbmMyhs/UlNq1l9W7W8hhNW10wAjHfYBjpqsdPvHdbv1nhQI/n8OHIgIozPOZyciA7U02SrkihZHHIxzm9nHNppdwk6qbMYz2ek5Bjxf3MX8/i35bQbycsMeINMexVkWJEqfBijn3X2JM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644251; c=relaxed/simple;
-	bh=D+85v+96x3lK9bFuMP0YcU7yEQ5OjZD8E9SUOXLxgx8=;
+	s=arc-20240116; t=1746645049; c=relaxed/simple;
+	bh=5QggyPsYuO3BQBEUfqDUoTSdV7hIlXRNc7q2yrBiuaw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kg8VL+si68ierhmB1asrF5s6cmhXfodIdI7475alIMwrw2XDj6zDimp600iG0sYHh83P4QBRxq4ufaLxet+KQYgkLUcAMpskS7WKZLh9oeR4jneVEgE4IsdtTCUs+O9SVz5kDM1SG6Mb1HipdGpkcAzlJgT1FMNY+leW4D+s/Yg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NCzPrOOc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9419BC4CEE2;
-	Wed,  7 May 2025 18:57:30 +0000 (UTC)
+	 MIME-Version; b=dsieehV4tUPCoCNCzYSiAFjWA6e27fEksIgWj8DypdroRjW1PDAxsjGRP5MFYrFJDq2p4ZJcRODzIXYTrUtYSSEkJJKym0hU85FCONct02ViOjsU9rI8ASeCtKOERCtaJmMzXQo6ojZyF/6nuVBtjGC4yorzoCnhb8IvNNiF5NI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rVE/Wya0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C0ADC4CEE2;
+	Wed,  7 May 2025 19:10:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644251;
-	bh=D+85v+96x3lK9bFuMP0YcU7yEQ5OjZD8E9SUOXLxgx8=;
+	s=korg; t=1746645048;
+	bh=5QggyPsYuO3BQBEUfqDUoTSdV7hIlXRNc7q2yrBiuaw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NCzPrOOctdj9Canb7Hmg2lEs8kh58G6rMlkaq5OQ/KIMMm39nlmny5zWPZ7a/MYpF
-	 P06nvlVqRaz/GXKoV7L/W+xGw9XAFGF/ap/315r6RfFEHa4IDj2ysS9MXH0xiXpd8R
-	 vLAVAtoZ7UO4y51PTL8Xp5tQbakvnn00iTvZJNQw=
+	b=rVE/Wya0YMmQTqTX2Bq7FkKhEDS2+tGOnGcekfBavwRcW2CIqZ3pMuiYtXI7U5CpZ
+	 QPIwe8VEhJ2ZIu8bXHCbqqwCb7XV0Mg/zyZ5ZJjulqncCwx+U01aZUc/BqVsicA+j4
+	 HaPiIXDtqzLDqBb29nobX+w+rYgzjeQzu1H1ksHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sudeep Holla <sudeep.holla@arm.com>,
+	Da Xue <da@libre.computer>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 167/183] firmware: arm_ffa: Skip Rx buffer ownership release if not acquired
+Subject: [PATCH 6.6 076/129] net: mdio: mux-meson-gxl: set reversed bit when using internal phy
 Date: Wed,  7 May 2025 20:40:12 +0200
-Message-ID: <20250507183831.630826920@linuxfoundation.org>
+Message-ID: <20250507183816.594737210@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,54 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sudeep Holla <sudeep.holla@arm.com>
+From: Da Xue <da@libre.computer>
 
-[ Upstream commit 4567bdaaaaa1744da3d7da07d9aca2f941f5b4e5 ]
+[ Upstream commit b23285e93bef729e67519a5209d5b7fde3b4af50 ]
 
-Completion of the FFA_PARTITION_INFO_GET ABI transfers the ownership of
-the caller’s Rx buffer from the producer(typically partition mnager) to
-the consumer(this driver/OS). FFA_RX_RELEASE transfers the ownership
-from the consumer back to the producer.
+This bit is necessary to receive packets from the internal PHY.
+Without this bit set, no activity occurs on the interface.
 
-However, when we set the flag to just return the count of partitions
-deployed in the system corresponding to the specified UUID while
-invoking FFA_PARTITION_INFO_GET, the Rx buffer ownership shouldn't be
-transferred to this driver. We must be able to skip transferring back
-the ownership to the partition manager when we request just to get the
-count of the partitions as the buffers are not acquired in this case.
+Normally u-boot sets this bit, but if u-boot is compiled without
+net support, the interface will be up but without any activity.
+If bit is set once, it will work until the IP is powered down or reset.
 
-Firmware may return FFA_RET_DENIED or other error for the ffa_rx_release()
-in such cases.
+The vendor SDK sets this bit along with the PHY_ID bits.
 
-Fixes: bb1be7498500 ("firmware: arm_ffa: Add v1.1 get_partition_info support")
-Message-Id: <20250321115700.3525197-1-sudeep.holla@arm.com>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+Signed-off-by: Da Xue <da@libre.computer>
+Fixes: 9a24e1ff4326 ("net: mdio: add amlogic gxl mdio mux support")
+Link: https://patch.msgid.link/20250425192009.1439508-1-da@libre.computer
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/arm_ffa/driver.c | 3 ++-
+ drivers/net/mdio/mdio-mux-meson-gxl.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/arm_ffa/driver.c b/drivers/firmware/arm_ffa/driver.c
-index 655672a880959..03d22cbb2ad47 100644
---- a/drivers/firmware/arm_ffa/driver.c
-+++ b/drivers/firmware/arm_ffa/driver.c
-@@ -280,7 +280,8 @@ __ffa_partition_info_get(u32 uuid0, u32 uuid1, u32 uuid2, u32 uuid3,
- 			memcpy(buffer + idx, drv_info->rx_buffer + idx * sz,
- 			       buf_sz);
+diff --git a/drivers/net/mdio/mdio-mux-meson-gxl.c b/drivers/net/mdio/mdio-mux-meson-gxl.c
+index 76188575ca1fc..19153d44800a9 100644
+--- a/drivers/net/mdio/mdio-mux-meson-gxl.c
++++ b/drivers/net/mdio/mdio-mux-meson-gxl.c
+@@ -17,6 +17,7 @@
+ #define  REG2_LEDACT		GENMASK(23, 22)
+ #define  REG2_LEDLINK		GENMASK(25, 24)
+ #define  REG2_DIV4SEL		BIT(27)
++#define  REG2_REVERSED		BIT(28)
+ #define  REG2_ADCBYPASS		BIT(30)
+ #define  REG2_CLKINSEL		BIT(31)
+ #define ETH_REG3		0x4
+@@ -65,7 +66,7 @@ static void gxl_enable_internal_mdio(struct gxl_mdio_mux *priv)
+ 	 * The only constraint is that it must match the one in
+ 	 * drivers/net/phy/meson-gxl.c to properly match the PHY.
+ 	 */
+-	writel(FIELD_PREP(REG2_PHYID, EPHY_GXL_ID),
++	writel(REG2_REVERSED | FIELD_PREP(REG2_PHYID, EPHY_GXL_ID),
+ 	       priv->regs + ETH_REG2);
  
--	ffa_rx_release();
-+	if (!(flags & PARTITION_INFO_GET_RETURN_COUNT_ONLY))
-+		ffa_rx_release();
- 
- 	mutex_unlock(&drv_info->rx_lock);
- 
+ 	/* Enable the internal phy */
 -- 
 2.39.5
 
