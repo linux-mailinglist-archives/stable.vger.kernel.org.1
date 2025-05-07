@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-142218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55A94AAE992
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:46:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C211CAAEA8C
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:56:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BC969505D5E
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:46:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D4233B4E8D
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:56:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2FAE1A00E7;
-	Wed,  7 May 2025 18:46:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F9F421E0BB;
+	Wed,  7 May 2025 18:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HLBI6hiK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DLqz+f5a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E63329A0;
-	Wed,  7 May 2025 18:46:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D4C41482F5;
+	Wed,  7 May 2025 18:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643575; cv=none; b=EY+j21iMiCZpHuGVmpDt1bjEUr5juuLuDOH+NYzEKCrE8UvOuxMxy0WdpYtkdFxxOUvH/BbOgDaC29RjZ0jgZMEGxHrzn1iw0yd4uCPWTKZFKLu5Qjbhvg5/QyPVkCAoYdONGSMZUicfQeOaJx/Y3BDxStzYRaxdcXC/Zds8CBA=
+	t=1746644189; cv=none; b=pfXnjEN0ehwJ/RSGRt19RMnOo5Q1b10qd6GASkgX1j5b1NzjJR3UfwTA0fDeDhHXo+GZFeQNJxi/XgXRYJryWqu/wjPHhihTV6Vj9hprdp9AH9o4ntgVHglzjl0rkLtTiYI0LOqgsCQL7SkSm4NKsDg6dPw+Gc0UzN4pBXMy52o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643575; c=relaxed/simple;
-	bh=Xi7xs9+ztyhDmp9UMfZwejkDO9T2yvmQ72tJxyRTi1o=;
+	s=arc-20240116; t=1746644189; c=relaxed/simple;
+	bh=Ep4miOLBSDfMaCH/lSw5+OkjqcmFAvNXAWDkzm69wn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uc/Tqc1l4fyPtwyQgSHCcMiV+L+HjXKRTJg8mbSHdagMghvNeEZ4lW9Il9tbbMwCf4SZyfzU8WgpA7WRBo5qQrrAoslFtMKSsYZQXsl9HomY2mKDiYGDCGaIgoQj107jKHb1MQn36WZNnlaSmtwgi7RZ89RNQ3PMQFEVz8bq0ZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HLBI6hiK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F7CFC4CEE2;
-	Wed,  7 May 2025 18:46:14 +0000 (UTC)
+	 MIME-Version; b=pzLfBLP9tgbzLQGz2CmzL93R7ppObTADaWBq8/MbV7ZE5zpFl297QNSKOuve7y5G6pSR/wTESLmEMhqnXbxhfJ3+d0zu8qirpEOKa4IRegTw5iix9kRxMsp/lsmMgVLdBDyfVlJ1dMmRAOimoTDxOOnXsV0eoqgAI1X9jS6U9qE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DLqz+f5a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2953C4CEE2;
+	Wed,  7 May 2025 18:56:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643575;
-	bh=Xi7xs9+ztyhDmp9UMfZwejkDO9T2yvmQ72tJxyRTi1o=;
+	s=korg; t=1746644189;
+	bh=Ep4miOLBSDfMaCH/lSw5+OkjqcmFAvNXAWDkzm69wn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HLBI6hiKHqfygPhTtuRIwWth/w4U6GxsOMOg/VsuK4Evd/v04MP1gIYkQOW4GjssE
-	 ZdKhjOlFv+QI24LZWNx/6ZMAhK/Wwzqan6pfkEMR/84smzUt09oLrbYu8H8cqZ/Ze/
-	 rzny/+GJEcmUrer2ti26mHVJvlTicDZzLZQRUS90=
+	b=DLqz+f5ak/fSIuU4b3NZU6sroWxd98pbV2hiPmu+v//mrsai08pJgADesmmjyuoLv
+	 oTKAXzcgMp8KtrzyceJmRgN77BQhjG+sOWthnB7U7CTNWM4cs73b3gV+txO/2kYPXy
+	 aWRma7QV/aZ5xZTzyc8Efcjt/lkJTCUNpcTHuy+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Chad Monroe <chad@monroe.io>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 47/97] net: mscc: ocelot: delete PVID VLAN when readding it as non-PVID
+Subject: [PATCH 6.14 117/183] net: ethernet: mtk_eth_soc: fix SER panic with 4GB+ RAM
 Date: Wed,  7 May 2025 20:39:22 +0200
-Message-ID: <20250507183808.893840801@linuxfoundation.org>
+Message-ID: <20250507183829.560093183@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
-References: <20250507183806.987408728@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Chad Monroe <chad@monroe.io>
 
-[ Upstream commit 5ec6d7d737a491256cd37e33910f7ac1978db591 ]
+[ Upstream commit 6e0490fc36cdac696f96e57b61d93b9ae32e0f4c ]
 
-The following set of commands:
+If the mtk_poll_rx() function detects the MTK_RESETTING flag, it will
+jump to release_desc and refill the high word of the SDP on the 4GB RFB.
+Subsequently, mtk_rx_clean will process an incorrect SDP, leading to a
+panic.
 
-ip link add br0 type bridge vlan_filtering 1 # vlan_default_pvid 1 is implicit
-ip link set swp0 master br0
-bridge vlan add dev swp0 vid 1
+Add patch from MediaTek's SDK to resolve this.
 
-should result in the dropping of untagged and 802.1p-tagged traffic, but
-we see that it continues to be accepted. Whereas, had we deleted VID 1
-instead, the aforementioned dropping would have worked
-
-This is because the ANA_PORT_DROP_CFG update logic doesn't run, because
-ocelot_vlan_add() only calls ocelot_port_set_pvid() if the new VLAN has
-the BRIDGE_VLAN_INFO_PVID flag.
-
-Similar to other drivers like mt7530_port_vlan_add() which handle this
-case correctly, we need to test whether the VLAN we're changing used to
-have the BRIDGE_VLAN_INFO_PVID flag, but lost it now. That amounts to a
-PVID deletion and should be treated as such.
-
-Regarding blame attribution: this never worked properly since the
-introduction of bridge VLAN filtering in commit 7142529f1688 ("net:
-mscc: ocelot: add VLAN filtering"). However, there was a significant
-paradigm shift which aligned the ANA_PORT_DROP_CFG register with the
-PVID concept rather than with the native VLAN concept, and that change
-wasn't targeted for 'stable'. Realistically, that is as far as this fix
-needs to be propagated to.
-
-Fixes: be0576fed6d3 ("net: mscc: ocelot: move the logic to drop 802.1p traffic to the pvid deletion")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250424223734.3096202-1-vladimir.oltean@nxp.com
+Fixes: 2d75891ebc09 ("net: ethernet: mtk_eth_soc: support 36-bit DMA addressing on MT7988")
+Link: https://git01.mediatek.com/plugins/gitiles/openwrt/feeds/mtk-openwrt-feeds/+/71f47ea785699c6aa3b922d66c2bdc1a43da25b1
+Signed-off-by: Chad Monroe <chad@monroe.io>
+Link: https://patch.msgid.link/4adc2aaeb0fb1b9cdc56bf21cf8e7fa328daa345.1745715843.git.daniel@makrotopia.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mscc/ocelot.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/mscc/ocelot.c b/drivers/net/ethernet/mscc/ocelot.c
-index ec644a201b8e5..203cb4978544a 100644
---- a/drivers/net/ethernet/mscc/ocelot.c
-+++ b/drivers/net/ethernet/mscc/ocelot.c
-@@ -793,6 +793,7 @@ EXPORT_SYMBOL(ocelot_vlan_prepare);
- int ocelot_vlan_add(struct ocelot *ocelot, int port, u16 vid, bool pvid,
- 		    bool untagged)
- {
-+	struct ocelot_port *ocelot_port = ocelot->ports[port];
- 	int err;
+diff --git a/drivers/net/ethernet/mediatek/mtk_eth_soc.c b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+index 1365888a4be11..c6d60f1d4f77a 100644
+--- a/drivers/net/ethernet/mediatek/mtk_eth_soc.c
++++ b/drivers/net/ethernet/mediatek/mtk_eth_soc.c
+@@ -2202,14 +2202,18 @@ static int mtk_poll_rx(struct napi_struct *napi, int budget,
+ 		ring->data[idx] = new_data;
+ 		rxd->rxd1 = (unsigned int)dma_addr;
+ release_desc:
++		if (MTK_HAS_CAPS(eth->soc->caps, MTK_36BIT_DMA)) {
++			if (unlikely(dma_addr == DMA_MAPPING_ERROR))
++				addr64 = FIELD_GET(RX_DMA_ADDR64_MASK,
++						   rxd->rxd2);
++			else
++				addr64 = RX_DMA_PREP_ADDR64(dma_addr);
++		}
++
+ 		if (MTK_HAS_CAPS(eth->soc->caps, MTK_SOC_MT7628))
+ 			rxd->rxd2 = RX_DMA_LSO;
+ 		else
+-			rxd->rxd2 = RX_DMA_PREP_PLEN0(ring->buf_size);
+-
+-		if (MTK_HAS_CAPS(eth->soc->caps, MTK_36BIT_DMA) &&
+-		    likely(dma_addr != DMA_MAPPING_ERROR))
+-			rxd->rxd2 |= RX_DMA_PREP_ADDR64(dma_addr);
++			rxd->rxd2 = RX_DMA_PREP_PLEN0(ring->buf_size) | addr64;
  
- 	/* Ignore VID 0 added to our RX filter by the 8021q module, since
-@@ -812,6 +813,11 @@ int ocelot_vlan_add(struct ocelot *ocelot, int port, u16 vid, bool pvid,
- 					   ocelot_bridge_vlan_find(ocelot, vid));
- 		if (err)
- 			return err;
-+	} else if (ocelot_port->pvid_vlan &&
-+		   ocelot_bridge_vlan_find(ocelot, vid) == ocelot_port->pvid_vlan) {
-+		err = ocelot_port_set_pvid(ocelot, port, NULL);
-+		if (err)
-+			return err;
- 	}
- 
- 	/* Untagged egress vlan clasification */
+ 		ring->calc_idx = idx;
+ 		done++;
 -- 
 2.39.5
 
