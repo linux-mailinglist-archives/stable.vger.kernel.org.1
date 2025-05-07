@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-142714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3C94AAEBE1
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:11:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CAC4AAEB6E
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:07:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 228FCB2168C
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:10:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32B11526B0C
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:06:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA39E28C2B3;
-	Wed,  7 May 2025 19:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E197428DF3C;
+	Wed,  7 May 2025 19:05:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KO6vNzWf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hMS/l6hK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A73022144C1;
-	Wed,  7 May 2025 19:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DC8A214813;
+	Wed,  7 May 2025 19:05:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746645103; cv=none; b=tczvRl1iS6bjvimA1rBRz0Rn8CZWZylfcYWcKZxvHrENYez9L6os+nRIKNUXBOskqYPncGe/E7d79rZPc1M8rSto0zqHp+ymADeDr8M5iCwTlWac8TSMy0gYxpOqH1FSJ7hl4D9EQDeK1fE50lEISS4izwWDbl0z3uujkb2P2ig=
+	t=1746644759; cv=none; b=FOL/LR/mpuq5l1u3fKfZvqljaikNfl6KfG2lsi1U3LQNtcTl+gXv0Gw4G12NUXfyFZKkNlg5iK9bhRcRxmv7bzL86KgkpfQLThC07uhf5deqKg1LAy/hqRrulcfalJV5c1p3gKtO6sCDXRFiOYI+49ib5yybJNRznU6SC22jIek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746645103; c=relaxed/simple;
-	bh=u55HoD5XivrLtw3MqvSOIX4zp3j+pCzDeKrsjoeU7M4=;
+	s=arc-20240116; t=1746644759; c=relaxed/simple;
+	bh=/rkO6FDU2e9i2/jOdhiSPPzg8ZGWHQw45mN6NA9UbAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tG5HYwKLA3IJ0CV5K0sySbRXlak1KtSe0UmGpSH5WCfsrf6frpUfD8v776OMXSCd26oXquYZ6FdVc41itmyFZmji1/yGfAnPnE4yjXsMxFlQtGOuOrfN0icCj7vY9d+ht/77R+IS0ZcO3MNDiX3fO1zk7p8Za/1+zqNUBgMEr40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KO6vNzWf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B539C4CEE2;
-	Wed,  7 May 2025 19:11:42 +0000 (UTC)
+	 MIME-Version; b=RrrRGmxJj+yYxZIyBWAnBy3kYTFYmKpYUmDKKbXNjp0C0KLinXp8Cs9fBEGTINkgdDp7Ck1HepH5bs4/+b9uacgm4hWHQ7u7j8vBR58mkIloVPZWgrrH8LteBnwLwI3j3FLJAbKqRNd99wUkit30ZjRbSKNUzinZa2MiNcN949g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hMS/l6hK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FF8FC4CEE2;
+	Wed,  7 May 2025 19:05:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746645103;
-	bh=u55HoD5XivrLtw3MqvSOIX4zp3j+pCzDeKrsjoeU7M4=;
+	s=korg; t=1746644759;
+	bh=/rkO6FDU2e9i2/jOdhiSPPzg8ZGWHQw45mN6NA9UbAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KO6vNzWfAwvCurP4awlnc2MQZ0W2B/Rxo3vlJ84jERjBwm9ScM7GxVcv10a9IZGyE
-	 gvjzANVD9BLe5U/9P3Pp4L3YkNhUXkUJOnYYo80hLlbJNu+m9f2wk0LrTmtQVjnnkh
-	 INYqAc29xi3gm6LJ73ti+v4UugyUD5U9HofntYwo=
+	b=hMS/l6hKWB6uUOZ5PaU4vTnejF3n6i62EHlpuTnMkDK4PWvnk9NRez7lVqw+HXTnm
+	 OzqAGaTswxAYd0Y6EKbehplVT3oz3/WuGQT+I5/tPvFOAgjiUDdu6hqmVn3Pe9vQk5
+	 Fr8ydOZWbPuRCtoHfNzZgILGnUkddXoMnNJwQkIg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 095/129] net: vertexcom: mse102x: Fix RX error handling
-Date: Wed,  7 May 2025 20:40:31 +0200
-Message-ID: <20250507183817.346667570@linuxfoundation.org>
+	Gerrard Tai <gerrard.tai@starlabs.sg>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.12 147/164] sch_htb: make htb_qlen_notify() idempotent
+Date: Wed,  7 May 2025 20:40:32 +0200
+Message-ID: <20250507183826.923547159@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
-References: <20250507183813.500572371@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-[ Upstream commit ee512922ddd7d64afe2b28830a88f19063217649 ]
+commit 5ba8b837b522d7051ef81bacf3d95383ff8edce5 upstream.
 
-In case the CMD_RTS got corrupted by interferences, the MSE102x
-doesn't allow a retransmission of the command. Instead the Ethernet
-frame must be shifted out of the SPI FIFO. Since the actual length is
-unknown, assume the maximum possible value.
+htb_qlen_notify() always deactivates the HTB class and in fact could
+trigger a warning if it is already deactivated. Therefore, it is not
+idempotent and not friendly to its callers, like fq_codel_dequeue().
 
-Fixes: 2f207cbf0dd4 ("net: vertexcom: Add MSE102x SPI support")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250430133043.7722-5-wahrenst@gmx.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Let's make it idempotent to ease qdisc_tree_reduce_backlog() callers'
+life.
+
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250403211033.166059-2-xiyou.wangcong@gmail.com
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/vertexcom/mse102x.c | 20 ++++++++++++++++----
- 1 file changed, 16 insertions(+), 4 deletions(-)
+ net/sched/sch_htb.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/vertexcom/mse102x.c b/drivers/net/ethernet/vertexcom/mse102x.c
-index 2b1aac72601d0..060a566bc6aae 100644
---- a/drivers/net/ethernet/vertexcom/mse102x.c
-+++ b/drivers/net/ethernet/vertexcom/mse102x.c
-@@ -263,7 +263,7 @@ static int mse102x_tx_frame_spi(struct mse102x_net *mse, struct sk_buff *txp,
+--- a/net/sched/sch_htb.c
++++ b/net/sched/sch_htb.c
+@@ -1485,6 +1485,8 @@ static void htb_qlen_notify(struct Qdisc
+ {
+ 	struct htb_class *cl = (struct htb_class *)arg;
+ 
++	if (!cl->prio_activity)
++		return;
+ 	htb_deactivate(qdisc_priv(sch), cl);
  }
  
- static int mse102x_rx_frame_spi(struct mse102x_net *mse, u8 *buff,
--				unsigned int frame_len)
-+				unsigned int frame_len, bool drop)
- {
- 	struct mse102x_net_spi *mses = to_mse102x_spi(mse);
- 	struct spi_transfer *xfer = &mses->spi_xfer;
-@@ -281,6 +281,9 @@ static int mse102x_rx_frame_spi(struct mse102x_net *mse, u8 *buff,
- 		netdev_err(mse->ndev, "%s: spi_sync() failed: %d\n",
- 			   __func__, ret);
- 		mse->stats.xfer_err++;
-+	} else if (drop) {
-+		netdev_dbg(mse->ndev, "%s: Drop frame\n", __func__);
-+		ret = -EINVAL;
- 	} else if (*sof != cpu_to_be16(DET_SOF)) {
- 		netdev_dbg(mse->ndev, "%s: SPI start of frame is invalid (0x%04x)\n",
- 			   __func__, *sof);
-@@ -308,6 +311,7 @@ static void mse102x_rx_pkt_spi(struct mse102x_net *mse)
- 	struct sk_buff *skb;
- 	unsigned int rxalign;
- 	unsigned int rxlen;
-+	bool drop = false;
- 	__be16 rx = 0;
- 	u16 cmd_resp;
- 	u8 *rxpkt;
-@@ -330,7 +334,8 @@ static void mse102x_rx_pkt_spi(struct mse102x_net *mse)
- 			net_dbg_ratelimited("%s: Unexpected response (0x%04x)\n",
- 					    __func__, cmd_resp);
- 			mse->stats.invalid_rts++;
--			return;
-+			drop = true;
-+			goto drop;
- 		}
- 
- 		net_dbg_ratelimited("%s: Unexpected response to first CMD\n",
-@@ -342,9 +347,16 @@ static void mse102x_rx_pkt_spi(struct mse102x_net *mse)
- 		net_dbg_ratelimited("%s: Invalid frame length: %d\n", __func__,
- 				    rxlen);
- 		mse->stats.invalid_len++;
--		return;
-+		drop = true;
- 	}
- 
-+	/* In case of a invalid CMD_RTS, the frame must be consumed anyway.
-+	 * So assume the maximum possible frame length.
-+	 */
-+drop:
-+	if (drop)
-+		rxlen = VLAN_ETH_FRAME_LEN;
-+
- 	rxalign = ALIGN(rxlen + DET_SOF_LEN + DET_DFT_LEN, 4);
- 	skb = netdev_alloc_skb_ip_align(mse->ndev, rxalign);
- 	if (!skb)
-@@ -355,7 +367,7 @@ static void mse102x_rx_pkt_spi(struct mse102x_net *mse)
- 	 * They are copied, but ignored.
- 	 */
- 	rxpkt = skb_put(skb, rxlen) - DET_SOF_LEN;
--	if (mse102x_rx_frame_spi(mse, rxpkt, rxlen)) {
-+	if (mse102x_rx_frame_spi(mse, rxpkt, rxlen, drop)) {
- 		mse->ndev->stats.rx_errors++;
- 		dev_kfree_skb(skb);
- 		return;
--- 
-2.39.5
-
 
 
 
