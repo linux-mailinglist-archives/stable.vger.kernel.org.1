@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-142266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142437-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 757DBAAE9E7
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:49:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDEABAAEA9C
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:57:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 291BE9C106E
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:48:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BB0797BE520
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:56:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6042D2144CC;
-	Wed,  7 May 2025 18:48:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53C7128B4F0;
+	Wed,  7 May 2025 18:57:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fTDEMBtR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BZM8Pt5O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E8931DDC23;
-	Wed,  7 May 2025 18:48:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E8A01CF5C6;
+	Wed,  7 May 2025 18:57:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643726; cv=none; b=TsUU8L6/YWZDo7gapYAduofxhfggUcPVL7YWN6RXwoTnyY6iFMR2BataT3SAWLXzmTr6z053GQRBOOO9seb7CB82EXi20dXG6HriSqH5j/Ogb0KzAD7n5MTH77LvbOAlgzp7GxbWgEQ9cXtJUeY3BmUhnrCpgS1iCmh77wAMZ40=
+	t=1746644248; cv=none; b=EcA9EwMiJ2UWzSF5iaHnreiyomqAwmC90vtvt7L+khBmxBCtXCv7TsoyBitz31szCgBHvGSsyWbBfV0HdAInK/VWrsIBzeldvXgLl+eXE+neDvbbUBc4ojHXj0wsCqzbxySPuvIVyvCbyPuQgerMag9zuiY9beIW2SgJ4ACuKCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643726; c=relaxed/simple;
-	bh=RsTFy/kLqbKwIgWpyZZ3BgMpIBONR4QMnBa6FSBGtI8=;
+	s=arc-20240116; t=1746644248; c=relaxed/simple;
+	bh=U5MRMQyJd5zFRlrgxzwI7Ea0EPvBYTIvTkmkmDPJxLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kau8b4EchfnsDnvGwc3cjq9BbgjuIXnesk4GQsMu8XEiIQA0yeh/eDD9on4Rci4yStKCtzSum+nx9Xv4YfJgJrADFb4+2xZERGjEqfLGsfg48qgBm5O6zr2rDPSgjpssEL/zk1b1qDOTKM4Bc3C5ZqHziCOGO2Y/vvDyRuV/nds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fTDEMBtR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7875EC4CEE2;
-	Wed,  7 May 2025 18:48:45 +0000 (UTC)
+	 MIME-Version; b=JkVRJOX4uDKcSVy7r3tZHbbdRKGx5zoR1hoA4Sh8607J7pOA+1r9hkQTnry7wEZ0TmVCltnNa422NfnRlcwtEVc0cSShehQZyfMcuYv0XV4RQZkfC24ZgQ8dkUa1WgkvO/aQL7eTdBxYLM4x1pln2EZoXfnjJVZoYCw0cOv4AXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BZM8Pt5O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A9F9C4CEE2;
+	Wed,  7 May 2025 18:57:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643726;
-	bh=RsTFy/kLqbKwIgWpyZZ3BgMpIBONR4QMnBa6FSBGtI8=;
+	s=korg; t=1746644247;
+	bh=U5MRMQyJd5zFRlrgxzwI7Ea0EPvBYTIvTkmkmDPJxLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fTDEMBtRHyQS3TI6qEVXomP5Hil5IbCeMaPNeSb7hStoGHdvXwNQCoej9ipM3pZAw
-	 fDtoqfcWA47jRRDQBrvEXy6wkyop2qerBHVR03lf+0FJzzZQlTwfoXOQeJV5SLsIih
-	 RFydO7aqRg5wjm83Z7cw4XU6fC3TjxuyiQXf3DAM=
+	b=BZM8Pt5O5tU42gjUHNq1q0iKtwe1PHvxsPmzIMLVlgUSft7b8naUEVuVskQfOpcUS
+	 /h3JErGmOweKieWPeAtdh2de7UvWdAaslUn9l+inhGtSK5uLNnbmZJBKMdlfsLtkNs
+	 PiRMPuFVL4HG2y25LAk5dJfvfxrFQOl7jwGzynP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 96/97] ASoC: Use of_property_read_bool()
+Subject: [PATCH 6.14 166/183] firmware: arm_scmi: Balance device refcount when destroying devices
 Date: Wed,  7 May 2025 20:40:11 +0200
-Message-ID: <20250507183810.841684350@linuxfoundation.org>
+Message-ID: <20250507183831.591307693@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
-References: <20250507183806.987408728@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +64,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Herring (Arm) <robh@kernel.org>
+From: Cristian Marussi <cristian.marussi@arm.com>
 
-[ Upstream commit 69dd15a8ef0ae494179fd15023aa8172188db6b7 ]
+[ Upstream commit 9ca67840c0ddf3f39407339624cef824a4f27599 ]
 
-Use of_property_read_bool() to read boolean properties rather than
-of_get_property(). This is part of a larger effort to remove callers
-of of_get_property() and similar functions. of_get_property() leaks
-the DT property data pointer which is a problem for dynamically
-allocated nodes which may be freed.
+Using device_find_child() to lookup the proper SCMI device to destroy
+causes an unbalance in device refcount, since device_find_child() calls an
+implicit get_device(): this, in turns, inhibits the call of the provided
+release methods upon devices destruction.
 
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-Link: https://patch.msgid.link/20240731191312.1710417-20-robh@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 6eab70345799 ("ASoC: soc-core: Stop using of_property_read_bool() for non-boolean properties")
+As a consequence, one of the structures that is not freed properly upon
+destruction is the internal struct device_private dev->p populated by the
+drivers subsystem core.
+
+KMemleak detects this situation since loading/unloding some SCMI driver
+causes related devices to be created/destroyed without calling any
+device_release method.
+
+unreferenced object 0xffff00000f583800 (size 512):
+  comm "insmod", pid 227, jiffies 4294912190
+  hex dump (first 32 bytes):
+    00 00 00 00 ad 4e ad de ff ff ff ff 00 00 00 00  .....N..........
+    ff ff ff ff ff ff ff ff 60 36 1d 8a 00 80 ff ff  ........`6......
+  backtrace (crc 114e2eed):
+    kmemleak_alloc+0xbc/0xd8
+    __kmalloc_cache_noprof+0x2dc/0x398
+    device_add+0x954/0x12d0
+    device_register+0x28/0x40
+    __scmi_device_create.part.0+0x1bc/0x380
+    scmi_device_create+0x2d0/0x390
+    scmi_create_protocol_devices+0x74/0xf8
+    scmi_device_request_notifier+0x1f8/0x2a8
+    notifier_call_chain+0x110/0x3b0
+    blocking_notifier_call_chain+0x70/0xb0
+    scmi_driver_register+0x350/0x7f0
+    0xffff80000a3b3038
+    do_one_initcall+0x12c/0x730
+    do_init_module+0x1dc/0x640
+    load_module+0x4b20/0x5b70
+    init_module_from_file+0xec/0x158
+
+$ ./scripts/faddr2line ./vmlinux device_add+0x954/0x12d0
+device_add+0x954/0x12d0:
+kmalloc_noprof at include/linux/slab.h:901
+(inlined by) kzalloc_noprof at include/linux/slab.h:1037
+(inlined by) device_private_init at drivers/base/core.c:3510
+(inlined by) device_add at drivers/base/core.c:3561
+
+Balance device refcount by issuing a put_device() on devices found via
+device_find_child().
+
+Reported-by: Alice Ryhl <aliceryhl@google.com>
+Closes: https://lore.kernel.org/linux-arm-kernel/Z8nK3uFkspy61yjP@arm.com/T/#mc1f73a0ea5e41014fa145147b7b839fc988ada8f
+CC: Sudeep Holla <sudeep.holla@arm.com>
+CC: Catalin Marinas <catalin.marinas@arm.com>
+Fixes: d4f9dddd21f3 ("firmware: arm_scmi: Add dynamic scmi devices creation")
+Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
+Tested-by: Alice Ryhl <aliceryhl@google.com>
+Message-Id: <20250306185447.2039336-1-cristian.marussi@arm.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/ak4613.c | 4 ++--
- sound/soc/soc-core.c      | 8 ++++----
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/firmware/arm_scmi/bus.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/sound/soc/codecs/ak4613.c b/sound/soc/codecs/ak4613.c
-index f75c19ef35511..3f790d1f11a94 100644
---- a/sound/soc/codecs/ak4613.c
-+++ b/sound/soc/codecs/ak4613.c
-@@ -840,14 +840,14 @@ static void ak4613_parse_of(struct ak4613_priv *priv,
- 	/* Input 1 - 2 */
- 	for (i = 0; i < 2; i++) {
- 		snprintf(prop, sizeof(prop), "asahi-kasei,in%d-single-end", i + 1);
--		if (!of_get_property(np, prop, NULL))
-+		if (!of_property_read_bool(np, prop))
- 			priv->ic |= 1 << i;
- 	}
+diff --git a/drivers/firmware/arm_scmi/bus.c b/drivers/firmware/arm_scmi/bus.c
+index a3386bf36de50..7d7af2262c013 100644
+--- a/drivers/firmware/arm_scmi/bus.c
++++ b/drivers/firmware/arm_scmi/bus.c
+@@ -260,6 +260,9 @@ static struct scmi_device *scmi_child_dev_find(struct device *parent,
+ 	if (!dev)
+ 		return NULL;
  
- 	/* Output 1 - 6 */
- 	for (i = 0; i < 6; i++) {
- 		snprintf(prop, sizeof(prop), "asahi-kasei,out%d-single-end", i + 1);
--		if (!of_get_property(np, prop, NULL))
-+		if (!of_property_read_bool(np, prop))
- 			priv->oc |= 1 << i;
- 	}
- 
-diff --git a/sound/soc/soc-core.c b/sound/soc/soc-core.c
-index 6a4101dc15a54..58e07296144e0 100644
---- a/sound/soc/soc-core.c
-+++ b/sound/soc/soc-core.c
-@@ -3143,10 +3143,10 @@ unsigned int snd_soc_daifmt_parse_format(struct device_node *np,
- 	 * SND_SOC_DAIFMT_INV_MASK area
- 	 */
- 	snprintf(prop, sizeof(prop), "%sbitclock-inversion", prefix);
--	bit = !!of_get_property(np, prop, NULL);
-+	bit = of_property_read_bool(np, prop);
- 
- 	snprintf(prop, sizeof(prop), "%sframe-inversion", prefix);
--	frame = !!of_get_property(np, prop, NULL);
-+	frame = of_property_read_bool(np, prop);
- 
- 	switch ((bit << 4) + frame) {
- 	case 0x11:
-@@ -3183,12 +3183,12 @@ unsigned int snd_soc_daifmt_parse_clock_provider_raw(struct device_node *np,
- 	 * check "[prefix]frame-master"
- 	 */
- 	snprintf(prop, sizeof(prop), "%sbitclock-master", prefix);
--	bit = !!of_get_property(np, prop, NULL);
-+	bit = of_property_read_bool(np, prop);
- 	if (bit && bitclkmaster)
- 		*bitclkmaster = of_parse_phandle(np, prop, 0);
- 
- 	snprintf(prop, sizeof(prop), "%sframe-master", prefix);
--	frame = !!of_get_property(np, prop, NULL);
-+	frame = of_property_read_bool(np, prop);
- 	if (frame && framemaster)
- 		*framemaster = of_parse_phandle(np, prop, 0);
++	/* Drop the refcnt bumped implicitly by device_find_child */
++	put_device(dev);
++
+ 	return to_scmi_dev(dev);
+ }
  
 -- 
 2.39.5
