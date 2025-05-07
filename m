@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-142227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F089AAAE9A3
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:47:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE83EAAEB04
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:02:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A5503BC648
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:46:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 635B11C44C27
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:02:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAE461FECCD;
-	Wed,  7 May 2025 18:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C0811E22E9;
+	Wed,  7 May 2025 19:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YIkqDG9f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FNja1Ski"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B22E1C84D7;
-	Wed,  7 May 2025 18:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A7A529A0;
+	Wed,  7 May 2025 19:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643603; cv=none; b=bYx26IC835DLQVkbbP/bXzic235wmnXFP1CBMtGGH/BhjKX60LFam2VrOOOc5m23xz7hfqlLf5l+GIZZixbUOFhp13xXj/WG+wD1MZljilMpII1pGkp3PV41K7B9XSzqLG1KX5mM3e77HZIejRz0Ek3yidSm7WRh0aErm1b8iIU=
+	t=1746644534; cv=none; b=YwRqBteGd0mxt3qnz2NybcnPq5jsjrsDhG5QEkGSuthz6tMUMUeD2u7TIya8a4VMowsm0s22RwYMqsc/Ad0la1m/OnKF+t+BNczrWIw6IO8Wlg2rFnzfDKg68RycpyaTQP9VJJK+3USxF921pgiDfX1coWZiuBwHx7JurvAljrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643603; c=relaxed/simple;
-	bh=KCrJZMdAZbqxdFuIaTn4roDxPoyLbVWV6IIcrIutMRo=;
+	s=arc-20240116; t=1746644534; c=relaxed/simple;
+	bh=pSb9mby11niLs9pwTRIoLfKrhwYonMw65ORpjqrWv1s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ph8mBOfpid/YUZl2/+R6FPay5/ff6VhadVmbA3350AQN/sNSfhs47unn3hSSmSCDBJIxujSfL4Ht1V/YcG3NnScz4XKIfNszXSXNCNvEC2JbSWWGEvCHBP1DElMXS8hoyts2Uw5e4mBs34pEpKRNSOk8lw01Uci99Dtea8CqnE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YIkqDG9f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CF6BC4CEE2;
-	Wed,  7 May 2025 18:46:42 +0000 (UTC)
+	 MIME-Version; b=RvglGQGlxy11fWZeuwV0wHaRPNt0yvEAphtK7uF/bKAlSUG+nGLHyUfFOWczFsKAYkUP4+j/Z3/95QuZqpmhdNjM3IgtrJdgs+ah83MamimB0/6N3UKTY6hleMcFqfIMNx3HGbR50VLupH8Aj0x7COE4T9u2VE48Fj9fVjSxaPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FNja1Ski; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B7C3C4CEE2;
+	Wed,  7 May 2025 19:02:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643603;
-	bh=KCrJZMdAZbqxdFuIaTn4roDxPoyLbVWV6IIcrIutMRo=;
+	s=korg; t=1746644533;
+	bh=pSb9mby11niLs9pwTRIoLfKrhwYonMw65ORpjqrWv1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YIkqDG9fodZGiOUO3osJdvoT/RhxRQCQcvSw2PdoCim2jy9zHW80y7WcZEWjm2kdv
-	 zOf0ZyzQdpXQz3500qi9I8+fz5j5/bSFvOvrikpjSGS8Bb8tZA3BWhilC6j077eF6b
-	 fwTcA6KsTxZnZzgZ0mKPWzD5uXjLjg3H1mepbPOI=
+	b=FNja1SkiRLyM4XmMDfO5eJJlYm2hjIuCa25bk5kD1xr9jIRo5dHL1CoOxfxIPHNcP
+	 8gBpgYARcDpwLkWiISKOzlcGiI7tEZB/F7pZwVIhwjgHtq5jHd6exu4kmIx6ialM6X
+	 rvUF4sQUuhAxQgP+XobF+KImXasySvTliVIy8yAU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 27/97] xfs: check opcode and iovec count match in xlog_recover_attri_commit_pass2
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 057/164] powerpc/boot: Check for ld-option support
 Date: Wed,  7 May 2025 20:39:02 +0200
-Message-ID: <20250507183808.079019162@linuxfoundation.org>
+Message-ID: <20250507183823.244228831@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
-References: <20250507183806.987408728@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
 
-[ Upstream commit ad206ae50eca62836c5460ab5bbf2a6c59a268e7 ]
+[ Upstream commit b2accfe7ca5bc9f9af28e603b79bdd5ad8df5c0b ]
 
-Check that the number of recovered log iovecs is what is expected for
-the xattri opcode is expecting.
+Commit 579aee9fc594 ("powerpc: suppress some linker warnings in recent linker versions")
+enabled support to add linker option "--no-warn-rwx-segments",
+if the version is greater than 2.39. Similar build warning were
+reported recently from linker version 2.35.2.
 
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ld: warning: arch/powerpc/boot/zImage.epapr has a LOAD segment with RWX permissions
+ld: warning: arch/powerpc/boot/zImage.pseries has a LOAD segment with RWX permissions
+
+Fix the warning by checking for "--no-warn-rwx-segments"
+option support in linker to enable it, instead of checking
+for the version range.
+
+Fixes: 579aee9fc594 ("powerpc: suppress some linker warnings in recent linker versions")
+Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Closes: https://lore.kernel.org/linuxppc-dev/61cf556c-4947-4bd6-af63-892fc0966dad@linux.ibm.com/
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250401004218.24869-1-maddy@linux.ibm.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_attr_item.c |   27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+ arch/powerpc/boot/wrapper | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/fs/xfs/xfs_attr_item.c
-+++ b/fs/xfs/xfs_attr_item.c
-@@ -717,6 +717,7 @@ xlog_recover_attri_commit_pass2(
- 	const void			*attr_value = NULL;
- 	const void			*attr_name;
- 	size_t				len;
-+	unsigned int			op;
+diff --git a/arch/powerpc/boot/wrapper b/arch/powerpc/boot/wrapper
+index b1f5549a3c9c4..08f7a1386e8e0 100755
+--- a/arch/powerpc/boot/wrapper
++++ b/arch/powerpc/boot/wrapper
+@@ -234,10 +234,8 @@ fi
  
- 	attri_formatp = item->ri_buf[0].i_addr;
- 	attr_name = item->ri_buf[1].i_addr;
-@@ -735,6 +736,32 @@ xlog_recover_attri_commit_pass2(
- 		return -EFSCORRUPTED;
- 	}
+ # suppress some warnings in recent ld versions
+ nowarn="-z noexecstack"
+-if ! ld_is_lld; then
+-	if [ "$LD_VERSION" -ge "$(echo 2.39 | ld_version)" ]; then
+-		nowarn="$nowarn --no-warn-rwx-segments"
+-	fi
++if [ $(${CROSS}ld -v --no-warn-rwx-segments &>/dev/null; echo $?) -eq 0 ]; then
++	nowarn="$nowarn --no-warn-rwx-segments"
+ fi
  
-+	/* Check the number of log iovecs makes sense for the op code. */
-+	op = attri_formatp->alfi_op_flags & XFS_ATTRI_OP_FLAGS_TYPE_MASK;
-+	switch (op) {
-+	case XFS_ATTRI_OP_FLAGS_SET:
-+	case XFS_ATTRI_OP_FLAGS_REPLACE:
-+		/* Log item, attr name, attr value */
-+		if (item->ri_total != 3) {
-+			XFS_CORRUPTION_ERROR(__func__, XFS_ERRLEVEL_LOW, mp,
-+					     attri_formatp, len);
-+			return -EFSCORRUPTED;
-+		}
-+		break;
-+	case XFS_ATTRI_OP_FLAGS_REMOVE:
-+		/* Log item, attr name */
-+		if (item->ri_total != 2) {
-+			XFS_CORRUPTION_ERROR(__func__, XFS_ERRLEVEL_LOW, mp,
-+					     attri_formatp, len);
-+			return -EFSCORRUPTED;
-+		}
-+		break;
-+	default:
-+		XFS_CORRUPTION_ERROR(__func__, XFS_ERRLEVEL_LOW, mp,
-+				     attri_formatp, len);
-+		return -EFSCORRUPTED;
-+	}
-+
- 	/* Validate the attr name */
- 	if (item->ri_buf[1].i_len !=
- 			xlog_calc_iovec_len(attri_formatp->alfi_name_len)) {
+ platformo=$object/"$platform".o
+-- 
+2.39.5
+
 
 
 
