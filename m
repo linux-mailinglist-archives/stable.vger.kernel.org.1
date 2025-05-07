@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-142464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0628FAAEAB9
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:58:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB91CAAEA3E
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:53:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 255DB7A7DBE
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:57:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6C21987CE4
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:52:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1F7C28B4FE;
-	Wed,  7 May 2025 18:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5234289348;
+	Wed,  7 May 2025 18:53:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DauwfkOw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q8ddQepS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7C61482F5;
-	Wed,  7 May 2025 18:58:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0F161FF5EC;
+	Wed,  7 May 2025 18:53:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644334; cv=none; b=LPjxE+8hWJwkcIaWGc85MWdlb+HSK6a5t2P46DVJt+fuWwXS9fOoHtSC0yO6bK49ffPwAQngBJVtbSjiEBLb/40bfJsGmTLalZGHR9pznPnWKHbCUwtiu3w+8pHE4dEttWoNg2fBC2V9/Q4nWqdzrvchKwWejfanE4Ndj/59psc=
+	t=1746643980; cv=none; b=IdT5+tSn4qcgtY5Q1iu6wkzK6B5UQGU6ypCQuyf4aiGcM+l+qSZ0nuSPgc/jQwohn0ETzXy6NwMTByJ1nF2VDIVKMeck7SfNPasgBH7XNStF+QO0w7x+HuyIel0hIeRx8TzmW1zhTWmNwr8NuLKCuCqzLibZBBydtXAWwmSEsHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644334; c=relaxed/simple;
-	bh=8sjSiCUiobMuq18+AzgNqp1ggpvmfhn2wppcpPa2hUM=;
+	s=arc-20240116; t=1746643980; c=relaxed/simple;
+	bh=5wPXc7uaUgRYr1Y9lF+McPK+SoYHav8eMxL8A4sVGas=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hZ6bg2ivh1mXecwDFcKo0qbRfmPhivp0GZQCbTpGIe3TUqcgrA0hZAXu9GrNFUcgp3UsDIT3jPDpq/MwbGN4lnxgfZbEMbjWo0Dk3UFjVY9ohmSSXNcVYQywVra/yNwkHABH5aOyrMv9h/CFvluH7SB4fasOcTeh/U9zEk9qIbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DauwfkOw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1709C4CEE2;
-	Wed,  7 May 2025 18:58:53 +0000 (UTC)
+	 MIME-Version; b=hBz1XdBBxkDgt+EBUpvwUZF+Onlf2Cvhe3v1U9GAowx759QFXjnZmtBrtQsxOuCWadlijZBA2CmV7jjRuSwKY04OBmnl8e1xd2cap8eh7Ybj0oeE6NSlIUyn2hL/2N5Duk2SKidfrPFPWipvmbZE1abBQZW9ipSZvLHhOO4fheM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q8ddQepS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EEFDC4CEE2;
+	Wed,  7 May 2025 18:52:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644334;
-	bh=8sjSiCUiobMuq18+AzgNqp1ggpvmfhn2wppcpPa2hUM=;
+	s=korg; t=1746643980;
+	bh=5wPXc7uaUgRYr1Y9lF+McPK+SoYHav8eMxL8A4sVGas=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DauwfkOwNWv6lOdLZt9Ig1Joh3jgDV00oeviCkVSU6M4DR9UHMRYTduepQ6Gfldr9
-	 H6GXkgM2gzrGIft8YwFuXDjG3VM6pEqhAzt69CnVzY/h/6YkM8Kq087/x3+k9BMQt8
-	 liy9mLaOyb6Rc+mglUDsXifenr2IIk6J1Ox23Klo=
+	b=q8ddQepS/5xm2nHvVwQXhxkIEodb5E2wT6WE13Zh6czSrEhrn6BNTEVgE9DrXXdA4
+	 bsTwO2QbxQylTf6gxBQ6dizSqmdZqCyyOIb0Ae8RRcETz2s6oFUn4CaA6xpRyTiPiY
+	 mJ51WmHThKjieTveU3GyBUzO/W8dtFEJXZFyA7xE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Tiffany Y. Yang" <ynaffit@google.com>,
-	stable <stable@kernel.org>,
-	Carlos Llamas <cmllamas@google.com>
-Subject: [PATCH 6.12 010/164] binder: fix offset calculation in debug log
-Date: Wed,  7 May 2025 20:38:15 +0200
-Message-ID: <20250507183821.249364866@linuxfoundation.org>
+	Nico Pache <npache@redhat.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	David Gow <davidgow@google.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 051/183] firmware: cs_dsp: tests: Depend on FW_CS_DSP rather then enabling it
+Date: Wed,  7 May 2025 20:38:16 +0200
+Message-ID: <20250507183826.758021166@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Llamas <cmllamas@google.com>
+From: Nico Pache <npache@redhat.com>
 
-commit 170d1a3738908eef6a0dbf378ea77fb4ae8e294d upstream.
+[ Upstream commit a0b887f6eb9a0d1be3c57d00b0f3ba8408d3018a ]
 
-The vma start address should be substracted from the buffer's user data
-address and not the other way around.
+FW_CS_DSP gets enabled if KUNIT is enabled. The test should rather
+depend on if the feature is enabled. Fix this by moving FW_CS_DSP to the
+depends on clause.
 
-Cc: Tiffany Y. Yang <ynaffit@google.com>
-Cc: stable <stable@kernel.org>
-Fixes: 162c79731448 ("binder: avoid user addresses in debug logs")
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Reviewed-by: Tiffany Y. Yang <ynaffit@google.com>
-Link: https://lore.kernel.org/r/20250325184902.587138-1-cmllamas@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[cmllamas: fix conflicts due to alloc->buffer renaming]
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: dd0b6b1f29b9 ("firmware: cs_dsp: Add KUnit testing of bin file download")
+Signed-off-by: Nico Pache <npache@redhat.com>
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Link: https://patch.msgid.link/20250411123608.1676462-4-rf@opensource.cirrus.com
+Reviewed-by: David Gow <davidgow@google.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/android/binder.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/firmware/cirrus/Kconfig | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -6374,7 +6374,7 @@ static void print_binder_transaction_ilo
- 		seq_printf(m, " node %d", buffer->target_node->debug_id);
- 	seq_printf(m, " size %zd:%zd offset %lx\n",
- 		   buffer->data_size, buffer->offsets_size,
--		   proc->alloc.buffer - buffer->user_data);
-+		   buffer->user_data - proc->alloc.buffer);
- }
+diff --git a/drivers/firmware/cirrus/Kconfig b/drivers/firmware/cirrus/Kconfig
+index 0a883091259a2..e3c2e38b746df 100644
+--- a/drivers/firmware/cirrus/Kconfig
++++ b/drivers/firmware/cirrus/Kconfig
+@@ -6,14 +6,11 @@ config FW_CS_DSP
  
- static void print_binder_work_ilocked(struct seq_file *m,
+ config FW_CS_DSP_KUNIT_TEST_UTILS
+ 	tristate
+-	depends on KUNIT && REGMAP
+-	select FW_CS_DSP
+ 
+ config FW_CS_DSP_KUNIT_TEST
+ 	tristate "KUnit tests for Cirrus Logic cs_dsp" if !KUNIT_ALL_TESTS
+-	depends on KUNIT && REGMAP
++	depends on KUNIT && REGMAP && FW_CS_DSP
+ 	default KUNIT_ALL_TESTS
+-	select FW_CS_DSP
+ 	select FW_CS_DSP_KUNIT_TEST_UTILS
+ 	help
+ 	  This builds KUnit tests for cs_dsp.
+-- 
+2.39.5
+
 
 
 
