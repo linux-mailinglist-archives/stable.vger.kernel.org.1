@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-142434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85F77AAEA98
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:57:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18941AAE9E6
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:49:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F6369C2104
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:57:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C4C87A2E44
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:48:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0FE128D836;
-	Wed,  7 May 2025 18:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0755212B3F;
+	Wed,  7 May 2025 18:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GFkZO5as"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qs/+69cP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB3B528BA9D;
-	Wed,  7 May 2025 18:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BFF01DDC23;
+	Wed,  7 May 2025 18:49:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644238; cv=none; b=KKdbHVnKHYw/fe0ZPzHW1N21lsQDvOF2SnBS/+maEx55o/dbJWh5y1QiIV0tLfnzl+eYQOm34Lrx9oXTt5hyuc+PbyAWB6c8NKhVJ83tgA0lYud1ZlWiy9rqcXLQAkjUiwpEJq2DrYipCzS5P3pkdZg5OzoxD6f++95NOcDWp8k=
+	t=1746643755; cv=none; b=qFfHiDWjf0ddSGAmPZvBPe0YsWjH2ILWwZQQ/JffqydZ6w+8CLpO4s3D34w25dqRb0HPOExc1pRPhzk68m09/pNVCeI1CMMWPeSbiYPYRchhUcqTYvE9ZcAvaGdkxAxfHVSh5NEyrYihrIjYUm/LpRnJEwwiWKnxDvmy6OMmh7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644238; c=relaxed/simple;
-	bh=wj7vyevrlhh3xdOwOcqmqhNe0d6RGPwyNRjcu/UcOGc=;
+	s=arc-20240116; t=1746643755; c=relaxed/simple;
+	bh=yCYoQDR7kwKX5YvSO53jY25j8gKC3MoY62XJLu8gruY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JyFx6ZOwaLc5AyOmVhlHCKCDMALcp+ygD0lObXM3WnKbymGHe9xZ3LAg94tP01lAY8g7pJk/Em0E+DRj+ELsktschae3zyVk8/rh1sWB/Z0OdoQrx7QLo0n6CB1ZdnT4TnuJSzNH2bOb8TbPhM2wGWD32Rh5kyy8jVH+bimf6+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GFkZO5as; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28EBCC4CEE2;
-	Wed,  7 May 2025 18:57:17 +0000 (UTC)
+	 MIME-Version; b=iU3puXwDc7iFIls2B4+TsjPXQIRfoFIUogGn/mAwF7zP69F6wxounEJjh5ewrz5ITEZv6wWawTlWl+CUJkio6DMW1hxSouYDCqsp26daiwl7RBpVdBYsiJpN5ZXHl4z8prqA/G5J2jAbKUJzRhIU62DDBE7i2c3GdwTOhmcxsfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qs/+69cP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0397C4CEE2;
+	Wed,  7 May 2025 18:49:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644238;
-	bh=wj7vyevrlhh3xdOwOcqmqhNe0d6RGPwyNRjcu/UcOGc=;
+	s=korg; t=1746643754;
+	bh=yCYoQDR7kwKX5YvSO53jY25j8gKC3MoY62XJLu8gruY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GFkZO5as0pj75yZHiV88GnAnjg6iC8rH8txhATquMzJnBNxZdI2nXAudezSeRc6Pc
-	 au42BqG9dcRCHWHbDIb6rLkiCkUZIn7MOWVYadte6u83Hl1cFDP6SbbbomONRcvISj
-	 viAvbcFJqYX81sjbY+Zd/io2yjOtBFVUI6HtfwP4=
+	b=qs/+69cP8el2l/pLHikQVuzzi424GdgfpZ3iDXIlYLBg+AOqY8xTI/GYRO+YVbEPP
+	 TfZbkrELAC2A+c+uLXFFPL+vUMnGwpK4KjAps0RGwOmIDHLxkW9LH+z23lb5aSiH4g
+	 L0ITWCFt7UMmZzj9BdXIRormlaBUddzr8cIXhlKs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.14 163/183] sch_hfsc: make hfsc_qlen_notify() idempotent
+	Qingqing Zhuo <qingqing.zhuo@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Bhawanpreet Lakha <bhawanpreet.lakha@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 93/97] drm/amd/display: Change HDCP update sequence for DM
 Date: Wed,  7 May 2025 20:40:08 +0200
-Message-ID: <20250507183831.473191807@linuxfoundation.org>
+Message-ID: <20250507183810.714628932@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
+References: <20250507183806.987408728@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +65,168 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <xiyou.wangcong@gmail.com>
+From: Bhawanpreet Lakha <bhawanpreet.lakha@amd.com>
 
-commit 51eb3b65544c9efd6a1026889ee5fb5aa62da3bb upstream.
+[ Upstream commit 393e83484839970e4975dfa1f0666f939a6f3e3d ]
 
-hfsc_qlen_notify() is not idempotent either and not friendly
-to its callers, like fq_codel_dequeue(). Let's make it idempotent
-to ease qdisc_tree_reduce_backlog() callers' life:
+Refactor the sequence in hdcp_update_display() to use
+mod_hdcp_update_display().
 
-1. update_vf() decreases cl->cl_nactive, so we can check whether it is
-non-zero before calling it.
+Previous sequence:
+	- remove()->add()
 
-2. eltree_remove() always removes RB node cl->el_node, but we can use
-   RB_EMPTY_NODE() + RB_CLEAR_NODE() to make it safe.
+This Sequence was used to update the display, (mod_hdcp_update_display
+didn't exist at the time). This meant for any hdcp updates (type changes,
+enable/disable) we would remove, reconstruct, and add. This leads to
+unnecessary calls to psp eventually
 
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250403211033.166059-4-xiyou.wangcong@gmail.com
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+New Sequence using mod_hdcp_update_display():
+	- add() once when stream is enabled
+	- use update() for all updates
+
+The update function checks for prev == new states and will not
+unnecessarily end up calling psp via add/remove.
+
+Reviewed-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Bhawanpreet Lakha <bhawanpreet.lakha@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: be593d9d91c5 ("drm/amd/display: Fix slab-use-after-free in hdcp")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_hfsc.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ .../amd/display/amdgpu_dm/amdgpu_dm_hdcp.c    | 80 +++++++++----------
+ 1 file changed, 38 insertions(+), 42 deletions(-)
 
---- a/net/sched/sch_hfsc.c
-+++ b/net/sched/sch_hfsc.c
-@@ -203,7 +203,10 @@ eltree_insert(struct hfsc_class *cl)
- static inline void
- eltree_remove(struct hfsc_class *cl)
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c
+index 15537f554ca86..7c67bb771f996 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_hdcp.c
+@@ -168,53 +168,45 @@ void hdcp_update_display(struct hdcp_workqueue *hdcp_work,
+ 			 bool enable_encryption)
  {
--	rb_erase(&cl->el_node, &cl->sched->eligible);
-+	if (!RB_EMPTY_NODE(&cl->el_node)) {
-+		rb_erase(&cl->el_node, &cl->sched->eligible);
-+		RB_CLEAR_NODE(&cl->el_node);
-+	}
+ 	struct hdcp_workqueue *hdcp_w = &hdcp_work[link_index];
+-	struct mod_hdcp_display *display = &hdcp_work[link_index].display;
+-	struct mod_hdcp_link *link = &hdcp_work[link_index].link;
+-	struct mod_hdcp_display_query query;
++	struct mod_hdcp_link_adjustment link_adjust;
++	struct mod_hdcp_display_adjustment display_adjust;
+ 	unsigned int conn_index = aconnector->base.index;
+ 
+ 	mutex_lock(&hdcp_w->mutex);
+ 	hdcp_w->aconnector[conn_index] = aconnector;
+ 
+-	query.display = NULL;
+-	mod_hdcp_query_display(&hdcp_w->hdcp, aconnector->base.index, &query);
+-
+-	if (query.display) {
+-		memcpy(display, query.display, sizeof(struct mod_hdcp_display));
+-		mod_hdcp_remove_display(&hdcp_w->hdcp, aconnector->base.index, &hdcp_w->output);
+-
+-		hdcp_w->link.adjust.hdcp2.force_type = MOD_HDCP_FORCE_TYPE_0;
+-
+-		if (enable_encryption) {
+-			/* Explicitly set the saved SRM as sysfs call will be after
+-			 * we already enabled hdcp (s3 resume case)
+-			 */
+-			if (hdcp_work->srm_size > 0)
+-				psp_set_srm(hdcp_work->hdcp.config.psp.handle, hdcp_work->srm,
+-					    hdcp_work->srm_size,
+-					    &hdcp_work->srm_version);
+-
+-			display->adjust.disable = MOD_HDCP_DISPLAY_NOT_DISABLE;
+-			if (content_type == DRM_MODE_HDCP_CONTENT_TYPE0) {
+-				hdcp_w->link.adjust.hdcp1.disable = 0;
+-				hdcp_w->link.adjust.hdcp2.force_type = MOD_HDCP_FORCE_TYPE_0;
+-			} else if (content_type == DRM_MODE_HDCP_CONTENT_TYPE1) {
+-				hdcp_w->link.adjust.hdcp1.disable = 1;
+-				hdcp_w->link.adjust.hdcp2.force_type = MOD_HDCP_FORCE_TYPE_1;
+-			}
++	memset(&link_adjust, 0, sizeof(link_adjust));
++	memset(&display_adjust, 0, sizeof(display_adjust));
+ 
+-			schedule_delayed_work(&hdcp_w->property_validate_dwork,
+-					      msecs_to_jiffies(DRM_HDCP_CHECK_PERIOD_MS));
+-		} else {
+-			display->adjust.disable = MOD_HDCP_DISPLAY_DISABLE_AUTHENTICATION;
+-			hdcp_w->encryption_status[conn_index] = MOD_HDCP_ENCRYPTION_STATUS_HDCP_OFF;
+-			cancel_delayed_work(&hdcp_w->property_validate_dwork);
++	if (enable_encryption) {
++		/* Explicitly set the saved SRM as sysfs call will be after we already enabled hdcp
++		 * (s3 resume case)
++		 */
++		if (hdcp_work->srm_size > 0)
++			psp_set_srm(hdcp_work->hdcp.config.psp.handle, hdcp_work->srm,
++				    hdcp_work->srm_size,
++				    &hdcp_work->srm_version);
++
++		display_adjust.disable = MOD_HDCP_DISPLAY_NOT_DISABLE;
++
++		link_adjust.auth_delay = 2;
++
++		if (content_type == DRM_MODE_HDCP_CONTENT_TYPE0) {
++			link_adjust.hdcp2.force_type = MOD_HDCP_FORCE_TYPE_0;
++		} else if (content_type == DRM_MODE_HDCP_CONTENT_TYPE1) {
++			link_adjust.hdcp1.disable = 1;
++			link_adjust.hdcp2.force_type = MOD_HDCP_FORCE_TYPE_1;
+ 		}
+ 
+-		display->state = MOD_HDCP_DISPLAY_ACTIVE;
++		schedule_delayed_work(&hdcp_w->property_validate_dwork,
++				      msecs_to_jiffies(DRM_HDCP_CHECK_PERIOD_MS));
++	} else {
++		display_adjust.disable = MOD_HDCP_DISPLAY_DISABLE_AUTHENTICATION;
++		hdcp_w->encryption_status[conn_index] = MOD_HDCP_ENCRYPTION_STATUS_HDCP_OFF;
++		cancel_delayed_work(&hdcp_w->property_validate_dwork);
+ 	}
+ 
+-	mod_hdcp_add_display(&hdcp_w->hdcp, link, display, &hdcp_w->output);
++	mod_hdcp_update_display(&hdcp_w->hdcp, conn_index, &link_adjust, &display_adjust, &hdcp_w->output);
+ 
+ 	process_output(hdcp_w);
+ 	mutex_unlock(&hdcp_w->mutex);
+@@ -521,7 +513,7 @@ static void update_config(void *handle, struct cp_psp_stream_config *config)
+ 	int link_index = aconnector->dc_link->link_index;
+ 	struct mod_hdcp_display *display = &hdcp_work[link_index].display;
+ 	struct mod_hdcp_link *link = &hdcp_work[link_index].link;
+-	struct drm_connector_state *conn_state;
++	struct hdcp_workqueue *hdcp_w = &hdcp_work[link_index];
+ 	struct dc_sink *sink = NULL;
+ 	bool link_is_hdcp14 = false;
+ 
+@@ -563,7 +555,7 @@ static void update_config(void *handle, struct cp_psp_stream_config *config)
+ 	display->adjust.disable = MOD_HDCP_DISPLAY_DISABLE_AUTHENTICATION;
+ 	link->adjust.auth_delay = 3;
+ 	link->adjust.hdcp1.disable = 0;
+-	conn_state = aconnector->base.state;
++	hdcp_w->encryption_status[display->index] = MOD_HDCP_ENCRYPTION_STATUS_HDCP_OFF;
+ 
+ 	DRM_DEBUG_DRIVER("[HDCP_DM] display %d, CP %d, type %d\n", aconnector->base.index,
+ 			 (!!aconnector->base.state) ?
+@@ -571,9 +563,13 @@ static void update_config(void *handle, struct cp_psp_stream_config *config)
+ 			 (!!aconnector->base.state) ?
+ 			 aconnector->base.state->hdcp_content_type : -1);
+ 
+-	if (conn_state)
+-		hdcp_update_display(hdcp_work, link_index, aconnector,
+-				    conn_state->hdcp_content_type, false);
++	mutex_lock(&hdcp_w->mutex);
++
++	mod_hdcp_add_display(&hdcp_w->hdcp, link, display, &hdcp_w->output);
++
++	process_output(hdcp_w);
++	mutex_unlock(&hdcp_w->mutex);
++
  }
  
- static inline void
-@@ -1225,7 +1228,8 @@ hfsc_qlen_notify(struct Qdisc *sch, unsi
- 	/* vttree is now handled in update_vf() so that update_vf(cl, 0, 0)
- 	 * needs to be called explicitly to remove a class from vttree.
- 	 */
--	update_vf(cl, 0, 0);
-+	if (cl->cl_nactive)
-+		update_vf(cl, 0, 0);
- 	if (cl->cl_flags & HFSC_RSC)
- 		eltree_remove(cl);
- }
+ /**
+-- 
+2.39.5
+
 
 
 
