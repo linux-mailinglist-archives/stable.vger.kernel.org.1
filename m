@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-142176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60F2FAAE960
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:44:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D45E6AAEA72
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:55:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DD599E098A
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:43:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D51963B1429
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:55:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABEFA28DF47;
-	Wed,  7 May 2025 18:44:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C6CF28B4F0;
+	Wed,  7 May 2025 18:55:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B5GETYPN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ub8FmiHx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6843614A4C7;
-	Wed,  7 May 2025 18:44:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECBE32116E9;
+	Wed,  7 May 2025 18:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643446; cv=none; b=Y4FoV9wK8nVOG9t3eu5DLo+VOWOhZm7E7OYvxq7D2e7jdC9niMzmh8WggLdQXWagvKgjaDBXf8xyTUUtwd4+G2GVEaBradocXhff29Vq0z1QtUi9/2HiALR+9SVEVNuZQ4aGV2o5t2+sjb/kDWgu479y+OYnw1ISHkT/DP+cpzc=
+	t=1746644128; cv=none; b=YrDCUYfReuEGT91RTgh0pfBQc4ycw4GbnahnDdbHnOKnPzr4Om6bfwmvqPF4Wbw2DLFmSxFwHhRs9Q6uAq7UpwjRZSeWptdNLjvKrfClU5a3kTonwezSXYb01f1XjjZp1MQ7/hFBCaTI2FBhZrnhkpwSx+/1qaXZvuT+mMWnWjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643446; c=relaxed/simple;
-	bh=KfhF7NH4/drislHC+iqJZWmRCjx9njF0uSK4lUvbCRI=;
+	s=arc-20240116; t=1746644128; c=relaxed/simple;
+	bh=QlvQljSVuf5J06R1fAgXg3jOcZbsYoq1URbDrp5plnQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cz4NU2ZCA2OzWgoBTjDp4T9eN7J95qiPHZ7Ra/6fqrYdk1cMOQa5x+JTTk2uq36ZK5FwEBlk0aWAg6gHSD38WCjWLajfp7DbFeu9/lfIsdbylEuI7FIbdmaycnIGfMWfxrOATcIMXDPX+Oby8uK95m7usmcOY3tTAuvhDmbfxIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B5GETYPN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4E3FC4CEE2;
-	Wed,  7 May 2025 18:44:05 +0000 (UTC)
+	 MIME-Version; b=ePcZCi1F37MPR0Tlhqfzp28tcB1iDtWz9wZsyj5uCGE96u9wB/7KTtGhH5/bKpyWfpo/5X8FvnOgqBYiw4U8M1hlOsym/TOUqfCXfrAK7TcpyW/n8wXpXoO9CBsHMP1ILMW1V+WZztudzZ2yDx55PYJniuq+7pP6TXsvEvnW2sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ub8FmiHx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51997C4CEE2;
+	Wed,  7 May 2025 18:55:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643446;
-	bh=KfhF7NH4/drislHC+iqJZWmRCjx9njF0uSK4lUvbCRI=;
+	s=korg; t=1746644127;
+	bh=QlvQljSVuf5J06R1fAgXg3jOcZbsYoq1URbDrp5plnQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B5GETYPNaEL8P3FLXYORSRzioQZiZWfar+bXFMJJkr2Ga+hYeiNxq3r/0jHu4haTp
-	 3mVU/Nln+9w+eP7fbxt6WRhHM550KFYn2SfLqXh8PeZ+k56yXUzBc5DwsWv2jsJFVn
-	 n5Thbzb+2ufrR+bkj2P/x6B6OnNA403tj/xyceL4=
+	b=Ub8FmiHx2TB73ehyjqwdXXy8d9uJd+PEWkLTF88j4kSFQOYCM1MuS85/0TzKbP78C
+	 ZDKENlTGjvjLBAvypkliBSqhZmB/vxgQa6Q398WJq3G6OgfnmVkNTiRY3eRHoMZQGy
+	 8TfEaK92az2uibkSAPVdRZY0x/VE/D37R46/V7G4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shruti Parab <shruti.parab@broadcom.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Alistair Francis <alistair.francis@wdc.com>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Hannes Reinecke <hare@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 33/55] bnxt_en: Fix ethtool -d byte order for 32-bit values
+Subject: [PATCH 6.14 129/183] nvme-tcp: select CONFIG_TLS from CONFIG_NVME_TCP_TLS
 Date: Wed,  7 May 2025 20:39:34 +0200
-Message-ID: <20250507183800.372189949@linuxfoundation.org>
+Message-ID: <20250507183830.047965228@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
-References: <20250507183759.048732653@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,87 +64,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Chan <michael.chan@broadcom.com>
+From: Alistair Francis <alistair23@gmail.com>
 
-[ Upstream commit 02e8be5a032cae0f4ca33c6053c44d83cf4acc93 ]
+[ Upstream commit 521987940ad4fd37fe3d0340ec6f39c4e8e91e36 ]
 
-For version 1 register dump that includes the PCIe stats, the existing
-code incorrectly assumes that all PCIe stats are 64-bit values.  Fix it
-by using an array containing the starting and ending index of the 32-bit
-values.  The loop in bnxt_get_regs() will use the array to do proper
-endian swap for the 32-bit values.
+Ensure that TLS support is enabled in the kernel when
+CONFIG_NVME_TCP_TLS is enabled. Without this the code compiles, but does
+not actually work unless something else enables CONFIG_TLS.
 
-Fixes: b5d600b027eb ("bnxt_en: Add support for 'ethtool -d'")
-Reviewed-by: Shruti Parab <shruti.parab@broadcom.com>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Reviewed-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: be8e82caa68 ("nvme-tcp: enable TLS handshake upcall")
+Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/broadcom/bnxt/bnxt_ethtool.c | 38 ++++++++++++++++---
- 1 file changed, 32 insertions(+), 6 deletions(-)
+ drivers/nvme/host/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-index 8ebc1c522a05b..ad307df8d97ba 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-@@ -1360,6 +1360,17 @@ static int bnxt_get_regs_len(struct net_device *dev)
- 	return reg_len;
- }
+diff --git a/drivers/nvme/host/Kconfig b/drivers/nvme/host/Kconfig
+index 486afe5981845..09ed1f61c9a85 100644
+--- a/drivers/nvme/host/Kconfig
++++ b/drivers/nvme/host/Kconfig
+@@ -97,6 +97,7 @@ config NVME_TCP_TLS
+ 	depends on NVME_TCP
+ 	select NET_HANDSHAKE
+ 	select KEYS
++	select TLS
+ 	help
+ 	  Enables TLS encryption for NVMe TCP using the netlink handshake API.
  
-+#define BNXT_PCIE_32B_ENTRY(start, end)			\
-+	 { offsetof(struct pcie_ctx_hw_stats, start),	\
-+	   offsetof(struct pcie_ctx_hw_stats, end) }
-+
-+static const struct {
-+	u16 start;
-+	u16 end;
-+} bnxt_pcie_32b_entries[] = {
-+	BNXT_PCIE_32B_ENTRY(pcie_ltssm_histogram[0], pcie_ltssm_histogram[3]),
-+};
-+
- static void bnxt_get_regs(struct net_device *dev, struct ethtool_regs *regs,
- 			  void *_p)
- {
-@@ -1391,12 +1402,27 @@ static void bnxt_get_regs(struct net_device *dev, struct ethtool_regs *regs,
- 	req->pcie_stat_host_addr = cpu_to_le64(hw_pcie_stats_addr);
- 	rc = hwrm_req_send(bp, req);
- 	if (!rc) {
--		__le64 *src = (__le64 *)hw_pcie_stats;
--		u64 *dst = (u64 *)(_p + BNXT_PXP_REG_LEN);
--		int i;
--
--		for (i = 0; i < sizeof(*hw_pcie_stats) / sizeof(__le64); i++)
--			dst[i] = le64_to_cpu(src[i]);
-+		u8 *dst = (u8 *)(_p + BNXT_PXP_REG_LEN);
-+		u8 *src = (u8 *)hw_pcie_stats;
-+		int i, j;
-+
-+		for (i = 0, j = 0; i < sizeof(*hw_pcie_stats); ) {
-+			if (i >= bnxt_pcie_32b_entries[j].start &&
-+			    i <= bnxt_pcie_32b_entries[j].end) {
-+				u32 *dst32 = (u32 *)(dst + i);
-+
-+				*dst32 = le32_to_cpu(*(__le32 *)(src + i));
-+				i += 4;
-+				if (i > bnxt_pcie_32b_entries[j].end &&
-+				    j < ARRAY_SIZE(bnxt_pcie_32b_entries) - 1)
-+					j++;
-+			} else {
-+				u64 *dst64 = (u64 *)(dst + i);
-+
-+				*dst64 = le64_to_cpu(*(__le64 *)(src + i));
-+				i += 8;
-+			}
-+		}
- 	}
- 	hwrm_req_drop(bp, req);
- }
 -- 
 2.39.5
 
