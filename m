@@ -1,51 +1,55 @@
-Return-Path: <stable+bounces-142009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8834AADB66
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 11:24:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67B22AADB69
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 11:25:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22D131BC5325
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 09:23:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D11387B6E37
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 09:24:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C8EE21C188;
-	Wed,  7 May 2025 09:23:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 852001DDA32;
+	Wed,  7 May 2025 09:25:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uj4wtUjo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BpMuyzUM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE991EB5DD
-	for <stable@vger.kernel.org>; Wed,  7 May 2025 09:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41E7B1B87EB
+	for <stable@vger.kernel.org>; Wed,  7 May 2025 09:25:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746609815; cv=none; b=CbHIHQX1XLu5RQtTtzpUd89xBSSTv0bDvIwMk7OtWoowgKiFpBK6xPEBuBSd4pQjyZFqVSCi78clHQ9poj6NKPHeLFlOONpU8Sx6RAMTJ555y7WnXTwNNn/OkyPr9vlhoSN60V7Wa/+tC+mvYnB5qji46uvZX86LWZ9SG6wLoS8=
+	t=1746609923; cv=none; b=PINdg2Ib3Gmz753eS/qxeUwrmQbiZPflDnS6evW52lImYxWwuKQBS9FJpqm4TM6NCpvATTGYxGU0OVfzwVh6okMB4d5dUWBcCQf57o8OyUSd5tFIcU9KZr8+aKScNDtgTLfiIPXQDLBohtUHmap0cbMqeZM6UWIw5rIp1//rOX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746609815; c=relaxed/simple;
-	bh=yJhJnrCP4Ayns4k/Yaqo1CAJie3fE9MqIONDIIVpXEE=;
+	s=arc-20240116; t=1746609923; c=relaxed/simple;
+	bh=JpiZ7vzGDRSfaw6KXsTbvxS2f+ACgQGlxMgQoPZBiIE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZLjTUxSS7XE8klsupi2HK6bTcPz1yvr+uX9sNRvDJ1EFL+YSQPnqhnRLhZa2GhnjsXbpHw71UVmSl+H13PD/RvJWUZrQQzTlppeija4vTlBGl71wRVyURh4sIxX+jd+dKIi9MZs4c+fY/1CkwX3Ipx8N+TKQMqn1mPdm2H27s9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uj4wtUjo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AE13C4CEEE;
-	Wed,  7 May 2025 09:23:34 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=gCPl1akv5OJQ7WkH6mXohxZFRGQr/tQCczmX2g2Z33cjINHeCljz2m8rPl92l4o/yEx4OAVlwMiM/vmdWuDcVxhHNJ7C93lIeAq9I8mxytpRjZChA+LdUOk2gN+JE0lyIjIqeNO+ESVHrysEDQnejOzSOefMsOV2fC8XkLwTXrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BpMuyzUM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78A23C4CEE7;
+	Wed,  7 May 2025 09:25:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746609814;
-	bh=yJhJnrCP4Ayns4k/Yaqo1CAJie3fE9MqIONDIIVpXEE=;
+	s=korg; t=1746609922;
+	bh=JpiZ7vzGDRSfaw6KXsTbvxS2f+ACgQGlxMgQoPZBiIE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Uj4wtUjoa5oepyL1B37mq+1748mfBDO+Sci3qklWba4rcXwi657bZxSsPxMBq7aQE
-	 uFkTLO+d/xCXI9IxdqWI0mYjU0fxPxRtaY976nMuoz5fP1535sZzNDzhUwjRBVMVFg
-	 AHoLWnz5vqpFTkTOLXnrkI6qaZ/mCnPs/v26Lgo0=
-Date: Wed, 7 May 2025 11:23:31 +0200
+	b=BpMuyzUMS/O0hIQ7Fx7jreVBqMTK4kTIgtt/kadiFxJukLz8Ws9cJT/k4oTjFj81I
+	 T6nxvJhniQ7NYahbw5BN7bGQaXhkSQZiWT1PZOwax/XX+bZ6AuzzKX7rHvMx00g4sQ
+	 AuthGO4rI/phcUH6BQblQVo9Pw9wfZf5fRifdgIE=
+Date: Wed, 7 May 2025 11:25:20 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Penglei Jiang <superman.xpt@gmail.com>
-Cc: stable@vger.kernel.org
-Subject: Re: [PATCH v2 6.14.y] btrfs: fix the inode leak in btrfs_iget()
-Message-ID: <2025050752-maturely-urology-62bd@gregkh>
-References: <2025050558-charger-crumpled-6ca4@gregkh>
- <20250505150322.40733-1-superman.xpt@gmail.com>
+To: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: stable@vger.kernel.org,
+	Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>
+Subject: Re: [PATCH 6.12.y] drm/xe: Ensure fixed_slice_mode gets set after
+ ccs_mode change
+Message-ID: <2025050745-fifteen-shaky-2bca@gregkh>
+References: <2025042256-unshackle-unwashed-bd50@gregkh>
+ <20250505161316.3451888-2-lucas.demarchi@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,48 +58,31 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250505150322.40733-1-superman.xpt@gmail.com>
+In-Reply-To: <20250505161316.3451888-2-lucas.demarchi@intel.com>
 
-On Mon, May 05, 2025 at 08:03:22AM -0700, Penglei Jiang wrote:
-> The commit 48c1d1bb525b1c44b8bdc8e7ec5629cb6c2b9fc4 fails to compile
-> in kernel version 6.14.
+On Mon, May 05, 2025 at 09:13:17AM -0700, Lucas De Marchi wrote:
+> From: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
 > 
-> Version 6.14:
->     struct inode *btrfs_iget(u64 ino, struct btrfs_root *root)
->     {
->             struct inode *inode;
->             ~~~~~~~~~~~~~~
->             ...
->             inode = btrfs_iget_locked(ino, root);
->             ...
->     }
+> The RCU_MODE_FIXED_SLICE_CCS_MODE setting is not getting invoked
+> in the gt reset path after the ccs_mode setting by the user.
+> Add it to engine register update list (in hw_engine_setup_default_state())
+> which ensures it gets set in the gt reset and engine reset paths.
 > 
-> Version 6.15:
->     struct btrfs_inode *btrfs_iget(u64 ino, struct btrfs_root *root)
->     {
->             struct btrfs_inode *inode;
->             ~~~~~~~~~~~~~~~~~~~~
->             ...
->             inode = btrfs_iget_locked(ino, root);
->             ...
->     }
+> v2: Add register update to engine list to ensure it gets updated
+> after engine reset also.
 > 
-> In kernel version 6.14, the function btrfs_iget_locked() returns a
-> struct inode *, so the patch code adjusts to use iget_failed(inode).
-> 
-> Reported-by: Penglei Jiang <superman.xpt@gmail.com>
-> Link: https://lore.kernel.org/linux-btrfs/20250421102425.44431-1-superman.xpt@gmail.com/
-> Fixes: 7c855e16ab72 ("btrfs: remove conditional path allocation in btrfs_read_locked_inode()")
-> Signed-off-by: Penglei Jiang <superman.xpt@gmail.com>
-> ---
->  fs/btrfs/inode.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Fixes: 0d97ecce16bd ("drm/xe: Enable Fixed CCS mode setting")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Niranjana Vishwanathapura <niranjana.vishwanathapura@intel.com>
+> Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+> Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+> Link: https://lore.kernel.org/r/20250327185604.18230-1-niranjana.vishwanathapura@intel.com
+> (cherry picked from commit 12468e519f98e4d93370712e3607fab61df9dae9)
+> Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+> (cherry picked from commit 262de94a3a7ef23c326534b3d9483602b7af841e)
 
-This is not a v2, it is a totally different patch.
-
-Please just fix up your original backport to build properly when you
-submit it, don't send a "fix up patch" to solve a build problem a
-previous patch added.
+Wrong git id, please use the git id that the original commit is in
+Linus's tree, NOT the stable branch only.  Please fix and resend a v2.
 
 thanks,
 
