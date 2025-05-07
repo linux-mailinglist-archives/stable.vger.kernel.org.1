@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-142649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DE6EAAEB93
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:08:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05948AAEA6A
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:55:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18D5D9E32F4
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:08:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 006ED9C7A51
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:54:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B476128DF4F;
-	Wed,  7 May 2025 19:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 335BE21E0BB;
+	Wed,  7 May 2025 18:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W0+EAklj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j7sODoOf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7255928DF21;
-	Wed,  7 May 2025 19:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56742116E9;
+	Wed,  7 May 2025 18:55:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644902; cv=none; b=RapSmERp+3Dn3rr8/usR7aRNlcDqqcmbe4V1A14KMnkeqdbdDtnG0dMD55RbUHILjZYSp+aOV3a0bpq0fa9seb2lVM8eKZjre9zkD4k0r07srIHBqboNfMHWmTh2dLpmc+wY2bJTIGEW0LAsWudajx4qJdPzQyzGVpSOYweQzjc=
+	t=1746644104; cv=none; b=jz++1ZTyjnVFdTK/BqdSwAuZ9SBHdLj3bvA9FXhZtFR/HR2wJia2Ja5RsdiUqFHRnSoecWZJDdFpvaAcWZT3fvLxPVrvxahGUrWGF/DBbb5yPmEXKoVwh8agB+7ZnQ5g1XUer6gHtdwdp2/j4PMJISedh0DwWP/iH2rRTUUopi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644902; c=relaxed/simple;
-	bh=3Bp9wozF+n+HgUx8ETjP6IgxpTYm1e0ZCGBsbJFLIP8=;
+	s=arc-20240116; t=1746644104; c=relaxed/simple;
+	bh=hWqfumIyIJa5fKCmTqN4h9PCDlo9nvG0OJaqd/5YU9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WrJoRI3dsk4rxdxnTQ2UmdGrkgr2FUa0e2fgD9yJ7t23I9q3RubcfUjp7w4Ult+1g6ZD91HEj/p5mHHKc5Zp+4b62uXonGTSv+tJyq6LDmOYE0Di8g2+XhODoYkKUBFrcOyPCHBdrDDS13PpBDTsP71IBYZCFGkI9LW8mJ+LhKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W0+EAklj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D69F6C4CEE2;
-	Wed,  7 May 2025 19:08:21 +0000 (UTC)
+	 MIME-Version; b=NgXPmKIkpBSC/6Wf5A4pB+YdZs/4djKzCnCMKLPJE+Ln4XHZvX9mA2PbLOwMzzSeUy3M73L9i3kjRhyJ0ZaQVFkP7ZL9N0z/aSE6ToF6DdYSMije+i+I98qb1skNOK05U2eIjMZuCdCgXYBOC6FCYE1jMZ94un3WSKGnEop6ZBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j7sODoOf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6570EC4CEE2;
+	Wed,  7 May 2025 18:55:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644902;
-	bh=3Bp9wozF+n+HgUx8ETjP6IgxpTYm1e0ZCGBsbJFLIP8=;
+	s=korg; t=1746644103;
+	bh=hWqfumIyIJa5fKCmTqN4h9PCDlo9nvG0OJaqd/5YU9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W0+EAkljjn/J+wwdc6qcYYKWvwTrZj5hHYk1+KIBFqRGbJJh4ZOGOmtk0wpyP4kHD
-	 GEV8/JVvq4NiWEMJyuzzF6Se7uvRYlYKabQ3DEp0aZtm3IIgF+liv2rbK0R7V2CwCp
-	 P7BbTdG2CiBJUAhmd5Votjv8uTqh/ghwy9eirOE8=
+	b=j7sODoOfrC47flGpNBWbos4ejV8w2rEYpkRm+30UADPNLR1Q7fz2q7N+WnnOCoofa
+	 A9DynzrXB8t+Md0ikzUcvh+KYm4GCyD9vFfbOVbrYbsGDX0HaOeAF0YSnMM0rKZEJF
+	 QJfa48/1QWKem6j9GRp0BJjCt2bkQhwyUu4SFIqc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Christian Loehle <christian.loehle@arm.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>
-Subject: [PATCH 6.6 030/129] cpufreq: Avoid using inconsistent policy->min and policy->max
+	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Shravya KN <shravya.k-n@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 121/183] bnxt_en: Fix error handling path in bnxt_init_chip()
 Date: Wed,  7 May 2025 20:39:26 +0200
-Message-ID: <20250507183814.747964259@linuxfoundation.org>
+Message-ID: <20250507183829.726716729@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
-References: <20250507183813.500572371@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Shravya KN <shravya.k-n@broadcom.com>
 
-commit 7491cdf46b5cbdf123fc84fbe0a07e9e3d7b7620 upstream.
+[ Upstream commit 9ab7a709c926c16b4433cf02d04fcbcf35aaab2b ]
 
-Since cpufreq_driver_resolve_freq() can run in parallel with
-cpufreq_set_policy() and there is no synchronization between them,
-the former may access policy->min and policy->max while the latter
-is updating them and it may see intermediate values of them due
-to the way the update is carried out.  Also the compiler is free
-to apply any optimizations it wants both to the stores in
-cpufreq_set_policy() and to the loads in cpufreq_driver_resolve_freq()
-which may result in additional inconsistencies.
+WARN_ON() is triggered in __flush_work() if bnxt_init_chip() fails
+because we call cancel_work_sync() on dim work that has not been
+initialized.
 
-To address this, use WRITE_ONCE() when updating policy->min and
-policy->max in cpufreq_set_policy() and use READ_ONCE() for reading
-them in cpufreq_driver_resolve_freq().  Moreover, rearrange the update
-in cpufreq_set_policy() to avoid storing intermediate values in
-policy->min and policy->max with the help of the observation that
-their new values are expected to be properly ordered upfront.
+WARNING: CPU: 37 PID: 5223 at kernel/workqueue.c:4201 __flush_work.isra.0+0x212/0x230
 
-Also modify cpufreq_driver_resolve_freq() to take the possible reverse
-ordering of policy->min and policy->max, which may happen depending on
-the ordering of operations when this function and cpufreq_set_policy()
-run concurrently, into account by always honoring the max when it
-turns out to be less than the min (in case it comes from thermal
-throttling or similar).
+The driver relies on the BNXT_STATE_NAPI_DISABLED bit to check if dim
+work has already been cancelled.  But in the bnxt_open() path,
+BNXT_STATE_NAPI_DISABLED is not set and this causes the error
+path to think that it needs to cancel the uninitalized dim work.
+Fix it by setting BNXT_STATE_NAPI_DISABLED during initialization.
+The bit will be cleared when we enable NAPI and initialize dim work.
 
-Fixes: 151717690694 ("cpufreq: Make policy min/max hard requirements")
-Cc: 5.16+ <stable@vger.kernel.org> # 5.16+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Christian Loehle <christian.loehle@arm.com>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Link: https://patch.msgid.link/5907080.DvuYhMxLoT@rjwysocki.net
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 40452969a506 ("bnxt_en: Fix DIM shutdown")
+Suggested-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Signed-off-by: Shravya KN <shravya.k-n@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cpufreq.c |   32 +++++++++++++++++++++++++-------
- 1 file changed, 25 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -538,8 +538,6 @@ static unsigned int __resolve_freq(struc
- {
- 	unsigned int idx;
- 
--	target_freq = clamp_val(target_freq, policy->min, policy->max);
--
- 	if (!policy->freq_table)
- 		return target_freq;
- 
-@@ -563,7 +561,22 @@ static unsigned int __resolve_freq(struc
- unsigned int cpufreq_driver_resolve_freq(struct cpufreq_policy *policy,
- 					 unsigned int target_freq)
- {
--	return __resolve_freq(policy, target_freq, CPUFREQ_RELATION_LE);
-+	unsigned int min = READ_ONCE(policy->min);
-+	unsigned int max = READ_ONCE(policy->max);
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index e44f9692dc2ee..da837866c02f8 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -11379,6 +11379,9 @@ static void bnxt_init_napi(struct bnxt *bp)
+ 		poll_fn = bnxt_poll_p5;
+ 	else if (BNXT_CHIP_TYPE_NITRO_A0(bp))
+ 		cp_nr_rings--;
 +
-+	/*
-+	 * If this function runs in parallel with cpufreq_set_policy(), it may
-+	 * read policy->min before the update and policy->max after the update
-+	 * or the other way around, so there is no ordering guarantee.
-+	 *
-+	 * Resolve this by always honoring the max (in case it comes from
-+	 * thermal throttling or similar).
-+	 */
-+	if (unlikely(min > max))
-+		min = max;
++	set_bit(BNXT_STATE_NAPI_DISABLED, &bp->state);
 +
-+	return __resolve_freq(policy, clamp_val(target_freq, min, max),
-+			      CPUFREQ_RELATION_LE);
- }
- EXPORT_SYMBOL_GPL(cpufreq_driver_resolve_freq);
- 
-@@ -2335,6 +2348,7 @@ int __cpufreq_driver_target(struct cpufr
- 	if (cpufreq_disabled())
- 		return -ENODEV;
- 
-+	target_freq = clamp_val(target_freq, policy->min, policy->max);
- 	target_freq = __resolve_freq(policy, target_freq, relation);
- 
- 	pr_debug("target for CPU %u: %u kHz, relation %u, requested %u kHz\n",
-@@ -2625,11 +2639,15 @@ static int cpufreq_set_policy(struct cpu
- 	 * Resolve policy min/max to available frequencies. It ensures
- 	 * no frequency resolution will neither overshoot the requested maximum
- 	 * nor undershoot the requested minimum.
-+	 *
-+	 * Avoid storing intermediate values in policy->max or policy->min and
-+	 * compiler optimizations around them because they may be accessed
-+	 * concurrently by cpufreq_driver_resolve_freq() during the update.
- 	 */
--	policy->min = new_data.min;
--	policy->max = new_data.max;
--	policy->min = __resolve_freq(policy, policy->min, CPUFREQ_RELATION_L);
--	policy->max = __resolve_freq(policy, policy->max, CPUFREQ_RELATION_H);
-+	WRITE_ONCE(policy->max, __resolve_freq(policy, new_data.max, CPUFREQ_RELATION_H));
-+	new_data.min = __resolve_freq(policy, new_data.min, CPUFREQ_RELATION_L);
-+	WRITE_ONCE(policy->min, new_data.min > policy->max ? policy->max : new_data.min);
-+
- 	trace_cpu_frequency_limits(policy);
- 
- 	policy->cached_target_freq = UINT_MAX;
+ 	for (i = 0; i < cp_nr_rings; i++) {
+ 		bnapi = bp->bnapi[i];
+ 		netif_napi_add_config(bp->dev, &bnapi->napi, poll_fn,
+-- 
+2.39.5
+
 
 
 
