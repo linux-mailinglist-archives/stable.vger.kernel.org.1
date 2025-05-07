@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-142559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49996AAEB23
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:03:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 694C3AAE953
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:43:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B786F525D8B
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:03:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D805E7BB369
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:42:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D928C28C2A5;
-	Wed,  7 May 2025 19:03:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C81228B7D6;
+	Wed,  7 May 2025 18:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gh2ZqHzm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ugVvsI+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9603129A0;
-	Wed,  7 May 2025 19:03:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19CE114A4C7;
+	Wed,  7 May 2025 18:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644626; cv=none; b=Tf9inzKWGWUrqKpd34A9niphzBlfTodbZ5lk0RSYtqdVH3xwuOgqFw0jJv8G1W+t32DeUVlyH2uBTyCF4ajQfOzcYNzK/2FJTbN8Wlaghxu2Age79Zb+rXBx3V35XlXglmfbhmpQrYwAfYeDVO4z3pWUhS2SWhfKS33CIgaGtjY=
+	t=1746643407; cv=none; b=O+7jH8ixROA0Ste8sq/Tr92NjYRmhGhFrkhFjopDai6PSqb6aH0e8SL1OdKRgzfshaPSPmf7VQHN2IqaB3HybHOyE0AjkoaPU07j4zfaJFOVEa3Tf5rrBmzV9eoPVSQnQ8DeonlcNF+etaJh57PxvQfXL/GkgxHtAjNaOX/UL58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644626; c=relaxed/simple;
-	bh=J05Llo/pFcjScQZ48tRSTk0QUNXg6DmLClf/iRbfnAw=;
+	s=arc-20240116; t=1746643407; c=relaxed/simple;
+	bh=BygBvMjnd/thE0vCUYW/znt46lxIJ274cl/7BzDoGY8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WFNNrWttAsWaRcaz+KogAidd5AmI2tXmpU/DSQJPGGXmhRusXhZjm18jJhLGK6xxDBvlGEkfys1PzPkWHlrvpcPATuXVtD+l7M/rEdQzWdWCmVUMfDYDN4LOg34cXIGqTFZly734friSTwJe95Q7SXdjDj7Jmj6pjP7Suy3t0Ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gh2ZqHzm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26262C4CEE2;
-	Wed,  7 May 2025 19:03:45 +0000 (UTC)
+	 MIME-Version; b=CRKD/w209dLnCdhP2PV80CnT5rl8yZomTSzXfcXX+btuWuTrpuPwecPVJ96z6qzkRphLdFE/df2fjCh+WHDJP2r25/yuuLl4df+Ibwl8QXUsiIciVDc+K00lYq9leXJVcMawjoiJg7CGSlNjD7Nl0lDltW56O2eAjtEVLa60yM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ugVvsI+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 957D9C4CEE2;
+	Wed,  7 May 2025 18:43:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644626;
-	bh=J05Llo/pFcjScQZ48tRSTk0QUNXg6DmLClf/iRbfnAw=;
+	s=korg; t=1746643407;
+	bh=BygBvMjnd/thE0vCUYW/znt46lxIJ274cl/7BzDoGY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gh2ZqHzmVHQmwxYRCkPEzr07w04yFR30RLF9SV3mR5GRe4YzrTNG+Pc48Muc+uL+U
-	 SvS1hiCNGEzq23PO9JdVnCevd1l5IFobtO8GVDj/iuoQu2s3B4qz968ze1OAX6k/a1
-	 hIFGFJ/COuTGNhz/LxQtTortytcWqnH/5E5lhpWE=
+	b=1ugVvsI+rSiQlaYW0gAAkTDVE1/aMCfls1PYMQHpy1p++zcH7tNrdJcK8ezqxc4Uy
+	 SPNuluo7mWr2td9CP8ElESLFKXiqs5utMRatP0pBfin/n/LbQ/kChLcEBbf6dzqUI+
+	 A5LsUwcqZJDAyipgC12cRDskW8VDNwBEcnP+Bowc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Emil Tantilov <emil.s.tantilov@intel.com>,
-	Samuel Salin <Samuel.salin@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Xiang wangx <wangxiang@cdjrlc.com>,
+	Marc Zyngier <maz@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 105/164] idpf: protect shutdown from reset
+Subject: [PATCH 5.15 49/55] irqchip/gic-v2m: Add const to of_device_id
 Date: Wed,  7 May 2025 20:39:50 +0200
-Message-ID: <20250507183825.225776109@linuxfoundation.org>
+Message-ID: <20250507183801.020417502@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
+References: <20250507183759.048732653@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,55 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Larysa Zaremba <larysa.zaremba@intel.com>
+From: Xiang wangx <wangxiang@cdjrlc.com>
 
-[ Upstream commit ed375b182140eeb9c73609b17939c8a29b27489e ]
+[ Upstream commit c10f2f8b5d8027c1ea77f777f2d16cb9043a6c09 ]
 
-Before the referenced commit, the shutdown just called idpf_remove(),
-this way IDPF_REMOVE_IN_PROG was protecting us from the serv_task
-rescheduling reset. Without this flag set the shutdown process is
-vulnerable to HW reset or any other triggering conditions (such as
-default mailbox being destroyed).
+struct of_device_id should normally be const.
 
-When one of conditions checked in idpf_service_task becomes true,
-vc_event_task can be rescheduled during shutdown, this leads to accessing
-freed memory e.g. idpf_req_rel_vector_indexes() trying to read
-vport->q_vector_idxs. This in turn causes the system to become defunct
-during e.g. systemctl kexec.
-
-Considering using IDPF_REMOVE_IN_PROG would lead to more heavy shutdown
-process, instead just cancel the serv_task before cancelling
-adapter->serv_task before cancelling adapter->vc_event_task to ensure that
-reset will not be scheduled while we are doing a shutdown.
-
-Fixes: 4c9106f4906a ("idpf: fix adapter NULL pointer dereference on reboot")
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Emil Tantilov <emil.s.tantilov@intel.com>
-Tested-by: Samuel Salin <Samuel.salin@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Xiang wangx <wangxiang@cdjrlc.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20211209132453.25623-1-wangxiang@cdjrlc.com
+Stable-dep-of: 3318dc299b07 ("irqchip/gic-v2m: Prevent use after free of gicv2m_get_fwnode()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/idpf/idpf_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/irqchip/irq-gic-v2m.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_main.c b/drivers/net/ethernet/intel/idpf/idpf_main.c
-index 7557bb6694c09..734da1680c5a4 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_main.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_main.c
-@@ -89,6 +89,7 @@ static void idpf_shutdown(struct pci_dev *pdev)
- {
- 	struct idpf_adapter *adapter = pci_get_drvdata(pdev);
+diff --git a/drivers/irqchip/irq-gic-v2m.c b/drivers/irqchip/irq-gic-v2m.c
+index 0e57c60681aab..48e2eed33f8fa 100644
+--- a/drivers/irqchip/irq-gic-v2m.c
++++ b/drivers/irqchip/irq-gic-v2m.c
+@@ -405,7 +405,7 @@ static int __init gicv2m_init_one(struct fwnode_handle *fwnode,
+ 	return ret;
+ }
  
-+	cancel_delayed_work_sync(&adapter->serv_task);
- 	cancel_delayed_work_sync(&adapter->vc_event_task);
- 	idpf_vc_core_deinit(adapter);
- 	idpf_deinit_dflt_mbx(adapter);
+-static struct of_device_id gicv2m_device_id[] = {
++static const struct of_device_id gicv2m_device_id[] = {
+ 	{	.compatible	= "arm,gic-v2m-frame",	},
+ 	{},
+ };
 -- 
 2.39.5
 
