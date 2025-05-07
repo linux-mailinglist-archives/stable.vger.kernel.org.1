@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-142336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142512-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E680AAEA30
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:52:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 066BEAAEAF0
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:01:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3F8750817F
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:52:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 828DC7BEE91
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:00:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFAC928937F;
-	Wed,  7 May 2025 18:52:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAF4A28AAE9;
+	Wed,  7 May 2025 19:01:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TGZU87hK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M6uVdFVo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E3FD1FF5EC;
-	Wed,  7 May 2025 18:52:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A22F288A8;
+	Wed,  7 May 2025 19:01:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643937; cv=none; b=khOuwUn0RIN0I8mVIHwR99YeTt2VjsrKb5j1SQjTeKOMPOPNK+Du13rwZZ0MxYwXXxOYIOud8yegK0+z3WOku7V0ZeYoOAc9Mia1rdRmPbzPbEhKl36m8RlDmztme4amwr7vXcDTpUc5yLtIGhRkcYXUHympbSr2IlZw6ZUsr/0=
+	t=1746644481; cv=none; b=NbQWdO2UOOghRXATZpaHU1t2tP4paGX9O/BVwY9H/67V1oapi6XusWSLPp/AweB6Fk0BLrbDy4HgUV3m04e90t5pqs3903Amsqahrm+hr+t+Ex09x9lZ/lvf/wMgz5lM+T9/NVDVVjlrbkAwmYNTLpzBH6n0SIa4WIiHG8waDkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643937; c=relaxed/simple;
-	bh=AOMcZn9rIMae6KxqQgrbezgqNGYaiLZxgxbwr8IGI9I=;
+	s=arc-20240116; t=1746644481; c=relaxed/simple;
+	bh=tih45WD9HL8kum2A/3si0srtAYWvUJOO9DTV+cWz5go=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N0SGYccIwrmgUCwN0qme26rI1+VLTd9oFPjNreu2UfA4AsxIXIhIm+eRyS6oQVX5p7MKI7MZ7L2I6go5e2cMtFJDKWZM6oOrO9iv3yEUt6oIqAMJqLNRsg8n/PE2rGRPAku9WkxamJUldhiFNydj2YsKCaKSynY/0FaLJ2zGz50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TGZU87hK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C1A7C4CEE2;
-	Wed,  7 May 2025 18:52:16 +0000 (UTC)
+	 MIME-Version; b=sWCTlJqXA4d3Il+6HtkIRZjij7zJ0aowp0CEuW9vljIWdl0/aPqfkPEJfTBMOlRvC2gxu//K8quWd4EoQ+ZVlEWySBWcv/KhbS5qwMtAh6/Jog9Yv2hmYF3yUFe1A6aJXjO49tF/qkxku2Whf4qyfqiKz3/qojhbo9yP4ktxv4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M6uVdFVo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B551C4CEE9;
+	Wed,  7 May 2025 19:01:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643937;
-	bh=AOMcZn9rIMae6KxqQgrbezgqNGYaiLZxgxbwr8IGI9I=;
+	s=korg; t=1746644481;
+	bh=tih45WD9HL8kum2A/3si0srtAYWvUJOO9DTV+cWz5go=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TGZU87hKQPu8849hyNf/Y+lom2vPDNSq7bHgCQ03w6ZM9AOsfSR02jwt2ICgG1PUl
-	 XIC5xt5KM66pWN7d4LsnXlP+tXnPqiLblTWATZgGmhY3xa8fLo2lpa3GoXUuVpFc4N
-	 AsyU8QXxPbBJR3otUOVeepSZ6BPoHReq0KgYa76o=
+	b=M6uVdFVool91/5L3XaFpwOmT5qf8V0KVqPZkFKTKNFzpHJV6SXE37v9Zjd570chc2
+	 VzKmBDQQ0iFqhQnKY4hOZTbVUf4QZURM/fC70KhXGyYUrCpjNhD6RYHcCg4gwZUF04
+	 +LYfNHcRHlPSh7oqK0P7sIzbSGzFUxZ6SPB3nUS8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 066/183] vxlan: vnifilter: Fix unlocked deletion of default FDB entry
-Date: Wed,  7 May 2025 20:38:31 +0200
-Message-ID: <20250507183827.365416447@linuxfoundation.org>
+	Ihar Salauyou <salauyou.ihar@gmail.com>,
+	Ruslan Piasetskyi <ruslan.piasetskyi@gmail.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.12 027/164] mmc: renesas_sdhi: Fix error handling in renesas_sdhi_probe
+Date: Wed,  7 May 2025 20:38:32 +0200
+Message-ID: <20250507183821.967161964@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +64,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Ruslan Piasetskyi <ruslan.piasetskyi@gmail.com>
 
-[ Upstream commit 087a9eb9e5978e3ba362e1163691e41097e8ca20 ]
+commit 649b50a82f09fa44c2f7a65618e4584072145ab7 upstream.
 
-When a VNI is deleted from a VXLAN device in 'vnifilter' mode, the FDB
-entry associated with the default remote (assuming one was configured)
-is deleted without holding the hash lock. This is wrong and will result
-in a warning [1] being generated by the lockdep annotation that was
-added by commit ebe642067455 ("vxlan: Create wrappers for FDB lookup").
+After moving tmio_mmc_host_probe down, error handling has to be
+adjusted.
 
-Reproducer:
-
- # ip link add vx0 up type vxlan dstport 4789 external vnifilter local 192.0.2.1
- # bridge vni add vni 10010 remote 198.51.100.1 dev vx0
- # bridge vni del vni 10010 dev vx0
-
-Fix by acquiring the hash lock before the deletion and releasing it
-afterwards. Blame the original commit that introduced the issue rather
-than the one that exposed it.
-
-[1]
-WARNING: CPU: 3 PID: 392 at drivers/net/vxlan/vxlan_core.c:417 vxlan_find_mac+0x17f/0x1a0
-[...]
-RIP: 0010:vxlan_find_mac+0x17f/0x1a0
-[...]
-Call Trace:
- <TASK>
- __vxlan_fdb_delete+0xbe/0x560
- vxlan_vni_delete_group+0x2ba/0x940
- vxlan_vni_del.isra.0+0x15f/0x580
- vxlan_process_vni_filter+0x38b/0x7b0
- vxlan_vnifilter_process+0x3bb/0x510
- rtnetlink_rcv_msg+0x2f7/0xb70
- netlink_rcv_skb+0x131/0x360
- netlink_unicast+0x426/0x710
- netlink_sendmsg+0x75a/0xc20
- __sock_sendmsg+0xc1/0x150
- ____sys_sendmsg+0x5aa/0x7b0
- ___sys_sendmsg+0xfc/0x180
- __sys_sendmsg+0x121/0x1b0
- do_syscall_64+0xbb/0x1d0
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-Fixes: f9c4bb0b245c ("vxlan: vni filtering support on collect metadata device")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20250423145131.513029-1-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 74f45de394d9 ("mmc: renesas_sdhi: register irqs before registering controller")
+Reviewed-by: Ihar Salauyou <salauyou.ihar@gmail.com>
+Signed-off-by: Ruslan Piasetskyi <ruslan.piasetskyi@gmail.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Tested-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250326220638.460083-1-ruslan.piasetskyi@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/vxlan/vxlan_vnifilter.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/mmc/host/renesas_sdhi_core.c |   10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
-index 6e6e9f05509ab..06d19e90eadb5 100644
---- a/drivers/net/vxlan/vxlan_vnifilter.c
-+++ b/drivers/net/vxlan/vxlan_vnifilter.c
-@@ -627,7 +627,11 @@ static void vxlan_vni_delete_group(struct vxlan_dev *vxlan,
- 	 * default dst remote_ip previously added for this vni
- 	 */
- 	if (!vxlan_addr_any(&vninode->remote_ip) ||
--	    !vxlan_addr_any(&dst->remote_ip))
-+	    !vxlan_addr_any(&dst->remote_ip)) {
-+		u32 hash_index = fdb_head_index(vxlan, all_zeros_mac,
-+						vninode->vni);
-+
-+		spin_lock_bh(&vxlan->hash_lock[hash_index]);
- 		__vxlan_fdb_delete(vxlan, all_zeros_mac,
- 				   (vxlan_addr_any(&vninode->remote_ip) ?
- 				   dst->remote_ip : vninode->remote_ip),
-@@ -635,6 +639,8 @@ static void vxlan_vni_delete_group(struct vxlan_dev *vxlan,
- 				   vninode->vni, vninode->vni,
- 				   dst->remote_ifindex,
- 				   true);
-+		spin_unlock_bh(&vxlan->hash_lock[hash_index]);
-+	}
+--- a/drivers/mmc/host/renesas_sdhi_core.c
++++ b/drivers/mmc/host/renesas_sdhi_core.c
+@@ -1112,26 +1112,26 @@ int renesas_sdhi_probe(struct platform_d
+ 	num_irqs = platform_irq_count(pdev);
+ 	if (num_irqs < 0) {
+ 		ret = num_irqs;
+-		goto eirq;
++		goto edisclk;
+ 	}
  
- 	if (vxlan->dev->flags & IFF_UP) {
- 		if (vxlan_addr_multicast(&vninode->remote_ip) &&
--- 
-2.39.5
-
+ 	/* There must be at least one IRQ source */
+ 	if (!num_irqs) {
+ 		ret = -ENXIO;
+-		goto eirq;
++		goto edisclk;
+ 	}
+ 
+ 	for (i = 0; i < num_irqs; i++) {
+ 		irq = platform_get_irq(pdev, i);
+ 		if (irq < 0) {
+ 			ret = irq;
+-			goto eirq;
++			goto edisclk;
+ 		}
+ 
+ 		ret = devm_request_irq(&pdev->dev, irq, tmio_mmc_irq, 0,
+ 				       dev_name(&pdev->dev), host);
+ 		if (ret)
+-			goto eirq;
++			goto edisclk;
+ 	}
+ 
+ 	ret = tmio_mmc_host_probe(host);
+@@ -1143,8 +1143,6 @@ int renesas_sdhi_probe(struct platform_d
+ 
+ 	return ret;
+ 
+-eirq:
+-	tmio_mmc_host_remove(host);
+ edisclk:
+ 	renesas_sdhi_clk_disable(host);
+ efree:
 
 
 
