@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-142443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8D09AAEAAA
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:58:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14E68AAEBFE
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:13:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F86B188B1AD
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:58:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FFAA9E3E31
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:12:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C8FC28C027;
-	Wed,  7 May 2025 18:57:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60D3828DF1F;
+	Wed,  7 May 2025 19:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dX/Ggr8W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jahoBNlW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A68F24E4CE;
-	Wed,  7 May 2025 18:57:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC99214813;
+	Wed,  7 May 2025 19:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644267; cv=none; b=E/ltx6emzTrxk27bl5ZaPS1KxQ4teSjN5UMCT1Tciye7Zk+qTCmViqF4SHweOU4nD0J5QHki9Z0Da4ALPbz/oixbSapq/uT4CVVkmw4qnOQ35ZNqHTUs6ew1ezvm/hwluLDcxbylTnmBHP7/PvqQW/YSAeGGZkiMIy1ypJqyhME=
+	t=1746645190; cv=none; b=rxksCxGjUWuOsXWaaW1wXfeMm5Qvvpf8Lirryv13WRDAArqxeeW2izfzZDevWaAiSI4fo1CmD71yTH8Cw6fGOsq2K8u6UJ6pRwBFcLn65scPD5n8cdSHVVe97uUj99evD6GtazfwegYhitETl4Flmx+24DgdJ9gi9iZKKyQRxag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644267; c=relaxed/simple;
-	bh=MzmC0pim/TZJgoNTrv1crcXzH4CNG5gLp+lKe+qBgXc=;
+	s=arc-20240116; t=1746645190; c=relaxed/simple;
+	bh=qUJsJRNorasHLx3rpPehjmHEIAVPYkiM9g4H72NZtvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P+iErG7inVFn1vWBN6dHiDJiXD1I6EwuPtybTFlT8+14BD1Rix5pWxL7Yuh8/vQ9RGc7QpKvVmce1itb2OXFkNvu8l5vgPxNHuRiwJDCot4QswZMzu5JSuQXkqdMFmlJg48UEO/mDK4YdIPxza+5ybmFBkbdAaLNB+4w9Lqkdh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dX/Ggr8W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6474C4CEE2;
-	Wed,  7 May 2025 18:57:46 +0000 (UTC)
+	 MIME-Version; b=TN6ZshSIzOhUptjqnymKZUdn5JUuoPe3V6F6Jig35ltJ75HoVQoizKtvz43BNseTF4L46DTQfxyeiOb7CQznb/asZM2bsc1C5Thm/4i1yf/oj6kjLMOOY8Gehn+WgdbERfE08hkKYLYk+XYzop1UGbo5js5Bj1U0KCTkTPaUsG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jahoBNlW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80758C4CEE2;
+	Wed,  7 May 2025 19:13:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644267;
-	bh=MzmC0pim/TZJgoNTrv1crcXzH4CNG5gLp+lKe+qBgXc=;
+	s=korg; t=1746645190;
+	bh=qUJsJRNorasHLx3rpPehjmHEIAVPYkiM9g4H72NZtvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dX/Ggr8W7eavQwYE+c+iyMOInrCdpba6bJDjpvAcz5ddWDwp0BoOeV0RnULb1A6MJ
-	 HupHymyTOm7sv35FrLEeZKd8zoDjh/i4L1JOZoRMB4nR0Fw4UdIysu7Orvkka4mvnZ
-	 OFGTqw6sGUKFVOulXnYobRTWxeawds4LmOfOCKj0=
+	b=jahoBNlWQNGBMRy0XiTnWAAHox1RaiUMGBQmynMwCDde2Cp68rckDte5CiZ1yBPyK
+	 dNFhTVWFcb1itwPAPJjLjF9tEOPkE9mwes5G6G1FYqnIx1z/VhtoF/XkyxAwqGdL4P
+	 a17TIc5bz9er7eSi2CCXs4xuc2+ON8xv6zCMDHbk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	David Sterba <dsterba@suse.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Shruti Parab <shruti.parab@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 172/183] block: introduce zone capacity helper
-Date: Wed,  7 May 2025 20:40:17 +0200
-Message-ID: <20250507183831.827140197@linuxfoundation.org>
+Subject: [PATCH 6.6 082/129] bnxt_en: Fix out-of-bound memcpy() during ethtool -w
+Date: Wed,  7 May 2025 20:40:18 +0200
+Message-ID: <20250507183816.832036426@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,123 +64,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naohiro Aota <naohiro.aota@wdc.com>
+From: Shruti Parab <shruti.parab@broadcom.com>
 
-[ Upstream commit c1a79b1a583654f24b17da81ba868b0064077243 ]
+[ Upstream commit 6b87bd94f34370bbf1dfa59352bed8efab5bf419 ]
 
-{bdev,disk}_zone_capacity() takes block_device or gendisk and sector position
-and returns the zone capacity of the corresponding zone.
+When retrieving the FW coredump using ethtool, it can sometimes cause
+memory corruption:
 
-With that, move disk_nr_zones() and blk_zone_plug_bio() to consolidate them in
-the same #ifdef block.
+BUG: KFENCE: memory corruption in __bnxt_get_coredump+0x3ef/0x670 [bnxt_en]
+Corrupted memory at 0x000000008f0f30e8 [ ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ] (in kfence-#45):
+__bnxt_get_coredump+0x3ef/0x670 [bnxt_en]
+ethtool_get_dump_data+0xdc/0x1a0
+__dev_ethtool+0xa1e/0x1af0
+dev_ethtool+0xa8/0x170
+dev_ioctl+0x1b5/0x580
+sock_do_ioctl+0xab/0xf0
+sock_ioctl+0x1ce/0x2e0
+__x64_sys_ioctl+0x87/0xc0
+do_syscall_64+0x5c/0xf0
+entry_SYSCALL_64_after_hwframe+0x78/0x80
 
-Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Stable-dep-of: 866bafae59ec ("btrfs: zoned: skip reporting zone for new block group")
+...
+
+This happens when copying the coredump segment list in
+bnxt_hwrm_dbg_dma_data() with the HWRM_DBG_COREDUMP_LIST FW command.
+The info->dest_buf buffer is allocated based on the number of coredump
+segments returned by the FW.  The segment list is then DMA'ed by
+the FW and the length of the DMA is returned by FW.  The driver then
+copies this DMA'ed segment list to info->dest_buf.
+
+In some cases, this DMA length may exceed the info->dest_buf length
+and cause the above BUG condition.  Fix it by capping the copy
+length to not exceed the length of info->dest_buf.  The extra
+DMA data contains no useful information.
+
+This code path is shared for the HWRM_DBG_COREDUMP_LIST and the
+HWRM_DBG_COREDUMP_RETRIEVE FW commands.  The buffering is different
+for these 2 FW commands.  To simplify the logic, we need to move
+the line to adjust the buffer length for HWRM_DBG_COREDUMP_RETRIEVE
+up, so that the new check to cap the copy length will work for both
+commands.
+
+Fixes: c74751f4c392 ("bnxt_en: Return error if FW returns more data than dump length")
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Shruti Parab <shruti.parab@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/blkdev.h | 67 ++++++++++++++++++++++++++++--------------
- 1 file changed, 45 insertions(+), 22 deletions(-)
+ .../net/ethernet/broadcom/bnxt/bnxt_coredump.c    | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-index 6aa67e9b2ec08..0fec27d6b986c 100644
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -691,23 +691,6 @@ static inline bool blk_queue_is_zoned(struct request_queue *q)
- 		(q->limits.features & BLK_FEAT_ZONED);
- }
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_coredump.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_coredump.c
+index b57d2a25ae276..32813cdd5aa5c 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_coredump.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_coredump.c
+@@ -66,10 +66,19 @@ static int bnxt_hwrm_dbg_dma_data(struct bnxt *bp, void *msg,
+ 			}
+ 		}
  
--#ifdef CONFIG_BLK_DEV_ZONED
--static inline unsigned int disk_nr_zones(struct gendisk *disk)
--{
--	return disk->nr_zones;
--}
--bool blk_zone_plug_bio(struct bio *bio, unsigned int nr_segs);
--#else /* CONFIG_BLK_DEV_ZONED */
--static inline unsigned int disk_nr_zones(struct gendisk *disk)
--{
--	return 0;
--}
--static inline bool blk_zone_plug_bio(struct bio *bio, unsigned int nr_segs)
--{
--	return false;
--}
--#endif /* CONFIG_BLK_DEV_ZONED */
++		if (cmn_req->req_type ==
++				cpu_to_le16(HWRM_DBG_COREDUMP_RETRIEVE))
++			info->dest_buf_size += len;
++
+ 		if (info->dest_buf) {
+ 			if ((info->seg_start + off + len) <=
+ 			    BNXT_COREDUMP_BUF_LEN(info->buf_len)) {
+-				memcpy(info->dest_buf + off, dma_buf, len);
++				u16 copylen = min_t(u16, len,
++						    info->dest_buf_size - off);
++
++				memcpy(info->dest_buf + off, dma_buf, copylen);
++				if (copylen < len)
++					break;
+ 			} else {
+ 				rc = -ENOBUFS;
+ 				if (cmn_req->req_type ==
+@@ -81,10 +90,6 @@ static int bnxt_hwrm_dbg_dma_data(struct bnxt *bp, void *msg,
+ 			}
+ 		}
+ 
+-		if (cmn_req->req_type ==
+-				cpu_to_le16(HWRM_DBG_COREDUMP_RETRIEVE))
+-			info->dest_buf_size += len;
 -
- static inline unsigned int disk_zone_no(struct gendisk *disk, sector_t sector)
- {
- 	if (!blk_queue_is_zoned(disk->queue))
-@@ -715,11 +698,6 @@ static inline unsigned int disk_zone_no(struct gendisk *disk, sector_t sector)
- 	return sector >> ilog2(disk->queue->limits.chunk_sectors);
- }
+ 		if (!(cmn_resp->flags & HWRM_DBG_CMN_FLAGS_MORE))
+ 			break;
  
--static inline unsigned int bdev_nr_zones(struct block_device *bdev)
--{
--	return disk_nr_zones(bdev->bd_disk);
--}
--
- static inline unsigned int bdev_max_open_zones(struct block_device *bdev)
- {
- 	return bdev->bd_disk->queue->limits.max_open_zones;
-@@ -826,6 +804,51 @@ static inline u64 sb_bdev_nr_blocks(struct super_block *sb)
- 		(sb->s_blocksize_bits - SECTOR_SHIFT);
- }
- 
-+#ifdef CONFIG_BLK_DEV_ZONED
-+static inline unsigned int disk_nr_zones(struct gendisk *disk)
-+{
-+	return disk->nr_zones;
-+}
-+bool blk_zone_plug_bio(struct bio *bio, unsigned int nr_segs);
-+
-+/**
-+ * disk_zone_capacity - returns the zone capacity of zone containing @sector
-+ * @disk:	disk to work with
-+ * @sector:	sector number within the querying zone
-+ *
-+ * Returns the zone capacity of a zone containing @sector. @sector can be any
-+ * sector in the zone.
-+ */
-+static inline unsigned int disk_zone_capacity(struct gendisk *disk,
-+					      sector_t sector)
-+{
-+	sector_t zone_sectors = disk->queue->limits.chunk_sectors;
-+
-+	if (sector + zone_sectors >= get_capacity(disk))
-+		return disk->last_zone_capacity;
-+	return disk->zone_capacity;
-+}
-+static inline unsigned int bdev_zone_capacity(struct block_device *bdev,
-+					      sector_t pos)
-+{
-+	return disk_zone_capacity(bdev->bd_disk, pos);
-+}
-+#else /* CONFIG_BLK_DEV_ZONED */
-+static inline unsigned int disk_nr_zones(struct gendisk *disk)
-+{
-+	return 0;
-+}
-+static inline bool blk_zone_plug_bio(struct bio *bio, unsigned int nr_segs)
-+{
-+	return false;
-+}
-+#endif /* CONFIG_BLK_DEV_ZONED */
-+
-+static inline unsigned int bdev_nr_zones(struct block_device *bdev)
-+{
-+	return disk_nr_zones(bdev->bd_disk);
-+}
-+
- int bdev_disk_changed(struct gendisk *disk, bool invalidate);
- 
- void put_disk(struct gendisk *disk);
 -- 
 2.39.5
 
