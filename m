@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-142137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3DA9AAE936
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:42:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21907AAEB92
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:08:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 670F0505271
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:42:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 220A89E309B
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:08:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8779628DF4F;
-	Wed,  7 May 2025 18:42:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4923628DF1F;
+	Wed,  7 May 2025 19:08:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TRaecKNX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lXR2XPY3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4367714A4C7;
-	Wed,  7 May 2025 18:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04C3F28E572;
+	Wed,  7 May 2025 19:08:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643330; cv=none; b=L76gAsuyrUxwVt/ET6ol3UbpgD/npcl9tmFsS+dOxo/tgEtWnD5w6xAqx+oYxta3V1xaTqteRqcSjxD0IW3/03AngqLExbpgRHTDA1nohwz+6AzreUpHB3l8OEs/4QoJl8PO1+4GuureLdBVNLOWhZhA5FdMyKHRXT5G6ggytaE=
+	t=1746644896; cv=none; b=WrJSCF2mbCWNjscMxvZ7g5sYHoHDmmCqkARFijzm+RgNBkOKoF5eDxdOhSy+q15CakbNyNEzR+S4zY6LCMUafYQvNDW008VXQgydl0jD0vEdPzWRU78GCpG5z7IRRGTwBZBTS5X5iqQ6Zq0IrY4yjIA4r1T7WdarR+7FVmHwzWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643330; c=relaxed/simple;
-	bh=w7JHTz5UQAP2ILkAnSBv9saO77GCZ4BWAacaM5aHgGw=;
+	s=arc-20240116; t=1746644896; c=relaxed/simple;
+	bh=H35eDjqp6IsE12i9koZUyHExP42Guyndsz+SoA3IPrQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UgvxSYyrFFmzgzVx7CZ7vDkupBkMl4kHWa6DGFSqsPP6nCEvkgU0CbvQK4WARc78m1NsN/45FnMJbe8aIEXVVdymaLBk6S6vxA5Qeh8xWxMh37k+RaRwixHfLSJMzeQiNXiwYcj49goWgVkkm8wZNpk4JJR5R1IFsMjweu8XrEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TRaecKNX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62184C4CEE2;
-	Wed,  7 May 2025 18:42:09 +0000 (UTC)
+	 MIME-Version; b=Yn8tKKewJSlE8GVcfAn2BwHSJUrjaSdIr3hdFvUEd9ak37Su7HUIyBTR2huImxeY1giDiieF4nxYlf3toYhS27h9GSC4eXzzXWGVlZ+5m2z0m3sku+C7/KzAUhk+8ZvMZ5o8sBUTobqKNO9scLgppI8vzfbz93V/gXRvyKSRzHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lXR2XPY3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6819AC4CEE2;
+	Wed,  7 May 2025 19:08:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643329;
-	bh=w7JHTz5UQAP2ILkAnSBv9saO77GCZ4BWAacaM5aHgGw=;
+	s=korg; t=1746644895;
+	bh=H35eDjqp6IsE12i9koZUyHExP42Guyndsz+SoA3IPrQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TRaecKNXQfxLX+IlpsvNQ6Cvwr62W1j8fAyoPsfaHjR1rvAogOztGJjHeDOzo9jq6
-	 VHg27o28lzgty29orYj+CZg7E30/6ZQwDmkkAVdo0tse7WftSIjOyy/cpHZPg7TbaJ
-	 TM8s5TLr5LkjInCv5T5K4yM+XCSWIeT+ly+ovqgk=
+	b=lXR2XPY37q513GLHE/4Kg71ASAYez8FAQw2WVGaPBaYYFxOvvF1ZCF5evh47mgSQW
+	 uxZVc/9Dzv3b56GPFj0aZfUT6JdkKf/UULQzGuAn3tg1kF9EshqfPx31w+MrEgF8Vy
+	 j8y5hVMsvoS+L+64capSN+pod0wRNCH0kWhNzpB8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 23/55] net_sched: drr: Fix double list add in class with netem as child qdisc
+	Sean Heelan <seanheelan@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 028/129] ksmbd: fix use-after-free in kerberos authentication
 Date: Wed,  7 May 2025 20:39:24 +0200
-Message-ID: <20250507183759.975180461@linuxfoundation.org>
+Message-ID: <20250507183814.668979623@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
-References: <20250507183759.048732653@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Nogueira <victor@mojatatu.com>
+From: Sean Heelan <seanheelan@gmail.com>
 
-[ Upstream commit f99a3fbf023e20b626be4b0f042463d598050c9a ]
+commit e86e9134e1d1c90a960dd57f59ce574d27b9a124 upstream.
 
-As described in Gerrard's report [1], there are use cases where a netem
-child qdisc will make the parent qdisc's enqueue callback reentrant.
-In the case of drr, there won't be a UAF, but the code will add the same
-classifier to the list twice, which will cause memory corruption.
+Setting sess->user = NULL was introduced to fix the dangling pointer
+created by ksmbd_free_user. However, it is possible another thread could
+be operating on the session and make use of sess->user after it has been
+passed to ksmbd_free_user but before sess->user is set to NULL.
 
-In addition to checking for qlen being zero, this patch checks whether the
-class was already added to the active_list (cl_is_active) before adding
-to the list to cover for the reentrant case.
-
-[1] https://lore.kernel.org/netdev/CAHcdcOm+03OD2j6R0=YHKqmy=VgJ8xEOKuP6c7mSgnp-TEJJbw@mail.gmail.com/
-
-Fixes: 37d9cf1a3ce3 ("sched: Fix detection of empty queues in child qdiscs")
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
-Link: https://patch.msgid.link/20250425220710.3964791-2-victor@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Sean Heelan <seanheelan@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_drr.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ fs/smb/server/auth.c    |   14 +++++++++++++-
+ fs/smb/server/smb2pdu.c |    5 -----
+ 2 files changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/net/sched/sch_drr.c b/net/sched/sch_drr.c
-index 80a88e208d2bc..e33a72c356c87 100644
---- a/net/sched/sch_drr.c
-+++ b/net/sched/sch_drr.c
-@@ -36,6 +36,11 @@ struct drr_sched {
- 	struct Qdisc_class_hash		clhash;
- };
- 
-+static bool cl_is_active(struct drr_class *cl)
-+{
-+	return !list_empty(&cl->alist);
-+}
+--- a/fs/smb/server/auth.c
++++ b/fs/smb/server/auth.c
+@@ -546,7 +546,19 @@ int ksmbd_krb5_authenticate(struct ksmbd
+ 		retval = -ENOMEM;
+ 		goto out;
+ 	}
+-	sess->user = user;
 +
- static struct drr_class *drr_find_class(struct Qdisc *sch, u32 classid)
- {
- 	struct drr_sched *q = qdisc_priv(sch);
-@@ -345,7 +350,6 @@ static int drr_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	struct drr_sched *q = qdisc_priv(sch);
- 	struct drr_class *cl;
- 	int err = 0;
--	bool first;
++	if (!sess->user) {
++		/* First successful authentication */
++		sess->user = user;
++	} else {
++		if (!ksmbd_compare_user(sess->user, user)) {
++			ksmbd_debug(AUTH, "different user tried to reuse session\n");
++			retval = -EPERM;
++			ksmbd_free_user(user);
++			goto out;
++		}
++		ksmbd_free_user(user);
++	}
  
- 	cl = drr_classify(skb, sch, &err);
- 	if (cl == NULL) {
-@@ -355,7 +359,6 @@ static int drr_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		return err;
- 	}
+ 	memcpy(sess->sess_key, resp->payload, resp->session_key_len);
+ 	memcpy(out_blob, resp->payload + resp->session_key_len,
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -1599,11 +1599,6 @@ static int krb5_authenticate(struct ksmb
+ 	if (prev_sess_id && prev_sess_id != sess->id)
+ 		destroy_previous_session(conn, sess->user, prev_sess_id);
  
--	first = !cl->qdisc->q.qlen;
- 	err = qdisc_enqueue(skb, cl->qdisc, to_free);
- 	if (unlikely(err != NET_XMIT_SUCCESS)) {
- 		if (net_xmit_drop_count(err)) {
-@@ -365,7 +368,7 @@ static int drr_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		return err;
- 	}
- 
--	if (first) {
-+	if (!cl_is_active(cl)) {
- 		list_add_tail(&cl->alist, &q->active);
- 		cl->deficit = cl->quantum;
- 	}
--- 
-2.39.5
-
+-	if (sess->state == SMB2_SESSION_VALID) {
+-		ksmbd_free_user(sess->user);
+-		sess->user = NULL;
+-	}
+-
+ 	retval = ksmbd_krb5_authenticate(sess, in_blob, in_len,
+ 					 out_blob, &out_len);
+ 	if (retval) {
 
 
 
