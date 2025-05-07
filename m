@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-142384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82039AAEA61
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:54:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A677AAE968
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:44:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C3659C7462
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:54:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 727E43ADB2E
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:44:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E035E28937F;
-	Wed,  7 May 2025 18:54:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D123128DF47;
+	Wed,  7 May 2025 18:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ytOCfu/M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dJUffbJ6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D9B62116E9;
-	Wed,  7 May 2025 18:54:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE6E1DE4C4;
+	Wed,  7 May 2025 18:44:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644082; cv=none; b=ODSi6NLs6WA/n3xLz4+x81W0Dy+PkZEWogxxwkAThZ3akPe4s/ZoWuxmIJZAAGvd8M4Cq7CLA/LJL74M6nLseRkwFna+JOlKGLvKPU07kYQ/+sc4fuP4pYkaNq4estFKi1p2INzYrNX0Ep6lVuKeoZ5T6ZhY2pDkbnCpW/QDRgw=
+	t=1746643470; cv=none; b=ktQ22rZh+wzluiLuoZWJltYjt/AQCo30sb0kTdurzETWHVGZff9+X+64USYrNId4U918tFLYQm7XgL2Shx7wDjhzr+Y+FC/zGwBs+tbaqFhoPVFkeJomJQparMmAkjF3v/TbhsgyUo0mOuBsvxnQ1Ek0kcCvIfaANZbuHSf46qE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644082; c=relaxed/simple;
-	bh=eI+xvl6Qv3UeibZScHzASqOmOv9Jpq/oB2o9cR+jqIA=;
+	s=arc-20240116; t=1746643470; c=relaxed/simple;
+	bh=yNlzM0a8qzw31Q1j9nei2fTBjhJ98ooWcfMZFxHTkBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dQyiIMytHsGuI3+yyjB4uhU3UhkRZXA6derwd0Fdyld8fb0t0BQvW/bcinS7Aoh/sGSDxBhnZULhakg0PufxEz1Zml4P/EIZCZmEq8jcaid/drjHtNwKXnmPvFJ8JKFpJ365EDTxj8s3z1iyrdLz0jId8wBNgtapF5PAigD6RW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ytOCfu/M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF891C4CEE2;
-	Wed,  7 May 2025 18:54:41 +0000 (UTC)
+	 MIME-Version; b=sW199Y1zxZhcugR+u5ccs4Y2jEChuBZyuK37apRDpjFhWm04xLe8E6DErLAvqSc+x5c9Gf4sZu1G0f/QrSl9r2qVC7dV0NPTOykgnAZ3FykqbEfJTQ9sZZRVcN+GG4G6x+9eztRpjpGSayCUETXB8P5wDFM6erL6LPjKXLbfMSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dJUffbJ6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E637C4CEE2;
+	Wed,  7 May 2025 18:44:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644082;
-	bh=eI+xvl6Qv3UeibZScHzASqOmOv9Jpq/oB2o9cR+jqIA=;
+	s=korg; t=1746643470;
+	bh=yNlzM0a8qzw31Q1j9nei2fTBjhJ98ooWcfMZFxHTkBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ytOCfu/MyZcM85NIGqLPsqESnrB6q1vp4H0N/TVD9hJyrVShFpCNaQTmk5cLEPI/x
-	 16XFKZdUKnTPufvpz43FkDopFlIU5skwSDBtlB+tLQoYe52m83r6uwWXHNJKN0003s
-	 R3+IAUgVpUFE9ubP15wIKVFWG07GtLrgHcJcFtEA=
+	b=dJUffbJ6PQpnOZqs6x6DQt3+oTM7TyukUf9H0NE3nHFCCFM4wao/H+IlQwuUXS/by
+	 iaStl7pDQwUPMrQYDS4lcwHaY47HVUxuzYzs/+U5VAjgDcalNodRBuJQ2MmvdoHfo4
+	 gMpROCBWdA5L2p7e0bCE08HYrlHCTbmoksMe7rWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>,
-	Kiran K <kiran.k@intel.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 084/183] Bluetooth: btintel_pcie: Add additional to checks to clear TX/RX paths
-Date: Wed,  7 May 2025 20:38:49 +0200
-Message-ID: <20250507183828.235628741@linuxfoundation.org>
+	Benjamin Marzinski <bmarzins@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 6.1 15/97] dm: always update the array size in realloc_argv on success
+Date: Wed,  7 May 2025 20:38:50 +0200
+Message-ID: <20250507183807.602111045@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
+References: <20250507183806.987408728@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kiran K <kiran.k@intel.com>
+From: Benjamin Marzinski <bmarzins@redhat.com>
 
-[ Upstream commit 1c7664957e4edb234c69de2db4be1f740d2df564 ]
+commit 5a2a6c428190f945c5cbf5791f72dbea83e97f66 upstream.
 
-Due to a hardware issue, there is a possibility that the driver may miss
-an MSIx interrupt on the RX/TX data path. Since the TX and RX paths are
-independent, when a TX MSIx interrupt occurs, the driver can check the
-RX queue for any pending data and process it if present. The same
-approach applies to the RX path.
+realloc_argv() was only updating the array size if it was called with
+old_argv already allocated. The first time it was called to create an
+argv array, it would allocate the array but return the array size as
+zero. dm_split_args() would think that it couldn't store any arguments
+in the array and would call realloc_argv() again, causing it to
+reallocate the initial slots (this time using GPF_KERNEL) and finally
+return a size. Aside from being wasteful, this could cause deadlocks on
+targets that need to process messages without starting new IO. Instead,
+realloc_argv should always update the allocated array size on success.
 
-Fixes: c2b636b3f788 ("Bluetooth: btintel_pcie: Add support for PCIe transport")
-Signed-off-by: Chandrashekar Devegowda <chandrashekar.devegowda@intel.com>
-Signed-off-by: Kiran K <kiran.k@intel.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a0651926553c ("dm table: don't copy from a NULL pointer in realloc_argv()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btintel_pcie.c | 24 +++++++++++++++++++-----
- 1 file changed, 19 insertions(+), 5 deletions(-)
+ drivers/md/dm-table.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/bluetooth/btintel_pcie.c b/drivers/bluetooth/btintel_pcie.c
-index ea9b137b1491c..1636f636fbef0 100644
---- a/drivers/bluetooth/btintel_pcie.c
-+++ b/drivers/bluetooth/btintel_pcie.c
-@@ -773,10 +773,8 @@ static void btintel_pcie_msix_rx_handle(struct btintel_pcie_data *data)
- 	bt_dev_dbg(hdev, "RXQ: cr_hia: %u  cr_tia: %u", cr_hia, cr_tia);
+--- a/drivers/md/dm-table.c
++++ b/drivers/md/dm-table.c
+@@ -502,9 +502,10 @@ static char **realloc_argv(unsigned int
+ 		gfp = GFP_NOIO;
+ 	}
+ 	argv = kmalloc_array(new_size, sizeof(*argv), gfp);
+-	if (argv && old_argv) {
+-		memcpy(argv, old_argv, *size * sizeof(*argv));
++	if (argv) {
+ 		*size = new_size;
++		if (old_argv)
++			memcpy(argv, old_argv, *size * sizeof(*argv));
+ 	}
  
- 	/* Check CR_TIA and CR_HIA for change */
--	if (cr_tia == cr_hia) {
--		bt_dev_warn(hdev, "RXQ: no new CD found");
-+	if (cr_tia == cr_hia)
- 		return;
--	}
- 
- 	rxq = &data->rxq;
- 
-@@ -812,6 +810,16 @@ static irqreturn_t btintel_pcie_msix_isr(int irq, void *data)
- 	return IRQ_WAKE_THREAD;
- }
- 
-+static inline bool btintel_pcie_is_rxq_empty(struct btintel_pcie_data *data)
-+{
-+	return data->ia.cr_hia[BTINTEL_PCIE_RXQ_NUM] == data->ia.cr_tia[BTINTEL_PCIE_RXQ_NUM];
-+}
-+
-+static inline bool btintel_pcie_is_txackq_empty(struct btintel_pcie_data *data)
-+{
-+	return data->ia.cr_tia[BTINTEL_PCIE_TXQ_NUM] == data->ia.cr_hia[BTINTEL_PCIE_TXQ_NUM];
-+}
-+
- static irqreturn_t btintel_pcie_irq_msix_handler(int irq, void *dev_id)
- {
- 	struct msix_entry *entry = dev_id;
-@@ -839,12 +847,18 @@ static irqreturn_t btintel_pcie_irq_msix_handler(int irq, void *dev_id)
- 		btintel_pcie_msix_gp0_handler(data);
- 
- 	/* For TX */
--	if (intr_fh & BTINTEL_PCIE_MSIX_FH_INT_CAUSES_0)
-+	if (intr_fh & BTINTEL_PCIE_MSIX_FH_INT_CAUSES_0) {
- 		btintel_pcie_msix_tx_handle(data);
-+		if (!btintel_pcie_is_rxq_empty(data))
-+			btintel_pcie_msix_rx_handle(data);
-+	}
- 
- 	/* For RX */
--	if (intr_fh & BTINTEL_PCIE_MSIX_FH_INT_CAUSES_1)
-+	if (intr_fh & BTINTEL_PCIE_MSIX_FH_INT_CAUSES_1) {
- 		btintel_pcie_msix_rx_handle(data);
-+		if (!btintel_pcie_is_txackq_empty(data))
-+			btintel_pcie_msix_tx_handle(data);
-+	}
- 
- 	/*
- 	 * Before sending the interrupt the HW disables it to prevent a nested
--- 
-2.39.5
-
+ 	kfree(old_argv);
 
 
 
