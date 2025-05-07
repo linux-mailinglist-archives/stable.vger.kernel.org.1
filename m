@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-142602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CAC4AAEB6E
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:07:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C513EAAEBE3
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:11:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32B11526B0C
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:06:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C7F65270F9
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:11:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E197428DF3C;
-	Wed,  7 May 2025 19:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ABCA28DF1F;
+	Wed,  7 May 2025 19:11:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hMS/l6hK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FdRyjL1i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DC8A214813;
-	Wed,  7 May 2025 19:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2778628BA9F;
+	Wed,  7 May 2025 19:11:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644759; cv=none; b=FOL/LR/mpuq5l1u3fKfZvqljaikNfl6KfG2lsi1U3LQNtcTl+gXv0Gw4G12NUXfyFZKkNlg5iK9bhRcRxmv7bzL86KgkpfQLThC07uhf5deqKg1LAy/hqRrulcfalJV5c1p3gKtO6sCDXRFiOYI+49ib5yybJNRznU6SC22jIek=
+	t=1746645107; cv=none; b=mHFAA2e9ycSLCKp7QpzycBb6XHk0tvpXKGBKRSHcEcGMuLM8Ow02Qr1E4o8Ht395S2Jq4OLjKoaN8meDzkfXnrQmCjgIy4yg7FUv6Q34OFeOqo6WiOh+LPLWPH2C1c0Oowrus7tfkx00qAV7wiZA2SHoUZsqcrbaPExZudXP9ik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644759; c=relaxed/simple;
-	bh=/rkO6FDU2e9i2/jOdhiSPPzg8ZGWHQw45mN6NA9UbAE=;
+	s=arc-20240116; t=1746645107; c=relaxed/simple;
+	bh=X79Ocf4eOt2Z+0B9K6jf+q9YDyYuYglQqT15brtlwXY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RrrRGmxJj+yYxZIyBWAnBy3kYTFYmKpYUmDKKbXNjp0C0KLinXp8Cs9fBEGTINkgdDp7Ck1HepH5bs4/+b9uacgm4hWHQ7u7j8vBR58mkIloVPZWgrrH8LteBnwLwI3j3FLJAbKqRNd99wUkit30ZjRbSKNUzinZa2MiNcN949g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hMS/l6hK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FF8FC4CEE2;
-	Wed,  7 May 2025 19:05:58 +0000 (UTC)
+	 MIME-Version; b=m45jcJ8D0HuoUr10pdd/1AMeeScfwYAAt4r2RKvPLOiroXE+7SPTT1rqCXotj2uyvdNoexfzG8vzHvLLRFtspa1voxA7B2dTSeamIgu+vNLlgG4hzhfHvXzdAjPw7W4/X1FlqaiHgrSRxCVZYKYhgbjthluK1oJrfKVyp7gC24Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FdRyjL1i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E28AC4CEE2;
+	Wed,  7 May 2025 19:11:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644759;
-	bh=/rkO6FDU2e9i2/jOdhiSPPzg8ZGWHQw45mN6NA9UbAE=;
+	s=korg; t=1746645107;
+	bh=X79Ocf4eOt2Z+0B9K6jf+q9YDyYuYglQqT15brtlwXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hMS/l6hKWB6uUOZ5PaU4vTnejF3n6i62EHlpuTnMkDK4PWvnk9NRez7lVqw+HXTnm
-	 OzqAGaTswxAYd0Y6EKbehplVT3oz3/WuGQT+I5/tPvFOAgjiUDdu6hqmVn3Pe9vQk5
-	 Fr8ydOZWbPuRCtoHfNzZgILGnUkddXoMnNJwQkIg=
+	b=FdRyjL1i9SB0yDoP+yf8AzqM8/JvfRjXaOb/NHEK/B/N7PaPZOZ5Z9bfCwKjgim7k
+	 f+7L8eIvOI4+UNqsmeLkdG2Z2TrKDO/t6aPq+p4whyP3wgwlm/Cm5eE3l3pseMM7mY
+	 gNztM5ohlWt6UF78BePnOJykd3ydIna+Jmgo4ysw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.12 147/164] sch_htb: make htb_qlen_notify() idempotent
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH 6.6 096/129] ASoC: Use of_property_read_bool()
 Date: Wed,  7 May 2025 20:40:32 +0200
-Message-ID: <20250507183826.923547159@linuxfoundation.org>
+Message-ID: <20250507183817.387633538@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <xiyou.wangcong@gmail.com>
+From: Rob Herring (Arm) <robh@kernel.org>
 
-commit 5ba8b837b522d7051ef81bacf3d95383ff8edce5 upstream.
+commit 69dd15a8ef0ae494179fd15023aa8172188db6b7 upstream.
 
-htb_qlen_notify() always deactivates the HTB class and in fact could
-trigger a warning if it is already deactivated. Therefore, it is not
-idempotent and not friendly to its callers, like fq_codel_dequeue().
+Use of_property_read_bool() to read boolean properties rather than
+of_get_property(). This is part of a larger effort to remove callers
+of of_get_property() and similar functions. of_get_property() leaks
+the DT property data pointer which is a problem for dynamically
+allocated nodes which may be freed.
 
-Let's make it idempotent to ease qdisc_tree_reduce_backlog() callers'
-life.
-
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250403211033.166059-2-xiyou.wangcong@gmail.com
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+Link: https://patch.msgid.link/20240731191312.1710417-20-robh@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_htb.c |    2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/codecs/ak4613.c |    4 ++--
+ sound/soc/soc-core.c      |    8 ++++----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
---- a/net/sched/sch_htb.c
-+++ b/net/sched/sch_htb.c
-@@ -1485,6 +1485,8 @@ static void htb_qlen_notify(struct Qdisc
- {
- 	struct htb_class *cl = (struct htb_class *)arg;
+--- a/sound/soc/codecs/ak4613.c
++++ b/sound/soc/codecs/ak4613.c
+@@ -840,14 +840,14 @@ static void ak4613_parse_of(struct ak461
+ 	/* Input 1 - 2 */
+ 	for (i = 0; i < 2; i++) {
+ 		snprintf(prop, sizeof(prop), "asahi-kasei,in%d-single-end", i + 1);
+-		if (!of_get_property(np, prop, NULL))
++		if (!of_property_read_bool(np, prop))
+ 			priv->ic |= 1 << i;
+ 	}
  
-+	if (!cl->prio_activity)
-+		return;
- 	htb_deactivate(qdisc_priv(sch), cl);
- }
+ 	/* Output 1 - 6 */
+ 	for (i = 0; i < 6; i++) {
+ 		snprintf(prop, sizeof(prop), "asahi-kasei,out%d-single-end", i + 1);
+-		if (!of_get_property(np, prop, NULL))
++		if (!of_property_read_bool(np, prop))
+ 			priv->oc |= 1 << i;
+ 	}
+ 
+--- a/sound/soc/soc-core.c
++++ b/sound/soc/soc-core.c
+@@ -3249,10 +3249,10 @@ unsigned int snd_soc_daifmt_parse_format
+ 	 * SND_SOC_DAIFMT_INV_MASK area
+ 	 */
+ 	snprintf(prop, sizeof(prop), "%sbitclock-inversion", prefix);
+-	bit = !!of_get_property(np, prop, NULL);
++	bit = of_property_read_bool(np, prop);
+ 
+ 	snprintf(prop, sizeof(prop), "%sframe-inversion", prefix);
+-	frame = !!of_get_property(np, prop, NULL);
++	frame = of_property_read_bool(np, prop);
+ 
+ 	switch ((bit << 4) + frame) {
+ 	case 0x11:
+@@ -3289,12 +3289,12 @@ unsigned int snd_soc_daifmt_parse_clock_
+ 	 * check "[prefix]frame-master"
+ 	 */
+ 	snprintf(prop, sizeof(prop), "%sbitclock-master", prefix);
+-	bit = !!of_get_property(np, prop, NULL);
++	bit = of_property_read_bool(np, prop);
+ 	if (bit && bitclkmaster)
+ 		*bitclkmaster = of_parse_phandle(np, prop, 0);
+ 
+ 	snprintf(prop, sizeof(prop), "%sframe-master", prefix);
+-	frame = !!of_get_property(np, prop, NULL);
++	frame = of_property_read_bool(np, prop);
+ 	if (frame && framemaster)
+ 		*framemaster = of_parse_phandle(np, prop, 0);
  
 
 
