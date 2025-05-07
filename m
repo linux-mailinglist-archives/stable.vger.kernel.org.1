@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-142433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A7A8AAEA9D
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:57:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75862AAEB24
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:03:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0DB337B98F4
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:56:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E349D525D99
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:03:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2741328C5B0;
-	Wed,  7 May 2025 18:57:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06B4D28BA9F;
+	Wed,  7 May 2025 19:03:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I91YAe8M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IM6/W2m/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D144428BA9D;
-	Wed,  7 May 2025 18:57:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72F329A0;
+	Wed,  7 May 2025 19:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644235; cv=none; b=L/9x3pqzj+ksnGe4cJuizlEJ5WWd4mCjz34XMtnpfS8SqhIcuZDpKCoCukY1edA+6bayum9ori0XsSgW3uWNFFE0paJzdBnbhOikVFxxxt5tjlBMeWSTUI4bzH4FyD6RU0bHBqem3xX2a+XRQj7TQctEjNLGqE7H8AwKz0ME3F8=
+	t=1746644629; cv=none; b=JxR84El0B8SAM6RbbWH7dBe1oNEcy9bJJGpbGuquUC9azUtN7sxNGMuONCAW5f3NyrllT/X/OPMeUdDVKU6RL05pAv66xiC/5SmqL8n52HIbeb9YV6UpoQQEal0MUBy/moIUtNm57TAQYOTnWjOmxy8o+U22Qs+ikg1wEpPPFqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644235; c=relaxed/simple;
-	bh=DTPrmJkpdXVHEy+qiuO7YxQ+GZBV4W5Xq+PweEZKbIA=;
+	s=arc-20240116; t=1746644629; c=relaxed/simple;
+	bh=46GhVJxXNUdB8tjf3FS+SltI+H/TuzI+eEsPJoRyg3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QkDUhgcNusRpkPPk3pzk4XtC7dThJhZKLzW1iFGqkU84+Ojx2uBEzUDdpZ9eQxXUAlq6CFYI7Ooc4MKcPfp1hnJr3hCCnzy42FA0ItohXEyFN4sCBg3iceGGf2ZTSuI0ZMHrhLtlbzjeFBfB8FCCgGC8MzRCaC1wvLkC4kTbHQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I91YAe8M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5818FC4CEEB;
-	Wed,  7 May 2025 18:57:15 +0000 (UTC)
+	 MIME-Version; b=FUmJsl04V7MvO4yC2tJ0WmdK4PzILi5lmYR1cbnWSnyrj0TzJ4l2MbW63aMy48dtsG2k6zYhXBsGiOp6Zm59NBbg+qXL1f2xJ6fH0SpK+nAe2yh8WIRC5toyk5ZoZAYXzKWiHIrZikmEhFyyFE05lOPbH0xtnTQPqOjhzz94bEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IM6/W2m/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D719C4CEE2;
+	Wed,  7 May 2025 19:03:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644235;
-	bh=DTPrmJkpdXVHEy+qiuO7YxQ+GZBV4W5Xq+PweEZKbIA=;
+	s=korg; t=1746644629;
+	bh=46GhVJxXNUdB8tjf3FS+SltI+H/TuzI+eEsPJoRyg3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I91YAe8MT9mWtU+UQClZQd21h8B8ozL+5ByC/0+1Z987V/Up/Dx4hxy82oJXAOj4Y
-	 YcamqKIzV7rvIZPygoiY/RMSAbrv+jpj+8txsD/tIizgkb9qZa2j54bqnWXKydRQu9
-	 8jLlrTWnghQHd0szUDlzBYwGLgZ8sGDWQD2SqPBk=
+	b=IM6/W2m/YzW+HIoe9DUTTOZ9DZpHVgEnqf2HCUeIX8XIMdEJx9BqZl9bt2hzo5qdl
+	 91Wo7xXJK/TpJceHqRo8k30Gvx780qug8ldgFQLV46L7YqmIlQoYMcxwX63Gcf0n3v
+	 5DqxHjvcGbCt1W29BssATLk3loiPTlts6+x/gLC4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Vitaly Lifshits <vitaly.lifshits@intel.com>,
+	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 145/183] net: vertexcom: mse102x: Fix LEN_MASK
-Date: Wed,  7 May 2025 20:39:50 +0200
-Message-ID: <20250507183830.741849738@linuxfoundation.org>
+Subject: [PATCH 6.12 106/164] igc: fix lock order in igc_ptp_reset
+Date: Wed,  7 May 2025 20:39:51 +0200
+Message-ID: <20250507183825.273515804@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +65,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Jacob Keller <jacob.e.keller@intel.com>
 
-[ Upstream commit 74987089ec678b4018dba0a609e9f4bf6ef7f4ad ]
+[ Upstream commit c7d6cb96d5c33b5148f3dc76fcd30a9b8cd9e973 ]
 
-The LEN_MASK for CMD_RTS doesn't cover the whole parameter mask.
-The Bit 11 is reserved, so adjust LEN_MASK accordingly.
+Commit 1a931c4f5e68 ("igc: add lock preventing multiple simultaneous PTM
+transactions") added a new mutex to protect concurrent PTM transactions.
+This lock is acquired in igc_ptp_reset() in order to ensure the PTM
+registers are properly disabled after a device reset.
 
-Fixes: 2f207cbf0dd4 ("net: vertexcom: Add MSE102x SPI support")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250430133043.7722-3-wahrenst@gmx.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The flow where the lock is acquired already holds a spinlock, so acquiring
+a mutex leads to a sleep-while-locking bug, reported both by smatch,
+and the kernel test robot.
+
+The critical section in igc_ptp_reset() does correctly use the
+readx_poll_timeout_atomic variants, but the standard PTM flow uses regular
+sleeping variants. This makes converting the mutex to a spinlock a bit
+tricky.
+
+Instead, re-order the locking in igc_ptp_reset. Acquire the mutex first,
+and then the tmreg_lock spinlock. This is safe because there is no other
+ordering dependency on these locks, as this is the only place where both
+locks were acquired simultaneously. Indeed, any other flow acquiring locks
+in that order would be wrong regardless.
+
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Fixes: 1a931c4f5e68 ("igc: add lock preventing multiple simultaneous PTM transactions")
+Link: https://lore.kernel.org/intel-wired-lan/Z_-P-Hc1yxcw0lTB@stanley.mountain/
+Link: https://lore.kernel.org/intel-wired-lan/202504211511.f7738f5d-lkp@intel.com/T/#u
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/vertexcom/mse102x.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/igc/igc_ptp.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/vertexcom/mse102x.c b/drivers/net/ethernet/vertexcom/mse102x.c
-index 92ebf16331598..3edf2c3753f0e 100644
---- a/drivers/net/ethernet/vertexcom/mse102x.c
-+++ b/drivers/net/ethernet/vertexcom/mse102x.c
-@@ -33,7 +33,7 @@
- #define CMD_CTR		(0x2 << CMD_SHIFT)
+diff --git a/drivers/net/ethernet/intel/igc/igc_ptp.c b/drivers/net/ethernet/intel/igc/igc_ptp.c
+index 612ed26a29c5d..efc7b30e42113 100644
+--- a/drivers/net/ethernet/intel/igc/igc_ptp.c
++++ b/drivers/net/ethernet/intel/igc/igc_ptp.c
+@@ -1290,6 +1290,8 @@ void igc_ptp_reset(struct igc_adapter *adapter)
+ 	/* reset the tstamp_config */
+ 	igc_ptp_set_timestamp_mode(adapter, &adapter->tstamp_config);
  
- #define CMD_MASK	GENMASK(15, CMD_SHIFT)
--#define LEN_MASK	GENMASK(CMD_SHIFT - 1, 0)
-+#define LEN_MASK	GENMASK(CMD_SHIFT - 2, 0)
++	mutex_lock(&adapter->ptm_lock);
++
+ 	spin_lock_irqsave(&adapter->tmreg_lock, flags);
  
- #define DET_CMD_LEN	4
- #define DET_SOF_LEN	2
+ 	switch (adapter->hw.mac.type) {
+@@ -1308,7 +1310,6 @@ void igc_ptp_reset(struct igc_adapter *adapter)
+ 		if (!igc_is_crosststamp_supported(adapter))
+ 			break;
+ 
+-		mutex_lock(&adapter->ptm_lock);
+ 		wr32(IGC_PCIE_DIG_DELAY, IGC_PCIE_DIG_DELAY_DEFAULT);
+ 		wr32(IGC_PCIE_PHY_DELAY, IGC_PCIE_PHY_DELAY_DEFAULT);
+ 
+@@ -1332,7 +1333,6 @@ void igc_ptp_reset(struct igc_adapter *adapter)
+ 			netdev_err(adapter->netdev, "Timeout reading IGC_PTM_STAT register\n");
+ 
+ 		igc_ptm_reset(hw);
+-		mutex_unlock(&adapter->ptm_lock);
+ 		break;
+ 	default:
+ 		/* No work to do. */
+@@ -1349,5 +1349,7 @@ void igc_ptp_reset(struct igc_adapter *adapter)
+ out:
+ 	spin_unlock_irqrestore(&adapter->tmreg_lock, flags);
+ 
++	mutex_unlock(&adapter->ptm_lock);
++
+ 	wrfl();
+ }
 -- 
 2.39.5
 
