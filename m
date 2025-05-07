@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-142246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D076AAE9C3
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:48:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7283AAEBDE
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:11:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DD9E79873B6
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:47:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C543172401
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:11:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DFB71E9B04;
-	Wed,  7 May 2025 18:47:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 486C828C2B3;
+	Wed,  7 May 2025 19:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZS1WoDE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T06brcgr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B26B1A29A;
-	Wed,  7 May 2025 18:47:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 051A92144C1;
+	Wed,  7 May 2025 19:11:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643663; cv=none; b=EflRoEKi2uW/hUjZZjaCiq7MBJrcupxmysrm4oagsOsZD9F8c3FeeFXutXVSkjtBv7Y6HATsK268Q0EsH3XBc6Q+x0ESC5yhO0EjkCNqFPgs7QfKk2s1r01Y56VCaIfM6KXzWDRkmUUwyNcOXqJMifpEqPiEeO21PuMXJ2BNSyM=
+	t=1746645070; cv=none; b=tRNp055uZdyFKnND/L6thMdIRGuw4hBad+ZrNYU7K+gLUKTZIu2LDPZj76kgJ6w0lKlNrbxhFxlBf8JpJ8NrqASugBZxcKoj37++LfZ6wrsAC2w0jiuvilZyMjA2cTR7PRhbRJrn4Mj62MUhAlRmr+uCUYyaeoAPoTpxsN/SiJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643663; c=relaxed/simple;
-	bh=988TcI7ACWbtaE9ICK5NMjhl/vQ1ktE85plyEwl2BWA=;
+	s=arc-20240116; t=1746645070; c=relaxed/simple;
+	bh=dCvzHwQg9Afwp2BqFDQg4G2V67HxE7jU5nC2R6KXMnM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rcUCOmmJv9t8V2sZQEh6nDCJJsemAaMZ/+yk3aFw+TxdUTZQ5z1hdFeEB8jEsKFG7Dzpsc0AxIFruNDhSKszLnfcJN1oM8s2pGhieLPasa9z+7aylTgKVIDV9uaqWw6C0NJ3c7xIUpKSvpmAtSixtEtkAt9cDo51g/ZiKf8Z754=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZS1WoDE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72C91C4CEF0;
-	Wed,  7 May 2025 18:47:42 +0000 (UTC)
+	 MIME-Version; b=b5NRHGHcGoYNF0koYp0MZAtEJVZljP411W5uZim5nXmTGrT8WlyQtI25CJG94fIfo7qphBZW7FqmAUqd+Z4dReHM/7y52MeaHYwyLXq/vkHstPKiFO21KzHwD52FE4ydR5mNUSDtBgJz/PeZZujsSeYFIbXeMuS5LvB8urjFr1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T06brcgr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1833DC4CEE2;
+	Wed,  7 May 2025 19:11:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643662;
-	bh=988TcI7ACWbtaE9ICK5NMjhl/vQ1ktE85plyEwl2BWA=;
+	s=korg; t=1746645069;
+	bh=dCvzHwQg9Afwp2BqFDQg4G2V67HxE7jU5nC2R6KXMnM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XZS1WoDE6Hi4P6yNUM2AFa/FdDoIqiNc7jpL2NElHyIgWWSbno+sVrv1pQPtHgFb3
-	 ZJXgnryeZRzbscvn16jF/DILfu+eBoGEabIHhKRWyOM3JMHzFaEvkziVQq3vmwz1wy
-	 zFH6ayGe2Cl/iqaiglvoE39HE53a8+wS6/d5B9Do=
+	b=T06brcgrFl0CCSwMFLJdUyjMfXaS3wSFAe8iHrlF1LdAXF3HIm0v/OYacLMLOa7k2
+	 freSYt7zsYiUTVCukaOGQoPGhlWJHNngqJwQ2QGFuNcT41m04vOLRtUvHyxLR0lkMb
+	 veZUosxRqc2X1Lod00LS5F1k8g8TCizE7IEVHcjs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1 75/97] sch_drr: make drr_qlen_notify() idempotent
+	Maor Gottlieb <maorg@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 054/129] net/mlx5: E-Switch, Initialize MAC Address for Default GID
 Date: Wed,  7 May 2025 20:39:50 +0200
-Message-ID: <20250507183810.005165869@linuxfoundation.org>
+Message-ID: <20250507183815.724160798@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
-References: <20250507183806.987408728@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cong Wang <xiyou.wangcong@gmail.com>
+From: Maor Gottlieb <maorg@nvidia.com>
 
-commit df008598b3a00be02a8051fde89ca0fbc416bd55 upstream.
+[ Upstream commit 5d1a04f347e6cbf5ffe74da409a5d71fbe8c5f19 ]
 
-drr_qlen_notify() always deletes the DRR class from its active list
-with list_del(), therefore, it is not idempotent and not friendly
-to its callers, like fq_codel_dequeue().
+Initialize the source MAC address when creating the default GID entry.
+Since this entry is used only for loopback traffic, it only needs to
+be a unicast address. A zeroed-out MAC address is sufficient for this
+purpose.
+Without this fix, random bits would be assigned as the source address.
+If these bits formed a multicast address, the firmware would return an
+error, preventing the user from switching to switchdev mode:
 
-Let's make it idempotent to ease qdisc_tree_reduce_backlog() callers'
-life. Also change other list_del()'s to list_del_init() just to be
-extra safe.
+Error: mlx5_core: Failed setting eswitch to offloads.
+kernel answers: Invalid argument
 
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250403211033.166059-3-xiyou.wangcong@gmail.com
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 80f09dfc237f ("net/mlx5: Eswitch, enable RoCE loopback traffic")
+Signed-off-by: Maor Gottlieb <maorg@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Link: https://patch.msgid.link/20250423083611.324567-3-mbloch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_drr.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/rdma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/sched/sch_drr.c
-+++ b/net/sched/sch_drr.c
-@@ -111,6 +111,7 @@ static int drr_change_class(struct Qdisc
- 		return -ENOBUFS;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/rdma.c b/drivers/net/ethernet/mellanox/mlx5/core/rdma.c
+index a42f6cd99b744..f585ef5a34243 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/rdma.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/rdma.c
+@@ -118,8 +118,8 @@ static void mlx5_rdma_make_default_gid(struct mlx5_core_dev *dev, union ib_gid *
  
- 	gnet_stats_basic_sync_init(&cl->bstats);
-+	INIT_LIST_HEAD(&cl->alist);
- 	cl->common.classid = classid;
- 	cl->quantum	   = quantum;
- 	cl->qdisc	   = qdisc_create_dflt(sch->dev_queue,
-@@ -233,7 +234,7 @@ static void drr_qlen_notify(struct Qdisc
+ static int mlx5_rdma_add_roce_addr(struct mlx5_core_dev *dev)
  {
- 	struct drr_class *cl = (struct drr_class *)arg;
++	u8 mac[ETH_ALEN] = {};
+ 	union ib_gid gid;
+-	u8 mac[ETH_ALEN];
  
--	list_del(&cl->alist);
-+	list_del_init(&cl->alist);
- }
- 
- static int drr_dump_class(struct Qdisc *sch, unsigned long arg,
-@@ -392,7 +393,7 @@ static struct sk_buff *drr_dequeue(struc
- 			if (unlikely(skb == NULL))
- 				goto out;
- 			if (cl->qdisc->q.qlen == 0)
--				list_del(&cl->alist);
-+				list_del_init(&cl->alist);
- 
- 			bstats_update(&cl->bstats, skb);
- 			qdisc_bstats_update(sch, skb);
-@@ -433,7 +434,7 @@ static void drr_reset_qdisc(struct Qdisc
- 	for (i = 0; i < q->clhash.hashsize; i++) {
- 		hlist_for_each_entry(cl, &q->clhash.hash[i], common.hnode) {
- 			if (cl->qdisc->q.qlen)
--				list_del(&cl->alist);
-+				list_del_init(&cl->alist);
- 			qdisc_reset(cl->qdisc);
- 		}
- 	}
+ 	mlx5_rdma_make_default_gid(dev, &gid);
+ 	return mlx5_core_roce_gid_set(dev, 0,
+-- 
+2.39.5
+
 
 
 
