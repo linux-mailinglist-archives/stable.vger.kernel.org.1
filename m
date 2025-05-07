@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-142667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E096AAEBBF
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:10:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0789EAAEB1C
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:03:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19603464167
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:09:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FB64525CD2
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:03:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 603642144C1;
-	Wed,  7 May 2025 19:09:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EF2728AAE9;
+	Wed,  7 May 2025 19:03:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HacdPea/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NBIHH13M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C93621504D;
-	Wed,  7 May 2025 19:09:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E010429A0;
+	Wed,  7 May 2025 19:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644957; cv=none; b=rpuEQm602g75NOIuAqVpstpdei93nMsQ/po5pyGTuRfLZy1cO60Rlo9Ov/kcEncu5SdxYuCyDl08vtY5hTkNkk5PAuDiTyBwNnJb6XLPo5JMmXpby4aRsgU1ToPZSCpp6OD7D/WUigk/jXLSXMnGqvRMhOYXewHyt0gRnsHr9GQ=
+	t=1746644606; cv=none; b=URPiU7dFVkrXfjk0zIdTV3SNFTXDuyJ8ulrNuAPyW618SDw7a/AOiQjUx+6l0eDTTFqYOJS7YExJgMcQOkcO8GB418ULaS7Ln8A/twJIbG75Tw7PEugGFnZVcZziWhRNE0ZAp9y1lZu1R+gNvkoRr62SzUNex34Z+Oe0Dt974BU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644957; c=relaxed/simple;
-	bh=3N8D5S5C5hPdUxfWhUKdQl2Tg5AQ+LZg/s6Vaw897DI=;
+	s=arc-20240116; t=1746644606; c=relaxed/simple;
+	bh=XAhJjakkOazYlNPtPLslTW1n6NAXueyAD/s/05eRkEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qz4FmzNW1v0aOxpbf73hC87kUz0PaakpYtBkgyBVZeS2jmpYZ+gaMqWKXhW1HsZ/tRWCdkXa0E2mJwiRHhGQyp4eixyyM8Bnvor9izb6JRP2bucKa71dJln0d1obTifOX25tfeav03Gy3ZP/YJurED3UjGD/7z+1zAnyBQ5I5i0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HacdPea/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A27DCC4CEE2;
-	Wed,  7 May 2025 19:09:16 +0000 (UTC)
+	 MIME-Version; b=OOwfSbaXzAi+dfFzxZ+KOUGXut5/isiPWmn473ANQBDKBLvUrThFBlFEm/oP9cS24ARPGKVZ5976n2qSBEM5HAnL5seuFlyS/jzi4Fr0J47Em9HkjQ6aFpKkc9M5DbAMeXrQW7969UE8+ie+lgkWSYUPPzJ6/J2YGkc6SNikecI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NBIHH13M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02F55C4CEE2;
+	Wed,  7 May 2025 19:03:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644957;
-	bh=3N8D5S5C5hPdUxfWhUKdQl2Tg5AQ+LZg/s6Vaw897DI=;
+	s=korg; t=1746644605;
+	bh=XAhJjakkOazYlNPtPLslTW1n6NAXueyAD/s/05eRkEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HacdPea/6z7/chi8+L+Mk25mHyB+hMKvFhKw/mGnu+fBmmUuL5/rPRAD+fSAmtus+
-	 0MGlVSt3VHE7IJwnYdZndANN85cuP4nwNsDggHfcRJI4EIqSIBYDd3j/btGGq0YoMy
-	 oGOSSeD3DtoSW7vxzoIM6AK62cUN+yS036177Rj8=
+	b=NBIHH13MnyLHmSgdNkC8aKGRpSEwmCaLoLlAKFj34fmN1kVUDP7odFLZvcL4lxeLF
+	 mo5rZ5F6T0gVwCYAtI5khQeF09eRpRIlVzVc76zbFFh9vtbdsFGD6sXg3QSNqHb3cZ
+	 Aqj4T3Q/j9mfDMx3EkVIYuKrNVa/+xDr3q0GpwCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sheetal <sheetal@nvidia.com>,
-	Mark Brown <broonie@kernel.org>,
+	Argusee <vr@darknavy.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 047/129] ASoC: soc-pcm: Fix hw_params() and DAPM widget sequence
+Subject: [PATCH 6.12 098/164] ALSA: ump: Fix buffer overflow at UMP SysEx message conversion
 Date: Wed,  7 May 2025 20:39:43 +0200
-Message-ID: <20250507183815.445441317@linuxfoundation.org>
+Message-ID: <20250507183824.943555302@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
-References: <20250507183813.500572371@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sheetal <sheetal@nvidia.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 9aff2e8df240e84a36f2607f98a0a9924a24e65d ]
+[ Upstream commit 56f1f30e6795b890463d9b20b11e576adf5a2f77 ]
 
-Issue:
- When multiple audio streams share a common BE DAI, the BE DAI
- widget can be powered up before its hardware parameters are configured.
- This incorrect sequence leads to intermittent pcm_write errors.
+The conversion function from MIDI 1.0 to UMP packet contains an
+internal buffer to keep the incoming MIDI bytes, and its size is 4, as
+it was supposed to be the max size for a MIDI1 UMP packet data.
+However, the implementation overlooked that SysEx is handled in a
+different format, and it can be up to 6 bytes, as found in
+do_convert_to_ump().  It leads eventually to a buffer overflow, and
+may corrupt the memory when a longer SysEx message is received.
 
- For example, the below Tegra use-case throws an error:
-  aplay(2 streams) -> AMX(mux) -> ADX(demux) -> arecord(2 streams),
-  here, 'AMX TX' and 'ADX RX' are common BE DAIs.
+The fix is simply to extend the buffer size to 6 to fit with the SysEx
+UMP message.
 
-For above usecase when failure happens below sequence is observed:
- aplay(1) FE open()
-  - BE DAI callbacks added to the list
-  - BE DAI state = SND_SOC_DPCM_STATE_OPEN
- aplay(2) FE open()
-  - BE DAI callbacks are not added to the list as the state is
-    already SND_SOC_DPCM_STATE_OPEN during aplay(1) FE open().
- aplay(2) FE hw_params()
-  - BE DAI hw_params() callback ignored
- aplay(2) FE prepare()
-  - Widget is powered ON without BE DAI hw_params() call
- aplay(1) FE hw_params()
-  - BE DAI hw_params() is now called
-
-Fix:
- Add BE DAIs in the list if its state is either SND_SOC_DPCM_STATE_OPEN
- or SND_SOC_DPCM_STATE_HW_PARAMS as well.
-
-It ensures the widget is powered ON after BE DAI hw_params() callback.
-
-Fixes: 0c25db3f7621 ("ASoC: soc-pcm: Don't reconnect an already active BE")
-Signed-off-by: Sheetal <sheetal@nvidia.com>
-Link: https://patch.msgid.link/20250404105953.2784819-1-sheetal@nvidia.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 0b5288f5fe63 ("ALSA: ump: Add legacy raw MIDI support")
+Reported-by: Argusee <vr@darknavy.com>
+Link: https://patch.msgid.link/20250429124845.25128-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-pcm.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ include/sound/ump_convert.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/soc-pcm.c b/sound/soc/soc-pcm.c
-index 60248a6820aac..30e93f9aad762 100644
---- a/sound/soc/soc-pcm.c
-+++ b/sound/soc/soc-pcm.c
-@@ -1534,10 +1534,13 @@ static int dpcm_add_paths(struct snd_soc_pcm_runtime *fe, int stream,
- 		/*
- 		 * Filter for systems with 'component_chaining' enabled.
- 		 * This helps to avoid unnecessary re-configuration of an
--		 * already active BE on such systems.
-+		 * already active BE on such systems and ensures the BE DAI
-+		 * widget is powered ON after hw_params() BE DAI callback.
- 		 */
- 		if (fe->card->component_chaining &&
- 		    (be->dpcm[stream].state != SND_SOC_DPCM_STATE_NEW) &&
-+		    (be->dpcm[stream].state != SND_SOC_DPCM_STATE_OPEN) &&
-+		    (be->dpcm[stream].state != SND_SOC_DPCM_STATE_HW_PARAMS) &&
- 		    (be->dpcm[stream].state != SND_SOC_DPCM_STATE_CLOSE))
- 			continue;
+diff --git a/include/sound/ump_convert.h b/include/sound/ump_convert.h
+index d099ae27f8491..682499b871eac 100644
+--- a/include/sound/ump_convert.h
++++ b/include/sound/ump_convert.h
+@@ -19,7 +19,7 @@ struct ump_cvt_to_ump_bank {
+ /* context for converting from MIDI1 byte stream to UMP packet */
+ struct ump_cvt_to_ump {
+ 	/* MIDI1 intermediate buffer */
+-	unsigned char buf[4];
++	unsigned char buf[6]; /* up to 6 bytes for SysEx */
+ 	int len;
+ 	int cmd_bytes;
  
 -- 
 2.39.5
