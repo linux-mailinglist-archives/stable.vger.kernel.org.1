@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-142673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4EB6AAEBB3
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:09:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BEDCAAEA86
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:56:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 917C77B75C2
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:08:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C66575232E8
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:56:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAB8228DF1F;
-	Wed,  7 May 2025 19:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5597244693;
+	Wed,  7 May 2025 18:56:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1RUTyEL5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OsLdAA9S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5FBE21504D;
-	Wed,  7 May 2025 19:09:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A10801CF5C6;
+	Wed,  7 May 2025 18:56:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644974; cv=none; b=U9LsN6sfnVF5JuS9nDIDI5QhqR11fysqB4Dd8bFUk/aUeP6JjYoQ5aOhh+2hbrL/OWKlbsm863Ey/ClB4+NfnwBKCCgoXwy5NWIFVPzNlUm8DJWIR3Z8xJWnHADHRfKzrU8q1lzQ5NnoJ4fd4uB1ireFWHNsWH+07Bgrlbu2Zy0=
+	t=1746644185; cv=none; b=hT6JxJzKBnfG2V9au2z74TA3sS2GWsmhWUKVeebuUqoVphzicPQQGjmDluOxQSdJu1T/057zb/D1Dw1PcjfQaZ7OT7cmo8ZNmFS3nwGMdSl7FVhbCQCvgWwtdoCkrGQduefCE9CVUtHG37pmcUf1a9yaW0U/BtHt8Umu5tUYRuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644974; c=relaxed/simple;
-	bh=supyRvM0b/vzwurIriEgCDpZmH1KqLtAsqTmArMYIJQ=;
+	s=arc-20240116; t=1746644185; c=relaxed/simple;
+	bh=C+VO1RoqIH0bN4YkXdPDREBvlsg2XfkFtkMuarPMz4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D6K0q7u5BxIHKTDzXMGdycKMhNL5DATdmqC3E1bKY/VU8dkpaeYgRVA3cbA0Ik/OXBtSUMoTlHQcXpxKwwe1RdKDk8C4nSAJv8Babzx1LZUed8P8t5Out2EUkSYej3oDqJe6BZHi1sWGCJ0/2SWN5q28Zl55pQUxBIvVHabDvpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1RUTyEL5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35BFEC4CEE2;
-	Wed,  7 May 2025 19:09:34 +0000 (UTC)
+	 MIME-Version; b=OpyZb3f8TLMk9NFdmoLuIUbHMLStrA6KP7tQ/v/xmrdMlIDg858VvF/xC+KUo8L6jlfibkiER5QLHyboLlz//J3mxMv7+S0jtIW3/thb3B+bbDikfsU/D9OITh67pef1lZergmxKCQrWYkbmNhwLtKIxTptiBAcHauX2GD62p14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OsLdAA9S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10BD0C4CEE2;
+	Wed,  7 May 2025 18:56:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644974;
-	bh=supyRvM0b/vzwurIriEgCDpZmH1KqLtAsqTmArMYIJQ=;
+	s=korg; t=1746644185;
+	bh=C+VO1RoqIH0bN4YkXdPDREBvlsg2XfkFtkMuarPMz4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1RUTyEL5TlidUQnTA/hXstVXWe0mE2PvO6NbUncIsxUdZsLrnoT5Mxhd0Uy/r+lLj
-	 U9+m4+Qe3udlQKTO4VmBJy3Ao4FIId9WIArbFGIKUqKl4UqgjyxQkY+t7R8w0vlQla
-	 J7EbaQmaRoQmAAvCJ8M/wZQmpXAewGyDiACCYLAs=
+	b=OsLdAA9Szsi6oi1sEy682ZSE5aEVR6hQhXQc5i2murVLES29YyQqRXpnN3jTVdEBR
+	 PB/I7HUvXKjB5+jTy0TOi88ZHGdlkNdQmh0jpHejFe2XrbqpPSc4m4CeDFpbPhWHHD
+	 lYtS0SggmaFKmRQFHI3EiVFFmFNaUd0LaEECuUwU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Paklov <Pavel.Paklov@cyberprotect.ru>,
-	Joerg Roedel <jroedel@suse.de>
-Subject: [PATCH 6.6 024/129] iommu/amd: Fix potential buffer overflow in parse_ivrs_acpihid
-Date: Wed,  7 May 2025 20:39:20 +0200
-Message-ID: <20250507183814.508995203@linuxfoundation.org>
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Vitaly Lifshits <vitaly.lifshits@intel.com>,
+	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 116/183] igc: fix lock order in igc_ptp_reset
+Date: Wed,  7 May 2025 20:39:21 +0200
+Message-ID: <20250507183829.521542560@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
-References: <20250507183813.500572371@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +65,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Paklov <Pavel.Paklov@cyberprotect.ru>
+From: Jacob Keller <jacob.e.keller@intel.com>
 
-commit 8dee308e4c01dea48fc104d37f92d5b58c50b96c upstream.
+[ Upstream commit c7d6cb96d5c33b5148f3dc76fcd30a9b8cd9e973 ]
 
-There is a string parsing logic error which can lead to an overflow of hid
-or uid buffers. Comparing ACPIID_LEN against a total string length doesn't
-take into account the lengths of individual hid and uid buffers so the
-check is insufficient in some cases. For example if the length of hid
-string is 4 and the length of the uid string is 260, the length of str
-will be equal to ACPIID_LEN + 1 but uid string will overflow uid buffer
-which size is 256.
+Commit 1a931c4f5e68 ("igc: add lock preventing multiple simultaneous PTM
+transactions") added a new mutex to protect concurrent PTM transactions.
+This lock is acquired in igc_ptp_reset() in order to ensure the PTM
+registers are properly disabled after a device reset.
 
-The same applies to the hid string with length 13 and uid string with
-length 250.
+The flow where the lock is acquired already holds a spinlock, so acquiring
+a mutex leads to a sleep-while-locking bug, reported both by smatch,
+and the kernel test robot.
 
-Check the length of hid and uid strings separately to prevent
-buffer overflow.
+The critical section in igc_ptp_reset() does correctly use the
+readx_poll_timeout_atomic variants, but the standard PTM flow uses regular
+sleeping variants. This makes converting the mutex to a spinlock a bit
+tricky.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Instead, re-order the locking in igc_ptp_reset. Acquire the mutex first,
+and then the tmreg_lock spinlock. This is safe because there is no other
+ordering dependency on these locks, as this is the only place where both
+locks were acquired simultaneously. Indeed, any other flow acquiring locks
+in that order would be wrong regardless.
 
-Fixes: ca3bf5d47cec ("iommu/amd: Introduces ivrs_acpihid kernel parameter")
-Cc: stable@vger.kernel.org
-Signed-off-by: Pavel Paklov <Pavel.Paklov@cyberprotect.ru>
-Link: https://lore.kernel.org/r/20250325092259.392844-1-Pavel.Paklov@cyberprotect.ru
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Fixes: 1a931c4f5e68 ("igc: add lock preventing multiple simultaneous PTM transactions")
+Link: https://lore.kernel.org/intel-wired-lan/Z_-P-Hc1yxcw0lTB@stanley.mountain/
+Link: https://lore.kernel.org/intel-wired-lan/202504211511.f7738f5d-lkp@intel.com/T/#u
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/init.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/ethernet/intel/igc/igc_ptp.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/iommu/amd/init.c
-+++ b/drivers/iommu/amd/init.c
-@@ -3682,6 +3682,14 @@ found:
- 	while (*uid == '0' && *(uid + 1))
- 		uid++;
+diff --git a/drivers/net/ethernet/intel/igc/igc_ptp.c b/drivers/net/ethernet/intel/igc/igc_ptp.c
+index 612ed26a29c5d..efc7b30e42113 100644
+--- a/drivers/net/ethernet/intel/igc/igc_ptp.c
++++ b/drivers/net/ethernet/intel/igc/igc_ptp.c
+@@ -1290,6 +1290,8 @@ void igc_ptp_reset(struct igc_adapter *adapter)
+ 	/* reset the tstamp_config */
+ 	igc_ptp_set_timestamp_mode(adapter, &adapter->tstamp_config);
  
-+	if (strlen(hid) >= ACPIHID_HID_LEN) {
-+		pr_err("Invalid command line: hid is too long\n");
-+		return 1;
-+	} else if (strlen(uid) >= ACPIHID_UID_LEN) {
-+		pr_err("Invalid command line: uid is too long\n");
-+		return 1;
-+	}
++	mutex_lock(&adapter->ptm_lock);
 +
- 	i = early_acpihid_map_size++;
- 	memcpy(early_acpihid_map[i].hid, hid, strlen(hid));
- 	memcpy(early_acpihid_map[i].uid, uid, strlen(uid));
+ 	spin_lock_irqsave(&adapter->tmreg_lock, flags);
+ 
+ 	switch (adapter->hw.mac.type) {
+@@ -1308,7 +1310,6 @@ void igc_ptp_reset(struct igc_adapter *adapter)
+ 		if (!igc_is_crosststamp_supported(adapter))
+ 			break;
+ 
+-		mutex_lock(&adapter->ptm_lock);
+ 		wr32(IGC_PCIE_DIG_DELAY, IGC_PCIE_DIG_DELAY_DEFAULT);
+ 		wr32(IGC_PCIE_PHY_DELAY, IGC_PCIE_PHY_DELAY_DEFAULT);
+ 
+@@ -1332,7 +1333,6 @@ void igc_ptp_reset(struct igc_adapter *adapter)
+ 			netdev_err(adapter->netdev, "Timeout reading IGC_PTM_STAT register\n");
+ 
+ 		igc_ptm_reset(hw);
+-		mutex_unlock(&adapter->ptm_lock);
+ 		break;
+ 	default:
+ 		/* No work to do. */
+@@ -1349,5 +1349,7 @@ void igc_ptp_reset(struct igc_adapter *adapter)
+ out:
+ 	spin_unlock_irqrestore(&adapter->tmreg_lock, flags);
+ 
++	mutex_unlock(&adapter->ptm_lock);
++
+ 	wrfl();
+ }
+-- 
+2.39.5
+
 
 
 
