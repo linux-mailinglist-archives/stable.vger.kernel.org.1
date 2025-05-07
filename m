@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-142560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75862AAEB24
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:03:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EEDAAAEAAC
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:58:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E349D525D99
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:03:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D5791C4498A
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:58:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06B4D28BA9F;
-	Wed,  7 May 2025 19:03:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0872228DB59;
+	Wed,  7 May 2025 18:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IM6/W2m/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D88iTnPz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72F329A0;
-	Wed,  7 May 2025 19:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B351482F5;
+	Wed,  7 May 2025 18:57:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644629; cv=none; b=JxR84El0B8SAM6RbbWH7dBe1oNEcy9bJJGpbGuquUC9azUtN7sxNGMuONCAW5f3NyrllT/X/OPMeUdDVKU6RL05pAv66xiC/5SmqL8n52HIbeb9YV6UpoQQEal0MUBy/moIUtNm57TAQYOTnWjOmxy8o+U22Qs+ikg1wEpPPFqo=
+	t=1746644270; cv=none; b=UO5Eu6hCFIK7h277n7L2B1PWbUBDhcMGPg2P8HejsHegaaZJ14vdI5SotoHTNOgAYmkrh+V5KkqJB51U25TXpR9FjCkaB1DZBXP6/1jwvpn+0YdqJxTYP5MNy1jzAj/xGWIzhv+jPRdUSRHs/SBFvB+pMF+KmSuWr+loXgJuFGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644629; c=relaxed/simple;
-	bh=46GhVJxXNUdB8tjf3FS+SltI+H/TuzI+eEsPJoRyg3s=;
+	s=arc-20240116; t=1746644270; c=relaxed/simple;
+	bh=F30zkno1XkseOOvLV/KbVUm3o+7OD2fshNx1Bvtv9ic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FUmJsl04V7MvO4yC2tJ0WmdK4PzILi5lmYR1cbnWSnyrj0TzJ4l2MbW63aMy48dtsG2k6zYhXBsGiOp6Zm59NBbg+qXL1f2xJ6fH0SpK+nAe2yh8WIRC5toyk5ZoZAYXzKWiHIrZikmEhFyyFE05lOPbH0xtnTQPqOjhzz94bEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IM6/W2m/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D719C4CEE2;
-	Wed,  7 May 2025 19:03:48 +0000 (UTC)
+	 MIME-Version; b=loNGZAJQ3QXYckjbh+I8MIAD0+qCwPb2zhIWc1WJxPMsc6KSEx2R9nvSSSmrHNbwfDiFDcrHB/1FfQ5MPDl7BN9SSye6TwrWsLLYZeyX5LNScyLxErVk/ftg/hlpCnBVTr9btb0WJEF3KNwGQVa2Xp1Qg/rKLZtquVzmP+MdhrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D88iTnPz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37C77C4CEE2;
+	Wed,  7 May 2025 18:57:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644629;
-	bh=46GhVJxXNUdB8tjf3FS+SltI+H/TuzI+eEsPJoRyg3s=;
+	s=korg; t=1746644270;
+	bh=F30zkno1XkseOOvLV/KbVUm3o+7OD2fshNx1Bvtv9ic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IM6/W2m/YzW+HIoe9DUTTOZ9DZpHVgEnqf2HCUeIX8XIMdEJx9BqZl9bt2hzo5qdl
-	 91Wo7xXJK/TpJceHqRo8k30Gvx780qug8ldgFQLV46L7YqmIlQoYMcxwX63Gcf0n3v
-	 5DqxHjvcGbCt1W29BssATLk3loiPTlts6+x/gLC4=
+	b=D88iTnPzjhDoI9uzB6UnVDJZmG9g78LdGZTpeSgCWmYOQXQtbzwxGjs/2eb93WpjU
+	 s+WfMCYAL5mbw/GOymOx81zYEFDHLtMV5LGf3rRX4FuiBtkqSzunOf/ZIZrsX2dxXZ
+	 jMkCI5ezwLNPSqR9s6oqMaDoOAWmIlzQNwzxWezo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 106/164] igc: fix lock order in igc_ptp_reset
+Subject: [PATCH 6.14 146/183] net: vertexcom: mse102x: Add range check for CMD_RTS
 Date: Wed,  7 May 2025 20:39:51 +0200
-Message-ID: <20250507183825.273515804@linuxfoundation.org>
+Message-ID: <20250507183830.783391352@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,84 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Keller <jacob.e.keller@intel.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit c7d6cb96d5c33b5148f3dc76fcd30a9b8cd9e973 ]
+[ Upstream commit d4dda902dac194e3231a1ed0f76c6c3b6340ba8a ]
 
-Commit 1a931c4f5e68 ("igc: add lock preventing multiple simultaneous PTM
-transactions") added a new mutex to protect concurrent PTM transactions.
-This lock is acquired in igc_ptp_reset() in order to ensure the PTM
-registers are properly disabled after a device reset.
+Since there is no protection in the SPI protocol against electrical
+interferences, the driver shouldn't blindly trust the length payload
+of CMD_RTS. So introduce a bounds check for incoming frames.
 
-The flow where the lock is acquired already holds a spinlock, so acquiring
-a mutex leads to a sleep-while-locking bug, reported both by smatch,
-and the kernel test robot.
-
-The critical section in igc_ptp_reset() does correctly use the
-readx_poll_timeout_atomic variants, but the standard PTM flow uses regular
-sleeping variants. This makes converting the mutex to a spinlock a bit
-tricky.
-
-Instead, re-order the locking in igc_ptp_reset. Acquire the mutex first,
-and then the tmreg_lock spinlock. This is safe because there is no other
-ordering dependency on these locks, as this is the only place where both
-locks were acquired simultaneously. Indeed, any other flow acquiring locks
-in that order would be wrong regardless.
-
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Fixes: 1a931c4f5e68 ("igc: add lock preventing multiple simultaneous PTM transactions")
-Link: https://lore.kernel.org/intel-wired-lan/Z_-P-Hc1yxcw0lTB@stanley.mountain/
-Link: https://lore.kernel.org/intel-wired-lan/202504211511.f7738f5d-lkp@intel.com/T/#u
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 2f207cbf0dd4 ("net: vertexcom: Add MSE102x SPI support")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250430133043.7722-4-wahrenst@gmx.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc_ptp.c | 6 ++++--
+ drivers/net/ethernet/vertexcom/mse102x.c | 6 ++++--
  1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_ptp.c b/drivers/net/ethernet/intel/igc/igc_ptp.c
-index 612ed26a29c5d..efc7b30e42113 100644
---- a/drivers/net/ethernet/intel/igc/igc_ptp.c
-+++ b/drivers/net/ethernet/intel/igc/igc_ptp.c
-@@ -1290,6 +1290,8 @@ void igc_ptp_reset(struct igc_adapter *adapter)
- 	/* reset the tstamp_config */
- 	igc_ptp_set_timestamp_mode(adapter, &adapter->tstamp_config);
+diff --git a/drivers/net/ethernet/vertexcom/mse102x.c b/drivers/net/ethernet/vertexcom/mse102x.c
+index 3edf2c3753f0e..2c06d1d05164f 100644
+--- a/drivers/net/ethernet/vertexcom/mse102x.c
++++ b/drivers/net/ethernet/vertexcom/mse102x.c
+@@ -6,6 +6,7 @@
  
-+	mutex_lock(&adapter->ptm_lock);
-+
- 	spin_lock_irqsave(&adapter->tmreg_lock, flags);
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
  
- 	switch (adapter->hw.mac.type) {
-@@ -1308,7 +1310,6 @@ void igc_ptp_reset(struct igc_adapter *adapter)
- 		if (!igc_is_crosststamp_supported(adapter))
- 			break;
++#include <linux/if_vlan.h>
+ #include <linux/interrupt.h>
+ #include <linux/module.h>
+ #include <linux/kernel.h>
+@@ -337,8 +338,9 @@ static void mse102x_rx_pkt_spi(struct mse102x_net *mse)
+ 	}
  
--		mutex_lock(&adapter->ptm_lock);
- 		wr32(IGC_PCIE_DIG_DELAY, IGC_PCIE_DIG_DELAY_DEFAULT);
- 		wr32(IGC_PCIE_PHY_DELAY, IGC_PCIE_PHY_DELAY_DEFAULT);
- 
-@@ -1332,7 +1333,6 @@ void igc_ptp_reset(struct igc_adapter *adapter)
- 			netdev_err(adapter->netdev, "Timeout reading IGC_PTM_STAT register\n");
- 
- 		igc_ptm_reset(hw);
--		mutex_unlock(&adapter->ptm_lock);
- 		break;
- 	default:
- 		/* No work to do. */
-@@ -1349,5 +1349,7 @@ void igc_ptp_reset(struct igc_adapter *adapter)
- out:
- 	spin_unlock_irqrestore(&adapter->tmreg_lock, flags);
- 
-+	mutex_unlock(&adapter->ptm_lock);
-+
- 	wrfl();
- }
+ 	rxlen = cmd_resp & LEN_MASK;
+-	if (!rxlen) {
+-		net_dbg_ratelimited("%s: No frame length defined\n", __func__);
++	if (rxlen < ETH_ZLEN || rxlen > VLAN_ETH_FRAME_LEN) {
++		net_dbg_ratelimited("%s: Invalid frame length: %d\n", __func__,
++				    rxlen);
+ 		mse->stats.invalid_len++;
+ 		return;
+ 	}
 -- 
 2.39.5
 
