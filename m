@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-142561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACCE5AAEB25
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:03:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60F2FAAE960
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:44:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8F387B844B
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:02:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DD599E098A
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:43:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36A6728AAE9;
-	Wed,  7 May 2025 19:03:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABEFA28DF47;
+	Wed,  7 May 2025 18:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VKLRfXKr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B5GETYPN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E2E29A0;
-	Wed,  7 May 2025 19:03:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6843614A4C7;
+	Wed,  7 May 2025 18:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644633; cv=none; b=D6+hWw3TLFlapBFz2F7WQlnx7jyV/qf+gVFLnMlmcmW9uIoaXjjsEZDiBVUg3h5PCaG8dKecVMGRV0xvXBIXPlazu+c4EfXhFL0NO5YU9/cLhZ6sFKAAtbS5lSShjDs/WGl7eFRIvYoZAvFoPl4satIoT7gfDvlhMig9c+5gKMs=
+	t=1746643446; cv=none; b=Y4FoV9wK8nVOG9t3eu5DLo+VOWOhZm7E7OYvxq7D2e7jdC9niMzmh8WggLdQXWagvKgjaDBXf8xyTUUtwd4+G2GVEaBradocXhff29Vq0z1QtUi9/2HiALR+9SVEVNuZQ4aGV2o5t2+sjb/kDWgu479y+OYnw1ISHkT/DP+cpzc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644633; c=relaxed/simple;
-	bh=psjnClNeWNTXP/5g9kJPy6mYkh6lK5h8Nu0EVRpr/cQ=;
+	s=arc-20240116; t=1746643446; c=relaxed/simple;
+	bh=KfhF7NH4/drislHC+iqJZWmRCjx9njF0uSK4lUvbCRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k/qtlR7p3mXz1EfaFHfnk1efsVEZnxFwgFOmrpTaLN9Px1dF7a5mZc4/urxYKNZbIDfRQJfCw03fAcljC87wL2IpIsV3CJUVEpG8xt2HyLgBK+S4nI13kLx7nMfOXyUA6awdjegQY1O7zMIjNSW4BhJN+KOwI2TPSmihvVaDdOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VKLRfXKr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70FB2C4CEE2;
-	Wed,  7 May 2025 19:03:52 +0000 (UTC)
+	 MIME-Version; b=Cz4NU2ZCA2OzWgoBTjDp4T9eN7J95qiPHZ7Ra/6fqrYdk1cMOQa5x+JTTk2uq36ZK5FwEBlk0aWAg6gHSD38WCjWLajfp7DbFeu9/lfIsdbylEuI7FIbdmaycnIGfMWfxrOATcIMXDPX+Oby8uK95m7usmcOY3tTAuvhDmbfxIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B5GETYPN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4E3FC4CEE2;
+	Wed,  7 May 2025 18:44:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644632;
-	bh=psjnClNeWNTXP/5g9kJPy6mYkh6lK5h8Nu0EVRpr/cQ=;
+	s=korg; t=1746643446;
+	bh=KfhF7NH4/drislHC+iqJZWmRCjx9njF0uSK4lUvbCRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VKLRfXKrsg4BKWwj4u2Ugv1T2466+wtOfbwk83naT3iH0lACmXCy5ocEf1VqV7TOm
-	 lOS6HEcOkooUPeqC17YdhT8LwOy7H6DiB4Ol0n2nIYe/skLg0+RtL7IuASkOQWYLPN
-	 2FWPbfvts8ohNGs7THJXnUhLOLxBOFFQUgeaplYI=
+	b=B5GETYPNaEL8P3FLXYORSRzioQZiZWfar+bXFMJJkr2Ga+hYeiNxq3r/0jHu4haTp
+	 3mVU/Nln+9w+eP7fbxt6WRhHM550KFYn2SfLqXh8PeZ+k56yXUzBc5DwsWv2jsJFVn
+	 n5Thbzb+2ufrR+bkj2P/x6B6OnNA403tj/xyceL4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Shruti Parab <shruti.parab@broadcom.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 089/164] pds_core: specify auxiliary_device to be created
+Subject: [PATCH 5.15 33/55] bnxt_en: Fix ethtool -d byte order for 32-bit values
 Date: Wed,  7 May 2025 20:39:34 +0200
-Message-ID: <20250507183824.568586706@linuxfoundation.org>
+Message-ID: <20250507183800.372189949@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
+References: <20250507183759.048732653@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,197 +65,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shannon Nelson <shannon.nelson@amd.com>
+From: Michael Chan <michael.chan@broadcom.com>
 
-[ Upstream commit b699bdc720c0255d1bb76cecba7382c1f2107af5 ]
+[ Upstream commit 02e8be5a032cae0f4ca33c6053c44d83cf4acc93 ]
 
-In preparation for adding a new auxiliary_device for the PF,
-make the vif type an argument to pdsc_auxbus_dev_add().  Pass in
-the address of the padev pointer so that the caller can specify
-where to save it and keep the mutex usage within the function.
+For version 1 register dump that includes the PCIe stats, the existing
+code incorrectly assumes that all PCIe stats are 64-bit values.  Fix it
+by using an array containing the starting and ending index of the 32-bit
+values.  The loop in bnxt_get_regs() will use the array to do proper
+endian swap for the 32-bit values.
 
-Link: https://patch.msgid.link/r/20250320194412.67983-3-shannon.nelson@amd.com
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Stable-dep-of: dfd76010f8e8 ("pds_core: remove write-after-free of client_id")
+Fixes: b5d600b027eb ("bnxt_en: Add support for 'ethtool -d'")
+Reviewed-by: Shruti Parab <shruti.parab@broadcom.com>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Reviewed-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/pds_core/auxbus.c  | 37 ++++++++++-----------
- drivers/net/ethernet/amd/pds_core/core.h    |  7 ++--
- drivers/net/ethernet/amd/pds_core/devlink.c |  5 +--
- drivers/net/ethernet/amd/pds_core/main.c    | 11 +++---
- 4 files changed, 33 insertions(+), 27 deletions(-)
+ .../net/ethernet/broadcom/bnxt/bnxt_ethtool.c | 38 ++++++++++++++++---
+ 1 file changed, 32 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/amd/pds_core/auxbus.c b/drivers/net/ethernet/amd/pds_core/auxbus.c
-index d53b2124b1498..4d3387bebe6a4 100644
---- a/drivers/net/ethernet/amd/pds_core/auxbus.c
-+++ b/drivers/net/ethernet/amd/pds_core/auxbus.c
-@@ -172,29 +172,32 @@ static struct pds_auxiliary_dev *pdsc_auxbus_dev_register(struct pdsc *cf,
- 	return padev;
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
+index 8ebc1c522a05b..ad307df8d97ba 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
+@@ -1360,6 +1360,17 @@ static int bnxt_get_regs_len(struct net_device *dev)
+ 	return reg_len;
  }
  
--void pdsc_auxbus_dev_del(struct pdsc *cf, struct pdsc *pf)
-+void pdsc_auxbus_dev_del(struct pdsc *cf, struct pdsc *pf,
-+			 struct pds_auxiliary_dev **pd_ptr)
- {
- 	struct pds_auxiliary_dev *padev;
- 
-+	if (!*pd_ptr)
-+		return;
++#define BNXT_PCIE_32B_ENTRY(start, end)			\
++	 { offsetof(struct pcie_ctx_hw_stats, start),	\
++	   offsetof(struct pcie_ctx_hw_stats, end) }
 +
- 	mutex_lock(&pf->config_lock);
- 
--	padev = pf->vfs[cf->vf_id].padev;
--	if (padev) {
--		pds_client_unregister(pf, padev->client_id);
--		auxiliary_device_delete(&padev->aux_dev);
--		auxiliary_device_uninit(&padev->aux_dev);
--		padev->client_id = 0;
--	}
--	pf->vfs[cf->vf_id].padev = NULL;
-+	padev = *pd_ptr;
-+	pds_client_unregister(pf, padev->client_id);
-+	auxiliary_device_delete(&padev->aux_dev);
-+	auxiliary_device_uninit(&padev->aux_dev);
-+	padev->client_id = 0;
-+	*pd_ptr = NULL;
- 
- 	mutex_unlock(&pf->config_lock);
- }
- 
--int pdsc_auxbus_dev_add(struct pdsc *cf, struct pdsc *pf)
-+int pdsc_auxbus_dev_add(struct pdsc *cf, struct pdsc *pf,
-+			enum pds_core_vif_types vt,
-+			struct pds_auxiliary_dev **pd_ptr)
- {
- 	struct pds_auxiliary_dev *padev;
- 	char devname[PDS_DEVNAME_LEN];
--	enum pds_core_vif_types vt;
- 	unsigned long mask;
- 	u16 vt_support;
- 	int client_id;
-@@ -203,6 +206,9 @@ int pdsc_auxbus_dev_add(struct pdsc *cf, struct pdsc *pf)
- 	if (!cf)
- 		return -ENODEV;
- 
-+	if (vt >= PDS_DEV_TYPE_MAX)
-+		return -EINVAL;
++static const struct {
++	u16 start;
++	u16 end;
++} bnxt_pcie_32b_entries[] = {
++	BNXT_PCIE_32B_ENTRY(pcie_ltssm_histogram[0], pcie_ltssm_histogram[3]),
++};
 +
- 	mutex_lock(&pf->config_lock);
- 
- 	mask = BIT_ULL(PDSC_S_FW_DEAD) |
-@@ -214,17 +220,10 @@ int pdsc_auxbus_dev_add(struct pdsc *cf, struct pdsc *pf)
- 		goto out_unlock;
- 	}
- 
--	/* We only support vDPA so far, so it is the only one to
--	 * be verified that it is available in the Core device and
--	 * enabled in the devlink param.  In the future this might
--	 * become a loop for several VIF types.
--	 */
+ static void bnxt_get_regs(struct net_device *dev, struct ethtool_regs *regs,
+ 			  void *_p)
+ {
+@@ -1391,12 +1402,27 @@ static void bnxt_get_regs(struct net_device *dev, struct ethtool_regs *regs,
+ 	req->pcie_stat_host_addr = cpu_to_le64(hw_pcie_stats_addr);
+ 	rc = hwrm_req_send(bp, req);
+ 	if (!rc) {
+-		__le64 *src = (__le64 *)hw_pcie_stats;
+-		u64 *dst = (u64 *)(_p + BNXT_PXP_REG_LEN);
+-		int i;
 -
- 	/* Verify that the type is supported and enabled.  It is not
- 	 * an error if there is no auxbus device support for this
- 	 * VF, it just means something else needs to happen with it.
- 	 */
--	vt = PDS_DEV_TYPE_VDPA;
- 	vt_support = !!le16_to_cpu(pf->dev_ident.vif_types[vt]);
- 	if (!(vt_support &&
- 	      pf->viftype_status[vt].supported &&
-@@ -250,7 +249,7 @@ int pdsc_auxbus_dev_add(struct pdsc *cf, struct pdsc *pf)
- 		err = PTR_ERR(padev);
- 		goto out_unlock;
+-		for (i = 0; i < sizeof(*hw_pcie_stats) / sizeof(__le64); i++)
+-			dst[i] = le64_to_cpu(src[i]);
++		u8 *dst = (u8 *)(_p + BNXT_PXP_REG_LEN);
++		u8 *src = (u8 *)hw_pcie_stats;
++		int i, j;
++
++		for (i = 0, j = 0; i < sizeof(*hw_pcie_stats); ) {
++			if (i >= bnxt_pcie_32b_entries[j].start &&
++			    i <= bnxt_pcie_32b_entries[j].end) {
++				u32 *dst32 = (u32 *)(dst + i);
++
++				*dst32 = le32_to_cpu(*(__le32 *)(src + i));
++				i += 4;
++				if (i > bnxt_pcie_32b_entries[j].end &&
++				    j < ARRAY_SIZE(bnxt_pcie_32b_entries) - 1)
++					j++;
++			} else {
++				u64 *dst64 = (u64 *)(dst + i);
++
++				*dst64 = le64_to_cpu(*(__le64 *)(src + i));
++				i += 8;
++			}
++		}
  	}
--	pf->vfs[cf->vf_id].padev = padev;
-+	*pd_ptr = padev;
- 
- out_unlock:
- 	mutex_unlock(&pf->config_lock);
-diff --git a/drivers/net/ethernet/amd/pds_core/core.h b/drivers/net/ethernet/amd/pds_core/core.h
-index 08b8280437dcf..becd3104473c2 100644
---- a/drivers/net/ethernet/amd/pds_core/core.h
-+++ b/drivers/net/ethernet/amd/pds_core/core.h
-@@ -303,8 +303,11 @@ void pdsc_health_thread(struct work_struct *work);
- int pdsc_register_notify(struct notifier_block *nb);
- void pdsc_unregister_notify(struct notifier_block *nb);
- void pdsc_notify(unsigned long event, void *data);
--int pdsc_auxbus_dev_add(struct pdsc *cf, struct pdsc *pf);
--void pdsc_auxbus_dev_del(struct pdsc *cf, struct pdsc *pf);
-+int pdsc_auxbus_dev_add(struct pdsc *cf, struct pdsc *pf,
-+			enum pds_core_vif_types vt,
-+			struct pds_auxiliary_dev **pd_ptr);
-+void pdsc_auxbus_dev_del(struct pdsc *cf, struct pdsc *pf,
-+			 struct pds_auxiliary_dev **pd_ptr);
- 
- void pdsc_process_adminq(struct pdsc_qcq *qcq);
- void pdsc_work_thread(struct work_struct *work);
-diff --git a/drivers/net/ethernet/amd/pds_core/devlink.c b/drivers/net/ethernet/amd/pds_core/devlink.c
-index 48a7c22fe3320..d8dc39da4161f 100644
---- a/drivers/net/ethernet/amd/pds_core/devlink.c
-+++ b/drivers/net/ethernet/amd/pds_core/devlink.c
-@@ -57,9 +57,10 @@ int pdsc_dl_enable_set(struct devlink *dl, u32 id,
- 		struct pdsc *vf = pdsc->vfs[vf_id].vf;
- 
- 		if (ctx->val.vbool)
--			err = pdsc_auxbus_dev_add(vf, pdsc);
-+			err = pdsc_auxbus_dev_add(vf, pdsc, vt_entry->vif_id,
-+						  &pdsc->vfs[vf_id].padev);
- 		else
--			pdsc_auxbus_dev_del(vf, pdsc);
-+			pdsc_auxbus_dev_del(vf, pdsc, &pdsc->vfs[vf_id].padev);
- 	}
- 
- 	return err;
-diff --git a/drivers/net/ethernet/amd/pds_core/main.c b/drivers/net/ethernet/amd/pds_core/main.c
-index 660268ff95623..a3a68889137b6 100644
---- a/drivers/net/ethernet/amd/pds_core/main.c
-+++ b/drivers/net/ethernet/amd/pds_core/main.c
-@@ -190,7 +190,8 @@ static int pdsc_init_vf(struct pdsc *vf)
- 	devl_unlock(dl);
- 
- 	pf->vfs[vf->vf_id].vf = vf;
--	err = pdsc_auxbus_dev_add(vf, pf);
-+	err = pdsc_auxbus_dev_add(vf, pf, PDS_DEV_TYPE_VDPA,
-+				  &pf->vfs[vf->vf_id].padev);
- 	if (err) {
- 		devl_lock(dl);
- 		devl_unregister(dl);
-@@ -417,7 +418,7 @@ static void pdsc_remove(struct pci_dev *pdev)
- 
- 		pf = pdsc_get_pf_struct(pdsc->pdev);
- 		if (!IS_ERR(pf)) {
--			pdsc_auxbus_dev_del(pdsc, pf);
-+			pdsc_auxbus_dev_del(pdsc, pf, &pf->vfs[pdsc->vf_id].padev);
- 			pf->vfs[pdsc->vf_id].vf = NULL;
- 		}
- 	} else {
-@@ -482,7 +483,8 @@ static void pdsc_reset_prepare(struct pci_dev *pdev)
- 
- 		pf = pdsc_get_pf_struct(pdsc->pdev);
- 		if (!IS_ERR(pf))
--			pdsc_auxbus_dev_del(pdsc, pf);
-+			pdsc_auxbus_dev_del(pdsc, pf,
-+					    &pf->vfs[pdsc->vf_id].padev);
- 	}
- 
- 	pdsc_unmap_bars(pdsc);
-@@ -527,7 +529,8 @@ static void pdsc_reset_done(struct pci_dev *pdev)
- 
- 		pf = pdsc_get_pf_struct(pdsc->pdev);
- 		if (!IS_ERR(pf))
--			pdsc_auxbus_dev_add(pdsc, pf);
-+			pdsc_auxbus_dev_add(pdsc, pf, PDS_DEV_TYPE_VDPA,
-+					    &pf->vfs[pdsc->vf_id].padev);
- 	}
+ 	hwrm_req_drop(bp, req);
  }
- 
 -- 
 2.39.5
 
