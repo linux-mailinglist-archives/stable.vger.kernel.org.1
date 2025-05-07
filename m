@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-142579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0049EAAEB38
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:04:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22442AAEBA9
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:09:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F08949E2AD7
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:04:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23A279E37C7
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:08:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 743FC28BA9F;
-	Wed,  7 May 2025 19:04:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5936828AAE9;
+	Wed,  7 May 2025 19:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M/CU2lGU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uu+E3CUS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3261A1E22E9;
-	Wed,  7 May 2025 19:04:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 179E02144C1;
+	Wed,  7 May 2025 19:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644690; cv=none; b=VFhNIEX0dkIudDEAPCfJq6v603ZoU20SsLmT1aLMaidNXjww3Y1aIFoh2x2XnzVQm1ajKbCR4iwbojhCN/wTAryHv/sl4Hxr8ppUecFl84GTcXNUmy617w5SFed8EvIzT/SqyJOn2u41yuWJPDdg6W4Dj120mG8VhQP3/zdMbL8=
+	t=1746644948; cv=none; b=hvqM+ka8QFQUzAMIqqLFwQc2MBCYUGpvHN7rdXHDsg6aulMoGC1dV6U9BtYtJHXxRb3kBrAhnsL7C+hQKlf2886O4AOewJ7EYmup8O9nci7KMYZXhiPUqj4QUyvlwmssHBvNFZGyzqrgZfV5C6A3HFFtgMIJcqlXvWEXpO6pkCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644690; c=relaxed/simple;
-	bh=FtQTl0PJ77E5E+OdzvwE8Rtx5U9Mxr6T1wbCHLhxmHU=;
+	s=arc-20240116; t=1746644948; c=relaxed/simple;
+	bh=e1A9VCU9nrNXFUJ87A+igwHYsxHOuVwkN2rSZmFWShs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LwF4MR1mdENPMlG29XbqZe2EWO63HcNq+UBK7cgUPeO0/eXGM64LkMkUyoKJ85FcCSCvd3vv6Mi9fp48ojk/z4y8OONUPiwM7CK/7fd+FRfvy4uOiSzBkGeWXZbgtDRJrfvK1gMkFElYpHHPF165qM6OlM3vcQTn3zhkCc9NBn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M/CU2lGU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B89FCC4CEE2;
-	Wed,  7 May 2025 19:04:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BKWNwRkn8Asme/pGGqkSAH9B+lU65ffs0lAy2FmdWYDbVnLZ0OWY80sR5I7U3vU9RZW5X78UsyInqJchQ1T0QfggyG7FaEW24ih1b3RvmXv426fmUa+zZBwMQnh2M/cY9KrMSoUZRFFkV4nt4P3wN5o47JPatG0lc9oezXR3QgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uu+E3CUS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85CF0C4CEE2;
+	Wed,  7 May 2025 19:09:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644690;
-	bh=FtQTl0PJ77E5E+OdzvwE8Rtx5U9Mxr6T1wbCHLhxmHU=;
+	s=korg; t=1746644948;
+	bh=e1A9VCU9nrNXFUJ87A+igwHYsxHOuVwkN2rSZmFWShs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M/CU2lGUwkaxd3H80GV0BwsmiVERW3Op8wgt1EdjHViQJclwciWiGh/lW+yv62xcy
-	 cMOgt1Y68D9N9kHbt90DmdpAMETvAt+MFoP1ZNXk+QmeMxHyjV740tTEZ2AsFwmDq8
-	 oOTbBFhOepz30goNaBrhDdOn+gzZniv/+9hTYsR0=
+	b=uu+E3CUSoKcgkPRWMRugZ+pUtEvuZ9hVIcLxVEznKIDj1BT9eTmk0KcGue44gsqDO
+	 2wvKpIPGJwAJUQrfCafp+QSScMXkYV4Xxn3WbID5X6lbp8bViZ/GYy/1/5NsJIGpsx
+	 1UT4GMK7E+E2fIUFjJlPKVuqz2xy5PuwTJKy+AoY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 094/164] net_sched: qfq: Fix double list add in class with netem as child qdisc
-Date: Wed,  7 May 2025 20:39:39 +0200
-Message-ID: <20250507183824.783426804@linuxfoundation.org>
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Ryan Matthews <ryanmatthews@fastmail.com>
+Subject: [PATCH 6.6 044/129] PCI: imx6: Skip controller_id generation logic for i.MX7D
+Date: Wed,  7 May 2025 20:39:40 +0200
+Message-ID: <20250507183815.326275687@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,83 +63,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Nogueira <victor@mojatatu.com>
+From: Richard Zhu <hongxing.zhu@nxp.com>
 
-[ Upstream commit f139f37dcdf34b67f5bf92bc8e0f7f6b3ac63aa4 ]
+[ Upstream commit f068ffdd034c93f0c768acdc87d4d2d7023c1379 ]
 
-As described in Gerrard's report [1], there are use cases where a netem
-child qdisc will make the parent qdisc's enqueue callback reentrant.
-In the case of qfq, there won't be a UAF, but the code will add the same
-classifier to the list twice, which will cause memory corruption.
+The i.MX7D only has one PCIe controller, so controller_id should always be
+0. The previous code is incorrect although yielding the correct result.
 
-This patch checks whether the class was already added to the agg->active
-list (cl_is_active) before doing the addition to cater for the reentrant
-case.
+Fix by removing "IMX7D" from the switch case branch.
 
-[1] https://lore.kernel.org/netdev/CAHcdcOm+03OD2j6R0=YHKqmy=VgJ8xEOKuP6c7mSgnp-TEJJbw@mail.gmail.com/
-
-Fixes: 37d9cf1a3ce3 ("sched: Fix detection of empty queues in child qdiscs")
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
-Link: https://patch.msgid.link/20250425220710.3964791-5-victor@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2d8ed461dbc9 ("PCI: imx6: Add support for i.MX8MQ")
+Link: https://lore.kernel.org/r/20241126075702.4099164-5-hongxing.zhu@nxp.com
+Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+[Because this switch case does more than just controller_id
+ logic, move the "IMX7D" case label instead of removing it entirely.]
+Signed-off-by: Ryan Matthews <ryanmatthews@fastmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_qfq.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/pci/controller/dwc/pci-imx6.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
-index d584c0c25899c..0a1f5ebfdd412 100644
---- a/net/sched/sch_qfq.c
-+++ b/net/sched/sch_qfq.c
-@@ -202,6 +202,11 @@ struct qfq_sched {
-  */
- enum update_reason {enqueue, requeue};
- 
-+static bool cl_is_active(struct qfq_class *cl)
-+{
-+	return !list_empty(&cl->alist);
-+}
-+
- static struct qfq_class *qfq_find_class(struct Qdisc *sch, u32 classid)
- {
- 	struct qfq_sched *q = qdisc_priv(sch);
-@@ -1217,7 +1222,6 @@ static int qfq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	struct qfq_class *cl;
- 	struct qfq_aggregate *agg;
- 	int err = 0;
--	bool first;
- 
- 	cl = qfq_classify(skb, sch, &err);
- 	if (cl == NULL) {
-@@ -1239,7 +1243,6 @@ static int qfq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	}
- 
- 	gso_segs = skb_is_gso(skb) ? skb_shinfo(skb)->gso_segs : 1;
--	first = !cl->qdisc->q.qlen;
- 	err = qdisc_enqueue(skb, cl->qdisc, to_free);
- 	if (unlikely(err != NET_XMIT_SUCCESS)) {
- 		pr_debug("qfq_enqueue: enqueue failed %d\n", err);
-@@ -1255,8 +1258,8 @@ static int qfq_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	++sch->q.qlen;
- 
- 	agg = cl->agg;
--	/* if the queue was not empty, then done here */
--	if (!first) {
-+	/* if the class is active, then done here */
-+	if (cl_is_active(cl)) {
- 		if (unlikely(skb == cl->qdisc->ops->peek(cl->qdisc)) &&
- 		    list_first_entry(&agg->active, struct qfq_class, alist)
- 		    == cl && cl->deficit < len)
--- 
-2.39.5
-
+--- a/drivers/pci/controller/dwc/pci-imx6.c
++++ b/drivers/pci/controller/dwc/pci-imx6.c
+@@ -1281,10 +1281,10 @@ static int imx6_pcie_probe(struct platfo
+ 	switch (imx6_pcie->drvdata->variant) {
+ 	case IMX8MQ:
+ 	case IMX8MQ_EP:
+-	case IMX7D:
+ 		if (dbi_base->start == IMX8MQ_PCIE2_BASE_ADDR)
+ 			imx6_pcie->controller_id = 1;
+-
++		fallthrough;
++	case IMX7D:
+ 		imx6_pcie->pciephy_reset = devm_reset_control_get_exclusive(dev,
+ 									    "pciephy");
+ 		if (IS_ERR(imx6_pcie->pciephy_reset)) {
 
 
 
