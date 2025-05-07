@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-142523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7C6FAAEAFC
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:01:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F202CAAEBB9
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:09:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61430524E1B
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:01:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 34EA07A17B0
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:08:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 812C91E22E9;
-	Wed,  7 May 2025 19:01:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8E8D28DF3C;
+	Wed,  7 May 2025 19:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="09y1B8vd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xjzk91c7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3018823DE;
-	Wed,  7 May 2025 19:01:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A832144C1;
+	Wed,  7 May 2025 19:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644516; cv=none; b=FrqX+jVB4paAKKuj4KYuYq+t8hEACh4u05kNKvTfmuyYCPQcYrHz60WYqoU1czw+q9V/8rpzYrldwV4mxGLhipNSnRzGqCht7FdJVgohOhkCdonoDXYqnDfKTD9AApR4PFp0bzBkm/0HPOwgeldh/NW9hT6kbc+K6PCRc2StMF8=
+	t=1746644987; cv=none; b=r7jbI/1Cq9LV0ZoZEaIDkyH+R7L4wTG6JVagVz7UwrilJeIcetfOzMFT//RX35pO3RShsJU5oa8jX7dhj2ZFg0LGv47UMXnlEwU9PW5AjcrWLt3DO2x1hSIQTrwylHPlQpM5EGjgnKPqtHtwEnb7PShAgKhtQXSPNGdw7k/Rjo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644516; c=relaxed/simple;
-	bh=GveBhhBYbt8Pi5SkR+4OUTW7AcLk5PUiuSCrA0N9HWE=;
+	s=arc-20240116; t=1746644987; c=relaxed/simple;
+	bh=F0GvGfYGwYagaN8CrlZrTLN0O3FSKkBUaH2Uo5Hc/10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QKYdk9wvqaEbH7MC8DP02wu2I+HwKT+TqPxbmUmeQdk9vn2J5fTv4A+T0orm6IU9TcxsA8wYk+y6rZHI/p33nm+/yXB2bow97mauO6Ti3IrZAA9++ZgUyFTl2w4QL90K0nkpuX69QdEQkbk7MYzJej4T+2KZv45sqD/ypjbYH0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=09y1B8vd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D1B6C4CEE2;
-	Wed,  7 May 2025 19:01:55 +0000 (UTC)
+	 MIME-Version; b=rN1uyk64AFhyE5k93bt1D6m/zTkC/OoDiPTcbxJ96CGcQzUVJ5ySgGI3CA1aA41z0DoGXva4AWJcbiQvz1xu2Ez51iW/PsW3I+vhhPLQXDwB/qhVON9YigA8RfXmERIST3hwSdFEiyov+oj8XX/gVQh7BIGXQXHKxx2mFdq6DdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xjzk91c7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9A74C4CEE2;
+	Wed,  7 May 2025 19:09:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644515;
-	bh=GveBhhBYbt8Pi5SkR+4OUTW7AcLk5PUiuSCrA0N9HWE=;
+	s=korg; t=1746644987;
+	bh=F0GvGfYGwYagaN8CrlZrTLN0O3FSKkBUaH2Uo5Hc/10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=09y1B8vds11gnRHq4oBEtEoIQ2tovUGZeeTc5AS6k87E5/ov/7boLHSKcRgfBTOAm
-	 BjRwBWcIYExt19Sh1ZJnTbYImJEGhW8Ji59byjA5yuc0S25q1eTyVfc4JsbF68eKWt
-	 iU2fFtpZux9oyHfIzKQB25x46dEh2GV5RuEyvYdo=
+	b=xjzk91c7CKXRiVzh06VwTVyoQ5jf5PCWsTulWlkner0ZQQ4gfuuEZ11XcnUwjal6B
+	 cH6hfkD8y7+KZ10LrhCVGevccUAWSrpVMyLkH5kpD/jYkGLhraIyFJbXCbhP4+gjpo
+	 U3L5IUQdIjltOJ+S+msmUBTWffZRYl4czZhvmjck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianbo Liu <jianbol@nvidia.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 069/164] net/mlx5e: TC, Continue the attr process even if encap entry is invalid
+	Aaron Kling <webgeek1234@gmail.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 018/129] spi: tegra114: Dont fail set_cs_timing when delays are zero
 Date: Wed,  7 May 2025 20:39:14 +0200
-Message-ID: <20250507183823.754057086@linuxfoundation.org>
+Message-ID: <20250507183814.273940534@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jianbo Liu <jianbol@nvidia.com>
+From: Aaron Kling <webgeek1234@gmail.com>
 
-[ Upstream commit 172c034264c894518c012387f2de2f9d6443505d ]
+commit 4426e6b4ecf632bb75d973051e1179b8bfac2320 upstream.
 
-Previously the offload of the rule with header rewrite and mirror to
-both internal and external destinations is skipped if the encap entry
-is not valid. But it shouldn't because driver will try to offload it
-again if neighbor is updated and encap entry is valid, to replace the
-old FTE added for slow path. But the extra split attr doesn't exist at
-that time as the process is skipped, driver then fails to offload it.
-To fix this issue, remove the checking and continue the attr process
-if encap entry is invalid.
+The original code would skip null delay pointers, but when the pointers
+were converted to point within the spi_device struct, the check was not
+updated to skip delays of zero. Hence all spi devices that didn't set
+delays would fail to probe.
 
-Fixes: b11bde56246e ("net/mlx5e: TC, Offload rewrite and mirror to both internal and external dests")
-Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
-Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Link: https://patch.msgid.link/20250423083611.324567-4-mbloch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 04e6bb0d6bb1 ("spi: modify set_cs_timing parameter")
+Cc: stable@vger.kernel.org
+Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
+Link: https://patch.msgid.link/20250423-spi-tegra114-v1-1-2d608bcc12f9@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_tc.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/spi/spi-tegra114.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-index 6b3b1afe83121..218d5402cd1a6 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-@@ -1750,9 +1750,6 @@ extra_split_attr_dests_needed(struct mlx5e_tc_flow *flow, struct mlx5_flow_attr
- 	    !list_is_first(&attr->list, &flow->attrs))
- 		return 0;
+--- a/drivers/spi/spi-tegra114.c
++++ b/drivers/spi/spi-tegra114.c
+@@ -728,9 +728,9 @@ static int tegra_spi_set_hw_cs_timing(st
+ 	u32 inactive_cycles;
+ 	u8 cs_state;
  
--	if (flow_flag_test(flow, SLOW))
--		return 0;
--
- 	esw_attr = attr->esw_attr;
- 	if (!esw_attr->split_count ||
- 	    esw_attr->split_count == esw_attr->out_count - 1)
-@@ -1766,7 +1763,7 @@ extra_split_attr_dests_needed(struct mlx5e_tc_flow *flow, struct mlx5_flow_attr
- 	for (i = esw_attr->split_count; i < esw_attr->out_count; i++) {
- 		/* external dest with encap is considered as internal by firmware */
- 		if (esw_attr->dests[i].vport == MLX5_VPORT_UPLINK &&
--		    !(esw_attr->dests[i].flags & MLX5_ESW_DEST_ENCAP_VALID))
-+		    !(esw_attr->dests[i].flags & MLX5_ESW_DEST_ENCAP))
- 			ext_dest = true;
- 		else
- 			int_dest = true;
--- 
-2.39.5
-
+-	if (setup->unit != SPI_DELAY_UNIT_SCK ||
+-	    hold->unit != SPI_DELAY_UNIT_SCK ||
+-	    inactive->unit != SPI_DELAY_UNIT_SCK) {
++	if ((setup->unit && setup->unit != SPI_DELAY_UNIT_SCK) ||
++	    (hold->unit && hold->unit != SPI_DELAY_UNIT_SCK) ||
++	    (inactive->unit && inactive->unit != SPI_DELAY_UNIT_SCK)) {
+ 		dev_err(&spi->dev,
+ 			"Invalid delay unit %d, should be SPI_DELAY_UNIT_SCK\n",
+ 			SPI_DELAY_UNIT_SCK);
 
 
 
