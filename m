@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-142201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8158AAE97C
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:45:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F683AAEA59
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:54:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADAD03AA9AE
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:45:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 630F19C6E53
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:53:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E72E42116E9;
-	Wed,  7 May 2025 18:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB16628B4FE;
+	Wed,  7 May 2025 18:54:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QALdZm6W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p0kuVJ9a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2C531482F5;
-	Wed,  7 May 2025 18:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96FEB1FF5EC;
+	Wed,  7 May 2025 18:54:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643520; cv=none; b=qCUzTkHo+aGgCQ3/VMQ4juhQDqQnMEfSkhH8HpO6JHCV9DyplRrbdbqiDKp0+txMdUJerblcGyg0IsMgFDJ+tWiL5f1OHW/R9rvBRc/gh1cBRjsvBbT/SYLD4KidbMNP2jUini5OpCbDKAnVUcCEgXOqcE+J2Gjv4vZIhhnieZM=
+	t=1746644052; cv=none; b=OBEvN3YmwW5yCezohzh+8fdljUZr1jo10/6jCQMoxMKD5O/fE+27Ux0+okFpclRxp84t/4ciIa7U55VJhAEpcMKJ0iIEhYqRLTmKOgh+jPK0XxUl6DhTkJVWBLGCxQm1hVcd/20ZdTahw3Q33RqQwXuFpmELif9MEu5WME8oz1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643520; c=relaxed/simple;
-	bh=I0TQkdlGViVOrERUpIz56oVeEJvFyBoVrob/JabjyQE=;
+	s=arc-20240116; t=1746644052; c=relaxed/simple;
+	bh=NIte9ZjU4tYBOgXqPWQN4L9EPwS5P+Dj+5E8ksBCp/g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W9ZbvsJI8b9TFi58Xxl0DrXACWU3VZ2F7Y6B067aj22Luyg7kpcIuP45zHMOuYE/LhgfTAYCFxA68xfz0koCx+9NQ9JnKCzT/NcE3k3mc9wDhl37ivkWAngD+rtUoDyOjZTzCZ60HcAuAM/H/+23/SSu3QpshdCId5Y/wNsyouE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QALdZm6W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FBD7C4CEE2;
-	Wed,  7 May 2025 18:45:19 +0000 (UTC)
+	 MIME-Version; b=B+4qnQNU2z00qBWWfuSI56zcjoQA5M3du3Qsy9FkH4ruBipSgLd+M56ugfZI9zFLdvEzSw8A3yUOXrmWGLeXfAJORFhZW7RBRcjZuUM/m7kgY0IO9wd14K8F/HYEmurlBboB6V1WtilH+katl26sY2p9m12On0oJlEpGCf0uqP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p0kuVJ9a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B57D8C4CEE2;
+	Wed,  7 May 2025 18:54:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643520;
-	bh=I0TQkdlGViVOrERUpIz56oVeEJvFyBoVrob/JabjyQE=;
+	s=korg; t=1746644052;
+	bh=NIte9ZjU4tYBOgXqPWQN4L9EPwS5P+Dj+5E8ksBCp/g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QALdZm6Wdx6kIaZUcn80nyG7JAO85YnXHXbd8fcFma8Kp4IwrFp+nA5ra/1xxnp28
-	 61jNdckWS1HI4Dhcv9vf1nmUSYj74m34BaVpjKCJlkSSNO6YvxMmxNC/PEQtL9ChbB
-	 z4GWRa3MPghy26vWkt6VCAXajdNTYOpT4MsqYTbI=
+	b=p0kuVJ9a9WJZ37FVF7iP+AhH36uvX28M88MZzoIs5H9jvgdsvILEC1zod7DIbUK5a
+	 mTJ9OXIzNjrW7kgctowVl8FqEWDyA4P/mrM1wph9N2qwgWrEfmmmpySZ35N5249T82
+	 7XnkrXPEfUAvQPyJV9atGdgWsA/c9PRlUeA3Kbm8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 32/97] xfs: make xfs_bmapi_convert_delalloc() to allocate the target offset
-Date: Wed,  7 May 2025 20:39:07 +0200
-Message-ID: <20250507183808.285916401@linuxfoundation.org>
+	Xuanqiang Luo <luoxuanqiang@kylinos.cn>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 103/183] ice: Check VF VSI Pointer Value in ice_vc_add_fdir_fltr()
+Date: Wed,  7 May 2025 20:39:08 +0200
+Message-ID: <20250507183829.006738497@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
-References: <20250507183806.987408728@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,161 +65,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 
-[ Upstream commit 2e08371a83f1c06fd85eea8cd37c87a224cc4cc4 ]
+[ Upstream commit 425c5f266b2edeee0ce16fedd8466410cdcfcfe3 ]
 
-Since xfs_bmapi_convert_delalloc() only attempts to allocate the entire
-delalloc extent and require multiple invocations to allocate the target
-offset. So xfs_convert_blocks() add a loop to do this job and we call it
-in the write back path, but xfs_convert_blocks() isn't a common helper.
-Let's do it in xfs_bmapi_convert_delalloc() and drop
-xfs_convert_blocks(), preparing for the post EOF delalloc blocks
-converting in the buffered write begin path.
+As mentioned in the commit baeb705fd6a7 ("ice: always check VF VSI
+pointer values"), we need to perform a null pointer check on the return
+value of ice_get_vf_vsi() before using it.
 
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6ebbe97a4881 ("ice: Add a per-VF limit on number of FDIR filters")
+Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://patch.msgid.link/20250425222636.3188441-3-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/libxfs/xfs_bmap.c |   34 +++++++++++++++++++++++++++--
- fs/xfs/xfs_aops.c        |   54 ++++++++++++-----------------------------------
- 2 files changed, 46 insertions(+), 42 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/fs/xfs/libxfs/xfs_bmap.c
-+++ b/fs/xfs/libxfs/xfs_bmap.c
-@@ -4522,8 +4522,8 @@ error0:
-  * invocations to allocate the target offset if a large enough physical extent
-  * is not available.
-  */
--int
--xfs_bmapi_convert_delalloc(
-+static int
-+xfs_bmapi_convert_one_delalloc(
- 	struct xfs_inode	*ip,
- 	int			whichfork,
- 	xfs_off_t		offset,
-@@ -4651,6 +4651,36 @@ out_trans_cancel:
- 	return error;
- }
+diff --git a/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c b/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
+index 9be4bd717512d..f90f545b3144d 100644
+--- a/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
++++ b/drivers/net/ethernet/intel/ice/ice_virtchnl_fdir.c
+@@ -2097,6 +2097,11 @@ int ice_vc_add_fdir_fltr(struct ice_vf *vf, u8 *msg)
+ 	pf = vf->pf;
+ 	dev = ice_pf_to_dev(pf);
+ 	vf_vsi = ice_get_vf_vsi(vf);
++	if (!vf_vsi) {
++		dev_err(dev, "Can not get FDIR vf_vsi for VF %u\n", vf->vf_id);
++		v_ret = VIRTCHNL_STATUS_ERR_PARAM;
++		goto err_exit;
++	}
  
-+/*
-+ * Pass in a dellalloc extent and convert it to real extents, return the real
-+ * extent that maps offset_fsb in iomap.
-+ */
-+int
-+xfs_bmapi_convert_delalloc(
-+	struct xfs_inode	*ip,
-+	int			whichfork,
-+	loff_t			offset,
-+	struct iomap		*iomap,
-+	unsigned int		*seq)
-+{
-+	int			error;
-+
-+	/*
-+	 * Attempt to allocate whatever delalloc extent currently backs offset
-+	 * and put the result into iomap.  Allocate in a loop because it may
-+	 * take several attempts to allocate real blocks for a contiguous
-+	 * delalloc extent if free space is sufficiently fragmented.
-+	 */
-+	do {
-+		error = xfs_bmapi_convert_one_delalloc(ip, whichfork, offset,
-+					iomap, seq);
-+		if (error)
-+			return error;
-+	} while (iomap->offset + iomap->length <= offset);
-+
-+	return 0;
-+}
-+
- int
- xfs_bmapi_remap(
- 	struct xfs_trans	*tp,
---- a/fs/xfs/xfs_aops.c
-+++ b/fs/xfs/xfs_aops.c
-@@ -225,45 +225,6 @@ xfs_imap_valid(
- 	return true;
- }
- 
--/*
-- * Pass in a dellalloc extent and convert it to real extents, return the real
-- * extent that maps offset_fsb in wpc->iomap.
-- *
-- * The current page is held locked so nothing could have removed the block
-- * backing offset_fsb, although it could have moved from the COW to the data
-- * fork by another thread.
-- */
--static int
--xfs_convert_blocks(
--	struct iomap_writepage_ctx *wpc,
--	struct xfs_inode	*ip,
--	int			whichfork,
--	loff_t			offset)
--{
--	int			error;
--	unsigned		*seq;
--
--	if (whichfork == XFS_COW_FORK)
--		seq = &XFS_WPC(wpc)->cow_seq;
--	else
--		seq = &XFS_WPC(wpc)->data_seq;
--
--	/*
--	 * Attempt to allocate whatever delalloc extent currently backs offset
--	 * and put the result into wpc->iomap.  Allocate in a loop because it
--	 * may take several attempts to allocate real blocks for a contiguous
--	 * delalloc extent if free space is sufficiently fragmented.
--	 */
--	do {
--		error = xfs_bmapi_convert_delalloc(ip, whichfork, offset,
--				&wpc->iomap, seq);
--		if (error)
--			return error;
--	} while (wpc->iomap.offset + wpc->iomap.length <= offset);
--
--	return 0;
--}
--
- static int
- xfs_map_blocks(
- 	struct iomap_writepage_ctx *wpc,
-@@ -281,6 +242,7 @@ xfs_map_blocks(
- 	struct xfs_iext_cursor	icur;
- 	int			retries = 0;
- 	int			error = 0;
-+	unsigned int		*seq;
- 
- 	if (xfs_is_shutdown(mp))
- 		return -EIO;
-@@ -376,7 +338,19 @@ retry:
- 	trace_xfs_map_blocks_found(ip, offset, count, whichfork, &imap);
- 	return 0;
- allocate_blocks:
--	error = xfs_convert_blocks(wpc, ip, whichfork, offset);
-+	/*
-+	 * Convert a dellalloc extent to a real one. The current page is held
-+	 * locked so nothing could have removed the block backing offset_fsb,
-+	 * although it could have moved from the COW to the data fork by another
-+	 * thread.
-+	 */
-+	if (whichfork == XFS_COW_FORK)
-+		seq = &XFS_WPC(wpc)->cow_seq;
-+	else
-+		seq = &XFS_WPC(wpc)->data_seq;
-+
-+	error = xfs_bmapi_convert_delalloc(ip, whichfork, offset,
-+				&wpc->iomap, seq);
- 	if (error) {
- 		/*
- 		 * If we failed to find the extent in the COW fork we might have
+ #define ICE_VF_MAX_FDIR_FILTERS	128
+ 	if (!ice_fdir_num_avail_fltr(&pf->hw, vf_vsi) ||
+-- 
+2.39.5
+
 
 
 
