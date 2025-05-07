@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-142731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142616-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03B15AAEBF3
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:12:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D82AAAEB63
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:07:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 329761C21A41
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:12:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 75CBEB20C5D
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:05:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AC5E28D839;
-	Wed,  7 May 2025 19:12:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD87828980D;
+	Wed,  7 May 2025 19:06:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rautck9C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LvH9BKGY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC9CF214813;
-	Wed,  7 May 2025 19:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AD1219AD5C;
+	Wed,  7 May 2025 19:06:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746645155; cv=none; b=SPHCUxRiEGUYH7RMZa6QCYyqy1rt/z93fxubmamHGmv7RnNB1dhCcjxQnGX4UROpRKYIItHl/5KwbWXjIiHOydMA87m7PXtHhLuk6X4VEiCwajWSMsCGqto3P1i5TczZVx+fpDRbQhwNeItGFhgjT8BOuJ0KJ/Fhopm+9V83JiA=
+	t=1746644802; cv=none; b=YCvn1/B6ZkFJxcmmHz2RYSqOmT/aSl54tgl9KWluq2r3Vii4da/40nrIWNAZRjlC7ttA7zBezQp4rU9piWm+9N2sk1aF8IQUlGu+2ProDz17UM62GRixPDxQ9o80PkunU2hBq8ODqHhgSnUK+veEvZsILhvhG3/HSMC7PP9XOL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746645155; c=relaxed/simple;
-	bh=jpb8c7riOmR8h9D1XCkeFxefrp4HVgaLXnpGcDDE1xM=;
+	s=arc-20240116; t=1746644802; c=relaxed/simple;
+	bh=79hOpXos0puHfcnfixL1gNA3RxLOlN0q09tNuxtAkDU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J0lScqJKhc3iYtRv6Afd1gnLoVSauyV+0xXvs44uyNUzoLS7Xe7l5YWf2bhMpx03Shjbh4XKZK7WZiB2b2Ggukt+9B3Ulb1fDYFd/gyqGqihRkBPaRoCbZ0xswULmDCObdPZV4yyX3bJmbx6hj7l9JgKNHgvBBzdNs/hkLQCmoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rautck9C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35F4AC4CEE2;
-	Wed,  7 May 2025 19:12:35 +0000 (UTC)
+	 MIME-Version; b=V36f0GzJEkFVYtWAXtyoQIEA+JZr9m2pLLSwFYWXc3ahp7ovkW3wtgbu5e6/Hj1uU7sTwNbQ4bFPRf8S64O38eGWbYkyN7yIAIYOGDtp7NplPNtdCiOJcDCXOovqTgPEXNfXVCkyk7WElIoPWE0NUpKU7Lo1o/6DBkmIdJjUNFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LvH9BKGY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09047C4CEE2;
+	Wed,  7 May 2025 19:06:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746645155;
-	bh=jpb8c7riOmR8h9D1XCkeFxefrp4HVgaLXnpGcDDE1xM=;
+	s=korg; t=1746644802;
+	bh=79hOpXos0puHfcnfixL1gNA3RxLOlN0q09tNuxtAkDU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rautck9CxMQ9TSBA0NzT4sMT3Ti72RCFJIzTqUIsyJaXxJErvZLbV4Fpp4URQQATX
-	 9p1LbtY6Zsdp6U7PhAdlGF1VirVdJImZ80Uww6oTpUZ0LFIqe6M5JAk5Nh+/TZwYW7
-	 1QEdaJVlzEl7GMpQXjLkNiLgMfg1pO5+b3Hu0lPg=
+	b=LvH9BKGYMU1shAFulabbohS6mJ3olBC23UKQfOu8Q5l06EYkwwTrnxmJWkhFGstKl
+	 IGUsJ7nMnXWn6cFB4MDf2iiX9/OZFP/G2O064MNpNMvuJGhg1kOJluWC52XmM/Nnea
+	 bDV5ysQgPtLOZIxs0p7eWhmLWgNy/tkEkx7EHSO8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Bell <jonathan@raspberrypi.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Shyam Saini <shyamsaini@linux.microsoft.com>,
+	Petr Pavlu <petr.pavlu@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 111/129] xhci: Use more than one Event Ring segment
+Subject: [PATCH 6.12 162/164] drivers: base: handle module_kobject creation
 Date: Wed,  7 May 2025 20:40:47 +0200
-Message-ID: <20250507183817.989811986@linuxfoundation.org>
+Message-ID: <20250507183827.521463411@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
-References: <20250507183813.500572371@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Bell <jonathan@raspberrypi.com>
+From: Shyam Saini <shyamsaini@linux.microsoft.com>
 
-[ Upstream commit 28084d3fcc3c8445542917f32e382c45b5343cc2 ]
+[ Upstream commit f95bbfe18512c5c018720468959edac056a17196 ]
 
-Users have reported log spam created by "Event Ring Full" xHC event
-TRBs.  These are caused by interrupt latency in conjunction with a very
-busy set of devices on the bus.  The errors are benign, but throughput
-will suffer as the xHC will pause processing of transfers until the
-Event Ring is drained by the kernel.
+module_add_driver() relies on module_kset list for
+/sys/module/<built-in-module>/drivers directory creation.
 
-Commit dc0ffbea5729 ("usb: host: xhci: update event ring dequeue pointer
-on purpose") mitigated the issue by advancing the Event Ring Dequeue
-Pointer already after half a segment has been processed.  Nevertheless,
-providing a larger Event Ring would be useful to cope with load peaks.
+Since,
+commit 96a1a2412acba ("kernel/params.c: defer most of param_sysfs_init() to late_initcall time")
+drivers which are initialized from subsys_initcall() or any other
+higher precedence initcall couldn't find the related kobject entry
+in the module_kset list because module_kset is not fully populated
+by the time module_add_driver() refers it. As a consequence,
+module_add_driver() returns early without calling make_driver_name().
+Therefore, /sys/module/<built-in-module>/drivers is never created.
 
-Expand the number of event TRB slots available by increasing the number
-of Event Ring segments in the ERST.
+Fix this issue by letting module_add_driver() handle module_kobject
+creation itself.
 
-Controllers have a hardware-defined limit as to the number of ERST
-entries they can process, but with up to 32k it can be excessively high
-(sec 5.3.4).  So cap the actual number at 2 (configurable through the
-ERST_MAX_SEGS macro), which seems like a reasonable quantity.  It is
-supported by any xHC because the limit in the HCSPARAMS2 register is
-defined as a power of 2.  Renesas uPD720201 and VIA VL805 controllers
-do not support more than 2 ERST entries.
-
-An alternative to increasing the number of Event Ring segments would be
-an increase of the segment size.  But that requires allocating multiple
-contiguous pages, which may be impossible if memory is fragmented.
-
-Signed-off-by: Jonathan Bell <jonathan@raspberrypi.com>
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20231019102924.2797346-6-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: bea5892d0ed2 ("xhci: Limit time spent with xHC interrupts disabled during bus resume")
+Fixes: 96a1a2412acb ("kernel/params.c: defer most of param_sysfs_init() to late_initcall time")
+Cc: stable@vger.kernel.org # requires all other patches from the series
+Suggested-by: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Signed-off-by: Shyam Saini <shyamsaini@linux.microsoft.com>
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20250227184930.34163-5-shyamsaini@linux.microsoft.com
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-mem.c | 10 +++++++---
- drivers/usb/host/xhci.h     |  5 +++--
- 2 files changed, 10 insertions(+), 5 deletions(-)
+ drivers/base/module.c | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
-index f236fba5cd248..45240299fa171 100644
---- a/drivers/usb/host/xhci-mem.c
-+++ b/drivers/usb/host/xhci-mem.c
-@@ -2237,14 +2237,18 @@ xhci_alloc_interrupter(struct xhci_hcd *xhci, gfp_t flags)
- {
- 	struct device *dev = xhci_to_hcd(xhci)->self.sysdev;
- 	struct xhci_interrupter *ir;
-+	unsigned int num_segs;
- 	int ret;
+diff --git a/drivers/base/module.c b/drivers/base/module.c
+index 5bc71bea883a0..218aaa0964552 100644
+--- a/drivers/base/module.c
++++ b/drivers/base/module.c
+@@ -42,16 +42,13 @@ int module_add_driver(struct module *mod, const struct device_driver *drv)
+ 	if (mod)
+ 		mk = &mod->mkobj;
+ 	else if (drv->mod_name) {
+-		struct kobject *mkobj;
+-
+-		/* Lookup built-in module entry in /sys/modules */
+-		mkobj = kset_find_obj(module_kset, drv->mod_name);
+-		if (mkobj) {
+-			mk = container_of(mkobj, struct module_kobject, kobj);
++		/* Lookup or create built-in module entry in /sys/modules */
++		mk = lookup_or_create_module_kobject(drv->mod_name);
++		if (mk) {
+ 			/* remember our module structure */
+ 			drv->p->mkobj = mk;
+-			/* kset_find_obj took a reference */
+-			kobject_put(mkobj);
++			/* lookup_or_create_module_kobject took a reference */
++			kobject_put(&mk->kobj);
+ 		}
+ 	}
  
- 	ir = kzalloc_node(sizeof(*ir), flags, dev_to_node(dev));
- 	if (!ir)
- 		return NULL;
- 
--	ir->event_ring = xhci_ring_alloc(xhci, ERST_NUM_SEGS, 1, TYPE_EVENT,
--					0, flags);
-+	num_segs = min_t(unsigned int, 1 << HCS_ERST_MAX(xhci->hcs_params2),
-+			 ERST_MAX_SEGS);
-+
-+	ir->event_ring = xhci_ring_alloc(xhci, num_segs, 1, TYPE_EVENT, 0,
-+					 flags);
- 	if (!ir->event_ring) {
- 		xhci_warn(xhci, "Failed to allocate interrupter event ring\n");
- 		kfree(ir);
-@@ -2280,7 +2284,7 @@ xhci_add_interrupter(struct xhci_hcd *xhci, struct xhci_interrupter *ir,
- 	/* set ERST count with the number of entries in the segment table */
- 	erst_size = readl(&ir->ir_set->erst_size);
- 	erst_size &= ERST_SIZE_MASK;
--	erst_size |= ERST_NUM_SEGS;
-+	erst_size |= ir->event_ring->num_segs;
- 	writel(erst_size, &ir->ir_set->erst_size);
- 
- 	erst_base = xhci_read_64(xhci, &ir->ir_set->erst_base);
-diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
-index 0325fccfaa2a4..76a3010b8b74a 100644
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1427,8 +1427,9 @@ struct urb_priv {
-  * Each segment table entry is 4*32bits long.  1K seems like an ok size:
-  * (1K bytes * 8bytes/bit) / (4*32 bits) = 64 segment entries in the table,
-  * meaning 64 ring segments.
-- * Initial allocated size of the ERST, in number of entries */
--#define	ERST_NUM_SEGS	1
-+ * Reasonable limit for number of Event Ring segments (spec allows 32k)
-+ */
-+#define	ERST_MAX_SEGS	2
- /* Poll every 60 seconds */
- #define	POLL_TIMEOUT	60
- /* Stop endpoint command timeout (secs) for URB cancellation watchdog timer */
 -- 
 2.39.5
 
