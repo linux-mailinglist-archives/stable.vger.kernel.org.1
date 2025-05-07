@@ -1,99 +1,129 @@
-Return-Path: <stable+bounces-142078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F9DAAAE373
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 16:45:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4347BAAE36F
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 16:45:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92D333AEF0E
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 14:44:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3AB881C01550
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 14:45:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16DD51FF601;
-	Wed,  7 May 2025 14:44:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF324289834;
+	Wed,  7 May 2025 14:45:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OdFbB+hN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GvXU7Rfc"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4A2257ACF
-	for <stable@vger.kernel.org>; Wed,  7 May 2025 14:44:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AADDA2153C9;
+	Wed,  7 May 2025 14:45:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746629085; cv=none; b=QadCoJg9uWKTp5dDmqwcb9UmlOWwRH2gbFN6yi1TU3NoqUyMSB/LZj7t1LTh8fUzunAC0el2FG5FdBlzRy3f+DVJX2sJWmaWsuLUMEzO9EusSAVs2xVtmp+JgwnGbN/Ef1Ml0l23QWukKi8tYlyYszMPceYB3nMsm1lieTZsXJo=
+	t=1746629118; cv=none; b=t/0wgbWAb/LSiXmYtE3QpkdzQLfjHPDujsxPWcKqbKLfOjm3BlQD0bl9gQCEhoec6DEhkLkVhFZy6yqUGneUlX+Cb+Z6pCWDF5vmhODyq2U2N0fglcszMI8ssOgHLJ75e+JDE7LsuKc//AaTpWV7vLUAPv7xQZ3Ye8YrFxnht+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746629085; c=relaxed/simple;
-	bh=n8EI7E6Dz6AzwEes/6/LRkBeJ5KMDspkzsKY7QNj+H8=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=re6WUjdcPcNkUHskRIKJXe3M+LiB+qvRK+O2ecJRb/mYndHJ1LvA1cvkwkF7w4QYH7h0nTrACwUcR2BDOi6OTQOKZEtG66b8Ljw+1EI4HQVkqGAq046LVwnHLuZ0SeVDOGRqs4xFP8D8MXMzxFMXs+QYRhsRlGflMFYHfpREKHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OdFbB+hN; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746629083; x=1778165083;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=n8EI7E6Dz6AzwEes/6/LRkBeJ5KMDspkzsKY7QNj+H8=;
-  b=OdFbB+hN2bOwRGuK+6Hia9jwN9aqM7NbBETTI6/BjCjMDhbE8G8erade
-   T/3/XyUeGruot/xJr2oYnMDVV54cWPWhjuhz/6KxSYw6FkdW1ykdsw2kA
-   erevkFAmjs73MEY+Nh+ILhZf2BTf5eI9VmHvUgSSAJkW6+0PZH4htL9Gj
-   PDd69UI1qs5WfCTwPVJLD29w/T7a11205OzTUxpcq7ztv02kumqA3bU3h
-   jlKnKSSdTYndL/bLHKVxdI+dBNNtsm2kd+Yn23uTmWKj26a3KinYYjOTp
-   F+sRjdZelagCNmDuKEuI3QhX7I0GmE7Bo51c7VOpHdHUeevo9pivLT8CL
-   w==;
-X-CSE-ConnectionGUID: y2I4/PQbR6izfmdchFOsuw==
-X-CSE-MsgGUID: ZPWFi2cRS/+5YdHLn8wJwA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11426"; a="65893900"
-X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; 
-   d="scan'208";a="65893900"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2025 07:44:42 -0700
-X-CSE-ConnectionGUID: 6jczajH8Sl201PDxomnKCQ==
-X-CSE-MsgGUID: NmJqAWPaR9aZSVLpZFutNQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; 
-   d="scan'208";a="136001085"
-Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
-  by fmviesa007.fm.intel.com with ESMTP; 07 May 2025 07:44:41 -0700
-Received: from kbuild by 1992f890471c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uCg0l-00080T-01;
-	Wed, 07 May 2025 14:44:39 +0000
-Date: Wed, 7 May 2025 22:44:31 +0800
-From: kernel test robot <lkp@intel.com>
-To: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v2 2/3] udmabuf: use sgtable-based scatterlist wrappers
-Message-ID: <aBtxz_RNTlOc1M9b@908e72e18855>
+	s=arc-20240116; t=1746629118; c=relaxed/simple;
+	bh=5/vox8SkxtP8WaAcZbuuT52799a84BSzW/YOX8NP9UU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=f5ry3/s8v+iy1uypC4O0vguT6/a+ThF7471eP9udzG2+hujHgms24MK6RXaOQRO4QxKuC1aFAaT3xM7hv/+GrM3AthsrXJBMXQwFMHnjLhPBaN7C4e5yo+fOGXmuRenVZExT4XEhsOMSrb1t1WEoVIIFHvcuH1yXAOHkz4AK690=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GvXU7Rfc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66F4EC4CEE9;
+	Wed,  7 May 2025 14:45:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746629118;
+	bh=5/vox8SkxtP8WaAcZbuuT52799a84BSzW/YOX8NP9UU=;
+	h=From:To:Cc:Subject:Date:From;
+	b=GvXU7RfcmhJ5RxakNeznV6pxC+vKKr9PJ8JCQF6qpukh7T2xtOObuXkoXhb16L/IZ
+	 Wij9sp+K9UDwHE5hw3QEbswO5XFVJTU/AaUAXm4H9NSaIj8fKRTdUXL/hKCvq0HdM5
+	 7JNUdJkUZ2UiGD045dbRkD8jer+3ig7ltxepw0CRO6QXmwwM3+XpiOS1k+AfE7oQkw
+	 U5IcV5omX5DTO84vhZyQP25S7zYExhGwZKTz9tnpXCSW8j2HRlgAqkvzMz4cocF8WK
+	 mW41gXb+hMbExrTbIbxFiz5CJ1DCdC0yrBeFrFshV0Hu/v72WZif1DH3hejrTjuP/g
+	 aUQoZOOv1cx5A==
+From: cel@kernel.org
+To: NeilBrown <neil@brown.name>,
+	Jeff Layton <jlayton@kernel.org>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <dai.ngo@oracle.com>,
+	Tom Talpey <tom@talpey.com>
+Cc: <linux-nfs@vger.kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Roland Mainz <roland.mainz@nrubsig.org>,
+	Christoph Hellwig <hch@infradead.org>,
+	stable@vger.kernel.org
+Subject: [PATCH v3] NFSD: Implement FATTR4_CLONE_BLKSIZE attribute
+Date: Wed,  7 May 2025 10:45:15 -0400
+Message-ID: <20250507144515.6864-1-cel@kernel.org>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250507144203.2081756-3-m.szyprowski@samsung.com>
+Content-Transfer-Encoding: 8bit
 
-Hi,
+From: Chuck Lever <chuck.lever@oracle.com>
 
-Thanks for your patch.
+RFC 7862 states that if an NFS server implements a CLONE operation,
+it MUST also implement FATTR4_CLONE_BLKSIZE. NFSD implements CLONE,
+but does not implement FATTR4_CLONE_BLKSIZE.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Note that in Section 12.2, RFC 7862 claims that
+FATTR4_CLONE_BLKSIZE is RECOMMENDED, not REQUIRED. Likely this is
+because a minor version is not permitted to add a REQUIRED
+attribute. Confusing.
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+We assume this attribute reports a block size as a count of bytes,
+as RFC 7862 does not specify a unit.
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH v2 2/3] udmabuf: use sgtable-based scatterlist wrappers
-Link: https://lore.kernel.org/stable/20250507144203.2081756-3-m.szyprowski%40samsung.com
+Reported-by: Roland Mainz <roland.mainz@nrubsig.org>
+Suggested-by: Christoph Hellwig <hch@infradead.org>
+Reviewed-by: Roland Mainz <roland.mainz@nrubsig.org>
+Cc: stable@vger.kernel.org # v6.7+
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+---
+ fs/nfsd/nfs4xdr.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
+diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
+index e67420729ecd..9eb8e5704622 100644
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -3391,6 +3391,23 @@ static __be32 nfsd4_encode_fattr4_suppattr_exclcreat(struct xdr_stream *xdr,
+ 	return nfsd4_encode_bitmap4(xdr, supp[0], supp[1], supp[2]);
+ }
+ 
++/*
++ * Copied from generic_remap_checks/generic_remap_file_range_prep.
++ *
++ * These generic functions use the file system's s_blocksize, but
++ * individual file systems aren't required to use
++ * generic_remap_file_range_prep. Until there is a mechanism for
++ * determining a particular file system's (or file's) clone block
++ * size, this is the best NFSD can do.
++ */
++static __be32 nfsd4_encode_fattr4_clone_blksize(struct xdr_stream *xdr,
++						const struct nfsd4_fattr_args *args)
++{
++	struct inode *inode = d_inode(args->dentry);
++
++	return nfsd4_encode_uint32_t(xdr, inode->i_sb->s_blocksize);
++}
++
+ #ifdef CONFIG_NFSD_V4_SECURITY_LABEL
+ static __be32 nfsd4_encode_fattr4_sec_label(struct xdr_stream *xdr,
+ 					    const struct nfsd4_fattr_args *args)
+@@ -3545,7 +3562,7 @@ static const nfsd4_enc_attr nfsd4_enc_fattr4_encode_ops[] = {
+ 	[FATTR4_MODE_SET_MASKED]	= nfsd4_encode_fattr4__noop,
+ 	[FATTR4_SUPPATTR_EXCLCREAT]	= nfsd4_encode_fattr4_suppattr_exclcreat,
+ 	[FATTR4_FS_CHARSET_CAP]		= nfsd4_encode_fattr4__noop,
+-	[FATTR4_CLONE_BLKSIZE]		= nfsd4_encode_fattr4__noop,
++	[FATTR4_CLONE_BLKSIZE]		= nfsd4_encode_fattr4_clone_blksize,
+ 	[FATTR4_SPACE_FREED]		= nfsd4_encode_fattr4__noop,
+ 	[FATTR4_CHANGE_ATTR_TYPE]	= nfsd4_encode_fattr4__noop,
+ 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+2.49.0
 
 
