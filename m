@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-142514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B3E0AAEAF2
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:01:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D325EAAEA34
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:52:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A46855249C4
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:01:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D38D3982F49
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:52:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 987C823DE;
-	Wed,  7 May 2025 19:01:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 440AC24E4CE;
+	Wed,  7 May 2025 18:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AJ5dqxGk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yCSPh+4p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54CC429A0;
-	Wed,  7 May 2025 19:01:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 015F11FF5EC;
+	Wed,  7 May 2025 18:52:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644488; cv=none; b=L/XqeNo3wnl9QlTr3E433GoeN4OHVkl0143icKupToUVVQKLmq8+dMfRRkJW0fYJJpoIH0qwRkkIMmHm3UfhoIoKs3E3SKTEM0JocwcUy5MN5Fq2mbEXwilJhje+oYLaFJIvh9wZlVD3aL+m+jh4cgoCbPNuv/HxQdcuLrQuBaM=
+	t=1746643950; cv=none; b=Dc0toHN8pacAwTB3wL4kgYwJNrUH1AgAfUc767LzHcBCWwc6rEvxMB2I2PlyD6sty2sOEAZpZOXzEPm5hcB1YAnOOxrfd40cZxjRfpkCpxlRL09WkO5nB1BIk0RJ0jbllKnnI4+TYEiJURqvcwXoGFI0DZqOsLFcZM9l7y9MUoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644488; c=relaxed/simple;
-	bh=2MgdHd5LIDeG1PM5jtATOfXXtb/u+CWXG3DKpCWXtlo=;
+	s=arc-20240116; t=1746643950; c=relaxed/simple;
+	bh=GKLlRocnb0uisynVdSaBSwIjnkEBqK/2NLaIFc/AhiM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t1mQE68TTL2LQKdF3Ez3mj76uN/Y0LLI5Hb2lTOOfN7Cn2xIviRdjZNA05OLNbtrC7ix4YLlZAGfsj1IU++qIJzUfvDsIIKPGc4RPfHRXXIDNJVU3X2tuBWe7LIXee71q7n6ozuyRqQ1FzUuQ44YWybl0q+Ic4hXqpNTKIEupqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AJ5dqxGk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 712BAC4CEE2;
-	Wed,  7 May 2025 19:01:27 +0000 (UTC)
+	 MIME-Version; b=JaUG6CnVm4SGzN7eR5TjzHZaDBUyae5d9aMRanf7yT7AVZHuKthkVT5SrSvbe84Wo2nPQpS5yhGIlp8mVzcmVgRpJFlsMiE6l+tkPH8kik6m+dGsDGWjaXHrIeTnLpixca5nQSFjDL8ExO7Y38PZdAXRy/BNKc18U/5/ktFHE/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yCSPh+4p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85430C4CEE2;
+	Wed,  7 May 2025 18:52:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644487;
-	bh=2MgdHd5LIDeG1PM5jtATOfXXtb/u+CWXG3DKpCWXtlo=;
+	s=korg; t=1746643949;
+	bh=GKLlRocnb0uisynVdSaBSwIjnkEBqK/2NLaIFc/AhiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AJ5dqxGk8/eHGzHNftF/DoB0RPxS/5EjWgyT/hw0dVuseUHGXhJrqRdHKPvwynkGS
-	 +1vXGfbmDRmj1vNxfq1NsKbQ6XfNHEcOOMU/akAG+G1e6g8tucHUXmKAOIgrlKOf+R
-	 kHNijIbr1bSdVc8vsLKCx90HhCDz9VOf1ZdQe+TM=
+	b=yCSPh+4pvWKGAZcNrsYgCeGTkov7MmfnoQbXsQkxFA6F/hV/ED1z5pdkKQTcOm1p2
+	 Zn66SiH6FhcbRjrbUs/en2NkJjfIdywDEcwAYNMhQL8CiGYZB8HWrD//dE4FqiLlba
+	 //D8UvpEkaHY471PpK7FIjNFseLl5t3lVu+5pCy0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	syzbot+441582c1592938fccf09@syzkaller.appspotmail.com,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.12 029/164] tracing: Do not take trace_event_sem in print_event_fields()
-Date: Wed,  7 May 2025 20:38:34 +0200
-Message-ID: <20250507183822.048963072@linuxfoundation.org>
+	Maor Gottlieb <maorg@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 070/183] net/mlx5: E-Switch, Initialize MAC Address for Default GID
+Date: Wed,  7 May 2025 20:38:35 +0200
+Message-ID: <20250507183827.523563237@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Maor Gottlieb <maorg@nvidia.com>
 
-commit 0a8f11f8569e7ed16cbcedeb28c4350f6378fea6 upstream.
+[ Upstream commit 5d1a04f347e6cbf5ffe74da409a5d71fbe8c5f19 ]
 
-On some paths in print_event_fields() it takes the trace_event_sem for
-read, even though it should always be held when the function is called.
+Initialize the source MAC address when creating the default GID entry.
+Since this entry is used only for loopback traffic, it only needs to
+be a unicast address. A zeroed-out MAC address is sufficient for this
+purpose.
+Without this fix, random bits would be assigned as the source address.
+If these bits formed a multicast address, the firmware would return an
+error, preventing the user from switching to switchdev mode:
 
-Remove the taking of that mutex and add a lockdep_assert_held_read() to
-make sure the trace_event_sem is held when print_event_fields() is called.
+Error: mlx5_core: Failed setting eswitch to offloads.
+kernel answers: Invalid argument
 
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Link: https://lore.kernel.org/20250501224128.0b1f0571@batman.local.home
-Fixes: 80a76994b2d88 ("tracing: Add "fields" option to show raw trace event fields")
-Reported-by: syzbot+441582c1592938fccf09@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/6813ff5e.050a0220.14dd7d.001b.GAE@google.com/
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 80f09dfc237f ("net/mlx5: Eswitch, enable RoCE loopback traffic")
+Signed-off-by: Maor Gottlieb <maorg@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Link: https://patch.msgid.link/20250423083611.324567-3-mbloch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_output.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/rdma.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/trace/trace_output.c
-+++ b/kernel/trace/trace_output.c
-@@ -950,11 +950,12 @@ enum print_line_t print_event_fields(str
- 	struct trace_event_call *call;
- 	struct list_head *head;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/rdma.c b/drivers/net/ethernet/mellanox/mlx5/core/rdma.c
+index a42f6cd99b744..f585ef5a34243 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/rdma.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/rdma.c
+@@ -118,8 +118,8 @@ static void mlx5_rdma_make_default_gid(struct mlx5_core_dev *dev, union ib_gid *
  
-+	lockdep_assert_held_read(&trace_event_sem);
-+
- 	/* ftrace defined events have separate call structures */
- 	if (event->type <= __TRACE_LAST_TYPE) {
- 		bool found = false;
+ static int mlx5_rdma_add_roce_addr(struct mlx5_core_dev *dev)
+ {
++	u8 mac[ETH_ALEN] = {};
+ 	union ib_gid gid;
+-	u8 mac[ETH_ALEN];
  
--		down_read(&trace_event_sem);
- 		list_for_each_entry(call, &ftrace_events, list) {
- 			if (call->event.type == event->type) {
- 				found = true;
-@@ -964,7 +965,6 @@ enum print_line_t print_event_fields(str
- 			if (call->event.type > __TRACE_LAST_TYPE)
- 				break;
- 		}
--		up_read(&trace_event_sem);
- 		if (!found) {
- 			trace_seq_printf(&iter->seq, "UNKNOWN TYPE %d\n", event->type);
- 			goto out;
+ 	mlx5_rdma_make_default_gid(dev, &gid);
+ 	return mlx5_core_roce_gid_set(dev, 0,
+-- 
+2.39.5
+
 
 
 
