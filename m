@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-142151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDC1BAAE94C
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:43:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49DC1AAEA78
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:55:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEDBB9812B7
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:42:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4931B9C41FE
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:55:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E6C528DF47;
-	Wed,  7 May 2025 18:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91604289823;
+	Wed,  7 May 2025 18:55:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HYR5v5Ai"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QNbYy1Qo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 481FC1DE4C4;
-	Wed,  7 May 2025 18:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 509BE214813;
+	Wed,  7 May 2025 18:55:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643372; cv=none; b=nWWCJzLJZjDFDw7uF0vFwYRmkQFCrPDQ/+YZ2pA+O2cxvNB9oIypRxe+XbIwHoKYsAHLMi90sRR/3cHN1GVU3IQYuT8bOiUSEHGKEbyKWR0yXhMyc+Nvyw+GwBk8bX10c9epml2030OedrLTFY02LM60bbObu7RzUdgzqq404GY=
+	t=1746644147; cv=none; b=AlXpJuiFQkdTvglQeE0SmPwJGYTTDzMjL08aCWkEYr0CsQxLE41GO80nFHg/XHuBuvwC26irpXiLlhwtOT7vjSTVd+Ix2ULsuFpuiedHLtTgDloYKeeGg/sjviP7gUGMr59p25XmR25n8qzZy/aSTPiBp0YydlT121ifaEzKAXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643372; c=relaxed/simple;
-	bh=qWUMQThKi5fvnB4X8iJMcMhrnsBHbQW6oph+SQsutJk=;
+	s=arc-20240116; t=1746644147; c=relaxed/simple;
+	bh=FBaBtMiGb8LLLyHn5S2/3Ibbp42PlYOcmYVRZSVgZJU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nf3d06mO2UrhD+C8zzJjBAbGXUG6BAqxxvdyAZUW75T7GPNp38kNAWP31yqqAsVFas/B114H3pxn/xXxKJ+iYOXCdxF9Pyd5GgX9zakrr9JNdwDhG8FH1NNr/Zb2laMm+XXswo6wlzuhmxQ7HpEBEYPVHoQrmcccUR6tVy0eti0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HYR5v5Ai; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A941CC4CEE2;
-	Wed,  7 May 2025 18:42:51 +0000 (UTC)
+	 MIME-Version; b=gBRxidUQtQtSxHqsKwfEa1EgEZCq4FBKcrZDvgPke7/iXaUXX4TY2DcRkFe6qHTJtS9VnOIlBSOFAVV4tEoaw2eaNHMj+OOUMdau0/ZVB583cX2L4Kn5hgN/hXuFM8XTgAOv3rdqG8OxkQPoAkyrs08xKBFNeRvzS9spsix/t88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QNbYy1Qo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D52A0C4CEE2;
+	Wed,  7 May 2025 18:55:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643372;
-	bh=qWUMQThKi5fvnB4X8iJMcMhrnsBHbQW6oph+SQsutJk=;
+	s=korg; t=1746644147;
+	bh=FBaBtMiGb8LLLyHn5S2/3Ibbp42PlYOcmYVRZSVgZJU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HYR5v5AiK9rvU8Yj3h8AXH3bNVQaUPBGxfC7z+yaTenRcKh+1CreierbkwQ85CjWY
-	 M0/5ze0u7Owbmd0Zwm2TJjwk8qiwrH4nEOcFYODbgJ+pGXekSxYHVyK8FGUCg8T4YP
-	 1n87DFcWietP7H+d5onqsmdcjl//+kAHsDFJ6ERA=
+	b=QNbYy1QoXh3yswF7gB5oX/dlbRomEzHqp/PsYAgo4eAuCSzzqsrCqKkW/X7N9sAyz
+	 +svZlzUqY/56tfJCVxYmXTmp7bZMtQ8DCsWtmihhFbqA9PH36Go3VkdkLH1rtPCroL
+	 ILfS/Jc6yiheNc61Vjj0QSVyoGfWPdyuqa9nNYX4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonglong Liu <liuyonglong@huawei.com>,
-	Guangbin Huang <huangguangbin2@huawei.com>,
+	Taehee Yoo <ap420073@gmail.com>,
+	Vadim Fedorenko <vadfed@meta.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Michael Chan <michael.chan@broadcom.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 38/55] net: hns3: add support for external loopback test
+Subject: [PATCH 6.14 134/183] bnxt_en: fix module unload sequence
 Date: Wed,  7 May 2025 20:39:39 +0200
-Message-ID: <20250507183800.575307223@linuxfoundation.org>
+Message-ID: <20250507183830.246842719@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
-References: <20250507183759.048732653@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,336 +65,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonglong Liu <liuyonglong@huawei.com>
+From: Vadim Fedorenko <vadfed@meta.com>
 
-[ Upstream commit 04b6ba143521f4485b7f2c36c655b262a79dae97 ]
+[ Upstream commit 927069d5c40c1cfa7b2d13cfc6d7d58bc6f85c50 ]
 
-This patch add support for external loopback test.
-The successful test need the link is up with duplex full. The
-driver do external loopback first, and then the whole offline
-test.
+Recent updates to the PTP part of bnxt changed the way PTP FIFO is
+cleared, skbs waiting for TX timestamps are now cleared during
+ndo_close() call. To do clearing procedure, the ptp structure must
+exist and point to a valid address. Module destroy sequence had ptp
+clear code running before netdev close causing invalid memory access and
+kernel crash. Change the sequence to destroy ptp structure after device
+close.
 
-Signed-off-by: Yonglong Liu <liuyonglong@huawei.com>
-Signed-off-by: Guangbin Huang <huangguangbin2@huawei.com>
+Fixes: 8f7ae5a85137 ("bnxt_en: improve TX timestamping FIFO configuration")
+Reported-by: Taehee Yoo <ap420073@gmail.com>
+Closes: https://lore.kernel.org/netdev/CAMArcTWDe2cd41=ub=zzvYifaYcYv-N-csxfqxUvejy_L0D6UQ@mail.gmail.com/
+Signed-off-by: Vadim Fedorenko <vadfed@meta.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Michael Chan <michael.chan@broadcom.com>
+Tested-by: Taehee Yoo <ap420073@gmail.com>
+Link: https://patch.msgid.link/20250430170343.759126-1-vadfed@meta.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 8e6b9c6ea5a5 ("net: hns3: fix an interrupt residual problem")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hnae3.h   |  2 +
- .../net/ethernet/hisilicon/hns3/hns3_enet.c   | 51 ++++++++++++++++
- .../net/ethernet/hisilicon/hns3/hns3_enet.h   |  3 +
- .../ethernet/hisilicon/hns3/hns3_ethtool.c    | 61 +++++++++++++------
- .../hisilicon/hns3/hns3pf/hclge_main.c        | 26 +++++---
- 5 files changed, 119 insertions(+), 24 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hnae3.h b/drivers/net/ethernet/hisilicon/hns3/hnae3.h
-index fa16cdcee10db..8d1b66281c095 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hnae3.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hnae3.h
-@@ -178,6 +178,7 @@ struct hns3_mac_stats {
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index a414d7d721b20..bd8b9cb05ae98 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -15731,8 +15731,8 @@ static void bnxt_remove_one(struct pci_dev *pdev)
  
- /* hnae3 loop mode */
- enum hnae3_loop {
-+	HNAE3_LOOP_EXTERNAL,
- 	HNAE3_LOOP_APP,
- 	HNAE3_LOOP_SERIAL_SERDES,
- 	HNAE3_LOOP_PARALLEL_SERDES,
-@@ -802,6 +803,7 @@ struct hnae3_roce_private_info {
- #define HNAE3_SUPPORT_SERDES_SERIAL_LOOPBACK	BIT(2)
- #define HNAE3_SUPPORT_VF	      BIT(3)
- #define HNAE3_SUPPORT_SERDES_PARALLEL_LOOPBACK	BIT(4)
-+#define HNAE3_SUPPORT_EXTERNAL_LOOPBACK	BIT(5)
+ 	bnxt_rdma_aux_device_del(bp);
  
- #define HNAE3_USER_UPE		BIT(0)	/* unicast promisc enabled by user */
- #define HNAE3_USER_MPE		BIT(1)	/* mulitcast promisc enabled by user */
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-index 60592e8ddf3b8..03fe5e0729f64 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-@@ -5642,6 +5642,57 @@ int hns3_set_channels(struct net_device *netdev,
- 	return 0;
- }
+-	bnxt_ptp_clear(bp);
+ 	unregister_netdev(dev);
++	bnxt_ptp_clear(bp);
  
-+void hns3_external_lb_prepare(struct net_device *ndev, bool if_running)
-+{
-+	struct hns3_nic_priv *priv = netdev_priv(ndev);
-+	struct hnae3_handle *h = priv->ae_handle;
-+	int i;
-+
-+	if (!if_running)
-+		return;
-+
-+	netif_carrier_off(ndev);
-+	netif_tx_disable(ndev);
-+
-+	for (i = 0; i < priv->vector_num; i++)
-+		hns3_vector_disable(&priv->tqp_vector[i]);
-+
-+	for (i = 0; i < h->kinfo.num_tqps; i++)
-+		hns3_tqp_disable(h->kinfo.tqp[i]);
-+
-+	/* delay ring buffer clearing to hns3_reset_notify_uninit_enet
-+	 * during reset process, because driver may not be able
-+	 * to disable the ring through firmware when downing the netdev.
-+	 */
-+	if (!hns3_nic_resetting(ndev))
-+		hns3_nic_reset_all_ring(priv->ae_handle);
-+
-+	hns3_reset_tx_queue(priv->ae_handle);
-+}
-+
-+void hns3_external_lb_restore(struct net_device *ndev, bool if_running)
-+{
-+	struct hns3_nic_priv *priv = netdev_priv(ndev);
-+	struct hnae3_handle *h = priv->ae_handle;
-+	int i;
-+
-+	if (!if_running)
-+		return;
-+
-+	hns3_nic_reset_all_ring(priv->ae_handle);
-+
-+	for (i = 0; i < priv->vector_num; i++)
-+		hns3_vector_enable(&priv->tqp_vector[i]);
-+
-+	for (i = 0; i < h->kinfo.num_tqps; i++)
-+		hns3_tqp_enable(h->kinfo.tqp[i]);
-+
-+	netif_tx_wake_all_queues(ndev);
-+
-+	if (h->ae_algo->ops->get_status(h))
-+		netif_carrier_on(ndev);
-+}
-+
- static const struct hns3_hw_error_info hns3_hw_err[] = {
- 	{ .type = HNAE3_PPU_POISON_ERROR,
- 	  .msg = "PPU poison" },
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
-index f60ba2ee8b8b1..f3f7f370807f0 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.h
-@@ -729,4 +729,7 @@ u16 hns3_get_max_available_channels(struct hnae3_handle *h);
- void hns3_cq_period_mode_init(struct hns3_nic_priv *priv,
- 			      enum dim_cq_period_mode tx_mode,
- 			      enum dim_cq_period_mode rx_mode);
-+
-+void hns3_external_lb_prepare(struct net_device *ndev, bool if_running);
-+void hns3_external_lb_restore(struct net_device *ndev, bool if_running);
- #endif
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c b/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
-index 17fa4e7684cd2..b01ce4fd6bc43 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_ethtool.c
-@@ -67,7 +67,6 @@ static const struct hns3_stats hns3_rxq_stats[] = {
+ 	bnxt_rdma_aux_device_uninit(bp);
  
- #define HNS3_TQP_STATS_COUNT (HNS3_TXQ_STATS_COUNT + HNS3_RXQ_STATS_COUNT)
- 
--#define HNS3_SELF_TEST_TYPE_NUM         4
- #define HNS3_NIC_LB_TEST_PKT_NUM	1
- #define HNS3_NIC_LB_TEST_RING_ID	0
- #define HNS3_NIC_LB_TEST_PACKET_SIZE	128
-@@ -93,6 +92,7 @@ static int hns3_lp_setup(struct net_device *ndev, enum hnae3_loop loop, bool en)
- 	case HNAE3_LOOP_PARALLEL_SERDES:
- 	case HNAE3_LOOP_APP:
- 	case HNAE3_LOOP_PHY:
-+	case HNAE3_LOOP_EXTERNAL:
- 		ret = h->ae_algo->ops->set_loopback(h, loop, en);
- 		break;
- 	default:
-@@ -300,6 +300,10 @@ static int hns3_lp_run_test(struct net_device *ndev, enum hnae3_loop mode)
- 
- static void hns3_set_selftest_param(struct hnae3_handle *h, int (*st_param)[2])
- {
-+	st_param[HNAE3_LOOP_EXTERNAL][0] = HNAE3_LOOP_EXTERNAL;
-+	st_param[HNAE3_LOOP_EXTERNAL][1] =
-+			h->flags & HNAE3_SUPPORT_EXTERNAL_LOOPBACK;
-+
- 	st_param[HNAE3_LOOP_APP][0] = HNAE3_LOOP_APP;
- 	st_param[HNAE3_LOOP_APP][1] =
- 			h->flags & HNAE3_SUPPORT_APP_LOOPBACK;
-@@ -318,17 +322,11 @@ static void hns3_set_selftest_param(struct hnae3_handle *h, int (*st_param)[2])
- 			h->flags & HNAE3_SUPPORT_PHY_LOOPBACK;
- }
- 
--static void hns3_selftest_prepare(struct net_device *ndev,
--				  bool if_running, int (*st_param)[2])
-+static void hns3_selftest_prepare(struct net_device *ndev, bool if_running)
- {
- 	struct hns3_nic_priv *priv = netdev_priv(ndev);
- 	struct hnae3_handle *h = priv->ae_handle;
- 
--	if (netif_msg_ifdown(h))
--		netdev_info(ndev, "self test start\n");
--
--	hns3_set_selftest_param(h, st_param);
--
- 	if (if_running)
- 		ndev->netdev_ops->ndo_stop(ndev);
- 
-@@ -367,18 +365,15 @@ static void hns3_selftest_restore(struct net_device *ndev, bool if_running)
- 
- 	if (if_running)
- 		ndev->netdev_ops->ndo_open(ndev);
--
--	if (netif_msg_ifdown(h))
--		netdev_info(ndev, "self test end\n");
- }
- 
- static void hns3_do_selftest(struct net_device *ndev, int (*st_param)[2],
- 			     struct ethtool_test *eth_test, u64 *data)
- {
--	int test_index = 0;
-+	int test_index = HNAE3_LOOP_APP;
- 	u32 i;
- 
--	for (i = 0; i < HNS3_SELF_TEST_TYPE_NUM; i++) {
-+	for (i = HNAE3_LOOP_APP; i < HNAE3_LOOP_NONE; i++) {
- 		enum hnae3_loop loop_type = (enum hnae3_loop)st_param[i][0];
- 
- 		if (!st_param[i][1])
-@@ -397,6 +392,20 @@ static void hns3_do_selftest(struct net_device *ndev, int (*st_param)[2],
- 	}
- }
- 
-+static void hns3_do_external_lb(struct net_device *ndev,
-+				struct ethtool_test *eth_test, u64 *data)
-+{
-+	data[HNAE3_LOOP_EXTERNAL] = hns3_lp_up(ndev, HNAE3_LOOP_EXTERNAL);
-+	if (!data[HNAE3_LOOP_EXTERNAL])
-+		data[HNAE3_LOOP_EXTERNAL] = hns3_lp_run_test(ndev, HNAE3_LOOP_EXTERNAL);
-+	hns3_lp_down(ndev, HNAE3_LOOP_EXTERNAL);
-+
-+	if (data[HNAE3_LOOP_EXTERNAL])
-+		eth_test->flags |= ETH_TEST_FL_FAILED;
-+
-+	eth_test->flags |= ETH_TEST_FL_EXTERNAL_LB_DONE;
-+}
-+
- /**
-  * hns3_nic_self_test - self test
-  * @ndev: net device
-@@ -406,7 +415,9 @@ static void hns3_do_selftest(struct net_device *ndev, int (*st_param)[2],
- static void hns3_self_test(struct net_device *ndev,
- 			   struct ethtool_test *eth_test, u64 *data)
- {
--	int st_param[HNS3_SELF_TEST_TYPE_NUM][2];
-+	struct hns3_nic_priv *priv = netdev_priv(ndev);
-+	struct hnae3_handle *h = priv->ae_handle;
-+	int st_param[HNAE3_LOOP_NONE][2];
- 	bool if_running = netif_running(ndev);
- 
- 	if (hns3_nic_resetting(ndev)) {
-@@ -414,13 +425,29 @@ static void hns3_self_test(struct net_device *ndev,
- 		return;
- 	}
- 
--	/* Only do offline selftest, or pass by default */
--	if (eth_test->flags != ETH_TEST_FL_OFFLINE)
-+	if (!(eth_test->flags & ETH_TEST_FL_OFFLINE))
- 		return;
- 
--	hns3_selftest_prepare(ndev, if_running, st_param);
-+	if (netif_msg_ifdown(h))
-+		netdev_info(ndev, "self test start\n");
-+
-+	hns3_set_selftest_param(h, st_param);
-+
-+	/* external loopback test requires that the link is up and the duplex is
-+	 * full, do external test first to reduce the whole test time
-+	 */
-+	if (eth_test->flags & ETH_TEST_FL_EXTERNAL_LB) {
-+		hns3_external_lb_prepare(ndev, if_running);
-+		hns3_do_external_lb(ndev, eth_test, data);
-+		hns3_external_lb_restore(ndev, if_running);
-+	}
-+
-+	hns3_selftest_prepare(ndev, if_running);
- 	hns3_do_selftest(ndev, st_param, eth_test, data);
- 	hns3_selftest_restore(ndev, if_running);
-+
-+	if (netif_msg_ifdown(h))
-+		netdev_info(ndev, "self test end\n");
- }
- 
- static void hns3_update_limit_promisc_mode(struct net_device *netdev,
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index 35411f9a14323..a0284a9d90e89 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -151,10 +151,11 @@ static const u32 tqp_intr_reg_addr_list[] = {HCLGE_TQP_INTR_CTRL_REG,
- 					     HCLGE_TQP_INTR_RL_REG};
- 
- static const char hns3_nic_test_strs[][ETH_GSTRING_LEN] = {
--	"App    Loopback test",
--	"Serdes serial Loopback test",
--	"Serdes parallel Loopback test",
--	"Phy    Loopback test"
-+	"External Loopback test",
-+	"App      Loopback test",
-+	"Serdes   serial Loopback test",
-+	"Serdes   parallel Loopback test",
-+	"Phy      Loopback test"
- };
- 
- static const struct hclge_comm_stats_str g_mac_stats_string[] = {
-@@ -754,7 +755,8 @@ static int hclge_get_sset_count(struct hnae3_handle *handle, int stringset)
- #define HCLGE_LOOPBACK_TEST_FLAGS (HNAE3_SUPPORT_APP_LOOPBACK | \
- 		HNAE3_SUPPORT_PHY_LOOPBACK | \
- 		HNAE3_SUPPORT_SERDES_SERIAL_LOOPBACK | \
--		HNAE3_SUPPORT_SERDES_PARALLEL_LOOPBACK)
-+		HNAE3_SUPPORT_SERDES_PARALLEL_LOOPBACK | \
-+		HNAE3_SUPPORT_EXTERNAL_LOOPBACK)
- 
- 	struct hclge_vport *vport = hclge_get_vport(handle);
- 	struct hclge_dev *hdev = vport->back;
-@@ -776,9 +778,12 @@ static int hclge_get_sset_count(struct hnae3_handle *handle, int stringset)
- 			handle->flags |= HNAE3_SUPPORT_APP_LOOPBACK;
- 		}
- 
--		count += 2;
-+		count += 1;
- 		handle->flags |= HNAE3_SUPPORT_SERDES_SERIAL_LOOPBACK;
-+		count += 1;
- 		handle->flags |= HNAE3_SUPPORT_SERDES_PARALLEL_LOOPBACK;
-+		count += 1;
-+		handle->flags |= HNAE3_SUPPORT_EXTERNAL_LOOPBACK;
- 
- 		if ((hdev->hw.mac.phydev && hdev->hw.mac.phydev->drv &&
- 		     hdev->hw.mac.phydev->drv->set_loopback) ||
-@@ -806,6 +811,11 @@ static void hclge_get_strings(struct hnae3_handle *handle, u32 stringset,
- 					   size, p);
- 		p = hclge_tqps_get_strings(handle, p);
- 	} else if (stringset == ETH_SS_TEST) {
-+		if (handle->flags & HNAE3_SUPPORT_EXTERNAL_LOOPBACK) {
-+			memcpy(p, hns3_nic_test_strs[HNAE3_LOOP_EXTERNAL],
-+			       ETH_GSTRING_LEN);
-+			p += ETH_GSTRING_LEN;
-+		}
- 		if (handle->flags & HNAE3_SUPPORT_APP_LOOPBACK) {
- 			memcpy(p, hns3_nic_test_strs[HNAE3_LOOP_APP],
- 			       ETH_GSTRING_LEN);
-@@ -8060,7 +8070,7 @@ static int hclge_set_loopback(struct hnae3_handle *handle,
- {
- 	struct hclge_vport *vport = hclge_get_vport(handle);
- 	struct hclge_dev *hdev = vport->back;
--	int ret;
-+	int ret = 0;
- 
- 	/* Loopback can be enabled in three places: SSU, MAC, and serdes. By
- 	 * default, SSU loopback is enabled, so if the SMAC and the DMAC are
-@@ -8087,6 +8097,8 @@ static int hclge_set_loopback(struct hnae3_handle *handle,
- 	case HNAE3_LOOP_PHY:
- 		ret = hclge_set_phy_loopback(hdev, en);
- 		break;
-+	case HNAE3_LOOP_EXTERNAL:
-+		break;
- 	default:
- 		ret = -ENOTSUPP;
- 		dev_err(&hdev->pdev->dev,
 -- 
 2.39.5
 
