@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-142536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EE5BAAEB0D
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:02:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DE6EAAEB93
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:08:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9A321C03E44
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:02:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18D5D9E32F4
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:08:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F37732144BF;
-	Wed,  7 May 2025 19:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B476128DF4F;
+	Wed,  7 May 2025 19:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NEckXFAy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W0+EAklj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0A8329A0;
-	Wed,  7 May 2025 19:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7255928DF21;
+	Wed,  7 May 2025 19:08:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644556; cv=none; b=pxCff6owMMqgxqeVPB7KEgEm0naymX0CVV5nTkQ/Lcmif9vRsmwFww7Bd0iFUJivnO/QKGvSs7wBZmmUEK8JqVjUtz9OHr3j98Rqm7j6CykHZ0/mJ81ie+yuFVsflFgtQnD6PFRFRqI0b0UoP9OcRU/OziXDZlH5/0NPOF9WDBA=
+	t=1746644902; cv=none; b=RapSmERp+3Dn3rr8/usR7aRNlcDqqcmbe4V1A14KMnkeqdbdDtnG0dMD55RbUHILjZYSp+aOV3a0bpq0fa9seb2lVM8eKZjre9zkD4k0r07srIHBqboNfMHWmTh2dLpmc+wY2bJTIGEW0LAsWudajx4qJdPzQyzGVpSOYweQzjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644556; c=relaxed/simple;
-	bh=nluNkmT3FIxO+0mKun+/6PFmQSVdfTnTtwlF+MdzrqE=;
+	s=arc-20240116; t=1746644902; c=relaxed/simple;
+	bh=3Bp9wozF+n+HgUx8ETjP6IgxpTYm1e0ZCGBsbJFLIP8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mUTGbq4cc+yUen+OdCx+vm3MkXB/77cT4OUWU4TZVNQHRg8Orfx3Qcvs0bYQYzX3ET6chkRd7XirFJBiwtUc6GXHi19qS31Ixeb2Z+9HoWWyD/LLWEA1UqNJoMGgqGAj0HZgzFZjT4M3U7UDXMpA15YLSeoBi5TWeNPQMoGWQRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NEckXFAy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8895AC4CEE2;
-	Wed,  7 May 2025 19:02:35 +0000 (UTC)
+	 MIME-Version; b=WrJoRI3dsk4rxdxnTQ2UmdGrkgr2FUa0e2fgD9yJ7t23I9q3RubcfUjp7w4Ult+1g6ZD91HEj/p5mHHKc5Zp+4b62uXonGTSv+tJyq6LDmOYE0Di8g2+XhODoYkKUBFrcOyPCHBdrDDS13PpBDTsP71IBYZCFGkI9LW8mJ+LhKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W0+EAklj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D69F6C4CEE2;
+	Wed,  7 May 2025 19:08:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644556;
-	bh=nluNkmT3FIxO+0mKun+/6PFmQSVdfTnTtwlF+MdzrqE=;
+	s=korg; t=1746644902;
+	bh=3Bp9wozF+n+HgUx8ETjP6IgxpTYm1e0ZCGBsbJFLIP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NEckXFAyLEBzhJCWTxc+gCBWmfByAL4HLHNzdchyh7xmB1w+G7sAgWxSO4eN2IVk/
-	 3phHeBKaQAkrd+0zGloNXk5Kbx+CohS3qLaYn5JSdcqURdGd85T9gPI8mOsHFt0XNH
-	 oJeuxEghypjAZoTjf0wCoc5Hxr1bt+olCkPtHSQs=
+	b=W0+EAkljjn/J+wwdc6qcYYKWvwTrZj5hHYk1+KIBFqRGbJJh4ZOGOmtk0wpyP4kHD
+	 GEV8/JVvq4NiWEMJyuzzF6Se7uvRYlYKabQ3DEp0aZtm3IIgF+liv2rbK0R7V2CwCp
+	 P7BbTdG2CiBJUAhmd5Votjv8uTqh/ghwy9eirOE8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 081/164] net: mscc: ocelot: delete PVID VLAN when readding it as non-PVID
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Christian Loehle <christian.loehle@arm.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>
+Subject: [PATCH 6.6 030/129] cpufreq: Avoid using inconsistent policy->min and policy->max
 Date: Wed,  7 May 2025 20:39:26 +0200
-Message-ID: <20250507183824.240417851@linuxfoundation.org>
+Message-ID: <20250507183814.747964259@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +62,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 5ec6d7d737a491256cd37e33910f7ac1978db591 ]
+commit 7491cdf46b5cbdf123fc84fbe0a07e9e3d7b7620 upstream.
 
-The following set of commands:
+Since cpufreq_driver_resolve_freq() can run in parallel with
+cpufreq_set_policy() and there is no synchronization between them,
+the former may access policy->min and policy->max while the latter
+is updating them and it may see intermediate values of them due
+to the way the update is carried out.  Also the compiler is free
+to apply any optimizations it wants both to the stores in
+cpufreq_set_policy() and to the loads in cpufreq_driver_resolve_freq()
+which may result in additional inconsistencies.
 
-ip link add br0 type bridge vlan_filtering 1 # vlan_default_pvid 1 is implicit
-ip link set swp0 master br0
-bridge vlan add dev swp0 vid 1
+To address this, use WRITE_ONCE() when updating policy->min and
+policy->max in cpufreq_set_policy() and use READ_ONCE() for reading
+them in cpufreq_driver_resolve_freq().  Moreover, rearrange the update
+in cpufreq_set_policy() to avoid storing intermediate values in
+policy->min and policy->max with the help of the observation that
+their new values are expected to be properly ordered upfront.
 
-should result in the dropping of untagged and 802.1p-tagged traffic, but
-we see that it continues to be accepted. Whereas, had we deleted VID 1
-instead, the aforementioned dropping would have worked
+Also modify cpufreq_driver_resolve_freq() to take the possible reverse
+ordering of policy->min and policy->max, which may happen depending on
+the ordering of operations when this function and cpufreq_set_policy()
+run concurrently, into account by always honoring the max when it
+turns out to be less than the min (in case it comes from thermal
+throttling or similar).
 
-This is because the ANA_PORT_DROP_CFG update logic doesn't run, because
-ocelot_vlan_add() only calls ocelot_port_set_pvid() if the new VLAN has
-the BRIDGE_VLAN_INFO_PVID flag.
-
-Similar to other drivers like mt7530_port_vlan_add() which handle this
-case correctly, we need to test whether the VLAN we're changing used to
-have the BRIDGE_VLAN_INFO_PVID flag, but lost it now. That amounts to a
-PVID deletion and should be treated as such.
-
-Regarding blame attribution: this never worked properly since the
-introduction of bridge VLAN filtering in commit 7142529f1688 ("net:
-mscc: ocelot: add VLAN filtering"). However, there was a significant
-paradigm shift which aligned the ANA_PORT_DROP_CFG register with the
-PVID concept rather than with the native VLAN concept, and that change
-wasn't targeted for 'stable'. Realistically, that is as far as this fix
-needs to be propagated to.
-
-Fixes: be0576fed6d3 ("net: mscc: ocelot: move the logic to drop 802.1p traffic to the pvid deletion")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250424223734.3096202-1-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 151717690694 ("cpufreq: Make policy min/max hard requirements")
+Cc: 5.16+ <stable@vger.kernel.org> # 5.16+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Christian Loehle <christian.loehle@arm.com>
+Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
+Link: https://patch.msgid.link/5907080.DvuYhMxLoT@rjwysocki.net
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mscc/ocelot.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/cpufreq/cpufreq.c |   32 +++++++++++++++++++++++++-------
+ 1 file changed, 25 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/mscc/ocelot.c b/drivers/net/ethernet/mscc/ocelot.c
-index ef93df5208871..08bee56aea35f 100644
---- a/drivers/net/ethernet/mscc/ocelot.c
-+++ b/drivers/net/ethernet/mscc/ocelot.c
-@@ -830,6 +830,7 @@ EXPORT_SYMBOL(ocelot_vlan_prepare);
- int ocelot_vlan_add(struct ocelot *ocelot, int port, u16 vid, bool pvid,
- 		    bool untagged)
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -538,8 +538,6 @@ static unsigned int __resolve_freq(struc
  {
-+	struct ocelot_port *ocelot_port = ocelot->ports[port];
- 	int err;
+ 	unsigned int idx;
  
- 	/* Ignore VID 0 added to our RX filter by the 8021q module, since
-@@ -849,6 +850,11 @@ int ocelot_vlan_add(struct ocelot *ocelot, int port, u16 vid, bool pvid,
- 					   ocelot_bridge_vlan_find(ocelot, vid));
- 		if (err)
- 			return err;
-+	} else if (ocelot_port->pvid_vlan &&
-+		   ocelot_bridge_vlan_find(ocelot, vid) == ocelot_port->pvid_vlan) {
-+		err = ocelot_port_set_pvid(ocelot, port, NULL);
-+		if (err)
-+			return err;
- 	}
+-	target_freq = clamp_val(target_freq, policy->min, policy->max);
+-
+ 	if (!policy->freq_table)
+ 		return target_freq;
  
- 	/* Untagged egress vlan clasification */
--- 
-2.39.5
-
+@@ -563,7 +561,22 @@ static unsigned int __resolve_freq(struc
+ unsigned int cpufreq_driver_resolve_freq(struct cpufreq_policy *policy,
+ 					 unsigned int target_freq)
+ {
+-	return __resolve_freq(policy, target_freq, CPUFREQ_RELATION_LE);
++	unsigned int min = READ_ONCE(policy->min);
++	unsigned int max = READ_ONCE(policy->max);
++
++	/*
++	 * If this function runs in parallel with cpufreq_set_policy(), it may
++	 * read policy->min before the update and policy->max after the update
++	 * or the other way around, so there is no ordering guarantee.
++	 *
++	 * Resolve this by always honoring the max (in case it comes from
++	 * thermal throttling or similar).
++	 */
++	if (unlikely(min > max))
++		min = max;
++
++	return __resolve_freq(policy, clamp_val(target_freq, min, max),
++			      CPUFREQ_RELATION_LE);
+ }
+ EXPORT_SYMBOL_GPL(cpufreq_driver_resolve_freq);
+ 
+@@ -2335,6 +2348,7 @@ int __cpufreq_driver_target(struct cpufr
+ 	if (cpufreq_disabled())
+ 		return -ENODEV;
+ 
++	target_freq = clamp_val(target_freq, policy->min, policy->max);
+ 	target_freq = __resolve_freq(policy, target_freq, relation);
+ 
+ 	pr_debug("target for CPU %u: %u kHz, relation %u, requested %u kHz\n",
+@@ -2625,11 +2639,15 @@ static int cpufreq_set_policy(struct cpu
+ 	 * Resolve policy min/max to available frequencies. It ensures
+ 	 * no frequency resolution will neither overshoot the requested maximum
+ 	 * nor undershoot the requested minimum.
++	 *
++	 * Avoid storing intermediate values in policy->max or policy->min and
++	 * compiler optimizations around them because they may be accessed
++	 * concurrently by cpufreq_driver_resolve_freq() during the update.
+ 	 */
+-	policy->min = new_data.min;
+-	policy->max = new_data.max;
+-	policy->min = __resolve_freq(policy, policy->min, CPUFREQ_RELATION_L);
+-	policy->max = __resolve_freq(policy, policy->max, CPUFREQ_RELATION_H);
++	WRITE_ONCE(policy->max, __resolve_freq(policy, new_data.max, CPUFREQ_RELATION_H));
++	new_data.min = __resolve_freq(policy, new_data.min, CPUFREQ_RELATION_L);
++	WRITE_ONCE(policy->min, new_data.min > policy->max ? policy->max : new_data.min);
++
+ 	trace_cpu_frequency_limits(policy);
+ 
+ 	policy->cached_target_freq = UINT_MAX;
 
 
 
