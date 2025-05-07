@@ -1,197 +1,251 @@
-Return-Path: <stable+bounces-141973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-141974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 808FFAAD7C1
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 09:23:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0964AAAD822
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 09:31:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DAE4C467F67
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 07:23:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E16F3BE929
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 07:27:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE401221294;
-	Wed,  7 May 2025 07:18:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 668E6219312;
+	Wed,  7 May 2025 07:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=bernerfachhochschule.onmicrosoft.com header.i=@bernerfachhochschule.onmicrosoft.com header.b="SaVGr7yH"
+	dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b="e/my3sV9"
 X-Original-To: stable@vger.kernel.org
-Received: from ZRAP278CU002.outbound.protection.outlook.com (mail-switzerlandnorthazon11020094.outbound.protection.outlook.com [52.101.186.94])
+Received: from mx08-00178001.pphosted.com (mx08-00178001.pphosted.com [91.207.212.93])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28459221284;
-	Wed,  7 May 2025 07:18:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.186.94
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746602322; cv=fail; b=f3ai2GAC5OgRpFxTqwWUo81bqtNICRwyztdpBM9kzR0g2qRHVAkc1rRqLSoDKzFRrnSv3ZudHv7eNFgz2E5hsINXWNHazt3SF365F1xJ6/99/4PcWtGMjorrUnYYNKgHhviRKZvGdAOx1w+e5/UJQMIdGya/ij/tXhXA86AQLJU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746602322; c=relaxed/simple;
-	bh=H/Gf02lBQ3OTz/nCr+PLp3f0hUIVTeDoLvwwjpTKumU=;
-	h=Message-ID:Date:From:Subject:To:Cc:Content-Type:MIME-Version; b=YSSb5rQ1B21AcqbPUyGMe3B172L4lMUGpl+0P2yDgSpNvHonnV+UGdxTK8srKiNngRqyYJx3b+CGjB/AUlzme08qLjnbpX82dt8iBg1+kQzPi1nVPcNeMGF1aZLjNa74iOZ6ghY+mD2cLL2KE9KQ5ITXHW5IkZCHqnV/YQ7QH4c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bfh.ch; spf=pass smtp.mailfrom=bfh.ch; dkim=pass (1024-bit key) header.d=bernerfachhochschule.onmicrosoft.com header.i=@bernerfachhochschule.onmicrosoft.com header.b=SaVGr7yH; arc=fail smtp.client-ip=52.101.186.94
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=bfh.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bfh.ch
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GuxEtu6AlGJRSLgYbtFsOmtrsGYfEo6KpQzpOFzLBwp85bQMlqz684U29zXtSvwiF4++KOAR0i0L/YisIlYA7aSvilL+ccEEZmVhQqynoHMR9gsSuYJb6BiaEl4Nil0LoiB+leIHsDaPRbeDzO/jDol9psIsKmr6O5pRyso35U/XH1i0pMxwIWIcc1CP7NWEuI4Q7yUXfku4zoQxxMW3RngcJh9+qrTbJ5dBUpnkvaY/jzcjJKH5JaiTbApMFce+SoAWcv0heoDPisxFTYQcxkspDKY1Ua3VL0cjxxXFn94UG9QbsegsDDXdcGwQCz6KsgUgMJk85zWJM0ymQvgY9g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=H/Gf02lBQ3OTz/nCr+PLp3f0hUIVTeDoLvwwjpTKumU=;
- b=CRkrn+qcysa17MM+bbIgkd5RRlnvRtOTxuuuGcNTMUX+jgOJuMRdnPZof/y5YSZoo7AZxFc5RukhYHg/x2faX2tFgc/cDyytXyxCJ40emXOIPN6Jrfplot+OcZDIGbXPz298KV8ZAGBuTbHia3++9qAnUyMJu2ZuMNBlqNry62dg2byUXo6oa2LkMs3TF5C34Dk2brYK3SlxmDnJb0ePn5EwE2SwXslbujSLr7Q9MuqCkNVysn4KweaKX6WBgEW9601EQh+54d4+ZgJJhYWH6DM2tGGoCwUGq/WTm2fnM8jXmox2NS8/U6v6t0tu4JkEqxtkYFx2vXDKRXSMaA27EQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=bfh.ch; dmarc=pass action=none header.from=bfh.ch; dkim=pass
- header.d=bfh.ch; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=bernerfachhochschule.onmicrosoft.com;
- s=selector1-bernerfachhochschule-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=H/Gf02lBQ3OTz/nCr+PLp3f0hUIVTeDoLvwwjpTKumU=;
- b=SaVGr7yHM/1YrdlUrIzkHXYbll0s1PZK0fUWd4+AuBCFHKaCR+l15XPpD9qJwt317D4zilYUuRvaCFVJgRlIJO2rLOEWfQSivlTY5Ojy2L/CFxn/6ub/dtCL5pQaTRNlLKsFGfeOGelqpswGrd516yimMboGptmrzTENKYWOsyQ=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=bfh.ch;
-Received: from ZR2P278MB1033.CHEP278.PROD.OUTLOOK.COM (2603:10a6:910:60::5) by
- ZR2P278MB1110.CHEP278.PROD.OUTLOOK.COM (2603:10a6:910:60::11) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8722.12; Wed, 7 May 2025 07:18:34 +0000
-Received: from ZR2P278MB1033.CHEP278.PROD.OUTLOOK.COM
- ([fe80::b47e:1592:3ea2:2d5a]) by ZR2P278MB1033.CHEP278.PROD.OUTLOOK.COM
- ([fe80::b47e:1592:3ea2:2d5a%4]) with mapi id 15.20.8699.022; Wed, 7 May 2025
- 07:18:34 +0000
-Message-ID: <4dada48a-c5dd-4c30-9c85-5b03b0aa01f0@bfh.ch>
-Date: Wed, 7 May 2025 09:18:33 +0200
-User-Agent: Mozilla Thunderbird
-From: =?UTF-8?Q?Berkel_J=C3=B6rg?= <joerg.berkel@bfh.ch>
-Subject: [REGRESSION] applespi from 6.12 onwards
-To: linux-input@vger.kernel.org
-Content-Language: de-CH
-Cc: dmitry.torokhov@gmail.com, stable@vger.kernel.org,
- regressions@lists.linux.dev, linux-spi@vger.kernel.org
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
-X-ClientProxiedBy: ZR0P278CA0058.CHEP278.PROD.OUTLOOK.COM
- (2603:10a6:910:21::9) To ZR2P278MB1033.CHEP278.PROD.OUTLOOK.COM
- (2603:10a6:910:60::5)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1901215772;
+	Wed,  7 May 2025 07:28:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.207.212.93
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746602884; cv=none; b=BIKF1bF2YGAVluyjyaBuGk1gLta2wXxuXA+J7iZFUG/y8lf4ASi7IRH05fWB8OxK2R9VKoaCIWf7jxdHqg3dejcqWLBV89GMT8cuU1hzDawjEwhCGUciakc6dpi0H4jkQI34yDXkr9QOTBUrOLfKn7O4lRFYUA9HtapeopH4luo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746602884; c=relaxed/simple;
+	bh=/fS75YgNQqufVubGOZNHO5Z+UxgbbZ3y2istb9E1Mj8=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=DYeorxdq9Rj5pcWEWIYfq7Pvs1VVutGuneN8awt3JqJ+K+yDOLJOA63Uk859ujdS8eOt/c1fAVhtRvOPkGmdKDvaY1d8dE3djJE4cTdwkbYHX1h8gvH7KLFthvjjSPa508eG3Qms7CKS5b8ce9+2wAzWMgQCIeU4cdpmYIENI68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com; spf=pass smtp.mailfrom=foss.st.com; dkim=pass (2048-bit key) header.d=foss.st.com header.i=@foss.st.com header.b=e/my3sV9; arc=none smtp.client-ip=91.207.212.93
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foss.st.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foss.st.com
+Received: from pps.filterd (m0369457.ppops.net [127.0.0.1])
+	by mx07-00178001.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54779UN1021799;
+	Wed, 7 May 2025 09:27:47 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foss.st.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=selector1; bh=iQxRiNu03TITYfxYaE1KEL
+	g0ZyDlorP8jtI9q1o4F6c=; b=e/my3sV93bdOMqA87zdXgDZozgW27q51n3s91T
+	PyFonW6LZchI4REOiGzdUslND+smkmX+NTuAeZMTcCDZ3oqUZsC/qwaclxOyNaEx
+	lQNFTq9BbmDv7gKgwNuOSHGPuYGG2duTt3jGUZySYiMDjV49/7ebwevEOgLSWe3E
+	e8IIP0D9FGiM+cxY1vjG1M5gwunPTFyK9N1mPoGdT5zgRq9VBZ6NoruYDaR90xhT
+	GwRc3l1rGtA/83hV8AqEWCI8STYimMCTpuf6coxmSs/QRo/viy92cf+IKzDwB/ly
+	Dwgrf9OD+6zA9ddLQ2n6hyapdTnJY0fWeJTWbG4gzGFSPSXQ==
+Received: from beta.dmz-ap.st.com (beta.dmz-ap.st.com [138.198.100.35])
+	by mx07-00178001.pphosted.com (PPS) with ESMTPS id 46dx3mct86-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 07 May 2025 09:27:47 +0200 (MEST)
+Received: from euls16034.sgp.st.com (euls16034.sgp.st.com [10.75.44.20])
+	by beta.dmz-ap.st.com (STMicroelectronics) with ESMTP id 2EC284005C;
+	Wed,  7 May 2025 09:26:49 +0200 (CEST)
+Received: from Webmail-eu.st.com (shfdag1node1.st.com [10.75.129.69])
+	by euls16034.sgp.st.com (STMicroelectronics) with ESMTP id 56C46ACB658;
+	Wed,  7 May 2025 09:25:16 +0200 (CEST)
+Received: from localhost (10.48.87.62) by SHFDAG1NODE1.st.com (10.75.129.69)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 7 May
+ 2025 09:25:16 +0200
+From: Patrice Chotard <patrice.chotard@foss.st.com>
+Subject: [PATCH v13 0/4] Add STM32MP25 SPI NOR support
+Date: Wed, 7 May 2025 09:25:13 +0200
+Message-ID: <20250507-upstream_ospi_v6-v13-0-32290b21419a@foss.st.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: ZR2P278MB1033:EE_|ZR2P278MB1110:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5c1cdc0a-01c1-4bc4-d1ba-08dd8d376094
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|10070799003|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?WHJCVFdES0VLWU11azQzZW0rdXVsRHpLR2M2RG9vRVRLUjJxNUc1ZktmbHBF?=
- =?utf-8?B?MHVaNExBQlY5dTBCTm41WWhubVJLV0JtT3ZBb2tyN0Z0eHB5K1F6aTRIc1ZT?=
- =?utf-8?B?TWxMV1hJS3JKMmg3YUVUOEt6SThNU0JzWmhSTnZvZW5HemhaQ3QxZEo0RnBC?=
- =?utf-8?B?c25JdHlKRnk0OEtTb2RqUnd0Wm5seXozc3M0MEdYc0FUaTNpS0ptTXVROFN2?=
- =?utf-8?B?MW1rVFNtTytPOENtWUFTdGZkVUczUzV1TmVlcFFKcnZuelB1RjM0UWFpVEhG?=
- =?utf-8?B?UWZOcFNjbThQOTEvZjZkdUVRWlFsZ0NTN1pUODJrYmVwYmRyNlBIbndyaERB?=
- =?utf-8?B?UGxrL3o4eUFCbVpxRlFSWFA1Qi95KzFxT1VRNlE2M2EwVkQ4cGpNMG96ZTRj?=
- =?utf-8?B?WUZpWHZPWHJBbTBDakRaNS9ZSXpHejV4UEF2Yno5VEhtbUJqanJwZllXUWpX?=
- =?utf-8?B?cHNXOEVMZVRiSitUSmlIL1JYVkJjQVBST3ExMzhsQVJSODhBTUF1NWJBSmNp?=
- =?utf-8?B?STVHeHEvNnd3a1Bkc01kLzl2YVNleFp3TVFkeVV2QUdDVXdRV1hnaUZyNmZM?=
- =?utf-8?B?S2N0NTNCNzRQRndNZ25FU0dVUXdPakJrbi9JalRmL3lxbVhJWHZDSUo2OTJF?=
- =?utf-8?B?c0VIeXJ4Zk9IWnJ4M1Q3a3ptZEpreDVlQ1NuenAzVitzbERyNEN0Z0dML21N?=
- =?utf-8?B?ZU0rbzJTL0VobTROeHgrRE4zbWM1V0R4TE1uamtpbGZNcURkR2VGSUxWTUZ5?=
- =?utf-8?B?RXpCNnhVSk01bnQ3Z25hMzNDZWZOR2l6MUZiaFhjd2duWkVOYW56RGFGekxB?=
- =?utf-8?B?akE1cDVZcnliYmhGMjE1TEg0REw5emNZVXlBMTYvOGdGaERsbTZmQ3p1V2kv?=
- =?utf-8?B?Y3VzektENEQ1U2ZwS0ZOZlhQRXk3MmI5WkJobitUVzM2MUVPaHNwMmZ1NWlh?=
- =?utf-8?B?MWswMW1JTjVHdGhURFpjOUFnc3B0S0dCQk9xKzBUcU1kUFJCYXViOEMrSU9S?=
- =?utf-8?B?eHBEMDRmdnVBSi85UE5oMXMrUHlpcGczYit6aGV2a0l1eWpXNVRRMUwrOXBS?=
- =?utf-8?B?bno1RkRLbFpRZm9zaVlwVER3andCS2poa2E3WkthYXhWYU1ja3N3R1h1UENz?=
- =?utf-8?B?OS9VZlpIdjRrT2dXMFRPZ0pGb05PVzc1dU1lbmJWWDRVRzc5dXQyd0IwZU1i?=
- =?utf-8?B?VER3SXNXTXFFeFF6a1M0cGxsSkRxU05XUGpZdGM1VHR0bENlRUZPMERXdVY0?=
- =?utf-8?B?VU9DT1BHUjZlTnpsUWpyT0dKWlpSOS9Wb0Nhb2hXOElVcXZlSlJ0MzdSOTk3?=
- =?utf-8?B?ejhQYStOVTdDT21ObVE1VXltZGFkbzBKNUgzcHgrWVJHN2orOTFrbDNBd0FM?=
- =?utf-8?B?RjNIYkdVRjFsNUg3cmprckZBMzdSeHBCdUlGcVBEZ2Q3Sit1dUVXb2JSMkxE?=
- =?utf-8?B?TEVvUWxsVmdzTHlxVnl6eGJaaHhNN1g0bFdKZk4yV1pTdHU5NEJtSXo3eEl6?=
- =?utf-8?B?Q2liclZqV0ZQOWZRQ3ZJeThvMWczSklzazZPTmxXZldwOTB3NTM1QnZtSUwx?=
- =?utf-8?B?RzBDc3hYclIrSXo4UU9CSTlGQldmNEd0b0F1VFdLVlBJYzRoV01tRDBISkNO?=
- =?utf-8?B?YTI1aEZFa1loRWFVVklacWYzalluUkI2NmVmNGo4OVA1MHA3b3htL1RENGNU?=
- =?utf-8?B?UytqeXA5RXViSldiTjVWUTJLWDZxbXVReUJ3RWZ6TlRaTjd5TFJ1b1c0ZWgz?=
- =?utf-8?B?UkZrbEp5RjFtUytvOWFlUXRrWWlkbVI1Rk8zRzNmVjNJQUpITkYyS1hqd3dR?=
- =?utf-8?B?Q3J3QVpjb3ZHbjBjTUZ5TnJWbVU3M0JkdzBHVUMvUmRkYUdvSGFreC94aldu?=
- =?utf-8?B?cUw1bG5UOFlXaEJqWkQxSGp2UVl6WTEyeVpkejNESWd1eGlSdjZwMXJCbXJL?=
- =?utf-8?Q?5yolbydff/Y=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZR2P278MB1033.CHEP278.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(10070799003)(1800799024);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?T1JXS2NrV1d0S1FFT2hxTnZFb0NPbWhiMDYvd3V5VDRwL09EOWdaQWZyQ3h4?=
- =?utf-8?B?ZGtVSjZQbldoV0owR2QrWUt2V0cxeVE5cE5UV3hvWC9GcXhRMmtjNHlNdyt4?=
- =?utf-8?B?alg4cWR5RzU5Tzh2SVo3cnMyUUJKYjZsMUhFSjVJRWlxTzAxb2tqcEhUZWl6?=
- =?utf-8?B?SkJRWkNwSy9kbVRsdTE1Sm1RT05CYlhzV3dEZ05aWDBFdmx6TE9rSDdRNyta?=
- =?utf-8?B?QS9IaUtVZ3lqQ1ZrelQrL2M4SWZYZFhpL2RYZUtRRllZdUsxVHZSN1Nad1ll?=
- =?utf-8?B?WXFMbUpzV2lxeVVyMVgySGt1cjZrWmZXS3M1Y1R0TUNFKzc0RXdGTWlQRHlJ?=
- =?utf-8?B?a2FSS1EvbHlzcm0xRTd1NXZ1TExGa0liTjBYMW9JSG1CcC9FdjlDb3FTZnVH?=
- =?utf-8?B?MkFIampORUFLcmpsTG1CZGVLeVQ4UThTN1dqb3IrMFUzLzRFYUcrQWplZTZP?=
- =?utf-8?B?bkdmcW9pSGQ0QkVvN1ZFZHlObEhtTm1OS1JnMmNJdkYyMFpmeTV3OXcxNHdN?=
- =?utf-8?B?amlvS1lEMUxDMUZISnRGRXRhNGN3TDlLWSs1Wm5ueFZ5ek5hQklPSUVOK2pY?=
- =?utf-8?B?bVFFM1M2MWNEL0ZIazAwQ0I0YTh5MHVsd3V0czlQS3dZMHRQa3BUeitGbjJo?=
- =?utf-8?B?dE10cnRycml0dW9aWkIrTzF2SUJ4VVRlNTh4VU1LSXkxMTdvOTA5b29WNmp6?=
- =?utf-8?B?SjBzajY4OGV2WGt0V00xak1iMDZ4eHJUa0YwR0g5RGpOTXRqOTR2blFFNW14?=
- =?utf-8?B?cG1tQTRqMzhCdThGYnZrY1dFTm5MN2V4bG9PekFlU2hSQ09kU2xia2Y2YXlK?=
- =?utf-8?B?Y3ZydGF1NHJuTWZPYSs5Q1VHUDFaSElXcUVlT1MrZEJ0VENaQ0Z0di82T3Nt?=
- =?utf-8?B?cUFOeEhQK1RjS1VjOTA1KzI5Y3VHNkpxL2xKdlNvZm5jNkprdGg3ckJra0ZB?=
- =?utf-8?B?RXdKS3h0dGpwcUIrMHdvMTlCZ0lZYVJjM3IyQXJEbkxJZ1F6MFBnTkM2Q2R4?=
- =?utf-8?B?MEhSZjJ5MU1mQUU1RFNFV0F0NEtTVTFBcW5uRVpHSlp3UVF0V3lISStMek1p?=
- =?utf-8?B?ZUJid0cwT3ROVEZpYUtGR0kwampnRlJvWVBsd2NUc0crOUovRUNUUjNrYXpT?=
- =?utf-8?B?U3VEVzZFTkQ5YVFvb1VzSTZZbkN6RFpvVkd3aGF5YisyS1RyTFlyck92WVU0?=
- =?utf-8?B?UWZzZVB0Uys0T0U1a09JWHgxMmFqTVJ1TGN4eXpEVkNhOWxIWHpPSnh3UG1B?=
- =?utf-8?B?aU5YaEpYRUhSMUpBWVV2bkFodVBtcWMvYjVPQ3FuejE1Vnc0N2trOUZUejlx?=
- =?utf-8?B?Rk9sREliTDhiVnNZUXpKM1NOQ1h0cmI1RTB3QUJ0WlhPREFtMGExNTh1UnFp?=
- =?utf-8?B?MmcxVEtRcHI3ZGp5WDd0YTBrc1VtclcyMTVpTUtTMEVmTjl1TXBEa040N1hV?=
- =?utf-8?B?cTlaaGNLbGozNjArd2NJWXVNR0plSjVJc0FTN2NSVmFKVjFTMms5QlQxMGFT?=
- =?utf-8?B?aitrcUgyWXhaWlV6T1pPRHJNWGxobFBJNUpFMm1DU0FtVDBUZTZSdm5kZzlj?=
- =?utf-8?B?MkdyMGs4SjYvZnRPNVgxUmJwSGdLbjBVNEI0aTkzT0doQjdkOHhaalEzUWlx?=
- =?utf-8?B?MG5uR0dkR2xxRm1uN2YrTjJzNVU4cndPTWNvMTJ5ZWZWdDhLQzBxdVpPdklC?=
- =?utf-8?B?dVM5NUZWWkpwbWJiYXp5dHlXU3djeTRoZGowTGVXbGR4eHpSbE1YWTh1U011?=
- =?utf-8?B?VEpPdzBNVTh3cXVBaUM2OWRYZ2pUaGo5dzBtbWE2RHpiNzRtOElDdVluUzF4?=
- =?utf-8?B?VzlHRytMaWREQ08yd0VTdlZFRlIxS3R5ZGR1RjlBZlQ0czg0NDZPeFljb0lO?=
- =?utf-8?B?ekFZN1gwRllvQ3FYVk5BNHdiM2lva3FoZXFxTHdvTzlXMkhZbExocVJuSUJ1?=
- =?utf-8?B?R2RSTHl1QTRlRWZPOEh3VTdIVlo2eENHaXNSL2pZaXlmbTlaZjRmd2x4UW1T?=
- =?utf-8?B?dUpqL01iTnV6cmNvYUNKWGlBSW0xcjA3QU55TThnNE5WT0tzVFhBOU5zWFU4?=
- =?utf-8?B?VHdhU2g2T0xFc0hqVEk2VG9kdzNQZC9XNXJOZkUyNVNZSytKcVo2UDlXSFR3?=
- =?utf-8?B?Y0hWOWpjdWpybUF6Q0o2eDk2NHJFazhpUVlSZVRmazVLZExFQk9tcVdFYlpM?=
- =?utf-8?Q?3s2HW2/jxmF8hY1LvKM3dIw=3D?=
-X-OriginatorOrg: bfh.ch
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5c1cdc0a-01c1-4bc4-d1ba-08dd8d376094
-X-MS-Exchange-CrossTenant-AuthSource: ZR2P278MB1033.CHEP278.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2025 07:18:34.1221
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: d6a1cf8c-768e-4187-a738-b6e50c4deb4a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8L2ZoDocn/6AjJYC/F2Xh3Ne8gmXsSkhW66NYntBlUFx/74wwuY2S4rv8SnoYom6
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZR2P278MB1110
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANoKG2gC/23Qy2rDQAwF0F8Js66DpHm6q/5HKWGezSwSG49rW
+ oL/vZNAiYsHtLkXdAS6sRKnHAt7PdzYFJdc8nCtAfnLgfmzvX7GLodaMAKSwAm6r7HMU7SX01D
+ GfFpUFwQna1ATgmR1bZxiyt8P8/2j5nMu8zD9PE4s6t7+YbjH6kDHtXPeOsEF79/SUMqxzEc/X
+ NidW/STENAidCUgJjISeQwG94TZErpBmEpopzUqjx6T2hP9hsDGV5a+Ej4h9hKMEcbuCYSNQdQ
+ wKgydSqIXZEFEhAaCW8S0EKwISmE0Vyn0gRoIPREJqoVQRSJ3TloI2iT3H1nX9RcEAV7wSwIAA
+ A==
+X-Change-ID: 20250320-upstream_ospi_v6-d432a8172105
+To: Krzysztof Kozlowski <krzk@kernel.org>, Rob Herring <robh@kernel.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Maxime Coquelin
+	<mcoquelin.stm32@gmail.com>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Krzysztof Kozlowski
+	<krzk+dt@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon
+	<will@kernel.org>,
+        Gatien Chevallier <gatien.chevallier@foss.st.com>
+CC: <christophe.kerello@foss.st.com>, <linux-kernel@vger.kernel.org>,
+        <devicetree@vger.kernel.org>,
+        <linux-stm32@st-md-mailman.stormreply.com>,
+        <linux-arm-kernel@lists.infradead.org>,
+        Patrice Chotard
+	<patrice.chotard@foss.st.com>,
+        <stable@vger.kernel.org>
+X-Mailer: b4 0.14.2
+X-ClientProxiedBy: SHFCAS1NODE1.st.com (10.75.129.72) To SHFDAG1NODE1.st.com
+ (10.75.129.69)
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-07_02,2025-05-06_01,2025-02-21_01
 
-S2V5Ym9hcmQgYW5kIHRvdWNocGFkIHN0b3BwZWQgd29ya2luZyBvbiBzZXZlcmFsIEFwcGxlIE1h
-Y2Jvb2tzIGZyb20gdGhlIA0KeWVhciAyMDE3IHVzaW5nIGtlcm5lbCA2LjEyLnh4IC4gVW50aWwg
-bm93IEkgY291bGQgb25seSBmaW5kIHRoaXMgDQpkaXNjdXNzaW9uIGFmZmlybWluZyB0aGUgYnVn
-IG9uIERlYmlhbiBhbmQgRmVkb3JhOiANCmh0dHBzOi8vZ2l0aHViLmNvbS9EdW5lZGFuL21icC0y
-MDE2LWxpbnV4L2lzc3Vlcy8yMDINCg0KT24gc2lkdWN0aW9uIEkgYWxzbyB0cmllZCB0aGUgbW9y
-ZSByZWNlbnQga2VybmVscyA2LjE0LjUgYW5kIG1haW5saW5lIA0KNi4xNS1yYzQgKGZyb20gVWJ1
-bnR1KSBhbmQgdGhlIGlzc3VlIHBlcnNpc3RlZCB3aXRoIG15IHRlc3RkZXZpY2UgDQpNYWNCb29r
-UHJvMTQsMSAtLSBzZWUgdGhlIHJlbGV2YW50IG91dHB1dDoNCg0Ka2VybmVsOiBwbGF0Zm9ybSBw
-eGEyeHgtc3BpLjM6IEFkZGluZyB0byBpb21tdSBncm91cCAyMA0Ka2VybmVsOiBpbnB1dDogQXBw
-bGUgU1BJIEtleWJvYXJkIGFzIA0KL2RldmljZXMvcGNpMDAwMDowMC8wMDAwOjAwOjFlLjMvcHhh
-Mnh4LXNwaS4zL3NwaV9tYXN0ZXIvc3BpMi9zcGktQVBQMDAwRDowMC9pbnB1dC9pbnB1dDANCmtl
-cm5lbDogRE1BUjogRFJIRDogaGFuZGxpbmcgZmF1bHQgc3RhdHVzIHJlZyAzDQprZXJuZWw6IERN
-QVI6IFtETUEgUmVhZCBOT19QQVNJRF0gUmVxdWVzdCBkZXZpY2UgWzAwOjFlLjNdIGZhdWx0IGFk
-ZHIgDQoweGZmZmZhMDAwIFtmYXVsdCByZWFzb24gMHgwNl0gUFRFIFJlYWQgYWNjZXNzIGlzIG5v
-dCBzZXQNCmtlcm5lbDogRE1BUjogRFJIRDogaGFuZGxpbmcgZmF1bHQgc3RhdHVzIHJlZyAzDQpr
-ZXJuZWw6IERNQVI6IFtETUEgUmVhZCBOT19QQVNJRF0gUmVxdWVzdCBkZXZpY2UgWzAwOjFlLjNd
-IGZhdWx0IGFkZHIgDQoweGZmZmZhMDAwIFtmYXVsdCByZWFzb24gMHgwNl0gUFRFIFJlYWQgYWNj
-ZXNzIGlzIG5vdCBzZXQNCmtlcm5lbDogYXBwbGVzcGkgc3BpLUFQUDAwMEQ6MDA6IEVycm9yIHdy
-aXRpbmcgdG8gZGV2aWNlOiAwMSAwZSAwMCAwMA0Ka2VybmVsOiBETUFSOiBEUkhEOiBoYW5kbGlu
-ZyBmYXVsdCBzdGF0dXMgcmVnIDMNCmtlcm5lbDogRE1BUjogW0RNQSBSZWFkIE5PX1BBU0lEXSBS
-ZXF1ZXN0IGRldmljZSBbMDA6MWUuM10gZmF1bHQgYWRkciANCjB4ZmZmZmEwMDAgW2ZhdWx0IHJl
-YXNvbiAweDA2XSBQVEUgUmVhZCBhY2Nlc3MgaXMgbm90IHNldA0Ka2VybmVsOiBETUFSOiBEUkhE
-OiBoYW5kbGluZyBmYXVsdCBzdGF0dXMgcmVnIDMNCmtlcm5lbDogYXBwbGVzcGkgc3BpLUFQUDAw
-MEQ6MDA6IEVycm9yIHdyaXRpbmcgdG8gZGV2aWNlOiAwMSAwZSAwMCAwMA0KDQpNYW55IHRoYW5r
-cywNCg0KSsO2cmcgQmVya2VsDQo=
+This series adds SPI NOR support for STM32MP25 SoCs from STMicroelectronics.
+
+On STM32MP25 SoCs family, an Octo Memory Manager block manages the muxing,
+the memory area split, the chip select override and the time constraint
+between its 2 Octo SPI children.
+
+Due to these depedencies, this series adds support for:
+  - Octo Memory Manager driver.
+  - Octo SPI driver.
+  - yaml schema for Octo Memory Manager and Octo SPI drivers.
+
+The device tree files adds Octo Memory Manager and its 2 associated Octo
+SPI chidren in stm32mp251.dtsi and adds SPI NOR support in stm32mp257f-ev1
+board.
+    
+Signed-off-by: Patrice Chotard <patrice.chotard@foss.st.com>
+
+Changes in v13:
+- Make firewall prototypes always exposed.
+- Restore STM32_OMM Kconfig dependency from v11.
+- Link to v12: https://lore.kernel.org/r/20250506-upstream_ospi_v6-v12-0-e3bb5a0d78fb@foss.st.com
+
+Changes in v12:
+- Update Kconfig dependencies.
+- Link to v11: https://lore.kernel.org/r/20250428-upstream_ospi_v6-v11-0-1548736fd9d2@foss.st.com
+
+Changes in v11:
+  - Add stm32_omm_toggle_child_clock(dev, false) in stm32_omm_disable_child() in case of error.
+  - Check MUXEN bit in stm32_omm_probe() to check if child clock must be disabled.
+  - Add dev_err_probe() in stm32_omm_probe().
+  - Link to v10: https://lore.kernel.org/r/20250422-upstream_ospi_v6-v10-0-6f4942a04e10@foss.st.com
+
+Changes in v10:
+  - Add of_node_put() in stm32_omm_set_amcr().
+  - Link to v9: https://lore.kernel.org/r/20250410-upstream_ospi_v6-v9-0-cf119508848a@foss.st.com
+
+Changes in v9:
+  - split patchset by susbsystem, current one include only OMM related
+    patches.
+  - Update SPDX Identifiers to "GPL-2.0-only".
+  - Add of_node_put)() instm32_omm_set_amcr().
+  - Rework error path in stm32_omm_toggle_child_clock().
+  - Make usage of reset_control_acquire/release() in stm32_omm_disable_child()
+    and move reset_control_get in probe().
+  - Rename error label in stm32_omm_configure().
+  - Remove child compatible check in stm32_omm_probe().
+  - Make usage of devm_of_platform_populate().
+  - Link to v8: https://lore.kernel.org/r/20250407-upstream_ospi_v6-v8-0-7b7716c1c1f6@foss.st.com
+
+Changes in v8:
+  - update OMM's dt-bindings:
+    - Remove minItems for clocks and resets properties.
+    - Fix st,syscfg-amcr items declaration.
+    - move power-domains property before vendor specific properties.
+  - Update compatible check wrongly introduced during internal tests in
+    stm32_omm.c.
+  - Move ommanager's node outside bus@42080000's node in stm32mp251.dtsi.
+  - Link to v7: https://lore.kernel.org/r/20250401-upstream_ospi_v6-v7-0-0ef28513ed81@foss.st.com
+
+Changes in v7:
+  - update OMM's dt-bindings by updating :
+    - clock-names and reset-names properties.
+    - spi unit-address node.
+    - example.
+  - update stm32mp251.dtsi to match with OMM's bindings update.
+  - update stm32mp257f-ev1.dts to match with OMM's bindings update.
+  - Link to v6: https://lore.kernel.org/r/20250321-upstream_ospi_v6-v6-0-37bbcab43439@foss.st.com
+
+Changes in v6:
+  - Update MAINTAINERS file.
+  - Remove previous patch 1/8 and 2/8, merged by Mark Brown in spi git tree.
+  - Fix Signed-off-by order for patch 3.
+  - OMM driver:
+    - Add dev_err_probe() in error path.
+    - Rename stm32_omm_enable_child_clock() to stm32_omm_toggle_child_clock().
+    - Reorder initialised/non-initialized variable in stm32_omm_configure()
+          and stm32_omm_probe().
+    - Move pm_runtime_disable() calls from stm32_omm_configure() to
+      stm32_omm_probe().
+    - Update children's clocks and reset management.
+    - Use of_platform_populate() to probe children.
+    - Add missing pm_runtime_disable().
+    - Remove useless stm32_omm_check_access's first parameter.
+  - Update OMM's dt-bindings by adding OSPI's clocks and resets.
+  - Update stm32mp251.dtsi by adding OSPI's clock and reset in OMM's node.
+
+Changes in v5:
+  - Add Reviewed-by Krzysztof Kozlowski for patch 1 and 3.
+
+Changes in v4:
+  - Add default value requested by Krzysztof for st,omm-req2ack-ns,
+    st,omm-cssel-ovr and st,omm-mux properties in st,stm32mp25-omm.yaml
+  - Remove constraint in free form test for st,omm-mux property.
+  - Fix drivers/memory/Kconfig by replacing TEST_COMPILE_ by COMPILE_TEST.
+  - Fix SPDX-License-Identifier for stm32-omm.c.
+  - Fix Kernel test robot by fixing dev_err() format in stm32-omm.c.
+  - Add missing pm_runtime_disable() in the error handling path in
+    stm32-omm.c.
+  - Replace an int by an unsigned int in stm32-omm.c
+  - Remove uneeded "," after terminator in stm32-omm.c.
+  - Update cover letter description to explain dependecies between
+Octo Memory Manager and its 2 Octo SPI children.
+
+Changes in v3:
+  - Squash defconfig patches 8 and 9.
+  - Update STM32 Octo Memory Manager controller bindings.
+  - Rename st,stm32-omm.yaml to st,stm32mp25-omm.yaml.
+  - Update STM32 OSPI controller bindings.
+  - Reorder DT properties in .dtsi and .dts files.
+  - Replace devm_reset_control_get_optional() by
+    devm_reset_control_get_optional_exclusive() in stm32_omm.c.
+  - Reintroduce region-memory-names management in stm32_omm.c.
+  - Rename stm32_ospi_tx_poll() and stm32_ospi_tx() to respectively to
+    stm32_ospi_poll() and stm32_ospi_xfer() in spi-stm32-ospi.c.
+  - Set SPI_CONTROLLER_HALF_DUPLEX in controller flags in spi-stm32-ospi.c.
+
+Changes in v2:
+  - Move STM32 Octo Memory Manager controller driver and bindings from
+    misc to memory-controllers.
+  - Update STM32 OSPI controller bindings.
+  - Update STM32 Octo Memory Manager controller bindings.
+  - Update STM32 Octo Memory Manager driver to match bindings update.
+  - Update DT to match bindings update.
+
+Signed-off-by: Patrice Chotard <patrice.chotard@foss.st.com>
+---
+Patrice Chotard (4):
+      firewall: Always expose firewall prototype
+      dt-bindings: memory-controllers: Add STM32 Octo Memory Manager controller
+      memory: Add STM32 Octo Memory Manager driver
+      MAINTAINERS: add entry for STM32 OCTO MEMORY MANAGER driver
+
+ .../memory-controllers/st,stm32mp25-omm.yaml       | 226 ++++++++++
+ MAINTAINERS                                        |   6 +
+ drivers/memory/Kconfig                             |  17 +
+ drivers/memory/Makefile                            |   1 +
+ drivers/memory/stm32_omm.c                         | 476 +++++++++++++++++++++
+ include/linux/bus/stm32_firewall_device.h          |  10 +-
+ 6 files changed, 735 insertions(+), 1 deletion(-)
+---
+base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
+change-id: 20250320-upstream_ospi_v6-d432a8172105
+
+Best regards,
+-- 
+Patrice Chotard <patrice.chotard@foss.st.com>
+
 
