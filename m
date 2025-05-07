@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-142631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9563AAEB6F
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:07:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2055BAAEB16
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:03:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA3507B8A99
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:06:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EC1D525C02
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:03:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 073681E1DF6;
-	Wed,  7 May 2025 19:07:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B26328BA9F;
+	Wed,  7 May 2025 19:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JaLgGzmF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zwDfPKku"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B886E2144BF;
-	Wed,  7 May 2025 19:07:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57DBB288A8;
+	Wed,  7 May 2025 19:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644846; cv=none; b=kZ07JTxKEoiV2wp8tHqMa9aU5UKfOya3Y97lDEcTPkHiWYzqn4GyaJ5NCI5Rlbivr54qPeb3YQrNW2In5hUiD79LrGnEggnKpeO/rx8PBNblEr38QkZqFtbG5KTX2OzAhEAhPL9n6bwYPOOsziEx+tFRimbUk0mIlkc7T4NjKbE=
+	t=1746644590; cv=none; b=GfNDVMp8vimVTwZAq+osuy9T0KLdQRPNLlTA6CDJBzSp/Ty002chUsLGBGZSr/Gih1uDwWYrQdprSa3bhTm8/1tdKBInGBhJzAWzeAqk2jSeCwj1T8QmzXIBYtYj5Q1m1g4uJXoHSlXYHLp91benxrfnxjgzLDx9d2Dmn58Y16U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644846; c=relaxed/simple;
-	bh=MiUt3pxvSzBp/X4vazk9WYdyZ3lHhUHmcCdIpRmOlbI=;
+	s=arc-20240116; t=1746644590; c=relaxed/simple;
+	bh=4mqByN+I5I/zjcQtH+iYUAoJEw8OLWt5ILcwYBENApo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lasi0lutBt+9TFIvVvY3m+Wieifn81aXa+5OuJug87uzoL04ZfC35bnKZy2UFqmPFUdNfDqzYEABc7l3Y/sYI/AFiqbiRmX2+Kjbe3Dk6PViG6UrMhC1Al1hq5HAvLygvQD8fjIRTaf1IQSvI0+QdbeUkbI4ugng/0oAQueoOy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JaLgGzmF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47209C4CEE2;
-	Wed,  7 May 2025 19:07:26 +0000 (UTC)
+	 MIME-Version; b=Q0F9J4BzPcEqFDBmeV8VJPrrGkD7qTqpwS+QIVccfQunNfyKnQQ+8QaXH6Z/r1nclTWtOM/hV2G6XwUKdwq5etYnQnkZ+eSS+TMzpc5XYggbWrmIQZr11Nb11Kytbj/jTbDPApTP9R4iN4QZ0bM3265NxmTZtLjdFe2kDYK1cmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zwDfPKku; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9CA8C4CEE2;
+	Wed,  7 May 2025 19:03:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644846;
-	bh=MiUt3pxvSzBp/X4vazk9WYdyZ3lHhUHmcCdIpRmOlbI=;
+	s=korg; t=1746644590;
+	bh=4mqByN+I5I/zjcQtH+iYUAoJEw8OLWt5ILcwYBENApo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JaLgGzmFeD7mieT5T5QCIO6OW5KhhHHLF+O/ZT8W7luTDROUgMuZlrLdX/ktQN1cB
-	 YZtc0CNrK3+1ZiR6bxuBmapq12fKgHC8eabpfXC5zdaotBV41q963Umo7VpeEZHCF5
-	 ODFA3KqQtKbcO46/nI4AmYVAwQSFmthEqH+saZAA=
+	b=zwDfPKkuiU6huCMbMmsFgNSgxN+GDBef8nLn/F5TAPwrnfAS9w+IZvsEN4gT1tjZa
+	 zrkDZP/dkrJrXXSV4FwU0aTW8qt1ImcJ5rISTeA3etfLJvH9uKtoxAL4ynOecRKoyr
+	 pFnX6hWjiwrIjUtVPSch24GepKphG4Z0ub1oDeXA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Seth Forshee <sforshee@kernel.org>,
-	Sean Christopherson <seanjc@google.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>
-Subject: [PATCH 6.6 012/129] perf/x86/intel: KVM: Mask PEBS_ENABLE loaded for guest with vCPUs value.
+	syzbot+7d4f142f6c288de8abfe@syzkaller.appspotmail.com,
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 063/164] wifi: plfxlc: Remove erroneous assert in plfxlc_mac_release
 Date: Wed,  7 May 2025 20:39:08 +0200
-Message-ID: <20250507183814.036055162@linuxfoundation.org>
+Message-ID: <20250507183823.494469804@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
-References: <20250507183813.500572371@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +63,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Murad Masimov <m.masimov@mt-integration.ru>
 
-commit 58f6217e5d0132a9f14e401e62796916aa055c1b upstream.
+[ Upstream commit 0fb15ae3b0a9221be01715dac0335647c79f3362 ]
 
-When generating the MSR_IA32_PEBS_ENABLE value that will be loaded on
-VM-Entry to a KVM guest, mask the value with the vCPU's desired PEBS_ENABLE
-value.  Consulting only the host kernel's host vs. guest masks results in
-running the guest with PEBS enabled even when the guest doesn't want to use
-PEBS.  Because KVM uses perf events to proxy the guest virtual PMU, simply
-looking at exclude_host can't differentiate between events created by host
-userspace, and events created by KVM on behalf of the guest.
+plfxlc_mac_release() asserts that mac->lock is held. This assertion is
+incorrect, because even if it was possible, it would not be the valid
+behaviour. The function is used when probe fails or after the device is
+disconnected. In both cases mac->lock can not be held as the driver is
+not working with the device at the moment. All functions that use mac->lock
+unlock it just after it was held. There is also no need to hold mac->lock
+for plfxlc_mac_release() itself, as mac data is not affected, except for
+mac->flags, which is modified atomically.
 
-Running the guest with PEBS unexpectedly enabled typically manifests as
-crashes due to a near-infinite stream of #PFs.  E.g. if the guest hasn't
-written MSR_IA32_DS_AREA, the CPU will hit page faults on address '0' when
-trying to record PEBS events.
+This bug leads to the following warning:
+================================================================
+WARNING: CPU: 0 PID: 127 at drivers/net/wireless/purelifi/plfxlc/mac.c:106 plfxlc_mac_release+0x7d/0xa0
+Modules linked in:
+CPU: 0 PID: 127 Comm: kworker/0:2 Not tainted 6.1.124-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+Workqueue: usb_hub_wq hub_event
+RIP: 0010:plfxlc_mac_release+0x7d/0xa0 drivers/net/wireless/purelifi/plfxlc/mac.c:106
+Call Trace:
+ <TASK>
+ probe+0x941/0xbd0 drivers/net/wireless/purelifi/plfxlc/usb.c:694
+ usb_probe_interface+0x5c0/0xaf0 drivers/usb/core/driver.c:396
+ really_probe+0x2ab/0xcb0 drivers/base/dd.c:639
+ __driver_probe_device+0x1a2/0x3d0 drivers/base/dd.c:785
+ driver_probe_device+0x50/0x420 drivers/base/dd.c:815
+ __device_attach_driver+0x2cf/0x510 drivers/base/dd.c:943
+ bus_for_each_drv+0x183/0x200 drivers/base/bus.c:429
+ __device_attach+0x359/0x570 drivers/base/dd.c:1015
+ bus_probe_device+0xba/0x1e0 drivers/base/bus.c:489
+ device_add+0xb48/0xfd0 drivers/base/core.c:3696
+ usb_set_configuration+0x19dd/0x2020 drivers/usb/core/message.c:2165
+ usb_generic_driver_probe+0x84/0x140 drivers/usb/core/generic.c:238
+ usb_probe_device+0x130/0x260 drivers/usb/core/driver.c:293
+ really_probe+0x2ab/0xcb0 drivers/base/dd.c:639
+ __driver_probe_device+0x1a2/0x3d0 drivers/base/dd.c:785
+ driver_probe_device+0x50/0x420 drivers/base/dd.c:815
+ __device_attach_driver+0x2cf/0x510 drivers/base/dd.c:943
+ bus_for_each_drv+0x183/0x200 drivers/base/bus.c:429
+ __device_attach+0x359/0x570 drivers/base/dd.c:1015
+ bus_probe_device+0xba/0x1e0 drivers/base/bus.c:489
+ device_add+0xb48/0xfd0 drivers/base/core.c:3696
+ usb_new_device+0xbdd/0x18f0 drivers/usb/core/hub.c:2620
+ hub_port_connect drivers/usb/core/hub.c:5477 [inline]
+ hub_port_connect_change drivers/usb/core/hub.c:5617 [inline]
+ port_event drivers/usb/core/hub.c:5773 [inline]
+ hub_event+0x2efe/0x5730 drivers/usb/core/hub.c:5855
+ process_one_work+0x8a9/0x11d0 kernel/workqueue.c:2292
+ worker_thread+0xa47/0x1200 kernel/workqueue.c:2439
+ kthread+0x28d/0x320 kernel/kthread.c:376
+ ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:295
+ </TASK>
+================================================================
 
-The issue is most easily reproduced by running `perf kvm top` from before
-commit 7b100989b4f6 ("perf evlist: Remove __evlist__add_default") (after
-which, `perf kvm top` effectively stopped using PEBS).	The userspace side
-of perf creates a guest-only PEBS event, which intel_guest_get_msrs()
-misconstrues a guest-*owned* PEBS event.
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 
-Arguably, this is a userspace bug, as enabling PEBS on guest-only events
-simply cannot work, and userspace can kill VMs in many other ways (there
-is no danger to the host).  However, even if this is considered to be bad
-userspace behavior, there's zero downside to perf/KVM restricting PEBS to
-guest-owned events.
-
-Note, commit 854250329c02 ("KVM: x86/pmu: Disable guest PEBS temporarily
-in two rare situations") fixed the case where host userspace is profiling
-KVM *and* userspace, but missed the case where userspace is profiling only
-KVM.
-
-Fixes: c59a1f106f5c ("KVM: x86/pmu: Add IA32_PEBS_ENABLE MSR emulation for extended PEBS")
-Closes: https://lore.kernel.org/all/Z_VUswFkWiTYI0eD@do-x1carbon
-Reported-by: Seth Forshee <sforshee@kernel.org>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Tested-by: "Seth Forshee (DigitalOcean)" <sforshee@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250426001355.1026530-1-seanjc@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 68d57a07bfe5 ("wireless: add plfxlc driver for pureLiFi X, XL, XC devices")
+Reported-by: syzbot+7d4f142f6c288de8abfe@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7d4f142f6c288de8abfe
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Link: https://patch.msgid.link/20250321185226.71-2-m.masimov@mt-integration.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/intel/core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/purelifi/plfxlc/mac.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -4206,7 +4206,7 @@ static struct perf_guest_switch_msr *int
- 	arr[pebs_enable] = (struct perf_guest_switch_msr){
- 		.msr = MSR_IA32_PEBS_ENABLE,
- 		.host = cpuc->pebs_enabled & ~cpuc->intel_ctrl_guest_mask,
--		.guest = pebs_mask & ~cpuc->intel_ctrl_host_mask,
-+		.guest = pebs_mask & ~cpuc->intel_ctrl_host_mask & kvm_pmu->pebs_enable,
- 	};
+diff --git a/drivers/net/wireless/purelifi/plfxlc/mac.c b/drivers/net/wireless/purelifi/plfxlc/mac.c
+index eae93efa61504..82d1bf7edba20 100644
+--- a/drivers/net/wireless/purelifi/plfxlc/mac.c
++++ b/drivers/net/wireless/purelifi/plfxlc/mac.c
+@@ -102,7 +102,6 @@ int plfxlc_mac_init_hw(struct ieee80211_hw *hw)
+ void plfxlc_mac_release(struct plfxlc_mac *mac)
+ {
+ 	plfxlc_chip_release(&mac->chip);
+-	lockdep_assert_held(&mac->lock);
+ }
  
- 	if (arr[pebs_enable].host) {
+ int plfxlc_op_start(struct ieee80211_hw *hw)
+-- 
+2.39.5
+
 
 
 
