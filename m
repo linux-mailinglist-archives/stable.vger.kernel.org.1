@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-142353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7382FAAEA41
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:53:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAFCAAAEABF
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:59:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E1821508690
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:53:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 995921C2802C
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:59:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E2D928937F;
-	Wed,  7 May 2025 18:53:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3E17289823;
+	Wed,  7 May 2025 18:59:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OAy9Qxm8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MNTOPvXn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9A81FF5EC;
-	Wed,  7 May 2025 18:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 603D724E4CE;
+	Wed,  7 May 2025 18:59:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643989; cv=none; b=lwhSOR8t7SQjQ742/oKx18CGU6AsBpT2fidioTR2NwOeK4hO8PPCsEAeyguKIAH8T/HvFeVaoUMLAvfZz7H4aeNdM40/StZ5Ql1dc1QCN4M0muaFyZKrad7HF8xoMAmoW4lsLCeYmSlTnh7/R8jTrmsJzmzyNNmgrHpsED+Nc5g=
+	t=1746644346; cv=none; b=u+zBGznxrylxDHDotI+VQaUBQIGA90Wwi437rSGWmJCAtJ8re+iwaQVB+2I7fvod9qU8g9P1etp9Qn4OS1iT/bsARk/skiBSlfgi+RqfJDIV8Ij147NNbcSxJPyd/xC+AYNYhVjEYU/sEdlf7sX4cqYGy8zo+SCpiD8Y+JFo3Vo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643989; c=relaxed/simple;
-	bh=75uT/rhCOfEDVGFn+ISlm8TGr4vBkhxx9e83mSUe7K4=;
+	s=arc-20240116; t=1746644346; c=relaxed/simple;
+	bh=x7TECmERLVyk2pT4nmg21HalTzwDS4iW8MIBbJHGOfE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QC0ERTKqWwysBFkxH8oGKWCc7CSBgY8zJoWHK9FFLyt11rpSVB9O/rjTc4UG6AACfRltLQpRkLVpQOVOxt+mFBdO0PO4CQ4DgUuy4xfV2u8aOG7rv3XB+ZeiJtvTXP6MnDvPKNTWyxQ1wk1PsLw8+4Rdmfrha97LwgtXT0dEmOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OAy9Qxm8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A6FDC4CEE2;
-	Wed,  7 May 2025 18:53:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ozbOie4Z2J0EtGUoQifvgosm1zbid7dyYUt8ipCyhYhNd0SAGw+kGTHO+27KHRnapNr7JoFH/cHqOPqiwPDsG51XrSRXR/rmQHnLGM7NPgIfDx10K1tK9A8VPr9badHu2KeGm/Dthq5FcC7t8H6K1UKCOQ0Lw7B6q/BZEog4zJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MNTOPvXn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD127C4CEE2;
+	Wed,  7 May 2025 18:59:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643989;
-	bh=75uT/rhCOfEDVGFn+ISlm8TGr4vBkhxx9e83mSUe7K4=;
+	s=korg; t=1746644346;
+	bh=x7TECmERLVyk2pT4nmg21HalTzwDS4iW8MIBbJHGOfE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OAy9Qxm8JxxtWPSqpEANUMKtTu5NaAxcuD+3l9qQt24Sij7LAyGr1W1SfteD3ElUq
-	 ARo9lIvgDrlpL74ZG5UZCFStt/qOK70A08LPCzBhQWcSDPgW27OzHIqmD1wTURa7nd
-	 BH3eOBw5qR+bzxLTz3dlGW/UirzGdVaMhVvVY71E=
+	b=MNTOPvXnuJ8weKhGZjXXiKqxQiLn79+Nk4Oc6HoWuUgddFGnEmLB0bfFxz+hsehAL
+	 tX6kb6ir1seBAVCK3kpbKyO5qjByVwV18JkNyJNJaQEQHWtelfb3iIhdUqDQBXpr1D
+	 io0vo7JwijmRgDaj5l4h6/82lVyGwtas+j5tMbo0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anthony Iliopoulos <ailiop@suse.com>,
-	"Naveen N Rao (AMD)" <naveen@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 054/183] powerpc64/ftrace: fix module loading without patchable function entries
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Subject: [PATCH 6.12 014/164] drm/fdinfo: Protect against driver unbind
 Date: Wed,  7 May 2025 20:38:19 +0200
-Message-ID: <20250507183826.876727838@linuxfoundation.org>
+Message-ID: <20250507183821.420982821@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +62,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anthony Iliopoulos <ailiop@suse.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
-[ Upstream commit 534f5a8ba27863141e29766467a3e1f61bcb47ac ]
+commit 5b1834d6202f86180e451ad1a2a8a193a1da18fc upstream.
 
-get_stubs_size assumes that there must always be at least one patchable
-function entry, which is not always the case (modules that export data
-but no code), otherwise it returns -ENOEXEC and thus the section header
-sh_size is set to that value. During module_memory_alloc() the size is
-passed to execmem_alloc() after being page-aligned and thus set to zero
-which will cause it to fail the allocation (and thus module loading) as
-__vmalloc_node_range() checks for zero-sized allocs and returns null:
+If we unbind a driver from the PCI device with an active DRM client,
+subsequent read of the fdinfo data associated with the file descriptor in
+question will not end well.
 
-[  115.466896] module_64: cast_common: doesn't contain __patchable_function_entries.
-[  115.469189] ------------[ cut here ]------------
-[  115.469496] WARNING: CPU: 0 PID: 274 at mm/vmalloc.c:3778 __vmalloc_node_range_noprof+0x8b4/0x8f0
-...
-[  115.478574] ---[ end trace 0000000000000000 ]---
-[  115.479545] execmem: unable to allocate memory
+Protect the path with a drm_dev_enter/exit() pair.
 
-Fix this by removing the check completely, since it is anyway not
-helpful to propagate this as an error upwards.
-
-Fixes: eec37961a56a ("powerpc64/ftrace: Move ftrace sequence out of line")
-Signed-off-by: Anthony Iliopoulos <ailiop@suse.com>
-Acked-by: Naveen N Rao (AMD) <naveen@kernel.org>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250204231821.39140-1-ailiop@suse.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Fixes: 3f09a0cd4ea3 ("drm: Add common fdinfo helper")
+Cc: <stable@vger.kernel.org> # v6.5+
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Link: https://lore.kernel.org/r/20250418162512.72324-1-tvrtko.ursulin@igalia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kernel/module_64.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/gpu/drm/drm_file.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/powerpc/kernel/module_64.c b/arch/powerpc/kernel/module_64.c
-index 34a5aec4908fb..126bf3b06ab7e 100644
---- a/arch/powerpc/kernel/module_64.c
-+++ b/arch/powerpc/kernel/module_64.c
-@@ -258,10 +258,6 @@ static unsigned long get_stubs_size(const Elf64_Ehdr *hdr,
- 			break;
- 		}
- 	}
--	if (i == hdr->e_shnum) {
--		pr_err("%s: doesn't contain __patchable_function_entries.\n", me->name);
--		return -ENOEXEC;
--	}
- #endif
+--- a/drivers/gpu/drm/drm_file.c
++++ b/drivers/gpu/drm/drm_file.c
+@@ -938,6 +938,10 @@ void drm_show_fdinfo(struct seq_file *m,
+ 	struct drm_file *file = f->private_data;
+ 	struct drm_device *dev = file->minor->dev;
+ 	struct drm_printer p = drm_seq_file_printer(m);
++	int idx;
++
++	if (!drm_dev_enter(dev, &idx))
++		return;
  
- 	pr_debug("Looks like a total of %lu stubs, max\n", relocs);
--- 
-2.39.5
-
+ 	drm_printf(&p, "drm-driver:\t%s\n", dev->driver->name);
+ 	drm_printf(&p, "drm-client-id:\t%llu\n", file->client_id);
+@@ -952,6 +956,8 @@ void drm_show_fdinfo(struct seq_file *m,
+ 
+ 	if (dev->driver->show_fdinfo)
+ 		dev->driver->show_fdinfo(&p, file);
++
++	drm_dev_exit(idx);
+ }
+ EXPORT_SYMBOL(drm_show_fdinfo);
+ 
 
 
 
