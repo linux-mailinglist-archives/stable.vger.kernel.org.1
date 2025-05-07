@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-142447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09F5BAAEAA6
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:58:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA95EAAE9B5
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:47:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D697B7BE6CF
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:56:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D07A506155
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:47:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 688A828B4FE;
-	Wed,  7 May 2025 18:58:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37CE51F4629;
+	Wed,  7 May 2025 18:47:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gmk9EYt2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k0xCY6/1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282D9214813;
-	Wed,  7 May 2025 18:58:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E82E51A29A;
+	Wed,  7 May 2025 18:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644282; cv=none; b=Yz9jfJH4CIkeOjpOhBKa65XOihQgcpNiBY8PJ50L4TVZ8HGaPcF/9MtxFdXXmnw+1DXyAalzjA+bDLfdTzVPgurcRFd6y9rfwT+HNyCsFjix4+SnaJFHb6fSfu/Db2VyOJPPgdOOwRR3TGDTfTlm4Nt4BAyUry3O2baoiW7if28=
+	t=1746643670; cv=none; b=X6o4ACmVrWhvZfTZJKxsNcOMRaNfe6r0i3Mx55yyhj4qukpRyhrJp0cGblMEQEcRg/PgoD4ItY7AvuZjRfmujfN476AzqxQ2GFT4k15u8iEHNAlfr1d5jXCpdaJtAwDVyQuyz5v211X5hWxq8UYQIZvo0b0rpn6RyyTo4sV3e38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644282; c=relaxed/simple;
-	bh=+DtuhmdZ5sYHQ75kLWdnKZBqIbouvje/vk00aUA3ZLc=;
+	s=arc-20240116; t=1746643670; c=relaxed/simple;
+	bh=FJUw4AEwyzD29Z/JCPr+8Y14IIcOLbXAKXMfLJzzBxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UdcTS18JThpXSpP+IH+MsBBwlA6GfJQS0n1ZSb7YhhzrqYT7grXRAQ2nyjbGtap7UIHn4jphdaXgK/et4gWcUgvreJhJ/oFU+1NmCwmNlr2yCUEGstQryoP9RHblpUHcAf3jxwD7/OVJY/Xj4Qp/q8cBw7EeZda0A2ad5rqUlaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gmk9EYt2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3767FC4CEE2;
-	Wed,  7 May 2025 18:58:00 +0000 (UTC)
+	 MIME-Version; b=B1SwPe5rj/ABADyAJ8L3BDqQdlogiT5p2w/OQk6hAc5n7iE0qXg9untLm8GEwLQM3iLQP2pfeGI2qtVr3h9XLnbdoAE+4UbEbdO3dd1ax4+ZtUJ/TbMRbSg2pKfWniZQlRFQ1RdSrZDDMbOTf5AzXAyM7VsyjabJnEOjhTBL++E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k0xCY6/1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC0B4C4CEE2;
+	Wed,  7 May 2025 18:47:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644281;
-	bh=+DtuhmdZ5sYHQ75kLWdnKZBqIbouvje/vk00aUA3ZLc=;
+	s=korg; t=1746643669;
+	bh=FJUw4AEwyzD29Z/JCPr+8Y14IIcOLbXAKXMfLJzzBxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gmk9EYt2qDC9ZGUpHtWUAoyIubCynrd9EsA6BD4JE/S68TGhzFbZ52cALNK0Coq6E
-	 YSXaElqBt212Wb+31StLswWyGD/1xiMVTnh3Viv8sy2ytmaM+23pGM8q+gWnoxQwlK
-	 onQZ2k87fC2XGR8P5byHrqWlotTkTxC+kdmngfOI=
+	b=k0xCY6/12yaPMhXFcMdgySP+6ehiFaMaLfGqJmEaUl8PK3Mj7WE0dL123WnnxoyI2
+	 UwqyMVrae8k5WXIcpe75sSm85aX19J0jZ/A5McUd+OTXmsQ0W/XTb0Z0j1JDu37NtR
+	 igJiucfNKAu+13REHD3pKOvx/EzvH0wtEe4yQkS0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 147/183] net: vertexcom: mse102x: Fix RX error handling
+	Gerrard Tai <gerrard.tai@starlabs.sg>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.1 77/97] sch_qfq: make qfq_qlen_notify() idempotent
 Date: Wed,  7 May 2025 20:39:52 +0200
-Message-ID: <20250507183830.822499153@linuxfoundation.org>
+Message-ID: <20250507183810.082015398@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
+References: <20250507183806.987408728@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +64,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Cong Wang <xiyou.wangcong@gmail.com>
 
-[ Upstream commit ee512922ddd7d64afe2b28830a88f19063217649 ]
+commit 55f9eca4bfe30a15d8656f915922e8c98b7f0728 upstream.
 
-In case the CMD_RTS got corrupted by interferences, the MSE102x
-doesn't allow a retransmission of the command. Instead the Ethernet
-frame must be shifted out of the SPI FIFO. Since the actual length is
-unknown, assume the maximum possible value.
+qfq_qlen_notify() always deletes its class from its active list
+with list_del_init() _and_ calls qfq_deactivate_agg() when the whole list
+becomes empty.
 
-Fixes: 2f207cbf0dd4 ("net: vertexcom: Add MSE102x SPI support")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250430133043.7722-5-wahrenst@gmx.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To make it idempotent, just skip everything when it is not in the active
+list.
+
+Also change other list_del()'s to list_del_init() just to be extra safe.
+
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Signed-off-by: Cong Wang <xiyou.wangcong@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250403211033.166059-5-xiyou.wangcong@gmail.com
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/vertexcom/mse102x.c | 20 ++++++++++++++++----
- 1 file changed, 16 insertions(+), 4 deletions(-)
+ net/sched/sch_qfq.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/vertexcom/mse102x.c b/drivers/net/ethernet/vertexcom/mse102x.c
-index 2c06d1d05164f..e4d993f313740 100644
---- a/drivers/net/ethernet/vertexcom/mse102x.c
-+++ b/drivers/net/ethernet/vertexcom/mse102x.c
-@@ -263,7 +263,7 @@ static int mse102x_tx_frame_spi(struct mse102x_net *mse, struct sk_buff *txp,
+--- a/net/sched/sch_qfq.c
++++ b/net/sched/sch_qfq.c
+@@ -354,7 +354,7 @@ static void qfq_deactivate_class(struct
+ 	struct qfq_aggregate *agg = cl->agg;
+ 
+ 
+-	list_del(&cl->alist); /* remove from RR queue of the aggregate */
++	list_del_init(&cl->alist); /* remove from RR queue of the aggregate */
+ 	if (list_empty(&agg->active)) /* agg is now inactive */
+ 		qfq_deactivate_agg(q, agg);
+ }
+@@ -483,6 +483,7 @@ static int qfq_change_class(struct Qdisc
+ 	gnet_stats_basic_sync_init(&cl->bstats);
+ 	cl->common.classid = classid;
+ 	cl->deficit = lmax;
++	INIT_LIST_HEAD(&cl->alist);
+ 
+ 	cl->qdisc = qdisc_create_dflt(sch->dev_queue, &pfifo_qdisc_ops,
+ 				      classid, NULL);
+@@ -989,7 +990,7 @@ static struct sk_buff *agg_dequeue(struc
+ 	cl->deficit -= (int) len;
+ 
+ 	if (cl->qdisc->q.qlen == 0) /* no more packets, remove from list */
+-		list_del(&cl->alist);
++		list_del_init(&cl->alist);
+ 	else if (cl->deficit < qdisc_pkt_len(cl->qdisc->ops->peek(cl->qdisc))) {
+ 		cl->deficit += agg->lmax;
+ 		list_move_tail(&cl->alist, &agg->active);
+@@ -1420,6 +1421,8 @@ static void qfq_qlen_notify(struct Qdisc
+ 	struct qfq_sched *q = qdisc_priv(sch);
+ 	struct qfq_class *cl = (struct qfq_class *)arg;
+ 
++	if (list_empty(&cl->alist))
++		return;
+ 	qfq_deactivate_class(q, cl);
  }
  
- static int mse102x_rx_frame_spi(struct mse102x_net *mse, u8 *buff,
--				unsigned int frame_len)
-+				unsigned int frame_len, bool drop)
- {
- 	struct mse102x_net_spi *mses = to_mse102x_spi(mse);
- 	struct spi_transfer *xfer = &mses->spi_xfer;
-@@ -281,6 +281,9 @@ static int mse102x_rx_frame_spi(struct mse102x_net *mse, u8 *buff,
- 		netdev_err(mse->ndev, "%s: spi_sync() failed: %d\n",
- 			   __func__, ret);
- 		mse->stats.xfer_err++;
-+	} else if (drop) {
-+		netdev_dbg(mse->ndev, "%s: Drop frame\n", __func__);
-+		ret = -EINVAL;
- 	} else if (*sof != cpu_to_be16(DET_SOF)) {
- 		netdev_dbg(mse->ndev, "%s: SPI start of frame is invalid (0x%04x)\n",
- 			   __func__, *sof);
-@@ -308,6 +311,7 @@ static void mse102x_rx_pkt_spi(struct mse102x_net *mse)
- 	struct sk_buff *skb;
- 	unsigned int rxalign;
- 	unsigned int rxlen;
-+	bool drop = false;
- 	__be16 rx = 0;
- 	u16 cmd_resp;
- 	u8 *rxpkt;
-@@ -330,7 +334,8 @@ static void mse102x_rx_pkt_spi(struct mse102x_net *mse)
- 			net_dbg_ratelimited("%s: Unexpected response (0x%04x)\n",
- 					    __func__, cmd_resp);
- 			mse->stats.invalid_rts++;
--			return;
-+			drop = true;
-+			goto drop;
- 		}
- 
- 		net_dbg_ratelimited("%s: Unexpected response to first CMD\n",
-@@ -342,9 +347,16 @@ static void mse102x_rx_pkt_spi(struct mse102x_net *mse)
- 		net_dbg_ratelimited("%s: Invalid frame length: %d\n", __func__,
- 				    rxlen);
- 		mse->stats.invalid_len++;
--		return;
-+		drop = true;
- 	}
- 
-+	/* In case of a invalid CMD_RTS, the frame must be consumed anyway.
-+	 * So assume the maximum possible frame length.
-+	 */
-+drop:
-+	if (drop)
-+		rxlen = VLAN_ETH_FRAME_LEN;
-+
- 	rxalign = ALIGN(rxlen + DET_SOF_LEN + DET_DFT_LEN, 4);
- 	skb = netdev_alloc_skb_ip_align(mse->ndev, rxalign);
- 	if (!skb)
-@@ -355,7 +367,7 @@ static void mse102x_rx_pkt_spi(struct mse102x_net *mse)
- 	 * They are copied, but ignored.
- 	 */
- 	rxpkt = skb_put(skb, rxlen) - DET_SOF_LEN;
--	if (mse102x_rx_frame_spi(mse, rxpkt, rxlen)) {
-+	if (mse102x_rx_frame_spi(mse, rxpkt, rxlen, drop)) {
- 		mse->ndev->stats.rx_errors++;
- 		dev_kfree_skb(skb);
- 		return;
--- 
-2.39.5
-
 
 
 
