@@ -1,173 +1,181 @@
-Return-Path: <stable+bounces-142026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36073AADC16
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 12:02:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 660B9AADCCE
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 12:57:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23D7A520804
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 10:00:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE4924C7DCD
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 10:57:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B637207A27;
-	Wed,  7 May 2025 10:00:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="Z0TtpOiE";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="MQTeTpIf";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="Z0TtpOiE";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="MQTeTpIf"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D7522153C5;
+	Wed,  7 May 2025 10:57:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from unicorn.mansr.com (unicorn.mansr.com [81.2.72.234])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CC2D202969
-	for <stable@vger.kernel.org>; Wed,  7 May 2025 10:00:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4029020F09C;
+	Wed,  7 May 2025 10:56:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.2.72.234
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746612035; cv=none; b=AVhOHTidRgzNm2+GXzXCQkUV5Ott5L6uFyQW0iLPb2oKQgEBRFToZpjVpN8XS6pB6ng9g44vbJn7+34kjRgw7cmTJ+mTCGKKzsFXOUZM1dh0h28ydoFeol7nwoFShBQdCqvfZBmryqAmz9fgLt2fcTy5JXyqce9swXCPqtdDBAw=
+	t=1746615421; cv=none; b=H3dYQFqc8FXj/nroq5vGd/RRydtNQC3jXNZcD5BJQnoU4c6IUutUEe57dHzbEF2tKOowqkMO86iD5eryP/lFwULInlIJYPKn0wbLTkmHVYaTwPb9JQAfAXITnHXzqw8HpDjmj+OuDEr6QmTVore7EwouVu00WppvNzq5SoFy1Gg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746612035; c=relaxed/simple;
-	bh=x6yWmoo6qPjvrZFDG+GfNt4k4ft48EnihqDbNQG/sRc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ggBjef6RXfYrzViGj9qREkt+9dPLCF8hWuEYxL2t5e6f02zdQzzLswYvDaGZHGGS3Wim/5KrsfNQc0mf9iJMzpz0vse/i0EX1ZVJzRbzvw0e96MiB7pYP5T5huq2YouVvrXv9kSi4A/0e+QP0g/p/57E3jJXIcpPiQLgdo2JEEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=Z0TtpOiE; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=MQTeTpIf; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=Z0TtpOiE; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=MQTeTpIf; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 2A9832118C;
-	Wed,  7 May 2025 10:00:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1746612032; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=FwFmgELbtw8nVecCPlwuYtq6ecmWR15BEDPQfyNbLfs=;
-	b=Z0TtpOiExeSK8uvMJgf90DofLqXv6O0X1hCugvPhDl9CyUCRQ3ShB3KJ2+zhNfeZvqn49f
-	PKO6oK89EWkcYMpqR8lxlE9RLNFDLgmJ51B+Yc1OBr83pAha85u1t7BOyEb55cZDef/Qrs
-	Xno0KG27PV65Ogvys+Rx7NnKd+g7inI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1746612032;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=FwFmgELbtw8nVecCPlwuYtq6ecmWR15BEDPQfyNbLfs=;
-	b=MQTeTpIfNIbXbr/iKzstnMDieizDStceCRPfOxIjZ3PxJLzzrlRaP0BID1htK89yZlaNmC
-	shEh5VK65XzZ5QAQ==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Z0TtpOiE;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=MQTeTpIf
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1746612032; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=FwFmgELbtw8nVecCPlwuYtq6ecmWR15BEDPQfyNbLfs=;
-	b=Z0TtpOiExeSK8uvMJgf90DofLqXv6O0X1hCugvPhDl9CyUCRQ3ShB3KJ2+zhNfeZvqn49f
-	PKO6oK89EWkcYMpqR8lxlE9RLNFDLgmJ51B+Yc1OBr83pAha85u1t7BOyEb55cZDef/Qrs
-	Xno0KG27PV65Ogvys+Rx7NnKd+g7inI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1746612032;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=FwFmgELbtw8nVecCPlwuYtq6ecmWR15BEDPQfyNbLfs=;
-	b=MQTeTpIfNIbXbr/iKzstnMDieizDStceCRPfOxIjZ3PxJLzzrlRaP0BID1htK89yZlaNmC
-	shEh5VK65XzZ5QAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1A56A139D9;
-	Wed,  7 May 2025 10:00:32 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id TLxqBkAvG2gdBgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Wed, 07 May 2025 10:00:32 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 9A43BA09BE; Wed,  7 May 2025 12:00:27 +0200 (CEST)
-From: Jan Kara <jack@suse.cz>
-To: <linux-fsdevel@vger.kernel.org>
-Cc: Jan Kara <jack@suse.cz>,
-	stable@vger.kernel.org
-Subject: [PATCH] udf: Make sure i_lenExtents is uptodate on inode eviction
-Date: Wed,  7 May 2025 12:00:17 +0200
-Message-ID: <20250507100016.19586-2-jack@suse.cz>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1746615421; c=relaxed/simple;
+	bh=YeFtMqNDEE5PX6B6Tj7LJQjOAiObwszJ+gN/hAA9Pyc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=OsySIhz5jBOJZwkGXroB1zBQaOCvl+65zsyLnuTvQdsxSIyE4z9gKCx5AM8Fuq8IPg+HYv9OL10qGK/jtSYvaC/66ApNIcvZwM93an4cSrAM4RpYxv2q9XoSIREc/ZHeZHY4TYTFUj5mfV+W4ii691ljfZbn5MWWqnAaGeZWWWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mansr.com; spf=pass smtp.mailfrom=mansr.com; arc=none smtp.client-ip=81.2.72.234
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=mansr.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mansr.com
+Received: from raven.mansr.com (raven.mansr.com [81.2.72.235])
+	by unicorn.mansr.com (Postfix) with ESMTPS id 0911515365;
+	Wed, 07 May 2025 11:56:57 +0100 (BST)
+Received: by raven.mansr.com (Postfix, from userid 51770)
+	id DF9E221A3DA; Wed, 07 May 2025 11:56:56 +0100 (BST)
+From: =?iso-8859-1?Q?M=E5ns_Rullg=E5rd?= <mans@mansr.com>
+To: Jiri Slaby <jirislaby@kernel.org>
+Cc: gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org,
+ linux-serial@vger.kernel.org, linux-omap@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] tty: serial: 8250_omap: fix tx with dma
+In-Reply-To: <14d13f9b-77db-4545-97d1-bc36abcb9644@kernel.org> (Jiri Slaby's
+	message of "Wed, 7 May 2025 10:09:52 +0200")
+References: <20250506150748.3162-1-mans@mansr.com>
+	<d51b4422-0c46-4b03-840b-302603b3136f@kernel.org>
+	<yw1xwmaslv1d.fsf@mansr.com>
+	<14d13f9b-77db-4545-97d1-bc36abcb9644@kernel.org>
+Date: Wed, 07 May 2025 11:56:56 +0100
+Message-ID: <yw1xselglmdj.fsf@mansr.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/29.4 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1444; i=jack@suse.cz; h=from:subject; bh=x6yWmoo6qPjvrZFDG+GfNt4k4ft48EnihqDbNQG/sRc=; b=owEBbQGS/pANAwAIAZydqgc/ZEDZAcsmYgBoGy8w2vjrDkNDtqPzj02VjNcYAjCv4Jb4giVzp8mD wNVK4EWJATMEAAEIAB0WIQSrWdEr1p4yirVVKBycnaoHP2RA2QUCaBsvMAAKCRCcnaoHP2RA2dmSB/ 9JyzYCCk6UJs4Tpt9qRaElodq6U8Ctau9sdTqlr7BaPGQ+lCNXGpRKuk9pB6Q+CaBL6M0jjRJ8Asf8 pWuWFeC4HH2y92rKOREyztNYPEgH1fkFDFY/YoTlDCa2E++R8Gyzf59/iTYuU61doZb5aWe4IrP8Gk aQhwFsrQ7LWuVoIKrBJNAyPJyqybZaw82D4bVETsWdJ0V9sQJkTMwvxIk+0KniFxaBYDtoDsHWYCso v6GhapxDZXsbIWonUKF3+boXBt3/IVQmDzYJw/ACzAZSBv694wy9qdVpuvdLj4gYS0cJd7RuOwwhMj PdsnapKT0GwbK4MzedNRacYUGeLw04
-X-Developer-Key: i=jack@suse.cz; a=openpgp; fpr=93C6099A142276A28BBE35D815BC833443038D8C
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 2A9832118C
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	ARC_NA(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	MIME_TRACE(0.00)[0:+];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	TO_DN_SOME(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCVD_TLS_LAST(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[epos.bh:url,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.cz:email,suse.cz:dkim,suse.cz:mid]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -3.01
-X-Spam-Flag: NO
+Content-Type: text/plain; charset=iso-8859-1
+Content-Transfer-Encoding: quoted-printable
 
-UDF maintains total length of all extents in i_lenExtents. Generally we
-keep extent lengths (and thus i_lenExtents) block aligned because it
-makes the file appending logic simpler. However the standard mandates
-that the inode size must match the length of all extents and thus we
-trim the last extent when closing the file. To catch possible bugs we
-also verify that i_lenExtents matches i_size when evicting inode from
-memory. Commit b405c1e58b73 ("udf: refactor udf_next_aext() to handle
-error") however broke the code updating i_lenExtents and thus
-udf_evict_inode() ended up spewing lots of errors about incorrectly
-sized extents although the extents were actually sized properly. Fix the
-updating of i_lenExtents to silence the errors.
+Jiri Slaby <jirislaby@kernel.org> writes:
 
-Fixes: b405c1e58b73 ("udf: refactor udf_next_aext() to handle error")
-CC: stable@vger.kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
----
- fs/udf/truncate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> On 07. 05. 25, 9:49, M=E5ns Rullg=E5rd wrote:
+>> Jiri Slaby <jirislaby@kernel.org> writes:
+>>=20
+>>> On 06. 05. 25, 17:07, Mans Rullgard wrote:
+>>>> Commit 1788cf6a91d9 ("tty: serial: switch from circ_buf to kfifo")
+>>>> introduced an error in the TX DMA handling for 8250_omap.
+>>>> When the OMAP_DMA_TX_KICK flag is set, one byte is pulled from the
+>>>> kfifo and emitted directly in order to start the DMA.  This is done
+>>>> without updating DMA tx_size which leads to uart_xmit_advance() called
+>>>> in the DMA complete callback advancing the kfifo by one too much.
+>>>> In practice, transmitting N bytes has been seen to result in the last
+>>>> N-1 bytes being sent repeatedly.
+>>>> This change fixes the problem by moving all of the dma setup after
+>>>> the OMAP_DMA_TX_KICK handling and using kfifo_len() instead of the
+>>>> dma size for the 4-byte cutoff check. This slightly changes the
+>>>> behaviour at buffer wraparound, but it still transmits the correct
+>>>> bytes somehow. At the point kfifo_dma_out_prepare_mapped is called,
+>>>> at least one byte is guaranteed to be in the fifo, so checking the
+>>>> return value is not necessary.
+>>>> Fixes: 1788cf6a91d9 ("tty: serial: switch from circ_buf to kfifo")
+>>>> Cc: stable@vger.kernel.org
+>>>> Signed-off-by: Mans Rullgard <mans@mansr.com>
+>>>> ---
+>>>> v2: split patch in two
+>>>> ---
+>>>>    drivers/tty/serial/8250/8250_omap.c | 24 +++++++++---------------
+>>>>    1 file changed, 9 insertions(+), 15 deletions(-)
+>>>> diff --git a/drivers/tty/serial/8250/8250_omap.c
+>>>> b/drivers/tty/serial/8250/8250_omap.c
+>>>> index f1aee915bc02..180466e09605 100644
+>>>> --- a/drivers/tty/serial/8250/8250_omap.c
+>>>> +++ b/drivers/tty/serial/8250/8250_omap.c
+>>>> @@ -1173,16 +1173,6 @@ static int omap_8250_tx_dma(struct uart_8250_po=
+rt *p)
+>>>>    		return 0;
+>>>>    	}
+>>>>    -	sg_init_table(&sg, 1);
+>>>> -	ret =3D kfifo_dma_out_prepare_mapped(&tport->xmit_fifo, &sg, 1,
+>>>> -					   UART_XMIT_SIZE, dma->tx_addr);
+>>>> -	if (ret !=3D 1) {
+>>>> -		serial8250_clear_THRI(p);
+>>>> -		return 0;
+>>>> -	}
+>>>> -
+>>>> -	dma->tx_size =3D sg_dma_len(&sg);
+>>>> -
+>>>>    	if (priv->habit & OMAP_DMA_TX_KICK) {
+>>>>    		unsigned char c;
+>>>>    		u8 tx_lvl;
+>>> ...
+>>>> @@ -1216,11 +1206,12 @@ static int omap_8250_tx_dma(struct uart_8250_p=
+ort *p)
+>>>>    			goto err;
+>>>>    		}
+>>>>    		skip_byte =3D c;
+>>>> -		/* now we need to recompute due to kfifo_get */
+>>>> -		kfifo_dma_out_prepare_mapped(&tport->xmit_fifo, &sg, 1,
+>>>> -				UART_XMIT_SIZE, dma->tx_addr);
+>>>>    	}
+>>>>    +	sg_init_table(&sg, 1);
+>>>> +	kfifo_dma_out_prepare_mapped(&tport->xmit_fifo, &sg, 1,
+>>>> +				     UART_XMIT_SIZE, dma->tx_addr);
+>>>
+>>> This can fail (note the first call to this was checked). The latter
+>>> (deliberately) not.
+>> No, it can't.  The fifo has already been checked to contain something
+>> right at the top of the function.  There is no other failure mode for
+>> kfifo_dma_out_prepare_mapped.
+>
+> That it cannot fail now does not mean it cannot in the future. Simply do =
+it
+> properly and check the retval.
+>
+>>>> +
+>>>>    	desc =3D dmaengine_prep_slave_sg(dma->txchan, &sg, 1, DMA_MEM_TO_D=
+EV,
+>>>>    			DMA_PREP_INTERRUPT | DMA_CTRL_ACK);
+>>>>    	if (!desc) {
+>>> ...
+>>>> @@ -1248,8 +1240,10 @@ static int omap_8250_tx_dma(struct uart_8250_po=
+rt *p)
+>>>>    err:
+>>>>    	dma->tx_err =3D 1;
+>>>>    out_skip:
+>>>> -	if (skip_byte >=3D 0)
+>>>> +	if (skip_byte >=3D 0) {
+>>>>    		serial_out(p, UART_TX, skip_byte);
+>>>> +		p->port.icount.tx++;
+>>>
+>>> This is still unrelated.
+>> No, it's not.  Your broken code called uart_xmit_advance with the full
+>> amount due to the incorrect tx_size value.  This compensates for that.
+>
+> Then document it properly in the commit log.
+>
+>> You made this mess.
+>
+> I can only say that I am sorry for the breakage of this driver. This TX w=
+ay
+> with one byte via FIFO and the rest via DMA, and only if > 4 chars to be
+> sent is indeed cumbersome and apparently uneasy to do right.
+>
+>> Now fix it.  I don't care how.  It's wasted enough
+>> of my time already.
+>
+> How exactly does this help to get the code in shape? You apparently have =
+the
+> HW, you spent some time debugging that, you have patches, so you deserve =
+the
+> credits.
 
-I plan to merge this fix to my tree.
+I don't care about credit, I just want it fixed, and I feel like that's
+your responsibility since you broke it.  I've pointed out where the
+problem is and provided a fix.  If that's not enough for you, then I
+give up.  I'm not paid enough to play your guessing games.
 
-diff --git a/fs/udf/truncate.c b/fs/udf/truncate.c
-index 4f33a4a48886..b4071c9cf8c9 100644
---- a/fs/udf/truncate.c
-+++ b/fs/udf/truncate.c
-@@ -115,7 +115,7 @@ void udf_truncate_tail_extent(struct inode *inode)
- 	}
- 	/* This inode entry is in-memory only and thus we don't have to mark
- 	 * the inode dirty */
--	if (ret == 0)
-+	if (ret >= 0)
- 		iinfo->i_lenExtents = inode->i_size;
- 	brelse(epos.bh);
- }
--- 
-2.43.0
-
+--=20
+M=E5ns Rullg=E5rd
 
