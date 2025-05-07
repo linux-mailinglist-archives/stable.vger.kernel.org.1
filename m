@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-142518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B0EBAAEAF7
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:01:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E529AAEB87
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:08:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28A87524C8C
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:01:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4EACCB20E50
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:06:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F294428AAE9;
-	Wed,  7 May 2025 19:01:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCD952144BF;
+	Wed,  7 May 2025 19:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OjgkM9vZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QDbPnYoS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B035429A0;
-	Wed,  7 May 2025 19:01:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98CFE1E1DF6;
+	Wed,  7 May 2025 19:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644499; cv=none; b=X88+6c5Y/XGbe7TfAZWi7lfNnloe9LocuSqdwX11PBh+SH/I850xnXLCeFeLSOHt53c8nSIv35SVHXcRKCaDb69S1UHaW+Dr1/vWmT4SDNxlLXBc6hjj6ARaSF4Obk9MATfjZ4vJvAm38itoMXwfLRJX3TTGunKqdcuq8Y6iLvM=
+	t=1746644874; cv=none; b=pDNUMAixPzPxc3igmgO3bV9LMfcvz55BUJmFaYpnCcGs84eBcxHoFLQCgw6cwIuRAU/jwneUO5vuWa/N+02NUq6XvZ9qMhAz68ZqWSpKDu4yOcCZONC9xiX9lhj4azGIRbO4o/eDE/9xm0+14ue8PAk9YTpu7FpLUGavrMUIJ7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644499; c=relaxed/simple;
-	bh=SP6kdkk9y56PT7/LTwHZk5oiDvIEDkkTBOn1zy9bE1Y=;
+	s=arc-20240116; t=1746644874; c=relaxed/simple;
+	bh=OileND7weJx1KL0H2FOAgYQh7bwqx9oPkE66zoZnEyo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mygG0x3YMtYhGniuDtCiMKwhpPITf3AX++DdZYwp+yR3AN6speIRBET3j4WwxzRYpb6XRh89ojVEUmJpV6sq2cBNwDt8zrXp3dHwurtooU8NrxzfSAGP8cTG0QOvV+hTynCjSmM3RAjHjoMHj/gPrnXbMba7lP1AKcQn7luMnWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OjgkM9vZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DE1FC4CEE2;
-	Wed,  7 May 2025 19:01:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UTtMk8u1Rmcc9Wi5WeD6ud0Qs1RHSBL7cmkRUOHnBrV1A7hva+IO8uDCd7L5PnwZhmLfE2poE8JBdYxSZjk13BNqjSGHVRxfQHsqhNjTmmsQp8eq68nT5LuqvSOEPr5z+7RxGxw5uQwAglthBzmoh+bbOk1t01QjjJjDgzrwjVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QDbPnYoS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06120C4CEE2;
+	Wed,  7 May 2025 19:07:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644499;
-	bh=SP6kdkk9y56PT7/LTwHZk5oiDvIEDkkTBOn1zy9bE1Y=;
+	s=korg; t=1746644874;
+	bh=OileND7weJx1KL0H2FOAgYQh7bwqx9oPkE66zoZnEyo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OjgkM9vZ0/YwabPhST0yua7/eC/5y607knjnkiaTHzD2PED3JhVLl02AFnMlUJnyP
-	 7AtQTonjKkK3gHhwmAQnxBwkndlPR5y2+lKk7Rw6OwfvEXDDmZbig8qbqBLxuh48lD
-	 2xkGnlnXrtTUJAcssMDuY6NtdaLS45GKxJj3sxRs=
+	b=QDbPnYoSQbBwZ4x3gfQpggj8hYEXuFzjK9zaZH0RktH5R1KckpDC0lBEM6bqB5W98
+	 1dif3rMWOZfBts9d7PUQO81X7P371pbaim+hEOm9F4RREuGReYDXQzev5ygMuiZS/i
+	 2FGClv4gqVnHTfL9JEUir8jIUzEQYfKd534Mh5Kw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hui Wang <hui.wang@canonical.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 056/164] pinctrl: imx: Return NULL if no group is matched and found
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Subject: [PATCH 6.6 005/129] drm/fdinfo: Protect against driver unbind
 Date: Wed,  7 May 2025 20:39:01 +0200
-Message-ID: <20250507183823.203637809@linuxfoundation.org>
+Message-ID: <20250507183813.744381554@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +62,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hui Wang <hui.wang@canonical.com>
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
-[ Upstream commit e64c0ff0d5d85791fbcd126ee558100a06a24a97 ]
+commit 5b1834d6202f86180e451ad1a2a8a193a1da18fc upstream.
 
-Currently if no group is matched and found, this function will return
-the last grp to the caller, this is not expected, it is supposed to
-return NULL in this case.
+If we unbind a driver from the PCI device with an active DRM client,
+subsequent read of the fdinfo data associated with the file descriptor in
+question will not end well.
 
-Fixes: e566fc11ea76 ("pinctrl: imx: use generic pinctrl helpers for managing groups")
-Signed-off-by: Hui Wang <hui.wang@canonical.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/20250327031600.99723-1-hui.wang@canonical.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Protect the path with a drm_dev_enter/exit() pair.
+
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Umesh Nerlige Ramappa <umesh.nerlige.ramappa@intel.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Fixes: 3f09a0cd4ea3 ("drm: Add common fdinfo helper")
+Cc: <stable@vger.kernel.org> # v6.5+
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Link: https://lore.kernel.org/r/20250418162512.72324-1-tvrtko.ursulin@igalia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/freescale/pinctrl-imx.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/drm_file.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/pinctrl/freescale/pinctrl-imx.c b/drivers/pinctrl/freescale/pinctrl-imx.c
-index d05c2c478e795..4e1fe457a608a 100644
---- a/drivers/pinctrl/freescale/pinctrl-imx.c
-+++ b/drivers/pinctrl/freescale/pinctrl-imx.c
-@@ -37,16 +37,16 @@ static inline const struct group_desc *imx_pinctrl_find_group_by_name(
- 				struct pinctrl_dev *pctldev,
- 				const char *name)
- {
--	const struct group_desc *grp = NULL;
-+	const struct group_desc *grp;
- 	int i;
+--- a/drivers/gpu/drm/drm_file.c
++++ b/drivers/gpu/drm/drm_file.c
+@@ -1015,6 +1015,10 @@ void drm_show_fdinfo(struct seq_file *m,
+ 	struct drm_file *file = f->private_data;
+ 	struct drm_device *dev = file->minor->dev;
+ 	struct drm_printer p = drm_seq_file_printer(m);
++	int idx;
++
++	if (!drm_dev_enter(dev, &idx))
++		return;
  
- 	for (i = 0; i < pctldev->num_groups; i++) {
- 		grp = pinctrl_generic_get_group(pctldev, i);
- 		if (grp && !strcmp(grp->grp.name, name))
--			break;
-+			return grp;
- 	}
+ 	drm_printf(&p, "drm-driver:\t%s\n", dev->driver->name);
+ 	drm_printf(&p, "drm-client-id:\t%llu\n", file->client_id);
+@@ -1029,6 +1033,8 @@ void drm_show_fdinfo(struct seq_file *m,
  
--	return grp;
-+	return NULL;
+ 	if (dev->driver->show_fdinfo)
+ 		dev->driver->show_fdinfo(&p, file);
++
++	drm_dev_exit(idx);
  }
+ EXPORT_SYMBOL(drm_show_fdinfo);
  
- static void imx_pin_dbg_show(struct pinctrl_dev *pctldev, struct seq_file *s,
--- 
-2.39.5
-
 
 
 
