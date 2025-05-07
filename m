@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-142341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6CC5AAEA35
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:52:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04E94AAE962
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:44:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 603715082A8
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:52:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C15A5056DC
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:44:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63EB5289348;
-	Wed,  7 May 2025 18:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BFAC28DF45;
+	Wed,  7 May 2025 18:44:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g1fERJzD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DXvaTZqq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 215281FF5EC;
-	Wed,  7 May 2025 18:52:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4898114A4C7;
+	Wed,  7 May 2025 18:44:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643953; cv=none; b=SSNjlfDdn82L+zVOtHBLfJbyOt0C2VfMHIkGOH0PTU7+gcgy1BVRPBt/4kTiMbLfofM9hCJ0Ua+ONvjgtuvGaQJfQc/VambyViViJtke2+qfmeVghGHL5l+eYiN2b0Gp+58olj/sQj1Ts0L8yZWi6S+J780iGtYK8oF+T6+BRk0=
+	t=1746643452; cv=none; b=pAgFFLc9bUNHRfH2THC75e+F8JAJ7qHVrwv1s4WO9YVAmSbBaCbYdvOEUNM6/qG7ITz28jhSVXwtPtPMvw/XI8/5VC1uEv6Hs7rV/JURVDhu+lkIBb4JDx6Z/cVI3nu7oBwhpeIZ/CuEULtiTDCEY9wQoV4JtfyOsgreBi6fB+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643953; c=relaxed/simple;
-	bh=7OSIKhD9Cca0LZih3qbWSPNgkbu3gAcKir+g/e+vCns=;
+	s=arc-20240116; t=1746643452; c=relaxed/simple;
+	bh=DptW1vkZA9AgARrUwBtLaNkCRYdTirLh9tNEt6pNrXM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N+4Nxg7oKW9sdPBavXQn9pDAmpxCAsWUsaUyu7efplsUDrAIVhCcO3c7RsUfsCJSjxwVJudtxSSgGgzzpwq2vY+CKb65XM0VIEzYXLQm40v3USeWi5/b2jl6SF1zoqvjcBPefk+xU4D0g3w+S+H8xHVGARYl72MTjn56iCBz8Ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g1fERJzD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E0CDC4CEE2;
-	Wed,  7 May 2025 18:52:32 +0000 (UTC)
+	 MIME-Version; b=nlA64ReHbk6U9SXQUibWUj19h84PWYDBydXwyBz+seYF5ameNNooqZ8dZ+dvYQmEhUSKQGEdY/VQ77TUYpD+DsxAjHhgRdU3f52OUUYf3pYeb1DroXrde95eAl5DE8uxd2DRSIyMPy6sTheDXdJB9BAOZK8+k0cddCH2jyjF/u4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DXvaTZqq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8C27C4CEE2;
+	Wed,  7 May 2025 18:44:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643953;
-	bh=7OSIKhD9Cca0LZih3qbWSPNgkbu3gAcKir+g/e+vCns=;
+	s=korg; t=1746643452;
+	bh=DptW1vkZA9AgARrUwBtLaNkCRYdTirLh9tNEt6pNrXM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g1fERJzDHjQ7a+fId0hW7GGdd9srRwwQmzSg6tXzXnrnMJX0wqB3D7RlPyCYw2DkG
-	 hx6TN1GtYywzYftri2zi7WtgK9kLS8ij4bLCfBhqeDNGJqMeumBzOxgtI2ZTstWjpT
-	 optX3inWBtIUQl45aRFKPHSMwNuQDMr5TAZvug0I=
+	b=DXvaTZqqrHmAQiH/p2LUDUMH5skwFS/keVCefogOyeSuhm4zZjsoXTzbr9sFJGjwa
+	 jUePUy5MZl/UM2yzE2Xiul3agogFPPeH167lV9RxVP15kAQlGl8tjfEFjcdxCezXvS
+	 Y1rUs/7ElQC9+s+pEiaoZrl2Y2FRD6lhtQVd9SWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianbo Liu <jianbol@nvidia.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 071/183] net/mlx5e: TC, Continue the attr process even if encap entry is invalid
+	Lubomir Rintel <lkundrak@v3.sk>,
+	Christian Heusel <christian@heusel.eu>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 01/97] Revert "rndis_host: Flag RNDIS modems as WWAN devices"
 Date: Wed,  7 May 2025 20:38:36 +0200
-Message-ID: <20250507183827.571823199@linuxfoundation.org>
+Message-ID: <20250507183807.050300817@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
+References: <20250507183806.987408728@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jianbo Liu <jianbol@nvidia.com>
+From: Christian Heusel <christian@heusel.eu>
 
-[ Upstream commit 172c034264c894518c012387f2de2f9d6443505d ]
+commit 765f253e28909f161b0211f85cf0431cfee7d6df upstream.
 
-Previously the offload of the rule with header rewrite and mirror to
-both internal and external destinations is skipped if the encap entry
-is not valid. But it shouldn't because driver will try to offload it
-again if neighbor is updated and encap entry is valid, to replace the
-old FTE added for slow path. But the extra split attr doesn't exist at
-that time as the process is skipped, driver then fails to offload it.
-To fix this issue, remove the checking and continue the attr process
-if encap entry is invalid.
+This reverts commit 67d1a8956d2d62fe6b4c13ebabb57806098511d8. Since this
+commit has been proven to be problematic for the setup of USB-tethered
+ethernet connections and the related breakage is very noticeable for
+users it should be reverted until a fixed version of the change can be
+rolled out.
 
-Fixes: b11bde56246e ("net/mlx5e: TC, Offload rewrite and mirror to both internal and external dests")
-Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
-Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Link: https://patch.msgid.link/20250423083611.324567-4-mbloch@nvidia.com
+Closes: https://lore.kernel.org/all/e0df2d85-1296-4317-b717-bd757e3ab928@heusel.eu/
+Link: https://chaos.social/@gromit/114377862699921553
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220002
+Link: https://bugs.gentoo.org/953555
+Link: https://bbs.archlinux.org/viewtopic.php?id=304892
+Cc: stable@vger.kernel.org
+Acked-by: Lubomir Rintel <lkundrak@v3.sk>
+Signed-off-by: Christian Heusel <christian@heusel.eu>
+Link: https://patch.msgid.link/20250424-usb-tethering-fix-v1-1-b65cf97c740e@heusel.eu
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_tc.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/net/usb/rndis_host.c |   16 ++--------------
+ 1 file changed, 2 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-index 9ba99609999f4..f1d908f611349 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-@@ -1750,9 +1750,6 @@ extra_split_attr_dests_needed(struct mlx5e_tc_flow *flow, struct mlx5_flow_attr
- 	    !list_is_first(&attr->list, &flow->attrs))
- 		return 0;
+--- a/drivers/net/usb/rndis_host.c
++++ b/drivers/net/usb/rndis_host.c
+@@ -630,16 +630,6 @@ static const struct driver_info	zte_rndi
+ 	.tx_fixup =	rndis_tx_fixup,
+ };
  
--	if (flow_flag_test(flow, SLOW))
--		return 0;
+-static const struct driver_info	wwan_rndis_info = {
+-	.description =	"Mobile Broadband RNDIS device",
+-	.flags =	FLAG_WWAN | FLAG_POINTTOPOINT | FLAG_FRAMING_RN | FLAG_NO_SETINT,
+-	.bind =		rndis_bind,
+-	.unbind =	rndis_unbind,
+-	.status =	rndis_status,
+-	.rx_fixup =	rndis_rx_fixup,
+-	.tx_fixup =	rndis_tx_fixup,
+-};
 -
- 	esw_attr = attr->esw_attr;
- 	if (!esw_attr->split_count ||
- 	    esw_attr->split_count == esw_attr->out_count - 1)
-@@ -1766,7 +1763,7 @@ extra_split_attr_dests_needed(struct mlx5e_tc_flow *flow, struct mlx5_flow_attr
- 	for (i = esw_attr->split_count; i < esw_attr->out_count; i++) {
- 		/* external dest with encap is considered as internal by firmware */
- 		if (esw_attr->dests[i].vport == MLX5_VPORT_UPLINK &&
--		    !(esw_attr->dests[i].flags & MLX5_ESW_DEST_ENCAP_VALID))
-+		    !(esw_attr->dests[i].flags & MLX5_ESW_DEST_ENCAP))
- 			ext_dest = true;
- 		else
- 			int_dest = true;
--- 
-2.39.5
-
+ /*-------------------------------------------------------------------------*/
+ 
+ static const struct usb_device_id	products [] = {
+@@ -676,11 +666,9 @@ static const struct usb_device_id	produc
+ 	USB_INTERFACE_INFO(USB_CLASS_WIRELESS_CONTROLLER, 1, 3),
+ 	.driver_info = (unsigned long) &rndis_info,
+ }, {
+-	/* Mobile Broadband Modem, seen in Novatel Verizon USB730L and
+-	 * Telit FN990A (RNDIS)
+-	 */
++	/* Novatel Verizon USB730L */
+ 	USB_INTERFACE_INFO(USB_CLASS_MISC, 4, 1),
+-	.driver_info = (unsigned long)&wwan_rndis_info,
++	.driver_info = (unsigned long) &rndis_info,
+ },
+ 	{ },		// END
+ };
 
 
 
