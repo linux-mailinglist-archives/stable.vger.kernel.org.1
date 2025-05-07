@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-142400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0693FAAEA73
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:55:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DD3DAAE938
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:42:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D1CF1BC4802
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:55:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 876743B8F44
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:41:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B97224E4CE;
-	Wed,  7 May 2025 18:55:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFFA428DF1B;
+	Wed,  7 May 2025 18:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2QjGxpEM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ldpLDtrx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAEFA2116E9;
-	Wed,  7 May 2025 18:55:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8782B28DF50;
+	Wed,  7 May 2025 18:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644130; cv=none; b=nRT8cnPFv05tz0n2a47W0vPMpUMorS+OKuxtAufMwqh48X9TPPnsmSmwpT9MQDBPvu3oaJH8tbYhxS4OQsff7AmOitbEj0ZhKnzroBe3FPWXk4SO1ZD1fSHmYtjZM43Yw41Ct1olSfI6sVQDpUa5b4hdI7FAjs7vAM6q4fT1x0g=
+	t=1746643306; cv=none; b=QZrzVHUce8d6aV+AFjIabeUk7UXF2gCqqovX53TAV7YoJxJSjOr4asnMjFFNrZyJnTea12Eb2sgk5pMC3VWJJJogZWHXYw2HPNjWXku4a0pLooJ3Bb4vu+0XkyI9MHT+PqWRFS6488JXZ0EQ92V33ANNi2B26I+NILWyHfJ64SY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644130; c=relaxed/simple;
-	bh=7W/wmZavmAZ6cSqCPfqRlDPM7ntxzUQh4UOx8dpmjgg=;
+	s=arc-20240116; t=1746643306; c=relaxed/simple;
+	bh=9ylDcrenE0uqH4SmVQ35Yb6L6ZjOEAedZS7nZIMCfQ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WEV6VM2S++xi5aUASPEymrQQ2/vhSvBrRfz3VOH/Wz9XYbzUZ8vx43osYZAw1baS40VZqJ0TM5WVKpa0p1FlS1eNYEusRGsnYaWuyg0/2+VG8XQASEJW2jtUYWw2eQtl7lVydaDb5wEE0BoR4bPrgMCAy45MfpO4LlWO10eBJ9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2QjGxpEM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4553EC4CEE2;
-	Wed,  7 May 2025 18:55:30 +0000 (UTC)
+	 MIME-Version; b=JrLreAK2qOjaeaa2q5VXw9YdL01JGZC2ixXRBqcN1lr/CUFIPG2S9842YKa6R6h4C4cHFmYQTXn0UjYjZh1kJKCRJaORPgnF059f/GudHrBHChm4oyhDN2fcSg6kn+P6cbh0qXhmoBXFzlIv4t6o9wYGKGWgZx/qavoPVpsZyyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ldpLDtrx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 848E0C4CEE2;
+	Wed,  7 May 2025 18:41:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644130;
-	bh=7W/wmZavmAZ6cSqCPfqRlDPM7ntxzUQh4UOx8dpmjgg=;
+	s=korg; t=1746643306;
+	bh=9ylDcrenE0uqH4SmVQ35Yb6L6ZjOEAedZS7nZIMCfQ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2QjGxpEMC0BAJ72WPE0Jn+AJwSvtqtZiJHuCzPsOY2agfAanNPbtxD2RIKEKrgFfo
-	 4FEOMmpE/c78BY3oQhlknTKjk/4YU70ElH+P8wJwvz76fkpYjXPV8ehi9Ai1qY7L9Z
-	 wXxAgoXFO2FVMoi6Tor2DezLvd89n1KryKmyxXOU=
+	b=ldpLDtrxDjD2i/PvHgWsdsmtMZnfQcS19yKcV4G1i1tTZM0rIl7cOL1F+nqaLJYRV
+	 8im5tlnNDo9WnhuVsnbxb3wBLUCXui3VQUvtR/hHiPW/I9/yp7kAQf6IwTSsO9orZh
+	 bI2OHlcV3P4pUGOiC1lrGvh30DdioCZPG8bOD6CU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 112/183] net: dlink: Correct endianness handling of led_mode
+	John Stultz <jstultz@google.com>,
+	Jim Mattson <jmattson@google.com>,
+	Sean Christopherson <seanjc@google.com>,
+	James Houghton <jthoughton@google.com>
+Subject: [PATCH 5.15 16/55] KVM: x86: Load DR6 with guest value only before entering .vcpu_run() loop
 Date: Wed,  7 May 2025 20:39:17 +0200
-Message-ID: <20250507183829.364249034@linuxfoundation.org>
+Message-ID: <20250507183759.702730489@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
+References: <20250507183759.048732653@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +63,233 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Horman <horms@kernel.org>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit e7e5ae71831c44d58627a991e603845a2fed2cab ]
+commit c2fee09fc167c74a64adb08656cb993ea475197e upstream.
 
-As it's name suggests, parse_eeprom() parses EEPROM data.
+Move the conditional loading of hardware DR6 with the guest's DR6 value
+out of the core .vcpu_run() loop to fix a bug where KVM can load hardware
+with a stale vcpu->arch.dr6.
 
-This is done by reading data, 16 bits at a time as follows:
+When the guest accesses a DR and host userspace isn't debugging the guest,
+KVM disables DR interception and loads the guest's values into hardware on
+VM-Enter and saves them on VM-Exit.  This allows the guest to access DRs
+at will, e.g. so that a sequence of DR accesses to configure a breakpoint
+only generates one VM-Exit.
 
-	for (i = 0; i < 128; i++)
-                ((__le16 *) sromdata)[i] = cpu_to_le16(read_eeprom(np, i));
+For DR0-DR3, the logic/behavior is identical between VMX and SVM, and also
+identical between KVM_DEBUGREG_BP_ENABLED (userspace debugging the guest)
+and KVM_DEBUGREG_WONT_EXIT (guest using DRs), and so KVM handles loading
+DR0-DR3 in common code, _outside_ of the core kvm_x86_ops.vcpu_run() loop.
 
-sromdata is at the same memory location as psrom.
-And the type of psrom is a pointer to struct t_SROM.
+But for DR6, the guest's value doesn't need to be loaded into hardware for
+KVM_DEBUGREG_BP_ENABLED, and SVM provides a dedicated VMCB field whereas
+VMX requires software to manually load the guest value, and so loading the
+guest's value into DR6 is handled by {svm,vmx}_vcpu_run(), i.e. is done
+_inside_ the core run loop.
 
-As can be seen in the loop above, data is stored in sromdata, and thus psrom,
-as 16-bit little-endian values.
+Unfortunately, saving the guest values on VM-Exit is initiated by common
+x86, again outside of the core run loop.  If the guest modifies DR6 (in
+hardware, when DR interception is disabled), and then the next VM-Exit is
+a fastpath VM-Exit, KVM will reload hardware DR6 with vcpu->arch.dr6 and
+clobber the guest's actual value.
 
-However, the integer fields of t_SROM are host byte order integers.
-And in the case of led_mode this leads to a little endian value
-being incorrectly treated as host byte order.
+The bug shows up primarily with nested VMX because KVM handles the VMX
+preemption timer in the fastpath, and the window between hardware DR6
+being modified (in guest context) and DR6 being read by guest software is
+orders of magnitude larger in a nested setup.  E.g. in non-nested, the
+VMX preemption timer would need to fire precisely between #DB injection
+and the #DB handler's read of DR6, whereas with a KVM-on-KVM setup, the
+window where hardware DR6 is "dirty" extends all the way from L1 writing
+DR6 to VMRESUME (in L1).
 
-Looking at rio_set_led_mode, this does appear to be a bug as that code
-masks led_mode with 0x1, 0x2 and 0x8. Logic that would be effected by a
-reversed byte order.
+    L1's view:
+    ==========
+    <L1 disables DR interception>
+           CPU 0/KVM-7289    [023] d....  2925.640961: kvm_entry: vcpu 0
+ A:  L1 Writes DR6
+           CPU 0/KVM-7289    [023] d....  2925.640963: <hack>: Set DRs, DR6 = 0xffff0ff1
 
-This problem would only manifest on big endian hosts.
+ B:        CPU 0/KVM-7289    [023] d....  2925.640967: kvm_exit: vcpu 0 reason EXTERNAL_INTERRUPT intr_info 0x800000ec
 
-Found by inspection while investigating a sparse warning
-regarding the crc field of t_SROM.
+ D: L1 reads DR6, arch.dr6 = 0
+           CPU 0/KVM-7289    [023] d....  2925.640969: <hack>: Sync DRs, DR6 = 0xffff0ff0
 
-I believe that warning is a false positive. And although I plan
-to send a follow-up to use little-endian types for other the integer
-fields of PSROM_t I do not believe that will involve any bug fixes.
+           CPU 0/KVM-7289    [023] d....  2925.640976: kvm_entry: vcpu 0
+    L2 reads DR6, L1 disables DR interception
+           CPU 0/KVM-7289    [023] d....  2925.640980: kvm_exit: vcpu 0 reason DR_ACCESS info1 0x0000000000000216
+           CPU 0/KVM-7289    [023] d....  2925.640983: kvm_entry: vcpu 0
 
-Compile tested only.
+           CPU 0/KVM-7289    [023] d....  2925.640983: <hack>: Set DRs, DR6 = 0xffff0ff0
 
-Fixes: c3f45d322cbd ("dl2k: Add support for IP1000A-based cards")
-Signed-off-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250425-dlink-led-mode-v1-1-6bae3c36e736@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    L2 detects failure
+           CPU 0/KVM-7289    [023] d....  2925.640987: kvm_exit: vcpu 0 reason HLT
+    L1 reads DR6 (confirms failure)
+           CPU 0/KVM-7289    [023] d....  2925.640990: <hack>: Sync DRs, DR6 = 0xffff0ff0
+
+    L0's view:
+    ==========
+    L2 reads DR6, arch.dr6 = 0
+          CPU 23/KVM-5046    [001] d....  3410.005610: kvm_exit: vcpu 23 reason DR_ACCESS info1 0x0000000000000216
+          CPU 23/KVM-5046    [001] .....  3410.005610: kvm_nested_vmexit: vcpu 23 reason DR_ACCESS info1 0x0000000000000216
+
+    L2 => L1 nested VM-Exit
+          CPU 23/KVM-5046    [001] .....  3410.005610: kvm_nested_vmexit_inject: reason: DR_ACCESS ext_inf1: 0x0000000000000216
+
+          CPU 23/KVM-5046    [001] d....  3410.005610: kvm_entry: vcpu 23
+          CPU 23/KVM-5046    [001] d....  3410.005611: kvm_exit: vcpu 23 reason VMREAD
+          CPU 23/KVM-5046    [001] d....  3410.005611: kvm_entry: vcpu 23
+          CPU 23/KVM-5046    [001] d....  3410.005612: kvm_exit: vcpu 23 reason VMREAD
+          CPU 23/KVM-5046    [001] d....  3410.005612: kvm_entry: vcpu 23
+
+    L1 writes DR7, L0 disables DR interception
+          CPU 23/KVM-5046    [001] d....  3410.005612: kvm_exit: vcpu 23 reason DR_ACCESS info1 0x0000000000000007
+          CPU 23/KVM-5046    [001] d....  3410.005613: kvm_entry: vcpu 23
+
+    L0 writes DR6 = 0 (arch.dr6)
+          CPU 23/KVM-5046    [001] d....  3410.005613: <hack>: Set DRs, DR6 = 0xffff0ff0
+
+ A: <L1 writes DR6 = 1, no interception, arch.dr6 is still '0'>
+
+ B:       CPU 23/KVM-5046    [001] d....  3410.005614: kvm_exit: vcpu 23 reason PREEMPTION_TIMER
+          CPU 23/KVM-5046    [001] d....  3410.005614: kvm_entry: vcpu 23
+
+ C: L0 writes DR6 = 0 (arch.dr6)
+          CPU 23/KVM-5046    [001] d....  3410.005614: <hack>: Set DRs, DR6 = 0xffff0ff0
+
+    L1 => L2 nested VM-Enter
+          CPU 23/KVM-5046    [001] d....  3410.005616: kvm_exit: vcpu 23 reason VMRESUME
+
+    L0 reads DR6, arch.dr6 = 0
+
+Reported-by: John Stultz <jstultz@google.com>
+Closes: https://lkml.kernel.org/r/CANDhNCq5_F3HfFYABqFGCA1bPd_%2BxgNj-iDQhH4tDk%2Bwi8iZZg%40mail.gmail.com
+Fixes: 375e28ffc0cf ("KVM: X86: Set host DR6 only on VMX and for KVM_DEBUGREG_WONT_EXIT")
+Fixes: d67668e9dd76 ("KVM: x86, SVM: isolate vcpu->arch.dr6 from vmcb->save.dr6")
+Cc: stable@vger.kernel.org
+Cc: Jim Mattson <jmattson@google.com>
+Tested-by: John Stultz <jstultz@google.com>
+Link: https://lore.kernel.org/r/20250125011833.3644371-1-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+[jth: Handled conflicts with kvm_x86_ops reshuffle]
+Signed-off-by: James Houghton <jthoughton@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/dlink/dl2k.c | 2 +-
- drivers/net/ethernet/dlink/dl2k.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/kvm-x86-ops.h |    1 +
+ arch/x86/include/asm/kvm_host.h    |    1 +
+ arch/x86/kvm/svm/svm.c             |   13 ++++++-------
+ arch/x86/kvm/vmx/vmx.c             |   11 +++++++----
+ arch/x86/kvm/x86.c                 |    3 +++
+ 5 files changed, 18 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/ethernet/dlink/dl2k.c b/drivers/net/ethernet/dlink/dl2k.c
-index d0ea926078706..6bf8a7aeef908 100644
---- a/drivers/net/ethernet/dlink/dl2k.c
-+++ b/drivers/net/ethernet/dlink/dl2k.c
-@@ -352,7 +352,7 @@ parse_eeprom (struct net_device *dev)
- 	eth_hw_addr_set(dev, psrom->mac_addr);
+--- a/arch/x86/include/asm/kvm-x86-ops.h
++++ b/arch/x86/include/asm/kvm-x86-ops.h
+@@ -44,6 +44,7 @@ KVM_X86_OP(set_idt)
+ KVM_X86_OP(get_gdt)
+ KVM_X86_OP(set_gdt)
+ KVM_X86_OP(sync_dirty_debug_regs)
++KVM_X86_OP(set_dr6)
+ KVM_X86_OP(set_dr7)
+ KVM_X86_OP(cache_reg)
+ KVM_X86_OP(get_rflags)
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1344,6 +1344,7 @@ struct kvm_x86_ops {
+ 	void (*get_gdt)(struct kvm_vcpu *vcpu, struct desc_ptr *dt);
+ 	void (*set_gdt)(struct kvm_vcpu *vcpu, struct desc_ptr *dt);
+ 	void (*sync_dirty_debug_regs)(struct kvm_vcpu *vcpu);
++	void (*set_dr6)(struct kvm_vcpu *vcpu, unsigned long value);
+ 	void (*set_dr7)(struct kvm_vcpu *vcpu, unsigned long value);
+ 	void (*cache_reg)(struct kvm_vcpu *vcpu, enum kvm_reg reg);
+ 	unsigned long (*get_rflags)(struct kvm_vcpu *vcpu);
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -1887,11 +1887,11 @@ static void new_asid(struct vcpu_svm *sv
+ 	svm->asid = sd->next_asid++;
+ }
  
- 	if (np->chip_id == CHIP_IP1000A) {
--		np->led_mode = psrom->led_mode;
-+		np->led_mode = le16_to_cpu(psrom->led_mode);
- 		return 0;
+-static void svm_set_dr6(struct vcpu_svm *svm, unsigned long value)
++static void svm_set_dr6(struct kvm_vcpu *vcpu, unsigned long value)
+ {
+-	struct vmcb *vmcb = svm->vmcb;
++	struct vmcb *vmcb = to_svm(vcpu)->vmcb;
+ 
+-	if (svm->vcpu.arch.guest_state_protected)
++	if (vcpu->arch.guest_state_protected)
+ 		return;
+ 
+ 	if (unlikely(value != vmcb->save.dr6)) {
+@@ -3851,10 +3851,8 @@ static __no_kcsan fastpath_t svm_vcpu_ru
+ 	 * Run with all-zero DR6 unless needed, so that we can get the exact cause
+ 	 * of a #DB.
+ 	 */
+-	if (unlikely(vcpu->arch.switch_db_regs & KVM_DEBUGREG_WONT_EXIT))
+-		svm_set_dr6(svm, vcpu->arch.dr6);
+-	else
+-		svm_set_dr6(svm, DR6_ACTIVE_LOW);
++	if (likely(!(vcpu->arch.switch_db_regs & KVM_DEBUGREG_WONT_EXIT)))
++		svm_set_dr6(vcpu, DR6_ACTIVE_LOW);
+ 
+ 	clgi();
+ 	kvm_load_guest_xsave_state(vcpu);
+@@ -4631,6 +4629,7 @@ static struct kvm_x86_ops svm_x86_ops __
+ 	.set_idt = svm_set_idt,
+ 	.get_gdt = svm_get_gdt,
+ 	.set_gdt = svm_set_gdt,
++	.set_dr6 = svm_set_dr6,
+ 	.set_dr7 = svm_set_dr7,
+ 	.sync_dirty_debug_regs = svm_sync_dirty_debug_regs,
+ 	.cache_reg = svm_cache_reg,
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -5249,6 +5249,12 @@ static void vmx_sync_dirty_debug_regs(st
+ 	set_debugreg(DR6_RESERVED, 6);
+ }
+ 
++static void vmx_set_dr6(struct kvm_vcpu *vcpu, unsigned long val)
++{
++	lockdep_assert_irqs_disabled();
++	set_debugreg(vcpu->arch.dr6, 6);
++}
++
+ static void vmx_set_dr7(struct kvm_vcpu *vcpu, unsigned long val)
+ {
+ 	vmcs_writel(GUEST_DR7, val);
+@@ -6839,10 +6845,6 @@ static fastpath_t vmx_vcpu_run(struct kv
+ 		vmx->loaded_vmcs->host_state.cr4 = cr4;
  	}
  
-diff --git a/drivers/net/ethernet/dlink/dl2k.h b/drivers/net/ethernet/dlink/dl2k.h
-index 195dc6cfd8955..0e33e2eaae960 100644
---- a/drivers/net/ethernet/dlink/dl2k.h
-+++ b/drivers/net/ethernet/dlink/dl2k.h
-@@ -335,7 +335,7 @@ typedef struct t_SROM {
- 	u16 sub_system_id;	/* 0x06 */
- 	u16 pci_base_1;		/* 0x08 (IP1000A only) */
- 	u16 pci_base_2;		/* 0x0a (IP1000A only) */
--	u16 led_mode;		/* 0x0c (IP1000A only) */
-+	__le16 led_mode;	/* 0x0c (IP1000A only) */
- 	u16 reserved1[9];	/* 0x0e-0x1f */
- 	u8 mac_addr[6];		/* 0x20-0x25 */
- 	u8 reserved2[10];	/* 0x26-0x2f */
--- 
-2.39.5
-
+-	/* When KVM_DEBUGREG_WONT_EXIT, dr6 is accessible in guest. */
+-	if (unlikely(vcpu->arch.switch_db_regs & KVM_DEBUGREG_WONT_EXIT))
+-		set_debugreg(vcpu->arch.dr6, 6);
+-
+ 	/* When single-stepping over STI and MOV SS, we must clear the
+ 	 * corresponding interruptibility bits in the guest state. Otherwise
+ 	 * vmentry fails as it then expects bit 14 (BS) in pending debug
+@@ -7777,6 +7779,7 @@ static struct kvm_x86_ops vmx_x86_ops __
+ 	.set_idt = vmx_set_idt,
+ 	.get_gdt = vmx_get_gdt,
+ 	.set_gdt = vmx_set_gdt,
++	.set_dr6 = vmx_set_dr6,
+ 	.set_dr7 = vmx_set_dr7,
+ 	.sync_dirty_debug_regs = vmx_sync_dirty_debug_regs,
+ 	.cache_reg = vmx_cache_reg,
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -9963,6 +9963,9 @@ static int vcpu_enter_guest(struct kvm_v
+ 		set_debugreg(vcpu->arch.eff_db[1], 1);
+ 		set_debugreg(vcpu->arch.eff_db[2], 2);
+ 		set_debugreg(vcpu->arch.eff_db[3], 3);
++		/* When KVM_DEBUGREG_WONT_EXIT, dr6 is accessible in guest. */
++		if (unlikely(vcpu->arch.switch_db_regs & KVM_DEBUGREG_WONT_EXIT))
++			static_call(kvm_x86_set_dr6)(vcpu, vcpu->arch.dr6);
+ 	} else if (unlikely(hw_breakpoint_active())) {
+ 		set_debugreg(0, 7);
+ 	}
 
 
 
