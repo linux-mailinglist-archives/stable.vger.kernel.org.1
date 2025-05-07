@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-142204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57251AAE985
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:45:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06E0CAAEAFF
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:02:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3C46505C31
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:45:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D01C31BA0326
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:01:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 695BF29A0;
-	Wed,  7 May 2025 18:45:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0AED1E22E9;
+	Wed,  7 May 2025 19:01:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XCIwtubD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Of43TZ5j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266E8FC1D;
-	Wed,  7 May 2025 18:45:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C8523DE;
+	Wed,  7 May 2025 19:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643531; cv=none; b=I78LRT7bHtrkXUaT93yZQIyIKBM1ZoZ+njnG50kngPabK503TE+9BB4vJDcz9p7xjJgmHybar+TDnI+2BkYsYFk3BgMYE2bqGYZOWwAyH3Vzo3WX0gY0ur9blQycNZWYmVEe8k6Q64gbM5D93N6bmyWk1WMFPEz/8SHzGhK3trQ=
+	t=1746644503; cv=none; b=YIfcPjraPIxrvb9P9LJHI6Jr3sDtmTTM6sVLfKFmtDIdzy+2C/VCzVJsAQsqP1B28nPmMdzUZOcHaTcPvMR/XQ30XbW9/fPkBSngf7LhAKTQlD5seyuX0xZqwRG4xKHuxD8Y/nNqlTUKKmzgdoZkcjRYhnOR0x1p28m48yyL97c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643531; c=relaxed/simple;
-	bh=eAOh55FGJGu1RV5ITjUutC22YCp8GFes0Vlx0TPLLpk=;
+	s=arc-20240116; t=1746644503; c=relaxed/simple;
+	bh=0S3B+TD0pl1/+ObM3XaXw6FurRVXJ84cLFepWl/lPHw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J2aQwxreF8Q6IlbUB7IiaevpCusbCuGTRLi1wB3hTTepC45gP5XMsy/IBl2oOXsW9OaWL0p1DdCReX1rtPisrviNKcYjp2TQEaZPvlPe7NMwMbMBDg/ZRRVyQYNPg00tedxUCJ78BmgsT4uY55d+f751FYOO/iew8h04VXMHkKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XCIwtubD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9F03C4CEE2;
-	Wed,  7 May 2025 18:45:30 +0000 (UTC)
+	 MIME-Version; b=hkr+xalYg6h6Vuambe5+I8TV+/8pPJ5/BgVWaDbZsND4l6RYlSyOpQ6nT9g90PKSpEARSo9jfF32wfVvM8oAfOSDVMD4DJwnmsfWXc1toPRnDE6T4u4q+bvY0vnSTQZJ2hMqDAURytDhXPSNRkWGmxLd+n9MT3/fOBlitghdEvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Of43TZ5j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32BD7C4CEE2;
+	Wed,  7 May 2025 19:01:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643531;
-	bh=eAOh55FGJGu1RV5ITjUutC22YCp8GFes0Vlx0TPLLpk=;
+	s=korg; t=1746644502;
+	bh=0S3B+TD0pl1/+ObM3XaXw6FurRVXJ84cLFepWl/lPHw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XCIwtubDJUq48r/HOLxg9VM7TF7Oh5A5jQMGZlSp6qSj+vtJMTCv5aRE3w4MNiLWG
-	 76KdI/qLalBTSyMynq3B9XbXxS0Xfzuuh4wuxSVCBLz6maOjLqz9k3Wv7DXllJYab/
-	 b1PTJtiViLpgdyciyX3UcBLp6ZigPuU0b1zU1qT0=
+	b=Of43TZ5jvcwuUpbBDRvrO65xgui3gEWXqXix2FOt+Yd3gdcNRIGXuonbzMNZ56sAe
+	 djdPWeVzP3e9xZJ4Hjlsmjk9jcn+W21LARlfm0rlEDVDxGIOfW5z0I94cq/50a45Ir
+	 5zWBCCzf8RId0v1Q1Sb8JXm3hcOq4qRc+Efk/YbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wengang Wang <wen.gang.wang@oracle.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 35/97] xfs: make sure sb_fdblocks is non-negative
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 065/164] vxlan: vnifilter: Fix unlocked deletion of default FDB entry
 Date: Wed,  7 May 2025 20:39:10 +0200
-Message-ID: <20250507183808.405884105@linuxfoundation.org>
+Message-ID: <20250507183823.581669316@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
-References: <20250507183806.987408728@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +63,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wengang Wang <wen.gang.wang@oracle.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 58f880711f2ba53fd5e959875aff5b3bf6d5c32e ]
+[ Upstream commit 087a9eb9e5978e3ba362e1163691e41097e8ca20 ]
 
-A user with a completely full filesystem experienced an unexpected
-shutdown when the filesystem tried to write the superblock during
-runtime.
-kernel shows the following dmesg:
+When a VNI is deleted from a VXLAN device in 'vnifilter' mode, the FDB
+entry associated with the default remote (assuming one was configured)
+is deleted without holding the hash lock. This is wrong and will result
+in a warning [1] being generated by the lockdep annotation that was
+added by commit ebe642067455 ("vxlan: Create wrappers for FDB lookup").
 
-[    8.176281] XFS (dm-4): Metadata corruption detected at xfs_sb_write_verify+0x60/0x120 [xfs], xfs_sb block 0x0
-[    8.177417] XFS (dm-4): Unmount and run xfs_repair
-[    8.178016] XFS (dm-4): First 128 bytes of corrupted metadata buffer:
-[    8.178703] 00000000: 58 46 53 42 00 00 10 00 00 00 00 00 01 90 00 00  XFSB............
-[    8.179487] 00000010: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-[    8.180312] 00000020: cf 12 dc 89 ca 26 45 29 92 e6 e3 8d 3b b8 a2 c3  .....&E)....;...
-[    8.181150] 00000030: 00 00 00 00 01 00 00 06 00 00 00 00 00 00 00 80  ................
-[    8.182003] 00000040: 00 00 00 00 00 00 00 81 00 00 00 00 00 00 00 82  ................
-[    8.182004] 00000050: 00 00 00 01 00 64 00 00 00 00 00 04 00 00 00 00  .....d..........
-[    8.182004] 00000060: 00 00 64 00 b4 a5 02 00 02 00 00 08 00 00 00 00  ..d.............
-[    8.182005] 00000070: 00 00 00 00 00 00 00 00 0c 09 09 03 17 00 00 19  ................
-[    8.182008] XFS (dm-4): Corruption of in-memory data detected.  Shutting down filesystem
-[    8.182010] XFS (dm-4): Please unmount the filesystem and rectify the problem(s)
+Reproducer:
 
-When xfs_log_sb writes super block to disk, b_fdblocks is fetched from
-m_fdblocks without any lock. As m_fdblocks can experience a positive ->
-negative -> positive changing when the FS reaches fullness (see
-xfs_mod_fdblocks). So there is a chance that sb_fdblocks is negative, and
-because sb_fdblocks is type of unsigned long long, it reads super big.
-And sb_fdblocks being bigger than sb_dblocks is a problem during log
-recovery, xfs_validate_sb_write() complains.
+ # ip link add vx0 up type vxlan dstport 4789 external vnifilter local 192.0.2.1
+ # bridge vni add vni 10010 remote 198.51.100.1 dev vx0
+ # bridge vni del vni 10010 dev vx0
 
-Fix:
-As sb_fdblocks will be re-calculated during mount when lazysbcount is
-enabled, We just need to make xfs_validate_sb_write() happy -- make sure
-sb_fdblocks is not nenative. This patch also takes care of other percpu
-counters in xfs_log_sb.
+Fix by acquiring the hash lock before the deletion and releasing it
+afterwards. Blame the original commit that introduced the issue rather
+than the one that exposed it.
 
-Signed-off-by: Wengang Wang <wen.gang.wang@oracle.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[1]
+WARNING: CPU: 3 PID: 392 at drivers/net/vxlan/vxlan_core.c:417 vxlan_find_mac+0x17f/0x1a0
+[...]
+RIP: 0010:vxlan_find_mac+0x17f/0x1a0
+[...]
+Call Trace:
+ <TASK>
+ __vxlan_fdb_delete+0xbe/0x560
+ vxlan_vni_delete_group+0x2ba/0x940
+ vxlan_vni_del.isra.0+0x15f/0x580
+ vxlan_process_vni_filter+0x38b/0x7b0
+ vxlan_vnifilter_process+0x3bb/0x510
+ rtnetlink_rcv_msg+0x2f7/0xb70
+ netlink_rcv_skb+0x131/0x360
+ netlink_unicast+0x426/0x710
+ netlink_sendmsg+0x75a/0xc20
+ __sock_sendmsg+0xc1/0x150
+ ____sys_sendmsg+0x5aa/0x7b0
+ ___sys_sendmsg+0xfc/0x180
+ __sys_sendmsg+0x121/0x1b0
+ do_syscall_64+0xbb/0x1d0
+ entry_SYSCALL_64_after_hwframe+0x4b/0x53
+
+Fixes: f9c4bb0b245c ("vxlan: vni filtering support on collect metadata device")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20250423145131.513029-1-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/libxfs/xfs_sb.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/vxlan/vxlan_vnifilter.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/fs/xfs/libxfs/xfs_sb.c
-+++ b/fs/xfs/libxfs/xfs_sb.c
-@@ -1022,11 +1022,12 @@ xfs_log_sb(
- 	 * and hence we don't need have to update it here.
+diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
+index 6e6e9f05509ab..06d19e90eadb5 100644
+--- a/drivers/net/vxlan/vxlan_vnifilter.c
++++ b/drivers/net/vxlan/vxlan_vnifilter.c
+@@ -627,7 +627,11 @@ static void vxlan_vni_delete_group(struct vxlan_dev *vxlan,
+ 	 * default dst remote_ip previously added for this vni
  	 */
- 	if (xfs_has_lazysbcount(mp)) {
--		mp->m_sb.sb_icount = percpu_counter_sum(&mp->m_icount);
-+		mp->m_sb.sb_icount = percpu_counter_sum_positive(&mp->m_icount);
- 		mp->m_sb.sb_ifree = min_t(uint64_t,
--				percpu_counter_sum(&mp->m_ifree),
-+				percpu_counter_sum_positive(&mp->m_ifree),
- 				mp->m_sb.sb_icount);
--		mp->m_sb.sb_fdblocks = percpu_counter_sum(&mp->m_fdblocks);
-+		mp->m_sb.sb_fdblocks =
-+				percpu_counter_sum_positive(&mp->m_fdblocks);
- 	}
+ 	if (!vxlan_addr_any(&vninode->remote_ip) ||
+-	    !vxlan_addr_any(&dst->remote_ip))
++	    !vxlan_addr_any(&dst->remote_ip)) {
++		u32 hash_index = fdb_head_index(vxlan, all_zeros_mac,
++						vninode->vni);
++
++		spin_lock_bh(&vxlan->hash_lock[hash_index]);
+ 		__vxlan_fdb_delete(vxlan, all_zeros_mac,
+ 				   (vxlan_addr_any(&vninode->remote_ip) ?
+ 				   dst->remote_ip : vninode->remote_ip),
+@@ -635,6 +639,8 @@ static void vxlan_vni_delete_group(struct vxlan_dev *vxlan,
+ 				   vninode->vni, vninode->vni,
+ 				   dst->remote_ifindex,
+ 				   true);
++		spin_unlock_bh(&vxlan->hash_lock[hash_index]);
++	}
  
- 	xfs_sb_to_disk(bp->b_addr, &mp->m_sb);
+ 	if (vxlan->dev->flags & IFF_UP) {
+ 		if (vxlan_addr_multicast(&vninode->remote_ip) &&
+-- 
+2.39.5
+
 
 
 
