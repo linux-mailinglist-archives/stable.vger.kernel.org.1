@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-142519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06E0CAAEAFF
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:02:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8264AAEB9A
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:09:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D01C31BA0326
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:01:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73C3252642E
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:07:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0AED1E22E9;
-	Wed,  7 May 2025 19:01:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BC8E28AAE9;
+	Wed,  7 May 2025 19:07:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Of43TZ5j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tEsohCKy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C8523DE;
-	Wed,  7 May 2025 19:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCF2B1E1DF6;
+	Wed,  7 May 2025 19:07:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644503; cv=none; b=YIfcPjraPIxrvb9P9LJHI6Jr3sDtmTTM6sVLfKFmtDIdzy+2C/VCzVJsAQsqP1B28nPmMdzUZOcHaTcPvMR/XQ30XbW9/fPkBSngf7LhAKTQlD5seyuX0xZqwRG4xKHuxD8Y/nNqlTUKKmzgdoZkcjRYhnOR0x1p28m48yyL97c=
+	t=1746644853; cv=none; b=ngDmLco5OhEmcaxAlBoNCq8pfDtup/Zs21LdLvxuuuZT769kbr7Z3t0ox1YLkr0Cmq3PBqPXzhLvrsfaxHGQZJ/flac0FaHAg553PCIgZ2b3rsf397Kc9+IKx1gy8fp0BEhn8bvP7Q2Auc6yLfGWEqNHoxrmSAgyw8oQc3ni4Fw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644503; c=relaxed/simple;
-	bh=0S3B+TD0pl1/+ObM3XaXw6FurRVXJ84cLFepWl/lPHw=;
+	s=arc-20240116; t=1746644853; c=relaxed/simple;
+	bh=12aZVv5E2kZHdlj0W0xw/MktVpMiWVDXP5UQs+4sTT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hkr+xalYg6h6Vuambe5+I8TV+/8pPJ5/BgVWaDbZsND4l6RYlSyOpQ6nT9g90PKSpEARSo9jfF32wfVvM8oAfOSDVMD4DJwnmsfWXc1toPRnDE6T4u4q+bvY0vnSTQZJ2hMqDAURytDhXPSNRkWGmxLd+n9MT3/fOBlitghdEvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Of43TZ5j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32BD7C4CEE2;
-	Wed,  7 May 2025 19:01:42 +0000 (UTC)
+	 MIME-Version; b=Xtr8AziG0TRjAgha/pEQIikkSjoVb12UOdnBpOfZHLN/3w8OCyyknztJZT/8W/vRzyZsiZgKhmZYMkpL/gO0FL157avdQheVH3gnn1ljmNb+bMxPIcG0pMIyw7ju++2+NOkZd3xRKwrUojJcUin0wd00nIgFr7oGTj1YoTlpPD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tEsohCKy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6677CC4CEE2;
+	Wed,  7 May 2025 19:07:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644502;
-	bh=0S3B+TD0pl1/+ObM3XaXw6FurRVXJ84cLFepWl/lPHw=;
+	s=korg; t=1746644852;
+	bh=12aZVv5E2kZHdlj0W0xw/MktVpMiWVDXP5UQs+4sTT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Of43TZ5jvcwuUpbBDRvrO65xgui3gEWXqXix2FOt+Yd3gdcNRIGXuonbzMNZ56sAe
-	 djdPWeVzP3e9xZJ4Hjlsmjk9jcn+W21LARlfm0rlEDVDxGIOfW5z0I94cq/50a45Ir
-	 5zWBCCzf8RId0v1Q1Sb8JXm3hcOq4qRc+Efk/YbM=
+	b=tEsohCKyxC/kSEX/20mbALkqq2n6tw7dYT9//6zXYYkDkz0+OTGoy9Ed2WAcmCcRO
+	 Qhov+4pF3X2KtykvjGSm2y5Cf2WhLVB6vt7bl+QJdw3S6Ky85RMdKFPrTNymVscrbz
+	 czW4NffvpsN8CUzpaoL3ySL7SRczH6Pi55WZRcgA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 065/164] vxlan: vnifilter: Fix unlocked deletion of default FDB entry
+	Alexey Klimov <alexey.klimov@linaro.org>,
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.6 014/129] irqchip/qcom-mpm: Prevent crash when trying to handle non-wake GPIOs
 Date: Wed,  7 May 2025 20:39:10 +0200
-Message-ID: <20250507183823.581669316@linuxfoundation.org>
+Message-ID: <20250507183814.117871000@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-[ Upstream commit 087a9eb9e5978e3ba362e1163691e41097e8ca20 ]
+commit 38a05c0b87833f5b188ae43b428b1f792df2b384 upstream.
 
-When a VNI is deleted from a VXLAN device in 'vnifilter' mode, the FDB
-entry associated with the default remote (assuming one was configured)
-is deleted without holding the hash lock. This is wrong and will result
-in a warning [1] being generated by the lockdep annotation that was
-added by commit ebe642067455 ("vxlan: Create wrappers for FDB lookup").
+On Qualcomm chipsets not all GPIOs are wakeup capable. Those GPIOs do not
+have a corresponding MPM pin and should not be handled inside the MPM
+driver. The IRQ domain hierarchy is always applied, so it's required to
+explicitly disconnect the hierarchy for those. The pinctrl-msm driver marks
+these with GPIO_NO_WAKE_IRQ. qcom-pdc has a check for this, but
+irq-qcom-mpm is currently missing the check. This is causing crashes when
+setting up interrupts for non-wake GPIOs:
 
-Reproducer:
+ root@rb1:~# gpiomon -c gpiochip1 10
+   irq: IRQ159: trimming hierarchy from :soc@0:interrupt-controller@f200000-1
+   Unable to handle kernel paging request at virtual address ffff8000a1dc3820
+   Hardware name: Qualcomm Technologies, Inc. Robotics RB1 (DT)
+   pc : mpm_set_type+0x80/0xcc
+   lr : mpm_set_type+0x5c/0xcc
+   Call trace:
+    mpm_set_type+0x80/0xcc (P)
+    qcom_mpm_set_type+0x64/0x158
+    irq_chip_set_type_parent+0x20/0x38
+    msm_gpio_irq_set_type+0x50/0x530
+    __irq_set_trigger+0x60/0x184
+    __setup_irq+0x304/0x6bc
+    request_threaded_irq+0xc8/0x19c
+    edge_detector_setup+0x260/0x364
+    linereq_create+0x420/0x5a8
+    gpio_ioctl+0x2d4/0x6c0
 
- # ip link add vx0 up type vxlan dstport 4789 external vnifilter local 192.0.2.1
- # bridge vni add vni 10010 remote 198.51.100.1 dev vx0
- # bridge vni del vni 10010 dev vx0
+Fix this by copying the check for GPIO_NO_WAKE_IRQ from qcom-pdc.c, so that
+MPM is removed entirely from the hierarchy for non-wake GPIOs.
 
-Fix by acquiring the hash lock before the deletion and releasing it
-afterwards. Blame the original commit that introduced the issue rather
-than the one that exposed it.
-
-[1]
-WARNING: CPU: 3 PID: 392 at drivers/net/vxlan/vxlan_core.c:417 vxlan_find_mac+0x17f/0x1a0
-[...]
-RIP: 0010:vxlan_find_mac+0x17f/0x1a0
-[...]
-Call Trace:
- <TASK>
- __vxlan_fdb_delete+0xbe/0x560
- vxlan_vni_delete_group+0x2ba/0x940
- vxlan_vni_del.isra.0+0x15f/0x580
- vxlan_process_vni_filter+0x38b/0x7b0
- vxlan_vnifilter_process+0x3bb/0x510
- rtnetlink_rcv_msg+0x2f7/0xb70
- netlink_rcv_skb+0x131/0x360
- netlink_unicast+0x426/0x710
- netlink_sendmsg+0x75a/0xc20
- __sock_sendmsg+0xc1/0x150
- ____sys_sendmsg+0x5aa/0x7b0
- ___sys_sendmsg+0xfc/0x180
- __sys_sendmsg+0x121/0x1b0
- do_syscall_64+0xbb/0x1d0
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-Fixes: f9c4bb0b245c ("vxlan: vni filtering support on collect metadata device")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20250423145131.513029-1-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a6199bb514d8 ("irqchip: Add Qualcomm MPM controller driver")
+Reported-by: Alexey Klimov <alexey.klimov@linaro.org>
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Alexey Klimov <alexey.klimov@linaro.org>
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20250502-irq-qcom-mpm-fix-no-wake-v1-1-8a1eafcd28d4@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/vxlan/vxlan_vnifilter.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/irqchip/irq-qcom-mpm.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
-index 6e6e9f05509ab..06d19e90eadb5 100644
---- a/drivers/net/vxlan/vxlan_vnifilter.c
-+++ b/drivers/net/vxlan/vxlan_vnifilter.c
-@@ -627,7 +627,11 @@ static void vxlan_vni_delete_group(struct vxlan_dev *vxlan,
- 	 * default dst remote_ip previously added for this vni
- 	 */
- 	if (!vxlan_addr_any(&vninode->remote_ip) ||
--	    !vxlan_addr_any(&dst->remote_ip))
-+	    !vxlan_addr_any(&dst->remote_ip)) {
-+		u32 hash_index = fdb_head_index(vxlan, all_zeros_mac,
-+						vninode->vni);
-+
-+		spin_lock_bh(&vxlan->hash_lock[hash_index]);
- 		__vxlan_fdb_delete(vxlan, all_zeros_mac,
- 				   (vxlan_addr_any(&vninode->remote_ip) ?
- 				   dst->remote_ip : vninode->remote_ip),
-@@ -635,6 +639,8 @@ static void vxlan_vni_delete_group(struct vxlan_dev *vxlan,
- 				   vninode->vni, vninode->vni,
- 				   dst->remote_ifindex,
- 				   true);
-+		spin_unlock_bh(&vxlan->hash_lock[hash_index]);
-+	}
+--- a/drivers/irqchip/irq-qcom-mpm.c
++++ b/drivers/irqchip/irq-qcom-mpm.c
+@@ -226,6 +226,9 @@ static int qcom_mpm_alloc(struct irq_dom
+ 	if (ret)
+ 		return ret;
  
- 	if (vxlan->dev->flags & IFF_UP) {
- 		if (vxlan_addr_multicast(&vninode->remote_ip) &&
--- 
-2.39.5
-
++	if (pin == GPIO_NO_WAKE_IRQ)
++		return irq_domain_disconnect_hierarchy(domain, virq);
++
+ 	ret = irq_domain_set_hwirq_and_chip(domain, virq, pin,
+ 					    &qcom_mpm_chip, priv);
+ 	if (ret)
 
 
 
