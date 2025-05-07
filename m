@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-142670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C594AAEBB1
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:09:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEC56AAE9A8
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:47:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A149C7B7DA2
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:08:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 248971C41AB1
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:47:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38D9928DF3C;
-	Wed,  7 May 2025 19:09:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C632929A0;
+	Wed,  7 May 2025 18:47:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SBsvIhQ2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eCpTU7W5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E992428BA9F;
-	Wed,  7 May 2025 19:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 806C51C84D7;
+	Wed,  7 May 2025 18:47:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644966; cv=none; b=LFVgtQwuVu7JsenMm4IPoOONbDepm1hyuGnVTJjwCiibQA6lcGKa88s2kH8cAlhgrmJwGXNQ+2QTI7YEm5o6qdSPsWNp2PSEyPa55DUZiFkh4+EQt5z1f/t/pEbONaL4IY/oTbnVemWw1ECANf9sq4MQxsQlyfDE3VRoLLIlSZw=
+	t=1746643644; cv=none; b=BMgbg3OUj/w4S/zeOYthfrCgoZoa4ID8Ey8d0BKXdLBBk5IJGoDeIE3lOO+HFJyqPP6sPHQovysazQp1GMSt+PbshzbT9lI26k5qOqwnDrGf/3VAyO2hRML4n9MnGqKZq/fDYJLgSfXXaBNWitNoXQa5mHF08ntX/F/U7IUQxRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644966; c=relaxed/simple;
-	bh=/4av3u7LN+1v4DHRAD1a0rxE4sG1juxJz3g4FMlf4tg=;
+	s=arc-20240116; t=1746643644; c=relaxed/simple;
+	bh=N9oyezusv1F0d+GqK/+yL6+Bt/RxQzhgLsZmNs81edM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rbR/XroLE69vZ2A4Bq0GVNFO5JQaq3vyfNrxfVyi/nzPUW1am48eZ9Ew/VM2vgWtDX/TVGWGgeTLrgGre87guDpxAJDjj6BUdit7T+A+YxsN8w2esMw7FyJL2aNQMusN8lm7dRagp0s1PKwjbIVmQk/lQ19DDqh5YVu2KgBsoE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SBsvIhQ2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68003C4CEE2;
-	Wed,  7 May 2025 19:09:25 +0000 (UTC)
+	 MIME-Version; b=gfDBrAmZYFHz0VrYlMxFKUywhnG+kdYH5BJ0pJWnKceswvOA40PFjMf2Am9Lti3u0hfGDRAoVKyqxr/eisdO0YxsQnE/SXiJOoeIiEfXVu1r4EHG3pvdE1i+sk/BJmfKd7Z8gXcwwyTTxDxia/t8GXX41SjmJeOFjVbOtVrz+3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eCpTU7W5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B51AC4CEE2;
+	Wed,  7 May 2025 18:47:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644965;
-	bh=/4av3u7LN+1v4DHRAD1a0rxE4sG1juxJz3g4FMlf4tg=;
+	s=korg; t=1746643644;
+	bh=N9oyezusv1F0d+GqK/+yL6+Bt/RxQzhgLsZmNs81edM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SBsvIhQ2Z43VzmdI/xOWfEAWdMOz8BNo1uUW5Tpz5b7PNBlgzt9RD3uucLxBWkT8F
-	 52vZR2URaV1BCyIAZchQxx9ZE94W8ajiwoCD2P2M9FYWdTw5JTFmcwzKDKusNIEf9E
-	 iviIyMAZxHKxqhthM1ItJb9ZS/o+eViT5v95XY3c=
+	b=eCpTU7W5+BsouUptyZOeLmh7Rsyxhoe1HC37bjOjvlONQyC4eoOM/GrrbCiqcFVOJ
+	 acHzRyQXXHxS5Fp/8883Nfhj9IW/pD0N0cJ6Bh91nw8mLndF0Mi+7PV06dnTzyJ2L+
+	 pB6in16n4oJeEU/iJL2DY12krbKyEy7TyK4ITASA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 049/129] powerpc/boot: Check for ld-option support
+Subject: [PATCH 6.1 70/97] net: vertexcom: mse102x: Add range check for CMD_RTS
 Date: Wed,  7 May 2025 20:39:45 +0200
-Message-ID: <20250507183815.524741150@linuxfoundation.org>
+Message-ID: <20250507183809.808616884@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
-References: <20250507183813.500572371@linuxfoundation.org>
+In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
+References: <20250507183806.987408728@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit b2accfe7ca5bc9f9af28e603b79bdd5ad8df5c0b ]
+[ Upstream commit d4dda902dac194e3231a1ed0f76c6c3b6340ba8a ]
 
-Commit 579aee9fc594 ("powerpc: suppress some linker warnings in recent linker versions")
-enabled support to add linker option "--no-warn-rwx-segments",
-if the version is greater than 2.39. Similar build warning were
-reported recently from linker version 2.35.2.
+Since there is no protection in the SPI protocol against electrical
+interferences, the driver shouldn't blindly trust the length payload
+of CMD_RTS. So introduce a bounds check for incoming frames.
 
-ld: warning: arch/powerpc/boot/zImage.epapr has a LOAD segment with RWX permissions
-ld: warning: arch/powerpc/boot/zImage.pseries has a LOAD segment with RWX permissions
-
-Fix the warning by checking for "--no-warn-rwx-segments"
-option support in linker to enable it, instead of checking
-for the version range.
-
-Fixes: 579aee9fc594 ("powerpc: suppress some linker warnings in recent linker versions")
-Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Closes: https://lore.kernel.org/linuxppc-dev/61cf556c-4947-4bd6-af63-892fc0966dad@linux.ibm.com/
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250401004218.24869-1-maddy@linux.ibm.com
+Fixes: 2f207cbf0dd4 ("net: vertexcom: Add MSE102x SPI support")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250430133043.7722-4-wahrenst@gmx.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/boot/wrapper | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/vertexcom/mse102x.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/boot/wrapper b/arch/powerpc/boot/wrapper
-index 352d7de24018f..fea9694f1047e 100755
---- a/arch/powerpc/boot/wrapper
-+++ b/arch/powerpc/boot/wrapper
-@@ -234,10 +234,8 @@ fi
+diff --git a/drivers/net/ethernet/vertexcom/mse102x.c b/drivers/net/ethernet/vertexcom/mse102x.c
+index 55f34d9d111c4..2b1aac72601d0 100644
+--- a/drivers/net/ethernet/vertexcom/mse102x.c
++++ b/drivers/net/ethernet/vertexcom/mse102x.c
+@@ -6,6 +6,7 @@
  
- # suppress some warnings in recent ld versions
- nowarn="-z noexecstack"
--if ! ld_is_lld; then
--	if [ "$LD_VERSION" -ge "$(echo 2.39 | ld_version)" ]; then
--		nowarn="$nowarn --no-warn-rwx-segments"
--	fi
-+if [ $(${CROSS}ld -v --no-warn-rwx-segments &>/dev/null; echo $?) -eq 0 ]; then
-+	nowarn="$nowarn --no-warn-rwx-segments"
- fi
+ #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
  
- platformo=$object/"$platform".o
++#include <linux/if_vlan.h>
+ #include <linux/interrupt.h>
+ #include <linux/module.h>
+ #include <linux/kernel.h>
+@@ -337,8 +338,9 @@ static void mse102x_rx_pkt_spi(struct mse102x_net *mse)
+ 	}
+ 
+ 	rxlen = cmd_resp & LEN_MASK;
+-	if (!rxlen) {
+-		net_dbg_ratelimited("%s: No frame length defined\n", __func__);
++	if (rxlen < ETH_ZLEN || rxlen > VLAN_ETH_FRAME_LEN) {
++		net_dbg_ratelimited("%s: Invalid frame length: %d\n", __func__,
++				    rxlen);
+ 		mse->stats.invalid_len++;
+ 		return;
+ 	}
 -- 
 2.39.5
 
