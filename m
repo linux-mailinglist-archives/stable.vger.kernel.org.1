@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-142351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F0CFAAEA3F
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:53:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D748AAEABD
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:59:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D28591BC3562
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:53:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07D5B9C7C8F
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:58:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDFB928937F;
-	Wed,  7 May 2025 18:53:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90A1928B4F0;
+	Wed,  7 May 2025 18:59:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JynN1gst"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AH5yeO+P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3641FF5EC;
-	Wed,  7 May 2025 18:53:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B1E81482F5;
+	Wed,  7 May 2025 18:59:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643983; cv=none; b=FvT8tF/H9SQxvSZG49VPfHukspSCPrcxxEXsJMog+h4JluJK97n27vz5RdMvnWGaIrm757APYmkthPKOMWiB3b5s15zqznQBDSO312bD0MINxLxAl8HCnOXfxsL3JJGdTXFQvskxZAYgZuFY+xdm30yET2nHHuAun53cTkHGmF0=
+	t=1746644343; cv=none; b=Tpt9F4/MYt2sYH+0G14M3NFp/GYBN5YkzWSUMQm//up4QxNuRjh9PKZvy+weNUwcwvUDW4M5AJW5QVtZdmIBZAIaJYTYjVQl2+mWUh35D7U1GDMKEsZJxFDf75Xu3+p9tk9wZNIKHDsevmAHGZxM06u52TZdBEp3GFZ4rq8PhG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643983; c=relaxed/simple;
-	bh=cdtzGWrYujYyjjGQbL8nEXOALBUN8vovDuS6PJVC358=;
+	s=arc-20240116; t=1746644343; c=relaxed/simple;
+	bh=7zH2hmRfsuH9LoLVK2cSDNGGjFOg3VfCwlDUUVr2mfY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pSQMAkLaTpAbkkFR9kyfREr4owRDgoT/T4U8/xGryq5sH41ng3GqkpERCr/Ngac9pb6VpQOPKfhXBFhMEG5Cu/dRV5sqbox5NolvBvBZvSMqfGEm8Gop9WdWLlQ1vkE1lTSzuRnVIQryh3C/ky1LtGuiAXX5ddwPuxaf6MwgWo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JynN1gst; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07EC2C4CEE2;
-	Wed,  7 May 2025 18:53:02 +0000 (UTC)
+	 MIME-Version; b=KHdZWhOLmK+/J9m8N20sJM3h81lemliclrGKSb7Acy20dv4nsLZ7a3xazXXo2C2akfSX8/JatI8GAG54kAP9PaP2avP91JNDUSGbZJ4N3TQyck7Mx6A+y9FmL+1HUgVLG5/9w474QcjGinocQo9OUOQf5sDyHPRROMQkppfJp+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AH5yeO+P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE7B7C4CEE2;
+	Wed,  7 May 2025 18:59:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643983;
-	bh=cdtzGWrYujYyjjGQbL8nEXOALBUN8vovDuS6PJVC358=;
+	s=korg; t=1746644343;
+	bh=7zH2hmRfsuH9LoLVK2cSDNGGjFOg3VfCwlDUUVr2mfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JynN1gstC4Yw9gKWxSOJAtTCvO8314R22MTsjVCtsRZG03fMKbFszNxhTG5/uguAK
-	 /HbmzTQfgGDCkknWa+yxwmuuQ12382btSl4KAeglzOYw8ZOXnD97Dq05/dio+/JyJ1
-	 dbobH5Rpc+yDBsAUjyIzfH3UQ2xGGoXd/atRNIX4=
+	b=AH5yeO+PN1d+1EQT806nj+QYIWZhvWY41l65oiW6eFpFDEZtPhhwGAWm1jN+1DhND
+	 EqV0kchpogjhsyujTlgO5rWKCGzMDyJg/kZXNMWuklzJGp3IyHu58EPVUFH8ODAkyG
+	 UWd9tUJaAfRdFwJ3VUue8ec8GHrnMmMK1qXfwX8s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sheetal <sheetal@nvidia.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 052/183] ASoC: soc-pcm: Fix hw_params() and DAPM widget sequence
-Date: Wed,  7 May 2025 20:38:17 +0200
-Message-ID: <20250507183826.798381628@linuxfoundation.org>
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.12 013/164] cpufreq: intel_pstate: Unchecked MSR aceess in legacy mode
+Date: Wed,  7 May 2025 20:38:18 +0200
+Message-ID: <20250507183821.380451420@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sheetal <sheetal@nvidia.com>
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-[ Upstream commit 9aff2e8df240e84a36f2607f98a0a9924a24e65d ]
+commit ac4e04d9e378f5aa826c2406ad7871ae1b6a6fb9 upstream.
 
-Issue:
- When multiple audio streams share a common BE DAI, the BE DAI
- widget can be powered up before its hardware parameters are configured.
- This incorrect sequence leads to intermittent pcm_write errors.
+When turbo mode is unavailable on a Skylake-X system, executing the
+command:
 
- For example, the below Tegra use-case throws an error:
-  aplay(2 streams) -> AMX(mux) -> ADX(demux) -> arecord(2 streams),
-  here, 'AMX TX' and 'ADX RX' are common BE DAIs.
+ # echo 1 > /sys/devices/system/cpu/intel_pstate/no_turbo
 
-For above usecase when failure happens below sequence is observed:
- aplay(1) FE open()
-  - BE DAI callbacks added to the list
-  - BE DAI state = SND_SOC_DPCM_STATE_OPEN
- aplay(2) FE open()
-  - BE DAI callbacks are not added to the list as the state is
-    already SND_SOC_DPCM_STATE_OPEN during aplay(1) FE open().
- aplay(2) FE hw_params()
-  - BE DAI hw_params() callback ignored
- aplay(2) FE prepare()
-  - Widget is powered ON without BE DAI hw_params() call
- aplay(1) FE hw_params()
-  - BE DAI hw_params() is now called
+results in an unchecked MSR access error:
 
-Fix:
- Add BE DAIs in the list if its state is either SND_SOC_DPCM_STATE_OPEN
- or SND_SOC_DPCM_STATE_HW_PARAMS as well.
+ WRMSR to 0x199 (attempted to write 0x0000000100001300).
 
-It ensures the widget is powered ON after BE DAI hw_params() callback.
+This issue was reproduced on an OEM (Original Equipment Manufacturer)
+system and is not a common problem across all Skylake-X systems.
 
-Fixes: 0c25db3f7621 ("ASoC: soc-pcm: Don't reconnect an already active BE")
-Signed-off-by: Sheetal <sheetal@nvidia.com>
-Link: https://patch.msgid.link/20250404105953.2784819-1-sheetal@nvidia.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This error occurs because the MSR 0x199 Turbo Engage Bit (bit 32) is set
+when turbo mode is disabled. The issue arises when intel_pstate fails to
+detect that turbo mode is disabled. Here intel_pstate relies on
+MSR_IA32_MISC_ENABLE bit 38 to determine the status of turbo mode.
+However, on this system, bit 38 is not set even when turbo mode is
+disabled.
+
+According to the Intel Software Developer's Manual (SDM), the BIOS sets
+this bit during platform initialization to enable or disable
+opportunistic processor performance operations. Logically, this bit
+should be set in such cases. However, the SDM also specifies that "OS
+and applications must use CPUID leaf 06H to detect processors with
+opportunistic processor performance operations enabled."
+
+Therefore, in addition to checking MSR_IA32_MISC_ENABLE bit 38, verify
+that CPUID.06H:EAX[1] is 0 to accurately determine if turbo mode is
+disabled.
+
+Fixes: 4521e1a0ce17 ("cpufreq: intel_pstate: Reflect current no_turbo state correctly")
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/soc-pcm.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/cpufreq/intel_pstate.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/sound/soc/soc-pcm.c b/sound/soc/soc-pcm.c
-index 88b3ad5a25520..53b0ea68b939f 100644
---- a/sound/soc/soc-pcm.c
-+++ b/sound/soc/soc-pcm.c
-@@ -1618,10 +1618,13 @@ static int dpcm_add_paths(struct snd_soc_pcm_runtime *fe, int stream,
- 		/*
- 		 * Filter for systems with 'component_chaining' enabled.
- 		 * This helps to avoid unnecessary re-configuration of an
--		 * already active BE on such systems.
-+		 * already active BE on such systems and ensures the BE DAI
-+		 * widget is powered ON after hw_params() BE DAI callback.
- 		 */
- 		if (fe->card->component_chaining &&
- 		    (be->dpcm[stream].state != SND_SOC_DPCM_STATE_NEW) &&
-+		    (be->dpcm[stream].state != SND_SOC_DPCM_STATE_OPEN) &&
-+		    (be->dpcm[stream].state != SND_SOC_DPCM_STATE_HW_PARAMS) &&
- 		    (be->dpcm[stream].state != SND_SOC_DPCM_STATE_CLOSE))
- 			continue;
+--- a/drivers/cpufreq/intel_pstate.c
++++ b/drivers/cpufreq/intel_pstate.c
+@@ -600,6 +600,9 @@ static bool turbo_is_disabled(void)
+ {
+ 	u64 misc_en;
  
--- 
-2.39.5
-
++	if (!cpu_feature_enabled(X86_FEATURE_IDA))
++		return true;
++
+ 	rdmsrl(MSR_IA32_MISC_ENABLE, misc_en);
+ 
+ 	return !!(misc_en & MSR_IA32_MISC_ENABLE_TURBO_DISABLE);
 
 
 
