@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-142148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F00DAAE942
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:42:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFB4FAAE9AC
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:47:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 85B781C26E87
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:43:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27D5F3BF6CE
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:46:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 564CE28DF47;
-	Wed,  7 May 2025 18:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 853771A2390;
+	Wed,  7 May 2025 18:46:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r6wmoO9M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PpotYBLn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1348614A4C7;
-	Wed,  7 May 2025 18:42:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4164529A0;
+	Wed,  7 May 2025 18:46:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643363; cv=none; b=i6kjw+05yyxUYN+Ld8lzGuzPnUkq62uBrOqktI/0IwypOzxX3sSO6lIybVBAG100LKcHOadiSIq5l1wEs/YNkeoJzRP6NasQsgAGeeCStrjXk9scaJnTBJYLNrhSI/nrSlf0K5Hnbvich/7N2ZCeoC+EagijWAAogHGlEwN04sI=
+	t=1746643616; cv=none; b=G9I8X4FhCNy0Vvx324HE42zuuFRY6gjOSPyrfZxlo/a2VZOgIOfcXDZJgbWKgIRXIT5ArJ8TRqADlEyplTbqU4l1aoahipHwsrXgKZ38a4MP+CTQwIc8bcqEzQfkc7dmlSyVImdkDPpIlttaKImkSCDg5vimY1kJxc9NL63Keqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643363; c=relaxed/simple;
-	bh=Dh8IDuRap5z8DTE1I54tQyHady2wEgiig//+R3hX6eA=;
+	s=arc-20240116; t=1746643616; c=relaxed/simple;
+	bh=/71Edp5sxWqEdsbackWJ+/bUOLGq6frIh6wWLOMP2Tg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BXFuuoaDl9Ojd+pEUS7J1wcR1rPS1+gPbgopM91W80hrFs7q5lj7aRL2fH4Yr7kTIbE2lxmUtYMiYwev5LEcb6LoMmOTP8bjrivixqU60k+bAjSsWoarFYQP4J47NrVWhmVoXi248P84DIGP0lATj0qtCeBZr6igZ2n6VuO8yFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r6wmoO9M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75986C4CEE2;
-	Wed,  7 May 2025 18:42:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Kf5w7lkwejQ6OSNxWlrNxN93R18K8Nna1ihCe8hnGMSzN3fGjMOuL7SIj8R7koQPmqNaTtkRaf6oTIEIsj0fir+zI84M1x/cA0EJDchre7rX+Fm7qNXl50ugDGmGtLcGnWsiFIlBgesdu5JSPoF7UeeJoYPkYyEBwgVp+6z2Xmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PpotYBLn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B558C4CEE2;
+	Wed,  7 May 2025 18:46:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643362;
-	bh=Dh8IDuRap5z8DTE1I54tQyHady2wEgiig//+R3hX6eA=;
+	s=korg; t=1746643615;
+	bh=/71Edp5sxWqEdsbackWJ+/bUOLGq6frIh6wWLOMP2Tg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r6wmoO9MbHeDS9rROiBjz4pdggoWTS3hvBYQVfdOM1o1w5tdZJJUMrsIj7GcRdku8
-	 JiJ/ib8552QTxc8Ah7x4WOOcmg71okFu12ucZPntq5+rHOhgL+YeFL3vnkH4nzvVzP
-	 ZmnDFrAk9wI6w8EXLTJ3giHQCtZghJPdWFWfWeEc=
+	b=PpotYBLnYO4+4S0TICNpPb9FjIulFMSBMzSiTx4Cd4yOomuap/XzUa/FhgUL12EqW
+	 uMFTxj514lKJ28GB6nZS4pEsXVGZKct9bqx/6rCUeAD7RTeDILV7n75bVs3HaO5RS3
+	 OYK4iXW0pxA0jhzP5oyUGWHDdTEC1JZqIRMe+88E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thangaraj Samynathan <thangaraj.s@microchip.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Michael Liang <mliang@purestorage.com>,
+	Mohamed Khalfella <mkhalfella@purestorage.com>,
+	Randy Jennings <randyj@purestorage.com>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 35/55] net: lan743x: Fix memleak issue when GSO enabled
+Subject: [PATCH 6.1 61/97] nvme-tcp: fix premature queue removal and I/O failover
 Date: Wed,  7 May 2025 20:39:36 +0200
-Message-ID: <20250507183800.452743985@linuxfoundation.org>
+Message-ID: <20250507183809.452557215@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
-References: <20250507183759.048732653@linuxfoundation.org>
+In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
+References: <20250507183806.987408728@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +63,114 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thangaraj Samynathan <thangaraj.s@microchip.com>
+From: Michael Liang <mliang@purestorage.com>
 
-[ Upstream commit 2d52e2e38b85c8b7bc00dca55c2499f46f8c8198 ]
+[ Upstream commit 77e40bbce93059658aee02786a32c5c98a240a8a ]
 
-Always map the `skb` to the LS descriptor. Previously skb was
-mapped to EXT descriptor when the number of fragments is zero with
-GSO enabled. Mapping the skb to EXT descriptor prevents it from
-being freed, leading to a memory leak
+This patch addresses a data corruption issue observed in nvme-tcp during
+testing.
 
-Fixes: 23f0703c125b ("lan743x: Add main source files for new lan743x driver")
-Signed-off-by: Thangaraj Samynathan <thangaraj.s@microchip.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20250429052527.10031-1-thangaraj.s@microchip.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+In an NVMe native multipath setup, when an I/O timeout occurs, all
+inflight I/Os are canceled almost immediately after the kernel socket is
+shut down. These canceled I/Os are reported as host path errors,
+triggering a failover that succeeds on a different path.
+
+However, at this point, the original I/O may still be outstanding in the
+host's network transmission path (e.g., the NIC’s TX queue). From the
+user-space app's perspective, the buffer associated with the I/O is
+considered completed since they're acked on the different path and may
+be reused for new I/O requests.
+
+Because nvme-tcp enables zero-copy by default in the transmission path,
+this can lead to corrupted data being sent to the original target,
+ultimately causing data corruption.
+
+We can reproduce this data corruption by injecting delay on one path and
+triggering i/o timeout.
+
+To prevent this issue, this change ensures that all inflight
+transmissions are fully completed from host's perspective before
+returning from queue stop. To handle concurrent I/O timeout from multiple
+namespaces under the same controller, always wait in queue stop
+regardless of queue's state.
+
+This aligns with the behavior of queue stopping in other NVMe fabric
+transports.
+
+Fixes: 3f2304f8c6d6 ("nvme-tcp: add NVMe over TCP host driver")
+Signed-off-by: Michael Liang <mliang@purestorage.com>
+Reviewed-by: Mohamed Khalfella <mkhalfella@purestorage.com>
+Reviewed-by: Randy Jennings <randyj@purestorage.com>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microchip/lan743x_main.c | 8 ++++++--
- drivers/net/ethernet/microchip/lan743x_main.h | 1 +
- 2 files changed, 7 insertions(+), 2 deletions(-)
+ drivers/nvme/host/tcp.c | 31 +++++++++++++++++++++++++++++--
+ 1 file changed, 29 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
-index a3392c74372a8..fe919c1974505 100644
---- a/drivers/net/ethernet/microchip/lan743x_main.c
-+++ b/drivers/net/ethernet/microchip/lan743x_main.c
-@@ -1448,6 +1448,7 @@ static void lan743x_tx_frame_add_lso(struct lan743x_tx *tx,
- 	if (nr_frags <= 0) {
- 		tx->frame_data0 |= TX_DESC_DATA0_LS_;
- 		tx->frame_data0 |= TX_DESC_DATA0_IOC_;
-+		tx->frame_last = tx->frame_first;
- 	}
- 	tx_descriptor = &tx->ring_cpu_ptr[tx->frame_tail];
- 	tx_descriptor->data0 = cpu_to_le32(tx->frame_data0);
-@@ -1517,6 +1518,7 @@ static int lan743x_tx_frame_add_fragment(struct lan743x_tx *tx,
- 		tx->frame_first = 0;
- 		tx->frame_data0 = 0;
- 		tx->frame_tail = 0;
-+		tx->frame_last = 0;
- 		return -ENOMEM;
- 	}
+diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
+index 6dd19322c7f8e..4e1b91c0416b9 100644
+--- a/drivers/nvme/host/tcp.c
++++ b/drivers/nvme/host/tcp.c
+@@ -1686,7 +1686,7 @@ static void __nvme_tcp_stop_queue(struct nvme_tcp_queue *queue)
+ 	cancel_work_sync(&queue->io_work);
+ }
  
-@@ -1557,16 +1559,18 @@ static void lan743x_tx_frame_end(struct lan743x_tx *tx,
- 	    TX_DESC_DATA0_DTYPE_DATA_) {
- 		tx->frame_data0 |= TX_DESC_DATA0_LS_;
- 		tx->frame_data0 |= TX_DESC_DATA0_IOC_;
-+		tx->frame_last = tx->frame_tail;
- 	}
+-static void nvme_tcp_stop_queue(struct nvme_ctrl *nctrl, int qid)
++static void nvme_tcp_stop_queue_nowait(struct nvme_ctrl *nctrl, int qid)
+ {
+ 	struct nvme_tcp_ctrl *ctrl = to_tcp_ctrl(nctrl);
+ 	struct nvme_tcp_queue *queue = &ctrl->queues[qid];
+@@ -1700,6 +1700,31 @@ static void nvme_tcp_stop_queue(struct nvme_ctrl *nctrl, int qid)
+ 	mutex_unlock(&queue->queue_lock);
+ }
  
--	tx_descriptor = &tx->ring_cpu_ptr[tx->frame_tail];
--	buffer_info = &tx->buffer_info[tx->frame_tail];
-+	tx_descriptor = &tx->ring_cpu_ptr[tx->frame_last];
-+	buffer_info = &tx->buffer_info[tx->frame_last];
- 	buffer_info->skb = skb;
- 	if (time_stamp)
- 		buffer_info->flags |= TX_BUFFER_INFO_FLAG_TIMESTAMP_REQUESTED;
- 	if (ignore_sync)
- 		buffer_info->flags |= TX_BUFFER_INFO_FLAG_IGNORE_SYNC;
++static void nvme_tcp_wait_queue(struct nvme_ctrl *nctrl, int qid)
++{
++	struct nvme_tcp_ctrl *ctrl = to_tcp_ctrl(nctrl);
++	struct nvme_tcp_queue *queue = &ctrl->queues[qid];
++	int timeout = 100;
++
++	while (timeout > 0) {
++		if (!test_bit(NVME_TCP_Q_ALLOCATED, &queue->flags) ||
++		    !sk_wmem_alloc_get(queue->sock->sk))
++			return;
++		msleep(2);
++		timeout -= 2;
++	}
++	dev_warn(nctrl->device,
++		 "qid %d: timeout draining sock wmem allocation expired\n",
++		 qid);
++}
++
++static void nvme_tcp_stop_queue(struct nvme_ctrl *nctrl, int qid)
++{
++	nvme_tcp_stop_queue_nowait(nctrl, qid);
++	nvme_tcp_wait_queue(nctrl, qid);
++}
++
++
+ static void nvme_tcp_setup_sock_ops(struct nvme_tcp_queue *queue)
+ {
+ 	write_lock_bh(&queue->sock->sk->sk_callback_lock);
+@@ -1766,7 +1791,9 @@ static void nvme_tcp_stop_io_queues(struct nvme_ctrl *ctrl)
+ 	int i;
  
-+	tx_descriptor = &tx->ring_cpu_ptr[tx->frame_tail];
- 	tx_descriptor->data0 = cpu_to_le32(tx->frame_data0);
- 	tx->frame_tail = lan743x_tx_next_index(tx, tx->frame_tail);
- 	tx->last_tail = tx->frame_tail;
-diff --git a/drivers/net/ethernet/microchip/lan743x_main.h b/drivers/net/ethernet/microchip/lan743x_main.h
-index 6080028c1df2c..a1226ab0fb421 100644
---- a/drivers/net/ethernet/microchip/lan743x_main.h
-+++ b/drivers/net/ethernet/microchip/lan743x_main.h
-@@ -658,6 +658,7 @@ struct lan743x_tx {
- 	u32		frame_first;
- 	u32		frame_data0;
- 	u32		frame_tail;
-+	u32		frame_last;
+ 	for (i = 1; i < ctrl->queue_count; i++)
+-		nvme_tcp_stop_queue(ctrl, i);
++		nvme_tcp_stop_queue_nowait(ctrl, i);
++	for (i = 1; i < ctrl->queue_count; i++)
++		nvme_tcp_wait_queue(ctrl, i);
+ }
  
- 	struct lan743x_tx_buffer_info *buffer_info;
- 
+ static int nvme_tcp_start_io_queues(struct nvme_ctrl *ctrl,
 -- 
 2.39.5
 
