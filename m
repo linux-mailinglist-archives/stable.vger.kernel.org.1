@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-142472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F150AAEAC1
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:59:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D4692AAEA27
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:51:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89E579C7E7B
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:59:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3AF43A30E1
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:51:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD4A9289348;
-	Wed,  7 May 2025 18:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3450214813;
+	Wed,  7 May 2025 18:51:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MlmIBxzL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gY0NeuAR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997041482F5;
-	Wed,  7 May 2025 18:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906271FF5EC;
+	Wed,  7 May 2025 18:51:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644358; cv=none; b=HuIZcIS6nDTdH2vvWPeAZnK3wMlKoRmsLQhkes4KZGKMaN6H0hUynRoRMiyJUlBI4Ov/gZtDjnu7WAhZ0sNI0gYofjrwZX2vN3/cWjBOKCvUeI3GmkbNXYzlpmERpIUn9x21Jbkdwymg8hEm3oYdhleS1uY6pPdqetzmRcBIZPs=
+	t=1746643909; cv=none; b=unBQCEB+Xh+PgwvfokbgG1ZNw4ac0JMNa2pqPWz5F0R2Flm7IN9/vLJpt3/qmZru8ZJDSJ9cDyjg1yUAvgVfFmphBzHY3jy4umTk1v7dLW1VLagv7AP7lN52lz/Z53oJvKRYMTqqABEJ3FMlBZhYqitk1hQGbSuulhbgOxTCHH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644358; c=relaxed/simple;
-	bh=hjeH7+HRDPAlDDiAhzLXsZ3zHQhzKq3nKjAE3pZVqi0=;
+	s=arc-20240116; t=1746643909; c=relaxed/simple;
+	bh=t21PjLjAe9MuQQnVuVw2+8gZPJWarjSwe7SS4LJFKXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P22KW7LQg7kdgvs78u5j2Fkdc4HoQ7nYPr5SKVUDYoEf7MPlOkN/VAs1/wYTtl/1RS05YwzGst6cotY5No1DE1NPU2X2t6HcFWI+RTmmuLrOfO+vChhtqkCAvu2d77KrIepp3paSaCx9DsInHSIiuQLGhQVNfLy8m5BWWfOYhBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MlmIBxzL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 165D1C4CEE2;
-	Wed,  7 May 2025 18:59:17 +0000 (UTC)
+	 MIME-Version; b=gTZSzoGtDpr4/Zf8BjzXN0K7y3ixD4adbL8h30CUkW/xRAdBJxjgtzy2+1PjThhMZAl3QLf1zkOdBx3eLe5iJUfYQaVLCqsaIG3rnMiY4oohdf1bptYKOlTLOywXZ/noEPPbffiBV8OTmseFCBY74OHqo8jTxiPGM+71Xtt84+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gY0NeuAR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0F3DC4CEE2;
+	Wed,  7 May 2025 18:51:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644358;
-	bh=hjeH7+HRDPAlDDiAhzLXsZ3zHQhzKq3nKjAE3pZVqi0=;
+	s=korg; t=1746643909;
+	bh=t21PjLjAe9MuQQnVuVw2+8gZPJWarjSwe7SS4LJFKXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MlmIBxzL2TaB8Si/kMV4EA7ufcFQolOW+a43cfDPzC1/ijwQ0xzt7DkD4cRJJaTWf
-	 c6UR3vKMe1bVX+EbFcGoWESl1S18pKBtxvbN1q+SrRc3zbjgzXZgSHfSS4HhU108Xw
-	 sNmF7R1vLfXbvwF/bE96/s7bikPovP4P3WJFUkhg=
+	b=gY0NeuARLkULFIAqIpySmoZz7KarXiaEs/RscfwpE4yq/A3Om9b3S9SSpoL6iVCqA
+	 g8n8RxuEh8WD2QtubgWLy8frpLTw7Y96v+ANcOE9Ia3cqWHKWTaiBinBSsCbkgNE+t
+	 O00gTPCWKzi6wh621PzR5s7Tqh3X6CqKfgekfgW0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	Carlos Song <carlos.song@nxp.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.12 018/164] i2c: imx-lpi2c: Fix clock count when probe defers
+	"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Pranjal Shrivastava <praan@google.com>,
+	Will Deacon <will@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 058/183] iommu/arm-smmu-v3: Add missing S2FWB feature detection
 Date: Wed,  7 May 2025 20:38:23 +0200
-Message-ID: <20250507183821.599944128@linuxfoundation.org>
+Message-ID: <20250507183827.038152927@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +65,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Clark Wang <xiaoning.wang@nxp.com>
+From: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
 
-commit b1852c5de2f2a37dd4462f7837c9e3e678f9e546 upstream.
+[ Upstream commit 45e00e36718902d81bdaebb37b3a8244e685bc48 ]
 
-Deferred probe with pm_runtime_put() may delay clock disable, causing
-incorrect clock usage count. Use pm_runtime_put_sync() to ensure the
-clock is disabled immediately.
+Commit 67e4fe398513 ("iommu/arm-smmu-v3: Use S2FWB for NESTED domains")
+introduced S2FWB usage but omitted the corresponding feature detection.
+As a result, vIOMMU allocation fails on FVP in arm_vsmmu_alloc(), due to
+the following check:
 
-Fixes: 13d6eb20fc79 ("i2c: imx-lpi2c: add runtime pm support")
-Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-Signed-off-by: Carlos Song <carlos.song@nxp.com>
-Cc: <stable@vger.kernel.org> # v4.16+
-Link: https://lore.kernel.org/r/20250421062341.2471922-1-carlos.song@nxp.com
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	if (!arm_smmu_master_canwbs(master) &&
+	    !(smmu->features & ARM_SMMU_FEAT_S2FWB))
+		return ERR_PTR(-EOPNOTSUPP);
+
+This patch adds the missing detection logic to prevent allocation
+failure when S2FWB is supported.
+
+Fixes: 67e4fe398513 ("iommu/arm-smmu-v3: Use S2FWB for NESTED domains")
+Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
+Reviewed-by: Pranjal Shrivastava <praan@google.com>
+Link: https://lore.kernel.org/r/20250408033351.1012411-1-aneesh.kumar@kernel.org
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-imx-lpi2c.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/i2c/busses/i2c-imx-lpi2c.c
-+++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
-@@ -652,9 +652,9 @@ static int lpi2c_imx_probe(struct platfo
- 	return 0;
+diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+index ae803c64ae1ee..e495334d1c43a 100644
+--- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
++++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
+@@ -4416,6 +4416,8 @@ static int arm_smmu_device_hw_probe(struct arm_smmu_device *smmu)
+ 	reg = readl_relaxed(smmu->base + ARM_SMMU_IDR3);
+ 	if (FIELD_GET(IDR3_RIL, reg))
+ 		smmu->features |= ARM_SMMU_FEAT_RANGE_INV;
++	if (FIELD_GET(IDR3_FWB, reg))
++		smmu->features |= ARM_SMMU_FEAT_S2FWB;
  
- rpm_disable:
--	pm_runtime_put(&pdev->dev);
--	pm_runtime_disable(&pdev->dev);
- 	pm_runtime_dont_use_autosuspend(&pdev->dev);
-+	pm_runtime_put_sync(&pdev->dev);
-+	pm_runtime_disable(&pdev->dev);
- 
- 	return ret;
- }
+ 	/* IDR5 */
+ 	reg = readl_relaxed(smmu->base + ARM_SMMU_IDR5);
+-- 
+2.39.5
+
 
 
 
