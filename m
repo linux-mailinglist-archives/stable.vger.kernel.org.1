@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-142493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3376AAEAD9
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:00:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7DACAAEA44
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:53:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DD651C28460
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:00:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4ED29C170E
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:53:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50E1228DF5B;
-	Wed,  7 May 2025 19:00:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8DD7289348;
+	Wed,  7 May 2025 18:53:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V6upEQpK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jjdHcLh2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0F8D28BA9F;
-	Wed,  7 May 2025 19:00:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B921FF5EC;
+	Wed,  7 May 2025 18:53:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644423; cv=none; b=UafnYZm6NU1zx6q61MyawDoY4o7zCVDsSkG3dGerETIwfyHKbWAcRmiOsrbWptLoHfoL/o2J0kHyvqFiWHkYo+IVmXVosGzocnOyqop4sn5yML5X5bRFUK9hj0+PaS0BVtVdSA7IZZZkcBIfzOCCDIQx7x2/NiHCb3uza/HyyNw=
+	t=1746643998; cv=none; b=HlgWxZ5wKSxck8cFq9WdX1BDEJvzWoza1Lt4NPnQQk+zt4cCwsaYji4G2mpG61xv0qdcJXNC4I/lSwLIbr/PdfhfmYCPsV6/L3wQgMlVYKDa1Rx91ExWL6EB++6M57ot1NSuIdhE+jiruzblvNYr20LTZYNX4LnKQLF1DCKEmmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644423; c=relaxed/simple;
-	bh=GKaQS/6YoWjYP/i75u5tYfrmzHzPhzckBxnvWUqQZpw=;
+	s=arc-20240116; t=1746643998; c=relaxed/simple;
+	bh=XglTjcs9X5Oj8WmqBVP7ZkgX/xMKCbi10nhDWAld9lc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RWIQtlMXdu0KOGsrYDjmW4kMg/UJY/l93JGdu+DyRu3pB+bnJUPnhaDQy181JFtJzfZtDOO7NjCnVqBhyZ+EMP2aX8c+jb+zbvAbTTi2f84Sjd1Mhss+DBHgCE7mf21kyPARPQuBnwkUlW4Qeq5jqKJmtYTk4Di1aPSGdaKQpdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V6upEQpK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C8B2C4CEEE;
-	Wed,  7 May 2025 19:00:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DJMTm4mzqtNn8hKULOPM/qTPPa3+QMlgMyLS4OK4vH60YNhuG7lH4wnTVcNzb5XGL+y8TGNxrusAPsw0kX2UTMgyh1uhhyUFHWypIV32HcF7vDC36GBFA8wh+BRtHTXNzT/uyzwbo5xGTArct5Z78sOW0UTne8b0OXO/Vu0XDkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jjdHcLh2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0E03C4CEE2;
+	Wed,  7 May 2025 18:53:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644422;
-	bh=GKaQS/6YoWjYP/i75u5tYfrmzHzPhzckBxnvWUqQZpw=;
+	s=korg; t=1746643998;
+	bh=XglTjcs9X5Oj8WmqBVP7ZkgX/xMKCbi10nhDWAld9lc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V6upEQpKUlGF6GJggzzpcqzFcG2sqky1fA/gEIivcF6EBDAgcyFrB6VE3AR1GMjJx
-	 LR5DSE3/A2jkBDxJxAUlMJtHr3OPXY3ERrijnKeWmND8sxeFYOOKkJZna/PS0cZQrU
-	 ephewa48G91pzRh/FIgMkNranF2iPI1c15knn54c=
+	b=jjdHcLh2Rp4dQBa8PD72hh5Vdc0Ky5kc8NmZhv7XMptEbuO9wBIJhK+Zqnr+yTFMs
+	 OTOPUJARC+mjATeUCUHn30XPjFIu7CqxNX35N779UPPFaglJQViOVJYCJQjnJ6odLe
+	 1vAs8z3RlKuvI+32PTfdQKiPhJkpPHaNTHnzZM6c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Balbir Singh <balbirs@nvidia.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Joerg Roedel <joro@8bytes.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>
-Subject: [PATCH 6.12 039/164] iommu/arm-smmu-v3: Fix pgsize_bit for sva domains
+	Nicholas Chin <nic.c3.14@gmail.com>,
+	Lifeng Zheng <zhenglifeng1@huawei.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 079/183] cpufreq: ACPI: Re-sync CPU boost state on system resume
 Date: Wed,  7 May 2025 20:38:44 +0200
-Message-ID: <20250507183822.464893517@linuxfoundation.org>
+Message-ID: <20250507183827.886394332@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +62,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Balbir Singh <balbirs@nvidia.com>
+From: Viresh Kumar <viresh.kumar@linaro.org>
 
-commit 12f78021973ae422564b234136c702a305932d73 upstream.
+[ Upstream commit 3d59224947b024c9b2aa6e149a1537d449adb828 ]
 
-UBSan caught a bug with IOMMU SVA domains, where the reported exponent
-value in __arm_smmu_tlb_inv_range() was >= 64.
-__arm_smmu_tlb_inv_range() uses the domain's pgsize_bitmap to compute
-the number of pages to invalidate and the invalidation range. Currently
-arm_smmu_sva_domain_alloc() does not setup the iommu domain's
-pgsize_bitmap. This leads to __ffs() on the value returning 64 and that
-leads to undefined behaviour w.r.t. shift operations
+During CPU hotunplug events (such as those occurring during
+suspend/resume cycles), platform firmware may modify the CPU boost
+state.
 
-Fix this by initializing the iommu_domain's pgsize_bitmap to PAGE_SIZE.
-Effectively the code needs to use the smallest page size for
-invalidation
+If boost was disabled prior to CPU removal, it correctly remains
+disabled upon re-plug. However, if firmware re-enables boost while the
+CPU is offline, the CPU may return with boost enabled—even if it was
+originally disabled—once it is hotplugged back in. This leads to
+inconsistent behavior and violates user or kernel policy expectations.
 
-Cc: stable@vger.kernel.org
-Fixes: eb6c97647be2 ("iommu/arm-smmu-v3: Avoid constructing invalid range commands")
-Suggested-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Balbir Singh <balbirs@nvidia.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To maintain consistency, ensure the boost state is re-synchronized with
+the kernel policy when a CPU is hotplugged back in.
 
-Cc: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Cc: Will Deacon <will@kernel.org>
-Cc: Robin Murphy <robin.murphy@arm.com>
-Cc: Joerg Roedel <joro@8bytes.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/20250412002354.3071449-1-balbirs@nvidia.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Note: This re-synchronization is not necessary during the initial call
+to ->init() for a CPU, as the cpufreq core handles it via
+cpufreq_online(). At that point, acpi_cpufreq_driver.boost_enabled is
+initialized to the value returned by boost_state(0).
+
+Fixes: 2b16c631832d ("cpufreq: ACPI: Remove set_boost in acpi_cpufreq_cpu_init()")
+Reported-by: Nicholas Chin <nic.c3.14@gmail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220013
+Tested-by: Nicholas Chin <nic.c3.14@gmail.com>
+Reviewed-by: Lifeng Zheng <zhenglifeng1@huawei.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Link: https://patch.msgid.link/9c7de55fb06015c1b77e7dafd564b659838864e0.1745511526.git.viresh.kumar@linaro.org
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/cpufreq/acpi-cpufreq.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
---- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c
-+++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3-sva.c
-@@ -397,6 +397,12 @@ struct iommu_domain *arm_smmu_sva_domain
- 		return ERR_CAST(smmu_domain);
- 	smmu_domain->domain.type = IOMMU_DOMAIN_SVA;
- 	smmu_domain->domain.ops = &arm_smmu_sva_domain_ops;
-+
-+	/*
-+	 * Choose page_size as the leaf page size for invalidation when
-+	 * ARM_SMMU_FEAT_RANGE_INV is present
-+	 */
-+	smmu_domain->domain.pgsize_bitmap = PAGE_SIZE;
- 	smmu_domain->smmu = smmu;
+diff --git a/drivers/cpufreq/acpi-cpufreq.c b/drivers/cpufreq/acpi-cpufreq.c
+index ae0766b5a076b..453b629d3de65 100644
+--- a/drivers/cpufreq/acpi-cpufreq.c
++++ b/drivers/cpufreq/acpi-cpufreq.c
+@@ -909,8 +909,19 @@ static int acpi_cpufreq_cpu_init(struct cpufreq_policy *policy)
+ 	if (perf->states[0].core_frequency * 1000 != freq_table[0].frequency)
+ 		pr_warn(FW_WARN "P-state 0 is not max freq\n");
  
- 	ret = xa_alloc(&arm_smmu_asid_xa, &asid, smmu_domain,
+-	if (acpi_cpufreq_driver.set_boost)
+-		policy->boost_supported = true;
++	if (acpi_cpufreq_driver.set_boost) {
++		if (policy->boost_supported) {
++			/*
++			 * The firmware may have altered boost state while the
++			 * CPU was offline (for example during a suspend-resume
++			 * cycle).
++			 */
++			if (policy->boost_enabled != boost_state(cpu))
++				set_boost(policy, policy->boost_enabled);
++		} else {
++			policy->boost_supported = true;
++		}
++	}
+ 
+ 	return result;
+ 
+-- 
+2.39.5
+
 
 
 
