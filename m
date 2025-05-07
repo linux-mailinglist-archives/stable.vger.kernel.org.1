@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-142713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 642FEAAEBDF
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:11:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3665AAAEB61
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:06:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A61A9E2A81
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:11:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 003691C08DDE
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:06:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73ECE28DF4C;
-	Wed,  7 May 2025 19:11:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E235928E597;
+	Wed,  7 May 2025 19:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VGuwOiTs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FZpMPkK+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A902144C1;
-	Wed,  7 May 2025 19:11:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EB4228DF21;
+	Wed,  7 May 2025 19:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746645100; cv=none; b=J4rJpp+g3HRG/wrKt5y3iG+9NdNgNiXtG9PbqZKYm4hMGjXyn8ELDCgHao087gRSgKCqd31R8ktsYX+YSWbiFs1uiVsfteKgSz+g03miuydrWq6yAqbW9Op9ppJ/ewINZ1NPtmGMmfY5ZgajMefPa2FxaoLJA3XUDFE7AJGS87E=
+	t=1746644756; cv=none; b=YZ6nINp7hMnhZAZqw07q7nnZ2fzvC84duVeyNSv78F9SIfbhlPyw1CDYVKjOW0v028VtNTARMd+rjwDrHO7x4fZSJc1Ep2zMe/DbveYM7KtoI7vcGDKsiudofLtFXKe8jA3IISAjSxgQqETmOeWoRXBzmS3iGC75HiruWuoB9O8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746645100; c=relaxed/simple;
-	bh=Mo7+7aWOw3MfafX7ra5oPp4pYkswiQVcP6yjts2MVcY=;
+	s=arc-20240116; t=1746644756; c=relaxed/simple;
+	bh=Pjb0XYGHFWNPN7oHKTCsN2LMJ1rkLqWajOn9d9Pf/VI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gxnJCXeQOTIbwBKbDvrI28oWwZ+vrJMjw9DVe8LrUU/kksd85Le+Xp0T/OwAZyPt4k6YUBSErqUTdfFRZTNSGmtinHeRT0stf68/+0n5Yvdt5mA7myrJMUAgx/fXEEnAb0u/HTGRN1u3VOviUeQhS6o+dshEnlQfNCW8rtDc+Hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VGuwOiTs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB32DC4CEE2;
-	Wed,  7 May 2025 19:11:39 +0000 (UTC)
+	 MIME-Version; b=aKgmx9rKxhL8tzRy61c9RHSp6CX6idY+a5ohmcAXF/EalZaCZTYbmw8LOt7bfIO2jeMDhDq68Z0htMOADUrPhwPyU8hLzxHFhkRdJxbfYkAO1lUaJgC0956ivZPvS93dCDQ7TvxYpJAyfdMJwkPd52rwPYlY9R9SgEr7mCD5xuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FZpMPkK+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27CB3C4CEE2;
+	Wed,  7 May 2025 19:05:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746645100;
-	bh=Mo7+7aWOw3MfafX7ra5oPp4pYkswiQVcP6yjts2MVcY=;
+	s=korg; t=1746644756;
+	bh=Pjb0XYGHFWNPN7oHKTCsN2LMJ1rkLqWajOn9d9Pf/VI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VGuwOiTswhiqQnp+e52j5tUK5MzjAf8125SRAvSJua137cuddyIeNAG/GquLl3XmK
-	 IFD74czazhfyxU93kbLn8kmg77aEOoTtET/yMNf4e9CzWi65KTDiU939EZmNyBcxXF
-	 R5oxv/y4GOWzjkEFFNfAP0zUqM2A9rnbJRPC3pD4=
+	b=FZpMPkK+nccNAzNiTwDZOCacde31pbFxOayRdmHunfCTbczpfViQEGwgKXPGQ7qKb
+	 KSc9fmwGXmI01Z9mkIsR15nehzQfETWUetbRNpq5PTwDdn5dBsX0uiNgWiqyBAoTXI
+	 dLiNbX+eV7AeoYcniOi+wMuIHZztK7/qKf7NawD0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 094/129] net: vertexcom: mse102x: Add range check for CMD_RTS
-Date: Wed,  7 May 2025 20:40:30 +0200
-Message-ID: <20250507183817.304108312@linuxfoundation.org>
+	Karol Wachowski <karol.wachowski@intel.com>,
+	Maciej Falkowski <maciej.falkowski@linux.intel.com>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Subject: [PATCH 6.12 146/164] accel/ivpu: Add handling of VPU_JSM_STATUS_MVNCI_CONTEXT_VIOLATION_HW
+Date: Wed,  7 May 2025 20:40:31 +0200
+Message-ID: <20250507183826.882448771@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
-References: <20250507183813.500572371@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Karol Wachowski <karol.wachowski@intel.com>
 
-[ Upstream commit d4dda902dac194e3231a1ed0f76c6c3b6340ba8a ]
+commit dad945c27a42dfadddff1049cf5ae417209a8996 upstream.
 
-Since there is no protection in the SPI protocol against electrical
-interferences, the driver shouldn't blindly trust the length payload
-of CMD_RTS. So introduce a bounds check for incoming frames.
+Mark as invalid context of a job that returned HW context violation
+error and queue work that aborts jobs from faulty context.
+Add engine reset to the context abort thread handler to not only abort
+currently executing jobs but also to ensure NPU invalid state recovery.
 
-Fixes: 2f207cbf0dd4 ("net: vertexcom: Add MSE102x SPI support")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250430133043.7722-4-wahrenst@gmx.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Karol Wachowski <karol.wachowski@intel.com>
+Signed-off-by: Maciej Falkowski <maciej.falkowski@linux.intel.com>
+Reviewed-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250107173238.381120-13-maciej.falkowski@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/vertexcom/mse102x.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/accel/ivpu/ivpu_job.c |   25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/drivers/net/ethernet/vertexcom/mse102x.c b/drivers/net/ethernet/vertexcom/mse102x.c
-index 55f34d9d111c4..2b1aac72601d0 100644
---- a/drivers/net/ethernet/vertexcom/mse102x.c
-+++ b/drivers/net/ethernet/vertexcom/mse102x.c
-@@ -6,6 +6,7 @@
+--- a/drivers/accel/ivpu/ivpu_job.c
++++ b/drivers/accel/ivpu/ivpu_job.c
+@@ -486,6 +486,26 @@ static int ivpu_job_signal_and_destroy(s
  
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 	lockdep_assert_held(&vdev->submitted_jobs_lock);
  
-+#include <linux/if_vlan.h>
- #include <linux/interrupt.h>
- #include <linux/module.h>
- #include <linux/kernel.h>
-@@ -337,8 +338,9 @@ static void mse102x_rx_pkt_spi(struct mse102x_net *mse)
- 	}
++	job = xa_load(&vdev->submitted_jobs_xa, job_id);
++	if (!job)
++		return -ENOENT;
++
++	if (job_status == VPU_JSM_STATUS_MVNCI_CONTEXT_VIOLATION_HW) {
++		guard(mutex)(&job->file_priv->lock);
++
++		if (job->file_priv->has_mmu_faults)
++			return 0;
++
++		/*
++		 * Mark context as faulty and defer destruction of the job to jobs abort thread
++		 * handler to synchronize between both faults and jobs returning context violation
++		 * status and ensure both are handled in the same way
++		 */
++		job->file_priv->has_mmu_faults = true;
++		queue_work(system_wq, &vdev->context_abort_work);
++		return 0;
++	}
++
+ 	job = ivpu_job_remove_from_submitted_jobs(vdev, job_id);
+ 	if (!job)
+ 		return -ENOENT;
+@@ -795,6 +815,9 @@ void ivpu_context_abort_thread_handler(s
+ 	struct ivpu_job *job;
+ 	unsigned long id;
  
- 	rxlen = cmd_resp & LEN_MASK;
--	if (!rxlen) {
--		net_dbg_ratelimited("%s: No frame length defined\n", __func__);
-+	if (rxlen < ETH_ZLEN || rxlen > VLAN_ETH_FRAME_LEN) {
-+		net_dbg_ratelimited("%s: Invalid frame length: %d\n", __func__,
-+				    rxlen);
- 		mse->stats.invalid_len++;
++	if (vdev->fw->sched_mode == VPU_SCHEDULING_MODE_HW)
++		ivpu_jsm_reset_engine(vdev, 0);
++
+ 	mutex_lock(&vdev->context_list_lock);
+ 	xa_for_each(&vdev->context_xa, ctx_id, file_priv) {
+ 		if (!file_priv->has_mmu_faults || file_priv->aborted)
+@@ -808,6 +831,8 @@ void ivpu_context_abort_thread_handler(s
+ 
+ 	if (vdev->fw->sched_mode != VPU_SCHEDULING_MODE_HW)
  		return;
- 	}
--- 
-2.39.5
-
++
++	ivpu_jsm_hws_resume_engine(vdev, 0);
+ 	/*
+ 	 * In hardware scheduling mode NPU already has stopped processing jobs
+ 	 * and won't send us any further notifications, thus we have to free job related resources
 
 
 
