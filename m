@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-142330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8FDAAAEA2A
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:52:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDC94AAEAC9
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:59:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13D6050803A
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:52:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DA13500CB5
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:59:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A4C421E0BB;
-	Wed,  7 May 2025 18:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DD3E289823;
+	Wed,  7 May 2025 18:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zcJuOpyj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v/yeP29P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F2F1FF5EC;
-	Wed,  7 May 2025 18:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5B31482F5;
+	Wed,  7 May 2025 18:59:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643918; cv=none; b=QuK5OFYIrTiKS7PskAceBtZ9iA0SQfUvscVhcGxzL8ctTEMAnMRiVgS/uqXzFUxi+RDENMW3YBGQaIuf1c7R1ktXH9yE1TYa5AwqcG+ABqgblTp0yecZRpRmACKGmjZdnAeLbA9tVrGZUeoPOZbCXr7eSD05fKstzjC/pyoHtPI=
+	t=1746644371; cv=none; b=pl3Yrb4kQo1E2PDBdmmxwETHu58YG8vqereYhIEpdnUc28h/DKBBALHljFgAS2SUw5dcYQOs2kuEQpkVwGBZ9MkQZ51tLsZxyVuWCcbRCRpTXQ9w1s4JzVcO8H0ixtmli19Gp0D0x+2M/W9HwBMM4QoLp0Roqovwv0Hve8f8r6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643918; c=relaxed/simple;
-	bh=HDZpADKCQ0KZtkKcMU4GaDNqXsGnpO9+SWV2KRnwcqU=;
+	s=arc-20240116; t=1746644371; c=relaxed/simple;
+	bh=VhB6Yd7ATZxaN5hg3zw+ekMX8OynOa6btmwYvJ9XIfE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tSR3qdE+OFXhQ/TiGO/G18NmR7UqJhtMW6zb7sUbi1DEzClKjT2lPerjMV5eP0fBrDudG6QT/RBEmTgFNStrdrCcPLmi26iOHbfPMudxyK6/abd+eVcTUouo89B+q+IH1lXkeC5j1aAzDWcFL7whfTIypaWnKGbVnYoajeToCzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zcJuOpyj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33242C4CEEE;
-	Wed,  7 May 2025 18:51:58 +0000 (UTC)
+	 MIME-Version; b=p20vjSU+dLSB8YAjA/8prmqyIIvWg9oC83L8nXdKNUtmdVcEmdmHJL23Fhj9Bo9A1rsqXvLukn7MNqINdgt281Lfdqu2Fzyxxu0KdcQdQV+yEWNH6eUp7SqC6mQtGtV0fAYRaupjTsmY9QSGBTEvLlJE9sJjGI5KgExf3MYFLfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v/yeP29P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD52C4CEE2;
+	Wed,  7 May 2025 18:59:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643918;
-	bh=HDZpADKCQ0KZtkKcMU4GaDNqXsGnpO9+SWV2KRnwcqU=;
+	s=korg; t=1746644370;
+	bh=VhB6Yd7ATZxaN5hg3zw+ekMX8OynOa6btmwYvJ9XIfE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zcJuOpyjmhmx+nyv+JT+lB/2XMQEapldas220KdA2nibxTMlf953KejXCdvFykWhh
-	 CwTz6S+3OadxhjWdHIFNgpevYAXDHvDYMZLoiRfpIBAjgvmD02rzc4rZYSrNnSs5kZ
-	 RciByiRu+DqmzET5YQkxRezlqPTiKEeBQTcA3Rc0=
+	b=v/yeP29P9SOScaWmQ3AWrI2yJVj2NfdVa0xR6ZqBdM7sPhtg/2dNF5I8UZbShpebR
+	 q/ha9C6ccONN1CSbAJ7UmmiLcuJVSOTxabgbc7Smg6rNYJHUxc+TWBBiVs5JpeDyGd
+	 nwhUJIRByhBSvd8IM+knbKiKQrsQue8jJBGf8hnw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 061/183] wifi: iwlwifi: back off on continuous errors
+	Luo Gengkun <luogengkun@huaweicloud.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 6.12 021/164] perf/x86/intel: Only check the group flag for X86 leader
 Date: Wed,  7 May 2025 20:38:26 +0200
-Message-ID: <20250507183827.156048394@linuxfoundation.org>
+Message-ID: <20250507183821.727393205@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,165 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Kan Liang <kan.liang@linux.intel.com>
 
-[ Upstream commit d49437a6afc707951e5767ef70c9726b6c05da08 ]
+commit 75aea4b0656ead0facd13d2aae4cb77326e53d2f upstream.
 
-When errors occur repeatedly, the driver shouldn't go into a
-tight loop trying to reset the device. Implement the backoff
-I had already defined IWL_TRANS_RESET_DELAY for, but clearly
-forgotten the implementation of.
+A warning in intel_pmu_lbr_counters_reorder() may be triggered by below
+perf command.
 
-Fixes: 9a2f13c40c63 ("wifi: iwlwifi: implement reset escalation")
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20250420095642.8816e299efa2.I82cde34e2345a2b33b1f03dbb040f5ad3439a5aa@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+perf record -e "{cpu-clock,cycles/call-graph="lbr"/}" -- sleep 1
+
+It's because the group is mistakenly treated as a branch counter group.
+
+The hw.flags of the leader are used to determine whether a group is a
+branch counters group. However, the hw.flags is only available for a
+hardware event. The field to store the flags is a union type. For a
+software event, it's a hrtimer. The corresponding bit may be set if the
+leader is a software event.
+
+For a branch counter group and other groups that have a group flag
+(e.g., topdown, PEBS counters snapshotting, and ACR), the leader must
+be a X86 event. Check the X86 event before checking the flag.
+The patch only fixes the issue for the branch counter group.
+The following patch will fix the other groups.
+
+There may be an alternative way to fix the issue by moving the hw.flags
+out of the union type. It should work for now. But it's still possible
+that the flags will be used by other types of events later. As long as
+that type of event is used as a leader, a similar issue will be
+triggered. So the alternative way is dropped.
+
+Fixes: 33744916196b ("perf/x86/intel: Support branch counters logging")
+Closes: https://lore.kernel.org/lkml/20250412091423.1839809-1-luogengkun@huaweicloud.com/
+Reported-by: Luo Gengkun <luogengkun@huaweicloud.com>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20250424134718.311934-2-kan.liang@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/wireless/intel/iwlwifi/iwl-trans.c    | 27 ++++++++++++++-----
- .../net/wireless/intel/iwlwifi/iwl-trans.h    |  7 +++--
- .../net/wireless/intel/iwlwifi/pcie/trans.c   |  3 ++-
- 3 files changed, 28 insertions(+), 9 deletions(-)
+ arch/x86/events/core.c       |    2 +-
+ arch/x86/events/perf_event.h |    9 ++++++++-
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
-index 47854a36413e1..8ad2bd64dbd3d 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.c
-@@ -21,6 +21,7 @@ struct iwl_trans_dev_restart_data {
- 	struct list_head list;
- 	unsigned int restart_count;
- 	time64_t last_error;
-+	bool backoff;
- 	char name[];
- };
- 
-@@ -125,13 +126,20 @@ iwl_trans_determine_restart_mode(struct iwl_trans *trans)
- 	if (!data)
- 		return at_least;
- 
--	if (ktime_get_boottime_seconds() - data->last_error >=
-+	if (!data->backoff &&
-+	    ktime_get_boottime_seconds() - data->last_error >=
- 			IWL_TRANS_RESET_OK_TIME)
- 		data->restart_count = 0;
- 
- 	index = data->restart_count;
--	if (index >= ARRAY_SIZE(escalation_list))
-+	if (index >= ARRAY_SIZE(escalation_list)) {
- 		index = ARRAY_SIZE(escalation_list) - 1;
-+		if (!data->backoff) {
-+			data->backoff = true;
-+			return IWL_RESET_MODE_BACKOFF;
-+		}
-+		data->backoff = false;
-+	}
- 
- 	return max(at_least, escalation_list[index]);
+--- a/arch/x86/events/core.c
++++ b/arch/x86/events/core.c
+@@ -753,7 +753,7 @@ void x86_pmu_enable_all(int added)
+ 	}
  }
-@@ -140,7 +148,8 @@ iwl_trans_determine_restart_mode(struct iwl_trans *trans)
  
- static void iwl_trans_restart_wk(struct work_struct *wk)
+-static inline int is_x86_event(struct perf_event *event)
++int is_x86_event(struct perf_event *event)
  {
--	struct iwl_trans *trans = container_of(wk, typeof(*trans), restart.wk);
-+	struct iwl_trans *trans = container_of(wk, typeof(*trans),
-+					       restart.wk.work);
- 	struct iwl_trans_reprobe *reprobe;
- 	enum iwl_reset_mode mode;
+ 	int i;
  
-@@ -168,6 +177,12 @@ static void iwl_trans_restart_wk(struct work_struct *wk)
- 		return;
- 
- 	mode = iwl_trans_determine_restart_mode(trans);
-+	if (mode == IWL_RESET_MODE_BACKOFF) {
-+		IWL_ERR(trans, "Too many device errors - delay next reset\n");
-+		queue_delayed_work(system_unbound_wq, &trans->restart.wk,
-+				   IWL_TRANS_RESET_DELAY);
-+		return;
-+	}
- 
- 	iwl_trans_inc_restart_count(trans->dev);
- 
-@@ -227,7 +242,7 @@ struct iwl_trans *iwl_trans_alloc(unsigned int priv_size,
- 	trans->dev = dev;
- 	trans->num_rx_queues = 1;
- 
--	INIT_WORK(&trans->restart.wk, iwl_trans_restart_wk);
-+	INIT_DELAYED_WORK(&trans->restart.wk, iwl_trans_restart_wk);
- 
- 	return trans;
- }
-@@ -271,7 +286,7 @@ int iwl_trans_init(struct iwl_trans *trans)
- 
- void iwl_trans_free(struct iwl_trans *trans)
- {
--	cancel_work_sync(&trans->restart.wk);
-+	cancel_delayed_work_sync(&trans->restart.wk);
- 	kmem_cache_destroy(trans->dev_cmd_pool);
+--- a/arch/x86/events/perf_event.h
++++ b/arch/x86/events/perf_event.h
+@@ -110,9 +110,16 @@ static inline bool is_topdown_event(stru
+ 	return is_metric_event(event) || is_slots_event(event);
  }
  
-@@ -403,7 +418,7 @@ void iwl_trans_op_mode_leave(struct iwl_trans *trans)
- 
- 	iwl_trans_pcie_op_mode_leave(trans);
- 
--	cancel_work_sync(&trans->restart.wk);
-+	cancel_delayed_work_sync(&trans->restart.wk);
- 
- 	trans->op_mode = NULL;
- 
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-index f6234065dbdde..9c64e1fd4c096 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-@@ -958,7 +958,7 @@ struct iwl_trans {
- 	struct iwl_dma_ptr invalid_tx_cmd;
- 
- 	struct {
--		struct work_struct wk;
-+		struct delayed_work wk;
- 		struct iwl_fw_error_dump_mode mode;
- 		bool during_reset;
- 	} restart;
-@@ -1159,7 +1159,7 @@ static inline void iwl_trans_schedule_reset(struct iwl_trans *trans,
- 	 */
- 	trans->restart.during_reset = test_bit(STATUS_IN_SW_RESET,
- 					       &trans->status);
--	queue_work(system_unbound_wq, &trans->restart.wk);
-+	queue_delayed_work(system_unbound_wq, &trans->restart.wk, 0);
- }
- 
- static inline void iwl_trans_fw_error(struct iwl_trans *trans,
-@@ -1258,6 +1258,9 @@ enum iwl_reset_mode {
- 	IWL_RESET_MODE_RESCAN,
- 	IWL_RESET_MODE_FUNC_RESET,
- 	IWL_RESET_MODE_PROD_RESET,
++int is_x86_event(struct perf_event *event);
 +
-+	/* keep last - special backoff value */
-+	IWL_RESET_MODE_BACKOFF,
- };
++static inline bool check_leader_group(struct perf_event *leader, int flags)
++{
++	return is_x86_event(leader) ? !!(leader->hw.flags & flags) : false;
++}
++
+ static inline bool is_branch_counters_group(struct perf_event *event)
+ {
+-	return event->group_leader->hw.flags & PERF_X86_EVENT_BRANCH_COUNTERS;
++	return check_leader_group(event->group_leader, PERF_X86_EVENT_BRANCH_COUNTERS);
+ }
  
- void iwl_trans_pcie_reset(struct iwl_trans *trans, enum iwl_reset_mode mode);
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-index c917ed4c19bcc..b1ccace7377fb 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-@@ -2351,7 +2351,8 @@ void iwl_trans_pcie_reset(struct iwl_trans *trans, enum iwl_reset_mode mode)
- 	struct iwl_trans_pcie_removal *removal;
- 	char _msg = 0, *msg = &_msg;
- 
--	if (WARN_ON(mode < IWL_RESET_MODE_REMOVE_ONLY))
-+	if (WARN_ON(mode < IWL_RESET_MODE_REMOVE_ONLY ||
-+		    mode == IWL_RESET_MODE_BACKOFF))
- 		return;
- 
- 	if (test_bit(STATUS_TRANS_DEAD, &trans->status))
--- 
-2.39.5
-
+ struct amd_nb {
 
 
 
