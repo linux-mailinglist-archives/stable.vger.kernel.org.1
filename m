@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-142124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF63FAAE929
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:41:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BD86AAE989
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:45:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C0E71C07281
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:41:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C13C37BBF71
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:44:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B708C28DF45;
-	Wed,  7 May 2025 18:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A9C1482F5;
+	Wed,  7 May 2025 18:45:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L6XYCWWA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QNTwPHbt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70FA714A4C7;
-	Wed,  7 May 2025 18:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 312B81A29A;
+	Wed,  7 May 2025 18:45:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746643291; cv=none; b=F5Gv2Zf75n58FsAAqBET3ph7G+5sS2Z6uyk+0QSVzhjasXAwu+Ca31gwFRzIHTJRQOH8SDDsnoG8JvvyA5CDnLuYBUO0XXAgSA41v6BgOnljTWqXG2i/J8gfZMtKfh6deGDKXAS2L+p0c1APxc2x15gE2P9a8jzu+BSBBsqYpuU=
+	t=1746643541; cv=none; b=Yufw7jdWYXqkh1zLLRDZmaftTDjx93y8+CRO230ToqUQOidhz/GCgsQU6tB4IXVDt8VankvIBpHzOmJK+HZeGa+QX7pY/TMDR1pdSf6awa3ZxQt/AqJDo7KAYXHdzNI2kdE2TMlhR6ihIi2D0NY/5paKzcoOhxO51QtqsrvrOc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746643291; c=relaxed/simple;
-	bh=gUOk+U0ZqjsMKGkFaBRYIdT5ifBSGSw4EqNR3Mf2cis=;
+	s=arc-20240116; t=1746643541; c=relaxed/simple;
+	bh=HpmRBTxqHjD/Z45+qNUAVjwwCy+ulGoB3uH1+cP/csg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M4KQlMkuAex4ZrKLELpVV2SMyb71VkZgXpY7CI5O7G2HLEbkFSIssDufI/3Cm5fK5GVuBAHjMcKziNemEZDQQaQceih/2VBfB9WnTkZ8xTFA/heGB2C6dBDxxotSkfC0CAIfbLoFAUbIHIRfWh3vHY1BDklQcsMzoehvygJ2BuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L6XYCWWA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 988F7C4CEE2;
-	Wed,  7 May 2025 18:41:30 +0000 (UTC)
+	 MIME-Version; b=qGu3gSLhxT3vtCMvTUO5OUsOeJR2Rm61Ea95oGYYKbrmd4R5/6SdBthMQnwCjtbdCt+dyEVjr2Q0ppiO6HU3mwy3NX6vKRwxHKYgKXsqDDeiqh5Dpb1uUNJNJQxgbWCteFDDxEK7KgVLjmkk4b3xSmAXTxAJtVsDEF0GD/EubtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QNTwPHbt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DC36C4CEE2;
+	Wed,  7 May 2025 18:45:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746643291;
-	bh=gUOk+U0ZqjsMKGkFaBRYIdT5ifBSGSw4EqNR3Mf2cis=;
+	s=korg; t=1746643539;
+	bh=HpmRBTxqHjD/Z45+qNUAVjwwCy+ulGoB3uH1+cP/csg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L6XYCWWAueTYVvXKWievlnjevqQ62QBFmV6o1TItvu3v4QMPsRdLC6hxbbxpcvIHj
-	 XsLOrQ3OYGeSZzsA/A/2Q8OG19BihndDx7TmgxZa32jdXE3Wp5+JscahvLKFX/diIL
-	 o1xXMvm1v0fuDrMbtGchlZQ5If+cfbqd4QcSQ/mk=
+	b=QNTwPHbtzg70NF1CwhaKklwyafz4ZwYQYy3JovRQib6PYe3EcXtjS9G4DJmR1m7i0
+	 7sa6nhqd8m+zyoP+d8nXuaAeyyQAfBTwCtZ8rvcXqRTnRqWvFyKIDxxAr/5mEvP7pM
+	 pGrRtiEH9zWsymu5bUkDurBEcbG09lmxGRLglcUc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 5.15 11/55] dm-integrity: fix a warning on invalid table line
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Chandan Babu R <chandanbabu@kernel.org>,
+	Leah Rumancik <leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 37/97] xfs: allow unlinked symlinks and dirs with zero size
 Date: Wed,  7 May 2025 20:39:12 +0200
-Message-ID: <20250507183759.506637621@linuxfoundation.org>
+Message-ID: <20250507183808.486021624@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
-References: <20250507183759.048732653@linuxfoundation.org>
+In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
+References: <20250507183806.987408728@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,36 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: "Darrick J. Wong" <djwong@kernel.org>
 
-commit 0a533c3e4246c29d502a7e0fba0e86d80a906b04 upstream.
+[ Upstream commit 1ec9307fc066dd8a140d5430f8a7576aa9d78cd3 ]
 
-If we use the 'B' mode and we have an invalit table line,
-cancel_delayed_work_sync would trigger a warning. This commit avoids the
-warning.
+For a very very long time, inode inactivation has set the inode size to
+zero before unmapping the extents associated with the data fork.
+Unfortunately, commit 3c6f46eacd876 changed the inode verifier to
+prohibit zero-length symlinks and directories.  If an inode happens to
+get logged in this state and the system crashes before freeing the
+inode, log recovery will also fail on the broken inode.
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Cc: stable@vger.kernel.org
+Therefore, allow zero-size symlinks and directories as long as the link
+count is zero; nobody will be able to open these files by handle so
+there isn't any risk of data exposure.
+
+Fixes: 3c6f46eacd876 ("xfs: sanity check directory inode di_size")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: "Darrick J. Wong" <djwong@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-integrity.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/xfs/libxfs/xfs_inode_buf.c |   23 ++++++++++++++++++-----
+ 1 file changed, 18 insertions(+), 5 deletions(-)
 
---- a/drivers/md/dm-integrity.c
-+++ b/drivers/md/dm-integrity.c
-@@ -4543,7 +4543,7 @@ static void dm_integrity_dtr(struct dm_t
- 	BUG_ON(!RB_EMPTY_ROOT(&ic->in_progress));
- 	BUG_ON(!list_empty(&ic->wait_list));
+--- a/fs/xfs/libxfs/xfs_inode_buf.c
++++ b/fs/xfs/libxfs/xfs_inode_buf.c
+@@ -370,10 +370,13 @@ xfs_dinode_verify_fork(
+ 		/*
+ 		 * A directory small enough to fit in the inode must be stored
+ 		 * in local format.  The directory sf <-> extents conversion
+-		 * code updates the directory size accordingly.
++		 * code updates the directory size accordingly.  Directories
++		 * being truncated have zero size and are not subject to this
++		 * check.
+ 		 */
+ 		if (S_ISDIR(mode)) {
+-			if (be64_to_cpu(dip->di_size) <= fork_size &&
++			if (dip->di_size &&
++			    be64_to_cpu(dip->di_size) <= fork_size &&
+ 			    fork_format != XFS_DINODE_FMT_LOCAL)
+ 				return __this_address;
+ 		}
+@@ -511,9 +514,19 @@ xfs_dinode_verify(
+ 	if (mode && xfs_mode_to_ftype(mode) == XFS_DIR3_FT_UNKNOWN)
+ 		return __this_address;
  
--	if (ic->mode == 'B')
-+	if (ic->mode == 'B' && ic->bitmap_flush_work.work.func)
- 		cancel_delayed_work_sync(&ic->bitmap_flush_work);
- 	if (ic->metadata_wq)
- 		destroy_workqueue(ic->metadata_wq);
+-	/* No zero-length symlinks/dirs. */
+-	if ((S_ISLNK(mode) || S_ISDIR(mode)) && di_size == 0)
+-		return __this_address;
++	/*
++	 * No zero-length symlinks/dirs unless they're unlinked and hence being
++	 * inactivated.
++	 */
++	if ((S_ISLNK(mode) || S_ISDIR(mode)) && di_size == 0) {
++		if (dip->di_version > 1) {
++			if (dip->di_nlink)
++				return __this_address;
++		} else {
++			if (dip->di_onlink)
++				return __this_address;
++		}
++	}
+ 
+ 	fa = xfs_dinode_verify_nrext64(mp, dip);
+ 	if (fa)
 
 
 
