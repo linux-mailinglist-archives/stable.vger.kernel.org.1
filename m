@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-142578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED225AAEB37
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:04:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8612AAE94B
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:43:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B6871C08B10
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:05:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A0D8981060
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:42:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D519928DF5D;
-	Wed,  7 May 2025 19:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA35828DF50;
+	Wed,  7 May 2025 18:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2aBftl4q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jinaMU0T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9165F28DF4C;
-	Wed,  7 May 2025 19:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 833ED288CB0;
+	Wed,  7 May 2025 18:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644687; cv=none; b=X2DV6rpP8L7uFVv4flUkpU157hMF22fCR7iFiivsMUfkuZbVDeYrdmcUzUXv7X2pDS6jfKKCWG+sjpYeGNkeFzbuyyEMhXwHv9DjpG3RPwNJEncVvOGIm6wk5oh4dY+j2Scpo8ydXZedXQ9T1wlWYpQVW+pWVu2HKyNeyU4Q93U=
+	t=1746643369; cv=none; b=f6L8Oz4TJVNO/HBLlOHWh+OEvm2vIwM8xUitamGBNhjYUmU9mX9CMbY4t+hYyjZGAWfTK+4eMqdvkDyrrcDtViMHtgkrZx7aknuHTyGdUFbhBwCuJ4cSQUsysOHI7DV0IHqiI98iq/XdSvhTlaKGbQtowP8BoCczUqnxOhFozHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644687; c=relaxed/simple;
-	bh=iVapUoviE0gQIpM3dtL5k6z+YlAq6cl/HIOWYHeD5pI=;
+	s=arc-20240116; t=1746643369; c=relaxed/simple;
+	bh=HNRh4j7OXKFoyxrcn34cgTdWtBgzMy6QtM7iKz+PUx8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AlEyydHCpr2vR83UNeehwNna4aswGcti9yw9z4tFVGoLBs/3KVse6x/nVvnW22vUGJ9Kz9jJwt1bHYyuJewkUGmw2oM7jZMdkoD+IZwrTFSBHCEVR0Fa8/XOz2gfIzwWZXmla6i8U3BQeQcbHf8jjtLG6L9Z5ok9sn34GDwqfyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2aBftl4q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F9A8C4CEE2;
-	Wed,  7 May 2025 19:04:46 +0000 (UTC)
+	 MIME-Version; b=uBDkCcQpOeBMngenrrV/IQI4smLMJ601aKA5rJ7ie9B9gp1jVBSTPBNBhvJBzFuPtE1PFVrBJYMIaC0+uXu78IbpoauvAnRse85ur6DaNzZvq8yDXxW+lvaxl7aMfBbqP3or8Q5pFuMcNDp10YT4yENBpe1EWjUDY22HjRM1LSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jinaMU0T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1415C4CEE2;
+	Wed,  7 May 2025 18:42:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644687;
-	bh=iVapUoviE0gQIpM3dtL5k6z+YlAq6cl/HIOWYHeD5pI=;
+	s=korg; t=1746643369;
+	bh=HNRh4j7OXKFoyxrcn34cgTdWtBgzMy6QtM7iKz+PUx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2aBftl4qi34XMGvDD+u96RyhW/zWeSBujpKcal8BTxd3mRU+cZvCKl74u0x9axfb8
-	 2MznFr6ARPTX9mIv7s05eG/wXCLuEnQ+gHKss4mQjQEmvCE40TMPIGjcdTwU/L+F/Q
-	 LshLPhvHlinKy1M/NEVfJJfHZqr2RWmrEdA2K4J8=
+	b=jinaMU0Te/B1a4UIuLPPQH1W/vvwl6v8i+C0ScozDnjCiw0yCgxhiIzHwCTxx8G32
+	 2vCtFCWo5iIqjfSPqjURfcZB+gM1iBG9Ds+oAztpNH1p1gfc+osA3i3rzYe/kTyxUn
+	 8BfSK9fbTtT+SHooKgujU2K3VVsQ2/v07wF8fdm8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Victor Nogueira <victor@mojatatu.com>,
+	Jian Shen <shenjian15@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 093/164] net_sched: ets: Fix double list add in class with netem as child qdisc
+Subject: [PATCH 5.15 37/55] net: hns3: store rx VLAN tag offload state for VF
 Date: Wed,  7 May 2025 20:39:38 +0200
-Message-ID: <20250507183824.737231158@linuxfoundation.org>
+Message-ID: <20250507183800.532295617@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183759.048732653@linuxfoundation.org>
+References: <20250507183759.048732653@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +64,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Nogueira <victor@mojatatu.com>
+From: Jian Shen <shenjian15@huawei.com>
 
-[ Upstream commit 1a6d0c00fa07972384b0c308c72db091d49988b6 ]
+[ Upstream commit ef2383d078edcbe3055032436b16cdf206f26de2 ]
 
-As described in Gerrard's report [1], there are use cases where a netem
-child qdisc will make the parent qdisc's enqueue callback reentrant.
-In the case of ets, there won't be a UAF, but the code will add the same
-classifier to the list twice, which will cause memory corruption.
+The VF driver missed to store the rx VLAN tag strip state when
+user change the rx VLAN tag offload state. And it will default
+to enable the rx vlan tag strip when re-init VF device after
+reset. So if user disable rx VLAN tag offload, and trig reset,
+then the HW will still strip the VLAN tag from packet nad fill
+into RX BD, but the VF driver will ignore it for rx VLAN tag
+offload disabled. It may cause the rx VLAN tag dropped.
 
-In addition to checking for qlen being zero, this patch checks whether
-the class was already added to the active_list (cl_is_active) before
-doing the addition to cater for the reentrant case.
-
-[1] https://lore.kernel.org/netdev/CAHcdcOm+03OD2j6R0=YHKqmy=VgJ8xEOKuP6c7mSgnp-TEJJbw@mail.gmail.com/
-
-Fixes: 37d9cf1a3ce3 ("sched: Fix detection of empty queues in child qdiscs")
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
-Link: https://patch.msgid.link/20250425220710.3964791-4-victor@mojatatu.com
+Fixes: b2641e2ad456 ("net: hns3: Add support of hardware rx-vlan-offload to HNS3 VF driver")
+Signed-off-by: Jian Shen <shenjian15@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250430093052.2400464-2-shaojijie@huawei.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_ets.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ .../hisilicon/hns3/hns3vf/hclgevf_main.c      | 25 ++++++++++++++-----
+ .../hisilicon/hns3/hns3vf/hclgevf_main.h      |  1 +
+ 2 files changed, 20 insertions(+), 6 deletions(-)
 
-diff --git a/net/sched/sch_ets.c b/net/sched/sch_ets.c
-index 516038a441638..9e4cd2cefa8c6 100644
---- a/net/sched/sch_ets.c
-+++ b/net/sched/sch_ets.c
-@@ -74,6 +74,11 @@ static const struct nla_policy ets_class_policy[TCA_ETS_MAX + 1] = {
- 	[TCA_ETS_QUANTA_BAND] = { .type = NLA_U32 },
- };
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
+index 7bb01eafba745..628d5c5ad75de 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
+@@ -1761,9 +1761,8 @@ static void hclgevf_sync_vlan_filter(struct hclgevf_dev *hdev)
+ 	rtnl_unlock();
+ }
  
-+static bool cl_is_active(struct ets_class *cl)
+-static int hclgevf_en_hw_strip_rxvtag(struct hnae3_handle *handle, bool enable)
++static int hclgevf_en_hw_strip_rxvtag_cmd(struct hclgevf_dev *hdev, bool enable)
+ {
+-	struct hclgevf_dev *hdev = hclgevf_ae_get_hdev(handle);
+ 	struct hclge_vf_to_pf_msg send_msg;
+ 
+ 	hclgevf_build_send_msg(&send_msg, HCLGE_MBX_SET_VLAN,
+@@ -1772,6 +1771,19 @@ static int hclgevf_en_hw_strip_rxvtag(struct hnae3_handle *handle, bool enable)
+ 	return hclgevf_send_mbx_msg(hdev, &send_msg, false, NULL, 0);
+ }
+ 
++static int hclgevf_en_hw_strip_rxvtag(struct hnae3_handle *handle, bool enable)
 +{
-+	return !list_empty(&cl->alist);
++	struct hclgevf_dev *hdev = hclgevf_ae_get_hdev(handle);
++	int ret;
++
++	ret = hclgevf_en_hw_strip_rxvtag_cmd(hdev, enable);
++	if (ret)
++		return ret;
++
++	hdev->rxvtag_strip_en = enable;
++	return 0;
 +}
 +
- static int ets_quantum_parse(struct Qdisc *sch, const struct nlattr *attr,
- 			     unsigned int *quantum,
- 			     struct netlink_ext_ack *extack)
-@@ -416,7 +421,6 @@ static int ets_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	struct ets_sched *q = qdisc_priv(sch);
- 	struct ets_class *cl;
- 	int err = 0;
--	bool first;
+ static int hclgevf_reset_tqp(struct hnae3_handle *handle)
+ {
+ #define HCLGEVF_RESET_ALL_QUEUE_DONE	1U
+@@ -2684,12 +2696,13 @@ static int hclgevf_rss_init_hw(struct hclgevf_dev *hdev)
+ 	return hclgevf_set_rss_tc_mode(hdev, rss_cfg->rss_size);
+ }
  
- 	cl = ets_classify(skb, sch, &err);
- 	if (!cl) {
-@@ -426,7 +430,6 @@ static int ets_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		return err;
+-static int hclgevf_init_vlan_config(struct hclgevf_dev *hdev)
++static int hclgevf_init_vlan_config(struct hclgevf_dev *hdev,
++				    bool rxvtag_strip_en)
+ {
+ 	struct hnae3_handle *nic = &hdev->nic;
+ 	int ret;
+ 
+-	ret = hclgevf_en_hw_strip_rxvtag(nic, true);
++	ret = hclgevf_en_hw_strip_rxvtag(nic, rxvtag_strip_en);
+ 	if (ret) {
+ 		dev_err(&hdev->pdev->dev,
+ 			"failed to enable rx vlan offload, ret = %d\n", ret);
+@@ -3359,7 +3372,7 @@ static int hclgevf_reset_hdev(struct hclgevf_dev *hdev)
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = hclgevf_init_vlan_config(hdev);
++	ret = hclgevf_init_vlan_config(hdev, hdev->rxvtag_strip_en);
+ 	if (ret) {
+ 		dev_err(&hdev->pdev->dev,
+ 			"failed(%d) to initialize VLAN config\n", ret);
+@@ -3472,7 +3485,7 @@ static int hclgevf_init_hdev(struct hclgevf_dev *hdev)
+ 		goto err_config;
  	}
  
--	first = !cl->qdisc->q.qlen;
- 	err = qdisc_enqueue(skb, cl->qdisc, to_free);
- 	if (unlikely(err != NET_XMIT_SUCCESS)) {
- 		if (net_xmit_drop_count(err)) {
-@@ -436,7 +439,7 @@ static int ets_qdisc_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		return err;
- 	}
+-	ret = hclgevf_init_vlan_config(hdev);
++	ret = hclgevf_init_vlan_config(hdev, true);
+ 	if (ret) {
+ 		dev_err(&hdev->pdev->dev,
+ 			"failed(%d) to initialize VLAN config\n", ret);
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.h b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.h
+index 2b216ac96914c..a6468fe2ec326 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.h
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.h
+@@ -315,6 +315,7 @@ struct hclgevf_dev {
+ 	int *vector_irq;
  
--	if (first && !ets_class_is_strict(q, cl)) {
-+	if (!cl_is_active(cl) && !ets_class_is_strict(q, cl)) {
- 		list_add_tail(&cl->alist, &q->active);
- 		cl->deficit = cl->quantum;
- 	}
+ 	bool gro_en;
++	bool rxvtag_strip_en;
+ 
+ 	unsigned long vlan_del_fail_bmap[BITS_TO_LONGS(VLAN_N_VID)];
+ 
 -- 
 2.39.5
 
