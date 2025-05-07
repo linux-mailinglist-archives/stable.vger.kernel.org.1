@@ -1,149 +1,99 @@
-Return-Path: <stable+bounces-142077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FEF5AAE36E
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 16:45:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F9DAAAE373
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 16:45:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4D0C3AB9EC
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 14:42:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92D333AEF0E
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 14:44:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC09926D4FC;
-	Wed,  7 May 2025 14:42:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16DD51FF601;
+	Wed,  7 May 2025 14:44:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="d9Evnz9V"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OdFbB+hN"
 X-Original-To: stable@vger.kernel.org
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D42F827A128
-	for <stable@vger.kernel.org>; Wed,  7 May 2025 14:42:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4A2257ACF
+	for <stable@vger.kernel.org>; Wed,  7 May 2025 14:44:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746628967; cv=none; b=laHmveGYLCfUHDTfA1VeVWR2UN95q+5f6GocPo71+cKcf+d9BwLpCz2sU+FdLRZelhIMIgl6x6OjqO5VwTB5Pupui//LthfNT1i+ERslnZi9KBMhzHNchNVzY/SXiiBYbtzQRl9cO9IIW5P8Camu0VNrwfJvpSWvhmORE8y+TFg=
+	t=1746629085; cv=none; b=QadCoJg9uWKTp5dDmqwcb9UmlOWwRH2gbFN6yi1TU3NoqUyMSB/LZj7t1LTh8fUzunAC0el2FG5FdBlzRy3f+DVJX2sJWmaWsuLUMEzO9EusSAVs2xVtmp+JgwnGbN/Ef1Ml0l23QWukKi8tYlyYszMPceYB3nMsm1lieTZsXJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746628967; c=relaxed/simple;
-	bh=7DunRLFldUeiMTf+UYtSN6FMcB3hN60Iv5yKAvtTt0o=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:MIME-Version:
-	 Content-Type:References; b=ponAmiDWdLeHsljtM6QN3jfhvKJiJs4xsI2vYggev+Lp0M60qr6xWxQYGRDvzV5t+BobGhfTiy7QzccAQSu1vKF4JinPdcoJk0ZQlbu/pgLdw+rIbovYk3tWKPvj+NCibPfiLf6QO7AMqczl/Fqyn0eX/jP65XG9VpHDXsDSXiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=d9Evnz9V; arc=none smtp.client-ip=210.118.77.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20250507144244euoutp017cebf46fd45094d026b59fb8bfb1aa5d~9Rcn4L6dm0139001390euoutp01q
-	for <stable@vger.kernel.org>; Wed,  7 May 2025 14:42:44 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20250507144244euoutp017cebf46fd45094d026b59fb8bfb1aa5d~9Rcn4L6dm0139001390euoutp01q
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1746628964;
-	bh=mdz+cXEDZljQjj2QHVAL79wyw6IZ/e07fNnVY+iBXtw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d9Evnz9VsLfmbn0AKxp+0qI5a3c1Rj/fY+g81UV/Jo6OCwbj/aftq/2NjRGsRtc9J
-	 Am3pdiZqSXjG8av2hmZ0LKAcJePbcyxFLgk8IILY2gQ0wtGqD4W22tMQwqB1PHJqRZ
-	 PWxRbZ8go7ktkhJpRijPlJIFLpJzPZeR55+9Wn84=
-Received: from eusmtip2.samsung.com (unknown [203.254.199.222]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTPA id
-	20250507144243eucas1p223283ee32d1675125dc77c2457253443~9RcnYuNDg1729917299eucas1p2Z;
-	Wed,  7 May 2025 14:42:43 +0000 (GMT)
-Received: from AMDC4653.digital.local (unknown [106.120.51.32]) by
-	eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20250507144242eusmtip25a0a7410ff09476124e2b33381e9f69a~9RcmtVAvp0180601806eusmtip2E;
-	Wed,  7 May 2025 14:42:42 +0000 (GMT)
-From: Marek Szyprowski <m.szyprowski@samsung.com>
-To: linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
-	iommu@lists.linux.dev
-Cc: Marek Szyprowski <m.szyprowski@samsung.com>, Laurent Pinchart
-	<laurent.pinchart@ideasonboard.com>, Sakari Ailus
-	<sakari.ailus@linux.intel.com>, Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>, Robin Murphy <robin.murphy@arm.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 3/3] media: omap3isp: use sgtable-based scatterlist
- wrappers
-Date: Wed,  7 May 2025 16:42:03 +0200
-Message-Id: <20250507144203.2081756-4-m.szyprowski@samsung.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250507144203.2081756-1-m.szyprowski@samsung.com>
+	s=arc-20240116; t=1746629085; c=relaxed/simple;
+	bh=n8EI7E6Dz6AzwEes/6/LRkBeJ5KMDspkzsKY7QNj+H8=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=re6WUjdcPcNkUHskRIKJXe3M+LiB+qvRK+O2ecJRb/mYndHJ1LvA1cvkwkF7w4QYH7h0nTrACwUcR2BDOi6OTQOKZEtG66b8Ljw+1EI4HQVkqGAq046LVwnHLuZ0SeVDOGRqs4xFP8D8MXMzxFMXs+QYRhsRlGflMFYHfpREKHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OdFbB+hN; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1746629083; x=1778165083;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=n8EI7E6Dz6AzwEes/6/LRkBeJ5KMDspkzsKY7QNj+H8=;
+  b=OdFbB+hN2bOwRGuK+6Hia9jwN9aqM7NbBETTI6/BjCjMDhbE8G8erade
+   T/3/XyUeGruot/xJr2oYnMDVV54cWPWhjuhz/6KxSYw6FkdW1ykdsw2kA
+   erevkFAmjs73MEY+Nh+ILhZf2BTf5eI9VmHvUgSSAJkW6+0PZH4htL9Gj
+   PDd69UI1qs5WfCTwPVJLD29w/T7a11205OzTUxpcq7ztv02kumqA3bU3h
+   jlKnKSSdTYndL/bLHKVxdI+dBNNtsm2kd+Yn23uTmWKj26a3KinYYjOTp
+   F+sRjdZelagCNmDuKEuI3QhX7I0GmE7Bo51c7VOpHdHUeevo9pivLT8CL
+   w==;
+X-CSE-ConnectionGUID: y2I4/PQbR6izfmdchFOsuw==
+X-CSE-MsgGUID: ZPWFi2cRS/+5YdHLn8wJwA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11426"; a="65893900"
+X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; 
+   d="scan'208";a="65893900"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2025 07:44:42 -0700
+X-CSE-ConnectionGUID: 6jczajH8Sl201PDxomnKCQ==
+X-CSE-MsgGUID: NmJqAWPaR9aZSVLpZFutNQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,269,1739865600"; 
+   d="scan'208";a="136001085"
+Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
+  by fmviesa007.fm.intel.com with ESMTP; 07 May 2025 07:44:41 -0700
+Received: from kbuild by 1992f890471c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uCg0l-00080T-01;
+	Wed, 07 May 2025 14:44:39 +0000
+Date: Wed, 7 May 2025 22:44:31 +0800
+From: kernel test robot <lkp@intel.com>
+To: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v2 2/3] udmabuf: use sgtable-based scatterlist wrappers
+Message-ID: <aBtxz_RNTlOc1M9b@908e72e18855>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CMS-MailID: 20250507144243eucas1p223283ee32d1675125dc77c2457253443
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20250507144243eucas1p223283ee32d1675125dc77c2457253443
-X-EPHeader: CA
-X-CMS-RootMailID: 20250507144243eucas1p223283ee32d1675125dc77c2457253443
-References: <20250507144203.2081756-1-m.szyprowski@samsung.com>
-	<CGME20250507144243eucas1p223283ee32d1675125dc77c2457253443@eucas1p2.samsung.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250507144203.2081756-3-m.szyprowski@samsung.com>
 
-Use common wrappers operating directly on the struct sg_table objects to
-fix incorrect use of scatterlists sync calls. dma_sync_sg_for_*()
-functions have to be called with the number of elements originally passed
-to dma_map_sg_*() function, not the one returned in sgtable's nents.
+Hi,
 
-Fixes: d33186d0be18 ("[media] omap3isp: ccdc: Use the DMA API for LSC")
-Fixes: 0e24e90f2ca7 ("[media] omap3isp: stat: Use the DMA API")
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
----
- drivers/media/platform/ti/omap3isp/ispccdc.c | 8 ++++----
- drivers/media/platform/ti/omap3isp/ispstat.c | 6 ++----
- 2 files changed, 6 insertions(+), 8 deletions(-)
+Thanks for your patch.
 
-diff --git a/drivers/media/platform/ti/omap3isp/ispccdc.c b/drivers/media/platform/ti/omap3isp/ispccdc.c
-index dd375c4e180d..7d0c723dcd11 100644
---- a/drivers/media/platform/ti/omap3isp/ispccdc.c
-+++ b/drivers/media/platform/ti/omap3isp/ispccdc.c
-@@ -446,8 +446,8 @@ static int ccdc_lsc_config(struct isp_ccdc_device *ccdc,
- 		if (ret < 0)
- 			goto done;
- 
--		dma_sync_sg_for_cpu(isp->dev, req->table.sgt.sgl,
--				    req->table.sgt.nents, DMA_TO_DEVICE);
-+		dma_sync_sgtable_for_cpu(isp->dev, &req->table.sgt,
-+					 DMA_TO_DEVICE);
- 
- 		if (copy_from_user(req->table.addr, config->lsc,
- 				   req->config.size)) {
-@@ -455,8 +455,8 @@ static int ccdc_lsc_config(struct isp_ccdc_device *ccdc,
- 			goto done;
- 		}
- 
--		dma_sync_sg_for_device(isp->dev, req->table.sgt.sgl,
--				       req->table.sgt.nents, DMA_TO_DEVICE);
-+		dma_sync_sgtable_for_device(isp->dev, &req->table.sgt,
-+					    DMA_TO_DEVICE);
- 	}
- 
- 	spin_lock_irqsave(&ccdc->lsc.req_lock, flags);
-diff --git a/drivers/media/platform/ti/omap3isp/ispstat.c b/drivers/media/platform/ti/omap3isp/ispstat.c
-index 359a846205b0..d3da68408ecb 100644
---- a/drivers/media/platform/ti/omap3isp/ispstat.c
-+++ b/drivers/media/platform/ti/omap3isp/ispstat.c
-@@ -161,8 +161,7 @@ static void isp_stat_buf_sync_for_device(struct ispstat *stat,
- 	if (ISP_STAT_USES_DMAENGINE(stat))
- 		return;
- 
--	dma_sync_sg_for_device(stat->isp->dev, buf->sgt.sgl,
--			       buf->sgt.nents, DMA_FROM_DEVICE);
-+	dma_sync_sgtable_for_device(stat->isp->dev, &buf->sgt, DMA_FROM_DEVICE);
- }
- 
- static void isp_stat_buf_sync_for_cpu(struct ispstat *stat,
-@@ -171,8 +170,7 @@ static void isp_stat_buf_sync_for_cpu(struct ispstat *stat,
- 	if (ISP_STAT_USES_DMAENGINE(stat))
- 		return;
- 
--	dma_sync_sg_for_cpu(stat->isp->dev, buf->sgt.sgl,
--			    buf->sgt.nents, DMA_FROM_DEVICE);
-+	dma_sync_sgtable_for_cpu(stat->isp->dev, &buf->sgt, DMA_FROM_DEVICE);
- }
- 
- static void isp_stat_buf_clear(struct ispstat *stat)
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
+
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH v2 2/3] udmabuf: use sgtable-based scatterlist wrappers
+Link: https://lore.kernel.org/stable/20250507144203.2081756-3-m.szyprowski%40samsung.com
+
 -- 
-2.34.1
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
