@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-142700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D68EFAAEBCF
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:11:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41290AAEA8B
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:56:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 109831C457E5
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:11:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A934B5234C4
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:56:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6AFD28C845;
-	Wed,  7 May 2025 19:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99495244693;
+	Wed,  7 May 2025 18:56:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n4tkDc7l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uRvnXp0D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6268B2144C1;
-	Wed,  7 May 2025 19:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 570A01482F5;
+	Wed,  7 May 2025 18:56:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746645060; cv=none; b=t7VTVplfl6K9fem1OZMKdl2g1Ea28OA5gn5GBSrJ3McwgfaRIyH7ncCLkiRoMgCmStE9Q9+f2gO91coedJuLFLUfkkNhKIBeSaPqpfzDMWkyNQ1YxS7NaMPYanBN7HUAci/b7FWvLwVMxrNj7oPnWxbBFhKry+RZtBmtXUX8tCg=
+	t=1746644201; cv=none; b=FCdPq5QlXh2TNlPmKIi7pcH93idH2KexfKaBfojn0d1Q0b0YSz7jPu2sYSXtshM/nxXQUu4bmPbg/vgwBKyXFNxazvmasN1LjN06M0902t3FZvSemAvBYM2TlwfCKCiGUSvUAko5Q++ZzL96L7LrbXav4ut2nkADGMGvX5ChsT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746645060; c=relaxed/simple;
-	bh=9ct3QUNvW0a40CVudk2Ac2MdN3ZN4MWJOM11hmcpkOA=;
+	s=arc-20240116; t=1746644201; c=relaxed/simple;
+	bh=k36pJw46zdcFIa8PbqsfVQ2gaqDeKYiNmQvtnuceJ0I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YG6W24osvDwy2pzI4Y+u4OuEY6Sj7SfS7ZGSGVNfIh97f5RAYrCULUN0YuUFSniqGIC0SOi5fEBwwEBas3GL8whjg3RSY2tUGYs3nM0FP8ejCAlBmOxxsGBVEpT5r07YetTWJUyettIVoSJUGqqwqizOrb0xf9Fp5hDIVtpV91w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n4tkDc7l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7E61C4CEE2;
-	Wed,  7 May 2025 19:10:59 +0000 (UTC)
+	 MIME-Version; b=UZSWKzMSmhmZyeHHW/6lxKUJ5ywqgy9SJyFRT44g/p/R+qYZpFE9w+rl9t2abvo99Wu8TGG5OreRLT9aJAsR9M7EXM9L4t1tiSX9372jNn84aIo2MxDF6k2oRSAlCynJWxwsR6p3ZJZ2eTKV+tHl2gamtzCXYaGSeHzlXWzH09I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uRvnXp0D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ABCEC4CEE2;
+	Wed,  7 May 2025 18:56:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746645060;
-	bh=9ct3QUNvW0a40CVudk2Ac2MdN3ZN4MWJOM11hmcpkOA=;
+	s=korg; t=1746644201;
+	bh=k36pJw46zdcFIa8PbqsfVQ2gaqDeKYiNmQvtnuceJ0I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n4tkDc7l3yWNjqRmdnIXi9ZYyuTdFUlxca5qon8AZxw4k2ePFnyPo9/CMyQcvsVy3
-	 WNi961ioZUomf5caTLJD3fK6BXvQLO6ysBAqY4L9xFH77yodwHh6zLujbjpCpLeoFx
-	 IV0aGb4SSxu5/anH47EjlOdyQk3WePpcNohRMgZo=
+	b=uRvnXp0DBpkClPs/uK1EFJH1xObFozEIhYlRjkNZc/NY0UTvzg2zu5I92QPrWxN3L
+	 5RSZa2imM3HWoIEqtkqtKWvbPv8MNRfG5TKT4FZ57AXFRotc1OBAcKbt0lzm5mXMSJ
+	 qTP50TgQ+OyqZq+VNh5k+5MiqqSZva/qUns+Cxas=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
+	Stefan Wahren <wahrenst@gmx.net>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 053/129] vxlan: vnifilter: Fix unlocked deletion of default FDB entry
+Subject: [PATCH 6.14 144/183] net: vertexcom: mse102x: Fix possible stuck of SPI interrupt
 Date: Wed,  7 May 2025 20:39:49 +0200
-Message-ID: <20250507183815.684824618@linuxfoundation.org>
+Message-ID: <20250507183830.701646873@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
-References: <20250507183813.500572371@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-[ Upstream commit 087a9eb9e5978e3ba362e1163691e41097e8ca20 ]
+[ Upstream commit 55f362885951b2d00fd7fbb02ef0227deea572c2 ]
 
-When a VNI is deleted from a VXLAN device in 'vnifilter' mode, the FDB
-entry associated with the default remote (assuming one was configured)
-is deleted without holding the hash lock. This is wrong and will result
-in a warning [1] being generated by the lockdep annotation that was
-added by commit ebe642067455 ("vxlan: Create wrappers for FDB lookup").
+The MSE102x doesn't provide any SPI commands for interrupt handling.
+So in case the interrupt fired before the driver requests the IRQ,
+the interrupt will never fire again. In order to fix this always poll
+for pending packets after opening the interface.
 
-Reproducer:
-
- # ip link add vx0 up type vxlan dstport 4789 external vnifilter local 192.0.2.1
- # bridge vni add vni 10010 remote 198.51.100.1 dev vx0
- # bridge vni del vni 10010 dev vx0
-
-Fix by acquiring the hash lock before the deletion and releasing it
-afterwards. Blame the original commit that introduced the issue rather
-than the one that exposed it.
-
-[1]
-WARNING: CPU: 3 PID: 392 at drivers/net/vxlan/vxlan_core.c:417 vxlan_find_mac+0x17f/0x1a0
-[...]
-RIP: 0010:vxlan_find_mac+0x17f/0x1a0
-[...]
-Call Trace:
- <TASK>
- __vxlan_fdb_delete+0xbe/0x560
- vxlan_vni_delete_group+0x2ba/0x940
- vxlan_vni_del.isra.0+0x15f/0x580
- vxlan_process_vni_filter+0x38b/0x7b0
- vxlan_vnifilter_process+0x3bb/0x510
- rtnetlink_rcv_msg+0x2f7/0xb70
- netlink_rcv_skb+0x131/0x360
- netlink_unicast+0x426/0x710
- netlink_sendmsg+0x75a/0xc20
- __sock_sendmsg+0xc1/0x150
- ____sys_sendmsg+0x5aa/0x7b0
- ___sys_sendmsg+0xfc/0x180
- __sys_sendmsg+0x121/0x1b0
- do_syscall_64+0xbb/0x1d0
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
-
-Fixes: f9c4bb0b245c ("vxlan: vni filtering support on collect metadata device")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20250423145131.513029-1-idosch@nvidia.com
+Fixes: 2f207cbf0dd4 ("net: vertexcom: Add MSE102x SPI support")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250430133043.7722-2-wahrenst@gmx.net
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/vxlan/vxlan_vnifilter.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/vertexcom/mse102x.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/vxlan/vxlan_vnifilter.c b/drivers/net/vxlan/vxlan_vnifilter.c
-index 6e6e9f05509ab..06d19e90eadb5 100644
---- a/drivers/net/vxlan/vxlan_vnifilter.c
-+++ b/drivers/net/vxlan/vxlan_vnifilter.c
-@@ -627,7 +627,11 @@ static void vxlan_vni_delete_group(struct vxlan_dev *vxlan,
- 	 * default dst remote_ip previously added for this vni
- 	 */
- 	if (!vxlan_addr_any(&vninode->remote_ip) ||
--	    !vxlan_addr_any(&dst->remote_ip))
-+	    !vxlan_addr_any(&dst->remote_ip)) {
-+		u32 hash_index = fdb_head_index(vxlan, all_zeros_mac,
-+						vninode->vni);
-+
-+		spin_lock_bh(&vxlan->hash_lock[hash_index]);
- 		__vxlan_fdb_delete(vxlan, all_zeros_mac,
- 				   (vxlan_addr_any(&vninode->remote_ip) ?
- 				   dst->remote_ip : vninode->remote_ip),
-@@ -635,6 +639,8 @@ static void vxlan_vni_delete_group(struct vxlan_dev *vxlan,
- 				   vninode->vni, vninode->vni,
- 				   dst->remote_ifindex,
- 				   true);
-+		spin_unlock_bh(&vxlan->hash_lock[hash_index]);
-+	}
+diff --git a/drivers/net/ethernet/vertexcom/mse102x.c b/drivers/net/ethernet/vertexcom/mse102x.c
+index 89dc4c401a8de..92ebf16331598 100644
+--- a/drivers/net/ethernet/vertexcom/mse102x.c
++++ b/drivers/net/ethernet/vertexcom/mse102x.c
+@@ -509,6 +509,7 @@ static irqreturn_t mse102x_irq(int irq, void *_mse)
+ static int mse102x_net_open(struct net_device *ndev)
+ {
+ 	struct mse102x_net *mse = netdev_priv(ndev);
++	struct mse102x_net_spi *mses = to_mse102x_spi(mse);
+ 	int ret;
  
- 	if (vxlan->dev->flags & IFF_UP) {
- 		if (vxlan_addr_multicast(&vninode->remote_ip) &&
+ 	ret = request_threaded_irq(ndev->irq, NULL, mse102x_irq, IRQF_ONESHOT,
+@@ -524,6 +525,13 @@ static int mse102x_net_open(struct net_device *ndev)
+ 
+ 	netif_carrier_on(ndev);
+ 
++	/* The SPI interrupt can stuck in case of pending packet(s).
++	 * So poll for possible packet(s) to re-arm the interrupt.
++	 */
++	mutex_lock(&mses->lock);
++	mse102x_rx_pkt_spi(mse);
++	mutex_unlock(&mses->lock);
++
+ 	netif_dbg(mse, ifup, ndev, "network device up\n");
+ 
+ 	return 0;
 -- 
 2.39.5
 
