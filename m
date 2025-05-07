@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-142510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E84BEAAEAED
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:01:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3CB9AAEA4B
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:53:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9044B3A7510
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:00:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 39A185087C0
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:53:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E040028C2A5;
-	Wed,  7 May 2025 19:01:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C3DC21E0BB;
+	Wed,  7 May 2025 18:53:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cSc7zZ7X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XpdXfXZZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BDF02144BF;
-	Wed,  7 May 2025 19:01:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04303211A2A;
+	Wed,  7 May 2025 18:53:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644475; cv=none; b=i6n8wEk/6Jcfy1u7E5fgqzC5vK8/47iGRaS23fdVyLHLxozdbTMBhHRhqSPAE08mQoPInA+kppO8LvN8ct3KGplE0WG1ozpX9ZnWOwnLISSouxg2686m5mjT+Wtl/W97mN1ZF0NxRqotfEqLDwFglXJsSqCNOI1GkX+pJq1y/Fw=
+	t=1746644020; cv=none; b=I1stN2i9QqjtIPsys3EvCxZSEg9TnIre80lq7t6opOASUA5knGzYzJFQTggGKSL0d+Mr+yR8+Fj7r6E3vurA6K0nOEyKm/PK1PGsb61mb7CAVUbXO2Ym2vmla4Kn+I04f+0K6NvuU+tGbMZ74q3ydaDhs6qNGvaNKjyLj4w402E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644475; c=relaxed/simple;
-	bh=cq7+mUz3uSU7YzTc7idC4tqntGSzVNcBgIzWQdHIMUU=;
+	s=arc-20240116; t=1746644020; c=relaxed/simple;
+	bh=V6ryQeHdrx5+itd6b1ru/+5IMyJEU3XUPNiOkB6d2Gs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PEHsnktIDYYXrQMjaKLlTalRO8cw7eTw/O8kX0g+eusoPoQaxy/zlyx44GE5f3sqTfJqRrZq5C4o7mQUg82BUaIr9bQekBbUKH+dCjIooxxky9uaQaEtf36yHGZStmbgf1DcBbGGGszB6QQuz5WSzx8n2VXI/vrk0mBlxSlTmuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cSc7zZ7X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BE78C4CEE2;
-	Wed,  7 May 2025 19:01:15 +0000 (UTC)
+	 MIME-Version; b=mqs/F5vYUiS365ECqDK5iPSlcPRh1BPfoCffc6tTlBRSICDBb5v19OKww39LhnuiV0KGztNEyO4GD5L6mGU2K0D14r7rma6QHMEs8ZUDvgxnIe3OWF/M+j8YsybjRAPXVvoj0JIPsrtueJjOAojnGk5qlbno4pL06z53LWoNgFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XpdXfXZZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76A6AC4CEEB;
+	Wed,  7 May 2025 18:53:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644475;
-	bh=cq7+mUz3uSU7YzTc7idC4tqntGSzVNcBgIzWQdHIMUU=;
+	s=korg; t=1746644019;
+	bh=V6ryQeHdrx5+itd6b1ru/+5IMyJEU3XUPNiOkB6d2Gs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cSc7zZ7XARFVUyDtw2JVq9bG+XXH0HtgLdZa8t7FVpYbtjaHKG2M0wIN09XMNsGkf
-	 IlxreIKfDp6iinwSJIrWbAK+fbtnndw7ue6qF/5CWyQz+aZJYRbzBWpnCmob3ReF9h
-	 uK8oAB5saONHpYFsT1YXUCAFiO0AuNlQSiucxlzk=
+	b=XpdXfXZZmYjf3BCer0L0ZljtGkV1WMjtwz6JRP4tO5FbEgeQ7CTsLKrqcjif0awMZ
+	 0+gFe3pFkBf7TsrOdp3Wg7uFL6mMMioPb9Nzdkw2LmfPbH4S13C+uf4+tsgnO9LrkU
+	 ANmKxgzHCwLDLohcZyK5RNFRJ18dnNY8YvjaeACM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sheetal <sheetal@nvidia.com>,
-	Mark Brown <broonie@kernel.org>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 054/164] ASoC: soc-pcm: Fix hw_params() and DAPM widget sequence
+Subject: [PATCH 6.14 094/183] pds_core: specify auxiliary_device to be created
 Date: Wed,  7 May 2025 20:38:59 +0200
-Message-ID: <20250507183823.124077427@linuxfoundation.org>
+Message-ID: <20250507183828.631767202@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+References: <20250507183824.682671926@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +65,196 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sheetal <sheetal@nvidia.com>
+From: Shannon Nelson <shannon.nelson@amd.com>
 
-[ Upstream commit 9aff2e8df240e84a36f2607f98a0a9924a24e65d ]
+[ Upstream commit b699bdc720c0255d1bb76cecba7382c1f2107af5 ]
 
-Issue:
- When multiple audio streams share a common BE DAI, the BE DAI
- widget can be powered up before its hardware parameters are configured.
- This incorrect sequence leads to intermittent pcm_write errors.
+In preparation for adding a new auxiliary_device for the PF,
+make the vif type an argument to pdsc_auxbus_dev_add().  Pass in
+the address of the padev pointer so that the caller can specify
+where to save it and keep the mutex usage within the function.
 
- For example, the below Tegra use-case throws an error:
-  aplay(2 streams) -> AMX(mux) -> ADX(demux) -> arecord(2 streams),
-  here, 'AMX TX' and 'ADX RX' are common BE DAIs.
-
-For above usecase when failure happens below sequence is observed:
- aplay(1) FE open()
-  - BE DAI callbacks added to the list
-  - BE DAI state = SND_SOC_DPCM_STATE_OPEN
- aplay(2) FE open()
-  - BE DAI callbacks are not added to the list as the state is
-    already SND_SOC_DPCM_STATE_OPEN during aplay(1) FE open().
- aplay(2) FE hw_params()
-  - BE DAI hw_params() callback ignored
- aplay(2) FE prepare()
-  - Widget is powered ON without BE DAI hw_params() call
- aplay(1) FE hw_params()
-  - BE DAI hw_params() is now called
-
-Fix:
- Add BE DAIs in the list if its state is either SND_SOC_DPCM_STATE_OPEN
- or SND_SOC_DPCM_STATE_HW_PARAMS as well.
-
-It ensures the widget is powered ON after BE DAI hw_params() callback.
-
-Fixes: 0c25db3f7621 ("ASoC: soc-pcm: Don't reconnect an already active BE")
-Signed-off-by: Sheetal <sheetal@nvidia.com>
-Link: https://patch.msgid.link/20250404105953.2784819-1-sheetal@nvidia.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://patch.msgid.link/r/20250320194412.67983-3-shannon.nelson@amd.com
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Stable-dep-of: dfd76010f8e8 ("pds_core: remove write-after-free of client_id")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-pcm.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/amd/pds_core/auxbus.c  | 37 ++++++++++-----------
+ drivers/net/ethernet/amd/pds_core/core.h    |  7 ++--
+ drivers/net/ethernet/amd/pds_core/devlink.c |  5 +--
+ drivers/net/ethernet/amd/pds_core/main.c    | 11 +++---
+ 4 files changed, 33 insertions(+), 27 deletions(-)
 
-diff --git a/sound/soc/soc-pcm.c b/sound/soc/soc-pcm.c
-index 1102599403c53..0e21ff9f7b74e 100644
---- a/sound/soc/soc-pcm.c
-+++ b/sound/soc/soc-pcm.c
-@@ -1633,10 +1633,13 @@ static int dpcm_add_paths(struct snd_soc_pcm_runtime *fe, int stream,
- 		/*
- 		 * Filter for systems with 'component_chaining' enabled.
- 		 * This helps to avoid unnecessary re-configuration of an
--		 * already active BE on such systems.
-+		 * already active BE on such systems and ensures the BE DAI
-+		 * widget is powered ON after hw_params() BE DAI callback.
- 		 */
- 		if (fe->card->component_chaining &&
- 		    (be->dpcm[stream].state != SND_SOC_DPCM_STATE_NEW) &&
-+		    (be->dpcm[stream].state != SND_SOC_DPCM_STATE_OPEN) &&
-+		    (be->dpcm[stream].state != SND_SOC_DPCM_STATE_HW_PARAMS) &&
- 		    (be->dpcm[stream].state != SND_SOC_DPCM_STATE_CLOSE))
- 			continue;
+diff --git a/drivers/net/ethernet/amd/pds_core/auxbus.c b/drivers/net/ethernet/amd/pds_core/auxbus.c
+index d53b2124b1498..4d3387bebe6a4 100644
+--- a/drivers/net/ethernet/amd/pds_core/auxbus.c
++++ b/drivers/net/ethernet/amd/pds_core/auxbus.c
+@@ -172,29 +172,32 @@ static struct pds_auxiliary_dev *pdsc_auxbus_dev_register(struct pdsc *cf,
+ 	return padev;
+ }
+ 
+-void pdsc_auxbus_dev_del(struct pdsc *cf, struct pdsc *pf)
++void pdsc_auxbus_dev_del(struct pdsc *cf, struct pdsc *pf,
++			 struct pds_auxiliary_dev **pd_ptr)
+ {
+ 	struct pds_auxiliary_dev *padev;
+ 
++	if (!*pd_ptr)
++		return;
++
+ 	mutex_lock(&pf->config_lock);
+ 
+-	padev = pf->vfs[cf->vf_id].padev;
+-	if (padev) {
+-		pds_client_unregister(pf, padev->client_id);
+-		auxiliary_device_delete(&padev->aux_dev);
+-		auxiliary_device_uninit(&padev->aux_dev);
+-		padev->client_id = 0;
+-	}
+-	pf->vfs[cf->vf_id].padev = NULL;
++	padev = *pd_ptr;
++	pds_client_unregister(pf, padev->client_id);
++	auxiliary_device_delete(&padev->aux_dev);
++	auxiliary_device_uninit(&padev->aux_dev);
++	padev->client_id = 0;
++	*pd_ptr = NULL;
+ 
+ 	mutex_unlock(&pf->config_lock);
+ }
+ 
+-int pdsc_auxbus_dev_add(struct pdsc *cf, struct pdsc *pf)
++int pdsc_auxbus_dev_add(struct pdsc *cf, struct pdsc *pf,
++			enum pds_core_vif_types vt,
++			struct pds_auxiliary_dev **pd_ptr)
+ {
+ 	struct pds_auxiliary_dev *padev;
+ 	char devname[PDS_DEVNAME_LEN];
+-	enum pds_core_vif_types vt;
+ 	unsigned long mask;
+ 	u16 vt_support;
+ 	int client_id;
+@@ -203,6 +206,9 @@ int pdsc_auxbus_dev_add(struct pdsc *cf, struct pdsc *pf)
+ 	if (!cf)
+ 		return -ENODEV;
+ 
++	if (vt >= PDS_DEV_TYPE_MAX)
++		return -EINVAL;
++
+ 	mutex_lock(&pf->config_lock);
+ 
+ 	mask = BIT_ULL(PDSC_S_FW_DEAD) |
+@@ -214,17 +220,10 @@ int pdsc_auxbus_dev_add(struct pdsc *cf, struct pdsc *pf)
+ 		goto out_unlock;
+ 	}
+ 
+-	/* We only support vDPA so far, so it is the only one to
+-	 * be verified that it is available in the Core device and
+-	 * enabled in the devlink param.  In the future this might
+-	 * become a loop for several VIF types.
+-	 */
+-
+ 	/* Verify that the type is supported and enabled.  It is not
+ 	 * an error if there is no auxbus device support for this
+ 	 * VF, it just means something else needs to happen with it.
+ 	 */
+-	vt = PDS_DEV_TYPE_VDPA;
+ 	vt_support = !!le16_to_cpu(pf->dev_ident.vif_types[vt]);
+ 	if (!(vt_support &&
+ 	      pf->viftype_status[vt].supported &&
+@@ -250,7 +249,7 @@ int pdsc_auxbus_dev_add(struct pdsc *cf, struct pdsc *pf)
+ 		err = PTR_ERR(padev);
+ 		goto out_unlock;
+ 	}
+-	pf->vfs[cf->vf_id].padev = padev;
++	*pd_ptr = padev;
+ 
+ out_unlock:
+ 	mutex_unlock(&pf->config_lock);
+diff --git a/drivers/net/ethernet/amd/pds_core/core.h b/drivers/net/ethernet/amd/pds_core/core.h
+index 08b8280437dcf..becd3104473c2 100644
+--- a/drivers/net/ethernet/amd/pds_core/core.h
++++ b/drivers/net/ethernet/amd/pds_core/core.h
+@@ -303,8 +303,11 @@ void pdsc_health_thread(struct work_struct *work);
+ int pdsc_register_notify(struct notifier_block *nb);
+ void pdsc_unregister_notify(struct notifier_block *nb);
+ void pdsc_notify(unsigned long event, void *data);
+-int pdsc_auxbus_dev_add(struct pdsc *cf, struct pdsc *pf);
+-void pdsc_auxbus_dev_del(struct pdsc *cf, struct pdsc *pf);
++int pdsc_auxbus_dev_add(struct pdsc *cf, struct pdsc *pf,
++			enum pds_core_vif_types vt,
++			struct pds_auxiliary_dev **pd_ptr);
++void pdsc_auxbus_dev_del(struct pdsc *cf, struct pdsc *pf,
++			 struct pds_auxiliary_dev **pd_ptr);
+ 
+ void pdsc_process_adminq(struct pdsc_qcq *qcq);
+ void pdsc_work_thread(struct work_struct *work);
+diff --git a/drivers/net/ethernet/amd/pds_core/devlink.c b/drivers/net/ethernet/amd/pds_core/devlink.c
+index 48a7c22fe3320..d8dc39da4161f 100644
+--- a/drivers/net/ethernet/amd/pds_core/devlink.c
++++ b/drivers/net/ethernet/amd/pds_core/devlink.c
+@@ -57,9 +57,10 @@ int pdsc_dl_enable_set(struct devlink *dl, u32 id,
+ 		struct pdsc *vf = pdsc->vfs[vf_id].vf;
+ 
+ 		if (ctx->val.vbool)
+-			err = pdsc_auxbus_dev_add(vf, pdsc);
++			err = pdsc_auxbus_dev_add(vf, pdsc, vt_entry->vif_id,
++						  &pdsc->vfs[vf_id].padev);
+ 		else
+-			pdsc_auxbus_dev_del(vf, pdsc);
++			pdsc_auxbus_dev_del(vf, pdsc, &pdsc->vfs[vf_id].padev);
+ 	}
+ 
+ 	return err;
+diff --git a/drivers/net/ethernet/amd/pds_core/main.c b/drivers/net/ethernet/amd/pds_core/main.c
+index 660268ff95623..a3a68889137b6 100644
+--- a/drivers/net/ethernet/amd/pds_core/main.c
++++ b/drivers/net/ethernet/amd/pds_core/main.c
+@@ -190,7 +190,8 @@ static int pdsc_init_vf(struct pdsc *vf)
+ 	devl_unlock(dl);
+ 
+ 	pf->vfs[vf->vf_id].vf = vf;
+-	err = pdsc_auxbus_dev_add(vf, pf);
++	err = pdsc_auxbus_dev_add(vf, pf, PDS_DEV_TYPE_VDPA,
++				  &pf->vfs[vf->vf_id].padev);
+ 	if (err) {
+ 		devl_lock(dl);
+ 		devl_unregister(dl);
+@@ -417,7 +418,7 @@ static void pdsc_remove(struct pci_dev *pdev)
+ 
+ 		pf = pdsc_get_pf_struct(pdsc->pdev);
+ 		if (!IS_ERR(pf)) {
+-			pdsc_auxbus_dev_del(pdsc, pf);
++			pdsc_auxbus_dev_del(pdsc, pf, &pf->vfs[pdsc->vf_id].padev);
+ 			pf->vfs[pdsc->vf_id].vf = NULL;
+ 		}
+ 	} else {
+@@ -482,7 +483,8 @@ static void pdsc_reset_prepare(struct pci_dev *pdev)
+ 
+ 		pf = pdsc_get_pf_struct(pdsc->pdev);
+ 		if (!IS_ERR(pf))
+-			pdsc_auxbus_dev_del(pdsc, pf);
++			pdsc_auxbus_dev_del(pdsc, pf,
++					    &pf->vfs[pdsc->vf_id].padev);
+ 	}
+ 
+ 	pdsc_unmap_bars(pdsc);
+@@ -527,7 +529,8 @@ static void pdsc_reset_done(struct pci_dev *pdev)
+ 
+ 		pf = pdsc_get_pf_struct(pdsc->pdev);
+ 		if (!IS_ERR(pf))
+-			pdsc_auxbus_dev_add(pdsc, pf);
++			pdsc_auxbus_dev_add(pdsc, pf, PDS_DEV_TYPE_VDPA,
++					    &pf->vfs[pdsc->vf_id].padev);
+ 	}
+ }
  
 -- 
 2.39.5
