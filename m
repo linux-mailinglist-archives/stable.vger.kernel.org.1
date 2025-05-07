@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-142601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3665AAAEB61
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:06:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3C94AAEBE1
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 21:11:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 003691C08DDE
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:06:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 228FCB2168C
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 19:10:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E235928E597;
-	Wed,  7 May 2025 19:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA39E28C2B3;
+	Wed,  7 May 2025 19:11:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FZpMPkK+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KO6vNzWf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EB4228DF21;
-	Wed,  7 May 2025 19:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A73022144C1;
+	Wed,  7 May 2025 19:11:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644756; cv=none; b=YZ6nINp7hMnhZAZqw07q7nnZ2fzvC84duVeyNSv78F9SIfbhlPyw1CDYVKjOW0v028VtNTARMd+rjwDrHO7x4fZSJc1Ep2zMe/DbveYM7KtoI7vcGDKsiudofLtFXKe8jA3IISAjSxgQqETmOeWoRXBzmS3iGC75HiruWuoB9O8=
+	t=1746645103; cv=none; b=tczvRl1iS6bjvimA1rBRz0Rn8CZWZylfcYWcKZxvHrENYez9L6os+nRIKNUXBOskqYPncGe/E7d79rZPc1M8rSto0zqHp+ymADeDr8M5iCwTlWac8TSMy0gYxpOqH1FSJ7hl4D9EQDeK1fE50lEISS4izwWDbl0z3uujkb2P2ig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644756; c=relaxed/simple;
-	bh=Pjb0XYGHFWNPN7oHKTCsN2LMJ1rkLqWajOn9d9Pf/VI=;
+	s=arc-20240116; t=1746645103; c=relaxed/simple;
+	bh=u55HoD5XivrLtw3MqvSOIX4zp3j+pCzDeKrsjoeU7M4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aKgmx9rKxhL8tzRy61c9RHSp6CX6idY+a5ohmcAXF/EalZaCZTYbmw8LOt7bfIO2jeMDhDq68Z0htMOADUrPhwPyU8hLzxHFhkRdJxbfYkAO1lUaJgC0956ivZPvS93dCDQ7TvxYpJAyfdMJwkPd52rwPYlY9R9SgEr7mCD5xuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FZpMPkK+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27CB3C4CEE2;
-	Wed,  7 May 2025 19:05:55 +0000 (UTC)
+	 MIME-Version; b=tG5HYwKLA3IJ0CV5K0sySbRXlak1KtSe0UmGpSH5WCfsrf6frpUfD8v776OMXSCd26oXquYZ6FdVc41itmyFZmji1/yGfAnPnE4yjXsMxFlQtGOuOrfN0icCj7vY9d+ht/77R+IS0ZcO3MNDiX3fO1zk7p8Za/1+zqNUBgMEr40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KO6vNzWf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B539C4CEE2;
+	Wed,  7 May 2025 19:11:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644756;
-	bh=Pjb0XYGHFWNPN7oHKTCsN2LMJ1rkLqWajOn9d9Pf/VI=;
+	s=korg; t=1746645103;
+	bh=u55HoD5XivrLtw3MqvSOIX4zp3j+pCzDeKrsjoeU7M4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FZpMPkK+nccNAzNiTwDZOCacde31pbFxOayRdmHunfCTbczpfViQEGwgKXPGQ7qKb
-	 KSc9fmwGXmI01Z9mkIsR15nehzQfETWUetbRNpq5PTwDdn5dBsX0uiNgWiqyBAoTXI
-	 dLiNbX+eV7AeoYcniOi+wMuIHZztK7/qKf7NawD0=
+	b=KO6vNzWfAwvCurP4awlnc2MQZ0W2B/Rxo3vlJ84jERjBwm9ScM7GxVcv10a9IZGyE
+	 gvjzANVD9BLe5U/9P3Pp4L3YkNhUXkUJOnYYo80hLlbJNu+m9f2wk0LrTmtQVjnnkh
+	 INYqAc29xi3gm6LJ73ti+v4UugyUD5U9HofntYwo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karol Wachowski <karol.wachowski@intel.com>,
-	Maciej Falkowski <maciej.falkowski@linux.intel.com>,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Subject: [PATCH 6.12 146/164] accel/ivpu: Add handling of VPU_JSM_STATUS_MVNCI_CONTEXT_VIOLATION_HW
+	Stefan Wahren <wahrenst@gmx.net>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 095/129] net: vertexcom: mse102x: Fix RX error handling
 Date: Wed,  7 May 2025 20:40:31 +0200
-Message-ID: <20250507183826.882448771@linuxfoundation.org>
+Message-ID: <20250507183817.346667570@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+References: <20250507183813.500572371@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karol Wachowski <karol.wachowski@intel.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-commit dad945c27a42dfadddff1049cf5ae417209a8996 upstream.
+[ Upstream commit ee512922ddd7d64afe2b28830a88f19063217649 ]
 
-Mark as invalid context of a job that returned HW context violation
-error and queue work that aborts jobs from faulty context.
-Add engine reset to the context abort thread handler to not only abort
-currently executing jobs but also to ensure NPU invalid state recovery.
+In case the CMD_RTS got corrupted by interferences, the MSE102x
+doesn't allow a retransmission of the command. Instead the Ethernet
+frame must be shifted out of the SPI FIFO. Since the actual length is
+unknown, assume the maximum possible value.
 
-Signed-off-by: Karol Wachowski <karol.wachowski@intel.com>
-Signed-off-by: Maciej Falkowski <maciej.falkowski@linux.intel.com>
-Reviewed-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250107173238.381120-13-maciej.falkowski@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2f207cbf0dd4 ("net: vertexcom: Add MSE102x SPI support")
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250430133043.7722-5-wahrenst@gmx.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/ivpu/ivpu_job.c |   25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ drivers/net/ethernet/vertexcom/mse102x.c | 20 ++++++++++++++++----
+ 1 file changed, 16 insertions(+), 4 deletions(-)
 
---- a/drivers/accel/ivpu/ivpu_job.c
-+++ b/drivers/accel/ivpu/ivpu_job.c
-@@ -486,6 +486,26 @@ static int ivpu_job_signal_and_destroy(s
+diff --git a/drivers/net/ethernet/vertexcom/mse102x.c b/drivers/net/ethernet/vertexcom/mse102x.c
+index 2b1aac72601d0..060a566bc6aae 100644
+--- a/drivers/net/ethernet/vertexcom/mse102x.c
++++ b/drivers/net/ethernet/vertexcom/mse102x.c
+@@ -263,7 +263,7 @@ static int mse102x_tx_frame_spi(struct mse102x_net *mse, struct sk_buff *txp,
+ }
  
- 	lockdep_assert_held(&vdev->submitted_jobs_lock);
+ static int mse102x_rx_frame_spi(struct mse102x_net *mse, u8 *buff,
+-				unsigned int frame_len)
++				unsigned int frame_len, bool drop)
+ {
+ 	struct mse102x_net_spi *mses = to_mse102x_spi(mse);
+ 	struct spi_transfer *xfer = &mses->spi_xfer;
+@@ -281,6 +281,9 @@ static int mse102x_rx_frame_spi(struct mse102x_net *mse, u8 *buff,
+ 		netdev_err(mse->ndev, "%s: spi_sync() failed: %d\n",
+ 			   __func__, ret);
+ 		mse->stats.xfer_err++;
++	} else if (drop) {
++		netdev_dbg(mse->ndev, "%s: Drop frame\n", __func__);
++		ret = -EINVAL;
+ 	} else if (*sof != cpu_to_be16(DET_SOF)) {
+ 		netdev_dbg(mse->ndev, "%s: SPI start of frame is invalid (0x%04x)\n",
+ 			   __func__, *sof);
+@@ -308,6 +311,7 @@ static void mse102x_rx_pkt_spi(struct mse102x_net *mse)
+ 	struct sk_buff *skb;
+ 	unsigned int rxalign;
+ 	unsigned int rxlen;
++	bool drop = false;
+ 	__be16 rx = 0;
+ 	u16 cmd_resp;
+ 	u8 *rxpkt;
+@@ -330,7 +334,8 @@ static void mse102x_rx_pkt_spi(struct mse102x_net *mse)
+ 			net_dbg_ratelimited("%s: Unexpected response (0x%04x)\n",
+ 					    __func__, cmd_resp);
+ 			mse->stats.invalid_rts++;
+-			return;
++			drop = true;
++			goto drop;
+ 		}
  
-+	job = xa_load(&vdev->submitted_jobs_xa, job_id);
-+	if (!job)
-+		return -ENOENT;
-+
-+	if (job_status == VPU_JSM_STATUS_MVNCI_CONTEXT_VIOLATION_HW) {
-+		guard(mutex)(&job->file_priv->lock);
-+
-+		if (job->file_priv->has_mmu_faults)
-+			return 0;
-+
-+		/*
-+		 * Mark context as faulty and defer destruction of the job to jobs abort thread
-+		 * handler to synchronize between both faults and jobs returning context violation
-+		 * status and ensure both are handled in the same way
-+		 */
-+		job->file_priv->has_mmu_faults = true;
-+		queue_work(system_wq, &vdev->context_abort_work);
-+		return 0;
-+	}
-+
- 	job = ivpu_job_remove_from_submitted_jobs(vdev, job_id);
- 	if (!job)
- 		return -ENOENT;
-@@ -795,6 +815,9 @@ void ivpu_context_abort_thread_handler(s
- 	struct ivpu_job *job;
- 	unsigned long id;
+ 		net_dbg_ratelimited("%s: Unexpected response to first CMD\n",
+@@ -342,9 +347,16 @@ static void mse102x_rx_pkt_spi(struct mse102x_net *mse)
+ 		net_dbg_ratelimited("%s: Invalid frame length: %d\n", __func__,
+ 				    rxlen);
+ 		mse->stats.invalid_len++;
+-		return;
++		drop = true;
+ 	}
  
-+	if (vdev->fw->sched_mode == VPU_SCHEDULING_MODE_HW)
-+		ivpu_jsm_reset_engine(vdev, 0);
++	/* In case of a invalid CMD_RTS, the frame must be consumed anyway.
++	 * So assume the maximum possible frame length.
++	 */
++drop:
++	if (drop)
++		rxlen = VLAN_ETH_FRAME_LEN;
 +
- 	mutex_lock(&vdev->context_list_lock);
- 	xa_for_each(&vdev->context_xa, ctx_id, file_priv) {
- 		if (!file_priv->has_mmu_faults || file_priv->aborted)
-@@ -808,6 +831,8 @@ void ivpu_context_abort_thread_handler(s
- 
- 	if (vdev->fw->sched_mode != VPU_SCHEDULING_MODE_HW)
+ 	rxalign = ALIGN(rxlen + DET_SOF_LEN + DET_DFT_LEN, 4);
+ 	skb = netdev_alloc_skb_ip_align(mse->ndev, rxalign);
+ 	if (!skb)
+@@ -355,7 +367,7 @@ static void mse102x_rx_pkt_spi(struct mse102x_net *mse)
+ 	 * They are copied, but ignored.
+ 	 */
+ 	rxpkt = skb_put(skb, rxlen) - DET_SOF_LEN;
+-	if (mse102x_rx_frame_spi(mse, rxpkt, rxlen)) {
++	if (mse102x_rx_frame_spi(mse, rxpkt, rxlen, drop)) {
+ 		mse->ndev->stats.rx_errors++;
+ 		dev_kfree_skb(skb);
  		return;
-+
-+	ivpu_jsm_hws_resume_engine(vdev, 0);
- 	/*
- 	 * In hardware scheduling mode NPU already has stopped processing jobs
- 	 * and won't send us any further notifications, thus we have to free job related resources
+-- 
+2.39.5
+
 
 
 
