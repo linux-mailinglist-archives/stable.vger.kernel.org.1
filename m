@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-142386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66C92AAEA63
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:54:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9625CAAE969
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 20:44:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 678039C74B2
-	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:54:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C412B1C27381
+	for <lists+stable@lfdr.de>; Wed,  7 May 2025 18:44:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8A0C24E4CE;
-	Wed,  7 May 2025 18:54:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4F9128DF1B;
+	Wed,  7 May 2025 18:44:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ToP5Rw1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="exn6REtE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75DAF2116E9;
-	Wed,  7 May 2025 18:54:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 715F914A4C7;
+	Wed,  7 May 2025 18:44:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746644088; cv=none; b=KZBuZAuBQ/A6KtfM1rysYne+6Fez8IqXNI65xqYTXtjmTiL1E+bYVaqSQyuW4kIhHPegFpUHs1SsvDCynV/1f89X/UJ/YjmVmQLpENZRWbP49mlW3f6OvFRLpOzxHd187M8Z+FonTs6WbLsWKDCBzfva52aXtex1kGi2lpwXYPw=
+	t=1746643473; cv=none; b=TUPivpExsOuyfSei1VO+al0ZnzAAl3Q1vJyQbmajMMPj+dNIQnZrdSR9rCkeazJvrjZkd3ScwZtSWRT3JKr+qkJ7ZBUgexMU0HcuWI8RwU9W3Ov6vRzKwu5RtVo6eOJO4By14tEbJHoBcGVrinbhvRGGZl+15yTl5ZBhAIeS2J8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746644088; c=relaxed/simple;
-	bh=cQNzI+uBv3f2w/Q7CBHB9rZE8mIXLgGUHiXos2QIdfo=;
+	s=arc-20240116; t=1746643473; c=relaxed/simple;
+	bh=FCeKJ/Hm5vZsF9h5LUVTtkL94gMaMbv/M+4nTD4/IHM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FDgysN2hf3qIi3s7x3UWmu8KMGGHiDiHatBFKqyhmQC7AurpljKba9gFf2SZM+3j1WTpqBBye+GAhgZrBUriPZwcC0ihBMFkHHBHRNGxCWnHX2MnKkuX64eV1W2k5WSdyWY4Q3ijj9Uv9k5M2QACCdxZWuiEDMjs1AOTAjDppC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ToP5Rw1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9282C4CEE2;
-	Wed,  7 May 2025 18:54:47 +0000 (UTC)
+	 MIME-Version; b=hUZnWrPbO4JbczhbygiRBHbS7Br4Tfh5I7ieqYoBraPQCQXM/F9gyzegFlCb+vyTV2fzuWd/jsjLd5A2adwi5RKhkJdI7TgTzfBqgqXd8zmqjhJmhxgXapxQNa6S9gx46FdwLhn6T9MHdsOW7/8nFdMacs176HeCGaCB1mqQvVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=exn6REtE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2D83C4CEE2;
+	Wed,  7 May 2025 18:44:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746644088;
-	bh=cQNzI+uBv3f2w/Q7CBHB9rZE8mIXLgGUHiXos2QIdfo=;
+	s=korg; t=1746643473;
+	bh=FCeKJ/Hm5vZsF9h5LUVTtkL94gMaMbv/M+4nTD4/IHM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1ToP5Rw1H6OkBNHXbgGHCpwwBL/14iLyI7ajU3mNdysjA2zHIIDIZJm7zgBzFb0xV
-	 ZQY7ikRfhenXJd61H+mkVGQC9zcvR+DgxKAAzr18p02ninMteIs6FsVFGil62aKge5
-	 R6ZhjADkNMeJcQTmzfULhPqqD/hsdrKXHLchSlZQ=
+	b=exn6REtEqRz+cRa3lN3UXTRmTBeWCpoSOf8DKVWRedJZZEfZbPB/ANMQM1zC3wan3
+	 wJ05ZxpsvUNIcR4xDTxTRgvUz0SNhnFsRIyI3X13kB4e8paIe/6XXzui9KReIP4fVL
+	 VW3M0XZFL52hBJM17ptySvtZ+h9hvXVO46cFpuEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 086/183] net: mscc: ocelot: delete PVID VLAN when readding it as non-PVID
+	Pavel Paklov <Pavel.Paklov@cyberprotect.ru>,
+	Joerg Roedel <jroedel@suse.de>
+Subject: [PATCH 6.1 16/97] iommu/amd: Fix potential buffer overflow in parse_ivrs_acpihid
 Date: Wed,  7 May 2025 20:38:51 +0200
-Message-ID: <20250507183828.313750503@linuxfoundation.org>
+Message-ID: <20250507183807.641944031@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
-References: <20250507183824.682671926@linuxfoundation.org>
+In-Reply-To: <20250507183806.987408728@linuxfoundation.org>
+References: <20250507183806.987408728@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Pavel Paklov <Pavel.Paklov@cyberprotect.ru>
 
-[ Upstream commit 5ec6d7d737a491256cd37e33910f7ac1978db591 ]
+commit 8dee308e4c01dea48fc104d37f92d5b58c50b96c upstream.
 
-The following set of commands:
+There is a string parsing logic error which can lead to an overflow of hid
+or uid buffers. Comparing ACPIID_LEN against a total string length doesn't
+take into account the lengths of individual hid and uid buffers so the
+check is insufficient in some cases. For example if the length of hid
+string is 4 and the length of the uid string is 260, the length of str
+will be equal to ACPIID_LEN + 1 but uid string will overflow uid buffer
+which size is 256.
 
-ip link add br0 type bridge vlan_filtering 1 # vlan_default_pvid 1 is implicit
-ip link set swp0 master br0
-bridge vlan add dev swp0 vid 1
+The same applies to the hid string with length 13 and uid string with
+length 250.
 
-should result in the dropping of untagged and 802.1p-tagged traffic, but
-we see that it continues to be accepted. Whereas, had we deleted VID 1
-instead, the aforementioned dropping would have worked
+Check the length of hid and uid strings separately to prevent
+buffer overflow.
 
-This is because the ANA_PORT_DROP_CFG update logic doesn't run, because
-ocelot_vlan_add() only calls ocelot_port_set_pvid() if the new VLAN has
-the BRIDGE_VLAN_INFO_PVID flag.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Similar to other drivers like mt7530_port_vlan_add() which handle this
-case correctly, we need to test whether the VLAN we're changing used to
-have the BRIDGE_VLAN_INFO_PVID flag, but lost it now. That amounts to a
-PVID deletion and should be treated as such.
-
-Regarding blame attribution: this never worked properly since the
-introduction of bridge VLAN filtering in commit 7142529f1688 ("net:
-mscc: ocelot: add VLAN filtering"). However, there was a significant
-paradigm shift which aligned the ANA_PORT_DROP_CFG register with the
-PVID concept rather than with the native VLAN concept, and that change
-wasn't targeted for 'stable'. Realistically, that is as far as this fix
-needs to be propagated to.
-
-Fixes: be0576fed6d3 ("net: mscc: ocelot: move the logic to drop 802.1p traffic to the pvid deletion")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250424223734.3096202-1-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ca3bf5d47cec ("iommu/amd: Introduces ivrs_acpihid kernel parameter")
+Cc: stable@vger.kernel.org
+Signed-off-by: Pavel Paklov <Pavel.Paklov@cyberprotect.ru>
+Link: https://lore.kernel.org/r/20250325092259.392844-1-Pavel.Paklov@cyberprotect.ru
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mscc/ocelot.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/iommu/amd/init.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/ethernet/mscc/ocelot.c b/drivers/net/ethernet/mscc/ocelot.c
-index ef93df5208871..08bee56aea35f 100644
---- a/drivers/net/ethernet/mscc/ocelot.c
-+++ b/drivers/net/ethernet/mscc/ocelot.c
-@@ -830,6 +830,7 @@ EXPORT_SYMBOL(ocelot_vlan_prepare);
- int ocelot_vlan_add(struct ocelot *ocelot, int port, u16 vid, bool pvid,
- 		    bool untagged)
- {
-+	struct ocelot_port *ocelot_port = ocelot->ports[port];
- 	int err;
+--- a/drivers/iommu/amd/init.c
++++ b/drivers/iommu/amd/init.c
+@@ -3610,6 +3610,14 @@ found:
+ 	while (*uid == '0' && *(uid + 1))
+ 		uid++;
  
- 	/* Ignore VID 0 added to our RX filter by the 8021q module, since
-@@ -849,6 +850,11 @@ int ocelot_vlan_add(struct ocelot *ocelot, int port, u16 vid, bool pvid,
- 					   ocelot_bridge_vlan_find(ocelot, vid));
- 		if (err)
- 			return err;
-+	} else if (ocelot_port->pvid_vlan &&
-+		   ocelot_bridge_vlan_find(ocelot, vid) == ocelot_port->pvid_vlan) {
-+		err = ocelot_port_set_pvid(ocelot, port, NULL);
-+		if (err)
-+			return err;
- 	}
- 
- 	/* Untagged egress vlan clasification */
--- 
-2.39.5
-
++	if (strlen(hid) >= ACPIHID_HID_LEN) {
++		pr_err("Invalid command line: hid is too long\n");
++		return 1;
++	} else if (strlen(uid) >= ACPIHID_UID_LEN) {
++		pr_err("Invalid command line: uid is too long\n");
++		return 1;
++	}
++
+ 	i = early_acpihid_map_size++;
+ 	memcpy(early_acpihid_map[i].hid, hid, strlen(hid));
+ 	memcpy(early_acpihid_map[i].uid, uid, strlen(uid));
 
 
 
