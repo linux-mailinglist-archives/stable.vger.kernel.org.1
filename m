@@ -1,62 +1,75 @@
-Return-Path: <stable+bounces-142782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD7E8AAF2AF
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 07:15:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E9EAAAF2C1
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 07:17:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 031B04A7EF2
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 05:15:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AD134A7FA8
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 05:17:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DD7C2144A1;
-	Thu,  8 May 2025 05:15:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1A5E2139AF;
+	Thu,  8 May 2025 05:16:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="tncbnr0Z"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="TGD6GepW"
 X-Original-To: stable@vger.kernel.org
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB7692139C4;
-	Thu,  8 May 2025 05:15:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 127CC213227;
+	Thu,  8 May 2025 05:16:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746681332; cv=none; b=lpxeBIbkr2YRu6JsZhACki68CRV/vAjokj2UY36Jf89qdKA/d5fHJPpXKQNG53WNa/xdmBXz69AKodgaBLUMbmECRXb4I9xEgykylyHNh82hfN1fOCViHAHJ7FtVtJzEI4Xahqke2X3gzel44dVktTjBPkbF9X5rHRSy0OhN6l4=
+	t=1746681384; cv=none; b=uvZmUVHXf08D3QAROyuSjL1QD0feMT05XGvdvfNRRaC5pj00Gt1Y7YJgjKD90uNCKDBfxYiRAlclhjfyYmCPDTww1PC6iD81sF1DAa99//RuvTOjZ++Yte/P/V3HRv2pxIBijCayEb72fMWO2TmKoHyGRvAqybqlWrGto6PctKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746681332; c=relaxed/simple;
-	bh=ISTACO0x9B1R7EsjFwT3G1ahFXPlmjZx3tK2r/IA7Gw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sw3GORxvDEUI5Dcs+1eUggV9X1hGGL6gnRveIF/QmJWWjn29bCj0cUZ+2JMCX5eIUFB9gKzssNJ6OHhEvOh/7uJS+Xifp/zT+qFd0XG8Ipy9HLZTsFjmTlWRWpnfKr0GATmX4qdtjDrMMBzEMggXWUJyyYrImFRFajR1eR6OuWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=lst.de; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=tncbnr0Z; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=lst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
-	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=hjROd0wIshF4nMKexOdcqPc3YUZQgQDvNXYUo/8KwuY=; b=tncbnr0Z/51DQlCz6NmFJZGyGG
-	aT5jujsnIXf19DNcnuMwusr8F6xwrqODAPPL9iFemFFE57h1vKdZUjODAEz3VbjoxneORcLp3Hcrf
-	hcvGv1PqEWzkPHfSq93lefR+hoh01EzsNvGxsjxP+U9D3RXMVHb/48DhFfyIfmilZQf5Ag7bdXVhp
-	J4iXUvDw0XBvLlGAeuEvMezQ+tsnOh76DlgmzV7DYzIAQU/mRPDr9FEexZIhHb9HyCI3oQiUa1lAE
-	QRBiLXPc7diNb6EwD5Qb+UHE/+k4EJO0xXwLRsmjdnLVvb4RmWnhTYcYXmD6xRMwtLF2t8Vw4jaBl
-	1yt/wrPg==;
-Received: from 2a02-8389-2341-5b80-2368-be33-a304-131f.cable.dynamic.v6.surfer.at ([2a02:8389:2341:5b80:2368:be33:a304:131f] helo=localhost)
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1uCtbV-0000000HLfo-2btf;
-	Thu, 08 May 2025 05:15:30 +0000
-From: Christoph Hellwig <hch@lst.de>
-To: Jaegeuk Kim <jaegeuk@kernel.org>,
-	Chao Yu <chao@kernel.org>
-Cc: linux-f2fs-devel@lists.sourceforge.net,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH 1/6] f2fs: fix to return correct error number in f2fs_sync_node_pages()
-Date: Thu,  8 May 2025 07:14:27 +0200
-Message-ID: <20250508051520.4169795-2-hch@lst.de>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250508051520.4169795-1-hch@lst.de>
-References: <20250508051520.4169795-1-hch@lst.de>
+	s=arc-20240116; t=1746681384; c=relaxed/simple;
+	bh=fvfk1rN9at/x9/s1QMvLTS+mJ8ZBQUK8ceaW8i0w/mA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KLCY0mFU4UftUviDhLCFHaZ3OVdG2zyAyRX1tGSvELwzHrnoCs1La90HSANNIMySlT0z3VYXG53K804UC/MXQGe69r03nwClR2mYsS6yjRRSclpryrBDzFhuGp2a6iOmcOSGzN4JukTWw8pd/B9+hiwxro/U7qGA8Qc+FL33oJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=TGD6GepW; arc=none smtp.client-ip=210.61.82.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: 8cba32342bcb11f082f7f7ac98dee637-20250508
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=eB+nig6p0qQNlwfENUx4jlMxAMgQY3TgotzcJmiZERs=;
+	b=TGD6GepWfYa0hdVt16UwAMOJQvjRnVlxMCsuWhqp0uxNbiXXS3/TXH/gLR26fnhxsS35H2q5dz9zPadusRH+MRwzpBasboycwElStFaG89jZJSqud5ZX2wO3V9L8iFwKmshnJByRD78UjA54JO80VRC6iRUxevmGPL39rnPY3DU=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.2.1,REQID:1d56b577-59a6-44d4-9350-403376b81144,IP:0,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:0
+X-CID-META: VersionHash:0ef645f,CLOUDID:359c4a51-76c0-4e62-bb75-246dfb0889c6,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0|50,EDM:-3,IP:ni
+	l,URL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
+	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0,NGT
+X-CID-BAS: 0,NGT,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR
+X-UUID: 8cba32342bcb11f082f7f7ac98dee637-20250508
+Received: from mtkmbs10n1.mediatek.inc [(172.21.101.34)] by mailgw02.mediatek.com
+	(envelope-from <mingyen.hsieh@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 828154473; Thu, 08 May 2025 13:16:08 +0800
+Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
+ mtkmbs11n2.mediatek.inc (172.21.101.187) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.39; Thu, 8 May 2025 13:16:07 +0800
+Received: from mtksitap99.mediatek.inc (10.233.130.16) by
+ mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1258.39 via Frontend Transport; Thu, 8 May 2025 13:16:07 +0800
+From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
+To: <nbd@nbd.name>, <lorenzo@kernel.org>
+CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
+	<Leon.Yen@mediatek.com>, <Michael.Lo@mediatek.com>,
+	<allan.wang@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
+	<km.lin@mediatek.com>, <Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
+	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
+	<linux-mediatek@lists.infradead.org>, Ming Yen Hsieh
+	<mingyen.hsieh@mediatek.com>, <stable@vger.kernel.org>
+Subject: [PATCH] wifi: mt76: mt7925: fix missing hdr_trans_tlv command for broadcast wtbl
+Date: Thu, 8 May 2025 13:16:04 +0800
+Message-ID: <20250508051604.280661-1-mingyen.hsieh@mediatek.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,51 +77,43 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain
+X-MTK: N
 
-From: Chao Yu <chao@kernel.org>
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-If __write_node_folio() failed, it will return AOP_WRITEPAGE_ACTIVATE,
-the incorrect return value may be passed to userspace in below path,
-fix it.
-
-- sync_filesystem
- - sync_fs
-  - f2fs_issue_checkpoint
-   - block_operations
-    - f2fs_sync_node_pages
-     - __write_node_folio
-     : return AOP_WRITEPAGE_ACTIVATE
+The hdr_trans_tlv function call has been moved inside the conditional block
+to ensure it is executed when info->enable is true.
 
 Cc: stable@vger.kernel.org
-Reported-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Chao Yu <chao@kernel.org>
+Fixes: cb1353ef3473 ("wifi: mt76: mt7925: integrate *mlo_sta_cmd and *sta_cmd")
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 ---
- fs/f2fs/node.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
-index ec74eb9982a5..69308523c34e 100644
---- a/fs/f2fs/node.c
-+++ b/fs/f2fs/node.c
-@@ -2092,10 +2092,14 @@ int f2fs_sync_node_pages(struct f2fs_sb_info *sbi,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index a42b584634ab..fd756f0d18f8 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -2183,14 +2183,14 @@ mt7925_mcu_sta_cmd(struct mt76_phy *phy,
+ 			mt7925_mcu_sta_mld_tlv(skb, info->vif, info->link_sta->sta);
+ 			mt7925_mcu_sta_eht_mld_tlv(skb, info->vif, info->link_sta->sta);
+ 		}
+-
+-		mt7925_mcu_sta_hdr_trans_tlv(skb, info->vif, info->link_sta);
+ 	}
  
- 			ret = __write_node_folio(folio, false, &submitted,
- 						wbc, do_balance, io_type, NULL);
--			if (ret)
-+			if (ret) {
- 				folio_unlock(folio);
--			else if (submitted)
-+				folio_batch_release(&fbatch);
-+				ret = -EIO;
-+				goto out;
-+			} else if (submitted) {
- 				nwritten++;
-+			}
+ 	if (!info->enable) {
+ 		mt7925_mcu_sta_remove_tlv(skb);
+ 		mt76_connac_mcu_add_tlv(skb, STA_REC_MLD_OFF,
+ 					sizeof(struct tlv));
++	} else {
++		mt7925_mcu_sta_hdr_trans_tlv(skb, info->vif, info->link_sta);
+ 	}
  
- 			if (--wbc->nr_to_write == 0)
- 				break;
+ 	return mt76_mcu_skb_send_msg(dev, skb, info->cmd, true);
 -- 
-2.47.2
+2.34.1
 
 
