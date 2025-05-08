@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-142893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11388AB0026
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 18:18:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A39AAB0025
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 18:18:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C20F79C55B6
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 16:18:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 796B81C07E7D
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 16:18:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15379280A5E;
-	Thu,  8 May 2025 16:18:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 869FD280A52;
+	Thu,  8 May 2025 16:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nmEM8c9s"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dal7tB6h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7207281346
-	for <stable@vger.kernel.org>; Thu,  8 May 2025 16:18:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 463882798E2
+	for <stable@vger.kernel.org>; Thu,  8 May 2025 16:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746721109; cv=none; b=PQinAw/ZGnPLduiwQ4pzGvckqybWb3tr9bbpnxDFwkk5wyzjWmiNPM3ZWsKQye9cDC+1ghyzPDD1qOurbRvFIyPvuDL7ReEqo//oPfOuGUWQA3Ram0B4DX4exXleZnbKPfPG0DnWMFb8U56Amxpe4keez5v/j/LxNXfulxuMEEE=
+	t=1746721114; cv=none; b=EGckScH5WQLi1cGAxgEOJwYPGputtMcTuMPrwUEOz6qUHcDEvB+pq6c1b6Nfg563fY7WLOtL1FxtU6yp2sf+p6X2SAyUl+x4nVFZIXypvuu18jdPo6kjCZJseOuXJC3chUKn9GE5QX8GMcccJbmts5joQE/cCMXopsjE8QFWBNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746721109; c=relaxed/simple;
-	bh=K960whzbDp4+ebJAAsQeDOYEwLdwPTraWpyuzCRbVg8=;
+	s=arc-20240116; t=1746721114; c=relaxed/simple;
+	bh=RC8U900UhX/W2UXZwLiWvAm6QkXW7+7b6HsPvFQATq0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=l+0OIUzGD1Wx5CoV5lvkifqieifkCuarEImuupfCt3TvxcotKF45QWwLtZ9iAYmm8ehhrZ1FE7sgqo28f9qAlCdJy6BmEj6+am6oWUs+TN+L6mTcmqJRNdwpz0VNL4hVp1NZiV/MQIfM2XdgkwRy1s2UX/fQrUFZk4UXCQVR8cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nmEM8c9s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29BA7C4CEE7;
-	Thu,  8 May 2025 16:18:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Oc8PH1Yvj/HLGJCADyawDOh8CLfkqz2mrMQElhsuAnLzGF4h92OzIcvBv+rri5pShS7hNHFz0hU34WmjRd/AP0mdho6R9Zmije/SPZHLy0RVFynSll/l2cXRjgCaq2k5lk6cnjZC1kmq39QFBhJgVleUhIGxD+Qj4poI0a+4Axw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dal7tB6h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2917C4CEE7;
+	Thu,  8 May 2025 16:18:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746721109;
-	bh=K960whzbDp4+ebJAAsQeDOYEwLdwPTraWpyuzCRbVg8=;
+	s=k20201202; t=1746721114;
+	bh=RC8U900UhX/W2UXZwLiWvAm6QkXW7+7b6HsPvFQATq0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nmEM8c9sCVO2burUIM/v5wirsJm3YNSVgvHntBhLKv30XJYZ0QkVe1Im9sBGGc2qB
-	 SA2dOf151zk1wno1YiOOXheSMd6NakGHO1k3XS/+CQjQ2ZcGiZIkHV+9xAdqC2NKP1
-	 biK/daE3+KRJwjOaNmvS81WJRzyMrm4+Pgh7mSBp/TPbB26ddX04RufsWYHbsOfmUT
-	 heantcTqHpcTOJlV83rSa8sqBFE3uGowoSvxRLSLqgWJ8bvZDK6sfiCW4AO532gCrn
-	 UCBWMZjxDNFzSnz22ztAa0mIlpz+qtUEHsKsSvoE8zfZ4knIaxP7oCpbh7SNTw2dJk
-	 Mq71OOlL95kYA==
+	b=dal7tB6hoHIfe7ty5Kg+vfbRYYVlcOX8YU3hT48lnBpCoQzaVIRv5vbGecfXfMrsA
+	 El/eEXe5tz3z3i9z+CXBusT1lWzkPH/oDT8aDHdCBx73ww2ga2FdZ5JvDhnVu6+e5p
+	 eBWNta1Y2Ys/vZM8fDKYXkiVuXFL7eRqzSet4/dfqZ9kMlyx1EvqWWbEnE6xEImxqq
+	 aZzZXbQsnNQDzqwqtVy7VH0Dhl3mV4S1uRDSZskyjHj72N7pd1uq3F+tfRIHXH+tFQ
+	 Z9LIhk0TqrcHfvDZ7QGggCTk+szBVUL/m69dyyoeNIegryfChdx/9vCxlc1L2gAkJ+
+	 f1PO7VkE3F8Aw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Jared Holzman <jholzman@nvidia.com>,
+Cc: Ryan Matthews <ryanmatthews@fastmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.14.y v2 6/7] ublk: simplify aborting ublk request
-Date: Thu,  8 May 2025 12:18:25 -0400
-Message-Id: <20250507084945-aa645b0881f4ce8d@stable.kernel.org>
+Subject: Re: [PATCH 5.4 1/1] PCI: imx6: Skip controller_id generation logic for i.MX7D
+Date: Thu,  8 May 2025 12:18:29 -0400
+Message-Id: <20250507075224-592884ae66fe57ca@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250507094702.73459-7-jholzman@nvidia.com>
+In-Reply-To:  <20250506054406.4961-2-ryanmatthews@fastmail.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,24 +67,24 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: e63d2228ef831af36f963b3ab8604160cfff84c1
+The upstream commit SHA1 provided is correct: f068ffdd034c93f0c768acdc87d4d2d7023c1379
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Jared Holzman<jholzman@nvidia.com>
-Commit author: Ming Lei<ming.lei@redhat.com>
+Backport author: Ryan Matthews<ryanmatthews@fastmail.com>
+Commit author: Richard Zhu<hongxing.zhu@nxp.com>
+
+Status in newer kernel trees:
+6.14.y | Present (exact SHA1)
+6.12.y | Present (different SHA1: d0f8c566464d)
+6.6.y | Present (different SHA1: 8f5a9b5cc102)
+6.1.y | Not found
+5.15.y | Not found
+5.10.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  e63d2228ef831 ! 1:  b0b649f236e0e ublk: simplify aborting ublk request
-    @@ Metadata
-      ## Commit message ##
-         ublk: simplify aborting ublk request
-     
-    +    [ Upstream commit e63d2228ef831af36f963b3ab8604160cfff84c1 ]
-    +
-         Now ublk_abort_queue() is moved to ublk char device release handler,
-         meantime our request queue is "quiesced" because either ->canceling was
-         set from uring_cmd cancel function or all IOs are inflight and can't be
+1:  f068ffdd034c9 < -:  ------------- PCI: imx6: Skip controller_id generation logic for i.MX7D
+-:  ------------- > 1:  34963c5f41fd6 PCI: imx6: Skip controller_id generation logic for i.MX7D
 ---
 
 Results of testing on various branches:
