@@ -1,194 +1,165 @@
-Return-Path: <stable+bounces-142813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F73FAAF4C3
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 09:38:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA296AAF4B8
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 09:37:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB9F81C073EE
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 07:38:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD2AA1C01AC1
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 07:37:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB6FC22538F;
-	Thu,  8 May 2025 07:37:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E255F220680;
+	Thu,  8 May 2025 07:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=b4.vu header.i=@b4.vu header.b="Um7yZ+3/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eN5tUL8c"
 X-Original-To: stable@vger.kernel.org
-Received: from m.b4.vu (m.b4.vu [203.16.231.148])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f196.google.com (mail-pf1-f196.google.com [209.85.210.196])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3650F2248A6;
-	Thu,  8 May 2025 07:37:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.16.231.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 378AE195FE8;
+	Thu,  8 May 2025 07:36:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746689830; cv=none; b=pv7F02Xgnjx7or3QfSqaEmfD+U9cA6ktM2Qycjo1RDuH7OQmXD7Ar8mshu3Pzukdia0I2eLSJZVGOiZ5kxD9hq9Z6pzvk6NrUeFzCAeYQIuXRK6infCb21tGSOlN/Xrn93WvOUuzyxnuuBefqe6Ctmymajmcj10UFeImQqsYCSU=
+	t=1746689814; cv=none; b=jsHFSs6o2b4Op+Tfg1/SClvwjZHsVxq6eeeIhCMrDWF5V8oMdYhk+SeU0xXtYmNE3rqpz+gCa0Q9HAdhMTzGk4ttrfiwYIdw+rF8dLx44oVJq1EnAVYFf1R8QpG+6JGsSbl597L7n68y76cvkeQiaBTd60DQizQOtucR/HmGabA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746689830; c=relaxed/simple;
-	bh=PDN/gK0e9nksO/e0fMKNuCkmsVxa4j1m/bDsuxAY8dU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j8x3HRnLSNoscuDsjfhEzN1uRO4wJUhvOMAD78JhT3MAygWnG2G8fbqOtqW1ipEgesJMmg0JzjTZbFZhJ7PM4qZEBAp8DYbvW7iihyVNUpEZe+7XK8ImKFxLJpZhAQxQH3sgNyVH+sl/bk6cOOzPtD3RcRd8xsyDJeZgeqLouqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=b4.vu; spf=pass smtp.mailfrom=b4.vu; dkim=pass (2048-bit key) header.d=b4.vu header.i=@b4.vu header.b=Um7yZ+3/; arc=none smtp.client-ip=203.16.231.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=b4.vu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=b4.vu
-Received: by m.b4.vu (Postfix, from userid 1000)
-	id E15EE6698FAF; Thu,  8 May 2025 17:00:44 +0930 (ACST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 m.b4.vu E15EE6698FAF
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=b4.vu; s=m1;
-	t=1746689444; bh=6UXt1BLwGoaNZgKxHK1YJO3spw1jLrC52dMEz3YS0QI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Um7yZ+3/iqSsjao6eljDCKxaWAD+DncNagXdz3mFXGIxRezqt6Knlx0GrD3xHWfXP
-	 qxq6un9Z/s2RkIqLMR11NyVmddaS1QKCYLZKdz/Tr5PFIGf7rXuSFH/xhauV/BhCdo
-	 zwuZ8/uAd5P/K9NSfxGKkOUjh5cplYywUU7UOmBX29KU/SH8tzFBWhr98vSP2P9zw9
-	 5gdKanB0U5oNavB7LnwEbfp9X7DWHmW1xA3TdThKMO2bBijagCZ54pvxws8neVWaUz
-	 IKu2WmvL2PONMkvIGrMTQ8ZOGKST2wzya6qhZc8Y4R0a+S252X3zHZIO1y1x81EiaB
-	 bi2te+GomZUIA==
-Date: Thu, 8 May 2025 17:00:44 +0930
-From: "Geoffrey D. Bennett" <g@b4.vu>
-To: stable@vger.kernel.org, Marcel Holtmann <marcel@holtmann.org>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Hao Qin <hao.qin@mediatek.com>
-Cc: linux-bluetooth@vger.kernel.org, Sean Wang <sean.wang@mediatek.com>,
-	Chris Lu <chris.lu@mediatek.com>, linux-sound@vger.kernel.org,
-	Benedikt Ziemons <ben@rs485.network>, pmenzel@molgen.mpg.de,
-	tiwai@suse.de, geraldogabriel@gmail.com,
-	regressions@lists.linux.dev, gregkh@linuxfoundation.org
-Subject: [STABLE 6.12/6.14] Bluetooth MediaTek controller reset fixes
-Message-ID: <aBxdpIabalg073AU@m.b4.vu>
-References: <Z+W6dmZFfC7SBhza@m.b4.vu>
- <Z+XN2a3141NpZKcb@m.b4.vu>
+	s=arc-20240116; t=1746689814; c=relaxed/simple;
+	bh=hGAbVqQFT69FqQTzOmATV5AJRMzSHoqIT19dRWp0pMY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=No7bORQbKVoNFQRmfVS8XERRDKoBR4K4iKqTufeTwS2ynMxkwBIlPfFK3B1eKzC90Hg1gWmiMa4DvrfN1XIYbAYsK20fy2T++IYQZ81opWl6JFJ67s8wf9bsknowYAo+V6OBN1zWOjHyct9+La01aoA41+nbaA06xZZHYvpup6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eN5tUL8c; arc=none smtp.client-ip=209.85.210.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f196.google.com with SMTP id d2e1a72fcca58-736aa9d0f2aso923815b3a.0;
+        Thu, 08 May 2025 00:36:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746689812; x=1747294612; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9fwr70jRROQnhTfVJ4M+ZZqp2+Z1EXWKMCwGS7IUNFQ=;
+        b=eN5tUL8cw61K/XSDIC6pxdrSPAOQUjUBpquKJHe/HksTNiQyJusL+WtXSA4JCHvYWA
+         ipKjYsDfnf08flMtPoixHV3817Xnx0PDiauiwgyA98fuEVI4IqoG5GuVqaFqM7RWMP7b
+         mNBk8RkmpzoGgbTdqKvI8yjkcQzFEG2K4O+h/sHIe0/xAJctU7sag3/iYaduq3tMfeua
+         8f1OVj45WXcqaItAeMBj6nLNdTGPnyD7eJQO0HJ2ZpyJBL/ODEmHKOUYaAfgXa+/Tm1g
+         dn6FdfP8nXHsfrfI9XHie2xzjahOYadBFfh812jwmyWtKUnbABQfbqZIrOyQ5aRbT4Zq
+         hgyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746689812; x=1747294612;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9fwr70jRROQnhTfVJ4M+ZZqp2+Z1EXWKMCwGS7IUNFQ=;
+        b=xIbHNAyAaw0/ac7meL1xjST1tRpPWdTYvTBn+dKldy+S6pZoweQ2rdri5Og9hpTHKl
+         /cFreIVmaoJjJBnVO2RPAatWJ1rw7v+rUd3K4UIoeb1xjnLeUrrJPrJPaZ/M1t+PuIsm
+         DYwyvTjt4oPd3NgiUGWv22YldSfX1joz1dwflNlUNpeOcL1AfIZAww2G8aDUyXHVl2lf
+         pyiixw5lqSvib1A93gnn4fgzru2fNg0KaQD6egeWHG4h70aLakOIjgByIKVJZtRrnnGL
+         oF9xeOtVc81pe/68jRD15RyFEnHlweDFN5cz93w/p5LLuSw97u6bfVHVDCoNsIBcAupr
+         JhjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU0BCViFDxfwbadwsMFLkDimSJcB6IKOfRhQWeCbLB8uAdwIFnu6BUtSI699T3oismnLDEiAM+h@vger.kernel.org, AJvYcCUzB3SrwZXrVVHjHFj9hI3QV5guIzDHauFkfpDWAnuM1FTBRYH1suFZCnjMhayHatxVWhZSvPsl+A+wmZ8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwcESY9YllYiU2rPnEUTys/WMReIDTax0Kg9uEnqE0btS6rSzcp
+	fknddi2IPahcKa7lqfvG7mLYW3hhYHAUDNP6BhcH/+cZlopDe/tt
+X-Gm-Gg: ASbGncvfpv+TGJ1X1kJdviCMlgN77pyGWtO8tb6PTo5ImpBCSWQSYskLpa+j/Moo1nE
+	HIhJW/Ty6gA/lefLttT5eotWvfPlLBDSykaadQHEgfDPyDMvwsrkb7QQcZKmwcmoCBhTXm2+G3k
+	pxeKPX+q3UehYdwCUpD4BSOulL1p51YYJm5oTG9CXu9iuqzDLcYHbe5Q3qSknYeqZdXMjlzmB69
+	fZF6CXbeXMyCW9JifEWyHBR2hIaKqcWh5/30qr6Y6gEvMJiiWL4dOZ/CBSIqRB717JqkeOCqGk2
+	EB7Bq/f4868JlEndyGNDIgTJlEsGV7CSP9xl3jxHXtD2n+6hdIf3ESdEyfH53FCwDTZxfA==
+X-Google-Smtp-Source: AGHT+IHPnNoxLhV7GIw/VlymXwTFp+WFlPFIfHMoS/t+AGVcolUKDOh9qji1dI06No4oykb/YQlDeA==
+X-Received: by 2002:a05:6a20:2d2b:b0:1f5:59e5:8ada with SMTP id adf61e73a8af0-2148b81f041mr10087427637.4.1746689812362;
+        Thu, 08 May 2025 00:36:52 -0700 (PDT)
+Received: from tom-QiTianM540-A739.. ([124.127.236.130])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7405905d16asm12570475b3a.127.2025.05.08.00.36.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 May 2025 00:36:51 -0700 (PDT)
+From: Qiu-ji Chen <chenqiuji666@gmail.com>
+To: sean.wang@mediatek.com,
+	vkoul@kernel.org,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com
+Cc: dmaengine@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	baijiaju1990@gmail.com,
+	Qiu-ji Chen <chenqiuji666@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] dmaengine: mediatek: Fix a possible deadlock error in mtk_cqdma_tx_status()
+Date: Thu,  8 May 2025 15:36:33 +0800
+Message-Id: <20250508073634.3719-1-chenqiuji666@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z+XN2a3141NpZKcb@m.b4.vu>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi stable@vger.kernel.org,
+Fix a potential deadlock bug. Observe that in the mtk-cqdma.c
+file, functions like mtk_cqdma_issue_pending() and
+mtk_cqdma_free_active_desc() properly acquire the pc lock before the vc
+lock when handling pc and vc fields. However, mtk_cqdma_tx_status()
+violates this order by first acquiring the vc lock before invoking
+mtk_cqdma_find_active_desc(), which subsequently takes the pc lock. This
+reversed locking sequence (vc → pc) contradicts the established
+pc → vc order and creates deadlock risks.
 
-Could you please apply:
+Fix the issue by moving the vc lock acquisition code from
+mtk_cqdma_find_active_desc() to mtk_cqdma_tx_status(). Ensure the pc lock
+is acquired before the vc lock in the calling function to maintain correct
+locking hierarchy. Note that since mtk_cqdma_find_active_desc() is a
+static function with only one caller (mtk_cqdma_tx_status()), this
+modification safely eliminates the deadlock possibility without affecting
+other components.
 
-1. Commit a7208610761ae ("Bluetooth: btmtk: Remove resetting mt7921
-before downloading the fw") to v6.12.x (it's already in
-v6.14).
+This possible bug is found by an experimental static analysis tool
+developed by our team. This tool analyzes the locking APIs to extract
+function pairs that can be concurrently executed, and then analyzes the
+instructions in the paired functions to identify possible concurrency bugs
+including deadlocks, data races and atomicity violations.
 
-2. Commit 33634e2ab7c6 ("Bluetooth: btmtk: Remove the resetting step
-before downloading the fw") to v6.12.x and v6.14.x.
+Fixes: b1f01e48df5a ("dmaengine: mediatek: Add MediaTek Command-Queue DMA controller for MT6765 SoC")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
+---
+V2:
+Revised the fix approach and updated the description to address the
+reduced protection scope of the vc lock in the V1 solution.
+---
+ drivers/dma/mediatek/mtk-cqdma.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-These fixes address an issue with some audio interfaces failing to
-initialise during boot on kernels 6.11+. As noted in my original
-analysis below, the MediaTek Bluetooth controller reset increases the
-device setup time from ~200ms to ~20s and can interfere with other USB
-devices on the bus.
+diff --git a/drivers/dma/mediatek/mtk-cqdma.c b/drivers/dma/mediatek/mtk-cqdma.c
+index d5ddb4e30e71..e35271ac1eed 100644
+--- a/drivers/dma/mediatek/mtk-cqdma.c
++++ b/drivers/dma/mediatek/mtk-cqdma.c
+@@ -422,13 +422,10 @@ static struct virt_dma_desc *mtk_cqdma_find_active_desc(struct dma_chan *c,
+ 	struct virt_dma_desc *vd;
+ 	unsigned long flags;
+ 
+-	spin_lock_irqsave(&cvc->pc->lock, flags);
+ 	list_for_each_entry(vd, &cvc->pc->queue, node)
+ 		if (vd->tx.cookie == cookie) {
+-			spin_unlock_irqrestore(&cvc->pc->lock, flags);
+ 			return vd;
+ 		}
+-	spin_unlock_irqrestore(&cvc->pc->lock, flags);
+ 
+ 	list_for_each_entry(vd, &cvc->vc.desc_issued, node)
+ 		if (vd->tx.cookie == cookie)
+@@ -452,9 +449,11 @@ static enum dma_status mtk_cqdma_tx_status(struct dma_chan *c,
+ 	if (ret == DMA_COMPLETE || !txstate)
+ 		return ret;
+ 
++	spin_lock_irqsave(&cvc->pc->lock, flags);
+ 	spin_lock_irqsave(&cvc->vc.lock, flags);
+ 	vd = mtk_cqdma_find_active_desc(c, cookie);
+ 	spin_unlock_irqrestore(&cvc->vc.lock, flags);
++	spin_unlock_irqrestore(&cvc->pc->lock, flags);
+ 
+ 	if (vd) {
+ 		cvd = to_cqdma_vdesc(vd);
+-- 
+2.34.1
 
-Thanks,
-Geoffrey.
-
-On Fri, Mar 28, 2025 at 08:44:49AM +1030, Geoffrey D. Bennett wrote:
-> Hi all,
-> 
-> Sorry, I see that an identical patch has already been applied to
-> bluetooth-next
-> https://lore.kernel.org/linux-bluetooth/20250315022730.11071-1-hao.qin@mediatek.com/
-> 
-> While I'm glad the issue is being addressed, my original patch
-> https://lore.kernel.org/linux-bluetooth/Z8ybV04CVUfVAykH@m.b4.vu/
-> contained useful context and tags that didn't make it into the final
-> commit.
-> 
-> For getting this fix into current kernel releases 6.12/6.13/6.14, I
-> think the patch needs the "Cc: stable@vger.kernel.org" tag that was in
-> my original submission but missing from Hao's. Since this is causing
-> significant issues for users on kernels 6.11+ (audio interfaces
-> failing to work), it's important this gets backported.
-> 
-> Hao, is this something you can do? I think the instructions at
-> https://www.kernel.org/doc/html/v6.14/process/stable-kernel-rules.html#option-3
-> need to be followed, but I've not done this before.
-> 
-> Thanks,
-> Geoffrey.
-> 
-> On Fri, Mar 28, 2025 at 07:22:06AM +1030, Geoffrey D. Bennett wrote:
-> > This reverts commit ccfc8948d7e4d93cab341a99774b24586717d89a.
-> > 
-> > The MediaTek Bluetooth controller reset that was added increases the
-> > Bluetooth device setup time from ~200ms to ~20s and interferes with
-> > other devices on the bus.
-> > 
-> > Three users (with Focusrite Scarlett 2nd Gen 6i6 and 3rd Gen Solo and
-> > 4i4 audio interfaces) reported that since 6.11 (which added this
-> > commit) their audio interface fails to initialise if connected during
-> > boot. Two of the users confirmed they have an MT7922.
-> > 
-> > Errors like this are observed in dmesg for the audio interface:
-> > 
-> >   usb 3-4: parse_audio_format_rates_v2v3(): unable to find clock source (clock -110)
-> >   usb 3-4: uac_clock_source_is_valid(): cannot get clock validity for id 41
-> >   usb 3-4: clock source 41 is not valid, cannot use
-> > 
-> > The problem only occurs when both devices and kernel modules are
-> > present and loaded during system boot, so it can be worked around by
-> > connecting the audio interface after booting.
-> > 
-> > Fixes: ccfc8948d7e4 ("Bluetooth: btusb: mediatek: reset the controller before downloading the fw")
-> > Closes: https://github.com/geoffreybennett/linux-fcp/issues/24
-> > Bisected-by: Benedikt Ziemons <ben@rs485.network>
-> > Tested-by: Benedikt Ziemons <ben@rs485.network>
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Geoffrey D. Bennett <g@b4.vu>
-> > ---
-> > Changelog:
-> > 
-> > v1 -> v2:
-> > 
-> > - Updated commit message with additional information.
-> > - No change to this patch's diff.
-> > - Dropped alternate patch that only reverted for 0x7922.
-> > - Chris, Sean, Hao agreed to reverting the change:
-> >   https://lore.kernel.org/linux-bluetooth/2025031352-octopus-quadrant-f7ca@gregkh/T/#m0b31a9a8e87b9499e1ec3370c08f03e43bfb54bf
-> > 
-> >  drivers/bluetooth/btmtk.c | 10 ----------
-> >  1 file changed, 10 deletions(-)
-> > 
-> > diff --git a/drivers/bluetooth/btmtk.c b/drivers/bluetooth/btmtk.c
-> > index 68846c5bd4f7..4390fd571dbd 100644
-> > --- a/drivers/bluetooth/btmtk.c
-> > +++ b/drivers/bluetooth/btmtk.c
-> > @@ -1330,13 +1330,6 @@ int btmtk_usb_setup(struct hci_dev *hdev)
-> >  		break;
-> >  	case 0x7922:
-> >  	case 0x7925:
-> > -		/* Reset the device to ensure it's in the initial state before
-> > -		 * downloading the firmware to ensure.
-> > -		 */
-> > -
-> > -		if (!test_bit(BTMTK_FIRMWARE_LOADED, &btmtk_data->flags))
-> > -			btmtk_usb_subsys_reset(hdev, dev_id);
-> > -		fallthrough;
-> >  	case 0x7961:
-> >  		btmtk_fw_get_filename(fw_bin_name, sizeof(fw_bin_name), dev_id,
-> >  				      fw_version, fw_flavor);
-> > @@ -1345,12 +1338,9 @@ int btmtk_usb_setup(struct hci_dev *hdev)
-> >  						btmtk_usb_hci_wmt_sync);
-> >  		if (err < 0) {
-> >  			bt_dev_err(hdev, "Failed to set up firmware (%d)", err);
-> > -			clear_bit(BTMTK_FIRMWARE_LOADED, &btmtk_data->flags);
-> >  			return err;
-> >  		}
-> > 
-> > -		set_bit(BTMTK_FIRMWARE_LOADED, &btmtk_data->flags);
-> > -
-> >  		/* It's Device EndPoint Reset Option Register */
-> >  		err = btmtk_usb_uhw_reg_write(hdev, MTK_EP_RST_OPT,
-> >  					      MTK_EP_RST_IN_OUT_OPT);
-> > --
-> > 2.45.0
-> > 
-> > 
-> > 
 
