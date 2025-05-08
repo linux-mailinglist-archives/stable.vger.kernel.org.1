@@ -1,139 +1,155 @@
-Return-Path: <stable+bounces-142933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DF13AB05C9
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 00:06:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FD65AB05D5
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 00:09:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC7644E7F04
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 22:06:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F075C1C2710E
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 22:09:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A35AA223DDC;
-	Thu,  8 May 2025 22:06:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F854226D1F;
+	Thu,  8 May 2025 22:09:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IN+DE+wu"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OKlKKkro"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D65B1A2390;
-	Thu,  8 May 2025 22:06:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 959F62222BA;
+	Thu,  8 May 2025 22:09:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746741964; cv=none; b=B7dRSltsi54BpPpGjES5iVYIrgsHI80qi1/c+9Y/snXkcSnU1GTC6+66an2TWpOvlMCS4j61tkKsk/3GJ4KxZ21sPP28rnnPa+iXg19t68b4HCyemfUDoIqIP63dQVV8afUjMJjn6o4odFoPYmjcGBmQy/QqwNyPfPj11eSrpHA=
+	t=1746742165; cv=none; b=DfCJtCzHa6n14a++SIh3V2GFkNJZzckMb0X7LGzP46phzd4X21CK7pgzRZPuL5uIk/lVkDjrwMi5muyU5Dh9ROU/PkGCTzk7gYmjW+RizsBZjxlREtXnbI9SZoa3ZHytRauAHmjjmBqSlVcFT2oQtG7oiaUHsi4m7Q/DBvq88uw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746741964; c=relaxed/simple;
-	bh=nJGSya3nk9fSTp7YpGyO3JhSqO1gXL/uAOoUiq4UGgo=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=XESMJdBz/fnZJGZl+iMvIzarMUjARdt/TIOm8R3dvxFOzwluwdCgFKR+oae5BnFRopWg3dqb+qKMDVPCdIIocSByjP32E9v+5CiD/4Jl3zR+GriF32HbSrPlR9BXuOUXzI17Fr732bvPIqRni0uw02pq8hLfSRunTzVxrvwhtPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IN+DE+wu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EE5DC4CEE7;
-	Thu,  8 May 2025 22:05:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746741963;
-	bh=nJGSya3nk9fSTp7YpGyO3JhSqO1gXL/uAOoUiq4UGgo=;
-	h=Subject:From:Reply-To:To:Cc:Date:In-Reply-To:References:From;
-	b=IN+DE+wuCAWPAELs5oW0EpKs5ORy43kC+oE1Q2vW0wWTQQwY29Op9abjDOt6onAQt
-	 6Ut9bUmgXFuh+1IXL/m7ysUpkC/rhe6i7MrxqhnuU/+TzfpMMtkV28rrryI86j18RF
-	 e3Cc3+28GQ2WCy0U/Rous0UTwRv/vo4y5PXoaO8zeV0rmPmRzAfwq/SqVTdoyKq+MY
-	 dbXI/tF95dqosOSSmgIHom4Frq2mcOWUFPcGIME4Q4u62aPY/OnxzzDv9eoQarkt5Z
-	 b1/2jIYRuD1IOX9x8F0skh/+az+G/LbnTZlnmanbtiH9tIf5mUmdGrnieIPwHOHkQ6
-	 nRNNo290L6UZA==
-Message-ID: <18a80b20916b2f7d73ea29cc67d1389662f9836b.camel@kernel.org>
-Subject: Re: [PATCH v2] wifi: mt76: mt7925: fix missing hdr_trans_tlv
- command for broadcast wtbl
-From: Niklas Schnelle <niks@kernel.org>
-Reply-To: niks@kernel.org
-To: Mingyen Hsieh <mingyen.hsieh@mediatek.com>, nbd@nbd.name, 
-	lorenzo@kernel.org
-Cc: deren.wu@mediatek.com, Sean.Wang@mediatek.com, Leon.Yen@mediatek.com, 
-	Michael.Lo@mediatek.com, allan.wang@mediatek.com,
- Eric-SY.Chang@mediatek.com, 	km.lin@mediatek.com, Quan.Zhou@mediatek.com,
- Ryder.Lee@mediatek.com, 	Shayne.Chen@mediatek.com,
- linux-wireless@vger.kernel.org, 	linux-mediatek@lists.infradead.org,
- stable@vger.kernel.org, fossben@pm.me
-Date: Fri, 09 May 2025 00:05:57 +0200
-In-Reply-To: <20250508085534.305242-1-mingyen.hsieh@mediatek.com>
-References: <20250508085534.305242-1-mingyen.hsieh@mediatek.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.1 
+	s=arc-20240116; t=1746742165; c=relaxed/simple;
+	bh=VXIalOPd7qfE59DRjVfo6aZAb2m474rAniDu80owj2g=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=I2bx+SZ6OQBNlyupAbps3ZcjDoBYKAGOmp/KaFxCtsdKOvdEgKfoaJY7vlRlJ9i4XQLNEPZCnJ43V6ujKNOvD85MJWHuzmjOqZniLfq2FvDBvNle0h2fGpQZNFWu8ZQA++QQC7I8PwGFwiobiMZeH4QUnNcf5JETQEkO4kOGvcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OKlKKkro; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-7396f13b750so1715855b3a.1;
+        Thu, 08 May 2025 15:09:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746742163; x=1747346963; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=izwRWOO45q1gJjUhAd8RLBY3xuEu+OORG94FpQzpIq8=;
+        b=OKlKKkroseur3UqEBk7CYJsk8PrzicHr3YRwfh8Vkp+/Ty+NACUlakDh3sEnzLLTbG
+         bVZsrlAfWdpR1fHmvp8QnXFYzqh2oiss1xOTMufiy91LeoL7CU1D/bdPXC9C4F4ISjbF
+         IFR+W9I4BuAs0HX9s5eWQaWoXXqyC4X5a+Fg5UVudPuL/uiajgd2cWf4CkRR/QHzK74Y
+         LQzPealUwDGfKa5EkqpCr2P7JG7mE06I+o478GeDjc5+zxwZ9Hb0L6bfR2FXU9SEU2p6
+         8k3R6Kd5rH5kY+9i02xCs2ISBCWCd97uj42cQTJA1JzhBv8pChJXdsCAHizOolRYEZH/
+         GnYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746742163; x=1747346963;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=izwRWOO45q1gJjUhAd8RLBY3xuEu+OORG94FpQzpIq8=;
+        b=w/qIwyjkDvkQzYnO4I4/BS1aXVvvGAlIx+YSelOMe5T13tAB2oDjLRL8sjPlBZVec/
+         j8lXORSdp3Bcqa9D6TjwVQeAM31DivM7xiadyh758n35IH0YmoHH/B+I+kRiTv6HvhCc
+         KE10Lwh6YntCcyL9kFxoVKpDDJCYtzKrh8SK7Y2SykCg08J+HuK9ltPKhk8NFtQGe/Y/
+         DOhu277Yop7nCFkSvMoGqI0u92iOcn/Gmh1hP8EFqde39rJRiN0IlLBX6ILOMXzPUpy2
+         sbry9/s8osrEzeLMSFiMWcJHw4X038bshB3vSeI0BdVYmNGk02Vp9QmYo+01/60NySuX
+         kItw==
+X-Forwarded-Encrypted: i=1; AJvYcCVqdP9OTfkD1bSawnkWKf7t0Czah37RzykUTce0Ya8AzYMXSy7xUu+2WzRzofgcfDrDaTpyP1U=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywey+JJ0SJ96zLC+UGKoJhl5foaCUQRQfxv2ObvIQNNGYLVvsEC
+	581hHV4ilknF0cwu5asWgmL0EuGAU9l+tw+MOUNHi0fgfrLwT2RA
+X-Gm-Gg: ASbGncsCCR1lLeyDOCsvVfFBmhsZ36EFVfesSgX7fUI4TNb7+Z1Um41tv8YOvAUdMy5
+	WIOmThGuRk0XgjdMJCjM1isA04hWx9mPRAaRwDDX+i6EG5ZTidS9I39oX404xF09MMQWrhUki/s
+	bm8vltVVChaew2HEfBBoddFXDhtJuO47yfoJjOO4EQBy0H5yJZX4d3FedD9baTLoKxX053ZN+85
+	dw7gTabAPcUgSUMps+rlNNPsJj1ajLIMMjaF16VTvwwXgiJ9n7bY2dITfZGk+sBfKoTEv1HoI9T
+	WW3ypZGOh7ELxB++00u1y+t9I5ououhjahG7CIrrx2SMiQLrEN0+7XxK
+X-Google-Smtp-Source: AGHT+IFkZ/rzCCAl+euvoNiSCCwS0EK66FZhD9x1Yb5CCdnY4h1LOdX0thkT3oEe3BUDFyuGOmH/aQ==
+X-Received: by 2002:a05:6a00:4148:b0:740:921a:3cb4 with SMTP id d2e1a72fcca58-7423bd57d80mr1528325b3a.13.1746742162742;
+        Thu, 08 May 2025 15:09:22 -0700 (PDT)
+Received: from Barrys-MBP.hub ([118.92.10.104])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7423772750bsm533327b3a.42.2025.05.08.15.09.18
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Thu, 08 May 2025 15:09:21 -0700 (PDT)
+From: Barry Song <21cnbao@gmail.com>
+To: akpm@linux-foundation.org,
+	linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
+	Barry Song <v-songbaohua@oppo.com>,
+	David Hildenbrand <david@redhat.com>,
+	Peter Xu <peterx@redhat.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Lokesh Gidra <lokeshgidra@google.com>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] mm: userfaultfd: correct dirty flags set for both present and swap pte
+Date: Fri,  9 May 2025 10:09:12 +1200
+Message-Id: <20250508220912.7275-1-21cnbao@gmail.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Thu, 2025-05-08 at 16:55 +0800, Mingyen Hsieh wrote:
-> From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
->=20
-> The hdr_trans_tlv function call has been moved inside the conditional blo=
-ck
-> to ensure it is executed when info->enable is true.
->=20
-> Cc: stable@vger.kernel.org
-> Fixes: cb1353ef3473 ("wifi: mt76: mt7925: integrate *mlo_sta_cmd and *sta=
-_cmd")
-> Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-> Tested-by: Niklas Schnelle <niks@kernel.org>
-> ---
-> v2:
->     add tested-by tag
->=20
+From: Barry Song <v-songbaohua@oppo.com>
 
-Thanks for adding the tag, appreciate it. If I may add some stylistic
-comments. I saw that this is one of your first independent upstream
-patches so congratulations on that and even better it's an actual
-proper fix. Well done!
+As David pointed out, what truly matters for mremap and userfaultfd
+move operations is the soft dirty bit. The current comment and
+implementation—which always sets the dirty bit for present PTEs
+and fails to set the soft dirty bit for swap PTEs—are incorrect.
+This could break features like Checkpoint-Restore in Userspace
+(CRIU).
 
-One thing, I noticed though is that your commit message lacks context,
-like this affecting IPv6 and multicast. Basically it just re-iterates
-what I can already see in the code. It also doesn't use the recommended
-imperative tone (see [0]). Moreover, I think this would be a good case
-for using a Link: tag pointing to the thread[1] of Ben's bisect result.
-Relatedly one could also add a Reported-by tag for Ben, I still fondly
-remember getting a Reported-by mention long before I did my first
-kernel contribution. This stuff is hard to balance with getting fixes
-out there and I still screw up some detail with mails sometimes, but
-we're all learning so wanted to give my 5 cents.
+This patch updates the behavior to correctly set the soft dirty bit
+for both present and swap PTEs in accordance with mremap.
 
-Thanks,
-Niklas
+Reported-by: David Hildenbrand <david@redhat.com>
+Closes: https://lore.kernel.org/linux-mm/02f14ee1-923f-47e3-a994-4950afb9afcc@redhat.com/
+Acked-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+Cc: Lokesh Gidra <lokeshgidra@google.com>
+Cc: Andrea Arcangeli <aarcange@redhat.com>
+Fixes: adef440691bab ("userfaultfd: UFFDIO_MOVE uABI")
+Cc: stable@vger.kernel.org
+Signed-off-by: Barry Song <v-songbaohua@oppo.com>
+---
+ mm/userfaultfd.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-[0]
-https://www.kernel.org/doc/html/v4.12/process/submitting-patches.html#descr=
-ibe-your-changes
-[1]
-https://lore.kernel.org/lkml/EmWnO5b-acRH1TXbGnkx41eJw654vmCR-8_xMBaPMwexCn=
-fkvKCdlU5u19CGbaapJ3KRu-l3B-tSUhf8CCQwL0odjo6Cd5YG5lvNeB-vfdg=3D@pm.me/
+diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+index e8ce92dc105f..bc473ad21202 100644
+--- a/mm/userfaultfd.c
++++ b/mm/userfaultfd.c
+@@ -1064,8 +1064,13 @@ static int move_present_pte(struct mm_struct *mm,
+ 	src_folio->index = linear_page_index(dst_vma, dst_addr);
+ 
+ 	orig_dst_pte = folio_mk_pte(src_folio, dst_vma->vm_page_prot);
+-	/* Follow mremap() behavior and treat the entry dirty after the move */
+-	orig_dst_pte = pte_mkwrite(pte_mkdirty(orig_dst_pte), dst_vma);
++	/* Set soft dirty bit so userspace can notice the pte was moved */
++#ifdef CONFIG_MEM_SOFT_DIRTY
++	orig_dst_pte = pte_mksoft_dirty(orig_dst_pte);
++#endif
++	if (pte_dirty(orig_src_pte))
++		orig_dst_pte = pte_mkdirty(orig_dst_pte);
++	orig_dst_pte = pte_mkwrite(orig_dst_pte, dst_vma);
+ 
+ 	set_pte_at(mm, dst_addr, dst_pte, orig_dst_pte);
+ out:
+@@ -1100,6 +1105,9 @@ static int move_swap_pte(struct mm_struct *mm, struct vm_area_struct *dst_vma,
+ 	}
+ 
+ 	orig_src_pte = ptep_get_and_clear(mm, src_addr, src_pte);
++#ifdef CONFIG_MEM_SOFT_DIRTY
++	orig_src_pte = pte_swp_mksoft_dirty(orig_src_pte);
++#endif
+ 	set_pte_at(mm, dst_addr, dst_pte, orig_src_pte);
+ 	double_pt_unlock(dst_ptl, src_ptl);
+ 
+-- 
+2.39.3 (Apple Git-146)
 
-> ---
->  drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->=20
-> diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/ne=
-t/wireless/mediatek/mt76/mt7925/mcu.c
-> index a42b584634ab..fd756f0d18f8 100644
-> --- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-> +++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-> @@ -2183,14 +2183,14 @@ mt7925_mcu_sta_cmd(struct mt76_phy *phy,
->  			mt7925_mcu_sta_mld_tlv(skb, info->vif, info->link_sta->sta);
->  			mt7925_mcu_sta_eht_mld_tlv(skb, info->vif, info->link_sta->sta);
->  		}
-> -
-> -		mt7925_mcu_sta_hdr_trans_tlv(skb, info->vif, info->link_sta);
->  	}
-> =20
->  	if (!info->enable) {
->  		mt7925_mcu_sta_remove_tlv(skb);
->  		mt76_connac_mcu_add_tlv(skb, STA_REC_MLD_OFF,
->  					sizeof(struct tlv));
-> +	} else {
-> +		mt7925_mcu_sta_hdr_trans_tlv(skb, info->vif, info->link_sta);
->  	}
-> =20
->  	return mt76_mcu_skb_send_msg(dev, skb, info->cmd, true);
 
