@@ -1,147 +1,227 @@
-Return-Path: <stable+bounces-142790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C4EFAAF3DD
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 08:40:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 633E1AAF3E2
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 08:40:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B4224C7E9B
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 06:40:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 505271BC1F52
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 06:41:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 462A5219A63;
-	Thu,  8 May 2025 06:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3D3221A422;
+	Thu,  8 May 2025 06:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="CkVsDYMz"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ofO1utEa"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 188062192EC
-	for <stable@vger.kernel.org>; Thu,  8 May 2025 06:40:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A82AB2192FA;
+	Thu,  8 May 2025 06:40:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746686433; cv=none; b=Atch+RtsKcxdBEYxBjRRzRJeFCKAg34UtbU3UVUU/EUd3f8X9cFMIc750A0TpTohFVJo6OsC/5tbUt3WJCTAr2r2Uu9Tcm2F1srxs2elW4lTIypR1cyufaFKSlyxeS5/QtV4l0aWDL8cMMKyTe9PNEsCBh3P+zNYhTWgZMIRnts=
+	t=1746686442; cv=none; b=OI9rpHvF8qamk/o003Z0mcetqwCNFgmB9xmo3mQQRaRiKL2bwWKCRaD0ulqUe6o3TFnklcz86DaqPKJKEMkmeFIUrrRAMvIn/OZMpoRAfHLaAtlOFeVBeRpXueEM09kLtubsBkfVy4Lw0eBFIPLXwdONXLAisUiwHJCCU5ObQbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746686433; c=relaxed/simple;
-	bh=mo7aBOYxy2laS+VfZHPupXplp+OJ0XZ0QwmwUj+Cx7E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=odTm66gk4Pw5ThpWiS3A48j0ZRjFCu9A94JLgDHSsLSsjWvix0ICltrrlqlWPUV9cJ8RWOb73z4B7bkGXJkU1WXKqJaVVoKxVHYsvrCe1DQV7PShPJLdjrXlM/G4pXMQJc0ZXh+X/HZtJt3ppIIMQ92azkQAfsLThAWzXmPJR5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=CkVsDYMz; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-43ea40a6e98so6081535e9.1
-        for <stable@vger.kernel.org>; Wed, 07 May 2025 23:40:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1746686429; x=1747291229; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=m0BYhiXUdA6i9dCcFIqo30mmGVKS8d1Kjub/7fShZA0=;
-        b=CkVsDYMzDpzRHRO6FcVVzzHLgRGY4XxjKvk3TqtyBCrBQQMfFO0SleHFkpRLJZPB89
-         terLxyDUCkNb/9OW1fmRTLcNTGnDwWS3OB/mCPUR28HD8+j8WA3IeQQEyItIgOK/gnUR
-         88VcAsrNKud4mY4WMJ87NrUHoiBzwFP8LGA7qag3DYb+QG4dAQGjwIgH22k445UE2fDv
-         tsNpQhiTladg92zjGW2oS90vcZ5JzZG2nfHeWwj15lJgXJjks1lTSPL7j+EnmNFIAVV/
-         1RXk5sRaPtimqAnJjb/VnHsH5PQnsJuAS731kwCsv9xO8SYMHqfKvQh/TeX0LOa/RyNX
-         7Ihg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746686429; x=1747291229;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=m0BYhiXUdA6i9dCcFIqo30mmGVKS8d1Kjub/7fShZA0=;
-        b=b8wq17W3YYNs6z7K6M81KXnTCnRYfOcqyp0au/th+0T28c0/mRG3ZsNkR+bHKvVmmT
-         0M4IGpLnYYLXKatgW9Q4hppD/1tASL0hWe/8dLPzAqDJGP5zSPfVY1dbHvUOtelBkeFt
-         iNuolD8RfEQaYyaWwwqf72lHtDsHEuwX7iOS4SBcBuQ6U2UAEdbEGoHEk8xtOfXRpZNE
-         ctmLzxBzXm06XIWKMEnAJZtzECHAWcFiSiwadimP1kZwY/89Mh2M8/uUqEwIdjWVI24Q
-         0OYKpwfw0azJ912m+j5NxNK2p/yFNa0M4mjH/2tMAH7Px7sFeiGP2XTNO5A+qw3/h3uG
-         I4Qw==
-X-Forwarded-Encrypted: i=1; AJvYcCWijN04bgZbwA/ygv7oC9jbdepq0xV8VH56nBxrRfbHSbm2ekFJei7nofk5V1xcTh1t0fu/Hx4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMLVAtGq8hkZdQOPCiL+a+l7u1zDXX539hOPS5mRL0wkCVumaR
-	VlIOMoSTAad1Mi0Y+n9EbvIjKBQhggNfQUyI4NnCvgqPtMGTEW0Vt/Sph2qD6ZY=
-X-Gm-Gg: ASbGncvUcgF1ZgVcUKDdWJr/VfdjQW5MgHlp3RX/eugVcJbRpYFw6c3JiEWbhPKK66w
-	T3jly8Y/4Kg410QaiWejzeDv1ZXd++wp/X6LGFEZZnfJTbckS1GjAKMro+vYqGwvs7UQOZ85cfs
-	YzF7yCs1TDlkPuI+9EADjz/EENlg1o79CwJJvrIFhnLf2T57gjWFoFE2wmAv06aQRA66tkqRMJd
-	pqXenK/qqhUP5ad1F3vtmUR0PjzRzxVH6W5h6ddqYdX8A3LUz7yx2WgSbUqjJoeGuTu3KcQ17TP
-	plZSSgWh4vmk4rZNqySeo2pw/f9MrzLNLTsPaGA3jeGR/vpx9jKZbL1p
-X-Google-Smtp-Source: AGHT+IFZRIfE5PxRRbMe4B54cwayzKdn3VEZhgxzfmBDRkxcWCbiRLfEqYjfrSNjGm+C2f+T0IBaxg==
-X-Received: by 2002:a05:600c:628d:b0:43d:fa:1f9a with SMTP id 5b1f17b1804b1-441d44e3359mr67512805e9.30.1746686429396;
-        Wed, 07 May 2025 23:40:29 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-442cd35f40asm25158595e9.27.2025.05.07.23.40.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 May 2025 23:40:28 -0700 (PDT)
-Date: Thu, 8 May 2025 09:40:26 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Bjorn Andersson <andersson@kernel.org>,
-	Naresh Kamboju <naresh.kamboju@linaro.org>
-Cc: Mathieu Poirier <mathieu.poirier@linaro.org>,
-	linux-arm-msm@vger.kernel.org, linux-remoteproc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel-janitors@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	stable@vger.kernel.org, patches@lists.linux.dev,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org,
-	Arnd Bergmann <arnd@arndb.de>, Liam Girdwood <lgirdwood@gmail.com>,
-	Frieder Schrempf <frieder.schrempf@kontron.de>,
-	Marek Vasut <marex@denx.de>,
-	Anders Roxell <anders.roxell@linaro.org>
-Subject: Re: [PATCH] rpmsg: qcom_smd: Fix uninitialized return variable in
- __qcom_smd_send()
-Message-ID: <aBxR2nnW1GZ7dN__@stanley.mountain>
-References: <CA+G9fYs+z4-aCriaGHnrU=5A14cQskg=TMxzQ5MKxvjq_zCX6g@mail.gmail.com>
- <aAkhvV0nSbrsef1P@stanley.mountain>
+	s=arc-20240116; t=1746686442; c=relaxed/simple;
+	bh=hHi3T2t1572bHmvJ5VLsXPynoUavILu4+JPhlnQvadE=;
+	h=Date:To:From:Subject:Message-Id; b=R3yO/p6Bk6x7LOwct+JWgVPEelK95l/4t5qdclbm6+a2njqrttQB2EPYP8xPsC1vjmCVavxluVmC1C+kCZA3IIUkIULR5GOBvkVUa65/ARbLbQ3EO2GEuDvMQY9Wwaa9ktmXnPbY8HMdxJjjMEpdN7fEnD8P0iJwk83Gv+1oPdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ofO1utEa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EAE1C4CEEB;
+	Thu,  8 May 2025 06:40:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1746686442;
+	bh=hHi3T2t1572bHmvJ5VLsXPynoUavILu4+JPhlnQvadE=;
+	h=Date:To:From:Subject:From;
+	b=ofO1utEadMTficpTJCqHEalLSirgIfSslp2l+MDj4riCHAu9ZmxgeIxlFQLJEkHGP
+	 jyIlPKfle0iBUK/G/KvL99O1qlWuyDtqfGdx6lAUNrYxHfADrSb4sn8h0KN741PnhP
+	 cKxSs7maAf93tgazFNkflmO/5OSopsk0pRPcn+CA=
+Date: Wed, 07 May 2025 23:40:41 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,joseph.qi@linux.alibaba.com,jlbec@evilplan.org,gechangwei@live.cn,gautham.ananthakrishna@oracle.com,heming.zhao@suse.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-hotfixes-stable] ocfs2-fix-the-issue-with-discontiguous-allocation-in-the-global_bitmap.patch removed from -mm tree
+Message-Id: <20250508064042.0EAE1C4CEEB@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aAkhvV0nSbrsef1P@stanley.mountain>
 
-Hi Greg,
 
-I'm sorry I forgot to add the:
+The quilt patch titled
+     Subject: ocfs2: fix the issue with discontiguous allocation in the global_bitmap
+has been removed from the -mm tree.  Its filename was
+     ocfs2-fix-the-issue-with-discontiguous-allocation-in-the-global_bitmap.patch
 
-Cc: stable@vger.kernel.org
+This patch was dropped because it was merged into the mm-hotfixes-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-to this patch.  Could we backport it to stable, please?
+------------------------------------------------------
+From: Heming Zhao <heming.zhao@suse.com>
+Subject: ocfs2: fix the issue with discontiguous allocation in the global_bitmap
+Date: Mon, 14 Apr 2025 14:01:23 +0800
 
-regards,
-dan carpenter
+commit 4eb7b93e0310 ("ocfs2: improve write IO performance when
+fragmentation is high") introduced another regression.
 
-On Wed, Apr 23, 2025 at 08:22:05PM +0300, Dan Carpenter wrote:
-> The "ret" variable isn't initialized if we don't enter the loop.  For
-> example,  if "channel->state" is not SMD_CHANNEL_OPENED.
-> 
-> Fixes: 33e3820dda88 ("rpmsg: smd: Use spinlock in tx path")
-> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-> ---
-> Naresh, could you test this patch and see if it fixes the boot
-> problems you saw?
-> 
->  drivers/rpmsg/qcom_smd.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/rpmsg/qcom_smd.c b/drivers/rpmsg/qcom_smd.c
-> index 40d386809d6b..bb161def3175 100644
-> --- a/drivers/rpmsg/qcom_smd.c
-> +++ b/drivers/rpmsg/qcom_smd.c
-> @@ -746,7 +746,7 @@ static int __qcom_smd_send(struct qcom_smd_channel *channel, const void *data,
->  	__le32 hdr[5] = { cpu_to_le32(len), };
->  	int tlen = sizeof(hdr) + len;
->  	unsigned long flags;
-> -	int ret;
-> +	int ret = 0;
->  
->  	/* Word aligned channels only accept word size aligned data */
->  	if (channel->info_word && len % 4)
-> -- 
-> 2.47.2
+The following ocfs2-test case can trigger this issue:
+> discontig_runner.sh => activate_discontig_bg.sh => resv_unwritten:
+> ${RESV_UNWRITTEN_BIN} -f ${WORK_PLACE}/large_testfile -s 0 -l \
+> $((${FILE_MAJOR_SIZE_M}*1024*1024))
+
+In my env, test disk size (by "fdisk -l <dev>"):
+> 53687091200 bytes, 104857600 sectors.
+
+Above command is:
+> /usr/local/ocfs2-test/bin/resv_unwritten -f \
+> /mnt/ocfs2/ocfs2-activate-discontig-bg-dir/large_testfile -s 0 -l \
+> 53187969024
+
+Error log:
+> [*] Reserve 50724M space for a LARGE file, reserve 200M space for future test.
+> ioctl error 28: "No space left on device"
+> resv allocation failed Unknown error -1
+> reserve unwritten region from 0 to 53187969024.
+
+Call flow:
+__ocfs2_change_file_space //by ioctl OCFS2_IOC_RESVSP64
+ ocfs2_allocate_unwritten_extents //start:0 len:53187969024
+  while()
+   + ocfs2_get_clusters //cpos:0, alloc_size:1623168 (cluster number)
+   + ocfs2_extend_allocation
+     + ocfs2_lock_allocators
+     |  + choose OCFS2_AC_USE_MAIN & ocfs2_cluster_group_search
+     |
+     + ocfs2_add_inode_data
+        ocfs2_add_clusters_in_btree
+         __ocfs2_claim_clusters
+          ocfs2_claim_suballoc_bits
+          + During the allocation of the final part of the large file
+	    (after ~47GB), no chain had the required contiguous
+            bits_wanted. Consequently, the allocation failed.
+
+How to fix:
+When OCFS2 is encountering fragmented allocation, the file system should
+stop attempting bits_wanted contiguous allocation and instead provide the
+largest available contiguous free bits from the cluster groups.
+
+Link: https://lkml.kernel.org/r/20250414060125.19938-2-heming.zhao@suse.com
+Fixes: 4eb7b93e0310 ("ocfs2: improve write IO performance when fragmentation is high")
+Signed-off-by: Heming Zhao <heming.zhao@suse.com>
+Reported-by: Gautham Ananthakrishna <gautham.ananthakrishna@oracle.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ fs/ocfs2/suballoc.c |   38 ++++++++++++++++++++++++++++++++------
+ fs/ocfs2/suballoc.h |    1 +
+ 2 files changed, 33 insertions(+), 6 deletions(-)
+
+--- a/fs/ocfs2/suballoc.c~ocfs2-fix-the-issue-with-discontiguous-allocation-in-the-global_bitmap
++++ a/fs/ocfs2/suballoc.c
+@@ -698,10 +698,12 @@ static int ocfs2_block_group_alloc(struc
+ 
+ 	bg_bh = ocfs2_block_group_alloc_contig(osb, handle, alloc_inode,
+ 					       ac, cl);
+-	if (PTR_ERR(bg_bh) == -ENOSPC)
++	if (PTR_ERR(bg_bh) == -ENOSPC) {
++		ac->ac_which = OCFS2_AC_USE_MAIN_DISCONTIG;
+ 		bg_bh = ocfs2_block_group_alloc_discontig(handle,
+ 							  alloc_inode,
+ 							  ac, cl);
++	}
+ 	if (IS_ERR(bg_bh)) {
+ 		status = PTR_ERR(bg_bh);
+ 		bg_bh = NULL;
+@@ -1794,6 +1796,7 @@ static int ocfs2_search_chain(struct ocf
+ {
+ 	int status;
+ 	u16 chain;
++	u32 contig_bits;
+ 	u64 next_group;
+ 	struct inode *alloc_inode = ac->ac_inode;
+ 	struct buffer_head *group_bh = NULL;
+@@ -1819,10 +1822,21 @@ static int ocfs2_search_chain(struct ocf
+ 	status = -ENOSPC;
+ 	/* for now, the chain search is a bit simplistic. We just use
+ 	 * the 1st group with any empty bits. */
+-	while ((status = ac->ac_group_search(alloc_inode, group_bh,
+-					     bits_wanted, min_bits,
+-					     ac->ac_max_block,
+-					     res)) == -ENOSPC) {
++	while (1) {
++		if (ac->ac_which == OCFS2_AC_USE_MAIN_DISCONTIG) {
++			contig_bits = le16_to_cpu(bg->bg_contig_free_bits);
++			if (!contig_bits)
++				contig_bits = ocfs2_find_max_contig_free_bits(bg->bg_bitmap,
++						le16_to_cpu(bg->bg_bits), 0);
++			if (bits_wanted > contig_bits && contig_bits >= min_bits)
++				bits_wanted = contig_bits;
++		}
++
++		status = ac->ac_group_search(alloc_inode, group_bh,
++				bits_wanted, min_bits,
++				ac->ac_max_block, res);
++		if (status != -ENOSPC)
++			break;
+ 		if (!bg->bg_next_group)
+ 			break;
+ 
+@@ -1982,6 +1996,7 @@ static int ocfs2_claim_suballoc_bits(str
+ 	victim = ocfs2_find_victim_chain(cl);
+ 	ac->ac_chain = victim;
+ 
++search:
+ 	status = ocfs2_search_chain(ac, handle, bits_wanted, min_bits,
+ 				    res, &bits_left);
+ 	if (!status) {
+@@ -2022,6 +2037,16 @@ static int ocfs2_claim_suballoc_bits(str
+ 		}
+ 	}
+ 
++	/* Chains can't supply the bits_wanted contiguous space.
++	 * We should switch to using every single bit when allocating
++	 * from the global bitmap. */
++	if (i == le16_to_cpu(cl->cl_next_free_rec) &&
++	    status == -ENOSPC && ac->ac_which == OCFS2_AC_USE_MAIN) {
++		ac->ac_which = OCFS2_AC_USE_MAIN_DISCONTIG;
++		ac->ac_chain = victim;
++		goto search;
++	}
++
+ set_hint:
+ 	if (status != -ENOSPC) {
+ 		/* If the next search of this group is not likely to
+@@ -2365,7 +2390,8 @@ int __ocfs2_claim_clusters(handle_t *han
+ 	BUG_ON(ac->ac_bits_given >= ac->ac_bits_wanted);
+ 
+ 	BUG_ON(ac->ac_which != OCFS2_AC_USE_LOCAL
+-	       && ac->ac_which != OCFS2_AC_USE_MAIN);
++	       && ac->ac_which != OCFS2_AC_USE_MAIN
++	       && ac->ac_which != OCFS2_AC_USE_MAIN_DISCONTIG);
+ 
+ 	if (ac->ac_which == OCFS2_AC_USE_LOCAL) {
+ 		WARN_ON(min_clusters > 1);
+--- a/fs/ocfs2/suballoc.h~ocfs2-fix-the-issue-with-discontiguous-allocation-in-the-global_bitmap
++++ a/fs/ocfs2/suballoc.h
+@@ -29,6 +29,7 @@ struct ocfs2_alloc_context {
+ #define OCFS2_AC_USE_MAIN  2
+ #define OCFS2_AC_USE_INODE 3
+ #define OCFS2_AC_USE_META  4
++#define OCFS2_AC_USE_MAIN_DISCONTIG  5
+ 	u32    ac_which;
+ 
+ 	/* these are used by the chain search */
+_
+
+Patches currently in -mm which might be from heming.zhao@suse.com are
+
+
 
