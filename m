@@ -1,272 +1,165 @@
-Return-Path: <stable+bounces-142847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 466D6AAFA57
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 14:46:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62ECAAAFAB3
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 14:57:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DC4E4E5DD4
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 12:46:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A93593B8A7A
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 12:56:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9B8E224B0D;
-	Thu,  8 May 2025 12:46:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="sBJmUSWd"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34687229B23;
+	Thu,  8 May 2025 12:56:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com [209.85.221.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-m32102.qiye.163.com (mail-m32102.qiye.163.com [220.197.32.102])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 951B52C190
-	for <stable@vger.kernel.org>; Thu,  8 May 2025 12:46:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EB5D2253B2;
+	Thu,  8 May 2025 12:56:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.32.102
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746708388; cv=none; b=SXhXscuk5nMSqSDpzAgWYOQpIK9lLbAbrR0p2si0tZANnN1peqUHEvYA3I2YY2ikoi+i7/svoK1bNriG93yi1zNxlnqwEtcLQel9ZsMQ9Oni66AhIZlksc8KeI/xkd4fyFUj3YgAzRgjzDkeVM45beri00c+oEkUvdNUx4321VM=
+	t=1746708968; cv=none; b=MY0/zzSbSpgBcNwL9eFgeMw7jZlF2GuGPBZfANsc1dXeibleuhdT4EqzrV6OQ+mrlIO9hcRAhSG0A9S8XqlG0kKmMhceThmMrX9N3wo/vOBiwqOA52Gagl5xyjHQDQMI1e/SMTbm1ivGXUA79Ep3vE/A4LOoathqwTs+RsEFwEY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746708388; c=relaxed/simple;
-	bh=vLN5n2hNo5eOWSuE3Ijv35O1O0lrmdP/iNolJY2Xm4I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mFPmy5ZengaWaZm/xgJzplZND4cmjw1lBT9Yvac20zepLgYDDYoRELB15ghjNtS1PC28IFuU3jiHbIGFnm+5fX3BrCpW2b5UPSff2bM2D4Sh49CV/nZgeZ2VVWhNBJLJ4wKp0ggnqKdUqoCn2NhGFxEL6gJzKg4TDhONGaP81Y0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=sBJmUSWd; arc=none smtp.client-ip=209.85.221.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-525b44b7720so287872e0c.0
-        for <stable@vger.kernel.org>; Thu, 08 May 2025 05:46:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1746708384; x=1747313184; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=GxhL21BMpd7ZCe+Gl4Bl8PbrN0Fr94zagNOX3ZIRJuo=;
-        b=sBJmUSWdOv2JXElzpUyg558r5cOLVnpFKLDfZuZHu/U9FuJ9uzeKFNCP0GVM8fcrSo
-         nCfSbTudJ2vmTTGuoi0mq6ugfyiohLP1hcKd2A2P3fm4uvBTtszZ7j5fO9YftD3djui4
-         MTDtWgBCdDoWCqsLhWaWh+yxhvuCQTJCswC0KHdPzpkjmd+khPu5RD3WLZJF03OWIYc+
-         jMQiKZ98YFa84DVpZ74dc9vzynC240XjA8NBuHi9ed6VJlzvOadDXEzoHsaL4StLUDtU
-         GaiQbUScv7ecki6aYNEsX4Lx3sQbptwXWtXMAG7yDe9ovGNpZIKd5GJR9j3UWMzEFWyd
-         MAGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746708384; x=1747313184;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GxhL21BMpd7ZCe+Gl4Bl8PbrN0Fr94zagNOX3ZIRJuo=;
-        b=lPdbkQez3VWeRYu6310gitybE3cELEatF9ButmGkRDGK26D75CwVRErLGOqVvQ/0NO
-         jiU/rKCLxhVUdkk+vfrp9aeW6gly2+505URI0rBvfOw8lJzZh2Esyb287AkrBwBWocoq
-         Is+smQO/sUtSmf10euvinWeAt9K5OsXQNLhiV5txaFEhLWX160nddswsqcc/I8HT6ua4
-         TlwEvmqp68tsGKuC900isCSV+MrYhL49A3QAOZpKpjWXGR5KGLIwFV5gXz0eGftUcJC0
-         09+030MDVqxR6g+itZRgp3XXBygLspIIyO3+5oYi8+SuorGMk5tV3C2JVIqd2Sfkb6s3
-         Uytw==
-X-Gm-Message-State: AOJu0YzWmOaD4+mA5rI5O4JTQm1/CDQUZbeV7+qur/Bx3DD+DmUKaK3F
-	D+tsz3cDuESpP8vbnRCaRZiwjMPu2OkJI0sVGF5jJfS2EZ37SUSu18QMlncKTVX8dnWd820SnqJ
-	bRjjJXJVKOA8C7i5plTHV+Y9tKxfWJY2khDTcLg==
-X-Gm-Gg: ASbGncstOPmsNQrHvP+WuNmco+uV4+mKG9BkPDy7ndvoQjnQJKyb/eI60/0c7sncH8/
-	oYcZTsegiKl4SDDHYgWzsdId0Q6eNt6EtCVvxliSiq95wv/XGx3I0EW4yFooTfUwvbETbt2N1dW
-	cZuhEsRuL9vCeb6Cbpq/9OV0Ttbu/LycyL0DPq+CIQxOv3zYGZAefdVpY=
-X-Google-Smtp-Source: AGHT+IFbvVLt60GR/D06kXgXguRPxKyPhSA1l9Mw/CXrZpcupzwQrtjV+ttTgDBVDbqFZyYz6tmMEWUoqdrcuK9JqVw=
-X-Received: by 2002:a05:6122:d0c:b0:52a:c0db:29e3 with SMTP id
- 71dfb90a1353d-52c37adcb5bmr4445788e0c.10.1746708384263; Thu, 08 May 2025
- 05:46:24 -0700 (PDT)
+	s=arc-20240116; t=1746708968; c=relaxed/simple;
+	bh=5PDCbIC95j/ITD40mDOy1iMbEairxNDKkHP6w2tyA+E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GOEM1tttbxur2oBjLoz2UPa+rETu7ZXTDo2qr6QTE28NTJPAEZ32iticuz3hdgA0XoG1YYXx+DfYH1cBLbSv6rujbApJ15GpPrUPjmJbue9QLj1lbnr+POiH72fTqUERUPjGpKSK76Dr4zLaifotM7heHI0dXB+q8bzEQwY+MYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sangfor.com.cn; spf=pass smtp.mailfrom=sangfor.com.cn; arc=none smtp.client-ip=220.197.32.102
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sangfor.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sangfor.com.cn
+Received: from ubuntu.. (unknown [121.32.254.147])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 1464cfa34;
+	Thu, 8 May 2025 20:50:46 +0800 (GMT+08:00)
+From: Zhu Wei <zhuwei@sangfor.com.cn>
+To: don.brace@microchip.com,
+	kevin.barnett@microchip.com
+Cc: dinghui@sangfor.com.cn,
+	zengzhicong@sangfor.com.cn,
+	James.Bottomley@HansenPartnership.com,
+	martin.petersen@oracle.com,
+	storagedev@microchip.com,
+	linux-scsi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Zhu Wei <zhuwei@sangfor.com.cn>
+Subject: [PATCH] scsi: smartpqi: Fix the race condition between pqi_tmf_worker and pqi_sdev_destroy
+Date: Thu,  8 May 2025 20:50:11 +0800
+Message-ID: <20250508125011.3455696-1-zhuwei@sangfor.com.cn>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250508112618.875786933@linuxfoundation.org>
-In-Reply-To: <20250508112618.875786933@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Thu, 8 May 2025 18:16:12 +0530
-X-Gm-Features: AX0GCFv8JbrdwShAXY5M9k1TMxLoslym5xx2qqXHrMOUjCEEzcClWt3y2dmQbkc
-Message-ID: <CA+G9fYsKqxUExVW1rEhU8_5pYOuhkzXyeL9TmTyGVsV2-C-PFQ@mail.gmail.com>
-Subject: Re: [PATCH 6.6 000/129] 6.6.90-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@rivosinc.com>, 
-	Anders Roxell <anders.roxell@linaro.org>, Dan Carpenter <dan.carpenter@linaro.org>, 
-	Arnd Bergmann <arnd@arndb.de>, Palmer Dabbelt <palmer@rivosinc.com>, 
-	linux-riscv <linux-riscv@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVkZSx9KVhlNSh5KTE1NTUxMSFYVFAkWGhdVEwETFh
+	oSFyQUDg9ZV1kYEgtZQVlKSUpVSElVSU5PVUpPTFlXWRYaDxIVHRRZQVlPS0hVSktJT09PSFVKS0
+	tVSkJLS1kG
+X-HM-Tid: 0a96aff2c9a309cekunm1464cfa34
+X-HM-MType: 1
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6NRg6Tgw5LjIMTg0qAU4oSgsj
+	GA5PCzVVSlVKTE9NTEtDTU9MT0JMVTMWGhIXVQETDgweEjsIGhUcHRQJVRgUFlUYFUVZV1kSC1lB
+	WUpJSlVISVVJTk9VSk9MWVdZCAFZQU5PSE03Bg++
 
-On Thu, 8 May 2025 at 17:00, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.6.90 release.
-> There are 129 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sat, 10 May 2025 11:25:47 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.90-rc2.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+There is a race condition between pqi_sdev_destroy and pqi_tmf_worker.
+After pqi_free_device is released, pqi_tmf_worker will still use device.
 
-Regressions on riscv with allyesconfig and allmodconfig builds failed with
-clang-20 and gcc-13 toolchain on the stable-rc 6.6.90-rc1 and 6.6.90-rc2
+kasan report:
+[ 1933.765810] ==================================================================
+[ 1933.771862] scsi 15:0:20:0: Direct-Access     ATA      WDC  WUH722222AL WTS2 PQ: 0 ANSI: 6
+[ 1933.779190] BUG: KASAN: use-after-free in pqi_device_wait_for_pending_io+0x9e/0x600 [smartpqi]
+[ 1933.779194] Read of size 4 at addr ffff88954c490480 by task kworker/2:2/518186
+[ 1933.779201] CPU: 2 PID: 518186 Comm: kworker/2:2 Kdump: loaded Tainted: G     U     OE
+			4.19.90-89.16.v2401.osc.sfc.6.11.1.0108.ky10.x86_64+debug #1
+[ 1933.779203] Source Version: v6.11.1.0108+0~65323201.20250328
+[ 1933.779205] Hardware name: SANGFOR S2122-S12L/ASERVER-P-2000, BIOS TYR.2.00.0100 05/18/2019
+[ 1933.779213] Workqueue: events pqi_tmf_worker [smartpqi]
+[ 1933.779216] Call Trace:
+[ 1933.779225]  dump_stack+0x8b/0xb9
+[ 1933.779239]  print_address_description+0x65/0x2b0
+[ 1933.779249]  kasan_report+0x14b/0x290
+[ 1933.779255]  pqi_device_wait_for_pending_io+0x9e/0x600 [smartpqi]
+[ 1933.779264]  pqi_device_reset_handler+0x174f/0x1f30 [smartpqi]
+[ 1933.779284]  process_one_work+0x65f/0x12d0
+[ 1933.806306]  worker_thread+0x87/0xb50
+[ 1933.806315]  kthread+0x2e9/0x3a0
+[ 1933.806323]  ret_from_fork+0x1f/0x40
+[ 1933.843994] Allocated by task 579094:
+[ 1933.875361]  save_stack+0x19/0x80
+[ 1933.892366]  kasan_kmalloc+0xa0/0xd0
+[ 1933.892373]  kmem_cache_alloc+0xbb/0x1c0
+[ 1933.892378]  getname_flags+0xba/0x500
+[ 1933.892384]  user_path_at_empty+0x1d/0x40
+[ 1933.892389]  vfs_statx+0xb9/0x140
+[ 1933.892397]  __do_sys_newstat+0x77/0xd0
+[ 1933.913179]  do_syscall_64+0xa4/0x430
+[ 1933.913187]  entry_SYSCALL_64_after_hwframe+0x5c/0xc1
+[ 1933.933381] Freed by task 579094:
+[ 1933.933389]  save_stack+0x19/0x80
+[ 1933.933392]  __kasan_slab_free+0x130/0x180
+[ 1933.933396]  kmem_cache_free+0x78/0x1e0
+[ 1933.933401]  filename_lookup+0x216/0x400
+[ 1933.933405]  vfs_statx+0xb9/0x140
+[ 1933.933407]  __do_sys_newstat+0x77/0xd0
+[ 1933.933417]  do_syscall_64+0xa4/0x430
+[ 1933.933432]  entry_SYSCALL_64_after_hwframe+0x5c/0xc1
+[ 1933.956837]
+[ 1933.956842] The buggy address belongs to the object at ffff88954c490000
+                which belongs to the cache names_cache of size 4096
+[ 1933.956845] The buggy address is located 1152 bytes inside of
+                4096-byte region [ffff88954c490000, ffff88954c491000)
+[ 1933.956851] The buggy address belongs to the page:
+[ 1934.297352] page:ffffea0055312400 count:1 mapcount:0 mapping:ffff888100580f00
+		index:0x0 compound_mapcount: 0
+[ 1934.309566] flags: 0x57ffffc0008100(slab|head)
+[ 1934.316370] raw: 0057ffffc0008100 0000000000000000 dead000000000200 ffff888100580f00
+[ 1934.326518] raw: 0000000000000000 0000000000070007 00000001ffffffff 0000000000000000
+[ 1934.338191] page dumped because: kasan: bad access detected
+[ 1934.346177]
+[ 1934.350031] Memory state around the buggy address:
+[ 1934.357220]  ffff88954c490380: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[ 1934.366854]  ffff88954c490400: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[ 1934.376474] >ffff88954c490480: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[ 1934.386094]                    ^
+[ 1934.391684]  ffff88954c490500: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[ 1934.402601]  ffff88954c490580: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[ 1934.412228] ==================================================================
 
-* riscv, build
-  - clang-20-allmodconfig
-  - gcc-13-allmodconfig
-  - gcc-13-allyesconfig
+Before pqi_sdev_destroy executes pqi_free_device, cancel the pqi_tmf_worker
+of the corresponding device.
 
-Regression Analysis:
- - New regression? Yes
- - Reproducibility? Yes
+Fixes: 2d80f4054f7f ("scsi: smartpqi: Update deleting a LUN via sysfs")
+Signed-off-by: Zhu Wei <zhuwei@sangfor.com.cn>
+---
+ drivers/scsi/smartpqi/smartpqi_init.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Build regression: riscv uprobes.c unused variable 'start'
+diff --git a/drivers/scsi/smartpqi/smartpqi_init.c b/drivers/scsi/smartpqi/smartpqi_init.c
+index 8a26eca4fdc9..102ed7501f08 100644
+--- a/drivers/scsi/smartpqi/smartpqi_init.c
++++ b/drivers/scsi/smartpqi/smartpqi_init.c
+@@ -6581,6 +6581,8 @@ static void pqi_sdev_destroy(struct scsi_device *sdev)
+ 	struct pqi_scsi_dev *device;
+ 	int mutex_acquired;
+ 	unsigned long flags;
++	unsigned int lun;
++	struct pqi_tmf_work *tmf_work;
+ 
+ 	ctrl_info = shost_to_hba(sdev->host);
+ 
+@@ -6607,6 +6609,8 @@ static void pqi_sdev_destroy(struct scsi_device *sdev)
+ 	mutex_unlock(&ctrl_info->scan_mutex);
+ 
+ 	pqi_dev_info(ctrl_info, "removed", device);
++	for (lun = 0, tmf_work = device->tmf_work; lun < PQI_MAX_LUNS_PER_DEVICE; lun++, tmf_work++)
++		cancel_work_sync(&tmf_work->work_struct);
+ 	pqi_free_device(device);
+ }
+ 
+-- 
+2.43.0
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-## Build error riscv
-arch/riscv/kernel/probes/uprobes.c: In function 'arch_uprobe_copy_ixol':
-arch/riscv/kernel/probes/uprobes.c:170:23: error: unused variable
-'start' [-Werror=unused-variable]
-  170 |         unsigned long start = (unsigned long)dst;
-      |                       ^~~~~
-cc1: all warnings being treated as errors
-
-## Build riscv
-* Build log:  https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.89-130-ga7b3b5860e08/testrun/28376898/suite/build/test/gcc-13-allmodconfig/log
-* Build history:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.89-130-ga7b3b5860e08/testrun/28376898/suite/build/test/gcc-13-allmodconfig/history/
-* Build details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.89-130-ga7b3b5860e08/testrun/28376898/suite/build/test/gcc-13-allmodconfig/details/
-* Build link: https://storage.tuxsuite.com/public/linaro/lkft/builds/2woO9vttziZGlSKcBdoVu2LZm8Q/
-* Kernel config:
-https://storage.tuxsuite.com/public/linaro/lkft/builds/2woO9vttziZGlSKcBdoVu2LZm8Q/config
-* Toolchain: gcc-13 and clang-20
-
-## Steps to reproduce
- -  tuxmake --runtime podman --target-arch riscv --toolchain gcc-13
---kconfig allmodconfig
-
-## Build
-* kernel: 6.6.90-rc2
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-* git commit: a7b3b5860e08c3b29b4a004562b9691d7c25a2f3
-* git describe: v6.6.89-130-ga7b3b5860e08
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.89-130-ga7b3b5860e08
-
-## Test Regressions (compared to v6.6.87-586-gda7333f263c3)
-
-* riscv, build
-  - clang-20-allmodconfig
-  - gcc-13-allmodconfig
-  - gcc-13-allyesconfig
-
-## Metric Regressions (compared to v6.6.87-586-gda7333f263c3)
-
-## Test Fixes (compared to v6.6.87-586-gda7333f263c3)
-
-## Metric Fixes (compared to v6.6.87-586-gda7333f263c3)
-
-## Test result summary
-total: 112131, pass: 91642, fail: 4421, skip: 15654, xfail: 414
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 129 total, 129 passed, 0 failed
-* arm64: 44 total, 44 passed, 0 failed
-* i386: 27 total, 20 passed, 7 failed
-* mips: 26 total, 22 passed, 4 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 32 total, 31 passed, 1 failed
-* riscv: 20 total, 17 passed, 3 failed
-* s390: 14 total, 13 passed, 1 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 7 total, 7 passed, 0 failed
-* riscv: 37 total, 33 passed, 4 failed
-
-## Test suites summary
-* boot
-* commands
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-kcmp
-* kselftest-kvm
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-mincore
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-x86
-* kunit
-* kvm-unit-tests
-* lava
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-build-clang
-* log-parser-build-gcc
-* log-parser-test
-* ltp-capability
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
