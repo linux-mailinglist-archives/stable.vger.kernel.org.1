@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-142887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57AA1AB001B
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAC35AB001C
 	for <lists+stable@lfdr.de>; Thu,  8 May 2025 18:18:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1052B1C07629
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 16:18:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E14C4505C7B
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 16:18:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F42A280A52;
-	Thu,  8 May 2025 16:18:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA86022422D;
+	Thu,  8 May 2025 16:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uA0uYa1f"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tvlEXBJW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EFAF22422D
-	for <stable@vger.kernel.org>; Thu,  8 May 2025 16:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79B3C28032C
+	for <stable@vger.kernel.org>; Thu,  8 May 2025 16:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746721087; cv=none; b=u1B30EuZYsUqWXpgoR1TcvQfIK7glGYh1naT3buB6mUrqIeMBwBkIZ2UNQPw/TgG5qFoA9rkIL7BPs4de9EduD9dpQN9CtCmT8fAFBFMuVaxIVjORr1NT4ERQqEdPX+a9XQi1r0Z+DJTI/XHDUd6GnRXVYbicfHTorpqp/9TxRw=
+	t=1746721090; cv=none; b=TrOOH+EDeHvTmP45DXq/mXpT9ArCMaTcGIQOwjtOJua+njLKbO3DU/lh05V6WVx+z8y5srkGfVFO2mDQ1on+ZgwpHOXyFU41OIbPfwxNQroDMbJLZFcsINuGkeFoF9lgxleng6vV4rDtEd4UkyN3wbwWDC6B66rHikGV9My2LG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746721087; c=relaxed/simple;
-	bh=o3XwYjs5Ryc5aIJUz/TWs5m0o3vkQAjIOfE9qLgJUcc=;
+	s=arc-20240116; t=1746721090; c=relaxed/simple;
+	bh=cf01kdzsCmEaT6JTXucz+B/0XS+NYp+SjAVKqW34Ik8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u9btNZn91QDDH0yDjTwncILbcWLytfDyXlTHbPUgXCDi10viEd9nwBQWXEZ6cP1aj/KMlI5pdWvJWMoyM2rV8ibajGObcqi1u0138d9Hg3Kjmxopao60qmDpJPR0D3l9zkcTsJL0B5u9GlGYVcMO4McRAudryTnTKjaRsZkyEUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uA0uYa1f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68164C4CEE7;
-	Thu,  8 May 2025 16:18:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HTGdjjCHJHn8+XWH56Z6J/ACKYFmdKw9Y2S1mrdbsqMDCAp9fNu0NkRV7iSfAWsisISfiw5dydGqD2H1XG44yUsCwQZe3kmKMOuUMPi2WthfgZaAqZ2D/1nGBB3xJHQ1c5Zbn1jpM4m8VWSV5yCS90rqFlf8g0+3gg/82y3HLAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tvlEXBJW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA217C4CEF0;
+	Thu,  8 May 2025 16:18:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746721085;
-	bh=o3XwYjs5Ryc5aIJUz/TWs5m0o3vkQAjIOfE9qLgJUcc=;
+	s=k20201202; t=1746721090;
+	bh=cf01kdzsCmEaT6JTXucz+B/0XS+NYp+SjAVKqW34Ik8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uA0uYa1flrcBan86Fc73LZzkuakfmQUhpL8mzFx7wy6Z6aSyuJF3sm5K9I9v9FnvK
-	 SCmr/WusrhK4ph4D+Kt4FtrKabnJVnqEraK6FJTtHfoTAmEMtWk1WbeE9YK+MDSfQ8
-	 zQMI7HvEf9QKJrs4TRtwzLqr4vKBTNHAim0QAw75nVH77ha072BmRDzPDwxTagsAi9
-	 7SVg5IRLki10qnHo3FAV6d7lGFVqU+BWWRxLmzy3hOjxgsiWr9NEN5dRNeWWhRXUkC
-	 UfaGGY+L2VW8qopUQs0MjEe1gM8ZIC/8bRZeWzQ+sDmoLTeDSijlLk8giRi1PqOnPp
-	 CtSyoI+xZQ9OA==
+	b=tvlEXBJWCYZmHP6ZhIkVAtcSrcODSo/Q+E2wGpXyQQK5CuaFHQRmnrLwUE8xJ1Yc2
+	 q5CdWv4gbTIkQ0hD0b1AZzN4wDJ1hY9xX0Olpooq/d0Jlrvr6OXdutsx4u7bAePC5T
+	 F8zQHk77LlAA2VJYRvqhaB8fHF6xGjrsKLdwGLs8AMyiUXUPApzhxK1IgiD9I/OFIo
+	 YEY0zWw66FzBNSZKFSpEiOUZohb3Yl5btYFlNDW0OP4hLoESJt4cM4c1JeLA7Ks97K
+	 +akJOk6Ue6JqqSVRuXTjFwxTPk+9dbBkDAfJT8Ek6lXdVUkC3z4FdgHLqU2hXyxcVz
+	 ubtNQpmMxQ6cg==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH v2 3/7] accel/ivpu: Fix a typo
-Date: Thu,  8 May 2025 12:18:01 -0400
-Message-Id: <20250507120340-6842bb4b5049b0de@stable.kernel.org>
+To: stable@vger.kernel.org,
+	kuurtb@gmail.com
+Cc: Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.14.y] platform/x86: alienware-wmi-wmax: Add support for Alienware m15 R7
+Date: Thu,  8 May 2025 12:18:06 -0400
+Message-Id: <20250507080321-4706d5ff17056ff6@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250505103334.79027-4-jacek.lawrynowicz@linux.intel.com>
+In-Reply-To:  <20250506141921.19467-1-kuurtb@gmail.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,24 +64,20 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+Summary of potential issues:
+⚠️ Found matching upstream commit but patch is missing proper reference to it
 
-The upstream commit SHA1 provided is correct: 284a8908f5ec25355a831e3e2d87975d748e98dc
-
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Jacek Lawrynowicz<jacek.lawrynowicz@linux.intel.com>
-Commit author: Andrew Kreimer<algonell@gmail.com>
+Found matching upstream commit: 246f9bb62016c423972ea7f2335a8e0ed3521cde
 
 Note: The patch differs from the upstream commit:
 ---
-1:  284a8908f5ec2 < -:  ------------- accel/ivpu: Fix a typo
--:  ------------- > 1:  aeaee199900ee Linux 6.14.5
+1:  246f9bb62016c < -:  ------------- platform/x86: alienware-wmi-wmax: Add support for Alienware m15 R7
+-:  ------------- > 1:  6d7a63cbdfa6e platform/x86: alienware-wmi-wmax: Add support for Alienware m15 R7
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.4.y        |  Success    |  Success   |
+| stable/linux-6.14.y       |  Success    |  Success   |
 
