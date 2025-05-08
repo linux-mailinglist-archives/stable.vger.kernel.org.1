@@ -1,258 +1,124 @@
-Return-Path: <stable+bounces-142850-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3049AAFA9C
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 14:54:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 139FDAAFAB0
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 14:57:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EEAC189F1C3
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 12:54:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A87CA177EAD
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 12:56:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4512E229B32;
-	Thu,  8 May 2025 12:54:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DD7E28682;
+	Thu,  8 May 2025 12:55:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="rDQRqRk8"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="XPlPcIC0"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2081.outbound.protection.outlook.com [40.107.93.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B388229B12
-	for <stable@vger.kernel.org>; Thu,  8 May 2025 12:54:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.81
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746708870; cv=fail; b=oCOfF8XcBwiafiAaNJIMkrqxJMR75KAnFQqhDiTZFkmxN96iJY1KnJolzh5fH8CeXnruxVdqXPlvzNsYWkmqtniZkY0Nd0ENeNYvoLNdi1I3qamF95oOjKksxKLwOwp/fySkEDGkH7wruZy/Z35TUWwWn8/t+Wq9aNOy+lG0IUU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746708870; c=relaxed/simple;
-	bh=bevJd+zlt3OyGa6LEA2ysTa5wYccoAEkr6wnPq8lBnQ=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=pSDy5MxC1m3TylJRKvbJ59FK+pIF26GxEikSDwdJ5umbcNu44BdJLMDv1CsvTTdVNdKS4IHwtq4QCG8s2dB0SiKgyUpzNZ90cYzu9fvch8rcQqQO3GrAc9oNnwqYC4GCfQ/lCpZTRO1fJUdTyk1Y7fnUSwHLwY2CAGbwg6UHuFo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=rDQRqRk8; arc=fail smtp.client-ip=40.107.93.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DipqeubiV9eUHb81mWyNkWCX2QSktxS+oOXJ2NqYNp7VVGxPItbHoXv64HAPt+xq1FbmeAhDRXsyijwcG1s26sS+I/BN1qK+dX+AZI+L7DnlZs90eueFjjLRjNJhNRRd+oYULohufAc3v4lXbTKdHi/jZ/nD5s6YVyvobl2vd1zfqj+z8C/c2IDOr4szi8/rAnVhRHZPiaoQdBURzPR5CwcMMVTqzjb75fOiwtsrKsLRrWndmIqKsoJb8unPNGO225vVDiP8xUlhBNYAVHiK0pjGiD5slZAlB8Q7rbiR3Rsxl4xcQ041fG0c7qTxMmPDkPFGRg0+/ugbwOwieWcuvg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8EUlxyOX48WJ0yh3Tu7T9oymBPescaCAIWDjmim8qO4=;
- b=ka8N9Kmo2GIm79rCWkgSVBupzO0zZ28jwU80aeEh+HEHmkwb7qxsBX/HN8y1R/K07gZvLaT6vjD2tCyZLR5ucxR0motVrWa8NT/kVCoXKfQl+SiWyubxT5TPsqqEvBXcComnISNohrGSN34pqzQAeB6wRWR7ft+ZmIbF3pCWdrtTsWqye3Ol/yWVolQNKH5I30SIHoItOBoYx76/8txwhjE/yrrIRdB266Lk7/2TkohuLUBf4sU858fq/JfQd0ynszKbdG9H8BbCTqanCS8BYQcoKiYly+fHn+KbWyTJHIkVXvBCY3ntyKu67mYPIc+RiRELK73AGSaT65OeGcAdMA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8EUlxyOX48WJ0yh3Tu7T9oymBPescaCAIWDjmim8qO4=;
- b=rDQRqRk8TmXoQTWf5lXdFt0I9m359GTc+8MFWN4bRKoSRWQhMcUxVE+k/C+16HuBwDPEDP7oLmke+phIxpWEfRelsGiDDaevEXToCjPKulXHBotlBJx0Xq3Bo1jjdP+un9XBFG3e2rc4LWzUNkILfgkk0TU/JBSK3DIs+gJrq9k=
-Received: from CO6PR12MB5489.namprd12.prod.outlook.com (2603:10b6:303:139::18)
- by MN2PR12MB4159.namprd12.prod.outlook.com (2603:10b6:208:1da::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.26; Thu, 8 May
- 2025 12:54:25 +0000
-Received: from CO6PR12MB5489.namprd12.prod.outlook.com
- ([fe80::5f4:a2a9:3d28:3282]) by CO6PR12MB5489.namprd12.prod.outlook.com
- ([fe80::5f4:a2a9:3d28:3282%7]) with mapi id 15.20.8722.020; Thu, 8 May 2025
- 12:54:25 +0000
-From: "Lin, Wayne" <Wayne.Lin@amd.com>
-To: Jani Nikula <jani.nikula@intel.com>, "dri-devel@lists.freedesktop.org"
-	<dri-devel@lists.freedesktop.org>
-CC: "ville.syrjala@linux.intel.com" <ville.syrjala@linux.intel.com>,
-	"Limonciello, Mario" <Mario.Limonciello@amd.com>, "Wentland, Harry"
-	<Harry.Wentland@amd.com>, "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH] drm/dp: Fix Write_Status_Update_Request AUX request
- format
-Thread-Topic: [PATCH] drm/dp: Fix Write_Status_Update_Request AUX request
- format
-Thread-Index: AQHbt1nr3/aHG7++OkeNXsWgnC3TZLPIdQkAgAA2QmCAAAwOgIAACFZA
-Date: Thu, 8 May 2025 12:54:25 +0000
-Message-ID:
- <CO6PR12MB548976F0F1A7DA5FEDDAA901FC8BA@CO6PR12MB5489.namprd12.prod.outlook.com>
-References: <20250427095053.875064-1-Wayne.Lin@amd.com>
- <877c2rv7k3.fsf@intel.com>
- <CO6PR12MB5489386C2D4F5D6DC49FF27AFC8BA@CO6PR12MB5489.namprd12.prod.outlook.com>
- <878qn7ti02.fsf@intel.com>
-In-Reply-To: <878qn7ti02.fsf@intel.com>
-Accept-Language: en-US, zh-TW
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
- MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_ActionId=9198d5ac-fa6d-4051-a24f-e11975e6c6a4;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_ContentBits=0;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_Enabled=true;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_Method=Privileged;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_Name=Open
- Source;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_SetDate=2025-05-08T12:48:42Z;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_Tag=10,
- 0, 1, 1;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CO6PR12MB5489:EE_|MN2PR12MB4159:EE_
-x-ms-office365-filtering-correlation-id: 73444827-2d0b-4b67-cf91-08dd8e2f7629
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|376014|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?4v13SjJMA2B1I4lipo74KTVpnPPHW8hsHC77ydefyEztdEmoHTHDyxrnv9vi?=
- =?us-ascii?Q?CKQU4w2gS31jqGD+yjz25N3+3TH2OwEk6yzEzugAp7rohGsVoX7bGyFcbHHO?=
- =?us-ascii?Q?xZr7C2ACfErm+uJPMsLk4f9/BD5KbwmzgLK8qgaWkxZoOXTGqOlvGdz8ksQN?=
- =?us-ascii?Q?WG7p9OOWw4dyvuS84abnPr6tqv/tIMkJ7vPfqYp188EeBTWA7HEXRJnQ5YIA?=
- =?us-ascii?Q?I2UI/od1qICqRqxfPjqdQtZ7slEoJFLSpiAC2yo8JtxLdjIVM5QZ9HDN9apU?=
- =?us-ascii?Q?fl7GNGFG4SBcXDIRzQ0LmmRRo+9i32sybvRjzufwshJ17nvtDDWfebI3TMoL?=
- =?us-ascii?Q?wO4K8nAI4tZMUe6UpT2CkZd9dzwoVECqtmG+C9rZUd51xH8HQqWS/UeDsLdE?=
- =?us-ascii?Q?7ywP7incxtc2zS0Atcv5IQud8eMY4exhxUkIgHGXn/MmI42QSzrX0Qw7vgmo?=
- =?us-ascii?Q?lJaSGakRnx1Rzt8aY/6wIEpgt4NW6f8agaAelHSNgCPCqopnQpQdhN95EwFG?=
- =?us-ascii?Q?+/55vLx4vlKe2evV9qju5+j02CFMoIAGbJ4LLlD594M5JgWK7L1gqIM2TgAc?=
- =?us-ascii?Q?AciJwZgs9FyJ6LKUavTsESVcme/qzQ/hsAJuVHVN1I/XwoPuU070z5KNAoki?=
- =?us-ascii?Q?T7RUJ8Qc+zRogX/y1xM97M7gYbI09gRgT3uo7wcK/yDeTS4fmShDn5Vqz74c?=
- =?us-ascii?Q?A+PEBZIIyxgYttZ0T/3JGYx68brwSnP+Y+s85Z+Dw5BdeDnTb1tzLLFnyqM1?=
- =?us-ascii?Q?G3w1T8+PdADy0tDvw0Sy1lurEbBGzQStkYDvd7hxw65bE+e7i/R37hKxoyn+?=
- =?us-ascii?Q?yy44JBo8WFzbuW8WYUWi7g1399ctltyRE5Nx7ECVy3XC6roTL6Y79MQAFwzZ?=
- =?us-ascii?Q?uZW1HIBgYE5FeUupvflpN6p+iLoS0hU91+hprP6cXGjhfl1VEu/prmkXVd45?=
- =?us-ascii?Q?uUGa1UQfqiv2aJuvgtKw35yhI4vgW8BGULoHnbfHV/2YM3tMlfBmjLSYEEDS?=
- =?us-ascii?Q?mxz8KylrP6LfQX/6TF5lamrjoe3GOeeVUBHdFyWGN2CmzseVYOlCOMscxbYe?=
- =?us-ascii?Q?acumwhThnZrnRhac8A06kWAxwyNxDDhRVFGheFObDkzXtZjnHgQaeVRQASvF?=
- =?us-ascii?Q?jiG26ZCwSt1tftHWYK2qGWGKL5YiH8FLx3aM1gYcK4jqNVhDVYDUJG8fK9E/?=
- =?us-ascii?Q?Eu0G0LC1qtUIdFHQ0jNhCFWL98R/9AeZOycHsl05eSLBRHIi8m0HVxc9ufig?=
- =?us-ascii?Q?EQpkzq1KI6ixNq26Um+zEeAvWnQ57o7hvnOKqF4ZMoAlyBTauIMbP2r9DsEz?=
- =?us-ascii?Q?29XTKCig/YuhsVarpVQ2vYmiV0W3gNdZwZYIi8lBCEL2+tZ2NVL9QikBfYP3?=
- =?us-ascii?Q?pEUHOjJhsoeqJG7EPnYmC4pidqZAO3h1MIAZs/ckDwkNgi/BZNIeVS/RsmRY?=
- =?us-ascii?Q?7r7HfXFyzIcTbIItgiu0nwpLW3NOG+dm+/toMIf9K61l5AlR55SQw48JDhwm?=
- =?us-ascii?Q?Bl2oqECxbXn2dyA=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO6PR12MB5489.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?z4uCHrgQIuKfUcvY+aPijgHl/Xr48P2QgLAj47COIQf4gU2vqEWEDAoWK05W?=
- =?us-ascii?Q?cXe4KuDZfl3YEjtJyOvRXUDI3LdYl3OpxkxcrbSUQbftdurOwOM/qM8sp7zG?=
- =?us-ascii?Q?OLDkjxvb3P0mYbcKAIDTcYGNwk0S8r5y7zIPde/YO+GYv++S99tQIZUaWgV9?=
- =?us-ascii?Q?J1cuOrSV1rTFO/JMEeBML5ospLJgQiP5AR/ytPGS9prKQDjdzZ+4wU3upe59?=
- =?us-ascii?Q?YfxtuZqkxd+lx4zkkkiz1mJyRUmCjnECYRpvNdx8Xlpdqu9rF3HOHEzX4coF?=
- =?us-ascii?Q?PzfN03RL4WDpsbIo4F7Em54m2MV7Rf+ERBsalikTu91y5FITfrvsr5aGCEJT?=
- =?us-ascii?Q?h47IeB+S1aUVaWujZAinBUI8Aiwp8F9jLlfjiqar5LHSYYlZFeUTs0M9Xsw/?=
- =?us-ascii?Q?sGJFKRzPSIc6/tZOAn3MjUdYpmTcCBVOkdy0ZgNEGjii0eIhvmfxCG0QBJbh?=
- =?us-ascii?Q?atbiHhTJnJNacLrQ+bXw78Omxo35v5Pi7cnxzNpWKTeQLa89JfRXu+7GuID7?=
- =?us-ascii?Q?TbIaGuBlomHSGWLjlsUOl/iB5gE9D4FcTQ8YLGIfQAkKVpkNH8MVqN9q+z8b?=
- =?us-ascii?Q?85Sjz0Qc5SkHUd4CXr1cZ9qEZPDv5yjy3uBJYnSKcl0AiyFBTNrzdIy6Z2RG?=
- =?us-ascii?Q?HuGb86/5ZGKJET6etA0ns6k6O2x2jiFnUwnXhijmV6F/v9tI90xqNBVgfgXj?=
- =?us-ascii?Q?y8odcMUvJv8fph89eFg+bcDzRzQLXXhJ0e3fDNdbWLrSw1LF/ueapmkgz1mU?=
- =?us-ascii?Q?bwKfDfHehZAqRbCtIyjPuWB3e51Uyl92nTdrmWno5xfkmgSE/GYp+dBf57/3?=
- =?us-ascii?Q?YFcWR744NRPlpz5IuFYXDGpCf8w19H8I4JaEaF6HG1gMvi+7N4SXWmeK7FPs?=
- =?us-ascii?Q?ucqKwpWsfknHOpA4U24MDpd8MVquYo4WxBruKEjcKHZ1dat8fs3Y5uC5jMg/?=
- =?us-ascii?Q?LM/kduOPKRvqIxb5SeiboZJVn65fKg7Ga5a6Zpe+6MG5D4uLkgnF5U0M4FGC?=
- =?us-ascii?Q?LDo08je4edvj8UdLxzSALdW9qFrndnQ8NhYJ9JW2eUvkv5xDye3Pu6P8rmw6?=
- =?us-ascii?Q?fNkcPsapEYPwBUT/7rZe8M/1gjkuR3CHvl909o4eMUo5qny8KGpw2dxTrsJR?=
- =?us-ascii?Q?W9mwLmhKdBkwBEqxI68AXz8tOS5T4Zurl20n4rxgHTp2mgq6Rq3sZ5O0IsNh?=
- =?us-ascii?Q?p603NXGs54Jn19elJjWZgAd+MPfbzewBhgt/M+DOEpPGu7gKgTXyCREwhAEm?=
- =?us-ascii?Q?7vGaOn0+jLYUP9NocpvHMidi2CrILKJBPXh6sF4jK2jwEVBQ5svHPUNMEbYt?=
- =?us-ascii?Q?Kdyl8BGgCdXl78d+dE6ej2KU1jOiCARsvbZ7nR3ZMo2Mi55WDuHzEPrve8x/?=
- =?us-ascii?Q?khxnXByLB8V67Pcav+tFkutapC5XK83yHahve6dKKbyDZNzr5h98TCdnudEf?=
- =?us-ascii?Q?/MiT5sc4cRbM1UrcDYtZ8j8T/h7ptsmJXF2RoMnqkfIFmF9zKySaH/rV/Edb?=
- =?us-ascii?Q?DrsAOAKq/Onz1C+BF1ZYim8KI/HZ8yV+WnlEmclmtIDbYIwj5QqXM3zkXUZ/?=
- =?us-ascii?Q?p/QGhPSV3ITVPKOHg6M=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 655D922579B;
+	Thu,  8 May 2025 12:55:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746708958; cv=none; b=PoQM7Z6UljZiu7DconZGla7fFHfX1QR+lu+58EmZ9vPSrwWiSr7a+xkAHTtSF06ePoJj9taQLd3StKrUmp9Cg44YRPfzaYIyiPiOCOFdfXo4sEns69uXKxLwYVvC2siFVUK7MbawmMmJXfd7+oAJ5s43hidxbK/NE8QzuC1D3eA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746708958; c=relaxed/simple;
+	bh=P2hkK24gIBpekWVgzbZvUT9UAOj3974Lm4QOgZm4MU4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=F9+fXCi42XBTkWYor+Tx1hGkZ3P98pAH+Rc8AHPDflIrT8YJdxXiIr6dCgy2PFTWUTvgdA5MIwBR0C8YA7BSBaxn1KONijQuewdiwODVDK04KVD0Vt3c+b/eVYHqkMnny9YrVquobVCwPMAjpHdXQZ1ZT37J/3vb/MuZWBtARO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=XPlPcIC0; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-39ee5ac4321so1215691f8f.1;
+        Thu, 08 May 2025 05:55:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1746708954; x=1747313754; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=p6AYNVAEWLWzZVYwdSbhFHON7qW08tK4r17ya22Q5uQ=;
+        b=XPlPcIC0Ng4UNTZiY1dUVjhVyMtIGmrfmrHqhcUfj/0CgSyWKAPhXUfICIFnLRCOCX
+         LBRsZ9AJ+z+SrJtuWv5+JB7Oq2dyB7s2VixxOwpf01bU9tMBNiJCRm9bZgVYDuOVCgGp
+         0DO4GiIZSK/mwtmK0YocxNijvsapPK7gvwAkPPZmetrHhvy7Cj1gBxLgb3Vxx62JbWY1
+         0nCzimV8vGy9RHgWlCR72yBXWnyOrIz1URka7aGgECf8pYek/m3AZguAuF0mWSqVG19A
+         m1I5XPpZVSU7uVmxvlebuQmppL9iPCr/3g+y34T3w20r6TebcSpDGyPFkSy035CSR6Tg
+         WpQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746708955; x=1747313755;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=p6AYNVAEWLWzZVYwdSbhFHON7qW08tK4r17ya22Q5uQ=;
+        b=QAG39Mzoy+Nifa8y0wJlv3Sol2PlWpSuSq4Fb82MoRW/YNXOYlQXBVHqoRQ8q8Su9i
+         zSYEoqI4YO2uDGFMW5tMqWKzQocBK3FSxwCvd8g2H0SSJdoyWqW4sCnbdxKK3Htp3qh2
+         B0rBhV0jfYbB3Hepo9yU067K2z0sfE7g7YlapCLNBXFFZPLsTfL4ha1ZPg4YpYdGwDPj
+         iAdnxMVz5c7Ad39W/P+qvm4YtP25oHFq94yTLRTS0AFsqXmPJE5SJZBBGL/fx76Yazy9
+         m1wBub1VsA6jnYlN3Vm1wMLwA5axg2d01uLSeuHf4qF2uhTcH8tadplGaT93dehh8tMv
+         NWoQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWtw+KqCDUtJ7Rctd6bzmZKWImPwHbgYTOnUcjZtRm5Z+Fj74VVDUJS7FlOvFjeHEaQNn5a9+RDaK4v40o=@vger.kernel.org, AJvYcCXxZxXaXUSsrE6qBuSUmTu8prpjQ/iobTdgzF/+4cD1xF1b/QKToyhRTmTyLlZl8GkLjOb8c+74@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzt8rKET4gviuYWO0vtjEHYYhk1pD3pwjyfog3lOWzPAjGYgUkz
+	qN7fXzuIH1rja8oLeEfOo9VSQSUKFEvGCRE/N6l4OTbYBIbMoNqhFE7z
+X-Gm-Gg: ASbGncsR8MyNHUc1DHQBF/yv4IlM7jo2lrlDas450zCDTs42Z4Jfkkqglq3JGElo0L4
+	btDckmWdaEXYM5vczRLZL8jF0e1occ032wefQJgBElJkXwWY+vwR9ZQg77+vXzgBG0gGbpqwt1i
+	cHNRj4dyJ1l7uU/mulcQbxxRJLMdhbxBx6kaWE0fYGoPFqUSQ5aG4rs8/RHcWi6rdKyqQX6L+oP
+	n92UMDz6geSxxAO7T+SAxNZIXLRSg9M30aV+EmghPce209Kqx6E1iTJTNCH/Csinyxo5LDXwwv1
+	ZivlyN6B9nnH343fDj+ZfOhbKamLganspQVtymmoL7BGAOIM1TsgquG4gWaa6CtnrQhvGhVXmt5
+	8T86YTgcrMDeNq1MIhg==
+X-Google-Smtp-Source: AGHT+IGTa2WWD3VgWj+uKDTBuDUhX771kiVc7NX3oQrzYhOmASsrPcy1MfhL6cDIuvZ78Xz9Lvk9Tg==
+X-Received: by 2002:a05:6000:184d:b0:39c:30d9:3b5c with SMTP id ffacd0b85a97d-3a0ba0efbf9mr2488623f8f.39.1746708954465;
+        Thu, 08 May 2025 05:55:54 -0700 (PDT)
+Received: from [192.168.1.3] (p5b05727d.dip0.t-ipconnect.de. [91.5.114.125])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a0b9af4ba1sm2897233f8f.59.2025.05.08.05.55.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 08 May 2025 05:55:53 -0700 (PDT)
+Message-ID: <384739cf-4b2b-4c4c-81e6-19d4547dd395@googlemail.com>
+Date: Thu, 8 May 2025 14:55:52 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CO6PR12MB5489.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 73444827-2d0b-4b67-cf91-08dd8e2f7629
-X-MS-Exchange-CrossTenant-originalarrivaltime: 08 May 2025 12:54:25.2955
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: xaGRgX/bgojwQIbIqb9lLbBwRFpVtJnqM75TuVDMo0RJJUjIG+44DttWB/pUe/DLeTTjk4pQQU/Wf5xN47DNZg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4159
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.1 00/97] 6.1.138-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250508112609.711621924@linuxfoundation.org>
+Content-Language: de-DE
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20250508112609.711621924@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-[Public]
+Am 08.05.2025 um 13:30 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.1.138 release.
+> There are 97 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-> -----Original Message-----
-> From: Jani Nikula <jani.nikula@intel.com>
-> Sent: Thursday, May 8, 2025 8:16 PM
-> To: Lin, Wayne <Wayne.Lin@amd.com>; dri-devel@lists.freedesktop.org
-> Cc: ville.syrjala@linux.intel.com; Limonciello, Mario <Mario.Limonciello@=
-amd.com>;
-> Wentland, Harry <Harry.Wentland@amd.com>; stable@vger.kernel.org
-> Subject: RE: [PATCH] drm/dp: Fix Write_Status_Update_Request AUX request
-> format
->
-> On Thu, 08 May 2025, "Lin, Wayne" <Wayne.Lin@amd.com> wrote:
-> > [Public]
-> >
-> >> -----Original Message-----
-> >> From: Jani Nikula <jani.nikula@intel.com>
-> >> Sent: Thursday, May 8, 2025 4:19 PM
-> >> To: Lin, Wayne <Wayne.Lin@amd.com>; dri-devel@lists.freedesktop.org
-> >> Cc: ville.syrjala@linux.intel.com; Limonciello, Mario
-> >> <Mario.Limonciello@amd.com>; Wentland, Harry
-> >> <Harry.Wentland@amd.com>; Lin, Wayne <Wayne.Lin@amd.com>;
-> >> stable@vger.kernel.org
-> >> Subject: Re: [PATCH] drm/dp: Fix Write_Status_Update_Request AUX
-> >> request format
-> >>
-> >> On Sun, 27 Apr 2025, Wayne Lin <Wayne.Lin@amd.com> wrote:
-> >> > +                   /*
-> >> > +                    * When I2C write firstly get defer and get ack =
-after
-> >> > +                    * retries by wirte_status_update, we have to re=
-turn
-> >> > +                    * all data bytes get transferred instead of 0.
-> >> > +                    */
-> >>
-> >> My brain gives me syntax and parse error here. ;)
-> >
-> > Appreciate for the feedback, Jani.
-> > Could you elaborate more on your concerns please?
-> >
-> > Since Write_Status_Update_Request is address only request. Data length
-> > is 0. When I2C write request completes, reply for
-> > Write_Status_Update_Request from DPRx will be ACK only (i.e. data
-> > length is 0).
-> >
-> > Is your concern about returning 0 from aux->transfer?
-> > My thoughts is drm_dp_i2c_do_msg() is designed to handle I2C-Over-Aux
-> > reply data, and aux->transfer() is handling hw specific manipulation
-> > and return transferred bytes. For Write_Status_Update_Request request
-> > itself, nothing new to be transferred. I think drm_dp_i2c_do_msg()
-> > should be responsible for determining the correct transferred data
-> > bytes under this case. Or do you expect aux->transfer to memorize the
-> > data length of write request?
->
-> My concern is that I don't understand what the comment is trying to say.
->
-> "when i2c write firstly get defer" - what does it mean?
->
-> "wirte_status_update" - typo
->
-> "we have to" - why?
->
-> "return all data bytes get transferred" - what does it mean?
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
+oddities or regressions found.
 
-I see. Thanks!
-We can't reply 0 since drm_dp_i2c_drain_msg() take 0 returned from
-drm_dp_i2c_do_msg() as error. And it actually completes transferring all
-data bytes.
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-I'll refine the comment. Thanks again.
 
->
-> >
-> > Thanks!
-> >>
-> >> BR,
-> >> Jani.
-> >>
-> >> --
-> >> Jani Nikula, Intel
-> > --
-> > Wayne Lin
->
-> --
-> Jani Nikula, Intel
+Beste Grüße,
+Peter Schneider
 
---
-Wayne Lin
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
+
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
