@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-142884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01C18AB0017
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 18:18:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6E90AB0018
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 18:18:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4DB51BC6626
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 16:18:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BB7A1C075D4
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 16:18:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 516F4280CCE;
-	Thu,  8 May 2025 16:17:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E318281346;
+	Thu,  8 May 2025 16:17:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CjAmYx32"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MwhIwIx4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1200422422D
-	for <stable@vger.kernel.org>; Thu,  8 May 2025 16:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C10C22422D
+	for <stable@vger.kernel.org>; Thu,  8 May 2025 16:17:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746721074; cv=none; b=T+mWpfXJrmq8zS62BB9kV5MIlEIZIFAOsqTtbbGQI0SZwn7XFgxBZHAPnWpO6Sw3AoPxps9VRDNMl8Qx4ieuFJcJR2ZmoaeKFPmCVpw7hRhKa/hNQlLXI49jrvMiEmXNI2yRgujIGb7uqqEsv684+Jgf6TvkjsWWc1hZPemH/Qs=
+	t=1746721077; cv=none; b=IyjFcANqygdrMrRYeXyWwq1WUX2JzGGBym1bccNamWtBWgjtaEYNwbgbH0KRP/QnuMSb+wHB85Qk6+B4N4TJLon3+hq1R2QbCYU1qnkYUMotJ/1GQ7gnb99hgEYDnldsEy+NLYIOB2o931/f1GdbKrdErHTRyOMgfAX1CdOYMWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746721074; c=relaxed/simple;
-	bh=pfWUCU2y4IW90AR91SqpfEv41y3VmDl/YPURYWtN4vM=;
+	s=arc-20240116; t=1746721077; c=relaxed/simple;
+	bh=r6b1pThhHAMDxd2booSv/ARSMP5QWx/E0PoMeYY3V+4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=emQS2dVbe4/cft+ILP3DGNBbLqJPLhaLtV5wBDVz4c22imfiLa0ujTVmov+WGeYl1GI0uVoav5ec3/lk7mTuQswM/8B4M/myWv0bUt2qi/LU+bGaZJaZyddwKucZnFBKl8IpYje/mRPFRTmE3Xhq6NoLjoPTk3OfiBehUVpvVTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CjAmYx32; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C5EAC4CEF1;
-	Thu,  8 May 2025 16:17:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IgRgTSH/oPZwTc9ALwS5gS3ESoJg4tDiGFaRrPawuHoU2dQ03kHdeOMyxdNexnKIEO+JW0tK+7xzREXt2RtORZsBi9wCbPdL6cDgQpNIL8/efeUyuvk++9rwmSqp4fXUB+q9BH8+uQoxREJDM5ra3VylYrCfbP3WxbiQoa0Toxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MwhIwIx4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 876E7C4CEE7;
+	Thu,  8 May 2025 16:17:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746721072;
-	bh=pfWUCU2y4IW90AR91SqpfEv41y3VmDl/YPURYWtN4vM=;
+	s=k20201202; t=1746721077;
+	bh=r6b1pThhHAMDxd2booSv/ARSMP5QWx/E0PoMeYY3V+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CjAmYx32Ixhq8HH+GLFtfmeNpj4rqmAbPjXp2jyFXA7RdPid4bjLbRURffryM6TUw
-	 XX6xT6xKHo/t4kQoWUww/7in1HuftMB+3kJROisj1J1TWA/rcTUD9r7qTBh34ys1vR
-	 Sh/SUGIlqqueCNRJlE6tpWHsauaYo2XJj3QCEnoUN1jhhXwRZY28oXceovIi8izni2
-	 UqjUAhejKtx8fCksppg/OSxmgsHMZUS/15RV/A2/LTtNE/ej8hdq4KKRmJO7d/80ID
-	 kA/LQ77U13g4ZaDZKLcKq02CKGx1aQ9TdTAKRdhsYAC61SPodn+iJv7bA2yjCtkQCF
-	 BYDDHsr+Ci5lA==
+	b=MwhIwIx4J25lf8V0aX1Wxjy7j5PBtJT6WHsrhQR3TDCPHUqTTRs0u264KDWHcqUxW
+	 b3sc6u5CnnV3mPkTjSqrSYRt8XgoNjJm2gZapguOnkxwrFw8B3aIggJTadB5IIDTEP
+	 9+wWReELNn+Mzr8SPwbRGf13z7Uqz4B90UoerHWVquMsJOswKcUDJa0pT9vPaLriSN
+	 Fu3684V4QHtl3wJttYaSzcb4pKUtlysJbge+/vOIvdvbV7pGAqloCJiihw/68S6XM5
+	 OeZ3N0NxnE4WPnPVB6KnAe41Nbkvx5PMGVrrZOINKj/va3Eys4uiL4gR1N7ozqp0jN
+	 LMcLPn1byPs4g==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Nam Cao <namcao@linutronix.de>,
+Cc: Jared Holzman <jholzman@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH stable v6.6] riscv: Pass patch_text() the length in bytes
-Date: Thu,  8 May 2025 12:17:47 -0400
-Message-Id: <20250507075823-74ae3d0ba9940f62@stable.kernel.org>
+Subject: Re: [PATCH 6.14.y v2 7/7] ublk: fix race between io_uring_cmd_complete_in_task and ublk_cancel_cmd
+Date: Thu,  8 May 2025 12:17:52 -0400
+Message-Id: <20250507085227-891f6a1dc77e536e@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250506201752.1915639-1-namcao@linutronix.de>
+In-Reply-To:  <20250507094702.73459-8-jholzman@nvidia.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,59 +67,29 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 51781ce8f4486c3738a6c85175b599ad1be71f89
+The upstream commit SHA1 provided is correct: f40139fde5278d81af3227444fd6e76a76b9506d
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Nam Cao<namcao@linutronix.de>
-Commit author: Samuel Holland<samuel.holland@sifive.com>
-
-Status in newer kernel trees:
-6.14.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
+Backport author: Jared Holzman<jholzman@nvidia.com>
+Commit author: Ming Lei<ming.lei@redhat.com>
 
 Note: The patch differs from the upstream commit:
 ---
-1:  51781ce8f4486 ! 1:  1bc29061a4457 riscv: Pass patch_text() the length in bytes
+1:  f40139fde5278 ! 1:  7ae6d5a88218e ublk: fix race between io_uring_cmd_complete_in_task and ublk_cancel_cmd
     @@ Metadata
       ## Commit message ##
-         riscv: Pass patch_text() the length in bytes
+         ublk: fix race between io_uring_cmd_complete_in_task and ublk_cancel_cmd
      
-    +    [ Upstream commit 51781ce8f4486c3738a6c85175b599ad1be71f89 ]
+    +    [ Upstream commit f40139fde5278d81af3227444fd6e76a76b9506d ]
     +
-         patch_text_nosync() already handles an arbitrary length of code, so this
-         removes a superfluous loop and reduces the number of icache flushes.
-     
-    @@ Commit message
-         Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-         Link: https://lore.kernel.org/r/20240327160520.791322-6-samuel.holland@sifive.com
-         Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-    +    [apply to v6.6]
-    +    Signed-off-by: Nam Cao <namcao@linutronix.de>
-     
-      ## arch/riscv/include/asm/patch.h ##
-     @@
-    @@ arch/riscv/kernel/probes/kprobes.c: post_kprobe_handler(struct kprobe *, struct
-     +	p->ainsn.api.restore = (unsigned long)p->addr + len;
-      
-     -	patch_text_nosync(p->ainsn.api.insn, &p->opcode, 1);
-    --	patch_text_nosync(p->ainsn.api.insn + offset, &insn, 1);
-    +-	patch_text_nosync((void *)p->ainsn.api.insn + offset, &insn, 1);
-     +	patch_text_nosync(p->ainsn.api.insn, &p->opcode, len);
-    -+	patch_text_nosync(p->ainsn.api.insn + len, &insn, GET_INSN_LENGTH(insn));
-    ++	patch_text_nosync((void *)p->ainsn.api.insn + len, &insn, GET_INSN_LENGTH(insn));
-      }
-      
-      static void __kprobes arch_prepare_simulate(struct kprobe *p)
-    -@@ arch/riscv/kernel/probes/kprobes.c: int __kprobes arch_prepare_kprobe(struct kprobe *p)
-    +@@ arch/riscv/kernel/probes/kprobes.c: void *alloc_insn_page(void)
-      /* install breakpoint in text */
-      void __kprobes arch_arm_kprobe(struct kprobe *p)
-      {
+         ublk_cancel_cmd() calls io_uring_cmd_done() to complete uring_cmd, but
+         we may have scheduled task work via io_uring_cmd_complete_in_task() for
+         dispatching request, then kernel crash can be triggered.
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
+| stable/linux-5.4.y        |  Success    |  Success   |
 
