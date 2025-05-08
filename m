@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-142897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1250AAB002B
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E239CAB002C
 	for <lists+stable@lfdr.de>; Thu,  8 May 2025 18:19:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A2D41C20564
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 16:19:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA6559C5522
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 16:19:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D7F127F4E5;
-	Thu,  8 May 2025 16:19:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50BDC280A5E;
+	Thu,  8 May 2025 16:19:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kUa2urV1"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lIlX8IxJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BE3A22422D
-	for <stable@vger.kernel.org>; Thu,  8 May 2025 16:19:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 110A128032C
+	for <stable@vger.kernel.org>; Thu,  8 May 2025 16:19:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746721167; cv=none; b=cV0u/QW/ZK5+i0ZpzKVsyV83V6Aw/N0fnIyTDcvWPmXEezpwertpGf+w846nsC6zX/6S0UesBymFob2JUqsW5X/HhUhnsl496wMV9y5K7sVV9R5WIxa0Hksyif49VlQS3Mr5rkPY7lPaCERslJPYTrluldlLHan3gVqd6CKthZQ=
+	t=1746721170; cv=none; b=bQSgJUcoa3hwEvLmpsOCbR9ocnQVcXMDMOnKZmsmA1SY26lo3GsENOQfQyB0Vwit1bIEw3CVky8eeYsc7cOlkiBSt+TCVaMkB1PZ0aUJNJe5hOKHkLHhSWuJy8NTQ0kuTsZ7xF1Rwvzfuz91WLZEw9cAzbAqwOnpogbSZ7tXfs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746721167; c=relaxed/simple;
-	bh=8xZDhbA9kCq1uEHYBJmkUebpVKDFdOjv261nrFyhfu0=;
+	s=arc-20240116; t=1746721170; c=relaxed/simple;
+	bh=RVIKDl/EugWmSnvOXT9bd2yaYW36FECzGaIqHt8JOYc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ltzpzlKoYUfVELFg1XxD0R0lrVrfjf4wmaL3kEf+tiBNSdVBeda8T9XX5Gm/QudN060gzwDXzzSiJn8xmv0Ot7vo7v0hRYyuw04MuA1JtRvi9pfXnF7z4YZeHUpAUcNXUvaS1EfDep+nN4Y3cZ6Xt2pUWzKHVkAwfMOj66zwWio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kUa2urV1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16D83C4CEEE;
-	Thu,  8 May 2025 16:19:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AoOipQJWQZ/4EMGK/EpTbWVyQEjvfmYbEuQlpns1Ouq3OGork8XpFdKfrRqeSaSePZxy4IboOoe3u+wsdsbhbxbTrvszIg/PvjC7X2SNECEYbrI8xofcZNkZmgMKAQvS/zojl9co848XOzodWBDCEFHOe7gJNrhiH6VNCscKnC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lIlX8IxJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E2DEC4CEEE;
+	Thu,  8 May 2025 16:19:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746721166;
-	bh=8xZDhbA9kCq1uEHYBJmkUebpVKDFdOjv261nrFyhfu0=;
+	s=k20201202; t=1746721169;
+	bh=RVIKDl/EugWmSnvOXT9bd2yaYW36FECzGaIqHt8JOYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kUa2urV1/XU5uZc6njIaD9Eyu3n6Ozl9quHm7WowRtzaXI1K/9oy5zhFArB/KQXKS
-	 p+sGxHfp2P+6ZGxi3xoAgDBg9abxux9nOO42xCCn3srLguokiDFso3sY0xBXQHxkXI
-	 6sB3FV1fXiSBI5QySoLU+gMhjXqm5WqDLZ0t9Gt5Qi3v18+39myps+SrDMbGNdT1el
-	 jGQxO4Lt/5xdBRRJPfBGXuSHn1PdOXwBs6LESAGVBdVqDkYp0+QxAzZIqDMl2YNocQ
-	 txlWQe9yIkgNx/j5e1AIGfCRQ++lokhgzviGW7BVZClLb/XS2tE0zPcoAb9pQ3bZ/H
-	 YH0+qhlEsUsIA==
+	b=lIlX8IxJ7jyok2WhEyEBY0aqlHpCYOKaGRLSpbZfmfSDg0UqyNPAHkZeyPQ+GSIah
+	 rYvO4mSnfZ08Uou8q/EkRj7z83VAF/xTP9lWPag2vriYw/Lm1SlmKIZSfI5mHKTOZF
+	 1fRZQGmLxcxpL1+6gQ7GGpoO4rTQ+P4nBsmaEFOmMJvPQq/SzRaj6rLz8ovKTK8mlr
+	 X8zp3EhAeFJZ+nLvpZY91ZHKLOS9IZ4RJfn/IoJ82Hv1+zukP049EMxPKp7NbE+Nek
+	 a8VeJEujV1Siwo7odCMt9RsO/xXH6UWhUKvl7Q0uCLzNpPNwc1ZAll7mRbgUa4JYtu
+	 pHQKEsDpn/1kw==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	kenneth@whitecape.org
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.14.y] drm/xe: Invalidate L3 read-only cachelines for geometry streams too
-Date: Thu,  8 May 2025 12:19:22 -0400
-Message-Id: <20250507083323-d16daa69989f89d7@stable.kernel.org>
+To: stable@vger.kernel.org
+Cc: Yu Kuai <yukuai1@huaweicloud.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH v6.1] md: move initialization and destruction of 'io_acct_set' to md.c
+Date: Thu,  8 May 2025 12:19:26 -0400
+Message-Id: <20250507083005-e59e898b9f88e24f@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250505213335.243943-1-kenneth@whitecape.org>
+In-Reply-To:  <20250506012417.312790-1-yukuai1@huaweicloud.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,43 +64,48 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Summary of potential issues:
-⚠️ Found matching upstream commit but patch is missing proper reference to it
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-Found matching upstream commit: e775278cd75f24a2758c28558c4e41b36c935740
+The upstream commit SHA1 provided is correct: c567c86b90d4715081adfe5eb812141a5b6b4883
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Yu Kuai<yukuai1@huaweicloud.com>
+Commit author: Yu Kuai<yukuai3@huawei.com>
+
+Status in newer kernel trees:
+6.14.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (exact SHA1)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  e775278cd75f2 ! 1:  e3a6440ff115b drm/xe: Invalidate L3 read-only cachelines for geometry streams too
-    @@ Commit message
-         Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-         (cherry picked from commit 61672806b579dd5a150a042ec9383be2bbc2ae7e)
-         Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-    +    (cherry picked from commit e775278cd75f24a2758c28558c4e41b36c935740)
-    +    Signed-off-by: Kenneth Graunke <kenneth@whitecape.org>
+1:  c567c86b90d47 ! 1:  421676e64b498 md: move initialization and destruction of 'io_acct_set' to md.c
+    @@ Metadata
+      ## Commit message ##
+         md: move initialization and destruction of 'io_acct_set' to md.c
      
-      ## drivers/gpu/drm/xe/instructions/xe_gpu_commands.h ##
-     @@
-    @@ drivers/gpu/drm/xe/xe_ring_ops.c: static int emit_pipe_invalidate(u32 mask_flags
-     -	flags &= ~mask_flags;
-     +	flags1 &= ~mask_flags;
-      
-    --	return emit_pipe_control(dw, i, 0, flags, LRC_PPHWSP_FLUSH_INVAL_SCRATCH_ADDR, 0);
-    +-	return emit_pipe_control(dw, i, 0, flags, LRC_PPHWSP_SCRATCH_ADDR, 0);
-     +	if (flags1 & PIPE_CONTROL_VF_CACHE_INVALIDATE)
-     +		flags0 |= PIPE_CONTROL0_L3_READ_ONLY_CACHE_INVALIDATE;
-     +
-     +	return emit_pipe_control(dw, i, flags0, flags1,
-    -+				 LRC_PPHWSP_FLUSH_INVAL_SCRATCH_ADDR, 0);
-    ++				 LRC_PPHWSP_SCRATCH_ADDR, 0);
-      }
-      
-      static int emit_store_imm_ppgtt_posted(u64 addr, u64 value,
+    +    commit c567c86b90d4715081adfe5eb812141a5b6b4883 upstream.
+    +
+         'io_acct_set' is only used for raid0 and raid456, prepare to use it for
+         raid1 and raid10, so that io accounting from different levels can be
+         consistent.
+    @@ Commit message
+         Reviewed-by: Xiao Ni <xni@redhat.com>
+         Signed-off-by: Song Liu <song@kernel.org>
+         Link: https://lore.kernel.org/r/20230621165110.1498313-2-yukuai1@huaweicloud.com
+    +    [Yu Kuai: This is the relied patch for commit 4a05f7ae3371 ("md/raid10:
+    +    fix missing discard IO accounting"), kernel will panic while issuing
+    +    discard to raid10 without this patch]
+    +    Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+     
+      ## drivers/md/md.c ##
+     @@ drivers/md/md.c: int md_run(struct mddev *mddev)
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.14.y       |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Success   |
 
