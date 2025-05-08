@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-142791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 633E1AAF3E2
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 08:40:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38594AAF3E3
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 08:40:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 505271BC1F52
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 06:41:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EF5F4C7FE5
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 06:40:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3D3221A422;
-	Thu,  8 May 2025 06:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0646821B19E;
+	Thu,  8 May 2025 06:40:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="ofO1utEa"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="PiaQsvJB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A82AB2192FA;
-	Thu,  8 May 2025 06:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B47642192F1;
+	Thu,  8 May 2025 06:40:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746686442; cv=none; b=OI9rpHvF8qamk/o003Z0mcetqwCNFgmB9xmo3mQQRaRiKL2bwWKCRaD0ulqUe6o3TFnklcz86DaqPKJKEMkmeFIUrrRAMvIn/OZMpoRAfHLaAtlOFeVBeRpXueEM09kLtubsBkfVy4Lw0eBFIPLXwdONXLAisUiwHJCCU5ObQbM=
+	t=1746686446; cv=none; b=syO4KUupNqQwu/61jy1c6/6AeG8cCDMhRFjRvWT5CcXuhIqjflGLVfVeQURtpd7/slRKtEzmjH61f9r1gfGZcwqkyaKUywwLchBb1AhykKQRyawgEFjMyh6HkFrTWkrUL1wu9SMc5fKb6H3XMTYFjXwmls0h6BKRFzRp26QXuXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746686442; c=relaxed/simple;
-	bh=hHi3T2t1572bHmvJ5VLsXPynoUavILu4+JPhlnQvadE=;
-	h=Date:To:From:Subject:Message-Id; b=R3yO/p6Bk6x7LOwct+JWgVPEelK95l/4t5qdclbm6+a2njqrttQB2EPYP8xPsC1vjmCVavxluVmC1C+kCZA3IIUkIULR5GOBvkVUa65/ARbLbQ3EO2GEuDvMQY9Wwaa9ktmXnPbY8HMdxJjjMEpdN7fEnD8P0iJwk83Gv+1oPdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=ofO1utEa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EAE1C4CEEB;
-	Thu,  8 May 2025 06:40:42 +0000 (UTC)
+	s=arc-20240116; t=1746686446; c=relaxed/simple;
+	bh=KaEWQ6/K29TMH3nRw9jtkg1uBOev5mGCsGHuVOknMmI=;
+	h=Date:To:From:Subject:Message-Id; b=R6/CDC2/LARV+MzMqJqzz4AZg1P6dXpza9Q+V7wC9Eqgez6iTb5K2XBX+nYi3HEFu8u61aNKWOex3j4uv/lC9I1lkp23qGDjeKUhIjsoNVIHcGCyWvrBN85TSRGoh4BtPOCfZGzVT8Z2IISYe70f3D7khyofUs2hP3uQ3Y/mcyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=PiaQsvJB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63228C4CEEB;
+	Thu,  8 May 2025 06:40:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1746686442;
-	bh=hHi3T2t1572bHmvJ5VLsXPynoUavILu4+JPhlnQvadE=;
+	s=korg; t=1746686446;
+	bh=KaEWQ6/K29TMH3nRw9jtkg1uBOev5mGCsGHuVOknMmI=;
 	h=Date:To:From:Subject:From;
-	b=ofO1utEadMTficpTJCqHEalLSirgIfSslp2l+MDj4riCHAu9ZmxgeIxlFQLJEkHGP
-	 jyIlPKfle0iBUK/G/KvL99O1qlWuyDtqfGdx6lAUNrYxHfADrSb4sn8h0KN741PnhP
-	 cKxSs7maAf93tgazFNkflmO/5OSopsk0pRPcn+CA=
-Date: Wed, 07 May 2025 23:40:41 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,joseph.qi@linux.alibaba.com,jlbec@evilplan.org,gechangwei@live.cn,gautham.ananthakrishna@oracle.com,heming.zhao@suse.com,akpm@linux-foundation.org
+	b=PiaQsvJBXMqG4g8/cXNyx5RwXToUlrJrmD/sRdKAXqNA/qcWFHggigdot6QR6ATpC
+	 7kbMYUnsEYULpKXaaDlBR1Z23tYpTXzNISXi9FBHvCzRGZOZeb3XfHNvmTZ4INddmK
+	 NnsHEuEZF6Xn+KLxrNSxTZ6TsApl+AaXbINYKWWw=
+Date: Wed, 07 May 2025 23:40:45 -0700
+To: mm-commits@vger.kernel.org,ziy@nvidia.com,willy@infradead.org,stable@vger.kernel.org,revest@google.com,linmiaohe@huawei.com,hughd@google.com,gshan@redhat.com,david@redhat.com,gavinguo@igalia.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] ocfs2-fix-the-issue-with-discontiguous-allocation-in-the-global_bitmap.patch removed from -mm tree
-Message-Id: <20250508064042.0EAE1C4CEEB@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-huge_memory-fix-dereferencing-invalid-pmd-migration-entry.patch removed from -mm tree
+Message-Id: <20250508064046.63228C4CEEB@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,178 +50,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: ocfs2: fix the issue with discontiguous allocation in the global_bitmap
+     Subject: mm/huge_memory: fix dereferencing invalid pmd migration entry
 has been removed from the -mm tree.  Its filename was
-     ocfs2-fix-the-issue-with-discontiguous-allocation-in-the-global_bitmap.patch
+     mm-huge_memory-fix-dereferencing-invalid-pmd-migration-entry.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Heming Zhao <heming.zhao@suse.com>
-Subject: ocfs2: fix the issue with discontiguous allocation in the global_bitmap
-Date: Mon, 14 Apr 2025 14:01:23 +0800
+From: Gavin Guo <gavinguo@igalia.com>
+Subject: mm/huge_memory: fix dereferencing invalid pmd migration entry
+Date: Mon, 21 Apr 2025 19:35:36 +0800
 
-commit 4eb7b93e0310 ("ocfs2: improve write IO performance when
-fragmentation is high") introduced another regression.
+When migrating a THP, concurrent access to the PMD migration entry during
+a deferred split scan can lead to an invalid address access, as
+illustrated below.  To prevent this invalid access, it is necessary to
+check the PMD migration entry and return early.  In this context, there is
+no need to use pmd_to_swp_entry and pfn_swap_entry_to_page to verify the
+equality of the target folio.  Since the PMD migration entry is locked, it
+cannot be served as the target.
 
-The following ocfs2-test case can trigger this issue:
-> discontig_runner.sh => activate_discontig_bg.sh => resv_unwritten:
-> ${RESV_UNWRITTEN_BIN} -f ${WORK_PLACE}/large_testfile -s 0 -l \
-> $((${FILE_MAJOR_SIZE_M}*1024*1024))
+Mailing list discussion and explanation from Hugh Dickins: "An anon_vma
+lookup points to a location which may contain the folio of interest, but
+might instead contain another folio: and weeding out those other folios is
+precisely what the "folio != pmd_folio((*pmd)" check (and the "risk of
+replacing the wrong folio" comment a few lines above it) is for."
 
-In my env, test disk size (by "fdisk -l <dev>"):
-> 53687091200 bytes, 104857600 sectors.
+BUG: unable to handle page fault for address: ffffea60001db008
+CPU: 0 UID: 0 PID: 2199114 Comm: tee Not tainted 6.14.0+ #4 NONE
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:split_huge_pmd_locked+0x3b5/0x2b60
+Call Trace:
+<TASK>
+try_to_migrate_one+0x28c/0x3730
+rmap_walk_anon+0x4f6/0x770
+unmap_folio+0x196/0x1f0
+split_huge_page_to_list_to_order+0x9f6/0x1560
+deferred_split_scan+0xac5/0x12a0
+shrinker_debugfs_scan_write+0x376/0x470
+full_proxy_write+0x15c/0x220
+vfs_write+0x2fc/0xcb0
+ksys_write+0x146/0x250
+do_syscall_64+0x6a/0x120
+entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Above command is:
-> /usr/local/ocfs2-test/bin/resv_unwritten -f \
-> /mnt/ocfs2/ocfs2-activate-discontig-bg-dir/large_testfile -s 0 -l \
-> 53187969024
+The bug is found by syzkaller on an internal kernel, then confirmed on
+upstream.
 
-Error log:
-> [*] Reserve 50724M space for a LARGE file, reserve 200M space for future test.
-> ioctl error 28: "No space left on device"
-> resv allocation failed Unknown error -1
-> reserve unwritten region from 0 to 53187969024.
-
-Call flow:
-__ocfs2_change_file_space //by ioctl OCFS2_IOC_RESVSP64
- ocfs2_allocate_unwritten_extents //start:0 len:53187969024
-  while()
-   + ocfs2_get_clusters //cpos:0, alloc_size:1623168 (cluster number)
-   + ocfs2_extend_allocation
-     + ocfs2_lock_allocators
-     |  + choose OCFS2_AC_USE_MAIN & ocfs2_cluster_group_search
-     |
-     + ocfs2_add_inode_data
-        ocfs2_add_clusters_in_btree
-         __ocfs2_claim_clusters
-          ocfs2_claim_suballoc_bits
-          + During the allocation of the final part of the large file
-	    (after ~47GB), no chain had the required contiguous
-            bits_wanted. Consequently, the allocation failed.
-
-How to fix:
-When OCFS2 is encountering fragmented allocation, the file system should
-stop attempting bits_wanted contiguous allocation and instead provide the
-largest available contiguous free bits from the cluster groups.
-
-Link: https://lkml.kernel.org/r/20250414060125.19938-2-heming.zhao@suse.com
-Fixes: 4eb7b93e0310 ("ocfs2: improve write IO performance when fragmentation is high")
-Signed-off-by: Heming Zhao <heming.zhao@suse.com>
-Reported-by: Gautham Ananthakrishna <gautham.ananthakrishna@oracle.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
+Link: https://lkml.kernel.org/r/20250421113536.3682201-1-gavinguo@igalia.com
+Link: https://lore.kernel.org/all/20250414072737.1698513-1-gavinguo@igalia.com/
+Link: https://lore.kernel.org/all/20250418085802.2973519-1-gavinguo@igalia.com/
+Fixes: 84c3fc4e9c56 ("mm: thp: check pmd migration entry in common path")
+Signed-off-by: Gavin Guo <gavinguo@igalia.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Hugh Dickins <hughd@google.com>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Gavin Shan <gshan@redhat.com>
+Cc: Florent Revest <revest@google.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- fs/ocfs2/suballoc.c |   38 ++++++++++++++++++++++++++++++++------
- fs/ocfs2/suballoc.h |    1 +
- 2 files changed, 33 insertions(+), 6 deletions(-)
+ mm/huge_memory.c |   11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/fs/ocfs2/suballoc.c~ocfs2-fix-the-issue-with-discontiguous-allocation-in-the-global_bitmap
-+++ a/fs/ocfs2/suballoc.c
-@@ -698,10 +698,12 @@ static int ocfs2_block_group_alloc(struc
- 
- 	bg_bh = ocfs2_block_group_alloc_contig(osb, handle, alloc_inode,
- 					       ac, cl);
--	if (PTR_ERR(bg_bh) == -ENOSPC)
-+	if (PTR_ERR(bg_bh) == -ENOSPC) {
-+		ac->ac_which = OCFS2_AC_USE_MAIN_DISCONTIG;
- 		bg_bh = ocfs2_block_group_alloc_discontig(handle,
- 							  alloc_inode,
- 							  ac, cl);
-+	}
- 	if (IS_ERR(bg_bh)) {
- 		status = PTR_ERR(bg_bh);
- 		bg_bh = NULL;
-@@ -1794,6 +1796,7 @@ static int ocfs2_search_chain(struct ocf
+--- a/mm/huge_memory.c~mm-huge_memory-fix-dereferencing-invalid-pmd-migration-entry
++++ a/mm/huge_memory.c
+@@ -3075,6 +3075,8 @@ static void __split_huge_pmd_locked(stru
+ void split_huge_pmd_locked(struct vm_area_struct *vma, unsigned long address,
+ 			   pmd_t *pmd, bool freeze, struct folio *folio)
  {
- 	int status;
- 	u16 chain;
-+	u32 contig_bits;
- 	u64 next_group;
- 	struct inode *alloc_inode = ac->ac_inode;
- 	struct buffer_head *group_bh = NULL;
-@@ -1819,10 +1822,21 @@ static int ocfs2_search_chain(struct ocf
- 	status = -ENOSPC;
- 	/* for now, the chain search is a bit simplistic. We just use
- 	 * the 1st group with any empty bits. */
--	while ((status = ac->ac_group_search(alloc_inode, group_bh,
--					     bits_wanted, min_bits,
--					     ac->ac_max_block,
--					     res)) == -ENOSPC) {
-+	while (1) {
-+		if (ac->ac_which == OCFS2_AC_USE_MAIN_DISCONTIG) {
-+			contig_bits = le16_to_cpu(bg->bg_contig_free_bits);
-+			if (!contig_bits)
-+				contig_bits = ocfs2_find_max_contig_free_bits(bg->bg_bitmap,
-+						le16_to_cpu(bg->bg_bits), 0);
-+			if (bits_wanted > contig_bits && contig_bits >= min_bits)
-+				bits_wanted = contig_bits;
-+		}
++	bool pmd_migration = is_pmd_migration_entry(*pmd);
 +
-+		status = ac->ac_group_search(alloc_inode, group_bh,
-+				bits_wanted, min_bits,
-+				ac->ac_max_block, res);
-+		if (status != -ENOSPC)
-+			break;
- 		if (!bg->bg_next_group)
- 			break;
- 
-@@ -1982,6 +1996,7 @@ static int ocfs2_claim_suballoc_bits(str
- 	victim = ocfs2_find_victim_chain(cl);
- 	ac->ac_chain = victim;
- 
-+search:
- 	status = ocfs2_search_chain(ac, handle, bits_wanted, min_bits,
- 				    res, &bits_left);
- 	if (!status) {
-@@ -2022,6 +2037,16 @@ static int ocfs2_claim_suballoc_bits(str
- 		}
+ 	VM_WARN_ON_ONCE(folio && !folio_test_pmd_mappable(folio));
+ 	VM_WARN_ON_ONCE(!IS_ALIGNED(address, HPAGE_PMD_SIZE));
+ 	VM_WARN_ON_ONCE(folio && !folio_test_locked(folio));
+@@ -3085,9 +3087,12 @@ void split_huge_pmd_locked(struct vm_are
+ 	 * require a folio to check the PMD against. Otherwise, there
+ 	 * is a risk of replacing the wrong folio.
+ 	 */
+-	if (pmd_trans_huge(*pmd) || pmd_devmap(*pmd) ||
+-	    is_pmd_migration_entry(*pmd)) {
+-		if (folio && folio != pmd_folio(*pmd))
++	if (pmd_trans_huge(*pmd) || pmd_devmap(*pmd) || pmd_migration) {
++		/*
++		 * Do not apply pmd_folio() to a migration entry; and folio lock
++		 * guarantees that it must be of the wrong folio anyway.
++		 */
++		if (folio && (pmd_migration || folio != pmd_folio(*pmd)))
+ 			return;
+ 		__split_huge_pmd_locked(vma, pmd, address, freeze);
  	}
- 
-+	/* Chains can't supply the bits_wanted contiguous space.
-+	 * We should switch to using every single bit when allocating
-+	 * from the global bitmap. */
-+	if (i == le16_to_cpu(cl->cl_next_free_rec) &&
-+	    status == -ENOSPC && ac->ac_which == OCFS2_AC_USE_MAIN) {
-+		ac->ac_which = OCFS2_AC_USE_MAIN_DISCONTIG;
-+		ac->ac_chain = victim;
-+		goto search;
-+	}
-+
- set_hint:
- 	if (status != -ENOSPC) {
- 		/* If the next search of this group is not likely to
-@@ -2365,7 +2390,8 @@ int __ocfs2_claim_clusters(handle_t *han
- 	BUG_ON(ac->ac_bits_given >= ac->ac_bits_wanted);
- 
- 	BUG_ON(ac->ac_which != OCFS2_AC_USE_LOCAL
--	       && ac->ac_which != OCFS2_AC_USE_MAIN);
-+	       && ac->ac_which != OCFS2_AC_USE_MAIN
-+	       && ac->ac_which != OCFS2_AC_USE_MAIN_DISCONTIG);
- 
- 	if (ac->ac_which == OCFS2_AC_USE_LOCAL) {
- 		WARN_ON(min_clusters > 1);
---- a/fs/ocfs2/suballoc.h~ocfs2-fix-the-issue-with-discontiguous-allocation-in-the-global_bitmap
-+++ a/fs/ocfs2/suballoc.h
-@@ -29,6 +29,7 @@ struct ocfs2_alloc_context {
- #define OCFS2_AC_USE_MAIN  2
- #define OCFS2_AC_USE_INODE 3
- #define OCFS2_AC_USE_META  4
-+#define OCFS2_AC_USE_MAIN_DISCONTIG  5
- 	u32    ac_which;
- 
- 	/* these are used by the chain search */
 _
 
-Patches currently in -mm which might be from heming.zhao@suse.com are
+Patches currently in -mm which might be from gavinguo@igalia.com are
 
+mm-huge_memory-adjust-try_to_migrate_one-and-split_huge_pmd_locked.patch
+mm-huge_memory-remove-useless-folio-pointers-passing.patch
 
 
