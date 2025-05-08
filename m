@@ -1,145 +1,150 @@
-Return-Path: <stable+bounces-142778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B513CAAF129
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 04:30:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D59DAAF1CF
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 05:47:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C9BA165BD8
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 02:30:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3ECEE1B68025
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 03:47:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E622F1AF0A4;
-	Thu,  8 May 2025 02:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61F931F0E58;
+	Thu,  8 May 2025 03:47:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="WdiC7YSb"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A7831EF1D;
-	Thu,  8 May 2025 02:30:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A660D17D2
+	for <stable@vger.kernel.org>; Thu,  8 May 2025 03:47:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746671450; cv=none; b=LRzqR6IHmfUeyf9O/i0f1+5fbxhxe/svf6cZko37M0KeSP8INGp9AVjOaMbPe2PXqGWg4Cdh/tXgoPoLnawvo0bwBUtrI0uJhuDBkvI5cI69uN7WuXt+ijSFiqMUyPUzXPhQDyFkprZaycxLnVknkRdIzqmdIPQfDPJ5HsJNGcA=
+	t=1746676046; cv=none; b=dxnEOk0jWlaQky/bFwVsIB5SEW/6LQw+PJogdWF+zY+HIIca0YBb9vcVxz2Dt4L92hidFnlu/wE9nVybdTT+wT5t/+j7M/t9M+sgFebfKWYfnhJE36I2elPffgWBeLFjv1po5dwDd3604vsCH1BvE58DrZIUk0LoEU7i1f/Wauw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746671450; c=relaxed/simple;
-	bh=GLeMnowwZZvRZ60BgiiBk1gBJRid4rdu40b029b9ne8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dIJNlE4JoHCJX1Bx7BakOgPJ5eZZmgdaN/F8Ks8hneuIHx3BSHFlSH8E3DqjXgMTYKscB1+D6IUDQLPdeKmOPFaz5Y/UMrB5oeQYNubVLIZF+qDDNO05ixBkE6VONUYdAiMVj6zKY2ldbIB8s/KMGgXmy81rYF2zxSQ+ggoYrJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8ABA3106F;
-	Wed,  7 May 2025 19:30:36 -0700 (PDT)
-Received: from u200865.usa.arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 97B933F5A1;
-	Wed,  7 May 2025 19:30:46 -0700 (PDT)
-From: Jeremy Linton <jeremy.linton@arm.com>
-To: rafael@kernel.org
-Cc: lenb@kernel.org,
-	jmeurin@google.com,
-	linux-acpi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	sudeep.holla@arm.com,
-	Jeremy Linton <jeremy.linton@arm.com>,
-	Maximilian Heyne <mheyne@amazon.de>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] ACPI: PPTT: Fix processor subtable walk
-Date: Wed,  7 May 2025 21:30:25 -0500
-Message-ID: <20250508023025.1301030-1-jeremy.linton@arm.com>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1746676046; c=relaxed/simple;
+	bh=gMvqmUDQloM/OGi8vQ9oaLiFubDBuCvPI4E4jN9iTYU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Rz4WXj7WPfUy6SV2YP4cTqeP3MheMqVvQuGyiMnrEc66xINy+r6QoAqwUQ+1T8UI2lGj3SD4bcaEn0KGv9sOz6aBhSQChvZRKXwEtwDWtljx0NwIQv1RBfbVLTHtgzf2I+bPGZSqBJzyRa/T7i6euWto3lFDmf42bMNeqQZG8SU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=WdiC7YSb; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-22e6a088e16so4351825ad.1
+        for <stable@vger.kernel.org>; Wed, 07 May 2025 20:47:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1746676044; x=1747280844; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ajwTuAXKGu9zIQucAwG1LBx8zev6+XMsQE6hj821iRA=;
+        b=WdiC7YSbT0gO+yuQ54FzHmEEWfEJeB7xpCmD75sMK38l64VJCzVfLcikwmDxkD8vg0
+         u3d2HEyC0pLhoKGDDnVPqY/lFC79uBR1MYQUd2OoxiDemlcxzisuo5+h1LjbAoDozfeZ
+         XEhyO5doG3AvctrR3Jae0QS5m5LMZgonyX+0M=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746676044; x=1747280844;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ajwTuAXKGu9zIQucAwG1LBx8zev6+XMsQE6hj821iRA=;
+        b=ayAwITE/g4/8WttbmrNVBtVqSvB+JRS3Pxz2Pb0Yl0RMcHGRjINZYS3RY/yXVmJsCK
+         wWysZdI3vKJ1TzlfX4ASN2fAg/+hZWJDyHwIqIf63dLVfAZzQOm2tINd4sFlbb6aFiXE
+         gERAAYR6TtHTSS0WaRvmmHXABccn16ODxdpc+655dJACi2EpGJYJE6Hu/gLzU2M4UvyU
+         RzzGZ2WAp2othO29tv14T3RwPd6GP5eOCNPAoObGYWfnyEAtVzbOZ6TmSHxU8ZjvuvrI
+         IhkE9QXcPa6IEnY5csS13AB53TrNKGFrP435/Ojs+h8r8f5LIYIE2DTHCCnTF1wjyk3o
+         /81Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXq7y70/IMQkqEh2UmbhuCku5y198MlzRb6Ytjm9zyt2T3TDsMMx5aby2dGbCUAMiFuMcPn7IA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz8sywHksdiRDtowfsYic71DxEvCVwnplx5xZllOBGT5x+9copW
+	bnXQmQvO0D1eDdXiMS1xJ37ZuFQ8R9yR6j1pv/pFKU8wW75g8XWr4L1+9Wuh1A==
+X-Gm-Gg: ASbGncsxY7t7A2oyJiPt7ca95h8xvVtSiGs8U2YhebKGXTV/cHj2hLverU0Tr1J87au
+	vfty7Xaml3fINL7yX5xn13REov8EZf5HCcQztKy3kYEu9t6s1YnpfgRrXFp7BXoZNT4Fh/P7mEk
+	KmYW9Rmrc+l+jtpQpG/+sfYNJf66PZcd4nblq1BK7/BO377GyIZLsa64l3EOBGv1GuoqrNoURCP
+	RPJSWTopHXyFHiR+yKFWBNKUFAB7KNAksLz2H2eLC4qdbvrBRdiunIhIhDhRbQnVfew6N/coxwS
+	dPQytb5UKQSJkA6oa6shIFpFKUxHnFw4gvh8lxSS2Agl
+X-Google-Smtp-Source: AGHT+IGcl17l7VZA4rVy6AOSJ6DC+M8PTTH8SKwAHZrFUgJBfGe+LwYpbZdpVLRwNYkh8vHIu6cVwQ==
+X-Received: by 2002:a17:902:fc8d:b0:22e:457d:3989 with SMTP id d9443c01a7336-22e845bcb87mr29979685ad.0.1746676043927;
+        Wed, 07 May 2025 20:47:23 -0700 (PDT)
+Received: from google.com ([2401:fa00:8f:203:c794:38be:3be8:4c26])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22e1522916esm102263245ad.196.2025.05.07.20.47.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 May 2025 20:47:23 -0700 (PDT)
+Date: Thu, 8 May 2025 12:47:18 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Mika Westerberg <westeri@kernel.org>
+Cc: Andreas Noever <andreas.noever@gmail.com>, 
+	Michael Jamet <michael.jamet@intel.com>, Yehezkel Bernat <YehezkelShB@gmail.com>, 
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Sergey Senozhatsky <senozhatsky@chromium.org>
+Subject: Re: [PATCHv3] thunderbolt: do not double dequeue a request
+Message-ID: <ojkrbtd2kpweo5xcfulfobdavj5ab3ysxxle4kr5oa455me77s@p2o4jdwsr3m2>
+References: <20250327150406.138736-1-senozhatsky@chromium.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250327150406.138736-1-senozhatsky@chromium.org>
 
-The original PPTT code had a bug where the processor subtable length
-was not correctly validated when encountering a truncated
-acpi_pptt_processor node.
+On (25/03/28 00:03), Sergey Senozhatsky wrote:
+> Some of our devices crash in tb_cfg_request_dequeue():
+> 
+>  general protection fault, probably for non-canonical address 0xdead000000000122
+> 
+>  CPU: 6 PID: 91007 Comm: kworker/6:2 Tainted: G U W 6.6.65
+>  RIP: 0010:tb_cfg_request_dequeue+0x2d/0xa0
+>  Call Trace:
+>  <TASK>
+>  ? tb_cfg_request_dequeue+0x2d/0xa0
+>  tb_cfg_request_work+0x33/0x80
+>  worker_thread+0x386/0x8f0
+>  kthread+0xed/0x110
+>  ret_from_fork+0x38/0x50
+>  ret_from_fork_asm+0x1b/0x30
+> 
+> The circumstances are unclear, however, the theory is that
+> tb_cfg_request_work() can be scheduled twice for a request:
+> first time via frame.callback from ring_work() and second
+> time from tb_cfg_request().  Both times kworkers will execute
+> tb_cfg_request_dequeue(), which results in double list_del()
+> from the ctl->request_queue (the list poison deference hints
+> at it: 0xdead000000000122).
+> 
+> Do not dequeue requests that don't have TB_CFG_REQUEST_ACTIVE
+> bit set.
 
-Commit 7ab4f0e37a0f4 ("ACPI PPTT: Fix coding mistakes in a couple of
-sizeof() calls") attempted to fix this by validating the size is as
-large as the acpi_pptt_processor node structure. This introduced a
-regression where the last processor node in the PPTT table is ignored
-if it doesn't contain any private resources. That results errors like:
+Mika, as was discussed in [1] thread we rolled out the fix to
+our fleet and we don't see the crashes anymore.  So it's tested
+and verified.
 
-  ACPI PPTT: PPTT table found, but unable to locate core XX (XX)
-  ACPI: SPE must be homogeneous
+[1] https://lore.kernel.org/linux-kernel/20250327145543.GC3152277@black.fi.intel.com
 
-Furthermore, it fail in a common case where the node length isn't
-equal to the acpi_pptt_processor structure size, leaving the original
-bug in a modified form.
-
-Correct the regression by adjusting the loop termination conditions as
-suggested by the bug reporters. An additional check performed after
-the subtable node type is detected, validates the acpi_pptt_processor
-node is fully contained in the PPTT table. Repeating the check in
-acpi_pptt_leaf_node() is largely redundant as the node is already
-known to be fully contained in the table.
-
-The case where a final truncated node's parent property is accepted,
-but the node itself is rejected should not be considered a bug.
-
-Fixes: 7ab4f0e37a0f4 ("ACPI PPTT: Fix coding mistakes in a couple of sizeof() calls")
-Reported-by: Maximilian Heyne <mheyne@amazon.de>
-Closes: https://lore.kernel.org/linux-acpi/20250506-draco-taped-15f475cd@mheyne-amazon/
-Reported-by: Yicong Yang <yangyicong@hisilicon.com>
-Closes: https://lore.kernel.org/linux-acpi/20250507035124.28071-1-yangyicong@huawei.com/
-Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
-Cc: Jean-Marc Eurin <jmeurin@google.com>
-Cc: <stable@vger.kernel.org>
----
- drivers/acpi/pptt.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
-index f73ce6e13065..54676e3d82dd 100644
---- a/drivers/acpi/pptt.c
-+++ b/drivers/acpi/pptt.c
-@@ -231,16 +231,18 @@ static int acpi_pptt_leaf_node(struct acpi_table_header *table_hdr,
- 			     sizeof(struct acpi_table_pptt));
- 	proc_sz = sizeof(struct acpi_pptt_processor);
- 
--	while ((unsigned long)entry + proc_sz < table_end) {
-+	/* ignore subtable types that are smaller than a processor node */
-+	while ((unsigned long)entry + proc_sz <= table_end) {
- 		cpu_node = (struct acpi_pptt_processor *)entry;
-+
- 		if (entry->type == ACPI_PPTT_TYPE_PROCESSOR &&
- 		    cpu_node->parent == node_entry)
- 			return 0;
- 		if (entry->length == 0)
- 			return 0;
-+
- 		entry = ACPI_ADD_PTR(struct acpi_subtable_header, entry,
- 				     entry->length);
--
- 	}
- 	return 1;
- }
-@@ -273,15 +275,18 @@ static struct acpi_pptt_processor *acpi_find_processor_node(struct acpi_table_he
- 	proc_sz = sizeof(struct acpi_pptt_processor);
- 
- 	/* find the processor structure associated with this cpuid */
--	while ((unsigned long)entry + proc_sz < table_end) {
-+	while ((unsigned long)entry + proc_sz <= table_end) {
- 		cpu_node = (struct acpi_pptt_processor *)entry;
- 
- 		if (entry->length == 0) {
- 			pr_warn("Invalid zero length subtable\n");
- 			break;
- 		}
-+		/* entry->length may not equal proc_sz, revalidate the processor structure length */
- 		if (entry->type == ACPI_PPTT_TYPE_PROCESSOR &&
- 		    acpi_cpu_id == cpu_node->acpi_processor_id &&
-+		    (unsigned long)entry + entry->length <= table_end &&
-+		    entry->length == proc_sz + cpu_node->number_of_priv_resources * sizeof(u32) &&
- 		     acpi_pptt_leaf_node(table_hdr, cpu_node)) {
- 			return (struct acpi_pptt_processor *)entry;
- 		}
--- 
-2.49.0
-
+> ---
+> 
+> v3: tweaked commit message
+> 
+>  drivers/thunderbolt/ctl.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/drivers/thunderbolt/ctl.c b/drivers/thunderbolt/ctl.c
+> index cd15e84c47f4..1db2e951b53f 100644
+> --- a/drivers/thunderbolt/ctl.c
+> +++ b/drivers/thunderbolt/ctl.c
+> @@ -151,6 +151,11 @@ static void tb_cfg_request_dequeue(struct tb_cfg_request *req)
+>  	struct tb_ctl *ctl = req->ctl;
+>  
+>  	mutex_lock(&ctl->request_queue_lock);
+> +	if (!test_bit(TB_CFG_REQUEST_ACTIVE, &req->flags)) {
+> +		mutex_unlock(&ctl->request_queue_lock);
+> +		return;
+> +	}
+> +
+>  	list_del(&req->list);
+>  	clear_bit(TB_CFG_REQUEST_ACTIVE, &req->flags);
+>  	if (test_bit(TB_CFG_REQUEST_CANCELED, &req->flags))
+> -- 
+> 2.49.0.395.g12beb8f557-goog
+> 
 
