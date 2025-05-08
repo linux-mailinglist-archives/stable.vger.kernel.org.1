@@ -1,139 +1,141 @@
-Return-Path: <stable+bounces-142831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC049AAF7CE
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 12:31:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43512AAF819
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 12:39:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4FC981C204D9
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 10:31:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05C109E32B3
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 10:39:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB59212B3E;
-	Thu,  8 May 2025 10:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DFC52376FF;
+	Thu,  8 May 2025 10:34:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fqADccl+"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zor5QPT2"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC4E61D8E10
-	for <stable@vger.kernel.org>; Thu,  8 May 2025 10:31:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89333221FA0;
+	Thu,  8 May 2025 10:34:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746700265; cv=none; b=bdLoVSy6eVjCb7iF9/vdGcyWLY+DRNI3TIShvEiu16KXOjqI1aiFck7RViE2M2JOaTKTTEluKDgxRz8mN5/bZoFuCLjorM2gcsCt5K1KfJp4+K4It4sO3K9inBfTMjqUfsNfneIzLspkmkH2ok89U0gksre4HOnxCKTeMkx1vhk=
+	t=1746700473; cv=none; b=VJbCeDqMoyrjy2PISPQ9GoBNqJNwRxNzkEk8ag+oOsdODWnmhV3klhG2VMrSMXwQpc70rTs7Zmp7p4UnkjqPkWNcpY5Z9onGX9ODS4cZLvhGwv1oBDrh+aHcxZe5Zq7YkppFY9uF+2jru47YA44nnTRYYCLucnFjwLaPaYqh5nM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746700265; c=relaxed/simple;
-	bh=A8YkZE941Qo2bcb2V5y4qh1al/nROQMu27FsUkwRXXE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jPomJorWSf6dgDi4CLaB8a97bTMTMdDh5Sy4BwvuYnRjGCvKmmLZSk65HV5mI7PWP+aF0xZls2PQyAxU7CaK7pm43lxtuMRCdlzVUM9G+e6y2jRV00lerzDtmR0oST+tSmUUckd6n8IM2s5SqtTsH6LE4+GUjM1PQMyD52f4a6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fqADccl+; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1746700261;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KppfSxPYDF6f+QjVb7FQQnMkQOL1arXunk8/zYRcSfE=;
-	b=fqADccl+9yKL/l4/lBr3UbYb9zkjHzVXjQ3U5Sk0A0C0SYIdZCGNWTyPLaOA2WtxgdEHAj
-	mW5nT+chITkLe6/w9NOS9TLO7l6vqOCw9p9wtfZihRZnXtgI8xtjn/0YGTbVakXJ1L0met
-	vcq4GJhpBCPle9mJrkfkODwoZ3q+yy4=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-294-OsJKEImxPYCS6IQnHpNluQ-1; Thu, 08 May 2025 06:31:00 -0400
-X-MC-Unique: OsJKEImxPYCS6IQnHpNluQ-1
-X-Mimecast-MFC-AGG-ID: OsJKEImxPYCS6IQnHpNluQ_1746700259
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-442ccf0eb4eso6110595e9.1
-        for <stable@vger.kernel.org>; Thu, 08 May 2025 03:31:00 -0700 (PDT)
+	s=arc-20240116; t=1746700473; c=relaxed/simple;
+	bh=KuKPBoDjHDPZ4zNZNAc7e3c9x+J+qxdFTx8dGtAK3ss=;
+	h=Message-ID:Date:From:To:CC:Subject:References:Content-Type:
+	 MIME-Version; b=nVG3BZdpnqMt6kNBIvi3R7TmN6Bp2fmhh5JZ/TVDAF5ZEPlJ8kfU3XDIpiEAFQplYVOjlv93yxiUiixrR4+ktyG1KSNkyWqOkfV0GgOLMZy0sXr7rJCDsH2D/yD1LFx66R0ilvjwBcvjrHauxy8QPSNzGLkAsCpWKrMXyO4uuPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zor5QPT2; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-43cf680d351so11064265e9.0;
+        Thu, 08 May 2025 03:34:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746700470; x=1747305270; darn=vger.kernel.org;
+        h=mime-version:content-transfer-encoding:references:subject:cc:to
+         :from:date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=xizeysbD+2cKLonCxb9Ikg/JQWMKPiH+tr5vKFbIOfM=;
+        b=Zor5QPT2m5SKi6/mOJ61pDqc9bqaX6SlsOKripywQ+UZ4EinkQI27MI8eSfvYP6/8a
+         qr1UhsuCfflC5vwlnvVrT07eVx7pfJ7NGYTtF0ZJgAe3tg+shKJGcTHd8u+gCK++uftP
+         Kq4nd9A3tDxH7XMGdnz9ZluKNy661YH39LaumWZMazVKLZc57DNV45Eq7HGMzGgSY3vz
+         oKetOV4j7Q/BXvIwrfhfHL8vVNtgA6sekI59pM8FM44m7JOoNXbjRWnCnnRwu6DqBCCM
+         DVMobZq0/OgAUQGWuf8RarqCr5/e1yA/wD+wWLYpFxtVpp0aISn/yXrn4icyAUyPJJKr
+         cf7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746700259; x=1747305059;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KppfSxPYDF6f+QjVb7FQQnMkQOL1arXunk8/zYRcSfE=;
-        b=SxabHgGRMpNLFwmilDAXft0De7sAIPT5m1bH7ekldBrMhicr7PA42SHxTIKymbIjAq
-         rbkimFlc/GNoISTL8YPLUgsAngLN4LwsgXBX5kHYpqgbEI85wV9t1DKyY3HQNsY451Vo
-         25+w93izRZHtI8rSuSpJUTlSB+nzrlnNAqkwfmyzZJK52SSFQYGdROX9IkBh9yoEZjtp
-         k84pX1bf6Uq/LQT2CktaeI6HdQp+o7gMkdUd9c1di13MAEtkPDOybmjQPVmKzF4e4yo3
-         Sj3o45pJsQjWM8gFPP53/uGWdvnt0EZmt0W8PUExqpDQoEDyrrLUV9HSVBHG8PslA/hs
-         DvIg==
-X-Gm-Message-State: AOJu0YzNzi78csQALta/ts19ka0CmpnS6EPzYiXmw2kEgi/EARNgIJ3g
-	UamHfNXg7vegpCHGKzb9RXGywxlrsT5HCPsr/YtlSztVQML1XT9KuY021xHTbgCHqpoVq1yzi6L
-	Pq7ya0Kbcv+xwKP37+1wInPwgCgmC2Didg8fh55oAa0x1Z5IDBo3RMw==
-X-Gm-Gg: ASbGncu56bZnNlMYp2t+iyIsWDrEPEPi1DGnKFq9FyR6yVXPmfX0JWv/1RZCWU1Cowz
-	ifnZU9bMqoWhf0Xej4ynxkXc6BGMZSm2eSWuDtGRwew83egplbFOsyz019D1koUbkOj9ExJuOJP
-	cgikPo7bjixBzN1aFP0na55kAnkOVow12SSVgCPvjs0J82GLwV9L03H5nAi/Lv2F/Ntq44BY9HY
-	rFEK67JVoWNRLk+NHDcpEyDuw27El6Y69xqQkJ/bIUwyObYaQ3Ax6o3TIrPm1o+J6Al8mDF1icO
-	jyDJfA33T+tJfsKB
-X-Received: by 2002:a05:600c:c1d7:20b0:43c:fd72:f039 with SMTP id 5b1f17b1804b1-441d455c28emr31167015e9.11.1746700259163;
-        Thu, 08 May 2025 03:30:59 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGdfcxunDocP0pDjfnkPBi4M69qa1avvBAI2s5ulgVlUCPUhVgsQbaizTm4UBvb6rLfNgp1Ww==
-X-Received: by 2002:a05:600c:c1d7:20b0:43c:fd72:f039 with SMTP id 5b1f17b1804b1-441d455c28emr31166825e9.11.1746700258778;
-        Thu, 08 May 2025 03:30:58 -0700 (PDT)
-Received: from ?IPV6:2a0d:3344:244b:910::f39? ([2a0d:3344:244b:910::f39])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a0ba657db7sm2068319f8f.51.2025.05.08.03.30.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 May 2025 03:30:58 -0700 (PDT)
-Message-ID: <c993748c-18ba-4dad-9130-01ac35322491@redhat.com>
-Date: Thu, 8 May 2025 12:30:56 +0200
+        d=1e100.net; s=20230601; t=1746700470; x=1747305270;
+        h=mime-version:content-transfer-encoding:references:subject:cc:to
+         :from:date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xizeysbD+2cKLonCxb9Ikg/JQWMKPiH+tr5vKFbIOfM=;
+        b=qO8IwWV1hA4V5PQ5i0zJN/ZWHhhbk8HQXc9o44V/liBlJz3DzPpyulz420VWSiM76q
+         MuUx81eo/eecwdPVe1GvyFyKphZm9yJGqzKy+M/Zo+mcGVIN3qxY4hev5tYD5TsOgHOF
+         uwvvnZKRuxNleXDeksmnUWmucAz2ALgjZGN0Psk6sIl70UES8Y3KbG6L+S+sZNgXl1C7
+         HMl07DOXu9ZK28CAlUp047c7PbDn+ek7zOJq70LoEBAqLhQ6N+5f9QjCbN0bliVTOOnL
+         lpheYlVqc3HPl2cD7iYB4ONeTXKizd1FFRfkAWG5DRx4Z84DP9owN9+sOZjVO5YAvDTR
+         MZcw==
+X-Forwarded-Encrypted: i=1; AJvYcCVFVMeE+3vYPTdEIVGqsUlEUQtmdkc0mPjau850sXJ2p+oz0Od/y+7NKf8AW6alGF0fPPW8BT0xCO9yev4=@vger.kernel.org, AJvYcCVpZeiFYJIiIO22jrdUV0DsiJfzibAeHLXO2+EB0M+XLsNay70oEwCpUuImdRKGerTUXfwocSUm@vger.kernel.org, AJvYcCXKQAH1AVA890mwyd3l1ITcuVwDFWK7nzaHOoRA8q5BWdRKXFtMgAG2mN3/9RrpVCb4xPL3RwazTowz3eE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwlXJWoT1OMmw52rqVYm9EAVY4o/13mTrQwm3hyP4YNApkfO1Ek
+	pwyMyaemb60t3pNfIPQN17fR4UTcHJlcLg70aA1Jzl7CTWUoMwuKO8mi4g==
+X-Gm-Gg: ASbGncvYdyyDWexakk0Pw2rxX0FizyhOdwnYsdG+jbtbRIMRqVVYTh1OmeBgYSfLAoV
+	99KY8NKoxw0hXMx+vN1MBXBQjgf+ZGw2UtMtqmrlFIgOP6kpiRXtv4+mrmCAZGvPS892iLJTyxB
+	iRFNdcz7qXZhhExr4TZkZjjQ7BcAF0KsvHs+cgBxw2We00Tv5y08g1T3PXeYjWzBG3Dqjl4nyUd
+	6KJDsh14FCL5GRAOWo6GKQ8qe525ABm0WKQNk6aF9vo8v5h7sJLPU9RF5+r2CoOhnVbdqF0CI7h
+	6tWLqRDnhFr8XdQZ9xHupPrMQtJ7pVda26FD3id8wg3vrl/m2fafciSxazq2
+X-Google-Smtp-Source: AGHT+IH0a9roXZBmBGMXIYr5UBAYL9NEGf0Evua2N7Ei76fP3u0l/UvqfgyhZORZuaF/Pyun04enog==
+X-Received: by 2002:a05:600c:818d:b0:439:9737:675b with SMTP id 5b1f17b1804b1-442d02e7047mr27334675e9.7.1746700469388;
+        Thu, 08 May 2025 03:34:29 -0700 (PDT)
+Received: from red.local ([2a01:cb1d:898:ab00:4a02:2aff:fe07:1efc])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-3a0bc2e17a3sm1668728f8f.62.2025.05.08.03.34.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 May 2025 03:34:28 -0700 (PDT)
+Message-ID: <681c88b4.df0a0220.27ca51.39ec@mx.google.com>
+Date: Thu, 08 May 2025 03:34:28 -0700 (PDT)
+From: clabbe.montjoie@gmail.com
+To: ldewangan@nvidia.com,broonie@kernel.org,thierry.reding@gmail.com,jonathanh@nvidia.com,devnull+webgeek1234.gmail.com@kernel.org
+CC: linux-spi@vger.kernel.org,linux-tegra@vger.kernel.org,linux-kernel@vger.kernel.org,stable@vger.kernel.org,webgeek1234@gmail.com
+Subject: Re: [PATCH] spi: tegra114: Use value to check for invalid delays
+References: <20250506-spi-tegra114-fixup-v1-1-136dc2f732f3@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net v4 1/2] net: dsa: microchip: let phylink manage PHY
- EEE configuration on KSZ switches
-To: Oleksij Rempel <o.rempel@pengutronix.de>,
- "David S. Miller" <davem@davemloft.net>, Andrew Lunn <andrew@lunn.ch>,
- Eric Dumazet <edumazet@google.com>, Florian Fainelli <f.fainelli@gmail.com>,
- Jakub Kicinski <kuba@kernel.org>, Vladimir Oltean <olteanv@gmail.com>,
- Woojung Huh <woojung.huh@microchip.com>,
- "Russell King (Oracle)" <linux@armlinux.org.uk>,
- Heiner Kallweit <hkallweit1@gmail.com>
-Cc: stable@vger.kernel.org, kernel@pengutronix.de,
- linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- UNGLinuxDriver@microchip.com
-References: <20250504081434.424489-1-o.rempel@pengutronix.de>
- <20250504081434.424489-2-o.rempel@pengutronix.de>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20250504081434.424489-2-o.rempel@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-On 5/4/25 10:14 AM, Oleksij Rempel wrote:
-> Phylink expects MAC drivers to provide LPI callbacks to properly manage
-> Energy Efficient Ethernet (EEE) configuration. On KSZ switches with
-> integrated PHYs, LPI is internally handled by hardware, while ports
-> without integrated PHYs have no documented MAC-level LPI support.
-> 
-> Provide dummy mac_disable_tx_lpi() and mac_enable_tx_lpi() callbacks to
-> satisfy phylink requirements. Also, set default EEE capabilities during
-> phylink initialization where applicable.
-> 
-> Since phylink can now gracefully handle optional EEE configuration,
-> remove the need for the MICREL_NO_EEE PHY flag.
-> 
-> This change addresses issues caused by incomplete EEE refactoring
-> introduced in commit fe0d4fd9285e ("net: phy: Keep track of EEE
-> configuration"). It is not easily possible to fix all older kernels, but
-> this patch ensures proper behavior on latest kernels and can be
-> considered for backporting to stable kernels starting from v6.14.
-> 
-> Fixes: fe0d4fd9285e ("net: phy: Keep track of EEE configuration")
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> Cc: stable@vger.kernel.org # v6.14+
+> From: Aaron Kling <webgeek1234@gmail.com>
+>=20
+> A delay unit of 0 is a valid entry, thus it is not valid to check for
+> unused delays. Instead, check the value field; if that is zero, the
+> given delay is unset.
+>=20
+> Fixes: 4426e6b4ecf6 ("spi: tegra114: Don't fail set_cs_timing when delays a=
+re zero")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Aaron Kling <webgeek1234@gmail.com>
+> ---
+>  drivers/spi/spi-tegra114.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+>=20
+> diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
+> index 2a8bb798e95b954fe573f1c50445ed2e7fcbfd78..795a8482c2c700c3768bd50bf59=
+971256893a486 100644
+> --- a/drivers/spi/spi-tegra114.c
+> +++ b/drivers/spi/spi-tegra114.c
+> @@ -728,9 +728,9 @@ static int tegra_spi_set_hw_cs_timing(struct spi_device=
+ *spi)
+>  	u32 inactive_cycles;
+>  	u8 cs_state;
+> =20
+> -	if ((setup->unit && setup->unit !=3D SPI_DELAY_UNIT_SCK) ||
+> -	    (hold->unit && hold->unit !=3D SPI_DELAY_UNIT_SCK) ||
+> -	    (inactive->unit && inactive->unit !=3D SPI_DELAY_UNIT_SCK)) {
+> +	if ((setup->value && setup->unit !=3D SPI_DELAY_UNIT_SCK) ||
+> +	    (hold->value && hold->unit !=3D SPI_DELAY_UNIT_SCK) ||
+> +	    (inactive->value && inactive->unit !=3D SPI_DELAY_UNIT_SCK)) {
+>  		dev_err(&spi->dev,
+>  			"Invalid delay unit %d, should be SPI_DELAY_UNIT_SCK\n",
+>  			SPI_DELAY_UNIT_SCK);
+>=20
+> ---
+> base-commit: 0d8d44db295ccad20052d6301ef49ff01fb8ae2d
+> change-id: 20250506-spi-tegra114-fixup-dbf6730db087
+>=20
+> Best regards,
+> --=20
+> Aaron Kling <webgeek1234@gmail.com>
+>=20
+>=20
+>=20
+>=20
 
-It would be great if either a phy maintainer could have a look here.
+Tested-by: Corentin LABBE <clabbe.montjoie@gmail.com>
+Tested-on: tegra124-jetson-tk1
 
-Thanks,
-
-Paolo
-
+Thanks
+Regards
 
