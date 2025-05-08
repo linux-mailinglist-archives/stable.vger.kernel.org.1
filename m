@@ -1,190 +1,203 @@
-Return-Path: <stable+bounces-142910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 747DBAB00FB
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 19:05:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07A96AB0122
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 19:13:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 848CF173C31
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 17:05:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 71C635027FB
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 17:13:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A08EA2857DC;
-	Thu,  8 May 2025 17:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 004E928688E;
+	Thu,  8 May 2025 17:13:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PxcE+OWr"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="NpDcB/Yq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF50C221294
-	for <stable@vger.kernel.org>; Thu,  8 May 2025 17:04:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EC6D28642F
+	for <stable@vger.kernel.org>; Thu,  8 May 2025 17:13:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746723899; cv=none; b=V0wjKuNU2uEMqy2A6CZ1p92/hizwCjsU2dAx4xGju99XNb4XsanIQlYFTKOSi9rhHEozMPrb92S0uebLyWIvWr+MlLEl9sER7T7dPVUFIaU25XXGRri9fhPHselahPQDVc3KnBqc3Cv5n6PTckxv6g0ofF/pmS1rXY4dwWlpUrk=
+	t=1746724383; cv=none; b=ZS1ozCA4Kce/Gl7z5QmhaIj89TQkwL2viYe+8cDcgtDoSEt04DS+3iB+8ezFed0Q/8ATZnS/ZmZgVBRgR38Iy6jOFU2U3MTcjX028FjiWjeQ3KO6DHZACxK5RCydm9UHwexaXpDhQ4NC3JuxLr66QoN4mShws6uyTVzm2aReBGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746723899; c=relaxed/simple;
-	bh=Yfz9hBAyOqe3HiefHbXrJanjbqQvgloTrumbHSp58UM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Yild+WEIMavHEd7MXHL/XqHXdZzPg0IiU0WX56QwU/TebUuJ+OCEe4UMbJtuK5A8MnmWcM2Ecpa6APQKYhwYbxs+9pTVUvF8WuCRv68lpdlACQJG2pb/jQ6Gg3jlyh81TjQNuGEoXtROGs5Fb+y4DJY5Qw1B3ey9h2nXd9sYu0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PxcE+OWr; arc=none smtp.client-ip=209.85.160.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-47e9fea29easo5901cf.1
-        for <stable@vger.kernel.org>; Thu, 08 May 2025 10:04:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746723896; x=1747328696; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LrV74FfvJs+nm8dGPS+u5XEtfMzjV3NN8v4vNf4EC4M=;
-        b=PxcE+OWrNpa4nitIDJOKpQ18zMRTp6vjhXqJiENIrtdtNOXc8HHCWGzCWS04LSWpHf
-         sIbvdWCxj94ehz7szMd+bXXzUyRxUtfH/BtHEPzKGCPNNgE72dtSSKLb6ELkm6CwmNVD
-         o4pexq5RuYKFln7+5U0hkzAGblmzQttAGbvoPV8lXcXJ1uk72opngayreQWfHmI0cHFq
-         g01OjE2i4hYgV9dIxr87GGpRLQZdy9UCJ9mSkLmjun1jxrjCEwidMwbWvbPPwtg7doaI
-         Dz+AqSCAL8iBCmzLC0DdfSC1gKS/0gdYm0K8AgARxV2EYACFwcnb6v390Nl/JDt8rz0h
-         UhJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746723896; x=1747328696;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=LrV74FfvJs+nm8dGPS+u5XEtfMzjV3NN8v4vNf4EC4M=;
-        b=uhC3JuOmfqfb6cJVeRyemgn8fAUdg6aJZuiXxwYrCutnn1J1tSWrMwn1YNI/Xvg68T
-         qNxY1HFF8Q3aZ3SWzLWl5QOOzi0r7kcSeKs0+VyyftdV1IXbu4EBCHMtGrE57tlrUwmk
-         OJ9MJiIfCVDCzGYukV9vMMSRzaXmpiN6S1nCMDivyj4B19aCU/942TWdQS0+dc6fzJOP
-         udKGBxZUd/o6tYHgwEWV9Y6oIxRdKf9IHcPuTlzJjREFzx26v7+63unBtYDTihG2ThY/
-         /ER85gZ6kSmFX4Pc9PNI8AhPu57bxTA518YNt/hiI+zKvWUssvzFkDZWlDWyi+o+55DD
-         xhzQ==
-X-Gm-Message-State: AOJu0Yw1E2tdjM+IqN0TVs55+EF1tv2/EAWboC/cIWlEx6HYbsVLiUAz
-	wsWivTGArT8+p/9Ws72KjoTF8Frz+UxKqsthcIhwMMZP7G2QQAn2oTqWQzXwwdJK2SLwEUx3ej9
-	eetushAANjsnj1AqfFthj9Q/Ub0bTh6SxpTftKFagFDuaxQwa0mVSBLY=
-X-Gm-Gg: ASbGnctMe8ff79RcipDW8eUVSuPadIBnwD9y5DnfY7Noos8FQ9cmn0zp3Bzkc1ZwfFe
-	1pnYmV6/ChB767ojg9kz7LRBCoUlFQf+g39zEwSjb4AjvcHzQ4hyLESgG2hKOS5tbCe1q0PY7ZI
-	RJHuELv1LdCX9ihE1xn675DQrc0EM1jD3+cskIqTrpvlgYecn1Hw==
-X-Google-Smtp-Source: AGHT+IF7DuBX8KihKThGAbSSiyzQZUh/8czdW4cAAEismtKOZlSmpL+yWuvunDt3A4oAOXN3VCUM2HN56GUEWLbw/A4=
-X-Received: by 2002:ac8:5949:0:b0:48a:7cd7:7e02 with SMTP id
- d75a77b69052e-494499d7d62mr6121471cf.18.1746723896291; Thu, 08 May 2025
- 10:04:56 -0700 (PDT)
+	s=arc-20240116; t=1746724383; c=relaxed/simple;
+	bh=kplQ/oOJvA0YG6pIrZr8gYPWx1aw2fbKAIZHQ0YCzCw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=f36w4Bs601s3N2WDtsSe3kRAS9z5jFELFf8G0CXNX9WD9TQ56jdc1O4gnb/a24WB0od1pZUrrmpg3UxJ+SeRJJ0mz6PcmktOOQbRK5GmBV19FTBgnoKK0lF/JK/wWUT3vkPN0nSE2GqMA6AU0j0AO3Jr0iUHnX2y01sk/getRMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=NpDcB/Yq; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=ViC3Vp7dErVibjpIJ8GsP8Af1EHoNwDVFisWnZ+tltY=;
+	t=1746724382; x=1747933982; b=NpDcB/YqoMzHAJDp7WCp5ZGtjHvDOhgWMKbGzhTpz85Vnbr
+	8EdnCaWaPzuXA1rK8pq/WJmzPq5RxfRHJc2p5dmr4OqZiV2JFdiRNAFyixstfsCGYSD2l1w2o361v
+	vKq/DlsTTlgbES+jYSA5NFEt0oO1/iwv6SKnd5zLcp5kkS2U7bNfVAPXHa5o2vAPPyT+G6FL77bYl
+	lqZwMVI2W0FP/iUyyemzCz0tG0sfoVJZAfq3qYOpBB5Fi2NBtcc6UTDPd65AiS5Ei82LeV3n8H11H
+	CGHCUCFk2THc3rfB0Fs04Jk9UNeOguPDAvTfH2ioeilrjgy4VaguUvjJ8k4mnYqA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.1)
+	(envelope-from <benjamin@sipsolutions.net>)
+	id 1uD4nq-0000000Apcs-3tlu;
+	Thu, 08 May 2025 19:12:59 +0200
+Message-ID: <8ce0b6056a9726e540f61bce77311278654219eb.camel@sipsolutions.net>
+Subject: Re: Missing patch in 6.12.27 - breaks UM target builds
+From: Benjamin Berg <benjamin@sipsolutions.net>
+To: Christian Lamparter <christian.lamparter@isd.uni-stuttgart.de>, 
+	linux-um@lists.infradead.org, stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Date: Thu, 08 May 2025 19:12:57 +0200
+In-Reply-To: <0df8de9f-d24a-4ffb-8234-7d7bbe1660a4@isd.uni-stuttgart.de>
+References: <20250314130815.226872-1-benjamin@sipsolutions.net>
+	 <0df8de9f-d24a-4ffb-8234-7d7bbe1660a4@isd.uni-stuttgart.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250505232601.3160940-1-surenb@google.com> <20250507082538-05e988860e87f40a@stable.kernel.org>
-In-Reply-To: <20250507082538-05e988860e87f40a@stable.kernel.org>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 8 May 2025 17:04:45 +0000
-X-Gm-Features: ATxdqUFA751lEqbKD-xJxNtwC0DU9NTeHC0-FM0rdJrfutIT2oFRmHIyMU2nM34
-Message-ID: <CAJuCfpEdkkZd8RSZUPsXkq3BXzDvebfSHuF4T=AoRHDv8hgJzg@mail.gmail.com>
-Subject: Re: [PATCH 6.12.y] mm, slab: clean up slab->obj_exts always
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-malware-bazaar: not-scanned
 
-On Thu, May 8, 2025 at 4:18=E2=80=AFPM Sasha Levin <sashal@kernel.org> wrot=
-e:
->
-> [ Sasha's backport helper bot ]
->
+Hi,
+
+I think it is better to just not backport
+0b8b2668f9981c1fefc2ef892bd915288ef01f33 ("um: insert scheduler ticks
+when userspace does not yield").
+
+Benjamin
+
+On Thu, 2025-05-08 at 19:00 +0200, Christian Lamparter wrote:
 > Hi,
->
-> Summary of potential issues:
-> =E2=9A=A0=EF=B8=8F Found matching upstream commit but patch is missing pr=
-oper reference to it
+>=20
+> On 3/14/25 2:08 PM, Benjamin Berg wrote:
+> > From: Benjamin Berg <benjamin.berg@intel.com>
+> > =C2=A0=C2=A0=C2=A0 um: work around sched_yield not yielding in time-tra=
+vel mode
+> >=20
+> > sched_yield by a userspace may not actually cause scheduling in
+> > time-travel mode as no time has passed. In the case seen it appears
+> > to
+> > be a badly implemented userspace spinlock in ASAN. Unfortunately,
+> > with
+> > time-travel it causes an extreme slowdown or even deadlock
+> > depending on
+> > the kernel configuration (CONFIG_UML_MAX_USERSPACE_ITERATIONS).
+> >=20
+> > Work around it by accounting time to the process whenever it
+> > executes a
+> > sched_yield syscall.
+> >=20
+> > Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+>=20
+> =C2=A0From what I can tell the patch mentioned above was backported to
+> 6.12.27 by:
+> <
+> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commi
+> t/arch/um?id=3D887c5c12e80c8424bd471122d2e8b6b462e12874>
+>=20
+> but without the upstream
+> > Commit 0b8b2668f9981c1fefc2ef892bd915288ef01f33
+> > Author: Benjamin Berg <benjamin.berg@intel.com>
+> > Date: =C2=A0=C2=A0Thu Oct 10 16:25:37 2024 +0200
+> > =C2=A0 um: insert scheduler ticks when userspace does not yield
+> >=20
+> > =C2=A0=C2=A0 In time-travel mode userspace can do a lot of work without=
+ any
+> > time
+> > =C2=A0=C2=A0 passing. Unfortunately, this can result in OOM situations =
+as the
+> > RCU
+> > =C2=A0 core code will never be run. [...]
+>=20
+> the kernel build for 6.12.27 for the UM-Target will fail:
+>=20
+> > /usr/bin/ld: arch/um/kernel/skas/syscall.o: in function
+> > `handle_syscall': linux-
+> > 6.12.27/arch/um/kernel/skas/syscall.c:43:(.text+0xa2): undefined
+> > reference to `tt_extra_sched_jiffies'
+> > collect2: error: ld returned 1 exit status
+>=20
+> is it possible to backport 0b8b2668f9981c1fefc2ef892bd915288ef01f33
+> too?
+> Or is it better to revert 887c5c12e80c8424bd471122d2e8b6b462e12874
+> again
+> in the stable releases?
+>=20
+> Best Regards,
+> Christian Lamparter
+>=20
+> >=20
+> > ---
+> >=20
+> > I suspect it is this code in ASAN that uses sched_yield
+> > =C2=A0=C2=A0
+> > https://github.com/llvm/llvm-project/blob/main/compiler-rt/lib/sanitize=
+r_common/sanitizer_mutex.cpp
+> > though there are also some other places that use sched_yield.
+> >=20
+> > I doubt that code is reasonable. At the same time, not sure that
+> > sched_yield is behaving as advertised either as it obviously is not
+> > necessarily relinquishing the CPU.
+> > ---
+> > =C2=A0 arch/um/include/linux/time-internal.h |=C2=A0 2 ++
+> > =C2=A0 arch/um/kernel/skas/syscall.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 | 11 +++++++++++
+> > =C2=A0 2 files changed, 13 insertions(+)
+> >=20
+> > diff --git a/arch/um/include/linux/time-internal.h
+> > b/arch/um/include/linux/time-internal.h
+> > index b22226634ff6..138908b999d7 100644
+> > --- a/arch/um/include/linux/time-internal.h
+> > +++ b/arch/um/include/linux/time-internal.h
+> > @@ -83,6 +83,8 @@ extern void time_travel_not_configured(void);
+> > =C2=A0 #define time_travel_del_event(...) time_travel_not_configured()
+> > =C2=A0 #endif /* CONFIG_UML_TIME_TRAVEL_SUPPORT */
+> > =C2=A0=20
+> > +extern unsigned long tt_extra_sched_jiffies;
+> > +
+> > =C2=A0 /*
+> > =C2=A0=C2=A0 * Without CONFIG_UML_TIME_TRAVEL_SUPPORT this is a linker =
+error
+> > if used,
+> > =C2=A0=C2=A0 * which is intentional since we really shouldn't link it i=
+n that
+> > case.
+> > diff --git a/arch/um/kernel/skas/syscall.c
+> > b/arch/um/kernel/skas/syscall.c
+> > index b09e85279d2b..a5beaea2967e 100644
+> > --- a/arch/um/kernel/skas/syscall.c
+> > +++ b/arch/um/kernel/skas/syscall.c
+> > @@ -31,6 +31,17 @@ void handle_syscall(struct uml_pt_regs *r)
+> > =C2=A0=C2=A0		goto out;
+> > =C2=A0=20
+> > =C2=A0=C2=A0	syscall =3D UPT_SYSCALL_NR(r);
+> > +
+> > +	/*
+> > +	 * If no time passes, then sched_yield may not actually
+> > yield, causing
+> > +	 * broken spinlock implementations in userspace (ASAN) to
+> > hang for long
+> > +	 * periods of time.
+> > +	 */
+> > +	if ((time_travel_mode =3D=3D TT_MODE_INFCPU ||
+> > +	=C2=A0=C2=A0=C2=A0=C2=A0 time_travel_mode =3D=3D TT_MODE_EXTERNAL) &&
+> > +	=C2=A0=C2=A0=C2=A0 syscall =3D=3D __NR_sched_yield)
+> > +		tt_extra_sched_jiffies +=3D 1;
+> > +
+> > =C2=A0=C2=A0	if (syscall >=3D 0 && syscall < __NR_syscalls) {
+> > =C2=A0=C2=A0		unsigned long ret =3D EXECUTE_SYSCALL(syscall,
+> > regs);
+> > =C2=A0=20
+>=20
+>=20
 
-Not sure why "patch is missing proper reference to it". I see (cherry
-picked from commit be8250786ca94952a19ce87f98ad9906448bc9ef) in place.
-Did I miss something?
-
->
-> Found matching upstream commit: be8250786ca94952a19ce87f98ad9906448bc9ef
->
-> WARNING: Author mismatch between patch and found commit:
-> Backport author: Suren Baghdasaryan<surenb@google.com>
-> Commit author: Zhenhua Huang<quic_zhenhuah@quicinc.com>
->
-> Status in newer kernel trees:
-> 6.14.y | Present (different SHA1: 94107e5aed93)
->
-> Note: The patch differs from the upstream commit:
-
-Yep, this is expected as I had to make changes when backporting.
-
-> ---
-> 1:  be8250786ca94 ! 1:  86ffacf03afed mm, slab: clean up slab->obj_exts a=
-lways
->     @@ Commit message
->          Acked-by: Suren Baghdasaryan <surenb@google.com>
->          Link: https://patch.msgid.link/20250421075232.2165527-1-quic_zhe=
-nhuah@quicinc.com
->          Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
->     +    (cherry picked from commit be8250786ca94952a19ce87f98ad9906448bc=
-9ef)
->     +    [surenb: fixed trivial merge conflict in alloc_tagging_slab_allo=
-c_hook(),
->     +    skipped inlining free_slab_obj_exts() as it's already inline in =
-6.12]
-
-And the changes are documented above.
-
->     +    Signed-off-by: Suren Baghdasaryan <surenb@google.com>
->
->       ## mm/slub.c ##
->     -@@ mm/slub.c: int alloc_slab_obj_exts(struct slab *slab, struct kmem=
-_cache *s,
->     -   return 0;
->     - }
->     -
->     --/* Should be called only if mem_alloc_profiling_enabled() */
->     --static noinline void free_slab_obj_exts(struct slab *slab)
->     -+static inline void free_slab_obj_exts(struct slab *slab)
->     - {
->     -   struct slabobj_ext *obj_exts;
->     -
->     -@@ mm/slub.c: static noinline void free_slab_obj_exts(struct slab *s=
-lab)
->     +@@ mm/slub.c: static inline void free_slab_obj_exts(struct slab *sla=
-b)
->         slab->obj_exts =3D 0;
->       }
->
->     @@ mm/slub.c: static inline void free_slab_obj_exts(struct slab *slab=
-)
->       #endif /* CONFIG_SLAB_OBJ_EXT */
->
->       #ifdef CONFIG_MEM_ALLOC_PROFILING
->     -@@ mm/slub.c: __alloc_tagging_slab_alloc_hook(struct kmem_cache *s, =
-void *object, gfp_t flags)
->     +@@ mm/slub.c: prepare_slab_obj_exts_hook(struct kmem_cache *s, gfp_t=
- flags, void *p)
->       static inline void
->       alloc_tagging_slab_alloc_hook(struct kmem_cache *s, void *object, g=
-fp_t flags)
->       {
->     --  if (need_slab_obj_ext())
->     -+  if (mem_alloc_profiling_enabled())
->     -           __alloc_tagging_slab_alloc_hook(s, object, flags);
->     - }
->     +-  if (need_slab_obj_ext()) {
->     ++  if (mem_alloc_profiling_enabled()) {
->     +           struct slabobj_ext *obj_exts;
->
->     +           obj_exts =3D prepare_slab_obj_exts_hook(s, flags, object)=
-;
->      @@ mm/slub.c: static __always_inline void account_slab(struct slab *=
-slab, int order,
->       static __always_inline void unaccount_slab(struct slab *slab, int o=
-rder,
->                                            struct kmem_cache *s)
-> ---
->
-> Results of testing on various branches:
->
-> | Branch                    | Patch Apply | Build Test |
-> |---------------------------|-------------|------------|
-> | stable/linux-6.12.y       |  Success    |  Success   |
 
