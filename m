@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-142892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21E12AB0024
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 18:18:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11388AB0026
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 18:18:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 39D8D1C07D85
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 16:18:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C20F79C55B6
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 16:18:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4D7A280CD0;
-	Thu,  8 May 2025 16:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15379280A5E;
+	Thu,  8 May 2025 16:18:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="okmDCgtk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nmEM8c9s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A583922422D
-	for <stable@vger.kernel.org>; Thu,  8 May 2025 16:18:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7207281346
+	for <stable@vger.kernel.org>; Thu,  8 May 2025 16:18:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746721105; cv=none; b=SxT2G4LUx6+p3AOVrKLB3nlLpmJRusO/whpJLuyEsw9jLAJ+HHaH4hVP/U6h4mlZCafdC3/Vs6j7xNDDpywDMMh2ljnvNRHazpxdGtrIH6j7aGHQOQdVaSih8NtH6G8KFtWqBbfSHEfu7NQgCbWs3keL1qImPZpUJ4nNw9gxhVc=
+	t=1746721109; cv=none; b=PQinAw/ZGnPLduiwQ4pzGvckqybWb3tr9bbpnxDFwkk5wyzjWmiNPM3ZWsKQye9cDC+1ghyzPDD1qOurbRvFIyPvuDL7ReEqo//oPfOuGUWQA3Ram0B4DX4exXleZnbKPfPG0DnWMFb8U56Amxpe4keez5v/j/LxNXfulxuMEEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746721105; c=relaxed/simple;
-	bh=ON9n22fPcsy6bRbrtb7T1rfgoOutSSlZA5llNn11EkM=;
+	s=arc-20240116; t=1746721109; c=relaxed/simple;
+	bh=K960whzbDp4+ebJAAsQeDOYEwLdwPTraWpyuzCRbVg8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZBqVZWi+950YVfQetTjPUNy0Xqxd2H1d7w0A1r0+BfH0rBp6v4o24ChUlA8JS5QFVKsZ86MVJja8OpJkPh2YglktI7G1FW0Dqx4o5QlZgvDwdpVFQ7p9OpVKlNMYNrfGN7k5uMnVnV4WsGKIDWwRcruoHN8cwhNGkMBaRtrggYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=okmDCgtk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAF0EC4CEE7;
-	Thu,  8 May 2025 16:18:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=l+0OIUzGD1Wx5CoV5lvkifqieifkCuarEImuupfCt3TvxcotKF45QWwLtZ9iAYmm8ehhrZ1FE7sgqo28f9qAlCdJy6BmEj6+am6oWUs+TN+L6mTcmqJRNdwpz0VNL4hVp1NZiV/MQIfM2XdgkwRy1s2UX/fQrUFZk4UXCQVR8cw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nmEM8c9s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29BA7C4CEE7;
+	Thu,  8 May 2025 16:18:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746721105;
-	bh=ON9n22fPcsy6bRbrtb7T1rfgoOutSSlZA5llNn11EkM=;
+	s=k20201202; t=1746721109;
+	bh=K960whzbDp4+ebJAAsQeDOYEwLdwPTraWpyuzCRbVg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=okmDCgtkjx3Fft7h1oX+L1iM7HxKbzpol9etcQ5aSe6QH0fH5coXUGX9X42WfuRkJ
-	 OC+EMdq8fTj5XerDgdMASR69KsGUkXcL00E/tNHH1SupVCTWPRPzNtEfbN2GMdljex
-	 DSD6rMhGXO2SFFi5hWmrdj2Ry/zuVTl40h03kWm94v9dDLcpp3j4M3wEKxLqid/CKj
-	 tZbjx85HJzBOdvehpwgdJufdSOdpyit6Fm+l7lf4CjjlgTnqK/Bn9REJdz+9/lAsrg
-	 /u7Z6QaIIt0/ySsrto1Zp94nh5NV2CPlmYZf0/30pvRXeraMqw1XfCSegPrUny4PWI
-	 zJINahs6KVWnw==
+	b=nmEM8c9sCVO2burUIM/v5wirsJm3YNSVgvHntBhLKv30XJYZ0QkVe1Im9sBGGc2qB
+	 SA2dOf151zk1wno1YiOOXheSMd6NakGHO1k3XS/+CQjQ2ZcGiZIkHV+9xAdqC2NKP1
+	 biK/daE3+KRJwjOaNmvS81WJRzyMrm4+Pgh7mSBp/TPbB26ddX04RufsWYHbsOfmUT
+	 heantcTqHpcTOJlV83rSa8sqBFE3uGowoSvxRLSLqgWJ8bvZDK6sfiCW4AO532gCrn
+	 UCBWMZjxDNFzSnz22ztAa0mIlpz+qtUEHsKsSvoE8zfZ4knIaxP7oCpbh7SNTw2dJk
+	 Mq71OOlL95kYA==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	superman.xpt@gmail.com
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH v2 6.14.y] btrfs: fix the inode leak in btrfs_iget()
-Date: Thu,  8 May 2025 12:18:21 -0400
-Message-Id: <20250507080609-a1af134a5ce3061d@stable.kernel.org>
+To: stable@vger.kernel.org
+Cc: Jared Holzman <jholzman@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.14.y v2 6/7] ublk: simplify aborting ublk request
+Date: Thu,  8 May 2025 12:18:25 -0400
+Message-Id: <20250507084945-aa645b0881f4ce8d@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250505150322.40733-1-superman.xpt@gmail.com>
+In-Reply-To:  <20250507094702.73459-7-jholzman@nvidia.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,20 +64,32 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Summary of potential issues:
-⚠️ Found matching upstream commit but patch is missing proper reference to it
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-Found matching upstream commit: 48c1d1bb525b1c44b8bdc8e7ec5629cb6c2b9fc4
+The upstream commit SHA1 provided is correct: e63d2228ef831af36f963b3ab8604160cfff84c1
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Jared Holzman<jholzman@nvidia.com>
+Commit author: Ming Lei<ming.lei@redhat.com>
 
 Note: The patch differs from the upstream commit:
 ---
-1:  48c1d1bb525b1 < -:  ------------- btrfs: fix the inode leak in btrfs_iget()
--:  ------------- > 1:  aeaee199900ee Linux 6.14.5
+1:  e63d2228ef831 ! 1:  b0b649f236e0e ublk: simplify aborting ublk request
+    @@ Metadata
+      ## Commit message ##
+         ublk: simplify aborting ublk request
+     
+    +    [ Upstream commit e63d2228ef831af36f963b3ab8604160cfff84c1 ]
+    +
+         Now ublk_abort_queue() is moved to ublk char device release handler,
+         meantime our request queue is "quiesced" because either ->canceling was
+         set from uring_cmd cancel function or all IOs are inflight and can't be
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.14.y       |  Success    |  Success   |
+| stable/linux-5.4.y        |  Success    |  Success   |
 
