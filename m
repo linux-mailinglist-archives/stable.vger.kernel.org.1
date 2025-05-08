@@ -1,138 +1,125 @@
-Return-Path: <stable+bounces-142856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70E42AAFB1D
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 15:19:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FA34AAFB50
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 15:28:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B22AA1BC6AF4
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 13:19:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9EF571C07ADE
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 13:28:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C8C9225414;
-	Thu,  8 May 2025 13:18:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9432422CBC0;
+	Thu,  8 May 2025 13:28:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bPiFVg7B"
+	dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b="pRWh7vZu"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FB7714D2A0
-	for <stable@vger.kernel.org>; Thu,  8 May 2025 13:18:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A764F22B590
+	for <stable@vger.kernel.org>; Thu,  8 May 2025 13:28:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746710338; cv=none; b=N5cy/g9q+KoMZnwkflYXxzBcWDgygT366OfADSzk65UIKXtO2bZdM7LwgDA+3aKRIU5XXWCkxzeB3sjYJZ4kt5eRTK8t6lNv1fh0vjsKlxe4LEBssj/aBqEnv4EF7QyPbgLo+1HlZmPBRYvpRGZRJulxupvvON8hbQJKyaXkVV0=
+	t=1746710908; cv=none; b=bgHRAtuRFJMACCL7jS0lsFikKvcCOZe5i5dkMKWKWT8dDd/ytPYALudE/VRFqFo3zFN4wU/n0ZZwZHWX0EktxB5eLJ56TXd+joJiz4m67uCLZkfUzsW4ix76ALJCXjhTTUlzgmw1Tcydk14vMVFSRypfNk3rJLkD0eOhEMkckA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746710338; c=relaxed/simple;
-	bh=NC6aZCnk2yQCUTn2o/QPYLbt6yzD49eOOrZg5imo7KE=;
+	s=arc-20240116; t=1746710908; c=relaxed/simple;
+	bh=+L4RShj5f5vWujBc4hl7X7bkL3O1PyKno5T0QURiKrc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=juBVOgKe/GaAJNWGNKZbSfdhsZV0bNCR8IBDMECVY9y7ByzGZMQWlZdxO7NSIDJKQ45Dqg1eexP9v0js0mOQ1dacMv73T3tNzUoOX1d/tFAG2GG2ydW9jhbAeYmrv2fxaVKbIhlYcX5zGGEfZsJG4qKOmPTI1XRtK95uWFkGEKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bPiFVg7B; arc=none smtp.client-ip=209.85.216.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-3087a70557bso153299a91.2
-        for <stable@vger.kernel.org>; Thu, 08 May 2025 06:18:56 -0700 (PDT)
+	 To:Cc:Content-Type; b=o5nwCp9YJJ8KgJfH4VwLtLnmm6RpJ2VDh4Ge/MvyNoJkU9p1fRSBG4TUiFfAZBGZVqJbAZChDLNpI6OPhkaSan2sXqwYuak3yB1VBkOJyiZq+y0LeklfI0pC1L922Ds23DVaH2qDumR6uaZnSgzWVavX7vNl+S+60zViyEokkSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com; spf=pass smtp.mailfrom=ciq.com; dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b=pRWh7vZu; arc=none smtp.client-ip=209.85.222.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ciq.com
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-7c5a88b34a6so106665385a.3
+        for <stable@vger.kernel.org>; Thu, 08 May 2025 06:28:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746710336; x=1747315136; darn=vger.kernel.org;
+        d=ciq.com; s=s1; t=1746710904; x=1747315704; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=W1roDko1XbrOHKIMUjuHPe417xq/761zF6ZWegodHkQ=;
-        b=bPiFVg7BlFhNOhBTzh07kO7I34+F2kLHNaNznnsahS1gmJEajRlhLjAZpikAD0KlRP
-         Kr4eHZ7lczbipTtaffYjDN7rHIu9ffwmIlFNZjzU6DFO13LMOmrxli6c3sdR6RjqaEbQ
-         /9sv+OvoQAlbmZqjz2x7tnE5FnZcymggYcuDFGJFjoFI2lXik3DSJcdH6boIaxKEYgsU
-         hZYAbzVlIQ4jGDeJ1v6lfcbya5FXHVn3oM9naTRtMNDr+zWNPfRtmY2eTloAq7NuE70D
-         ojGQwXY8jQJvE+OwKtVAa+0F32q52ImwHINXaSCtUUYoBD98qWLYTR0Q1ZvmV2OSGAtm
-         V2CA==
+        bh=W6+F7sC4lq7A9uwyyHv0JUmrfUrtoSWQI2+38pjZK+0=;
+        b=pRWh7vZuRyAPVq0mf295rzpaLpKDMLH1+ZQ8fyMKVbUA1y2oPiQlBRuob790LXYM2U
+         K1ryBNP9xI8VEKxGUaFYoU90Lqs9meCEEwslxwmmArPCrbwS1ujYEkGqI+hLNrJp8Z6U
+         rbP21HBX3Y7CQnkzvUT8LjU2TwATdTVPJaVS356UeHuBJAnuhy934Jft2JlhCcF04jF1
+         wpusVOMDvk87g9zKMz6LfPqQ/ncuCgXT0et6cVhwsA+JePI/T7oJdcZdwlveMloIyli9
+         IU4zsOJsIMt07875q2xGPyDDZRUcPkaz/exVWfLXKSu752n9GPT5Q1n7VXUVjUJJsyqI
+         zJ9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746710336; x=1747315136;
+        d=1e100.net; s=20230601; t=1746710904; x=1747315704;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=W1roDko1XbrOHKIMUjuHPe417xq/761zF6ZWegodHkQ=;
-        b=iPswE+MltXGchE5V9f+HDGDgMecvck4o2BZoe84me702zT4LvlDu7xCEJI3rFHw1JD
-         L1yDbPTWlQBBhtatSPXtuLUQ7nVvFGPTaTfMmv/jb4/Jj2DzYAFntWgtfyjmXeQpgIQM
-         EzPW85xdFJtOZHzN4MiGFZreUsZEQthjDsiUEyfJR4T9ofSPB35tf/KSfZF9w8DD6peu
-         hd35i5aqERQjB+M0Q3RA1yrP5pW+b0vDXQdTjoBrETix08TTlt5WVF2chXZPhczBJ3ZZ
-         IEgiaFd+UswzQmMEhhqcZPi97r8jsdumyS48eQAK6TlZ/t6x3dBSauJ9q661KTnKgiBj
-         v1tA==
-X-Gm-Message-State: AOJu0Yx7KRJxjTPt1kCqD+gLz2+UQhCdRkj+/ob9JcEMaeHIbz0kbvDG
-	lEX5LgxcjrnVfHGX4sVe5aBkCzUrjxvqzoEFjv4lQlDOfZP5DMsOvxRaWZP0XB2qgQfXjN2E+r7
-	EXQlYA8x8AgKRDl0xYrKciodSelw=
-X-Gm-Gg: ASbGncvoKlb4TyL3usa8Qf9bNJ1VKCLa7xyV6wPnGYxQBFPj+ncrjBqDdXO9xr3n2H6
-	kVzvxV2xToC9/Gj7uWKg6D87P5LTdDAnuAHkQA2uJslDEYqpmCEul9bwJ+DkHXrX0GS0HuOkWD0
-	zqdMxU4ox8PqaDOCPpTho4BQ==
-X-Google-Smtp-Source: AGHT+IFq0Lg3VZtCXUNslSbOl91jQC1KDok+Cuyoct+R62Hp6QOZMTlt5q0sgQH4VvcvrHtyIRM3g+TIjX0s0JSf60A=
-X-Received: by 2002:a17:90b:4a0d:b0:2fe:91d0:f781 with SMTP id
- 98e67ed59e1d1-30aac168c32mr3996692a91.2.1746710335552; Thu, 08 May 2025
- 06:18:55 -0700 (PDT)
+        bh=W6+F7sC4lq7A9uwyyHv0JUmrfUrtoSWQI2+38pjZK+0=;
+        b=H4a2G0HE3WKrZzUm0fsQE5L5joS9T4J8iZIgDdPP6JFFBPdv9Y2rlt7tGIXtB0YPXX
+         KmZD69WwSPjja6q/25KV58gTV+M2MuQv9dMlm7LJ61hK08KNrmJR6KRpkIjqH3qwZa4t
+         yFcRreLkik9H3idPL0l+h8UK7ew34oK9XOBBUcS+ofcMhWeX6qKLFFNPPLsxf9TCzCeU
+         SQThnndRDj6puofH8AKe2l/6lGb8++sgDN8CEW6u/cNM0XZs06Iy+DssV1mzOmkYkjtB
+         Hqp6FglGA81+POCsHNEIlLV823RStfS7f797ZogLS3DPZobVaq6c51rkKBf90iLeWuZV
+         GQ5A==
+X-Gm-Message-State: AOJu0YwxUR3nr6Cq6JjtOahY1YkDcRW/8q4fWJozh8r7b5jrHQbxDNLL
+	NUkHFmffQXreO4iHHrMs7rXUc5hIUCaIwSKgiBq9866NEbptgFyaCX3tdksNdZ5g+d2xbeIESpV
+	bWMn/4nJPiuykBAQKH68uEaIr1zsE9vQQ4qvzww==
+X-Gm-Gg: ASbGnctZIRp3KQ47tM8+r2sASJernpuFiltpYmoNb0aovM0A+bIN8514EsbFwcOR8a9
+	UyCtrIfUcNeRz6aYw4avsq2WY1YpCj/qTyFLGmWOQ3cacEZ3jy8NkWvzLoXf8bfrsbyFqxKKQ3J
+	AL5OJgpKz510DDa61go0VNBg==
+X-Google-Smtp-Source: AGHT+IFAm5bd005VyseIS1dr9F6a/JBOZzKDKZuZ1gmuo0nUeW1bL4XJmAQifXGpoCCjFyCVBzgF3f33AxU4Tq3X+YE=
+X-Received: by 2002:a05:620a:1985:b0:7c7:a554:e2a5 with SMTP id
+ af79cd13be357-7caf7405679mr1060715285a.44.1746710904541; Thu, 08 May 2025
+ 06:28:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <c415d9e0b08bcba068b01700225bf560@disroot.org>
-In-Reply-To: <c415d9e0b08bcba068b01700225bf560@disroot.org>
-From: Alex Deucher <alexdeucher@gmail.com>
-Date: Thu, 8 May 2025 09:18:43 -0400
-X-Gm-Features: ATxdqUGPLOFgD59MDg0LhtzD4qji_j1FkqfSHl_wTRX4mI-vM5Sp5qVFzLgtUw8
-Message-ID: <CADnq5_PX1dYF2Jd3q7ghaBjpPhNLq9EmFJtN1w6YOSfVo++7sA@mail.gmail.com>
-Subject: Re: Unplayable framerates in game but specific kernel versions work,
- maybe amdgpu problem
-To: machion@disroot.org
-Cc: stable@vger.kernel.org, regressions@lists.linux.dev, 
-	amd-gfx@lists.freedesktop.org, alexander.deucher@amd.com, 
-	christian.koenig@amd.com
+References: <20250507183820.781599563@linuxfoundation.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+From: Brett Mastbergen <bmastbergen@ciq.com>
+Date: Thu, 8 May 2025 09:28:13 -0400
+X-Gm-Features: ATxdqUGQ979zRBf0y1uOq64HSCY88KmE0OF2th89NGdxTXyo1bgCaZ6VsUDVfCg
+Message-ID: <CAOBMUvigbAGXoCSVqCz0nZ+7Y9ausHqV01uY1Z6W1jgGJkQzzQ@mail.gmail.com>
+Subject: Re: [PATCH 6.12 000/164] 6.12.28-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 8, 2025 at 9:13=E2=80=AFAM <machion@disroot.org> wrote:
+On Wed, May 7, 2025 at 3:00=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> Hello kernel/driver developers,
+> This is the start of the stable review cycle for the 6.12.28 release.
+> There are 164 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 >
-> I hope, with my information it's possible to find a bug/problem in the
-> kernel. Otherwise I am sorry, that I disturbed you.
-> I only use LTS kernels, but I can narrow it down to a hand full of them,
-> where it works.
+> Responses should be made by Fri, 09 May 2025 18:37:41 +0000.
+> Anything received after that time might be too late.
 >
-> The PC: Manjaro Stable/Cinnamon/X11/AMD Ryzen 5 2600/Radeon HD 7790/8GB
-> RAM
-> I already asked the Manjaro community, but with no luck.
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.12.28-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.12.y
+> and the diffstat can be found below.
 >
-> The game: Hellpoint (GOG Linux latest version, Unity3D-Engine v2021),
-> uses vulkan
+> thanks,
 >
-> ---
+> greg k-h
 >
-> I came a long road of kernels. I had many versions of 5.4, 5.10, 5.15,
-> 6.1 and 6.6 and and the game was always unplayable, because the frames
-> where around 1fps (performance of PC is not the problem).
-> I asked the mesa and cinnamon team for help in the past, but also with
-> no luck.
-> It never worked, till on 2025-03-29 when I installed 6.12.19 for the
-> first time and it worked!
->
-> But it only worked with 6.12.19, 6.12.20 and 6.12.21
-> When I updated to 6.12.25, it was back to unplayable.
 
-Can you bisect to see what fixed it in 6.12.19 or what broke it in
-6.12.25?  For example if it was working in 6.12.21 and not working in
-6.12.25, you can bisect between 6.12.21 and .25.
+Builds successfully.  Boots and works on qemu and Dell XPS 15 9520 w/
+Intel Core i7-12600H
 
-Alex
+Tested-by: Brett Mastbergen <bmastbergen@ciq.com>
 
->
-> For testing I installed 6.14.4 with the same result. It doesn't work.
->
-> I also compared file /proc/config.gz of both kernels (6.12.21 <>
-> 6.14.4), but can't seem to see drastic changes to the graphical part.
->
-> I presume it has something to do with amdgpu.
->
-> If you need more information, I would be happy to help.
->
-> Kind regards,
-> Marion
+Thanks,
+Brett
 
