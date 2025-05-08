@@ -1,121 +1,117 @@
-Return-Path: <stable+bounces-142919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31069AB0271
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 20:17:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6645EAB02A8
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 20:26:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B37E6505A7D
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 18:16:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41DB73B6DB2
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 18:26:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE855286D4E;
-	Thu,  8 May 2025 18:14:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3562F284B25;
+	Thu,  8 May 2025 18:26:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="X1DySTF9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W0vX34Bv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E01AC28B50C
-	for <stable@vger.kernel.org>; Thu,  8 May 2025 18:14:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6353281363;
+	Thu,  8 May 2025 18:26:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746728080; cv=none; b=aDcAoEMnMDQvj+NAzSlhWi5gvxX0Uwf77p5wD5mOg36k/hkrkDfNAIHmj+U5rd/sqqm8ecg08Np0U+PAAeRppx1HDtZiClHxXCaRwn4BarL5/4YRungpSTsnNnrW8cwzeRnvDX5K02Uatjh/JVcV0fHJrsNqblEnblyFMPGYfF4=
+	t=1746728797; cv=none; b=bM0Ju1DoRnZzGaLbwXQMoDJyoxZQPJe5BSIa4qig8YhnGtPAknmIlcEN5HZ0KuexUupYszCf+OPxwsGqbu+M5AoGanaa4T0ov0/nRB2nGtQr8qdQmSBJdVwwuDbUXu/H1ygeXAIU6rTIEKznSvU4o/cHJpqyjDhNE+fO9bO4ktw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746728080; c=relaxed/simple;
-	bh=NbzZ80paJlbOudZo5cy2lKwapBBe1uVv2cGRVxSGlVs=;
+	s=arc-20240116; t=1746728797; c=relaxed/simple;
+	bh=TV/DfA1+9HMKHUzT+UR/gakV4+uuJ2aHJxXt+sNWNpo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=J5eydP2frXyBqfN92uvkK5QjVVD8cw7E0urtRjgBPEHiWaVuv/PH9JvKk4gge8bUC2LOMnnIV5ywGUO779+uUhaVjTnwnLb5+84O1oTQ/UcOAwjEPUlSwuKARQd2jY/a8YWw+sUKG9O+QTXzDbEqizB/pDJgf71XuCNmXFOcxWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=X1DySTF9; arc=none smtp.client-ip=209.85.160.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-47666573242so46351cf.0
-        for <stable@vger.kernel.org>; Thu, 08 May 2025 11:14:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1746728077; x=1747332877; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8cF+7Q3DWdlrrgNAEAG7h80Z18yQnWFZWmqYzAyeels=;
-        b=X1DySTF9SCmMTqEpH+BVk+FowGH8M3HK/4dn8ULXO0A1Pd1Td7dcV37eTZ3WFYWrGk
-         +jRfno6bCEBABgvbBKeiio3YayW9iHNf3JfQwcMmoTeChuQ0d97Z/HryEG5XmeoSw0TL
-         BXP5s2hpBlIESmg52Sf61T2dm4u73YoE1jfI8ijYKV7IsaGJNJeyCpNetZjWVBKmwY4N
-         k0KdPiDVhZpxQk3k1nYSHPVrtwA3N12KJ+34/+HS7oH+OyT+/Yv6W0pneG1lQKC7sRJv
-         UmA+yKzvGSqsb4LWCJmaKChuO5o9Qph5WHeTZNmXVQd3fgshy/jPXjIDvNtLZzBMPruk
-         +Maw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746728077; x=1747332877;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8cF+7Q3DWdlrrgNAEAG7h80Z18yQnWFZWmqYzAyeels=;
-        b=JbWkzTX8NxoGR5amEToAJyItH5OOsliUVOohQ9oLrU3cA+l55Awn4+kztwedg2H23K
-         aJmz5juzjy76VCRbeKUD5sEq/qCIoiZCSmHrEObcmprjbg1i29QXHJOsB6z4HmPV31fA
-         H2CvMK47YRjYl55hSeuiXR8K1wR9pMjBUu2cuNpf81RZ7+m5FOs4oLpC+w79TmwwvHeh
-         mw5DZoSFxIu//X61YcbCPmcsR1c40ovKdRQUAeha4HN0BAhTOCOJlA9SddqP/tSP5IeW
-         YxcUD6nmU5UxsM25Xg4FN2uV/P4cf9gpKPAyoHuO4i0C+C/t3MtmYtsHpOl83k0GFCbi
-         Whvw==
-X-Gm-Message-State: AOJu0YyBymd0efo9vb2YA3KHVpHnbMRRU2ncZ+/AyBsrhk90nbnw7wDs
-	jVN7SYwnzkzb/5/FGxXB15g3/sTgdxLjQWpVzyqgeoi69VYQ/KJ7f+MbESBsd2VXOFdWzh9zkg3
-	cFsUKGaw/mt7bU42UgIO9zxCZInY1filRalmLzmWV8jYOkQ7jN70fac0=
-X-Gm-Gg: ASbGnct7HcGZcaS95gNQdWqeKFv+9j3e9kfF06l/RxXR2PYZYQDC5ZUpecAjtpbSUNd
-	l07PDuMhubLmQPePBUiCHssPNm0m0qqoReWHWR6g/kpkcTlDtzYGMe8TpZIF9oyo3jHFzkkL+pw
-	QeaLMNUM9GohXnLwCH7QoR6PUzpODk6Gx7V9V1IRcEmmJ4nZr3p7M+r2oUFZHs
-X-Google-Smtp-Source: AGHT+IHaD/8W8gkdsy60lk3JqLE4FhvbJ608a7G9PY69qWRw0dfReh1VTGOC/+58Fth4MTgSqQrEG5/OHtN2ip6tURk=
-X-Received: by 2002:a05:622a:1ba6:b0:47d:cdd2:8290 with SMTP id
- d75a77b69052e-49452ee111emr43271cf.9.1746728077347; Thu, 08 May 2025 11:14:37
- -0700 (PDT)
+	 To:Cc:Content-Type; b=WC6gCe1+xZPm4I3Y0pZWF7dbzlmTJVJgSa35ec6gS3dGb4Sj8IHLGU/d9Wjz+y1szCG0FY9pfvAx8XozEo2IFayZsyWlZx/piAZeqhV1OR5sI1t2+YQzc1Lfo1yaDE5DdXlOPCs/HJRAtAPs6VpudKXQPvPNbpjYWDonhLPTdJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W0vX34Bv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53773C4AF09;
+	Thu,  8 May 2025 18:26:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746728796;
+	bh=TV/DfA1+9HMKHUzT+UR/gakV4+uuJ2aHJxXt+sNWNpo=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=W0vX34BvhqERisc9pPDTrtpEzxpqUU7+fjntYQSiYl1vgqIrS7y455J4HVkP4tMiE
+	 9S5EC67d43f8FD2n3FGNXqXBY33xhNi6k5PiFNkIZ3S7GYaaOiwB88EmBPJYoSuo4p
+	 45+EwZUJPIyNEQBK2ZJwt6c/dPEW23FK1TWscFMq62I4dR5kl8r+pts0mDEUDiM9nR
+	 Aitf1znG+IiXkMTe6jqPCcMgPfxU3Nf0EfsdT5hMCNnpEQmloLPMm889X9nCgsz4pu
+	 99SJP0j5KjxL1DmNxwrJT8AJTAPYx8rAyriWW1hx5JXsMaywvQ9eDal1G8dUvBP0yL
+	 Iw3l+zBJiDN4A==
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-72c7336ed99so400502a34.0;
+        Thu, 08 May 2025 11:26:36 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUhho5o1o7dDGGNx+FdfpQ9tS3eFhzM1HGKfxSzIK+mEVFF+2gIIFnoI5hqjb2uEJfKylbtXhEiI2GFtA7X@vger.kernel.org, AJvYcCV2TFowXXW77kIyynry+sreFJMZcQrK/8Ls7TIBchJlmRgR9eAtaCL8Clk2rS3SW307lNu+hLc9Y+My@vger.kernel.org, AJvYcCWbTKAnTxVFUpEF2InJu5OicVhb0oK1TFN1m0VPmxvSMhJFb5lzo7TopzcHqE6agymM1NzIRG8G@vger.kernel.org
+X-Gm-Message-State: AOJu0YwT9B4j6vvYmjL5KTi3e5FV+kMpQAdfUnA8n+30T3zz6ToOjL0y
+	/fGnBFXLksRt0SdNvunZ6CyoY5lb2mx82cpn1rysJfLIXH706L6CCr/KnhPCYjH1+LZ3HWm9oXR
+	xnN0tjUYa9qcPxgbo66MbUIAo7v0=
+X-Google-Smtp-Source: AGHT+IF2Nf5Fasy7Qu/XU0O/UO9AwN3maQCBaHAFkTPwDHkgmNIXFD8BqrcDfV+OFXwTKgnDslsqpJLbbTA5+Cs/0HQ=
+X-Received: by 2002:a05:6830:6611:b0:730:da:1165 with SMTP id
+ 46e09a7af769-73226ae9d31mr741954a34.21.1746728795645; Thu, 08 May 2025
+ 11:26:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250505232601.3160940-1-surenb@google.com> <20250507082538-05e988860e87f40a@stable.kernel.org>
- <CAJuCfpEdkkZd8RSZUPsXkq3BXzDvebfSHuF4T=AoRHDv8hgJzg@mail.gmail.com> <aBzmyRU6EXuuYCJu@lappy>
-In-Reply-To: <aBzmyRU6EXuuYCJu@lappy>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Thu, 8 May 2025 18:14:26 +0000
-X-Gm-Features: ATxdqUEDThUgBYUWf2yQeufjIhPZSgc9A_82tCaLVpN-ec0P-Alwb4hF8OGzGKg
-Message-ID: <CAJuCfpGoto6chqWSN_FET4isyLfioKzxadEQbLyKYzXTwCo+FA@mail.gmail.com>
-Subject: Re: [PATCH 6.12.y] mm, slab: clean up slab->obj_exts always
-To: Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org
+References: <20250508023025.1301030-1-jeremy.linton@arm.com> <20250508-abiding-enigmatic-mustang-ab3bd2@sudeepholla>
+In-Reply-To: <20250508-abiding-enigmatic-mustang-ab3bd2@sudeepholla>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 8 May 2025 20:26:23 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0jOmeKy84N0My7o+PvAybjdaxv9ZS8HT=X0momY7rzTuQ@mail.gmail.com>
+X-Gm-Features: ATxdqUH9Pj_neQFHcxXdnSIxaBpGj_wzwhGGHZ5DpVN043u7sQCsmcbIF9wohLs
+Message-ID: <CAJZ5v0jOmeKy84N0My7o+PvAybjdaxv9ZS8HT=X0momY7rzTuQ@mail.gmail.com>
+Subject: Re: [PATCH] ACPI: PPTT: Fix processor subtable walk
+To: Sudeep Holla <sudeep.holla@arm.com>
+Cc: Jeremy Linton <jeremy.linton@arm.com>, rafael@kernel.org, lenb@kernel.org, 
+	jmeurin@google.com, linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Maximilian Heyne <mheyne@amazon.de>, Yicong Yang <yangyicong@hisilicon.com>, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 8, 2025 at 5:15=E2=80=AFPM Sasha Levin <sashal@kernel.org> wrot=
-e:
+On Thu, May 8, 2025 at 11:13=E2=80=AFAM Sudeep Holla <sudeep.holla@arm.com>=
+ wrote:
 >
-> On Thu, May 08, 2025 at 05:04:45PM +0000, Suren Baghdasaryan wrote:
-> >On Thu, May 8, 2025 at 4:18=E2=80=AFPM Sasha Levin <sashal@kernel.org> w=
-rote:
-> >>
-> >> [ Sasha's backport helper bot ]
-> >>
-> >> Hi,
-> >>
-> >> Summary of potential issues:
-> >> =E2=9A=A0=EF=B8=8F Found matching upstream commit but patch is missing=
- proper reference to it
+> On Wed, May 07, 2025 at 09:30:25PM -0500, Jeremy Linton wrote:
+> > The original PPTT code had a bug where the processor subtable length
+> > was not correctly validated when encountering a truncated
+> > acpi_pptt_processor node.
 > >
-> >Not sure why "patch is missing proper reference to it". I see (cherry
-> >picked from commit be8250786ca94952a19ce87f98ad9906448bc9ef) in place.
-> >Did I miss something?
+> > Commit 7ab4f0e37a0f4 ("ACPI PPTT: Fix coding mistakes in a couple of
+> > sizeof() calls") attempted to fix this by validating the size is as
+> > large as the acpi_pptt_processor node structure. This introduced a
+> > regression where the last processor node in the PPTT table is ignored
+> > if it doesn't contain any private resources. That results errors like:
+> >
+> >   ACPI PPTT: PPTT table found, but unable to locate core XX (XX)
+> >   ACPI: SPE must be homogeneous
+> >
+> > Furthermore, it fail in a common case where the node length isn't
+> > equal to the acpi_pptt_processor structure size, leaving the original
+> > bug in a modified form.
+> >
+> > Correct the regression by adjusting the loop termination conditions as
+> > suggested by the bug reporters. An additional check performed after
+> > the subtable node type is detected, validates the acpi_pptt_processor
+> > node is fully contained in the PPTT table. Repeating the check in
+> > acpi_pptt_leaf_node() is largely redundant as the node is already
+> > known to be fully contained in the table.
+> >
+> > The case where a final truncated node's parent property is accepted,
+> > but the node itself is rejected should not be considered a bug.
+> >
 >
-> It tries to find one of the references described in the docs for
-> submitting stuff to stable@:
+> Thanks for picking this up and describing the issue properly in the commi=
+t
+> message.
 >
->         https://www.kernel.org/doc/html/latest/process/stable-kernel-rule=
-s.html#option-3
+> Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
 
-Ah, I see now what I missed. Thanks!
-Would you be able to add the reference or should I repost the backports?
+Applied, but it is a bit too late to push it for -rc6, so I'll queue
+it up for -rc7.
 
->
-> --
-> Thanks,
-> Sasha
+Thanks!
 
