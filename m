@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-142886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C6F7AB0019
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 18:18:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57AA1AB001B
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 18:18:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 386E91C078A4
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 16:18:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1052B1C07629
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 16:18:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3511227F4E5;
-	Thu,  8 May 2025 16:18:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F42A280A52;
+	Thu,  8 May 2025 16:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C0Texldw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uA0uYa1f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C8C22422D
-	for <stable@vger.kernel.org>; Thu,  8 May 2025 16:18:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EFAF22422D
+	for <stable@vger.kernel.org>; Thu,  8 May 2025 16:18:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746721082; cv=none; b=mSR/phiJciuioFWBsNRKpDYKEB4OSi+tdcRfNHi06qS8P1i3kLIChx4a4m88qR9HiXUyQkQQkTR3QtHSy0hw9mS/HDMLjHon+kCdY3wHrKMnmWtrllyTUWAtIl2nfyHjGKIDrExhWVHcNrmxKOCnVk8tjzBUkGVdBu4L1Ezp06Q=
+	t=1746721087; cv=none; b=u1B30EuZYsUqWXpgoR1TcvQfIK7glGYh1naT3buB6mUrqIeMBwBkIZ2UNQPw/TgG5qFoA9rkIL7BPs4de9EduD9dpQN9CtCmT8fAFBFMuVaxIVjORr1NT4ERQqEdPX+a9XQi1r0Z+DJTI/XHDUd6GnRXVYbicfHTorpqp/9TxRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746721082; c=relaxed/simple;
-	bh=CgGpEvVyhZUb5hjaA1DjZw0H3nlwcQy2G9FsCGROEwA=;
+	s=arc-20240116; t=1746721087; c=relaxed/simple;
+	bh=o3XwYjs5Ryc5aIJUz/TWs5m0o3vkQAjIOfE9qLgJUcc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=usmv29BfGd7WQN4a201ZdyfQzBq4rSaNqGhLl53Fu19scyBUa8bywxo2kfhL/4PuzBXFxMIyS4Cg7ir9tGoOf3IPVh1u3r0WUWxmv8jsRQxrArCyN6H65+IRttUlyFQRB1MAfEVXDaGTtKjDS8j1AupcqwU8P6gpnFhsmk2D9sI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C0Texldw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA0DEC4CEE7;
-	Thu,  8 May 2025 16:18:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=u9btNZn91QDDH0yDjTwncILbcWLytfDyXlTHbPUgXCDi10viEd9nwBQWXEZ6cP1aj/KMlI5pdWvJWMoyM2rV8ibajGObcqi1u0138d9Hg3Kjmxopao60qmDpJPR0D3l9zkcTsJL0B5u9GlGYVcMO4McRAudryTnTKjaRsZkyEUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uA0uYa1f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68164C4CEE7;
+	Thu,  8 May 2025 16:18:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746721081;
-	bh=CgGpEvVyhZUb5hjaA1DjZw0H3nlwcQy2G9FsCGROEwA=;
+	s=k20201202; t=1746721085;
+	bh=o3XwYjs5Ryc5aIJUz/TWs5m0o3vkQAjIOfE9qLgJUcc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C0TexldwLoGQaEIh9JG86lV5DkN2Z6U2NCbMWaSwaZmVsyC0nAMAQgCzVMeQxE7Pv
-	 dTP0rbIhwUYJzo7vnz8t5vnpLtThCjCfhnyscAdoDYsD6AX9XoA2RIapWTXZXw6JSl
-	 dDc8LkQBnHBoULnc6M1oNHCaCEl4HL16IQkOTacZglEjtlBdSohwo5XjRRypJSs6Mc
-	 dAkgDIrFVmiKq6QS/VZFxIAtEaY+GYJCca/i1yDzZnP6rXIasaotEkkwZN51QUyIgn
-	 Ljutg8ZUDa4QKAEkeNNYiSoaAKo7z/mQ+/cmuE5O4L/pEIbW91QMh6w75vo434HTxg
-	 BMBCRc9BIq0SQ==
+	b=uA0uYa1flrcBan86Fc73LZzkuakfmQUhpL8mzFx7wy6Z6aSyuJF3sm5K9I9v9FnvK
+	 SCmr/WusrhK4ph4D+Kt4FtrKabnJVnqEraK6FJTtHfoTAmEMtWk1WbeE9YK+MDSfQ8
+	 zQMI7HvEf9QKJrs4TRtwzLqr4vKBTNHAim0QAw75nVH77ha072BmRDzPDwxTagsAi9
+	 7SVg5IRLki10qnHo3FAV6d7lGFVqU+BWWRxLmzy3hOjxgsiWr9NEN5dRNeWWhRXUkC
+	 UfaGGY+L2VW8qopUQs0MjEe1gM8ZIC/8bRZeWzQ+sDmoLTeDSijlLk8giRi1PqOnPp
+	 CtSyoI+xZQ9OA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Jared Holzman <jholzman@nvidia.com>,
+Cc: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.14.y v2 5/7] ublk: remove __ublk_quiesce_dev()
-Date: Thu,  8 May 2025 12:17:57 -0400
-Message-Id: <20250507084702-60da01b945ef64ee@stable.kernel.org>
+Subject: Re: [PATCH v2 3/7] accel/ivpu: Fix a typo
+Date: Thu,  8 May 2025 12:18:01 -0400
+Message-Id: <20250507120340-6842bb4b5049b0de@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250507094702.73459-6-jholzman@nvidia.com>
+In-Reply-To:  <20250505103334.79027-4-jacek.lawrynowicz@linux.intel.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,36 +67,16 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 736b005b413a172670711ee17cab3c8ccab83223
+The upstream commit SHA1 provided is correct: 284a8908f5ec25355a831e3e2d87975d748e98dc
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Jared Holzman<jholzman@nvidia.com>
-Commit author: Ming Lei<ming.lei@redhat.com>
+Backport author: Jacek Lawrynowicz<jacek.lawrynowicz@linux.intel.com>
+Commit author: Andrew Kreimer<algonell@gmail.com>
 
 Note: The patch differs from the upstream commit:
 ---
-1:  736b005b413a1 ! 1:  4115ef18a9595 ublk: remove __ublk_quiesce_dev()
-    @@ Metadata
-      ## Commit message ##
-         ublk: remove __ublk_quiesce_dev()
-     
-    +    [ Upstream commit 736b005b413a172670711ee17cab3c8ccab83223 ]
-    +
-         Remove __ublk_quiesce_dev() and open code for updating device state as
-         QUIESCED.
-     
-    @@ drivers/block/ublk_drv.c: struct ublk_params_header {
-      static void ublk_stop_dev_unlocked(struct ublk_device *ub);
-      static void ublk_abort_queue(struct ublk_device *ub, struct ublk_queue *ubq);
-     -static void __ublk_quiesce_dev(struct ublk_device *ub);
-    - static inline struct request *__ublk_check_and_get_req(struct ublk_device *ub,
-    - 		struct ublk_queue *ubq, int tag, size_t offset);
-    + 
-      static inline unsigned int ublk_req_build_flags(struct request *req);
-    + static inline struct ublksrv_io_desc *ublk_get_iod(struct ublk_queue *ubq,
-     @@ drivers/block/ublk_drv.c: static int ublk_ch_release(struct inode *inode, struct file *filp)
-      		ublk_stop_dev_unlocked(ub);
-      	} else {
+1:  284a8908f5ec2 < -:  ------------- accel/ivpu: Fix a typo
+-:  ------------- > 1:  aeaee199900ee Linux 6.14.5
 ---
 
 Results of testing on various branches:
