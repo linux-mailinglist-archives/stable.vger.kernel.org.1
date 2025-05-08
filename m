@@ -1,166 +1,162 @@
-Return-Path: <stable+bounces-142923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED11DAB03AD
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 21:27:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89A12AB03FF
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 21:51:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E97A41C20752
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 19:27:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61EE13AA1E2
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 19:51:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA1EA28A1C9;
-	Thu,  8 May 2025 19:27:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5DF3288529;
+	Thu,  8 May 2025 19:51:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="GJuYdMBF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QzVa9d0L"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 121001F582E;
-	Thu,  8 May 2025 19:27:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 328364B1E7C;
+	Thu,  8 May 2025 19:51:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746732447; cv=none; b=MhrsXfqwUdH+SK5t+k1s4uN8ezEmV40gOaXT1xZVI2vvHKtxoec5aYzuRlR0wrXDkIVsiXNPW9f6PQxTvq0w4YkIp2TBHMLD6Ex3TEDxE4Mo018WpeO5b8bdpGIxeKgOUAHIcOmm7DZ7ITIceWiTA7xBcmyExX25qoAcYFTzDVk=
+	t=1746733885; cv=none; b=oDzr3L7mObudVpljfWaFZEeysUjbX3X29iNFUCxrDsx6EQnH06AESBwK0BG9lq6aJm2JFx5x7N03r/U6tD6gGN7U/DLDr5uMJ1FUwiqpABvIVfuqipTMorSXL6xzeqxxy9h2SoPg5xq3bz/52Kughr0z9AoRZQE5O1ZnNh40TZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746732447; c=relaxed/simple;
-	bh=EsQsPHoAmNYkbMvqJ9RNhtyjAtm4NunCNX5rWU2hgYA=;
-	h=Date:To:From:Subject:Message-Id; b=B68mU6cpN5rY74+9OSnbnIoVi5Ocy+4gWNWDXHzViWBbRunYnxmP/60MJA2Tan4v7J2BnQwupPNJEv2mXq8/0WeHYVFasQWa/X/89289MffXA4UVIHKxPfZI6zjBWWzojNPK77cqpXEXiK7el7hSkwZq+d6XAysM77HW6HaBSSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=GJuYdMBF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 701FDC4CEEB;
-	Thu,  8 May 2025 19:27:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1746732446;
-	bh=EsQsPHoAmNYkbMvqJ9RNhtyjAtm4NunCNX5rWU2hgYA=;
-	h=Date:To:From:Subject:From;
-	b=GJuYdMBFOE72opKHP5p1/BJkdnjH8OWHqCTs+i3IxrpTgJlcwdw3RGSYBxPOpN/QD
-	 8rjIDb849sWDZGxuDxgt2Qm9gz6Uokrm7TGl+yBOX0iSbaSrOYeVoJI71Y2B4lSp7k
-	 EeBVkftLoYzNk/ma1my92O9nIYJZduUlIJ4QuAoo=
-Date: Thu, 08 May 2025 12:27:25 -0700
-To: mm-commits@vger.kernel.org,x86@kernel.org,vgoyal@redhat.com,stable@vger.kernel.org,dyoung@redhat.com,coxu@redhat.com,bhe@redhat.com,fuqiang.wang@easystack.cn,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [to-be-updated] x86-kexec-fix-potential-cmem-ranges-out-of-bounds.patch removed from -mm tree
-Message-Id: <20250508192726.701FDC4CEEB@smtp.kernel.org>
+	s=arc-20240116; t=1746733885; c=relaxed/simple;
+	bh=NxSLgtwGa5Pvm3sSaGJSWkuVJbuhdtpWSuSUnu/IKFo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PeAuf8KPgP6D720HEbivt7spXe2s47ScLX2WyiwdKGWhTTMco7FyoVvTExg010DLnZgroezWal4l6id24VJPZWNcwc1DEqJHrWJfX8RG5ggS/Y0cBBaV1VQGTnCUh7U5lwuFy4LKQAIFMwORofFs/JOfoyihJ0BfINahnrFbUTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QzVa9d0L; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7376dd56eccso1528302b3a.0;
+        Thu, 08 May 2025 12:51:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746733883; x=1747338683; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=BxFtwmyoa5Fo1/6tSGbyqsFnT+GrzfrM2vUs8B7e09U=;
+        b=QzVa9d0LZf5g21QnKYdol5ibj13EBIIN6GHG5wIG6Ij1yeW4MWR3ovFKCh9EccHhgd
+         2ZTgj2D9re3Q94eCAnqIcNKyV4Qm+6PjS5IPCCaMyE7XBFKEP2N/FCsx9EOfeRpthS3F
+         e4d8cgo4ytrARbG7Ra/mdNnSjqFa5zrQbcYqXF5zZK8Ba6UZV4ZMP/V2Li9DNm9UfGCy
+         XucBcQtaAsH5NoddtVAFl2Vy14BArwfTph1HoWNUzlc0tlCUmmqqOeyCivSvrHHrAawf
+         9EqYafkYYw69ttxIUN5lZI3goiAbg9RND0oEvHgk9VdDgT46TfgyRH5Z5nhSHydv2xYr
+         ckew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746733883; x=1747338683;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BxFtwmyoa5Fo1/6tSGbyqsFnT+GrzfrM2vUs8B7e09U=;
+        b=GpzPXE5Qpgw3SJZr5jA1dQ+qoLkfo4w8Q8tRcQ/1y3k/WVqV9rnSExKKFa0L+w3U1s
+         HmLcVSENMNo5pqbyZVaA8UpGuf8fDZcpRaUfegBrTqmLygIF641kj6eRyzhvmnkTaGLj
+         ZkRdAIz89znCVTXZ2OhhO/XkPUkWE1HU3PT9N/yNcAQL6nr58nkMMj1nTlcYeyXgKG51
+         aKHB7A9WZlKKAzI+2ch73i0VzKckxS4xL7zSk8NMEqyKhCsnNAwjX1plovKI/+5RyZ9V
+         UXnpKsdmUqaKMRSwupFtcFa1iJcbTz2VjUC8m9jBnzNa0STIrzfVjMLdYfopHpeTDcas
+         5xDw==
+X-Forwarded-Encrypted: i=1; AJvYcCVPbh1eT1igkHX/3alDm+NmxaKqG6SwZ1qfBj8kHvoyFlxFFU3Wmn0/zlmX1KczdwYaNuroScMw4BvUVfg=@vger.kernel.org, AJvYcCWluTXWjcgAO66yNzmql9dkZHpGf6/hJYsBgig69vn72KvP4J13k0lrR4m9H8nCd4OyoiS9ALAw@vger.kernel.org
+X-Gm-Message-State: AOJu0YwFeFLsWPXL3LTZkiMraXDhCs8CpyitOJ3sFhuUORTB/ucKH4uJ
+	JtQ7413JA5uAeDmtm7VU87wXCr0ogHtE//OKDdB/p2Pq4gVAzIth
+X-Gm-Gg: ASbGnctSIDy07/7eoMDYXgFrowZ5DwHPdjayWcIqNwKeXanNiTM6KpumjgUtcGWTC93
+	us1hdTbZE5+lzeCSyZexJ3GgmVeGnsyOwyuva4xFk9r+2a7RpNOp2O44ymiUcmU4PmQ244lZ1dI
+	IUzf15+bFP8U1dEUKuDu7VZdnUP4/yDB5yiYwWdATlUufLnr8YcVLlr0cx2wrGQtvPq1JlKT+gj
+	2aQ2MBW280Jn8QDOxxDKrVzB6r0VF5lTzFLOuzUaSwsGyUZurDKJMxh2Ogjop4FSMr5ed/VJ8Y+
+	r6dLn01JiVk0FsOJDEaiX0NFfsdf+lCL/84MFsc6sAHrn5vq079ONxfUXBygctoShOi7VWOtbWT
+	nP0q5
+X-Google-Smtp-Source: AGHT+IGMfZ8xzshY932iVGkJXt00AIUnjSibA64iPqAaIAFBbci7gB43Nlq621rK0qJj+ODf6GJ3ww==
+X-Received: by 2002:a05:6a00:f0b:b0:737:6fdf:bb69 with SMTP id d2e1a72fcca58-7423be92b53mr753548b3a.13.1746733883325;
+        Thu, 08 May 2025 12:51:23 -0700 (PDT)
+Received: from [192.168.1.177] (46.37.67.37.rev.sfr.net. [37.67.37.46])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7423773c796sm430081b3a.69.2025.05.08.12.51.19
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 08 May 2025 12:51:22 -0700 (PDT)
+Message-ID: <7098bb22-76d2-4097-918c-7120a4998b92@gmail.com>
+Date: Thu, 8 May 2025 21:51:18 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.15 00/55] 5.15.182-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250508112559.173535641@linuxfoundation.org>
+Content-Language: en-US
+From: Florian Fainelli <f.fainelli@gmail.com>
+Autocrypt: addr=f.fainelli@gmail.com; keydata=
+ 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
+ WlfRzlpjIPmdjgoicA==
+In-Reply-To: <20250508112559.173535641@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
 
-The quilt patch titled
-     Subject: x86/kexec: fix potential cmem->ranges out of bounds
-has been removed from the -mm tree.  Its filename was
-     x86-kexec-fix-potential-cmem-ranges-out-of-bounds.patch
 
-This patch was dropped because an updated version will be issued
+On 5/8/2025 1:30 PM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.182 release.
+> There are 55 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sat, 10 May 2025 11:25:42 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.182-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-------------------------------------------------------
-From: fuqiang wang <fuqiang.wang@easystack.cn>
-Subject: x86/kexec: fix potential cmem->ranges out of bounds
-Date: Mon, 8 Jan 2024 21:06:47 +0800
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels build tested on 
+BMIPS_GENERIC:
 
-In memmap_exclude_ranges(), elfheader will be excluded from crashk_res.
-In the current x86 architecture code, the elfheader is always allocated
-at crashk_res.start. It seems that there won't be a new split range.
-But it depends on the allocation position of elfheader in crashk_res. To
-avoid potential out of bounds in future, add a extra slot.
-
-The similar issue also exists in fill_up_crash_elf_data(). The range to
-be excluded is [0, 1M], start (0) is special and will not appear in the
-middle of existing cmem->ranges[]. But in cast the low 1M could be
-changed in the future, add a extra slot too.
-
-Without this patch, kdump kernel will fail to be loaded by
-kexec_file_load,
-
-  [  139.736948] UBSAN: array-index-out-of-bounds in arch/x86/kernel/crash.c:350:25
-  [  139.742360] index 0 is out of range for type 'range [*]'
-  [  139.745695] CPU: 0 UID: 0 PID: 5778 Comm: kexec Not tainted 6.15.0-0.rc3.20250425git02ddfb981de8.32.fc43.x86_64 #1 PREEMPT(lazy) 
-  [  139.745698] Hardware name: Amazon EC2 c5.large/, BIOS 1.0 10/16/2017
-  [  139.745699] Call Trace:
-  [  139.745700]  <TASK>
-  [  139.745701]  dump_stack_lvl+0x5d/0x80
-  [  139.745706]  ubsan_epilogue+0x5/0x2b
-  [  139.745709]  __ubsan_handle_out_of_bounds.cold+0x54/0x59
-  [  139.745711]  crash_setup_memmap_entries+0x2d9/0x330
-  [  139.745716]  setup_boot_parameters+0xf8/0x6a0
-  [  139.745720]  bzImage64_load+0x41b/0x4e0
-  [  139.745722]  ? find_next_iomem_res+0x109/0x140
-  [  139.745727]  ? locate_mem_hole_callback+0x109/0x170
-  [  139.745737]  kimage_file_alloc_init+0x1ef/0x3e0
-  [  139.745740]  __do_sys_kexec_file_load+0x180/0x2f0
-  [  139.745742]  do_syscall_64+0x7b/0x160
-  [  139.745745]  ? do_user_addr_fault+0x21a/0x690
-  [  139.745747]  ? exc_page_fault+0x7e/0x1a0
-  [  139.745749]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-  [  139.745751] RIP: 0033:0x7f7712c84e4d
-
-
-Previously discussed link:
-[1] https://lore.kernel.org/kexec/ZXk2oBf%2FT1Ul6o0c@MiWiFi-R3L-srv/
-[2] https://lore.kernel.org/kexec/273284e8-7680-4f5f-8065-c5d780987e59@easystack.cn/
-[3] https://lore.kernel.org/kexec/ZYQ6O%2F57sHAPxTHm@MiWiFi-R3L-srv/
-
-Link: https://lkml.kernel.org/r/20240108130720.228478-1-fuqiang.wang@easystack.cn
-Signed-off-by: fuqiang wang <fuqiang.wang@easystack.cn>
-Acked-by: Baoquan He <bhe@redhat.com>
-Reported-by: Coiby Xu <coxu@redhat.com>
-Closes: https://lkml.kernel.org/r/4de3c2onosr7negqnfhekm4cpbklzmsimgdfv33c52dktqpza5@z5pb34ghz4at
-Cc: Vivek Goyal <vgoyal@redhat.com>
-Cc: Dave Young <dyoung@redhat.com>
-Cc: <x86@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- arch/x86/kernel/crash.c |   21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
-
---- a/arch/x86/kernel/crash.c~x86-kexec-fix-potential-cmem-ranges-out-of-bounds
-+++ a/arch/x86/kernel/crash.c
-@@ -165,8 +165,18 @@ static struct crash_mem *fill_up_crash_e
- 	/*
- 	 * Exclusion of crash region and/or crashk_low_res may cause
- 	 * another range split. So add extra two slots here.
-+	 *
-+	 * Exclusion of low 1M may not cause another range split, because the
-+	 * range of exclude is [0, 1M] and the condition for splitting a new
-+	 * region is that the start, end parameters are both in a certain
-+	 * existing region in cmem and cannot be equal to existing region's
-+	 * start or end. Obviously, the start of [0, 1M] cannot meet this
-+	 * condition.
-+	 *
-+	 * But in order to lest the low 1M could be changed in the future,
-+	 * (e.g. [stare, 1M]), add a extra slot.
- 	 */
--	nr_ranges += 2;
-+	nr_ranges += 3;
- 	cmem = vzalloc(struct_size(cmem, ranges, nr_ranges));
- 	if (!cmem)
- 		return NULL;
-@@ -298,9 +308,16 @@ int crash_setup_memmap_entries(struct ki
- 	struct crash_memmap_data cmd;
- 	struct crash_mem *cmem;
- 
--	cmem = vzalloc(struct_size(cmem, ranges, 1));
-+	/*
-+	 * In the current x86 architecture code, the elfheader is always
-+	 * allocated at crashk_res.start. But it depends on the allocation
-+	 * position of elfheader in crashk_res. To avoid potential out of
-+	 * bounds in future, add a extra slot.
-+	 */
-+	cmem = vzalloc(struct_size(cmem, ranges, 2));
- 	if (!cmem)
- 		return -ENOMEM;
-+	cmem->max_nr_ranges = 2;
- 
- 	memset(&cmd, 0, sizeof(struct crash_memmap_data));
- 	cmd.params = params;
-_
-
-Patches currently in -mm which might be from fuqiang.wang@easystack.cn are
-
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
 
 
