@@ -1,367 +1,252 @@
-Return-Path: <stable+bounces-142904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFCB3AB005F
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 18:24:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 387EBAB0068
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 18:28:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91D997B3DFA
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 16:23:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C2BF1C01D1A
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 16:28:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1010B2820C9;
-	Thu,  8 May 2025 16:24:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61FBE2798E2;
+	Thu,  8 May 2025 16:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=cmpxchg-org.20230601.gappssmtp.com header.i=@cmpxchg-org.20230601.gappssmtp.com header.b="cLnmR2YI"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="dTVGn1fj";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="hX834wJq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f194.google.com (mail-qt1-f194.google.com [209.85.160.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7DA922B8DB
-	for <stable@vger.kernel.org>; Thu,  8 May 2025 16:24:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.194
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746721475; cv=none; b=QDtazfVkeWmPFjj1bSfKHjetgA8ADHJqGmJFiCjE20UgPsy9XSLKQOyhLuIJ5OwjoKU+16MBYOkD0ZgUAoFzLUhtIEfiKljuGsJ5qvnPfRZFetzPzchEhWn9W2pmir5ldwDa3mNikf71L9K8V0fhiK5ORLzxUgS8d0DmM3RFqSA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746721475; c=relaxed/simple;
-	bh=5UKCAaB5HWfYEUCVHcScgxqFD9mIZJdPWmrrW/OWr5c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VpBhCkCJM4GCdA0J870b0qFYSrQtIX/asClCngx29ptoTM+WMdlfk2MvAAusqPu39x1PaOqDkt17atNZnJbo415/VkBAQvaRPlzlVra/BOsJh4dS2irRnUscYBiycINtJYdaN9/4BtSkLbBUlRiOCn3H66lta+AA2ru4f/MgDJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmpxchg.org; spf=pass smtp.mailfrom=cmpxchg.org; dkim=pass (2048-bit key) header.d=cmpxchg-org.20230601.gappssmtp.com header.i=@cmpxchg-org.20230601.gappssmtp.com header.b=cLnmR2YI; arc=none smtp.client-ip=209.85.160.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=cmpxchg.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cmpxchg.org
-Received: by mail-qt1-f194.google.com with SMTP id d75a77b69052e-47677b77725so12570741cf.3
-        for <stable@vger.kernel.org>; Thu, 08 May 2025 09:24:31 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9153A228CBC;
+	Thu,  8 May 2025 16:28:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746721693; cv=fail; b=XGCBDZo5g26B3/zvnUHmtUR9pO1AI5hxsCrkXKBLwcmQQu0YKYus8C+gRA4cGnftQkVmC90PvWPs2IO5eKJWWARUPVzDQ8wucujigFw7cvjEn+oQQ7dHJobi/s+2BfY1ut3mNtMgXkMPlkyULqsnevKxcgEuGqllHKu9AzgTRsA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746721693; c=relaxed/simple;
+	bh=i+XuQubG0vSlFca8qWnJoaeivKr1qz9e5H/2dsgNG4I=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=gjyBeGKCdTBPYAwwAJf5CscN4A2xVnnDDb4tgdWSU255KmgNZ/QwbYMGLVTR6HX0iAxfSwBiPMjnI6xtIrDqUIOEBlLpNKDKw91kAAcwOMbkOymC0wnyDAF91iRRwtXKtqWe05TSkF78Yh+JKsbTOlhq5CFVbc0nM9mqo7pkOl4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=dTVGn1fj; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=hX834wJq; arc=fail smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 548G0jbb006357;
+	Thu, 8 May 2025 16:27:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=HxYEe7cE5uIulZeXC2YF+SOI4w3UUPKKWNVXgWcsoEw=; b=
+	dTVGn1fjoEJZqcRz6t+GNGEZVMzs1grQOZuGBo8hvPbHMOWqowGtRjYCYCsXiHRD
+	IfzlAzrRR5GoY18v8RKagK+47j2ta1L3R2hYLSulki9tIF8hxeM2bWwKlx7v3bah
+	R9DDRlZwpiBfwNRN6UOIT+RFev0lVBfVYSBU1bvq9UIeNElf1Ve2ibIiRCyE/XMb
+	vGmBJjtRRDXAwKrAIpb+oyo/FzI9XfhxccATnovoSN0acXsKuOghMuxLXM7EtvFJ
+	e42V7XgFHh8fgiqBubR+wd1CGB7o2r/c+vvR21wufG3dPVjXdnXovIV2/rMsU12T
+	LLqWntjxh+rciSRjE6Sm3w==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46gxwa87k1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 08 May 2025 16:27:34 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 548G6olt037610;
+	Thu, 8 May 2025 16:27:34 GMT
+Received: from ch4pr04cu002.outbound.protection.outlook.com (mail-northcentralusazlp17013060.outbound.protection.outlook.com [40.93.20.60])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 46d9kbngce-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 08 May 2025 16:27:33 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lbkPqiT5oq5UUpH5We4o92tx459IQQrX7tiuS53Sj+jnrtvqfO3QyPRgqeT+U7CAExXPZqvbX6Z/yEpfAvIW5ukPUeqar3Yxpj9J+VKfBisN0qbdja7bsByXkgXewdP0YHjEpKv3PAJHHIeDessfsPNHbj5VCrpOG4c1kJ975R3tCaJ+/ga4oC9BwyC4jiQhXgLKdoExyTYthI9EmP6/VB5BYGPN16clCZ9PgFbKz9JxewEyymPxLjWPu35cxt0DmgkCG5fJNlx+LhOW80zZKAPVjwKoqijD1JvNGNsqpn25fiFSxAS6rXdk0latoSKgWXuRwQQQHthgy0nQYkLc5g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=HxYEe7cE5uIulZeXC2YF+SOI4w3UUPKKWNVXgWcsoEw=;
+ b=KrvMGigdf0upH3EjLr7SDFG0gF+4XvFYERkiiBuQ+dx8KrZYA4xC0vkzExXK3CaFMXYB33AXKvALqh4ypaOSKNAXHFUtad8O5pJX+K7DK1N5vItMyrx8b4AKPeXfzgrMXcXAxu7x/VOi4bm9iRSj6wV0bxun1mLNe9vWws3dgjFWOCMsAi5aw8z5JdVW7oKdmalHK/c3U5sLZBCwignmOaD0N6wI7asESF/ynkU8Q9J91Ne76WFluldRqw4o+vLw2AM6GOQ/oo8lwNRGYDOp/xpxWqLClsaIdUmIBFh7xq0Ef+Mirl/Y0pnaLr5e0Bo6XkZ2+/NB0M5NYB/FjBU1Ow==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=cmpxchg-org.20230601.gappssmtp.com; s=20230601; t=1746721470; x=1747326270; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=evoV24c74OyNWadvZaBN6elrbHipQaEllekDlYjGmj0=;
-        b=cLnmR2YIyBSjpYwy9Thr/sbXSs8DzNBr3a4/0G/k3jmTH5882N1pv5ifBAqeJeNdbF
-         iZ1ZMpG5sXjrTf2tEkG9i5mosYUPT7hLyqz0hniQ/8BHrG+6skUHuKfPTiKNQwPwBAgF
-         p6yEUjN4SrNWjS4dr07lPKkqvLHn0PTaBgQvn7ZP9b9moEr2mreL5y9kj2Eq3eaemmxJ
-         8hKjGJntEiPQt8dD7wR8dNUUeqiQFLy5014Xz640+i1bGhfPWHFWrdN8oXYaMpqPyGUK
-         BND0yXF7cQXo1Et7Qenw2JFdpqZIw93yjnZtu07ncVJeUy9w/CZDJiV8lU/dm+Xd26+O
-         rXKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746721470; x=1747326270;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=evoV24c74OyNWadvZaBN6elrbHipQaEllekDlYjGmj0=;
-        b=Hk29TpOMisn8v69T6sTqzE23ZeI/Myn96lV2NxAzd0Su6rJvcdDsWpMC7SGISiJqyn
-         FMnYlARIFCDfQmJLbun5ue4FUrsRJgik1b9VTfU5aeiahF0fKcYBSJg5MGK+u3dr8c5b
-         8mOXwGKp5+wmKaTugUS6Qisv40PKF8p7OQHBi8Ga4qtN+3+9ecatAoRPR1meYge8UTDY
-         /UgJp8zu3A5WnUl9Dy+1f+XLpIW/q4uDHG+MkcY9+DxCyN7Y7X4q8SdZjWnPP7Uzetpz
-         Hd64oUvYmVEXuArTwALLCNU8nTcwn152KU3eegSShy3SPLmAvyLO8qVS8yBTfeWS9y0z
-         DixQ==
-X-Gm-Message-State: AOJu0YzUoxOSauUV5fq308gXZkHDxLWWd7rUQFXV5mxgEISCO49RJ0Z/
-	vYbVR7MybfcZnu7klq/MULYUrudhoEtSEyKNbE3S0nKDNkPcU8IIbqLTul3eGhO4cmqvSrfkmy4
-	H1LlsEQ==
-X-Gm-Gg: ASbGnct5NjLAYpIgzrE+LHvg0SvPHAY8dUK47GdNI94vXvoVCcs3wJtR2tfwJGvnnY+
-	HZrcdN9rIFoCemKnOuQtEz2EW6fCfbL/bKCpSA6bqIWW7JAW+c9cQYL3soXj7Wk/UttcID0UjEn
-	0ytd1TbaBjUh83EymLKWWKNSaFt0NqeDu/1KabxVcAuU0q4nTqvC+h2R4gRNFaID6JtlRRIyrIL
-	RVy592QMrySYzZozo1GmUbrcU1b9vV5dbGm/vxjmNNrgeBYQ+SncdBBdcYSJ6K4sDzCAyINGnLG
-	rxdY5sMQwvDxaam9YtWB/SWOh9Y/8fudvu+aA7U=
-X-Google-Smtp-Source: AGHT+IFFcad8xCXt+QqWTM3+sj7HTW74QJNp9zhi4+GyHHbCrgugr6XXYAtlZ9bA11tOrOjwoEfMGA==
-X-Received: by 2002:a05:622a:2d5:b0:476:77ba:f7 with SMTP id d75a77b69052e-4944961b7e6mr64284361cf.34.1746721469338;
-        Thu, 08 May 2025 09:24:29 -0700 (PDT)
-Received: from localhost ([2603:7000:c01:2716:365a:60ff:fe62:ff29])
-        by smtp.gmail.com with UTF8SMTPSA id 6a1803df08f44-6f6e3a47327sm1482156d6.80.2025.05.08.09.24.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 May 2025 09:24:28 -0700 (PDT)
-From: Johannes Weiner <hannes@cmpxchg.org>
-To: stable@vger.kernel.org
-Cc: Brendan Jackman <jackmanb@google.com>,
-	kernel test robot <oliver.sang@intel.com>,
-	Carlos Song <carlos.song@nxp.com>,
-	Shivank Garg <shivankg@amd.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12.y 2/2] mm: page_alloc: speed up fallbacks in rmqueue_bulk()
-Date: Thu,  8 May 2025 12:24:26 -0400
-Message-ID: <20250508162426.427619-2-hannes@cmpxchg.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250508162426.427619-1-hannes@cmpxchg.org>
-References: <2025042150-hardiness-hunting-0780@gregkh>
- <20250508162426.427619-1-hannes@cmpxchg.org>
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=HxYEe7cE5uIulZeXC2YF+SOI4w3UUPKKWNVXgWcsoEw=;
+ b=hX834wJqmQn5zyM79JyUxvbAuubqK8KGYTipoHOBJC+MwJA1jdjj5FMRvaf4lp4ExbLgr9RybqAAakDKtA269GHNx85KkHFa1NvSgHLtQLMJFF3rnfHNncav2dp8bFIGeNPYqBxf30rb14EinssWY/u7EkRA/5ZmG/9TZHWHWaY=
+Received: from SJ0PR10MB5437.namprd10.prod.outlook.com (2603:10b6:a03:3aa::8)
+ by SA0PR10MB6426.namprd10.prod.outlook.com (2603:10b6:806:2c0::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.21; Thu, 8 May
+ 2025 16:27:27 +0000
+Received: from SJ0PR10MB5437.namprd10.prod.outlook.com
+ ([fe80::e4e9:670b:5d8f:f2af]) by SJ0PR10MB5437.namprd10.prod.outlook.com
+ ([fe80::e4e9:670b:5d8f:f2af%2]) with mapi id 15.20.8722.020; Thu, 8 May 2025
+ 16:27:27 +0000
+Message-ID: <4209f54b-f85c-430d-84ea-3798642561f4@oracle.com>
+Date: Thu, 8 May 2025 21:57:17 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.15 00/55] 5.15.182-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+        rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com,
+        broonie@kernel.org
+References: <20250508112559.173535641@linuxfoundation.org>
+Content-Language: en-US
+From: Vijayendra Suman <vijayendra.suman@oracle.com>
+In-Reply-To: <20250508112559.173535641@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: TYAPR01CA0192.jpnprd01.prod.outlook.com
+ (2603:1096:404:ba::36) To SJ0PR10MB5437.namprd10.prod.outlook.com
+ (2603:10b6:a03:3aa::8)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ0PR10MB5437:EE_|SA0PR10MB6426:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8df38d98-f68d-4c85-5d05-08dd8e4d388b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?Ym0wbWlGTXk0Qkc1b25xRTFyMEZ6eTB2MWk1S1NTUGJUVFV4dFFMMWs0TzB0?=
+ =?utf-8?B?NEVZQ3RjbFB0ZWJpRXY2ZHhNUlVvK2k4UktYOStRN2pGMTYxTnZHWnhMczVG?=
+ =?utf-8?B?TFdwVllxeFFNV29YYmt5SlNjRFFia0MyaHdqTGZ4YjV1VTFVeEJHQ3crc21V?=
+ =?utf-8?B?UUlnRU9mWGd4VWhtVnNxZ3NVbkI1QVlGalQzS2c2UmJWREVvRFhFZ1FKSDJL?=
+ =?utf-8?B?VVhRR01TeHJOcWNUSUsydUlHS2hkeTFtMzBIZjNOZ0dBQlRQT3I5Tk9wTTEy?=
+ =?utf-8?B?M0tmdUZkd2p0MUVnTFBsdnUycFQvWW4vNVFxOWN0TjRUdXgzbDliVzBIU0VO?=
+ =?utf-8?B?bWF5bnpUR2dYYnVzbVFFOXJKWXllZ1BGY0ZoUGFpOTZoSEdpb1UwekFwUVZN?=
+ =?utf-8?B?QzI0aC9rbmgrTDdSTytQY2J0bnlXMUx6OFE2QXg1VUNyRThPSmFKcE14MTZL?=
+ =?utf-8?B?aFQ4T0h5YkRiVE1sOWxRK1h3UGJkRGQxVHFmUE5YWEZZam9CQkx1emM2ZnB5?=
+ =?utf-8?B?QTZpUWtyZ1JkalhVL1VpOUNlTlg4RTcrT21kakNHRXVEMHZJQThQc0dDRng1?=
+ =?utf-8?B?eE1QK3lFQWptVlppcm1MbHFuQm5EM0RsMlB4NUF4R1Vra2MwLzQvTldBZDlX?=
+ =?utf-8?B?V1lpdWZoeDUvWUJjVUIrbEV6SG1McDhsNTkvWVRyL2dTc00zekgrMCtZcXh3?=
+ =?utf-8?B?U2xscWJiUzBCbE1aRnVkMVN1eisvZStoMUw2cmR0RFU2clhIdmJxZWFXamt4?=
+ =?utf-8?B?RjU5NDhLRzZWQjBTczlJaVJQQkt4QWlya25ZQlhrTGJoc1h0SEszQWQ4VVkw?=
+ =?utf-8?B?MWtINmJIZ0VUeGFHOGNoN3d5ZDFxQk92SzJWVTZhaGRaZFdzbnNQQUMvME12?=
+ =?utf-8?B?UEpQanJick5YY09GQ0p1MG0wYXNvZkFURGhIR042dHU1aTVSdE9uL3hLS3dt?=
+ =?utf-8?B?TGxxbjJLSlppVDA4QWxOY0lwN2F6Y0o2QU1SUUNPaVVhamtYbS82NHlFL0JW?=
+ =?utf-8?B?WUQvV0RhMTB0VDE2TW9qZ1dmbGdZUjNwMDFBUEluaXA4RURjNXpxcE82ZEV4?=
+ =?utf-8?B?Mk9GMDBJQ21FcUI5V2wzdTRhZ1cxc2VLNHFUUTBab0hYczN2NnIySWJZQllX?=
+ =?utf-8?B?UU9wejFpT0NsaTM3SHY0OTIrT3hUb0hpSWFsRmNQTmx2MlpNdDI1eHNnNlJr?=
+ =?utf-8?B?Sm9Ld05YZTYycnd5dkN2Qis3NC9LYlcxYlptUXJkTDkrN3pmNUVvMlAvNWdl?=
+ =?utf-8?B?dEMwallyTTl5SlVXUktvY1dQSFpHaGRQOSs3MVJtK2d4V0x6Q3VydXpISlhX?=
+ =?utf-8?B?UEZsZ29wWU1wc0RhNEpzNUpQQ0RlNkNScXd4RDFSNDBxcEZuc0ZRcDNqbDlJ?=
+ =?utf-8?B?S2tpeTl5VzR2NW5MVjhuQURpSWdOdGZSNUVIWHJ4ZkZHWlNGUXMxQ1luL1ZI?=
+ =?utf-8?B?eUFVd3hXTjZrZjVDVytXU2ZJT0I5aWMrUkQ2K2s0V2VoaDR2NHNWbk1tbXZn?=
+ =?utf-8?B?Wi9qNDQ1dUp3cGJqM09Xd28xVjBLM2crTUJGQkNHMGlXYlB3eHJVZEY3KzYv?=
+ =?utf-8?B?SGRtejBHcGZ2SzJtdkdETDBuYUJtdUUzNEtRbTdDZ0IzZFZ0cVFIVk9qRE5Y?=
+ =?utf-8?B?R3RaNys2Q3IzSUtub3k3YzMyKytYcUtONkVPdUFad3pSK256S3hyTWV1WG1Q?=
+ =?utf-8?B?ang4TkJ2ekRydHc3MkZ2WllNdkg4S1dhMW00ZGFZM1B1Y282Z1U3V3I2enls?=
+ =?utf-8?B?ai96RDN1YVgzWVpSMXNrM2xpRzJHQjBoMkVUbkJKT3Y5QzBZU1F1YW5hV1dP?=
+ =?utf-8?B?L0NZNUdwYzhTKzdvWjQxTXNRcEJqcFgrcEk0RU0xR2hUNXEyUmp1Qi9JOGVD?=
+ =?utf-8?B?NlYzZkdySFFaUEk5TmlRN242MnBIN0dWSEdJME53MFdacUs5aUYzMEUrdy9T?=
+ =?utf-8?Q?1Fnv2J4wdIM=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR10MB5437.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?ZlIwU1lqOG9UVEI0SDg4dW93bENkUk5YV3VFTEUyYjJBRDFOblNFSkpHcTVK?=
+ =?utf-8?B?aTZTWUc4WkI3SVFmeXRBQ2p1OFFuZmdxcjViUHFRSmZsV0ZUc2l3aUtieEE0?=
+ =?utf-8?B?bjE1ODFkcE1aTDRXTmg1eldmMGlzeTJtWVMzeXRXOUVyUjBqeXByb3hwK2l4?=
+ =?utf-8?B?bHFGV1RoTXF0akg5cGRockw1NDlmN3dOQnR0bkdRdWRnRjFnSU1uRk5CQnZi?=
+ =?utf-8?B?NGIxblZIM2ZaL3VEU1J1MTZVK2NmeGNyVk96V0E2bVNwaVk4ZngzL2ZkVkJI?=
+ =?utf-8?B?NHBGNXhVVk95bXJBZzZhZXJSaisyeUJWNkdvQWVKL0ppd0VZb1BJSUZ5aUJJ?=
+ =?utf-8?B?QW5JK0ZpNUFMRVRpSmlLUzNZbVVMTmNjdlJUTERqYUdONHM4cUJZZ3RBTVVB?=
+ =?utf-8?B?aENCcmliT0g4clZXcEF4U1NOM3ZhbmNzSy8yb0NvenZXMWhxTVR0ZnBGSFVt?=
+ =?utf-8?B?RkNvam5LUUI4T3BidDFBSjkyVGk2WCs2bWJYN3NjUExSZkVjVGVwbzVHNjds?=
+ =?utf-8?B?UUxJRnJMaSttajAyeGRPUUt6SDRkdmMrMEFWSlIyWGtuVDM4QlpPTEtWT2JL?=
+ =?utf-8?B?SFdld04wb0tJN2E4ZEpCRTJ6WHBReWJ2bW4wRWQ0WDcyNDVQd0tSbGc2RkVF?=
+ =?utf-8?B?VExaY1A1Qm5oUkVNUEl2UnpyTkZYNnY5OWgzTHNZY2FabzFQUzlCSEsvMFhG?=
+ =?utf-8?B?T3B4VUI5bFJsSTBQcXNQZXIxK1I5UGd6eW8rbk9DN3NKWFY5U3dhQzdwRGdx?=
+ =?utf-8?B?Q2RFY0Zoa25wbW5VejNsQ3lZWDBNY1dUL2pRN2x0am1pNWR4YlRkbUt2aW5Y?=
+ =?utf-8?B?WUVHUEdaaXZ3dVAxWFhsVXFBZGprRmNnWDd4UVJOZG1xOUo4cDVjT2NhS3ZW?=
+ =?utf-8?B?d0U2Z2UrSTVFTndhOVF5MjJJbmptYTJpbFhHSUtPYWFIaFVGV0hJWk5kNjNV?=
+ =?utf-8?B?VjBoamlHR1IzYmhRTWMrbFYxdWI1UVNBOHNTSDhSdW14dlVmTVQ1bUprZVNr?=
+ =?utf-8?B?WVEreTh0VVVxdGFTZXlzM1NkdG1Ea3NYUm5uK0picjZQNjZ1K3RJZFc4N0l4?=
+ =?utf-8?B?Sy9sVHoxU0d3Y01CRzJLcnpRZGJ0a2hzOEgrT0tHMG80akphRXVocTF4dGtQ?=
+ =?utf-8?B?VTFJdHNEOWQ0TUE5b3JXaWZoOWhhQlQwQ0xyTEo4ZXFaL1FVei8rYUhQdFJT?=
+ =?utf-8?B?S0dyWlV0M1MwbEhHR3U4dHpwcVM5bk92TTJDNStocHBySHd4U3A0eXZDSXFE?=
+ =?utf-8?B?OU92UFJodVk2aFdUc2liVElKbHFuLytzUk00a2o3WVBXNEhsSEtmdldORVJ2?=
+ =?utf-8?B?S1R6WWtvN0NzekxVeWVLeHE3eEErN1BweHpXQkJic1NOOW9sWm0zR2JGYlNh?=
+ =?utf-8?B?NENGODg5WHRSOTQrNGNRNE1xc3VNZEY4VU00T3NJNDRaZlhpVkdRcUhmM3NQ?=
+ =?utf-8?B?djNpbkxMWUxNNU90czNyWU9NVE1ENXpvN1Q2TzRta2ZveHVIWWxyMGtqeEtv?=
+ =?utf-8?B?bXBYL3BkZjA4Y2dtRUdQTmtqaDErQlJOSUd6Vms4R1pZTm5lUUNsUHVkOFRM?=
+ =?utf-8?B?cVpJWkozMUpHVzNxcG9lOG5GTC9USnoyTU13NDBncFpaSnV2a3dDS3pPVmdk?=
+ =?utf-8?B?dkVUZnlVbzhQSjF0cFgvR3hyZ0Q5R0VuT0xWNXZzMjhYSmttTTI4V3lISTA5?=
+ =?utf-8?B?OCtXZjcwL1lSOTJZMW83ZTFtWFpzOVBCYTBQaWZiZlBEV0ljc0x0RHlIeUJ6?=
+ =?utf-8?B?WnA5SXVYZ3pERUF1ZTlGcGw3dG4xeEVmajk3MHRXS0Eza0pzbkhYWEt6TFlV?=
+ =?utf-8?B?NU1DTEZHaDA3UHpKVFBsQ3Jjamw1Umt5MGhEbE9pbmdNZ3BEM0diMGd6dmhm?=
+ =?utf-8?B?U0J0bTZoTWRvOFFlRTRxLzdvY09kN2MwNkxNTzVpWk9ZOWhmQlo0NFBzWUFk?=
+ =?utf-8?B?UkF5Rllvd0EreGcySSt5eTE0b1lhb1RBM3BVK01ZWmZEaWxTUURlbmYzT1ly?=
+ =?utf-8?B?bW8zOFphcm4yTlJlMFFRaWNFSjMxWUNZditwNmhzSHJTbi8vZ2ZNWDc3SVU5?=
+ =?utf-8?B?cUd3UkhLempha2wyRDRkS3JSKzQwaHgrcEgzMG94UkhLS1QvQnlNK2N5WlJh?=
+ =?utf-8?B?WkY4bHJocGFRYklJOGd0VW0rSm53bUJVTGRJUmNCb2hKd3kxcG9xclBhS2Vu?=
+ =?utf-8?B?V0E9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	psuZyztZ490pOLCiE4qNSqthQ5xLYl9O6BmAofWSljd9Cwp9PajrDYBOLoh0CPPysRXk3vMCNsScTEpg+gpyESY2am7haYUKuB6iBEI2MmwkNqxwLf90GogYz67KUag5AE+8a82kVDOpm7jIVfKRKDbxLGs4g3FtP08vPQNlFAUydVxEz5xVmI9g3DsHH2Xiw43Op4L5whFAOVyu2HwNSgf2xxDPJRK2GeqO/VDZ06uQJMY9rOd3Xhr9xxQTl1Jm72ABYg7iSm8u+Y6ASSHZQdeXwqZJ8VqkVH22+bQm8THMqaleBOTrF/aXmXSIWQHxN6q9Txq+zUCgNxvGGIEZxq/J2IVlubKS3I/l8lpdN772YeeLEoljLP2RgcGZjC8AO6bskNelm9O51FI27RJZO/3yzWc4/bTWDvoV0og6PDlTe36PdMawSrf00bKez2Yc8fXTm10MzrJ2+uzfmJBCsnkc43oAf1wsENYJZiXesKIlGDQVtyhZ0WZRLXnqlWNCcanyE5Vm+P3xJLoznD7VNxPNOUmCXIUzHuibrdY70OefauNHRybfCsZI1uQHI/Cb79hplaBFMNQV/IdAvdBxozt18ykbPzV8Cs1iMMLkOQY=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8df38d98-f68d-4c85-5d05-08dd8e4d388b
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR10MB5437.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 May 2025 16:27:27.3297
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: YfQ5AfHpXsqQiM6OSlqpIBE3qzufPrssaAoPukt3HGNNIL3PEV/3seUR1PoqJXehe3uQPbQXF0/KwXjXi1Vo3AiwO3QFAHy18JmVICvGEx4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR10MB6426
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-08_05,2025-05-08_02,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 bulkscore=0 malwarescore=0
+ adultscore=0 mlxscore=0 spamscore=0 mlxlogscore=999 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2504070000
+ definitions=main-2505080143
+X-Authority-Analysis: v=2.4 cv=YOWfyQGx c=1 sm=1 tr=0 ts=681cdb76 cx=c_pps a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10
+ a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=GoEa3M9JfhUA:10 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8 a=8-vRK6DNSD7UNujOA5sA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: v_YDsvGB9yt_knuFNxcCVCcFC25nJ_Kv
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA4MDE0NCBTYWx0ZWRfX9+8DRYdKlj2U FISs+pS1N1Qd3RbFPFgQWThtUwNDuoUiHTWJ3y0+x1PRHxYTjda3oR5wYWMeOzg3dqZ551ln/Sx 41iYygZ3qanseAdcDO2xHU0TDRXO1DPKGPXBjIXI4VJrBfcVPUMO3xEPEsVBvSUHnFY9xpN6DPv
+ fWSgYUvRSpqviznD+ngY8EFcgWGr6zc5ofAnFUddlJ+tnggBh8eb5tj7yrRhQIYU5YV69ex3iHW KJ//bF/E96GLhHPorabnZPXJ+JNACE++ucl8jeNueGROVZLU6+Z6u3esCqTHu3cYTFphwDFny3F WLe0IVAACp63MRq09d7mq2DyG+8J6anOLuR+P5yKl3XyxGax/a0ntUt0SrmAObnLImWLj6pSX7L
+ ihmZ6ueVpb8GHO3+h2NqrF3JQPhli7hoe55ZhjTj90JdQswB++mooY8HaYcKHlRUAoaT3d2F
+X-Proofpoint-GUID: v_YDsvGB9yt_knuFNxcCVCcFC25nJ_Kv
 
-The test robot identified c2f6ea38fc1b ("mm: page_alloc: don't steal
-single pages from biggest buddy") as the root cause of a 56.4% regression
-in vm-scalability::lru-file-mmap-read.
 
-Carlos reports an earlier patch, c0cd6f557b90 ("mm: page_alloc: fix
-freelist movement during block conversion"), as the root cause for a
-regression in worst-case zone->lock+irqoff hold times.
 
-Both of these patches modify the page allocator's fallback path to be less
-greedy in an effort to stave off fragmentation.  The flip side of this is
-that fallbacks are also less productive each time around, which means the
-fallback search can run much more frequently.
+On 08/05/25 5:00 pm, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.182 release.
+> There are 55 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sat, 10 May 2025 11:25:42 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/ 
+> patch-5.15.182-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
 
-Carlos' traces point to rmqueue_bulk() specifically, which tries to refill
-the percpu cache by allocating a large batch of pages in a loop.  It
-highlights how once the native freelists are exhausted, the fallback code
-first scans orders top-down for whole blocks to claim, then falls back to
-a bottom-up search for the smallest buddy to steal.  For the next batch
-page, it goes through the same thing again.
+No issues were seen on x86_64 and aarch64 platforms with our testing.
 
-This can be made more efficient.  Since rmqueue_bulk() holds the
-zone->lock over the entire batch, the freelists are not subject to outside
-changes; when the search for a block to claim has already failed, there is
-no point in trying again for the next page.
+Tested-by: Vijayendra Suman <vijayendra.suman@oracle.com>
 
-Modify __rmqueue() to remember the last successful fallback mode, and
-restart directly from there on the next rmqueue_bulk() iteration.
 
-Oliver confirms that this improves beyond the regression that the test
-robot reported against c2f6ea38fc1b:
+> 
+> thanks,
+> 
+> greg k-h
 
-commit:
-  f3b92176f4 ("tools/selftests: add guard region test for /proc/$pid/pagemap")
-  c2f6ea38fc ("mm: page_alloc: don't steal single pages from biggest buddy")
-  acc4d5ff0b ("Merge tag 'net-6.15-rc0' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net")
-  2c847f27c3 ("mm: page_alloc: speed up fallbacks in rmqueue_bulk()")   <--- your patch
+Thanks
+Vijay
 
-f3b92176f4f7100f c2f6ea38fc1b640aa7a2e155cc1 acc4d5ff0b61eb1715c498b6536 2c847f27c37da65a93d23c237c5
----------------- --------------------------- --------------------------- ---------------------------
-         %stddev     %change         %stddev     %change         %stddev     %change         %stddev
-             \          |                \          |                \          |                \
-  25525364 ±  3%     -56.4%   11135467           -57.8%   10779336           +31.6%   33581409        vm-scalability.throughput
-
-Carlos confirms that worst-case times are almost fully recovered
-compared to before the earlier culprit patch:
-
-  2dd482ba627d (before freelist hygiene):    1ms
-  c0cd6f557b90  (after freelist hygiene):   90ms
- next-20250319    (steal smallest buddy):  280ms
-    this patch                          :    8ms
-
-[jackmanb@google.com: comment updates]
-  Link: https://lkml.kernel.org/r/D92AC0P9594X.3BML64MUKTF8Z@google.com
-[hannes@cmpxchg.org: reset rmqueue_mode in rmqueue_buddy() error loop, per Yunsheng Lin]
-  Link: https://lkml.kernel.org/r/20250409140023.GA2313@cmpxchg.org
-Link: https://lkml.kernel.org/r/20250407180154.63348-1-hannes@cmpxchg.org
-Fixes: c0cd6f557b90 ("mm: page_alloc: fix freelist movement during block conversion")
-Fixes: c2f6ea38fc1b ("mm: page_alloc: don't steal single pages from biggest buddy")
-Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-Signed-off-by: Brendan Jackman <jackmanb@google.com>
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Reported-by: Carlos Song <carlos.song@nxp.com>
-Tested-by: Carlos Song <carlos.song@nxp.com>
-Tested-by: kernel test robot <oliver.sang@intel.com>
-Closes: https://lore.kernel.org/oe-lkp/202503271547.fc08b188-lkp@intel.com
-Reviewed-by: Brendan Jackman <jackmanb@google.com>
-Tested-by: Shivank Garg <shivankg@amd.com>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>	[6.10+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 90abee6d7895d5eef18c91d870d8168be4e76e9d)
-Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
----
- mm/page_alloc.c | 113 ++++++++++++++++++++++++++++++++++--------------
- 1 file changed, 80 insertions(+), 33 deletions(-)
-
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index bfc0139d2f45..d29da0c6a7f2 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -2164,22 +2164,15 @@ static bool unreserve_highatomic_pageblock(const struct alloc_context *ac,
- }
- 
- /*
-- * Try finding a free buddy page on the fallback list.
-- *
-- * This will attempt to steal a whole pageblock for the requested type
-- * to ensure grouping of such requests in the future.
-- *
-- * If a whole block cannot be stolen, regress to __rmqueue_smallest()
-- * logic to at least break up as little contiguity as possible.
-+ * Try to allocate from some fallback migratetype by claiming the entire block,
-+ * i.e. converting it to the allocation's start migratetype.
-  *
-  * The use of signed ints for order and current_order is a deliberate
-  * deviation from the rest of this file, to make the for loop
-  * condition simpler.
-- *
-- * Return the stolen page, or NULL if none can be found.
-  */
- static __always_inline struct page *
--__rmqueue_fallback(struct zone *zone, int order, int start_migratetype,
-+__rmqueue_claim(struct zone *zone, int order, int start_migratetype,
- 						unsigned int alloc_flags)
- {
- 	struct free_area *area;
-@@ -2216,14 +2209,29 @@ __rmqueue_fallback(struct zone *zone, int order, int start_migratetype,
- 		page = get_page_from_free_area(area, fallback_mt);
- 		page = try_to_steal_block(zone, page, current_order, order,
- 					  start_migratetype, alloc_flags);
--		if (page)
--			goto got_one;
-+		if (page) {
-+			trace_mm_page_alloc_extfrag(page, order, current_order,
-+						    start_migratetype, fallback_mt);
-+			return page;
-+		}
- 	}
- 
--	if (alloc_flags & ALLOC_NOFRAGMENT)
--		return NULL;
-+	return NULL;
-+}
-+
-+/*
-+ * Try to steal a single page from some fallback migratetype. Leave the rest of
-+ * the block as its current migratetype, potentially causing fragmentation.
-+ */
-+static __always_inline struct page *
-+__rmqueue_steal(struct zone *zone, int order, int start_migratetype)
-+{
-+	struct free_area *area;
-+	int current_order;
-+	struct page *page;
-+	int fallback_mt;
-+	bool can_steal;
- 
--	/* No luck stealing blocks. Find the smallest fallback page */
- 	for (current_order = order; current_order < NR_PAGE_ORDERS; current_order++) {
- 		area = &(zone->free_area[current_order]);
- 		fallback_mt = find_suitable_fallback(area, current_order,
-@@ -2233,25 +2241,28 @@ __rmqueue_fallback(struct zone *zone, int order, int start_migratetype,
- 
- 		page = get_page_from_free_area(area, fallback_mt);
- 		page_del_and_expand(zone, page, order, current_order, fallback_mt);
--		goto got_one;
-+		trace_mm_page_alloc_extfrag(page, order, current_order,
-+					    start_migratetype, fallback_mt);
-+		return page;
- 	}
- 
- 	return NULL;
--
--got_one:
--	trace_mm_page_alloc_extfrag(page, order, current_order,
--		start_migratetype, fallback_mt);
--
--	return page;
- }
- 
-+enum rmqueue_mode {
-+	RMQUEUE_NORMAL,
-+	RMQUEUE_CMA,
-+	RMQUEUE_CLAIM,
-+	RMQUEUE_STEAL,
-+};
-+
- /*
-  * Do the hard work of removing an element from the buddy allocator.
-  * Call me with the zone->lock already held.
-  */
- static __always_inline struct page *
- __rmqueue(struct zone *zone, unsigned int order, int migratetype,
--						unsigned int alloc_flags)
-+	  unsigned int alloc_flags, enum rmqueue_mode *mode)
- {
- 	struct page *page;
- 
-@@ -2270,16 +2281,49 @@ __rmqueue(struct zone *zone, unsigned int order, int migratetype,
- 		}
- 	}
- 
--	page = __rmqueue_smallest(zone, order, migratetype);
--	if (unlikely(!page)) {
--		if (alloc_flags & ALLOC_CMA)
-+	/*
-+	 * First try the freelists of the requested migratetype, then try
-+	 * fallbacks modes with increasing levels of fragmentation risk.
-+	 *
-+	 * The fallback logic is expensive and rmqueue_bulk() calls in
-+	 * a loop with the zone->lock held, meaning the freelists are
-+	 * not subject to any outside changes. Remember in *mode where
-+	 * we found pay dirt, to save us the search on the next call.
-+	 */
-+	switch (*mode) {
-+	case RMQUEUE_NORMAL:
-+		page = __rmqueue_smallest(zone, order, migratetype);
-+		if (page)
-+			return page;
-+		fallthrough;
-+	case RMQUEUE_CMA:
-+		if (alloc_flags & ALLOC_CMA) {
- 			page = __rmqueue_cma_fallback(zone, order);
--
--		if (!page)
--			page = __rmqueue_fallback(zone, order, migratetype,
--						  alloc_flags);
-+			if (page) {
-+				*mode = RMQUEUE_CMA;
-+				return page;
-+			}
-+		}
-+		fallthrough;
-+	case RMQUEUE_CLAIM:
-+		page = __rmqueue_claim(zone, order, migratetype, alloc_flags);
-+		if (page) {
-+			/* Replenished preferred freelist, back to normal mode. */
-+			*mode = RMQUEUE_NORMAL;
-+			return page;
-+		}
-+		fallthrough;
-+	case RMQUEUE_STEAL:
-+		if (!(alloc_flags & ALLOC_NOFRAGMENT)) {
-+			page = __rmqueue_steal(zone, order, migratetype);
-+			if (page) {
-+				*mode = RMQUEUE_STEAL;
-+				return page;
-+			}
-+		}
- 	}
--	return page;
-+
-+	return NULL;
- }
- 
- /*
-@@ -2291,13 +2335,14 @@ static int rmqueue_bulk(struct zone *zone, unsigned int order,
- 			unsigned long count, struct list_head *list,
- 			int migratetype, unsigned int alloc_flags)
- {
-+	enum rmqueue_mode rmqm = RMQUEUE_NORMAL;
- 	unsigned long flags;
- 	int i;
- 
- 	spin_lock_irqsave(&zone->lock, flags);
- 	for (i = 0; i < count; ++i) {
- 		struct page *page = __rmqueue(zone, order, migratetype,
--								alloc_flags);
-+					      alloc_flags, &rmqm);
- 		if (unlikely(page == NULL))
- 			break;
- 
-@@ -2898,7 +2943,9 @@ struct page *rmqueue_buddy(struct zone *preferred_zone, struct zone *zone,
- 		if (alloc_flags & ALLOC_HIGHATOMIC)
- 			page = __rmqueue_smallest(zone, order, MIGRATE_HIGHATOMIC);
- 		if (!page) {
--			page = __rmqueue(zone, order, migratetype, alloc_flags);
-+			enum rmqueue_mode rmqm = RMQUEUE_NORMAL;
-+
-+			page = __rmqueue(zone, order, migratetype, alloc_flags, &rmqm);
- 
- 			/*
- 			 * If the allocation fails, allow OOM handling and
--- 
-2.49.0
 
 
