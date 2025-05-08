@@ -1,102 +1,114 @@
-Return-Path: <stable+bounces-142781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 508AFAAF235
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 06:51:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD7E8AAF2AF
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 07:15:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B49D1C04BA8
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 04:51:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 031B04A7EF2
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 05:15:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7401620C001;
-	Thu,  8 May 2025 04:51:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DD7C2144A1;
+	Thu,  8 May 2025 05:15:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="jbX4SbYP"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="tncbnr0Z"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D050B1F63F9
-	for <stable@vger.kernel.org>; Thu,  8 May 2025 04:51:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB7692139C4;
+	Thu,  8 May 2025 05:15:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746679891; cv=none; b=iLBRtvALnI4KDG/wog+AMYiUVV3UtOGkMGMKwYSkYoRfWDmlV4BtZ8P+EPy4GIDmTWWyDbLoYU2BDl7x7jaUQKFnK4EKaRywIJgryCeGT1Waq/o9RUldK0wCCc71ojkfThXEoFWxQhlG3e14XjybUlMPxbvnplSWtpwhti/8cy8=
+	t=1746681332; cv=none; b=lpxeBIbkr2YRu6JsZhACki68CRV/vAjokj2UY36Jf89qdKA/d5fHJPpXKQNG53WNa/xdmBXz69AKodgaBLUMbmECRXb4I9xEgykylyHNh82hfN1fOCViHAHJ7FtVtJzEI4Xahqke2X3gzel44dVktTjBPkbF9X5rHRSy0OhN6l4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746679891; c=relaxed/simple;
-	bh=vH8pZApZwCxXj/zcKr2DuVOpsesqXZ3FpznsuRlEkIQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NbqdENu8yvcJs/4KUEFk7aAjEDAqBF1JIGQ0v0PIteb7FoClKHubIYqeb9aIVPQ6X+ujelR1g7E0Vum1jN+6W9Fh5IePPvtSXl/Mcet/emRulMfmWNmBBRN8IRZaYOrTT962a09M54fcGQu3PTc3R+uRu/e+OypKrAL0O1QTOmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=jbX4SbYP; arc=none smtp.client-ip=209.85.210.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-7390d21bb1cso657162b3a.2
-        for <stable@vger.kernel.org>; Wed, 07 May 2025 21:51:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1746679889; x=1747284689; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vH8pZApZwCxXj/zcKr2DuVOpsesqXZ3FpznsuRlEkIQ=;
-        b=jbX4SbYP2dKr37f14Y4b1v3LuV5fI5CxSwUHxyTAFUoR/dscDaqOjIsBnDFuVttes8
-         WD57GxqWxRwA93eV0UziNQWEpZavcBnLY0IgaYZ/qB4bXklkuEbeIWOk2X055xFRHKK0
-         ZbsusjWj1zOfSeShT4BFqi5YZUn0OpxaEjieI=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746679889; x=1747284689;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vH8pZApZwCxXj/zcKr2DuVOpsesqXZ3FpznsuRlEkIQ=;
-        b=knHjlTtUeJ5YDrOCTJdAHdonwVaM2ByZBWvojK6Z6tzq6sdxIjYCzTtzA9a1a2FXRg
-         QOPZ6JjxRWP+ufYsPp8o7IAqWYcYCgxvHxnGFfQhn6U8z2EHeksit/BXey2Q8JucI64v
-         KlI0Fk5IG1VuDMzbe+4Sskwxgr5bGK4Jr1jBOWXcRkqYgiG2hEa0VC41DA8/jsQR4ZO2
-         7UfihnROg5C/b6gD2B9VOctNhaY5kEHXAe911VGYqLHgpwnaJHCCR26EZCuFmEfpULa0
-         4lfRZupJb0GH9u/ALN/cP7oDzecCGwrCZxxPDtoj/YAo2myBQCQvOzQcS2fnm/t4v8Nl
-         SqyA==
-X-Forwarded-Encrypted: i=1; AJvYcCUOrN8JitKAnDX0b+ZZsGC14LVk2mbkwFkF+6G3ymOe+fVCIfHOaHx7Ze2d/p9JVxAtZWDVr5g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxSYajs9rAflFSkaGwQKsfF9ICzFqBaLldMwZ6E1HMYXNP00Uad
-	l5ppeU9+uHfN6q9kLtAmrZqFBKai1oK7QphPWrfYPIOPsGkQqX/hC3RACArtYCkgH6ObS1R4/o6
-	bVw==
-X-Gm-Gg: ASbGncvJKWwRHTZhgCAX8+Prc0w8FPASNZGqRCSAl4zxCjowl2aKxZpG9IWgOA7xgQz
-	XvhwBWjtmvZLqcLixGNPj6lT8zyBsipgjnwAp1GnCUC+VNUF7Xi0q4qjyX8ljDlYSqJXPTl8wtw
-	yRSwXcFQIO9t3bWATdPiH9NxVSTEQYyZs3sKbM//5w0WmupLlIWEEhPRK6noQYb9oi0pR1VUYFJ
-	O1EAH/rRBzjXDe+1LarFmmUz/Os0a2j0meijGoycUE1JoS/2WXxWYmnPJprtOpI7NthFcvtsfp2
-	daxaHjHXIKn7MZywQoop4Ktae9Gl4944L0b5zXF0N0ZM
-X-Google-Smtp-Source: AGHT+IHJt3oTtWnZHdDl97ybd6P+Hsv2F0EjcCAUaLYDnkgYwSOPmPUSLh8gTCh3PPuM9rSSslwTKw==
-X-Received: by 2002:a05:6a00:1bca:b0:736:5504:e8b4 with SMTP id d2e1a72fcca58-7409cfaf3a7mr7364505b3a.19.1746679889147;
-        Wed, 07 May 2025 21:51:29 -0700 (PDT)
-Received: from google.com ([2401:fa00:8f:203:c794:38be:3be8:4c26])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7405905ce9fsm12728777b3a.136.2025.05.07.21.51.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 May 2025 21:51:28 -0700 (PDT)
-Date: Thu, 8 May 2025 13:51:23 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org, 
-	iommu@lists.linux.dev, Tomasz Figa <tfiga@chromium.org>, 
-	Mauro Carvalho Chehab <mchehab@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Hans Verkuil <hverkuil@xs4all.nl>, Robin Murphy <robin.murphy@arm.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v3 1/3] media: videobuf2: use sgtable-based scatterlist
- wrappers
-Message-ID: <ravkxkfx6du2uovpfqwugtmm3ymmuswkusfiry3erslpgnvaz2@2gwxofmdfjye>
-References: <20250507160913.2084079-1-m.szyprowski@samsung.com>
- <CGME20250507160921eucas1p2aa77e0930944aadaaa7c090c8d3d0e73@eucas1p2.samsung.com>
- <20250507160913.2084079-2-m.szyprowski@samsung.com>
+	s=arc-20240116; t=1746681332; c=relaxed/simple;
+	bh=ISTACO0x9B1R7EsjFwT3G1ahFXPlmjZx3tK2r/IA7Gw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=sw3GORxvDEUI5Dcs+1eUggV9X1hGGL6gnRveIF/QmJWWjn29bCj0cUZ+2JMCX5eIUFB9gKzssNJ6OHhEvOh/7uJS+Xifp/zT+qFd0XG8Ipy9HLZTsFjmTlWRWpnfKr0GATmX4qdtjDrMMBzEMggXWUJyyYrImFRFajR1eR6OuWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=lst.de; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=tncbnr0Z; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=lst.de
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
+	:Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=hjROd0wIshF4nMKexOdcqPc3YUZQgQDvNXYUo/8KwuY=; b=tncbnr0Z/51DQlCz6NmFJZGyGG
+	aT5jujsnIXf19DNcnuMwusr8F6xwrqODAPPL9iFemFFE57h1vKdZUjODAEz3VbjoxneORcLp3Hcrf
+	hcvGv1PqEWzkPHfSq93lefR+hoh01EzsNvGxsjxP+U9D3RXMVHb/48DhFfyIfmilZQf5Ag7bdXVhp
+	J4iXUvDw0XBvLlGAeuEvMezQ+tsnOh76DlgmzV7DYzIAQU/mRPDr9FEexZIhHb9HyCI3oQiUa1lAE
+	QRBiLXPc7diNb6EwD5Qb+UHE/+k4EJO0xXwLRsmjdnLVvb4RmWnhTYcYXmD6xRMwtLF2t8Vw4jaBl
+	1yt/wrPg==;
+Received: from 2a02-8389-2341-5b80-2368-be33-a304-131f.cable.dynamic.v6.surfer.at ([2a02:8389:2341:5b80:2368:be33:a304:131f] helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1uCtbV-0000000HLfo-2btf;
+	Thu, 08 May 2025 05:15:30 +0000
+From: Christoph Hellwig <hch@lst.de>
+To: Jaegeuk Kim <jaegeuk@kernel.org>,
+	Chao Yu <chao@kernel.org>
+Cc: linux-f2fs-devel@lists.sourceforge.net,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH 1/6] f2fs: fix to return correct error number in f2fs_sync_node_pages()
+Date: Thu,  8 May 2025 07:14:27 +0200
+Message-ID: <20250508051520.4169795-2-hch@lst.de>
+X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250508051520.4169795-1-hch@lst.de>
+References: <20250508051520.4169795-1-hch@lst.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250507160913.2084079-2-m.szyprowski@samsung.com>
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 
-On (25/05/07 18:09), Marek Szyprowski wrote:
-> Use common wrappers operating directly on the struct sg_table objects to
-> fix incorrect use of scatterlists sync calls. dma_sync_sg_for_*()
-> functions have to be called with the number of elements originally passed
-> to dma_map_sg_*() function, not the one returned in sgt->nents.
+From: Chao Yu <chao@kernel.org>
 
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+If __write_node_folio() failed, it will return AOP_WRITEPAGE_ACTIVATE,
+the incorrect return value may be passed to userspace in below path,
+fix it.
+
+- sync_filesystem
+ - sync_fs
+  - f2fs_issue_checkpoint
+   - block_operations
+    - f2fs_sync_node_pages
+     - __write_node_folio
+     : return AOP_WRITEPAGE_ACTIVATE
+
+Cc: stable@vger.kernel.org
+Reported-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Chao Yu <chao@kernel.org>
+---
+ fs/f2fs/node.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/fs/f2fs/node.c b/fs/f2fs/node.c
+index ec74eb9982a5..69308523c34e 100644
+--- a/fs/f2fs/node.c
++++ b/fs/f2fs/node.c
+@@ -2092,10 +2092,14 @@ int f2fs_sync_node_pages(struct f2fs_sb_info *sbi,
+ 
+ 			ret = __write_node_folio(folio, false, &submitted,
+ 						wbc, do_balance, io_type, NULL);
+-			if (ret)
++			if (ret) {
+ 				folio_unlock(folio);
+-			else if (submitted)
++				folio_batch_release(&fbatch);
++				ret = -EIO;
++				goto out;
++			} else if (submitted) {
+ 				nwritten++;
++			}
+ 
+ 			if (--wbc->nr_to_write == 0)
+ 				break;
+-- 
+2.47.2
+
 
