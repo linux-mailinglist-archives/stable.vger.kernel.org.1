@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-142854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 567E1AAFB09
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 15:14:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 466ACAAFB14
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 15:17:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D97BE7AA490
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 13:13:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61AA73AF1BE
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 13:17:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DD2022AE5D;
-	Thu,  8 May 2025 13:14:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84F28221FD5;
+	Thu,  8 May 2025 13:17:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dwji80nG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ci4tw5th"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C2C22A4E3;
-	Thu,  8 May 2025 13:14:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 368A17F477;
+	Thu,  8 May 2025 13:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746710058; cv=none; b=iATio/0PUb57mXGKXr0nReWRxVmQ4STxQn1ktTe0lNM24wdg1nG0/VHUPmd2mPsiFWOTOlcF7z1naJS6RJMiQVXb46Z5eHrCwjct4EgzAebI3R/Y/liSVU6G9et4ZYgOSsNahRqO/iQLL6aQMzzeHo/MZCAdXsI42x37Zv7FiTs=
+	t=1746710242; cv=none; b=O/XB1c1yesOAH7YgKqLS9rbFh9q0k9etYSDVABfpFrSwFMfjzs9kMVgV42VNQhh1g8287BvfJ352Orh91/vrbkGld29O7LHZJa1J5gZ8fbQNe0MzPMUXWhA+6SMarpF84dR2bnGaJiVA/n0YjoElWl0Vuj4oydjFcB6xZThz9kM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746710058; c=relaxed/simple;
-	bh=C50vYTMMMLJegSnhiKqc3VZzFMbE07J+cq/qRHMRREs=;
+	s=arc-20240116; t=1746710242; c=relaxed/simple;
+	bh=mnccy7esbwOoSqU2ZRFDXPvTDNT5Wjn866GGEtoo0nk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o2aPf62mvoupDMcTli+lKCiz1jzUmbxndyH3d3rLSe02ZWL7MnfMcPk+nW1OXQe020As8PTWAY7v9zjO04qg2qzM7IY2bEWuwnHPoSnMQsG9QPraYQ1NkDo9qBbYDD71yXjTj92/izxyhK1vITt9Auqp2TFGOWXS7JCJoQe7xSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dwji80nG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AD8CC4CEED;
-	Thu,  8 May 2025 13:14:13 +0000 (UTC)
+	 MIME-Version; b=G3LZOLPDDoQIU5X0h6/3yYHUu7z2Y6HGjnIPw8PzJu70kpfGZMsY6C0vwf+ALltupn4sRTnqmTHnDZki9yFzExOn01mR5bXHjneAClZjbaYoZmfrr9M6W7NuKyZ2CNwAaxqFv07AQ6eVK/UKmxxHYa3kKs7aXONK4UF8QWFtH/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ci4tw5th; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D9A2C4CEE7;
+	Thu,  8 May 2025 13:17:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746710058;
-	bh=C50vYTMMMLJegSnhiKqc3VZzFMbE07J+cq/qRHMRREs=;
+	s=k20201202; t=1746710241;
+	bh=mnccy7esbwOoSqU2ZRFDXPvTDNT5Wjn866GGEtoo0nk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dwji80nGV9fIyRuxKaYf+HghXFXqx1+2kVS8apGQ/dOFuqoYL1sQZL/SOpn7wVeud
-	 PyORB8EDEusdC1FTd3M9s6Sy1GEcTgfff09JLyLEYYusqDREgxQ4rz4CdiTSLbm1g/
-	 iM1oObH3HydpD/iPKdPZtFAaMT/HHHhIj08ISV1MGKPayMMP93xolbOoVs/8y5NH8Y
-	 z+lYv+ZfCJHvmD1V2veU/99k5Hk2qp5g8TPZnEHr8UgOjxf1xPLFBlR0ZCXTq/jH0l
-	 BzXSg2p7pUyL0sPfG9+wDWUBow1Oc47lWXKFsGRwI5TbhFyZxSfkOFub8Lth1sycon
-	 Itj1nJDZuQKEQ==
+	b=Ci4tw5thzoad0Jy+2N7Yvb5nPs8oJF7LKzKLG/aOa1pyl08PSflc0I5tssLp6REel
+	 1DA/Om83ze1WcYe+wwKnhZ8aNPSbH3nhl0PoMQXIbtGh4hbEdLvw9Q8c09YpnjNYWT
+	 XSk+JZ0CmYJqcPCmAAE8RMrU+AnUj/2+Hy1h8WWTeEuz9JbCWbaByYWE3q2vrvMUF9
+	 ngCVKPr3xb4F+zO/ltHFRvDIvOQ7MXNQVtyAwhMqmIsTj8mKDxyJtM184HzhcfhDGu
+	 o8KzSwdTNI/SgLBcNwK+tQy3BfaAnReAsKMwr8OM2Vv4eQA9DFxeWcJh+29MHuoGOl
+	 QBfZw6Ituiegg==
 From: Miguel Ojeda <ojeda@kernel.org>
 To: gregkh@linuxfoundation.org
 Cc: akpm@linux-foundation.org,
@@ -62,11 +62,11 @@ Cc: akpm@linux-foundation.org,
 	sudipm.mukherjee@gmail.com,
 	torvalds@linux-foundation.org,
 	Miguel Ojeda <ojeda@kernel.org>
-Subject: Re: [PATCH 6.6 000/129] 6.6.90-rc1 review
-Date: Thu,  8 May 2025 15:14:08 +0200
-Message-ID: <20250508131408.623011-1-ojeda@kernel.org>
-In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
-References: <20250507183813.500572371@linuxfoundation.org>
+Subject: Re: [PATCH 6.12 000/164] 6.12.28-rc1 review
+Date: Thu,  8 May 2025 15:17:00 +0200
+Message-ID: <20250508131700.623429-1-ojeda@kernel.org>
+In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
+References: <20250507183820.781599563@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -75,17 +75,18 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-On Wed, 07 May 2025 20:38:56 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+On Wed, 07 May 2025 20:38:05 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
 >
-> This is the start of the stable review cycle for the 6.6.90 release.
-> There are 129 patches in this series, all will be posted as a response
+> This is the start of the stable review cycle for the 6.12.28 release.
+> There are 164 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 >
 > Responses should be made by Fri, 09 May 2025 18:37:41 +0000.
 > Anything received after that time might be too late.
 
-Boot-tested under QEMU for Rust x86_64:
+Boot-tested under QEMU for Rust x86_64, arm64 and riscv64; built-tested
+for loongarch64:
 
 Tested-by: Miguel Ojeda <ojeda@kernel.org>
 
