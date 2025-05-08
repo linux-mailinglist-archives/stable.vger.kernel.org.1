@@ -1,123 +1,161 @@
-Return-Path: <stable+bounces-142870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6F4EAAFDAA
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 16:48:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5CDAAAFDBF
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 16:50:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1704F1BA2C68
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 14:48:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 448F84C71F1
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 14:50:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5553D2777F5;
-	Thu,  8 May 2025 14:47:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4723527816D;
+	Thu,  8 May 2025 14:50:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QkzQtZO8"
+	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="jzZKrupp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp-fw-9105.amazon.com (smtp-fw-9105.amazon.com [207.171.188.204])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A46D1D514B
-	for <stable@vger.kernel.org>; Thu,  8 May 2025 14:47:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDB12279337;
+	Thu,  8 May 2025 14:50:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=207.171.188.204
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746715679; cv=none; b=Fu9LSt5cJ0d5HTN5Cz1v6OO8jnvSPn5DmwS90JBO34hDvlOgmxrsNjUOR0vBfUCceeL8EjgjRc9kHMcPJ/q0X3UnONDiXCSlSAzxHBXxnDIyn2CMzBPuTKIjBQnoC4n99udpbXwlPCxuaF9erwVc77mKwUZ+YlrHoGCdBRS7T1E=
+	t=1746715821; cv=none; b=eJlUK2X+41ZBV9iWTuSWxpuCwUOVLoqIW2qEcOsKUGxCGp0fCIhqAskWyhqxATqAejUzxDlhtUnuMEz2HjDJMDpFEWhCjZzz29GShLxAJQG1qQ1H8XynT3+gsJ+9Fi642JS+a4+7kM6VizR27scUGjC166YQsThCILFoXru3jBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746715679; c=relaxed/simple;
-	bh=OP0WRNpQ3AhTCII2JqnV9mcyFJ8DbeYGPnHp7gBLYfo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Db25L151KQwTGnlR9dSib1T1nIq0jxG9Vx+/bGElNtEgDFuJx4rT8cBzqnDsLqlORYGcLtZgE9fHeuccFhKCUxmf9LAIVXrFD7X4KTWEuDCV5+l1vPOHcopzAgdC+U62O/ZorBJOEsSTCVy+voljzJN7sRSEdNm51krpAGF3nuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QkzQtZO8; arc=none smtp.client-ip=209.85.160.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-2d071fcd89bso473741fac.3
-        for <stable@vger.kernel.org>; Thu, 08 May 2025 07:47:57 -0700 (PDT)
+	s=arc-20240116; t=1746715821; c=relaxed/simple;
+	bh=kSyOd/YqwB4I7SCdXQSrZ2DZeX6cJamcOQno4YyOQA0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=K4zFU3WkZfm9r7VmRPcdhC1xjE7t+PU59hsu4DJWAVb05x9OQYmP9CljHAmdwu0O8DE8/x5Y7Xxp7DuucKTMQr4IJ/Ptp5rLTC/rKavamnVKC2LK/aYE13FxtC0Qu2hQvFvBokXQAjO+1U0oil99WHlq9x0TDBPuO9zYx1q2SlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=jzZKrupp; arc=none smtp.client-ip=207.171.188.204
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1746715676; x=1747320476; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ZbKXS17FLCeINM3f26BpfyHxYt8ulznWKq5GCJKKZ7s=;
-        b=QkzQtZO8aY6n3+WjKEIL7hwWinNpcpRYlo4iqe/lflSF9tRKi/cvmluvESHQi1feNi
-         9iRHotQSUD4gIyl32OQV9tzXIvCaVzNzZmnN1dKRkJixlXjtQi+feAlCtfmMQ/ctMN6h
-         ZoEIMxcI60owOdTWdo3u5OqfdKfEppQnGcx0s=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746715676; x=1747320476;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZbKXS17FLCeINM3f26BpfyHxYt8ulznWKq5GCJKKZ7s=;
-        b=n2nx7P1/YBHKmD4ajcZnhikKbgsJ2DxGEc9K2CqwVyDCMFTyyhdOd66y1sMm0Ik3Qk
-         C4aUEZ2qpQuPsFUXOmkFlQsN6F8UQKgtTTecrbij6NylVNAzWKyNPBn60aNiCJDCF/GW
-         V+t4r+CXIJ5cI6lWDkt5CiLY3phbfYCauZmLhfeZTc2dFNqlOzqxPNVd8FiSeFVs6ywe
-         XyaBepLj4JlTkuhIbEjRJWtZu+CWwPj5T4H/WfQeECW2De4y+D12EvIPRPqYrxEan3bT
-         rfxrvNAsp1zA7Lo1VZ2OmVaKgaoK7Fn5YqNR5DLMYnpnuWvsrkHmhRQwxasboqwpz3RY
-         Q2xQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXFzPBh0Xl6A09w5BGP1/C/MQMmdPWyW31BNrTFRU7ZwLdJYGOMsNYWWBDFJt4db8AxrcTC39E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRu8T+iHeDAYEljxYtOsXbPpoaSlnvn3R326WoxLuXJ9F+zr61
-	IqTLdrSpc8UZHS+9vwu0CXaMZ9klDJwGr7DwZESWbwwSfpMzNrYBl5bG2IHlQZk=
-X-Gm-Gg: ASbGncu/k0mCAB8c0Binci+4FfGo2fgl7ZX+2tefYYHZfNT0aiS5z4Hw/Cgb71Hlh/N
-	EopxuswqDLuehqSGT2y2G6U3zta8rZYjEYobo3ALXj55PE9i4QUEa6Vz+8veeZhkU3RGzotyP/R
-	Xlbo3SDloNqD4/IDyIRO+1WqejdxyGtIaUYqZZ3fgpvaSTrsecSy5TkNN+vM3ex09YRmLHCAGDU
-	rarbSaoeU4/9+uGZP5+aJjjhx5preUFUcB2XxzQ84VtK/uOsvhK60zHT3nljk5ZE808/NGTDD0r
-	JMs+Z9vjpjF/khNlKskd7h7gm7CcXLMcGRg36AwTC/70QdSbJpw=
-X-Google-Smtp-Source: AGHT+IGEA5a4mOTrYmH7D6XLU6ZecdwkH7ReVPSCIEcHWSuV4+go/qkk5dvHLhAUPmYAL8ZzKUhwxw==
-X-Received: by 2002:a05:6871:20d:b0:2d4:d393:8e47 with SMTP id 586e51a60fabf-2db5bd5c4d3mr4693133fac.4.1746715676231;
-        Thu, 08 May 2025 07:47:56 -0700 (PDT)
-Received: from [192.168.1.14] ([38.175.170.29])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4f88a91977bsm3220210173.54.2025.05.08.07.47.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 08 May 2025 07:47:55 -0700 (PDT)
-Message-ID: <e6503d21-6e95-44d4-bf84-9412d61d7605@linuxfoundation.org>
-Date: Thu, 8 May 2025 08:47:55 -0600
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
+  t=1746715817; x=1778251817;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-id:mime-version:
+   content-transfer-encoding;
+  bh=BHpCAxEHtnyUYUm3CkHmDoIQw35lsCllGPJ1yOn0X/M=;
+  b=jzZKruppJ9XiyNyM96RJUYQFfvubslfmg+agRJsgcLNXMKxkK/zosHov
+   n6Snk9KmcFARQ2exLyMne70+TpgsZO2Ob167yLUVO+ukCB48fCuDaFNSR
+   oSMT91gh4OJO9HtvjJrJK/bif7jz5Hai25M6W1KUdZvD/cgKSF1FQxFjv
+   y3SfkM8AKcu+RpM4eihDPh/9ZRbo050sUqBGiFzrDl7tdm4IVgyPNwps8
+   E/e77Hi+qgL/QAjyT4ARkttDzaBOOIWV+66ZGjFhP7cS7uJCP89AoILqV
+   jUs7SZT1s0bOd812QhmNg87t8X9whKd+Le7svKDuImOE+uGmG8hTWJpeu
+   w==;
+X-IronPort-AV: E=Sophos;i="6.15,272,1739836800"; 
+   d="scan'208";a="17815690"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.210])
+  by smtp-border-fw-9105.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2025 14:50:09 +0000
+Received: from EX19MTAEUB001.ant.amazon.com [10.0.17.79:2671]
+ by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.32.128:2525] with esmtp (Farcaster)
+ id 44994329-5418-4e57-adac-c37e048f9fa5; Thu, 8 May 2025 14:50:06 +0000 (UTC)
+X-Farcaster-Flow-ID: 44994329-5418-4e57-adac-c37e048f9fa5
+Received: from EX19D008EUC002.ant.amazon.com (10.252.51.146) by
+ EX19MTAEUB001.ant.amazon.com (10.252.51.26) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Thu, 8 May 2025 14:50:06 +0000
+Received: from EX19D008EUC001.ant.amazon.com (10.252.51.165) by
+ EX19D008EUC002.ant.amazon.com (10.252.51.146) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Thu, 8 May 2025 14:50:06 +0000
+Received: from EX19D008EUC001.ant.amazon.com ([fe80::9611:c62b:a7ba:aee1]) by
+ EX19D008EUC001.ant.amazon.com ([fe80::9611:c62b:a7ba:aee1%3]) with mapi id
+ 15.02.1544.014; Thu, 8 May 2025 14:50:06 +0000
+From: "Heyne, Maximilian" <mheyne@amazon.de>
+To: Jeremy Linton <jeremy.linton@arm.com>
+CC: "rafael@kernel.org" <rafael@kernel.org>, "lenb@kernel.org"
+	<lenb@kernel.org>, "jmeurin@google.com" <jmeurin@google.com>,
+	"linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"sudeep.holla@arm.com" <sudeep.holla@arm.com>, Yicong Yang
+	<yangyicong@hisilicon.com>, "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH] ACPI: PPTT: Fix processor subtable walk
+Thread-Topic: [PATCH] ACPI: PPTT: Fix processor subtable walk
+Thread-Index: AQHbwCh8rUbZYEeM7U2CpGyi5RqI0g==
+Date: Thu, 8 May 2025 14:50:06 +0000
+Message-ID: <20250508-laugh-stud-e5037c82@mheyne-amazon>
+References: <20250508023025.1301030-1-jeremy.linton@arm.com>
+In-Reply-To: <20250508023025.1301030-1-jeremy.linton@arm.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+Content-Type: text/plain; charset="us-ascii"
+Content-ID: <2D3D35BEE9554B4D99A6B058091F6CEE@amazon.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.12 000/164] 6.12.28-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- Shuah Khan <skhan@linuxfoundation.org>
-References: <20250507183820.781599563@linuxfoundation.org>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20250507183820.781599563@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 
-On 5/7/25 12:38, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.12.28 release.
-> There are 164 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Fri, 09 May 2025 18:37:41 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.28-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
+On Wed, May 07, 2025 at 09:30:25PM -0500, Jeremy Linton wrote:
+> The original PPTT code had a bug where the processor subtable length
+> was not correctly validated when encountering a truncated
+> acpi_pptt_processor node.
+> =
 
-Compiled and booted on my test system. No dmesg regressions.
+> Commit 7ab4f0e37a0f4 ("ACPI PPTT: Fix coding mistakes in a couple of
+> sizeof() calls") attempted to fix this by validating the size is as
+> large as the acpi_pptt_processor node structure. This introduced a
+> regression where the last processor node in the PPTT table is ignored
+> if it doesn't contain any private resources. That results errors like:
+> =
 
-Tested-by: Shuah Khan <skhan@linuxfoundation.org>
+>   ACPI PPTT: PPTT table found, but unable to locate core XX (XX)
+>   ACPI: SPE must be homogeneous
+> =
 
-thanks,
--- Shuah
+> Furthermore, it fail in a common case where the node length isn't
+> equal to the acpi_pptt_processor structure size, leaving the original
+> bug in a modified form.
+> =
+
+> Correct the regression by adjusting the loop termination conditions as
+> suggested by the bug reporters. An additional check performed after
+> the subtable node type is detected, validates the acpi_pptt_processor
+> node is fully contained in the PPTT table. Repeating the check in
+> acpi_pptt_leaf_node() is largely redundant as the node is already
+> known to be fully contained in the table.
+> =
+
+> The case where a final truncated node's parent property is accepted,
+> but the node itself is rejected should not be considered a bug.
+> =
+
+> Fixes: 7ab4f0e37a0f4 ("ACPI PPTT: Fix coding mistakes in a couple of size=
+of() calls")
+> Reported-by: Maximilian Heyne <mheyne@amazon.de>
+> Closes: https://lore.kernel.org/linux-acpi/20250506-draco-taped-15f475cd@=
+mheyne-amazon/
+> Reported-by: Yicong Yang <yangyicong@hisilicon.com>
+> Closes: https://lore.kernel.org/linux-acpi/20250507035124.28071-1-yangyic=
+ong@huawei.com/
+> Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
+> Cc: Jean-Marc Eurin <jmeurin@google.com>
+> Cc: <stable@vger.kernel.org>
+
+Thank you so much for providing this proper fix and also thanks for the
+great discussions. This allowed my to learn new things. Much
+appreciated.
+
+I confirm the fix works for me. Therefore,
+
+Tested-by: Maximilian Heyne <mheyne@amazon.de>
+
+
+
+
+Amazon Web Services Development Center Germany GmbH
+Tamara-Danz-Str. 13
+10243 Berlin
+Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
+Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
+Sitz: Berlin
+Ust-ID: DE 365 538 597
+
 
