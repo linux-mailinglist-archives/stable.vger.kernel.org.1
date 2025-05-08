@@ -1,157 +1,102 @@
-Return-Path: <stable+bounces-142780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BD29AAF20A
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 06:16:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 508AFAAF235
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 06:51:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D9081C022E1
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 04:16:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B49D1C04BA8
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 04:51:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64E1B1925AB;
-	Thu,  8 May 2025 04:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7401620C001;
+	Thu,  8 May 2025 04:51:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="jbX4SbYP"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0568BEE;
-	Thu,  8 May 2025 04:16:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D050B1F63F9
+	for <stable@vger.kernel.org>; Thu,  8 May 2025 04:51:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746677771; cv=none; b=aILSefZtd+Juawpj4h7L3AGbTozapDIe/08cOCMdc9FIqN4m7+UUhHisXpgn5OK8wPHARTvvVM+9EjEnaKe3Eqgbosa0vdg4ZPKJ2QMvYkiXSGBonngSO67o418l532+F4h5bbNPWMLf5E0Q3PgBJ6ny1P0Sllak10R/BrHPCzA=
+	t=1746679891; cv=none; b=iLBRtvALnI4KDG/wog+AMYiUVV3UtOGkMGMKwYSkYoRfWDmlV4BtZ8P+EPy4GIDmTWWyDbLoYU2BDl7x7jaUQKFnK4EKaRywIJgryCeGT1Waq/o9RUldK0wCCc71ojkfThXEoFWxQhlG3e14XjybUlMPxbvnplSWtpwhti/8cy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746677771; c=relaxed/simple;
-	bh=SYPfWTFh0S/3r3Zj9WHCONJnjPTTvaA4ymNvkrkBam0=;
-	h=CC:Subject:To:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=ga3q/RvU3qZbmp61P1oDs30NxXma97YJaRZM/gfUYd6NiiRFStCQPrOw3XkPJPG7kHZNOZceQZh0aCxSczfyngbntKu2NfrrgRVGpZM8Hc+msA8qConiWcWo1WKq7dmbzEDN5nyRC3ICjrQ9NrainJKsPJpfBsIez95HzOkKVQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.162.112])
-	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4ZtJMY12t6z27hdY;
-	Thu,  8 May 2025 12:00:57 +0800 (CST)
-Received: from kwepemd200014.china.huawei.com (unknown [7.221.188.8])
-	by mail.maildlp.com (Postfix) with ESMTPS id 11A16140277;
-	Thu,  8 May 2025 12:00:11 +0800 (CST)
-Received: from [10.67.121.177] (10.67.121.177) by
- kwepemd200014.china.huawei.com (7.221.188.8) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1748.10; Thu, 8 May 2025 12:00:10 +0800
-CC: <yangyicong@hisilicon.com>, <lenb@kernel.org>, <jmeurin@google.com>,
-	<linux-acpi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<sudeep.holla@arm.com>, Maximilian Heyne <mheyne@amazon.de>,
-	<stable@vger.kernel.org>
-Subject: Re: [PATCH] ACPI: PPTT: Fix processor subtable walk
-To: Jeremy Linton <jeremy.linton@arm.com>, <rafael@kernel.org>
-References: <20250508023025.1301030-1-jeremy.linton@arm.com>
-From: Yicong Yang <yangyicong@huawei.com>
-Message-ID: <14393dc8-692d-eea2-c8c0-76125806622c@huawei.com>
-Date: Thu, 8 May 2025 12:00:09 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.1
+	s=arc-20240116; t=1746679891; c=relaxed/simple;
+	bh=vH8pZApZwCxXj/zcKr2DuVOpsesqXZ3FpznsuRlEkIQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NbqdENu8yvcJs/4KUEFk7aAjEDAqBF1JIGQ0v0PIteb7FoClKHubIYqeb9aIVPQ6X+ujelR1g7E0Vum1jN+6W9Fh5IePPvtSXl/Mcet/emRulMfmWNmBBRN8IRZaYOrTT962a09M54fcGQu3PTc3R+uRu/e+OypKrAL0O1QTOmc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=jbX4SbYP; arc=none smtp.client-ip=209.85.210.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-7390d21bb1cso657162b3a.2
+        for <stable@vger.kernel.org>; Wed, 07 May 2025 21:51:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1746679889; x=1747284689; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=vH8pZApZwCxXj/zcKr2DuVOpsesqXZ3FpznsuRlEkIQ=;
+        b=jbX4SbYP2dKr37f14Y4b1v3LuV5fI5CxSwUHxyTAFUoR/dscDaqOjIsBnDFuVttes8
+         WD57GxqWxRwA93eV0UziNQWEpZavcBnLY0IgaYZ/qB4bXklkuEbeIWOk2X055xFRHKK0
+         ZbsusjWj1zOfSeShT4BFqi5YZUn0OpxaEjieI=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746679889; x=1747284689;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vH8pZApZwCxXj/zcKr2DuVOpsesqXZ3FpznsuRlEkIQ=;
+        b=knHjlTtUeJ5YDrOCTJdAHdonwVaM2ByZBWvojK6Z6tzq6sdxIjYCzTtzA9a1a2FXRg
+         QOPZ6JjxRWP+ufYsPp8o7IAqWYcYCgxvHxnGFfQhn6U8z2EHeksit/BXey2Q8JucI64v
+         KlI0Fk5IG1VuDMzbe+4Sskwxgr5bGK4Jr1jBOWXcRkqYgiG2hEa0VC41DA8/jsQR4ZO2
+         7UfihnROg5C/b6gD2B9VOctNhaY5kEHXAe911VGYqLHgpwnaJHCCR26EZCuFmEfpULa0
+         4lfRZupJb0GH9u/ALN/cP7oDzecCGwrCZxxPDtoj/YAo2myBQCQvOzQcS2fnm/t4v8Nl
+         SqyA==
+X-Forwarded-Encrypted: i=1; AJvYcCUOrN8JitKAnDX0b+ZZsGC14LVk2mbkwFkF+6G3ymOe+fVCIfHOaHx7Ze2d/p9JVxAtZWDVr5g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSYajs9rAflFSkaGwQKsfF9ICzFqBaLldMwZ6E1HMYXNP00Uad
+	l5ppeU9+uHfN6q9kLtAmrZqFBKai1oK7QphPWrfYPIOPsGkQqX/hC3RACArtYCkgH6ObS1R4/o6
+	bVw==
+X-Gm-Gg: ASbGncvJKWwRHTZhgCAX8+Prc0w8FPASNZGqRCSAl4zxCjowl2aKxZpG9IWgOA7xgQz
+	XvhwBWjtmvZLqcLixGNPj6lT8zyBsipgjnwAp1GnCUC+VNUF7Xi0q4qjyX8ljDlYSqJXPTl8wtw
+	yRSwXcFQIO9t3bWATdPiH9NxVSTEQYyZs3sKbM//5w0WmupLlIWEEhPRK6noQYb9oi0pR1VUYFJ
+	O1EAH/rRBzjXDe+1LarFmmUz/Os0a2j0meijGoycUE1JoS/2WXxWYmnPJprtOpI7NthFcvtsfp2
+	daxaHjHXIKn7MZywQoop4Ktae9Gl4944L0b5zXF0N0ZM
+X-Google-Smtp-Source: AGHT+IHJt3oTtWnZHdDl97ybd6P+Hsv2F0EjcCAUaLYDnkgYwSOPmPUSLh8gTCh3PPuM9rSSslwTKw==
+X-Received: by 2002:a05:6a00:1bca:b0:736:5504:e8b4 with SMTP id d2e1a72fcca58-7409cfaf3a7mr7364505b3a.19.1746679889147;
+        Wed, 07 May 2025 21:51:29 -0700 (PDT)
+Received: from google.com ([2401:fa00:8f:203:c794:38be:3be8:4c26])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7405905ce9fsm12728777b3a.136.2025.05.07.21.51.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 07 May 2025 21:51:28 -0700 (PDT)
+Date: Thu, 8 May 2025 13:51:23 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org, 
+	iommu@lists.linux.dev, Tomasz Figa <tfiga@chromium.org>, 
+	Mauro Carvalho Chehab <mchehab@kernel.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Hans Verkuil <hverkuil@xs4all.nl>, Robin Murphy <robin.murphy@arm.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v3 1/3] media: videobuf2: use sgtable-based scatterlist
+ wrappers
+Message-ID: <ravkxkfx6du2uovpfqwugtmm3ymmuswkusfiry3erslpgnvaz2@2gwxofmdfjye>
+References: <20250507160913.2084079-1-m.szyprowski@samsung.com>
+ <CGME20250507160921eucas1p2aa77e0930944aadaaa7c090c8d3d0e73@eucas1p2.samsung.com>
+ <20250507160913.2084079-2-m.szyprowski@samsung.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20250508023025.1301030-1-jeremy.linton@arm.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- kwepemd200014.china.huawei.com (7.221.188.8)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250507160913.2084079-2-m.szyprowski@samsung.com>
 
-On 2025/5/8 10:30, Jeremy Linton wrote:
-> The original PPTT code had a bug where the processor subtable length
-> was not correctly validated when encountering a truncated
-> acpi_pptt_processor node.
-> 
-> Commit 7ab4f0e37a0f4 ("ACPI PPTT: Fix coding mistakes in a couple of
-> sizeof() calls") attempted to fix this by validating the size is as
-> large as the acpi_pptt_processor node structure. This introduced a
-> regression where the last processor node in the PPTT table is ignored
-> if it doesn't contain any private resources. That results errors like:
-> 
->   ACPI PPTT: PPTT table found, but unable to locate core XX (XX)
->   ACPI: SPE must be homogeneous
-> 
-> Furthermore, it fail in a common case where the node length isn't
-> equal to the acpi_pptt_processor structure size, leaving the original
-> bug in a modified form.
-> 
-> Correct the regression by adjusting the loop termination conditions as
-> suggested by the bug reporters. An additional check performed after
-> the subtable node type is detected, validates the acpi_pptt_processor
-> node is fully contained in the PPTT table. Repeating the check in
-> acpi_pptt_leaf_node() is largely redundant as the node is already
-> known to be fully contained in the table.
-> 
-> The case where a final truncated node's parent property is accepted,
-> but the node itself is rejected should not be considered a bug.
-> 
-> Fixes: 7ab4f0e37a0f4 ("ACPI PPTT: Fix coding mistakes in a couple of sizeof() calls")
-> Reported-by: Maximilian Heyne <mheyne@amazon.de>
-> Closes: https://lore.kernel.org/linux-acpi/20250506-draco-taped-15f475cd@mheyne-amazon/
-> Reported-by: Yicong Yang <yangyicong@hisilicon.com>
+On (25/05/07 18:09), Marek Szyprowski wrote:
+> Use common wrappers operating directly on the struct sg_table objects to
+> fix incorrect use of scatterlists sync calls. dma_sync_sg_for_*()
+> functions have to be called with the number of elements originally passed
+> to dma_map_sg_*() function, not the one returned in sgt->nents.
 
-Thanks for the fix. The last CPU in the PPTT can be parsed on my board with this.
-
-Tested-by: Yicong Yang <yangyicong@hisilicon.com>
-
-> Closes: https://lore.kernel.org/linux-acpi/20250507035124.28071-1-yangyicong@huawei.com/
-> Signed-off-by: Jeremy Linton <jeremy.linton@arm.com>
-> Cc: Jean-Marc Eurin <jmeurin@google.com>
-> Cc: <stable@vger.kernel.org>
-> ---
->  drivers/acpi/pptt.c | 11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/acpi/pptt.c b/drivers/acpi/pptt.c
-> index f73ce6e13065..54676e3d82dd 100644
-> --- a/drivers/acpi/pptt.c
-> +++ b/drivers/acpi/pptt.c
-> @@ -231,16 +231,18 @@ static int acpi_pptt_leaf_node(struct acpi_table_header *table_hdr,
->  			     sizeof(struct acpi_table_pptt));
->  	proc_sz = sizeof(struct acpi_pptt_processor);
->  
-> -	while ((unsigned long)entry + proc_sz < table_end) {
-> +	/* ignore subtable types that are smaller than a processor node */
-> +	while ((unsigned long)entry + proc_sz <= table_end) {
->  		cpu_node = (struct acpi_pptt_processor *)entry;
-> +
->  		if (entry->type == ACPI_PPTT_TYPE_PROCESSOR &&
->  		    cpu_node->parent == node_entry)
->  			return 0;
->  		if (entry->length == 0)
->  			return 0;
-> +
->  		entry = ACPI_ADD_PTR(struct acpi_subtable_header, entry,
->  				     entry->length);
-> -
->  	}
->  	return 1;
->  }
-> @@ -273,15 +275,18 @@ static struct acpi_pptt_processor *acpi_find_processor_node(struct acpi_table_he
->  	proc_sz = sizeof(struct acpi_pptt_processor);
->  
->  	/* find the processor structure associated with this cpuid */
-> -	while ((unsigned long)entry + proc_sz < table_end) {
-> +	while ((unsigned long)entry + proc_sz <= table_end) {
->  		cpu_node = (struct acpi_pptt_processor *)entry;
->  
->  		if (entry->length == 0) {
->  			pr_warn("Invalid zero length subtable\n");
->  			break;
->  		}
-> +		/* entry->length may not equal proc_sz, revalidate the processor structure length */
->  		if (entry->type == ACPI_PPTT_TYPE_PROCESSOR &&
->  		    acpi_cpu_id == cpu_node->acpi_processor_id &&
-> +		    (unsigned long)entry + entry->length <= table_end &&
-> +		    entry->length == proc_sz + cpu_node->number_of_priv_resources * sizeof(u32) &&
->  		     acpi_pptt_leaf_node(table_hdr, cpu_node)) {
->  			return (struct acpi_pptt_processor *)entry;
->  		}
-> 
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
 
