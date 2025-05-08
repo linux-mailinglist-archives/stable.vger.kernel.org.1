@@ -1,91 +1,139 @@
-Return-Path: <stable+bounces-142932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 992D9AB0526
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 23:02:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DF13AB05C9
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 00:06:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F3C24A8A05
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 21:02:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC7644E7F04
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 22:06:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC79B21D5BB;
-	Thu,  8 May 2025 21:01:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A35AA223DDC;
+	Thu,  8 May 2025 22:06:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vDcANHHv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IN+DE+wu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 633BF2163BD;
-	Thu,  8 May 2025 21:01:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D65B1A2390;
+	Thu,  8 May 2025 22:06:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746738115; cv=none; b=NdqcqqPZVSQgs7OREnS37nPrA2SoPuwc2+uDjRJWZA2oEnmCEc5ukxc/er1gNFUgBVpwZbknxupFR1SFckY0NfY52Nx7s8WI5GzMGB89fbJu0YrKkbWsN2DIzp+nqFWsx42Gxd4otq2B3W21UGjl608MJjhTmKcu4LUU1lYLGrA=
+	t=1746741964; cv=none; b=B7dRSltsi54BpPpGjES5iVYIrgsHI80qi1/c+9Y/snXkcSnU1GTC6+66an2TWpOvlMCS4j61tkKsk/3GJ4KxZ21sPP28rnnPa+iXg19t68b4HCyemfUDoIqIP63dQVV8afUjMJjn6o4odFoPYmjcGBmQy/QqwNyPfPj11eSrpHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746738115; c=relaxed/simple;
-	bh=yPdOGFTeZlQxWn2TKGbf4D34zWBOx2mSseNPYh4tUpE=;
-	h=Message-ID:Content-Type:MIME-Version:In-Reply-To:References:
-	 Subject:From:Cc:To:Date; b=bqTJ/DPlfaIal1az2+0vRnhw8t8D0iW6xdZsKDd8uJu5NgY83549WPv9hp6CkbT+DSAlheAZDhdhxCxwWzx5kMhCpnKl8W0lgF+WToJjGciPlGkHhhxRCTahDQ6EGWEQKmwcjV8ODND1h72KJZECIFCOozYs+jhXuM5nVxCPibw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vDcANHHv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B90AAC4CEF1;
-	Thu,  8 May 2025 21:01:54 +0000 (UTC)
+	s=arc-20240116; t=1746741964; c=relaxed/simple;
+	bh=nJGSya3nk9fSTp7YpGyO3JhSqO1gXL/uAOoUiq4UGgo=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=XESMJdBz/fnZJGZl+iMvIzarMUjARdt/TIOm8R3dvxFOzwluwdCgFKR+oae5BnFRopWg3dqb+qKMDVPCdIIocSByjP32E9v+5CiD/4Jl3zR+GriF32HbSrPlR9BXuOUXzI17Fr732bvPIqRni0uw02pq8hLfSRunTzVxrvwhtPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IN+DE+wu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EE5DC4CEE7;
+	Thu,  8 May 2025 22:05:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746738114;
-	bh=yPdOGFTeZlQxWn2TKGbf4D34zWBOx2mSseNPYh4tUpE=;
-	h=In-Reply-To:References:Subject:From:Cc:To:Date:From;
-	b=vDcANHHvJ/7W5hB7Irg9yt8c9BB6CR3oQXFrUXNyX1jJYx3OikZhbm2dCdEHERmVq
-	 LEfPVOe/2oGtxK8heJUO152csjkspyAdgJEpJBBn4L5weIjo1HQ9n29JtvpdKNKBy1
-	 1AzBtI9GEVIJ6Na8SdIUHr3AQm39sfbOZHVmtQkGmD7y/Qw3iMJQxWkngp2wlZvaJs
-	 pJOm8ua9v74aQ1eqr0nh+1EgEmYYQRAT6C/J/AQ9v5dmBfb6ogBZzs8B7XlxLyLSIA
-	 pffGSU+5xpR9sbnrs+orXmNFrPLK4BT8BmSuCquuwlcD/sPV8DLlTlANBiiVb1rM2W
-	 a6aL5B44WDUoA==
-Message-ID: <43a26fb44baa417a4fe2663d86909c0e@kernel.org>
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1746741963;
+	bh=nJGSya3nk9fSTp7YpGyO3JhSqO1gXL/uAOoUiq4UGgo=;
+	h=Subject:From:Reply-To:To:Cc:Date:In-Reply-To:References:From;
+	b=IN+DE+wuCAWPAELs5oW0EpKs5ORy43kC+oE1Q2vW0wWTQQwY29Op9abjDOt6onAQt
+	 6Ut9bUmgXFuh+1IXL/m7ysUpkC/rhe6i7MrxqhnuU/+TzfpMMtkV28rrryI86j18RF
+	 e3Cc3+28GQ2WCy0U/Rous0UTwRv/vo4y5PXoaO8zeV0rmPmRzAfwq/SqVTdoyKq+MY
+	 dbXI/tF95dqosOSSmgIHom4Frq2mcOWUFPcGIME4Q4u62aPY/OnxzzDv9eoQarkt5Z
+	 b1/2jIYRuD1IOX9x8F0skh/+az+G/LbnTZlnmanbtiH9tIf5mUmdGrnieIPwHOHkQ6
+	 nRNNo290L6UZA==
+Message-ID: <18a80b20916b2f7d73ea29cc67d1389662f9836b.camel@kernel.org>
+Subject: Re: [PATCH v2] wifi: mt76: mt7925: fix missing hdr_trans_tlv
+ command for broadcast wtbl
+From: Niklas Schnelle <niks@kernel.org>
+Reply-To: niks@kernel.org
+To: Mingyen Hsieh <mingyen.hsieh@mediatek.com>, nbd@nbd.name, 
+	lorenzo@kernel.org
+Cc: deren.wu@mediatek.com, Sean.Wang@mediatek.com, Leon.Yen@mediatek.com, 
+	Michael.Lo@mediatek.com, allan.wang@mediatek.com,
+ Eric-SY.Chang@mediatek.com, 	km.lin@mediatek.com, Quan.Zhou@mediatek.com,
+ Ryder.Lee@mediatek.com, 	Shayne.Chen@mediatek.com,
+ linux-wireless@vger.kernel.org, 	linux-mediatek@lists.infradead.org,
+ stable@vger.kernel.org, fossben@pm.me
+Date: Fri, 09 May 2025 00:05:57 +0200
+In-Reply-To: <20250508085534.305242-1-mingyen.hsieh@mediatek.com>
+References: <20250508085534.305242-1-mingyen.hsieh@mediatek.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.56.1 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <20250326-s2mps11-ubsan-v1-1-fcc6fce5c8a9@linaro.org>
-References: <20250326-s2mps11-ubsan-v1-1-fcc6fce5c8a9@linaro.org>
-Subject: Re: [PATCH] clk: s2mps11: initialise clk_hw_onecell_data::num before accessing ::hws[] in probe()
-From: Stephen Boyd <sboyd@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-samsung-soc@vger.kernel.org, linux-clk@vger.kernel.org, linux-hardening@vger.kernel.org, stable@vger.kernel.org, =?utf-8?q?Andr=C3=A9?= Draszik <andre.draszik@linaro.org>
-To: =?utf-8?q?Andr=C3=A9?= Draszik <andre.draszik@linaro.org>, Gustavo A. R. Silva <gustavoars@kernel.org>, Kees Cook <kees@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, Michael Turquette <mturquette@baylibre.com>
-Date: Thu, 08 May 2025 14:01:52 -0700
-User-Agent: alot/0.12.dev8+g17a99a841c4b
 
-Quoting Andr=C3=A9 Draszik (2025-03-26 05:08:00)
-> With UBSAN enabled, we're getting the following trace:
+On Thu, 2025-05-08 at 16:55 +0800, Mingyen Hsieh wrote:
+> From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 >=20
->     UBSAN: array-index-out-of-bounds in .../drivers/clk/clk-s2mps11.c:186=
-:3
->     index 0 is out of range for type 'struct clk_hw *[] __counted_by(num)=
-' (aka 'struct clk_hw *[]')
->=20
-> This is because commit f316cdff8d67 ("clk: Annotate struct
-> clk_hw_onecell_data with __counted_by") annotated the hws member of
-> that struct with __counted_by, which informs the bounds sanitizer about
-> the number of elements in hws, so that it can warn when hws is accessed
-> out of bounds.
->=20
-> As noted in that change, the __counted_by member must be initialised
-> with the number of elements before the first array access happens,
-> otherwise there will be a warning from each access prior to the
-> initialisation because the number of elements is zero. This occurs in
-> s2mps11_clk_probe() due to ::num being assigned after ::hws access.
->=20
-> Move the assignment to satisfy the requirement of assign-before-access.
+> The hdr_trans_tlv function call has been moved inside the conditional blo=
+ck
+> to ensure it is executed when info->enable is true.
 >=20
 > Cc: stable@vger.kernel.org
-> Fixes: f316cdff8d67 ("clk: Annotate struct clk_hw_onecell_data with __cou=
-nted_by")
-> Signed-off-by: Andr=C3=A9 Draszik <andre.draszik@linaro.org>
+> Fixes: cb1353ef3473 ("wifi: mt76: mt7925: integrate *mlo_sta_cmd and *sta=
+_cmd")
+> Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+> Tested-by: Niklas Schnelle <niks@kernel.org>
 > ---
+> v2:
+>     add tested-by tag
+>=20
 
-Applied to clk-fixes
+Thanks for adding the tag, appreciate it. If I may add some stylistic
+comments. I saw that this is one of your first independent upstream
+patches so congratulations on that and even better it's an actual
+proper fix. Well done!
+
+One thing, I noticed though is that your commit message lacks context,
+like this affecting IPv6 and multicast. Basically it just re-iterates
+what I can already see in the code. It also doesn't use the recommended
+imperative tone (see [0]). Moreover, I think this would be a good case
+for using a Link: tag pointing to the thread[1] of Ben's bisect result.
+Relatedly one could also add a Reported-by tag for Ben, I still fondly
+remember getting a Reported-by mention long before I did my first
+kernel contribution. This stuff is hard to balance with getting fixes
+out there and I still screw up some detail with mails sometimes, but
+we're all learning so wanted to give my 5 cents.
+
+Thanks,
+Niklas
+
+[0]
+https://www.kernel.org/doc/html/v4.12/process/submitting-patches.html#descr=
+ibe-your-changes
+[1]
+https://lore.kernel.org/lkml/EmWnO5b-acRH1TXbGnkx41eJw654vmCR-8_xMBaPMwexCn=
+fkvKCdlU5u19CGbaapJ3KRu-l3B-tSUhf8CCQwL0odjo6Cd5YG5lvNeB-vfdg=3D@pm.me/
+
+> ---
+>  drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/ne=
+t/wireless/mediatek/mt76/mt7925/mcu.c
+> index a42b584634ab..fd756f0d18f8 100644
+> --- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+> +++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+> @@ -2183,14 +2183,14 @@ mt7925_mcu_sta_cmd(struct mt76_phy *phy,
+>  			mt7925_mcu_sta_mld_tlv(skb, info->vif, info->link_sta->sta);
+>  			mt7925_mcu_sta_eht_mld_tlv(skb, info->vif, info->link_sta->sta);
+>  		}
+> -
+> -		mt7925_mcu_sta_hdr_trans_tlv(skb, info->vif, info->link_sta);
+>  	}
+> =20
+>  	if (!info->enable) {
+>  		mt7925_mcu_sta_remove_tlv(skb);
+>  		mt76_connac_mcu_add_tlv(skb, STA_REC_MLD_OFF,
+>  					sizeof(struct tlv));
+> +	} else {
+> +		mt7925_mcu_sta_hdr_trans_tlv(skb, info->vif, info->link_sta);
+>  	}
+> =20
+>  	return mt76_mcu_skb_send_msg(dev, skb, info->cmd, true);
 
