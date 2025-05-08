@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-142795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CA13AAF3E6
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 08:41:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31D64AAF3EB
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 08:41:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 210D01BC297A
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 06:41:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C3DB3A713F
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 06:40:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 484B621C9FE;
-	Thu,  8 May 2025 06:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5685121ADC9;
+	Thu,  8 May 2025 06:40:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Ih8IenlU"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="nfvohwmR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2E5A2192FE;
-	Thu,  8 May 2025 06:40:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 116942192E6;
+	Thu,  8 May 2025 06:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746686453; cv=none; b=ao/aK3N0NP9SLGBuyrEkjlv4MM+xbRnfnRXwn3e9o7GzGPLsb1Q5ZTQgqYfdYF9mkAiC01X31hQ4EbEQZPMonOJN/bZIm4egV2KIUgEl+zBUZsrjIwlNOHDu8U/U5dOR1U9SbY/kGEQtCSjfSPEiGVHcm88HJfPEoagUioj3j8k=
+	t=1746686457; cv=none; b=k0epVyp/XY7pdCDR1NMT45eHkBDrMaumFxY42ERPxUoBKkfmyd31IK8/QmtXi5MCKQrpX2muDE4PNT4PkLGIvHJeJga1wR8RDzQ8a13bcAqi6VTMV215okG9g6Vj6MTS9ue0H9xkQQjW2xRau4GsKuTAibW1nrSgxteVu2hqnq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746686453; c=relaxed/simple;
-	bh=ok0xFlPIvbQHdOPm7/c/w8IHaQYXEapH12SeUM9LuU0=;
-	h=Date:To:From:Subject:Message-Id; b=OhGX90MvWstOBXr8G7O0NDs05bjdn8mOEtInijA9SrqHwOmCU6R0uYO5roCUOAjQHuru5JM5TaOkGAr4roLF1FCxHl/LsKhVa5IMXpki8Apo+0MwYgBtBCt8YZX5Uul0j+Sx2JDjxEkmV+z/IZD0+ncy60Vv8n0nZ6GjzqRarac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Ih8IenlU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6A10C4CEEB;
-	Thu,  8 May 2025 06:40:52 +0000 (UTC)
+	s=arc-20240116; t=1746686457; c=relaxed/simple;
+	bh=9F4er+LAE/rznm9dWpO8LxemrB2gdQAxyZ81HNNg8iY=;
+	h=Date:To:From:Subject:Message-Id; b=i43RBf5+ASXzT1XJPWINY9vDnwxHKEOi5DwD8xd6azMToJlALo6K+4gQMA7G9axZ7fFdCds81nS4N3Jzc3uf/GMPMaRV+hbJ8hdAjPWQ1wLc6WG2T4nTQ7MKZS4lrSI/TvunxWMxd8klflpgem4k7/JzIGpVSpIOhGl3x3iUqws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=nfvohwmR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1C5FC4CEEB;
+	Thu,  8 May 2025 06:40:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1746686452;
-	bh=ok0xFlPIvbQHdOPm7/c/w8IHaQYXEapH12SeUM9LuU0=;
+	s=korg; t=1746686456;
+	bh=9F4er+LAE/rznm9dWpO8LxemrB2gdQAxyZ81HNNg8iY=;
 	h=Date:To:From:Subject:From;
-	b=Ih8IenlUsTfJWKF4MSDMMH65vuFCVyQlIBqlm1DWHzAFp/Vp0vhTMm0336eYgmvzt
-	 adJHOyxLZ0YV5IHadVGiHVbdrjGxpz3WCG6nK8Mmd9ldcQlROmNOCXtpQw58x4ffV1
-	 0pOXuikwL6Fzk3b9SfguRUor/ymFol3Ts2S3PpAI=
-Date: Wed, 07 May 2025 23:40:52 -0700
-To: mm-commits@vger.kernel.org,surenb@google.com,stable@vger.kernel.org,rppt@kernel.org,david@redhat.com,axelrasmussen@google.com,aarcange@redhat.com,peterx@redhat.com,akpm@linux-foundation.org
+	b=nfvohwmRgM5woQNmRKdMXadQ66t/Y/cKjlNYyg0md6AZr8rqnRrtlBAn8K8uFsVjz
+	 kxmL2JNFd8zJ/liv0Ypg47GypTU3LUyZ9+Thh4Aum6E1PaLUaTy8SQ2+1lt9Z1RIOJ
+	 OniIksotIn11fmzrnb3nBNrTOkXIisIRrZkUmAQY=
+Date: Wed, 07 May 2025 23:40:56 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,shi.changkuo@h3c.com,piaojun@huawei.com,m.masimov@mt-integration.ru,mark@fasheh.com,junxiao.bi@oracle.com,joseph.qi@linux.alibaba.com,jlbec@evilplan.org,heming.zhao@suse.com,gechangwei@live.cn,jack@suse.cz,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-userfaultfd-fix-uninitialized-output-field-for-eagain-race.patch removed from -mm tree
-Message-Id: <20250508064052.B6A10C4CEEB@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] ocfs2-switch-osb-disable_recovery-to-enum.patch removed from -mm tree
+Message-Id: <20250508064056.C1C5FC4CEEB@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,141 +50,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm/userfaultfd: fix uninitialized output field for -EAGAIN race
+     Subject: ocfs2: switch osb->disable_recovery to enum
 has been removed from the -mm tree.  Its filename was
-     mm-userfaultfd-fix-uninitialized-output-field-for-eagain-race.patch
+     ocfs2-switch-osb-disable_recovery-to-enum.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Peter Xu <peterx@redhat.com>
-Subject: mm/userfaultfd: fix uninitialized output field for -EAGAIN race
-Date: Thu, 24 Apr 2025 17:57:28 -0400
+From: Jan Kara <jack@suse.cz>
+Subject: ocfs2: switch osb->disable_recovery to enum
+Date: Thu, 24 Apr 2025 15:45:11 +0200
 
-While discussing some userfaultfd relevant issues recently, Andrea noticed
-a potential ABI breakage with -EAGAIN on almost all userfaultfd ioctl()s.
+Patch series "ocfs2: Fix deadlocks in quota recovery", v3.
 
-Quote from Andrea, explaining how -EAGAIN was processed, and how this
-should fix it (taking example of UFFDIO_COPY ioctl):
+This implements another approach to fixing quota recovery deadlocks.  We
+avoid grabbing sb->s_umount semaphore from ocfs2_finish_quota_recovery()
+and instead stop quota recovery early in ocfs2_dismount_volume().
 
-  The "mmap_changing" and "stale pmd" conditions are already reported as
-  -EAGAIN written in the copy field, this does not change it. This change
-  removes the subnormal case that left copy.copy uninitialized and required
-  apps to explicitly set the copy field to get deterministic
-  behavior (which is a requirement contrary to the documentation in both
-  the manpage and source code). In turn there's no alteration to backwards
-  compatibility as result of this change because userland will find the
-  copy field consistently set to -EAGAIN, and not anymore sometime -EAGAIN
-  and sometime uninitialized.
 
-  Even then the change only can make a difference to non cooperative users
-  of userfaultfd, so when UFFD_FEATURE_EVENT_* is enabled, which is not
-  true for the vast majority of apps using userfaultfd or this unintended
-  uninitialized field may have been noticed sooner.
+This patch (of 3):
 
-Meanwhile, since this bug existed for years, it also almost affects all
-ioctl()s that was introduced later.  Besides UFFDIO_ZEROPAGE, these also
-get affected in the same way:
+We will need more recovery states than just pure enable / disable to fix
+deadlocks with quota recovery.  Switch osb->disable_recovery to enum.
 
-  - UFFDIO_CONTINUE
-  - UFFDIO_POISON
-  - UFFDIO_MOVE
-
-This patch should have fixed all of them.
-
-Link: https://lkml.kernel.org/r/20250424215729.194656-2-peterx@redhat.com
-Fixes: df2cc96e7701 ("userfaultfd: prevent non-cooperative events vs mcopy_atomic races")
-Fixes: f619147104c8 ("userfaultfd: add UFFDIO_CONTINUE ioctl")
-Fixes: fc71884a5f59 ("mm: userfaultfd: add new UFFDIO_POISON ioctl")
-Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
-Signed-off-by: Peter Xu <peterx@redhat.com>
-Reported-by: Andrea Arcangeli <aarcange@redhat.com>
-Suggested-by: Andrea Arcangeli <aarcange@redhat.com>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
+Link: https://lkml.kernel.org/r/20250424134301.1392-1-jack@suse.cz
+Link: https://lkml.kernel.org/r/20250424134515.18933-4-jack@suse.cz
+Fixes: 5f530de63cfc ("ocfs2: Use s_umount for quota recovery protection")
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Heming Zhao <heming.zhao@suse.com>
+Tested-by: Heming Zhao <heming.zhao@suse.com>
+Acked-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Murad Masimov <m.masimov@mt-integration.ru>
+Cc: Shichangkuo <shi.changkuo@h3c.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- fs/userfaultfd.c |   28 ++++++++++++++++++++++------
- 1 file changed, 22 insertions(+), 6 deletions(-)
+ fs/ocfs2/journal.c |   14 ++++++++------
+ fs/ocfs2/ocfs2.h   |    7 ++++++-
+ 2 files changed, 14 insertions(+), 7 deletions(-)
 
---- a/fs/userfaultfd.c~mm-userfaultfd-fix-uninitialized-output-field-for-eagain-race
-+++ a/fs/userfaultfd.c
-@@ -1585,8 +1585,11 @@ static int userfaultfd_copy(struct userf
- 	user_uffdio_copy = (struct uffdio_copy __user *) arg;
+--- a/fs/ocfs2/journal.c~ocfs2-switch-osb-disable_recovery-to-enum
++++ a/fs/ocfs2/journal.c
+@@ -174,7 +174,7 @@ int ocfs2_recovery_init(struct ocfs2_sup
+ 	struct ocfs2_recovery_map *rm;
  
- 	ret = -EAGAIN;
--	if (atomic_read(&ctx->mmap_changing))
-+	if (unlikely(atomic_read(&ctx->mmap_changing))) {
-+		if (unlikely(put_user(ret, &user_uffdio_copy->copy)))
-+			return -EFAULT;
+ 	mutex_init(&osb->recovery_lock);
+-	osb->disable_recovery = 0;
++	osb->recovery_state = OCFS2_REC_ENABLED;
+ 	osb->recovery_thread_task = NULL;
+ 	init_waitqueue_head(&osb->recovery_event);
+ 
+@@ -206,7 +206,7 @@ void ocfs2_recovery_exit(struct ocfs2_su
+ 	/* disable any new recovery threads and wait for any currently
+ 	 * running ones to exit. Do this before setting the vol_state. */
+ 	mutex_lock(&osb->recovery_lock);
+-	osb->disable_recovery = 1;
++	osb->recovery_state = OCFS2_REC_DISABLED;
+ 	mutex_unlock(&osb->recovery_lock);
+ 	wait_event(osb->recovery_event, !ocfs2_recovery_thread_running(osb));
+ 
+@@ -1582,14 +1582,16 @@ bail:
+ 
+ void ocfs2_recovery_thread(struct ocfs2_super *osb, int node_num)
+ {
++	int was_set = -1;
++
+ 	mutex_lock(&osb->recovery_lock);
++	if (osb->recovery_state < OCFS2_REC_DISABLED)
++		was_set = ocfs2_recovery_map_set(osb, node_num);
+ 
+ 	trace_ocfs2_recovery_thread(node_num, osb->node_num,
+-		osb->disable_recovery, osb->recovery_thread_task,
+-		osb->disable_recovery ?
+-		-1 : ocfs2_recovery_map_set(osb, node_num));
++		osb->recovery_state, osb->recovery_thread_task, was_set);
+ 
+-	if (osb->disable_recovery)
++	if (osb->recovery_state == OCFS2_REC_DISABLED)
  		goto out;
-+	}
  
- 	ret = -EFAULT;
- 	if (copy_from_user(&uffdio_copy, user_uffdio_copy,
-@@ -1641,8 +1644,11 @@ static int userfaultfd_zeropage(struct u
- 	user_uffdio_zeropage = (struct uffdio_zeropage __user *) arg;
+ 	if (osb->recovery_thread_task)
+--- a/fs/ocfs2/ocfs2.h~ocfs2-switch-osb-disable_recovery-to-enum
++++ a/fs/ocfs2/ocfs2.h
+@@ -308,6 +308,11 @@ enum ocfs2_journal_trigger_type {
+ void ocfs2_initialize_journal_triggers(struct super_block *sb,
+ 				       struct ocfs2_triggers triggers[]);
  
- 	ret = -EAGAIN;
--	if (atomic_read(&ctx->mmap_changing))
-+	if (unlikely(atomic_read(&ctx->mmap_changing))) {
-+		if (unlikely(put_user(ret, &user_uffdio_zeropage->zeropage)))
-+			return -EFAULT;
- 		goto out;
-+	}
- 
- 	ret = -EFAULT;
- 	if (copy_from_user(&uffdio_zeropage, user_uffdio_zeropage,
-@@ -1744,8 +1750,11 @@ static int userfaultfd_continue(struct u
- 	user_uffdio_continue = (struct uffdio_continue __user *)arg;
- 
- 	ret = -EAGAIN;
--	if (atomic_read(&ctx->mmap_changing))
-+	if (unlikely(atomic_read(&ctx->mmap_changing))) {
-+		if (unlikely(put_user(ret, &user_uffdio_continue->mapped)))
-+			return -EFAULT;
- 		goto out;
-+	}
- 
- 	ret = -EFAULT;
- 	if (copy_from_user(&uffdio_continue, user_uffdio_continue,
-@@ -1801,8 +1810,11 @@ static inline int userfaultfd_poison(str
- 	user_uffdio_poison = (struct uffdio_poison __user *)arg;
- 
- 	ret = -EAGAIN;
--	if (atomic_read(&ctx->mmap_changing))
-+	if (unlikely(atomic_read(&ctx->mmap_changing))) {
-+		if (unlikely(put_user(ret, &user_uffdio_poison->updated)))
-+			return -EFAULT;
- 		goto out;
-+	}
- 
- 	ret = -EFAULT;
- 	if (copy_from_user(&uffdio_poison, user_uffdio_poison,
-@@ -1870,8 +1882,12 @@ static int userfaultfd_move(struct userf
- 
- 	user_uffdio_move = (struct uffdio_move __user *) arg;
- 
--	if (atomic_read(&ctx->mmap_changing))
--		return -EAGAIN;
-+	ret = -EAGAIN;
-+	if (unlikely(atomic_read(&ctx->mmap_changing))) {
-+		if (unlikely(put_user(ret, &user_uffdio_move->move)))
-+			return -EFAULT;
-+		goto out;
-+	}
- 
- 	if (copy_from_user(&uffdio_move, user_uffdio_move,
- 			   /* don't copy "move" last field */
++enum ocfs2_recovery_state {
++	OCFS2_REC_ENABLED = 0,
++	OCFS2_REC_DISABLED,
++};
++
+ struct ocfs2_journal;
+ struct ocfs2_slot_info;
+ struct ocfs2_recovery_map;
+@@ -370,7 +375,7 @@ struct ocfs2_super
+ 	struct ocfs2_recovery_map *recovery_map;
+ 	struct ocfs2_replay_map *replay_map;
+ 	struct task_struct *recovery_thread_task;
+-	int disable_recovery;
++	enum ocfs2_recovery_state recovery_state;
+ 	wait_queue_head_t checkpoint_event;
+ 	struct ocfs2_journal *journal;
+ 	unsigned long osb_commit_interval;
 _
 
-Patches currently in -mm which might be from peterx@redhat.com are
+Patches currently in -mm which might be from jack@suse.cz are
 
-mm-selftests-add-a-test-to-verify-mmap_changing-race-with-eagain.patch
 
 
