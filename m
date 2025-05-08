@@ -1,182 +1,162 @@
-Return-Path: <stable+bounces-142926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 029D9AB044C
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 22:01:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76255AB045B
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 22:12:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5AF71B27EA5
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 20:00:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 409984E610D
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 20:12:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C398A288C96;
-	Thu,  8 May 2025 20:01:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6BB229A0;
+	Thu,  8 May 2025 20:12:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gn+wy42R"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Tt9+h5jv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82BA429A0;
-	Thu,  8 May 2025 20:01:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 138C21946A0;
+	Thu,  8 May 2025 20:12:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746734504; cv=none; b=ZZVmUijFoI9Wi0pj1CT4a/N8oyAFhN9f6NkqIsWYwSk8c+odNVEvTBfpjp+EdtK+eXckEz8GxPF8ry7cd67SkeJYACK8hY0MGzmC0KiuMJMOGa1Ed8FSQkHBCJ7JBHdPsZhVqIiCP4yN0m/02xAcKr3P3RjlDd9qLiP8tgHr9FY=
+	t=1746735122; cv=none; b=uHUHFZ+yktxHTrVFZcd9RvXS+CoPnOtWu2hGdPIA2FgnpirQ6qjP47YbmbqvFDqTjZDlV/LUAObyWLVmEHHR02l4EHk7G29mQ3Br8QM89aEOT2gtluKtopqMrR78Y2ZM/LcMvcS9tmK8aMVTN0NwTJ9DYtYGkt3XIBB3EnNjZXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746734504; c=relaxed/simple;
-	bh=o1lVW46PXTWWdu/UpHD+IYP3tsrSGXwyJV65NS1S7k4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A7HpfbWFcuFz1kO315TOQkOMT4om2w/HHjPDP5SymqQnzbwGnY+kTw3zf92RW2Bru/rftaHzV2vkAS/gXTwqrWucrme1ktvGEnf/PMKfsSbUs5HRwEBgtAl9IHeOcDcRw0f7fW9579RrJol06L1zU/nM3hYgwbpBgimdvEAH8OA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gn+wy42R; arc=none smtp.client-ip=209.85.222.169
+	s=arc-20240116; t=1746735122; c=relaxed/simple;
+	bh=k0wwXn9+Kglc/htmR5mqLgpkq0ooGdmYiPqFrSisiog=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hDG7L0gV9tkibvgQP9CfzG9PITjtNK8jGpQDIru2e2aqByOqMFYnI29EvFBmT0VRas81Wa9LmdcdFVSI3A4fjp5/JrcKX+E4R7amiiBScYkXJJb8Ofw1Pc7e2YSUbksQrdc7tPKcOBPrsroi0aDvAOHG4w2xPHT9VOx1FP3eCYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Tt9+h5jv; arc=none smtp.client-ip=209.85.210.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-7c55500d08cso148881185a.0;
-        Thu, 08 May 2025 13:01:42 -0700 (PDT)
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-7398d65476eso1276977b3a.1;
+        Thu, 08 May 2025 13:12:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746734501; x=1747339301; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=kgM6c6LraGF3CFvj1Ab2yrgYuKDmDrIThr6mCkYZ2qc=;
-        b=gn+wy42Rpo4BG03Myg51OhJ5/HjygooBG9rjt32Ovwe4W6FQU8iwsf1ZvT8u1wg64/
-         mLLL/TVgjLPV6S5d1hWTrZQADle210b1i2YOfpcVGOch81kDq3I+/alMl+kKpQ4JqdA6
-         EFSHRSVXRYo9/YNKZrqeV3/8NQ0Wzw/qfKrarOAILT7e3QP3lfvCgf3unTzYhdDknzUe
-         thX1BFwYBtfai5bfmk8WuMKJP3J24+kNKd87N8IS4V+9m3xkYQMdYpHgYaz/1p7e7yck
-         OQDnw01k7sMlPtmAJ6kooHY5bQsuA39l8/IUJ2WCVJBkZh7TowdUxTFbuZTJceNy2xfL
-         69TQ==
+        d=gmail.com; s=20230601; t=1746735120; x=1747339920; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=aw4B1u4HPbJNfnMuBelVDNrfn4TFJHyKA2ta4iSdBBM=;
+        b=Tt9+h5jvQQEkQBHKeAFrcPF6KswecHlek8ZlwUEy2MlHO4teyp1wQ0x16lTOzfWECX
+         y3VPU9CzGCRu4sKHos5aSKJaUEpq+f7XRvrAbIdAebw7XDletaEZjX0lZLMh5EUSXoxZ
+         Xr+mcAX/s+PR/khOv9l70Y9VDh2xOssLsrxi8E1WnM5ZX1okVfHaMboDW4KgXzK4fjtp
+         osrYXUDt8WkglMN7fUWKQ5F+TFAjQLcFmvja52nrXquWIU2BILm371cB6ms30FondcmV
+         TyNgCa3180QKO3+vR2kivuEurTTTxrTkAgjabopQFKY+D7I7tXXk09bOLJ7t0aC1uAJb
+         dcyg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746734501; x=1747339301;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kgM6c6LraGF3CFvj1Ab2yrgYuKDmDrIThr6mCkYZ2qc=;
-        b=suI9I5IRIN6dRJdwqJmjZxp+Ol/3RerF1yzeOv+U+AAcyn5SjSVkhHgbgdWL1C7ry9
-         YW9XJccphayX7Rnbw8WvppGXEyjCfDG51QkubqkN6oJEiwhZ6Nf3xUpMrZttyjW8xLlF
-         jv6I+EDaCZ1FMEfn8mDs9XjR2Q4xAaIIisDBhbFWwCob2xcdOiYn/M74YzB3FbZ46DDJ
-         iP0yRWOejVrK8d9m6cFn0p1wtXuqp6AkpLLw6kcWzjiVlG0X/E+4M97f/dscA1K2KvZc
-         2hu/SwffUmoJJinMkLreLVJ1m0/lEUppBByp5ARN5SUIUQcVWsv9UN5OL+4Pi4+98fIN
-         Dtrw==
-X-Forwarded-Encrypted: i=1; AJvYcCUpAGTZ2PBEqfpoAwX9ePhi4zXyUhZ9x2348BOnKIUJYW16NzRWnu/WnPcCkUb/wZ0SZU+loEKO93OZoQ==@vger.kernel.org, AJvYcCWeGZhBXT6Ukf/8K1RtVPDdO3sLcyG+EQVU6y6Zt+mNffFdEQtcxAZQ17+rEIGK7SWJoYLumn0I@vger.kernel.org, AJvYcCXD+Z7JMuJCy3yWgqCRERqqrLN64AgQk5hEYv/POodZTqCi6wmDFzrA74hrWtIbwmjpyy5XK+nrxVP7uel0@vger.kernel.org, AJvYcCXtYdu1CekUUzLmMikmaV3ldaL5idslavUYRdFlmw7W9bQLrxnPT+CB288zG1bWNKU9io91l7FtOOKahQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZ0nqe6zDvF4jjAFxc0YHbaK8ViK3EQFXq/6BDIUG6gmrDQuKw
-	BtPmKOXX2Y0m37u+AT4Z5JW2PUp4/p9BRvnO5jZYENKXMIyf/73Y
-X-Gm-Gg: ASbGncuO5Vv0BvQfPr/HUUyGciR52O0EayEpVytNVupIBjXXKMlzswLfn3Vohrxe8Bu
-	gEiPr8VbKtV2B2H771uwN4NzLpH3LWAUol8vTIFGoJr0DVqEfgjSqihLMlXZ9X364JEC7vlm3SN
-	52dmUf4Eiy7uuVsbMsEYUBGSDf8s0YHN6pGu2X16esGdBnXnDMRpi9rZhyJCKvJCkSGD6OZPBx5
-	rOzR/CXDKbAmm3/77cO9w+Hchh9QI/9Wx1DyrCf49n8eiDKZVUW7neyhuMIQPhPgGZpO9CIgdXL
-	LW1e1zuynjJHV2o+rad6I21tEXWolBxVHImVeuTA5WwvyOT+ArypMqkwgqrPXbRcVmWcR4eBeiI
-	nxw==
-X-Google-Smtp-Source: AGHT+IFewyOueSH4VcN5bLw+ZFthO2Ya/CLXTWm+zH5sTHftdu9/7mh7k0vUBEcGTs6EWcx2G1Pofw==
-X-Received: by 2002:a05:620a:2688:b0:7c5:4adb:782a with SMTP id af79cd13be357-7cd010eeaccmr145817085a.9.1746734501085;
-        Thu, 08 May 2025 13:01:41 -0700 (PDT)
-Received: from localhost.localdomain.com (sw.attotech.com. [208.69.85.34])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7cd00f637e3sm34235685a.31.2025.05.08.13.01.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 08 May 2025 13:01:40 -0700 (PDT)
-From: Steve Siwinski <stevensiwinski@gmail.com>
-X-Google-Original-From: Steve Siwinski <ssiwinski@atto.com>
-To: dlemoal@kernel.org
-Cc: James.Bottomley@hansenpartnership.com,
-	axboe@kernel.dk,
-	bgrove@atto.com,
-	hch@infradead.org,
-	linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-scsi@vger.kernel.org,
-	martin.petersen@oracle.com,
-	ssiwinski@atto.com,
-	stevensiwinski@gmail.com,
-	tdoedline@atto.com,
-	stable@vger.kernel.org
-Subject: [PATCH v3] block, scsi: sd_zbc: Respect bio vector limits for report zones buffer
-Date: Thu,  8 May 2025 16:01:22 -0400
-Message-ID: <20250508200122.243129-1-ssiwinski@atto.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <32a7f1ad-e28a-4494-9293-96237c4ed70b@kernel.org>
-References: <32a7f1ad-e28a-4494-9293-96237c4ed70b@kernel.org>
+        d=1e100.net; s=20230601; t=1746735120; x=1747339920;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aw4B1u4HPbJNfnMuBelVDNrfn4TFJHyKA2ta4iSdBBM=;
+        b=nHyRL4v5nT3TIrFz0nn1Dm02+f/i0hbhPJ5g+n+5LYmASY7WLk0Csh0NRgpyugx5BD
+         QeIg9jqRYgb+HfS4Q7FdhEU/knMa4pj+zR0XwBxQPp2XwRO4hlJiKvBcatK5dJPwWNzk
+         CdJVxMk0LNC6M7vnP/foDeomVHtze7RnvEAeWVJsBTvafwxCIqPYWQWQRuFpHUirhQrL
+         B9OeZB5SlSx//hZ00Wrednsf0BFg/diI1zirO8/HUH4SLngEbyktEjnfZ+qs6xktSjkm
+         5Rkx+wwK2g8Al82xYp/3QnoyMzwktkS2xsT8Zxs8vftf9NNJXBmgcm6AdK/Vbe6sb5lZ
+         CcKg==
+X-Forwarded-Encrypted: i=1; AJvYcCUwvIu8DRG/l5r8OwhtCD45sPBvHloW0AA0jBUv2u7pplX8zLnN35h7yU2pUSby1IDPCnEdlLx8lQ+c6Bo=@vger.kernel.org, AJvYcCW2BAlLFCNaiDp3TI66qY2S+vtoHjH0G1oVpspcRRWoyWD3SwbRbjl6AG3O5UkcVwSTbKoHCeb3@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw5gJw+gG95CeoyRg4bmj6Z8DflgKTZXn4GWM+AWranuurdbPUI
+	46Aem2smzucWihTmDD2yE5MVF1D2ezQ2iQkjeU+AQcHsn+UM2f0A
+X-Gm-Gg: ASbGncuuXSOI3/+5y6Ts9snOW8GF4U0j3cyl3pLk2+3dnngIsIKaK4RMwzsDRs4lj+m
+	Q1gaNVwWvBdhgpCNJZeVSpoNBqttEzBfBZfA4rPc1AkmuV8XT/tyfhGw2FZOP48Oc7yProYYR7S
+	SUBTe6G9P2lG+jMDQ8+Y7YF+voRVUiwMpDQWwfmSpAN8aOVZqf4C6DppHvbH46f2cDc0o8L6uH+
+	3a+PI2gljQKhOkJHT0AzujUMfC2DUxu/zugrY29a9f9PRSyC5dB3DS355zx0sPTDXiK3/kmyIHR
+	pFz4AwxNf3EmyS07bFMcinTRWUsRtmfP8RYzhSffj2tpM6+gzVZfg+5BqmBHoqL5i33K/uhc/qZ
+	5PY4b
+X-Google-Smtp-Source: AGHT+IHpt5aPkaQLSd1QA23UtVwpqaETMta8Cc2kQrD0v6amxVQTqNzfxXJKS2U5zxDPJcxd2wofeA==
+X-Received: by 2002:a05:6a00:3e20:b0:732:5875:eb95 with SMTP id d2e1a72fcca58-740a9316019mr8520617b3a.4.1746735120241;
+        Thu, 08 May 2025 13:12:00 -0700 (PDT)
+Received: from [192.168.1.177] (46.37.67.37.rev.sfr.net. [37.67.37.46])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b235198cccdsm241367a12.64.2025.05.08.13.11.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 08 May 2025 13:11:59 -0700 (PDT)
+Message-ID: <a98e39af-ff02-4f1d-8902-97a5a183c2f0@gmail.com>
+Date: Thu, 8 May 2025 22:11:55 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6 000/129] 6.6.90-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+References: <20250507183813.500572371@linuxfoundation.org>
+Content-Language: en-US
+From: Florian Fainelli <f.fainelli@gmail.com>
+Autocrypt: addr=f.fainelli@gmail.com; keydata=
+ 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
+ WlfRzlpjIPmdjgoicA==
+In-Reply-To: <20250507183813.500572371@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-The report zones buffer size is currently limited by the HBA's
-maximum segment count to ensure the buffer can be mapped. However,
-the block layer further limits the number of iovec entries to
-1024 when allocating a bio.
 
-To avoid allocation of buffers too large to be mapped, further
-restrict the maximum buffer size to BIO_MAX_INLINE_VECS.
 
-Replace the UIO_MAXIOV symbolic name with the more contextually
-appropriate BIO_MAX_INLINE_VECS.
+On 5/7/2025 8:38 PM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.90 release.
+> There are 129 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Fri, 09 May 2025 18:37:41 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.90-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Fixes: b091ac616846 ("sd_zbc: Fix report zones buffer allocation")
-Cc: stable@vger.kernel.org
-Signed-off-by: Steve Siwinski <ssiwinski@atto.com>
----
- block/bio.c           | 2 +-
- drivers/scsi/sd_zbc.c | 6 +++++-
- include/linux/bio.h   | 1 +
- 3 files changed, 7 insertions(+), 2 deletions(-)
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels build tested on 
+BMIPS_GENERIC:
 
-diff --git a/block/bio.c b/block/bio.c
-index 4e6c85a33d74..4be592d37fb6 100644
---- a/block/bio.c
-+++ b/block/bio.c
-@@ -611,7 +611,7 @@ struct bio *bio_kmalloc(unsigned short nr_vecs, gfp_t gfp_mask)
- {
- 	struct bio *bio;
- 
--	if (nr_vecs > UIO_MAXIOV)
-+	if (nr_vecs > BIO_MAX_INLINE_VECS)
- 		return NULL;
- 	return kmalloc(struct_size(bio, bi_inline_vecs, nr_vecs), gfp_mask);
- }
-diff --git a/drivers/scsi/sd_zbc.c b/drivers/scsi/sd_zbc.c
-index 7a447ff600d2..a8db66428f80 100644
---- a/drivers/scsi/sd_zbc.c
-+++ b/drivers/scsi/sd_zbc.c
-@@ -169,6 +169,7 @@ static void *sd_zbc_alloc_report_buffer(struct scsi_disk *sdkp,
- 					unsigned int nr_zones, size_t *buflen)
- {
- 	struct request_queue *q = sdkp->disk->queue;
-+	unsigned int max_segments;
- 	size_t bufsize;
- 	void *buf;
- 
-@@ -180,12 +181,15 @@ static void *sd_zbc_alloc_report_buffer(struct scsi_disk *sdkp,
- 	 * Furthermore, since the report zone command cannot be split, make
- 	 * sure that the allocated buffer can always be mapped by limiting the
- 	 * number of pages allocated to the HBA max segments limit.
-+	 * Since max segments can be larger than the max inline bio vectors,
-+	 * further limit the allocated buffer to BIO_MAX_INLINE_VECS.
- 	 */
- 	nr_zones = min(nr_zones, sdkp->zone_info.nr_zones);
- 	bufsize = roundup((nr_zones + 1) * 64, SECTOR_SIZE);
- 	bufsize = min_t(size_t, bufsize,
- 			queue_max_hw_sectors(q) << SECTOR_SHIFT);
--	bufsize = min_t(size_t, bufsize, queue_max_segments(q) << PAGE_SHIFT);
-+	max_segments = min(BIO_MAX_INLINE_VECS, queue_max_segments(q));
-+	bufsize = min_t(size_t, bufsize, max_segments << PAGE_SHIFT);
- 
- 	while (bufsize >= SECTOR_SIZE) {
- 		buf = kvzalloc(bufsize, GFP_KERNEL | __GFP_NORETRY);
-diff --git a/include/linux/bio.h b/include/linux/bio.h
-index cafc7c215de8..b786ec5bcc81 100644
---- a/include/linux/bio.h
-+++ b/include/linux/bio.h
-@@ -11,6 +11,7 @@
- #include <linux/uio.h>
- 
- #define BIO_MAX_VECS		256U
-+#define BIO_MAX_INLINE_VECS	UIO_MAXIOV
- 
- struct queue_limits;
- 
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 -- 
-2.43.5
+Florian
 
 
