@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-142885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6E90AB0018
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 18:18:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C6F7AB0019
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 18:18:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1BB7A1C075D4
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 16:18:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 386E91C078A4
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 16:18:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E318281346;
-	Thu,  8 May 2025 16:17:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3511227F4E5;
+	Thu,  8 May 2025 16:18:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MwhIwIx4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C0Texldw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C10C22422D
-	for <stable@vger.kernel.org>; Thu,  8 May 2025 16:17:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C8C22422D
+	for <stable@vger.kernel.org>; Thu,  8 May 2025 16:18:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746721077; cv=none; b=IyjFcANqygdrMrRYeXyWwq1WUX2JzGGBym1bccNamWtBWgjtaEYNwbgbH0KRP/QnuMSb+wHB85Qk6+B4N4TJLon3+hq1R2QbCYU1qnkYUMotJ/1GQ7gnb99hgEYDnldsEy+NLYIOB2o931/f1GdbKrdErHTRyOMgfAX1CdOYMWw=
+	t=1746721082; cv=none; b=mSR/phiJciuioFWBsNRKpDYKEB4OSi+tdcRfNHi06qS8P1i3kLIChx4a4m88qR9HiXUyQkQQkTR3QtHSy0hw9mS/HDMLjHon+kCdY3wHrKMnmWtrllyTUWAtIl2nfyHjGKIDrExhWVHcNrmxKOCnVk8tjzBUkGVdBu4L1Ezp06Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746721077; c=relaxed/simple;
-	bh=r6b1pThhHAMDxd2booSv/ARSMP5QWx/E0PoMeYY3V+4=;
+	s=arc-20240116; t=1746721082; c=relaxed/simple;
+	bh=CgGpEvVyhZUb5hjaA1DjZw0H3nlwcQy2G9FsCGROEwA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IgRgTSH/oPZwTc9ALwS5gS3ESoJg4tDiGFaRrPawuHoU2dQ03kHdeOMyxdNexnKIEO+JW0tK+7xzREXt2RtORZsBi9wCbPdL6cDgQpNIL8/efeUyuvk++9rwmSqp4fXUB+q9BH8+uQoxREJDM5ra3VylYrCfbP3WxbiQoa0Toxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MwhIwIx4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 876E7C4CEE7;
-	Thu,  8 May 2025 16:17:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=usmv29BfGd7WQN4a201ZdyfQzBq4rSaNqGhLl53Fu19scyBUa8bywxo2kfhL/4PuzBXFxMIyS4Cg7ir9tGoOf3IPVh1u3r0WUWxmv8jsRQxrArCyN6H65+IRttUlyFQRB1MAfEVXDaGTtKjDS8j1AupcqwU8P6gpnFhsmk2D9sI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C0Texldw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA0DEC4CEE7;
+	Thu,  8 May 2025 16:18:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746721077;
-	bh=r6b1pThhHAMDxd2booSv/ARSMP5QWx/E0PoMeYY3V+4=;
+	s=k20201202; t=1746721081;
+	bh=CgGpEvVyhZUb5hjaA1DjZw0H3nlwcQy2G9FsCGROEwA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MwhIwIx4J25lf8V0aX1Wxjy7j5PBtJT6WHsrhQR3TDCPHUqTTRs0u264KDWHcqUxW
-	 b3sc6u5CnnV3mPkTjSqrSYRt8XgoNjJm2gZapguOnkxwrFw8B3aIggJTadB5IIDTEP
-	 9+wWReELNn+Mzr8SPwbRGf13z7Uqz4B90UoerHWVquMsJOswKcUDJa0pT9vPaLriSN
-	 Fu3684V4QHtl3wJttYaSzcb4pKUtlysJbge+/vOIvdvbV7pGAqloCJiihw/68S6XM5
-	 OeZ3N0NxnE4WPnPVB6KnAe41Nbkvx5PMGVrrZOINKj/va3Eys4uiL4gR1N7ozqp0jN
-	 LMcLPn1byPs4g==
+	b=C0TexldwLoGQaEIh9JG86lV5DkN2Z6U2NCbMWaSwaZmVsyC0nAMAQgCzVMeQxE7Pv
+	 dTP0rbIhwUYJzo7vnz8t5vnpLtThCjCfhnyscAdoDYsD6AX9XoA2RIapWTXZXw6JSl
+	 dDc8LkQBnHBoULnc6M1oNHCaCEl4HL16IQkOTacZglEjtlBdSohwo5XjRRypJSs6Mc
+	 dAkgDIrFVmiKq6QS/VZFxIAtEaY+GYJCca/i1yDzZnP6rXIasaotEkkwZN51QUyIgn
+	 Ljutg8ZUDa4QKAEkeNNYiSoaAKo7z/mQ+/cmuE5O4L/pEIbW91QMh6w75vo434HTxg
+	 BMBCRc9BIq0SQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Jared Holzman <jholzman@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.14.y v2 7/7] ublk: fix race between io_uring_cmd_complete_in_task and ublk_cancel_cmd
-Date: Thu,  8 May 2025 12:17:52 -0400
-Message-Id: <20250507085227-891f6a1dc77e536e@stable.kernel.org>
+Subject: Re: [PATCH 6.14.y v2 5/7] ublk: remove __ublk_quiesce_dev()
+Date: Thu,  8 May 2025 12:17:57 -0400
+Message-Id: <20250507084702-60da01b945ef64ee@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250507094702.73459-8-jholzman@nvidia.com>
+In-Reply-To:  <20250507094702.73459-6-jholzman@nvidia.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,7 +67,7 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: f40139fde5278d81af3227444fd6e76a76b9506d
+The upstream commit SHA1 provided is correct: 736b005b413a172670711ee17cab3c8ccab83223
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: Jared Holzman<jholzman@nvidia.com>
@@ -75,16 +75,28 @@ Commit author: Ming Lei<ming.lei@redhat.com>
 
 Note: The patch differs from the upstream commit:
 ---
-1:  f40139fde5278 ! 1:  7ae6d5a88218e ublk: fix race between io_uring_cmd_complete_in_task and ublk_cancel_cmd
+1:  736b005b413a1 ! 1:  4115ef18a9595 ublk: remove __ublk_quiesce_dev()
     @@ Metadata
       ## Commit message ##
-         ublk: fix race between io_uring_cmd_complete_in_task and ublk_cancel_cmd
+         ublk: remove __ublk_quiesce_dev()
      
-    +    [ Upstream commit f40139fde5278d81af3227444fd6e76a76b9506d ]
+    +    [ Upstream commit 736b005b413a172670711ee17cab3c8ccab83223 ]
     +
-         ublk_cancel_cmd() calls io_uring_cmd_done() to complete uring_cmd, but
-         we may have scheduled task work via io_uring_cmd_complete_in_task() for
-         dispatching request, then kernel crash can be triggered.
+         Remove __ublk_quiesce_dev() and open code for updating device state as
+         QUIESCED.
+     
+    @@ drivers/block/ublk_drv.c: struct ublk_params_header {
+      static void ublk_stop_dev_unlocked(struct ublk_device *ub);
+      static void ublk_abort_queue(struct ublk_device *ub, struct ublk_queue *ubq);
+     -static void __ublk_quiesce_dev(struct ublk_device *ub);
+    - static inline struct request *__ublk_check_and_get_req(struct ublk_device *ub,
+    - 		struct ublk_queue *ubq, int tag, size_t offset);
+    + 
+      static inline unsigned int ublk_req_build_flags(struct request *req);
+    + static inline struct ublksrv_io_desc *ublk_get_iod(struct ublk_queue *ubq,
+     @@ drivers/block/ublk_drv.c: static int ublk_ch_release(struct inode *inode, struct file *filp)
+      		ublk_stop_dev_unlocked(ub);
+      	} else {
 ---
 
 Results of testing on various branches:
