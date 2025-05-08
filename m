@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-142802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81BADAAF3F0
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 08:41:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5295CAAF3EF
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 08:41:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7BC9984271
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 06:41:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE27B4C83EF
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 06:41:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B664B21C179;
-	Thu,  8 May 2025 06:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A105A21CA0E;
+	Thu,  8 May 2025 06:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="v+vs+a0s"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="aJd/KUJL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 723CB20012B;
-	Thu,  8 May 2025 06:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD0D747F;
+	Thu,  8 May 2025 06:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746686464; cv=none; b=H8I63kXiB4b+NuEUwGx/JKdXwPpxheknzR6wSU78rKem+0koRCC5gN3EP6ko80AZkhElKy0geHk+zr/TCXh4QWFSMK+xyi59NHeNIP1y/2qRrQmLLX3OUubrGlKpsq4djsom/dLsS1BvywmBjHWeQsx3rNbpk+BNtnyCt9eMk5Y=
+	t=1746686469; cv=none; b=GFaE/F9iaBaC3dDdlIpl0oyb+TkPr1KIV4/XyaGWeCiYfIsrHHruD8YOdq3xFqUtFJVrcnIRzeSOhe1OgW0LIeD4bjs5HFfoX3nRLCwMFFe94jBMwvoP1XvtfbvMMbQLvTOLoGRzY1rKQtjuH8mr95MAeUmOfW290MhEnvIJYf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746686464; c=relaxed/simple;
-	bh=1Cwk87Gj4SG2rjSOHBpQS1LQSMxMBvkFv61YpyqHDSE=;
-	h=Date:To:From:Subject:Message-Id; b=ZBkETvCTXFIfevoiAK0duJv/5ivMpJlrxnIAT0I1eIr+DSwURQMYLY+bzOTdXiN8hw/Yon//U7pg3v1Mr5MUPyjzBG7dVjY3eH8vg3tL/WbznbJYU16ZTMysXvT3OMTUlILvi1spzQPtv6VucB1kBjBW3MrU9tNrTDaGMlQjeFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=v+vs+a0s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D254DC4CEEB;
-	Thu,  8 May 2025 06:41:03 +0000 (UTC)
+	s=arc-20240116; t=1746686469; c=relaxed/simple;
+	bh=Uk2lEFvzCVer29Qz0oVslG3PKaoTJzAxTC0F6RI/BUM=;
+	h=Date:To:From:Subject:Message-Id; b=tq++tCOD9VEc10tdUJzAoOCLqtaqdCkAyq+gAtmeJ7KDNwLPwrlmjWyfWOyAPIDJ6qA+mPzdNrfVNYpSG/Gok5R6CTMKYur841IUsdmiCgKnbcjD+UwvGlI0y1OlWpv5I0HLXd3aDb1BpJGdb1xXKhOfIVMO71Ic2YKXMl2huCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=aJd/KUJL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12711C4CEEB;
+	Thu,  8 May 2025 06:41:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1746686463;
-	bh=1Cwk87Gj4SG2rjSOHBpQS1LQSMxMBvkFv61YpyqHDSE=;
+	s=korg; t=1746686469;
+	bh=Uk2lEFvzCVer29Qz0oVslG3PKaoTJzAxTC0F6RI/BUM=;
 	h=Date:To:From:Subject:From;
-	b=v+vs+a0sCJ1xCk1umbEDcQnu8s7w67CIOle4o8p9EkZJ7+Hix1q3ZAwN3lQUkb1Kx
-	 kumLQwMt4Zq331tNj94PiMe2/Yj5z8zT5aGp94BuLmS+I/xmr0gG+oRmoVjpFunTWC
-	 6m/7iv2csRzthFGv/4cFAUkyiRSZ1XSRCLB2gBIs=
-Date: Wed, 07 May 2025 23:41:03 -0700
-To: mm-commits@vger.kernel.org,venkat88@linux.ibm.com,stable@vger.kernel.org,maddy@linux.ibm.com,donettom@linux.ibm.com,nysal@linux.ibm.com,akpm@linux-foundation.org
+	b=aJd/KUJL9RNfrtwzH6FyPYKfxK5EutejiJ6Ji6MufbLbUnogNJsXaubxrDV8sylRb
+	 nIia/h6/gSvtIRAqq89cqDnvME8GpXr18V91Rti9saTDA+F+oqBd217lOG78Y+Dgmw
+	 cDsV4VTaj2Kh16WaYV6+XaNesBuUo5bxcjhP/GCQ=
+Date: Wed, 07 May 2025 23:41:08 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,ryan.roberts@arm.com,david@redhat.com,arkamar@atlas.cz,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] selftests-mm-fix-a-build-failure-on-powerpc.patch removed from -mm tree
-Message-Id: <20250508064103.D254DC4CEEB@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-fix-folio_pte_batch-on-xen-pv.patch removed from -mm tree
+Message-Id: <20250508064109.12711C4CEEB@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,72 +50,162 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: selftests/mm: fix a build failure on powerpc
+     Subject: mm: fix folio_pte_batch() on XEN PV
 has been removed from the -mm tree.  Its filename was
-     selftests-mm-fix-a-build-failure-on-powerpc.patch
+     mm-fix-folio_pte_batch-on-xen-pv.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: "Nysal Jan K.A." <nysal@linux.ibm.com>
-Subject: selftests/mm: fix a build failure on powerpc
-Date: Mon, 28 Apr 2025 18:49:35 +0530
+From: Petr Vaněk <arkamar@atlas.cz>
+Subject: mm: fix folio_pte_batch() on XEN PV
+Date: Fri, 2 May 2025 23:50:19 +0200
 
-The compiler is unaware of the size of code generated by the ".rept"
-assembler directive.  This results in the compiler emitting branch
-instructions where the offset to branch to exceeds the maximum allowed
-value, resulting in build failures like the following:
+On XEN PV, folio_pte_batch() can incorrectly batch beyond the end of a
+folio due to a corner case in pte_advance_pfn().  Specifically, when the
+PFN following the folio maps to an invalidated MFN,
 
-  CC       protection_keys
-  /tmp/ccypKWAE.s: Assembler messages:
-  /tmp/ccypKWAE.s:2073: Error: operand out of range (0x0000000000020158
-  is not between 0xffffffffffff8000 and 0x0000000000007ffc)
-  /tmp/ccypKWAE.s:2509: Error: operand out of range (0x0000000000020130
-  is not between 0xffffffffffff8000 and 0x0000000000007ffc)
+	expected_pte = pte_advance_pfn(expected_pte, nr);
 
-Fix the issue by manually adding nop instructions using the preprocessor.
+produces a pte_none().  If the actual next PTE in memory is also
+pte_none(), the pte_same() succeeds,
 
-Link: https://lkml.kernel.org/r/20250428131937.641989-2-nysal@linux.ibm.com
-Fixes: 46036188ea1f ("selftests/mm: build with -O2")
-Reported-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Signed-off-by: Nysal Jan K.A. <nysal@linux.ibm.com>
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Reviewed-by: Donet Tom <donettom@linux.ibm.com>
-Tested-by: Donet Tom <donettom@linux.ibm.com>
+	if (!pte_same(pte, expected_pte))
+		break;
+
+the loop is not broken, and batching continues into unrelated memory.
+
+For example, with a 4-page folio, the PTE layout might look like this:
+
+[   53.465673] [ T2552] folio_pte_batch: printing PTE values at addr=0x7f1ac9dc5000
+[   53.465674] [ T2552]   PTE[453] = 000000010085c125
+[   53.465679] [ T2552]   PTE[454] = 000000010085d125
+[   53.465682] [ T2552]   PTE[455] = 000000010085e125
+[   53.465684] [ T2552]   PTE[456] = 000000010085f125
+[   53.465686] [ T2552]   PTE[457] = 0000000000000000 <-- not present
+[   53.465689] [ T2552]   PTE[458] = 0000000101da7125
+
+pte_advance_pfn(PTE[456]) returns a pte_none() due to invalid PFN->MFN
+mapping.  The next actual PTE (PTE[457]) is also pte_none(), so the loop
+continues and includes PTE[457] in the batch, resulting in 5 batched
+entries for a 4-page folio.  This triggers the following warning:
+
+[   53.465751] [ T2552] page: refcount:85 mapcount:20 mapping:ffff88813ff4f6a8 index:0x110 pfn:0x10085c
+[   53.465754] [ T2552] head: order:2 mapcount:80 entire_mapcount:0 nr_pages_mapped:4 pincount:0
+[   53.465756] [ T2552] memcg:ffff888003573000
+[   53.465758] [ T2552] aops:0xffffffff8226fd20 ino:82467c dentry name(?):"libc.so.6"
+[   53.465761] [ T2552] flags: 0x2000000000416c(referenced|uptodate|lru|active|private|head|node=0|zone=2)
+[   53.465764] [ T2552] raw: 002000000000416c ffffea0004021f08 ffffea0004021908 ffff88813ff4f6a8
+[   53.465767] [ T2552] raw: 0000000000000110 ffff888133d8bd40 0000005500000013 ffff888003573000
+[   53.465768] [ T2552] head: 002000000000416c ffffea0004021f08 ffffea0004021908 ffff88813ff4f6a8
+[   53.465770] [ T2552] head: 0000000000000110 ffff888133d8bd40 0000005500000013 ffff888003573000
+[   53.465772] [ T2552] head: 0020000000000202 ffffea0004021701 000000040000004f 00000000ffffffff
+[   53.465774] [ T2552] head: 0000000300000003 8000000300000002 0000000000000013 0000000000000004
+[   53.465775] [ T2552] page dumped because: VM_WARN_ON_FOLIO((_Generic((page + nr_pages - 1), const struct page *: (const struct folio *)_compound_head(page + nr_pages - 1), struct page *: (struct folio *)_compound_head(page + nr_pages - 1))) != folio)
+
+Original code works as expected everywhere, except on XEN PV, where
+pte_advance_pfn() can yield a pte_none() after balloon inflation due to
+MFNs invalidation.  In XEN, pte_advance_pfn() ends up calling
+__pte()->xen_make_pte()->pte_pfn_to_mfn(), which returns pte_none() when
+mfn == INVALID_P2M_ENTRY.
+
+The pte_pfn_to_mfn() documents that nastiness:
+
+	If there's no mfn for the pfn, then just create an
+	empty non-present pte.  Unfortunately this loses
+	information about the original pfn, so
+	pte_mfn_to_pfn is asymmetric.
+
+While such hacks should certainly be removed, we can do better in
+folio_pte_batch() and simply check ahead of time how many PTEs we can
+possibly batch in our folio.
+
+This way, we can not only fix the issue but cleanup the code: removing the
+pte_pfn() check inside the loop body and avoiding end_ptr comparison +
+arithmetic.
+
+Link: https://lkml.kernel.org/r/20250502215019.822-2-arkamar@atlas.cz
+Fixes: f8d937761d65 ("mm/memory: optimize fork() with PTE-mapped THP")
+Co-developed-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Petr Vaněk <arkamar@atlas.cz>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- tools/testing/selftests/mm/pkey-powerpc.h |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ mm/internal.h |   27 +++++++++++----------------
+ 1 file changed, 11 insertions(+), 16 deletions(-)
 
---- a/tools/testing/selftests/mm/pkey-powerpc.h~selftests-mm-fix-a-build-failure-on-powerpc
-+++ a/tools/testing/selftests/mm/pkey-powerpc.h
-@@ -104,8 +104,18 @@ static inline void expect_fault_on_read_
- 	return;
+--- a/mm/internal.h~mm-fix-folio_pte_batch-on-xen-pv
++++ a/mm/internal.h
+@@ -248,11 +248,9 @@ static inline int folio_pte_batch(struct
+ 		pte_t *start_ptep, pte_t pte, int max_nr, fpb_t flags,
+ 		bool *any_writable, bool *any_young, bool *any_dirty)
+ {
+-	unsigned long folio_end_pfn = folio_pfn(folio) + folio_nr_pages(folio);
+-	const pte_t *end_ptep = start_ptep + max_nr;
+ 	pte_t expected_pte, *ptep;
+ 	bool writable, young, dirty;
+-	int nr;
++	int nr, cur_nr;
+ 
+ 	if (any_writable)
+ 		*any_writable = false;
+@@ -265,11 +263,15 @@ static inline int folio_pte_batch(struct
+ 	VM_WARN_ON_FOLIO(!folio_test_large(folio) || max_nr < 1, folio);
+ 	VM_WARN_ON_FOLIO(page_folio(pfn_to_page(pte_pfn(pte))) != folio, folio);
+ 
++	/* Limit max_nr to the actual remaining PFNs in the folio we could batch. */
++	max_nr = min_t(unsigned long, max_nr,
++		       folio_pfn(folio) + folio_nr_pages(folio) - pte_pfn(pte));
++
+ 	nr = pte_batch_hint(start_ptep, pte);
+ 	expected_pte = __pte_batch_clear_ignored(pte_advance_pfn(pte, nr), flags);
+ 	ptep = start_ptep + nr;
+ 
+-	while (ptep < end_ptep) {
++	while (nr < max_nr) {
+ 		pte = ptep_get(ptep);
+ 		if (any_writable)
+ 			writable = !!pte_write(pte);
+@@ -282,14 +284,6 @@ static inline int folio_pte_batch(struct
+ 		if (!pte_same(pte, expected_pte))
+ 			break;
+ 
+-		/*
+-		 * Stop immediately once we reached the end of the folio. In
+-		 * corner cases the next PFN might fall into a different
+-		 * folio.
+-		 */
+-		if (pte_pfn(pte) >= folio_end_pfn)
+-			break;
+-
+ 		if (any_writable)
+ 			*any_writable |= writable;
+ 		if (any_young)
+@@ -297,12 +291,13 @@ static inline int folio_pte_batch(struct
+ 		if (any_dirty)
+ 			*any_dirty |= dirty;
+ 
+-		nr = pte_batch_hint(ptep, pte);
+-		expected_pte = pte_advance_pfn(expected_pte, nr);
+-		ptep += nr;
++		cur_nr = pte_batch_hint(ptep, pte);
++		expected_pte = pte_advance_pfn(expected_pte, cur_nr);
++		ptep += cur_nr;
++		nr += cur_nr;
+ 	}
+ 
+-	return min(ptep - start_ptep, max_nr);
++	return min(nr, max_nr);
  }
  
-+#define REPEAT_8(s) s s s s s s s s
-+#define REPEAT_64(s) REPEAT_8(s) REPEAT_8(s) REPEAT_8(s) REPEAT_8(s) \
-+		     REPEAT_8(s) REPEAT_8(s) REPEAT_8(s) REPEAT_8(s)
-+#define REPEAT_512(s) REPEAT_64(s) REPEAT_64(s) REPEAT_64(s) REPEAT_64(s) \
-+		      REPEAT_64(s) REPEAT_64(s) REPEAT_64(s) REPEAT_64(s)
-+#define REPEAT_4096(s) REPEAT_512(s) REPEAT_512(s) REPEAT_512(s) REPEAT_512(s) \
-+		       REPEAT_512(s) REPEAT_512(s) REPEAT_512(s) REPEAT_512(s)
-+#define REPEAT_16384(s) REPEAT_4096(s) REPEAT_4096(s) \
-+			REPEAT_4096(s) REPEAT_4096(s)
-+
- /* 4-byte instructions * 16384 = 64K page */
--#define __page_o_noops() asm(".rept 16384 ; nop; .endr")
-+#define __page_o_noops() asm(REPEAT_16384("nop\n"))
- 
- static inline void *malloc_pkey_with_mprotect_subpage(long size, int prot, u16 pkey)
- {
+ /**
 _
 
-Patches currently in -mm which might be from nysal@linux.ibm.com are
+Patches currently in -mm which might be from arkamar@atlas.cz are
 
-watchdog-fix-watchdog-may-detect-false-positive-of-softlockup-fix.patch
 
 
