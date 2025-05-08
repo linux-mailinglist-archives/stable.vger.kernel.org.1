@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-142793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EA0FAAF3E4
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 08:41:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4A59AAF3E5
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 08:41:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75BD31BC2A22
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 06:41:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCD3E4C7E7D
+	for <lists+stable@lfdr.de>; Thu,  8 May 2025 06:41:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31A5C21B9FE;
-	Thu,  8 May 2025 06:40:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FB9121C19F;
+	Thu,  8 May 2025 06:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="pdumCHtX"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="wMsHi55u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2042192F1;
-	Thu,  8 May 2025 06:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFCFD219A72;
+	Thu,  8 May 2025 06:40:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746686449; cv=none; b=HvMbTy+uo9UiskXVsEqlkfCC3UpF+cyjbtVsbu3H9ufGcYCvy8By/ScK2v29cCdcETrOThAdqljFUSq+So11hleCU9nJB6NZsMecE10Kx7rvFGKNMT6rygpy/zekGe/PQhuQ4MtHvSJEX/tQhFaCxpNJed48KQnqWf/hJ6Mo+Ik=
+	t=1746686451; cv=none; b=eqO/8GWnC6G6R1d50BOQULFsB2xM3BV2AWk3Y2o+cbxO1c0xpxtqpjPQrIXC+O+NoQ4I64gJt2AdDPbwMXo8zRlIiUa6Hi8YakZ87XDOiNEFIekKYzOiNekDakV9SkaA1kp/m8yZfC0r/R6JJ4AlE/VToZCYwBp1jhTnt9V569Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746686449; c=relaxed/simple;
-	bh=wCe6ccNBV1utS5m+mi8Pk3sGYFqdlSf4Iq2vDBDKUpQ=;
-	h=Date:To:From:Subject:Message-Id; b=UAo39ZfE+6I7g5HJ3puWqiFcH9SHQR18x8/T7tjavVXLW4P7TqJspkXXh2BSN8O9XuTEKgQoyvQzTP1cpuWm4B/haJp5/6hNn2EMU3FRMx629emYunpKJZkQlpggEXjwKXWpOfbwG28qA9F4rJzUyTvEXEmQbyhZzQYfGkqzfzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=pdumCHtX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 495D0C4CEEB;
-	Thu,  8 May 2025 06:40:48 +0000 (UTC)
+	s=arc-20240116; t=1746686451; c=relaxed/simple;
+	bh=JF41+ZUWpLBZXM8P/468uhHm+jXa4jRdv+/46rLWPf0=;
+	h=Date:To:From:Subject:Message-Id; b=kvVYPRQo+QTD/aLyjJ9OXDqpZ43s8M1HqQ4CvFTwSE1g/B58VgJwEo4gwzL9KcvB4AuPwlFjT4iCDDLuT5u5sa4cmvW62kmq8yB7Eoivh0kIPg3EmCqJhgfzpp/etnOFnOaYQOq+TKAOPFBUrTnkjV2Fk1rxNx3sumuDfMWcp64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=wMsHi55u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 707A4C4CEF3;
+	Thu,  8 May 2025 06:40:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1746686448;
-	bh=wCe6ccNBV1utS5m+mi8Pk3sGYFqdlSf4Iq2vDBDKUpQ=;
+	s=korg; t=1746686451;
+	bh=JF41+ZUWpLBZXM8P/468uhHm+jXa4jRdv+/46rLWPf0=;
 	h=Date:To:From:Subject:From;
-	b=pdumCHtXK2NDj2ywzz3oAopTuES/q/vcySVkWyxoFchXV79qGOLPJjv2/8tr4jRTi
-	 6mglAQz9600qD8ShsMiUznAGFYNu91T6MCacSOUVWET35dBNolL4ixYPY0OTr/b3PK
-	 GuEfLQ7dBMqeXGaW4bTbjYljL1hFnb1l/rp+7e/A=
-Date: Wed, 07 May 2025 23:40:47 -0700
-To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,nathan@kernel.org,mark@fasheh.com,junxiao.bi@oracle.com,jlbec@evilplan.org,gechangwei@live.cn,mark.tinguely@oracle.com,akpm@linux-foundation.org
+	b=wMsHi55uy4KBuon3cKeYSZCsMTwucX+n6qmls7Jme8w/wf3pam2/+O8U56Ir7a7vl
+	 F+n/q8wosOvxjmSg0pDXvKZLYexCGmF+nZa0yDGk/STj/N/IZJFOjrGHLE3DmKv1gy
+	 RevI+smS3Fv71yevLY48KJ/Hk4qrSbxKIiT0Yjgo=
+Date: Wed, 07 May 2025 23:40:50 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,sjayaram@akamai.com,shuah@kernel.org,dev.jain@arm.com,baolin.wang@linux.alibaba.com,baolin.wang@inux.alibaba.com,feng.tang@linux.alibaba.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] v2-ocfs2-fix-panic-in-failed-foilio-allocation.patch removed from -mm tree
-Message-Id: <20250508064048.495D0C4CEEB@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] selftests-mm-compaction_test-support-platform-with-huge-mount-of-memory.patch removed from -mm tree
+Message-Id: <20250508064051.707A4C4CEF3@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,57 +50,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: ocfs2: fix panic in failed foilio allocation
+     Subject: selftests/mm: compaction_test: support platform with huge mount of memory
 has been removed from the -mm tree.  Its filename was
-     v2-ocfs2-fix-panic-in-failed-foilio-allocation.patch
+     selftests-mm-compaction_test-support-platform-with-huge-mount-of-memory.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Mark Tinguely <mark.tinguely@oracle.com>
-Subject: ocfs2: fix panic in failed foilio allocation
-Date: Fri, 11 Apr 2025 11:31:24 -0500
+From: Feng Tang <feng.tang@linux.alibaba.com>
+Subject: selftests/mm: compaction_test: support platform with huge mount of memory
+Date: Wed, 23 Apr 2025 18:36:45 +0800
 
-commit 7e119cff9d0a ("ocfs2: convert w_pages to w_folios") and commit
-9a5e08652dc4b ("ocfs2: use an array of folios instead of an array of
-pages") save -ENOMEM in the folio array upon allocation failure and call
-the folio array free code.
+When running mm selftest to verify mm patches, 'compaction_test' case
+failed on an x86 server with 1TB memory.  And the root cause is that it
+has too much free memory than what the test supports.
 
-The folio array free code expects either valid folio pointers or NULL. 
-Finding the -ENOMEM will result in a panic.  Fix by NULLing the error
-folio entry.
+The test case tries to allocate 100000 huge pages, which is about 200 GB
+for that x86 server, and when it succeeds, it expects it's large than 1/3
+of 80% of the free memory in system.  This logic only works for platform
+with 750 GB ( 200 / (1/3) / 80% ) or less free memory, and may raise false
+alarm for others.
 
-Link: https://lkml.kernel.org/r/c879a52b-835c-4fa0-902b-8b2e9196dcbd@oracle.com
-Fixes: 7e119cff9d0a ("ocfs2: convert w_pages to w_folios")
-Fixes: 9a5e08652dc4b ("ocfs2: use an array of folios instead of an array of pages")
-Signed-off-by: Mark Tinguely <mark.tinguely@oracle.com>
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Nathan Chancellor <nathan@kernel.org>
+Fix it by changing the fixed page number to self-adjustable number
+according to the real number of free memory.
+
+Link: https://lkml.kernel.org/r/20250423103645.2758-1-feng.tang@linux.alibaba.com
+Fixes: bd67d5c15cc1 ("Test compaction of mlocked memory")
+Signed-off-by: Feng Tang <feng.tang@linux.alibaba.com>
+Acked-by: Dev Jain <dev.jain@arm.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Tested-by: Baolin Wang <baolin.wang@inux.alibaba.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Sri Jayaramappa <sjayaram@akamai.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- fs/ocfs2/alloc.c |    1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/mm/compaction_test.c |   19 ++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
---- a/fs/ocfs2/alloc.c~v2-ocfs2-fix-panic-in-failed-foilio-allocation
-+++ a/fs/ocfs2/alloc.c
-@@ -6918,6 +6918,7 @@ static int ocfs2_grab_folios(struct inod
- 		if (IS_ERR(folios[numfolios])) {
- 			ret = PTR_ERR(folios[numfolios]);
- 			mlog_errno(ret);
-+			folios[numfolios] = NULL;
- 			goto out;
- 		}
+--- a/tools/testing/selftests/mm/compaction_test.c~selftests-mm-compaction_test-support-platform-with-huge-mount-of-memory
++++ a/tools/testing/selftests/mm/compaction_test.c
+@@ -90,6 +90,8 @@ int check_compaction(unsigned long mem_f
+ 	int compaction_index = 0;
+ 	char nr_hugepages[20] = {0};
+ 	char init_nr_hugepages[24] = {0};
++	char target_nr_hugepages[24] = {0};
++	int slen;
+ 
+ 	snprintf(init_nr_hugepages, sizeof(init_nr_hugepages),
+ 		 "%lu", initial_nr_hugepages);
+@@ -106,11 +108,18 @@ int check_compaction(unsigned long mem_f
+ 		goto out;
+ 	}
+ 
+-	/* Request a large number of huge pages. The Kernel will allocate
+-	   as much as it can */
+-	if (write(fd, "100000", (6*sizeof(char))) != (6*sizeof(char))) {
+-		ksft_print_msg("Failed to write 100000 to /proc/sys/vm/nr_hugepages: %s\n",
+-			       strerror(errno));
++	/*
++	 * Request huge pages for about half of the free memory. The Kernel
++	 * will allocate as much as it can, and we expect it will get at least 1/3
++	 */
++	nr_hugepages_ul = mem_free / hugepage_size / 2;
++	snprintf(target_nr_hugepages, sizeof(target_nr_hugepages),
++		 "%lu", nr_hugepages_ul);
++
++	slen = strlen(target_nr_hugepages);
++	if (write(fd, target_nr_hugepages, slen) != slen) {
++		ksft_print_msg("Failed to write %lu to /proc/sys/vm/nr_hugepages: %s\n",
++			       nr_hugepages_ul, strerror(errno));
+ 		goto close_fd;
+ 	}
  
 _
 
-Patches currently in -mm which might be from mark.tinguely@oracle.com are
+Patches currently in -mm which might be from feng.tang@linux.alibaba.com are
 
 
 
