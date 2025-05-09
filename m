@@ -1,128 +1,126 @@
-Return-Path: <stable+bounces-143052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6E74AB172F
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 16:19:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80B05AB1743
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 16:22:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A5911C4635D
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 14:19:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F9211C27C05
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 14:22:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8EE8212FB7;
-	Fri,  9 May 2025 14:18:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="hewAkBeu"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 673D6C147;
+	Fri,  9 May 2025 14:22:33 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA50A1E5B82;
-	Fri,  9 May 2025 14:18:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8FA82110
+	for <stable@vger.kernel.org>; Fri,  9 May 2025 14:22:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746800328; cv=none; b=f7DqV+bgijkh/7+8KDUQMmbPRANVU5SlRGLbLFHxewFO0b+kIziIaGoQU5ySoiE4DIFOUhhFnzkG63PT+zeCI4d9P9otC2o2zdcQhAK0Auar1B0noa+CvZQnkh1OWFREB7FlGD9RL52qzyh5gHrLsuY25H7UOIupPEdwka9Bg+o=
+	t=1746800553; cv=none; b=d7l+faSDF4LVaju16iMKbJZgWWbiBhR2ek8kt34ZWPr2QQgqgBZeEi1Zq+2MXqrh3TXhA6dZgSBPe4XZMP3s65iwiI0r64k+LDccX26OdbBaTtB6j+FBc+fXYvjMplLMvrK0xi2CXruoL68oNy6TxtbwQRQ5WnnQNkBlgaCFlNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746800328; c=relaxed/simple;
-	bh=K/Qfs3+JXPjQFxdXIhUR3acZ/8Eb5wwetSO8CwTUPJ8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=vAaY+lJP23CXoEfjSklucd8o11c5s4BUCfo/DHB0kv8nFjsyrdWDW1iCCB3XL98HtAOSjBu7VtbtyuxjPzszxypFy2Cq6QNBKRh3FnePzmnzpxGMHgb+sidooEhdn2s/ADdmrndfXxZopB9HzgyKAP+gAqlVBy1bs7mIwTRap7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=hewAkBeu; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
-Received: from francesco-nb.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 7250722206;
-	Fri,  9 May 2025 16:18:43 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1746800324;
-	bh=WiABciZh5JeYfdXWgF7so0KTIPIEJer4ove2V2q8QQI=; h=From:To:Subject;
-	b=hewAkBeuJ/GBJorEuaZV7kTk3/dGRf/27fx6mM11wyI2t4CFdRNLQEUNE2k2tOCHv
-	 fhZDttEFj04i1OHoJ5pOgUM/m2gwn8+iwuXQGvMqqfxbH6k/FWcenBg4khGwpduwBI
-	 ozCGUv+EPGklAZWX3gDsEkL1Gj4vQqdeFgV8WMIURJ8BEKGcT/jTd1tyqAp7Zcx1gx
-	 6ld1+xt0Tz+xNCnPfkwklyEWevf7wVvObsbsSK6KJF+0KP7xr85JPeNRqDIbSJmaY0
-	 9fNuzPQRoopUviExzdX3Y8uExJafjosb1JmnGL5JUzT2yKRxjAyGK2U6vjLLWu4I3+
-	 PG4VJFXCcgtxA==
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
-	linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Marek Vasut <marek.vasut@gmail.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	stable@vger.kernel.org,
-	Francesco Dolcini <francesco.dolcini@toradex.com>
-Subject: [PATCH v2] gpio: pca953x: fix IRQ storm on system wake up
-Date: Fri,  9 May 2025 16:18:28 +0200
-Message-Id: <20250509141828.57851-1-francesco@dolcini.it>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1746800553; c=relaxed/simple;
+	bh=2zaQhErJPN3uZ2cg/gLpnbkL4EsK1rCm5F4ZAkxbU4Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rG+MAwSDP5qH89a0PO5sfMbrnen4jtSANaIkW4sOXm1NDbho3phnIBnYifUiMh8IQnfsqNRCM6mVuk/RVJasaNx3Pp0ic432RV+pUTWwiyOh5dZTRg0n5n+8FdJZIYqy63ZBGwUQBYrEj8rsCEEZWWL31vcx/TsFaTSjt9qSu0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 131E0175D;
+	Fri,  9 May 2025 07:22:20 -0700 (PDT)
+Received: from pluto (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 537163F5A1;
+	Fri,  9 May 2025 07:22:30 -0700 (PDT)
+Date: Fri, 9 May 2025 15:22:22 +0100
+From: Cristian Marussi <cristian.marussi@arm.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Cristian Marussi <cristian.marussi@arm.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 6.6.y] firmware: arm_scmi: Add missing definition of info
+ reference
+Message-ID: <aB4PnqeXehOD0VPz@pluto>
+References: <2025050930-scuba-spending-0eb9@gregkh>
+ <20250509114422.982089-1-cristian.marussi@arm.com>
+ <2025050920-aide-squire-5a2e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2025050920-aide-squire-5a2e@gregkh>
 
-From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+On Fri, May 09, 2025 at 03:45:26PM +0200, Greg KH wrote:
+> On Fri, May 09, 2025 at 12:44:22PM +0100, Cristian Marussi wrote:
+> > Add the missing definition that caused a build break.
+> > 
+> > Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
+> > ---
+> >  drivers/firmware/arm_scmi/driver.c | 2 ++
+> >  1 file changed, 2 insertions(+)
+> > 
+> > diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/arm_scmi/driver.c
+> > index 609fbf4563ff..3f3701ed196e 100644
+> > --- a/drivers/firmware/arm_scmi/driver.c
+> > +++ b/drivers/firmware/arm_scmi/driver.c
+> > @@ -1044,6 +1044,8 @@ static int scmi_wait_for_reply(struct device *dev, const struct scmi_desc *desc,
+> >  		 */
+> >  		if (!desc->sync_cmds_completed_on_ret) {
+> >  			bool ooo = false;
+> > +			struct scmi_info *info =
+> > +				handle_to_scmi_info(cinfo->handle);
+> >  
+> >  			/*
+> >  			 * Poll on xfer using transport provided .poll_done();
+> > -- 
+> > 2.39.5
+> > 
 
-If an input changes state during wake-up and is used as an interrupt
-source, the IRQ handler reads the volatile input register to clear the
-interrupt mask and deassert the IRQ line. However, the IRQ handler is
-triggered before access to the register is granted, causing the read
-operation to fail.
+Hi Greg,
 
-As a result, the IRQ handler enters a loop, repeatedly printing the
-"failed reading register" message, until `pca953x_resume` is eventually
-called, which restores the driver context and enables access to
-registers.
+> > 
+> 
+> <formletter>
+> 
+> This is not the correct way to submit patches for inclusion in the
+> stable kernel tree.  Please read:
+>     https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+> for how to do this properly.
 
-Fix by disabling the IRQ line before entering suspend mode, and
-re-enabling it after the driver context is restored in `pca953x_resume`.
+..oh...I know...but from the FAILED report that I received related to the
+fact that the patch did not apply cleanly...
 
-An irq can be disabled with disable_irq() and still wake the system as
-long as the irq has wake enabled, so the wake-up functionality is
-preserved.
+https://lore.kernel.org/all/2025050930-scuba-spending-0eb9@gregkh/
 
-Fixes: b76574300504 ("gpio: pca953x: Restore registers after suspend/resume cycle")
-Cc: stable@vger.kernel.org
-Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 ---
-v1 -> v2
- - Instead of calling PM ops with disabled interrupts, just disable the
-   irq while going in suspend and re-enable it after restoring the
-   context in resume function.
----
- drivers/gpio/gpio-pca953x.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-diff --git a/drivers/gpio/gpio-pca953x.c b/drivers/gpio/gpio-pca953x.c
-index ab2c0fd428fb..b852e4997629 100644
---- a/drivers/gpio/gpio-pca953x.c
-+++ b/drivers/gpio/gpio-pca953x.c
-@@ -1226,6 +1226,8 @@ static int pca953x_restore_context(struct pca953x_chip *chip)
- 
- 	guard(mutex)(&chip->i2c_lock);
- 
-+	if (chip->client->irq > 0)
-+		enable_irq(chip->client->irq);
- 	regcache_cache_only(chip->regmap, false);
- 	regcache_mark_dirty(chip->regmap);
- 	ret = pca953x_regcache_sync(chip);
-@@ -1238,6 +1240,10 @@ static int pca953x_restore_context(struct pca953x_chip *chip)
- static void pca953x_save_context(struct pca953x_chip *chip)
- {
- 	guard(mutex)(&chip->i2c_lock);
-+
-+	/* Disable IRQ to prevent early triggering while regmap "cache only" is on */
-+	if (chip->client->irq > 0)
-+		disable_irq(chip->client->irq);
- 	regcache_cache_only(chip->regmap, true);
- }
- 
--- 
-2.39.5
+To reproduce the conflict and resubmit, you may use the following commands:
 
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x c23c03bf1faa1e76be1eba35bad6da6a2a7c95ee
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025050930-scuba-spending-0eb9@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+
+Possible dependencies:
+----
+
+...my (mis-)understanding was that you wanted some sort of diff on top
+of that the bad non-applying patch ('git commit -s') instead of fresh new
+poeprly backported patch....thing which, indeed, seemed weird :P
+
+I'll resend following the proper procedure.
+
+Sorry for the noise.
+
+Thanks,
+Cristian
 
