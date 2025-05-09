@@ -1,123 +1,111 @@
-Return-Path: <stable+bounces-143061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC0ABAB1B48
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 19:07:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76142AB1BA0
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 19:33:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C26EB1B651EB
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 17:07:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F28781C46E3F
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 17:33:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B67E82356C9;
-	Fri,  9 May 2025 17:06:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFC11237186;
+	Fri,  9 May 2025 17:32:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Bjp5HcYi"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="HuZzubWh"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 023D820C030;
-	Fri,  9 May 2025 17:06:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB9B145038;
+	Fri,  9 May 2025 17:32:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746810417; cv=none; b=ofXN6vXdP4+mLmYdAtoFiPVGiILjIeSGK59Xgw4sBmLcGgtP9odhbBSj5zN0oHFppHkcyTpHkgTDVpvZ5lVaS97Qi5tAzg0nRlNQkq+f2MFGFnmA/8ZKIWgaWN0hmu6dhvD7J6v0OD9lWiphOcFUejjGH4J/2mqpaTvUtmgqM20=
+	t=1746811972; cv=none; b=QLAJSlLL6CPZEmkiZCRDaj9xvgME/wXt3NAEw6cYMnPOiWVE/h1hKzB3eZUnR0jswYPVTcgpsVyGhwfJllUruV3gfwgzbXiu55GBpJGBYIPdxQY5yIh7+shtspZyMyn4GH93WdUNzH/tQ2S1vc1sXBHCiiIewzSf6WM3UMoogFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746810417; c=relaxed/simple;
-	bh=nrh242XAYGJ4BUggQHAKhdHYKrqxRWsUk/neqm6hKew=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bPp4x6pb/PSR6PGiPXXQLJ7mUjxrnVHsbsZDvHadpfxbWVay3v8TO46/sQwz4ZKyW9xwLLwjl1lioEdeu5IwjvASDPNNocfnVYrbt1Vldxe38lDFFShowJy1V39aeCLu7u85Pvem/wZo/uQkfLgaeCBVcw8CRWvzYyFe6qTcTuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Bjp5HcYi; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746810416; x=1778346416;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=nrh242XAYGJ4BUggQHAKhdHYKrqxRWsUk/neqm6hKew=;
-  b=Bjp5HcYi2xiOl7c8smzF3cURF/jQLb9viW8NOgI0EGcBNGYoPyoL8siz
-   QetMMUer/+IStBB3rK7a0VzvJpb08n3D6/ebY0T3ZpIpP7tkSj6eP1WLQ
-   plbTmkUF3wC5NDQ66XMzGpq1bDx/1QuUS88sQtho2Uyptv+2NPrc8YpdG
-   vH32fslu0H/UK+0tErKpS1pROmraO/eRNqzWVPoVHMneg3eko4NqIaM/s
-   nj75JPpKc9F+Nl9Rb7m1TuVs4im0JsDUDTs9DafGXhD29u57UZOJNgrf9
-   cO9xiPSIR3IMRpcDCDm9kChGak7l2AcN9idsK5DSwPKgDnfi8qnhg+pAp
-   Q==;
-X-CSE-ConnectionGUID: qpglH75OTh+bGG5TacPXkg==
-X-CSE-MsgGUID: B8UCwfELRw+u3AsGYL5nsw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="52455779"
-X-IronPort-AV: E=Sophos;i="6.15,275,1739865600"; 
-   d="scan'208";a="52455779"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2025 10:06:55 -0700
-X-CSE-ConnectionGUID: WaT8JMCHQjqZstX/dzgNuA==
-X-CSE-MsgGUID: 5/SnilGKTbK9uA6bdOAFMA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,275,1739865600"; 
-   d="scan'208";a="141450336"
-Received: from unknown (HELO jiaqingz-acrn-container.sh.intel.com) ([10.239.43.235])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2025 10:06:52 -0700
-From: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
-To: Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Bernhard Kaindl <bk@suse.de>,
-	Andi Kleen <ak@linux.intel.com>
-Cc: Li Fei <fei1.li@intel.com>,
-	Jiaqing Zhao <jiaqing.zhao@linux.intel.com>,
-	stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] x86/mtrr: Check if fixed-range MTRR exists in mtrr_save_fixed_ranges()
-Date: Fri,  9 May 2025 17:06:33 +0000
-Message-ID: <20250509170633.3411169-2-jiaqing.zhao@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1746811972; c=relaxed/simple;
+	bh=BYghYgLKz845p/XJUOgV5+fweGgy0oL4oXzWYAfXIGc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SbGeLLPk4IBESx4hWo6dcnDG+p+sXjgPRZR5FAhkX1jvj/QtBxL77a85RcD+hM+LCeKBcg1Yhb44sugpQoqXk7/HZJ2IjD0Hwui2tTTKbz8r3KReg//NiicknJp89hb/p3BmLR7JllCXz5oqUhtNUO1DO8pCWnZsYU3SvZPuE0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=HuZzubWh; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 1914640E01CF;
+	Fri,  9 May 2025 17:32:47 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id QP-XzlRqnOfZ; Fri,  9 May 2025 17:32:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1746811962; bh=92FBgt9X64NNgwgndLEy21ZDonQ9gW2RlXVeTWQ7YCs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HuZzubWhBj+bfLZE+YRtp8iBNxxFiR2Eg98G0JtYkLbtOzksG7IyiPCeOqSbwJXJT
+	 E1zyb7RSbovxsFzasq4gZluAvNeGCMO5XVm77neg5V525PpR7XULkoHwH1NpjOqgW4
+	 MMA57bP5OEYUovC8rtePBK9wFDWHIQWRLP3zED04BGf1Furmj30FfQHettBLsXNKZt
+	 I7mxnaW+vXqcslYDEgfw0bt0sOniuPjgXKU/WHMmvzf9pmVYJ9ez3VuFask7KJSRB6
+	 HrnNTCCpQAqzSjxiqxTNHjTBt2McSg+ANrdOAPUXPep69mCtnWzKSc4D986dueIemK
+	 bZIwTJC+l0UQR23Ig1WuX6U29+fEr/+QQ9icYFxKQR9QEJsgHposZRJ2DPAd6fMjkh
+	 anaA9ATNvLJndcc3euJ/jIqLIHigYe2QSvXq5bfMA5djQKZc64B8+HnlPOhHkJ4x9g
+	 NAyiVEMeOCx/JMAcMwpX7PUxGgn8MIZQ8IRzSsbGD93vBpDVOUFxTJ1LqBIG01hwfy
+	 UjF3JmvoPEowqyt8A/4YVILdIpngBLMHD+MYO7Mh0PcoVRurByZS/Kd11zRiFkJVR7
+	 dDq4BAZ1nRE30tKAbFWQY7c0t62lV+EdfRwBDw/eojza9yHgwUrg3LxC4VjaaxlxeZ
+	 fQmznck9KvdSAV6aEz/PVdHA=
+Received: from zn.tnic (p579690ee.dip0.t-ipconnect.de [87.150.144.238])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 3288C40E0222;
+	Fri,  9 May 2025 17:32:31 +0000 (UTC)
+Date: Fri, 9 May 2025 19:32:25 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Bernhard Kaindl <bk@suse.de>,
+	Andi Kleen <ak@linux.intel.com>, Li Fei <fei1.li@intel.com>,
+	stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] x86/mtrr: Check if fixed-range MTRR exists in
+ mtrr_save_fixed_ranges()
+Message-ID: <20250509173225.GDaB48KZvZSA9QLUaR@fat_crate.local>
+References: <20250509170633.3411169-2-jiaqing.zhao@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250509170633.3411169-2-jiaqing.zhao@linux.intel.com>
 
-When suspending, save_processor_state() calls mtrr_save_fixed_ranges()
-to save fixed-range MTRRs. On platforms without fixed-range MTRRs,
-accessing these MSRs will trigger unchecked MSR access error. Make
-sure fixed-range MTRRs are supported before access to prevent such
-error.
+On Fri, May 09, 2025 at 05:06:33PM +0000, Jiaqing Zhao wrote:
+> When suspending, save_processor_state() calls mtrr_save_fixed_ranges()
+> to save fixed-range MTRRs. On platforms without fixed-range MTRRs,
+> accessing these MSRs will trigger unchecked MSR access error. Make
+> sure fixed-range MTRRs are supported before access to prevent such
+> error.
+> 
+> Since mtrr_state.have_fixed is only set when MTRRs are present and
+> enabled, checking the CPU feature flag in mtrr_save_fixed_ranges()
+> is unnecessary.
+> 
+> Fixes: 3ebad5905609 ("[PATCH] x86: Save and restore the fixed-range MTRRs of the BSP when suspending")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
 
-Since mtrr_state.have_fixed is only set when MTRRs are present and
-enabled, checking the CPU feature flag in mtrr_save_fixed_ranges()
-is unnecessary.
+Next question: this is CC:stable, meaning it'll go to Linus now.
 
-Fixes: 3ebad5905609 ("[PATCH] x86: Save and restore the fixed-range MTRRs of the BSP when suspending")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
----
-v2:
-* Removed unnecessary boot_cpu_has(X86_FEATURE_MTRR) check.
-* Updated commit message.
-Link: https://lore.kernel.org/all/20250509085612.2236222-2-jiaqing.zhao@linux.intel.com
+What exactly is it fixing?
 
- arch/x86/kernel/cpu/mtrr/generic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Because the patch in Fixes: is from 2007. :-\
 
-diff --git a/arch/x86/kernel/cpu/mtrr/generic.c b/arch/x86/kernel/cpu/mtrr/generic.c
-index e2c6b471d230..8c18327eb10b 100644
---- a/arch/x86/kernel/cpu/mtrr/generic.c
-+++ b/arch/x86/kernel/cpu/mtrr/generic.c
-@@ -593,7 +593,7 @@ static void get_fixed_ranges(mtrr_type *frs)
- 
- void mtrr_save_fixed_ranges(void *info)
- {
--	if (boot_cpu_has(X86_FEATURE_MTRR))
-+	if (mtrr_state.have_fixed)
- 		get_fixed_ranges(mtrr_state.fixed_ranges);
- }
- 
 -- 
-2.43.0
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
 
