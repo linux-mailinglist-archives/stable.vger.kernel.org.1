@@ -1,122 +1,127 @@
-Return-Path: <stable+bounces-143040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57CDEAB10FC
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 12:45:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F045FAB1139
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 12:53:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A87861C2547C
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 10:45:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C0DF07A54B5
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 10:51:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0110C21D3EF;
-	Fri,  9 May 2025 10:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB5D928F935;
+	Fri,  9 May 2025 10:51:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="N3fDS+hm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SBrA6Clr"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFABB28F51F;
-	Fri,  9 May 2025 10:45:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AA2D28F934
+	for <stable@vger.kernel.org>; Fri,  9 May 2025 10:51:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746787514; cv=none; b=qEgL9HpN3vDMz+KiMj+CgSdRT1EcFyqXDaBWv1dYJlN+/Iktv4E9rnRvf9OYRRyGQtrq9htkaKVzaH+TG4SrREzdJnCyHnGatL2X95OUGLrOmQI2LsP+az3aVgLMHMHgk/5BOCgDCALmNcCxm4cFB1rHllH08jb3WEwyIYb36bU=
+	t=1746787866; cv=none; b=f2NnPSdJ0sPjNn62zZKYa2b8nB3P19SZ9u1ei+T6jcByadsnWHKRIxJ8c1rHYflDZ2jcfa7atzOirEB3TBjuM7hdIxw6thB6PniK4D+A4GNCjz+6+ctUBZg+st6llUk71FU7q250BJH2I/SMHU2l6R41Ransg/LIUxSHyJa/pYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746787514; c=relaxed/simple;
-	bh=J0R085KxdN2eA0ziT4kp9Pv3r3T+JFpzEc9TfAOlb3s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RU1XiSmUwxr+4icL9t9cKOiRwLZeHXUtYJxbdAoSSawGGteeSOk1DfUjE+8vdYYnhG1cL/hL0s/nMmLCYlOv6vCW6D5Fxv+o7KhkMwO65lQs+EZbXmUsb9eYz+OnJ47uolFCnuOWJ4s+9n2SYQ8LOXwGLarj76XvPeQRY+E+pek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=N3fDS+hm; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id DFB7040E01FA;
-	Fri,  9 May 2025 10:45:07 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id GdDCXDC1iPDN; Fri,  9 May 2025 10:45:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1746787503; bh=dwE9OGu7iwJrUb/YEJOzLU4pWDCbvE0L6Byfl3N88FU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=N3fDS+hm60VcT0Yx5axAUD6WCNxuAy3xmXFWugxtCLlAwvZxBYA79dgYHn8MwTfyB
-	 CheBWQL0E4JGk//ZdyRmfuy9WjF8e/0Z5TfVoz/yYEgHcpGd1UZveRZfN2OgVVshZ5
-	 T2hhD+u0V/ZJOxMDDxMbkHpGjSC6nMeJ+TqyAvsPqNYI13gaS5s130pP1vkqssaXb5
-	 v6mFBXF48G/U+9RE4TpG7635nQvCF6CQ9gJlyzvJ0/p5EIH7GNrYmSPWUB8d6HZeKl
-	 MgeBU9a5tOJoEdJojnb+liu5gtj82xssCw5l0/AHjqlO+o4cvgu7UVm19Ito3Ahlbj
-	 PapZAgTnDLRONcFo9OlTEY/eBdrI/h0CIawgo5ZtTyzbibLbEpTZ8wM0sqh7G09gkb
-	 b34ZfGXybc1yC7kgftqv6TqDl/JQoAKdHEQFeV5qfkSs39GrLW6oYMaZNnuloIgCZW
-	 lI4PqA3cyJA9wwATZWN+0IPoxX5vf0f7uQ4zIStDr66FzcFoHXcQUpxvz+QgCbM/rS
-	 W2jslPZpZ/keJ/Q+AIc32ss4HiEfst4+n6lxh8RCn9t+p2aCts1sb+WcMeJd5UOOp1
-	 vzPO9WWbj9pV32VRQ/28MuXNEnA/VKYThstiQhozJl+A/d9G8V86twx14dUnPUs7FX
-	 3fqm11BJG93clEkUz1t+n0YA=
-Received: from zn.tnic (p579690ee.dip0.t-ipconnect.de [87.150.144.238])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id DB8F440E01CF;
-	Fri,  9 May 2025 10:44:51 +0000 (UTC)
-Date: Fri, 9 May 2025 12:44:45 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Bernhard Kaindl <bk@suse.de>,
-	Andi Kleen <ak@linux.intel.com>, Li Fei <fei1.li@intel.com>,
-	stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] x86/mtrr: Check if fixed-range MTRR exists in
- `mtrr_save_fixed_ranges`
-Message-ID: <20250509104445.GBaB3cnZnqCy-Vv6CR@fat_crate.local>
-References: <20250509085612.2236222-2-jiaqing.zhao@linux.intel.com>
+	s=arc-20240116; t=1746787866; c=relaxed/simple;
+	bh=oJ5Ioz2kr9QFDM7LS6WTL+LCq1hCqbqYm00kaYXszTs=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=powWk9r/flR0HrllRfs323csXMwjdGPOmwkwj/DQaNXAXe60ATHWCBBgztQNsaRsOD5jsiTN3b7So3aGYAuYdlYrVE6iPZAVRn/Ghqk4fWUMaxFCw8Dt90yist2yTm4cJ52PffQ2itcMtKX52Kdg/Z2HVoKezSq7cFJXaRU0Njk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SBrA6Clr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83EB1C4CEE4;
+	Fri,  9 May 2025 10:51:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746787865;
+	bh=oJ5Ioz2kr9QFDM7LS6WTL+LCq1hCqbqYm00kaYXszTs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=SBrA6Clr4HtEsXok99grePX0E3p4+uUG0evMjHqcC1Tv+v7QGCGdyNLQ7OQCqrNyG
+	 t+60trjiq8Y8pt12nz3IGMek3frDTJTW4vxjgKk4MhDyHf03z7WJUN77rmWIGMgzm8
+	 ZFWQnzZtECRKO0bdPvhDQxERdbUuDrY6kGHndv2fUtNSGWqNo+EBLkHxPRVvnKwF0+
+	 iKC5y2j/4zHnTZ/4z7BLe27GtXKwGzMdIFd6eYRyKWB2mmSvo3lFogz/W+f6CpyuWb
+	 7hJ0Mr6PavVE32q2e/96RELQEyNv4x8J6Wv4qj1AuoD2u3Xc/KP9J5rQREIFn/wH6O
+	 JT3s1HE1jEsqw==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Qu Wenruo <wqu@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.6.y v2] btrfs: always fallback to buffered write if the inode requires checksum
+Date: Fri,  9 May 2025 06:51:01 -0400
+Message-Id: <20250508142620-05d880325aa36850@stable.kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To:  <54c7002136a047b7140c36478200a89e39d6bd04.1746687932.git.wqu@suse.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250509085612.2236222-2-jiaqing.zhao@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, May 09, 2025 at 08:56:12AM +0000, Jiaqing Zhao wrote:
-> When suspending, `save_processor_state` calls `mtrr_save_fixed_ranges`
+[ Sasha's backport helper bot ]
 
-Put () after the function names and drop the ``.
+Hi,
 
-> to save fixed-range MTRRs. On platforms without MTRR or fixed-range
-> MTRR support, accessing MTRR MSRs triggers unchecked MSR access error.
-> Make sure fixed-range MTRR is supported before access to prevent such
-> error.
-> 
-> Fixes: 3ebad5905609 ("[PATCH] x86: Save and restore the fixed-range MTRRs of the BSP when suspending")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
-> ---
->  arch/x86/kernel/cpu/mtrr/generic.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/x86/kernel/cpu/mtrr/generic.c b/arch/x86/kernel/cpu/mtrr/generic.c
-> index e2c6b471d230..ca37b374d1b0 100644
-> --- a/arch/x86/kernel/cpu/mtrr/generic.c
-> +++ b/arch/x86/kernel/cpu/mtrr/generic.c
-> @@ -593,7 +593,7 @@ static void get_fixed_ranges(mtrr_type *frs)
->  
->  void mtrr_save_fixed_ranges(void *info)
->  {
-> -	if (boot_cpu_has(X86_FEATURE_MTRR))
-> +	if (boot_cpu_has(X86_FEATURE_MTRR) && mtrr_state.have_fixed)
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-Does it work too if you check only mtrr_state.have_fixed?
+The upstream commit SHA1 provided is correct: 968f19c5b1b7d5595423b0ac0020cc18dfed8cb5
 
-Without the feature check...
+Status in newer kernel trees:
+6.14.y | Not found
+6.12.y | Not found
 
--- 
-Regards/Gruss,
-    Boris.
+Note: The patch differs from the upstream commit:
+---
+1:  968f19c5b1b7d ! 1:  21bb3166ede2a btrfs: always fallback to buffered write if the inode requires checksum
+    @@ Metadata
+      ## Commit message ##
+         btrfs: always fallback to buffered write if the inode requires checksum
+     
+    +    commit 968f19c5b1b7d5595423b0ac0020cc18dfed8cb5 upstream.
+    +
+         [BUG]
+         It is a long known bug that VM image on btrfs can lead to data csum
+         mismatch, if the qemu is using direct-io for the image (this is commonly
+    @@ Commit message
+           to buffered IO.  At least by this, we avoid the more deadly false data
+           checksum mismatch error.
+     
+    +    CC: stable@vger.kernel.org # 6.6
+         Suggested-by: Christoph Hellwig <hch@infradead.org>
+         Reviewed-by: Filipe Manana <fdmanana@suse.com>
+         Signed-off-by: Qu Wenruo <wqu@suse.com>
+         Reviewed-by: David Sterba <dsterba@suse.com>
+         Signed-off-by: David Sterba <dsterba@suse.com>
+    +    [ Fix a conflict due to the movement of the function. ]
+     
+    - ## fs/btrfs/direct-io.c ##
+    -@@ fs/btrfs/direct-io.c: ssize_t btrfs_direct_write(struct kiocb *iocb, struct iov_iter *from)
+    - 		btrfs_inode_unlock(BTRFS_I(inode), ilock_flags);
+    + ## fs/btrfs/file.c ##
+    +@@ fs/btrfs/file.c: static ssize_t btrfs_direct_write(struct kiocb *iocb, struct iov_iter *from)
+      		goto buffered;
+      	}
+    + 
+     +	/*
+     +	 * We can't control the folios being passed in, applications can write
+     +	 * to them while a direct IO write is in progress.  This means the
+    @@ fs/btrfs/direct-io.c: ssize_t btrfs_direct_write(struct kiocb *iocb, struct iov_
+     +		btrfs_inode_unlock(BTRFS_I(inode), ilock_flags);
+     +		goto buffered;
+     +	}
+    - 
+    ++
+      	/*
+      	 * The iov_iter can be mapped to the same file range we are writing to.
+    + 	 * If that's the case, then we will deadlock in the iomap code, because
+---
 
-https://people.kernel.org/tglx/notes-about-netiquette
+Results of testing on various branches:
+
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-6.6.y        |  Success    |  Success   |
 
