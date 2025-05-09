@@ -1,111 +1,138 @@
-Return-Path: <stable+bounces-143042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F797AB113D
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 12:53:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44515AB117F
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 13:06:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB3171BC3390
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 10:53:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E32E3B4BCB
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 11:06:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31C9B28F92B;
-	Fri,  9 May 2025 10:51:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 762D128ECE9;
+	Fri,  9 May 2025 11:06:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qZTXmp4p"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c2v614rF"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E239328F926
-	for <stable@vger.kernel.org>; Fri,  9 May 2025 10:51:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8972B228C99
+	for <stable@vger.kernel.org>; Fri,  9 May 2025 11:06:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746787870; cv=none; b=VG1Eojv3HTRuv3dL2gTd8k0ybzrdku96Tp0i85Jv5v9mU5Qb+YQrh0dqs+UC+oaWrnLm3EERgVEURPoXAl0iE/xtxxs0GYk98x7E6bOEXC2CHVp1DgGpEpaVSIGWUXnCaweVhztIcRsYN9Z/RHuo5J233HOSj7g+AP+9mCLWQqg=
+	t=1746788789; cv=none; b=HoJSlZzvvA2Q3PVjx7sG4nGmc3HugjA72CPxEE/XMJ8ajyCAJ0zbeM6i7Zfnr2hKUWlzb4WX6JWp2zP6gMB0hovvbzR7LPXPItuAvqxrpQgJahWhzATRZ93S+Ba/1CUx7+/UIjyDO9cYWYAwwuCqNzMrRwJcqokyjNSX6/BS+9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746787870; c=relaxed/simple;
-	bh=eGqS4QFxSEjZHGuQ+WLWaJt04NPuZDrlMKvaZt86C0I=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=re4Ieg06qfDqNbzVc2+kiZZURzbN9XPLVDfPeeCK772UP87/AgkwasnGwdoZRPjjzi7k4JPEEQ+HHwykxhqwJttrm/YhNPS2MLUfXCIhgZ545VXASD5AP45OPZ3D2NnjhDA6WRR/Xe9U/Np/K48aedJc0Tq1VA7Pypzg7182WjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qZTXmp4p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3EB6C4CEE4;
-	Fri,  9 May 2025 10:51:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746787869;
-	bh=eGqS4QFxSEjZHGuQ+WLWaJt04NPuZDrlMKvaZt86C0I=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qZTXmp4pRppWrkikPgKsQtTjwcIq5ewkANYx6CsigT46mmD/stsIhUz80Wx7lSYDz
-	 NEOh4sEb3aECF/cAp838TXwxYbJM5JlMNmL8kSMyf/Rx8iSY2qJxwaVCoAE6AOo2TC
-	 qVWqXqI72aZR1NYUvdRaIdAU5OaSBt/KSDBoIg3HRtMBqhqreOWRX307BG42k+jTb8
-	 oB8X+noSTwrvFDe5ZPPpVed0O8XvZJR+Z03YsUH2kJqxkQAQ+KwV+QrtidwPUJPL9X
-	 XNG/amr1KapP47UAFcPiM7Z6FQmbjETipZakA4g5NkO/ux5ANvgDHGtQfYF2yue+57
-	 qnklOf9cGCAEg==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Omar Sandoval <osandov@osandov.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.12] sched/eevdf: Fix se->slice being set to U64_MAX and resulting crash
-Date: Fri,  9 May 2025 06:51:05 -0400
-Message-Id: <20250508145402-e4369d956fad8683@stable.kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <9c0ce2024e862b3ee99bda8c16fbe9d863a9b918.1746650111.git.osandov@fb.com>
-References: 
+	s=arc-20240116; t=1746788789; c=relaxed/simple;
+	bh=t2C4HMX2q+ykrxCLasIqR6WQaMhRrz7zJKiG5kqBRoM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OZJ9SKJIHQH+q76RU1R83yWnoMHk61HULwWAeSkdUzwSJulprROd7pIUb8uqSfSj/rZkw91KFw2BF1MNetv1nx+yg5JAt6bkaho4kYXIDsc7wsqUof4c0f1KMlxHCj9HmIY4YOqMxf446h85M8BYSbqhmlRKCLOjYVllLtXaJGM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c2v614rF; arc=none smtp.client-ip=209.85.208.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-326c38c7346so7100191fa.2
+        for <stable@vger.kernel.org>; Fri, 09 May 2025 04:06:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746788786; x=1747393586; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=t2C4HMX2q+ykrxCLasIqR6WQaMhRrz7zJKiG5kqBRoM=;
+        b=c2v614rFWLGatAcdM33dOJ+3ljkRpOZf3JGfOHsP+Uf6QojE2f/tuwsnd2ybF7cJP9
+         ByZWVPOXwgFW2JldXWX+aAbVc2MPUaM3kBi7si1AS9B3ykuTlcLk+gKD9I5yF91c27PN
+         MJzEndWet+j1DCY3s0oIRt06Q7m1/kt717adRHw81oK4UrE9LAOH2q/MLhbrcroaXB7N
+         IEYS0vae9l4YFE6sSTMypkzQ0RAT7R0NwGxm3vOOu1Gf7bj1tkFgHEcFjJ3FbW58PXl5
+         GDcw1xKQ6PRB9AbZPHpfWfGUkgmuUnmhzMRPy5mhZonOkuKR3cTCxmwilw0VBDf5FXMQ
+         4saQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746788786; x=1747393586;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=t2C4HMX2q+ykrxCLasIqR6WQaMhRrz7zJKiG5kqBRoM=;
+        b=Nln+2qqtz+TA3i50o1Lwfrc4YiD0AS4vitu1URCGpSkZ7Vk30x/7Yl+8cHslXVFOuO
+         OqMhqzLc4PlATTOfsiZmhLb4xY6que69CSO0jAxWClUJQWmsx98p9lBBK303hMOB0E0Y
+         4jNSo6z8UrgQYr5BJBvUSPT2Fcgo20WYj2eCMw6HGblxY7i7vxRn0CEN4xtsXjyy+EGP
+         hZrd2fPM1hNB4NOXZIWAFMHDiNK8TwBMQlZr7vaC3YvFvsPqWmDOp0i+aynw2Pa6LsdW
+         6OmIEHkvBWEngONU2+KYl8QcSi1oz5Zm6abFPsLuKFRX8Z5nq7PHU5X0ef3wmTLWHe+J
+         u9NQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX6qqy8VVlTxQ/bav1+75IeQwza++h/FeRXw9FZ31ZJW6LtR6TGwWg3X5GmAPzhayEYShPnv1I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyP9QQguszoTu6AfjmI7GGen4zK5CzquIf4/njBtbTw8Nf8OL0y
+	Y2O840d4a4m83riTCsSiQZRAafQ7G4LR2Ge5N6RBxcxENmQqt3x77VmgRz3AVSrCIszQ7V9323D
+	pjG9Zl7QVUkPAW67Jo6ZVxMbfMrE=
+X-Gm-Gg: ASbGncvH4lRawNKwKJ0y9qb0SXqMiCbfGzkvies+omTxqcQE59IbIxThEF1WFRI5j/x
+	y658Nvtix+vjmI7CpYIkbeSSCWME+RCgrr5BB1kqlDgajj2D1Zowvobyt5OFz7709hQS5MJXem6
+	A6V/3I/ZP67qv58pXGGj4ZHDRTMGe4NYgS0fydPWLocPa/U2KOohc1bw==
+X-Google-Smtp-Source: AGHT+IHiMtszuL64FRiLenfMWJnjacyFz/EaJ395z0Hb6Q2QJkAv3A/Z9lBNihBKSxG9s8jWhG0EvBQMivIP3Y13B+I=
+X-Received: by 2002:a2e:a10a:0:b0:30d:e104:cd57 with SMTP id
+ 38308e7fff4ca-326c469229bmr10665481fa.40.1746788785405; Fri, 09 May 2025
+ 04:06:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20250417103458.2496790-1-festevam@gmail.com> <87cyd3c180.fsf@minerva.mail-host-address-is-not-set>
+In-Reply-To: <87cyd3c180.fsf@minerva.mail-host-address-is-not-set>
+From: Fabio Estevam <festevam@gmail.com>
+Date: Fri, 9 May 2025 08:06:14 -0300
+X-Gm-Features: ATxdqUGhLIWwN25Ny1sR2sK7ptO4iuCb08bNbX96W5xMiFLLSRewadVWruWN4GA
+Message-ID: <CAOMZO5CghWOyYse2nJjKzAk2tTGXTsag=EYeS+cS6tV6YO+NLw@mail.gmail.com>
+Subject: Re: [PATCH v2] drm/tiny: panel-mipi-dbi: Use drm_client_setup_with_fourcc()
+To: Javier Martinez Canillas <javierm@redhat.com>, tzimmermann@suse.de
+Cc: simona@ffwll.ch, airlied@gmail.com, maarten.lankhorst@linux.intel.com, 
+	mripard@kernel.org, noralf@tronnes.org, dri-devel@lists.freedesktop.org, 
+	Fabio Estevam <festevam@denx.de>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-[ Sasha's backport helper bot ]
+Hi Javier and Thomas,
 
-Hi,
+On Tue, Apr 22, 2025 at 6:53=E2=80=AFPM Javier Martinez Canillas
+<javierm@redhat.com> wrote:
+>
+> Fabio Estevam <festevam@gmail.com> writes:
+>
+> Hello Fabio,
+>
+> > From: Fabio Estevam <festevam@denx.de>
+> >
+> > Since commit 559358282e5b ("drm/fb-helper: Don't use the preferred dept=
+h
+> > for the BPP default"), RGB565 displays such as the CFAF240320X no longe=
+r
+> > render correctly: colors are distorted and the content is shown twice
+> > horizontally.
+> >
+> > This regression is due to the fbdev emulation layer defaulting to 32 bi=
+ts
+> > per pixel, whereas the display expects 16 bpp (RGB565). As a result, th=
+e
+> > framebuffer data is incorrectly interpreted by the panel.
+> >
+> > Fix the issue by calling drm_client_setup_with_fourcc() with a format
+> > explicitly selected based on the display's bits-per-pixel value. For 16
+> > bpp, use DRM_FORMAT_RGB565; for other values, fall back to the previous
+> > behavior. This ensures that the allocated framebuffer format matches th=
+e
+> > hardware expectations, avoiding color and layout corruption.
+> >
+> > Tested on a CFAF240320X display with an RGB565 configuration, confirmin=
+g
+> > correct colors and layout after applying this patch.
+> >
+> > Cc: stable@vger.kernel.org
+> > Fixes: 559358282e5b ("drm/fb-helper: Don't use the preferred depth for =
+the BPP default")
+> > Signed-off-by: Fabio Estevam <festevam@denx.de>
+> > Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+> > ---
+>
+> Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+Could you please help apply this fix?
 
-The upstream commit SHA1 provided is correct: bbce3de72be56e4b5f68924b7da9630cc89aa1a8
-
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Omar Sandoval<osandov@osandov.com>
-Commit author: Omar Sandoval<osandov@fb.com>
-
-Status in newer kernel trees:
-6.14.y | Present (different SHA1: 50a665496881)
-
-Note: The patch differs from the upstream commit:
----
-1:  bbce3de72be56 ! 1:  878496a829cec sched/eevdf: Fix se->slice being set to U64_MAX and resulting crash
-    @@ Metadata
-      ## Commit message ##
-         sched/eevdf: Fix se->slice being set to U64_MAX and resulting crash
-     
-    +    commit bbce3de72be56e4b5f68924b7da9630cc89aa1a8 upstream.
-    +
-         There is a code path in dequeue_entities() that can set the slice of a
-         sched_entity to U64_MAX, which sometimes results in a crash.
-     
-    @@ Commit message
-     
-      ## kernel/sched/fair.c ##
-     @@ kernel/sched/fair.c: static int dequeue_entities(struct rq *rq, struct sched_entity *se, int flags)
-    - 		h_nr_idle = task_has_idle_policy(p);
-    - 		if (task_sleep || task_delayed || !se->sched_delayed)
-    - 			h_nr_runnable = 1;
-    + 		idle_h_nr_running = task_has_idle_policy(p);
-    + 		if (!task_sleep && !task_delayed)
-    + 			h_nr_delayed = !!se->sched_delayed;
-     -	} else {
-     -		cfs_rq = group_cfs_rq(se);
-     -		slice = cfs_rq_min_slice(cfs_rq);
----
-
-Results of testing on various branches:
-
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-6.12.y       |  Success    |  Success   |
+Thanks
 
