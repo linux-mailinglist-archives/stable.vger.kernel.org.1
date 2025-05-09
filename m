@@ -1,86 +1,128 @@
-Return-Path: <stable+bounces-143051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EC3DAB15E9
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 15:55:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6E74AB172F
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 16:19:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 953F54C2C03
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 13:55:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A5911C4635D
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 14:19:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E096829209C;
-	Fri,  9 May 2025 13:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8EE8212FB7;
+	Fri,  9 May 2025 14:18:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d5p1Mi5Y"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="hewAkBeu"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A933292083;
-	Fri,  9 May 2025 13:55:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA50A1E5B82;
+	Fri,  9 May 2025 14:18:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746798927; cv=none; b=gSTENmnxddboneF0kfDhHjZCro3CNFwxwhl15Z+2uGYlFpZLEyUz2w88hYlnwWC7f/UCKTIUNA2BaMHnweIFhH9AOUbjybtcDr13YtvONw/zesqERZQDXafdAxt6lzL+vH+FCnc7L0a9+T3DG83kOo4bjSDYBlDkY0tHEjJtfg8=
+	t=1746800328; cv=none; b=f7DqV+bgijkh/7+8KDUQMmbPRANVU5SlRGLbLFHxewFO0b+kIziIaGoQU5ySoiE4DIFOUhhFnzkG63PT+zeCI4d9P9otC2o2zdcQhAK0Auar1B0noa+CvZQnkh1OWFREB7FlGD9RL52qzyh5gHrLsuY25H7UOIupPEdwka9Bg+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746798927; c=relaxed/simple;
-	bh=da3RkCqXANyBGgu6g4hnmz+mJdGqS579klvM2K7ikjo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Gu5/kjAZ2kfkgF25ZOPy+VNu8QQQoAwiu5wLf/Nn0BJ49sVHAp5ShF/yuKKoFbjY0Ty/kM/kHCMhyUMzEXdclH58Lv2n0aEMK/11b8dS2FM8wSU73OdgO4T1gaZ555A9Bl4xCBOxSS6qjijpC1t6pWxDrsMWX/bjsz3YWs18bBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d5p1Mi5Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 753D2C4CEEF;
-	Fri,  9 May 2025 13:55:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746798927;
-	bh=da3RkCqXANyBGgu6g4hnmz+mJdGqS579klvM2K7ikjo=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d5p1Mi5YCMihuJE9OfUQVXe4W23KR5UspW7XhDDz4gIVp+fQhLKLlXaOlvlf49hxp
-	 bK6YqSIhX+3MGRHodGeOe0x2HPZJb9x4OpMERBGopPXlJbd/MS4GgCqNvXNo94bMqK
-	 iW9l4NIBaoWU+mu7HoZCHN6Ir7fOUDNr7FC4vA0mloabHlz+GIVLGDoPNLe2gs9qKU
-	 DHGY8h6a3jIEVVCzXYJuvol6T0ZJaNHLR/Rv5/K2jh/JCkY5thxNvs8DGhnm3rGRrg
-	 DaoO8nlRlyD7P0mBBdkhRpMnKyhpHykI9CJmXwdNlxFwSqCEW5YHhGyNgiE9wsT9Zp
-	 qbGlJ2p8qP19A==
-From: Will Deacon <will@kernel.org>
-To: Robin Murphy <robin.murphy@arm.com>
-Cc: catalin.marinas@arm.com,
-	kernel-team@android.com,
-	Will Deacon <will@kernel.org>,
-	mark.rutland@arm.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-perf-users@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] perf/arm-cmn: Fix REQ2/SNP2 mixup
-Date: Fri,  9 May 2025 14:55:17 +0100
-Message-Id: <174678933203.1772245.7314989125641687120.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <087023e9737ac93d7ec7a841da904758c254cb01.1746717400.git.robin.murphy@arm.com>
-References: <087023e9737ac93d7ec7a841da904758c254cb01.1746717400.git.robin.murphy@arm.com>
+	s=arc-20240116; t=1746800328; c=relaxed/simple;
+	bh=K/Qfs3+JXPjQFxdXIhUR3acZ/8Eb5wwetSO8CwTUPJ8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=vAaY+lJP23CXoEfjSklucd8o11c5s4BUCfo/DHB0kv8nFjsyrdWDW1iCCB3XL98HtAOSjBu7VtbtyuxjPzszxypFy2Cq6QNBKRh3FnePzmnzpxGMHgb+sidooEhdn2s/ADdmrndfXxZopB9HzgyKAP+gAqlVBy1bs7mIwTRap7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=hewAkBeu; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Received: from francesco-nb.pivistrello.it (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 7250722206;
+	Fri,  9 May 2025 16:18:43 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1746800324;
+	bh=WiABciZh5JeYfdXWgF7so0KTIPIEJer4ove2V2q8QQI=; h=From:To:Subject;
+	b=hewAkBeuJ/GBJorEuaZV7kTk3/dGRf/27fx6mM11wyI2t4CFdRNLQEUNE2k2tOCHv
+	 fhZDttEFj04i1OHoJ5pOgUM/m2gwn8+iwuXQGvMqqfxbH6k/FWcenBg4khGwpduwBI
+	 ozCGUv+EPGklAZWX3gDsEkL1Gj4vQqdeFgV8WMIURJ8BEKGcT/jTd1tyqAp7Zcx1gx
+	 6ld1+xt0Tz+xNCnPfkwklyEWevf7wVvObsbsSK6KJF+0KP7xr85JPeNRqDIbSJmaY0
+	 9fNuzPQRoopUviExzdX3Y8uExJafjosb1JmnGL5JUzT2yKRxjAyGK2U6vjLLWu4I3+
+	 PG4VJFXCcgtxA==
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+	linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Marek Vasut <marek.vasut@gmail.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	stable@vger.kernel.org,
+	Francesco Dolcini <francesco.dolcini@toradex.com>
+Subject: [PATCH v2] gpio: pca953x: fix IRQ storm on system wake up
+Date: Fri,  9 May 2025 16:18:28 +0200
+Message-Id: <20250509141828.57851-1-francesco@dolcini.it>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 
-On Thu, 08 May 2025 16:16:40 +0100, Robin Murphy wrote:
-> Somehow the encodings for REQ2/SNP2 channels in XP events
-> got mixed up... Unmix them.
-> 
-> 
+From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
 
-Applied to will (for-next/perf), thanks!
+If an input changes state during wake-up and is used as an interrupt
+source, the IRQ handler reads the volatile input register to clear the
+interrupt mask and deassert the IRQ line. However, the IRQ handler is
+triggered before access to the register is granted, causing the read
+operation to fail.
 
-[1/1] perf/arm-cmn: Fix REQ2/SNP2 mixup
-      https://git.kernel.org/will/c/11b0f576e0cb
+As a result, the IRQ handler enters a loop, repeatedly printing the
+"failed reading register" message, until `pca953x_resume` is eventually
+called, which restores the driver context and enables access to
+registers.
 
-Cheers,
+Fix by disabling the IRQ line before entering suspend mode, and
+re-enabling it after the driver context is restored in `pca953x_resume`.
+
+An irq can be disabled with disable_irq() and still wake the system as
+long as the irq has wake enabled, so the wake-up functionality is
+preserved.
+
+Fixes: b76574300504 ("gpio: pca953x: Restore registers after suspend/resume cycle")
+Cc: stable@vger.kernel.org
+Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+---
+v1 -> v2
+ - Instead of calling PM ops with disabled interrupts, just disable the
+   irq while going in suspend and re-enable it after restoring the
+   context in resume function.
+---
+ drivers/gpio/gpio-pca953x.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/drivers/gpio/gpio-pca953x.c b/drivers/gpio/gpio-pca953x.c
+index ab2c0fd428fb..b852e4997629 100644
+--- a/drivers/gpio/gpio-pca953x.c
++++ b/drivers/gpio/gpio-pca953x.c
+@@ -1226,6 +1226,8 @@ static int pca953x_restore_context(struct pca953x_chip *chip)
+ 
+ 	guard(mutex)(&chip->i2c_lock);
+ 
++	if (chip->client->irq > 0)
++		enable_irq(chip->client->irq);
+ 	regcache_cache_only(chip->regmap, false);
+ 	regcache_mark_dirty(chip->regmap);
+ 	ret = pca953x_regcache_sync(chip);
+@@ -1238,6 +1240,10 @@ static int pca953x_restore_context(struct pca953x_chip *chip)
+ static void pca953x_save_context(struct pca953x_chip *chip)
+ {
+ 	guard(mutex)(&chip->i2c_lock);
++
++	/* Disable IRQ to prevent early triggering while regmap "cache only" is on */
++	if (chip->client->irq > 0)
++		disable_irq(chip->client->irq);
+ 	regcache_cache_only(chip->regmap, true);
+ }
+ 
 -- 
-Will
+2.39.5
 
-https://fixes.arm64.dev
-https://next.arm64.dev
-https://will.arm64.dev
 
