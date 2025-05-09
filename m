@@ -1,126 +1,86 @@
-Return-Path: <stable+bounces-143053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80B05AB1743
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 16:22:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8755DAB17AB
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 16:47:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F9211C27C05
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 14:22:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 739E03AFBBC
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 14:46:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 673D6C147;
-	Fri,  9 May 2025 14:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67ECC230BD9;
+	Fri,  9 May 2025 14:46:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NBDafEHq"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8FA82110
-	for <stable@vger.kernel.org>; Fri,  9 May 2025 14:22:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDEB522836C;
+	Fri,  9 May 2025 14:46:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746800553; cv=none; b=d7l+faSDF4LVaju16iMKbJZgWWbiBhR2ek8kt34ZWPr2QQgqgBZeEi1Zq+2MXqrh3TXhA6dZgSBPe4XZMP3s65iwiI0r64k+LDccX26OdbBaTtB6j+FBc+fXYvjMplLMvrK0xi2CXruoL68oNy6TxtbwQRQ5WnnQNkBlgaCFlNQ=
+	t=1746802004; cv=none; b=rsVMiN7w5GjQNo7VCkQSnyIcwYo5m1vJQj1qrs8TWw/izavDC2F2jd8iUmfqogx9eyMXXoLkwh13niMw240zB/ssQ2S7lEHtFExocwk8t/gIPPYdQ6x7LMdIlEtF8LSvgMpNclu1dZlhRPtGXtUVm/aVf5+IRjXZpGSEOFmuUkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746800553; c=relaxed/simple;
-	bh=2zaQhErJPN3uZ2cg/gLpnbkL4EsK1rCm5F4ZAkxbU4Y=;
+	s=arc-20240116; t=1746802004; c=relaxed/simple;
+	bh=ITyllf7NjzMckWcbcZTSZV9MLgSZOrnT/AnyMYDomsE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rG+MAwSDP5qH89a0PO5sfMbrnen4jtSANaIkW4sOXm1NDbho3phnIBnYifUiMh8IQnfsqNRCM6mVuk/RVJasaNx3Pp0ic432RV+pUTWwiyOh5dZTRg0n5n+8FdJZIYqy63ZBGwUQBYrEj8rsCEEZWWL31vcx/TsFaTSjt9qSu0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 131E0175D;
-	Fri,  9 May 2025 07:22:20 -0700 (PDT)
-Received: from pluto (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 537163F5A1;
-	Fri,  9 May 2025 07:22:30 -0700 (PDT)
-Date: Fri, 9 May 2025 15:22:22 +0100
-From: Cristian Marussi <cristian.marussi@arm.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Cristian Marussi <cristian.marussi@arm.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 6.6.y] firmware: arm_scmi: Add missing definition of info
- reference
-Message-ID: <aB4PnqeXehOD0VPz@pluto>
-References: <2025050930-scuba-spending-0eb9@gregkh>
- <20250509114422.982089-1-cristian.marussi@arm.com>
- <2025050920-aide-squire-5a2e@gregkh>
+	 Content-Type:Content-Disposition:In-Reply-To; b=qzxTR8rYdaYRbUrbc8gWefs2esiovbQMyi3Kpl3V4gXGgVHif6ZcBKsUz/djGN/DwWV6WIOW4WhT6X50caHkEHM+S7A/rOL2iQmZnoMuI6HZxbBw6XDZktB2BiQZjmg5WknayYeTEYGraFzzJ33DiLWty6ZQSTavN+lB+jB9xqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NBDafEHq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC543C4CEE4;
+	Fri,  9 May 2025 14:46:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1746802001;
+	bh=ITyllf7NjzMckWcbcZTSZV9MLgSZOrnT/AnyMYDomsE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NBDafEHqIKTGoT+qTKao2amsX3Yl1IIyCvOGO+Fr5EGgH7POZKUrFRbSibAsoj7uu
+	 WAiTj13BWziflZ64/a2ds3d9GOMeppEDIapGu0raybNNf4Bd5Cl+Nl48TvgNbAzwsW
+	 OTxNT5k2NZcRZL5EQ4FNPBXnsgDdiLIohtR1CZTk=
+Date: Fri, 9 May 2025 16:44:56 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: RD Babiera <rdbabiera@google.com>
+Cc: heikki.krogerus@linux.intel.com, badhri@google.com,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v1] usb: typec: tcpm: apply vbus before data bringup in
+ tcpm_src_attach
+Message-ID: <2025050933-flanking-poison-1d8a@gregkh>
+References: <20250429234743.3749129-2-rdbabiera@google.com>
+ <2025050116-hardy-twins-913e@gregkh>
+ <CALzBnUF7zb6F2iq_1xaF=1vbSkrpvPkPd0Ses0iWDG-n4fxHQQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <2025050920-aide-squire-5a2e@gregkh>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CALzBnUF7zb6F2iq_1xaF=1vbSkrpvPkPd0Ses0iWDG-n4fxHQQ@mail.gmail.com>
 
-On Fri, May 09, 2025 at 03:45:26PM +0200, Greg KH wrote:
-> On Fri, May 09, 2025 at 12:44:22PM +0100, Cristian Marussi wrote:
-> > Add the missing definition that caused a build break.
-> > 
-> > Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
-> > ---
-> >  drivers/firmware/arm_scmi/driver.c | 2 ++
-> >  1 file changed, 2 insertions(+)
-> > 
-> > diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/arm_scmi/driver.c
-> > index 609fbf4563ff..3f3701ed196e 100644
-> > --- a/drivers/firmware/arm_scmi/driver.c
-> > +++ b/drivers/firmware/arm_scmi/driver.c
-> > @@ -1044,6 +1044,8 @@ static int scmi_wait_for_reply(struct device *dev, const struct scmi_desc *desc,
-> >  		 */
-> >  		if (!desc->sync_cmds_completed_on_ret) {
-> >  			bool ooo = false;
-> > +			struct scmi_info *info =
-> > +				handle_to_scmi_info(cinfo->handle);
-> >  
-> >  			/*
-> >  			 * Poll on xfer using transport provided .poll_done();
-> > -- 
-> > 2.39.5
-> > 
-
-Hi Greg,
-
-> > 
+On Tue, May 06, 2025 at 10:57:10AM -0700, RD Babiera wrote:
+> On Thu, May 1, 2025 at 8:41 AM Greg KH <gregkh@linuxfoundation.org> wrote:
 > 
-> <formletter>
+> > Does not apply to my tree, can you rebase against usb-next and resend?
 > 
-> This is not the correct way to submit patches for inclusion in the
-> stable kernel tree.  Please read:
->     https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-> for how to do this properly.
+> This patch is rebased against usb-next/usb-next, but I think I do need to rebase
+> against usb-linus. commit 8a50da849151e7e12b43c1d8fe7ad302223aef6b is
+> present in usb-next but not usb-linus, and my patch as it is now is
+> dependent on it.
+> 
+> Would you prefer that I rebase against usb-linus and resubmit given
+> I'm submitting
+> as a stable fix? It looks like the conflicting patch would be up for
+> the 6.16 merge
+> window.
 
-..oh...I know...but from the FAILED report that I received related to the
-fact that the patch did not apply cleanly...
+It depends on when you want it merged, for 6.15-final, or 6.16-final.
+Your choice.
 
-https://lore.kernel.org/all/2025050930-scuba-spending-0eb9@gregkh/
+thanks,
 
----
-The patch below does not apply to the 6.6-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-git checkout FETCH_HEAD
-git cherry-pick -x c23c03bf1faa1e76be1eba35bad6da6a2a7c95ee
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025050930-scuba-spending-0eb9@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
-
-Possible dependencies:
-----
-
-...my (mis-)understanding was that you wanted some sort of diff on top
-of that the bad non-applying patch ('git commit -s') instead of fresh new
-poeprly backported patch....thing which, indeed, seemed weird :P
-
-I'll resend following the proper procedure.
-
-Sorry for the noise.
-
-Thanks,
-Cristian
+greg k-h
 
