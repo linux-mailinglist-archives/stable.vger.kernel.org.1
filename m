@@ -1,523 +1,315 @@
-Return-Path: <stable+bounces-143026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A7A6AB0EDB
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 11:24:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19DB3AB0EF3
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 11:27:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2CDA53AA499
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 09:21:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DAD3A02960
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 09:22:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5FAA27AC3E;
-	Fri,  9 May 2025 09:20:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01A62278172;
+	Fri,  9 May 2025 09:22:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="rX/oC+DX"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2068.outbound.protection.outlook.com [40.107.237.68])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C9D27A137;
-	Fri,  9 May 2025 09:20:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.178.238
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746782407; cv=none; b=tCO/cJOPHUy0UA3XQ97RXRkPwBQjpkVPdvk2w8Ds0MKs6jKFzPK+2t0IdwS5fJqiVCyHYF3EL5rUw7MSFih4gCSyQJF6UH+0tS34KgcFMSAYxNCr+pxRfWdGfngcl0cjt1Dfy2kKy7tiueX6c7fNnB+2CyQSHP5mjcu2fedDj/Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746782407; c=relaxed/simple;
-	bh=EMOhec4HskiBdc/01dhCtn++PiZsLN3WyjQfpIewH54=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=axIZA1I/nwsfR6hIlwt8R9QLFW8kyE0PrZ6pZVWzEu7bY6ZVahYn9hhqFDfYkxhyYE0l42+Ut1o4ZaQBkDA8pwO9xWo9fdL1+UskXlG4ipqaHDJ/ZTUtRpXbfhwv/fPeZt/NQPlEvbA4N4/NbG+JaQCqbdK52hHowqxZpu1iBIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.178.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54970X2G030883;
-	Fri, 9 May 2025 09:19:52 GMT
-Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [147.11.82.254])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 46d8c1753b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Fri, 09 May 2025 09:19:51 +0000 (GMT)
-Received: from ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) by
- ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.43; Fri, 9 May 2025 02:19:50 -0700
-Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
- ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server id
- 15.1.2507.43 via Frontend Transport; Fri, 9 May 2025 02:19:47 -0700
-From: <jianqi.ren.cn@windriver.com>
-To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>
-CC: <patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-        <jianqi.ren.cn@windriver.com>, <penguin-kernel@i-love.sakura.ne.jp>,
-        <akpm@linux-foundation.org>, <daniel.starke@siemens.com>,
-        <torvalds@linux-foundation.org>
-Subject: [PATCH 5.10.y] tty: add the option to have a tty reject a new ldisc
-Date: Fri, 9 May 2025 17:19:47 +0800
-Message-ID: <20250509091947.3242314-1-jianqi.ren.cn@windriver.com>
-X-Mailer: git-send-email 2.34.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A67277031
+	for <stable@vger.kernel.org>; Fri,  9 May 2025 09:22:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.68
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746782556; cv=fail; b=mtaaqH7x5sbVOmelgelD8PzNlDVRi2z0VLI2JmxLyU6c/c7Ee5dzVeK54R4mq+XlSGnRG+85YahNjh9Cp4cNmvr+oIrBF9qnzxpf6wOyk/WJ1QOWmpj3lRa2NSgbT+KiGqvFbDKz7MTuy8qt04bichCg0VqdcRDUHhQl0addwgo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746782556; c=relaxed/simple;
+	bh=w3LRV1M4GH+hrxWGq4rbEEyzyLDG2UUtC8ZXa4bPnOU=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=GVDK4jJLmjMdTi1vmJUyRLvVAkbY2aMpSbM9bfY+wnKhzdQtO4gfVdvEalsiiW7fXwqsmtR1nU28bH1CWSuweZvr7N7eNjyA7263ISx8zG4d4B1zTQBn+j/SmSsDhFBccVZHogqqr74QLFGFbswHy43eO5w4iv/PNcfNh0lH8vI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=rX/oC+DX; arc=fail smtp.client-ip=40.107.237.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=YeYHVWkPAV+4/pPBOMG8pos82S6cX/Sinlh20TNfV9Dqwo9nsvTu1mj1L6YIikk0sYzPcNP8jtdO4WR3hWy1CwbJbB5OQjNxHhTW5FrAqZE3hhxZ7GChD+5P44bmS6mz+DdwkJdxyKwSNh4jNa8obYgz9EqAnSwmph6mkS282TKaItQVsPvTyCdOkIhQPNQQi0EadhM60G5xmZklHDdF6BrdjCrnaLRflZy/ij6ohnnMBtRd/wSofskxrnC8e6csIdgqEMmh7ia00j17rRhooWRcdcjsPB8GUcI4tNceymukoG6IZ4kSRJoTmxG4GQAjsPcdQD/q45l5qq7YGxX0GA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wGkKGF80OUGsO4c8VC7wNh9nxFRGJIl6sVDaL1nnDgw=;
+ b=bc8aaUMgOL1fVqZkc7IeuSAYgv1NtxTLHrrYQFGwCAmPJucZOFY9nVHNSy8U8w12sBg6ad/5jvHYlJAVRuOTcxF1HjdJR4JgYknBU8pln9UBIGHQoqTc/ijscLU7FgbNujdNxRqfPT/rX6OuGuGk1F3P79E5WRXnyg4ZKRXtBi3UkT3cfdn2qZ43zPvDUKcRTxDoewZv+UivaSG6c39XymFLbOLO6sn+lgeHkVyvJBih/OlTrG4i4hHbkmzuncwEc+txCtZI9XEUMuBMHvijKztBmACoeZYdqB0pxSxjDm2cXbhEblkFyH0lC0roxJOFgKjSdGYphIKYIwQZcuueqA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wGkKGF80OUGsO4c8VC7wNh9nxFRGJIl6sVDaL1nnDgw=;
+ b=rX/oC+DXI6PfbwQJXC57e/HOueUq2rEnl9ogcsIh4s7XamDSJ8Zc7iE5kTfvQuDDyPwm2zl5QRBN6wPi2P234L+ztINoH9bRyXdXpVihkiiONOIHuCiuFrP8ILfFEk7AsYvQPly3dpXUO/2u8RBa+1IF8qVq5Oag9b53mNa+rs4=
+Received: from CH0PR13CA0024.namprd13.prod.outlook.com (2603:10b6:610:b1::29)
+ by MW4PR12MB6876.namprd12.prod.outlook.com (2603:10b6:303:208::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.26; Fri, 9 May
+ 2025 09:22:29 +0000
+Received: from CH1PEPF0000AD75.namprd04.prod.outlook.com
+ (2603:10b6:610:b1:cafe::67) by CH0PR13CA0024.outlook.office365.com
+ (2603:10b6:610:b1::29) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8722.20 via Frontend Transport; Fri,
+ 9 May 2025 09:22:29 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CH1PEPF0000AD75.mail.protection.outlook.com (10.167.244.54) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8722.18 via Frontend Transport; Fri, 9 May 2025 09:22:28 +0000
+Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Fri, 9 May
+ 2025 04:22:28 -0500
+Received: from localhost.localdomain (10.180.168.240) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
+ Transport; Fri, 9 May 2025 04:22:25 -0500
+From: Wayne Lin <Wayne.Lin@amd.com>
+To: <dri-devel@lists.freedesktop.org>
+CC: <ville.syrjala@linux.intel.com>, <jani.nikula@intel.com>,
+	<mario.limonciello@amd.com>, <harry.wentland@amd.com>, Wayne Lin
+	<Wayne.Lin@amd.com>, <stable@vger.kernel.org>
+Subject: [PATCH v2] drm/dp: Fix Write_Status_Update_Request AUX request format
+Date: Fri, 9 May 2025 17:22:18 +0800
+Message-ID: <20250509092218.805771-1-Wayne.Lin@amd.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Authority-Analysis: v=2.4 cv=NIjV+16g c=1 sm=1 tr=0 ts=681dc8b7 cx=c_pps a=K4BcnWQioVPsTJd46EJO2w==:117 a=K4BcnWQioVPsTJd46EJO2w==:17 a=py2lGXHgnwZgnTii:21 a=dt9VzEwgFbYA:10 a=edf1wS77AAAA:8 a=VwQbUJbxAAAA:8 a=Z4Rwk6OoAAAA:8 a=a_U1oVfrAAAA:8
- a=hSkVLCK3AAAA:8 a=ag1SF4gXAAAA:8 a=t7CeM3EgAAAA:8 a=6NjF2_L7S0a423FRwFsA:9 a=DcSpbTIhAlouE1Uv7lRv:22 a=HkZW87K1Qel5hWWM3VKY:22 a=cQPPKAXgyycSBL8etih5:22 a=Yupwre4RP9_Eg_Bd0iYG:22 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-GUID: bDTybNtv7NfbLu8vhRSLRWhNGRy8gZQG
-X-Proofpoint-ORIG-GUID: bDTybNtv7NfbLu8vhRSLRWhNGRy8gZQG
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA5MDA4OSBTYWx0ZWRfX0bteHXWOAlbL EdpnTQRqBSEZE4f9VJiCAPBKT68iRKEG+Ainvm8H1z5r+lzHeRGiFSW0kgqvE4Jvuzcm558u3TQ bJb6jmZg6R32nsfekmJtLckLezG5XLCyxLwQChSXsL719V1QhWNQK7C5v2CLsmy+djdCf2ssqbj
- 33Z4wBibMSx570bixPVKjiVQMO+gQtvDizA31bJ9w6Dp3XpYXxXGRkvmVezDs32Lb8Dd9L0S6tq 7Ls1T+XOYUtYc82aP6f9IYWztTiQwcCMsdk8dNkmFW2X9vfhmjTtJTZb3pXLZulgHwkTCLuAAB1 7UPWcYtJEF5rbqTalUmN04wkIppFC69oL81KzhR5i0Skm3ThqgSnwaqdkcwJMeFpakMkwEwsY5Y
- HADkEQm8kyRasPawIUSSWFAelogoA9u+TGMyoR6t5GYu5mHsh4IShvAR1878z/Uhvd3wcTq3
-X-Sensitive_Customer_Information: Yes
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-09_03,2025-05-08_04,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- priorityscore=1501 bulkscore=0 mlxscore=0 spamscore=0 malwarescore=0
- clxscore=1015 adultscore=0 impostorscore=0 mlxlogscore=999 phishscore=0
- lowpriorityscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.21.0-2504070000
- definitions=main-2505090089
+Received-SPF: None (SATLEXMB04.amd.com: Wayne.Lin@amd.com does not designate
+ permitted sender hosts)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH1PEPF0000AD75:EE_|MW4PR12MB6876:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5f655071-0815-4046-26f2-08dd8edb04e5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|82310400026|36860700013;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?dno2aXF3ekh5TTROYWlHU3lGU3hObGtZRzVqYUJCaDZrMURGOVAzbnpYdHBl?=
+ =?utf-8?B?aS9jcUFmL2s0eEs4L01qUGx5SGFHMnJLckloc2huZjVlS3hIUjFSbUlhT3M3?=
+ =?utf-8?B?Qi9mS3Nrd1NnUW1HdmVKdDYxVEFSQ3lwODJWSkdHWXMxWlRuL056VStxQW9h?=
+ =?utf-8?B?cGppZFkrOTlvWGhlaUlDTHBtTFNSaXd6N09MK1BkQTN3MzIyRGlyQmZiaWRn?=
+ =?utf-8?B?RVdQTFdCTTlzV0MzY3BMdWlWdDJvTFZEaElyRzI4c2R1ZC9MbGkvcm1OYXRh?=
+ =?utf-8?B?akdLWlhUTU0yY1d1eTdZS0Z5QTMvMkcwM2U0R2FkLzhyREUzZ0ZybDJ5amdX?=
+ =?utf-8?B?L3F1LzI2d1NaK0ZqV3gzQ0FtQXF5MC9wb1gzNTFUbGpPaGVBME5YeUdRaG1Z?=
+ =?utf-8?B?Ump6c1ByQ1RlN2hlUDFrRnFOR3NmMk9SNlV6OGw1QVlld0FEL1plYXBNbEJp?=
+ =?utf-8?B?dGpzWjMzdDYvZjFKU0ZBd0VETUhMTXJjdkhrWHZaUXh0a1JQcVdSZFpOcUI2?=
+ =?utf-8?B?N3lUOW9VbFFueEdCdm13QWl5dCtqYXc5eVdxMmZQTDEyeXI3SWdKQlJRbmRt?=
+ =?utf-8?B?Tmo5UEpRa2FMelc0SjNxMGI4bzk5UzBzNG5OcVZyZzJoUDhRa1lVZkgvM1kz?=
+ =?utf-8?B?Z1ZTV1NhREpRY3hFUXpUelZBeDlzTFFtMGZFV0laQWpSWk5GQy84SnJMV2wx?=
+ =?utf-8?B?eDBFeEMvd1BZeFJNVTREUHkzNXFvZDhuQlJDVW5sdmtDZmdMbmU3aGZlYXJl?=
+ =?utf-8?B?bllZd1JUcTI3REVudlNNV3BwT25YeGQ4eG1Eb0pwd3R1YmQ1ZlJkUTZucVFJ?=
+ =?utf-8?B?RDdtSjhOVGZSYnFrWEVvNDBSS3VvNUJLU1VKTjJxOEVUSGNoVGRPcmt0djdE?=
+ =?utf-8?B?dElHY2tscGpiYmZGRjUycTlma0VhM1VPMnhNbFI2Zy9zSVcyTEZheWhKZ3pV?=
+ =?utf-8?B?azhXdzJOSUF4L1d0eFF4b0lDUmsrb3dnT1F2Ulp1Z0dxWmRuLy95Vm1wZStT?=
+ =?utf-8?B?OUZHOVdvYysyaDJLRi80S3RidzZjUzRDeFFIWDJWdUg2bVJsWEVXUGJZRldC?=
+ =?utf-8?B?TUJGYzE4OHI1WFpGYXByNkR5dnZ2QU04MEF5cXZNUnhPTjJKZGNwNTBzaTB1?=
+ =?utf-8?B?NVpGaWRXQU0vSG1oMVF0TjdrVWJQcWtRSDh2OWZFWUk5cjdvR0laNFhmZGdw?=
+ =?utf-8?B?SjJhNHpFMklaY0pIOFA0b2lXN096VTZ4WFpxdmdNVEtURFRCT0Jwd3ppZ1lH?=
+ =?utf-8?B?SUlKWGs2eGZxOXBMNzBYL1lmWG4rZmRobXJHSEZBOGZ4VHY4U0UrT0sweFRP?=
+ =?utf-8?B?YTNNbEc5Zmx0SHJnc3ppMWR3V2Jud3h6b1RDNXphQ0tkblNaZ3VNTVpxcnJT?=
+ =?utf-8?B?aExjVlQyNzFjTk5JWEg5NGpLY2RTQzFuc1J3dHFKSzdUSjhRazRkUHdpZlFJ?=
+ =?utf-8?B?ZmVMYndJU3FSZ0V3anRRMzhmL2pRRThPVjNqNFBUR0NqZHNHMm1yM21TVUdF?=
+ =?utf-8?B?a1ZpMlUwNlkxK0NrVEtkZ3ZHRkVGNnU1NzhtTUhURk5RNXZDRHJyKzhyTlpw?=
+ =?utf-8?B?R1ZlRGI4MUJZeU94TXRpWndQcWhhQjdyWWdDRUZVN3BoZ29qc3FUcytaT1pB?=
+ =?utf-8?B?M2ZmSlEvQnNsazBUMmlpU3A1V1UwaEFMSmg3a01wczJuWnEzUmdob1Q5Snlq?=
+ =?utf-8?B?RTB0TFd5eXVvY0lxYW0zcmNhSERnMHovK1lYRDZQWTlneDJ5d2hkY3Nod2VB?=
+ =?utf-8?B?UDg3NVdrWlRNZFk4aWJYY1NUREdOdzJWN0llNWdCdXgwdWZmQy9PcjZhQTlo?=
+ =?utf-8?B?ZFp4aThXcnBXRG02akc0cW03Q1EwNkNoNHJ2RWk1RUZlb01VdGIwZzgxaVV1?=
+ =?utf-8?B?bzh4ZGN4NUlSbVo2QXdUa2JSU2lYclg4b2RRSmcvWFRNUUlLcUZqZnNtdU9u?=
+ =?utf-8?B?Nk9DSFhHUy9vVk4rZmtwU3VPQWFjblduZlhWSUYvVUpXTkZLYVJOVi9zaFpm?=
+ =?utf-8?B?ZmtlaUp2c1I4TWV2ekp1Y0Q3K3FQU2FEUEZNcGtQdzRrKy96MlZnd3hmMjZU?=
+ =?utf-8?Q?2K0olW?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(82310400026)(36860700013);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 May 2025 09:22:28.7039
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5f655071-0815-4046-26f2-08dd8edb04e5
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH1PEPF0000AD75.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6876
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+[Why]
+Notice AUX request format of I2C-over-AUX with
+Write_Status_Update_Request flag set is incorrect. It should
+be address only request without length and data like:
+"SYNC->COM3:0 (= 0110)|0000-> 0000|0000->
+0|7-bit I2C address (the same as the last)-> STOP->".
 
-[ Upstream commit 6bd23e0c2bb6c65d4f5754d1456bc9a4427fc59b ]
+[How]
+Refer to DP v2.1 Table 2-178, correct the
+Write_Status_Update_Request to be address only request.
 
-... and use it to limit the virtual terminals to just N_TTY.  They are
-kind of special, and in particular, the "con_write()" routine violates
-the "writes cannot sleep" rule that some ldiscs rely on.
+Note that we might receive 0 returned by aux->transfer() when
+receive reply I2C_ACK|AUX_ACK of Write_Status_Update_Request
+transaction. Which indicating all data bytes get written.
+We should avoid to return 0 bytes get transferred under this
+case.
 
-This avoids the
+V2:
+- Add checking condition before restoring msg->buffer and
+  msg->size. (Limonciello Mario)
+- Revise unclear comment to appropriately describe the idea.
+  (Jani Nikula)
 
-   BUG: sleeping function called from invalid context at kernel/printk/printk.c:2659
-
-when N_GSM has been attached to a virtual console, and gsmld_write()
-calls con_write() while holding a spinlock, and con_write() then tries
-to get the console lock.
-
-Tested-by: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
-Cc: Jiri Slaby <jirislaby@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Daniel Starke <daniel.starke@siemens.com>
-Reported-by: syzbot <syzbot+dbac96d8e73b61aa559c@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=dbac96d8e73b61aa559c
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/20240423163339.59780-1-torvalds@linux-foundation.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[Minor conflict resolved due to code context change. And also backport description
-comments for struct tty_operations.]
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
+Fixes: 68ec2a2a2481 ("drm/dp: Use I2C_WRITE_STATUS_UPDATE to drain partial I2C_WRITE requests")
+Cc: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Cc: Jani Nikula <jani.nikula@intel.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
 ---
-Verified the build test
----
- drivers/tty/tty_ldisc.c    |   6 +
- drivers/tty/vt/vt.c        |  10 ++
- include/linux/tty_driver.h | 339 +++++++++++++++++++++++++++++++++++++
- 3 files changed, 355 insertions(+)
+ drivers/gpu/drm/display/drm_dp_helper.c | 54 +++++++++++++++++++++----
+ 1 file changed, 47 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/tty/tty_ldisc.c b/drivers/tty/tty_ldisc.c
-index 7262f45b513b..0dae579efdd9 100644
---- a/drivers/tty/tty_ldisc.c
-+++ b/drivers/tty/tty_ldisc.c
-@@ -579,6 +579,12 @@ int tty_set_ldisc(struct tty_struct *tty, int disc)
- 		goto out;
- 	}
- 
-+	if (tty->ops->ldisc_ok) {
-+		retval = tty->ops->ldisc_ok(tty, disc);
-+		if (retval)
-+			goto out;
-+	}
-+
- 	old_ldisc = tty->ldisc;
- 
- 	/* Shutdown the old discipline. */
-diff --git a/drivers/tty/vt/vt.c b/drivers/tty/vt/vt.c
-index 5d9de3a53548..a772c614a878 100644
---- a/drivers/tty/vt/vt.c
-+++ b/drivers/tty/vt/vt.c
-@@ -3448,6 +3448,15 @@ static void con_cleanup(struct tty_struct *tty)
- 	tty_port_put(&vc->port);
+diff --git a/drivers/gpu/drm/display/drm_dp_helper.c b/drivers/gpu/drm/display/drm_dp_helper.c
+index 57828f2b7b5a..c71a1395a2d6 100644
+--- a/drivers/gpu/drm/display/drm_dp_helper.c
++++ b/drivers/gpu/drm/display/drm_dp_helper.c
+@@ -1857,6 +1857,12 @@ static u32 drm_dp_i2c_functionality(struct i2c_adapter *adapter)
+ 	       I2C_FUNC_10BIT_ADDR;
  }
  
-+/*
-+ * We can't deal with anything but the N_TTY ldisc,
-+ * because we can sleep in our write() routine.
-+ */
-+static int con_ldisc_ok(struct tty_struct *tty, int ldisc)
++static inline bool
++drm_dp_i2c_msg_is_write_status_update(struct drm_dp_aux_msg *msg)
 +{
-+	return ldisc == N_TTY ? 0 : -EINVAL;
++	return ((msg->request & ~DP_AUX_I2C_MOT) == DP_AUX_I2C_WRITE_STATUS_UPDATE);
 +}
 +
- static int default_color           = 7; /* white */
- static int default_italic_color    = 2; // green (ASCII)
- static int default_underline_color = 3; // cyan (ASCII)
-@@ -3576,6 +3585,7 @@ static const struct tty_operations con_ops = {
- 	.resize = vt_resize,
- 	.shutdown = con_shutdown,
- 	.cleanup = con_cleanup,
-+	.ldisc_ok = con_ldisc_ok,
- };
+ static void drm_dp_i2c_msg_write_status_update(struct drm_dp_aux_msg *msg)
+ {
+ 	/*
+@@ -1965,6 +1971,7 @@ MODULE_PARM_DESC(dp_aux_i2c_speed_khz,
+ static int drm_dp_i2c_do_msg(struct drm_dp_aux *aux, struct drm_dp_aux_msg *msg)
+ {
+ 	unsigned int retry, defer_i2c;
++	struct drm_dp_aux_msg orig_msg = *msg;
+ 	int ret;
+ 	/*
+ 	 * DP1.2 sections 2.7.7.1.5.6.1 and 2.7.7.1.6.6.1: A DP Source device
+@@ -1976,6 +1983,12 @@ static int drm_dp_i2c_do_msg(struct drm_dp_aux *aux, struct drm_dp_aux_msg *msg)
+ 	int max_retries = max(7, drm_dp_i2c_retry_count(msg, dp_aux_i2c_speed_khz));
  
- static struct cdev vc0_cdev;
-diff --git a/include/linux/tty_driver.h b/include/linux/tty_driver.h
-index 2f719b471d52..3412eb7280da 100644
---- a/include/linux/tty_driver.h
-+++ b/include/linux/tty_driver.h
-@@ -243,6 +243,344 @@ struct tty_driver;
- struct serial_icounter_struct;
- struct serial_struct;
+ 	for (retry = 0, defer_i2c = 0; retry < (max_retries + defer_i2c); retry++) {
++		if (drm_dp_i2c_msg_is_write_status_update(msg)) {
++			/* Address only transaction */
++			msg->buffer = NULL;
++			msg->size = 0;
++		}
++
+ 		ret = aux->transfer(aux, msg);
+ 		if (ret < 0) {
+ 			if (ret == -EBUSY)
+@@ -1993,7 +2006,7 @@ static int drm_dp_i2c_do_msg(struct drm_dp_aux *aux, struct drm_dp_aux_msg *msg)
+ 			else
+ 				drm_dbg_kms(aux->drm_dev, "%s: transaction failed: %d\n",
+ 					    aux->name, ret);
+-			return ret;
++			goto out;
+ 		}
  
-+/**
-+ * struct tty_operations -- interface between driver and tty
-+ *
-+ * @lookup: ``struct tty_struct *()(struct tty_driver *self, struct file *,
-+ *				    int idx)``
-+ *
-+ *	Return the tty device corresponding to @idx, %NULL if there is not
-+ *	one currently in use and an %ERR_PTR value on error. Called under
-+ *	%tty_mutex (for now!)
-+ *
-+ *	Optional method. Default behaviour is to use the @self->ttys array.
-+ *
-+ * @install: ``int ()(struct tty_driver *self, struct tty_struct *tty)``
-+ *
-+ *	Install a new @tty into the @self's internal tables. Used in
-+ *	conjunction with @lookup and @remove methods.
-+ *
-+ *	Optional method. Default behaviour is to use the @self->ttys array.
-+ *
-+ * @remove: ``void ()(struct tty_driver *self, struct tty_struct *tty)``
-+ *
-+ *	Remove a closed @tty from the @self's internal tables. Used in
-+ *	conjunction with @lookup and @remove methods.
-+ *
-+ *	Optional method. Default behaviour is to use the @self->ttys array.
-+ *
-+ * @open: ``int ()(struct tty_struct *tty, struct file *)``
-+ *
-+ *	This routine is called when a particular @tty device is opened. This
-+ *	routine is mandatory; if this routine is not filled in, the attempted
-+ *	open will fail with %ENODEV.
-+ *
-+ *	Required method. Called with tty lock held. May sleep.
-+ *
-+ * @close: ``void ()(struct tty_struct *tty, struct file *)``
-+ *
-+ *	This routine is called when a particular @tty device is closed. At the
-+ *	point of return from this call the driver must make no further ldisc
-+ *	calls of any kind.
-+ *
-+ *	Remark: called even if the corresponding @open() failed.
-+ *
-+ *	Required method. Called with tty lock held. May sleep.
-+ *
-+ * @shutdown: ``void ()(struct tty_struct *tty)``
-+ *
-+ *	This routine is called under the tty lock when a particular @tty device
-+ *	is closed for the last time. It executes before the @tty resources
-+ *	are freed so may execute while another function holds a @tty kref.
-+ *
-+ * @cleanup: ``void ()(struct tty_struct *tty)``
-+ *
-+ *	This routine is called asynchronously when a particular @tty device
-+ *	is closed for the last time freeing up the resources. This is
-+ *	actually the second part of shutdown for routines that might sleep.
-+ *
-+ * @write: ``int ()(struct tty_struct *tty, const unsigned char *buf,
-+ *		    int count)``
-+ *
-+ *	This routine is called by the kernel to write a series (@count) of
-+ *	characters (@buf) to the @tty device. The characters may come from
-+ *	user space or kernel space.  This routine will return the
-+ *	number of characters actually accepted for writing.
-+ *
-+ *	May occur in parallel in special cases. Because this includes panic
-+ *	paths drivers generally shouldn't try and do clever locking here.
-+ *
-+ *	Optional: Required for writable devices. May not sleep.
-+ *
-+ * @put_char: ``int ()(struct tty_struct *tty, unsigned char ch)``
-+ *
-+ *	This routine is called by the kernel to write a single character @ch to
-+ *	the @tty device. If the kernel uses this routine, it must call the
-+ *	@flush_chars() routine (if defined) when it is done stuffing characters
-+ *	into the driver. If there is no room in the queue, the character is
-+ *	ignored.
-+ *
-+ *	Optional: Kernel will use the @write method if not provided. Do not
-+ *	call this function directly, call tty_put_char().
-+ *
-+ * @flush_chars: ``void ()(struct tty_struct *tty)``
-+ *
-+ *	This routine is called by the kernel after it has written a
-+ *	series of characters to the tty device using @put_char().
-+ *
-+ *	Optional. Do not call this function directly, call
-+ *	tty_driver_flush_chars().
-+ *
-+ * @write_room: ``int ()(struct tty_struct *tty)``
-+ *
-+ *	This routine returns the numbers of characters the @tty driver
-+ *	will accept for queuing to be written.  This number is subject
-+ *	to change as output buffers get emptied, or if the output flow
-+ *	control is acted.
-+ *
-+ *	The ldisc is responsible for being intelligent about multi-threading of
-+ *	write_room/write calls
-+ *
-+ *	Required if @write method is provided else not needed. Do not call this
-+ *	function directly, call tty_write_room()
-+ *
-+ * @chars_in_buffer: ``int ()(struct tty_struct *tty)``
-+ *
-+ *	This routine returns the number of characters in the device private
-+ *	output queue. Used in tty_wait_until_sent() and for poll()
-+ *	implementation.
-+ *
-+ *	Optional: if not provided, it is assumed there is no queue on the
-+ *	device. Do not call this function directly, call tty_chars_in_buffer().
-+ *
-+ * @ioctl: ``int ()(struct tty_struct *tty, unsigned int cmd,
-+ *		    unsigned long arg)``
-+ *
-+ *	This routine allows the @tty driver to implement device-specific
-+ *	ioctls. If the ioctl number passed in @cmd is not recognized by the
-+ *	driver, it should return %ENOIOCTLCMD.
-+ *
-+ *	Optional.
-+ *
-+ * @compat_ioctl: ``long ()(struct tty_struct *tty, unsigned int cmd,
-+ *			  unsigned long arg)``
-+ *
-+ *	Implement ioctl processing for 32 bit process on 64 bit system.
-+ *
-+ *	Optional.
-+ *
-+ * @set_termios: ``void ()(struct tty_struct *tty, struct ktermios *old)``
-+ *
-+ *	This routine allows the @tty driver to be notified when device's
-+ *	termios settings have changed. New settings are in @tty->termios.
-+ *	Previous settings are passed in the @old argument.
-+ *
-+ *	The API is defined such that the driver should return the actual modes
-+ *	selected. This means that the driver is responsible for modifying any
-+ *	bits in @tty->termios it cannot fulfill to indicate the actual modes
-+ *	being used.
-+ *
-+ *	Optional. Called under the @tty->termios_rwsem. May sleep.
-+ *
-+ * @ldisc_ok: ``int ()(struct tty_struct *tty, int ldisc)``
-+ *
-+ *	This routine allows the @tty driver to decide if it can deal
-+ *	with a particular @ldisc.
-+ *
-+ *	Optional. Called under the @tty->ldisc_sem and @tty->termios_rwsem.
-+ *
-+ * @set_ldisc: ``void ()(struct tty_struct *tty)``
-+ *
-+ *	This routine allows the @tty driver to be notified when the device's
-+ *	line discipline is being changed. At the point this is done the
-+ *	discipline is not yet usable.
-+ *
-+ *	Optional. Called under the @tty->ldisc_sem and @tty->termios_rwsem.
-+ *
-+ * @throttle: ``void ()(struct tty_struct *tty)``
-+ *
-+ *	This routine notifies the @tty driver that input buffers for the line
-+ *	discipline are close to full, and it should somehow signal that no more
-+ *	characters should be sent to the @tty.
-+ *
-+ *	Serialization including with @unthrottle() is the job of the ldisc
-+ *	layer.
-+ *
-+ *	Optional: Always invoke via tty_throttle_safe(). Called under the
-+ *	@tty->termios_rwsem.
-+ *
-+ * @unthrottle: ``void ()(struct tty_struct *tty)``
-+ *
-+ *	This routine notifies the @tty driver that it should signal that
-+ *	characters can now be sent to the @tty without fear of overrunning the
-+ *	input buffers of the line disciplines.
-+ *
-+ *	Optional. Always invoke via tty_unthrottle(). Called under the
-+ *	@tty->termios_rwsem.
-+ *
-+ * @stop: ``void ()(struct tty_struct *tty)``
-+ *
-+ *	This routine notifies the @tty driver that it should stop outputting
-+ *	characters to the tty device.
-+ *
-+ *	Called with @tty->flow.lock held. Serialized with @start() method.
-+ *
-+ *	Optional. Always invoke via stop_tty().
-+ *
-+ * @start: ``void ()(struct tty_struct *tty)``
-+ *
-+ *	This routine notifies the @tty driver that it resumed sending
-+ *	characters to the @tty device.
-+ *
-+ *	Called with @tty->flow.lock held. Serialized with stop() method.
-+ *
-+ *	Optional. Always invoke via start_tty().
-+ *
-+ * @hangup: ``void ()(struct tty_struct *tty)``
-+ *
-+ *	This routine notifies the @tty driver that it should hang up the @tty
-+ *	device.
-+ *
-+ *	Optional. Called with tty lock held.
-+ *
-+ * @break_ctl: ``int ()(struct tty_struct *tty, int state)``
-+ *
-+ *	This optional routine requests the @tty driver to turn on or off BREAK
-+ *	status on the RS-232 port. If @state is -1, then the BREAK status
-+ *	should be turned on; if @state is 0, then BREAK should be turned off.
-+ *
-+ *	If this routine is implemented, the high-level tty driver will handle
-+ *	the following ioctls: %TCSBRK, %TCSBRKP, %TIOCSBRK, %TIOCCBRK.
-+ *
-+ *	If the driver sets %TTY_DRIVER_HARDWARE_BREAK in tty_alloc_driver(),
-+ *	then the interface will also be called with actual times and the
-+ *	hardware is expected to do the delay work itself. 0 and -1 are still
-+ *	used for on/off.
-+ *
-+ *	Optional: Required for %TCSBRK/%BRKP/etc. handling. May sleep.
-+ *
-+ * @flush_buffer: ``void ()(struct tty_struct *tty)``
-+ *
-+ *	This routine discards device private output buffer. Invoked on close,
-+ *	hangup, to implement %TCOFLUSH ioctl and similar.
-+ *
-+ *	Optional: if not provided, it is assumed there is no queue on the
-+ *	device. Do not call this function directly, call
-+ *	tty_driver_flush_buffer().
-+ *
-+ * @wait_until_sent: ``void ()(struct tty_struct *tty, int timeout)``
-+ *
-+ *	This routine waits until the device has written out all of the
-+ *	characters in its transmitter FIFO. Or until @timeout (in jiffies) is
-+ *	reached.
-+ *
-+ *	Optional: If not provided, the device is assumed to have no FIFO.
-+ *	Usually correct to invoke via tty_wait_until_sent(). May sleep.
-+ *
-+ * @send_xchar: ``void ()(struct tty_struct *tty, char ch)``
-+ *
-+ *	This routine is used to send a high-priority XON/XOFF character (@ch)
-+ *	to the @tty device.
-+ *
-+ *	Optional: If not provided, then the @write method is called under
-+ *	the @tty->atomic_write_lock to keep it serialized with the ldisc.
-+ *
-+ * @tiocmget: ``int ()(struct tty_struct *tty)``
-+ *
-+ *	This routine is used to obtain the modem status bits from the @tty
-+ *	driver.
-+ *
-+ *	Optional: If not provided, then %ENOTTY is returned from the %TIOCMGET
-+ *	ioctl. Do not call this function directly, call tty_tiocmget().
-+ *
-+ * @tiocmset: ``int ()(struct tty_struct *tty,
-+ *		       unsigned int set, unsigned int clear)``
-+ *
-+ *	This routine is used to set the modem status bits to the @tty driver.
-+ *	First, @clear bits should be cleared, then @set bits set.
-+ *
-+ *	Optional: If not provided, then %ENOTTY is returned from the %TIOCMSET
-+ *	ioctl. Do not call this function directly, call tty_tiocmset().
-+ *
-+ * @resize: ``int ()(struct tty_struct *tty, struct winsize *ws)``
-+ *
-+ *	Called when a termios request is issued which changes the requested
-+ *	terminal geometry to @ws.
-+ *
-+ *	Optional: the default action is to update the termios structure
-+ *	without error. This is usually the correct behaviour. Drivers should
-+ *	not force errors here if they are not resizable objects (e.g. a serial
-+ *	line). See tty_do_resize() if you need to wrap the standard method
-+ *	in your own logic -- the usual case.
-+ *
-+ * @get_icount: ``int ()(struct tty_struct *tty,
-+ *			 struct serial_icounter *icount)``
-+ *
-+ *	Called when the @tty device receives a %TIOCGICOUNT ioctl. Passed a
-+ *	kernel structure @icount to complete.
-+ *
-+ *	Optional: called only if provided, otherwise %ENOTTY will be returned.
-+ *
-+ * @get_serial: ``int ()(struct tty_struct *tty, struct serial_struct *p)``
-+ *
-+ *	Called when the @tty device receives a %TIOCGSERIAL ioctl. Passed a
-+ *	kernel structure @p (&struct serial_struct) to complete.
-+ *
-+ *	Optional: called only if provided, otherwise %ENOTTY will be returned.
-+ *	Do not call this function directly, call tty_tiocgserial().
-+ *
-+ * @set_serial: ``int ()(struct tty_struct *tty, struct serial_struct *p)``
-+ *
-+ *	Called when the @tty device receives a %TIOCSSERIAL ioctl. Passed a
-+ *	kernel structure @p (&struct serial_struct) to set the values from.
-+ *
-+ *	Optional: called only if provided, otherwise %ENOTTY will be returned.
-+ *	Do not call this function directly, call tty_tiocsserial().
-+ *
-+ * @show_fdinfo: ``void ()(struct tty_struct *tty, struct seq_file *m)``
-+ *
-+ *	Called when the @tty device file descriptor receives a fdinfo request
-+ *	from VFS (to show in /proc/<pid>/fdinfo/). @m should be filled with
-+ *	information.
-+ *
-+ *	Optional: called only if provided, otherwise nothing is written to @m.
-+ *	Do not call this function directly, call tty_show_fdinfo().
-+ *
-+ * @poll_init: ``int ()(struct tty_driver *driver, int line, char *options)``
-+ *
-+ *	kgdboc support (Documentation/dev-tools/kgdb.rst). This routine is
-+ *	called to initialize the HW for later use by calling @poll_get_char or
-+ *	@poll_put_char.
-+ *
-+ *	Optional: called only if provided, otherwise skipped as a non-polling
-+ *	driver.
-+ *
-+ * @poll_get_char: ``int ()(struct tty_driver *driver, int line)``
-+ *
-+ *	kgdboc support (see @poll_init). @driver should read a character from a
-+ *	tty identified by @line and return it.
-+ *
-+ *	Optional: called only if @poll_init provided.
-+ *
-+ * @poll_put_char: ``void ()(struct tty_driver *driver, int line, char ch)``
-+ *
-+ *	kgdboc support (see @poll_init). @driver should write character @ch to
-+ *	a tty identified by @line.
-+ *
-+ *	Optional: called only if @poll_init provided.
-+ *
-+ * @proc_show: ``int ()(struct seq_file *m, void *driver)``
-+ *
-+ *	Driver @driver (cast to &struct tty_driver) can show additional info in
-+ *	/proc/tty/driver/<driver_name>. It is enough to fill in the information
-+ *	into @m.
-+ *
-+ *	Optional: called only if provided, otherwise no /proc entry created.
-+ *
-+ * This structure defines the interface between the low-level tty driver and
-+ * the tty routines. These routines can be defined. Unless noted otherwise,
-+ * they are optional, and can be filled in with a %NULL pointer.
-+ */
- struct tty_operations {
- 	struct tty_struct * (*lookup)(struct tty_driver *driver,
- 			struct file *filp, int idx);
-@@ -270,6 +608,7 @@ struct tty_operations {
- 	void (*hangup)(struct tty_struct *tty);
- 	int (*break_ctl)(struct tty_struct *tty, int state);
- 	void (*flush_buffer)(struct tty_struct *tty);
-+	int (*ldisc_ok)(struct tty_struct *tty, int ldisc);
- 	void (*set_ldisc)(struct tty_struct *tty);
- 	void (*wait_until_sent)(struct tty_struct *tty, int timeout);
- 	void (*send_xchar)(struct tty_struct *tty, char ch);
+ 
+@@ -2008,7 +2021,8 @@ static int drm_dp_i2c_do_msg(struct drm_dp_aux *aux, struct drm_dp_aux_msg *msg)
+ 		case DP_AUX_NATIVE_REPLY_NACK:
+ 			drm_dbg_kms(aux->drm_dev, "%s: native nack (result=%d, size=%zu)\n",
+ 				    aux->name, ret, msg->size);
+-			return -EREMOTEIO;
++			ret = -EREMOTEIO;
++			goto out;
+ 
+ 		case DP_AUX_NATIVE_REPLY_DEFER:
+ 			drm_dbg_kms(aux->drm_dev, "%s: native defer\n", aux->name);
+@@ -2027,24 +2041,41 @@ static int drm_dp_i2c_do_msg(struct drm_dp_aux *aux, struct drm_dp_aux_msg *msg)
+ 		default:
+ 			drm_err(aux->drm_dev, "%s: invalid native reply %#04x\n",
+ 				aux->name, msg->reply);
+-			return -EREMOTEIO;
++			ret = -EREMOTEIO;
++			goto out;
+ 		}
+ 
+ 		switch (msg->reply & DP_AUX_I2C_REPLY_MASK) {
+ 		case DP_AUX_I2C_REPLY_ACK:
++			/*
++			 * When DPTx sets Write_Status_Update_Request flag to
++			 * ask DPRx for the write status, the AUX reply from
++			 * DPRx will be I2C_ACK|AUX_ACK if I2C write request
++			 * completes successfully. Such AUX transaction is for
++			 * status checking only, so no new data is written by
++			 * aux->transfer(). In this case, here we have to
++			 * report all original data get written. Otherwise,
++			 * drm_dp_i2c_drain_msg() takes returned value 0 as
++			 * an error.
++			 */
++			if (drm_dp_i2c_msg_is_write_status_update(msg) && ret == 0)
++				ret = orig_msg.size;
++
+ 			/*
+ 			 * Both native ACK and I2C ACK replies received. We
+ 			 * can assume the transfer was successful.
+ 			 */
+ 			if (ret != msg->size)
+ 				drm_dp_i2c_msg_write_status_update(msg);
+-			return ret;
++
++			goto out;
+ 
+ 		case DP_AUX_I2C_REPLY_NACK:
+ 			drm_dbg_kms(aux->drm_dev, "%s: I2C nack (result=%d, size=%zu)\n",
+ 				    aux->name, ret, msg->size);
+ 			aux->i2c_nack_count++;
+-			return -EREMOTEIO;
++			ret = -EREMOTEIO;
++			goto out;
+ 
+ 		case DP_AUX_I2C_REPLY_DEFER:
+ 			drm_dbg_kms(aux->drm_dev, "%s: I2C defer\n", aux->name);
+@@ -2063,12 +2094,21 @@ static int drm_dp_i2c_do_msg(struct drm_dp_aux *aux, struct drm_dp_aux_msg *msg)
+ 		default:
+ 			drm_err(aux->drm_dev, "%s: invalid I2C reply %#04x\n",
+ 				aux->name, msg->reply);
+-			return -EREMOTEIO;
++			ret = -EREMOTEIO;
++			goto out;
+ 		}
+ 	}
+ 
+ 	drm_dbg_kms(aux->drm_dev, "%s: Too many retries, giving up\n", aux->name);
+-	return -EREMOTEIO;
++	ret = -EREMOTEIO;
++out:
++	/* In case we change original msg by Write_Status_Update case*/
++	if (drm_dp_i2c_msg_is_write_status_update(msg)) {
++		msg->buffer = orig_msg.buffer;
++		msg->size = orig_msg.size;
++	}
++
++	return ret;
+ }
+ 
+ static void drm_dp_i2c_msg_set_request(struct drm_dp_aux_msg *msg,
 -- 
-2.34.1
+2.43.0
 
 
