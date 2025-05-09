@@ -1,139 +1,127 @@
-Return-Path: <stable+bounces-142941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CED51AB075A
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 02:58:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3275AB075D
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 03:04:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C8661C02730
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 00:58:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 162D11C0285C
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 01:04:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B9693B2A0;
-	Fri,  9 May 2025 00:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 244695FDA7;
+	Fri,  9 May 2025 01:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="sv72gbes"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="LzU24JKy"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF2DCD53C;
-	Fri,  9 May 2025 00:58:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DB4B20E6;
+	Fri,  9 May 2025 01:04:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746752291; cv=none; b=pxItYxLKkCLovZeHhXhZbCtVI4jGgG4vcQQTlhey8nZd4/jqS+8LUZAge9orey7j7f4Rcc+W1zhy2G714IbI9s+M7ynnHl6fu+ELsrSXnU+qzZ6jD2mvOKFp7quyPXN9/2kVkRMUt7EiTQdEeY+9xh3mZtfD+oR8Hq/PS+mF4Ms=
+	t=1746752672; cv=none; b=WCQRATFMqZSKUcLF5KzlPnCiSLXninMqggiJ3gnR/6AlLKUJfKDACTOSE+QRPGgi2JXIhOKotaLERNwB8oDhx1QHWqRv5l7e3INg5gCviDr8+/3V3Ba67mIn2u/KS2/Yad7VOsYsRkkciD963KeZdfihlLNUkZpVI4v5ET/Wrv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746752291; c=relaxed/simple;
-	bh=6UHx54DMjMlf3Ohp8TL2ArLx6Txr0ynHe1wIwHx9GPs=;
-	h=Date:To:From:Subject:Message-Id; b=D/4BpEnhKyYtQ6+cgcFgxbDCOWNP2AmacQ8KJmqIdA/CDt7w10M7p7TUGR3GEvVTLyxVy6IjnFgZ3+2QCIgr4TcoiBg9DVu+WvxbIXhCMqA/sWKhbc5R5sqAbsNt3nuYXbjMP7OhGL6nfBXMnLK6Rkd4QOKtapFiijDPfXy+nhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=sv72gbes; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 359E1C4CEE7;
-	Fri,  9 May 2025 00:58:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1746752290;
-	bh=6UHx54DMjMlf3Ohp8TL2ArLx6Txr0ynHe1wIwHx9GPs=;
-	h=Date:To:From:Subject:From;
-	b=sv72gbesztEMWIwaR/Bey0CXPGlEKh/azwyMtyjBowaJTt/t63p802LKyb6efZI0o
-	 Eb7eHHGlciFFMdeoPRBsooJPfbI6RI7Y1gQh0a1MNjwxeFYpU23DT2Rvcq48vCcLT6
-	 SC1offd6mBx9IP73uqYtBCOLTpT17cz9mX5169Z4=
-Date: Thu, 08 May 2025 17:58:09 -0700
-To: mm-commits@vger.kernel.org,surenb@google.com,stable@vger.kernel.org,peterx@redhat.com,lokeshgidra@google.com,david@redhat.com,aarcange@redhat.com,v-songbaohua@oppo.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-userfaultfd-correct-dirty-flags-set-for-both-present-and-swap-pte.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250509005810.359E1C4CEE7@smtp.kernel.org>
+	s=arc-20240116; t=1746752672; c=relaxed/simple;
+	bh=d5tRvZCmJBVCc6MoiOu5zf+hcKgcc+Z6A6RFbN4W7rY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dms9Iu/+y0v3Pw0rZIUJh667AsNCrw0zeuMbFrSvJR2altCivObyL4i4g2p3EAO/s/P3KgHQfL3q2kmDCxvwlHydhrQ7nz4m5l8Qfu9dXMAKPACg6RE5PplLGEEXtFpui5ZF11QJqSsQB7JsJjg8xUPYWgGyv/Zx5cVUBCRfZ/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=LzU24JKy; arc=none smtp.client-ip=60.244.123.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: 8bdeb7f82c7111f0813e4fe1310efc19-20250509
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=0vPECswObQPRV1ipuOt1lHBTvRNdDtkZAdIDJlDmFKY=;
+	b=LzU24JKyOU33svUeHPRxmMjtgLL1/N4E2R8puiajLVEYffRR0UJSOYR8IeJ+1W4owZOWD0BpgApjpnjvSjbD2ij+bAEBHDFLaoxJ4KtMFzAorEizex8Xa+G223M/1k8km8K6UB2Dj5mVRPpjMtrwMcMxbmCwrBWcFA9ga+df8cI=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.2.1,REQID:22f903f5-b47e-47f1-81e9-94b367fae313,IP:0,UR
+	L:0,TC:0,Content:0,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION:r
+	elease,TS:0
+X-CID-META: VersionHash:0ef645f,CLOUDID:841c7480-1eec-4f76-b81b-944fecd9abcd,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0|50,EDM:-3,IP:ni
+	l,URL:99|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,
+	LES:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULS
+X-UUID: 8bdeb7f82c7111f0813e4fe1310efc19-20250509
+Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw01.mediatek.com
+	(envelope-from <mingyen.hsieh@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 1904332798; Fri, 09 May 2025 09:04:23 +0800
+Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
+ MTKMBS14N1.mediatek.inc (172.21.101.75) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.39; Fri, 9 May 2025 09:04:21 +0800
+Received: from mtksitap99.mediatek.inc (10.233.130.16) by
+ mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1258.39 via Frontend Transport; Fri, 9 May 2025 09:04:21 +0800
+From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
+To: <nbd@nbd.name>, <lorenzo@kernel.org>
+CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
+	<Leon.Yen@mediatek.com>, <Michael.Lo@mediatek.com>,
+	<allan.wang@mediatek.com>, <Eric-SY.Chang@mediatek.com>,
+	<km.lin@mediatek.com>, <Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
+	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
+	<linux-mediatek@lists.infradead.org>, Ming Yen Hsieh
+	<mingyen.hsieh@mediatek.com>, <stable@vger.kernel.org>, Benjamin Xiao
+	<fossben@pm.me>, Niklas Schnelle <niks@kernel.org>
+Subject: [PATCH v3] wifi: mt76: mt7925: fix missing hdr_trans_tlv command for broadcast wtbl
+Date: Fri, 9 May 2025 09:04:20 +0800
+Message-ID: <20250509010421.403022-1-mingyen.hsieh@mediatek.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-MTK: N
 
+From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
 
-The patch titled
-     Subject: mm: userfaultfd: correct dirty flags set for both present and swap pte
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-userfaultfd-correct-dirty-flags-set-for-both-present-and-swap-pte.patch
+Ensure that the hdr_trans_tlv command is included in the broadcast wtbl to
+prevent the IPv6 and multicast packet from being dropped by the chip.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-userfaultfd-correct-dirty-flags-set-for-both-present-and-swap-pte.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Barry Song <v-songbaohua@oppo.com>
-Subject: mm: userfaultfd: correct dirty flags set for both present and swap pte
-Date: Fri, 9 May 2025 10:09:12 +1200
-
-As David pointed out, what truly matters for mremap and userfaultfd move
-operations is the soft dirty bit.  The current comment and
-implementation—which always sets the dirty bit for present PTEs and
-fails to set the soft dirty bit for swap PTEs—are incorrect.  This could
-break features like Checkpoint-Restore in Userspace (CRIU).
-
-This patch updates the behavior to correctly set the soft dirty bit for
-both present and swap PTEs in accordance with mremap.
-
-Link: https://lkml.kernel.org/r/20250508220912.7275-1-21cnbao@gmail.com
-Fixes: adef440691bab ("userfaultfd: UFFDIO_MOVE uABI")
-Signed-off-by: Barry Song <v-songbaohua@oppo.com>
-Reported-by: David Hildenbrand <david@redhat.com>
-Closes: https://lore.kernel.org/linux-mm/02f14ee1-923f-47e3-a994-4950afb9afcc@redhat.com/
-Acked-by: Peter Xu <peterx@redhat.com>
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-Cc: Lokesh Gidra <lokeshgidra@google.com>
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: cb1353ef3473 ("wifi: mt76: mt7925: integrate *mlo_sta_cmd and *sta_cmd")
+Reported-by: Benjamin Xiao <fossben@pm.me>
+Tested-by: Niklas Schnelle <niks@kernel.org>
+Link: https://lore.kernel.org/lkml/EmWnO5b-acRH1TXbGnkx41eJw654vmCR-8_xMBaPMwexCnfkvKCdlU5u19CGbaapJ3KRu-l3B-tSUhf8CCQwL0odjo6Cd5YG5lvNeB-vfdg=@pm.me/
 ---
+v2:
+    add tested-by tag
+v3:
+    add more info in commit
+---
+ drivers/net/wireless/mediatek/mt76/mt7925/mcu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
- mm/userfaultfd.c |   12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
-
---- a/mm/userfaultfd.c~mm-userfaultfd-correct-dirty-flags-set-for-both-present-and-swap-pte
-+++ a/mm/userfaultfd.c
-@@ -1064,8 +1064,13 @@ static int move_present_pte(struct mm_st
- 	src_folio->index = linear_page_index(dst_vma, dst_addr);
- 
- 	orig_dst_pte = mk_pte(&src_folio->page, dst_vma->vm_page_prot);
--	/* Follow mremap() behavior and treat the entry dirty after the move */
--	orig_dst_pte = pte_mkwrite(pte_mkdirty(orig_dst_pte), dst_vma);
-+	/* Set soft dirty bit so userspace can notice the pte was moved */
-+#ifdef CONFIG_MEM_SOFT_DIRTY
-+	orig_dst_pte = pte_mksoft_dirty(orig_dst_pte);
-+#endif
-+	if (pte_dirty(orig_src_pte))
-+		orig_dst_pte = pte_mkdirty(orig_dst_pte);
-+	orig_dst_pte = pte_mkwrite(orig_dst_pte, dst_vma);
- 
- 	set_pte_at(mm, dst_addr, dst_pte, orig_dst_pte);
- out:
-@@ -1100,6 +1105,9 @@ static int move_swap_pte(struct mm_struc
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index a42b584634ab..fd756f0d18f8 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -2183,14 +2183,14 @@ mt7925_mcu_sta_cmd(struct mt76_phy *phy,
+ 			mt7925_mcu_sta_mld_tlv(skb, info->vif, info->link_sta->sta);
+ 			mt7925_mcu_sta_eht_mld_tlv(skb, info->vif, info->link_sta->sta);
+ 		}
+-
+-		mt7925_mcu_sta_hdr_trans_tlv(skb, info->vif, info->link_sta);
  	}
  
- 	orig_src_pte = ptep_get_and_clear(mm, src_addr, src_pte);
-+#ifdef CONFIG_MEM_SOFT_DIRTY
-+	orig_src_pte = pte_swp_mksoft_dirty(orig_src_pte);
-+#endif
- 	set_pte_at(mm, dst_addr, dst_pte, orig_src_pte);
- 	double_pt_unlock(dst_ptl, src_ptl);
+ 	if (!info->enable) {
+ 		mt7925_mcu_sta_remove_tlv(skb);
+ 		mt76_connac_mcu_add_tlv(skb, STA_REC_MLD_OFF,
+ 					sizeof(struct tlv));
++	} else {
++		mt7925_mcu_sta_hdr_trans_tlv(skb, info->vif, info->link_sta);
+ 	}
  
-_
-
-Patches currently in -mm which might be from v-songbaohua@oppo.com are
-
-mm-userfaultfd-correct-dirty-flags-set-for-both-present-and-swap-pte.patch
+ 	return mt76_mcu_skb_send_msg(dev, skb, info->cmd, true);
+-- 
+2.34.1
 
 
