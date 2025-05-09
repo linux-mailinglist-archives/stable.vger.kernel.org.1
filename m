@@ -1,109 +1,85 @@
-Return-Path: <stable+bounces-142995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B588CAB0CC3
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 10:12:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42425AB0CF5
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 10:19:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1C977AB3E4
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 08:10:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C72C01C2252E
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 08:19:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B04B269B11;
-	Fri,  9 May 2025 08:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF9492741B5;
+	Fri,  9 May 2025 08:17:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dkiBSTeY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Weg3KJcy"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FF1426A1DA;
-	Fri,  9 May 2025 08:12:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BAA6272E6B;
+	Fri,  9 May 2025 08:17:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746778323; cv=none; b=n/UksG6S9ONYbSqEuzsMexA65oEiL4TB1qV7mhnVXk/x6kA9PIEEgDbf2WZ3oNpMOoKxzIBXM/uF28Jx/nA2zxTicQfI54zFcChChksO6UkURtHio1dO+HQXk/ttl6Gx7US6OSUW4vlDJPQ3oc+LOLe4CUW6UBcbOcELxTqnp6g=
+	t=1746778658; cv=none; b=HxDRMy2Tlo+wF4+AB9YbcfNU83wP7P7wUZ8XSdCtWr/io+yall06Wwjx7zoNSr6AiEnYAicnpOK7240tttLagY6DeSU6fhTWFIOMqiVhYmp9CbrHMmB+oIkvqe1oVPro4gH4ue8OM0LGzS69mQv27aQSr9RRMnEvrUO9reueLK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746778323; c=relaxed/simple;
-	bh=8IbLnw9mBjgrk+9yg+uifNi0PymoSeiWbk1RPstYs7E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YWMBxPYV9P1ro2obNFAW5a2Tso/v0017hfp+OI4JzKXs/rPsUovIg9tHmBMawA78O90gJNppgSWBa/Cgmnc1mI53hiHhiFPO5SM7emppMyUHl7jR3CR3GMymVI6E1hNfROqEuzNrw8QSEYuFetnQFLGwQGYmvbDOvXoa3iuJeEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dkiBSTeY; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746778322; x=1778314322;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=8IbLnw9mBjgrk+9yg+uifNi0PymoSeiWbk1RPstYs7E=;
-  b=dkiBSTeYwwBZNfjLbE7vdE0HUkQ6zm71JGC9ch6K6LSKe5yCQKAZR40I
-   58LP6/CZqXgas41xkryA+TRm7w56UqguPYAEaNXUqUNmMQSziHLyI4u70
-   QMSAmytygwOtTsj1heFMQPBPC3a4yRzpaVSaDm6JqvkSRfnwgINU+6spl
-   lY2abb4NvmgaR3dI2hPixJCcVuO134hSO1WW5r6Q4uaU8/5ALjb9sqfmK
-   OtuXoH427IJQb/Gv+XXJos4kAauNEv94vKhazHSb9dwSG+OP816Co1zgg
-   D4uZRFT6mQ/eDQ5lsxds/mbplx7kISqSuUOC5r5o/AvrxfGMrpWyKXBxl
-   Q==;
-X-CSE-ConnectionGUID: r+vQldL2QCOxc9kx0Mf5jw==
-X-CSE-MsgGUID: utNmgeb2T/ya1CLFtCu2QQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="36225018"
-X-IronPort-AV: E=Sophos;i="6.15,274,1739865600"; 
-   d="scan'208";a="36225018"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2025 01:12:01 -0700
-X-CSE-ConnectionGUID: UPTLarKASvehNtOGMe+Jdw==
-X-CSE-MsgGUID: q4AQOU+wTGO7nusOyBZ2gQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,274,1739865600"; 
-   d="scan'208";a="167481069"
-Received: from klitkey1-mobl1.ger.corp.intel.com (HELO pujfalus-desk.intel.com) ([10.245.246.132])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2025 01:11:58 -0700
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-To: lgirdwood@gmail.com,
-	broonie@kernel.org
-Cc: linux-sound@vger.kernel.org,
-	kai.vehmanen@linux.intel.com,
-	ranjani.sridharan@linux.intel.com,
-	yung-chuan.liao@linux.intel.com,
-	pierre-louis.bossart@linux.dev,
-	stable@vger.kernel.org
-Subject: [PATCH] ASoC: SOF: Intel: hda-bus: Use PIO mode on ACE2+ platforms
-Date: Fri,  9 May 2025 11:13:08 +0300
-Message-ID: <20250509081308.13784-1-peter.ujfalusi@linux.intel.com>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1746778658; c=relaxed/simple;
+	bh=Ql/RqmkYojQcGQ0EfLd1kl8icHakCphGsH1R0s3l5vs=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=AfVAOLLIlr7WlAKmYC6/w4ldylWUz1mKEgNLZ8etly8/8fFeCPICSQ48ZQyPXN2FGhVcbw4f/KFzvMgR35nyoAprA/GVpqxiVHd4H0W32RHzBlIumyE8/MPG1jPUtiyHDpSzdF1pSpWLp7LMS5YdINFSVomLth1TyyFMaTjxlRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Weg3KJcy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2788DC4CEE4;
+	Fri,  9 May 2025 08:17:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746778658;
+	bh=Ql/RqmkYojQcGQ0EfLd1kl8icHakCphGsH1R0s3l5vs=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=Weg3KJcyyjYxGZbdLsm0rMLMkCxscK++ucF5r3yCN3h2VuAi0/+LM/mRbH9D/fOgi
+	 LTkQV47VYWhkgEQXS8LnyNYrRsNTWET6lWU0fohNbFKRdWhJQ9b7g5fAy3mJ8MD0+f
+	 Fp1f6l6iE9ZyYZQYFhvRMI3bDHGMp8m5/iBAOwG/aTLawZTHo903y70aFOM9rHoO92
+	 IQHxUuOx59SUZYdGrfm8Io2pEVgDBqJ2/szEDb5AjZ7tO/R8LOLKop2OCsbwlHy03y
+	 y3c93UBXSWygqeI71VWzRWDmqPdXMl6V0dgGiB9Vs3K14nbsqxKED5Fi9dowlf9jod
+	 lve9Flg2OHHIA==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Joel Becker <jlbec@evilplan.org>, 
+ Pantelis Antoniou <pantelis.antoniou@konsulko.com>, 
+ Al Viro <viro@zeniv.linux.org.uk>, Breno Leitao <leitao@debian.org>, 
+ Zijun Hu <zijun_hu@icloud.com>
+Cc: linux-kernel@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>, 
+ stable@vger.kernel.org
+In-Reply-To: <20250507-fix_configfs-v3-0-fe2d96de8dc4@quicinc.com>
+References: <20250507-fix_configfs-v3-0-fe2d96de8dc4@quicinc.com>
+Subject: Re: [PATCH v3 0/3] configfs: fix bugs
+Message-Id: <174677862396.1934573.4068910930493177460.b4-ty@kernel.org>
+Date: Fri, 09 May 2025 10:17:03 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev
 
-Keep using the PIO mode for commands on ACE2+ platforms, similarly how
-the legacy stack is configured.
 
-Fixes: 05cf17f1bf6d ("ASoC: SOF: Intel: hda-bus: Use PIO mode for Lunar Lake")
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Cc: stable@vger.kernel.org
----
- sound/soc/sof/intel/hda-bus.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Wed, 07 May 2025 19:50:24 +0800, Zijun Hu wrote:
+> 
 
-diff --git a/sound/soc/sof/intel/hda-bus.c b/sound/soc/sof/intel/hda-bus.c
-index b1be03011d7e..6492e1cefbfb 100644
---- a/sound/soc/sof/intel/hda-bus.c
-+++ b/sound/soc/sof/intel/hda-bus.c
-@@ -76,7 +76,7 @@ void sof_hda_bus_init(struct snd_sof_dev *sdev, struct device *dev)
- 
- 	snd_hdac_ext_bus_init(bus, dev, &bus_core_ops, sof_hda_ext_ops);
- 
--	if (chip && chip->hw_ip_version == SOF_INTEL_ACE_2_0)
-+	if (chip && chip->hw_ip_version >= SOF_INTEL_ACE_2_0)
- 		bus->use_pio_for_commands = true;
- #else
- 	snd_hdac_ext_bus_init(bus, dev, NULL, NULL);
+
+Applied, thanks!
+
+[1/3] configfs: Delete semicolon from macro type_print() definition
+      commit: d78aa60cfa7ece7477a4089a3a4b520ec7beba1b
+[2/3] configfs: Do not override creating attribute file failure in populate_attrs()
+      commit: f830edbae247b89228c3e09294151b21e0dc849c
+[3/3] configfs: Correct error value returned by API config_item_set_name()
+      commit: bbb67d4f85fd00a216fca4ca048e15f8ff6a2195
+
+Best regards,
 -- 
-2.49.0
+Andreas Hindborg <a.hindborg@kernel.org>
+
 
 
