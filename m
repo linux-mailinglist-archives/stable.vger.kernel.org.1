@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-142958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1F44AB07D4
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 04:18:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CA2EAB07C1
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 04:06:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21E413BA2EA
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 02:17:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2B6C3B9D96
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 02:06:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 630AD24167B;
-	Fri,  9 May 2025 02:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A75A242927;
+	Fri,  9 May 2025 02:06:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C10D9242D75;
-	Fri,  9 May 2025 02:18:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 429462AE96;
+	Fri,  9 May 2025 02:06:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746757096; cv=none; b=nHyMdoNGvIHTirr7NfZgNVoqFJxu0K5puAJVfV2PNKBwYj0/pi83lOhyTT1ur0PE9+gTSdM5/VXy9+mcVnHa3a4Q5wf696lXR9C1r8FabzSF4TeYGFKIvz3x2sYsMZKOwo/wALBj9GljBR2i/nA/xlVlXv63mONKnPbr+2yGiCA=
+	t=1746756402; cv=none; b=XZmfO0p6DzPkKDdavD9hRxj5Fp8/xtD1HZEpQlcPOZZd3upvwr+FNP95qWXLwdlQHi+pXrBvfBbzmUp83SrtC/pWAyZ+PdoxsxC0cdyej//W8MTGdjNgHvycZQWkjyld6Nl7LwpgMX9sXsaEp7bLpGaunPDgFPtZCZX07QbmPRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746757096; c=relaxed/simple;
-	bh=mxDVPjsDKcDaT0A+7FtJ1iu07Vwd+q9XbsTcO2uDOZc=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qQ4QkoVfx6MnUNWoMP97y8QjYC6j+0gzpDjYRDZ4qwwJQlbMv5KZ5efZ9eWKt+syMddg49gB0vWdioMDBVdFdwWpKQwmJ0GmBuViovpzyaEORhl9hv3MNJAT1FQLnG26JHnUCbHEb85VZmseAjZTKYhCKDz7kkakiiDDVT3x0H8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.163])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4ZtscS3hC9z2CddF;
-	Fri,  9 May 2025 09:59:04 +0800 (CST)
-Received: from kwepemj200003.china.huawei.com (unknown [7.202.194.15])
-	by mail.maildlp.com (Postfix) with ESMTPS id D8FCD18001B;
-	Fri,  9 May 2025 10:02:40 +0800 (CST)
-Received: from localhost.huawei.com (10.90.30.45) by
- kwepemj200003.china.huawei.com (7.202.194.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 9 May 2025 10:02:40 +0800
-From: Qinxin Xia <xiaqinxin@huawei.com>
-To: <21cnbao@gmail.com>, <xiaqinxin@huawei.com>
-CC: <yangyicong@huawei.com>, <hch@lst.de>, <iommu@lists.linux.dev>,
-	<jonathan.cameron@huawei.com>, <prime.zeng@huawei.com>,
-	<fanghao11@huawei.com>, <linux-kernel@vger.kernel.org>,
-	<linuxarm@huawei.com>, <stable@vger.kernel.org>
-Subject: [PATCH v3 1/4] dma-mapping: benchmark: Add padding to ensure uABI remained consistent
-Date: Fri, 9 May 2025 10:02:35 +0800
-Message-ID: <20250509020238.3378396-2-xiaqinxin@huawei.com>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20250509020238.3378396-1-xiaqinxin@huawei.com>
-References: <20250509020238.3378396-1-xiaqinxin@huawei.com>
+	s=arc-20240116; t=1746756402; c=relaxed/simple;
+	bh=eOG+6uPAgB6kk87jbQU1jozNIa3ia4nGj0etd0Lgu8Y=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qR/O+i8XR+6f7IPb0E+AF9IsbquFzsFDPq4oWGkZn473d8OreZGu2OS4QBL/zoY/nUPQaJbF9/vv7dH41tYja39wfcenTCB4OewlGR2Q/Pgu12oJveTnBC27kemnyjV7O+/QWJRTAzX3W5qyBPx5tM3mt2ssoedumXXCXhHXgjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.2.10.34])
+	by gateway (Coremail) with SMTP id _____8BxjawlYx1oktPaAA--.63242S3;
+	Fri, 09 May 2025 10:06:29 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.10.34])
+	by front1 (Coremail) with SMTP id qMiowMBxLscjYx1owBG_AA--.32426S2;
+	Fri, 09 May 2025 10:06:27 +0800 (CST)
+From: Tianyang Zhang <zhangtianyang@loongson.cn>
+To: chenhuacai@kernel.org,
+	kernel@xen0n.name,
+	bigeasy@linutronix.de,
+	clrkwllms@kernel.org,
+	rostedt@goodmis.org
+Cc: loongarch@lists.linux.dev,
+	linux-rt-devel@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Tianyang Zhang <zhangtianyang@loongson.cn>,
+	stable@vger.kernel.org,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH] LoongArch: Prevent cond_resched() occurring within kernel-fpu
+Date: Fri,  9 May 2025 10:06:26 +0800
+Message-Id: <20250509020626.23414-1-zhangtianyang@loongson.cn>
+X-Mailer: git-send-email 2.20.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,38 +55,103 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- kwepemj200003.china.huawei.com (7.202.194.15)
+X-CM-TRANSID:qMiowMBxLscjYx1owBG_AA--.32426S2
+X-CM-SenderInfo: x2kd0wxwld05hdqjqz5rrqw2lrqou0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7uryUKFyDXFyxuryDtr15WrX_yoW5Jr4Upr
+	yfur95tr4UJa4ava9rJw18Cry5Awn7G34xWa9xG34rA34Yqr18Xwn29r12qF12vFyIyFyS
+	vFnYqrWI93W5A3cCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUB0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v2
+	6rxl6s0DM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
+	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUAVWU
+	twAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI4
+	8JMxkF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j
+	6r4UMxCIbckI1I0E14v26r1Y6r17MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwV
+	AFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv2
+	0xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4
+	v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AK
+	xVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUcpBTUUUUU
 
-The padding field in the structure was previously reserved to
-maintain a stable interface for potential new fields, ensuring
-compatibility with user-space shared data structures.
-However,it was accidentally removed by tiantao in a prior commit,
-which may lead to incompatibility between user space and the kernel.
+When CONFIG_PREEMPT_COUNT is not configured (i.e. CONFIG_PREEMPT_NONE/
+CONFIG_PREEMPT_VOLUNTARY), preempt_disable() / preempt_enable() merely
+acts as a barrier(). However, in these cases cond_resched() can still
+trigger a context switch and modify the CSR.EUEN, resulting in do_fpu()
+exception being activated within the kernel-fpu critical sections, as
+demonstrated in the following path:
 
-This patch reinstates the padding to restore the original structure
-layout and preserve compatibility.
+dcn32_calculate_wm_and_dlg()
+    DC_FP_START()
+	dcn32_calculate_wm_and_dlg_fpu()
+	    dcn32_find_dummy_latency_index_for_fw_based_mclk_switch()
+		dcn32_internal_validate_bw()
+		    dcn32_enable_phantom_stream()
+			dc_create_stream_for_sink()
+			   kzalloc(GFP_KERNEL)
+				__kmem_cache_alloc_node()
+				    __cond_resched()
+    DC_FP_END()
 
-Fixes: 8ddde07a3d28 ("dma-mapping: benchmark: extract a common header file for map_benchmark definition")
+This patch is similar to commit d021985 (x86/fpu: Improve crypto
+performance by making kernel-mode FPU reliably usable in softirqs).  It
+uses local_bh_disable() instead of preempt_disable() for non-RT kernels
+so it can avoid the cond_resched() issue, and also extend the kernel-fpu
+application scenarios to the softirq context.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Qinxin Xia <xiaqinxin@huawei.com>
+Signed-off-by: Tianyang Zhang <zhangtianyang@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 ---
- include/linux/map_benchmark.h | 1 +
- 1 file changed, 1 insertion(+)
+ arch/loongarch/kernel/kfpu.c | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/map_benchmark.h b/include/linux/map_benchmark.h
-index 62674c83bde4..2ac2fe52f248 100644
---- a/include/linux/map_benchmark.h
-+++ b/include/linux/map_benchmark.h
-@@ -27,5 +27,6 @@ struct map_benchmark {
- 	__u32 dma_dir; /* DMA data direction */
- 	__u32 dma_trans_ns; /* time for DMA transmission in ns */
- 	__u32 granule;  /* how many PAGE_SIZE will do map/unmap once a time */
-+	__u8 expansion[76];     /* For future use */
- };
- #endif /* _KERNEL_DMA_BENCHMARK_H */
+diff --git a/arch/loongarch/kernel/kfpu.c b/arch/loongarch/kernel/kfpu.c
+index ec5b28e570c9..4e469b021cf4 100644
+--- a/arch/loongarch/kernel/kfpu.c
++++ b/arch/loongarch/kernel/kfpu.c
+@@ -18,11 +18,28 @@ static unsigned int euen_mask = CSR_EUEN_FPEN;
+ static DEFINE_PER_CPU(bool, in_kernel_fpu);
+ static DEFINE_PER_CPU(unsigned int, euen_current);
+ 
++static inline void fpregs_lock(void)
++{
++	if (!IS_ENABLED(CONFIG_PREEMPT_RT))
++		local_bh_disable();
++	else
++		preempt_disable();
++}
++
++static inline void fpregs_unlock(void)
++{
++	if (!IS_ENABLED(CONFIG_PREEMPT_RT))
++		local_bh_enable();
++	else
++		preempt_enable();
++}
++
+ void kernel_fpu_begin(void)
+ {
+ 	unsigned int *euen_curr;
+ 
+-	preempt_disable();
++	if (!irqs_disabled())
++		fpregs_lock();
+ 
+ 	WARN_ON(this_cpu_read(in_kernel_fpu));
+ 
+@@ -73,7 +90,8 @@ void kernel_fpu_end(void)
+ 
+ 	this_cpu_write(in_kernel_fpu, false);
+ 
+-	preempt_enable();
++	if (!irqs_disabled())
++		fpregs_unlock();
+ }
+ EXPORT_SYMBOL_GPL(kernel_fpu_end);
+ 
 -- 
-2.33.0
+2.20.1
 
 
