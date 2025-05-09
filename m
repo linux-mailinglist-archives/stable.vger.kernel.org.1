@@ -1,65 +1,62 @@
-Return-Path: <stable+bounces-143064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7B44AB1C79
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 20:40:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 889CAAB1C77
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 20:40:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 769E516F512
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 18:39:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5C1E1C285D9
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 18:40:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B02223AE60;
-	Fri,  9 May 2025 18:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 650DF23F41F;
+	Fri,  9 May 2025 18:39:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QOR3T+Ue"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TOd74BLl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E906D241139;
-	Fri,  9 May 2025 18:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098E323E32B;
+	Fri,  9 May 2025 18:39:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746815942; cv=none; b=Kj2Fjy6QyhhPYz6kF4iAqP05iB4Dgtu4f9ZnB9siBlxMXg8OsxmX8YC0eqp2OWQDLPq2Y9AyngQOthJu0u98jRtYco55gUqkxE8vlyZxY7RAWXHpigS4DDmmOYvPl4reOxztD7wNXmMPlzkxNPpf39r3Sej+hJMthX9GJXiNZzI=
+	t=1746815986; cv=none; b=i63VxlrAgspu6uWi1JTYIFaQtMgTV/+ZrNtdz1B0f+OK0h7S9z8upacjxArrsYr+jU7FfKXfSnEesjoN91XLLTPsiCN4Ztu/XytJV0QLGxLtmNkUfOfN14NQsO95HaM2E47TTtX8mfAtRIlQtuhfOHZvadSP6lgv98gN1L5ePxQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746815942; c=relaxed/simple;
-	bh=CNzigu9OBmuWrlsbb6lkAHKQvEmV0rXReJcmd4lUIG0=;
+	s=arc-20240116; t=1746815986; c=relaxed/simple;
+	bh=9tFcGorhL6voOakeXXFjagkhUDM5lruKobGMxyRZxWs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AG7V0QtBF96zjRDYgHyCMkue5IwbQSavd2O0Jb5M2MuZ2WBfUOP+W2lxXgcjNyD/KbBHk6p0zzy2c0c+4kJ8LvsW7mO4qysJEL8jSmVX+bw7cTPQ/SwuRGz4xreQ6SAkp28/PPif/4VF+VWFEeM40pRsAV5MCsjyOZFNARU83ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QOR3T+Ue; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C5AFC4CEE4;
-	Fri,  9 May 2025 18:39:01 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=R8jldr+1eMazYdGJmCrp0pGy8wAmmN6daMK0qAbiT833oNvX+qAB1sOekw0SqbuRnf2rYws8wbFFbqp2u0CtfWpYkefZlGDjtJNE1XH4HT/dluM/NivTgRBdHCXxfBNeA9ulIKKsApvpNaaazIkyIgb0ghr+2LG2d773cDZEv0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TOd74BLl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31CDDC4CEE4;
+	Fri,  9 May 2025 18:39:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746815941;
-	bh=CNzigu9OBmuWrlsbb6lkAHKQvEmV0rXReJcmd4lUIG0=;
+	s=k20201202; t=1746815985;
+	bh=9tFcGorhL6voOakeXXFjagkhUDM5lruKobGMxyRZxWs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=QOR3T+Uea/m9D1NaeSWXmmevBwXXe1rwMHM9tj20bdo5M/Q1Uz6xZw+S9DICifwPw
-	 mq+MEqH0ToOrWY8bUhm2sARgZvXf4NJp+4wzxRfO0ygybgggqztpqAMvpqm7kehrlw
-	 hELbnaCIrgfTjteCssiBoQPaMu0o0oO9jSFmt17Ugt91b0YEVY0KyRByE5AWVL3Egw
-	 iMIpJ6ihhnprEpw8MmmEwfOE4nghtEPK5HSt4MtTLU8qi+T0u5ZphiQdat+TJvlTtU
-	 /H5ahjFWOcwroMtB7aNubyLP5eN/MdKW6LyuF70OlcPx1kMmYPRMavi03kh3Edwb/M
-	 OO+/gygR1OmMg==
-Date: Fri, 9 May 2025 13:38:59 -0500
+	b=TOd74BLl0+zeMXfM3EV0HHE1Zy/0dZINU8gdkkEvIXPKtE+ieSfibZXGyZHYaWGy9
+	 3R4BzoAGRqLd2BNSUbSRulcW54oyLceaqC8xCxdBMWhYb95dI7KZmAwU5cgdppF0gx
+	 2Sc84OwBOI+92f3KTFIvkC9ORrAdYDXVrjeK++m/JsKf4QCTc2P0rUcJkXxrMYo+zh
+	 UQwmXNRy4Zgi/I1/6ST9csS3q359ki4blTZX8Yvd80uGhe2iVdN/yv6P7c+E79hgAB
+	 Oxpup4LLecWStUb5/w6Ujf/qmJIobPF1VMUhXnRqw6a8Kbdfn46xjILFBOQptOJULv
+	 LnGlUNrglZmJQ==
+Date: Fri, 9 May 2025 13:39:43 -0500
 From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
-Cc: Benjamin Bara <benjamin.bara@skidata.com>,
-	linux-rockchip@lists.infradead.org, stable@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: linux-kernel@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>,
+	linux-remoteproc@vger.kernel.org, stable@vger.kernel.org,
+	Dmitry Baryshkov <lumag@kernel.org>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Heiko Stuebner <heiko@sntech.de>, linux-usb@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	Klaus Goger <klaus.goger@theobroma-systems.com>,
-	Matthias Kaehlcke <mka@chromium.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/5] dt-bindings: usb: cypress,hx3: Add support for
- all variants
-Message-ID: <174681593868.3912440.12960505435883876267.robh@kernel.org>
-References: <20250425-onboard_usb_dev-v2-0-4a76a474a010@thaumatec.com>
- <20250425-onboard_usb_dev-v2-2-4a76a474a010@thaumatec.com>
+	linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: remoteproc: qcom,sm8150-pas: Add missing
+ SC8180X compatible
+Message-ID: <174681598302.3913409.18333226552734196520.robh@kernel.org>
+References: <20250428075243.44256-2-krzysztof.kozlowski@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,26 +65,23 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250425-onboard_usb_dev-v2-2-4a76a474a010@thaumatec.com>
+In-Reply-To: <20250428075243.44256-2-krzysztof.kozlowski@linaro.org>
 
 
-On Fri, 25 Apr 2025 17:18:07 +0200, Lukasz Czechowski wrote:
-> The Cypress HX3 hubs use different default PID value depending
-> on the variant. Update compatibles list.
-> Becasuse all hub variants use the same driver data, allow the
-> dt node to have two compatibles: leftmost which matches the HW
-> exactly, and the second one as fallback.
+On Mon, 28 Apr 2025 09:52:44 +0200, Krzysztof Kozlowski wrote:
+> Commit 4b4ab93ddc5f ("dt-bindings: remoteproc: Consolidate SC8180X and
+> SM8150 PAS files") moved SC8180X bindings from separate file into this
+> one, but it forgot to add actual compatibles in top-level properties
+> section making the entire binding un-selectable (no-op) for SC8180X PAS.
 > 
-> Fixes: 1eca51f58a10 ("dt-bindings: usb: Add binding for Cypress HX3 USB 3.0 family")
-> Cc: stable@vger.kernel.org # 6.6
-> Cc: stable@vger.kernel.org # Backport of the patch ("dt-bindings: usb: usb-device: relax compatible pattern to a contains") from list: https://lore.kernel.org/linux-usb/20250418-dt-binding-usb-device-compatibles-v2-1-b3029f14e800@cherry.de/
-> Cc: stable@vger.kernel.org # Backport of the patch in this series fixing product ID in onboard_dev_id_table in drivers/usb/misc/onboard_usb_dev.c driver
-> Signed-off-by: Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
+> Fixes: 4b4ab93ddc5f ("dt-bindings: remoteproc: Consolidate SC8180X and SM8150 PAS files")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 > ---
->  .../devicetree/bindings/usb/cypress,hx3.yaml          | 19 ++++++++++++++++---
->  1 file changed, 16 insertions(+), 3 deletions(-)
+>  .../devicetree/bindings/remoteproc/qcom,sm8150-pas.yaml        | 3 +++
+>  1 file changed, 3 insertions(+)
 > 
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
 
 
