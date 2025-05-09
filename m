@@ -1,154 +1,114 @@
-Return-Path: <stable+bounces-143019-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13DEAAB0DDE
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 10:54:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A32ECAB0DE4
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 10:57:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DAAA43A5E0C
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 08:54:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B41543BE131
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 08:57:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 560AC2741BE;
-	Fri,  9 May 2025 08:54:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B38912741D0;
+	Fri,  9 May 2025 08:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yz0hOloK"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DlfdqH5X"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D7A321FF23
-	for <stable@vger.kernel.org>; Fri,  9 May 2025 08:54:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3EDF2749DA;
+	Fri,  9 May 2025 08:57:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746780887; cv=none; b=mrTaYFRRBelBxpbVRNJRp+VybQrZUV7SOpeda3KajXwHv6tTUiAvf+5S74RIdKdQLtD0Dkmi7sIN8ziZo2K1kKB4kQJywE2naN5HP3GLbxfZKzq7i4m6BHP9pc/askOVe8loteAYeVGoNu+rlPPplWvEZc91j+iZRDWQnTBsUD0=
+	t=1746781037; cv=none; b=VXo+4+r/2YcwSBrSwchGJZZMyrZd9a1S+h06kKINCsokW+ZnVfTe59fQxqQA8Tq3Ao/4AhDDTccAdVG6F3nuEnfYi1GQUJxGlZHBTg1MqoBY5PvroLI5X8haIh7VIRXlq6fooXq5YMRNMeZ8wLF2DAtv1bi8M26WtAxCj6UBmTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746780887; c=relaxed/simple;
-	bh=PzjpeR5ZG+4hsXTyIArpJya3ZKxtyDewBIR3qDqHpXA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=BK6j0Tf2WzqswHlqynEplReWYUVKpdVS/PGIOC21weyGO1PA6jRF6i4W4IL9zW7vcD5Zh2lLT/RZZTOLoKBw4Hnoim77TDJ96EotSqjIiYfCOonvHAuIrkuSfQEOLApTRDm2AaoBmLGVrYdUfbl5EYXei13E04BAIZKEQkoWEMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yz0hOloK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF6BDC4CEE4;
-	Fri,  9 May 2025 08:54:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746780882;
-	bh=PzjpeR5ZG+4hsXTyIArpJya3ZKxtyDewBIR3qDqHpXA=;
-	h=Subject:To:Cc:From:Date:From;
-	b=Yz0hOloKrJ40T7Bfp5sR58WbAZuT8x+OCnMVqmuRg1mZFvcKPDMNDwmqbtu7uSHGa
-	 fYDQxc5jXOTH4ayMoZT7+Svm9dRFEyyzzpTnBBEys+KmAQNaIYLsoZ4nHSL3qb7dsQ
-	 Sj/+f28E6cpaEtl1kS7qvdQf+qMdOQ07B0lwMB1E=
-Subject: FAILED: patch "[PATCH] ksmbd: Fix UAF in __close_file_table_ids" failed to apply to 6.1-stable tree
-To: seanheelan@gmail.com,linkinjeon@kernel.org,stfrench@microsoft.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Fri, 09 May 2025 10:54:39 +0200
-Message-ID: <2025050939-activism-hesitant-7576@gregkh>
+	s=arc-20240116; t=1746781037; c=relaxed/simple;
+	bh=g2kpuyvLGCAKN83aNu3nllO/A1653V53pmPpo/UjVQk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OYiZyW4SsELaLqwVCTLgOnIv2gAwcIfST2LPeoglI8x/FXbvWKULYQ0+COm08L04sqimqb8Q49f0cI8FWv7nTlCf2V79Ez0RHlirZoEAi+aWKaSB1O0Yxv9/ZLy0O1042yHsz7bKX42xBO5lm+1TaT3BkNkq98JWstcmY7ry0Mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DlfdqH5X; arc=none smtp.client-ip=198.175.65.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1746781036; x=1778317036;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=g2kpuyvLGCAKN83aNu3nllO/A1653V53pmPpo/UjVQk=;
+  b=DlfdqH5XzV3u6LSdv7YTytl0YBjDjikhrsP3BZDMT8uAnvLarojhpFH4
+   8FKCzOiOKp1lyY0hicffDf7xSCZISnEchyq4z4epswCHMPZeUgMx/sktE
+   vlsQ5NCoqX9dt5F2Ryb4GCz6SZxYoy2JB8HHmVcPBWfIaTf9FcUqAJLPM
+   AidRf8KiJStGsbDiYSZnm5IAQylXXWSP8h731OfXwKxxr926qd6/HdZPJ
+   DHin9Av2hk+gmW0HOV5nEdRfTnyptXrQ0ZvHMkDLG9veqlyITl0xpGRdd
+   Kg1eRtKCtXIUuNoT9ekG9zSYE7jg7AMwnCg2YkzB/Z9TEeqdyvarPgsUx
+   g==;
+X-CSE-ConnectionGUID: 731VyrCqRuSCCgY74NDgKg==
+X-CSE-MsgGUID: EM0lxu8ySFePtiWV7d6j+w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="58818043"
+X-IronPort-AV: E=Sophos;i="6.15,274,1739865600"; 
+   d="scan'208";a="58818043"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2025 01:57:15 -0700
+X-CSE-ConnectionGUID: QtZHdK5FRs2Qi9mZx09OMQ==
+X-CSE-MsgGUID: vcgmSyiLRf+7TfKxr27H5g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,274,1739865600"; 
+   d="scan'208";a="136514060"
+Received: from unknown (HELO jiaqingz-acrn-container.sh.intel.com) ([10.239.43.235])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2025 01:57:13 -0700
+From: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
+To: Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Bernhard Kaindl <bk@suse.de>,
+	Andi Kleen <ak@linux.intel.com>
+Cc: Li Fei <fei1.li@intel.com>,
+	Jiaqing Zhao <jiaqing.zhao@linux.intel.com>,
+	stable@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] x86/mtrr: Check if fixed-range MTRR exists in `mtrr_save_fixed_ranges`
+Date: Fri,  9 May 2025 08:56:12 +0000
+Message-ID: <20250509085612.2236222-2-jiaqing.zhao@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
+When suspending, `save_processor_state` calls `mtrr_save_fixed_ranges`
+to save fixed-range MTRRs. On platforms without MTRR or fixed-range
+MTRR support, accessing MTRR MSRs triggers unchecked MSR access error.
+Make sure fixed-range MTRR is supported before access to prevent such
+error.
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x 36991c1ccde2d5a521577c448ffe07fcccfe104d
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025050939-activism-hesitant-7576@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 36991c1ccde2d5a521577c448ffe07fcccfe104d Mon Sep 17 00:00:00 2001
-From: Sean Heelan <seanheelan@gmail.com>
-Date: Tue, 6 May 2025 22:04:52 +0900
-Subject: [PATCH] ksmbd: Fix UAF in __close_file_table_ids
-
-A use-after-free is possible if one thread destroys the file
-via __ksmbd_close_fd while another thread holds a reference to
-it. The existing checks on fp->refcount are not sufficient to
-prevent this.
-
-The fix takes ft->lock around the section which removes the
-file from the file table. This prevents two threads acquiring the
-same file pointer via __close_file_table_ids, as well as the other
-functions which retrieve a file from the IDR and which already use
-this same lock.
-
+Fixes: 3ebad5905609 ("[PATCH] x86: Save and restore the fixed-range MTRRs of the BSP when suspending")
 Cc: stable@vger.kernel.org
-Signed-off-by: Sean Heelan <seanheelan@gmail.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
+---
+ arch/x86/kernel/cpu/mtrr/generic.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/server/vfs_cache.c b/fs/smb/server/vfs_cache.c
-index 1f8fa3468173..dfed6fce8904 100644
---- a/fs/smb/server/vfs_cache.c
-+++ b/fs/smb/server/vfs_cache.c
-@@ -661,21 +661,40 @@ __close_file_table_ids(struct ksmbd_file_table *ft,
- 		       bool (*skip)(struct ksmbd_tree_connect *tcon,
- 				    struct ksmbd_file *fp))
+diff --git a/arch/x86/kernel/cpu/mtrr/generic.c b/arch/x86/kernel/cpu/mtrr/generic.c
+index e2c6b471d230..ca37b374d1b0 100644
+--- a/arch/x86/kernel/cpu/mtrr/generic.c
++++ b/arch/x86/kernel/cpu/mtrr/generic.c
+@@ -593,7 +593,7 @@ static void get_fixed_ranges(mtrr_type *frs)
+ 
+ void mtrr_save_fixed_ranges(void *info)
  {
--	unsigned int			id;
--	struct ksmbd_file		*fp;
--	int				num = 0;
-+	struct ksmbd_file *fp;
-+	unsigned int id = 0;
-+	int num = 0;
- 
--	idr_for_each_entry(ft->idr, fp, id) {
--		if (skip(tcon, fp))
-+	while (1) {
-+		write_lock(&ft->lock);
-+		fp = idr_get_next(ft->idr, &id);
-+		if (!fp) {
-+			write_unlock(&ft->lock);
-+			break;
-+		}
-+
-+		if (skip(tcon, fp) ||
-+		    !atomic_dec_and_test(&fp->refcount)) {
-+			id++;
-+			write_unlock(&ft->lock);
- 			continue;
-+		}
- 
- 		set_close_state_blocked_works(fp);
-+		idr_remove(ft->idr, fp->volatile_id);
-+		fp->volatile_id = KSMBD_NO_FID;
-+		write_unlock(&ft->lock);
-+
-+		down_write(&fp->f_ci->m_lock);
-+		list_del_init(&fp->node);
-+		up_write(&fp->f_ci->m_lock);
- 
--		if (!atomic_dec_and_test(&fp->refcount))
--			continue;
- 		__ksmbd_close_fd(ft, fp);
-+
- 		num++;
-+		id++;
- 	}
-+
- 	return num;
+-	if (boot_cpu_has(X86_FEATURE_MTRR))
++	if (boot_cpu_has(X86_FEATURE_MTRR) && mtrr_state.have_fixed)
+ 		get_fixed_ranges(mtrr_state.fixed_ranges);
  }
  
+-- 
+2.43.0
 
 
