@@ -1,108 +1,93 @@
-Return-Path: <stable+bounces-143063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7A69AB1C26
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 20:16:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7B44AB1C79
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 20:40:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3541F16F391
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 18:16:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 769E516F512
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 18:39:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F1F623717F;
-	Fri,  9 May 2025 18:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B02223AE60;
+	Fri,  9 May 2025 18:39:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iol9ECPQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QOR3T+Ue"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8788366;
-	Fri,  9 May 2025 18:16:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E906D241139;
+	Fri,  9 May 2025 18:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746814602; cv=none; b=puioKkWnT7k7sNClyyFQpUfpBxsnVDvTO4xuUCFWODnh+vGZ8vUw/Tn5JlpF7DT3WfZbBJ1zcBtlTe0u5vnSoGjmWZchQPFgJGq90+z9BIsakENPJ2huodaxSgP6cJY70mfwIgEuWc/gh9SNOQ/WF9scFe22tAUDsJa8aGGyQfU=
+	t=1746815942; cv=none; b=Kj2Fjy6QyhhPYz6kF4iAqP05iB4Dgtu4f9ZnB9siBlxMXg8OsxmX8YC0eqp2OWQDLPq2Y9AyngQOthJu0u98jRtYco55gUqkxE8vlyZxY7RAWXHpigS4DDmmOYvPl4reOxztD7wNXmMPlzkxNPpf39r3Sej+hJMthX9GJXiNZzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746814602; c=relaxed/simple;
-	bh=4db0ffyZ6ZlK/hKC1+HVVn/FLoYOK7OSjsI1t3sCLoA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GybozgScccty78tJ8nTOl/ea8H7X+znoymMOrMngIR8Kzyj07nBllCb6oChXEyO/py1IcBO7Kj5ueueaAPyMOTi6zkaTyxz/9vLDlYs66Ix3SQsmHVtCFTYAET+QsmB0gprOoGo/c6B8mKDKAoqoyh8AS3ZDneGbBdscDmG7XQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iol9ECPQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F7FFC4CEEE;
-	Fri,  9 May 2025 18:16:42 +0000 (UTC)
+	s=arc-20240116; t=1746815942; c=relaxed/simple;
+	bh=CNzigu9OBmuWrlsbb6lkAHKQvEmV0rXReJcmd4lUIG0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AG7V0QtBF96zjRDYgHyCMkue5IwbQSavd2O0Jb5M2MuZ2WBfUOP+W2lxXgcjNyD/KbBHk6p0zzy2c0c+4kJ8LvsW7mO4qysJEL8jSmVX+bw7cTPQ/SwuRGz4xreQ6SAkp28/PPif/4VF+VWFEeM40pRsAV5MCsjyOZFNARU83ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QOR3T+Ue; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C5AFC4CEE4;
+	Fri,  9 May 2025 18:39:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746814602;
-	bh=4db0ffyZ6ZlK/hKC1+HVVn/FLoYOK7OSjsI1t3sCLoA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=iol9ECPQrn+h0Vh6sz5x69StylmsQWUw3krctN81fGyqs9z9lbSv7n3ilYNAXHI9/
-	 H9cllQZatGSOJIZRdsRIwppLydq97lY2lOWuc0dDJ2tmEoOtB7gvJTPx/Gh9Ajne0I
-	 36IBdKaW3kF+0LdC5UIACFALbmw68tuOztybpuWRPIe0BN4IVWf8pgMiejDXeeFt7b
-	 kUMdGUgwOvjAt+lbedgDyghPxioMqCfAMvi6mN3Z7sa7cH08sF4YMnRKkRSjaiNObv
-	 Q7aSsFK02Ege3kSfRNrFxXW+VJtoJltSmWP0j0KpPrlw9Y2VdTWNo7hhXObdcwY9+l
-	 RSsFRKP4Gfdkw==
-Received: by mail-oa1-f54.google.com with SMTP id 586e51a60fabf-2d4f8c42f49so2079865fac.1;
-        Fri, 09 May 2025 11:16:42 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUzHokUbYfTqw5aLUoDti4ZQ7qGLgkpbfhcLVhA98Xy1hVdbbB6ul0Fp5bcOj97vGp7UgiIrA5nDoTXoRzL@vger.kernel.org, AJvYcCVbnekSpIBpiaUtLGZPiNFCUHBLn3dxbV2kZpuSyDFlcablJCNfuA8VRRzxABpARsr5j109B4He@vger.kernel.org, AJvYcCWcv5fRh2dJbl3M9anmYh4apsd8CeO8R41PiN+oTfCut+ul/cQMmu3rBrmfQLc83cClw3UUdjrpiVin@vger.kernel.org
-X-Gm-Message-State: AOJu0YyknOi+QLVTKCspX8Y4AmNyj4ZlBqMTDLzfqMoGlhEYVirLjhcB
-	HVhx4hCgep2TtTdF/gaD4p+G3YYeb93PGR6VmZcQCfDox8tvSKZAp5XZxhm7bIqWZwdbZ11cvZJ
-	FmhF/NdU82KuPDZDEI9TzZ09SGoE=
-X-Google-Smtp-Source: AGHT+IHLajxModkuKvg1vNWCSGkmFnN3bnSLzw735Pccv/Lt+iE2xpGn1NCsbiozWd1eosGEe8y7nH+eZe7+TuJ3ZVw=
-X-Received: by 2002:a05:6870:596:b0:2d4:dc79:b92 with SMTP id
- 586e51a60fabf-2dba55bc402mr2294716fac.6.1746814601884; Fri, 09 May 2025
- 11:16:41 -0700 (PDT)
+	s=k20201202; t=1746815941;
+	bh=CNzigu9OBmuWrlsbb6lkAHKQvEmV0rXReJcmd4lUIG0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QOR3T+Uea/m9D1NaeSWXmmevBwXXe1rwMHM9tj20bdo5M/Q1Uz6xZw+S9DICifwPw
+	 mq+MEqH0ToOrWY8bUhm2sARgZvXf4NJp+4wzxRfO0ygybgggqztpqAMvpqm7kehrlw
+	 hELbnaCIrgfTjteCssiBoQPaMu0o0oO9jSFmt17Ugt91b0YEVY0KyRByE5AWVL3Egw
+	 iMIpJ6ihhnprEpw8MmmEwfOE4nghtEPK5HSt4MtTLU8qi+T0u5ZphiQdat+TJvlTtU
+	 /H5ahjFWOcwroMtB7aNubyLP5eN/MdKW6LyuF70OlcPx1kMmYPRMavi03kh3Edwb/M
+	 OO+/gygR1OmMg==
+Date: Fri, 9 May 2025 13:38:59 -0500
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
+Cc: Benjamin Bara <benjamin.bara@skidata.com>,
+	linux-rockchip@lists.infradead.org, stable@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Heiko Stuebner <heiko@sntech.de>, linux-usb@vger.kernel.org,
+	devicetree@vger.kernel.org,
+	Klaus Goger <klaus.goger@theobroma-systems.com>,
+	Matthias Kaehlcke <mka@chromium.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/5] dt-bindings: usb: cypress,hx3: Add support for
+ all variants
+Message-ID: <174681593868.3912440.12960505435883876267.robh@kernel.org>
+References: <20250425-onboard_usb_dev-v2-0-4a76a474a010@thaumatec.com>
+ <20250425-onboard_usb_dev-v2-2-4a76a474a010@thaumatec.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250417073947.47419-1-jeffbai@aosc.io>
-In-Reply-To: <20250417073947.47419-1-jeffbai@aosc.io>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Fri, 9 May 2025 20:16:31 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0jLoXSCTzLpP4MkLwu9tvUBbO04ZgoJHq_8P6nWQWFWWQ@mail.gmail.com>
-X-Gm-Features: ATxdqUGGfJhKpwzohwWCSsK4mQ3r3XDpJAoT0Z_cfRX_fXOgAJPqm9_KZMT3cF4
-Message-ID: <CAJZ5v0jLoXSCTzLpP4MkLwu9tvUBbO04ZgoJHq_8P6nWQWFWWQ@mail.gmail.com>
-Subject: Re: [PATCH] ACPI: resource: fix a typo for MECHREVO in irq1_edge_low_force_override
-To: Mingcong Bai <jeffbai@aosc.io>
-Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Kexy Biscuit <kexybiscuit@aosc.io>, Runhua He <hua@aosc.io>, 
-	stable@vger.kernel.org, Len Brown <lenb@kernel.org>, Li Chen <me@linux.beauty>, 
-	"open list:ACPI" <linux-acpi@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250425-onboard_usb_dev-v2-2-4a76a474a010@thaumatec.com>
 
-On Thu, Apr 17, 2025 at 9:40=E2=80=AFAM Mingcong Bai <jeffbai@aosc.io> wrot=
-e:
->
-> The vendor name for MECHREVO was incorrectly spelled in commit
-> b53f09ecd602 ("ACPI: resource: Do IRQ override on MECHREV GM7XG0M").
->
-> Correct this typo in this trivial patch.
->
-> Cc: stable@vger.kernel.org
-> Fixes: b53f09ecd602 ("ACPI: resource: Do IRQ override on MECHREV GM7XG0M"=
-)
-> Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
+
+On Fri, 25 Apr 2025 17:18:07 +0200, Lukasz Czechowski wrote:
+> The Cypress HX3 hubs use different default PID value depending
+> on the variant. Update compatibles list.
+> Becasuse all hub variants use the same driver data, allow the
+> dt node to have two compatibles: leftmost which matches the HW
+> exactly, and the second one as fallback.
+> 
+> Fixes: 1eca51f58a10 ("dt-bindings: usb: Add binding for Cypress HX3 USB 3.0 family")
+> Cc: stable@vger.kernel.org # 6.6
+> Cc: stable@vger.kernel.org # Backport of the patch ("dt-bindings: usb: usb-device: relax compatible pattern to a contains") from list: https://lore.kernel.org/linux-usb/20250418-dt-binding-usb-device-compatibles-v2-1-b3029f14e800@cherry.de/
+> Cc: stable@vger.kernel.org # Backport of the patch in this series fixing product ID in onboard_dev_id_table in drivers/usb/misc/onboard_usb_dev.c driver
+> Signed-off-by: Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
 > ---
->  drivers/acpi/resource.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-> index 14c7bac4100b..7d59c6c9185f 100644
-> --- a/drivers/acpi/resource.c
-> +++ b/drivers/acpi/resource.c
-> @@ -534,7 +534,7 @@ static const struct dmi_system_id irq1_level_low_skip=
-_override[] =3D {
->   */
->  static const struct dmi_system_id irq1_edge_low_force_override[] =3D {
->         {
-> -               /* MECHREV Jiaolong17KS Series GM7XG0M */
-> +               /* MECHREVO Jiaolong17KS Series GM7XG0M */
->                 .matches =3D {
->                         DMI_MATCH(DMI_BOARD_NAME, "GM7XG0M"),
->                 },
-> --
+>  .../devicetree/bindings/usb/cypress,hx3.yaml          | 19 ++++++++++++++++---
+>  1 file changed, 16 insertions(+), 3 deletions(-)
+> 
 
-Applied as 6.16 material, thanks!
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+
 
