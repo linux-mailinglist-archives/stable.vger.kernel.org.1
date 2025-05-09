@@ -1,276 +1,139 @@
-Return-Path: <stable+bounces-142940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABD4BAB06F8
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 02:17:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CED51AB075A
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 02:58:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 351161B674AC
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 00:17:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C8661C02730
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 00:58:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07BD73FFD;
-	Fri,  9 May 2025 00:17:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B9693B2A0;
+	Fri,  9 May 2025 00:58:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=invisiblethingslab.com header.i=@invisiblethingslab.com header.b="gC5tilBA";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ssaGgH70"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="sv72gbes"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b4-smtp.messagingengine.com (fhigh-b4-smtp.messagingengine.com [202.12.124.155])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9DF317E0;
-	Fri,  9 May 2025 00:17:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.155
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF2DCD53C;
+	Fri,  9 May 2025 00:58:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746749859; cv=none; b=jcxeYCNzGCuxtDYTz5yRl9q6th1i8TqpbGsPwvskdTCqLQITn4Ac4n8g/NQDt1hKiiYk2JVeQqifWAulZHD9SjHBs3K9qVHCSw6t3zJUdPhBAISb7u6WeuQiDWjEFdzIfF+H55sVljWntFrGOvzLj3A2vPMZjISOnW0J3T0NAAs=
+	t=1746752291; cv=none; b=pxItYxLKkCLovZeHhXhZbCtVI4jGgG4vcQQTlhey8nZd4/jqS+8LUZAge9orey7j7f4Rcc+W1zhy2G714IbI9s+M7ynnHl6fu+ELsrSXnU+qzZ6jD2mvOKFp7quyPXN9/2kVkRMUt7EiTQdEeY+9xh3mZtfD+oR8Hq/PS+mF4Ms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746749859; c=relaxed/simple;
-	bh=9haGLbaj7o3J3rM7o4wBiyA591YCU1OOSyCeJoWZXn4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SFgbv9eZyDEBHbwY+tnldoGXZuhAM2lsavrpLp1yNWr1wkMDcepDrHjHDIEX9VVVmaMGWiDqfDcYG56FgKlYdJI9JzRQZvtCYK3fT+Lgyuuo+yBGnRxaTJq2EoeHCox1J7sLkCj1n2Ewi88rHmY6VeRG+5e7/2+pY6uPamjfoHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invisiblethingslab.com; spf=pass smtp.mailfrom=invisiblethingslab.com; dkim=pass (2048-bit key) header.d=invisiblethingslab.com header.i=@invisiblethingslab.com header.b=gC5tilBA; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ssaGgH70; arc=none smtp.client-ip=202.12.124.155
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invisiblethingslab.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=invisiblethingslab.com
-Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 7711425400F3;
-	Thu,  8 May 2025 20:17:36 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Thu, 08 May 2025 20:17:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	invisiblethingslab.com; h=cc:cc:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1746749856;
-	 x=1746836256; bh=bgHJflbPL1ZQTYsAd2pB4rR8mFMyVmjAMJfDeemkDT8=; b=
-	gC5tilBAAP54Lw04gwewVC6RS8re5PYM06mtGXclfNM1rIiH68Dz0tPN3W/gehL+
-	YQMkieZNr8FzBW1Eq0d2SKKfEs3TajsAlTfjoLts9V7M+7BOUP00UTB5FUko0bv1
-	CEcWbxGmPLVTe6Faam1cV9GYtVWWDCw4Jon+6Yri1ZV9FlZTE9gUj7xqjZEZ6SSC
-	x70RLp37F6i2Pkf+Mc/Mu8fFaiHBKQTYCHTooCBYt+D3RzPy8H9dQKhFq4sonGyu
-	6tdN5iXWuZtZsQGEiY6s8wVH831jn3fgknqWu7RpdzauIz5cFoZyW4Nu/hiSkrRQ
-	oQ6F5zLq6eWEWCzXCGvZdA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1746749856; x=1746836256; bh=bgHJflbPL1ZQTYsAd2pB4rR8mFMyVmjAMJf
-	DeemkDT8=; b=ssaGgH705DTYvEOmTn32UH7m1LusRBexQqyf+Z6EQf0M5OMB0C0
-	MkY+qWFDeUh7VIv6P/5YuUZZ8kYot8k6qLjtE8XuVIQVPjJ8bcGKg3kPnaey/LRN
-	rMhMsLlxl7LlebcV++G9BCW5rK6D/RkySncJ8jH+sOWejFURQqKZ5v/GFCo22XzO
-	kYOcXuLO/MnRKniFiTO6PZa+ArHeiGSV0e7S3yEEJl1Xo/ocb49pX7N5MVotJbcR
-	4LcW/BJ9OZ13jw0E7+iNud7SNseLDbP223IPdBcsaGHXbx2/kY2YLHzXRuR+vM4r
-	Ty//7aVwf/qtZSVAwhmcmewb5sB5is7BZdA==
-X-ME-Sender: <xms:n0kdaM_jyzM0Mj6qJqYvb4-ZOESNADMDs94fkOWFRsmvRpnVaDdmWA>
-    <xme:n0kdaEsVRgnEck-1zYNBg7wez07XgycZY2Zjd2kvObJw3cOeQOL1CalMpDI2nEDRG
-    gx_qkfPRPCZ0Q>
-X-ME-Received: <xmr:n0kdaCDLfIxUt3D02DlLhJEqxUt0OiMcTqW_DOuB_lSMKd4L9LsvbEEATgYalzwZue3dUu712EMScjA7hHwqDGD6nP5hE9tpAg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvleduudeiucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesghdtreertddt
-    jeenucfhrhhomhepofgrrhgvkhcuofgrrhgtiiihkhhofihskhhiqdfikphrvggtkhhiuc
-    eomhgrrhhmrghrvghksehinhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomheqnecu
-    ggftrfgrthhtvghrnhepgfduleetfeevhfefheeiteeliefhjefhleduveetteekveettd
-    dvgeeuteefjedunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhf
-    rhhomhepmhgrrhhmrghrvghksehinhhvihhsihgslhgvthhhihhnghhslhgrsgdrtghomh
-    dpnhgspghrtghpthhtohepledpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepphhm
-    vghniigvlhesmhholhhgvghnrdhmphhgrdguvgdprhgtphhtthhopehvihhtrghlhidrlh
-    hifhhshhhithhssehinhhtvghlrdgtohhmpdhrtghpthhtoheprghnthhhohhnhidrlhdr
-    nhhguhihvghnsehinhhtvghlrdgtohhmpdhrtghpthhtohepphhriigvmhihshhlrgifrd
-    hkihhtshiivghlsehinhhtvghlrdgtohhmpdhrtghpthhtohepnhgvthguvghvsehvghgv
-    rhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepihhnthgvlhdqfihirhgvugdqlhgrnh
-    eslhhishhtshdrohhsuhhoshhlrdhorhhgpdhrtghpthhtoheprhgvghhrvghsshhiohhn
-    sheslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehsthgrsghlvgesvhhgvg
-    hrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehsrghshhgrlheskhgvrhhnvghlrdho
-    rhhg
-X-ME-Proxy: <xmx:oEkdaMeoBDYQtrGOZOnFG1VmLHKojrxNh6QVm4NzkfIZImjijPZVTQ>
-    <xmx:oEkdaBNrVpVy4pPbBQkjnxPHw-mtom2XhGdXFIf9YyUkA3MPVjP_kw>
-    <xmx:oEkdaGlFaepKy2O1nPmTmaWgXUj0qzDJVSqaV9x0BWBf0cujwnMC7A>
-    <xmx:oEkdaDt1mOAbQN6NUCE7beRz8Gij4RqlB_bwM7qpCBYMWUwlhvvYHQ>
-    <xmx:oEkdaGSZkcJvQWro2fvms4v08_gsHZWCni7f9hkkYd5V_hI1eaVusN_S>
-Feedback-ID: i1568416f:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 8 May 2025 20:17:34 -0400 (EDT)
-Date: Fri, 9 May 2025 02:17:32 +0200
-From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
-To: Paul Menzel <pmenzel@molgen.mpg.de>
-Cc: Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	netdev@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
-	regressions@lists.linux.dev, stable@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [Intel-wired-lan] [REGRESSION] e1000e heavy packet loss on
- Meteor Lake - 6.14.2
-Message-ID: <aB1JnJG_CH5vxAsw@mail-itl>
-References: <50da66d0-fe66-0563-4d34-7bd2e25695a4@intel.com>
- <b5d72f51-3cd0-aeca-60af-41a20ad59cd5@intel.com>
- <Z_-l2q9ZhszFxiqA@mail-itl>
- <d37a7c9e-7b3f-afc2-b010-e9785f39a785@intel.com>
- <aAZF0JUKCF0UvfF6@mail-itl>
- <aAZH7fpaGf7hvX6T@mail-itl>
- <e0034a96-e285-98c8-b526-fb167747aedc@intel.com>
- <aB0zLQawNrImVqPE@mail-itl>
- <c918d4f5-ee53-4f64-b152-cea0f6d99c4f@molgen.mpg.de>
- <aB0-JLSDT03fosST@mail-itl>
+	s=arc-20240116; t=1746752291; c=relaxed/simple;
+	bh=6UHx54DMjMlf3Ohp8TL2ArLx6Txr0ynHe1wIwHx9GPs=;
+	h=Date:To:From:Subject:Message-Id; b=D/4BpEnhKyYtQ6+cgcFgxbDCOWNP2AmacQ8KJmqIdA/CDt7w10M7p7TUGR3GEvVTLyxVy6IjnFgZ3+2QCIgr4TcoiBg9DVu+WvxbIXhCMqA/sWKhbc5R5sqAbsNt3nuYXbjMP7OhGL6nfBXMnLK6Rkd4QOKtapFiijDPfXy+nhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=sv72gbes; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 359E1C4CEE7;
+	Fri,  9 May 2025 00:58:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1746752290;
+	bh=6UHx54DMjMlf3Ohp8TL2ArLx6Txr0ynHe1wIwHx9GPs=;
+	h=Date:To:From:Subject:From;
+	b=sv72gbesztEMWIwaR/Bey0CXPGlEKh/azwyMtyjBowaJTt/t63p802LKyb6efZI0o
+	 Eb7eHHGlciFFMdeoPRBsooJPfbI6RI7Y1gQh0a1MNjwxeFYpU23DT2Rvcq48vCcLT6
+	 SC1offd6mBx9IP73uqYtBCOLTpT17cz9mX5169Z4=
+Date: Thu, 08 May 2025 17:58:09 -0700
+To: mm-commits@vger.kernel.org,surenb@google.com,stable@vger.kernel.org,peterx@redhat.com,lokeshgidra@google.com,david@redhat.com,aarcange@redhat.com,v-songbaohua@oppo.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-userfaultfd-correct-dirty-flags-set-for-both-present-and-swap-pte.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250509005810.359E1C4CEE7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="n/MWWdr08H3gZy0e"
-Content-Disposition: inline
-In-Reply-To: <aB0-JLSDT03fosST@mail-itl>
 
 
---n/MWWdr08H3gZy0e
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 9 May 2025 02:17:32 +0200
-From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
-To: Paul Menzel <pmenzel@molgen.mpg.de>
-Cc: Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	netdev@vger.kernel.org, intel-wired-lan@lists.osuosl.org,
-	regressions@lists.linux.dev, stable@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [Intel-wired-lan] [REGRESSION] e1000e heavy packet loss on
- Meteor Lake - 6.14.2
+The patch titled
+     Subject: mm: userfaultfd: correct dirty flags set for both present and swap pte
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-userfaultfd-correct-dirty-flags-set-for-both-present-and-swap-pte.patch
 
-On Fri, May 09, 2025 at 01:28:36AM +0200, Marek Marczykowski-G=C3=B3recki w=
-rote:
-> On Fri, May 09, 2025 at 01:13:28AM +0200, Paul Menzel wrote:
-> > Dear Marek, dear Vitaly,
-> >=20
-> >=20
-> > Am 09.05.25 um 00:41 schrieb Marek Marczykowski-G=C3=B3recki:
-> > > On Thu, May 08, 2025 at 09:26:18AM +0300, Lifshits, Vitaly
-> > > > On 4/21/2025 4:28 PM, Marek Marczykowski-G=C3=B3recki wrote:
-> > > > > On Mon, Apr 21, 2025 at 03:19:12PM +0200, Marek Marczykowski-G=C3=
-=B3recki wrote:
-> > > > > > On Mon, Apr 21, 2025 at 03:44:02PM +0300, Lifshits, Vitaly wrot=
-e:
-> > > > > > >=20
-> > > > > > >=20
-> > > > > > > On 4/16/2025 3:43 PM, Marek Marczykowski-G=C3=B3recki wrote:
-> > > > > > > > On Wed, Apr 16, 2025 at 03:09:39PM +0300, Lifshits, Vitaly =
-wrote:
-> > > > > > > > > Can you please also share the output of ethtool -i? I wou=
-ld like to know the
-> > > > > > > > > NVM version that you have on your device.
-> > > > > > > >=20
-> > > > > > > > driver: e1000e
-> > > > > > > > version: 6.14.1+
-> > > > > > > > firmware-version: 1.1-4
-> > > > > > > > expansion-rom-version:
-> > > > > > > > bus-info: 0000:00:1f.6
-> > > > > > > > supports-statistics: yes
-> > > > > > > > supports-test: yes
-> > > > > > > > supports-eeprom-access: yes
-> > > > > > > > supports-register-dump: yes
-> > > > > > > > supports-priv-flags: yes
-> > > > > > > >=20
-> > > > > > >=20
-> > > > > > > Your firmware version is not the latest, can you check with t=
-he board
-> > > > > > > manufacturer if there is a BIOS update to your system?
-> > > > > >=20
-> > > > > > I can check, but still, it's a regression in the Linux driver -=
- old
-> > > > > > kernel did work perfectly well on this hw. Maybe new driver tri=
-es to use
-> > > > > > some feature that is missing (or broken) in the old firmware?
-> > > > >=20
-> > > > > A little bit of context: I'm maintaining the kernel package for a=
- Qubes
-> > > > > OS distribution. While I can try to update firmware on my test sy=
-stem, I
-> > > > > have no influence on what hardware users will use this kernel, and
-> > > > > which firmware version they will use (and whether all the vendors
-> > > > > provide newer firmware at all). I cannot ship a kernel that is kn=
-own
-> > > > > to break network on some devices.
-> > > > >=20
-> > > > > > > Also, you mentioned that on another system this issue doesn't=
- reproduce, do
-> > > > > > > they have the same firmware version?
-> > > > > >=20
-> > > > > > The other one has also 1.1-4 firmware. And I re-checked, e1000e=
- from
-> > > > > > 6.14.2 works fine there.
-> >=20
-> > > > Thank you for your detailed feedback and for providing the requested
-> > > > information.
-> > > >=20
-> > > > We have conducted extensive testing of this patch across multiple s=
-ystems
-> > > > and have not observed any packet loss issues. Upon comparing the me=
-ntioned
-> > > > setups, we noted that while the LAN controller is similar, the CPU =
-differs.
-> > > > We believe that the issue may be related to transitions in the CPU'=
-s low
-> > > > power states.
-> > > >=20
-> > > > Consequently, we kindly request that you disable the CPU low power =
-state
-> > > > transitions in the S0 system state and verify if the issue persists=
-=2E You can
-> > > > disable this in the kernel parameters on the command line with idle=
-=3Dpoll.
-> > > > Please note that this command is intended for debugging purposes on=
-ly, as it
-> > > > may result in higher power consumption.
-> > >=20
-> > > I tried with idle=3Dpoll, and it didn't help, I still see a lot of pa=
-cket
-> > > losses. But I can also confirm that idle=3Dpoll makes the system use
-> > > significantly more power (previously at 25-30W, with this option stays
-> > > at about 42W).
-> > >=20
-> > > Is there any other info I can provide, enable some debug features or
-> > > something?
-> > >=20
-> > > I see the problem is with receiving packets - in my simple ping test,
-> > > the ping target sees all the echo requests (and respond to them), but
-> > > the responses aren't reaching ping back (and are not visible on tcpdu=
-mp
-> > > on the problematic system either).
-> >=20
-> > As the cause is still unclear, can the commit please be reverted in the
-> > master branch due adhere to Linux=E2=80=99 no-regression policy, so tha=
-t it can be
-> > reverted from the stable series?
-> >=20
-> > Marek, did you also test 6.15 release candidates?
->=20
-> The last test I did was on 6.15-rc3. I can re-test on -rc5.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-userfaultfd-correct-dirty-flags-set-for-both-present-and-swap-pte.patch
 
-Same with 6.15-rc5.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
---=20
-Best Regards,
-Marek Marczykowski-G=C3=B3recki
-Invisible Things Lab
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
---n/MWWdr08H3gZy0e
-Content-Type: application/pgp-signature; name=signature.asc
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
------BEGIN PGP SIGNATURE-----
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
-iQEzBAEBCAAdFiEEhrpukzGPukRmQqkK24/THMrX1ywFAmgdSZwACgkQ24/THMrX
-1yzoAQgAioPuDagIQxZe0pqULGrZjcrKqwKAiq91lo8jeuvVdB7Yd8j9r++ORea9
-uKZ9wGXKSwB8ZXBJ628zNTRbNUcLlCToAqmHkxXFvLk839u9G55nvVW6g8aT6Ahg
-zBkvllcehFRPSLPd0KfHPVaeoj6squmhG8TnFs/bsn/heimrnCHIzCU7RayK2tim
-UBRAwloLWZJmk5+p+fIvYoODDlvpUlXY8/pnaRFWb2YOMX+ylFzCF1MEelNh36VN
-w1WCAlylz7kMG0bp0NuVEequjHbOU+7A2ppHPQdEjFMj4h6bDvprc1SnzTG+0GR/
-AMGxAIrdhQnrGDsKREVZsassJjIG4Q==
-=NlgR
------END PGP SIGNATURE-----
+------------------------------------------------------
+From: Barry Song <v-songbaohua@oppo.com>
+Subject: mm: userfaultfd: correct dirty flags set for both present and swap pte
+Date: Fri, 9 May 2025 10:09:12 +1200
 
---n/MWWdr08H3gZy0e--
+As David pointed out, what truly matters for mremap and userfaultfd move
+operations is the soft dirty bit.  The current comment and
+implementation—which always sets the dirty bit for present PTEs and
+fails to set the soft dirty bit for swap PTEs—are incorrect.  This could
+break features like Checkpoint-Restore in Userspace (CRIU).
+
+This patch updates the behavior to correctly set the soft dirty bit for
+both present and swap PTEs in accordance with mremap.
+
+Link: https://lkml.kernel.org/r/20250508220912.7275-1-21cnbao@gmail.com
+Fixes: adef440691bab ("userfaultfd: UFFDIO_MOVE uABI")
+Signed-off-by: Barry Song <v-songbaohua@oppo.com>
+Reported-by: David Hildenbrand <david@redhat.com>
+Closes: https://lore.kernel.org/linux-mm/02f14ee1-923f-47e3-a994-4950afb9afcc@redhat.com/
+Acked-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+Cc: Lokesh Gidra <lokeshgidra@google.com>
+Cc: Andrea Arcangeli <aarcange@redhat.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/userfaultfd.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+--- a/mm/userfaultfd.c~mm-userfaultfd-correct-dirty-flags-set-for-both-present-and-swap-pte
++++ a/mm/userfaultfd.c
+@@ -1064,8 +1064,13 @@ static int move_present_pte(struct mm_st
+ 	src_folio->index = linear_page_index(dst_vma, dst_addr);
+ 
+ 	orig_dst_pte = mk_pte(&src_folio->page, dst_vma->vm_page_prot);
+-	/* Follow mremap() behavior and treat the entry dirty after the move */
+-	orig_dst_pte = pte_mkwrite(pte_mkdirty(orig_dst_pte), dst_vma);
++	/* Set soft dirty bit so userspace can notice the pte was moved */
++#ifdef CONFIG_MEM_SOFT_DIRTY
++	orig_dst_pte = pte_mksoft_dirty(orig_dst_pte);
++#endif
++	if (pte_dirty(orig_src_pte))
++		orig_dst_pte = pte_mkdirty(orig_dst_pte);
++	orig_dst_pte = pte_mkwrite(orig_dst_pte, dst_vma);
+ 
+ 	set_pte_at(mm, dst_addr, dst_pte, orig_dst_pte);
+ out:
+@@ -1100,6 +1105,9 @@ static int move_swap_pte(struct mm_struc
+ 	}
+ 
+ 	orig_src_pte = ptep_get_and_clear(mm, src_addr, src_pte);
++#ifdef CONFIG_MEM_SOFT_DIRTY
++	orig_src_pte = pte_swp_mksoft_dirty(orig_src_pte);
++#endif
+ 	set_pte_at(mm, dst_addr, dst_pte, orig_src_pte);
+ 	double_pt_unlock(dst_ptl, src_ptl);
+ 
+_
+
+Patches currently in -mm which might be from v-songbaohua@oppo.com are
+
+mm-userfaultfd-correct-dirty-flags-set-for-both-present-and-swap-pte.patch
+
 
