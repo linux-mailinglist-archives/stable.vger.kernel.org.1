@@ -1,114 +1,112 @@
-Return-Path: <stable+bounces-143022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A32ECAB0DE4
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 10:57:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70895AB0DE1
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 10:56:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B41543BE131
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 08:57:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C72F81BA1025
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 08:56:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B38912741D0;
-	Fri,  9 May 2025 08:57:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17C672741D0;
+	Fri,  9 May 2025 08:56:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DlfdqH5X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cWwOKbQr"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3EDF2749DA;
-	Fri,  9 May 2025 08:57:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F64A21FF23
+	for <stable@vger.kernel.org>; Fri,  9 May 2025 08:56:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746781037; cv=none; b=VXo+4+r/2YcwSBrSwchGJZZMyrZd9a1S+h06kKINCsokW+ZnVfTe59fQxqQA8Tq3Ao/4AhDDTccAdVG6F3nuEnfYi1GQUJxGlZHBTg1MqoBY5PvroLI5X8haIh7VIRXlq6fooXq5YMRNMeZ8wLF2DAtv1bi8M26WtAxCj6UBmTE=
+	t=1746780977; cv=none; b=e8G8VYC/IpjEq0RHzSeaT+4oJgrZr5QeLiCQzj7XeeJNHwwUymEJU38VCQTtJ7XOIbq3uZ5TwbepoBvDI9KzNXKDrps9g8YvV0XArHcqxpni4uFBQfydf3supc2MoKxdBryip+n6Dz+HtWg+fWV6/pBH+zO/GBjQtcHe30ZVBIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746781037; c=relaxed/simple;
-	bh=g2kpuyvLGCAKN83aNu3nllO/A1653V53pmPpo/UjVQk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OYiZyW4SsELaLqwVCTLgOnIv2gAwcIfST2LPeoglI8x/FXbvWKULYQ0+COm08L04sqimqb8Q49f0cI8FWv7nTlCf2V79Ez0RHlirZoEAi+aWKaSB1O0Yxv9/ZLy0O1042yHsz7bKX42xBO5lm+1TaT3BkNkq98JWstcmY7ry0Mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DlfdqH5X; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746781036; x=1778317036;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=g2kpuyvLGCAKN83aNu3nllO/A1653V53pmPpo/UjVQk=;
-  b=DlfdqH5XzV3u6LSdv7YTytl0YBjDjikhrsP3BZDMT8uAnvLarojhpFH4
-   8FKCzOiOKp1lyY0hicffDf7xSCZISnEchyq4z4epswCHMPZeUgMx/sktE
-   vlsQ5NCoqX9dt5F2Ryb4GCz6SZxYoy2JB8HHmVcPBWfIaTf9FcUqAJLPM
-   AidRf8KiJStGsbDiYSZnm5IAQylXXWSP8h731OfXwKxxr926qd6/HdZPJ
-   DHin9Av2hk+gmW0HOV5nEdRfTnyptXrQ0ZvHMkDLG9veqlyITl0xpGRdd
-   Kg1eRtKCtXIUuNoT9ekG9zSYE7jg7AMwnCg2YkzB/Z9TEeqdyvarPgsUx
-   g==;
-X-CSE-ConnectionGUID: 731VyrCqRuSCCgY74NDgKg==
-X-CSE-MsgGUID: EM0lxu8ySFePtiWV7d6j+w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="58818043"
-X-IronPort-AV: E=Sophos;i="6.15,274,1739865600"; 
-   d="scan'208";a="58818043"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2025 01:57:15 -0700
-X-CSE-ConnectionGUID: QtZHdK5FRs2Qi9mZx09OMQ==
-X-CSE-MsgGUID: vcgmSyiLRf+7TfKxr27H5g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,274,1739865600"; 
-   d="scan'208";a="136514060"
-Received: from unknown (HELO jiaqingz-acrn-container.sh.intel.com) ([10.239.43.235])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2025 01:57:13 -0700
-From: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
-To: Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Bernhard Kaindl <bk@suse.de>,
-	Andi Kleen <ak@linux.intel.com>
-Cc: Li Fei <fei1.li@intel.com>,
-	Jiaqing Zhao <jiaqing.zhao@linux.intel.com>,
-	stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] x86/mtrr: Check if fixed-range MTRR exists in `mtrr_save_fixed_ranges`
-Date: Fri,  9 May 2025 08:56:12 +0000
-Message-ID: <20250509085612.2236222-2-jiaqing.zhao@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1746780977; c=relaxed/simple;
+	bh=gFEWM9T1QNlZi9sO4xAojwdoSkLmQ6YPuQaTDgdu888=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qx3NCkSpQOis34zikLHhxDhlB21sxV7T+9hIHscueASP2FujqRVc1TpOgyTqCHcxISWO9Ss4Bhxt/SEJuO1htIU/y1tbF2j+XoXfSvtfHMLqGvumiJzSr4YbUnEmU82T8hKDJ6psdm0mPq7z/4Fd4SX4qlnQAiTDP/YknoEdyaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cWwOKbQr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B3C9C4CEE4;
+	Fri,  9 May 2025 08:56:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1746780977;
+	bh=gFEWM9T1QNlZi9sO4xAojwdoSkLmQ6YPuQaTDgdu888=;
+	h=Subject:To:Cc:From:Date:From;
+	b=cWwOKbQrOyRKYTvTdPF+0zgMS0dMueDJ+va7lzNC9UjvtICU1Bl86ZRAFtkb3KQfD
+	 dONA2NvtVl+PidKXrdbRIWkr3+PZ5RrcA4x4yHTFvLCjKE4YUDoVr91fjcIcfz0lJK
+	 B1f4mvtuzjw7NT19Iw+/LN3DwDvHGi9O1uHYCn9o=
+Subject: FAILED: patch "[PATCH] openvswitch: Fix unsafe attribute parsing in" failed to apply to 5.4-stable tree
+To: echaudro@redhat.com,aconole@redhat.com,i.maximets@ovn.org,kuba@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Fri, 09 May 2025 10:56:13 +0200
+Message-ID: <2025050913-rubble-confirm-99ee@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
-When suspending, `save_processor_state` calls `mtrr_save_fixed_ranges`
-to save fixed-range MTRRs. On platforms without MTRR or fixed-range
-MTRR support, accessing MTRR MSRs triggers unchecked MSR access error.
-Make sure fixed-range MTRR is supported before access to prevent such
-error.
 
-Fixes: 3ebad5905609 ("[PATCH] x86: Save and restore the fixed-range MTRRs of the BSP when suspending")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
----
- arch/x86/kernel/cpu/mtrr/generic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+The patch below does not apply to the 5.4-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-diff --git a/arch/x86/kernel/cpu/mtrr/generic.c b/arch/x86/kernel/cpu/mtrr/generic.c
-index e2c6b471d230..ca37b374d1b0 100644
---- a/arch/x86/kernel/cpu/mtrr/generic.c
-+++ b/arch/x86/kernel/cpu/mtrr/generic.c
-@@ -593,7 +593,7 @@ static void get_fixed_ranges(mtrr_type *frs)
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git checkout FETCH_HEAD
+git cherry-pick -x 6beb6835c1fbb3f676aebb51a5fee6b77fed9308
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025050913-rubble-confirm-99ee@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 6beb6835c1fbb3f676aebb51a5fee6b77fed9308 Mon Sep 17 00:00:00 2001
+From: Eelco Chaudron <echaudro@redhat.com>
+Date: Tue, 6 May 2025 16:28:54 +0200
+Subject: [PATCH] openvswitch: Fix unsafe attribute parsing in
+ output_userspace()
+
+This patch replaces the manual Netlink attribute iteration in
+output_userspace() with nla_for_each_nested(), which ensures that only
+well-formed attributes are processed.
+
+Fixes: ccb1352e76cf ("net: Add Open vSwitch kernel components.")
+Signed-off-by: Eelco Chaudron <echaudro@redhat.com>
+Acked-by: Ilya Maximets <i.maximets@ovn.org>
+Acked-by: Aaron Conole <aconole@redhat.com>
+Link: https://patch.msgid.link/0bd65949df61591d9171c0dc13e42cea8941da10.1746541734.git.echaudro@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+
+diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
+index 61fea7baae5d..2f22ca59586f 100644
+--- a/net/openvswitch/actions.c
++++ b/net/openvswitch/actions.c
+@@ -975,8 +975,7 @@ static int output_userspace(struct datapath *dp, struct sk_buff *skb,
+ 	upcall.cmd = OVS_PACKET_CMD_ACTION;
+ 	upcall.mru = OVS_CB(skb)->mru;
  
- void mtrr_save_fixed_ranges(void *info)
- {
--	if (boot_cpu_has(X86_FEATURE_MTRR))
-+	if (boot_cpu_has(X86_FEATURE_MTRR) && mtrr_state.have_fixed)
- 		get_fixed_ranges(mtrr_state.fixed_ranges);
- }
- 
--- 
-2.43.0
+-	for (a = nla_data(attr), rem = nla_len(attr); rem > 0;
+-	     a = nla_next(a, &rem)) {
++	nla_for_each_nested(a, attr, rem) {
+ 		switch (nla_type(a)) {
+ 		case OVS_USERSPACE_ATTR_USERDATA:
+ 			upcall.userdata = a;
 
 
