@@ -1,164 +1,137 @@
-Return-Path: <stable+bounces-142963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 719D6AB0815
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 04:52:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C469CAB08E4
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 05:31:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEF7D4C88F3
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 02:52:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DE413ABC61
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 03:31:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DAF7230BE1;
-	Fri,  9 May 2025 02:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 630BD22D78F;
+	Fri,  9 May 2025 03:31:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZCQt4XHj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hbp3Y5e0"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com [209.85.217.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1F1E22FDFF;
-	Fri,  9 May 2025 02:52:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C3734964E;
+	Fri,  9 May 2025 03:31:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746759143; cv=none; b=P4ezAqBVB2YJGFoLPiDfRtF8EWgrBP4DSLVZRHPqwzbsWM7WejcRN9h5kD/jLf/xPsgy6wjY9wI5Bogaljuoxgbv4AyTCXLHNqp5ZtJXXjnfrBdRrQLyUl6ttM2ibX6/8SV91E0lQ2CkK9g2D/lrKvLMgpZ1OXE0Ee9ihDR+kZo=
+	t=1746761483; cv=none; b=PkiUM/GBjhCu2hw31zYgb6KFfCJQIgaFrUlUXTHXYg2slQKQCS22lfujNdSfmLL5hIAkcP7xoZWZyzC10hQfFqaKZiStktREkHdCJvLMwqq0zBpBi9GO4goMWecjuS8cLO5RE/LNcThLI9ECwyYOqN0Gqbze7IVCazB+k3Fo6oo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746759143; c=relaxed/simple;
-	bh=6GJl5/03p4qtZ357VqegbeleeR8vc8nJug60jKGZQws=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=b8wKB1kIv+Cy8jpmXuEUXqUxqUimZAd9kX2ibaoemtgqEBrGCNl9An2vs1LiCmaEoS+QVv2BZU4nIGBNDVAVLGzwmhDJ6XAXBTNQRwJ3qjOpOD87/wcRuqk1vavtezIjfMi8fllqGSUhsTRgtcHZigPHfbcTEGhO0935f3hQdYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZCQt4XHj; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746759142; x=1778295142;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=6GJl5/03p4qtZ357VqegbeleeR8vc8nJug60jKGZQws=;
-  b=ZCQt4XHjlNLsLN26Yy6Uj9zo6VzjyYe15TPp/B6Q9ajcvi1OXd5IDXAg
-   Ms4piGdHGoomfmed1Hze04fNw1NY/DOOGYXB/Oqs4L0n0S4iVAxefzhtt
-   aezT6cWakksk4ml0avSwyj72ssOm+rn7zXKjIyI8bU8fVYGiSJhr/hbq7
-   yfuRbY9lJ6rMqXvJw7ZutVYlzSqGLtsKfxurxbbulJXaykXScl4gRUUed
-   4NV5P8rL6SaQpa4y5iGir9XI9rm5viN39eCxsTIPoMBrYuWcVahxdEhs1
-   5bfH1gEFlarDvfmqVgse1cgeeXZ7PYwo6PCBmud/ypHAUMh9tYGR+0APu
-   Q==;
-X-CSE-ConnectionGUID: TJpYdmIMTai529IxgWC6Zw==
-X-CSE-MsgGUID: zl+DiOZaRbW9PcM3YU3Rzw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="59971005"
-X-IronPort-AV: E=Sophos;i="6.15,274,1739865600"; 
-   d="scan'208";a="59971005"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2025 19:52:21 -0700
-X-CSE-ConnectionGUID: mzkDUzqyTteGozfkbYOQ0g==
-X-CSE-MsgGUID: z1gCnSq0RGKtHzq0AizYig==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,274,1739865600"; 
-   d="scan'208";a="136185823"
-Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2025 19:52:18 -0700
-Message-ID: <db0bf1b9-dd6c-4451-8eb9-ab789d732992@linux.intel.com>
-Date: Fri, 9 May 2025 10:47:48 +0800
+	s=arc-20240116; t=1746761483; c=relaxed/simple;
+	bh=+Yt6T0u3fYfQL7cdc7BFMhOrNEKA8KJXzQY/Qxnx5gY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NBYg4PSaRXAURqE7dOdqaxS4SuefhqMSN4pT3LfBTsw2d65FB0aXt6qZCFbKXBU5+mY0tuf40CeofWJM5XEyW995Z4E9wjplPHI21RQjLI66vgljlvWqgP7WG6Z+Xq6BXWigZKsG8H+dQygQ/v+yIPl9aeSXusfsZJvz/+71y1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hbp3Y5e0; arc=none smtp.client-ip=209.85.217.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vs1-f49.google.com with SMTP id ada2fe7eead31-4ddac386a29so605587137.3;
+        Thu, 08 May 2025 20:31:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1746761480; x=1747366280; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4A2ix+KLqr1uAddQxC8meUMDCd4s6wELmtjquDmWLdA=;
+        b=Hbp3Y5e0nNVwKZRE2bWOf/nvF16Oqv6lsWvXkR20NeEYThlkm0kVKIDzPMOOkNYjOD
+         dXeKqUS/pN4PrxzDklt748QWkJuq7qCrU/FRmHfqff7MJ7YRcUjkC763BWnd6qZljIuQ
+         8LoQmjOY3iY/WdqSv4RZbc/xp1jijCvud0RFYa/jTmP6FZdN0CWxDnspQ9REb82zl/HH
+         zJMTDr/bVYgwUSDOVkbepbhek7e5U7la2qHfehDeoVt0vN300J4QDeEWbL8Fyrgye+zG
+         0pmm4ebBcLh0Uwwr7CF30Xof3Fvelst96kuzFvyJvm5DhCL4ps0wAM5A6PLdLRD0ETVP
+         OX9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746761480; x=1747366280;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4A2ix+KLqr1uAddQxC8meUMDCd4s6wELmtjquDmWLdA=;
+        b=ApLTyUdSZf+AnhF8cphmikc+XBe12TwPKgGwJeEwJPEtteBAn0uBsJznn6MhFsFZQr
+         JHVP8WcaYEGMMcMPj9NUgL7FmHFcaR3sXv9ItEb7dTKyREY/G4kp+zAR2/WeT8uNgm2F
+         KfFaADG32shB68bYlUCoYZcn8xsNDKDfgubszNFvp5oIM+QTwks8iiNun4tzUh7k5fzU
+         xz3KniG0lIsfem6+HywZlJ3jlCfisRQ3K82+4IG9/VFM9rHcLAzc44JrDWhquKlpapjF
+         dPy7uksDWvdCS/hds+oaQLnZvxE2N2G2nRanODNgkuREUiSii02cCnW2l54WdYQ8x3/J
+         ticw==
+X-Forwarded-Encrypted: i=1; AJvYcCWS8Fw3B+iz4LW/AUadfgl5oW3izjj/mObBB/1il+X0utKEjwCertAnW4MQMXT/jXTfsI0iGHvt@vger.kernel.org, AJvYcCX3qcac7BGGECl9sPHwSb+3AxTOokhFOg2mqVTA+F2/b03t1hlYLnm5yo5EQtGrlFwy0jhUcXGWXWpX5l4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzojKidh1dG7fIe3oWUCnHNQSStLbsGpGdCohuBpBmgOXR44tUd
+	4ugeoRN716ZzUdgElAZcycBqFozQFY9HjW9cY26+3gM6ePlap8dTMbKR1XEu+kwtgw23ffnG59R
+	gEllci7FQA+qdC2K3zRC+xvVTx2k=
+X-Gm-Gg: ASbGncssZP+m6iwKK5fDCoYWthK5NgMXEagPmc/RdNFUnhY3NzDGsMlggzAqSeGcr2c
+	Nxch+Jet8qCNoy09RcqGQs0lGEBuo0S7ZjmCcVPd0AMvVSZDCBsH1v9J/U+h9SsbM4ipGNJh37x
+	13gKH4SfdyEQki0dcAiGt0Zg==
+X-Google-Smtp-Source: AGHT+IGc5+Cslf0S1acbclvSNhn/uwwmcTG8ZUvvlGJo/X0wH/M3Gq+zbif2xm4TrTenOWf1MumTFqC9O986MUqRF8I=
+X-Received: by 2002:a05:6102:8097:b0:4c1:774b:3f7a with SMTP id
+ ada2fe7eead31-4deed3d4b5bmr1410263137.16.1746761480413; Thu, 08 May 2025
+ 20:31:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] applespi from 6.12 onwards
-To: Robin Murphy <robin.murphy@arm.com>, Aditya Garg <gargaditya08@live.com>,
- =?UTF-8?Q?Berkel_J=C3=B6rg?= <joerg.berkel@bfh.ch>,
- linux-input@vger.kernel.org
-Cc: dmitry.torokhov@gmail.com, stable@vger.kernel.org,
- regressions@lists.linux.dev, linux-spi@vger.kernel.org, lukas@wunner.de,
- David Woodhouse <dwmw2@infradead.org>, iommu@lists.linux.dev,
- Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>
-References: <4dada48a-c5dd-4c30-9c85-5b03b0aa01f0@bfh.ch>
- <PN3PR01MB9597D8E327CC7910673849D3B888A@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM>
- <122a1f90-ddd9-4e74-96d1-57e21e580ae2@linux.intel.com>
- <f1b41874-1535-4457-9747-eee3d816091a@arm.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <f1b41874-1535-4457-9747-eee3d816091a@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20250509020238.3378396-1-xiaqinxin@huawei.com> <20250509020238.3378396-2-xiaqinxin@huawei.com>
+In-Reply-To: <20250509020238.3378396-2-xiaqinxin@huawei.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Fri, 9 May 2025 15:31:09 +1200
+X-Gm-Features: AX0GCFuxI4KztwbrtFwtCfTebZzuXx55Bo7QyZab2Vhdl2Eshu9OBelft6iLsz8
+Message-ID: <CAGsJ_4zrCiugrAPw-aExgSMZXYBBUqLyyWbcpKH8RdhKnHxj9g@mail.gmail.com>
+Subject: Re: [PATCH v3 1/4] dma-mapping: benchmark: Add padding to ensure uABI
+ remained consistent
+To: Qinxin Xia <xiaqinxin@huawei.com>, Marek Szyprowski <m.szyprowski@samsung.com>, 
+	Robin Murphy <robin.murphy@arm.com>
+Cc: yangyicong@huawei.com, hch@lst.de, iommu@lists.linux.dev, 
+	jonathan.cameron@huawei.com, prime.zeng@huawei.com, fanghao11@huawei.com, 
+	linux-kernel@vger.kernel.org, linuxarm@huawei.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 5/8/25 19:29, Robin Murphy wrote:
-> On 2025-05-08 3:15 am, Baolu Lu wrote:
->> On 5/8/25 01:07, Aditya Garg wrote:
->>> Keyboard and touchpad stopped working on several Apple Macbooks from 
->>> the year 2017 using kernel 6.12.xx . Until now I could only find this 
->>> discussion affirming the bug on Debian and Fedora:https://github.com/ 
->>> Dunedan/mbp-2016-linux/issues/202
->>>
->>> On siduction I also tried the more recent kernels 6.14.5 and mainline 
->>> 6.15-rc4 (from Ubuntu) and the issue persisted with my testdevice 
->>> MacBookPro14,1 -- see the relevant output:
->>>
->>> kernel: platform pxa2xx-spi.3: Adding to iommu group 20
->>> kernel: input: Apple SPI Keyboard as /devices/ 
->>> pci0000:00/0000:00:1e.3/ pxa2xx-spi.3/spi_master/spi2/spi-APP000D:00/ 
->>> input/input0
->>> kernel: DMAR: DRHD: handling fault status reg 3
->>> kernel: DMAR: [DMA Read NO_PASID] Request device [00:1e.3] fault addr 
->>> 0xffffa000 [fault reason 0x06] PTE Read access is not set
->>> kernel: DMAR: DRHD: handling fault status reg 3
->>> kernel: DMAR: [DMA Read NO_PASID] Request device [00:1e.3] fault addr 
->>> 0xffffa000 [fault reason 0x06] PTE Read access is not set
->>> kernel: applespispi-APP000D:00: Error writing to device: 01 0e 00 00
->>> kernel: DMAR: DRHD: handling fault status reg 3
->>> kernel: DMAR: [DMA Read NO_PASID] Request device [00:1e.3] fault addr 
->>> 0xffffa000 [fault reason 0x06] PTE Read access is not set
->>> kernel: DMAR: DRHD: handling fault status reg 3
->>> kernel: applespispi-APP000D:00: Error writing to device: 01 0e 00 00
->>
->> It appears that all DMA faults are related to a fixed address,
->> 0xffffa000. Is this address something special?
-> 
-> Maybe it's retrying the same buffer a few times before finally giving 
-> up? The address does look like a plausible iommu-dma IOVA, so I can 
-> imagine at least two possibilities where a change in the IOMMU driver 
-> might have an impact:
-> 
-> - It's the right address in the right context but incorrectly mapped as 
-> DMA_FROM_DEVICE, where that previously had implicit read permission as 
-> well but is now write-only (can the Intel 2nd-stage format do that like 
-> Arm does? I forget...)
+On Fri, May 9, 2025 at 2:02=E2=80=AFPM Qinxin Xia <xiaqinxin@huawei.com> wr=
+ote:
+>
+> The padding field in the structure was previously reserved to
+> maintain a stable interface for potential new fields, ensuring
+> compatibility with user-space shared data structures.
+> However,it was accidentally removed by tiantao in a prior commit,
+> which may lead to incompatibility between user space and the kernel.
+>
+> This patch reinstates the padding to restore the original structure
+> layout and preserve compatibility.
+>
+> Fixes: 8ddde07a3d28 ("dma-mapping: benchmark: extract a common header fil=
+e for map_benchmark definition")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Qinxin Xia <xiaqinxin@huawei.com>
 
-Intel 2nd-stage page table format allows write-only permission. But
-commit eea53c581688 ("iommu/vt-d: Remove WO permissions on second-level
-paging entries") has already removed it, and v6.12 kernel contains this
-commit.
++Marek, +Robin
 
-By the way, we are about to restore the write-only permission on 2nd-
-stage page table,
+Acked-by: Barry Song <baohua@kernel.org>
 
-https://lore.kernel.org/all/0-v1-c26553717e90+65f-iommu_vtd_ss_wo_jgg@nvidia.com/
+> ---
+>  include/linux/map_benchmark.h | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/include/linux/map_benchmark.h b/include/linux/map_benchmark.=
+h
+> index 62674c83bde4..2ac2fe52f248 100644
+> --- a/include/linux/map_benchmark.h
+> +++ b/include/linux/map_benchmark.h
+> @@ -27,5 +27,6 @@ struct map_benchmark {
+>         __u32 dma_dir; /* DMA data direction */
+>         __u32 dma_trans_ns; /* time for DMA transmission in ns */
+>         __u32 granule;  /* how many PAGE_SIZE will do map/unmap once a ti=
+me */
+> +       __u8 expansion[76];     /* For future use */
+>  };
+>  #endif /* _KERNEL_DMA_BENCHMARK_H */
+> --
+> 2.33.0
+>
 
-... if the device driver provides only DMA_FROM_DEVICE and the iommu
-driver uses 2nd-stage page table for its dma translation.
-
-The iommu driver currently treats DMA_FROM_DEVICE as a hint rather than
-a mandatory requirement. If we want to enforce write-only permission in
-the future, we should allocate a domain allocation flag so that the
-iommu driver could have the opportunity to select the appropriate page
-table format.
-
-> 
-> - It's the right address in the wrong context, because the DMA mapping 
-> was done with the wrong device, which was previously in the same IOMMU 
-> group as 00:1e.3, but now we assign groups differently. I don't know if 
-> lpss_spi_setup() is relevant to this particular hardware setup, but 
-> "dma_dev = pci_get_slot(dev->bus, PCI_DEVFN(PCI_SLOT(dev->devfn), 0));" 
-> there certainly catches my attention, at least.
-> 
-> The DMA mapping tracepoints should be able to shed light on how that 
-> address is mapped prior to the fault.
-
-Yes. DMA mapping trace messages would shed more lights.
-
-Thanks,
-baolu
+Thanks
+Barry
 
