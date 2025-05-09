@@ -1,148 +1,109 @@
-Return-Path: <stable+bounces-142994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A947AB0CC2
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B588CAB0CC3
 	for <lists+stable@lfdr.de>; Fri,  9 May 2025 10:12:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68AE81899FF9
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 08:12:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1C977AB3E4
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 08:10:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86BA526A1DA;
-	Fri,  9 May 2025 08:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B04B269B11;
+	Fri,  9 May 2025 08:12:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uc/hnAUC"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dkiBSTeY"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 464EB26989D
-	for <stable@vger.kernel.org>; Fri,  9 May 2025 08:11:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FF1426A1DA;
+	Fri,  9 May 2025 08:12:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746778309; cv=none; b=o7ZtmeOOnMvQpxkHFj8BXF9eLoGSQQHb5OiaraQGgWRo6YIvmFuw5erYEpzTRVBvLf06Hr9dx+wutfEx+eP0/m2eP2cSudU2yE2Jusl4O60fz4txCNvqWUiTyw/X5XvbQ/QtIVoWt7sRIdmwF0x7ug56qnp+IvO8OaOAX+9/rzo=
+	t=1746778323; cv=none; b=n/UksG6S9ONYbSqEuzsMexA65oEiL4TB1qV7mhnVXk/x6kA9PIEEgDbf2WZ3oNpMOoKxzIBXM/uF28Jx/nA2zxTicQfI54zFcChChksO6UkURtHio1dO+HQXk/ttl6Gx7US6OSUW4vlDJPQ3oc+LOLe4CUW6UBcbOcELxTqnp6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746778309; c=relaxed/simple;
-	bh=IOkItXqcyemuO9jpfsmQb5QrfA2bQcDkGFUT1wmNs5w=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FyjbiqbFtDgG0FB2Z9KptuH0Cn7dBogwfKILK2PqENIoTztfeGEbQLEWvBL1pSBgJy+Wff1L8RFoO8yQ05E2LF0ELjPTFNugZGbTFmN7tBSVPYIw/9fO6qx8orGjsUf6qcN3UgQFjkrjON0JqmhEcxKNVQskIEgYOoxPFmXbjoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uc/hnAUC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E92DC4CEE4;
-	Fri,  9 May 2025 08:11:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1746778308;
-	bh=IOkItXqcyemuO9jpfsmQb5QrfA2bQcDkGFUT1wmNs5w=;
-	h=Subject:To:Cc:From:Date:From;
-	b=uc/hnAUCU6IfNeKohj5aB9YXTvxALSJonzzIPPFRbqs8FDCJPTzH9schckUTXmeHV
-	 fanFsukG1tbGxAaUJVSmjHkOcmlwKKdZUOY0FDa8jqCM5/cHOX3ooR2wUrEIfWPcXe
-	 +v/DKvQ4cQR5sJBCCvNRthN6vCd4Sm3WNBNB4ZO4=
-Subject: FAILED: patch "[PATCH] firmware: arm_scmi: Fix timeout checks on polling path" failed to apply to 6.1-stable tree
-To: cristian.marussi@arm.com,huangjie1663@phytium.com.cn,sudeep.holla@arm.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Fri, 09 May 2025 10:11:45 +0200
-Message-ID: <2025050945-multitude-powdered-34d0@gregkh>
+	s=arc-20240116; t=1746778323; c=relaxed/simple;
+	bh=8IbLnw9mBjgrk+9yg+uifNi0PymoSeiWbk1RPstYs7E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YWMBxPYV9P1ro2obNFAW5a2Tso/v0017hfp+OI4JzKXs/rPsUovIg9tHmBMawA78O90gJNppgSWBa/Cgmnc1mI53hiHhiFPO5SM7emppMyUHl7jR3CR3GMymVI6E1hNfROqEuzNrw8QSEYuFetnQFLGwQGYmvbDOvXoa3iuJeEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dkiBSTeY; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1746778322; x=1778314322;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=8IbLnw9mBjgrk+9yg+uifNi0PymoSeiWbk1RPstYs7E=;
+  b=dkiBSTeYwwBZNfjLbE7vdE0HUkQ6zm71JGC9ch6K6LSKe5yCQKAZR40I
+   58LP6/CZqXgas41xkryA+TRm7w56UqguPYAEaNXUqUNmMQSziHLyI4u70
+   QMSAmytygwOtTsj1heFMQPBPC3a4yRzpaVSaDm6JqvkSRfnwgINU+6spl
+   lY2abb4NvmgaR3dI2hPixJCcVuO134hSO1WW5r6Q4uaU8/5ALjb9sqfmK
+   OtuXoH427IJQb/Gv+XXJos4kAauNEv94vKhazHSb9dwSG+OP816Co1zgg
+   D4uZRFT6mQ/eDQ5lsxds/mbplx7kISqSuUOC5r5o/AvrxfGMrpWyKXBxl
+   Q==;
+X-CSE-ConnectionGUID: r+vQldL2QCOxc9kx0Mf5jw==
+X-CSE-MsgGUID: utNmgeb2T/ya1CLFtCu2QQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="36225018"
+X-IronPort-AV: E=Sophos;i="6.15,274,1739865600"; 
+   d="scan'208";a="36225018"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2025 01:12:01 -0700
+X-CSE-ConnectionGUID: UPTLarKASvehNtOGMe+Jdw==
+X-CSE-MsgGUID: q4AQOU+wTGO7nusOyBZ2gQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,274,1739865600"; 
+   d="scan'208";a="167481069"
+Received: from klitkey1-mobl1.ger.corp.intel.com (HELO pujfalus-desk.intel.com) ([10.245.246.132])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2025 01:11:58 -0700
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+To: lgirdwood@gmail.com,
+	broonie@kernel.org
+Cc: linux-sound@vger.kernel.org,
+	kai.vehmanen@linux.intel.com,
+	ranjani.sridharan@linux.intel.com,
+	yung-chuan.liao@linux.intel.com,
+	pierre-louis.bossart@linux.dev,
+	stable@vger.kernel.org
+Subject: [PATCH] ASoC: SOF: Intel: hda-bus: Use PIO mode on ACE2+ platforms
+Date: Fri,  9 May 2025 11:13:08 +0300
+Message-ID: <20250509081308.13784-1-peter.ujfalusi@linux.intel.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
+Keep using the PIO mode for commands on ACE2+ platforms, similarly how
+the legacy stack is configured.
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Fixes: 05cf17f1bf6d ("ASoC: SOF: Intel: hda-bus: Use PIO mode for Lunar Lake")
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Cc: stable@vger.kernel.org
+---
+ sound/soc/sof/intel/hda-bus.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x c23c03bf1faa1e76be1eba35bad6da6a2a7c95ee
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025050945-multitude-powdered-34d0@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From c23c03bf1faa1e76be1eba35bad6da6a2a7c95ee Mon Sep 17 00:00:00 2001
-From: Cristian Marussi <cristian.marussi@arm.com>
-Date: Mon, 10 Mar 2025 17:58:00 +0000
-Subject: [PATCH] firmware: arm_scmi: Fix timeout checks on polling path
-
-Polling mode transactions wait for a reply busy-looping without holding a
-spinlock, but currently the timeout checks are based only on elapsed time:
-as a result we could hit a false positive whenever our busy-looping thread
-is pre-empted and scheduled out for a time greater than the polling
-timeout.
-
-Change the checks at the end of the busy-loop to make sure that the polling
-wasn't indeed successful or an out-of-order reply caused the polling to be
-forcibly terminated.
-
-Fixes: 31d2f803c19c ("firmware: arm_scmi: Add sync_cmds_completed_on_ret transport flag")
-Reported-by: Huangjie <huangjie1663@phytium.com.cn>
-Closes: https://lore.kernel.org/arm-scmi/20250123083323.2363749-1-jackhuang021@gmail.com/
-Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
-Cc: stable@vger.kernel.org # 5.18.x
-Message-Id: <20250310175800.1444293-1-cristian.marussi@arm.com>
-Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
-
-diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/arm_scmi/driver.c
-index 1c75a4c9c371..0390d5ff195e 100644
---- a/drivers/firmware/arm_scmi/driver.c
-+++ b/drivers/firmware/arm_scmi/driver.c
-@@ -1248,7 +1248,8 @@ static void xfer_put(const struct scmi_protocol_handle *ph,
- }
+diff --git a/sound/soc/sof/intel/hda-bus.c b/sound/soc/sof/intel/hda-bus.c
+index b1be03011d7e..6492e1cefbfb 100644
+--- a/sound/soc/sof/intel/hda-bus.c
++++ b/sound/soc/sof/intel/hda-bus.c
+@@ -76,7 +76,7 @@ void sof_hda_bus_init(struct snd_sof_dev *sdev, struct device *dev)
  
- static bool scmi_xfer_done_no_timeout(struct scmi_chan_info *cinfo,
--				      struct scmi_xfer *xfer, ktime_t stop)
-+				      struct scmi_xfer *xfer, ktime_t stop,
-+				      bool *ooo)
- {
- 	struct scmi_info *info = handle_to_scmi_info(cinfo->handle);
+ 	snd_hdac_ext_bus_init(bus, dev, &bus_core_ops, sof_hda_ext_ops);
  
-@@ -1257,7 +1258,7 @@ static bool scmi_xfer_done_no_timeout(struct scmi_chan_info *cinfo,
- 	 * in case of out-of-order receptions of delayed responses
- 	 */
- 	return info->desc->ops->poll_done(cinfo, xfer) ||
--	       try_wait_for_completion(&xfer->done) ||
-+	       (*ooo = try_wait_for_completion(&xfer->done)) ||
- 	       ktime_after(ktime_get(), stop);
- }
- 
-@@ -1274,15 +1275,17 @@ static int scmi_wait_for_reply(struct device *dev, const struct scmi_desc *desc,
- 		 * itself to support synchronous commands replies.
- 		 */
- 		if (!desc->sync_cmds_completed_on_ret) {
-+			bool ooo = false;
-+
- 			/*
- 			 * Poll on xfer using transport provided .poll_done();
- 			 * assumes no completion interrupt was available.
- 			 */
- 			ktime_t stop = ktime_add_ms(ktime_get(), timeout_ms);
- 
--			spin_until_cond(scmi_xfer_done_no_timeout(cinfo,
--								  xfer, stop));
--			if (ktime_after(ktime_get(), stop)) {
-+			spin_until_cond(scmi_xfer_done_no_timeout(cinfo, xfer,
-+								  stop, &ooo));
-+			if (!ooo && !info->desc->ops->poll_done(cinfo, xfer)) {
- 				dev_err(dev,
- 					"timed out in resp(caller: %pS) - polling\n",
- 					(void *)_RET_IP_);
+-	if (chip && chip->hw_ip_version == SOF_INTEL_ACE_2_0)
++	if (chip && chip->hw_ip_version >= SOF_INTEL_ACE_2_0)
+ 		bus->use_pio_for_commands = true;
+ #else
+ 	snd_hdac_ext_bus_init(bus, dev, NULL, NULL);
+-- 
+2.49.0
 
 
