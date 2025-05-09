@@ -1,70 +1,70 @@
-Return-Path: <stable+bounces-142939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B20A4AB067D
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 01:28:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABD4BAB06F8
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 02:17:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 240D11782A2
-	for <lists+stable@lfdr.de>; Thu,  8 May 2025 23:28:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 351161B674AC
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 00:17:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1E6022FDEA;
-	Thu,  8 May 2025 23:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07BD73FFD;
+	Fri,  9 May 2025 00:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=invisiblethingslab.com header.i=@invisiblethingslab.com header.b="dBO+wosw";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="QCgNjUWi"
+	dkim=pass (2048-bit key) header.d=invisiblethingslab.com header.i=@invisiblethingslab.com header.b="gC5tilBA";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ssaGgH70"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-b4-smtp.messagingengine.com (fout-b4-smtp.messagingengine.com [202.12.124.147])
+Received: from fhigh-b4-smtp.messagingengine.com (fhigh-b4-smtp.messagingengine.com [202.12.124.155])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC5B828373;
-	Thu,  8 May 2025 23:28:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.147
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9DF317E0;
+	Fri,  9 May 2025 00:17:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.155
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746746923; cv=none; b=elJADBexufHiXU8BVGuPNFpTlUBsbq1QPHxO+ZobxbLp/VM/uDibXGABVkdeE9V955P0TRKNSrDvw2uSX4pX/fqqJafb2z5PQqE7n3b4oCIwGazh3TFyYL2mkwhlooe5BBHR4Zem/jwYMgTuhXlDA2Yy97qP+Vq1tnCgdckZ1eA=
+	t=1746749859; cv=none; b=jcxeYCNzGCuxtDYTz5yRl9q6th1i8TqpbGsPwvskdTCqLQITn4Ac4n8g/NQDt1hKiiYk2JVeQqifWAulZHD9SjHBs3K9qVHCSw6t3zJUdPhBAISb7u6WeuQiDWjEFdzIfF+H55sVljWntFrGOvzLj3A2vPMZjISOnW0J3T0NAAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746746923; c=relaxed/simple;
-	bh=fZtb3dNMA4tZA0ZWd/TLJ0fgNp4xVcZG5f8oM3CdWts=;
+	s=arc-20240116; t=1746749859; c=relaxed/simple;
+	bh=9haGLbaj7o3J3rM7o4wBiyA591YCU1OOSyCeJoWZXn4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J2HDM2QclbWPq7ibSVM9SIKlG6JWAboplCSJBOWQSs438DCfc/iCb9qUp3B8IKbzBnuCDiMfj9Q+6JFkKvjQrsE9YQcrlRB3W7KYoYnOxH+8TKIKVJje0PCiLAYrbqhyKUlnmTxmx/m7FCiuTt0nXnowhIbyD4SFNwcvKzWuLNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invisiblethingslab.com; spf=pass smtp.mailfrom=invisiblethingslab.com; dkim=pass (2048-bit key) header.d=invisiblethingslab.com header.i=@invisiblethingslab.com header.b=dBO+wosw; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=QCgNjUWi; arc=none smtp.client-ip=202.12.124.147
+	 Content-Type:Content-Disposition:In-Reply-To; b=SFgbv9eZyDEBHbwY+tnldoGXZuhAM2lsavrpLp1yNWr1wkMDcepDrHjHDIEX9VVVmaMGWiDqfDcYG56FgKlYdJI9JzRQZvtCYK3fT+Lgyuuo+yBGnRxaTJq2EoeHCox1J7sLkCj1n2Ewi88rHmY6VeRG+5e7/2+pY6uPamjfoHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invisiblethingslab.com; spf=pass smtp.mailfrom=invisiblethingslab.com; dkim=pass (2048-bit key) header.d=invisiblethingslab.com header.i=@invisiblethingslab.com header.b=gC5tilBA; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ssaGgH70; arc=none smtp.client-ip=202.12.124.155
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=invisiblethingslab.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=invisiblethingslab.com
-Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
-	by mailfout.stl.internal (Postfix) with ESMTP id 6742411400C3;
-	Thu,  8 May 2025 19:28:40 -0400 (EDT)
+Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 7711425400F3;
+	Thu,  8 May 2025 20:17:36 -0400 (EDT)
 Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Thu, 08 May 2025 19:28:40 -0400
+  by phl-compute-03.internal (MEProxy); Thu, 08 May 2025 20:17:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	invisiblethingslab.com; h=cc:cc:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1746746920;
-	 x=1746833320; bh=IJqSlMGSjYMgJIHKbPM3YyFA5RfvykcsmoPIZTS7ViQ=; b=
-	dBO+woswp3j9IO1OVO+kJZ4RehlaaChEV2MdIYZptRP7xukvFqK8vYJ3It2YhUzj
-	81kGvutZDC6En7CRqFQxFWEdOcDxZYp4PV9Gn7krkSX10cj/7ub/rCmJcXMSyv8I
-	xuew+nVt4szDnvqr3tD4lHt2L+wlEqrC7DMXGAhgDBRgbUV8QrODlg0lOn2/vFjB
-	EjDd268JCRpAxh0FlV37z78HErJ8HoZlp2Gr+GEtSEAkb08lpRdDwztvKQ8cKHda
-	rZyPi8ixJq6BxcHY6kLpNIyU8rE8l4VcnrHZcvWT/5XH9Du3aYb9I7nFNtslKH9k
-	O6wlOm4MmHUqgnvA92p0xA==
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1746749856;
+	 x=1746836256; bh=bgHJflbPL1ZQTYsAd2pB4rR8mFMyVmjAMJfDeemkDT8=; b=
+	gC5tilBAAP54Lw04gwewVC6RS8re5PYM06mtGXclfNM1rIiH68Dz0tPN3W/gehL+
+	YQMkieZNr8FzBW1Eq0d2SKKfEs3TajsAlTfjoLts9V7M+7BOUP00UTB5FUko0bv1
+	CEcWbxGmPLVTe6Faam1cV9GYtVWWDCw4Jon+6Yri1ZV9FlZTE9gUj7xqjZEZ6SSC
+	x70RLp37F6i2Pkf+Mc/Mu8fFaiHBKQTYCHTooCBYt+D3RzPy8H9dQKhFq4sonGyu
+	6tdN5iXWuZtZsQGEiY6s8wVH831jn3fgknqWu7RpdzauIz5cFoZyW4Nu/hiSkrRQ
+	oQ6F5zLq6eWEWCzXCGvZdA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-type:content-type:date:date
 	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
 	:message-id:mime-version:references:reply-to:subject:subject:to
 	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1746746920; x=1746833320; bh=IJqSlMGSjYMgJIHKbPM3YyFA5RfvykcsmoP
-	IZTS7ViQ=; b=QCgNjUWi8aq3iW4G7KF8GVI7fDf0OduNL/ZfYxOPVB8NV65LR89
-	ZSCfE9UP+gJa0t1Jaf0f83vp7JeqPhREOfAn8l9ZqQoYY3ehPROSKIkHL5DG06qm
-	YXKDD2fquwXyVeP3Kr1Xovu8G85cNt7UoSg68460eZnHBgsXyMC/sIGtW3n3lOi+
-	tV3TnQ7SLx9Fv4s+ICLA6aOVIUj9Ng+9XI4EDhetRim3Wlpo5sbTMrQL0nY5v6tZ
-	C8I/rtGtvJkhLVr0PQfaobMGaghZRjmw+qaOriQ2S5qX4zxsa4Dpd4NVTRTlhheZ
-	RDimG9kY0eikC1IAzGt9L23TIqhCN5Jr8CQ==
-X-ME-Sender: <xms:Jz4daLVjZ8aK7ifKCrZsXuBRWI0cQmSn_y47f1TBqtmiTg9jL1g_gg>
-    <xme:Jz4daDkubIZFMppuCgsXYHALF74KUaGu9__imNszAunfol_ZWn0DWTCJ5SSnBzH27
-    Xrhv1B2GNWqBQ>
-X-ME-Received: <xmr:Jz4daHY8g2-T-rmkcR5Yn1m739oGbxA1eEyRk5MLaN0-S4mRGJe0_-Cwlo-dQnMzTp3X5NnNkWhEYffP-wNMdEQ1vsXRfgGuBA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvledutdeiucetufdoteggodetrf
+	1746749856; x=1746836256; bh=bgHJflbPL1ZQTYsAd2pB4rR8mFMyVmjAMJf
+	DeemkDT8=; b=ssaGgH705DTYvEOmTn32UH7m1LusRBexQqyf+Z6EQf0M5OMB0C0
+	MkY+qWFDeUh7VIv6P/5YuUZZ8kYot8k6qLjtE8XuVIQVPjJ8bcGKg3kPnaey/LRN
+	rMhMsLlxl7LlebcV++G9BCW5rK6D/RkySncJ8jH+sOWejFURQqKZ5v/GFCo22XzO
+	kYOcXuLO/MnRKniFiTO6PZa+ArHeiGSV0e7S3yEEJl1Xo/ocb49pX7N5MVotJbcR
+	4LcW/BJ9OZ13jw0E7+iNud7SNseLDbP223IPdBcsaGHXbx2/kY2YLHzXRuR+vM4r
+	Ty//7aVwf/qtZSVAwhmcmewb5sB5is7BZdA==
+X-ME-Sender: <xms:n0kdaM_jyzM0Mj6qJqYvb4-ZOESNADMDs94fkOWFRsmvRpnVaDdmWA>
+    <xme:n0kdaEsVRgnEck-1zYNBg7wez07XgycZY2Zjd2kvObJw3cOeQOL1CalMpDI2nEDRG
+    gx_qkfPRPCZ0Q>
+X-ME-Received: <xmr:n0kdaCDLfIxUt3D02DlLhJEqxUt0OiMcTqW_DOuB_lSMKd4L9LsvbEEATgYalzwZue3dUu712EMScjA7hHwqDGD6nP5hE9tpAg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvleduudeiucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
     pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
     gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesghdtreertddt
@@ -83,15 +83,15 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvledutdeiucetufdote
     sheslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehsthgrsghlvgesvhhgvg
     hrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehsrghshhgrlheskhgvrhhnvghlrdho
     rhhg
-X-ME-Proxy: <xmx:Jz4daGUu3rh-StBKiPlTZ41MrdUyXyAJ2pifuJJh2wweN4FBEdwNAA>
-    <xmx:Jz4daFlDqOu-L9I3EGDruZbZlzU-auIdXm8z2YGDI8rEAygnQORrEg>
-    <xmx:Jz4daDc_GUggdqXWInxX46Mjq4TN89bKvS90mM2znBlsowoYkxwfeQ>
-    <xmx:Jz4daPHl3MxFpaiOXbuOchlS_zq_ng3WuMkUHzAK5kClTqPtDd4bkA>
-    <xmx:KD4daMKJ4vYNwSVTB04R7jTksfFNjj7jmnxeia2I_65Ja9_RMs8R9naC>
+X-ME-Proxy: <xmx:oEkdaMeoBDYQtrGOZOnFG1VmLHKojrxNh6QVm4NzkfIZImjijPZVTQ>
+    <xmx:oEkdaBNrVpVy4pPbBQkjnxPHw-mtom2XhGdXFIf9YyUkA3MPVjP_kw>
+    <xmx:oEkdaGlFaepKy2O1nPmTmaWgXUj0qzDJVSqaV9x0BWBf0cujwnMC7A>
+    <xmx:oEkdaDt1mOAbQN6NUCE7beRz8Gij4RqlB_bwM7qpCBYMWUwlhvvYHQ>
+    <xmx:oEkdaGSZkcJvQWro2fvms4v08_gsHZWCni7f9hkkYd5V_hI1eaVusN_S>
 Feedback-ID: i1568416f:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 8 May 2025 19:28:38 -0400 (EDT)
-Date: Fri, 9 May 2025 01:28:36 +0200
+ 8 May 2025 20:17:34 -0400 (EDT)
+Date: Fri, 9 May 2025 02:17:32 +0200
 From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
 To: Paul Menzel <pmenzel@molgen.mpg.de>
 Cc: Vitaly Lifshits <vitaly.lifshits@intel.com>,
@@ -102,9 +102,8 @@ Cc: Vitaly Lifshits <vitaly.lifshits@intel.com>,
 	Sasha Levin <sashal@kernel.org>
 Subject: Re: [Intel-wired-lan] [REGRESSION] e1000e heavy packet loss on
  Meteor Lake - 6.14.2
-Message-ID: <aB0-JLSDT03fosST@mail-itl>
-References: <Z_0GYR8jR-5NWZ9K@mail-itl>
- <50da66d0-fe66-0563-4d34-7bd2e25695a4@intel.com>
+Message-ID: <aB1JnJG_CH5vxAsw@mail-itl>
+References: <50da66d0-fe66-0563-4d34-7bd2e25695a4@intel.com>
  <b5d72f51-3cd0-aeca-60af-41a20ad59cd5@intel.com>
  <Z_-l2q9ZhszFxiqA@mail-itl>
  <d37a7c9e-7b3f-afc2-b010-e9785f39a785@intel.com>
@@ -113,6 +112,7 @@ References: <Z_0GYR8jR-5NWZ9K@mail-itl>
  <e0034a96-e285-98c8-b526-fb167747aedc@intel.com>
  <aB0zLQawNrImVqPE@mail-itl>
  <c918d4f5-ee53-4f64-b152-cea0f6d99c4f@molgen.mpg.de>
+ <aB0-JLSDT03fosST@mail-itl>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -120,16 +120,16 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="MKivEXeJngpk5/D4"
+	protocol="application/pgp-signature"; boundary="n/MWWdr08H3gZy0e"
 Content-Disposition: inline
-In-Reply-To: <c918d4f5-ee53-4f64-b152-cea0f6d99c4f@molgen.mpg.de>
+In-Reply-To: <aB0-JLSDT03fosST@mail-itl>
 
 
---MKivEXeJngpk5/D4
+--n/MWWdr08H3gZy0e
 Content-Type: text/plain; protected-headers=v1; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 9 May 2025 01:28:36 +0200
+Date: Fri, 9 May 2025 02:17:32 +0200
 From: Marek =?utf-8?Q?Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>
 To: Paul Menzel <pmenzel@molgen.mpg.de>
 Cc: Vitaly Lifshits <vitaly.lifshits@intel.com>,
@@ -141,129 +141,136 @@ Cc: Vitaly Lifshits <vitaly.lifshits@intel.com>,
 Subject: Re: [Intel-wired-lan] [REGRESSION] e1000e heavy packet loss on
  Meteor Lake - 6.14.2
 
-On Fri, May 09, 2025 at 01:13:28AM +0200, Paul Menzel wrote:
-> Dear Marek, dear Vitaly,
->=20
->=20
-> Am 09.05.25 um 00:41 schrieb Marek Marczykowski-G=C3=B3recki:
-> > On Thu, May 08, 2025 at 09:26:18AM +0300, Lifshits, Vitaly
-> > > On 4/21/2025 4:28 PM, Marek Marczykowski-G=C3=B3recki wrote:
-> > > > On Mon, Apr 21, 2025 at 03:19:12PM +0200, Marek Marczykowski-G=C3=
+On Fri, May 09, 2025 at 01:28:36AM +0200, Marek Marczykowski-G=C3=B3recki w=
+rote:
+> On Fri, May 09, 2025 at 01:13:28AM +0200, Paul Menzel wrote:
+> > Dear Marek, dear Vitaly,
+> >=20
+> >=20
+> > Am 09.05.25 um 00:41 schrieb Marek Marczykowski-G=C3=B3recki:
+> > > On Thu, May 08, 2025 at 09:26:18AM +0300, Lifshits, Vitaly
+> > > > On 4/21/2025 4:28 PM, Marek Marczykowski-G=C3=B3recki wrote:
+> > > > > On Mon, Apr 21, 2025 at 03:19:12PM +0200, Marek Marczykowski-G=C3=
 =B3recki wrote:
-> > > > > On Mon, Apr 21, 2025 at 03:44:02PM +0300, Lifshits, Vitaly wrote:
-> > > > > >=20
-> > > > > >=20
-> > > > > > On 4/16/2025 3:43 PM, Marek Marczykowski-G=C3=B3recki wrote:
-> > > > > > > On Wed, Apr 16, 2025 at 03:09:39PM +0300, Lifshits, Vitaly wr=
-ote:
-> > > > > > > > Can you please also share the output of ethtool -i? I would=
- like to know the
-> > > > > > > > NVM version that you have on your device.
+> > > > > > On Mon, Apr 21, 2025 at 03:44:02PM +0300, Lifshits, Vitaly wrot=
+e:
 > > > > > > >=20
-> > > > > > > driver: e1000e
-> > > > > > > version: 6.14.1+
-> > > > > > > firmware-version: 1.1-4
-> > > > > > > expansion-rom-version:
-> > > > > > > bus-info: 0000:00:1f.6
-> > > > > > > supports-statistics: yes
-> > > > > > > supports-test: yes
-> > > > > > > supports-eeprom-access: yes
-> > > > > > > supports-register-dump: yes
-> > > > > > > supports-priv-flags: yes
 > > > > > > >=20
+> > > > > > > On 4/16/2025 3:43 PM, Marek Marczykowski-G=C3=B3recki wrote:
+> > > > > > > > On Wed, Apr 16, 2025 at 03:09:39PM +0300, Lifshits, Vitaly =
+wrote:
+> > > > > > > > > Can you please also share the output of ethtool -i? I wou=
+ld like to know the
+> > > > > > > > > NVM version that you have on your device.
+> > > > > > > >=20
+> > > > > > > > driver: e1000e
+> > > > > > > > version: 6.14.1+
+> > > > > > > > firmware-version: 1.1-4
+> > > > > > > > expansion-rom-version:
+> > > > > > > > bus-info: 0000:00:1f.6
+> > > > > > > > supports-statistics: yes
+> > > > > > > > supports-test: yes
+> > > > > > > > supports-eeprom-access: yes
+> > > > > > > > supports-register-dump: yes
+> > > > > > > > supports-priv-flags: yes
+> > > > > > > >=20
+> > > > > > >=20
+> > > > > > > Your firmware version is not the latest, can you check with t=
+he board
+> > > > > > > manufacturer if there is a BIOS update to your system?
 > > > > > >=20
-> > > > > > Your firmware version is not the latest, can you check with the=
- board
-> > > > > > manufacturer if there is a BIOS update to your system?
+> > > > > > I can check, but still, it's a regression in the Linux driver -=
+ old
+> > > > > > kernel did work perfectly well on this hw. Maybe new driver tri=
+es to use
+> > > > > > some feature that is missing (or broken) in the old firmware?
 > > > > >=20
-> > > > > I can check, but still, it's a regression in the Linux driver - o=
-ld
-> > > > > kernel did work perfectly well on this hw. Maybe new driver tries=
- to use
-> > > > > some feature that is missing (or broken) in the old firmware?
-> > > >=20
-> > > > A little bit of context: I'm maintaining the kernel package for a Q=
-ubes
-> > > > OS distribution. While I can try to update firmware on my test syst=
-em, I
-> > > > have no influence on what hardware users will use this kernel, and
-> > > > which firmware version they will use (and whether all the vendors
-> > > > provide newer firmware at all). I cannot ship a kernel that is known
-> > > > to break network on some devices.
-> > > >=20
-> > > > > > Also, you mentioned that on another system this issue doesn't r=
-eproduce, do
-> > > > > > they have the same firmware version?
+> > > > > A little bit of context: I'm maintaining the kernel package for a=
+ Qubes
+> > > > > OS distribution. While I can try to update firmware on my test sy=
+stem, I
+> > > > > have no influence on what hardware users will use this kernel, and
+> > > > > which firmware version they will use (and whether all the vendors
+> > > > > provide newer firmware at all). I cannot ship a kernel that is kn=
+own
+> > > > > to break network on some devices.
 > > > > >=20
-> > > > > The other one has also 1.1-4 firmware. And I re-checked, e1000e f=
-rom
-> > > > > 6.14.2 works fine there.
->=20
-> > > Thank you for your detailed feedback and for providing the requested
-> > > information.
-> > >=20
-> > > We have conducted extensive testing of this patch across multiple sys=
-tems
-> > > and have not observed any packet loss issues. Upon comparing the ment=
-ioned
-> > > setups, we noted that while the LAN controller is similar, the CPU di=
-ffers.
-> > > We believe that the issue may be related to transitions in the CPU's =
-low
-> > > power states.
-> > >=20
-> > > Consequently, we kindly request that you disable the CPU low power st=
-ate
-> > > transitions in the S0 system state and verify if the issue persists. =
-You can
-> > > disable this in the kernel parameters on the command line with idle=
+> > > > > > > Also, you mentioned that on another system this issue doesn't=
+ reproduce, do
+> > > > > > > they have the same firmware version?
+> > > > > >=20
+> > > > > > The other one has also 1.1-4 firmware. And I re-checked, e1000e=
+ from
+> > > > > > 6.14.2 works fine there.
+> >=20
+> > > > Thank you for your detailed feedback and for providing the requested
+> > > > information.
+> > > >=20
+> > > > We have conducted extensive testing of this patch across multiple s=
+ystems
+> > > > and have not observed any packet loss issues. Upon comparing the me=
+ntioned
+> > > > setups, we noted that while the LAN controller is similar, the CPU =
+differs.
+> > > > We believe that the issue may be related to transitions in the CPU'=
+s low
+> > > > power states.
+> > > >=20
+> > > > Consequently, we kindly request that you disable the CPU low power =
+state
+> > > > transitions in the S0 system state and verify if the issue persists=
+=2E You can
+> > > > disable this in the kernel parameters on the command line with idle=
 =3Dpoll.
-> > > Please note that this command is intended for debugging purposes only=
-, as it
-> > > may result in higher power consumption.
+> > > > Please note that this command is intended for debugging purposes on=
+ly, as it
+> > > > may result in higher power consumption.
+> > >=20
+> > > I tried with idle=3Dpoll, and it didn't help, I still see a lot of pa=
+cket
+> > > losses. But I can also confirm that idle=3Dpoll makes the system use
+> > > significantly more power (previously at 25-30W, with this option stays
+> > > at about 42W).
+> > >=20
+> > > Is there any other info I can provide, enable some debug features or
+> > > something?
+> > >=20
+> > > I see the problem is with receiving packets - in my simple ping test,
+> > > the ping target sees all the echo requests (and respond to them), but
+> > > the responses aren't reaching ping back (and are not visible on tcpdu=
+mp
+> > > on the problematic system either).
 > >=20
-> > I tried with idle=3Dpoll, and it didn't help, I still see a lot of pack=
-et
-> > losses. But I can also confirm that idle=3Dpoll makes the system use
-> > significantly more power (previously at 25-30W, with this option stays
-> > at about 42W).
+> > As the cause is still unclear, can the commit please be reverted in the
+> > master branch due adhere to Linux=E2=80=99 no-regression policy, so tha=
+t it can be
+> > reverted from the stable series?
 > >=20
-> > Is there any other info I can provide, enable some debug features or
-> > something?
-> >=20
-> > I see the problem is with receiving packets - in my simple ping test,
-> > the ping target sees all the echo requests (and respond to them), but
-> > the responses aren't reaching ping back (and are not visible on tcpdump
-> > on the problematic system either).
+> > Marek, did you also test 6.15 release candidates?
 >=20
-> As the cause is still unclear, can the commit please be reverted in the
-> master branch due adhere to Linux=E2=80=99 no-regression policy, so that =
-it can be
-> reverted from the stable series?
->=20
-> Marek, did you also test 6.15 release candidates?
+> The last test I did was on 6.15-rc3. I can re-test on -rc5.
 
-The last test I did was on 6.15-rc3. I can re-test on -rc5.
+Same with 6.15-rc5.
 
 --=20
 Best Regards,
 Marek Marczykowski-G=C3=B3recki
 Invisible Things Lab
 
---MKivEXeJngpk5/D4
+--n/MWWdr08H3gZy0e
 Content-Type: application/pgp-signature; name=signature.asc
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAEBCAAdFiEEhrpukzGPukRmQqkK24/THMrX1ywFAmgdPiQACgkQ24/THMrX
-1yyHzQf9Ff8sqJ07qvWeLgrsktZeS+HffHZLA9w76Of342AJEHdXT0Sxem4VK0XW
-wZPWCa3Y0bOPpY+YsNk8X457RlfTr0LuSPi78Tq5Zsuj6B7nPORfbGKZPfBU1Ezl
-NtahR6GNlxLNvr0SJ/Kh4oXaMUurOR6noOCEN9QKnb02+hl8tKyN3HNAVm2VuVmh
-xmhIvAjXmR/x6Xm0q7ud+XEQKKE7PlxoXNcJ1acF4T7A4o0eRq8G35ol63pxsZo7
-QHYPxHuj1phbluQSSnZALgNcaiZ3ATC5s0G1dXYTnKb56FPS4E9FC27Wz8bxgfxG
-YwwZt06X8HvgnGTzeVrx77foDn85Tg==
-=K2no
+iQEzBAEBCAAdFiEEhrpukzGPukRmQqkK24/THMrX1ywFAmgdSZwACgkQ24/THMrX
+1yzoAQgAioPuDagIQxZe0pqULGrZjcrKqwKAiq91lo8jeuvVdB7Yd8j9r++ORea9
+uKZ9wGXKSwB8ZXBJ628zNTRbNUcLlCToAqmHkxXFvLk839u9G55nvVW6g8aT6Ahg
+zBkvllcehFRPSLPd0KfHPVaeoj6squmhG8TnFs/bsn/heimrnCHIzCU7RayK2tim
+UBRAwloLWZJmk5+p+fIvYoODDlvpUlXY8/pnaRFWb2YOMX+ylFzCF1MEelNh36VN
+w1WCAlylz7kMG0bp0NuVEequjHbOU+7A2ppHPQdEjFMj4h6bDvprc1SnzTG+0GR/
+AMGxAIrdhQnrGDsKREVZsassJjIG4Q==
+=NlgR
 -----END PGP SIGNATURE-----
 
---MKivEXeJngpk5/D4--
+--n/MWWdr08H3gZy0e--
 
