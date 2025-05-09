@@ -1,162 +1,144 @@
-Return-Path: <stable+bounces-143015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143016-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83C59AB0D7A
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 10:43:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C6C7AB0DB2
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 10:48:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AFF137B1537
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 08:42:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F37863A1FA9
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 08:46:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1941E28032E;
-	Fri,  9 May 2025 08:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDC0626FA57;
+	Fri,  9 May 2025 08:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ZOqpcOte"
+	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="HTww9T2a"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2459F276021;
-	Fri,  9 May 2025 08:40:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99D342741DF;
+	Fri,  9 May 2025 08:42:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.24
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746780023; cv=none; b=JrJ/mFwfiuSgFI+/fWVHRVV8cuGbu/jdOxKIsRLMCtM4dtJ0Q606Q2aydFA/FVeu1xJNUAmaj2VaBdVkD5JMcQvYqUqDMlBuUWcHHZNj16YsQhhgyV3hqEnBD4dRqBuic3lpL49dq4NUMMDv04uSIcFq+MU7Pk9tTO4xtzEeeeA=
+	t=1746780143; cv=none; b=TSD0PC59RbrN0GcF1swlmfxtMqf/ipdzFvKmptp09R7QlKXnnNVipC0WRJP/DBu8U4pnHM9F09N3UcACBlhZlruXju+GgDH7bYPqqyGLcOZGbPz7eNlXB3kWu6yaNM/frw6cdx/wKgoF7nMkuCDxvFnm9NbhlyzxgToK+cx4Vog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746780023; c=relaxed/simple;
-	bh=XXj1oNRwypz5WvQNDTyMQ6yX8egfGIoeXAAXQV9q0r4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=JppZJnM5LNMvGOqvWE9vbk/QWWYvPoYJT2N8I94bLxJgDUuN5RZRfELAHSB68UChVF4GrZYU3Ny97Lvb820vflKrZb1hfLudF8Qsh7NGekRiG6VwVazjLwn1cgCB6QiI9y+TDNEnd/kQ5eozYLov0TgsKnPsV/FdxT4+H3sDkFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ZOqpcOte; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279870.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5491eQCt014298;
-	Fri, 9 May 2025 08:40:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	MQ4gnvJqoaqJpYV4SnIYU5axM4mLnp+OzSnmH0W36Eg=; b=ZOqpcOteVLlFln2n
-	FQxtmGJzLwyOkSdV1FUUXbznKuXAhki8brm6txsKOlO7dWI5RvorSr75PtEld3MC
-	ZSjeXCegHo8zg/QjQxrE35HixE3SdUJif1SZM0DQPp8m1UtAxLLKsXNjeKFJutcA
-	rKctvykNAGuapQBdaFv+kZRfWUiyKBn9TwJqFKI+9+VcHInEt7KE2IoJ3DfTK0lT
-	QC+Uvs4k3vnkzc5o7qsSYfjrM8g4XCK1nusc8PB6JyVI9N6mMR7x635oSF6+iEdn
-	FAVsHvNYLPB72qBNmcE+XGmrxW7mF29n4TfSdhF6aAWnXmccqDRnFI0jTBch8atv
-	zzP7dQ==
-Received: from nalasppmta01.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46gnp4m05y-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 09 May 2025 08:40:18 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5498eGeQ000439
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 9 May 2025 08:40:17 GMT
-Received: from hu-dikshita-hyd.qualcomm.com (10.80.80.8) by
- nalasex01a.na.qualcomm.com (10.47.209.196) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Fri, 9 May 2025 01:40:12 -0700
-From: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Date: Fri, 9 May 2025 14:09:02 +0530
-Subject: [PATCH v5 16/26] media: iris: Remove unnecessary re-initialization
- of flush completion
+	s=arc-20240116; t=1746780143; c=relaxed/simple;
+	bh=SEoSsi3ett6o6pUdRiHxp7fe3M4N18U+wukVJjqimCo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NWitrcsm6WhzASPJq5JJwGPumNa5xSXU3gpJu+SC+WxDPS2aHDlCWi25AAZN+cPJZ9Po01KvfUxeR7lRXB2e2PpetwEMa/tedfcCX0bx78tADGmdfFBVjlAHzxgQBD7W4RQ12WIh0WzWKOQCnStu2ClRKEWBPwbTiya6SVUml40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=HTww9T2a; arc=none smtp.client-ip=212.227.17.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
+	s=s1-ionos; t=1746780092; x=1747384892; i=christian@heusel.eu;
+	bh=TIojQnKcGA8HumCrxDJ31cFYqtelx81BtXW1fwzCys8=;
+	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:In-Reply-To:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=HTww9T2aMAkVR2/R2rV/26WHTCdsJ4WTiH65/daYhEnY4wpH+nqlzmxOLRwB9zyL
+	 Qw50npQv2v0g72CwoCbCqS2Am2zo2aV/soxyA32IZaj9SjPU973bFJW4jL4H+QwDR
+	 6wM4dz6p7Id5qjo++5HRTefvTwnwXbObHeT/uXUQhPqBG7QGM+RSjsX0kzEJR9gIK
+	 ttYfX4dzfFcK2y5JQpqD5LzM6EgbXI+0XpH/OznCL8+2BDkeXfGZ9ShlEzG0ZKyqp
+	 i3GilVNGAqIuVrKvkTTkoKUw1A//ZrUFdYy7eOMxxYUJX5sBfRz0kAdAHsIXtj8Ib
+	 tamqE6TaZ0b0Uln9ng==
+X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
+Received: from localhost ([129.206.222.166]) by mrelayeu.kundenserver.de
+ (mreue107 [212.227.15.183]) with ESMTPSA (Nemesis) id
+ 1MOAmt-1uO4oP2IXZ-00I6FV; Fri, 09 May 2025 10:41:32 +0200
+Date: Fri, 9 May 2025 10:41:29 +0200
+From: Christian Heusel <christian@heusel.eu>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, 
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, 
+	hargar@microsoft.com, broonie@kernel.org
+Subject: Re: [PATCH 6.14 000/183] 6.14.6-rc1 review
+Message-ID: <e82396ea-ca7a-4ccf-814c-2d674698a839@heusel.eu>
+References: <20250507183824.682671926@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-ID: <20250509-video-iris-hevc-vp9-v5-16-59b4ff7d331c@quicinc.com>
-References: <20250509-video-iris-hevc-vp9-v5-0-59b4ff7d331c@quicinc.com>
-In-Reply-To: <20250509-video-iris-hevc-vp9-v5-0-59b4ff7d331c@quicinc.com>
-To: Vikash Garodia <quic_vgarodia@quicinc.com>,
-        Abhinav Kumar
-	<quic_abhinavk@quicinc.com>,
-        Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Stefan Schmidt
-	<stefan.schmidt@linaro.org>,
-        Hans Verkuil <hverkuil@xs4all.nl>
-CC: <linux-media@vger.kernel.org>, <linux-arm-msm@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        Dmitry Baryshkov
-	<dmitry.baryshkov@oss.qualcomm.com>,
-        Neil Armstrong
-	<neil.armstrong@linaro.org>,
-        Nicolas Dufresne
-	<nicolas.dufresne@collabora.com>,
-        Dan Carpenter <dan.carpenter@linaro.org>,
-        Dikshita Agarwal <quic_dikshita@quicinc.com>, <stable@vger.kernel.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1746779937; l=1621;
- i=quic_dikshita@quicinc.com; s=20240917; h=from:subject:message-id;
- bh=XXj1oNRwypz5WvQNDTyMQ6yX8egfGIoeXAAXQV9q0r4=;
- b=aAWZxwVHV7XjgGJ50+4fjOEo5nhegTeW568eIlyxouFjB+ZsOCBBHOK1wzX3ka7Difj2lew8F
- uQxORveJ5unByde8x0wlACjqEcRMXyJlpir3J7c0nF56ufraNzFh0mw
-X-Developer-Key: i=quic_dikshita@quicinc.com; a=ed25519;
- pk=EEvKY6Ar1OI5SWf44FJ1Ebo1KuQEVbbf5UNPO+UHVhM=
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: 9A32DUhvyJDahNkfBtxbVdGCcaXT2zQa
-X-Authority-Analysis: v=2.4 cv=E5XNpbdl c=1 sm=1 tr=0 ts=681dbf72 cx=c_pps
- a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
- a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VwQbUJbxAAAA:8
- a=COk6AnOGAAAA:8 a=KKAkSRfTAAAA:8 a=6av5jTddOrEJwTo9HyEA:9 a=QEXdDO2ut3YA:10
- a=TjNXssC_j7lpFel5tvFf:22 a=cvBusfyB2V15izCimMoJ:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA5MDA4MyBTYWx0ZWRfX3lMwQgruvQsn
- nPnPm2l9I7P9fIDYZeWeaAZE9g4P4Z+ccNuIr5BIVrCBGgmUs7ekOpS6VWsXAvY4lKTmk+H1mvN
- 8tJAaOX4p/cGdP96RPS0Cb0/m00MSeNm2sp2/IXDkA7dUk59PdUl7vZrAXbUv5mMhun7dclSi/L
- MSkIbKOpJxLi+qbV36DQwkpfdfPHYELFmxO7R0NPIfJ2gQ6uyWDCd0htmdhJAoVosnSGCNSp/Va
- qyq+wav9TG4FVpxrrr3GZ8wcG32y6DEhycXf8YICFG0cpkqAVoyNMZHPeaO7xSsFrppFw/UwG1O
- V4tyBhRO4O4mZ10H+8eEqKbRBWzV92igl7gxzLJnjfvYHGI873y5FVsSe0rtAJTACn3SKr5im0Y
- y8e9nPw9Je08DfkwafwCixUL69uhrxeshICNAkQ54Ve3az9q5CsrtGESwMUAz5vpfdSDvqMI
-X-Proofpoint-ORIG-GUID: 9A32DUhvyJDahNkfBtxbVdGCcaXT2zQa
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-09_03,2025-05-08_04,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 suspectscore=0 adultscore=0 mlxscore=0 malwarescore=0
- bulkscore=0 phishscore=0 spamscore=0 priorityscore=1501 mlxlogscore=999
- lowpriorityscore=0 impostorscore=0 classifier=spam authscore=0 authtc=n/a
- authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.19.0-2504070000 definitions=main-2505090083
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="u3uhr5mzdzw2ymni"
+Content-Disposition: inline
+In-Reply-To: <20250507183824.682671926@linuxfoundation.org>
+X-Provags-ID: V03:K1:RLGs2bY4QbKII0bIzj9LCZhoPD5sEVfNozmAVbsDnVyTS0+t+eX
+ oRvy41WJTiLPlWaBE5NmipmtHomEEVB2xy0kwThayvTLyGmEU8G0/N9R/JpxiMbZ8jFFjBa
+ EObbg3Sdzp6bl/EWMoGo3DZVxuiVcNYTMsBMgE+femjBMCGQ02ZyyhoifCQOmLqH/82NMlF
+ MyUrNfWzYJn45c1yj4q1Q==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:qDBu2Cn7V+U=;0U2DSi3Fck/RImMwAgSzQ3Vt11W
+ cQR0X5d2x+i6ipFcX6olsvezaHyyk0ffcacl8KfRBg4Cs3bYK6aNrJYt7i0aa6E2MmmPxtHAr
+ OMjGUHB98TuHhPEqre9Gfrrcaze7gbDLqyQWBqQ1Wo0gZMmcV/hghBgLwU9rWJ4GaYD/yffhK
+ XT+iscrAEfQqfUE7BiomfajbulKmcTMddsrNETfCorJ60gBFaCinVI4dcX3oo0oNdkSNbxkR9
+ i1RgN13XVFcc0C3XGTRJTLhf83Po3QcTYZ8HXG0Mc/LYEAtY4Q2TOO0rrBxHcSWmUBrGppkwn
+ wlYvzzlmF+Q6ZSDKtp3tpcyDGTBgfG+ecf58NH+aPkfap1IeCezoF64jQiHwQ+0mWoSw9Cihk
+ IgOkevsGv4ua7BLItu/RGtWsDRZffue0mxkNZRYQXWMHsQFCHPPxmWTpc5g/xmISXcwyW1VS/
+ HGbRwxKQvM2/MU5k5QMiUb9IV9fFw7uMjo1czHTmJHQcnf530mN2EN4u9FtptkR5ockQKMMYm
+ 3gPu7OCzuNsaSNOGzIag/LFSkGWg+oJ9qgZf767EQI30TtxoVW5n9nncPtJcsiz9rMJUjtKVA
+ 99XAFLi8l1fm0yG04gk88jNzko1pNmGnKZS//EV55g85lQg2jKbPs7wYRpVMmGIltTmsM94Xc
+ Nko6TZ+NBD8MEox1hwQVyuYqNsX4vymo+HfKqT8HYZfvU9eCCVjPccecwO1/xhjFzstgqXgg2
+ S7puy8cLshKiQnJfp728ZQbIO/XtOUSohMOH5L0NmESpXiHexoOVj1YJ0tTPqWKxa5dO1z3+v
+ J1MixErSRK0Y9WRXiwje5t5EWDUspIh29r/bqeRA/3gqpsGfro6sehEDhp0pxjEZnWzc2GJTc
+ ZGr4YosVFkMwTtfDB106P9fnUZB3BaMxsUJD72lmLajQzGuehTGxSbMtA7gk72EBpthXR22J1
+ hp0eO2avh8VdRR0Tk5wTioyglby3278eXzgfeOVTX5eK0rx/okctAjeXZiUcWKXrUkV0MNsMY
+ W9QDTtZW6PR2fWF6gBhlPQ1/2L5ldav6Yi+ybfXUFladU0mOM+t/MLLnQUNKDriAaT9k7DqC/
+ 94wSz9RdJW+fEJm8YrIThbpZWaxpa96CdgnOF2s4EWvIIttAbNVXqAiFXcuP46bL0RZDxdRNS
+ 7shnMHInCEN9HvdH7/R4s8fEMvSWJNp2McGlrXkaHz3KWCxIIheRvLOXkTKw4cwNoAboce4Ie
+ 4QiBaE7M2kPpel7cBAou8jb7Z6TohTPgv/QDwGZSFF/s6oNxHZe3Jg0AFsYbIRA9vpHLE0s2x
+ SeJEncSYQmtQ5mVS38KXMGgo8LSrevCcnlG9lo1ycZqJ26E5RZiOtkwp2tC9Vjy+UWR7dh62N
+ EdXSnpEQ0itG+uN7yo2AyaDuJ261ODBY9iYTrOHWJz0T3ipz2UaElqPn+4L9O4wGgDWvf/Pn/
+ zSe/0uQ==
 
-Currently, The flush completion signal is being re-initialized even
-though no response is expected during a sequence change.
 
-Simplify the code by removing re-initialization of flush completion
-signal as it is redundant.
+--u3uhr5mzdzw2ymni
+Content-Type: text/plain; protected-headers=v1; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 6.14 000/183] 6.14.6-rc1 review
+MIME-Version: 1.0
 
-Cc: stable@vger.kernel.org
-Fixes: 84e17adae3e3 ("media: iris: add support for dynamic resolution change")
-Acked-by: Vikash Garodia <quic_vgarodia@quicinc.com>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-HDK
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-QRD
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8650-HDK
-Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
----
- drivers/media/platform/qcom/iris/iris_hfi_gen1_response.c | 1 -
- 1 file changed, 1 deletion(-)
+On 25/05/07 08:37PM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.14.6 release.
+> There are 183 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>=20
+> Responses should be made by Fri, 09 May 2025 18:37:41 +0000.
+> Anything received after that time might be too late.
 
-diff --git a/drivers/media/platform/qcom/iris/iris_hfi_gen1_response.c b/drivers/media/platform/qcom/iris/iris_hfi_gen1_response.c
-index aaad32a70b9ecba94b4c3bfadd8687db7d22a5b4..c8c0aa23536b73a1d29f560c21900238e704c74d 100644
---- a/drivers/media/platform/qcom/iris/iris_hfi_gen1_response.c
-+++ b/drivers/media/platform/qcom/iris/iris_hfi_gen1_response.c
-@@ -201,7 +201,6 @@ static void iris_hfi_gen1_event_seq_changed(struct iris_inst *inst,
- 	iris_hfi_gen1_read_changed_params(inst, pkt);
- 
- 	if (inst->state != IRIS_INST_ERROR && !(inst->sub_state & IRIS_INST_SUB_FIRST_IPSC)) {
--		reinit_completion(&inst->flush_completion);
- 
- 		flush_pkt.shdr.hdr.size = sizeof(struct hfi_session_flush_pkt);
- 		flush_pkt.shdr.hdr.pkt_type = HFI_CMD_SESSION_FLUSH;
+Tested-by: Christian Heusel <christian@heusel.eu>
 
--- 
-2.34.1
+Tested on a ThinkPad E14 Gen 3 with a AMD Ryzen 5 5500U CPU and on the
+Steam Deck (LCD variant) aswell as a Framework Desktop.
 
+--u3uhr5mzdzw2ymni
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEb3ea3iR6a4oPcswTwEfU8yi1JYUFAmgdv7kACgkQwEfU8yi1
+JYWVNA/9GxCifOOnIUC22tB0WhuybgI+4sLGs/5alIJXygyPz0zwsQ9B+/aMfz6I
+ga/inQOu039/mJHjiymqF9CZ/Ly1U9HZz8WXEFbwqJTFpU49DdOzOyEyHVxJxs+G
+TgYwRy2dFSMpPS43SoY2TlICURgIJV2S7I2sQMYXgqSR8bQlxCf1zr0Qm/1u5v7k
+1jox+xPGjD4rmOVFb8mrvLZSUojhdEjTicMbFcEW49amY0Kz1F/93k6Pf++zD9KU
+sz4WD7HwDxcOX5SlcFstFXObuREp2B2/LLXBgwrl88d+usGgmk0WTrX9QFE9dGkW
+2ITYdMz26yeE/NmpDTLtPt7p/awsEsJ+Li89wWZPOZrwb/k7s01hil34XpMqd5KX
+4I2tTeWUTXgWKh6te4ImBtIs9SR26cbCzUCCTHph9tjSmQRdH5d9inxs756V4a6E
+SRoutX/g+gL23UIHEav/PJsOXn6kqGEg2FNbS52vrmOIR/XoUwBNfAoecP9XAlNF
+5QfgQs4vPUdUfevXIToSZ1MGeaZOPWfGc7RBxO0ttZQtvAz4QLQhOFiewlpcUtZl
+S8juvuCbAgJAuzxkttY1Q69z5J4XsAFDKCVUhsLc2vsgmg8zg67rNgqKChn8Zjsf
+gkuTLkHM0EcO15GtxK/tisCRA+3eHgxXw5SL8XJ2f5HFl5srVok=
+=g2YJ
+-----END PGP SIGNATURE-----
+
+--u3uhr5mzdzw2ymni--
 
