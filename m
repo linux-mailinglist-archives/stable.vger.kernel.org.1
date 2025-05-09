@@ -1,144 +1,148 @@
-Return-Path: <stable+bounces-143017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61F0DAB0DD1
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 10:52:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A49B1AB0DD6
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 10:53:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5FDD33A6803
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 08:51:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 729103A4608
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 08:53:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7D56272E48;
-	Fri,  9 May 2025 08:52:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF9F72741D0;
+	Fri,  9 May 2025 08:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UqzQPQdV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b4GXqnEG"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD7A721FF23;
-	Fri,  9 May 2025 08:52:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E7D72741BE
+	for <stable@vger.kernel.org>; Fri,  9 May 2025 08:53:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746780732; cv=none; b=UsTidk2uNCQjUzh13xAyBQDBRIoRNd1ZWvlsQeV9O7e52rWQyZEwiX3wIURiAbkH6MGiNsoqEWd+fCT4fA0gMZIFmoIgycgBbFyxyK4hWdXzLv6B+YivXg/WUYAjhfsxrPmuY7u07dEvI4VBjkP6yBJv1e83YnHQDXa02psNl7k=
+	t=1746780815; cv=none; b=pqZl3vXiKk5xE1ol8O2rYxqejdieNwCv3EBjwTsC/1R6xD0t02RkEQiw3H2PvRGz/6lZe3bOUImDcqovcS5hbPqfaU9zILYDFAkwztSiG7E5pfSP5j1Lb2hNzgQqf41dOof7DHQFZDofMHycxCNdbvuS5ivQZVlqo7u7lCjCeZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746780732; c=relaxed/simple;
-	bh=3NWLRY1fttsxR1X1w6G21knbvaA4o/ONT7PqaOvD1yQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=crgDaMku6jlLSjXKG2odwbeJCWnozbvBfgPGbMR6XyRL8AcWUIBNtuI6U+A1UNC4l37nScErys7mSIl+Pcyhys7hKltJuR/+Cmkq0yE3RqkJYP3WJn/CCy/Cbp+sD6V5CAaqRgthAF03JObyUHDl0vd/LgOf9VPLk2/pjv3v//Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UqzQPQdV; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1746780731; x=1778316731;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=3NWLRY1fttsxR1X1w6G21knbvaA4o/ONT7PqaOvD1yQ=;
-  b=UqzQPQdVgEgHeFp8TY3h+8/4nMGjBGK6KTkPipN/fmQihkF5VfIT0K68
-   W3V2HhzwMgpsmhpC2MEdQK7fIyCJAOtglN17cygQT84wfGPJD3hE3c5Em
-   KL+24WS7jZEQE3sodVdTizuQyGenZX+WcytbiU+QsA4OxPRC5yI+uXTKT
-   cUA6Pf3fC0gOwyzF69G3Nt89cBtp28JOuvIXnNRz/e0QT7vWOGqPgVUcb
-   ginyKFUlqXQgYhvfmaIgf+vsirEGt735WDE2XjH2sLf2vootsDAWXzxgQ
-   xqjHVhKYLE6bj21tYnkSwmiaRlIx+iKZbChauWlfltbUjEr7IKBtxEFx3
-   w==;
-X-CSE-ConnectionGUID: vPWNAPqmRLG8x5Kr7E2dvw==
-X-CSE-MsgGUID: +CW2Jrj7Ti2QDJibNYeGjg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="48300687"
-X-IronPort-AV: E=Sophos;i="6.15,274,1739865600"; 
-   d="scan'208";a="48300687"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2025 01:52:10 -0700
-X-CSE-ConnectionGUID: ScD8pEPGTUakD30H5rERfw==
-X-CSE-MsgGUID: u1qHCCtQSp6wjN4OXqQyVg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,274,1739865600"; 
-   d="scan'208";a="173725327"
-Received: from klitkey1-mobl1.ger.corp.intel.com (HELO pujfalus-desk.intel.com) ([10.245.246.132])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2025 01:52:08 -0700
-From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-To: lgirdwood@gmail.com,
-	broonie@kernel.org
-Cc: linux-sound@vger.kernel.org,
-	kai.vehmanen@linux.intel.com,
-	ranjani.sridharan@linux.intel.com,
-	yung-chuan.liao@linux.intel.com,
-	pierre-louis.bossart@linux.dev,
-	stable@vger.kernel.org
-Subject: [PATCH] ASoc: SOF: topology: connect DAI to a single DAI link
-Date: Fri,  9 May 2025 11:53:18 +0300
-Message-ID: <20250509085318.13936-1-peter.ujfalusi@linux.intel.com>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1746780815; c=relaxed/simple;
+	bh=YaU0wkVGCOIB5w6m0jLo2M6LUI8nU485ajGHfYaae98=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=YBQ59IRi3AexMhj1BlwSZvQLHP67NSyCdcAQIGj2p07HM0NgVsBcMCGjsC6u2l/o4k4Qe8xsIrISXqfucgpoMctjVsFoisJo8VdeE1YVJMcYPxOuOhH88KiN1TsPnVkXWQv48l7AvCrRNX6X6BZaj32HHLOe60b4ahQNjTAim5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b4GXqnEG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C373C4CEE9;
+	Fri,  9 May 2025 08:53:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1746780813;
+	bh=YaU0wkVGCOIB5w6m0jLo2M6LUI8nU485ajGHfYaae98=;
+	h=Subject:To:Cc:From:Date:From;
+	b=b4GXqnEGrN5VQ+coGRJ3uiWIzU/0gjffOBGQDIqq5hL7Ait0r57xumXqiuYLQjYAu
+	 A9Kor2v+43Rh6tFoiT/frFrW62yKqgAz0PSwfSHpWQ0g3YLOEMX1lnjLjYh3Z0daWn
+	 uRMZGoxBaXEuYHoBR21zooceUaqFvpxwb6GpkVNQ=
+Subject: FAILED: patch "[PATCH] firmware: arm_scmi: Fix timeout checks on polling path" failed to apply to 6.6-stable tree
+To: cristian.marussi@arm.com,huangjie1663@phytium.com.cn,sudeep.holla@arm.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Fri, 09 May 2025 10:53:30 +0200
+Message-ID: <2025050930-scuba-spending-0eb9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
-From: Kai Vehmanen <kai.vehmanen@linux.intel.com>
 
-The partial matching of DAI widget to link names, can cause problems if
-one of the widget names is a substring of another. E.g. with names
-"Foo1" and Foo10", it's not possible to correctly link up "Foo1".
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Modify the logic so that if multiple DAI links match the widget stream
-name, prioritize a full match if one is found.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Fixes: fe88788779fc ("ASoC: SOF: topology: Use partial match for connecting DAI link and DAI widget")
-Link: https://github.com/thesofproject/linux/issues/5308
-Signed-off-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
----
- sound/soc/sof/topology.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x c23c03bf1faa1e76be1eba35bad6da6a2a7c95ee
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025050930-scuba-spending-0eb9@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
-diff --git a/sound/soc/sof/topology.c b/sound/soc/sof/topology.c
-index 2d4e660b19d5..d612d693efc3 100644
---- a/sound/soc/sof/topology.c
-+++ b/sound/soc/sof/topology.c
-@@ -1071,7 +1071,7 @@ static int sof_connect_dai_widget(struct snd_soc_component *scomp,
- 				  struct snd_sof_dai *dai)
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From c23c03bf1faa1e76be1eba35bad6da6a2a7c95ee Mon Sep 17 00:00:00 2001
+From: Cristian Marussi <cristian.marussi@arm.com>
+Date: Mon, 10 Mar 2025 17:58:00 +0000
+Subject: [PATCH] firmware: arm_scmi: Fix timeout checks on polling path
+
+Polling mode transactions wait for a reply busy-looping without holding a
+spinlock, but currently the timeout checks are based only on elapsed time:
+as a result we could hit a false positive whenever our busy-looping thread
+is pre-empted and scheduled out for a time greater than the polling
+timeout.
+
+Change the checks at the end of the busy-loop to make sure that the polling
+wasn't indeed successful or an out-of-order reply caused the polling to be
+forcibly terminated.
+
+Fixes: 31d2f803c19c ("firmware: arm_scmi: Add sync_cmds_completed_on_ret transport flag")
+Reported-by: Huangjie <huangjie1663@phytium.com.cn>
+Closes: https://lore.kernel.org/arm-scmi/20250123083323.2363749-1-jackhuang021@gmail.com/
+Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
+Cc: stable@vger.kernel.org # 5.18.x
+Message-Id: <20250310175800.1444293-1-cristian.marussi@arm.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
+
+diff --git a/drivers/firmware/arm_scmi/driver.c b/drivers/firmware/arm_scmi/driver.c
+index 1c75a4c9c371..0390d5ff195e 100644
+--- a/drivers/firmware/arm_scmi/driver.c
++++ b/drivers/firmware/arm_scmi/driver.c
+@@ -1248,7 +1248,8 @@ static void xfer_put(const struct scmi_protocol_handle *ph,
+ }
+ 
+ static bool scmi_xfer_done_no_timeout(struct scmi_chan_info *cinfo,
+-				      struct scmi_xfer *xfer, ktime_t stop)
++				      struct scmi_xfer *xfer, ktime_t stop,
++				      bool *ooo)
  {
- 	struct snd_soc_card *card = scomp->card;
--	struct snd_soc_pcm_runtime *rtd;
-+	struct snd_soc_pcm_runtime *rtd, *full, *partial;
- 	struct snd_soc_dai *cpu_dai;
- 	int stream;
- 	int i;
-@@ -1088,12 +1088,22 @@ static int sof_connect_dai_widget(struct snd_soc_component *scomp,
- 	else
- 		goto end;
+ 	struct scmi_info *info = handle_to_scmi_info(cinfo->handle);
  
-+	full = NULL;
-+	partial = NULL;
- 	list_for_each_entry(rtd, &card->rtd_list, list) {
- 		/* does stream match DAI link ? */
--		if (!rtd->dai_link->stream_name ||
--		    !strstr(rtd->dai_link->stream_name, w->sname))
--			continue;
-+		if (rtd->dai_link->stream_name) {
-+			if (!strcmp(rtd->dai_link->stream_name, w->sname)) {
-+				full = rtd;
-+				break;
-+			} else if (strstr(rtd->dai_link->stream_name, w->sname)) {
-+				partial = rtd;
-+			}
-+		}
-+	}
+@@ -1257,7 +1258,7 @@ static bool scmi_xfer_done_no_timeout(struct scmi_chan_info *cinfo,
+ 	 * in case of out-of-order receptions of delayed responses
+ 	 */
+ 	return info->desc->ops->poll_done(cinfo, xfer) ||
+-	       try_wait_for_completion(&xfer->done) ||
++	       (*ooo = try_wait_for_completion(&xfer->done)) ||
+ 	       ktime_after(ktime_get(), stop);
+ }
  
-+	rtd = full ? full : partial;
-+	if (rtd) {
- 		for_each_rtd_cpu_dais(rtd, i, cpu_dai) {
+@@ -1274,15 +1275,17 @@ static int scmi_wait_for_reply(struct device *dev, const struct scmi_desc *desc,
+ 		 * itself to support synchronous commands replies.
+ 		 */
+ 		if (!desc->sync_cmds_completed_on_ret) {
++			bool ooo = false;
++
  			/*
- 			 * Please create DAI widget in the right order
--- 
-2.49.0
+ 			 * Poll on xfer using transport provided .poll_done();
+ 			 * assumes no completion interrupt was available.
+ 			 */
+ 			ktime_t stop = ktime_add_ms(ktime_get(), timeout_ms);
+ 
+-			spin_until_cond(scmi_xfer_done_no_timeout(cinfo,
+-								  xfer, stop));
+-			if (ktime_after(ktime_get(), stop)) {
++			spin_until_cond(scmi_xfer_done_no_timeout(cinfo, xfer,
++								  stop, &ooo));
++			if (!ooo && !info->desc->ops->poll_done(cinfo, xfer)) {
+ 				dev_err(dev,
+ 					"timed out in resp(caller: %pS) - polling\n",
+ 					(void *)_RET_IP_);
 
 
