@@ -1,137 +1,175 @@
-Return-Path: <stable+bounces-142965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C469CAB08E4
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 05:31:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30A0EAB0A1C
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 07:58:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DE413ABC61
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 03:31:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2C7E8B22860
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 05:56:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 630BD22D78F;
-	Fri,  9 May 2025 03:31:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2510C269AFD;
+	Fri,  9 May 2025 05:57:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Hbp3Y5e0"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="n1QvwF1K"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com [209.85.217.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C3734964E;
-	Fri,  9 May 2025 03:31:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5686D22D9EF;
+	Fri,  9 May 2025 05:57:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746761483; cv=none; b=PkiUM/GBjhCu2hw31zYgb6KFfCJQIgaFrUlUXTHXYg2slQKQCS22lfujNdSfmLL5hIAkcP7xoZWZyzC10hQfFqaKZiStktREkHdCJvLMwqq0zBpBi9GO4goMWecjuS8cLO5RE/LNcThLI9ECwyYOqN0Gqbze7IVCazB+k3Fo6oo=
+	t=1746770255; cv=none; b=Y1h/Gpowx5T2ErzIeMFaAOYjTMpwcWd8mnrRAKNReD0taXW4KGY+ImvG1oR7jioYzMus1kusn/veIUYGHkLOBXN0/n9uUpVl4vL7kIn0uyp3onPH+rCYmpVHD9hnlgkCGi9UVfrvOt8TKsrugmS1QoNWbBECeF4yM/WDtX2bhFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746761483; c=relaxed/simple;
-	bh=+Yt6T0u3fYfQL7cdc7BFMhOrNEKA8KJXzQY/Qxnx5gY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NBYg4PSaRXAURqE7dOdqaxS4SuefhqMSN4pT3LfBTsw2d65FB0aXt6qZCFbKXBU5+mY0tuf40CeofWJM5XEyW995Z4E9wjplPHI21RQjLI66vgljlvWqgP7WG6Z+Xq6BXWigZKsG8H+dQygQ/v+yIPl9aeSXusfsZJvz/+71y1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Hbp3Y5e0; arc=none smtp.client-ip=209.85.217.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f49.google.com with SMTP id ada2fe7eead31-4ddac386a29so605587137.3;
-        Thu, 08 May 2025 20:31:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746761480; x=1747366280; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4A2ix+KLqr1uAddQxC8meUMDCd4s6wELmtjquDmWLdA=;
-        b=Hbp3Y5e0nNVwKZRE2bWOf/nvF16Oqv6lsWvXkR20NeEYThlkm0kVKIDzPMOOkNYjOD
-         dXeKqUS/pN4PrxzDklt748QWkJuq7qCrU/FRmHfqff7MJ7YRcUjkC763BWnd6qZljIuQ
-         8LoQmjOY3iY/WdqSv4RZbc/xp1jijCvud0RFYa/jTmP6FZdN0CWxDnspQ9REb82zl/HH
-         zJMTDr/bVYgwUSDOVkbepbhek7e5U7la2qHfehDeoVt0vN300J4QDeEWbL8Fyrgye+zG
-         0pmm4ebBcLh0Uwwr7CF30Xof3Fvelst96kuzFvyJvm5DhCL4ps0wAM5A6PLdLRD0ETVP
-         OX9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746761480; x=1747366280;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4A2ix+KLqr1uAddQxC8meUMDCd4s6wELmtjquDmWLdA=;
-        b=ApLTyUdSZf+AnhF8cphmikc+XBe12TwPKgGwJeEwJPEtteBAn0uBsJznn6MhFsFZQr
-         JHVP8WcaYEGMMcMPj9NUgL7FmHFcaR3sXv9ItEb7dTKyREY/G4kp+zAR2/WeT8uNgm2F
-         KfFaADG32shB68bYlUCoYZcn8xsNDKDfgubszNFvp5oIM+QTwks8iiNun4tzUh7k5fzU
-         xz3KniG0lIsfem6+HywZlJ3jlCfisRQ3K82+4IG9/VFM9rHcLAzc44JrDWhquKlpapjF
-         dPy7uksDWvdCS/hds+oaQLnZvxE2N2G2nRanODNgkuREUiSii02cCnW2l54WdYQ8x3/J
-         ticw==
-X-Forwarded-Encrypted: i=1; AJvYcCWS8Fw3B+iz4LW/AUadfgl5oW3izjj/mObBB/1il+X0utKEjwCertAnW4MQMXT/jXTfsI0iGHvt@vger.kernel.org, AJvYcCX3qcac7BGGECl9sPHwSb+3AxTOokhFOg2mqVTA+F2/b03t1hlYLnm5yo5EQtGrlFwy0jhUcXGWXWpX5l4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzojKidh1dG7fIe3oWUCnHNQSStLbsGpGdCohuBpBmgOXR44tUd
-	4ugeoRN716ZzUdgElAZcycBqFozQFY9HjW9cY26+3gM6ePlap8dTMbKR1XEu+kwtgw23ffnG59R
-	gEllci7FQA+qdC2K3zRC+xvVTx2k=
-X-Gm-Gg: ASbGncssZP+m6iwKK5fDCoYWthK5NgMXEagPmc/RdNFUnhY3NzDGsMlggzAqSeGcr2c
-	Nxch+Jet8qCNoy09RcqGQs0lGEBuo0S7ZjmCcVPd0AMvVSZDCBsH1v9J/U+h9SsbM4ipGNJh37x
-	13gKH4SfdyEQki0dcAiGt0Zg==
-X-Google-Smtp-Source: AGHT+IGc5+Cslf0S1acbclvSNhn/uwwmcTG8ZUvvlGJo/X0wH/M3Gq+zbif2xm4TrTenOWf1MumTFqC9O986MUqRF8I=
-X-Received: by 2002:a05:6102:8097:b0:4c1:774b:3f7a with SMTP id
- ada2fe7eead31-4deed3d4b5bmr1410263137.16.1746761480413; Thu, 08 May 2025
- 20:31:20 -0700 (PDT)
+	s=arc-20240116; t=1746770255; c=relaxed/simple;
+	bh=VbeeMITY7uwElAuo02LWfKhQw5qHzgaBs/IxmqV/O24=;
+	h=From:Subject:Date:Message-ID:MIME-Version:Content-Type:To:CC; b=CLoyK8IEo1HB5IvObtLFW6wRGHbMfY7hKrYpEcTz89ff7TFnpY0R4fbhhrows1C5mja8rPNmZwJ8ZBO7MfYGHwj4URNGXNY5Jr1qTXb8KcPHgrxj2I4Q4rBXQo7sjyYDtIeefuOQEHIpjeIngLEV1VHL1w7XFLym40EYSch4wNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=n1QvwF1K; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 548KAh4U013634;
+	Fri, 9 May 2025 05:57:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=qcppdkim1; bh=HsG3OxjZ+G1ri3CZO5LLbu
+	NF82bXyymJSOT2yBQtCjI=; b=n1QvwF1KJKOyne0+6DXCQhB5kX8ERNi/Ukk3zn
+	Gk4177FnSHauOzWMLW0wc960sIovh4pi5N7TlZ/mJNnACWBDqm6OSgt9JugWLdWC
+	H8FFRILzvPYcGLnmjBu7rFyB8kMLZmONO9PfRp49GG4y3uCpxtj975Jf6oSTJe1h
+	YWl0U5lUvsqKEpEphkUKg9HvmXdJL5J+b6XwN7/fA6+y7n3tpyQ1ON1rKBmS1Fs8
+	F1YIF/tzSPxWU23Y1S8/HCjyLcMRBJDj+XZHpb6rEiZRopmv+JbT4lvy3JOyJ8P1
+	Xi4fkKZR5LKIKtZ5l6BSIqF+Wq/bl8IQplsWqq7rlU3XVRvw==
+Received: from nalasppmta05.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46gt52tr9k-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 09 May 2025 05:57:30 +0000 (GMT)
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
+	by NALASPPMTA05.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 5495vTYg014239
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 9 May 2025 05:57:29 GMT
+Received: from hu-skakitap-hyd.qualcomm.com (10.80.80.8) by
+ nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Thu, 8 May 2025 22:57:23 -0700
+From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+Subject: [PATCH v3 0/4] clk: qcom: Add camera clock controller support for
+ sc8180x
+Date: Fri, 9 May 2025 11:26:46 +0530
+Message-ID: <20250509-sc8180x-camcc-support-v3-0-409ca8bfd6b8@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250509020238.3378396-1-xiaqinxin@huawei.com> <20250509020238.3378396-2-xiaqinxin@huawei.com>
-In-Reply-To: <20250509020238.3378396-2-xiaqinxin@huawei.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Fri, 9 May 2025 15:31:09 +1200
-X-Gm-Features: AX0GCFuxI4KztwbrtFwtCfTebZzuXx55Bo7QyZab2Vhdl2Eshu9OBelft6iLsz8
-Message-ID: <CAGsJ_4zrCiugrAPw-aExgSMZXYBBUqLyyWbcpKH8RdhKnHxj9g@mail.gmail.com>
-Subject: Re: [PATCH v3 1/4] dma-mapping: benchmark: Add padding to ensure uABI
- remained consistent
-To: Qinxin Xia <xiaqinxin@huawei.com>, Marek Szyprowski <m.szyprowski@samsung.com>, 
-	Robin Murphy <robin.murphy@arm.com>
-Cc: yangyicong@huawei.com, hch@lst.de, iommu@lists.linux.dev, 
-	jonathan.cameron@huawei.com, prime.zeng@huawei.com, fanghao11@huawei.com, 
-	linux-kernel@vger.kernel.org, linuxarm@huawei.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAB6ZHWgC/4XNvQ6CMBDA8Vchna3pFwWcfA/jUI4iN0CxhQZDe
+ HcLkw7G8X+X+91KgvVoA7lkK/E2YkA3pJCnjEBnhoel2KQmgomcKSFogJKXbKFgegAa5nF0fqK
+ VKdO+aISRFUm3o7ctLod7u6fuMEzOv443ke/Tf2LklFFdcc1Vw2XL9PU5I+AAZ3A92c0oPhzJf
+ jlid+q6zrlqlS7g29m27Q1PE92OBAEAAA==
+X-Change-ID: 20250422-sc8180x-camcc-support-9a82507d2a39
+To: Bjorn Andersson <andersson@kernel.org>,
+        Michael Turquette
+	<mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, Rob Herring
+	<robh@kernel.org>,
+        Krzysztof Kozlowski <krzk+dt@kernel.org>,
+        Conor Dooley
+	<conor+dt@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>
+CC: Ajit Pandey <quic_ajipan@quicinc.com>,
+        Imran Shaik
+	<quic_imrashai@quicinc.com>,
+        Taniya Das <quic_tdas@quicinc.com>,
+        "Jagadeesh
+ Kona" <quic_jkona@quicinc.com>,
+        <linux-arm-msm@vger.kernel.org>, <linux-clk@vger.kernel.org>,
+        <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Satya Priya Kakitapalli
+	<quic_skakitap@quicinc.com>,
+        <stable@vger.kernel.org>,
+        Vladimir Zapolskiy
+	<vladimir.zapolskiy@linaro.org>,
+        Dmitry Baryshkov
+	<dmitry.baryshkov@oss.qualcomm.com>,
+        Konrad Dybcio
+	<konrad.dybcio@oss.qualcomm.com>
+X-Mailer: b4 0.14.2
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA5MDA1NSBTYWx0ZWRfX34nVZBEcMRNn
+ iuHpcg3/2BbXocD5qyQz8n7iCRXNZK2ArkqibPSrWX7RdrWcA/KjL9Nd08GOdixCFj8MBCZgSNk
+ k1IB+lXImMA+gPX4YIRRJS2kRLFzqQImt8A3DunvqEU99YBjxyLUbaJbI2z2JHtAp+1BVlL3WCt
+ JvlUPB7sXvCgV8jmQobUsdXLz7vqdVlqkX/0w+AUIIa9XT05/5ZLv85QZpQNVQ9EEuPc6Npg6EZ
+ UEipq4E57humXExBL4umXaY/i7YPP0eVfxQfewK4/ClK0y0slbIsFUcrcK95kcEtlbopFie/bQL
+ E6OyKe2RVMKdIiOUpgh1frUCnyhfISvc7Qd1WTVHwKxSlhxH7AvfhIb6nutB0Ed2FeTKwyXEahO
+ aAbpS8I80VzNkHtwnJfh57QAoGFkPJ3sfqXVvhqzI6kJ4s45nc1kZ3ap5KmS18dfxpp+fAjq
+X-Authority-Analysis: v=2.4 cv=LKFmQIW9 c=1 sm=1 tr=0 ts=681d994a cx=c_pps
+ a=ouPCqIW2jiPt+lZRy3xVPw==:117 a=ouPCqIW2jiPt+lZRy3xVPw==:17
+ a=GEpy-HfZoHoA:10 a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VwQbUJbxAAAA:8
+ a=COk6AnOGAAAA:8 a=lu7Rr3KQo9iiGg5JtfsA:9 a=QEXdDO2ut3YA:10
+ a=TjNXssC_j7lpFel5tvFf:22
+X-Proofpoint-ORIG-GUID: 1yO4pUnJ5Bkn-1reZrjzMTgVOqJz4T2n
+X-Proofpoint-GUID: 1yO4pUnJ5Bkn-1reZrjzMTgVOqJz4T2n
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-09_02,2025-05-08_04,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ mlxlogscore=906 clxscore=1015 lowpriorityscore=0 suspectscore=0
+ malwarescore=0 mlxscore=0 bulkscore=0 spamscore=0 phishscore=0 adultscore=0
+ priorityscore=1501 impostorscore=0 classifier=spam authscore=0 authtc=n/a
+ authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2504070000 definitions=main-2505090055
 
-On Fri, May 9, 2025 at 2:02=E2=80=AFPM Qinxin Xia <xiaqinxin@huawei.com> wr=
-ote:
->
-> The padding field in the structure was previously reserved to
-> maintain a stable interface for potential new fields, ensuring
-> compatibility with user-space shared data structures.
-> However,it was accidentally removed by tiantao in a prior commit,
-> which may lead to incompatibility between user space and the kernel.
->
-> This patch reinstates the padding to restore the original structure
-> layout and preserve compatibility.
->
-> Fixes: 8ddde07a3d28 ("dma-mapping: benchmark: extract a common header fil=
-e for map_benchmark definition")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Qinxin Xia <xiaqinxin@huawei.com>
+This series adds support for camera clock controller base driver,
+bindings and DT support on sc8180x platform.
 
-+Marek, +Robin
+Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+---
+Changes in v3:
+- Drop Fixes tag in patch [1/4]. Dropped unused gpu_iref and
+  aggre_ufs_card_2 clk bindings.
+- Move the allOf block below required block in bindings patch.
+- Remove the unused cam_cc_parent_data_7 and cam_cc_parent_map_7
+  in the driver patch. Reported by kernel test bot.
+- Link to v2: https://lore.kernel.org/r/20250430-sc8180x-camcc-support-v2-0-6bbb514f467c@quicinc.com
 
-Acked-by: Barry Song <baohua@kernel.org>
+Changes in v2:
+- New patch [1/4] to add all the missing gcc bindings along with
+  the required GCC_CAMERA_AHB_CLOCK
+- As per Konrad's comments, add the camera AHB clock dependency in the
+  DT and yaml bindings.
+- As per Vladimir's comments, update the Kconfig to add the SC8180X config
+  in correct alphanumerical order.
+- Link to v1: https://lore.kernel.org/r/20250422-sc8180x-camcc-support-v1-0-691614d13f06@quicinc.com
 
-> ---
->  include/linux/map_benchmark.h | 1 +
->  1 file changed, 1 insertion(+)
->
-> diff --git a/include/linux/map_benchmark.h b/include/linux/map_benchmark.=
-h
-> index 62674c83bde4..2ac2fe52f248 100644
-> --- a/include/linux/map_benchmark.h
-> +++ b/include/linux/map_benchmark.h
-> @@ -27,5 +27,6 @@ struct map_benchmark {
->         __u32 dma_dir; /* DMA data direction */
->         __u32 dma_trans_ns; /* time for DMA transmission in ns */
->         __u32 granule;  /* how many PAGE_SIZE will do map/unmap once a ti=
-me */
-> +       __u8 expansion[76];     /* For future use */
->  };
->  #endif /* _KERNEL_DMA_BENCHMARK_H */
-> --
-> 2.33.0
->
+---
+Satya Priya Kakitapalli (4):
+      dt-bindings: clock: qcom: Add missing bindings on gcc-sc8180x
+      dt-bindings: clock: Add Qualcomm SC8180X Camera clock controller
+      clk: qcom: camcc-sc8180x: Add SC8180X camera clock controller driver
+      arm64: dts: qcom: Add camera clock controller for sc8180x
 
-Thanks
-Barry
+ .../bindings/clock/qcom,sc8180x-camcc.yaml         |   67 +
+ arch/arm64/boot/dts/qcom/sc8180x.dtsi              |   14 +
+ drivers/clk/qcom/Kconfig                           |   10 +
+ drivers/clk/qcom/Makefile                          |    1 +
+ drivers/clk/qcom/camcc-sc8180x.c                   | 2889 ++++++++++++++++++++
+ include/dt-bindings/clock/qcom,gcc-sc8180x.h       |   10 +
+ include/dt-bindings/clock/qcom,sc8180x-camcc.h     |  181 ++
+ 7 files changed, 3172 insertions(+)
+---
+base-commit: bc8aa6cdadcc00862f2b5720e5de2e17f696a081
+change-id: 20250422-sc8180x-camcc-support-9a82507d2a39
+
+Best regards,
+-- 
+Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+
 
