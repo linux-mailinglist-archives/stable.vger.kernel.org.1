@@ -1,92 +1,57 @@
-Return-Path: <stable+bounces-143032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143033-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4B8DAB0F98
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 11:50:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A239AB0F9A
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 11:51:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D84E91C034CE
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 09:51:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B22F3B3FD0
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 09:51:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D192D28D8E9;
-	Fri,  9 May 2025 09:50:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YW0IKNpn"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAB1428D8F5;
+	Fri,  9 May 2025 09:51:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD34928D85C;
-	Fri,  9 May 2025 09:50:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDB2D28C86D;
+	Fri,  9 May 2025 09:51:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.178.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746784245; cv=none; b=M2Z1mVb40sdg/SsIN6OvqM5FAeiAgqCN+CHnPxFB7CZJEBQVtrI0Cg8E/WtMgvLd/+py5lZnMqQsz+Rbe0eeomK4lirE6CKVJDv9a+BOZS4iINUUXNpi8WmSvQXyTXQ/jNbHtcYGPnB1b8xonWcD7DcPHySTGIztEKO4bj3J2kA=
+	t=1746784288; cv=none; b=Cr4m1evIz9+pT8P0qf2M5ZTIFAgfRAeI3j7CAq6/p/rFtcesy32tuzHL9T/CxcJVPEOy46j0HKvMkxqlllRkTfKoeVvPNDHAcNvdl5DYdNR4TWCNnYRuCpP3+96sPhWq9dlRCKrxSv1LR3e6Jrloh0dReP+scanYEjUXO7nur6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746784245; c=relaxed/simple;
-	bh=jQYrurA0SVtU9Vgm5m13+oVS1uHGNfI5uZAX31EmPXA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CHAR3yNbvCa4Gw47WXjXrH2T1YpTWuEAOZYmRqoDDW9oGPgD7jvUK+xj+NfutAtn0TdhbF09j/EkepErV96jKBwQ+AkV8dhz7h/Wj+9XAWqPQgFCY2C0+a4Jq0eS18nuwq4Fo1mQZzV6Ghv6vkroByN0md4a+if4ASxks7DSlRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YW0IKNpn; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3a1c85e77d7so741560f8f.0;
-        Fri, 09 May 2025 02:50:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746784242; x=1747389042; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=3TNF/WTwb6fH59tCvVgLWV5Zr9bwM2Z/zWAmtxnfJ/g=;
-        b=YW0IKNpnasXIpthKh9VqKDLM4w+hIcg1BewphLSSAL2F083JD0ZBm1fV7dIsqWYQin
-         Gx44+f5XW3fD++L3/ZTg/eKULvW0kUmMO6HNNJzRkEGVeaAN+Zx9/CdAnC+kTbV1QY8C
-         FTUPeppnrGBxIBi85jkL74lVXwSr2ZHjSp3tx/ChKBDsRYiJh0Y0guIr0HUmBkGp3sz3
-         oYAqkjkkGsCpDVn0to/NzEXWiDiIRBXPhxNMKLbnaMO2UkNM2/NOm7dCd43FhRCFALot
-         dWAyp8yBf10M0VasSNsiacwORDrOThoItVK8jjvs3JVRJ6ozLhxEzXFz8eh1/tiF3+qN
-         vi0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746784242; x=1747389042;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3TNF/WTwb6fH59tCvVgLWV5Zr9bwM2Z/zWAmtxnfJ/g=;
-        b=lWycEPrHf7TJ+c0Mo43vM4mjlPD5x84UNcp+FwHLkLmEhMycb2AgKtYj4As1OeWJB6
-         BRYTG36k3pkv7lsaS4s+omFWSQDLUkmCifaUqPR0PjKpwK3V9aCZvVquFEQwDiXSJR1U
-         ZYabW07sMO+rNCTZrV9hUlpXMWI3C59QjiDI6uPWaZTd+3OEyfm8gWluenMaAqe/4laG
-         xarK+PQfHAxZTXf+YRHu5C6w47SQ2R6e1xah8uIMYSyIc/GDTQoGgaxZItIUMsPM7r/X
-         G0yLX8yXL9gyYZV0b+k5HTIEBI1mqSpI8d94mos64SuFXx5x6IPoIK6Hl51msizFhv8S
-         /MnQ==
-X-Forwarded-Encrypted: i=1; AJvYcCURTOwv/bBkNQ4ypNBQDDfwjc6xiY28YAsc+HDkkQV2Gz1zSQrkLCCUCrVlnQo7MBBCKfkFnjc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywt+nRoiWk7GEKa8n4St8hXwNIy/OdYHTVgs3VLpC4kFzKkKjZQ
-	JgZ5C1xyEPliTJfNkp4eU08uMjNQjF9NAM4fkfY3uNQ0QhlpMbQS
-X-Gm-Gg: ASbGncuQFacl/O4iyDXWphPno+6No79UkpxnlLIqyL49y8WDdGrGKFhoW6kclC8C3uc
-	SpjTWvi/LoLE4eB5TYFEPO9/inwT+TVnyV8us0pOPv0usxyagXQm1H7bUb+5gX3vHmNuj5g8co0
-	r3xRR619PsShRyDV6sx+OlZJiYlhXzpHsDYn3nHpJY0iq5mcG5IORHx27bwl/gDGfeU9fJa0Hvc
-	FCOgjl5bzLU/+KKGFSQmwBzCXh5MMQgsKlbO+Iz3JMqptL8WdPx0j7YHsZec1SmkEf17GK4YGVA
-	s1kd9exFx7uM8YJmeu5gx7xTLKHWIbXohSVT42vpR5V4PytCkw8FpDqec1DLpHyKJPzdN4NoG/h
-	sptPZ9XUP1BxX6X6ngF0ASuDkYzZoi/ghcuObyv2ArRiI
-X-Google-Smtp-Source: AGHT+IGMXb7WjOlHsAN4McILuPOq3l/6AWG6K2Gldt3FlkNGZYP2N4+a8wqcjJih8Qzz9h7iz5UpcA==
-X-Received: by 2002:a05:6000:2512:b0:3a0:809f:1c95 with SMTP id ffacd0b85a97d-3a1f64f1443mr2138130f8f.53.1746784241837;
-        Fri, 09 May 2025 02:50:41 -0700 (PDT)
-Received: from shift.daheim (p200300d5ff34db0050f496fffe46beef.dip0.t-ipconnect.de. [2003:d5:ff34:db00:50f4:96ff:fe46:beef])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-442cd3b7e26sm66058155e9.37.2025.05.09.02.50.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 May 2025 02:50:41 -0700 (PDT)
-Received: from chuck by shift.daheim with local (Exim 4.98.2)
-	(envelope-from <chuck@shift.daheim>)
-	id 1uDKNM-000000008gK-2htd;
-	Fri, 09 May 2025 11:50:40 +0200
-From: Christian Lamparter <chunkeey@gmail.com>
-To: linux-kernel@vger.kernel.org,
-	linux-um@lists.infradead.org
-Cc: benjamin.berg@intel.com,
-	sashal@kernel.org,
-	johannes@sipsolutions.net,
-	richard@nod.at,
-	stable@vger.kernel.org
-Subject: [PATCH 6.12] Revert "um: work around sched_yield not yielding in time-travel mode"
-Date: Fri,  9 May 2025 11:50:39 +0200
-Message-ID: <20250509095040.33355-1-chunkeey@gmail.com>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1746784288; c=relaxed/simple;
+	bh=d+lSoU9WOMdXgvMp5Q1zAJQSs3xXOLPO8P24pOZXoKc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JmtSTR5jZf89LPzUc7AgpcwEfaQnZmIs+WGeSp7dHvcSL3GafRaF4fcyA1mRHD55xfyiQGj/WOAxnIqF0gt7gQD2/LnFjNaYHgss/taR2qlLJ47XugrujNeHKX3yAve3trm5Mf4/RCeiKBKiXHjXuxy1dY1grE8xbiK8Ovb0M10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.178.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54970X4Q030883;
+	Fri, 9 May 2025 09:51:19 GMT
+Received: from ala-exchng01.corp.ad.wrs.com (ala-exchng01.wrs.com [147.11.82.252])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 46d8c175xd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Fri, 09 May 2025 09:51:19 +0000 (GMT)
+Received: from ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.43; Fri, 9 May 2025 02:51:18 -0700
+Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
+ ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server id
+ 15.1.2507.43 via Frontend Transport; Fri, 9 May 2025 02:51:15 -0700
+From: <jianqi.ren.cn@windriver.com>
+To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>
+CC: <patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+        <jianqi.ren.cn@windriver.com>, <clm@fb.com>, <josef@toxicpanda.com>,
+        <dsterba@suse.com>, <linux-btrfs@vger.kernel.org>, <wqu@suse.com>,
+        <fdmanana@suse.com>
+Subject: [PATCH 6.6.y] btrfs: don't BUG_ON() when 0 reference count at btrfs_lookup_extent_info()
+Date: Fri, 9 May 2025 17:51:14 +0800
+Message-ID: <20250509095114.3245010-1-jianqi.ren.cn@windriver.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -94,85 +59,96 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Authority-Analysis: v=2.4 cv=NIjV+16g c=1 sm=1 tr=0 ts=681dd017 cx=c_pps a=/ZJR302f846pc/tyiSlYyQ==:117 a=/ZJR302f846pc/tyiSlYyQ==:17 a=dt9VzEwgFbYA:10 a=iox4zFpeAAAA:8 a=t7CeM3EgAAAA:8 a=cm_jlSa5FMeQIn3fhkUA:9 a=WzC6qhA0u3u7Ye7llzcV:22
+ a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-GUID: sOA-Ia8K_QMhNvex2gnJ07Tf4xbbIyYr
+X-Proofpoint-ORIG-GUID: sOA-Ia8K_QMhNvex2gnJ07Tf4xbbIyYr
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA5MDA5NSBTYWx0ZWRfXx5zwhR94oQrT o2JRLFMhgwB7QSVCo2fTAE6V5ymDgVnonARq52L9djRLuA2Rk8D6M7qN3Xawc+DRNaLIGuhQm0v 8B7LKRmFV6BNoQDpft8JAY+d4XvO7ym+lwR9OTLFKVHaG8KRR6FMfgyxnH9ryXDv0N4VrloOta3
+ jiJpk4IaN+xSnmmcGoTNaLoqh6hgCVkQd/VavYNrU8O8SZaSr0WPqM/8rIp2lW4nEb8pxv9m+CW sk5qVA6g9gThHSgkJcLlZRAp0SVGNr01TdHa05z7pLzGc9CSaWZKimwWFtZCjGDlrYb2+0NhphH UbyzpexxCm0gCRMC+00FS8YQZgrT9bWahT6XTGk+scTjYagnRYLbOzBK4EFodVRzLVUMXynapGB
+ PiWXwsLv5WcDCNO0oI4SyQO2iZzmZBp51kLo+49EUQXNDCU7BqKAa306ARi/ej+mB7CQj9d5
+X-Sensitive_Customer_Information: Yes
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-09_03,2025-05-08_04,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ priorityscore=1501 bulkscore=0 mlxscore=0 spamscore=0 malwarescore=0
+ clxscore=1011 adultscore=0 impostorscore=0 mlxlogscore=861 phishscore=0
+ lowpriorityscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.21.0-2504070000
+ definitions=main-2505090095
 
-This reverts commit 887c5c12e80c ("um: work around sched_yield not yielding in time-travel mode")
-added with v6.12.25.
+From: Filipe Manana <fdmanana@suse.com>
 
-Reason being that the patch depends on at least
-commit 0b8b2668f998 ("um: insert scheduler ticks when userspace does not yield")
-in order to build. Otherwise it fails with:
+[ Upstream commit 28cb13f29faf6290597b24b728dc3100c019356f ]
 
-| /usr/bin/ld: arch/um/kernel/skas/syscall.o: in function `handle_syscall':
-|      linux-6.12.27/arch/um/kernel/skas/syscall.c:43:(.text+0xa2): undefined
-| reference to `tt_extra_sched_jiffies'
-| collect2: error: ld returned 1 exit status
+Instead of doing a BUG_ON() handle the error by returning -EUCLEAN,
+aborting the transaction and logging an error message.
 
-The author Benjamin Berg commented: "I think it is better to just not backport
-commit 0b8b2668f998 ("um: insert scheduler ticks when userspace does not yield")
-"
-
-Link: https://lore.kernel.org/linux-um/8ce0b6056a9726e540f61bce77311278654219eb.camel@sipsolutions.net/
-Cc: <stable@vger.kernel.org> # 6.12.y
-Cc: Benjamin Berg <benjamin.berg@intel.com>
-Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
-
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+[Minor conflict resolved due to code context change.]
+Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
 ---
-
-Just in case, this throws someone else for a space-time loop:
-
-What's interessting/very strange strange about this time-travel stuff:
-|commit 0b8b2668f998 ("um: insert scheduler ticks when userspace does not yield")
-
- $ git describe 0b8b2668f998
-=> v6.12-rc2-43-g0b8b2668f998
-(from what I know this is 43 patches on top of v6.12-rc2 as per the man page:
-"The command finds the most recent tag that is reachable from a commit. [...]
-it suffixes the tag name with the number of additional commits on top of the tagged
-object and the abbreviated object name of the most recent commit."
-
-But it was merged as part of: uml-for-linus-6.13-rc1 :
-https://lore.kernel.org/lkml/1155823186.11802667.1732921581257.JavaMail.zimbra@nod.at/
+Verified the build test
 ---
- arch/um/include/linux/time-internal.h |  2 --
- arch/um/kernel/skas/syscall.c         | 11 -----------
- 2 files changed, 13 deletions(-)
+ fs/btrfs/extent-tree.c | 25 ++++++++++++++++++++-----
+ 1 file changed, 20 insertions(+), 5 deletions(-)
 
-diff --git a/arch/um/include/linux/time-internal.h b/arch/um/include/linux/time-internal.h
-index 138908b999d7..b22226634ff6 100644
---- a/arch/um/include/linux/time-internal.h
-+++ b/arch/um/include/linux/time-internal.h
-@@ -83,8 +83,6 @@ extern void time_travel_not_configured(void);
- #define time_travel_del_event(...) time_travel_not_configured()
- #endif /* CONFIG_UML_TIME_TRAVEL_SUPPORT */
+diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
+index af03a1c6ba76..ef77d4208510 100644
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -164,6 +164,14 @@ int btrfs_lookup_extent_info(struct btrfs_trans_handle *trans,
+ 			ei = btrfs_item_ptr(leaf, path->slots[0],
+ 					    struct btrfs_extent_item);
+ 			num_refs = btrfs_extent_refs(leaf, ei);
++			if (unlikely(num_refs == 0)) {
++				ret = -EUCLEAN;
++				btrfs_err(fs_info,
++			"unexpected zero reference count for extent item (%llu %u %llu)",
++					  key.objectid, key.type, key.offset);
++				btrfs_abort_transaction(trans, ret);
++				goto out_free;
++			}
+ 			extent_flags = btrfs_extent_flags(leaf, ei);
+ 		} else {
+ 			ret = -EUCLEAN;
+@@ -177,8 +185,6 @@ int btrfs_lookup_extent_info(struct btrfs_trans_handle *trans,
  
--extern unsigned long tt_extra_sched_jiffies;
+ 			goto out_free;
+ 		}
 -
- /*
-  * Without CONFIG_UML_TIME_TRAVEL_SUPPORT this is a linker error if used,
-  * which is intentional since we really shouldn't link it in that case.
-diff --git a/arch/um/kernel/skas/syscall.c b/arch/um/kernel/skas/syscall.c
-index a5beaea2967e..b09e85279d2b 100644
---- a/arch/um/kernel/skas/syscall.c
-+++ b/arch/um/kernel/skas/syscall.c
-@@ -31,17 +31,6 @@ void handle_syscall(struct uml_pt_regs *r)
- 		goto out;
+-		BUG_ON(num_refs == 0);
+ 	} else {
+ 		num_refs = 0;
+ 		extent_flags = 0;
+@@ -208,10 +214,19 @@ int btrfs_lookup_extent_info(struct btrfs_trans_handle *trans,
+ 			goto search_again;
+ 		}
+ 		spin_lock(&head->lock);
+-		if (head->extent_op && head->extent_op->update_flags)
++		if (head->extent_op && head->extent_op->update_flags) {
+ 			extent_flags |= head->extent_op->flags_to_set;
+-		else
+-			BUG_ON(num_refs == 0);
++		} else if (unlikely(num_refs == 0)) {
++			spin_unlock(&head->lock);
++			mutex_unlock(&head->mutex);
++			spin_unlock(&delayed_refs->lock);
++			ret = -EUCLEAN;
++			btrfs_err(fs_info,
++			  "unexpected zero reference count for extent %llu (%s)",
++				  bytenr, metadata ? "metadata" : "data");
++			btrfs_abort_transaction(trans, ret);
++			goto out_free;
++		}
  
- 	syscall = UPT_SYSCALL_NR(r);
--
--	/*
--	 * If no time passes, then sched_yield may not actually yield, causing
--	 * broken spinlock implementations in userspace (ASAN) to hang for long
--	 * periods of time.
--	 */
--	if ((time_travel_mode == TT_MODE_INFCPU ||
--	     time_travel_mode == TT_MODE_EXTERNAL) &&
--	    syscall == __NR_sched_yield)
--		tt_extra_sched_jiffies += 1;
--
- 	if (syscall >= 0 && syscall < __NR_syscalls) {
- 		unsigned long ret = EXECUTE_SYSCALL(syscall, regs);
- 
+ 		num_refs += head->ref_mod;
+ 		spin_unlock(&head->lock);
 -- 
-2.49.0
+2.34.1
 
 
