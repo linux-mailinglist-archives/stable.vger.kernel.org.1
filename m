@@ -1,157 +1,282 @@
-Return-Path: <stable+bounces-142957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CA2EAB07C1
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 04:06:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 136F2AB0821
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 05:00:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2B6C3B9D96
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 02:06:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 354011BA1F7F
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 03:00:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A75A242927;
-	Fri,  9 May 2025 02:06:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ABB5236451;
+	Fri,  9 May 2025 03:00:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 429462AE96;
-	Fri,  9 May 2025 02:06:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746756402; cv=none; b=XZmfO0p6DzPkKDdavD9hRxj5Fp8/xtD1HZEpQlcPOZZd3upvwr+FNP95qWXLwdlQHi+pXrBvfBbzmUp83SrtC/pWAyZ+PdoxsxC0cdyej//W8MTGdjNgHvycZQWkjyld6Nl7LwpgMX9sXsaEp7bLpGaunPDgFPtZCZX07QbmPRU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746756402; c=relaxed/simple;
-	bh=eOG+6uPAgB6kk87jbQU1jozNIa3ia4nGj0etd0Lgu8Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qR/O+i8XR+6f7IPb0E+AF9IsbquFzsFDPq4oWGkZn473d8OreZGu2OS4QBL/zoY/nUPQaJbF9/vv7dH41tYja39wfcenTCB4OewlGR2Q/Pgu12oJveTnBC27kemnyjV7O+/QWJRTAzX3W5qyBPx5tM3mt2ssoedumXXCXhHXgjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.2.10.34])
-	by gateway (Coremail) with SMTP id _____8BxjawlYx1oktPaAA--.63242S3;
-	Fri, 09 May 2025 10:06:29 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.10.34])
-	by front1 (Coremail) with SMTP id qMiowMBxLscjYx1owBG_AA--.32426S2;
-	Fri, 09 May 2025 10:06:27 +0800 (CST)
-From: Tianyang Zhang <zhangtianyang@loongson.cn>
-To: chenhuacai@kernel.org,
-	kernel@xen0n.name,
-	bigeasy@linutronix.de,
-	clrkwllms@kernel.org,
-	rostedt@goodmis.org
-Cc: loongarch@lists.linux.dev,
-	linux-rt-devel@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Tianyang Zhang <zhangtianyang@loongson.cn>,
-	stable@vger.kernel.org,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH] LoongArch: Prevent cond_resched() occurring within kernel-fpu
-Date: Fri,  9 May 2025 10:06:26 +0800
-Message-Id: <20250509020626.23414-1-zhangtianyang@loongson.cn>
-X-Mailer: git-send-email 2.20.1
+Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25EFA8F77;
+	Fri,  9 May 2025 03:00:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.166.238
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1746759628; cv=fail; b=RvouXOz11RBvwXkOcNfTYoQ46QOk8rmVrPLecpMg+YiBKOQv6348Zh9cZYxk9duWrpkUemtCDTRt3vUqFwvScdiQzFmb11V/eDhRsyvnDy2jtx18YF1KBIvG86gYdnGxZoXzdd0GtTf22oZZFwyVBz8Ve+MPcSjB6T648BGcu14=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1746759628; c=relaxed/simple;
+	bh=hwrnLTZYrDjkawKmqleyfErTjJHMG7CARyWxMVScU3k=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=MQdUwDkbqDst3jiqgkc6dZQmghzKO7YUuk6pklzVcrvyrkFLURKKd3InELf5aElOug8mffouk8qBlRQeATINTWfdegRs/Bv6YiuUUmXI5qGV/KBbGFI4GqSg7a5qLxXYt6LSm8Wy1ankrO2G6+C5KZnKxMV3YJPIQ9Cu4H6d+HE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eng.windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=fail smtp.client-ip=205.220.166.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=eng.windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250810.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5491auCe009035;
+	Thu, 8 May 2025 19:22:33 -0700
+Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2044.outbound.protection.outlook.com [104.47.55.44])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 46dee3ep1q-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 08 May 2025 19:22:32 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MT2jZ+cYjVpKke4Tpw6mAi+hIdeNYeyw7JFoNmdJi3vZtuat40dGVz5AQvZSXwWMeDypg6groOk5nr6fXwFKy8oCpf3fDHBariCMa6RLruVD4WSrYc/BxEofFn8d74V/L4ScoBhRo5r3lJrDlqjytMEgmC59Jjlo24kMrkG83qiLD51orlMrFVubAh/OAaT1Q4Jq00hYSC9UF0N0IZW08Wta5VojVNsqEBuSVptJB3GmD5mHJKavgcJQGEdGBtv01eKsJEO/vkl74kcs3A2+kM4SqWWeTuJ0xPP+Oo1wYQcZplMOWo39YBmaDokD4rqtgy2awZMUFU9kaXioCB1+3g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nquZu8StwxLh11s8bzPsKtO/Gk+SMMxvQfexFl/T9Ug=;
+ b=IeOIWclTttbgBXciE0fTf9lJ8EPhi8xY0QE0XsV+aeMADDx9jddwowoVGBpX8+uEbkAhRzPKUp5ZB5I+kyFT77c2gstH8oHQPC/wd2Xvc24Ik0a2lmW3Gy3fs+OmowE7kfVaRKktrdAMI6iDk9jQruRwmzvdrfqgz53EPASlZqgKbzlptUrV9hgOkr3qyPFTAmKxKK8wWZJl16lHgtROI/ilSkfFgoCS4JdH+Kjv3ASXvSNMwpDAYg7TR3SBOErxMXs/L21VGwRk+Gltub+sznlmvXU+rHDHNhv+n+Z/LoDm58Y30CpwO/xLv4VM/wkhMVl6bCCjXUtdqZ8paiETxA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=windriver.com; dmarc=pass action=none
+ header.from=eng.windriver.com; dkim=pass header.d=eng.windriver.com; arc=none
+Received: from BYAPR11MB3832.namprd11.prod.outlook.com (2603:10b6:a03:ff::18)
+ by MN2PR11MB4680.namprd11.prod.outlook.com (2603:10b6:208:26d::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.21; Fri, 9 May
+ 2025 02:22:26 +0000
+Received: from BYAPR11MB3832.namprd11.prod.outlook.com
+ ([fe80::83ab:15a8:cce6:b531]) by BYAPR11MB3832.namprd11.prod.outlook.com
+ ([fe80::83ab:15a8:cce6:b531%7]) with mapi id 15.20.8722.020; Fri, 9 May 2025
+ 02:22:25 +0000
+From: Zhi Yang <Zhi.Yang@eng.windriver.com>
+To: stable@vger.kernel.org, zack.rusin@broadcom.com
+Cc: xiangyu.chen@windriver.com, zhe.he@windriver.com,
+        bcm-kernel-feedback-list@broadcom.com, dri-devel@lists.freedesktop.org,
+        maaz.mombasawala@broadcom.com, martin.krastev@broadcom.com,
+        linux-graphics-maintainer@vmware.com, sroland@vmware.com,
+        airlied@linux.ie, daniel@ffwll.ch, sumit.semwal@linaro.org,
+        christian.koenig@amd.com, linux-kernel@vger.kernel.org,
+        linux-media@vger.kernel.org, linaro-mm-sig@lists.linaro.org
+Subject: [PATCH 5.10.y] drm/vmwgfx: Fix a deadlock in dma buf fence polling
+Date: Fri,  9 May 2025 10:22:08 +0800
+Message-Id: <20250509022208.3027108-1-Zhi.Yang@eng.windriver.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: TYCPR01CA0131.jpnprd01.prod.outlook.com
+ (2603:1096:400:26d::19) To BYAPR11MB3832.namprd11.prod.outlook.com
+ (2603:10b6:a03:ff::18)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowMBxLscjYx1owBG_AA--.32426S2
-X-CM-SenderInfo: x2kd0wxwld05hdqjqz5rrqw2lrqou0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7uryUKFyDXFyxuryDtr15WrX_yoW5Jr4Upr
-	yfur95tr4UJa4ava9rJw18Cry5Awn7G34xWa9xG34rA34Yqr18Xwn29r12qF12vFyIyFyS
-	vFnYqrWI93W5A3cCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUB0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6rxl6s0DM2kKe7AKxVWUXVWUAwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
-	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUAVWU
-	twAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI4
-	8JMxkF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j
-	6r4UMxCIbckI1I0E14v26r1Y6r17MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwV
-	AFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv2
-	0xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4
-	v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AK
-	xVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxUcpBTUUUUU
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BYAPR11MB3832:EE_|MN2PR11MB4680:EE_
+X-MS-Office365-Filtering-Correlation-Id: ed6f2ef7-ea34-49de-172b-08dd8ea0566e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|52116014|7416014|1800799024|366016|7053199007|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?ixYj37VkPBCNlBPuGf3cxMo/dF/uex1EL/qd60HEZWoGFnXSLXDyLlZ4Yd14?=
+ =?us-ascii?Q?jtIORj8MQvzxwcci4FySlgNvjSgtIK9ftOziQLCZoy6+DGgBs0+p9UbRGCOi?=
+ =?us-ascii?Q?vZfoUAs1W0KgSp2VhihKJkbD6Fy1B/l288tI+hsG4NlBLqK5bSzX43GamMjE?=
+ =?us-ascii?Q?0OICDJEA3A9/zDwqRuTqnXDzBdaF87igHpV0u5iRrGTmkuNTh0f7N84j2mhz?=
+ =?us-ascii?Q?3vwYcN8AgNIljWRmEXPZm4McLj/hKBu44E3FnrZ8dr4CNtDZJSieVg1esckE?=
+ =?us-ascii?Q?KV3UEDSlEFZKl+weFz6DGy0eNcLr82oTy3zB5ZnfNMQieNWr7o/102Sy2tw5?=
+ =?us-ascii?Q?t5CjgncJz7ypAJPysxBS71gceqsIsRN8+oT65dDWSwNOWDl3NYFo290kgQ71?=
+ =?us-ascii?Q?eOHxmP/oUMeSb/5h22pmDPpRm6xRUEZo+GycbWwueTZc26eRXLLquXbJx+jw?=
+ =?us-ascii?Q?dJOHG+EDay1d01ppQPUwEL2xkmff3ABwqICdFG4XWErXQY0Yxi02acoGOtgk?=
+ =?us-ascii?Q?MwCA3z4kzxd67Gp6O7BRvAvWvPJnYSrTnGSZ+IWXlG/QZJBfpHN8kGbh2Uu6?=
+ =?us-ascii?Q?FqegUbP5xeL03NmiufZlgLvVkwSnjPpX3DyFE3gkMStFkBXVGjynS+FiaxyI?=
+ =?us-ascii?Q?rlSM+taX7M1RaBiApiD0piIWWLMZfwh/na/JQQIFoJ8YVx+C5ye0zdG/2LVx?=
+ =?us-ascii?Q?WRzE+Ee3rnFQ9Dzjhu6gt2oewifQ2dWqdK9IZwZu2oXMaFcLj4eF4grcWN33?=
+ =?us-ascii?Q?xV1NezGvo3Ra2YWS0qejvGRURJINKCQCxrPk6hViUsPT3rN25Y6Woobzq6Pl?=
+ =?us-ascii?Q?VTtrDijqRa4osVja+Y5sXlAYBXUPr7g+amr2Y+bqGztxO5ITPbOTlUa5zbhJ?=
+ =?us-ascii?Q?eOFK/m179asIcZDoiEBnOmZIapqKDo7QtWHp/Upx7/f43J39eboSInSZyWwL?=
+ =?us-ascii?Q?7Zgm7WmNhr68I1sNqMgKl6BYbarYH7b+G15gnsmU4+f+VYxTkD8zTiZahzY7?=
+ =?us-ascii?Q?c9S3KjAkYhlLQvEkJWkBgcYhgDxcM/RnOtFSV7iWhH7nqa2jzHkeWAWhDAoo?=
+ =?us-ascii?Q?RG9zDXL9w25vfkHdt5DQfc/+txeUhxzbRnkcaz+8xKo4AWV1HYyBfvYWAD3k?=
+ =?us-ascii?Q?3fjyHV/ws7UCuZqpZOIPrYKpdSLNnGvoifv8HKR8T1FLeSAzjHbzWwsrodAd?=
+ =?us-ascii?Q?ysfGPcg5rVkhfRytJxktl9dY5CaXWv4UDh/CeAmB0dchSivdze3krm3sJxdE?=
+ =?us-ascii?Q?AE9jifFceBgZG5iihP/Jmlxgt7aw/tkNr9P+PT3UFrkcuipcoAXk6EzVPsDl?=
+ =?us-ascii?Q?RwH8yFvnXYcHX1vKpGsfhliKAh21Z3CWqi/q5vhoxwa+UULKIbgP5u8Z1wms?=
+ =?us-ascii?Q?fKEkDmiOO+pstxgO+E2VNmrjxk+gQR7ma9LIor/cyptwNg5ADyXz1RosSp36?=
+ =?us-ascii?Q?rIdR0mkkJxY=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB3832.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(7416014)(1800799024)(366016)(7053199007)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?31Q9JVrtUiueGmmaW9oFV4Hp/F+qXt9Q+UKKsgLwmcII4bFV3bbJGbUQg+xU?=
+ =?us-ascii?Q?oYUdSVc5HJvrNwfjgenrxoZNOmIPBeLTF3SwguHosE+IGxK9jSW+/N6T/EG6?=
+ =?us-ascii?Q?r2N5Jn1BPQQS3ubtzQt6d2HGEev3KqFrk9qAquFcJYCZrwSMka/TG5iGZWi8?=
+ =?us-ascii?Q?1XK+5BGDI0WqheNRbdY7h3g/j+JgjcsQuF6wwIhrUOtXnvwIPADssBTndmxT?=
+ =?us-ascii?Q?BQD+8OnIFtyB1RU6Tb7bRMEoqt5DsAnGFVhXdmzEeJmImVPnPdmUQ4+q6dqy?=
+ =?us-ascii?Q?omTooGXjX5BrTsl2us7CNVjGjTYFrzP5qN/6RtuqgSQ0DUJPUajAB8tOrRFr?=
+ =?us-ascii?Q?ropY3V29eY/iqzw5cXzSjfX75a1a1RZAJuh/Uam2vvGX6fGppNVvDqZazitQ?=
+ =?us-ascii?Q?H5muSoX7zbUUNzmmFCgDE0ON/b4ftLwx3k/ipzlnw61ursGtLttjwZWb50Vb?=
+ =?us-ascii?Q?lI4WCUqXfpKVyLPuLkj3Cdh+iNr7pN7KSb0jKiQ3hL01RqX0FGa23SAiHa6z?=
+ =?us-ascii?Q?bsvpr8MV1RbzGShL3lDS9FeMLO+9nquhcJNlPV7WNPOkjmqgwi+cfihyQnpz?=
+ =?us-ascii?Q?7ajFFqqYK8uOHOoP4oD6VczDHhbeyekrNCxu/Jo3PO8Oe14VZt7o5k5kaWF8?=
+ =?us-ascii?Q?0rwypwptv+GlPsCmsr4ssyJl7XyvA80o50b5cU2nrQV0IoQbPEisAHMabZHf?=
+ =?us-ascii?Q?oou1yRMclFCcnd9iNOoz9wpA/Fhv3aBrEw2IaIIyAXLg2dKa4j9P5EiMYgsb?=
+ =?us-ascii?Q?m9w/ZZ+GPz/O/BBB1mVm73h6bwrSCMjZnxR02/NwfhE8g28NwonnwxBWojRL?=
+ =?us-ascii?Q?CQBAup0w4y8hVEtrNcgzgGcrK496amrKJ0otyJy/chSpR95eBoaTW1GryOh0?=
+ =?us-ascii?Q?9LsivYweVWsNV+FAffQhV33pWNeksFTZPqFU/0UxNKVaJCdQr3AWrZqAArdx?=
+ =?us-ascii?Q?+/2effAo6BvrYochW7XZpjMyd6NT4kgkhT8888+gKsa14dNpMKWSvV04EcGc?=
+ =?us-ascii?Q?03XHC4OmvRhpF5E+XlSkRjUblUfUyyWkoxeSmPy7QOUw7Z2qE2vwFaLdsKgi?=
+ =?us-ascii?Q?ezo4e8cmLsK8upxAMVmMP3f97zyncbQC7oquWgwC+/8u0nFtLkGFrabIaP8G?=
+ =?us-ascii?Q?baBTEAFEhgSdu7/cWqk5hAymQPzh7WlvD0lUEtR3bHOBdA5s3mjQ1cO+xCZl?=
+ =?us-ascii?Q?U5bc2q0z1aTn73sErGnjkK6i6t7o0JUKAbBDkKUajmSxqidZ7FEH0ti1aDZX?=
+ =?us-ascii?Q?UphYhZ1dt7Nd3du6BgoBuEfW3Xe+hCD9R+0Fcgl/gnxI2zmdoqNO/0FOFkTS?=
+ =?us-ascii?Q?0IoKG3cvXaBIBnveINnUsNkMT3yVWAcsoDZmgUirK6WM+FXJ+LZCWCz3kc/Y?=
+ =?us-ascii?Q?/HnjhYeOP640ZCV4E/QkNx7FVLf3tY0FAi6PC7FYHuyh17cqfY+NCK+EVBbM?=
+ =?us-ascii?Q?M8m4tSdI2Nxfw+gLSe7oVqc7jPkkPhJ1kY/9SzqhRhgkN2v/SqW4xAsuJiEb?=
+ =?us-ascii?Q?ENqcI8W+WyI3yckDgY+XdhbGG7KNM68mVeiMvHJn3Om8TdhJki9jKpRvjTbv?=
+ =?us-ascii?Q?Y02SX3dpfnk3O5g3afTaRy06GUwm7xjrkJgpII8E?=
+X-OriginatorOrg: eng.windriver.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ed6f2ef7-ea34-49de-172b-08dd8ea0566e
+X-MS-Exchange-CrossTenant-AuthSource: BYAPR11MB3832.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 May 2025 02:22:25.7225
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: NbAVyAD3CcyX+ERJKfF+qBMDMpUvE1NOxIKDd9ZLHAX7ZzVgA1A65m2Is3ps9O3SY+W1G1sH4p1sgxBIAyl3mg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR11MB4680
+X-Proofpoint-ORIG-GUID: PK_AmuhlCypCEG43kqYq1OshMkyomDu7
+X-Authority-Analysis: v=2.4 cv=Pd3/hjhd c=1 sm=1 tr=0 ts=681d66e8 cx=c_pps a=t4e0UQJdoJrPmzgCWb9hsw==:117 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=dt9VzEwgFbYA:10
+ a=e5mUnYsNAAAA:8 a=Q-fNiiVtAAAA:8 a=VwQbUJbxAAAA:8 a=t7CeM3EgAAAA:8 a=azflqpau20-cq16KAhMA:9 a=Vxmtnl_E_bksehYqCbjh:22 a=FdTzh2GWekK77mhwV6Dw:22 a=Omh45SbU8xzqK50xPoZQ:22
+X-Proofpoint-GUID: PK_AmuhlCypCEG43kqYq1OshMkyomDu7
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTA5MDAyMSBTYWx0ZWRfX9aOdUK2Ia/RH deCJApwQA4GF0Iv+plke671upnLiwAoosRf7pOTpSOeJ72SyaTRVvX7a95cj/X0NpKn17f9FfWf OFFjhFezGA5YpHJeVhnYcpPVnFaVnLL0NRRl9HyCT5xCDdWyNeYBb08+1tgUgr08XUW3GHY586g
+ h4dwYAnQAkFL6uO7FurTZUkyNts5TNO/hisnzvA8vXV3boe/8qWtGTky0YRhq7UsXQb5CEOoPmg JzCP8V9s4LH4oD1f+ueMs0M9z5JJRpRGAU9sSvzj3ZyKb+Rf4rzlnQZCUsRfPyxQACYo7/GO/Gi zGmFc5onb442Hqnqp2yyDIndALbpCI2QyhF/dvAnQnRyXmqnpoJ5usliYX813eisKHCsXWkGJUm
+ GNZf8kO7pXykajLgnTP+8j59OijKSorcu0V00EeBWqwervYGRhHhk83PTPm1UXJaXuR8c33d
+X-Sensitive_Customer_Information: Yes
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-09_01,2025-05-08_04,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
+ priorityscore=1501 mlxscore=0 suspectscore=0 spamscore=0 malwarescore=0
+ impostorscore=0 clxscore=1011 mlxlogscore=999 phishscore=0 bulkscore=0
+ lowpriorityscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.21.0-2504070000
+ definitions=main-2505090021
 
-When CONFIG_PREEMPT_COUNT is not configured (i.e. CONFIG_PREEMPT_NONE/
-CONFIG_PREEMPT_VOLUNTARY), preempt_disable() / preempt_enable() merely
-acts as a barrier(). However, in these cases cond_resched() can still
-trigger a context switch and modify the CSR.EUEN, resulting in do_fpu()
-exception being activated within the kernel-fpu critical sections, as
-demonstrated in the following path:
+From: Zack Rusin <zack.rusin@broadcom.com>
 
-dcn32_calculate_wm_and_dlg()
-    DC_FP_START()
-	dcn32_calculate_wm_and_dlg_fpu()
-	    dcn32_find_dummy_latency_index_for_fw_based_mclk_switch()
-		dcn32_internal_validate_bw()
-		    dcn32_enable_phantom_stream()
-			dc_create_stream_for_sink()
-			   kzalloc(GFP_KERNEL)
-				__kmem_cache_alloc_node()
-				    __cond_resched()
-    DC_FP_END()
+commit e58337100721f3cc0c7424a18730e4f39844934f upstream.
 
-This patch is similar to commit d021985 (x86/fpu: Improve crypto
-performance by making kernel-mode FPU reliably usable in softirqs).  It
-uses local_bh_disable() instead of preempt_disable() for non-RT kernels
-so it can avoid the cond_resched() issue, and also extend the kernel-fpu
-application scenarios to the softirq context.
+Introduce a version of the fence ops that on release doesn't remove
+the fence from the pending list, and thus doesn't require a lock to
+fix poll->fence wait->fence unref deadlocks.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Tianyang Zhang <zhangtianyang@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+vmwgfx overwrites the wait callback to iterate over the list of all
+fences and update their status, to do that it holds a lock to prevent
+the list modifcations from other threads. The fence destroy callback
+both deletes the fence and removes it from the list of pending
+fences, for which it holds a lock.
+
+dma buf polling cb unrefs a fence after it's been signaled: so the poll
+calls the wait, which signals the fences, which are being destroyed.
+The destruction tries to acquire the lock on the pending fences list
+which it can never get because it's held by the wait from which it
+was called.
+
+Old bug, but not a lot of userspace apps were using dma-buf polling
+interfaces. Fix those, in particular this fixes KDE stalls/deadlock.
+
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Fixes: 2298e804e96e ("drm/vmwgfx: rework to new fence interface, v2")
+Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v6.2+
+Reviewed-by: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
+Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240722184313.181318-2-zack.rusin@broadcom.com
+[Minor context change fixed]
+Signed-off-by: Zhi Yang <Zhi.Yang@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
 ---
- arch/loongarch/kernel/kfpu.c | 22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+Build test passed.
+---
+ drivers/gpu/drm/vmwgfx/vmwgfx_fence.c | 17 +++++++----------
+ 1 file changed, 7 insertions(+), 10 deletions(-)
 
-diff --git a/arch/loongarch/kernel/kfpu.c b/arch/loongarch/kernel/kfpu.c
-index ec5b28e570c9..4e469b021cf4 100644
---- a/arch/loongarch/kernel/kfpu.c
-+++ b/arch/loongarch/kernel/kfpu.c
-@@ -18,11 +18,28 @@ static unsigned int euen_mask = CSR_EUEN_FPEN;
- static DEFINE_PER_CPU(bool, in_kernel_fpu);
- static DEFINE_PER_CPU(unsigned int, euen_current);
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_fence.c b/drivers/gpu/drm/vmwgfx/vmwgfx_fence.c
+index 6bacdb7583df..0505f87d13c0 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_fence.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_fence.c
+@@ -32,7 +32,6 @@
+ #define VMW_FENCE_WRAP (1 << 31)
  
-+static inline void fpregs_lock(void)
-+{
-+	if (!IS_ENABLED(CONFIG_PREEMPT_RT))
-+		local_bh_disable();
-+	else
-+		preempt_disable();
-+}
-+
-+static inline void fpregs_unlock(void)
-+{
-+	if (!IS_ENABLED(CONFIG_PREEMPT_RT))
-+		local_bh_enable();
-+	else
-+		preempt_enable();
-+}
-+
- void kernel_fpu_begin(void)
+ struct vmw_fence_manager {
+-	int num_fence_objects;
+ 	struct vmw_private *dev_priv;
+ 	spinlock_t lock;
+ 	struct list_head fence_list;
+@@ -113,13 +112,13 @@ static void vmw_fence_obj_destroy(struct dma_fence *f)
  {
- 	unsigned int *euen_curr;
+ 	struct vmw_fence_obj *fence =
+ 		container_of(f, struct vmw_fence_obj, base);
+-
+ 	struct vmw_fence_manager *fman = fman_from_fence(fence);
  
--	preempt_disable();
-+	if (!irqs_disabled())
-+		fpregs_lock();
- 
- 	WARN_ON(this_cpu_read(in_kernel_fpu));
- 
-@@ -73,7 +90,8 @@ void kernel_fpu_end(void)
- 
- 	this_cpu_write(in_kernel_fpu, false);
- 
--	preempt_enable();
-+	if (!irqs_disabled())
-+		fpregs_unlock();
+-	spin_lock(&fman->lock);
+-	list_del_init(&fence->head);
+-	--fman->num_fence_objects;
+-	spin_unlock(&fman->lock);
++	if (!list_empty(&fence->head)) {
++		spin_lock(&fman->lock);
++		list_del_init(&fence->head);
++		spin_unlock(&fman->lock);
++	}
+ 	fence->destroy(fence);
  }
- EXPORT_SYMBOL_GPL(kernel_fpu_end);
  
+@@ -250,7 +249,6 @@ static const struct dma_fence_ops vmw_fence_ops = {
+ 	.release = vmw_fence_obj_destroy,
+ };
+ 
+-
+ /**
+  * Execute signal actions on fences recently signaled.
+  * This is done from a workqueue so we don't have to execute
+@@ -353,7 +351,6 @@ static int vmw_fence_obj_init(struct vmw_fence_manager *fman,
+ 		goto out_unlock;
+ 	}
+ 	list_add_tail(&fence->head, &fman->fence_list);
+-	++fman->num_fence_objects;
+ 
+ out_unlock:
+ 	spin_unlock(&fman->lock);
+@@ -402,7 +399,7 @@ static bool vmw_fence_goal_new_locked(struct vmw_fence_manager *fman,
+ {
+ 	u32 goal_seqno;
+ 	u32 *fifo_mem;
+-	struct vmw_fence_obj *fence;
++	struct vmw_fence_obj *fence, *next_fence;
+ 
+ 	if (likely(!fman->seqno_valid))
+ 		return false;
+@@ -413,7 +410,7 @@ static bool vmw_fence_goal_new_locked(struct vmw_fence_manager *fman,
+ 		return false;
+ 
+ 	fman->seqno_valid = false;
+-	list_for_each_entry(fence, &fman->fence_list, head) {
++	list_for_each_entry_safe(fence, next_fence, &fman->fence_list, head) {
+ 		if (!list_empty(&fence->seq_passed_actions)) {
+ 			fman->seqno_valid = true;
+ 			vmw_mmio_write(fence->base.seqno,
 -- 
-2.20.1
+2.34.1
 
 
