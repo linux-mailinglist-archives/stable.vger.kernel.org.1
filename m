@@ -1,87 +1,85 @@
-Return-Path: <stable+bounces-143065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 889CAAB1C77
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 20:40:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D90D3AB1FCE
+	for <lists+stable@lfdr.de>; Sat, 10 May 2025 00:14:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5C1E1C285D9
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 18:40:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 647D4176728
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 22:14:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 650DF23F41F;
-	Fri,  9 May 2025 18:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78AC6265613;
+	Fri,  9 May 2025 22:13:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TOd74BLl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hy6Proz/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 098E323E32B;
-	Fri,  9 May 2025 18:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30730264FAF;
+	Fri,  9 May 2025 22:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746815986; cv=none; b=i63VxlrAgspu6uWi1JTYIFaQtMgTV/+ZrNtdz1B0f+OK0h7S9z8upacjxArrsYr+jU7FfKXfSnEesjoN91XLLTPsiCN4Ztu/XytJV0QLGxLtmNkUfOfN14NQsO95HaM2E47TTtX8mfAtRIlQtuhfOHZvadSP6lgv98gN1L5ePxQ=
+	t=1746828819; cv=none; b=IwcP5JBFMkcHgM6A5QhtWlJbgT3I7MMeJy+dwFuGMWnLpbFkotQywtX8K+ApNtPpv9b//GsfnyCxIPO8GGkqNBrhqf6U0Osgj1jPpgXY5P56WuNlrlwAwYkNYY6X/kna39OYM/UKnHmU4DF4nSJTepDHQsxclNG0D1P4tZGDdSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746815986; c=relaxed/simple;
-	bh=9tFcGorhL6voOakeXXFjagkhUDM5lruKobGMxyRZxWs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R8jldr+1eMazYdGJmCrp0pGy8wAmmN6daMK0qAbiT833oNvX+qAB1sOekw0SqbuRnf2rYws8wbFFbqp2u0CtfWpYkefZlGDjtJNE1XH4HT/dluM/NivTgRBdHCXxfBNeA9ulIKKsApvpNaaazIkyIgb0ghr+2LG2d773cDZEv0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TOd74BLl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31CDDC4CEE4;
-	Fri,  9 May 2025 18:39:45 +0000 (UTC)
+	s=arc-20240116; t=1746828819; c=relaxed/simple;
+	bh=dyDNLZLlo7IvLPpnr8siDNU045aNfecNQMzRLdQ1wGw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KuD/QsTifrq3LsJbDw6URyQakfzf6Y1Iiwk8y8p6CJo3PD2h67JB3psrm1Xf2esMRc6VmzoyFOp4ulmqvzuEw8ut7q9+kU1kiRSdpeknCsRb55GvG+JCYtzACCbTN3NMXUAEGJQKrB4oTU9aQMjSMEckvAJBVWYBCjsk5RVSZoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hy6Proz/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26F7BC4CEE4;
+	Fri,  9 May 2025 22:13:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1746815985;
-	bh=9tFcGorhL6voOakeXXFjagkhUDM5lruKobGMxyRZxWs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TOd74BLl0+zeMXfM3EV0HHE1Zy/0dZINU8gdkkEvIXPKtE+ieSfibZXGyZHYaWGy9
-	 3R4BzoAGRqLd2BNSUbSRulcW54oyLceaqC8xCxdBMWhYb95dI7KZmAwU5cgdppF0gx
-	 2Sc84OwBOI+92f3KTFIvkC9ORrAdYDXVrjeK++m/JsKf4QCTc2P0rUcJkXxrMYo+zh
-	 UQwmXNRy4Zgi/I1/6ST9csS3q359ki4blTZX8Yvd80uGhe2iVdN/yv6P7c+E79hgAB
-	 Oxpup4LLecWStUb5/w6Ujf/qmJIobPF1VMUhXnRqw6a8Kbdfn46xjILFBOQptOJULv
-	 LnGlUNrglZmJQ==
-Date: Fri, 9 May 2025 13:39:43 -0500
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: linux-kernel@vger.kernel.org, Bjorn Andersson <andersson@kernel.org>,
-	linux-remoteproc@vger.kernel.org, stable@vger.kernel.org,
-	Dmitry Baryshkov <lumag@kernel.org>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	devicetree@vger.kernel.org, Conor Dooley <conor+dt@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: remoteproc: qcom,sm8150-pas: Add missing
- SC8180X compatible
-Message-ID: <174681598302.3913409.18333226552734196520.robh@kernel.org>
-References: <20250428075243.44256-2-krzysztof.kozlowski@linaro.org>
+	s=k20201202; t=1746828818;
+	bh=dyDNLZLlo7IvLPpnr8siDNU045aNfecNQMzRLdQ1wGw=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=hy6Proz/qAvCmLW9g5PlYyRXsvzhjfYeolEAswi/kxEzMviqEDcCn42BztVlQtmF6
+	 Dq+mL67D3YilSJkuK0UaNtfg26nR4dmRnS82/BjDQ/K+I/ZDEDx5IO09ZsJHuIXa8x
+	 smTGA/Xdw7sYFGZl9F7CxdcixtoAviwra6DuiZ0/3QQXKQQwue38cTdtLc7KgWgvzb
+	 vQp2FhmJyE8hAfA6QutAYvXzCZMMNMsa0Vj0PlzRb6hmTg3twkMxWGVSSyGLqyHtkb
+	 PQ4ZGMk4oJ7+qUwTZVJsm0F90y8o3MIhu+rB1877Wirj9KxTPIH0B3j4qqmO9xvk5F
+	 jSVMVf7nI+TZg==
+From: Bjorn Andersson <andersson@kernel.org>
+To: Konrad Dybcio <konradybcio@kernel.org>,
+	Johan Hovold <johan+linaro@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Clayton Craft <clayton@craftyguy.net>
+Subject: Re: [PATCH] soc: qcom: pmic_glink_altmode: fix spurious DP hotplug events
+Date: Fri,  9 May 2025 17:13:25 -0500
+Message-ID: <174682880460.49052.8140434549089739167.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250324132448.6134-1-johan+linaro@kernel.org>
+References: <20250324132448.6134-1-johan+linaro@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250428075243.44256-2-krzysztof.kozlowski@linaro.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
 
-On Mon, 28 Apr 2025 09:52:44 +0200, Krzysztof Kozlowski wrote:
-> Commit 4b4ab93ddc5f ("dt-bindings: remoteproc: Consolidate SC8180X and
-> SM8150 PAS files") moved SC8180X bindings from separate file into this
-> one, but it forgot to add actual compatibles in top-level properties
-> section making the entire binding un-selectable (no-op) for SC8180X PAS.
+On Mon, 24 Mar 2025 14:24:48 +0100, Johan Hovold wrote:
+> The PMIC GLINK driver is currently generating DisplayPort hotplug
+> notifications whenever something is connected to (or disconnected from)
+> a port regardless of the type of notification sent by the firmware.
 > 
-> Fixes: 4b4ab93ddc5f ("dt-bindings: remoteproc: Consolidate SC8180X and SM8150 PAS files")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-> ---
->  .../devicetree/bindings/remoteproc/qcom,sm8150-pas.yaml        | 3 +++
->  1 file changed, 3 insertions(+)
+> These notifications are forwarded to user space by the DRM subsystem as
+> connector "change" uevents:
 > 
+> [...]
 
-Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Applied, thanks!
 
+[1/1] soc: qcom: pmic_glink_altmode: fix spurious DP hotplug events
+      commit: 5090ac9191a19c61beeade60d3d839e509fab640
+
+Best regards,
+-- 
+Bjorn Andersson <andersson@kernel.org>
 
