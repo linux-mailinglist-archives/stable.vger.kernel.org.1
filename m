@@ -1,154 +1,99 @@
-Return-Path: <stable+bounces-142954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-142956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 335D6AB07B6
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 04:02:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36F2DAB07BF
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 04:05:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D78E31C21FF3
-	for <lists+stable@lfdr.de>; Fri,  9 May 2025 02:03:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 654DA7B5E99
+	for <lists+stable@lfdr.de>; Fri,  9 May 2025 02:04:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24209242D66;
-	Fri,  9 May 2025 02:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C54B22D9E2;
+	Fri,  9 May 2025 02:05:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="drsKpsa2"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02CE013D52F;
-	Fri,  9 May 2025 02:02:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3DFF1AA782
+	for <stable@vger.kernel.org>; Fri,  9 May 2025 02:05:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746756167; cv=none; b=AClvPklZ7445j1Or8ZuZrfxBi6Gi9arXN10wfNoY7l0IuDufdCFhAibr0Nvn9Cgtd05EVQwjH/QLDUY44JLs/FDlT14cfaKZcTypx6mkaPE9mz7w8QNWhGR9MrwXhD+ZvTIhYPaM/mf1PJmoh2SG/uM11OgUHvUMGVnEH631RpU=
+	t=1746756315; cv=none; b=g7iZ6fcNs9sb83S4uKKyk7wVwQLfQpkLXl8IdTCEcl1A3NI4EpnJNr+PStocakMI0DyHpgcEnOX6vu2GAhiJDL7ueHaU0fsCmhocpCIU4g29l4YIxdkxCS3PxEVX5BhAewUQWPSdM0KqqyKAquzUR0X3IsdobBAvMsYoKKkrrR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746756167; c=relaxed/simple;
-	bh=OvePDz61hU89iP6mjSJW/9XhetJ3HI8k3T4tIuDg20o=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A6P11KaA/zSfaBngvL8MGcUKZ5b7CsICHC0V1/0PckBXG+OtYEAz3eUiy+sMioY3yke2lxWzWOiLUWoCsyJU9ao9ms78mTZpOaCOfEmhR3BI8ztpdcPBi5oDd8Nd6kSXme7eILhsX2irjIl+A4+PSxbIUw9aGfeHXNdiI2jHaGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.17])
-	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4ZtsjX4xMwz27hZY;
-	Fri,  9 May 2025 10:03:28 +0800 (CST)
-Received: from kwepemj200003.china.huawei.com (unknown [7.202.194.15])
-	by mail.maildlp.com (Postfix) with ESMTPS id 68CDF1A0188;
-	Fri,  9 May 2025 10:02:42 +0800 (CST)
-Received: from localhost.huawei.com (10.90.30.45) by
- kwepemj200003.china.huawei.com (7.202.194.15) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 9 May 2025 10:02:41 +0800
-From: Qinxin Xia <xiaqinxin@huawei.com>
-To: <21cnbao@gmail.com>, <xiaqinxin@huawei.com>
-CC: <yangyicong@huawei.com>, <hch@lst.de>, <iommu@lists.linux.dev>,
-	<jonathan.cameron@huawei.com>, <prime.zeng@huawei.com>,
-	<fanghao11@huawei.com>, <linux-kernel@vger.kernel.org>,
-	<linuxarm@huawei.com>, <stable@vger.kernel.org>
-Subject: [PATCH v3 4/4] selftests/dma: Add dma_map_sg support
-Date: Fri, 9 May 2025 10:02:38 +0800
-Message-ID: <20250509020238.3378396-5-xiaqinxin@huawei.com>
-X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20250509020238.3378396-1-xiaqinxin@huawei.com>
-References: <20250509020238.3378396-1-xiaqinxin@huawei.com>
+	s=arc-20240116; t=1746756315; c=relaxed/simple;
+	bh=Fr3afaaBiQ1fuEPmraQ/CCsY3pGVvM5uDnGuwCFO/bE=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=tZJuKXfdYd6pf0GeQuPI7S+KHZ0ZYAGuNgZDN2is1dEYCRYzYp5d3dHVdNz30Z/76olRksw/nhvJah1KTsNKJ1QBuNJvz3HAzf7ug9z/a/6XRvmtNg7hliLzWIxqAXmGEW0M4hrqol9ChXJ32I3Lv+TsX94/KXGDhUqhnpCwxc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=drsKpsa2; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1746756313; x=1778292313;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=Fr3afaaBiQ1fuEPmraQ/CCsY3pGVvM5uDnGuwCFO/bE=;
+  b=drsKpsa2ulhy/I2aBP8fViGDxw+BtSzdgxhv+RPW0HlqEON3RxDGM0PI
+   9TDthaUo+CfxrScKtpxeU+eIPCnCy/y2nfrdL+WoejxYaRKrp4W695IXl
+   0S2l6+isaQi16FSbxF9zYNypvw1XSh+BaL6yAveRrc4kUPzobxyZlIvUP
+   mh8GWwfUmYAsTU1pbj2zH8HHEbFC9EMNAs40tjvstxpW9IqmIVYUDu2Tp
+   YRd14Ea7GKx4jlAyKtl8Jlwhn7etKFuk/SKTWRfgMTtd557QStm0bX7XM
+   ZA6y1zjynoMpJIV4Y84DWD2vfJF93eKO6hPhwF3rdJec2XMzltTNDQ2em
+   Q==;
+X-CSE-ConnectionGUID: jzWwIQ5zRnaP/xxoEHV26A==
+X-CSE-MsgGUID: KEotKltSRiCHuYgBDTg6lQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11427"; a="48477639"
+X-IronPort-AV: E=Sophos;i="6.15,273,1739865600"; 
+   d="scan'208";a="48477639"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2025 19:05:12 -0700
+X-CSE-ConnectionGUID: i6y03PySQ/OxAWUIV12pTg==
+X-CSE-MsgGUID: lm3m+0cuS0uw0Azwei0k2Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,273,1739865600"; 
+   d="scan'208";a="137402965"
+Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
+  by orviesa008.jf.intel.com with ESMTP; 08 May 2025 19:05:11 -0700
+Received: from kbuild by 1992f890471c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uDD6q-000BZf-2r;
+	Fri, 09 May 2025 02:05:08 +0000
+Date: Fri, 9 May 2025 10:04:45 +0800
+From: kernel test robot <lkp@intel.com>
+To: Qinxin Xia <xiaqinxin@huawei.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH v3 3/4] dma-mapping: benchmark: add support for dma_map_sg
+Message-ID: <aB1ivUFR5Vm_QGih@c5bf816c9d15>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
- kwepemj200003.china.huawei.com (7.202.194.15)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250509020238.3378396-4-xiaqinxin@huawei.com>
 
-Support for dma_map_sg, add option '-m' to distinguish mode.
+Hi,
 
-i) Users can set option '-m' to select mode:
-   DMA_MAP_SINGLE_MODE=0, DMA_MAP_SG_MODE:=1
-   (The mode is also show in the test result).
-ii) Users can set option '-g' to set sg_nents
-    (total count of entries in scatterlist)
-    the maximum number is 1024. Each of sg buf size is PAGE_SIZE.
-    e.g
-    [root@localhost]# ./dma_map_benchmark -m 1 -g 8 -t 8 -s 30 -d 2
-    dma mapping mode: DMA_MAP_SG_MODE
-    dma mapping benchmark: threads:8 seconds:30 node:-1
-    dir:FROM_DEVICE granule/sg_nents: 8
-    average map latency(us):1.4 standard deviation:0.3
-    average unmap latency(us):1.3 standard deviation:0.3
-    [root@localhost]# ./dma_map_benchmark -m 0 -g 8 -t 8 -s 30 -d 2
-    dma mapping mode: DMA_MAP_SINGLE_MODE
-    dma mapping benchmark: threads:8 seconds:30 node:-1
-    dir:FROM_DEVICE granule/sg_nents: 8
-    average map latency(us):1.0 standard deviation:0.3
-    average unmap latency(us):1.3 standard deviation:0.5
+Thanks for your patch.
 
-Signed-off-by: Qinxin Xia <xiaqinxin@huawei.com>
----
- tools/testing/selftests/dma/dma_map_benchmark.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-diff --git a/tools/testing/selftests/dma/dma_map_benchmark.c b/tools/testing/selftests/dma/dma_map_benchmark.c
-index b12f1f9babf8..036ddb5ac862 100644
---- a/tools/testing/selftests/dma/dma_map_benchmark.c
-+++ b/tools/testing/selftests/dma/dma_map_benchmark.c
-@@ -27,6 +27,7 @@ int main(int argc, char **argv)
- 	int fd, opt;
- 	/* default single thread, run 20 seconds on NUMA_NO_NODE */
- 	int threads = 1, seconds = 20, node = -1;
-+	int map_mode = DMA_MAP_SINGLE_MODE;
- 	/* default dma mask 32bit, bidirectional DMA */
- 	int bits = 32, xdelay = 0, dir = DMA_MAP_BIDIRECTIONAL;
- 	/* default granule 1 PAGESIZE */
-@@ -34,7 +35,7 @@ int main(int argc, char **argv)
- 
- 	int cmd = DMA_MAP_BENCHMARK;
- 
--	while ((opt = getopt(argc, argv, "t:s:n:b:d:x:g:")) != -1) {
-+	while ((opt = getopt(argc, argv, "t:s:n:b:d:x:g:m:")) != -1) {
- 		switch (opt) {
- 		case 't':
- 			threads = atoi(optarg);
-@@ -57,11 +58,20 @@ int main(int argc, char **argv)
- 		case 'g':
- 			granule = atoi(optarg);
- 			break;
-+		case 'm':
-+			map_mode = atoi(optarg);
-+			break;
- 		default:
- 			return -1;
- 		}
- 	}
- 
-+	if (map_mode >= DMA_MAP_MODE_MAX) {
-+		fprintf(stderr, "invalid map mode, DMA_MAP_SINGLE_MODE:%d, DMA_MAP_SG_MODE:%d\n",
-+			DMA_MAP_SINGLE_MODE, DMA_MAP_SG_MODE);
-+		exit(1);
-+	}
-+
- 	if (threads <= 0 || threads > DMA_MAP_MAX_THREADS) {
- 		fprintf(stderr, "invalid number of threads, must be in 1-%d\n",
- 			DMA_MAP_MAX_THREADS);
-@@ -111,13 +121,15 @@ int main(int argc, char **argv)
- 	map.dma_dir = dir;
- 	map.dma_trans_ns = xdelay;
- 	map.granule = granule;
-+	map.map_mode = map_mode;
- 
- 	if (ioctl(fd, cmd, &map)) {
- 		perror("ioctl");
- 		exit(1);
- 	}
- 
--	printf("dma mapping benchmark: threads:%d seconds:%d node:%d dir:%s granule: %d\n",
-+	printf("dma mapping mode: %d\n", map_mode);
-+	printf("dma mapping benchmark: threads:%d seconds:%d node:%d dir:%s granule/sg_nents: %d\n",
- 			threads, seconds, node, dir[directions], granule);
- 	printf("average map latency(us):%.1f standard deviation:%.1f\n",
- 			map.avg_map_100ns/10.0, map.map_stddev/10.0);
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH v3 3/4] dma-mapping: benchmark: add support for dma_map_sg
+Link: https://lore.kernel.org/stable/20250509020238.3378396-4-xiaqinxin%40huawei.com
+
 -- 
-2.33.0
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
