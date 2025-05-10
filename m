@@ -1,105 +1,103 @@
-Return-Path: <stable+bounces-143075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 928EAAB2102
-	for <lists+stable@lfdr.de>; Sat, 10 May 2025 05:05:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBAFEAB2160
+	for <lists+stable@lfdr.de>; Sat, 10 May 2025 07:51:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 101471BA115C
-	for <lists+stable@lfdr.de>; Sat, 10 May 2025 03:05:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74F6A3BA36A
+	for <lists+stable@lfdr.de>; Sat, 10 May 2025 05:51:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 816B86F06B;
-	Sat, 10 May 2025 03:05:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="L9u12xnT"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AC391D9A49;
+	Sat, 10 May 2025 05:51:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-52004.amazon.com (smtp-fw-52004.amazon.com [52.119.213.154])
+Received: from mail-m8327.xmail.ntesmail.com (mail-m8327.xmail.ntesmail.com [156.224.83.27])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C34E5846F;
-	Sat, 10 May 2025 03:05:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DFFF1C6FE8;
+	Sat, 10 May 2025 05:51:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.224.83.27
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746846327; cv=none; b=Tieh1PZYqo8Aq4QA4jZxiPvB8dJmaSQ/4smWjLi4M4KBvOVMzA5MUxiv0M3setrWa1Ypmc9dsIeji0h6a+teyqAomMyeIXWxbP6qeqHPX+dFnGqvHgxgF4igIpaClsOtXgb4FM+S+5BWoKMb1/2z7mE5PONuhH1BF5+wxSL8vjQ=
+	t=1746856288; cv=none; b=lT4OATUmxXYnoQqfzDSsr49Sv+ceUn5FcWSnhCupVx9urXm56d/AIkuacJ86bsFO9dENAG8SZaWrJznKEj6w4qBX1pVtc8L+0cD+ubbopqu/cRSyhs9zUdMhCqYgQssVSO2KrymQB/Lj1pUUAB98IjKAhurd7Y2W5jiy8EQG7bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746846327; c=relaxed/simple;
-	bh=0Y5jtXbkzPHbi+33JLX/GRAnmyxVtbBj1SF8BU/aAA0=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CCDTf6N7AXQUFsC18by2UJobblvi3XEFH8HCPMTIkcBTM2ZAMmE5ZSubqgeku/UYTi4r/Is6GcU55jivlRIQviozmDN4npZYej+IMCg0bQXO04LdPN4VI0GBX91mpxn2/pSEIn0Q5ShIloCv7JYg5xijbY2R90CUKMQUpiWBibc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=L9u12xnT; arc=none smtp.client-ip=52.119.213.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1746846326; x=1778382326;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=0Y5jtXbkzPHbi+33JLX/GRAnmyxVtbBj1SF8BU/aAA0=;
-  b=L9u12xnT25QYNASFTXh159xICCHvNBI/FWuuO+WaYffwIW8m8h7KtII2
-   CwzjAQOsn5U7IGUYkIhS/57H4LKu67BT7C7U5dDR1ukgEMRmyWvuRYMOZ
-   jE51ANbdTtZzWfkt1GRu02toEHwjRU83fp/ruJsaYZnlhn+rTlD+0g0SO
-   NMiznEq5YjMLncPGQQXYVzArgf91EFBf//4UlbmlCimSLJFL2GLwQ0wT6
-   vd4LFFVUNieqGHIKYCe3KQ9oIQNXYDDzr/dCY3V+9VlOAM17yqDWhPFeS
-   fKSmSMHkXq4t4T9jtN+X8NgTxHIT6i4tbySsoBFBaVKfaCAQ7Ae01MAHJ
-   w==;
-X-IronPort-AV: E=Sophos;i="6.15,276,1739836800"; 
-   d="scan'208";a="296299169"
-Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.2])
-  by smtp-border-fw-52004.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 May 2025 03:05:23 +0000
-Received: from EX19MTAEUB002.ant.amazon.com [10.0.10.100:40195]
- by smtpin.naws.eu-west-1.prod.farcaster.email.amazon.dev [10.0.12.229:2525] with esmtp (Farcaster)
- id bf756ada-ce60-45e5-bac3-f1e19ee65d09; Sat, 10 May 2025 03:05:21 +0000 (UTC)
-X-Farcaster-Flow-ID: bf756ada-ce60-45e5-bac3-f1e19ee65d09
-Received: from EX19D026EUB004.ant.amazon.com (10.252.61.64) by
- EX19MTAEUB002.ant.amazon.com (10.252.51.79) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Sat, 10 May 2025 03:05:20 +0000
-Received: from 3c06303d853a.ant.amazon.com (10.135.223.133) by
- EX19D026EUB004.ant.amazon.com (10.252.61.64) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Sat, 10 May 2025 03:05:18 +0000
-Date: Fri, 9 May 2025 20:05:13 -0700
-From: Andrew Paniakin <apanyaki@amazon.com>
-To: Linux regressions mailing list <regressions@lists.linux.dev>
-CC: Christian Heusel <christian@heusel.eu>, <pc@cjr.nz>,
-	<stfrench@microsoft.com>, <sashal@kernel.org>, <pc@manguebit.com>,
-	<stable@vger.kernel.org>, <linux-cifs@vger.kernel.org>,
-	<abuehaze@amazon.com>, <simbarb@amazon.com>, <benh@amazon.com>,
-	<gregkh@linuxfoundation.org>
-Subject: Re: [REGRESSION][BISECTED][STABLE] Commit 60e3318e3e900 in
- stable/linux-6.1.y breaks cifs client failover to another server in DFS
- namespace
-Message-ID: <aB7CaTP-jwYhDROJ@3c06303d853a.ant.amazon.com>
-References: <210b1da5-6b22-4dd9-a25f-8b24ba4723d4@heusel.eu>
- <ZnyRlEUqgZ_m_pu-@3c06303d853a>
- <a58625e7-8245-4963-b589-ad69621cb48a@heusel.eu>
- <7c8d1ec1-7913-45ff-b7e2-ea58d2f04857@leemhuis.info>
- <ZpHy4V6P-pawTG2f@3c06303d853a.ant.amazon.com>
- <Zp7-gl5mMFCb4UWa@3c06303d853a.ant.amazon.com>
- <fb4c481d-91ba-46b8-b11a-534597a2b467@leemhuis.info>
- <ZxAm4rvmWp2MMt4b@3c06303d853a.ant.amazon.com>
- <ZzD0cW4gbQnbI9Gm@3c06303d853a>
- <Z9cZuBxOscqybcMy@3c06303d853a.ant.amazon.com>
+	s=arc-20240116; t=1746856288; c=relaxed/simple;
+	bh=KC0f4NcgvAuBmb2oh4vE1jM3mEtPu06HOF02kc+Ru0I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VsAiFTP/XE9Jau8aFrorVISwxkmL8bDY91qzkKiFfRh6py96jKsT8geokr669RZXsw5KBB86NIF/QnoBrquOpPGQfYGhYXkCEGH4vyffCdP70XOFU5hXFmlDAFBD0JEw3c7AHlPmdpmYfCrkDLBQD+Sjux/fsPcIQB5IQIxHpr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sangfor.com.cn; spf=pass smtp.mailfrom=sangfor.com.cn; arc=none smtp.client-ip=156.224.83.27
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sangfor.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sangfor.com.cn
+Received: from [172.16.212.10] (unknown [121.32.254.146])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 148f13876;
+	Sat, 10 May 2025 09:15:13 +0800 (GMT+08:00)
+Message-ID: <a497880a-e6a3-409d-8c4e-d5086459ce3a@sangfor.com.cn>
+Date: Sat, 10 May 2025 09:15:13 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <Z9cZuBxOscqybcMy@3c06303d853a.ant.amazon.com>
-X-ClientProxiedBy: EX19D041UWA001.ant.amazon.com (10.13.139.124) To
- EX19D026EUB004.ant.amazon.com (10.252.61.64)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] scsi: smartpqi: Fix the race condition between
+ pqi_tmf_worker and pqi_sdev_destroy
+To: Don.Brace@microchip.com
+Cc: dinghui@sangfor.com.cn, zengzhicong@sangfor.com.cn,
+ James.Bottomley@hansenpartnership.com, martin.petersen@oracle.com,
+ storagedev@microchip.com, linux-scsi@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20250508125011.3455696-1-zhuwei@sangfor.com.cn>
+ <CAF=wSYo0=US5Rj8Qbo7tbPLTtEVR-E=q4w07jCvU3nMroZBKmA@mail.gmail.com>
+ <SJ2PR11MB8369E480AEB019041B756254E18AA@SJ2PR11MB8369.namprd11.prod.outlook.com>
+From: zhuwei <zhuwei@sangfor.com.cn>
+In-Reply-To: <SJ2PR11MB8369E480AEB019041B756254E18AA@SJ2PR11MB8369.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVkaTEtPVk5MShkdSU4dGhofGlYVFAkWGhdVEwETFh
+	oSFyQUDg9ZV1kYEgtZQVlKSUpVSElVSU5PVUpPTVlXWRYaDxIVHRRZQVlPS0hVSktJT09PSFVKS0
+	tVSkJLS1kG
+X-HM-Tid: 0a96b7c2b77509cekunm148f13876
+X-HM-MType: 1
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6NCo6SAw*DDJDAVETDT0MShwi
+	PCxPCw5VSlVKTE9NQ0hCTEpPSENMVTMWGhIXVQETDgweEjsIGhUcHRQJVRgUFlUYFUVZV1kSC1lB
+	WUpJSlVISVVJTk9VSk9NWVdZCAFZQUlPTUo3Bg++
 
-On 16/03/2025, Andrew Paniakin wrote:
-> My next step is to resend 7ad54b98fc1f1 ("cifs: use origin fullpath for
-> automounts") with required comments and send an update to this thread once it
-> merged.
 
-Backport with a fix was released in v6.1.135.
 
-#regzbot fix: 7d8bb979f627 ("cifs: use origin fullpath for automounts")
+On 2025/5/9 23:19, Don.Brace@microchip.com wrote:
+> 
+> ---------- Forwarded message ---------
+> From: Zhu Wei <zhuwei@sangfor.com.cn>
+> Date: Thu, May 8, 2025 at 7:57 AM
+> Subject: [PATCH] scsi: smartpqi: Fix the race condition between pqi_tmf_worker and pqi_sdev_destroy
+> To: <don.brace@microchip.com>, <kevin.barnett@microchip.com>
+> Cc: <dinghui@sangfor.com.cn>, <zengzhicong@sangfor.com.cn>, <James.Bottomley@hansenpartnership.com>, <martin.petersen@oracle.com>, <storagedev@microchip.com>, <linux-scsi@vger.kernel.org>, <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>, Zhu Wei <zhuwei@sangfor.com.cn>
+> 
+> 
+> There is a race condition between pqi_sdev_destroy and pqi_tmf_worker.
+> After pqi_free_device is released, pqi_tmf_worker will still use device.
+> 
+> Don: Thank-you for your patch, however we recently applied a similar patch to our internal repo.
+> Don: But more checking is done for removed devices.
+> Don: When this patch has been tested internally, we will post it up for review.
+> Don: I will add a Reported-By tag with your name.
+
+Ok, hope smartpqi gets better.
+
+> Don: So Nak.
+> 
+> 
+> 
+> kasan report:
+> [ 1933.765810] ==================================================================
+> [ 1933.771862] scsi 15:0:20:0: Direct-Access     ATA      WDC  WUH722222AL WTS2 PQ: 0 ANSI: 6
+> [ 1933.779190] BUG: KASAN: use-after-free in pqi_device_wait_for_pending_io+0x9e/0x600 [smartpqi]
+> ......
+> --
+> 2.43.0
+> 
+
 
