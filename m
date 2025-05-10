@@ -1,87 +1,53 @@
-Return-Path: <stable+bounces-143081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B382AB243B
-	for <lists+stable@lfdr.de>; Sat, 10 May 2025 17:10:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12102AB2517
+	for <lists+stable@lfdr.de>; Sat, 10 May 2025 21:02:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 922D84C0E16
-	for <lists+stable@lfdr.de>; Sat, 10 May 2025 15:10:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7F46117AE8B
+	for <lists+stable@lfdr.de>; Sat, 10 May 2025 19:02:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EAEC22FAE1;
-	Sat, 10 May 2025 15:10:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8CED1D63F5;
+	Sat, 10 May 2025 19:02:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WrwcGYwB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hY/LgUA1"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 717551DD0C7;
-	Sat, 10 May 2025 15:10:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 781491C3C08
+	for <stable@vger.kernel.org>; Sat, 10 May 2025 19:02:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746889826; cv=none; b=KhuTQcAuWlrkW84n2q6bi8kFhTRMoVPycmWtQEs6DjRY1an42yA7tPTcegbLrPx35z5QH53MD7BXQqEth2YstvJt4fJXO7ZK4jIaaZ4Dg8SQeCKHM/vebMmciolwI180RUdz1MdnqFovVWfHUPAbJ+mZe7DI/DOsWJHV6ty7aWc=
+	t=1746903743; cv=none; b=dQqMnBp2VWjj/9TuLXtUHa8U2lFALYobBebUMWjpJVmv2Eb0cfloIYEyWNrif5ijZbYvH/H92eNV1iJsbkSz/EzcegtkKpQBEjj59eV5F5oMrXcxXphfEeFXNf7M22BaU596stqxjDt6lNzjQKGOpMR60H2VePm4Xi+3piUW4Lk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746889826; c=relaxed/simple;
-	bh=fj8vk2nF5Goc0jM13PecpuLrre3yWedEKp7zIwxRSro=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Q6Rf0NGTFAV5Dhn4xvjo72YRpenka8q70DPZIPmU/g7mvmD2hLJnbf9MqvcS5ctL/fwCsX70DJZg16/7VR45rW29XAfaO4aI0Ouis6WJrOGzHg5/YGsvTTl2AcTWXytBXMcvDw4lBmRWTKIm/0kJ0F4wQsAL8hLlhDa+PKd5VXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WrwcGYwB; arc=none smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-74248a3359fso1101757b3a.2;
-        Sat, 10 May 2025 08:10:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746889824; x=1747494624; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=s5NjWbgd+215NvmTsJYPIGQXgwcjX49aa20RxmgDo9M=;
-        b=WrwcGYwBoKexy9y5cabZ/8bAgDVwdnz+WauieKUKki9S6BPhmiiSJBBg2meK8PUu5z
-         ig4Pgy32Hikl9Vc9FonPpzTaTNaP6tn56wwe9RNm20rs7dv3/9+zqpIOHESRHwE4Ibn5
-         hpILcEwPZ3jGCKIKWVv/ph3p8JwJ12pKnkqMGK1fyzz/90ccF1XjGArl9VK2pCdrar1J
-         IK2B58ttcbLOPnN8fXiWyFtS+q6A8vmqwGqK4F+nDiAp2JsuyR5hp+dDMgo2dFIe8RG9
-         CWETOthkOUQ5twVneUcC+yQehscCom2Ld4XH+24js6gger4z8LqZA28KVZxRBysU5ery
-         /ILA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746889824; x=1747494624;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=s5NjWbgd+215NvmTsJYPIGQXgwcjX49aa20RxmgDo9M=;
-        b=MbTdJoEwB7+7fuxjEgNGJrIsfsQYdmAZnY1NkJzIqiYJ0jXTbiSQucRsHCylWMmrV0
-         WbuDP2PCf46aO4iPf0zlZFGHt3/HGrkCrXjqfG4KEJUoNP2n14wvhRVaLfyED939wqXP
-         MODHAPLVCvWyHuChD8U3pCN3oWD1Te302Dtr1l0kTxdqm8CAtNCaV0+bUH0JQOLezg4e
-         Qo0atwmopGsXD8mYWj5waUnrnBaHK6rp0X38AJ4M8AKXmdRcw4w+D3+2yXVZcLN6psQM
-         NB570pWT2icQZ3O+7bAbhfMGtZyPIgaxOykoW9hz18F1XT5sJrKgKmU/WWDcIA4y/Sk8
-         4fQA==
-X-Forwarded-Encrypted: i=1; AJvYcCVSj0WqDFnZsl7MYVK9Ci3cWtugcci5x68GIMi4DdkFTPy5wE9pp9ulwSi1ZWSPGU54WQMIAoA26EdLytI=@vger.kernel.org, AJvYcCXIr0X4zMQcJrwp0ajYnUngIYR/2IyIp91P+kAbOuUmR2whU0/j4CfeBaQxCe0B7CrO2e+A6PIQ@vger.kernel.org, AJvYcCXbM4zX5YIUkYPBhVOVKOlISsZglKvvHtj59Oie8O5aVFD5Rq9qmejTOXyJ2IUFnyUjRm2QfejFXWdJ@vger.kernel.org
-X-Gm-Message-State: AOJu0YyhbngUzuxsi+0aAhBHTqwgEHjoFMjwhqYoTeGstXZEF7taaWwm
-	4oALVYbedleX1s/Jq0pEIHVx7se/W3qvFFqIxu5WSNpoFoiLc1Qg
-X-Gm-Gg: ASbGncvTF0zf8ByiTKjHGDszoBS1KCMHlW4ZW9qRmfIW0QcVYPOaNjWfpcF5aNDqg7q
-	IIk9ioovmGvnSvdycLnekO2edyWErofisNsqgDt7/P9hGX/m5Y1uCLkF3e/MmMHuI4HAoEdjDLS
-	UdB6kXtRxTGARdJmZH53gjh2CXY9OTdDqDtN4bPjvZR0JWxlhG5NrwBB9eJO9N8Dn5j6Fdpn6QP
-	MVwXDPhiKrRPMIQvjKcydPLwp87FaGoC+0SCkvMGawTzF6aA7pOcAyqtwLwpVCqvCWji4C4sBS8
-	/fhdqw+XmwIgwlpeoj2zbb7EVpTojQ11702EiM9wNm+sJz4gYZ53+wnzQmdF4ThfEa8C3S7WpxO
-	RuCnf
-X-Google-Smtp-Source: AGHT+IE4QDBGiCycNXUyjCPkwa79deYcY277mu+wqZuo1qApUC6KJqFhsxYVGJVK7G71naCt3LuLbg==
-X-Received: by 2002:a05:6a21:e92:b0:1f5:8678:1832 with SMTP id adf61e73a8af0-215abb8e35amr10807619637.11.1746889824477;
-        Sat, 10 May 2025 08:10:24 -0700 (PDT)
-Received: from localhost.localdomain ([121.185.186.233])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b2350ddb4cbsm2990428a12.52.2025.05.10.08.10.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 10 May 2025 08:10:24 -0700 (PDT)
-From: Jeongjun Park <aha310510@gmail.com>
-To: alexandre.belloni@bootlin.com
-Cc: gregkh@linuxfoundation.org,
-	akpm@linux-foundation.org,
-	linux-rtc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1746903743; c=relaxed/simple;
+	bh=G45MZhKOVyBEzGgepP3wRSkj4iFRcUI/9Fv0xQct6gc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NQyF+4QdSIuZuySEzNggiFSnMWtHwxeWdvjzXKhKe3PxTQAWwIHuvx8Xa32YCnHkJR2LD8VvPzGLJuP/3bdvq0YxXXMUoQFIKhqNmMdzfjLXNhQRYcGH2vhNB8LluvjwA9rJ/7TFF4TPwobEA/h9BFOcmMdenSi6bAD7rtgXQDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hY/LgUA1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66553C4CEE2;
+	Sat, 10 May 2025 19:02:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1746903742;
+	bh=G45MZhKOVyBEzGgepP3wRSkj4iFRcUI/9Fv0xQct6gc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=hY/LgUA1hCYNydAanU9mgF+9tAofnqWY1Bzt5DI6tGRGKMtQbzsbHxKscF1/XlI9z
+	 3TcxUSzVM4DII1AVpad8oSV/uEUEtc+OQF19BTZftmdevvWiFsQaIufC56+5lY8sNK
+	 dyWwdpvCdqZUKn+JiJZ07fh4BFqSPsKdcXSYBGSPkh6CfngoZpXYxLi7f1y83oa+Gs
+	 YbzQRoYSVFS+2tTbXc4TiF96Q8utzJ7v6u94xmpG2onaB8KO8d6LGzYFL3D8zXxhYD
+	 klKqaSERyUHwlOLdOSf71SPfVKP+Z6rQICvdBAEdByiNwuvhDCrNbLPGF5+5ZC71AO
+	 5G28ZBhElqAOw==
+From: Mario Limonciello <superm1@kernel.org>
+To: amd-gfx@lists.freedesktop.org
+Cc: Mario Limonciello <mario.limonciello@amd.com>,
 	stable@vger.kernel.org,
-	Jeongjun Park <aha310510@gmail.com>
-Subject: [PATCH] rtc: fix data race in rtc_dev_poll()
-Date: Sun, 11 May 2025 00:09:44 +0900
-Message-ID: <20250510150945.18387-1-aha310510@gmail.com>
+	David.Wu3@amd.com
+Subject: [PATCH] drm/amd: Turn off doorbell for vcn 4.0.5
+Date: Sat, 10 May 2025 14:02:16 -0500
+Message-ID: <20250510190216.3461208-1-superm1@kernel.org>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -91,56 +57,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-I found data-race in my fuzzer:
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-==================================================================
-BUG: KCSAN: data-race in rtc_dev_poll / rtc_handle_legacy_irq
+On VCN 4.0.5 using a doorbell to notify VCN hardware for WPTR changes
+while dynamic power gating is enabled introduces a timing dependency
+that can sometimes cause WPTR to not be properly updated. This manifests
+as a job timeout which will trigger a VCN reset and cause the application
+that submitted the job to crash.
 
-write to 0xffff88800b307380 of 8 bytes by interrupt on cpu 1:
- rtc_handle_legacy_irq+0x58/0xb0 drivers/rtc/interface.c:624
- rtc_pie_update_irq+0x75/0x90 drivers/rtc/interface.c:672
- __run_hrtimer kernel/time/hrtimer.c:1761 [inline]
- __hrtimer_run_queues+0x2c4/0x5d0 kernel/time/hrtimer.c:1825
- hrtimer_interrupt+0x214/0x4a0 kernel/time/hrtimer.c:1887
- local_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1038 [inline]
-....
+Writing directly to the WPTR register instead of using the doorbell changes
+the timing enough that the issue doesn't happen. Turn off doorbell use for
+now while the issue continues to be debugged.
 
-read to 0xffff88800b307380 of 8 bytes by task 11566 on cpu 0:
- rtc_dev_poll+0x6c/0xa0 drivers/rtc/dev.c:198
- vfs_poll include/linux/poll.h:82 [inline]
- select_poll_one fs/select.c:480 [inline]
- do_select+0x95f/0x1030 fs/select.c:536
- core_sys_select+0x284/0x6d0 fs/select.c:677
- do_pselect.constprop.0+0x118/0x150 fs/select.c:759
-....
-
-value changed: 0x00000000000801c0 -> 0x00000000000802c0
-==================================================================
-
-rtc_dev_poll() is reading rtc->irq_data without a spinlock for some
-unknown reason. This causes a data-race, so we need to add a spinlock
-to fix it.
-
-Cc: <stable@vger.kernel.org>
-Fixes: e824290e5dcf ("[PATCH] RTC subsystem: dev interface")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Cc: stable@vger.kernel.org
+Cc: David.Wu3@amd.com
+Closes: https://gitlab.freedesktop.org/mesa/mesa/-/issues/12528
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3909
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 ---
- drivers/rtc/dev.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/rtc/dev.c b/drivers/rtc/dev.c
-index 0eeae5bcc3aa..a6570a5a938a 100644
---- a/drivers/rtc/dev.c
-+++ b/drivers/rtc/dev.c
-@@ -195,7 +195,9 @@ static __poll_t rtc_dev_poll(struct file *file, poll_table *wait)
+diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c
+index ba603b2246e2e..ea9513f65d7e4 100644
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c
+@@ -181,7 +181,7 @@ static int vcn_v4_0_5_sw_init(struct amdgpu_ip_block *ip_block)
+ 			return r;
  
- 	poll_wait(file, &rtc->irq_queue, wait);
- 
-+	spin_lock_irq(&rtc->irq_lock);
- 	data = rtc->irq_data;
-+	spin_unlock_irq(&rtc->irq_lock);
- 
- 	return (data != 0) ? (EPOLLIN | EPOLLRDNORM) : 0;
- }
---
+ 		ring = &adev->vcn.inst[i].ring_enc[0];
+-		ring->use_doorbell = true;
++		ring->use_doorbell = false;
+ 		if (amdgpu_sriov_vf(adev))
+ 			ring->doorbell_index = (adev->doorbell_index.vcn.vcn_ring0_1 << 1) +
+ 						i * (adev->vcn.inst[i].num_enc_rings + 1) + 1;
+-- 
+2.43.0
+
 
