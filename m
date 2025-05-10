@@ -1,118 +1,134 @@
-Return-Path: <stable+bounces-143076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF1D6AB2156
-	for <lists+stable@lfdr.de>; Sat, 10 May 2025 07:45:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94E0DAB218E
+	for <lists+stable@lfdr.de>; Sat, 10 May 2025 08:31:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CF2FA042A7
-	for <lists+stable@lfdr.de>; Sat, 10 May 2025 05:45:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D6373B5BB2
+	for <lists+stable@lfdr.de>; Sat, 10 May 2025 06:31:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C43641C6FE8;
-	Sat, 10 May 2025 05:45:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0CE61DF277;
+	Sat, 10 May 2025 06:31:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="MVXIBFaN"
 X-Original-To: stable@vger.kernel.org
-Received: from sgoci-sdnproxy-4.icoremail.net (sgoci-sdnproxy-4.icoremail.net [129.150.39.64])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2550829D0B
-	for <stable@vger.kernel.org>; Sat, 10 May 2025 05:45:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.150.39.64
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA8042E401
+	for <stable@vger.kernel.org>; Sat, 10 May 2025 06:31:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746855949; cv=none; b=gbWb0HY2q9WY0uaxr++mMq0b4JFoUXBTTUphOWngtKBI1UcrPBSn7f++WN4K/5/eddsBasjtOL0lnth8Iusytwmn0CW7th3c8EoVpCNW9Giuw0X41SIrWHeF3T49sZ1gdep923R6GiHDfhiosQ4YaIO7RAoHMqrMMnfF31CviiQ=
+	t=1746858697; cv=none; b=KWpyjHsa9D9Tu3FldkWnZ3mkS++e1NdtaNHHJQ6hpNJIBnX/ghGzsAAl4FQFKZZkdsnqmWiaCV8+FAwjEpNZzvJf2QT8/hdCcvt1ok8V8Xl6FlLdrrmrvU+b22+IyW4Y3FF2W5DPFD689tix5bJXqgaAozovNGXsvTFfmvUR2u0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746855949; c=relaxed/simple;
-	bh=9oEEu/SAZUgR46EFqyXrNEVmVFJ4AANa2p+2/FJiFrM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=k9xMQzUjMlN5g6Ja3Hrig/IaIeBbuZeGh1iSvavVrD+eLuT9waTAXuPGy5MmzY4xaTyYif+cPDgvfLzlcQ35GTpyu/rtFoKGCoWIYbpED+SVkp4Hbr1qxiAKqmxMPdsc6EXAa+FdvY82F6mZPhb2guK7g7+jXcQP2nHG7KPtq+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hust.edu.cn; spf=pass smtp.mailfrom=hust.edu.cn; arc=none smtp.client-ip=129.150.39.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hust.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hust.edu.cn
-Received: from hust.edu.cn (unknown [172.16.0.50])
-	by app2 (Coremail) with SMTP id HwEQrAAXHnrU5x5oZVhEAQ--.1807S2;
-	Sat, 10 May 2025 13:44:52 +0800 (CST)
-Received: from ubuntu.localdomain (unknown [10.12.190.56])
-	by gateway (Coremail) with SMTP id _____wBXXy_R5x5oyUYiAA--.40730S4;
-	Sat, 10 May 2025 13:44:50 +0800 (CST)
-From: Zhaoyang Li <lizy04@hust.edu.cn>
-To: stable@vger.kernel.org
-Cc: dzm91@hust.edu.cn,
-	Mark Brown <broonie@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Zhaoyang Li <lizy04@hust.edu.cn>
-Subject: [PATCH 6.1.y] arm64/sme: Always exit sme_alloc() early with existing storage
-Date: Sat, 10 May 2025 13:44:24 +0800
-Message-Id: <20250510054424.346532-1-lizy04@hust.edu.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <2024012617-overlap-reborn-e124@gregkh>
-References: <2024012617-overlap-reborn-e124@gregkh>
+	s=arc-20240116; t=1746858697; c=relaxed/simple;
+	bh=/CUWNCKJLlL2ZUz9MqaxNPY5UPyrCzuEVCDqSKKaiwY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=s1aSyl9jGEg9bISqhGMNPrUt/O3NfPrSTZE8Q9ExF3HbM6LZ+jVTBAUhKxR11Ed4FfHJ2Nt3fOSur//BSnvvK5qkYzNwJ00L4wE578tElrn9L4dvkV5WKcGX3M+tTbnTIN4Roi+THQv/rDuJB8kaWLyBqeW/LxOQVD9NegIpdtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=MVXIBFaN; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3a1fa0d8884so764729f8f.3
+        for <stable@vger.kernel.org>; Fri, 09 May 2025 23:31:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1746858694; x=1747463494; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=al12x7untsw9gT40SLDOdxEjze2k19FQIlHKuwT2kqQ=;
+        b=MVXIBFaNTzcJH/anR5qym88MwkABM+Zj7KoL7uATZcH+BcrAecC9frL5VeS0sVdzdi
+         hUJv3H9ojh1IGvebhzIZkbD1w/6ZixvlV4Qdke2ddT52SO8kUrjsCP0L+sbHUuMy8TPq
+         OBLL8tROouoczzulH4wuBAmedzNO3y1XAiQes2ZVN4UmKsvhAns6yiyH9zNA5Y7xWcPy
+         6NHTOR3EB4XXbB4UwUVIrXFzK2zEPnVyWg+8b/S3HHkmOxwDIHsLOIeJcExhv5WjdvEm
+         2RcvTRvBZxupHzftBZLBo2042CXYaCwZXXcKWUj+CSvLlBgMUTBWrKI/zRN15cBJrU01
+         Pl3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1746858694; x=1747463494;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=al12x7untsw9gT40SLDOdxEjze2k19FQIlHKuwT2kqQ=;
+        b=E3fV+QHcZjWcrTAD8v+aaBLE2BlkQ+ZcpS7FCxsmK/amiqKgx49iK4bFEh1iOIiUYQ
+         BAmOooO007IerN8em2YkW+cDW0WIDJoIoHef+iq5MZW4OJzDyxwdyZo5IZ6uaNtLOfg8
+         h3MRn6NF2VTP00Aq4hn7jQABv2ACJbPHEgNy1kFgUqi5Ur98jFN7WDloQDskOMQW4xsF
+         gaJHsL8MVprSLx3bF8dKH/KRBedX02RdksLkd4RBh0EDz0xURfMTRfvNWOdkmaCZgEL+
+         lGTWCAmjrl1MD4FMYcfIHuvCz0FFxP92h1OJcZ9uvsXSYFIOd8d/q0LHxI7K0zBw2YJi
+         qw5A==
+X-Forwarded-Encrypted: i=1; AJvYcCU4Jmw0aPBNJpkeWxLw3sq2+EpzN9YmCoheRKAtz5LyfhpWLcyHNjjKdPpQNy9ydHlwYakw2Dw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOXMisFnkfxRYEoiJneXQs/98xjx9N6elVeXlviY+VMUTqSAma
+	f+m98O/n0jEo4bVSDnY5mSyAO19q4AT86K9aT9SwzPusVAN/TXDDYOE4KZzyfA==
+X-Gm-Gg: ASbGncuJSP0yCgTDF4tYSwAIJFCShSzP+JTjZVFBfmORTrUYsUzLFkj8CzFR3F34M0b
+	Ch2Tv9olFyG/hS1dApoMR283kQgFQiiC6xCBAQ+nKZwh+UezCl4Og+/LPfTvISwhnQr5xHj1t/G
+	xxYjQAgcdYl1y2msEr4w6M0fp86xk6Reado7As/mTjd0mZxGYDODN87k8V9WLkAnoQQZHa/Wvzm
+	tD9eqEFsPOJ8MFYiDYV3mWGSSclGYMmpL5u1ai171t4gGSJjM//ZZVQV5kGmZlKfMEHwrc0QZpU
+	bleaW482JRYZccGx6/JbxGcsMbu/UEzteqVTPBlshe+moMT8d1AhdHcFBow39zPb8HLp9pON5gE
+	j7DHlKHh2+9Qat/rwIWboQbwOOmWQGujXNQ==
+X-Google-Smtp-Source: AGHT+IETPcny+oJkB2S2QRPRO7MBeUeS+pHJgVEZyOPsrPJBO7sk8jq/SJTSNUR5nO2ekoZ3PrRZwg==
+X-Received: by 2002:a05:6000:22ca:b0:391:454:5eb8 with SMTP id ffacd0b85a97d-3a1f64b5c99mr4768988f8f.48.1746858693887;
+        Fri, 09 May 2025 23:31:33 -0700 (PDT)
+Received: from thinkpad (cust-east-par-46-193-69-61.cust.wifirst.net. [46.193.69.61])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a1f5a4c583sm5351182f8f.84.2025.05.09.23.31.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 May 2025 23:31:33 -0700 (PDT)
+Date: Sat, 10 May 2025 12:01:31 +0530
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+To: Lukas Wunner <lukas@wunner.de>
+Cc: Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Bartosz Golaszewski <bartosz.golaszewski@linaro.org>, 
+	Krzysztof Wilczy??ski <kwilczynski@kernel.org>, bhelgaas@google.com, linux-pci@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.14 382/642] PCI/pwrctrl: Move
+ pci_pwrctrl_unregister() to pci_destroy_dev()
+Message-ID: <tfil3k6pjl5pvyu5hrhnoq7bleripyvdpcimuvjrvswpqrail3@65t65y2owbpw>
+References: <20250505221419.2672473-1-sashal@kernel.org>
+ <20250505221419.2672473-382-sashal@kernel.org>
+ <aBnDI_40fX7SM4tp@wunner.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:HwEQrAAXHnrU5x5oZVhEAQ--.1807S2
-Authentication-Results: app2; spf=neutral smtp.mail=lizy04@hust.edu.cn
-	;
-X-Coremail-Antispam: 1UD129KBjvJXoW7ur17uw4fuw15ZrWrKw17Jrb_yoW8XFW8pF
-	WkCw1qkr4UWa40k3sxX3Zrur95Gws5WF45WFZxAw1Fyr1YqFyFgFn8Xry3Xw4Fqr9YgFWa
-	9F1YvrWFgFWDAw7anT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBIb7Iv0xC_KF4lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
-	cIk0rVWrJVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjx
-	v20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1l84ACjcxK
-	6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1lnxkEFVAIw2
-	0F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I2
-	7wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0EF7xvrVAajcxG14v26r4UJVWxJr1lYx0E74
-	AGY7Cv6cx26r4fZr1UJr1lYx0Ec7CjxVAajcxG14v26r4UJVWxJr1lOx8S6xCaFVCjc4AY
-	6r1j6r4UM4x0Y48IcxkI7VAKI48JMxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1sIEY2
-	0_GFW3Jr1UJwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I
-	3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIx
-	AIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAI
-	cVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2js
-	IEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU0dOzDUUUUU==
-X-CM-SenderInfo: rpsqjjixsriko6kx23oohg3hdfq/1tbiAQcRB2gdeuFGkAACsq
+In-Reply-To: <aBnDI_40fX7SM4tp@wunner.de>
 
-From: Mark Brown <broonie@kernel.org>
+On Tue, May 06, 2025 at 10:06:59AM +0200, Lukas Wunner wrote:
+> On Mon, May 05, 2025 at 06:09:58PM -0400, Sasha Levin wrote:
+> > From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> > 
+> > [ Upstream commit 2d923930f2e3fe1ecf060169f57980da819a191f ]
+> > 
+> > The PCI core will try to access the devices even after pci_stop_dev()
+> > for things like Data Object Exchange (DOE), ASPM, etc.
+> > 
+> > So, move pci_pwrctrl_unregister() to the near end of pci_destroy_dev()
+> > to make sure that the devices are powered down only after the PCI core
+> > is done with them.
+> 
+> The above was patch [2/5] in this series:
+> 
+> https://lore.kernel.org/r/20250116-pci-pwrctrl-slot-v3-0-827473c8fbf4@linaro.org/
+> 
+> ... so I think the preceding patch [1/5] is a prerequisite and would
+> need to be cherry-picked as well.  Upstream commit id is:
+> 957f40d039a98d630146f74f94b3f60a40a449e4
+> 
 
-[ Upstream commit dc7eb8755797ed41a0d1b5c0c39df3c8f401b3d9 ]
+Yes, thanks for spotting it Lukas, appreciated!
 
-When sme_alloc() is called with existing storage and we are not flushing we
-will always allocate new storage, both leaking the existing storage and
-corrupting the state. Fix this by separating the checks for flushing and
-for existing storage as we do for SVE.
+> That said, I'm not sure this is really a fix that merits backporting
+> to stable.  Mani may have more comments whether it makes sense.
+> 
 
-Callers that reallocate (eg, due to changing the vector length) should
-call sme_free() themselves.
+Both this commit and the one corresponding to patch 1/5 are not bug fixes that
+warrants backporting. So please drop this one from the queue.
 
-Fixes: 5d0a8d2fba50 ("arm64/ptrace: Ensure that SME is set up for target when writing SSVE state")
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20240115-arm64-sme-flush-v1-1-7472bd3459b7@kernel.org
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Zhaoyang Li <lizy04@hust.edu.cn>
----
- arch/arm64/kernel/fpsimd.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+- Mani
 
-diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
-index 43afe07c74fd..3a08c7609d1e 100644
---- a/arch/arm64/kernel/fpsimd.c
-+++ b/arch/arm64/kernel/fpsimd.c
-@@ -1234,8 +1234,10 @@ void fpsimd_release_task(struct task_struct *dead_task)
-  */
- void sme_alloc(struct task_struct *task, bool flush)
- {
--	if (task->thread.za_state && flush) {
--		memset(task->thread.za_state, 0, za_state_size(task));
-+	if (task->thread.za_state) {
-+		if (flush)
-+			memset(task->thread.za_state, 0,
-+			       za_state_size(task));
- 		return;
- 	}
- 
 -- 
-2.25.1
-
+மணிவண்ணன் சதாசிவம்
 
