@@ -1,129 +1,103 @@
-Return-Path: <stable+bounces-143088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A24AAB276C
-	for <lists+stable@lfdr.de>; Sun, 11 May 2025 11:07:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 175DAAB278D
+	for <lists+stable@lfdr.de>; Sun, 11 May 2025 11:57:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A641F3AC138
-	for <lists+stable@lfdr.de>; Sun, 11 May 2025 09:06:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92E7A17574F
+	for <lists+stable@lfdr.de>; Sun, 11 May 2025 09:57:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 262931A5B85;
-	Sun, 11 May 2025 09:06:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACBE21A317E;
+	Sun, 11 May 2025 09:57:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UcAA8xUC"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b="lNQdupnS"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [78.32.30.218])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44F7118DF86;
-	Sun, 11 May 2025 09:06:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE5D513BAF1;
+	Sun, 11 May 2025 09:57:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=78.32.30.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746954412; cv=none; b=ThSeo/uAVJ3XFKmrsrh214DUcWLBX5/C+bg+bH5R858enD5QklLjCm8MkWbWj0hNexzOOsZhhECVuWs3e8dlaE1m/NSwpEJIZNMCJoYjUIEhaoyoi/OXiEFXX4pMgCTEclOdxDKKWvC/Yn2/dczuz7Va2yRxOgskE0jUSx1AhTU=
+	t=1746957452; cv=none; b=C5ivnMxvP9OpYmlaFfRvMket3Dhd14RfMXw5MYB0wHcA5IJebAxOiOZEfcnsYauS6ZrU6+YhBayeFpPmt3GfN24AAc6sIDOnrA1eE4cgn8c7pPK1kxNzCsuJmBZMLMlj1l+0rzL1qmk5+8ljNxVeqmwI+L3FyvsxDJw8965Pw1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746954412; c=relaxed/simple;
-	bh=ExMotRCy4nVraExxzurjrmt7fEMjU12YNaqJHoOLUa0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EkSesLoCU++PW58s4/1GvBwYkvkzmrLwJxKX6NY/RqfwtcNf00OAvfqRURnUZDZ1ONSF8FL92LuHnCrvu1xaAiAS1i5/bgEzCPJLRx8g3M19T5S+KFYYrLSSG1etoBvekzLiK+D/ltqQ9tfeqKn8xuVo88JFE+umDvUvX+r6C8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UcAA8xUC; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-441d1ed82faso23747755e9.0;
-        Sun, 11 May 2025 02:06:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1746954409; x=1747559209; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=JbaH4y/1rTcRlURo/BeZ1x9PF6y8qt1yTcz5WxSietc=;
-        b=UcAA8xUCeKHCeZtYYM/mloYq0r5ei1Oofm8w1TSXaEwFD87gvK8A0MFXLnnkhG9/8X
-         Sr09NIm818U5zkY4yE9kegQSF8CxtT1tXypL6DquUssZHpCQwtclK51iEsttjoJ9frRM
-         A75WKMMSA9aUGH9sZurHfHsC9N7zFdYF87a5sPUso1lzUrJxGIp8d3tPuAmGAjhewf9K
-         Na3Xpu/7WESMGaVs7B8MQdXk3MY9JgChKGyCRVUjAwl/3bNRt1qpdT9N5nEOoPxko68f
-         WFj6LdKT05EQbot9VLhK6Lh8Oy0bkdeUtaDLhmN6bnadH6ZwXkOHZ22OVgACCg6uFD7b
-         jCSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746954409; x=1747559209;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JbaH4y/1rTcRlURo/BeZ1x9PF6y8qt1yTcz5WxSietc=;
-        b=r71YMo5hc1BCt390Lhc0G/CrLZFKLyohQwvDRAliMJjUYMxGXUdwzw2IhvRr+VgSGi
-         S8od0U9Tsc/Y6KK3eINwDD7CXNV5j1FZ4I375h5yrvpKYeLP+AkPsY+UySbkbHcQfeci
-         LuKORJSWzvqWOfOk8/NMUVSCTdjG6XkVvFGGjWnG4EH10nMNtQ+6/+AuXxfoVvPgEszT
-         nDZMcc13z5pX39YGbtgbA/M5oRdtsZaI4kdlRMUHl0/OSfmpLwx9PbPoO4o7TMoi4uu/
-         oaiRLp0Io6G4Z1qfLbN8MDzmWfxOmi05zx7VCM/4w5O0VNQ1hZdaW9D7DLn9umXBVtph
-         FvNA==
-X-Forwarded-Encrypted: i=1; AJvYcCUKTRwgTR4EJwNrvJs13jMY3gqFwB2y7RWBdRH2aSNfOfrEHtnKHR/9bjyyTbeRZdeO7yJqhu7JiiSUqL4=@vger.kernel.org, AJvYcCWEoIO1IUzB/WhdScKJU50fB2zkR8mX4jSWWJn/HFnLM2n7/97lGXUhmKVa8/ccAVUoXiBvtMWi@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz1dqysqGOID+qF5C46WpzfIe6uQBcw1MxjR06mCRuSalISmVa7
-	59xD80oO8b5G10hWTr2CyCtybEFiSxrojZxKeVeESdPnVkh5Duhj
-X-Gm-Gg: ASbGncsj9EnXgnGBZt/Scesg/yGg7ZiWpBXOVLVxbxOkPhpNvJGLVWJOSWCJ6hYuzi0
-	eiXXgM1nNLbFu7RZ9T+Hstt3C0YzzWNuiytdzGNsVuN2X7x6WFHLhVS4503Sk1bnNDGv1qOpvKu
-	IhJrBYdTPcjan14GcAOHzckYRxQBZTR49eWrKOsWlU4nmranPcVnI5qj2fKDVAvOfvrHSMlOrjt
-	h8gRAw7oA42Uj6S+oDjx6BXfndlz+ZK2MMi/mXPBIZM19DK2EORUUm0WOa9vyFVQZ+T3B9tpG/F
-	rUZ+Dy32cnFywfPf4+kaNRgAkj0J4yhWsgkcO4sDcr/aYwX8nKZZgCxgUM0UTGI5MYT6F3ndgis
-	0Hfh+9lPgulytcxWicHJM
-X-Google-Smtp-Source: AGHT+IFElRoaAmVj+C4yHdrJOpH4ai6Mw0b7qh+nhLaqXHyIAZ4Ia9CP33KyyUP3gLKsWjLKzLyWIg==
-X-Received: by 2002:a05:600c:8708:b0:43c:f3e4:d6f6 with SMTP id 5b1f17b1804b1-442d6ddeb99mr92730575e9.31.1746954409190;
-        Sun, 11 May 2025 02:06:49 -0700 (PDT)
-Received: from localhost.localdomain (93-34-88-225.ip49.fastwebnet.it. [93.34.88.225])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-442cd32f2a8sm127794645e9.14.2025.05.11.02.06.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 11 May 2025 02:06:48 -0700 (PDT)
-From: Christian Marangi <ansuelsmth@gmail.com>
-To: Andrew Lunn <andrew@lunn.ch>,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
+	s=arc-20240116; t=1746957452; c=relaxed/simple;
+	bh=DPJG4PvkAyLVxlGdfS4q/kBq/bWu/WF2ntWz4PAzrw4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rcX6feQJC49dICJyQCWtGbG7gi9nw2PTPlbdglx+TB7HHpuPRZMBznmJZTJUgOGfYVIpJJ2gh0DAMLjInWlSXPvelaKsBfRxVRWa0T1RK7J5wuSDrReMHMJQNEdrc+lDDHqL8OsudknSzWVDmKw0/Pj2ifeZV+VgG8R81KZrRdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk; spf=none smtp.mailfrom=armlinux.org.uk; dkim=pass (2048-bit key) header.d=armlinux.org.uk header.i=@armlinux.org.uk header.b=lNQdupnS; arc=none smtp.client-ip=78.32.30.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=armlinux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=armlinux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=+HkXY9uD0IJgliLTge+1QCfl90UxdVOyJJ6tTfPwFkw=; b=lNQdupnS2kvfwZbuZTFh4QZWxn
+	v9xyxWJqe/r0AUDDCUpQyFlyJSxdYV3zRKlatBQztgqNaGXtAV1oNqCAnEL+ihEEqUCI2UATZyHxB
+	E+LCD9A0UQFkGVvDkeLtm/ydm0k27fQrsKs+5uIdROO2+C7/OqUfTpeMNW2o2ASQEGHr1w8OQUYxM
+	0InHvXcW5ruIAwU5ay8YHxBKGk38YWZpsfbvdM3TMKGD5vbl0+Vm+SNG5oYnJPJnRKFPy0l3FPSLv
+	BXE3O1ugQ/Aq4Cty/4d7hOJ18LqVxy+47Bq/ORjCwCmZF9pqBZKB8In7/Xuf/asP06aeB9pHys3rq
+	c5wJQTfA==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:41920)
+	by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <linux@armlinux.org.uk>)
+	id 1uE3Qp-0003ox-20;
+	Sun, 11 May 2025 10:57:15 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.96)
+	(envelope-from <linux@shell.armlinux.org.uk>)
+	id 1uE3Qk-0001DM-38;
+	Sun, 11 May 2025 10:57:10 +0100
+Date: Sun, 11 May 2025 10:57:10 +0100
+From: "Russell King (Oracle)" <linux@armlinux.org.uk>
+To: Christian Marangi <ansuelsmth@gmail.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit <hkallweit1@gmail.com>,
 	"David S. Miller" <davem@davemloft.net>,
 	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Christian Marangi <ansuelsmth@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
 	Daniel Golle <daniel@makrotopia.org>,
 	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Subject: [net PATCH] net: phy: aquantia: fix wrong GENMASK define for LED_PROV_ACT_STRETCH
-Date: Sun, 11 May 2025 11:06:17 +0200
-Message-ID: <20250511090619.3453606-1-ansuelsmth@gmail.com>
-X-Mailer: git-send-email 2.48.1
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [net PATCH] net: phy: aquantia: fix wrong GENMASK define for
+ LED_PROV_ACT_STRETCH
+Message-ID: <aCB0dkhiO49NJhyX@shell.armlinux.org.uk>
+References: <20250511090619.3453606-1-ansuelsmth@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250511090619.3453606-1-ansuelsmth@gmail.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 
-In defining VEND1_GLOBAL_LED_PROV_ACT_STRETCH there was a typo where the
-GENMASK definition was swapped.
+On Sun, May 11, 2025 at 11:06:17AM +0200, Christian Marangi wrote:
+> In defining VEND1_GLOBAL_LED_PROV_ACT_STRETCH there was a typo where the
+> GENMASK definition was swapped.
+> 
+> Fix it to prevent any kind of misconfiguration if ever this define will
+> be used in the future.
 
-Fix it to prevent any kind of misconfiguration if ever this define will
-be used in the future.
+I thought GENMASK() was supposed to warn about this kind of thing. I've
+questioned in the past whether GENMASK() is better than defining fields
+with hex numbers, and each time I see another repeat of this exact case,
+I re-question whether GENMASK() actually gives much benefit over hex
+numbers because it's just too easy to get the two arguments to
+GENMASK() swapped and it's never obvious that's happened.
 
-Cc: <stable@vger.kernel.org>
-Fixes: 61578f679378 ("net: phy: aquantia: add support for PHY LEDs")
-Signed-off-by: Christian Marangi <ansuelsmth@gmail.com>
----
- drivers/net/phy/aquantia/aquantia.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I don't remember there being a dribble of patches in the past
+correcting bitfields defined using hex numbers, but that seems common
+with GENMASK().
 
-diff --git a/drivers/net/phy/aquantia/aquantia.h b/drivers/net/phy/aquantia/aquantia.h
-index 0c78bfabace5..e2bb66a21589 100644
---- a/drivers/net/phy/aquantia/aquantia.h
-+++ b/drivers/net/phy/aquantia/aquantia.h
-@@ -76,7 +76,7 @@
- #define VEND1_GLOBAL_LED_PROV_LINK100		BIT(5)
- #define VEND1_GLOBAL_LED_PROV_RX_ACT		BIT(3)
- #define VEND1_GLOBAL_LED_PROV_TX_ACT		BIT(2)
--#define VEND1_GLOBAL_LED_PROV_ACT_STRETCH	GENMASK(0, 1)
-+#define VEND1_GLOBAL_LED_PROV_ACT_STRETCH	GENMASK(1, 0)
- 
- #define VEND1_GLOBAL_LED_PROV_LINK_MASK		(VEND1_GLOBAL_LED_PROV_LINK100 | \
- 						 VEND1_GLOBAL_LED_PROV_LINK1000 | \
 -- 
-2.48.1
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
 
