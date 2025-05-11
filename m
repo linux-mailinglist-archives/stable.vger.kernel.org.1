@@ -1,134 +1,87 @@
-Return-Path: <stable+bounces-143100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B384AB2A0F
-	for <lists+stable@lfdr.de>; Sun, 11 May 2025 19:39:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC084AB2A7F
+	for <lists+stable@lfdr.de>; Sun, 11 May 2025 21:23:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9860B189A661
-	for <lists+stable@lfdr.de>; Sun, 11 May 2025 17:40:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 410353A69DB
+	for <lists+stable@lfdr.de>; Sun, 11 May 2025 19:23:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC62025D8E5;
-	Sun, 11 May 2025 17:39:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F835158DAC;
+	Sun, 11 May 2025 19:23:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=libre.computer header.i=@libre.computer header.b="SUvMbhWY"
+	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="h7n0X8ru"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E232A25D554
-	for <stable@vger.kernel.org>; Sun, 11 May 2025 17:39:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72834C80;
+	Sun, 11 May 2025 19:23:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1746985178; cv=none; b=ekoM1QnA+Vlzg0AfGLjfZdTbgvyuckQNVkq7sXZuQd1X7++N+KhK1MPA6MhaJfRiM4GjfY9IGfh/9lmkpYH3/QAcu7qoir5lW13BK10PNHNvVTPsVybDAPKfIeJJmAdoH6hiDSi0K93E7v4rmt+9bTF1/kfL1z/3lVXyve8JrnA=
+	t=1746991423; cv=none; b=WL77pKWVg9MOeXiEvl8EFQLtEhJvwAZHHhpR4/vdx5zuVMyW2p5QuVDqQSeRFQCU8g6due+9h7zHvbovp+d3ZGTCvjzJYUwJ41GwJ6pLDxQlXUZnYBqDoPzFusR+rclHee9vQ+44vpDNkNFImHNArNHnQAi5qyRZQtLa06i3xtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1746985178; c=relaxed/simple;
-	bh=IPXduNjdPqXlwZF1nLbl8D7KU2jgmcdSUy8mFKn4DLY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nKBD+8BiAex0tFUeMoM5U7CyGBHYkkZkfp9Pri4Pu/shH1KcW4KnknLtp5+6NXDhNSnZ1i+amPprCUbISJ0jrVt0i5vAykpsH9StHos6GkywsXjyc+mYQ4Sy3RMlqPx5Xwu+Vnjz51J+k/FlXIpl63EluYyulQ0ixArlRYKNxKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=libre.computer; spf=none smtp.mailfrom=libretech.co; dkim=pass (2048-bit key) header.d=libre.computer header.i=@libre.computer header.b=SUvMbhWY; arc=none smtp.client-ip=209.85.160.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=libre.computer
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=libretech.co
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-47664364628so45582311cf.1
-        for <stable@vger.kernel.org>; Sun, 11 May 2025 10:39:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=libre.computer; s=google; t=1746985176; x=1747589976; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=xLoioQfYdPBgm49bPKitfsKJOSsTnQU6DqnNOtLxcjQ=;
-        b=SUvMbhWYe1AOzh8qEaf8fDuvtdEd4nDyBg09KVt8Cgs3HcMwUAdz/VuylRnUV6iBdh
-         jUbcMLmcp6Vxa2sl7Q6YXwCjtynsDBeB13/3XHBUhRutYaCNQ/qlaDt718eLNs/Lun3Z
-         MD096u+YMLXx1C3AhdIA6jxPBnlqpauikcf7sK9fc4GDortMFnUkTuxQSIm1WusIYZ1y
-         e20Ufqq/FRSP3euK80ff04QGz785i5zZQkOa2sUE/DU2fvpQhhB02Tcs5uZ58OfmqK93
-         1lJ65V4h4YAyoMA41+u28PeOCPUuslfw/BfadhCGdNtn5AOiHTP/jBahxsVYkTJRV8gd
-         mTjw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1746985176; x=1747589976;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xLoioQfYdPBgm49bPKitfsKJOSsTnQU6DqnNOtLxcjQ=;
-        b=jkzSzVaApLuF99JD2O0UrBiSWZYU2OnSLnS7/+PJKgs4TWwdm3OsD6BrXopVIuGag0
-         iCgNjndfU0XCZIz5RnT/J4FxmCNQjJfa4NmKhs92l8tB9x4p72FY7CkdWvfkJctkLdVe
-         SVWpF3Qr/gTOuO7BshSD24vZEvma8AHSNkuCqJsfi1qnod4WzCort3YHaWuEEh5byTja
-         gegVG9oUTKxKv7oyxxQ2Ew1onGZFqyLaiDC3iiVMwMO084W4bZX51DM3LjT61D1pDnuX
-         ejsFPIMEkss1qjIYjkaWhZ4no1dwqq7h319sULPEPkg7KsH4zg68CcyIx43vaT1XIztc
-         zjyw==
-X-Forwarded-Encrypted: i=1; AJvYcCUl2UUMEyKYX8N/bIcN+qwcIxcrgzkA0bAwkxXNkL7K++QDIV4XC/jCAnmnOMSjdLfVlb/1Af0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyKW591nVrRACB2Kwv4seaeXEusRq+sBAUmV70ywIFAEjV/BeY/
-	BmCwTRH5XYPEE/KFT3HPOkFio8531Izg02SM2h1L5WBx9WgT3/OlseFjIdzuPQ==
-X-Gm-Gg: ASbGncvRXvUWzB7rCsAx9FA5+2EZot7rVf09fbPtCZIaSjG3QJmei55X4aPWmULa26U
-	IlH9tGM74VmoLD+D3hd5TN4kHfEr3iO5v6+VLEZiI6hmF7Yv1tJ5gJnf77x2bDaGO13d9ws6XlV
-	pbPQlYAei8d+mgrfFXEH1TU1tMQHxU7FP289L+Pvh/6YybquO8odgDznB7iRGAC7uNKpA/rPTib
-	RIBfkMBeGBujdhWnI2xIQJKw/mZSJfTiL7QUJnq1QZhirZcTBnjspDlKi/7meJp2/GNEA8qmJNI
-	Wz9JFkdgQeTcAgZ1XVOxZl3M7fe60/mIGj3s6AyAnjUYH4A=
-X-Google-Smtp-Source: AGHT+IGbtN6p73kbilpYBJERKanPWex1vuDrJr9UjFDjOEDztJIOHD7xUAEl7SH4fqjj9AVcDWDKXw==
-X-Received: by 2002:ac8:5d0d:0:b0:477:6e32:aae2 with SMTP id d75a77b69052e-4945285d6b1mr173557071cf.0.1746985175732;
-        Sun, 11 May 2025 10:39:35 -0700 (PDT)
-Received: from localhost ([2607:fb91:eb2:c0a0:10e4:4464:87db:3a66])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-49452588d92sm38259301cf.59.2025.05.11.10.39.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 11 May 2025 10:39:35 -0700 (PDT)
-From: Da Xue <da@libre.computer>
-To: Neil Armstrong <neil.armstrong@linaro.org>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Cc: Da Xue <da@libre.computer>,
-	stable@vger.kernel.org,
-	linux-amlogic@lists.infradead.org,
-	linux-clk@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] clk: meson-g12a: fix missing spicc clks to clk_sel
-Date: Sun, 11 May 2025 13:39:26 -0400
-Message-Id: <20250511173926.1468374-1-da@libre.computer>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1746991423; c=relaxed/simple;
+	bh=+OTFpMuvTlo08V9NAG4jWSYjc1KKfYrxW9G1gMBm4Jc=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=NjHpGhxudYrpWTodFqTWI2fROcI7A8BKUZ7nnJQiSy3cp0qUBjJjZYu4JwXihPOY7PUL5l3rHGiOVRechJXZ0v7vM2MeoNbhULeEaQ0QsuPvJivI86yfqTXJxsgIsnIdAGQIQWelZorh5uQ9y8GKbfN/p/bZvk2m/RhcwwvRiO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=h7n0X8ru; arc=none smtp.client-ip=168.119.38.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+	Resent-Cc:Resent-Message-ID; bh=bggfRofGtQv41sMq7DiElPPeAu0aUPI8Xjg9f5re5GQ=;
+	t=1746991421; x=1748201021; b=h7n0X8rurifnDVzA3O6Il4/0eE3Pfp3bYUP92JyWkaAFfk4
+	BY/kLa8IZLMUycaIKLnNqU6n3xdf7C3un9QV5U74Vo/m63wHjZ12GEFAqxp68nqhhzmHpZkFSds4J
+	WHEiRDDaI1DebkgKMYxLH8e+O2T4LrHOTVqcll2UZSo9a2XEdr+axkTbsewsnnizCfzFByZNwnHE2
+	myUgmpoqMrv4I1LHvuS4di/Xcu2PWiRLUghl3vUYkGsxMGS1OqzP0mK66zoO5VBDSUYiCgfj7O2D1
+	sn7u0hpaLj6et2PJmoZasiMTyv0fCopec3q+GJ/vdF0ZK09kvMwnJS41iTMRXg/w==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+	(Exim 4.98.1)
+	(envelope-from <johannes@sipsolutions.net>)
+	id 1uECGm-00000001bBk-3lWn;
+	Sun, 11 May 2025 21:23:29 +0200
+Message-ID: <b09d6b4ef6291a2109dd7e1bada4ecff931a553f.camel@sipsolutions.net>
+Subject: Re: [PATCH 6.12] Revert "um: work around sched_yield not yielding
+ in time-travel mode"
+From: Johannes Berg <johannes@sipsolutions.net>
+To: Christian Lamparter <chunkeey@gmail.com>, linux-kernel@vger.kernel.org, 
+	linux-um@lists.infradead.org
+Cc: benjamin.berg@intel.com, sashal@kernel.org, richard@nod.at, 
+	stable@vger.kernel.org
+Date: Sun, 11 May 2025 21:23:28 +0200
+In-Reply-To: <20250509095040.33355-1-chunkeey@gmail.com>
+References: <20250509095040.33355-1-chunkeey@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-malware-bazaar: not-scanned
 
-HHI_SPICC_CLK_CNTL bits 25:23 controls spicc clk_sel.
+On Fri, 2025-05-09 at 11:50 +0200, Christian Lamparter wrote:
+>=20
+> What's interessting/very strange strange about this time-travel stuff:
+> > commit 0b8b2668f998 ("um: insert scheduler ticks when userspace does no=
+t yield")
+>=20
+>  $ git describe 0b8b2668f998
+> =3D> v6.12-rc2-43-g0b8b2668f998
+>=20
 
-It is missing fclk_div 2 and gp0_pll which causes the spicc module to
-output the incorrect clocks for spicc sclk at 2.5x the expected rate.
+Come to think of it, often you just want "git describe --contains":
 
-Add the missing clocks resolves this.
+$ git describe --contains --match=3Dv* 0b8b2668f998
+v6.13-rc1~18^2~25
 
-Fixes: a18c8e0b7697 ("clk: meson: g12a: add support for the SPICC SCLK Source clocks")
-Cc: <stable@vger.kernel.org> # 6.1
-Signed-off-by: Da Xue <da@libre.computer>
----
-Changelog:
-
-v1 -> v2: add Fixes as an older version of the patch was incorrectly sent as v1
----
- drivers/clk/meson/g12a.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/clk/meson/g12a.c b/drivers/clk/meson/g12a.c
-index 4f92b83965d5a..892862bf39996 100644
---- a/drivers/clk/meson/g12a.c
-+++ b/drivers/clk/meson/g12a.c
-@@ -4099,8 +4099,10 @@ static const struct clk_parent_data spicc_sclk_parent_data[] = {
- 	{ .hw = &g12a_clk81.hw },
- 	{ .hw = &g12a_fclk_div4.hw },
- 	{ .hw = &g12a_fclk_div3.hw },
-+	{ .hw = &g12a_fclk_div2.hw },
- 	{ .hw = &g12a_fclk_div5.hw },
- 	{ .hw = &g12a_fclk_div7.hw },
-+	{ .hw = &g12a_gp0_pll.hw, },
- };
- 
- static struct clk_regmap g12a_spicc0_sclk_sel = {
--- 
-2.39.5
-
+johannes
 
