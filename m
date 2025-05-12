@@ -1,213 +1,283 @@
-Return-Path: <stable+bounces-143268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D1B1AB382B
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 15:12:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17F4BAB3838
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 15:15:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 162A47AA671
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 13:11:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AF9A860411
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 13:15:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E189262FC9;
-	Mon, 12 May 2025 13:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66ED72D7BF;
+	Mon, 12 May 2025 13:15:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="GHnkBlnB"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="GSRVSwUT"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f42.google.com (mail-io1-f42.google.com [209.85.166.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2040.outbound.protection.outlook.com [40.107.236.40])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD98522F
-	for <stable@vger.kernel.org>; Mon, 12 May 2025 13:12:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.42
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747055560; cv=none; b=Bm9WUiAyeGd86XdhBChwwJZBvF36IxjfTG02pwks0G/zcY4Ob/IDV9x8FmGfigkn0/3fYjnqjgqLeTsEwLG84phRMhF1sE79h7bGMpegvrY9zZYQQ3ASzEJIYwIcRlcEd43wero8a5b+EsWwde2Du/VaQ1WOeV/JAUeZ6GXE+Ss=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747055560; c=relaxed/simple;
-	bh=3OrPmx0bvhSY6Us11+ed8nnyqt717S4A6B5p35YXbmI=;
-	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To; b=qeKcSYqtE36FGN1cHsiXuueBR9qREoXanQl1hXl6AOIOIkAMEtdhXHGDb3RiJIBFq/JwW+y2aIzAekCfsV3ndDoBhJ807bwG6PbgQfe6zqGpmXQODP5G/EYfer97fDOa8yUS4SGQrUBvlBbCXW6MkSwXGHMfJ9RA+bJdWLQ8AsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=GHnkBlnB; arc=none smtp.client-ip=209.85.166.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-io1-f42.google.com with SMTP id ca18e2360f4ac-8616987c261so127681939f.3
-        for <stable@vger.kernel.org>; Mon, 12 May 2025 06:12:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1747055557; x=1747660357; darn=vger.kernel.org;
-        h=in-reply-to:from:content-language:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Qd9kKrJx/B/X0+dzzm/MC472uDW1vuqnKct63I2ZUn8=;
-        b=GHnkBlnBmOY/VOPLmcNpsLej6yZ1Ucrlbq5kzBHAzF58wZ66lq/UiRlCXFTKameZZc
-         TLzLvseN21ZOU0wxDIj/AhnwNsyIF7M9oJSx5x8UIDW2LS9Yaf59opBfpC73VV6aHBYV
-         sRPAKRFuBavOeteef/w5DNinpKjJxI4rF5JGgbGPGiDNEoLgOqLHDEpc2SIX3n7G8eMF
-         6y1NKa5vFR9HOUnMgL8C5Jsk85hfDPyeg7Yn3Cb7thadaGqQ56rWgUM1CMN8AFPHANWM
-         wWPzdTMW6pODP+2wI4Y/JDbLetXU2/C7jpTFfcx8yU0CYhfR1nnQ7e+ngjxWEMbVXu/8
-         WMew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747055557; x=1747660357;
-        h=in-reply-to:from:content-language:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Qd9kKrJx/B/X0+dzzm/MC472uDW1vuqnKct63I2ZUn8=;
-        b=UmhEFZxwVremG0SnjsyZJ6MkhSCexXPOqE5EbSiI/q3J8xPBYTafhwC8gCID2gc376
-         HYuq8i/N0rRCiG5QvvdtXVt50yhZxkmFuAChti3vQeU/Phak+7pQjmSpf0HRU7jXa7W0
-         Si1u12MBYHMchGqlrBg30AnumbpFp3Ud97TFH9yCeAUswbWw2ZXndBmlSaYliKf+gNFT
-         HzzHAdejKDUzbsPhTp3ic5P3rzTA0aH08sdxcOAXxLjVm2Y2vapSkdCHR/4OpLnxRhP2
-         Tp0srjyrL5w6wYoDWiWBcJI24tS9B0x1Pv5RtXNbAAsdXv9PVKxpf5nONa4JcPS33mKd
-         2EEQ==
-X-Gm-Message-State: AOJu0YyOoe1WIXvaZbtm9TDoUiUYFF76Do4ogUG/6dUCVddK2SF0Zhsh
-	2+Qf5UyFYqirNBO0YWPvfwvEKImha9CCFB4JYki3kx/sYbKzXADD3QBWKHTthn8=
-X-Gm-Gg: ASbGnctML1NdwglMJyXWCGlsErDR+b0sZtyDihEKC7F9JveWjYwmCKGZ4oLW5O6anRI
-	4jCA9QYqy4gEg4P5tQzLqKGIYaHh8ULhDFj1ZedX/hcESgYkdjKQTSAcn8FTtu9QtHiO/nGrk50
-	czUPMy5L4zzEqYqRreqcnO+j+p+b82zDmKvt+0p6XHfmv5OcnaIZWwbD1bK2HSKIUAJjq7oFQi6
-	1jANcB4FtnSoQ8Hzh2F/NfvSs37qTjFYBFrYX7f4ICQ6ark4ghhxIHq6QnKPcXnK+o8U7buYkvO
-	64+W4iNIw+LYi4vpa/nUEXPr533pBIf6/1Of9luHG15oym4=
-X-Google-Smtp-Source: AGHT+IH/Ipf67dHsaxCZZJPUvpaDUbh4LQMPzuPABISEg8If2ixVAMs4B35g48/uqyNiKtR7WB+flA==
-X-Received: by 2002:a05:6602:1692:b0:85b:3fda:7dbf with SMTP id ca18e2360f4ac-8676362c972mr1390887739f.9.1747055557062;
-        Mon, 12 May 2025 06:12:37 -0700 (PDT)
-Received: from [192.168.1.116] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id ca18e2360f4ac-867635d61b6sm187342739f.22.2025.05.12.06.12.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 12 May 2025 06:12:36 -0700 (PDT)
-Content-Type: multipart/mixed; boundary="------------wox3V9Urkma0Ipd07jMXmOBB"
-Message-ID: <4372dd98-0f08-4f1f-af1f-31771b09d8d0@kernel.dk>
-Date: Mon, 12 May 2025 07:12:35 -0600
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37DD318E750
+	for <stable@vger.kernel.org>; Mon, 12 May 2025 13:15:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.40
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747055730; cv=fail; b=oNJFhiWlYVle2mEc4xqDBkStW01AKFJV+TlqjcUmir+QWjyR8IGgFFYwXNFdaCUEOPuw5vZ9OtiHu23sXP46jNFV/Fr9TxewVftyIpaYakXXoRJjPT4hDB/mF89ROs19fiO3X/EYvEf69Pe/w6u4riPRronKgaZZg8DjANlR0sQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747055730; c=relaxed/simple;
+	bh=Q4ZgFc4COn1P1kEWCxN9ML4gmpsgmO84YYBQaLUp9C0=;
+	h=Message-ID:Date:To:Cc:References:From:Subject:In-Reply-To:
+	 Content-Type:MIME-Version; b=tPzXoAG2tGCWrPh6It57XCx2cX8YtHXKHb2NRnxOWLUoF+oBIHbGkyZXMFKr3MVqnXQQJ8ob5iDWwpOYX4AWRvjYnpb6235hHxW3wgVbI4AVNje+lMyl+8/kp1UBPs2iGnyl5D4gsv4U91kujUM4WdS3dqpUXPGSg66tnDkbCvE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=GSRVSwUT; arc=fail smtp.client-ip=40.107.236.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=hDY9ZrUMdkYIRTwD/Uidjnie3PrjouIL2nPNRkkAbGtz0G3qf76TFBgISwE7scEK7ED2HJlFudeJjeVvehPrSTlJjBDmIvO+MxNVByAErX0Fo4ufuEUuFVsg0g/LxXEE64//Ot+v1dN0G3zHZ0bPxJL1QS1gEwP4mM+K4X6BTMdTeRrykfoLoR2tzWwjWdMyMVP1y4yiJp47/hOqCZnBWWxEI1r4UKFtlW5s7ESVnl9AmouIKRvmF1MB8bgDxuhZKXl/I5XSHe7/oVQIslowhr381Q7465O7KuzZa9vJ/du5sg48Q/KaJdFA4WQIFWew2NBHCfplt5eHInBa5/cspg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=orSoWRZsd3FhX9Vm5jQu11G3fifL3BLwX5XZevneSCk=;
+ b=GBj59ELgdPH7FEUoqXaTNsjAFCKQfm6pYfki06RT7dIOFYsJi3Z8OTFcFCIaNWSo4nM7BaXzH9OWIHMpcuiiKbauxlPieeRIUsfk8JJRuSy5Bo3gYMbelEz2b8vI3e2iZ0FbUcbkYFcWbF9XWoyK/cT5OSRaRGODdtSaYU7KO0slfG6KFyASWz9JjiRdZ6mEEnqBhsTCpFsFEvM9gf05w4DQuUafFN3iW10LTe7YWpK3B6YoiFNVkI8LLiXHJLZQcIOXUHnPBk/aOW2EOPVRHepwgyQ8HnwfCPVqcN0cmB5zSJPdFEf6zjSulBZhpMywrtVeSAOqNc5G1yVWj09ObA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=orSoWRZsd3FhX9Vm5jQu11G3fifL3BLwX5XZevneSCk=;
+ b=GSRVSwUTtd3IiHxvaTDE//Es43D2jRoeTZccvZSLFl7o8LmNXZSXL2yXoeYY2sz2fusc4HclJkyzqlEpnT5p+L0wkUhMrET+5Hvu9M3QVlIWS5IlvhTQAaWs4v3WFUeAl767gbjvY838mmsXfLj9S9WD+rz4ZmooJbhrTV+GPxA=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DM4PR12MB5070.namprd12.prod.outlook.com (2603:10b6:5:389::22)
+ by DS5PPF2FA070BDF.namprd12.prod.outlook.com (2603:10b6:f:fc00::649) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8655.34; Mon, 12 May
+ 2025 13:15:24 +0000
+Received: from DM4PR12MB5070.namprd12.prod.outlook.com
+ ([fe80::20a9:919e:fd6b:5a6e]) by DM4PR12MB5070.namprd12.prod.outlook.com
+ ([fe80::20a9:919e:fd6b:5a6e%4]) with mapi id 15.20.8722.027; Mon, 12 May 2025
+ 13:15:24 +0000
+Message-ID: <9339fb64-a62a-fdb7-5686-dd9b2a4cdf0d@amd.com>
+Date: Mon, 12 May 2025 08:15:22 -0500
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+To: stable@vger.kernel.org
+Cc: gregkh@linuxfoundation.org
+References: <2025051242-predefine-census-81af@gregkh>
+Content-Language: en-US
+From: Tom Lendacky <thomas.lendacky@amd.com>
+Subject: Re: Patch "memblock: Accept allocated memory before use in
+ memblock_double_array()" has been added to the 6.6-stable tree
+In-Reply-To: <2025051242-predefine-census-81af@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: DS7P222CA0021.NAMP222.PROD.OUTLOOK.COM (2603:10b6:8:2e::20)
+ To DM4PR12MB5070.namprd12.prod.outlook.com (2603:10b6:5:389::22)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: FAILED: patch "[PATCH] io_uring: always arm linked timeouts prior
- to issue" failed to apply to 6.14-stable tree
-To: gregkh@linuxfoundation.org, chase@path.net
-Cc: stable@vger.kernel.org
-References: <2025051224-effects-slightly-6462@gregkh>
-Content-Language: en-US
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <2025051224-effects-slightly-6462@gregkh>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR12MB5070:EE_|DS5PPF2FA070BDF:EE_
+X-MS-Office365-Filtering-Correlation-Id: dd8a0244-248d-43a8-e9b7-08dd91570e02
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?d3FWUmQrZmVxYXpVZFcva0RDdWdGRVArQUoyOWt2SlFvam5YRTR6SFp3T2pW?=
+ =?utf-8?B?L0dWYm1YWnRBUWFPZ2tOaW9VblBESFFQMlV6eHRHR3pPNTdleGNWOVZxZEFO?=
+ =?utf-8?B?NXVBMUUxc3liQmtiTWwyeTRNNGkweGNHdkdKVTdVSTRPOW80WmpPZkZrVFN3?=
+ =?utf-8?B?YVZPMkxWZEFzRk1mV281bjkzY1lhNW5ERkNCYlRLUU4ySFJCWVVER3lmeGIy?=
+ =?utf-8?B?SFRmMllqWkZNd1d1T2gzZTJEbWd5QjRmVmRoa0toT2pnQ1FmZEoyMHlGTGs0?=
+ =?utf-8?B?ZXJlbHV0dWIyenN4Umpic041MWMrOWlzZ3lycytiS3FGT2QxSmQyQjFkSzBE?=
+ =?utf-8?B?eDZ4RXZOOTBJeFNCWEJsOG5nQnVoNUtnbmV6TjVvNWQwdmJmaXBpR0hybjVS?=
+ =?utf-8?B?M3RDVHNmZEVJMEg0My82S21wUE1DWFlydmFpQTk5RHNKZW00R1ZYQjlOVWIx?=
+ =?utf-8?B?a1JGajJTWEZNcy9uUTIxQ0pxbFVEMUV5c1RTM1NwWkREcGRMRWZ0ZmRNNEhr?=
+ =?utf-8?B?cTFUUkpBbzZyUGt4WWk2QnpESFRCOXN5WXRJdWl1bE9zNUt3Sm5nTVhiS1FU?=
+ =?utf-8?B?YUsxbHlJODJVMmorZzVnekEzRityNzYwK0tSdDBUNm4vMHFzOGV4Z09Sb0Mz?=
+ =?utf-8?B?ZXVFbWVPOXZoTThscHV5dmUvODlQSkQxdDIvTUIremRBdXhydlJBRURTQkI3?=
+ =?utf-8?B?WDZmNzlrV2puVUFHTjlXZUhzZUFXeWlrVzdvSy9xZm94dGdwRjB3a0NHY21N?=
+ =?utf-8?B?c1NwRmF4Q3RFYUlDY2tBcmZIMFVUaGpjdERkYTBIMFQ2ekR4WlhtWnpyaGZ2?=
+ =?utf-8?B?YjAxc0NSTnRMTzVUYkY4c3ppUzNIMC9PeEh4OHNHaFNqSkZxV2Yvb1hoa2xl?=
+ =?utf-8?B?cUkwRnBEYnRDMmRNVGE1djlzTXBNNDJ3RThKRlhYMUxQb01JUGEwem1wWmZs?=
+ =?utf-8?B?QzY2bERSUmEzUTZuK1dtZzJSeVlXSFFpTjNPR0NEelhXdElWUWZoMzhlei9q?=
+ =?utf-8?B?Q1lxVkJtcFpDYWJDSjBLRzYrWFRPWUJsWUh1dDZMQ3o3N1Bnem5aN1UycHMx?=
+ =?utf-8?B?Nms0M2JUNzU0VnY1SW5KUkIyTW15RmVKWlRZSjlNaHNkNWRRQTVhbVZZOFhY?=
+ =?utf-8?B?TzB1Ums1djdPamNqL3I0N012U1FPY25sTjBPbEVtbG9vY1AvdXk5eHhaS3Zj?=
+ =?utf-8?B?NFNTSWFuSWJGYm4yY1hBZzZQaXpsM1QvZDJ2ZEdGU1N3b0xyUmdhd0VXcUlY?=
+ =?utf-8?B?VW5iRVhPRlYvVXVjSVdtNlN2NHIwcGxrTldxTEIrdHJUSTVXaXFhWkdoODF1?=
+ =?utf-8?B?eWZzSWxYVXR2UXlZTjBVRkpNMTJJZFdIbW5lai9VTzJLUXk5RVhLY1VnSjEv?=
+ =?utf-8?B?OHFCemxncnFMMkkwenFDR3dTRGFoUTlyajJMRUlNOThZbzlnOEpmM1FoQXY1?=
+ =?utf-8?B?RzQxQjlmY0dTUituaC9oWEJ4WFV3VEZpaUR6cFZ5Ym5QOGJNWUdyOXRpRjh5?=
+ =?utf-8?B?WmxWQTd2QmpKbFR1OWRheC91R1dRK2pJZlQrMmgxTGtnaXhKZ1RFV2NDMDRn?=
+ =?utf-8?B?eEJxNkxlRVhhaWNJQ3BNWVIzV0hYL3BPenRjcVZZenArL01xM1JjK08zRWt1?=
+ =?utf-8?B?c1EvS0VyM0lnZkdpNnJPV24yanN1c2pVS3JzVmpMZjd0ZXJ3dWtjSEE0VTM2?=
+ =?utf-8?B?c05hdU03N1R2MGJ5M2NrZWxzVDgwaGcvMGdrZDVhQnROdW5MRU1iREJTUWli?=
+ =?utf-8?B?OFZJZXY3S3ZPOEd2VWcyUFFHRGgzMlFxazhlY2NlRFZKNWtrTXVEbXRZSVNr?=
+ =?utf-8?B?b0dTR1FUODlFQjZzNm9MK0J0bGxYV0F2RHNvbytNdmkzZ0cxTEgwYWV1RlJ4?=
+ =?utf-8?B?ZEMrdlQ0RDY0K3NOSGpDWkl6MXZrUUo0M0JOcXpxUmxEWFNMazZVMmlaU3Vv?=
+ =?utf-8?Q?EsPsfGsQ3dmC+FG/7HVrS+seKEvU/V8p?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5070.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?UjU5dW1IU05VamJwTkRtcnowa2x6S3BnenZXa0VuUm5GVHYyMm82WjNkVjA3?=
+ =?utf-8?B?TDlzYmd4V0NHT2k2Y1ZBWDFrSHJ5cWM0ZmZpVWJUOVB6b2ZhV1lQWUh2WHA2?=
+ =?utf-8?B?WGIzaHVSVFZ6T1JxZ3cyVzFva25WYlcwSitsNjloUXhmRmY1eEVjVkNUK1kr?=
+ =?utf-8?B?RTdGV0x2N0ZEaTNNSUlaZ0ZHOFo2YlFsRFJVMmFWYWxCL2ZXdDU3eFY4WFVk?=
+ =?utf-8?B?UXUvS1RoMSsrMzBKMXNIdndZblBaNitzeWVoOTRCdjE5bnVSMm1QNTZoYlBR?=
+ =?utf-8?B?bkpJODJxYWVNSjJScjl5T1dGVnQzb0ZmQm80KzFrZzR3U3B2S2Rwd2pheXFM?=
+ =?utf-8?B?UDdqdStsQ1JId0Z4aHlESCt3eVlQUUk5MXNxY0ovd1FmZU0yaVMzcnl4TXYy?=
+ =?utf-8?B?MFJKVy85ZldQSjRpN1M5WmU0bWtGYWRlbzE1TTNmNlR4SStvcjN3UkJrQUkv?=
+ =?utf-8?B?S3Q5Zkt3ZGp0ZExoNGVGMlBFSlF3d0VvODAyeU95YjZESHMrM1oyT1ptS0sv?=
+ =?utf-8?B?L3FCKzZZcStkTlJ6TVVEeFVrc2JSRjBLaExwbkFxNEREVVBhZ3pjK1dBV2tP?=
+ =?utf-8?B?aThVYkwyQ2ZsUlNEZGJPc0huSE9tTHV5REdnWmtsa0hpM0ErUk4reGlZcDNS?=
+ =?utf-8?B?d2c4cndHNWROZ21tY3hyWDFXOXQwTnhnTHl4Q01mSW1MeXk3c3paWi9kTkFy?=
+ =?utf-8?B?QjFZSlB2NWMvS2lRc2dOUHBGK0RTQVhMUmdSNStXTlkzZy8vV09lOFh5enMz?=
+ =?utf-8?B?dHhmUCtKQkxZNEp3ZmtLZmpUdXRCQ1NEVXRTWDVyZWVBcWpkaGY3QzRVM0Vy?=
+ =?utf-8?B?T3VGYXo3MTI2RnJ6eHlnemdoN056OXB4dGE0SGpLQ21GTmhpeTBTK0gvSVlD?=
+ =?utf-8?B?L1ppTkM3MXpDR3ZxVlVGZjNldFppby9CYzRXSUE0ajZVRGhRd1B1SFErcmtY?=
+ =?utf-8?B?T0IxNVdpRDVFYlVTWjhVSlAyTTFpVStGUXV5TzVkdHhOT3dQVWdVTVVMZWp6?=
+ =?utf-8?B?RTJrZnprWGpSV1VLYjQxWDd6aUt1eEw3STNzbXdpZ1pFVjdpbkR0L0xCYWd0?=
+ =?utf-8?B?WHhiUkhHZ1hJdGdjVC9PWnFpWmQ4b0ZtOFFxRnRmYS9ZZXVGQXh3TktLWVp2?=
+ =?utf-8?B?aWNoZVBheVhOY0ZIY0NtZkRWZS96Y1FxVUZpQlovSHpEZ1pNMFRHaG5TN2RZ?=
+ =?utf-8?B?N2FPQkk1R0NNeVA2VmNpRmpoejdnZGd5TzZtU0JaZW0yb0twekNuczMwcXp3?=
+ =?utf-8?B?MEE1T3NRc0h5ejErWE1ZdDJjaU4rTkpyY1cxY3pobExaU3U1VXRGWE1tcXNz?=
+ =?utf-8?B?NXVFR0xRK2RxUzFvSWJmMkRLN3V5cHVOM1JiSXk1eU1lNW1mOHNUTGlGaTh5?=
+ =?utf-8?B?c2g1a3VtMEVBUTI5aHRCWXYzbUxjOGxEM2puWGlGYkYrSnFXRXB5Vjk5Vi9k?=
+ =?utf-8?B?SVlnLy9ieUMwdVoxWDB4aXJuQlJHVFNjWjdtTVlwakxaVEkzWGRMaUdYQXBq?=
+ =?utf-8?B?MUgyRmpyMkF6UENBbUtnVERkNndSUDROcDZqR0lqMzI5Y3hPMFlDYlFQTVpY?=
+ =?utf-8?B?R2s3NDdJY0QwUkc2eWlkSDVvdmhnekgvdGRWdGZ2VExoUkp3Tk91N2Rkenl5?=
+ =?utf-8?B?dE5ReUpsU0w4NE4wM1RPOGt1UnN3SlhzbDQ0L2hSM3VlWGN3NVNtVzJQWGVl?=
+ =?utf-8?B?YU5YNU5vb056Q1VVMXZGMXlxWFhRZWo1a0pRSnNka0J0OGx3UmZBRlYxTVlu?=
+ =?utf-8?B?UCs3SDFLbXkyR1d2YkJPTzQ3ckxXWVg3VTU0Z1JnQzBsUEhTN2t5b1FoMTA2?=
+ =?utf-8?B?bGd1czFKbG5kUTdiMkR5TXM4TDJkN3U1T2trcjZIYkJERWUzcHl3QUJ5S2Vl?=
+ =?utf-8?B?VVB4SFo0ZnZjTTFEODVPVFF1R0h4SmYwYlF5Vnp2UVZOR2drUHpOOGlvNXA4?=
+ =?utf-8?B?T2ZKaVp5aG9UYkZtOXRVUHN1azhIYUZOZlRxTWV2QlZwRzN0R3I4V3JzM1Yz?=
+ =?utf-8?B?NERkYXdZcllKUGZISFJDNnJ5Y1c3QjZoY2dOcUFycUU5ZTNQd24zS2xGekc1?=
+ =?utf-8?B?ay9yYTVCem83cVcxbzNNZE03dzd2Q1pMbS8xREk0RHI3MnJGdFlNa3krcXg3?=
+ =?utf-8?Q?ixq2MnyevlrE0aNerbt+XjYOg?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dd8a0244-248d-43a8-e9b7-08dd91570e02
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5070.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2025 13:15:24.1263
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5YBeVwEsCDxQArn6Fq3lmSGnZUGNgJSvsiWijdseEhCP1jf1dRzoza74tGnb1xd4Y5ZDpTJ9xRZ7YeWUKwZiuw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS5PPF2FA070BDF
 
-This is a multi-part message in MIME format.
---------------wox3V9Urkma0Ipd07jMXmOBB
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-
-On 5/12/25 4:01 AM, gregkh@linuxfoundation.org wrote:
+On 5/12/25 05:34, gregkh@linuxfoundation.org wrote:
 > 
-> The patch below does not apply to the 6.14-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
+> This is a note to let you know that I've just added the patch titled
+> 
+>     memblock: Accept allocated memory before use in memblock_double_array()
+> 
+> to the 6.6-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> 
+> The filename of the patch is:
+>      memblock-accept-allocated-memory-before-use-in-memblock_double_array.patch
+> and it can be found in the queue-6.6 subdirectory.
+> 
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
 
-Here's a tested 6.14-stable backport.
+The 6.6 version of the patch needs a fixup. As mentioned in the patch
+description, any release before v6.12 needs to have the accept_memory()
+call changed from:
 
--- 
-Jens Axboe
+	accept_memory(addr, new_alloc_size);
 
---------------wox3V9Urkma0Ipd07jMXmOBB
-Content-Type: text/x-patch; charset=UTF-8;
- name="0001-io_uring-always-arm-linked-timeouts-prior-to-issue.patch"
-Content-Disposition: attachment;
- filename*0="0001-io_uring-always-arm-linked-timeouts-prior-to-issue.patc";
- filename*1="h"
-Content-Transfer-Encoding: base64
+to
 
-RnJvbSBhYzJjZGJjZjU2YjhhZDI4MzE5NDk4Yzc4ZjE3Zjc5YTczOTY1NjE1IE1vbiBTZXAg
-MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBKZW5zIEF4Ym9lIDxheGJvZUBrZXJuZWwuZGs+CkRh
-dGU6IFN1biwgNCBNYXkgMjAyNSAwODowNjoyOCAtMDYwMApTdWJqZWN0OiBbUEFUQ0ggMS8y
-XSBpb191cmluZzogYWx3YXlzIGFybSBsaW5rZWQgdGltZW91dHMgcHJpb3IgdG8gaXNzdWUK
-CkNvbW1pdCBiNTNlNTIzMjYxYmYwNThlYTRhNTE4YjQ4MjIyMmU3YTI3N2IxODZiIHVwc3Ry
-ZWFtLgoKVGhlcmUgYXJlIGEgZmV3IHNwb3RzIHdoZXJlIGxpbmtlZCB0aW1lb3V0cyBhcmUg
-YXJtZWQsIGFuZCBub3QgYWxsIG9mCnRoZW0gYWRoZXJlIHRvIHRoZSBwcmUtYXJtLCBhdHRl
-bXB0IGlzc3VlLCBwb3N0LWFybSBwYXR0ZXJuLiBUaGlzIGNhbgpiZSBwcm9ibGVtYXRpYyBp
-ZiB0aGUgbGlua2VkIHJlcXVlc3QgcmV0dXJucyB0aGF0IGl0IHdpbGwgdHJpZ2dlciBhCmNh
-bGxiYWNrIGxhdGVyLCBhbmQgZG9lcyBzbyBiZWZvcmUgdGhlIGxpbmtlZCB0aW1lb3V0IGlz
-IGZ1bGx5IGFybWVkLgoKQ29uc29saWRhdGUgYWxsIHRoZSBsaW5rZWQgdGltZW91dCBoYW5k
-bGluZyBpbnRvIF9faW9faXNzdWVfc3FlKCksCnJhdGhlciB0aGFuIGhhdmUgaXQgc3ByZWFk
-IHRocm91Z2hvdXQgdGhlIHZhcmlvdXMgaXNzdWUgZW50cnkgcG9pbnRzLgoKQ2M6IHN0YWJs
-ZUB2Z2VyLmtlcm5lbC5vcmcKTGluazogaHR0cHM6Ly9naXRodWIuY29tL2F4Ym9lL2xpYnVy
-aW5nL2lzc3Vlcy8xMzkwClJlcG9ydGVkLWJ5OiBDaGFzZSBIaWx0eiA8Y2hhc2VAcGF0aC5u
-ZXQ+ClNpZ25lZC1vZmYtYnk6IEplbnMgQXhib2UgPGF4Ym9lQGtlcm5lbC5kaz4KLS0tCiBp
-b191cmluZy9pb191cmluZy5jIHwgNTAgKysrKysrKysrKysrKystLS0tLS0tLS0tLS0tLS0t
-LS0tLS0tLS0tLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgMTUgaW5zZXJ0aW9ucygrKSwgMzUg
-ZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvaW9fdXJpbmcvaW9fdXJpbmcuYyBiL2lvX3Vy
-aW5nL2lvX3VyaW5nLmMKaW5kZXggMjRiOWU5YTUxMDVkLi41NmQ5MGRlNWMzODUgMTAwNjQ0
-Ci0tLSBhL2lvX3VyaW5nL2lvX3VyaW5nLmMKKysrIGIvaW9fdXJpbmcvaW9fdXJpbmcuYwpA
-QCAtNDQzLDI0ICs0NDMsNiBAQCBzdGF0aWMgc3RydWN0IGlvX2tpb2NiICpfX2lvX3ByZXBf
-bGlua2VkX3RpbWVvdXQoc3RydWN0IGlvX2tpb2NiICpyZXEpCiAJcmV0dXJuIHJlcS0+bGlu
-azsKIH0KIAotc3RhdGljIGlubGluZSBzdHJ1Y3QgaW9fa2lvY2IgKmlvX3ByZXBfbGlua2Vk
-X3RpbWVvdXQoc3RydWN0IGlvX2tpb2NiICpyZXEpCi17Ci0JaWYgKGxpa2VseSghKHJlcS0+
-ZmxhZ3MgJiBSRVFfRl9BUk1fTFRJTUVPVVQpKSkKLQkJcmV0dXJuIE5VTEw7Ci0JcmV0dXJu
-IF9faW9fcHJlcF9saW5rZWRfdGltZW91dChyZXEpOwotfQotCi1zdGF0aWMgbm9pbmxpbmUg
-dm9pZCBfX2lvX2FybV9sdGltZW91dChzdHJ1Y3QgaW9fa2lvY2IgKnJlcSkKLXsKLQlpb19x
-dWV1ZV9saW5rZWRfdGltZW91dChfX2lvX3ByZXBfbGlua2VkX3RpbWVvdXQocmVxKSk7Ci19
-Ci0KLXN0YXRpYyBpbmxpbmUgdm9pZCBpb19hcm1fbHRpbWVvdXQoc3RydWN0IGlvX2tpb2Ni
-ICpyZXEpCi17Ci0JaWYgKHVubGlrZWx5KHJlcS0+ZmxhZ3MgJiBSRVFfRl9BUk1fTFRJTUVP
-VVQpKQotCQlfX2lvX2FybV9sdGltZW91dChyZXEpOwotfQotCiBzdGF0aWMgdm9pZCBpb19w
-cmVwX2FzeW5jX3dvcmsoc3RydWN0IGlvX2tpb2NiICpyZXEpCiB7CiAJY29uc3Qgc3RydWN0
-IGlvX2lzc3VlX2RlZiAqZGVmID0gJmlvX2lzc3VlX2RlZnNbcmVxLT5vcGNvZGVdOwpAQCAt
-NTEzLDcgKzQ5NSw2IEBAIHN0YXRpYyB2b2lkIGlvX3ByZXBfYXN5bmNfbGluayhzdHJ1Y3Qg
-aW9fa2lvY2IgKnJlcSkKIAogc3RhdGljIHZvaWQgaW9fcXVldWVfaW93cShzdHJ1Y3QgaW9f
-a2lvY2IgKnJlcSkKIHsKLQlzdHJ1Y3QgaW9fa2lvY2IgKmxpbmsgPSBpb19wcmVwX2xpbmtl
-ZF90aW1lb3V0KHJlcSk7CiAJc3RydWN0IGlvX3VyaW5nX3Rhc2sgKnRjdHggPSByZXEtPnRj
-dHg7CiAKIAlCVUdfT04oIXRjdHgpOwpAQCAtNTM4LDggKzUxOSw2IEBAIHN0YXRpYyB2b2lk
-IGlvX3F1ZXVlX2lvd3Eoc3RydWN0IGlvX2tpb2NiICpyZXEpCiAKIAl0cmFjZV9pb191cmlu
-Z19xdWV1ZV9hc3luY193b3JrKHJlcSwgaW9fd3FfaXNfaGFzaGVkKCZyZXEtPndvcmspKTsK
-IAlpb193cV9lbnF1ZXVlKHRjdHgtPmlvX3dxLCAmcmVxLT53b3JrKTsKLQlpZiAobGluaykK
-LQkJaW9fcXVldWVfbGlua2VkX3RpbWVvdXQobGluayk7CiB9CiAKIHN0YXRpYyB2b2lkIGlv
-X3JlcV9xdWV1ZV9pb3dxX3R3KHN0cnVjdCBpb19raW9jYiAqcmVxLCBzdHJ1Y3QgaW9fdHdf
-c3RhdGUgKnRzKQpAQCAtMTcyMCwxNyArMTY5OSwyNCBAQCBzdGF0aWMgYm9vbCBpb19hc3Np
-Z25fZmlsZShzdHJ1Y3QgaW9fa2lvY2IgKnJlcSwgY29uc3Qgc3RydWN0IGlvX2lzc3VlX2Rl
-ZiAqZGVmLAogCXJldHVybiAhIXJlcS0+ZmlsZTsKIH0KIAorI2RlZmluZSBSRVFfSVNTVUVf
-U0xPV19GTEFHUwkoUkVRX0ZfQ1JFRFMgfCBSRVFfRl9BUk1fTFRJTUVPVVQpCisKIHN0YXRp
-YyBpbnQgaW9faXNzdWVfc3FlKHN0cnVjdCBpb19raW9jYiAqcmVxLCB1bnNpZ25lZCBpbnQg
-aXNzdWVfZmxhZ3MpCiB7CiAJY29uc3Qgc3RydWN0IGlvX2lzc3VlX2RlZiAqZGVmID0gJmlv
-X2lzc3VlX2RlZnNbcmVxLT5vcGNvZGVdOwogCWNvbnN0IHN0cnVjdCBjcmVkICpjcmVkcyA9
-IE5VTEw7CisJc3RydWN0IGlvX2tpb2NiICpsaW5rID0gTlVMTDsKIAlpbnQgcmV0OwogCiAJ
-aWYgKHVubGlrZWx5KCFpb19hc3NpZ25fZmlsZShyZXEsIGRlZiwgaXNzdWVfZmxhZ3MpKSkK
-IAkJcmV0dXJuIC1FQkFERjsKIAotCWlmICh1bmxpa2VseSgocmVxLT5mbGFncyAmIFJFUV9G
-X0NSRURTKSAmJiByZXEtPmNyZWRzICE9IGN1cnJlbnRfY3JlZCgpKSkKLQkJY3JlZHMgPSBv
-dmVycmlkZV9jcmVkcyhyZXEtPmNyZWRzKTsKKwlpZiAodW5saWtlbHkocmVxLT5mbGFncyAm
-IFJFUV9JU1NVRV9TTE9XX0ZMQUdTKSkgeworCQlpZiAoKHJlcS0+ZmxhZ3MgJiBSRVFfRl9D
-UkVEUykgJiYgcmVxLT5jcmVkcyAhPSBjdXJyZW50X2NyZWQoKSkKKwkJCWNyZWRzID0gb3Zl
-cnJpZGVfY3JlZHMocmVxLT5jcmVkcyk7CisJCWlmIChyZXEtPmZsYWdzICYgUkVRX0ZfQVJN
-X0xUSU1FT1VUKQorCQkJbGluayA9IF9faW9fcHJlcF9saW5rZWRfdGltZW91dChyZXEpOwor
-CX0KIAogCWlmICghZGVmLT5hdWRpdF9za2lwKQogCQlhdWRpdF91cmluZ19lbnRyeShyZXEt
-Pm9wY29kZSk7CkBAIC0xNzQwLDggKzE3MjYsMTIgQEAgc3RhdGljIGludCBpb19pc3N1ZV9z
-cWUoc3RydWN0IGlvX2tpb2NiICpyZXEsIHVuc2lnbmVkIGludCBpc3N1ZV9mbGFncykKIAlp
-ZiAoIWRlZi0+YXVkaXRfc2tpcCkKIAkJYXVkaXRfdXJpbmdfZXhpdCghcmV0LCByZXQpOwog
-Ci0JaWYgKGNyZWRzKQotCQlyZXZlcnRfY3JlZHMoY3JlZHMpOworCWlmICh1bmxpa2VseShj
-cmVkcyB8fCBsaW5rKSkgeworCQlpZiAoY3JlZHMpCisJCQlyZXZlcnRfY3JlZHMoY3JlZHMp
-OworCQlpZiAobGluaykKKwkJCWlvX3F1ZXVlX2xpbmtlZF90aW1lb3V0KGxpbmspOworCX0K
-IAogCWlmIChyZXQgPT0gSU9VX09LKSB7CiAJCWlmIChpc3N1ZV9mbGFncyAmIElPX1VSSU5H
-X0ZfQ09NUExFVEVfREVGRVIpCkBAIC0xNzU0LDcgKzE3NDQsNiBAQCBzdGF0aWMgaW50IGlv
-X2lzc3VlX3NxZShzdHJ1Y3QgaW9fa2lvY2IgKnJlcSwgdW5zaWduZWQgaW50IGlzc3VlX2Zs
-YWdzKQogCiAJaWYgKHJldCA9PSBJT1VfSVNTVUVfU0tJUF9DT01QTEVURSkgewogCQlyZXQg
-PSAwOwotCQlpb19hcm1fbHRpbWVvdXQocmVxKTsKIAogCQkvKiBJZiB0aGUgb3AgZG9lc24n
-dCBoYXZlIGEgZmlsZSwgd2UncmUgbm90IHBvbGxpbmcgZm9yIGl0ICovCiAJCWlmICgocmVx
-LT5jdHgtPmZsYWdzICYgSU9SSU5HX1NFVFVQX0lPUE9MTCkgJiYgZGVmLT5pb3BvbGxfcXVl
-dWUpCkBAIC0xNzk3LDggKzE3ODYsNiBAQCB2b2lkIGlvX3dxX3N1Ym1pdF93b3JrKHN0cnVj
-dCBpb193cV93b3JrICp3b3JrKQogCWVsc2UKIAkJcmVxX3JlZl9nZXQocmVxKTsKIAotCWlv
-X2FybV9sdGltZW91dChyZXEpOwotCiAJLyogZWl0aGVyIGNhbmNlbGxlZCBvciBpby13cSBp
-cyBkeWluZywgc28gZG9uJ3QgdG91Y2ggdGN0eC0+aW93cSAqLwogCWlmIChhdG9taWNfcmVh
-ZCgmd29yay0+ZmxhZ3MpICYgSU9fV1FfV09SS19DQU5DRUwpIHsKIGZhaWw6CkBAIC0xOTE0
-LDE1ICsxOTAxLDExIEBAIHN0cnVjdCBmaWxlICppb19maWxlX2dldF9ub3JtYWwoc3RydWN0
-IGlvX2tpb2NiICpyZXEsIGludCBmZCkKIHN0YXRpYyB2b2lkIGlvX3F1ZXVlX2FzeW5jKHN0
-cnVjdCBpb19raW9jYiAqcmVxLCBpbnQgcmV0KQogCV9fbXVzdF9ob2xkKCZyZXEtPmN0eC0+
-dXJpbmdfbG9jaykKIHsKLQlzdHJ1Y3QgaW9fa2lvY2IgKmxpbmtlZF90aW1lb3V0OwotCiAJ
-aWYgKHJldCAhPSAtRUFHQUlOIHx8IChyZXEtPmZsYWdzICYgUkVRX0ZfTk9XQUlUKSkgewog
-CQlpb19yZXFfZGVmZXJfZmFpbGVkKHJlcSwgcmV0KTsKIAkJcmV0dXJuOwogCX0KIAotCWxp
-bmtlZF90aW1lb3V0ID0gaW9fcHJlcF9saW5rZWRfdGltZW91dChyZXEpOwotCiAJc3dpdGNo
-IChpb19hcm1fcG9sbF9oYW5kbGVyKHJlcSwgMCkpIHsKIAljYXNlIElPX0FQT0xMX1JFQURZ
-OgogCQlpb19rYnVmX3JlY3ljbGUocmVxLCAwKTsKQEAgLTE5MzUsOSArMTkxOCw2IEBAIHN0
-YXRpYyB2b2lkIGlvX3F1ZXVlX2FzeW5jKHN0cnVjdCBpb19raW9jYiAqcmVxLCBpbnQgcmV0
-KQogCWNhc2UgSU9fQVBPTExfT0s6CiAJCWJyZWFrOwogCX0KLQotCWlmIChsaW5rZWRfdGlt
-ZW91dCkKLQkJaW9fcXVldWVfbGlua2VkX3RpbWVvdXQobGlua2VkX3RpbWVvdXQpOwogfQog
-CiBzdGF0aWMgaW5saW5lIHZvaWQgaW9fcXVldWVfc3FlKHN0cnVjdCBpb19raW9jYiAqcmVx
-KQotLSAKMi40OS4wCgo=
+	accept_memory(addr, addr + new_alloc_size);
 
---------------wox3V9Urkma0Ipd07jMXmOBB--
+Do you need for me to send a v6.6 specific patch?
+
+Thanks,
+Tom
+
+> 
+> 
+> From da8bf5daa5e55a6af2b285ecda460d6454712ff4 Mon Sep 17 00:00:00 2001
+> From: Tom Lendacky <thomas.lendacky@amd.com>
+> Date: Thu, 8 May 2025 12:24:10 -0500
+> Subject: memblock: Accept allocated memory before use in memblock_double_array()
+> 
+> From: Tom Lendacky <thomas.lendacky@amd.com>
+> 
+> commit da8bf5daa5e55a6af2b285ecda460d6454712ff4 upstream.
+> 
+> When increasing the array size in memblock_double_array() and the slab
+> is not yet available, a call to memblock_find_in_range() is used to
+> reserve/allocate memory. However, the range returned may not have been
+> accepted, which can result in a crash when booting an SNP guest:
+> 
+>   RIP: 0010:memcpy_orig+0x68/0x130
+>   Code: ...
+>   RSP: 0000:ffffffff9cc03ce8 EFLAGS: 00010006
+>   RAX: ff11001ff83e5000 RBX: 0000000000000000 RCX: fffffffffffff000
+>   RDX: 0000000000000bc0 RSI: ffffffff9dba8860 RDI: ff11001ff83e5c00
+>   RBP: 0000000000002000 R08: 0000000000000000 R09: 0000000000002000
+>   R10: 000000207fffe000 R11: 0000040000000000 R12: ffffffff9d06ef78
+>   R13: ff11001ff83e5000 R14: ffffffff9dba7c60 R15: 0000000000000c00
+>   memblock_double_array+0xff/0x310
+>   memblock_add_range+0x1fb/0x2f0
+>   memblock_reserve+0x4f/0xa0
+>   memblock_alloc_range_nid+0xac/0x130
+>   memblock_alloc_internal+0x53/0xc0
+>   memblock_alloc_try_nid+0x3d/0xa0
+>   swiotlb_init_remap+0x149/0x2f0
+>   mem_init+0xb/0xb0
+>   mm_core_init+0x8f/0x350
+>   start_kernel+0x17e/0x5d0
+>   x86_64_start_reservations+0x14/0x30
+>   x86_64_start_kernel+0x92/0xa0
+>   secondary_startup_64_no_verify+0x194/0x19b
+> 
+> Mitigate this by calling accept_memory() on the memory range returned
+> before the slab is available.
+> 
+> Prior to v6.12, the accept_memory() interface used a 'start' and 'end'
+> parameter instead of 'start' and 'size', therefore the accept_memory()
+> call must be adjusted to specify 'start + size' for 'end' when applying
+> to kernels prior to v6.12.
+> 
+> Cc: stable@vger.kernel.org # see patch description, needs adjustments for <= 6.11
+> Fixes: dcdfdd40fa82 ("mm: Add support for unaccepted memory")
+> Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+> Link: https://lore.kernel.org/r/da1ac73bf4ded761e21b4e4bb5178382a580cd73.1746725050.git.thomas.lendacky@amd.com
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>  mm/memblock.c |    9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
+> 
+> --- a/mm/memblock.c
+> +++ b/mm/memblock.c
+> @@ -460,7 +460,14 @@ static int __init_memblock memblock_doub
+>  				min(new_area_start, memblock.current_limit),
+>  				new_alloc_size, PAGE_SIZE);
+>  
+> -		new_array = addr ? __va(addr) : NULL;
+> +		if (addr) {
+> +			/* The memory may not have been accepted, yet. */
+> +			accept_memory(addr, new_alloc_size);
+> +
+> +			new_array = __va(addr);
+> +		} else {
+> +			new_array = NULL;
+> +		}
+>  	}
+>  	if (!addr) {
+>  		pr_err("memblock: Failed to double %s array from %ld to %ld entries !\n",
+> 
+> 
+> Patches currently in stable-queue which might be from thomas.lendacky@amd.com are
+> 
+> queue-6.6/memblock-accept-allocated-memory-before-use-in-memblock_double_array.patch
 
