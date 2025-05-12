@@ -1,160 +1,243 @@
-Return-Path: <stable+bounces-144025-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCF4FAB4587
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 22:37:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCC5FAB4570
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 22:26:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38DB619E67D5
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:37:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A917B3ACB27
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:26:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA32E297125;
-	Mon, 12 May 2025 20:37:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE94B2528F3;
+	Mon, 12 May 2025 20:26:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="xGAtQcr2"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="F9pbSEG+"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.135])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D24FF1B6CF1;
-	Mon, 12 May 2025 20:37:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.135
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747082250; cv=none; b=Sc7gjiOuCeq69Z7ZFNTyJYm4ga8RCq8X20vH9vLLrOBpVhMUQ2njTOy3SkWbr01vn12c8GUfwSP6zbYt1Gj611ltLNa/uCcKefn1up6dDd5MZz/F28pJ7NaaoJ3SHEAoVtlkbeOUt2tL81jiGd/T93hbQp6KZrqQ35kzhcoKtRU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747082250; c=relaxed/simple;
-	bh=Jnbhu+3zpTMBTqhYWevRyYw6xUl7YSnfNgdoVlvygmE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=RFn0smFk3QCq3g5xnFRqJWa5Sr1VNjMBo87LtvHf+oHBhfSO/mDc98Xswx1JNnptONU47G+gpsVOhQomftcBykYoaQnVugujUWkcKDtn2CR+vIcRaNeO8rNBeS5WF10m8JBdJzpFklCHKxXnmX+rBuoO4DTbncB14l0Ot2cRhLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=xGAtQcr2; arc=none smtp.client-ip=212.227.126.135
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
-	s=s1-ionos; t=1747082245; x=1747687045; i=christian@heusel.eu;
-	bh=v5IPjjPdS4AX/054+2XWNWZoam2uEJChhCqsehtFEcc=;
-	h=X-UI-Sender-Class:From:Date:Subject:MIME-Version:Content-Type:
-	 Content-Transfer-Encoding:Message-Id:To:Cc:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=xGAtQcr2blQh9ZKWRIofwcFetiyxmjpHGr1I6d23foOIjhzbrTF4s9fGfsWGJ917
-	 jFvhYx52dnFHr3M1eBoaS2GVq1Ql0KELA6PUy2lkLAdGti3P1KKC8ps3OL/yghpTt
-	 LFdasN6um/7McWXhGQy4/DztQNOw+vx21ZQyKCXS1miQGo5FYRlJWzgAkIjXCwVSi
-	 AyYIuzlGYSwK+3/HLbTuQzqiX4uF24SWuIm3h4ZOkzgo6OMy59935n3pSm1Jb/Nce
-	 YTLO7GRiGxuiJ/jyjevc5E+80TtRq3jyUItOEATmXwn6WFRJtCXn9V6DGBqIf9Pdj
-	 PKNBXz00BEfn3AIkmQ==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from meterpeter.localdomain ([89.244.90.40]) by
- mrelayeu.kundenserver.de (mreue011 [212.227.15.167]) with ESMTPSA (Nemesis)
- id 1MNtGq-1ucg7f47I0-00UEIt; Mon, 12 May 2025 22:24:12 +0200
-From: Christian Heusel <christian@heusel.eu>
-Date: Mon, 12 May 2025 22:23:37 +0200
-Subject: [PATCH] ALSA: usb-audio: Add sample rate quirk for Audioengine D1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8BB125742F
+	for <stable@vger.kernel.org>; Mon, 12 May 2025 20:26:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.17
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747081590; cv=fail; b=t0rlaItER+NJ0hdc7zLFOXtl7Yt4TE4pmYGedW7OHi8YAgYl87aP3CApP+lVNa5d2qq/YUmtKlOwbjAvItackUU/oYg/HALVbykmsEpGo6nsrVsfLqBRwkyIEIvUhX3SjqU84v4jW5ebumJ3QQa66jOLhSXTFJSxc7i0lzK4SbY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747081590; c=relaxed/simple;
+	bh=Z40kslrci4hlOSLzLb4G4Oj8+Q/hWHpKoD0422fTGrI=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=e6kX//Sw+BG0y71rb4x9I31/D6tg8Jdun0eJ5YS1ZiXEz4KwlMdsjgKQL8GuJa68c/KraolZ3gm8ijGHP6HlxD+BcGvLJbn4LDsbOTDYh05tVtTwRTVtvNTfmOPbdwiNjnZ+shVvfI0C50r/kNpa8gk4eo1lx9Zxs2yEuidKqmk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=F9pbSEG+; arc=fail smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747081589; x=1778617589;
+  h=date:from:to:cc:subject:message-id:reply-to:references:
+   in-reply-to:mime-version;
+  bh=Z40kslrci4hlOSLzLb4G4Oj8+Q/hWHpKoD0422fTGrI=;
+  b=F9pbSEG+kge02riyvazPpUFDP2Tq+qhxs2mqFRCs9/1u7MUNgOTLM1Ep
+   7MVa3AJa0y/1bvgaS68K7NEVPsnop8lkrKksH1L2Kg1AVq33ILdF2d7lI
+   Og/YGecZLNXoLBqzGKtrkIWQq6EZagmHT5AxatRpQoAxRv8u1HFf0+wRf
+   6souuqP8q+jVb/6iOgF4gX7pirmSCbLywbdlz8zQkJRCYtqgrWaJC9xOd
+   YY7Osoy3cITWzGO6/IoaUyXerOtrihPEliMxY8A6l1/UDiPF8wW6+TX+m
+   9Y0kUM8hNSG1pJB/wKMj7+8ewILbfqjesKOMX0hkToVXn6oIsq+TGkyQk
+   w==;
+X-CSE-ConnectionGUID: HRl7Qpm8QuCXlu4/v22Lgw==
+X-CSE-MsgGUID: l00pZvmQRvWipsO4aHo3TA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11431"; a="48893352"
+X-IronPort-AV: E=Sophos;i="6.15,283,1739865600"; 
+   d="scan'208";a="48893352"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2025 13:26:28 -0700
+X-CSE-ConnectionGUID: rSf6OBApT+a4dxDKyPTJFA==
+X-CSE-MsgGUID: MG1JHRbISCK8cacqxQ0oAA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,283,1739865600"; 
+   d="scan'208";a="137323392"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by orviesa010.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2025 13:26:29 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14; Mon, 12 May 2025 13:26:27 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14 via Frontend Transport; Mon, 12 May 2025 13:26:27 -0700
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.169)
+ by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Mon, 12 May 2025 13:26:27 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=QN0IQgLY/rNTmQ/odoc9fvsS7xjl8/IGxE1KZIGb2OxijSm3T+P9ByL7tgETp8oTp1VANfBmGW1dcyNSZqLcOXKF7Is3gfhE2vLB1pjyAShMnwhg4w1nA6kJL4KRZxo7CPKz1MPDwpVJz1+WzzQXPcHdzdkGOLdMAV6ARVuUpAwXooN8IP7w+EoIQGJYbCIa+p5uxw0L/9mtWxkhfqowx/i51PT02TYaBitakbfGi2JbWoG1q83afWjOR2micK6l5uZpGDrprMtUJV+vm52iz7GzSLI+bUojsiE/Ikf9NLkIIsqHqkFY8Et1ksX7eVv1KsrbnwjZ+iid1MSuafoabw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=QYsNVLUjNmyaWPOglhsHr6yCkhwxrPk8CYGsdE1OHdo=;
+ b=WS6HNWn36Bo9lmBIzNFtbqbZa1ppGWybHgo+BgBoCQ+RrPy8Dq6PqNSUOG+Fwj/GaDuvN7vTuidTZgYaTt0URAMBe4QNqcNSq8fHTpVq5+5YiVFPK47okhMSaXYQi8Drea/UKCFa2mKXjJPthRw3EeA160/Y0SfRTKNOLoskcc6QXHeFDwGH9et+KlvIKQFz+AlhiExgm3ahUtNBb56USjwrIozHOL3Y05qg7paleD2ycd9ATf0q5FHqVOkNFLwjtdIKECGFAZ9zLLS6d9X79S/6yD601yJMgKiQVZQfXc68cJa8EiJvqbTcJ0Ad3DVjHNFP8WysX6uM8PQ+/7+9uQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from CO1PR11MB4834.namprd11.prod.outlook.com (2603:10b6:303:90::20)
+ by SJ0PR11MB4783.namprd11.prod.outlook.com (2603:10b6:a03:2af::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.28; Mon, 12 May
+ 2025 20:25:57 +0000
+Received: from CO1PR11MB4834.namprd11.prod.outlook.com
+ ([fe80::1dff:f717:6190:8c17]) by CO1PR11MB4834.namprd11.prod.outlook.com
+ ([fe80::1dff:f717:6190:8c17%5]) with mapi id 15.20.8722.027; Mon, 12 May 2025
+ 20:25:57 +0000
+Date: Mon, 12 May 2025 23:26:05 +0300
+From: Imre Deak <imre.deak@intel.com>
+To: Gustavo Sousa <gustavo.sousa@intel.com>
+CC: <intel-gfx@lists.freedesktop.org>, <intel-xe@lists.freedesktop.org>, "Mika
+ Kahola" <mika.kahola@intel.com>, <stable@vger.kernel.org>
+Subject: Re: [PATCH] drm/i915/ptl: Use everywhere the correct DDI port clock
+ select mask
+Message-ID: <aCJZXWBsS7Is6Zpz@ideak-desk.fi.intel.com>
+Reply-To: <imre.deak@intel.com>
+References: <20250512142600.824347-1-imre.deak@intel.com>
+ <174708023231.10493.6499863984617165104@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <174708023231.10493.6499863984617165104@intel.com>
+X-ClientProxiedBy: DUZPR01CA0121.eurprd01.prod.exchangelabs.com
+ (2603:10a6:10:4bc::11) To CO1PR11MB4834.namprd11.prod.outlook.com
+ (2603:10b6:303:90::20)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <20250512-audioengine-quirk-addition-v1-1-4c370af6eff7@heusel.eu>
-X-B4-Tracking: v=1; b=H4sIAMhYImgC/x3MQQqAIBBG4avErBtIwYquEi1Ep/oJrLQiiO6et
- PwW7z2UJEISdcVDUS4krCFDlQW52YZJGD6bdKVNZZRme3qsEiYE4f1EXNh6jyNn3KhWatfWVjt
- HebBFGXH/83543w/8U/gObAAAAA==
-X-Change-ID: 20250512-audioengine-quirk-addition-718e6c86a2cc
-To: Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>
-Cc: linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Christian Heusel <christian@heusel.eu>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1691; i=christian@heusel.eu;
- h=from:subject:message-id; bh=T9nyqPOg2vRW5mnTPvD+UoZUWmgIkXbcc2Hb0EE8f7Q=;
- b=owEBbQKS/ZANAwAIAcBH1PMotSWFAcsmYgBoIljhEuX+ZbwJp5mNldpSXNG31Ogx3W9URffKQ
- mmuo9yXpDGJAjMEAAEIAB0WIQRvd5reJHprig9yzBPAR9TzKLUlhQUCaCJY4QAKCRDAR9TzKLUl
- hWj7D/4yaYeUzOtd1rmbaZCWY/HA9EUntN7fjTblqHu3Sn9ocKfV3K3DETws9yiEj2+joXJ3dvl
- ZgWDvKcniPT6VkE/KUywU7sWpwwLjbqiX1Udqs8g7cPz6mWUx8+ybAYBjUYixKcBZQ1f/hhvvd/
- ehnlP0BH2fOSnpWDuqOAQZYwjOQa18QG8cgnLX75qvg8E9Gk+ScuMjL38J75Kfx3SNAGBTxJiZB
- +nJPa1UKqxRvJoNLDTCze4tseS59f+miYSICcIGdHL07T0ptU1ZXzNnuxPCjGiUglTSZd/3YOUE
- SkZ3wox7OXs90JxvrBsMPk44sNMeX8QX6oT9QSBJxbtHZgHJrV1JfxwQL4ZJ0+HgUmeMd8L3WTp
- 55Zzq9+Hl9FoMjeRtQcbCqwD6GaL36pTKw8vDrFaoDbW1M4kvkd26NSAHAvWFyehfqqcRy/ivoJ
- Q0MKYbQDZTO3pVFqaBVIfEeChZRwaz86NSAT4wFinRV4TlxcsbJ9/JbYAz7MhcObqnKFqY5oYZC
- 5dVgt/AkhUxt2szo+W8ilVsl4JqqRYN0y4tAir6Ukp4fonYVqcJggMBl3DtcgAJoI0n7DmpB03H
- 2wvgkJX6Jvxvz0Irxe2s3joeAA2v4wR8CXd8WvusiVcO2RwT4KR0cljXyQss/gXC+UVQ5/7ivJQ
- EdoirFaE9iqVl1A==
-X-Developer-Key: i=christian@heusel.eu; a=openpgp;
- fpr=6F779ADE247A6B8A0F72CC13C047D4F328B52585
-X-Provags-ID: V03:K1:r8gcN1SJNqU2hfw9rpVP9dmQjgonF9wWrAaxjZinHlO8OVGHD1q
- riFc/XpBp5PUm5fjg09BmSOwsifudYg0xSw6QHB2qPd0YkxITE1bBC4QmUhAuL4OD06Hi6J
- 20MEU52wKtudEsu9ssppGaC8FLYob4PgsZAyrnarCX0h8IL1BTntg1aTr0W6bP0uuZOBsCB
- wkzZ0TfVTTRecrhe1uFNg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:PhcBKGKJ6Is=;TjiN0bfpIoCVwFhSucg1BiU4x2K
- V7aaJkd/JyqT8em96jir+tfgSef+fMrsGyRayLvkmJGdXzyRGFdKi0KlDRbCsJTO3fdmLKNE6
- cHdDS20qxNisFTw3GXK17o86QeTgmaqvxmYSc2WARAbSo82Wt5wLQwssmBXexmobxenSSU8CZ
- 1Dk9dR7hbuUcpR5ho/zIrklCtkubSog0d2LGN2eC24piWdWCkAFvBzqibd+IqZn7pLZcs5C03
- 8h1hSM0a4OK75UPk+vQj1Q8ebJ1E4sc8T7ZDYS/6LLqhidOhPurVIV+FYCmmi5KFEtttThtwN
- eCc0vJiZNrujR0XdU8cHbLkidR8ThR2KMMwC1sR8ot+Ku6dIwme0myK8xcJcw1KeuCwnb0mcO
- crbwq2G9JOPqlcbi0sqaNUuZszLSL6or624WOCr30bl+TytMg6Ygkr+XYKcz82wCN1AuezdnX
- Ivlk+dIKxErThGZCdpvEkQqWWx34eW3hHMaceiMvWJ99ywFpVgo6eeEKsucp11BYMdysWIkkE
- KXEfavVCjiRQyYpjYq0iIB935Z7n2hmLpNg26pETRLm04XG4V40I1r2MqLIpsk/l8Y8kI6fJZ
- WR8W5/W3xCAlX96CvH/46OVebE/DlFOU9NLH3/vBQQzpewVTuNNjZNj6HCjV1NvJZp1avPtgx
- PKkub2tN7Jrmft0jSQzRbka8d7xXRT3fP8MUB1wMKKpUNLtDFRKTXIHhAyTHU7kgUpM79nI5d
- kjbMNfGIB0OAo20vYJG0yKpP6wTNGVX8nwvfB2LdiOZLp9yAIr63ZeqAii3aneHUlft8f3VP+
- Nuv2Xq7U66Omg4szXYmcw3hWU3NKWQ8z/l+EVrEbhDY713DsKwJpKH0rNdkcZybhScOnjPhMf
- cR8sJDJ6/lBsZvvAG0vTAJ9G6suhOnU7tV5iPYuMFbf19nMwwUyF3isf23vpzKp4Wd0dWIzdR
- E+DtyQTTOySP2HI2G/b8LAZl1uE6GEV/Kp+AjgnS6feDlVs2zHxD+C7Y3I7aWPUJahOBpG0Wu
- EFU4/koP4ig8/6lLZaj4djFuLWhi9roZjLUh4zkrgYeZVJ4RGpFhtfiu0ehIkSBAYGPdiCRmV
- qbRfOxrDKL5NgvaBUJ9+/XtBuKp6wdFeTFXb1fWiwDzHVsoPaDpa4kgmQD0WG8rqROD46V22/
- pOltJmpdAfLuMaEOKiS/0ySvrMIfU5vBqzZkY4CpmEJF6RqT7gR342qb0+jo0iQ/CntRKjJ85
- nrofFZvXQzXi5dJ0HTs3KvkU2RSCQynx3m1pMcFuvXy6mp+e++1+zXzlOZGs95TL9oJboerI5
- 2TUy8AHPb9wbEh7cRPj7sUaDuQLIjfyPITAHJCMNB9bmgDzQz2N88Q+hjKB5nlD3c2BxdYXUt
- LnTxHDqZSCFFi1PTpsRyUeDhwEp5nQlPxpFAZpX6AtiKkgA1ObTQ03RyzC
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PR11MB4834:EE_|SJ0PR11MB4783:EE_
+X-MS-Office365-Filtering-Correlation-Id: b9e54651-6409-49a6-a95a-08dd919333bb
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?vyWiaQOWO3EBrndCg3aROmvzoamstAkXukLPl6VarKT5LeYMHAnAM3mwGDcl?=
+ =?us-ascii?Q?RYg82rEY2gR33dMiP72QucuO1OKqpsKFnX75JI+wknkI+2S+tFyukzED8yNV?=
+ =?us-ascii?Q?ELILnQXZH06L20hKqZ6PH8i6IT42nqbF23QYhTsDN+8ppTLG8jTST+3nkOYW?=
+ =?us-ascii?Q?pTrugHM7dHx7fRkzeNr+6W7rgcpm2nt1RKPTCf0q6K5HcdJYws+fKYZD7piQ?=
+ =?us-ascii?Q?6YjG7QBfkTn52WqW2IE/PNIUHJTlov1rtWypGc510uD0lNEBxFFbuAgh/RlZ?=
+ =?us-ascii?Q?bMtFBCB7J+wiHUHpywNMIyBo5sasQlxGWXLrgrLzPV91H09kMUKkDkaDcw/z?=
+ =?us-ascii?Q?orD4QmQ3Zi0mYIhPXFGkfkNam8vY2hSuW95h5597xxfdhJzaVcfrUbEmcTgt?=
+ =?us-ascii?Q?WxJW7/hYYD/6l9huWk3yqefe4f26xIsu2dKmSEAiovReXpeklHJiMKzrVrEJ?=
+ =?us-ascii?Q?fw1rWd+G5rJWi5r94ScW51kMdmszUXiN/18VCY8aT6ISqZT4zrG6bwT/aaIs?=
+ =?us-ascii?Q?CQCigUU2XTbU8BnWqLpjeG7gr+9Ha3kcWr8sQaQTAS5ZKFNFZsVudHGUP8n3?=
+ =?us-ascii?Q?G+jBz1yQe/0JvpC8hXlL07iW6fHU5svOGtZAVKDV9C7l1cKXvrFA4TJ4H2RD?=
+ =?us-ascii?Q?QxIE04rL0NEOF+DITwgju6LA0fVocz0YSjALu9HUUAIo4Yholh3VSRnnljyX?=
+ =?us-ascii?Q?BA+saPpCO/S5zFdx+BwONDt7GutqiNyAmiwNwOKy4N7Pm+7ZTLWxAwbMnZu3?=
+ =?us-ascii?Q?8DsIx4S8oAeE2abBp0Rr4gLqLix9TtRNwylH6A06qBil+VmXJA7ySIhVE8ew?=
+ =?us-ascii?Q?+0RH4YTq04MiGd95tGreiGc4omuP6ML/3E3Sfps8Lpqa6L6Ry7rL7/NDycy5?=
+ =?us-ascii?Q?vHgY+UW4cfDatfKk77yKPTwKokpNmnCn21Faw4PS6cq4329XKkm8UTXduLGE?=
+ =?us-ascii?Q?eDfOK4uthIjSEmQKAFruo+0T6mDjSYh5SNDcaCckZS0rm9M6jrW7GyQZXcPu?=
+ =?us-ascii?Q?YgMF6f2ARgYtg33YE52/DjNeg3dNIw9AxpW0aGlz+iIS7CGGOgfrip1g8mL1?=
+ =?us-ascii?Q?ZZtmaO/do4vcHcSEc3LieLCqOofbaNQJs/39rupwpolZSeBWJcHoB4QcWcUa?=
+ =?us-ascii?Q?B6t9i5Ex3UuqyoAbtKM8tbxXTziKd8o1aUYj+3bRDygVkoQoT/4Ztq7E1tzJ?=
+ =?us-ascii?Q?XLF2hYh4+wabS638o/H8flvPQ1VoHcMzFE2Ae5dow8ikEC9WeZipMaSYjr8t?=
+ =?us-ascii?Q?zL9wWqdV7Z4ZOo4ZlkVccT4+mNK8g+0LoYBMOV7zNy5ZCndZmOELxXK37E25?=
+ =?us-ascii?Q?2LLGYtaek7HwDP7m+1uNd6Uw2e2lKOxUfXH+0uNLrJe7uSLq+tlBaZoEJR4B?=
+ =?us-ascii?Q?Uhpa1Sy+oG7/qMht50F09uAYmKMXxRp03zrSLhx/zqqeIzHyHtVb7SuzpALx?=
+ =?us-ascii?Q?1iAOhA/lK3E=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR11MB4834.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?cGMtSwqIIQdEmE12cx+ZKkRYq5Xnw/5RnCUyvAcPILSftvVLWaIwl+ehvNnR?=
+ =?us-ascii?Q?/Q1ZFNoYs/kYULQmAdICUxRJ/GWSl3GbSg/jeRr1MvZVFMetTpQK2MOTmBht?=
+ =?us-ascii?Q?V9c+A3SKp9mA6Cj+v+UjdAV3s4/3FNJcjj3SCiNeWYQcnDTzukdUsCFROY/b?=
+ =?us-ascii?Q?ycSges0PNmza6jFWq/2QgOwb43l2mIN/BsViX8PthjScnC210DcY5vOnsLpy?=
+ =?us-ascii?Q?K5jnwxeEBncIKjQ5DUUhGDQGJJ1C6DC1tfP0sK8gAzd6OyskJNBQaKt0cOyz?=
+ =?us-ascii?Q?Pydck1Q2JhRxo4hgg9bzGAs5o41vpp4hd4ra3cQ47ZAIAN8h7vlDuTe6CRvg?=
+ =?us-ascii?Q?LcrzH9xSRBXquYuFUo30GPOwGAGar3d2zE8b8GicXZUHgzlZJYfn2sJQLWo6?=
+ =?us-ascii?Q?Y6rZrixU92OtG5qRzTXsBHJoGUAVtHxcvXS1xYeMSquL/HPfB0gNnwwD5a3q?=
+ =?us-ascii?Q?vOAGOgniDe+Lktu89AIEenurgZ15McCgm7asHjILY0lOo7WW66Ajw1Rvvh6B?=
+ =?us-ascii?Q?4dNugViNbMKy/uoBrNrCf+Yq9fp/Xp0GMOtSBVooYhY5USNdANnDoBXKu+Fg?=
+ =?us-ascii?Q?tfZDTwNYSOcT6BCkLeQ6+RlYAsvzhseAV9zfVldFByO6GuAmAvUSihW/72NW?=
+ =?us-ascii?Q?HerFz4HPys/a7SIeQxraOsZNdOx2dhrzQsugxQzaDMqowTufskIqTYAzdYtV?=
+ =?us-ascii?Q?a9argDu2/s7NV1HZ/CIop5/43smzT53GCsiIGTQUyEpp5y8H8itSF2E9zUwV?=
+ =?us-ascii?Q?kTNhl4lh0Hw9AAutQ8GBTLlusfa4VJQ/EsbQiSs1GkczLOkknRPeq1/WeSMC?=
+ =?us-ascii?Q?qvG3reI52osfONDajmuGQ6cgxxPpHYsvOs/hahibXvEVTY6dG/PZRt6Z9tC5?=
+ =?us-ascii?Q?oLdY3WtmY9HeNruXJ3RISiGB34gtwUfsFb5RcSyRsY76g6yEIHiLGnwj4SQ0?=
+ =?us-ascii?Q?vaphY34HouhV2CIEeTvZKs65E6BOuA0Y51QrMwlSCTaa+iOiVPMU5rdX4HYA?=
+ =?us-ascii?Q?xZN1+sHs5hpEoUm6Vdm65bdOlfPmV6tq9exNM3G7ub56FcCt4z3Dr4kVsirx?=
+ =?us-ascii?Q?KGNcBCGfLcAzBDPMycmFx7xpEZAcCaR7TwJuF96I93u7tzqGfjGXtcn9Pnmd?=
+ =?us-ascii?Q?p4LsVpi7aUZ4SeMg6YjuwZKgUNUHjXl8MLGO7YyH3guwGLBGHFL9LG3Gx3qL?=
+ =?us-ascii?Q?vimOHkGTxvQqver8FqMQ+Tcj/y2GREaMMywlJzBAiVNTFLKhcZG6PI+SirJt?=
+ =?us-ascii?Q?Mn6eVGFz56Vttm4IWHofN+VKXe0A9mLnGv+tpFcrwbQQ8DWEhlJTl/0Rb21K?=
+ =?us-ascii?Q?w0eY4buM5dkVRqh5QwnS49DZeY31DEgls5LKSQfgJpX9sn+cSfrF8iDtbOh+?=
+ =?us-ascii?Q?lG1wdqOC8vMnp63j4+hxSaw3HT9YeK94OfDuYWZyQB/x7zXXmEZbnBpuqNQQ?=
+ =?us-ascii?Q?iK0puGCx/u6CRH4jiruiw6cAJ9ozmRnsfX0ZqP4up5fwg6tqbpyeXON6UQ0p?=
+ =?us-ascii?Q?I6+mRa+IMsH6T3QjuqXwu2HyHYzoUb/vexO0feIX5QaVKPUKEK1tF3POgJMq?=
+ =?us-ascii?Q?5GXyn2ssHmZkYQT/GeCDslo+2Sd/kzkAqoB9U7hs?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: b9e54651-6409-49a6-a95a-08dd919333bb
+X-MS-Exchange-CrossTenant-AuthSource: CO1PR11MB4834.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2025 20:25:57.2514
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: PXY1ExUBvBvR1Khy8nTvLPJMRj1S4nKE4P2Bc2t2hhBmffMWFguUV/bbCKk8RCBgntIo2vGUhQ/FYcu8p34n6A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB4783
+X-OriginatorOrg: intel.com
 
-A user reported on the Arch Linux Forums that their device is emitting
-the following message in the kernel journal, which is fixed by adding
-the quirk as submitted in this patch:
+On Mon, May 12, 2025 at 05:03:52PM -0300, Gustavo Sousa wrote:
+> Quoting Imre Deak (2025-05-12 11:26:00-03:00)
+>
+> [...]
+>
+> >diff --git a/drivers/gpu/drm/i915/display/intel_cx0_phy_regs.h b/drivers/gpu/drm/i915/display/intel_cx0_phy_regs.h
+> >index 960f7f778fb81..59c22beaf1de5 100644
+> >--- a/drivers/gpu/drm/i915/display/intel_cx0_phy_regs.h
+> >+++ b/drivers/gpu/drm/i915/display/intel_cx0_phy_regs.h
+> >@@ -192,10 +192,17 @@
+> > 
+> > #define   XELPDP_TBT_CLOCK_REQUEST                        REG_BIT(19)
+> > #define   XELPDP_TBT_CLOCK_ACK                                REG_BIT(18)
+> >-#define   XELPDP_DDI_CLOCK_SELECT_MASK                        REG_GENMASK(15, 12)
+> >-#define   XE3_DDI_CLOCK_SELECT_MASK                        REG_GENMASK(16, 12)
+> >-#define   XELPDP_DDI_CLOCK_SELECT(val)                        REG_FIELD_PREP(XELPDP_DDI_CLOCK_SELECT_MASK, val)
+> >-#define   XE3_DDI_CLOCK_SELECT(val)                        REG_FIELD_PREP(XE3_DDI_CLOCK_SELECT_MASK, val)
+> >+#define   _XELPDP_DDI_CLOCK_SELECT_MASK                        REG_GENMASK(15, 12)
+> >+#define   _XE3_DDI_CLOCK_SELECT_MASK                        REG_GENMASK(16, 12)
+> 
+> Since bit 16 is unused for pre-Xe3 display IPs, I wonder if we should
+> simply redefine XELPDP_DDI_CLOCK_SELECT_MASK to be REG_GENMASK(16, 12)
+> and add a comment noting changes by display IP? Are we aware of
+> something that would be wired to bit 16 that would prevent us from doing
+> that?
 
-    > kernel: usb 1-2: current rate 8436480 is different from the runtime =
-rate 48000
+Not sure if a register bit is not used, unless it's defined as reserved.
+For pre-Xe3 (pre-PTL) bits 16-17 are not defined as reserved.
 
-There also is an entry for this product line added long time ago.
-Their specific device has the following ID:
-
-    $ lsusb | grep Audio
-    Bus 001 Device 002: ID 1101:0003 EasyPass Industrial Co., Ltd Audioeng=
-ine D1
-
-Link: https://bbs.archlinux.org/viewtopic.php?id=3D305494
-Fixes: 93f9d1a4ac593 ("ALSA: usb-audio: Apply sample rate quirk for Audioe=
-ngine D1")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christian Heusel <christian@heusel.eu>
-=2D--
- sound/usb/quirks.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
-index 9112313a9dbc005d8ab6076a6f2f4b0c0cecc64f..eb192834db68ca599770055cb5=
-63201e648f20ba 100644
-=2D-- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -2250,6 +2250,8 @@ static const struct usb_audio_quirk_flags_table quir=
-k_flags_table[] =3D {
- 		   QUIRK_FLAG_FIXED_RATE),
- 	DEVICE_FLG(0x0fd9, 0x0008, /* Hauppauge HVR-950Q */
- 		   QUIRK_FLAG_SHARE_MEDIA_DEVICE | QUIRK_FLAG_ALIGN_TRANSFER),
-+	DEVICE_FLG(0x1101, 0x0003, /* Audioengine D1 */
-+		   QUIRK_FLAG_GET_SAMPLE_RATE),
- 	DEVICE_FLG(0x1224, 0x2a25, /* Jieli Technology USB PHY 2.0 */
- 		   QUIRK_FLAG_GET_SAMPLE_RATE | QUIRK_FLAG_MIC_RES_16),
- 	DEVICE_FLG(0x1395, 0x740a, /* Sennheiser DECT */
-
-=2D--
-base-commit: 82f2b0b97b36ee3fcddf0f0780a9a0825d52fec3
-change-id: 20250512-audioengine-quirk-addition-718e6c86a2cc
-
-Best regards,
-=2D-=20
-Christian Heusel <christian@heusel.eu>
-
+> I remember something similar was done to other register fields in the
+> past. Some examples I found:
+> 
+>     3fe856180c94 ("drm/i915/xe3lpd: Add new bit range of MAX swing setup")
+>     247bdac958fc ("drm/i915/adl_p: Add ddb allocation support")
+>     d7e449a858ec ("drm/i915: Just use icl+ definition for PLANE_WM blocks field")
+> 
+> --
+> Gustavo Sousa
+> 
+> >+#define   XELPDP_DDI_CLOCK_SELECT_MASK(display)                (DISPLAY_VER(display) >= 30 ? \
+> >+                                                         _XE3_DDI_CLOCK_SELECT_MASK : _XELPDP_DDI_CLOCK_SELECT_MASK)
+> >+#define   XELPDP_DDI_CLOCK_SELECT_PREP(display, val)        (DISPLAY_VER(display) >= 30 ? \
+> >+                                                         REG_FIELD_PREP(_XE3_DDI_CLOCK_SELECT_MASK, (val)) : \
+> >+                                                         REG_FIELD_PREP(_XELPDP_DDI_CLOCK_SELECT_MASK, (val)))
+> >+#define   XELPDP_DDI_CLOCK_SELECT_GET(display, val)        (DISPLAY_VER(display) >= 30 ? \
+> >+                                                         REG_FIELD_GET(_XE3_DDI_CLOCK_SELECT_MASK, (val)) : \
+> >+                                                         REG_FIELD_GET(_XELPDP_DDI_CLOCK_SELECT_MASK, (val)))
+> >+
+> > #define   XELPDP_DDI_CLOCK_SELECT_NONE                        0x0
+> > #define   XELPDP_DDI_CLOCK_SELECT_MAXPCLK                0x8
+> > #define   XELPDP_DDI_CLOCK_SELECT_DIV18CLK                0x9
+> >-- 
+> >2.44.2
+> >
 
