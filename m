@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-143358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DA81AB3F78
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:43:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBFA1AB3F80
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:43:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ACA3D4657F4
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:43:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBE6F19E6278
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:44:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D2A826561E;
-	Mon, 12 May 2025 17:42:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3744297101;
+	Mon, 12 May 2025 17:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zPosB66k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MZGWX1+Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 981AC296D28;
-	Mon, 12 May 2025 17:42:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F8F1296D3C;
+	Mon, 12 May 2025 17:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747071730; cv=none; b=KJFIKUHiXqSkxZ1DheJ2ihOwUwYHXYAJLOMqKrv7gYtswzmpD2e3SCNVpb2LNN+5h+Up58eTuNnHg4jnycHaMh/N3p9dAbQj49fXwBNkWZcPtaKSQCLOzgU2LnI6ZO6GL1OE6ZGhQu++dpn3TQ7zmsGriEI65ct0ZVF8LVziGgs=
+	t=1747071767; cv=none; b=LcHcvtyJWz5bfQ3dYiXy1MUhhXV+DInYM7nZyMgVlGGjJvp614m2pwP2yzyXIcFRoi4XUojzAsPwPJSj1JkNdrpFqdpIp92vhf82i/igmCBzZHZ5BshRUg7qHSbK0zdanimYVJ+CbHNFeETFrVNxJHalU4YYZbC9YLTMiQnK4yU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747071730; c=relaxed/simple;
-	bh=lPxB28wvxhbUyNysq6fw/77elCGJiflI9V0aLlhPFRA=;
+	s=arc-20240116; t=1747071767; c=relaxed/simple;
+	bh=7bgAWczTkDZsKezQ8pB8ukTG912n/RHOBJrcg2Jox/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WO25HMOkhe21hc8XZDgjNFEG9H9uYtzU6R5HecUhxj/vt/QJiHFtcor7APXy5+5zrjQ3Tizhj56ap7boHC5W9iBXg6MOclD4yb4UHz3GJw/IqXc1iGWRTzj6q7OOljwcWxi0uHoDCjwjn92R3YnT1104WrhCocVJS0Cj3ojksok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zPosB66k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A66CCC4CEE7;
-	Mon, 12 May 2025 17:42:09 +0000 (UTC)
+	 MIME-Version; b=eu6/zN9o3rWzeRu3siLt98CVmT4ZZOn/Km/Se0ytXU2sXOgdv7dbxGlLZJc3heGvtICgzZIcontYURIwRg/gcgckQTwp0SqAe53c1etdTAFo9GjyprkLvAni3FFag8Zh+6OsB24in+586fklgfAWrcHcbcYw1+EeG7or7c3Z/+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MZGWX1+Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9F2CC4CEE7;
+	Mon, 12 May 2025 17:42:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747071730;
-	bh=lPxB28wvxhbUyNysq6fw/77elCGJiflI9V0aLlhPFRA=;
+	s=korg; t=1747071767;
+	bh=7bgAWczTkDZsKezQ8pB8ukTG912n/RHOBJrcg2Jox/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zPosB66kF3/xJQR0MHTAFNHjNoXGq382qa182XMWVu5Xgqhy3zCoz5/m1xZsxzq6x
-	 IqFCIUhONou27867tqT5+vZOKYQkmYZc2yinDgi+/8PpTZF1PQ29RCh/UsecsZid5l
-	 MOspQP+/04qXw3ohaT1Np6huuyM8jZ19/5Nk1Sis=
+	b=MZGWX1+ZsHix6HFz1R28gpRw2gMTB1G8mnqRVw4WiLyDXefFWFxNxqa4Yz5hVG1Gm
+	 NjG5Ec6X4zj6cD0z8oULcK8TLrpSx+DoeNG52pPcMWZgd5nfzO5Qk3cecNb+IRLBXy
+	 BitjTj7C6yb1tT6uAgDv68OPkHQth0dl2C5ZDfws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 6.14 001/197] dm: add missing unlock on in dm_keyslot_evict()
-Date: Mon, 12 May 2025 19:37:31 +0200
-Message-ID: <20250512172044.399506123@linuxfoundation.org>
+	Max Kellermann <max.kellermann@ionos.com>,
+	Gao Xiang <xiang@kernel.org>,
+	Hongbo Li <lihongbo22@huawei.com>
+Subject: [PATCH 6.14 002/197] fs/erofs/fileio: call erofs_onlinefolio_split() after bio_add_folio()
+Date: Mon, 12 May 2025 19:37:32 +0200
+Message-ID: <20250512172044.439910580@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512172044.326436266@linuxfoundation.org>
 References: <20250512172044.326436266@linuxfoundation.org>
@@ -65,41 +66,66 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Max Kellermann <max.kellermann@ionos.com>
 
-commit 650266ac4c7230c89bcd1307acf5c9c92cfa85e2 upstream.
+commit bbfe756dc3062c1e934f06e5ba39c239aa953b92 upstream.
 
-We need to call dm_put_live_table() even if dm_get_live_table() returns
-NULL.
+If bio_add_folio() fails (because it is full),
+erofs_fileio_scan_folio() needs to submit the I/O request via
+erofs_fileio_rq_submit() and allocate a new I/O request with an empty
+`struct bio`.  Then it retries the bio_add_folio() call.
 
-Fixes: 9355a9eb21a5 ("dm: support key eviction from keyslot managers of underlying devices")
-Cc: stable@vger.kernel.org	# v5.12+
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+However, at this point, erofs_onlinefolio_split() has already been
+called which increments `folio->private`; the retry will call
+erofs_onlinefolio_split() again, but there will never be a matching
+erofs_onlinefolio_end() call.  This leaves the folio locked forever
+and all waiters will be stuck in folio_wait_bit_common().
+
+This bug has been added by commit ce63cb62d794 ("erofs: support
+unencoded inodes for fileio"), but was practically unreachable because
+there was room for 256 folios in the `struct bio` - until commit
+9f74ae8c9ac9 ("erofs: shorten bvecs[] for file-backed mounts") which
+reduced the array capacity to 16 folios.
+
+It was now trivial to trigger the bug by manually invoking readahead
+from userspace, e.g.:
+
+ posix_fadvise(fd, 0, st.st_size, POSIX_FADV_WILLNEED);
+
+This should be fixed by invoking erofs_onlinefolio_split() only after
+bio_add_folio() has succeeded.  This is safe: asynchronous completions
+invoking erofs_onlinefolio_end() will not unlock the folio because
+erofs_fileio_scan_folio() is still holding a reference to be released
+by erofs_onlinefolio_end() at the end.
+
+Fixes: ce63cb62d794 ("erofs: support unencoded inodes for fileio")
+Fixes: 9f74ae8c9ac9 ("erofs: shorten bvecs[] for file-backed mounts")
+Cc: stable@vger.kernel.org
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+Reviewed-by: Gao Xiang <xiang@kernel.org>
+Tested-by: Hongbo Li <lihongbo22@huawei.com>
+Link: https://lore.kernel.org/r/20250428230933.3422273-1-max.kellermann@ionos.com
+Signed-off-by: Gao Xiang <xiang@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-table.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/erofs/fileio.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/md/dm-table.c
-+++ b/drivers/md/dm-table.c
-@@ -1178,7 +1178,7 @@ static int dm_keyslot_evict(struct blk_c
- 
- 	t = dm_get_live_table(md, &srcu_idx);
- 	if (!t)
--		return 0;
-+		goto put_live_table;
- 
- 	for (unsigned int i = 0; i < t->num_targets; i++) {
- 		struct dm_target *ti = dm_table_get_target(t, i);
-@@ -1189,6 +1189,7 @@ static int dm_keyslot_evict(struct blk_c
- 					  (void *)key);
- 	}
- 
-+put_live_table:
- 	dm_put_live_table(md, srcu_idx);
- 	return 0;
- }
+--- a/fs/erofs/fileio.c
++++ b/fs/erofs/fileio.c
+@@ -150,10 +150,10 @@ io_retry:
+ 				io->rq->bio.bi_iter.bi_sector = io->dev.m_pa >> 9;
+ 				attached = 0;
+ 			}
+-			if (!attached++)
+-				erofs_onlinefolio_split(folio);
+ 			if (!bio_add_folio(&io->rq->bio, folio, len, cur))
+ 				goto io_retry;
++			if (!attached++)
++				erofs_onlinefolio_split(folio);
+ 			io->dev.m_pa += len;
+ 		}
+ 		cur += len;
 
 
 
