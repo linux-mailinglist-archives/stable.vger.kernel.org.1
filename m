@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-143430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FCCCAB3FC0
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:46:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F1DCAB3FCC
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:46:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D807465CD2
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:46:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6E363AA188
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:46:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99399296FAC;
-	Mon, 12 May 2025 17:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF373296FB8;
+	Mon, 12 May 2025 17:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NcnTqs4K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X4Ebel/O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55DB8254AF7;
-	Mon, 12 May 2025 17:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CA4C296FA7;
+	Mon, 12 May 2025 17:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747071928; cv=none; b=hQv+/Ycs5OMvXcSE6DJT6bVQunbLJUOF8lnrBrJb+1f1JvVMtI/uc2Zw+5yZ6skwCQ03aYqjDCUEVLbyNLswMtAk4EwHkmDJbJyBDs1UXxfaUNNWJXdghJ10TdewVxn5jIqTiif0zuUZdP6T2LawnKZWXF7szniNaABFDw9QUnk=
+	t=1747071933; cv=none; b=MWGqEhIDDeLOCMKnZ2NlDqEtl16+bWg08/gYNL9+4THRpyFOrU/+XQDurKo46qoNXaMKX1t3tZR1rHI/onqcEpEUcDxK0ZDSVnk6U7nmBHfJ4w9JcK6y0GfMeNMxC4RqqgiQqx39bj4Hh+PXuEUgxRdzdQVCMbpStIALwNz5qeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747071928; c=relaxed/simple;
-	bh=spRJZVCtJpkGWZnqRGV2/AmeOgjLOH4vrRtfvlMN2w0=;
+	s=arc-20240116; t=1747071933; c=relaxed/simple;
+	bh=RT6BzzrfjAmurJcIpuajXeNvzfhaymILWw8MaCsO5eg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f9nCJ36fdpOo5aamdgO9/oVSLGzs3iLw6uxkPjIc9qztKS4e87OnKoSG6p3mT6NNRuEmIKW17M24WYlUbhJkUMbSfU7uoKzv1/NWM7zASCol7671F522XZrPvW548lY5izFUQ7T9azyrAGuQEHjdJRWnRYFUBUc5YefVFvFzIr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NcnTqs4K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA4CEC4CEE7;
-	Mon, 12 May 2025 17:45:27 +0000 (UTC)
+	 MIME-Version; b=jCsy4DJ7bPWy0L+AUijnB3FGpsFvQTLf3XmPaGbBhrLw+t+cLsqUuVpsIzdpcrPL0toYDXkquiMz3CtapE2Zlcy8ZUeXItZDTN50rZJ5VLq+zg5d9ESKO9TRBaRPy+AtqdceGpIbIcx5ia9N10qMG2TlwUyMZbdwSmg7zlzHuB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X4Ebel/O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AB62C4CEE7;
+	Mon, 12 May 2025 17:45:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747071928;
-	bh=spRJZVCtJpkGWZnqRGV2/AmeOgjLOH4vrRtfvlMN2w0=;
+	s=korg; t=1747071933;
+	bh=RT6BzzrfjAmurJcIpuajXeNvzfhaymILWw8MaCsO5eg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NcnTqs4KKW/pY9XcBNt8qobmvr8N7u7NXwavugkYcl/JsibJr3T7OnIMflm1ds1gB
-	 6298orop8UrifIk5+944+nyoWSkzejuAfy22rb5utGqvigOCGTUpBRe0PVTGpTMWAC
-	 HQXzVVJV8h2PeqkGUM8/AhwqND0+AfxO2QNzM2cc=
+	b=X4Ebel/O50KlxVTQdxRgGMYMWDhZFfX8LOwdxRfgH5gUd3qBPcNOmpIa7tM6r5ill
+	 K1Du2t8jt242gOrDByIpeNMvZPyAOPUWiZtHdaQ5tI2mxAiRuoufgF8e8spJdocuzu
+	 /7dlXbWBjWalJb046mRPJ/wrRan9tKpyEHoOiotU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Roth <michael.roth@amd.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.14 081/197] KVM: x86/mmu: Prevent installing hugepages when mem attributes are changing
-Date: Mon, 12 May 2025 19:38:51 +0200
-Message-ID: <20250512172047.672557340@linuxfoundation.org>
+	Sean Christopherson <seanjc@google.com>,
+	Mikhail Lobanov <m.lobanov@rosa.ru>
+Subject: [PATCH 6.14 082/197] KVM: SVM: Forcibly leave SMM mode on SHUTDOWN interception
+Date: Mon, 12 May 2025 19:38:52 +0200
+Message-ID: <20250512172047.713324064@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512172044.326436266@linuxfoundation.org>
 References: <20250512172044.326436266@linuxfoundation.org>
@@ -65,129 +65,98 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Mikhail Lobanov <m.lobanov@rosa.ru>
 
-commit 9129633d568edd36aa22bf703b12835153cec985 upstream.
+commit a2620f8932fa9fdabc3d78ed6efb004ca409019f upstream.
 
-When changing memory attributes on a subset of a potential hugepage, add
-the hugepage to the invalidation range tracking to prevent installing a
-hugepage until the attributes are fully updated.  Like the actual hugepage
-tracking updates in kvm_arch_post_set_memory_attributes(), process only
-the head and tail pages, as any potential hugepages that are entirely
-covered by the range will already be tracked.
+Previously, commit ed129ec9057f ("KVM: x86: forcibly leave nested mode
+on vCPU reset") addressed an issue where a triple fault occurring in
+nested mode could lead to use-after-free scenarios. However, the commit
+did not handle the analogous situation for System Management Mode (SMM).
 
-Note, only hugepage chunks whose current attributes are NOT mixed need to
-be added to the invalidation set, as mixed attributes already prevent
-installing a hugepage, and it's perfectly safe to install a smaller
-mapping for a gfn whose attributes aren't changing.
+This omission results in triggering a WARN when KVM forces a vCPU INIT
+after SHUTDOWN interception while the vCPU is in SMM. This situation was
+reprodused using Syzkaller by:
 
-Fixes: 8dd2eee9d526 ("KVM: x86/mmu: Handle page fault for private memory")
+  1) Creating a KVM VM and vCPU
+  2) Sending a KVM_SMI ioctl to explicitly enter SMM
+  3) Executing invalid instructions causing consecutive exceptions and
+     eventually a triple fault
+
+The issue manifests as follows:
+
+  WARNING: CPU: 0 PID: 25506 at arch/x86/kvm/x86.c:12112
+  kvm_vcpu_reset+0x1d2/0x1530 arch/x86/kvm/x86.c:12112
+  Modules linked in:
+  CPU: 0 PID: 25506 Comm: syz-executor.0 Not tainted
+  6.1.130-syzkaller-00157-g164fe5dde9b6 #0
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996),
+  BIOS 1.12.0-1 04/01/2014
+  RIP: 0010:kvm_vcpu_reset+0x1d2/0x1530 arch/x86/kvm/x86.c:12112
+  Call Trace:
+   <TASK>
+   shutdown_interception+0x66/0xb0 arch/x86/kvm/svm/svm.c:2136
+   svm_invoke_exit_handler+0x110/0x530 arch/x86/kvm/svm/svm.c:3395
+   svm_handle_exit+0x424/0x920 arch/x86/kvm/svm/svm.c:3457
+   vcpu_enter_guest arch/x86/kvm/x86.c:10959 [inline]
+   vcpu_run+0x2c43/0x5a90 arch/x86/kvm/x86.c:11062
+   kvm_arch_vcpu_ioctl_run+0x50f/0x1cf0 arch/x86/kvm/x86.c:11283
+   kvm_vcpu_ioctl+0x570/0xf00 arch/x86/kvm/../../../virt/kvm/kvm_main.c:4122
+   vfs_ioctl fs/ioctl.c:51 [inline]
+   __do_sys_ioctl fs/ioctl.c:870 [inline]
+   __se_sys_ioctl fs/ioctl.c:856 [inline]
+   __x64_sys_ioctl+0x19a/0x210 fs/ioctl.c:856
+   do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+   do_syscall_64+0x35/0x80 arch/x86/entry/common.c:81
+   entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+
+Architecturally, INIT is blocked when the CPU is in SMM, hence KVM's WARN()
+in kvm_vcpu_reset() to guard against KVM bugs, e.g. to detect improper
+emulation of INIT.  SHUTDOWN on SVM is a weird edge case where KVM needs to
+do _something_ sane with the VMCB, since it's technically undefined, and
+INIT is the least awful choice given KVM's ABI.
+
+So, double down on stuffing INIT on SHUTDOWN, and force the vCPU out of
+SMM to avoid any weirdness (and the WARN).
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: ed129ec9057f ("KVM: x86: forcibly leave nested mode on vCPU reset")
 Cc: stable@vger.kernel.org
-Reported-by: Michael Roth <michael.roth@amd.com>
-Tested-by: Michael Roth <michael.roth@amd.com>
-Link: https://lore.kernel.org/r/20250430220954.522672-1-seanjc@google.com
+Suggested-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Mikhail Lobanov <m.lobanov@rosa.ru>
+Link: https://lore.kernel.org/r/20250414171207.155121-1-m.lobanov@rosa.ru
+[sean: massage changelog, make it clear this isn't architectural behavior]
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/mmu/mmu.c |   69 +++++++++++++++++++++++++++++++++++++------------
- 1 file changed, 53 insertions(+), 16 deletions(-)
+ arch/x86/kvm/smm.c     |    1 +
+ arch/x86/kvm/svm/svm.c |    4 ++++
+ 2 files changed, 5 insertions(+)
 
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -7496,9 +7496,30 @@ void kvm_mmu_pre_destroy_vm(struct kvm *
- }
+--- a/arch/x86/kvm/smm.c
++++ b/arch/x86/kvm/smm.c
+@@ -131,6 +131,7 @@ void kvm_smm_changed(struct kvm_vcpu *vc
  
- #ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
-+static bool hugepage_test_mixed(struct kvm_memory_slot *slot, gfn_t gfn,
-+				int level)
-+{
-+	return lpage_info_slot(gfn, slot, level)->disallow_lpage & KVM_LPAGE_MIXED_FLAG;
-+}
-+
-+static void hugepage_clear_mixed(struct kvm_memory_slot *slot, gfn_t gfn,
-+				 int level)
-+{
-+	lpage_info_slot(gfn, slot, level)->disallow_lpage &= ~KVM_LPAGE_MIXED_FLAG;
-+}
-+
-+static void hugepage_set_mixed(struct kvm_memory_slot *slot, gfn_t gfn,
-+			       int level)
-+{
-+	lpage_info_slot(gfn, slot, level)->disallow_lpage |= KVM_LPAGE_MIXED_FLAG;
-+}
-+
- bool kvm_arch_pre_set_memory_attributes(struct kvm *kvm,
- 					struct kvm_gfn_range *range)
+ 	kvm_mmu_reset_context(vcpu);
+ }
++EXPORT_SYMBOL_GPL(kvm_smm_changed);
+ 
+ void process_smi(struct kvm_vcpu *vcpu)
  {
-+	struct kvm_memory_slot *slot = range->slot;
-+	int level;
-+
- 	/*
- 	 * Zap SPTEs even if the slot can't be mapped PRIVATE.  KVM x86 only
- 	 * supports KVM_MEMORY_ATTRIBUTE_PRIVATE, and so it *seems* like KVM
-@@ -7513,6 +7534,38 @@ bool kvm_arch_pre_set_memory_attributes(
- 	if (WARN_ON_ONCE(!kvm_arch_has_private_mem(kvm)))
- 		return false;
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -2220,6 +2220,10 @@ static int shutdown_interception(struct
+ 	 */
+ 	if (!sev_es_guest(vcpu->kvm)) {
+ 		clear_page(svm->vmcb);
++#ifdef CONFIG_KVM_SMM
++		if (is_smm(vcpu))
++			kvm_smm_changed(vcpu, false);
++#endif
+ 		kvm_vcpu_reset(vcpu, true);
+ 	}
  
-+	if (WARN_ON_ONCE(range->end <= range->start))
-+		return false;
-+
-+	/*
-+	 * If the head and tail pages of the range currently allow a hugepage,
-+	 * i.e. reside fully in the slot and don't have mixed attributes, then
-+	 * add each corresponding hugepage range to the ongoing invalidation,
-+	 * e.g. to prevent KVM from creating a hugepage in response to a fault
-+	 * for a gfn whose attributes aren't changing.  Note, only the range
-+	 * of gfns whose attributes are being modified needs to be explicitly
-+	 * unmapped, as that will unmap any existing hugepages.
-+	 */
-+	for (level = PG_LEVEL_2M; level <= KVM_MAX_HUGEPAGE_LEVEL; level++) {
-+		gfn_t start = gfn_round_for_level(range->start, level);
-+		gfn_t end = gfn_round_for_level(range->end - 1, level);
-+		gfn_t nr_pages = KVM_PAGES_PER_HPAGE(level);
-+
-+		if ((start != range->start || start + nr_pages > range->end) &&
-+		    start >= slot->base_gfn &&
-+		    start + nr_pages <= slot->base_gfn + slot->npages &&
-+		    !hugepage_test_mixed(slot, start, level))
-+			kvm_mmu_invalidate_range_add(kvm, start, start + nr_pages);
-+
-+		if (end == start)
-+			continue;
-+
-+		if ((end + nr_pages) > range->end &&
-+		    (end + nr_pages) <= (slot->base_gfn + slot->npages) &&
-+		    !hugepage_test_mixed(slot, end, level))
-+			kvm_mmu_invalidate_range_add(kvm, end, end + nr_pages);
-+	}
-+
- 	/* Unmap the old attribute page. */
- 	if (range->arg.attributes & KVM_MEMORY_ATTRIBUTE_PRIVATE)
- 		range->attr_filter = KVM_FILTER_SHARED;
-@@ -7522,23 +7575,7 @@ bool kvm_arch_pre_set_memory_attributes(
- 	return kvm_unmap_gfn_range(kvm, range);
- }
- 
--static bool hugepage_test_mixed(struct kvm_memory_slot *slot, gfn_t gfn,
--				int level)
--{
--	return lpage_info_slot(gfn, slot, level)->disallow_lpage & KVM_LPAGE_MIXED_FLAG;
--}
--
--static void hugepage_clear_mixed(struct kvm_memory_slot *slot, gfn_t gfn,
--				 int level)
--{
--	lpage_info_slot(gfn, slot, level)->disallow_lpage &= ~KVM_LPAGE_MIXED_FLAG;
--}
- 
--static void hugepage_set_mixed(struct kvm_memory_slot *slot, gfn_t gfn,
--			       int level)
--{
--	lpage_info_slot(gfn, slot, level)->disallow_lpage |= KVM_LPAGE_MIXED_FLAG;
--}
- 
- static bool hugepage_has_attrs(struct kvm *kvm, struct kvm_memory_slot *slot,
- 			       gfn_t gfn, int level, unsigned long attrs)
 
 
 
