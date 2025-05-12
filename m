@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-143648-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA5C7AB40DA
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:58:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F104AB40B1
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:56:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 642C23B0575
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:56:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 92C3B467762
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:56:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26EB725742B;
-	Mon, 12 May 2025 17:57:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C679293B6B;
+	Mon, 12 May 2025 17:56:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OY07jxy4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EGYHiR9+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D466E1DF72E;
-	Mon, 12 May 2025 17:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52114227E8A;
+	Mon, 12 May 2025 17:56:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072629; cv=none; b=k/2TvvBu27aAHDXsCjFyHE7HBqptow9Z42qmes4gGzbTQEl2Byh2gu35kbJV2t9tUZ8RPMygIw6VdNwTPLeaw6Ddtvc8yNvkTYkEqgo1Npo/Lq4VDP9s9ZAGzO+A6uHc6BwtpiJxOoiDKLDx2K1OhgyGYWxYSQaJSTPZaTu9hiw=
+	t=1747072615; cv=none; b=NQv8rkSJDpmnPZ/wpU1KAUNUklaedgXCtXMk23KW8IZWY4BmxH0AxJjN4mF+qB2l487ss0vnq+HfTr6Pi7od3JyGvHNlG1UR8Oo7b35MopUOLB9x6e0XuUVhe8vy4WmoNUolo7ypfxZDeXWl6W6Gvhx3MgGURG9ZOh21Wv7WyFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072629; c=relaxed/simple;
-	bh=6foka23a8POoA/sEq0Y63h03yIhs2UxykplttO/wgow=;
+	s=arc-20240116; t=1747072615; c=relaxed/simple;
+	bh=5cy+tD2vyW5ljITao83Asrgi41WKfUyJXTNNKd0Q7p4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HCVdawHoJD//tFQ1Q6UCHymLst/5D2WU/IyanENtPEqEyV/f5Baet8Rm9YWKXJvjU2vdxbuoQyAp7FraSwoan3cnkII218esXNurzRzMDSpfoOjrcqeTWm2ljfXfjvbMaORC/PcUDrd6zQe6T4N08XVd+AMp+JrKrwc7tdR311k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OY07jxy4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6107DC4CEE7;
-	Mon, 12 May 2025 17:57:09 +0000 (UTC)
+	 MIME-Version; b=lVYqW7odxAsJ41iOhf9p2Kda4iqr7ilzloGZyzJpV1ZecylNezb1VyynMGC9PYdpw/nF8bEUmEbyLHErNNHia3yBAmePkgtcSV7cJcm95j9v8RFSXaZ5gf63vur+VyAgmw9/b6An//BjXLdXh5xmaNXHXJGaar/jN/HejkgBv8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EGYHiR9+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4217BC4CEE7;
+	Mon, 12 May 2025 17:56:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072629;
-	bh=6foka23a8POoA/sEq0Y63h03yIhs2UxykplttO/wgow=;
+	s=korg; t=1747072614;
+	bh=5cy+tD2vyW5ljITao83Asrgi41WKfUyJXTNNKd0Q7p4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OY07jxy46R37kvV3H/HhN7EvkQh5AG9M1pKN5ZW2W0Lylsf39LWfeVZBhkKwrOHtX
-	 0n6PWnQaf/OWfpjIAih7EHP0pCkaLqD6v8xq7agVZBVQISnHtXHBvVUD9VM08QTQLC
-	 Z2kSH9xoXn/dfCnU4EyKmZJRAQaw+jyyNRhckwuQ=
+	b=EGYHiR9+mwOrfuEDzQNSbV8m2Np6HqGvs6GR0Kc10bb+tkyGoR0bS4j/08IBx1x8h
+	 rg3ylu3Y+xsnmQU8y0JNwvkcUQMGZsDVDOzgcAemi0abGJQEN9M0p0OCar2zOS3Nx8
+	 kX1p5tWeBlRggx+kxtCHKnbFRzHISQRTedNIWS4M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	Josh Poimboeuf <jpoimboe@kernel.org>,
 	Alexandre Chartre <alexandre.chartre@oracle.com>
-Subject: [PATCH 6.1 87/92] x86/its: Add support for ITS-safe return thunk
-Date: Mon, 12 May 2025 19:46:02 +0200
-Message-ID: <20250512172026.668717830@linuxfoundation.org>
+Subject: [PATCH 6.1 88/92] x86/its: Enable Indirect Target Selection mitigation
+Date: Mon, 12 May 2025 19:46:03 +0200
+Message-ID: <20250512172026.707886403@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512172023.126467649@linuxfoundation.org>
 References: <20250512172023.126467649@linuxfoundation.org>
@@ -69,21 +69,50 @@ Content-Transfer-Encoding: 8bit
 
 From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-commit a75bf27fe41abe658c53276a0c486c4bf9adecfc upstream.
+commit f4818881c47fd91fcb6d62373c57c7844e3de1c0 upstream.
 
-RETs in the lower half of cacheline may be affected by ITS bug,
-specifically when the RSB-underflows. Use ITS-safe return thunk for such
-RETs.
+Indirect Target Selection (ITS) is a bug in some pre-ADL Intel CPUs with
+eIBRS. It affects prediction of indirect branch and RETs in the
+lower half of cacheline. Due to ITS such branches may get wrongly predicted
+to a target of (direct or indirect) branch that is located in the upper
+half of the cacheline.
 
-RETs that are not patched:
+Scope of impact
+===============
 
-- RET in retpoline sequence does not need to be patched, because the
-  sequence itself fills an RSB before RET.
-- RET in Call Depth Tracking (CDT) thunks __x86_indirect_{call|jump}_thunk
-  and call_depth_return_thunk are not patched because CDT by design
-  prevents RSB-underflow.
-- RETs in .init section are not reachable after init.
-- RETs that are explicitly marked safe with ANNOTATE_UNRET_SAFE.
+Guest/host isolation
+--------------------
+When eIBRS is used for guest/host isolation, the indirect branches in the
+VMM may still be predicted with targets corresponding to branches in the
+guest.
+
+Intra-mode
+----------
+cBPF or other native gadgets can be used for intra-mode training and
+disclosure using ITS.
+
+User/kernel isolation
+---------------------
+When eIBRS is enabled user/kernel isolation is not impacted.
+
+Indirect Branch Prediction Barrier (IBPB)
+-----------------------------------------
+After an IBPB, indirect branches may be predicted with targets
+corresponding to direct branches which were executed prior to IBPB. This is
+mitigated by a microcode update.
+
+Add cmdline parameter indirect_target_selection=off|on|force to control the
+mitigation to relocate the affected branches to an ITS-safe thunk i.e.
+located in the upper half of cacheline. Also add the sysfs reporting.
+
+When retpoline mitigation is deployed, ITS safe-thunks are not needed,
+because retpoline sequence is already ITS-safe. Similarly, when call depth
+tracking (CDT) mitigation is deployed (retbleed=stuff), ITS safe return
+thunk is not used, as CDT prevents RSB-underflow.
+
+To not overcomplicate things, ITS mitigation is not supported with
+spectre-v2 lfence;jmp mitigation. Moreover, it is less practical to deploy
+lfence;jmp mitigation on ITS affected parts anyways.
 
 Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
@@ -91,155 +120,287 @@ Reviewed-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/alternative.h   |   14 ++++++++++++++
- arch/x86/include/asm/nospec-branch.h |    6 ++++++
- arch/x86/kernel/alternative.c        |   17 ++++++++++++++++-
- arch/x86/kernel/ftrace.c             |    2 +-
- arch/x86/kernel/static_call.c        |    2 +-
- arch/x86/kernel/vmlinux.lds.S        |    4 ++++
- arch/x86/lib/retpoline.S             |   13 ++++++++++++-
- arch/x86/net/bpf_jit_comp.c          |    2 +-
- 8 files changed, 55 insertions(+), 5 deletions(-)
+ Documentation/ABI/testing/sysfs-devices-system-cpu |    1 
+ Documentation/admin-guide/kernel-parameters.txt    |   13 ++
+ arch/x86/kernel/cpu/bugs.c                         |  128 ++++++++++++++++++++-
+ drivers/base/cpu.c                                 |    8 +
+ include/linux/cpu.h                                |    2 
+ 5 files changed, 149 insertions(+), 3 deletions(-)
 
---- a/arch/x86/include/asm/alternative.h
-+++ b/arch/x86/include/asm/alternative.h
-@@ -81,6 +81,20 @@ extern void apply_ibt_endbr(s32 *start,
+--- a/Documentation/ABI/testing/sysfs-devices-system-cpu
++++ b/Documentation/ABI/testing/sysfs-devices-system-cpu
+@@ -514,6 +514,7 @@ Description:	information about CPUs hete
  
- struct module;
+ What:		/sys/devices/system/cpu/vulnerabilities
+ 		/sys/devices/system/cpu/vulnerabilities/gather_data_sampling
++		/sys/devices/system/cpu/vulnerabilities/indirect_target_selection
+ 		/sys/devices/system/cpu/vulnerabilities/itlb_multihit
+ 		/sys/devices/system/cpu/vulnerabilities/l1tf
+ 		/sys/devices/system/cpu/vulnerabilities/mds
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -2025,6 +2025,18 @@
+ 			different crypto accelerators. This option can be used
+ 			to achieve best performance for particular HW.
  
-+#if defined(CONFIG_RETHUNK) && defined(CONFIG_OBJTOOL)
-+extern bool cpu_wants_rethunk(void);
-+extern bool cpu_wants_rethunk_at(void *addr);
-+#else
-+static __always_inline bool cpu_wants_rethunk(void)
++	indirect_target_selection= [X86,Intel] Mitigation control for Indirect
++			Target Selection(ITS) bug in Intel CPUs. Updated
++			microcode is also required for a fix in IBPB.
++
++			on:     Enable mitigation (default).
++			off:    Disable mitigation.
++			force:	Force the ITS bug and deploy default
++				mitigation.
++
++			For details see:
++			Documentation/admin-guide/hw-vuln/indirect-target-selection.rst
++
+ 	init=		[KNL]
+ 			Format: <full_path>
+ 			Run specified binary instead of /sbin/init as init
+@@ -3263,6 +3275,7 @@
+ 				expose users to several CPU vulnerabilities.
+ 				Equivalent to: if nokaslr then kpti=0 [ARM64]
+ 					       gather_data_sampling=off [X86]
++					       indirect_target_selection=off [X86]
+ 					       kvm.nx_huge_pages=off [X86]
+ 					       l1tf=off [X86]
+ 					       mds=off [X86]
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -48,6 +48,7 @@ static void __init srbds_select_mitigati
+ static void __init l1d_flush_select_mitigation(void);
+ static void __init gds_select_mitigation(void);
+ static void __init srso_select_mitigation(void);
++static void __init its_select_mitigation(void);
+ 
+ /* The base value of the SPEC_CTRL MSR without task-specific bits set */
+ u64 x86_spec_ctrl_base;
+@@ -66,6 +67,14 @@ static DEFINE_MUTEX(spec_ctrl_mutex);
+ 
+ void (*x86_return_thunk)(void) __ro_after_init = &__x86_return_thunk;
+ 
++static void __init set_return_thunk(void *thunk)
 +{
-+	return false;
-+}
-+static __always_inline bool cpu_wants_rethunk_at(void *addr)
-+{
-+	return false;
-+}
-+#endif
++	if (x86_return_thunk != __x86_return_thunk)
++		pr_warn("x86/bugs: return thunk changed\n");
 +
- #ifdef CONFIG_SMP
- extern void alternatives_smp_module_add(struct module *mod, char *name,
- 					void *locks, void *locks_end,
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -257,6 +257,12 @@ extern void __x86_return_thunk(void);
- static inline void __x86_return_thunk(void) {}
- #endif
++	x86_return_thunk = thunk;
++}
++
+ /* Update SPEC_CTRL MSR and its cached copy unconditionally */
+ static void update_spec_ctrl(u64 val)
+ {
+@@ -174,6 +183,7 @@ void __init cpu_select_mitigations(void)
+ 	 */
+ 	srso_select_mitigation();
+ 	gds_select_mitigation();
++	its_select_mitigation();
+ }
  
-+#ifdef CONFIG_MITIGATION_ITS
-+extern void its_return_thunk(void);
-+#else
-+static inline void its_return_thunk(void) {}
-+#endif
-+
- extern void retbleed_return_thunk(void);
- extern void srso_return_thunk(void);
- extern void srso_alias_return_thunk(void);
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -614,6 +614,21 @@ void __init_or_module noinline apply_ret
- 
- #ifdef CONFIG_RETHUNK
- 
-+bool cpu_wants_rethunk(void)
-+{
-+	return cpu_feature_enabled(X86_FEATURE_RETHUNK);
-+}
-+
-+bool cpu_wants_rethunk_at(void *addr)
-+{
-+	if (!cpu_feature_enabled(X86_FEATURE_RETHUNK))
-+		return false;
-+	if (x86_return_thunk != its_return_thunk)
-+		return true;
-+
-+	return !((unsigned long)addr & 0x20);
-+}
-+
  /*
-  * Rewrite the compiler generated return thunk tail-calls.
-  *
-@@ -629,7 +644,7 @@ static int patch_return(void *addr, stru
+@@ -1081,7 +1091,7 @@ do_cmd_auto:
+ 		setup_force_cpu_cap(X86_FEATURE_UNRET);
+ 
+ 		if (IS_ENABLED(CONFIG_RETHUNK))
+-			x86_return_thunk = retbleed_return_thunk;
++			set_return_thunk(retbleed_return_thunk);
+ 
+ 		if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD &&
+ 		    boot_cpu_data.x86_vendor != X86_VENDOR_HYGON)
+@@ -1143,6 +1153,105 @@ do_cmd_auto:
+ }
+ 
+ #undef pr_fmt
++#define pr_fmt(fmt)     "ITS: " fmt
++
++enum its_mitigation_cmd {
++	ITS_CMD_OFF,
++	ITS_CMD_ON,
++};
++
++enum its_mitigation {
++	ITS_MITIGATION_OFF,
++	ITS_MITIGATION_ALIGNED_THUNKS,
++};
++
++static const char * const its_strings[] = {
++	[ITS_MITIGATION_OFF]			= "Vulnerable",
++	[ITS_MITIGATION_ALIGNED_THUNKS]		= "Mitigation: Aligned branch/return thunks",
++};
++
++static enum its_mitigation its_mitigation __ro_after_init = ITS_MITIGATION_ALIGNED_THUNKS;
++
++static enum its_mitigation_cmd its_cmd __ro_after_init =
++	IS_ENABLED(CONFIG_MITIGATION_ITS) ? ITS_CMD_ON : ITS_CMD_OFF;
++
++static int __init its_parse_cmdline(char *str)
++{
++	if (!str)
++		return -EINVAL;
++
++	if (!IS_ENABLED(CONFIG_MITIGATION_ITS)) {
++		pr_err("Mitigation disabled at compile time, ignoring option (%s)", str);
++		return 0;
++	}
++
++	if (!strcmp(str, "off")) {
++		its_cmd = ITS_CMD_OFF;
++	} else if (!strcmp(str, "on")) {
++		its_cmd = ITS_CMD_ON;
++	} else if (!strcmp(str, "force")) {
++		its_cmd = ITS_CMD_ON;
++		setup_force_cpu_bug(X86_BUG_ITS);
++	} else {
++		pr_err("Ignoring unknown indirect_target_selection option (%s).", str);
++	}
++
++	return 0;
++}
++early_param("indirect_target_selection", its_parse_cmdline);
++
++static void __init its_select_mitigation(void)
++{
++	enum its_mitigation_cmd cmd = its_cmd;
++
++	if (!boot_cpu_has_bug(X86_BUG_ITS) || cpu_mitigations_off()) {
++		its_mitigation = ITS_MITIGATION_OFF;
++		return;
++	}
++
++	/* Exit early to avoid irrelevant warnings */
++	if (cmd == ITS_CMD_OFF) {
++		its_mitigation = ITS_MITIGATION_OFF;
++		goto out;
++	}
++	if (spectre_v2_enabled == SPECTRE_V2_NONE) {
++		pr_err("WARNING: Spectre-v2 mitigation is off, disabling ITS\n");
++		its_mitigation = ITS_MITIGATION_OFF;
++		goto out;
++	}
++	if (!IS_ENABLED(CONFIG_RETPOLINE) || !IS_ENABLED(CONFIG_RETHUNK)) {
++		pr_err("WARNING: ITS mitigation depends on retpoline and rethunk support\n");
++		its_mitigation = ITS_MITIGATION_OFF;
++		goto out;
++	}
++	if (IS_ENABLED(CONFIG_DEBUG_FORCE_FUNCTION_ALIGN_64B)) {
++		pr_err("WARNING: ITS mitigation is not compatible with CONFIG_DEBUG_FORCE_FUNCTION_ALIGN_64B\n");
++		its_mitigation = ITS_MITIGATION_OFF;
++		goto out;
++	}
++	if (boot_cpu_has(X86_FEATURE_RETPOLINE_LFENCE)) {
++		pr_err("WARNING: ITS mitigation is not compatible with lfence mitigation\n");
++		its_mitigation = ITS_MITIGATION_OFF;
++		goto out;
++	}
++
++	switch (cmd) {
++	case ITS_CMD_OFF:
++		its_mitigation = ITS_MITIGATION_OFF;
++		break;
++	case ITS_CMD_ON:
++		its_mitigation = ITS_MITIGATION_ALIGNED_THUNKS;
++		if (!boot_cpu_has(X86_FEATURE_RETPOLINE))
++			setup_force_cpu_cap(X86_FEATURE_INDIRECT_THUNK_ITS);
++		setup_force_cpu_cap(X86_FEATURE_RETHUNK);
++		set_return_thunk(its_return_thunk);
++		break;
++	}
++out:
++	pr_info("%s\n", its_strings[its_mitigation]);
++}
++
++#undef pr_fmt
+ #define pr_fmt(fmt)     "Spectre V2 : " fmt
+ 
+ static enum spectre_v2_user_mitigation spectre_v2_user_stibp __ro_after_init =
+@@ -2592,10 +2701,10 @@ static void __init srso_select_mitigatio
+ 
+ 			if (boot_cpu_data.x86 == 0x19) {
+ 				setup_force_cpu_cap(X86_FEATURE_SRSO_ALIAS);
+-				x86_return_thunk = srso_alias_return_thunk;
++				set_return_thunk(srso_alias_return_thunk);
+ 			} else {
+ 				setup_force_cpu_cap(X86_FEATURE_SRSO);
+-				x86_return_thunk = srso_return_thunk;
++				set_return_thunk(srso_return_thunk);
+ 			}
+ 			srso_mitigation = SRSO_MITIGATION_SAFE_RET;
+ 		} else {
+@@ -2775,6 +2884,11 @@ static ssize_t rfds_show_state(char *buf
+ 	return sysfs_emit(buf, "%s\n", rfds_strings[rfds_mitigation]);
+ }
+ 
++static ssize_t its_show_state(char *buf)
++{
++	return sysfs_emit(buf, "%s\n", its_strings[its_mitigation]);
++}
++
+ static char *stibp_state(void)
  {
- 	int i = 0;
+ 	if (spectre_v2_in_eibrs_mode(spectre_v2_enabled) &&
+@@ -2959,6 +3073,9 @@ static ssize_t cpu_show_common(struct de
+ 	case X86_BUG_RFDS:
+ 		return rfds_show_state(buf);
  
--	if (cpu_feature_enabled(X86_FEATURE_RETHUNK)) {
-+	if (cpu_wants_rethunk_at(addr)) {
- 		if (x86_return_thunk == __x86_return_thunk)
- 			return -1;
- 
---- a/arch/x86/kernel/ftrace.c
-+++ b/arch/x86/kernel/ftrace.c
-@@ -360,7 +360,7 @@ create_trampoline(struct ftrace_ops *ops
- 		goto fail;
- 
- 	ip = trampoline + size;
--	if (cpu_feature_enabled(X86_FEATURE_RETHUNK))
-+	if (cpu_wants_rethunk_at(ip))
- 		__text_gen_insn(ip, JMP32_INSN_OPCODE, ip, x86_return_thunk, JMP32_INSN_SIZE);
- 	else
- 		memcpy(ip, retq, sizeof(retq));
---- a/arch/x86/kernel/static_call.c
-+++ b/arch/x86/kernel/static_call.c
-@@ -79,7 +79,7 @@ static void __ref __static_call_transfor
++	case X86_BUG_ITS:
++		return its_show_state(buf);
++
+ 	default:
  		break;
- 
- 	case RET:
--		if (cpu_feature_enabled(X86_FEATURE_RETHUNK))
-+		if (cpu_wants_rethunk_at(insn))
- 			code = text_gen_insn(JMP32_INSN_OPCODE, insn, x86_return_thunk);
- 		else
- 			code = &retinsn;
---- a/arch/x86/kernel/vmlinux.lds.S
-+++ b/arch/x86/kernel/vmlinux.lds.S
-@@ -534,6 +534,10 @@ INIT_PER_CPU(irq_stack_backing_store);
- . = ASSERT(__x86_indirect_its_thunk_array == __x86_indirect_its_thunk_rax, "Gap in ITS thunk array");
- #endif
- 
-+#if defined(CONFIG_MITIGATION_ITS) && !defined(CONFIG_DEBUG_FORCE_FUNCTION_ALIGN_64B)
-+. = ASSERT(its_return_thunk & 0x20, "its_return_thunk not in second half of cacheline");
-+#endif
-+
- #endif /* CONFIG_X86_64 */
- 
- #ifdef CONFIG_KEXEC_CORE
---- a/arch/x86/lib/retpoline.S
-+++ b/arch/x86/lib/retpoline.S
-@@ -284,7 +284,18 @@ SYM_CODE_START(__x86_indirect_its_thunk_
- 	.align 64, 0xcc
- SYM_CODE_END(__x86_indirect_its_thunk_array)
- 
--#endif
-+.align 64, 0xcc
-+.skip 32, 0xcc
-+SYM_CODE_START(its_return_thunk)
-+	UNWIND_HINT_FUNC
-+	ANNOTATE_NOENDBR
-+	ANNOTATE_UNRET_SAFE
-+	ret
-+	int3
-+SYM_CODE_END(its_return_thunk)
-+EXPORT_SYMBOL(its_return_thunk)
-+
-+#endif /* CONFIG_MITIGATION_ITS */
- 
- SYM_CODE_START(__x86_return_thunk)
- 	UNWIND_HINT_FUNC
---- a/arch/x86/net/bpf_jit_comp.c
-+++ b/arch/x86/net/bpf_jit_comp.c
-@@ -487,7 +487,7 @@ static void emit_return(u8 **pprog, u8 *
+ 	}
+@@ -3038,4 +3155,9 @@ ssize_t cpu_show_reg_file_data_sampling(
  {
- 	u8 *prog = *pprog;
+ 	return cpu_show_common(dev, attr, buf, X86_BUG_RFDS);
+ }
++
++ssize_t cpu_show_indirect_target_selection(struct device *dev, struct device_attribute *attr, char *buf)
++{
++	return cpu_show_common(dev, attr, buf, X86_BUG_ITS);
++}
+ #endif
+--- a/drivers/base/cpu.c
++++ b/drivers/base/cpu.c
+@@ -595,6 +595,12 @@ ssize_t __weak cpu_show_reg_file_data_sa
+ 	return sysfs_emit(buf, "Not affected\n");
+ }
  
--	if (cpu_feature_enabled(X86_FEATURE_RETHUNK)) {
-+	if (cpu_wants_rethunk()) {
- 		emit_jump(&prog, x86_return_thunk, ip);
- 	} else {
- 		EMIT1(0xC3);		/* ret */
++ssize_t __weak cpu_show_indirect_target_selection(struct device *dev,
++						  struct device_attribute *attr, char *buf)
++{
++	return sysfs_emit(buf, "Not affected\n");
++}
++
+ static DEVICE_ATTR(meltdown, 0444, cpu_show_meltdown, NULL);
+ static DEVICE_ATTR(spectre_v1, 0444, cpu_show_spectre_v1, NULL);
+ static DEVICE_ATTR(spectre_v2, 0444, cpu_show_spectre_v2, NULL);
+@@ -609,6 +615,7 @@ static DEVICE_ATTR(retbleed, 0444, cpu_s
+ static DEVICE_ATTR(gather_data_sampling, 0444, cpu_show_gds, NULL);
+ static DEVICE_ATTR(spec_rstack_overflow, 0444, cpu_show_spec_rstack_overflow, NULL);
+ static DEVICE_ATTR(reg_file_data_sampling, 0444, cpu_show_reg_file_data_sampling, NULL);
++static DEVICE_ATTR(indirect_target_selection, 0444, cpu_show_indirect_target_selection, NULL);
+ 
+ static struct attribute *cpu_root_vulnerabilities_attrs[] = {
+ 	&dev_attr_meltdown.attr,
+@@ -625,6 +632,7 @@ static struct attribute *cpu_root_vulner
+ 	&dev_attr_gather_data_sampling.attr,
+ 	&dev_attr_spec_rstack_overflow.attr,
+ 	&dev_attr_reg_file_data_sampling.attr,
++	&dev_attr_indirect_target_selection.attr,
+ 	NULL
+ };
+ 
+--- a/include/linux/cpu.h
++++ b/include/linux/cpu.h
+@@ -76,6 +76,8 @@ extern ssize_t cpu_show_gds(struct devic
+ 			    struct device_attribute *attr, char *buf);
+ extern ssize_t cpu_show_reg_file_data_sampling(struct device *dev,
+ 					       struct device_attribute *attr, char *buf);
++extern ssize_t cpu_show_indirect_target_selection(struct device *dev,
++						  struct device_attribute *attr, char *buf);
+ 
+ extern __printf(4, 5)
+ struct device *cpu_device_create(struct device *parent, void *drvdata,
 
 
 
