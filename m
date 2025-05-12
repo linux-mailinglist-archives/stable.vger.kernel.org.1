@@ -1,111 +1,97 @@
-Return-Path: <stable+bounces-143845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAC97AB420F
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:17:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BB15AB4201
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:16:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9971317D091
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:16:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 908357B3460
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:14:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFE672BD5B3;
-	Mon, 12 May 2025 18:05:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D7282BD012;
+	Mon, 12 May 2025 18:05:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tFtU2ryU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="icbnnhpC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A7892BD5AB;
-	Mon, 12 May 2025 18:05:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C5D52BD004
+	for <stable@vger.kernel.org>; Mon, 12 May 2025 18:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073118; cv=none; b=ah3i2j/jcUUwSwvHthsPrls51bikxSN95Iz6lI7a3f1QLp6Efni7ff7uMv0Z4Yn2EjvqFPWEViW+iuxUfEoWQAYpVUMFHlsoZoOvVhPRAIBm0ukOdRre6piAEgYfCdaJ31Q0GcxvIq1+/Iv9Zn721B39pySAv4OTClATjyqm2Oo=
+	t=1747073115; cv=none; b=LknP0BBHd0JtLVqTRE+vZuUi8uRolEmBP4U3Zvcd6XWLTgpLJJNNjxIS1W8CAs4BHJj0kHwQMRKHgnDAbcbLIEbwmCVJjcMsmRpReIFEIWwZZYcQUP5bVt1+olwRHugQNAMBf93+L+PRolKrDwtec0WM5T7Q4QPN4q2Y3mmWzRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073118; c=relaxed/simple;
-	bh=bOnQEdYThpYqJSXsbDNSJRuDppx3jO9r6VhGfGNxQFk=;
+	s=arc-20240116; t=1747073115; c=relaxed/simple;
+	bh=PBtjmxKQgSbzUymj+O+Bvs1NZ29mSwGZfUp0nH/yIB4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jAFt7KbScvxKxG+QGRFAR+U9Y08tvcQOhQLnjJBE1m2gP1P7SBA0DDj2oI0ftYm//1MdCPisNWNiJy9ZHIRVfLsgBp9R8+QXlv/oBRzafqPrHdYzbIW7Jr5QrA/NnIwFxYBvbTSk7a6ASq3xe+Oc/3ohWdp/rzwl4ivva7TNWlg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tFtU2ryU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A5F4C4CEEF;
-	Mon, 12 May 2025 18:05:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CWjKVB17K2DiY8MJyT8zN7EhI3xFuLkYxKEVo0qrHt0SXR71UDqanOFh9kXL81LXulcJIwuzWBx5QSgSDbV3B/FhvNg/qFC2JhMfVHP8cn577o+KsBg9uSMXl0WF3Om6q/jCWWvAuQUviIihvN9n3HrtVShzgejjVcH2uPIzZXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=icbnnhpC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEF8BC4CEE7;
+	Mon, 12 May 2025 18:05:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747073118;
-	bh=bOnQEdYThpYqJSXsbDNSJRuDppx3jO9r6VhGfGNxQFk=;
+	s=k20201202; t=1747073114;
+	bh=PBtjmxKQgSbzUymj+O+Bvs1NZ29mSwGZfUp0nH/yIB4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tFtU2ryUvbAifO6YAfkcksIl9QYgbkAerOSEGUcu4bY71XG/8DaAPa8v4vI8/RkYK
-	 4Q+Cp6KXt7FzNqHCo+FYEkykkG55s6bpYUlskTMUDGjwntAEeiv5ft0/sDaowhXH32
-	 rtKKkhwsB8qsaxUkiCRjTp8l4ICJe2ph0fI1T9ecgoi+QRu0EqqgwoO/We9TGWxySd
-	 zjmCX0m36YVfa9GvZfLdfoI6gcqWD6AC0LeKbFxaAzr6ZVagFbITK/8Bp7ZQnteXil
-	 L8LC9pmwnAp2gQgEHcecfEayTXkK6VmMgmHftMQnoDbtF2n+JMu/YK/yw/v0pGHuMd
-	 Q5JVijYWFF4SQ==
+	b=icbnnhpCVS2xGPrWsflehXoG9ct9Ko6naay+PEJY/yjQQ0ITacIHVOFNNCyd6japF
+	 JnxQXhbEHu2lqPHPnSeqPkP7tdY5h2gkcJ+SQTA59M65rjyL8k/uKq1hy7kD+34pmh
+	 kCJi2I0JI+HTZA7eMnpEPZOmnA5zXXETl9Mrtm2s5kNrxGufEupZjlIlYef0oXdhEh
+	 Y7xhMhMDr0NTUjOlvWCHj1NOnD191/P5nPr90cMeWjBq0KFrSDHv94dBFIFAyPstSX
+	 +9I/fkFSvML6oeNm3rt1C/2hELwLcK2VjxMqDHwOlXmQ02vUCNxVvccjtYk4GwlKcI
+	 ue3ZfUVYNHqkA==
 From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Al Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 4/4] __legitimize_mnt(): check for MNT_SYNC_UMOUNT should be under mount_lock
-Date: Mon, 12 May 2025 14:05:07 -0400
-Message-Id: <20250512180508.437991-4-sashal@kernel.org>
+To: stable@vger.kernel.org,
+	bin.lan.cn@windriver.com
+Cc: Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.10.y 1/2] usb: typec: fix potential array underflow in ucsi_ccg_sync_control()
+Date: Mon, 12 May 2025 14:05:11 -0400
+Message-Id: <20250511231302-15ae1af200b9d853@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250512180508.437991-1-sashal@kernel.org>
-References: <20250512180508.437991-1-sashal@kernel.org>
+In-Reply-To:  <20250509063512.487582-1-bin.lan.cn@windriver.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.138
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+[ Sasha's backport helper bot ]
 
-[ Upstream commit 250cf3693060a5f803c5f1ddc082bb06b16112a9 ]
+Hi,
 
-... or we risk stealing final mntput from sync umount - raising mnt_count
-after umount(2) has verified that victim is not busy, but before it
-has set MNT_SYNC_UMOUNT; in that case __legitimize_mnt() doesn't see
-that it's safe to quietly undo mnt_count increment and leaves dropping
-the reference to caller, where it'll be a full-blown mntput().
+Summary of potential issues:
+⚠️ Found follow-up fixes in mainline
 
-Check under mount_lock is needed; leaving the current one done before
-taking that makes no sense - it's nowhere near common enough to bother
-with.
+The upstream commit SHA1 provided is correct: e56aac6e5a25630645607b6856d4b2a17b2311a5
 
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: bin.lan.cn@windriver.com
+Commit author: Dan Carpenter<dan.carpenter@linaro.org>
+
+Status in newer kernel trees:
+6.14.y | Present (exact SHA1)
+6.12.y | Present (different SHA1: 56971710cd54)
+6.6.y | Present (different SHA1: 0e66fd8e5a2e)
+6.1.y | Not found
+5.15.y | Not found
+
+Found fixes commits:
+b0e525d7a22e usb: typec: fix pm usage counter imbalance in ucsi_ccg_sync_control()
+
+Note: The patch differs from the upstream commit:
 ---
- fs/namespace.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+1:  e56aac6e5a256 < -:  ------------- usb: typec: fix potential array underflow in ucsi_ccg_sync_control()
+-:  ------------- > 1:  9a3fccdc1acb9 usb: typec: fix potential array underflow in ucsi_ccg_sync_control()
+---
 
-diff --git a/fs/namespace.c b/fs/namespace.c
-index 57166cc7e5117..42e33d3ad05d8 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -632,12 +632,8 @@ int __legitimize_mnt(struct vfsmount *bastard, unsigned seq)
- 	smp_mb();			// see mntput_no_expire()
- 	if (likely(!read_seqretry(&mount_lock, seq)))
- 		return 0;
--	if (bastard->mnt_flags & MNT_SYNC_UMOUNT) {
--		mnt_add_count(mnt, -1);
--		return 1;
--	}
- 	lock_mount_hash();
--	if (unlikely(bastard->mnt_flags & MNT_DOOMED)) {
-+	if (unlikely(bastard->mnt_flags & (MNT_SYNC_UMOUNT | MNT_DOOMED))) {
- 		mnt_add_count(mnt, -1);
- 		unlock_mount_hash();
- 		return 1;
--- 
-2.39.5
+Results of testing on various branches:
 
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-5.10.y       |  Success    |  Success   |
 
