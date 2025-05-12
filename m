@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-143610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143578-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D05DAB4084
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:55:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F5AAAB4064
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:53:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACFB019E7B68
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:55:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13620466F6F
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:53:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E99651A08CA;
-	Mon, 12 May 2025 17:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AD91296FB6;
+	Mon, 12 May 2025 17:53:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D/BBhnNW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J4hwuT8M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6DB826157B;
-	Mon, 12 May 2025 17:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB3F3296FAF;
+	Mon, 12 May 2025 17:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072507; cv=none; b=rNbABdUelaLdNw3rquiTEYHo41RLp8omP9aVEjs7/lP3F8ZvbUCM0uG4gSx2+8f4Cd5hfr9Lc9XXVRP/839wxWz8pF/1pV4djyoVbRQc7+p2UXnc9/tz7V9l23D5DTfB9AtVOa4rioyVHj4xjPOVtOVeb17ThiAQbB5QXUpxFs8=
+	t=1747072405; cv=none; b=dQjq/MZAk+1cnqYTHxtWy3XoBQDb5kDnDtyEk7zCUYUDXtMAygexTTIV1Qo9Y/8QV7AM+mlSbxJhy8mrJisrPnNZK93eqXtW1k6lU8BqVg4xlrke0YSsfy0zxJkU4cm0zEynp2hyVxGDCplwu0D8Ph78nMIqLejX9BbgTDKQifw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072507; c=relaxed/simple;
-	bh=35/Ct5Wb+XyiLUmEmUlOrLnK+ARfnX3RWWXwQju+6yI=;
+	s=arc-20240116; t=1747072405; c=relaxed/simple;
+	bh=VRdWmtoEnHRQGJNaBdDXXPiTRHFnueHZGBzFyAbCVFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qwTNy5fC0TzROnA8lhcEIZq76cfs+LgiepXCOyc54FpCpoZJuT1OKF0sFC2tBINxz9XfrIBalES0noeT/9L6etvah1BJS7HAyd8Q+Gnam2bL8OCrQ1MpKfva/wLLFzgfuGFh1oDMr7kUjNkWgTGUnONMpn8OnnIgmQbLXby8kjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D/BBhnNW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26630C4CEE7;
-	Mon, 12 May 2025 17:55:06 +0000 (UTC)
+	 MIME-Version; b=YL/hmEluicL6Qgv6Cj0egEAP4MNzmt33nRpMf9Oh7IDDUpsBMvJ4g4OX7LvobbHq7pKA281rCR0j9rLsKRS/EVbvOJ9iwiueqlbTUcIKz0Vd1FM4xIkWHa/YZLnYWK9RY//I3OINxpADRPHDCoT0IQImFCqGOnX//spUkEvnuMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J4hwuT8M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF04C4CEE7;
+	Mon, 12 May 2025 17:53:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072507;
-	bh=35/Ct5Wb+XyiLUmEmUlOrLnK+ARfnX3RWWXwQju+6yI=;
+	s=korg; t=1747072405;
+	bh=VRdWmtoEnHRQGJNaBdDXXPiTRHFnueHZGBzFyAbCVFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D/BBhnNWEaYGSRUj82jr9IQamlbg2rA+xn8sZoE+TKvr+ilUw8h16ELfWEpIwJfea
-	 wa//+jSnjBiDic0wq2Qwxk0iHMM/HGlnHCKcqlnJTSV6N2+LThWY57K2oKXe8aqoaL
-	 R7+Wx4wSSaSXmfZSkAqoTbAIM/FmXMldHX0g88B0=
+	b=J4hwuT8MFkj5yq20J6FG0a6txrnVndZSflAorJHqoL7fRo4H+6i7cdQhD9PYqOrTd
+	 wLRDJt6FOnQVXSnWF/G3pK9Vjg9GwqGFMAdVkogNuFSuppsxxgA4xCGyhpnLPmHicZ
+	 L1hKpK2xAPKjL+SNgDCLME/Uu1KXGVUHEW9daWDs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 22/92] net: dsa: b53: fix learning on VLAN unaware bridges
-Date: Mon, 12 May 2025 19:44:57 +0200
-Message-ID: <20250512172024.025190955@linuxfoundation.org>
+	Gary Bisson <bisson.gary@gmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.1 23/92] Input: mtk-pmic-keys - fix possible null pointer dereference
+Date: Mon, 12 May 2025 19:44:58 +0200
+Message-ID: <20250512172024.066482305@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512172023.126467649@linuxfoundation.org>
 References: <20250512172023.126467649@linuxfoundation.org>
@@ -67,44 +65,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@gmail.com>
+From: Gary Bisson <bisson.gary@gmail.com>
 
-[ Upstream commit 9f34ad89bcf0e6df6f8b01f1bdab211493fc66d1 ]
+commit 11cdb506d0fbf5ac05bf55f5afcb3a215c316490 upstream.
 
-When VLAN filtering is off, we configure the switch to forward, but not
-learn on VLAN table misses. This effectively disables learning while not
-filtering.
+In mtk_pmic_keys_probe, the regs parameter is only set if the button is
+parsed in the device tree. However, on hardware where the button is left
+floating, that node will most likely be removed not to enable that
+input. In that case the code will try to dereference a null pointer.
 
-Fix this by switching to forward and learn. Setting the learning disable
-register will still control whether learning actually happens.
+Let's use the regs struct instead as it is defined for all supported
+platforms. Note that it is ok setting the key reg even if that latter is
+disabled as the interrupt won't be enabled anyway.
 
-Fixes: dad8d7c6452b ("net: dsa: b53: Properly account for VLAN filtering")
-Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20250429201710.330937-11-jonas.gorski@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b581acb49aec ("Input: mtk-pmic-keys - transfer per-key bit in mtk_pmic_keys_regs")
+Signed-off-by: Gary Bisson <bisson.gary@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/input/keyboard/mtk-pmic-keys.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index 9d410c21416f9..1a23fcc0445cb 100644
---- a/drivers/net/dsa/b53/b53_common.c
-+++ b/drivers/net/dsa/b53/b53_common.c
-@@ -383,7 +383,7 @@ static void b53_enable_vlan(struct b53_device *dev, int port, bool enable,
- 			vc4 |= VC4_ING_VID_VIO_DROP << VC4_ING_VID_CHECK_S;
- 			vc5 |= VC5_DROP_VTABLE_MISS;
- 		} else {
--			vc4 |= VC4_ING_VID_VIO_FWD << VC4_ING_VID_CHECK_S;
-+			vc4 |= VC4_NO_ING_VID_CHK << VC4_ING_VID_CHECK_S;
- 			vc5 &= ~VC5_DROP_VTABLE_MISS;
- 		}
+--- a/drivers/input/keyboard/mtk-pmic-keys.c
++++ b/drivers/input/keyboard/mtk-pmic-keys.c
+@@ -133,8 +133,8 @@ static void mtk_pmic_keys_lp_reset_setup
+ 	u32 value, mask;
+ 	int error;
  
--- 
-2.39.5
-
+-	kregs_home = keys->keys[MTK_PMIC_HOMEKEY_INDEX].regs;
+-	kregs_pwr = keys->keys[MTK_PMIC_PWRKEY_INDEX].regs;
++	kregs_home = &regs->keys_regs[MTK_PMIC_HOMEKEY_INDEX];
++	kregs_pwr = &regs->keys_regs[MTK_PMIC_PWRKEY_INDEX];
+ 
+ 	error = of_property_read_u32(keys->dev->of_node, "power-off-time-sec",
+ 				     &long_press_debounce);
 
 
 
