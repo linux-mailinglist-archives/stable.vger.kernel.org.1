@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-143347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CB74AB3F31
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:32:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BBF6AB3F3F
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:33:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B3741886959
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:32:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3606A864ECC
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:32:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 982B778F52;
-	Mon, 12 May 2025 17:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02537253920;
+	Mon, 12 May 2025 17:32:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E2gYocqI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OfAhcT1w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55B861DC1A7;
-	Mon, 12 May 2025 17:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B29D878F52;
+	Mon, 12 May 2025 17:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747071136; cv=none; b=lOgAMrYeNwbQRqUSB+LxuGpxlwfVwGFWzi7Ublerr9MuU77xNTn0LCxyYF8pkJeBNyXRjDMwJwk3dcHHMRCWzsZmX4sp+MxXFLfOfQM/sd5HxvUjfVj8wP3EREyUEsvWV15YgRI+ZUx5eqWHGV3wcDeZGwpZuNPqi7sVGTz6wus=
+	t=1747071141; cv=none; b=uuMCP0Ti5q0LfCIIAT7Oj0FPojFggkMeh4+2477aAnvSLCWmV8v2U1BQeBHfpf8qjWzTMKY0vFcYuu8NE+2PX4xgvFIOwHfjOdYvD6AimgMkr5zLPaG1BeTTBG6yhp2xdjmVgzff7B1fSm0FusyQdqVZja5HqtyT5Nk7hzYma/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747071136; c=relaxed/simple;
-	bh=rDJZr0wIIXOBDAnecFRQ7Ka75sSQk2au9QfOywJTNTs=;
+	s=arc-20240116; t=1747071141; c=relaxed/simple;
+	bh=shsoJ3v7IrIFM7l07TM2FC5vAt+aGfdECWHvGXmxsE4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kkJwfENh7tfn2fzOyXC68tiQtJQRWLVlozTIXtwoR9YBvpLqUUCiofrjVhyATmDu50+cUSKObnwJgS6/QqpKbZ4OfiyjQC5zS4P4cL/ZQTbhStWwiN5DHoaszXq/VvZ7db8ZwtqDFjCkuVII2Lg+gimFTGVRELd9z0Ld5loZv/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E2gYocqI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB974C4CEE7;
-	Mon, 12 May 2025 17:32:15 +0000 (UTC)
+	 MIME-Version; b=MAdSzmLPj94esEcByWxBM5mqLEfATdga3zRVO9wCXSiYijtcOrWUswTg+quDQQrPwo649tpbQt2ifuox6TIbC0wlzzwkGWsEDR3etjfVmijQ+rWgX++b4e3CzNWl4o4WtLP+6oxGNVbdSLB36KjnH9gzsHu2HZBkT/g1SqY4vU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OfAhcT1w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 242E9C4CEE9;
+	Mon, 12 May 2025 17:32:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747071136;
-	bh=rDJZr0wIIXOBDAnecFRQ7Ka75sSQk2au9QfOywJTNTs=;
+	s=korg; t=1747071141;
+	bh=shsoJ3v7IrIFM7l07TM2FC5vAt+aGfdECWHvGXmxsE4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E2gYocqIn1xWD76NrR84IHEJt4U0kHM9DNB52xEsOVR3CiCNgZkjeS72xYNKIdNlj
-	 lw7zYaIRfV7oCrFQ1IpVib8U+smoWXxMxDPKFPX9sbJesk8of9DR7rhRrInQvcXrIw
-	 MEZ0++kUiVGg0+xgYQZr9AXEI6yhO/BWeDAgDz/U=
+	b=OfAhcT1wf9MZUyOFhk43aU51d/n27bXaPiyaucnIoMfDaSSPKtoiVe9wTNiAv7exy
+	 hytGiCoDSsXgQXcfnKo/dUK/gtCmknvN3lE3J30GtyrquN0qVRSgwxGpqUgNmfgrtm
+	 qJ/vesRButbYm8ovlM+uy6Rd8HEgi/MuYcm3agQY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	Daniel Borkmann <daniel@iogearbox.net>,
 	Alexandre Chartre <alexandre.chartre@oracle.com>
-Subject: [PATCH 5.15 52/54] x86/bpf: Call branch history clearing sequence on exit
-Date: Mon, 12 May 2025 19:30:04 +0200
-Message-ID: <20250512172017.737057329@linuxfoundation.org>
+Subject: [PATCH 5.15 53/54] x86/bpf: Add IBHF call at end of classic BPF
+Date: Mon, 12 May 2025 19:30:05 +0200
+Message-ID: <20250512172017.779412521@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512172015.643809034@linuxfoundation.org>
 References: <20250512172015.643809034@linuxfoundation.org>
@@ -70,19 +70,33 @@ Content-Transfer-Encoding: 8bit
 
 From: Daniel Sneddon <daniel.sneddon@linux.intel.com>
 
-commit d4e89d212d401672e9cdfe825d947ee3a9fbe3f5 upstream.
+commit 9f725eec8fc0b39bdc07dcc8897283c367c1a163 upstream.
 
-Classic BPF programs have been identified as potential vectors for
-intra-mode Branch Target Injection (BTI) attacks. Classic BPF programs can
-be run by unprivileged users. They allow unprivileged code to execute
-inside the kernel. Attackers can use unprivileged cBPF to craft branch
-history in kernel mode that can influence the target of indirect branches.
+Classic BPF programs can be run by unprivileged users, allowing
+unprivileged code to execute inside the kernel. Attackers can use this to
+craft branch history in kernel mode that can influence the target of
+indirect branches.
 
-Introduce a branch history buffer (BHB) clearing sequence during the JIT
-compilation of classic BPF programs. The clearing sequence is the same as
-is used in previous mitigations to protect syscalls. Since eBPF programs
-already have their own mitigations in place, only insert the call on
-classic programs that aren't run by privileged users.
+BHI_DIS_S provides user-kernel isolation of branch history, but cBPF can be
+used to bypass this protection by crafting branch history in kernel mode.
+To stop intra-mode attacks via cBPF programs, Intel created a new
+instruction Indirect Branch History Fence (IBHF). IBHF prevents the
+predicted targets of subsequent indirect branches from being influenced by
+branch history prior to the IBHF. IBHF is only effective while BHI_DIS_S is
+enabled.
+
+Add the IBHF instruction to cBPF jitted code's exit path. Add the new fence
+when the hardware mitigation is enabled (i.e., X86_FEATURE_CLEAR_BHB_HW is
+set) or after the software sequence (X86_FEATURE_CLEAR_BHB_LOOP) is being
+used in a virtual machine. Note that X86_FEATURE_CLEAR_BHB_HW and
+X86_FEATURE_CLEAR_BHB_LOOP are mutually exclusive, so the JIT compiler will
+only emit the new fence, not the SW sequence, when X86_FEATURE_CLEAR_BHB_HW
+is set.
+
+Hardware that enumerates BHI_NO basically has BHI_DIS_S protections always
+enabled, regardless of the value of BHI_DIS_S. Since BHI_DIS_S doesn't
+protect against intra-mode attacks, enumerate BHI bug on BHI_NO hardware as
+well.
 
 Signed-off-by: Daniel Sneddon <daniel.sneddon@linux.intel.com>
 Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
@@ -91,57 +105,63 @@ Acked-by: Daniel Borkmann <daniel@iogearbox.net>
 Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/net/bpf_jit_comp.c |   32 ++++++++++++++++++++++++++++++++
- 1 file changed, 32 insertions(+)
+ arch/x86/kernel/cpu/common.c |    9 ++++++---
+ arch/x86/net/bpf_jit_comp.c  |   19 +++++++++++++++++++
+ 2 files changed, 25 insertions(+), 3 deletions(-)
 
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -1345,9 +1345,12 @@ static void __init cpu_set_bug_bits(stru
+ 	if (vulnerable_to_rfds(x86_arch_cap_msr))
+ 		setup_force_cpu_bug(X86_BUG_RFDS);
+ 
+-	/* When virtualized, eIBRS could be hidden, assume vulnerable */
+-	if (!(x86_arch_cap_msr & ARCH_CAP_BHI_NO) &&
+-	    !cpu_matches(cpu_vuln_whitelist, NO_BHI) &&
++	/*
++	 * Intel parts with eIBRS are vulnerable to BHI attacks. Parts with
++	 * BHI_NO still need to use the BHI mitigation to prevent Intra-mode
++	 * attacks.  When virtualized, eIBRS could be hidden, assume vulnerable.
++	 */
++	if (!cpu_matches(cpu_vuln_whitelist, NO_BHI) &&
+ 	    (boot_cpu_has(X86_FEATURE_IBRS_ENHANCED) ||
+ 	     boot_cpu_has(X86_FEATURE_HYPERVISOR)))
+ 		setup_force_cpu_bug(X86_BUG_BHI);
 --- a/arch/x86/net/bpf_jit_comp.c
 +++ b/arch/x86/net/bpf_jit_comp.c
-@@ -932,6 +932,29 @@ static void emit_nops(u8 **pprog, int le
+@@ -36,6 +36,8 @@ static u8 *emit_code(u8 *ptr, u32 bytes,
+ #define EMIT2(b1, b2)		EMIT((b1) + ((b2) << 8), 2)
+ #define EMIT3(b1, b2, b3)	EMIT((b1) + ((b2) << 8) + ((b3) << 16), 3)
+ #define EMIT4(b1, b2, b3, b4)   EMIT((b1) + ((b2) << 8) + ((b3) << 16) + ((b4) << 24), 4)
++#define EMIT5(b1, b2, b3, b4, b5) \
++	do { EMIT1(b1); EMIT4(b2, b3, b4, b5); } while (0)
  
- #define INSN_SZ_DIFF (((addrs[i] - addrs[i - 1]) - (prog - temp)))
- 
-+static int emit_spectre_bhb_barrier(u8 **pprog, u8 *ip,
-+				    struct bpf_prog *bpf_prog)
-+{
-+	u8 *prog = *pprog;
-+	u8 *func;
-+
-+	if (cpu_feature_enabled(X86_FEATURE_CLEAR_BHB_LOOP)) {
-+		/* The clearing sequence clobbers eax and ecx. */
-+		EMIT1(0x50); /* push rax */
-+		EMIT1(0x51); /* push rcx */
-+		ip += 2;
-+
-+		func = (u8 *)clear_bhb_loop;
-+
-+		if (emit_call(&prog, func, ip))
-+			return -EINVAL;
-+		EMIT1(0x59); /* pop rcx */
-+		EMIT1(0x58); /* pop rax */
+ #define EMIT1_off32(b1, off) \
+ 	do { EMIT1(b1); EMIT(off, 4); } while (0)
+@@ -951,6 +953,23 @@ static int emit_spectre_bhb_barrier(u8 *
+ 		EMIT1(0x59); /* pop rcx */
+ 		EMIT1(0x58); /* pop rax */
+ 	}
++	/* Insert IBHF instruction */
++	if ((cpu_feature_enabled(X86_FEATURE_CLEAR_BHB_LOOP) &&
++	     cpu_feature_enabled(X86_FEATURE_HYPERVISOR)) ||
++	    (cpu_feature_enabled(X86_FEATURE_CLEAR_BHB_HW) &&
++	     IS_ENABLED(CONFIG_X86_64))) {
++		/*
++		 * Add an Indirect Branch History Fence (IBHF). IBHF acts as a
++		 * fence preventing branch history from before the fence from
++		 * affecting indirect branches after the fence. This is
++		 * specifically used in cBPF jitted code to prevent Intra-mode
++		 * BHI attacks. The IBHF instruction is designed to be a NOP on
++		 * hardware that doesn't need or support it.  The REP and REX.W
++		 * prefixes are required by the microcode, and they also ensure
++		 * that the NOP is unlikely to be used in existing code.
++		 */
++		EMIT5(0xF3, 0x48, 0x0F, 0x1E, 0xF8); /* ibhf */
 +	}
-+	*pprog = prog;
-+	return 0;
-+}
-+
- static int do_jit(struct bpf_prog *bpf_prog, int *addrs, u8 *image,
- 		  int oldproglen, struct jit_context *ctx, bool jmp_padding)
- {
-@@ -1737,6 +1760,15 @@ emit_jmp:
- 			seen_exit = true;
- 			/* Update cleanup_addr */
- 			ctx->cleanup_addr = proglen;
-+
-+			if (bpf_prog_was_classic(bpf_prog) &&
-+			    !capable(CAP_SYS_ADMIN)) {
-+				u8 *ip = image + addrs[i - 1];
-+
-+				if (emit_spectre_bhb_barrier(&prog, ip, bpf_prog))
-+					return -EINVAL;
-+			}
-+
- 			pop_callee_regs(&prog, callee_regs_used);
- 			EMIT1(0xC9);         /* leave */
- 			emit_return(&prog, image + addrs[i - 1] + (prog - temp));
+ 	*pprog = prog;
+ 	return 0;
+ }
 
 
 
