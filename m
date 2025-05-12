@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-143547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A531CAB405A
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:53:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58861AB4030
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:50:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96E6D863D95
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:51:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF9513B7844
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:49:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60597254863;
-	Mon, 12 May 2025 17:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D63FE2528FC;
+	Mon, 12 May 2025 17:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SuPhpFYx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r8eP7aPy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E325296FA2;
-	Mon, 12 May 2025 17:51:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 931DB1A08CA;
+	Mon, 12 May 2025 17:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072309; cv=none; b=bdp4qIQY85l5XzKi/HDlA+jeXb5RMBcDQ6gWaBThKhdvydFKtyKCnDKUZM6GqXdUt19ASYi53DqEIBWjQ90gHQlC4QGuoGIZZx966pbit/ikwyojGekrsA+Tca2/8HEDAYAw45WmfNxy8Ql5u/P/MefiSagX2PffUwu7BQyWGNc=
+	t=1747072209; cv=none; b=q0/mxMHhb579ActGEqtinJCi9GjGPGUdWp4kfOO60gta9NdOnTMP7eAcdUbf0aSuX9M+w6ssmyCBWd5wpQ8vl1sji2vvCFCWJ5766E6Z7MPwNAnmvZxnsLzCYFINs5AjM3aFXTSxyslTGURFd4+BIARD6h08S+xk964wlv7T0QY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072309; c=relaxed/simple;
-	bh=oKkSJ5T1ghB9AR/pKFee9QS557CgeMTphwVm5Mpvz0E=;
+	s=arc-20240116; t=1747072209; c=relaxed/simple;
+	bh=TTz5V1sXApHb/9foLHtyo6LGHKU6bK4x21JhmxgLPiY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iXVC9Ho9MfjQXjd/4L1boofWiUpPh8a84y2Z6LdyE89wIOPSRS3T562Xfp+hrgmiy+WTiLLJtMQb9wkIq9PHhLoVC/27DDBMa1ORS2rTbscXqOFRI9VbEF/1ggUJCHWsSrVZt+o/4mOnL5XMY+AXADsqqPOD3DTmdw7XekD9DZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SuPhpFYx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14EF2C4CEE7;
-	Mon, 12 May 2025 17:51:47 +0000 (UTC)
+	 MIME-Version; b=V8kA0GTYOMioDeWp5U4pFKScWZKT1Rc+QF0a44+89QQm0NV0j7GWN6Xaxry3aayG1f8+Lk+0n56QTAEUDSLGcQgfjq6XMeu5Z5jwp6I3GKNmbigYQQii8ThoIzL0GsEdXsUjRFfokm8Vzv3cMzBPbf16MVs5dK3VIXyA+ZTHH1w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r8eP7aPy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAD53C4CEE7;
+	Mon, 12 May 2025 17:50:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072308;
-	bh=oKkSJ5T1ghB9AR/pKFee9QS557CgeMTphwVm5Mpvz0E=;
+	s=korg; t=1747072209;
+	bh=TTz5V1sXApHb/9foLHtyo6LGHKU6bK4x21JhmxgLPiY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SuPhpFYxaiQeSckK5eKjAM1B3wLD15EKFdlCfZPHLkgaaT92LZHIDeeUk8U71ouCF
-	 kdJQsrxfHUcq09BINIEUjDLZ+UlvTbGBHRUbOtce+rO9vvyYjJJnrPjmeNUQlD+UJ+
-	 InAH8HbRvdmFQdcbfOYbwwNUjla3LJRkncCl5OGU=
+	b=r8eP7aPyQ/mqtOLtzlbCDV49P1P4KGv1dxv+MlR5sDKVdnnTw0RgsojCND5OZ/Er9
+	 +uPf4SzE/NmhzWEWOyvUvL7WuZ1nPb//qbPanJasalCowSDnlRFDYQjVtfx6odhLxq
+	 tcNvADDE/uFrC7bs9YsEX9phJtTeZmcgLHdGQdkY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
-	Tejas Upadhyay <tejas.upadhyay@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Shuicheng Lin <shuicheng.lin@intel.com>,
 	Lucas De Marchi <lucas.demarchi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 168/197] drm/xe/tests/mocs: Hold XE_FORCEWAKE_ALL for LNCF regs
-Date: Mon, 12 May 2025 19:40:18 +0200
-Message-ID: <20250512172051.223788629@linuxfoundation.org>
+Subject: [PATCH 6.14 169/197] drm/xe: Release force wake first then runtime power
+Date: Mon, 12 May 2025 19:40:19 +0200
+Message-ID: <20250512172051.266470290@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512172044.326436266@linuxfoundation.org>
 References: <20250512172044.326436266@linuxfoundation.org>
@@ -67,47 +68,61 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tejas Upadhyay <tejas.upadhyay@intel.com>
+From: Shuicheng Lin <shuicheng.lin@intel.com>
 
-[ Upstream commit 51c0ee84e4dc339287b2d7335f2b54d747794c83 ]
+[ Upstream commit 9d271a4f5ba52520e448ab223b1a91c6e35f17c7 ]
 
-LNCF registers report wrong values when XE_FORCEWAKE_GT
-only is held. Holding XE_FORCEWAKE_ALL ensures correct
-operations on LNCF regs.
+xe_force_wake_get() is dependent on xe_pm_runtime_get(), so for
+the release path, xe_force_wake_put() should be called first then
+xe_pm_runtime_put().
+Combine the error path and normal path together with goto.
 
-V2(Himal):
- - Use xe_force_wake_ref_has_domain
-
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/1999
-Fixes: a6a4ea6d7d37 ("drm/xe: Add mocs kunit")
+Fixes: 85d547608ef5 ("drm/xe/xe_gt_debugfs: Update handling of xe_force_wake_get return")
+Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Shuicheng Lin <shuicheng.lin@intel.com>
 Reviewed-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250428082357.1730068-1-tejas.upadhyay@intel.com
-Signed-off-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
-(cherry picked from commit 70a2585e582058e94fe4381a337be42dec800337)
+Link: https://lore.kernel.org/r/20250507022302.2187527-1-shuicheng.lin@intel.com
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+(cherry picked from commit 432cd94efdca06296cc5e76d673546f58aa90ee1)
 Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/tests/xe_mocs.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_gt_debugfs.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/tests/xe_mocs.c b/drivers/gpu/drm/xe/tests/xe_mocs.c
-index ef1e5256c56a8..0e502feaca818 100644
---- a/drivers/gpu/drm/xe/tests/xe_mocs.c
-+++ b/drivers/gpu/drm/xe/tests/xe_mocs.c
-@@ -46,8 +46,11 @@ static void read_l3cc_table(struct xe_gt *gt,
- 	unsigned int fw_ref, i;
- 	u32 reg_val;
+diff --git a/drivers/gpu/drm/xe/xe_gt_debugfs.c b/drivers/gpu/drm/xe/xe_gt_debugfs.c
+index 2d63a69cbfa38..f7005a3643e62 100644
+--- a/drivers/gpu/drm/xe/xe_gt_debugfs.c
++++ b/drivers/gpu/drm/xe/xe_gt_debugfs.c
+@@ -92,22 +92,23 @@ static int hw_engines(struct xe_gt *gt, struct drm_printer *p)
+ 	struct xe_hw_engine *hwe;
+ 	enum xe_hw_engine_id id;
+ 	unsigned int fw_ref;
++	int ret = 0;
  
--	fw_ref = xe_force_wake_get(gt_to_fw(gt), XE_FW_GT);
--	KUNIT_ASSERT_NE_MSG(test, fw_ref, 0, "Forcewake Failed.\n");
-+	fw_ref = xe_force_wake_get(gt_to_fw(gt), XE_FORCEWAKE_ALL);
-+	if (!xe_force_wake_ref_has_domain(fw_ref, XE_FORCEWAKE_ALL)) {
-+		xe_force_wake_put(gt_to_fw(gt), fw_ref);
-+		KUNIT_ASSERT_TRUE_MSG(test, true, "Forcewake Failed.\n");
-+	}
+ 	xe_pm_runtime_get(xe);
+ 	fw_ref = xe_force_wake_get(gt_to_fw(gt), XE_FORCEWAKE_ALL);
+ 	if (!xe_force_wake_ref_has_domain(fw_ref, XE_FORCEWAKE_ALL)) {
+-		xe_pm_runtime_put(xe);
+-		xe_force_wake_put(gt_to_fw(gt), fw_ref);
+-		return -ETIMEDOUT;
++		ret = -ETIMEDOUT;
++		goto fw_put;
+ 	}
  
- 	for (i = 0; i < info->num_mocs_regs; i++) {
- 		if (!(i & 1)) {
+ 	for_each_hw_engine(hwe, gt, id)
+ 		xe_hw_engine_print(hwe, p);
+ 
++fw_put:
+ 	xe_force_wake_put(gt_to_fw(gt), fw_ref);
+ 	xe_pm_runtime_put(xe);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static int powergate_info(struct xe_gt *gt, struct drm_printer *p)
 -- 
 2.39.5
 
