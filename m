@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-143507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCEEBAB401C
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:50:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D98A5AB4017
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:49:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87EB93BA769
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:49:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25DEB19E6FB6
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:49:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2962F2550C4;
-	Mon, 12 May 2025 17:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1BB32550A3;
+	Mon, 12 May 2025 17:49:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yaMBHyZh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tI97hFbA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8625251782;
-	Mon, 12 May 2025 17:49:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FD0A251782;
+	Mon, 12 May 2025 17:49:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072163; cv=none; b=r+sFeox0w/E13+RFvddvWRVDISZM2HbqK4dHCKzU71avqEUd076FM4zSp9ROR6uTbnikNnHolYpmHUs3Ne3vmlpkAvLLrslPBQMiLiaY+OCUPzx0/XS5wQ4xZlOuoBiHMBkrGO/ugLwPIiaPt9mltPswuhZlhFYpGQKYjv4DIZk=
+	t=1747072174; cv=none; b=jBrBOAtLZf1kEJubDhVSGew66LXtwknCATqv5AD65tNrpQRFbsyT++I4GGkcKU92hun4bLbhSSoaykgJT69rHW31gvXXj0hL6IeyTjnIBLM4iOjlMQLGCap0ZUaYXzCFCj71cjbwFtT3MOgTyrXvb97L+bCR3Wxh+AXP601jFp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072163; c=relaxed/simple;
-	bh=zqm5Pet0x07m+B/rmQPSwfCWTfaAxJ5TNADsJPb7zKE=;
+	s=arc-20240116; t=1747072174; c=relaxed/simple;
+	bh=VNAgG4bAb62GWEqMYCrI+Skk7WmfdVb0InTSn9SDsYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MyikbmiO+xGpD3geKieJAAinU+0pysbFYecFiSs5GCQp0qxBCtAqDY0gTWkekUqq67f6Rfc66usm84zRVDXx+clBx+OzgdVt5F90lAACCtJ0q+22K6RdvkoZt1s4SYCW0IObtORY2ZSUf1IhUJKGmo46fMBIP/4eYPfgKYPOk4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yaMBHyZh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6746EC4CEF1;
-	Mon, 12 May 2025 17:49:23 +0000 (UTC)
+	 MIME-Version; b=N1G0WD5Q3ltjr0/PtavDmXMFovIiWWC9r0aYRObXjbGQt/Yd0QVHCiOrbmms/Acs+B6/ryTxhvqQAjePtKtV48CroXXAc6Rj+ssgVgvffZqe7QpXG94rQO35kjb6tX4e1I6KmwcURCgbrlUwq6IBV97NTzLB45I7W60ZK1y0//Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tI97hFbA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EB58C4CEE7;
+	Mon, 12 May 2025 17:49:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072163;
-	bh=zqm5Pet0x07m+B/rmQPSwfCWTfaAxJ5TNADsJPb7zKE=;
+	s=korg; t=1747072174;
+	bh=VNAgG4bAb62GWEqMYCrI+Skk7WmfdVb0InTSn9SDsYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yaMBHyZhezT8bt0nF0XXG2kvcOO0V99mWKPoYAYI+3ptiSeaVIvrkV2SwxDSpXgGU
-	 QmEZgUx0BPUAvi74UGkF1waEWcHon8PP+EGwTMgzgaE13wTO4yGW0aK2ZlMrfGaqMA
-	 7w1f3f3i64IaBl1GqeRXrTHBQ+6m1SNWqr75+giQ=
+	b=tI97hFbA8TDJittA9VmrJ6S72LbAyQNn21HvlgaYHHKptUmAxvtwNPCZiCTIqHdQI
+	 30i2ABbHZv8a0B5f4KzTK5TCGITe8SmviurHJAqAMWOSfih6C4pG8o32WmaTrtZj9A
+	 DgP/kp4M/FTMgjIYiaKAflFzN1+LCLdhHQ9FBwHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Jan Kara <jack@suse.cz>,
 	Heming Zhao <heming.zhao@suse.com>,
-	Gautham Ananthakrishna <gautham.ananthakrishna@oracle.com>,
 	Joseph Qi <joseph.qi@linux.alibaba.com>,
 	Mark Fasheh <mark@fasheh.com>,
 	Joel Becker <jlbec@evilplan.org>,
 	Junxiao Bi <junxiao.bi@oracle.com>,
 	Changwei Ge <gechangwei@live.cn>,
 	Jun Piao <piaojun@huawei.com>,
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Shichangkuo <shi.changkuo@h3c.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.14 130/197] ocfs2: fix the issue with discontiguous allocation in the global_bitmap
-Date: Mon, 12 May 2025 19:39:40 +0200
-Message-ID: <20250512172049.688054581@linuxfoundation.org>
+Subject: [PATCH 6.14 131/197] ocfs2: switch osb->disable_recovery to enum
+Date: Mon, 12 May 2025 19:39:41 +0200
+Message-ID: <20250512172049.729046755@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512172044.326436266@linuxfoundation.org>
 References: <20250512172044.326436266@linuxfoundation.org>
@@ -72,167 +74,108 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Heming Zhao <heming.zhao@suse.com>
+From: Jan Kara <jack@suse.cz>
 
-commit bd1261b16d9131d79723d982d54295e7f309797a upstream.
+commit c0fb83088f0cc4ee4706e0495ee8b06f49daa716 upstream.
 
-commit 4eb7b93e0310 ("ocfs2: improve write IO performance when
-fragmentation is high") introduced another regression.
+Patch series "ocfs2: Fix deadlocks in quota recovery", v3.
 
-The following ocfs2-test case can trigger this issue:
-> discontig_runner.sh => activate_discontig_bg.sh => resv_unwritten:
-> ${RESV_UNWRITTEN_BIN} -f ${WORK_PLACE}/large_testfile -s 0 -l \
-> $((${FILE_MAJOR_SIZE_M}*1024*1024))
+This implements another approach to fixing quota recovery deadlocks.  We
+avoid grabbing sb->s_umount semaphore from ocfs2_finish_quota_recovery()
+and instead stop quota recovery early in ocfs2_dismount_volume().
 
-In my env, test disk size (by "fdisk -l <dev>"):
-> 53687091200 bytes, 104857600 sectors.
 
-Above command is:
-> /usr/local/ocfs2-test/bin/resv_unwritten -f \
-> /mnt/ocfs2/ocfs2-activate-discontig-bg-dir/large_testfile -s 0 -l \
-> 53187969024
+This patch (of 3):
 
-Error log:
-> [*] Reserve 50724M space for a LARGE file, reserve 200M space for future test.
-> ioctl error 28: "No space left on device"
-> resv allocation failed Unknown error -1
-> reserve unwritten region from 0 to 53187969024.
+We will need more recovery states than just pure enable / disable to fix
+deadlocks with quota recovery.  Switch osb->disable_recovery to enum.
 
-Call flow:
-__ocfs2_change_file_space //by ioctl OCFS2_IOC_RESVSP64
- ocfs2_allocate_unwritten_extents //start:0 len:53187969024
-  while()
-   + ocfs2_get_clusters //cpos:0, alloc_size:1623168 (cluster number)
-   + ocfs2_extend_allocation
-     + ocfs2_lock_allocators
-     |  + choose OCFS2_AC_USE_MAIN & ocfs2_cluster_group_search
-     |
-     + ocfs2_add_inode_data
-        ocfs2_add_clusters_in_btree
-         __ocfs2_claim_clusters
-          ocfs2_claim_suballoc_bits
-          + During the allocation of the final part of the large file
-	    (after ~47GB), no chain had the required contiguous
-            bits_wanted. Consequently, the allocation failed.
-
-How to fix:
-When OCFS2 is encountering fragmented allocation, the file system should
-stop attempting bits_wanted contiguous allocation and instead provide the
-largest available contiguous free bits from the cluster groups.
-
-Link: https://lkml.kernel.org/r/20250414060125.19938-2-heming.zhao@suse.com
-Fixes: 4eb7b93e0310 ("ocfs2: improve write IO performance when fragmentation is high")
-Signed-off-by: Heming Zhao <heming.zhao@suse.com>
-Reported-by: Gautham Ananthakrishna <gautham.ananthakrishna@oracle.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Link: https://lkml.kernel.org/r/20250424134301.1392-1-jack@suse.cz
+Link: https://lkml.kernel.org/r/20250424134515.18933-4-jack@suse.cz
+Fixes: 5f530de63cfc ("ocfs2: Use s_umount for quota recovery protection")
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Heming Zhao <heming.zhao@suse.com>
+Tested-by: Heming Zhao <heming.zhao@suse.com>
+Acked-by: Joseph Qi <joseph.qi@linux.alibaba.com>
 Cc: Mark Fasheh <mark@fasheh.com>
 Cc: Joel Becker <jlbec@evilplan.org>
 Cc: Junxiao Bi <junxiao.bi@oracle.com>
 Cc: Changwei Ge <gechangwei@live.cn>
 Cc: Jun Piao <piaojun@huawei.com>
+Cc: Murad Masimov <m.masimov@mt-integration.ru>
+Cc: Shichangkuo <shi.changkuo@h3c.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/suballoc.c |   38 ++++++++++++++++++++++++++++++++------
- fs/ocfs2/suballoc.h |    1 +
- 2 files changed, 33 insertions(+), 6 deletions(-)
+ fs/ocfs2/journal.c |   14 ++++++++------
+ fs/ocfs2/ocfs2.h   |    7 ++++++-
+ 2 files changed, 14 insertions(+), 7 deletions(-)
 
---- a/fs/ocfs2/suballoc.c
-+++ b/fs/ocfs2/suballoc.c
-@@ -698,10 +698,12 @@ static int ocfs2_block_group_alloc(struc
+--- a/fs/ocfs2/journal.c
++++ b/fs/ocfs2/journal.c
+@@ -174,7 +174,7 @@ int ocfs2_recovery_init(struct ocfs2_sup
+ 	struct ocfs2_recovery_map *rm;
  
- 	bg_bh = ocfs2_block_group_alloc_contig(osb, handle, alloc_inode,
- 					       ac, cl);
--	if (PTR_ERR(bg_bh) == -ENOSPC)
-+	if (PTR_ERR(bg_bh) == -ENOSPC) {
-+		ac->ac_which = OCFS2_AC_USE_MAIN_DISCONTIG;
- 		bg_bh = ocfs2_block_group_alloc_discontig(handle,
- 							  alloc_inode,
- 							  ac, cl);
-+	}
- 	if (IS_ERR(bg_bh)) {
- 		status = PTR_ERR(bg_bh);
- 		bg_bh = NULL;
-@@ -1794,6 +1796,7 @@ static int ocfs2_search_chain(struct ocf
+ 	mutex_init(&osb->recovery_lock);
+-	osb->disable_recovery = 0;
++	osb->recovery_state = OCFS2_REC_ENABLED;
+ 	osb->recovery_thread_task = NULL;
+ 	init_waitqueue_head(&osb->recovery_event);
+ 
+@@ -206,7 +206,7 @@ void ocfs2_recovery_exit(struct ocfs2_su
+ 	/* disable any new recovery threads and wait for any currently
+ 	 * running ones to exit. Do this before setting the vol_state. */
+ 	mutex_lock(&osb->recovery_lock);
+-	osb->disable_recovery = 1;
++	osb->recovery_state = OCFS2_REC_DISABLED;
+ 	mutex_unlock(&osb->recovery_lock);
+ 	wait_event(osb->recovery_event, !ocfs2_recovery_thread_running(osb));
+ 
+@@ -1582,14 +1582,16 @@ bail:
+ 
+ void ocfs2_recovery_thread(struct ocfs2_super *osb, int node_num)
  {
- 	int status;
- 	u16 chain;
-+	u32 contig_bits;
- 	u64 next_group;
- 	struct inode *alloc_inode = ac->ac_inode;
- 	struct buffer_head *group_bh = NULL;
-@@ -1819,10 +1822,21 @@ static int ocfs2_search_chain(struct ocf
- 	status = -ENOSPC;
- 	/* for now, the chain search is a bit simplistic. We just use
- 	 * the 1st group with any empty bits. */
--	while ((status = ac->ac_group_search(alloc_inode, group_bh,
--					     bits_wanted, min_bits,
--					     ac->ac_max_block,
--					     res)) == -ENOSPC) {
-+	while (1) {
-+		if (ac->ac_which == OCFS2_AC_USE_MAIN_DISCONTIG) {
-+			contig_bits = le16_to_cpu(bg->bg_contig_free_bits);
-+			if (!contig_bits)
-+				contig_bits = ocfs2_find_max_contig_free_bits(bg->bg_bitmap,
-+						le16_to_cpu(bg->bg_bits), 0);
-+			if (bits_wanted > contig_bits && contig_bits >= min_bits)
-+				bits_wanted = contig_bits;
-+		}
++	int was_set = -1;
 +
-+		status = ac->ac_group_search(alloc_inode, group_bh,
-+				bits_wanted, min_bits,
-+				ac->ac_max_block, res);
-+		if (status != -ENOSPC)
-+			break;
- 		if (!bg->bg_next_group)
- 			break;
+ 	mutex_lock(&osb->recovery_lock);
++	if (osb->recovery_state < OCFS2_REC_DISABLED)
++		was_set = ocfs2_recovery_map_set(osb, node_num);
  
-@@ -1982,6 +1996,7 @@ static int ocfs2_claim_suballoc_bits(str
- 	victim = ocfs2_find_victim_chain(cl);
- 	ac->ac_chain = victim;
+ 	trace_ocfs2_recovery_thread(node_num, osb->node_num,
+-		osb->disable_recovery, osb->recovery_thread_task,
+-		osb->disable_recovery ?
+-		-1 : ocfs2_recovery_map_set(osb, node_num));
++		osb->recovery_state, osb->recovery_thread_task, was_set);
  
-+search:
- 	status = ocfs2_search_chain(ac, handle, bits_wanted, min_bits,
- 				    res, &bits_left);
- 	if (!status) {
-@@ -2022,6 +2037,16 @@ static int ocfs2_claim_suballoc_bits(str
- 		}
- 	}
+-	if (osb->disable_recovery)
++	if (osb->recovery_state == OCFS2_REC_DISABLED)
+ 		goto out;
  
-+	/* Chains can't supply the bits_wanted contiguous space.
-+	 * We should switch to using every single bit when allocating
-+	 * from the global bitmap. */
-+	if (i == le16_to_cpu(cl->cl_next_free_rec) &&
-+	    status == -ENOSPC && ac->ac_which == OCFS2_AC_USE_MAIN) {
-+		ac->ac_which = OCFS2_AC_USE_MAIN_DISCONTIG;
-+		ac->ac_chain = victim;
-+		goto search;
-+	}
+ 	if (osb->recovery_thread_task)
+--- a/fs/ocfs2/ocfs2.h
++++ b/fs/ocfs2/ocfs2.h
+@@ -308,6 +308,11 @@ enum ocfs2_journal_trigger_type {
+ void ocfs2_initialize_journal_triggers(struct super_block *sb,
+ 				       struct ocfs2_triggers triggers[]);
+ 
++enum ocfs2_recovery_state {
++	OCFS2_REC_ENABLED = 0,
++	OCFS2_REC_DISABLED,
++};
 +
- set_hint:
- 	if (status != -ENOSPC) {
- 		/* If the next search of this group is not likely to
-@@ -2365,7 +2390,8 @@ int __ocfs2_claim_clusters(handle_t *han
- 	BUG_ON(ac->ac_bits_given >= ac->ac_bits_wanted);
- 
- 	BUG_ON(ac->ac_which != OCFS2_AC_USE_LOCAL
--	       && ac->ac_which != OCFS2_AC_USE_MAIN);
-+	       && ac->ac_which != OCFS2_AC_USE_MAIN
-+	       && ac->ac_which != OCFS2_AC_USE_MAIN_DISCONTIG);
- 
- 	if (ac->ac_which == OCFS2_AC_USE_LOCAL) {
- 		WARN_ON(min_clusters > 1);
---- a/fs/ocfs2/suballoc.h
-+++ b/fs/ocfs2/suballoc.h
-@@ -29,6 +29,7 @@ struct ocfs2_alloc_context {
- #define OCFS2_AC_USE_MAIN  2
- #define OCFS2_AC_USE_INODE 3
- #define OCFS2_AC_USE_META  4
-+#define OCFS2_AC_USE_MAIN_DISCONTIG  5
- 	u32    ac_which;
- 
- 	/* these are used by the chain search */
+ struct ocfs2_journal;
+ struct ocfs2_slot_info;
+ struct ocfs2_recovery_map;
+@@ -370,7 +375,7 @@ struct ocfs2_super
+ 	struct ocfs2_recovery_map *recovery_map;
+ 	struct ocfs2_replay_map *replay_map;
+ 	struct task_struct *recovery_thread_task;
+-	int disable_recovery;
++	enum ocfs2_recovery_state recovery_state;
+ 	wait_queue_head_t checkpoint_event;
+ 	struct ocfs2_journal *journal;
+ 	unsigned long osb_commit_interval;
 
 
 
