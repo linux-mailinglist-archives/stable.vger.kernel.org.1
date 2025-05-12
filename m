@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-143517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DF87AB403F
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:51:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DECDAB4031
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:50:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0C6D07AD4F6
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:48:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2162246683A
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:50:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 054B4254879;
-	Mon, 12 May 2025 17:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05F3A296D30;
+	Mon, 12 May 2025 17:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="05rO1lJp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CmkAS+Ur"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B63251A08CA;
-	Mon, 12 May 2025 17:50:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B83BC254879;
+	Mon, 12 May 2025 17:50:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072206; cv=none; b=rKieD4XKu4Lpl2UlD5V8KfEx2KsdjjgHml/EknT5Ub38uxWB3wchD8Xa92MToxnZd1njWESY0HcLUTMEupoqB1lxNvEpa2pV65jPEi94TFn5tlEPN5lNXHl0XS/t4fQ5KLkBp2XjVPI0P5KtoKTq5FL0I8K73FL75BzbbHYwN9M=
+	t=1747072244; cv=none; b=tFvsefduISGr5bPSgXHoy+xp1/7fYm9cldx1X6WeNx/l+9HtTOhoSDIREl3dw2jYtirdtTkgF5sT6emrT0/lwVRfShHZLODV43Ccgef7gJhib8uMXytVDob06l3byYjiNEDcTD9bBmpB3ymJ1c9K9NN3AU4C7+VOw1rgA3FL8GE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072206; c=relaxed/simple;
-	bh=em2ICtvT8Su2mznLks5GNO/JEvlJNxcv0J63PtJNb34=;
+	s=arc-20240116; t=1747072244; c=relaxed/simple;
+	bh=MavcPj2VPmijY3s5izDKQ/295stt8XH4WZpPhq0/Lpw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XtKYiRRJ9cQeJJFmctdu+9J/VbxdGiRnJWHMP96p/30wrM1MpchZu26X+CxgXgexcOfEwZ1Lr+SWtd65iRAusYQavkRcQ64y89FAJSm+2on4UPMuAoTIbAcYBcW3tWSZT/p3m+v2WiTdP12qjpiAOnojfmfZpEfkSHryb818NaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=05rO1lJp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7C26C4CEE7;
-	Mon, 12 May 2025 17:50:05 +0000 (UTC)
+	 MIME-Version; b=uYw9YpDgBNmJX9f+n/93uROxZUhsEKAtWf+w3gzs0vEes01Kf0WPiQLn6Fx28HU7fvtZhIohSVPZhUEYf4Cic/MLOGCMooia3/W4eHsA1kZ9JGe4mEUnmnUanZoFrkku953/x+eiekC3VRINozLcLgzsV8nfrX37h5njZLpgyAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CmkAS+Ur; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 485B1C4CEEF;
+	Mon, 12 May 2025 17:50:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072206;
-	bh=em2ICtvT8Su2mznLks5GNO/JEvlJNxcv0J63PtJNb34=;
+	s=korg; t=1747072244;
+	bh=MavcPj2VPmijY3s5izDKQ/295stt8XH4WZpPhq0/Lpw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=05rO1lJpNTgqNKCyP+fhT6MJPQYn4IAxpeCPEow7uw/7J0mZCcL60fWottR5QgU+T
-	 NZxsqK3NkLuCRMQ3mwzIK3KDrIP8pXXzcmKnwmzbpRa63nRdz02Il/b5NAOrRVEV/Y
-	 JJKzYgvnDYTw75lMB91JwGehZsY5t7kTeRohWHW8=
+	b=CmkAS+Ur32KnvonYIF9mDohkoZmw2Osle6rdPLzErfQtC4QU+PiXMYPQwsyDBJscL
+	 MOiZRQhmNwxK5tlJYQY2f0uH5XEix2xx5HohnEChMYj9MtCwAaVjbpnEJ8ryXXUnPH
+	 9kna5rG2ZL9vuLGKE61Iy7cGwez79DzYLxLNSUD8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zong Li <zong.li@sifive.com>,
-	Nylon Chen <nylon.chen@sifive.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 160/197] riscv: misaligned: Add handling for ZCB instructions
-Date: Mon, 12 May 2025 19:40:10 +0200
-Message-ID: <20250512172050.898823596@linuxfoundation.org>
+Subject: [PATCH 6.14 161/197] loop: factor out a loop_assign_backing_file helper
+Date: Mon, 12 May 2025 19:40:11 +0200
+Message-ID: <20250512172050.939087333@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512172044.326436266@linuxfoundation.org>
 References: <20250512172044.326436266@linuxfoundation.org>
@@ -67,66 +67,82 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nylon Chen <nylon.chen@sifive.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit eb16b3727c05ed36420c90eca1e8f0e279514c1c ]
+[ Upstream commit d278164832618bf2775c6a89e6434e2633de1eed ]
 
-Add support for the Zcb extension's compressed half-word instructions
-(C.LHU, C.LH, and C.SH) in the RISC-V misaligned access trap handler.
+Split the code for setting up a backing file into a helper in preparation
+of adding more code to this path.
 
-Signed-off-by: Zong Li <zong.li@sifive.com>
-Signed-off-by: Nylon Chen <nylon.chen@sifive.com>
-Fixes: 956d705dd279 ("riscv: Unaligned load/store handling for M_MODE")
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20250411073850.3699180-2-nylon.chen@sifive.com
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20250131120120.1315125-2-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: f5c84eff634b ("loop: Add sanity check for read/write_iter")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/traps_misaligned.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/block/loop.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/arch/riscv/kernel/traps_misaligned.c b/arch/riscv/kernel/traps_misaligned.c
-index 4354c87c0376f..dde5d11dc1b50 100644
---- a/arch/riscv/kernel/traps_misaligned.c
-+++ b/arch/riscv/kernel/traps_misaligned.c
-@@ -88,6 +88,13 @@
- #define INSN_MATCH_C_FSWSP		0xe002
- #define INSN_MASK_C_FSWSP		0xe003
+diff --git a/drivers/block/loop.c b/drivers/block/loop.c
+index 7668b79d8b0a9..61ce7ccde3445 100644
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -496,6 +496,14 @@ static int loop_validate_file(struct file *file, struct block_device *bdev)
+ 	return 0;
+ }
  
-+#define INSN_MATCH_C_LHU		0x8400
-+#define INSN_MASK_C_LHU			0xfc43
-+#define INSN_MATCH_C_LH			0x8440
-+#define INSN_MASK_C_LH			0xfc43
-+#define INSN_MATCH_C_SH			0x8c00
-+#define INSN_MASK_C_SH			0xfc43
++static void loop_assign_backing_file(struct loop_device *lo, struct file *file)
++{
++	lo->lo_backing_file = file;
++	lo->old_gfp_mask = mapping_gfp_mask(file->f_mapping);
++	mapping_set_gfp_mask(file->f_mapping,
++			lo->old_gfp_mask & ~(__GFP_IO | __GFP_FS));
++}
 +
- #define INSN_LEN(insn)			((((insn) & 0x3) < 0x3) ? 2 : 4)
+ /*
+  * loop_change_fd switched the backing store of a loopback device to
+  * a new file. This is useful for operating system installers to free up
+@@ -549,10 +557,7 @@ static int loop_change_fd(struct loop_device *lo, struct block_device *bdev,
+ 	disk_force_media_change(lo->lo_disk);
+ 	memflags = blk_mq_freeze_queue(lo->lo_queue);
+ 	mapping_set_gfp_mask(old_file->f_mapping, lo->old_gfp_mask);
+-	lo->lo_backing_file = file;
+-	lo->old_gfp_mask = mapping_gfp_mask(file->f_mapping);
+-	mapping_set_gfp_mask(file->f_mapping,
+-			     lo->old_gfp_mask & ~(__GFP_IO|__GFP_FS));
++	loop_assign_backing_file(lo, file);
+ 	loop_update_dio(lo);
+ 	blk_mq_unfreeze_queue(lo->lo_queue, memflags);
+ 	partscan = lo->lo_flags & LO_FLAGS_PARTSCAN;
+@@ -943,7 +948,6 @@ static int loop_configure(struct loop_device *lo, blk_mode_t mode,
+ 			  const struct loop_config *config)
+ {
+ 	struct file *file = fget(config->fd);
+-	struct address_space *mapping;
+ 	struct queue_limits lim;
+ 	int error;
+ 	loff_t size;
+@@ -979,8 +983,6 @@ static int loop_configure(struct loop_device *lo, blk_mode_t mode,
+ 	if (error)
+ 		goto out_unlock;
  
- #if defined(CONFIG_64BIT)
-@@ -431,6 +438,13 @@ static int handle_scalar_misaligned_load(struct pt_regs *regs)
- 		fp = 1;
- 		len = 4;
- #endif
-+	} else if ((insn & INSN_MASK_C_LHU) == INSN_MATCH_C_LHU) {
-+		len = 2;
-+		insn = RVC_RS2S(insn) << SH_RD;
-+	} else if ((insn & INSN_MASK_C_LH) == INSN_MATCH_C_LH) {
-+		len = 2;
-+		shift = 8 * (sizeof(ulong) - len);
-+		insn = RVC_RS2S(insn) << SH_RD;
- 	} else {
- 		regs->epc = epc;
- 		return -1;
-@@ -530,6 +544,9 @@ static int handle_scalar_misaligned_store(struct pt_regs *regs)
- 		len = 4;
- 		val.data_ulong = GET_F32_RS2C(insn, regs);
- #endif
-+	} else if ((insn & INSN_MASK_C_SH) == INSN_MATCH_C_SH) {
-+		len = 2;
-+		val.data_ulong = GET_RS2S(insn, regs);
- 	} else {
- 		regs->epc = epc;
- 		return -1;
+-	mapping = file->f_mapping;
+-
+ 	if ((config->info.lo_flags & ~LOOP_CONFIGURE_SETTABLE_FLAGS) != 0) {
+ 		error = -EINVAL;
+ 		goto out_unlock;
+@@ -1012,9 +1014,7 @@ static int loop_configure(struct loop_device *lo, blk_mode_t mode,
+ 	set_disk_ro(lo->lo_disk, (lo->lo_flags & LO_FLAGS_READ_ONLY) != 0);
+ 
+ 	lo->lo_device = bdev;
+-	lo->lo_backing_file = file;
+-	lo->old_gfp_mask = mapping_gfp_mask(mapping);
+-	mapping_set_gfp_mask(mapping, lo->old_gfp_mask & ~(__GFP_IO|__GFP_FS));
++	loop_assign_backing_file(lo, file);
+ 
+ 	lim = queue_limits_start_update(lo->lo_queue);
+ 	loop_update_limits(lo, &lim, config->block_size);
 -- 
 2.39.5
 
