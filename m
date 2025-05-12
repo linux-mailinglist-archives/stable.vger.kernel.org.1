@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-143828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46D8CAB41ED
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:15:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11592AB431F
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:30:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCD96867889
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:13:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 419E78C62FC
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:27:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9280297A45;
-	Mon, 12 May 2025 18:05:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DB5329A334;
+	Mon, 12 May 2025 18:10:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="on83mWZm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S8MYT/DH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A3E29C349;
-	Mon, 12 May 2025 18:05:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1337F29A32F;
+	Mon, 12 May 2025 18:10:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073101; cv=none; b=jRG9Ug8BtQ5tQTMgYoPqOcKmwt1MV4GunHWlH1JmPGokvaSv3gb4Bf/MqsxYpnm7EOD4mrJ0AGVKdJuh/v+m9zsFG1E+EdanZ4NtS+pItRRjW35QfVnmPwACavJwqxQMJVBy6IpLzpR/5nwKUErbQBLCWpj6YlsoA2VLGqkNW+4=
+	t=1747073413; cv=none; b=Hl4metX0b/OxXwmw0wx72wT8UUIv5kzYmiiEnKgVsEGxQ9hCXq081urzziHAixKKFOHfbDJla4Dw0cDfZ8WmwfYzOMI3ImxMZVveqElnpAXZ7N2wJT8AES/7iZ5SaDZIcMkEWaigoE1og7LVa44p8UqrMpNlsUboDNhK8eWTjVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073101; c=relaxed/simple;
-	bh=SrSlGuuQGcDDC/wk6KJZiNoMPMhRAShhMiAhtOz1H5w=;
+	s=arc-20240116; t=1747073413; c=relaxed/simple;
+	bh=3ZH/C8gRVoMbxJVZVNgDqBRKUKUcPpeqZWPhB5eNszQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kGOfz5Ys9l8cLfQuvtqSj/cXuHBmXmJkJ2fOr3eM3RU5yx8xrWcwIuTpR+9KhisjpWsul78+ZOc08+LbeEpjpI+lUVkEUKVDMla1hI9BZqXQqFA7tp7DtjsAYIH5kXoP0kKDgO7sVCAujEqnnxu3iU7TF8NwkQMf+ArDry7qfF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=on83mWZm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE82C4CEE7;
-	Mon, 12 May 2025 18:05:00 +0000 (UTC)
+	 MIME-Version; b=Iixe9OURkd2i+XApeKlP7btddSYYW2I+U/I8BY/Aq8bUaNAusRyb4lUVSns/ZJ7WKzeo40bHM6p1y9B9VqMoZI1fT+3cFL/RnzVQfi4n3kqaeC8o03g3nQvx5bgz9IZRJtBhDnsigK/2ve5KgIGw091PMk3FFjW+JMMD8nXcNCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S8MYT/DH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90135C4CEE7;
+	Mon, 12 May 2025 18:10:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073101;
-	bh=SrSlGuuQGcDDC/wk6KJZiNoMPMhRAShhMiAhtOz1H5w=;
+	s=korg; t=1747073413;
+	bh=3ZH/C8gRVoMbxJVZVNgDqBRKUKUcPpeqZWPhB5eNszQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=on83mWZm2aE30czmQIcm6Oc1KIUgCzcN2Svpd2sum0Xv7BmDdIsKgNSDfylat2+us
-	 tRSpwcl/T0NuxUKQ8vUXuykpur826mtJVJDdKeqFMOUZ2ddDjRmjG29URP8eypUowt
-	 dDlyoR5VpejQPAvJqq2danMkYQc+l3t8CRzUjG6I=
+	b=S8MYT/DHFGRdcZIqefIpmRxlmga5ekMa/nNrAYhfH37LKQenuYvvqMWCbXYWep+zP
+	 zFnpV8o6Hd+XNc4n7UKOEzVPYeUkDSd5MpboFNSkZy+TTcZ8Uvn1rD71aRIoQpHZgH
+	 iu/QqYNk5T38T7HvukcPVS9lXtXETbgxlkhilJmU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12 154/184] rust: allow Rust 1.87.0s `clippy::ptr_eq` lint
-Date: Mon, 12 May 2025 19:45:55 +0200
-Message-ID: <20250512172048.090068113@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Pawel Laszczak <pawell@cadence.com>,
+	Peter Chen <peter.chen@kernel.org>
+Subject: [PATCH 6.6 067/113] usb: cdnsp: Fix issue with resuming from L1
+Date: Mon, 12 May 2025 19:45:56 +0200
+Message-ID: <20250512172030.409783395@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
-References: <20250512172041.624042835@linuxfoundation.org>
+In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
+References: <20250512172027.691520737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,70 +62,154 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Pawel Laszczak <pawell@cadence.com>
 
-commit a39f3087092716f2bd531d6fdc20403c3dc2a879 upstream.
+commit 241e2ce88e5a494be7a5d44c0697592f1632fbee upstream.
 
-Starting with Rust 1.87.0 (expected 2025-05-15) [1], Clippy may expand
-the `ptr_eq` lint, e.g.:
+In very rare cases after resuming controller from L1 to L0 it reads
+registers before the clock UTMI have been enabled and as the result
+driver reads incorrect value.
+Most of registers are in APB domain clock but some of them (e.g. PORTSC)
+are in UTMI domain clock.
+After entering to L1 state the UTMI clock can be disabled.
+When controller transition from L1 to L0 the port status change event is
+reported and in interrupt runtime function driver reads PORTSC.
+During this read operation controller synchronize UTMI and APB domain
+but UTMI clock is still disabled and in result it reads 0xFFFFFFFF value.
+To fix this issue driver increases APB timeout value.
 
-    error: use `core::ptr::eq` when comparing raw pointers
-       --> rust/kernel/list.rs:438:12
-        |
-    438 |         if self.first == item {
-        |            ^^^^^^^^^^^^^^^^^^ help: try: `core::ptr::eq(self.first, item)`
-        |
-        = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#ptr_eq
-        = note: `-D clippy::ptr-eq` implied by `-D warnings`
-        = help: to override `-D warnings` add `#[allow(clippy::ptr_eq)]`
+The issue is platform specific and if the default value of APB timeout
+is not sufficient then this time should be set Individually for each
+platform.
 
-It is expected that a PR to relax the lint will be backported [2] by
-the time Rust 1.87.0 releases, since the lint was considered too eager
-(at least by default) [3].
-
-Thus allow the lint temporarily just in case.
-
-Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
-Link: https://github.com/rust-lang/rust-clippy/pull/14339 [1]
-Link: https://github.com/rust-lang/rust-clippy/pull/14526 [2]
-Link: https://github.com/rust-lang/rust-clippy/issues/14525 [3]
-Link: https://lore.kernel.org/r/20250502140237.1659624-3-ojeda@kernel.org
-[ Converted to `allow`s since backport was confirmed. - Miguel ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Pawel Laszczak <pawell@cadence.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/PH7PR07MB953846C57973E4DB134CAA71DDBF2@PH7PR07MB9538.namprd07.prod.outlook.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/kernel/alloc/kvec.rs |    3 +++
- rust/kernel/list.rs       |    3 +++
- 2 files changed, 6 insertions(+)
+ drivers/usb/cdns3/cdnsp-gadget.c |   29 +++++++++++++++++++++++++++++
+ drivers/usb/cdns3/cdnsp-gadget.h |    3 +++
+ drivers/usb/cdns3/cdnsp-pci.c    |   12 ++++++++++--
+ drivers/usb/cdns3/core.h         |    3 +++
+ 4 files changed, 45 insertions(+), 2 deletions(-)
 
---- a/rust/kernel/alloc/kvec.rs
-+++ b/rust/kernel/alloc/kvec.rs
-@@ -2,6 +2,9 @@
+--- a/drivers/usb/cdns3/cdnsp-gadget.c
++++ b/drivers/usb/cdns3/cdnsp-gadget.c
+@@ -138,6 +138,26 @@ static void cdnsp_clear_port_change_bit(
+ 	       (portsc & PORT_CHANGE_BITS), port_regs);
+ }
  
- //! Implementation of [`Vec`].
- 
-+// May not be needed in Rust 1.87.0 (pending beta backport).
-+#![allow(clippy::ptr_eq)]
++static void cdnsp_set_apb_timeout_value(struct cdnsp_device *pdev)
++{
++	struct cdns *cdns = dev_get_drvdata(pdev->dev);
++	__le32 __iomem *reg;
++	void __iomem *base;
++	u32 offset = 0;
++	u32 val;
 +
- use super::{
-     allocator::{KVmalloc, Kmalloc, Vmalloc},
-     layout::ArrayLayout,
---- a/rust/kernel/list.rs
-+++ b/rust/kernel/list.rs
-@@ -4,6 +4,9 @@
- 
- //! A linked list implementation.
- 
-+// May not be needed in Rust 1.87.0 (pending beta backport).
-+#![allow(clippy::ptr_eq)]
++	if (!cdns->override_apb_timeout)
++		return;
 +
- use crate::init::PinInit;
- use crate::sync::ArcBorrow;
- use crate::types::Opaque;
++	base = &pdev->cap_regs->hc_capbase;
++	offset = cdnsp_find_next_ext_cap(base, offset, D_XEC_PRE_REGS_CAP);
++	reg = base + offset + REG_CHICKEN_BITS_3_OFFSET;
++
++	val  = le32_to_cpu(readl(reg));
++	val = CHICKEN_APB_TIMEOUT_SET(val, cdns->override_apb_timeout);
++	writel(cpu_to_le32(val), reg);
++}
++
+ static void cdnsp_set_chicken_bits_2(struct cdnsp_device *pdev, u32 bit)
+ {
+ 	__le32 __iomem *reg;
+@@ -1801,6 +1821,15 @@ static int cdnsp_gen_setup(struct cdnsp_
+ 	pdev->hci_version = HC_VERSION(pdev->hcc_params);
+ 	pdev->hcc_params = readl(&pdev->cap_regs->hcc_params);
+ 
++	/*
++	 * Override the APB timeout value to give the controller more time for
++	 * enabling UTMI clock and synchronizing APB and UTMI clock domains.
++	 * This fix is platform specific and is required to fixes issue with
++	 * reading incorrect value from PORTSC register after resuming
++	 * from L1 state.
++	 */
++	cdnsp_set_apb_timeout_value(pdev);
++
+ 	cdnsp_get_rev_cap(pdev);
+ 
+ 	/* Make sure the Device Controller is halted. */
+--- a/drivers/usb/cdns3/cdnsp-gadget.h
++++ b/drivers/usb/cdns3/cdnsp-gadget.h
+@@ -520,6 +520,9 @@ struct cdnsp_rev_cap {
+ #define REG_CHICKEN_BITS_2_OFFSET	0x48
+ #define CHICKEN_XDMA_2_TP_CACHE_DIS	BIT(28)
+ 
++#define REG_CHICKEN_BITS_3_OFFSET       0x4C
++#define CHICKEN_APB_TIMEOUT_SET(p, val) (((p) & ~GENMASK(21, 0)) | (val))
++
+ /* XBUF Extended Capability ID. */
+ #define XBUF_CAP_ID			0xCB
+ #define XBUF_RX_TAG_MASK_0_OFFSET	0x1C
+--- a/drivers/usb/cdns3/cdnsp-pci.c
++++ b/drivers/usb/cdns3/cdnsp-pci.c
+@@ -33,6 +33,8 @@
+ #define CDNS_DRD_ID		0x0100
+ #define CDNS_DRD_IF		(PCI_CLASS_SERIAL_USB << 8 | 0x80)
+ 
++#define CHICKEN_APB_TIMEOUT_VALUE       0x1C20
++
+ static struct pci_dev *cdnsp_get_second_fun(struct pci_dev *pdev)
+ {
+ 	/*
+@@ -144,6 +146,14 @@ static int cdnsp_pci_probe(struct pci_de
+ 		cdnsp->otg_irq = pdev->irq;
+ 	}
+ 
++	/*
++	 * Cadence PCI based platform require some longer timeout for APB
++	 * to fixes domain clock synchronization issue after resuming
++	 * controller from L1 state.
++	 */
++	cdnsp->override_apb_timeout = CHICKEN_APB_TIMEOUT_VALUE;
++	pci_set_drvdata(pdev, cdnsp);
++
+ 	if (pci_is_enabled(func)) {
+ 		cdnsp->dev = dev;
+ 		cdnsp->gadget_init = cdnsp_gadget_init;
+@@ -153,8 +163,6 @@ static int cdnsp_pci_probe(struct pci_de
+ 			goto free_cdnsp;
+ 	}
+ 
+-	pci_set_drvdata(pdev, cdnsp);
+-
+ 	device_wakeup_enable(&pdev->dev);
+ 	if (pci_dev_run_wake(pdev))
+ 		pm_runtime_put_noidle(&pdev->dev);
+--- a/drivers/usb/cdns3/core.h
++++ b/drivers/usb/cdns3/core.h
+@@ -79,6 +79,8 @@ struct cdns3_platform_data {
+  * @pdata: platform data from glue layer
+  * @lock: spinlock structure
+  * @xhci_plat_data: xhci private data structure pointer
++ * @override_apb_timeout: hold value of APB timeout. For value 0 the default
++ *                        value in CHICKEN_BITS_3 will be preserved.
+  * @gadget_init: pointer to gadget initialization function
+  */
+ struct cdns {
+@@ -117,6 +119,7 @@ struct cdns {
+ 	struct cdns3_platform_data	*pdata;
+ 	spinlock_t			lock;
+ 	struct xhci_plat_priv		*xhci_plat_data;
++	u32                             override_apb_timeout;
+ 
+ 	int (*gadget_init)(struct cdns *cdns);
+ };
 
 
 
