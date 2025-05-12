@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-143527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E131CAB4043
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:52:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 313C8AB4039
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:51:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B65E7B1BA3
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:49:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 928BB8632FA
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:50:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36E242528FC;
-	Mon, 12 May 2025 17:50:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E13192528FC;
+	Mon, 12 May 2025 17:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SaJ4qfgG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tbbDWMpv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E836C1A08CA;
-	Mon, 12 May 2025 17:50:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D66B1A08CA;
+	Mon, 12 May 2025 17:50:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072239; cv=none; b=NXIOQkth9PaRqZtvaBuz5HD8jfzWW5nWeLEWw2aN1/iyWFI3SuiYepuZn73h0ZRdVPMZ4Q8iwhehWT05hYnaoUQBQ0W+Urx2e97D0Yi/JUTek/p+y75gDr7CwyXZKx7BRsKTokvaAHMJ9yrO0DJtOdHEabYWYnBnLylexguXfw8=
+	t=1747072247; cv=none; b=olX0x5MzHNHUdNKZt+5pNSYnQOJJSH/Tdew8VqQWeqZUMOIsJDbP7qrsmicvLkjE6O2BhDWTKdW3d6d6iVqdP+Bdu8kY2/HrBTcr2pvvdPvtZQkt7/aulSs4kLd9CYpLDZEWKjabjevTBhwsm/sgLC/P/O3RrJLj1RCLKFIQEeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072239; c=relaxed/simple;
-	bh=67nEbj7V8QZL5Wnt9hNRdiYVdq003O8D02GpBKogCY8=;
+	s=arc-20240116; t=1747072247; c=relaxed/simple;
+	bh=Y8+PUHpD1S4ClIQpzGqURKsmafHf/+T4VEpyWZcYk3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eh8xrJKeQjZmPPSqvlRIS5w/tr8B8mTLENp+pDpYOpg1pHIViZEieG5GIk3TptDdGyKgClQMwDvDEgdZsUZ43lRx/0LX43I5sNsg3Ca8a32ge1IUiHYfdgGsWrswgOxcL8viHHz4Y6K2XgSTO3hN3vPt5LegQHEFt72PVLtHz8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SaJ4qfgG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E07EC4CEE7;
-	Mon, 12 May 2025 17:50:38 +0000 (UTC)
+	 MIME-Version; b=i7mntv+KAce0G3Zq3OMakCtht3Y0LbcFVpAvjYLRyW4fg13odM05JRrCCVZiaeX7NknRRsHCHEXsemdbVU4pob0UFlddHF6HlcWR6DOPxkUTdw4uzlYCqlGhUltv7QPvPT4eyyX4S1DyJ1WqwRn+/LbWWWCd3VtOTLA9ZTmjxEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tbbDWMpv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26B4FC4CEE7;
+	Mon, 12 May 2025 17:50:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072238;
-	bh=67nEbj7V8QZL5Wnt9hNRdiYVdq003O8D02GpBKogCY8=;
+	s=korg; t=1747072247;
+	bh=Y8+PUHpD1S4ClIQpzGqURKsmafHf/+T4VEpyWZcYk3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SaJ4qfgGTqmuQZk6U8YYCS3Y44YKX7NrCmuLRI4FLX3RtcWaEdE4ZufH9KsCtM6tp
-	 1ky5AOJregspaGU2Lb5zIFki1io/80RJdS68ksGsi7csE9chDTDaSZPmbl6nY197QG
-	 d6JpvgktJav4VG7qV2VpmfW/vomsClHiCZ+YqMBw=
+	b=tbbDWMpvp2MRpJcvzNOkzgXbHOoB6zctG1/9gt89tvoDOX2Vb22x3Be/7qEvr6sLE
+	 2BlsTNEhNbtN4ZY4hYPYq/3n3WVLSWg5FmvmrgNBXJdjt0E+Jx3lhc0I7uH3oxUyEP
+	 7v72aBp6qo6k+lLvsrBr0uFLpQasGHoxRHGYdy1k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	James Morse <james.morse@arm.com>,
 	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.14 178/197] arm64: insn: Add support for encoding DSB
-Date: Mon, 12 May 2025 19:40:28 +0200
-Message-ID: <20250512172051.636489626@linuxfoundation.org>
+Subject: [PATCH 6.14 179/197] arm64: proton-pack: Expose whether the platform is mitigated by firmware
+Date: Mon, 12 May 2025 19:40:29 +0200
+Message-ID: <20250512172051.678292583@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512172044.326436266@linuxfoundation.org>
 References: <20250512172044.326436266@linuxfoundation.org>
@@ -67,126 +67,56 @@ Content-Transfer-Encoding: 8bit
 
 From: James Morse <james.morse@arm.com>
 
-commit 63de8abd97ddb9b758bd8f915ecbd18e1f1a87a0 upstream.
+commit e7956c92f396a44eeeb6eaf7a5b5e1ad24db6748 upstream.
 
-To generate code in the eBPF epilogue that uses the DSB instruction,
-insn.c needs a heler to encode the type and domain.
+is_spectre_bhb_fw_affected() allows the caller to determine if the CPU
+is known to need a firmware mitigation. CPUs are either on the list
+of CPUs we know about, or firmware has been queried and reported that
+the platform is affected - and mitigated by firmware.
 
-Re-use the crm encoding logic from the DMB instruction.
+This helper is not useful to determine if the platform is mitigated
+by firmware. A CPU could be on the know list, but the firmware may
+not be implemented. Its affected but not mitigated.
+
+spectre_bhb_enable_mitigation() handles this distinction by checking
+the firmware state before enabling the mitigation.
+
+Add a helper to expose this state. This will be used by the BPF JIT
+to determine if calling firmware for a mitigation is necessary and
+supported.
 
 Signed-off-by: James Morse <james.morse@arm.com>
 Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/insn.h |    1 
- arch/arm64/lib/insn.c         |   60 +++++++++++++++++++++++++-----------------
- 2 files changed, 38 insertions(+), 23 deletions(-)
+ arch/arm64/include/asm/spectre.h |    1 +
+ arch/arm64/kernel/proton-pack.c  |    5 +++++
+ 2 files changed, 6 insertions(+)
 
---- a/arch/arm64/include/asm/insn.h
-+++ b/arch/arm64/include/asm/insn.h
-@@ -698,6 +698,7 @@ u32 aarch64_insn_gen_cas(enum aarch64_in
- }
- #endif
- u32 aarch64_insn_gen_dmb(enum aarch64_insn_mb_type type);
-+u32 aarch64_insn_gen_dsb(enum aarch64_insn_mb_type type);
- u32 aarch64_insn_gen_mrs(enum aarch64_insn_register result,
- 			 enum aarch64_insn_system_register sysreg);
+--- a/arch/arm64/include/asm/spectre.h
++++ b/arch/arm64/include/asm/spectre.h
+@@ -97,6 +97,7 @@ enum mitigation_state arm64_get_meltdown
  
---- a/arch/arm64/lib/insn.c
-+++ b/arch/arm64/lib/insn.c
-@@ -5,6 +5,7 @@
-  *
-  * Copyright (C) 2014-2016 Zi Shen Lim <zlim.lnx@gmail.com>
-  */
-+#include <linux/bitfield.h>
- #include <linux/bitops.h>
- #include <linux/bug.h>
- #include <linux/printk.h>
-@@ -1471,48 +1472,61 @@ u32 aarch64_insn_gen_extr(enum aarch64_i
- 	return aarch64_insn_encode_register(AARCH64_INSN_REGTYPE_RM, insn, Rm);
+ enum mitigation_state arm64_get_spectre_bhb_state(void);
+ bool is_spectre_bhb_affected(const struct arm64_cpu_capabilities *entry, int scope);
++bool is_spectre_bhb_fw_mitigated(void);
+ void spectre_bhb_enable_mitigation(const struct arm64_cpu_capabilities *__unused);
+ bool try_emulate_el1_ssbs(struct pt_regs *regs, u32 instr);
+ 
+--- a/arch/arm64/kernel/proton-pack.c
++++ b/arch/arm64/kernel/proton-pack.c
+@@ -1093,6 +1093,11 @@ void spectre_bhb_enable_mitigation(const
+ 	update_mitigation_state(&spectre_bhb_state, state);
  }
  
--u32 aarch64_insn_gen_dmb(enum aarch64_insn_mb_type type)
-+static u32 __get_barrier_crm_val(enum aarch64_insn_mb_type type)
- {
--	u32 opt;
--	u32 insn;
--
- 	switch (type) {
- 	case AARCH64_INSN_MB_SY:
--		opt = 0xf;
--		break;
-+		return 0xf;
- 	case AARCH64_INSN_MB_ST:
--		opt = 0xe;
--		break;
-+		return 0xe;
- 	case AARCH64_INSN_MB_LD:
--		opt = 0xd;
--		break;
-+		return 0xd;
- 	case AARCH64_INSN_MB_ISH:
--		opt = 0xb;
--		break;
-+		return 0xb;
- 	case AARCH64_INSN_MB_ISHST:
--		opt = 0xa;
--		break;
-+		return 0xa;
- 	case AARCH64_INSN_MB_ISHLD:
--		opt = 0x9;
--		break;
-+		return 0x9;
- 	case AARCH64_INSN_MB_NSH:
--		opt = 0x7;
--		break;
-+		return 0x7;
- 	case AARCH64_INSN_MB_NSHST:
--		opt = 0x6;
--		break;
-+		return 0x6;
- 	case AARCH64_INSN_MB_NSHLD:
--		opt = 0x5;
--		break;
-+		return 0x5;
- 	default:
--		pr_err("%s: unknown dmb type %d\n", __func__, type);
-+		pr_err("%s: unknown barrier type %d\n", __func__, type);
- 		return AARCH64_BREAK_FAULT;
- 	}
++bool is_spectre_bhb_fw_mitigated(void)
++{
++	return test_bit(BHB_FW, &system_bhb_mitigations);
 +}
 +
-+u32 aarch64_insn_gen_dmb(enum aarch64_insn_mb_type type)
-+{
-+	u32 opt;
-+	u32 insn;
-+
-+	opt = __get_barrier_crm_val(type);
-+	if (opt == AARCH64_BREAK_FAULT)
-+		return AARCH64_BREAK_FAULT;
- 
- 	insn = aarch64_insn_get_dmb_value();
- 	insn &= ~GENMASK(11, 8);
- 	insn |= (opt << 8);
- 
-+	return insn;
-+}
-+
-+u32 aarch64_insn_gen_dsb(enum aarch64_insn_mb_type type)
-+{
-+	u32 opt, insn;
-+
-+	opt = __get_barrier_crm_val(type);
-+	if (opt == AARCH64_BREAK_FAULT)
-+		return AARCH64_BREAK_FAULT;
-+
-+	insn = aarch64_insn_get_dsb_base_value();
-+	insn &= ~GENMASK(11, 8);
-+	insn |= (opt << 8);
-+
- 	return insn;
- }
- 
+ /* Patched to NOP when enabled */
+ void noinstr spectre_bhb_patch_loop_mitigation_enable(struct alt_instr *alt,
+ 						     __le32 *origptr,
 
 
 
