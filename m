@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-143893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8658AB4373
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:34:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52639AB42F0
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:28:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BB5E27BA3F3
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:22:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C2E316DF4B
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:28:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D5431EB3D;
-	Mon, 12 May 2025 18:06:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B41C529A9F3;
+	Mon, 12 May 2025 18:10:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dZymmXwm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dU/1hEvl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE75B296FB2;
-	Mon, 12 May 2025 18:06:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F4B729A326;
+	Mon, 12 May 2025 18:10:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073210; cv=none; b=vDV7wG4UQezK9KIMtzr/FnxUVLz6NPHDTkFqMRuD7tJHOUC38RjGb3bzG+h6eTnF+HDBU8eDeCtNbyl316yvF+rvwTZm1i7L5UFN63/E19Ll2deC9cT9QVcjhfBQjNkpA1sIHNeEp5x0kSbnRMkjz93K0YCkc6h1jAF9XhqXvtA=
+	t=1747073443; cv=none; b=l7hlNomH0GZiHx01sJE2kJWTigo6suaoTTU/5IR3BnXcCJhIcRBCr7lQiYIogK54IuGcrH+thoKDAEqwNCWETxFeGB09n4qoxWRFqA1Nu506VOpu2EIhh1n3SW6Q/RHvwDsl5JVw59ArsS3VeW0CtKbY2g5AtazoJUS3X7w8PNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073210; c=relaxed/simple;
-	bh=JFMkj1CFhqnwOpBlnJ4maVYwpAl0NrkRVZ2xi9sMwBI=;
+	s=arc-20240116; t=1747073443; c=relaxed/simple;
+	bh=kvWR6uAKp7KFdJWsy+/doa0rYxCD/FHFhgRDWIX2ceQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SqznrY9hcU7h/V0Pz92R2j2kjVZUfljA//QMJtReZ2yZ2KJeLK2rqHBDVzZFuDIqSJRs5vzAuHjbrlELmNvY3ZRjEIgnAJAT0PXvaoAZJrMrsxIq+WhwQnTGULx8/rCt7npiMeavev0s4LpZbzvHpAXa5lu1eHgSeRvLQXyJVA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dZymmXwm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52E5FC4CEE9;
-	Mon, 12 May 2025 18:06:49 +0000 (UTC)
+	 MIME-Version; b=H0cxCujKXgrnA2jHFxCZSNnzTYhSsmkZnNys5OMuTd+USYhO/LKINS5qyFf11i0FdPIr8xi0TMaghouKlj8p0UuDcz6qZU6FjeWv0xLT0JBnuOyEjQNdFwXjBjggwMZb2dLGt3GuqV/7bux7BK0KBxlHS0toXg8HR+VMEbhoxls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dU/1hEvl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92CB2C4CEE7;
+	Mon, 12 May 2025 18:10:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073209;
-	bh=JFMkj1CFhqnwOpBlnJ4maVYwpAl0NrkRVZ2xi9sMwBI=;
+	s=korg; t=1747073443;
+	bh=kvWR6uAKp7KFdJWsy+/doa0rYxCD/FHFhgRDWIX2ceQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dZymmXwmcJpEV/G4W8zOaFWzSINyS5IMW8oZAkYqp1wZn58XJ5kwp4hVAYD+4bcTi
-	 Con7/FpMOuSxT9e/4QGBFN5gNevqcZjrEu1X8QFuIpOVEUa3QBReQsyiFo59wkJabC
-	 MaZRzZZIMHxXwO/MDQ2xOhgn2YQn10gbZJ4UD+9o=
+	b=dU/1hEvlb6buh0/dbw+6OPHOjZVr6R7EoDFhSEHyhRxkcmbEy+vNA8ddfoJ5HLckq
+	 GzuMvrnPf7+mrVka15fDWqZTuoZRNCm7rGPoJFfXCtyK3Y0qaqoC74F4eSPm3Yeh8G
+	 R5cy/BefbAqGTSel19tZArjymTkAi0agmPqGQXeI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Morse <james.morse@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.12 163/184] arm64: proton-pack: Expose whether the platform is mitigated by firmware
-Date: Mon, 12 May 2025 19:46:04 +0200
-Message-ID: <20250512172048.451431190@linuxfoundation.org>
+	Michael Katzmann <vk2bea@gmail.com>,
+	Dave Penkler <dpenkler@gmail.com>
+Subject: [PATCH 6.6 076/113] usb: usbtmc: Fix erroneous get_stb ioctl error returns
+Date: Mon, 12 May 2025 19:46:05 +0200
+Message-ID: <20250512172030.768068997@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
-References: <20250512172041.624042835@linuxfoundation.org>
+In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
+References: <20250512172027.691520737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +61,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Morse <james.morse@arm.com>
+From: Dave Penkler <dpenkler@gmail.com>
 
-commit e7956c92f396a44eeeb6eaf7a5b5e1ad24db6748 upstream.
+commit cac01bd178d6a2a23727f138d647ce1a0e8a73a1 upstream.
 
-is_spectre_bhb_fw_affected() allows the caller to determine if the CPU
-is known to need a firmware mitigation. CPUs are either on the list
-of CPUs we know about, or firmware has been queried and reported that
-the platform is affected - and mitigated by firmware.
+wait_event_interruptible_timeout returns a long
+The return was being assigned to an int causing an integer overflow when
+the remaining jiffies > INT_MAX resulting in random error returns.
 
-This helper is not useful to determine if the platform is mitigated
-by firmware. A CPU could be on the know list, but the firmware may
-not be implemented. Its affected but not mitigated.
+Use a long return value and convert to int ioctl return only on error.
 
-spectre_bhb_enable_mitigation() handles this distinction by checking
-the firmware state before enabling the mitigation.
+When the return value of wait_event_interruptible_timeout was <= INT_MAX
+the number of remaining jiffies was returned which has no meaning for the
+user. Return 0 on success.
 
-Add a helper to expose this state. This will be used by the BPF JIT
-to determine if calling firmware for a mitigation is necessary and
-supported.
-
-Signed-off-by: James Morse <james.morse@arm.com>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Reported-by: Michael Katzmann <vk2bea@gmail.com>
+Fixes: dbf3e7f654c0 ("Implement an ioctl to support the USMTMC-USB488 READ_STATUS_BYTE operation.")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dave Penkler <dpenkler@gmail.com>
+Link: https://lore.kernel.org/r/20250502070941.31819-2-dpenkler@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/spectre.h |    1 +
- arch/arm64/kernel/proton-pack.c  |    5 +++++
- 2 files changed, 6 insertions(+)
+ drivers/usb/class/usbtmc.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/arch/arm64/include/asm/spectre.h
-+++ b/arch/arm64/include/asm/spectre.h
-@@ -97,6 +97,7 @@ enum mitigation_state arm64_get_meltdown
+--- a/drivers/usb/class/usbtmc.c
++++ b/drivers/usb/class/usbtmc.c
+@@ -482,6 +482,7 @@ static int usbtmc_get_stb(struct usbtmc_
+ 	u8 *buffer;
+ 	u8 tag;
+ 	int rv;
++	long wait_rv;
  
- enum mitigation_state arm64_get_spectre_bhb_state(void);
- bool is_spectre_bhb_affected(const struct arm64_cpu_capabilities *entry, int scope);
-+bool is_spectre_bhb_fw_mitigated(void);
- void spectre_bhb_enable_mitigation(const struct arm64_cpu_capabilities *__unused);
- bool try_emulate_el1_ssbs(struct pt_regs *regs, u32 instr);
+ 	dev_dbg(dev, "Enter ioctl_read_stb iin_ep_present: %d\n",
+ 		data->iin_ep_present);
+@@ -511,16 +512,17 @@ static int usbtmc_get_stb(struct usbtmc_
+ 	}
  
---- a/arch/arm64/kernel/proton-pack.c
-+++ b/arch/arm64/kernel/proton-pack.c
-@@ -1093,6 +1093,11 @@ void spectre_bhb_enable_mitigation(const
- 	update_mitigation_state(&spectre_bhb_state, state);
- }
+ 	if (data->iin_ep_present) {
+-		rv = wait_event_interruptible_timeout(
++		wait_rv = wait_event_interruptible_timeout(
+ 			data->waitq,
+ 			atomic_read(&data->iin_data_valid) != 0,
+ 			file_data->timeout);
+-		if (rv < 0) {
+-			dev_dbg(dev, "wait interrupted %d\n", rv);
++		if (wait_rv < 0) {
++			dev_dbg(dev, "wait interrupted %ld\n", wait_rv);
++			rv = wait_rv;
+ 			goto exit;
+ 		}
  
-+bool is_spectre_bhb_fw_mitigated(void)
-+{
-+	return test_bit(BHB_FW, &system_bhb_mitigations);
-+}
+-		if (rv == 0) {
++		if (wait_rv == 0) {
+ 			dev_dbg(dev, "wait timed out\n");
+ 			rv = -ETIMEDOUT;
+ 			goto exit;
+@@ -539,6 +541,8 @@ static int usbtmc_get_stb(struct usbtmc_
+ 
+ 	dev_dbg(dev, "stb:0x%02x received %d\n", (unsigned int)*stb, rv);
+ 
++	rv = 0;
 +
- /* Patched to NOP when enabled */
- void noinstr spectre_bhb_patch_loop_mitigation_enable(struct alt_instr *alt,
- 						     __le32 *origptr,
+  exit:
+ 	/* bump interrupt bTag */
+ 	data->iin_bTag += 1;
 
 
 
