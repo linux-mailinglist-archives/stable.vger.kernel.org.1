@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-143169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CD4BAB331B
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 11:23:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25DAFAB331E
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 11:23:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DCF9189D9C0
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 09:22:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1DAB189D9FB
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 09:22:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2731E25B69A;
-	Mon, 12 May 2025 09:21:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 482D725C6EE;
+	Mon, 12 May 2025 09:21:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fRA2em8i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LRkw0Nja"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC18925B1FA
-	for <stable@vger.kernel.org>; Mon, 12 May 2025 09:21:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0818A25C705
+	for <stable@vger.kernel.org>; Mon, 12 May 2025 09:21:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747041702; cv=none; b=KLofanOd/hr6OtuNm2JnLytRyWZJJ1W8bsvN7BKLrhLE/V+4EoeREgkXbGfCjfc5+c1hfNsuBYGxKtQd4Du9L5guwTdGQz79TvZCfDrTQzuwzkn2og0+sDAhOLOD7TsmbimCxLNoKCz3TkUjJc3+j5LBzw5/NIE2xzsLxuOJlQM=
+	t=1747041706; cv=none; b=ona0voNd7+Q6k3oNLAgxNrvqaaTPopvm3K//mXyBHQfxBGUqtBrSPyoXxdYsBZMh4Vqvz9JjZDbRASS7Alq1zFW/BhU5Meoa13WwMXfzAJRiBMbXUw77UVop2zXBCJtZHNH+FHz6KvCmQnWZExQXSA43wSssF+POi+BeDL3U/o4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747041702; c=relaxed/simple;
-	bh=6ybE+07orvOmNn8hR396ZlvynxXPBsmLg4H9dP5E+uo=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ZWCAk2FuOSQaefqyTLpZQmTxthKrklVHa3531/GmTz2RzrasmxfOl1qF/kpFwefoxYuiXMHLxjD02cCzJac96CsIMCE4SUso3wmxahPol+eg7ss3FTlRxeBddroU2y1B1lkYIJvWLe8gkmlKPDFgr5cDz4foo3uNiftbnLGYOzY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fRA2em8i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 638FBC4CEE9;
-	Mon, 12 May 2025 09:21:42 +0000 (UTC)
+	s=arc-20240116; t=1747041706; c=relaxed/simple;
+	bh=Mv52Q4IgTvf3gAX1RQZqXcUaJ1AGwgWoHgwLxLifi3w=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=QvP7V1Hn8hahpn3SM7kqegCKOCj4L1lqCL4IobNLzqzW96j7TvltIcwAYZ28QAkkAilUVdrXPFRUmL/3KNExpqnBZu+J+NIVyMF788KEEf8XICXZCQK3B1J3UsiLG2vz6+UUX9XoJ7+mgpQWyiuSoUCsJAxeQmgTMGgXsHk+PJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LRkw0Nja; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66A52C4CEE9;
+	Mon, 12 May 2025 09:21:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747041702;
-	bh=6ybE+07orvOmNn8hR396ZlvynxXPBsmLg4H9dP5E+uo=;
+	s=korg; t=1747041705;
+	bh=Mv52Q4IgTvf3gAX1RQZqXcUaJ1AGwgWoHgwLxLifi3w=;
 	h=Subject:To:Cc:From:Date:From;
-	b=fRA2em8iACsX9CLfxOfTg9R0klnrD5pUY/kcrzDNz8Lo/JofbeGZhCWHj/avPc5vU
-	 okkuMiijHsCdu2sT0SB7QNqsnA4BMYjpJgctFRxO+pIzNzvkWJEX+PqSUjMMBXULGW
-	 taI2dXR37/3uSW6q2yhfYaBcSYtYYTNK3wizay5g=
-Subject: FAILED: patch "[PATCH] KVM: SVM: Forcibly leave SMM mode on SHUTDOWN interception" failed to apply to 6.1-stable tree
+	b=LRkw0Nja+jYEm4vnfbjP/2xhWgzCxSZB0Wp6LB/oUOuXh8MZKFOPRCDNw7WkvWyru
+	 jBLtU3GTKqmXBOpdHtmJsDN2qslva7bLeGOfNweG8l78ObNXOijR4EHH2hFPz0xU3u
+	 efEikeVHYyAjTshUHjePPF33Ol0ljYv1zAY6BmS4=
+Subject: FAILED: patch "[PATCH] KVM: SVM: Forcibly leave SMM mode on SHUTDOWN interception" failed to apply to 5.15-stable tree
 To: m.lobanov@rosa.ru,seanjc@google.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 May 2025 11:21:32 +0200
-Message-ID: <2025051231-surpass-scone-a484@gregkh>
+Date: Mon, 12 May 2025 11:21:33 +0200
+Message-ID: <2025051233-flatfoot-delete-7a4b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x a2620f8932fa9fdabc3d78ed6efb004ca409019f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025051231-surpass-scone-a484@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025051233-flatfoot-delete-7a4b@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
