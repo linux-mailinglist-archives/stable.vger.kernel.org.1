@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-143599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5B56AB409D
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:56:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47D7AAB4141
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:03:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83EAB8C1146
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:54:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB0D57AE69F
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:02:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8471F255F4D;
-	Mon, 12 May 2025 17:54:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD1B51DF754;
+	Mon, 12 May 2025 18:03:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lwMRuh0x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bbY8zL69"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40F671A08CA;
-	Mon, 12 May 2025 17:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9968F175BF;
+	Mon, 12 May 2025 18:03:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072472; cv=none; b=fMkLXqhYhVghUcDgtZetJ/mXsx1Bsx5xpjFhivy4mgy5onJ15kyqzE3kjxylsRYPQd1PCQKnO/v79vF33XWqaxWhQQigj6ZYswdoO8agn33USXU6qzve7FkxzB7W0BIdlSDgdNfphkMb/p2F5OhovnL8n1uhy+0c/0VmVWIsHUA=
+	t=1747073033; cv=none; b=VxqizxxAOTB5CRTK6trz+J4s+parPrUwcFvjAPZ4upCZIQ4dRJJf6Z5O7I0pORN6bf6N3ebt9WWdnHPj8Q6Dnke9vlcGmmgtFSkPsiJYvNMqcboBnboocJHCz4QTctII/386gUdayFpSP1iuzW9BC8CVsEBzWpG8cNNBq4HFcNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072472; c=relaxed/simple;
-	bh=cDjQilRLgVawajOr5eMe7rP2az+tnMYI+Wr5B4B1f6M=;
+	s=arc-20240116; t=1747073033; c=relaxed/simple;
+	bh=t2hKnZMc3lngHVhd7ASjFtocl5hgwH4s+/szG4V+ETs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dQNM4z1AmSoh7x3JWru+JbElU+rycSG5Xw+DyArC3UlzXsQ8spIJBaGdfNvVZhogPeomnZztEhHM6hHFFZ8JbXmqdSfm2u9xIP5rMYuZXGR/tDdpSLPoNfUrd+Dskb/0zsM9TBJQ0FiOrizXM0VENGbs4HURe+zwafbEsE3BA7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lwMRuh0x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65BA2C4CEE7;
-	Mon, 12 May 2025 17:54:31 +0000 (UTC)
+	 MIME-Version; b=VFS9FWXTSnYmj2/dCQ3ilWQvJVrlhqHfMnajI3Q65R8vhDltvZ3teDFZjQ6BmJYyMMVbhaUleTqED8gQBbAkJHaq6pMf5vy+IDqELlWB+TJFbfYFl7MwfBHUWrW4uhFF/mu9haq631nJ6XsJkJ7Hpf2XQb1YCCgILrglDuqdetk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bbY8zL69; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16227C4CEE7;
+	Mon, 12 May 2025 18:03:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072471;
-	bh=cDjQilRLgVawajOr5eMe7rP2az+tnMYI+Wr5B4B1f6M=;
+	s=korg; t=1747073033;
+	bh=t2hKnZMc3lngHVhd7ASjFtocl5hgwH4s+/szG4V+ETs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lwMRuh0xweoXu0bQZMKR9dakQFHSJVPsJg3Uls7r6tPyBMWcFAMfs3CYOLzcthkyx
-	 kA1g6KImqQ1oLe9y8yh5j1A7YEBtgbeU10Gpr0CZqByRQDqAxV3lvVg7P++vYAaMHz
-	 DC2TnHfG+3aYz7DtqaBrz9K0zkC25j3r6C0wZv84=
+	b=bbY8zL69Gw9/Yu88I1rgWH5PcIakkdla9pZhbP765693yMSQEDzBJT22WbVfR2UPg
+	 Xizk13g/ZQ+t3Dqa2LeBfuaQibr2BZLZw7T3DJPYOjaLEKQwvx31tvNP0HbGjbqUrv
+	 RnuzHKrgxh9RYut28qx/gybExNUGHzRBm5/99fX0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Pawel Laszczak <pawell@cadence.com>,
-	Peter Chen <peter.chen@kernel.org>
-Subject: [PATCH 6.1 51/92] usb: cdnsp: fix L1 resume issue for RTL_REVISION_NEW_LPM version
-Date: Mon, 12 May 2025 19:45:26 +0200
-Message-ID: <20250512172025.195801210@linuxfoundation.org>
+	Oliver Neukum <oneukum@suse.com>
+Subject: [PATCH 6.12 126/184] USB: usbtmc: use interruptible sleep in usbtmc_read
+Date: Mon, 12 May 2025 19:45:27 +0200
+Message-ID: <20250512172046.949883867@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172023.126467649@linuxfoundation.org>
-References: <20250512172023.126467649@linuxfoundation.org>
+In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
+References: <20250512172041.624042835@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawel Laszczak <pawell@cadence.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit 8614ecdb1570e4fffe87ebdc62b613ed66f1f6a6 upstream.
+commit 054c5145540e5ad5b80adf23a5e3e2fc281fb8aa upstream.
 
-The controllers with rtl version larger than
-RTL_REVISION_NEW_LPM (0x00002700) has bug which causes that controller
-doesn't resume from L1 state. It happens if after receiving LPM packet
-controller starts transitioning to L1 and in this moment the driver force
-resuming by write operation to PORTSC.PLS.
-It's corner case and happens when write operation to PORTSC occurs during
-device delay before transitioning to L1 after transmitting ACK
-time (TL1TokenRetry).
+usbtmc_read() calls usbtmc_generic_read()
+which uses interruptible sleep, but usbtmc_read()
+itself uses uninterruptble sleep for mutual exclusion
+between threads. That makes no sense.
+Both should use interruptible sleep.
 
-Forcing transition from L1->L0 by driver for revision larger than
-RTL_REVISION_NEW_LPM is not needed, so driver can simply fix this issue
-through block call of cdnsp_force_l0_go function.
-
-Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
+Fixes: 5b775f672cc99 ("USB: add USB test and measurement class driver")
 Cc: stable <stable@kernel.org>
-Signed-off-by: Pawel Laszczak <pawell@cadence.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/PH7PR07MB9538B55C3A6E71F9ED29E980DD842@PH7PR07MB9538.namprd07.prod.outlook.com
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Link: https://lore.kernel.org/r/20250430134810.226015-1-oneukum@suse.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/cdns3/cdnsp-gadget.c |    2 ++
- drivers/usb/cdns3/cdnsp-gadget.h |    3 +++
- drivers/usb/cdns3/cdnsp-ring.c   |    3 ++-
- 3 files changed, 7 insertions(+), 1 deletion(-)
+ drivers/usb/class/usbtmc.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/cdns3/cdnsp-gadget.c
-+++ b/drivers/usb/cdns3/cdnsp-gadget.c
-@@ -1796,6 +1796,8 @@ static void cdnsp_get_rev_cap(struct cdn
- 	reg += cdnsp_find_next_ext_cap(reg, 0, RTL_REV_CAP);
- 	pdev->rev_cap  = reg;
+--- a/drivers/usb/class/usbtmc.c
++++ b/drivers/usb/class/usbtmc.c
+@@ -1380,7 +1380,10 @@ static ssize_t usbtmc_read(struct file *
+ 	if (!buffer)
+ 		return -ENOMEM;
  
-+	pdev->rtl_revision = readl(&pdev->rev_cap->rtl_revision);
+-	mutex_lock(&data->io_mutex);
++	retval = mutex_lock_interruptible(&data->io_mutex);
++	if (retval < 0)
++		goto exit_nolock;
 +
- 	dev_info(pdev->dev, "Rev: %08x/%08x, eps: %08x, buff: %08x/%08x\n",
- 		 readl(&pdev->rev_cap->ctrl_revision),
- 		 readl(&pdev->rev_cap->rtl_revision),
---- a/drivers/usb/cdns3/cdnsp-gadget.h
-+++ b/drivers/usb/cdns3/cdnsp-gadget.h
-@@ -1362,6 +1362,7 @@ struct cdnsp_port {
-  * @rev_cap: Controller Capabilities Registers.
-  * @hcs_params1: Cached register copies of read-only HCSPARAMS1
-  * @hcc_params: Cached register copies of read-only HCCPARAMS1
-+ * @rtl_revision: Cached controller rtl revision.
-  * @setup: Temporary buffer for setup packet.
-  * @ep0_preq: Internal allocated request used during enumeration.
-  * @ep0_stage: ep0 stage during enumeration process.
-@@ -1416,6 +1417,8 @@ struct cdnsp_device {
- 	__u32 hcs_params1;
- 	__u32 hcs_params3;
- 	__u32 hcc_params;
-+	#define RTL_REVISION_NEW_LPM 0x2700
-+	__u32 rtl_revision;
- 	/* Lock used in interrupt thread context. */
- 	spinlock_t lock;
- 	struct usb_ctrlrequest setup;
---- a/drivers/usb/cdns3/cdnsp-ring.c
-+++ b/drivers/usb/cdns3/cdnsp-ring.c
-@@ -308,7 +308,8 @@ static bool cdnsp_ring_ep_doorbell(struc
+ 	if (data->zombie) {
+ 		retval = -ENODEV;
+ 		goto exit;
+@@ -1503,6 +1506,7 @@ static ssize_t usbtmc_read(struct file *
  
- 	writel(db_value, reg_addr);
- 
--	cdnsp_force_l0_go(pdev);
-+	if (pdev->rtl_revision < RTL_REVISION_NEW_LPM)
-+		cdnsp_force_l0_go(pdev);
- 
- 	/* Doorbell was set. */
- 	return true;
+ exit:
+ 	mutex_unlock(&data->io_mutex);
++exit_nolock:
+ 	kfree(buffer);
+ 	return retval;
+ }
 
 
 
