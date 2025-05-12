@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-143968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF0CBAB4334
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:31:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83483AB4188
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:07:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E92B78C6C46
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:27:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D06817AF40F
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:04:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFCA529AAEF;
-	Mon, 12 May 2025 18:10:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 740CE297B9C;
+	Mon, 12 May 2025 18:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xq0lfNcZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qade9Ef9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB9829AAE1;
-	Mon, 12 May 2025 18:10:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E537296FA2;
+	Mon, 12 May 2025 18:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073449; cv=none; b=PNOvsKm6nJEUwQf8kuloMG1GYusqaT6Hptd0xmduHhKiwrW0fpI7K9b6koS+LB4jY8KzaPQblQvbHPDYKTdBbcIWwEc+MH+FhcqzsCkI8lUAxXC4MrF3Ih31GzD1CFS+zxNnpFuyH1K1sY9ztiWzeG9azs30Hs55tyrG8cB+Sz8=
+	t=1747073050; cv=none; b=hVKmr544H3/h7fFNo+3pO5q31KUO+pMLUbHIsWCjeOr+qZaRIV9l8715AesXa6/idDT2eztEQ/fIBiu/8ZmyWeTGZ/s6sWa80Ni9u732vVinfVttyaIfVV+DvX00sT98zEVuKaTHtCrevc5jYfHXpuBkco/L9AV4/3VEIielbkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073449; c=relaxed/simple;
-	bh=2MLp8LeNJhAJVYohUSZzwX/Wshe+KOvpR7Y7NC9AHa0=;
+	s=arc-20240116; t=1747073050; c=relaxed/simple;
+	bh=PiIqHbpu0AjccLkXGvGdCFDG1ZkSso+91QWm0jb+rU4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pN85KDTQarEyQN/55VgS8YrPJyLVfeJXLl3BdzA5uIJ0gUbySVvmWrESWyYvxE8hW/+RqQdQO5rroudTF9LQKU328lBblsWvZXEBlglJ1HyEnj7D/MOSL8IMG/CsE2DzeSRUjdecVytI9Sx9rEBIXWqpB11TV6J9bOValgOC3d8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xq0lfNcZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 980E9C4CEE7;
-	Mon, 12 May 2025 18:10:48 +0000 (UTC)
+	 MIME-Version; b=VlGxh4WUdqlp2O9HFfrSwpt8QzeiAJiz78op49tAdyncHRh3SBPQNWelqyS4AleymG3QjHxTaA830Wa/GnDWSY5GRbSrg3YeNkzatPg1V5Dnf090JJANZ4uhKlUgXfyOjRJJMj5zlDYfpxLb8rUZvmTflkY7Q/chxRdI5xRYtOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qade9Ef9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F71CC4CEF2;
+	Mon, 12 May 2025 18:04:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073448;
-	bh=2MLp8LeNJhAJVYohUSZzwX/Wshe+KOvpR7Y7NC9AHa0=;
+	s=korg; t=1747073049;
+	bh=PiIqHbpu0AjccLkXGvGdCFDG1ZkSso+91QWm0jb+rU4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xq0lfNcZpIlsYypnpuv0DfxgVjk8RZ9obKLDGVduU3ksZlCjCsKrJZ4R14Q8r535b
-	 K9MKdFkMq0m4+3oN4aLpwCF545RId2odvEhHsO2XYC9S/MR5BSaWv5kcnKBpbeJxHU
-	 nfapFW1CUxg8Zfb9Z8oMWxmBCqv+wG+YHq1zTaw4=
+	b=Qade9Ef9EBEdF8RxUsyn7oLnmGSxA2W8UWIszZAEB64BxgzhPUO9ef7EDyJO/NfTl
+	 od8BNd+HLrKONuBl5gMl2md1O9BoImVnWB01Gad6YWBSlCNyIV6muRcVfqMy0JJ/KB
+	 tOAgJfcXXhjMNIA6/DYTT4SoI7rI6GFbCu4jVKSg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Ray Wu <ray.wu@amd.com>,
-	Wayne Lin <Wayne.Lin@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.6 051/113] drm/amd/display: Fix wrong handling for AUX_DEFER case
+	John Garry <john.g.garry@oracle.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 139/184] loop: Use bdev limit helpers for configuring discard
 Date: Mon, 12 May 2025 19:45:40 +0200
-Message-ID: <20250512172029.751151755@linuxfoundation.org>
+Message-ID: <20250512172047.473190098@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
-References: <20250512172027.691520737@linuxfoundation.org>
+In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
+References: <20250512172041.624042835@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,95 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wayne Lin <Wayne.Lin@amd.com>
+From: John Garry <john.g.garry@oracle.com>
 
-commit 65924ec69b29296845c7f628112353438e63ea56 upstream.
+[ Upstream commit 8d3fd059dd289e6c322e5741ad56794bcce699a2 ]
 
-[Why]
-We incorrectly ack all bytes get written when the reply actually is defer.
-When it's defer, means sink is not ready for the request. We should
-retry the request.
+Instead of directly looking at the request_queue limits, use the bdev
+limits helpers, which is preferable.
 
-[How]
-Only reply all data get written when receive I2C_ACK|AUX_ACK. Otherwise,
-reply the number of actual written bytes received from the sink.
-Add some messages to facilitate debugging as well.
-
-Fixes: ad6756b4d773 ("drm/amd/display: Shift dc link aux to aux_payload")
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Ray Wu <ray.wu@amd.com>
-Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
-Signed-off-by: Ray Wu <ray.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 3637e457eb0000bc37d8bbbec95964aad2fb29fd)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: John Garry <john.g.garry@oracle.com>
+Link: https://lore.kernel.org/r/20241030111900.3981223-1-john.g.garry@oracle.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: f5c84eff634b ("loop: Add sanity check for read/write_iter")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c |   28 ++++++++++--
- 1 file changed, 24 insertions(+), 4 deletions(-)
+ drivers/block/loop.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-@@ -48,6 +48,9 @@
+diff --git a/drivers/block/loop.c b/drivers/block/loop.c
+index 8827a768284ac..b3355a8d78965 100644
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -710,11 +710,11 @@ static void loop_config_discard(struct loop_device *lo,
+ 	 * file-backed loop devices: discarded regions read back as zero.
+ 	 */
+ 	if (S_ISBLK(inode->i_mode)) {
+-		struct request_queue *backingq = bdev_get_queue(I_BDEV(inode));
++		struct block_device *bdev = I_BDEV(inode);
  
- #define PEAK_FACTOR_X1000 1006
+-		max_discard_sectors = backingq->limits.max_write_zeroes_sectors;
+-		granularity = bdev_discard_granularity(I_BDEV(inode)) ?:
+-			queue_physical_block_size(backingq);
++		max_discard_sectors = bdev_write_zeroes_sectors(bdev);
++		granularity = bdev_discard_granularity(bdev) ?:
++			bdev_physical_block_size(bdev);
  
-+/*
-+ * This function handles both native AUX and I2C-Over-AUX transactions.
-+ */
- static ssize_t dm_dp_aux_transfer(struct drm_dp_aux *aux,
- 				  struct drm_dp_aux_msg *msg)
- {
-@@ -84,15 +87,25 @@ static ssize_t dm_dp_aux_transfer(struct
- 	if (adev->dm.aux_hpd_discon_quirk) {
- 		if (msg->address == DP_SIDEBAND_MSG_DOWN_REQ_BASE &&
- 			operation_result == AUX_RET_ERROR_HPD_DISCON) {
--			result = 0;
-+			result = msg->size;
- 			operation_result = AUX_RET_SUCCESS;
- 		}
- 	}
- 
--	if (payload.write && result >= 0)
--		result = msg->size;
-+	/*
-+	 * result equals to 0 includes the cases of AUX_DEFER/I2C_DEFER
-+	 */
-+	if (payload.write && result >= 0) {
-+		if (result) {
-+			/*one byte indicating partially written bytes. Force 0 to retry*/
-+			drm_info(adev_to_drm(adev), "amdgpu: AUX partially written\n");
-+			result = 0;
-+		} else if (!payload.reply[0])
-+			/*I2C_ACK|AUX_ACK*/
-+			result = msg->size;
-+	}
- 
--	if (result < 0)
-+	if (result < 0) {
- 		switch (operation_result) {
- 		case AUX_RET_SUCCESS:
- 			break;
-@@ -111,6 +124,13 @@ static ssize_t dm_dp_aux_transfer(struct
- 			break;
- 		}
- 
-+		drm_info(adev_to_drm(adev), "amdgpu: DP AUX transfer fail:%d\n", operation_result);
-+	}
-+
-+	if (payload.reply[0])
-+		drm_info(adev_to_drm(adev), "amdgpu: AUX reply command not ACK: 0x%02x.",
-+			payload.reply[0]);
-+
- 	return result;
- }
- 
+ 	/*
+ 	 * We use punch hole to reclaim the free space used by the
+-- 
+2.39.5
+
 
 
 
