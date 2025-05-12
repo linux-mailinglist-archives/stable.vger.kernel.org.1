@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-143106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68F2EAB2CAA
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 02:27:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70E40AB2CAB
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 02:30:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 492CE3AF550
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 00:26:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF745175597
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 00:30:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B052560DCF;
-	Mon, 12 May 2025 00:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A88D83770B;
+	Mon, 12 May 2025 00:30:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="dB3DB/zk"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="vJ4Jmc2d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D70C2940B;
-	Mon, 12 May 2025 00:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54C7417741;
+	Mon, 12 May 2025 00:30:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747009618; cv=none; b=COohkqsS7443uuldMe+usetlHKISnyhemZWYGXGOoadAsisWg2zOXZrXdBVUDmKDA9DcKkcxhBjz1DOdLLnzNsbPXV2j87hYXu/gGiqINSVQqGwnf13z1vEXEfMzcaF6mjPdLg1mYJCmJCC0WeN/JVkp+DFriq3G8TJU5eRjTNU=
+	t=1747009815; cv=none; b=ZqGV5+RLBIVgnrh+KfCTax3yQhSaRNtY4sg82KrGeRwTKqW8oHtnAtLUV71cWObL9gtR7sArqTiyEmo+pUwku9IMjyk4nOq/D/3F/drkLkjFB5Y+jg85jlYKHDrej8J3FQX1egJn4dcTwZK6i5YFobdPX/eXc3K+0/ZC9i7iUpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747009618; c=relaxed/simple;
-	bh=3hCO/bOrGHPBKg+NiFEE1olSTORD47AKbKI2cRHHh+0=;
-	h=Date:To:From:Subject:Message-Id; b=oOvWwsG6dHQDIofuGfMWO343suPb70RnXssR7bx6zY7m9jBF65HLc2qVLvhG/w5C7IgZdTUQcimqe1OTXEiX06Na9ZlTPuoTdlELqd4x4LORKtdwLy/n222L+40pCiR26QziworM2ku1fQMxf8aEWXA9wbUEqotDDhaChJcuxmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=dB3DB/zk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2AB4C4CEEF;
-	Mon, 12 May 2025 00:26:57 +0000 (UTC)
+	s=arc-20240116; t=1747009815; c=relaxed/simple;
+	bh=JHjdxSqWl/qn8ijPKEzvBVBy3M+QALcVxHezti25ZoY=;
+	h=Date:To:From:Subject:Message-Id; b=dBjb428SmWuwWSmxdffzuZeG0F3rKvIRE1AH+RAMGBBnzR+iYFZ3vQZ/Qm1VtAuhz7q9ZhiQs5dHeBo6i8quSorOkWRRKNg8J31Cnhth4F3Ik7uBswr7uqjGFlyMvSxP06h5zsQsvzHKLqhvM3UtNLZhhxhRpLrXqX3sEHZhVZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=vJ4Jmc2d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B480BC4CEE4;
+	Mon, 12 May 2025 00:30:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1747009617;
-	bh=3hCO/bOrGHPBKg+NiFEE1olSTORD47AKbKI2cRHHh+0=;
+	s=korg; t=1747009813;
+	bh=JHjdxSqWl/qn8ijPKEzvBVBy3M+QALcVxHezti25ZoY=;
 	h=Date:To:From:Subject:From;
-	b=dB3DB/zkNGRlTxrmhCUTnTOpGcZWOau46+mxZ3qPdfpBZF0Jz0Tou8twERbHUQEIB
-	 9MBzBzJu4QfkKHLibwVLWuP4YM3YT71ID/KrpP8AsB0PmuPsC744vJ8zYv3iQ+8I5d
-	 OWVMlSK1opnLZSrIRE4hC/MSxRogk3m+SvHC4130=
-Date: Sun, 11 May 2025 17:26:57 -0700
-To: mm-commits@vger.kernel.org,vbabka@suse.cz,tglx@linutronix.de,surenb@google.com,stable@vger.kernel.org,mhocko@suse.com,jackmanb@google.com,hannes@cmpxchg.org,bp@alien8.de,kirill.shutemov@linux.intel.com,akpm@linux-foundation.org
+	b=vJ4Jmc2dc11ENm6njBcSkkdYJu/qM3fBMLsT2NG5/e4mVt+6K7EgqHroYdfCNvJFs
+	 R23D6RIuGtTTJoVWGDgTql4eRaPh3K+EnW8L4NCOnsIn+c1KaUMKztiyd1009Ytv6Y
+	 kzmpw2kv/7RpAOqF2oShIF3uLtnccd/dC4L3U2Sw=
+Date: Sun, 11 May 2025 17:30:13 -0700
+To: mm-commits@vger.kernel.org,surenb@google.com,stable@vger.kernel.org,peterx@redhat.com,lokeshgidra@google.com,david@redhat.com,aarcange@redhat.com,v-songbaohua@oppo.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-page_alloc-fix-race-condition-in-unaccepted-memory-handling.patch removed from -mm tree
-Message-Id: <20250512002657.B2AB4C4CEEF@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-userfaultfd-correct-dirty-flags-set-for-both-present-and-swap-pte.patch removed from -mm tree
+Message-Id: <20250512003013.B480BC4CEE4@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,192 +50,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm/page_alloc: fix race condition in unaccepted memory handling
+     Subject: mm: userfaultfd: correct dirty flags set for both present and swap pte
 has been removed from the -mm tree.  Its filename was
-     mm-page_alloc-fix-race-condition-in-unaccepted-memory-handling.patch
+     mm-userfaultfd-correct-dirty-flags-set-for-both-present-and-swap-pte.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: mm/page_alloc: fix race condition in unaccepted memory handling
-Date: Tue, 6 May 2025 16:32:07 +0300
+From: Barry Song <v-songbaohua@oppo.com>
+Subject: mm: userfaultfd: correct dirty flags set for both present and swap pte
+Date: Fri, 9 May 2025 10:09:12 +1200
 
-The page allocator tracks the number of zones that have unaccepted memory
-using static_branch_enc/dec() and uses that static branch in hot paths to
-determine if it needs to deal with unaccepted memory.
+As David pointed out, what truly matters for mremap and userfaultfd move
+operations is the soft dirty bit.  The current comment and
+implementation—which always sets the dirty bit for present PTEs and
+fails to set the soft dirty bit for swap PTEs—are incorrect.  This could
+break features like Checkpoint-Restore in Userspace (CRIU).
 
-Borislav and Thomas pointed out that the tracking is racy: operations on
-static_branch are not serialized against adding/removing unaccepted pages
-to/from the zone.
+This patch updates the behavior to correctly set the soft dirty bit for
+both present and swap PTEs in accordance with mremap.
 
-Sanity checks inside static_branch machinery detects it:
-
-WARNING: CPU: 0 PID: 10 at kernel/jump_label.c:276 __static_key_slow_dec_cpuslocked+0x8e/0xa0
-
-The comment around the WARN() explains the problem:
-
-	/*
-	 * Warn about the '-1' case though; since that means a
-	 * decrement is concurrent with a first (0->1) increment. IOW
-	 * people are trying to disable something that wasn't yet fully
-	 * enabled. This suggests an ordering problem on the user side.
-	 */
-
-The effect of this static_branch optimization is only visible on
-microbenchmark.
-
-Instead of adding more complexity around it, remove it altogether.
-
-Link: https://lkml.kernel.org/r/20250506133207.1009676-1-kirill.shutemov@linux.intel.com
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Fixes: dcdfdd40fa82 ("mm: Add support for unaccepted memory")
-Link: https://lore.kernel.org/all/20250506092445.GBaBnVXXyvnazly6iF@fat_crate.local
-Reported-by: Borislav Petkov <bp@alien8.de>
-Tested-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reported-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Brendan Jackman <jackmanb@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: <stable@vger.kernel.org>	[6.5+]
+Link: https://lkml.kernel.org/r/20250508220912.7275-1-21cnbao@gmail.com
+Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+Signed-off-by: Barry Song <v-songbaohua@oppo.com>
+Reported-by: David Hildenbrand <david@redhat.com>
+Closes: https://lore.kernel.org/linux-mm/02f14ee1-923f-47e3-a994-4950afb9afcc@redhat.com/
+Acked-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+Cc: Lokesh Gidra <lokeshgidra@google.com>
+Cc: Andrea Arcangeli <aarcange@redhat.com>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/internal.h   |    1 
- mm/mm_init.c    |    1 
- mm/page_alloc.c |   47 ----------------------------------------------
- 3 files changed, 49 deletions(-)
+ mm/userfaultfd.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
---- a/mm/internal.h~mm-page_alloc-fix-race-condition-in-unaccepted-memory-handling
-+++ a/mm/internal.h
-@@ -1590,7 +1590,6 @@ unsigned long move_page_tables(struct pa
+--- a/mm/userfaultfd.c~mm-userfaultfd-correct-dirty-flags-set-for-both-present-and-swap-pte
++++ a/mm/userfaultfd.c
+@@ -1064,8 +1064,13 @@ static int move_present_pte(struct mm_st
+ 	src_folio->index = linear_page_index(dst_vma, dst_addr);
  
- #ifdef CONFIG_UNACCEPTED_MEMORY
- void accept_page(struct page *page);
--void unaccepted_cleanup_work(struct work_struct *work);
- #else /* CONFIG_UNACCEPTED_MEMORY */
- static inline void accept_page(struct page *page)
- {
---- a/mm/mm_init.c~mm-page_alloc-fix-race-condition-in-unaccepted-memory-handling
-+++ a/mm/mm_init.c
-@@ -1441,7 +1441,6 @@ static void __meminit zone_init_free_lis
+ 	orig_dst_pte = mk_pte(&src_folio->page, dst_vma->vm_page_prot);
+-	/* Follow mremap() behavior and treat the entry dirty after the move */
+-	orig_dst_pte = pte_mkwrite(pte_mkdirty(orig_dst_pte), dst_vma);
++	/* Set soft dirty bit so userspace can notice the pte was moved */
++#ifdef CONFIG_MEM_SOFT_DIRTY
++	orig_dst_pte = pte_mksoft_dirty(orig_dst_pte);
++#endif
++	if (pte_dirty(orig_src_pte))
++		orig_dst_pte = pte_mkdirty(orig_dst_pte);
++	orig_dst_pte = pte_mkwrite(orig_dst_pte, dst_vma);
  
- #ifdef CONFIG_UNACCEPTED_MEMORY
- 	INIT_LIST_HEAD(&zone->unaccepted_pages);
--	INIT_WORK(&zone->unaccepted_cleanup, unaccepted_cleanup_work);
- #endif
- }
+ 	set_pte_at(mm, dst_addr, dst_pte, orig_dst_pte);
+ out:
+@@ -1100,6 +1105,9 @@ static int move_swap_pte(struct mm_struc
+ 	}
  
---- a/mm/page_alloc.c~mm-page_alloc-fix-race-condition-in-unaccepted-memory-handling
-+++ a/mm/page_alloc.c
-@@ -7172,16 +7172,8 @@ bool has_managed_dma(void)
- 
- #ifdef CONFIG_UNACCEPTED_MEMORY
- 
--/* Counts number of zones with unaccepted pages. */
--static DEFINE_STATIC_KEY_FALSE(zones_with_unaccepted_pages);
--
- static bool lazy_accept = true;
- 
--void unaccepted_cleanup_work(struct work_struct *work)
--{
--	static_branch_dec(&zones_with_unaccepted_pages);
--}
--
- static int __init accept_memory_parse(char *p)
- {
- 	if (!strcmp(p, "lazy")) {
-@@ -7206,11 +7198,7 @@ static bool page_contains_unaccepted(str
- static void __accept_page(struct zone *zone, unsigned long *flags,
- 			  struct page *page)
- {
--	bool last;
--
- 	list_del(&page->lru);
--	last = list_empty(&zone->unaccepted_pages);
--
- 	account_freepages(zone, -MAX_ORDER_NR_PAGES, MIGRATE_MOVABLE);
- 	__mod_zone_page_state(zone, NR_UNACCEPTED, -MAX_ORDER_NR_PAGES);
- 	__ClearPageUnaccepted(page);
-@@ -7219,28 +7207,6 @@ static void __accept_page(struct zone *z
- 	accept_memory(page_to_phys(page), PAGE_SIZE << MAX_PAGE_ORDER);
- 
- 	__free_pages_ok(page, MAX_PAGE_ORDER, FPI_TO_TAIL);
--
--	if (last) {
--		/*
--		 * There are two corner cases:
--		 *
--		 * - If allocation occurs during the CPU bring up,
--		 *   static_branch_dec() cannot be used directly as
--		 *   it causes a deadlock on cpu_hotplug_lock.
--		 *
--		 *   Instead, use schedule_work() to prevent deadlock.
--		 *
--		 * - If allocation occurs before workqueues are initialized,
--		 *   static_branch_dec() should be called directly.
--		 *
--		 *   Workqueues are initialized before CPU bring up, so this
--		 *   will not conflict with the first scenario.
--		 */
--		if (system_wq)
--			schedule_work(&zone->unaccepted_cleanup);
--		else
--			unaccepted_cleanup_work(&zone->unaccepted_cleanup);
--	}
- }
- 
- void accept_page(struct page *page)
-@@ -7277,20 +7243,12 @@ static bool try_to_accept_memory_one(str
- 	return true;
- }
- 
--static inline bool has_unaccepted_memory(void)
--{
--	return static_branch_unlikely(&zones_with_unaccepted_pages);
--}
--
- static bool cond_accept_memory(struct zone *zone, unsigned int order,
- 			       int alloc_flags)
- {
- 	long to_accept, wmark;
- 	bool ret = false;
- 
--	if (!has_unaccepted_memory())
--		return false;
--
- 	if (list_empty(&zone->unaccepted_pages))
- 		return false;
- 
-@@ -7328,22 +7286,17 @@ static bool __free_unaccepted(struct pag
- {
- 	struct zone *zone = page_zone(page);
- 	unsigned long flags;
--	bool first = false;
- 
- 	if (!lazy_accept)
- 		return false;
- 
- 	spin_lock_irqsave(&zone->lock, flags);
--	first = list_empty(&zone->unaccepted_pages);
- 	list_add_tail(&page->lru, &zone->unaccepted_pages);
- 	account_freepages(zone, MAX_ORDER_NR_PAGES, MIGRATE_MOVABLE);
- 	__mod_zone_page_state(zone, NR_UNACCEPTED, MAX_ORDER_NR_PAGES);
- 	__SetPageUnaccepted(page);
- 	spin_unlock_irqrestore(&zone->lock, flags);
- 
--	if (first)
--		static_branch_inc(&zones_with_unaccepted_pages);
--
- 	return true;
- }
+ 	orig_src_pte = ptep_get_and_clear(mm, src_addr, src_pte);
++#ifdef CONFIG_MEM_SOFT_DIRTY
++	orig_src_pte = pte_swp_mksoft_dirty(orig_src_pte);
++#endif
+ 	set_pte_at(mm, dst_addr, dst_pte, orig_src_pte);
+ 	double_pt_unlock(dst_ptl, src_ptl);
  
 _
 
-Patches currently in -mm which might be from kirill.shutemov@linux.intel.com are
+Patches currently in -mm which might be from v-songbaohua@oppo.com are
 
 
 
