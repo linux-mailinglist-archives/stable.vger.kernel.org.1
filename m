@@ -1,798 +1,857 @@
-Return-Path: <stable+bounces-143554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B06BAB4063
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:53:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29728AB40FA
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:00:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C581B867337
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:51:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 447AE863AEC
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:58:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B04D29614D;
-	Mon, 12 May 2025 17:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46B97295DAB;
+	Mon, 12 May 2025 17:58:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A4L6EgNL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cY5IlffA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1523E295DA6;
-	Mon, 12 May 2025 17:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1E631E505;
+	Mon, 12 May 2025 17:58:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072330; cv=none; b=okgvVzkYHO3hMGsTWG8CKRDJhD3vfo7Sm0Oq+zMA2XhJXWtrVtF9dMMoZ+ExCugGaacHMNkCnE7If6ikTXAsvisRS64cFxdp1+zlDY7INi0ulIVWoUV1ub+krKBq09LQL+66LrDdFFXGUpgjSMf76KteBW+d/bZwJFwqC/Vilc8=
+	t=1747072721; cv=none; b=CKPjiF5sdU7nvQHbQzu4zSVPut+8dwNzPCmn5gXS5K5h93ohmofrHlwKulUsKs4wCbiSlxQYd9ZcBZBbn5wyzTPpHqwIOOUBvSVUq1XdbfmbR7pS/B6COYYQ61SOhlZ6Kkm3+zLdgmTnozwsGKGo6hjLizO8sjy12OizEdq4CGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072330; c=relaxed/simple;
-	bh=d7gxCObdYuoN3LhRmORe6oixAdHPzJ4IBFWjCWqihBY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AZSOQ3A2FIXaxK7j0IGPvA18g7vKGu0vOHMgx0osHnR8ESFopvcNqFNCiGg+3knxGQP2RjpBXY9EdHtM80EfpNoeu9WSiRH9qMcaHi9xlZW9ZDCclbC2kxn/hWAn/EW605RfjksR9XtTRjf/vdML6fWHQ60Kw0r6UQQjBlbGwiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A4L6EgNL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45680C4CEE7;
-	Mon, 12 May 2025 17:52:09 +0000 (UTC)
+	s=arc-20240116; t=1747072721; c=relaxed/simple;
+	bh=WEt99JJZjZcy8HRdxdM7E0lP/NogiIz+p4iLZHZtpr4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=sj2Xiox9Zw/YLXGP3QvJ79sHZWGbuoz9f/fx3Lkrr5C6eck1S2Dp7Qlzw5GWjsl1788dOOBv7OTjAsiG5i2ZBrSpg0Gswrhalt4shulaYseJ6TTzNFLbohX3P1W+6OejCzLAwtpoQ3RYwimBQLO7eBeC8c2XANhOg3ysTHu7wc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cY5IlffA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D4B2C4CEE7;
+	Mon, 12 May 2025 17:58:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072330;
-	bh=d7gxCObdYuoN3LhRmORe6oixAdHPzJ4IBFWjCWqihBY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A4L6EgNL+gnYaBfQRfTw8X2gcQIV88DbCCfCYaY797c+F7YWWMxxz2CrVB+q/2fdj
-	 GMXs/whl79hOjC990AbL5MqS+IaXZywcxeysKZRRpwdvqxiLtU8Dycwn2z/zi2s9Dx
-	 OpHWZjtvu89FAuL2VFSVW04hC8mK9Q30N07cXhhc=
+	s=korg; t=1747072720;
+	bh=WEt99JJZjZcy8HRdxdM7E0lP/NogiIz+p4iLZHZtpr4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=cY5IlffAyptuKqs5mrpKkbfGrTBBoXAhDd6KwZd4p7SSuUe5JIjZQ0f91R5DxhuXW
+	 y74h6rF0th7L48+gLqxp+3TIkdCQwtmVs8h8cRoG0rZ4KEqsLd6KKwNCWD6BuLygLN
+	 oOC9Zw48u73b5kcefj6SSnxVn2tyZaAFgR5PYvs4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tao Zhang <tao1.zhang@linux.intel.com>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCH 6.14 197/197] selftest/x86/bugs: Add selftests for ITS
-Date: Mon, 12 May 2025 19:40:47 +0200
-Message-ID: <20250512172052.439043944@linuxfoundation.org>
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	hargar@microsoft.com,
+	broonie@kernel.org
+Subject: [PATCH 6.12 000/184] 6.12.29-rc1 review
+Date: Mon, 12 May 2025 19:43:21 +0200
+Message-ID: <20250512172041.624042835@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172044.326436266@linuxfoundation.org>
-References: <20250512172044.326436266@linuxfoundation.org>
-User-Agent: quilt/0.68
-X-stable: review
-X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: quilt/0.68
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.29-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-6.12.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 6.12.29-rc1
+X-KernelTest-Deadline: 2025-05-14T17:20+00:00
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+This is the start of the stable review cycle for the 6.12.29 release.
+There are 184 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-------------------
+Responses should be made by Wed, 14 May 2025 17:19:58 +0000.
+Anything received after that time might be too late.
 
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.29-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+and the diffstat can be found below.
 
-commit 7a9b709e7cc5ce1ffb84ce07bf6d157e1de758df upstream.
+thanks,
 
-Below are the tests added for Indirect Target Selection (ITS):
+greg k-h
 
-- its_sysfs.py - Check if sysfs reflects the correct mitigation status for
-  the mitigation selected via the kernel cmdline.
+-------------
+Pseudo-Shortlog of commits:
 
-- its_permutations.py - tests mitigation selection with cmdline
-  permutations with other bugs like spectre_v2 and retbleed.
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 6.12.29-rc1
 
-- its_indirect_alignment.py - verifies that for addresses in
-  .retpoline_sites section that belong to lower half of cacheline are
-  patched to ITS-safe thunk. Typical output looks like below:
+Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+    selftest/x86/bugs: Add selftests for ITS
 
-  Site 49: function symbol: __x64_sys_restart_syscall+0x1f <0xffffffffbb1509af>
-  #     vmlinux: 0xffffffff813509af:    jmp     0xffffffff81f5a8e0
-  #     kcore:   0xffffffffbb1509af:    jmpq    *%rax
-  #     ITS thunk NOT expected for site 49
-  #     PASSED: Found *%rax
-  #
-  Site 50: function symbol: __resched_curr+0xb0 <0xffffffffbb181910>
-  #     vmlinux: 0xffffffff81381910:    jmp     0xffffffff81f5a8e0
-  #     kcore:   0xffffffffbb181910:    jmp     0xffffffffc02000fc
-  #     ITS thunk expected for site 50
-  #     PASSED: Found 0xffffffffc02000fc -> jmpq *%rax <scattered-thunk?>
+Peter Zijlstra <peterz@infradead.org>
+    x86/its: Use dynamic thunks for indirect branches
 
-- its_ret_alignment.py - verifies that for addresses in .return_sites
-  section that belong to lower half of cacheline are patched to
-  its_return_thunk. Typical output looks like below:
+Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+    x86/ibt: Keep IBT disabled during alternative patching
 
-  Site 97: function symbol: collect_event+0x48 <0xffffffffbb007f18>
-  #     vmlinux: 0xffffffff81207f18:    jmp     0xffffffff81f5b500
-  #     kcore:   0xffffffffbb007f18:    jmp     0xffffffffbbd5b560
-  #     PASSED: Found jmp 0xffffffffbbd5b560 <its_return_thunk>
-  #
-  Site 98: function symbol: collect_event+0xa4 <0xffffffffbb007f74>
-  #     vmlinux: 0xffffffff81207f74:    jmp     0xffffffff81f5b500
-  #     kcore:   0xffffffffbb007f74:    retq
-  #     PASSED: Found retq
+Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+    x86/its: Align RETs in BHB clear sequence to avoid thunking
 
-Some of these tests have dependency on tools like virtme-ng[1] and drgn[2].
-When the dependencies are not met, the test will be skipped.
+Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+    x86/its: Add support for RSB stuffing mitigation
 
-[1] https://github.com/arighi/virtme-ng
-[2] https://github.com/osandov/drgn
+Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+    x86/its: Add "vmexit" option to skip mitigation on some CPUs
 
-Co-developed-by: Tao Zhang <tao1.zhang@linux.intel.com>
-Signed-off-by: Tao Zhang <tao1.zhang@linux.intel.com>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- tools/testing/selftests/Makefile                           |    1 
- tools/testing/selftests/x86/bugs/Makefile                  |    3 
- tools/testing/selftests/x86/bugs/common.py                 |  164 +++++++++++++
- tools/testing/selftests/x86/bugs/its_indirect_alignment.py |  150 +++++++++++
- tools/testing/selftests/x86/bugs/its_permutations.py       |  109 ++++++++
- tools/testing/selftests/x86/bugs/its_ret_alignment.py      |  139 +++++++++++
- tools/testing/selftests/x86/bugs/its_sysfs.py              |   65 +++++
- 7 files changed, 631 insertions(+)
- create mode 100644 tools/testing/selftests/x86/bugs/Makefile
- create mode 100755 tools/testing/selftests/x86/bugs/common.py
- create mode 100755 tools/testing/selftests/x86/bugs/its_indirect_alignment.py
- create mode 100755 tools/testing/selftests/x86/bugs/its_permutations.py
- create mode 100755 tools/testing/selftests/x86/bugs/its_ret_alignment.py
- create mode 100755 tools/testing/selftests/x86/bugs/its_sysfs.py
+Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+    x86/its: Enable Indirect Target Selection mitigation
 
---- a/tools/testing/selftests/Makefile
-+++ b/tools/testing/selftests/Makefile
-@@ -118,6 +118,7 @@ TARGETS += user_events
- TARGETS += vDSO
- TARGETS += mm
- TARGETS += x86
-+TARGETS += x86/bugs
- TARGETS += zram
- #Please keep the TARGETS list alphabetically sorted
- # Run "make quicktest=1 run_tests" or
---- /dev/null
-+++ b/tools/testing/selftests/x86/bugs/Makefile
-@@ -0,0 +1,3 @@
-+TEST_PROGS := its_sysfs.py its_permutations.py its_indirect_alignment.py its_ret_alignment.py
-+TEST_FILES := common.py
-+include ../../lib.mk
---- /dev/null
-+++ b/tools/testing/selftests/x86/bugs/common.py
-@@ -0,0 +1,164 @@
-+#!/usr/bin/env python3
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Copyright (c) 2025 Intel Corporation
-+#
-+# This contains kselftest framework adapted common functions for testing
-+# mitigation for x86 bugs.
-+
-+import os, sys, re, shutil
-+
-+sys.path.insert(0, '../../kselftest')
-+import ksft
-+
-+def read_file(path):
-+    if not os.path.exists(path):
-+        return None
-+    with open(path, 'r') as file:
-+        return file.read().strip()
-+
-+def cpuinfo_has(arg):
-+    cpuinfo = read_file('/proc/cpuinfo')
-+    if arg in cpuinfo:
-+        return True
-+    return False
-+
-+def cmdline_has(arg):
-+    cmdline = read_file('/proc/cmdline')
-+    if arg in cmdline:
-+        return True
-+    return False
-+
-+def cmdline_has_either(args):
-+    cmdline = read_file('/proc/cmdline')
-+    for arg in args:
-+        if arg in cmdline:
-+            return True
-+    return False
-+
-+def cmdline_has_none(args):
-+    return not cmdline_has_either(args)
-+
-+def cmdline_has_all(args):
-+    cmdline = read_file('/proc/cmdline')
-+    for arg in args:
-+        if arg not in cmdline:
-+            return False
-+    return True
-+
-+def get_sysfs(bug):
-+    return read_file("/sys/devices/system/cpu/vulnerabilities/" + bug)
-+
-+def sysfs_has(bug, mitigation):
-+    status = get_sysfs(bug)
-+    if mitigation in status:
-+        return True
-+    return False
-+
-+def sysfs_has_either(bugs, mitigations):
-+    for bug in bugs:
-+        for mitigation in mitigations:
-+            if sysfs_has(bug, mitigation):
-+                return True
-+    return False
-+
-+def sysfs_has_none(bugs, mitigations):
-+    return not sysfs_has_either(bugs, mitigations)
-+
-+def sysfs_has_all(bugs, mitigations):
-+    for bug in bugs:
-+        for mitigation in mitigations:
-+            if not sysfs_has(bug, mitigation):
-+                return False
-+    return True
-+
-+def bug_check_pass(bug, found):
-+    ksft.print_msg(f"\nFound: {found}")
-+    # ksft.print_msg(f"\ncmdline: {read_file('/proc/cmdline')}")
-+    ksft.test_result_pass(f'{bug}: {found}')
-+
-+def bug_check_fail(bug, found, expected):
-+    ksft.print_msg(f'\nFound:\t {found}')
-+    ksft.print_msg(f'Expected:\t {expected}')
-+    ksft.print_msg(f"\ncmdline: {read_file('/proc/cmdline')}")
-+    ksft.test_result_fail(f'{bug}: {found}')
-+
-+def bug_status_unknown(bug, found):
-+    ksft.print_msg(f'\nUnknown status: {found}')
-+    ksft.print_msg(f"\ncmdline: {read_file('/proc/cmdline')}")
-+    ksft.test_result_fail(f'{bug}: {found}')
-+
-+def basic_checks_sufficient(bug, mitigation):
-+    if not mitigation:
-+        bug_status_unknown(bug, "None")
-+        return True
-+    elif mitigation == "Not affected":
-+        ksft.test_result_pass(bug)
-+        return True
-+    elif mitigation == "Vulnerable":
-+        if cmdline_has_either([f'{bug}=off', 'mitigations=off']):
-+            bug_check_pass(bug, mitigation)
-+            return True
-+    return False
-+
-+def get_section_info(vmlinux, section_name):
-+    from elftools.elf.elffile import ELFFile
-+    with open(vmlinux, 'rb') as f:
-+        elffile = ELFFile(f)
-+        section = elffile.get_section_by_name(section_name)
-+        if section is None:
-+            ksft.print_msg("Available sections in vmlinux:")
-+            for sec in elffile.iter_sections():
-+                ksft.print_msg(sec.name)
-+            raise ValueError(f"Section {section_name} not found in {vmlinux}")
-+        return section['sh_addr'], section['sh_offset'], section['sh_size']
-+
-+def get_patch_sites(vmlinux, offset, size):
-+    import struct
-+    output = []
-+    with open(vmlinux, 'rb') as f:
-+        f.seek(offset)
-+        i = 0
-+        while i < size:
-+            data = f.read(4)  # s32
-+            if not data:
-+                break
-+            sym_offset = struct.unpack('<i', data)[0] + i
-+            i += 4
-+            output.append(sym_offset)
-+    return output
-+
-+def get_instruction_from_vmlinux(elffile, section, virtual_address, target_address):
-+    from capstone import Cs, CS_ARCH_X86, CS_MODE_64
-+    section_start = section['sh_addr']
-+    section_end = section_start + section['sh_size']
-+
-+    if not (section_start <= target_address < section_end):
-+        return None
-+
-+    offset = target_address - section_start
-+    code = section.data()[offset:offset + 16]
-+
-+    cap = init_capstone()
-+    for instruction in cap.disasm(code, target_address):
-+        if instruction.address == target_address:
-+            return instruction
-+    return None
-+
-+def init_capstone():
-+    from capstone import Cs, CS_ARCH_X86, CS_MODE_64, CS_OPT_SYNTAX_ATT
-+    cap = Cs(CS_ARCH_X86, CS_MODE_64)
-+    cap.syntax = CS_OPT_SYNTAX_ATT
-+    return cap
-+
-+def get_runtime_kernel():
-+    import drgn
-+    return drgn.program_from_kernel()
-+
-+def check_dependencies_or_skip(modules, script_name="unknown test"):
-+    for mod in modules:
-+        try:
-+            __import__(mod)
-+        except ImportError:
-+            ksft.test_result_skip(f"Skipping {script_name}: missing module '{mod}'")
-+            ksft.finished()
---- /dev/null
-+++ b/tools/testing/selftests/x86/bugs/its_indirect_alignment.py
-@@ -0,0 +1,150 @@
-+#!/usr/bin/env python3
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Copyright (c) 2025 Intel Corporation
-+#
-+# Test for indirect target selection (ITS) mitigation.
-+#
-+# Test if indirect CALL/JMP are correctly patched by evaluating
-+# the vmlinux .retpoline_sites in /proc/kcore.
-+
-+# Install dependencies
-+# add-apt-repository ppa:michel-slm/kernel-utils
-+# apt update
-+# apt install -y python3-drgn python3-pyelftools python3-capstone
-+#
-+# Best to copy the vmlinux at a standard location:
-+# mkdir -p /usr/lib/debug/lib/modules/$(uname -r)
-+# cp $VMLINUX /usr/lib/debug/lib/modules/$(uname -r)/vmlinux
-+#
-+# Usage: ./its_indirect_alignment.py [vmlinux]
-+
-+import os, sys, argparse
-+from pathlib import Path
-+
-+this_dir = os.path.dirname(os.path.realpath(__file__))
-+sys.path.insert(0, this_dir + '/../../kselftest')
-+import ksft
-+import common as c
-+
-+bug = "indirect_target_selection"
-+
-+mitigation = c.get_sysfs(bug)
-+if not mitigation or "Aligned branch/return thunks" not in mitigation:
-+    ksft.test_result_skip("Skipping its_indirect_alignment.py: Aligned branch/return thunks not enabled")
-+    ksft.finished()
-+
-+if c.sysfs_has("spectre_v2", "Retpolines"):
-+    ksft.test_result_skip("Skipping its_indirect_alignment.py: Retpolines deployed")
-+    ksft.finished()
-+
-+c.check_dependencies_or_skip(['drgn', 'elftools', 'capstone'], script_name="its_indirect_alignment.py")
-+
-+from elftools.elf.elffile import ELFFile
-+from drgn.helpers.common.memory import identify_address
-+
-+cap = c.init_capstone()
-+
-+if len(os.sys.argv) > 1:
-+    arg_vmlinux = os.sys.argv[1]
-+    if not os.path.exists(arg_vmlinux):
-+        ksft.test_result_fail(f"its_indirect_alignment.py: vmlinux not found at argument path: {arg_vmlinux}")
-+        ksft.exit_fail()
-+    os.makedirs(f"/usr/lib/debug/lib/modules/{os.uname().release}", exist_ok=True)
-+    os.system(f'cp {arg_vmlinux} /usr/lib/debug/lib/modules/$(uname -r)/vmlinux')
-+
-+vmlinux = f"/usr/lib/debug/lib/modules/{os.uname().release}/vmlinux"
-+if not os.path.exists(vmlinux):
-+    ksft.test_result_fail(f"its_indirect_alignment.py: vmlinux not found at {vmlinux}")
-+    ksft.exit_fail()
-+
-+ksft.print_msg(f"Using vmlinux: {vmlinux}")
-+
-+retpolines_start_vmlinux, retpolines_sec_offset, size = c.get_section_info(vmlinux, '.retpoline_sites')
-+ksft.print_msg(f"vmlinux: Section .retpoline_sites (0x{retpolines_start_vmlinux:x}) found at 0x{retpolines_sec_offset:x} with size 0x{size:x}")
-+
-+sites_offset = c.get_patch_sites(vmlinux, retpolines_sec_offset, size)
-+total_retpoline_tests = len(sites_offset)
-+ksft.print_msg(f"Found {total_retpoline_tests} retpoline sites")
-+
-+prog = c.get_runtime_kernel()
-+retpolines_start_kcore = prog.symbol('__retpoline_sites').address
-+ksft.print_msg(f'kcore: __retpoline_sites: 0x{retpolines_start_kcore:x}')
-+
-+x86_indirect_its_thunk_r15 = prog.symbol('__x86_indirect_its_thunk_r15').address
-+ksft.print_msg(f'kcore: __x86_indirect_its_thunk_r15: 0x{x86_indirect_its_thunk_r15:x}')
-+
-+tests_passed = 0
-+tests_failed = 0
-+tests_unknown = 0
-+
-+with open(vmlinux, 'rb') as f:
-+    elffile = ELFFile(f)
-+    text_section = elffile.get_section_by_name('.text')
-+
-+    for i in range(0, len(sites_offset)):
-+        site = retpolines_start_kcore + sites_offset[i]
-+        vmlinux_site = retpolines_start_vmlinux + sites_offset[i]
-+        passed = unknown = failed = False
-+        try:
-+            vmlinux_insn = c.get_instruction_from_vmlinux(elffile, text_section, text_section['sh_addr'], vmlinux_site)
-+            kcore_insn = list(cap.disasm(prog.read(site, 16), site))[0]
-+            operand = kcore_insn.op_str
-+            insn_end = site + kcore_insn.size - 1 # TODO handle Jcc.32 __x86_indirect_thunk_\reg
-+            safe_site = insn_end & 0x20
-+            site_status = "" if safe_site else "(unsafe)"
-+
-+            ksft.print_msg(f"\nSite {i}: {identify_address(prog, site)} <0x{site:x}> {site_status}")
-+            ksft.print_msg(f"\tvmlinux: 0x{vmlinux_insn.address:x}:\t{vmlinux_insn.mnemonic}\t{vmlinux_insn.op_str}")
-+            ksft.print_msg(f"\tkcore:   0x{kcore_insn.address:x}:\t{kcore_insn.mnemonic}\t{kcore_insn.op_str}")
-+
-+            if (site & 0x20) ^ (insn_end & 0x20):
-+                ksft.print_msg(f"\tSite at safe/unsafe boundary: {str(kcore_insn.bytes)} {kcore_insn.mnemonic} {operand}")
-+            if safe_site:
-+                tests_passed += 1
-+                passed = True
-+                ksft.print_msg(f"\tPASSED: At safe address")
-+                continue
-+
-+            if operand.startswith('0xffffffff'):
-+                thunk = int(operand, 16)
-+                if thunk > x86_indirect_its_thunk_r15:
-+                    insn_at_thunk = list(cap.disasm(prog.read(thunk, 16), thunk))[0]
-+                    operand += ' -> ' + insn_at_thunk.mnemonic + ' ' + insn_at_thunk.op_str + ' <dynamic-thunk?>'
-+                    if 'jmp' in insn_at_thunk.mnemonic and thunk & 0x20:
-+                        ksft.print_msg(f"\tPASSED: Found {operand} at safe address")
-+                        passed = True
-+                if not passed:
-+                    if kcore_insn.operands[0].type == capstone.CS_OP_IMM:
-+                        operand += ' <' + prog.symbol(int(operand, 16)) + '>'
-+                        if '__x86_indirect_its_thunk_' in operand:
-+                            ksft.print_msg(f"\tPASSED: Found {operand}")
-+                        else:
-+                            ksft.print_msg(f"\tPASSED: Found direct branch: {kcore_insn}, ITS thunk not required.")
-+                        passed = True
-+                    else:
-+                        unknown = True
-+            if passed:
-+                tests_passed += 1
-+            elif unknown:
-+                ksft.print_msg(f"UNKNOWN: unexpected operand: {kcore_insn}")
-+                tests_unknown += 1
-+            else:
-+                ksft.print_msg(f'\t************* FAILED *************')
-+                ksft.print_msg(f"\tFound {kcore_insn.bytes} {kcore_insn.mnemonic} {operand}")
-+                ksft.print_msg(f'\t**********************************')
-+                tests_failed += 1
-+        except Exception as e:
-+            ksft.print_msg(f"UNKNOWN: An unexpected error occurred: {e}")
-+            tests_unknown += 1
-+
-+ksft.print_msg(f"\n\nSummary:")
-+ksft.print_msg(f"PASS:    \t{tests_passed} \t/ {total_retpoline_tests}")
-+ksft.print_msg(f"FAIL:    \t{tests_failed} \t/ {total_retpoline_tests}")
-+ksft.print_msg(f"UNKNOWN: \t{tests_unknown} \t/ {total_retpoline_tests}")
-+
-+if tests_failed == 0:
-+    ksft.test_result_pass("All ITS return thunk sites passed")
-+else:
-+    ksft.test_result_fail(f"{tests_failed} ITS return thunk sites failed")
-+ksft.finished()
---- /dev/null
-+++ b/tools/testing/selftests/x86/bugs/its_permutations.py
-@@ -0,0 +1,109 @@
-+#!/usr/bin/env python3
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Copyright (c) 2025 Intel Corporation
-+#
-+# Test for indirect target selection (ITS) cmdline permutations with other bugs
-+# like spectre_v2 and retbleed.
-+
-+import os, sys, subprocess, itertools, re, shutil
-+
-+test_dir = os.path.dirname(os.path.realpath(__file__))
-+sys.path.insert(0, test_dir + '/../../kselftest')
-+import ksft
-+import common as c
-+
-+bug = "indirect_target_selection"
-+mitigation = c.get_sysfs(bug)
-+
-+if not mitigation or "Not affected" in mitigation:
-+    ksft.test_result_skip("Skipping its_permutations.py: not applicable")
-+    ksft.finished()
-+
-+if shutil.which('vng') is None:
-+    ksft.test_result_skip("Skipping its_permutations.py: virtme-ng ('vng') not found in PATH.")
-+    ksft.finished()
-+
-+TEST = f"{test_dir}/its_sysfs.py"
-+default_kparam = ['clearcpuid=hypervisor', 'panic=5', 'panic_on_warn=1', 'oops=panic', 'nmi_watchdog=1', 'hung_task_panic=1']
-+
-+DEBUG = " -v "
-+
-+# Install dependencies
-+# https://github.com/arighi/virtme-ng
-+# apt install virtme-ng
-+BOOT_CMD = f"vng --run {test_dir}/../../../../../arch/x86/boot/bzImage "
-+#BOOT_CMD += DEBUG
-+
-+bug = "indirect_target_selection"
-+
-+input_options = {
-+    'indirect_target_selection'     : ['off', 'on', 'stuff', 'vmexit'],
-+    'retbleed'                      : ['off', 'stuff', 'auto'],
-+    'spectre_v2'                    : ['off', 'on', 'eibrs', 'retpoline', 'ibrs', 'eibrs,retpoline'],
-+}
-+
-+def pretty_print(output):
-+    OKBLUE = '\033[94m'
-+    OKGREEN = '\033[92m'
-+    WARNING = '\033[93m'
-+    FAIL = '\033[91m'
-+    ENDC = '\033[0m'
-+    BOLD = '\033[1m'
-+
-+    # Define patterns and their corresponding colors
-+    patterns = {
-+        r"^ok \d+": OKGREEN,
-+        r"^not ok \d+": FAIL,
-+        r"^# Testing .*": OKBLUE,
-+        r"^# Found: .*": WARNING,
-+        r"^# Totals: .*": BOLD,
-+        r"pass:([1-9]\d*)": OKGREEN,
-+        r"fail:([1-9]\d*)": FAIL,
-+        r"skip:([1-9]\d*)": WARNING,
-+    }
-+
-+    # Apply colors based on patterns
-+    for pattern, color in patterns.items():
-+        output = re.sub(pattern, lambda match: f"{color}{match.group(0)}{ENDC}", output, flags=re.MULTILINE)
-+
-+    print(output)
-+
-+combinations = list(itertools.product(*input_options.values()))
-+ksft.print_header()
-+ksft.set_plan(len(combinations))
-+
-+logs = ""
-+
-+for combination in combinations:
-+    append = ""
-+    log = ""
-+    for p in default_kparam:
-+        append += f' --append={p}'
-+    command = BOOT_CMD + append
-+    test_params = ""
-+    for i, key in enumerate(input_options.keys()):
-+        param = f'{key}={combination[i]}'
-+        test_params += f' {param}'
-+        command += f" --append={param}"
-+    command += f" -- {TEST}"
-+    test_name = f"{bug} {test_params}"
-+    pretty_print(f'# Testing {test_name}')
-+    t =  subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-+    t.wait()
-+    output, _ = t.communicate()
-+    if t.returncode == 0:
-+        ksft.test_result_pass(test_name)
-+    else:
-+        ksft.test_result_fail(test_name)
-+    output = output.decode()
-+    log += f" {output}"
-+    pretty_print(log)
-+    logs += output + "\n"
-+
-+# Optionally use tappy to parse the output
-+# apt install python3-tappy
-+with open("logs.txt", "w") as f:
-+    f.write(logs)
-+
-+ksft.finished()
---- /dev/null
-+++ b/tools/testing/selftests/x86/bugs/its_ret_alignment.py
-@@ -0,0 +1,139 @@
-+#!/usr/bin/env python3
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Copyright (c) 2025 Intel Corporation
-+#
-+# Test for indirect target selection (ITS) mitigation.
-+#
-+# Tests if the RETs are correctly patched by evaluating the
-+# vmlinux .return_sites in /proc/kcore.
-+#
-+# Install dependencies
-+# add-apt-repository ppa:michel-slm/kernel-utils
-+# apt update
-+# apt install -y python3-drgn python3-pyelftools python3-capstone
-+#
-+# Run on target machine
-+# mkdir -p /usr/lib/debug/lib/modules/$(uname -r)
-+# cp $VMLINUX /usr/lib/debug/lib/modules/$(uname -r)/vmlinux
-+#
-+# Usage: ./its_ret_alignment.py
-+
-+import os, sys, argparse
-+from pathlib import Path
-+
-+this_dir = os.path.dirname(os.path.realpath(__file__))
-+sys.path.insert(0, this_dir + '/../../kselftest')
-+import ksft
-+import common as c
-+
-+bug = "indirect_target_selection"
-+mitigation = c.get_sysfs(bug)
-+if not mitigation or "Aligned branch/return thunks" not in mitigation:
-+    ksft.test_result_skip("Skipping its_ret_alignment.py: Aligned branch/return thunks not enabled")
-+    ksft.finished()
-+
-+c.check_dependencies_or_skip(['drgn', 'elftools', 'capstone'], script_name="its_ret_alignment.py")
-+
-+from elftools.elf.elffile import ELFFile
-+from drgn.helpers.common.memory import identify_address
-+
-+cap = c.init_capstone()
-+
-+if len(os.sys.argv) > 1:
-+    arg_vmlinux = os.sys.argv[1]
-+    if not os.path.exists(arg_vmlinux):
-+        ksft.test_result_fail(f"its_ret_alignment.py: vmlinux not found at user-supplied path: {arg_vmlinux}")
-+        ksft.exit_fail()
-+    os.makedirs(f"/usr/lib/debug/lib/modules/{os.uname().release}", exist_ok=True)
-+    os.system(f'cp {arg_vmlinux} /usr/lib/debug/lib/modules/$(uname -r)/vmlinux')
-+
-+vmlinux = f"/usr/lib/debug/lib/modules/{os.uname().release}/vmlinux"
-+if not os.path.exists(vmlinux):
-+    ksft.test_result_fail(f"its_ret_alignment.py: vmlinux not found at {vmlinux}")
-+    ksft.exit_fail()
-+
-+ksft.print_msg(f"Using vmlinux: {vmlinux}")
-+
-+rethunks_start_vmlinux, rethunks_sec_offset, size = c.get_section_info(vmlinux, '.return_sites')
-+ksft.print_msg(f"vmlinux: Section .return_sites (0x{rethunks_start_vmlinux:x}) found at 0x{rethunks_sec_offset:x} with size 0x{size:x}")
-+
-+sites_offset = c.get_patch_sites(vmlinux, rethunks_sec_offset, size)
-+total_rethunk_tests = len(sites_offset)
-+ksft.print_msg(f"Found {total_rethunk_tests} rethunk sites")
-+
-+prog = c.get_runtime_kernel()
-+rethunks_start_kcore = prog.symbol('__return_sites').address
-+ksft.print_msg(f'kcore: __rethunk_sites: 0x{rethunks_start_kcore:x}')
-+
-+its_return_thunk = prog.symbol('its_return_thunk').address
-+ksft.print_msg(f'kcore: its_return_thunk: 0x{its_return_thunk:x}')
-+
-+tests_passed = 0
-+tests_failed = 0
-+tests_unknown = 0
-+tests_skipped = 0
-+
-+with open(vmlinux, 'rb') as f:
-+    elffile = ELFFile(f)
-+    text_section = elffile.get_section_by_name('.text')
-+
-+    for i in range(len(sites_offset)):
-+        site = rethunks_start_kcore + sites_offset[i]
-+        vmlinux_site = rethunks_start_vmlinux + sites_offset[i]
-+        try:
-+            passed = unknown = failed = skipped = False
-+
-+            symbol = identify_address(prog, site)
-+            vmlinux_insn = c.get_instruction_from_vmlinux(elffile, text_section, text_section['sh_addr'], vmlinux_site)
-+            kcore_insn = list(cap.disasm(prog.read(site, 16), site))[0]
-+
-+            insn_end = site + kcore_insn.size - 1
-+
-+            safe_site = insn_end & 0x20
-+            site_status = "" if safe_site else "(unsafe)"
-+
-+            ksft.print_msg(f"\nSite {i}: {symbol} <0x{site:x}> {site_status}")
-+            ksft.print_msg(f"\tvmlinux: 0x{vmlinux_insn.address:x}:\t{vmlinux_insn.mnemonic}\t{vmlinux_insn.op_str}")
-+            ksft.print_msg(f"\tkcore:   0x{kcore_insn.address:x}:\t{kcore_insn.mnemonic}\t{kcore_insn.op_str}")
-+
-+            if safe_site:
-+                tests_passed += 1
-+                passed = True
-+                ksft.print_msg(f"\tPASSED: At safe address")
-+                continue
-+
-+            if "jmp" in kcore_insn.mnemonic:
-+                passed = True
-+            elif "ret" not in kcore_insn.mnemonic:
-+                skipped = True
-+
-+            if passed:
-+                ksft.print_msg(f"\tPASSED: Found {kcore_insn.mnemonic} {kcore_insn.op_str}")
-+                tests_passed += 1
-+            elif skipped:
-+                ksft.print_msg(f"\tSKIPPED: Found '{kcore_insn.mnemonic}'")
-+                tests_skipped += 1
-+            elif unknown:
-+                ksft.print_msg(f"UNKNOWN: An unknown instruction: {kcore_insn}")
-+                tests_unknown += 1
-+            else:
-+                ksft.print_msg(f'\t************* FAILED *************')
-+                ksft.print_msg(f"\tFound {kcore_insn.mnemonic} {kcore_insn.op_str}")
-+                ksft.print_msg(f'\t**********************************')
-+                tests_failed += 1
-+        except Exception as e:
-+            ksft.print_msg(f"UNKNOWN: An unexpected error occurred: {e}")
-+            tests_unknown += 1
-+
-+ksft.print_msg(f"\n\nSummary:")
-+ksft.print_msg(f"PASSED: \t{tests_passed} \t/ {total_rethunk_tests}")
-+ksft.print_msg(f"FAILED: \t{tests_failed} \t/ {total_rethunk_tests}")
-+ksft.print_msg(f"SKIPPED: \t{tests_skipped} \t/ {total_rethunk_tests}")
-+ksft.print_msg(f"UNKNOWN: \t{tests_unknown} \t/ {total_rethunk_tests}")
-+
-+if tests_failed == 0:
-+    ksft.test_result_pass("All ITS return thunk sites passed.")
-+else:
-+    ksft.test_result_fail(f"{tests_failed} failed sites need ITS return thunks.")
-+ksft.finished()
---- /dev/null
-+++ b/tools/testing/selftests/x86/bugs/its_sysfs.py
-@@ -0,0 +1,65 @@
-+#!/usr/bin/env python3
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Copyright (c) 2025 Intel Corporation
-+#
-+# Test for Indirect Target Selection(ITS) mitigation sysfs status.
-+
-+import sys, os, re
-+this_dir = os.path.dirname(os.path.realpath(__file__))
-+sys.path.insert(0, this_dir + '/../../kselftest')
-+import ksft
-+
-+from common import *
-+
-+bug = "indirect_target_selection"
-+mitigation = get_sysfs(bug)
-+
-+ITS_MITIGATION_ALIGNED_THUNKS	= "Mitigation: Aligned branch/return thunks"
-+ITS_MITIGATION_RETPOLINE_STUFF	= "Mitigation: Retpolines, Stuffing RSB"
-+ITS_MITIGATION_VMEXIT_ONLY		= "Mitigation: Vulnerable, KVM: Not affected"
-+ITS_MITIGATION_VULNERABLE       = "Vulnerable"
-+
-+def check_mitigation():
-+    if mitigation == ITS_MITIGATION_ALIGNED_THUNKS:
-+        if cmdline_has(f'{bug}=stuff') and sysfs_has("spectre_v2", "Retpolines"):
-+            bug_check_fail(bug, ITS_MITIGATION_ALIGNED_THUNKS, ITS_MITIGATION_RETPOLINE_STUFF)
-+            return
-+        if cmdline_has(f'{bug}=vmexit') and cpuinfo_has('its_native_only'):
-+            bug_check_fail(bug, ITS_MITIGATION_ALIGNED_THUNKS, ITS_MITIGATION_VMEXIT_ONLY)
-+            return
-+        bug_check_pass(bug, ITS_MITIGATION_ALIGNED_THUNKS)
-+        return
-+
-+    if mitigation == ITS_MITIGATION_RETPOLINE_STUFF:
-+        if cmdline_has(f'{bug}=stuff') and sysfs_has("spectre_v2", "Retpolines"):
-+            bug_check_pass(bug, ITS_MITIGATION_RETPOLINE_STUFF)
-+            return
-+        if sysfs_has('retbleed', 'Stuffing'):
-+            bug_check_pass(bug, ITS_MITIGATION_RETPOLINE_STUFF)
-+            return
-+        bug_check_fail(bug, ITS_MITIGATION_RETPOLINE_STUFF, ITS_MITIGATION_ALIGNED_THUNKS)
-+
-+    if mitigation == ITS_MITIGATION_VMEXIT_ONLY:
-+        if cmdline_has(f'{bug}=vmexit') and cpuinfo_has('its_native_only'):
-+            bug_check_pass(bug, ITS_MITIGATION_VMEXIT_ONLY)
-+            return
-+        bug_check_fail(bug, ITS_MITIGATION_VMEXIT_ONLY, ITS_MITIGATION_ALIGNED_THUNKS)
-+
-+    if mitigation == ITS_MITIGATION_VULNERABLE:
-+        if sysfs_has("spectre_v2", "Vulnerable"):
-+            bug_check_pass(bug, ITS_MITIGATION_VULNERABLE)
-+        else:
-+            bug_check_fail(bug, "Mitigation", ITS_MITIGATION_VULNERABLE)
-+
-+    bug_status_unknown(bug, mitigation)
-+    return
-+
-+ksft.print_header()
-+ksft.set_plan(1)
-+ksft.print_msg(f'{bug}: {mitigation} ...')
-+
-+if not basic_checks_sufficient(bug, mitigation):
-+    check_mitigation()
-+
-+ksft.finished()
+Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+    x86/its: Add support for ITS-safe return thunk
+
+Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+    x86/its: Add support for ITS-safe indirect thunk
+
+Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+    x86/its: Enumerate Indirect Target Selection (ITS) bug
+
+Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+    Documentation: x86/bugs/its: Add ITS documentation
+
+Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+    x86/speculation: Remove the extra #ifdef around CALL_NOSPEC
+
+Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+    x86/speculation: Add a conditional CS prefix to CALL_NOSPEC
+
+Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+    x86/speculation: Simplify and make CALL_NOSPEC consistent
+
+Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+    x86/bhi: Do not set BHI_DIS_S in 32-bit mode
+
+Daniel Sneddon <daniel.sneddon@linux.intel.com>
+    x86/bpf: Add IBHF call at end of classic BPF
+
+Daniel Sneddon <daniel.sneddon@linux.intel.com>
+    x86/bpf: Call branch history clearing sequence on exit
+
+James Morse <james.morse@arm.com>
+    arm64: proton-pack: Add new CPUs 'k' values for branch mitigation
+
+James Morse <james.morse@arm.com>
+    arm64: bpf: Only mitigate cBPF programs loaded by unprivileged users
+
+James Morse <james.morse@arm.com>
+    arm64: bpf: Add BHB mitigation to the epilogue for cBPF programs
+
+James Morse <james.morse@arm.com>
+    arm64: proton-pack: Expose whether the branchy loop k value
+
+James Morse <james.morse@arm.com>
+    arm64: proton-pack: Expose whether the platform is mitigated by firmware
+
+James Morse <james.morse@arm.com>
+    arm64: insn: Add support for encoding DSB
+
+Omar Sandoval <osandov@fb.com>
+    sched/eevdf: Fix se->slice being set to U64_MAX and resulting crash
+
+Johannes Weiner <hannes@cmpxchg.org>
+    mm: page_alloc: speed up fallbacks in rmqueue_bulk()
+
+Johannes Weiner <hannes@cmpxchg.org>
+    mm: page_alloc: don't steal single pages from biggest buddy
+
+Hao Qin <hao.qin@mediatek.com>
+    Bluetooth: btmtk: Remove the resetting step before downloading the fw
+
+Hao Qin <hao.qin@mediatek.com>
+    Bluetooth: btmtk: Remove resetting mt7921 before downloading the fw
+
+Jens Axboe <axboe@kernel.dk>
+    io_uring: always arm linked timeouts prior to issue
+
+Miguel Ojeda <ojeda@kernel.org>
+    rust: clean Rust 1.88.0's `clippy::uninlined_format_args` lint
+
+Miguel Ojeda <ojeda@kernel.org>
+    rust: allow Rust 1.87.0's `clippy::ptr_eq` lint
+
+Christian Lamparter <chunkeey@gmail.com>
+    Revert "um: work around sched_yield not yielding in time-travel mode"
+
+Al Viro <viro@zeniv.linux.org.uk>
+    do_umount(): add missing barrier before refcount checks in sync case
+
+Gabriel Krisman Bertazi <krisman@suse.de>
+    io_uring/sqpoll: Increase task_work submission batch size
+
+Tejas Upadhyay <tejas.upadhyay@intel.com>
+    drm/xe/tests/mocs: Hold XE_FORCEWAKE_ALL for LNCF regs
+
+Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+    drm/xe/tests/mocs: Update xe_force_wake_get() return handling
+
+Clément Léger <cleger@rivosinc.com>
+    riscv: misaligned: enable IRQs while handling misaligned accesses
+
+Clément Léger <cleger@rivosinc.com>
+    riscv: misaligned: factorize trap handling
+
+Daniel Wagner <wagi@kernel.org>
+    nvme: unblock ctrl state transition for firmware update
+
+Kevin Baker <kevinb@ventureresearch.com>
+    drm/panel: simple: Update timings for AUO G101EVN010
+
+Lizhi Xu <lizhi.xu@windriver.com>
+    loop: Add sanity check for read/write_iter
+
+Christoph Hellwig <hch@lst.de>
+    loop: factor out a loop_assign_backing_file helper
+
+Christoph Hellwig <hch@lst.de>
+    loop: refactor queue limits updates
+
+OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
+    loop: Fix ABBA locking race
+
+John Garry <john.g.garry@oracle.com>
+    loop: Simplify discard granularity calc
+
+John Garry <john.g.garry@oracle.com>
+    loop: Use bdev limit helpers for configuring discard
+
+Nylon Chen <nylon.chen@sifive.com>
+    riscv: misaligned: Add handling for ZCB instructions
+
+Thorsten Blum <thorsten.blum@linux.dev>
+    MIPS: Fix MAX_REG_OFFSET
+
+Marco Crivellari <marco.crivellari@suse.com>
+    MIPS: Move r4k_wait() to .cpuidle.text section
+
+Marco Crivellari <marco.crivellari@suse.com>
+    MIPS: Fix idle VS timer enqueue
+
+Jonathan Cameron <Jonathan.Cameron@huawei.com>
+    iio: adc: dln2: Use aligned_s64 for timestamp
+
+Jonathan Cameron <Jonathan.Cameron@huawei.com>
+    iio: accel: adxl355: Make timestamp 64-bit aligned using aligned_s64
+
+Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+    types: Complement the aligned types with signed 64-bit one
+
+Jonathan Cameron <Jonathan.Cameron@huawei.com>
+    iio: temp: maxim-thermocouple: Fix potential lack of DMA safe buffer.
+
+Lothar Rubusch <l.rubusch@gmail.com>
+    iio: accel: adxl367: fix setting odr for activity time update
+
+Dave Penkler <dpenkler@gmail.com>
+    usb: usbtmc: Fix erroneous generic_read ioctl return
+
+Dave Penkler <dpenkler@gmail.com>
+    usb: usbtmc: Fix erroneous wait_srq ioctl return
+
+Dave Penkler <dpenkler@gmail.com>
+    usb: usbtmc: Fix erroneous get_stb ioctl error returns
+
+Oliver Neukum <oneukum@suse.com>
+    USB: usbtmc: use interruptible sleep in usbtmc_read
+
+Andrei Kuchynski <akuchynski@chromium.org>
+    usb: typec: ucsi: displayport: Fix NULL pointer access
+
+RD Babiera <rdbabiera@google.com>
+    usb: typec: tcpm: delay SNK_TRY_WAIT_DEBOUNCE to SRC_TRYWAIT transition
+
+Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
+    usb: misc: onboard_usb_dev: fix support for Cypress HX3 hubs
+
+Jim Lin <jilin@nvidia.com>
+    usb: host: tegra: Prevent host controller crash when OTG port is used
+
+Prashanth K <prashanth.k@oss.qualcomm.com>
+    usb: gadget: Use get_status callback to set remote wakeup capability
+
+Wayne Chang <waynec@nvidia.com>
+    usb: gadget: tegra-xudc: ACK ST_RC after clearing CTRL_RUN
+
+Prashanth K <prashanth.k@oss.qualcomm.com>
+    usb: gadget: f_ecm: Add get_status callback
+
+Pawel Laszczak <pawell@cadence.com>
+    usb: cdnsp: fix L1 resume issue for RTL_REVISION_NEW_LPM version
+
+Pawel Laszczak <pawell@cadence.com>
+    usb: cdnsp: Fix issue with resuming from L1
+
+Prashanth K <prashanth.k@oss.qualcomm.com>
+    usb: dwc3: gadget: Make gadget_wakeup asynchronous
+
+Jan Kara <jack@suse.cz>
+    ocfs2: stop quota recovery before disabling quotas
+
+Jan Kara <jack@suse.cz>
+    ocfs2: implement handshaking with ocfs2 recovery thread
+
+Jan Kara <jack@suse.cz>
+    ocfs2: switch osb->disable_recovery to enum
+
+Heming Zhao <heming.zhao@suse.com>
+    ocfs2: fix the issue with discontiguous allocation in the global_bitmap
+
+Borislav Petkov (AMD) <bp@alien8.de>
+    x86/microcode: Consolidate the loader enablement checking
+
+Dmitry Antipov <dmantipov@yandex.ru>
+    module: ensure that kobject_put() is safe for module type kobjects
+
+Tom Lendacky <thomas.lendacky@amd.com>
+    memblock: Accept allocated memory before use in memblock_double_array()
+
+Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+    clocksource/i8253: Use raw_spinlock_irqsave() in clockevent_i8253_disable()
+
+Yeoreum Yun <yeoreum.yun@arm.com>
+    arm64: cpufeature: Move arm64_use_ng_mappings to the .data section to prevent wrong idmap generation
+
+Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+    accel/ivpu: Increase state dump msg timeout
+
+Jason Andryuk <jason.andryuk@amd.com>
+    xenbus: Use kref to track req lifetime
+
+John Ernberg <john.ernberg@actia.se>
+    xen: swiotlb: Use swiotlb bouncing if kmalloc allocation demands it
+
+Paul Aurich <paul@darkrain42.org>
+    smb: client: Avoid race in open_cached_dir with lease breaks
+
+Alexey Charkov <alchark@gmail.com>
+    usb: uhci-platform: Make the clock really optional
+
+Alex Deucher <alexander.deucher@amd.com>
+    drm/amdgpu/hdp7: use memcfg register to post the write for HDP flush
+
+Alex Deucher <alexander.deucher@amd.com>
+    drm/amdgpu/hdp6: use memcfg register to post the write for HDP flush
+
+Alex Deucher <alexander.deucher@amd.com>
+    drm/amdgpu/hdp5: use memcfg register to post the write for HDP flush
+
+Alex Deucher <alexander.deucher@amd.com>
+    drm/amdgpu/hdp5.2: use memcfg register to post the write for HDP flush
+
+Alex Deucher <alexander.deucher@amd.com>
+    drm/amdgpu/hdp4: use memcfg register to post the write for HDP flush
+
+Wayne Lin <Wayne.Lin@amd.com>
+    drm/amd/display: Copy AUX read reply data whenever length > 0
+
+Wayne Lin <Wayne.Lin@amd.com>
+    drm/amd/display: Fix wrong handling for AUX_DEFER case
+
+Wayne Lin <Wayne.Lin@amd.com>
+    drm/amd/display: Remove incorrect checking in dmub aux handler
+
+Wayne Lin <Wayne.Lin@amd.com>
+    drm/amd/display: Fix the checking condition in dmub aux handling
+
+Aurabindo Pillai <aurabindo.pillai@amd.com>
+    drm/amd/display: more liberal vmin/vmax update for freesync
+
+Roman Li <Roman.Li@amd.com>
+    drm/amd/display: Fix invalid context error in dml helper
+
+Ruijing Dong <ruijing.dong@amd.com>
+    drm/amdgpu/vcn: using separate VCN1_AON_SOC offset
+
+Matthew Brost <matthew.brost@intel.com>
+    drm/xe: Add page queue multiplier
+
+Maíra Canal <mcanal@igalia.com>
+    drm/v3d: Add job to pending list if the reset was skipped
+
+Silvano Seva <s.seva@4sigma.it>
+    iio: imu: st_lsm6dsx: fix possible lockup in st_lsm6dsx_read_tagged_fifo
+
+Silvano Seva <s.seva@4sigma.it>
+    iio: imu: st_lsm6dsx: fix possible lockup in st_lsm6dsx_read_fifo
+
+David Lechner <dlechner@baylibre.com>
+    iio: imu: inv_mpu6050: align buffer for timestamp
+
+Gabriel Shahrouzi <gshahrouzi@gmail.com>
+    iio: adis16201: Correct inclinometer channel resolution
+
+Simon Xue <xxm@rock-chips.com>
+    iio: adc: rockchip: Fix clock initialization sequence
+
+Angelo Dureghello <adureghello@baylibre.com>
+    iio: adc: ad7606: fix serial register access
+
+Jens Axboe <axboe@kernel.dk>
+    io_uring: ensure deferred completions are flushed for multishot
+
+Wayne Lin <Wayne.Lin@amd.com>
+    drm/amd/display: Shift DMUB AUX reply command if necessary
+
+Mikhail Lobanov <m.lobanov@rosa.ru>
+    KVM: SVM: Forcibly leave SMM mode on SHUTDOWN interception
+
+Nysal Jan K.A. <nysal@linux.ibm.com>
+    selftests/mm: fix a build failure on powerpc
+
+Feng Tang <feng.tang@linux.alibaba.com>
+    selftests/mm: compaction_test: support platform with huge mount of memory
+
+Peter Xu <peterx@redhat.com>
+    mm/userfaultfd: fix uninitialized output field for -EAGAIN race
+
+Gavin Guo <gavinguo@igalia.com>
+    mm/huge_memory: fix dereferencing invalid pmd migration entry
+
+Kees Cook <kees@kernel.org>
+    mm: vmalloc: support more granular vrealloc() sizing
+
+Petr Vaněk <arkamar@atlas.cz>
+    mm: fix folio_pte_batch() on XEN PV
+
+Dave Hansen <dave.hansen@linux.intel.com>
+    x86/mm: Eliminate window where TLB flushes may be inadvertently skipped
+
+Gabriel Shahrouzi <gshahrouzi@gmail.com>
+    staging: axis-fifo: Correct handling of tx_fifo_depth for size validation
+
+Gabriel Shahrouzi <gshahrouzi@gmail.com>
+    staging: axis-fifo: Remove hardware resets for user errors
+
+Dave Stevenson <dave.stevenson@raspberrypi.com>
+    staging: bcm2835-camera: Initialise dev in v4l2_dev
+
+Gabriel Shahrouzi <gshahrouzi@gmail.com>
+    staging: iio: adc: ad7816: Correct conditional logic for store mode
+
+Miguel Ojeda <ojeda@kernel.org>
+    rust: clean Rust 1.88.0's warning about `clippy::disallowed_macros` configuration
+
+Miguel Ojeda <ojeda@kernel.org>
+    objtool/rust: add one more `noreturn` Rust function for Rust 1.87.0
+
+Miguel Ojeda <ojeda@kernel.org>
+    rust: clean Rust 1.88.0's `unnecessary_transmutes` lint
+
+Aditya Garg <gargaditya08@live.com>
+    Input: synaptics - enable InterTouch on TUXEDO InfinityBook Pro 14 v5
+
+Dmitry Torokhov <dmitry.torokhov@gmail.com>
+    Input: synaptics - enable SMBus for HP Elitebook 850 G1
+
+Aditya Garg <gargaditya08@live.com>
+    Input: synaptics - enable InterTouch on Dell Precision M3800
+
+Aditya Garg <gargaditya08@live.com>
+    Input: synaptics - enable InterTouch on Dynabook Portege X30L-G
+
+Manuel Fombuena <fombuena@outlook.com>
+    Input: synaptics - enable InterTouch on Dynabook Portege X30-D
+
+Vicki Pfau <vi@endrift.com>
+    Input: xpad - fix two controller table values
+
+Lode Willems <me@lodewillems.com>
+    Input: xpad - add support for 8BitDo Ultimate 2 Wireless Controller
+
+Vicki Pfau <vi@endrift.com>
+    Input: xpad - fix Share button on Xbox One controllers
+
+Gary Bisson <bisson.gary@gmail.com>
+    Input: mtk-pmic-keys - fix possible null pointer dereference
+
+Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>
+    Input: cyttsp5 - fix power control issue on wakeup
+
+Hugo Villeneuve <hvilleneuve@dimonoff.com>
+    Input: cyttsp5 - ensure minimum reset pulse width
+
+Jakub Kicinski <kuba@kernel.org>
+    virtio-net: fix total qstat values
+
+Jakub Kicinski <kuba@kernel.org>
+    net: export a helper for adding up queue stats
+
+Alexander Duyck <alexanderduyck@fb.com>
+    fbnic: Do not allow mailbox to toggle to ready outside fbnic_mbx_poll_tx_ready
+
+Alexander Duyck <alexanderduyck@fb.com>
+    fbnic: Pull fbnic_fw_xmit_cap_msg use out of interrupt context
+
+Alexander Duyck <alexanderduyck@fb.com>
+    fbnic: Improve responsiveness of fbnic_mbx_poll_tx_ready
+
+Alexander Duyck <alexanderduyck@fb.com>
+    fbnic: Actually flush_tx instead of stalling out
+
+Alexander Duyck <alexanderduyck@fb.com>
+    fbnic: Gate AXI read/write enabling on FW mailbox
+
+Alexander Duyck <alexanderduyck@fb.com>
+    fbnic: Fix initialization of mailbox descriptor rings
+
+Jonas Gorski <jonas.gorski@gmail.com>
+    net: dsa: b53: do not set learning and unicast/multicast on up
+
+Jonas Gorski <jonas.gorski@gmail.com>
+    net: dsa: b53: fix learning on VLAN unaware bridges
+
+Jonas Gorski <jonas.gorski@gmail.com>
+    net: dsa: b53: fix toggling vlan_filtering
+
+Jonas Gorski <jonas.gorski@gmail.com>
+    net: dsa: b53: do not program vlans when vlan filtering is off
+
+Jonas Gorski <jonas.gorski@gmail.com>
+    net: dsa: b53: do not allow to configure VLAN 0
+
+Jonas Gorski <jonas.gorski@gmail.com>
+    net: dsa: b53: always rejoin default untagged VLAN on bridge leave
+
+Jonas Gorski <jonas.gorski@gmail.com>
+    net: dsa: b53: fix VLAN ID for untagged vlan on bridge leave
+
+Jonas Gorski <jonas.gorski@gmail.com>
+    net: dsa: b53: fix flushing old pvid VLAN on pvid change
+
+Jonas Gorski <jonas.gorski@gmail.com>
+    net: dsa: b53: fix clearing PVID of a port
+
+Jonas Gorski <jonas.gorski@gmail.com>
+    net: dsa: b53: keep CPU port always tagged again
+
+Jonas Gorski <jonas.gorski@gmail.com>
+    net: dsa: b53: allow leaky reserved multicast
+
+Paul Chaignon <paul.chaignon@gmail.com>
+    bpf: Scrub packet on bpf_redirect_peer
+
+Jozsef Kadlecsik <kadlec@netfilter.org>
+    netfilter: ipset: fix region locking in hash types
+
+Julian Anastasov <ja@ssi.bg>
+    ipvs: fix uninit-value for saddr in do_output_route4
+
+Gao Xiang <xiang@kernel.org>
+    erofs: ensure the extra temporary copy is valid for shortened bvecs
+
+Przemek Kitszel <przemyslaw.kitszel@intel.com>
+    ice: use DSN instead of PCI BDF for ice_adapter index
+
+Sergey Temerkhanov <sergey.temerkhanov@intel.com>
+    ice: Initial support for E825C hardware in ice_adapter
+
+Michael-CY Lee <michael-cy.lee@mediatek.com>
+    wifi: mac80211: fix the type of status_code for negotiated TID to Link Mapping
+
+Oliver Hartkopp <socketcan@hartkopp.net>
+    can: gw: fix RCU/BH usage in cgw_create_job()
+
+Kelsey Maes <kelsey@vpprocess.com>
+    can: mcp251xfd: fix TDC setting for low data bit rates
+
+Antonios Salios <antonios@mwa.re>
+    can: m_can: m_can_class_allocate_dev(): initialize spin lock on device probe
+
+Frank Wunderlich <frank-w@public-files.de>
+    net: ethernet: mtk_eth_soc: do not reset PSE when setting FE
+
+Daniel Golle <daniel@makrotopia.org>
+    net: ethernet: mtk_eth_soc: reset all TX queues on DMA free
+
+Guillaume Nault <gnault@redhat.com>
+    gre: Fix again IPv6 link-local address generation.
+
+Jakub Kicinski <kuba@kernel.org>
+    virtio-net: free xsk_buffs on error in virtnet_xsk_pool_enable()
+
+Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+    virtio_net: xsk: bind/unbind xsk for tx
+
+Cong Wang <xiyou.wangcong@gmail.com>
+    sch_htb: make htb_deactivate() idempotent
+
+Heiko Carstens <hca@linux.ibm.com>
+    s390/entry: Fix last breaking event handling in case of stack corruption
+
+Wang Zhaolong <wangzhaolong1@huawei.com>
+    ksmbd: fix memory leak in parse_lease_state()
+
+Eelco Chaudron <echaudro@redhat.com>
+    openvswitch: Fix unsafe attribute parsing in output_userspace()
+
+Sean Heelan <seanheelan@gmail.com>
+    ksmbd: Fix UAF in __close_file_table_ids
+
+Norbert Szetei <norbert@doyensec.com>
+    ksmbd: prevent out-of-bounds stream writes by validating *pos
+
+Namjae Jeon <linkinjeon@kernel.org>
+    ksmbd: prevent rename with empty string
+
+Marc Kleine-Budde <mkl@pengutronix.de>
+    can: rockchip_canfd: rkcanfd_remove(): fix order of unregistration calls
+
+Marc Kleine-Budde <mkl@pengutronix.de>
+    can: mcp251xfd: mcp251xfd_remove(): fix order of unregistration calls
+
+Niklas Schnelle <schnelle@linux.ibm.com>
+    s390/pci: Fix duplicate pci_dev_put() in disable_slot() when PF has child VFs
+
+Alex Williamson <alex.williamson@redhat.com>
+    vfio/pci: Align huge faults to order
+
+Veerendranath Jakkam <quic_vjakkam@quicinc.com>
+    wifi: cfg80211: fix out-of-bounds access during multi-link element defragmentation
+
+Niklas Schnelle <schnelle@linux.ibm.com>
+    s390/pci: Fix missing check for zpci_create_device() error return
+
+Marc Kleine-Budde <mkl@pengutronix.de>
+    can: mcan: m_can_class_unregister(): fix order of unregistration calls
+
+Cristian Marussi <cristian.marussi@arm.com>
+    firmware: arm_scmi: Fix timeout checks on polling path
+
+Wojciech Dubowik <Wojciech.Dubowik@mt.com>
+    arm64: dts: imx8mm-verdin: Link reg_usdhc2_vqmmc to usdhc2
+
+Qu Wenruo <wqu@suse.com>
+    Revert "btrfs: canonicalize the device path before adding it"
+
+Max Kellermann <max.kellermann@ionos.com>
+    fs/erofs/fileio: call erofs_onlinefolio_split() after bio_add_folio()
+
+Dan Carpenter <dan.carpenter@linaro.org>
+    dm: add missing unlock on in dm_keyslot_evict()
+
+
+-------------
+
+Diffstat:
+
+ .clippy.toml                                       |   2 +-
+ Documentation/ABI/testing/sysfs-devices-system-cpu |   1 +
+ Documentation/admin-guide/hw-vuln/index.rst        |   1 +
+ .../hw-vuln/indirect-target-selection.rst          | 168 ++++++++++++++++
+ Documentation/admin-guide/kernel-parameters.txt    |  18 ++
+ Makefile                                           |   4 +-
+ arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi   |  25 ++-
+ arch/arm64/include/asm/cputype.h                   |   2 +
+ arch/arm64/include/asm/insn.h                      |   1 +
+ arch/arm64/include/asm/spectre.h                   |   3 +
+ arch/arm64/kernel/cpufeature.c                     |   9 +-
+ arch/arm64/kernel/proton-pack.c                    |  13 +-
+ arch/arm64/lib/insn.c                              |  76 +++++---
+ arch/arm64/net/bpf_jit_comp.c                      |  57 +++++-
+ arch/mips/include/asm/idle.h                       |   3 +-
+ arch/mips/include/asm/ptrace.h                     |   3 +-
+ arch/mips/kernel/genex.S                           |  63 +++---
+ arch/mips/kernel/idle.c                            |   7 -
+ arch/riscv/kernel/traps.c                          |  64 ++++---
+ arch/riscv/kernel/traps_misaligned.c               |  17 ++
+ arch/s390/kernel/entry.S                           |   3 +-
+ arch/s390/pci/pci_clp.c                            |   2 +
+ arch/um/include/linux/time-internal.h              |   2 -
+ arch/um/kernel/skas/syscall.c                      |  11 --
+ arch/x86/Kconfig                                   |  12 ++
+ arch/x86/entry/entry_64.S                          |  20 +-
+ arch/x86/include/asm/alternative.h                 |  24 +++
+ arch/x86/include/asm/cpufeatures.h                 |   3 +
+ arch/x86/include/asm/microcode.h                   |   2 +
+ arch/x86/include/asm/msr-index.h                   |   8 +
+ arch/x86/include/asm/nospec-branch.h               |  38 ++--
+ arch/x86/kernel/alternative.c                      | 195 ++++++++++++++++++-
+ arch/x86/kernel/cpu/bugs.c                         | 176 ++++++++++++++++-
+ arch/x86/kernel/cpu/common.c                       |  72 +++++--
+ arch/x86/kernel/cpu/microcode/amd.c                |   6 +-
+ arch/x86/kernel/cpu/microcode/core.c               |  60 +++---
+ arch/x86/kernel/cpu/microcode/intel.c              |   2 +-
+ arch/x86/kernel/cpu/microcode/internal.h           |   1 -
+ arch/x86/kernel/ftrace.c                           |   2 +-
+ arch/x86/kernel/head32.c                           |   4 -
+ arch/x86/kernel/module.c                           |   6 +
+ arch/x86/kernel/static_call.c                      |   4 +-
+ arch/x86/kernel/vmlinux.lds.S                      |  10 +
+ arch/x86/kvm/smm.c                                 |   1 +
+ arch/x86/kvm/svm/svm.c                             |   4 +
+ arch/x86/kvm/x86.c                                 |   4 +-
+ arch/x86/lib/retpoline.S                           |  39 ++++
+ arch/x86/mm/tlb.c                                  |  23 ++-
+ arch/x86/net/bpf_jit_comp.c                        |  58 +++++-
+ drivers/accel/ivpu/ivpu_hw.c                       |   2 +-
+ drivers/base/cpu.c                                 |   3 +
+ drivers/block/loop.c                               | 104 ++++++----
+ drivers/bluetooth/btmtk.c                          |  12 +-
+ drivers/clocksource/i8253.c                        |   4 +-
+ drivers/firmware/arm_scmi/driver.c                 |  13 +-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.h            |   1 -
+ drivers/gpu/drm/amd/amdgpu/hdp_v4_0.c              |   7 +-
+ drivers/gpu/drm/amd/amdgpu/hdp_v5_0.c              |   7 +-
+ drivers/gpu/drm/amd/amdgpu/hdp_v5_2.c              |  12 +-
+ drivers/gpu/drm/amd/amdgpu/hdp_v6_0.c              |   7 +-
+ drivers/gpu/drm/amd/amdgpu/hdp_v7_0.c              |   7 +-
+ drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c              |   1 +
+ drivers/gpu/drm/amd/amdgpu/vcn_v2_5.c              |   1 +
+ drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c              |   1 +
+ drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c              |   4 +-
+ drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c            |   1 +
+ drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c            |   1 +
+ drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c            |   3 +-
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c  |  36 ++--
+ .../amd/display/amdgpu_dm/amdgpu_dm_mst_types.c    |  28 ++-
+ .../amd/display/dc/dml2/dml2_translation_helper.c  |  14 +-
+ drivers/gpu/drm/panel/panel-simple.c               |  25 +--
+ drivers/gpu/drm/v3d/v3d_sched.c                    |  28 ++-
+ drivers/gpu/drm/xe/tests/xe_mocs.c                 |  21 +-
+ drivers/gpu/drm/xe/xe_gt_pagefault.c               |  11 +-
+ drivers/iio/accel/adis16201.c                      |   4 +-
+ drivers/iio/accel/adxl355_core.c                   |   2 +-
+ drivers/iio/accel/adxl367.c                        |  10 +-
+ drivers/iio/adc/ad7606_spi.c                       |   2 +-
+ drivers/iio/adc/dln2-adc.c                         |   2 +-
+ drivers/iio/adc/rockchip_saradc.c                  |  17 +-
+ drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c         |   2 +-
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c     |   6 +
+ drivers/iio/temperature/maxim_thermocouple.c       |   2 +-
+ drivers/input/joystick/xpad.c                      |  40 ++--
+ drivers/input/keyboard/mtk-pmic-keys.c             |   4 +-
+ drivers/input/mouse/synaptics.c                    |   5 +
+ drivers/input/touchscreen/cyttsp5.c                |   7 +-
+ drivers/md/dm-table.c                              |   3 +-
+ drivers/net/can/m_can/m_can.c                      |   3 +-
+ drivers/net/can/rockchip/rockchip_canfd-core.c     |   2 +-
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c     |  42 +++-
+ drivers/net/dsa/b53/b53_common.c                   | 213 +++++++++++++++------
+ drivers/net/dsa/b53/b53_priv.h                     |   3 +
+ drivers/net/dsa/bcm_sf2.c                          |   1 +
+ drivers/net/ethernet/intel/ice/ice_adapter.c       |  39 ++--
+ drivers/net/ethernet/intel/ice/ice_adapter.h       |   6 +-
+ drivers/net/ethernet/mediatek/mtk_eth_soc.c        |  19 +-
+ drivers/net/ethernet/meta/fbnic/fbnic_csr.h        |   2 +
+ drivers/net/ethernet/meta/fbnic/fbnic_fw.c         | 180 +++++++++--------
+ drivers/net/ethernet/meta/fbnic/fbnic_mac.c        |   6 -
+ drivers/net/virtio_net.c                           |  61 ++++++
+ drivers/nvme/host/core.c                           |   3 +-
+ drivers/pci/hotplug/s390_pci_hpc.c                 |   1 -
+ drivers/staging/axis-fifo/axis-fifo.c              |  14 +-
+ drivers/staging/iio/adc/ad7816.c                   |   2 +-
+ .../vc04_services/bcm2835-camera/bcm2835-camera.c  |   1 +
+ drivers/usb/cdns3/cdnsp-gadget.c                   |  31 +++
+ drivers/usb/cdns3/cdnsp-gadget.h                   |   6 +
+ drivers/usb/cdns3/cdnsp-pci.c                      |  12 +-
+ drivers/usb/cdns3/cdnsp-ring.c                     |   3 +-
+ drivers/usb/cdns3/core.h                           |   3 +
+ drivers/usb/class/usbtmc.c                         |  59 +++---
+ drivers/usb/dwc3/core.h                            |   4 +
+ drivers/usb/dwc3/gadget.c                          |  60 +++---
+ drivers/usb/gadget/composite.c                     |  12 +-
+ drivers/usb/gadget/function/f_ecm.c                |   7 +
+ drivers/usb/gadget/udc/tegra-xudc.c                |   4 +
+ drivers/usb/host/uhci-platform.c                   |   2 +-
+ drivers/usb/host/xhci-tegra.c                      |   3 +
+ drivers/usb/misc/onboard_usb_dev.c                 |  10 +-
+ drivers/usb/typec/tcpm/tcpm.c                      |   2 +-
+ drivers/usb/typec/ucsi/displayport.c               |   2 +
+ drivers/vfio/pci/vfio_pci_core.c                   |  12 +-
+ drivers/xen/swiotlb-xen.c                          |   1 +
+ drivers/xen/xenbus/xenbus.h                        |   2 +
+ drivers/xen/xenbus/xenbus_comms.c                  |   9 +-
+ drivers/xen/xenbus/xenbus_dev_frontend.c           |   2 +-
+ drivers/xen/xenbus/xenbus_xs.c                     |  18 +-
+ fs/btrfs/volumes.c                                 |  91 +--------
+ fs/erofs/fileio.c                                  |   4 +-
+ fs/erofs/zdata.c                                   |  29 ++-
+ fs/namespace.c                                     |   3 +-
+ fs/ocfs2/journal.c                                 |  80 +++++---
+ fs/ocfs2/journal.h                                 |   1 +
+ fs/ocfs2/ocfs2.h                                   |  17 +-
+ fs/ocfs2/quota_local.c                             |   9 +-
+ fs/ocfs2/suballoc.c                                |  38 +++-
+ fs/ocfs2/suballoc.h                                |   1 +
+ fs/ocfs2/super.c                                   |   3 +
+ fs/smb/client/cached_dir.c                         |  10 +-
+ fs/smb/server/oplock.c                             |   7 +-
+ fs/smb/server/smb2pdu.c                            |   5 +
+ fs/smb/server/vfs.c                                |   7 +
+ fs/smb/server/vfs_cache.c                          |  33 +++-
+ fs/userfaultfd.c                                   |  28 ++-
+ include/linux/cpu.h                                |   2 +
+ include/linux/execmem.h                            |   3 +
+ include/linux/ieee80211.h                          |   2 +-
+ include/linux/module.h                             |   5 +
+ include/linux/types.h                              |   3 +-
+ include/linux/vmalloc.h                            |   1 +
+ include/net/netdev_queues.h                        |   6 +
+ include/uapi/linux/types.h                         |   1 +
+ init/Kconfig                                       |   3 +
+ io_uring/io_uring.c                                |  58 +++---
+ io_uring/sqpoll.c                                  |   2 +-
+ kernel/params.c                                    |   4 +-
+ kernel/sched/fair.c                                |   4 +-
+ mm/huge_memory.c                                   |  11 +-
+ mm/internal.h                                      |  27 ++-
+ mm/memblock.c                                      |   9 +-
+ mm/page_alloc.c                                    | 159 +++++++++------
+ mm/vmalloc.c                                       |  31 ++-
+ net/can/gw.c                                       | 151 +++++++++------
+ net/core/filter.c                                  |   1 +
+ net/core/netdev-genl.c                             |  69 +++++--
+ net/ipv6/addrconf.c                                |  15 +-
+ net/mac80211/mlme.c                                |  12 +-
+ net/netfilter/ipset/ip_set_hash_gen.h              |   2 +-
+ net/netfilter/ipvs/ip_vs_xmit.c                    |  27 +--
+ net/openvswitch/actions.c                          |   3 +-
+ net/sched/sch_htb.c                                |  15 +-
+ net/wireless/scan.c                                |   2 +-
+ rust/bindings/lib.rs                               |   1 +
+ rust/kernel/alloc/kvec.rs                          |   3 +
+ rust/kernel/list.rs                                |   3 +
+ rust/kernel/str.rs                                 |  46 ++---
+ rust/macros/module.rs                              |  19 +-
+ rust/macros/pinned_drop.rs                         |   3 +-
+ rust/uapi/lib.rs                                   |   1 +
+ tools/objtool/check.c                              |   1 +
+ tools/testing/selftests/Makefile                   |   1 +
+ tools/testing/selftests/mm/compaction_test.c       |  19 +-
+ tools/testing/selftests/mm/pkey-powerpc.h          |  12 +-
+ tools/testing/selftests/x86/bugs/Makefile          |   3 +
+ tools/testing/selftests/x86/bugs/common.py         | 164 ++++++++++++++++
+ .../selftests/x86/bugs/its_indirect_alignment.py   | 150 +++++++++++++++
+ .../testing/selftests/x86/bugs/its_permutations.py | 109 +++++++++++
+ .../selftests/x86/bugs/its_ret_alignment.py        | 139 ++++++++++++++
+ tools/testing/selftests/x86/bugs/its_sysfs.py      |  65 +++++++
+ 191 files changed, 3250 insertions(+), 1134 deletions(-)
 
 
 
