@@ -1,93 +1,149 @@
-Return-Path: <stable+bounces-143833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0A13AB41F5
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:15:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A094AAB420A
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:17:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4983168D19
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:14:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A1A48C105D
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:15:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E870429DB95;
-	Mon, 12 May 2025 18:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F53F297A59;
+	Mon, 12 May 2025 18:05:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ejJCUXqq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EuszHWs1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A656D29DB8C
-	for <stable@vger.kernel.org>; Mon, 12 May 2025 18:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51F6529E04F;
+	Mon, 12 May 2025 18:05:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073106; cv=none; b=oW9tqj4ud1pNY3mhKR8/9ziyf9aVOPxpnoD2bKiqL+clMW04X0TOEKVWf/ir2SefF2SY6bMiRF61PPo2CA8Vt1Tc0wkeZYdk5JGhcjkn3LtCmFwa1vgtlQ/wKAYV860UKQGmXEpTNUWeNCpnJOcR1lHap6pmzrwXZmF19UEQpCE=
+	t=1747073112; cv=none; b=BqUQ6IxV5E8JrvECaURxGFKqm34OOp5lWKWGV3/9sEEyLDo+H4UuIQb5bAlPWVbG/dcD00f/+4j/CHBnH830uF4hsgN/iqEpMRjkPUJchiJX1iAgarn0v5Wy+C6N2MVmVsGeHlmvNQVdtoluyy0gR1dBhG5MWUgHBH5GaGtkNAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073106; c=relaxed/simple;
-	bh=tPR/WWRZJSEtM7MBh0fqaeM5e5Y8SmAAjm2iw8AkWLQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OjLqeJebl4eiVw3iRnIxYVM+RaTO/5pCh9ejJnU3yjmgRC5SKqtUCgpQe2is1oHx5YYN1aSVnji5r6XY+lnaqFj/mtkPewEQnFIirPC2gBMwXkrjWo/H6PdUyMevPw5Rvyr0uISOzpmxlSyPWgmUY5ttTVbSniIRjezHU4PHONw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ejJCUXqq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD2DC4CEE7;
-	Mon, 12 May 2025 18:05:05 +0000 (UTC)
+	s=arc-20240116; t=1747073112; c=relaxed/simple;
+	bh=AgTCjWtTnceNZNHPVA461xtebQce1P3X1TcG8LA0Nnk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MJfZVMwRrknfyzrEqe8CKLk6PWx7Lh28+VtDXleZRyMJtxC27oOpXWqERjsGx03JLxFfBvIYgyjPdEXNWTviVjYfPeZviqgdDya5a8TZAymSZnTTKC7rhkXTp2uwkxU6Hf9TU1voOx5p3ovpJORyCoiJFYA0GybnVEeJezTKuJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EuszHWs1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C49BBC4CEE9;
+	Mon, 12 May 2025 18:05:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747073106;
-	bh=tPR/WWRZJSEtM7MBh0fqaeM5e5Y8SmAAjm2iw8AkWLQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ejJCUXqqyANRSlrPwF7UMHugLqUltCp48kl93BjV/u52jO0dHb7g9GLy4ss1wSLQF
-	 uSqh2kNX1kOUXxnhX8TdJzijbJ3VAG6ziqb/7QWWgaIERSYF462uCNBs93Cw31YYVA
-	 TCbJ6z5zg0nI9tjukszEwsj51gXegEXa5eP9xvWwDzkml1GttGYjhXhHnSpjqbANGA
-	 tCSFv58DMx+zHdd9T27bCtHo6YXBSqRrGQU5e0YDv+pufupKKGR1O9MkJxiubokhuH
-	 URjBdj2VRR4Ply0NJr8T7mkcnye8suJ1tU21KvTfJNmyaFHrVcGP75VQTT5/t5du05
-	 6345NEWFn/FtQ==
+	s=k20201202; t=1747073112;
+	bh=AgTCjWtTnceNZNHPVA461xtebQce1P3X1TcG8LA0Nnk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=EuszHWs1I6+DaKdGOyfYDPc/EkvUOEv7PODFR6xz7hNm4QYErqO6exmExQjrbRuDv
+	 eDvnp+Lm7r4U/uqmZ5gC1rPJX0icKBuvdjcEaw1afQlioIaAqpwD/baTe7FO6x1F6j
+	 w8K0sF1ZUzACCa4kvOvX847U4k8niH3eOeKft45txla9wGDKBGCbCqzf92VEoyChVO
+	 HlXylecRMb+r+HcSVEcg/I47ZpPhK3dGyKy6cP+T6OXeM49PNv5SDf7D5Q7w7zfW5n
+	 X4KrQsu47s49UiFc4UCSO+CunsYcRYz1qpCo4V61Wtjwc7z2tYJRYwvXRKXHlgg9jH
+	 uD3AavCymw7Eg==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: bin.lan.cn@windriver.com,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15.y 2/2] usb: typec: fix pm usage counter imbalance in ucsi_ccg_sync_control()
-Date: Mon, 12 May 2025 14:05:03 -0400
-Message-Id: <20250511204127-97ea154870caccf9@stable.kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Goldwyn Rodrigues <rgoldwyn@suse.de>,
+	Goldwyn Rodrigues <rgoldwyn@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>,
+	clm@fb.com,
+	josef@toxicpanda.com,
+	rostedt@goodmis.org,
+	mhiramat@kernel.org,
+	linux-btrfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 1/4] btrfs: correct the order of prelim_ref arguments in btrfs__prelim_ref
+Date: Mon, 12 May 2025 14:05:04 -0400
+Message-Id: <20250512180508.437991-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250509062802.481959-2-bin.lan.cn@windriver.com>
-References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.1.138
 Content-Transfer-Encoding: 8bit
 
-[ Sasha's backport helper bot ]
+From: Goldwyn Rodrigues <rgoldwyn@suse.de>
 
-Hi,
+[ Upstream commit bc7e0975093567f51be8e1bdf4aa5900a3cf0b1e ]
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+btrfs_prelim_ref() calls the old and new reference variables in the
+incorrect order. This causes a NULL pointer dereference because oldref
+is passed as NULL to trace_btrfs_prelim_ref_insert().
 
-The upstream commit SHA1 provided is correct: b0e525d7a22ea350e75e2aec22e47fcfafa4cacd
+Note, trace_btrfs_prelim_ref_insert() is being called with newref as
+oldref (and oldref as NULL) on purpose in order to print out
+the values of newref.
 
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: bin.lan.cn@windriver.com
-Commit author: GONG Ruiqi<gongruiqi1@huawei.com>
+To reproduce:
+echo 1 > /sys/kernel/debug/tracing/events/btrfs/btrfs_prelim_ref_insert/enable
 
-Status in newer kernel trees:
-6.14.y | Present (exact SHA1)
-6.12.y | Present (different SHA1: 976544bdb40a)
-6.6.y | Present (different SHA1: e8336d3c9ab7)
-6.1.y | Not found
+Perform some writeback operations.
 
-Note: The patch differs from the upstream commit:
+Backtrace:
+BUG: kernel NULL pointer dereference, address: 0000000000000018
+ #PF: supervisor read access in kernel mode
+ #PF: error_code(0x0000) - not-present page
+ PGD 115949067 P4D 115949067 PUD 11594a067 PMD 0
+ Oops: Oops: 0000 [#1] SMP NOPTI
+ CPU: 1 UID: 0 PID: 1188 Comm: fsstress Not tainted 6.15.0-rc2-tester+ #47 PREEMPT(voluntary)  7ca2cef72d5e9c600f0c7718adb6462de8149622
+ Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.3-2-gc13ff2cd-prebuilt.qemu.org 04/01/2014
+ RIP: 0010:trace_event_raw_event_btrfs__prelim_ref+0x72/0x130
+ Code: e8 43 81 9f ff 48 85 c0 74 78 4d 85 e4 0f 84 8f 00 00 00 49 8b 94 24 c0 06 00 00 48 8b 0a 48 89 48 08 48 8b 52 08 48 89 50 10 <49> 8b 55 18 48 89 50 18 49 8b 55 20 48 89 50 20 41 0f b6 55 28 88
+ RSP: 0018:ffffce44820077a0 EFLAGS: 00010286
+ RAX: ffff8c6b403f9014 RBX: ffff8c6b55825730 RCX: 304994edf9cf506b
+ RDX: d8b11eb7f0fdb699 RSI: ffff8c6b403f9010 RDI: ffff8c6b403f9010
+ RBP: 0000000000000001 R08: 0000000000000001 R09: 0000000000000010
+ R10: 00000000ffffffff R11: 0000000000000000 R12: ffff8c6b4e8fb000
+ R13: 0000000000000000 R14: ffffce44820077a8 R15: ffff8c6b4abd1540
+ FS:  00007f4dc6813740(0000) GS:ffff8c6c1d378000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 0000000000000018 CR3: 000000010eb42000 CR4: 0000000000750ef0
+ PKRU: 55555554
+ Call Trace:
+  <TASK>
+  prelim_ref_insert+0x1c1/0x270
+  find_parent_nodes+0x12a6/0x1ee0
+  ? __entry_text_end+0x101f06/0x101f09
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  ? srso_alias_return_thunk+0x5/0xfbef5
+  btrfs_is_data_extent_shared+0x167/0x640
+  ? fiemap_process_hole+0xd0/0x2c0
+  extent_fiemap+0xa5c/0xbc0
+  ? __entry_text_end+0x101f05/0x101f09
+  btrfs_fiemap+0x7e/0xd0
+  do_vfs_ioctl+0x425/0x9d0
+  __x64_sys_ioctl+0x75/0xc0
+
+Signed-off-by: Goldwyn Rodrigues <rgoldwyn@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-1:  b0e525d7a22ea < -:  ------------- usb: typec: fix pm usage counter imbalance in ucsi_ccg_sync_control()
--:  ------------- > 1:  e59f2a21c85ab usb: typec: fix pm usage counter imbalance in ucsi_ccg_sync_control()
----
+ include/trace/events/btrfs.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Results of testing on various branches:
+diff --git a/include/trace/events/btrfs.h b/include/trace/events/btrfs.h
+index 7a6c5a870d33c..31847ccae4936 100644
+--- a/include/trace/events/btrfs.h
++++ b/include/trace/events/btrfs.h
+@@ -1847,7 +1847,7 @@ DECLARE_EVENT_CLASS(btrfs__prelim_ref,
+ 	TP_PROTO(const struct btrfs_fs_info *fs_info,
+ 		 const struct prelim_ref *oldref,
+ 		 const struct prelim_ref *newref, u64 tree_size),
+-	TP_ARGS(fs_info, newref, oldref, tree_size),
++	TP_ARGS(fs_info, oldref, newref, tree_size),
+ 
+ 	TP_STRUCT__entry_btrfs(
+ 		__field(	u64,  root_id		)
+-- 
+2.39.5
 
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-6.1.y        |  Success    |  Success   |
 
