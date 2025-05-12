@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-143867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D72C1AB4278
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:23:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51AF2AB4332
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:31:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1BB53ADF74
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:21:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 99CD57BA110
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:21:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D00FF2C108D;
-	Mon, 12 May 2025 18:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DD8F2C1E16;
+	Mon, 12 May 2025 18:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O6gd69wl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NuRZ2gf8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4932C1084
-	for <stable@vger.kernel.org>; Mon, 12 May 2025 18:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D0022C1E12
+	for <stable@vger.kernel.org>; Mon, 12 May 2025 18:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073144; cv=none; b=Jifs0agu3wTvDXGckLAxdwY+EBwvdi/TFqOEMlBC0cT33XkRJQioETJDsXUMKXJvZNiKGLUZocZQYvBMybP2PSwURYb+OcQkghiLbg07eQHB61JbDKvpoypv6HmXlfI/ps1F7xWk9Au0PJmgJYELrEfZXViuqOZi2uoqiaRQqQg=
+	t=1747073149; cv=none; b=FV2HTDC2iNxGui8ijjbG49TcnmFS3PCiWzlOOitOWkcq3cBmfVXx44Croi3G56oU8JP/eIDHp3Z2oyi//Q4bR1LtUN3wivNKMVQsCVOVwPzf/+/vNLMnvJ9ji3d77dg2m/KHNYN601flK1nUtCk/OQ4rxcrQidFtH3dt+eH+2mQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073144; c=relaxed/simple;
-	bh=kTKYvPC43p5A4OxlXh74C/vNaOqWHRrjAL8hXv5WXWk=;
+	s=arc-20240116; t=1747073149; c=relaxed/simple;
+	bh=Dl6aVg5Eps+jcfiPrbivMBtZSipX2ciXiZ4ReoNN3b4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dmehUybVBctDvrtdKB4Lqy2pp2NiitOff9hcUqcq+sxPrynNpxm4r1ehbIqZY/MMhHsI5rgmBwZLl1mKvlbVttHgngf3lGESVdXSaFYYFw1GUowQ7azDK8mZ3DKEDoe3YmWkRiqtckfFh34tyesLVZhuEw1AO+A0aZIza7EC0us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O6gd69wl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB77AC4CEE9;
-	Mon, 12 May 2025 18:05:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=I76mbCyIU0ZYlNrE/CYV6LORapNy1D7bIopSKtNITlRXzZxj5K8bgK35I0T8UlcKSR2n2yDWx7O4sfsnS13HYqcf74KkxzUjdAJVM53SdVGNM8swrWGwsPltMcw0jtKJ/iVXqwI8ejuLjhXnPhTWi53w3Dk3WMHMih4RwgJfeQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NuRZ2gf8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 888DBC4CEF0;
+	Mon, 12 May 2025 18:05:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747073144;
-	bh=kTKYvPC43p5A4OxlXh74C/vNaOqWHRrjAL8hXv5WXWk=;
+	s=k20201202; t=1747073149;
+	bh=Dl6aVg5Eps+jcfiPrbivMBtZSipX2ciXiZ4ReoNN3b4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O6gd69wle7uLoPo/hpYZV5/7Ynb5XMgTRSOR2EJ0w85cwKPoqerjjObhMtmro4pSX
-	 Tdr9M3Xc4Grh0Lr0bDvzu/l40YsMqnaIE3ahm0VAfbAhJZTV1/PxoS+2AREvheHgXl
-	 ZiqFKk0061ngLByDCOjv20KteROBuko9xLzyyWJy9EA//HL95NyzH++ke0QdMHBaND
-	 VTVR0sEJF1LZhU36hnZk8SEKl7Ymtz5Z1Zat7/D1zHqOu45A5CNJ1oBxvyX01cZpDT
-	 cxc/SBDYX2FPyo9ctA2I747IppmsagA3pBpZtXjh/G7IBjENV6CAbUDR0eNocMa8om
-	 Dkb/9Bl5H7HQQ==
+	b=NuRZ2gf8lz0aCWUEhvYGIOABKU/aSmPZyqFcNN4EtfgLW0CU/1FxR/CyQcyabu+7x
+	 gF/1sFHXaIfZsIz3T8UiAFYfau1oRBvuEjuUs6EWWIFxoV66kGIS36CE8Jr19TdaU/
+	 SLdOYhjgO7BB8pXQ0dGnD5OGXT12nJHOIVSe3tDlfGW8jbiWkpDHaJXsP1/V8S8Vzs
+	 7JBRzc+cDXhP5R34IJv+9ITxgmqoIYhi3eirfpUgLrpA231sqnKdN44bXgSnhUbZ46
+	 HHtSIVxsNFZZxxF394PmmsIUguZSHDr5b9hJHThs7vv55DfysDwaL+EQP7RP1xY8XZ
+	 0a8oLrUbg5ovw==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	jianqi.ren.cn@windriver.com
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15.y] media: mtk-vcodec: potential null pointer deference in SCP
-Date: Mon, 12 May 2025 14:05:40 -0400
-Message-Id: <20250511211340-9266be1f36cef753@stable.kernel.org>
+To: stable@vger.kernel.org
+Cc: jianqi.ren.cn@windriver.com,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.1.y] f2fs: fix to cover read extent cache access with lock
+Date: Mon, 12 May 2025 14:05:44 -0400
+Message-Id: <20250511195936-bcaf6f53ebd59af9@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250509092805.3242802-1-jianqi.ren.cn@windriver.com>
+In-Reply-To:  <20250509024654.3233384-1-jianqi.ren.cn@windriver.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,59 +64,128 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Summary of potential issues:
-⚠️ Found follow-up fixes in mainline
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 53dbe08504442dc7ba4865c09b3bbf5fe849681b
+The upstream commit SHA1 provided is correct: d7409b05a64f212735f0d33f5f1602051a886eab
 
 WARNING: Author mismatch between patch and upstream commit:
 Backport author: <jianqi.ren.cn@windriver.com>
-Commit author: Fullway Wang<fullwaywang@outlook.com>
+Commit author: Chao Yu<chao@kernel.org>
 
 Status in newer kernel trees:
 6.14.y | Present (exact SHA1)
 6.12.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: f066882293b5)
-6.1.y | Present (different SHA1: eeb62bb4ca22)
-
-Found fixes commits:
-4936cd5817af media: mediatek: vcodec: Fix a resource leak related to the scp device in FW initialization
+6.6.y | Present (different SHA1: 263df78166d3)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  53dbe08504442 ! 1:  99d7258da8569 media: mtk-vcodec: potential null pointer deference in SCP
+1:  d7409b05a64f2 ! 1:  ac73e346ab4ec f2fs: fix to cover read extent cache access with lock
     @@ Metadata
       ## Commit message ##
-         media: mtk-vcodec: potential null pointer deference in SCP
+         f2fs: fix to cover read extent cache access with lock
      
-    +    [ Upstream commit 53dbe08504442dc7ba4865c09b3bbf5fe849681b ]
+    +    [ Upstream commit d7409b05a64f212735f0d33f5f1602051a886eab ]
     +
-         The return value of devm_kzalloc() needs to be checked to avoid
-         NULL pointer deference. This is similar to CVE-2022-3113.
+         syzbot reports a f2fs bug as below:
      
-         Link: https://lore.kernel.org/linux-media/PH7PR20MB5925094DAE3FD750C7E39E01BF712@PH7PR20MB5925.namprd20.prod.outlook.com
-         Signed-off-by: Fullway Wang <fullwaywang@outlook.com>
-         Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+         BUG: KASAN: slab-use-after-free in sanity_check_extent_cache+0x370/0x410 fs/f2fs/extent_cache.c:46
+    @@ Commit message
+         Closes: https://lore.kernel.org/linux-f2fs-devel/00000000000009beea061740a531@google.com
+         Signed-off-by: Chao Yu <chao@kernel.org>
+         Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
     +    [Minor conflict resolved due to code context change.]
     +    Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
     +    Signed-off-by: He Zhe <zhe.he@windriver.com>
      
-    - ## drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_scp.c ##
-    -@@ drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_scp.c: struct mtk_vcodec_fw *mtk_vcodec_fw_scp_init(void *priv, enum mtk_vcodec_fw_use
-    + ## drivers/media/platform/mtk-vcodec/mtk_vcodec_fw_scp.c ##
-    +@@ drivers/media/platform/mtk-vcodec/mtk_vcodec_fw_scp.c: struct mtk_vcodec_fw *mtk_vcodec_fw_scp_init(struct mtk_vcodec_dev *dev)
-      	}
+      ## fs/f2fs/extent_cache.c ##
+     @@
+    @@ fs/f2fs/extent_cache.c
+      {
+      	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
+     -	struct f2fs_inode_info *fi = F2FS_I(inode);
+    --	struct extent_tree *et = fi->extent_tree[EX_READ];
+     -	struct extent_info *ei;
+    --
+    --	if (!et)
+    --		return true;
+     +	struct f2fs_extent *i_ext = &F2FS_INODE(ipage)->i_ext;
+     +	struct extent_info ei;
       
-    - 	fw = devm_kzalloc(&plat_dev->dev, sizeof(*fw), GFP_KERNEL);
-    + 	fw = devm_kzalloc(&dev->plat_dev->dev, sizeof(*fw), GFP_KERNEL);
-     +	if (!fw)
-     +		return ERR_PTR(-ENOMEM);
-      	fw->type = SCP;
+    --	ei = &et->largest;
+    --	if (!ei->len)
+    +-	if (!fi->extent_tree[EX_READ])
+     -		return true;
+     +	get_read_extent_info(&ei, i_ext);
+      
+    --	/* Let's drop, if checkpoint got corrupted. */
+    --	if (is_set_ckpt_flags(sbi, CP_ERROR_FLAG)) {
+    --		ei->len = 0;
+    --		et->largest_updated = true;
+    +-	ei = &fi->extent_tree[EX_READ]->largest;
+     +	if (!ei.len)
+    - 		return true;
+    --	}
+    ++		return true;
+      
+    --	if (!f2fs_is_valid_blkaddr(sbi, ei->blk, DATA_GENERIC_ENHANCE) ||
+    --	    !f2fs_is_valid_blkaddr(sbi, ei->blk + ei->len - 1,
+    +-	if (ei->len &&
+    +-		(!f2fs_is_valid_blkaddr(sbi, ei->blk,
+    +-					DATA_GENERIC_ENHANCE) ||
+    +-		!f2fs_is_valid_blkaddr(sbi, ei->blk + ei->len - 1,
+    +-					DATA_GENERIC_ENHANCE))) {
+    +-		set_sbi_flag(sbi, SBI_NEED_FSCK);
+     +	if (!f2fs_is_valid_blkaddr(sbi, ei.blk, DATA_GENERIC_ENHANCE) ||
+     +	    !f2fs_is_valid_blkaddr(sbi, ei.blk + ei.len - 1,
+    - 					DATA_GENERIC_ENHANCE)) {
+    ++					DATA_GENERIC_ENHANCE)) {
+      		f2fs_warn(sbi, "%s: inode (ino=%lx) extent info [%u, %u, %u] is incorrect, run fsck to fix",
+      			  __func__, inode->i_ino,
+     -			  ei->blk, ei->fofs, ei->len);
+    @@ fs/f2fs/extent_cache.c: void f2fs_init_read_extent_tree(struct inode *inode, str
+     -		set_inode_flag(inode, FI_NO_EXTENT);
+      }
+      
+    - void f2fs_init_age_extent_tree(struct inode *inode)
+    + void f2fs_init_extent_tree(struct inode *inode)
+     
+      ## fs/f2fs/f2fs.h ##
+     @@ fs/f2fs/f2fs.h: void f2fs_leave_shrinker(struct f2fs_sb_info *sbi);
+    @@ fs/f2fs/f2fs.h: void f2fs_leave_shrinker(struct f2fs_sb_info *sbi);
+       */
+     -bool sanity_check_extent_cache(struct inode *inode);
+     +bool sanity_check_extent_cache(struct inode *inode, struct page *ipage);
+    - void f2fs_init_extent_tree(struct inode *inode);
+    - void f2fs_drop_extent_tree(struct inode *inode);
+    - void f2fs_destroy_extent_node(struct inode *inode);
+    + struct rb_entry *f2fs_lookup_rb_tree(struct rb_root_cached *root,
+    + 				struct rb_entry *cached_re, unsigned int ofs);
+    + struct rb_node **f2fs_lookup_rb_tree_for_insert(struct f2fs_sb_info *sbi,
+     
+      ## fs/f2fs/inode.c ##
+     @@ fs/f2fs/inode.c: static int do_read_inode(struct inode *inode)
+    @@ fs/f2fs/inode.c: static int do_read_inode(struct inode *inode)
+      
+     -	/* Need all the flag bits */
+     -	f2fs_init_read_extent_tree(inode, node_page);
+    --	f2fs_init_age_extent_tree(inode);
+     -
+     -	if (!sanity_check_extent_cache(inode)) {
+     +	if (!sanity_check_extent_cache(inode, node_page)) {
+    @@ fs/f2fs/inode.c: static int do_read_inode(struct inode *inode)
+      
+     +	/* Need all the flag bits */
+     +	f2fs_init_read_extent_tree(inode, node_page);
+    -+	f2fs_init_age_extent_tree(inode);
+     +
+      	f2fs_put_page(node_page, 1);
+      
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.15.y       |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Success   |
 
