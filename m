@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-143475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DDF5AB3FE8
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:47:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03969AB4003
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:49:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6168466368
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:47:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F1CA7868284
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:47:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5EF7254AF7;
-	Mon, 12 May 2025 17:47:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BE7523C510;
+	Mon, 12 May 2025 17:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0GWKqMnK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VSxpQjxc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8430E1C32FF;
-	Mon, 12 May 2025 17:47:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8FCF254B10;
+	Mon, 12 May 2025 17:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072060; cv=none; b=DTSUGwo/zbX6U8+zWTag73dEUjcAlbrgneLINxjr//9lFRWUq5A/xYaX8FvyfNGNzl0mkLa7z2tjDP/L/b1b0mVdDzkPjD+2cndfKJZxE6jWI8hKZyfyAnFzWm+7krscmWMyHkvTVrrqe1lJx6QCmF1qpjZV1e6fIWlVzGYAKzo=
+	t=1747072069; cv=none; b=fbqY0HCpvCdU5OVfKoQKo3FY24GvHA3jEFbFZ8npFo7uCJLb2sU8TsoocshE2jh6JkFSNCGJ1dD16FLYbcC0WCQfqI+iw1hXn+qTn9KxAHY1Q96izpjw9U3Cy5Wx1LoPSUUQmTyf67ZESknky8f3BkmtAEKN0uJR8lHq1ewQRwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072060; c=relaxed/simple;
-	bh=P0at67NPwEsje03a4qrImfsKNNEARAncWbsykliqSiU=;
+	s=arc-20240116; t=1747072069; c=relaxed/simple;
+	bh=N9QGKnI7qJ/+H8ENuE0xuQG3ua3dLMjAraqgllTptkg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BVaXTs0Vo+RhNFAKTe0RgBOgmqIOPTJCIhsMQc93TpQowyrWrF0C+2IQqFRK/ACkNcXt856i1BDtQSmM/X4WuLJZvJJWorwLTw1w8kSvZL9w4fDCfIJ95j/QCRdLSuIGjUaAf+9K4CsVTBHvKOZbgFk+11DCHmKxS6LEvAvyAeg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0GWKqMnK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13083C4CEE7;
-	Mon, 12 May 2025 17:47:39 +0000 (UTC)
+	 MIME-Version; b=HNMnFjgoWKoDSwgf1QvaH/oQR5+8HOMF6jYdN01jf9uwoQUaSDgdc6jovcK78CmLe27pYMOvH6eu0Ns8U29UNEFBIklakjxJGL6jgMZGEJoLOj8pV3jg3MO+JHgQv8vAspQPzxcOzbJdYzoxW8gw8QH7kIwynL4JEyJG/HUX4h0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VSxpQjxc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7258CC4CEE7;
+	Mon, 12 May 2025 17:47:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072060;
-	bh=P0at67NPwEsje03a4qrImfsKNNEARAncWbsykliqSiU=;
+	s=korg; t=1747072068;
+	bh=N9QGKnI7qJ/+H8ENuE0xuQG3ua3dLMjAraqgllTptkg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0GWKqMnKDLXpyOmbE8I3bd0n8OewuEv6NDEMI0f7rD4l3aOqVOZoRXKCbo1rzI0OF
-	 kw8dm40Oe61N16rMNWpde79/XP7LRFVdq6lm2KsyO5czXQ7ysLrKo8WWgVhSckPXpF
-	 yXlDQkbFwhlQNxDu5n5FdexVly2BHq9rPuXd/zm4=
+	b=VSxpQjxcf3tmdj2KKzvF0UrQ7rP1ooBMqwMKwQY0heJ02r46YdnoQ3TLZbjI6odp/
+	 MBa5Z8OtBSHaoB5Ak2n1bNGRswR5ivbyMg05ly7ZTABnPUrT2dz4Dmr/eoUVala0gZ
+	 TFC1vgQtpfkdc7rILSWN6J0w5JYK5vtAZVFvRswU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Silvano Seva <s.seva@4sigma.it>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Stable@vger.kernel.org,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.14 098/197] iio: imu: st_lsm6dsx: fix possible lockup in st_lsm6dsx_read_tagged_fifo
-Date: Mon, 12 May 2025 19:39:08 +0200
-Message-ID: <20250512172048.373455226@linuxfoundation.org>
+Subject: [PATCH 6.14 099/197] iio: light: opt3001: fix deadlock due to concurrent flag access
+Date: Mon, 12 May 2025 19:39:09 +0200
+Message-ID: <20250512172048.412763071@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512172044.326436266@linuxfoundation.org>
 References: <20250512172044.326436266@linuxfoundation.org>
@@ -67,36 +65,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Silvano Seva <s.seva@4sigma.it>
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-commit 8114ef86e2058e2554111b793596f17bee23fa15 upstream.
+commit f063a28002e3350088b4577c5640882bf4ea17ea upstream.
 
-Prevent st_lsm6dsx_read_tagged_fifo from falling in an infinite loop in
-case pattern_len is equal to zero and the device FIFO is not empty.
+The threaded IRQ function in this driver is reading the flag twice: once to
+lock a mutex and once to unlock it. Even though the code setting the flag
+is designed to prevent it, there are subtle cases where the flag could be
+true at the mutex_lock stage and false at the mutex_unlock stage. This
+results in the mutex not being unlocked, resulting in a deadlock.
 
-Fixes: 801a6e0af0c6 ("iio: imu: st_lsm6dsx: add support to LSM6DSO")
-Signed-off-by: Silvano Seva <s.seva@4sigma.it>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20250311085030.3593-4-s.seva@4sigma.it
-Cc: <Stable@vger.kernel.org>
+Fix it by making the opt3001_irq() code generally more robust, reading the
+flag into a variable and using the variable value at both stages.
+
+Fixes: 94a9b7b1809f ("iio: light: add support for TI's opt3001 light sensor")
+Cc: stable@vger.kernel.org
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Link: https://patch.msgid.link/20250321-opt3001-irq-fix-v1-1-6c520d851562@bootlin.com
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/iio/light/opt3001.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-@@ -626,6 +626,9 @@ int st_lsm6dsx_read_tagged_fifo(struct s
- 	if (!fifo_len)
- 		return 0;
+--- a/drivers/iio/light/opt3001.c
++++ b/drivers/iio/light/opt3001.c
+@@ -788,8 +788,9 @@ static irqreturn_t opt3001_irq(int irq,
+ 	int ret;
+ 	bool wake_result_ready_queue = false;
+ 	enum iio_chan_type chan_type = opt->chip_info->chan_type;
++	bool ok_to_ignore_lock = opt->ok_to_ignore_lock;
  
-+	if (!pattern_len)
-+		pattern_len = ST_LSM6DSX_TAGGED_SAMPLE_SIZE;
-+
- 	for (read_len = 0; read_len < fifo_len; read_len += pattern_len) {
- 		err = st_lsm6dsx_read_block(hw,
- 					    ST_LSM6DSX_REG_FIFO_OUT_TAG_ADDR,
+-	if (!opt->ok_to_ignore_lock)
++	if (!ok_to_ignore_lock)
+ 		mutex_lock(&opt->lock);
+ 
+ 	ret = i2c_smbus_read_word_swapped(opt->client, OPT3001_CONFIGURATION);
+@@ -826,7 +827,7 @@ static irqreturn_t opt3001_irq(int irq,
+ 	}
+ 
+ out:
+-	if (!opt->ok_to_ignore_lock)
++	if (!ok_to_ignore_lock)
+ 		mutex_unlock(&opt->lock);
+ 
+ 	if (wake_result_ready_queue)
 
 
 
