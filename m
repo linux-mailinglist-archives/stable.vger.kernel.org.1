@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-143984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57AA8AB4313
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:29:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA19BAB4270
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:23:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6FD61B6228E
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:29:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDC4716D1E4
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:23:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3E1729ACE3;
-	Mon, 12 May 2025 18:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08BDF296FAE;
+	Mon, 12 May 2025 18:06:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1J4ZgNFw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VYlJX425"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FAB8296FAD;
-	Mon, 12 May 2025 18:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B2925335E;
+	Mon, 12 May 2025 18:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073497; cv=none; b=sQ3t+j5MHKMyVXWHsOz+Jotnr5N0oPiwpi6ytpyZqgL7pusmokZLInfHDmJei621LhzO/FwYypi8mYyeCGgXaGRC8TsPd9daS/qa+3vs9hHkMgEtKOi9PTWGqqzr3QQU3GmPCXeaJY09SqhTGOPxQSqJV/r3MHmirTel/WKUyOQ=
+	t=1747073192; cv=none; b=hsP216olXQ1e8YIL70SJiXb4ybNK0hymxdzK29vQF+oAckl6IwgmNfSnLrbNS9HEC5RnzWcu09aCvrACFevdK+hsTc+ifBBhu96y344LYKeagfLVzejgFcqmV/IEIs9qjpjl0t0+ZuSauj3dkQyoOGr4szTgGwp/0YbdLEeIlzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073497; c=relaxed/simple;
-	bh=pjswzhaL51jwr90nafBEY//k8DNxpeoUST9dC6W/2Fo=;
+	s=arc-20240116; t=1747073192; c=relaxed/simple;
+	bh=ubqpFPZLfnrDO3fgezuiOWKRB6ocoMahsBxkaVR7UmM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U/i9HlIHdC3UbJfrgkwyDFmDRa8Z6syYNOQcQenujUAMEjGBwCZu7SsSAF6cpxSHVXgs6/1nroZEdtgrMH+0s9nu2yr3Y8DInN+k57DUksArnk18R2lfnOn0vnSqX+BrUF4iM2j15MXdmYPIJvgMkjbhVLK1GlsoiKORnfN6ZCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1J4ZgNFw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A13FDC4CEE7;
-	Mon, 12 May 2025 18:11:36 +0000 (UTC)
+	 MIME-Version; b=p/pn2JsBvBLTn5TaoQks8ni1fULiKL+NKJgU0HmugQuiZ1IqP4HsvfZ3PojhEdfnqebQSaExNDQLJLLadHbxqIXqsuDBCCLQ4HJ7GCJ9/naSY0njG9nqptgolLQ2Z6cCaA3B34CDm2++ohX7wHsWfSbZrsME6zJWHW9oYxipPUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VYlJX425; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DFEDC4CEEF;
+	Mon, 12 May 2025 18:06:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073497;
-	bh=pjswzhaL51jwr90nafBEY//k8DNxpeoUST9dC6W/2Fo=;
+	s=korg; t=1747073192;
+	bh=ubqpFPZLfnrDO3fgezuiOWKRB6ocoMahsBxkaVR7UmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1J4ZgNFwYlCWOcl0H9OGOHw1Vc888UA4z0uRnpHOJPndiv4fTPeXAvDbFwJ2rcLNh
-	 Fd2PpyGYukSO92n47/SwDqRZJS5GIS+iU1dy8jgZnV2It4zzTVxN/MVOvu9rZI38Uj
-	 obhbeadvZFVOZDtSoQMfe4UOmTS6EVTT9ZAAswO8=
+	b=VYlJX4254O/Huu2m/Ye2J4cwPUA7/mZCdnCvEClrPXY9vjkUu+FTATJUXpjQEjyZi
+	 SSH7S/RQ256hSUWCOdr61/4BAbf8GTIa/3LHL3YImIO2FdC73cjJiCWp9cGnSBFska
+	 lai+6sxUe9fIsD+VQwaqBQrc0h35twpoj6czMoe4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Morse <james.morse@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Daniel Borkmann <daniel@iogearbox.net>
-Subject: [PATCH 6.6 095/113] arm64: bpf: Add BHB mitigation to the epilogue for cBPF programs
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Alexandre Chartre <alexandre.chartre@oracle.com>
+Subject: [PATCH 6.12 183/184] x86/its: Use dynamic thunks for indirect branches
 Date: Mon, 12 May 2025 19:46:24 +0200
-Message-ID: <20250512172031.548946379@linuxfoundation.org>
+Message-ID: <20250512172049.263732536@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
-References: <20250512172027.691520737@linuxfoundation.org>
+In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
+References: <20250512172041.624042835@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,154 +63,296 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Morse <james.morse@arm.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-commit 0dfefc2ea2f29ced2416017d7e5b1253a54c2735 upstream.
+commit 872df34d7c51a79523820ea6a14860398c639b87 upstream.
 
-A malicious BPF program may manipulate the branch history to influence
-what the hardware speculates will happen next.
+ITS mitigation moves the unsafe indirect branches to a safe thunk. This
+could degrade the prediction accuracy as the source address of indirect
+branches becomes same for different execution paths.
 
-On exit from a BPF program, emit the BHB mititgation sequence.
+To improve the predictions, and hence the performance, assign a separate
+thunk for each indirect callsite. This is also a defense-in-depth measure
+to avoid indirect branches aliasing with each other.
 
-This is only applied for 'classic' cBPF programs that are loaded by
-seccomp.
+As an example, 5000 dynamic thunks would utilize around 16 bits of the
+address space, thereby gaining entropy. For a BTB that uses
+32 bits for indexing, dynamic thunks could provide better prediction
+accuracy over fixed thunks.
 
-Signed-off-by: James Morse <james.morse@arm.com>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Have ITS thunks be variable sized and use EXECMEM_MODULE_TEXT such that
+they are both more flexible (got to extend them later) and live in 2M TLBs,
+just like kernel code, avoiding undue TLB pressure.
+
+  [ pawan: CONFIG_EXECMEM_ROX is not supported on backport kernel, made
+	   adjustments to set memory to RW and ROX ]
+
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/spectre.h |    1 
- arch/arm64/kernel/proton-pack.c  |    2 -
- arch/arm64/net/bpf_jit_comp.c    |   54 ++++++++++++++++++++++++++++++++++++---
- 3 files changed, 52 insertions(+), 5 deletions(-)
+ arch/x86/Kconfig                   |    1 
+ arch/x86/include/asm/alternative.h |   10 ++
+ arch/x86/kernel/alternative.c      |  129 ++++++++++++++++++++++++++++++++++++-
+ arch/x86/kernel/module.c           |    6 +
+ include/linux/execmem.h            |    3 
+ include/linux/module.h             |    5 +
+ 6 files changed, 151 insertions(+), 3 deletions(-)
 
---- a/arch/arm64/include/asm/spectre.h
-+++ b/arch/arm64/include/asm/spectre.h
-@@ -97,6 +97,7 @@ enum mitigation_state arm64_get_meltdown
- 
- enum mitigation_state arm64_get_spectre_bhb_state(void);
- bool is_spectre_bhb_affected(const struct arm64_cpu_capabilities *entry, int scope);
-+extern bool __nospectre_bhb;
- u8 get_spectre_bhb_loop_value(void);
- bool is_spectre_bhb_fw_mitigated(void);
- void spectre_bhb_enable_mitigation(const struct arm64_cpu_capabilities *__unused);
---- a/arch/arm64/kernel/proton-pack.c
-+++ b/arch/arm64/kernel/proton-pack.c
-@@ -1020,7 +1020,7 @@ static void this_cpu_set_vectors(enum ar
- 	isb();
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -2751,6 +2751,7 @@ config MITIGATION_ITS
+ 	bool "Enable Indirect Target Selection mitigation"
+ 	depends on CPU_SUP_INTEL && X86_64
+ 	depends on MITIGATION_RETPOLINE && MITIGATION_RETHUNK
++	select EXECMEM
+ 	default y
+ 	help
+ 	  Enable Indirect Target Selection (ITS) mitigation. ITS is a bug in
+--- a/arch/x86/include/asm/alternative.h
++++ b/arch/x86/include/asm/alternative.h
+@@ -134,6 +134,16 @@ static __always_inline int x86_call_dept
  }
+ #endif
  
--static bool __read_mostly __nospectre_bhb;
-+bool __read_mostly __nospectre_bhb;
- static int __init parse_spectre_bhb_param(char *str)
- {
- 	__nospectre_bhb = true;
---- a/arch/arm64/net/bpf_jit_comp.c
-+++ b/arch/arm64/net/bpf_jit_comp.c
-@@ -7,6 +7,7 @@
++#ifdef CONFIG_MITIGATION_ITS
++extern void its_init_mod(struct module *mod);
++extern void its_fini_mod(struct module *mod);
++extern void its_free_mod(struct module *mod);
++#else /* CONFIG_MITIGATION_ITS */
++static inline void its_init_mod(struct module *mod) { }
++static inline void its_fini_mod(struct module *mod) { }
++static inline void its_free_mod(struct module *mod) { }
++#endif
++
+ #if defined(CONFIG_MITIGATION_RETHUNK) && defined(CONFIG_OBJTOOL)
+ extern bool cpu_wants_rethunk(void);
+ extern bool cpu_wants_rethunk_at(void *addr);
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -18,6 +18,7 @@
+ #include <linux/mmu_context.h>
+ #include <linux/bsearch.h>
+ #include <linux/sync_core.h>
++#include <linux/execmem.h>
+ #include <asm/text-patching.h>
+ #include <asm/alternative.h>
+ #include <asm/sections.h>
+@@ -32,6 +33,7 @@
+ #include <asm/asm-prototypes.h>
+ #include <asm/cfi.h>
+ #include <asm/ibt.h>
++#include <asm/set_memory.h>
  
- #define pr_fmt(fmt) "bpf_jit: " fmt
+ int __read_mostly alternatives_patched;
  
-+#include <linux/arm-smccc.h>
- #include <linux/bitfield.h>
- #include <linux/bpf.h>
- #include <linux/filter.h>
-@@ -17,6 +18,7 @@
- #include <asm/asm-extable.h>
- #include <asm/byteorder.h>
- #include <asm/cacheflush.h>
-+#include <asm/cpufeature.h>
- #include <asm/debug-monitors.h>
- #include <asm/insn.h>
- #include <asm/patching.h>
-@@ -653,7 +655,48 @@ static void build_plt(struct jit_ctx *ct
- 		plt->target = (u64)&dummy_tramp;
- }
+@@ -125,6 +127,123 @@ const unsigned char * const x86_nops[ASM
+ #endif
+ };
  
--static void build_epilogue(struct jit_ctx *ctx)
-+/* Clobbers BPF registers 1-4, aka x0-x3 */
-+static void __maybe_unused build_bhb_mitigation(struct jit_ctx *ctx)
++#ifdef CONFIG_MITIGATION_ITS
++
++static struct module *its_mod;
++static void *its_page;
++static unsigned int its_offset;
++
++/* Initialize a thunk with the "jmp *reg; int3" instructions. */
++static void *its_init_thunk(void *thunk, int reg)
 +{
-+	const u8 r1 = bpf2a64[BPF_REG_1]; /* aka x0 */
-+	u8 k = get_spectre_bhb_loop_value();
++	u8 *bytes = thunk;
++	int i = 0;
 +
-+	if (!IS_ENABLED(CONFIG_MITIGATE_SPECTRE_BRANCH_HISTORY) ||
-+	    cpu_mitigations_off() || __nospectre_bhb ||
-+	    arm64_get_spectre_v2_state() == SPECTRE_VULNERABLE)
++	if (reg >= 8) {
++		bytes[i++] = 0x41; /* REX.B prefix */
++		reg -= 8;
++	}
++	bytes[i++] = 0xff;
++	bytes[i++] = 0xe0 + reg; /* jmp *reg */
++	bytes[i++] = 0xcc;
++
++	return thunk;
++}
++
++void its_init_mod(struct module *mod)
++{
++	if (!cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS))
 +		return;
 +
-+	if (supports_clearbhb(SCOPE_SYSTEM)) {
-+		emit(aarch64_insn_gen_hint(AARCH64_INSN_HINT_CLEARBHB), ctx);
++	mutex_lock(&text_mutex);
++	its_mod = mod;
++	its_page = NULL;
++}
++
++void its_fini_mod(struct module *mod)
++{
++	if (!cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS))
 +		return;
-+	}
 +
-+	if (k) {
-+		emit_a64_mov_i64(r1, k, ctx);
-+		emit(A64_B(1), ctx);
-+		emit(A64_SUBS_I(true, r1, r1, 1), ctx);
-+		emit(A64_B_(A64_COND_NE, -2), ctx);
-+		emit(aarch64_insn_gen_dsb(AARCH64_INSN_MB_ISH), ctx);
-+		emit(aarch64_insn_get_isb_value(), ctx);
-+	}
++	WARN_ON_ONCE(its_mod != mod);
 +
-+	if (is_spectre_bhb_fw_mitigated()) {
-+		emit(A64_ORR_I(false, r1, AARCH64_INSN_REG_ZR,
-+			       ARM_SMCCC_ARCH_WORKAROUND_3), ctx);
-+		switch (arm_smccc_1_1_get_conduit()) {
-+		case SMCCC_CONDUIT_HVC:
-+			emit(aarch64_insn_get_hvc_value(), ctx);
-+			break;
-+		case SMCCC_CONDUIT_SMC:
-+			emit(aarch64_insn_get_smc_value(), ctx);
-+			break;
-+		default:
-+			pr_err_once("Firmware mitigation enabled with unknown conduit\n");
-+		}
++	its_mod = NULL;
++	its_page = NULL;
++	mutex_unlock(&text_mutex);
++
++	for (int i = 0; i < mod->its_num_pages; i++) {
++		void *page = mod->its_page_array[i];
++		set_memory_rox((unsigned long)page, 1);
 +	}
 +}
 +
-+static void build_epilogue(struct jit_ctx *ctx, bool was_classic)
- {
- 	const u8 r0 = bpf2a64[BPF_REG_0];
- 	const u8 r6 = bpf2a64[BPF_REG_6];
-@@ -675,10 +718,13 @@ static void build_epilogue(struct jit_ct
- 	emit(A64_POP(r8, r9, A64_SP), ctx);
- 	emit(A64_POP(r6, r7, A64_SP), ctx);
- 
-+	if (was_classic)
-+		build_bhb_mitigation(ctx);
++void its_free_mod(struct module *mod)
++{
++	if (!cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS))
++		return;
 +
- 	/* Restore FP/LR registers */
- 	emit(A64_POP(A64_FP, A64_LR, A64_SP), ctx);
++	for (int i = 0; i < mod->its_num_pages; i++) {
++		void *page = mod->its_page_array[i];
++		execmem_free(page);
++	}
++	kfree(mod->its_page_array);
++}
++
++static void *its_alloc(void)
++{
++	void *page __free(execmem) = execmem_alloc(EXECMEM_MODULE_TEXT, PAGE_SIZE);
++
++	if (!page)
++		return NULL;
++
++	if (its_mod) {
++		void *tmp = krealloc(its_mod->its_page_array,
++				     (its_mod->its_num_pages+1) * sizeof(void *),
++				     GFP_KERNEL);
++		if (!tmp)
++			return NULL;
++
++		its_mod->its_page_array = tmp;
++		its_mod->its_page_array[its_mod->its_num_pages++] = page;
++	}
++
++	return no_free_ptr(page);
++}
++
++static void *its_allocate_thunk(int reg)
++{
++	int size = 3 + (reg / 8);
++	void *thunk;
++
++	if (!its_page || (its_offset + size - 1) >= PAGE_SIZE) {
++		its_page = its_alloc();
++		if (!its_page) {
++			pr_err("ITS page allocation failed\n");
++			return NULL;
++		}
++		memset(its_page, INT3_INSN_OPCODE, PAGE_SIZE);
++		its_offset = 32;
++	}
++
++	/*
++	 * If the indirect branch instruction will be in the lower half
++	 * of a cacheline, then update the offset to reach the upper half.
++	 */
++	if ((its_offset + size - 1) % 64 < 32)
++		its_offset = ((its_offset - 1) | 0x3F) + 33;
++
++	thunk = its_page + its_offset;
++	its_offset += size;
++
++	set_memory_rw((unsigned long)its_page, 1);
++	thunk = its_init_thunk(thunk, reg);
++	set_memory_rox((unsigned long)its_page, 1);
++
++	return thunk;
++}
++
++#endif
++
+ /*
+  * Nomenclature for variable names to simplify and clarify this code and ease
+  * any potential staring at it:
+@@ -637,9 +756,13 @@ static int emit_call_track_retpoline(voi
+ #ifdef CONFIG_MITIGATION_ITS
+ static int emit_its_trampoline(void *addr, struct insn *insn, int reg, u8 *bytes)
+ {
+-	return __emit_trampoline(addr, insn, bytes,
+-				 __x86_indirect_its_thunk_array[reg],
+-				 __x86_indirect_its_thunk_array[reg]);
++	u8 *thunk = __x86_indirect_its_thunk_array[reg];
++	u8 *tmp = its_allocate_thunk(reg);
++
++	if (tmp)
++		thunk = tmp;
++
++	return __emit_trampoline(addr, insn, bytes, thunk, thunk);
+ }
  
--	/* Set return value */
-+	/* Move the return value from bpf:r0 (aka x7) to x0 */
- 	emit(A64_MOV(1, A64_R(0), r0), ctx);
- 
- 	/* Authenticate lr */
-@@ -1586,7 +1632,7 @@ struct bpf_prog *bpf_int_jit_compile(str
+ /* Check if an indirect branch is at ITS-unsafe address */
+--- a/arch/x86/kernel/module.c
++++ b/arch/x86/kernel/module.c
+@@ -251,6 +251,8 @@ int module_finalize(const Elf_Ehdr *hdr,
+ 			ibt_endbr = s;
  	}
  
- 	ctx.epilogue_offset = ctx.idx;
--	build_epilogue(&ctx);
-+	build_epilogue(&ctx, was_classic);
- 	build_plt(&ctx);
- 
- 	extable_align = __alignof__(struct exception_table_entry);
-@@ -1622,7 +1668,7 @@ skip_init_ctx:
- 		goto out_off;
++	its_init_mod(me);
++
+ 	if (retpolines || cfi) {
+ 		void *rseg = NULL, *cseg = NULL;
+ 		unsigned int rsize = 0, csize = 0;
+@@ -271,6 +273,9 @@ int module_finalize(const Elf_Ehdr *hdr,
+ 		void *rseg = (void *)retpolines->sh_addr;
+ 		apply_retpolines(rseg, rseg + retpolines->sh_size);
  	}
++
++	its_fini_mod(me);
++
+ 	if (returns) {
+ 		void *rseg = (void *)returns->sh_addr;
+ 		apply_returns(rseg, rseg + returns->sh_size);
+@@ -318,4 +323,5 @@ int module_finalize(const Elf_Ehdr *hdr,
+ void module_arch_cleanup(struct module *mod)
+ {
+ 	alternatives_smp_module_del(mod);
++	its_free_mod(mod);
+ }
+--- a/include/linux/execmem.h
++++ b/include/linux/execmem.h
+@@ -4,6 +4,7 @@
  
--	build_epilogue(&ctx);
-+	build_epilogue(&ctx, was_classic);
- 	build_plt(&ctx);
+ #include <linux/types.h>
+ #include <linux/moduleloader.h>
++#include <linux/cleanup.h>
  
- 	/* 3. Extra pass to validate JITed code. */
+ #if (defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)) && \
+ 		!defined(CONFIG_KASAN_VMALLOC)
+@@ -123,6 +124,8 @@ void *execmem_alloc(enum execmem_type ty
+  */
+ void execmem_free(void *ptr);
+ 
++DEFINE_FREE(execmem, void *, if (_T) execmem_free(_T));
++
+ #if defined(CONFIG_EXECMEM) && !defined(CONFIG_ARCH_WANTS_EXECMEM_LATE)
+ void execmem_init(void);
+ #else
+--- a/include/linux/module.h
++++ b/include/linux/module.h
+@@ -582,6 +582,11 @@ struct module {
+ 	atomic_t refcnt;
+ #endif
+ 
++#ifdef CONFIG_MITIGATION_ITS
++	int its_num_pages;
++	void **its_page_array;
++#endif
++
+ #ifdef CONFIG_CONSTRUCTORS
+ 	/* Constructor functions. */
+ 	ctor_fn_t *ctors;
 
 
 
