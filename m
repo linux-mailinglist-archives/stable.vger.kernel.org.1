@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-144041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1FE6AB46B7
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 23:51:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD847AB46B9
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 23:51:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA67D18876C2
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 21:52:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EAEED1888333
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 21:52:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BD4A22338;
-	Mon, 12 May 2025 21:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB7BA29992B;
+	Mon, 12 May 2025 21:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S7mjdWco"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ID1ULRJa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CD8D299AB4
-	for <stable@vger.kernel.org>; Mon, 12 May 2025 21:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BCCA298C35
+	for <stable@vger.kernel.org>; Mon, 12 May 2025 21:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747086696; cv=none; b=kNPALZytvcYTPLHhWB+RQMcgmfYTgOY1e54gSDK1x1qBw7lLHK5aRjFM+hOTbbJ5QOloYnL5DSRPkRGREdllFX087SEDfScZpqfrMJ7IV9Nq9y9Nxf0WLL8Gg4ltoA/heJyy2xlrPDmIhh5ebBg/xzelbG1CTUsigpI7w3ZUZZ4=
+	t=1747086699; cv=none; b=ayzOMjFVFkStZkGms4OoejnkwdPrUT4RKROfSvmu508BOTqu/OCydCI23KERK0uwU3wER0Nf7lAbhwkXgxvHbc2QKH2nAg0eZRap5kSDl5z4ymtzOOrF6bVVzthEVHRVL8V0wm5jc1nA/Q3fqbHZi592ql0IIn3sd3ROQAMhXCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747086696; c=relaxed/simple;
-	bh=Fgx0CxBQ7A9JJZ5l/EwJoE0AfvRlg77klVPRljWFIBM=;
+	s=arc-20240116; t=1747086699; c=relaxed/simple;
+	bh=D8w5hwc+j+iW+wfazJbsXHKaB69LX45oDlQDWT5Ok7o=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uMpBB9aUadg3U7UN+2nkN4I7LlRLthrXkzhYKEzbqfrRFUC93MvWZFACi3/3+H1pegDGaN171Ck4UnCyg+a0zuC1ZWb/brjhrZ7cKsIAr1bz1uq4AxKgHp3UnppRTiYBC00I+zMX27fNpjzssZlLfOvXI3R+4haNz5X25ClZIn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S7mjdWco; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F7E4C4CEF4;
-	Mon, 12 May 2025 21:51:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RS7uAqJeg4kmh3E4bdrXMN3hnA9AC9ybiA4bWm0P+eaB6kJC2Ej5VUtmPRslQccyWdjmETGux0P3rSPOC72CiXVrmneDo4kxWs+Uzxb5bXy/s0gJlOKm2mSzE7cvzVTufHlPMoSeEFu9rF1MgKpsTK/K5y7poCmJhV80apJW3IY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ID1ULRJa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE33C4CEE7;
+	Mon, 12 May 2025 21:51:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747086694;
-	bh=Fgx0CxBQ7A9JJZ5l/EwJoE0AfvRlg77klVPRljWFIBM=;
+	s=k20201202; t=1747086699;
+	bh=D8w5hwc+j+iW+wfazJbsXHKaB69LX45oDlQDWT5Ok7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S7mjdWcoiss3kJIloOwoFnS0YvhMi5rm23snL6/fMfp3BjwDh7lCygdxQ+T/rJizT
-	 G6m0kT3OpGmXaad2hUYlwTmkaKh4VAqZU6U90KLAGqOd+Tb+QG6wfV0Jp/4ZcVDBw/
-	 okj8OLi+s51aVTRsw0RVbFkbVpVTdhasxrm3TcW//XOvb+w8uXFydR9NsOzxmAZp3U
-	 GpIR92O+C/VX4T6H0APQ+4zbIgQvfgDteVtKGVJTQ8TnyLFxzsXh2wc/ureibmx77r
-	 MSWwPdOCgkogkbwJEePmlxuFXFryPk9hgv3hdsNe1iHOju6IIR+8H21h1rcK12yKAH
-	 zZ/8Enf5rHo7A==
+	b=ID1ULRJaj7zOFZGGBpXAGChqiFXRrV+HHeL7HwDno5X15ijD2TByvj6gZyFcAIpfk
+	 MY57bve3eB0O15Zr6zB9qGZ2kM/422GvEZy+saUKgCQ8HuqJ5WJaN+geeolNRL39HC
+	 FAs+NuPSrEejTyTglQW/ytuMGKKISVJBWQy9UzvU9JEgtMkWGMiic3oGx4UvzU8X6S
+	 ZVq56yMf3//MDkicG6GLqG3xpC05liNmBISZ+O9ypu7s2YigXKrR22fiZczZ0Y1LV3
+	 acYhLjrbZW7yOKMZ6asII90XrVRr2g+BEgP9MZ6Xvhp9MZawbF3CGlmHPFFOkc3xfW
+	 kxJgy69s7kKiQ==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	ojeda@kernel.org
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.12.y] rust: allow Rust 1.87.0's `clippy::ptr_eq` lint
-Date: Mon, 12 May 2025 17:51:30 -0400
-Message-Id: <20250512160856-f366c9d30f1aa319@stable.kernel.org>
+To: stable@vger.kernel.org
+Cc: jianqi.ren.cn@windriver.com,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.15.y] netfilter: nf_tables: fix memleak in map from abort path
+Date: Mon, 12 May 2025 17:51:34 -0400
+Message-Id: <20250512163639-872419907546246b@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250512124247.1401815-1-ojeda@kernel.org>
+In-Reply-To:  <20250512030914.3330393-1-jianqi.ren.cn@windriver.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,39 +64,30 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Summary of potential issues:
-⚠️ Found matching upstream commit but patch is missing proper reference to it
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-Found matching upstream commit: a39f3087092716f2bd531d6fdc20403c3dc2a879
+The upstream commit SHA1 provided is correct: 86a1471d7cde792941109b93b558b5dc078b9ee9
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: <jianqi.ren.cn@windriver.com>
+Commit author: Pablo Neira Ayuso<pablo@netfilter.org>
 
 Status in newer kernel trees:
-6.14.y | Not found
+6.14.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (different SHA1: a1bd2a38a1c6)
+6.1.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  a39f308709271 ! 1:  1872bc81b5295 rust: allow Rust 1.87.0's `clippy::ptr_eq` lint
-    @@ Commit message
-         Link: https://lore.kernel.org/r/20250502140237.1659624-3-ojeda@kernel.org
-         [ Converted to `allow`s since backport was confirmed. - Miguel ]
-         Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-    +    (cherry picked from commit a39f3087092716f2bd531d6fdc20403c3dc2a879)
-    +    Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-     
-      ## rust/kernel/alloc/kvec.rs ##
-     @@
-    @@ rust/kernel/list.rs
-     +// May not be needed in Rust 1.87.0 (pending beta backport).
-     +#![allow(clippy::ptr_eq)]
-     +
-    + use crate::init::PinInit;
-      use crate::sync::ArcBorrow;
-      use crate::types::Opaque;
-    - use core::iter::{DoubleEndedIterator, FusedIterator};
+1:  86a1471d7cde7 < -:  ------------- netfilter: nf_tables: fix memleak in map from abort path
+-:  ------------- > 1:  d8e7bbe3d277d netfilter: nf_tables: fix memleak in map from abort path
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.12.y       |  Success    |  Success   |
+| stable/linux-5.15.y       |  Success    |  Success   |
 
