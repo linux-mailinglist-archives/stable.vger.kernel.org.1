@@ -1,164 +1,165 @@
-Return-Path: <stable+bounces-143150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0D87AB32EA
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 11:18:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2657AAB32F4
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 11:20:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D34B9189C582
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 09:18:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7598E16B926
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 09:20:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3942C25B1F2;
-	Mon, 12 May 2025 09:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 632AA25B665;
+	Mon, 12 May 2025 09:20:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GkcS0A/J"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBE57134AC;
-	Mon, 12 May 2025 09:18:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2441725B1FF
+	for <stable@vger.kernel.org>; Mon, 12 May 2025 09:20:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747041485; cv=none; b=OkSPsksQd0jtm93Qo2PzUeSP4807gSBoTMn9/63xELkb1z0ExuB+rmXwRUKTP2VsBHLKSypMrzHxTAzUy/3GHyY9S2dHByEjGaKBRQ7CJdToybS5HSL14bKC62tNrr/3Tqo2Y6I5X7rGHeHhVd3x4BqvAJcnAP0Mwjcd9wyaPkc=
+	t=1747041605; cv=none; b=tjxmU1gPwf3aVH4On65pSjpd7ULeDNpU+q6fQRJOXTaLkLpnV2mr5RcF08JnEYrvhLM++kBlEsEwNBDWLictDwcxUj5ajb7ELEqXbwoaaa2hnQlbX0Hrr9J8maRzyfXP5gndgWKhcJ1upyUDDr+LWzbh3AHISdQDGO7eUQUEFwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747041485; c=relaxed/simple;
-	bh=20wCNPBChVfLOxnez/k+p6fyn8K7JV/aN+exYqU8/sg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jTRKAbyTVMX7yDThHhUe/t2jzV87ndZ1yUYen4xf4K/s/x99S4v5CQzFtweEIvuoyie9X1TB7g9TqBMlTCWGIoR3rxLcQaFT2hePCFJ5gY9pH2Bfx7niR/Qog6HnnnJL8PmUUFUQVJMUlDsnp3gzLoSFkC3SboKsidubkjLCoCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-5290be1aedcso4124704e0c.1;
-        Mon, 12 May 2025 02:18:02 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747041481; x=1747646281;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=1GCzaDLKiY3kq0HsFC8+1h8MN6YYKUQQuwUOm7Hvb2g=;
-        b=REt9+IZIgWbESEvk3wjGK9bOTRgUKNbToQPQ9LmcXHSID5M6tiXpvmC1wCACwcrzJm
-         EGaoESpcgu0kNFwCta+iNDxebCtp+Hw1lOYl+ugV6Kq6iw/18VYjK/WeoKQ6NFesBqdG
-         HnM3KYg6WxynOLcpPe5lvuNJsV4AbHuNQ56G0gFvBv5UCfeIwI4Fuws+VKIRF2a7nRQ+
-         A1vGsIYvPP1f8QbcnBf2u/gaxGG4KWC2mS17iVOKuZ1fAW9zmQp+avWMdJUZ7lmbqwjn
-         uod0hQ76wAlQF3nhVW7MvIAlwljQykF8tSpVIa84UpOxeshUkVGIJ67DlFh5Z6YRncfc
-         22Rw==
-X-Forwarded-Encrypted: i=1; AJvYcCVSH6xRCL2doUc7HpceHdWGXncmkQG0pf8Ue03ISWZS/Zjf1Iq5y//mw3xD6QTFaWxe/plJKOd0@vger.kernel.org, AJvYcCWFloWLFD4eyX6D+lOz9hIiBn/PH6xP+hJDcxKJcO7+xAVu7Mnc8vYfOIcBkkAGfnBskjqMWJ1N3FN0GWym@vger.kernel.org, AJvYcCWcAps/wns2BSU8jviZNIyZVef/CfI/XY320sSHZROLgN5GUH2n+841w0E6KUT3RkKU2+ADSHd8O7i4@vger.kernel.org
-X-Gm-Message-State: AOJu0YzfAe0wxuKWA3310zjzOzsq0w1AwrwKdHr7R95Kfua9bPAbgYcm
-	76oP/9Jw2YR4UKOzxVraQJcszwFTH1Y1W+pi/5eY7ZULdj2RT09WfemNwtFj
-X-Gm-Gg: ASbGncu5EUwK4fAxU22M9cgbxf8vNNzVWN6HHZEcq20LR0xwZvWbmzajQl/wsMTIqD3
-	2XMUZmdLGv+2lwk9NiyknVdyUKnEOyd0hlfRGhgoQLsgTxwEnQY4fNHpGnCcMy2+OTxUvH+RUsf
-	7s61+hy/8U5a2V0xjDVJvwPHNPlF8D+5afyFgZIcJ2pslZCtkPXITl2mlav861IyJ5NbKmGZ9kz
-	RDCz8FlFD3LVI/JZJJu8EHyYmGf6Bi7ZTavvxaHjAnu4v9c8K1d1L9YRkN27REkgMEnHExtqM+b
-	+Yz9noYbEOyXmimPxsK4pxtH7phrgZctvY8v2YzTxSVpbgTjKbXMx28vzaq4NOcJ2pd2aV6CfFf
-	CiZVQmE4xNxW45A==
-X-Google-Smtp-Source: AGHT+IHJs0ZzCPyfm0JL94byRrkupHP8LDAu211cUAaO+EsOa1rRPYUfi9plZlazokd78/w9INEM8g==
-X-Received: by 2002:ac5:cde1:0:b0:523:dbd5:4e7f with SMTP id 71dfb90a1353d-52c44223bfbmr10687585e0c.3.1747041481098;
-        Mon, 12 May 2025 02:18:01 -0700 (PDT)
-Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com. [209.85.222.42])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-52c53574e28sm5407716e0c.0.2025.05.12.02.18.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 12 May 2025 02:18:00 -0700 (PDT)
-Received: by mail-ua1-f42.google.com with SMTP id a1e0cc1a2514c-86d587dbc15so3101652241.1;
-        Mon, 12 May 2025 02:18:00 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUCsAQ/qq307ymILubpUwpi9ixVKGQLuMtFqJpcyaOj6Yi6XS/n63LdEQ36TH3Q3lB2J+nLtqHhK5CY@vger.kernel.org, AJvYcCVM4tQiUg1lu9LUEDFegBdBOyOrG8BgF3EEe8+YfA6PJK4dqcPOdqevGyXi2gjZROnViVPBRSZ8@vger.kernel.org, AJvYcCXIcCSNavZ/i9Sc7Ctrn+hVHKrQx1FyBKbl2SIzhZEP/GYXk9ZNsAOx5pGr+LJQp6wJx8Bpt+4OYpw1IksN@vger.kernel.org
-X-Received: by 2002:a05:6102:1529:b0:4c3:243:331a with SMTP id
- ada2fe7eead31-4ddac869475mr14899178137.6.1747041480540; Mon, 12 May 2025
- 02:18:00 -0700 (PDT)
+	s=arc-20240116; t=1747041605; c=relaxed/simple;
+	bh=2PnL5fGi4UCwQn5tr2LKXvNZGYx0XBxHx/viYCKaTaA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=HkW7G7p22abw9ypg7aTIrw+G7XajxJcqt0Fgzt19DXmwxNLipe2eIGKND36TDp6BuXD69QLlV7yorNK1QoC854YjfXYZl3MD/YB2Yryfb/b2hqA7nd3NZOJ2iWRR9zqBVjG5bw/+6UE06HXAVxwsisMaQMm4/WAFDDEhDvoDc2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GkcS0A/J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CB92C4CEE7;
+	Mon, 12 May 2025 09:20:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1747041605;
+	bh=2PnL5fGi4UCwQn5tr2LKXvNZGYx0XBxHx/viYCKaTaA=;
+	h=Subject:To:Cc:From:Date:From;
+	b=GkcS0A/JvkJttZSAERgP/M6byVHGTijCyGPsPQ/ZqMeHx+pBcpFuib8fYVtuy6NlL
+	 MI/sVdq0I8V6hZpl30CyG10PrN6O8HFMrC9V17lCYOgrT2lIlYTPh9Ny6LDZ0YleXN
+	 VwQD6cs24vj2mxqZO96gkFS0EUrDlu/0lcnhv2VY=
+Subject: FAILED: patch "[PATCH] mm/huge_memory: fix dereferencing invalid pmd migration entry" failed to apply to 6.6-stable tree
+To: gavinguo@igalia.com,akpm@linux-foundation.org,david@redhat.com,gshan@redhat.com,hughd@google.com,linmiaohe@huawei.com,revest@google.com,stable@vger.kernel.org,willy@infradead.org,ziy@nvidia.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 12 May 2025 11:20:02 +0200
+Message-ID: <2025051202-nutrient-upswing-4a86@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250509141828.57851-1-francesco@dolcini.it>
-In-Reply-To: <20250509141828.57851-1-francesco@dolcini.it>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 12 May 2025 11:17:48 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdXqRpuy8gsz+0a0xTp6VWfMD0=WWdS84jWvF31O9i4MZw@mail.gmail.com>
-X-Gm-Features: AX0GCFu9GLpjYZglknqssUJDtYOeHiT_fWmLArgWGMr7BFw0q2XZWcOcZfqXvp0
-Message-ID: <CAMuHMdXqRpuy8gsz+0a0xTp6VWfMD0=WWdS84jWvF31O9i4MZw@mail.gmail.com>
-Subject: Re: [PATCH v2] gpio: pca953x: fix IRQ storm on system wake up
-To: Francesco Dolcini <francesco@dolcini.it>
-Cc: Linus Walleij <linus.walleij@linaro.org>, Bartosz Golaszewski <brgl@bgdev.pl>, 
-	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>, linux-gpio@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Andy Shevchenko <andriy.shevchenko@intel.com>, 
-	Marek Vasut <marek.vasut@gmail.com>, stable@vger.kernel.org, 
-	Francesco Dolcini <francesco.dolcini@toradex.com>
-Content-Type: text/plain; charset="UTF-8"
-
-Hi Francesco,
-
-On Fri, 9 May 2025 at 16:18, Francesco Dolcini <francesco@dolcini.it> wrote:
-> From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
->
-> If an input changes state during wake-up and is used as an interrupt
-> source, the IRQ handler reads the volatile input register to clear the
-> interrupt mask and deassert the IRQ line. However, the IRQ handler is
-> triggered before access to the register is granted, causing the read
-> operation to fail.
->
-> As a result, the IRQ handler enters a loop, repeatedly printing the
-> "failed reading register" message, until `pca953x_resume` is eventually
-> called, which restores the driver context and enables access to
-> registers.
->
-> Fix by disabling the IRQ line before entering suspend mode, and
-> re-enabling it after the driver context is restored in `pca953x_resume`.
->
-> An irq can be disabled with disable_irq() and still wake the system as
-> long as the irq has wake enabled, so the wake-up functionality is
-> preserved.
->
-> Fixes: b76574300504 ("gpio: pca953x: Restore registers after suspend/resume cycle")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
-> Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-> ---
-> v1 -> v2
->  - Instead of calling PM ops with disabled interrupts, just disable the
->    irq while going in suspend and re-enable it after restoring the
->    context in resume function.
-
-Thanks for the update!
-
-> --- a/drivers/gpio/gpio-pca953x.c
-> +++ b/drivers/gpio/gpio-pca953x.c
-> @@ -1226,6 +1226,8 @@ static int pca953x_restore_context(struct pca953x_chip *chip)
->
->         guard(mutex)(&chip->i2c_lock);
->
-> +       if (chip->client->irq > 0)
-> +               enable_irq(chip->client->irq);
->         regcache_cache_only(chip->regmap, false);
->         regcache_mark_dirty(chip->regmap);
->         ret = pca953x_regcache_sync(chip);
-> @@ -1238,6 +1240,10 @@ static int pca953x_restore_context(struct pca953x_chip *chip)
->  static void pca953x_save_context(struct pca953x_chip *chip)
->  {
->         guard(mutex)(&chip->i2c_lock);
-> +
-> +       /* Disable IRQ to prevent early triggering while regmap "cache only" is on */
-> +       if (chip->client->irq > 0)
-> +               disable_irq(chip->client->irq);
->         regcache_cache_only(chip->regmap, true);
->  }
-
-While this does not cause the regression seen on Salvator-XS with
-the earlier approach[1], I expect this will break using a GPIO as a
-wake-up source?
-
-[1] https://lore.kernel.org/linux-gpio/CAMuHMdVnKX23yi7ir1LVxfXAMeeWMFzM+cdgSSTNjpn1OnC2xw@mail.gmail.com
-
-Gr{oetje,eeting}s,
-
-                        Geert
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
 
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x be6e843fc51a584672dfd9c4a6a24c8cb81d5fb7
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025051202-nutrient-upswing-4a86@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From be6e843fc51a584672dfd9c4a6a24c8cb81d5fb7 Mon Sep 17 00:00:00 2001
+From: Gavin Guo <gavinguo@igalia.com>
+Date: Mon, 21 Apr 2025 19:35:36 +0800
+Subject: [PATCH] mm/huge_memory: fix dereferencing invalid pmd migration entry
+
+When migrating a THP, concurrent access to the PMD migration entry during
+a deferred split scan can lead to an invalid address access, as
+illustrated below.  To prevent this invalid access, it is necessary to
+check the PMD migration entry and return early.  In this context, there is
+no need to use pmd_to_swp_entry and pfn_swap_entry_to_page to verify the
+equality of the target folio.  Since the PMD migration entry is locked, it
+cannot be served as the target.
+
+Mailing list discussion and explanation from Hugh Dickins: "An anon_vma
+lookup points to a location which may contain the folio of interest, but
+might instead contain another folio: and weeding out those other folios is
+precisely what the "folio != pmd_folio((*pmd)" check (and the "risk of
+replacing the wrong folio" comment a few lines above it) is for."
+
+BUG: unable to handle page fault for address: ffffea60001db008
+CPU: 0 UID: 0 PID: 2199114 Comm: tee Not tainted 6.14.0+ #4 NONE
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:split_huge_pmd_locked+0x3b5/0x2b60
+Call Trace:
+<TASK>
+try_to_migrate_one+0x28c/0x3730
+rmap_walk_anon+0x4f6/0x770
+unmap_folio+0x196/0x1f0
+split_huge_page_to_list_to_order+0x9f6/0x1560
+deferred_split_scan+0xac5/0x12a0
+shrinker_debugfs_scan_write+0x376/0x470
+full_proxy_write+0x15c/0x220
+vfs_write+0x2fc/0xcb0
+ksys_write+0x146/0x250
+do_syscall_64+0x6a/0x120
+entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+The bug is found by syzkaller on an internal kernel, then confirmed on
+upstream.
+
+Link: https://lkml.kernel.org/r/20250421113536.3682201-1-gavinguo@igalia.com
+Link: https://lore.kernel.org/all/20250414072737.1698513-1-gavinguo@igalia.com/
+Link: https://lore.kernel.org/all/20250418085802.2973519-1-gavinguo@igalia.com/
+Fixes: 84c3fc4e9c56 ("mm: thp: check pmd migration entry in common path")
+Signed-off-by: Gavin Guo <gavinguo@igalia.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Acked-by: Hugh Dickins <hughd@google.com>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Gavin Shan <gshan@redhat.com>
+Cc: Florent Revest <revest@google.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 2a47682d1ab7..47d76d03ce30 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -3075,6 +3075,8 @@ static void __split_huge_pmd_locked(struct vm_area_struct *vma, pmd_t *pmd,
+ void split_huge_pmd_locked(struct vm_area_struct *vma, unsigned long address,
+ 			   pmd_t *pmd, bool freeze, struct folio *folio)
+ {
++	bool pmd_migration = is_pmd_migration_entry(*pmd);
++
+ 	VM_WARN_ON_ONCE(folio && !folio_test_pmd_mappable(folio));
+ 	VM_WARN_ON_ONCE(!IS_ALIGNED(address, HPAGE_PMD_SIZE));
+ 	VM_WARN_ON_ONCE(folio && !folio_test_locked(folio));
+@@ -3085,9 +3087,12 @@ void split_huge_pmd_locked(struct vm_area_struct *vma, unsigned long address,
+ 	 * require a folio to check the PMD against. Otherwise, there
+ 	 * is a risk of replacing the wrong folio.
+ 	 */
+-	if (pmd_trans_huge(*pmd) || pmd_devmap(*pmd) ||
+-	    is_pmd_migration_entry(*pmd)) {
+-		if (folio && folio != pmd_folio(*pmd))
++	if (pmd_trans_huge(*pmd) || pmd_devmap(*pmd) || pmd_migration) {
++		/*
++		 * Do not apply pmd_folio() to a migration entry; and folio lock
++		 * guarantees that it must be of the wrong folio anyway.
++		 */
++		if (folio && (pmd_migration || folio != pmd_folio(*pmd)))
+ 			return;
+ 		__split_huge_pmd_locked(vma, pmd, address, freeze);
+ 	}
+
 
