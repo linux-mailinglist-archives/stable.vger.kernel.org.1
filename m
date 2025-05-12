@@ -1,135 +1,138 @@
-Return-Path: <stable+bounces-143856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3E0EAB422B
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:19:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDE42AB4252
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:21:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9826160243
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:19:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA96C3B75EA
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:19:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E05792BEC5D;
-	Mon, 12 May 2025 18:05:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A9382BF996;
+	Mon, 12 May 2025 18:05:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ckaCkEMy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sIWqO7dc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E1AE2BEC55
-	for <stable@vger.kernel.org>; Mon, 12 May 2025 18:05:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36DED2BF989;
+	Mon, 12 May 2025 18:05:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073131; cv=none; b=dNv6O5jqTXXa3YJ4alQ/K2y2t/rxE+CHaOg6wiGfAUZGetP9WmbTVTQdVNvGj+sISq03+FVEbr2uRbgII9AY55XNHuc04Zyh/HQVhEjzOjQx18LCFO2G8TB+ehuSxPNNy/8RyyLGxUPqrJ5oCJBE5r/rBRuX5irUN7P24Gc9Jpk=
+	t=1747073136; cv=none; b=M1aPx/aZTn2XFLnbPtGZ4iAT8TvAPhD97cpnwNua0JmoCnp+xiT79YufzMGZocyVJG7E52oN8tiIOzrkMaawdVaUAowsOGig/RV/IP1rZJUeogAHH5hEnNg/MvFx5E99IpghemeAeY7Xy1gfKR30EFAYIY4Fnte/xmhVxsihRFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073131; c=relaxed/simple;
-	bh=GEoE8VF9HBhXTGwwcydCLuizNsdyG/TfcdwpRbd9qc0=;
+	s=arc-20240116; t=1747073136; c=relaxed/simple;
+	bh=tClUygEdgjrbqL6Az0SliCxYp1+a19KrR43GjyNmmfE=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WHIdsh3czyRx0AlQkBFIUMlzXyRNzYgOQYczgkQOFg7QkzxZa0gFDegFcLfXu3zVAP22vz91cODrKOPbyayaBe7UY4uJIQUfx9rHQzw2cMMiIWnHPlTlbMvgPgE80QNKDU8HkMZbOM+Lb1kibf05THRaPnUyaJfDGyKydB0mjDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ckaCkEMy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1BCAC4CEEF;
-	Mon, 12 May 2025 18:05:30 +0000 (UTC)
+	 MIME-Version; b=U2fosJp1WCUn+3YKrXzD5TqpBK/EtJvfnASD9+4tJxCEGRxVPvq5/mwDkACK07IaRuk1A9Mi1nNrvNllRCteRcJpepSOlA/I11eKweJdJyrpouPPQOjKdTnsklx7j92Z8vF0e7YMXseyVZhkNsy8FHD199vWJKcNkejSOWOKKOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sIWqO7dc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2452C4CEE7;
+	Mon, 12 May 2025 18:05:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747073131;
-	bh=GEoE8VF9HBhXTGwwcydCLuizNsdyG/TfcdwpRbd9qc0=;
+	s=k20201202; t=1747073136;
+	bh=tClUygEdgjrbqL6Az0SliCxYp1+a19KrR43GjyNmmfE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ckaCkEMy6UwoGj9T7k5o5YyAv64D7XFafEoKhT1mQdialfjyYkUiVBr5zzExbFDJ6
-	 KTdVUfpfc+dUpQvn69krLMzGxqkv+QZu6LuKfsMVQct+Q5pLPQPxVxolw3efIKAkMX
-	 vrWwy8iVXmli9YTco2NUDGylNeJYnpKeKMu+wQUoUrXHf8QNLVhCITcjDpBLi0PEvj
-	 szMjASGIXh88aYu0j6ZRMVIjB8KQkKdaMLX8Dmqj2cbFf6vLN0ls0PV7ZyKx2fZWUj
-	 UJNcqiGGxZfJh5sQRwW09nSBms4JTL6NB/B5UIykK2s72SUp4m5QiJxoySxBeSldYS
-	 ITKYESMmGVYyw==
+	b=sIWqO7dcL6+H0+FDcizZdrxvtSrzg+M1wlI2sy83EV246KLXdSqqB9JNwNR5+1Oeq
+	 h6fyTrfhEuS84ixdK2gb3IZMS2Rg5MQZBGixyPJKPNYaPbyvFyU38Xim6BrsBN+Tt/
+	 Qx6TICpsew4Wm5p1Quqx63ujNooZgELWiDjBJdK4FkxTskFD0TNOHifZjigeJLfGq4
+	 HuAILqg/i6Vr+CsBCX9yRDRUCKq1FEf6e6A1NOtp9HylDf0KqAnX8/h8qFOVH4g6Rl
+	 EZqLkIZmueGkNsqQFf8UGpUODzhZ0/zj2z4Dycb0hGxV6TNyzYS5QOd5R37actUdPo
+	 LHU1e70CFRqew==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: bin.lan.cn@windriver.com,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1.y] nvme: apple: fix device reference counting
-Date: Mon, 12 May 2025 14:05:26 -0400
-Message-Id: <20250511210241-99d8b8041e61aa49@stable.kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Jason Andryuk <jason.andryuk@amd.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Juergen Gross <jgross@suse.com>,
+	Sasha Levin <sashal@kernel.org>,
+	xin.wang2@amd.com,
+	chenqiuji666@gmail.com,
+	elder@kernel.org,
+	gregkh@linuxfoundation.org,
+	xen-devel@lists.xenproject.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 2/3] xenbus: Allow PVH dom0 a non-local xenstore
+Date: Mon, 12 May 2025 14:05:27 -0400
+Message-Id: <20250512180528.438177-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250509083216.1281489-1-bin.lan.cn@windriver.com>
-References: 
+In-Reply-To: <20250512180528.438177-1-sashal@kernel.org>
+References: <20250512180528.438177-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 5.10.237
 Content-Transfer-Encoding: 8bit
 
-[ Sasha's backport helper bot ]
+From: Jason Andryuk <jason.andryuk@amd.com>
 
-Hi,
+[ Upstream commit 90989869baae47ee2aa3bcb6f6eb9fbbe4287958 ]
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+Make xenbus_init() allow a non-local xenstore for a PVH dom0 - it is
+currently forced to XS_LOCAL.  With Hyperlaunch booting dom0 and a
+xenstore stubdom, dom0 can be handled as a regular XS_HVM following the
+late init path.
 
-The upstream commit SHA1 provided is correct: b9ecbfa45516182cd062fecd286db7907ba84210
+Ideally we'd drop the use of xen_initial_domain() and just check for the
+event channel instead.  However, ARM has a xen,enhanced no-xenstore
+mode, where the event channel and PFN would both be 0.  Retain the
+xen_initial_domain() check, and use that for an additional check when
+the event channel is 0.
 
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: bin.lan.cn@windriver.com
-Commit author: Keith Busch<kbusch@kernel.org>
+Check the full 64bit HVM_PARAM_STORE_EVTCHN value to catch the off
+chance that high bits are set for the 32bit event channel.
 
-Status in newer kernel trees:
-6.14.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: f7d9a18572fc)
-
-Note: The patch differs from the upstream commit:
+Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
+Change-Id: I5506da42e4c6b8e85079fefb2f193c8de17c7437
+Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20250506204456.5220-1-jason.andryuk@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-1:  b9ecbfa455161 ! 1:  66a0d9b8ca96a nvme: apple: fix device reference counting
-    @@ Metadata
-      ## Commit message ##
-         nvme: apple: fix device reference counting
-     
-    +    [ Upstream commit b9ecbfa45516182cd062fecd286db7907ba84210 ]
-    +
-         Drivers must call nvme_uninit_ctrl after a successful nvme_init_ctrl.
-         Split the allocation side out to make the error handling boundary easier
-         to navigate. The apple driver had been doing this wrong, leaking the
-    @@ Commit message
-         Reviewed-by: Christoph Hellwig <hch@lst.de>
-         Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-         Signed-off-by: Keith Busch <kbusch@kernel.org>
-    +    [Minor context change fixed.]
-    +    Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
-    +    Signed-off-by: He Zhe <zhe.he@windriver.com>
-     
-      ## drivers/nvme/host/apple.c ##
-     @@ drivers/nvme/host/apple.c: static void devm_apple_nvme_mempool_destroy(void *data)
-    @@ drivers/nvme/host/apple.c: static int apple_nvme_probe(struct platform_device *p
-     +	if (IS_ERR(anv))
-     +		return PTR_ERR(anv);
-     +
-    - 	anv->ctrl.admin_q = blk_mq_alloc_queue(&anv->admin_tagset, NULL, NULL);
-    + 	anv->ctrl.admin_q = blk_mq_init_queue(&anv->admin_tagset);
-      	if (IS_ERR(anv->ctrl.admin_q)) {
-      		ret = -ENOMEM;
-     -		goto put_dev;
-    @@ drivers/nvme/host/apple.c: static int apple_nvme_probe(struct platform_device *p
-     +		goto out_uninit_ctrl;
-      	}
-      
-    + 	if (!blk_get_queue(anv->ctrl.admin_q)) {
-    +@@ drivers/nvme/host/apple.c: static int apple_nvme_probe(struct platform_device *pdev)
-    + 		blk_mq_destroy_queue(anv->ctrl.admin_q);
-    + 		anv->ctrl.admin_q = NULL;
-    + 		ret = -ENODEV;
-    +-		goto put_dev;
-    ++		goto out_uninit_ctrl;
-    + 	}
-    + 
-      	nvme_reset_ctrl(&anv->ctrl);
-     @@ drivers/nvme/host/apple.c: static int apple_nvme_probe(struct platform_device *pdev)
-      
----
+ drivers/xen/xenbus/xenbus_probe.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-Results of testing on various branches:
+diff --git a/drivers/xen/xenbus/xenbus_probe.c b/drivers/xen/xenbus/xenbus_probe.c
+index 743795d402cb0..fb5358a738204 100644
+--- a/drivers/xen/xenbus/xenbus_probe.c
++++ b/drivers/xen/xenbus/xenbus_probe.c
+@@ -864,9 +864,15 @@ static int __init xenbus_init(void)
+ 	if (xen_pv_domain())
+ 		xen_store_domain_type = XS_PV;
+ 	if (xen_hvm_domain())
++	{
+ 		xen_store_domain_type = XS_HVM;
+-	if (xen_hvm_domain() && xen_initial_domain())
+-		xen_store_domain_type = XS_LOCAL;
++		err = hvm_get_parameter(HVM_PARAM_STORE_EVTCHN, &v);
++		if (err)
++			goto out_error;
++		xen_store_evtchn = (int)v;
++		if (!v && xen_initial_domain())
++			xen_store_domain_type = XS_LOCAL;
++	}
+ 	if (xen_pv_domain() && !xen_start_info->store_evtchn)
+ 		xen_store_domain_type = XS_LOCAL;
+ 	if (xen_pv_domain() && xen_start_info->store_evtchn)
+@@ -885,10 +891,6 @@ static int __init xenbus_init(void)
+ 		xen_store_interface = gfn_to_virt(xen_store_gfn);
+ 		break;
+ 	case XS_HVM:
+-		err = hvm_get_parameter(HVM_PARAM_STORE_EVTCHN, &v);
+-		if (err)
+-			goto out_error;
+-		xen_store_evtchn = (int)v;
+ 		err = hvm_get_parameter(HVM_PARAM_STORE_PFN, &v);
+ 		if (err)
+ 			goto out_error;
+-- 
+2.39.5
 
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-6.1.y        |  Success    |  Success   |
 
