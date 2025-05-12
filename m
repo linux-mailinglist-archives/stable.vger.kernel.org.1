@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-143959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 108B6AB42F8
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:28:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F0A4AB42A7
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:25:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B07C41885B30
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:27:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2CE03AE77B
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:23:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F4F82980C5;
-	Mon, 12 May 2025 18:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EFD5296FC3;
+	Mon, 12 May 2025 18:07:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oxHglmIM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zKoBWtLm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC65F29A33D;
-	Mon, 12 May 2025 18:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4B7296FBD;
+	Mon, 12 May 2025 18:07:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073421; cv=none; b=U/3Z1Im+X/McCBqDp5XJ8lU2cMW6ELwZ7hxmIIpgqIl10k/cqlPIcnu10egAUAZZ7JWCVlSolJb6c7yWTeCV/NDAFzyrguv/J5Zu7kockIHGFbEyInHaNL/eH0DFhKL5odYtf7eOEIuIsrScezenQH23yFnlqxwY3sOfV0FglHI=
+	t=1747073222; cv=none; b=X4Ybp+D77BoVfdxow7+Udzm116limYj9/6VWBS4OPt/bRz6YA3GjeW42oN3eczE0AFJQz7kRSxp+x7slR9r78BemLEQNntKCiYuaFpiBBhtrwpiW1QPhJ0QH74r5IAoeGkdmWwNf65f9ZIr4z6nf2r4TzCt9l2oL6H6VIp+mFIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073421; c=relaxed/simple;
-	bh=IalcmXnx7L+YgHCv4apm6GHcaXDrNTQ2L42VHF6WV7w=;
+	s=arc-20240116; t=1747073222; c=relaxed/simple;
+	bh=B+J0kCEBhRS2koS12gCnLpCrLSH7qK/JqciB7fETWqY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AA9G1AEy4IcjMDgPq78W0RPkHzc7BuXxzG+Js1xDHb5pZNOesZ8tToR2ILbx1xy9pUSCwod80CiYdk9FhYWabKZQKxaArWBBG+DTL/DqQh+lrdJM8gHo9sNxmHwSThj/jhfO6FRAHAH1IydEhegUg/O8QNQ+lPvK8xXPNDdhSao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oxHglmIM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48AB5C4CEE7;
-	Mon, 12 May 2025 18:10:21 +0000 (UTC)
+	 MIME-Version; b=oXMkzcc7GFjmNiYZcE2Zg0gtmQIr0mv2c/ANOQe+sD9a3/LGhl6NSFjHAaNdDWQqvlzXqg/8xyJ2q/MmB/G+HVLnXb88V/eJpA/TbSZ5jaIm+MGl0WCVgFk87XNZc+NmqZ5BBfL6+/dSv26F/YCR4HaKVpeNM1cDhQrlszOimfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zKoBWtLm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF08AC4CEE7;
+	Mon, 12 May 2025 18:07:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073421;
-	bh=IalcmXnx7L+YgHCv4apm6GHcaXDrNTQ2L42VHF6WV7w=;
+	s=korg; t=1747073222;
+	bh=B+J0kCEBhRS2koS12gCnLpCrLSH7qK/JqciB7fETWqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oxHglmIMmik0t4kdXPYEa/d3i7jzQHnwgsnJvhCc+nmlDoljfP1/L7IHB/OY+98ax
-	 D1pKk0SW8avx5/zmUWTznyO/SvbpK0MgX8ku47G51fL0+JB1UqN1MRuo62MInn37I/
-	 JA/u3aogcOYglFXCzOYPM9lSLK6BcqCMFqjYkHf4=
+	b=zKoBWtLmRuSMFHh/HWWCvMw1HJFVUNAKt4aGfyg+yF6ii/bYK5AQrXz6cbS9Yga5E
+	 M1a+p+ngbkyWi3b2oOo2zePUv70RRFunqBhJ+ZZeujw/D1HZtCyj/+Qo+N+tOZ8wPb
+	 zcnU2yic1toGcD5wZWSC22aTp81QIaeqScmtTac8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Prashanth K <prashanth.k@oss.qualcomm.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.6 069/113] usb: gadget: f_ecm: Add get_status callback
+	Hao Qin <hao.qin@mediatek.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	"Geoffrey D. Bennett" <g@b4.vu>
+Subject: [PATCH 6.12 157/184] Bluetooth: btmtk: Remove resetting mt7921 before downloading the fw
 Date: Mon, 12 May 2025 19:45:58 +0200
-Message-ID: <20250512172030.487165001@linuxfoundation.org>
+Message-ID: <20250512172048.211959959@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
-References: <20250512172027.691520737@linuxfoundation.org>
+In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
+References: <20250512172041.624042835@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prashanth K <prashanth.k@oss.qualcomm.com>
+From: Hao Qin <hao.qin@mediatek.com>
 
-commit 8e3820271c517ceb89ab7442656ba49fa23ee1d0 upstream.
+commit a7208610761ae9b3bc109ddc493eb7c332fca5b2 upstream.
 
-When host sends GET_STATUS to ECM interface, handle the request
-from the function driver. Since the interface is wakeup capable,
-set the corresponding bit, and set RW bit if the function is
-already armed for wakeup by the host.
+Remove resetting mt7921 before downloading the fw, as it may cause
+command timeout when performing the reset.
 
-Cc: stable <stable@kernel.org>
-Fixes: 481c225c4802 ("usb: gadget: Handle function suspend feature selector")
-Signed-off-by: Prashanth K <prashanth.k@oss.qualcomm.com>
-Reviewed-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20250422103231.1954387-2-prashanth.k@oss.qualcomm.com
+Signed-off-by: Hao Qin <hao.qin@mediatek.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Cc: "Geoffrey D. Bennett" <g@b4.vu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/function/f_ecm.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/bluetooth/btmtk.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/gadget/function/f_ecm.c
-+++ b/drivers/usb/gadget/function/f_ecm.c
-@@ -892,6 +892,12 @@ static void ecm_resume(struct usb_functi
- 	gether_resume(&ecm->port);
- }
+--- a/drivers/bluetooth/btmtk.c
++++ b/drivers/bluetooth/btmtk.c
+@@ -1329,7 +1329,6 @@ int btmtk_usb_setup(struct hci_dev *hdev
+ 		fwname = FIRMWARE_MT7668;
+ 		break;
+ 	case 0x7922:
+-	case 0x7961:
+ 	case 0x7925:
+ 		/* Reset the device to ensure it's in the initial state before
+ 		 * downloading the firmware to ensure.
+@@ -1337,7 +1336,8 @@ int btmtk_usb_setup(struct hci_dev *hdev
  
-+static int ecm_get_status(struct usb_function *f)
-+{
-+	return (f->func_wakeup_armed ? USB_INTRF_STAT_FUNC_RW : 0) |
-+		USB_INTRF_STAT_FUNC_RW_CAP;
-+}
-+
- static void ecm_free(struct usb_function *f)
- {
- 	struct f_ecm *ecm;
-@@ -960,6 +966,7 @@ static struct usb_function *ecm_alloc(st
- 	ecm->port.func.disable = ecm_disable;
- 	ecm->port.func.free_func = ecm_free;
- 	ecm->port.func.suspend = ecm_suspend;
-+	ecm->port.func.get_status = ecm_get_status;
- 	ecm->port.func.resume = ecm_resume;
+ 		if (!test_bit(BTMTK_FIRMWARE_LOADED, &btmtk_data->flags))
+ 			btmtk_usb_subsys_reset(hdev, dev_id);
+-
++		fallthrough;
++	case 0x7961:
+ 		btmtk_fw_get_filename(fw_bin_name, sizeof(fw_bin_name), dev_id,
+ 				      fw_version, fw_flavor);
  
- 	return &ecm->port.func;
 
 
 
