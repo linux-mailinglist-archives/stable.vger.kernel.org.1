@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-143981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 421AFAB4348
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:32:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2B0CAB4284
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:23:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2AD03B9AF0
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:28:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95268188CAF0
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:23:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D1B029AB19;
-	Mon, 12 May 2025 18:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 731A92980B3;
+	Mon, 12 May 2025 18:06:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GC6WEIEq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iJvXMFts"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDE651E505;
-	Mon, 12 May 2025 18:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30FDF25335E;
+	Mon, 12 May 2025 18:06:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073489; cv=none; b=L8wcIONTaf/LO0omWkiiTPYLDqfKh1IDgFe1ieo9FsZVTA47BFh0pHnIYjJukshhH7tucjLiA5grF10Fuz+EVvcyNMeZefbchduzWg2Z8PmS0Q5t40E9eRDuUTg6SN6Fmq+B2VoB43ZdrBzBbRYrG06tlWk+KSjMi2lI5C6UBwE=
+	t=1747073185; cv=none; b=sJybtXnAgoWXLrbR75+d45vpKNRYh1hkj2U/573HvbQPxPeyywE7p56bxV6P1DfvRoUiVOZgfWEbZtAVIjxC3fmHYOkR/+oP5ZvDgk0/kmR6qHBtYFDxyiXwtxonqmuexg4jWEm6ffr2GErUyMEcewZvBq+VrPR6c0W/Tm5Xiag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073489; c=relaxed/simple;
-	bh=nShFgQ+vNLFW6rf3IumLgJhiiXXupwdMRycOcKZyPmQ=;
+	s=arc-20240116; t=1747073185; c=relaxed/simple;
+	bh=mn8Ku05vE3U12oPjQCbbtl5tJOxT6R2VW8mnfBf0cMQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uuRVCxK63k4ucnn9VSCV+j/PC357XMGLmz2hQEMsFbdr40PFXZl7ZXUckHnb9IW+lw/9fjM2SxFLDvA0WQ8z1A4UsUauFeZf3y7Ng8SuQpkA7K+KFqDBhhnZQZFLElkh2Yjxy55D+MTHIVULI15UnKrDVhnK16LcTURXFo0VCSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GC6WEIEq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9E48C4CEE7;
-	Mon, 12 May 2025 18:11:27 +0000 (UTC)
+	 MIME-Version; b=ukxgmLxvPdeQ66juOiGR04uiAOsEGrLmlMRQNDx6sBCsvJttTMkK8dJv59L2uYEfuIUsJMBgxUMALCkbfpaTl/wYoXR0tWpFU2Eh29ZVU0RbPkDSk4ovhsEn3mJP3hPExH8biUXs41wiZpfyENCOq8S1P5mXWdEXkWdgs9qBDfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iJvXMFts; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC86CC4CEE7;
+	Mon, 12 May 2025 18:06:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073488;
-	bh=nShFgQ+vNLFW6rf3IumLgJhiiXXupwdMRycOcKZyPmQ=;
+	s=korg; t=1747073185;
+	bh=mn8Ku05vE3U12oPjQCbbtl5tJOxT6R2VW8mnfBf0cMQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GC6WEIEqxbz6pQx5Ec3ZWKDqh8q1sD79RcDTLNo4+5TZQwt3OcgqFAPmNyAV1en7D
-	 xrOixki1p0jpHlWC/zgtlDPG90zCX2BTAwFHgY7uxuGyTeI2Y3bN7+t1MyhTlD/1kr
-	 bXVk1ux+5eK3xzDmc0O7UZ/n2AJruP08wOV9+2+Y=
+	b=iJvXMFtsDoSc2lSzqk3Pl38RwlHaBU0mU+zzaunSrr5NJ7gcRQuhdO4Fld14EK0F/
+	 o3/0SLyCe4+nxNOxB9QaVeghVao4cIdk8Y//arz1UzUq+4emu0n97109tGrHpXIyoT
+	 qkiOkT0uEBpFT1pdq4p6YDyHOfyQYhO+q8gv7yZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Morse <james.morse@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.6 092/113] arm64: insn: Add support for encoding DSB
-Date: Mon, 12 May 2025 19:46:21 +0200
-Message-ID: <20250512172031.427622732@linuxfoundation.org>
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Alexandre Chartre <alexandre.chartre@oracle.com>
+Subject: [PATCH 6.12 181/184] x86/its: Align RETs in BHB clear sequence to avoid thunking
+Date: Mon, 12 May 2025 19:46:22 +0200
+Message-ID: <20250512172049.176509847@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
-References: <20250512172027.691520737@linuxfoundation.org>
+In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
+References: <20250512172041.624042835@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,131 +63,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Morse <james.morse@arm.com>
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-commit 63de8abd97ddb9b758bd8f915ecbd18e1f1a87a0 upstream.
+commit f0cd7091cc5a032c8870b4285305d9172569d126 upstream.
 
-To generate code in the eBPF epilogue that uses the DSB instruction,
-insn.c needs a heler to encode the type and domain.
+The software mitigation for BHI is to execute BHB clear sequence at syscall
+entry, and possibly after a cBPF program. ITS mitigation thunks RETs in the
+lower half of the cacheline. This causes the RETs in the BHB clear sequence
+to be thunked as well, adding unnecessary branches to the BHB clear
+sequence.
 
-Re-use the crm encoding logic from the DMB instruction.
+Since the sequence is in hot path, align the RET instructions in the
+sequence to avoid thunking.
 
-Signed-off-by: James Morse <james.morse@arm.com>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+This is how disassembly clear_bhb_loop() looks like after this change:
+
+   0x44 <+4>:     mov    $0x5,%ecx
+   0x49 <+9>:     call   0xffffffff81001d9b <clear_bhb_loop+91>
+   0x4e <+14>:    jmp    0xffffffff81001de5 <clear_bhb_loop+165>
+   0x53 <+19>:    int3
+   ...
+   0x9b <+91>:    call   0xffffffff81001dce <clear_bhb_loop+142>
+   0xa0 <+96>:    ret
+   0xa1 <+97>:    int3
+   ...
+   0xce <+142>:   mov    $0x5,%eax
+   0xd3 <+147>:   jmp    0xffffffff81001dd6 <clear_bhb_loop+150>
+   0xd5 <+149>:   nop
+   0xd6 <+150>:   sub    $0x1,%eax
+   0xd9 <+153>:   jne    0xffffffff81001dd3 <clear_bhb_loop+147>
+   0xdb <+155>:   sub    $0x1,%ecx
+   0xde <+158>:   jne    0xffffffff81001d9b <clear_bhb_loop+91>
+   0xe0 <+160>:   ret
+   0xe1 <+161>:   int3
+   0xe2 <+162>:   int3
+   0xe3 <+163>:   int3
+   0xe4 <+164>:   int3
+   0xe5 <+165>:   lfence
+   0xe8 <+168>:   pop    %rbp
+   0xe9 <+169>:   ret
+
+Suggested-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/insn.h |    1 
- arch/arm64/lib/insn.c         |   60 +++++++++++++++++++++++++-----------------
- 2 files changed, 38 insertions(+), 23 deletions(-)
+ arch/x86/entry/entry_64.S |   20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
---- a/arch/arm64/include/asm/insn.h
-+++ b/arch/arm64/include/asm/insn.h
-@@ -687,6 +687,7 @@ u32 aarch64_insn_gen_cas(enum aarch64_in
- }
- #endif
- u32 aarch64_insn_gen_dmb(enum aarch64_insn_mb_type type);
-+u32 aarch64_insn_gen_dsb(enum aarch64_insn_mb_type type);
- 
- s32 aarch64_get_branch_offset(u32 insn);
- u32 aarch64_set_branch_offset(u32 insn, s32 offset);
---- a/arch/arm64/lib/insn.c
-+++ b/arch/arm64/lib/insn.c
-@@ -5,6 +5,7 @@
+--- a/arch/x86/entry/entry_64.S
++++ b/arch/x86/entry/entry_64.S
+@@ -1524,7 +1524,9 @@ SYM_CODE_END(rewind_stack_and_make_dead)
+  * ORC to unwind properly.
   *
-  * Copyright (C) 2014-2016 Zi Shen Lim <zlim.lnx@gmail.com>
+  * The alignment is for performance and not for safety, and may be safely
+- * refactored in the future if needed.
++ * refactored in the future if needed. The .skips are for safety, to ensure
++ * that all RETs are in the second half of a cacheline to mitigate Indirect
++ * Target Selection, rather than taking the slowpath via its_return_thunk.
   */
-+#include <linux/bitfield.h>
- #include <linux/bitops.h>
- #include <linux/bug.h>
- #include <linux/printk.h>
-@@ -1471,47 +1472,60 @@ u32 aarch64_insn_gen_extr(enum aarch64_i
- 	return aarch64_insn_encode_register(AARCH64_INSN_REGTYPE_RM, insn, Rm);
- }
- 
--u32 aarch64_insn_gen_dmb(enum aarch64_insn_mb_type type)
-+static u32 __get_barrier_crm_val(enum aarch64_insn_mb_type type)
- {
--	u32 opt;
--	u32 insn;
--
- 	switch (type) {
- 	case AARCH64_INSN_MB_SY:
--		opt = 0xf;
--		break;
-+		return 0xf;
- 	case AARCH64_INSN_MB_ST:
--		opt = 0xe;
--		break;
-+		return 0xe;
- 	case AARCH64_INSN_MB_LD:
--		opt = 0xd;
--		break;
-+		return 0xd;
- 	case AARCH64_INSN_MB_ISH:
--		opt = 0xb;
--		break;
-+		return 0xb;
- 	case AARCH64_INSN_MB_ISHST:
--		opt = 0xa;
--		break;
-+		return 0xa;
- 	case AARCH64_INSN_MB_ISHLD:
--		opt = 0x9;
--		break;
-+		return 0x9;
- 	case AARCH64_INSN_MB_NSH:
--		opt = 0x7;
--		break;
-+		return 0x7;
- 	case AARCH64_INSN_MB_NSHST:
--		opt = 0x6;
--		break;
-+		return 0x6;
- 	case AARCH64_INSN_MB_NSHLD:
--		opt = 0x5;
--		break;
-+		return 0x5;
- 	default:
--		pr_err("%s: unknown dmb type %d\n", __func__, type);
-+		pr_err("%s: unknown barrier type %d\n", __func__, type);
- 		return AARCH64_BREAK_FAULT;
- 	}
-+}
-+
-+u32 aarch64_insn_gen_dmb(enum aarch64_insn_mb_type type)
-+{
-+	u32 opt;
-+	u32 insn;
-+
-+	opt = __get_barrier_crm_val(type);
-+	if (opt == AARCH64_BREAK_FAULT)
-+		return AARCH64_BREAK_FAULT;
- 
- 	insn = aarch64_insn_get_dmb_value();
- 	insn &= ~GENMASK(11, 8);
- 	insn |= (opt << 8);
- 
-+	return insn;
-+}
-+
-+u32 aarch64_insn_gen_dsb(enum aarch64_insn_mb_type type)
-+{
-+	u32 opt, insn;
-+
-+	opt = __get_barrier_crm_val(type);
-+	if (opt == AARCH64_BREAK_FAULT)
-+		return AARCH64_BREAK_FAULT;
-+
-+	insn = aarch64_insn_get_dsb_base_value();
-+	insn &= ~GENMASK(11, 8);
-+	insn |= (opt << 8);
-+
- 	return insn;
- }
+ SYM_FUNC_START(clear_bhb_loop)
+ 	push	%rbp
+@@ -1534,10 +1536,22 @@ SYM_FUNC_START(clear_bhb_loop)
+ 	call	1f
+ 	jmp	5f
+ 	.align 64, 0xcc
++	/*
++	 * Shift instructions so that the RET is in the upper half of the
++	 * cacheline and don't take the slowpath to its_return_thunk.
++	 */
++	.skip 32 - (.Lret1 - 1f), 0xcc
+ 	ANNOTATE_INTRA_FUNCTION_CALL
+ 1:	call	2f
+-	RET
++.Lret1:	RET
+ 	.align 64, 0xcc
++	/*
++	 * As above shift instructions for RET at .Lret2 as well.
++	 *
++	 * This should be ideally be: .skip 32 - (.Lret2 - 2f), 0xcc
++	 * but some Clang versions (e.g. 18) don't like this.
++	 */
++	.skip 32 - 18, 0xcc
+ 2:	movl	$5, %eax
+ 3:	jmp	4f
+ 	nop
+@@ -1545,7 +1559,7 @@ SYM_FUNC_START(clear_bhb_loop)
+ 	jnz	3b
+ 	sub	$1, %ecx
+ 	jnz	1b
+-	RET
++.Lret2:	RET
+ 5:	lfence
+ 	pop	%rbp
+ 	RET
 
 
 
