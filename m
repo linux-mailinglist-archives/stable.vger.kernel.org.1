@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-143809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 482D2AB41BD
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:11:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03CADAB41BB
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:11:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 971608C29D3
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:09:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C92F4A1D64
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:10:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8994429A334;
-	Mon, 12 May 2025 18:04:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3946529A9E9;
+	Mon, 12 May 2025 18:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CO7lEdgp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aQskM/ky"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ABDB29A326;
-	Mon, 12 May 2025 18:04:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E185229A9DD;
+	Mon, 12 May 2025 18:04:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073080; cv=none; b=QPWdMGG2g8fSuNBsRnHj1dA1M+0TBHxM654uGmLvHKXRmDG6OKJ/aWH69Ycpduc3NE7VTtjlEMqq+8NJAFJEa3YL7SxNCmsOHv3fZ/AzsMgnvjsONM9eZl7fkL7ge0midXAA5DT6RQMp5ghJCreLVtIpM2mynsGXS0/GFrOBb5o=
+	t=1747073083; cv=none; b=Z2wQNWJwd6QYi7L7DZMmQTprAMOCuhv7mBpcgjo2rZs28mlomDUjSL1SfRz0hCiYv5OHSBijvEOtBtG/IVNSbzAa7R5dSdxP3iGiAsoWlV/tAoJ2iU7913YxxH5BCGMijMre88RTVId2MHT215uAA5ikkV1mVdunLHG/1AoyToo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073080; c=relaxed/simple;
-	bh=q2GbhTnqw4HSKUD14vcZX5VevC9i7BETntU11kPDREM=;
+	s=arc-20240116; t=1747073083; c=relaxed/simple;
+	bh=xb7FF4IAwqMmIelFbryrjSBpRZWqcQ2jQVXTGgKyM5k=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=PuaFCRrjuSVeDASSG7L/kB/1GNlUnaHfMqfjp759MjwrRX4h1ez/2oxraRnC7/2Uw7EW3OoG2HT3wAdI4tp48UQ9RNue7SUxOYccCrL8IEPNh8CLS7AD1vTYVISKVzYQS+IvPA7vxcONiCj1XuZP52criaVV7ibyRI9ur1CoH2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CO7lEdgp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30B2EC4CEF0;
-	Mon, 12 May 2025 18:04:39 +0000 (UTC)
+	 MIME-Version; b=JJRu7G7PBFNDl9fWlPgX9ux2M6f/JfNnBaEOaOhkcULiPAt0oM51wc6EHlaPEzK0Ahn1yNnrcdbZEV51z7yVoh3i6x9nPM960qi9t54jIbZR8xTNQu7YVFIs73sI3gusvAZD6O+UBNARg5xbbaLXTGIAae85WNX4loUvqN5TJkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aQskM/ky; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C9FDC4CEEF;
+	Mon, 12 May 2025 18:04:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747073080;
-	bh=q2GbhTnqw4HSKUD14vcZX5VevC9i7BETntU11kPDREM=;
+	s=k20201202; t=1747073082;
+	bh=xb7FF4IAwqMmIelFbryrjSBpRZWqcQ2jQVXTGgKyM5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CO7lEdgpABoI3UBXn8585HRIE5IrHNeF257GfqmKXgD+mcE2qT+h76iwlrIRwxZXG
-	 lFU2ndoDqcUAzVb44BSstxN5L1NLHCI9lpDgQforqIQ90FFyjVY/X3tp3lDo/yc2k3
-	 c03saBaapvFbQ+aS5HdMEH8XUca0UE4Od2dP01VAhbQhHZq/A540l25U3sTbxeuowu
-	 20/QEi/5A0ME++qDnQm81mr+BjWj5SQKDq/otLYmDsCdiTTNPYXOvjrWMTo7pmNCM/
-	 Y8/XUA/eeJs+hMMR7Cxr7zTAvsCwzy7BvjKWTQZY+6x6w9U5rS3naZNsWKmNS05+F9
-	 B4dpGquKYhlNw==
+	b=aQskM/kytyOkI2x9xtaSJkQ83oeXC716Tw1+fdaLnxfEg6IUWxCrAmYk/I+c9YclH
+	 mANmC38bIYIzXxkd0Hr62US0jSVVk4ErhnZQNbS+/c7KBteV279Mv4zB4vYGv3CmKJ
+	 j1k/9I+Y5miIgmPgZLEMCFGnThOlwrVsaBUYygwuFARRc2vHdwboLOUziu0FMRXDkj
+	 Lg0/MSl+5yabkQdhja9gwGBNWqyX9XDmlXMva0RLB6UjRzWAGnGMsXQBXcmk7FTsjG
+	 WaW94nkJGnpj+/8MSBjmiBySVQP75uudfGQgdM/l94AreSWURtw21B/XrxO9eS61xF
+	 +2NMnkfsS1ipg==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
+Cc: Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-block@vger.kernel.org,
+	miriam.rachel.korenblit@intel.com,
+	emmanuel.grumbach@intel.com,
+	somashekhar.puttagangaiah@intel.com,
+	golan.ben.ami@intel.com,
+	linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 06/11] block: only update request sector if needed
-Date: Mon, 12 May 2025 14:04:21 -0400
-Message-Id: <20250512180426.437627-6-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 07/11] wifi: iwlwifi: add support for Killer on MTL
+Date: Mon, 12 May 2025 14:04:22 -0400
+Message-Id: <20250512180426.437627-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250512180426.437627-1-sashal@kernel.org>
 References: <20250512180426.437627-1-sashal@kernel.org>
@@ -67,48 +69,34 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.28
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit db492e24f9b05547ba12b4783f09c9d943cf42fe ]
+[ Upstream commit ebedf8b7f05b9c886d68d63025db8d1b12343157 ]
 
-In case of a ZONE APPEND write, regardless of native ZONE APPEND or the
-emulation layer in the zone write plugging code, the sector the data got
-written to by the device needs to be updated in the bio.
+For now, we need another entry for these devices, this
+will be changed completely for 6.16.
 
-At the moment, this is done for every native ZONE APPEND write and every
-request that is flagged with 'BIO_ZONE_WRITE_PLUGGING'. But thus
-superfluously updates the sector for regular writes to a zoned block
-device.
-
-Check if a bio is a native ZONE APPEND write or if the bio is flagged as
-'BIO_EMULATES_ZONE_APPEND', meaning the block layer's zone write plugging
-code handles the ZONE APPEND and translates it into a regular write and
-back. Only if one of these two criterion is met, update the sector in the
-bio upon completion.
-
-Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/dea089581cb6b777c1cd1500b38ac0b61df4b2d1.1746530748.git.jth@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219926
+Link: https://patch.msgid.link/20250506214258.2efbdc9e9a82.I31915ec252bd1c74bd53b89a0e214e42a74b6f2e@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/block/blk.h b/block/blk.h
-index 1426f9c281973..e91012247ff29 100644
---- a/block/blk.h
-+++ b/block/blk.h
-@@ -482,7 +482,8 @@ static inline void blk_zone_update_request_bio(struct request *rq,
- 	 * the original BIO sector so that blk_zone_write_plug_bio_endio() can
- 	 * lookup the zone write plug.
- 	 */
--	if (req_op(rq) == REQ_OP_ZONE_APPEND || bio_zone_write_plugging(bio))
-+	if (req_op(rq) == REQ_OP_ZONE_APPEND ||
-+	    bio_flagged(bio, BIO_EMULATES_ZONE_APPEND))
- 		bio->bi_iter.bi_sector = rq->__sector;
- }
- void blk_zone_write_plug_bio_endio(struct bio *bio);
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+index 9141ea57abfce..68989d183e82a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
+@@ -587,6 +587,8 @@ VISIBLE_IF_IWLWIFI_KUNIT const struct iwl_dev_info iwl_dev_info_table[] = {
+ 	IWL_DEV_INFO(0x7A70, 0x1692, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690i_name),
+ 	IWL_DEV_INFO(0x7AF0, 0x1691, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690s_name),
+ 	IWL_DEV_INFO(0x7AF0, 0x1692, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690i_name),
++	IWL_DEV_INFO(0x7F70, 0x1691, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690s_name),
++	IWL_DEV_INFO(0x7F70, 0x1692, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690i_name),
+ 
+ 	IWL_DEV_INFO(0x271C, 0x0214, iwl9260_2ac_cfg, iwl9260_1_name),
+ 	IWL_DEV_INFO(0x7E40, 0x1691, iwl_cfg_ma, iwl_ax411_killer_1690s_name),
 -- 
 2.39.5
 
