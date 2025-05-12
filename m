@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-143938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CF6DAB42E0
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:27:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96400AB4163
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:05:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8A87188525B
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:26:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CFC93BF395
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:03:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D094299A8C;
-	Mon, 12 May 2025 18:09:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA11D2512F1;
+	Mon, 12 May 2025 18:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f+eBb/uY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JbolqRMg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF792517B1;
-	Mon, 12 May 2025 18:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7B0319049B;
+	Mon, 12 May 2025 18:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073353; cv=none; b=ZGQqzSDwQBoI3as15cBujWlGkxXvhb38lpOgRLLVDrv9ZH6ZoB1Lu9aUW4RcMXLOUl51MpCaa/nqaCWn92jrY0FffxmLHtWt4YZ9WyWmcIydMux+EYl3f8JQ0xlv+4nxNeawW264U9p+cAj3rQ+tS2haej8Qk1PzkWQAnsTiqUc=
+	t=1747073037; cv=none; b=sPStmICy9k1C8LaXnQFmOKNh5HrC18czemAeNY2KcBOkghqz5IipiaVXdjFDYbNbAr9OMqdrRzzQi8GIQlKHDTKB0y7yEDSfLAzlKNoYPLJ9oi7tCZXNtzq8Q9Yhh2ko61Uidb2x/nj5uFsyzm8PCk4j0yN99cv3nxzpTW7/+GY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073353; c=relaxed/simple;
-	bh=hpFpeZOdsoGz7Yd4qq7R7QvXBF0gkjO7eIONr3ySjIo=;
+	s=arc-20240116; t=1747073037; c=relaxed/simple;
+	bh=fw/+jUg+FYR1ixpnuLKv+i39YzeO8R5Gde0u+5bTEBs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ElBFY1v4MAP2RmyI2mpjGp2p2lO2gSdjZd/2y0OAaLlkS6jjt2WWd6J5m7qTHkxQVcUSTPr8qzSAAIxcnvtvBzjXqSQ81usgsNzIehHq4CE4wLdh7AMxcxZA3mTcxpJ4jt6ngBy8f4uBjdCIDQQIzZ5Dp+upPy1BHF18v/4ny4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f+eBb/uY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30807C4CEE7;
-	Mon, 12 May 2025 18:09:12 +0000 (UTC)
+	 MIME-Version; b=DvruqOJgXlwInb7XtE77MCxUHkuxPy0K+nlWMEKHhcG9aT8f8ZL0VIWLWmJ7absrf3wXDr08PlZ241VnM6JESbchrvV9nV9jG7fHfsOHK5YV3VRepgpqlnVRQdq94AIUpx7nh6yQdumDbCJyVk8feUl+imGP0X0jHT+77JNUTJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JbolqRMg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27F6FC4CEE7;
+	Mon, 12 May 2025 18:03:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073353;
-	bh=hpFpeZOdsoGz7Yd4qq7R7QvXBF0gkjO7eIONr3ySjIo=;
+	s=korg; t=1747073037;
+	bh=fw/+jUg+FYR1ixpnuLKv+i39YzeO8R5Gde0u+5bTEBs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f+eBb/uY1H+jFgR7dk04wfQPHMKKB4vnkS+999xlFhIjC/km5OrZXqkjYkP0hBbNT
-	 RyMNFlGwiJjsjf14ryFv9jAESAiQoGLERok+ygOBJRQZn0rlLbvkbfUegsvHRntqoZ
-	 x+lYrwgNdDDk5vjrVxD/b1ESyyQLW0TCNZK+Wwg8=
+	b=JbolqRMgIYaQyedaobQfu6e416HVIX8jHqZjKYsyg8k8STR8iCjVGYg1g9pPysrAs
+	 JpS43fFMioHx1INsvQ9/Ff7r0KaBe29YmxccvdPFQ/CHvcV+L/x8fY4APfVxd4DPhm
+	 8iKmZh817Uz/Bdqb3cCSJ/9+6cyvoy48JXidSlpw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daivik Bhatia <dtgs1208@gmail.com>,
-	Iago Toral Quiroga <itoral@igalia.com>,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
-Subject: [PATCH 6.6 047/113] drm/v3d: Add job to pending list if the reset was skipped
+	Marco Crivellari <marco.crivellari@suse.com>,
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 135/184] MIPS: Fix idle VS timer enqueue
 Date: Mon, 12 May 2025 19:45:36 +0200
-Message-ID: <20250512172029.583275696@linuxfoundation.org>
+Message-ID: <20250512172047.313152780@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
-References: <20250512172027.691520737@linuxfoundation.org>
+In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
+References: <20250512172041.624042835@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,103 +62,169 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maíra Canal <mcanal@igalia.com>
+From: Marco Crivellari <marco.crivellari@suse.com>
 
-commit 35e4079bf1a2570abffce6ababa631afcf8ea0e5 upstream.
+[ Upstream commit 56651128e2fbad80f632f388d6bf1f39c928267a ]
 
-When a CL/CSD job times out, we check if the GPU has made any progress
-since the last timeout. If so, instead of resetting the hardware, we skip
-the reset and let the timer get rearmed. This gives long-running jobs a
-chance to complete.
+MIPS re-enables interrupts on its idle routine and performs
+a TIF_NEED_RESCHED check afterwards before putting the CPU to sleep.
 
-However, when `timedout_job()` is called, the job in question is removed
-from the pending list, which means it won't be automatically freed through
-`free_job()`. Consequently, when we skip the reset and keep the job
-running, the job won't be freed when it finally completes.
+The IRQs firing between the check and the 'wait' instruction may set the
+TIF_NEED_RESCHED flag. In order to deal with this possible race, IRQs
+interrupting __r4k_wait() rollback their return address to the
+beginning of __r4k_wait() so that TIF_NEED_RESCHED is checked
+again before going back to sleep.
 
-This situation leads to a memory leak, as exposed in [1] and [2].
+However idle IRQs can also queue timers that may require a tick
+reprogramming through a new generic idle loop iteration but those timers
+would go unnoticed here because __r4k_wait() only checks
+TIF_NEED_RESCHED. It doesn't check for pending timers.
 
-Similarly to commit 704d3d60fec4 ("drm/etnaviv: don't block scheduler when
-GPU is still active"), this patch ensures the job is put back on the
-pending list when extending the timeout.
+Fix this with fast-forwarding idle IRQs return address to the end of the
+idle routine instead of the beginning, so that the generic idle loop
+handles both TIF_NEED_RESCHED and pending timers.
 
-Cc: stable@vger.kernel.org # 6.0
-Reported-by: Daivik Bhatia <dtgs1208@gmail.com>
-Closes: https://gitlab.freedesktop.org/mesa/mesa/-/issues/12227 [1]
-Closes: https://github.com/raspberrypi/linux/issues/6817 [2]
-Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
-Acked-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Link: https://lore.kernel.org/r/20250430210643.57924-1-mcanal@igalia.com
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CONFIG_CPU_MICROMIPS has been removed along with the nop instructions.
+There, NOPs are 2 byte in size, so change the code with 3 _ssnop which are
+always 4 byte and remove the ifdef. Added ehb to make sure the hazard
+is always cleared.
+
+Fixes: c65a5480ff29 ("[MIPS] Fix potential latency problem due to non-atomic cpu_wait.")
+Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Acked-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/v3d/v3d_sched.c |   28 +++++++++++++++++++++-------
- 1 file changed, 21 insertions(+), 7 deletions(-)
+ arch/mips/include/asm/idle.h |  3 +-
+ arch/mips/kernel/genex.S     | 62 +++++++++++++++++++++---------------
+ arch/mips/kernel/idle.c      |  7 ----
+ 3 files changed, 37 insertions(+), 35 deletions(-)
 
---- a/drivers/gpu/drm/v3d/v3d_sched.c
-+++ b/drivers/gpu/drm/v3d/v3d_sched.c
-@@ -289,11 +289,16 @@ v3d_gpu_reset_for_timeout(struct v3d_dev
- 	return DRM_GPU_SCHED_STAT_NOMINAL;
+diff --git a/arch/mips/include/asm/idle.h b/arch/mips/include/asm/idle.h
+index 0992cad9c632e..2bc3678455ed0 100644
+--- a/arch/mips/include/asm/idle.h
++++ b/arch/mips/include/asm/idle.h
+@@ -6,8 +6,7 @@
+ #include <linux/linkage.h>
+ 
+ extern void (*cpu_wait)(void);
+-extern void r4k_wait(void);
+-extern asmlinkage void __r4k_wait(void);
++extern asmlinkage void r4k_wait(void);
+ extern void r4k_wait_irqoff(void);
+ 
+ static inline int using_rollback_handler(void)
+diff --git a/arch/mips/kernel/genex.S b/arch/mips/kernel/genex.S
+index a572ce36a24f2..46d975d00298d 100644
+--- a/arch/mips/kernel/genex.S
++++ b/arch/mips/kernel/genex.S
+@@ -104,42 +104,52 @@ handle_vcei:
+ 
+ 	__FINIT
+ 
+-	.align	5	/* 32 byte rollback region */
+-LEAF(__r4k_wait)
+-	.set	push
+-	.set	noreorder
+-	/* start of rollback region */
+-	LONG_L	t0, TI_FLAGS($28)
+-	nop
+-	andi	t0, _TIF_NEED_RESCHED
+-	bnez	t0, 1f
+-	 nop
+-	nop
+-	nop
+-#ifdef CONFIG_CPU_MICROMIPS
+-	nop
+-	nop
+-	nop
+-	nop
+-#endif
++	/* Align to 32 bytes for the maximum idle interrupt region size. */
++	.align	5
++LEAF(r4k_wait)
++	/* Keep the ISA bit clear for calculations on local labels here. */
++0:	.fill 	0
++	/* Start of idle interrupt region. */
++	local_irq_enable
++	/*
++	 * If an interrupt lands here, before going idle on the next
++	 * instruction, we must *NOT* go idle since the interrupt could
++	 * have set TIF_NEED_RESCHED or caused a timer to need resched.
++	 * Fall through -- see rollback_handler below -- and have the
++	 * idle loop take care of things.
++	 */
++1:	.fill	0
++	/* The R2 EI/EHB sequence takes 8 bytes, otherwise pad up.  */
++	.if		1b - 0b > 32
++	.error	"overlong idle interrupt region"
++	.elseif	1b - 0b > 8
++	.align	4
++	.endif
++2:	.fill	0
++	.equ	r4k_wait_idle_size, 2b - 0b
++	/* End of idle interrupt region; size has to be a power of 2. */
+ 	.set	MIPS_ISA_ARCH_LEVEL_RAW
++r4k_wait_insn:
+ 	wait
+-	/* end of rollback region (the region size must be power of two) */
+-1:
++r4k_wait_exit:
++	.set	mips0
++	local_irq_disable
+ 	jr	ra
+-	 nop
+-	.set	pop
+-	END(__r4k_wait)
++	END(r4k_wait)
++	.previous
+ 
+ 	.macro	BUILD_ROLLBACK_PROLOGUE handler
+ 	FEXPORT(rollback_\handler)
+ 	.set	push
+ 	.set	noat
+ 	MFC0	k0, CP0_EPC
+-	PTR_LA	k1, __r4k_wait
+-	ori	k0, 0x1f	/* 32 byte rollback region */
+-	xori	k0, 0x1f
++	/* Subtract/add 2 to let the ISA bit propagate through the mask.  */
++	PTR_LA	k1, r4k_wait_insn - 2
++	ori 	k0, r4k_wait_idle_size - 2
++	.set	noreorder
+ 	bne	k0, k1, \handler
++	PTR_ADDIU 	k0, r4k_wait_exit - r4k_wait_insn + 2
++	.set	reorder
+ 	MTC0	k0, CP0_EPC
+ 	.set pop
+ 	.endm
+diff --git a/arch/mips/kernel/idle.c b/arch/mips/kernel/idle.c
+index 5abc8b7340f88..80e8a04a642e0 100644
+--- a/arch/mips/kernel/idle.c
++++ b/arch/mips/kernel/idle.c
+@@ -35,13 +35,6 @@ static void __cpuidle r3081_wait(void)
+ 	write_c0_conf(cfg | R30XX_CONF_HALT);
  }
  
--/* If the current address or return address have changed, then the GPU
-- * has probably made progress and we should delay the reset.  This
-- * could fail if the GPU got in an infinite loop in the CL, but that
-- * is pretty unlikely outside of an i-g-t testcase.
-- */
-+static void
-+v3d_sched_skip_reset(struct drm_sched_job *sched_job)
-+{
-+	struct drm_gpu_scheduler *sched = sched_job->sched;
-+
-+	spin_lock(&sched->job_list_lock);
-+	list_add(&sched_job->list, &sched->pending_list);
-+	spin_unlock(&sched->job_list_lock);
-+}
-+
- static enum drm_gpu_sched_stat
- v3d_cl_job_timedout(struct drm_sched_job *sched_job, enum v3d_queue q,
- 		    u32 *timedout_ctca, u32 *timedout_ctra)
-@@ -303,9 +308,16 @@ v3d_cl_job_timedout(struct drm_sched_job
- 	u32 ctca = V3D_CORE_READ(0, V3D_CLE_CTNCA(q));
- 	u32 ctra = V3D_CORE_READ(0, V3D_CLE_CTNRA(q));
- 
-+	/* If the current address or return address have changed, then the GPU
-+	 * has probably made progress and we should delay the reset. This
-+	 * could fail if the GPU got in an infinite loop in the CL, but that
-+	 * is pretty unlikely outside of an i-g-t testcase.
-+	 */
- 	if (*timedout_ctca != ctca || *timedout_ctra != ctra) {
- 		*timedout_ctca = ctca;
- 		*timedout_ctra = ctra;
-+
-+		v3d_sched_skip_reset(sched_job);
- 		return DRM_GPU_SCHED_STAT_NOMINAL;
- 	}
- 
-@@ -345,11 +357,13 @@ v3d_csd_job_timedout(struct drm_sched_jo
- 	struct v3d_dev *v3d = job->base.v3d;
- 	u32 batches = V3D_CORE_READ(0, V3D_CSD_CURRENT_CFG4);
- 
--	/* If we've made progress, skip reset and let the timer get
--	 * rearmed.
-+	/* If we've made progress, skip reset, add the job to the pending
-+	 * list, and let the timer get rearmed.
- 	 */
- 	if (job->timedout_batches != batches) {
- 		job->timedout_batches = batches;
-+
-+		v3d_sched_skip_reset(sched_job);
- 		return DRM_GPU_SCHED_STAT_NOMINAL;
- 	}
- 
+-void __cpuidle r4k_wait(void)
+-{
+-	raw_local_irq_enable();
+-	__r4k_wait();
+-	raw_local_irq_disable();
+-}
+-
+ /*
+  * This variant is preferable as it allows testing need_resched and going to
+  * sleep depending on the outcome atomically.  Unfortunately the "It is
+-- 
+2.39.5
+
 
 
 
