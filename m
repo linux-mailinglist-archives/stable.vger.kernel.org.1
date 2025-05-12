@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-143923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6554EAB42B9
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:25:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 062CCAB42B8
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:25:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1133188ADBA
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:25:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D243716DA2D
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:25:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63576298C1B;
-	Mon, 12 May 2025 18:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C01A3298CB0;
+	Mon, 12 May 2025 18:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lf8NmqxO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zJd+beu8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EB57296FDB;
-	Mon, 12 May 2025 18:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C613296FDB;
+	Mon, 12 May 2025 18:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073305; cv=none; b=b5mHRSIy9J+5ljjbr3DgRlilaV2n1z/+ztJ1LimaXpx38on/BivuMM8UO1Tbp4javZxZXSyImPNTDTMtA4AAmb5oPU3PRmn8WN8bB8EQFJmdCQsW6+OgwSVu1uLpaaz+ogvOCE5ecWTerrlIlDuUUxUN/yKuU5BIiw3ISXV7uM8=
+	t=1747073311; cv=none; b=Jwzb6zxqHEo3wIw4+mwDCRaoxHasUbQdudmL3vw4TBbZWc0pAtstWbPvuPkPsODgoUzG/3jS0nOsSzSm7t1JwIuGZuuD9b7+5th1bg1BMAu7wKyNHXR74ET+TG4bnQz/it/Sm27Bt/sfWHv9l28rEPnTRWc5khij3aEDYHdewLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073305; c=relaxed/simple;
-	bh=QK/RuxzKeJHZqR6GlDWzkf/hLT84C3hinmM8VfpfRsw=;
+	s=arc-20240116; t=1747073311; c=relaxed/simple;
+	bh=7rSrdep1n4H1n2y3IXtX2/t8TjyVFLScdJ2lWgGQ/Go=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z3YvB/6mhp0JyFh7xy23aDDrvn33baaIBFaLJKOSVVd6RTu53QHDF+4vLXUapi9hsiqZL/f9bnas8RAkS9KgmIfqHXSIV0+icjWxILskDotbyUvDSE5MT30w7FO17Iut4optIZZ3wRG79GgTKOUXRbL9x198YAgIOvXtRw1jJ/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lf8NmqxO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E552C4CEE7;
-	Mon, 12 May 2025 18:08:24 +0000 (UTC)
+	 MIME-Version; b=mLnHKCHl6kqKSuLa4SJI8T8vDpfRONrUUS2NyYAP/BLCC3L7vo85QFanEiHw0VukMSTQWVnbO0LiMW2q2cReTxlPHP1Mcyb0xuKajZF7wuk0srbrZuxi0TeIc/tZABv9qC5akf3ePa5RUnt9gFZbjBcED7CuwOcuxTXwuPHDNtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zJd+beu8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD971C4CEE7;
+	Mon, 12 May 2025 18:08:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073305;
-	bh=QK/RuxzKeJHZqR6GlDWzkf/hLT84C3hinmM8VfpfRsw=;
+	s=korg; t=1747073311;
+	bh=7rSrdep1n4H1n2y3IXtX2/t8TjyVFLScdJ2lWgGQ/Go=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lf8NmqxO6NmIr61Lfjw8WM3Ohxlll5Kc4YGhzCcHB8A5yp84c1LBmVCG2l39LApq3
-	 8s/hh0BzlPs9z+1Fikz/HaZn1SVYvEfWGMVd9nyR48hIbaGd8xoX0YRs13DqwY1fVF
-	 rnTiyK0veer4TBWnpBhjW5uS9W5Yyg5w4usSZyYY=
+	b=zJd+beu8UZ5n5fhLN+/OAexF7UctjJdxqr4JEfflaCr1WbnJpEX3/ye5GX9MKQTqA
+	 zzzQW+DYZbZB5PcA4wTzf7KeQqcZTXvzdNIu0UgY13RG/ihcfbniZcasf2aiYar5Kb
+	 YkxEbZcr3uPlIaW7Km3ftmSMB0xG4IoeVVyNntSA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Rathgeb <maggu2810@gmail.com>,
-	Aditya Garg <gargaditya08@live.com>,
+	jt <enopatch@gmail.com>,
 	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.6 034/113] Input: synaptics - enable InterTouch on Dell Precision M3800
-Date: Mon, 12 May 2025 19:45:23 +0200
-Message-ID: <20250512172029.062348277@linuxfoundation.org>
+Subject: [PATCH 6.6 035/113] Input: synaptics - enable SMBus for HP Elitebook 850 G1
+Date: Mon, 12 May 2025 19:45:24 +0200
+Message-ID: <20250512172029.101356103@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
 References: <20250512172027.691520737@linuxfoundation.org>
@@ -66,16 +65,15 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Aditya Garg <gargaditya08@live.com>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-commit a609cb4cc07aa9ab8f50466622814356c06f2c17 upstream.
+commit f04f03d3e99bc8f89b6af5debf07ff67d961bc23 upstream.
 
-Enable InterTouch mode on Dell Precision M3800 by adding "DLL060d" to
-the list of SMBus-enabled variants.
+The kernel reports that the touchpad for this device can support
+SMBus mode.
 
-Reported-by: Markus Rathgeb <maggu2810@gmail.com>
-Signed-off-by: Aditya Garg <gargaditya08@live.com>
-Link: https://lore.kernel.org/r/PN3PR01MB959789DD6D574E16141E5DC4B888A@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM
+Reported-by: jt <enopatch@gmail.com>
+Link: https://lore.kernel.org/r/iys5dbv3ldddsgobfkxldazxyp54kay4bozzmagga6emy45jop@2ebvuxgaui4u
 Cc: stable@vger.kernel.org
 Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
@@ -85,14 +83,14 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/input/mouse/synaptics.c
 +++ b/drivers/input/mouse/synaptics.c
-@@ -163,6 +163,7 @@ static const char * const topbuttonpad_p
- 
- static const char * const smbus_pnp_ids[] = {
- 	/* all of the topbuttonpad_pnp_ids are valid, we just add some extras */
-+	"DLL060d", /* Dell Precision M3800 */
- 	"LEN0048", /* X1 Carbon 3 */
- 	"LEN0046", /* X250 */
- 	"LEN0049", /* Yoga 11e */
+@@ -190,6 +190,7 @@ static const char * const smbus_pnp_ids[
+ 	"LEN2054", /* E480 */
+ 	"LEN2055", /* E580 */
+ 	"LEN2068", /* T14 Gen 1 */
++	"SYN3003", /* HP EliteBook 850 G1 */
+ 	"SYN3015", /* HP EliteBook 840 G2 */
+ 	"SYN3052", /* HP EliteBook 840 G4 */
+ 	"SYN3221", /* HP 15-ay000 */
 
 
 
