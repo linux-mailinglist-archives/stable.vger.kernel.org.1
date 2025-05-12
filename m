@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-143104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BCB7AB2CA8
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 02:26:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 17947AB2CA9
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 02:27:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABB663AC401
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 00:26:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47F493AEB05
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 00:26:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7862D2BCF5;
-	Mon, 12 May 2025 00:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8807374040;
+	Mon, 12 May 2025 00:26:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="h+wnj1Cd"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="icvWL+r4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCD10481DD;
-	Mon, 12 May 2025 00:26:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4301D2940B;
+	Mon, 12 May 2025 00:26:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747009609; cv=none; b=VY7cTlkf0l4W22L98/JLEw9aTHdKlT1VOfgkS5XvAv9Th37WwBsxkIdN+5HrmNO/8X6heHXgFGEx2h1bvz7/Ccx3ZwbRS/XQigvnhXEa/GBTy8FXrVe2umBRk/AfP7KayqF1TFm72+j2d9vTt/EcjxiFd1Z1mE+mQoZkMXVSpDQ=
+	t=1747009617; cv=none; b=thVkCPkbKgMLxgCeiGRA6Cd5kLV6dyix7lrYtmk2Y3U8VXZTcySTfobEs82CF1yEpP3/LxUTm5RnUG31PufzxzSkmOIfqDxnlmkGWCgf9UFhVhftg4xQUSZhDdFL67oJL7xNqSSjbOQjZOYOeUiuzaEonY2+2djELyLeKlnQWAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747009609; c=relaxed/simple;
-	bh=qee4Q+IA/V+ZmSHH8rwb0wGOR8tVH8MUq4NxIAGeDfY=;
-	h=Date:To:From:Subject:Message-Id; b=ZznSo13XaDUo6bhPfd5d6WF9yp9/2J2dQx9ML1cgloA0/DoZEqKg1Du0+ABcfJu1qrZ5FL69bz1om00ICOf1bhc2vKRtiEtHyEZOOTIw/gEWQN0DEyoPWR2lLhAcyxq5P5O8Z8Nj/jR0lLXVAN+waiGSnvqoysQhfmSzuD7suRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=h+wnj1Cd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F932C4CEED;
-	Mon, 12 May 2025 00:26:48 +0000 (UTC)
+	s=arc-20240116; t=1747009617; c=relaxed/simple;
+	bh=LMikkdJBDP5bC3+ucIrgMCc44/Ovtjy4Pw7f8hTCKd0=;
+	h=Date:To:From:Subject:Message-Id; b=YJ1iguYMorrCyrzRLFAXjp96CGOXrB/zbd6nozrryYgky1uDxD7qS+45UNyvN1mFrdyJ+SGDm9iirv+qZUw3aTC3CAy177x5YD6z5pfqJxXUfTAsQDt6aM8ZlOmnyrmnmYa76x1dt+NZ5uzM8juAojsbeyFM9YosN9c85h3XC0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=icvWL+r4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 665A4C4CEE4;
+	Mon, 12 May 2025 00:26:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1747009608;
-	bh=qee4Q+IA/V+ZmSHH8rwb0wGOR8tVH8MUq4NxIAGeDfY=;
+	s=korg; t=1747009616;
+	bh=LMikkdJBDP5bC3+ucIrgMCc44/Ovtjy4Pw7f8hTCKd0=;
 	h=Date:To:From:Subject:From;
-	b=h+wnj1CdAtFJ0FMPxcPA9XgAupazrvm7BPYRjaYZ/7Zu/4IDUt7HDafiGAjMaWiNU
-	 q8imSMwm7zOxd3K2SQ5wuCVPQUczkAIVFp4IWi+6cjJWkWZCFhrC3mwRF4kh4FbiaZ
-	 wpknuCRTwzut58peJbs2yD9N5OqKjMoJTmhjrhjA=
-Date: Sun, 11 May 2025 17:26:47 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,osalvador@suse.de,muchun.song@linux.dev,joshua.hahnjy@gmail.com,david@redhat.com,mawupeng1@huawei.com,akpm@linux-foundation.org
+	b=icvWL+r4edqKXgZSzmiBi1k8vLTx8FLpetWATU/cSWSLACn+J/4B76UCgo8iI8b/8
+	 wkGQYrSrGd3RltMX1I9lQrBHQiHOX6TGWf8fwTk//HoCfdALStB1ESkNtS60Sw+tNP
+	 /jTOgNGuoJ8jwVO4Y8Il8qOiNi66VjXpdmrsAbwI=
+Date: Sun, 11 May 2025 17:26:55 -0700
+To: mm-commits@vger.kernel.org,vbabka@suse.cz,surenb@google.com,stable@vger.kernel.org,mhocko@suse.com,jackmanb@google.com,hannes@cmpxchg.org,ast@kernel.org,kirill.shutemov@linux.intel.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] mm-hugetlb-fix-incorrect-fallback-for-subpool.patch removed from -mm tree
-Message-Id: <20250512002648.3F932C4CEED@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-page_alloc-ensure-try_alloc_pages-plays-well-with-unaccepted-memory.patch removed from -mm tree
+Message-Id: <20250512002656.665A4C4CEE4@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,128 +50,150 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm: hugetlb: fix incorrect fallback for subpool
+     Subject: mm/page_alloc: ensure try_alloc_pages() plays well with unaccepted memory
 has been removed from the -mm tree.  Its filename was
-     mm-hugetlb-fix-incorrect-fallback-for-subpool.patch
+     mm-page_alloc-ensure-try_alloc_pages-plays-well-with-unaccepted-memory.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Wupeng Ma <mawupeng1@huawei.com>
-Subject: mm: hugetlb: fix incorrect fallback for subpool
-Date: Thu, 10 Apr 2025 14:26:33 +0800
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Subject: mm/page_alloc: ensure try_alloc_pages() plays well with unaccepted memory
+Date: Tue, 6 May 2025 14:25:08 +0300
 
-During our testing with hugetlb subpool enabled, we observe that
-hstate->resv_huge_pages may underflow into negative values.  Root cause
-analysis reveals a race condition in subpool reservation fallback handling
-as follow:
+try_alloc_pages() will not attempt to allocate memory if the system has
+*any* unaccepted memory.  Memory is accepted as needed and can remain in
+the system indefinitely, causing the interface to always fail.
 
-hugetlb_reserve_pages()
-    /* Attempt subpool reservation */
-    gbl_reserve = hugepage_subpool_get_pages(spool, chg);
+Rather than immediately giving up, attempt to use already accepted memory
+on free lists.
 
-    /* Global reservation may fail after subpool allocation */
-    if (hugetlb_acct_memory(h, gbl_reserve) < 0)
-        goto out_put_pages;
+Pass 'alloc_flags' to cond_accept_memory() and do not accept new memory
+for ALLOC_TRYLOCK requests.
 
-out_put_pages:
-    /* This incorrectly restores reservation to subpool */
-    hugepage_subpool_put_pages(spool, chg);
+Found via code inspection - only BPF uses this at present and the
+runtime effects are unclear.
 
-When hugetlb_acct_memory() fails after subpool allocation, the current
-implementation over-commits subpool reservations by returning the full
-'chg' value instead of the actual allocated 'gbl_reserve' amount.  This
-discrepancy propagates to global reservations during subsequent releases,
-eventually causing resv_huge_pages underflow.
-
-This problem can be trigger easily with the following steps:
-1. reverse hugepage for hugeltb allocation
-2. mount hugetlbfs with min_size to enable hugetlb subpool
-3. alloc hugepages with two task(make sure the second will fail due to
-   insufficient amount of hugepages)
-4. with for a few seconds and repeat step 3 which will make
-   hstate->resv_huge_pages to go below zero.
-
-To fix this problem, return corrent amount of pages to subpool during the
-fallback after hugepage_subpool_get_pages is called.
-
-Link: https://lkml.kernel.org/r/20250410062633.3102457-1-mawupeng1@huawei.com
-Fixes: 1c5ecae3a93f ("hugetlbfs: add minimum size accounting to subpools")
-Signed-off-by: Wupeng Ma <mawupeng1@huawei.com>
-Tested-by: Joshua Hahn <joshua.hahnjy@gmail.com>
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Ma Wupeng <mawupeng1@huawei.com>
-Cc: Muchun Song <muchun.song@linux.dev>
+Link: https://lkml.kernel.org/r/20250506112509.905147-2-kirill.shutemov@linux.intel.com
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Fixes: 97769a53f117 ("mm, bpf: Introduce try_alloc_pages() for opportunistic page allocation")
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Brendan Jackman <jackmanb@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/hugetlb.c |   28 ++++++++++++++++++++++------
- 1 file changed, 22 insertions(+), 6 deletions(-)
+ mm/page_alloc.c |   28 +++++++++++++++-------------
+ 1 file changed, 15 insertions(+), 13 deletions(-)
 
---- a/mm/hugetlb.c~mm-hugetlb-fix-incorrect-fallback-for-subpool
-+++ a/mm/hugetlb.c
-@@ -3010,7 +3010,7 @@ struct folio *alloc_hugetlb_folio(struct
- 	struct hugepage_subpool *spool = subpool_vma(vma);
- 	struct hstate *h = hstate_vma(vma);
- 	struct folio *folio;
--	long retval, gbl_chg;
-+	long retval, gbl_chg, gbl_reserve;
- 	map_chg_state map_chg;
- 	int ret, idx;
- 	struct hugetlb_cgroup *h_cg = NULL;
-@@ -3163,8 +3163,16 @@ out_uncharge_cgroup_reservation:
- 		hugetlb_cgroup_uncharge_cgroup_rsvd(idx, pages_per_huge_page(h),
- 						    h_cg);
- out_subpool_put:
--	if (map_chg)
--		hugepage_subpool_put_pages(spool, 1);
-+	/*
-+	 * put page to subpool iff the quota of subpool's rsv_hpages is used
-+	 * during hugepage_subpool_get_pages.
-+	 */
-+	if (map_chg && !gbl_chg) {
-+		gbl_reserve = hugepage_subpool_put_pages(spool, 1);
-+		hugetlb_acct_memory(h, -gbl_reserve);
-+	}
-+
-+
- out_end_reservation:
- 	if (map_chg != MAP_CHG_ENFORCED)
- 		vma_end_reservation(h, vma, addr);
-@@ -7239,7 +7247,7 @@ bool hugetlb_reserve_pages(struct inode
- 					struct vm_area_struct *vma,
- 					vm_flags_t vm_flags)
- {
--	long chg = -1, add = -1;
-+	long chg = -1, add = -1, spool_resv, gbl_resv;
- 	struct hstate *h = hstate_inode(inode);
- 	struct hugepage_subpool *spool = subpool_inode(inode);
- 	struct resv_map *resv_map;
-@@ -7374,8 +7382,16 @@ bool hugetlb_reserve_pages(struct inode
- 	return true;
+--- a/mm/page_alloc.c~mm-page_alloc-ensure-try_alloc_pages-plays-well-with-unaccepted-memory
++++ a/mm/page_alloc.c
+@@ -290,7 +290,8 @@ EXPORT_SYMBOL(nr_online_nodes);
+ #endif
  
- out_put_pages:
--	/* put back original number of pages, chg */
--	(void)hugepage_subpool_put_pages(spool, chg);
-+	spool_resv = chg - gbl_reserve;
-+	if (spool_resv) {
-+		/* put sub pool's reservation back, chg - gbl_reserve */
-+		gbl_resv = hugepage_subpool_put_pages(spool, spool_resv);
-+		/*
-+		 * subpool's reserved pages can not be put back due to race,
-+		 * return to hstate.
-+		 */
-+		hugetlb_acct_memory(h, -gbl_resv);
-+	}
- out_uncharge_cgroup:
- 	hugetlb_cgroup_uncharge_cgroup_rsvd(hstate_index(h),
- 					    chg * pages_per_huge_page(h), h_cg);
+ static bool page_contains_unaccepted(struct page *page, unsigned int order);
+-static bool cond_accept_memory(struct zone *zone, unsigned int order);
++static bool cond_accept_memory(struct zone *zone, unsigned int order,
++			       int alloc_flags);
+ static bool __free_unaccepted(struct page *page);
+ 
+ int page_group_by_mobility_disabled __read_mostly;
+@@ -3611,7 +3612,7 @@ retry:
+ 			}
+ 		}
+ 
+-		cond_accept_memory(zone, order);
++		cond_accept_memory(zone, order, alloc_flags);
+ 
+ 		/*
+ 		 * Detect whether the number of free pages is below high
+@@ -3638,7 +3639,7 @@ check_alloc_wmark:
+ 				       gfp_mask)) {
+ 			int ret;
+ 
+-			if (cond_accept_memory(zone, order))
++			if (cond_accept_memory(zone, order, alloc_flags))
+ 				goto try_this_zone;
+ 
+ 			/*
+@@ -3691,7 +3692,7 @@ try_this_zone:
+ 
+ 			return page;
+ 		} else {
+-			if (cond_accept_memory(zone, order))
++			if (cond_accept_memory(zone, order, alloc_flags))
+ 				goto try_this_zone;
+ 
+ 			/* Try again if zone has deferred pages */
+@@ -4844,7 +4845,7 @@ unsigned long alloc_pages_bulk_noprof(gf
+ 			goto failed;
+ 		}
+ 
+-		cond_accept_memory(zone, 0);
++		cond_accept_memory(zone, 0, alloc_flags);
+ retry_this_zone:
+ 		mark = wmark_pages(zone, alloc_flags & ALLOC_WMARK_MASK) + nr_pages;
+ 		if (zone_watermark_fast(zone, 0,  mark,
+@@ -4853,7 +4854,7 @@ retry_this_zone:
+ 			break;
+ 		}
+ 
+-		if (cond_accept_memory(zone, 0))
++		if (cond_accept_memory(zone, 0, alloc_flags))
+ 			goto retry_this_zone;
+ 
+ 		/* Try again if zone has deferred pages */
+@@ -7281,7 +7282,8 @@ static inline bool has_unaccepted_memory
+ 	return static_branch_unlikely(&zones_with_unaccepted_pages);
+ }
+ 
+-static bool cond_accept_memory(struct zone *zone, unsigned int order)
++static bool cond_accept_memory(struct zone *zone, unsigned int order,
++			       int alloc_flags)
+ {
+ 	long to_accept, wmark;
+ 	bool ret = false;
+@@ -7292,6 +7294,10 @@ static bool cond_accept_memory(struct zo
+ 	if (list_empty(&zone->unaccepted_pages))
+ 		return false;
+ 
++	/* Bailout, since try_to_accept_memory_one() needs to take a lock */
++	if (alloc_flags & ALLOC_TRYLOCK)
++		return false;
++
+ 	wmark = promo_wmark_pages(zone);
+ 
+ 	/*
+@@ -7348,7 +7354,8 @@ static bool page_contains_unaccepted(str
+ 	return false;
+ }
+ 
+-static bool cond_accept_memory(struct zone *zone, unsigned int order)
++static bool cond_accept_memory(struct zone *zone, unsigned int order,
++			       int alloc_flags)
+ {
+ 	return false;
+ }
+@@ -7419,11 +7426,6 @@ struct page *try_alloc_pages_noprof(int
+ 	if (!pcp_allowed_order(order))
+ 		return NULL;
+ 
+-#ifdef CONFIG_UNACCEPTED_MEMORY
+-	/* Bailout, since try_to_accept_memory_one() needs to take a lock */
+-	if (has_unaccepted_memory())
+-		return NULL;
+-#endif
+ 	/* Bailout, since _deferred_grow_zone() needs to take a lock */
+ 	if (deferred_pages_enabled())
+ 		return NULL;
 _
 
-Patches currently in -mm which might be from mawupeng1@huawei.com are
+Patches currently in -mm which might be from kirill.shutemov@linux.intel.com are
 
 
 
