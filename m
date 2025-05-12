@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-143108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E915DAB2CAE
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 02:49:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C35D8AB2CAF
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 02:56:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F19E175497
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 00:49:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F092176DBF
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 00:56:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F6B913AA2E;
-	Mon, 12 May 2025 00:49:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91DEF1A83F7;
+	Mon, 12 May 2025 00:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="VLRfSCa2"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="xkApBvup"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CEC91E489;
-	Mon, 12 May 2025 00:49:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D4C32EB10;
+	Mon, 12 May 2025 00:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747010975; cv=none; b=m4pk1cSHcPx47y8k2TmAkREHSVPws6hiPUHZV4o56+JJyKEIa9QG5Ha/B8/g2syevLs4zrs62fdkS7FBLveoXg+VGQ8ogr/X3L2VYpcJaa9YzQHHr283K49pj//q1UwMP7h4Ik0LZArRV6I4WJZqbDotCwqlUsnNNRTcUrSCt9Q=
+	t=1747011371; cv=none; b=tJ4/GSMFQyxFdtRIsjV09dWVV9xQOem8kINCdWpY2HKMKHtXmHU4hmQD2bq4nQj/sZmbVNB1hNN38KKbehoRh9c1Eik7i62A5P8A9wXlDSv3nuwVh0cODbJ7qDsxOxzySQAsOl4y10IQwzf+XDceLJW6BfaKt7JhnpbSx1dgufg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747010975; c=relaxed/simple;
-	bh=H2An/ke4PtMN9t+AA7meIsIrjMdznX7wx4ZkjJKbWSA=;
-	h=Date:To:From:Subject:Message-Id; b=Rmqzogsp2cvjFKN8ziw1GnWC2EaGxV0AHd2CPUd2fQZenpf+12WSuVGxaE/dIrBdd+41YB1SMPqX5fCbslm9hACB9e9B7VD6Es013DE7PrIJxb+eWYptmsTuUFMBsCAXilczI9i+gmHa+qS3tID7LHdALtr3Iol1i3Nn0QAUKrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=VLRfSCa2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F143C4CEE4;
-	Mon, 12 May 2025 00:49:34 +0000 (UTC)
+	s=arc-20240116; t=1747011371; c=relaxed/simple;
+	bh=VyoSqGrn/4tIikcnuM1J+sqlVZSbA3GDZkWE8V5poBQ=;
+	h=Date:To:From:Subject:Message-Id; b=D7xHKsqxXILxp5NYjYj2G/N40wprytsgA8ChCV4jnQEeq1X1QTIR/h5v/zu9BCDqIA5Nj21sB+rXBMR5IGet8bI0YzTMMvKm7gEHEYdvrnoHBnfXbeg9NYZOoJFOtdR7/a3bkY7xjjOojcasyfiLwTt8az6MaAlu1DsS68j057c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=xkApBvup; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23725C4CEE4;
+	Mon, 12 May 2025 00:56:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1747010974;
-	bh=H2An/ke4PtMN9t+AA7meIsIrjMdznX7wx4ZkjJKbWSA=;
+	s=korg; t=1747011371;
+	bh=VyoSqGrn/4tIikcnuM1J+sqlVZSbA3GDZkWE8V5poBQ=;
 	h=Date:To:From:Subject:From;
-	b=VLRfSCa2nUMWLkn4waBh4VA9S37Yo6t++yUISCEOZHwLP8XYZitjtTDN9ujhKx6TF
-	 aYpNZD4nyluUFv45tUxLDFCfftsT+YDiaXUR3GuvxQB226Z4VprGntd9D1s+A7bpxe
-	 LOB/jeHf83Rcsh8iBbR4LhJqocLclLfL7p1UJpcc=
-Date: Sun, 11 May 2025 17:49:33 -0700
-To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,mengensun@tencent.com,fengguang.wu@intel.com,andrea@betterlinux.com,alexjlzheng@tencent.com,akpm@linux-foundation.org
+	b=xkApBvup31kry0zxueuTRyID9x0ZG2Z/v1CpHQU0g2AdpQxxjI2GJW0eyryTU3jNf
+	 kb3voN+fwdi0eFG5toaiRSsp2/jAN9MVr+BDt6yVsXKSrgac2xtOp43z9Jv45oNGLm
+	 d7dha6/0ENhrNeSIhEh5rqF6U+bqbegob+QdeZgY=
+Date: Sun, 11 May 2025 17:56:10 -0700
+To: mm-commits@vger.kernel.org,venkat88@linux.ibm.com,tglx@linutronix.de,stable@vger.kernel.org,song@kernel.org,nysal@linux.ibm.com,joel.granados@kernel.org,dianders@chromium.org,luogengkun@huaweicloud.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] mm-fix-ratelimit_pages-update-error-in-dirty_ratio_handler.patch removed from -mm tree
-Message-Id: <20250512004934.0F143C4CEE4@smtp.kernel.org>
+Subject: [merged mm-nonmm-stable] watchdog-fix-watchdog-may-detect-false-positive-of-softlockup.patch removed from -mm tree
+Message-Id: <20250512005611.23725C4CEE4@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,87 +50,217 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm: fix ratelimit_pages update error in dirty_ratio_handler()
+     Subject: watchdog: fix watchdog may detect false positive of softlockup
 has been removed from the -mm tree.  Its filename was
-     mm-fix-ratelimit_pages-update-error-in-dirty_ratio_handler.patch
+     watchdog-fix-watchdog-may-detect-false-positive-of-softlockup.patch
 
-This patch was dropped because it was merged into the mm-stable branch
+This patch was dropped because it was merged into the mm-nonmm-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Jinliang Zheng <alexjlzheng@tencent.com>
-Subject: mm: fix ratelimit_pages update error in dirty_ratio_handler()
-Date: Tue, 15 Apr 2025 17:02:32 +0800
+From: Luo Gengkun <luogengkun@huaweicloud.com>
+Subject: watchdog: fix watchdog may detect false positive of softlockup
+Date: Mon, 21 Apr 2025 03:50:21 +0000
 
-In dirty_ratio_handler(), vm_dirty_bytes must be set to zero before
-calling writeback_set_ratelimit(), as global_dirty_limits() always
-prioritizes the value of vm_dirty_bytes.
+When updating `watchdog_thresh`, there is a race condition between writing
+the new `watchdog_thresh` value and stopping the old watchdog timer.  If
+the old timer triggers during this window, it may falsely detect a
+softlockup due to the old interval and the new `watchdog_thresh` value
+being used.  The problem can be described as follow:
 
-It's domain_dirty_limits() that's relevant here, not node_dirty_ok:
+ # We asuume previous watchdog_thresh is 60, so the watchdog timer is
+ # coming every 24s.
+echo 10 > /proc/sys/kernel/watchdog_thresh (User space)
+|
++------>+ update watchdog_thresh (We are in kernel now)
+	|
+	|	  # using old interval and new `watchdog_thresh`
+	+------>+ watchdog hrtimer (irq context: detect softlockup)
+		|
+		|
+	+-------+
+	|
+	|
+	+ softlockup_stop_all
 
-  dirty_ratio_handler
-    writeback_set_ratelimit
-      global_dirty_limits(&dirty_thresh)           <- ratelimit_pages based on dirty_thresh
-        domain_dirty_limits
-          if (bytes)                               <- bytes = vm_dirty_bytes <--------+
-            thresh = f1(bytes)                     <- prioritizes vm_dirty_bytes      |
-          else                                                                        |
-            thresh = f2(ratio)                                                        |
-      ratelimit_pages = f3(dirty_thresh)                                              |
-    vm_dirty_bytes = 0                             <- it's late! ---------------------+
+To fix this problem, introduce a shadow variable for `watchdog_thresh`. 
+The update to the actual `watchdog_thresh` is delayed until after the old
+timer is stopped, preventing false positives.
 
-This causes ratelimit_pages to still use the value calculated based on
-vm_dirty_bytes, which is wrong now.
+The following testcase may help to understand this problem.
 
+---------------------------------------------
+echo RT_RUNTIME_SHARE > /sys/kernel/debug/sched/features
+echo -1 > /proc/sys/kernel/sched_rt_runtime_us
+echo 0 > /sys/kernel/debug/sched/fair_server/cpu3/runtime
+echo 60 > /proc/sys/kernel/watchdog_thresh
+taskset -c 3 chrt -r 99 /bin/bash -c "while true;do true; done" &
+echo 10 > /proc/sys/kernel/watchdog_thresh &
+---------------------------------------------
 
-The impact visible to userspace is difficult to capture directly because
-there is no procfs/sysfs interface exported to user space.  However, it
-will have a real impact on the balance of dirty pages.
+The test case above first removes the throttling restrictions for
+real-time tasks.  It then sets watchdog_thresh to 60 and executes a
+real-time task ,a simple while(1) loop, on cpu3.  Consequently, the final
+command gets blocked because the presence of this real-time thread
+prevents kworker:3 from being selected by the scheduler.  This eventually
+triggers a softlockup detection on cpu3 due to watchdog_timer_fn operating
+with inconsistent variable - using both the old interval and the updated
+watchdog_thresh simultaneously.
 
-For example:
-
-1. On default, we have vm_dirty_ratio=40, vm_dirty_bytes=0
-
-2. echo 8192 > dirty_bytes, then vm_dirty_bytes=8192,
-   vm_dirty_ratio=0, and ratelimit_pages is calculated based on
-   vm_dirty_bytes now.
-
-3. echo 20 > dirty_ratio, then since vm_dirty_bytes is not reset to
-   zero when writeback_set_ratelimit() -> global_dirty_limits() ->
-   domain_dirty_limits() is called, reallimit_pages is still calculated
-   based on vm_dirty_bytes instead of vm_dirty_ratio.  This does not
-   conform to the actual intent of the user.
-
-Link: https://lkml.kernel.org/r/20250415090232.7544-1-alexjlzheng@tencent.com
-Fixes: 9d823e8f6b1b ("writeback: per task dirty rate limit")
-Signed-off-by: Jinliang Zheng <alexjlzheng@tencent.com>
-Reviewed-by: MengEn Sun <mengensun@tencent.com>
-Cc: Andrea Righi <andrea@betterlinux.com>
-Cc: Fenggaung Wu <fengguang.wu@intel.com>
-Cc: Jinliang Zheng <alexjlzheng@tencent.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+[nysal@linux.ibm.com: fix the SOFTLOCKUP_DETECTOR=n case]
+  Link: https://lkml.kernel.org/r/20250502111120.282690-1-nysal@linux.ibm.com
+Link: https://lkml.kernel.org/r/20250421035021.3507649-1-luogengkun@huaweicloud.com
+Signed-off-by: Luo Gengkun <luogengkun@huaweicloud.com>
+Signed-off-by: Nysal Jan K.A. <nysal@linux.ibm.com>
+Cc: Doug Anderson <dianders@chromium.org>
+Cc: Joel Granados <joel.granados@kernel.org>
+Cc: Song Liu <song@kernel.org>
+Cc: Thomas Gleinxer <tglx@linutronix.de>
+Cc: "Nysal Jan K.A." <nysal@linux.ibm.com>
+Cc: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/page-writeback.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/watchdog.c |   41 +++++++++++++++++++++++++++--------------
+ 1 file changed, 27 insertions(+), 14 deletions(-)
 
---- a/mm/page-writeback.c~mm-fix-ratelimit_pages-update-error-in-dirty_ratio_handler
-+++ a/mm/page-writeback.c
-@@ -520,8 +520,8 @@ static int dirty_ratio_handler(const str
+--- a/kernel/watchdog.c~watchdog-fix-watchdog-may-detect-false-positive-of-softlockup
++++ a/kernel/watchdog.c
+@@ -47,6 +47,7 @@ int __read_mostly watchdog_user_enabled
+ static int __read_mostly watchdog_hardlockup_user_enabled = WATCHDOG_HARDLOCKUP_DEFAULT;
+ static int __read_mostly watchdog_softlockup_user_enabled = 1;
+ int __read_mostly watchdog_thresh = 10;
++static int __read_mostly watchdog_thresh_next;
+ static int __read_mostly watchdog_hardlockup_available;
  
- 	ret = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
- 	if (ret == 0 && write && vm_dirty_ratio != old_ratio) {
--		writeback_set_ratelimit();
- 		vm_dirty_bytes = 0;
-+		writeback_set_ratelimit();
- 	}
- 	return ret;
+ struct cpumask watchdog_cpumask __read_mostly;
+@@ -870,12 +871,20 @@ int lockup_detector_offline_cpu(unsigned
+ 	return 0;
  }
+ 
+-static void __lockup_detector_reconfigure(void)
++static void __lockup_detector_reconfigure(bool thresh_changed)
+ {
+ 	cpus_read_lock();
+ 	watchdog_hardlockup_stop();
+ 
+ 	softlockup_stop_all();
++	/*
++	 * To prevent watchdog_timer_fn from using the old interval and
++	 * the new watchdog_thresh at the same time, which could lead to
++	 * false softlockup reports, it is necessary to update the
++	 * watchdog_thresh after the softlockup is completed.
++	 */
++	if (thresh_changed)
++		watchdog_thresh = READ_ONCE(watchdog_thresh_next);
+ 	set_sample_period();
+ 	lockup_detector_update_enable();
+ 	if (watchdog_enabled && watchdog_thresh)
+@@ -888,7 +897,7 @@ static void __lockup_detector_reconfigur
+ void lockup_detector_reconfigure(void)
+ {
+ 	mutex_lock(&watchdog_mutex);
+-	__lockup_detector_reconfigure();
++	__lockup_detector_reconfigure(false);
+ 	mutex_unlock(&watchdog_mutex);
+ }
+ 
+@@ -908,27 +917,29 @@ static __init void lockup_detector_setup
+ 		return;
+ 
+ 	mutex_lock(&watchdog_mutex);
+-	__lockup_detector_reconfigure();
++	__lockup_detector_reconfigure(false);
+ 	softlockup_initialized = true;
+ 	mutex_unlock(&watchdog_mutex);
+ }
+ 
+ #else /* CONFIG_SOFTLOCKUP_DETECTOR */
+-static void __lockup_detector_reconfigure(void)
++static void __lockup_detector_reconfigure(bool thresh_changed)
+ {
+ 	cpus_read_lock();
+ 	watchdog_hardlockup_stop();
++	if (thresh_changed)
++		watchdog_thresh = READ_ONCE(watchdog_thresh_next);
+ 	lockup_detector_update_enable();
+ 	watchdog_hardlockup_start();
+ 	cpus_read_unlock();
+ }
+ void lockup_detector_reconfigure(void)
+ {
+-	__lockup_detector_reconfigure();
++	__lockup_detector_reconfigure(false);
+ }
+ static inline void lockup_detector_setup(void)
+ {
+-	__lockup_detector_reconfigure();
++	__lockup_detector_reconfigure(false);
+ }
+ #endif /* !CONFIG_SOFTLOCKUP_DETECTOR */
+ 
+@@ -946,11 +957,11 @@ void lockup_detector_soft_poweroff(void)
+ #ifdef CONFIG_SYSCTL
+ 
+ /* Propagate any changes to the watchdog infrastructure */
+-static void proc_watchdog_update(void)
++static void proc_watchdog_update(bool thresh_changed)
+ {
+ 	/* Remove impossible cpus to keep sysctl output clean. */
+ 	cpumask_and(&watchdog_cpumask, &watchdog_cpumask, cpu_possible_mask);
+-	__lockup_detector_reconfigure();
++	__lockup_detector_reconfigure(thresh_changed);
+ }
+ 
+ /*
+@@ -984,7 +995,7 @@ static int proc_watchdog_common(int whic
+ 	} else {
+ 		err = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
+ 		if (!err && old != READ_ONCE(*param))
+-			proc_watchdog_update();
++			proc_watchdog_update(false);
+ 	}
+ 	mutex_unlock(&watchdog_mutex);
+ 	return err;
+@@ -1035,11 +1046,13 @@ static int proc_watchdog_thresh(const st
+ 
+ 	mutex_lock(&watchdog_mutex);
+ 
+-	old = READ_ONCE(watchdog_thresh);
++	watchdog_thresh_next = READ_ONCE(watchdog_thresh);
++
++	old = watchdog_thresh_next;
+ 	err = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
+ 
+-	if (!err && write && old != READ_ONCE(watchdog_thresh))
+-		proc_watchdog_update();
++	if (!err && write && old != READ_ONCE(watchdog_thresh_next))
++		proc_watchdog_update(true);
+ 
+ 	mutex_unlock(&watchdog_mutex);
+ 	return err;
+@@ -1060,7 +1073,7 @@ static int proc_watchdog_cpumask(const s
+ 
+ 	err = proc_do_large_bitmap(table, write, buffer, lenp, ppos);
+ 	if (!err && write)
+-		proc_watchdog_update();
++		proc_watchdog_update(false);
+ 
+ 	mutex_unlock(&watchdog_mutex);
+ 	return err;
+@@ -1080,7 +1093,7 @@ static const struct ctl_table watchdog_s
+ 	},
+ 	{
+ 		.procname	= "watchdog_thresh",
+-		.data		= &watchdog_thresh,
++		.data		= &watchdog_thresh_next,
+ 		.maxlen		= sizeof(int),
+ 		.mode		= 0644,
+ 		.proc_handler	= proc_watchdog_thresh,
 _
 
-Patches currently in -mm which might be from alexjlzheng@tencent.com are
+Patches currently in -mm which might be from luogengkun@huaweicloud.com are
 
 
 
