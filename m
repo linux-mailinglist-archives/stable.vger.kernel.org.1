@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-143743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2DD1AB4124
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:02:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 545BFAB4098
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:55:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51759467CEA
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:02:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B46217B3E3B
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:53:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 286EF23BF9F;
-	Mon, 12 May 2025 18:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6D4F1A08CA;
+	Mon, 12 May 2025 17:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eOODMu4w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JW/wDRla"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8C0A175BF;
-	Mon, 12 May 2025 18:02:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83BEA255E47;
+	Mon, 12 May 2025 17:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072935; cv=none; b=I0PVJgsgJzgzC8mhH+VzuMBYSS0Rtp83OS8L2rnMLTpwJ1DMdkLhmVCdw7WQ/9AQeMMfSkd6HOPHB1CyFC3bL0A8dEIKhOtJs0DdyFi+WOiQMJoTGB8binCuE70Qfz8iYQVdwpQXrKSNXAKO0hMeEXX0xK6Kg+Wpm4zOVMwJ1fw=
+	t=1747072498; cv=none; b=oN3JUhtbuDH7cx5auoe8yvJIGsjpTJZ3AQlukXqMN7fT4t4YUQO37gO0eqwVYNVKo4Qpv9IYoa0SmYgV7gLKeUdpX3gr3U6GImO9cjuoJO49tIuHXqdbNFN2oXzQ8wIXp8oJMLEkl5ojlnlkgn+j/08T/JcoP5s97Vn4YefWeh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072935; c=relaxed/simple;
-	bh=DBFaoUtKnbPcFJJorXrfPW9MGstxkjX2F/YzsxjGi1I=;
+	s=arc-20240116; t=1747072498; c=relaxed/simple;
+	bh=HSTehoG2wpqCwNU1MkG0Tp4gSFgYrMJGhr5bgDI26TA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oBHT8MyslWgQDrIjtAfySNcvdTiP+i79jOv9nw0MwFcGdUcChjQq0zwPeUNlqnffno0L5kl1Ppy/Xk0AXBGGWQk3O70ofJUVF6hsMSMt2fxnALZdxivCSmNP04t0S3syRVaJqDscP//WHM9G8ACGzQhxZvUadKmQYylxqTCBF9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eOODMu4w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48E1EC4CEE7;
-	Mon, 12 May 2025 18:02:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=KBucJQMkkgNlmtgd2iAnCHZLHJWoKtzW/IKJ9VFkHzQVjwbRcU5UoRtbnGHCRMNzzs5PFOWmVKGUHwtnD9gArIRtOJOJbi8OZfdQ5S2OHQh2trX49BbkgIVNI7sBMmcEAiIIY9vsSPNyvbIvweMbVFbDcU3wP3bGy1kvL7CBCy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JW/wDRla; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E553EC4CEE7;
+	Mon, 12 May 2025 17:54:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072935;
-	bh=DBFaoUtKnbPcFJJorXrfPW9MGstxkjX2F/YzsxjGi1I=;
+	s=korg; t=1747072498;
+	bh=HSTehoG2wpqCwNU1MkG0Tp4gSFgYrMJGhr5bgDI26TA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eOODMu4wqWh/IcfOaUWQF1CoGrGFau2ct04YN85cznIY77Xdom7xPIRg0czrG60MJ
-	 j6Lumdm+8j3QEEenHZYZqX93Q5wzklz91hMjJIqxalp86n3QeFyKZKD73PnJtW1zRB
-	 fj7YDTWE/7dV36g3cbhzOzym57E+1cs6IzPu4BxY=
+	b=JW/wDRlaiXvxSgyP3de+YfQal4vJuWP8mIgC8TGW+IRJJMReHzF3cd+C9NnP1Vbni
+	 KodWzlJMS4Rrm+oVwDMW/8kUUCRxA57qMV4S0U7qqMWH/BQQxx5NmTtaVzXGuy/vdy
+	 QZ5nF+JI3QLmAT3FFWrID45eSccmfsQCL9MREIcU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henrique Carvalho <henrique.carvalho@suse.com>,
-	Paul Aurich <paul@darkrain42.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 103/184] smb: client: Avoid race in open_cached_dir with lease breaks
+	Gabriel Shahrouzi <gshahrouzi@gmail.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 29/92] staging: iio: adc: ad7816: Correct conditional logic for store mode
 Date: Mon, 12 May 2025 19:45:04 +0200
-Message-ID: <20250512172046.016840679@linuxfoundation.org>
+Message-ID: <20250512172024.310441868@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
-References: <20250512172041.624042835@linuxfoundation.org>
+In-Reply-To: <20250512172023.126467649@linuxfoundation.org>
+References: <20250512172023.126467649@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,96 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Aurich <paul@darkrain42.org>
+From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
 
-commit 3ca02e63edccb78ef3659bebc68579c7224a6ca2 upstream.
+commit 2e922956277187655ed9bedf7b5c28906e51708f upstream.
 
-A pre-existing valid cfid returned from find_or_create_cached_dir might
-race with a lease break, meaning open_cached_dir doesn't consider it
-valid, and thinks it's newly-constructed. This leaks a dentry reference
-if the allocation occurs before the queued lease break work runs.
+The mode setting logic in ad7816_store_mode was reversed due to
+incorrect handling of the strcmp return value. strcmp returns 0 on
+match, so the `if (strcmp(buf, "full"))` block executed when the
+input was not "full".
 
-Avoid the race by extending holding the cfid_list_lock across
-find_or_create_cached_dir and when the result is checked.
+This resulted in "full" setting the mode to AD7816_PD (power-down) and
+other inputs setting it to AD7816_FULL.
 
+Fix this by checking it against 0 to correctly check for "full" and
+"power-down", mapping them to AD7816_FULL and AD7816_PD respectively.
+
+Fixes: 7924425db04a ("staging: iio: adc: new driver for AD7816 devices")
 Cc: stable@vger.kernel.org
-Reviewed-by: Henrique Carvalho <henrique.carvalho@suse.com>
-Signed-off-by: Paul Aurich <paul@darkrain42.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+Acked-by: Nuno Sá <nuno.sa@analog.com>
+Link: https://lore.kernel.org/stable/20250414152920.467505-1-gshahrouzi%40gmail.com
+Link: https://patch.msgid.link/20250414154050.469482-1-gshahrouzi@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cached_dir.c |   10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ drivers/staging/iio/adc/ad7816.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/client/cached_dir.c
-+++ b/fs/smb/client/cached_dir.c
-@@ -29,7 +29,6 @@ static struct cached_fid *find_or_create
- {
- 	struct cached_fid *cfid;
+--- a/drivers/staging/iio/adc/ad7816.c
++++ b/drivers/staging/iio/adc/ad7816.c
+@@ -136,7 +136,7 @@ static ssize_t ad7816_store_mode(struct
+ 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
+ 	struct ad7816_chip_info *chip = iio_priv(indio_dev);
  
--	spin_lock(&cfids->cfid_list_lock);
- 	list_for_each_entry(cfid, &cfids->entries, entry) {
- 		if (!strcmp(cfid->path, path)) {
- 			/*
-@@ -38,25 +37,20 @@ static struct cached_fid *find_or_create
- 			 * being deleted due to a lease break.
- 			 */
- 			if (!cfid->time || !cfid->has_lease) {
--				spin_unlock(&cfids->cfid_list_lock);
- 				return NULL;
- 			}
- 			kref_get(&cfid->refcount);
--			spin_unlock(&cfids->cfid_list_lock);
- 			return cfid;
- 		}
- 	}
- 	if (lookup_only) {
--		spin_unlock(&cfids->cfid_list_lock);
- 		return NULL;
- 	}
- 	if (cfids->num_entries >= max_cached_dirs) {
--		spin_unlock(&cfids->cfid_list_lock);
- 		return NULL;
- 	}
- 	cfid = init_cached_dir(path);
- 	if (cfid == NULL) {
--		spin_unlock(&cfids->cfid_list_lock);
- 		return NULL;
- 	}
- 	cfid->cfids = cfids;
-@@ -74,7 +68,6 @@ static struct cached_fid *find_or_create
- 	 */
- 	cfid->has_lease = true;
- 
--	spin_unlock(&cfids->cfid_list_lock);
- 	return cfid;
- }
- 
-@@ -185,8 +178,10 @@ replay_again:
- 	if (!utf16_path)
- 		return -ENOMEM;
- 
-+	spin_lock(&cfids->cfid_list_lock);
- 	cfid = find_or_create_cached_dir(cfids, path, lookup_only, tcon->max_cached_dirs);
- 	if (cfid == NULL) {
-+		spin_unlock(&cfids->cfid_list_lock);
- 		kfree(utf16_path);
- 		return -ENOENT;
- 	}
-@@ -195,7 +190,6 @@ replay_again:
- 	 * Otherwise, it is either a new entry or laundromat worker removed it
- 	 * from @cfids->entries.  Caller will put last reference if the latter.
- 	 */
--	spin_lock(&cfids->cfid_list_lock);
- 	if (cfid->has_lease && cfid->time) {
- 		spin_unlock(&cfids->cfid_list_lock);
- 		*ret_cfid = cfid;
+-	if (strcmp(buf, "full")) {
++	if (strcmp(buf, "full") == 0) {
+ 		gpiod_set_value(chip->rdwr_pin, 1);
+ 		chip->mode = AD7816_FULL;
+ 	} else {
 
 
 
