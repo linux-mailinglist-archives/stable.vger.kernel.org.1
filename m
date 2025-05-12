@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-143571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D045AB4077
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:54:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A248BAB412D
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:02:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5CFB57A48E6
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:52:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D46908C350B
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:00:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6910425A2C5;
-	Mon, 12 May 2025 17:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B1B72550D5;
+	Mon, 12 May 2025 18:00:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zZMXBn56"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yIKoRRIq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF73254879;
-	Mon, 12 May 2025 17:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D97191519B8;
+	Mon, 12 May 2025 18:00:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072384; cv=none; b=Xth9IiKbDUV88IC0eVqtlDlk8YDMcH5aqFciiJHafWtuFaOefWg2840279FI1s9crDPnHAkNTlLaVv1lZUz1ayfJnwo7cFUsbsp+6RlFUpHbP1hO/xJJbOS+c+fBDG5C6INtu3QWq8SFAoMnR65kw/OVFjf75sKuIYTA44bftQ8=
+	t=1747072858; cv=none; b=sDsNrJILGywFrvH/hcDQP/9EG92bwp6MknYlg4kAuHDrq/qo/TAEco0nczR8gyxGLtknWOadjHI53/k0Xy0mbY5DdI1o9049CWZHfhdvK1RDtAtc30L5rGPQxFrCim50MMPpUnaSlkdOFwWSQdAOBw6Rcy9l5yg7+RIG0HnBFOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072384; c=relaxed/simple;
-	bh=ukp6rZepbQQA7qgzDPak04yxe4hUXwumj7tLoeKYNBY=;
+	s=arc-20240116; t=1747072858; c=relaxed/simple;
+	bh=dohXAWee1aQOPWJ3Dw7ZmsBLSJ7It0+Ajyp7ee36VxE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iWLBGpyFh/wxkQZQKu09igwgDbjRzgTyZAMra+krTGQBUWacg9fQdzEbH6hvOgFTLNb60NmeZXngq/IpxMaCArNWcztUcGT2GrK/grO0jcFX0jR2L/kNaeH/C4HkFjlzMxOWEs46td3rsGfURmrsU7WC1zi9Eqvx1TCWhKNFAAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zZMXBn56; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9878FC4CEE7;
-	Mon, 12 May 2025 17:53:03 +0000 (UTC)
+	 MIME-Version; b=Ynm4wrk59XHnFBvawHX9AjbF0A9iSttg04HSlJLZmAZYCvPzG4C4JA2PmNPc1VesLak9nxnJwLXs/eE+ERuwTenQpvpDcJtuoTT4v7YrAI3m7d8DkPIe0VLr5domrUvZdm9tVwYAF3AGO3f8CDWOcajDGz/mdKpY10pT+kGjqO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yIKoRRIq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57089C4CEE7;
+	Mon, 12 May 2025 18:00:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072384;
-	bh=ukp6rZepbQQA7qgzDPak04yxe4hUXwumj7tLoeKYNBY=;
+	s=korg; t=1747072858;
+	bh=dohXAWee1aQOPWJ3Dw7ZmsBLSJ7It0+Ajyp7ee36VxE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zZMXBn56Nxjdw8LV5uhYoQlHcNwsUgSODpsbi/+utGnB5by56Zua/cobnZ4blBtVF
-	 fGiWexUWdkxuq3fDmbruwPa9w1k51aJLxQ80wuXpqjmMpG/1ojiNFS4zCzgyBoY3uu
-	 YUyLngE0v1pvmVxZFX9jVYavMG5WRvhmgENad5ME=
+	b=yIKoRRIqPr1R5ZIQ00ggdwv8S0NC7dlshg969Q9bTdP5JQqTHx90QW8VLtjydSjMt
+	 k3lz/OYpSLcseSl/rJqUh4xDyRQGRIcZguE/YvQnKzvwF3UdYDTVx+IgL9OO2gUPSm
+	 ZH8RzHHjJItZ2BoU38Vgfrre/NOjNYLoXL5U+pZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.1 04/92] can: mcp251xfd: mcp251xfd_remove(): fix order of unregistration calls
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	"Nysal Jan K.A." <nysal@linux.ibm.com>,
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+	Donet Tom <donettom@linux.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 078/184] selftests/mm: fix a build failure on powerpc
 Date: Mon, 12 May 2025 19:44:39 +0200
-Message-ID: <20250512172023.314153688@linuxfoundation.org>
+Message-ID: <20250512172044.999572424@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172023.126467649@linuxfoundation.org>
-References: <20250512172023.126467649@linuxfoundation.org>
+In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
+References: <20250512172041.624042835@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Nysal Jan K.A. <nysal@linux.ibm.com>
 
-commit 84f5eb833f53ae192baed4cfb8d9eaab43481fc9 upstream.
+commit 8cf6ecb18baac867585fe1cba5dde6dbf3b6d29a upstream.
 
-If a driver is removed, the driver framework invokes the driver's
-remove callback. A CAN driver's remove function calls
-unregister_candev(), which calls net_device_ops::ndo_stop further down
-in the call stack for interfaces which are in the "up" state.
+The compiler is unaware of the size of code generated by the ".rept"
+assembler directive.  This results in the compiler emitting branch
+instructions where the offset to branch to exceeds the maximum allowed
+value, resulting in build failures like the following:
 
-With the mcp251xfd driver the removal of the module causes the
-following warning:
+  CC       protection_keys
+  /tmp/ccypKWAE.s: Assembler messages:
+  /tmp/ccypKWAE.s:2073: Error: operand out of range (0x0000000000020158
+  is not between 0xffffffffffff8000 and 0x0000000000007ffc)
+  /tmp/ccypKWAE.s:2509: Error: operand out of range (0x0000000000020130
+  is not between 0xffffffffffff8000 and 0x0000000000007ffc)
 
-| WARNING: CPU: 0 PID: 352 at net/core/dev.c:7342 __netif_napi_del_locked+0xc8/0xd8
+Fix the issue by manually adding nop instructions using the preprocessor.
 
-as can_rx_offload_del() deletes the NAPI, while it is still active,
-because the interface is still up.
-
-To fix the warning, first unregister the network interface, which
-calls net_device_ops::ndo_stop, which disables the NAPI, and then call
-can_rx_offload_del().
-
-Fixes: 55e5b97f003e ("can: mcp25xxfd: add driver for Microchip MCP25xxFD SPI CAN")
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250502-can-rx-offload-del-v1-1-59a9b131589d@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Link: https://lkml.kernel.org/r/20250428131937.641989-2-nysal@linux.ibm.com
+Fixes: 46036188ea1f ("selftests/mm: build with -O2")
+Reported-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Signed-off-by: Nysal Jan K.A. <nysal@linux.ibm.com>
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Reviewed-by: Donet Tom <donettom@linux.ibm.com>
+Tested-by: Donet Tom <donettom@linux.ibm.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/mm/pkey-powerpc.h |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
-@@ -2179,8 +2179,8 @@ static void mcp251xfd_remove(struct spi_
- 	struct mcp251xfd_priv *priv = spi_get_drvdata(spi);
- 	struct net_device *ndev = priv->ndev;
- 
--	can_rx_offload_del(&priv->offload);
- 	mcp251xfd_unregister(priv);
-+	can_rx_offload_del(&priv->offload);
- 	spi->max_speed_hz = priv->spi_max_speed_hz_orig;
- 	free_candev(ndev);
+--- a/tools/testing/selftests/mm/pkey-powerpc.h
++++ b/tools/testing/selftests/mm/pkey-powerpc.h
+@@ -102,8 +102,18 @@ void expect_fault_on_read_execonly_key(v
+ 	return;
  }
+ 
++#define REPEAT_8(s) s s s s s s s s
++#define REPEAT_64(s) REPEAT_8(s) REPEAT_8(s) REPEAT_8(s) REPEAT_8(s) \
++		     REPEAT_8(s) REPEAT_8(s) REPEAT_8(s) REPEAT_8(s)
++#define REPEAT_512(s) REPEAT_64(s) REPEAT_64(s) REPEAT_64(s) REPEAT_64(s) \
++		      REPEAT_64(s) REPEAT_64(s) REPEAT_64(s) REPEAT_64(s)
++#define REPEAT_4096(s) REPEAT_512(s) REPEAT_512(s) REPEAT_512(s) REPEAT_512(s) \
++		       REPEAT_512(s) REPEAT_512(s) REPEAT_512(s) REPEAT_512(s)
++#define REPEAT_16384(s) REPEAT_4096(s) REPEAT_4096(s) \
++			REPEAT_4096(s) REPEAT_4096(s)
++
+ /* 4-byte instructions * 16384 = 64K page */
+-#define __page_o_noops() asm(".rept 16384 ; nop; .endr")
++#define __page_o_noops() asm(REPEAT_16384("nop\n"))
+ 
+ void *malloc_pkey_with_mprotect_subpage(long size, int prot, u16 pkey)
+ {
 
 
 
