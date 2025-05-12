@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-143708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96F1CAB4118
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:01:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8DF3AB40DD
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:58:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A75C03AA18C
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:00:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C89607A8115
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:57:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9C8023BF9F;
-	Mon, 12 May 2025 18:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13989296D2E;
+	Mon, 12 May 2025 17:58:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dTG+cF/c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hq8GZTVE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D151D7E41;
-	Mon, 12 May 2025 18:00:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6436296D2B;
+	Mon, 12 May 2025 17:58:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072826; cv=none; b=sER1a2OM7lqamIwM3V2tOPpnCYQFnRpSxJq9eoFkKK3eZimER5GLQJXQxqb4RswrReYXbkSLg53IvLJlZEUofs4YTjwpT50HuTKrcpFG6FSig1ZjYOmyHpx9vGqGUfYh5Ns3p1po9DcpuIRjZ/5CUEFprqyoeHE/AcnFMIkqzPo=
+	t=1747072723; cv=none; b=OMKAAujP2tKiJk9BymrE+b4CF9drtr0yIgqBJsk6Uxb7C8UGTR3Dv1bE5kMMN0CW7jvI9WrlRhGopMYAMfA4E9enPnaGf72uym5IOLQ+XH+UwQk7YBJs8zlq4FIaeL9gPZQkCGud4QT9nG7SVxeBD+DT5cMAE/TO1CKrS2nr0ek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072826; c=relaxed/simple;
-	bh=0/MJtRJRhdO3ynq7XMaL8fRLPUNZaAkFCRU32KRgOPU=;
+	s=arc-20240116; t=1747072723; c=relaxed/simple;
+	bh=Q5I4tqUMSQzp2IYvFKTlbg5zchVfJ39uTs8hzWu5pn0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=awWuC+FSMUj9xlMoVf4VoFz12pMSh7IKCui6DMo2ITOjEwMC1UQiuiYqXtVV7oTQ7NY62P17HBfivn8ykpEJj+/ppKLPMVPA1ISwu+CcKPnWUxu9pWGrrWRk5dlvIUdeCJBwzJrSsK55sWAb7BLRWYJ/ok5QxW8A21IpbN/5pd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dTG+cF/c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAB46C4CEE7;
-	Mon, 12 May 2025 18:00:25 +0000 (UTC)
+	 MIME-Version; b=g4MK9U35axVmdkoTXwqFGbqGu1n9hosePS8THOteuz8ThRYcSaJb/evRhRJMyCVTIpLW5S7BVdJXdnJLwzVH7EYVG7+Rb6PfzzuRHaE3uK+4RnvFm2i/s0ANSDkE5U09QhlX7DNxQuNafhlJkk5Vs7AZmlTVdewbmWaFNPME9OE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hq8GZTVE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F656C4CEEF;
+	Mon, 12 May 2025 17:58:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072826;
-	bh=0/MJtRJRhdO3ynq7XMaL8fRLPUNZaAkFCRU32KRgOPU=;
+	s=korg; t=1747072723;
+	bh=Q5I4tqUMSQzp2IYvFKTlbg5zchVfJ39uTs8hzWu5pn0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dTG+cF/cF4agKSi7bvBGr60o0sGkCgl/W//aAIqecN+Kh+Eo68B1AE+8bBuPLgFCH
-	 fSQS8J/n2iq8K/uPKcyA0cmXn+BlQFQadWNNJDRuLFKZSJvsY2rr7x2OaaUCEfe+3W
-	 2JaPex9mWeOs4PVCrYnMChxFgb+gH1jSIXwYpe0Y=
+	b=hq8GZTVEffTOQaw3gCpX3y7iS5CpdMg0kMtAMFUfl53nyeFPFKVGP1L8sB7Cyn5Ii
+	 0wSJSJuTQafxtp2989Jau50DyytFBM2dQiBWbgIQPHT26lUmgKDr8pWOIofekXB8J/
+	 2WS5vpqnEHR44bZJYnMbo483TageQVWZmMgntSqE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael-CY Lee <michael-cy.lee@mediatek.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 028/184] wifi: mac80211: fix the type of status_code for negotiated TID to Link Mapping
-Date: Mon, 12 May 2025 19:43:49 +0200
-Message-ID: <20250512172042.860392400@linuxfoundation.org>
+	Sergey Temerkhanov <sergey.temerkhanov@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 6.12 029/184] ice: Initial support for E825C hardware in ice_adapter
+Date: Mon, 12 May 2025 19:43:50 +0200
+Message-ID: <20250512172042.900303901@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
 References: <20250512172041.624042835@linuxfoundation.org>
@@ -66,81 +68,63 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Michael-CY Lee <michael-cy.lee@mediatek.com>
+From: Sergey Temerkhanov <sergey.temerkhanov@intel.com>
 
-[ Upstream commit e12a42f64fc3d74872b349eedd47f90c6676b78a ]
+[ Upstream commit fdb7f54700b1c88e734323a62fea986d9ce5a9c6 ]
 
-The status code should be type of __le16.
+Address E825C devices by PCI ID since dual IP core configurations
+need 1 ice_adapter for both devices.
 
-Fixes: 83e897a961b8 ("wifi: ieee80211: add definitions for negotiated TID to Link map")
-Fixes: 8f500fbc6c65 ("wifi: mac80211: process and save negotiated TID to Link mapping request")
-Signed-off-by: Michael-CY Lee <michael-cy.lee@mediatek.com>
-Link: https://patch.msgid.link/20250505081946.3927214-1-michael-cy.lee@mediatek.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sergey Temerkhanov <sergey.temerkhanov@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Stable-dep-of: 0093cb194a75 ("ice: use DSN instead of PCI BDF for ice_adapter index")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/ieee80211.h |  2 +-
- net/mac80211/mlme.c       | 12 ++++++------
- 2 files changed, 7 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_adapter.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
-index 3750e56bfcbb3..777f6aa8efa7b 100644
---- a/include/linux/ieee80211.h
-+++ b/include/linux/ieee80211.h
-@@ -1524,7 +1524,7 @@ struct ieee80211_mgmt {
- 				struct {
- 					u8 action_code;
- 					u8 dialog_token;
--					u8 status_code;
-+					__le16 status_code;
- 					u8 variable[];
- 				} __packed ttlm_res;
- 				struct {
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index ad0d040569dcd..cc8c5d18b130d 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -7177,6 +7177,7 @@ ieee80211_send_neg_ttlm_res(struct ieee80211_sub_if_data *sdata,
- 	int hdr_len = offsetofend(struct ieee80211_mgmt, u.action.u.ttlm_res);
- 	int ttlm_max_len = 2 + 1 + sizeof(struct ieee80211_ttlm_elem) + 1 +
- 		2 * 2 * IEEE80211_TTLM_NUM_TIDS;
-+	u16 status_code;
+diff --git a/drivers/net/ethernet/intel/ice/ice_adapter.c b/drivers/net/ethernet/intel/ice/ice_adapter.c
+index f3e195974a8ef..01a08cfd0090a 100644
+--- a/drivers/net/ethernet/intel/ice/ice_adapter.c
++++ b/drivers/net/ethernet/intel/ice/ice_adapter.c
+@@ -9,12 +9,14 @@
+ #include <linux/spinlock.h>
+ #include <linux/xarray.h>
+ #include "ice_adapter.h"
++#include "ice.h"
  
- 	skb = dev_alloc_skb(local->tx_headroom + hdr_len + ttlm_max_len);
- 	if (!skb)
-@@ -7199,19 +7200,18 @@ ieee80211_send_neg_ttlm_res(struct ieee80211_sub_if_data *sdata,
- 		WARN_ON(1);
- 		fallthrough;
- 	case NEG_TTLM_RES_REJECT:
--		mgmt->u.action.u.ttlm_res.status_code =
--			WLAN_STATUS_DENIED_TID_TO_LINK_MAPPING;
-+		status_code = WLAN_STATUS_DENIED_TID_TO_LINK_MAPPING;
- 		break;
- 	case NEG_TTLM_RES_ACCEPT:
--		mgmt->u.action.u.ttlm_res.status_code = WLAN_STATUS_SUCCESS;
-+		status_code = WLAN_STATUS_SUCCESS;
- 		break;
- 	case NEG_TTLM_RES_SUGGEST_PREFERRED:
--		mgmt->u.action.u.ttlm_res.status_code =
--			WLAN_STATUS_PREF_TID_TO_LINK_MAPPING_SUGGESTED;
-+		status_code = WLAN_STATUS_PREF_TID_TO_LINK_MAPPING_SUGGESTED;
- 		ieee80211_neg_ttlm_add_suggested_map(skb, neg_ttlm);
- 		break;
- 	}
+ static DEFINE_XARRAY(ice_adapters);
+ static DEFINE_MUTEX(ice_adapters_mutex);
  
-+	mgmt->u.action.u.ttlm_res.status_code = cpu_to_le16(status_code);
- 	ieee80211_tx_skb(sdata, skb);
+ /* PCI bus number is 8 bits. Slot is 5 bits. Domain can have the rest. */
+ #define INDEX_FIELD_DOMAIN GENMASK(BITS_PER_LONG - 1, 13)
++#define INDEX_FIELD_DEV    GENMASK(31, 16)
+ #define INDEX_FIELD_BUS    GENMASK(12, 5)
+ #define INDEX_FIELD_SLOT   GENMASK(4, 0)
+ 
+@@ -24,9 +26,17 @@ static unsigned long ice_adapter_index(const struct pci_dev *pdev)
+ 
+ 	WARN_ON(domain > FIELD_MAX(INDEX_FIELD_DOMAIN));
+ 
+-	return FIELD_PREP(INDEX_FIELD_DOMAIN, domain) |
+-	       FIELD_PREP(INDEX_FIELD_BUS,    pdev->bus->number) |
+-	       FIELD_PREP(INDEX_FIELD_SLOT,   PCI_SLOT(pdev->devfn));
++	switch (pdev->device) {
++	case ICE_DEV_ID_E825C_BACKPLANE:
++	case ICE_DEV_ID_E825C_QSFP:
++	case ICE_DEV_ID_E825C_SFP:
++	case ICE_DEV_ID_E825C_SGMII:
++		return FIELD_PREP(INDEX_FIELD_DEV, pdev->device);
++	default:
++		return FIELD_PREP(INDEX_FIELD_DOMAIN, domain) |
++		       FIELD_PREP(INDEX_FIELD_BUS,    pdev->bus->number) |
++		       FIELD_PREP(INDEX_FIELD_SLOT,   PCI_SLOT(pdev->devfn));
++	}
  }
  
-@@ -7377,7 +7377,7 @@ void ieee80211_process_neg_ttlm_res(struct ieee80211_sub_if_data *sdata,
- 	 * This can be better implemented in the future, to handle request
- 	 * rejections.
- 	 */
--	if (mgmt->u.action.u.ttlm_res.status_code != WLAN_STATUS_SUCCESS)
-+	if (le16_to_cpu(mgmt->u.action.u.ttlm_res.status_code) != WLAN_STATUS_SUCCESS)
- 		__ieee80211_disconnect(sdata);
- }
- 
+ static struct ice_adapter *ice_adapter_new(void)
 -- 
 2.39.5
 
