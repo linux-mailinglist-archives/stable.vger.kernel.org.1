@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-143578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F5AAAB4064
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:53:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07984AB4139
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:03:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13620466F6F
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:53:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1C2419E196F
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:03:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AD91296FB6;
-	Mon, 12 May 2025 17:53:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EE0F255235;
+	Mon, 12 May 2025 18:03:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J4hwuT8M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aPcJz3WE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB3F3296FAF;
-	Mon, 12 May 2025 17:53:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ACD61DF754;
+	Mon, 12 May 2025 18:03:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072405; cv=none; b=dQjq/MZAk+1cnqYTHxtWy3XoBQDb5kDnDtyEk7zCUYUDXtMAygexTTIV1Qo9Y/8QV7AM+mlSbxJhy8mrJisrPnNZK93eqXtW1k6lU8BqVg4xlrke0YSsfy0zxJkU4cm0zEynp2hyVxGDCplwu0D8Ph78nMIqLejX9BbgTDKQifw=
+	t=1747073012; cv=none; b=QXNQGrcSLC6uS5ZUoIoGpPff4rqMtPjesMdhHeUDbaUB+xsuxRfE3/2UDriBroMLI+ZXAcmnRVqIjmjHCcKHwtzQaKZ9kj3dsAOVJH4VIWV4FNDTMuSzOFCzqseCao6IdWvCBl+IeXVl0B+IoiyXkqssUcse6hr4X20+JlYGtMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072405; c=relaxed/simple;
-	bh=VRdWmtoEnHRQGJNaBdDXXPiTRHFnueHZGBzFyAbCVFA=;
+	s=arc-20240116; t=1747073012; c=relaxed/simple;
+	bh=QvHIdjj2MemaHUO2f7fg9Kooaos7+1vEBHbTtUPYKVY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YL/hmEluicL6Qgv6Cj0egEAP4MNzmt33nRpMf9Oh7IDDUpsBMvJ4g4OX7LvobbHq7pKA281rCR0j9rLsKRS/EVbvOJ9iwiueqlbTUcIKz0Vd1FM4xIkWHa/YZLnYWK9RY//I3OINxpADRPHDCoT0IQImFCqGOnX//spUkEvnuMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J4hwuT8M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF04C4CEE7;
-	Mon, 12 May 2025 17:53:25 +0000 (UTC)
+	 MIME-Version; b=i23DFxy22T5EyToIWdLL5Ybn6jVRU4t3UwemQuK0+U6WwB80k5FIz/P+EOhVY9oyWwRzBtVWcrtJhFEp9TaO9vSTXO4YaCfbiHPEzncAHnclpqkwGqdqy+O36rB2XFOuQ1byMj+PKCl4ohmHTyJ4uigEQjH+Om4XC1j9JvbhwRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aPcJz3WE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 761C5C4CEE7;
+	Mon, 12 May 2025 18:03:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072405;
-	bh=VRdWmtoEnHRQGJNaBdDXXPiTRHFnueHZGBzFyAbCVFA=;
+	s=korg; t=1747073011;
+	bh=QvHIdjj2MemaHUO2f7fg9Kooaos7+1vEBHbTtUPYKVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J4hwuT8MFkj5yq20J6FG0a6txrnVndZSflAorJHqoL7fRo4H+6i7cdQhD9PYqOrTd
-	 wLRDJt6FOnQVXSnWF/G3pK9Vjg9GwqGFMAdVkogNuFSuppsxxgA4xCGyhpnLPmHicZ
-	 L1hKpK2xAPKjL+SNgDCLME/Uu1KXGVUHEW9daWDs=
+	b=aPcJz3WEWGMipt50C9QfMlyc6awrs+K9gysYlczAAXk/Z1e8z2e6DcVarvckn4cix
+	 JJU/iPjMSdCwvvJE3o1RfteKRoGj5XheZHRMkxAAk1TX7LU9VCzT/M0g3h48lr/3QH
+	 qbKuxGdrBVVU1kB4y8IJvk0VOenF1EP46199y3Z8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gary Bisson <bisson.gary@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.1 23/92] Input: mtk-pmic-keys - fix possible null pointer dereference
+	Alexey Klimov <alexey.klimov@linaro.org>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 097/184] drm/amdgpu/hdp4: use memcfg register to post the write for HDP flush
 Date: Mon, 12 May 2025 19:44:58 +0200
-Message-ID: <20250512172024.066482305@linuxfoundation.org>
+Message-ID: <20250512172045.776246938@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172023.126467649@linuxfoundation.org>
-References: <20250512172023.126467649@linuxfoundation.org>
+In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
+References: <20250512172041.624042835@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gary Bisson <bisson.gary@gmail.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit 11cdb506d0fbf5ac05bf55f5afcb3a215c316490 upstream.
+commit f690e3974755a650259a45d71456decc9c96a282 upstream.
 
-In mtk_pmic_keys_probe, the regs parameter is only set if the button is
-parsed in the device tree. However, on hardware where the button is left
-floating, that node will most likely be removed not to enable that
-input. In that case the code will try to dereference a null pointer.
+Reading back the remapped HDP flush register seems to cause
+problems on some platforms. All we need is a read, so read back
+the memcfg register.
 
-Let's use the regs struct instead as it is defined for all supported
-platforms. Note that it is ok setting the key reg even if that latter is
-disabled as the interrupt won't be enabled anyway.
-
-Fixes: b581acb49aec ("Input: mtk-pmic-keys - transfer per-key bit in mtk_pmic_keys_regs")
-Signed-off-by: Gary Bisson <bisson.gary@gmail.com>
+Fixes: c9b8dcabb52a ("drm/amdgpu/hdp4.0: do a posting read when flushing HDP")
+Reported-by: Alexey Klimov <alexey.klimov@linaro.org>
+Link: https://lists.freedesktop.org/archives/amd-gfx/2025-April/123150.html
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4119
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3908
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 5c937b4a6050316af37ef214825b6340b5e9e391)
 Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/keyboard/mtk-pmic-keys.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/hdp_v4_0.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/input/keyboard/mtk-pmic-keys.c
-+++ b/drivers/input/keyboard/mtk-pmic-keys.c
-@@ -133,8 +133,8 @@ static void mtk_pmic_keys_lp_reset_setup
- 	u32 value, mask;
- 	int error;
- 
--	kregs_home = keys->keys[MTK_PMIC_HOMEKEY_INDEX].regs;
--	kregs_pwr = keys->keys[MTK_PMIC_PWRKEY_INDEX].regs;
-+	kregs_home = &regs->keys_regs[MTK_PMIC_HOMEKEY_INDEX];
-+	kregs_pwr = &regs->keys_regs[MTK_PMIC_PWRKEY_INDEX];
- 
- 	error = of_property_read_u32(keys->dev->of_node, "power-off-time-sec",
- 				     &long_press_debounce);
+--- a/drivers/gpu/drm/amd/amdgpu/hdp_v4_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/hdp_v4_0.c
+@@ -42,7 +42,12 @@ static void hdp_v4_0_flush_hdp(struct am
+ {
+ 	if (!ring || !ring->funcs->emit_wreg) {
+ 		WREG32((adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2, 0);
+-		RREG32((adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2);
++		/* We just need to read back a register to post the write.
++		 * Reading back the remapped register causes problems on
++		 * some platforms so just read back the memory size register.
++		 */
++		if (adev->nbio.funcs->get_memsize)
++			adev->nbio.funcs->get_memsize(adev);
+ 	} else {
+ 		amdgpu_ring_emit_wreg(ring, (adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2, 0);
+ 	}
 
 
 
