@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-143945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FE46AB42E6
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:27:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1150AAB4297
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:24:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71DF31886EFD
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:27:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9460A16A76F
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:24:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3A6B299A95;
-	Mon, 12 May 2025 18:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07DF5298989;
+	Mon, 12 May 2025 18:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uo/Y33Yy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mB8pDfMV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE6C92512F1;
-	Mon, 12 May 2025 18:09:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6D4D298279;
+	Mon, 12 May 2025 18:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073375; cv=none; b=IKFAQcWZ1L5vOhVQFv3scnyPqkCHSc6dvaWXj2Q267VphxDuKWlAB0pOrk6beS6R/LerHZLKndfphEJ/gY9ae1mBc5GuKsE/Uup4TKZwr18RCI2q6EfgQhSRsATGh5kGp4SZAHWfvsdljMQHaaUv4E1pUneHAhoAGxEV9Xuj9kA=
+	t=1747073273; cv=none; b=cjZ50EVYnILKpGRNe+ZRmbLdgickP711BF1ikGiDW3gPKwpWeBaxq1gFHuARwHpNCIynDioAWnCVDwu78OBayH/Y0VJBDnvILgacgeCvoHKhYHm+UOZC9ItwGfcH4rGzuYn+3fWCKyjsLLgiT3GPI1rQWnnnsjywrngJuPJGNOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073375; c=relaxed/simple;
-	bh=/VLt3X2mDyxfFZ65Xb1OxN31ygsDtFMwOsPVUuaggRM=;
+	s=arc-20240116; t=1747073273; c=relaxed/simple;
+	bh=3dLCDzdSeCKtGgqs2C7V2dHCykqp6PGtYMpiCiNqXDM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cO3TN+2Cg81NkRh5RYKMuIeTCtIcp9BlEfn7diFFk8rIc0WGYjuZjapIoo2+Pdazw+Y3ZM503BkGXyKvD11b8pPwJoOMW7fPM483eChURE5DZuMxGx3y74Bn4qn05Y/J+ozWoJlJqYhW9QtCm0PPTcfddGA/cWqsNH1ZafHz4mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uo/Y33Yy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF857C4CEE7;
-	Mon, 12 May 2025 18:09:34 +0000 (UTC)
+	 MIME-Version; b=Waa7yxdCyq7mNTzone5mnw/u+X0grTnStobusg3vAv7hB+F/qkb5HZzjf1hmDrXosUe3Vt1GSnGe/sndVCKh+UMVyQB90eGlKZovshDlf7fVzCKY0mj/iMSSuL1uCm/uV5taocQh3i+WGyWvPty2dg2B/CcSC2O/03GLq2Xu7ek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mB8pDfMV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD700C4CEEF;
+	Mon, 12 May 2025 18:07:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073375;
-	bh=/VLt3X2mDyxfFZ65Xb1OxN31ygsDtFMwOsPVUuaggRM=;
+	s=korg; t=1747073273;
+	bh=3dLCDzdSeCKtGgqs2C7V2dHCykqp6PGtYMpiCiNqXDM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uo/Y33YyVgQFaaqQ2OcQvBQy72xwjxdLtWZmjbo8rmZ8A75u3tHzqiBuCMFBENTCR
-	 VHTijUdZPPbsnnnVEgOPu5U2HtuPh9/HtaibedbFKv3541n1OsgZJ/Vrf4QzJOA/Uh
-	 lHv14xY7J0s63XU5yg6g32y5dhPF9Qx8QqQnSIAQ=
+	b=mB8pDfMVLatNCECSQbgcIAWY5ehJyX7+sYgSnd5E6zVef7412nOZr+vWwZxRy1Frk
+	 DtJfsDVseFoGXba/rnQ/u/Dy/w9r/1dtYIR/RkQweZyaNdalsj/apVmXqm20SkXKi+
+	 gTIsgWAlc/MAI4RgrsnSDbbJOO7hbP4/DwYqgJp0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kelsey Maes <kelsey@vpprocess.com>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
 	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 015/113] can: mcp251xfd: fix TDC setting for low data bit rates
-Date: Mon, 12 May 2025 19:45:04 +0200
-Message-ID: <20250512172028.311682736@linuxfoundation.org>
+Subject: [PATCH 6.6 016/113] can: gw: fix RCU/BH usage in cgw_create_job()
+Date: Mon, 12 May 2025 19:45:05 +0200
+Message-ID: <20250512172028.352171431@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
 References: <20250512172027.691520737@linuxfoundation.org>
@@ -67,153 +67,364 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kelsey Maes <kelsey@vpprocess.com>
+From: Oliver Hartkopp <socketcan@hartkopp.net>
 
-[ Upstream commit 5e1663810e11c64956aa7e280cf74b2f3284d816 ]
+[ Upstream commit 511e64e13d8cc72853275832e3f372607466c18c ]
 
-The TDC is currently hardcoded enabled. This means that even for lower
-CAN-FD data bitrates (with a DBRP (data bitrate prescaler) > 2) a TDC
-is configured. This leads to a bus-off condition.
+As reported by Sebastian Andrzej Siewior the use of local_bh_disable()
+is only feasible in uni processor systems to update the modification rules.
+The usual use-case to update the modification rules is to update the data
+of the modifications but not the modification types (AND/OR/XOR/SET) or
+the checksum functions itself.
 
-ISO 11898-1 section 11.3.3 says "Transmitter delay compensation" (TDC)
-is only applicable if DBRP is 1 or 2.
+To omit additional memory allocations to maintain fast modification
+switching times, the modification description space is doubled at gw-job
+creation time so that only the reference to the active modification
+description is changed under rcu protection.
 
-To fix the problem, switch the driver to use the TDC calculation
-provided by the CAN driver framework (which respects ISO 11898-1
-section 11.3.3). This has the positive side effect that userspace can
-control TDC as needed.
+Rename cgw_job::mod to cf_mod and make it a RCU pointer. Allocate in
+cgw_create_job() and free it together with cgw_job in
+cgw_job_free_rcu(). Update all users to dereference cgw_job::cf_mod with
+a RCU accessor and if possible once.
 
-Demonstration of the feature in action:
-| $ ip link set can0 up type can bitrate 125000 dbitrate 500000 fd on
-| $ ip -details link show can0
-| 3: can0: <NOARP,UP,LOWER_UP,ECHO> mtu 72 qdisc pfifo_fast state UP mode DEFAULT group default qlen 10
-|     link/can  promiscuity 0  allmulti 0 minmtu 0 maxmtu 0
-|     can <FD> state ERROR-ACTIVE (berr-counter tx 0 rx 0) restart-ms 0
-| 	  bitrate 125000 sample-point 0.875
-| 	  tq 50 prop-seg 69 phase-seg1 70 phase-seg2 20 sjw 10 brp 2
-| 	  mcp251xfd: tseg1 2..256 tseg2 1..128 sjw 1..128 brp 1..256 brp_inc 1
-| 	  dbitrate 500000 dsample-point 0.875
-| 	  dtq 125 dprop-seg 6 dphase-seg1 7 dphase-seg2 2 dsjw 1 dbrp 5
-| 	  mcp251xfd: dtseg1 1..32 dtseg2 1..16 dsjw 1..16 dbrp 1..256 dbrp_inc 1
-| 	  tdcv 0..63 tdco 0..63
-| 	  clock 40000000 numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535 tso_max_size 65536 tso_max_segs 65535 gro_max_size 65536 parentbus spi parentdev spi0.0
-| $ ip link set can0 up type can bitrate 1000000 dbitrate 4000000 fd on
-| $ ip -details link show can0
-| 3: can0: <NOARP,UP,LOWER_UP,ECHO> mtu 72 qdisc pfifo_fast state UP mode DEFAULT group default qlen 10
-|     link/can  promiscuity 0  allmulti 0 minmtu 0 maxmtu 0
-|     can <FD,TDC-AUTO> state ERROR-ACTIVE (berr-counter tx 0 rx 0) restart-ms 0
-| 	  bitrate 1000000 sample-point 0.750
-| 	  tq 25 prop-seg 14 phase-seg1 15 phase-seg2 10 sjw 5 brp 1
-| 	  mcp251xfd: tseg1 2..256 tseg2 1..128 sjw 1..128 brp 1..256 brp_inc 1
-| 	  dbitrate 4000000 dsample-point 0.700
-| 	  dtq 25 dprop-seg 3 dphase-seg1 3 dphase-seg2 3 dsjw 1 dbrp 1
-| 	  tdco 7
-| 	  mcp251xfd: dtseg1 1..32 dtseg2 1..16 dsjw 1..16 dbrp 1..256 dbrp_inc 1
-| 	  tdcv 0..63 tdco 0..63
-| 	  clock 40000000 numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535 tso_max_size 65536 tso_max_segs 65535 gro_max_size 65536 parentbus spi parentdev spi0.0
+[bigeasy: Replace mod1/mod2 from the Oliver's original patch with dynamic
+allocation, use RCU annotation and accessor]
 
-There has been some confusion about the MCP2518FD using a relative or
-absolute TDCO due to the datasheet specifying a range of [-64,63]. I
-have a custom board with a 40 MHz clock and an estimated loop delay of
-100 to 216 ns. During testing at a data bit rate of 4 Mbit/s I found
-that using can_get_relative_tdco() resulted in bus-off errors. The
-final TDCO value was 1 which corresponds to a 10% SSP in an absolute
-configuration. This behavior is expected if the TDCO value is really
-absolute and not relative. Using priv->can.tdc.tdco instead results in
-a final TDCO of 8, setting the SSP at exactly 80%. This configuration
-works.
-
-The automatic, manual, and off TDC modes were tested at speeds up to,
-and including, 8 Mbit/s on real hardware and behave as expected.
-
-Fixes: 55e5b97f003e ("can: mcp25xxfd: add driver for Microchip MCP25xxFD SPI CAN")
-Reported-by: Kelsey Maes <kelsey@vpprocess.com>
-Closes: https://lore.kernel.org/all/C2121586-C87F-4B23-A933-845362C29CA1@vpprocess.com
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Signed-off-by: Kelsey Maes <kelsey@vpprocess.com>
-Link: https://patch.msgid.link/20250430161501.79370-1-kelsey@vpprocess.com
-[mkl: add comment]
+Reported-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Closes: https://lore.kernel.org/linux-can/20231031112349.y0aLoBrz@linutronix.de/
+Fixes: dd895d7f21b2 ("can: cangw: introduce optional uid to reference created routing jobs")
+Tested-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://patch.msgid.link/20250429070555.cs-7b_eZ@linutronix.de
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/can/spi/mcp251xfd/mcp251xfd-core.c    | 40 +++++++++++++++----
- 1 file changed, 32 insertions(+), 8 deletions(-)
+ net/can/gw.c | 149 +++++++++++++++++++++++++++++++--------------------
+ 1 file changed, 90 insertions(+), 59 deletions(-)
 
-diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
-index a48996265172f..21ae3a89924e9 100644
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
-@@ -75,6 +75,24 @@ static const struct can_bittiming_const mcp251xfd_data_bittiming_const = {
- 	.brp_inc = 1,
- };
+diff --git a/net/can/gw.c b/net/can/gw.c
+index 37528826935e7..e65500c52bf5c 100644
+--- a/net/can/gw.c
++++ b/net/can/gw.c
+@@ -130,7 +130,7 @@ struct cgw_job {
+ 	u32 handled_frames;
+ 	u32 dropped_frames;
+ 	u32 deleted_frames;
+-	struct cf_mod mod;
++	struct cf_mod __rcu *cf_mod;
+ 	union {
+ 		/* CAN frame data source */
+ 		struct net_device *dev;
+@@ -459,6 +459,7 @@ static void can_can_gw_rcv(struct sk_buff *skb, void *data)
+ 	struct cgw_job *gwj = (struct cgw_job *)data;
+ 	struct canfd_frame *cf;
+ 	struct sk_buff *nskb;
++	struct cf_mod *mod;
+ 	int modidx = 0;
  
-+/* The datasheet of the mcp2518fd (DS20006027B) specifies a range of
-+ * [-64,63] for TDCO, indicating a relative TDCO.
-+ *
-+ * Manual tests have shown, that using a relative TDCO configuration
-+ * results in bus off, while an absolute configuration works.
-+ *
-+ * For TDCO use the max value (63) from the data sheet, but 0 as the
-+ * minimum.
-+ */
-+static const struct can_tdc_const mcp251xfd_tdc_const = {
-+	.tdcv_min = 0,
-+	.tdcv_max = 63,
-+	.tdco_min = 0,
-+	.tdco_max = 63,
-+	.tdcf_min = 0,
-+	.tdcf_max = 0,
-+};
-+
- static const char *__mcp251xfd_get_model_str(enum mcp251xfd_model model)
+ 	/* process strictly Classic CAN or CAN FD frames */
+@@ -506,7 +507,8 @@ static void can_can_gw_rcv(struct sk_buff *skb, void *data)
+ 	 * When there is at least one modification function activated,
+ 	 * we need to copy the skb as we want to modify skb->data.
+ 	 */
+-	if (gwj->mod.modfunc[0])
++	mod = rcu_dereference(gwj->cf_mod);
++	if (mod->modfunc[0])
+ 		nskb = skb_copy(skb, GFP_ATOMIC);
+ 	else
+ 		nskb = skb_clone(skb, GFP_ATOMIC);
+@@ -529,8 +531,8 @@ static void can_can_gw_rcv(struct sk_buff *skb, void *data)
+ 	cf = (struct canfd_frame *)nskb->data;
+ 
+ 	/* perform preprocessed modification functions if there are any */
+-	while (modidx < MAX_MODFUNCTIONS && gwj->mod.modfunc[modidx])
+-		(*gwj->mod.modfunc[modidx++])(cf, &gwj->mod);
++	while (modidx < MAX_MODFUNCTIONS && mod->modfunc[modidx])
++		(*mod->modfunc[modidx++])(cf, mod);
+ 
+ 	/* Has the CAN frame been modified? */
+ 	if (modidx) {
+@@ -546,11 +548,11 @@ static void can_can_gw_rcv(struct sk_buff *skb, void *data)
+ 		}
+ 
+ 		/* check for checksum updates */
+-		if (gwj->mod.csumfunc.crc8)
+-			(*gwj->mod.csumfunc.crc8)(cf, &gwj->mod.csum.crc8);
++		if (mod->csumfunc.crc8)
++			(*mod->csumfunc.crc8)(cf, &mod->csum.crc8);
+ 
+-		if (gwj->mod.csumfunc.xor)
+-			(*gwj->mod.csumfunc.xor)(cf, &gwj->mod.csum.xor);
++		if (mod->csumfunc.xor)
++			(*mod->csumfunc.xor)(cf, &mod->csum.xor);
+ 	}
+ 
+ 	/* clear the skb timestamp if not configured the other way */
+@@ -581,9 +583,20 @@ static void cgw_job_free_rcu(struct rcu_head *rcu_head)
  {
- 	switch (model) {
-@@ -510,8 +528,7 @@ static int mcp251xfd_set_bittiming(const struct mcp251xfd_priv *priv)
- {
- 	const struct can_bittiming *bt = &priv->can.bittiming;
- 	const struct can_bittiming *dbt = &priv->can.data_bittiming;
--	u32 val = 0;
--	s8 tdco;
-+	u32 tdcmod, val = 0;
- 	int err;
+ 	struct cgw_job *gwj = container_of(rcu_head, struct cgw_job, rcu);
  
- 	/* CAN Control Register
-@@ -575,11 +592,16 @@ static int mcp251xfd_set_bittiming(const struct mcp251xfd_priv *priv)
- 		return err;
- 
- 	/* Transmitter Delay Compensation */
--	tdco = clamp_t(int, dbt->brp * (dbt->prop_seg + dbt->phase_seg1),
--		       -64, 63);
--	val = FIELD_PREP(MCP251XFD_REG_TDC_TDCMOD_MASK,
--			 MCP251XFD_REG_TDC_TDCMOD_AUTO) |
--		FIELD_PREP(MCP251XFD_REG_TDC_TDCO_MASK, tdco);
-+	if (priv->can.ctrlmode & CAN_CTRLMODE_TDC_AUTO)
-+		tdcmod = MCP251XFD_REG_TDC_TDCMOD_AUTO;
-+	else if (priv->can.ctrlmode & CAN_CTRLMODE_TDC_MANUAL)
-+		tdcmod = MCP251XFD_REG_TDC_TDCMOD_MANUAL;
-+	else
-+		tdcmod = MCP251XFD_REG_TDC_TDCMOD_DISABLED;
-+
-+	val = FIELD_PREP(MCP251XFD_REG_TDC_TDCMOD_MASK, tdcmod) |
-+		FIELD_PREP(MCP251XFD_REG_TDC_TDCV_MASK, priv->can.tdc.tdcv) |
-+		FIELD_PREP(MCP251XFD_REG_TDC_TDCO_MASK, priv->can.tdc.tdco);
- 
- 	return regmap_write(priv->map_reg, MCP251XFD_REG_TDC, val);
++	/* cgw_job::cf_mod is always accessed from the same cgw_job object within
++	 * the same RCU read section. Once cgw_job is scheduled for removal,
++	 * cf_mod can also be removed without mandating an additional grace period.
++	 */
++	kfree(rcu_access_pointer(gwj->cf_mod));
+ 	kmem_cache_free(cgw_cache, gwj);
  }
-@@ -2083,10 +2105,12 @@ static int mcp251xfd_probe(struct spi_device *spi)
- 	priv->can.do_get_berr_counter = mcp251xfd_get_berr_counter;
- 	priv->can.bittiming_const = &mcp251xfd_bittiming_const;
- 	priv->can.data_bittiming_const = &mcp251xfd_data_bittiming_const;
-+	priv->can.tdc_const = &mcp251xfd_tdc_const;
- 	priv->can.ctrlmode_supported = CAN_CTRLMODE_LOOPBACK |
- 		CAN_CTRLMODE_LISTENONLY | CAN_CTRLMODE_BERR_REPORTING |
- 		CAN_CTRLMODE_FD | CAN_CTRLMODE_FD_NON_ISO |
--		CAN_CTRLMODE_CC_LEN8_DLC;
-+		CAN_CTRLMODE_CC_LEN8_DLC | CAN_CTRLMODE_TDC_AUTO |
-+		CAN_CTRLMODE_TDC_MANUAL;
- 	set_bit(MCP251XFD_FLAGS_DOWN, priv->flags);
- 	priv->ndev = ndev;
- 	priv->spi = spi;
+ 
++/* Return cgw_job::cf_mod with RTNL protected section */
++static struct cf_mod *cgw_job_cf_mod(struct cgw_job *gwj)
++{
++	return rcu_dereference_protected(gwj->cf_mod, rtnl_is_locked());
++}
++
+ static int cgw_notifier(struct notifier_block *nb,
+ 			unsigned long msg, void *ptr)
+ {
+@@ -616,6 +629,7 @@ static int cgw_put_job(struct sk_buff *skb, struct cgw_job *gwj, int type,
+ {
+ 	struct rtcanmsg *rtcan;
+ 	struct nlmsghdr *nlh;
++	struct cf_mod *mod;
+ 
+ 	nlh = nlmsg_put(skb, pid, seq, type, sizeof(*rtcan), flags);
+ 	if (!nlh)
+@@ -650,82 +664,83 @@ static int cgw_put_job(struct sk_buff *skb, struct cgw_job *gwj, int type,
+ 			goto cancel;
+ 	}
+ 
++	mod = cgw_job_cf_mod(gwj);
+ 	if (gwj->flags & CGW_FLAGS_CAN_FD) {
+ 		struct cgw_fdframe_mod mb;
+ 
+-		if (gwj->mod.modtype.and) {
+-			memcpy(&mb.cf, &gwj->mod.modframe.and, sizeof(mb.cf));
+-			mb.modtype = gwj->mod.modtype.and;
++		if (mod->modtype.and) {
++			memcpy(&mb.cf, &mod->modframe.and, sizeof(mb.cf));
++			mb.modtype = mod->modtype.and;
+ 			if (nla_put(skb, CGW_FDMOD_AND, sizeof(mb), &mb) < 0)
+ 				goto cancel;
+ 		}
+ 
+-		if (gwj->mod.modtype.or) {
+-			memcpy(&mb.cf, &gwj->mod.modframe.or, sizeof(mb.cf));
+-			mb.modtype = gwj->mod.modtype.or;
++		if (mod->modtype.or) {
++			memcpy(&mb.cf, &mod->modframe.or, sizeof(mb.cf));
++			mb.modtype = mod->modtype.or;
+ 			if (nla_put(skb, CGW_FDMOD_OR, sizeof(mb), &mb) < 0)
+ 				goto cancel;
+ 		}
+ 
+-		if (gwj->mod.modtype.xor) {
+-			memcpy(&mb.cf, &gwj->mod.modframe.xor, sizeof(mb.cf));
+-			mb.modtype = gwj->mod.modtype.xor;
++		if (mod->modtype.xor) {
++			memcpy(&mb.cf, &mod->modframe.xor, sizeof(mb.cf));
++			mb.modtype = mod->modtype.xor;
+ 			if (nla_put(skb, CGW_FDMOD_XOR, sizeof(mb), &mb) < 0)
+ 				goto cancel;
+ 		}
+ 
+-		if (gwj->mod.modtype.set) {
+-			memcpy(&mb.cf, &gwj->mod.modframe.set, sizeof(mb.cf));
+-			mb.modtype = gwj->mod.modtype.set;
++		if (mod->modtype.set) {
++			memcpy(&mb.cf, &mod->modframe.set, sizeof(mb.cf));
++			mb.modtype = mod->modtype.set;
+ 			if (nla_put(skb, CGW_FDMOD_SET, sizeof(mb), &mb) < 0)
+ 				goto cancel;
+ 		}
+ 	} else {
+ 		struct cgw_frame_mod mb;
+ 
+-		if (gwj->mod.modtype.and) {
+-			memcpy(&mb.cf, &gwj->mod.modframe.and, sizeof(mb.cf));
+-			mb.modtype = gwj->mod.modtype.and;
++		if (mod->modtype.and) {
++			memcpy(&mb.cf, &mod->modframe.and, sizeof(mb.cf));
++			mb.modtype = mod->modtype.and;
+ 			if (nla_put(skb, CGW_MOD_AND, sizeof(mb), &mb) < 0)
+ 				goto cancel;
+ 		}
+ 
+-		if (gwj->mod.modtype.or) {
+-			memcpy(&mb.cf, &gwj->mod.modframe.or, sizeof(mb.cf));
+-			mb.modtype = gwj->mod.modtype.or;
++		if (mod->modtype.or) {
++			memcpy(&mb.cf, &mod->modframe.or, sizeof(mb.cf));
++			mb.modtype = mod->modtype.or;
+ 			if (nla_put(skb, CGW_MOD_OR, sizeof(mb), &mb) < 0)
+ 				goto cancel;
+ 		}
+ 
+-		if (gwj->mod.modtype.xor) {
+-			memcpy(&mb.cf, &gwj->mod.modframe.xor, sizeof(mb.cf));
+-			mb.modtype = gwj->mod.modtype.xor;
++		if (mod->modtype.xor) {
++			memcpy(&mb.cf, &mod->modframe.xor, sizeof(mb.cf));
++			mb.modtype = mod->modtype.xor;
+ 			if (nla_put(skb, CGW_MOD_XOR, sizeof(mb), &mb) < 0)
+ 				goto cancel;
+ 		}
+ 
+-		if (gwj->mod.modtype.set) {
+-			memcpy(&mb.cf, &gwj->mod.modframe.set, sizeof(mb.cf));
+-			mb.modtype = gwj->mod.modtype.set;
++		if (mod->modtype.set) {
++			memcpy(&mb.cf, &mod->modframe.set, sizeof(mb.cf));
++			mb.modtype = mod->modtype.set;
+ 			if (nla_put(skb, CGW_MOD_SET, sizeof(mb), &mb) < 0)
+ 				goto cancel;
+ 		}
+ 	}
+ 
+-	if (gwj->mod.uid) {
+-		if (nla_put_u32(skb, CGW_MOD_UID, gwj->mod.uid) < 0)
++	if (mod->uid) {
++		if (nla_put_u32(skb, CGW_MOD_UID, mod->uid) < 0)
+ 			goto cancel;
+ 	}
+ 
+-	if (gwj->mod.csumfunc.crc8) {
++	if (mod->csumfunc.crc8) {
+ 		if (nla_put(skb, CGW_CS_CRC8, CGW_CS_CRC8_LEN,
+-			    &gwj->mod.csum.crc8) < 0)
++			    &mod->csum.crc8) < 0)
+ 			goto cancel;
+ 	}
+ 
+-	if (gwj->mod.csumfunc.xor) {
++	if (mod->csumfunc.xor) {
+ 		if (nla_put(skb, CGW_CS_XOR, CGW_CS_XOR_LEN,
+-			    &gwj->mod.csum.xor) < 0)
++			    &mod->csum.xor) < 0)
+ 			goto cancel;
+ 	}
+ 
+@@ -1059,7 +1074,7 @@ static int cgw_create_job(struct sk_buff *skb,  struct nlmsghdr *nlh,
+ 	struct net *net = sock_net(skb->sk);
+ 	struct rtcanmsg *r;
+ 	struct cgw_job *gwj;
+-	struct cf_mod mod;
++	struct cf_mod *mod;
+ 	struct can_can_gw ccgw;
+ 	u8 limhops = 0;
+ 	int err = 0;
+@@ -1078,37 +1093,48 @@ static int cgw_create_job(struct sk_buff *skb,  struct nlmsghdr *nlh,
+ 	if (r->gwtype != CGW_TYPE_CAN_CAN)
+ 		return -EINVAL;
+ 
+-	err = cgw_parse_attr(nlh, &mod, CGW_TYPE_CAN_CAN, &ccgw, &limhops);
++	mod = kmalloc(sizeof(*mod), GFP_KERNEL);
++	if (!mod)
++		return -ENOMEM;
++
++	err = cgw_parse_attr(nlh, mod, CGW_TYPE_CAN_CAN, &ccgw, &limhops);
+ 	if (err < 0)
+-		return err;
++		goto out_free_cf;
+ 
+-	if (mod.uid) {
++	if (mod->uid) {
+ 		ASSERT_RTNL();
+ 
+ 		/* check for updating an existing job with identical uid */
+ 		hlist_for_each_entry(gwj, &net->can.cgw_list, list) {
+-			if (gwj->mod.uid != mod.uid)
++			struct cf_mod *old_cf;
++
++			old_cf = cgw_job_cf_mod(gwj);
++			if (old_cf->uid != mod->uid)
+ 				continue;
+ 
+ 			/* interfaces & filters must be identical */
+-			if (memcmp(&gwj->ccgw, &ccgw, sizeof(ccgw)))
+-				return -EINVAL;
++			if (memcmp(&gwj->ccgw, &ccgw, sizeof(ccgw))) {
++				err = -EINVAL;
++				goto out_free_cf;
++			}
+ 
+-			/* update modifications with disabled softirq & quit */
+-			local_bh_disable();
+-			memcpy(&gwj->mod, &mod, sizeof(mod));
+-			local_bh_enable();
++			rcu_assign_pointer(gwj->cf_mod, mod);
++			kfree_rcu_mightsleep(old_cf);
+ 			return 0;
+ 		}
+ 	}
+ 
+ 	/* ifindex == 0 is not allowed for job creation */
+-	if (!ccgw.src_idx || !ccgw.dst_idx)
+-		return -ENODEV;
++	if (!ccgw.src_idx || !ccgw.dst_idx) {
++		err = -ENODEV;
++		goto out_free_cf;
++	}
+ 
+ 	gwj = kmem_cache_alloc(cgw_cache, GFP_KERNEL);
+-	if (!gwj)
+-		return -ENOMEM;
++	if (!gwj) {
++		err = -ENOMEM;
++		goto out_free_cf;
++	}
+ 
+ 	gwj->handled_frames = 0;
+ 	gwj->dropped_frames = 0;
+@@ -1118,7 +1144,7 @@ static int cgw_create_job(struct sk_buff *skb,  struct nlmsghdr *nlh,
+ 	gwj->limit_hops = limhops;
+ 
+ 	/* insert already parsed information */
+-	memcpy(&gwj->mod, &mod, sizeof(mod));
++	RCU_INIT_POINTER(gwj->cf_mod, mod);
+ 	memcpy(&gwj->ccgw, &ccgw, sizeof(ccgw));
+ 
+ 	err = -ENODEV;
+@@ -1152,9 +1178,11 @@ static int cgw_create_job(struct sk_buff *skb,  struct nlmsghdr *nlh,
+ 	if (!err)
+ 		hlist_add_head_rcu(&gwj->list, &net->can.cgw_list);
+ out:
+-	if (err)
++	if (err) {
+ 		kmem_cache_free(cgw_cache, gwj);
+-
++out_free_cf:
++		kfree(mod);
++	}
+ 	return err;
+ }
+ 
+@@ -1214,19 +1242,22 @@ static int cgw_remove_job(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 
+ 	/* remove only the first matching entry */
+ 	hlist_for_each_entry_safe(gwj, nx, &net->can.cgw_list, list) {
++		struct cf_mod *cf_mod;
++
+ 		if (gwj->flags != r->flags)
+ 			continue;
+ 
+ 		if (gwj->limit_hops != limhops)
+ 			continue;
+ 
++		cf_mod = cgw_job_cf_mod(gwj);
+ 		/* we have a match when uid is enabled and identical */
+-		if (gwj->mod.uid || mod.uid) {
+-			if (gwj->mod.uid != mod.uid)
++		if (cf_mod->uid || mod.uid) {
++			if (cf_mod->uid != mod.uid)
+ 				continue;
+ 		} else {
+ 			/* no uid => check for identical modifications */
+-			if (memcmp(&gwj->mod, &mod, sizeof(mod)))
++			if (memcmp(cf_mod, &mod, sizeof(mod)))
+ 				continue;
+ 		}
+ 
 -- 
 2.39.5
 
