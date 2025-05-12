@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-143740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EC4BAB4146
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:04:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C606BAB411B
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:01:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACC713AA272
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:01:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E223C3B0F93
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:00:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B25822550A7;
-	Mon, 12 May 2025 18:02:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9671255235;
+	Mon, 12 May 2025 18:00:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QIHeig5X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YX5+0pgd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7124D175BF;
-	Mon, 12 May 2025 18:02:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A592A1D7E41;
+	Mon, 12 May 2025 18:00:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072926; cv=none; b=PA9vFNVLd6IHXWhE9tQkk3jaYcwna4hyqMnc2wG+DnySyep/9OUABBB90KfHsaCQ9o1EcWn7MqGq3BM6iRbFmdtS4MrTOgWQbJT5jPadMx8PiO8a9jLjwQlveqa1452oQ7260e4YSUOuWa07aARqfftsLpMCHETPAAJV9j0JG2Q=
+	t=1747072832; cv=none; b=j9af/a3fkfAL+0pAOpXM9WgiuPvH0ID6C+Xbw1ZJFbyM1SdI9J6dnSoX1pUH8Hgg4VmvMtx+7wyT7Wt4OyEY9S8EuXObSHHQUqnBegkua8k5YmW+QwtpFWKIXBFoeYGwPko1i6Yf0jjHGyjApHzh4lwbkyyd4s1YoLL7+Igl01s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072926; c=relaxed/simple;
-	bh=N9a72ETdxXtnmcv2PR01/fKY2/JY4tnifqjZyHX1HJ4=;
+	s=arc-20240116; t=1747072832; c=relaxed/simple;
+	bh=mkPskb1RdPUSNU/onrUUvk/oS9PgBRHk22QznfFdLJg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KIpzJznG0Zowyf91VhWG5HyLWhk+QnyeBGEp4DUok1jvLuFxU6q0sxBvK9w2sjQ4WvtkAqUgWAeSpL8wViGsZzC4dUPAb3cAiBrVCqh6OnLpQfyFSvGD8hsViNteCqLSWcnGKrdnw71Ed3hOkNUfxAr10v5JhFrtOW24BF35w14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QIHeig5X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5D1CC4CEE7;
-	Mon, 12 May 2025 18:02:05 +0000 (UTC)
+	 MIME-Version; b=CLbWWQOVQ7nrQ5p4jf9Mc5oQT9EkxCaeYwEtiypdd29noNtJXwhJnchwtoUZyCxxnMBOkjIBi5aOHBqsTY0fmXHjx7Qeqqpr4PGnOeniTbb4UM26sbJjhnhuWDx5SxbPvPkRNPGQKlQhVeo87uW34vkcV9RJYsFIPY229k6qduY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YX5+0pgd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7036C4CEE9;
+	Mon, 12 May 2025 18:00:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072926;
-	bh=N9a72ETdxXtnmcv2PR01/fKY2/JY4tnifqjZyHX1HJ4=;
+	s=korg; t=1747072832;
+	bh=mkPskb1RdPUSNU/onrUUvk/oS9PgBRHk22QznfFdLJg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QIHeig5X8k9iO4t724V6Oor1ajSEXe6Y3KN9G+ITZj9U6vhVr4lYhc1SEiHI+snV8
-	 m9LO7wdtxjvkTse2NYdfqMH+VM6P8b/tIdrpjKphN2mSKxCPDjpG8eSydl98LRlpy+
-	 qbyO6nos8+4fTn/EuyeQlZOIuROK8rlFsv83IJKc=
+	b=YX5+0pgdopXtSnv2Pu0OwGRiIuQH00tpNE/l8/Is6ADd8Gzl4xXBp3AuJU0yIoikU
+	 IX5xZlutNFLo1e+kjEmr7domezQIKEKtjzoaJ7HGSIKNpENHzpZefP5wAGvQEw8qxY
+	 s5Dh5w3K4cSnb/0KNF9oq1qf7+OsyV/N0GK0w5Wc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Stevenson <dave.stevenson@raspberrypi.com>,
-	Stefan Wahren <wahrenst@gmx.net>
-Subject: [PATCH 6.12 069/184] staging: bcm2835-camera: Initialise dev in v4l2_dev
-Date: Mon, 12 May 2025 19:44:30 +0200
-Message-ID: <20250512172044.646254972@linuxfoundation.org>
+	Gabriel Shahrouzi <gshahrouzi@gmail.com>
+Subject: [PATCH 6.12 070/184] staging: axis-fifo: Remove hardware resets for user errors
+Date: Mon, 12 May 2025 19:44:31 +0200
+Message-ID: <20250512172044.685034300@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
 References: <20250512172041.624042835@linuxfoundation.org>
@@ -65,39 +64,74 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dave Stevenson <dave.stevenson@raspberrypi.com>
+From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
 
-commit 98698ca0e58734bc5c1c24e5bbc7429f981cd186 upstream.
+commit c6e8d85fafa7193613db37da29c0e8d6e2515b13 upstream.
 
-Commit 42a2f6664e18 ("staging: vc04_services: Move global g_state to
-vchiq_state") changed mmal_init to pass dev->v4l2_dev.dev to
-vchiq_mmal_init, however nothing iniitialised dev->v4l2_dev, so we got
-a NULL pointer dereference.
+The axis-fifo driver performs a full hardware reset (via
+reset_ip_core()) in several error paths within the read and write
+functions. This reset flushes both TX and RX FIFOs and resets the
+AXI-Stream links.
 
-Set dev->v4l2_dev.dev during bcm2835_mmal_probe. The device pointer
-could be passed into v4l2_device_register to set it, however that also
-has other effects that would need additional changes.
+Allow the user to handle the error without causing hardware disruption
+or data loss in other FIFO paths.
 
-Fixes: 42a2f6664e18 ("staging: vc04_services: Move global g_state to vchiq_state")
+Fixes: 4a965c5f89de ("staging: add driver for Xilinx AXI-Stream FIFO v4.1 IP core")
 Cc: stable@vger.kernel.org
-Signed-off-by: Dave Stevenson <dave.stevenson@raspberrypi.com>
-Reviewed-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://lore.kernel.org/r/20250423-staging-bcm2835-v4l2-fix-v2-1-3227f0ba4700@raspberrypi.com
+Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+Link: https://lore.kernel.org/r/20250419004306.669605-1-gshahrouzi@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/vc04_services/bcm2835-camera/bcm2835-camera.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/staging/axis-fifo/axis-fifo.c |   11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
---- a/drivers/staging/vc04_services/bcm2835-camera/bcm2835-camera.c
-+++ b/drivers/staging/vc04_services/bcm2835-camera/bcm2835-camera.c
-@@ -1902,6 +1902,7 @@ static int bcm2835_mmal_probe(struct vch
- 				__func__, ret);
- 			goto free_dev;
- 		}
-+		dev->v4l2_dev.dev = &device->dev;
+--- a/drivers/staging/axis-fifo/axis-fifo.c
++++ b/drivers/staging/axis-fifo/axis-fifo.c
+@@ -393,16 +393,14 @@ static ssize_t axis_fifo_read(struct fil
  
- 		/* setup v4l controls */
- 		ret = bcm2835_mmal_init_controls(dev, &dev->ctrl_handler);
+ 	bytes_available = ioread32(fifo->base_addr + XLLF_RLR_OFFSET);
+ 	if (!bytes_available) {
+-		dev_err(fifo->dt_device, "received a packet of length 0 - fifo core will be reset\n");
+-		reset_ip_core(fifo);
++		dev_err(fifo->dt_device, "received a packet of length 0\n");
+ 		ret = -EIO;
+ 		goto end_unlock;
+ 	}
+ 
+ 	if (bytes_available > len) {
+-		dev_err(fifo->dt_device, "user read buffer too small (available bytes=%zu user buffer bytes=%zu) - fifo core will be reset\n",
++		dev_err(fifo->dt_device, "user read buffer too small (available bytes=%zu user buffer bytes=%zu)\n",
+ 			bytes_available, len);
+-		reset_ip_core(fifo);
+ 		ret = -EINVAL;
+ 		goto end_unlock;
+ 	}
+@@ -411,8 +409,7 @@ static ssize_t axis_fifo_read(struct fil
+ 		/* this probably can't happen unless IP
+ 		 * registers were previously mishandled
+ 		 */
+-		dev_err(fifo->dt_device, "received a packet that isn't word-aligned - fifo core will be reset\n");
+-		reset_ip_core(fifo);
++		dev_err(fifo->dt_device, "received a packet that isn't word-aligned\n");
+ 		ret = -EIO;
+ 		goto end_unlock;
+ 	}
+@@ -433,7 +430,6 @@ static ssize_t axis_fifo_read(struct fil
+ 
+ 		if (copy_to_user(buf + copied * sizeof(u32), tmp_buf,
+ 				 copy * sizeof(u32))) {
+-			reset_ip_core(fifo);
+ 			ret = -EFAULT;
+ 			goto end_unlock;
+ 		}
+@@ -542,7 +538,6 @@ static ssize_t axis_fifo_write(struct fi
+ 
+ 		if (copy_from_user(tmp_buf, buf + copied * sizeof(u32),
+ 				   copy * sizeof(u32))) {
+-			reset_ip_core(fifo);
+ 			ret = -EFAULT;
+ 			goto end_unlock;
+ 		}
 
 
 
