@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-143453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0654AB3FE9
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:48:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D101DAB3FD9
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:47:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D86C3A3E02
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:46:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F56E466239
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:47:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5399F296D30;
-	Mon, 12 May 2025 17:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73012296D3C;
+	Mon, 12 May 2025 17:47:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k1iM01cC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IvVklzzG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 115EA2528FC;
-	Mon, 12 May 2025 17:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E4F81DF72E;
+	Mon, 12 May 2025 17:47:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747071996; cv=none; b=T0j4yvwKKZ5Ni7f+7InrfY8x8z0ID0IsQiN8+VSmEgDqHwxw0hmY/nqJzogdWsqi6Ij0d/rgdc8Z6sBKNEwQpf4r+wd9MxfHPQdD+h6t1finwUcwBjtrNjThspebMje36eYHK626hNpS4c/tdSxIIR6OfE9xphzQ7E9lrAQKb/o=
+	t=1747072030; cv=none; b=dVM4KuObrVALJriroZNWZB1pwTsbcpNJTSCPi9R2A7dlwzrcvWXJBN1m1HKOV+R01bw6ZNv2LfXwyOSDphcsF3L4Sf8HakOsUSzqQNMJNPKAo0++cfN8N9jsVavh87h4NJ0teKy0w9+nOU8nC97tbYDru1emDpC9RbG7Knoa9pg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747071996; c=relaxed/simple;
-	bh=tNfbw08buieYclpHqf6mP3u5U0LTByk0WKHIPSu73/8=;
+	s=arc-20240116; t=1747072030; c=relaxed/simple;
+	bh=+mACTxlWBxU3IECAl2kg3xeDNAu4exN/3DwU76KiDNs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iNRuYXMGySpxloDpZoMk199eUhfi2lECrfIwu3LE540VeAFwLdG+sKocznOLbpNV2edAqdTDhDLPy71GyOia2Kv8Z4XWvueQft/Ipyco/pC7cgl2V4iqUIU5L4e0trEODd7eVtNK4LCz0oqOapY+sOoMRZX3ATxrL5eL/brCNb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k1iM01cC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 972F3C4CEE7;
-	Mon, 12 May 2025 17:46:35 +0000 (UTC)
+	 MIME-Version; b=hHM0yXlm9dibwTmvkj9uHDxQV2mpfqqFJIeS1F7Xu2zqdKdWNR0FP+5DHP9NQw2b/nVG4z8mUULzNxMECmAIPreZam+h9kawUrkWw2r+XBkmWkiXwYA2kPrFDvt9LqHtJNKpcJuME4P6r4jv4DUgja8cvjEwARxr6TrlCY9+Qd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IvVklzzG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA185C4CEE7;
+	Mon, 12 May 2025 17:47:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747071995;
-	bh=tNfbw08buieYclpHqf6mP3u5U0LTByk0WKHIPSu73/8=;
+	s=korg; t=1747072030;
+	bh=+mACTxlWBxU3IECAl2kg3xeDNAu4exN/3DwU76KiDNs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k1iM01cChAyLYgIbdMHoyVMLMaDPPjMgBFTjKMc4fFjd3ErHB/jaEwxlV7Wz/uS+H
-	 qPBeWsJepo+IV9HpwSvhBar3rFrRzGk+FmcWhHRyrBF8FzhOaZpcMjXHoEsc9cK0Vz
-	 RJTwC5+5AMCP9RU+1yKZPReoCEyFurAkT8voTqp4=
+	b=IvVklzzGByILLD355a9CSJyZUnKDIkv7tqo+0QiozWLQnA1Vh2jeOZgK8eXrd1fS3
+	 FSkAgAQk8gZiubXOE+1c0jOPYHb3rG0gNXdRQwOdvYRtJzelmmFS68u2Yk+4l/6lxj
+	 cj1n30tLFMe4N4xDWvJByeulVvU8rNMpNkSp9vl4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
+	Silvano Seva <s.seva@4sigma.it>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
 	Stable@vger.kernel.org,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.14 096/197] iio: imu: inv_mpu6050: align buffer for timestamp
-Date: Mon, 12 May 2025 19:39:06 +0200
-Message-ID: <20250512172048.292564864@linuxfoundation.org>
+Subject: [PATCH 6.14 097/197] iio: imu: st_lsm6dsx: fix possible lockup in st_lsm6dsx_read_fifo
+Date: Mon, 12 May 2025 19:39:07 +0200
+Message-ID: <20250512172048.332665042@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512172044.326436266@linuxfoundation.org>
 References: <20250512172044.326436266@linuxfoundation.org>
@@ -66,34 +67,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Silvano Seva <s.seva@4sigma.it>
 
-commit 1d2d8524eaffc4d9a116213520d2c650e07c9cc6 upstream.
+commit 159ca7f18129834b6f4c7eae67de48e96c752fc9 upstream.
 
-Align the buffer used with iio_push_to_buffers_with_timestamp() to
-ensure the s64 timestamp is aligned to 8 bytes.
+Prevent st_lsm6dsx_read_fifo from falling in an infinite loop in case
+pattern_len is equal to zero and the device FIFO is not empty.
 
-Fixes: 0829edc43e0a ("iio: imu: inv_mpu6050: read the full fifo when processing data")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250417-iio-more-timestamp-alignment-v1-7-eafac1e22318@baylibre.com
+Fixes: 290a6ce11d93 ("iio: imu: add support to lsm6dsx driver")
+Signed-off-by: Silvano Seva <s.seva@4sigma.it>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20250311085030.3593-2-s.seva@4sigma.it
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
-@@ -50,7 +50,7 @@ irqreturn_t inv_mpu6050_read_fifo(int ir
- 	u16 fifo_count;
- 	u32 fifo_period;
- 	s64 timestamp;
--	u8 data[INV_MPU6050_OUTPUT_DATA_SIZE];
-+	u8 data[INV_MPU6050_OUTPUT_DATA_SIZE] __aligned(8);
- 	size_t i, nb;
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+@@ -392,6 +392,9 @@ int st_lsm6dsx_read_fifo(struct st_lsm6d
+ 	if (fifo_status & cpu_to_le16(ST_LSM6DSX_FIFO_EMPTY_MASK))
+ 		return 0;
  
- 	mutex_lock(&st->lock);
++	if (!pattern_len)
++		pattern_len = ST_LSM6DSX_SAMPLE_SIZE;
++
+ 	fifo_len = (le16_to_cpu(fifo_status) & fifo_diff_mask) *
+ 		   ST_LSM6DSX_CHAN_SIZE;
+ 	fifo_len = (fifo_len / pattern_len) * pattern_len;
 
 
 
