@@ -1,188 +1,139 @@
-Return-Path: <stable+bounces-143293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97289AB3B25
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 16:47:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FD75AB3AF9
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 16:46:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1718117D93A
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 14:47:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 253267AC712
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 14:45:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7489C22A1CD;
-	Mon, 12 May 2025 14:46:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EBDA1EDA06;
+	Mon, 12 May 2025 14:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EEeuRNBP"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DBHvCD6q"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D7AD21578F;
-	Mon, 12 May 2025 14:46:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C982F41
+	for <stable@vger.kernel.org>; Mon, 12 May 2025 14:46:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747061215; cv=none; b=C5xNYnrkft3ynwkHv3s3ibxfsJmO6Qhu5LU4tlGwRIVWoQatPHAqBBOnoNZU3f6/jC75rteN8ha+UZYHwu/QU4cSoGKkjsJ5ycwftwYMWVUhoHUyf1riy3nytAwhG3DpWXduyCy+zrlZdxTlx3efVSuVugLBoYmTJF268CRbMuU=
+	t=1747061195; cv=none; b=g1XlfdkCEJZzRap2fsTa+/Cbf2kKQaIAqbDWkzydvJyAJ9LOhACs3LjXSN6kTrZjH7uD8JXMj4UTjNjdpqtDl2JduAi+zc1UO69+3WiHAGsdzmNAZoAe4bMxhEsrm+tB5J8r/1klzaacbDYNagLYSIFrYaO5+yUjpYGfT4fLIEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747061215; c=relaxed/simple;
-	bh=y0vMuL7Jk3buyImcDrOCI0mRiAxBKFqw2NbBhs7V0mU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=o+fW5Eg0zaNiCKXQMQ4uzrJz+pdoB936jVVI46/4/ExMEy/ehD3tIm8nbUaW1jYV3gAGE0R8z5Dy6EqxnOzUvNPej6KaxGLpgCoe+h3b1WoduNUhHDN586GbJuDBMXbTO2hYIuGyvFZAqmHLL/VfeP11J/F6BiDCa9ygfbNqiwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EEeuRNBP; arc=none smtp.client-ip=209.85.208.46
+	s=arc-20240116; t=1747061195; c=relaxed/simple;
+	bh=y/WCT9k+NHEwx87D3TbRYlcmZKAHjaI6LXf2RTnFDl8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fzGDsW2MHlD1MDzGpB/8g0FkQcPLr20HhD3x8RF1q6fbo7IEdeIsz8Mti5xLAmqxVBEgX1WsCBRMguxw1LDkdruqu8y2FCMZzalFaVgH99cVOb1tucVi3l2QcIE0G3oNXF/i5XBAOcyEj+/Q7Y3EFyv/CCvqZ/l4O0UBm8iOghA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DBHvCD6q; arc=none smtp.client-ip=209.85.215.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5fcf1dc8737so4900833a12.1;
-        Mon, 12 May 2025 07:46:53 -0700 (PDT)
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-b1ff8a0a13cso766473a12.0
+        for <stable@vger.kernel.org>; Mon, 12 May 2025 07:46:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747061212; x=1747666012; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=dODwYdoTP5CLtjwQLab2m40ueX2C15m4SlmDSPZB+Rw=;
-        b=EEeuRNBPe8MMCoPQg6c0+5PW/W4x7Rx+1IUooHWDYaif4kxNOAwASsARZYbTBrG7WG
-         GYwLY3GssTKnko/F1ZVDet6MjgQNHWeaCA5iemOPStJ+BzzacKz+8ODlboIztidOvsEv
-         +wkfVGT5aKehKcZqinRKYGh8PYbZf9xkJX4xIWAQVkaxNr+llWQ91A1QNrgGb9co5S+C
-         leK7OSysQHcYuGLcdMcDDnIEOBvgyxJFxVxJ381+U+S4CWbPVUpR5YdQS9Rk+4N2c92q
-         XF9UDcBTjpPAeROgt6o/enoP3kpm6LZWqTxp0cLpfoIGDC8Bt7KlCCsGZ8+NFssa/jFQ
-         45tg==
+        d=gmail.com; s=20230601; t=1747061193; x=1747665993; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WLqVwA910Oz+N1ZjLYrP/5SUcf9+/wqVkZckGAFbHSU=;
+        b=DBHvCD6qKitilw0IIdNGW+UECFFAkWdNKd841tfVCGfllZLxmjyaqRDHd6FAhie3I0
+         NVk9zSRcuoQ2Cqy1dvbzUUcfri5BnNmfdbTqhyi6ObGgOPAdcqfCsA99VXZgId25m+PR
+         Svkf+gEQLQwdsXa+iPRDwjgARAJivEDjWGWazbqwcRZ1h+R03VIsSxMBoNVdTQX7NDLx
+         h96dtD9sr+Ikq5vEtgr5IMGd8g10rmk8JNgeQe1BdsYahQfwDHC0KgTpoWHSjYFjQrEH
+         tK7K/P7JPxmyD+YUhjeOEycCJVOgyzfjbdnZ0ihzoe4ByxXh21N6W6RFFp910bLp0xk5
+         YTEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747061212; x=1747666012;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=dODwYdoTP5CLtjwQLab2m40ueX2C15m4SlmDSPZB+Rw=;
-        b=lMraTLMG1W66jY0rvaNlf1gWTYEkos0ot7VQa4Es3EvspVBGrhntDuDgz3U0PhyKax
-         vXNIvmxyUBPvLO9Aszjg2mnvMnKbM03tNll7npDTgiGUNw4rouB7BkvCIwOW/OLXTkEA
-         VZjbuGNi3YpF08raScytJz2K69Z/XWH6se7v1Ucgx7/A+bnklvaGoRQDImFPCVIRlxu3
-         tlRwNIpsO2ucwDh4kbpb04jCnQ+Q/8JcPkQ9ItP2lW9huttehFebRPiIRYvyMD4QoHgB
-         Z1OTOKt85WAzDP+ahzdo9dobYIwTC1p4BSPTFCPKQfQU6FpuwsSnBkffLYD4y7wYqwfD
-         cLUw==
-X-Forwarded-Encrypted: i=1; AJvYcCUp+HRR/Hrms0Gbf96LFn29QogVbrgOu8iHQd0nR7/ZNaXyxbohiL9ZrAk+ipICAxQMN4EBHAaS@vger.kernel.org, AJvYcCVhZ5WHDlXajeyH+TgEqZcda/Wi6VnXDux2/s2AkQT+zrCDMgiWVhi+7M05cj+IGFoLPKza4zg+@vger.kernel.org, AJvYcCWXGA9225yW63It0+2PMJA4ZTvVnj2B0TnXx0G8I3k4V2/OhZLJxSlt3uekPUG6pRBR7wIVLIVA1M+5pB0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxGglSfRfiLNXPTnuJUyql5bE4fZpqAKHd8tum83mg4cxMUMsNY
-	OHFBIUandAmII3w2ej+I78/JtKYs3DYUnn7AAv4CUWYfqagRXQeX
-X-Gm-Gg: ASbGncvzP0EZEHs8bKGENALYcLcMq/HIHhe1RvD2CvdW050k+3NG2K5wAwW2O7T25aa
-	jxATbH1y/JbCsfwR230at+fTtdQbJ4yGnzRJgABpBNeZTx55NP4SmZbHHTBGyJRgBwuLKRIUOoi
-	a/JQvQlEcWYXw9tuczchVDBJIaLCiIVgJza8XKdRgFxh6rC0JDg74OmgQyeS995wZxL0KYsE9cO
-	MNakhwC3i2EG2oHVhMtgHcgDrYo07me05mSnUhZnokZjY4CfBHD8DM4XCTiOmy0JDbAdK0mqD+f
-	/KJ4L5lbTf/eHajPKUtsDIs/gU3aX09Fv5hV3JF2IDEjEm/26xiF1P5xW2Yt0UXYfMEXlcF3ChE
-	1HT3FRSA1KK2VaQ3UW2LF49z7W+3HGg==
-X-Google-Smtp-Source: AGHT+IE2pf4YYuapDIgRwCICOjUiidG0buuxRhxKXdwb/npfu+yM/uc5CWac1o9ODhHsbILHbvroYQ==
-X-Received: by 2002:a17:907:a08d:b0:ad2:4ed5:ca4b with SMTP id a640c23a62f3a-ad24ed5cc4bmr320290066b.61.1747061211427;
-        Mon, 12 May 2025 07:46:51 -0700 (PDT)
-Received: from localhost.localdomain (ip092042140082.rev.nessus.at. [92.42.140.82])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad2197be17csm620475066b.156.2025.05.12.07.46.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 May 2025 07:46:50 -0700 (PDT)
-From: Jakob Unterwurzacher <jakobunt@gmail.com>
-X-Google-Original-From: Jakob Unterwurzacher <jakob.unterwurzacher@cherry.de>
-To: Woojung Huh <woojung.huh@microchip.com>,
-	UNGLinuxDriver@microchip.com,
-	Andrew Lunn <andrew@lunn.ch>,
-	Vladimir Oltean <olteanv@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Marek Vasut <marex@denx.de>,
-	Tristram Ha <Tristram.Ha@microchip.com>,
-	Florian Fainelli <f.fainelli@gmail.com>
-Cc: jakob.unterwurzacher@cherry.de,
-	stable@vger.kernel.org,
-	Woojung Huh <Woojung.Huh@microchip.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH net v2] net: dsa: microchip: linearize skb for tail-tagging switches
-Date: Mon, 12 May 2025 16:44:18 +0200
-Message-Id: <20250512144416.3697054-1-jakob.unterwurzacher@cherry.de>
-X-Mailer: git-send-email 2.39.5
+        d=1e100.net; s=20230601; t=1747061193; x=1747665993;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WLqVwA910Oz+N1ZjLYrP/5SUcf9+/wqVkZckGAFbHSU=;
+        b=kr24Y+E6S57Hp9GPRLX1n3hhYUL0YFJUEIxHB34qHHS/GgWklt8TyZZUeoRX/MGQ4F
+         NFQWRLGVwAzRm+8FKyKfLRpu6RgYgPDsINvHL1mhnJCU7g/8EegTIRznjUc2/amE/fqt
+         uHCj18RBSTl+VMS7SlM8Pe9VZ35U6b1NlLo2FktJSiuUndUbBdW/wPmUVDoiqGdsxU0T
+         x7Q5k9Hi9/dw6OGVviyyRAj/4kiuFVO6gXOcU03maVce5nH9OcFmm19YTHc2Y9VNhBp+
+         6SpiKfltQpbIwLDkhaS25iat8rFb2EGGNCST7hpYSp1Nk1rd1k5C0ZspKJEpUdE+nT9T
+         iQgw==
+X-Forwarded-Encrypted: i=1; AJvYcCV647Z9oxI/DHJup2z/rLnmKt1y9oc61kAW/T5woqQVxwP9a0LfWSwieqyvtXXs+l2KbP2g37g=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9mzNbhWla4h5xAWeau5vYdejGM+nP3nNMM0uJolUI32RW4v3A
+	rtcP3UtgwtpZguCb2o9z5LMjqS8yQ7kEty7aNPqA0YhR2kZ60uvRajXseQXVaQjcp0U1ofhh5/1
+	CYmDnTuvIvSbUo3pPfDPdiieNkVw=
+X-Gm-Gg: ASbGncv7siUrNkk9Ht+umdCjE2vmp5WlNf5mp7SJ65ukhPJDyts9DQVj4DbcpyCHPVq
+	i0N/mYBtrfxBg2FVUBZrsryBRWBR/1SV1OWM9ttYkzja7imcK3eFZ7V2ju6UqHKxHvjtuZPeytL
+	ac6QGvUcyndhrZFvPS6BXV5FcCaQMin3Bp
+X-Google-Smtp-Source: AGHT+IENnH5CiJy9w5b5F05MU7kzwPLR9EX+eFQG19NegOYS/HTngrIDNEadQ1CCfn3YeLQ6h+DmTNX0hQmZJfYU7KQ=
+X-Received: by 2002:a17:902:d2c7:b0:223:f903:aa86 with SMTP id
+ d9443c01a7336-22fc8b106d0mr76317645ad.1.1747061193179; Mon, 12 May 2025
+ 07:46:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <D97FB92117J2.PXTNFKCIRWAS@linaro.org> <SI2PR06MB5041FB15F8DBB44916FB6430F1BD2@SI2PR06MB5041.apcprd06.prod.outlook.com>
+ <D980Y4WDV662.L4S7QAU72GN2@linaro.org> <CADnq5_NT0syV8wB=MZZRDONsTNSYwNXhGhNg9LOFmn=MJP7d9Q@mail.gmail.com>
+ <SI2PR06MB504138A5BEA1E1B3772E8527F1BC2@SI2PR06MB5041.apcprd06.prod.outlook.com>
+ <CADnq5_M=YiMVvMpGaFhn2T3jRWGY2FrsUwCVPG6HupmTzZCYug@mail.gmail.com>
+ <D9CT4HS7F067.J0GJHAGHI9G9@linaro.org> <CADnq5_ML25QA7xD+bLqNprO3zzTxJYLkiVw-KmeP-N6TqNHRYA@mail.gmail.com>
+ <D9DAIUZXIWH3.1L7CV6GEX4C9M@linaro.org> <CADnq5_NE2M19JdrULtJH-OXwycDpu0hrFHy42YiJA3nMYoP=+w@mail.gmail.com>
+ <D9H0K4EW3XTV.1XO4KO44J1YRE@linaro.org> <CADnq5_PuXu-9MAhr3d7HLGnOqHR7Uo+nJPzrpdJEusvRCE8wbw@mail.gmail.com>
+ <CANgGJDqZptyPK2nn5NR+OCcGHX1H=YF1vUGsqoLz-vYZjf5Htg@mail.gmail.com>
+In-Reply-To: <CANgGJDqZptyPK2nn5NR+OCcGHX1H=YF1vUGsqoLz-vYZjf5Htg@mail.gmail.com>
+From: Alex Deucher <alexdeucher@gmail.com>
+Date: Mon, 12 May 2025 10:46:21 -0400
+X-Gm-Features: AX0GCFssUsUak1AQ1yrAFKDGy4jdp1x4SO9rABfJG55FF56FGyGeO0hrLajcuUk
+Message-ID: <CADnq5_O77xrMBKX+j-b-ULQi7GJ6=nqfKhU82E7L1oUANXwcuw@mail.gmail.com>
+Subject: =?UTF-8?B?UmU6IOWbnuWkjTogW1JFR1JFU1NJT05dIGFtZGdwdTogYXN5bmMgc3lzdGVtIGVycm9yIA==?=
+	=?UTF-8?B?ZXhjZXB0aW9uIGZyb20gaGRwX3Y1XzBfZmx1c2hfaGRwKCk=?=
+To: Alexey Klimov <alexey.klimov@linaro.org>
+Cc: Fugang Duan <fugang.duan@cixtech.com>, 
+	"alexander.deucher@amd.com" <alexander.deucher@amd.com>, "frank.min@amd.com" <frank.min@amd.com>, 
+	"amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, "david.belanger@amd.com" <david.belanger@amd.com>, 
+	"christian.koenig@amd.com" <christian.koenig@amd.com>, Peter Chen <peter.chen@cixtech.com>, 
+	cix-kernel-upstream <cix-kernel-upstream@cixtech.com>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The pointer arithmentic for accessing the tail tag only works
-for linear skbs.
+On Sun, May 11, 2025 at 7:25=E2=80=AFPM Alexey Klimov <alexey.klimov@linaro=
+.org> wrote:
+>
+> On Wed, 30 Apr 2025 at 17:55, Alex Deucher <alexdeucher@gmail.com> wrote:
+> >
+> > I think I have a better solution.  Please try these patches instead.  T=
+hanks!
+> >
+> > For the RX6600, you only need patch 0003.  The rest of the series
+> > fixes up other chips.
+>
+> Sorry for the delay.
+> Finally managed to find some time to test it.
+> It seems that patches are merged in the current -rc tree so I just
+> re-tested -rc5.
+> All works. Thank you.
 
-For nonlinear skbs, it reads uninitialized memory inside the
-skb headroom, essentially randomizing the tag. I have observed
-it gets set to 6 most of the time.
+Thanks.
 
-Example where ksz9477_rcv thinks that the packet from port 1 comes from port 6
-(which does not exist for the ksz9896 that's in use), dropping the packet.
-Debug prints added by me (not included in this patch):
+>
+> A bit annoying thing is repeating:
+> [drm] Unknown EDID CEA parser results
+> and I also didn't observe such messages before on -rc2 or -rc3:
+> amdgpu 0000:c3:00.0: amdgpu: [drm] amdgpu: DP AUX transfer fail:4
+>
+> dmesg is in attachment. But I don't think that these are related to
+> hdp_v5_0_flush_hdp() issue.
 
-	[  256.645337] ksz9477_rcv:323 tag0=6
-	[  256.645349] skb len=47 headroom=78 headlen=0 tailroom=0
-	               mac=(64,14) mac_len=14 net=(78,0) trans=78
-	               shinfo(txflags=0 nr_frags=1 gso(size=0 type=0 segs=0))
-	               csum(0x0 start=0 offset=0 ip_summed=0 complete_sw=0 valid=0 level=0)
-	               hash(0x0 sw=0 l4=0) proto=0x00f8 pkttype=1 iif=3
-	               priority=0x0 mark=0x0 alloc_cpu=0 vlan_all=0x0
-	               encapsulation=0 inner(proto=0x0000, mac=0, net=0, trans=0)
-	[  256.645377] dev name=end1 feat=0x0002e10200114bb3
-	[  256.645386] skb headroom: 00000000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-	[  256.645395] skb headroom: 00000010: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-	[  256.645403] skb headroom: 00000020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-	[  256.645411] skb headroom: 00000030: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-	[  256.645420] skb headroom: 00000040: ff ff ff ff ff ff 00 1c 19 f2 e2 db 08 06
-	[  256.645428] skb frag:     00000000: 00 01 08 00 06 04 00 01 00 1c 19 f2 e2 db 0a 02
-	[  256.645436] skb frag:     00000010: 00 83 00 00 00 00 00 00 0a 02 a0 2f 00 00 00 00
-	[  256.645444] skb frag:     00000020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01
-	[  256.645452] ksz_common_rcv:92 dsa_conduit_find_user returned NULL
+Correct.  There was a DP AUX fix that also landed that was a bit too
+chatty in some cases.  There will be a patch to quiet that down.
 
-Call skb_linearize before trying to access the tag.
+Alex
 
-This patch fixes ksz9477_rcv which is used by the ksz9896 I have at
-hand, and also applies the same fix to ksz8795_rcv which seems to have
-the same problem.
-
-Signed-off-by: Jakob Unterwurzacher <jakob.unterwurzacher@cherry.de>
-Cc: stable@vger.kernel.org
-Fixes: 016e43a26bab ("net: dsa: ksz: Add KSZ8795 tag code")
-Fixes: 8b8010fb7876 ("dsa: add support for Microchip KSZ tail tagging)
----
-v1: https://lore.kernel.org/netdev/20250509071820.4100022-1-jakob.unterwurzacher@cherry.de/
-v2: add Fixes tags, Cc stable, "[PATCH net]" prefix
-
- net/dsa/tag_ksz.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
-
-diff --git a/net/dsa/tag_ksz.c b/net/dsa/tag_ksz.c
-index 281bbac5539d..55ef093fe66b 100644
---- a/net/dsa/tag_ksz.c
-+++ b/net/dsa/tag_ksz.c
-@@ -140,7 +140,12 @@ static struct sk_buff *ksz8795_xmit(struct sk_buff *skb, struct net_device *dev)
- 
- static struct sk_buff *ksz8795_rcv(struct sk_buff *skb, struct net_device *dev)
- {
--	u8 *tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
-+	u8 *tag;
-+
-+	if (skb_linearize(skb))
-+		return NULL;
-+
-+	tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
- 
- 	return ksz_common_rcv(skb, dev, tag[0] & KSZ8795_TAIL_TAG_EG_PORT_M,
- 			      KSZ_EGRESS_TAG_LEN);
-@@ -311,8 +316,13 @@ static struct sk_buff *ksz9477_xmit(struct sk_buff *skb,
- 
- static struct sk_buff *ksz9477_rcv(struct sk_buff *skb, struct net_device *dev)
- {
-+	u8 *tag;
-+
-+	if (skb_linearize(skb))
-+		return NULL;
-+
- 	/* Tag decoding */
--	u8 *tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
-+	tag = skb_tail_pointer(skb) - KSZ_EGRESS_TAG_LEN;
- 	unsigned int port = tag[0] & KSZ9477_TAIL_TAG_EG_PORT_M;
- 	unsigned int len = KSZ_EGRESS_TAG_LEN;
- 
--- 
-2.39.5
-
+>
+> Best regards,
+> Alexey
 
