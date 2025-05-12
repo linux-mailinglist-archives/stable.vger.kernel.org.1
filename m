@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-143799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09C3DAB41A8
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:09:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D88DAB41A1
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:09:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21EE73B9F7E
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:07:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3BAA77B4C23
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:07:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C83AD298C24;
-	Mon, 12 May 2025 18:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04EB9298CB9;
+	Mon, 12 May 2025 18:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GIy+h3cG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tBzDKoys"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E27B298C1B;
-	Mon, 12 May 2025 18:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE99A297101;
+	Mon, 12 May 2025 18:04:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073066; cv=none; b=AE2hJyGNdd+i3N1upwih4Y9EShEQjEChDTq2BnP3q0Ek2Zm5FHPaFgvGMRpTCK7xN0QGGlsE7LWcRhSwPiDGZpsj1yrjGEypR/VCx3XKXT6MDHAJSOf8Usd/II4NbhNBsVH8+4A/euvtPSSWhvGnkyzseHYUFb16jDdP2o//Iks=
+	t=1747073071; cv=none; b=A4QcPGMoXUP3arceUP2R8TS7Dj8FZDQjfHN+aipStX/IgaZEMDWBLnCoVMXVj4s+5Kw4m+SfYmZsToq5G5GBoQSIJWXVo7ynR2KVwv5RyaWQ0wYRernDgXsCOFZo7Z0NjKPM6MVDB84G3TYbapGf3W1YzFA7+PuW2sGAERRiru8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073066; c=relaxed/simple;
-	bh=UHCXy9jR8dSGqVN48aTVRaYvNMr8ifTKeSKvOn17H8w=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=IWJ0kwNXnOf2DAA27UogijYyEZToXkxD+Y/xCLsa7jvi/7Bg7JukGlJfBX7Le7QK/+50HydBMOM1wCXC/i157JXwnG5TZ7p+JEOii2pBtdfVHchNeWgX38RJx6lt/11YsPnQlIizg44QBpy617c46j3pGkSX6X5Apk6A27PEJgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GIy+h3cG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24A3CC4CEF0;
-	Mon, 12 May 2025 18:04:25 +0000 (UTC)
+	s=arc-20240116; t=1747073071; c=relaxed/simple;
+	bh=6yGGThJp/v6xWSh4vMlnt3kWtvP0zME5v5Q+cE7cJYQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=F7FhWVz8ug5SK9Ac/k3P0m4D7edpiMHgOm63TVFohS/GolCLwL+BFG5kVmoXtRLu3ZMpOaus8j28AVp4u8q/SZLJzGHhahMqCryKBqtc+PCtin0Ss9hSzfZtX4jRDwQcUoZilRiP7BLx6ujcKT6ziTI1o9PoQanzOQHU5Qd3RXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tBzDKoys; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6436DC4CEF0;
+	Mon, 12 May 2025 18:04:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747073066;
-	bh=UHCXy9jR8dSGqVN48aTVRaYvNMr8ifTKeSKvOn17H8w=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GIy+h3cGV028lDKoKPOQt8neYjnSnCIfJZL23jzQ2stNM3JIKGOIaG3qSXiQfRZM4
-	 NE8qeKGSAParA1fkMHvjPHOhwuyDESiRRCGoSdfdFMVq/vc+cqaI5PKmN6N83HZ6Mm
-	 K0wPGu8coC+QHd334uMmognyvfpr8vW+JC9nzocYlTq5qxFOabDsc5jj6CfLrJjCQF
-	 THcrcSZtpXr+0Sp8lA/2BP0OoylpEC0X0+6cQn1TaNCvWKpp0HbAG65wV5tKE+RtIk
-	 n8OhnCuYpe3oo4w4Xw9tKIKtPWFdRq7Pckp/5R5lIs+Smq9F9jGYk0NURyUK2mFlx0
-	 kBYIBi3Q9vVEQ==
+	s=k20201202; t=1747073071;
+	bh=6yGGThJp/v6xWSh4vMlnt3kWtvP0zME5v5Q+cE7cJYQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=tBzDKoysDaTnoV5UXhZJbwHZw5RlI/kinmKfvVPTX8b07k2Ok5QaXZUhzHQ9KSDPE
+	 ySY/5g4vUj4qv2mhwz3xBIkYD7fK4sQXSOUKV0kYAPonGQ+c2P1XZDXmkra8Rc3H5k
+	 uQPPT0KLIYK7U+qeayTxhb727L+6q86HhjJ5n+io/4kRmFdZlaCjM9g34IDaSF5WxI
+	 W4aaDH3WgRWqHDJqhmq+xfT8d7SKDdW167ccA2UxjyY3foriuXYKgr3JcMgQ9t80it
+	 r2bc4Eppfs8KzdgukBLxTw58h/5MwcvjVCn6g2fk2oiwKxnRwpoYXkh00uO1i1fgq5
+	 vbyhr2zWM+dTA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Al Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
+Cc: Kees Cook <kees@kernel.org>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-fsdevel@vger.kernel.org,
+	clm@fb.com,
+	josef@toxicpanda.com,
+	linux-btrfs@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 15/15] __legitimize_mnt(): check for MNT_SYNC_UMOUNT should be under mount_lock
-Date: Mon, 12 May 2025 14:03:50 -0400
-Message-Id: <20250512180352.437356-15-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 01/11] btrfs: compression: adjust cb->compressed_folios allocation type
+Date: Mon, 12 May 2025 14:04:16 -0400
+Message-Id: <20250512180426.437627-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250512180352.437356-1-sashal@kernel.org>
-References: <20250512180352.437356-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,48 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.14.6
+X-stable-base: Linux 6.12.28
 Content-Transfer-Encoding: 8bit
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 250cf3693060a5f803c5f1ddc082bb06b16112a9 ]
+[ Upstream commit 6f9a8ab796c6528d22de3c504c81fce7dde63d8a ]
 
-... or we risk stealing final mntput from sync umount - raising mnt_count
-after umount(2) has verified that victim is not busy, but before it
-has set MNT_SYNC_UMOUNT; in that case __legitimize_mnt() doesn't see
-that it's safe to quietly undo mnt_count increment and leaves dropping
-the reference to caller, where it'll be a full-blown mntput().
+In preparation for making the kmalloc() family of allocators type aware,
+we need to make sure that the returned type from the allocation matches
+the type of the variable being assigned. (Before, the allocator would
+always return "void *", which can be implicitly cast to any pointer type.)
 
-Check under mount_lock is needed; leaving the current one done before
-taking that makes no sense - it's nowhere near common enough to bother
-with.
+The assigned type is "struct folio **" but the returned type will be
+"struct page **". These are the same allocation size (pointer size), but
+the types don't match. Adjust the allocation type to match the assignment.
 
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Kees Cook <kees@kernel.org>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/namespace.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ fs/btrfs/compression.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/namespace.c b/fs/namespace.c
-index 280a6ebc46d93..6730ffb03da5b 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -781,12 +781,8 @@ int __legitimize_mnt(struct vfsmount *bastard, unsigned seq)
- 	smp_mb();			// see mntput_no_expire()
- 	if (likely(!read_seqretry(&mount_lock, seq)))
- 		return 0;
--	if (bastard->mnt_flags & MNT_SYNC_UMOUNT) {
--		mnt_add_count(mnt, -1);
--		return 1;
--	}
- 	lock_mount_hash();
--	if (unlikely(bastard->mnt_flags & MNT_DOOMED)) {
-+	if (unlikely(bastard->mnt_flags & (MNT_SYNC_UMOUNT | MNT_DOOMED))) {
- 		mnt_add_count(mnt, -1);
- 		unlock_mount_hash();
- 		return 1;
+diff --git a/fs/btrfs/compression.c b/fs/btrfs/compression.c
+index 40332ab62f101..65d883da86c60 100644
+--- a/fs/btrfs/compression.c
++++ b/fs/btrfs/compression.c
+@@ -606,7 +606,7 @@ void btrfs_submit_compressed_read(struct btrfs_bio *bbio)
+ 	free_extent_map(em);
+ 
+ 	cb->nr_folios = DIV_ROUND_UP(compressed_len, PAGE_SIZE);
+-	cb->compressed_folios = kcalloc(cb->nr_folios, sizeof(struct page *), GFP_NOFS);
++	cb->compressed_folios = kcalloc(cb->nr_folios, sizeof(struct folio *), GFP_NOFS);
+ 	if (!cb->compressed_folios) {
+ 		ret = BLK_STS_RESOURCE;
+ 		goto out_free_bio;
 -- 
 2.39.5
 
