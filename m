@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-143752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 043A9AB4152
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:04:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB7D7AB406B
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:54:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D1763AE57B
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:02:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7FB016531A
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:54:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3AB32512F1;
-	Mon, 12 May 2025 18:02:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26CE8261586;
+	Mon, 12 May 2025 17:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f4/7ip87"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="frMZ6Krp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F8BF175BF;
-	Mon, 12 May 2025 18:02:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3DA2263F30;
+	Mon, 12 May 2025 17:53:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072964; cv=none; b=BI2mk5PScBxONuLjlb4IAya8l8cbu00NZ721LEYHzfqfE8cBICFcZbER6zCAkDa49l63g0Ub26UJTt44w99PHfzPH/rrk5IzZx3vGH1sme5KTbhBlSaYyx/lcFQhxf0pC3la+26CqdyouNW9aLVJJ5UJPVD9Z6+FPCL5Wg54bR4=
+	t=1747072427; cv=none; b=TjDertKxo+U5/KmV3xURjo00fyRXVAPN0/eJg7fT8dHKoLCSA7lA02Y3UNYP+xEhqAU0vXbO1GUIKN59/8nXcMTzvlmvKgNAYTPl6OnCfrD7NGTHdtnEMHXW75+2lj3TtL65csTln/X9XvpbRRMThci6aCYrv+5JvzJCWkJbL38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072964; c=relaxed/simple;
-	bh=KRAS6MjKiT8DyMU7hY9GW3i/0GTJxrHh++aJ7qK66hI=;
+	s=arc-20240116; t=1747072427; c=relaxed/simple;
+	bh=U0WjejE8S0xdyTrUARfJH3IhIjF7mZsiyIBAdkcHuo4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bLLZYL9yrIp3EYQBwNF0rqVqQYDivcbUydtW5dbvQzKLTM+T/wiMvxKKlPJ4bmhoO14i90jNJoO3Hi0wXpaW9pjr9uPd1DrHKi+WuvOoGWtejO1q0WaVgHoly874AVlXoc6OTwCYCpuV9N6seyyUv/WgJUO7QCaBzSpbhz+wdog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f4/7ip87; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0134C4CEE7;
-	Mon, 12 May 2025 18:02:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PSaLw/1TX9EnYeSZqdwzqmT/n96s5bLBN6rK6MOwuJj0qE7ptTJsPAlYmn7HOzGDsesFNQliKrw7GwFK6zvephUZg+h0NIq1UHjbqx/Atiavbcqba/4TnuV6ifInbMU2bc1Ok4KcWRARItMLa4yC/sxq9mYZoblDsMT4B63Zv/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=frMZ6Krp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E1A8C4CEE7;
+	Mon, 12 May 2025 17:53:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072964;
-	bh=KRAS6MjKiT8DyMU7hY9GW3i/0GTJxrHh++aJ7qK66hI=;
+	s=korg; t=1747072427;
+	bh=U0WjejE8S0xdyTrUARfJH3IhIjF7mZsiyIBAdkcHuo4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f4/7ip8734WVUkfAqDb4yH+BxzlY0QO9EQBKFeAJjY/VvRfM2+XQ+wHkC/0Pu0BjO
-	 9ywgY7a18pG8NAOlZKc9uZpDO0y02v/moR/9gEq7FI8v2XHOhyE7QPQDdC20n9/OPg
-	 vmFUXmGdbxXxu5ri1ufFST30ryfT79br8mA+olZU=
+	b=frMZ6KrpskVhKwfn3GdGuxDJMImPBMSRKUKG66YWsmsCBUg3HeQ41SsbNatVORNmP
+	 4kdNaOXb5VUEDZDfYxoaCiJrrx11NA29uoZPdO++XnV/ktV5R18Jgu+oBn5Znoqvpm
+	 g5pVuXboZeOa+koolDcrbq/88QULm9k8jew6I/M8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heming Zhao <heming.zhao@suse.com>,
-	Gautham Ananthakrishna <gautham.ananthakrishna@oracle.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 112/184] ocfs2: fix the issue with discontiguous allocation in the global_bitmap
+	Daivik Bhatia <dtgs1208@gmail.com>,
+	Iago Toral Quiroga <itoral@igalia.com>,
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
+Subject: [PATCH 6.1 38/92] drm/v3d: Add job to pending list if the reset was skipped
 Date: Mon, 12 May 2025 19:45:13 +0200
-Message-ID: <20250512172046.388565913@linuxfoundation.org>
+Message-ID: <20250512172024.674446037@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
-References: <20250512172041.624042835@linuxfoundation.org>
+In-Reply-To: <20250512172023.126467649@linuxfoundation.org>
+References: <20250512172023.126467649@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,180 +61,103 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heming Zhao <heming.zhao@suse.com>
+From: Maíra Canal <mcanal@igalia.com>
 
-commit bd1261b16d9131d79723d982d54295e7f309797a upstream.
+commit 35e4079bf1a2570abffce6ababa631afcf8ea0e5 upstream.
 
-commit 4eb7b93e0310 ("ocfs2: improve write IO performance when
-fragmentation is high") introduced another regression.
+When a CL/CSD job times out, we check if the GPU has made any progress
+since the last timeout. If so, instead of resetting the hardware, we skip
+the reset and let the timer get rearmed. This gives long-running jobs a
+chance to complete.
 
-The following ocfs2-test case can trigger this issue:
-> discontig_runner.sh => activate_discontig_bg.sh => resv_unwritten:
-> ${RESV_UNWRITTEN_BIN} -f ${WORK_PLACE}/large_testfile -s 0 -l \
-> $((${FILE_MAJOR_SIZE_M}*1024*1024))
+However, when `timedout_job()` is called, the job in question is removed
+from the pending list, which means it won't be automatically freed through
+`free_job()`. Consequently, when we skip the reset and keep the job
+running, the job won't be freed when it finally completes.
 
-In my env, test disk size (by "fdisk -l <dev>"):
-> 53687091200 bytes, 104857600 sectors.
+This situation leads to a memory leak, as exposed in [1] and [2].
 
-Above command is:
-> /usr/local/ocfs2-test/bin/resv_unwritten -f \
-> /mnt/ocfs2/ocfs2-activate-discontig-bg-dir/large_testfile -s 0 -l \
-> 53187969024
+Similarly to commit 704d3d60fec4 ("drm/etnaviv: don't block scheduler when
+GPU is still active"), this patch ensures the job is put back on the
+pending list when extending the timeout.
 
-Error log:
-> [*] Reserve 50724M space for a LARGE file, reserve 200M space for future test.
-> ioctl error 28: "No space left on device"
-> resv allocation failed Unknown error -1
-> reserve unwritten region from 0 to 53187969024.
-
-Call flow:
-__ocfs2_change_file_space //by ioctl OCFS2_IOC_RESVSP64
- ocfs2_allocate_unwritten_extents //start:0 len:53187969024
-  while()
-   + ocfs2_get_clusters //cpos:0, alloc_size:1623168 (cluster number)
-   + ocfs2_extend_allocation
-     + ocfs2_lock_allocators
-     |  + choose OCFS2_AC_USE_MAIN & ocfs2_cluster_group_search
-     |
-     + ocfs2_add_inode_data
-        ocfs2_add_clusters_in_btree
-         __ocfs2_claim_clusters
-          ocfs2_claim_suballoc_bits
-          + During the allocation of the final part of the large file
-	    (after ~47GB), no chain had the required contiguous
-            bits_wanted. Consequently, the allocation failed.
-
-How to fix:
-When OCFS2 is encountering fragmented allocation, the file system should
-stop attempting bits_wanted contiguous allocation and instead provide the
-largest available contiguous free bits from the cluster groups.
-
-Link: https://lkml.kernel.org/r/20250414060125.19938-2-heming.zhao@suse.com
-Fixes: 4eb7b93e0310 ("ocfs2: improve write IO performance when fragmentation is high")
-Signed-off-by: Heming Zhao <heming.zhao@suse.com>
-Reported-by: Gautham Ananthakrishna <gautham.ananthakrishna@oracle.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org # 6.0
+Reported-by: Daivik Bhatia <dtgs1208@gmail.com>
+Closes: https://gitlab.freedesktop.org/mesa/mesa/-/issues/12227 [1]
+Closes: https://github.com/raspberrypi/linux/issues/6817 [2]
+Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
+Acked-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Link: https://lore.kernel.org/r/20250430210643.57924-1-mcanal@igalia.com
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/suballoc.c | 38 ++++++++++++++++++++++++++++++++------
- fs/ocfs2/suballoc.h |  1 +
- 2 files changed, 33 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/v3d/v3d_sched.c |   28 +++++++++++++++++++++-------
+ 1 file changed, 21 insertions(+), 7 deletions(-)
 
-diff --git a/fs/ocfs2/suballoc.c b/fs/ocfs2/suballoc.c
-index f7b483f0de2a..6ac4dcd54588 100644
---- a/fs/ocfs2/suballoc.c
-+++ b/fs/ocfs2/suballoc.c
-@@ -698,10 +698,12 @@ static int ocfs2_block_group_alloc(struct ocfs2_super *osb,
+--- a/drivers/gpu/drm/v3d/v3d_sched.c
++++ b/drivers/gpu/drm/v3d/v3d_sched.c
+@@ -289,11 +289,16 @@ v3d_gpu_reset_for_timeout(struct v3d_dev
+ 	return DRM_GPU_SCHED_STAT_NOMINAL;
+ }
  
- 	bg_bh = ocfs2_block_group_alloc_contig(osb, handle, alloc_inode,
- 					       ac, cl);
--	if (PTR_ERR(bg_bh) == -ENOSPC)
-+	if (PTR_ERR(bg_bh) == -ENOSPC) {
-+		ac->ac_which = OCFS2_AC_USE_MAIN_DISCONTIG;
- 		bg_bh = ocfs2_block_group_alloc_discontig(handle,
- 							  alloc_inode,
- 							  ac, cl);
-+	}
- 	if (IS_ERR(bg_bh)) {
- 		status = PTR_ERR(bg_bh);
- 		bg_bh = NULL;
-@@ -1794,6 +1796,7 @@ static int ocfs2_search_chain(struct ocfs2_alloc_context *ac,
- {
- 	int status;
- 	u16 chain;
-+	u32 contig_bits;
- 	u64 next_group;
- 	struct inode *alloc_inode = ac->ac_inode;
- 	struct buffer_head *group_bh = NULL;
-@@ -1819,10 +1822,21 @@ static int ocfs2_search_chain(struct ocfs2_alloc_context *ac,
- 	status = -ENOSPC;
- 	/* for now, the chain search is a bit simplistic. We just use
- 	 * the 1st group with any empty bits. */
--	while ((status = ac->ac_group_search(alloc_inode, group_bh,
--					     bits_wanted, min_bits,
--					     ac->ac_max_block,
--					     res)) == -ENOSPC) {
-+	while (1) {
-+		if (ac->ac_which == OCFS2_AC_USE_MAIN_DISCONTIG) {
-+			contig_bits = le16_to_cpu(bg->bg_contig_free_bits);
-+			if (!contig_bits)
-+				contig_bits = ocfs2_find_max_contig_free_bits(bg->bg_bitmap,
-+						le16_to_cpu(bg->bg_bits), 0);
-+			if (bits_wanted > contig_bits && contig_bits >= min_bits)
-+				bits_wanted = contig_bits;
-+		}
+-/* If the current address or return address have changed, then the GPU
+- * has probably made progress and we should delay the reset.  This
+- * could fail if the GPU got in an infinite loop in the CL, but that
+- * is pretty unlikely outside of an i-g-t testcase.
+- */
++static void
++v3d_sched_skip_reset(struct drm_sched_job *sched_job)
++{
++	struct drm_gpu_scheduler *sched = sched_job->sched;
 +
-+		status = ac->ac_group_search(alloc_inode, group_bh,
-+				bits_wanted, min_bits,
-+				ac->ac_max_block, res);
-+		if (status != -ENOSPC)
-+			break;
- 		if (!bg->bg_next_group)
- 			break;
++	spin_lock(&sched->job_list_lock);
++	list_add(&sched_job->list, &sched->pending_list);
++	spin_unlock(&sched->job_list_lock);
++}
++
+ static enum drm_gpu_sched_stat
+ v3d_cl_job_timedout(struct drm_sched_job *sched_job, enum v3d_queue q,
+ 		    u32 *timedout_ctca, u32 *timedout_ctra)
+@@ -303,9 +308,16 @@ v3d_cl_job_timedout(struct drm_sched_job
+ 	u32 ctca = V3D_CORE_READ(0, V3D_CLE_CTNCA(q));
+ 	u32 ctra = V3D_CORE_READ(0, V3D_CLE_CTNRA(q));
  
-@@ -1982,6 +1996,7 @@ static int ocfs2_claim_suballoc_bits(struct ocfs2_alloc_context *ac,
- 	victim = ocfs2_find_victim_chain(cl);
- 	ac->ac_chain = victim;
- 
-+search:
- 	status = ocfs2_search_chain(ac, handle, bits_wanted, min_bits,
- 				    res, &bits_left);
- 	if (!status) {
-@@ -2022,6 +2037,16 @@ static int ocfs2_claim_suballoc_bits(struct ocfs2_alloc_context *ac,
- 		}
++	/* If the current address or return address have changed, then the GPU
++	 * has probably made progress and we should delay the reset. This
++	 * could fail if the GPU got in an infinite loop in the CL, but that
++	 * is pretty unlikely outside of an i-g-t testcase.
++	 */
+ 	if (*timedout_ctca != ctca || *timedout_ctra != ctra) {
+ 		*timedout_ctca = ctca;
+ 		*timedout_ctra = ctra;
++
++		v3d_sched_skip_reset(sched_job);
+ 		return DRM_GPU_SCHED_STAT_NOMINAL;
  	}
  
-+	/* Chains can't supply the bits_wanted contiguous space.
-+	 * We should switch to using every single bit when allocating
-+	 * from the global bitmap. */
-+	if (i == le16_to_cpu(cl->cl_next_free_rec) &&
-+	    status == -ENOSPC && ac->ac_which == OCFS2_AC_USE_MAIN) {
-+		ac->ac_which = OCFS2_AC_USE_MAIN_DISCONTIG;
-+		ac->ac_chain = victim;
-+		goto search;
-+	}
+@@ -345,11 +357,13 @@ v3d_csd_job_timedout(struct drm_sched_jo
+ 	struct v3d_dev *v3d = job->base.v3d;
+ 	u32 batches = V3D_CORE_READ(0, V3D_CSD_CURRENT_CFG4);
+ 
+-	/* If we've made progress, skip reset and let the timer get
+-	 * rearmed.
++	/* If we've made progress, skip reset, add the job to the pending
++	 * list, and let the timer get rearmed.
+ 	 */
+ 	if (job->timedout_batches != batches) {
+ 		job->timedout_batches = batches;
 +
- set_hint:
- 	if (status != -ENOSPC) {
- 		/* If the next search of this group is not likely to
-@@ -2365,7 +2390,8 @@ int __ocfs2_claim_clusters(handle_t *handle,
- 	BUG_ON(ac->ac_bits_given >= ac->ac_bits_wanted);
++		v3d_sched_skip_reset(sched_job);
+ 		return DRM_GPU_SCHED_STAT_NOMINAL;
+ 	}
  
- 	BUG_ON(ac->ac_which != OCFS2_AC_USE_LOCAL
--	       && ac->ac_which != OCFS2_AC_USE_MAIN);
-+	       && ac->ac_which != OCFS2_AC_USE_MAIN
-+	       && ac->ac_which != OCFS2_AC_USE_MAIN_DISCONTIG);
- 
- 	if (ac->ac_which == OCFS2_AC_USE_LOCAL) {
- 		WARN_ON(min_clusters > 1);
-diff --git a/fs/ocfs2/suballoc.h b/fs/ocfs2/suballoc.h
-index b481b834857d..bcf2ed4a8631 100644
---- a/fs/ocfs2/suballoc.h
-+++ b/fs/ocfs2/suballoc.h
-@@ -29,6 +29,7 @@ struct ocfs2_alloc_context {
- #define OCFS2_AC_USE_MAIN  2
- #define OCFS2_AC_USE_INODE 3
- #define OCFS2_AC_USE_META  4
-+#define OCFS2_AC_USE_MAIN_DISCONTIG  5
- 	u32    ac_which;
- 
- 	/* these are used by the chain search */
--- 
-2.49.0
-
 
 
 
