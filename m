@@ -1,139 +1,220 @@
-Return-Path: <stable+bounces-143292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FD75AB3AF9
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 16:46:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF492AB3B50
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 16:50:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 253267AC712
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 14:45:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 409323AD9EA
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 14:49:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EBDA1EDA06;
-	Mon, 12 May 2025 14:46:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 912B8218AC4;
+	Mon, 12 May 2025 14:49:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DBHvCD6q"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Ej0Akcht"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2067.outbound.protection.outlook.com [40.107.94.67])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5C982F41
-	for <stable@vger.kernel.org>; Mon, 12 May 2025 14:46:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747061195; cv=none; b=g1XlfdkCEJZzRap2fsTa+/Cbf2kKQaIAqbDWkzydvJyAJ9LOhACs3LjXSN6kTrZjH7uD8JXMj4UTjNjdpqtDl2JduAi+zc1UO69+3WiHAGsdzmNAZoAe4bMxhEsrm+tB5J8r/1klzaacbDYNagLYSIFrYaO5+yUjpYGfT4fLIEc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747061195; c=relaxed/simple;
-	bh=y/WCT9k+NHEwx87D3TbRYlcmZKAHjaI6LXf2RTnFDl8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fzGDsW2MHlD1MDzGpB/8g0FkQcPLr20HhD3x8RF1q6fbo7IEdeIsz8Mti5xLAmqxVBEgX1WsCBRMguxw1LDkdruqu8y2FCMZzalFaVgH99cVOb1tucVi3l2QcIE0G3oNXF/i5XBAOcyEj+/Q7Y3EFyv/CCvqZ/l4O0UBm8iOghA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DBHvCD6q; arc=none smtp.client-ip=209.85.215.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-b1ff8a0a13cso766473a12.0
-        for <stable@vger.kernel.org>; Mon, 12 May 2025 07:46:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747061193; x=1747665993; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WLqVwA910Oz+N1ZjLYrP/5SUcf9+/wqVkZckGAFbHSU=;
-        b=DBHvCD6qKitilw0IIdNGW+UECFFAkWdNKd841tfVCGfllZLxmjyaqRDHd6FAhie3I0
-         NVk9zSRcuoQ2Cqy1dvbzUUcfri5BnNmfdbTqhyi6ObGgOPAdcqfCsA99VXZgId25m+PR
-         Svkf+gEQLQwdsXa+iPRDwjgARAJivEDjWGWazbqwcRZ1h+R03VIsSxMBoNVdTQX7NDLx
-         h96dtD9sr+Ikq5vEtgr5IMGd8g10rmk8JNgeQe1BdsYahQfwDHC0KgTpoWHSjYFjQrEH
-         tK7K/P7JPxmyD+YUhjeOEycCJVOgyzfjbdnZ0ihzoe4ByxXh21N6W6RFFp910bLp0xk5
-         YTEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747061193; x=1747665993;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WLqVwA910Oz+N1ZjLYrP/5SUcf9+/wqVkZckGAFbHSU=;
-        b=kr24Y+E6S57Hp9GPRLX1n3hhYUL0YFJUEIxHB34qHHS/GgWklt8TyZZUeoRX/MGQ4F
-         NFQWRLGVwAzRm+8FKyKfLRpu6RgYgPDsINvHL1mhnJCU7g/8EegTIRznjUc2/amE/fqt
-         uHCj18RBSTl+VMS7SlM8Pe9VZ35U6b1NlLo2FktJSiuUndUbBdW/wPmUVDoiqGdsxU0T
-         x7Q5k9Hi9/dw6OGVviyyRAj/4kiuFVO6gXOcU03maVce5nH9OcFmm19YTHc2Y9VNhBp+
-         6SpiKfltQpbIwLDkhaS25iat8rFb2EGGNCST7hpYSp1Nk1rd1k5C0ZspKJEpUdE+nT9T
-         iQgw==
-X-Forwarded-Encrypted: i=1; AJvYcCV647Z9oxI/DHJup2z/rLnmKt1y9oc61kAW/T5woqQVxwP9a0LfWSwieqyvtXXs+l2KbP2g37g=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy9mzNbhWla4h5xAWeau5vYdejGM+nP3nNMM0uJolUI32RW4v3A
-	rtcP3UtgwtpZguCb2o9z5LMjqS8yQ7kEty7aNPqA0YhR2kZ60uvRajXseQXVaQjcp0U1ofhh5/1
-	CYmDnTuvIvSbUo3pPfDPdiieNkVw=
-X-Gm-Gg: ASbGncv7siUrNkk9Ht+umdCjE2vmp5WlNf5mp7SJ65ukhPJDyts9DQVj4DbcpyCHPVq
-	i0N/mYBtrfxBg2FVUBZrsryBRWBR/1SV1OWM9ttYkzja7imcK3eFZ7V2ju6UqHKxHvjtuZPeytL
-	ac6QGvUcyndhrZFvPS6BXV5FcCaQMin3Bp
-X-Google-Smtp-Source: AGHT+IENnH5CiJy9w5b5F05MU7kzwPLR9EX+eFQG19NegOYS/HTngrIDNEadQ1CCfn3YeLQ6h+DmTNX0hQmZJfYU7KQ=
-X-Received: by 2002:a17:902:d2c7:b0:223:f903:aa86 with SMTP id
- d9443c01a7336-22fc8b106d0mr76317645ad.1.1747061193179; Mon, 12 May 2025
- 07:46:33 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDE23215789
+	for <stable@vger.kernel.org>; Mon, 12 May 2025 14:49:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.67
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747061374; cv=fail; b=D1X+nLpJs4z3S6j0jW86Q0P3D994QR9W4W1qQQqHV88hmZ6dsJIuwMlPbZ6JNUzKMMLpIlaxKloPcU37AXr07j7fGcrDXK+MG/gsM20F8izU4OFZXBATfIzDH2rnbcvIWK0wNFwXGdfhkEexeGHjnUjMnq1Z+IDZoYsc46Y1KDY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747061374; c=relaxed/simple;
+	bh=V8dtTwQPV+NW87p1KBC/AywhiSYV5Q9XkfMAtYzNd6w=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=isz+LPRUsackKFRtG88UKJ9oqL+/85eDKI2YHDjFO/YVmKgCxqC5KOCit+fOtBIhpvEz5HUmrw94y5BZGdN1+Xnihsfw8uMtZBSF2IOV1lw6tP8mcyHLfNq92hzWpfiDryvqMUvVgv0fu1qmDVa2yuXQ7Lmw30h+gPlbex8yb1w=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Ej0Akcht; arc=fail smtp.client-ip=40.107.94.67
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BdZvVRlMKJaPD32f1io2mD+0l26G9X42TpXz7xSjocY9bBj8LX4AjJnuY/1FG5uxvXNfyPydkFq5eFjVgVYhNHYs95CoMvQdwIxRJQVC6M0KPXSmnZMtM9P5+h3Q0Olszzo8tcsbdguv2soXGLekBYqjr3QnOlfEB0Eyi3v2FhZCxmElz5SuCPluBiuWw0utC7Layl8CrUZTCEyScMsnsSkl8tmNJWEkQ2kWr6Yw9VEwymtcdEma728lZ1xLv90YuDZ23gj3vfhgysWG2Vq0VRhZzoCDfCnIl09yvjSotwuC2rbSR9+dxTqtfDgN2eZFXvX34cUPP0s9GBXk8e1KvA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Y17ioDAvcB+4iSI2jaBZQJXhiL7U8cUYrCGcvkgBzkw=;
+ b=Q/F/zXU3isF0AbwL9GtQCi4OL86mmAk2O1otFTvpo/x7h4o0RizgC0Ma/qWW4xPRuQKuGgQlG3kwf3U3R76lpCqOdtDTP8U48ZpLW80ezsadqhrEEI0WYlzCI7QfZBJU2QejO3d7vRq1yln/yPs+HnUGK1PBQQwk5k56cSVhSOecuDVpCc526FZRvjqOG4nbKSOuV9UEuA7UB77cx6VjeMy9paqivAenAp8vQQhCYtedY4ik5HHoKvhJkDfsHcyhJhjUQ/dgPBHAU09ONsR064e8eL39rrGN7iwEoe/hx278pUSiD57SYr1wFjChzGXymWUH43qahTL5W4Qweua4Aw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Y17ioDAvcB+4iSI2jaBZQJXhiL7U8cUYrCGcvkgBzkw=;
+ b=Ej0AkchtkXY7AHFlsJ82mdug5yC+aNAxklr0Zw8UeV6GSd85AT9hfDQHtfxrgeI4bwYfQFi8X0RSqDy9aqvRFQqpnsKJS+rFd6N2WV+uUj80nJxYG3SRCBLrhlUI7RNf9v2n74vqSdCuynh8Opfn/+E71qWeAUx3yAkogO8L+RI=
+Received: from CH0PR03CA0310.namprd03.prod.outlook.com (2603:10b6:610:118::33)
+ by CY1PR12MB9673.namprd12.prod.outlook.com (2603:10b6:930:104::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.29; Mon, 12 May
+ 2025 14:49:30 +0000
+Received: from CH2PEPF00000141.namprd02.prod.outlook.com
+ (2603:10b6:610:118:cafe::7e) by CH0PR03CA0310.outlook.office365.com
+ (2603:10b6:610:118::33) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8722.20 via Frontend Transport; Mon,
+ 12 May 2025 14:49:30 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CH2PEPF00000141.mail.protection.outlook.com (10.167.244.74) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8722.18 via Frontend Transport; Mon, 12 May 2025 14:49:30 +0000
+Received: from tlendack-t1.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 12 May
+ 2025 09:49:29 -0500
+From: Tom Lendacky <thomas.lendacky@amd.com>
+To: <stable@vger.kernel.org>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Mike Rapoport
+	<rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka
+	<vbabka@suse.cz>, "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Michael Roth <michael.roth@amd.com>
+Subject: [PATCH] memblock: Accept allocated memory before use in memblock_double_array()
+Date: Mon, 12 May 2025 09:48:50 -0500
+Message-ID: <ac06a9649992e80e584e4f2548d9058c50f50c6a.1747061330.git.thomas.lendacky@amd.com>
+X-Mailer: git-send-email 2.46.2
+In-Reply-To: <2025051217-dispersal-trustful-906e@gregkh>
+References: <2025051217-dispersal-trustful-906e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <D97FB92117J2.PXTNFKCIRWAS@linaro.org> <SI2PR06MB5041FB15F8DBB44916FB6430F1BD2@SI2PR06MB5041.apcprd06.prod.outlook.com>
- <D980Y4WDV662.L4S7QAU72GN2@linaro.org> <CADnq5_NT0syV8wB=MZZRDONsTNSYwNXhGhNg9LOFmn=MJP7d9Q@mail.gmail.com>
- <SI2PR06MB504138A5BEA1E1B3772E8527F1BC2@SI2PR06MB5041.apcprd06.prod.outlook.com>
- <CADnq5_M=YiMVvMpGaFhn2T3jRWGY2FrsUwCVPG6HupmTzZCYug@mail.gmail.com>
- <D9CT4HS7F067.J0GJHAGHI9G9@linaro.org> <CADnq5_ML25QA7xD+bLqNprO3zzTxJYLkiVw-KmeP-N6TqNHRYA@mail.gmail.com>
- <D9DAIUZXIWH3.1L7CV6GEX4C9M@linaro.org> <CADnq5_NE2M19JdrULtJH-OXwycDpu0hrFHy42YiJA3nMYoP=+w@mail.gmail.com>
- <D9H0K4EW3XTV.1XO4KO44J1YRE@linaro.org> <CADnq5_PuXu-9MAhr3d7HLGnOqHR7Uo+nJPzrpdJEusvRCE8wbw@mail.gmail.com>
- <CANgGJDqZptyPK2nn5NR+OCcGHX1H=YF1vUGsqoLz-vYZjf5Htg@mail.gmail.com>
-In-Reply-To: <CANgGJDqZptyPK2nn5NR+OCcGHX1H=YF1vUGsqoLz-vYZjf5Htg@mail.gmail.com>
-From: Alex Deucher <alexdeucher@gmail.com>
-Date: Mon, 12 May 2025 10:46:21 -0400
-X-Gm-Features: AX0GCFssUsUak1AQ1yrAFKDGy4jdp1x4SO9rABfJG55FF56FGyGeO0hrLajcuUk
-Message-ID: <CADnq5_O77xrMBKX+j-b-ULQi7GJ6=nqfKhU82E7L1oUANXwcuw@mail.gmail.com>
-Subject: =?UTF-8?B?UmU6IOWbnuWkjTogW1JFR1JFU1NJT05dIGFtZGdwdTogYXN5bmMgc3lzdGVtIGVycm9yIA==?=
-	=?UTF-8?B?ZXhjZXB0aW9uIGZyb20gaGRwX3Y1XzBfZmx1c2hfaGRwKCk=?=
-To: Alexey Klimov <alexey.klimov@linaro.org>
-Cc: Fugang Duan <fugang.duan@cixtech.com>, 
-	"alexander.deucher@amd.com" <alexander.deucher@amd.com>, "frank.min@amd.com" <frank.min@amd.com>, 
-	"amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>, "david.belanger@amd.com" <david.belanger@amd.com>, 
-	"christian.koenig@amd.com" <christian.koenig@amd.com>, Peter Chen <peter.chen@cixtech.com>, 
-	cix-kernel-upstream <cix-kernel-upstream@cixtech.com>, 
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PEPF00000141:EE_|CY1PR12MB9673:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4861a90a-8df9-4604-a685-08dd916433b7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|82310400026|1800799024|36860700013|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?JQ2ggH7GjYIRiQoHLsKUpTk6XajUnJaeJSHt3WSFTWVHParcYO+bM8yWEAoT?=
+ =?us-ascii?Q?vEnE5zWyUADiN3r6MYrbo00mVIDUuVMcN7HVh+JFXisCQKI7/Uyl1ICcFBCe?=
+ =?us-ascii?Q?KKx65D5R0/ZJvNQhvqkUaTsqBLSpY4pTLa9sK5meyg/BDOBU9nw3IE5ud+/S?=
+ =?us-ascii?Q?EwguHI9JayROSG+7CwNDdy6bDIAJqLEue9AtH47fM2AwVGdKCf4cJli+QLUY?=
+ =?us-ascii?Q?NPjFg5kzgBaonI+M8YDHszL90xZEmNepo6LA9FfK0eS3oLMt/2H5T/u9j6z4?=
+ =?us-ascii?Q?jD75zaUU4TxwxemYWCQzstWzOXTYzFII8DuiwYTzlzeMM/+9akN37Vu4EMgT?=
+ =?us-ascii?Q?o/psqC447J93GXYV/Cgev1hw4j6FBaVTWbLMvdkiLU5KyTx/LmEY1NJdLHai?=
+ =?us-ascii?Q?s4tjGJxiIgtZxvJ8l416KwSDznGAOETQluh/aFmqhKGrcLBXmyDhS5GYwnYr?=
+ =?us-ascii?Q?xGFN0wOl6Y4S+lPTfJUb5YT9lIYnA+Ze3Q8VqkRZINlNq5uxawNvnTQx4JHf?=
+ =?us-ascii?Q?vDsPvgKGnF8ohM2cgLJNc/+auoyy8PJtaxGoFBEXGBWgM+usy+ebWWDr2JZF?=
+ =?us-ascii?Q?nPmDJzDa3YV3BU1eZsXd9ojcAC6Q6jiP40J48JiHL5qZ0oWmd+17rBcmpqMh?=
+ =?us-ascii?Q?pYI55zJJkQh9zGqPbsXfA0kQJ++5QTOuRXM1pKYK5bMRAnCL+Ehukl4s+m8Q?=
+ =?us-ascii?Q?KKvW2ILB+TPQ6DQcBUiZN42tLzW5I0EUgGRujk9QGTuI6ipyI8JEE2LjI4Ps?=
+ =?us-ascii?Q?RO3kaJbivHFlkx1m8kkmArEhS/iftEpOHNkSN+6BXwstpjSeZWnGXDtXoCEj?=
+ =?us-ascii?Q?yz0Zt+xZm2KHsmBHKU/m7/xr87GS+0rt8v4gH+UbT7H9cRwfeh6vIIiiGQXC?=
+ =?us-ascii?Q?oTGhJe2OsX+khv5TaKfgecu+Pq5DyFnJmfstQMDTLVSBPxjt8y7h86EcldZW?=
+ =?us-ascii?Q?oM/9OtIG1WWYw2tRKD/8t5SVALZd3IJUtXDQwC91nq+BLT9jwKGo7Ep67rDD?=
+ =?us-ascii?Q?Tbu2GLIs3KoDaVvRLpLKxDvrHUKywAAUcBD1fJtV4SUrkoSFY5Zm2Q/OQDxG?=
+ =?us-ascii?Q?0juEjhoIBkERHrMaM4Uc4yVB98QitVt0OxLeblIs69VwYtVhVeZZpXZEFgK4?=
+ =?us-ascii?Q?4DBRr2h9tNY8WvYXOxSw1LvS8MDIACypfD4LEyoGyhGBaRPUo7qV++BjX1kZ?=
+ =?us-ascii?Q?J1Zg4NGku84fXcZ3rw5FkW3q43SXlUsjFcXD5ZgGj90x/E7gGmhQV3jsAgHl?=
+ =?us-ascii?Q?GEbsET4G61CCjXBsN4DgDKa9+oaWCs520t0QQ2S7+m5pOBTMpetFNEqKV79J?=
+ =?us-ascii?Q?T1+oFL+aOiLy4O0zkXFAXlspvVjBaM2qNUUR3873rUeTF6/GPie/Jv+Gt+A8?=
+ =?us-ascii?Q?DtC2Ie2nxV7CKxdiicAze5ti68P0/inFTpUg5YBcgclAIAbdHLGAPaQgyCzP?=
+ =?us-ascii?Q?kMbefm6d2RZipyflSYRxvMt6oZ+w26gn5hMkk02xdf1cKbCFRNI7eLv77oWZ?=
+ =?us-ascii?Q?jD7l3FCT4zZ2n4ZI8dvIokNPadHoioLyGDPrfD6oRmU9BXNgzUZnsUhHww?=
+ =?us-ascii?Q?=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(82310400026)(1800799024)(36860700013)(7053199007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 May 2025 14:49:30.5996
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4861a90a-8df9-4604-a685-08dd916433b7
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH2PEPF00000141.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY1PR12MB9673
 
-On Sun, May 11, 2025 at 7:25=E2=80=AFPM Alexey Klimov <alexey.klimov@linaro=
-.org> wrote:
->
-> On Wed, 30 Apr 2025 at 17:55, Alex Deucher <alexdeucher@gmail.com> wrote:
-> >
-> > I think I have a better solution.  Please try these patches instead.  T=
-hanks!
-> >
-> > For the RX6600, you only need patch 0003.  The rest of the series
-> > fixes up other chips.
->
-> Sorry for the delay.
-> Finally managed to find some time to test it.
-> It seems that patches are merged in the current -rc tree so I just
-> re-tested -rc5.
-> All works. Thank you.
+commit da8bf5daa5e55a6af2b285ecda460d6454712ff4 upstream.
 
-Thanks.
+When increasing the array size in memblock_double_array() and the slab
+is not yet available, a call to memblock_find_in_range() is used to
+reserve/allocate memory. However, the range returned may not have been
+accepted, which can result in a crash when booting an SNP guest:
 
->
-> A bit annoying thing is repeating:
-> [drm] Unknown EDID CEA parser results
-> and I also didn't observe such messages before on -rc2 or -rc3:
-> amdgpu 0000:c3:00.0: amdgpu: [drm] amdgpu: DP AUX transfer fail:4
->
-> dmesg is in attachment. But I don't think that these are related to
-> hdp_v5_0_flush_hdp() issue.
+  RIP: 0010:memcpy_orig+0x68/0x130
+  Code: ...
+  RSP: 0000:ffffffff9cc03ce8 EFLAGS: 00010006
+  RAX: ff11001ff83e5000 RBX: 0000000000000000 RCX: fffffffffffff000
+  RDX: 0000000000000bc0 RSI: ffffffff9dba8860 RDI: ff11001ff83e5c00
+  RBP: 0000000000002000 R08: 0000000000000000 R09: 0000000000002000
+  R10: 000000207fffe000 R11: 0000040000000000 R12: ffffffff9d06ef78
+  R13: ff11001ff83e5000 R14: ffffffff9dba7c60 R15: 0000000000000c00
+  memblock_double_array+0xff/0x310
+  memblock_add_range+0x1fb/0x2f0
+  memblock_reserve+0x4f/0xa0
+  memblock_alloc_range_nid+0xac/0x130
+  memblock_alloc_internal+0x53/0xc0
+  memblock_alloc_try_nid+0x3d/0xa0
+  swiotlb_init_remap+0x149/0x2f0
+  mem_init+0xb/0xb0
+  mm_core_init+0x8f/0x350
+  start_kernel+0x17e/0x5d0
+  x86_64_start_reservations+0x14/0x30
+  x86_64_start_kernel+0x92/0xa0
+  secondary_startup_64_no_verify+0x194/0x19b
 
-Correct.  There was a DP AUX fix that also landed that was a bit too
-chatty in some cases.  There will be a patch to quiet that down.
+Mitigate this by calling accept_memory() on the memory range returned
+before the slab is available.
 
-Alex
+Prior to v6.12, the accept_memory() interface used a 'start' and 'end'
+parameter instead of 'start' and 'size', therefore the accept_memory()
+call must be adjusted to specify 'start + size' for 'end' when applying
+to kernels prior to v6.12.
 
->
-> Best regards,
-> Alexey
+Cc: stable@vger.kernel.org # see patch description, needs adjustments for <= 6.11
+Fixes: dcdfdd40fa82 ("mm: Add support for unaccepted memory")
+Signed-off-by: Tom Lendacky <thomas.lendacky@amd.com>
+Link: https://lore.kernel.org/r/da1ac73bf4ded761e21b4e4bb5178382a580cd73.1746725050.git.thomas.lendacky@amd.com
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+
+---
+
+This version of the patch is to be applied to the v6.6 stable branch.
+---
+ mm/memblock.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/mm/memblock.c b/mm/memblock.c
+index 047dce35cf6e..0695284232f3 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -460,7 +460,14 @@ static int __init_memblock memblock_double_array(struct memblock_type *type,
+ 				min(new_area_start, memblock.current_limit),
+ 				new_alloc_size, PAGE_SIZE);
+ 
+-		new_array = addr ? __va(addr) : NULL;
++		if (addr) {
++			/* The memory may not have been accepted, yet. */
++			accept_memory(addr, addr + new_alloc_size);
++
++			new_array = __va(addr);
++		} else {
++			new_array = NULL;
++		}
+ 	}
+ 	if (!addr) {
+ 		pr_err("memblock: Failed to double %s array from %ld to %ld entries !\n",
+
+base-commit: 9c2dd8954dad0430e83ee55b985ba55070e50cf7
+-- 
+2.46.2
+
 
