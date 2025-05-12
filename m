@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-143805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8846AB41A9
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:09:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED7F8AB430B
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:29:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09CC97B529A
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:08:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59BBF8C5CAA
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:26:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64ABE299A9C;
-	Mon, 12 May 2025 18:04:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 911C7299A9E;
+	Mon, 12 May 2025 18:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DDF26CCG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bj0XyGjx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B62729992E;
-	Mon, 12 May 2025 18:04:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB09297109;
+	Mon, 12 May 2025 18:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073076; cv=none; b=eG0cp2D8cV6TLymHDShzYTj8XANm7fbHns4ydDxhROmEip0j5QRGcDUrYgUrsNkt1rZcw0A0iuohwIBL2kc1wglelC/1JT3ZhLa9Lhcx2L8N7Ogha5InLf6qoM0tT37H5FrZ6g5g7jj67HsHiTXwFC23/AUqV/HF+pg5rkXjjO8=
+	t=1747073381; cv=none; b=m8LT6lCpjPAnPKHsu/dQaUOi74u0h5QqJTIlEUbsimN3k9zkbXSyKNnRlU4BI2t896zyQMu+I08lcF76+GMNtcFytMnwkIDdQHJaIXkWXZjEACj0wXiTmoYYcgJXxe+oFuLfF8qXtybsCH8tdugUcrAMlMHu3VJvevQTusOBDXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073076; c=relaxed/simple;
-	bh=nXTckhGudQMSiRqNspmo4uwcaKKSF+2RKoZbAxCgNA8=;
+	s=arc-20240116; t=1747073381; c=relaxed/simple;
+	bh=Z5kCbkSZwlN16U1HiT+HWmwRzarrt7jEVKlLgUMTsbw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SZ2lWMFPXn4o9uLTFkGZn+qM0RrymdbyC/TjdM9JtCIEa17hhK7jdOeE8OI/0p5a6Vn5RnghVQt6XKAdBShZTDxK81isscjM6hzcbQ7JH6YwNM60D/WVfvVo/h1xPyUjBeoXGqpy/eNCm0l4plj/K4GPgys7LCdfYttKILseWYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DDF26CCG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BDEFC4CEE9;
-	Mon, 12 May 2025 18:04:34 +0000 (UTC)
+	 MIME-Version; b=jevqBHRxQbNMxDH3B0OwItTPbRetu7nkbN2Y6Oiy26br3agJrGxi1zl6mOaAAgIhaX5gZIaMOYnoSA+5UfcNDYUpeF0eRUGmI6tIwrqQMRPL4IJTt1GqahgZqgU+NBLT/S+YO2QWd7+YELkdXyclrpBtjRCtXHbEbCOwcxTruBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bj0XyGjx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CD7DC4CEE7;
+	Mon, 12 May 2025 18:09:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073075;
-	bh=nXTckhGudQMSiRqNspmo4uwcaKKSF+2RKoZbAxCgNA8=;
+	s=korg; t=1747073381;
+	bh=Z5kCbkSZwlN16U1HiT+HWmwRzarrt7jEVKlLgUMTsbw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DDF26CCGh757TpTOBNiD8K/zwQL8EUGnQEn/IS0SAspl75LpsVLfG3/KvtAmWaNiA
-	 O1SVfXWElDvlLI870rF9TLKWahb95Gdx0nB1OBtHDbwFf2aOiAZvtT/7dyEAsFWOKp
-	 eCt+9Rf6sl7Cc6gPLwpBNRiLqIa7AHD5M/fqEG0o=
+	b=bj0XyGjxwWWkQT8Y8aI4vbTMsXnCsTlcRbasYNibdrDrlO1pcRmpPEObj1aar8bUA
+	 MxHGAGaV7ebtcm88XEl8dSIaJ3K390Bp5eKOTt8wbrZ19Yug2oPsOkUEaiBCHhFQvM
+	 UyZlgUw70Q56mFp4GNySH5U9Pr2yh64DwxsnXV6w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Daniel Wagner <wagi@kernel.org>,
-	Keith Busch <kbusch@kernel.org>,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 146/184] nvme: unblock ctrl state transition for firmware update
+	Henrique Carvalho <henrique.carvalho@suse.com>,
+	Paul Aurich <paul@darkrain42.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 058/113] smb: client: Avoid race in open_cached_dir with lease breaks
 Date: Mon, 12 May 2025 19:45:47 +0200
-Message-ID: <20250512172047.760465704@linuxfoundation.org>
+Message-ID: <20250512172030.040852219@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
-References: <20250512172041.624042835@linuxfoundation.org>
+In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
+References: <20250512172027.691520737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +62,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <wagi@kernel.org>
+From: Paul Aurich <paul@darkrain42.org>
 
-[ Upstream commit 650415fca0a97472fdd79725e35152614d1aad76 ]
+commit 3ca02e63edccb78ef3659bebc68579c7224a6ca2 upstream.
 
-The original nvme subsystem design didn't have a CONNECTING state; the
-state machine allowed transitions from RESETTING to LIVE directly.
+A pre-existing valid cfid returned from find_or_create_cached_dir might
+race with a lease break, meaning open_cached_dir doesn't consider it
+valid, and thinks it's newly-constructed. This leaks a dentry reference
+if the allocation occurs before the queued lease break work runs.
 
-With the introduction of nvme fabrics the CONNECTING state was
-introduce. Over time the nvme-pci started to use the CONNECTING state as
-well.
+Avoid the race by extending holding the cfid_list_lock across
+find_or_create_cached_dir and when the result is checked.
 
-Eventually, a bug fix for the nvme-fc started to depend that the only
-valid transition to LIVE was from CONNECTING. Though this change didn't
-update the firmware update handler which was still depending on
-RESETTING to LIVE transition.
-
-The simplest way to address it for the time being is to switch into
-CONNECTING state before going to LIVE state.
-
-Fixes: d2fe192348f9 ("nvme: only allow entering LIVE from CONNECTING state")
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Daniel Wagner <wagi@kernel.org>
-Closes: https://lore.kernel.org/all/0134ea15-8d5f-41f7-9e9a-d7e6d82accaa@roeck-us.net
-Reviewed-by: Keith Busch <kbusch@kernel.org>
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: Henrique Carvalho <henrique.carvalho@suse.com>
+Signed-off-by: Paul Aurich <paul@darkrain42.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/smb/client/cached_dir.c |   10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index f19410723b179..98dad1bdff440 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -4473,7 +4473,8 @@ static void nvme_fw_act_work(struct work_struct *work)
- 		msleep(100);
+--- a/fs/smb/client/cached_dir.c
++++ b/fs/smb/client/cached_dir.c
+@@ -29,7 +29,6 @@ static struct cached_fid *find_or_create
+ {
+ 	struct cached_fid *cfid;
+ 
+-	spin_lock(&cfids->cfid_list_lock);
+ 	list_for_each_entry(cfid, &cfids->entries, entry) {
+ 		if (!strcmp(cfid->path, path)) {
+ 			/*
+@@ -38,25 +37,20 @@ static struct cached_fid *find_or_create
+ 			 * being deleted due to a lease break.
+ 			 */
+ 			if (!cfid->time || !cfid->has_lease) {
+-				spin_unlock(&cfids->cfid_list_lock);
+ 				return NULL;
+ 			}
+ 			kref_get(&cfid->refcount);
+-			spin_unlock(&cfids->cfid_list_lock);
+ 			return cfid;
+ 		}
  	}
+ 	if (lookup_only) {
+-		spin_unlock(&cfids->cfid_list_lock);
+ 		return NULL;
+ 	}
+ 	if (cfids->num_entries >= max_cached_dirs) {
+-		spin_unlock(&cfids->cfid_list_lock);
+ 		return NULL;
+ 	}
+ 	cfid = init_cached_dir(path);
+ 	if (cfid == NULL) {
+-		spin_unlock(&cfids->cfid_list_lock);
+ 		return NULL;
+ 	}
+ 	cfid->cfids = cfids;
+@@ -74,7 +68,6 @@ static struct cached_fid *find_or_create
+ 	 */
+ 	cfid->has_lease = true;
  
--	if (!nvme_change_ctrl_state(ctrl, NVME_CTRL_LIVE))
-+	if (!nvme_change_ctrl_state(ctrl, NVME_CTRL_CONNECTING) ||
-+	    !nvme_change_ctrl_state(ctrl, NVME_CTRL_LIVE))
- 		return;
+-	spin_unlock(&cfids->cfid_list_lock);
+ 	return cfid;
+ }
  
- 	nvme_unquiesce_io_queues(ctrl);
--- 
-2.39.5
-
+@@ -185,8 +178,10 @@ replay_again:
+ 	if (!utf16_path)
+ 		return -ENOMEM;
+ 
++	spin_lock(&cfids->cfid_list_lock);
+ 	cfid = find_or_create_cached_dir(cfids, path, lookup_only, tcon->max_cached_dirs);
+ 	if (cfid == NULL) {
++		spin_unlock(&cfids->cfid_list_lock);
+ 		kfree(utf16_path);
+ 		return -ENOENT;
+ 	}
+@@ -195,7 +190,6 @@ replay_again:
+ 	 * Otherwise, it is either a new entry or laundromat worker removed it
+ 	 * from @cfids->entries.  Caller will put last reference if the latter.
+ 	 */
+-	spin_lock(&cfids->cfid_list_lock);
+ 	if (cfid->has_lease && cfid->time) {
+ 		spin_unlock(&cfids->cfid_list_lock);
+ 		*ret_cfid = cfid;
 
 
 
