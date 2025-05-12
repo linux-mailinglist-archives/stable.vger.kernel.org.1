@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-143741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D599AAB4147
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:04:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0CA6AB411A
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:01:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08C0F3AA4D0
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:01:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9844A3AF523
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:00:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08FC523BF9F;
-	Mon, 12 May 2025 18:02:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D19A2550A7;
+	Mon, 12 May 2025 18:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g/8NuZ7Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hm2Fy6Hr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B83F9175BF;
-	Mon, 12 May 2025 18:02:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 586BD1519B8;
+	Mon, 12 May 2025 18:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072929; cv=none; b=FtTH5myOrafgWmBX24LoBhFSomtNeObZ9Oa8WnkVzx7magxxL7paC0hDRUqL3KEEWL2CiCj03In4P9EIbiy8qzaPcGivvpqjgW/CkmvYq2Zggo8PUQpKeQctkI7mL3tXX/ybExvx/YRhsov92xR2jlK3n7mIv++pkJ05fDR3lm8=
+	t=1747072829; cv=none; b=bZnnyqiHk6ke2EvD+oYNwblxjKiI03fMvBY6JXfZXfqMwVDF+zDFeJeZ05xx75t7pWPM9CdZ5PneRXQjinN3WWquz+w02t9PHUX/skezdrSwAgwSy8D8SYng5ekXGdZ3Fsz/jFbpM5fiXc/Sr2e/D8Hgi5j/DMHp0FHAeFyXA6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072929; c=relaxed/simple;
-	bh=EfDzcDBvv2IMVkC+F249kKyUx+9m8XkEbAKO1i1OlZU=;
+	s=arc-20240116; t=1747072829; c=relaxed/simple;
+	bh=f/ruqs5DGqHwH+XZLrhAY641fvctPvxzT8/T+D+bals=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oEb+CowlA/lJOqPgd90+GsAw0VX9yJzsuoZrX1pqaqZ+oM1q8bcZwAryry46ZB0pwFLujSui+xayUboBaaZ0j5tsqhouR5KqsnGEQhmI+mab+B5ijy9ub44FR+5zOT5x7lOrSl6x5CHMAL5wEADMOHHtlbqwRTLHLfZnOfWggw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g/8NuZ7Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 259E6C4CEE7;
-	Mon, 12 May 2025 18:02:08 +0000 (UTC)
+	 MIME-Version; b=UrhB0ySn7ZYXJs3/Ei/Uha2S1ltZ41gFCbwNhumUPLVjmNUTAgxnoU3pyyNZJXvZgqNYh3W3FOf4HbYKxnfku/CJhd7zdJj8Tl+w8RnLF43EOXxm5l+6ADoIiy1261cYCbVZGUI809EyWhNjFwH7kOoGfJmVHZDQo3/2GtuNt5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hm2Fy6Hr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCC0FC4CEE9;
+	Mon, 12 May 2025 18:00:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072929;
-	bh=EfDzcDBvv2IMVkC+F249kKyUx+9m8XkEbAKO1i1OlZU=;
+	s=korg; t=1747072829;
+	bh=f/ruqs5DGqHwH+XZLrhAY641fvctPvxzT8/T+D+bals=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g/8NuZ7Q4lDzF94WpqDYOAQoQUio/e0WkI8QI98HD0TYcoZtbeP3Ixn5VEBdx+ZQX
-	 arrXTYcR64+iFBrBMlp4qZleceXDERH/q9ZSJs7y8YDgdZZK+Pe1qM3aF71Vlft7Uy
-	 MDah9i4IOgCWVCY3aTviyS1Gn3CiF/gleOMpg2wE=
+	b=Hm2Fy6HrAPGN4eeqgyOpBa1rAwhjNoShubqlKeSYM7ure/2L7P9Udg+pQZaUqzeJN
+	 XRBMcsULBemQemqOItaN46AnGn1MRd29Be76gSLXF+aENJXy2U1i5zyG7epfhT+JYD
+	 BDzsh194KkyvNkvjDzrkTMif8YBOkXfdkSNFfT1k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manuel Fombuena <fombuena@outlook.com>,
+	Xuntao Chi <chotaotao1qaz2wsx@gmail.com>,
 	Aditya Garg <gargaditya08@live.com>,
 	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.12 060/184] Input: synaptics - enable InterTouch on Dynabook Portege X30-D
-Date: Mon, 12 May 2025 19:44:21 +0200
-Message-ID: <20250512172044.179729305@linuxfoundation.org>
+Subject: [PATCH 6.12 061/184] Input: synaptics - enable InterTouch on Dynabook Portege X30L-G
+Date: Mon, 12 May 2025 19:44:22 +0200
+Message-ID: <20250512172044.219643455@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
 References: <20250512172041.624042835@linuxfoundation.org>
@@ -66,22 +66,17 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Manuel Fombuena <fombuena@outlook.com>
+From: Aditya Garg <gargaditya08@live.com>
 
-commit 6d7ea0881000966607772451b789b5fb5766f11d upstream.
+commit 47d768b32e644b56901bb4bbbdb1feb01ea86c85 upstream.
 
-[    5.989588] psmouse serio1: synaptics: Your touchpad (PNP: TOS0213 PNP0f03) says it can support a different bus. If i2c-hid and hid-rmi are not used, you might want to try setting psmouse.synaptics_intertouch to 1 and report this to linux-input@vger.kernel.org.
-[    6.039923] psmouse serio1: synaptics: Touchpad model: 1, fw: 9.32, id: 0x1e2a1, caps: 0xf00223/0x840300/0x12e800/0x52d884, board id: 3322, fw id: 2658004
+Enable InterTouch mode on Dynabook Portege X30L-G by adding "TOS01f6" to
+the list of SMBus-enabled variants.
 
-The board is labelled TM3322.
-
-Present on the Toshiba / Dynabook Portege X30-D and possibly others.
-
-Confirmed working well with psmouse.synaptics_intertouch=1 and local build.
-
-Signed-off-by: Manuel Fombuena <fombuena@outlook.com>
+Reported-by: Xuntao Chi <chotaotao1qaz2wsx@gmail.com>
+Tested-by: Xuntao Chi <chotaotao1qaz2wsx@gmail.com>
 Signed-off-by: Aditya Garg <gargaditya08@live.com>
-Link: https://lore.kernel.org/r/PN3PR01MB9597711E7933A08389FEC31DB888A@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM
+Link: https://lore.kernel.org/r/PN3PR01MB959786E4AC797160CDA93012B888A@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM
 Cc: stable@vger.kernel.org
 Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
@@ -95,10 +90,10 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	"SYN3221", /* HP 15-ay000 */
  	"SYN323d", /* HP Spectre X360 13-w013dx */
  	"SYN3257", /* HP Envy 13-ad105ng */
-+	"TOS0213", /* Dynabook Portege X30-D */
++	"TOS01f6", /* Dynabook Portege X30L-G */
+ 	"TOS0213", /* Dynabook Portege X30-D */
  	NULL
  };
- 
 
 
 
