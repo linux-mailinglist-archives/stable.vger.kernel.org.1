@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-143844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67E53AB421B
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:18:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B2F1AB4213
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:17:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 58DEE3AA244
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:16:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98A6616FB0D
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:17:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79CAF2BD5A8;
-	Mon, 12 May 2025 18:05:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 869CD297A70;
+	Mon, 12 May 2025 18:05:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ILMySbWe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DacDPgmU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 350652BD59A;
-	Mon, 12 May 2025 18:05:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3068F2BDC00;
+	Mon, 12 May 2025 18:05:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073118; cv=none; b=jQgTkBNIoZlyaNbRy2A7ophyZZWLn5wp3WXKITnLp4T+Uf1phzpCwOMsEV7v+2vGfcHxvW14zCfyYzDFoBy0f49EPnr6tCWnR5uqPIa2x512tZegwqsUo/vmyNI8yaBo8VEtffq8y2938oYfveFc8jy61GL6gLLWrbas6VAhwnc=
+	t=1747073121; cv=none; b=bKGA6dr8meYdjJcpJECH26BAsLyxH8tuyD1j6E7F6JwrMpxXdyFvzBrzR3rwmTl6VhzUU7aYc+c97gQjIsVGciso5h7fP0csJPC+V17bWE+JUaF9MB/hXJrus+B76jFgjzavbCA+4kdEb++o7+qdvLPz7nHLJBAYQ97YKOsYcFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073118; c=relaxed/simple;
-	bh=oLwuT6wgnOCD33RaKr4whM+9KP2D+ynkiTGkyFaTUK0=;
+	s=arc-20240116; t=1747073121; c=relaxed/simple;
+	bh=ayWXNut7kRPcCdLbA1V3GVsMyKB9l1gP9VuhI2Ht4pg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hEAN8w4voBisceSemTlF3wT/lDv9PnTF7UsH7o389tKoLo6PyO0JyCruU7v5cKlPvuBpocicPOEHvEulWOPHiDGCdYreIMuOFrar+xhdebRC3LHIYMfSvVGA2bh7ZdAtr/BZU3hjMvN1LbMApB211w4Ccq4qT8muHut/EI+G/To=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ILMySbWe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42659C4CEE9;
-	Mon, 12 May 2025 18:05:17 +0000 (UTC)
+	 MIME-Version; b=pxKW4F/lkbSJ1aBNCus1LrOt8mamhxR0sqfnuC+OT+ZeoPIgKCe+uB34sQ/vMSg0TDAw76G2ytR0Gcb9jJrYkegNqJI7PWjwFuh3HiZsJzBljdEwC1JALtJOa0hfQKocuHLBR7NEyKALH9PsmAbENIdKrA3A7UL/g/QRoW3PYw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DacDPgmU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FCE9C4CEF0;
+	Mon, 12 May 2025 18:05:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073117;
-	bh=oLwuT6wgnOCD33RaKr4whM+9KP2D+ynkiTGkyFaTUK0=;
+	s=korg; t=1747073120;
+	bh=ayWXNut7kRPcCdLbA1V3GVsMyKB9l1gP9VuhI2Ht4pg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ILMySbWeQuScgs425fBbWYPhUOZgiMq9benu9ZdxT5DYItiqk9azJGPyfZHNK8x/5
-	 V7rAjubWUkB1hQPFqwkSHnB3YgsLb2r3YkdnTESfB/8r4ivgPg/PIw8+FLPYZ1bGpk
-	 lNiAgc7STSYasyCzOVa7G28rcjKwJWqDIRoa+k8A=
+	b=DacDPgmU7g2gKIRlsDgcch8ay8YUlwUuhzsErTMyBtLCNjYUFaTWDhmbhATToWYTV
+	 ufua0ityZykOaiXPcAnfbFFq8/Vq98k8QbOnmIX87al8G7DsxptwXSO96aSkRy23QV
+	 ajvMUTpU9IHsxB1YCp/G9iesGtQSh8fualQEA/8w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lothar Rubusch <l.rubusch@gmail.com>,
-	Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+	David Lechner <dlechner@baylibre.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 130/184] iio: accel: adxl367: fix setting odr for activity time update
-Date: Mon, 12 May 2025 19:45:31 +0200
-Message-ID: <20250512172047.112198689@linuxfoundation.org>
+Subject: [PATCH 6.12 131/184] iio: temp: maxim-thermocouple: Fix potential lack of DMA safe buffer.
+Date: Mon, 12 May 2025 19:45:32 +0200
+Message-ID: <20250512172047.152302948@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
 References: <20250512172041.624042835@linuxfoundation.org>
@@ -67,66 +66,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Lothar Rubusch <l.rubusch@gmail.com>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-[ Upstream commit 38f67d0264929762e54ae5948703a21f841fe706 ]
+[ Upstream commit f79aeb6c631b57395f37acbfbe59727e355a714c ]
 
-Fix setting the odr value to update activity time based on frequency
-derrived by recent odr, and not by obsolete odr value.
+The trick of using __aligned(IIO_DMA_MINALIGN) ensures that there is
+no overlap between buffers used for DMA and those used for driver
+state storage that are before the marking. It doesn't ensure
+anything above state variables found after the marking. Hence
+move this particular bit of state earlier in the structure.
 
-The [small] bug: When _adxl367_set_odr() is called with a new odr value,
-it first writes the new odr value to the hardware register
-ADXL367_REG_FILTER_CTL.
-Second, it calls _adxl367_set_act_time_ms(), which calls
-adxl367_time_ms_to_samples(). Here st->odr still holds the old odr value.
-This st->odr member is used to derrive a frequency value, which is
-applied to update ADXL367_REG_TIME_ACT. Hence, the idea is to update
-activity time, based on possibilities and power consumption by the
-current ODR rate.
-Finally, when the function calls return, again in _adxl367_set_odr() the
-new ODR is assigned to st->odr.
-
-The fix: When setting a new ODR value is set to ADXL367_REG_FILTER_CTL,
-also ADXL367_REG_TIME_ACT should probably be updated with a frequency
-based on the recent ODR value and not the old one. Changing the location
-of the assignment to st->odr fixes this.
-
-Fixes: cbab791c5e2a5 ("iio: accel: add ADXL367 driver")
-Signed-off-by: Lothar Rubusch <l.rubusch@gmail.com>
-Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Link: https://patch.msgid.link/20250309193515.2974-1-l.rubusch@gmail.com
+Fixes: 10897f34309b ("iio: temp: maxim_thermocouple: Fix alignment for DMA safety")
+Reviewed-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20250413103443.2420727-14-jic23@kernel.org
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/accel/adxl367.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ drivers/iio/temperature/maxim_thermocouple.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/accel/adxl367.c b/drivers/iio/accel/adxl367.c
-index e790a66d86c79..d44d52e5a5140 100644
---- a/drivers/iio/accel/adxl367.c
-+++ b/drivers/iio/accel/adxl367.c
-@@ -604,18 +604,14 @@ static int _adxl367_set_odr(struct adxl367_state *st, enum adxl367_odr odr)
- 	if (ret)
- 		return ret;
+diff --git a/drivers/iio/temperature/maxim_thermocouple.c b/drivers/iio/temperature/maxim_thermocouple.c
+index c28a7a6dea5f1..555a61e2f3fdd 100644
+--- a/drivers/iio/temperature/maxim_thermocouple.c
++++ b/drivers/iio/temperature/maxim_thermocouple.c
+@@ -121,9 +121,9 @@ static const struct maxim_thermocouple_chip maxim_thermocouple_chips[] = {
+ struct maxim_thermocouple_data {
+ 	struct spi_device *spi;
+ 	const struct maxim_thermocouple_chip *chip;
++	char tc_type;
  
-+	st->odr = odr;
-+
- 	/* Activity timers depend on ODR */
- 	ret = _adxl367_set_act_time_ms(st, st->act_time_ms);
- 	if (ret)
- 		return ret;
+ 	u8 buffer[16] __aligned(IIO_DMA_MINALIGN);
+-	char tc_type;
+ };
  
--	ret = _adxl367_set_inact_time_ms(st, st->inact_time_ms);
--	if (ret)
--		return ret;
--
--	st->odr = odr;
--
--	return 0;
-+	return _adxl367_set_inact_time_ms(st, st->inact_time_ms);
- }
- 
- static int adxl367_set_odr(struct iio_dev *indio_dev, enum adxl367_odr odr)
+ static int maxim_thermocouple_read(struct maxim_thermocouple_data *data,
 -- 
 2.39.5
 
