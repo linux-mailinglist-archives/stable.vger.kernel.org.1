@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-143261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F268AB378F
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 14:43:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6382AB37A3
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 14:47:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB9E31B60073
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 12:43:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7315A17DFB2
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 12:47:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAAD2293B63;
-	Mon, 12 May 2025 12:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E567258CFB;
+	Mon, 12 May 2025 12:47:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eHg6duNi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UyMtKpT8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AF63263C7F
-	for <stable@vger.kernel.org>; Mon, 12 May 2025 12:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5567254AE1
+	for <stable@vger.kernel.org>; Mon, 12 May 2025 12:47:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747053792; cv=none; b=gKmFH4sTFho9+IErzDkWFmS319H5jPH0Na1LrxWaude0J510Q5Jxj2qypNiz1L7NluSdAEOHmBTSTR+HqauMjfPVxN0/Gv+hVKI1rpMdn/3BIwCtDc2pogSXtns4mv76w1UyR84bVhNvbegruquXpyOEecGqJw84Mb9yyXxPLls=
+	t=1747054047; cv=none; b=lnVMMnQykPj83Zv3yRmVvGV5C9gVuzgU0CiwWe5AEAPor9kZyoBW9T+JEHkgQnZtQOxOBkJ0VwkkMVpMlbA55YdzDAYvC5JTiRBgtyg19AstJRdnsy4PqVtLfB7NUBCCuN6hM861IGEGTPm9Ssj5lp+1Xi3Fa14ElKSCqHX3fgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747053792; c=relaxed/simple;
+	s=arc-20240116; t=1747054047; c=relaxed/simple;
 	bh=j6rnRGNg2eSatkE4P7DTupgMxGwaJY1/EsVmSEe+6JY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p4r7kjg7pZmN6N16vw+SPPyO2HT5debsAuSg7r7SBQf+p3vaFphv5yQXJMjd70K9pI8/oEx1xKC+WTKx//DMn2Y/ld9mZ6ihO1vbdDxpPSOV7ChQvkmB2J+tahPwM4h5hlLAmO/YHPLEx2hGnu1we35YzV+MJpgZakHSVdf1zkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eHg6duNi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53D45C4CEE7;
-	Mon, 12 May 2025 12:43:11 +0000 (UTC)
+	 MIME-Version; b=atSogjRKIoNSjjJxtNdTIJ7o78eyg5xc7mRh3LjdKAde+w46s00QtanqNzv3GTwAubbbYNDXRBuu3jvWA5W0ssBs1+tU8J+rWtY++RtWTndeJ12iW2IcfihMnzVNHWRqWOhAw9glQsHVSFUj8yKlfbWSKwtWvVjdT6XZbnCgO3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UyMtKpT8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FE25C4CEE7;
+	Mon, 12 May 2025 12:47:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747053792;
+	s=k20201202; t=1747054046;
 	bh=j6rnRGNg2eSatkE4P7DTupgMxGwaJY1/EsVmSEe+6JY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eHg6duNi4MIJ1irDkJn3MaLP7vKNB8SOEblA7p/ypE0oSbMedR2BoPf67fx0TpAX0
-	 eHzdfzq7GggV/ZhNr4DohqwLNo4ZG8+4vBDbYwaV7m0b3wma6Icv7k4KarCZvfV7eh
-	 f3XdSVwsmYyczakzFrXNahsGvIl/fhhfaSxusmx8qh5zD5WMSNaJFvQJ9kWPW9nCUa
-	 NxiQ0ViMZzLz2A0u8FrGBIfNenZSRE6whLW/ebaZ58dk6tNzdcvui+J7bRlFuD7Dtt
-	 AxwYRJWsfIQjopXRkbmBqt6chr1AWhI80Xe5nUxjOXGVExVjyCQ2wtxv65y9GV45vx
-	 15EBhlI9NfxYQ==
+	b=UyMtKpT8mlYtqUueddqGtOLSXLBDDKRohaVARln0DetmIxhDmMAzdbgipFRb9yXln
+	 1Xl+5pzN0iCaeeQ5BqAqgK9MMwX6UvcNKAioTELPhw//LYvrcJNWq6b3r4Yy59Rgew
+	 N6rYfdCoGC0EWjm/Q8bOE/RpbzRpKcGdNeQ1uFKr1w1Mw9W3hRR74ote7dL2FOq5ty
+	 CQEIV0aSCykfT2MrNzWAFkAJYDgHLlOgDfKKc9PY4WzXqxIpT9N/B25TXdgd3Luxv/
+	 sJOOO2i50nNWXe43xFEGVKjye3gG/N+JaHpRg7LWh3yyRLGQvYyAHBOHSmxzKs2DgQ
+	 Vaod+y57p6Fsg==
 From: Miguel Ojeda <ojeda@kernel.org>
 To: stable@vger.kernel.org
 Cc: Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12.y] rust: allow Rust 1.87.0's `clippy::ptr_eq` lint
-Date: Mon, 12 May 2025 14:42:47 +0200
-Message-ID: <20250512124247.1401815-1-ojeda@kernel.org>
-In-Reply-To: <2025051211-unclothed-common-f6cf@gregkh>
-References: <2025051211-unclothed-common-f6cf@gregkh>
+Subject: [PATCH 6.14.y] rust: allow Rust 1.87.0's `clippy::ptr_eq` lint
+Date: Mon, 12 May 2025 14:47:18 +0200
+Message-ID: <20250512124718.1403201-1-ojeda@kernel.org>
+In-Reply-To: <2025051210-devourer-antarctic-1ed3@gregkh>
+References: <2025051210-devourer-antarctic-1ed3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
