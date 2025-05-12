@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-143580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14B8FAB4087
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:55:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34F51AB414D
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:04:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 278537B3A38
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:52:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AA193AC8E2
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:02:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBA6D296D1D;
-	Mon, 12 May 2025 17:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C3ED19049B;
+	Mon, 12 May 2025 18:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ADlXsms+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I/OzKRqY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 722B929614D;
-	Mon, 12 May 2025 17:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 571101DF754;
+	Mon, 12 May 2025 18:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072412; cv=none; b=BJySzWZB23VSPUxBrUiKsAkQxBTCZ7g+RzUKgygtddsYfdohJqGs4jU57p7Bsu6414J18a6i0wtFdL12/M6YshuuXQAWF7VXpoX1jCG1eRmALzYqYeXb03ZfLv9vN/DqGibniMfsS6z6Inzv68bPrCyXdzkUe/DnMYhR4u5zBK0=
+	t=1747072951; cv=none; b=L08+bz1i6xqRrfUVk5oXV8dARdSkEHHqYJ6a1ECS+mlqtVSt3CqdZhMVc4toVpl2PJbjrq5ise/HFbjo5ij++p1ptzlRIw7cY+kSPtv5fyDmWwyvKJMPjkt+5ND5DneIEvA9hzlRUWgGK7V+qqSmcC1iin2MpTVT33JVkv/XSi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072412; c=relaxed/simple;
-	bh=tgBcSKjSlyHfh78DCALbCNAlx7ERSKDGuz9WeQL0DqE=;
+	s=arc-20240116; t=1747072951; c=relaxed/simple;
+	bh=6Y44eWiHRvdnFbhrnDxI8SSUX6ApTSXCOdVjRqu54FY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZpUGQSlQBPkoM6xrbU2kZHGDNnS5ZkG947P3YcGuRgzocZI1V1qh12pd9T4HYWpIzwqYYyqxRXvi0rN8ix3CqwAXcI1YVA8NCWP6QkXPiQWO6N3a4tS6w3bdn5CUuISESsEmS1HAvTW8YSscEiy7AsbunHYBxwyyoc0Bt2J0BtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ADlXsms+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64757C4CEE7;
-	Mon, 12 May 2025 17:53:31 +0000 (UTC)
+	 MIME-Version; b=UQp+psQE4GFhQypxRGBPK/ADP/gtfykGw0tM0+d/Hdz1u4R0lBsEQcOChpcZuotJ1kF9BbGobvlOYlX9pednI4A3T0rtHxHxBPieY/YmbvcNZKJ52nTpFokNcQKQQwPFtKy+6NDfGiWzFL30W1dbE6dwakrzkmuge5AZS2IxA0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I/OzKRqY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC5EBC4CEE7;
+	Mon, 12 May 2025 18:02:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072412;
-	bh=tgBcSKjSlyHfh78DCALbCNAlx7ERSKDGuz9WeQL0DqE=;
+	s=korg; t=1747072951;
+	bh=6Y44eWiHRvdnFbhrnDxI8SSUX6ApTSXCOdVjRqu54FY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ADlXsms+wf76YPWCZXUCMnKTqVsd83KtpZ0xTpnuBZ6k2rkGSKXTAaZHZeLlt4f4Q
-	 392kxIw0jnb+kvtdQpwRuyjjH6/kIKwf5hT46H2u/SeBmzPIxrtIFQcqii0JiKWdDd
-	 pBGX2Ilzq33ncL1wF6YfK7KoUZYlbU4cWFLu/vXg=
+	b=I/OzKRqY+gSYcwrqOln+FAlccU2/iHabhWi9AB6cZUS2wliesRa/DhWjpR6zPuKRU
+	 ZMZsIcQWJAX8dnx9otNg4SYL0FmLd8mbZ/KPjyFyIqvmjOIZslwSZCax5DFFfga/1f
+	 312u7kdaEdi4maIaehvnG0IMB/lTU0UT4MwgKgv0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Ray Wu <ray.wu@amd.com>,
-	Wayne Lin <Wayne.Lin@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.1 33/92] drm/amd/display: Shift DMUB AUX reply command if necessary
-Date: Mon, 12 May 2025 19:45:08 +0200
-Message-ID: <20250512172024.482458928@linuxfoundation.org>
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 6.12 108/184] clocksource/i8253: Use raw_spinlock_irqsave() in clockevent_i8253_disable()
+Date: Mon, 12 May 2025 19:45:09 +0200
+Message-ID: <20250512172046.225687366@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172023.126467649@linuxfoundation.org>
-References: <20250512172023.126467649@linuxfoundation.org>
+In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
+References: <20250512172041.624042835@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +61,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wayne Lin <Wayne.Lin@amd.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-commit 5a3846648c0523fd850b7f0aec78c0139453ab8b upstream.
+commit 94cff94634e506a4a44684bee1875d2dbf782722 upstream.
 
-[Why]
-Defined value of dmub AUX reply command field get updated but didn't
-adjust dm receiving side accordingly.
+On x86 during boot, clockevent_i8253_disable() can be invoked via
+x86_late_time_init -> hpet_time_init() -> pit_timer_init() which happens
+with enabled interrupts.
 
-[How]
-Check the received reply command value to see if it's updated version
-or not. Adjust it if necessary.
+If some of the old i8253 hardware is actually used then lockdep will notice
+that i8253_lock is used in hard interrupt context. This causes lockdep to
+complain because it observed the lock being acquired with interrupts
+enabled and in hard interrupt context.
 
-Fixes: ead08b95fa50 ("drm/amd/display: Fix race condition in DPIA AUX transfer")
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Ray Wu <ray.wu@amd.com>
-Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
-Signed-off-by: Ray Wu <ray.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit d5c9ade755a9afa210840708a12a8f44c0d532f4)
+Make clockevent_i8253_disable() acquire the lock with
+raw_spinlock_irqsave() to cure this.
+
+[ tglx: Massage change log and use guard() ]
+
+Fixes: c8c4076723dac ("x86/timer: Skip PIT initialization on modern chipsets")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20250404133116.p-XRWJXf@linutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/clocksource/i8253.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -10702,8 +10702,11 @@ int amdgpu_dm_process_dmub_aux_transfer_
- 		goto out;
- 	}
+--- a/drivers/clocksource/i8253.c
++++ b/drivers/clocksource/i8253.c
+@@ -103,7 +103,7 @@ int __init clocksource_i8253_init(void)
+ #ifdef CONFIG_CLKEVT_I8253
+ void clockevent_i8253_disable(void)
+ {
+-	raw_spin_lock(&i8253_lock);
++	guard(raw_spinlock_irqsave)(&i8253_lock);
  
-+	payload->reply[0] = adev->dm.dmub_notify->aux_reply.command & 0xF;
-+	if (adev->dm.dmub_notify->aux_reply.command & 0xF0)
-+		/* The reply is stored in the top nibble of the command. */
-+		payload->reply[0] = (adev->dm.dmub_notify->aux_reply.command >> 4) & 0xF;
+ 	/*
+ 	 * Writing the MODE register should stop the counter, according to
+@@ -132,8 +132,6 @@ void clockevent_i8253_disable(void)
+ 	outb_p(0, PIT_CH0);
  
--	payload->reply[0] = adev->dm.dmub_notify->aux_reply.command;
- 	if (!payload->write && p_notify->aux_reply.length &&
- 			(payload->reply[0] == AUX_TRANSACTION_REPLY_AUX_ACK)) {
+ 	outb_p(0x30, PIT_MODE);
+-
+-	raw_spin_unlock(&i8253_lock);
+ }
  
+ static int pit_shutdown(struct clock_event_device *evt)
 
 
 
