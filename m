@@ -1,64 +1,56 @@
-Return-Path: <stable+bounces-143595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D06BAB408C
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:55:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F4F7AB4131
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:03:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 994457B328B
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:53:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A17C9467FCD
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:03:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01DBF2550C6;
-	Mon, 12 May 2025 17:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AABFF2512F1;
+	Mon, 12 May 2025 18:03:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lSZsklR+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kXOIZX02"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B31401A08CA;
-	Mon, 12 May 2025 17:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64465175BF;
+	Mon, 12 May 2025 18:03:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072459; cv=none; b=q9Y/RzVIJ/YLM2OWC1BWGJVXKB3u7ZIVIW9+AJPqLUk4t7WdKVnjcc2gNHIvJ2Hqrz+6aXZLNRfQQDOrQT6dMDd1Tf0ba78sv39ehGUxDXND54JKjlly3QYjoLAnxcizR+7gHinygSnsOBOAgyMLWld+Qn/ehiCezRn1ToC9HC4=
+	t=1747072996; cv=none; b=iyNgOZof37EeU6PTzKNXwH943lv1ruZRqY9Lm7KeLlqylSGHfe7FzMxOdj7B3qIuIEiD1kE3hOb4BrMo0VwC6/vYDYDKTvi0ibPKEmE7yvsft7i0Y/HlWUso/udFZoQFzvT3vSuj8XHHgIJq+pErLab7KP9yxH/fslMg6TwR8Ds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072459; c=relaxed/simple;
-	bh=Ua11CAh8Q13WmbSrCHf1nfXTaq+BjHygN6aWKTYqJ6A=;
+	s=arc-20240116; t=1747072996; c=relaxed/simple;
+	bh=i89B6QdUCELWPw9LqYgQXpBnzvds08uyL8snpdi8gV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kpvTZx/NnHVCCLDhv+BYyJHHcnpz+RQHT8mK5Nasb7otbAot2/uUuMCkt9bd/2nJZXGzkwox/g6KHg1qhiquYsSjzdIjYXSYrcNUMNVvdz0FoFlndTNU6anWHPrczvp3RwTWWJqq7cupnDmiyEClvBSjiaWV/lJF0XeRqyhTDHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lSZsklR+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0746BC4CEE7;
-	Mon, 12 May 2025 17:54:19 +0000 (UTC)
+	 MIME-Version; b=jwAT8xvvlSsHJrHIpLXUDay7LCnM2ZmhRQ7USP23a4FpthkpSN4nR8UIZczG1zvHj+BtibJe2EIMAXHPFPgPBk+MiEnjDkWvlfyCXmIvxrHPB6mH/36nH2KfFPv8tye2VKXFpuOPsDu8WTB0jCbzR0CXBSFcBM7MyUkI8jreXL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kXOIZX02; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D619BC4CEE7;
+	Mon, 12 May 2025 18:03:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072459;
-	bh=Ua11CAh8Q13WmbSrCHf1nfXTaq+BjHygN6aWKTYqJ6A=;
+	s=korg; t=1747072996;
+	bh=i89B6QdUCELWPw9LqYgQXpBnzvds08uyL8snpdi8gV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lSZsklR+UiWOiRwTPePyAqxPlZEiBRUEuDwu6kOFJEb0XRlIfyLy7qJ+U1ZufxpQN
-	 NxKAQYoqrF7WPi2ww8dJUqB7COb5AC28xlbQ/j4fXmy0B/c3UJyBiOFwYz8l4D5vBj
-	 yACedu/Lt0ZWP5r5XSqLVeRl4FYuUuGiepchxHnU=
+	b=kXOIZX02Kw/MppxguSox2JQJWvD4xT/Y4ykwETOEixm1gqMPFFOHQkyxqLwZnH+0Z
+	 NCsLkBUmP2/kghJHLfmyvZrIFnJCvr8DTTh7ElQi7jYna6mm16rA/n+IG30S1lioN8
+	 iII5S/rdhnu4HcaYtViWKlvYopZeD9cY3f/wv0OI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Heming Zhao <heming.zhao@suse.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Murad Masimov <m.masimov@mt-integration.ru>,
-	Shichangkuo <shi.changkuo@h3c.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 47/92] ocfs2: switch osb->disable_recovery to enum
+	stable <stable@kernel.org>,
+	Prashanth K <prashanth.k@oss.qualcomm.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.12 121/184] usb: gadget: Use get_status callback to set remote wakeup capability
 Date: Mon, 12 May 2025 19:45:22 +0200
-Message-ID: <20250512172025.034844492@linuxfoundation.org>
+Message-ID: <20250512172046.748193192@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172023.126467649@linuxfoundation.org>
-References: <20250512172023.126467649@linuxfoundation.org>
+In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
+References: <20250512172041.624042835@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,112 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Prashanth K <prashanth.k@oss.qualcomm.com>
 
-commit c0fb83088f0cc4ee4706e0495ee8b06f49daa716 upstream.
+commit 5977a58dd5a4865198b0204b998adb0f634abe19 upstream.
 
-Patch series "ocfs2: Fix deadlocks in quota recovery", v3.
+Currently when the host sends GET_STATUS request for an interface,
+we use get_status callbacks to set/clear remote wakeup capability
+of that interface. And if get_status callback isn't present for
+that interface, then we assume its remote wakeup capability based
+on bmAttributes.
 
-This implements another approach to fixing quota recovery deadlocks.  We
-avoid grabbing sb->s_umount semaphore from ocfs2_finish_quota_recovery()
-and instead stop quota recovery early in ocfs2_dismount_volume().
+Now consider a scenario, where we have a USB configuration with
+multiple interfaces (say ECM + ADB), here ECM is remote wakeup
+capable and as of now ADB isn't. And bmAttributes will indicate
+the device as wakeup capable. With the current implementation,
+when host sends GET_STATUS request for both interfaces, we will
+set FUNC_RW_CAP for both. This results in USB3 CV Chapter 9.15
+(Function Remote Wakeup Test) failures as host expects remote
+wakeup from both interfaces.
 
+The above scenario is just an example, and the failure can be
+observed if we use configuration with any interface except ECM.
+Hence avoid configuring remote wakeup capability from composite
+driver based on bmAttributes, instead use get_status callbacks
+and let the function drivers decide this.
 
-This patch (of 3):
-
-We will need more recovery states than just pure enable / disable to fix
-deadlocks with quota recovery.  Switch osb->disable_recovery to enum.
-
-Link: https://lkml.kernel.org/r/20250424134301.1392-1-jack@suse.cz
-Link: https://lkml.kernel.org/r/20250424134515.18933-4-jack@suse.cz
-Fixes: 5f530de63cfc ("ocfs2: Use s_umount for quota recovery protection")
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Heming Zhao <heming.zhao@suse.com>
-Tested-by: Heming Zhao <heming.zhao@suse.com>
-Acked-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Murad Masimov <m.masimov@mt-integration.ru>
-Cc: Shichangkuo <shi.changkuo@h3c.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable <stable@kernel.org>
+Fixes: 481c225c4802 ("usb: gadget: Handle function suspend feature selector")
+Signed-off-by: Prashanth K <prashanth.k@oss.qualcomm.com>
+Reviewed-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20250422103231.1954387-3-prashanth.k@oss.qualcomm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/journal.c |   14 ++++++++------
- fs/ocfs2/ocfs2.h   |    7 ++++++-
- 2 files changed, 14 insertions(+), 7 deletions(-)
+ drivers/usb/gadget/composite.c |   12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
---- a/fs/ocfs2/journal.c
-+++ b/fs/ocfs2/journal.c
-@@ -173,7 +173,7 @@ int ocfs2_recovery_init(struct ocfs2_sup
- 	struct ocfs2_recovery_map *rm;
+--- a/drivers/usb/gadget/composite.c
++++ b/drivers/usb/gadget/composite.c
+@@ -2011,15 +2011,13 @@ composite_setup(struct usb_gadget *gadge
  
- 	mutex_init(&osb->recovery_lock);
--	osb->disable_recovery = 0;
-+	osb->recovery_state = OCFS2_REC_ENABLED;
- 	osb->recovery_thread_task = NULL;
- 	init_waitqueue_head(&osb->recovery_event);
- 
-@@ -208,7 +208,7 @@ void ocfs2_recovery_exit(struct ocfs2_su
- 	/* disable any new recovery threads and wait for any currently
- 	 * running ones to exit. Do this before setting the vol_state. */
- 	mutex_lock(&osb->recovery_lock);
--	osb->disable_recovery = 1;
-+	osb->recovery_state = OCFS2_REC_DISABLED;
- 	mutex_unlock(&osb->recovery_lock);
- 	wait_event(osb->recovery_event, !ocfs2_recovery_thread_running(osb));
- 
-@@ -1549,14 +1549,16 @@ bail:
- 
- void ocfs2_recovery_thread(struct ocfs2_super *osb, int node_num)
- {
-+	int was_set = -1;
+ 		if (f->get_status) {
+ 			status = f->get_status(f);
 +
- 	mutex_lock(&osb->recovery_lock);
-+	if (osb->recovery_state < OCFS2_REC_DISABLED)
-+		was_set = ocfs2_recovery_map_set(osb, node_num);
- 
- 	trace_ocfs2_recovery_thread(node_num, osb->node_num,
--		osb->disable_recovery, osb->recovery_thread_task,
--		osb->disable_recovery ?
--		-1 : ocfs2_recovery_map_set(osb, node_num));
-+		osb->recovery_state, osb->recovery_thread_task, was_set);
- 
--	if (osb->disable_recovery)
-+	if (osb->recovery_state == OCFS2_REC_DISABLED)
- 		goto out;
- 
- 	if (osb->recovery_thread_task)
---- a/fs/ocfs2/ocfs2.h
-+++ b/fs/ocfs2/ocfs2.h
-@@ -284,6 +284,11 @@ enum ocfs2_mount_options
- #define OCFS2_OSB_ERROR_FS	0x0004
- #define OCFS2_DEFAULT_ATIME_QUANTUM	60
- 
-+enum ocfs2_recovery_state {
-+	OCFS2_REC_ENABLED = 0,
-+	OCFS2_REC_DISABLED,
-+};
+ 			if (status < 0)
+ 				break;
+-		} else {
+-			/* Set D0 and D1 bits based on func wakeup capability */
+-			if (f->config->bmAttributes & USB_CONFIG_ATT_WAKEUP) {
+-				status |= USB_INTRF_STAT_FUNC_RW_CAP;
+-				if (f->func_wakeup_armed)
+-					status |= USB_INTRF_STAT_FUNC_RW;
+-			}
 +
- struct ocfs2_journal;
- struct ocfs2_slot_info;
- struct ocfs2_recovery_map;
-@@ -346,7 +351,7 @@ struct ocfs2_super
- 	struct ocfs2_recovery_map *recovery_map;
- 	struct ocfs2_replay_map *replay_map;
- 	struct task_struct *recovery_thread_task;
--	int disable_recovery;
-+	enum ocfs2_recovery_state recovery_state;
- 	wait_queue_head_t checkpoint_event;
- 	struct ocfs2_journal *journal;
- 	unsigned long osb_commit_interval;
++			/* if D5 is not set, then device is not wakeup capable */
++			if (!(f->config->bmAttributes & USB_CONFIG_ATT_WAKEUP))
++				status &= ~(USB_INTRF_STAT_FUNC_RW_CAP | USB_INTRF_STAT_FUNC_RW);
+ 		}
+ 
+ 		put_unaligned_le16(status & 0x0000ffff, req->buf);
 
 
 
