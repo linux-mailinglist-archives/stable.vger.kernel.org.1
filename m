@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-143699-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9E17AB40F6
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:59:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0188EAB4115
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:01:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 407B517716C
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:59:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B81B3861C72
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:59:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07EE3295D97;
-	Mon, 12 May 2025 17:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4DF6296D32;
+	Mon, 12 May 2025 18:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QqTFqunL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r00fXT5Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8A5B2505C5;
-	Mon, 12 May 2025 17:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F5D9296D30;
+	Mon, 12 May 2025 18:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072793; cv=none; b=iglLG5EWSVSJiUY3207Ynue/dp0a6S8WKs/VmVe3ajLbzFdthLuFs+D5HxQI5M7Sb75anXCQiiLoTQPyXdlC2xoGQSnjML7e9ilKE9kjWaJWXKWygD5f6AMrhEHcydqiYFK9dtTqO3/6xjR8ptGRk3QKmIOhM8a6EBOeQydy0pU=
+	t=1747072803; cv=none; b=GjTt2lUynWVeyp73w3RopwSRmmYuk46wz2SH6Z3gnguuPySZDPPt379SkSU/UihguyPcwwGtItcQF1HO2OPKe42EfBLn0fnzFuppv7JyEeEl+5S/yyvxtC8o7ep5/3XQ7/y5Sxu1KcQ1oVZwKAtlSNccVxWMLce2OKzPDNFwV0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072793; c=relaxed/simple;
-	bh=RDEoO7GDq7DSEb+MRcALcwhQaZD4/d3cNqt4hxYWxgI=;
+	s=arc-20240116; t=1747072803; c=relaxed/simple;
+	bh=fHQ0cM5U3UNuX1jG7KUAyOxYsIJ+1u/fD8XjthWYuYM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=scmZRsdy3QTqmdIaQrJ4oUwvKTbPuPSF83H12weoCnayvXGEM9DmlLZ3i8A+uqgeY7gfIzTanopO0Ue303gTtHusMivNZ1JDJN4J7mNxjHyF28u45LVAH0XMHO26QEh5XCk+7kpc5QDQKUQAC8tH3S4JKnLF/wUIkh6JdGPc34g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QqTFqunL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27BEEC4CEE7;
-	Mon, 12 May 2025 17:59:52 +0000 (UTC)
+	 MIME-Version; b=ZQZQqe2iKCoEOEUQ34bDhvPjoYCk1qB5+XAb5ofNA25IuAHzTDRyuzNwSt89FbBbggW0IVu6bTnRDsmOB5cLzeIkkQCqSCsz9OQkBQOMKYHb56Xtg69S8WdHQxeT9AHSabEbjq0jUILWv0oa6RWuqF4vQqpFg9oBJHpVZQ59z7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r00fXT5Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0858C4CEE9;
+	Mon, 12 May 2025 18:00:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072793;
-	bh=RDEoO7GDq7DSEb+MRcALcwhQaZD4/d3cNqt4hxYWxgI=;
+	s=korg; t=1747072803;
+	bh=fHQ0cM5U3UNuX1jG7KUAyOxYsIJ+1u/fD8XjthWYuYM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QqTFqunLESoFb+6O5jgusDEYTXmehwYLrAq3dUiI0NWiYduuwWkNoc8ArFdzWJmHX
-	 w4oBL5LiQJjW6YUJzjYSut3CkbmvEHY3CZOIHdC69jbuVIV/lxZ9dBMG0j95B4ig3K
-	 0qg0pIWt3+2kQ5HKlCXyDCZWvmiF6AsL99mObnUo=
+	b=r00fXT5YjWdA5Bwa4DvIovp7NIP9nVAisGcrgVM/AC5+Af6kARXuD7pylnjoIzVc+
+	 0OWZr4v3PiwlkpTl2HvxVQNH5X1RyiPg/u0KpnVAqFEj9KhC7msqhwTY/5J9pOM/yH
+	 0tOkxhcTRm1+AnIbfcLrr4fgmkbTuWRMAIcfLz6E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hongbo Li <lihongbo22@huawei.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	syzbot+04b9a82855c8aed20860@syzkaller.appspotmail.com,
+	Julian Anastasov <ja@ssi.bg>,
+	Simon Horman <horms@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 031/184] erofs: ensure the extra temporary copy is valid for shortened bvecs
-Date: Mon, 12 May 2025 19:43:52 +0200
-Message-ID: <20250512172042.984844127@linuxfoundation.org>
+Subject: [PATCH 6.12 032/184] ipvs: fix uninit-value for saddr in do_output_route4
+Date: Mon, 12 May 2025 19:43:53 +0200
+Message-ID: <20250512172043.028463641@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
 References: <20250512172041.624042835@linuxfoundation.org>
@@ -66,142 +68,165 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Julian Anastasov <ja@ssi.bg>
 
-[ Upstream commit 35076d2223c731f7be75af61e67f90807384d030 ]
+[ Upstream commit e34090d7214e0516eb8722aee295cb2507317c07 ]
 
-When compressed data deduplication is enabled, multiple logical extents
-may reference the same compressed physical cluster.
+syzbot reports for uninit-value for the saddr argument [1].
+commit 4754957f04f5 ("ipvs: do not use random local source address for
+tunnels") already implies that the input value of saddr
+should be ignored but the code is still reading it which can prevent
+to connect the route. Fix it by changing the argument to ret_saddr.
 
-The previous commit 94c43de73521 ("erofs: fix wrong primary bvec
-selection on deduplicated extents") already avoids using shortened
-bvecs.  However, in such cases, the extra temporary buffers also
-need to be preserved for later use in z_erofs_fill_other_copies() to
-to prevent data corruption.
+[1]
+BUG: KMSAN: uninit-value in do_output_route4+0x42c/0x4d0 net/netfilter/ipvs/ip_vs_xmit.c:147
+ do_output_route4+0x42c/0x4d0 net/netfilter/ipvs/ip_vs_xmit.c:147
+ __ip_vs_get_out_rt+0x403/0x21d0 net/netfilter/ipvs/ip_vs_xmit.c:330
+ ip_vs_tunnel_xmit+0x205/0x2380 net/netfilter/ipvs/ip_vs_xmit.c:1136
+ ip_vs_in_hook+0x1aa5/0x35b0 net/netfilter/ipvs/ip_vs_core.c:2063
+ nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
+ nf_hook_slow+0xf7/0x400 net/netfilter/core.c:626
+ nf_hook include/linux/netfilter.h:269 [inline]
+ __ip_local_out+0x758/0x7e0 net/ipv4/ip_output.c:118
+ ip_local_out net/ipv4/ip_output.c:127 [inline]
+ ip_send_skb+0x6a/0x3c0 net/ipv4/ip_output.c:1501
+ udp_send_skb+0xfda/0x1b70 net/ipv4/udp.c:1195
+ udp_sendmsg+0x2fe3/0x33c0 net/ipv4/udp.c:1483
+ inet_sendmsg+0x1fc/0x280 net/ipv4/af_inet.c:851
+ sock_sendmsg_nosec net/socket.c:712 [inline]
+ __sock_sendmsg+0x267/0x380 net/socket.c:727
+ ____sys_sendmsg+0x91b/0xda0 net/socket.c:2566
+ ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2620
+ __sys_sendmmsg+0x41d/0x880 net/socket.c:2702
+ __compat_sys_sendmmsg net/compat.c:360 [inline]
+ __do_compat_sys_sendmmsg net/compat.c:367 [inline]
+ __se_compat_sys_sendmmsg net/compat.c:364 [inline]
+ __ia32_compat_sys_sendmmsg+0xc8/0x140 net/compat.c:364
+ ia32_sys_call+0x3ffa/0x41f0 arch/x86/include/generated/asm/syscalls_32.h:346
+ do_syscall_32_irqs_on arch/x86/entry/syscall_32.c:83 [inline]
+ __do_fast_syscall_32+0xb0/0x110 arch/x86/entry/syscall_32.c:306
+ do_fast_syscall_32+0x38/0x80 arch/x86/entry/syscall_32.c:331
+ do_SYSENTER_32+0x1f/0x30 arch/x86/entry/syscall_32.c:369
+ entry_SYSENTER_compat_after_hwframe+0x84/0x8e
 
-IOWs, extra temporary buffers have to be retained not only due to
-varying start relative offsets (`pageofs_out`, as indicated by
-`pcl->multibases`) but also because of shortened bvecs.
+Uninit was created at:
+ slab_post_alloc_hook mm/slub.c:4167 [inline]
+ slab_alloc_node mm/slub.c:4210 [inline]
+ __kmalloc_cache_noprof+0x8fa/0xe00 mm/slub.c:4367
+ kmalloc_noprof include/linux/slab.h:905 [inline]
+ ip_vs_dest_dst_alloc net/netfilter/ipvs/ip_vs_xmit.c:61 [inline]
+ __ip_vs_get_out_rt+0x35d/0x21d0 net/netfilter/ipvs/ip_vs_xmit.c:323
+ ip_vs_tunnel_xmit+0x205/0x2380 net/netfilter/ipvs/ip_vs_xmit.c:1136
+ ip_vs_in_hook+0x1aa5/0x35b0 net/netfilter/ipvs/ip_vs_core.c:2063
+ nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
+ nf_hook_slow+0xf7/0x400 net/netfilter/core.c:626
+ nf_hook include/linux/netfilter.h:269 [inline]
+ __ip_local_out+0x758/0x7e0 net/ipv4/ip_output.c:118
+ ip_local_out net/ipv4/ip_output.c:127 [inline]
+ ip_send_skb+0x6a/0x3c0 net/ipv4/ip_output.c:1501
+ udp_send_skb+0xfda/0x1b70 net/ipv4/udp.c:1195
+ udp_sendmsg+0x2fe3/0x33c0 net/ipv4/udp.c:1483
+ inet_sendmsg+0x1fc/0x280 net/ipv4/af_inet.c:851
+ sock_sendmsg_nosec net/socket.c:712 [inline]
+ __sock_sendmsg+0x267/0x380 net/socket.c:727
+ ____sys_sendmsg+0x91b/0xda0 net/socket.c:2566
+ ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2620
+ __sys_sendmmsg+0x41d/0x880 net/socket.c:2702
+ __compat_sys_sendmmsg net/compat.c:360 [inline]
+ __do_compat_sys_sendmmsg net/compat.c:367 [inline]
+ __se_compat_sys_sendmmsg net/compat.c:364 [inline]
+ __ia32_compat_sys_sendmmsg+0xc8/0x140 net/compat.c:364
+ ia32_sys_call+0x3ffa/0x41f0 arch/x86/include/generated/asm/syscalls_32.h:346
+ do_syscall_32_irqs_on arch/x86/entry/syscall_32.c:83 [inline]
+ __do_fast_syscall_32+0xb0/0x110 arch/x86/entry/syscall_32.c:306
+ do_fast_syscall_32+0x38/0x80 arch/x86/entry/syscall_32.c:331
+ do_SYSENTER_32+0x1f/0x30 arch/x86/entry/syscall_32.c:369
+ entry_SYSENTER_compat_after_hwframe+0x84/0x8e
 
-android.hardware.graphics.composer@2.1.so : 270696 bytes
-   0:        0..  204185 |  204185 :  628019200.. 628084736 |   65536
--> 1:   204185..  225536 |   21351 :  544063488.. 544129024 |   65536
-   2:   225536..  270696 |   45160 :          0..         0 |       0
+CPU: 0 UID: 0 PID: 22408 Comm: syz.4.5165 Not tainted 6.15.0-rc3-syzkaller-00019-gbc3372351d0c #0 PREEMPT(undef)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
 
-com.android.vndk.v28.apex : 93814897 bytes
-...
-   364: 53869896..54095257 |  225361 :  543997952.. 544063488 |   65536
--> 365: 54095257..54309344 |  214087 :  544063488.. 544129024 |   65536
-   366: 54309344..54514557 |  205213 :  544129024.. 544194560 |   65536
-...
-
-Both 204185 and 54095257 have the same start relative offset of 3481,
-but the logical page 55 of `android.hardware.graphics.composer@2.1.so`
-ranges from 225280 to 229632, forming a shortened bvec [225280, 225536)
-that cannot be used for decompressing the range from 54095257 to
-54309344 of `com.android.vndk.v28.apex`.
-
-Since `pcl->multibases` is already meaningless, just mark `be->keepxcpy`
-on demand for simplicity.
-
-Again, this issue can only lead to data corruption if `-Ededupe` is on.
-
-Fixes: 94c43de73521 ("erofs: fix wrong primary bvec selection on deduplicated extents")
-Reviewed-by: Hongbo Li <lihongbo22@huawei.com>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20250506101850.191506-1-hsiangkao@linux.alibaba.com
+Reported-by: syzbot+04b9a82855c8aed20860@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/68138dfa.050a0220.14dd7d.0017.GAE@google.com/
+Fixes: 4754957f04f5 ("ipvs: do not use random local source address for tunnels")
+Signed-off-by: Julian Anastasov <ja@ssi.bg>
+Acked-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/zdata.c | 31 ++++++++++++++-----------------
- 1 file changed, 14 insertions(+), 17 deletions(-)
+ net/netfilter/ipvs/ip_vs_xmit.c | 27 ++++++++-------------------
+ 1 file changed, 8 insertions(+), 19 deletions(-)
 
-diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
-index a8fb4b525f544..e5e94afc5af88 100644
---- a/fs/erofs/zdata.c
-+++ b/fs/erofs/zdata.c
-@@ -82,9 +82,6 @@ struct z_erofs_pcluster {
- 	/* L: whether partial decompression or not */
- 	bool partial;
+diff --git a/net/netfilter/ipvs/ip_vs_xmit.c b/net/netfilter/ipvs/ip_vs_xmit.c
+index 3313bceb6cc99..014f077403695 100644
+--- a/net/netfilter/ipvs/ip_vs_xmit.c
++++ b/net/netfilter/ipvs/ip_vs_xmit.c
+@@ -119,13 +119,12 @@ __mtu_check_toobig_v6(const struct sk_buff *skb, u32 mtu)
+ 	return false;
+ }
  
--	/* L: indicate several pageofs_outs or not */
--	bool multibases;
--
- 	/* L: whether extra buffer allocations are best-effort */
- 	bool besteffort;
- 
-@@ -1073,8 +1070,6 @@ static int z_erofs_scan_folio(struct z_erofs_decompress_frontend *f,
- 				break;
- 
- 			erofs_onlinefolio_split(folio);
--			if (f->pcl->pageofs_out != (map->m_la & ~PAGE_MASK))
--				f->pcl->multibases = true;
- 			if (f->pcl->length < offset + end - map->m_la) {
- 				f->pcl->length = offset + end - map->m_la;
- 				f->pcl->pageofs_out = map->m_la & ~PAGE_MASK;
-@@ -1120,7 +1115,6 @@ struct z_erofs_decompress_backend {
- 	struct page *onstack_pages[Z_EROFS_ONSTACK_PAGES];
- 	struct super_block *sb;
- 	struct z_erofs_pcluster *pcl;
--
- 	/* pages with the longest decompressed length for deduplication */
- 	struct page **decompressed_pages;
- 	/* pages to keep the compressed data */
-@@ -1129,6 +1123,8 @@ struct z_erofs_decompress_backend {
- 	struct list_head decompressed_secondary_bvecs;
- 	struct page **pagepool;
- 	unsigned int onstack_used, nr_pages;
-+	/* indicate if temporary copies should be preserved for later use */
-+	bool keepxcpy;
- };
- 
- struct z_erofs_bvec_item {
-@@ -1139,18 +1135,20 @@ struct z_erofs_bvec_item {
- static void z_erofs_do_decompressed_bvec(struct z_erofs_decompress_backend *be,
- 					 struct z_erofs_bvec *bvec)
+-/* Get route to daddr, update *saddr, optionally bind route to saddr */
++/* Get route to daddr, optionally bind route to saddr */
+ static struct rtable *do_output_route4(struct net *net, __be32 daddr,
+-				       int rt_mode, __be32 *saddr)
++				       int rt_mode, __be32 *ret_saddr)
  {
-+	int poff = bvec->offset + be->pcl->pageofs_out;
- 	struct z_erofs_bvec_item *item;
--	unsigned int pgnr;
+ 	struct flowi4 fl4;
+ 	struct rtable *rt;
+-	bool loop = false;
+ 
+ 	memset(&fl4, 0, sizeof(fl4));
+ 	fl4.daddr = daddr;
+@@ -135,23 +134,17 @@ static struct rtable *do_output_route4(struct net *net, __be32 daddr,
+ retry:
+ 	rt = ip_route_output_key(net, &fl4);
+ 	if (IS_ERR(rt)) {
+-		/* Invalid saddr ? */
+-		if (PTR_ERR(rt) == -EINVAL && *saddr &&
+-		    rt_mode & IP_VS_RT_MODE_CONNECT && !loop) {
+-			*saddr = 0;
+-			flowi4_update_output(&fl4, 0, daddr, 0);
+-			goto retry;
+-		}
+ 		IP_VS_DBG_RL("ip_route_output error, dest: %pI4\n", &daddr);
+ 		return NULL;
+-	} else if (!*saddr && rt_mode & IP_VS_RT_MODE_CONNECT && fl4.saddr) {
++	}
++	if (rt_mode & IP_VS_RT_MODE_CONNECT && fl4.saddr) {
+ 		ip_rt_put(rt);
+-		*saddr = fl4.saddr;
+ 		flowi4_update_output(&fl4, 0, daddr, fl4.saddr);
+-		loop = true;
++		rt_mode = 0;
+ 		goto retry;
+ 	}
+-	*saddr = fl4.saddr;
++	if (ret_saddr)
++		*ret_saddr = fl4.saddr;
+ 	return rt;
+ }
+ 
+@@ -344,19 +337,15 @@ __ip_vs_get_out_rt(struct netns_ipvs *ipvs, int skb_af, struct sk_buff *skb,
+ 		if (ret_saddr)
+ 			*ret_saddr = dest_dst->dst_saddr.ip;
+ 	} else {
+-		__be32 saddr = htonl(INADDR_ANY);
 -
--	if (!((bvec->offset + be->pcl->pageofs_out) & ~PAGE_MASK) &&
--	    (bvec->end == PAGE_SIZE ||
--	     bvec->offset + bvec->end == be->pcl->length)) {
--		pgnr = (bvec->offset + be->pcl->pageofs_out) >> PAGE_SHIFT;
--		DBG_BUGON(pgnr >= be->nr_pages);
--		if (!be->decompressed_pages[pgnr]) {
--			be->decompressed_pages[pgnr] = bvec->page;
-+	struct page **page;
-+
-+	if (!(poff & ~PAGE_MASK) && (bvec->end == PAGE_SIZE ||
-+			bvec->offset + bvec->end == be->pcl->length)) {
-+		DBG_BUGON((poff >> PAGE_SHIFT) >= be->nr_pages);
-+		page = be->decompressed_pages + (poff >> PAGE_SHIFT);
-+		if (!*page) {
-+			*page = bvec->page;
- 			return;
- 		}
-+	} else {
-+		be->keepxcpy = true;
+ 		noref = 0;
+ 
+ 		/* For such unconfigured boxes avoid many route lookups
+ 		 * for performance reasons because we do not remember saddr
+ 		 */
+ 		rt_mode &= ~IP_VS_RT_MODE_CONNECT;
+-		rt = do_output_route4(net, daddr, rt_mode, &saddr);
++		rt = do_output_route4(net, daddr, rt_mode, ret_saddr);
+ 		if (!rt)
+ 			goto err_unreach;
+-		if (ret_saddr)
+-			*ret_saddr = saddr;
  	}
  
- 	/* (cold path) one pcluster is requested multiple times */
-@@ -1316,7 +1314,7 @@ static int z_erofs_decompress_pcluster(struct z_erofs_decompress_backend *be,
- 					.alg = pcl->algorithmformat,
- 					.inplace_io = overlapped,
- 					.partial_decoding = pcl->partial,
--					.fillgaps = pcl->multibases,
-+					.fillgaps = be->keepxcpy,
- 					.gfp = pcl->besteffort ? GFP_KERNEL :
- 						GFP_NOWAIT | __GFP_NORETRY
- 				 }, be->pagepool);
-@@ -1370,7 +1368,6 @@ static int z_erofs_decompress_pcluster(struct z_erofs_decompress_backend *be,
- 
- 	pcl->length = 0;
- 	pcl->partial = true;
--	pcl->multibases = false;
- 	pcl->besteffort = false;
- 	pcl->bvset.nextpage = NULL;
- 	pcl->vcnt = 0;
+ 	local = (rt->rt_flags & RTCF_LOCAL) ? 1 : 0;
 -- 
 2.39.5
 
