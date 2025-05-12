@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-143707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C65BAB40FF
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:00:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF736AB40DE
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:58:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB00519E7F30
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:00:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8555F19E7C52
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:59:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77FEC2550A7;
-	Mon, 12 May 2025 18:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AEE1296D3C;
+	Mon, 12 May 2025 17:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mAkPr0BU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="opWUU0Ty"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 359A71519B8;
-	Mon, 12 May 2025 18:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17031296155;
+	Mon, 12 May 2025 17:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072819; cv=none; b=hv7gwh2+KItNvXuIe6PoQSF77UzGXoXeCR+b0Qq+hNnzirXVt7bZtRglJVAmiyTCq3oC282ylT23c0Vj+FzBAlDIbqyo4yOvd/iSOt5yd45UuPC+WznwVHQxCSZV4kvyvku+Pd5lMuBLT/LklGFUJ5qR6CL8um70JsZBKHBQxe8=
+	t=1747072727; cv=none; b=HVNFB3bmbEEfm9OsJJeE4ifly1meLYKHzw/+2lXbVG5NK2J6K7rZg5IhqZf+hnK6MGVFJvcsrCk2sdDl2pEROz9m2JdXuntU5/USX+eM1rdvUc3Ku4nZD8aF464b8ryL+qKeBxogHR1KkZ3OnabzcExoXAr3Bl68e7lxVosBPEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072819; c=relaxed/simple;
-	bh=D4ccS4uop2AiCP4OYY82ZeqW0geui9Jb+D+6hSTKaMk=;
+	s=arc-20240116; t=1747072727; c=relaxed/simple;
+	bh=FgdVhNGMTeNS4jAmWgB2GBQEdLsgZhVOVKmFiOAhTX0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pTPfPez0wVTg7xOyGrduihx43A5/AjtnwSWicNlfNj0xbvjJMkD9DpUPdAyLJKrKiDZB0kYufn7+mT9408U5l2C4c/Dlv6ALzrmkz9lVyOA5GGfz/+gB6u4n2xQFjbsgL2F/oXogtCyDWHdbMki9oHO8+76NU7VW2jrrWkD6Zzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mAkPr0BU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1B84C4CEE7;
-	Mon, 12 May 2025 18:00:18 +0000 (UTC)
+	 MIME-Version; b=mKbD+DcEk50lzr/FDkKX+Qy7kVktwN2cTGO1rJON/Zn5FQCysMtYXSU07H2vp3WnFxIfT2FuoByOnGBS+dEqYbvDOzpllGt4bl8am3OWUIlz7BesSEMbdH85F32FDhVhicKc/JiM+QLZ/SuJOU64pPX3KgOvz4GqWRJr3k+u18Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=opWUU0Ty; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B1D2C4CEE7;
+	Mon, 12 May 2025 17:58:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072819;
-	bh=D4ccS4uop2AiCP4OYY82ZeqW0geui9Jb+D+6hSTKaMk=;
+	s=korg; t=1747072727;
+	bh=FgdVhNGMTeNS4jAmWgB2GBQEdLsgZhVOVKmFiOAhTX0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mAkPr0BU43gkjPWRJllN709UhslbYkf34VQ9GDuFbmKe36dWNXKVk48L0DdJKMS/h
-	 6Qnjhiseayg8H5QJAljnDbcHJANG78imsCDU1zBFUO7aLWHyOcFWyJZu6+aSmhe7CC
-	 pnw6nbkRcMzb9G4E1QRUi2OKoZFxwUit7tiBj9Rk=
+	b=opWUU0TyOOieu+/gMXZyfsq1BLaOvp047sLWcIcO6VVrpqmLoY2aIwH2pidYlCOSE
+	 E66Npv8vWrfrdha3ZeZ1s/ZULOD0VSbz2Ba+Rxzk6M7/Fu4re3QYy6HjV38EsUqnCl
+	 cTAU1smZ25CQqP7KmoYBwyROE7vnF3j6SYy658g8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Florian Fainelli <florian.fainelli@broadcom.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 037/184] net: dsa: b53: fix clearing PVID of a port
-Date: Mon, 12 May 2025 19:43:58 +0200
-Message-ID: <20250512172043.234430306@linuxfoundation.org>
+Subject: [PATCH 6.12 038/184] net: dsa: b53: fix flushing old pvid VLAN on pvid change
+Date: Mon, 12 May 2025 19:43:59 +0200
+Message-ID: <20250512172043.274636964@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
 References: <20250512172041.624042835@linuxfoundation.org>
@@ -69,71 +69,35 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonas Gorski <jonas.gorski@gmail.com>
 
-[ Upstream commit f480851981043d9bb6447ca9883ade9247b9a0ad ]
+[ Upstream commit 083c6b28c0cbcd83b6af1a10f2c82937129b3438 ]
 
-Currently the PVID of ports are only set when adding/updating VLANs with
-PVID set or removing VLANs, but not when clearing the PVID flag of a
-VLAN.
-
-E.g. the following flow
-
-$ ip link add br0 type bridge vlan_filtering 1
-$ ip link set sw1p1 master bridge
-$ bridge vlan add dev sw1p1 vid 10 pvid untagged
-$ bridge vlan add dev sw1p1 vid 10 untagged
-
-Would keep the PVID set as 10, despite the flag being cleared. Fix this
-by checking if we need to unset the PVID on vlan updates.
+Presumably the intention here was to flush the VLAN of the old pvid, not
+the added VLAN again, which we already flushed before.
 
 Fixes: a2482d2ce349 ("net: dsa: b53: Plug in VLAN support")
 Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
 Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20250429201710.330937-4-jonas.gorski@gmail.com
+Link: https://patch.msgid.link/20250429201710.330937-5-jonas.gorski@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/b53/b53_common.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/net/dsa/b53/b53_common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
-index d66ef7ad7a604..31d20552cdb08 100644
+index 31d20552cdb08..d450100c1d020 100644
 --- a/drivers/net/dsa/b53/b53_common.c
 +++ b/drivers/net/dsa/b53/b53_common.c
-@@ -1538,12 +1538,21 @@ int b53_vlan_add(struct dsa_switch *ds, int port,
- 	bool untagged = vlan->flags & BRIDGE_VLAN_INFO_UNTAGGED;
- 	bool pvid = vlan->flags & BRIDGE_VLAN_INFO_PVID;
- 	struct b53_vlan *vl;
-+	u16 old_pvid, new_pvid;
- 	int err;
- 
- 	err = b53_vlan_prepare(ds, port, vlan);
- 	if (err)
- 		return err;
- 
-+	b53_read16(dev, B53_VLAN_PAGE, B53_VLAN_PORT_DEF_TAG(port), &old_pvid);
-+	if (pvid)
-+		new_pvid = vlan->vid;
-+	else if (!pvid && vlan->vid == old_pvid)
-+		new_pvid = b53_default_pvid(dev);
-+	else
-+		new_pvid = old_pvid;
-+
- 	vl = &dev->vlans[vlan->vid];
- 
- 	b53_get_vlan_entry(dev, vlan->vid, vl);
-@@ -1563,9 +1572,9 @@ int b53_vlan_add(struct dsa_switch *ds, int port,
- 	b53_set_vlan_entry(dev, vlan->vid, vl);
- 	b53_fast_age_vlan(dev, vlan->vid);
- 
--	if (pvid && !dsa_is_cpu_port(ds, port)) {
-+	if (!dsa_is_cpu_port(ds, port) && new_pvid != old_pvid) {
+@@ -1575,7 +1575,7 @@ int b53_vlan_add(struct dsa_switch *ds, int port,
+ 	if (!dsa_is_cpu_port(ds, port) && new_pvid != old_pvid) {
  		b53_write16(dev, B53_VLAN_PAGE, B53_VLAN_PORT_DEF_TAG(port),
--			    vlan->vid);
-+			    new_pvid);
- 		b53_fast_age_vlan(dev, vlan->vid);
+ 			    new_pvid);
+-		b53_fast_age_vlan(dev, vlan->vid);
++		b53_fast_age_vlan(dev, old_pvid);
  	}
  
+ 	return 0;
 -- 
 2.39.5
 
