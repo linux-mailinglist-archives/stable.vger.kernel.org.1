@@ -1,94 +1,137 @@
-Return-Path: <stable+bounces-143863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16496AB4249
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:21:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A293AB425A
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:22:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 144841B6135A
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:21:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 290F41881B55
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:21:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 499422C032B;
-	Mon, 12 May 2025 18:05:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D8D5296FA0;
+	Mon, 12 May 2025 18:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qRjAeAvr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tyuVzCWj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AEB42C0321
-	for <stable@vger.kernel.org>; Mon, 12 May 2025 18:05:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5292C1092;
+	Mon, 12 May 2025 18:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073140; cv=none; b=HKO8oer+eK1yqDIm2LmP/i14LG1j47q15zfSoWViYRlozrImncdZFZf6k+ZcaV8PkAfzFf+LamXGHLxUvyd3YIiXemWyUsFDL22sLaRdIWyzQVt641p5ZF/U07fEg7fIKAzVgdacldrzp4UajgcD8Ylv8Cii9Rg8biK6lXvUsyo=
+	t=1747073145; cv=none; b=Q6wVHysADw2tTACT/8lGmt8qs6zWj4oPxWYKZbNu/kAlxWUt9BfI2EHTftl+hnwP3IGzh/nFpa2A9dUAfBH1jzDJluRJC0jfos4Rz9BFWZWt4Bl56Dh31ZLhCwG45sVdXwmS69n/fh4fIRSepAMqar+3BQi5K1/7IHQbRp+3gHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073140; c=relaxed/simple;
-	bh=h7I6/oIdYPkQMdUoKxT3LyYL7uGmSen/dnkYWQfVlPc=;
+	s=arc-20240116; t=1747073145; c=relaxed/simple;
+	bh=0M7b1jwuL8aGrtVgJT1veCJSLkJZ6QXbB0t/Micp/7M=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mvcLdmCqHE9cGGgMrw1MdHlh6+yf8S0Tpka1+dHGy/76mEIw6oktC+feAqSSyByE11dphCqb0F1VYviIT1PX5Rs+BY6y7p2MNNAejmUghCk8sbYO642hsGLnss40S6Wu1ARH8ek1tpxGliGxQZZyZR3638q+5z4Xgm/n/nHVk4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qRjAeAvr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7058FC4CEE9;
-	Mon, 12 May 2025 18:05:39 +0000 (UTC)
+	 MIME-Version; b=HLV/ir5ofsklfFw6jMk7/ERL1LEtmT/vUIf0Ag9vAQY+yiDRc1BVTMgpSYNLlWQMbvqMCfz+DE8uxltXVs9G133dLZf9RvjV1T41OF69vCi2K8OuwG8DJm7h6WnzJ2TC4gLT7gE6/6lR74uxbI459IKYL4cBrWlw0hykrfhDCuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tyuVzCWj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DF8EC4CEE7;
+	Mon, 12 May 2025 18:05:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747073139;
-	bh=h7I6/oIdYPkQMdUoKxT3LyYL7uGmSen/dnkYWQfVlPc=;
+	s=k20201202; t=1747073144;
+	bh=0M7b1jwuL8aGrtVgJT1veCJSLkJZ6QXbB0t/Micp/7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qRjAeAvrrBbNX/vN/VcuBjVrZY57rrj0ZfWnjw6HDVeFFsMJdOmH4SIQnWk6TNdj1
-	 Jn6IvlZwigV+Kk+9zEwoDjWPPhe00G1pmZRUXB+X5KDazAm2NaEL2/wp+tOeQofMF+
-	 dXBiSaXLL4XI7xFRFTIRj8t8p+RoZQVv1l308GQe0843xR/f8h8sAdNUrEmvVbteMf
-	 7OtIc0TghyrMgMV0vLEsySDbXcBALTpokCFy6WarzD2+qLACfYXGc9ADwHNdGzx+hP
-	 N8e3yknUyIMYp1r3f10VDIGIc382EEIiMBQ2c+ifs9g+xHPqMw0MYMqBAWUOWd/GIj
-	 6VlO9UvS1c3xQ==
+	b=tyuVzCWj63wXRMOHJ5MGlLunznISQVMA/lipEyRQCtMonx1NA4tgbZKzpwtNfv7/C
+	 3RhMntOlyqtZGbIiUSEDZXB4882iArRoeFc+E3J+E3/ul/EMvRc8UTXS/ViB3JFtF3
+	 VfGq4XembhqziMvOavLcgg/da1Pe0cX/b2asOV87qjGQxxnxrJBCPL1sB1ges1Y1Na
+	 EhbHGEDiuMbo/UIJblj5zk9es2FLI1JIjy66ZO/BKu5cG0nkMFAPz7Ut3fF1wcBVpU
+	 4txeuvt69xDTSAS084chd9p2koow9L/RBjnSCjWI0WCYp4sNr8yK7tPRMh2/IkVeC5
+	 jTf/O886yQmUA==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: jianqi.ren.cn@windriver.com,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10.y] tty: add the option to have a tty reject a new ldisc
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Jason Andryuk <jason.andryuk@amd.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Juergen Gross <jgross@suse.com>,
+	Sasha Levin <sashal@kernel.org>,
+	chenqiuji666@gmail.com,
+	gregkh@linuxfoundation.org,
+	xin.wang2@amd.com,
+	xen-devel@lists.xenproject.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 2/3] xenbus: Allow PVH dom0 a non-local xenstore
 Date: Mon, 12 May 2025 14:05:36 -0400
-Message-Id: <20250511205130-18e9222719e0fe14@stable.kernel.org>
+Message-Id: <20250512180537.438255-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250509091947.3242314-1-jianqi.ren.cn@windriver.com>
-References: 
+In-Reply-To: <20250512180537.438255-1-sashal@kernel.org>
+References: <20250512180537.438255-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 5.4.293
 Content-Transfer-Encoding: 8bit
 
-[ Sasha's backport helper bot ]
+From: Jason Andryuk <jason.andryuk@amd.com>
 
-Hi,
+[ Upstream commit 90989869baae47ee2aa3bcb6f6eb9fbbe4287958 ]
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+Make xenbus_init() allow a non-local xenstore for a PVH dom0 - it is
+currently forced to XS_LOCAL.  With Hyperlaunch booting dom0 and a
+xenstore stubdom, dom0 can be handled as a regular XS_HVM following the
+late init path.
 
-The upstream commit SHA1 provided is correct: 6bd23e0c2bb6c65d4f5754d1456bc9a4427fc59b
+Ideally we'd drop the use of xen_initial_domain() and just check for the
+event channel instead.  However, ARM has a xen,enhanced no-xenstore
+mode, where the event channel and PFN would both be 0.  Retain the
+xen_initial_domain() check, and use that for an additional check when
+the event channel is 0.
 
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: <jianqi.ren.cn@windriver.com>
-Commit author: Linus Torvalds<torvalds@linux-foundation.org>
+Check the full 64bit HVM_PARAM_STORE_EVTCHN value to catch the off
+chance that high bits are set for the 32bit event channel.
 
-Status in newer kernel trees:
-6.14.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: 287b569a5b91)
-6.1.y | Present (different SHA1: 3c6332f3bb15)
-5.15.y | Not found
-
-Note: The patch differs from the upstream commit:
+Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
+Change-Id: I5506da42e4c6b8e85079fefb2f193c8de17c7437
+Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20250506204456.5220-1-jason.andryuk@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-1:  6bd23e0c2bb6c < -:  ------------- tty: add the option to have a tty reject a new ldisc
--:  ------------- > 1:  5cfd827469a29 tty: add the option to have a tty reject a new ldisc
----
+ drivers/xen/xenbus/xenbus_probe.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-Results of testing on various branches:
+diff --git a/drivers/xen/xenbus/xenbus_probe.c b/drivers/xen/xenbus/xenbus_probe.c
+index fd686b962727a..17705f82f85fd 100644
+--- a/drivers/xen/xenbus/xenbus_probe.c
++++ b/drivers/xen/xenbus/xenbus_probe.c
+@@ -881,9 +881,15 @@ static int __init xenbus_init(void)
+ 	if (xen_pv_domain())
+ 		xen_store_domain_type = XS_PV;
+ 	if (xen_hvm_domain())
++	{
+ 		xen_store_domain_type = XS_HVM;
+-	if (xen_hvm_domain() && xen_initial_domain())
+-		xen_store_domain_type = XS_LOCAL;
++		err = hvm_get_parameter(HVM_PARAM_STORE_EVTCHN, &v);
++		if (err)
++			goto out_error;
++		xen_store_evtchn = (int)v;
++		if (!v && xen_initial_domain())
++			xen_store_domain_type = XS_LOCAL;
++	}
+ 	if (xen_pv_domain() && !xen_start_info->store_evtchn)
+ 		xen_store_domain_type = XS_LOCAL;
+ 	if (xen_pv_domain() && xen_start_info->store_evtchn)
+@@ -902,10 +908,6 @@ static int __init xenbus_init(void)
+ 		xen_store_interface = gfn_to_virt(xen_store_gfn);
+ 		break;
+ 	case XS_HVM:
+-		err = hvm_get_parameter(HVM_PARAM_STORE_EVTCHN, &v);
+-		if (err)
+-			goto out_error;
+-		xen_store_evtchn = (int)v;
+ 		err = hvm_get_parameter(HVM_PARAM_STORE_PFN, &v);
+ 		if (err)
+ 			goto out_error;
+-- 
+2.39.5
 
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-5.10.y       |  Success    |  Success   |
 
