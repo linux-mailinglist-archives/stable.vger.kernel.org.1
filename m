@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-143548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 459A0AB404B
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:52:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DF87AB403F
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:51:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94863189DCCB
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:52:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0C6D07AD4F6
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:48:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29496296D2D;
-	Mon, 12 May 2025 17:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 054B4254879;
+	Mon, 12 May 2025 17:50:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kvhoIbff"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="05rO1lJp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D99C6296D23;
-	Mon, 12 May 2025 17:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B63251A08CA;
+	Mon, 12 May 2025 17:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072311; cv=none; b=GNb8G4z4+P5zsd8wznhXxiodrzrgnvcRjTgN/3905TvuCX5AVAuPy61WgheioroMTZ7p89jz0z/Enx6HidQr89SqM36rZIneV+VcPF0mfDLg2T780tGz2kB2dCY6s6/wCcYJ2OqSd4y7arViiS2PG+s4ZHLh0g8LrZAudN5zjOg=
+	t=1747072206; cv=none; b=rKieD4XKu4Lpl2UlD5V8KfEx2KsdjjgHml/EknT5Ub38uxWB3wchD8Xa92MToxnZd1njWESY0HcLUTMEupoqB1lxNvEpa2pV65jPEi94TFn5tlEPN5lNXHl0XS/t4fQ5KLkBp2XjVPI0P5KtoKTq5FL0I8K73FL75BzbbHYwN9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072311; c=relaxed/simple;
-	bh=SBpKJ08t79N8HkZHePw3hcisk0M/S0npX+r1mhkrcrc=;
+	s=arc-20240116; t=1747072206; c=relaxed/simple;
+	bh=em2ICtvT8Su2mznLks5GNO/JEvlJNxcv0J63PtJNb34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gbWIO53Vcta4dGOeFmXdVBl4X7+/pxnSqvP2hbuI8T3zFWAss1HS6op8Xys55hU8MPonmRPzkbuRnKQZm8tBLxQu6DMQidAZturUnFZD/adoScZAC49zsv7oThXVdLTyvjaB/vmBshc2vuCYTcyDVeHWzBiEJwAbuN4s6KiBZC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kvhoIbff; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 274B4C4CEE7;
-	Mon, 12 May 2025 17:51:50 +0000 (UTC)
+	 MIME-Version; b=XtKYiRRJ9cQeJJFmctdu+9J/VbxdGiRnJWHMP96p/30wrM1MpchZu26X+CxgXgexcOfEwZ1Lr+SWtd65iRAusYQavkRcQ64y89FAJSm+2on4UPMuAoTIbAcYBcW3tWSZT/p3m+v2WiTdP12qjpiAOnojfmfZpEfkSHryb818NaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=05rO1lJp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7C26C4CEE7;
+	Mon, 12 May 2025 17:50:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072311;
-	bh=SBpKJ08t79N8HkZHePw3hcisk0M/S0npX+r1mhkrcrc=;
+	s=korg; t=1747072206;
+	bh=em2ICtvT8Su2mznLks5GNO/JEvlJNxcv0J63PtJNb34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kvhoIbffwXt0fKnwATdT7/jo4qSbQNF2JrMZGRBoElvowYwE97SzzdESQbRp+hrdV
-	 TpCtXyETK2sK9xfkKD8MRm0oslOnzCgeP2oAwXYwc3L2ifZ/JYuntoyTED5T3dhxOc
-	 LDeb6PWCRNwLjANEqeRGtbQUiNlhwnCoWaNIqyvM=
+	b=05rO1lJpNTgqNKCyP+fhT6MJPQYn4IAxpeCPEow7uw/7J0mZCcL60fWottR5QgU+T
+	 NZxsqK3NkLuCRMQ3mwzIK3KDrIP8pXXzcmKnwmzbpRa63nRdz02Il/b5NAOrRVEV/Y
+	 JJKzYgvnDYTw75lMB91JwGehZsY5t7kTeRohWHW8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Zong Li <zong.li@sifive.com>,
+	Nylon Chen <nylon.chen@sifive.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 159/197] MIPS: Fix MAX_REG_OFFSET
-Date: Mon, 12 May 2025 19:40:09 +0200
-Message-ID: <20250512172050.858228370@linuxfoundation.org>
+Subject: [PATCH 6.14 160/197] riscv: misaligned: Add handling for ZCB instructions
+Date: Mon, 12 May 2025 19:40:10 +0200
+Message-ID: <20250512172050.898823596@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512172044.326436266@linuxfoundation.org>
 References: <20250512172044.326436266@linuxfoundation.org>
@@ -67,37 +67,66 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Nylon Chen <nylon.chen@sifive.com>
 
-[ Upstream commit c44572e0cc13c9afff83fd333135a0aa9b27ba26 ]
+[ Upstream commit eb16b3727c05ed36420c90eca1e8f0e279514c1c ]
 
-Fix MAX_REG_OFFSET to point to the last register in 'pt_regs' and not to
-the marker itself, which could allow regs_get_register() to return an
-invalid offset.
+Add support for the Zcb extension's compressed half-word instructions
+(C.LHU, C.LH, and C.SH) in the RISC-V misaligned access trap handler.
 
-Fixes: 40e084a506eb ("MIPS: Add uprobes support.")
-Suggested-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Zong Li <zong.li@sifive.com>
+Signed-off-by: Nylon Chen <nylon.chen@sifive.com>
+Fixes: 956d705dd279 ("riscv: Unaligned load/store handling for M_MODE")
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20250411073850.3699180-2-nylon.chen@sifive.com
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/asm/ptrace.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/riscv/kernel/traps_misaligned.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/arch/mips/include/asm/ptrace.h b/arch/mips/include/asm/ptrace.h
-index 85fa9962266a2..ef72c46b55688 100644
---- a/arch/mips/include/asm/ptrace.h
-+++ b/arch/mips/include/asm/ptrace.h
-@@ -65,7 +65,8 @@ static inline void instruction_pointer_set(struct pt_regs *regs,
+diff --git a/arch/riscv/kernel/traps_misaligned.c b/arch/riscv/kernel/traps_misaligned.c
+index 4354c87c0376f..dde5d11dc1b50 100644
+--- a/arch/riscv/kernel/traps_misaligned.c
++++ b/arch/riscv/kernel/traps_misaligned.c
+@@ -88,6 +88,13 @@
+ #define INSN_MATCH_C_FSWSP		0xe002
+ #define INSN_MASK_C_FSWSP		0xe003
  
- /* Query offset/name of register from its name/offset */
- extern int regs_query_register_offset(const char *name);
--#define MAX_REG_OFFSET (offsetof(struct pt_regs, __last))
-+#define MAX_REG_OFFSET \
-+	(offsetof(struct pt_regs, __last) - sizeof(unsigned long))
++#define INSN_MATCH_C_LHU		0x8400
++#define INSN_MASK_C_LHU			0xfc43
++#define INSN_MATCH_C_LH			0x8440
++#define INSN_MASK_C_LH			0xfc43
++#define INSN_MATCH_C_SH			0x8c00
++#define INSN_MASK_C_SH			0xfc43
++
+ #define INSN_LEN(insn)			((((insn) & 0x3) < 0x3) ? 2 : 4)
  
- /**
-  * regs_get_register() - get register value from its offset
+ #if defined(CONFIG_64BIT)
+@@ -431,6 +438,13 @@ static int handle_scalar_misaligned_load(struct pt_regs *regs)
+ 		fp = 1;
+ 		len = 4;
+ #endif
++	} else if ((insn & INSN_MASK_C_LHU) == INSN_MATCH_C_LHU) {
++		len = 2;
++		insn = RVC_RS2S(insn) << SH_RD;
++	} else if ((insn & INSN_MASK_C_LH) == INSN_MATCH_C_LH) {
++		len = 2;
++		shift = 8 * (sizeof(ulong) - len);
++		insn = RVC_RS2S(insn) << SH_RD;
+ 	} else {
+ 		regs->epc = epc;
+ 		return -1;
+@@ -530,6 +544,9 @@ static int handle_scalar_misaligned_store(struct pt_regs *regs)
+ 		len = 4;
+ 		val.data_ulong = GET_F32_RS2C(insn, regs);
+ #endif
++	} else if ((insn & INSN_MASK_C_SH) == INSN_MATCH_C_SH) {
++		len = 2;
++		val.data_ulong = GET_RS2S(insn, regs);
+ 	} else {
+ 		regs->epc = epc;
+ 		return -1;
 -- 
 2.39.5
 
