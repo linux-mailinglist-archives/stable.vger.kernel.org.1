@@ -1,64 +1,56 @@
-Return-Path: <stable+bounces-143953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48E04AB4318
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:30:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9060CAB41D4
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:13:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24E7E8C617A
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:26:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 271211658D5
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:12:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D06D429A310;
-	Mon, 12 May 2025 18:10:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C662929B79E;
+	Mon, 12 May 2025 18:04:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S5TMp0bi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NdkDa+o1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B0B729A306;
-	Mon, 12 May 2025 18:10:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 843B729B764;
+	Mon, 12 May 2025 18:04:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073403; cv=none; b=W5s6FRFEiMlQZdxj0ymlMH7khnNjYlmkJKsXkKdkdyhkciZVYMBWH1BwaG1pP+eXbu5okRJ0gXRUcK1FpgiwVYXLLK6yf6bRBDn2D4NNtlJmmk7OBrVeA4nGyjMuEf/jI21U3edaoQWJtfN9d752cQfLooUlNnRU8cqZvPeeHoQ=
+	t=1747073095; cv=none; b=gkJiuhBb32CbNU6nIA8Hqdx3RdtNskzFeA/BCDwnWak9VdSU0N9jRq8bUSFQYheMCgrPOgPZUO5NLQfJPKDevHr/Li25yLMRL7q3tzw6nnm6e6tN9r1pUGmU0CoNZpljvlQgj5dz3xQ2bgLG23As1r0jtzd4CoqRppmeCR8A8Hc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073403; c=relaxed/simple;
-	bh=fb5Xi6rH7nUSa/ISIrWStYk9shv1W1eoi2LOMEctURk=;
+	s=arc-20240116; t=1747073095; c=relaxed/simple;
+	bh=JUmgEvpH8oyO33xkz719wxgM0QDrT9JlC52zsOjlHkE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wzi5lc0Bjqfnnamzn7LlCVE7FovcDPcW/tnIrdllXoPXOO3RnlP6lmznjJcg2wyAcpl6v4yHLfeGGdb+hwAIZpRS59cCrcJ7xvIq1+HLzrlAlbK4o3bfDsdF4OvaQWxIMuvopm0joFGdaOdZQ9xdnE7lrkT/avl7L/TPRlaM34c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S5TMp0bi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEE26C4CEE7;
-	Mon, 12 May 2025 18:10:02 +0000 (UTC)
+	 MIME-Version; b=d4JtbO6g0WfEbQzMGuROOIaoOutXdknK2GJ4BoV65LrfcFjKR2U4uR2dzNrK/Ddp/i/7vyypi31xoLLDF+O1pCQ3SQ/4jneIB/2tMgF0avMHzE4WXcKHjNbXAqygYeWcVKO2mSe9h/n/CILtyLnhCoDQRmn0AqWcBOhIlhc/nGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NdkDa+o1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7B7DC4CEF1;
+	Mon, 12 May 2025 18:04:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073403;
-	bh=fb5Xi6rH7nUSa/ISIrWStYk9shv1W1eoi2LOMEctURk=;
+	s=korg; t=1747073095;
+	bh=JUmgEvpH8oyO33xkz719wxgM0QDrT9JlC52zsOjlHkE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S5TMp0bioTL8D1oSD8y5Ig7Wq3d9j+8TEYhMqpdusT8FGIqVMKYClzqJHBl4QWJki
-	 RiTySM10UUEO4gMATkIve+urlVlQhPbHjVQoDIyGdE5nWmWrW45So7YzSIJBzBcLYm
-	 sYrMRPdmEccXiF2hYShU+Fm1nL43/sPjrBK7mTNs=
+	b=NdkDa+o1fZUg3dwyzwIG8NnD7RRRLKmjFP2kdyM+ZFq93V49V1PVMA0nK8rSV5Ce0
+	 r5ep47LRSfUh+8YqEHdUIoRpatZLcyg71ceIEx2d81ELGMiaHbpXvfnTSO/KybBz3G
+	 Z6p5JsyVZf9ovHnjOnKFRqXA+Ktf8A/u2ySyDZH8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Heming Zhao <heming.zhao@suse.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Murad Masimov <m.masimov@mt-integration.ru>,
-	Shichangkuo <shi.changkuo@h3c.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 064/113] ocfs2: switch osb->disable_recovery to enum
+	Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 152/184] do_umount(): add missing barrier before refcount checks in sync case
 Date: Mon, 12 May 2025 19:45:53 +0200
-Message-ID: <20250512172030.286743280@linuxfoundation.org>
+Message-ID: <20250512172048.006385679@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
-References: <20250512172027.691520737@linuxfoundation.org>
+In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
+References: <20250512172041.624042835@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,112 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-commit c0fb83088f0cc4ee4706e0495ee8b06f49daa716 upstream.
+[ Upstream commit 65781e19dcfcb4aed1167d87a3ffcc2a0c071d47 ]
 
-Patch series "ocfs2: Fix deadlocks in quota recovery", v3.
+do_umount() analogue of the race fixed in 119e1ef80ecf "fix
+__legitimize_mnt()/mntput() race".  Here we want to make sure that
+if __legitimize_mnt() doesn't notice our lock_mount_hash(), we will
+notice their refcount increment.  Harder to hit than mntput_no_expire()
+one, fortunately, and consequences are milder (sync umount acting
+like umount -l on a rare race with RCU pathwalk hitting at just the
+wrong time instead of use-after-free galore mntput_no_expire()
+counterpart used to be hit).  Still a bug...
 
-This implements another approach to fixing quota recovery deadlocks.  We
-avoid grabbing sb->s_umount semaphore from ocfs2_finish_quota_recovery()
-and instead stop quota recovery early in ocfs2_dismount_volume().
-
-
-This patch (of 3):
-
-We will need more recovery states than just pure enable / disable to fix
-deadlocks with quota recovery.  Switch osb->disable_recovery to enum.
-
-Link: https://lkml.kernel.org/r/20250424134301.1392-1-jack@suse.cz
-Link: https://lkml.kernel.org/r/20250424134515.18933-4-jack@suse.cz
-Fixes: 5f530de63cfc ("ocfs2: Use s_umount for quota recovery protection")
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Heming Zhao <heming.zhao@suse.com>
-Tested-by: Heming Zhao <heming.zhao@suse.com>
-Acked-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Murad Masimov <m.masimov@mt-integration.ru>
-Cc: Shichangkuo <shi.changkuo@h3c.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 48a066e72d97 ("RCU'd vfsmounts")
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/journal.c |   14 ++++++++------
- fs/ocfs2/ocfs2.h   |    7 ++++++-
- 2 files changed, 14 insertions(+), 7 deletions(-)
+ fs/namespace.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/ocfs2/journal.c
-+++ b/fs/ocfs2/journal.c
-@@ -174,7 +174,7 @@ int ocfs2_recovery_init(struct ocfs2_sup
- 	struct ocfs2_recovery_map *rm;
- 
- 	mutex_init(&osb->recovery_lock);
--	osb->disable_recovery = 0;
-+	osb->recovery_state = OCFS2_REC_ENABLED;
- 	osb->recovery_thread_task = NULL;
- 	init_waitqueue_head(&osb->recovery_event);
- 
-@@ -206,7 +206,7 @@ void ocfs2_recovery_exit(struct ocfs2_su
- 	/* disable any new recovery threads and wait for any currently
- 	 * running ones to exit. Do this before setting the vol_state. */
- 	mutex_lock(&osb->recovery_lock);
--	osb->disable_recovery = 1;
-+	osb->recovery_state = OCFS2_REC_DISABLED;
- 	mutex_unlock(&osb->recovery_lock);
- 	wait_event(osb->recovery_event, !ocfs2_recovery_thread_running(osb));
- 
-@@ -1582,14 +1582,16 @@ bail:
- 
- void ocfs2_recovery_thread(struct ocfs2_super *osb, int node_num)
- {
-+	int was_set = -1;
-+
- 	mutex_lock(&osb->recovery_lock);
-+	if (osb->recovery_state < OCFS2_REC_DISABLED)
-+		was_set = ocfs2_recovery_map_set(osb, node_num);
- 
- 	trace_ocfs2_recovery_thread(node_num, osb->node_num,
--		osb->disable_recovery, osb->recovery_thread_task,
--		osb->disable_recovery ?
--		-1 : ocfs2_recovery_map_set(osb, node_num));
-+		osb->recovery_state, osb->recovery_thread_task, was_set);
- 
--	if (osb->disable_recovery)
-+	if (osb->recovery_state == OCFS2_REC_DISABLED)
- 		goto out;
- 
- 	if (osb->recovery_thread_task)
---- a/fs/ocfs2/ocfs2.h
-+++ b/fs/ocfs2/ocfs2.h
-@@ -308,6 +308,11 @@ enum ocfs2_journal_trigger_type {
- void ocfs2_initialize_journal_triggers(struct super_block *sb,
- 				       struct ocfs2_triggers triggers[]);
- 
-+enum ocfs2_recovery_state {
-+	OCFS2_REC_ENABLED = 0,
-+	OCFS2_REC_DISABLED,
-+};
-+
- struct ocfs2_journal;
- struct ocfs2_slot_info;
- struct ocfs2_recovery_map;
-@@ -370,7 +375,7 @@ struct ocfs2_super
- 	struct ocfs2_recovery_map *recovery_map;
- 	struct ocfs2_replay_map *replay_map;
- 	struct task_struct *recovery_thread_task;
--	int disable_recovery;
-+	enum ocfs2_recovery_state recovery_state;
- 	wait_queue_head_t checkpoint_event;
- 	struct ocfs2_journal *journal;
- 	unsigned long osb_commit_interval;
+diff --git a/fs/namespace.c b/fs/namespace.c
+index bd601ab26e781..c3c1e8c644f2e 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -747,7 +747,7 @@ int __legitimize_mnt(struct vfsmount *bastard, unsigned seq)
+ 		return 0;
+ 	mnt = real_mount(bastard);
+ 	mnt_add_count(mnt, 1);
+-	smp_mb();			// see mntput_no_expire()
++	smp_mb();		// see mntput_no_expire() and do_umount()
+ 	if (likely(!read_seqretry(&mount_lock, seq)))
+ 		return 0;
+ 	if (bastard->mnt_flags & MNT_SYNC_UMOUNT) {
+@@ -1916,6 +1916,7 @@ static int do_umount(struct mount *mnt, int flags)
+ 			umount_tree(mnt, UMOUNT_PROPAGATE);
+ 		retval = 0;
+ 	} else {
++		smp_mb(); // paired with __legitimize_mnt()
+ 		shrink_submounts(mnt);
+ 		retval = -EBUSY;
+ 		if (!propagate_mount_busy(mnt, 2)) {
+-- 
+2.39.5
+
 
 
 
