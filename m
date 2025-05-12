@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-143791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01429AB4182
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:07:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18595AB41C2
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:11:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAE7C19E1072
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:07:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD0B87B4627
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:06:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1992298276;
-	Mon, 12 May 2025 18:04:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73D392989BD;
+	Mon, 12 May 2025 18:04:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QtmB5Ea/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PfWxfaZW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F34F296FBD;
-	Mon, 12 May 2025 18:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A732989B2;
+	Mon, 12 May 2025 18:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073057; cv=none; b=Wc6em1PXb7/jS/btlR927LEWggAf/TDJvYHNqfYrTWbHkBmtw22dJElU0laqFzmkRwW5/ASrtCtbU+jxmw9SZyJNUyGCMNLLJpMWWUpzNRFSCBmnVEl7dDIKtAt3nU53EqUqW/Sgq0aKdVa+D3f4TwsAlJOEd3k0Dk2UQM0bcZA=
+	t=1747073061; cv=none; b=Jw3s48lYBbpk8XTf36K8G7JE461rVwohbz7lqdLhfbLLJWzbaTYQ1GNVWMp4MTQpSju57r9XjEeVV7M8+BMrROzvsBClx98N3ls9p6bFoKv6oDQS3RuJTPTYjnkQGoviKMbyUMW+ZoLLS48lhufLLTb/jHALdzFK/41KZGFmjW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073057; c=relaxed/simple;
-	bh=0RrDHPKBXyaRDEcdta9Mt+YcmvtP1RsMgsqgP1LVL78=;
+	s=arc-20240116; t=1747073061; c=relaxed/simple;
+	bh=yq93t+wQDRhOU6ht+Z5zQ1AWcbo7fRi1um1/XTqQrNs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NxWr3KTxQK9MXPB//F3JkBdAQ7wwOonIpsTr/rlfVvdLtQUW6KZRebm407SdZyaCpB9iu20qQeLo24GKxoi27DbwEBKJnS28xLiQDiIYM8+AOh080qfw8YcaV2ntky9xD/SQEA2CEIPwV9XelaKAr/4Zz76uoheTFVNwM7nLhsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QtmB5Ea/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3373DC4CEE7;
-	Mon, 12 May 2025 18:04:15 +0000 (UTC)
+	 MIME-Version; b=tCftYrHgFrTAqNYWfOF6iDabSiFYVUSRVSMDu18wH9e3YtMGkNFVkvfXdgmQgb61qha3KYj92doMV4XV4a8f1uhZcwwrTExNYbWMMajFasi1nhlTgD2KGmdiL05PDWtWYhzKvixw28KXqiXbU/0+Qj4kTGlyRw6cvLWSRJnM7SU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PfWxfaZW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13F9BC4CEE7;
+	Mon, 12 May 2025 18:04:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073055;
-	bh=0RrDHPKBXyaRDEcdta9Mt+YcmvtP1RsMgsqgP1LVL78=;
+	s=korg; t=1747073059;
+	bh=yq93t+wQDRhOU6ht+Z5zQ1AWcbo7fRi1um1/XTqQrNs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QtmB5Ea/mpUUugMgf9uyAkURfIj+I9zIH6INc6XW7UQ4r27nlEMUeCMwVHqwZcUZ2
-	 ONvtC8j9ojtu9gL2NSRrVw6zD0FI0Cy+Zrs98B3mhgTEU57+4AAjJPPyZTOzp9Swmi
-	 ltqan3TlFjXIrNQyO5kFw0lDCpjQHGEbOonza2b0=
+	b=PfWxfaZWVQUPkqia9xMjNsrUcL/rCMBzuKvsI2t42ElqcIBJOTCefuqAG8YrF+ggx
+	 5kqX7GeNHMZARXuS5uLViWT60QKx7nmxVpokNi8WYP5bSjo0+qbclFssAUTnSE2dM4
+	 Gp/ZT0/5vxmVY6AM7qLtS1Y4Mq0+RytXsftdmHQA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+a5d8c609c02f508672cc@syzkaller.appspotmail.com,
+	Christoph Hellwig <hch@lst.de>,
 	Ming Lei <ming.lei@redhat.com>,
-	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Nilay Shroff <nilay@linux.ibm.com>,
 	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 141/184] loop: Fix ABBA locking race
-Date: Mon, 12 May 2025 19:45:42 +0200
-Message-ID: <20250512172047.550723864@linuxfoundation.org>
+Subject: [PATCH 6.12 142/184] loop: refactor queue limits updates
+Date: Mon, 12 May 2025 19:45:43 +0200
+Message-ID: <20250512172047.589871280@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
 References: <20250512172041.624042835@linuxfoundation.org>
@@ -68,121 +71,118 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit b49125574cae26458d4aa02ce8f4523ba9a2a328 ]
+[ Upstream commit b38c8be255e89ffcdeb817407222d2de0b573a41 ]
 
-Current loop calls vfs_statfs() while holding the q->limits_lock. If
-FS takes some locking in vfs_statfs callback, this may lead to ABBA
-locking bug (at least, FAT fs has this issue actually).
+Replace loop_reconfigure_limits with a slightly less encompassing
+loop_update_limits that expects the caller to acquire and commit the
+queue limits to prepare for sorting out the freeze vs limits lock
+ordering.
 
-So this patch calls vfs_statfs() outside q->limits_locks instead,
-because looks like no reason to hold q->limits_locks while getting
-discord configs.
-
-Chain exists of:
-  &sbi->fat_lock --> &q->q_usage_counter(io)#17 --> &q->limits_lock
-
- Possible unsafe locking scenario:
-
-       CPU0                    CPU1
-       ----                    ----
-  lock(&q->limits_lock);
-                               lock(&q->q_usage_counter(io)#17);
-                               lock(&q->limits_lock);
-  lock(&sbi->fat_lock);
-
- *** DEADLOCK ***
-
-Reported-by: syzbot+a5d8c609c02f508672cc@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=a5d8c609c02f508672cc
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Signed-off-by: OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Nilay Shroff <nilay@linux.ibm.com>
+Link: https://lore.kernel.org/r/20250110054726.1499538-11-hch@lst.de
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Stable-dep-of: f5c84eff634b ("loop: Add sanity check for read/write_iter")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/loop.c | 30 +++++++++++++++---------------
- 1 file changed, 15 insertions(+), 15 deletions(-)
+ drivers/block/loop.c | 36 ++++++++++++++++++++----------------
+ 1 file changed, 20 insertions(+), 16 deletions(-)
 
 diff --git a/drivers/block/loop.c b/drivers/block/loop.c
-index 1f55ddef53f3d..27e4bd8ee9dc9 100644
+index 27e4bd8ee9dc9..81995ebefc962 100644
 --- a/drivers/block/loop.c
 +++ b/drivers/block/loop.c
-@@ -694,12 +694,11 @@ static void loop_sysfs_exit(struct loop_device *lo)
- 				   &loop_attribute_group);
+@@ -901,12 +901,12 @@ static unsigned int loop_default_blocksize(struct loop_device *lo,
+ 	return SECTOR_SIZE;
  }
  
--static void loop_config_discard(struct loop_device *lo,
--		struct queue_limits *lim)
-+static void loop_get_discard_config(struct loop_device *lo,
-+				    u32 *granularity, u32 *max_discard_sectors)
+-static int loop_reconfigure_limits(struct loop_device *lo, unsigned int bsize)
++static void loop_update_limits(struct loop_device *lo, struct queue_limits *lim,
++		unsigned int bsize)
  {
  	struct file *file = lo->lo_backing_file;
  	struct inode *inode = file->f_mapping->host;
--	u32 granularity = 0, max_discard_sectors = 0;
- 	struct kstatfs sbuf;
- 
- 	/*
-@@ -712,24 +711,17 @@ static void loop_config_discard(struct loop_device *lo,
- 	if (S_ISBLK(inode->i_mode)) {
- 		struct block_device *bdev = I_BDEV(inode);
- 
--		max_discard_sectors = bdev_write_zeroes_sectors(bdev);
--		granularity = bdev_discard_granularity(bdev);
-+		*max_discard_sectors = bdev_write_zeroes_sectors(bdev);
-+		*granularity = bdev_discard_granularity(bdev);
- 
- 	/*
- 	 * We use punch hole to reclaim the free space used by the
- 	 * image a.k.a. discard.
- 	 */
- 	} else if (file->f_op->fallocate && !vfs_statfs(&file->f_path, &sbuf)) {
--		max_discard_sectors = UINT_MAX >> 9;
--		granularity = sbuf.f_bsize;
-+		*max_discard_sectors = UINT_MAX >> 9;
-+		*granularity = sbuf.f_bsize;
- 	}
--
--	lim->max_hw_discard_sectors = max_discard_sectors;
--	lim->max_write_zeroes_sectors = max_discard_sectors;
--	if (max_discard_sectors)
--		lim->discard_granularity = granularity;
--	else
--		lim->discard_granularity = 0;
- }
- 
- struct loop_worker {
-@@ -915,6 +907,7 @@ static int loop_reconfigure_limits(struct loop_device *lo, unsigned int bsize)
- 	struct inode *inode = file->f_mapping->host;
  	struct block_device *backing_bdev = NULL;
- 	struct queue_limits lim;
-+	u32 granularity = 0, max_discard_sectors = 0;
+-	struct queue_limits lim;
+ 	u32 granularity = 0, max_discard_sectors = 0;
  
  	if (S_ISBLK(inode->i_mode))
- 		backing_bdev = I_BDEV(inode);
-@@ -924,6 +917,8 @@ static int loop_reconfigure_limits(struct loop_device *lo, unsigned int bsize)
- 	if (!bsize)
- 		bsize = loop_default_blocksize(lo, backing_bdev);
+@@ -919,22 +919,20 @@ static int loop_reconfigure_limits(struct loop_device *lo, unsigned int bsize)
  
-+	loop_get_discard_config(lo, &granularity, &max_discard_sectors);
-+
- 	lim = queue_limits_start_update(lo->lo_queue);
- 	lim.logical_block_size = bsize;
- 	lim.physical_block_size = bsize;
-@@ -933,7 +928,12 @@ static int loop_reconfigure_limits(struct loop_device *lo, unsigned int bsize)
- 		lim.features |= BLK_FEAT_WRITE_CACHE;
+ 	loop_get_discard_config(lo, &granularity, &max_discard_sectors);
+ 
+-	lim = queue_limits_start_update(lo->lo_queue);
+-	lim.logical_block_size = bsize;
+-	lim.physical_block_size = bsize;
+-	lim.io_min = bsize;
+-	lim.features &= ~(BLK_FEAT_WRITE_CACHE | BLK_FEAT_ROTATIONAL);
++	lim->logical_block_size = bsize;
++	lim->physical_block_size = bsize;
++	lim->io_min = bsize;
++	lim->features &= ~(BLK_FEAT_WRITE_CACHE | BLK_FEAT_ROTATIONAL);
+ 	if (file->f_op->fsync && !(lo->lo_flags & LO_FLAGS_READ_ONLY))
+-		lim.features |= BLK_FEAT_WRITE_CACHE;
++		lim->features |= BLK_FEAT_WRITE_CACHE;
  	if (backing_bdev && !bdev_nonrot(backing_bdev))
- 		lim.features |= BLK_FEAT_ROTATIONAL;
--	loop_config_discard(lo, &lim);
-+	lim.max_hw_discard_sectors = max_discard_sectors;
-+	lim.max_write_zeroes_sectors = max_discard_sectors;
-+	if (max_discard_sectors)
-+		lim.discard_granularity = granularity;
-+	else
-+		lim.discard_granularity = 0;
- 	return queue_limits_commit_update(lo->lo_queue, &lim);
+-		lim.features |= BLK_FEAT_ROTATIONAL;
+-	lim.max_hw_discard_sectors = max_discard_sectors;
+-	lim.max_write_zeroes_sectors = max_discard_sectors;
++		lim->features |= BLK_FEAT_ROTATIONAL;
++	lim->max_hw_discard_sectors = max_discard_sectors;
++	lim->max_write_zeroes_sectors = max_discard_sectors;
+ 	if (max_discard_sectors)
+-		lim.discard_granularity = granularity;
++		lim->discard_granularity = granularity;
+ 	else
+-		lim.discard_granularity = 0;
+-	return queue_limits_commit_update(lo->lo_queue, &lim);
++		lim->discard_granularity = 0;
  }
+ 
+ static int loop_configure(struct loop_device *lo, blk_mode_t mode,
+@@ -943,6 +941,7 @@ static int loop_configure(struct loop_device *lo, blk_mode_t mode,
+ {
+ 	struct file *file = fget(config->fd);
+ 	struct address_space *mapping;
++	struct queue_limits lim;
+ 	int error;
+ 	loff_t size;
+ 	bool partscan;
+@@ -1014,7 +1013,9 @@ static int loop_configure(struct loop_device *lo, blk_mode_t mode,
+ 	lo->old_gfp_mask = mapping_gfp_mask(mapping);
+ 	mapping_set_gfp_mask(mapping, lo->old_gfp_mask & ~(__GFP_IO|__GFP_FS));
+ 
+-	error = loop_reconfigure_limits(lo, config->block_size);
++	lim = queue_limits_start_update(lo->lo_queue);
++	loop_update_limits(lo, &lim, config->block_size);
++	error = queue_limits_commit_update(lo->lo_queue, &lim);
+ 	if (error)
+ 		goto out_unlock;
+ 
+@@ -1382,6 +1383,7 @@ static int loop_set_dio(struct loop_device *lo, unsigned long arg)
+ 
+ static int loop_set_block_size(struct loop_device *lo, unsigned long arg)
+ {
++	struct queue_limits lim;
+ 	int err = 0;
+ 
+ 	if (lo->lo_state != Lo_bound)
+@@ -1394,7 +1396,9 @@ static int loop_set_block_size(struct loop_device *lo, unsigned long arg)
+ 	invalidate_bdev(lo->lo_device);
+ 
+ 	blk_mq_freeze_queue(lo->lo_queue);
+-	err = loop_reconfigure_limits(lo, arg);
++	lim = queue_limits_start_update(lo->lo_queue);
++	loop_update_limits(lo, &lim, arg);
++	err = queue_limits_commit_update(lo->lo_queue, &lim);
+ 	loop_update_dio(lo);
+ 	blk_mq_unfreeze_queue(lo->lo_queue);
  
 -- 
 2.39.5
