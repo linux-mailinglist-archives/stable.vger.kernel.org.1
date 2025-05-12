@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-143463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A4FFAB3FD8
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:47:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F5A6AB3FEB
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:48:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E0084661CA
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:47:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEB26188D2C6
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:47:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8312281531;
-	Mon, 12 May 2025 17:47:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C86F255E47;
+	Mon, 12 May 2025 17:47:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZbICC6EI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2IycSARM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 860471DF72E;
-	Mon, 12 May 2025 17:47:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC6751C173C;
+	Mon, 12 May 2025 17:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072027; cv=none; b=ecUCG5U+DDvXosFSK5hQKs0/H9iirojWLy7mjWTKI7h4wFo9B9udI+/+gwc/7Ut0rnN11E2P4+zeVB7GNJ1bxGYVMfn/YdCzBO43tNbHm5HpebJtFs6qTGqtOcvuXJU/tPqDaq60D/osK7ggN79nWV6C6q0u6IbDbceA2O9XPLQ=
+	t=1747072032; cv=none; b=VXWBD9JP5xJcaSupbK1i2bt3IBFaGVt6M8MCP2SBqdVlc5jRbcMdCXR3RB4cpzHrTPrJbB86KrHVvcb/AZXwU8K8a6JTKhvWi74YSmW8PLAkOhcc6ZWyMshkW7kwkFpkbthZ64HftUUiVvHzEg1ufM2sljas8122SbySZWYs6Vg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072027; c=relaxed/simple;
-	bh=meFr/xyj9qkPANaJx6i2ndIHe8idED7v7qVK+tb8ee0=;
+	s=arc-20240116; t=1747072032; c=relaxed/simple;
+	bh=DLcYGAlVTLOPMBbG5sRCBqC79euKOcXryKMDer0Y1Bc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LkACscRKjHiUOODAMbuxLkBwSEkVavJD3ADnMDCta+YFVgPVsR+/bbc8R4/a41GLuAu2h/BS0WIObNYhV8lYLSUYOJYL92T4Brshs0Y2d8bl83hY/jS05TzoauZmPXIx9bEPKwiSWNr3i9v5sHGUybJcjiCSNTGtiZgPg2rz9uU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZbICC6EI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16CDDC4CEE7;
-	Mon, 12 May 2025 17:47:06 +0000 (UTC)
+	 MIME-Version; b=lBH8KhWtimbQmUFJPXIoMWoghKa+OhqYEZa57xkJ6KLDNvIXzWWdSKQnP0y33+UNO3pHZ66fA3Pna3s7OB/VvDntEAwbd7DjkQG0BoMxrDSdyUmV+MWiyfbopArN0Syru7YMEFCZCbT99GE4oWyfzqaeLRNNeowTxPN3Qfncr9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2IycSARM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CFF0C4CEE7;
+	Mon, 12 May 2025 17:47:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072027;
-	bh=meFr/xyj9qkPANaJx6i2ndIHe8idED7v7qVK+tb8ee0=;
+	s=korg; t=1747072032;
+	bh=DLcYGAlVTLOPMBbG5sRCBqC79euKOcXryKMDer0Y1Bc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZbICC6EIePziYqK4YRC3C0WrSQubBOPWgiZj9oEeREyD5nCd+wsklTUX7gdakK+gm
-	 hpQpb2bcTHbz7jxCcixBBdcvIpisIglumgQVuG5zC0oh3hj2D5wyd7rG/igqOKO8HU
-	 Z0Sd2gYKmbnhh9EKZB3sOAjY6MMkKwIm0SfQth8w=
+	b=2IycSARMxOwY3yw6AqUCim6OfEjg54HdOXEpscNR2AAY8ggUyXlH4azumTj9QSXHv
+	 TFo66iXOVdQXrrXDhOw1vXEgOgjSbNzASgc1ZOwfniRb5WUZ6P6bnEzNkHSre1BIYk
+	 G2mM4K09fnUMwGKv7Bn2ywAgBvBnnrAVuUDnGzJ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Alexey Klimov <alexey.klimov@linaro.org>,
 	Felix Kuehling <felix.kuehling@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.14 114/197] drm/amdgpu/hdp5: use memcfg register to post the write for HDP flush
-Date: Mon, 12 May 2025 19:39:24 +0200
-Message-ID: <20250512172049.020870068@linuxfoundation.org>
+Subject: [PATCH 6.14 115/197] drm/amdgpu/hdp6: use memcfg register to post the write for HDP flush
+Date: Mon, 12 May 2025 19:39:25 +0200
+Message-ID: <20250512172049.061230705@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512172044.326436266@linuxfoundation.org>
 References: <20250512172044.326436266@linuxfoundation.org>
@@ -68,29 +68,29 @@ Content-Transfer-Encoding: 8bit
 
 From: Alex Deucher <alexander.deucher@amd.com>
 
-commit 0e33e0f339b91eecd9558311449a3d1e728722d4 upstream.
+commit ca28e80abe4219c8f1a2961ae05102d70af6dc87 upstream.
 
 Reading back the remapped HDP flush register seems to cause
 problems on some platforms. All we need is a read, so read back
 the memcfg register.
 
-Fixes: cf424020e040 ("drm/amdgpu/hdp5.0: do a posting read when flushing HDP")
+Fixes: abe1cbaec6cf ("drm/amdgpu/hdp6.0: do a posting read when flushing HDP")
 Reported-by: Alexey Klimov <alexey.klimov@linaro.org>
 Link: https://lists.freedesktop.org/archives/amd-gfx/2025-April/123150.html
 Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4119
 Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3908
 Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit a5cb344033c7598762e89255e8ff52827abb57a4)
+(cherry picked from commit 84141ff615951359c9a99696fd79a36c465ed847)
 Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/hdp_v5_0.c |    7 ++++++-
+ drivers/gpu/drm/amd/amdgpu/hdp_v6_0.c |    7 ++++++-
  1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/hdp_v5_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/hdp_v5_0.c
-@@ -33,7 +33,12 @@ static void hdp_v5_0_flush_hdp(struct am
+--- a/drivers/gpu/drm/amd/amdgpu/hdp_v6_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/hdp_v6_0.c
+@@ -36,7 +36,12 @@ static void hdp_v6_0_flush_hdp(struct am
  {
  	if (!ring || !ring->funcs->emit_wreg) {
  		WREG32((adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2, 0);
