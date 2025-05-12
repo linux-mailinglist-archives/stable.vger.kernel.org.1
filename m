@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-144017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6211AAB44D2
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 21:21:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 154EBAB44CF
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 21:20:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39CB07B4181
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:19:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F12E188C60D
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:20:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BE292980BE;
-	Mon, 12 May 2025 19:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99DE62989AE;
+	Mon, 12 May 2025 19:20:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CibbbJrU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bMEICoi6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DED2C1F0E26
-	for <stable@vger.kernel.org>; Mon, 12 May 2025 19:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56A77298266
+	for <stable@vger.kernel.org>; Mon, 12 May 2025 19:20:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747077610; cv=none; b=OSATn+g+xb82qe3e+jxMBsWME4vxGu5uN1liMFG5APifErEkijDWjoeUfXu0rIkghpmM5cuNfJG0locc605qM/cxhXDWUIpD/l/Et7lxRQQLGNOUs+WUwlpGGwqxEw14gq862ErHHR4iwI58gIXNY3H/K9iTPRUTk2FCGkvVk6Y=
+	t=1747077613; cv=none; b=CeM35UJlIa9AfXQ9OoUXrSp0aIMJRIByu0M4/wBrCHqvrRwySrK5B5ubunlb9GDNaZiZt7eK4OShrJbw5qpHOelfEBycEO5KULVu/7my1VrZ+R0Kpj4Z1Naczrw74EradT9riS8i8EOyG3x2l/az6Vu6l9mX6gcm9Z1vfReLE4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747077610; c=relaxed/simple;
-	bh=hxOpCg/JGPYrMaVRzZ6KVngkCGitNOf1oxuzDxZ7ZQM=;
+	s=arc-20240116; t=1747077613; c=relaxed/simple;
+	bh=UpYxTXHwvbGSbMJk3XRdJlbgg9PqlpJlwzM7ayHWFY8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IrKA1fXutF2/WSC7vC/EvEPT8S1EVWH5xNbcWOGQQnHYMqf8uFGBFA0MDAARg7BmUt1qBLdcbO9a27G0ushv0ywWCuLKo8IoVAHS7V2dYtNrfYvy7WqkWiIcBlfxld6XwMLjkvvPFoLFxaVQKTF4HnMrHun5miT1YGsu3eUdL1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CibbbJrU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D393DC4CEE7;
-	Mon, 12 May 2025 19:20:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=r/EQvybJ/hweNdWFojE+4jEUoVdNldb+Rhs0WsIOHee9o8mpUS0Wp2l6/Nvu7o/DNcDmcr2rfXQJp+QhRhqrWBUCETu9QEhGGNgkCdK3mizPaMIYnUpP27WSueuNLStyA9kRREr518HUNu7mHJimisrD5Sl+vjPgcm01K5J0uz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bMEICoi6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 621CFC4CEE7;
+	Mon, 12 May 2025 19:20:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747077609;
-	bh=hxOpCg/JGPYrMaVRzZ6KVngkCGitNOf1oxuzDxZ7ZQM=;
+	s=k20201202; t=1747077612;
+	bh=UpYxTXHwvbGSbMJk3XRdJlbgg9PqlpJlwzM7ayHWFY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CibbbJrUlqo34e05pH7zDirZ9oZ/mXRNYKA7LVtQPv1AD6VXnJAXQip6mfb2+x15a
-	 f/1nLsWaye2uturoOdmALpQLZHUSSgNLHGrSlQAfnmDSbRAoAZSDxv1hAYC/6LNIGC
-	 dDFbBsbCmHUF7d/UnBxMruBKlXbu2ZOifnS0339/Dxd3i6yFtqnV3cB/mxYCbZ0UNc
-	 HAGOskqrxTKIQgIv7QSClN+IEW7cND7xqlnegcbcqtR+9TKRIqvuzC72t10Q1ox0lR
-	 ytIO93eZ+ObagSmFxWk1YIo9gaOMzZG7+rYzf3WpyFk7DUYLB98XKlwoM/+4Uy3c5Z
-	 mIB2csYnPSUVQ==
+	b=bMEICoi6flmiVgv+dZia4q2YuoTgLE9XBQg1d2n1KURlMkwGu6uz2ZByksHL/XsmX
+	 Ti0JgE5dDE7idii1+XdkjNHpG5q/nk8TnxRdUO/PGsLMufPwz9F7l29Krb5Oof1c5T
+	 +GMEOOu1Pg0ucNEuv9tFPZyZvQb8dgkrWWNZwcpUhsFn05aUlD0m0BAUrRgbyTPOnz
+	 NQlv+CG03WbA0JfmlhnNuw00cxvps5x9tVXFBLpKMNoFwrcP2hpj/aGI5UY2np13W9
+	 HqtAtcOkyOs7SN/PVEWXSvYI9jVs90miamOg+Z/OqlSLZRcKLxpYWhxqlLMJN/spZW
+	 UyHa/QSlojB4g==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Zhi Yang <Zhi.Yang@eng.windriver.com>,
+Cc: jianqi.ren.cn@windriver.com,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10.y] drm/vmwgfx: Fix a deadlock in dma buf fence polling
-Date: Mon, 12 May 2025 15:20:05 -0400
-Message-Id: <20250511233031-526a1fd662e70c9d@stable.kernel.org>
+Subject: Re: [PATCH 6.6.y] btrfs: don't BUG_ON() when 0 reference count at btrfs_lookup_extent_info()
+Date: Mon, 12 May 2025 15:20:09 -0400
+Message-Id: <20250511215955-b7236ec222b3b830@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250509022208.3027108-1-Zhi.Yang@eng.windriver.com>
+In-Reply-To:  <20250509095114.3245010-1-jianqi.ren.cn@windriver.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,72 +67,76 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: e58337100721f3cc0c7424a18730e4f39844934f
+The upstream commit SHA1 provided is correct: 28cb13f29faf6290597b24b728dc3100c019356f
 
 WARNING: Author mismatch between patch and upstream commit:
-Backport author: Zhi Yang<Zhi.Yang@eng.windriver.com>
-Commit author: Zack Rusin<zack.rusin@broadcom.com>
+Backport author: <jianqi.ren.cn@windriver.com>
+Commit author: Filipe Manana<fdmanana@suse.com>
 
 Status in newer kernel trees:
 6.14.y | Present (exact SHA1)
 6.12.y | Present (exact SHA1)
-6.6.y | Present (different SHA1: a8943969f9ea)
-6.1.y | Present (different SHA1: 3b933b16c996)
-5.15.y | Present (different SHA1: 9e20d028d8d1)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  e58337100721f ! 1:  cdcabc8bb962b drm/vmwgfx: Fix a deadlock in dma buf fence polling
+1:  28cb13f29faf6 ! 1:  2c6bdbac7c73e btrfs: don't BUG_ON() when 0 reference count at btrfs_lookup_extent_info()
     @@ Metadata
       ## Commit message ##
-         drm/vmwgfx: Fix a deadlock in dma buf fence polling
+         btrfs: don't BUG_ON() when 0 reference count at btrfs_lookup_extent_info()
      
-    +    commit e58337100721f3cc0c7424a18730e4f39844934f upstream.
+    +    [ Upstream commit 28cb13f29faf6290597b24b728dc3100c019356f ]
     +
-         Introduce a version of the fence ops that on release doesn't remove
-         the fence from the pending list, and thus doesn't require a lock to
-         fix poll->fence wait->fence unref deadlocks.
-    @@ Commit message
-         Reviewed-by: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
-         Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
-         Link: https://patchwork.freedesktop.org/patch/msgid/20240722184313.181318-2-zack.rusin@broadcom.com
-    +    [Minor context change fixed]
-    +    Signed-off-by: Zhi Yang <Zhi.Yang@windriver.com>
+         Instead of doing a BUG_ON() handle the error by returning -EUCLEAN,
+         aborting the transaction and logging an error message.
+     
+         Reviewed-by: Qu Wenruo <wqu@suse.com>
+         Signed-off-by: Filipe Manana <fdmanana@suse.com>
+         Signed-off-by: David Sterba <dsterba@suse.com>
+    +    [Minor conflict resolved due to code context change.]
+    +    Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
     +    Signed-off-by: He Zhe <zhe.he@windriver.com>
      
-      ## drivers/gpu/drm/vmwgfx/vmwgfx_fence.c ##
-     @@
-    @@ drivers/gpu/drm/vmwgfx/vmwgfx_fence.c: static const struct dma_fence_ops vmw_fen
-      };
+      ## fs/btrfs/extent-tree.c ##
+     @@ fs/btrfs/extent-tree.c: int btrfs_lookup_extent_info(struct btrfs_trans_handle *trans,
+    + 			ei = btrfs_item_ptr(leaf, path->slots[0],
+    + 					    struct btrfs_extent_item);
+    + 			num_refs = btrfs_extent_refs(leaf, ei);
+    ++			if (unlikely(num_refs == 0)) {
+    ++				ret = -EUCLEAN;
+    ++				btrfs_err(fs_info,
+    ++			"unexpected zero reference count for extent item (%llu %u %llu)",
+    ++					  key.objectid, key.type, key.offset);
+    ++				btrfs_abort_transaction(trans, ret);
+    ++				goto out_free;
+    ++			}
+    + 			extent_flags = btrfs_extent_flags(leaf, ei);
+    + 		} else {
+    + 			ret = -EUCLEAN;
+    +@@ fs/btrfs/extent-tree.c: int btrfs_lookup_extent_info(struct btrfs_trans_handle *trans,
       
-     -
-    - /*
-    + /**
-       * Execute signal actions on fences recently signaled.
-       * This is done from a workqueue so we don't have to execute
-     @@ drivers/gpu/drm/vmwgfx/vmwgfx_fence.c: static int vmw_fence_obj_init(struct vmw_fence_manager *fman,
-    @@ drivers/gpu/drm/vmwgfx/vmwgfx_fence.c: static int vmw_fence_obj_init(struct vmw_
-      out_unlock:
-      	spin_unlock(&fman->lock);
-     @@ drivers/gpu/drm/vmwgfx/vmwgfx_fence.c: static bool vmw_fence_goal_new_locked(struct vmw_fence_manager *fman,
-    - 				      u32 passed_seqno)
-      {
-      	u32 goal_seqno;
-    + 	u32 *fifo_mem;
-     -	struct vmw_fence_obj *fence;
-     +	struct vmw_fence_obj *fence, *next_fence;
-      
-    @@ drivers/gpu/drm/vmwgfx/vmwgfx_fence.c: static bool vmw_fence_goal_new_locked(str
-     +	list_for_each_entry_safe(fence, next_fence, &fman->fence_list, head) {
-      		if (!list_empty(&fence->seq_passed_actions)) {
-      			fman->seqno_valid = true;
-    - 			vmw_fence_goal_write(fman->dev_priv,
-    + 			vmw_mmio_write(fence->base.seqno,
+    - 		ei = btrfs_item_ptr(leaf, path->slots[0], struct btrfs_extent_item);
+    - 		num_refs = btrfs_extent_refs(leaf, ei);
+    -+		if (unlikely(num_refs == 0)) {
+    -+			ret = -EUCLEAN;
+    -+			btrfs_err(fs_info,
+    -+		"unexpected zero reference count for extent item (%llu %u %llu)",
+    -+				  key.objectid, key.type, key.offset);
+    -+			btrfs_abort_transaction(trans, ret);
+    -+			goto out_free;
+    -+		}
+    - 		extent_flags = btrfs_extent_flags(leaf, ei);
+    - 		owner = btrfs_get_extent_owner_root(fs_info, leaf, path->slots[0]);
+    + 			goto out_free;
+    + 		}
+    +-
+     -		BUG_ON(num_refs == 0);
+      	} else {
+      		num_refs = 0;
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.10.y       |  Success    |  Success   |
+| stable/linux-6.6.y        |  Success    |  Success   |
 
