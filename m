@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-143952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67F8FAB4310
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:29:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64E3BAB41D2
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:13:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3B338C5EEF
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:26:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0ED014680BB
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:12:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFB7B299AAB;
-	Mon, 12 May 2025 18:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF62229B225;
+	Mon, 12 May 2025 18:04:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bFG8VA6T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XDWmdXn5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BD11299AA6;
-	Mon, 12 May 2025 18:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AACCE29B771;
+	Mon, 12 May 2025 18:04:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073399; cv=none; b=DQzU14xmQdQw9OpFKwbwrbS5Aj1oesJh0hg48ax5H1feEUBouit+hbpwMhQNSbAomDrfD1Q2XYkODNhYDn9zLkSi8lHHF3otkOxalbbQ7Yty4Um9kp4RxwuKsIcM6bpW74Ljft9me6IhzMcw6JPldByC6Uiyv6mYvLtHB9hyKcU=
+	t=1747073092; cv=none; b=mhsmfr6Oi6wxhXe6hqaLMtLjwE1UnguBk6el9HVmDLThEXhNgD9I85Iu3alZbm/a63eFRyl3OgBc74BZ9tkT6Zd9/bV5/wtSBK4PdOiT6AyiLaN3QWO/14YWJ9IdbMW0aJu8cklhkFXvutDXUk5QZNiGG4Vfl079kRJ7i+eekwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073399; c=relaxed/simple;
-	bh=BGNOZgW17OAVOUTGY326Ib+E2TyTx83x0DanbM135ws=;
+	s=arc-20240116; t=1747073092; c=relaxed/simple;
+	bh=cDVovQpZwxFVqYUJ19dKELTt2MoCccvbY2EzrCKtLWk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=vEORSd2jehO+eVAUEAnxub6oJuGK8J8uslW65ulhwKL3dV0ZuCWSuAGO5ekbiIuRezbUolubkjz6LtYDBxPrmEnEPuhrfQQIBooT3cJfK2WXKVYaphcjMiPT2R1eQDS4PbQcdp209A5DEzSi2Nh5sdHQgb4CIsposKN5ppdiDwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bFG8VA6T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED2F0C4CEE7;
-	Mon, 12 May 2025 18:09:58 +0000 (UTC)
+	 MIME-Version; b=YoE5asB+d1j4axt9dsT9CWP4oyY8NYchlJM8SRAZ61T1A8vu3nzx5zJgIx/PHu8n6uctI/fWochDipfOz0DvJ7W57hT2qaaa24Qjk/eLqow+aQ1tg+O/HTNvBOA8Vq5LF6qAey0osBF+Py5x6vhN0mYAXvehlIsh8US/8S3x9hM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XDWmdXn5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9B8EC4CEE7;
+	Mon, 12 May 2025 18:04:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073399;
-	bh=BGNOZgW17OAVOUTGY326Ib+E2TyTx83x0DanbM135ws=;
+	s=korg; t=1747073092;
+	bh=cDVovQpZwxFVqYUJ19dKELTt2MoCccvbY2EzrCKtLWk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bFG8VA6T+8ustLXzWEjm84K/QIFLj5zIkMLH6mpZSFlWdJxShT/wf5+B3uv0YS0SJ
-	 3BX3E/BZ34GWPDYkxt7GpM37V3SwngoqXbVUQXtCZsIVn5H/nnoOlW3cRiv+exYBLf
-	 BvjLu4MKECo9OCuzs+WLTwr6fnnaRmWQvMYczJD8=
+	b=XDWmdXn5imuymgcXMYel55Pue74pY79DW2bvI2b9V5CAtJzo1U0JqUwQFM58d/NYj
+	 RzQRkIhBn4wy7X7jVK5BIAxktm/yhXU/wPLtgXYO0lvByNlZ/A1yljkX4HiLl4gIt7
+	 DKPXG5TIVAqGHuylP8i8pspJkVgcM6suO7q2Ve/0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Ingo Molnar <mingo@kernel.org>,
-	stable@kernel.org
-Subject: [PATCH 6.6 063/113] x86/microcode: Consolidate the loader enablement checking
+	Gabriel Krisman Bertazi <krisman@suse.de>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 151/184] io_uring/sqpoll: Increase task_work submission batch size
 Date: Mon, 12 May 2025 19:45:52 +0200
-Message-ID: <20250512172030.246268695@linuxfoundation.org>
+Message-ID: <20250512172047.965760945@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
-References: <20250512172027.691520737@linuxfoundation.org>
+In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
+References: <20250512172041.624042835@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,233 +60,108 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Borislav Petkov (AMD) <bp@alien8.de>
+From: Gabriel Krisman Bertazi <krisman@suse.de>
 
-commit 5214a9f6c0f56644acb9d2cbb58facf1856d322b upstream.
+[ Upstream commit 92835cebab120f8a5f023a26a792a2ac3f816c4f ]
 
-Consolidate the whole logic which determines whether the microcode loader
-should be enabled or not into a single function and call it everywhere.
+Our QA team reported a 10%-23%, throughput reduction on an io_uring
+sqpoll testcase doing IO to a null_blk, that I traced back to a
+reduction of the device submission queue depth utilization. It turns out
+that, after commit af5d68f8892f ("io_uring/sqpoll: manage task_work
+privately"), we capped the number of task_work entries that can be
+completed from a single spin of sqpoll to only 8 entries, before the
+sqpoll goes around to (potentially) sleep.  While this cap doesn't drive
+the submission side directly, it impacts the completion behavior, which
+affects the number of IO queued by fio per sqpoll cycle on the
+submission side, and io_uring ends up seeing less ios per sqpoll cycle.
+As a result, block layer plugging is less effective, and we see more
+time spent inside the block layer in profilings charts, and increased
+submission latency measured by fio.
 
-Well, almost everywhere - not in mk_early_pgtbl_32() because there the kernel
-is running without paging enabled and checking dis_ucode_ldr et al would
-require physical addresses and uglification of the code.
+There are other places that have increased overhead once sqpoll sleeps
+more often, such as the sqpoll utilization calculation.  But, in this
+microbenchmark, those were not representative enough in perf charts, and
+their removal didn't yield measurable changes in throughput.  The major
+overhead comes from the fact we plug less, and less often, when submitting
+to the block layer.
 
-But since this is 32-bit, the easier thing to do is to simply map the initrd
-unconditionally especially since that mapping is getting removed later anyway
-by zap_early_initrd_mapping() and avoid the uglification.
+My benchmark is:
 
-In doing so, address the issue of old 486er machines without CPUID
-support, not booting current kernels.
+fio --ioengine=io_uring --direct=1 --iodepth=128 --runtime=300 --bs=4k \
+    --invalidate=1 --time_based  --ramp_time=10 --group_reporting=1 \
+    --filename=/dev/nullb0 --name=RandomReads-direct-nullb-sqpoll-4k-1 \
+    --rw=randread --numjobs=1 --sqthread_poll
 
-  [ mingo: Fix no previous prototype for ‘microcode_loader_disabled’ [-Wmissing-prototypes] ]
+In one machine, tested on top of Linux 6.15-rc1, we have the following
+baseline:
+  READ: bw=4994MiB/s (5236MB/s), 4994MiB/s-4994MiB/s (5236MB/s-5236MB/s), io=439GiB (471GB), run=90001-90001msec
 
-Fixes: 4c585af7180c1 ("x86/boot/32: Temporarily map initrd for microcode loading")
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: <stable@kernel.org>
-Link: https://lore.kernel.org/r/CANpbe9Wm3z8fy9HbgS8cuhoj0TREYEEkBipDuhgkWFvqX0UoVQ@mail.gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+With this patch:
+  READ: bw=5762MiB/s (6042MB/s), 5762MiB/s-5762MiB/s (6042MB/s-6042MB/s), io=506GiB (544GB), run=90001-90001msec
+
+which is a 15% improvement in measured bandwidth.  The average
+submission latency is noticeably lowered too.  As measured by
+fio:
+
+Baseline:
+   lat (usec): min=20, max=241, avg=99.81, stdev=3.38
+Patched:
+   lat (usec): min=26, max=226, avg=86.48, stdev=4.82
+
+If we look at blktrace, we can also see the plugging behavior is
+improved. In the baseline, we end up limited to plugging 8 requests in
+the block layer regardless of the device queue depth size, while after
+patching we can drive more io, and we manage to utilize the full device
+queue.
+
+In the baseline, after a stabilization phase, an ordinary submission
+looks like:
+  254,0    1    49942     0.016028795  5977  U   N [iou-sqp-5976] 7
+
+After patching, I see consistently more requests per unplug.
+  254,0    1     4996     0.001432872  3145  U   N [iou-sqp-3144] 32
+
+Ideally, the cap size would at least be the deep enough to fill the
+device queue, but we can't predict that behavior, or assume all IO goes
+to a single device, and thus can't guess the ideal batch size.  We also
+don't want to let the tw run unbounded, though I'm not sure it would
+really be a problem.  Instead, let's just give it a more sensible value
+that will allow for more efficient batching.  I've tested with different
+cap values, and initially proposed to increase the cap to 1024.  Jens
+argued it is too big of a bump and I observed that, with 32, I'm no
+longer able to observe this bottleneck in any of my machines.
+
+Fixes: af5d68f8892f ("io_uring/sqpoll: manage task_work privately")
+Signed-off-by: Gabriel Krisman Bertazi <krisman@suse.de>
+Link: https://lore.kernel.org/r/20250508181203.3785544-1-krisman@suse.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/microcode.h         |    2 +
- arch/x86/kernel/cpu/microcode/amd.c      |    6 ++-
- arch/x86/kernel/cpu/microcode/core.c     |   58 ++++++++++++++++++-------------
- arch/x86/kernel/cpu/microcode/intel.c    |    2 -
- arch/x86/kernel/cpu/microcode/internal.h |    1 
- arch/x86/kernel/head32.c                 |    4 --
- 6 files changed, 41 insertions(+), 32 deletions(-)
+ io_uring/sqpoll.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/include/asm/microcode.h
-+++ b/arch/x86/include/asm/microcode.h
-@@ -17,10 +17,12 @@ struct ucode_cpu_info {
- void load_ucode_bsp(void);
- void load_ucode_ap(void);
- void microcode_bsp_resume(void);
-+bool __init microcode_loader_disabled(void);
- #else
- static inline void load_ucode_bsp(void)	{ }
- static inline void load_ucode_ap(void) { }
- static inline void microcode_bsp_resume(void) { }
-+static inline bool __init microcode_loader_disabled(void) { return false; }
- #endif
+diff --git a/io_uring/sqpoll.c b/io_uring/sqpoll.c
+index 5bc54c6df20fd..430922c541681 100644
+--- a/io_uring/sqpoll.c
++++ b/io_uring/sqpoll.c
+@@ -20,7 +20,7 @@
+ #include "sqpoll.h"
  
- extern unsigned long initrd_start_early;
---- a/arch/x86/kernel/cpu/microcode/amd.c
-+++ b/arch/x86/kernel/cpu/microcode/amd.c
-@@ -1102,15 +1102,17 @@ static enum ucode_state load_microcode_a
+ #define IORING_SQPOLL_CAP_ENTRIES_VALUE 8
+-#define IORING_TW_CAP_ENTRIES_VALUE	8
++#define IORING_TW_CAP_ENTRIES_VALUE	32
  
- static int __init save_microcode_in_initrd(void)
- {
--	unsigned int cpuid_1_eax = native_cpuid_eax(1);
- 	struct cpuinfo_x86 *c = &boot_cpu_data;
- 	struct cont_desc desc = { 0 };
-+	unsigned int cpuid_1_eax;
- 	enum ucode_state ret;
- 	struct cpio_data cp;
- 
--	if (dis_ucode_ldr || c->x86_vendor != X86_VENDOR_AMD || c->x86 < 0x10)
-+	if (microcode_loader_disabled() || c->x86_vendor != X86_VENDOR_AMD || c->x86 < 0x10)
- 		return 0;
- 
-+	cpuid_1_eax = native_cpuid_eax(1);
-+
- 	if (!find_blobs_in_containers(&cp))
- 		return -EINVAL;
- 
---- a/arch/x86/kernel/cpu/microcode/core.c
-+++ b/arch/x86/kernel/cpu/microcode/core.c
-@@ -43,8 +43,8 @@
- 
- #define DRIVER_VERSION	"2.2"
- 
--static struct microcode_ops	*microcode_ops;
--bool dis_ucode_ldr = true;
-+static struct microcode_ops *microcode_ops;
-+static bool dis_ucode_ldr = false;
- 
- bool force_minrev = IS_ENABLED(CONFIG_MICROCODE_LATE_FORCE_MINREV);
- module_param(force_minrev, bool, S_IRUSR | S_IWUSR);
-@@ -91,6 +91,9 @@ static bool amd_check_current_patch_leve
- 	u32 lvl, dummy, i;
- 	u32 *levels;
- 
-+	if (x86_cpuid_vendor() != X86_VENDOR_AMD)
-+		return false;
-+
- 	native_rdmsr(MSR_AMD64_PATCH_LEVEL, lvl, dummy);
- 
- 	levels = final_levels;
-@@ -102,27 +105,29 @@ static bool amd_check_current_patch_leve
- 	return false;
- }
- 
--static bool __init check_loader_disabled_bsp(void)
-+bool __init microcode_loader_disabled(void)
- {
--	static const char *__dis_opt_str = "dis_ucode_ldr";
--	const char *cmdline = boot_command_line;
--	const char *option  = __dis_opt_str;
-+	if (dis_ucode_ldr)
-+		return true;
- 
- 	/*
--	 * CPUID(1).ECX[31]: reserved for hypervisor use. This is still not
--	 * completely accurate as xen pv guests don't see that CPUID bit set but
--	 * that's good enough as they don't land on the BSP path anyway.
-+	 * Disable when:
-+	 *
-+	 * 1) The CPU does not support CPUID.
-+	 *
-+	 * 2) Bit 31 in CPUID[1]:ECX is clear
-+	 *    The bit is reserved for hypervisor use. This is still not
-+	 *    completely accurate as XEN PV guests don't see that CPUID bit
-+	 *    set, but that's good enough as they don't land on the BSP
-+	 *    path anyway.
-+	 *
-+	 * 3) Certain AMD patch levels are not allowed to be
-+	 *    overwritten.
- 	 */
--	if (native_cpuid_ecx(1) & BIT(31))
--		return true;
--
--	if (x86_cpuid_vendor() == X86_VENDOR_AMD) {
--		if (amd_check_current_patch_level())
--			return true;
--	}
--
--	if (cmdline_find_option_bool(cmdline, option) <= 0)
--		dis_ucode_ldr = false;
-+	if (!have_cpuid_p() ||
-+	    native_cpuid_ecx(1) & BIT(31) ||
-+	    amd_check_current_patch_level())
-+		dis_ucode_ldr = true;
- 
- 	return dis_ucode_ldr;
- }
-@@ -132,7 +137,10 @@ void __init load_ucode_bsp(void)
- 	unsigned int cpuid_1_eax;
- 	bool intel = true;
- 
--	if (!have_cpuid_p())
-+	if (cmdline_find_option_bool(boot_command_line, "dis_ucode_ldr") > 0)
-+		dis_ucode_ldr = true;
-+
-+	if (microcode_loader_disabled())
- 		return;
- 
- 	cpuid_1_eax = native_cpuid_eax(1);
-@@ -153,9 +161,6 @@ void __init load_ucode_bsp(void)
- 		return;
- 	}
- 
--	if (check_loader_disabled_bsp())
--		return;
--
- 	if (intel)
- 		load_ucode_intel_bsp(&early_data);
- 	else
-@@ -166,6 +171,11 @@ void load_ucode_ap(void)
- {
- 	unsigned int cpuid_1_eax;
- 
-+	/*
-+	 * Can't use microcode_loader_disabled() here - .init section
-+	 * hell. It doesn't have to either - the BSP variant must've
-+	 * parsed cmdline already anyway.
-+	 */
- 	if (dis_ucode_ldr)
- 		return;
- 
-@@ -817,7 +827,7 @@ static int __init microcode_init(void)
- 	struct cpuinfo_x86 *c = &boot_cpu_data;
- 	int error;
- 
--	if (dis_ucode_ldr)
-+	if (microcode_loader_disabled())
- 		return -EINVAL;
- 
- 	if (c->x86_vendor == X86_VENDOR_INTEL)
---- a/arch/x86/kernel/cpu/microcode/intel.c
-+++ b/arch/x86/kernel/cpu/microcode/intel.c
-@@ -389,7 +389,7 @@ static int __init save_builtin_microcode
- 	if (xchg(&ucode_patch_va, NULL) != UCODE_BSP_LOADED)
- 		return 0;
- 
--	if (dis_ucode_ldr || boot_cpu_data.x86_vendor != X86_VENDOR_INTEL)
-+	if (microcode_loader_disabled() || boot_cpu_data.x86_vendor != X86_VENDOR_INTEL)
- 		return 0;
- 
- 	uci.mc = get_microcode_blob(&uci, true);
---- a/arch/x86/kernel/cpu/microcode/internal.h
-+++ b/arch/x86/kernel/cpu/microcode/internal.h
-@@ -94,7 +94,6 @@ static inline unsigned int x86_cpuid_fam
- 	return x86_family(eax);
- }
- 
--extern bool dis_ucode_ldr;
- extern bool force_minrev;
- 
- #ifdef CONFIG_CPU_SUP_AMD
---- a/arch/x86/kernel/head32.c
-+++ b/arch/x86/kernel/head32.c
-@@ -145,10 +145,6 @@ void __init __no_stack_protector mk_earl
- 	*ptr = (unsigned long)ptep + PAGE_OFFSET;
- 
- #ifdef CONFIG_MICROCODE_INITRD32
--	/* Running on a hypervisor? */
--	if (native_cpuid_ecx(1) & BIT(31))
--		return;
--
- 	params = (struct boot_params *)__pa_nodebug(&boot_params);
- 	if (!params->hdr.ramdisk_size || !params->hdr.ramdisk_image)
- 		return;
+ enum {
+ 	IO_SQ_THREAD_SHOULD_STOP = 0,
+-- 
+2.39.5
+
 
 
 
