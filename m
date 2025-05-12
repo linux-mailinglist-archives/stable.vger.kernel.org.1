@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-143934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BA77AB42CB
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:26:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C401AB42CF
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:27:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F48919E1FED
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:26:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D49FC1B61223
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:26:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6407B2C2ADC;
-	Mon, 12 May 2025 18:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 032812C2FB5;
+	Mon, 12 May 2025 18:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LHM44uTS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uNwPKCY6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 187812C2AD3;
-	Mon, 12 May 2025 18:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B242D2C2FB2;
+	Mon, 12 May 2025 18:09:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073341; cv=none; b=oEunwzNiNG62N/nuN9iEOLQF7qFPqBwBEqOng9zA6dWFBZPKX+4xMCeBCMQ/hMBPw2egBcUzM0WRI0oTz9vEqCshSj9FPWnarkjMBdBCb3AG7xTczuKZ37RKuidJZlzKwO2owZsT8Y8wHCs5AMnA66ze9NKcFSlRZlw5HNMQY9Y=
+	t=1747073347; cv=none; b=lAdtKcl6YFZNF8odfP+kpYw5sz1x61mhQRtf+1DihxQqvQogzZT/98dkz1DCUDDr6NQOzbS98m+dwHhLYOPpaQ4A5EWnxwHtndSLwDNJzGft4Hw0mMBpUJvaH3O0AaZ4xxihsMEi3hSWO8EcsUs6MArpQ/a7L/4ZEhDrdPbgcw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073341; c=relaxed/simple;
-	bh=YYWHQFA+FKajkHsy5au7Gu5229SEsmKZRAptPmXr6UQ=;
+	s=arc-20240116; t=1747073347; c=relaxed/simple;
+	bh=wvZk/b0K9dvf6+k+ahUOSZKKp8HF+8LFQxsEgovm8xY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cSqi4wUhdHPupwELX/39aBHmXtICnSNoozjryTItpuJQG7sf7tITjKCoWokzwrbhgp9tdqbp77kjUqmcwpO0Ovw/qBAhAhKaLfd/5K5DvaK9dOGybrmQJBrN7obw5+eu7hW6Z6tgnylPqRx2o0Umktc7jroKXlPEOIxSm3jx4es=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LHM44uTS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92D1FC4CEE7;
-	Mon, 12 May 2025 18:09:00 +0000 (UTC)
+	 MIME-Version; b=RJBEUGep1ul81HEaaYwthfr7ajzxDgF7T9UT0oHMbxtTfmBDa0P9+Q+odAen/ht9FOxjHq08tDlG8wpHxG29aCvwhE+58cd5eCtedSHSUi6MM8fdF8dtuD8jdr9Va8mfjQ9gDHRC8pSQvz3u2vc4ukpVL/sh6JkP6Bbxva0AHL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uNwPKCY6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B648AC4CEE9;
+	Mon, 12 May 2025 18:09:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073341;
-	bh=YYWHQFA+FKajkHsy5au7Gu5229SEsmKZRAptPmXr6UQ=;
+	s=korg; t=1747073347;
+	bh=wvZk/b0K9dvf6+k+ahUOSZKKp8HF+8LFQxsEgovm8xY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LHM44uTS5ftQjgLGV8T4JGU7oRN1kbRSAhhLfaheFwbfb1bZp70W9XFXu8IUuhD3j
-	 e8nIckqn96E1MSP+3iVYQAdHWf1IMxaKsV7ugz+6FGsR1GnyQ/vW/0u6SKy3/ls1bV
-	 1chDPXnivnG26ZXXAFB5nzcZ6X/F086Bj8YSzRBg=
+	b=uNwPKCY6IsLj+8QSMXzf9vUYT07frI5evI5CTjorawWceNzgmPFz7/czzcxBVYuOK
+	 +Uqw6xiytlvq3DtVDiaJM13rDcSEml52vWVqWm0oFIiBQWEcGR8dziNexD/9Tu4BGp
+	 Dqqb4J/Qnomn5nmzBZWqT21ONP1L3395bmgPHcaY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabriel Shahrouzi <gshahrouzi@gmail.com>,
-	Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+	Silvano Seva <s.seva@4sigma.it>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Stable@vger.kernel.org,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 044/113] iio: adis16201: Correct inclinometer channel resolution
-Date: Mon, 12 May 2025 19:45:33 +0200
-Message-ID: <20250512172029.461222894@linuxfoundation.org>
+Subject: [PATCH 6.6 045/113] iio: imu: st_lsm6dsx: fix possible lockup in st_lsm6dsx_read_fifo
+Date: Mon, 12 May 2025 19:45:34 +0200
+Message-ID: <20250512172029.499887132@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
 References: <20250512172027.691520737@linuxfoundation.org>
@@ -66,41 +67,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+From: Silvano Seva <s.seva@4sigma.it>
 
-commit 609bc31eca06c7408e6860d8b46311ebe45c1fef upstream.
+commit 159ca7f18129834b6f4c7eae67de48e96c752fc9 upstream.
 
-The inclinometer channels were previously defined with 14 realbits.
-However, the ADIS16201 datasheet states the resolution for these output
-channels is 12 bits (Page 14, text description; Page 15, table 7).
+Prevent st_lsm6dsx_read_fifo from falling in an infinite loop in case
+pattern_len is equal to zero and the device FIFO is not empty.
 
-Correct the realbits value to 12 to accurately reflect the hardware.
-
-Fixes: f7fe1d1dd5a5 ("staging: iio: new adis16201 driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Link: https://patch.msgid.link/20250421131539.912966-1-gshahrouzi@gmail.com
+Fixes: 290a6ce11d93 ("iio: imu: add support to lsm6dsx driver")
+Signed-off-by: Silvano Seva <s.seva@4sigma.it>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20250311085030.3593-2-s.seva@4sigma.it
+Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/accel/adis16201.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/iio/accel/adis16201.c
-+++ b/drivers/iio/accel/adis16201.c
-@@ -211,9 +211,9 @@ static const struct iio_chan_spec adis16
- 			BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 14),
- 	ADIS_AUX_ADC_CHAN(ADIS16201_AUX_ADC_REG, ADIS16201_SCAN_AUX_ADC, 0, 12),
- 	ADIS_INCLI_CHAN(X, ADIS16201_XINCL_OUT_REG, ADIS16201_SCAN_INCLI_X,
--			BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 14),
-+			BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 12),
- 	ADIS_INCLI_CHAN(Y, ADIS16201_YINCL_OUT_REG, ADIS16201_SCAN_INCLI_Y,
--			BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 14),
-+			BIT(IIO_CHAN_INFO_CALIBBIAS), 0, 12),
- 	IIO_CHAN_SOFT_TIMESTAMP(7)
- };
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+@@ -370,6 +370,9 @@ int st_lsm6dsx_read_fifo(struct st_lsm6d
+ 	if (fifo_status & cpu_to_le16(ST_LSM6DSX_FIFO_EMPTY_MASK))
+ 		return 0;
  
++	if (!pattern_len)
++		pattern_len = ST_LSM6DSX_SAMPLE_SIZE;
++
+ 	fifo_len = (le16_to_cpu(fifo_status) & fifo_diff_mask) *
+ 		   ST_LSM6DSX_CHAN_SIZE;
+ 	fifo_len = (fifo_len / pattern_len) * pattern_len;
 
 
 
