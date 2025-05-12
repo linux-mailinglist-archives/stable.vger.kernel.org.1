@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-143574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3380FAB407E
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:54:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A767EAB410E
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:01:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BBC228C29F2
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:52:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 041F9466E87
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:01:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66A59255E47;
-	Mon, 12 May 2025 17:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 087391D7E41;
+	Mon, 12 May 2025 18:01:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JXdhzp3I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hrTCv+fd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24208254879;
-	Mon, 12 May 2025 17:53:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BADC91519B8;
+	Mon, 12 May 2025 18:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072394; cv=none; b=HJY0omU+vfLdSTcDYtSkc3qMYNli3kBT/EmJrWveovpxxK9yQPNhI+0z7MrS1ZXX2oO/+w1zkkKF3+TQl41Tc8C5+GYH7y4vBl+hHnArvcxWiy6xuFkjgfzHwWaDnt/gR+RgwkHl/qwctf/Hr9HfK6fAjln73iOWMBj5ubWvqOw=
+	t=1747072870; cv=none; b=i8M1drLSjJyA6XgaZOCGaWw7RZ08zftmUlwkumavBx2qwnC6tqW4YqcarWcAeGfduBKFUnM6hZ2bWKCJmB7CflRkLwKENwwG6T67YvQdXGhBj0qmrkBKYpwekUCf7Ncj/AUVPSrMOmNr/GrtsC8fZd4+P/+tQudAHCznnuKbLGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072394; c=relaxed/simple;
-	bh=/8oDmPolIdbDxWsHaFIex9V7OfH69RzEOzAWx1K7cs4=;
+	s=arc-20240116; t=1747072870; c=relaxed/simple;
+	bh=5+glFYPIAiXX1JK3E1YckSiQwTVIGQ8EO8jwJFL6cwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X/ilhaNlvW2CDNIbybcC4JJCO6GsqjiDrEh1R0Gu91wKj44zNeHHVTA26qjBH/9eYvH+3cxreki86H7giwnyofaPHKRbEOKFJfyH4tTh5wZD2pRh1hepQ+YhgCUEE7/V1TPh4FuRPMWvSMw+UlGmoT+Vnvou4NyXClazr3DNspI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JXdhzp3I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1460FC4CEE7;
-	Mon, 12 May 2025 17:53:12 +0000 (UTC)
+	 MIME-Version; b=GbnVU2rCJvKyOVTFTVoefNK7ouhvAeOg5icz9JmXrLO0fBRohkLCRiyHMO4OshOsz9yyq/qJtFuA//8ztahe10ORF1SFHNgX+g3tnVfw3pnOoeMQYWg2T1R1G6aqONKpoUEeoKcQlqdXh+TXhhqxQqct6o8MqECe13ZpoftHGT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hrTCv+fd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42165C4CEE7;
+	Mon, 12 May 2025 18:01:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072393;
-	bh=/8oDmPolIdbDxWsHaFIex9V7OfH69RzEOzAWx1K7cs4=;
+	s=korg; t=1747072870;
+	bh=5+glFYPIAiXX1JK3E1YckSiQwTVIGQ8EO8jwJFL6cwQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JXdhzp3Iq62ivlzlumHmcLpbHzeAy8Zyp2wzZtAh2bZ4ibu73EdBDa2JB64FPT2bJ
-	 dOMTWO0IUrsZcwVZW8/xbXgUP/TL3oQk9Yh0SDqnY5RyR2HYcOqfkf3H9Qs7NEJVmw
-	 idLP6hAesF8y1ditPZikv1+i3fWCMdqkq6YYyfGw=
+	b=hrTCv+fd617xuod8bINXwYWkKXr7M6Z4cn2TFZ9HN30CtJ/oXs4O+MQdvxyYmxvF2
+	 xAyH1UK6ke+zroGZweozVIEOwpd2Cx50eRMzvO+YrT//yZuW2XZinqy1oJCOWPzkQe
+	 xHEI6lsCxeBurbKsq5iTjELuCDgQg+3Zy2fglTv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wang Zhaolong <wangzhaolong1@huawei.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 07/92] ksmbd: fix memory leak in parse_lease_state()
+	Norman Maurer <norman_maurer@apple.com>,
+	Christian Mazakas <christian.mazakas@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 081/184] io_uring: ensure deferred completions are flushed for multishot
 Date: Mon, 12 May 2025 19:44:42 +0200
-Message-ID: <20250512172023.431474293@linuxfoundation.org>
+Message-ID: <20250512172045.122383373@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172023.126467649@linuxfoundation.org>
-References: <20250512172023.126467649@linuxfoundation.org>
+In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
+References: <20250512172041.624042835@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Zhaolong <wangzhaolong1@huawei.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit eb4447bcce915b43b691123118893fca4f372a8f ]
+commit 687b2bae0efff9b25e071737d6af5004e6e35af5 upstream.
 
-The previous patch that added bounds check for create lease context
-introduced a memory leak. When the bounds check fails, the function
-returns NULL without freeing the previously allocated lease_ctx_info
-structure.
+Multishot normally uses io_req_post_cqe() to post completions, but when
+stopping it, it may finish up with a deferred completion. This is fine,
+except if another multishot event triggers before the deferred completions
+get flushed. If this occurs, then CQEs may get reordered in the CQ ring,
+as new multishot completions get posted before the deferred ones are
+flushed. This can cause confusion on the application side, if strict
+ordering is required for the use case.
 
-This patch fixes the issue by adding kfree(lreq) before returning NULL
-in both boundary check cases.
+When multishot posting via io_req_post_cqe(), flush any pending deferred
+completions first, if any.
 
-Fixes: bab703ed8472 ("ksmbd: add bounds check for create lease context")
-Signed-off-by: Wang Zhaolong <wangzhaolong1@huawei.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # 6.1+
+Reported-by: Norman Maurer <norman_maurer@apple.com>
+Reported-by: Christian Mazakas <christian.mazakas@gmail.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/oplock.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ io_uring/io_uring.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/fs/smb/server/oplock.c b/fs/smb/server/oplock.c
-index 2fcfabc35b06b..258ed9978b90e 100644
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -1536,7 +1536,7 @@ struct lease_ctx_info *parse_lease_state(void *open_req, bool is_dir)
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -884,6 +884,14 @@ bool io_req_post_cqe(struct io_kiocb *re
+ 	struct io_ring_ctx *ctx = req->ctx;
+ 	bool posted;
  
- 		if (le16_to_cpu(cc->DataOffset) + le32_to_cpu(cc->DataLength) <
- 		    sizeof(struct create_lease_v2) - 4)
--			return NULL;
-+			goto err_out;
++	/*
++	 * If multishot has already posted deferred completions, ensure that
++	 * those are flushed first before posting this one. If not, CQEs
++	 * could get reordered.
++	 */
++	if (!wq_list_empty(&ctx->submit_state.compl_reqs))
++		__io_submit_flush_completions(ctx);
++
+ 	lockdep_assert(!io_wq_current_is_worker());
+ 	lockdep_assert_held(&ctx->uring_lock);
  
- 		memcpy(lreq->lease_key, lc->lcontext.LeaseKey, SMB2_LEASE_KEY_SIZE);
- 		if (is_dir) {
-@@ -1557,7 +1557,7 @@ struct lease_ctx_info *parse_lease_state(void *open_req, bool is_dir)
- 
- 		if (le16_to_cpu(cc->DataOffset) + le32_to_cpu(cc->DataLength) <
- 		    sizeof(struct create_lease))
--			return NULL;
-+			goto err_out;
- 
- 		memcpy(lreq->lease_key, lc->lcontext.LeaseKey, SMB2_LEASE_KEY_SIZE);
- 		lreq->req_state = lc->lcontext.LeaseState;
-@@ -1566,6 +1566,9 @@ struct lease_ctx_info *parse_lease_state(void *open_req, bool is_dir)
- 		lreq->version = 1;
- 	}
- 	return lreq;
-+err_out:
-+	kfree(lreq);
-+	return NULL;
- }
- 
- /**
--- 
-2.39.5
-
 
 
 
