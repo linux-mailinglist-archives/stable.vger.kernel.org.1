@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-143840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA7AAAB4207
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:16:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9F04AB4219
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:18:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A21F24A1C01
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:15:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0F0D3A85CC
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:16:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02BF32BD001;
-	Mon, 12 May 2025 18:05:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DED92BD597;
+	Mon, 12 May 2025 18:05:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TAoTut6g"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j2irdoKQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADDD52BCF76;
-	Mon, 12 May 2025 18:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC5632BD58B;
+	Mon, 12 May 2025 18:05:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073114; cv=none; b=LSCa3jpjYIa01RiMtIWhdRsjbt7GAylUptJzY3bQw921gD2MUZb1etKN/PeiY0TLVq/golVftyt85uAjFM9iyCKLteDM1v042AEqUZbEsOncp5dFC1/XXk1obljyjDYGxZ5NTWNoJJMps9iZsVKOKfPp2MrT40PLd++x5Q+H5OE=
+	t=1747073117; cv=none; b=QH9WoOsGIH16nOfMjqYaX3fM2OUnvKiwfed+YdBo6KUK0cPeQh/vjvnC1dCQTI7Fb3/P0wo0ZRqsAn1k/ZhE5QSyXr03J7v5577MapckbmTXX5LtTblOKnsNC45+kUAnxfaHoQmDcXdUcJTzlmmW+IfCrumQtB0hgZ4/QXyjwjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073114; c=relaxed/simple;
-	bh=FFlBadYZXJNC+KMlpiluI8jFwmkJwl/fk4NCvJGOB+A=;
+	s=arc-20240116; t=1747073117; c=relaxed/simple;
+	bh=CUwTTRBoepiWy3eBVkjtl52xMaizXnQOALV0fmgcrHo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nOoIgY/LWPzSWq0fBz99ZeOGtxgN2AWL9mc3gr43JbJYIVjOIyj0cvYDLKUUlM1fYh/u5nNhGh60Z+OZHJYnFc4zfjTUvVqXQS8VPeSFhoFoEut5SxaByCovpePu9XcoeK7+qBULpzQzEnfJRdIvOCwnVZUPc8OGJU9KwBZDBPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TAoTut6g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 717B3C4CEE9;
-	Mon, 12 May 2025 18:05:13 +0000 (UTC)
+	 MIME-Version; b=hm0m0O+RtjnbZ7i2IgprnRx6D8b1F/CHn6os8WW4X86gR7/5+5z2Q8rIMZjOClIVaTv7lDZ6fJ8EVetiD6HREfNDxvBZoyPQ5UmHfZw4XeD22ISczqWD9DqcAaSxML5PFqwBncup8moup5vyWUNhNHNNYJsldAt63Y6P5wU54cU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j2irdoKQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0911C4CEE7;
+	Mon, 12 May 2025 18:05:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747073114;
-	bh=FFlBadYZXJNC+KMlpiluI8jFwmkJwl/fk4NCvJGOB+A=;
+	s=k20201202; t=1747073117;
+	bh=CUwTTRBoepiWy3eBVkjtl52xMaizXnQOALV0fmgcrHo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TAoTut6g2A1H/T1/V3rqdWHcIX7cnoIoONP1VmHGrxJjC5qH7eo4GXX2TY4CCELzm
-	 TiECeUoxrnIrbIBCy5HN8G8Bys0nxE123bja7D+ff3c/nhYyM0Pcd40BbFsie+2GMh
-	 0aSPWmx1OjJfuem3Pf3brW5ph0RtW0EvsWtHXzazG3nMpCkV8NiT2IDE3mdpl1XzTW
-	 59qPtusH2P9dtjA+Eu4gX1iEV+/6DIFyiC/lz8GGbtHreQ2X5f95k/L+ZMo1kQrkdO
-	 Kbwn0cbOPwhGSjWunWUE5vfdvvWjtdeAfuC758jI9tRipZGuCvbhSr2qNlmcfvdFNp
-	 SPUfHwtTUoUIA==
+	b=j2irdoKQ1ovlV+17jJfSXbJ/8/i+TtLcyIs/53YehDBnIiGP19LFzLEFNphKTK2ea
+	 Y4EGjNagxgZ/Sv29nYQi0+XN3qIypZFKOQNs79cPkTTcHNhpXY7/5PoWlWPeyFKlqN
+	 dHrF3usEx5yyYf9cuWBFqol1Z0pR6WgLXUg4fYkcBz11Z7Me1OVQBkbWCapGYGbTg1
+	 /I4A9LJgqFZwR4b4wfHCqa6NwoRfSrwNUNeryjk17heawIICdtTmvE+yQG8W1rA05W
+	 7U862n5/sL5bDZ0N3gk1w8ZwGRkjHwZYSfBDlLgklwVYn2TEkLTfpuLY/UUZLBoQK2
+	 e5K0Wh+ZJq/TQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
+Cc: Jason Andryuk <jason.andryuk@amd.com>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Juergen Gross <jgross@suse.com>,
 	Sasha Levin <sashal@kernel.org>,
-	miriam.rachel.korenblit@intel.com,
-	emmanuel.grumbach@intel.com,
-	somashekhar.puttagangaiah@intel.com,
-	golan.ben.ami@intel.com,
-	linux-wireless@vger.kernel.org,
+	chenqiuji666@gmail.com,
+	elder@kernel.org,
+	michal.orzel@amd.com,
+	gregkh@linuxfoundation.org,
+	xin.wang2@amd.com,
+	xen-devel@lists.xenproject.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 2/4] wifi: iwlwifi: add support for Killer on MTL
-Date: Mon, 12 May 2025 14:05:05 -0400
-Message-Id: <20250512180508.437991-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 3/4] xenbus: Allow PVH dom0 a non-local xenstore
+Date: Mon, 12 May 2025 14:05:06 -0400
+Message-Id: <20250512180508.437991-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250512180508.437991-1-sashal@kernel.org>
 References: <20250512180508.437991-1-sashal@kernel.org>
@@ -69,34 +72,67 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.138
 Content-Transfer-Encoding: 8bit
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Jason Andryuk <jason.andryuk@amd.com>
 
-[ Upstream commit ebedf8b7f05b9c886d68d63025db8d1b12343157 ]
+[ Upstream commit 90989869baae47ee2aa3bcb6f6eb9fbbe4287958 ]
 
-For now, we need another entry for these devices, this
-will be changed completely for 6.16.
+Make xenbus_init() allow a non-local xenstore for a PVH dom0 - it is
+currently forced to XS_LOCAL.  With Hyperlaunch booting dom0 and a
+xenstore stubdom, dom0 can be handled as a regular XS_HVM following the
+late init path.
 
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219926
-Link: https://patch.msgid.link/20250506214258.2efbdc9e9a82.I31915ec252bd1c74bd53b89a0e214e42a74b6f2e@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Ideally we'd drop the use of xen_initial_domain() and just check for the
+event channel instead.  However, ARM has a xen,enhanced no-xenstore
+mode, where the event channel and PFN would both be 0.  Retain the
+xen_initial_domain() check, and use that for an additional check when
+the event channel is 0.
+
+Check the full 64bit HVM_PARAM_STORE_EVTCHN value to catch the off
+chance that high bits are set for the 32bit event channel.
+
+Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
+Change-Id: I5506da42e4c6b8e85079fefb2f193c8de17c7437
+Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20250506204456.5220-1-jason.andryuk@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/drv.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/xen/xenbus/xenbus_probe.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-index 7f30e6add9933..39ac9d81d10d6 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/drv.c
-@@ -552,6 +552,8 @@ static const struct iwl_dev_info iwl_dev_info_table[] = {
- 	IWL_DEV_INFO(0x7A70, 0x1692, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690i_name),
- 	IWL_DEV_INFO(0x7AF0, 0x1691, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690s_name),
- 	IWL_DEV_INFO(0x7AF0, 0x1692, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690i_name),
-+	IWL_DEV_INFO(0x7F70, 0x1691, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690s_name),
-+	IWL_DEV_INFO(0x7F70, 0x1692, iwlax411_2ax_cfg_so_gf4_a0, iwl_ax411_killer_1690i_name),
- 
- 	IWL_DEV_INFO(0x271C, 0x0214, iwl9260_2ac_cfg, iwl9260_1_name),
- 	IWL_DEV_INFO(0x7E40, 0x1691, iwl_cfg_ma_a0_gf4_a0, iwl_ax411_killer_1690s_name),
+diff --git a/drivers/xen/xenbus/xenbus_probe.c b/drivers/xen/xenbus/xenbus_probe.c
+index 25164d56c9d99..d3b6908110c6f 100644
+--- a/drivers/xen/xenbus/xenbus_probe.c
++++ b/drivers/xen/xenbus/xenbus_probe.c
+@@ -966,9 +966,15 @@ static int __init xenbus_init(void)
+ 	if (xen_pv_domain())
+ 		xen_store_domain_type = XS_PV;
+ 	if (xen_hvm_domain())
++	{
+ 		xen_store_domain_type = XS_HVM;
+-	if (xen_hvm_domain() && xen_initial_domain())
+-		xen_store_domain_type = XS_LOCAL;
++		err = hvm_get_parameter(HVM_PARAM_STORE_EVTCHN, &v);
++		if (err)
++			goto out_error;
++		xen_store_evtchn = (int)v;
++		if (!v && xen_initial_domain())
++			xen_store_domain_type = XS_LOCAL;
++	}
+ 	if (xen_pv_domain() && !xen_start_info->store_evtchn)
+ 		xen_store_domain_type = XS_LOCAL;
+ 	if (xen_pv_domain() && xen_start_info->store_evtchn)
+@@ -987,10 +993,6 @@ static int __init xenbus_init(void)
+ 		xen_store_interface = gfn_to_virt(xen_store_gfn);
+ 		break;
+ 	case XS_HVM:
+-		err = hvm_get_parameter(HVM_PARAM_STORE_EVTCHN, &v);
+-		if (err)
+-			goto out_error;
+-		xen_store_evtchn = (int)v;
+ 		err = hvm_get_parameter(HVM_PARAM_STORE_PFN, &v);
+ 		if (err)
+ 			goto out_error;
 -- 
 2.39.5
 
