@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-143972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AED9BAB433A
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:31:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01429AB4182
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:07:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B0428C6F89
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:28:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAE7C19E1072
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:07:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E82B29AB02;
-	Mon, 12 May 2025 18:11:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1992298276;
+	Mon, 12 May 2025 18:04:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i8QOQtdr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QtmB5Ea/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED9F6297120;
-	Mon, 12 May 2025 18:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F34F296FBD;
+	Mon, 12 May 2025 18:04:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073461; cv=none; b=eCm3Q/OHUCpA/DbNZO7Cg+92FYFbEeQG4OCqghbM2jo2qHjrR/XfCEHDO11d6fLrxfUxXnx2CN7oKHsF78NUO4hFTFGb/j8Avr1tsql9Xn/KLTZCRKv2YlzliApH17rT8MxsXasIv0GhyQTMcqDbV39+/v/nHcssEO9eTb7Tkrk=
+	t=1747073057; cv=none; b=Wc6em1PXb7/jS/btlR927LEWggAf/TDJvYHNqfYrTWbHkBmtw22dJElU0laqFzmkRwW5/ASrtCtbU+jxmw9SZyJNUyGCMNLLJpMWWUpzNRFSCBmnVEl7dDIKtAt3nU53EqUqW/Sgq0aKdVa+D3f4TwsAlJOEd3k0Dk2UQM0bcZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073461; c=relaxed/simple;
-	bh=U6rrONm87BwbtyqxKz0HZ6j83ME568Cu2wuq3zQWDLM=;
+	s=arc-20240116; t=1747073057; c=relaxed/simple;
+	bh=0RrDHPKBXyaRDEcdta9Mt+YcmvtP1RsMgsqgP1LVL78=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nvsJPY1sCIUAEb1j2v3TWlnfx/wyJsZnF6yxP52BYSltQjpFT7Ww0rQY4A37JFOqMyS/KKBXoM/RBmKcv5I+QwlwHGOAyt/nonyVDc/xRXxkT5B+44TfqVzA/gHsyN7YRdNFi18Os9hTQRqROn8J3BRlaDri6IZWe57qMD3qptQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i8QOQtdr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D126C4CEE7;
-	Mon, 12 May 2025 18:11:00 +0000 (UTC)
+	 MIME-Version; b=NxWr3KTxQK9MXPB//F3JkBdAQ7wwOonIpsTr/rlfVvdLtQUW6KZRebm407SdZyaCpB9iu20qQeLo24GKxoi27DbwEBKJnS28xLiQDiIYM8+AOh080qfw8YcaV2ntky9xD/SQEA2CEIPwV9XelaKAr/4Zz76uoheTFVNwM7nLhsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QtmB5Ea/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3373DC4CEE7;
+	Mon, 12 May 2025 18:04:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073460;
-	bh=U6rrONm87BwbtyqxKz0HZ6j83ME568Cu2wuq3zQWDLM=;
+	s=korg; t=1747073055;
+	bh=0RrDHPKBXyaRDEcdta9Mt+YcmvtP1RsMgsqgP1LVL78=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i8QOQtdrpKnfBF80IGNODYQam5wHg67U9oyBbKITnO0duhv4Y+sq1NBw4ldY0d6Al
-	 8bGYyAjWxEm2205DZ13qFACpCiG8Dcfj/NcfKHfl+1z1lFtQ4WNUk8YVhRyu6mmgEf
-	 1QcopE+q85ctfxllZX2qdbQD2KeW79wHQi3slG5k=
+	b=QtmB5Ea/mpUUugMgf9uyAkURfIj+I9zIH6INc6XW7UQ4r27nlEMUeCMwVHqwZcUZ2
+	 ONvtC8j9ojtu9gL2NSRrVw6zD0FI0Cy+Zrs98B3mhgTEU57+4AAjJPPyZTOzp9Swmi
+	 ltqan3TlFjXIrNQyO5kFw0lDCpjQHGEbOonza2b0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 053/113] drm/amdgpu/hdp4: use memcfg register to post the write for HDP flush
+	syzbot+a5d8c609c02f508672cc@syzkaller.appspotmail.com,
+	Ming Lei <ming.lei@redhat.com>,
+	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 141/184] loop: Fix ABBA locking race
 Date: Mon, 12 May 2025 19:45:42 +0200
-Message-ID: <20250512172029.827293130@linuxfoundation.org>
+Message-ID: <20250512172047.550723864@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
-References: <20250512172027.691520737@linuxfoundation.org>
+In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
+References: <20250512172041.624042835@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +64,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
 
-commit f690e3974755a650259a45d71456decc9c96a282 upstream.
+[ Upstream commit b49125574cae26458d4aa02ce8f4523ba9a2a328 ]
 
-Reading back the remapped HDP flush register seems to cause
-problems on some platforms. All we need is a read, so read back
-the memcfg register.
+Current loop calls vfs_statfs() while holding the q->limits_lock. If
+FS takes some locking in vfs_statfs callback, this may lead to ABBA
+locking bug (at least, FAT fs has this issue actually).
 
-Fixes: c9b8dcabb52a ("drm/amdgpu/hdp4.0: do a posting read when flushing HDP")
-Reported-by: Alexey Klimov <alexey.klimov@linaro.org>
-Link: https://lists.freedesktop.org/archives/amd-gfx/2025-April/123150.html
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4119
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3908
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 5c937b4a6050316af37ef214825b6340b5e9e391)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So this patch calls vfs_statfs() outside q->limits_locks instead,
+because looks like no reason to hold q->limits_locks while getting
+discord configs.
+
+Chain exists of:
+  &sbi->fat_lock --> &q->q_usage_counter(io)#17 --> &q->limits_lock
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  lock(&q->limits_lock);
+                               lock(&q->q_usage_counter(io)#17);
+                               lock(&q->limits_lock);
+  lock(&sbi->fat_lock);
+
+ *** DEADLOCK ***
+
+Reported-by: syzbot+a5d8c609c02f508672cc@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=a5d8c609c02f508672cc
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Signed-off-by: OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: f5c84eff634b ("loop: Add sanity check for read/write_iter")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/hdp_v4_0.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/block/loop.c | 30 +++++++++++++++---------------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/hdp_v4_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/hdp_v4_0.c
-@@ -42,7 +42,12 @@ static void hdp_v4_0_flush_hdp(struct am
+diff --git a/drivers/block/loop.c b/drivers/block/loop.c
+index 1f55ddef53f3d..27e4bd8ee9dc9 100644
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -694,12 +694,11 @@ static void loop_sysfs_exit(struct loop_device *lo)
+ 				   &loop_attribute_group);
+ }
+ 
+-static void loop_config_discard(struct loop_device *lo,
+-		struct queue_limits *lim)
++static void loop_get_discard_config(struct loop_device *lo,
++				    u32 *granularity, u32 *max_discard_sectors)
  {
- 	if (!ring || !ring->funcs->emit_wreg) {
- 		WREG32((adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2, 0);
--		RREG32((adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2);
-+		/* We just need to read back a register to post the write.
-+		 * Reading back the remapped register causes problems on
-+		 * some platforms so just read back the memory size register.
-+		 */
-+		if (adev->nbio.funcs->get_memsize)
-+			adev->nbio.funcs->get_memsize(adev);
- 	} else {
- 		amdgpu_ring_emit_wreg(ring, (adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2, 0);
+ 	struct file *file = lo->lo_backing_file;
+ 	struct inode *inode = file->f_mapping->host;
+-	u32 granularity = 0, max_discard_sectors = 0;
+ 	struct kstatfs sbuf;
+ 
+ 	/*
+@@ -712,24 +711,17 @@ static void loop_config_discard(struct loop_device *lo,
+ 	if (S_ISBLK(inode->i_mode)) {
+ 		struct block_device *bdev = I_BDEV(inode);
+ 
+-		max_discard_sectors = bdev_write_zeroes_sectors(bdev);
+-		granularity = bdev_discard_granularity(bdev);
++		*max_discard_sectors = bdev_write_zeroes_sectors(bdev);
++		*granularity = bdev_discard_granularity(bdev);
+ 
+ 	/*
+ 	 * We use punch hole to reclaim the free space used by the
+ 	 * image a.k.a. discard.
+ 	 */
+ 	} else if (file->f_op->fallocate && !vfs_statfs(&file->f_path, &sbuf)) {
+-		max_discard_sectors = UINT_MAX >> 9;
+-		granularity = sbuf.f_bsize;
++		*max_discard_sectors = UINT_MAX >> 9;
++		*granularity = sbuf.f_bsize;
  	}
+-
+-	lim->max_hw_discard_sectors = max_discard_sectors;
+-	lim->max_write_zeroes_sectors = max_discard_sectors;
+-	if (max_discard_sectors)
+-		lim->discard_granularity = granularity;
+-	else
+-		lim->discard_granularity = 0;
+ }
+ 
+ struct loop_worker {
+@@ -915,6 +907,7 @@ static int loop_reconfigure_limits(struct loop_device *lo, unsigned int bsize)
+ 	struct inode *inode = file->f_mapping->host;
+ 	struct block_device *backing_bdev = NULL;
+ 	struct queue_limits lim;
++	u32 granularity = 0, max_discard_sectors = 0;
+ 
+ 	if (S_ISBLK(inode->i_mode))
+ 		backing_bdev = I_BDEV(inode);
+@@ -924,6 +917,8 @@ static int loop_reconfigure_limits(struct loop_device *lo, unsigned int bsize)
+ 	if (!bsize)
+ 		bsize = loop_default_blocksize(lo, backing_bdev);
+ 
++	loop_get_discard_config(lo, &granularity, &max_discard_sectors);
++
+ 	lim = queue_limits_start_update(lo->lo_queue);
+ 	lim.logical_block_size = bsize;
+ 	lim.physical_block_size = bsize;
+@@ -933,7 +928,12 @@ static int loop_reconfigure_limits(struct loop_device *lo, unsigned int bsize)
+ 		lim.features |= BLK_FEAT_WRITE_CACHE;
+ 	if (backing_bdev && !bdev_nonrot(backing_bdev))
+ 		lim.features |= BLK_FEAT_ROTATIONAL;
+-	loop_config_discard(lo, &lim);
++	lim.max_hw_discard_sectors = max_discard_sectors;
++	lim.max_write_zeroes_sectors = max_discard_sectors;
++	if (max_discard_sectors)
++		lim.discard_granularity = granularity;
++	else
++		lim.discard_granularity = 0;
+ 	return queue_limits_commit_update(lo->lo_queue, &lim);
+ }
+ 
+-- 
+2.39.5
+
 
 
 
