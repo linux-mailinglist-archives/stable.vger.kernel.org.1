@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-143733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E826AB4120
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:02:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38F69AB4054
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:52:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0B441885902
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:01:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1337466DB7
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:52:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 506F9227E8A;
-	Mon, 12 May 2025 18:01:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF454296FA7;
+	Mon, 12 May 2025 17:52:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FPe2ieWm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pYZSMeIw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E2001519B8;
-	Mon, 12 May 2025 18:01:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A224296D3F;
+	Mon, 12 May 2025 17:52:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072904; cv=none; b=O1LQGok65u8m3sa6SpmPIbLpFlKBeZmVbggayiUJ0T1VULooJLvu2lnzwMgG6R7oW0hdDjtM/r6FIoGuOAidy7n8HhnJudkqh2xb9SB16l7LjXFJ+Ca4SoZ+xqn4euWZzSyEmxOpcsjJ2UymR089NJj8yqBtek17nhYKSStMIfk=
+	t=1747072362; cv=none; b=NlAjKDB+W2UCzf4XBH++npA3b+p01dfZjdLRIB0k9H7T/s53XIo0fmmPFDA+iT6IPytclnQwzc/ktY5hnDx6JxrAPkbYnr5v+nclYLdbuTMIbf1weC4snMB4UH58/Qp1RRJsK8Ucqmw6Q5J47PcrGZl9LcatUbOs2wFobrm4q6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072904; c=relaxed/simple;
-	bh=YvgcFNPCv+l59RB1pDUWJ4TUd5lJFJKH3lSE14giwzg=;
+	s=arc-20240116; t=1747072362; c=relaxed/simple;
+	bh=169AwVMIS9MgZ8tbdlPsoOgHlNHXgSHfeeGvxxUqajg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l+zXVvrN88+Ebg3HhIqEirlV/0osKZpTJP15+0vQbvzl1itjs2ZVZzGKF1olx5qHxr7AnX9nDrhoZKb8zhreIbNMmH5zAQBunYm4DkgBnGqIzzzjcvcD1bQF86KobBM4xPFdv/AL0GjNOGBBF6/XbyWpWUm8E0l4w6xgk5e9048=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FPe2ieWm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A950C4CEE7;
-	Mon, 12 May 2025 18:01:43 +0000 (UTC)
+	 MIME-Version; b=D2KooAX2L1hw6u+Gz5xxrCIKoYkq4aAmJ2YFXur71V7q5RA+gC9l0QHSsLkstvr/3GOliXbjPbjMvg332DsmpgmL6tRBEyjOtXMoYZgDKGIEycWGmCEuhOxw7q6X87FTAEiiIe+5EekMM6H1mi6CNvDbCUmDAUvOHYHFvjZkAfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pYZSMeIw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC309C4CEE7;
+	Mon, 12 May 2025 17:52:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072903;
-	bh=YvgcFNPCv+l59RB1pDUWJ4TUd5lJFJKH3lSE14giwzg=;
+	s=korg; t=1747072362;
+	bh=169AwVMIS9MgZ8tbdlPsoOgHlNHXgSHfeeGvxxUqajg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FPe2ieWmGDQQmgYz4CkbM5IO/ty9le/toulNAxBQHXBHVDdeMTX2afnvTMXHhMjOb
-	 IYWQtvTpuaHdv+li2j7KGHBgVF1Kdoz85F7kTqzLIFFr0dqLpd+wX/5St9ugBmnGoi
-	 n0tcuXIL0EiUljM0LFgl95n7LCKnekefw7und7GY=
+	b=pYZSMeIw3+2UV14ezvItJcnZVbibMGZH7dUNPJf9KDHxu4ltVoH5omBrl4eg+qe5n
+	 gg+UllkJcy8VObubB7NqfqnUDqAhMZOMMgMDsTeJqRUBG3oGUBmHIAWbMLByp9qx5U
+	 pHvzkSWOq4/OfTFKN4s4m5BgIuteSuoL23ZbgyN0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Roman Li <Roman.Li@amd.com>,
-	Ray Wu <ray.wu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.12 091/184] drm/amd/display: Fix invalid context error in dml helper
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 17/92] net: dsa: b53: allow leaky reserved multicast
 Date: Mon, 12 May 2025 19:44:52 +0200
-Message-ID: <20250512172045.534123285@linuxfoundation.org>
+Message-ID: <20250512172023.822969428@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
-References: <20250512172041.624042835@linuxfoundation.org>
+In-Reply-To: <20250512172023.126467649@linuxfoundation.org>
+References: <20250512172023.126467649@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,87 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Roman Li <Roman.Li@amd.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-commit 9984db63742099ee3f3cff35cf71306d10e64356 upstream.
+[ Upstream commit 5f93185a757ff38b36f849c659aeef368db15a68 ]
 
-[Why]
-"BUG: sleeping function called from invalid context" error.
-after:
-"drm/amd/display: Protect FPU in dml2_validate()/dml21_validate()"
+Allow reserved multicast to ignore VLAN membership so STP and other
+management protocols work without a PVID VLAN configured when using a
+vlan aware bridge.
 
-The populate_dml_plane_cfg_from_plane_state() uses the GFP_KERNEL flag
-for memory allocation, which shouldn't be used in atomic contexts.
-
-The allocation is needed only for using another helper function
-get_scaler_data_for_plane().
-
-[How]
-Modify helpers to pass a pointer to scaler_data within existing context,
-eliminating the need for dynamic memory allocation/deallocation
-and copying.
-
-Fixes: 366e77cd4923 ("drm/amd/display: Protect FPU in dml2_validate()/dml21_validate()")
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Roman Li <Roman.Li@amd.com>
-Signed-off-by: Ray Wu <ray.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit bd3e84bc98f81b44f2c43936bdadc3241d654259)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 967dd82ffc52 ("net: dsa: b53: Add support for Broadcom RoboSwitch")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20250429201710.330937-2-jonas.gorski@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c |   14 +++-------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ drivers/net/dsa/b53/b53_common.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_translation_helper.c
-@@ -929,7 +929,9 @@ static void populate_dml_surface_cfg_fro
- 	}
- }
- 
--static void get_scaler_data_for_plane(const struct dc_plane_state *in, struct dc_state *context, struct scaler_data *out)
-+static struct scaler_data *get_scaler_data_for_plane(
-+		const struct dc_plane_state *in,
-+		struct dc_state *context)
- {
- 	int i;
- 	struct pipe_ctx *temp_pipe = &context->res_ctx.temp_pipe;
-@@ -950,7 +952,7 @@ static void get_scaler_data_for_plane(co
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index ea7d2c01e6726..afaecc92f8a84 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -373,9 +373,11 @@ static void b53_enable_vlan(struct b53_device *dev, int port, bool enable,
+ 		b53_read8(dev, B53_VLAN_PAGE, B53_VLAN_CTRL5, &vc5);
  	}
  
- 	ASSERT(i < MAX_PIPES);
--	memcpy(out, &temp_pipe->plane_res.scl_data, sizeof(*out));
-+	return &temp_pipe->plane_res.scl_data;
- }
++	vc1 &= ~VC1_RX_MCST_FWD_EN;
++
+ 	if (enable) {
+ 		vc0 |= VC0_VLAN_EN | VC0_VID_CHK_EN | VC0_VID_HASH_VID;
+-		vc1 |= VC1_RX_MCST_UNTAG_EN | VC1_RX_MCST_FWD_EN;
++		vc1 |= VC1_RX_MCST_UNTAG_EN;
+ 		vc4 &= ~VC4_ING_VID_CHECK_MASK;
+ 		if (enable_filtering) {
+ 			vc4 |= VC4_ING_VID_VIO_DROP << VC4_ING_VID_CHECK_S;
+@@ -393,7 +395,7 @@ static void b53_enable_vlan(struct b53_device *dev, int port, bool enable,
  
- static void populate_dummy_dml_plane_cfg(struct dml_plane_cfg_st *out, unsigned int location,
-@@ -1013,11 +1015,7 @@ static void populate_dml_plane_cfg_from_
- 						    const struct dc_plane_state *in, struct dc_state *context,
- 						    const struct soc_bounding_box_st *soc)
- {
--	struct scaler_data *scaler_data = kzalloc(sizeof(*scaler_data), GFP_KERNEL);
--	if (!scaler_data)
--		return;
--
--	get_scaler_data_for_plane(in, context, scaler_data);
-+	struct scaler_data *scaler_data = get_scaler_data_for_plane(in, context);
+ 	} else {
+ 		vc0 &= ~(VC0_VLAN_EN | VC0_VID_CHK_EN | VC0_VID_HASH_VID);
+-		vc1 &= ~(VC1_RX_MCST_UNTAG_EN | VC1_RX_MCST_FWD_EN);
++		vc1 &= ~VC1_RX_MCST_UNTAG_EN;
+ 		vc4 &= ~VC4_ING_VID_CHECK_MASK;
+ 		vc5 &= ~VC5_DROP_VTABLE_MISS;
  
- 	out->CursorBPP[location] = dml_cur_32bit;
- 	out->CursorWidth[location] = 256;
-@@ -1082,8 +1080,6 @@ static void populate_dml_plane_cfg_from_
- 	out->DynamicMetadataTransmittedBytes[location] = 0;
- 
- 	out->NumberOfCursors[location] = 1;
--
--	kfree(scaler_data);
- }
- 
- static unsigned int map_stream_to_dml_display_cfg(const struct dml2_context *dml2,
+-- 
+2.39.5
+
 
 
 
