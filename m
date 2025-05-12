@@ -1,155 +1,140 @@
-Return-Path: <stable+bounces-143301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F1B6AB3DA9
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:33:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C1C0AB3D89
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:30:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2A6A1709A7
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 16:31:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F3FB179C3A
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 16:26:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B25042512F5;
-	Mon, 12 May 2025 16:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BD33296140;
+	Mon, 12 May 2025 16:22:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="fP3ChIBS"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R+j7Jfco"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7CA32512D8;
-	Mon, 12 May 2025 16:31:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F8D429614C
+	for <stable@vger.kernel.org>; Mon, 12 May 2025 16:22:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747067506; cv=none; b=ZtvQQspJ3ACObFqcZmWBWZmBbUUil5d24lKvwQR0bNYSzDwyLhaVNCwdvbYESBMwPLOo09bfL8I8AHppDOIYHOx69N1Y7aKkCGeCXiSJjqHGlWS640IMBVvOuYlE51gzOAs8dp63yna3Usa5a8mQoK2urKrFlfvkO5ETjnw7g5E=
+	t=1747066940; cv=none; b=s/prG2s/uF1xd5lDTkXqukX/Bi/1LpGoO5VQHUKSP4AwBkn9+HZVFARw4aS3bK1kqOjPanaKsTkTRahfW6Bg0l3LJ9t+4lhMsBqXt4Y1vONOQdELBr32LVxGHg997UN7oRWHZOXLNmMYfqRaMN33/wv01Z9VN88NRgF0zXC+xSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747067506; c=relaxed/simple;
-	bh=zTCHXo5qj1aSrkhmhcy495wGkdhIvjJB1e8sLW6iDtg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RgEbe6Je4Si1VIG5pUBs0zo2aZ7sFt4kqx8sQJ5dN/90eHHDcd3SpXIFYRWloBohPn+2iDdj1fDIlYS6gRNbBFsZmc1LDvFNxfVyBQlFdkSIHipdscGnOZNmB/SI/ZUAK4a/9fINwJ27TZ70hhNi0c9THDFeMhZR3D3utRFIEAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=fP3ChIBS; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54CGFYFB024389;
-	Mon, 12 May 2025 16:31:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=tGL/LbTAfn0zgVU3c0eZIOyEQsldEM
-	IlaiE0jItqvvI=; b=fP3ChIBSynYYYRzIHYSYCcuOVycnIJD3w1w6VAcYo04tWC
-	LGZMfh6cAxG/S8v9EMe8qJ9h2VMrye/hCZMEWttMYjh6zjdSABTqETWx0jVJ7D/4
-	fIan3icK3kf1YjOWOi5NaYWfTi3sP8gFKXrRmyNWLcpEVbeOHVqiGebQvOZfxAXM
-	JofCP+SvJYAoIV5r7jrmY4ZyMaIsSD9mDKQ46m95rpdOP/uKNTWQUPHm0FTxvNBr
-	hMmpcWEGGxDlPSIEr8/MiuT8/t7OCXwF7qTf/xsFwY0OgJQT56TRWwiFwjxOIe65
-	ZZi0YAB+beQYvTHi2wKc3BaFf72RENX4+6JszWjw==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46kbkstrvf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 12 May 2025 16:31:35 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 54CGEgRb024804;
-	Mon, 12 May 2025 16:31:34 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46kbkstrvb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 12 May 2025 16:31:34 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54CCqoM2016337;
-	Mon, 12 May 2025 16:31:33 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 46jh4tf0ph-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 12 May 2025 16:31:33 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 54CGVWjv54657416
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 12 May 2025 16:31:32 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 229C020114;
-	Mon, 12 May 2025 16:31:32 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id ECD8020111;
-	Mon, 12 May 2025 16:31:31 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.155.204.135])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 12 May 2025 16:31:31 +0000 (GMT)
-Date: Mon, 12 May 2025 18:31:30 +0200
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-        Daniel Axtens <dja@axtens.net>, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, kasan-dev@googlegroups.com,
-        linux-s390@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v7 1/1] kasan: Avoid sleepable page allocation from
- atomic context
-Message-ID: <aCIiYgeQcvO+VQzy@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
-References: <cover.1747059374.git.agordeev@linux.ibm.com>
- <c8eeeb146382bcadabce5b5dcf92e6176ba4fb04.1747059374.git.agordeev@linux.ibm.com>
- <aCIUz3_9WoSFH9Hp@harry>
+	s=arc-20240116; t=1747066940; c=relaxed/simple;
+	bh=31SUYSjAre9YyLoszXy4uNoKRPqB95ZMcryjSVmBdcQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=rKhyRPlhsd+KOLj1oJH5EDiX5Tr0t0xREaaFeu9u9LYeIsVKp5ppynQ0SCA7+jlJlszW0dyY7uybJIpUKgtPSfxNYTTIfjJJydNzD4qKmOIRCdakw95PhVzNnKBSUvE0BueCpdlX0DZa0/qtmQbVYhcm7Vtb+4jRyTCJGstzaVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R+j7Jfco; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747066939; x=1778602939;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=31SUYSjAre9YyLoszXy4uNoKRPqB95ZMcryjSVmBdcQ=;
+  b=R+j7JfcohD9QNjI4DBcsT1hC5R9sa2PIdYWlqoVUiMLnHOgyNmoYsxrO
+   qC/aTkm7VQWCJ0I/mYfUPNlnb1SnMEacbVSfnpP9fb9YWPIdX8DetSsgQ
+   PpaWBPSAzeNip9LvUohtxVkgO/mzWNotakunS3GvbP7hmhO1DO6jNk2G2
+   qUpl1e/GDasXS/l/Rttw6yMOL1/rZj7hjV2+4+zB8YZYIQv+0efCvo/FU
+   wQIafDyVwdQWByD7YXIuWQGaJkIbYtVayzhy6+0SDFuqJpkn3QYHj9Bqv
+   lODXYPxTfJezETsQzFMjmJ5c9MYfU7RqkUIqKgs51RE2jg0P4cPcYwRJy
+   Q==;
+X-CSE-ConnectionGUID: +D8hhM7cRZmC91p0oRTfIQ==
+X-CSE-MsgGUID: xqBI/GFGSH6ICvvW0/y80Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11431"; a="59508072"
+X-IronPort-AV: E=Sophos;i="6.15,282,1739865600"; 
+   d="scan'208";a="59508072"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2025 09:22:18 -0700
+X-CSE-ConnectionGUID: fOQwS9tvSlOiJAWCB0axmA==
+X-CSE-MsgGUID: d+2ahvD8SC2Qcw2V47ebHw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,282,1739865600"; 
+   d="scan'208";a="142532610"
+Received: from unknown (HELO himal-Super-Server.iind.intel.com) ([10.190.239.34])
+  by orviesa005.jf.intel.com with ESMTP; 12 May 2025 09:22:16 -0700
+From: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: matthew.brost@intel.com,
+	thomas.hellstrom@linux.intel.com,
+	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v8 01/20] drm/gpusvm: Introduce devmem_only flag for allocation
+Date: Mon, 12 May 2025 22:17:21 +0530
+Message-Id: <20250512164740.466852-2-himal.prasad.ghimiray@intel.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250512164740.466852-1-himal.prasad.ghimiray@intel.com>
+References: <20250512164740.466852-1-himal.prasad.ghimiray@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aCIUz3_9WoSFH9Hp@harry>
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=DrhW+H/+ c=1 sm=1 tr=0 ts=68222267 cx=c_pps a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17 a=kj9zAlcOel0A:10 a=dt9VzEwgFbYA:10 a=dg7Irr5rqVmvLQufYEsA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTEyMDE2NiBTYWx0ZWRfXweJ+O0011/Hs 6Hi4ZRGHDlEuF3MjSp1S3b9ZMbw7IQKKSMaelku9w/b5OsAN8qEomFNf5kouXsH7mtGlnlCEtvF uClj9wJ7drwFXTPRAGica6qa0XtOfr7AfpFn65OU1Qk88AedgaPcZzFgmtyYVTl1gdAOMd5cReN
- 7ObWluXXhDlPUzQ8HHQs5PSuD5d2cgz/aoNx7GOtMH38Bg5oEmGMldZdfoberwf7kt4nxgOvDcd yg0cE04WpU+7ZqSJIa7fcet/D87eDR4Byn93QV2FLuyoct/FurVgShuCbiEJIiEXK4sneVy4W1+ OUKx76PhRj/rKDEod/2dQSvFl//4ji1YxiSn+KAogptSpp/IdFODEwhyxNz29TrgwQ2Y089pOFd
- Am9OmqgYtKMWOWD4ynpv24Q55k8wN5Ljbtd+PP9QNcpo5/3rlNXcQgMeLbIfPFNon0jcuU1p
-X-Proofpoint-GUID: 13OLRlz25CD_Htxzm0V93LQo7uFLBEqY
-X-Proofpoint-ORIG-GUID: _K-rkFkUazgqcTHuIiwz58rCfqji_YEE
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-12_05,2025-05-09_01,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 spamscore=0
- priorityscore=1501 clxscore=1015 impostorscore=0 phishscore=0 bulkscore=0
- mlxscore=0 adultscore=0 lowpriorityscore=0 suspectscore=0 mlxlogscore=597
- classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2504070000
- definitions=main-2505120166
+Content-Transfer-Encoding: 8bit
 
-On Tue, May 13, 2025 at 12:33:35AM +0900, Harry Yoo wrote:
-> Thanks for the update, but I don't think nr_populated is sufficient
-> here. If nr_populated in the last iteration is smaller than its value
-> in any previous iteration, it could lead to a memory leak.
-> 
-> That's why I suggested (PAGE_SIZE / sizeof(data.pages[0])).
-> ...but on second thought maybe touching the whole array is not
-> efficient either.
+This commit adds a new flag, devmem_only, to the drm_gpusvm structure. The
+purpose of this flag is to ensure that the get_pages function allocates
+memory exclusively from the device's memory. If the allocation from
+device memory fails, the function will return an -EFAULT error.
 
-Yes, I did not like it and wanted to limit the number of pages,
-but did not realize that using nr_populated still could produce
-leaks. In addition I could simply do:
+Required for shared CPU and GPU atomics on certain devices.
 
-	max_populted = max(max_populted, nr_populated);
-	...
-	free_pages_bulk(data.pages, max_populated);
+v3:
+ - s/vram_only/devmem_only/
 
-> If this ends up making things complicated probably we should just
-> merge v6 instead (v6 looks good)? micro-optimizing vmalloc shadow memory
-> population doesn't seem worth it if it comes at the cost of complexity :)
+Fixes: 99624bdff867 ("drm/gpusvm: Add support for GPU Shared Virtual Memory")
+Cc: stable@vger.kernel.org
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+---
+ drivers/gpu/drm/drm_gpusvm.c | 5 +++++
+ include/drm/drm_gpusvm.h     | 2 ++
+ 2 files changed, 7 insertions(+)
 
-v6 is okay, except that in v7 I use break instead of return:
+diff --git a/drivers/gpu/drm/drm_gpusvm.c b/drivers/gpu/drm/drm_gpusvm.c
+index de424e670995..a58d03e6cac2 100644
+--- a/drivers/gpu/drm/drm_gpusvm.c
++++ b/drivers/gpu/drm/drm_gpusvm.c
+@@ -1454,6 +1454,11 @@ int drm_gpusvm_range_get_pages(struct drm_gpusvm *gpusvm,
+ 				goto err_unmap;
+ 			}
+ 
++			if (ctx->devmem_only) {
++				err = -EFAULT;
++				goto err_unmap;
++			}
++
+ 			addr = dma_map_page(gpusvm->drm->dev,
+ 					    page, 0,
+ 					    PAGE_SIZE << order,
+diff --git a/include/drm/drm_gpusvm.h b/include/drm/drm_gpusvm.h
+index df120b4d1f83..9fd25fc880a4 100644
+--- a/include/drm/drm_gpusvm.h
++++ b/include/drm/drm_gpusvm.h
+@@ -286,6 +286,7 @@ struct drm_gpusvm {
+  * @in_notifier: entering from a MMU notifier
+  * @read_only: operating on read-only memory
+  * @devmem_possible: possible to use device memory
++ * @devmem_only: use only device memory
+  *
+  * Context that is DRM GPUSVM is operating in (i.e. user arguments).
+  */
+@@ -294,6 +295,7 @@ struct drm_gpusvm_ctx {
+ 	unsigned int in_notifier :1;
+ 	unsigned int read_only :1;
+ 	unsigned int devmem_possible :1;
++	unsigned int devmem_only :1;
+ };
+ 
+ int drm_gpusvm_init(struct drm_gpusvm *gpusvm,
+-- 
+2.34.1
 
-	ret = apply_to_page_range(...);
-	if (ret)
-		break;
-
-and as result can call the final:
-
-	free_page((unsigned long)data.pages);
-
-Frankly, I do not have strong opinion.
-
-> -- 
-> Cheers,
-> Harry / Hyeonggon
-
-Thanks!
 
