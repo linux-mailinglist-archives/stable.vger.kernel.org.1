@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-143589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C1A6AB4073
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:54:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFFD2AB4137
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:03:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 936341684A6
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:54:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D6F54680DD
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:03:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2732A1A08CA;
-	Mon, 12 May 2025 17:54:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83B3B1DF754;
+	Mon, 12 May 2025 18:03:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SkX+0Px2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bOWzR7rM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7844254863;
-	Mon, 12 May 2025 17:54:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FE971A08CA;
+	Mon, 12 May 2025 18:03:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072440; cv=none; b=Y3SPOvj4QTBXbh24198+nt7NFsD7DWsvs9/zgtx+Qog+xno74MBPs9gHQo3dv1opuUhGGbDn3KPJzNMge/Ozy8hoqEpn7u+eHLyxkC94o+pULxIn6iAaxO9FQsZ3z/9kHk+JdtG+RnCDeJ2BbG1jhBfN1ziW59oYq9KpCAihWjQ=
+	t=1747073015; cv=none; b=jSnxusF2ulruIoIJSoz82V2VbzdM+YkqBrd6LxzxUowllvVpnEWjBedn2/mkaerKRNKWV15PYyeVAsZMsZcs1LVRAEaS3E9IaakH6+pbz7PznpKl1r12j8FMrxMBU4/7jzeYJQS17WezyOsV7utnnRhguSLYZtDserPwlS60FTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072440; c=relaxed/simple;
-	bh=rUWs6h94fMOLLCoebxLslrenjNOw+mNKb3V+A7QkYek=;
+	s=arc-20240116; t=1747073015; c=relaxed/simple;
+	bh=D1t69JbnBDFbtOZiJj7usr9DBFd0lgTCboA94TH/s+0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P7DLxtrMLw8w5HopcS1ojOmFNknXkShZ/Tu6WXQvEE4m9je8K69LTM0vCxsU5NU+t3daRNjowtx7emuYz6XzMYSfa4M/vIhnuHNJsdzka9aaDT4T9h0oLuxwl2+XEC+fys6xZCR8v/ft0aChb8/FGbO9queg9pZcQlXU5zYvisk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SkX+0Px2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47D71C4CEE7;
-	Mon, 12 May 2025 17:54:00 +0000 (UTC)
+	 MIME-Version; b=HtgVBj0NXeGqOBhxZ4CG5VmWHoz+RgsttqGW0ebqfKVTuvS7oCnAS1gMsgMP1/QmyZCZa+DymuD3ivuaivmSy5E1UHTQGpJSc+fyRPytvWjZa6sLBxsfOeWoctV7t9CvXcSwLNtp1gWJv6o8Z3l27JnZdt8MD9oabczVmsF/290=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bOWzR7rM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2BE5C4CEE7;
+	Mon, 12 May 2025 18:03:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072440;
-	bh=rUWs6h94fMOLLCoebxLslrenjNOw+mNKb3V+A7QkYek=;
+	s=korg; t=1747073015;
+	bh=D1t69JbnBDFbtOZiJj7usr9DBFd0lgTCboA94TH/s+0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SkX+0Px2GvA2+m2b7tmgYS/9Y3siEWhU2G547EW7uJAo3ZzYhu9VJoGD4speMc7Qz
-	 OOazxLQQIAhBkWLv7Y41zVeaVayD5SeQTyQXsdMH7duJqif4qKALxt90cvwweJPHIM
-	 bydau4vCIJNerGNtmii9PgKN5NHP95EzPb/l1R1s=
+	b=bOWzR7rM5FEM/0zBERPIbl0gKcpd//KtF6cF9YCnQv+7PLYWgK5Qar+4+ylRJHKyu
+	 dFqA51XjX15sw/V2E50qcvjGffN1614ZEQE1WjGWkZxPvMCnpNQANax/SCu/upMQ4t
+	 9SvOwAbzJvblWVssyJ3RhLvuFswIpvciTFrX/SEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manuel Fombuena <fombuena@outlook.com>,
-	Aditya Garg <gargaditya08@live.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.1 24/92] Input: synaptics - enable InterTouch on Dynabook Portege X30-D
+	Alexey Klimov <alexey.klimov@linaro.org>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 098/184] drm/amdgpu/hdp5.2: use memcfg register to post the write for HDP flush
 Date: Mon, 12 May 2025 19:44:59 +0200
-Message-ID: <20250512172024.107065669@linuxfoundation.org>
+Message-ID: <20250512172045.815556141@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172023.126467649@linuxfoundation.org>
-References: <20250512172023.126467649@linuxfoundation.org>
+In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
+References: <20250512172041.624042835@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manuel Fombuena <fombuena@outlook.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit 6d7ea0881000966607772451b789b5fb5766f11d upstream.
+commit dbc988c689333faeeed44d5561f372ff20395304 upstream.
 
-[    5.989588] psmouse serio1: synaptics: Your touchpad (PNP: TOS0213 PNP0f03) says it can support a different bus. If i2c-hid and hid-rmi are not used, you might want to try setting psmouse.synaptics_intertouch to 1 and report this to linux-input@vger.kernel.org.
-[    6.039923] psmouse serio1: synaptics: Touchpad model: 1, fw: 9.32, id: 0x1e2a1, caps: 0xf00223/0x840300/0x12e800/0x52d884, board id: 3322, fw id: 2658004
+Reading back the remapped HDP flush register seems to cause
+problems on some platforms. All we need is a read, so read back
+the memcfg register.
 
-The board is labelled TM3322.
-
-Present on the Toshiba / Dynabook Portege X30-D and possibly others.
-
-Confirmed working well with psmouse.synaptics_intertouch=1 and local build.
-
-Signed-off-by: Manuel Fombuena <fombuena@outlook.com>
-Signed-off-by: Aditya Garg <gargaditya08@live.com>
-Link: https://lore.kernel.org/r/PN3PR01MB9597711E7933A08389FEC31DB888A@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM
+Fixes: f756dbac1ce1 ("drm/amdgpu/hdp5.2: do a posting read when flushing HDP")
+Reported-by: Alexey Klimov <alexey.klimov@linaro.org>
+Link: https://lists.freedesktop.org/archives/amd-gfx/2025-April/123150.html
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4119
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3908
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 4a89b7698e771914b4d5b571600c76e2fdcbe2a9)
 Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/mouse/synaptics.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdgpu/hdp_v5_2.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
---- a/drivers/input/mouse/synaptics.c
-+++ b/drivers/input/mouse/synaptics.c
-@@ -194,6 +194,7 @@ static const char * const smbus_pnp_ids[
- 	"SYN3221", /* HP 15-ay000 */
- 	"SYN323d", /* HP Spectre X360 13-w013dx */
- 	"SYN3257", /* HP Envy 13-ad105ng */
-+	"TOS0213", /* Dynabook Portege X30-D */
- 	NULL
- };
- 
+--- a/drivers/gpu/drm/amd/amdgpu/hdp_v5_2.c
++++ b/drivers/gpu/drm/amd/amdgpu/hdp_v5_2.c
+@@ -34,7 +34,17 @@ static void hdp_v5_2_flush_hdp(struct am
+ 	if (!ring || !ring->funcs->emit_wreg) {
+ 		WREG32_NO_KIQ((adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2,
+ 			0);
+-		RREG32_NO_KIQ((adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2);
++		if (amdgpu_sriov_vf(adev)) {
++			/* this is fine because SR_IOV doesn't remap the register */
++			RREG32_NO_KIQ((adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2);
++		} else {
++			/* We just need to read back a register to post the write.
++			 * Reading back the remapped register causes problems on
++			 * some platforms so just read back the memory size register.
++			 */
++			if (adev->nbio.funcs->get_memsize)
++				adev->nbio.funcs->get_memsize(adev);
++		}
+ 	} else {
+ 		amdgpu_ring_emit_wreg(ring,
+ 			(adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2,
 
 
 
