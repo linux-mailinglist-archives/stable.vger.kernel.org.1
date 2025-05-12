@@ -1,62 +1,77 @@
-Return-Path: <stable+bounces-143816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E61BBAB41D1
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:13:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7315DAB41CE
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:12:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F2B23B0505
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:11:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47BB317AFB9
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:12:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73D3029ACE4;
-	Mon, 12 May 2025 18:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 668FD29B229;
+	Mon, 12 May 2025 18:04:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ENRtZKMX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BwsM1eT3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D42E29ACDA;
-	Mon, 12 May 2025 18:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 215D429B21F;
+	Mon, 12 May 2025 18:04:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073087; cv=none; b=Xo+ZYiSw9kSBkreMnd2j5UK6xAh5lv66vcl0sPRsC9SXdPNiadt7ArzSEOJ7q8RRyYc0U3hcY+VaDsNybde0YBmYupw+N2s8b0y44fej2aL4W2VqgLYjYf6x/MljOxY4TrGB7jZuWNJgQI2DPQ39ARuTxRL0yR+j9a14Ui4Rntk=
+	t=1747073091; cv=none; b=jgNA8A7cTPLyTNu5j9ckdzJD/naAWMTc+4XyRWq5z+A/nWcFVUA9Hm1cLHbMZHHLdfhqlcNMb1e+hOyesOItV+F7sm9z7CeM88SxomOjjJ64jBhrCiTxaOWWJFI1DB17BE1o+tmxqqJbYq3dwSRBCVIOTheRZATaeyjLqkUe5Iw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073087; c=relaxed/simple;
-	bh=lCTxzM5mPtEqEUhqg9mBz2nbnDEbWNQdOwqtwsH/FcI=;
+	s=arc-20240116; t=1747073091; c=relaxed/simple;
+	bh=AESvUlPW8mv9wKVURiU6MMPiaUUCwGT2gGubYF9BAAg=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qJRWeQ7LCDks61n7imdpMj7RfA7aTm5aPbWtVXrTumzPpOE+8u4Sjme6CoCyJtp/uEm4h7vxdBLm4+zqy5GRblGNWDX37ABHrt4CQxIfQJOeP/RbsybPeDqY0Df62rYWhR8j0V/KNG0n7uLAQtyBKMLmdNj1KiYz63LPqo1nTeo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ENRtZKMX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6BCDC4CEF0;
-	Mon, 12 May 2025 18:04:45 +0000 (UTC)
+	 MIME-Version; b=Iz9to8G5AlppIMhCXZNxmvlgOEnOxbqM13aptI31phU0yb2kkySAiNovZCw3nH3oiU1ZaEkfsBs8LZGbauFQACiBmq6KhgaOgZb9NMkBk0xh+hgR4WvKjKineCK5naGnw83IGNDcfaHYx07OktPUvKRQ5Y/xjNm87dVX56ocbA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BwsM1eT3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C564C4CEE7;
+	Mon, 12 May 2025 18:04:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747073087;
-	bh=lCTxzM5mPtEqEUhqg9mBz2nbnDEbWNQdOwqtwsH/FcI=;
+	s=k20201202; t=1747073091;
+	bh=AESvUlPW8mv9wKVURiU6MMPiaUUCwGT2gGubYF9BAAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ENRtZKMXwWza3chzqhxjc8H8mGmRL/Bz1M+Rr6NeobL0kj/Ew6VlWjTIwLk7lPd3p
-	 UC0yazS2b+t0Ha0lkfBb3NOOiwRlQMGlDZm1ZkL8XKB/gQoZxh/SJcBSMvZhfQ6dZK
-	 DHtUnayTofw+quRQn+/jY0mO0655OXvB1JM0+Tmh1tExm2gudfnWPjw1zwrj0mvNHq
-	 ngBI8UAjz/A5c65wJhRnhxClf85ZBKuV49Z80ejI/S43s4oEinsjoHcnU/GDZhK7FJ
-	 BlPkQp0ZVdkypn0N02ukbalB6cNmYZy06lG6h8RyjxCdo/1N8f4KaY2SNxYeetGfL+
-	 jS5RsK6iQH37Q==
+	b=BwsM1eT3Fpb4JXg297t2vWY/GgVkD96ukqHKjeil16HKnUQgCSBHkCnzPMUAxnj6m
+	 CsRyZ99lmxB9f5yIDS8t9TKbb+KQZcsRF28SOcrvRJwqyRQRaa1cutOdqZno4LrLNN
+	 MzBFy5TNkZms1X6v71FOup1McLz39aj0so2r70w3vhnRMRYw2Gpetn889nkL8giTPc
+	 ob8iZSnMlR4qYtSvVZM5YUtLnHoMLxgJ1zSQ2xo1ABd8vFN/+EyKAc7CCn+Ix/e+Ry
+	 5i1NdX3iRM+t7dJmGGpHMRSREXjrKaCH+wt5JH+1fCM1eLMBG+hX9FpNyHbrzOFfbf
+	 x3K9sEl2FGbgg==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Jason Andryuk <jason.andryuk@amd.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Juergen Gross <jgross@suse.com>,
+Cc: Austin Zheng <Austin.Zheng@amd.com>,
+	Alvin Lee <alvin.lee2@amd.com>,
+	Ray Wu <ray.wu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	chenqiuji666@gmail.com,
-	michal.orzel@amd.com,
-	xin.wang2@amd.com,
-	gregkh@linuxfoundation.org,
-	xen-devel@lists.xenproject.org,
+	austin.zheng@amd.com,
+	jun.lei@amd.com,
+	harry.wentland@amd.com,
+	sunpeng.li@amd.com,
+	christian.koenig@amd.com,
+	airlied@gmail.com,
+	simona@ffwll.ch,
+	dillon.varone@amd.com,
+	aurabindo.pillai@amd.com,
+	chenhuacai@kernel.org,
+	george.shen@amd.com,
+	rostrows@amd.com,
+	siqueira@igalia.com,
+	jerry.zuo@amd.com,
+	jiapeng.chong@linux.alibaba.com,
+	chris.park@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 09/11] xenbus: Allow PVH dom0 a non-local xenstore
-Date: Mon, 12 May 2025 14:04:24 -0400
-Message-Id: <20250512180426.437627-9-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.12 10/11] drm/amd/display: Call FP Protect Before Mode Programming/Mode Support
+Date: Mon, 12 May 2025 14:04:25 -0400
+Message-Id: <20250512180426.437627-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250512180426.437627-1-sashal@kernel.org>
 References: <20250512180426.437627-1-sashal@kernel.org>
@@ -71,67 +86,71 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.12.28
 Content-Transfer-Encoding: 8bit
 
-From: Jason Andryuk <jason.andryuk@amd.com>
+From: Austin Zheng <Austin.Zheng@amd.com>
 
-[ Upstream commit 90989869baae47ee2aa3bcb6f6eb9fbbe4287958 ]
+[ Upstream commit eba692ca3abca258b3214a6e4126afefad1822f0 ]
 
-Make xenbus_init() allow a non-local xenstore for a PVH dom0 - it is
-currently forced to XS_LOCAL.  With Hyperlaunch booting dom0 and a
-xenstore stubdom, dom0 can be handled as a regular XS_HVM following the
-late init path.
+[Why]
+Memory allocation occurs within dml21_validate() for adding phantom planes.
+May cause kernel to be tainted due to usage of FP Start.
 
-Ideally we'd drop the use of xen_initial_domain() and just check for the
-event channel instead.  However, ARM has a xen,enhanced no-xenstore
-mode, where the event channel and PFN would both be 0.  Retain the
-xen_initial_domain() check, and use that for an additional check when
-the event channel is 0.
+[How]
+Move FP start from dml21_validate to before mode programming/mode support.
+Calculations requiring floating point are all done within mode programming
+or mode support.
 
-Check the full 64bit HVM_PARAM_STORE_EVTCHN value to catch the off
-chance that high bits are set for the 32bit event channel.
-
-Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
-Change-Id: I5506da42e4c6b8e85079fefb2f193c8de17c7437
-Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20250506204456.5220-1-jason.andryuk@amd.com>
+Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
+Signed-off-by: Austin Zheng <Austin.Zheng@amd.com>
+Signed-off-by: Ray Wu <ray.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit fe3250f10819b411808ab9ae1d824c5fc9b59170)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/xenbus/xenbus_probe.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/xen/xenbus/xenbus_probe.c b/drivers/xen/xenbus/xenbus_probe.c
-index 6d32ffb011365..86fe6e7790566 100644
---- a/drivers/xen/xenbus/xenbus_probe.c
-+++ b/drivers/xen/xenbus/xenbus_probe.c
-@@ -966,9 +966,15 @@ static int __init xenbus_init(void)
- 	if (xen_pv_domain())
- 		xen_store_domain_type = XS_PV;
- 	if (xen_hvm_domain())
-+	{
- 		xen_store_domain_type = XS_HVM;
--	if (xen_hvm_domain() && xen_initial_domain())
--		xen_store_domain_type = XS_LOCAL;
-+		err = hvm_get_parameter(HVM_PARAM_STORE_EVTCHN, &v);
-+		if (err)
-+			goto out_error;
-+		xen_store_evtchn = (int)v;
-+		if (!v && xen_initial_domain())
-+			xen_store_domain_type = XS_LOCAL;
-+	}
- 	if (xen_pv_domain() && !xen_start_info->store_evtchn)
- 		xen_store_domain_type = XS_LOCAL;
- 	if (xen_pv_domain() && xen_start_info->store_evtchn)
-@@ -987,10 +993,6 @@ static int __init xenbus_init(void)
- 		xen_store_interface = gfn_to_virt(xen_store_gfn);
- 		break;
- 	case XS_HVM:
--		err = hvm_get_parameter(HVM_PARAM_STORE_EVTCHN, &v);
--		if (err)
--			goto out_error;
--		xen_store_evtchn = (int)v;
- 		err = hvm_get_parameter(HVM_PARAM_STORE_PFN, &v);
- 		if (err)
- 			goto out_error;
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c b/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c
+index e3e4f40bd4123..dcbe327209d5d 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_wrapper.c
+@@ -221,7 +221,9 @@ static bool dml21_mode_check_and_programming(const struct dc *in_dc, struct dc_s
+ 	if (!result)
+ 		return false;
+ 
++	DC_FP_START();
+ 	result = dml2_build_mode_programming(mode_programming);
++	DC_FP_END();
+ 	if (!result)
+ 		return false;
+ 
+@@ -271,7 +273,9 @@ static bool dml21_check_mode_support(const struct dc *in_dc, struct dc_state *co
+ 	mode_support->dml2_instance = dml_init->dml2_instance;
+ 	dml21_map_dc_state_into_dml_display_cfg(in_dc, context, dml_ctx);
+ 	dml_ctx->v21.mode_programming.dml2_instance->scratch.build_mode_programming_locals.mode_programming_params.programming = dml_ctx->v21.mode_programming.programming;
++	DC_FP_START();
+ 	is_supported = dml2_check_mode_supported(mode_support);
++	DC_FP_END();
+ 	if (!is_supported)
+ 		return false;
+ 
+@@ -282,16 +286,12 @@ bool dml21_validate(const struct dc *in_dc, struct dc_state *context, struct dml
+ {
+ 	bool out = false;
+ 
+-	DC_FP_START();
+-
+ 	/* Use dml_validate_only for fast_validate path */
+ 	if (fast_validate)
+ 		out = dml21_check_mode_support(in_dc, context, dml_ctx);
+ 	else
+ 		out = dml21_mode_check_and_programming(in_dc, context, dml_ctx);
+ 
+-	DC_FP_END();
+-
+ 	return out;
+ }
+ 
 -- 
 2.39.5
 
