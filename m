@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-143212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30E0AAB348F
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 12:08:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 526B2AB3491
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 12:10:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1F8617D081
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 10:08:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2BC117AF07
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 10:10:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D43AF25B674;
-	Mon, 12 May 2025 10:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74A2025B674;
+	Mon, 12 May 2025 10:09:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WSpjv0FY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QpUfjYKN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93889F9E6
-	for <stable@vger.kernel.org>; Mon, 12 May 2025 10:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 341AE19F11B
+	for <stable@vger.kernel.org>; Mon, 12 May 2025 10:09:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747044507; cv=none; b=hYzHfY5UxRU2zjk8M271unnFIa+V6UP8bV92YzwN+v06tvVxhZl1MyNx8Y69NDXyGiodH9SUsP1qOO6w86Gh3jQHYLhZ2aNkc+IlfxMDgtITpA2w9Su9EhxUOUhtf3HAnbBcP2NVIGYwZVLOPMASL/xhCrG2xmjTiLwwWCgLBQU=
+	t=1747044597; cv=none; b=uW8aVSgIWTph4ZxlbULUoyBIXYUwpkD/5H0aaWIYEp721/YXA27kmjybjECUl5sTlk3hgVTV0LshncVITu9bzt8vVySHzUEN/NiI5tSBmYJHBUOZnU3PREcNpee+Wvp1x85hJV44bI33pTXnBQ+L5Y5/qvkL700JUh8XgyvpS60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747044507; c=relaxed/simple;
-	bh=85jAoueEypikA9JO61Mhud/S0gbmE5JrEZ8aAMKXo8c=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=hZJUuFVVqHqcfrG1+4pYvJubBLnbdBRydsyWblBL1UiqKWlmccAJ54ctCd1MJXQm0vHNGTT4ZYzRoBOZ5VkdVnUWJLA5iaW8/X83aM+xesacDdzcdxFlEBa7LFXkXUxTOkjL8GGOrqHLQq2bYkszXwu6jJb653vGHq04GDmSOpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WSpjv0FY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 957ECC4CEE7;
-	Mon, 12 May 2025 10:08:26 +0000 (UTC)
+	s=arc-20240116; t=1747044597; c=relaxed/simple;
+	bh=30VyW1HMPMgtn7eq+1tAUHAB/g8Yy2zMHlmGx6wE0hs=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=JLubkdFb2K7s46EwG4h02UKtGab1v1HEvUEPl+EBks5ix1hK7Di0/hqKm1/RJAJfx+UgGfUJO3VihWgHNjKXRURkYotoYJMc+w+3/MFqhELXTfobBfoJvw89z5uJi7YGyOUZy+Dm87CYvd8hxmq+YevA+0DyQsAhNf0/76rPuPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QpUfjYKN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65C71C4CEE7;
+	Mon, 12 May 2025 10:09:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747044507;
-	bh=85jAoueEypikA9JO61Mhud/S0gbmE5JrEZ8aAMKXo8c=;
+	s=korg; t=1747044596;
+	bh=30VyW1HMPMgtn7eq+1tAUHAB/g8Yy2zMHlmGx6wE0hs=;
 	h=Subject:To:Cc:From:Date:From;
-	b=WSpjv0FY9LY5Q9+OgLKOvrDHL6xzs323kQgb5EPuSGU8ChyIzy62TG7/hfmiaSM1u
-	 f/+fx9HgZeetEZZhasvOTjIJGS+zgo5tIhznP0ab/qQCY845+AuhRJrXw0rPfpB5PH
-	 SvnXwzbk8X833119KzA5jS5q7WNMHavKVdjvzue4=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Fix wrong handling for AUX_DEFER case" failed to apply to 5.4-stable tree
-To: Wayne.Lin@amd.com,alexander.deucher@amd.com,daniel.wheeler@amd.com,mario.limonciello@amd.com,ray.wu@amd.com
+	b=QpUfjYKNeqWsZ8n/D/qyn64vhh8YipofUtveVeEXaOdX0eDhXg+eDwyw0VC09H6S0
+	 Hydz3dWxG0unXtezkvBTcvkV+Np9FUVwhEJEp0ZVLaSUgs/rJrMQAx8Y+BpxiPz/RN
+	 UDkygaYpXfwgD2+eI7dpN7KqavYLIMrGa6HDS88c=
+Subject: FAILED: patch "[PATCH] xhci: dbc: Avoid event polling busyloop if pending rx" failed to apply to 6.12-stable tree
+To: mathias.nyman@linux.intel.com,gregkh@linuxfoundation.org,ukaszb@chromium.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 May 2025 12:08:16 +0200
-Message-ID: <2025051216-denote-richly-592b@gregkh>
+Date: Mon, 12 May 2025 12:09:53 +0200
+Message-ID: <2025051253-undertook-polo-7c94@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 65924ec69b29296845c7f628112353438e63ea56
+git cherry-pick -x cab63934c33b12c0d1e9f4da7450928057f2c142
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025051216-denote-richly-592b@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025051253-undertook-polo-7c94@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,89 +77,122 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 65924ec69b29296845c7f628112353438e63ea56 Mon Sep 17 00:00:00 2001
-From: Wayne Lin <Wayne.Lin@amd.com>
-Date: Sun, 20 Apr 2025 19:22:14 +0800
-Subject: [PATCH] drm/amd/display: Fix wrong handling for AUX_DEFER case
+From cab63934c33b12c0d1e9f4da7450928057f2c142 Mon Sep 17 00:00:00 2001
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
+Date: Mon, 5 May 2025 15:56:30 +0300
+Subject: [PATCH] xhci: dbc: Avoid event polling busyloop if pending rx
+ transfers are inactive.
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-[Why]
-We incorrectly ack all bytes get written when the reply actually is defer.
-When it's defer, means sink is not ready for the request. We should
-retry the request.
+Event polling delay is set to 0 if there are any pending requests in
+either rx or tx requests lists. Checking for pending requests does
+not work well for "IN" transfers as the tty driver always queues
+requests to the list and TRBs to the ring, preparing to receive data
+from the host.
 
-[How]
-Only reply all data get written when receive I2C_ACK|AUX_ACK. Otherwise,
-reply the number of actual written bytes received from the sink.
-Add some messages to facilitate debugging as well.
+This causes unnecessary busylooping and cpu hogging.
 
-Fixes: ad6756b4d773 ("drm/amd/display: Shift dc link aux to aux_payload")
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Ray Wu <ray.wu@amd.com>
-Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
-Signed-off-by: Ray Wu <ray.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 3637e457eb0000bc37d8bbbec95964aad2fb29fd)
+Only set the event polling delay to 0 if there are pending tx "write"
+transfers, or if it was less than 10ms since last active data transfer
+in any direction.
+
+Cc: Łukasz Bartosik <ukaszb@chromium.org>
+Fixes: fb18e5bb9660 ("xhci: dbc: poll at different rate depending on data transfer activity")
 Cc: stable@vger.kernel.org
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250505125630.561699-3-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-index 7ceedf626d23..074b79fd5822 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-@@ -51,6 +51,9 @@
- 
- #define PEAK_FACTOR_X1000 1006
- 
-+/*
-+ * This function handles both native AUX and I2C-Over-AUX transactions.
-+ */
- static ssize_t dm_dp_aux_transfer(struct drm_dp_aux *aux,
- 				  struct drm_dp_aux_msg *msg)
+diff --git a/drivers/usb/host/xhci-dbgcap.c b/drivers/usb/host/xhci-dbgcap.c
+index fd7895b24367..0d4ce5734165 100644
+--- a/drivers/usb/host/xhci-dbgcap.c
++++ b/drivers/usb/host/xhci-dbgcap.c
+@@ -823,6 +823,7 @@ static enum evtreturn xhci_dbc_do_handle_events(struct xhci_dbc *dbc)
  {
-@@ -87,15 +90,25 @@ static ssize_t dm_dp_aux_transfer(struct drm_dp_aux *aux,
- 	if (adev->dm.aux_hpd_discon_quirk) {
- 		if (msg->address == DP_SIDEBAND_MSG_DOWN_REQ_BASE &&
- 			operation_result == AUX_RET_ERROR_HPD_DISCON) {
--			result = 0;
-+			result = msg->size;
- 			operation_result = AUX_RET_SUCCESS;
- 		}
+ 	dma_addr_t		deq;
+ 	union xhci_trb		*evt;
++	enum evtreturn		ret = EVT_DONE;
+ 	u32			ctrl, portsc;
+ 	bool			update_erdp = false;
+ 
+@@ -909,6 +910,7 @@ static enum evtreturn xhci_dbc_do_handle_events(struct xhci_dbc *dbc)
+ 			break;
+ 		case TRB_TYPE(TRB_TRANSFER):
+ 			dbc_handle_xfer_event(dbc, evt);
++			ret = EVT_XFER_DONE;
+ 			break;
+ 		default:
+ 			break;
+@@ -927,7 +929,7 @@ static enum evtreturn xhci_dbc_do_handle_events(struct xhci_dbc *dbc)
+ 		lo_hi_writeq(deq, &dbc->regs->erdp);
  	}
  
--	if (payload.write && result >= 0)
--		result = msg->size;
-+	/*
-+	 * result equals to 0 includes the cases of AUX_DEFER/I2C_DEFER
-+	 */
-+	if (payload.write && result >= 0) {
-+		if (result) {
-+			/*one byte indicating partially written bytes. Force 0 to retry*/
-+			drm_info(adev_to_drm(adev), "amdgpu: AUX partially written\n");
-+			result = 0;
-+		} else if (!payload.reply[0])
-+			/*I2C_ACK|AUX_ACK*/
-+			result = msg->size;
-+	}
- 
--	if (result < 0)
-+	if (result < 0) {
- 		switch (operation_result) {
- 		case AUX_RET_SUCCESS:
- 			break;
-@@ -114,6 +127,13 @@ static ssize_t dm_dp_aux_transfer(struct drm_dp_aux *aux,
- 			break;
- 		}
- 
-+		drm_info(adev_to_drm(adev), "amdgpu: DP AUX transfer fail:%d\n", operation_result);
-+	}
-+
-+	if (payload.reply[0])
-+		drm_info(adev_to_drm(adev), "amdgpu: AUX reply command not ACK: 0x%02x.",
-+			payload.reply[0]);
-+
- 	return result;
+-	return EVT_DONE;
++	return ret;
  }
  
+ static void xhci_dbc_handle_events(struct work_struct *work)
+@@ -936,6 +938,7 @@ static void xhci_dbc_handle_events(struct work_struct *work)
+ 	struct xhci_dbc		*dbc;
+ 	unsigned long		flags;
+ 	unsigned int		poll_interval;
++	unsigned long		busypoll_timelimit;
+ 
+ 	dbc = container_of(to_delayed_work(work), struct xhci_dbc, event_work);
+ 	poll_interval = dbc->poll_interval;
+@@ -954,11 +957,21 @@ static void xhci_dbc_handle_events(struct work_struct *work)
+ 			dbc->driver->disconnect(dbc);
+ 		break;
+ 	case EVT_DONE:
+-		/* set fast poll rate if there are pending data transfers */
++		/*
++		 * Set fast poll rate if there are pending out transfers, or
++		 * a transfer was recently processed
++		 */
++		busypoll_timelimit = dbc->xfer_timestamp +
++			msecs_to_jiffies(DBC_XFER_INACTIVITY_TIMEOUT);
++
+ 		if (!list_empty(&dbc->eps[BULK_OUT].list_pending) ||
+-		    !list_empty(&dbc->eps[BULK_IN].list_pending))
++		    time_is_after_jiffies(busypoll_timelimit))
+ 			poll_interval = 0;
+ 		break;
++	case EVT_XFER_DONE:
++		dbc->xfer_timestamp = jiffies;
++		poll_interval = 0;
++		break;
+ 	default:
+ 		dev_info(dbc->dev, "stop handling dbc events\n");
+ 		return;
+diff --git a/drivers/usb/host/xhci-dbgcap.h b/drivers/usb/host/xhci-dbgcap.h
+index 9dc8f4d8077c..47ac72c2286d 100644
+--- a/drivers/usb/host/xhci-dbgcap.h
++++ b/drivers/usb/host/xhci-dbgcap.h
+@@ -96,6 +96,7 @@ struct dbc_ep {
+ #define DBC_WRITE_BUF_SIZE		8192
+ #define DBC_POLL_INTERVAL_DEFAULT	64	/* milliseconds */
+ #define DBC_POLL_INTERVAL_MAX		5000	/* milliseconds */
++#define DBC_XFER_INACTIVITY_TIMEOUT	10	/* milliseconds */
+ /*
+  * Private structure for DbC hardware state:
+  */
+@@ -142,6 +143,7 @@ struct xhci_dbc {
+ 	enum dbc_state			state;
+ 	struct delayed_work		event_work;
+ 	unsigned int			poll_interval;	/* ms */
++	unsigned long			xfer_timestamp;
+ 	unsigned			resume_required:1;
+ 	struct dbc_ep			eps[2];
+ 
+@@ -187,6 +189,7 @@ struct dbc_request {
+ enum evtreturn {
+ 	EVT_ERR	= -1,
+ 	EVT_DONE,
++	EVT_XFER_DONE,
+ 	EVT_GSER,
+ 	EVT_DISC,
+ };
 
 
