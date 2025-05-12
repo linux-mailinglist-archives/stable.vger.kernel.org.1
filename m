@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-143786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83483AB4188
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:07:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85917AB4191
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:08:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D06817AF40F
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:04:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5037C3A723A
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:06:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 740CE297B9C;
-	Mon, 12 May 2025 18:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 632042980DA;
+	Mon, 12 May 2025 18:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qade9Ef9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cmcYByM4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E537296FA2;
-	Mon, 12 May 2025 18:04:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F7162980CE;
+	Mon, 12 May 2025 18:04:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073050; cv=none; b=hVKmr544H3/h7fFNo+3pO5q31KUO+pMLUbHIsWCjeOr+qZaRIV9l8715AesXa6/idDT2eztEQ/fIBiu/8ZmyWeTGZ/s6sWa80Ni9u732vVinfVttyaIfVV+DvX00sT98zEVuKaTHtCrevc5jYfHXpuBkco/L9AV4/3VEIielbkA=
+	t=1747073053; cv=none; b=nk9/lTwTLmG8wPsreMNZsOF5v6pVZ54NoHN0P1in7CN2iP+E9eP7heERLLiggMtdljG4T01BMHgVBVmV8WQInG4N+1SIqQJV/4e9rHvHOgHt+qlPNiB9KYWrOvQQIhN7LRaRRnn/4YQk3G1ZdF1OVfK0BPZHFO8ZFIUhcTSAIMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073050; c=relaxed/simple;
-	bh=PiIqHbpu0AjccLkXGvGdCFDG1ZkSso+91QWm0jb+rU4=;
+	s=arc-20240116; t=1747073053; c=relaxed/simple;
+	bh=qOIcH3ak1A9M3AaJQDUgMu8qVOBr872dWL8FRpxZAao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VlGxh4WUdqlp2O9HFfrSwpt8QzeiAJiz78op49tAdyncHRh3SBPQNWelqyS4AleymG3QjHxTaA830Wa/GnDWSY5GRbSrg3YeNkzatPg1V5Dnf090JJANZ4uhKlUgXfyOjRJJMj5zlDYfpxLb8rUZvmTflkY7Q/chxRdI5xRYtOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qade9Ef9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F71CC4CEF2;
-	Mon, 12 May 2025 18:04:09 +0000 (UTC)
+	 MIME-Version; b=S8tB1FTEgfKK648m9cG7en3Qp4UujRilag0PDhOzTyD0Kw1OPNAUKQQ9KvLcVKfxFjbW+o5+WOlJlWiXWM26CNdDBVjOgOW22K7rregJEvN7nyRePxAIz5w74g+tI4pP6uY9bMI5L10gTWcow0KdjOkrcvYQyzRKuxGO1shRXkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cmcYByM4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A327C4CEF1;
+	Mon, 12 May 2025 18:04:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073049;
-	bh=PiIqHbpu0AjccLkXGvGdCFDG1ZkSso+91QWm0jb+rU4=;
+	s=korg; t=1747073052;
+	bh=qOIcH3ak1A9M3AaJQDUgMu8qVOBr872dWL8FRpxZAao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qade9Ef9EBEdF8RxUsyn7oLnmGSxA2W8UWIszZAEB64BxgzhPUO9ef7EDyJO/NfTl
-	 od8BNd+HLrKONuBl5gMl2md1O9BoImVnWB01Gad6YWBSlCNyIV6muRcVfqMy0JJ/KB
-	 tOAgJfcXXhjMNIA6/DYTT4SoI7rI6GFbCu4jVKSg=
+	b=cmcYByM4ElpIzUmTuCzKt/N42/4QQSJeRQ9uXNTxgLPde4ERBCtgqjpksm92PXLPH
+	 QKE5PiCMfzal4aQIU+WM9u0Yyeoe3DdogH5NMjGZzyJ/82NnXsDBLXuPAs3eVSHXKo
+	 Okmi/tKWiwR/SYz35XUSTkYNT5UjuIXpUvZbjxk8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Christoph Hellwig <hch@lst.de>,
 	John Garry <john.g.garry@oracle.com>,
 	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 139/184] loop: Use bdev limit helpers for configuring discard
-Date: Mon, 12 May 2025 19:45:40 +0200
-Message-ID: <20250512172047.473190098@linuxfoundation.org>
+Subject: [PATCH 6.12 140/184] loop: Simplify discard granularity calc
+Date: Mon, 12 May 2025 19:45:41 +0200
+Message-ID: <20250512172047.512743461@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
 References: <20250512172041.624042835@linuxfoundation.org>
@@ -68,37 +69,32 @@ Content-Transfer-Encoding: 8bit
 
 From: John Garry <john.g.garry@oracle.com>
 
-[ Upstream commit 8d3fd059dd289e6c322e5741ad56794bcce699a2 ]
+[ Upstream commit d47de6ac8842327ae1c782670283450159c55d5b ]
 
-Instead of directly looking at the request_queue limits, use the bdev
-limits helpers, which is preferable.
+A bdev discard granularity is always at least SECTOR_SIZE, so don't check
+for a zero value.
 
+Suggested-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: John Garry <john.g.garry@oracle.com>
-Link: https://lore.kernel.org/r/20241030111900.3981223-1-john.g.garry@oracle.com
+Link: https://lore.kernel.org/r/20241101092215.422428-1-john.g.garry@oracle.com
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Stable-dep-of: f5c84eff634b ("loop: Add sanity check for read/write_iter")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/loop.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/block/loop.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/drivers/block/loop.c b/drivers/block/loop.c
-index 8827a768284ac..b3355a8d78965 100644
+index b3355a8d78965..1f55ddef53f3d 100644
 --- a/drivers/block/loop.c
 +++ b/drivers/block/loop.c
-@@ -710,11 +710,11 @@ static void loop_config_discard(struct loop_device *lo,
- 	 * file-backed loop devices: discarded regions read back as zero.
- 	 */
- 	if (S_ISBLK(inode->i_mode)) {
--		struct request_queue *backingq = bdev_get_queue(I_BDEV(inode));
-+		struct block_device *bdev = I_BDEV(inode);
+@@ -713,8 +713,7 @@ static void loop_config_discard(struct loop_device *lo,
+ 		struct block_device *bdev = I_BDEV(inode);
  
--		max_discard_sectors = backingq->limits.max_write_zeroes_sectors;
--		granularity = bdev_discard_granularity(I_BDEV(inode)) ?:
--			queue_physical_block_size(backingq);
-+		max_discard_sectors = bdev_write_zeroes_sectors(bdev);
-+		granularity = bdev_discard_granularity(bdev) ?:
-+			bdev_physical_block_size(bdev);
+ 		max_discard_sectors = bdev_write_zeroes_sectors(bdev);
+-		granularity = bdev_discard_granularity(bdev) ?:
+-			bdev_physical_block_size(bdev);
++		granularity = bdev_discard_granularity(bdev);
  
  	/*
  	 * We use punch hole to reclaim the free space used by the
