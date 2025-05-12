@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-143483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3B44AB4008
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:49:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A58FAB3FEA
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:48:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BB3958C023E
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:48:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 55D573BB613
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:46:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1E69254AF7;
-	Mon, 12 May 2025 17:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13BDF296D36;
+	Mon, 12 May 2025 17:46:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VYJ3Ueai"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yOHYY9Pe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DE561C173C;
-	Mon, 12 May 2025 17:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C54EF24BCE8;
+	Mon, 12 May 2025 17:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072082; cv=none; b=RDtMH+As/GJoJlOc8PnziNTxNpiTqQ03vJkDXvHFeEVd3ncoOb6np7ujLWWiivA0oNbyKsmSzTcfrUjHX0h+uCLYb8zUeJUoglPX2NjHyX9jQ/BfdDhOKC2OKyVb63wZnoq1VLxdRYK8Hx7Yx6j+NVJmDo/NhAlyRhkWP5tpEzs=
+	t=1747071998; cv=none; b=cFTg3/VUz+YQZREC4NCJ6vf9LGghtW1NTwMGvOeBByrRA1MD0AdfU/HTmlFeImvKeFw+DUb421QuEDFJg1hDnkQOrDk6LUwOS2bXoS2PJIvnOkPEtavJuvjQGspJvPU/u1ur3ME3SaScfqc+x7DP9ZYEiZys/973XBWBF7pCauY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072082; c=relaxed/simple;
-	bh=M+1CCiOJI1UqsrHaA2X1ufg5ZL3AoHouVy9wUHe5DUQ=;
+	s=arc-20240116; t=1747071998; c=relaxed/simple;
+	bh=AwHs3bj+xEbxyxyo8TsL9s+sqc7A6t09pe0HD6tzYrY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bLnliVVwjtViORaMEF/pi95cAXT+SgBt99TDlYtfg/SKvjDlAiFTcETCTqSh8sLBapk+ogZE5HfEmuQFG2URyWmgyMyQVmlNrs0BUmIeE5mMKAd9KuNt4b8l4AvLNLeLno6QCjPgyS4QdTOPYPnQBxPvO8/UmgLs+4M7PP9zeTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VYJ3Ueai; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E113C4CEE7;
-	Mon, 12 May 2025 17:48:01 +0000 (UTC)
+	 MIME-Version; b=tpYckZCkGNax8rmS85rvfWt8KHMDBLUkivbdAIKY+IVG6JU/O0Ren1IqctUVpY0WkkvSb7yD891GzhpwgWqGy+mFMQ8WoPxd3VQbqftuo6QEvS8p5IccBDThxHaeGp4mLVWItNPdRfoVW3ukpccHuiSs8e5n6OJ11nfLxPaImo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yOHYY9Pe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E34DC4CEE7;
+	Mon, 12 May 2025 17:46:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072082;
-	bh=M+1CCiOJI1UqsrHaA2X1ufg5ZL3AoHouVy9wUHe5DUQ=;
+	s=korg; t=1747071998;
+	bh=AwHs3bj+xEbxyxyo8TsL9s+sqc7A6t09pe0HD6tzYrY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VYJ3UeaiacZ4LBNdiDDWclFE8SOgmJ08kk2UmSVX/vmn3Bn2j1hDR0Szu9yoZpUlE
-	 LxCQlrJpDXR4z7n99kbksNxTF7XI+haKmimOAUE1DeAtn2kAU5LIWrUFquNe/uzf2B
-	 cyntu7Py610b6Ua1w39X+AlUpqfFWvW0DT2nUFZ8=
+	b=yOHYY9Pesl9hTqYiMi+IrErWdaRZIW9b0lan3XTKMiUF2x7uw03wUwlnNlpb4mlgG
+	 vIGm0MK9WQ6dC5zYsOrMLtFzMVNoQF7plQXRTYEaSK1NE9rEymTaGNDizgcvNWl6N4
+	 Iw15le4jfIA3M4CP2BcDeEBsqTERXANtScvtT/Vk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
+	Saleemkhan Jamadar <saleemkhan.jamadar@amd.com>,
+	Leo Liu <leo.liu@amd.com>,
+	Ruijing Dong <ruijing.dong@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.14 104/197] drm/amdgpu: fix pm notifier handling
-Date: Mon, 12 May 2025 19:39:14 +0200
-Message-ID: <20250512172048.618165191@linuxfoundation.org>
+Subject: [PATCH 6.14 105/197] drm/amdgpu/vcn: using separate VCN1_AON_SOC offset
+Date: Mon, 12 May 2025 19:39:15 +0200
+Message-ID: <20250512172048.657917312@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512172044.326436266@linuxfoundation.org>
 References: <20250512172044.326436266@linuxfoundation.org>
@@ -65,94 +67,129 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Ruijing Dong <ruijing.dong@amd.com>
 
-commit 4aaffc85751da5722e858e4333e8cf0aa4b6c78f upstream.
+commit b7e84fb708392b37e5dbb2a95db9b94a0e3f0aa2 upstream.
 
-Set the s3/s0ix and s4 flags in the pm notifier so that we can skip
-the resource evictions properly in pm prepare based on whether
-we are suspending or hibernating.  Drop the eviction as processes
-are not frozen at this time, we we can end up getting stuck trying
-to evict VRAM while applications continue to submit work which
-causes the buffers to get pulled back into VRAM.
+VCN1_AON_SOC_ADDRESS_3_0 offset varies on different
+VCN generations, the issue in vcn4.0.5 is caused by
+a different VCN1_AON_SOC_ADDRESS_3_0 offset.
 
-v2: Move suspend flags out of pm notifier (Mario)
+This patch does the following:
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4178
-Fixes: 2965e6355dcd ("drm/amd: Add Suspend/Hibernate notification callback support")
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+    1. use the same offset for other VCN generations.
+    2. use the vcn4.0.5 special offset
+    3. update vcn_4_0 and vcn_5_0
+
+Acked-by: Saleemkhan Jamadar <saleemkhan.jamadar@amd.com>
+Reviewed-by: Leo Liu <leo.liu@amd.com>
+Signed-off-by: Ruijing Dong <ruijing.dong@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 06f2dcc241e7e5c681f81fbc46cacdf4bfd7d6d7)
+(cherry picked from commit 5c89ceda9984498b28716944633a9a01cbb2c90d)
 Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c |   18 +++++-------------
- drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c    |   10 +---------
- 2 files changed, 6 insertions(+), 22 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.h |    1 -
+ drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c   |    1 +
+ drivers/gpu/drm/amd/amdgpu/vcn_v2_5.c   |    1 +
+ drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c   |    1 +
+ drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c   |    4 +++-
+ drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c |    1 +
+ drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c |    1 +
+ drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c |    3 ++-
+ 8 files changed, 10 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -4819,28 +4819,20 @@ static int amdgpu_device_evict_resources
-  * @data: data
-  *
-  * This function is called when the system is about to suspend or hibernate.
-- * It is used to evict resources from the device before the system goes to
-- * sleep while there is still access to swap.
-+ * It is used to set the appropriate flags so that eviction can be optimized
-+ * in the pm prepare callback.
-  */
- static int amdgpu_device_pm_notifier(struct notifier_block *nb, unsigned long mode,
- 				     void *data)
- {
- 	struct amdgpu_device *adev = container_of(nb, struct amdgpu_device, pm_nb);
--	int r;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.h
+@@ -66,7 +66,6 @@
+ #define VCN_ENC_CMD_REG_WAIT		0x0000000c
  
- 	switch (mode) {
- 	case PM_HIBERNATION_PREPARE:
- 		adev->in_s4 = true;
--		fallthrough;
--	case PM_SUSPEND_PREPARE:
--		r = amdgpu_device_evict_resources(adev);
--		/*
--		 * This is considered non-fatal at this time because
--		 * amdgpu_device_prepare() will also fatally evict resources.
--		 * See https://gitlab.freedesktop.org/drm/amd/-/issues/3781
--		 */
--		if (r)
--			drm_warn(adev_to_drm(adev), "Failed to evict resources, freeze active processes if problems occur: %d\n", r);
-+		break;
-+	case PM_POST_HIBERNATION:
-+		adev->in_s4 = false;
- 		break;
- 	}
+ #define VCN_AON_SOC_ADDRESS_2_0 	0x1f800
+-#define VCN1_AON_SOC_ADDRESS_3_0 	0x48000
+ #define VCN_VID_IP_ADDRESS_2_0		0x0
+ #define VCN_AON_IP_ADDRESS_2_0		0x30000
  
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c
-@@ -2582,13 +2582,8 @@ static int amdgpu_pmops_freeze(struct de
- static int amdgpu_pmops_thaw(struct device *dev)
- {
- 	struct drm_device *drm_dev = dev_get_drvdata(dev);
--	struct amdgpu_device *adev = drm_to_adev(drm_dev);
--	int r;
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c
+@@ -39,6 +39,7 @@
  
--	r = amdgpu_device_resume(drm_dev, true);
--	adev->in_s4 = false;
--
--	return r;
-+	return amdgpu_device_resume(drm_dev, true);
+ #define VCN_VID_SOC_ADDRESS_2_0					0x1fa00
+ #define VCN1_VID_SOC_ADDRESS_3_0				0x48200
++#define VCN1_AON_SOC_ADDRESS_3_0				0x48000
+ 
+ #define mmUVD_CONTEXT_ID_INTERNAL_OFFSET			0x1fd
+ #define mmUVD_GPCOM_VCPU_CMD_INTERNAL_OFFSET			0x503
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v2_5.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v2_5.c
+@@ -39,6 +39,7 @@
+ 
+ #define VCN_VID_SOC_ADDRESS_2_0					0x1fa00
+ #define VCN1_VID_SOC_ADDRESS_3_0				0x48200
++#define VCN1_AON_SOC_ADDRESS_3_0				0x48000
+ 
+ #define mmUVD_CONTEXT_ID_INTERNAL_OFFSET			0x27
+ #define mmUVD_GPCOM_VCPU_CMD_INTERNAL_OFFSET			0x0f
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c
+@@ -40,6 +40,7 @@
+ 
+ #define VCN_VID_SOC_ADDRESS_2_0					0x1fa00
+ #define VCN1_VID_SOC_ADDRESS_3_0				0x48200
++#define VCN1_AON_SOC_ADDRESS_3_0				0x48000
+ 
+ #define mmUVD_CONTEXT_ID_INTERNAL_OFFSET			0x27
+ #define mmUVD_GPCOM_VCPU_CMD_INTERNAL_OFFSET			0x0f
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c
+@@ -46,6 +46,7 @@
+ 
+ #define VCN_VID_SOC_ADDRESS_2_0							0x1fb00
+ #define VCN1_VID_SOC_ADDRESS_3_0						0x48300
++#define VCN1_AON_SOC_ADDRESS_3_0						0x48000
+ 
+ #define VCN_HARVEST_MMSCH								0
+ 
+@@ -582,7 +583,8 @@ static void vcn_v4_0_mc_resume_dpg_mode(
+ 
+ 	/* VCN global tiling registers */
+ 	WREG32_SOC15_DPG_MODE(inst_idx, SOC15_DPG_MODE_OFFSET(
+-		VCN, 0, regUVD_GFX10_ADDR_CONFIG), adev->gfx.config.gb_addr_config, 0, indirect);
++			VCN, inst_idx, regUVD_GFX10_ADDR_CONFIG),
++			adev->gfx.config.gb_addr_config, 0, indirect);
  }
  
- static int amdgpu_pmops_poweroff(struct device *dev)
-@@ -2601,9 +2596,6 @@ static int amdgpu_pmops_poweroff(struct
- static int amdgpu_pmops_restore(struct device *dev)
- {
- 	struct drm_device *drm_dev = dev_get_drvdata(dev);
--	struct amdgpu_device *adev = drm_to_adev(drm_dev);
--
--	adev->in_s4 = false;
+ /**
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c
+@@ -44,6 +44,7 @@
  
- 	return amdgpu_device_resume(drm_dev, true);
+ #define VCN_VID_SOC_ADDRESS_2_0		0x1fb00
+ #define VCN1_VID_SOC_ADDRESS_3_0	0x48300
++#define VCN1_AON_SOC_ADDRESS_3_0	0x48000
+ 
+ static const struct amdgpu_hwip_reg_entry vcn_reg_list_4_0_3[] = {
+ 	SOC15_REG_ENTRY_STR(VCN, 0, regUVD_POWER_STATUS),
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c
+@@ -46,6 +46,7 @@
+ 
+ #define VCN_VID_SOC_ADDRESS_2_0						0x1fb00
+ #define VCN1_VID_SOC_ADDRESS_3_0					(0x48300 + 0x38000)
++#define VCN1_AON_SOC_ADDRESS_3_0					(0x48000 + 0x38000)
+ 
+ #define VCN_HARVEST_MMSCH							0
+ 
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c
+@@ -502,7 +502,8 @@ static void vcn_v5_0_0_mc_resume_dpg_mod
+ 
+ 	/* VCN global tiling registers */
+ 	WREG32_SOC24_DPG_MODE(inst_idx, SOC24_DPG_MODE_OFFSET(
+-		VCN, 0, regUVD_GFX10_ADDR_CONFIG), adev->gfx.config.gb_addr_config, 0, indirect);
++		VCN, inst_idx, regUVD_GFX10_ADDR_CONFIG),
++		adev->gfx.config.gb_addr_config, 0, indirect);
+ 
+ 	return;
  }
 
 
