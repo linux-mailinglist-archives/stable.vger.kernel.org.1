@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-143927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CA33AB42DD
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:27:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CC10AB424A
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:21:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EF713B7C83
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:25:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 573233A4030
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:19:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 491F1298CBB;
-	Mon, 12 May 2025 18:08:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 677502BF3FC;
+	Mon, 12 May 2025 18:05:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c97Mcmlv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ZJ+g8Kw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05235296FDB;
-	Mon, 12 May 2025 18:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C532BF3F2;
+	Mon, 12 May 2025 18:05:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073318; cv=none; b=g8YiYYFxgajkLy8jsRJG/LAiP5+tbn28+MLwatc2Lu0emuMte4cArRyM1YIfleETU37KbmltTgQ6wirGdMNf5JCXoZ6Kh1fzVlKt8I/DCYr8yUHtQ7GZ2bZS83eQgX0vZTpSyroY9aqoXzgDdRoH11QpvPzKCv8J2uREJ64Lweg=
+	t=1747073134; cv=none; b=QFFMVFRvniZgz+iZ2qoF3aFI2UGNVowZjIKZ0BSwBO8pQnlXGOnlgdl4m6toBEtRqEPnVaSrB/PKzpqU4ofbE8Azug0bYuXQ+bGpywMriouwFUaMGEMph2HHfJdl2DgX6Rg/XsuDO2nR8iej0YVy317r0AyMk/iAj4nOOHB30Vo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073318; c=relaxed/simple;
-	bh=TRZshkTNDTBiEWrovFnL5y4a1Vd4WIJUwWgMJfQtUdk=;
+	s=arc-20240116; t=1747073134; c=relaxed/simple;
+	bh=W5zPkgd3X79X1K3mJF1Ln71+bGwPFHDYGAq45/4MhSY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ezWBCmqBITQa4BU6rRe6o5cpZalvIncAdnHjHnLEGSze2Iltkmz47qYFgA0QIGtH0058126xq/Oy5IOt6Mcij6AXyIU1x0OguAouDOBKXBg+ngi8L3m1Gh6MCCrXF3eB1lW0aXcWP0vTJXSVz9vIWn9j8MJHnXRSRUr4676sbGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c97Mcmlv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56E1AC4CEE7;
-	Mon, 12 May 2025 18:08:37 +0000 (UTC)
+	 MIME-Version; b=I46ah4OBsy0Mr9ffABtWANFOGsnrSnfrEmOFtUUKvnezmxAkN8NTHczxYHr8Y0Eh3zhkI1OlimpFmWdKYX/tFSIzg50iVklwN+An0lxifKFJFl9Ur2pXm0Bp4YaslPFbAx/MoHYo9CrW7+RWCAo/oI0A2Ta2aVykYB/SEZoDMcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ZJ+g8Kw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E3A2C4CEE9;
+	Mon, 12 May 2025 18:05:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073317;
-	bh=TRZshkTNDTBiEWrovFnL5y4a1Vd4WIJUwWgMJfQtUdk=;
+	s=korg; t=1747073133;
+	bh=W5zPkgd3X79X1K3mJF1Ln71+bGwPFHDYGAq45/4MhSY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c97McmlvUgHMjiXlOZS/DOgx4IKq0ov477cIk9QGcNLdB4OJ3kZnmsUU9Qif7M6x/
-	 azsMRclJBwkmZdReMBobXUhjgERcCs7tZGt6G9Ekx4+T/snNfPvaHu9+abVZWnGAtJ
-	 Zu5KdwNRJ8gZyj43QJkmtU9lbxu8mH/dAYlwFQf8=
+	b=1ZJ+g8KwUG7Ru8TqSx5PrtI9/azm5RK6NEogFTXNjAG4gSZxPPZ96vYcewIbKsajG
+	 jcMQMmEvl3EK3rujxUySKDV3/jHyMOhguLv+PIWfSGiHxFI8R9G4a7uk3gXgaIkHAZ
+	 0f3K8Wn1R9gs0xgl51up/154nHl9fzE4jNMgk6yc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabriel Shahrouzi <gshahrouzi@gmail.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 037/113] staging: iio: adc: ad7816: Correct conditional logic for store mode
+	stable <stable@kernel.org>,
+	Andrei Kuchynski <akuchynski@chromium.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Benson Leung <bleung@chromium.org>
+Subject: [PATCH 6.12 125/184] usb: typec: ucsi: displayport: Fix NULL pointer access
 Date: Mon, 12 May 2025 19:45:26 +0200
-Message-ID: <20250512172029.181538900@linuxfoundation.org>
+Message-ID: <20250512172046.909463711@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
-References: <20250512172027.691520737@linuxfoundation.org>
+In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
+References: <20250512172041.624042835@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +61,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+From: Andrei Kuchynski <akuchynski@chromium.org>
 
-commit 2e922956277187655ed9bedf7b5c28906e51708f upstream.
+commit 312d79669e71283d05c05cc49a1a31e59e3d9e0e upstream.
 
-The mode setting logic in ad7816_store_mode was reversed due to
-incorrect handling of the strcmp return value. strcmp returns 0 on
-match, so the `if (strcmp(buf, "full"))` block executed when the
-input was not "full".
+This patch ensures that the UCSI driver waits for all pending tasks in the
+ucsi_displayport_work workqueue to finish executing before proceeding with
+the partner removal.
 
-This resulted in "full" setting the mode to AD7816_PD (power-down) and
-other inputs setting it to AD7816_FULL.
-
-Fix this by checking it against 0 to correctly check for "full" and
-"power-down", mapping them to AD7816_FULL and AD7816_PD respectively.
-
-Fixes: 7924425db04a ("staging: iio: adc: new driver for AD7816 devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-Acked-by: Nuno Sá <nuno.sa@analog.com>
-Link: https://lore.kernel.org/stable/20250414152920.467505-1-gshahrouzi%40gmail.com
-Link: https://patch.msgid.link/20250414154050.469482-1-gshahrouzi@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: stable <stable@kernel.org>
+Fixes: af8622f6a585 ("usb: typec: ucsi: Support for DisplayPort alt mode")
+Signed-off-by: Andrei Kuchynski <akuchynski@chromium.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Reviewed-by: Benson Leung <bleung@chromium.org>
+Link: https://lore.kernel.org/r/20250424084429.3220757-3-akuchynski@chromium.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/iio/adc/ad7816.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/typec/ucsi/displayport.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/staging/iio/adc/ad7816.c
-+++ b/drivers/staging/iio/adc/ad7816.c
-@@ -136,7 +136,7 @@ static ssize_t ad7816_store_mode(struct
- 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
- 	struct ad7816_chip_info *chip = iio_priv(indio_dev);
+--- a/drivers/usb/typec/ucsi/displayport.c
++++ b/drivers/usb/typec/ucsi/displayport.c
+@@ -296,6 +296,8 @@ void ucsi_displayport_remove_partner(str
+ 	if (!dp)
+ 		return;
  
--	if (strcmp(buf, "full")) {
-+	if (strcmp(buf, "full") == 0) {
- 		gpiod_set_value(chip->rdwr_pin, 1);
- 		chip->mode = AD7816_FULL;
- 	} else {
++	cancel_work_sync(&dp->work);
++
+ 	dp->data.conf = 0;
+ 	dp->data.status = 0;
+ 	dp->initialized = false;
 
 
 
