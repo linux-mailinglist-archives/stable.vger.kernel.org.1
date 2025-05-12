@@ -1,213 +1,127 @@
-Return-Path: <stable+bounces-143166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D5B1AB330E
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 11:22:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60FF9AB330C
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 11:22:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 642B23BD487
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 09:21:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DCD007A9BEA
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 09:21:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8CD525B67A;
-	Mon, 12 May 2025 09:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9194225E446;
+	Mon, 12 May 2025 09:21:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rFZxxf0B"
+	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="ZlSnRaJK"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx.denx.de (mx.denx.de [89.58.32.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992B025B67D
-	for <stable@vger.kernel.org>; Mon, 12 May 2025 09:21:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4F0625B1FA;
+	Mon, 12 May 2025 09:21:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747041683; cv=none; b=uoUn0BChK1Xwq8ZpwD5+VKFhdXMb9ypacLiUOVZ13GJK1gdk4LrGX2rsUoMlhDl7oA/PcGswgGulyqky3BWu1G2XnPuCc0zMn3adbSJZghT0gLcIm9s/Cr7R3srnMkbwhVrvttyANaS5C/FIbKzUCMJMu0tnfMYDKPz9vaI8UyI=
+	t=1747041698; cv=none; b=kSTkaEZtJuUT7MrTjkTrEDrfbFn68S6ks40GSTDYYl97kjX0rb8YADKHK1YJ46wdWzPzg81N+D8eLQQe5WT8j9rB3ICVGezCJMyyPgWIghF3HH1AClb1o/KEFUVdgtt/k5UgfYKeZHXjdvNg4JnhL9nCSKLvHEM70kaxnO+XizA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747041683; c=relaxed/simple;
-	bh=1Pst9//J++lT4vNBSEC/lidN8RYIh8IViSk7wOr2v24=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jEtJOF13hVgDCYME00sUaAb0uK2g+4RAlWPOB/geYVQo9WjwwJ1x5SSlkHDzs0feGtgUPz8HYT5N3Px2zJsK/pGtB6UYx92FsIfHhhNuhS8WPOnf4w9b7TlSbM2+7ZjRq860k36YOJefl7ljERroUGpQdr65T03Tm6e1NfPGAJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rFZxxf0B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A5BEC4CEE7;
-	Mon, 12 May 2025 09:21:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747041680;
-	bh=1Pst9//J++lT4vNBSEC/lidN8RYIh8IViSk7wOr2v24=;
-	h=Subject:To:Cc:From:Date:From;
-	b=rFZxxf0ByHCRgLK1+ZZizQMLM6MbREAeHUqL1Xz3iFpDapQMcMerYu7tQNkl6hj/s
-	 MxHMSVGCE9qSs3I7Ja5jAbd7xSfh/BSF9o6JhDKZ59+3JobaQ1H/sDcTJ7qsW6WMiL
-	 Q74g2j6uNMpUj89tzTmVN520bh5py4EEoFVCD1Yc=
-Subject: FAILED: patch "[PATCH] KVM: x86/mmu: Prevent installing hugepages when mem" failed to apply to 6.12-stable tree
-To: seanjc@google.com,michael.roth@amd.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 May 2025 11:21:17 +0200
-Message-ID: <2025051217-botch-sloped-8d28@gregkh>
+	s=arc-20240116; t=1747041698; c=relaxed/simple;
+	bh=BM3gRkXxpP/SAKqky4iMMr6XOm95AlJ/4pnaReE+WGk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=h3h/Mi9Qrg0QeieTqguXTEgEK49b149lu34cW+gY1Ag+qko+OeHTTepw/bRH53CfKlwyXF8AZPaWLsV7g2kqS8cJFEdRs9XWxATiMv5lVr2gf/A7dpTu20TnHCRFwWtFlC16QZnHOGypDoL2rCcBcL3sHqJhMYdGslkZ/GCKUF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=ZlSnRaJK; arc=none smtp.client-ip=89.58.32.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D5FCC10269581;
+	Mon, 12 May 2025 11:21:23 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
+	t=1747041688; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=v9XjcCc4+Cf0EOOdbdHT18QGrQ05At74v3TRQYv6bAA=;
+	b=ZlSnRaJKukyx7PnElNEJGOPHXWwU2zZi4dNgGOO6fV7mnefUhhTe8OCaXdDhsA7jiO9i+u
+	W9FmNFjPVp0onVkdA2KaBgu+Hwf2Jj2b0eIV5ATFP2rTZUnZ9yjeiVOO0LBohADZI4S5T1
+	sVat7kRNqXblIrt6ky7Q9PYVnl639uSGeB1I6hAnl6OhAoWCEF6O9/RJbUCl7fsLGi+QG+
+	pfgV9M1X9WwYGU+2UfXvJSDfCgAxpCutGtpFQOpQi5UQjpvJ41SL5ihq1uqVPKfGtjeghx
+	zPGDRUXP70VnDRasaVdfh5dCioYzNzCqXHXngEeT0iTSkbyALQpRc2tHR0ZKlA==
+Date: Mon, 12 May 2025 11:21:20 +0200
+From: Pavel Machek <pavel@denx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Florian Fainelli <f.fainelli@gmail.com>, stable@vger.kernel.org,
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, jonathanh@nvidia.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+Subject: Re: [PATCH 6.1 000/569] 6.1.129-rc2 review
+Message-ID: <aCG9kFjnZrMd4sy8@duo.ucw.cz>
+References: <20250220104545.805660879@linuxfoundation.org>
+ <80ab673f-aa94-43e2-899a-0c5a22f3f1e0@gmail.com>
+ <2025022221-revert-hubcap-f519@gregkh>
+ <Z7mXDolRS+3nLAse@duo.ucw.cz>
+ <2025022213-brewery-synergy-b4bf@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="nPmsm5nd9fp/OMiG"
+Content-Disposition: inline
+In-Reply-To: <2025022213-brewery-synergy-b4bf@gregkh>
+X-Last-TLS-Session-Version: TLSv1.3
 
 
-The patch below does not apply to the 6.12-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+--nPmsm5nd9fp/OMiG
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-To reproduce the conflict and resubmit, you may use the following commands:
+On Sat 2025-02-22 10:39:23, Greg Kroah-Hartman wrote:
+> On Sat, Feb 22, 2025 at 10:21:18AM +0100, Pavel Machek wrote:
+> > On Sat 2025-02-22 07:28:10, Greg Kroah-Hartman wrote:
+> > > On Fri, Feb 21, 2025 at 09:45:15AM -0800, Florian Fainelli wrote:
+> > > >=20
+> > > >=20
+> > > > On 2/20/2025 2:57 AM, Greg Kroah-Hartman wrote:
+> > > > > This is the start of the stable review cycle for the 6.1.129 rele=
+ase.
+> > > > > There are 569 patches in this series, all will be posted as a res=
+ponse
+> > > > > to this one.  If anyone has any issues with these being applied, =
+please
+> > > > > let me know.
+> > > > >=20
+> > > > > Responses should be made by Sat, 22 Feb 2025 10:44:04 +0000.
+> > > > > Anything received after that time might be too late.
+> > > >=20
+> > > > And yet there was a v6.1.29 tag created already?
+> > >=20
+> > > Sometimes I'm faster, which is usually the case for -rc2 and later, I=
+ go
+> > > off of the -rc1 date if the people that had problems with -rc1 have
+> > > reported that the newer -rc fixes their reported issues.
+> >=20
+> > Well, quoting time down to second then doing something completely
+> > different is quite confusing. Please fix your scripts.
+>=20
+> Patches gladly welcome :)
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
-git checkout FETCH_HEAD
-git cherry-pick -x 9129633d568edd36aa22bf703b12835153cec985
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025051217-botch-sloped-8d28@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+It is not okay to send misleading emails just because script generated
+them.
+								Pavel
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
-Possible dependencies:
+--nPmsm5nd9fp/OMiG
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
 
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaCG9kAAKCRAw5/Bqldv6
+8nz5AJ4lRm+kLJxoT8iH3r2OS+x01g2/pwCdElAtjh0eJDbRTA3b5dOr3cnBK8s=
+=ctRF
+-----END PGP SIGNATURE-----
 
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 9129633d568edd36aa22bf703b12835153cec985 Mon Sep 17 00:00:00 2001
-From: Sean Christopherson <seanjc@google.com>
-Date: Wed, 30 Apr 2025 15:09:54 -0700
-Subject: [PATCH] KVM: x86/mmu: Prevent installing hugepages when mem
- attributes are changing
-
-When changing memory attributes on a subset of a potential hugepage, add
-the hugepage to the invalidation range tracking to prevent installing a
-hugepage until the attributes are fully updated.  Like the actual hugepage
-tracking updates in kvm_arch_post_set_memory_attributes(), process only
-the head and tail pages, as any potential hugepages that are entirely
-covered by the range will already be tracked.
-
-Note, only hugepage chunks whose current attributes are NOT mixed need to
-be added to the invalidation set, as mixed attributes already prevent
-installing a hugepage, and it's perfectly safe to install a smaller
-mapping for a gfn whose attributes aren't changing.
-
-Fixes: 8dd2eee9d526 ("KVM: x86/mmu: Handle page fault for private memory")
-Cc: stable@vger.kernel.org
-Reported-by: Michael Roth <michael.roth@amd.com>
-Tested-by: Michael Roth <michael.roth@amd.com>
-Link: https://lore.kernel.org/r/20250430220954.522672-1-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 387464ebe8e8..8d1b632e33d2 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -7670,32 +7670,6 @@ void kvm_mmu_pre_destroy_vm(struct kvm *kvm)
- }
- 
- #ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
--bool kvm_arch_pre_set_memory_attributes(struct kvm *kvm,
--					struct kvm_gfn_range *range)
--{
--	/*
--	 * Zap SPTEs even if the slot can't be mapped PRIVATE.  KVM x86 only
--	 * supports KVM_MEMORY_ATTRIBUTE_PRIVATE, and so it *seems* like KVM
--	 * can simply ignore such slots.  But if userspace is making memory
--	 * PRIVATE, then KVM must prevent the guest from accessing the memory
--	 * as shared.  And if userspace is making memory SHARED and this point
--	 * is reached, then at least one page within the range was previously
--	 * PRIVATE, i.e. the slot's possible hugepage ranges are changing.
--	 * Zapping SPTEs in this case ensures KVM will reassess whether or not
--	 * a hugepage can be used for affected ranges.
--	 */
--	if (WARN_ON_ONCE(!kvm_arch_has_private_mem(kvm)))
--		return false;
--
--	/* Unmap the old attribute page. */
--	if (range->arg.attributes & KVM_MEMORY_ATTRIBUTE_PRIVATE)
--		range->attr_filter = KVM_FILTER_SHARED;
--	else
--		range->attr_filter = KVM_FILTER_PRIVATE;
--
--	return kvm_unmap_gfn_range(kvm, range);
--}
--
- static bool hugepage_test_mixed(struct kvm_memory_slot *slot, gfn_t gfn,
- 				int level)
- {
-@@ -7714,6 +7688,69 @@ static void hugepage_set_mixed(struct kvm_memory_slot *slot, gfn_t gfn,
- 	lpage_info_slot(gfn, slot, level)->disallow_lpage |= KVM_LPAGE_MIXED_FLAG;
- }
- 
-+bool kvm_arch_pre_set_memory_attributes(struct kvm *kvm,
-+					struct kvm_gfn_range *range)
-+{
-+	struct kvm_memory_slot *slot = range->slot;
-+	int level;
-+
-+	/*
-+	 * Zap SPTEs even if the slot can't be mapped PRIVATE.  KVM x86 only
-+	 * supports KVM_MEMORY_ATTRIBUTE_PRIVATE, and so it *seems* like KVM
-+	 * can simply ignore such slots.  But if userspace is making memory
-+	 * PRIVATE, then KVM must prevent the guest from accessing the memory
-+	 * as shared.  And if userspace is making memory SHARED and this point
-+	 * is reached, then at least one page within the range was previously
-+	 * PRIVATE, i.e. the slot's possible hugepage ranges are changing.
-+	 * Zapping SPTEs in this case ensures KVM will reassess whether or not
-+	 * a hugepage can be used for affected ranges.
-+	 */
-+	if (WARN_ON_ONCE(!kvm_arch_has_private_mem(kvm)))
-+		return false;
-+
-+	if (WARN_ON_ONCE(range->end <= range->start))
-+		return false;
-+
-+	/*
-+	 * If the head and tail pages of the range currently allow a hugepage,
-+	 * i.e. reside fully in the slot and don't have mixed attributes, then
-+	 * add each corresponding hugepage range to the ongoing invalidation,
-+	 * e.g. to prevent KVM from creating a hugepage in response to a fault
-+	 * for a gfn whose attributes aren't changing.  Note, only the range
-+	 * of gfns whose attributes are being modified needs to be explicitly
-+	 * unmapped, as that will unmap any existing hugepages.
-+	 */
-+	for (level = PG_LEVEL_2M; level <= KVM_MAX_HUGEPAGE_LEVEL; level++) {
-+		gfn_t start = gfn_round_for_level(range->start, level);
-+		gfn_t end = gfn_round_for_level(range->end - 1, level);
-+		gfn_t nr_pages = KVM_PAGES_PER_HPAGE(level);
-+
-+		if ((start != range->start || start + nr_pages > range->end) &&
-+		    start >= slot->base_gfn &&
-+		    start + nr_pages <= slot->base_gfn + slot->npages &&
-+		    !hugepage_test_mixed(slot, start, level))
-+			kvm_mmu_invalidate_range_add(kvm, start, start + nr_pages);
-+
-+		if (end == start)
-+			continue;
-+
-+		if ((end + nr_pages) > range->end &&
-+		    (end + nr_pages) <= (slot->base_gfn + slot->npages) &&
-+		    !hugepage_test_mixed(slot, end, level))
-+			kvm_mmu_invalidate_range_add(kvm, end, end + nr_pages);
-+	}
-+
-+	/* Unmap the old attribute page. */
-+	if (range->arg.attributes & KVM_MEMORY_ATTRIBUTE_PRIVATE)
-+		range->attr_filter = KVM_FILTER_SHARED;
-+	else
-+		range->attr_filter = KVM_FILTER_PRIVATE;
-+
-+	return kvm_unmap_gfn_range(kvm, range);
-+}
-+
-+
-+
- static bool hugepage_has_attrs(struct kvm *kvm, struct kvm_memory_slot *slot,
- 			       gfn_t gfn, int level, unsigned long attrs)
- {
-
+--nPmsm5nd9fp/OMiG--
 
