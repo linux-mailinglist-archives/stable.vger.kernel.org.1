@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-143726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAC14AB4135
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:03:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9100AB4051
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:52:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05B633A4635
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:01:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8689D19E774F
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:52:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 173831EE03B;
-	Mon, 12 May 2025 18:01:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5372A261586;
+	Mon, 12 May 2025 17:52:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SjqeXw/P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b7x3unkV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C702D1519B8;
-	Mon, 12 May 2025 18:01:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF461A08CA;
+	Mon, 12 May 2025 17:52:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072882; cv=none; b=PpnHeiT2ajLYHvy8ymYlwn0XALl618z2GLM72KgRBMNnElFqtNHjhQujSoH+twd9h4tukE7WK2zsjhBXwMlCfBVuet7WWdll5Mf4dEzw9/u0d4VtxXSH/6OhRDisCQ7A8QpZwZ28GNeuZ5ov/05MqrOLMkJAomnIR9CrojREKy0=
+	t=1747072343; cv=none; b=bwYouB6PiewSys72Mgs8xCmqtBgFxWghTdJWgtMxWKfFjKRzBOdw8PZq259DFsZL8v+DqWICmocVb9CME7z10AOpUtRzNb7hhpD/Ofg6qz4ofI435l5M3XN2JqSyTn7W1ijxnulKlAxn1wRibG/2auK+hWDoWS9RXMHt8xqzWmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072882; c=relaxed/simple;
-	bh=392aqt7fZtcPJlZxZgXfWfHiGntu9x9YUjGYFjATlyo=;
+	s=arc-20240116; t=1747072343; c=relaxed/simple;
+	bh=Q9Uaw67sflNNMmeA516iGrBXOE1nKUdhDSeEmHlL3O4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WvPdHkgg2PR2n7E1v63NmEsHVojbolcXG/dQj6P7Th7vVROBsNQcP4oHTczbrNvNsaaB1TYP7EtO+LQkK3a0LfJklUfCORPL3l8d15abKs9tR7mW0mlo/TTuESwFFwl+2xUyZG1Q19CmKa7dBjoy57ecCyUQeSE/Ahl3APSJlOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SjqeXw/P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DD82C4CEE7;
-	Mon, 12 May 2025 18:01:22 +0000 (UTC)
+	 MIME-Version; b=m7G8rfxF3F3o38T6OQe1Wl6ARbc/Fl5oPM4+0YMQB8XDXrQXKk1Di5sCFz7E3d2sfSEq93RWUlvf0OG3pL+ug+O++ngBCdfWCs6+tSkzGq51ghRxbxjORAPd9XOZw3r5JuFtD8Yj2ola05aFYzGPsFeqiVl+t3hS3QhKcPG9yA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b7x3unkV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24BC5C4CEE7;
+	Mon, 12 May 2025 17:52:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072882;
-	bh=392aqt7fZtcPJlZxZgXfWfHiGntu9x9YUjGYFjATlyo=;
+	s=korg; t=1747072342;
+	bh=Q9Uaw67sflNNMmeA516iGrBXOE1nKUdhDSeEmHlL3O4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SjqeXw/PtN2mBXlurLgItK4sNPecFZ/ffmN2+XtqcAg2XzLK92GQs1WNUuSRpM/kr
-	 M3OIvUeIKDN1cWbNX4rLerJrGqPvFNv/YI9eqgamIUrtVguakt6548tCtZ6LBZtIXF
-	 5eDT1Yi9dMwxDvWGU5VR4oJmuxMWBYNP8lM/rB2Q=
+	b=b7x3unkVoptQ4Q4nWUjVDUvVDXI8dM5VAjlMfau8cNA0WTX2ZrHJ4Y03akqaStia1
+	 YVbjfU2yNICTFpX8mGoUuTrluqCSWcQtpZHB8mA9lcq9qQOTcw6Fth6A9k6J4Unv0w
+	 yID7cziE1w+P8xzg+hhCs+eA82VW9i1C/HGy1jwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.12 085/184] iio: imu: inv_mpu6050: align buffer for timestamp
+	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 11/92] rcu/kvfree: Add kvfree_rcu_mightsleep() and kfree_rcu_mightsleep()
 Date: Mon, 12 May 2025 19:44:46 +0200
-Message-ID: <20250512172045.285145461@linuxfoundation.org>
+Message-ID: <20250512172023.588351989@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
-References: <20250512172041.624042835@linuxfoundation.org>
+In-Reply-To: <20250512172023.126467649@linuxfoundation.org>
+References: <20250512172023.126467649@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Uladzislau Rezki (Sony) <urezki@gmail.com>
 
-commit 1d2d8524eaffc4d9a116213520d2c650e07c9cc6 upstream.
+[ Upstream commit 608723c41cd951fb32ade2f8371e61c270816175 ]
 
-Align the buffer used with iio_push_to_buffers_with_timestamp() to
-ensure the s64 timestamp is aligned to 8 bytes.
+The kvfree_rcu() and kfree_rcu() APIs are hazardous in that if you forget
+the second argument, it works, but might sleep.  This sleeping can be a
+correctness bug from atomic contexts, and even in non-atomic contexts
+it might introduce unacceptable latencies.  This commit therefore adds
+kvfree_rcu_mightsleep() and kfree_rcu_mightsleep(), which will replace
+the single-argument kvfree_rcu() and kfree_rcu(), respectively.
 
-Fixes: 0829edc43e0a ("iio: imu: inv_mpu6050: read the full fifo when processing data")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250417-iio-more-timestamp-alignment-v1-7-eafac1e22318@baylibre.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This commit enables a series of commits that switch from single-argument
+kvfree_rcu() and kfree_rcu() to their _mightsleep() counterparts.  Once
+all of these commits land, the single-argument versions will be removed.
+
+Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Stable-dep-of: 511e64e13d8c ("can: gw: fix RCU/BH usage in cgw_create_job()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/rcupdate.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
-@@ -50,7 +50,7 @@ irqreturn_t inv_mpu6050_read_fifo(int ir
- 	u16 fifo_count;
- 	u32 fifo_period;
- 	s64 timestamp;
--	u8 data[INV_MPU6050_OUTPUT_DATA_SIZE];
-+	u8 data[INV_MPU6050_OUTPUT_DATA_SIZE] __aligned(8);
- 	size_t i, nb;
+diff --git a/include/linux/rcupdate.h b/include/linux/rcupdate.h
+index d001a69fcb7d4..aef8c7304d45d 100644
+--- a/include/linux/rcupdate.h
++++ b/include/linux/rcupdate.h
+@@ -1031,6 +1031,9 @@ static inline notrace void rcu_read_unlock_sched_notrace(void)
+ #define kvfree_rcu(...) KVFREE_GET_MACRO(__VA_ARGS__,		\
+ 	kvfree_rcu_arg_2, kvfree_rcu_arg_1)(__VA_ARGS__)
  
- 	mutex_lock(&st->lock);
++#define kvfree_rcu_mightsleep(ptr) kvfree_rcu_arg_1(ptr)
++#define kfree_rcu_mightsleep(ptr) kvfree_rcu_mightsleep(ptr)
++
+ #define KVFREE_GET_MACRO(_1, _2, NAME, ...) NAME
+ #define kvfree_rcu_arg_2(ptr, rhf)					\
+ do {									\
+-- 
+2.39.5
+
 
 
 
