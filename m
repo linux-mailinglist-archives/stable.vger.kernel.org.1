@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-144049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144050-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3B15AB46BF
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 23:52:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0E49AB46C0
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 23:52:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71D4C1894316
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 21:52:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 407CA1895810
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 21:52:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AA9E299951;
-	Mon, 12 May 2025 21:52:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0A29266B5C;
+	Mon, 12 May 2025 21:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EzIjoyLM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CDBbl3hP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF73322338
-	for <stable@vger.kernel.org>; Mon, 12 May 2025 21:52:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 703F122338
+	for <stable@vger.kernel.org>; Mon, 12 May 2025 21:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747086730; cv=none; b=beedUGFHUKxHOblbAovzwsE78uJx718AO8JP7u0NuFsUDh48/tzsBqryGtK4zs0yhjr9ItcdIGc2NBzl+H5EbL+aeTk0hQo51CL7ZWu3XQ7l4qdG6+5Y/shgTbZmmN8hwL9AUs3NqXlxykzUXz1vqe+HUWVB32v9FpxAntQaxI4=
+	t=1747086734; cv=none; b=kYPyY5ZZMUEe6b0haj/wGTB8qa70nFNVyjNsc6IbRqpO1Qhv6uTRR62tJlr+z139hz61S451rul5CiH+b6q5SZwlIah4KCduXP5eqnO2/ZtN9pS1/8fTuZcSqRBER0ng1NXmCk3wyWYT5Z6EAQ9uz2r9dHnHUnktxhaAiXeTO9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747086730; c=relaxed/simple;
-	bh=WqYOeKJO1+mir0s4Xoatpc04YsW0hrP0TngNmDNKkoE=;
+	s=arc-20240116; t=1747086734; c=relaxed/simple;
+	bh=Ih2Z9l+GTxzuDkwt5S+M6RecJw1kqhtR0qkxlV1PFdU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pqTtbkEanS/Zhe1nBDUX6pM3A0/KcFeiHe5xQfSgX0sy45ptJHPGj4BhHlkkqKLBwHcM97GHY1O17rmRn20V7p7aP4zkvEZCIsNcPtsk5zeTWZYDKW4RF95MDeww8kZIXGYK85F9ZLfnRe7/1zAJwTKtXLb/mcdiz12+EpvBgjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EzIjoyLM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 633BDC4CEE7;
-	Mon, 12 May 2025 21:52:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mga9WQt8D+ruu2sS2hKnosEaCUIqs7h+dxSoQ1R1d062lNlaue0gLDCBMLJhRrXqXmIOjfshEG25ZzF/EBsx6qzumtgJ51qoL46spG6DfgGxnDIKgezIjntpQuE9aYQAdFR+a9gmmurihtjDXlucnUfB1mVJc+PcCZ4U0po7VBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CDBbl3hP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB3C8C4CEE7;
+	Mon, 12 May 2025 21:52:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747086729;
-	bh=WqYOeKJO1+mir0s4Xoatpc04YsW0hrP0TngNmDNKkoE=;
+	s=k20201202; t=1747086734;
+	bh=Ih2Z9l+GTxzuDkwt5S+M6RecJw1kqhtR0qkxlV1PFdU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EzIjoyLMMhOcNk8pbd+Q/DE4Hu9ruwPXJICUid96BbmFaG+03Q7Y6bTgxkK5dxisD
-	 Yys6QkVj6E8nEuXuASGV1XCvvcfuFJEo/APJdi12mGycMyGl0II1Ek4Y1g+roD8nUC
-	 4JCKuTnB5oupXpIPrgyyyJhWn1T9lqdBbF6BufiGYSqztaMVMGEmRExlUX/AaqXONd
-	 KN81qRaYF5RsZE6mBfm4a+cbQHkbUGvRKA/Fd49bUqwyUDBkHaxzkyjzpY7q9PE5Fe
-	 MlY5CFUsx3GuLL7b1K/6101i+GnppE0CDIjkBOJaLaQzm4QYQ+ip3GAISrs+RpdsmW
-	 cAevUZYgYD+BQ==
+	b=CDBbl3hPamYZpenq5zDA3YnsT3kGtFM713iBPPx5Q6b0ynovGGfA6QtVvZC9TH81M
+	 1i7eT5OCstrM6S28kObWl//gq18E1sIzZwadaHCgVVR1YlAhBddWFFVhRD3j0YIswm
+	 yFjyL0u7K2Ccq4CgCg8XQu1dO19+yJ34RZoZRqQOTw71u6qRHE+VmJGJNSrv0rFNn5
+	 tZFPSCN3Z5OO5jemfps5RKkjbKFsik0Fpg4nLdE/liXoHigcQo4LtzXGBT3MX62dnJ
+	 /SEfSh1XN8FuGF+RBUuEWrKoFaxcIvc1rYLnB8QVQQme83ssRSoQIRl0G6oQIYzQz/
+	 lFTS1rf364hRQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	ojeda@kernel.org
+	jianqi.ren.cn@windriver.com
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.12.y] rust: clean Rust 1.88.0's `clippy::uninlined_format_args` lint
-Date: Mon, 12 May 2025 17:52:06 -0400
-Message-Id: <20250512160613-3d6ef16f3b9aa1e4@stable.kernel.org>
+Subject: Re: [PATCH 6.1.y] bpf: support deferring bpf_link dealloc to after RCU grace period
+Date: Mon, 12 May 2025 17:52:10 -0400
+Message-Id: <20250512155858-3ac04f98dd6ba4de@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250512133126.1409649-1-ojeda@kernel.org>
+In-Reply-To:  <20250512031847.3331135-1-jianqi.ren.cn@windriver.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -65,104 +65,83 @@ Content-Transfer-Encoding: 8bit
 Hi,
 
 Summary of potential issues:
-⚠️ Found matching upstream commit but patch is missing proper reference to it
+⚠️ Found follow-up fixes in mainline
 
-Found matching upstream commit: 211dcf77856db64c73e0c3b9ce0c624ec855daca
+The upstream commit SHA1 provided is correct: 1a80dbcb2dbaf6e4c216e62e30fa7d3daa8001ce
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: <jianqi.ren.cn@windriver.com>
+Commit author: Andrii Nakryiko<andrii@kernel.org>
 
 Status in newer kernel trees:
-6.14.y | Not found
+6.14.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (different SHA1: 876941f533e7)
+
+Found fixes commits:
+2884dc7d08d9 bpf: Fix a potential use-after-free in bpf_link_free()
 
 Note: The patch differs from the upstream commit:
 ---
-1:  211dcf77856db ! 1:  72f32deb26fb4 rust: clean Rust 1.88.0's `clippy::uninlined_format_args` lint
+1:  1a80dbcb2dbaf ! 1:  40f6d480a2072 bpf: support deferring bpf_link dealloc to after RCU grace period
+    @@ Metadata
+      ## Commit message ##
+         bpf: support deferring bpf_link dealloc to after RCU grace period
+     
+    +    commit 1a80dbcb2dbaf6e4c216e62e30fa7d3daa8001ce upstream.
+    +
+         BPF link for some program types is passed as a "context" which can be
+         used by those BPF programs to look up additional information. E.g., for
+         multi-kprobes and multi-uprobes, link is used to fetch BPF cookie values.
     @@ Commit message
-         Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-         Link: https://lore.kernel.org/r/20250502140237.1659624-6-ojeda@kernel.org
-         Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-    -
-    - ## drivers/gpu/nova-core/gpu.rs ##
-    -@@ drivers/gpu/nova-core/gpu.rs: pub(crate) fn arch(&self) -> Architecture {
-    - // For now, redirect to fmt::Debug for convenience.
-    - impl fmt::Display for Chipset {
-    -     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-    --        write!(f, "{:?}", self)
-    -+        write!(f, "{self:?}")
-    -     }
-    - }
-    - 
-    +    (cherry picked from commit 211dcf77856db64c73e0c3b9ce0c624ec855daca)
-    +    Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+         Acked-by: Jiri Olsa <jolsa@kernel.org>
+         Link: https://lore.kernel.org/r/20240328052426.3042617-2-andrii@kernel.org
+         Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+    +    [fixed conflicts due to missing commits 89ae89f53d20
+    +     ("bpf: Add multi uprobe link")]
+    +    Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+    +    Signed-off-by: He Zhe <zhe.he@windriver.com>
      
-      ## rust/kernel/str.rs ##
-     @@ rust/kernel/str.rs: fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-    @@ rust/kernel/str.rs: fn test_cstr_display_all_bytes() {
-      }
+      ## include/linux/bpf.h ##
+     @@ include/linux/bpf.h: struct bpf_link {
+    @@ kernel/bpf/syscall.c: void bpf_link_inc(struct bpf_link *link)
+     +
+      	bpf_link_free_id(link->id);
+      	if (link->prog) {
+    -+		sleepable = link->prog->sleepable;
+    ++		sleepable = link->prog->aux->sleepable;
+      		/* detach BPF program, clean up used resources */
+      		link->ops->release(link);
+      		bpf_prog_put(link->prog);
+    @@ kernel/bpf/syscall.c: static int bpf_raw_tp_link_fill_link_info(const struct bpf
+      };
+     
+      ## kernel/trace/bpf_trace.c ##
+    -@@ kernel/trace/bpf_trace.c: static int bpf_kprobe_multi_link_fill_link_info(const struct bpf_link *link,
+    +@@ kernel/trace/bpf_trace.c: static void bpf_kprobe_multi_link_dealloc(struct bpf_link *link)
       
-     
-    - ## rust/macros/kunit.rs ##
-    -@@ rust/macros/kunit.rs: pub(crate) fn kunit_tests(attr: TokenStream, ts: TokenStream) -> TokenStream {
-    -     }
+      static const struct bpf_link_ops bpf_kprobe_multi_link_lops = {
+      	.release = bpf_kprobe_multi_link_release,
+     -	.dealloc = bpf_kprobe_multi_link_dealloc,
+     +	.dealloc_deferred = bpf_kprobe_multi_link_dealloc,
+    - 	.fill_link_info = bpf_kprobe_multi_link_fill_link_info,
+    - };
     - 
-    -     if attr.len() > 255 {
-    --        panic!(
-    --            "The test suite name `{}` exceeds the maximum length of 255 bytes",
-    --            attr
-    --        )
-    -+        panic!("The test suite name `{attr}` exceeds the maximum length of 255 bytes")
-    -     }
+    -@@ kernel/trace/bpf_trace.c: static int bpf_uprobe_multi_link_fill_link_info(const struct bpf_link *link,
     - 
-    -     let mut tokens: Vec<_> = ts.into_iter().collect();
-    -@@ rust/macros/kunit.rs: pub(crate) fn kunit_tests(attr: TokenStream, ts: TokenStream) -> TokenStream {
-    -     let mut kunit_macros = "".to_owned();
-    -     let mut test_cases = "".to_owned();
-    -     for test in &tests {
-    --        let kunit_wrapper_fn_name = format!("kunit_rust_wrapper_{}", test);
-    -+        let kunit_wrapper_fn_name = format!("kunit_rust_wrapper_{test}");
-    -         let kunit_wrapper = format!(
-    --            "unsafe extern \"C\" fn {}(_test: *mut kernel::bindings::kunit) {{ {}(); }}",
-    --            kunit_wrapper_fn_name, test
-    -+            "unsafe extern \"C\" fn {kunit_wrapper_fn_name}(_test: *mut kernel::bindings::kunit) {{ {test}(); }}"
-    -         );
-    -         writeln!(kunit_macros, "{kunit_wrapper}").unwrap();
-    -         writeln!(
-    -             test_cases,
-    --            "    kernel::kunit::kunit_case(kernel::c_str!(\"{}\"), {}),",
-    --            test, kunit_wrapper_fn_name
-    -+            "    kernel::kunit::kunit_case(kernel::c_str!(\"{test}\"), {kunit_wrapper_fn_name}),"
-    -         )
-    -         .unwrap();
-    -     }
-    -
-      ## rust/macros/module.rs ##
-     @@ rust/macros/module.rs: fn emit_base(&mut self, field: &str, content: &str, builtin: bool) {
-                  )
-    @@ rust/macros/module.rs: fn parse(it: &mut token_stream::IntoIter) -> Self {
+    - static const struct bpf_link_ops bpf_uprobe_multi_link_lops = {
+    - 	.release = bpf_uprobe_multi_link_release,
+    --	.dealloc = bpf_uprobe_multi_link_dealloc,
+    -+	.dealloc_deferred = bpf_uprobe_multi_link_dealloc,
+    - 	.fill_link_info = bpf_uprobe_multi_link_fill_link_info,
+      };
       
-              info
-     
-    - ## rust/macros/paste.rs ##
-    -@@ rust/macros/paste.rs: fn concat_helper(tokens: &[TokenTree]) -> Vec<(String, Span)> {
-    -                 let tokens = group.stream().into_iter().collect::<Vec<TokenTree>>();
-    -                 segments.append(&mut concat_helper(tokens.as_slice()));
-    -             }
-    --            token => panic!("unexpected token in paste segments: {:?}", token),
-    -+            token => panic!("unexpected token in paste segments: {token:?}"),
-    -         };
-    -     }
-    - 
-    -
-    - ## rust/pin-init/internal/src/pinned_drop.rs ##
-    -@@ rust/pin-init/internal/src/pinned_drop.rs: pub(crate) fn pinned_drop(_args: TokenStream, input: TokenStream) -> TokenStream
-    + ## rust/macros/pinned_drop.rs ##
-    +@@ rust/macros/pinned_drop.rs: pub(crate) fn pinned_drop(_args: TokenStream, input: TokenStream) -> TokenStream
-                  // Found the end of the generics, this should be `PinnedDrop`.
-                  assert!(
-                      matches!(tt, TokenTree::Ident(i) if i.to_string() == "PinnedDrop"),
+    + static void bpf_kprobe_multi_cookie_swap(void *a, void *b, int size, const void *priv)
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.12.y       |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Success   |
 
