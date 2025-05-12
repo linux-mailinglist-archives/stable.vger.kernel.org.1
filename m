@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-143960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F4A6AB4324
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:30:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB111AB4325
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:30:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 791613AEE1F
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:27:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6FCEB7B2BC8
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:18:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ECD729A9C4;
-	Mon, 12 May 2025 18:10:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FA96297B78;
+	Mon, 12 May 2025 18:05:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1kuYA4ak"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H6odWjkW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A43D29711B;
-	Mon, 12 May 2025 18:10:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD752BFC62;
+	Mon, 12 May 2025 18:05:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073425; cv=none; b=LXVkLRbyej1iuiS6oVLONGoKKa/JnadA6kR5q25chZLvXBeoxQpIetxxhUx9rZmFi97plOnaQLpKjr1rCwszhufzIxiqGDNSTwfhGS97zh/BmgloXdFYqARHvNlm46sWS/0zgNdplQNQIqidp2xbDCDy6sbXfWfrxA9rK4kqCaM=
+	t=1747073137; cv=none; b=ocWIeqL0eYIxYE2RL2cDiNHhBbm52k72Z8r/Jrzj1eAg2V/g4AHVRL4MorwI9RX2WkK2+gvLmLTHg2jNm3zghI34LOXD2+c8eJ6Y8kRwBseQDAUtksEbbvz5MK9/kFtAjhlFBTb+Q9k7Myn2eiEMNZB3UZeTZKm3DoVuEa4Qguc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073425; c=relaxed/simple;
-	bh=GUN8oAkR7TIwwTZsv9w1SkmU625dVbljteLM60QdB6g=;
+	s=arc-20240116; t=1747073137; c=relaxed/simple;
+	bh=5KNvXOgGXU3JGM3P8kBWVxu5dLSFm00jlriOi7R2lU0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qs/n77XFtIVuURFgRiepRQpXi32fNAH/rDERtGq8raYnsyI1A6KA+j6footc960aavdtwaGfAnnTqqKJLhRudKKSq9PU7mplDZ5SgCExZb5Ss4/iPrlFeiZ+7FFTnwRPchV1vURnVr5XbCAATB76ELY93sUycoh4fzix6UbTl2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1kuYA4ak; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F604C4CEE7;
-	Mon, 12 May 2025 18:10:24 +0000 (UTC)
+	 MIME-Version; b=VmmK07ZEdfB+3OojXNLKhoxP8KiIeMcLUR++0OPzucOfunIEEBl04sOyg8+VqrD5uZh5rHv4amRlqv2VPfoGxSeGT8l061Pn0pNPcDYGo8Ny6b6pOjQC/pnoc8VsFimOzNE9JqtAjxeRMiIzCg3NDt5UAvbK8J7c1u/1v6dPwQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H6odWjkW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01300C4CEF1;
+	Mon, 12 May 2025 18:05:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073425;
-	bh=GUN8oAkR7TIwwTZsv9w1SkmU625dVbljteLM60QdB6g=;
+	s=korg; t=1747073136;
+	bh=5KNvXOgGXU3JGM3P8kBWVxu5dLSFm00jlriOi7R2lU0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1kuYA4akXbbknMVn4kYAjsr78wLURkavNQY3Spq9luxuE0VekdifuNViQVQKSiF1A
-	 uFE16lM9L3J9VdqLcI5Ssrzrqfq4ETlHoM2Lx/paKfGRMl/UAP1A5nJ+9qhSatw8BJ
-	 dPOMe8WDsexbO4DBdMVur2erVrR63upIiLPmSHQk=
+	b=H6odWjkWiBk9zV8fGWkxoyvmrHDLffv+RoKPenoXnNRJ5Y2RnBEkaSc1tB+YjLtHY
+	 5UMHEdoRgjHGHooOOOAjwQjJqhcB/ohZGSOn3O6I5wbFZAwFzpWBMIReyIdfu+cJct
+	 LMVISbqvoMfr+M12je1i+Z3G5+XMnSFmJ4tzUwZ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Wayne Chang <waynec@nvidia.com>
-Subject: [PATCH 6.6 070/113] usb: gadget: tegra-xudc: ACK ST_RC after clearing CTRL_RUN
+	Hao Qin <hao.qin@mediatek.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	"Geoffrey D. Bennett" <g@b4.vu>
+Subject: [PATCH 6.12 158/184] Bluetooth: btmtk: Remove the resetting step before downloading the fw
 Date: Mon, 12 May 2025 19:45:59 +0200
-Message-ID: <20250512172030.527138420@linuxfoundation.org>
+Message-ID: <20250512172048.250904585@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
-References: <20250512172027.691520737@linuxfoundation.org>
+In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
+References: <20250512172041.624042835@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wayne Chang <waynec@nvidia.com>
+From: Hao Qin <hao.qin@mediatek.com>
 
-commit 59820fde001500c167342257650541280c622b73 upstream.
+commit 33634e2ab7c6369391e0ca4b9b97dc861e33d20e upstream.
 
-We identified a bug where the ST_RC bit in the status register was not
-being acknowledged after clearing the CTRL_RUN bit in the control
-register. This could lead to unexpected behavior in the USB gadget
-drivers.
+Remove the resetting step before downloading the fw, as it may cause
+other usb devices to fail to initialise when connected during boot
+on kernels 6.11 and newer.
 
-This patch resolves the issue by adding the necessary code to explicitly
-acknowledge ST_RC after clearing CTRL_RUN based on the programming
-sequence, ensuring proper state transition.
-
-Fixes: 49db427232fe ("usb: gadget: Add UDC driver for tegra XUSB device mode controller")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Wayne Chang <waynec@nvidia.com>
-Link: https://lore.kernel.org/r/20250418081228.1194779-1-waynec@nvidia.com
+Signed-off-by: Hao Qin <hao.qin@mediatek.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Cc: "Geoffrey D. Bennett" <g@b4.vu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/udc/tegra-xudc.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/bluetooth/btmtk.c |   10 ----------
+ 1 file changed, 10 deletions(-)
 
---- a/drivers/usb/gadget/udc/tegra-xudc.c
-+++ b/drivers/usb/gadget/udc/tegra-xudc.c
-@@ -1749,6 +1749,10 @@ static int __tegra_xudc_ep_disable(struc
- 		val = xudc_readl(xudc, CTRL);
- 		val &= ~CTRL_RUN;
- 		xudc_writel(xudc, val, CTRL);
-+
-+		val = xudc_readl(xudc, ST);
-+		if (val & ST_RC)
-+			xudc_writel(xudc, ST_RC, ST);
- 	}
+--- a/drivers/bluetooth/btmtk.c
++++ b/drivers/bluetooth/btmtk.c
+@@ -1330,13 +1330,6 @@ int btmtk_usb_setup(struct hci_dev *hdev
+ 		break;
+ 	case 0x7922:
+ 	case 0x7925:
+-		/* Reset the device to ensure it's in the initial state before
+-		 * downloading the firmware to ensure.
+-		 */
+-
+-		if (!test_bit(BTMTK_FIRMWARE_LOADED, &btmtk_data->flags))
+-			btmtk_usb_subsys_reset(hdev, dev_id);
+-		fallthrough;
+ 	case 0x7961:
+ 		btmtk_fw_get_filename(fw_bin_name, sizeof(fw_bin_name), dev_id,
+ 				      fw_version, fw_flavor);
+@@ -1345,12 +1338,9 @@ int btmtk_usb_setup(struct hci_dev *hdev
+ 						btmtk_usb_hci_wmt_sync);
+ 		if (err < 0) {
+ 			bt_dev_err(hdev, "Failed to set up firmware (%d)", err);
+-			clear_bit(BTMTK_FIRMWARE_LOADED, &btmtk_data->flags);
+ 			return err;
+ 		}
  
- 	dev_info(xudc->dev, "ep %u disabled\n", ep->index);
+-		set_bit(BTMTK_FIRMWARE_LOADED, &btmtk_data->flags);
+-
+ 		/* It's Device EndPoint Reset Option Register */
+ 		err = btmtk_usb_uhw_reg_write(hdev, MTK_EP_RST_OPT,
+ 					      MTK_EP_RST_IN_OUT_OPT);
 
 
 
