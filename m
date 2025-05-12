@@ -1,172 +1,203 @@
-Return-Path: <stable+bounces-144013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 472FFAB43AE
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:39:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A79EAAB44C0
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 21:18:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52A444A4AF9
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:37:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1EEC188827D
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:18:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21ABA29711B;
-	Mon, 12 May 2025 18:36:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9183298C00;
+	Mon, 12 May 2025 19:17:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="dkBqZqMn"
+	dkim=pass (2048-bit key) header.d=tesarici.cz header.i=@tesarici.cz header.b="Ua+mzMWE"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from bee.tesarici.cz (bee.tesarici.cz [37.205.15.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FEB329711E
-	for <stable@vger.kernel.org>; Mon, 12 May 2025 18:36:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06820296D32;
+	Mon, 12 May 2025 19:17:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.205.15.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747074980; cv=none; b=YqQnEr/lLXiZQaaJs9XdOAGYcDm2JqTySOChlfKDQ8j0HU4Hx6YycB7/C+osBWQsq+3XGAivGaKRp0Y2jVOtIoeY+SF7P1iV89x5043W4ge9zPQIBhZ2FpbkCXKSaGnwzHiQ/7X5+pLjEfIyBR8VnDUfVKq7sm85Ia1hT7nk9FE=
+	t=1747077434; cv=none; b=MQUpRyXG+qchCSoZ5bQelZOTzNwvFdmPLXPSKdgffUI5P6wcCyx173cjdYmMSkYeg6ENXXiXxcAOOQy0VbsKbkWpxcSJ0v9xlGxji2erZN1xGIcF3zz/XazL8ASRnK+SZHoJV/JrhnVcySGxbxcb0URbE3ce80NapvQhEQC53/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747074980; c=relaxed/simple;
-	bh=jaHk7VrQ4nANABdlOUICEMjGVZ7+26En29DDJCb9Weo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aTWZjdcAfVTnUMoZ2QWFLS9PYOd/ekQ0TR3IkkJ6+0UN+NHHrtcdyq70BrEL2ckdl3xWCltsDPX4sIBvEfd/0L+HaSfTQNkf5eyYkyTJTAYWKZRCkNVqrldeBJ69Q7vT/ExOAXo0kIclBdnGDq9OuNjPIpxrTXwuETOdAhB1VNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=dkBqZqMn; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279865.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54CDsw0O010634
-	for <stable@vger.kernel.org>; Mon, 12 May 2025 18:36:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	Ua+j4+iYABTDoLL3xkPGvYtLna9rjbpRaD3utkRBGyE=; b=dkBqZqMnXwWQhD05
-	0xW3SO+47D5/01khApaIXKjaopHda1iNNSfej1Oc41A8dRBJUvpms+JmiZWU3wtu
-	vNukqUtXYabMuZKXEaSS6WUuFglIZzad8ovSJoTtBqK/Vf8gxSXZVNoz6w+m6Ots
-	x2pmJgOeVDIwgXdlphiix5LPrQ3rTGkJzoenA8KNMcyl2aJKQdAo0qr2vONW1vei
-	p+aIpfCaw6sorLz/jyWWXHSEbInlyEauUOL83eA4FG2oPrWSgUQLQIyQsQ31KWWC
-	l+tclPC4jKgfiUabz9tN5nNhi9EUftaD6+yEP2anwqzReqqANagyJxAISIkJ4/IL
-	ntWr+A==
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com [209.85.215.198])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46kc3mt3f0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Mon, 12 May 2025 18:36:18 +0000 (GMT)
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-b269789425bso1963098a12.0
-        for <stable@vger.kernel.org>; Mon, 12 May 2025 11:36:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747074978; x=1747679778;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ua+j4+iYABTDoLL3xkPGvYtLna9rjbpRaD3utkRBGyE=;
-        b=uwor9yrI9TQjxvGHRVMwfSWIFg6MxWI+SHt+E6N8PZ90v4xQEDfeI0vpbHUHgIygP0
-         SMyAPNyM9aviGvkuB3txLHuDaygyjGeVJ+XIkEyvhzgsyghM4mOPww4pWECjVlmtuR2F
-         cqwiMtIRJL2KJk65qhe+nKxbwaWL1tHxEhTLqdqZPxEQhtgHAiOURGsvLl0o3SvdU6W5
-         dOkrT9lpj9QzWhro3i4sv7dnN9FE6XPLRvEeRuurZodJggEgYU77fIPJkm4/rCUTrmfO
-         yEoepTMGy+e9TjfECsJ8ZJDy/AhPGSsumHGNuA3zymdw7Z0dSX1kEHxJwL5IXyR8Ru9g
-         X/6Q==
-X-Gm-Message-State: AOJu0YzpWxfzBxklj3JgK9/kNeP83kuhVNgTgqcMEi99pyLWCf7cLakC
-	nrC5OAgcwi2Z/oYAHitT4OEMuRfW6eZ1wicK0Is4IVPMQXwAuk1Xik781Vr3DdLhD4/USv6gCh5
-	P4QOvxcQQh3BGqeezAti00YPj4wee26R1LN8FG5sej1OZ3mdxxAFCNMI=
-X-Gm-Gg: ASbGnctF05BBn+1ajY5YonDeM3U8U2ZN94jwT+0S81MlCvb3tv3fooaCCw1PHt0PnHW
-	E9ePPVqrwiHq9j/DbhvmbXVoOoauAjnKonKpajuhoV8ZmxjW2FZ5GLS41qE7la77i0AIBx+RiYB
-	uVLQI3Rxs8dmERXJ9fmbo9PEdpvDFDVWHyHxL5vINZ5X/7ulsYWohpkxeD0Jf/jX0w23xNqDht2
-	WYIgJYNzHYI0FpAOUIPOVMtnAKag7PFtueCMhVQZWcAXKdNfWobEOERMzn+NIbPx7xmEJSDI78w
-	ggZP38uMnDuy5RmfKD7TIfVJGnztrPcA7s/AN0eS/fmhMtYktIaKJbLcmzTCGA==
-X-Received: by 2002:a17:902:ec87:b0:220:d078:eb33 with SMTP id d9443c01a7336-22fc8e990ffmr212504965ad.36.1747074977907;
-        Mon, 12 May 2025 11:36:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGb9eNA28YjCJt9lz3SJrMVGfwzv15037eo9H8POuKZy61L+gU6s4TwLgd+vSCL5plOLs8cZA==
-X-Received: by 2002:a17:902:ec87:b0:220:d078:eb33 with SMTP id d9443c01a7336-22fc8e990ffmr212504655ad.36.1747074977543;
-        Mon, 12 May 2025 11:36:17 -0700 (PDT)
-Received: from [10.226.59.182] (i-global254.qualcomm.com. [199.106.103.254])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22fc8271c01sm66156275ad.140.2025.05.12.11.36.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 12 May 2025 11:36:17 -0700 (PDT)
-Message-ID: <2432a3f0-871a-425d-8f89-94577cf0e493@oss.qualcomm.com>
-Date: Mon, 12 May 2025 12:36:15 -0600
+	s=arc-20240116; t=1747077434; c=relaxed/simple;
+	bh=JYFMfi6NvvswXPKWzX0gygRa/IzGaP7udvSOKwN43uQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=E+wJfVUMUjrIlg6zldRDtQbRG23PBmxVddh5J1MQEo5QvhpxGRN3Gof0nR3ttJzGAiy9d7AhO5lBXJmyxDGiMk3j9HcOnCnMN4w5bbmbohdI6Lh3XXUpJ1TxUxbFflBPfnoPaFumGQ9cAkUwdVu1mB/CpTA+cV/1IO9IoDvhRkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tesarici.cz; spf=pass smtp.mailfrom=tesarici.cz; dkim=pass (2048-bit key) header.d=tesarici.cz header.i=@tesarici.cz header.b=Ua+mzMWE; arc=none smtp.client-ip=37.205.15.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tesarici.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tesarici.cz
+Received: from meshulam.tesarici.cz (dynamic-2a00-1028-83b8-1e7a-4427-cc85-6706-c595.ipv6.o2.cz [IPv6:2a00:1028:83b8:1e7a:4427:cc85:6706:c595])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by bee.tesarici.cz (Postfix) with ESMTPSA id 96F8222156E;
+	Mon, 12 May 2025 21:17:09 +0200 (CEST)
+Authentication-Results: mail.tesarici.cz; dmarc=fail (p=quarantine dis=none) header.from=tesarici.cz
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tesarici.cz; s=mail;
+	t=1747077429; bh=afmavmvu6ERDtlMiPPJ+izaGZ9Iq701zLO8sCs2tIco=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Ua+mzMWEms8yJSGpZYB7PR0OKMcs0mWSl8mpJqWvwlyX6kgNqi9DWBmmxFNAatcvg
+	 pq54hTcVWvsU0lVlvm7aX3sMUK9KLhdEhi64XCWeEE70XNHoCdqAl9CKvD4kuk8Fc/
+	 14GJVTlMTUJbJXzZs9uqXG4+iPl+GyPbpSob24Rd5RXKThSO43pA1fLypjHrFRGsIx
+	 qU4pbZjlhKzlPGkkGdhRP9/EP4c+ZhBvqclXvTFPsV4nkLFNtnq2vyvT8XWmfJXuFx
+	 DWvZErJJi1as2fbfvJTl5/+FaEzkeqNMAXo1+LE+VnxzLCMj5R7OIajbwJrIJUVhXK
+	 Jezc4JcM6dXKA==
+Date: Mon, 12 May 2025 21:17:08 +0200
+From: Petr =?UTF-8?B?VGVzYcWZw61r?= <petr@tesarici.cz>
+To: Rong Zhang <i@rong.moe>
+Cc: Jiri Kosina <jikos@kernel.org>, Benjamin Tissoires <bentiss@kernel.org>,
+ linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+ bpf@vger.kernel.org, Brian Gerst <brgerst@gmail.com>, Borislav Petkov
+ <bp@alien8.de>, bugzilla-daemon@kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] HID: bpf: abort dispatch if device destroyed
+Message-ID: <20250512211708.35a0d8df@meshulam.tesarici.cz>
+In-Reply-To: <20250512152420.87441-1-i@rong.moe>
+References: <20250506145548.GGaBoi9Jzp3aeJizTR@fat_crate.local>
+	<20250512152420.87441-1-i@rong.moe>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-suse-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] accel/ivpu: Use firmware names from upstream repo
-To: Lizhi Hou <lizhi.hou@amd.com>,
-        Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>,
-        dri-devel@lists.freedesktop.org
-Cc: stable@vger.kernel.org
-References: <20250506092030.280276-1-jacek.lawrynowicz@linux.intel.com>
- <abf77771-ca6a-3b29-f5e7-fbb11c53844a@amd.com>
- <35f0d2b1-e958-44db-b4d2-978cd741c3ab@linux.intel.com>
- <08a17170-b991-f520-6aca-0690a28917a4@amd.com>
-Content-Language: en-US
-From: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
-In-Reply-To: <08a17170-b991-f520-6aca-0690a28917a4@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-ORIG-GUID: _rgeLhVynzxSZDj0ygxSXo6h5O0akTxe
-X-Proofpoint-GUID: _rgeLhVynzxSZDj0ygxSXo6h5O0akTxe
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTEyMDE5MSBTYWx0ZWRfX9HzFBaGzkXoJ
- kdiDH2QNRv+tB4tkygLsuYHvl8NcXFJM0lSLFzTZJvWWlr2d6RSVxqAOzq/3v51DkvPq6enq4Gh
- uQV59vMSeXCZ1JDYDRK+IqHzNcMWrGsXSs/1t9jaq8YFWSXa2rO1nzRIWkDlkps3qu7aLenfXJo
- JyH73LOE8G9OQ/xqLIJSwsFZQ7LF0jfx9re6Xle53O23czjYpNVVkNAiVGGVvczD2svO8KbvjD3
- NZhZ3IvpG94lC5UWNepr/ius7tfZzQsvXAN5PRdd8o0Cw8e58nSht3eeZJw/lL6mKv9QacRSQCO
- 5uBi/E0TbP/oeGCb33Q3qgyljoQNXNbboAuhb1B9Hs1yGJwJfxbH4QDYgYA6CDFnp3YujZzHEhT
- 6lQEpmM1/J8K7rE93CqwoJCg2Ufi6b053gdcsxmMBUvJ4fSzCcBwIV6NqkT3XW2b/J9BiSm9
-X-Authority-Analysis: v=2.4 cv=afhhnQot c=1 sm=1 tr=0 ts=68223fa2 cx=c_pps
- a=Qgeoaf8Lrialg5Z894R3/Q==:117 a=JYp8KDb2vCoCEuGobkYCKw==:17
- a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10 a=VwQbUJbxAAAA:8 a=QyXUC8HyAAAA:8
- a=zd2uoN0lAAAA:8 a=EUspDBNiAAAA:8 a=LTIWpQBfA_taFBiOom8A:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10 a=x9snwWr2DeNwDh03kgHS:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-12_06,2025-05-09_01,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 suspectscore=0 malwarescore=0 mlxlogscore=999 priorityscore=1501
- impostorscore=0 mlxscore=0 lowpriorityscore=0 phishscore=0 clxscore=1015
- spamscore=0 bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
- definitions=main-2505120191
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On 5/7/2025 9:24 AM, Lizhi Hou wrote:
-> 
-> On 5/6/25 23:59, Jacek Lawrynowicz wrote:
->> Hi,
->>
->> On 5/6/2025 5:41 PM, Lizhi Hou wrote:
->>> On 5/6/25 02:20, Jacek Lawrynowicz wrote:
->>>> Use FW names from linux-firmware repo instead of deprecated ones.
->>>>
->>>> Fixes: c140244f0cfb ("accel/ivpu: Add initial Panther Lake support")
->>>> Cc: <stable@vger.kernel.org> # v6.13+
->>>> Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
->>>> ---
->>>>    drivers/accel/ivpu/ivpu_fw.c | 12 ++++++------
->>>>    1 file changed, 6 insertions(+), 6 deletions(-)
->>>>
->>>> diff --git a/drivers/accel/ivpu/ivpu_fw.c b/drivers/accel/ivpu/ 
->>>> ivpu_fw.c
->>>> index ccaaf6c100c02..9db741695401e 100644
->>>> --- a/drivers/accel/ivpu/ivpu_fw.c
->>>> +++ b/drivers/accel/ivpu/ivpu_fw.c
->>>> @@ -55,18 +55,18 @@ static struct {
->>>>        int gen;
->>>>        const char *name;
->>>>    } fw_names[] = {
->>>> -    { IVPU_HW_IP_37XX, "vpu_37xx.bin" },
->>>> +    { IVPU_HW_IP_37XX, "intel/vpu/vpu_37xx_v1.bin" },
->>> What if old only vpu_37xx.bin is installed but not intel/vpu/ 
->>> vpu_37xx_v1?
->>>
->>> Maybe just put *_v1 line in front without removing { ..., 
->>> "vpu_37xx.bin"} ?
->>>
->> The vpu_37xx.bin style names were never released. This was only for 
->> developer convenience but it turns out that developers don't use this 
->> anymore, so it is safe to remove. Maybe it make sense to mention this 
->> in commit message :)
-> 
-> Sounds great.
-> 
-> Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
+On Mon, 12 May 2025 23:24:19 +0800
+Rong Zhang <i@rong.moe> wrote:
 
-Reviewed-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
+> The current HID bpf implementation assumes no output report/request will
+> go through it after hid_bpf_destroy_device() has been called. This leads
+> to a bug that unplugging certain types of HID devices causes a cleaned-
+> up SRCU to be accessed. The bug was previously a hidden failure until a
+> recent x86 percpu change [1] made it access not-present pages.
+> 
+> The bug will be triggered if the conditions below are met:
+> 
+> A) a device under the driver has some LEDs on
+> B) hid_ll_driver->request() is uninplemented (e.g., logitech-djreceiver)
+> 
+> If condition A is met, hidinput_led_worker() is always scheduled *after*
+> hid_bpf_destroy_device().
+> 
+> hid_destroy_device
+> ` hid_bpf_destroy_device
+>   ` cleanup_srcu_struct(&hdev->bpf.srcu)
+> ` hid_remove_device
+>   ` ...
+>     ` led_classdev_unregister
+>       ` led_trigger_set(led_cdev, NULL)
+>         ` led_set_brightness(led_cdev, LED_OFF)
+>           ` ...
+>             ` input_inject_event
+>               ` input_event_dispose
+>                 ` hidinput_input_event
+>                   ` schedule_work(&hid->led_work) [hidinput_led_worker]
+> 
+> This is fine when condition B is not met, where hidinput_led_worker()
+> calls hid_ll_driver->request(). This is the case for most HID drivers,
+> which implement it or use the generic one from usbhid. The driver itself
+> or an underlying driver will then abort processing the request.
+> 
+> Otherwise, hidinput_led_worker() tries hid_hw_output_report() and leads
+> to the bug.
+> 
+> hidinput_led_worker
+> ` hid_hw_output_report
+>   ` dispatch_hid_bpf_output_report
+>     ` srcu_read_lock(&hdev->bpf.srcu)
+>     ` srcu_read_unlock(&hdev->bpf.srcu, idx)
+> 
+> The bug has existed since the introduction [2] of
+> dispatch_hid_bpf_output_report(). However, the same bug also exists in
+> dispatch_hid_bpf_raw_requests(), and I've reproduced (no visible effect
+> because of the lack of [1], but confirmed bpf.destroyed == 1) the bug
+> against the commit (i.e., the Fixes:) introducing the function. This is
+> because hidinput_led_worker() falls back to hid_hw_raw_request() when
+> hid_ll_driver->output_report() is uninplemented (e.g., logitech-
+> djreceiver).
+> 
+> hidinput_led_worker
+> ` hid_hw_output_report: -ENOSYS
+> ` hid_hw_raw_request
+>   ` dispatch_hid_bpf_raw_requests
+>     ` srcu_read_lock(&hdev->bpf.srcu)
+>     ` srcu_read_unlock(&hdev->bpf.srcu, idx)
+> 
+> Fix the issue by returning early in the two mentioned functions if
+> hid_bpf has been marked as destroyed. Though
+> dispatch_hid_bpf_device_event() handles input events, and there is no
+> evidence that it may be called after the destruction, the same check, as
+> a safety net, is also added to it to maintain the consistency among all
+> dispatch functions.
+> 
+> The impact of the bug on other architectures is unclear. Even if it acts
+> as a hidden failure, this is still dangerous because it corrupts
+> whatever is on the address calculated by SRCU. Thus, CC'ing the stable
+> list.
+> 
+> [1]: commit 9d7de2aa8b41 ("x86/percpu/64: Use relative percpu offsets")
+> [2]: commit 9286675a2aed ("HID: bpf: add HID-BPF hooks for
+> hid_hw_output_report")
+> 
+> Closes: https://lore.kernel.org/all/20250506145548.GGaBoi9Jzp3aeJizTR@fat_crate.local/
+> Fixes: 8bd0488b5ea5 ("HID: bpf: add HID-BPF hooks for hid_hw_raw_requests")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Rong Zhang <i@rong.moe>
+
+Yes, this patch fixes the BUG and subsequent lock-ups in my scenario
+(suspend with a Bluetooth keyboard). Thank you!
+
+Tested-by: Petr Tesarik <petr@tesarici.cz>
+
+Petr T
+
+> ---
+>  drivers/hid/bpf/hid_bpf_dispatch.c | 9 +++++++++
+>  1 file changed, 9 insertions(+)
+> 
+> diff --git a/drivers/hid/bpf/hid_bpf_dispatch.c
+> b/drivers/hid/bpf/hid_bpf_dispatch.c index 2e96ec6a3073..9a06f9b0e4ef
+> 100644 --- a/drivers/hid/bpf/hid_bpf_dispatch.c
+> +++ b/drivers/hid/bpf/hid_bpf_dispatch.c
+> @@ -38,6 +38,9 @@ dispatch_hid_bpf_device_event(struct hid_device
+> *hdev, enum hid_report_type type struct hid_bpf_ops *e;
+>  	int ret;
+>  
+> +	if (unlikely(hdev->bpf.destroyed))
+> +		return ERR_PTR(-ENODEV);
+> +
+>  	if (type >= HID_REPORT_TYPES)
+>  		return ERR_PTR(-EINVAL);
+>  
+> @@ -93,6 +96,9 @@ int dispatch_hid_bpf_raw_requests(struct hid_device
+> *hdev, struct hid_bpf_ops *e;
+>  	int ret, idx;
+>  
+> +	if (unlikely(hdev->bpf.destroyed))
+> +		return -ENODEV;
+> +
+>  	if (rtype >= HID_REPORT_TYPES)
+>  		return -EINVAL;
+>  
+> @@ -130,6 +136,9 @@ int dispatch_hid_bpf_output_report(struct
+> hid_device *hdev, struct hid_bpf_ops *e;
+>  	int ret, idx;
+>  
+> +	if (unlikely(hdev->bpf.destroyed))
+> +		return -ENODEV;
+> +
+>  	idx = srcu_read_lock(&hdev->bpf.srcu);
+>  	list_for_each_entry_srcu(e, &hdev->bpf.prog_list, list,
+>  				 srcu_read_lock_held(&hdev->bpf.srcu))
+> {
+> 
+> base-commit: 82f2b0b97b36ee3fcddf0f0780a9a0825d52fec3
+
 
