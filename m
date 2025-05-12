@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-143989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A818AB4316
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:30:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C35E8AB4358
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:33:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 400641B6240E
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:29:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCD1F8C7D93
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:29:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D38C81DE4CD;
-	Mon, 12 May 2025 18:11:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03ACF29B20C;
+	Mon, 12 May 2025 18:12:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C3gl3uFm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o4DFKAmz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF0029712A;
-	Mon, 12 May 2025 18:11:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE5DC297132;
+	Mon, 12 May 2025 18:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073512; cv=none; b=RvQNDR2U1o5LrPD+ZLfpTm9SzLs72kaOJer5v0pxC4zNsxgYS5jrKGqjUNkIlQjTdCCfh9Ed5QAQRuPWWhvsd/6GzVSMHRdleK6ogXTeOkicT/P13xvpTOAqY64bKG6nv19zZj6N5h6pJ8MQlzJ8p8wiFnS+hAZOdP0RFKkIAmQ=
+	t=1747073546; cv=none; b=Z6Qb4LJvBUrt1etXdZ6r5U/UEla1gB422XQRnqoNsizzL3EgToTE+S1nraOuohm4eNoLN6e8KZ03y1BBwprta94X5OYUu1+V8jDj/iMQ7MwVhw+SkpsxjXZe14Zl19dTzYagwPFoPWglsvcPywrqxEZFvAr9d7b1jgdSkQq3zpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073512; c=relaxed/simple;
-	bh=RqU2YrplKjxKkEdVzq5olS3dza6qihtqYdmVA3HYNcc=;
+	s=arc-20240116; t=1747073546; c=relaxed/simple;
+	bh=jxzzxdxdbWR7BuoFPUUI0CDQbApVM3849cHbtn97oVQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dgX2x4FlWfUuUBeIEqEDFwt9BgGysjvFCDNqkAYgj4c+TTh1YI4yDauzIQmtJxzlda2jvA9giAhOuePyXmIu+8VhMbWI3Pj5dSPFeg5tdbHxo81qETb9Zi8fHFFCi19/1KtXSp2rAenQRm/8HTFNjVKnCrHa4ffy//B2vcCG/gA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C3gl3uFm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EBC4C4CEE7;
-	Mon, 12 May 2025 18:11:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NK4NW05rLfxwXmXOII6cGee2d4+UqLVK4jm3/otWgUlnu9+tlHO3tx3RKDicV//Xlzp9KCR2y0XkYAlGKI+GwlI+fMyBYSFR76AmjSVYuYk2ScnFiPezXBTquF3kJLBEUlatOb4FLTzjIG5dmaeCL3Yzpm8I+qghqskbN0EzLoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o4DFKAmz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36568C4CEE7;
+	Mon, 12 May 2025 18:12:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073512;
-	bh=RqU2YrplKjxKkEdVzq5olS3dza6qihtqYdmVA3HYNcc=;
+	s=korg; t=1747073546;
+	bh=jxzzxdxdbWR7BuoFPUUI0CDQbApVM3849cHbtn97oVQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C3gl3uFmjODYggijGtua1yNM8//eQl0stDPeGdyYMEtb8UxSHiORZV9X6nLHvA2ak
-	 5k3BROrhpV2h357Qs26f36YXZhiMEkkKcm+qGH51bQYX33NoKKPZX4Ck2gOawaWdAx
-	 J5q5D6KubeUDAWjJFjSu8kPBgjt18ZQQxtxfJBfY=
+	b=o4DFKAmzDaLQqWIi21ljGP8X7Q9f8jd1o6j22HZ9D4Y4LwTjgL9fVCGkOi3+VKQYe
+	 OHp7Knx2MF2tYa4Ed0ND2PniMNuMI29P3v6Pxu5l5Suy+cG8uf43wkLXKou85F3hVI
+	 HnKzrfCkXGPl466ROx54RcBxwtPY0+BrlZYxKL10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	David Lechner <dlechner@baylibre.com>,
+	Andy Shevchenko <andy@kernel.org>,
 	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 082/113] iio: accel: adxl355: Make timestamp 64-bit aligned using aligned_s64
-Date: Mon, 12 May 2025 19:46:11 +0200
-Message-ID: <20250512172031.022468199@linuxfoundation.org>
+Subject: [PATCH 6.6 083/113] iio: adc: dln2: Use aligned_s64 for timestamp
+Date: Mon, 12 May 2025 19:46:12 +0200
+Message-ID: <20250512172031.062902385@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
 References: <20250512172027.691520737@linuxfoundation.org>
@@ -70,36 +71,38 @@ Content-Transfer-Encoding: 8bit
 
 From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-[ Upstream commit 1bb942287e05dc4c304a003ea85e6dd9a5e7db39 ]
+[ Upstream commit 5097eaae98e53f9ab9d35801c70da819b92ca907 ]
 
-The IIO ABI requires 64-bit aligned timestamps. In this case insufficient
-padding would have been added on architectures where an s64 is only 32-bit
-aligned.  Use aligned_s64 to enforce the correct alignment.
+Here the lack of marking allows the overall structure to not be
+sufficiently aligned resulting in misplacement of the timestamp
+in iio_push_to_buffers_with_timestamp(). Use aligned_s64 to
+force the alignment on all architectures.
 
-Fixes: 327a0eaf19d5 ("iio: accel: adxl355: Add triggered buffer support")
+Fixes: 7c0299e879dd ("iio: adc: Add support for DLN2 ADC")
 Reported-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
 Reviewed-by: Nuno Sá <nuno.sa@analog.com>
 Reviewed-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250413103443.2420727-5-jic23@kernel.org
+Link: https://patch.msgid.link/20250413103443.2420727-4-jic23@kernel.org
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/accel/adxl355_core.c | 2 +-
+ drivers/iio/adc/dln2-adc.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/accel/adxl355_core.c b/drivers/iio/accel/adxl355_core.c
-index 0c9225d18fb29..4973e8da5399d 100644
---- a/drivers/iio/accel/adxl355_core.c
-+++ b/drivers/iio/accel/adxl355_core.c
-@@ -231,7 +231,7 @@ struct adxl355_data {
- 		u8 transf_buf[3];
- 		struct {
- 			u8 buf[14];
--			s64 ts;
-+			aligned_s64 ts;
- 		} buffer;
- 	} __aligned(IIO_DMA_MINALIGN);
- };
+diff --git a/drivers/iio/adc/dln2-adc.c b/drivers/iio/adc/dln2-adc.c
+index 97d162a3cba4e..49a2588e7431e 100644
+--- a/drivers/iio/adc/dln2-adc.c
++++ b/drivers/iio/adc/dln2-adc.c
+@@ -483,7 +483,7 @@ static irqreturn_t dln2_adc_trigger_h(int irq, void *p)
+ 	struct iio_dev *indio_dev = pf->indio_dev;
+ 	struct {
+ 		__le16 values[DLN2_ADC_MAX_CHANNELS];
+-		int64_t timestamp_space;
++		aligned_s64 timestamp_space;
+ 	} data;
+ 	struct dln2_adc_get_all_vals dev_data;
+ 	struct dln2_adc *dln2 = iio_priv(indio_dev);
 -- 
 2.39.5
 
