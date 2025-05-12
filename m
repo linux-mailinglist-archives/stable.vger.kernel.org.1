@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-143887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED996AB426C
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:23:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A329AB4308
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:29:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7606816D877
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:23:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73A3F161988
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:29:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA54F2980B6;
-	Mon, 12 May 2025 18:06:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F75529ACD8;
+	Mon, 12 May 2025 18:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="htv1Sy46"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XGY2480g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95FDD296FAE;
-	Mon, 12 May 2025 18:06:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EAB81E505;
+	Mon, 12 May 2025 18:11:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073189; cv=none; b=pxjaOw/tC4zqudJh0HguWSGlPUSUoqDlI4XXf0WYhIQyuQlWhEuFqOCRcGzzJdOwRHnvFTreaEvdabkBibSAB8i55Bc/8kDX9DYholvO03J6uVk/PQKmPgO9lu5JG/ERIkW0NSECsa9VX3vlLYeMiQPz0ast5+1or3ht238/Ni4=
+	t=1747073494; cv=none; b=c/V/764L+28BEc9//g1Om+ucUn6dKfZE3D5GfUk3/czB9Dv5LImuufekDO+aumC61VQGrJIn4eIHeyoT/UmVkIJOaYPdaYdbbm3mMjzwm3L+NunHV4WmlCJ53V6cttGJRMpryVGyklHP5l+Wbg3OxDW/v+7trLyq9ntCbqFVGqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073189; c=relaxed/simple;
-	bh=UKlkG/x4655gNgDINe2rmCY3Rr9t/AG0+E1vkT8dfK0=;
+	s=arc-20240116; t=1747073494; c=relaxed/simple;
+	bh=FXr29ZrXxAZIlwtL01zsBnXGGUtJ1+IcNVjHfXmqGcw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h+Z7whxRTFeBg5KRE+AroxYMZAeOHwEt4VSd9N4FtrLlNjjHl2VKlmj1KBGMJXzoFPxslZskRkB+5Uj5NoBnDoGSfCivPyHb2Uyle4ID6NQBp97xnoo/XCTMpDLQN47o28eJ8g0w42imPu8Z0miGxGg/NDbKII7l5EVuCeO6W4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=htv1Sy46; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C205C4CEE9;
-	Mon, 12 May 2025 18:06:28 +0000 (UTC)
+	 MIME-Version; b=pncPkJ5Wi44JK0vifgl/YezvEtPGg8u8S3XiErg1L0vc2WYvru2/TasLsgGV1UkFWl8eRATAFFpASTyJ2polL09l23dlCMcObLWH8iT3Kw10Hqmt9cwk/FL+G8CzFz+Ui4yTgP5+wChCvZGxnu7EEuTGCZ2n9lSuqrdWpkE1fIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XGY2480g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C36D4C4CEE7;
+	Mon, 12 May 2025 18:11:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073189;
-	bh=UKlkG/x4655gNgDINe2rmCY3Rr9t/AG0+E1vkT8dfK0=;
+	s=korg; t=1747073494;
+	bh=FXr29ZrXxAZIlwtL01zsBnXGGUtJ1+IcNVjHfXmqGcw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=htv1Sy4648OZU+BLViGdszmbwfwOGVVkPNNfZZ/FibdD5/0fBFyzjrv6gsxxwFYqC
-	 y19Fr2+tnj8OM0diFpbMiv/d22Un5cyF96y3mSUqsx5vJryHfVIGdA33gV+KAaMZyN
-	 JZkaISOo+2Xs6F0U3QtwYidN8gIPfXBdFqk6cwLo=
+	b=XGY2480g4Au0i6oG804WPiOUQ9ezCNA3PH1G8y1rtcrsRQq3He0K+7rmDY80NVkcV
+	 C+HbOXrdnnsU8xhTES+Gys0xpW3/hLMhP0VlS4WBWJ7Ow9jXHYVYC9Q3X5mpg6KB8/
+	 t2tdP9M4549JhBv2pb9eDtDHvp0g74R+ljtA5JR4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Alexandre Chartre <alexandre.chartre@oracle.com>
-Subject: [PATCH 6.12 182/184] x86/ibt: Keep IBT disabled during alternative patching
+	James Morse <james.morse@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.6 094/113] arm64: proton-pack: Expose whether the branchy loop k value
 Date: Mon, 12 May 2025 19:46:23 +0200
-Message-ID: <20250512172049.222397916@linuxfoundation.org>
+Message-ID: <20250512172031.505630403@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
-References: <20250512172041.624042835@linuxfoundation.org>
+In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
+References: <20250512172027.691520737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+From: James Morse <james.morse@arm.com>
 
-commit ebebe30794d38c51f71fe4951ba6af4159d9837d upstream.
+commit a1152be30a043d2d4dcb1683415f328bf3c51978 upstream.
 
-cfi_rewrite_callers() updates the fineIBT hash matching at the caller side,
-but except for paranoid-mode it relies on apply_retpoline() and friends for
-any ENDBR relocation. This could temporarily cause an indirect branch to
-land on a poisoned ENDBR.
+Add a helper to expose the k value of the branchy loop. This is needed
+by the BPF JIT to generate the mitigation sequence in BPF programs.
 
-For instance, with para-virtualization enabled, a simple wrmsrl() could
-have an indirect branch pointing to native_write_msr() who's ENDBR has been
-relocated due to fineIBT:
-
-<wrmsrl>:
-       push   %rbp
-       mov    %rsp,%rbp
-       mov    %esi,%eax
-       mov    %rsi,%rdx
-       shr    $0x20,%rdx
-       mov    %edi,%edi
-       mov    %rax,%rsi
-       call   *0x21e65d0(%rip)        # <pv_ops+0xb8>
-       ^^^^^^^^^^^^^^^^^^^^^^^
-
-Such an indirect call during the alternative patching could #CP if the
-caller is not *yet* adjusted for the new target ENDBR. To prevent a false
- #CP, keep CET-IBT disabled until all callers are patched.
-
-Patching during the module load does not need to be guarded by IBT-disable
-because the module code is not executed until the patching is complete.
-
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
+Signed-off-by: James Morse <james.morse@arm.com>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/alternative.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/arm64/include/asm/spectre.h |    1 +
+ arch/arm64/kernel/proton-pack.c  |    5 +++++
+ 2 files changed, 6 insertions(+)
 
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -31,6 +31,7 @@
- #include <asm/paravirt.h>
- #include <asm/asm-prototypes.h>
- #include <asm/cfi.h>
-+#include <asm/ibt.h>
+--- a/arch/arm64/include/asm/spectre.h
++++ b/arch/arm64/include/asm/spectre.h
+@@ -97,6 +97,7 @@ enum mitigation_state arm64_get_meltdown
  
- int __read_mostly alternatives_patched;
+ enum mitigation_state arm64_get_spectre_bhb_state(void);
+ bool is_spectre_bhb_affected(const struct arm64_cpu_capabilities *entry, int scope);
++u8 get_spectre_bhb_loop_value(void);
+ bool is_spectre_bhb_fw_mitigated(void);
+ void spectre_bhb_enable_mitigation(const struct arm64_cpu_capabilities *__unused);
+ bool try_emulate_el1_ssbs(struct pt_regs *regs, u32 instr);
+--- a/arch/arm64/kernel/proton-pack.c
++++ b/arch/arm64/kernel/proton-pack.c
+@@ -998,6 +998,11 @@ bool is_spectre_bhb_affected(const struc
+ 	return true;
+ }
  
-@@ -1719,6 +1720,8 @@ static noinline void __init alt_reloc_se
- 
- void __init alternative_instructions(void)
++u8 get_spectre_bhb_loop_value(void)
++{
++	return max_bhb_k;
++}
++
+ static void this_cpu_set_vectors(enum arm64_bp_harden_el1_vectors slot)
  {
-+	u64 ibt;
-+
- 	int3_selftest();
- 
- 	/*
-@@ -1745,6 +1748,9 @@ void __init alternative_instructions(voi
- 	 */
- 	paravirt_set_cap();
- 
-+	/* Keep CET-IBT disabled until caller/callee are patched */
-+	ibt = ibt_save(/*disable*/ true);
-+
- 	__apply_fineibt(__retpoline_sites, __retpoline_sites_end,
- 			__cfi_sites, __cfi_sites_end, true);
- 
-@@ -1768,6 +1774,8 @@ void __init alternative_instructions(voi
- 	 */
- 	apply_seal_endbr(__ibt_endbr_seal, __ibt_endbr_seal_end);
- 
-+	ibt_restore(ibt);
-+
- #ifdef CONFIG_SMP
- 	/* Patch to UP if other cpus not imminent. */
- 	if (!noreplace_smp && (num_present_cpus() == 1 || setup_max_cpus <= 1)) {
+ 	const char *v = arm64_get_bp_hardening_vector(slot);
 
 
 
