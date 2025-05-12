@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-143978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D598CAB4302
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:29:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B489BAB42EE
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:28:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 783004A2704
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:28:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13DF97BA04F
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:21:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4819F297126;
-	Mon, 12 May 2025 18:11:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1A532C1E09;
+	Mon, 12 May 2025 18:05:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0BDjy17z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YjF7AYhm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED8C229AAE9;
-	Mon, 12 May 2025 18:11:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACFD7297B8F;
+	Mon, 12 May 2025 18:05:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073481; cv=none; b=huQPbpZNy0HPNE74uC5JSIo8XHErVlmKTk7ErGKJeBHHrWp0i0NUremf2QCKMy73Q1blYplZw/vfxLxCerNBZ7pMt70vDCbWUTMKl16TDINJarmJ80BfZoYYSa/aAVW0WVLOpq1w0kXTGD2DBESej7zFVsarlNlDlXwh/dLyQUg=
+	t=1747073148; cv=none; b=HWfeD8txTQ8DGMV6urEhwieMkjDJq4NJn6ztV7tYjq+F6o4Fkh4XzZzR1ZupAge2GX95+m+WCqefEpM/vvQSdzxhYUXytYCkkKVgEV3GlsZ9iLxJxVBdrAvhaIDMCKfq62qcGbT9qb0mfc2Wmsw/NOrUbjmyvYpt+Or671SN0Ak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073481; c=relaxed/simple;
-	bh=8Mo0q1nwoXNm3Ld1fp22jtg4ax+3RYM+UFYgJA2vlwE=;
+	s=arc-20240116; t=1747073148; c=relaxed/simple;
+	bh=xhwLDB7fnhEtlM6WzdWsz/RIVJKrVro++wzb0jd61oM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jdGBwQuuQPXEZ5M591GWWMuOYqSHceeU4Ei+fn8x09e/b2/kP0inFT0RUSHsi12TWh7FF1TDz50hh/Vqlh8arGRLnzb8KU7N3W0dzzylPdSBZzMu6x7sryQdL7y55IFiun3vBzV2CefKfsm2s1q8SOZ9KSCrgOzJA8XtCZaJYP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0BDjy17z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC669C4CEE7;
-	Mon, 12 May 2025 18:11:18 +0000 (UTC)
+	 MIME-Version; b=L5ZM/+BGkoZ6l6UOD7ArTd+5Sn4nntTN6Dv4bNHxQmlkbo+11rmL4v8wx9h074dMRbz+bRa2McWq7nD+/cw28kdRSu4BqQaokwVl8hcTzv/mG84l0AZtRUS900/JpDjkZ9Ftp5Srz6NKkYi7UsxAaxPKa8Kz92VGIVG1S3ReHIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YjF7AYhm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BA1BC4CEE7;
+	Mon, 12 May 2025 18:05:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073479;
-	bh=8Mo0q1nwoXNm3Ld1fp22jtg4ax+3RYM+UFYgJA2vlwE=;
+	s=korg; t=1747073148;
+	bh=xhwLDB7fnhEtlM6WzdWsz/RIVJKrVro++wzb0jd61oM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0BDjy17z3CSNvUqKU9TSmVmgxQEFRQSehgnaxewwzNIzgqYyuMwGi6BXFf1pDYRuU
-	 gnq1HweWGHFI9TMVzgr3+QP3WRqLwjhR6e3uDbv4BkZaXUa2211XuGIDVmclDbDrBO
-	 Ez43hmxrtEeIy0NrT/dVMVU8CcNKBqqWTcTuy7fE=
+	b=YjF7AYhmFrFwDFR4oqnivf0geRsi4S464qqczytSgxKoF7IahG7GfKqPWqDQclwkc
+	 zM15idWaISgvQ/hYkICf0FAzdayCgNjb+zmebQMsd8s9VaAIP2Z83fOax3f+JUql+c
+	 E1jahtcvFZvovK2CrJCSffTWiC+tKuPU2ZWyQOcI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 081/113] types: Complement the aligned types with signed 64-bit one
-Date: Mon, 12 May 2025 19:46:10 +0200
-Message-ID: <20250512172030.982938097@linuxfoundation.org>
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Alexandre Chartre <alexandre.chartre@oracle.com>
+Subject: [PATCH 6.12 170/184] x86/bhi: Do not set BHI_DIS_S in 32-bit mode
+Date: Mon, 12 May 2025 19:46:11 +0200
+Message-ID: <20250512172048.732319650@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
-References: <20250512172027.691520737@linuxfoundation.org>
+In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
+References: <20250512172041.624042835@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-[ Upstream commit e4ca0e59c39442546866f3dd514a3a5956577daf ]
+commit 073fdbe02c69c43fb7c0d547ec265c7747d4a646 upstream.
 
-Some user may want to use aligned signed 64-bit type.
-Provide it for them.
+With the possibility of intra-mode BHI via cBPF, complete mitigation for
+BHI is to use IBHF (history fence) instruction with BHI_DIS_S set. Since
+this new instruction is only available in 64-bit mode, setting BHI_DIS_S in
+32-bit mode is only a partial mitigation.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/20240903180218.3640501-2-andriy.shevchenko@linux.intel.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: 1bb942287e05 ("iio: accel: adxl355: Make timestamp 64-bit aligned using aligned_s64")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Do not set BHI_DIS_S in 32-bit mode so as to avoid reporting misleading
+mitigated status. With this change IBHF won't be used in 32-bit mode, also
+remove the CONFIG_X86_64 check from emit_spectre_bhb_barrier().
+
+Suggested-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/types.h      | 3 ++-
- include/uapi/linux/types.h | 1 +
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ arch/x86/kernel/cpu/bugs.c  |    6 +++---
+ arch/x86/net/bpf_jit_comp.c |    5 +++--
+ 2 files changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/types.h b/include/linux/types.h
-index 253168bb3fe15..78d87c751ff58 100644
---- a/include/linux/types.h
-+++ b/include/linux/types.h
-@@ -115,8 +115,9 @@ typedef u64			u_int64_t;
- typedef s64			int64_t;
- #endif
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -1684,11 +1684,11 @@ static void __init bhi_select_mitigation
+ 			return;
+ 	}
  
--/* this is a special 64bit data type that is 8-byte aligned */
-+/* These are the special 64-bit data types that are 8-byte aligned */
- #define aligned_u64		__aligned_u64
-+#define aligned_s64		__aligned_s64
- #define aligned_be64		__aligned_be64
- #define aligned_le64		__aligned_le64
+-	/* Mitigate in hardware if supported */
+-	if (spec_ctrl_bhi_dis())
++	if (!IS_ENABLED(CONFIG_X86_64))
+ 		return;
  
-diff --git a/include/uapi/linux/types.h b/include/uapi/linux/types.h
-index 6375a06840520..48b933938877d 100644
---- a/include/uapi/linux/types.h
-+++ b/include/uapi/linux/types.h
-@@ -53,6 +53,7 @@ typedef __u32 __bitwise __wsum;
-  * No conversions are necessary between 32-bit user-space and a 64-bit kernel.
-  */
- #define __aligned_u64 __u64 __attribute__((aligned(8)))
-+#define __aligned_s64 __s64 __attribute__((aligned(8)))
- #define __aligned_be64 __be64 __attribute__((aligned(8)))
- #define __aligned_le64 __le64 __attribute__((aligned(8)))
+-	if (!IS_ENABLED(CONFIG_X86_64))
++	/* Mitigate in hardware if supported */
++	if (spec_ctrl_bhi_dis())
+ 		return;
  
--- 
-2.39.5
-
+ 	if (bhi_mitigation == BHI_MITIGATION_VMEXIT_ONLY) {
+--- a/arch/x86/net/bpf_jit_comp.c
++++ b/arch/x86/net/bpf_jit_comp.c
+@@ -1437,8 +1437,7 @@ static int emit_spectre_bhb_barrier(u8 *
+ 	/* Insert IBHF instruction */
+ 	if ((cpu_feature_enabled(X86_FEATURE_CLEAR_BHB_LOOP) &&
+ 	     cpu_feature_enabled(X86_FEATURE_HYPERVISOR)) ||
+-	    (cpu_feature_enabled(X86_FEATURE_CLEAR_BHB_HW) &&
+-	     IS_ENABLED(CONFIG_X86_64))) {
++	    cpu_feature_enabled(X86_FEATURE_CLEAR_BHB_HW)) {
+ 		/*
+ 		 * Add an Indirect Branch History Fence (IBHF). IBHF acts as a
+ 		 * fence preventing branch history from before the fence from
+@@ -1448,6 +1447,8 @@ static int emit_spectre_bhb_barrier(u8 *
+ 		 * hardware that doesn't need or support it.  The REP and REX.W
+ 		 * prefixes are required by the microcode, and they also ensure
+ 		 * that the NOP is unlikely to be used in existing code.
++		 *
++		 * IBHF is not a valid instruction in 32-bit mode.
+ 		 */
+ 		EMIT5(0xF3, 0x48, 0x0F, 0x1E, 0xF8); /* ibhf */
+ 	}
 
 
 
