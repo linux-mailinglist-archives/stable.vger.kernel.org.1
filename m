@@ -1,111 +1,128 @@
-Return-Path: <stable+bounces-143820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D7A7AB41C8
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:12:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6F4CAB41C5
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:12:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65679188ECF2
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:12:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99A6A3AE352
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:10:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F8E129ACDE;
-	Mon, 12 May 2025 18:04:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DCA429A9E7;
+	Mon, 12 May 2025 18:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HPy4xS7B"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FBKzVLPT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 549BC29B764;
-	Mon, 12 May 2025 18:04:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E17C129A9DC
+	for <stable@vger.kernel.org>; Mon, 12 May 2025 18:04:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073092; cv=none; b=TmDhyh50nn0NIwOydHe6puZJukcIdGZ6DkSJbj0F8OPqwZ/XtPW2jQ1vOM6V4EeknbZN9fWHED2INat/V0d804qUyo+osbbNYXDXQJubwp4Ik+316+xJCRckYXwAfiljDcFTeNuD6oK9L1/6NEs7zOV0HfmqpAa7/26lDbLprfo=
+	t=1747073083; cv=none; b=tGffmScwFilylJoVdWTbNZzIHcA0K5ST7tIC1lkIf6CJ6vHF1tyu9Ut3x9hLTlytThYzU6tUreYVEEuFI8rAqhqgcbEcjGq2Lm3Eb/KdkYYjrMkfMKa1WbwZMA3Vhk6sLv+LRd7OYDUKvfZtU0cuR2/b6Kuu/b7olZ5k3Rp6QBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073092; c=relaxed/simple;
-	bh=RMJNKyIKw876za9y8z2vgxq/gPNbJahPj+b6V8ycI8I=;
+	s=arc-20240116; t=1747073083; c=relaxed/simple;
+	bh=jIpa8khaCzD0Obxxl3ceg51ebS1GXqsHB0EH7Nq0+Uk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=ad7GtLU93Plu4cMBFD5loBD1hp7VDDGrZ7RYE/MhGWrbGIbO/4R+VszT0WqoyR+PtP3nNGNjcd6IPyoD+nPObnDcoguFdb7zzqTl8PTPT9OUdZihQXOnvo4OqTxj4ayQOQkZx0eG44RW5eSlCK2k3YzSOo1ByNz3fiboulQzMAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HPy4xS7B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64212C4CEE9;
-	Mon, 12 May 2025 18:04:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=r9QuuGHBlzeOKCI7c6+ajHtcbBUNCEc/S/wTtzYBZ3TYorR9L6cCSqeAeh9fh1v6b9N+mxoxqiHynQH5vY8uuwgKHXRxfIFjedFrJqP6MoYFKJcInM09p8mK6kjvXGYjl1SooYc9qbFPLWNyoVpJbSa78urZrgidskR4u3Cd8qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FBKzVLPT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C1D6C4CEE9;
+	Mon, 12 May 2025 18:04:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747073092;
-	bh=RMJNKyIKw876za9y8z2vgxq/gPNbJahPj+b6V8ycI8I=;
+	s=k20201202; t=1747073082;
+	bh=jIpa8khaCzD0Obxxl3ceg51ebS1GXqsHB0EH7Nq0+Uk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HPy4xS7BssRQcb+v46A+5H+FAkyUNQBVN+TF0+jQbA4E+2ro+wtV70t4rOn8bqR8l
-	 SeLAxmGuXtS8ccFC2nTDLdofLMI26IsB7UU4iYgJMVP2mf6AN2LfaJvH4Bc9tUK0im
-	 Qr+MyVOLpz7KU/wcQx31GVLp9yl9hawsZxRChO1iXrQOiDVwbhPEW03N3jYmzY3gEB
-	 U0JaU90VGfylSrUrpcXaairV24vTIFTVn8ipemsPTpgIHWb290zD3hn/cnw01osaPS
-	 kghM4uujin1a8C3mAwCxeGrEJ4sK0GNas2xKUeuCJKGRRdLj8Ot11wMCkR3Jqc5Hng
-	 l6qbZZelLblqQ==
+	b=FBKzVLPTjWqR4lbgbOzpl9KM12C8iIld4TDk19HIFIVRIyATUXJ+5ENmZ/TJQ3RcT
+	 bDFBSMc6eYPDMIiVmeY4Spppk7LHQv+swqJsqpNfvHND6ko0cvWNxRyEvHXysgHIKX
+	 P4LZRxMwRLtd5SyXHIy2ze6cSu4u0Zpg/UqygNxYm+1SkPv+J3ZPtnMpKr5hCHGA2L
+	 o/GnHCMojxdQIzuaNbkQ3+2B1YbX5sVBVtDk7TyfbVrcYIcD5U5drw4M/JK6gpFZHg
+	 eH+MZtNT7R5AGObCMqLUdtuMHWJKoWg00fGfh0IiTzk2+UMJtnEn9kuecluF+LJymr
+	 GHB6AoVo3YF9A==
 From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Al Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.12 11/11] __legitimize_mnt(): check for MNT_SYNC_UMOUNT should be under mount_lock
-Date: Mon, 12 May 2025 14:04:26 -0400
-Message-Id: <20250512180426.437627-11-sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: jianqi.ren.cn@windriver.com,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.1.y] sunrpc: fix one UAF issue caused by sunrpc kernel tcp socket
+Date: Mon, 12 May 2025 14:04:38 -0400
+Message-Id: <20250511223602-f5027c20e6177021@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250512180426.437627-1-sashal@kernel.org>
-References: <20250512180426.437627-1-sashal@kernel.org>
+In-Reply-To:  <20250509093828.3243368-1-jianqi.ren.cn@windriver.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.12.28
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+[ Sasha's backport helper bot ]
 
-[ Upstream commit 250cf3693060a5f803c5f1ddc082bb06b16112a9 ]
+Hi,
 
-... or we risk stealing final mntput from sync umount - raising mnt_count
-after umount(2) has verified that victim is not busy, but before it
-has set MNT_SYNC_UMOUNT; in that case __legitimize_mnt() doesn't see
-that it's safe to quietly undo mnt_count increment and leaves dropping
-the reference to caller, where it'll be a full-blown mntput().
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-Check under mount_lock is needed; leaving the current one done before
-taking that makes no sense - it's nowhere near common enough to bother
-with.
+The upstream commit SHA1 provided is correct: 3f23f96528e8fcf8619895c4c916c52653892ec1
 
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: <jianqi.ren.cn@windriver.com>
+Commit author: Liu Jian<liujian56@huawei.com>
+
+Status in newer kernel trees:
+6.14.y | Present (exact SHA1)
+6.12.y | Present (different SHA1: 61c0a5eac968)
+6.6.y | Present (different SHA1: 0ca87e506375)
+
+Note: The patch differs from the upstream commit:
 ---
- fs/namespace.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+1:  3f23f96528e8f ! 1:  96f83a102636d sunrpc: fix one UAF issue caused by sunrpc kernel tcp socket
+    @@ Metadata
+      ## Commit message ##
+         sunrpc: fix one UAF issue caused by sunrpc kernel tcp socket
+     
+    +    [ Upstream commit 3f23f96528e8fcf8619895c4c916c52653892ec1 ]
+    +
+         BUG: KASAN: slab-use-after-free in tcp_write_timer_handler+0x156/0x3e0
+         Read of size 1 at addr ffff888111f322cd by task swapper/0/0
+     
+    @@ Commit message
+         Acked-by: Jeff Layton <jlayton@kernel.org>
+         Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+         Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+    +    [Routine __netns_tracker_free() is not supported in 6.1 and so using
+    +    netns_tracker_free() instead.]
+    +    Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+    +    Signed-off-by: He Zhe <zhe.he@windriver.com>
+     
+      ## net/sunrpc/svcsock.c ##
+     @@ net/sunrpc/svcsock.c: static struct svc_xprt *svc_create_socket(struct svc_serv *serv,
+      	newlen = error;
+      
+      	if (protocol == IPPROTO_TCP) {
+    -+		__netns_tracker_free(net, &sock->sk->ns_tracker, false);
+    ++		netns_tracker_free(net, &sock->sk->ns_tracker);
+     +		sock->sk->sk_net_refcnt = 1;
+     +		get_net_track(net, &sock->sk->ns_tracker, GFP_KERNEL);
+     +		sock_inuse_add(net, 1);
+    @@ net/sunrpc/xprtsock.c: static struct socket *xs_create_sock(struct rpc_xprt *xpr
+      	}
+      
+     +	if (protocol == IPPROTO_TCP) {
+    -+		__netns_tracker_free(xprt->xprt_net, &sock->sk->ns_tracker, false);
+    ++		netns_tracker_free(xprt->xprt_net, &sock->sk->ns_tracker);
+     +		sock->sk->sk_net_refcnt = 1;
+     +		get_net_track(xprt->xprt_net, &sock->sk->ns_tracker, GFP_KERNEL);
+     +		sock_inuse_add(xprt->xprt_net, 1);
+---
 
-diff --git a/fs/namespace.c b/fs/namespace.c
-index bd601ab26e781..28727a1b4b118 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -750,12 +750,8 @@ int __legitimize_mnt(struct vfsmount *bastard, unsigned seq)
- 	smp_mb();			// see mntput_no_expire()
- 	if (likely(!read_seqretry(&mount_lock, seq)))
- 		return 0;
--	if (bastard->mnt_flags & MNT_SYNC_UMOUNT) {
--		mnt_add_count(mnt, -1);
--		return 1;
--	}
- 	lock_mount_hash();
--	if (unlikely(bastard->mnt_flags & MNT_DOOMED)) {
-+	if (unlikely(bastard->mnt_flags & (MNT_SYNC_UMOUNT | MNT_DOOMED))) {
- 		mnt_add_count(mnt, -1);
- 		unlock_mount_hash();
- 		return 1;
--- 
-2.39.5
+Results of testing on various branches:
 
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-6.1.y        |  Success    |  Success   |
 
