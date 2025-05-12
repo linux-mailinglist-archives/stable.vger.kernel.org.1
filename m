@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-143974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 480B3AB430A
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:29:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA1A8AB41A6
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:09:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 655FA1884864
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:28:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B4993AFE79
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:07:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 332E129AB16;
-	Mon, 12 May 2025 18:11:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FA30298C0C;
+	Mon, 12 May 2025 18:04:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZlEyh5IQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="galSuCJ8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E58A829AB09;
-	Mon, 12 May 2025 18:11:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B9D3298C08;
+	Mon, 12 May 2025 18:04:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073467; cv=none; b=APp+X7TXAeonPWzyks2mjwXkmZgt5cTgZddoojCUslUGxtWlY9PA0Q9BOXLeZaOGyWcc2bd0nBcRDFbGHupB3FhBAQxBhcXVyKLEyIvO2Qi57BMPYoo3Gvsa/QYro/RO2igMqwrgWvEgfMgcXVYfItRg4T6whpIs2BqJnyqYL+A=
+	t=1747073063; cv=none; b=NSljKY8puRCiaNav2ZTknk6quxRrCZM6cJ/KhfgTXsuXiZZPR0ud/Cl9KpmZrgz6ZM89/HTgsq22bx3hMYFTIS1TMXYJvFo5oFUGKNGaA1ayaOcmF5z0w798ypy2KpFsfD5nHE0rtXbL3ZtRd7aHwWg+aFkENXa9P15NhYVox6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073467; c=relaxed/simple;
-	bh=RpezTVBxTXRmpjeZKVeVOYxmH9G/oCH3An69V+i7nM0=;
+	s=arc-20240116; t=1747073063; c=relaxed/simple;
+	bh=6a03zXtMy4boFhfqEdcRZG6oi7lKxCf+Yj8MfuGWzP4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VLnxeO+VQsQ2GOeKR7L0so7ZBH3CVv2FOr20VduAf+pCKe9EX3/fLzyvnjWgRmh0Pyqad2SXnIEjPVH2o9WNt/4Fs9eCkOIyPUQkNV3lWQ0WwdA4X2UK/PCVyZxrfXK5JRf6UdGe5o6HkvAAbSDjLGMtC/UAZRkEyMnALIKNHaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZlEyh5IQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E158C4CEE7;
-	Mon, 12 May 2025 18:11:06 +0000 (UTC)
+	 MIME-Version; b=lhRSoueONaNsNmyqeRDarjrO4yMQfXnWrs0VML1mDXierykM/PlEIFwjUva+/B1Hmbp91+9eom1uAW5NPcZ+hGQ61Ta5Wp8aY7VEHh3in2V6iakEr/iQcWvYryx3pZHejD/izxecWmiegmljS4EqirYg8qe8msazszVgM8G3OQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=galSuCJ8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DD1CC4CEE9;
+	Mon, 12 May 2025 18:04:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073466;
-	bh=RpezTVBxTXRmpjeZKVeVOYxmH9G/oCH3An69V+i7nM0=;
+	s=korg; t=1747073063;
+	bh=6a03zXtMy4boFhfqEdcRZG6oi7lKxCf+Yj8MfuGWzP4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZlEyh5IQkUBLm99llBusXke/vj8aFmbG1UKi1sfRsH2zn9Tb+Yzy+TLuCflp+IrWC
-	 30OldAGvR7dKP2iOIuDwhTGSn+hsVfM0+Wr9Rnz67qhri7mU+ZF6okQlfYAvhGOr2l
-	 bs280jmIpa3MmNbaaPL1WJy6wScWwazq+jpvUHmU=
+	b=galSuCJ8D16eBEp5ZAuBfwJ3Oanjk2sf6wfMWm/jsP9l4XEAc6PW+kNrCyZyrwpFW
+	 T0C0XfRWLlaYgEr4Pg2YjKRcZzIfUW0IdLpSK+1Wp1fiYXpnxyVTt/UUaJNr9dwZRd
+	 kytE+xIIeJ5OcDFC4xaTiBLMmyEAjbGCENHyOneg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 055/113] drm/amdgpu/hdp5: use memcfg register to post the write for HDP flush
+	Christoph Hellwig <hch@lst.de>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 143/184] loop: factor out a loop_assign_backing_file helper
 Date: Mon, 12 May 2025 19:45:44 +0200
-Message-ID: <20250512172029.908275801@linuxfoundation.org>
+Message-ID: <20250512172047.629348393@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
-References: <20250512172027.691520737@linuxfoundation.org>
+In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
+References: <20250512172041.624042835@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Christoph Hellwig <hch@lst.de>
 
-commit 0e33e0f339b91eecd9558311449a3d1e728722d4 upstream.
+[ Upstream commit d278164832618bf2775c6a89e6434e2633de1eed ]
 
-Reading back the remapped HDP flush register seems to cause
-problems on some platforms. All we need is a read, so read back
-the memcfg register.
+Split the code for setting up a backing file into a helper in preparation
+of adding more code to this path.
 
-Fixes: cf424020e040 ("drm/amdgpu/hdp5.0: do a posting read when flushing HDP")
-Reported-by: Alexey Klimov <alexey.klimov@linaro.org>
-Link: https://lists.freedesktop.org/archives/amd-gfx/2025-April/123150.html
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4119
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3908
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit a5cb344033c7598762e89255e8ff52827abb57a4)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20250131120120.1315125-2-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: f5c84eff634b ("loop: Add sanity check for read/write_iter")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/hdp_v5_0.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/block/loop.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/hdp_v5_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/hdp_v5_0.c
-@@ -33,7 +33,12 @@ static void hdp_v5_0_flush_hdp(struct am
+diff --git a/drivers/block/loop.c b/drivers/block/loop.c
+index 81995ebefc962..e083099a01e29 100644
+--- a/drivers/block/loop.c
++++ b/drivers/block/loop.c
+@@ -493,6 +493,14 @@ static int loop_validate_file(struct file *file, struct block_device *bdev)
+ 	return 0;
+ }
+ 
++static void loop_assign_backing_file(struct loop_device *lo, struct file *file)
++{
++	lo->lo_backing_file = file;
++	lo->old_gfp_mask = mapping_gfp_mask(file->f_mapping);
++	mapping_set_gfp_mask(file->f_mapping,
++			lo->old_gfp_mask & ~(__GFP_IO | __GFP_FS));
++}
++
+ /*
+  * loop_change_fd switched the backing store of a loopback device to
+  * a new file. This is useful for operating system installers to free up
+@@ -545,10 +553,7 @@ static int loop_change_fd(struct loop_device *lo, struct block_device *bdev,
+ 	disk_force_media_change(lo->lo_disk);
+ 	blk_mq_freeze_queue(lo->lo_queue);
+ 	mapping_set_gfp_mask(old_file->f_mapping, lo->old_gfp_mask);
+-	lo->lo_backing_file = file;
+-	lo->old_gfp_mask = mapping_gfp_mask(file->f_mapping);
+-	mapping_set_gfp_mask(file->f_mapping,
+-			     lo->old_gfp_mask & ~(__GFP_IO|__GFP_FS));
++	loop_assign_backing_file(lo, file);
+ 	loop_update_dio(lo);
+ 	blk_mq_unfreeze_queue(lo->lo_queue);
+ 	partscan = lo->lo_flags & LO_FLAGS_PARTSCAN;
+@@ -940,7 +945,6 @@ static int loop_configure(struct loop_device *lo, blk_mode_t mode,
+ 			  const struct loop_config *config)
  {
- 	if (!ring || !ring->funcs->emit_wreg) {
- 		WREG32((adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2, 0);
--		RREG32((adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2);
-+		/* We just need to read back a register to post the write.
-+		 * Reading back the remapped register causes problems on
-+		 * some platforms so just read back the memory size register.
-+		 */
-+		if (adev->nbio.funcs->get_memsize)
-+			adev->nbio.funcs->get_memsize(adev);
- 	} else {
- 		amdgpu_ring_emit_wreg(ring, (adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2, 0);
- 	}
+ 	struct file *file = fget(config->fd);
+-	struct address_space *mapping;
+ 	struct queue_limits lim;
+ 	int error;
+ 	loff_t size;
+@@ -976,8 +980,6 @@ static int loop_configure(struct loop_device *lo, blk_mode_t mode,
+ 	if (error)
+ 		goto out_unlock;
+ 
+-	mapping = file->f_mapping;
+-
+ 	if ((config->info.lo_flags & ~LOOP_CONFIGURE_SETTABLE_FLAGS) != 0) {
+ 		error = -EINVAL;
+ 		goto out_unlock;
+@@ -1009,9 +1011,7 @@ static int loop_configure(struct loop_device *lo, blk_mode_t mode,
+ 
+ 	lo->use_dio = lo->lo_flags & LO_FLAGS_DIRECT_IO;
+ 	lo->lo_device = bdev;
+-	lo->lo_backing_file = file;
+-	lo->old_gfp_mask = mapping_gfp_mask(mapping);
+-	mapping_set_gfp_mask(mapping, lo->old_gfp_mask & ~(__GFP_IO|__GFP_FS));
++	loop_assign_backing_file(lo, file);
+ 
+ 	lim = queue_limits_start_update(lo->lo_queue);
+ 	loop_update_limits(lo, &lim, config->block_size);
+-- 
+2.39.5
+
 
 
 
