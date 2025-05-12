@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-143562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D83CBAB406D
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:54:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7124CAB413C
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:03:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8009A8C0AD1
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:52:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DAB33A7D4F
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:01:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FC3326561E;
-	Mon, 12 May 2025 17:52:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46B2C255235;
+	Mon, 12 May 2025 18:01:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V7G705bR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S2TIK14N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02EE1A08CA;
-	Mon, 12 May 2025 17:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03F381EE03B;
+	Mon, 12 May 2025 18:01:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072355; cv=none; b=jkSJdZyw/3gtcRS5aa1V+TT9WpbbMuJcNuVL/eDCosZUSlouWQBU6GnMwTR+n+hsEa1oQbrXQPhZfc4vc157XdkF9gvYwV2aZpRKeBLWXrYm0ADuYeoOu1jarKwXR7Cxxy2tfixkCbR+nXZvQuKc6p2wyIqBN4i5VCXtrBdSXfg=
+	t=1747072901; cv=none; b=KdhNZwvLCM5fUXYKtcAfQeodzQdcrT03vt1ovGEXx0hlRCUCyyVLIzOp0jzFG1tXG5lJsRXYN7Qo/1rkbD1bwCQImQC2tMtyRIjZp0ZEnnMMUrqvN1ViPWs7aq9XuVQDxjuFpRR4nF6YDYHpkZ/e4zYPaA9ieH36wAUbxHatSvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072355; c=relaxed/simple;
-	bh=+Qgm1Botn39T1B9EL1Zioy9QwGI3sBrce52G4MYvdBs=;
+	s=arc-20240116; t=1747072901; c=relaxed/simple;
+	bh=/86slEzPlnv/J5InxIn0cd+qpxDuARPknkWd31uR46s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oWlhmY1d/aehcHJxskD400mz5CqLMYy6SOiABc//WDRNNzVAbLmric7ENCTw3MFNHpzQidpLiUJsAvIHpfMzj4EfAxG4UrLi8RMSk9ncu4MjZhAcADuGMSzft2tKF4JSupBjX9sNKwTMvEN5bnLqNqRXXalNGIOdhfQAdEAS06w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V7G705bR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D3FEC4CEE7;
-	Mon, 12 May 2025 17:52:35 +0000 (UTC)
+	 MIME-Version; b=s3+Up1IbSeoInMNn9VrP/8TWRL81KKT4GgFtLRh8wHcmEwAIkIH3/jdD0yovikbtNL/sdd+sUvdxlTtOqUUfterCzbg8kOzEvrjAHt4oYKtwPOb+cE6E4mpYJdLLjSt06wZzPlB5XMcjxOlNgtalYt6dQRa/yr9NTnZPtSsKugw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S2TIK14N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A0DCC4CEE7;
+	Mon, 12 May 2025 18:01:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072355;
-	bh=+Qgm1Botn39T1B9EL1Zioy9QwGI3sBrce52G4MYvdBs=;
+	s=korg; t=1747072900;
+	bh=/86slEzPlnv/J5InxIn0cd+qpxDuARPknkWd31uR46s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V7G705bRZN6fRl4kpHJvcbwKXVJYIz3aib9c783FsbTnZ4R89pL8hWv6g+ftuZ+Ce
-	 rl0LZjN1HLzZUJqRXAJkVYP7drGD2XYpFbRwUc7z6HHS7H/mCMCgiYiddavynz1OfO
-	 k7+psvcbHe2UVB7PwE8s9UN2j7uZzifSt66Dr2ac=
+	b=S2TIK14NckJq3O6AqXfDFLWsG4zxB9Eui7DsZ8UkZn+TQY5u8pQ1V2S4ldPg6LixR
+	 ahIDlqmNe1cnTDMnKWKQ9KYVEWgFsCPaOjyihitSKtNkXSDttlRoBGRn34y3pfBH7R
+	 dZv6XczXTIOKbkDqG7vjF8w59TquYTKhACUtYpKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kota Toda <kota.toda@gmo-cybersecurity.com>,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 15/92] netfilter: ipset: fix region locking in hash types
-Date: Mon, 12 May 2025 19:44:50 +0200
-Message-ID: <20250512172023.745543583@linuxfoundation.org>
+	Saleemkhan Jamadar <saleemkhan.jamadar@amd.com>,
+	Leo Liu <leo.liu@amd.com>,
+	Ruijing Dong <ruijing.dong@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.12 090/184] drm/amdgpu/vcn: using separate VCN1_AON_SOC offset
+Date: Mon, 12 May 2025 19:44:51 +0200
+Message-ID: <20250512172045.493498870@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172023.126467649@linuxfoundation.org>
-References: <20250512172023.126467649@linuxfoundation.org>
+In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
+References: <20250512172041.624042835@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jozsef Kadlecsik <kadlec@netfilter.org>
+From: Ruijing Dong <ruijing.dong@amd.com>
 
-[ Upstream commit 8478a729c0462273188263136880480729e9efca ]
+commit b7e84fb708392b37e5dbb2a95db9b94a0e3f0aa2 upstream.
 
-Region locking introduced in v5.6-rc4 contained three macros to handle
-the region locks: ahash_bucket_start(), ahash_bucket_end() which gave
-back the start and end hash bucket values belonging to a given region
-lock and ahash_region() which should give back the region lock belonging
-to a given hash bucket. The latter was incorrect which can lead to a
-race condition between the garbage collector and adding new elements
-when a hash type of set is defined with timeouts.
+VCN1_AON_SOC_ADDRESS_3_0 offset varies on different
+VCN generations, the issue in vcn4.0.5 is caused by
+a different VCN1_AON_SOC_ADDRESS_3_0 offset.
 
-Fixes: f66ee0410b1c ("netfilter: ipset: Fix "INFO: rcu detected stall in hash_xxx" reports")
-Reported-by: Kota Toda <kota.toda@gmo-cybersecurity.com>
-Signed-off-by: Jozsef Kadlecsik <kadlec@netfilter.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch does the following:
+
+    1. use the same offset for other VCN generations.
+    2. use the vcn4.0.5 special offset
+    3. update vcn_4_0 and vcn_5_0
+
+Acked-by: Saleemkhan Jamadar <saleemkhan.jamadar@amd.com>
+Reviewed-by: Leo Liu <leo.liu@amd.com>
+Signed-off-by: Ruijing Dong <ruijing.dong@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 5c89ceda9984498b28716944633a9a01cbb2c90d)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/ipset/ip_set_hash_gen.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.h |    1 -
+ drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c   |    1 +
+ drivers/gpu/drm/amd/amdgpu/vcn_v2_5.c   |    1 +
+ drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c   |    1 +
+ drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c   |    4 +++-
+ drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c |    1 +
+ drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c |    1 +
+ drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c |    3 ++-
+ 8 files changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/net/netfilter/ipset/ip_set_hash_gen.h b/net/netfilter/ipset/ip_set_hash_gen.h
-index ef04e556aadb4..0bd6bf46f05f3 100644
---- a/net/netfilter/ipset/ip_set_hash_gen.h
-+++ b/net/netfilter/ipset/ip_set_hash_gen.h
-@@ -63,7 +63,7 @@ struct hbucket {
- #define ahash_sizeof_regions(htable_bits)		\
- 	(ahash_numof_locks(htable_bits) * sizeof(struct ip_set_region))
- #define ahash_region(n, htable_bits)		\
--	((n) % ahash_numof_locks(htable_bits))
-+	((n) / jhash_size(HTABLE_REGION_BITS))
- #define ahash_bucket_start(h,  htable_bits)	\
- 	((htable_bits) < HTABLE_REGION_BITS ? 0	\
- 		: (h) * jhash_size(HTABLE_REGION_BITS))
--- 
-2.39.5
-
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.h
+@@ -66,7 +66,6 @@
+ #define VCN_ENC_CMD_REG_WAIT		0x0000000c
+ 
+ #define VCN_AON_SOC_ADDRESS_2_0 	0x1f800
+-#define VCN1_AON_SOC_ADDRESS_3_0 	0x48000
+ #define VCN_VID_IP_ADDRESS_2_0		0x0
+ #define VCN_AON_IP_ADDRESS_2_0		0x30000
+ 
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c
+@@ -39,6 +39,7 @@
+ 
+ #define VCN_VID_SOC_ADDRESS_2_0					0x1fa00
+ #define VCN1_VID_SOC_ADDRESS_3_0				0x48200
++#define VCN1_AON_SOC_ADDRESS_3_0				0x48000
+ 
+ #define mmUVD_CONTEXT_ID_INTERNAL_OFFSET			0x1fd
+ #define mmUVD_GPCOM_VCPU_CMD_INTERNAL_OFFSET			0x503
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v2_5.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v2_5.c
+@@ -39,6 +39,7 @@
+ 
+ #define VCN_VID_SOC_ADDRESS_2_0					0x1fa00
+ #define VCN1_VID_SOC_ADDRESS_3_0				0x48200
++#define VCN1_AON_SOC_ADDRESS_3_0				0x48000
+ 
+ #define mmUVD_CONTEXT_ID_INTERNAL_OFFSET			0x27
+ #define mmUVD_GPCOM_VCPU_CMD_INTERNAL_OFFSET			0x0f
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c
+@@ -40,6 +40,7 @@
+ 
+ #define VCN_VID_SOC_ADDRESS_2_0					0x1fa00
+ #define VCN1_VID_SOC_ADDRESS_3_0				0x48200
++#define VCN1_AON_SOC_ADDRESS_3_0				0x48000
+ 
+ #define mmUVD_CONTEXT_ID_INTERNAL_OFFSET			0x27
+ #define mmUVD_GPCOM_VCPU_CMD_INTERNAL_OFFSET			0x0f
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c
+@@ -46,6 +46,7 @@
+ 
+ #define VCN_VID_SOC_ADDRESS_2_0							0x1fb00
+ #define VCN1_VID_SOC_ADDRESS_3_0						0x48300
++#define VCN1_AON_SOC_ADDRESS_3_0						0x48000
+ 
+ #define VCN_HARVEST_MMSCH								0
+ 
+@@ -575,7 +576,8 @@ static void vcn_v4_0_mc_resume_dpg_mode(
+ 
+ 	/* VCN global tiling registers */
+ 	WREG32_SOC15_DPG_MODE(inst_idx, SOC15_DPG_MODE_OFFSET(
+-		VCN, 0, regUVD_GFX10_ADDR_CONFIG), adev->gfx.config.gb_addr_config, 0, indirect);
++			VCN, inst_idx, regUVD_GFX10_ADDR_CONFIG),
++			adev->gfx.config.gb_addr_config, 0, indirect);
+ }
+ 
+ /**
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c
+@@ -44,6 +44,7 @@
+ 
+ #define VCN_VID_SOC_ADDRESS_2_0		0x1fb00
+ #define VCN1_VID_SOC_ADDRESS_3_0	0x48300
++#define VCN1_AON_SOC_ADDRESS_3_0	0x48000
+ 
+ static const struct amdgpu_hwip_reg_entry vcn_reg_list_4_0_3[] = {
+ 	SOC15_REG_ENTRY_STR(VCN, 0, regUVD_POWER_STATUS),
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c
+@@ -46,6 +46,7 @@
+ 
+ #define VCN_VID_SOC_ADDRESS_2_0						0x1fb00
+ #define VCN1_VID_SOC_ADDRESS_3_0					(0x48300 + 0x38000)
++#define VCN1_AON_SOC_ADDRESS_3_0					(0x48000 + 0x38000)
+ 
+ #define VCN_HARVEST_MMSCH							0
+ 
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c
+@@ -488,7 +488,8 @@ static void vcn_v5_0_0_mc_resume_dpg_mod
+ 
+ 	/* VCN global tiling registers */
+ 	WREG32_SOC24_DPG_MODE(inst_idx, SOC24_DPG_MODE_OFFSET(
+-		VCN, 0, regUVD_GFX10_ADDR_CONFIG), adev->gfx.config.gb_addr_config, 0, indirect);
++		VCN, inst_idx, regUVD_GFX10_ADDR_CONFIG),
++		adev->gfx.config.gb_addr_config, 0, indirect);
+ 
+ 	return;
+ }
 
 
 
