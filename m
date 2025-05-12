@@ -1,156 +1,179 @@
-Return-Path: <stable+bounces-143259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADB57AB36D3
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 14:17:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 231CEAB3726
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 14:38:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B72D18974A8
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 12:17:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41E6C19E1DD6
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 12:37:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3944189912;
-	Mon, 12 May 2025 12:17:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C5F927978E;
+	Mon, 12 May 2025 12:36:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JlPbOJwn"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="I+YKvXPl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FC9C1C6FF2;
-	Mon, 12 May 2025 12:17:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4533529373D
+	for <stable@vger.kernel.org>; Mon, 12 May 2025 12:36:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747052222; cv=none; b=BtqwCjKAlY/V1SbcMvA12Xf/qo2yOl4bPPXqNqIXeaeRvDkmQ521qD3xjpAgQAldWS4zyYQXtDJeU1NvNEfOqC32n4MqXodgL1fFR16EHtjFT5aXkKCfFnum1oVTBI09cG4sbps/3QDg2g/HSXKpUMPyeHFzVN593H7WRS/UBds=
+	t=1747053388; cv=none; b=jpXRJ6Dvn9RaI+iTKX8xMILXybWkBChTROkDO/LF+posmdPgqHyVrss0l77685hNOvK4Cn7q5ISzEqHFhlTgy9xQjB684P0ER6FX5pmjDqvupX8221UJmGMWX0CtLpdiZBRs64AS/L4XtGsz0+qlkP+lt+rgsDWgLdPLVYWKl5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747052222; c=relaxed/simple;
-	bh=mcT9W2XpGug/PF9XnYH8hrSTEA26BaaYyG5vLPJwSyk=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AogndMfxWzSYlhpXnuWA+PtvtQio16UuEP1Z4HTkh/sZ9XFezH0ikbxKXXPp1n8xJuwjrIV/IgRI9P24GJtX/BGgm+A1S3i6neI+ZBgfzcpPT9y1LY0uMU8gwSGV9tFpgozlD6l/2sYa7gKcLR3qxCOYV/U4r/5c7A2HzhJQHTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JlPbOJwn; arc=none smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7390d21bb1cso4112573b3a.2;
-        Mon, 12 May 2025 05:17:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747052220; x=1747657020; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:user-agent:references
-         :in-reply-to:subject:cc:to:from:message-id:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=UT8FxHYTuZLnDZ/LUAeiM7+DFqtM+z3h97KfeLVmQsw=;
-        b=JlPbOJwn9LkMLXLpYthT8yGD3yXr0x4CjGj8z1YjoyMVQycjsMUstrAhVNLuG45os5
-         eARQTw4SsxU/CuEyx29K4De9XqHg4vDUS+ipC14cIHntRixz5/jeF0U0eEP6zlTEk2rD
-         tsL5I6DuUwfbNoMTU6SZYOGUCY6dgaggKis94TbWfs6VLwf+DRp0l4QwF0uaI6Rbo+FM
-         Gn6Q0ZgdHKhSuf3glsIQAVipOSVuXYY+csTeKzVtcGVjNT0AkXvwuaSMIUR4nfeupXjK
-         3yS8VxzGrREPnNnsmHU7x5lTxtC4KD1rQ/yHTviB7WWl8hRO+RWmxXykd6/ygBjuP7kV
-         +VlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747052220; x=1747657020;
-        h=content-transfer-encoding:mime-version:user-agent:references
-         :in-reply-to:subject:cc:to:from:message-id:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=UT8FxHYTuZLnDZ/LUAeiM7+DFqtM+z3h97KfeLVmQsw=;
-        b=YEdQUprYDmR4EtzDEkO1zBD5oN4RG8npZUUskhXuwxLMJBk+Iao+/9irq1jZisTQwk
-         ryKrVwStbfx35hFyTe+9JihmVb2SZ/CZxj7vsX0yxXrs5ySyVy616THCDQwvUNP3/fnO
-         ysw1VbCFc573CX2OCdrZZZ0nWkkjCnV5orTHcJlFP9dQtwYbZAhsR4MB/zukZN7fdRxl
-         jshNeCMZQwCnaDOfsoVFpgdVMrQEfRLjOLI3uwq2brV2iOU6X/x6dHZcMP0S3a5KSGje
-         QB20YUd3pKnybDrul3riG7HuWAwndHKY0taqvkdytat/T/6aF6fCRfmsnVWZbWt721PO
-         jmaw==
-X-Forwarded-Encrypted: i=1; AJvYcCV7pdDk6NHuBzuT8HqtBjwpMpBU0ZAI1gO9UBX3OJfNy2p4uhEgTtXpIh3fguDjeZvqyiLZ7Pq0RirF@vger.kernel.org, AJvYcCWNxGfXiaPVuEBC2nzuCe4sjVR9ijPpFnZNEU4BJ5xCCgPZ8E6an33nWVx1GXKjOCw85/f4thSp@vger.kernel.org, AJvYcCXmWqgvnv1UrMxBLy8D/FwiUU/3WxLNJ42HM55jtiT6ib8aC5bekOAoMPocVacExHcKLLW4laPsDmU52w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxM0mfdX/CMuu/pre84mluHpIFYn04MyCn106jSrBVjPzCy8Cmh
-	il3R5G6jLIDRkPkaEBu/ga+Om7kVvemCrUs2GWETwIputROG7DA9
-X-Gm-Gg: ASbGncskSR0tzoOjIHIAGJCA494VcXVKq8HFyauKFVTerfHqe/EsyZVZHHocxATSsYM
-	9H+2cV/TwvdVvKAG+N5p4vB91S2ni6QJszNYLuk4UVXAzH17HFTK7szODW/3xFKWx6vrSxFfNfa
-	vYSKic82HjgO+YBBL9hS/VK17rGh4si/C++Wqgq+UzNYd76+k+FEs0/2/7PgUVOkHGeorkRQOM4
-	GXP4pEFOFBuquJCAEUokVB/VuvP5UU9PxJ7ffmdRXUWnGvgJ7q+ulC2HcBNPqhRxDG/3655MWXj
-	aewOC5/2vuMxnIicfKtZd8MOi1g1COpVYvf6COT1s0PjbwFq/Xh+puKnUac6joI/yot7n0AQfa9
-	2oWuw8A==
-X-Google-Smtp-Source: AGHT+IFlczZni4OBHuq4O/Qf3oTFzY2BdnjnEHkE4dmq/Vo7gt0d2DyGDIXpH0W7lsUp0iC1OeuuxQ==
-X-Received: by 2002:a05:6a00:17a7:b0:730:79bf:c893 with SMTP id d2e1a72fcca58-7423bc1d336mr19378195b3a.4.1747052220490;
-        Mon, 12 May 2025 05:17:00 -0700 (PDT)
-Received: from localhost (58x12x133x161.ap58.ftth.ucom.ne.jp. [58.12.133.161])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74237a3d3e9sm5865409b3a.125.2025.05.12.05.16.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 May 2025 05:17:00 -0700 (PDT)
-Date: Mon, 12 May 2025 21:16:53 +0900
-Message-ID: <eke7v7q6vxai.wl-kobarity@gmail.com>
-From: kobarity <kobarity@gmail.com>
-To: Baolu Lu <baolu.lu@linux.intel.com>
-Cc: Aditya Garg <gargaditya08@live.com>,	Berkel =?ISO-8859-1?Q?J=F6rg?=
- <joerg.berkel@bfh.ch>,	Robin Murphy <robin.murphy@arm.com>,
-	"linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
-	"dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"regressions@lists.linux.dev" <regressions@lists.linux.dev>,
-	"linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,	"lukas@wunner.de"
- <lukas@wunner.de>,	David Woodhouse <dwmw2@infradead.org>,
-	"iommu@lists.linux.dev" <iommu@lists.linux.dev>,	Joerg Roedel
- <joro@8bytes.org>,	Will Deacon <will@kernel.org>
-Subject: Re: [REGRESSION] applespi from 6.12 onwards
-In-Reply-To: <089b2370-23e4-4a22-bf57-886e46247a1f@linux.intel.com>
-References: <4dada48a-c5dd-4c30-9c85-5b03b0aa01f0@bfh.ch>
-	<PN3PR01MB9597D8E327CC7910673849D3B888A@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM>
-	<122a1f90-ddd9-4e74-96d1-57e21e580ae2@linux.intel.com>
-	<f1b41874-1535-4457-9747-eee3d816091a@arm.com>
-	<PN3PR01MB959764E908600CD45169348CB88BA@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM>
-	<c0bbfcc8-1275-43de-be40-acb8f2653359@bfh.ch>
-	<PN3PR01MB959708DEEA1567DD38447D5AB895A@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM>
-	<eke7wmanw9xq.wl-kobarity@gmail.com>
-	<089b2370-23e4-4a22-bf57-886e46247a1f@linux.intel.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
- Emacs/31.0.50 (x86_64-pc-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1747053388; c=relaxed/simple;
+	bh=7eKz9Met6byrIAUH9adG7uBbtkmmO6hjECkeW8IwJLA=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=Dqf+m9LJypvRRNL0Sgu6+9vKwt+I0x/WDRA7FlW13sUIerDVHnOpkmsZ9/Zpf86LMlEqrSVlR2iPRwnQbRN52NccTM+hGI8zrjBhqyxYrlvvO9WJwf3ths1w2bgcgoA55P06h+R16v6vCUj2TrherT871Eu8sYeu7+QN7IdTv58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=I+YKvXPl; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1747053385;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=6S/p4Jp0Aj0fVbsxpazo/Y1fkTp28o7I5t0XKUfFF0k=;
+	b=I+YKvXPlqce6Rf03F+Yv41Z7y2QR0Sq1kmf1uVRb7QpnzyA2ovknB27MV5FCvOPViGB9UT
+	CKT5W4wFROMoYdRLpkpO9Qbyby0U2NUFDlNpU3jPSi+66lzK1wF+kod//0bORbKnnwSKwI
+	RMXhbfupVWfxb839B7ZOLjqtTougFto=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-511-6OV1FC7nOlWe4a212UYIOA-1; Mon,
+ 12 May 2025 08:36:23 -0400
+X-MC-Unique: 6OV1FC7nOlWe4a212UYIOA-1
+X-Mimecast-MFC-AGG-ID: 6OV1FC7nOlWe4a212UYIOA_1747053382
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8E7E31955DE8;
+	Mon, 12 May 2025 12:36:22 +0000 (UTC)
+Received: from [10.22.80.45] (unknown [10.22.80.45])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 65E2330001AB;
+	Mon, 12 May 2025 12:36:21 +0000 (UTC)
+Date: Mon, 12 May 2025 14:36:16 +0200 (CEST)
+From: Mikulas Patocka <mpatocka@redhat.com>
+To: gregkh@linuxfoundation.org
+cc: dan.carpenter@linaro.org, stable@vger.kernel.org
+Subject: [PATCH 5.12.y] dm: add missing unlock on in dm_keyslot_evict()
+In-Reply-To: <2025050954-excretion-yonder-4e95@gregkh>
+Message-ID: <c9d4dfc7-2300-e271-0308-056633142226@redhat.com>
+References: <2025050954-excretion-yonder-4e95@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Baolu Lu wrote:
-> On 5/11/25 21:31, kobarity wrote:
-> >=20
-> > Hi
-> >=20
-> > I'm also experiencing this problem on my MacBookPro14,3.
-> >=20
-> > Aditya Garg wrote:
-> >>=20
-> >> Hi J=F6rg
-> >>=20
-> >> Can you test the kernel here to see if this fixes your issue:
-> >>=20
-> >> https://github.com/t2linux/T2-Debian-and-Ubuntu-Kernel/actions/runs/14=
-944200356
-> >>=20
-> >> Alternatively you can try compiling your own kernel with this patch:
-> >>=20
-> >> https://lore.kernel.org/all/0-v1-c26553717e90+65f-iommu_vtd_ss_wo_jgg@=
-nvidia.com/
-> >=20
-> > As far as I have tried, this patch did not solve the problem.
-> >=20
-> > By bisecting, I found that this problem was introduced by commit
-> > 2031c469f816 ("iommu/vt-d: Add support for static identity domain").
-> > In fact, since this commit, it will panic at startup.  This panic was
-> > fixed by commit 6e02a277f1db ("iommu/vt-d: Fix incorrect
-> > pci_for_each_dma_alias() for non-PCI devices").  So I applied commit
-> > 6e02a277f1db on commit 2031c469f816 and confirmed that the keyboard
-> > and touchpad is not working.
->=20
-> Have you tried to apply commit 64f792981e35 ("iommu/vt-d: Remove device
-> comparison in context_setup_pass_through_cb")?
+Hi
 
-Yes, I tried it on yesterday's master branch, including commit
-64f792981e35.
+Here I'm submitting updated patch.
 
-- Keyboard/Touchpad NOT working:
-  - No patches
-  - With patch in https://lore.kernel.org/all/0-v1-c26553717e90+65f-iommu_v=
-td_ss_wo_jgg@nvidia.com/
-- Keyboard/Touchpad working:
-  - With my workaround patch
+Mikulas
+
+
+On Fri, 9 May 2025, gregkh@linuxfoundation.org wrote:
+
+> 
+> The patch below does not apply to the 5.12-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
+> 
+> To reproduce the conflict and resubmit, you may use the following commands:
+> 
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.12.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x 650266ac4c7230c89bcd1307acf5c9c92cfa85e2
+> # <resolve conflicts, build, test, etc.>
+> git commit -s
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025050954-excretion-yonder-4e95@gregkh' --subject-prefix 'PATCH 5.12.y' HEAD^..
+> 
+> Possible dependencies:
+> 
+> 
+> 
+> thanks,
+> 
+> greg k-h
+> 
+> ------------------ original commit in Linus's tree ------------------
+> 
+> >From 650266ac4c7230c89bcd1307acf5c9c92cfa85e2 Mon Sep 17 00:00:00 2001
+> From: Dan Carpenter <dan.carpenter@linaro.org>
+> Date: Wed, 30 Apr 2025 11:05:54 +0300
+> Subject: [PATCH] dm: add missing unlock on in dm_keyslot_evict()
+> 
+> We need to call dm_put_live_table() even if dm_get_live_table() returns
+> NULL.
+> 
+> Fixes: 9355a9eb21a5 ("dm: support key eviction from keyslot managers of underlying devices")
+> Cc: stable@vger.kernel.org	# v5.12+
+> Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+> Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+> 
+> diff --git a/drivers/md/dm-table.c b/drivers/md/dm-table.c
+> index 9e175c5e0634..31d67a1a91dd 100644
+> --- a/drivers/md/dm-table.c
+> +++ b/drivers/md/dm-table.c
+> @@ -1173,7 +1173,7 @@ static int dm_keyslot_evict(struct blk_crypto_profile *profile,
+>  
+>  	t = dm_get_live_table(md, &srcu_idx);
+>  	if (!t)
+> -		return 0;
+> +		goto put_live_table;
+>  
+>  	for (unsigned int i = 0; i < t->num_targets; i++) {
+>  		struct dm_target *ti = dm_table_get_target(t, i);
+> @@ -1184,6 +1184,7 @@ static int dm_keyslot_evict(struct blk_crypto_profile *profile,
+>  					  (void *)key);
+>  	}
+>  
+> +put_live_table:
+>  	dm_put_live_table(md, srcu_idx);
+>  	return 0;
+>  }
+> 
+
+We need to call dm_put_live_table() even if dm_get_live_table() returns
+NULL.
+
+Fixes: 9355a9eb21a5 ("dm: support key eviction from keyslot managers of underlying devices")
+Cc: stable@vger.kernel.org    # v5.12+
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+
+---
+ drivers/md/dm-table.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+Index: linux-stable/drivers/md/dm-table.c
+===================================================================
+--- linux-stable.orig/drivers/md/dm-table.c
++++ linux-stable/drivers/md/dm-table.c
+@@ -1251,13 +1251,14 @@ static int dm_keyslot_evict(struct blk_k
+ 
+ 	t = dm_get_live_table(md, &srcu_idx);
+ 	if (!t)
+-		return 0;
++		goto put_live_table;
+ 	for (i = 0; i < dm_table_get_num_targets(t); i++) {
+ 		ti = dm_table_get_target(t, i);
+ 		if (!ti->type->iterate_devices)
+ 			continue;
+ 		ti->type->iterate_devices(ti, dm_keyslot_evict_callback, &args);
+ 	}
++put_live_table:
+ 	dm_put_live_table(md, srcu_idx);
+ 	return args.err;
+ }
+
 
