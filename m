@@ -1,164 +1,194 @@
-Return-Path: <stable+bounces-143131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C05BAB31AE
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 10:31:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D5CAAB31BC
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 10:33:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B16D23B0795
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 08:31:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D901D7ADCDB
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 08:31:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61C342550D4;
-	Mon, 12 May 2025 08:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0E3825A325;
+	Mon, 12 May 2025 08:32:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PdabjSit"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g2Umm7QY"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84CDD255F21;
-	Mon, 12 May 2025 08:31:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0593B25A2DA;
+	Mon, 12 May 2025 08:32:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747038704; cv=none; b=reL2159idetJjqKCBmVsMCvve9fj6jOw01aS9xRfWhIYEzQOs80GWMnRQLgu+BknUo2tCgRJmFF4mPRMlJx/KUzg+HiLNEr1+AfAonJqLNRyY/ABaqwshKQlN/7lmEQUySX211JEjpZtMj7z07gJd2jIbuleZ4CfTiOW46pWE+g=
+	t=1747038745; cv=none; b=K3mUZNMlatszQrK1reZhHrPKi6sV14GcUJ+WwN0sGbM9QNUTQLXF8Lyd1WGN2yQBORds+9Wubacv/G9fioY0Qi97ufkpFbRQUL6QSQSOHgFU2t61KPGPmA+6LeBLX0yacaGRvZQj+4Mq8KTFzA7gP5XrGumT/zx2nSyv8gIKD2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747038704; c=relaxed/simple;
-	bh=f8pYJrR7b0v7xVq/4odwpNWdLzpTrC9MBNDWyIHFjZ4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fTPnrYG3/y0iwJegUcC16vHuhTVXS891kjJgOCADFAVHkDEEUQC1Xchag6ucamu4w8UYemS7dqkiS16gSNFBKQbShSuoCE7BROElPVVHShHm4517NHHhiDT+7Zbf5lt83BKXbNqVU33C6uBdj0Z+y2CdrJ3n4CaX+UdAGrU1NYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PdabjSit; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747038703; x=1778574703;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=f8pYJrR7b0v7xVq/4odwpNWdLzpTrC9MBNDWyIHFjZ4=;
-  b=PdabjSit3/EtNRkCTJ+KffjYl+dteylWSpjxlNROpr86znUYFeUsjgXV
-   9uNf3DkpMPYmOWb3H5eeLHCWq+A3NVlfXnggiIouaqBnyaNqbjJGTIbwW
-   l8VVWdVA1CzMsDVbKh3yAkOsSvnVDByRgYeFX5GjR11PyhI/8Mt8+rDvK
-   sHSX1jV9xGXKB97XC7JjjaeFBNR3YoZY2CpTkoaN6bYPPrO2AItL4vV2F
-   jgmrieNFLuWWrECKvyPWRU2FhncsSOTJ09+X6ZBuTRKAPl2YSz+bgCfHx
-   XrNivUcXKaKxAIB1Pq55wu58C8TODLQ4QQbvNKfFTi9ptMZwoS/8miNJH
-   g==;
-X-CSE-ConnectionGUID: /UjcI638STGqUvk+WI74Dg==
-X-CSE-MsgGUID: k5KZTtARTXqroimaMVNuow==
-X-IronPort-AV: E=McAfee;i="6700,10204,11430"; a="48820259"
-X-IronPort-AV: E=Sophos;i="6.15,281,1739865600"; 
-   d="scan'208";a="48820259"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2025 01:31:42 -0700
-X-CSE-ConnectionGUID: Wt0JH0LnR4aVGkyff9QzVA==
-X-CSE-MsgGUID: s45XHkb/TjiYI+IeSrrSfg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,281,1739865600"; 
-   d="scan'208";a="137000875"
-Received: from jiaqingz-mobl.ccr.corp.intel.com (HELO [10.124.249.161]) ([10.124.249.161])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2025 01:31:40 -0700
-Message-ID: <0ec52e49-3996-48e2-a16b-5d7eb0a4c8a6@linux.intel.com>
-Date: Mon, 12 May 2025 16:31:23 +0800
+	s=arc-20240116; t=1747038745; c=relaxed/simple;
+	bh=2BugR5P92QeAabJWPRUeZifG7CzJunI8qA3dpv69ysE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=OPoNR3Ji0orJc0sNmWz9so2Cwap0lEGuRxubqUN3592Ji2nDPChpZnWc6/VzshPSViWtsSnUOMFN1S0iG32UOSChEFBHsXjb7DTpSg/otfy7+BpEntJ0xB3CNQpcoVND1gv3muI6jw6qieDAUPI/kY+jcij3GY/5oE1pJQyrpmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g2Umm7QY; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-441c99459e9so26799885e9.3;
+        Mon, 12 May 2025 01:32:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747038742; x=1747643542; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=kYXcYfmW92NwQS8DOWBMZ1iD5TRg6ruyTQhU7K965SU=;
+        b=g2Umm7QYiJYhJDBVj+dSF4SqqNTqVBWLZRbFtCDmlTN3cVQcE9DY+wlpcZHVhlSu1i
+         Rx/TlwUn7xjrUrRl7KWKt5toDHcsgKXm08n5y6PlLWJRIU2H+OZXyNn98DYKCekofxe/
+         dfPETQ5Lo1IPrc7FVxVu+sQmwEVVdOiKlx2kFVWF5RoPnkevUMBM3Ei8BGfeMJMW8v3s
+         ArA+a8SKKxxVG2FfIlBil24BhemvpE4HGKzDAYloWEZ76Y3xdPVpsM7f45Jvem91YjAJ
+         8cqcPS+Q/hCRqL8TZudcvK/L0Uyri9BZHyy2xxmSVyED7pKc4Lsjy0dZvvy85l2XIOBg
+         BFSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747038742; x=1747643542;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kYXcYfmW92NwQS8DOWBMZ1iD5TRg6ruyTQhU7K965SU=;
+        b=cT51RJTIEkX43vp+kip/DG5q4pmu+L/gITivJCgAiB0Uqa9lREBBiv65bK+F21UMOp
+         VFVQgVaucNsi2nh8G7YKwN3PSRlnGcduFK/uCpOhN1Rm6iSrum0EY0zkyxGbGrOEGXWF
+         DmQP21sxtG5c9iQGPchUB2hcJkw+WT3OL3QNOIFuwmt2xEubc6FqkLosGfxdjja1p37V
+         g8+OPkREBS2bNd4CZ9NKi597iYoalHWtXPmd8fg9ATkk8gXObC2Qn5jj2E7WVFiS9AD8
+         rN+hqrUPdl02G2OtvQjsAAyeZ3QSUEb6aqoHiE3Nx0xXoV/yEczqJz8vElVjSZoaC+KY
+         jUcQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVnfbhp0LqYDabwjFghqfOqlD8vDnqhIIggpEPpFPrK3x2o14U42AVOA2VzDzUkejY0rVjySO1T@vger.kernel.org, AJvYcCX5gmOBLm2/4LbVsAdCF00VhVZNQ8cql8BL7dEc765F6JnfrM1Gw3tDyTww5FmlK5gZ8iM9XlLejatmcLk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxeaGe6btedKu3jCS4eQFPjeCVL/5hCPh0YDcBwD+pTJ++ry//W
+	tlq8ZIYUgDJRBjnR3kS67nmNV6xegxdjErl85Lvml0Zj2UcZfHGR
+X-Gm-Gg: ASbGncvbTsvZd0ZYAfSzjCVvGHCQpbSu6trBPZ7kb7fRzt3mcv7gbkztbnsZD+/4kiJ
+	+M4noWmVkanpYK7DIGBXIhIui99pve0RdKGvFKNBmu4gST1Ru97v5XMkhXOmcNCNUKcgEy6l1gS
+	8/VVlemk5xwweuzcYSu4JS7Bv+rujLT4f8jyiNebIBsOnT3XMB5okSDq99i77VCQbT82ttaW+MG
+	tzU4U1EWsTHBRzk1DcztTLjMULSByszSMLsVB00NjSCvOU9k6etKdZsUeNSf7Qoea6n1VQ9X7im
+	Nz40mPd4MwNeXa079JPpuAw8BkzQxu9w0A5x7Ys/rjgxM/0o9Otr
+X-Google-Smtp-Source: AGHT+IEJoNDjSaA+Sniz3FqA3ByQMXjgbbgPzhBhHPvWA9YXb+3eKhQDYoPDKhbTMcwyvyd3M3nzGw==
+X-Received: by 2002:a05:6000:430e:b0:39c:1ef6:4364 with SMTP id ffacd0b85a97d-3a1f643833emr10644682f8f.14.1747038741864;
+        Mon, 12 May 2025 01:32:21 -0700 (PDT)
+Received: from vitor-nb.Home ([2001:8a0:e602:d900:7df1:5521:294c:1eb5])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a1f5a4c5a4sm11577918f8f.81.2025.05.12.01.32.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 May 2025 01:32:21 -0700 (PDT)
+From: Vitor Soares <ivitro@gmail.com>
+To: Andrzej Hajda <andrzej.hajda@intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Robert Foss <rfoss@kernel.org>,
+	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Jernej Skrabec <jernej.skrabec@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Simona Vetter <simona@ffwll.ch>
+Cc: Vitor Soares <vitor.soares@toradex.com>,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Aradhya Bhatia <aradhya.bhatia@linux.dev>,
+	Jayesh Choudhary <j-choudhary@ti.com>,
+	ivitro@gmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH v3] drm/bridge: cdns-dsi: Replace deprecated UNIVERSAL_DEV_PM_OPS()
+Date: Mon, 12 May 2025 09:32:15 +0100
+Message-Id: <20250512083215.436149-1-ivitro@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] x86/mtrr: Check if fixed-range MTRR exists in
- mtrr_save_fixed_ranges()
-To: Borislav Petkov <bp@alien8.de>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Bernhard Kaindl <bk@suse.de>,
- Andi Kleen <ak@linux.intel.com>, Li Fei <fei1.li@intel.com>,
- stable@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250509170633.3411169-2-jiaqing.zhao@linux.intel.com>
- <20250509173225.GDaB48KZvZSA9QLUaR@fat_crate.local>
-Content-Language: en-US
-From: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
-In-Reply-To: <20250509173225.GDaB48KZvZSA9QLUaR@fat_crate.local>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 2025-05-10 01:32, Borislav Petkov wrote:
-> On Fri, May 09, 2025 at 05:06:33PM +0000, Jiaqing Zhao wrote:
->> When suspending, save_processor_state() calls mtrr_save_fixed_ranges()
->> to save fixed-range MTRRs. On platforms without fixed-range MTRRs,
->> accessing these MSRs will trigger unchecked MSR access error. Make
->> sure fixed-range MTRRs are supported before access to prevent such
->> error.
->>
->> Since mtrr_state.have_fixed is only set when MTRRs are present and
->> enabled, checking the CPU feature flag in mtrr_save_fixed_ranges()
->> is unnecessary.
->>
->> Fixes: 3ebad5905609 ("[PATCH] x86: Save and restore the fixed-range MTRRs of the BSP when suspending")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
-> 
-> Next question: this is CC:stable, meaning it'll go to Linus now.
-> 
-> What exactly is it fixing?
-> 
-> Because the patch in Fixes: is from 2007. :-\
+From: Vitor Soares <vitor.soares@toradex.com>
 
-Hi, Boris
+The deprecated UNIVERSAL_DEV_PM_OPS() macro uses the provided callbacks
+for both runtime PM and system sleep. This causes the DSI clocks to be
+disabled twice: once during runtime suspend and again during system
+suspend, resulting in a WARN message from the clock framework when
+attempting to disable already-disabled clocks.
 
-This fixes unchecked MSR access error on platform without fixed-range
-MTRRs when doing ACPI S3 suspend. IMHO, though it is handled and won't
-panic kernel, it is worth getting fixed, and it matches the stable rule
-that
+[   84.384540] clk:231:5 already disabled
+[   84.388314] WARNING: CPU: 2 PID: 531 at /drivers/clk/clk.c:1181 clk_core_disable+0xa4/0xac
+...
+[   84.579183] Call trace:
+[   84.581624]  clk_core_disable+0xa4/0xac
+[   84.585457]  clk_disable+0x30/0x4c
+[   84.588857]  cdns_dsi_suspend+0x20/0x58 [cdns_dsi]
+[   84.593651]  pm_generic_suspend+0x2c/0x44
+[   84.597661]  ti_sci_pd_suspend+0xbc/0x15c
+[   84.601670]  dpm_run_callback+0x8c/0x14c
+[   84.605588]  __device_suspend+0x1a0/0x56c
+[   84.609594]  dpm_suspend+0x17c/0x21c
+[   84.613165]  dpm_suspend_start+0xa0/0xa8
+[   84.617083]  suspend_devices_and_enter+0x12c/0x634
+[   84.621872]  pm_suspend+0x1fc/0x368
 
-"It fixes a problem like an oops, a hang, data corruption, a real
-security issue, a hardware quirk, a build error (but not for things
-marked CONFIG_BROKEN), or some “oh, that’s not good” issue."
+To address this issue, replace UNIVERSAL_DEV_PM_OPS() with
+SET_RUNTIME_PM_OPS(), enabling suspend/resume handling through the
+_enable()/_disable() hooks managed by the DRM framework for both
+runtime and system-wide PM.
 
-Kernel log is attached below.
+Cc: <stable@vger.kernel.org> # 6.1.x
+Fixes: e19233955d9e ("drm/bridge: Add Cadence DSI driver")
+Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
+---
+v2 -> v3
+ - Fix warning: 'cdns_dsi_suspend' defined but not used [-Wunused-function]
+ - Fix warning: 'cdns_dsi_resume' defined but not used [-Wunused-function]
 
-Thanks,
-Jiaqing
+v1 -> v2
+ - Rely only on SET_RUNTIME_PM_OPS() for the PM.
 
-[ 173.115706] ACPI: PM: Saving platform NVS memory
-[ 173.115818] Disabling non-boot CPUs ...
-[ 173.126530] unchecked MSR access error: RDMSR from 0x250 at rIP: 0xffffffffa90a15ff (get_fixed_ranges+0x)
-[ 173.126749] Call Trace:
-[ 173.126806] <TASK>
-[ 173.126858] ? show_stack_regs+0x23/0x30
-[ 173.126946] ? fixup_exception+0x5a4/0x610
-[ 173.127037] ? printk_get_next_message+0x105/0x350
-[ 173.127141] ? gp_try_fixup_and_notify+0x37/0x100
-[ 173.127244] ? exc_general_protection+0xe1/0x1f0
-[ 173.127346] ? asm_exc_general_protection+0x27/0x30
-[ 173.127452] ? __cfi_x86_acpi_suspend_lowlevel+0x10/0x10
-[ 173.127567] ? get_fixed_ranges+0x5f/0x390
-[ 173.127657] mtrr_save_fixed_ranges+0x1b/0x40
-[ 173.127753] save_processor_state+0x111/0x220
-[ 173.127849] do_suspend_lowlevel+0xf/0xb70
-[ 173.127939] x86_acpi_suspend_lowlevel+0x14c/0x180
-[ 173.128042] acpi_suspend_enter+0x17e/0x1e0
-[ 173.128133] suspend_devices_and_enter+0x62d/0x950
-[ 173.128236] pm_suspend+0x2cf/0x4c0
-[ 173.128314] state_store+0x109/0x130
-[ 173.128393] kobj_attr_store+0x1e/0x40
-[ 173.128477] sysfs_kf_write+0x45/0x60
-[ 173.128559] kernfs_fop_write_iter+0x113/0x1a0
-[ 173.128698] vfs_write+0x38a/0x470
-[ 173.128775] ksys_write+0x87/0x100
-[ 173.128851] __x64_sys_write+0x1b/0x30
-[ 173.128932] x64_sys_call+0x17f1/0x25e0
-[ 173.129017] do_syscall_64+0x74/0x120
-[ 173.129098] entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[ 173.129206] RIP: 0033:0x7d6a19d82687
-[ 173.129288] Code: 00 00 00 b8 00 00 00 00 0f 05 48 3d 01 f0 ff ff 72 09 f7 d8 89 c7 e8 e8 fa ff ff c3 0f0
-[ 173.129661] RSP: 002b:00007d66c7a7f668 EFLAGS: 00000213 ORIG_RAX: 0000000000000001
-[ 173.129819] RAX: ffffffffffffffda RBX: 00007d68a8858450 RCX: 00007d6a19d82687
-[ 173.129967] RDX: 0000000000000003 RSI: 00007d680881a2a0 RDI: 00000000000000a8
-[ 173.130115] RBP: 00007d66c7a7f6e0 R08: ffffffffffffffff R09: 0000000000000000
-[ 173.130262] R10: 0000000000020000 R11: 0000000000000213 R12: 0000000000000000
-[ 173.130410] R13: 0000000070ec9fb8 R14: 00000000000000a8 R15: 00007d66c7a7f75c
-[ 173.130559] </TASK>
+ drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
+index b022dd6e6b6e..6429d541889c 100644
+--- a/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
++++ b/drivers/gpu/drm/bridge/cadence/cdns-dsi-core.c
+@@ -1258,7 +1258,7 @@ static const struct mipi_dsi_host_ops cdns_dsi_ops = {
+ 	.transfer = cdns_dsi_transfer,
+ };
+ 
+-static int __maybe_unused cdns_dsi_resume(struct device *dev)
++static int cdns_dsi_resume(struct device *dev)
+ {
+ 	struct cdns_dsi *dsi = dev_get_drvdata(dev);
+ 
+@@ -1269,7 +1269,7 @@ static int __maybe_unused cdns_dsi_resume(struct device *dev)
+ 	return 0;
+ }
+ 
+-static int __maybe_unused cdns_dsi_suspend(struct device *dev)
++static int cdns_dsi_suspend(struct device *dev)
+ {
+ 	struct cdns_dsi *dsi = dev_get_drvdata(dev);
+ 
+@@ -1279,8 +1279,9 @@ static int __maybe_unused cdns_dsi_suspend(struct device *dev)
+ 	return 0;
+ }
+ 
+-static UNIVERSAL_DEV_PM_OPS(cdns_dsi_pm_ops, cdns_dsi_suspend, cdns_dsi_resume,
+-			    NULL);
++static const struct dev_pm_ops cdns_dsi_pm_ops = {
++	RUNTIME_PM_OPS(cdns_dsi_suspend, cdns_dsi_resume, NULL)
++};
+ 
+ static int cdns_dsi_drm_probe(struct platform_device *pdev)
+ {
+@@ -1427,7 +1428,7 @@ static struct platform_driver cdns_dsi_platform_driver = {
+ 	.driver = {
+ 		.name   = "cdns-dsi",
+ 		.of_match_table = cdns_dsi_of_match,
+-		.pm = &cdns_dsi_pm_ops,
++		.pm = pm_ptr(&cdns_dsi_pm_ops),
+ 	},
+ };
+ module_platform_driver(cdns_dsi_platform_driver);
+-- 
+2.34.1
 
 
