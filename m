@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-143528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DECDAB4031
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:50:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C30D9AB4038
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:51:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2162246683A
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:50:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 514FB4668DE
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:51:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05F3A296D30;
-	Mon, 12 May 2025 17:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8378C255E47;
+	Mon, 12 May 2025 17:51:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CmkAS+Ur"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NECJ9BF1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B83BC254879;
-	Mon, 12 May 2025 17:50:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B052528FC;
+	Mon, 12 May 2025 17:51:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072244; cv=none; b=tFvsefduISGr5bPSgXHoy+xp1/7fYm9cldx1X6WeNx/l+9HtTOhoSDIREl3dw2jYtirdtTkgF5sT6emrT0/lwVRfShHZLODV43Ccgef7gJhib8uMXytVDob06l3byYjiNEDcTD9bBmpB3ymJ1c9K9NN3AU4C7+VOw1rgA3FL8GE=
+	t=1747072285; cv=none; b=D6fCGasAeNrlWxoRKi2p7eZ7lcUcePoKjmZz5Xo2LbqhzsOoh9u+AK9U0MVHEoyygXSWwxw1SsUVTiAJzySlanDxZ9ahYtYvkHCr1UBt/iggAhdFeViK9NIHn5XKE6/EXA+PtvQvOGk80L7onU6TqmBzvPXcVCKT1DsSt1J+qxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072244; c=relaxed/simple;
-	bh=MavcPj2VPmijY3s5izDKQ/295stt8XH4WZpPhq0/Lpw=;
+	s=arc-20240116; t=1747072285; c=relaxed/simple;
+	bh=AgcEP7e1bXMTYK0UEOiDR5DiFXXTM0Gm4Jf0C++xN4E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uYw9YpDgBNmJX9f+n/93uROxZUhsEKAtWf+w3gzs0vEes01Kf0WPiQLn6Fx28HU7fvtZhIohSVPZhUEYf4Cic/MLOGCMooia3/W4eHsA1kZ9JGe4mEUnmnUanZoFrkku953/x+eiekC3VRINozLcLgzsV8nfrX37h5njZLpgyAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CmkAS+Ur; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 485B1C4CEEF;
-	Mon, 12 May 2025 17:50:44 +0000 (UTC)
+	 MIME-Version; b=a9AlFej0PKAZQWmmd5ftk0s/ZDid7WZBPGgw7fQIiLFR2ou3mGYWnhNVoDxzC9v9UUUbyl4MqWmgi75dBmtqZLG/pd7etgGwQ09YJ4s0Gf9VDBIhkWgsVfqrcHurZhFarWHIawoIB2JPtOrUMN8reLQMJl2N4mbmU+YDSd2m5GY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NECJ9BF1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A17F5C4CEE7;
+	Mon, 12 May 2025 17:51:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072244;
-	bh=MavcPj2VPmijY3s5izDKQ/295stt8XH4WZpPhq0/Lpw=;
+	s=korg; t=1747072285;
+	bh=AgcEP7e1bXMTYK0UEOiDR5DiFXXTM0Gm4Jf0C++xN4E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CmkAS+Ur32KnvonYIF9mDohkoZmw2Osle6rdPLzErfQtC4QU+PiXMYPQwsyDBJscL
-	 MOiZRQhmNwxK5tlJYQY2f0uH5XEix2xx5HohnEChMYj9MtCwAaVjbpnEJ8ryXXUnPH
-	 9kna5rG2ZL9vuLGKE61Iy7cGwez79DzYLxLNSUD8=
+	b=NECJ9BF1gQmvSfvHza11oFAr/fKMCAfp/00Cf5Zz2fX7tRBifXhqhoD8e8DWmNPcc
+	 XM0x8stWsaqrstrlTXGFujKaD5Imh4zrJsbf2ZR2ixOQXC+03Pfwm1cNTsddQeoLUa
+	 U6icjpEVKmjuUQvI9hOq9KnlQcXyJRSVGMeQqG8E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	syzbot+6af973a3b8dfd2faefdc@syzkaller.appspotmail.com,
+	Lizhi Xu <lizhi.xu@windriver.com>,
 	Christoph Hellwig <hch@lst.de>,
-	Damien Le Moal <dlemoal@kernel.org>,
 	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 161/197] loop: factor out a loop_assign_backing_file helper
-Date: Mon, 12 May 2025 19:40:11 +0200
-Message-ID: <20250512172050.939087333@linuxfoundation.org>
+Subject: [PATCH 6.14 162/197] loop: Add sanity check for read/write_iter
+Date: Mon, 12 May 2025 19:40:12 +0200
+Message-ID: <20250512172050.980575013@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512172044.326436266@linuxfoundation.org>
 References: <20250512172044.326436266@linuxfoundation.org>
@@ -67,82 +68,78 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Lizhi Xu <lizhi.xu@windriver.com>
 
-[ Upstream commit d278164832618bf2775c6a89e6434e2633de1eed ]
+[ Upstream commit f5c84eff634ba003326aa034c414e2a9dcb7c6a7 ]
 
-Split the code for setting up a backing file into a helper in preparation
-of adding more code to this path.
+Some file systems do not support read_iter/write_iter, such as selinuxfs
+in this issue.
+So before calling them, first confirm that the interface is supported and
+then call it.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/r/20250131120120.1315125-2-hch@lst.de
+It is releavant in that vfs_iter_read/write have the check, and removal
+of their used caused szybot to be able to hit this issue.
+
+Fixes: f2fed441c69b ("loop: stop using vfs_iter__{read,write} for buffered I/O")
+Reported-by: syzbot+6af973a3b8dfd2faefdc@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6af973a3b8dfd2faefdc
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20250428143626.3318717-1-lizhi.xu@windriver.com
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: f5c84eff634b ("loop: Add sanity check for read/write_iter")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/loop.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ drivers/block/loop.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
 diff --git a/drivers/block/loop.c b/drivers/block/loop.c
-index 7668b79d8b0a9..61ce7ccde3445 100644
+index 61ce7ccde3445..b378d2aa49f06 100644
 --- a/drivers/block/loop.c
 +++ b/drivers/block/loop.c
-@@ -496,6 +496,14 @@ static int loop_validate_file(struct file *file, struct block_device *bdev)
- 	return 0;
+@@ -504,6 +504,17 @@ static void loop_assign_backing_file(struct loop_device *lo, struct file *file)
+ 			lo->old_gfp_mask & ~(__GFP_IO | __GFP_FS));
  }
  
-+static void loop_assign_backing_file(struct loop_device *lo, struct file *file)
++static int loop_check_backing_file(struct file *file)
 +{
-+	lo->lo_backing_file = file;
-+	lo->old_gfp_mask = mapping_gfp_mask(file->f_mapping);
-+	mapping_set_gfp_mask(file->f_mapping,
-+			lo->old_gfp_mask & ~(__GFP_IO | __GFP_FS));
++	if (!file->f_op->read_iter)
++		return -EINVAL;
++
++	if ((file->f_mode & FMODE_WRITE) && !file->f_op->write_iter)
++		return -EINVAL;
++
++	return 0;
 +}
 +
  /*
   * loop_change_fd switched the backing store of a loopback device to
   * a new file. This is useful for operating system installers to free up
-@@ -549,10 +557,7 @@ static int loop_change_fd(struct loop_device *lo, struct block_device *bdev,
- 	disk_force_media_change(lo->lo_disk);
- 	memflags = blk_mq_freeze_queue(lo->lo_queue);
- 	mapping_set_gfp_mask(old_file->f_mapping, lo->old_gfp_mask);
--	lo->lo_backing_file = file;
--	lo->old_gfp_mask = mapping_gfp_mask(file->f_mapping);
--	mapping_set_gfp_mask(file->f_mapping,
--			     lo->old_gfp_mask & ~(__GFP_IO|__GFP_FS));
-+	loop_assign_backing_file(lo, file);
- 	loop_update_dio(lo);
- 	blk_mq_unfreeze_queue(lo->lo_queue, memflags);
- 	partscan = lo->lo_flags & LO_FLAGS_PARTSCAN;
-@@ -943,7 +948,6 @@ static int loop_configure(struct loop_device *lo, blk_mode_t mode,
- 			  const struct loop_config *config)
- {
- 	struct file *file = fget(config->fd);
--	struct address_space *mapping;
- 	struct queue_limits lim;
- 	int error;
- 	loff_t size;
-@@ -979,8 +983,6 @@ static int loop_configure(struct loop_device *lo, blk_mode_t mode,
- 	if (error)
- 		goto out_unlock;
+@@ -525,6 +536,10 @@ static int loop_change_fd(struct loop_device *lo, struct block_device *bdev,
+ 	if (!file)
+ 		return -EBADF;
  
--	mapping = file->f_mapping;
--
- 	if ((config->info.lo_flags & ~LOOP_CONFIGURE_SETTABLE_FLAGS) != 0) {
- 		error = -EINVAL;
- 		goto out_unlock;
-@@ -1012,9 +1014,7 @@ static int loop_configure(struct loop_device *lo, blk_mode_t mode,
- 	set_disk_ro(lo->lo_disk, (lo->lo_flags & LO_FLAGS_READ_ONLY) != 0);
++	error = loop_check_backing_file(file);
++	if (error)
++		return error;
++
+ 	/* suppress uevents while reconfiguring the device */
+ 	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 1);
  
- 	lo->lo_device = bdev;
--	lo->lo_backing_file = file;
--	lo->old_gfp_mask = mapping_gfp_mask(mapping);
--	mapping_set_gfp_mask(mapping, lo->old_gfp_mask & ~(__GFP_IO|__GFP_FS));
-+	loop_assign_backing_file(lo, file);
+@@ -956,6 +971,14 @@ static int loop_configure(struct loop_device *lo, blk_mode_t mode,
  
- 	lim = queue_limits_start_update(lo->lo_queue);
- 	loop_update_limits(lo, &lim, config->block_size);
+ 	if (!file)
+ 		return -EBADF;
++
++	if ((mode & BLK_OPEN_WRITE) && !file->f_op->write_iter)
++		return -EINVAL;
++
++	error = loop_check_backing_file(file);
++	if (error)
++		return error;
++
+ 	is_loop = is_loop_device(file);
+ 
+ 	/* This is safe, since we have a reference from open(). */
 -- 
 2.39.5
 
