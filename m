@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-143858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CC10AB424A
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:21:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51E0DAB42E2
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:27:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 573233A4030
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:19:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 960A38C33A6
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:25:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 677502BF3FC;
-	Mon, 12 May 2025 18:05:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF16F298CB8;
+	Mon, 12 May 2025 18:08:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ZJ+g8Kw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nsZSHUO7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C532BF3F2;
-	Mon, 12 May 2025 18:05:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AADF8298CBC;
+	Mon, 12 May 2025 18:08:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073134; cv=none; b=QFFMVFRvniZgz+iZ2qoF3aFI2UGNVowZjIKZ0BSwBO8pQnlXGOnlgdl4m6toBEtRqEPnVaSrB/PKzpqU4ofbE8Azug0bYuXQ+bGpywMriouwFUaMGEMph2HHfJdl2DgX6Rg/XsuDO2nR8iej0YVy317r0AyMk/iAj4nOOHB30Vo=
+	t=1747073321; cv=none; b=ly4J7Rz/8Lh/RwkS0hqWMERDyRD9y0WfLO+Caw4/5q0N1Z9qxD2BYlfSbYfV+pB1rSIwquwsWYsvf1C9nc79MTsv1fWkcXJtZfUv1ZhXpzZeuB04R4+92Q/xbdlyQQNK5N8Y+uCB966GJNSVKpl/ooyTuwjigph9zbOrFkQ82MA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073134; c=relaxed/simple;
-	bh=W5zPkgd3X79X1K3mJF1Ln71+bGwPFHDYGAq45/4MhSY=;
+	s=arc-20240116; t=1747073321; c=relaxed/simple;
+	bh=CtzNqcF8Ar15ajOOIjzyDce+R4Wtysh4iU9tDTNkwjM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I46ah4OBsy0Mr9ffABtWANFOGsnrSnfrEmOFtUUKvnezmxAkN8NTHczxYHr8Y0Eh3zhkI1OlimpFmWdKYX/tFSIzg50iVklwN+An0lxifKFJFl9Ur2pXm0Bp4YaslPFbAx/MoHYo9CrW7+RWCAo/oI0A2Ta2aVykYB/SEZoDMcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ZJ+g8Kw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E3A2C4CEE9;
-	Mon, 12 May 2025 18:05:32 +0000 (UTC)
+	 MIME-Version; b=JozDOyjbvoi7oJKvpYTSNG49CcP7f18pn/Ec2x1yBNeI4soA7M/1LhjqxFWxgSJudVF4IE7nS/LK+cTjrXpoA1Dupx32B4w/hZRR4glMAbzrOc681T5PbleN4CIUgv586Spl7lcp+uY32oBUEqHtyU2xIMVq76so9BRcT8GOqq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nsZSHUO7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A574C4CEE9;
+	Mon, 12 May 2025 18:08:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073133;
-	bh=W5zPkgd3X79X1K3mJF1Ln71+bGwPFHDYGAq45/4MhSY=;
+	s=korg; t=1747073321;
+	bh=CtzNqcF8Ar15ajOOIjzyDce+R4Wtysh4iU9tDTNkwjM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1ZJ+g8KwUG7Ru8TqSx5PrtI9/azm5RK6NEogFTXNjAG4gSZxPPZ96vYcewIbKsajG
-	 jcMQMmEvl3EK3rujxUySKDV3/jHyMOhguLv+PIWfSGiHxFI8R9G4a7uk3gXgaIkHAZ
-	 0f3K8Wn1R9gs0xgl51up/154nHl9fzE4jNMgk6yc=
+	b=nsZSHUO7vTJz61DZhcUurShpSPUJ7RJX9tB8aMu+f2N1YE9f3RFrvfzr59z18gIEI
+	 PriYGA+2aSvYP5Zi3ocMaoecfu0NfUkBkdxTTVk2pRR+97nMp1mUfkehrz12BXQMH4
+	 OP1qiJaKas4LIw3HzkCPeaIHFbGPD7a4gE9ayffk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Andrei Kuchynski <akuchynski@chromium.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Benson Leung <bleung@chromium.org>
-Subject: [PATCH 6.12 125/184] usb: typec: ucsi: displayport: Fix NULL pointer access
-Date: Mon, 12 May 2025 19:45:26 +0200
-Message-ID: <20250512172046.909463711@linuxfoundation.org>
+	Gabriel Shahrouzi <gshahrouzi@gmail.com>
+Subject: [PATCH 6.6 038/113] staging: axis-fifo: Remove hardware resets for user errors
+Date: Mon, 12 May 2025 19:45:27 +0200
+Message-ID: <20250512172029.221238191@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
-References: <20250512172041.624042835@linuxfoundation.org>
+In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
+References: <20250512172027.691520737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +60,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrei Kuchynski <akuchynski@chromium.org>
+From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
 
-commit 312d79669e71283d05c05cc49a1a31e59e3d9e0e upstream.
+commit c6e8d85fafa7193613db37da29c0e8d6e2515b13 upstream.
 
-This patch ensures that the UCSI driver waits for all pending tasks in the
-ucsi_displayport_work workqueue to finish executing before proceeding with
-the partner removal.
+The axis-fifo driver performs a full hardware reset (via
+reset_ip_core()) in several error paths within the read and write
+functions. This reset flushes both TX and RX FIFOs and resets the
+AXI-Stream links.
 
-Cc: stable <stable@kernel.org>
-Fixes: af8622f6a585 ("usb: typec: ucsi: Support for DisplayPort alt mode")
-Signed-off-by: Andrei Kuchynski <akuchynski@chromium.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Benson Leung <bleung@chromium.org>
-Link: https://lore.kernel.org/r/20250424084429.3220757-3-akuchynski@chromium.org
+Allow the user to handle the error without causing hardware disruption
+or data loss in other FIFO paths.
+
+Fixes: 4a965c5f89de ("staging: add driver for Xilinx AXI-Stream FIFO v4.1 IP core")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+Link: https://lore.kernel.org/r/20250419004306.669605-1-gshahrouzi@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/ucsi/displayport.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/staging/axis-fifo/axis-fifo.c |   11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
---- a/drivers/usb/typec/ucsi/displayport.c
-+++ b/drivers/usb/typec/ucsi/displayport.c
-@@ -296,6 +296,8 @@ void ucsi_displayport_remove_partner(str
- 	if (!dp)
- 		return;
+--- a/drivers/staging/axis-fifo/axis-fifo.c
++++ b/drivers/staging/axis-fifo/axis-fifo.c
+@@ -398,16 +398,14 @@ static ssize_t axis_fifo_read(struct fil
  
-+	cancel_work_sync(&dp->work);
-+
- 	dp->data.conf = 0;
- 	dp->data.status = 0;
- 	dp->initialized = false;
+ 	bytes_available = ioread32(fifo->base_addr + XLLF_RLR_OFFSET);
+ 	if (!bytes_available) {
+-		dev_err(fifo->dt_device, "received a packet of length 0 - fifo core will be reset\n");
+-		reset_ip_core(fifo);
++		dev_err(fifo->dt_device, "received a packet of length 0\n");
+ 		ret = -EIO;
+ 		goto end_unlock;
+ 	}
+ 
+ 	if (bytes_available > len) {
+-		dev_err(fifo->dt_device, "user read buffer too small (available bytes=%zu user buffer bytes=%zu) - fifo core will be reset\n",
++		dev_err(fifo->dt_device, "user read buffer too small (available bytes=%zu user buffer bytes=%zu)\n",
+ 			bytes_available, len);
+-		reset_ip_core(fifo);
+ 		ret = -EINVAL;
+ 		goto end_unlock;
+ 	}
+@@ -416,8 +414,7 @@ static ssize_t axis_fifo_read(struct fil
+ 		/* this probably can't happen unless IP
+ 		 * registers were previously mishandled
+ 		 */
+-		dev_err(fifo->dt_device, "received a packet that isn't word-aligned - fifo core will be reset\n");
+-		reset_ip_core(fifo);
++		dev_err(fifo->dt_device, "received a packet that isn't word-aligned\n");
+ 		ret = -EIO;
+ 		goto end_unlock;
+ 	}
+@@ -438,7 +435,6 @@ static ssize_t axis_fifo_read(struct fil
+ 
+ 		if (copy_to_user(buf + copied * sizeof(u32), tmp_buf,
+ 				 copy * sizeof(u32))) {
+-			reset_ip_core(fifo);
+ 			ret = -EFAULT;
+ 			goto end_unlock;
+ 		}
+@@ -547,7 +543,6 @@ static ssize_t axis_fifo_write(struct fi
+ 
+ 		if (copy_from_user(tmp_buf, buf + copied * sizeof(u32),
+ 				   copy * sizeof(u32))) {
+-			reset_ip_core(fifo);
+ 			ret = -EFAULT;
+ 			goto end_unlock;
+ 		}
 
 
 
