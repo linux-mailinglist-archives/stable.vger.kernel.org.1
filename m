@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-143579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EAFFAB408A
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:55:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35949AB412B
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:02:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E613C7B3A27
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:52:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5DED1890C2C
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:02:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34E86296FC8;
-	Mon, 12 May 2025 17:53:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 769462550D5;
+	Mon, 12 May 2025 18:02:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zhj2t0a5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rzokPnRm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E333A295DAB;
-	Mon, 12 May 2025 17:53:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 337182550A7;
+	Mon, 12 May 2025 18:02:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072409; cv=none; b=c7j6tHrg/QbH7HGihmZBeMoGnY5/MaW2/9fnfqPZ2vFKoicDmKV0AeO7dyvLGdc/HwunZbfbZBJu0Ty3C2q4ExjCVrqj0H5G5TB6E6LX1guB1bTMP1hfQxEYvX8ZxzewzUDp+30kNnLoZ1xu1R8lvrk7jty0ZQGvDeQBiLrZAuo=
+	t=1747072948; cv=none; b=qgH117q1sYMLHVz8uDyoKkVaiAwaOdmdY7gImzApcS/EE0T2ZeccQoVpp+Sd/tbj+msC50PlFQjjkOHowfMNVdKh9MbWmHGW+ummV/6VO3r1RGjV++ClUg0ZJhSGC0BUTlASXLXLjoatiSovlqsivjy9WrdLVBYudpB/Pa31DiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072409; c=relaxed/simple;
-	bh=+R2dQmVc4kr/3y5BJ3lisKAynpu9r8E1JNY1P/9lKL0=;
+	s=arc-20240116; t=1747072948; c=relaxed/simple;
+	bh=K89jmE3m380NlAcCc5yQPCvMaGFA2MxZhMhESpO2ORA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ltfzuq6jFFiq0Lim9KuOQy9rVHwAJrGGUAsmljbUgeethvkPQbOkckhLVjpnLC8ocGARHCQFWwB6keXwccUxqFDes13n7LQoglVALJKxdeQYX8iaUwFsDRIh/NwcHSfyxwaEKpHGfERRXfcxoFfpH6+d/zfj6QXFXEBRyQ5ZQno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zhj2t0a5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60E5DC4CEE7;
-	Mon, 12 May 2025 17:53:28 +0000 (UTC)
+	 MIME-Version; b=f6Dna6ZfZEMp+BXYfA5EJKkjRn5K94yNapVe7OxhlbTlvzpmm26s2pofZcbFo0J4LbNSNTKsGZbDfAn/obtxParjruM2WnA359vlLX/u74PdJMK2FPeC901jyGsBtR9TZxSUxGPHQazhQ1W/eISZ8IP6WwFMXP6ZWrD9c8Wo3Dk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rzokPnRm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F203C4CEE7;
+	Mon, 12 May 2025 18:02:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072408;
-	bh=+R2dQmVc4kr/3y5BJ3lisKAynpu9r8E1JNY1P/9lKL0=;
+	s=korg; t=1747072948;
+	bh=K89jmE3m380NlAcCc5yQPCvMaGFA2MxZhMhESpO2ORA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zhj2t0a5Ta9Uyd/4jAsdXSlXT04jlNTg6vHKvE/YW0UtDfBD1nHX4npEWGLCJ1us8
-	 xu7KOETV4C8H/Qod/fngy5N7LBSvFfnWS5SX9uy297LOHqgLrzvOKLtY7nKEXzMLzt
-	 ub9Vhxm81uiFOrEMrrvsjLJc2H5aHXaMLs0UVFzM=
+	b=rzokPnRm1n4Jl46CZCWyqmwrajOn9gJJmyAPS9c8TFYLs0G1D0+xz8EyhW9O4MG4P
+	 eapVPyYG+oXtp/icn7tOL6Yo5nEi8OtXVLJISv1TdXOgq3U9+uB1cedTAt19kAdo7X
+	 0RDBEzT5xTLBGbkJhb6hSjSXST398WZh5tui1SbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Rik van Riel <riel@surriel.com>,
-	Stephen Dolan <sdolan@janestreet.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.1 32/92] x86/mm: Eliminate window where TLB flushes may be inadvertently skipped
-Date: Mon, 12 May 2025 19:45:07 +0200
-Message-ID: <20250512172024.444793053@linuxfoundation.org>
+	Nathan Chancellor <nathan@kernel.org>,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.12 107/184] arm64: cpufeature: Move arm64_use_ng_mappings to the .data section to prevent wrong idmap generation
+Date: Mon, 12 May 2025 19:45:08 +0200
+Message-ID: <20250512172046.183757589@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172023.126467649@linuxfoundation.org>
-References: <20250512172023.126467649@linuxfoundation.org>
+In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
+References: <20250512172041.624042835@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,136 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Hansen <dave.hansen@linux.intel.com>
+From: Yeoreum Yun <yeoreum.yun@arm.com>
 
-commit fea4e317f9e7e1f449ce90dedc27a2d2a95bee5a upstream.
+commit 363cd2b81cfdf706bbfc9ec78db000c9b1ecc552 upstream.
 
-tl;dr: There is a window in the mm switching code where the new CR3 is
-set and the CPU should be getting TLB flushes for the new mm.  But
-should_flush_tlb() has a bug and suppresses the flush.  Fix it by
-widening the window where should_flush_tlb() sends an IPI.
+The PTE_MAYBE_NG macro sets the nG page table bit according to the value
+of "arm64_use_ng_mappings". This variable is currently placed in the
+.bss section. create_init_idmap() is called before the .bss section
+initialisation which is done in early_map_kernel(). Therefore,
+data/test_prot in create_init_idmap() could be set incorrectly through
+the PAGE_KERNEL -> PROT_DEFAULT -> PTE_MAYBE_NG macros.
 
-Long Version:
+   # llvm-objdump-21 --syms vmlinux-gcc | grep arm64_use_ng_mappings
+     ffff800082f242a8 g     O .bss    0000000000000001 arm64_use_ng_mappings
 
-=== History ===
+The create_init_idmap() function disassembly compiled with llvm-21:
 
-There were a few things leading up to this.
+  // create_init_idmap()
+  ffff80008255c058: d10103ff     	sub	sp, sp, #0x40
+  ffff80008255c05c: a9017bfd     	stp	x29, x30, [sp, #0x10]
+  ffff80008255c060: a90257f6     	stp	x22, x21, [sp, #0x20]
+  ffff80008255c064: a9034ff4     	stp	x20, x19, [sp, #0x30]
+  ffff80008255c068: 910043fd     	add	x29, sp, #0x10
+  ffff80008255c06c: 90003fc8     	adrp	x8, 0xffff800082d54000
+  ffff80008255c070: d280e06a     	mov	x10, #0x703     // =1795
+  ffff80008255c074: 91400409     	add	x9, x0, #0x1, lsl #12 // =0x1000
+  ffff80008255c078: 394a4108     	ldrb	w8, [x8, #0x290] ------------- (1)
+  ffff80008255c07c: f2e00d0a     	movk	x10, #0x68, lsl #48
+  ffff80008255c080: f90007e9     	str	x9, [sp, #0x8]
+  ffff80008255c084: aa0103f3     	mov	x19, x1
+  ffff80008255c088: aa0003f4     	mov	x20, x0
+  ffff80008255c08c: 14000000     	b	0xffff80008255c08c <__pi_create_init_idmap+0x34>
+  ffff80008255c090: aa082d56     	orr	x22, x10, x8, lsl #11 -------- (2)
 
-First, updating mm_cpumask() was observed to be too expensive, so it was
-made lazier.  But being lazy caused too many unnecessary IPIs to CPUs
-due to the now-lazy mm_cpumask().  So code was added to cull
-mm_cpumask() periodically[2].  But that culling was a bit too aggressive
-and skipped sending TLB flushes to CPUs that need them.  So here we are
-again.
+Note (1) is loading the arm64_use_ng_mappings value in w8 and (2) is set
+the text or data prot with the w8 value to set PTE_NG bit. If the .bss
+section isn't initialized, x8 could include a garbage value and generate
+an incorrect mapping.
 
-=== Problem ===
+Annotate arm64_use_ng_mappings as __read_mostly so that it is placed in
+the .data section.
 
-The too-aggressive code in should_flush_tlb() strikes in this window:
-
-	// Turn on IPIs for this CPU/mm combination, but only
-	// if should_flush_tlb() agrees:
-	cpumask_set_cpu(cpu, mm_cpumask(next));
-
-	next_tlb_gen = atomic64_read(&next->context.tlb_gen);
-	choose_new_asid(next, next_tlb_gen, &new_asid, &need_flush);
-	load_new_mm_cr3(need_flush);
-	// ^ After 'need_flush' is set to false, IPIs *MUST*
-	// be sent to this CPU and not be ignored.
-
-        this_cpu_write(cpu_tlbstate.loaded_mm, next);
-	// ^ Not until this point does should_flush_tlb()
-	// become true!
-
-should_flush_tlb() will suppress TLB flushes between load_new_mm_cr3()
-and writing to 'loaded_mm', which is a window where they should not be
-suppressed.  Whoops.
-
-=== Solution ===
-
-Thankfully, the fuzzy "just about to write CR3" window is already marked
-with loaded_mm==LOADED_MM_SWITCHING.  Simply checking for that state in
-should_flush_tlb() is sufficient to ensure that the CPU is targeted with
-an IPI.
-
-This will cause more TLB flush IPIs.  But the window is relatively small
-and I do not expect this to cause any kind of measurable performance
-impact.
-
-Update the comment where LOADED_MM_SWITCHING is written since it grew
-yet another user.
-
-Peter Z also raised a concern that should_flush_tlb() might not observe
-'loaded_mm' and 'is_lazy' in the same order that switch_mm_irqs_off()
-writes them.  Add a barrier to ensure that they are observed in the
-order they are written.
-
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Rik van Riel <riel@surriel.com>
-Link: https://lore.kernel.org/oe-lkp/202411282207.6bd28eae-lkp@intel.com/ [1]
-Fixes: 6db2526c1d69 ("x86/mm/tlb: Only trim the mm_cpumask once a second") [2]
-Reported-by: Stephen Dolan <sdolan@janestreet.com>
-Cc: stable@vger.kernel.org
-Acked-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Fixes: 84b04d3e6bdb ("arm64: kernel: Create initial ID map from C code")
+Cc: stable@vger.kernel.org # 6.9.x
+Tested-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Link: https://lore.kernel.org/r/20250502180412.3774883-1-yeoreum.yun@arm.com
+[catalin.marinas@arm.com: use __read_mostly instead of __ro_after_init]
+[catalin.marinas@arm.com: slight tweaking of the code comment]
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/mm/tlb.c |   23 +++++++++++++++++++++--
- 1 file changed, 21 insertions(+), 2 deletions(-)
+ arch/arm64/kernel/cpufeature.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/arch/x86/mm/tlb.c
-+++ b/arch/x86/mm/tlb.c
-@@ -617,7 +617,11 @@ void switch_mm_irqs_off(struct mm_struct
+--- a/arch/arm64/kernel/cpufeature.c
++++ b/arch/arm64/kernel/cpufeature.c
+@@ -111,7 +111,14 @@ static struct arm64_cpu_capabilities con
  
- 		choose_new_asid(next, next_tlb_gen, &new_asid, &need_flush);
+ DECLARE_BITMAP(boot_cpucaps, ARM64_NCAPS);
  
--		/* Let nmi_uaccess_okay() know that we're changing CR3. */
-+		/*
-+		 * Indicate that CR3 is about to change. nmi_uaccess_okay()
-+		 * and others are sensitive to the window where mm_cpumask(),
-+		 * CR3 and cpu_tlbstate.loaded_mm are not all in sync.
-+ 		 */
- 		this_cpu_write(cpu_tlbstate.loaded_mm, LOADED_MM_SWITCHING);
- 		barrier();
- 	}
-@@ -880,8 +884,16 @@ done:
+-bool arm64_use_ng_mappings = false;
++/*
++ * arm64_use_ng_mappings must be placed in the .data section, otherwise it
++ * ends up in the .bss section where it is initialized in early_map_kernel()
++ * after the MMU (with the idmap) was enabled. create_init_idmap() - which
++ * runs before early_map_kernel() and reads the variable via PTE_MAYBE_NG -
++ * may end up generating an incorrect idmap page table attributes.
++ */
++bool arm64_use_ng_mappings __read_mostly = false;
+ EXPORT_SYMBOL(arm64_use_ng_mappings);
  
- static bool should_flush_tlb(int cpu, void *data)
- {
-+	struct mm_struct *loaded_mm = per_cpu(cpu_tlbstate.loaded_mm, cpu);
- 	struct flush_tlb_info *info = data;
- 
-+	/*
-+	 * Order the 'loaded_mm' and 'is_lazy' against their
-+	 * write ordering in switch_mm_irqs_off(). Ensure
-+	 * 'is_lazy' is at least as new as 'loaded_mm'.
-+	 */
-+	smp_rmb();
-+
- 	/* Lazy TLB will get flushed at the next context switch. */
- 	if (per_cpu(cpu_tlbstate_shared.is_lazy, cpu))
- 		return false;
-@@ -890,8 +902,15 @@ static bool should_flush_tlb(int cpu, vo
- 	if (!info->mm)
- 		return true;
- 
-+	/*
-+	 * While switching, the remote CPU could have state from
-+	 * either the prev or next mm. Assume the worst and flush.
-+	 */
-+	if (loaded_mm == LOADED_MM_SWITCHING)
-+		return true;
-+
- 	/* The target mm is loaded, and the CPU is not lazy. */
--	if (per_cpu(cpu_tlbstate.loaded_mm, cpu) == info->mm)
-+	if (loaded_mm == info->mm)
- 		return true;
- 
- 	/* In cpumask, but not the loaded mm? Periodically remove by flushing. */
+ DEFINE_PER_CPU_READ_MOSTLY(const char *, this_cpu_vector) = vectors;
 
 
 
