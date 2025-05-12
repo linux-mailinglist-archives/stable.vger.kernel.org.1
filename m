@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-143607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 545BFAB4098
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:55:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BD56AB4125
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:02:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B46217B3E3B
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:53:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9D0AE7ABC9A
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:01:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6D4F1A08CA;
-	Mon, 12 May 2025 17:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2110723C510;
+	Mon, 12 May 2025 18:02:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JW/wDRla"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2gYVl/2L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83BEA255E47;
-	Mon, 12 May 2025 17:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3384140E34;
+	Mon, 12 May 2025 18:02:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072498; cv=none; b=oN3JUhtbuDH7cx5auoe8yvJIGsjpTJZ3AQlukXqMN7fT4t4YUQO37gO0eqwVYNVKo4Qpv9IYoa0SmYgV7gLKeUdpX3gr3U6GImO9cjuoJO49tIuHXqdbNFN2oXzQ8wIXp8oJMLEkl5ojlnlkgn+j/08T/JcoP5s97Vn4YefWeh4=
+	t=1747072938; cv=none; b=LtQs5t/vRzBAPp5o+xNdaZZu7DGUi4ejjOGTofvSGnv6gkG7QIYscqjPxHOMsf6BwYWoWgJRQaNaDXz2MtY+uiMxJX8RToe6kiP70+HrSsJN/UKDwZ2/ro3WFJdNnNTbhF2WYHzrDWdOhs1ZyeSbG80rtFUekrTkyxF/4my4Ijo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072498; c=relaxed/simple;
-	bh=HSTehoG2wpqCwNU1MkG0Tp4gSFgYrMJGhr5bgDI26TA=;
+	s=arc-20240116; t=1747072938; c=relaxed/simple;
+	bh=zy5VoowhCcaoGHttALmh7DPd1MtUJqPfuxcq1h2/10Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KBucJQMkkgNlmtgd2iAnCHZLHJWoKtzW/IKJ9VFkHzQVjwbRcU5UoRtbnGHCRMNzzs5PFOWmVKGUHwtnD9gArIRtOJOJbi8OZfdQ5S2OHQh2trX49BbkgIVNI7sBMmcEAiIIY9vsSPNyvbIvweMbVFbDcU3wP3bGy1kvL7CBCy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JW/wDRla; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E553EC4CEE7;
-	Mon, 12 May 2025 17:54:57 +0000 (UTC)
+	 MIME-Version; b=e23hMXxuPDA/I79deA51Y7hTqRtR9DZ3EAUR0IyCe8Kzi69/IfvRHNKU5k5GUtsrtljRHdjaSnZB4bUfN6XTYT//9mgWy74tLPY4ve6OfYUL7LsttmLypXr5NejdNPgnngk8Tt+u82eRXVrIfbdNBjFA8Bty9s43MmBxpG3h6n0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2gYVl/2L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A9E7C4CEE7;
+	Mon, 12 May 2025 18:02:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072498;
-	bh=HSTehoG2wpqCwNU1MkG0Tp4gSFgYrMJGhr5bgDI26TA=;
+	s=korg; t=1747072938;
+	bh=zy5VoowhCcaoGHttALmh7DPd1MtUJqPfuxcq1h2/10Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JW/wDRlaiXvxSgyP3de+YfQal4vJuWP8mIgC8TGW+IRJJMReHzF3cd+C9NnP1Vbni
-	 KodWzlJMS4Rrm+oVwDMW/8kUUCRxA57qMV4S0U7qqMWH/BQQxx5NmTtaVzXGuy/vdy
-	 QZ5nF+JI3QLmAT3FFWrID45eSccmfsQCL9MREIcU=
+	b=2gYVl/2LJ3qZqEMxX+WK33e/vNQ72Z37X0Wz5O9x0y6u4A9EH0wwp3zfcfMbNgYTC
+	 EGW95xMk3nCsCyLAeA6SGUEQOOAdzcKO4W9kBNZmvf2CeAoJObFyfiWQ43T8sc58dS
+	 fnBvJUl71uMNRsqr19ea69hD26IDriHaxMVMSXac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabriel Shahrouzi <gshahrouzi@gmail.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 29/92] staging: iio: adc: ad7816: Correct conditional logic for store mode
-Date: Mon, 12 May 2025 19:45:04 +0200
-Message-ID: <20250512172024.310441868@linuxfoundation.org>
+	John Ernberg <john.ernberg@actia.se>,
+	Stefano Stabellini <sstabellini@kernel.org>,
+	Juergen Gross <jgross@suse.com>,
+	stable@kernel.org
+Subject: [PATCH 6.12 104/184] xen: swiotlb: Use swiotlb bouncing if kmalloc allocation demands it
+Date: Mon, 12 May 2025 19:45:05 +0200
+Message-ID: <20250512172046.055681837@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172023.126467649@linuxfoundation.org>
-References: <20250512172023.126467649@linuxfoundation.org>
+In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
+References: <20250512172041.624042835@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +61,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+From: John Ernberg <john.ernberg@actia.se>
 
-commit 2e922956277187655ed9bedf7b5c28906e51708f upstream.
+commit cd9c058489053e172a6654cad82ee936d1b09fab upstream.
 
-The mode setting logic in ad7816_store_mode was reversed due to
-incorrect handling of the strcmp return value. strcmp returns 0 on
-match, so the `if (strcmp(buf, "full"))` block executed when the
-input was not "full".
+Xen swiotlb support was missed when the patch set starting with
+4ab5f8ec7d71 ("mm/slab: decouple ARCH_KMALLOC_MINALIGN from
+ARCH_DMA_MINALIGN") was merged.
 
-This resulted in "full" setting the mode to AD7816_PD (power-down) and
-other inputs setting it to AD7816_FULL.
+When running Xen on iMX8QXP, a SoC without IOMMU, the effect was that USB
+transfers ended up corrupted when there was more than one URB inflight at
+the same time.
 
-Fix this by checking it against 0 to correctly check for "full" and
-"power-down", mapping them to AD7816_FULL and AD7816_PD respectively.
+Add a call to dma_kmalloc_needs_bounce() to make sure that allocations too
+small for DMA get bounced via swiotlb.
 
-Fixes: 7924425db04a ("staging: iio: adc: new driver for AD7816 devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-Acked-by: Nuno Sá <nuno.sa@analog.com>
-Link: https://lore.kernel.org/stable/20250414152920.467505-1-gshahrouzi%40gmail.com
-Link: https://patch.msgid.link/20250414154050.469482-1-gshahrouzi@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Closes: https://lore.kernel.org/linux-usb/ab2776f0-b838-4cf6-a12a-c208eb6aad59@actia.se/
+Fixes: 4ab5f8ec7d71 ("mm/slab: decouple ARCH_KMALLOC_MINALIGN from ARCH_DMA_MINALIGN")
+Cc: stable@kernel.org # v6.5+
+Signed-off-by: John Ernberg <john.ernberg@actia.se>
+Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20250502114043.1968976-2-john.ernberg@actia.se>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/iio/adc/ad7816.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/xen/swiotlb-xen.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/staging/iio/adc/ad7816.c
-+++ b/drivers/staging/iio/adc/ad7816.c
-@@ -136,7 +136,7 @@ static ssize_t ad7816_store_mode(struct
- 	struct iio_dev *indio_dev = dev_to_iio_dev(dev);
- 	struct ad7816_chip_info *chip = iio_priv(indio_dev);
- 
--	if (strcmp(buf, "full")) {
-+	if (strcmp(buf, "full") == 0) {
- 		gpiod_set_value(chip->rdwr_pin, 1);
- 		chip->mode = AD7816_FULL;
- 	} else {
+--- a/drivers/xen/swiotlb-xen.c
++++ b/drivers/xen/swiotlb-xen.c
+@@ -217,6 +217,7 @@ static dma_addr_t xen_swiotlb_map_page(s
+ 	 * buffering it.
+ 	 */
+ 	if (dma_capable(dev, dev_addr, size, true) &&
++	    !dma_kmalloc_needs_bounce(dev, size, dir) &&
+ 	    !range_straddles_page_boundary(phys, size) &&
+ 		!xen_arch_need_swiotlb(dev, phys, dev_addr) &&
+ 		!is_swiotlb_force_bounce(dev))
 
 
 
