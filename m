@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-143750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EDDCAB414F
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:04:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DC53AB4069
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:54:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4BDC73AD7F0
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:02:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC34D189D688
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:54:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DDC22550D5;
-	Mon, 12 May 2025 18:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B5BF296155;
+	Mon, 12 May 2025 17:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NST3L6AZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vkx2LHP1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02871D7E5B;
-	Mon, 12 May 2025 18:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB65C296D09;
+	Mon, 12 May 2025 17:53:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072957; cv=none; b=V4u+KCmaL9AQOcX63hef9dnMqaRANlSVfJLgICk+25eFXERfIHmLucfSvrJtbhyavwimRJs63X18flph1Se3b/F3Hf0UI5txf1l9j9g8weTcLzj/s7zWgG/hdmOAZF8YQJZjWaVzY9cqyw5UuOi7N1/umtdjCmCaRtay9wggR5M=
+	t=1747072422; cv=none; b=NDeN3CyE2oqQYFYVwvVOEGV6MgL/fr9c/WqHOQtI4v67T8rLqdZhiX6h3cqsKJrzdOP59dCvKrZQwStENax4rSNiPOIFFItyZmsdBs0DJrtzBwoB+HbFG1Nkm5CCfXKNFp6usz4pttApD4qcmCjDS+Lg3Bg3ps+Vpc29XIJn31M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072957; c=relaxed/simple;
-	bh=jVtR00rDhofu3t5VmxcpbrOoG5K1hekQ+MlA3NBcVD4=;
+	s=arc-20240116; t=1747072422; c=relaxed/simple;
+	bh=fPA7l7YCFHCRtGUnKswA/Kct4rE3ADxgwUUwRySZ+TY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pFwGaeLS3EDfGb4jHFC7/eShKVgV/Bdw7AZeuwmI6HoOMMGTdMcYCB8aGuuQu7O1yK32rLPPeJvRT4Lcy4kh6yCRAMqoOlMNtG09e4RKCoM3VS56sgr+F8kkxcte1BlSP2CsPeATzh02Wn+HDSyj10WHWfiXkCPp2zrCa3sQz8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NST3L6AZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C34D0C4CEE7;
-	Mon, 12 May 2025 18:02:36 +0000 (UTC)
+	 MIME-Version; b=KOp2jtgbutxljilLK9a/JyDItGpB8pxZK74yDLhWDb+JWC8E51GnL5rtlHVQ4/9MOdyZOPmwGK6cbLGDsrILpLf+dimHi77rsfWNqg99YC2/psRi4Z4Zbq/c+d6SuCk0ql57zhsHnOkz1yrx58qda7PKCBzwHDMedzJqfbQYqPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vkx2LHP1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53B09C4CEE7;
+	Mon, 12 May 2025 17:53:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072957;
-	bh=jVtR00rDhofu3t5VmxcpbrOoG5K1hekQ+MlA3NBcVD4=;
+	s=korg; t=1747072421;
+	bh=fPA7l7YCFHCRtGUnKswA/Kct4rE3ADxgwUUwRySZ+TY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NST3L6AZcoPJj+0D5Zn7RoCMMO5BgEiQtIUTCEP2ZDh+NPfaWLSqTo+FB/nYHBa9F
-	 qZEPsA3sSp+uMEArNUI9PiTyOb9o6qq2/PkfNc3yIfVibaHnlUcdNbGX6YbOa9dRAP
-	 FBKmN89t0qzXp9XPfU90/pqC03K9uxnqnrtRWhRM=
+	b=Vkx2LHP1diZzFnxmhOX+L5iK1A5SPwcTu4d68Q8ZA7Obxgraj0Wq8Q0bxFGb7T26c
+	 x6c60hDyRUJ+gOPupcYRk85xCdB6WKSzhOE+TlsKB085flrYhKugsBXFgGr+aH9tUZ
+	 VwuUyzOHhJFIj4gJ4UwfsQbrSirCbCa1sqp1KvEU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+7fb8a372e1f6add936dd@syzkaller.appspotmail.com,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Dmitry Antipov <dmantipov@yandex.ru>
-Subject: [PATCH 6.12 110/184] module: ensure that kobject_put() is safe for module type kobjects
+	Silvano Seva <s.seva@4sigma.it>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 36/92] iio: imu: st_lsm6dsx: fix possible lockup in st_lsm6dsx_read_fifo
 Date: Mon, 12 May 2025 19:45:11 +0200
-Message-ID: <20250512172046.308435565@linuxfoundation.org>
+Message-ID: <20250512172024.598074935@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
-References: <20250512172041.624042835@linuxfoundation.org>
+In-Reply-To: <20250512172023.126467649@linuxfoundation.org>
+References: <20250512172023.126467649@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Silvano Seva <s.seva@4sigma.it>
 
-commit a6aeb739974ec73e5217c75a7c008a688d3d5cf1 upstream.
+commit 159ca7f18129834b6f4c7eae67de48e96c752fc9 upstream.
 
-In 'lookup_or_create_module_kobject()', an internal kobject is created
-using 'module_ktype'. So call to 'kobject_put()' on error handling
-path causes an attempt to use an uninitialized completion pointer in
-'module_kobject_release()'. In this scenario, we just want to release
-kobject without an extra synchronization required for a regular module
-unloading process, so adding an extra check whether 'complete()' is
-actually required makes 'kobject_put()' safe.
+Prevent st_lsm6dsx_read_fifo from falling in an infinite loop in case
+pattern_len is equal to zero and the device FIFO is not empty.
 
-Reported-by: syzbot+7fb8a372e1f6add936dd@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=7fb8a372e1f6add936dd
-Fixes: 942e443127e9 ("module: Fix mod->mkobj.kobj potentially freed too early")
-Cc: stable@vger.kernel.org
-Suggested-by: Petr Pavlu <petr.pavlu@suse.com>
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Link: https://lore.kernel.org/r/20250507065044.86529-1-dmantipov@yandex.ru
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Fixes: 290a6ce11d93 ("iio: imu: add support to lsm6dsx driver")
+Signed-off-by: Silvano Seva <s.seva@4sigma.it>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20250311085030.3593-2-s.seva@4sigma.it
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/params.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/kernel/params.c
-+++ b/kernel/params.c
-@@ -949,7 +949,9 @@ struct kset *module_kset;
- static void module_kobj_release(struct kobject *kobj)
- {
- 	struct module_kobject *mk = to_module_kobject(kobj);
--	complete(mk->kobj_completion);
-+
-+	if (mk->kobj_completion)
-+		complete(mk->kobj_completion);
- }
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+@@ -370,6 +370,9 @@ int st_lsm6dsx_read_fifo(struct st_lsm6d
+ 	if (fifo_status & cpu_to_le16(ST_LSM6DSX_FIFO_EMPTY_MASK))
+ 		return 0;
  
- const struct kobj_type module_ktype = {
++	if (!pattern_len)
++		pattern_len = ST_LSM6DSX_SAMPLE_SIZE;
++
+ 	fifo_len = (le16_to_cpu(fifo_status) & fifo_diff_mask) *
+ 		   ST_LSM6DSX_CHAN_SIZE;
+ 	fifo_len = (fifo_len / pattern_len) * pattern_len;
 
 
 
