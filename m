@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-143847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B2F1AB4213
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:17:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E927EAB42F3
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:28:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98A6616FB0D
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:17:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B7AF3A48C3
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:25:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 869CD297A70;
-	Mon, 12 May 2025 18:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3708A2C2AC1;
+	Mon, 12 May 2025 18:08:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DacDPgmU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TuwpPEpR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3068F2BDC00;
-	Mon, 12 May 2025 18:05:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1C2729993E;
+	Mon, 12 May 2025 18:08:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073121; cv=none; b=bKGA6dr8meYdjJcpJECH26BAsLyxH8tuyD1j6E7F6JwrMpxXdyFvzBrzR3rwmTl6VhzUU7aYc+c97gQjIsVGciso5h7fP0csJPC+V17bWE+JUaF9MB/hXJrus+B76jFgjzavbCA+4kdEb++o7+qdvLPz7nHLJBAYQ97YKOsYcFs=
+	t=1747073339; cv=none; b=sOStgaYrlW5fmKUfrb6hg/B4RV6yoeQpXXf3y3qeyFNQTgmHHjqGZ0nPg8/qKbG+gJjQkw7hnUQLOqZRcfNPtgIJQsO1iU/NRW2rcQQ9cFh/di9mKI3fbKo5mF2bQ+vnNukZYXwBLcQYzmcMpXtZrC37iPW4DI1drSF8Yjp09mI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073121; c=relaxed/simple;
-	bh=ayWXNut7kRPcCdLbA1V3GVsMyKB9l1gP9VuhI2Ht4pg=;
+	s=arc-20240116; t=1747073339; c=relaxed/simple;
+	bh=yQaqMIk0c/7Y3ivut5NyuuUehRw4eRZgolyj7Mr9MNM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pxKW4F/lkbSJ1aBNCus1LrOt8mamhxR0sqfnuC+OT+ZeoPIgKCe+uB34sQ/vMSg0TDAw76G2ytR0Gcb9jJrYkegNqJI7PWjwFuh3HiZsJzBljdEwC1JALtJOa0hfQKocuHLBR7NEyKALH9PsmAbENIdKrA3A7UL/g/QRoW3PYw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DacDPgmU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FCE9C4CEF0;
-	Mon, 12 May 2025 18:05:19 +0000 (UTC)
+	 MIME-Version; b=JAOX/DuJSZZYb8btuA8P0cFd6nqpHtiq0YRYCbJzgWDPWtaMcXnWge8ZiWmNwQ04bSsbGKC5VkqkDnrLNkPIKgWznje6I06u2EP4pyj2jfQZ2dumlBr6BVoGrU8e8ojtZR3N9Z2cUuUQwSmbPz3ECSazkGlIdasvTFJXLd946QE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TuwpPEpR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 774B6C4CEE9;
+	Mon, 12 May 2025 18:08:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073120;
-	bh=ayWXNut7kRPcCdLbA1V3GVsMyKB9l1gP9VuhI2Ht4pg=;
+	s=korg; t=1747073337;
+	bh=yQaqMIk0c/7Y3ivut5NyuuUehRw4eRZgolyj7Mr9MNM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DacDPgmU7g2gKIRlsDgcch8ay8YUlwUuhzsErTMyBtLCNjYUFaTWDhmbhATToWYTV
-	 ufua0ityZykOaiXPcAnfbFFq8/Vq98k8QbOnmIX87al8G7DsxptwXSO96aSkRy23QV
-	 ajvMUTpU9IHsxB1YCp/G9iesGtQSh8fualQEA/8w=
+	b=TuwpPEpRUdpXPowdthERiVpDNLPN+2Gb1xr7cxsRI0d0Y8TuLd88CoZQE7OyG0e5n
+	 vnithErfOklyKx+EQnSso9LDp6Q0vptmNOUiSGXT5Sl6igyI4rRfTCDEZ2oQtffgA8
+	 MPsuz0ZiXr0sW69GtQTJsEy5jGitC96XDSE/NDYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 131/184] iio: temp: maxim-thermocouple: Fix potential lack of DMA safe buffer.
+	Simon Xue <xxm@rock-chips.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 043/113] iio: adc: rockchip: Fix clock initialization sequence
 Date: Mon, 12 May 2025 19:45:32 +0200
-Message-ID: <20250512172047.152302948@linuxfoundation.org>
+Message-ID: <20250512172029.422637805@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
-References: <20250512172041.624042835@linuxfoundation.org>
+In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
+References: <20250512172027.691520737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Simon Xue <xxm@rock-chips.com>
 
-[ Upstream commit f79aeb6c631b57395f37acbfbe59727e355a714c ]
+commit 839f81de397019f55161c5982d670ac19d836173 upstream.
 
-The trick of using __aligned(IIO_DMA_MINALIGN) ensures that there is
-no overlap between buffers used for DMA and those used for driver
-state storage that are before the marking. It doesn't ensure
-anything above state variables found after the marking. Hence
-move this particular bit of state earlier in the structure.
+clock_set_rate should be executed after devm_clk_get_enabled.
 
-Fixes: 10897f34309b ("iio: temp: maxim_thermocouple: Fix alignment for DMA safety")
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250413103443.2420727-14-jic23@kernel.org
+Fixes: 97ad10bb2901 ("iio: adc: rockchip_saradc: Make use of devm_clk_get_enabled")
+Signed-off-by: Simon Xue <xxm@rock-chips.com>
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patch.msgid.link/20250312062016.137821-1-xxm@rock-chips.com
+Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/temperature/maxim_thermocouple.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/rockchip_saradc.c |   17 ++++++++---------
+ 1 file changed, 8 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/iio/temperature/maxim_thermocouple.c b/drivers/iio/temperature/maxim_thermocouple.c
-index c28a7a6dea5f1..555a61e2f3fdd 100644
---- a/drivers/iio/temperature/maxim_thermocouple.c
-+++ b/drivers/iio/temperature/maxim_thermocouple.c
-@@ -121,9 +121,9 @@ static const struct maxim_thermocouple_chip maxim_thermocouple_chips[] = {
- struct maxim_thermocouple_data {
- 	struct spi_device *spi;
- 	const struct maxim_thermocouple_chip *chip;
-+	char tc_type;
+--- a/drivers/iio/adc/rockchip_saradc.c
++++ b/drivers/iio/adc/rockchip_saradc.c
+@@ -485,15 +485,6 @@ static int rockchip_saradc_probe(struct
+ 	if (info->reset)
+ 		rockchip_saradc_reset_controller(info->reset);
  
- 	u8 buffer[16] __aligned(IIO_DMA_MINALIGN);
--	char tc_type;
- };
+-	/*
+-	 * Use a default value for the converter clock.
+-	 * This may become user-configurable in the future.
+-	 */
+-	ret = clk_set_rate(info->clk, info->data->clk_rate);
+-	if (ret < 0)
+-		return dev_err_probe(&pdev->dev, ret,
+-				     "failed to set adc clk rate\n");
+-
+ 	ret = regulator_enable(info->vref);
+ 	if (ret < 0)
+ 		return dev_err_probe(&pdev->dev, ret,
+@@ -520,6 +511,14 @@ static int rockchip_saradc_probe(struct
+ 	if (IS_ERR(info->clk))
+ 		return dev_err_probe(&pdev->dev, PTR_ERR(info->clk),
+ 				     "failed to get adc clock\n");
++	/*
++	 * Use a default value for the converter clock.
++	 * This may become user-configurable in the future.
++	 */
++	ret = clk_set_rate(info->clk, info->data->clk_rate);
++	if (ret < 0)
++		return dev_err_probe(&pdev->dev, ret,
++				     "failed to set adc clk rate\n");
  
- static int maxim_thermocouple_read(struct maxim_thermocouple_data *data,
--- 
-2.39.5
-
+ 	platform_set_drvdata(pdev, indio_dev);
+ 
 
 
 
