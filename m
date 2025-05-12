@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-143999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0B0DAB4357
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:33:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9E3CAB435B
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:33:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7DFE8C7CE0
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:29:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A89E18C207C
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:29:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC0F029B20B;
-	Mon, 12 May 2025 18:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1000629B220;
+	Mon, 12 May 2025 18:12:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xhnRLaee"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QYgbrqaN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C1929B204;
-	Mon, 12 May 2025 18:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C00BC29711A;
+	Mon, 12 May 2025 18:12:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073543; cv=none; b=bO6FhSSf+2CUL3cZOvYalZolXrpwq2GxRKvAVlDqV725HKcUFXcbrnW4W4LJByWFs0ZcDE62vtQr7GKj6U+UQFlhfgH9kYkVcERUdEWPW2xcUkC3FLGJ39FHuCH0QajJ5nRxo34NRhlmD5cAgOb5ZIhiFPVvFP7w/7XZ+k/T6cU=
+	t=1747073549; cv=none; b=Ov8T8h7eUcXVJVuGjspFsUM50nL/B41XIWnj1jO93B3IQCBm4yNIcVgMb/IqUf14DJkFCUMzygnnBVNmNirqx9nElmGcdb7hXJgZ03b+zcEHx/iIdpC4lSSmaexpU6IYz8DcMqy+dDfMHi73+WrpbQpJdJlwpFhg6QCNXuoJOUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073543; c=relaxed/simple;
-	bh=1aPVUuMTEhgOhmRkcuiNPKtzABdMKMHHjTnfR+8xxww=;
+	s=arc-20240116; t=1747073549; c=relaxed/simple;
+	bh=bSURhbOxLYVZAIY+FhsGSY0IFc4uEQFlb8POPTc3Buk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bngZNSaXhseNye95jthvqUeqKNmZtCw+z0oSRNjrjAWUbNTzs9ou6Ug1vSVCR+oBoE+vlpCNFUGAKCaizNl6No5tMcw2c4LWxS1Txa0PlZct2QjtNAQi6ztqdyl7WclWqVmE8hew8vlht8LF8osQsHxvrZfLHx/XwZ1wC2DHLh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xhnRLaee; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDECEC4CEE7;
-	Mon, 12 May 2025 18:12:22 +0000 (UTC)
+	 MIME-Version; b=UnRVipEI+1p3DRlHH+8qGNasTIBAXmMsivbsSmLf54hVMMAD03f7TK2lmmSj685ECRaSnDe9P090ErFbhWmxXwFvcuBAfjFP/lJ2YUlTlZNkKdpSAMdxeceuI0thoGei0Z6tMiX90VKaGVfzhxdDBtNtKC5CzL4qEhl/o9CNgOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QYgbrqaN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FBDCC4CEE9;
+	Mon, 12 May 2025 18:12:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073543;
-	bh=1aPVUuMTEhgOhmRkcuiNPKtzABdMKMHHjTnfR+8xxww=;
+	s=korg; t=1747073549;
+	bh=bSURhbOxLYVZAIY+FhsGSY0IFc4uEQFlb8POPTc3Buk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xhnRLaee6dUKGQ7LVovKqcNCzXeOdRrgiAT9w94vrL9d1L2A9YzJlR78iJe+1IQ7v
-	 uJ0QGK/bpy3Hzo2agvI2ZTiv78jZVXEQAca6N6lAauR9qzzFAoeh0/hZly8hMYvUtq
-	 X2N9Zfp+2dPkyXu++dat9RSv+5aIR9YLxbgtEdnU=
+	b=QYgbrqaN/7e4goQ7fXugrJcDcYwYSFWI4+WJZLS6RpmR7h3TlZ80RYn/4Tf1hsCjS
+	 5h6yB2LaI9EsDBv6OeOkkOFuKe/MFQ8Z/uLwXqh3tpXOgDvkT3/EHHgi8hobJBvxpK
+	 s3kK3oVBuf26T6ETWS4eWL+GS0/LxcBhnNpe0uco=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Dave Hansen <dave.hansen@linux.intel.com>,
 	Josh Poimboeuf <jpoimboe@kernel.org>,
 	Alexandre Chartre <alexandre.chartre@oracle.com>
-Subject: [PATCH 6.6 109/113] x86/its: Add "vmexit" option to skip mitigation on some CPUs
-Date: Mon, 12 May 2025 19:46:38 +0200
-Message-ID: <20250512172032.111264367@linuxfoundation.org>
+Subject: [PATCH 6.6 110/113] x86/its: Add support for RSB stuffing mitigation
+Date: Mon, 12 May 2025 19:46:39 +0200
+Message-ID: <20250512172032.152882365@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
 References: <20250512172027.691520737@linuxfoundation.org>
@@ -69,16 +69,14 @@ Content-Transfer-Encoding: 8bit
 
 From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-commit 2665281a07e19550944e8354a2024635a7b2714a upstream.
+commit facd226f7e0c8ca936ac114aba43cb3e8b94e41e upstream.
 
-Ice Lake generation CPUs are not affected by guest/host isolation part of
-ITS. If a user is only concerned about KVM guests, they can now choose a
-new cmdline option "vmexit" that will not deploy the ITS mitigation when
-CPU is not affected by guest/host isolation. This saves the performance
-overhead of ITS mitigation on Ice Lake gen CPUs.
+When retpoline mitigation is enabled for spectre-v2, enabling
+call-depth-tracking and RSB stuffing also mitigates ITS. Add cmdline option
+indirect_target_selection=stuff to allow enabling RSB stuffing mitigation.
 
-When "vmexit" option selected, if the CPU is affected by ITS guest/host
-isolation, the default ITS mitigation is deployed.
+When retpoline mitigation is not enabled, =stuff option is ignored, and
+default mitigation for ITS is deployed.
 
 Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
@@ -86,122 +84,73 @@ Reviewed-by: Josh Poimboeuf <jpoimboe@kernel.org>
 Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/admin-guide/kernel-parameters.txt |    2 ++
- arch/x86/include/asm/cpufeatures.h              |    1 +
- arch/x86/kernel/cpu/bugs.c                      |   11 +++++++++++
- arch/x86/kernel/cpu/common.c                    |   19 ++++++++++++-------
- 4 files changed, 26 insertions(+), 7 deletions(-)
+ Documentation/admin-guide/kernel-parameters.txt |    3 +++
+ arch/x86/kernel/cpu/bugs.c                      |   21 +++++++++++++++++++++
+ 2 files changed, 24 insertions(+)
 
 --- a/Documentation/admin-guide/kernel-parameters.txt
 +++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -2068,6 +2068,8 @@
- 			off:    Disable mitigation.
- 			force:	Force the ITS bug and deploy default
+@@ -2070,6 +2070,9 @@
  				mitigation.
-+			vmexit: Only deploy mitigation if CPU is affected by
-+				guest/host isolation part of ITS.
+ 			vmexit: Only deploy mitigation if CPU is affected by
+ 				guest/host isolation part of ITS.
++			stuff:	Deploy RSB-fill mitigation when retpoline is
++				also deployed. Otherwise, deploy the default
++				mitigation.
  
  			For details see:
  			Documentation/admin-guide/hw-vuln/indirect-target-selection.rst
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -520,4 +520,5 @@
- #define X86_BUG_BHI			X86_BUG(1*32 + 3) /* CPU is affected by Branch History Injection */
- #define X86_BUG_IBPB_NO_RET		X86_BUG(1*32 + 4) /* "ibpb_no_ret" IBPB omits return target predictions */
- #define X86_BUG_ITS			X86_BUG(1*32 + 5) /* CPU is affected by Indirect Target Selection */
-+#define X86_BUG_ITS_NATIVE_ONLY		X86_BUG(1*32 + 6) /* CPU is affected by ITS, VMX is not affected */
- #endif /* _ASM_X86_CPUFEATURES_H */
 --- a/arch/x86/kernel/cpu/bugs.c
 +++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1188,16 +1188,19 @@ do_cmd_auto:
- enum its_mitigation_cmd {
+@@ -1189,6 +1189,7 @@ enum its_mitigation_cmd {
  	ITS_CMD_OFF,
  	ITS_CMD_ON,
-+	ITS_CMD_VMEXIT,
+ 	ITS_CMD_VMEXIT,
++	ITS_CMD_RSB_STUFF,
  };
  
  enum its_mitigation {
- 	ITS_MITIGATION_OFF,
-+	ITS_MITIGATION_VMEXIT_ONLY,
- 	ITS_MITIGATION_ALIGNED_THUNKS,
- 	ITS_MITIGATION_RETPOLINE_STUFF,
- };
- 
- static const char * const its_strings[] = {
- 	[ITS_MITIGATION_OFF]			= "Vulnerable",
-+	[ITS_MITIGATION_VMEXIT_ONLY]		= "Mitigation: Vulnerable, KVM: Not affected",
- 	[ITS_MITIGATION_ALIGNED_THUNKS]		= "Mitigation: Aligned branch/return thunks",
- 	[ITS_MITIGATION_RETPOLINE_STUFF]	= "Mitigation: Retpolines, Stuffing RSB",
- };
-@@ -1224,6 +1227,8 @@ static int __init its_parse_cmdline(char
- 	} else if (!strcmp(str, "force")) {
- 		its_cmd = ITS_CMD_ON;
+@@ -1229,6 +1230,8 @@ static int __init its_parse_cmdline(char
  		setup_force_cpu_bug(X86_BUG_ITS);
-+	} else if (!strcmp(str, "vmexit")) {
-+		its_cmd = ITS_CMD_VMEXIT;
+ 	} else if (!strcmp(str, "vmexit")) {
+ 		its_cmd = ITS_CMD_VMEXIT;
++	} else if (!strcmp(str, "stuff")) {
++		its_cmd = ITS_CMD_RSB_STUFF;
  	} else {
  		pr_err("Ignoring unknown indirect_target_selection option (%s).", str);
  	}
-@@ -1278,6 +1283,12 @@ static void __init its_select_mitigation
+@@ -1279,6 +1282,12 @@ static void __init its_select_mitigation
+ 		goto out;
+ 	}
+ 
++	if (cmd == ITS_CMD_RSB_STUFF &&
++	    (!boot_cpu_has(X86_FEATURE_RETPOLINE) || !IS_ENABLED(CONFIG_CALL_DEPTH_TRACKING))) {
++		pr_err("RSB stuff mitigation not supported, using default\n");
++		cmd = ITS_CMD_ON;
++	}
++
+ 	switch (cmd) {
  	case ITS_CMD_OFF:
  		its_mitigation = ITS_MITIGATION_OFF;
+@@ -1296,6 +1305,18 @@ static void __init its_select_mitigation
+ 		setup_force_cpu_cap(X86_FEATURE_RETHUNK);
+ 		set_return_thunk(its_return_thunk);
  		break;
-+	case ITS_CMD_VMEXIT:
-+		if (boot_cpu_has_bug(X86_BUG_ITS_NATIVE_ONLY)) {
-+			its_mitigation = ITS_MITIGATION_VMEXIT_ONLY;
-+			goto out;
++	case ITS_CMD_RSB_STUFF:
++		its_mitigation = ITS_MITIGATION_RETPOLINE_STUFF;
++		setup_force_cpu_cap(X86_FEATURE_RETHUNK);
++		setup_force_cpu_cap(X86_FEATURE_CALL_DEPTH);
++#ifdef CONFIG_CALL_DEPTH_TRACKING
++		set_return_thunk(&__x86_return_skl);
++#endif
++		if (retbleed_mitigation == RETBLEED_MITIGATION_NONE) {
++			retbleed_mitigation = RETBLEED_MITIGATION_STUFF;
++			pr_info("Retbleed mitigation updated to stuffing\n");
 +		}
-+		fallthrough;
- 	case ITS_CMD_ON:
- 		its_mitigation = ITS_MITIGATION_ALIGNED_THUNKS;
- 		if (!boot_cpu_has(X86_FEATURE_RETPOLINE))
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -1274,6 +1274,8 @@ static const __initconst struct x86_cpu_
- #define RFDS		BIT(7)
- /* CPU is affected by Indirect Target Selection */
- #define ITS		BIT(8)
-+/* CPU is affected by Indirect Target Selection, but guest-host isolation is not affected */
-+#define ITS_NATIVE_ONLY	BIT(9)
- 
- static const struct x86_cpu_id cpu_vuln_blacklist[] __initconst = {
- 	VULNBL_INTEL_STEPPINGS(IVYBRIDGE,	X86_STEPPING_ANY,		SRBDS),
-@@ -1294,16 +1296,16 @@ static const struct x86_cpu_id cpu_vuln_
- 	VULNBL_INTEL_STEPPINGS(KABYLAKE,	X86_STEPPINGS(0x0, 0xc),	MMIO | RETBLEED | GDS | SRBDS),
- 	VULNBL_INTEL_STEPPINGS(KABYLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS | ITS),
- 	VULNBL_INTEL_STEPPINGS(CANNONLAKE_L,	X86_STEPPING_ANY,		RETBLEED),
--	VULNBL_INTEL_STEPPINGS(ICELAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS | ITS),
--	VULNBL_INTEL_STEPPINGS(ICELAKE_D,	X86_STEPPING_ANY,		MMIO | GDS | ITS),
--	VULNBL_INTEL_STEPPINGS(ICELAKE_X,	X86_STEPPING_ANY,		MMIO | GDS | ITS),
-+	VULNBL_INTEL_STEPPINGS(ICELAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS | ITS | ITS_NATIVE_ONLY),
-+	VULNBL_INTEL_STEPPINGS(ICELAKE_D,	X86_STEPPING_ANY,		MMIO | GDS | ITS | ITS_NATIVE_ONLY),
-+	VULNBL_INTEL_STEPPINGS(ICELAKE_X,	X86_STEPPING_ANY,		MMIO | GDS | ITS | ITS_NATIVE_ONLY),
- 	VULNBL_INTEL_STEPPINGS(COMETLAKE,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS | ITS),
- 	VULNBL_INTEL_STEPPINGS(COMETLAKE_L,	X86_STEPPINGS(0x0, 0x0),	MMIO | RETBLEED | ITS),
- 	VULNBL_INTEL_STEPPINGS(COMETLAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS | ITS),
--	VULNBL_INTEL_STEPPINGS(TIGERLAKE_L,	X86_STEPPING_ANY,		GDS | ITS),
--	VULNBL_INTEL_STEPPINGS(TIGERLAKE,	X86_STEPPING_ANY,		GDS | ITS),
-+	VULNBL_INTEL_STEPPINGS(TIGERLAKE_L,	X86_STEPPING_ANY,		GDS | ITS | ITS_NATIVE_ONLY),
-+	VULNBL_INTEL_STEPPINGS(TIGERLAKE,	X86_STEPPING_ANY,		GDS | ITS | ITS_NATIVE_ONLY),
- 	VULNBL_INTEL_STEPPINGS(LAKEFIELD,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED),
--	VULNBL_INTEL_STEPPINGS(ROCKETLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | ITS),
-+	VULNBL_INTEL_STEPPINGS(ROCKETLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | ITS | ITS_NATIVE_ONLY),
- 	VULNBL_INTEL_STEPPINGS(ALDERLAKE,	X86_STEPPING_ANY,		RFDS),
- 	VULNBL_INTEL_STEPPINGS(ALDERLAKE_L,	X86_STEPPING_ANY,		RFDS),
- 	VULNBL_INTEL_STEPPINGS(RAPTORLAKE,	X86_STEPPING_ANY,		RFDS),
-@@ -1520,8 +1522,11 @@ static void __init cpu_set_bug_bits(stru
- 	if (cpu_has(c, X86_FEATURE_AMD_IBPB) && !cpu_has(c, X86_FEATURE_AMD_IBPB_RET))
- 		setup_force_cpu_bug(X86_BUG_IBPB_NO_RET);
- 
--	if (vulnerable_to_its(x86_arch_cap_msr))
-+	if (vulnerable_to_its(x86_arch_cap_msr)) {
- 		setup_force_cpu_bug(X86_BUG_ITS);
-+		if (cpu_matches(cpu_vuln_blacklist, ITS_NATIVE_ONLY))
-+			setup_force_cpu_bug(X86_BUG_ITS_NATIVE_ONLY);
-+	}
- 
- 	if (cpu_matches(cpu_vuln_whitelist, NO_MELTDOWN))
- 		return;
++		break;
+ 	}
+ out:
+ 	pr_info("%s\n", its_strings[its_mitigation]);
 
 
 
