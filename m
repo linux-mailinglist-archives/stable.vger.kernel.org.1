@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-143474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABC28AB3FFB
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:48:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7568CAB3FFD
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:49:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 643328664A1
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:47:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36FAE3B9A5C
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:47:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79F4C296D1D;
-	Mon, 12 May 2025 17:47:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D5B42550C4;
+	Mon, 12 May 2025 17:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ny7e4fPl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bAPvVPZJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35B3A296155;
-	Mon, 12 May 2025 17:47:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AE8C1C32FF;
+	Mon, 12 May 2025 17:47:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072058; cv=none; b=dikYdDKB1vQbgpXRIa7yAiMZcF8WjOP9J4MM1wJUA7H8v+G+k+fCDiamWz9RpUSXcvQHzdzVGsLz6ltCam2B7fT6RsBMVeB3MfangPviDy9JSdrJ4jMPe4SnqjuiGOhIqkiYtXTSDaRTXcYHrK4LcE2MNAjhXB1ssttcb8NbuUo=
+	t=1747072063; cv=none; b=Vco8l4vsEoYc+jyhXhWjvqcH1WZmSIAAgGffNiSNXM6imoCtRl9OoqoAnQtccdtwzSzG94kTIFPDL4M8QMOc2LweKGkRwHhhvfPeNPoOcr9bjLUKXguqKB1kn49GJEn9LtdfsF6EIGGAv88+op34Vk1jxkrPGDzIKZrLJPxuVmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072058; c=relaxed/simple;
-	bh=IwIdCkjIHd60EL88Bmj3wNAzEmtEBkQkUDD7flYu/e4=;
+	s=arc-20240116; t=1747072063; c=relaxed/simple;
+	bh=mq1lSOHsBgDs41wpIzAgUhLsbkcrKrEZjKuAtmVjJkU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EQ7IebfU/MVFIhFBdd9RlQFWu6robHT7497Igbd1k7y6gPjBQo4BBIEJaIMZZXdUgsicijTeF4gkSD79ZdrgmZFAvTTjuxPDWBkQnE7CCKotlNRrLFCYps5bTg69qmE21cUiAzBgyNYXeiId1ONc8nuswv+l/pA/gBtY4dnLDEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ny7e4fPl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 460B8C4CEE7;
-	Mon, 12 May 2025 17:47:37 +0000 (UTC)
+	 MIME-Version; b=nDgGEC9UWaDZXZUV1joxTILkhPn3THk+UiptSJLuvzi44RDLU+8mhJDBAhb8QrJbaRWtHzjq8X60pr5Pvze5k/i9wPxw8SrQPrRVKF7sJqby/3rG5GQilC728DweBbP4LwGNTGOR7IXy/F9eeG/J9Dk8VqbFhHueTbgsYW2uHOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bAPvVPZJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF5C2C4CEE9;
+	Mon, 12 May 2025 17:47:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072057;
-	bh=IwIdCkjIHd60EL88Bmj3wNAzEmtEBkQkUDD7flYu/e4=;
+	s=korg; t=1747072063;
+	bh=mq1lSOHsBgDs41wpIzAgUhLsbkcrKrEZjKuAtmVjJkU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ny7e4fPlkRKhrGDKPiQbsWIzC5+I+wNWo3IGfbsa4NoNLo8O19QcjVZlcY8U1qiOo
-	 CluJrWu0XajS0j/XsE1uZlbRKj5KgJ1zS2aAtWGKlGJ3KRKXMgmiToCQ+tnBoTIwSg
-	 O+gqlzmcqx1nLXPWCeTym1g+MzjrkB5ThiU3rKPw=
+	b=bAPvVPZJl7W83MwSvUVhdLoLUSH3dOXMP9MEWxLzS72L0ttucaSVBRuEfPbHrlo5J
+	 m+P9jYxC/75BRXvHqgEvINPYUaQL7oMP/9uVC2z9uvTQ+r9k7t1lzJQjO1It/OMHi6
+	 bYpYg2SnFGqogAInRS04wBPIc8l3sdr8W0na03rc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.14 124/197] clocksource/i8253: Use raw_spinlock_irqsave() in clockevent_i8253_disable()
-Date: Mon, 12 May 2025 19:39:34 +0200
-Message-ID: <20250512172049.436612104@linuxfoundation.org>
+	Sebastian Ott <sebott@redhat.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>
+Subject: [PATCH 6.14 125/197] KVM: arm64: Fix uninitialized memcache pointer in user_mem_abort()
+Date: Mon, 12 May 2025 19:39:35 +0200
+Message-ID: <20250512172049.477843725@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512172044.326436266@linuxfoundation.org>
 References: <20250512172044.326436266@linuxfoundation.org>
@@ -65,54 +66,63 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Sebastian Ott <sebott@redhat.com>
 
-commit 94cff94634e506a4a44684bee1875d2dbf782722 upstream.
+commit 157dbc4a321f5bb6f8b6c724d12ba720a90f1a7c upstream.
 
-On x86 during boot, clockevent_i8253_disable() can be invoked via
-x86_late_time_init -> hpet_time_init() -> pit_timer_init() which happens
-with enabled interrupts.
+Commit fce886a60207 ("KVM: arm64: Plumb the pKVM MMU in KVM") made the
+initialization of the local memcache variable in user_mem_abort()
+conditional, leaving a codepath where it is used uninitialized via
+kvm_pgtable_stage2_map().
 
-If some of the old i8253 hardware is actually used then lockdep will notice
-that i8253_lock is used in hard interrupt context. This causes lockdep to
-complain because it observed the lock being acquired with interrupts
-enabled and in hard interrupt context.
+This can fail on any path that requires a stage-2 allocation
+without transition via a permission fault or dirty logging.
 
-Make clockevent_i8253_disable() acquire the lock with
-raw_spinlock_irqsave() to cure this.
+Fix this by making sure that memcache is always valid.
 
-[ tglx: Massage change log and use guard() ]
-
-Fixes: c8c4076723dac ("x86/timer: Skip PIT initialization on modern chipsets")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Fixes: fce886a60207 ("KVM: arm64: Plumb the pKVM MMU in KVM")
+Signed-off-by: Sebastian Ott <sebott@redhat.com>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20250404133116.p-XRWJXf@linutronix.de
+Link: https://lore.kernel.org/kvmarm/3f5db4c7-ccce-fb95-595c-692fa7aad227@redhat.com/
+Link: https://lore.kernel.org/r/20250505173148.33900-1-sebott@redhat.com
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clocksource/i8253.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ arch/arm64/kvm/mmu.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
---- a/drivers/clocksource/i8253.c
-+++ b/drivers/clocksource/i8253.c
-@@ -103,7 +103,7 @@ int __init clocksource_i8253_init(void)
- #ifdef CONFIG_CLKEVT_I8253
- void clockevent_i8253_disable(void)
- {
--	raw_spin_lock(&i8253_lock);
-+	guard(raw_spinlock_irqsave)(&i8253_lock);
+--- a/arch/arm64/kvm/mmu.c
++++ b/arch/arm64/kvm/mmu.c
+@@ -1489,6 +1489,11 @@ static int user_mem_abort(struct kvm_vcp
+ 		return -EFAULT;
+ 	}
  
++	if (!is_protected_kvm_enabled())
++		memcache = &vcpu->arch.mmu_page_cache;
++	else
++		memcache = &vcpu->arch.pkvm_memcache;
++
  	/*
- 	 * Writing the MODE register should stop the counter, according to
-@@ -132,8 +132,6 @@ void clockevent_i8253_disable(void)
- 	outb_p(0, PIT_CH0);
+ 	 * Permission faults just need to update the existing leaf entry,
+ 	 * and so normally don't require allocations from the memcache. The
+@@ -1498,13 +1503,11 @@ static int user_mem_abort(struct kvm_vcp
+ 	if (!fault_is_perm || (logging_active && write_fault)) {
+ 		int min_pages = kvm_mmu_cache_min_pages(vcpu->arch.hw_mmu);
  
- 	outb_p(0x30, PIT_MODE);
--
--	raw_spin_unlock(&i8253_lock);
- }
- 
- static int pit_shutdown(struct clock_event_device *evt)
+-		if (!is_protected_kvm_enabled()) {
+-			memcache = &vcpu->arch.mmu_page_cache;
++		if (!is_protected_kvm_enabled())
+ 			ret = kvm_mmu_topup_memory_cache(memcache, min_pages);
+-		} else {
+-			memcache = &vcpu->arch.pkvm_memcache;
++		else
+ 			ret = topup_hyp_memcache(memcache, min_pages);
+-		}
++
+ 		if (ret)
+ 			return ret;
+ 	}
 
 
 
