@@ -1,111 +1,113 @@
-Return-Path: <stable+bounces-143862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7C87AB4259
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:22:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F829AB4251
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:21:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30D8A3B066C
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:19:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D3C03B736E
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:19:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C23FB2BFC7D;
-	Mon, 12 May 2025 18:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 743F22BF994;
+	Mon, 12 May 2025 18:05:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rH8t0BP8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dkio7C3f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774572BFC72;
-	Mon, 12 May 2025 18:05:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 355B82BF988
+	for <stable@vger.kernel.org>; Mon, 12 May 2025 18:05:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073137; cv=none; b=flQ9CE2QCY31uyRtZRZYZOSkN4vewCIJjzb2TUL5pXGve382HqYi/fo3uaRImrT0h78BK4tYgqsKo+ZiEEaW4M1bXKFBP5sX2iNJ5byb6oQhi6IM6y1/7AguY/W6lgWU5nHEZuZxEvIrJSLevhcoH1HKJG1f5JpWXMkQvCmpv8s=
+	t=1747073136; cv=none; b=oFN1qupTXgKXc2Jfh3OrvSst33hjtitOxQLSb6pOcV42unhEveSxIeFPWcoCmZ3aTh01rQlVq4if3K3ltkydcuZLJljYnaFWWxKf/HgUd49/boDCxW0+L7sTISxGL/Tj7gEyV8WraUp8YwmRLvVW36BUJPO2BHcbn4b4ScAbVmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073137; c=relaxed/simple;
-	bh=xuwcdzp+yOKlnUsHE+/kS8E8z/VbD6yCi+gpHECzW3I=;
+	s=arc-20240116; t=1747073136; c=relaxed/simple;
+	bh=o+wmvr0aFl9775aaRDdZJTulseJVXhNOz11wiNopgzs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=k1f4Yi4XuPFYipBhYn9Q7ST4axDRDmdF1nOb4J75mL8bUaTmSyjx/spGrDRrLRScngB1jKn2HxXWroczAYi4kU0ZzqGd8iw3WIBU0EVuUi+K3AVakh6klkmq6tPzoRbboMpSXcdImB31J1mY87ewBdYu+62NpuxbWJSQOBjh0q8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rH8t0BP8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BFBAC4CEE9;
-	Mon, 12 May 2025 18:05:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VtVmQ49m32jWS2qVHkoNMRNqua5kCRnimk9OVbXMczlAnBMB4cQZRXWzvRxuXe4+mwm83MNY13m49HnQ8Pg+7aay+uHfo9YqspfsMFYceU5q1aePdSVggt/GiVzUtEHd2hLr3MkBQAXVVOsfA4IPmQXQpz1hEYG1sYnd+7/qTMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dkio7C3f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3827AC4CEE9;
+	Mon, 12 May 2025 18:05:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747073137;
-	bh=xuwcdzp+yOKlnUsHE+/kS8E8z/VbD6yCi+gpHECzW3I=;
+	s=k20201202; t=1747073135;
+	bh=o+wmvr0aFl9775aaRDdZJTulseJVXhNOz11wiNopgzs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rH8t0BP87J6l2WvGedulXsIIF41m93RCx8gxtU8y3CQsqgs4rqeARI0SUuJY8hohc
-	 ct/us+VDQYTexXALyoWE+v5mHSvGfx1xQP+hkCFuyKB4WiV1f5fn7CbAgwCeBoPC7u
-	 EiAFMatm9rdEvS/dQw32+BG9MOTOktdptv5Lxm2dtoGXx/JzsacaOyStRWP4CzqJpu
-	 feGooq/jDjoaxUs/skEfHNdXUeniGqt79C5FL+Auq9Okvzqj+pk24Cpd8an1r5DHjf
-	 7uo4rz0KpUeFnHzMIrFXcBZ0qmxlTBYHwzy50b5H7E98SsKRalZm7eblXyccTyCAbN
-	 vXWmqvf7dYiiQ==
+	b=dkio7C3fYdKmw86O9ECDYGZdfhrbT1YW+0TfcE9boRNiTu62aySspouTCuBHs/aQ2
+	 AzkHM35Hb0PRQUbx9rmtgyqOiYODR5cHdLJFCgYXSB+MzoQfakQxJX1Vq6V4+CMir1
+	 tDKw//lHQW88dxKrY7KkZe9t9AlaD1RdYV/XvnftXXTVfJOUnow8REQeV/x9m0voZc
+	 zWl1VQbptSLsOELVV6rsoOc9FIgt9XDtYl7HOmzpJEkV3BwA4awitIf16qAlxeIQaq
+	 zZSW1H7XX5CJRpSc3y88Sc/kj8X8Bryv/i+rXRAjip92svzDVEMXZt89kjEPxiZF7f
+	 KyfdIcQE0tN0g==
 From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Al Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 3/3] __legitimize_mnt(): check for MNT_SYNC_UMOUNT should be under mount_lock
-Date: Mon, 12 May 2025 14:05:28 -0400
-Message-Id: <20250512180528.438177-3-sashal@kernel.org>
+To: stable@vger.kernel.org,
+	Zhi.Yang@eng.windriver.com
+Cc: Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.15.y] RDMA/core: Refactor rdma_bind_addr
+Date: Mon, 12 May 2025 14:05:31 -0400
+Message-Id: <20250511192601-c785336a16cb65ea@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250512180528.438177-1-sashal@kernel.org>
-References: <20250512180528.438177-1-sashal@kernel.org>
+In-Reply-To:  <20250509024447.3959342-1-Zhi.Yang@eng.windriver.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.10.237
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+[ Sasha's backport helper bot ]
 
-[ Upstream commit 250cf3693060a5f803c5f1ddc082bb06b16112a9 ]
+Hi,
 
-... or we risk stealing final mntput from sync umount - raising mnt_count
-after umount(2) has verified that victim is not busy, but before it
-has set MNT_SYNC_UMOUNT; in that case __legitimize_mnt() doesn't see
-that it's safe to quietly undo mnt_count increment and leaves dropping
-the reference to caller, where it'll be a full-blown mntput().
+Summary of potential issues:
+⚠️ Found follow-up fixes in mainline
 
-Check under mount_lock is needed; leaving the current one done before
-taking that makes no sense - it's nowhere near common enough to bother
-with.
+The upstream commit SHA1 provided is correct: 8d037973d48c026224ab285e6a06985ccac6f7bf
 
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Zhi Yang<Zhi.Yang@eng.windriver.com>
+Commit author: Patrisious Haddad<phaddad@nvidia.com>
+
+Status in newer kernel trees:
+6.14.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (exact SHA1)
+6.1.y | Present (different SHA1: 88067197e97a)
+
+Found fixes commits:
+0e15863015d9 RDMA/core: Update CMA destination address on rdma_resolve_addr
+
+Note: The patch differs from the upstream commit:
 ---
- fs/namespace.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+1:  8d037973d48c0 ! 1:  4144b6c866631 RDMA/core: Refactor rdma_bind_addr
+    @@ Metadata
+      ## Commit message ##
+         RDMA/core: Refactor rdma_bind_addr
+     
+    +    commit 8d037973d48c026224ab285e6a06985ccac6f7bf upstream.
+    +
+         Refactor rdma_bind_addr function so that it doesn't require that the
+         cma destination address be changed before calling it.
+     
+    @@ Commit message
+         Reviewed-by: Mark Zhang <markzhang@nvidia.com>
+         Link: https://lore.kernel.org/r/3d0e9a2fd62bc10ba02fed1c7c48a48638952320.1672819273.git.leonro@nvidia.com
+         Signed-off-by: Leon Romanovsky <leon@kernel.org>
+    +    Signed-off-by: Zhi Yang <Zhi.Yang@windriver.com>
+    +    Signed-off-by: He Zhe <zhe.he@windriver.com>
+     
+      ## drivers/infiniband/core/cma.c ##
+     @@ drivers/infiniband/core/cma.c: static int cma_resolve_ib_addr(struct rdma_id_private *id_priv)
+---
 
-diff --git a/fs/namespace.c b/fs/namespace.c
-index 2f97112657adc..9f9d0d9ba4dc7 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -572,12 +572,8 @@ int __legitimize_mnt(struct vfsmount *bastard, unsigned seq)
- 	smp_mb();			// see mntput_no_expire()
- 	if (likely(!read_seqretry(&mount_lock, seq)))
- 		return 0;
--	if (bastard->mnt_flags & MNT_SYNC_UMOUNT) {
--		mnt_add_count(mnt, -1);
--		return 1;
--	}
- 	lock_mount_hash();
--	if (unlikely(bastard->mnt_flags & MNT_DOOMED)) {
-+	if (unlikely(bastard->mnt_flags & (MNT_SYNC_UMOUNT | MNT_DOOMED))) {
- 		mnt_add_count(mnt, -1);
- 		unlock_mount_hash();
- 		return 1;
--- 
-2.39.5
+Results of testing on various branches:
 
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-5.15.y       |  Success    |  Success   |
 
