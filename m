@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-143925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 062CCAB42B8
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:25:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A109AB4160
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:05:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D243716DA2D
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:25:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7AD893B9935
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:03:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C01A3298CB0;
-	Mon, 12 May 2025 18:08:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C9CF23C4E7;
+	Mon, 12 May 2025 18:03:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zJd+beu8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g+OLXii9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C613296FDB;
-	Mon, 12 May 2025 18:08:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 378111A08CA;
+	Mon, 12 May 2025 18:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073311; cv=none; b=Jwzb6zxqHEo3wIw4+mwDCRaoxHasUbQdudmL3vw4TBbZWc0pAtstWbPvuPkPsODgoUzG/3jS0nOsSzSm7t1JwIuGZuuD9b7+5th1bg1BMAu7wKyNHXR74ET+TG4bnQz/it/Sm27Bt/sfWHv9l28rEPnTRWc5khij3aEDYHdewLU=
+	t=1747073006; cv=none; b=VtR+jl8nNHkt8Vt+i4+tw/0/42IXnnkK6q7qC7saO/VwuEF+AXKGx7bRjiOfFAuB+hvJQlrCw1FRz1zp0sR4EwjhKZwyows3EiPQejsrklEx0aIDf+r3MtVAjmRt9JJbsEHL3GWQWxiRmGvRa5cy1RJUfq4KsXvvKyx6EEBPv3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073311; c=relaxed/simple;
-	bh=7rSrdep1n4H1n2y3IXtX2/t8TjyVFLScdJ2lWgGQ/Go=;
+	s=arc-20240116; t=1747073006; c=relaxed/simple;
+	bh=ZRsK9NM+utPv5/xYEF1U6TrbzFpFgQfGUuQkI1K9KJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mLnHKCHl6kqKSuLa4SJI8T8vDpfRONrUUS2NyYAP/BLCC3L7vo85QFanEiHw0VukMSTQWVnbO0LiMW2q2cReTxlPHP1Mcyb0xuKajZF7wuk0srbrZuxi0TeIc/tZABv9qC5akf3ePa5RUnt9gFZbjBcED7CuwOcuxTXwuPHDNtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zJd+beu8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD971C4CEE7;
-	Mon, 12 May 2025 18:08:30 +0000 (UTC)
+	 MIME-Version; b=adT/PxmNLry0fuufqUrhCZowqwEHeXZWU42PeXGjPLMi1Phkh6WC9gqBxFKAE+Yb2dRLHRYq3wx2Rc9+dHWdnWEYvDoOx/lb2GDIztCmZdEX9wXS5FUjY1CG6Q3BG5gsEIRkYO09zR3HBbMtjJ1Ym17GPN2WmjJs77igPHKFSlg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g+OLXii9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39E4DC4CEE7;
+	Mon, 12 May 2025 18:03:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073311;
-	bh=7rSrdep1n4H1n2y3IXtX2/t8TjyVFLScdJ2lWgGQ/Go=;
+	s=korg; t=1747073005;
+	bh=ZRsK9NM+utPv5/xYEF1U6TrbzFpFgQfGUuQkI1K9KJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zJd+beu8UZ5n5fhLN+/OAexF7UctjJdxqr4JEfflaCr1WbnJpEX3/ye5GX9MKQTqA
-	 zzzQW+DYZbZB5PcA4wTzf7KeQqcZTXvzdNIu0UgY13RG/ihcfbniZcasf2aiYar5Kb
-	 YkxEbZcr3uPlIaW7Km3ftmSMB0xG4IoeVVyNntSA=
+	b=g+OLXii9DtFeK3M6NmVV12e+/6iQCsL+1DCxhkorSij0iqYa+5tAW8QXX2RvGmiNk
+	 2ctqDK1/VDls4mqMD5Ml1wthKN6Q7UpGKHxQLZBJjHQcZGQKrTEnc0+uQvRdDF0nJ7
+	 V7HkhQgmw3p5qCi++axjbldfMNJtZQQZ5y15Wvjc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	jt <enopatch@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.6 035/113] Input: synaptics - enable SMBus for HP Elitebook 850 G1
+	stable <stable@kernel.org>,
+	Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
+Subject: [PATCH 6.12 123/184] usb: misc: onboard_usb_dev: fix support for Cypress HX3 hubs
 Date: Mon, 12 May 2025 19:45:24 +0200
-Message-ID: <20250512172029.101356103@linuxfoundation.org>
+Message-ID: <20250512172046.830133067@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
-References: <20250512172027.691520737@linuxfoundation.org>
+In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
+References: <20250512172041.624042835@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
 
-commit f04f03d3e99bc8f89b6af5debf07ff67d961bc23 upstream.
+commit 9f657a92805cfc98e11cf5da9e8f4e02ecff2260 upstream.
 
-The kernel reports that the touchpad for this device can support
-SMBus mode.
+The Cypress HX3 USB3.0 hubs use different PID values depending
+on the product variant. The comment in compatibles table is
+misleading, as the currently used PIDs (0x6504 and 0x6506 for
+USB 3.0 and USB 2.0, respectively) are defaults for the CYUSB331x,
+while CYUSB330x and CYUSB332x variants use different values.
+Based on the datasheet [1], update the compatible usb devices table
+to handle different types of the hub.
+The change also includes vendor mode PIDs, which are used by the
+hub in I2C Master boot mode, if connected EEPROM contains invalid
+signature or is blank. This allows to correctly boot the hub even
+if the EEPROM will have broken content.
+Number of vcc supplies and timing requirements are the same for all
+HX variants, so the platform driver's match table does not have to
+be extended.
 
-Reported-by: jt <enopatch@gmail.com>
-Link: https://lore.kernel.org/r/iys5dbv3ldddsgobfkxldazxyp54kay4bozzmagga6emy45jop@2ebvuxgaui4u
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+[1] https://www.infineon.com/dgdl/Infineon-HX3_USB_3_0_Hub_Consumer_Industrial-DataSheet-v22_00-EN.pdf?fileId=8ac78c8c7d0d8da4017d0ecb53f644b8
+    Table 9. PID Values
+
+Fixes: b43cd82a1a40 ("usb: misc: onboard-hub: add support for Cypress HX3 USB 3.0 family")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
+Link: https://lore.kernel.org/r/20250425-onboard_usb_dev-v2-1-4a76a474a010@thaumatec.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/mouse/synaptics.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/misc/onboard_usb_dev.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/drivers/input/mouse/synaptics.c
-+++ b/drivers/input/mouse/synaptics.c
-@@ -190,6 +190,7 @@ static const char * const smbus_pnp_ids[
- 	"LEN2054", /* E480 */
- 	"LEN2055", /* E580 */
- 	"LEN2068", /* T14 Gen 1 */
-+	"SYN3003", /* HP EliteBook 850 G1 */
- 	"SYN3015", /* HP EliteBook 840 G2 */
- 	"SYN3052", /* HP EliteBook 840 G4 */
- 	"SYN3221", /* HP 15-ay000 */
+--- a/drivers/usb/misc/onboard_usb_dev.c
++++ b/drivers/usb/misc/onboard_usb_dev.c
+@@ -569,8 +569,14 @@ static void onboard_dev_usbdev_disconnec
+ }
+ 
+ static const struct usb_device_id onboard_dev_id_table[] = {
+-	{ USB_DEVICE(VENDOR_ID_CYPRESS, 0x6504) }, /* CYUSB33{0,1,2}x/CYUSB230x 3.0 HUB */
+-	{ USB_DEVICE(VENDOR_ID_CYPRESS, 0x6506) }, /* CYUSB33{0,1,2}x/CYUSB230x 2.0 HUB */
++	{ USB_DEVICE(VENDOR_ID_CYPRESS, 0x6500) }, /* CYUSB330x 3.0 HUB */
++	{ USB_DEVICE(VENDOR_ID_CYPRESS, 0x6502) }, /* CYUSB330x 2.0 HUB */
++	{ USB_DEVICE(VENDOR_ID_CYPRESS, 0x6503) }, /* CYUSB33{0,1}x 2.0 HUB, Vendor Mode */
++	{ USB_DEVICE(VENDOR_ID_CYPRESS, 0x6504) }, /* CYUSB331x 3.0 HUB */
++	{ USB_DEVICE(VENDOR_ID_CYPRESS, 0x6506) }, /* CYUSB331x 2.0 HUB */
++	{ USB_DEVICE(VENDOR_ID_CYPRESS, 0x6507) }, /* CYUSB332x 2.0 HUB, Vendor Mode */
++	{ USB_DEVICE(VENDOR_ID_CYPRESS, 0x6508) }, /* CYUSB332x 3.0 HUB */
++	{ USB_DEVICE(VENDOR_ID_CYPRESS, 0x650a) }, /* CYUSB332x 2.0 HUB */
+ 	{ USB_DEVICE(VENDOR_ID_CYPRESS, 0x6570) }, /* CY7C6563x 2.0 HUB */
+ 	{ USB_DEVICE(VENDOR_ID_GENESYS, 0x0608) }, /* Genesys Logic GL850G USB 2.0 HUB */
+ 	{ USB_DEVICE(VENDOR_ID_GENESYS, 0x0610) }, /* Genesys Logic GL852G USB 2.0 HUB */
 
 
 
