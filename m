@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-143188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFFC7AB345F
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 12:02:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97CAFAB3462
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 12:03:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A69A3B5AD8
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 10:02:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2AB6C17A11A
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 10:03:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B14A42586E7;
-	Mon, 12 May 2025 10:02:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF65619F41C;
+	Mon, 12 May 2025 10:03:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1EDR/2RP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s+MJY7GB"
 X-Original-To: Stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EF1A19E97C
-	for <Stable@vger.kernel.org>; Mon, 12 May 2025 10:02:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD1078C91
+	for <Stable@vger.kernel.org>; Mon, 12 May 2025 10:03:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747044163; cv=none; b=OULB76s6PbAzT6jmfzqaK/P1Q66XCXyefV95VjyPdLPeaBJWMn+F4Of9r2sa/qk+sVum+4wuF3t7+Cm9gZ+6t3DsxfGczM4MNV8RuR1tzae1AFvIkS1MVthgVFhG0wXG29r0E+6lkaEFjcBpGUbMkhH3ruqxYGAOWSBBdQ0spO8=
+	t=1747044224; cv=none; b=FLBXVIO1z825UHCb2KIh4eyU09IBQDG4oGwPxC2llfFILe00eSHocDHdCxnzua1cjeYMH3BF8fb73b8D7GEDIFV2jo2iG3m0ojITxhZJl/fi7nYi4yc160OVQnKDjopeg8TN9/eGd7Yrii14Sh/1Cg/pXHU1/t4bj0wcloDBpWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747044163; c=relaxed/simple;
-	bh=J2MiRIMMUEwdwwVAFU72YDRru11ZBuVV5yfdI6Cvg5U=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=bH35jlmUfE9tqmJUTy1/sxEeYmZ1Q1Oy81LZMHy9kb/ZiRBgMITtGqOeVjoIrwOZQl4x+HV5Ixwl9UEzq5xbRogrK8iZCPLgDG3NPcvspR1Az29AAk8aGuvrRgKvL9jMfEEe/JFLDIOmsKbwCvnlU+a75UpWuum3BTGgOHbm/Jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1EDR/2RP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B0A4C4CEE7;
-	Mon, 12 May 2025 10:02:42 +0000 (UTC)
+	s=arc-20240116; t=1747044224; c=relaxed/simple;
+	bh=ndTKbJq6dYAiV+ZmQq4XWMtV5ZsaWCq5Z4bQ4eXrbgI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=eUT1AqUzyxFLf+j7syk72zzmZVT9tjZb1v9DAD6ll9+7SpuGvEth4pDkoWt3AIznpNKEKx+7e6iDHTehUm0MuEuskWTUifpw6j1iludyOgC2hGVguLR9HmPHOLXHqTNi9Csdg2ivLvyNTK1sC7XIGdlt1B5p4g0qzOx1BsX/AYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s+MJY7GB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C242C4CEE7;
+	Mon, 12 May 2025 10:03:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747044162;
-	bh=J2MiRIMMUEwdwwVAFU72YDRru11ZBuVV5yfdI6Cvg5U=;
+	s=korg; t=1747044223;
+	bh=ndTKbJq6dYAiV+ZmQq4XWMtV5ZsaWCq5Z4bQ4eXrbgI=;
 	h=Subject:To:Cc:From:Date:From;
-	b=1EDR/2RPqz5StsTMVbkx89f5ei4S6GQWGKo/ybO8UXJaYOIvLjCLWnFNj8BAUU9h/
-	 WhzKAgKc/2kew9Zkxq9fZdM4Ykshe5OUOym3lvNNNuQu6fdS2WRV5LD17PEVns8Q9/
-	 mjvSLvrZUaKeYN503OmwsSATMT2s4DH5Xj8XVXjg=
-Subject: FAILED: patch "[PATCH] iio: adc: ad7606: check for NULL before calling" failed to apply to 6.14-stable tree
+	b=s+MJY7GBJQlfPDe7uq48wsrZMArQsbpzwPqWlzHz1KExtZM4Q3V6Zk9C6DQEwLQqA
+	 fVHnPhCmrLIEwcYZPE/s28gcqb78Z+jvLpt1EDdgRgsWGospSo2OZz92kMyZUKPrCX
+	 7fIRfaFzqxQElnwS/2IQl4uSQKl52hzyEsbstXCg=
+Subject: FAILED: patch "[PATCH] iio: chemical: pms7003: use aligned_s64 for timestamp" failed to apply to 6.6-stable tree
 To: dlechner@baylibre.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org,nuno.sa@analog.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 May 2025 12:02:39 +0200
-Message-ID: <2025051239-superior-nutlike-e1b7@gregkh>
+Date: Mon, 12 May 2025 12:03:41 +0200
+Message-ID: <2025051241-maternal-petal-34cf@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.14-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 5257d80e22bf27009d6742e4c174f42cfe54e425
+git cherry-pick -x 6ffa698674053e82e811520642db2650d00d2c01
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025051239-superior-nutlike-e1b7@gregkh' --subject-prefix 'PATCH 6.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025051241-maternal-petal-34cf@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,54 +77,57 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 5257d80e22bf27009d6742e4c174f42cfe54e425 Mon Sep 17 00:00:00 2001
+From 6ffa698674053e82e811520642db2650d00d2c01 Mon Sep 17 00:00:00 2001
 From: David Lechner <dlechner@baylibre.com>
-Date: Tue, 18 Mar 2025 17:52:09 -0500
-Subject: [PATCH] iio: adc: ad7606: check for NULL before calling
- sw_mode_config()
+Date: Thu, 17 Apr 2025 11:52:36 -0500
+Subject: [PATCH] iio: chemical: pms7003: use aligned_s64 for timestamp
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Check that the sw_mode_config function pointer is not NULL before
-calling it. Not all buses define this callback, which resulted in a NULL
-pointer dereference.
+Follow the pattern of other drivers and use aligned_s64 for the
+timestamp. This will ensure that the timestamp is correctly aligned on
+all architectures.
 
-Fixes: e571c1902116 ("iio: adc: ad7606: move scale_setup as function pointer on chip-info")
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Also move the unaligned.h header while touching this since it was the
+only one not in alphabetical order.
+
+Fixes: 13e945631c2f ("iio:chemical:pms7003: Fix timestamp alignment and prevent data leak.")
 Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250318-iio-adc-ad7606-improvements-v2-1-4b605427774c@baylibre.com
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20250417-iio-more-timestamp-alignment-v1-4-eafac1e22318@baylibre.com
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
-index 1a314fddd7eb..703556eb7257 100644
---- a/drivers/iio/adc/ad7606.c
-+++ b/drivers/iio/adc/ad7606.c
-@@ -1236,9 +1236,11 @@ static int ad7616_sw_mode_setup(struct iio_dev *indio_dev)
- 	st->write_scale = ad7616_write_scale_sw;
- 	st->write_os = &ad7616_write_os_sw;
+diff --git a/drivers/iio/chemical/pms7003.c b/drivers/iio/chemical/pms7003.c
+index d0bd94912e0a..e05ce1f12065 100644
+--- a/drivers/iio/chemical/pms7003.c
++++ b/drivers/iio/chemical/pms7003.c
+@@ -5,7 +5,6 @@
+  * Copyright (c) Tomasz Duszynski <tduszyns@gmail.com>
+  */
  
--	ret = st->bops->sw_mode_config(indio_dev);
--	if (ret)
--		return ret;
-+	if (st->bops->sw_mode_config) {
-+		ret = st->bops->sw_mode_config(indio_dev);
-+		if (ret)
-+			return ret;
-+	}
+-#include <linux/unaligned.h>
+ #include <linux/completion.h>
+ #include <linux/device.h>
+ #include <linux/errno.h>
+@@ -19,6 +18,8 @@
+ #include <linux/module.h>
+ #include <linux/mutex.h>
+ #include <linux/serdev.h>
++#include <linux/types.h>
++#include <linux/unaligned.h>
  
- 	/* Activate Burst mode and SEQEN MODE */
- 	return ad7606_write_mask(st, AD7616_CONFIGURATION_REGISTER,
-@@ -1268,6 +1270,9 @@ static int ad7606b_sw_mode_setup(struct iio_dev *indio_dev)
- 	st->write_scale = ad7606_write_scale_sw;
- 	st->write_os = &ad7606_write_os_sw;
+ #define PMS7003_DRIVER_NAME "pms7003"
  
-+	if (!st->bops->sw_mode_config)
-+		return 0;
-+
- 	return st->bops->sw_mode_config(indio_dev);
- }
+@@ -76,7 +77,7 @@ struct pms7003_state {
+ 	/* Used to construct scan to push to the IIO buffer */
+ 	struct {
+ 		u16 data[3]; /* PM1, PM2P5, PM10 */
+-		s64 ts;
++		aligned_s64 ts;
+ 	} scan;
+ };
  
 
 
