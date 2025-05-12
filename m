@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-143892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143964-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B34CBAB426F
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:23:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DD91AB42FD
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:28:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F382316FB12
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:23:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 169051B6220E
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:28:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E2C825335E;
-	Mon, 12 May 2025 18:06:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 863D229711E;
+	Mon, 12 May 2025 18:10:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mONzR8Dv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IW2lnUmS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BDB52980C2;
-	Mon, 12 May 2025 18:06:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C9664A32;
+	Mon, 12 May 2025 18:10:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073207; cv=none; b=Z2lW8OahFCG/F5wC6CxJefqtr6JZjGUDBslUwlRCvkAmWRL6LSZcrbit3eatUOId+zGN0wwM2JDSaCgxtlQWbsdSBpN3TRcDTQ7NkFC2L6sTA0rQg5zqKuSrIarrhHKH9Pl2/VegV2SD+cvoxmyoMiSgaTawl36dBjuBMO5HEE8=
+	t=1747073437; cv=none; b=NSmpIamvr2vxWQaWO/VAXATXujKCJmouBa7KP2d/BuePk0M8PV1b4arQW3jPvftlWcmgu5rSw4UujDY9Ej7WudYhl2SBKN5ezXN+GqAX1XabVVTjj43ObZWnysmlqFoWHpNPb7qxqHMYLYtswVjjupN4FIk/uAr9DJwHBU8TLLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073207; c=relaxed/simple;
-	bh=OZ1gd6sNFMKkkTTlCyq/9miZBJSBXEvZf9/h4RWOdlQ=;
+	s=arc-20240116; t=1747073437; c=relaxed/simple;
+	bh=5BAnoWANb+MCaQDiOigt1VfIN3V6660jL+OywbSd15I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fjndepALYNaPk1EF0FfVT1xpq+1WK5hm2N0Vs6P+ZEtdCFYzIcLTLVT8A0Zk85WHg657johShar5PgiYPjFhulCneDxSY6mzaA7rIRNtNe0GjWIeu22D9zHaGk1W8jEq/MoK2IBgrN+R6ZIlXpMRD/4vmCNbVbOmagVQxux6iKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mONzR8Dv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E020C4CEE7;
-	Mon, 12 May 2025 18:06:45 +0000 (UTC)
+	 MIME-Version; b=mvySTdhIJvZNvk7zCiDfKAi2m9APbxGqF3DGQgevH7Zl0GX+36/pdk6JliJmgFsO6CNbvyhxTvKkAXGkwFz9zHwz8gA2zI3WO8NROR5HXHqam0SzlHl1McJQxxWDPwIQi00ZT0OWQOP/vlnOqLjFG0vBU0EMbDNIbhFC6iuB4wg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IW2lnUmS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC9AEC4CEE7;
+	Mon, 12 May 2025 18:10:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073206;
-	bh=OZ1gd6sNFMKkkTTlCyq/9miZBJSBXEvZf9/h4RWOdlQ=;
+	s=korg; t=1747073437;
+	bh=5BAnoWANb+MCaQDiOigt1VfIN3V6660jL+OywbSd15I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mONzR8DvNes3QWGD63iDlpmU7ILYgwQ5/GoDiWsH20ZZMZgsNkyUb2AeEwzFCe9X1
-	 KYbOTUZD/CmU0S0RYDbT+p1UfuIpIZJwgne35GSnJ8ay+pzQvn/nP0OObVrkopXxEq
-	 6V0V9X0ci2cMTwp/WxDkFVOu1hOPi0VpyEBnr8+g=
+	b=IW2lnUmSRH2egGQ8iAK02glO9p1xJrrPSa9ICwiyHein8z88cxR9y35oc3Tb55fGs
+	 B3WBD+bsGLW/CubxDJpiOx3ceEuG52zeEGiPGXi5xaGv7EAwtJRKzaX/vDhsrkqst4
+	 XGkJkgj8/tNkNEe3wFdz2X7EG3XI1vy3EzTQPV1g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Morse <james.morse@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.12 162/184] arm64: insn: Add support for encoding DSB
+	stable <stable@kernel.org>,
+	Andrei Kuchynski <akuchynski@chromium.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Benson Leung <bleung@chromium.org>
+Subject: [PATCH 6.6 074/113] usb: typec: ucsi: displayport: Fix NULL pointer access
 Date: Mon, 12 May 2025 19:46:03 +0200
-Message-ID: <20250512172048.410870514@linuxfoundation.org>
+Message-ID: <20250512172030.688150299@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
-References: <20250512172041.624042835@linuxfoundation.org>
+In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
+References: <20250512172027.691520737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,132 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Morse <james.morse@arm.com>
+From: Andrei Kuchynski <akuchynski@chromium.org>
 
-commit 63de8abd97ddb9b758bd8f915ecbd18e1f1a87a0 upstream.
+commit 312d79669e71283d05c05cc49a1a31e59e3d9e0e upstream.
 
-To generate code in the eBPF epilogue that uses the DSB instruction,
-insn.c needs a heler to encode the type and domain.
+This patch ensures that the UCSI driver waits for all pending tasks in the
+ucsi_displayport_work workqueue to finish executing before proceeding with
+the partner removal.
 
-Re-use the crm encoding logic from the DMB instruction.
-
-Signed-off-by: James Morse <james.morse@arm.com>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Cc: stable <stable@kernel.org>
+Fixes: af8622f6a585 ("usb: typec: ucsi: Support for DisplayPort alt mode")
+Signed-off-by: Andrei Kuchynski <akuchynski@chromium.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Reviewed-by: Benson Leung <bleung@chromium.org>
+Link: https://lore.kernel.org/r/20250424084429.3220757-3-akuchynski@chromium.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/insn.h |    1 
- arch/arm64/lib/insn.c         |   60 +++++++++++++++++++++++++-----------------
- 2 files changed, 38 insertions(+), 23 deletions(-)
+ drivers/usb/typec/ucsi/displayport.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/arm64/include/asm/insn.h
-+++ b/arch/arm64/include/asm/insn.h
-@@ -693,6 +693,7 @@ u32 aarch64_insn_gen_cas(enum aarch64_in
- }
- #endif
- u32 aarch64_insn_gen_dmb(enum aarch64_insn_mb_type type);
-+u32 aarch64_insn_gen_dsb(enum aarch64_insn_mb_type type);
- u32 aarch64_insn_gen_mrs(enum aarch64_insn_register result,
- 			 enum aarch64_insn_system_register sysreg);
+--- a/drivers/usb/typec/ucsi/displayport.c
++++ b/drivers/usb/typec/ucsi/displayport.c
+@@ -296,6 +296,8 @@ void ucsi_displayport_remove_partner(str
+ 	if (!dp)
+ 		return;
  
---- a/arch/arm64/lib/insn.c
-+++ b/arch/arm64/lib/insn.c
-@@ -5,6 +5,7 @@
-  *
-  * Copyright (C) 2014-2016 Zi Shen Lim <zlim.lnx@gmail.com>
-  */
-+#include <linux/bitfield.h>
- #include <linux/bitops.h>
- #include <linux/bug.h>
- #include <linux/printk.h>
-@@ -1471,48 +1472,61 @@ u32 aarch64_insn_gen_extr(enum aarch64_i
- 	return aarch64_insn_encode_register(AARCH64_INSN_REGTYPE_RM, insn, Rm);
- }
- 
--u32 aarch64_insn_gen_dmb(enum aarch64_insn_mb_type type)
-+static u32 __get_barrier_crm_val(enum aarch64_insn_mb_type type)
- {
--	u32 opt;
--	u32 insn;
--
- 	switch (type) {
- 	case AARCH64_INSN_MB_SY:
--		opt = 0xf;
--		break;
-+		return 0xf;
- 	case AARCH64_INSN_MB_ST:
--		opt = 0xe;
--		break;
-+		return 0xe;
- 	case AARCH64_INSN_MB_LD:
--		opt = 0xd;
--		break;
-+		return 0xd;
- 	case AARCH64_INSN_MB_ISH:
--		opt = 0xb;
--		break;
-+		return 0xb;
- 	case AARCH64_INSN_MB_ISHST:
--		opt = 0xa;
--		break;
-+		return 0xa;
- 	case AARCH64_INSN_MB_ISHLD:
--		opt = 0x9;
--		break;
-+		return 0x9;
- 	case AARCH64_INSN_MB_NSH:
--		opt = 0x7;
--		break;
-+		return 0x7;
- 	case AARCH64_INSN_MB_NSHST:
--		opt = 0x6;
--		break;
-+		return 0x6;
- 	case AARCH64_INSN_MB_NSHLD:
--		opt = 0x5;
--		break;
-+		return 0x5;
- 	default:
--		pr_err("%s: unknown dmb type %d\n", __func__, type);
-+		pr_err("%s: unknown barrier type %d\n", __func__, type);
- 		return AARCH64_BREAK_FAULT;
- 	}
-+}
++	cancel_work_sync(&dp->work);
 +
-+u32 aarch64_insn_gen_dmb(enum aarch64_insn_mb_type type)
-+{
-+	u32 opt;
-+	u32 insn;
-+
-+	opt = __get_barrier_crm_val(type);
-+	if (opt == AARCH64_BREAK_FAULT)
-+		return AARCH64_BREAK_FAULT;
- 
- 	insn = aarch64_insn_get_dmb_value();
- 	insn &= ~GENMASK(11, 8);
- 	insn |= (opt << 8);
- 
-+	return insn;
-+}
-+
-+u32 aarch64_insn_gen_dsb(enum aarch64_insn_mb_type type)
-+{
-+	u32 opt, insn;
-+
-+	opt = __get_barrier_crm_val(type);
-+	if (opt == AARCH64_BREAK_FAULT)
-+		return AARCH64_BREAK_FAULT;
-+
-+	insn = aarch64_insn_get_dsb_base_value();
-+	insn &= ~GENMASK(11, 8);
-+	insn |= (opt << 8);
-+
- 	return insn;
- }
- 
+ 	dp->data.conf = 0;
+ 	dp->data.status = 0;
+ 	dp->initialized = false;
 
 
 
