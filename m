@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-143730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8573AB4116
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:01:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D83CBAB406D
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:54:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 151697AB480
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:00:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8009A8C0AD1
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:52:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F97523BF9F;
-	Mon, 12 May 2025 18:01:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FC3326561E;
+	Mon, 12 May 2025 17:52:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JBcMCS2z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V7G705bR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1F881519B8;
-	Mon, 12 May 2025 18:01:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02EE1A08CA;
+	Mon, 12 May 2025 17:52:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072895; cv=none; b=RzIPYIU9lq098qnrGjT/e36cmIEKZkgEXoKitJJRTNrSm3mH7erAtWDO4fOWRu4Bl0fflta6jJT/duI2+SK0i92tzQZNGF4KGNzy1h9D/MQqlaJgXuklqn5dI2MdQ+SmPnR4K86g2X5SLsYbYTBTIkhnSzoil++ljPKMHVhEoek=
+	t=1747072355; cv=none; b=jkSJdZyw/3gtcRS5aa1V+TT9WpbbMuJcNuVL/eDCosZUSlouWQBU6GnMwTR+n+hsEa1oQbrXQPhZfc4vc157XdkF9gvYwV2aZpRKeBLWXrYm0ADuYeoOu1jarKwXR7Cxxy2tfixkCbR+nXZvQuKc6p2wyIqBN4i5VCXtrBdSXfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072895; c=relaxed/simple;
-	bh=D3wapOJyuErR4hnucNOpXVxhyQVoWl0y959qqPDLN7o=;
+	s=arc-20240116; t=1747072355; c=relaxed/simple;
+	bh=+Qgm1Botn39T1B9EL1Zioy9QwGI3sBrce52G4MYvdBs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MzfmsE88OA15ZQ2/8wmufgLGw8lBXN0TN4ncTUgCmEl8xj8QsHTn0Mor67Dm6wjv07xhe9yePpGWG2WsTlLeafsr+x8cjI+BMQHOQLcj+IzKu5ckXKFI1dvMPz0WONRTvOqigX6Q1inBMfmIHl1iS3cn5tvXYB8LdVJxBkjiKaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JBcMCS2z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 783A3C4CEE7;
-	Mon, 12 May 2025 18:01:34 +0000 (UTC)
+	 MIME-Version; b=oWlhmY1d/aehcHJxskD400mz5CqLMYy6SOiABc//WDRNNzVAbLmric7ENCTw3MFNHpzQidpLiUJsAvIHpfMzj4EfAxG4UrLi8RMSk9ncu4MjZhAcADuGMSzft2tKF4JSupBjX9sNKwTMvEN5bnLqNqRXXalNGIOdhfQAdEAS06w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V7G705bR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D3FEC4CEE7;
+	Mon, 12 May 2025 17:52:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072894;
-	bh=D3wapOJyuErR4hnucNOpXVxhyQVoWl0y959qqPDLN7o=;
+	s=korg; t=1747072355;
+	bh=+Qgm1Botn39T1B9EL1Zioy9QwGI3sBrce52G4MYvdBs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JBcMCS2ziwxYcSUKdMq6Ls9QkybLR4KKdHXwRCQ3eDmInk0h3uDVjw92qqHjwZv5i
-	 y16M+0EkRVMq2pa+NaPnnJ8BwEKCRENyZPkvqGpHKPqpSb5DufK3T+8eKvEbU9rM0y
-	 WDVWP+aXr1vTPzkBKGIRH7+IwB5NwAnPWImivYFk=
+	b=V7G705bRZN6fRl4kpHJvcbwKXVJYIz3aib9c783FsbTnZ4R89pL8hWv6g+ftuZ+Ce
+	 rl0LZjN1HLzZUJqRXAJkVYP7drGD2XYpFbRwUc7z6HHS7H/mCMCgiYiddavynz1OfO
+	 k7+psvcbHe2UVB7PwE8s9UN2j7uZzifSt66Dr2ac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Brost <matthew.brost@intel.com>,
-	Jagmeet Randhawa <jagmeet.randhawa@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>
-Subject: [PATCH 6.12 089/184] drm/xe: Add page queue multiplier
+	Kota Toda <kota.toda@gmo-cybersecurity.com>,
+	Jozsef Kadlecsik <kadlec@netfilter.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 15/92] netfilter: ipset: fix region locking in hash types
 Date: Mon, 12 May 2025 19:44:50 +0200
-Message-ID: <20250512172045.453224893@linuxfoundation.org>
+Message-ID: <20250512172023.745543583@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
-References: <20250512172041.624042835@linuxfoundation.org>
+In-Reply-To: <20250512172023.126467649@linuxfoundation.org>
+References: <20250512172023.126467649@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Brost <matthew.brost@intel.com>
+From: Jozsef Kadlecsik <kadlec@netfilter.org>
 
-commit 391008f34e711253c5983b0bf52277cc43723127 upstream.
+[ Upstream commit 8478a729c0462273188263136880480729e9efca ]
 
-For an unknown reason the math to determine the PF queue size does is
-not correct - compute UMD applications are overflowing the PF queue
-which is fatal. A multippier of 8 fixes the problem.
+Region locking introduced in v5.6-rc4 contained three macros to handle
+the region locks: ahash_bucket_start(), ahash_bucket_end() which gave
+back the start and end hash bucket values belonging to a given region
+lock and ahash_region() which should give back the region lock belonging
+to a given hash bucket. The latter was incorrect which can lead to a
+race condition between the garbage collector and adding new elements
+when a hash type of set is defined with timeouts.
 
-Fixes: 3338e4f90c14 ("drm/xe: Use topology to determine page fault queue size")
-Cc: stable@vger.kernel.org
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Jagmeet Randhawa <jagmeet.randhawa@intel.com>
-Link: https://lore.kernel.org/r/20250408155915.78770-1-matthew.brost@intel.com
-(cherry picked from commit 29582e0ea75c95668d168b12406e3c56cf5a73c4)
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f66ee0410b1c ("netfilter: ipset: Fix "INFO: rcu detected stall in hash_xxx" reports")
+Reported-by: Kota Toda <kota.toda@gmo-cybersecurity.com>
+Signed-off-by: Jozsef Kadlecsik <kadlec@netfilter.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_gt_pagefault.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ net/netfilter/ipset/ip_set_hash_gen.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/xe/xe_gt_pagefault.c
-+++ b/drivers/gpu/drm/xe/xe_gt_pagefault.c
-@@ -423,9 +423,16 @@ static int xe_alloc_pf_queue(struct xe_g
- 	num_eus = bitmap_weight(gt->fuse_topo.eu_mask_per_dss,
- 				XE_MAX_EU_FUSE_BITS) * num_dss;
- 
--	/* user can issue separate page faults per EU and per CS */
-+	/*
-+	 * user can issue separate page faults per EU and per CS
-+	 *
-+	 * XXX: Multiplier required as compute UMD are getting PF queue errors
-+	 * without it. Follow on why this multiplier is required.
-+	 */
-+#define PF_MULTIPLIER	8
- 	pf_queue->num_dw =
--		(num_eus + XE_NUM_HW_ENGINES) * PF_MSG_LEN_DW;
-+		(num_eus + XE_NUM_HW_ENGINES) * PF_MSG_LEN_DW * PF_MULTIPLIER;
-+#undef PF_MULTIPLIER
- 
- 	pf_queue->gt = gt;
- 	pf_queue->data = devm_kcalloc(xe->drm.dev, pf_queue->num_dw,
+diff --git a/net/netfilter/ipset/ip_set_hash_gen.h b/net/netfilter/ipset/ip_set_hash_gen.h
+index ef04e556aadb4..0bd6bf46f05f3 100644
+--- a/net/netfilter/ipset/ip_set_hash_gen.h
++++ b/net/netfilter/ipset/ip_set_hash_gen.h
+@@ -63,7 +63,7 @@ struct hbucket {
+ #define ahash_sizeof_regions(htable_bits)		\
+ 	(ahash_numof_locks(htable_bits) * sizeof(struct ip_set_region))
+ #define ahash_region(n, htable_bits)		\
+-	((n) % ahash_numof_locks(htable_bits))
++	((n) / jhash_size(HTABLE_REGION_BITS))
+ #define ahash_bucket_start(h,  htable_bits)	\
+ 	((htable_bits) < HTABLE_REGION_BITS ? 0	\
+ 		: (h) * jhash_size(HTABLE_REGION_BITS))
+-- 
+2.39.5
+
 
 
 
