@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-144000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C35E8AB4358
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:33:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 753D2AB429B
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:24:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCD1F8C7D93
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:29:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E7933B684B
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:22:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03ACF29B20C;
-	Mon, 12 May 2025 18:12:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A0112C17A2;
+	Mon, 12 May 2025 18:05:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o4DFKAmz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q5dE6fn0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE5DC297132;
-	Mon, 12 May 2025 18:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 168FC297A61;
+	Mon, 12 May 2025 18:05:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073546; cv=none; b=Z6Qb4LJvBUrt1etXdZ6r5U/UEla1gB422XQRnqoNsizzL3EgToTE+S1nraOuohm4eNoLN6e8KZ03y1BBwprta94X5OYUu1+V8jDj/iMQ7MwVhw+SkpsxjXZe14Zl19dTzYagwPFoPWglsvcPywrqxEZFvAr9d7b1jgdSkQq3zpU=
+	t=1747073152; cv=none; b=rMBh1HAMZKYqzgrNJzDFQNjcN6Nyyst0GIGNcTeEYPIb43W2+DMcyS3liERhaORzMP+SrzrCaDSwBTaT8shXg7WiiqmhfkUuoDSSNCCroaksf8zNY+Ev6WHMAsPfEFxAjLO6pIh9mIvPdAWdx0X//pOT5A9LixRzlluOtL5tOas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073546; c=relaxed/simple;
-	bh=jxzzxdxdbWR7BuoFPUUI0CDQbApVM3849cHbtn97oVQ=;
+	s=arc-20240116; t=1747073152; c=relaxed/simple;
+	bh=4Jl0zTcoFUOWKCBhvX63iAtzvCO7splLVClGZy+9wc8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NK4NW05rLfxwXmXOII6cGee2d4+UqLVK4jm3/otWgUlnu9+tlHO3tx3RKDicV//Xlzp9KCR2y0XkYAlGKI+GwlI+fMyBYSFR76AmjSVYuYk2ScnFiPezXBTquF3kJLBEUlatOb4FLTzjIG5dmaeCL3Yzpm8I+qghqskbN0EzLoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o4DFKAmz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36568C4CEE7;
-	Mon, 12 May 2025 18:12:26 +0000 (UTC)
+	 MIME-Version; b=bdm000QnGTxzqvgmPMPlK1xY0mFnr2/1JcPLgp/0LaLmEgDvsMeF4faWkMPzQtQUjWySR+FJ93WYObBFYw9KCIjUPeTmDzKRLc/lo9Gli3WxI24UXuDb08NyC5BPwAKwgObpAU7Aa28d17ZFplFxiP89+IBirp4NznvDThbr6nc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q5dE6fn0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C299C4CEE9;
+	Mon, 12 May 2025 18:05:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073546;
-	bh=jxzzxdxdbWR7BuoFPUUI0CDQbApVM3849cHbtn97oVQ=;
+	s=korg; t=1747073151;
+	bh=4Jl0zTcoFUOWKCBhvX63iAtzvCO7splLVClGZy+9wc8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o4DFKAmzDaLQqWIi21ljGP8X7Q9f8jd1o6j22HZ9D4Y4LwTjgL9fVCGkOi3+VKQYe
-	 OHp7Knx2MF2tYa4Ed0ND2PniMNuMI29P3v6Pxu5l5Suy+cG8uf43wkLXKou85F3hVI
-	 HnKzrfCkXGPl466ROx54RcBxwtPY0+BrlZYxKL10=
+	b=q5dE6fn0lWxDcfzhyT/gAdTql4B6C8PNRXCvSeZXHG8o2F6Cb3HOrzubkbsi39pBA
+	 f+G4ML98Td0DRiVXWs89I3uQkcO9PMUlRS1fsD5H9wlSjGqrmkB7STwPSm/ruAWxEL
+	 dxesWsfU4MOBFHUvHFO/oe6IEmSVmYXJDpdd30g0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 083/113] iio: adc: dln2: Use aligned_s64 for timestamp
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>
+Subject: [PATCH 6.12 171/184] x86/speculation: Simplify and make CALL_NOSPEC consistent
 Date: Mon, 12 May 2025 19:46:12 +0200
-Message-ID: <20250512172031.062902385@linuxfoundation.org>
+Message-ID: <20250512172048.770948100@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
-References: <20250512172027.691520737@linuxfoundation.org>
+In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
+References: <20250512172041.624042835@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +61,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-[ Upstream commit 5097eaae98e53f9ab9d35801c70da819b92ca907 ]
+commit cfceff8526a426948b53445c02bcb98453c7330d upstream.
 
-Here the lack of marking allows the overall structure to not be
-sufficiently aligned resulting in misplacement of the timestamp
-in iio_push_to_buffers_with_timestamp(). Use aligned_s64 to
-force the alignment on all architectures.
+CALL_NOSPEC macro is used to generate Spectre-v2 mitigation friendly
+indirect branches. At compile time the macro defaults to indirect branch,
+and at runtime those can be patched to thunk based mitigations.
 
-Fixes: 7c0299e879dd ("iio: adc: Add support for DLN2 ADC")
-Reported-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Reviewed-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250413103443.2420727-4-jic23@kernel.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This approach is opposite of what is done for the rest of the kernel, where
+the compile time default is to replace indirect calls with retpoline thunk
+calls.
+
+Make CALL_NOSPEC consistent with the rest of the kernel, default to
+retpoline thunk at compile time when CONFIG_MITIGATION_RETPOLINE is
+enabled.
+
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Andrew Cooper <andrew.cooper3@citrix.com
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20250228-call-nospec-v3-1-96599fed0f33@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/dln2-adc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/nospec-branch.h |   15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/iio/adc/dln2-adc.c b/drivers/iio/adc/dln2-adc.c
-index 97d162a3cba4e..49a2588e7431e 100644
---- a/drivers/iio/adc/dln2-adc.c
-+++ b/drivers/iio/adc/dln2-adc.c
-@@ -483,7 +483,7 @@ static irqreturn_t dln2_adc_trigger_h(int irq, void *p)
- 	struct iio_dev *indio_dev = pf->indio_dev;
- 	struct {
- 		__le16 values[DLN2_ADC_MAX_CHANNELS];
--		int64_t timestamp_space;
-+		aligned_s64 timestamp_space;
- 	} data;
- 	struct dln2_adc_get_all_vals dev_data;
- 	struct dln2_adc *dln2 = iio_priv(indio_dev);
--- 
-2.39.5
-
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -442,16 +442,11 @@ static inline void call_depth_return_thu
+  * Inline asm uses the %V modifier which is only in newer GCC
+  * which is ensured when CONFIG_MITIGATION_RETPOLINE is defined.
+  */
+-# define CALL_NOSPEC						\
+-	ALTERNATIVE_2(						\
+-	ANNOTATE_RETPOLINE_SAFE					\
+-	"call *%[thunk_target]\n",				\
+-	"call __x86_indirect_thunk_%V[thunk_target]\n",		\
+-	X86_FEATURE_RETPOLINE,					\
+-	"lfence;\n"						\
+-	ANNOTATE_RETPOLINE_SAFE					\
+-	"call *%[thunk_target]\n",				\
+-	X86_FEATURE_RETPOLINE_LFENCE)
++#ifdef CONFIG_MITIGATION_RETPOLINE
++#define CALL_NOSPEC	"call __x86_indirect_thunk_%V[thunk_target]\n"
++#else
++#define CALL_NOSPEC	"call *%[thunk_target]\n"
++#endif
+ 
+ # define THUNK_TARGET(addr) [thunk_target] "r" (addr)
+ 
 
 
 
