@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-143977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67C32AB4344
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:32:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7804CAB437D
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:35:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EEBCD8C7411
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:28:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AAA707B37CC
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:25:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC2C82C3755;
-	Mon, 12 May 2025 18:11:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52AA1299A86;
+	Mon, 12 May 2025 18:09:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="owDHi6S5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rpkBA9mG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9911029ACCC;
-	Mon, 12 May 2025 18:11:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E291297112;
+	Mon, 12 May 2025 18:09:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073476; cv=none; b=QLb0lmb0IGqqpxIqM9XWCMiRBTy7LOeN+v99txByQ8p0x9kaYvS5kzprg+4uhFZ56UsDkw+54jrGCssENngV1YR7isjzJPXlEFEqiaEF9KKE/BhrcYAzWVcwA52PMlLub3J8ZTOg21ki/163GRncEzJH1RoD4QdhMA1NZa5wDaE=
+	t=1747073378; cv=none; b=FDolJA0ZqKMAwUH0d9B3UmxyVVWerJTI281yNzm2di+0Uyi6GGC8KnQAtFt5kR0w55NlI2bsG0PkimZf9hO80CKPf6HF9Mv0B7D1NYzfqYhMhYtEvLhrRAsghgxas0j3Dll3PnpnZq8CKqQ9bGMB90Mmguvy0uHsLaY5Wb2w1as=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073476; c=relaxed/simple;
-	bh=MvIdzGy45p3FgvF4mErK59RwWauUrLbw3fC1IoVYguY=;
+	s=arc-20240116; t=1747073378; c=relaxed/simple;
+	bh=EsKfOkhVFzChqnjNgclpzQ00E4/ZEYEg6NwK05aJz6M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hv8QAsUg9O2U6LCgCp0BY5/asYeAW7bHv+Qy7nujxiOk00yl9cYTUs3IbNjc7cbtXaA4focIHFBsVehmjJ9rEsm+D3QqFGNkUm7bUzKgEDgKXncCM2/TRAJjaumB4RTXKP+JX8Pk4a2KnqsP9AbNUocbVqIAnmzvDfCe+lJlSPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=owDHi6S5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3FADC4CEE7;
-	Mon, 12 May 2025 18:11:15 +0000 (UTC)
+	 MIME-Version; b=U6n4i2tDl6/RG1C+gf+NYJhlTO22hSO9pt/3LZHalAa3J4jATlcqbIb78/le/amhzK9uFZjqdTMU9oxCH82Cc3nkFLcsqnCsLr02VuZYFuM0DoJWFBDG9Q8HTQhuYmRHVfX0zlwMg0/4Fv23pomfApmJFHJ8EypgXXa+PZb0pY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rpkBA9mG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B537C4CEE7;
+	Mon, 12 May 2025 18:09:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073476;
-	bh=MvIdzGy45p3FgvF4mErK59RwWauUrLbw3fC1IoVYguY=;
+	s=korg; t=1747073377;
+	bh=EsKfOkhVFzChqnjNgclpzQ00E4/ZEYEg6NwK05aJz6M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=owDHi6S52QF+TbhqSveR5tDcfEDysK+0rH43KXerkoMXT4J+ltZK20FDUG/iBemWr
-	 NiRYYj9t4RNt8f0LxTs4KFU73PG56lq6G9PKKjjv0dLpYcBoUFZ0kCkhF0+cgRPUsh
-	 /coZD2nCZEugln59BJum7y0WqJUIAZTuJjjfXd8A=
+	b=rpkBA9mGexQ3b3axB6ds+4u0Xf5iJtmNLiYpW7+lEOorKyGBH4lnU+L8HDxQ8WmCp
+	 D2rBTjtBEvY3t/zNplVUvTkMN5A+vy6rZcfrK26TtsQTT4wXPmv+OUVzjTyqap24Pn
+	 NvLPU03R59sEQY7v+yl8MFMoZPHO5QFa3EMHMuys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ChiaHsuan Chung <chiahsuan.chung@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
 	Ray Wu <ray.wu@amd.com>,
+	Wayne Lin <Wayne.Lin@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 048/113] drm/amd/display: more liberal vmin/vmax update for freesync
-Date: Mon, 12 May 2025 19:45:37 +0200
-Message-ID: <20250512172029.630758582@linuxfoundation.org>
+Subject: [PATCH 6.6 049/113] drm/amd/display: Fix the checking condition in dmub aux handling
+Date: Mon, 12 May 2025 19:45:38 +0200
+Message-ID: <20250512172029.672052302@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
 References: <20250512172027.691520737@linuxfoundation.org>
@@ -68,61 +67,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Aurabindo Pillai <aurabindo.pillai@amd.com>
+From: Wayne Lin <Wayne.Lin@amd.com>
 
-commit f1c6be3999d2be2673a51a9be0caf9348e254e52 upstream.
+commit bc70e11b550d37fbd9eaed0f113ba560894f1609 upstream.
 
-[Why]
-FAMS2 expects vmin/vmax to be updated in the case when freesync is
-off, but supported. But we only update it when freesync is enabled.
+[Why & How]
+Fix the checking condition for detecting AUX_RET_ERROR_PROTOCOL_ERROR.
+It was wrongly checking by "not equals to"
 
-[How]
-Change the vsync handler such that dc_stream_adjust_vmin_vmax() its called
-irrespective of whether freesync is enabled. If freesync is supported,
-then there is no harm in updating vmin/vmax registers.
-
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3546
-Reviewed-by: ChiaHsuan Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Reviewed-by: Ray Wu <ray.wu@amd.com>
+Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
 Signed-off-by: Ray Wu <ray.wu@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit cfb2d41831ee5647a4ae0ea7c24971a92d5dfa0d)
+(cherry picked from commit 1db6c9e9b62e1a8912f0a281c941099fca678da3)
 Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
 +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -610,15 +610,21 @@ static void dm_crtc_high_irq(void *inter
- 	spin_lock_irqsave(&adev_to_drm(adev)->event_lock, flags);
- 
- 	if (acrtc->dm_irq_params.stream &&
--	    acrtc->dm_irq_params.vrr_params.supported &&
--	    acrtc->dm_irq_params.freesync_config.state ==
--		    VRR_STATE_ACTIVE_VARIABLE) {
-+		acrtc->dm_irq_params.vrr_params.supported) {
-+		bool replay_en = acrtc->dm_irq_params.stream->link->replay_settings.replay_feature_enabled;
-+		bool psr_en = acrtc->dm_irq_params.stream->link->psr_settings.psr_feature_enabled;
-+		bool fs_active_var_en = acrtc->dm_irq_params.freesync_config.state == VRR_STATE_ACTIVE_VARIABLE;
-+
- 		mod_freesync_handle_v_update(adev->dm.freesync_module,
- 					     acrtc->dm_irq_params.stream,
- 					     &acrtc->dm_irq_params.vrr_params);
- 
--		dc_stream_adjust_vmin_vmax(adev->dm.dc, acrtc->dm_irq_params.stream,
--					   &acrtc->dm_irq_params.vrr_params.adjust);
-+		/* update vmin_vmax only if freesync is enabled, or only if PSR and REPLAY are disabled */
-+		if (fs_active_var_en || (!fs_active_var_en && !replay_en && !psr_en)) {
-+			dc_stream_adjust_vmin_vmax(adev->dm.dc,
-+					acrtc->dm_irq_params.stream,
-+					&acrtc->dm_irq_params.vrr_params.adjust);
-+		}
- 	}
- 
- 	/*
+@@ -11055,7 +11055,7 @@ int amdgpu_dm_process_dmub_aux_transfer_
+ 		 * Transient states before tunneling is enabled could
+ 		 * lead to this error. We can ignore this for now.
+ 		 */
+-		if (p_notify->result != AUX_RET_ERROR_PROTOCOL_ERROR) {
++		if (p_notify->result == AUX_RET_ERROR_PROTOCOL_ERROR) {
+ 			DRM_WARN("DPIA AUX failed on 0x%x(%d), error %d\n",
+ 					payload->address, payload->length,
+ 					p_notify->result);
 
 
 
