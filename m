@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-143827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5E29AB41E7
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:14:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B487BAB41E1
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:14:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C61483B9824
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:12:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 603814A1E24
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:13:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63F0F29C324;
-	Mon, 12 May 2025 18:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAF4129C35C;
+	Mon, 12 May 2025 18:05:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NA1rIAW9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PxNGU0r5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F40AF29B8FD;
-	Mon, 12 May 2025 18:04:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F8EE29C349;
+	Mon, 12 May 2025 18:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073099; cv=none; b=P8LJ1sn5S9L4qGB6IKll+C26aE8x6MrIyIBmzu2mH4RX1hESg4yiZoWPgudaJ/LHp06uuJc85kk7y5CBtktTchGFjn4u+hLtiYVGeXw9nmFbtz7a0x8ExpNtYol52FDJlSPNIc1WJL9YYxPW0N6ptafqYnpLpYBmvzycpJnTVOU=
+	t=1747073102; cv=none; b=VezlLp8PmTrwfH8Nn7FG7o34Y5VyE5x4fyW7eftHUIp65V35GESQ5WZ+QJ1Yy38TKa+4V1dazlGEfolxEjyAajnKhgqskPVBthc/N8J9S2X8odwzNAsB2OH4n7g7uWYIYTT7dUX++ypCYPWCd1/9uwE+0Qai9RPdnbR/8xe0yBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073099; c=relaxed/simple;
-	bh=UCnHjw6AMlh96+0g3s1wWA2J2KlhdmrNkFn6QL6vA24=;
+	s=arc-20240116; t=1747073102; c=relaxed/simple;
+	bh=1fXxdmjBAZoi3QflX7ew1py07w7QX9cGXStVQVebULI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=fHS3jLNgi9nJovV5CyXo5SWsBNLHXJCklddJJIqAb5JlLQ81HTKy8G7QEcDJGhIwakOmPy2W3OVjd1en4ACIt6jAS3XU6+a24KojClbjaeT+S1CZiegBfUYBRAbrGFlYpcJI2G0mewf1B2S55YU5TzoVyvOkmY/BdZtmSTi3koE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NA1rIAW9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D56C4CEE7;
-	Mon, 12 May 2025 18:04:57 +0000 (UTC)
+	 MIME-Version; b=Z8fZQhE8XQzLXqZzSc8EhDpIe1NbQ3F6rJ+sf1yU2qrvO6zQcKbFaA3vVwS6LGJf2H5joJwZPwnCJPT2AsN/si20MRtqvxiOuG2mqgCPGPYXAR6tlSxuiV05cDQ2CX/lWEhZDU25aoPP5q/8kNoZhlWw/pW1Ifzh0NIsAhJeDKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PxNGU0r5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA202C4CEE9;
+	Mon, 12 May 2025 18:04:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747073098;
-	bh=UCnHjw6AMlh96+0g3s1wWA2J2KlhdmrNkFn6QL6vA24=;
+	s=k20201202; t=1747073101;
+	bh=1fXxdmjBAZoi3QflX7ew1py07w7QX9cGXStVQVebULI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NA1rIAW9WMyFdHejF9vJLeJok5Xs4yMEQB3HSrkKFHimLxib5D+jaV6FoTlbDnl7Z
-	 3cmRFMp3LP9+xwWKrFEN/5rCqXhvY1n18+QgAVpk9ydSTAi/fAUkZKakUMrDbA6Tr+
-	 QmXixCPtn/9Un7rMdyfO/OmJYsrBlXFiKkVmVDQQtLJTX6JHJLYsCP4pWcUCt48EK+
-	 HtPIEkANK4RONEuwQ5uorr2/Ud6yPM0Lb30YsvEiaBvPJETARlMv2VMKaXMl4zI0xQ
-	 zVn/zvPN9N1+XamAHxgTCxQVvBHYD9Y7o9zP8/eQ+rlFDkY+fQZ38GzUpqMZ9TDt/1
-	 W/x9q8u+QykCA==
+	b=PxNGU0r5kmp2Ot92nRI0RFWL+krqdCL+p7gmfLSdwXShr8PX/oWrsx5HZJ34NoUlE
+	 AtU9b2rJV3vaGLgIuTKoM2roZCsLmIJkS/Sq/ticTJyApskDUP0csTX7Dg23GPzIBE
+	 OSHsn0x6dIEKrb/vQHeLnXwoxXwmXyb7BEdEO9wBDPVE9q2tpVmK+BftqxQkaAmFz5
+	 qVS4qT73pN9FVUdprrHTl7H0ne3qligPu6hhVzFz7ndn+I310GsqG5tGgPEUXeUy7E
+	 1aaF4rT9AfIX1IT+MUGlNFUgrhZQip27v85/k7LPjJH32NqGlrrl/LoLt3DcDlW1Gf
+	 lvREP2cMkM3Cw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Qu Wenruo <wqu@suse.com>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	David Sterba <dsterba@suse.com>,
+Cc: David Wei <dw@davidwei.uk>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	clm@fb.com,
-	josef@toxicpanda.com,
-	linux-btrfs@vger.kernel.org,
+	donald.hunter@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	nicolas.dichtel@6wind.com,
+	colin.i.king@gmail.com,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 2/6] btrfs: avoid NULL pointer dereference if no valid csum tree
-Date: Mon, 12 May 2025 14:04:48 -0400
-Message-Id: <20250512180452.437844-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 3/6] tools: ynl-gen: validate 0 len strings from kernel
+Date: Mon, 12 May 2025 14:04:49 -0400
+Message-Id: <20250512180452.437844-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250512180452.437844-1-sashal@kernel.org>
 References: <20250512180452.437844-1-sashal@kernel.org>
@@ -69,71 +72,36 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.90
 Content-Transfer-Encoding: 8bit
 
-From: Qu Wenruo <wqu@suse.com>
+From: David Wei <dw@davidwei.uk>
 
-[ Upstream commit f95d186255b319c48a365d47b69bd997fecb674e ]
+[ Upstream commit 4720f9707c783f642332dee3d56dccaefa850e42 ]
 
-[BUG]
-When trying read-only scrub on a btrfs with rescue=idatacsums mount
-option, it will crash with the following call trace:
+Strings from the kernel are guaranteed to be null terminated and
+ynl_attr_validate() checks for this. But it doesn't check if the string
+has a len of 0, which would cause problems when trying to access
+data[len - 1]. Fix this by checking that len is positive.
 
-  BUG: kernel NULL pointer dereference, address: 0000000000000208
-  #PF: supervisor read access in kernel mode
-  #PF: error_code(0x0000) - not-present page
-  CPU: 1 UID: 0 PID: 835 Comm: btrfs Tainted: G           O        6.15.0-rc3-custom+ #236 PREEMPT(full)
-  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS unknown 02/02/2022
-  RIP: 0010:btrfs_lookup_csums_bitmap+0x49/0x480 [btrfs]
-  Call Trace:
-   <TASK>
-   scrub_find_fill_first_stripe+0x35b/0x3d0 [btrfs]
-   scrub_simple_mirror+0x175/0x290 [btrfs]
-   scrub_stripe+0x5f7/0x6f0 [btrfs]
-   scrub_chunk+0x9a/0x150 [btrfs]
-   scrub_enumerate_chunks+0x333/0x660 [btrfs]
-   btrfs_scrub_dev+0x23e/0x600 [btrfs]
-   btrfs_ioctl+0x1dcf/0x2f80 [btrfs]
-   __x64_sys_ioctl+0x97/0xc0
-   do_syscall_64+0x4f/0x120
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-[CAUSE]
-Mount option "rescue=idatacsums" will completely skip loading the csum
-tree, so that any data read will not find any data csum thus we will
-ignore data checksum verification.
-
-Normally call sites utilizing csum tree will check the fs state flag
-NO_DATA_CSUMS bit, but unfortunately scrub does not check that bit at all.
-
-This results in scrub to call btrfs_search_slot() on a NULL pointer
-and triggered above crash.
-
-[FIX]
-Check both extent and csum tree root before doing any tree search.
-
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Wei <dw@davidwei.uk>
+Link: https://patch.msgid.link/20250503043050.861238-1-dw@davidwei.uk
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/scrub.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/net/ynl/lib/ynl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/scrub.c b/fs/btrfs/scrub.c
-index 6be092bb814fd..da49bdb70375b 100644
---- a/fs/btrfs/scrub.c
-+++ b/fs/btrfs/scrub.c
-@@ -1538,8 +1538,8 @@ static int scrub_find_fill_first_stripe(struct btrfs_block_group *bg,
- 	u64 extent_gen;
- 	int ret;
- 
--	if (unlikely(!extent_root)) {
--		btrfs_err(fs_info, "no valid extent root for scrub");
-+	if (unlikely(!extent_root || !csum_root)) {
-+		btrfs_err(fs_info, "no valid extent or csum root for scrub");
- 		return -EUCLEAN;
- 	}
- 	memset(stripe->sectors, 0, sizeof(struct scrub_sector_verification) *
+diff --git a/tools/net/ynl/lib/ynl.c b/tools/net/ynl/lib/ynl.c
+index ae61ae5b02bf8..0871f86c6b666 100644
+--- a/tools/net/ynl/lib/ynl.c
++++ b/tools/net/ynl/lib/ynl.c
+@@ -368,7 +368,7 @@ int ynl_attr_validate(struct ynl_parse_arg *yarg, const struct nlattr *attr)
+ 		     "Invalid attribute (binary %s)", policy->name);
+ 		return -1;
+ 	case YNL_PT_NUL_STR:
+-		if ((!policy->len || len <= policy->len) && !data[len - 1])
++		if (len && (!policy->len || len <= policy->len) && !data[len - 1])
+ 			break;
+ 		yerr(yarg->ys, YNL_ERROR_ATTR_INVALID,
+ 		     "Invalid attribute (string %s)", policy->name);
 -- 
 2.39.5
 
