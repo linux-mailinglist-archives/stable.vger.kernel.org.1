@@ -1,179 +1,141 @@
-Return-Path: <stable+bounces-143136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D459EAB323D
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 10:51:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9AD6AB32A0
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 11:03:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8DA53ACD25
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 08:50:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23E983BEA97
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 09:02:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E0FC25A2AC;
-	Mon, 12 May 2025 08:50:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84D5725A34D;
+	Mon, 12 May 2025 09:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JblRDqxA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uramaB+K"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 218342566EE
-	for <stable@vger.kernel.org>; Mon, 12 May 2025 08:50:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E31525A32F
+	for <stable@vger.kernel.org>; Mon, 12 May 2025 09:02:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747039848; cv=none; b=hjugawAEr1BRO4rLDa8vV8hCedlztHQjzdv9xJbnJsEsvfKSEkDD+S+3Kod75vcik1HVhDhojPa5u+Fh/cVnVURt4M+uNPxctuA1qdoQYN7o3jM5NAgkocO5apeolhcm1UmTcVmOut0rKe8rGpGylPUTq4Gt7tjMCa5N3D+GuKo=
+	t=1747040534; cv=none; b=Tt7HK6ZmQVpgPjVWdrHYqBNLNVGaGbGWjaRzQ/C48DIizSwcqbX8QrtxlRDxYuXzQ/zKYAjAwo9HshYY3Qxr54uQr3S9hh1oH9Q4MRPklCUCGXHD+7O4RDq/y3AWgjxuwSrahpTpvc1Lj2vxPEKxXAjvJmeOtXiP0MaidCp4ODY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747039848; c=relaxed/simple;
-	bh=4iMobanZvL6ZMqvaDbrkvLN2vR3Q3UVfZ/v9JwDE/rs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CE7Ng+dJwUGssRo60ENNaMk8uT4fjzhMwH4zvFL52vYzZxwhP6buq6KuYFt/l7B7g92yfneZSzqJi804FwxQJgH8nOU/CKfeBR77e9x3S72Zss0l/wyawn+TORU2MIMlSQGqaP+mZ1qEL4zp/4uoBd3GBAq5skNcYy0X7KQDZdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JblRDqxA; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1747039846;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wRVZE0uzDi6mY23fwHxsV0F3g4VaiH2RBigcwGLVHN4=;
-	b=JblRDqxAlDfa7Lp/qSzcGq2L0dkQDxvAQZQysX6v+jWAfK2P0Upd8KAYqfAUT1kqfWPKcH
-	wUyQafXTFz0BRU83lEfrVmguAh0WbLvuz+6EOjQCGst7+Cl/xa/J83QxP4kYXGaNestTqj
-	vVFmxLnTgRdBZuZWBo2/j4yAlE6GiwE=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-464-yb2-VjfjMjyBdVeajXFhww-1; Mon, 12 May 2025 04:50:44 -0400
-X-MC-Unique: yb2-VjfjMjyBdVeajXFhww-1
-X-Mimecast-MFC-AGG-ID: yb2-VjfjMjyBdVeajXFhww_1747039843
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-acb8f9f58ebso353132266b.2
-        for <stable@vger.kernel.org>; Mon, 12 May 2025 01:50:44 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747039842; x=1747644642;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wRVZE0uzDi6mY23fwHxsV0F3g4VaiH2RBigcwGLVHN4=;
-        b=XyMfHVpfrt8l4DK/xwBw/O9VL7k4XELIFmorf/8TqLLX/XAu4lX9tE2FnXqe1oabow
-         z/a1ahWxVvUEERItacOqfQ0CjLTmE8UVcW/ppSQifFEnzvLy0op3EKbvn+tEV6A2P1IM
-         8cqQc+GmPHyADo+hqIlkLR1q8RP4LSUNEKGp6kpu0zqyAtE1p4XCodmMbtJM9e3sYLY1
-         7U9l7GHyI6ISuOyaGW0cXZ55CMHtsX8GxxWOWMvW311YVnqaj9qBQ+ZftuH7yKw7vCeA
-         3JexF+ilrQrbQwfKwmpNmXIgMiBdKipnsbpZ+peLd/B1La6DtkOYrX3w7YPEf2fotxC+
-         b12g==
-X-Forwarded-Encrypted: i=1; AJvYcCWvVz9AEERgJk2N/Wrdg7nMrZA+6U2+FOjo/EM8cN4mstelw/lrR+awYRJaG9k8A3ZwTh4XALs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxVf18uWu2JRq/sOQceSZj+rvyLyQMjuQ6iQrnn8ZcMJG4wgvh+
-	6tuwI9c/pAZPIPsB/azL6NoPloS4rYE83PWrBLpzceILfW7ey4qnZJfaz1R7fqOwOgLit27QwbO
-	qujV+4PC0MfHh38iy+UFrUJ+wKQiaOyfZOB3VYRaFY78iHxDDgUdIL6gDpcBYfQ==
-X-Gm-Gg: ASbGnctTHHXLF/0IuhjRUcjIRpjKP1EB3OjKu1Sk/Vzqrez0obIzx9acXLHBA8QrFGg
-	CxOTz6j12BS7a+wUrXjiI5Rt35hrfUCfGDIcvbD/0wB4JDLUI+uPO+H+dPbTQ7475cLzPWCLbu0
-	I60B12zvWJn5fVANurqLWmWpFQFpOwj76hcPVkfCt5cHZzyBNm4HzxZcGTnALpPNm1Xa5N3iUE+
-	4eGPPaqKJhVpnOFXHWGQeik/bVz2iLJB/joJx17n88+tBKEyTcinpO2nHOA2oZrc9Q/BtIi0eXz
-	VeiczeB0b4Uv8IMpItNzmvv5n0K9rJZl5FcjML1DQ2vhF+Q/7utOKYA=
-X-Received: by 2002:a17:907:9628:b0:ad2:3371:55cd with SMTP id a640c23a62f3a-ad233715c99mr713692866b.5.1747039842376;
-        Mon, 12 May 2025 01:50:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFSljQgiL2cPOQkorag8Y/JJhPj5K70If7rNnfBu/H6fyrDaRWF7KwnU4F2z9lX96I7XNy4Ew==
-X-Received: by 2002:a17:907:9628:b0:ad2:3371:55cd with SMTP id a640c23a62f3a-ad233715c99mr713690966b.5.1747039841936;
-        Mon, 12 May 2025 01:50:41 -0700 (PDT)
-Received: from [172.16.2.76] (5920ab7b.static.cust.trined.nl. [89.32.171.123])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad219853438sm581896566b.162.2025.05.12.01.50.41
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 12 May 2025 01:50:41 -0700 (PDT)
-From: Eelco Chaudron <echaudro@redhat.com>
-To: gregkh@linuxfoundation.org
-Cc: aconole@redhat.com, i.maximets@ovn.org, kuba@kernel.org,
- stable@vger.kernel.org
-Subject: Re: FAILED: patch
- "[PATCH] openvswitch: Fix unsafe attribute parsing in" failed to apply to
- 5.4-stable tree
-Date: Mon, 12 May 2025 10:50:39 +0200
-X-Mailer: MailMate (2.0r6255)
-Message-ID: <8DD6C6C6-2277-4A95-B73D-E95DB1B2D21C@redhat.com>
-In-Reply-To: <2025050913-rubble-confirm-99ee@gregkh>
-References: <2025050913-rubble-confirm-99ee@gregkh>
+	s=arc-20240116; t=1747040534; c=relaxed/simple;
+	bh=U7517LeVtezkrM0pRT0MxNYXcetU86Nsh5KTsClQaqM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=szPpfiJr6TmwTbH8lpJzIXEk9lBMzi7fMI+kv/p/tHjiJa9nZ/CnKl667af4glw+fmD4mdrcYpH5gUbfGQHydnoSVCBAxLoXB9P/MV13ra2NVu8m56WVp4djbGWEECuaYnri4tugXhg1tnWTbAurOJhDGuBJTo1+TOsb8g+MdT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uramaB+K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A040C4CEE7;
+	Mon, 12 May 2025 09:02:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1747040533;
+	bh=U7517LeVtezkrM0pRT0MxNYXcetU86Nsh5KTsClQaqM=;
+	h=Subject:To:Cc:From:Date:From;
+	b=uramaB+K7pan6lNi3K5Fr4e7ig9H3feXE8sxb0A+gBTm+3SMsSnGbWPlGV4CL4ZyD
+	 ezw7mZsi828D+uQqkPS/hTDeRZaNHpT+dsV/zXzHVlpvODqa855VNGn1+jpiSz6oK2
+	 lk50lub3+5aHurRrP/UAjDgt/Ag7jsDQmdxOyqeM=
+Subject: FAILED: patch "[PATCH] rust: allow Rust 1.87.0's `clippy::ptr_eq` lint" failed to apply to 6.14-stable tree
+To: ojeda@kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 12 May 2025 11:02:10 +0200
+Message-ID: <2025051210-devourer-antarctic-1ed3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+
+
+The patch below does not apply to the 6.14-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.14.y
+git checkout FETCH_HEAD
+git cherry-pick -x a39f3087092716f2bd531d6fdc20403c3dc2a879
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025051210-devourer-antarctic-1ed3@gregkh' --subject-prefix 'PATCH 6.14.y' HEAD^..
+
+Possible dependencies:
 
 
 
-On 9 May 2025, at 10:56, gregkh@linuxfoundation.org wrote:
+thanks,
 
-> The patch below does not apply to the 5.4-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit=
+greg k-h
 
-> id to <stable@vger.kernel.org>.
+------------------ original commit in Linus's tree ------------------
 
-Hi Greg,
+From a39f3087092716f2bd531d6fdc20403c3dc2a879 Mon Sep 17 00:00:00 2001
+From: Miguel Ojeda <ojeda@kernel.org>
+Date: Fri, 2 May 2025 16:02:34 +0200
+Subject: [PATCH] rust: allow Rust 1.87.0's `clippy::ptr_eq` lint
 
-I've just sent out a patch using the description below. This is my first =
-time doing this, so please let me know if I messed anything up. :)
+Starting with Rust 1.87.0 (expected 2025-05-15) [1], Clippy may expand
+the `ptr_eq` lint, e.g.:
 
-Cheers,
+    error: use `core::ptr::eq` when comparing raw pointers
+       --> rust/kernel/list.rs:438:12
+        |
+    438 |         if self.first == item {
+        |            ^^^^^^^^^^^^^^^^^^ help: try: `core::ptr::eq(self.first, item)`
+        |
+        = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#ptr_eq
+        = note: `-D clippy::ptr-eq` implied by `-D warnings`
+        = help: to override `-D warnings` add `#[allow(clippy::ptr_eq)]`
 
-Eelco
+It is expected that a PR to relax the lint will be backported [2] by
+the time Rust 1.87.0 releases, since the lint was considered too eager
+(at least by default) [3].
 
+Thus allow the lint temporarily just in case.
 
-> To reproduce the conflict and resubmit, you may use the following comma=
-nds:
->
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.=
-git/ linux-5.4.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x 6beb6835c1fbb3f676aebb51a5fee6b77fed9308
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '202505091=
-3-rubble-confirm-99ee@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
->
-> Possible dependencies:
->
->
->
-> thanks,
->
-> greg k-h
->
-> ------------------ original commit in Linus's tree ------------------
->
-> From 6beb6835c1fbb3f676aebb51a5fee6b77fed9308 Mon Sep 17 00:00:00 2001
-> From: Eelco Chaudron <echaudro@redhat.com>
-> Date: Tue, 6 May 2025 16:28:54 +0200
-> Subject: [PATCH] openvswitch: Fix unsafe attribute parsing in
->  output_userspace()
->
-> This patch replaces the manual Netlink attribute iteration in
-> output_userspace() with nla_for_each_nested(), which ensures that only
-> well-formed attributes are processed.
->
-> Fixes: ccb1352e76cf ("net: Add Open vSwitch kernel components.")
-> Signed-off-by: Eelco Chaudron <echaudro@redhat.com>
-> Acked-by: Ilya Maximets <i.maximets@ovn.org>
-> Acked-by: Aaron Conole <aconole@redhat.com>
-> Link: https://patch.msgid.link/0bd65949df61591d9171c0dc13e42cea8941da10=
-=2E1746541734.git.echaudro@redhat.com
-> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
->
-> diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
-> index 61fea7baae5d..2f22ca59586f 100644
-> --- a/net/openvswitch/actions.c
-> +++ b/net/openvswitch/actions.c
-> @@ -975,8 +975,7 @@ static int output_userspace(struct datapath *dp, st=
-ruct sk_buff *skb,
->  	upcall.cmd =3D OVS_PACKET_CMD_ACTION;
->  	upcall.mru =3D OVS_CB(skb)->mru;
->
-> -	for (a =3D nla_data(attr), rem =3D nla_len(attr); rem > 0;
-> -	     a =3D nla_next(a, &rem)) {
-> +	nla_for_each_nested(a, attr, rem) {
->  		switch (nla_type(a)) {
->  		case OVS_USERSPACE_ATTR_USERDATA:
->  			upcall.userdata =3D a;
+Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
+Link: https://github.com/rust-lang/rust-clippy/pull/14339 [1]
+Link: https://github.com/rust-lang/rust-clippy/pull/14526 [2]
+Link: https://github.com/rust-lang/rust-clippy/issues/14525 [3]
+Link: https://lore.kernel.org/r/20250502140237.1659624-3-ojeda@kernel.org
+[ Converted to `allow`s since backport was confirmed. - Miguel ]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+
+diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+index ae9d072741ce..87a71fd40c3c 100644
+--- a/rust/kernel/alloc/kvec.rs
++++ b/rust/kernel/alloc/kvec.rs
+@@ -2,6 +2,9 @@
+ 
+ //! Implementation of [`Vec`].
+ 
++// May not be needed in Rust 1.87.0 (pending beta backport).
++#![allow(clippy::ptr_eq)]
++
+ use super::{
+     allocator::{KVmalloc, Kmalloc, Vmalloc},
+     layout::ArrayLayout,
+diff --git a/rust/kernel/list.rs b/rust/kernel/list.rs
+index a335c3b1ff5e..2054682c5724 100644
+--- a/rust/kernel/list.rs
++++ b/rust/kernel/list.rs
+@@ -4,6 +4,9 @@
+ 
+ //! A linked list implementation.
+ 
++// May not be needed in Rust 1.87.0 (pending beta backport).
++#![allow(clippy::ptr_eq)]
++
+ use crate::sync::ArcBorrow;
+ use crate::types::Opaque;
+ use core::iter::{DoubleEndedIterator, FusedIterator};
 
 
