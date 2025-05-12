@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-143140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7615AB32A2
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 11:03:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B12CDAB32A4
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 11:03:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2EE93BD427
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 09:02:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E56A63BEA08
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 09:03:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C44D25A2C3;
-	Mon, 12 May 2025 09:02:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF66124E4CE;
+	Mon, 12 May 2025 09:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zOjI3Gha"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nR+2+d2X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4950C24E4CE
-	for <stable@vger.kernel.org>; Mon, 12 May 2025 09:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C82413212A
+	for <stable@vger.kernel.org>; Mon, 12 May 2025 09:03:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747040550; cv=none; b=dzrQVxZzZOEpRA/qfbzrUk/UqFVbfIpiyTbOUeOc1hq23zgl5Nz9/CY8B59pWM4BBpmbxcuziebT7QrshT9AsL2bBrmCc8VIZt1fHhYRhTwmY++AGkdCu4fwjYLaHAwZ2lw6h5KyD5bo6ZIq610PzOehwakIYpAzgFhsRtr30is=
+	t=1747040592; cv=none; b=irWfFRHYGJknsCcL4upbKm0YG7+4by9tK43yiTMc8B/9yH0Cn0JDdppmtriFp2hYKh3KDuB5F7kcy/buUIAMZ+JvjTqqgYuW+AG8u547/OcTR9ux0ard5iimZs97I3dm+qZ0DttE5dJJ/b+SCweb2kTBmBkROcSPqo7ic5gqLhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747040550; c=relaxed/simple;
-	bh=qDiwBCZioR9QoPBareQeGESLL7Uw8Sdpzu7X5KOU9LU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ruPFWB2tyjNfwcNsItosAI2QeqHCTOBkoYwDZjSbZtdUmlXociKxkjeZtcqoX8rrhpEmFXVXjBz4FabLkvPnDIJ+46K4l/9UEvGmk5xBNMVa+eNmbT3praumfWzlzCDWIgPOqYUr1fueXF09ZLNYrm+BxIcnADtruDbFgEZ/d74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zOjI3Gha; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68EF3C4CEE7;
-	Mon, 12 May 2025 09:02:29 +0000 (UTC)
+	s=arc-20240116; t=1747040592; c=relaxed/simple;
+	bh=qntVucIPbPTPYZvz16jZVwV4H8nUldzplaejTGCHYDc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=oKgCczB0ks3Gu9Qzpubnz9q6/ud2nIFAPPl7nVgj9vnYUX51vvl49CxateWf/4vJyEq+B4C8I7tCTYlSfdSdPrYmTTzpVlbLUtpVX7lDFRAVKoZQ8LVihnFbFfDYnKvw6fdBxY1IHEsBJZfKPB3ZN1UTcejG8xEN4lxag9pGdK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nR+2+d2X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB3E9C4CEE7;
+	Mon, 12 May 2025 09:03:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747040549;
-	bh=qDiwBCZioR9QoPBareQeGESLL7Uw8Sdpzu7X5KOU9LU=;
+	s=korg; t=1747040591;
+	bh=qntVucIPbPTPYZvz16jZVwV4H8nUldzplaejTGCHYDc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=zOjI3GhaGxzYsOSpzhpV0oOvl5CiXs6B9LQJGcWU3yKEWWQcsi96mtzQbEMoVOuaX
-	 uSVWr+Gn1s3DBNIM0dmgelbbvKtyXmpGGcmg0Q5E9yXSaL/aUfcfG+FnKrlsmKMich
-	 ZjvIn5s/FPnZtqKDk0MFqvazoxwb4rxd5B/jI9LE=
-Subject: FAILED: patch "[PATCH] rust: clean Rust 1.88.0's `clippy::uninlined_format_args`" failed to apply to 6.12-stable tree
-To: ojeda@kernel.org,aliceryhl@google.com,lossin@kernel.org,tamird@gmail.com
+	b=nR+2+d2XRte3nPukKudB3DezhoL1Qs9XFZjsVTtiUJZ3J0+fi6j5kN3Hd58O+ZFMy
+	 yNxvnN47evrv8J+Wd5jUi9pNV/2YajBMATZKv6duFL9huUHTMpXkoHlvUXpg18FZ4v
+	 K9S9YtfR4Lyy0P2al3/fLF7CpF964DZrU4Imvm7k=
+Subject: FAILED: patch "[PATCH] uio_hv_generic: Fix sysfs creation path for ring buffer" failed to apply to 6.12-stable tree
+To: namjain@linux.microsoft.com,decui@microsoft.com,gregkh@linuxfoundation.org,mhklinux@outlook.com,ssengar@linux.microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 May 2025 11:02:18 +0200
-Message-ID: <2025051218-radiator-fang-0ab6@gregkh>
+Date: Mon, 12 May 2025 11:03:08 +0200
+Message-ID: <2025051208-hardly-dole-1422@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,10 +62,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 211dcf77856db64c73e0c3b9ce0c624ec855daca
+git cherry-pick -x f31fe8165d365379d858c53bef43254c7d6d1cfd
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025051218-radiator-fang-0ab6@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025051208-hardly-dole-1422@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,309 +77,302 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 211dcf77856db64c73e0c3b9ce0c624ec855daca Mon Sep 17 00:00:00 2001
-From: Miguel Ojeda <ojeda@kernel.org>
-Date: Fri, 2 May 2025 16:02:37 +0200
-Subject: [PATCH] rust: clean Rust 1.88.0's `clippy::uninlined_format_args`
- lint
+From f31fe8165d365379d858c53bef43254c7d6d1cfd Mon Sep 17 00:00:00 2001
+From: Naman Jain <namjain@linux.microsoft.com>
+Date: Fri, 2 May 2025 13:18:10 +0530
+Subject: [PATCH] uio_hv_generic: Fix sysfs creation path for ring buffer
 
-Starting with Rust 1.88.0 (expected 2025-06-26) [1], `rustc` may move
-back the `uninlined_format_args` to `style` from `pedantic` (it was
-there waiting for rust-analyzer suppotr), and thus we will start to see
-lints like:
+On regular bootup, devices get registered to VMBus first, so when
+uio_hv_generic driver for a particular device type is probed,
+the device is already initialized and added, so sysfs creation in
+hv_uio_probe() works fine. However, when the device is removed
+and brought back, the channel gets rescinded and the device again gets
+registered to VMBus. However this time, the uio_hv_generic driver is
+already registered to probe for that device and in this case sysfs
+creation is tried before the device's kobject gets initialized
+completely.
 
-    warning: variables can be used directly in the `format!` string
-       --> rust/macros/kunit.rs:105:37
-        |
-    105 |         let kunit_wrapper_fn_name = format!("kunit_rust_wrapper_{}", test);
-        |                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-        |
-        = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#uninlined_format_args
-    help: change this to
-        |
-    105 -         let kunit_wrapper_fn_name = format!("kunit_rust_wrapper_{}", test);
-    105 +         let kunit_wrapper_fn_name = format!("kunit_rust_wrapper_{test}");
+Fix this by moving the core logic of sysfs creation of ring buffer,
+from uio_hv_generic to HyperV's VMBus driver, where the rest of the
+sysfs attributes for the channels are defined. While doing that, make
+use of attribute groups and macros, instead of creating sysfs
+directly, to ensure better error handling and code flow.
 
-There is even a case that is a pure removal:
+Problematic path:
+vmbus_process_offer (A new offer comes for the VMBus device)
+  vmbus_add_channel_work
+    vmbus_device_register
+      |-> device_register
+      |     |...
+      |     |-> hv_uio_probe
+      |           |...
+      |           |-> sysfs_create_bin_file (leads to a warning as
+      |                 the primary channel's kobject, which is used to
+      |                 create the sysfs file, is not yet initialized)
+      |-> kset_create_and_add
+      |-> vmbus_add_channel_kobj (initialization of the primary
+                                  channel's kobject happens later)
 
-    warning: variables can be used directly in the `format!` string
-      --> rust/macros/module.rs:51:13
-       |
-    51 |             format!("{field}={content}\0", field = field, content = content)
-       |             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-       |
-       = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#uninlined_format_args
-    help: change this to
-       |
-    51 -             format!("{field}={content}\0", field = field, content = content)
-    51 +             format!("{field}={content}\0")
+Above code flow is sequential and the warning is always reproducible in
+this path.
 
-The lints all seem like nice cleanups, thus just apply them.
+Fixes: 9ab877a6ccf8 ("uio_hv_generic: make ring buffer attribute for primary channel")
+Cc: stable@kernel.org
+Suggested-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Suggested-by: Michael Kelley <mhklinux@outlook.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Tested-by: Michael Kelley <mhklinux@outlook.com>
+Reviewed-by: Dexuan Cui <decui@microsoft.com>
+Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+Link: https://lore.kernel.org/r/20250502074811.2022-2-namjain@linux.microsoft.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-We may want to disable `allow-mixed-uninlined-format-args` in the future.
-
-Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
-Link: https://github.com/rust-lang/rust-clippy/pull/14160 [1]
-Acked-by: Benno Lossin <lossin@kernel.org>
-Reviewed-by: Tamir Duberstein <tamird@gmail.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://lore.kernel.org/r/20250502140237.1659624-6-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-
-diff --git a/drivers/gpu/nova-core/gpu.rs b/drivers/gpu/nova-core/gpu.rs
-index 17c9660da450..ab0e5a72a059 100644
---- a/drivers/gpu/nova-core/gpu.rs
-+++ b/drivers/gpu/nova-core/gpu.rs
-@@ -93,7 +93,7 @@ pub(crate) fn arch(&self) -> Architecture {
- // For now, redirect to fmt::Debug for convenience.
- impl fmt::Display for Chipset {
-     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
--        write!(f, "{:?}", self)
-+        write!(f, "{self:?}")
-     }
+diff --git a/drivers/hv/hyperv_vmbus.h b/drivers/hv/hyperv_vmbus.h
+index 29780f3a7478..0b450e53161e 100644
+--- a/drivers/hv/hyperv_vmbus.h
++++ b/drivers/hv/hyperv_vmbus.h
+@@ -477,4 +477,10 @@ static inline int hv_debug_add_dev_dir(struct hv_device *dev)
+ 
+ #endif /* CONFIG_HYPERV_TESTING */
+ 
++/* Create and remove sysfs entry for memory mapped ring buffers for a channel */
++int hv_create_ring_sysfs(struct vmbus_channel *channel,
++			 int (*hv_mmap_ring_buffer)(struct vmbus_channel *channel,
++						    struct vm_area_struct *vma));
++int hv_remove_ring_sysfs(struct vmbus_channel *channel);
++
+ #endif /* _HYPERV_VMBUS_H */
+diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
+index 8d3cff42bdbb..0f16a83cc2d6 100644
+--- a/drivers/hv/vmbus_drv.c
++++ b/drivers/hv/vmbus_drv.c
+@@ -1802,6 +1802,27 @@ static ssize_t subchannel_id_show(struct vmbus_channel *channel,
+ }
+ static VMBUS_CHAN_ATTR_RO(subchannel_id);
+ 
++static int hv_mmap_ring_buffer_wrapper(struct file *filp, struct kobject *kobj,
++				       const struct bin_attribute *attr,
++				       struct vm_area_struct *vma)
++{
++	struct vmbus_channel *channel = container_of(kobj, struct vmbus_channel, kobj);
++
++	/*
++	 * hv_(create|remove)_ring_sysfs implementation ensures that mmap_ring_buffer
++	 * is not NULL.
++	 */
++	return channel->mmap_ring_buffer(channel, vma);
++}
++
++static struct bin_attribute chan_attr_ring_buffer = {
++	.attr = {
++		.name = "ring",
++		.mode = 0600,
++	},
++	.size = 2 * SZ_2M,
++	.mmap = hv_mmap_ring_buffer_wrapper,
++};
+ static struct attribute *vmbus_chan_attrs[] = {
+ 	&chan_attr_out_mask.attr,
+ 	&chan_attr_in_mask.attr,
+@@ -1821,6 +1842,11 @@ static struct attribute *vmbus_chan_attrs[] = {
+ 	NULL
+ };
+ 
++static struct bin_attribute *vmbus_chan_bin_attrs[] = {
++	&chan_attr_ring_buffer,
++	NULL
++};
++
+ /*
+  * Channel-level attribute_group callback function. Returns the permission for
+  * each attribute, and returns 0 if an attribute is not visible.
+@@ -1841,9 +1867,24 @@ static umode_t vmbus_chan_attr_is_visible(struct kobject *kobj,
+ 	return attr->mode;
  }
  
-diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
-index 878111cb77bc..fb61ce81ea28 100644
---- a/rust/kernel/str.rs
-+++ b/rust/kernel/str.rs
-@@ -73,7 +73,7 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-                 b'\r' => f.write_str("\\r")?,
-                 // Printable characters.
-                 0x20..=0x7e => f.write_char(b as char)?,
--                _ => write!(f, "\\x{:02x}", b)?,
-+                _ => write!(f, "\\x{b:02x}")?,
-             }
-         }
-         Ok(())
-@@ -109,7 +109,7 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-                 b'\\' => f.write_str("\\\\")?,
-                 // Printable characters.
-                 0x20..=0x7e => f.write_char(b as char)?,
--                _ => write!(f, "\\x{:02x}", b)?,
-+                _ => write!(f, "\\x{b:02x}")?,
-             }
-         }
-         f.write_char('"')
-@@ -447,7 +447,7 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-                 // Printable character.
-                 f.write_char(c as char)?;
-             } else {
--                write!(f, "\\x{:02x}", c)?;
-+                write!(f, "\\x{c:02x}")?;
-             }
-         }
-         Ok(())
-@@ -479,7 +479,7 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-                 // Printable characters.
-                 b'\"' => f.write_str("\\\"")?,
-                 0x20..=0x7e => f.write_char(c as char)?,
--                _ => write!(f, "\\x{:02x}", c)?,
-+                _ => write!(f, "\\x{c:02x}")?,
-             }
-         }
-         f.write_str("\"")
-@@ -641,13 +641,13 @@ fn test_cstr_as_str_unchecked() {
-     #[test]
-     fn test_cstr_display() {
-         let hello_world = CStr::from_bytes_with_nul(b"hello, world!\0").unwrap();
--        assert_eq!(format!("{}", hello_world), "hello, world!");
-+        assert_eq!(format!("{hello_world}"), "hello, world!");
-         let non_printables = CStr::from_bytes_with_nul(b"\x01\x09\x0a\0").unwrap();
--        assert_eq!(format!("{}", non_printables), "\\x01\\x09\\x0a");
-+        assert_eq!(format!("{non_printables}"), "\\x01\\x09\\x0a");
-         let non_ascii = CStr::from_bytes_with_nul(b"d\xe9j\xe0 vu\0").unwrap();
--        assert_eq!(format!("{}", non_ascii), "d\\xe9j\\xe0 vu");
-+        assert_eq!(format!("{non_ascii}"), "d\\xe9j\\xe0 vu");
-         let good_bytes = CStr::from_bytes_with_nul(b"\xf0\x9f\xa6\x80\0").unwrap();
--        assert_eq!(format!("{}", good_bytes), "\\xf0\\x9f\\xa6\\x80");
-+        assert_eq!(format!("{good_bytes}"), "\\xf0\\x9f\\xa6\\x80");
-     }
++static umode_t vmbus_chan_bin_attr_is_visible(struct kobject *kobj,
++					      const struct bin_attribute *attr, int idx)
++{
++	const struct vmbus_channel *channel =
++		container_of(kobj, struct vmbus_channel, kobj);
++
++	/* Hide ring attribute if channel's ring_sysfs_visible is set to false */
++	if (attr ==  &chan_attr_ring_buffer && !channel->ring_sysfs_visible)
++		return 0;
++
++	return attr->attr.mode;
++}
++
+ static const struct attribute_group vmbus_chan_group = {
+ 	.attrs = vmbus_chan_attrs,
+-	.is_visible = vmbus_chan_attr_is_visible
++	.bin_attrs = vmbus_chan_bin_attrs,
++	.is_visible = vmbus_chan_attr_is_visible,
++	.is_bin_visible = vmbus_chan_bin_attr_is_visible,
+ };
  
-     #[test]
-@@ -658,47 +658,47 @@ fn test_cstr_display_all_bytes() {
-             bytes[i as usize] = i.wrapping_add(1);
-         }
-         let cstr = CStr::from_bytes_with_nul(&bytes).unwrap();
--        assert_eq!(format!("{}", cstr), ALL_ASCII_CHARS);
-+        assert_eq!(format!("{cstr}"), ALL_ASCII_CHARS);
-     }
+ static const struct kobj_type vmbus_chan_ktype = {
+@@ -1851,6 +1892,63 @@ static const struct kobj_type vmbus_chan_ktype = {
+ 	.release = vmbus_chan_release,
+ };
  
-     #[test]
-     fn test_cstr_debug() {
-         let hello_world = CStr::from_bytes_with_nul(b"hello, world!\0").unwrap();
--        assert_eq!(format!("{:?}", hello_world), "\"hello, world!\"");
-+        assert_eq!(format!("{hello_world:?}"), "\"hello, world!\"");
-         let non_printables = CStr::from_bytes_with_nul(b"\x01\x09\x0a\0").unwrap();
--        assert_eq!(format!("{:?}", non_printables), "\"\\x01\\x09\\x0a\"");
-+        assert_eq!(format!("{non_printables:?}"), "\"\\x01\\x09\\x0a\"");
-         let non_ascii = CStr::from_bytes_with_nul(b"d\xe9j\xe0 vu\0").unwrap();
--        assert_eq!(format!("{:?}", non_ascii), "\"d\\xe9j\\xe0 vu\"");
-+        assert_eq!(format!("{non_ascii:?}"), "\"d\\xe9j\\xe0 vu\"");
-         let good_bytes = CStr::from_bytes_with_nul(b"\xf0\x9f\xa6\x80\0").unwrap();
--        assert_eq!(format!("{:?}", good_bytes), "\"\\xf0\\x9f\\xa6\\x80\"");
-+        assert_eq!(format!("{good_bytes:?}"), "\"\\xf0\\x9f\\xa6\\x80\"");
-     }
- 
-     #[test]
-     fn test_bstr_display() {
-         let hello_world = BStr::from_bytes(b"hello, world!");
--        assert_eq!(format!("{}", hello_world), "hello, world!");
-+        assert_eq!(format!("{hello_world}"), "hello, world!");
-         let escapes = BStr::from_bytes(b"_\t_\n_\r_\\_\'_\"_");
--        assert_eq!(format!("{}", escapes), "_\\t_\\n_\\r_\\_'_\"_");
-+        assert_eq!(format!("{escapes}"), "_\\t_\\n_\\r_\\_'_\"_");
-         let others = BStr::from_bytes(b"\x01");
--        assert_eq!(format!("{}", others), "\\x01");
-+        assert_eq!(format!("{others}"), "\\x01");
-         let non_ascii = BStr::from_bytes(b"d\xe9j\xe0 vu");
--        assert_eq!(format!("{}", non_ascii), "d\\xe9j\\xe0 vu");
-+        assert_eq!(format!("{non_ascii}"), "d\\xe9j\\xe0 vu");
-         let good_bytes = BStr::from_bytes(b"\xf0\x9f\xa6\x80");
--        assert_eq!(format!("{}", good_bytes), "\\xf0\\x9f\\xa6\\x80");
-+        assert_eq!(format!("{good_bytes}"), "\\xf0\\x9f\\xa6\\x80");
-     }
- 
-     #[test]
-     fn test_bstr_debug() {
-         let hello_world = BStr::from_bytes(b"hello, world!");
--        assert_eq!(format!("{:?}", hello_world), "\"hello, world!\"");
-+        assert_eq!(format!("{hello_world:?}"), "\"hello, world!\"");
-         let escapes = BStr::from_bytes(b"_\t_\n_\r_\\_\'_\"_");
--        assert_eq!(format!("{:?}", escapes), "\"_\\t_\\n_\\r_\\\\_'_\\\"_\"");
-+        assert_eq!(format!("{escapes:?}"), "\"_\\t_\\n_\\r_\\\\_'_\\\"_\"");
-         let others = BStr::from_bytes(b"\x01");
--        assert_eq!(format!("{:?}", others), "\"\\x01\"");
-+        assert_eq!(format!("{others:?}"), "\"\\x01\"");
-         let non_ascii = BStr::from_bytes(b"d\xe9j\xe0 vu");
--        assert_eq!(format!("{:?}", non_ascii), "\"d\\xe9j\\xe0 vu\"");
-+        assert_eq!(format!("{non_ascii:?}"), "\"d\\xe9j\\xe0 vu\"");
-         let good_bytes = BStr::from_bytes(b"\xf0\x9f\xa6\x80");
--        assert_eq!(format!("{:?}", good_bytes), "\"\\xf0\\x9f\\xa6\\x80\"");
-+        assert_eq!(format!("{good_bytes:?}"), "\"\\xf0\\x9f\\xa6\\x80\"");
-     }
++/**
++ * hv_create_ring_sysfs() - create "ring" sysfs entry corresponding to ring buffers for a channel.
++ * @channel: Pointer to vmbus_channel structure
++ * @hv_mmap_ring_buffer: function pointer for initializing the function to be called on mmap of
++ *                       channel's "ring" sysfs node, which is for the ring buffer of that channel.
++ *                       Function pointer is of below type:
++ *                       int (*hv_mmap_ring_buffer)(struct vmbus_channel *channel,
++ *                                                  struct vm_area_struct *vma))
++ *                       This has a pointer to the channel and a pointer to vm_area_struct,
++ *                       used for mmap, as arguments.
++ *
++ * Sysfs node for ring buffer of a channel is created along with other fields, however its
++ * visibility is disabled by default. Sysfs creation needs to be controlled when the use-case
++ * is running.
++ * For example, HV_NIC device is used either by uio_hv_generic or hv_netvsc at any given point of
++ * time, and "ring" sysfs is needed only when uio_hv_generic is bound to that device. To avoid
++ * exposing the ring buffer by default, this function is reponsible to enable visibility of
++ * ring for userspace to use.
++ * Note: Race conditions can happen with userspace and it is not encouraged to create new
++ * use-cases for this. This was added to maintain backward compatibility, while solving
++ * one of the race conditions in uio_hv_generic while creating sysfs.
++ *
++ * Returns 0 on success or error code on failure.
++ */
++int hv_create_ring_sysfs(struct vmbus_channel *channel,
++			 int (*hv_mmap_ring_buffer)(struct vmbus_channel *channel,
++						    struct vm_area_struct *vma))
++{
++	struct kobject *kobj = &channel->kobj;
++
++	channel->mmap_ring_buffer = hv_mmap_ring_buffer;
++	channel->ring_sysfs_visible = true;
++
++	return sysfs_update_group(kobj, &vmbus_chan_group);
++}
++EXPORT_SYMBOL_GPL(hv_create_ring_sysfs);
++
++/**
++ * hv_remove_ring_sysfs() - remove ring sysfs entry corresponding to ring buffers for a channel.
++ * @channel: Pointer to vmbus_channel structure
++ *
++ * Hide "ring" sysfs for a channel by changing its is_visible attribute and updating sysfs group.
++ *
++ * Returns 0 on success or error code on failure.
++ */
++int hv_remove_ring_sysfs(struct vmbus_channel *channel)
++{
++	struct kobject *kobj = &channel->kobj;
++	int ret;
++
++	channel->ring_sysfs_visible = false;
++	ret = sysfs_update_group(kobj, &vmbus_chan_group);
++	channel->mmap_ring_buffer = NULL;
++	return ret;
++}
++EXPORT_SYMBOL_GPL(hv_remove_ring_sysfs);
++
+ /*
+  * vmbus_add_channel_kobj - setup a sub-directory under device/channels
+  */
+diff --git a/drivers/uio/uio_hv_generic.c b/drivers/uio/uio_hv_generic.c
+index 1b19b5647495..69c1df0f4ca5 100644
+--- a/drivers/uio/uio_hv_generic.c
++++ b/drivers/uio/uio_hv_generic.c
+@@ -131,15 +131,12 @@ static void hv_uio_rescind(struct vmbus_channel *channel)
+ 	vmbus_device_unregister(channel->device_obj);
  }
  
-diff --git a/rust/macros/kunit.rs b/rust/macros/kunit.rs
-index 4f553ecf40c0..99ccac82edde 100644
---- a/rust/macros/kunit.rs
-+++ b/rust/macros/kunit.rs
-@@ -15,10 +15,7 @@ pub(crate) fn kunit_tests(attr: TokenStream, ts: TokenStream) -> TokenStream {
-     }
+-/* Sysfs API to allow mmap of the ring buffers
++/* Function used for mmap of ring buffer sysfs interface.
+  * The ring buffer is allocated as contiguous memory by vmbus_open
+  */
+-static int hv_uio_ring_mmap(struct file *filp, struct kobject *kobj,
+-			    const struct bin_attribute *attr,
+-			    struct vm_area_struct *vma)
++static int
++hv_uio_ring_mmap(struct vmbus_channel *channel, struct vm_area_struct *vma)
+ {
+-	struct vmbus_channel *channel
+-		= container_of(kobj, struct vmbus_channel, kobj);
+ 	void *ring_buffer = page_address(channel->ringbuffer_page);
  
-     if attr.len() > 255 {
--        panic!(
--            "The test suite name `{}` exceeds the maximum length of 255 bytes",
--            attr
--        )
-+        panic!("The test suite name `{attr}` exceeds the maximum length of 255 bytes")
-     }
+ 	if (channel->state != CHANNEL_OPENED_STATE)
+@@ -149,15 +146,6 @@ static int hv_uio_ring_mmap(struct file *filp, struct kobject *kobj,
+ 			       channel->ringbuffer_pagecount << PAGE_SHIFT);
+ }
  
-     let mut tokens: Vec<_> = ts.into_iter().collect();
-@@ -102,16 +99,14 @@ pub(crate) fn kunit_tests(attr: TokenStream, ts: TokenStream) -> TokenStream {
-     let mut kunit_macros = "".to_owned();
-     let mut test_cases = "".to_owned();
-     for test in &tests {
--        let kunit_wrapper_fn_name = format!("kunit_rust_wrapper_{}", test);
-+        let kunit_wrapper_fn_name = format!("kunit_rust_wrapper_{test}");
-         let kunit_wrapper = format!(
--            "unsafe extern \"C\" fn {}(_test: *mut kernel::bindings::kunit) {{ {}(); }}",
--            kunit_wrapper_fn_name, test
-+            "unsafe extern \"C\" fn {kunit_wrapper_fn_name}(_test: *mut kernel::bindings::kunit) {{ {test}(); }}"
-         );
-         writeln!(kunit_macros, "{kunit_wrapper}").unwrap();
-         writeln!(
-             test_cases,
--            "    kernel::kunit::kunit_case(kernel::c_str!(\"{}\"), {}),",
--            test, kunit_wrapper_fn_name
-+            "    kernel::kunit::kunit_case(kernel::c_str!(\"{test}\"), {kunit_wrapper_fn_name}),"
-         )
-         .unwrap();
-     }
-diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-index a9418fbc9b44..2f66107847f7 100644
---- a/rust/macros/module.rs
-+++ b/rust/macros/module.rs
-@@ -48,7 +48,7 @@ fn emit_base(&mut self, field: &str, content: &str, builtin: bool) {
-             )
-         } else {
-             // Loadable modules' modinfo strings go as-is.
--            format!("{field}={content}\0", field = field, content = content)
-+            format!("{field}={content}\0")
-         };
+-static const struct bin_attribute ring_buffer_bin_attr = {
+-	.attr = {
+-		.name = "ring",
+-		.mode = 0600,
+-	},
+-	.size = 2 * SZ_2M,
+-	.mmap = hv_uio_ring_mmap,
+-};
+-
+ /* Callback from VMBUS subsystem when new channel created. */
+ static void
+ hv_uio_new_channel(struct vmbus_channel *new_sc)
+@@ -178,8 +166,7 @@ hv_uio_new_channel(struct vmbus_channel *new_sc)
+ 	/* Disable interrupts on sub channel */
+ 	new_sc->inbound.ring_buffer->interrupt_mask = 1;
+ 	set_channel_read_mode(new_sc, HV_CALL_ISR);
+-
+-	ret = sysfs_create_bin_file(&new_sc->kobj, &ring_buffer_bin_attr);
++	ret = hv_create_ring_sysfs(new_sc, hv_uio_ring_mmap);
+ 	if (ret) {
+ 		dev_err(device, "sysfs create ring bin file failed; %d\n", ret);
+ 		vmbus_close(new_sc);
+@@ -350,10 +337,18 @@ hv_uio_probe(struct hv_device *dev,
+ 		goto fail_close;
+ 	}
  
-         write!(
-@@ -126,10 +126,7 @@ fn parse(it: &mut token_stream::IntoIter) -> Self {
-             };
+-	ret = sysfs_create_bin_file(&channel->kobj, &ring_buffer_bin_attr);
+-	if (ret)
+-		dev_notice(&dev->device,
+-			   "sysfs create ring bin file failed; %d\n", ret);
++	/*
++	 * This internally calls sysfs_update_group, which returns a non-zero value if it executes
++	 * before sysfs_create_group. This is expected as the 'ring' will be created later in
++	 * vmbus_device_register() -> vmbus_add_channel_kobj(). Thus, no need to check the return
++	 * value and print warning.
++	 *
++	 * Creating/exposing sysfs in driver probe is not encouraged as it can lead to race
++	 * conditions with userspace. For backward compatibility, "ring" sysfs could not be removed
++	 * or decoupled from uio_hv_generic probe. Userspace programs can make use of inotify
++	 * APIs to make sure that ring is created.
++	 */
++	hv_create_ring_sysfs(channel, hv_uio_ring_mmap);
  
-             if seen_keys.contains(&key) {
--                panic!(
--                    "Duplicated key \"{}\". Keys can only be specified once.",
--                    key
--                );
-+                panic!("Duplicated key \"{key}\". Keys can only be specified once.");
-             }
+ 	hv_set_drvdata(dev, pdata);
  
-             assert_eq!(expect_punct(it), ':');
-@@ -143,10 +140,7 @@ fn parse(it: &mut token_stream::IntoIter) -> Self {
-                 "license" => info.license = expect_string_ascii(it),
-                 "alias" => info.alias = Some(expect_string_array(it)),
-                 "firmware" => info.firmware = Some(expect_string_array(it)),
--                _ => panic!(
--                    "Unknown key \"{}\". Valid keys are: {:?}.",
--                    key, EXPECTED_KEYS
--                ),
-+                _ => panic!("Unknown key \"{key}\". Valid keys are: {EXPECTED_KEYS:?}."),
-             }
+@@ -375,7 +370,7 @@ hv_uio_remove(struct hv_device *dev)
+ 	if (!pdata)
+ 		return;
  
-             assert_eq!(expect_punct(it), ',');
-@@ -158,7 +152,7 @@ fn parse(it: &mut token_stream::IntoIter) -> Self {
+-	sysfs_remove_bin_file(&dev->channel->kobj, &ring_buffer_bin_attr);
++	hv_remove_ring_sysfs(dev->channel);
+ 	uio_unregister_device(&pdata->info);
+ 	hv_uio_cleanup(dev, pdata);
  
-         for key in REQUIRED_KEYS {
-             if !seen_keys.iter().any(|e| e == key) {
--                panic!("Missing required key \"{}\".", key);
-+                panic!("Missing required key \"{key}\".");
-             }
-         }
+diff --git a/include/linux/hyperv.h b/include/linux/hyperv.h
+index 675959fb97ba..d6ffe01962c2 100644
+--- a/include/linux/hyperv.h
++++ b/include/linux/hyperv.h
+@@ -1002,6 +1002,12 @@ struct vmbus_channel {
  
-@@ -170,10 +164,7 @@ fn parse(it: &mut token_stream::IntoIter) -> Self {
-         }
+ 	/* The max size of a packet on this channel */
+ 	u32 max_pkt_size;
++
++	/* function to mmap ring buffer memory to the channel's sysfs ring attribute */
++	int (*mmap_ring_buffer)(struct vmbus_channel *channel, struct vm_area_struct *vma);
++
++	/* boolean to control visibility of sysfs for ring buffer */
++	bool ring_sysfs_visible;
+ };
  
-         if seen_keys != ordered_keys {
--            panic!(
--                "Keys are not ordered as expected. Order them like: {:?}.",
--                ordered_keys
--            );
-+            panic!("Keys are not ordered as expected. Order them like: {ordered_keys:?}.");
-         }
- 
-         info
-diff --git a/rust/macros/paste.rs b/rust/macros/paste.rs
-index 6529a387673f..cce712d19855 100644
---- a/rust/macros/paste.rs
-+++ b/rust/macros/paste.rs
-@@ -50,7 +50,7 @@ fn concat_helper(tokens: &[TokenTree]) -> Vec<(String, Span)> {
-                 let tokens = group.stream().into_iter().collect::<Vec<TokenTree>>();
-                 segments.append(&mut concat_helper(tokens.as_slice()));
-             }
--            token => panic!("unexpected token in paste segments: {:?}", token),
-+            token => panic!("unexpected token in paste segments: {token:?}"),
-         };
-     }
- 
-diff --git a/rust/pin-init/internal/src/pinned_drop.rs b/rust/pin-init/internal/src/pinned_drop.rs
-index c824dd8b436d..c4ca7a70b726 100644
---- a/rust/pin-init/internal/src/pinned_drop.rs
-+++ b/rust/pin-init/internal/src/pinned_drop.rs
-@@ -28,8 +28,7 @@ pub(crate) fn pinned_drop(_args: TokenStream, input: TokenStream) -> TokenStream
-             // Found the end of the generics, this should be `PinnedDrop`.
-             assert!(
-                 matches!(tt, TokenTree::Ident(i) if i.to_string() == "PinnedDrop"),
--                "expected 'PinnedDrop', found: '{:?}'",
--                tt
-+                "expected 'PinnedDrop', found: '{tt:?}'"
-             );
-             pinned_drop_idx = Some(i);
-             break;
+ #define lock_requestor(channel, flags)					\
 
 
