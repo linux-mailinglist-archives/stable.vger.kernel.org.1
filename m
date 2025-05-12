@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-143788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCD68AB4181
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:07:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D66E0AB4193
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:08:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8092D7AF43A
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:05:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6B543AC416
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:06:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E22BC2980C8;
-	Mon, 12 May 2025 18:04:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A6EB29824E;
+	Mon, 12 May 2025 18:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QEs/mpWl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tNib/Eek"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 967F5296FAA;
-	Mon, 12 May 2025 18:04:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1D4D298242;
+	Mon, 12 May 2025 18:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073052; cv=none; b=V6J0l3UZvv7Hdr9gfXK7qfZC0/gbuoWh1MeNYOaWf8PFUA4UHR2//CkkHiCH0lu6zC7HrvpWZhbzwSFnTWJaokVKXtY4dXGWXORZim4arMct80kNx5iB7fRodLPdi2MyqCU4evWthsFM2/9MwEXiGH+f3hMEDHmhlD3EPRjE0Kg=
+	t=1747073054; cv=none; b=fB6zlKIjP51vLfi2i17+Fxl7smkkNcn01g5nin2aXiYiIWJtlH4kwnXRjgPvolay90hhDG0khBxXEQoApDkoYFRou+FrtT7kx8fHHDZP1oJmidrDU9JM1bLZGfGXmFiEub3YeUaXIKQtQB/4PBOY1iFYzQjg4XXTSuK45nFVIek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073052; c=relaxed/simple;
-	bh=8d+MIh0ZJExvxWHnilQyk/lGhI/iKEiO0XS+vqKLqqo=;
+	s=arc-20240116; t=1747073054; c=relaxed/simple;
+	bh=L2k7cRkMJazui1TkT/w4yjvjzTYhEraMo91sqqKHc0A=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=mPbMDmRzOH4YewgxUZ5dYK09KDYhdd9k7ZFmBn3MKRau4fLfPQYCoiK18H6aNU9uEO6p2xJVLpvgWtKTFiIt3Cgvt6rEVs8A+tMeoAi1DT3GIpbrDHXajpjiYe4l+fEo1622OBHzKH7IzL+eNKo5grbsL/ie57Oh1JuohwLUiPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QEs/mpWl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6734C4CEE9;
-	Mon, 12 May 2025 18:04:10 +0000 (UTC)
+	 MIME-Version; b=EfgsczNzdjvOYVFERi2VwArA7mhJS8jmKuPtqVwGu7NKlu0oG4ErImDIJ2yon5qcT2ej5/T4Ncnlx3a3wEMyptPhK/8UrY7XE9mapXuT54OFBs4Py0eDfxZJjg9XJsH4sDXbwDp5doAbOqhLNzlv6hV5v/ai1KEsMThgTe5/aVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tNib/Eek; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ACCAC4CEF0;
+	Mon, 12 May 2025 18:04:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747073052;
-	bh=8d+MIh0ZJExvxWHnilQyk/lGhI/iKEiO0XS+vqKLqqo=;
+	s=k20201202; t=1747073053;
+	bh=L2k7cRkMJazui1TkT/w4yjvjzTYhEraMo91sqqKHc0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QEs/mpWlGtLJPnWe1DbOkZk3hsqoOELMyYIyhVnPp8ZRP8pB5fN+cN/GUOtsAe9oU
-	 LEo4oI8K7bJJeWZpX+nxSYh3k0Ruyp+klDd2FKAhfmcdR1weuhmBFeLK5LgGmR3Ytb
-	 VnE6pNRKaRMn7voPTtEAdxwfgdUibl1jmJ0htWN9v+T/pgJ600B0Ac5SLnTHs06Qp9
-	 /bPKaYAj0sCLtiYhb5pDok7geLm00/MwqurdmrNRx+tHdB1cKv4j0gUQBDsw/jRdaU
-	 ZSgMx/1RZF/G6HrZAepm+k/ztkv4sKxapNb8GnylgephUr7Tl+rE9mfjyX+6pCfouj
-	 0l1xR+Cm8OpHg==
+	b=tNib/Eekp66m5LPPzZWoExUbqNvHYCrju1FWqQ+HzyB1i4ux3iQteYIMX17slpdPC
+	 kdI5tAU2Dvi250OBMF04SaCcrPP6IVizJ35Li0k/IVxjJearTxJ8chnE/OFPMJGsda
+	 FEFP8Akzz4DgoLCg1yNdhpRdij1NiHnrRBVOh8NLbn/xTCX6VvB5uxRgWhO3ayv0lz
+	 qPseUQcTu0ZXr5XiiX++Eo7RE4dIMVmdjJpsv2+MnQpQ6KjD6Xl+ELgO0mMO02DrxH
+	 TC5L9H6QO9yU5DC1igvZsklFHTz+LGtOFGjK0kqxQ+GL5GWlF7+WEfXENcNp5uD7TP
+	 lCQ8mCWVS+sAQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: David Wei <dw@davidwei.uk>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>,
-	donald.hunter@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	colin.i.king@gmail.com,
-	nicolas.dichtel@6wind.com,
-	netdev@vger.kernel.org,
+	linux-block@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.14 09/15] tools: ynl-gen: validate 0 len strings from kernel
-Date: Mon, 12 May 2025 14:03:44 -0400
-Message-Id: <20250512180352.437356-9-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.14 10/15] block: only update request sector if needed
+Date: Mon, 12 May 2025 14:03:45 -0400
+Message-Id: <20250512180352.437356-10-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250512180352.437356-1-sashal@kernel.org>
 References: <20250512180352.437356-1-sashal@kernel.org>
@@ -72,36 +67,48 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.14.6
 Content-Transfer-Encoding: 8bit
 
-From: David Wei <dw@davidwei.uk>
+From: Johannes Thumshirn <johannes.thumshirn@wdc.com>
 
-[ Upstream commit 4720f9707c783f642332dee3d56dccaefa850e42 ]
+[ Upstream commit db492e24f9b05547ba12b4783f09c9d943cf42fe ]
 
-Strings from the kernel are guaranteed to be null terminated and
-ynl_attr_validate() checks for this. But it doesn't check if the string
-has a len of 0, which would cause problems when trying to access
-data[len - 1]. Fix this by checking that len is positive.
+In case of a ZONE APPEND write, regardless of native ZONE APPEND or the
+emulation layer in the zone write plugging code, the sector the data got
+written to by the device needs to be updated in the bio.
 
-Signed-off-by: David Wei <dw@davidwei.uk>
-Link: https://patch.msgid.link/20250503043050.861238-1-dw@davidwei.uk
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+At the moment, this is done for every native ZONE APPEND write and every
+request that is flagged with 'BIO_ZONE_WRITE_PLUGGING'. But thus
+superfluously updates the sector for regular writes to a zoned block
+device.
+
+Check if a bio is a native ZONE APPEND write or if the bio is flagged as
+'BIO_EMULATES_ZONE_APPEND', meaning the block layer's zone write plugging
+code handles the ZONE APPEND and translates it into a regular write and
+back. Only if one of these two criterion is met, update the sector in the
+bio upon completion.
+
+Signed-off-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/dea089581cb6b777c1cd1500b38ac0b61df4b2d1.1746530748.git.jth@kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/net/ynl/lib/ynl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ block/blk.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/net/ynl/lib/ynl.c b/tools/net/ynl/lib/ynl.c
-index ce32cb35007d6..c4da34048ef85 100644
---- a/tools/net/ynl/lib/ynl.c
-+++ b/tools/net/ynl/lib/ynl.c
-@@ -364,7 +364,7 @@ int ynl_attr_validate(struct ynl_parse_arg *yarg, const struct nlattr *attr)
- 		     "Invalid attribute (binary %s)", policy->name);
- 		return -1;
- 	case YNL_PT_NUL_STR:
--		if ((!policy->len || len <= policy->len) && !data[len - 1])
-+		if (len && (!policy->len || len <= policy->len) && !data[len - 1])
- 			break;
- 		yerr(yarg->ys, YNL_ERROR_ATTR_INVALID,
- 		     "Invalid attribute (string %s)", policy->name);
+diff --git a/block/blk.h b/block/blk.h
+index 9dcc92c7f2b50..c14f415de5228 100644
+--- a/block/blk.h
++++ b/block/blk.h
+@@ -480,7 +480,8 @@ static inline void blk_zone_update_request_bio(struct request *rq,
+ 	 * the original BIO sector so that blk_zone_write_plug_bio_endio() can
+ 	 * lookup the zone write plug.
+ 	 */
+-	if (req_op(rq) == REQ_OP_ZONE_APPEND || bio_zone_write_plugging(bio))
++	if (req_op(rq) == REQ_OP_ZONE_APPEND ||
++	    bio_flagged(bio, BIO_EMULATES_ZONE_APPEND))
+ 		bio->bi_iter.bi_sector = rq->__sector;
+ }
+ void blk_zone_write_plug_bio_endio(struct bio *bio);
 -- 
 2.39.5
 
