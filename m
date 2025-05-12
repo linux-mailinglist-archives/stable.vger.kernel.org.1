@@ -1,57 +1,64 @@
-Return-Path: <stable+bounces-143585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB7D7AB406B
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:54:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C719AAB412E
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:03:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7FB016531A
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:54:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE03F19E7B6E
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:03:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26CE8261586;
-	Mon, 12 May 2025 17:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E98E255235;
+	Mon, 12 May 2025 18:02:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="frMZ6Krp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dhUaEPtA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3DA2263F30;
-	Mon, 12 May 2025 17:53:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F15671DF754;
+	Mon, 12 May 2025 18:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072427; cv=none; b=TjDertKxo+U5/KmV3xURjo00fyRXVAPN0/eJg7fT8dHKoLCSA7lA02Y3UNYP+xEhqAU0vXbO1GUIKN59/8nXcMTzvlmvKgNAYTPl6OnCfrD7NGTHdtnEMHXW75+2lj3TtL65csTln/X9XvpbRRMThci6aCYrv+5JvzJCWkJbL38=
+	t=1747072971; cv=none; b=rRZDv7o6mFAR8TTI1LVg2QmOz51GevTHeIkbEmPnhgpi60Syiu9+mhlC5FRoR9746SikdPpuk+tEqoxG4Lm2yx/WSXhQqghk0mvJSRDPzmIu+kVoYCVQkiyHt5U+EEPXWO8rNUoFrBrcV9HTNjLR8tsRQgHvJgu4Rgl4RQAIDeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072427; c=relaxed/simple;
-	bh=U0WjejE8S0xdyTrUARfJH3IhIjF7mZsiyIBAdkcHuo4=;
+	s=arc-20240116; t=1747072971; c=relaxed/simple;
+	bh=slVQPdm1PvLuoz1JjuEW+Y5qFcRw7DKAgTxrzUsQh0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PSaLw/1TX9EnYeSZqdwzqmT/n96s5bLBN6rK6MOwuJj0qE7ptTJsPAlYmn7HOzGDsesFNQliKrw7GwFK6zvephUZg+h0NIq1UHjbqx/Atiavbcqba/4TnuV6ifInbMU2bc1Ok4KcWRARItMLa4yC/sxq9mYZoblDsMT4B63Zv/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=frMZ6Krp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E1A8C4CEE7;
-	Mon, 12 May 2025 17:53:47 +0000 (UTC)
+	 MIME-Version; b=ksvHIPghOGJ2lNaGDvEW5Kdji/aF9rFs4PrDiTjK1hyG6tYHGwYzvxRdSVwy7K7XEUkVHXOoHqcxjSgB22T4RmBJfQYqdYmIKbzb0/V0cCImHorIr25kQq1WmX8RJ4BN3Mc5/jVu2K3PHLXAKr/JaJKgSDxnvQpltO65aOFk2QA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dhUaEPtA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD9E5C4CEE7;
+	Mon, 12 May 2025 18:02:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072427;
-	bh=U0WjejE8S0xdyTrUARfJH3IhIjF7mZsiyIBAdkcHuo4=;
+	s=korg; t=1747072970;
+	bh=slVQPdm1PvLuoz1JjuEW+Y5qFcRw7DKAgTxrzUsQh0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=frMZ6KrpskVhKwfn3GdGuxDJMImPBMSRKUKG66YWsmsCBUg3HeQ41SsbNatVORNmP
-	 4kdNaOXb5VUEDZDfYxoaCiJrrx11NA29uoZPdO++XnV/ktV5R18Jgu+oBn5Znoqvpm
-	 g5pVuXboZeOa+koolDcrbq/88QULm9k8jew6I/M8=
+	b=dhUaEPtA/lnoJn3pT1p09yQ5VGFX369mhbN7j2xUFln6G0644WZq+UHTRdn/EwehC
+	 CSTuII/6UMbhYg+uU+dWCXg6KiTNuu5JZq3sTp5TQd9PNWSO64LR98GSstiyBGdDqp
+	 gjNut48lmxDNjVrMjnGSDtVx0OslCA4YpIHaFDCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daivik Bhatia <dtgs1208@gmail.com>,
-	Iago Toral Quiroga <itoral@igalia.com>,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
-Subject: [PATCH 6.1 38/92] drm/v3d: Add job to pending list if the reset was skipped
-Date: Mon, 12 May 2025 19:45:13 +0200
-Message-ID: <20250512172024.674446037@linuxfoundation.org>
+	Jan Kara <jack@suse.cz>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Shichangkuo <shi.changkuo@h3c.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 113/184] ocfs2: switch osb->disable_recovery to enum
+Date: Mon, 12 May 2025 19:45:14 +0200
+Message-ID: <20250512172046.429223988@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172023.126467649@linuxfoundation.org>
-References: <20250512172023.126467649@linuxfoundation.org>
+In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
+References: <20250512172041.624042835@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,103 +68,114 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maíra Canal <mcanal@igalia.com>
+From: Jan Kara <jack@suse.cz>
 
-commit 35e4079bf1a2570abffce6ababa631afcf8ea0e5 upstream.
+commit c0fb83088f0cc4ee4706e0495ee8b06f49daa716 upstream.
 
-When a CL/CSD job times out, we check if the GPU has made any progress
-since the last timeout. If so, instead of resetting the hardware, we skip
-the reset and let the timer get rearmed. This gives long-running jobs a
-chance to complete.
+Patch series "ocfs2: Fix deadlocks in quota recovery", v3.
 
-However, when `timedout_job()` is called, the job in question is removed
-from the pending list, which means it won't be automatically freed through
-`free_job()`. Consequently, when we skip the reset and keep the job
-running, the job won't be freed when it finally completes.
+This implements another approach to fixing quota recovery deadlocks.  We
+avoid grabbing sb->s_umount semaphore from ocfs2_finish_quota_recovery()
+and instead stop quota recovery early in ocfs2_dismount_volume().
 
-This situation leads to a memory leak, as exposed in [1] and [2].
 
-Similarly to commit 704d3d60fec4 ("drm/etnaviv: don't block scheduler when
-GPU is still active"), this patch ensures the job is put back on the
-pending list when extending the timeout.
+This patch (of 3):
 
-Cc: stable@vger.kernel.org # 6.0
-Reported-by: Daivik Bhatia <dtgs1208@gmail.com>
-Closes: https://gitlab.freedesktop.org/mesa/mesa/-/issues/12227 [1]
-Closes: https://github.com/raspberrypi/linux/issues/6817 [2]
-Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
-Acked-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Link: https://lore.kernel.org/r/20250430210643.57924-1-mcanal@igalia.com
-Signed-off-by: Maíra Canal <mcanal@igalia.com>
+We will need more recovery states than just pure enable / disable to fix
+deadlocks with quota recovery.  Switch osb->disable_recovery to enum.
+
+Link: https://lkml.kernel.org/r/20250424134301.1392-1-jack@suse.cz
+Link: https://lkml.kernel.org/r/20250424134515.18933-4-jack@suse.cz
+Fixes: 5f530de63cfc ("ocfs2: Use s_umount for quota recovery protection")
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Heming Zhao <heming.zhao@suse.com>
+Tested-by: Heming Zhao <heming.zhao@suse.com>
+Acked-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Murad Masimov <m.masimov@mt-integration.ru>
+Cc: Shichangkuo <shi.changkuo@h3c.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/v3d/v3d_sched.c |   28 +++++++++++++++++++++-------
- 1 file changed, 21 insertions(+), 7 deletions(-)
+ fs/ocfs2/journal.c |   14 ++++++++------
+ fs/ocfs2/ocfs2.h   |    7 ++++++-
+ 2 files changed, 14 insertions(+), 7 deletions(-)
 
---- a/drivers/gpu/drm/v3d/v3d_sched.c
-+++ b/drivers/gpu/drm/v3d/v3d_sched.c
-@@ -289,11 +289,16 @@ v3d_gpu_reset_for_timeout(struct v3d_dev
- 	return DRM_GPU_SCHED_STAT_NOMINAL;
- }
+--- a/fs/ocfs2/journal.c
++++ b/fs/ocfs2/journal.c
+@@ -174,7 +174,7 @@ int ocfs2_recovery_init(struct ocfs2_sup
+ 	struct ocfs2_recovery_map *rm;
  
--/* If the current address or return address have changed, then the GPU
-- * has probably made progress and we should delay the reset.  This
-- * could fail if the GPU got in an infinite loop in the CL, but that
-- * is pretty unlikely outside of an i-g-t testcase.
-- */
-+static void
-+v3d_sched_skip_reset(struct drm_sched_job *sched_job)
-+{
-+	struct drm_gpu_scheduler *sched = sched_job->sched;
+ 	mutex_init(&osb->recovery_lock);
+-	osb->disable_recovery = 0;
++	osb->recovery_state = OCFS2_REC_ENABLED;
+ 	osb->recovery_thread_task = NULL;
+ 	init_waitqueue_head(&osb->recovery_event);
+ 
+@@ -206,7 +206,7 @@ void ocfs2_recovery_exit(struct ocfs2_su
+ 	/* disable any new recovery threads and wait for any currently
+ 	 * running ones to exit. Do this before setting the vol_state. */
+ 	mutex_lock(&osb->recovery_lock);
+-	osb->disable_recovery = 1;
++	osb->recovery_state = OCFS2_REC_DISABLED;
+ 	mutex_unlock(&osb->recovery_lock);
+ 	wait_event(osb->recovery_event, !ocfs2_recovery_thread_running(osb));
+ 
+@@ -1582,14 +1582,16 @@ bail:
+ 
+ void ocfs2_recovery_thread(struct ocfs2_super *osb, int node_num)
+ {
++	int was_set = -1;
 +
-+	spin_lock(&sched->job_list_lock);
-+	list_add(&sched_job->list, &sched->pending_list);
-+	spin_unlock(&sched->job_list_lock);
-+}
+ 	mutex_lock(&osb->recovery_lock);
++	if (osb->recovery_state < OCFS2_REC_DISABLED)
++		was_set = ocfs2_recovery_map_set(osb, node_num);
+ 
+ 	trace_ocfs2_recovery_thread(node_num, osb->node_num,
+-		osb->disable_recovery, osb->recovery_thread_task,
+-		osb->disable_recovery ?
+-		-1 : ocfs2_recovery_map_set(osb, node_num));
++		osb->recovery_state, osb->recovery_thread_task, was_set);
+ 
+-	if (osb->disable_recovery)
++	if (osb->recovery_state == OCFS2_REC_DISABLED)
+ 		goto out;
+ 
+ 	if (osb->recovery_thread_task)
+--- a/fs/ocfs2/ocfs2.h
++++ b/fs/ocfs2/ocfs2.h
+@@ -308,6 +308,11 @@ enum ocfs2_journal_trigger_type {
+ void ocfs2_initialize_journal_triggers(struct super_block *sb,
+ 				       struct ocfs2_triggers triggers[]);
+ 
++enum ocfs2_recovery_state {
++	OCFS2_REC_ENABLED = 0,
++	OCFS2_REC_DISABLED,
++};
 +
- static enum drm_gpu_sched_stat
- v3d_cl_job_timedout(struct drm_sched_job *sched_job, enum v3d_queue q,
- 		    u32 *timedout_ctca, u32 *timedout_ctra)
-@@ -303,9 +308,16 @@ v3d_cl_job_timedout(struct drm_sched_job
- 	u32 ctca = V3D_CORE_READ(0, V3D_CLE_CTNCA(q));
- 	u32 ctra = V3D_CORE_READ(0, V3D_CLE_CTNRA(q));
- 
-+	/* If the current address or return address have changed, then the GPU
-+	 * has probably made progress and we should delay the reset. This
-+	 * could fail if the GPU got in an infinite loop in the CL, but that
-+	 * is pretty unlikely outside of an i-g-t testcase.
-+	 */
- 	if (*timedout_ctca != ctca || *timedout_ctra != ctra) {
- 		*timedout_ctca = ctca;
- 		*timedout_ctra = ctra;
-+
-+		v3d_sched_skip_reset(sched_job);
- 		return DRM_GPU_SCHED_STAT_NOMINAL;
- 	}
- 
-@@ -345,11 +357,13 @@ v3d_csd_job_timedout(struct drm_sched_jo
- 	struct v3d_dev *v3d = job->base.v3d;
- 	u32 batches = V3D_CORE_READ(0, V3D_CSD_CURRENT_CFG4);
- 
--	/* If we've made progress, skip reset and let the timer get
--	 * rearmed.
-+	/* If we've made progress, skip reset, add the job to the pending
-+	 * list, and let the timer get rearmed.
- 	 */
- 	if (job->timedout_batches != batches) {
- 		job->timedout_batches = batches;
-+
-+		v3d_sched_skip_reset(sched_job);
- 		return DRM_GPU_SCHED_STAT_NOMINAL;
- 	}
- 
+ struct ocfs2_journal;
+ struct ocfs2_slot_info;
+ struct ocfs2_recovery_map;
+@@ -370,7 +375,7 @@ struct ocfs2_super
+ 	struct ocfs2_recovery_map *recovery_map;
+ 	struct ocfs2_replay_map *replay_map;
+ 	struct task_struct *recovery_thread_task;
+-	int disable_recovery;
++	enum ocfs2_recovery_state recovery_state;
+ 	wait_queue_head_t checkpoint_event;
+ 	struct ocfs2_journal *journal;
+ 	unsigned long osb_commit_interval;
 
 
 
