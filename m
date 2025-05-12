@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-143200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBDE4AB3476
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 12:04:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDB69AB3478
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 12:05:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7E7316E033
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 10:04:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 652591899386
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 10:05:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E927925F96E;
-	Mon, 12 May 2025 10:04:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49AC225A64C;
+	Mon, 12 May 2025 10:05:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zfGdyKIo"
-X-Original-To: Stable@vger.kernel.org
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gan8LyVQ"
+X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A852B25EFAA
-	for <Stable@vger.kernel.org>; Mon, 12 May 2025 10:04:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0979C255F5A
+	for <stable@vger.kernel.org>; Mon, 12 May 2025 10:05:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747044286; cv=none; b=l7x/MrVLm/sVt+Jgp7iBhat9oyPsvnCEXJ6aFWLOOaIPseJ9HDemUgKEPgtDPJMlSlJ/7B1ZZljuHX26nckqqK2qmUJcOIuUtwexFG2Ha4GhNOQgec87zOlRamt7sIrLjutRf3a/iwG7X87GqzlnBO3iChRG1JPiR26emIyt9IA=
+	t=1747044321; cv=none; b=lon6r0BQganxGxBKGwoEsjV+QjRXQxUTqRr0fZia83dzI4byavNZjDe3+7lS1yrZr623xxwcfpEMOQKIbvJb47yoOQfn+QOvSFQbImNujGYJEGM6XU95eBbLsA39VbKrrwZt3wdmht/HilgzyUtAX/F8rSJf3DkZJ7N7kZQzCB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747044286; c=relaxed/simple;
-	bh=pEh/B0gp0Ly1liDbsxG2c3O7gUYFNNxHGQj2VH6lmFY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Mx2o6dx2EpPdm3tVMmBs74l5CXd8tz1siOKLtXpQSt+1U/xX1zZm+pUsBz9itVgD/Nq+xs9thUbGyfQOe0j6jjy/ODG0JD+mWXHxCAmUjHCq5sTPBHGtWtMOSDmAMPQAEUQFP1OBtWgqWMEYBshA9wSpllZvds2Enfz762H+n2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zfGdyKIo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B990CC4CEEF;
-	Mon, 12 May 2025 10:04:43 +0000 (UTC)
+	s=arc-20240116; t=1747044321; c=relaxed/simple;
+	bh=UdQfem4FSW+T+41f0g4jTBGW1nOUhzFEnupLVpu2Zug=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=npw01t6dLKpy2aC+9nc9vFV7TAhiyHsP0umaRDmxJDUJBkQcBucJsHiAZe4oF26hJoftgDHQcEcF2YoyHrh98DZsYK8gQJHfKjHwDykWFxzqb5TE1rN8xmZcHubM5kIyUwDe/3eQy/hisWCaC9ZkIMldgRpQnPvGN9pvqINa5fQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gan8LyVQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 729AAC4CEE7;
+	Mon, 12 May 2025 10:05:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747044284;
-	bh=pEh/B0gp0Ly1liDbsxG2c3O7gUYFNNxHGQj2VH6lmFY=;
+	s=korg; t=1747044320;
+	bh=UdQfem4FSW+T+41f0g4jTBGW1nOUhzFEnupLVpu2Zug=;
 	h=Subject:To:Cc:From:Date:From;
-	b=zfGdyKIoDsQD83cLb5BURy66CaY2oC+pyXj7ma/RBlJV6PthvwHB1bhKvvzuc/qIn
-	 Cl2DzxGZMhgpCi+JBEUY7AkLsGPnPvc5CzVvBsFvb4sAD4s+WbBKz7gKUwJDVb9EzN
-	 RBNrE1XvaaXZMlcRFErcqHgiq1BtQH7vFebW4vEs=
-Subject: FAILED: patch "[PATCH] iio: imu: inv_mpu6050: align buffer for timestamp" failed to apply to 6.6-stable tree
-To: dlechner@baylibre.com,Jonathan.Cameron@huawei.com,Stable@vger.kernel.org
+	b=gan8LyVQ7fKRBBje7xzcJnIpj/QKzD12TdeCYxJqvS1Q8M782xalAgviyXSJ1jUpI
+	 1jpYhUxc5aCQFtYXWhi0ZJ4YMIFccCyCvOGhGyy3AebvDLBqxW+qW6LUiC3yojsqMg
+	 yGdgn/6I+Zi65raG7eqXRLirqfdkOaVH85hQNnhA=
+Subject: FAILED: patch "[PATCH] iio: light: opt3001: fix deadlock due to concurrent flag" failed to apply to 6.6-stable tree
+To: luca.ceresoli@bootlin.com,Jonathan.Cameron@huawei.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 May 2025 12:04:31 +0200
-Message-ID: <2025051231-antitoxic-buffing-b701@gregkh>
+Date: Mon, 12 May 2025 12:05:15 +0200
+Message-ID: <2025051215-defendant-dilation-d039@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,10 +62,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 1d2d8524eaffc4d9a116213520d2c650e07c9cc6
+git cherry-pick -x f063a28002e3350088b4577c5640882bf4ea17ea
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025051231-antitoxic-buffing-b701@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025051215-defendant-dilation-d039@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,32 +77,50 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1d2d8524eaffc4d9a116213520d2c650e07c9cc6 Mon Sep 17 00:00:00 2001
-From: David Lechner <dlechner@baylibre.com>
-Date: Thu, 17 Apr 2025 11:52:39 -0500
-Subject: [PATCH] iio: imu: inv_mpu6050: align buffer for timestamp
+From f063a28002e3350088b4577c5640882bf4ea17ea Mon Sep 17 00:00:00 2001
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Date: Fri, 21 Mar 2025 19:10:00 +0100
+Subject: [PATCH] iio: light: opt3001: fix deadlock due to concurrent flag
+ access
 
-Align the buffer used with iio_push_to_buffers_with_timestamp() to
-ensure the s64 timestamp is aligned to 8 bytes.
+The threaded IRQ function in this driver is reading the flag twice: once to
+lock a mutex and once to unlock it. Even though the code setting the flag
+is designed to prevent it, there are subtle cases where the flag could be
+true at the mutex_lock stage and false at the mutex_unlock stage. This
+results in the mutex not being unlocked, resulting in a deadlock.
 
-Fixes: 0829edc43e0a ("iio: imu: inv_mpu6050: read the full fifo when processing data")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250417-iio-more-timestamp-alignment-v1-7-eafac1e22318@baylibre.com
-Cc: <Stable@vger.kernel.org>
+Fix it by making the opt3001_irq() code generally more robust, reading the
+flag into a variable and using the variable value at both stages.
+
+Fixes: 94a9b7b1809f ("iio: light: add support for TI's opt3001 light sensor")
+Cc: stable@vger.kernel.org
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Link: https://patch.msgid.link/20250321-opt3001-irq-fix-v1-1-6c520d851562@bootlin.com
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-diff --git a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
-index 3d3b27f28c9d..273196e647a2 100644
---- a/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
-+++ b/drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c
-@@ -50,7 +50,7 @@ irqreturn_t inv_mpu6050_read_fifo(int irq, void *p)
- 	u16 fifo_count;
- 	u32 fifo_period;
- 	s64 timestamp;
--	u8 data[INV_MPU6050_OUTPUT_DATA_SIZE];
-+	u8 data[INV_MPU6050_OUTPUT_DATA_SIZE] __aligned(8);
- 	size_t i, nb;
+diff --git a/drivers/iio/light/opt3001.c b/drivers/iio/light/opt3001.c
+index 65b295877b41..393a3d2fbe1d 100644
+--- a/drivers/iio/light/opt3001.c
++++ b/drivers/iio/light/opt3001.c
+@@ -788,8 +788,9 @@ static irqreturn_t opt3001_irq(int irq, void *_iio)
+ 	int ret;
+ 	bool wake_result_ready_queue = false;
+ 	enum iio_chan_type chan_type = opt->chip_info->chan_type;
++	bool ok_to_ignore_lock = opt->ok_to_ignore_lock;
  
- 	mutex_lock(&st->lock);
+-	if (!opt->ok_to_ignore_lock)
++	if (!ok_to_ignore_lock)
+ 		mutex_lock(&opt->lock);
+ 
+ 	ret = i2c_smbus_read_word_swapped(opt->client, OPT3001_CONFIGURATION);
+@@ -826,7 +827,7 @@ static irqreturn_t opt3001_irq(int irq, void *_iio)
+ 	}
+ 
+ out:
+-	if (!opt->ok_to_ignore_lock)
++	if (!ok_to_ignore_lock)
+ 		mutex_unlock(&opt->lock);
+ 
+ 	if (wake_result_ready_queue)
 
 
