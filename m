@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-143777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28EF3AB4154
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:04:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBFF1AB4157
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:04:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49078163A61
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:04:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 866B519E8201
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:04:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A20C296FB0;
-	Mon, 12 May 2025 18:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA16729711D;
+	Mon, 12 May 2025 18:04:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GLPageqa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tsux4j7w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58AE0296FA9;
-	Mon, 12 May 2025 18:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 979D5296FAD;
+	Mon, 12 May 2025 18:04:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073040; cv=none; b=YC9C1y9bUoq02jd+xiH1XB6PpdZlfo+MFBibp2aFSGCDlEEh00HTfQm3c2lV1njEkUWJ0KQYWQpEacCDMIE8rq3kEpYMbZG4izHyS/P4FpVfOiYwWOniZOzj4+EmNStAiyeYdN7qhwMn54yRUTG32vIsYFPz4Nb5ZSf9zz49JWM=
+	t=1747073043; cv=none; b=NtMutUURUCYKKa1kQV/29pP1VPqs0ZnY15zbeU8LxdWZ7y7mvZ3zF+xwsk1F6kYr5Nc5VvsBNtPxOTtakreKVnGroSDUgsm6KqBjJ11M4IOFr+k8Rp+PcJG8Jdo8a+B/2gfi9XNX8yIsK/NbEkzRtK1Gbn16JDxgIqcDR//kVMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073040; c=relaxed/simple;
-	bh=p/Z09czsGq2gi3IdwLjGuVW8WE8fiKek0J6/EseWBn0=;
+	s=arc-20240116; t=1747073043; c=relaxed/simple;
+	bh=ZlUZfdVo+qewTvhYqENLtuR/7WNkQL4N68j/qzv2oow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SWkiswu22/9LNkbFm1zf0oYfX/I+RnNlv+k3kUuDwEf1CppJJHJ4OmVcwcVbn3pROicAgIhgAU/zGxgoi2ntkGdiw0hTivoii06M6uhdFc2rLkGLpWOxZRA4qMXHKJsTpBgnwJN1or2KyMmL/xwb0wUmmmU8vf8/7HzRsyDKBz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GLPageqa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6A4FC4CEE7;
-	Mon, 12 May 2025 18:03:59 +0000 (UTC)
+	 MIME-Version; b=AOxWksUMlM3G3DCOMRGpOMIxq+O/h7uXeqXwZnWUxj1rmA9Q4nSa0HjF10tQOAWT77CHKQECe29NE8md61FbgVEugkexQC9yh2mdEMZGxdRab/cWyVgRSCWTehZVdpfI4NpQQHjWCX/+YVLLPKmYm58dDsJVE0l/ZTzJF3DjXmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tsux4j7w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0759DC4CEE9;
+	Mon, 12 May 2025 18:04:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073040;
-	bh=p/Z09czsGq2gi3IdwLjGuVW8WE8fiKek0J6/EseWBn0=;
+	s=korg; t=1747073043;
+	bh=ZlUZfdVo+qewTvhYqENLtuR/7WNkQL4N68j/qzv2oow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GLPageqapXQNeoTnu1mbnH7/AzzZbDqVXjdiFjSg09z4G7yRlV5BuFHeeVsJcaD8T
-	 ASfcuEoMjBvndYXQJeG9En0N591cUK/g/eRg5fwp30hcDrDVCQNvYQUWZa7RMM3eE2
-	 p44iDtf6qtp3K73zfn9Krv0kiCiCV/egIxqXG5ZY=
+	b=tsux4j7wd8f7cckxEaaODucSMgSB+/UNNJoR1HDEViDIT3omevr7N2DdbMe29UYu/
+	 icaZYcCav3yNom3V4emM0xiAzfKqp0tPQhRMg6XqS4hwR0vsHFVQ+7xYOrMhnscohC
+	 fOoAIsYM2B31WhwpmqjhrQ0FsBMS0e0hrPPKpiig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marco Crivellari <marco.crivellari@suse.com>,
 	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Frederic Weisbecker <frederic@kernel.org>,
+	Thorsten Blum <thorsten.blum@linux.dev>,
 	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 136/184] MIPS: Move r4k_wait() to .cpuidle.text section
-Date: Mon, 12 May 2025 19:45:37 +0200
-Message-ID: <20250512172047.351932848@linuxfoundation.org>
+Subject: [PATCH 6.12 137/184] MIPS: Fix MAX_REG_OFFSET
+Date: Mon, 12 May 2025 19:45:38 +0200
+Message-ID: <20250512172047.394688649@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
 References: <20250512172041.624042835@linuxfoundation.org>
@@ -68,35 +67,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Marco Crivellari <marco.crivellari@suse.com>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-[ Upstream commit b713f27e32d87c35737ec942dd6f5ed6b7475f48 ]
+[ Upstream commit c44572e0cc13c9afff83fd333135a0aa9b27ba26 ]
 
-Fix missing .cpuidle.text section assignment for r4k_wait() to correct
-backtracing with nmi_backtrace().
+Fix MAX_REG_OFFSET to point to the last register in 'pt_regs' and not to
+the marker itself, which could allow regs_get_register() to return an
+invalid offset.
 
-Fixes: 97c8580e85cf ("MIPS: Annotate cpu_wait implementations with __cpuidle")
-Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Acked-by: Frederic Weisbecker <frederic@kernel.org>
+Fixes: 40e084a506eb ("MIPS: Add uprobes support.")
+Suggested-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
 Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/kernel/genex.S | 1 +
- 1 file changed, 1 insertion(+)
+ arch/mips/include/asm/ptrace.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/kernel/genex.S b/arch/mips/kernel/genex.S
-index 46d975d00298d..2cf312d9a3b09 100644
---- a/arch/mips/kernel/genex.S
-+++ b/arch/mips/kernel/genex.S
-@@ -104,6 +104,7 @@ handle_vcei:
+diff --git a/arch/mips/include/asm/ptrace.h b/arch/mips/include/asm/ptrace.h
+index 4a2b40ce39e09..841612913f0d1 100644
+--- a/arch/mips/include/asm/ptrace.h
++++ b/arch/mips/include/asm/ptrace.h
+@@ -65,7 +65,8 @@ static inline void instruction_pointer_set(struct pt_regs *regs,
  
- 	__FINIT
+ /* Query offset/name of register from its name/offset */
+ extern int regs_query_register_offset(const char *name);
+-#define MAX_REG_OFFSET (offsetof(struct pt_regs, __last))
++#define MAX_REG_OFFSET \
++	(offsetof(struct pt_regs, __last) - sizeof(unsigned long))
  
-+	.section .cpuidle.text,"ax"
- 	/* Align to 32 bytes for the maximum idle interrupt region size. */
- 	.align	5
- LEAF(r4k_wait)
+ /**
+  * regs_get_register() - get register value from its offset
 -- 
 2.39.5
 
