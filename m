@@ -1,102 +1,140 @@
-Return-Path: <stable+bounces-143257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B28ACAB3575
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 13:01:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C887AB3623
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 13:45:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3CC347AE140
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 11:00:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E655D7AA0F3
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 11:44:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B66902749EE;
-	Mon, 12 May 2025 11:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4774C1DD0EF;
+	Mon, 12 May 2025 11:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="SOXzQQjf"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="jGp/Q7E5";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="CaSbZnt4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F83254AFE;
-	Mon, 12 May 2025 11:01:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 614531A316E;
+	Mon, 12 May 2025 11:45:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747047679; cv=none; b=R4e1htY9fGuvrbcnT8+se+RSQkJX7uKPc9cMmKBQCsDVPCE9VJZnYmRrbM34J/2kKub4lFKYAJRR3hpHaooxiUGtQBp2oyx6gHSkLjjKDVK9TKLxgJES/if2xY7husjdwNSQooQIyrFea6RAwHKPgYycF6mqMMxGpVktIf1I81A=
+	t=1747050330; cv=none; b=AmyGnTk8Rgfcl++9CgEvZsEYvV7x/qfkK4r62mllv4U+jhn8l3JyzT7CYxSEkbHPk7eG+ydpoRUcC8xwqQPgjzsmuUaY6w66Cg3JuG2REDJF1Tk6GpLS2s4rOgeSG+TBVkbtWjos6QvWIkD2PYUPmPEL4WpUQtE4k9fR1XYXAnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747047679; c=relaxed/simple;
-	bh=YgwBukWEosEIHWzTEsDv8Iae7lg5GArJS4aQGtAZfN8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CZ60vfGti6qZPQhfTAmXKPfgutvObMnBkQfvCGPfUXdaxpSui7UhKzulAYv3aUCm0zP4cwo8hGo7ycMqICBcVCXj3JvzOI703Up3FAUcwx5rBU498Y91wBoDCdWwVtGGiDjfpXEjxirP14ggjBEdU2512sXomyt5KBL9MWNd4uA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=SOXzQQjf; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 566C040E0240;
-	Mon, 12 May 2025 11:01:15 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id hCkH_1Sc274B; Mon, 12 May 2025 11:01:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1747047667; bh=QKy89tNXgNFis/DTzsa49kV8LAatgNLvxLkLTbLtMQM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SOXzQQjfUzh0ZsJjQVsdz4u/Q2feLkgC9dHGooiJP2/NoWIh1lyvUwuWKTCSqd27W
-	 0UBlCxD+8HbBifIkGFhRfoeCrupj2QfCdwlOk6lp2eEbwpZWaUvAu5eQNcVxytsM1a
-	 HKYoJE/a1k051Uzwbg5vPYqDQQoO26756rdlxro4cMGphAQU9ILbf2QGuAcch6gBlE
-	 8lXCkke3xw84Mxed8spj6kFaQ0Eprx74WH1IsVmefTiv2BZaOD8Uzr8YKxpQI3IHA6
-	 k3oCD+f/fCjrNug8aCtTvcm5gUmK7cbsxm0xi9O/2btNJt8NXtZEt+Gf9Rh/Gxoc9P
-	 TvHpKKvPuY002FwalJc5MvzNXCOVku6r77+FSm+uUfTrO0zFWmRd1OZBwf7QTnyAFN
-	 6+v7FDJfnmYueF8nm7Ilh8wuYZLmpQJ3Xwz+i4MKuk0x+ylFunKlj75SMJdY0krOdG
-	 NZKFPCC0D7c2mp+kWj8wTx9wOcJnNmcVuCAsg06qSa5xBIfEtHSm0LCyBus/Vx3/gp
-	 5yQSAZ5UrtlIxS78adQWAb79H1zHcICSeVkbUZNuOwr/4l/avnUmiPOFhIadbQHYN0
-	 xlZVWphz8slfyFNcUIDNTLvm6aNJzGBe4joL663Wzk2UrVpGoPVTF5ODAy/bTYlgNt
-	 P3+Vw3G6wqKTlcN0TnqsmtSA=
-Received: from zn.tnic (p579690ee.dip0.t-ipconnect.de [87.150.144.238])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 41EF340E023B;
-	Mon, 12 May 2025 11:00:56 +0000 (UTC)
-Date: Mon, 12 May 2025 13:00:49 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Bernhard Kaindl <bk@suse.de>,
-	Andi Kleen <ak@linux.intel.com>, Li Fei <fei1.li@intel.com>,
-	stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] x86/mtrr: Check if fixed-range MTRR exists in
- mtrr_save_fixed_ranges()
-Message-ID: <20250512110049.GCaCHU4feKMhVUmcMY@fat_crate.local>
-References: <20250509170633.3411169-2-jiaqing.zhao@linux.intel.com>
- <20250509173225.GDaB48KZvZSA9QLUaR@fat_crate.local>
- <0ec52e49-3996-48e2-a16b-5d7eb0a4c8a6@linux.intel.com>
- <FFB8ACEC-7208-40D0-8B57-EBB2A57DF65F@alien8.de>
- <1862275b-e7ca-4fa0-bdea-f739e90d9d22@linux.intel.com>
+	s=arc-20240116; t=1747050330; c=relaxed/simple;
+	bh=YWiM6vGisc533idk3Y8w3zdMwTHvy71CxY/g1Qi4rL0=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=mv5cMMjdoC45PEBkli8AGxIjzsijTWIJvk6hmdCNv7pUIvwKPQRgtyrGlLRHYJKHWFb8CgcKQrgffIEEtxdWmUK7xBb0lBU8VmjaK7HGH+AyYRbwwPmVL7dsiOOD6yaDAOvzUSVg5uogqLVf2SySRXnpCRaJFTp1NjiSm913TBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=jGp/Q7E5; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=CaSbZnt4; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Mon, 12 May 2025 11:45:24 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1747050326;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aLGjoFWngeYLmQuHMyClgegn0RjYCnIzKALh0Gu0V40=;
+	b=jGp/Q7E5qhAGIHxhdoQehddz/msxS830Lc9Ifp9UoCL8WFH3wuvFs4x5if/BBtIXExnIQe
+	BCYuOGdzyi+911ICsY0OK8PBa0AzbRCsZvs9s2qWKnabmq4h3mdeuZ+fuKhsyyVECPp8Jx
+	iU0wCK3vL3dxMXBwt3JnqZaeoWoDflr6fnT4WPks/3fFRj1/BBII064nAeFWnNvZOzq6UJ
+	QqgZaEMkEF6OqVg/gyh0Vi5xybsvQgW6vnn/uuYibbQ/G4ZD3cfKdhZhpW7k+crWwHBx0I
+	RUbdhAezCs1l3gK1+nYINHA1m1li6DRebQyGlgUKHlJ7kP8n+/d0QKFH1UiOgA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1747050326;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aLGjoFWngeYLmQuHMyClgegn0RjYCnIzKALh0Gu0V40=;
+	b=CaSbZnt4nmOY/Iol5YVXmB+EnhMACgCDAUayLlRrtsoYdIwEi85bkaPXcYRAHD8Ri6SEcJ
+	sA66LYWbBllruaCQ==
+From: "tip-bot2 for Alexey Makhalov" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/urgent] MAINTAINERS: Update Alexey Makhalov's email address
+Cc: Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
+ Juergen Gross <jgross@suse.com>,
+ Alexey Makhalov <alexey.makhalov@broadcom.com>,
+ "Borislav Petkov (AMD)" <bp@alien8.de>, stable@vger.kernel.org,
+ x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20250318004031.2703923-1-alexey.makhalov@broadcom.com>
+References: <20250318004031.2703923-1-alexey.makhalov@broadcom.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <1862275b-e7ca-4fa0-bdea-f739e90d9d22@linux.intel.com>
+Message-ID: <174705032496.406.14853786060370943087.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-On Mon, May 12, 2025 at 05:24:21PM +0800, Jiaqing Zhao wrote:
-> Actually it is happening on virtualized platform. A recent version of
-> ACRN hypervisor has removed emulated fixed-range MTRRs.
+The following commit has been merged into the x86/urgent branch of tip:
 
-Oh ok, nothing urgent then.
+Commit-ID:     386cd3dcfd63491619b4034b818737fc0219e128
+Gitweb:        https://git.kernel.org/tip/386cd3dcfd63491619b4034b818737fc0219e128
+Author:        Alexey Makhalov <alexey.makhalov@broadcom.com>
+AuthorDate:    Tue, 18 Mar 2025 00:40:31 
+Committer:     Borislav Petkov (AMD) <bp@alien8.de>
+CommitterDate: Mon, 12 May 2025 13:41:06 +02:00
 
-Will queue it for the next merge window.
+MAINTAINERS: Update Alexey Makhalov's email address
 
--- 
-Regards/Gruss,
-    Boris.
+Fix a typo in an email address.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+Closes: https://lore.kernel.org/all/20240925-rational-succinct-vulture-cca9fb@lemur/T/
+Reported-by: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+Reported-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Alexey Makhalov <alexey.makhalov@broadcom.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/20250318004031.2703923-1-alexey.makhalov@broadcom.com
+---
+ MAINTAINERS | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 69511c3..0d3a252 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -18373,7 +18373,7 @@ F:	include/uapi/linux/ppdev.h
+ PARAVIRT_OPS INTERFACE
+ M:	Juergen Gross <jgross@suse.com>
+ R:	Ajay Kaher <ajay.kaher@broadcom.com>
+-R:	Alexey Makhalov <alexey.amakhalov@broadcom.com>
++R:	Alexey Makhalov <alexey.makhalov@broadcom.com>
+ R:	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+ L:	virtualization@lists.linux.dev
+ L:	x86@kernel.org
+@@ -25859,7 +25859,7 @@ F:	drivers/misc/vmw_balloon.c
+ 
+ VMWARE HYPERVISOR INTERFACE
+ M:	Ajay Kaher <ajay.kaher@broadcom.com>
+-M:	Alexey Makhalov <alexey.amakhalov@broadcom.com>
++M:	Alexey Makhalov <alexey.makhalov@broadcom.com>
+ R:	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+ L:	virtualization@lists.linux.dev
+ L:	x86@kernel.org
+@@ -25887,7 +25887,7 @@ F:	drivers/scsi/vmw_pvscsi.h
+ VMWARE VIRTUAL PTP CLOCK DRIVER
+ M:	Nick Shi <nick.shi@broadcom.com>
+ R:	Ajay Kaher <ajay.kaher@broadcom.com>
+-R:	Alexey Makhalov <alexey.amakhalov@broadcom.com>
++R:	Alexey Makhalov <alexey.makhalov@broadcom.com>
+ R:	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+ L:	netdev@vger.kernel.org
+ S:	Supported
 
