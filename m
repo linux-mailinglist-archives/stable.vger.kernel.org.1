@@ -1,92 +1,91 @@
-Return-Path: <stable+bounces-143289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C63DAB3A85
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 16:27:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D755AB3A8B
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 16:27:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3D3C162C1F
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 14:27:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 423D2860F67
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 14:27:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1DA5218845;
-	Mon, 12 May 2025 14:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B9571E32D5;
+	Mon, 12 May 2025 14:27:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=libre.computer header.i=@libre.computer header.b="XKPL7R/Z"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="oT1uURl3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25501E379B
-	for <stable@vger.kernel.org>; Mon, 12 May 2025 14:26:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0264A3C;
+	Mon, 12 May 2025 14:27:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747060018; cv=none; b=EDiCi7JZkkfMQoY9cZfy4IzvEGzOWMCWzzo86DTDzHDd3Kktn70G/q3yEgdOwlgykbsuON0jY7ymP1aY3Cwyuv34xHwFaLD5Nxt8T+QjQ8orIqSy68dIoTfxJqQ6/M0P2zqgmsG4SlbuVUlAIssC0f0ZbXTzn5hsGOuDZAG3PKE=
+	t=1747060037; cv=none; b=FUJuC5KM07YyCFGcn0yhUhYVrSy+j77S1UVfZNUgXfMAd5eE9AfSqW4wOAO+7GZ2z9r8EoQezfL0hWSyQyijlPXrSAqPC5Vklq9LSSJMnR3Zqz/i/1RxrimbkqDKNi0j1Ev6rWiS0kRMnxTbimqdCJXyMFJuvkFztE1gYizk1wM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747060018; c=relaxed/simple;
-	bh=6T2kDON1dhsNnU+XjIY2oPcsXbHsrN2ApoTFS8oDyVs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bCLiHLAzIKP8xTuUZUiukTR91pmJHWXWbSx5Xk1RKlOefY4+IwX6TdLvLkubvSCXfFyBEr1sMcMhdixiHmPDadbQ+64LPfeXwpTG5dEXsakVTypuW+ar+NrdLhEBrqbQ2OcL4UGzKSUh+PQaGxWi9nbzCjQdovEuw+sVKfR0vYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=libre.computer; spf=none smtp.mailfrom=libretech.co; dkim=pass (2048-bit key) header.d=libre.computer header.i=@libre.computer header.b=XKPL7R/Z; arc=none smtp.client-ip=209.85.219.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=libre.computer
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=libretech.co
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-6ecfc2cb1aaso51018806d6.3
-        for <stable@vger.kernel.org>; Mon, 12 May 2025 07:26:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=libre.computer; s=google; t=1747060015; x=1747664815; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=RKMd5G0cFDMucPOpi+tWbuy3t/lyFnn71icIWCgXypM=;
-        b=XKPL7R/ZhanEz962li/zfhA6mK3Kl4Wt4vgXw4oWSqjQdvTjwsg1UByr6HxxrH+HEK
-         78lp9LNx4oZxILKw/eBgl2TF4mK8j5WtEXf1h4EY0c07yNDTkyJRK145B/Sm84JkTMFc
-         h9fNZ7BrufrfHJdbkFPb1MX+40dPVKMUNPEKr9sGKC466AQRDO2MsJaohVgdnbvIeB2W
-         EFJjgTG/CB2DXl6m14GG6uot9gOkQvg050Yfnydg+o75fcpufAAO/J3yJROqdUUTA6H7
-         nDODuaXp4gm/AKOVdi3zoGF98PBqmAbPg+IPi01j9ZUcCRuc8CcsbsGXtD4Pikh5TOsa
-         tgNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747060015; x=1747664815;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=RKMd5G0cFDMucPOpi+tWbuy3t/lyFnn71icIWCgXypM=;
-        b=Mz76S1XddUNYsRENiIkr7CdH3wuA/UwWV0D5bRScz1xAC2u75xIdHNkwFisDuzJjgl
-         0ZkjxpC07yIE2BI//aAFpsdCvuG36y20cO3bp2T/1pbXZFCi9Gnm2dq+TeBBrtSK6Do9
-         +buXpoDuaZBsVFloAff47fqu5YYZVLLdIZ2MyRYgQN2gK8eYbHpvR8TF7/m/QLQEY6uw
-         2Kvl5LwfcySnGUz7mpHOB3oFh6dD0efaihs70aJXoLBNKeIKpek2vgoxr/9za5vJ6awk
-         zD+EQJywEY/RxSU1ZMieRa5gE26ZO2WricdhxlWdzi7eWdH6aFzZqOuja/024LpAxvOM
-         ZJRQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWfyZHqYt5Mc7emjUU//pU1uD98yLZ9Q0EqRUD49Aeqc+afmQTGDGuxsl75vAAVjaBgd756ZTI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyTjTjd7Zes7h0QHHKm+itrUQ/Ir5Oy9vuL+Cmii6EBqKnWtMO2
-	UK486AXsaJWH8i7y9V8eMRC+Cz9/24qYbpVwA7FRS87x6deZzFenHxMatTYjFA==
-X-Gm-Gg: ASbGncsabKtZJHs66Zl/Q/ra/KeVTDcXN2ZLo0VHJ8cYkUUKZu5cEsXfMSDuLkIN7qV
-	d7xMVVp09ZHOYR/NayeH7bS82dUgYLD/KGjqTJZkEOjY1UFrUU3h7Lg53Gr+8XcM1AUKo9h1OG9
-	cAu0094A1mJk2WXXCLLdjcs5KxJFN7Ek6RDM5TZL/hL1NEeTkFIRmxoZ4+OTBc73xX8iVPXPRJ+
-	V5ZTJhj0M4Pw0lebKoZzRlxFhNytF7aBpiUaL9O52kt82zrCQ7ZtpATKKyo1YnvZnFudnlFJy0t
-	lJsTw6pUqdiQlg5KkQ1p3JH90c9N3MJ/mqCE30yHEK0X/N8I
-X-Google-Smtp-Source: AGHT+IHwLWxHT8fQlj2kksRDBg+A0JhtXKo+AreGOwt+ETP5hLx/Dy37l3apsuA9OkV+nl0kGKBq4w==
-X-Received: by 2002:a05:6214:300e:b0:6cb:ee08:c1e8 with SMTP id 6a1803df08f44-6f6e47fa918mr229336596d6.23.1747060013390;
-        Mon, 12 May 2025 07:26:53 -0700 (PDT)
-Received: from localhost ([2607:fb91:214c:42a4:3793:dd95:dfa1:719a])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6f6e393df31sm53362726d6.0.2025.05.12.07.26.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 May 2025 07:26:53 -0700 (PDT)
-From: Da Xue <da@libre.computer>
-To: Neil Armstrong <neil.armstrong@linaro.org>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Cc: Da Xue <da@libre.computer>,
-	stable@vger.kernel.org,
-	linux-amlogic@lists.infradead.org,
-	linux-clk@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3] clk: meson-g12a: add missing fclk_div2 to spicc
-Date: Mon, 12 May 2025 10:26:16 -0400
-Message-Id: <20250512142617.2175291-1-da@libre.computer>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1747060037; c=relaxed/simple;
+	bh=MFWOi/hatrl20vO83HihA/VIkxps3CRX6oucwcr8n/w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hiNMb4yYEV0JLcXluP7/NkQAzbAN2rcOFedHSnGHegO/RQpbmnTFsAT9k99WRnVC1djCPI6f05izKeMOhAVCta4rDiMrQTGHTFJqS58//T+6+ZGV8w1Cr2WRmeL91dlBCcA3Hk6Rxp2DVdWJ0/FqWekqN/RyvDobM6nOLNF6ryk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=oT1uURl3; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54CDnTtO001587;
+	Mon, 12 May 2025 14:27:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=H0Tkx7+SzjOipSHRz7BPdyfgQj+BfPBXjD5Rb6Pz8
+	m0=; b=oT1uURl3e8zh0H2qJTPbwEKmW9Qaxi8k9htZ/MaHYQ3AsMX2ydjOCUbOg
+	Ql6DIOT39Ao5OiD+aUoeAMgdabuF5k60eoh9tb20yRHczDUHuSBD5L3jd9qGXNVY
+	nQj3IEjy1NM5Y5hoyJyUY6Um3H662sc0uqLYYRxzN6g3POUi5vpPqiOfprgoHVfA
+	R2BVskt2MTVlKhcSqenAr0lDzIG2xJaVZZSiPFGLkhrZwZhY8WqYCc/9MUcLlG4x
+	3sYgVFJq8E7qPPaOQeCkJnclH01MiZH8PHMwYnegZsm10Ma3jfT0O+4AsIsPJ3ux
+	drj2NEMcf0mQPhB82xaUMRlHrxHIw==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46kj7586ts-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 12 May 2025 14:27:09 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 54CEKfRR009975;
+	Mon, 12 May 2025 14:27:09 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46kj7586tn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 12 May 2025 14:27:09 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54CCLZN2016348;
+	Mon, 12 May 2025 14:27:08 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 46jh4tej1b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 12 May 2025 14:27:08 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 54CER6lD56558036
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 12 May 2025 14:27:06 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AC25D200BD;
+	Mon, 12 May 2025 14:27:06 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 99755200BC;
+	Mon, 12 May 2025 14:27:06 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 12 May 2025 14:27:06 +0000 (GMT)
+Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55669)
+	id 535AFE0315; Mon, 12 May 2025 16:27:06 +0200 (CEST)
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+        Daniel Axtens <dja@axtens.net>, Harry Yoo <harry.yoo@oracle.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        kasan-dev@googlegroups.com, linux-s390@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: [PATCH v7 0/1] kasan: Avoid sleepable page allocation from atomic context
+Date: Mon, 12 May 2025 16:27:05 +0200
+Message-ID: <cover.1747059374.git.agordeev@linux.ibm.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -94,35 +93,52 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTEyMDE0NyBTYWx0ZWRfX4J+iA0krVspB fQXC+GPt+teDfwRbINmzxCYUQOg8HemzNXsTeqjzpOjeOYBI0CnzDijCkjgXOZXdWNhRCgRDnaC +qE1EMDLjSgRkh2PH6GM7/G6SHwdBpu7Ayg1OtUxE10edQ+JDp2UvFh0v45pDUxwMepS4IFwUBG
+ uZZpDAU5FpnryRkLfg/Gu+P8WMobEifo8tJWz1nH5jTJqwhruQvOtcILjNad4G053qFfNU7uk01 lHlw7uTQp6IlWDDC6OxheOpA8lS1ssT34q07RwafLp7DxKanPq/ZtLc/hJTchc1WtX5W97W0Pri Fy+MOPMwArVWO6gKRFHx5ROhIjszTPU77LRmv/xx9d5Yfla2BiX4Qm0BosBgIEUvadFAvl5par0
+ 5AAzwoHXreVc2ZNMcAZ2PXsQm7fDD0+dega9J0HPPKQwuTdp1dQ34D1yNnIJtV9/OFcM7GhK
+X-Authority-Analysis: v=2.4 cv=J4mq7BnS c=1 sm=1 tr=0 ts=6822053d cx=c_pps a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17 a=dt9VzEwgFbYA:10 a=gOThRBi6ftkcs8ZoH28A:9 a=zZCYzV9kfG8A:10
+X-Proofpoint-ORIG-GUID: qnJ4pF3Y3jPbDL6Rvh_FxR_LAFkxUmHH
+X-Proofpoint-GUID: vE3qFts5VaV5FnJpIAEOEtiXGRMzf5Ec
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-12_04,2025-05-09_01,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 adultscore=0
+ lowpriorityscore=0 bulkscore=0 mlxlogscore=680 priorityscore=1501
+ mlxscore=0 impostorscore=0 malwarescore=0 phishscore=0 clxscore=1015
+ spamscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
+ definitions=main-2505120147
 
-SPICC is missing fclk_div2 which causes the spicc module to output sclk at
-2.5x the expected rate. Adding the missing fclk_div2 resolves this.
+Hi All,
 
-Fixes: a18c8e0b7697 ("clk: meson: g12a: add support for the SPICC SCLK Source clocks")
-Cc: <stable@vger.kernel.org> # 6.1
-Signed-off-by: Da Xue <da@libre.computer>
----
-Changelog:
+Chages since v6:
+- do not unnecessary free pages across iterations
 
-v2 -> v3: remove gp0
-v1 -> v2: add Fixes as an older version of the patch was sent as v1
----
- drivers/clk/meson/g12a.c | 1 +
- 1 file changed, 1 insertion(+)
+Chages since v5:
+- full error message included into commit description
 
-diff --git a/drivers/clk/meson/g12a.c b/drivers/clk/meson/g12a.c
-index 4f92b83965d5a..b72eebd0fa474 100644
---- a/drivers/clk/meson/g12a.c
-+++ b/drivers/clk/meson/g12a.c
-@@ -4099,6 +4099,7 @@ static const struct clk_parent_data spicc_sclk_parent_data[] = {
- 	{ .hw = &g12a_clk81.hw },
- 	{ .hw = &g12a_fclk_div4.hw },
- 	{ .hw = &g12a_fclk_div3.hw },
-+	{ .hw = &g12a_fclk_div2.hw },
- 	{ .hw = &g12a_fclk_div5.hw },
- 	{ .hw = &g12a_fclk_div7.hw },
- };
+Chages since v4:
+- unused pages leak is avoided
+
+Chages since v3:
+- pfn_to_virt() changed to page_to_virt() due to compile error
+
+Chages since v2:
+- page allocation moved out of the atomic context
+
+Chages since v1:
+- Fixes: and -stable tags added to the patch description
+
+Thanks!
+
+Alexander Gordeev (1):
+  kasan: Avoid sleepable page allocation from atomic context
+
+ mm/kasan/shadow.c | 76 ++++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 62 insertions(+), 14 deletions(-)
+
 -- 
-2.39.5
+2.45.2
 
 
