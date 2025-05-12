@@ -1,60 +1,53 @@
-Return-Path: <stable+bounces-143688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E1A3AB40E9
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:59:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9E17AB40F6
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:59:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91CE419E7E63
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:59:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 407B517716C
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:59:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03E6C293B6B;
-	Mon, 12 May 2025 17:59:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07EE3295D97;
+	Mon, 12 May 2025 17:59:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hak2bPLr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QqTFqunL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B384A1E1A05;
-	Mon, 12 May 2025 17:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8A5B2505C5;
+	Mon, 12 May 2025 17:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072758; cv=none; b=CnSrAotNbf9wwRAzBvQr9JOOc2eP39J1fK8oTi+tZKWwwc11uopf7R5lyk8NieyTGJfyoSwNUiG8rmlkv3EIotl4SHuq6yZKJAv1pSeeDkO0fuhxLjjzr8OeAHhprBt6Id/KS2cil09GRvhDdep4yZHBRW9qhz3FWVUHetKaR+E=
+	t=1747072793; cv=none; b=iglLG5EWSVSJiUY3207Ynue/dp0a6S8WKs/VmVe3ajLbzFdthLuFs+D5HxQI5M7Sb75anXCQiiLoTQPyXdlC2xoGQSnjML7e9ilKE9kjWaJWXKWygD5f6AMrhEHcydqiYFK9dtTqO3/6xjR8ptGRk3QKmIOhM8a6EBOeQydy0pU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072758; c=relaxed/simple;
-	bh=xH1/IwRK0v40zNJ4OA6G7f/yG8KvxLOYuYcaNeIRPu4=;
+	s=arc-20240116; t=1747072793; c=relaxed/simple;
+	bh=RDEoO7GDq7DSEb+MRcALcwhQaZD4/d3cNqt4hxYWxgI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I8rn+BtHJ7EyKITCH2w4PvbwGadrpgwAVGBiQS5uw1RW47lnyALKQPz7XOPPaO7K4jKJVqxOsyw6CWYjCD6okuIPk80uC9jje9be7ktuq9juxF8RtJSriJuSZaEONdx6+Gs0YMGneKCioUD38TotQG69rmQrHVLW81mG/D5voes=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hak2bPLr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A553C4CEE7;
-	Mon, 12 May 2025 17:59:18 +0000 (UTC)
+	 MIME-Version; b=scmZRsdy3QTqmdIaQrJ4oUwvKTbPuPSF83H12weoCnayvXGEM9DmlLZ3i8A+uqgeY7gfIzTanopO0Ue303gTtHusMivNZ1JDJN4J7mNxjHyF28u45LVAH0XMHO26QEh5XCk+7kpc5QDQKUQAC8tH3S4JKnLF/wUIkh6JdGPc34g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QqTFqunL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27BEEC4CEE7;
+	Mon, 12 May 2025 17:59:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072758;
-	bh=xH1/IwRK0v40zNJ4OA6G7f/yG8KvxLOYuYcaNeIRPu4=;
+	s=korg; t=1747072793;
+	bh=RDEoO7GDq7DSEb+MRcALcwhQaZD4/d3cNqt4hxYWxgI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hak2bPLrXGdge22LRmN/lspKtIoCGwsZfbuvoWFRQaWuR+C1wQpPSRbE6HVwIOfzv
-	 wFxyExy55CLNXq4CbXXqsYd1WSYs75PFhDEDgZs/1pYzqfmPxDO0ZgBJD9kGSFNi4P
-	 Zyz24FYzPPREtQyvltI7n5NasOD5w0HsbG76YVoM=
+	b=QqTFqunLESoFb+6O5jgusDEYTXmehwYLrAq3dUiI0NWiYduuwWkNoc8ArFdzWJmHX
+	 w4oBL5LiQJjW6YUJzjYSut3CkbmvEHY3CZOIHdC69jbuVIV/lxZ9dBMG0j95B4ig3K
+	 0qg0pIWt3+2kQ5HKlCXyDCZWvmiF6AsL99mObnUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.12 030/184] ice: use DSN instead of PCI BDF for ice_adapter index
-Date: Mon, 12 May 2025 19:43:51 +0200
-Message-ID: <20250512172042.942750173@linuxfoundation.org>
+	Hongbo Li <lihongbo22@huawei.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 031/184] erofs: ensure the extra temporary copy is valid for shortened bvecs
+Date: Mon, 12 May 2025 19:43:52 +0200
+Message-ID: <20250512172042.984844127@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
 References: <20250512172041.624042835@linuxfoundation.org>
@@ -73,173 +66,142 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit 0093cb194a7511d1e68865fa35b763c72e44c2f0 ]
+[ Upstream commit 35076d2223c731f7be75af61e67f90807384d030 ]
 
-Use Device Serial Number instead of PCI bus/device/function for
-the index of struct ice_adapter.
+When compressed data deduplication is enabled, multiple logical extents
+may reference the same compressed physical cluster.
 
-Functions on the same physical device should point to the very same
-ice_adapter instance, but with two PFs, when at least one of them is
-PCI-e passed-through to a VM, it is no longer the case - PFs will get
-seemingly random PCI BDF values, and thus indices, what finally leds to
-each of them being on their own instance of ice_adapter. That causes them
-to don't attempt any synchronization of the PTP HW clock usage, or any
-other future resources.
+The previous commit 94c43de73521 ("erofs: fix wrong primary bvec
+selection on deduplicated extents") already avoids using shortened
+bvecs.  However, in such cases, the extra temporary buffers also
+need to be preserved for later use in z_erofs_fill_other_copies() to
+to prevent data corruption.
 
-DSN works nicely in place of the index, as it is "immutable" in terms of
-virtualization.
+IOWs, extra temporary buffers have to be retained not only due to
+varying start relative offsets (`pageofs_out`, as indicated by
+`pcl->multibases`) but also because of shortened bvecs.
 
-Fixes: 0e2bddf9e5f9 ("ice: add ice_adapter for shared data across PFs on the same NIC")
-Suggested-by: Jacob Keller <jacob.e.keller@intel.com>
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Suggested-by: Jiri Pirko <jiri@resnulli.us>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Link: https://patch.msgid.link/20250505161939.2083581-1-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+android.hardware.graphics.composer@2.1.so : 270696 bytes
+   0:        0..  204185 |  204185 :  628019200.. 628084736 |   65536
+-> 1:   204185..  225536 |   21351 :  544063488.. 544129024 |   65536
+   2:   225536..  270696 |   45160 :          0..         0 |       0
+
+com.android.vndk.v28.apex : 93814897 bytes
+...
+   364: 53869896..54095257 |  225361 :  543997952.. 544063488 |   65536
+-> 365: 54095257..54309344 |  214087 :  544063488.. 544129024 |   65536
+   366: 54309344..54514557 |  205213 :  544129024.. 544194560 |   65536
+...
+
+Both 204185 and 54095257 have the same start relative offset of 3481,
+but the logical page 55 of `android.hardware.graphics.composer@2.1.so`
+ranges from 225280 to 229632, forming a shortened bvec [225280, 225536)
+that cannot be used for decompressing the range from 54095257 to
+54309344 of `com.android.vndk.v28.apex`.
+
+Since `pcl->multibases` is already meaningless, just mark `be->keepxcpy`
+on demand for simplicity.
+
+Again, this issue can only lead to data corruption if `-Ededupe` is on.
+
+Fixes: 94c43de73521 ("erofs: fix wrong primary bvec selection on deduplicated extents")
+Reviewed-by: Hongbo Li <lihongbo22@huawei.com>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20250506101850.191506-1-hsiangkao@linux.alibaba.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_adapter.c | 47 ++++++++------------
- drivers/net/ethernet/intel/ice/ice_adapter.h |  6 ++-
- 2 files changed, 22 insertions(+), 31 deletions(-)
+ fs/erofs/zdata.c | 31 ++++++++++++++-----------------
+ 1 file changed, 14 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_adapter.c b/drivers/net/ethernet/intel/ice/ice_adapter.c
-index 01a08cfd0090a..66e070095d1bb 100644
---- a/drivers/net/ethernet/intel/ice/ice_adapter.c
-+++ b/drivers/net/ethernet/intel/ice/ice_adapter.c
-@@ -1,7 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0-only
- // SPDX-FileCopyrightText: Copyright Red Hat
+diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
+index a8fb4b525f544..e5e94afc5af88 100644
+--- a/fs/erofs/zdata.c
++++ b/fs/erofs/zdata.c
+@@ -82,9 +82,6 @@ struct z_erofs_pcluster {
+ 	/* L: whether partial decompression or not */
+ 	bool partial;
  
--#include <linux/bitfield.h>
- #include <linux/cleanup.h>
- #include <linux/mutex.h>
- #include <linux/pci.h>
-@@ -14,32 +13,16 @@
- static DEFINE_XARRAY(ice_adapters);
- static DEFINE_MUTEX(ice_adapters_mutex);
- 
--/* PCI bus number is 8 bits. Slot is 5 bits. Domain can have the rest. */
--#define INDEX_FIELD_DOMAIN GENMASK(BITS_PER_LONG - 1, 13)
--#define INDEX_FIELD_DEV    GENMASK(31, 16)
--#define INDEX_FIELD_BUS    GENMASK(12, 5)
--#define INDEX_FIELD_SLOT   GENMASK(4, 0)
+-	/* L: indicate several pageofs_outs or not */
+-	bool multibases;
 -
--static unsigned long ice_adapter_index(const struct pci_dev *pdev)
-+static unsigned long ice_adapter_index(u64 dsn)
- {
--	unsigned int domain = pci_domain_nr(pdev->bus);
+ 	/* L: whether extra buffer allocations are best-effort */
+ 	bool besteffort;
+ 
+@@ -1073,8 +1070,6 @@ static int z_erofs_scan_folio(struct z_erofs_decompress_frontend *f,
+ 				break;
+ 
+ 			erofs_onlinefolio_split(folio);
+-			if (f->pcl->pageofs_out != (map->m_la & ~PAGE_MASK))
+-				f->pcl->multibases = true;
+ 			if (f->pcl->length < offset + end - map->m_la) {
+ 				f->pcl->length = offset + end - map->m_la;
+ 				f->pcl->pageofs_out = map->m_la & ~PAGE_MASK;
+@@ -1120,7 +1115,6 @@ struct z_erofs_decompress_backend {
+ 	struct page *onstack_pages[Z_EROFS_ONSTACK_PAGES];
+ 	struct super_block *sb;
+ 	struct z_erofs_pcluster *pcl;
 -
--	WARN_ON(domain > FIELD_MAX(INDEX_FIELD_DOMAIN));
--
--	switch (pdev->device) {
--	case ICE_DEV_ID_E825C_BACKPLANE:
--	case ICE_DEV_ID_E825C_QSFP:
--	case ICE_DEV_ID_E825C_SFP:
--	case ICE_DEV_ID_E825C_SGMII:
--		return FIELD_PREP(INDEX_FIELD_DEV, pdev->device);
--	default:
--		return FIELD_PREP(INDEX_FIELD_DOMAIN, domain) |
--		       FIELD_PREP(INDEX_FIELD_BUS,    pdev->bus->number) |
--		       FIELD_PREP(INDEX_FIELD_SLOT,   PCI_SLOT(pdev->devfn));
--	}
-+#if BITS_PER_LONG == 64
-+	return dsn;
-+#else
-+	return (u32)dsn ^ (u32)(dsn >> 32);
-+#endif
- }
- 
--static struct ice_adapter *ice_adapter_new(void)
-+static struct ice_adapter *ice_adapter_new(u64 dsn)
- {
- 	struct ice_adapter *adapter;
- 
-@@ -47,6 +30,7 @@ static struct ice_adapter *ice_adapter_new(void)
- 	if (!adapter)
- 		return NULL;
- 
-+	adapter->device_serial_number = dsn;
- 	spin_lock_init(&adapter->ptp_gltsyn_time_lock);
- 	refcount_set(&adapter->refcount, 1);
- 
-@@ -77,23 +61,26 @@ static void ice_adapter_free(struct ice_adapter *adapter)
-  * Return:  Pointer to ice_adapter on success.
-  *          ERR_PTR() on error. -ENOMEM is the only possible error.
-  */
--struct ice_adapter *ice_adapter_get(const struct pci_dev *pdev)
-+struct ice_adapter *ice_adapter_get(struct pci_dev *pdev)
- {
--	unsigned long index = ice_adapter_index(pdev);
-+	u64 dsn = pci_get_dsn(pdev);
- 	struct ice_adapter *adapter;
-+	unsigned long index;
- 	int err;
- 
-+	index = ice_adapter_index(dsn);
- 	scoped_guard(mutex, &ice_adapters_mutex) {
- 		err = xa_insert(&ice_adapters, index, NULL, GFP_KERNEL);
- 		if (err == -EBUSY) {
- 			adapter = xa_load(&ice_adapters, index);
- 			refcount_inc(&adapter->refcount);
-+			WARN_ON_ONCE(adapter->device_serial_number != dsn);
- 			return adapter;
- 		}
- 		if (err)
- 			return ERR_PTR(err);
- 
--		adapter = ice_adapter_new();
-+		adapter = ice_adapter_new(dsn);
- 		if (!adapter)
- 			return ERR_PTR(-ENOMEM);
- 		xa_store(&ice_adapters, index, adapter, GFP_KERNEL);
-@@ -110,11 +97,13 @@ struct ice_adapter *ice_adapter_get(const struct pci_dev *pdev)
-  *
-  * Context: Process, may sleep.
-  */
--void ice_adapter_put(const struct pci_dev *pdev)
-+void ice_adapter_put(struct pci_dev *pdev)
- {
--	unsigned long index = ice_adapter_index(pdev);
-+	u64 dsn = pci_get_dsn(pdev);
- 	struct ice_adapter *adapter;
-+	unsigned long index;
- 
-+	index = ice_adapter_index(dsn);
- 	scoped_guard(mutex, &ice_adapters_mutex) {
- 		adapter = xa_load(&ice_adapters, index);
- 		if (WARN_ON(!adapter))
-diff --git a/drivers/net/ethernet/intel/ice/ice_adapter.h b/drivers/net/ethernet/intel/ice/ice_adapter.h
-index e233225848b38..ac15c0d2bc1a4 100644
---- a/drivers/net/ethernet/intel/ice/ice_adapter.h
-+++ b/drivers/net/ethernet/intel/ice/ice_adapter.h
-@@ -32,6 +32,7 @@ struct ice_port_list {
-  * @refcount: Reference count. struct ice_pf objects hold the references.
-  * @ctrl_pf: Control PF of the adapter
-  * @ports: Ports list
-+ * @device_serial_number: DSN cached for collision detection on 32bit systems
-  */
- struct ice_adapter {
- 	refcount_t refcount;
-@@ -40,9 +41,10 @@ struct ice_adapter {
- 
- 	struct ice_pf *ctrl_pf;
- 	struct ice_port_list ports;
-+	u64 device_serial_number;
+ 	/* pages with the longest decompressed length for deduplication */
+ 	struct page **decompressed_pages;
+ 	/* pages to keep the compressed data */
+@@ -1129,6 +1123,8 @@ struct z_erofs_decompress_backend {
+ 	struct list_head decompressed_secondary_bvecs;
+ 	struct page **pagepool;
+ 	unsigned int onstack_used, nr_pages;
++	/* indicate if temporary copies should be preserved for later use */
++	bool keepxcpy;
  };
  
--struct ice_adapter *ice_adapter_get(const struct pci_dev *pdev);
--void ice_adapter_put(const struct pci_dev *pdev);
-+struct ice_adapter *ice_adapter_get(struct pci_dev *pdev);
-+void ice_adapter_put(struct pci_dev *pdev);
+ struct z_erofs_bvec_item {
+@@ -1139,18 +1135,20 @@ struct z_erofs_bvec_item {
+ static void z_erofs_do_decompressed_bvec(struct z_erofs_decompress_backend *be,
+ 					 struct z_erofs_bvec *bvec)
+ {
++	int poff = bvec->offset + be->pcl->pageofs_out;
+ 	struct z_erofs_bvec_item *item;
+-	unsigned int pgnr;
+-
+-	if (!((bvec->offset + be->pcl->pageofs_out) & ~PAGE_MASK) &&
+-	    (bvec->end == PAGE_SIZE ||
+-	     bvec->offset + bvec->end == be->pcl->length)) {
+-		pgnr = (bvec->offset + be->pcl->pageofs_out) >> PAGE_SHIFT;
+-		DBG_BUGON(pgnr >= be->nr_pages);
+-		if (!be->decompressed_pages[pgnr]) {
+-			be->decompressed_pages[pgnr] = bvec->page;
++	struct page **page;
++
++	if (!(poff & ~PAGE_MASK) && (bvec->end == PAGE_SIZE ||
++			bvec->offset + bvec->end == be->pcl->length)) {
++		DBG_BUGON((poff >> PAGE_SHIFT) >= be->nr_pages);
++		page = be->decompressed_pages + (poff >> PAGE_SHIFT);
++		if (!*page) {
++			*page = bvec->page;
+ 			return;
+ 		}
++	} else {
++		be->keepxcpy = true;
+ 	}
  
- #endif /* _ICE_ADAPTER_H */
+ 	/* (cold path) one pcluster is requested multiple times */
+@@ -1316,7 +1314,7 @@ static int z_erofs_decompress_pcluster(struct z_erofs_decompress_backend *be,
+ 					.alg = pcl->algorithmformat,
+ 					.inplace_io = overlapped,
+ 					.partial_decoding = pcl->partial,
+-					.fillgaps = pcl->multibases,
++					.fillgaps = be->keepxcpy,
+ 					.gfp = pcl->besteffort ? GFP_KERNEL :
+ 						GFP_NOWAIT | __GFP_NORETRY
+ 				 }, be->pagepool);
+@@ -1370,7 +1368,6 @@ static int z_erofs_decompress_pcluster(struct z_erofs_decompress_backend *be,
+ 
+ 	pcl->length = 0;
+ 	pcl->partial = true;
+-	pcl->multibases = false;
+ 	pcl->besteffort = false;
+ 	pcl->bvset.nextpage = NULL;
+ 	pcl->vcnt = 0;
 -- 
 2.39.5
 
