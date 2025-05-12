@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-143152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 444E8AB32F6
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 11:20:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E0AFAB32FB
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 11:20:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8613D3B4578
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 09:19:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 089B3189CA4F
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 09:21:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CABB825B67D;
-	Mon, 12 May 2025 09:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AEBE25DD0B;
+	Mon, 12 May 2025 09:20:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LAuVLRrD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="irRKzeRC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82662194AD5
-	for <stable@vger.kernel.org>; Mon, 12 May 2025 09:20:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0883525D8E9
+	for <stable@vger.kernel.org>; Mon, 12 May 2025 09:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747041608; cv=none; b=CRoIQHSFWVbZcqhKLDr53ywLNjbSO1jtfMHZOeEW4BDTh4orU1v2t8ItbYoUDaUuzUW4qhzJZL///eEE/CIdSFRQfSTeWc0MxTi/kHe49cLWnXM2i2zlzIxOR3pL4T4Ti2g6EFUlIrEltWzp/o900doWMHYjVfu89Ozl5UjI2vI=
+	t=1747041612; cv=none; b=OtJ940J6Bwhn1N07onVr2ZhTJWF6mmECtEmZ1fi16C37ekqvQOe4SwVhrkKxqIIAzd1fY2V+VJnzt567s8T68cNp0arIgEcRzQ5pbV/QkWZpzhRHFJ6qA/H9suRWs2Q5JxOspvezAYA8AYkC/F/J56n8ZvPRZ4CoVS87TuhLkMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747041608; c=relaxed/simple;
-	bh=vAEfc0pDG6qr70WTK3bEt9I1Vy9AAsPQYC0VPLhY/RQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=cD7yq9Pm8D/HSobExZub+ABftxwxp1IHdIl2AZzFhY4WXQuuGOgk6q+dxyzOqMZiZQKT7/PkaocXSB6Lsq9YCW4lczP9UnabTZC9OWGA79Dsz7l5X3hzKaxwrcM8DxU6Q+zpMz10/QRlV3TTi7vLHeObp5e0VYBGNPoI31XE+GM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LAuVLRrD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08D75C4CEE7;
-	Mon, 12 May 2025 09:20:07 +0000 (UTC)
+	s=arc-20240116; t=1747041612; c=relaxed/simple;
+	bh=KOu5JAmkOSf7+wdhONnWNsKaC41SUDvLr6HtaWQ4E+k=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=gs3eEVi9vwjVOx4Bs+KwYkd6y1cEY5FYL4PIYIpLo4xTHN7q2wX0mW0nI3ydzOJllIza8nhVwvdDA9zquBMnDVxodZT9vFYMiCEMalQyPpBJm+8Bj/9YhbZigePi4L1SBl4zh3Twb78eJwAz5JscF/CrzIirk8fLm0AC1dQNz7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=irRKzeRC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01EF6C4CEED;
+	Mon, 12 May 2025 09:20:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747041608;
-	bh=vAEfc0pDG6qr70WTK3bEt9I1Vy9AAsPQYC0VPLhY/RQ=;
+	s=korg; t=1747041611;
+	bh=KOu5JAmkOSf7+wdhONnWNsKaC41SUDvLr6HtaWQ4E+k=;
 	h=Subject:To:Cc:From:Date:From;
-	b=LAuVLRrDeDreEsRyX3GF1NvYNv+KHOpI1ln1pFzoVdE0GUIBFkcLoJOVtOTByya4i
-	 WI2th0N3H47Zch4jyXX88nhpUDrzYWzmQo8Ka2H4Yhp1XsgH+NjVhGKXyLcX+Fmco2
-	 yVmWI6z9tpLX178cXiKON/dAaPzk7ZiBA+Ft9JeM=
-Subject: FAILED: patch "[PATCH] mm/huge_memory: fix dereferencing invalid pmd migration entry" failed to apply to 6.1-stable tree
+	b=irRKzeRCCKQiKOjt1q5CWbVAyR+I03/qVOzHpN4s1RkI0zRLXq4zqXhdYjT729UPH
+	 0fBfIaLEICldpFxUejoCKs2wDzXajkjZ2oKIfI4cwe0kjP3Jv9Y7V77TfIUKWj3pQL
+	 ehj7a5J9tBioms0ofkmRrcfR2XUkAIu4DH4pWqqM=
+Subject: FAILED: patch "[PATCH] mm/huge_memory: fix dereferencing invalid pmd migration entry" failed to apply to 5.15-stable tree
 To: gavinguo@igalia.com,akpm@linux-foundation.org,david@redhat.com,gshan@redhat.com,hughd@google.com,linmiaohe@huawei.com,revest@google.com,stable@vger.kernel.org,willy@infradead.org,ziy@nvidia.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 May 2025 11:20:03 +0200
-Message-ID: <2025051203-thrift-spool-ebc8@gregkh>
+Date: Mon, 12 May 2025 11:20:04 +0200
+Message-ID: <2025051204-tidal-lake-6ae7@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x be6e843fc51a584672dfd9c4a6a24c8cb81d5fb7
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025051203-thrift-spool-ebc8@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025051204-tidal-lake-6ae7@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
