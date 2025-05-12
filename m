@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-143860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDE42AB4252
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:21:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7C87AB4259
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:22:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA96C3B75EA
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:19:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30D8A3B066C
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:19:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A9382BF996;
-	Mon, 12 May 2025 18:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C23FB2BFC7D;
+	Mon, 12 May 2025 18:05:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sIWqO7dc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rH8t0BP8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36DED2BF989;
-	Mon, 12 May 2025 18:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774572BFC72;
+	Mon, 12 May 2025 18:05:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073136; cv=none; b=M1aPx/aZTn2XFLnbPtGZ4iAT8TvAPhD97cpnwNua0JmoCnp+xiT79YufzMGZocyVJG7E52oN8tiIOzrkMaawdVaUAowsOGig/RV/IP1rZJUeogAHH5hEnNg/MvFx5E99IpghemeAeY7Xy1gfKR30EFAYIY4Fnte/xmhVxsihRFs=
+	t=1747073137; cv=none; b=flQ9CE2QCY31uyRtZRZYZOSkN4vewCIJjzb2TUL5pXGve382HqYi/fo3uaRImrT0h78BK4tYgqsKo+ZiEEaW4M1bXKFBP5sX2iNJ5byb6oQhi6IM6y1/7AguY/W6lgWU5nHEZuZxEvIrJSLevhcoH1HKJG1f5JpWXMkQvCmpv8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073136; c=relaxed/simple;
-	bh=tClUygEdgjrbqL6Az0SliCxYp1+a19KrR43GjyNmmfE=;
+	s=arc-20240116; t=1747073137; c=relaxed/simple;
+	bh=xuwcdzp+yOKlnUsHE+/kS8E8z/VbD6yCi+gpHECzW3I=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=U2fosJp1WCUn+3YKrXzD5TqpBK/EtJvfnASD9+4tJxCEGRxVPvq5/mwDkACK07IaRuk1A9Mi1nNrvNllRCteRcJpepSOlA/I11eKweJdJyrpouPPQOjKdTnsklx7j92Z8vF0e7YMXseyVZhkNsy8FHD199vWJKcNkejSOWOKKOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sIWqO7dc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2452C4CEE7;
-	Mon, 12 May 2025 18:05:34 +0000 (UTC)
+	 MIME-Version; b=k1f4Yi4XuPFYipBhYn9Q7ST4axDRDmdF1nOb4J75mL8bUaTmSyjx/spGrDRrLRScngB1jKn2HxXWroczAYi4kU0ZzqGd8iw3WIBU0EVuUi+K3AVakh6klkmq6tPzoRbboMpSXcdImB31J1mY87ewBdYu+62NpuxbWJSQOBjh0q8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rH8t0BP8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BFBAC4CEE9;
+	Mon, 12 May 2025 18:05:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747073136;
-	bh=tClUygEdgjrbqL6Az0SliCxYp1+a19KrR43GjyNmmfE=;
+	s=k20201202; t=1747073137;
+	bh=xuwcdzp+yOKlnUsHE+/kS8E8z/VbD6yCi+gpHECzW3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sIWqO7dcL6+H0+FDcizZdrxvtSrzg+M1wlI2sy83EV246KLXdSqqB9JNwNR5+1Oeq
-	 h6fyTrfhEuS84ixdK2gb3IZMS2Rg5MQZBGixyPJKPNYaPbyvFyU38Xim6BrsBN+Tt/
-	 Qx6TICpsew4Wm5p1Quqx63ujNooZgELWiDjBJdK4FkxTskFD0TNOHifZjigeJLfGq4
-	 HuAILqg/i6Vr+CsBCX9yRDRUCKq1FEf6e6A1NOtp9HylDf0KqAnX8/h8qFOVH4g6Rl
-	 EZqLkIZmueGkNsqQFf8UGpUODzhZ0/zj2z4Dycb0hGxV6TNyzYS5QOd5R37actUdPo
-	 LHU1e70CFRqew==
+	b=rH8t0BP87J6l2WvGedulXsIIF41m93RCx8gxtU8y3CQsqgs4rqeARI0SUuJY8hohc
+	 ct/us+VDQYTexXALyoWE+v5mHSvGfx1xQP+hkCFuyKB4WiV1f5fn7CbAgwCeBoPC7u
+	 EiAFMatm9rdEvS/dQw32+BG9MOTOktdptv5Lxm2dtoGXx/JzsacaOyStRWP4CzqJpu
+	 feGooq/jDjoaxUs/skEfHNdXUeniGqt79C5FL+Auq9Okvzqj+pk24Cpd8an1r5DHjf
+	 7uo4rz0KpUeFnHzMIrFXcBZ0qmxlTBYHwzy50b5H7E98SsKRalZm7eblXyccTyCAbN
+	 vXWmqvf7dYiiQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Jason Andryuk <jason.andryuk@amd.com>,
-	Stefano Stabellini <sstabellini@kernel.org>,
-	Juergen Gross <jgross@suse.com>,
+Cc: Al Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	xin.wang2@amd.com,
-	chenqiuji666@gmail.com,
-	elder@kernel.org,
-	gregkh@linuxfoundation.org,
-	xen-devel@lists.xenproject.org,
+	linux-fsdevel@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.10 2/3] xenbus: Allow PVH dom0 a non-local xenstore
-Date: Mon, 12 May 2025 14:05:27 -0400
-Message-Id: <20250512180528.438177-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 3/3] __legitimize_mnt(): check for MNT_SYNC_UMOUNT should be under mount_lock
+Date: Mon, 12 May 2025 14:05:28 -0400
+Message-Id: <20250512180528.438177-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250512180528.438177-1-sashal@kernel.org>
 References: <20250512180528.438177-1-sashal@kernel.org>
@@ -71,67 +66,45 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.10.237
 Content-Transfer-Encoding: 8bit
 
-From: Jason Andryuk <jason.andryuk@amd.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 90989869baae47ee2aa3bcb6f6eb9fbbe4287958 ]
+[ Upstream commit 250cf3693060a5f803c5f1ddc082bb06b16112a9 ]
 
-Make xenbus_init() allow a non-local xenstore for a PVH dom0 - it is
-currently forced to XS_LOCAL.  With Hyperlaunch booting dom0 and a
-xenstore stubdom, dom0 can be handled as a regular XS_HVM following the
-late init path.
+... or we risk stealing final mntput from sync umount - raising mnt_count
+after umount(2) has verified that victim is not busy, but before it
+has set MNT_SYNC_UMOUNT; in that case __legitimize_mnt() doesn't see
+that it's safe to quietly undo mnt_count increment and leaves dropping
+the reference to caller, where it'll be a full-blown mntput().
 
-Ideally we'd drop the use of xen_initial_domain() and just check for the
-event channel instead.  However, ARM has a xen,enhanced no-xenstore
-mode, where the event channel and PFN would both be 0.  Retain the
-xen_initial_domain() check, and use that for an additional check when
-the event channel is 0.
+Check under mount_lock is needed; leaving the current one done before
+taking that makes no sense - it's nowhere near common enough to bother
+with.
 
-Check the full 64bit HVM_PARAM_STORE_EVTCHN value to catch the off
-chance that high bits are set for the 32bit event channel.
-
-Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
-Change-Id: I5506da42e4c6b8e85079fefb2f193c8de17c7437
-Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20250506204456.5220-1-jason.andryuk@amd.com>
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/xen/xenbus/xenbus_probe.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ fs/namespace.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/xen/xenbus/xenbus_probe.c b/drivers/xen/xenbus/xenbus_probe.c
-index 743795d402cb0..fb5358a738204 100644
---- a/drivers/xen/xenbus/xenbus_probe.c
-+++ b/drivers/xen/xenbus/xenbus_probe.c
-@@ -864,9 +864,15 @@ static int __init xenbus_init(void)
- 	if (xen_pv_domain())
- 		xen_store_domain_type = XS_PV;
- 	if (xen_hvm_domain())
-+	{
- 		xen_store_domain_type = XS_HVM;
--	if (xen_hvm_domain() && xen_initial_domain())
--		xen_store_domain_type = XS_LOCAL;
-+		err = hvm_get_parameter(HVM_PARAM_STORE_EVTCHN, &v);
-+		if (err)
-+			goto out_error;
-+		xen_store_evtchn = (int)v;
-+		if (!v && xen_initial_domain())
-+			xen_store_domain_type = XS_LOCAL;
-+	}
- 	if (xen_pv_domain() && !xen_start_info->store_evtchn)
- 		xen_store_domain_type = XS_LOCAL;
- 	if (xen_pv_domain() && xen_start_info->store_evtchn)
-@@ -885,10 +891,6 @@ static int __init xenbus_init(void)
- 		xen_store_interface = gfn_to_virt(xen_store_gfn);
- 		break;
- 	case XS_HVM:
--		err = hvm_get_parameter(HVM_PARAM_STORE_EVTCHN, &v);
--		if (err)
--			goto out_error;
--		xen_store_evtchn = (int)v;
- 		err = hvm_get_parameter(HVM_PARAM_STORE_PFN, &v);
- 		if (err)
- 			goto out_error;
+diff --git a/fs/namespace.c b/fs/namespace.c
+index 2f97112657adc..9f9d0d9ba4dc7 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -572,12 +572,8 @@ int __legitimize_mnt(struct vfsmount *bastard, unsigned seq)
+ 	smp_mb();			// see mntput_no_expire()
+ 	if (likely(!read_seqretry(&mount_lock, seq)))
+ 		return 0;
+-	if (bastard->mnt_flags & MNT_SYNC_UMOUNT) {
+-		mnt_add_count(mnt, -1);
+-		return 1;
+-	}
+ 	lock_mount_hash();
+-	if (unlikely(bastard->mnt_flags & MNT_DOOMED)) {
++	if (unlikely(bastard->mnt_flags & (MNT_SYNC_UMOUNT | MNT_DOOMED))) {
+ 		mnt_add_count(mnt, -1);
+ 		unlock_mount_hash();
+ 		return 1;
 -- 
 2.39.5
 
