@@ -1,51 +1,54 @@
-Return-Path: <stable+bounces-143314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62668AB3F0F
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:30:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D719EAB3F14
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:31:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F11A619E4792
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:31:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4102F86474A
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:30:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A8AC1DE4E3;
-	Mon, 12 May 2025 17:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29C9024EF85;
+	Mon, 12 May 2025 17:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zhnq0hek"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yG4G5WHm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06D8778F52;
-	Mon, 12 May 2025 17:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F4114658D;
+	Mon, 12 May 2025 17:30:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747071048; cv=none; b=B3yCoZr3GTl/FPr/v2nnGXo7i9g6ovr10EGNPamE0pz84C4JepuUlcOCeqGRtzMSa6muEKzYX76puOq4LSTBTeODFEhNqwDERgX22S30Bf4dGwx61dUZu8vKJSRkRI9OuTDVl3Zx9Du5443dG6gt1UD1YQ//jg4LJq6kRSW+aBA=
+	t=1747071058; cv=none; b=FiNMcE7h9URVseCvI3ZYfpOzirKooY94/Ux9fqU93PJd4bUjlK7dD1iJ7lvUYo91yZBze0xX1SDkiDqlHoAtUy7bO8CCjXEif2xdKObL9f6YtyDCrsqGeM9iiz6gAVzsf7tboVm+geREBji8TCQOn30k5lvKHwzQSYk2uknKP+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747071048; c=relaxed/simple;
-	bh=FMOz7LuvCoGW/ruubHOTbdr/4U+Le4ppFD+vdwXDKWc=;
+	s=arc-20240116; t=1747071058; c=relaxed/simple;
+	bh=E5gqgPoy62F6bXuADOgdKJlIbfc3tKZpbtnROhz8B+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jUtTwTBNbLZAoppxfim9icmjbWa9YrrJfBT3jLYArd9/koOonQ8+B0zJ4U9Ly5WFteJkmtFqUOaIrMpKlOJsP6dLNV1gW+PobwWQ9taEIjm4jXyF4SbrpRIxguSeWJ86Y6b6um+5D2SKwuZfSB7fuuid7oDdMDpPis0QTVDoFc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zhnq0hek; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CC93C4CEE9;
-	Mon, 12 May 2025 17:30:46 +0000 (UTC)
+	 MIME-Version; b=DSXTfXzYV+ABgvnj36xEb824pIuontBAxkOo8i+5eDi/YgCUdpCAlgHS5BHWxyVz+i9Zlzx65wGg6YLGAuXE+YzzgQMXGdP+aQ+x6OqdAED5/v0x7RO0mM0TAAgfLVgpMtHazIrRkcjfWwTxYWN2HYcWf+LB8APkFgezeJIYHAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yG4G5WHm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7071C4CEEF;
+	Mon, 12 May 2025 17:30:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747071047;
-	bh=FMOz7LuvCoGW/ruubHOTbdr/4U+Le4ppFD+vdwXDKWc=;
+	s=korg; t=1747071058;
+	bh=E5gqgPoy62F6bXuADOgdKJlIbfc3tKZpbtnROhz8B+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zhnq0hekJ7JLx63ouR3knbCk7AKdkw+rwU/4NrtSmAneAjdtMVWX8RUht2iGnd6rc
-	 iRUmyC7nG7wr8QbkZ6+SspzSUfsJef9Iw1g/Z6P5lg5ZEXPGMTx2lWle0Yse3RgMus
-	 e2cIPWs/X5ZHLX8MePZJBghtlid82xzp+lFbqnlE=
+	b=yG4G5WHmRR2Mq0bMp6Tnr4a53+MdEKNQEBNWGPSAQXVmDqai6Do2SFUB9/F30kf9d
+	 R/kXOLqfGHqZKVwTPZ5yQK7Txv62B5EgiuImbd9ey8kHcZrNnybGjSqrZ03G1DCV7H
+	 188b5Y89erO5gYqGhK6ODolr4lrcpmcTNVNYzBd8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 5.15 02/54] can: mcp251xfd: mcp251xfd_remove(): fix order of unregistration calls
-Date: Mon, 12 May 2025 19:29:14 +0200
-Message-ID: <20250512172015.744220496@linuxfoundation.org>
+	Eelco Chaudron <echaudro@redhat.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Aaron Conole <aconole@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 03/54] openvswitch: Fix unsafe attribute parsing in output_userspace()
+Date: Mon, 12 May 2025 19:29:15 +0200
+Message-ID: <20250512172015.783420631@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512172015.643809034@linuxfoundation.org>
 References: <20250512172015.643809034@linuxfoundation.org>
@@ -64,48 +67,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Eelco Chaudron <echaudro@redhat.com>
 
-commit 84f5eb833f53ae192baed4cfb8d9eaab43481fc9 upstream.
+commit 6beb6835c1fbb3f676aebb51a5fee6b77fed9308 upstream.
 
-If a driver is removed, the driver framework invokes the driver's
-remove callback. A CAN driver's remove function calls
-unregister_candev(), which calls net_device_ops::ndo_stop further down
-in the call stack for interfaces which are in the "up" state.
+This patch replaces the manual Netlink attribute iteration in
+output_userspace() with nla_for_each_nested(), which ensures that only
+well-formed attributes are processed.
 
-With the mcp251xfd driver the removal of the module causes the
-following warning:
-
-| WARNING: CPU: 0 PID: 352 at net/core/dev.c:7342 __netif_napi_del_locked+0xc8/0xd8
-
-as can_rx_offload_del() deletes the NAPI, while it is still active,
-because the interface is still up.
-
-To fix the warning, first unregister the network interface, which
-calls net_device_ops::ndo_stop, which disables the NAPI, and then call
-can_rx_offload_del().
-
-Fixes: 55e5b97f003e ("can: mcp25xxfd: add driver for Microchip MCP25xxFD SPI CAN")
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250502-can-rx-offload-del-v1-1-59a9b131589d@pengutronix.de
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Fixes: ccb1352e76cf ("net: Add Open vSwitch kernel components.")
+Signed-off-by: Eelco Chaudron <echaudro@redhat.com>
+Acked-by: Ilya Maximets <i.maximets@ovn.org>
+Acked-by: Aaron Conole <aconole@redhat.com>
+Link: https://patch.msgid.link/0bd65949df61591d9171c0dc13e42cea8941da10.1746541734.git.echaudro@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/openvswitch/actions.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
-@@ -3020,8 +3020,8 @@ static int mcp251xfd_remove(struct spi_d
- 	struct mcp251xfd_priv *priv = spi_get_drvdata(spi);
- 	struct net_device *ndev = priv->ndev;
+--- a/net/openvswitch/actions.c
++++ b/net/openvswitch/actions.c
+@@ -954,8 +954,7 @@ static int output_userspace(struct datap
+ 	upcall.cmd = OVS_PACKET_CMD_ACTION;
+ 	upcall.mru = OVS_CB(skb)->mru;
  
--	can_rx_offload_del(&priv->offload);
- 	mcp251xfd_unregister(priv);
-+	can_rx_offload_del(&priv->offload);
- 	spi->max_speed_hz = priv->spi_max_speed_hz_orig;
- 	free_candev(ndev);
- 
+-	for (a = nla_data(attr), rem = nla_len(attr); rem > 0;
+-	     a = nla_next(a, &rem)) {
++	nla_for_each_nested(a, attr, rem) {
+ 		switch (nla_type(a)) {
+ 		case OVS_USERSPACE_ATTR_USERDATA:
+ 			upcall.userdata = a;
 
 
 
