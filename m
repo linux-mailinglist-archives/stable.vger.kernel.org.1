@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-143742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C7A7AB4126
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:02:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07DB9AB4070
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:54:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 803DA1890DEA
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:02:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C3D157B2148
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:51:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 117552550CD;
-	Mon, 12 May 2025 18:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34999295DBC;
+	Mon, 12 May 2025 17:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2AKp840y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OsjhV1rt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2DF81D7E41;
-	Mon, 12 May 2025 18:02:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5983255222;
+	Mon, 12 May 2025 17:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072932; cv=none; b=rb7gELtU1W7PAPxN/hTwVeh/vSImzaPkP4nFMEYEeeREvK4UjQvPVuD1x+fY3xdkwEMJbFZJtIs9M6ZJiDwU5YtkwdvoU4lkdlWJUwNWiPTA2tQA/WWS1WdZ5iTPRRTxoGMGZ/kb2ZqTO/k0pFfRYjV5vpdrUSj/NlXvfGqasxc=
+	t=1747072375; cv=none; b=eaMEV0FXklT6zfz+Vx5/wTkHNb3bXaSXNk9DKBbN4G8xlMlO492Y7TIPwF+Nl6goRaRVwarfyYtJEYP4y8i54C/CHnIfTZwA8zjA6n2EHTqHUOkGxLRNZhsquo97wYU8KAftzRmUJfnzDSp+YD+MiNhuC44BKHt0ANbiomMdS8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072932; c=relaxed/simple;
-	bh=jXugyS72KqZKxXIEyu4lGGP6y3GvHlSRkyWFvNuNYCs=;
+	s=arc-20240116; t=1747072375; c=relaxed/simple;
+	bh=WQ0jr0zYryb5WfedHh0/cGrK4Lu1+iKOTqU9I60KXk0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ngQrm0LKAPeDz4z4ZRYnTQzOaQgMtNHe5ZBt1hGK71ycRnRyQ7gMIa/9m6uu689Nbj1U4wmKGa5pG8lq5z4sWgle11fBVgt0REimtI93HNEJIHG0xjgNjYKyQaSx7mUXrYrUiC9FRWUKX0xM5kBaln4OlzAn8xSBAIfTMgdiQhw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2AKp840y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5245BC4CEE7;
-	Mon, 12 May 2025 18:02:12 +0000 (UTC)
+	 MIME-Version; b=FWdGAVt2mHAfiSTGOsWukI4ZxgvMKLhl9GvnxFOYq7CGXggbRgxj6GO5ZIf+vUy51Rw+UWovjweoYs3klJN5VY6kd4RcH6nH7GgXIVVxDh9/G87ONjxcZcP41Vb3ULgnTfvMPGJmIsEDl5E232qgz9RCcouSgw3IyBxXKb63Xv4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OsjhV1rt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53B76C4CEE9;
+	Mon, 12 May 2025 17:52:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072932;
-	bh=jXugyS72KqZKxXIEyu4lGGP6y3GvHlSRkyWFvNuNYCs=;
+	s=korg; t=1747072374;
+	bh=WQ0jr0zYryb5WfedHh0/cGrK4Lu1+iKOTqU9I60KXk0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2AKp840yVdhgGNiaRT6kkLaWU38ivzQN6B7rdi92h2bAJLvjzuBKg/OaQfdJL99Hj
-	 Pfre3WCIVsDEjgC82sUT63Mye12Fnpu5/uC09t7AzFThrEra2hmDncnXP+YqiHRUfX
-	 DH8ErmuxXXJsdsCqJengcl3ckGAi+qjweMVXBkvA=
+	b=OsjhV1rtCcAGataEFbR8L4QMDhpUGfyQlvLB7qQPkw5wYw3tHhMApe3gFRAEN7mhr
+	 5QnEP3QUeDY56oquGolJmG+BOLC2oyKEcJ6AF4grVerI/A6JI4F/tHd/FHzm2w1kOn
+	 T9YYUfcl0gDe00P2WZx/D/Kkge+nyVj++R2eFns4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Ray Wu <ray.wu@amd.com>,
-	Wayne Lin <Wayne.Lin@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.12 094/184] drm/amd/display: Remove incorrect checking in dmub aux handler
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 20/92] net: dsa: b53: fix VLAN ID for untagged vlan on bridge leave
 Date: Mon, 12 May 2025 19:44:55 +0200
-Message-ID: <20250512172045.655236875@linuxfoundation.org>
+Message-ID: <20250512172023.943382300@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
-References: <20250512172041.624042835@linuxfoundation.org>
+In-Reply-To: <20250512172023.126467649@linuxfoundation.org>
+References: <20250512172023.126467649@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wayne Lin <Wayne.Lin@amd.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-commit 396dc51b3b7ea524bf8061f478332d0039e96d5d upstream.
+[ Upstream commit a1c1901c5cc881425cc45992ab6c5418174e9e5a ]
 
-[Why & How]
-"Request length != reply length" is expected behavior defined in spec.
-It's not an invalid reply. Besides, replied data handling logic is not
-designed to be written in amdgpu_dm_process_dmub_aux_transfer_sync().
-Remove the incorrectly handling section.
+The untagged default VLAN is added to the default vlan, which may be
+one, but we modify the VLAN 0 entry on bridge leave.
 
-Fixes: ead08b95fa50 ("drm/amd/display: Fix race condition in DPIA AUX transfer")
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Ray Wu <ray.wu@amd.com>
-Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
-Signed-off-by: Ray Wu <ray.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 81b5c6fa62af62fe89ae9576f41aae37830b94cb)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this to use the correct VLAN entry for the default pvid.
+
+Fixes: fea83353177a ("net: dsa: b53: Fix default VLAN ID")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20250429201710.330937-6-jonas.gorski@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   12 +-----------
- 1 file changed, 1 insertion(+), 11 deletions(-)
+ drivers/net/dsa/b53/b53_common.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -12547,19 +12547,9 @@ int amdgpu_dm_process_dmub_aux_transfer_
- 		payload->reply[0] = (adev->dm.dmub_notify->aux_reply.command >> 4) & 0xF;
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index cff0e1ecaca51..bffd23ff6e134 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -1923,7 +1923,7 @@ EXPORT_SYMBOL(b53_br_join);
+ void b53_br_leave(struct dsa_switch *ds, int port, struct dsa_bridge bridge)
+ {
+ 	struct b53_device *dev = ds->priv;
+-	struct b53_vlan *vl = &dev->vlans[0];
++	struct b53_vlan *vl;
+ 	s8 cpu_port = dsa_to_port(ds, port)->cpu_dp->index;
+ 	unsigned int i;
+ 	u16 pvlan, reg, pvid;
+@@ -1949,6 +1949,7 @@ void b53_br_leave(struct dsa_switch *ds, int port, struct dsa_bridge bridge)
+ 	dev->ports[port].vlan_ctl_mask = pvlan;
  
- 	if (!payload->write && p_notify->aux_reply.length &&
--			(payload->reply[0] == AUX_TRANSACTION_REPLY_AUX_ACK)) {
--
--		if (payload->length != p_notify->aux_reply.length) {
--			DRM_WARN("invalid read length %d from DPIA AUX 0x%x(%d)!\n",
--				p_notify->aux_reply.length,
--					payload->address, payload->length);
--			*operation_result = AUX_RET_ERROR_INVALID_REPLY;
--			goto out;
--		}
--
-+			(payload->reply[0] == AUX_TRANSACTION_REPLY_AUX_ACK))
- 		memcpy(payload->data, p_notify->aux_reply.data,
- 				p_notify->aux_reply.length);
--	}
+ 	pvid = b53_default_pvid(dev);
++	vl = &dev->vlans[pvid];
  
- 	/* success */
- 	ret = p_notify->aux_reply.length;
+ 	/* Make this port join all VLANs without VLAN entries */
+ 	if (is58xx(dev)) {
+-- 
+2.39.5
+
 
 
 
