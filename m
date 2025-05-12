@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-143975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79F93AB433F
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:32:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D4E2AB41B2
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:10:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D19498C5496
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:28:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0EFA8632BD
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:08:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DF9229AB1A;
-	Mon, 12 May 2025 18:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C76EF298CCE;
+	Mon, 12 May 2025 18:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o2bB9ZXC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hiiRMLWe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF5AC29AB10;
-	Mon, 12 May 2025 18:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82A19298CC4;
+	Mon, 12 May 2025 18:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073470; cv=none; b=O8yOV3gU7+q143JNDCH46+Sut3vf57LbK1zPxMoj3Yc9bAjC0JFk3muDHeaTiyuv7KEGyAVZzLcInpCWCwOTqDGicb0Jm4+b6DIl745mO1gaydcEmZKbCd9JRyvLOAhEP12hUIHtoyGBCBLfJj0z4fu8E7et4bIWRsr6kOREiGg=
+	t=1747073072; cv=none; b=O6fixWUfRlxcBRGX6tS/PrtMXaSHM/3U4O7DUUjw7Q40qFxZxw/pHzFlWz/zNDbI/4MABVImlHZPXtePugg1+lX0Z8Qo1eukbULY1u2pdBQJqJKIwjlQLk4dqEvXsrtKub3GGxlvX4x9wcmPVikOv+v+01we7VZqp+J08Ievoks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073470; c=relaxed/simple;
-	bh=iJbDfV9InMGI2hAQifufxv24+4EYjKksiylJlSkjOak=;
+	s=arc-20240116; t=1747073072; c=relaxed/simple;
+	bh=6UVnAcF7CuiDy1dIfaMC7Wp9pTazPt2j3D6QLR0+SQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uk6D6hkre4sgAtpufTLLdWRDeing4sekYS+MHm6STqjtLU5NW8IBwzsGX6Rb6biZptVErPWe9kMkXqcUvxW7Iooe6nohWboKvmVuncUmSPXoZfVNHBKCz1gKjAZo2iUQtdg5o30f9hy/E9WEFcknC/gYRgBAxsDMEmOmfcO2044=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o2bB9ZXC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56535C4CEE7;
-	Mon, 12 May 2025 18:11:09 +0000 (UTC)
+	 MIME-Version; b=JPODBY+i2ha4rMlVjLC7tuoDnOPHpetmRh7p3YC45T0Xtk24gDkO1mEj+BCaCatJ9ldQku4dCTm0BJHtbVhP5KwumorTOV4ZhNLap4tT1NrK9ABAaiQVtSlE7nk3a1uZWSK+aWACp0KlDE+h0uzStPUyRq0vd6PiCvc8Xvoo7KI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hiiRMLWe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B99C4C4CEEF;
+	Mon, 12 May 2025 18:04:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073469;
-	bh=iJbDfV9InMGI2hAQifufxv24+4EYjKksiylJlSkjOak=;
+	s=korg; t=1747073072;
+	bh=6UVnAcF7CuiDy1dIfaMC7Wp9pTazPt2j3D6QLR0+SQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o2bB9ZXChEhG+iM11vpCPOX4mcbBmH7TDy5r98gLq89m50848D2rbdmA7pysWs/zk
-	 jaNzPX0LPHzpzCw34fRVWpiuWFkoa0Sj9vtZSFauQ5d08PKGCMzWgHFO/gfgD0PBmr
-	 b8D+C4yb7ldpwHDSGkQFhTRUi6nxYD5g47hJsxsk=
+	b=hiiRMLWeeT1lRpKlKBVYOfw94PXY6s2QpAVT8oEBVVRANRi7+1CRxrh8xfRGzxode
+	 WPIYqtBKskm1sKgkS2/pmV2flZgr5hsayRoyOgGqKL83tsG3RnKSy/yOuazEzbRRnQ
+	 nCEsFqK3ppDtXiRjNEBP8s3okqSwgBGgn6Hsi+R0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Klimov <alexey.klimov@linaro.org>,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 056/113] drm/amdgpu/hdp6: use memcfg register to post the write for HDP flush
-Date: Mon, 12 May 2025 19:45:45 +0200
-Message-ID: <20250512172029.947568565@linuxfoundation.org>
+	Kevin Baker <kevinb@ventureresearch.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 145/184] drm/panel: simple: Update timings for AUO G101EVN010
+Date: Mon, 12 May 2025 19:45:46 +0200
+Message-ID: <20250512172047.719308112@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
-References: <20250512172027.691520737@linuxfoundation.org>
+In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
+References: <20250512172041.624042835@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Kevin Baker <kevinb@ventureresearch.com>
 
-commit ca28e80abe4219c8f1a2961ae05102d70af6dc87 upstream.
+[ Upstream commit 7c6fa1797a725732981f2d77711c867166737719 ]
 
-Reading back the remapped HDP flush register seems to cause
-problems on some platforms. All we need is a read, so read back
-the memcfg register.
+Switch to panel timings based on datasheet for the AUO G101EVN01.0
+LVDS panel. Default timings were tested on the panel.
 
-Fixes: abe1cbaec6cf ("drm/amdgpu/hdp6.0: do a posting read when flushing HDP")
-Reported-by: Alexey Klimov <alexey.klimov@linaro.org>
-Link: https://lists.freedesktop.org/archives/amd-gfx/2025-April/123150.html
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4119
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3908
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 84141ff615951359c9a99696fd79a36c465ed847)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Previous mode-based timings resulted in horizontal display shift.
+
+Signed-off-by: Kevin Baker <kevinb@ventureresearch.com>
+Fixes: 4fb86404a977 ("drm/panel: simple: Add AUO G101EVN010 panel support")
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250505170256.1385113-1-kevinb@ventureresearch.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250505170256.1385113-1-kevinb@ventureresearch.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/hdp_v6_0.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/panel/panel-simple.c | 25 +++++++++++++------------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/hdp_v6_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/hdp_v6_0.c
-@@ -33,7 +33,12 @@ static void hdp_v6_0_flush_hdp(struct am
- {
- 	if (!ring || !ring->funcs->emit_wreg) {
- 		WREG32((adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2, 0);
--		RREG32((adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2);
-+		/* We just need to read back a register to post the write.
-+		 * Reading back the remapped register causes problems on
-+		 * some platforms so just read back the memory size register.
-+		 */
-+		if (adev->nbio.funcs->get_memsize)
-+			adev->nbio.funcs->get_memsize(adev);
- 	} else {
- 		amdgpu_ring_emit_wreg(ring, (adev->rmmio_remap.reg_offset + KFD_MMIO_REMAP_HDP_MEM_FLUSH_CNTL) >> 2, 0);
- 	}
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index 06381c6282097..d041ff542a4ee 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -1027,27 +1027,28 @@ static const struct panel_desc auo_g070vvn01 = {
+ 	},
+ };
+ 
+-static const struct drm_display_mode auo_g101evn010_mode = {
+-	.clock = 68930,
+-	.hdisplay = 1280,
+-	.hsync_start = 1280 + 82,
+-	.hsync_end = 1280 + 82 + 2,
+-	.htotal = 1280 + 82 + 2 + 84,
+-	.vdisplay = 800,
+-	.vsync_start = 800 + 8,
+-	.vsync_end = 800 + 8 + 2,
+-	.vtotal = 800 + 8 + 2 + 6,
++static const struct display_timing auo_g101evn010_timing = {
++	.pixelclock = { 64000000, 68930000, 85000000 },
++	.hactive = { 1280, 1280, 1280 },
++	.hfront_porch = { 8, 64, 256 },
++	.hback_porch = { 8, 64, 256 },
++	.hsync_len = { 40, 168, 767 },
++	.vactive = { 800, 800, 800 },
++	.vfront_porch = { 4, 8, 100 },
++	.vback_porch = { 4, 8, 100 },
++	.vsync_len = { 8, 16, 223 },
+ };
+ 
+ static const struct panel_desc auo_g101evn010 = {
+-	.modes = &auo_g101evn010_mode,
+-	.num_modes = 1,
++	.timings = &auo_g101evn010_timing,
++	.num_timings = 1,
+ 	.bpc = 6,
+ 	.size = {
+ 		.width = 216,
+ 		.height = 135,
+ 	},
+ 	.bus_format = MEDIA_BUS_FMT_RGB666_1X7X3_SPWG,
++	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
+ 	.connector_type = DRM_MODE_CONNECTOR_LVDS,
+ };
+ 
+-- 
+2.39.5
+
 
 
 
