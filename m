@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-143909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143764-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56A81AB429D
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:24:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16EA8AB415F
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:05:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82F441890C4C
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:23:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C819E3B8C00
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:03:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A599029824B;
-	Mon, 12 May 2025 18:07:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFD541DF754;
+	Mon, 12 May 2025 18:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JSo4vlKd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lNkQXO1k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 621AE2550D5;
-	Mon, 12 May 2025 18:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CA4B175BF;
+	Mon, 12 May 2025 18:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073260; cv=none; b=qlaWM5TFFQbV/SaMP2pyPciSdmhjsZUxotmnLjaIETMzGfjk9EDE7SlvJCeMJNaKWmUtcl8J0ZVhG/zE8bd8sWWt+iD5bC7EyidpTe6vqgVR6zyuABrBKmcl8DG9BOMJxXLS0KBVel5eSZ+54DTQREuxi2RTAlGR/xnuJYKnV6k=
+	t=1747073002; cv=none; b=s+KztRjl8kA9/OKcDuSLvj+e7IWmVS2YEc7JMS5FvCC5IgVnGEisu8WCMgAznTrKDdYYnpWOvRLX3nh68dpBuGsrtHeiz4iVnKASKphNuHaSCUWfunSqqmZaCkcBz2LdTGbGylaj/sv0gcDa8TiIa2zN8WFf4G4G18L7i2+ljps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073260; c=relaxed/simple;
-	bh=aiIzvhiEjzfcJ/BQAL5ddlWHMfTPll3nUhdybl7yNps=;
+	s=arc-20240116; t=1747073002; c=relaxed/simple;
+	bh=QV+BGyST/mqHZzbN30ATJut4lUXBtf6XLCsRQKcaHpA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KQ8tzK+7ZKyNkwb/jFNbPCvZcNveybIXuuU1KAxJWg4YW8q5y4y2iXQ6c0N1JoPIW/nO5yBgunO19/NYroNpN0v7ZVMQc5g3IS3Ldl0oJeUHcCBfh8TRCDgQCuZdioLlQ6oejzXpxb60cjZ9MZP1nlbdbqAUe6imdN1zV18ONgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JSo4vlKd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 615EBC4CEE7;
-	Mon, 12 May 2025 18:07:39 +0000 (UTC)
+	 MIME-Version; b=YUazHwiOOrOuOVvEyrbzq/PXYvtFOkWV6CyehQxv8fV7jUuq+LaCrt4pZD0VAU2Bg+IdikDzxvE8gFk3AVTDprxXo49k6QUp/1BbMdVDF7MKFDNMFnbIsKwusRu7Xv0Jl0Osm6G0N4iUErrTI4N3L8zequwichr44pMuzxtgQoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lNkQXO1k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3BDAC4CEEF;
+	Mon, 12 May 2025 18:03:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073259;
-	bh=aiIzvhiEjzfcJ/BQAL5ddlWHMfTPll3nUhdybl7yNps=;
+	s=korg; t=1747073002;
+	bh=QV+BGyST/mqHZzbN30ATJut4lUXBtf6XLCsRQKcaHpA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JSo4vlKdnK7/eiapoqkyu7NJub3nzXJv5llq9OR/T1CQbyZlPMFQUxPiiLaZer+r7
-	 m1DhCURIAw3HZK1iQh8GQ3h5MQ3W+DeLJ0StZ1O1xwMSvBDYDJxf/K4Od7UvbM7Dv1
-	 ysf36cLOsIGXv+KiGDPA3qnfqmycg3nZ+BBSBniI=
+	b=lNkQXO1kDqwZ4Tevqbsdn9dM9I45meSyPuC2Lsp6/Y8myBbTDiq+98lfBm1ZGm3i7
+	 gjOzGLz0r4KOlbq9cKXp+TRBLic7h91WeFrqIBvd7W8DfTyikruOqdC3hlS9pnLzJs
+	 /dl3a0a0TTtbag6tPBrme/U/holUC7xpEfcXz1FQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Norbert Szetei <norbert@doyensec.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 007/113] ksmbd: prevent out-of-bounds stream writes by validating *pos
-Date: Mon, 12 May 2025 19:44:56 +0200
-Message-ID: <20250512172028.000209936@linuxfoundation.org>
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Ray Wu <ray.wu@amd.com>,
+	Wayne Lin <Wayne.Lin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.12 096/184] drm/amd/display: Copy AUX read reply data whenever length > 0
+Date: Mon, 12 May 2025 19:44:57 +0200
+Message-ID: <20250512172045.734863507@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
-References: <20250512172027.691520737@linuxfoundation.org>
+In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
+References: <20250512172041.624042835@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Norbert Szetei <norbert@doyensec.com>
+From: Wayne Lin <Wayne.Lin@amd.com>
 
-commit 0ca6df4f40cf4c32487944aaf48319cb6c25accc upstream.
+commit 3924f45d4de7250a603fd7b50379237a6a0e5adf upstream.
 
-ksmbd_vfs_stream_write() did not validate whether the write offset
-(*pos) was within the bounds of the existing stream data length (v_len).
-If *pos was greater than or equal to v_len, this could lead to an
-out-of-bounds memory write.
+[Why]
+amdgpu_dm_process_dmub_aux_transfer_sync() should return all exact data
+reply from the sink side. Don't do the analysis job in it.
 
-This patch adds a check to ensure *pos is less than v_len before
-proceeding. If the condition fails, -EINVAL is returned.
+[How]
+Remove unnecessary check condition AUX_TRANSACTION_REPLY_AUX_ACK.
 
+Fixes: ead08b95fa50 ("drm/amd/display: Fix race condition in DPIA AUX transfer")
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Ray Wu <ray.wu@amd.com>
+Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
+Signed-off-by: Ray Wu <ray.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 9b540e3fe6796fec4fb1344f3be8952fc2f084d4)
 Cc: stable@vger.kernel.org
-Signed-off-by: Norbert Szetei <norbert@doyensec.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/vfs.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/fs/smb/server/vfs.c
-+++ b/fs/smb/server/vfs.c
-@@ -443,6 +443,13 @@ static int ksmbd_vfs_stream_write(struct
- 		goto out;
- 	}
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -12546,8 +12546,7 @@ int amdgpu_dm_process_dmub_aux_transfer_
+ 		/* The reply is stored in the top nibble of the command. */
+ 		payload->reply[0] = (adev->dm.dmub_notify->aux_reply.command >> 4) & 0xF;
  
-+	if (v_len <= *pos) {
-+		pr_err("stream write position %lld is out of bounds (stream length: %zd)\n",
-+				*pos, v_len);
-+		err = -EINVAL;
-+		goto out;
-+	}
-+
- 	if (v_len < size) {
- 		wbuf = kvzalloc(size, GFP_KERNEL);
- 		if (!wbuf) {
+-	if (!payload->write && p_notify->aux_reply.length &&
+-			(payload->reply[0] == AUX_TRANSACTION_REPLY_AUX_ACK))
++	if (!payload->write && p_notify->aux_reply.length)
+ 		memcpy(payload->data, p_notify->aux_reply.data,
+ 				p_notify->aux_reply.length);
+ 
 
 
 
