@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-144052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99F48AB46C3
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 23:52:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80A5AAB46C4
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 23:52:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9657519E71D8
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 21:52:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10BAE4A0066
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 21:52:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAECC299AAA;
-	Mon, 12 May 2025 21:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60831298C35;
+	Mon, 12 May 2025 21:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iw64p0x4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fiYMkTB2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AABC9299AA5
-	for <stable@vger.kernel.org>; Mon, 12 May 2025 21:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2088A22338
+	for <stable@vger.kernel.org>; Mon, 12 May 2025 21:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747086743; cv=none; b=CZsY1KdgajQNiZrY9+Wc9ULFVPzPQbhbktQz82/X3eJbetdwYv6O7e4UmKdi9h5zWuD892rGQEFfPkDqs8R3lNIajLTXSnLb6xjEi/CMi5X8yH8OE6Fv1Frp7lPGHMdMxbxv+YZL+OOYlIRRYm30zIFh87wJvsPuPwsXALCZD74=
+	t=1747086748; cv=none; b=WkcwCXRVSrQqjSEAhhLlMApJimUTVLq2/qCzivfjGElb7IoInvi17B/vbTmg6XL5wQD9ux1qh2K/rvyoxO6WZRCe+bxow2E2Uav5tcjSkvEgOEQCstJ29SrXpogL+PhLnuTwdTV5wPQLKOS2vDzQcx09caoxpvwku+GzT3X3M5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747086743; c=relaxed/simple;
-	bh=cURNEQd34+Q+vC49/pZVX0Vp1yuMGHVs63XxFivOpLE=;
+	s=arc-20240116; t=1747086748; c=relaxed/simple;
+	bh=3wlDFhBX9aj+T1Ab8M0ajtb5oa9SXd6dw2fGw6LkTos=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WyTrw18Bc2CNYpv80ago9rXq1XnJuUiDsXxlNiDGZ9olWikiwND2sZH6fN1SlFlrPy6XOIYZreuMYg6bA+/m/lyZeBqwTec3c4i8xYeErXKNqBW/ygZ3xnJ4Jzll2+5lEjWQ/asOo5HhckrQJtzWJX3H8qXss9PaH/zIj1jc+7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iw64p0x4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CDC1C4CEED;
-	Mon, 12 May 2025 21:52:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=X6hwI+qlttISjkpI/ThecmOxnxlrSp6MPCUnxibAqg4cvUiT8mPl0LAiijk75i9sYGXFKgg+xoknGGOrjbU1erBfs0+cyMPu6C2vmdolN/tKEFL1o2PMSHczC/vuU9ohJ4ja/hx5u7FU1G0AWmAEVb6P3Ew+cW2dmj5Hdc0ceqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fiYMkTB2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CFAFC4CEE7;
+	Mon, 12 May 2025 21:52:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747086743;
-	bh=cURNEQd34+Q+vC49/pZVX0Vp1yuMGHVs63XxFivOpLE=;
+	s=k20201202; t=1747086748;
+	bh=3wlDFhBX9aj+T1Ab8M0ajtb5oa9SXd6dw2fGw6LkTos=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iw64p0x46W8/DnD3JVh9kp9zzz4kYkJDWIV4hIBlTIts16L3cEfRhm6BqKnuIxLnv
-	 K64FQawYr1OR6D/pi7rVDLJfKmHHtmRK9H4suSOaf/EpQDh038pRf8t+Gb4G7HZREN
-	 mqJhRtuTae/DXX3ShcPkLED/J6y0/kyvYZE0/OWkQd28Sr/DJlWeTEae66t/PN1wUa
-	 uEEYxR18l3IG3bw9jrsT0kgvzCOhku59NlDZKwevcmOqJqGGDx0sTrkWf3e5f2+P89
-	 LmO3gcj+Hy+cvvCAZYSffyAuyc3HTgW9+hBuOJQuMWye5BS2o29Ks4iwwkb8s6rAB+
-	 oxJmpKsviV6ww==
+	b=fiYMkTB2Ru6t6PaZP3I3dAmrc3ylLFruFbdiLVueYiHRQ7j8P8m3MfAZY+xLRKhim
+	 9GI/aQ8YOrLX99QDamMuaSmiKN02WhBn3YgUBcvHQjzCogH6OByJWM2ZvUQY1P9KmB
+	 wrrpHxFGlD164mtF5Lb9+uIDVq4gUoPLGYgpjLIu67cgzfHn99HUV3WA3b2hjqnqgg
+	 LLWd57SQk52jwB4ClPqSE9J4yqiwwXWHlGRJU+MI2htlZSMTg+Nq7GjT2U0+gmR017
+	 ncxhWiDlllMFSFG+LDbbcH40ycU1XqyMTpG7rOU45RelPJOgPq3RegBiN+wUQKS6Tp
+	 C8Q6Zjj4fnbFw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	echaudro@redhat.com
+	jianqi.ren.cn@windriver.com
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.4.y] openvswitch: Fix unsafe attribute parsing in output_userspace()
-Date: Mon, 12 May 2025 17:52:19 -0400
-Message-Id: <20250512171051-d0977a979bf65698@stable.kernel.org>
+Subject: Re: [PATCH 6.1.y] selinux: avoid dereference of garbage after mount failure
+Date: Mon, 12 May 2025 17:52:23 -0400
+Message-Id: <20250512161804-4a1e0992fbba3fe6@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <b047b86872e58e15c3b8d3ba394fa1aef4b557ea.1747039582.git.echaudro@redhat.com>
+In-Reply-To:  <20250512014400.3326099-1-jianqi.ren.cn@windriver.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -65,43 +65,61 @@ Content-Transfer-Encoding: 8bit
 Hi,
 
 Summary of potential issues:
-⚠️ Found matching upstream commit but patch is missing proper reference to it
+❌ Build failures detected
 
-Found matching upstream commit: 6beb6835c1fbb3f676aebb51a5fee6b77fed9308
+The upstream commit SHA1 provided is correct: 37801a36b4d68892ce807264f784d818f8d0d39b
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: <jianqi.ren.cn@windriver.com>
+Commit author: Christian Göttsche<cgzones@googlemail.com>
 
 Status in newer kernel trees:
-6.14.y | Present (different SHA1: 4d184c1b89b8)
-6.12.y | Present (different SHA1: 4ae0a4524c47)
-6.6.y | Present (different SHA1: 46e070d3714b)
-6.1.y | Present (different SHA1: 68544f9fe709)
-5.15.y | Present (different SHA1: 99deb2bf2bd1)
-5.10.y | Present (different SHA1: c081a8228222)
+6.14.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (different SHA1: 477ed6789eb9)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  6beb6835c1fbb ! 1:  88825867905fa openvswitch: Fix unsafe attribute parsing in output_userspace()
-    @@ Commit message
-         Acked-by: Aaron Conole <aconole@redhat.com>
-         Link: https://patch.msgid.link/0bd65949df61591d9171c0dc13e42cea8941da10.1746541734.git.echaudro@redhat.com
-         Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-    +    (cherry picked from commit 6beb6835c1fbb3f676aebb51a5fee6b77fed9308)
+1:  37801a36b4d68 ! 1:  31f99abbcce21 selinux: avoid dereference of garbage after mount failure
+    @@ Metadata
+      ## Commit message ##
+         selinux: avoid dereference of garbage after mount failure
      
-      ## net/openvswitch/actions.c ##
-     @@ net/openvswitch/actions.c: static int output_userspace(struct datapath *dp, struct sk_buff *skb,
-    @@ net/openvswitch/actions.c: static int output_userspace(struct datapath *dp, stru
-      	upcall.mru = OVS_CB(skb)->mru;
-      
-     -	for (a = nla_data(attr), rem = nla_len(attr); rem > 0;
-    --	     a = nla_next(a, &rem)) {
-    +-		 a = nla_next(a, &rem)) {
-     +	nla_for_each_nested(a, attr, rem) {
-      		switch (nla_type(a)) {
-      		case OVS_USERSPACE_ATTR_USERDATA:
+    +    commit 37801a36b4d68892ce807264f784d818f8d0d39b upstream.
+    +
+         In case kern_mount() fails and returns an error pointer return in the
+         error branch instead of continuing and dereferencing the error pointer.
+     
+    @@ Commit message
+         Fixes: 0619f0f5e36f ("selinux: wrap selinuxfs state")
+         Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
+         Signed-off-by: Paul Moore <paul@paul-moore.com>
+    +    Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+    +    Signed-off-by: He Zhe <zhe.he@windriver.com>
+     
+      ## security/selinux/selinuxfs.c ##
+     @@ security/selinux/selinuxfs.c: static struct file_system_type sel_fs_type = {
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.4.y        |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Failed    |
+
+Build Errors:
+Build error for stable/linux-6.1.y:
+    security/selinux/selinuxfs.c: In function 'exit_sel_fs':
+    security/selinux/selinuxfs.c:2261:22: error: 'selinuxfs_mount' undeclared (first use in this function)
+     2261 |         kern_unmount(selinuxfs_mount);
+          |                      ^~~~~~~~~~~~~~~
+    security/selinux/selinuxfs.c:2261:22: note: each undeclared identifier is reported only once for each function it appears in
+    make[3]: *** [scripts/Makefile.build:250: security/selinux/selinuxfs.o] Error 1
+    make[3]: Target 'security/selinux/' not remade because of errors.
+    make[2]: *** [scripts/Makefile.build:503: security/selinux] Error 2
+    make[2]: Target 'security/' not remade because of errors.
+    make[1]: *** [scripts/Makefile.build:503: security] Error 2
+    make[1]: Target './' not remade because of errors.
+    make: *** [Makefile:2013: .] Error 2
+    make: Target '__all' not remade because of errors.
 
