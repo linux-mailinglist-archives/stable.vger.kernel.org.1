@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-144008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BBD0AB4364
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:33:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAD97AB4269
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:23:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D5A53AB82B
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:29:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F29D16C5F1
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:23:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68796297121;
-	Mon, 12 May 2025 18:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C43F1296FA5;
+	Mon, 12 May 2025 18:06:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fq90U+nu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IHjZMmV2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2252E296FBC;
-	Mon, 12 May 2025 18:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC3422AE45;
+	Mon, 12 May 2025 18:06:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073573; cv=none; b=GC9A1661DdZdEsESU4/0/JhDdC5gxyVcChcnppxdohqRhuhigC5vV8bVoLmKGqDXFYb7FrFEObs7LMot2K5wY9m7woKR1EoxDJwqqizmQ2ZYDbcL9TBPqdDMr6svQUdGJphw1CdyLrAhrXXBA/GGieKu5AlUCAeOaxoE7a1eF6I=
+	t=1747073173; cv=none; b=oKSQyItGEupRSAkHFb7rItBJl0FIY4EqJutqqzLiqZtK2QseobaCHtdkYM3Do+GAaVP5FIcr4ozOm9LND26B/1axEc3m+e+UFlH7WphR44CnoVv4I6M2Aul9jIB4evlLi24id1LWaB2ICgamrdDiN/Ox5pmT2KbDaMhDv3IjMk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073573; c=relaxed/simple;
-	bh=qme6yMXdc2McZlG0PAH77I5dp7o4EG0JL/2vccPCH7o=;
+	s=arc-20240116; t=1747073173; c=relaxed/simple;
+	bh=qMprXEbnMX6zCe2DmRqFAA5Fc5PaOXsV/akb5j4KRs0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DPgQXfb701X3lY+qCDLG/k4D7F/5TTDbwJI85ujKldTLWrxAuwIzf76ycxxO44aMunihM0gWpEDrGHKTGZOksHjUwrSIV5AyQodOCW2T0UCc19GO0LS2Y8Ao7Qrm/1QG+6ntLMrB2PO/9GdMUp4qD0YQa+P7o8oBV+4xJf+8Ytg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fq90U+nu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83D8DC4CEE9;
-	Mon, 12 May 2025 18:12:52 +0000 (UTC)
+	 MIME-Version; b=aIujDnT68Iq6tG4z5Hxa7udopgxiR4F8Or3qHYnq3BR04wkjcW0xcAruvIumSK067XVfnqR909KuhR7XI72/dlm0H47LI2Q+tlmhk13m6X6GWmOzsqw4s8Y/XrhihG2zxuPK137nLwzl/4vv/PScOcpx3Z/qWOEVyOEG37v3/E8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IHjZMmV2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2615C4CEE7;
+	Mon, 12 May 2025 18:06:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073573;
-	bh=qme6yMXdc2McZlG0PAH77I5dp7o4EG0JL/2vccPCH7o=;
+	s=korg; t=1747073173;
+	bh=qMprXEbnMX6zCe2DmRqFAA5Fc5PaOXsV/akb5j4KRs0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fq90U+nuAcTtT21bpKKJvWJozSO7h3k97ewVC/Gw0ThveEgH1YnU5YYvH8FWDMY44
-	 gMFedDuCHJGVW0sjnNuf+WAl9UWIGxkaDIHpmI7zvbgb1yj1uhbOC0mVfGhGOqXoQV
-	 E74YqTDrMW72WwCe7LqtajuV0KysZeKwacbCYwXo=
+	b=IHjZMmV2cCm+E471IbsPujRVvqSsMULh93j8mNx1EUx2ZhsQC6LuOuOjWl/1oYQV4
+	 C1f7yAQ65epeTLzSNOQEolcp32ypAMw1wFqrJRPVp9msPX93KtazSYeO9PC+7TvpXe
+	 XCAx5841VYesOPI4zp/HWur82S/A+tEcVfUtW7Hs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 089/113] do_umount(): add missing barrier before refcount checks in sync case
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Alexandre Chartre <alexandre.chartre@oracle.com>
+Subject: [PATCH 6.12 177/184] x86/its: Add support for ITS-safe return thunk
 Date: Mon, 12 May 2025 19:46:18 +0200
-Message-ID: <20250512172031.305234421@linuxfoundation.org>
+Message-ID: <20250512172049.013982066@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
-References: <20250512172027.691520737@linuxfoundation.org>
+In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
+References: <20250512172041.624042835@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,199 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-[ Upstream commit 65781e19dcfcb4aed1167d87a3ffcc2a0c071d47 ]
+commit a75bf27fe41abe658c53276a0c486c4bf9adecfc upstream.
 
-do_umount() analogue of the race fixed in 119e1ef80ecf "fix
-__legitimize_mnt()/mntput() race".  Here we want to make sure that
-if __legitimize_mnt() doesn't notice our lock_mount_hash(), we will
-notice their refcount increment.  Harder to hit than mntput_no_expire()
-one, fortunately, and consequences are milder (sync umount acting
-like umount -l on a rare race with RCU pathwalk hitting at just the
-wrong time instead of use-after-free galore mntput_no_expire()
-counterpart used to be hit).  Still a bug...
+RETs in the lower half of cacheline may be affected by ITS bug,
+specifically when the RSB-underflows. Use ITS-safe return thunk for such
+RETs.
 
-Fixes: 48a066e72d97 ("RCU'd vfsmounts")
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+RETs that are not patched:
+
+- RET in retpoline sequence does not need to be patched, because the
+  sequence itself fills an RSB before RET.
+- RET in Call Depth Tracking (CDT) thunks __x86_indirect_{call|jump}_thunk
+  and call_depth_return_thunk are not patched because CDT by design
+  prevents RSB-underflow.
+- RETs in .init section are not reachable after init.
+- RETs that are explicitly marked safe with ANNOTATE_UNRET_SAFE.
+
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/namespace.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/alternative.h   |   14 ++++++++++++++
+ arch/x86/include/asm/nospec-branch.h |    6 ++++++
+ arch/x86/kernel/alternative.c        |   19 +++++++++++++++++--
+ arch/x86/kernel/ftrace.c             |    2 +-
+ arch/x86/kernel/static_call.c        |    4 ++--
+ arch/x86/kernel/vmlinux.lds.S        |    4 ++++
+ arch/x86/lib/retpoline.S             |   13 ++++++++++++-
+ arch/x86/net/bpf_jit_comp.c          |    2 +-
+ 8 files changed, 57 insertions(+), 7 deletions(-)
 
-diff --git a/fs/namespace.c b/fs/namespace.c
-index 5a885d35efe93..450f4198b8cdd 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -633,7 +633,7 @@ int __legitimize_mnt(struct vfsmount *bastard, unsigned seq)
- 		return 0;
- 	mnt = real_mount(bastard);
- 	mnt_add_count(mnt, 1);
--	smp_mb();			// see mntput_no_expire()
-+	smp_mb();		// see mntput_no_expire() and do_umount()
- 	if (likely(!read_seqretry(&mount_lock, seq)))
- 		return 0;
- 	if (bastard->mnt_flags & MNT_SYNC_UMOUNT) {
-@@ -1786,6 +1786,7 @@ static int do_umount(struct mount *mnt, int flags)
- 			umount_tree(mnt, UMOUNT_PROPAGATE);
- 		retval = 0;
+--- a/arch/x86/include/asm/alternative.h
++++ b/arch/x86/include/asm/alternative.h
+@@ -134,6 +134,20 @@ static __always_inline int x86_call_dept
+ }
+ #endif
+ 
++#if defined(CONFIG_MITIGATION_RETHUNK) && defined(CONFIG_OBJTOOL)
++extern bool cpu_wants_rethunk(void);
++extern bool cpu_wants_rethunk_at(void *addr);
++#else
++static __always_inline bool cpu_wants_rethunk(void)
++{
++	return false;
++}
++static __always_inline bool cpu_wants_rethunk_at(void *addr)
++{
++	return false;
++}
++#endif
++
+ #ifdef CONFIG_SMP
+ extern void alternatives_smp_module_add(struct module *mod, char *name,
+ 					void *locks, void *locks_end,
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -386,6 +386,12 @@ static inline void srso_return_thunk(voi
+ static inline void srso_alias_return_thunk(void) {}
+ #endif
+ 
++#ifdef CONFIG_MITIGATION_ITS
++extern void its_return_thunk(void);
++#else
++static inline void its_return_thunk(void) {}
++#endif
++
+ extern void retbleed_return_thunk(void);
+ extern void srso_return_thunk(void);
+ extern void srso_alias_return_thunk(void);
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -809,6 +809,21 @@ void __init_or_module noinline apply_ret
+ 
+ #ifdef CONFIG_MITIGATION_RETHUNK
+ 
++bool cpu_wants_rethunk(void)
++{
++	return cpu_feature_enabled(X86_FEATURE_RETHUNK);
++}
++
++bool cpu_wants_rethunk_at(void *addr)
++{
++	if (!cpu_feature_enabled(X86_FEATURE_RETHUNK))
++		return false;
++	if (x86_return_thunk != its_return_thunk)
++		return true;
++
++	return !((unsigned long)addr & 0x20);
++}
++
+ /*
+  * Rewrite the compiler generated return thunk tail-calls.
+  *
+@@ -825,7 +840,7 @@ static int patch_return(void *addr, stru
+ 	int i = 0;
+ 
+ 	/* Patch the custom return thunks... */
+-	if (cpu_feature_enabled(X86_FEATURE_RETHUNK)) {
++	if (cpu_wants_rethunk_at(addr)) {
+ 		i = JMP32_INSN_SIZE;
+ 		__text_gen_insn(bytes, JMP32_INSN_OPCODE, addr, x86_return_thunk, i);
  	} else {
-+		smp_mb(); // paired with __legitimize_mnt()
- 		shrink_submounts(mnt);
- 		retval = -EBUSY;
- 		if (!propagate_mount_busy(mnt, 2)) {
--- 
-2.39.5
-
+@@ -842,7 +857,7 @@ void __init_or_module noinline apply_ret
+ {
+ 	s32 *s;
+ 
+-	if (cpu_feature_enabled(X86_FEATURE_RETHUNK))
++	if (cpu_wants_rethunk())
+ 		static_call_force_reinit();
+ 
+ 	for (s = start; s < end; s++) {
+--- a/arch/x86/kernel/ftrace.c
++++ b/arch/x86/kernel/ftrace.c
+@@ -354,7 +354,7 @@ create_trampoline(struct ftrace_ops *ops
+ 		goto fail;
+ 
+ 	ip = trampoline + size;
+-	if (cpu_feature_enabled(X86_FEATURE_RETHUNK))
++	if (cpu_wants_rethunk_at(ip))
+ 		__text_gen_insn(ip, JMP32_INSN_OPCODE, ip, x86_return_thunk, JMP32_INSN_SIZE);
+ 	else
+ 		memcpy(ip, retq, sizeof(retq));
+--- a/arch/x86/kernel/static_call.c
++++ b/arch/x86/kernel/static_call.c
+@@ -81,7 +81,7 @@ static void __ref __static_call_transfor
+ 		break;
+ 
+ 	case RET:
+-		if (cpu_feature_enabled(X86_FEATURE_RETHUNK))
++		if (cpu_wants_rethunk_at(insn))
+ 			code = text_gen_insn(JMP32_INSN_OPCODE, insn, x86_return_thunk);
+ 		else
+ 			code = &retinsn;
+@@ -90,7 +90,7 @@ static void __ref __static_call_transfor
+ 	case JCC:
+ 		if (!func) {
+ 			func = __static_call_return;
+-			if (cpu_feature_enabled(X86_FEATURE_RETHUNK))
++			if (cpu_wants_rethunk())
+ 				func = x86_return_thunk;
+ 		}
+ 
+--- a/arch/x86/kernel/vmlinux.lds.S
++++ b/arch/x86/kernel/vmlinux.lds.S
+@@ -536,4 +536,8 @@ INIT_PER_CPU(irq_stack_backing_store);
+ . = ASSERT(__x86_indirect_its_thunk_array == __x86_indirect_its_thunk_rax, "Gap in ITS thunk array");
+ #endif
+ 
++#if defined(CONFIG_MITIGATION_ITS) && !defined(CONFIG_DEBUG_FORCE_FUNCTION_ALIGN_64B)
++. = ASSERT(its_return_thunk & 0x20, "its_return_thunk not in second half of cacheline");
++#endif
++
+ #endif /* CONFIG_X86_64 */
+--- a/arch/x86/lib/retpoline.S
++++ b/arch/x86/lib/retpoline.S
+@@ -392,7 +392,18 @@ SYM_CODE_START(__x86_indirect_its_thunk_
+ 	.align 64, 0xcc
+ SYM_CODE_END(__x86_indirect_its_thunk_array)
+ 
+-#endif
++.align 64, 0xcc
++.skip 32, 0xcc
++SYM_CODE_START(its_return_thunk)
++	UNWIND_HINT_FUNC
++	ANNOTATE_NOENDBR
++	ANNOTATE_UNRET_SAFE
++	ret
++	int3
++SYM_CODE_END(its_return_thunk)
++EXPORT_SYMBOL(its_return_thunk)
++
++#endif /* CONFIG_MITIGATION_ITS */
+ 
+ /*
+  * This function name is magical and is used by -mfunction-return=thunk-extern
+--- a/arch/x86/net/bpf_jit_comp.c
++++ b/arch/x86/net/bpf_jit_comp.c
+@@ -664,7 +664,7 @@ static void emit_return(u8 **pprog, u8 *
+ {
+ 	u8 *prog = *pprog;
+ 
+-	if (cpu_feature_enabled(X86_FEATURE_RETHUNK)) {
++	if (cpu_wants_rethunk()) {
+ 		emit_jump(&prog, x86_return_thunk, ip);
+ 	} else {
+ 		EMIT1(0xC3);		/* ret */
 
 
 
