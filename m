@@ -1,102 +1,100 @@
-Return-Path: <stable+bounces-143172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62D47AB3389
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 11:30:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1F97AB33AD
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 11:34:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4365E860893
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 09:29:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D227117BD46
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 09:34:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C139A25F7BD;
-	Mon, 12 May 2025 09:24:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 129BD265632;
+	Mon, 12 May 2025 09:31:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CIot0SOO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aqDkcM5k"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E859C2566F4;
-	Mon, 12 May 2025 09:24:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD346A934;
+	Mon, 12 May 2025 09:31:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747041869; cv=none; b=u19iouaTOYyuYnc3MhFGNab/bQr7yMfsDXB/FLRLeRzjWISPpWuPQsbVPLh1e/0nWAS4fE8hntv1HFKWDtGjQo4ynhKNK0YckTXD5lEkwgLwLkpQZwUV732Uuijbb69PZiTiBTR7VtZjlP5x7l9nI7weFEONiFU+wdyzqEqDuPw=
+	t=1747042283; cv=none; b=uOb78wzl3v//GpYD6O/EQ//zgsiiK2i06piQVBe75vX+6oN2MyR9gLjQCP2JWpca4m7GHOh5bC1MPFnt6iBSM40ngQjezwsO0HdT8mE8QMc+CkZx5KiDwOO69qi3UoPh8USPeK6AXNoEpWBK80kKusO0ZfRb00AntnWk+hfkGWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747041869; c=relaxed/simple;
-	bh=SepfAwFmEPyhCW7mcqed5FnkvJ30i4FjvqzI0hrQgm0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hlz3Xug9uOyHeHBh9GMu81Cw0c5vHiRjUavkwe2kXa9uKN1e/c2EYcPAaeyjyN4sTfe0dhuzcxZPRoa0HV9iXJaiWdHYCvUZF6ynk5KB2pIv+47FlJ/6Ekis2LF1Fllr8ap5mTzB/QX6tGD6fz5cEWf8lL88vjHYplR/dz9gfZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CIot0SOO; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747041868; x=1778577868;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=SepfAwFmEPyhCW7mcqed5FnkvJ30i4FjvqzI0hrQgm0=;
-  b=CIot0SOOUrl4hJ1J1+t7jqOjk/97Maixp2xVge9+hj3EDsWtcUuWKTUc
-   ka4AF/a4kWSeR9ShZhvp3dc8urAS1ikayEq14TXAwCr4DtCm1ainYN8tN
-   E2WFtMhXmHgxp6iAzqfb+K6kbSt1KgDIy2gqZpJH4M5Fuy8DUR56TL5sB
-   80K2BakC1ubU7q8MdU8r1N0KyLZ+zowyA633jbJgWXiQmgNIq4ZG5JDPp
-   xCw9SLiYN9A6IXK4sa7Y/c539kFIrltn/OLHCMX3JO1zUiohQrP0q4VGt
-   aSpP6YH+iXrDBvfYlF3FOr4F2PTCgm96pnNI0dq6LERiEYsJHuyy8niLD
-   A==;
-X-CSE-ConnectionGUID: Z/tAuSuhTVeta4wm6CVrUQ==
-X-CSE-MsgGUID: bU7jMK42TBaNfGntviD5Pg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11430"; a="48980268"
-X-IronPort-AV: E=Sophos;i="6.15,281,1739865600"; 
-   d="scan'208";a="48980268"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2025 02:24:27 -0700
-X-CSE-ConnectionGUID: 1tVxKyEuSbiofFOu0DBnGw==
-X-CSE-MsgGUID: ErCKQ8jpQD69Q9c/3yHA4w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,281,1739865600"; 
-   d="scan'208";a="142525408"
-Received: from jiaqingz-mobl.ccr.corp.intel.com (HELO [10.124.249.161]) ([10.124.249.161])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2025 02:24:25 -0700
-Message-ID: <1862275b-e7ca-4fa0-bdea-f739e90d9d22@linux.intel.com>
-Date: Mon, 12 May 2025 17:24:21 +0800
+	s=arc-20240116; t=1747042283; c=relaxed/simple;
+	bh=Pl5wI9ryAPdgORdBss+zWHr/rLzZLPqpkrMyNkyLOrE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=f+E7fUlmvj9M/ipy0EaXJeQEDsEvMmugrBu8Azsj2UmSKhS6ICOj6sRBURV9GQVQxadehq+n0hN0uA0hZhVtxXwiNPYN620UMwwqglRwiT6uX1EEvU0fgqLEwwk4BjzGpcaFlMvJqYF2jPTH0T76xnFdXehP7CKotr0aGjziRx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aqDkcM5k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0A26C4CEE7;
+	Mon, 12 May 2025 09:31:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1747042283;
+	bh=Pl5wI9ryAPdgORdBss+zWHr/rLzZLPqpkrMyNkyLOrE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=aqDkcM5kbzBSpqfa2DcUZcTC2CN2/IqVXcfwUnQ3zOru/LJ5p5i/z9LwkUsDTxXrI
+	 Y7IsYEHkb7pMDcSwuybWOhiCoiDMnlTmFOnjZ0dBJJbseASIbRBKBZGSru1x4LldDz
+	 kYZdcga4bRl1nnHM2Lz2mzYKK+Ii+7HDatDcArwc=
+Date: Mon, 12 May 2025 11:31:20 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Pavel Machek <pavel@denx.de>
+Cc: Florian Fainelli <f.fainelli@gmail.com>, stable@vger.kernel.org,
+	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org, akpm@linux-foundation.org,
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, jonathanh@nvidia.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
+Subject: Re: [PATCH 6.1 000/569] 6.1.129-rc2 review
+Message-ID: <2025051205-return-blame-ba79@gregkh>
+References: <20250220104545.805660879@linuxfoundation.org>
+ <80ab673f-aa94-43e2-899a-0c5a22f3f1e0@gmail.com>
+ <2025022221-revert-hubcap-f519@gregkh>
+ <Z7mXDolRS+3nLAse@duo.ucw.cz>
+ <2025022213-brewery-synergy-b4bf@gregkh>
+ <aCG9kFjnZrMd4sy8@duo.ucw.cz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] x86/mtrr: Check if fixed-range MTRR exists in
- mtrr_save_fixed_ranges()
-To: Borislav Petkov <bp@alien8.de>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Bernhard Kaindl <bk@suse.de>,
- Andi Kleen <ak@linux.intel.com>, Li Fei <fei1.li@intel.com>,
- stable@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20250509170633.3411169-2-jiaqing.zhao@linux.intel.com>
- <20250509173225.GDaB48KZvZSA9QLUaR@fat_crate.local>
- <0ec52e49-3996-48e2-a16b-5d7eb0a4c8a6@linux.intel.com>
- <FFB8ACEC-7208-40D0-8B57-EBB2A57DF65F@alien8.de>
-Content-Language: en-US
-From: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
-In-Reply-To: <FFB8ACEC-7208-40D0-8B57-EBB2A57DF65F@alien8.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aCG9kFjnZrMd4sy8@duo.ucw.cz>
 
-
-
-On 2025-05-12 16:46, Borislav Petkov wrote:
-> On May 12, 2025 10:31:23 AM GMT+02:00, Jiaqing Zhao <jiaqing.zhao@linux.intel.com> wrote:
->> This fixes unchecked MSR access error on platform without fixed-range
->> MTRRs when doing ACPI S3 suspend.
+On Mon, May 12, 2025 at 11:21:20AM +0200, Pavel Machek wrote:
+> On Sat 2025-02-22 10:39:23, Greg Kroah-Hartman wrote:
+> > On Sat, Feb 22, 2025 at 10:21:18AM +0100, Pavel Machek wrote:
+> > > On Sat 2025-02-22 07:28:10, Greg Kroah-Hartman wrote:
+> > > > On Fri, Feb 21, 2025 at 09:45:15AM -0800, Florian Fainelli wrote:
+> > > > > 
+> > > > > 
+> > > > > On 2/20/2025 2:57 AM, Greg Kroah-Hartman wrote:
+> > > > > > This is the start of the stable review cycle for the 6.1.129 release.
+> > > > > > There are 569 patches in this series, all will be posted as a response
+> > > > > > to this one.  If anyone has any issues with these being applied, please
+> > > > > > let me know.
+> > > > > > 
+> > > > > > Responses should be made by Sat, 22 Feb 2025 10:44:04 +0000.
+> > > > > > Anything received after that time might be too late.
+> > > > > 
+> > > > > And yet there was a v6.1.29 tag created already?
+> > > > 
+> > > > Sometimes I'm faster, which is usually the case for -rc2 and later, I go
+> > > > off of the -rc1 date if the people that had problems with -rc1 have
+> > > > reported that the newer -rc fixes their reported issues.
+> > > 
+> > > Well, quoting time down to second then doing something completely
+> > > different is quite confusing. Please fix your scripts.
+> > 
+> > Patches gladly welcome :)
 > 
-> Is this happening on hw which is shipping now and users will see it or is this some new platform which is yet to see the light of day in the future?
-> 
-Actually it is happening on virtualized platform. A recent version of
-ACRN hypervisor has removed emulated fixed-range MTRRs.
+> It is not okay to send misleading emails just because script generated
+> them.
 
-Thanks,
-Jiaqing
+*plonk*
 
