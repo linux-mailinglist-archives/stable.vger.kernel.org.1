@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-143980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACE8FAB434A
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:32:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFDC3AB426A
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:23:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 927163BCF11
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:28:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C483016D70D
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:23:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C081A29ACC9;
-	Mon, 12 May 2025 18:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 761042980A8;
+	Mon, 12 May 2025 18:06:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Chno9U9j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HpKUccUB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75B6C29A304;
-	Mon, 12 May 2025 18:11:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 341BF297B92;
+	Mon, 12 May 2025 18:06:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073485; cv=none; b=JMRtO3aVnS4WRHwWsctC5brfxPS/FGWKLbIA+sxZeObuBL3zVUz1xCPXQsmaPhF2xEglLCibp0DWP7OYs3E1mkgScbqDgQAbp4UyX49HIFLldf8RnmJ03mNn2KwQfRlzlqsT90BawUwqsyahm4BFBvCjKiCbUuTUJxBOvY9pfZ0=
+	t=1747073182; cv=none; b=Uo5RogGCIqPSKsw9bHaoXr5eAmPT6KJGCxyP6uNNIAqMPLHlPFUOdFshH1W3T470scgdInUB5TuQ+kNqMs++FP6VYtxX9taHZjNECosZ2hMg6/NMk1ZCsDDX4yBI2W7w2lZjQzk5SycCIWPeEKE6y9Zb523W7sZE7jc6GoSwgeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073485; c=relaxed/simple;
-	bh=2GrB2pF2gPzuM6J1tK4oMS6CTwI8jT7bH3gQjVIqpr8=;
+	s=arc-20240116; t=1747073182; c=relaxed/simple;
+	bh=B2bSmgXpzwdSPuJtcP4KrQsCKr+ZmZNYnxW6Otgw3Nw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KhD265q7ZLhIefkilnBUl0ublJPVVPBZDbzvu6cKnmeFuKtMJEKzdwnGAHIgqk9t60TJFrLb12dReKNpApq1Pisgvx555sypvqVbg2d5c7knOPQEHdc8tRua+iyzn17iul2VNMRMHs6FzAkE/wl6xvJRCP4p5S3/Xf0j8Vse2VA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Chno9U9j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D89F4C4CEE9;
-	Mon, 12 May 2025 18:11:24 +0000 (UTC)
+	 MIME-Version; b=ktcZBf0+yCWihvLRrS/enmuFrlVEKSxxnnHJslXvTzEi+dAOdSUGThHSGW1m1JJt8BpICj24Q9Cbr7zIhvyK7K67FIKcLzEzOvKmLu7ndTL4zK2gEodtyfI4WVGXAQmp2zObjWtAExD8aNRvT8qPHeWG7Mye4l5mdA1bOYbSj3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HpKUccUB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD5DFC4CEE7;
+	Mon, 12 May 2025 18:06:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073485;
-	bh=2GrB2pF2gPzuM6J1tK4oMS6CTwI8jT7bH3gQjVIqpr8=;
+	s=korg; t=1747073182;
+	bh=B2bSmgXpzwdSPuJtcP4KrQsCKr+ZmZNYnxW6Otgw3Nw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Chno9U9j9QNpkraA5b702OwMgu5v43ZKGMBlZFbgAjAbrIoMqKZNu+3nPbJFFereU
-	 fT8f2VcJkIfinC12w5fMKI56xsdZ0+qKxlvZmMjAN5ovuuj6M/1AXHHVJukiw3bVn5
-	 1TDypIsBOiWEs411LmrPIaQiYxNlXKRJGRm2Hyg0=
+	b=HpKUccUBk7psOfzK57d8xR7SRBXW8R6TWESAjW1Azp3J86WJ6a1WSjrkmzfsyEQOe
+	 tWukMcwRfJRl0rJQ3mCQ34yLj+gx/2mMivCS4pPhnSGXbS0Dt1IYfRvNLM4f8qTVt8
+	 0zPjEZoTXCOTcpBBUmg5wmjxgBaCks2YxfIPpDwA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Norman Maurer <norman_maurer@apple.com>,
-	Christian Mazakas <christian.mazakas@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 091/113] io_uring: ensure deferred completions are posted for multishot
-Date: Mon, 12 May 2025 19:46:20 +0200
-Message-ID: <20250512172031.386636019@linuxfoundation.org>
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Alexandre Chartre <alexandre.chartre@oracle.com>
+Subject: [PATCH 6.12 180/184] x86/its: Add support for RSB stuffing mitigation
+Date: Mon, 12 May 2025 19:46:21 +0200
+Message-ID: <20250512172049.136783746@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
-References: <20250512172027.691520737@linuxfoundation.org>
+In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
+References: <20250512172041.624042835@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-Commit 687b2bae0efff9b25e071737d6af5004e6e35af5 upstream.
+commit facd226f7e0c8ca936ac114aba43cb3e8b94e41e upstream.
 
-Multishot normally uses io_req_post_cqe() to post completions, but when
-stopping it, it may finish up with a deferred completion. This is fine,
-except if another multishot event triggers before the deferred completions
-get flushed. If this occurs, then CQEs may get reordered in the CQ ring,
-and cause confusion on the application side.
+When retpoline mitigation is enabled for spectre-v2, enabling
+call-depth-tracking and RSB stuffing also mitigates ITS. Add cmdline option
+indirect_target_selection=stuff to allow enabling RSB stuffing mitigation.
 
-When multishot posting via io_req_post_cqe(), flush any pending deferred
-completions first, if any.
+When retpoline mitigation is not enabled, =stuff option is ignored, and
+default mitigation for ITS is deployed.
 
-Cc: stable@vger.kernel.org # 6.1+
-Reported-by: Norman Maurer <norman_maurer@apple.com>
-Reported-by: Christian Mazakas <christian.mazakas@gmail.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io_uring.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ Documentation/admin-guide/kernel-parameters.txt |    3 +++
+ arch/x86/kernel/cpu/bugs.c                      |   19 +++++++++++++++++++
+ 2 files changed, 22 insertions(+)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -919,6 +919,14 @@ static bool __io_post_aux_cqe(struct io_
- {
- 	bool filled;
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -2159,6 +2159,9 @@
+ 				mitigation.
+ 			vmexit: Only deploy mitigation if CPU is affected by
+ 				guest/host isolation part of ITS.
++			stuff:	Deploy RSB-fill mitigation when retpoline is
++				also deployed. Otherwise, deploy the default
++				mitigation.
  
-+	/*
-+	 * If multishot has already posted deferred completions, ensure that
-+	 * those are flushed first before posting this one. If not, CQEs
-+	 * could get reordered.
-+	 */
-+	if (!wq_list_empty(&ctx->submit_state.compl_reqs))
-+		__io_submit_flush_completions(ctx);
+ 			For details see:
+ 			Documentation/admin-guide/hw-vuln/indirect-target-selection.rst
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -1190,6 +1190,7 @@ enum its_mitigation_cmd {
+ 	ITS_CMD_OFF,
+ 	ITS_CMD_ON,
+ 	ITS_CMD_VMEXIT,
++	ITS_CMD_RSB_STUFF,
+ };
+ 
+ enum its_mitigation {
+@@ -1230,6 +1231,8 @@ static int __init its_parse_cmdline(char
+ 		setup_force_cpu_bug(X86_BUG_ITS);
+ 	} else if (!strcmp(str, "vmexit")) {
+ 		its_cmd = ITS_CMD_VMEXIT;
++	} else if (!strcmp(str, "stuff")) {
++		its_cmd = ITS_CMD_RSB_STUFF;
+ 	} else {
+ 		pr_err("Ignoring unknown indirect_target_selection option (%s).", str);
+ 	}
+@@ -1281,6 +1284,12 @@ static void __init its_select_mitigation
+ 		goto out;
+ 	}
+ 
++	if (cmd == ITS_CMD_RSB_STUFF &&
++	    (!boot_cpu_has(X86_FEATURE_RETPOLINE) || !IS_ENABLED(CONFIG_MITIGATION_CALL_DEPTH_TRACKING))) {
++		pr_err("RSB stuff mitigation not supported, using default\n");
++		cmd = ITS_CMD_ON;
++	}
 +
- 	io_cq_lock(ctx);
- 	filled = io_fill_cqe_aux(ctx, user_data, res, cflags);
- 	if (!filled && allow_overflow)
+ 	switch (cmd) {
+ 	case ITS_CMD_OFF:
+ 		its_mitigation = ITS_MITIGATION_OFF;
+@@ -1298,6 +1307,16 @@ static void __init its_select_mitigation
+ 		setup_force_cpu_cap(X86_FEATURE_RETHUNK);
+ 		set_return_thunk(its_return_thunk);
+ 		break;
++	case ITS_CMD_RSB_STUFF:
++		its_mitigation = ITS_MITIGATION_RETPOLINE_STUFF;
++		setup_force_cpu_cap(X86_FEATURE_RETHUNK);
++		setup_force_cpu_cap(X86_FEATURE_CALL_DEPTH);
++		set_return_thunk(call_depth_return_thunk);
++		if (retbleed_mitigation == RETBLEED_MITIGATION_NONE) {
++			retbleed_mitigation = RETBLEED_MITIGATION_STUFF;
++			pr_info("Retbleed mitigation updated to stuffing\n");
++		}
++		break;
+ 	}
+ out:
+ 	pr_info("%s\n", its_strings[its_mitigation]);
 
 
 
