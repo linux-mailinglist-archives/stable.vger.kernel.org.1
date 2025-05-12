@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-144004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60B7EAB4361
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:33:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3289CAB4264
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:22:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EDC83A4B84
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:29:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B550C167A5A
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:22:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 482A029B234;
-	Mon, 12 May 2025 18:12:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7734297B88;
+	Mon, 12 May 2025 18:05:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dOaBM42p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ElfMWb6z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01F8929B231;
-	Mon, 12 May 2025 18:12:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89254297B94;
+	Mon, 12 May 2025 18:05:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073559; cv=none; b=D/g6essLA8U2cvquoxNZ9WDJTK1gCVQ3FTmaEQUvXbeuzKOk2RihlC7ihboDtsBKh6nMxhFwt0+l6+4MTzmLGVthuDYRhaGwEvxSkK9jP/A+FzA6ggwdjLr1E5FJK0V2xGyB40s5lVZZwEm0q32DFpTqB0NrANLtcj4ecV5KdWA=
+	t=1747073157; cv=none; b=I4UQ7Mq442dvDeiE2k5czQFfjotnGni3Ina1y1TW/KCVa7NEZjj0oBgkAV7Zn+JsxKTUQX3r0gTpCokDS+JGrm5rbsltBLTxOPTHC0S6M/Hx4HEUiA8iH3nj3Vbs7tiQOQv1GzVOi5kO4+qnvDcRJF78cXDXKGvfRk4UxiVHYG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073559; c=relaxed/simple;
-	bh=afG8tlM186MFOAFOmzSJHgot7Nehi2KluHpZG6BH8kE=;
+	s=arc-20240116; t=1747073157; c=relaxed/simple;
+	bh=wqrONNua3sCVKRYxHJYG4aFCLLCg9ANXHZWHMP13QoQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uKNVLV5ATx0furp7HizFAmSE89R8DsT7YsrI3xIrlm0rHRhfvB7vAniUrNSTC1vD/IdcDrkWGlSd9Kk00aqsiG9bSRQe3DdlEJz5zJHaPAXYGm9gSLA2gYNRjV9QXkglKu+UP6LO5s27eySZzfxeYvYIY2lUlG7DF9I0aOe9S2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dOaBM42p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 641F2C4CEE7;
-	Mon, 12 May 2025 18:12:38 +0000 (UTC)
+	 MIME-Version; b=rA/1/VwXeje6kqjH5Qci3bwXav8eWaFgoduU38SmGT/OIRwGuvRn6mOjG05Bz+6iyf0NOc9F8d7PX9Yqtig1lfhhV8ygb373Gfv8pi7LwNVGXybGweLifqoGXd6M9IGBaFMT4Lk8oms4pztt4dj9ZZIKgLYPGNAs+Mm47+DZEQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ElfMWb6z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A709C4CEE7;
+	Mon, 12 May 2025 18:05:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073558;
-	bh=afG8tlM186MFOAFOmzSJHgot7Nehi2KluHpZG6BH8kE=;
+	s=korg; t=1747073157;
+	bh=wqrONNua3sCVKRYxHJYG4aFCLLCg9ANXHZWHMP13QoQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dOaBM42pxfHXM2MGNDzjY2clbvcRH//hD16cYH3eHhZT3OpsBs81BTclFKm0XeGyJ
-	 xnFIqkGdAkO8VM3MTJlh/JyFgfyT3cEcxGyYzvIo0+3v5q9pOd2AOUlHyvlebDiVnZ
-	 JAG6UU7Bl8C2lo+sCilyTZ6CR3cFynbAGfFAZgKs=
+	b=ElfMWb6zTBG8SQ8R7RoyuyQHFcdomMRdGWh0iikNDDrshqm8UE3+NXVN6ABr0JpJP
+	 /bmgRnhy9JE5FkncGf/GwZwsf5lFHj3VdWe2chTue0r8LOMdUeLgz9zSKLR/r3aH2T
+	 Vk8i3shaAGj8FudcHYv7fakOqY1/oSfilubn2YbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marco Crivellari <marco.crivellari@suse.com>,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 085/113] MIPS: Move r4k_wait() to .cpuidle.text section
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>
+Subject: [PATCH 6.12 173/184] x86/speculation: Remove the extra #ifdef around CALL_NOSPEC
 Date: Mon, 12 May 2025 19:46:14 +0200
-Message-ID: <20250512172031.143637157@linuxfoundation.org>
+Message-ID: <20250512172048.854456314@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
-References: <20250512172027.691520737@linuxfoundation.org>
+In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
+References: <20250512172041.624042835@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marco Crivellari <marco.crivellari@suse.com>
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-[ Upstream commit b713f27e32d87c35737ec942dd6f5ed6b7475f48 ]
+commit c8c81458863ab686cda4fe1e603fccaae0f12460 upstream.
 
-Fix missing .cpuidle.text section assignment for r4k_wait() to correct
-backtracing with nmi_backtrace().
+Commit:
 
-Fixes: 97c8580e85cf ("MIPS: Annotate cpu_wait implementations with __cpuidle")
-Signed-off-by: Marco Crivellari <marco.crivellari@suse.com>
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Acked-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  010c4a461c1d ("x86/speculation: Simplify and make CALL_NOSPEC consistent")
+
+added an #ifdef CONFIG_MITIGATION_RETPOLINE around the CALL_NOSPEC definition.
+This is not required as this code is already under a larger #ifdef.
+
+Remove the extra #ifdef, no functional change.
+
+vmlinux size remains same before and after this change:
+
+ CONFIG_MITIGATION_RETPOLINE=y:
+      text       data        bss         dec        hex    filename
+  25434752    7342290    2301212    35078254    217406e    vmlinux.before
+  25434752    7342290    2301212    35078254    217406e    vmlinux.after
+
+ # CONFIG_MITIGATION_RETPOLINE is not set:
+      text       data        bss         dec        hex    filename
+  22943094    6214994    1550152    30708240    1d49210    vmlinux.before
+  22943094    6214994    1550152    30708240    1d49210    vmlinux.after
+
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Link: https://lore.kernel.org/r/20250320-call-nospec-extra-ifdef-v1-1-d9b084d24820@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/kernel/genex.S | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/include/asm/nospec-branch.h |    4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/arch/mips/kernel/genex.S b/arch/mips/kernel/genex.S
-index 488275e4566d4..f4cf3fcd337e1 100644
---- a/arch/mips/kernel/genex.S
-+++ b/arch/mips/kernel/genex.S
-@@ -104,6 +104,7 @@ handle_vcei:
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -452,12 +452,8 @@ static inline void call_depth_return_thu
+  * Inline asm uses the %V modifier which is only in newer GCC
+  * which is ensured when CONFIG_MITIGATION_RETPOLINE is defined.
+  */
+-#ifdef CONFIG_MITIGATION_RETPOLINE
+ #define CALL_NOSPEC	__CS_PREFIX("%V[thunk_target]")	\
+ 			"call __x86_indirect_thunk_%V[thunk_target]\n"
+-#else
+-#define CALL_NOSPEC	"call *%[thunk_target]\n"
+-#endif
  
- 	__FINIT
+ # define THUNK_TARGET(addr) [thunk_target] "r" (addr)
  
-+	.section .cpuidle.text,"ax"
- 	/* Align to 32 bytes for the maximum idle interrupt region size. */
- 	.align	5
- LEAF(r4k_wait)
--- 
-2.39.5
-
 
 
 
