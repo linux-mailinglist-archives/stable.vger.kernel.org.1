@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-143774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47D7AAB4141
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:03:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F475AB408F
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:55:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB0D57AE69F
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:02:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 76CC27B35D3
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:53:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD1B51DF754;
-	Mon, 12 May 2025 18:03:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C2B42550D0;
+	Mon, 12 May 2025 17:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bbY8zL69"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="udMu+DBv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9968F175BF;
-	Mon, 12 May 2025 18:03:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 593C923535A;
+	Mon, 12 May 2025 17:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073033; cv=none; b=VxqizxxAOTB5CRTK6trz+J4s+parPrUwcFvjAPZ4upCZIQ4dRJJf6Z5O7I0pORN6bf6N3ebt9WWdnHPj8Q6Dnke9vlcGmmgtFSkPsiJYvNMqcboBnboocJHCz4QTctII/386gUdayFpSP1iuzW9BC8CVsEBzWpG8cNNBq4HFcNY=
+	t=1747072478; cv=none; b=gcwJd81lIqtzfZyaphj65RLnoKXUjncZsu+fUrCuQZDOhW051FxnXRRMfazBOOn52Oj3qeKwYQ9nWaQNF9eZgTaCS8Sxe0dnfvmzl/VP4MZf5PB6LoCbdVQDlhVlUCflGwdQuImsm4/JRKHCXNuZgovh757N2OGIXbR1a3neX5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073033; c=relaxed/simple;
-	bh=t2hKnZMc3lngHVhd7ASjFtocl5hgwH4s+/szG4V+ETs=;
+	s=arc-20240116; t=1747072478; c=relaxed/simple;
+	bh=PhiWZ/e3wESfqnd0jRugk8u4XP8ZjGsWPtL4+fUtaRY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VFS9FWXTSnYmj2/dCQ3ilWQvJVrlhqHfMnajI3Q65R8vhDltvZ3teDFZjQ6BmJYyMMVbhaUleTqED8gQBbAkJHaq6pMf5vy+IDqELlWB+TJFbfYFl7MwfBHUWrW4uhFF/mu9haq631nJ6XsJkJ7Hpf2XQb1YCCgILrglDuqdetk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bbY8zL69; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16227C4CEE7;
-	Mon, 12 May 2025 18:03:52 +0000 (UTC)
+	 MIME-Version; b=fEkH3e3n/fOvxi+2W8w5gtJTdg6p91eZpFxAUyEBSueH2s3ShPc2zJ6W+g0ERpGoZNW4bl2EK7dW1V4vqBhimU7y7KNpdzrs0+A9Rgvi9H9JDC0WFZkoIRGgQ8Xvy+5F9n7fQaj4EyeuZipK1FOfetDGG9Y9BvGPsv362UR+4CM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=udMu+DBv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBA6FC4CEE7;
+	Mon, 12 May 2025 17:54:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073033;
-	bh=t2hKnZMc3lngHVhd7ASjFtocl5hgwH4s+/szG4V+ETs=;
+	s=korg; t=1747072478;
+	bh=PhiWZ/e3wESfqnd0jRugk8u4XP8ZjGsWPtL4+fUtaRY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bbY8zL69Gw9/Yu88I1rgWH5PcIakkdla9pZhbP765693yMSQEDzBJT22WbVfR2UPg
-	 Xizk13g/ZQ+t3Dqa2LeBfuaQibr2BZLZw7T3DJPYOjaLEKQwvx31tvNP0HbGjbqUrv
-	 RnuzHKrgxh9RYut28qx/gybExNUGHzRBm5/99fX0=
+	b=udMu+DBvQm/EZMQh5QFLkxUOs3tLmGqFOHLGLaqEllTmFeZDJ/S81Y0Ul0XV2coqm
+	 QJ5moxGU50c5lCDj3AFefEgIdxuSnEBepnVZrJLOv01NicHeFfqXSHR0GvMQUwuiCc
+	 QHQr3STzw08I6g8CCp2cQj+NulZZnx0afVqgNmQI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Oliver Neukum <oneukum@suse.com>
-Subject: [PATCH 6.12 126/184] USB: usbtmc: use interruptible sleep in usbtmc_read
+	Wayne Chang <waynec@nvidia.com>
+Subject: [PATCH 6.1 52/92] usb: gadget: tegra-xudc: ACK ST_RC after clearing CTRL_RUN
 Date: Mon, 12 May 2025 19:45:27 +0200
-Message-ID: <20250512172046.949883867@linuxfoundation.org>
+Message-ID: <20250512172025.236239125@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
-References: <20250512172041.624042835@linuxfoundation.org>
+In-Reply-To: <20250512172023.126467649@linuxfoundation.org>
+References: <20250512172023.126467649@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Wayne Chang <waynec@nvidia.com>
 
-commit 054c5145540e5ad5b80adf23a5e3e2fc281fb8aa upstream.
+commit 59820fde001500c167342257650541280c622b73 upstream.
 
-usbtmc_read() calls usbtmc_generic_read()
-which uses interruptible sleep, but usbtmc_read()
-itself uses uninterruptble sleep for mutual exclusion
-between threads. That makes no sense.
-Both should use interruptible sleep.
+We identified a bug where the ST_RC bit in the status register was not
+being acknowledged after clearing the CTRL_RUN bit in the control
+register. This could lead to unexpected behavior in the USB gadget
+drivers.
 
-Fixes: 5b775f672cc99 ("USB: add USB test and measurement class driver")
+This patch resolves the issue by adding the necessary code to explicitly
+acknowledge ST_RC after clearing CTRL_RUN based on the programming
+sequence, ensuring proper state transition.
+
+Fixes: 49db427232fe ("usb: gadget: Add UDC driver for tegra XUSB device mode controller")
 Cc: stable <stable@kernel.org>
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/r/20250430134810.226015-1-oneukum@suse.com
+Signed-off-by: Wayne Chang <waynec@nvidia.com>
+Link: https://lore.kernel.org/r/20250418081228.1194779-1-waynec@nvidia.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/class/usbtmc.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/usb/gadget/udc/tegra-xudc.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/usb/class/usbtmc.c
-+++ b/drivers/usb/class/usbtmc.c
-@@ -1380,7 +1380,10 @@ static ssize_t usbtmc_read(struct file *
- 	if (!buffer)
- 		return -ENOMEM;
- 
--	mutex_lock(&data->io_mutex);
-+	retval = mutex_lock_interruptible(&data->io_mutex);
-+	if (retval < 0)
-+		goto exit_nolock;
+--- a/drivers/usb/gadget/udc/tegra-xudc.c
++++ b/drivers/usb/gadget/udc/tegra-xudc.c
+@@ -1743,6 +1743,10 @@ static int __tegra_xudc_ep_disable(struc
+ 		val = xudc_readl(xudc, CTRL);
+ 		val &= ~CTRL_RUN;
+ 		xudc_writel(xudc, val, CTRL);
 +
- 	if (data->zombie) {
- 		retval = -ENODEV;
- 		goto exit;
-@@ -1503,6 +1506,7 @@ static ssize_t usbtmc_read(struct file *
++		val = xudc_readl(xudc, ST);
++		if (val & ST_RC)
++			xudc_writel(xudc, ST_RC, ST);
+ 	}
  
- exit:
- 	mutex_unlock(&data->io_mutex);
-+exit_nolock:
- 	kfree(buffer);
- 	return retval;
- }
+ 	dev_info(xudc->dev, "ep %u disabled\n", ep->index);
 
 
 
