@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-143961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25FBFAB42FB
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:28:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EAE7AB428C
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:24:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7C9D81B61E0D
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:27:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E50A1B61807
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:23:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89C2129A9D0;
-	Mon, 12 May 2025 18:10:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50F8C2980BC;
+	Mon, 12 May 2025 18:06:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A1U261ry"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LwB+FbVG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38CFE29A9CA;
-	Mon, 12 May 2025 18:10:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ECE4296FB0;
+	Mon, 12 May 2025 18:06:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073428; cv=none; b=cKf/k6NL53HYEBMiCi/7CB0SfJVcuykcoVnywZ6r7RkawAECDdBtZg4sPvPRPj6FEDqP+svz16osGrfgv/r6ev/Mb6StM0z3qCtPyXtzNHOXk9nvtZqbxMX4Ntkr0x8wxEtrzt3G5BS61Kjrz7Ql5wc+coc8lCQ5ghz1ausY+cg=
+	t=1747073199; cv=none; b=ObF/3enQAA98Mz6Yf4d2CAEiU6gPCZnzFIrvuMQ698UfD5N6vHnAWLWnFUNlDxJqwAOY+nqZ/gBtCsUYmivGUu3TYcbBEHHh+9sX9ceq+fbCmcX4lJbL2fT9mtk4yeZsUCx5ppOTH7Q02bwSebwk2PbX7rhXgvyR/tPTtjylyn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073428; c=relaxed/simple;
-	bh=k+WdecO1fhbnigWmCR5/6ziaRJmWJfoghIJ7NDh0D+E=;
+	s=arc-20240116; t=1747073199; c=relaxed/simple;
+	bh=bu919+QfE6lJ28se/W5U95Osm8y5hDu0cJs+7KegY2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pKAXfZfysx/PYAVvBhkINvo+HJlh0WK9vctBunhaJQ/nHqxWMZES5jH6q7wdUWfAgYkFqMQSpyXuxLK7MAQJvzzFZocsxBlsObl0RBmWeP8hxLce6YhmJxNIUGfT/NCFaeaafhfWTf2zDWeOSnbnPBY//PkRBAeYBHpIuApQ3Kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A1U261ry; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B62FAC4CEE7;
-	Mon, 12 May 2025 18:10:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=H+CuajgP6AbLC0AUFK6xC3h7QYO/mgurZxBjEQA6wKk+YZjHjuzP3E/izsK9AVmrbD/oNMZCf0EQ/sdkFk1EuqkUsN7g59I/F3TnqhOx5Vh123M/BvMRLnvXJ9OfXqN8jQ4fruER6eUSp160fhjv0y+x7MODcqf3HjoeilRVu4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LwB+FbVG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18429C4CEE7;
+	Mon, 12 May 2025 18:06:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073428;
-	bh=k+WdecO1fhbnigWmCR5/6ziaRJmWJfoghIJ7NDh0D+E=;
+	s=korg; t=1747073198;
+	bh=bu919+QfE6lJ28se/W5U95Osm8y5hDu0cJs+7KegY2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A1U261ryuGwSxi4HAhJg2iJH/N7uzgPXeh7b0GyES/ot3DFBz+kbMJwgbFCCZX0qe
-	 u4ZCeW1VgKQgGMmbWz6TnwE60iv8tcum6yQ7vDMj+q+IlGmCdOfVV27E/kqahmnqNh
-	 Opc20AnN0xFHe/olB9ZquOageuWvqqFzAmFX08CI=
+	b=LwB+FbVGM1XSK+DsnXg++2hybV7usGjzjs4bt7Gl/55wCWa6QutWEIaRmYE9PXCDa
+	 yz7vD6zXC6uO/xNm2e7eu4+KX/9oH1RcZiI7QQ/+CKE/0XcY6hk1tvEEIGgYTKS3Dp
+	 +fhILnI9GwFlBXOYX8JL41mJFzgXrZm1NNoWAqZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Prashanth K <prashanth.k@oss.qualcomm.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.6 071/113] usb: gadget: Use get_status callback to set remote wakeup capability
-Date: Mon, 12 May 2025 19:46:00 +0200
-Message-ID: <20250512172030.566470064@linuxfoundation.org>
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Brendan Jackman <jackmanb@google.com>,
+	kernel test robot <oliver.sang@intel.com>,
+	Carlos Song <carlos.song@nxp.com>,
+	Shivank Garg <shivankg@amd.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 160/184] mm: page_alloc: speed up fallbacks in rmqueue_bulk()
+Date: Mon, 12 May 2025 19:46:01 +0200
+Message-ID: <20250512172048.329431285@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
-References: <20250512172027.691520737@linuxfoundation.org>
+In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
+References: <20250512172041.624042835@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,70 +65,279 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prashanth K <prashanth.k@oss.qualcomm.com>
+From: Johannes Weiner <hannes@cmpxchg.org>
 
-commit 5977a58dd5a4865198b0204b998adb0f634abe19 upstream.
+commit 90abee6d7895d5eef18c91d870d8168be4e76e9d upstream.
 
-Currently when the host sends GET_STATUS request for an interface,
-we use get_status callbacks to set/clear remote wakeup capability
-of that interface. And if get_status callback isn't present for
-that interface, then we assume its remote wakeup capability based
-on bmAttributes.
+The test robot identified c2f6ea38fc1b ("mm: page_alloc: don't steal
+single pages from biggest buddy") as the root cause of a 56.4% regression
+in vm-scalability::lru-file-mmap-read.
 
-Now consider a scenario, where we have a USB configuration with
-multiple interfaces (say ECM + ADB), here ECM is remote wakeup
-capable and as of now ADB isn't. And bmAttributes will indicate
-the device as wakeup capable. With the current implementation,
-when host sends GET_STATUS request for both interfaces, we will
-set FUNC_RW_CAP for both. This results in USB3 CV Chapter 9.15
-(Function Remote Wakeup Test) failures as host expects remote
-wakeup from both interfaces.
+Carlos reports an earlier patch, c0cd6f557b90 ("mm: page_alloc: fix
+freelist movement during block conversion"), as the root cause for a
+regression in worst-case zone->lock+irqoff hold times.
 
-The above scenario is just an example, and the failure can be
-observed if we use configuration with any interface except ECM.
-Hence avoid configuring remote wakeup capability from composite
-driver based on bmAttributes, instead use get_status callbacks
-and let the function drivers decide this.
+Both of these patches modify the page allocator's fallback path to be less
+greedy in an effort to stave off fragmentation.  The flip side of this is
+that fallbacks are also less productive each time around, which means the
+fallback search can run much more frequently.
 
-Cc: stable <stable@kernel.org>
-Fixes: 481c225c4802 ("usb: gadget: Handle function suspend feature selector")
-Signed-off-by: Prashanth K <prashanth.k@oss.qualcomm.com>
-Reviewed-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20250422103231.1954387-3-prashanth.k@oss.qualcomm.com
+Carlos' traces point to rmqueue_bulk() specifically, which tries to refill
+the percpu cache by allocating a large batch of pages in a loop.  It
+highlights how once the native freelists are exhausted, the fallback code
+first scans orders top-down for whole blocks to claim, then falls back to
+a bottom-up search for the smallest buddy to steal.  For the next batch
+page, it goes through the same thing again.
+
+This can be made more efficient.  Since rmqueue_bulk() holds the
+zone->lock over the entire batch, the freelists are not subject to outside
+changes; when the search for a block to claim has already failed, there is
+no point in trying again for the next page.
+
+Modify __rmqueue() to remember the last successful fallback mode, and
+restart directly from there on the next rmqueue_bulk() iteration.
+
+Oliver confirms that this improves beyond the regression that the test
+robot reported against c2f6ea38fc1b:
+
+commit:
+  f3b92176f4 ("tools/selftests: add guard region test for /proc/$pid/pagemap")
+  c2f6ea38fc ("mm: page_alloc: don't steal single pages from biggest buddy")
+  acc4d5ff0b ("Merge tag 'net-6.15-rc0' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net")
+  2c847f27c3 ("mm: page_alloc: speed up fallbacks in rmqueue_bulk()")   <--- your patch
+
+f3b92176f4f7100f c2f6ea38fc1b640aa7a2e155cc1 acc4d5ff0b61eb1715c498b6536 2c847f27c37da65a93d23c237c5
+---------------- --------------------------- --------------------------- ---------------------------
+         %stddev     %change         %stddev     %change         %stddev     %change         %stddev
+             \          |                \          |                \          |                \
+  25525364 ±  3%     -56.4%   11135467           -57.8%   10779336           +31.6%   33581409        vm-scalability.throughput
+
+Carlos confirms that worst-case times are almost fully recovered
+compared to before the earlier culprit patch:
+
+  2dd482ba627d (before freelist hygiene):    1ms
+  c0cd6f557b90  (after freelist hygiene):   90ms
+ next-20250319    (steal smallest buddy):  280ms
+    this patch                          :    8ms
+
+[jackmanb@google.com: comment updates]
+  Link: https://lkml.kernel.org/r/D92AC0P9594X.3BML64MUKTF8Z@google.com
+[hannes@cmpxchg.org: reset rmqueue_mode in rmqueue_buddy() error loop, per Yunsheng Lin]
+  Link: https://lkml.kernel.org/r/20250409140023.GA2313@cmpxchg.org
+Link: https://lkml.kernel.org/r/20250407180154.63348-1-hannes@cmpxchg.org
+Fixes: c0cd6f557b90 ("mm: page_alloc: fix freelist movement during block conversion")
+Fixes: c2f6ea38fc1b ("mm: page_alloc: don't steal single pages from biggest buddy")
+Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+Signed-off-by: Brendan Jackman <jackmanb@google.com>
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Reported-by: Carlos Song <carlos.song@nxp.com>
+Tested-by: Carlos Song <carlos.song@nxp.com>
+Tested-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202503271547.fc08b188-lkp@intel.com
+Reviewed-by: Brendan Jackman <jackmanb@google.com>
+Tested-by: Shivank Garg <shivankg@amd.com>
+Acked-by: Zi Yan <ziy@nvidia.com>
+Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>	[6.10+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/composite.c |   12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ mm/page_alloc.c |  113 +++++++++++++++++++++++++++++++++++++++-----------------
+ 1 file changed, 80 insertions(+), 33 deletions(-)
 
---- a/drivers/usb/gadget/composite.c
-+++ b/drivers/usb/gadget/composite.c
-@@ -2011,15 +2011,13 @@ composite_setup(struct usb_gadget *gadge
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -2164,22 +2164,15 @@ static bool unreserve_highatomic_pageblo
+ }
  
- 		if (f->get_status) {
- 			status = f->get_status(f);
+ /*
+- * Try finding a free buddy page on the fallback list.
+- *
+- * This will attempt to steal a whole pageblock for the requested type
+- * to ensure grouping of such requests in the future.
+- *
+- * If a whole block cannot be stolen, regress to __rmqueue_smallest()
+- * logic to at least break up as little contiguity as possible.
++ * Try to allocate from some fallback migratetype by claiming the entire block,
++ * i.e. converting it to the allocation's start migratetype.
+  *
+  * The use of signed ints for order and current_order is a deliberate
+  * deviation from the rest of this file, to make the for loop
+  * condition simpler.
+- *
+- * Return the stolen page, or NULL if none can be found.
+  */
+ static __always_inline struct page *
+-__rmqueue_fallback(struct zone *zone, int order, int start_migratetype,
++__rmqueue_claim(struct zone *zone, int order, int start_migratetype,
+ 						unsigned int alloc_flags)
+ {
+ 	struct free_area *area;
+@@ -2216,14 +2209,29 @@ __rmqueue_fallback(struct zone *zone, in
+ 		page = get_page_from_free_area(area, fallback_mt);
+ 		page = try_to_steal_block(zone, page, current_order, order,
+ 					  start_migratetype, alloc_flags);
+-		if (page)
+-			goto got_one;
++		if (page) {
++			trace_mm_page_alloc_extfrag(page, order, current_order,
++						    start_migratetype, fallback_mt);
++			return page;
++		}
+ 	}
+ 
+-	if (alloc_flags & ALLOC_NOFRAGMENT)
+-		return NULL;
++	return NULL;
++}
 +
- 			if (status < 0)
- 				break;
--		} else {
--			/* Set D0 and D1 bits based on func wakeup capability */
--			if (f->config->bmAttributes & USB_CONFIG_ATT_WAKEUP) {
--				status |= USB_INTRF_STAT_FUNC_RW_CAP;
--				if (f->func_wakeup_armed)
--					status |= USB_INTRF_STAT_FUNC_RW;
--			}
++/*
++ * Try to steal a single page from some fallback migratetype. Leave the rest of
++ * the block as its current migratetype, potentially causing fragmentation.
++ */
++static __always_inline struct page *
++__rmqueue_steal(struct zone *zone, int order, int start_migratetype)
++{
++	struct free_area *area;
++	int current_order;
++	struct page *page;
++	int fallback_mt;
++	bool can_steal;
+ 
+-	/* No luck stealing blocks. Find the smallest fallback page */
+ 	for (current_order = order; current_order < NR_PAGE_ORDERS; current_order++) {
+ 		area = &(zone->free_area[current_order]);
+ 		fallback_mt = find_suitable_fallback(area, current_order,
+@@ -2233,25 +2241,28 @@ __rmqueue_fallback(struct zone *zone, in
+ 
+ 		page = get_page_from_free_area(area, fallback_mt);
+ 		page_del_and_expand(zone, page, order, current_order, fallback_mt);
+-		goto got_one;
++		trace_mm_page_alloc_extfrag(page, order, current_order,
++					    start_migratetype, fallback_mt);
++		return page;
+ 	}
+ 
+ 	return NULL;
+-
+-got_one:
+-	trace_mm_page_alloc_extfrag(page, order, current_order,
+-		start_migratetype, fallback_mt);
+-
+-	return page;
+ }
+ 
++enum rmqueue_mode {
++	RMQUEUE_NORMAL,
++	RMQUEUE_CMA,
++	RMQUEUE_CLAIM,
++	RMQUEUE_STEAL,
++};
 +
-+			/* if D5 is not set, then device is not wakeup capable */
-+			if (!(f->config->bmAttributes & USB_CONFIG_ATT_WAKEUP))
-+				status &= ~(USB_INTRF_STAT_FUNC_RW_CAP | USB_INTRF_STAT_FUNC_RW);
+ /*
+  * Do the hard work of removing an element from the buddy allocator.
+  * Call me with the zone->lock already held.
+  */
+ static __always_inline struct page *
+ __rmqueue(struct zone *zone, unsigned int order, int migratetype,
+-						unsigned int alloc_flags)
++	  unsigned int alloc_flags, enum rmqueue_mode *mode)
+ {
+ 	struct page *page;
+ 
+@@ -2270,16 +2281,49 @@ __rmqueue(struct zone *zone, unsigned in
  		}
+ 	}
  
- 		put_unaligned_le16(status & 0x0000ffff, req->buf);
+-	page = __rmqueue_smallest(zone, order, migratetype);
+-	if (unlikely(!page)) {
+-		if (alloc_flags & ALLOC_CMA)
++	/*
++	 * First try the freelists of the requested migratetype, then try
++	 * fallbacks modes with increasing levels of fragmentation risk.
++	 *
++	 * The fallback logic is expensive and rmqueue_bulk() calls in
++	 * a loop with the zone->lock held, meaning the freelists are
++	 * not subject to any outside changes. Remember in *mode where
++	 * we found pay dirt, to save us the search on the next call.
++	 */
++	switch (*mode) {
++	case RMQUEUE_NORMAL:
++		page = __rmqueue_smallest(zone, order, migratetype);
++		if (page)
++			return page;
++		fallthrough;
++	case RMQUEUE_CMA:
++		if (alloc_flags & ALLOC_CMA) {
+ 			page = __rmqueue_cma_fallback(zone, order);
+-
+-		if (!page)
+-			page = __rmqueue_fallback(zone, order, migratetype,
+-						  alloc_flags);
++			if (page) {
++				*mode = RMQUEUE_CMA;
++				return page;
++			}
++		}
++		fallthrough;
++	case RMQUEUE_CLAIM:
++		page = __rmqueue_claim(zone, order, migratetype, alloc_flags);
++		if (page) {
++			/* Replenished preferred freelist, back to normal mode. */
++			*mode = RMQUEUE_NORMAL;
++			return page;
++		}
++		fallthrough;
++	case RMQUEUE_STEAL:
++		if (!(alloc_flags & ALLOC_NOFRAGMENT)) {
++			page = __rmqueue_steal(zone, order, migratetype);
++			if (page) {
++				*mode = RMQUEUE_STEAL;
++				return page;
++			}
++		}
+ 	}
+-	return page;
++
++	return NULL;
+ }
+ 
+ /*
+@@ -2291,13 +2335,14 @@ static int rmqueue_bulk(struct zone *zon
+ 			unsigned long count, struct list_head *list,
+ 			int migratetype, unsigned int alloc_flags)
+ {
++	enum rmqueue_mode rmqm = RMQUEUE_NORMAL;
+ 	unsigned long flags;
+ 	int i;
+ 
+ 	spin_lock_irqsave(&zone->lock, flags);
+ 	for (i = 0; i < count; ++i) {
+ 		struct page *page = __rmqueue(zone, order, migratetype,
+-								alloc_flags);
++					      alloc_flags, &rmqm);
+ 		if (unlikely(page == NULL))
+ 			break;
+ 
+@@ -2898,7 +2943,9 @@ struct page *rmqueue_buddy(struct zone *
+ 		if (alloc_flags & ALLOC_HIGHATOMIC)
+ 			page = __rmqueue_smallest(zone, order, MIGRATE_HIGHATOMIC);
+ 		if (!page) {
+-			page = __rmqueue(zone, order, migratetype, alloc_flags);
++			enum rmqueue_mode rmqm = RMQUEUE_NORMAL;
++
++			page = __rmqueue(zone, order, migratetype, alloc_flags, &rmqm);
+ 
+ 			/*
+ 			 * If the allocation fails, allow OOM handling and
 
 
 
