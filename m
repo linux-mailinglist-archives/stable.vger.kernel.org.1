@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-143808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23E03AB41BC
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:11:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE8E0AB42DA
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:27:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BC2D8C15E7
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:09:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1E8816CD02
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:26:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB0C229A31E;
-	Mon, 12 May 2025 18:04:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AED5299925;
+	Mon, 12 May 2025 18:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UrttF2kt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QU1ZHD/Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85DFF29A316;
-	Mon, 12 May 2025 18:04:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56A7523C4E7;
+	Mon, 12 May 2025 18:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073079; cv=none; b=Qu+TjVG2ZbyADMInHTULzfXbfvH60C/o3tOLKxGmb5vqDtu8pvEbYnei6SJpaIf/FjeTiGblZDq+TsQqULzqW3cMA85rS3mkYWWtgJ29vvLfJyl5JzfghYQTwVT4h8rcURYoQgRsKJ2RXC5WtxE1a7M8YazltQMED9s6IClvhwc=
+	t=1747073389; cv=none; b=peBa1E+W89M/WbkPtmRkUqzUCR5UJmd+yIHn26na7p7RB/6it3zqpk0JpUYiCaZ+HNefLMOEMhUECfrpwPzzxwdo9lKOymYdGpkraF1whpe7SUjmwyTfNyvEMLr16r/tvX1A0mZpb5r7F7EA9DDvVy4O3AAGL51THMHRHVx6obo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073079; c=relaxed/simple;
-	bh=Pk0mUCRODHL8qHD0uMwUn0I69qH9zP2bLxKkudZLGuw=;
+	s=arc-20240116; t=1747073389; c=relaxed/simple;
+	bh=EOEkV66NPJrGcz//K9iq8/a5IVZgKIEUN+fePM52mCM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gN0xtuwC/hG9JiRx7dr+UsIpnQdHgVWwe+K+VVZ5MhtoAXANR97hPy/7s1L0w0rtOdS4D0wNxeAXcUCFEAxPMAK1DtHTP32a4ko1+E0SasMgIF4V1ziQurYsPYg22m7ZC+MYp3y0fjrdDwrgzPpE3Cx5VcsbM+9U5njHi4fpFYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UrttF2kt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F35CC4CEE9;
-	Mon, 12 May 2025 18:04:38 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Tf34cVskRWFLOEY2xMEGWyIeVY3Vof388TpFTBU/95H6EB92uVGdvjyVC+eCnn77e9BEGdKZ1cbcREVZpQg3xGwhJBCO+EKvBTrofdpO3IFrwa8eqOVQLc9XowKr80IEZk9K8hWOjfzKmFw9EIKqrepaYVk5bvk6gsQNhU5hSV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QU1ZHD/Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E16FC4CEE7;
+	Mon, 12 May 2025 18:09:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073078;
-	bh=Pk0mUCRODHL8qHD0uMwUn0I69qH9zP2bLxKkudZLGuw=;
+	s=korg; t=1747073388;
+	bh=EOEkV66NPJrGcz//K9iq8/a5IVZgKIEUN+fePM52mCM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UrttF2ktodJoItIZkRKdAMDyOwrJ5YR+micpnb9t0/Nn9sl+hQuCnu8ANsdmO5+oa
-	 6HqSxhc3DT2QcQvt4MAEBcPK1W25+FdUzrtVqJixY14lo2gi/9+JxM28m8j6nOxUXc
-	 hSuefJI7dkDrVxoR3vu1rPMv20MPzO6fG+rR+rig=
+	b=QU1ZHD/YjZX7UTcW+UeSbcfjodx57uLStQfNrwY0iQkFuFRp5LhKzbx3Mnh0qM5vz
+	 GCeI4SIh5pE+iKoJ+eHlZM5OkIzZ01QvmEQfA4EjAgp5FuiD+lXELvI/VbNVbOjLV1
+	 l+kLtKPuQbZD+9dX5wJE1KB0SM4VeD71Svw71K5o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 147/184] riscv: misaligned: factorize trap handling
-Date: Mon, 12 May 2025 19:45:48 +0200
-Message-ID: <20250512172047.802375711@linuxfoundation.org>
+	=?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>,
+	Jason Andryuk <jason.andryuk@amd.com>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 6.6 060/113] xenbus: Use kref to track req lifetime
+Date: Mon, 12 May 2025 19:45:49 +0200
+Message-ID: <20250512172030.123035541@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
-References: <20250512172041.624042835@linuxfoundation.org>
+In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
+References: <20250512172027.691520737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,118 +63,174 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Clément Léger <cleger@rivosinc.com>
+From: Jason Andryuk <jason.andryuk@amd.com>
 
-[ Upstream commit fd94de9f9e7aac11ec659e386b9db1203d502023 ]
+commit 1f0304dfd9d217c2f8b04a9ef4b3258a66eedd27 upstream.
 
-Since both load/store and user/kernel should use almost the same path and
-that we are going to add some code around that, factorize it.
+Marek reported seeing a NULL pointer fault in the xenbus_thread
+callstack:
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+RIP: e030:__wake_up_common+0x4c/0x180
+Call Trace:
+ <TASK>
+ __wake_up_common_lock+0x82/0xd0
+ process_msg+0x18e/0x2f0
+ xenbus_thread+0x165/0x1c0
 
-Signed-off-by: Clément Léger <cleger@rivosinc.com>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20250422162324.956065-2-cleger@rivosinc.com
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Stable-dep-of: 453805f0a28f ("riscv: misaligned: enable IRQs while handling misaligned accesses")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+process_msg+0x18e is req->cb(req).  req->cb is set to xs_wake_up(), a
+thin wrapper around wake_up(), or xenbus_dev_queue_reply().  It seems
+like it was xs_wake_up() in this case.
+
+It seems like req may have woken up the xs_wait_for_reply(), which
+kfree()ed the req.  When xenbus_thread resumes, it faults on the zero-ed
+data.
+
+Linux Device Drivers 2nd edition states:
+"Normally, a wake_up call can cause an immediate reschedule to happen,
+meaning that other processes might run before wake_up returns."
+... which would match the behaviour observed.
+
+Change to keeping two krefs on each request.  One for the caller, and
+one for xenbus_thread.  Each will kref_put() when finished, and the last
+will free it.
+
+This use of kref matches the description in
+Documentation/core-api/kref.rst
+
+Link: https://lore.kernel.org/xen-devel/ZO0WrR5J0xuwDIxW@mail-itl/
+Reported-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
+Fixes: fd8aa9095a95 ("xen: optimize xenbus driver for multiple concurrent xenstore accesses")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20250506210935.5607-1-jason.andryuk@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kernel/traps.c | 66 +++++++++++++++++++++------------------
- 1 file changed, 36 insertions(+), 30 deletions(-)
+ drivers/xen/xenbus/xenbus.h              |    2 ++
+ drivers/xen/xenbus/xenbus_comms.c        |    9 ++++-----
+ drivers/xen/xenbus/xenbus_dev_frontend.c |    2 +-
+ drivers/xen/xenbus/xenbus_xs.c           |   18 ++++++++++++++++--
+ 4 files changed, 23 insertions(+), 8 deletions(-)
 
-diff --git a/arch/riscv/kernel/traps.c b/arch/riscv/kernel/traps.c
-index 8ff8e8b36524b..b1d991c78a233 100644
---- a/arch/riscv/kernel/traps.c
-+++ b/arch/riscv/kernel/traps.c
-@@ -198,47 +198,53 @@ asmlinkage __visible __trap_section void do_trap_insn_illegal(struct pt_regs *re
- DO_ERROR_INFO(do_trap_load_fault,
- 	SIGSEGV, SEGV_ACCERR, "load access fault");
+--- a/drivers/xen/xenbus/xenbus.h
++++ b/drivers/xen/xenbus/xenbus.h
+@@ -77,6 +77,7 @@ enum xb_req_state {
+ struct xb_req_data {
+ 	struct list_head list;
+ 	wait_queue_head_t wq;
++	struct kref kref;
+ 	struct xsd_sockmsg msg;
+ 	uint32_t caller_req_id;
+ 	enum xsd_sockmsg_type type;
+@@ -103,6 +104,7 @@ int xb_init_comms(void);
+ void xb_deinit_comms(void);
+ int xs_watch_msg(struct xs_watch_event *event);
+ void xs_request_exit(struct xb_req_data *req);
++void xs_free_req(struct kref *kref);
  
--asmlinkage __visible __trap_section void do_trap_load_misaligned(struct pt_regs *regs)
-+enum misaligned_access_type {
-+	MISALIGNED_STORE,
-+	MISALIGNED_LOAD,
-+};
-+static const struct {
-+	const char *type_str;
-+	int (*handler)(struct pt_regs *regs);
-+} misaligned_handler[] = {
-+	[MISALIGNED_STORE] = {
-+		.type_str = "Oops - store (or AMO) address misaligned",
-+		.handler = handle_misaligned_store,
-+	},
-+	[MISALIGNED_LOAD] = {
-+		.type_str = "Oops - load address misaligned",
-+		.handler = handle_misaligned_load,
-+	},
-+};
-+
-+static void do_trap_misaligned(struct pt_regs *regs, enum misaligned_access_type type)
- {
--	if (user_mode(regs)) {
-+	irqentry_state_t state;
-+
-+	if (user_mode(regs))
- 		irqentry_enter_from_user_mode(regs);
-+	else
-+		state = irqentry_nmi_enter(regs);
+ int xenbus_match(struct device *_dev, struct device_driver *_drv);
+ int xenbus_dev_probe(struct device *_dev);
+--- a/drivers/xen/xenbus/xenbus_comms.c
++++ b/drivers/xen/xenbus/xenbus_comms.c
+@@ -309,8 +309,8 @@ static int process_msg(void)
+ 			virt_wmb();
+ 			req->state = xb_req_state_got_reply;
+ 			req->cb(req);
+-		} else
+-			kfree(req);
++		}
++		kref_put(&req->kref, xs_free_req);
+ 	}
  
--		if (handle_misaligned_load(regs))
--			do_trap_error(regs, SIGBUS, BUS_ADRALN, regs->epc,
--			      "Oops - load address misaligned");
-+	if (misaligned_handler[type].handler(regs))
-+		do_trap_error(regs, SIGBUS, BUS_ADRALN, regs->epc,
-+			      misaligned_handler[type].type_str);
+ 	mutex_unlock(&xs_response_mutex);
+@@ -386,14 +386,13 @@ static int process_writes(void)
+ 	state.req->msg.type = XS_ERROR;
+ 	state.req->err = err;
+ 	list_del(&state.req->list);
+-	if (state.req->state == xb_req_state_aborted)
+-		kfree(state.req);
+-	else {
++	if (state.req->state != xb_req_state_aborted) {
+ 		/* write err, then update state */
+ 		virt_wmb();
+ 		state.req->state = xb_req_state_got_reply;
+ 		wake_up(&state.req->wq);
+ 	}
++	kref_put(&state.req->kref, xs_free_req);
  
-+	if (user_mode(regs))
- 		irqentry_exit_to_user_mode(regs);
--	} else {
--		irqentry_state_t state = irqentry_nmi_enter(regs);
--
--		if (handle_misaligned_load(regs))
--			do_trap_error(regs, SIGBUS, BUS_ADRALN, regs->epc,
--			      "Oops - load address misaligned");
--
-+	else
- 		irqentry_nmi_exit(regs, state);
--	}
+ 	mutex_unlock(&xb_write_mutex);
+ 
+--- a/drivers/xen/xenbus/xenbus_dev_frontend.c
++++ b/drivers/xen/xenbus/xenbus_dev_frontend.c
+@@ -406,7 +406,7 @@ void xenbus_dev_queue_reply(struct xb_re
+ 	mutex_unlock(&u->reply_mutex);
+ 
+ 	kfree(req->body);
+-	kfree(req);
++	kref_put(&req->kref, xs_free_req);
+ 
+ 	kref_put(&u->kref, xenbus_file_free);
+ 
+--- a/drivers/xen/xenbus/xenbus_xs.c
++++ b/drivers/xen/xenbus/xenbus_xs.c
+@@ -112,6 +112,12 @@ static void xs_suspend_exit(void)
+ 	wake_up_all(&xs_state_enter_wq);
  }
  
--asmlinkage __visible __trap_section void do_trap_store_misaligned(struct pt_regs *regs)
-+asmlinkage __visible __trap_section void do_trap_load_misaligned(struct pt_regs *regs)
- {
--	if (user_mode(regs)) {
--		irqentry_enter_from_user_mode(regs);
--
--		if (handle_misaligned_store(regs))
--			do_trap_error(regs, SIGBUS, BUS_ADRALN, regs->epc,
--				"Oops - store (or AMO) address misaligned");
--
--		irqentry_exit_to_user_mode(regs);
--	} else {
--		irqentry_state_t state = irqentry_nmi_enter(regs);
--
--		if (handle_misaligned_store(regs))
--			do_trap_error(regs, SIGBUS, BUS_ADRALN, regs->epc,
--				"Oops - store (or AMO) address misaligned");
-+	do_trap_misaligned(regs, MISALIGNED_LOAD);
-+}
- 
--		irqentry_nmi_exit(regs, state);
--	}
-+asmlinkage __visible __trap_section void do_trap_store_misaligned(struct pt_regs *regs)
++void xs_free_req(struct kref *kref)
 +{
-+	do_trap_misaligned(regs, MISALIGNED_STORE);
- }
++	struct xb_req_data *req = container_of(kref, struct xb_req_data, kref);
++	kfree(req);
++}
 +
- DO_ERROR_INFO(do_trap_store_fault,
- 	SIGSEGV, SEGV_ACCERR, "store (or AMO) access fault");
- DO_ERROR_INFO(do_trap_ecall_s,
--- 
-2.39.5
-
+ static uint32_t xs_request_enter(struct xb_req_data *req)
+ {
+ 	uint32_t rq_id;
+@@ -237,6 +243,12 @@ static void xs_send(struct xb_req_data *
+ 	req->caller_req_id = req->msg.req_id;
+ 	req->msg.req_id = xs_request_enter(req);
+ 
++	/*
++	 * Take 2nd ref.  One for this thread, and the second for the
++	 * xenbus_thread.
++	 */
++	kref_get(&req->kref);
++
+ 	mutex_lock(&xb_write_mutex);
+ 	list_add_tail(&req->list, &xb_write_list);
+ 	notify = list_is_singular(&xb_write_list);
+@@ -261,8 +273,8 @@ static void *xs_wait_for_reply(struct xb
+ 	if (req->state == xb_req_state_queued ||
+ 	    req->state == xb_req_state_wait_reply)
+ 		req->state = xb_req_state_aborted;
+-	else
+-		kfree(req);
++
++	kref_put(&req->kref, xs_free_req);
+ 	mutex_unlock(&xb_write_mutex);
+ 
+ 	return ret;
+@@ -291,6 +303,7 @@ int xenbus_dev_request_and_reply(struct
+ 	req->cb = xenbus_dev_queue_reply;
+ 	req->par = par;
+ 	req->user_req = true;
++	kref_init(&req->kref);
+ 
+ 	xs_send(req, msg);
+ 
+@@ -319,6 +332,7 @@ static void *xs_talkv(struct xenbus_tran
+ 	req->num_vecs = num_vecs;
+ 	req->cb = xs_wake_up;
+ 	req->user_req = false;
++	kref_init(&req->kref);
+ 
+ 	msg.req_id = 0;
+ 	msg.tx_id = t.id;
 
 
 
