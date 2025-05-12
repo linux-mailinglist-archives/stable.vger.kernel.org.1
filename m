@@ -1,59 +1,54 @@
-Return-Path: <stable+bounces-143930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCE3BAB42E4
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:27:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1269AB4287
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:24:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCF6E3A7EC5
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:25:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78E387B2D7C
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:14:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D74B297108;
-	Mon, 12 May 2025 18:08:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EB5C2BD00E;
+	Mon, 12 May 2025 18:05:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CwZoOYOf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1kTE5KrD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0808B298CD1;
-	Mon, 12 May 2025 18:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB2802BCF7B;
+	Mon, 12 May 2025 18:05:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073328; cv=none; b=lg2jWHRRRdUVIIXFikRPfMyskVxEfojFg2fwHXbkbsSLYnz4M8ZEMglMDrnim3X+zYB4IwIr+G4kiyYBcc5p/e72TI3qeNeLqTOBGkrbQ74OLiQiBMlSCp6P+AZbzV0Hfj117/eKyLnoq4hULdPAa8eAw3ZV4YL1Eee06Gp3opg=
+	t=1747073114; cv=none; b=PG6RtHM+IJvOio0Wjv2FYBT45U6hXAB+qtkBRM+4HQz201iSbRT35+nf4mAnuURBo5awnwVKmOlCwdxZjz18B2GstMmtxiaF2q/LKrMqyPh7tiAol8iAOBKIqUXxYOlvqyCzyZcxXiNXJPehPqAMWp2td0vJl68Pl1QY4r+UWBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073328; c=relaxed/simple;
-	bh=i6rIAK4yZ6Ozj/Sez6GjUQTFdaLBalPUIhQk6qm73hg=;
+	s=arc-20240116; t=1747073114; c=relaxed/simple;
+	bh=GpS/950JNQjrJ3sNmjXQWxKXs5HeQNgntykIpJhBxcM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VcR+sQle2fYUrKILsCkHfWqOEtNeX/Ii+DO2bZIBK5Nn9wi14YqyQtzrMOoUVucKxpF6ho8jQpIplOyUHxZuhyOZ7l87plqRvruzkUdpjyac6afVVE7uoTQb8+4FNKOuC4qLUqKlkBotBnot8iALPormR7GCk5MWjItDVite1Eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CwZoOYOf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3277CC4CEEF;
-	Mon, 12 May 2025 18:08:47 +0000 (UTC)
+	 MIME-Version; b=llOUdAhe0orzpuVGx3hCGVh5F6dLBAtDcG1FfTh45GSfPXAX9kbRcYcJN6grCQi2urCAtrh840s92QCJTxhIzSZ9oofrH8E93pShlkiXx7mwg1Q2XeGcFnSxcrb8kw8DJTVxheV/Ir5dDQheTXeR8pDamHifexmDekLmnexj9/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1kTE5KrD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47CACC4CEEF;
+	Mon, 12 May 2025 18:05:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073327;
-	bh=i6rIAK4yZ6Ozj/Sez6GjUQTFdaLBalPUIhQk6qm73hg=;
+	s=korg; t=1747073114;
+	bh=GpS/950JNQjrJ3sNmjXQWxKXs5HeQNgntykIpJhBxcM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CwZoOYOfKvxSaXrIaUBcW4sWZ3CvXUrnfFmuLgbkUEjUqrW9MMjlTudI8GSBTAydz
-	 XPPSfILT2tQ6YarOpocD8jmN2f4MAQa28ASQjrNHdyOhkjsqAMJfo3gcLBJmigxMe+
-	 f9WQdmKrq9Q2o6wapt+4esXcAyJBgWUB35+LSpmE=
+	b=1kTE5KrDwc8GNyYnlAXQ0t0r/QE61Sj4ENHyQeOkuVaDxMSkg16rkEokeapKFLRVE
+	 /7ZGjBKpXIhsbBlu6hWkFAcEPh4BzcdSrNyKQuKM627LS3I7MCabX51F8i6q534t4m
+	 UaRtyJSAps3l3TPXjQqSdthML5Wax4CPfJpjQZQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Rik van Riel <riel@surriel.com>,
-	Stephen Dolan <sdolan@janestreet.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.6 040/113] x86/mm: Eliminate window where TLB flushes may be inadvertently skipped
-Date: Mon, 12 May 2025 19:45:29 +0200
-Message-ID: <20250512172029.302756097@linuxfoundation.org>
+	Dave Penkler <dpenkler@gmail.com>
+Subject: [PATCH 6.12 129/184] usb: usbtmc: Fix erroneous generic_read ioctl return
+Date: Mon, 12 May 2025 19:45:30 +0200
+Message-ID: <20250512172047.070486481@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
-References: <20250512172027.691520737@linuxfoundation.org>
+In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
+References: <20250512172041.624042835@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,136 +60,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Hansen <dave.hansen@linux.intel.com>
+From: Dave Penkler <dpenkler@gmail.com>
 
-commit fea4e317f9e7e1f449ce90dedc27a2d2a95bee5a upstream.
+commit 4e77d3ec7c7c0d9535ccf1138827cb9bb5480b9b upstream.
 
-tl;dr: There is a window in the mm switching code where the new CR3 is
-set and the CPU should be getting TLB flushes for the new mm.  But
-should_flush_tlb() has a bug and suppresses the flush.  Fix it by
-widening the window where should_flush_tlb() sends an IPI.
+wait_event_interruptible_timeout returns a long
+The return value was being assigned to an int causing an integer overflow
+when the remaining jiffies > INT_MAX which resulted in random error
+returns.
 
-Long Version:
+Use a long return value, converting to the int ioctl return only on error.
 
-=== History ===
-
-There were a few things leading up to this.
-
-First, updating mm_cpumask() was observed to be too expensive, so it was
-made lazier.  But being lazy caused too many unnecessary IPIs to CPUs
-due to the now-lazy mm_cpumask().  So code was added to cull
-mm_cpumask() periodically[2].  But that culling was a bit too aggressive
-and skipped sending TLB flushes to CPUs that need them.  So here we are
-again.
-
-=== Problem ===
-
-The too-aggressive code in should_flush_tlb() strikes in this window:
-
-	// Turn on IPIs for this CPU/mm combination, but only
-	// if should_flush_tlb() agrees:
-	cpumask_set_cpu(cpu, mm_cpumask(next));
-
-	next_tlb_gen = atomic64_read(&next->context.tlb_gen);
-	choose_new_asid(next, next_tlb_gen, &new_asid, &need_flush);
-	load_new_mm_cr3(need_flush);
-	// ^ After 'need_flush' is set to false, IPIs *MUST*
-	// be sent to this CPU and not be ignored.
-
-        this_cpu_write(cpu_tlbstate.loaded_mm, next);
-	// ^ Not until this point does should_flush_tlb()
-	// become true!
-
-should_flush_tlb() will suppress TLB flushes between load_new_mm_cr3()
-and writing to 'loaded_mm', which is a window where they should not be
-suppressed.  Whoops.
-
-=== Solution ===
-
-Thankfully, the fuzzy "just about to write CR3" window is already marked
-with loaded_mm==LOADED_MM_SWITCHING.  Simply checking for that state in
-should_flush_tlb() is sufficient to ensure that the CPU is targeted with
-an IPI.
-
-This will cause more TLB flush IPIs.  But the window is relatively small
-and I do not expect this to cause any kind of measurable performance
-impact.
-
-Update the comment where LOADED_MM_SWITCHING is written since it grew
-yet another user.
-
-Peter Z also raised a concern that should_flush_tlb() might not observe
-'loaded_mm' and 'is_lazy' in the same order that switch_mm_irqs_off()
-writes them.  Add a barrier to ensure that they are observed in the
-order they are written.
-
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Acked-by: Rik van Riel <riel@surriel.com>
-Link: https://lore.kernel.org/oe-lkp/202411282207.6bd28eae-lkp@intel.com/ [1]
-Fixes: 6db2526c1d69 ("x86/mm/tlb: Only trim the mm_cpumask once a second") [2]
-Reported-by: Stephen Dolan <sdolan@janestreet.com>
+Fixes: bb99794a4792 ("usb: usbtmc: Add ioctl for vendor specific read")
 Cc: stable@vger.kernel.org
-Acked-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Dave Penkler <dpenkler@gmail.com>
+Link: https://lore.kernel.org/r/20250502070941.31819-4-dpenkler@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/mm/tlb.c |   23 +++++++++++++++++++++--
- 1 file changed, 21 insertions(+), 2 deletions(-)
+ drivers/usb/class/usbtmc.c |   18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
---- a/arch/x86/mm/tlb.c
-+++ b/arch/x86/mm/tlb.c
-@@ -630,7 +630,11 @@ void switch_mm_irqs_off(struct mm_struct
+--- a/drivers/usb/class/usbtmc.c
++++ b/drivers/usb/class/usbtmc.c
+@@ -833,6 +833,7 @@ static ssize_t usbtmc_generic_read(struc
+ 	unsigned long expire;
+ 	int bufcount = 1;
+ 	int again = 0;
++	long wait_rv;
  
- 		choose_new_asid(next, next_tlb_gen, &new_asid, &need_flush);
+ 	/* mutex already locked */
  
--		/* Let nmi_uaccess_okay() know that we're changing CR3. */
-+		/*
-+		 * Indicate that CR3 is about to change. nmi_uaccess_okay()
-+		 * and others are sensitive to the window where mm_cpumask(),
-+		 * CR3 and cpu_tlbstate.loaded_mm are not all in sync.
-+ 		 */
- 		this_cpu_write(cpu_tlbstate.loaded_mm, LOADED_MM_SWITCHING);
- 		barrier();
- 	}
-@@ -900,8 +904,16 @@ done:
+@@ -945,19 +946,24 @@ static ssize_t usbtmc_generic_read(struc
+ 		if (!(flags & USBTMC_FLAG_ASYNC)) {
+ 			dev_dbg(dev, "%s: before wait time %lu\n",
+ 				__func__, expire);
+-			retval = wait_event_interruptible_timeout(
++			wait_rv = wait_event_interruptible_timeout(
+ 				file_data->wait_bulk_in,
+ 				usbtmc_do_transfer(file_data),
+ 				expire);
  
- static bool should_flush_tlb(int cpu, void *data)
- {
-+	struct mm_struct *loaded_mm = per_cpu(cpu_tlbstate.loaded_mm, cpu);
- 	struct flush_tlb_info *info = data;
+-			dev_dbg(dev, "%s: wait returned %d\n",
+-				__func__, retval);
++			dev_dbg(dev, "%s: wait returned %ld\n",
++				__func__, wait_rv);
  
-+	/*
-+	 * Order the 'loaded_mm' and 'is_lazy' against their
-+	 * write ordering in switch_mm_irqs_off(). Ensure
-+	 * 'is_lazy' is at least as new as 'loaded_mm'.
-+	 */
-+	smp_rmb();
+-			if (retval <= 0) {
+-				if (retval == 0)
+-					retval = -ETIMEDOUT;
++			if (wait_rv < 0) {
++				retval = wait_rv;
+ 				goto error;
+ 			}
 +
- 	/* Lazy TLB will get flushed at the next context switch. */
- 	if (per_cpu(cpu_tlbstate_shared.is_lazy, cpu))
- 		return false;
-@@ -910,8 +922,15 @@ static bool should_flush_tlb(int cpu, vo
- 	if (!info->mm)
- 		return true;
- 
-+	/*
-+	 * While switching, the remote CPU could have state from
-+	 * either the prev or next mm. Assume the worst and flush.
-+	 */
-+	if (loaded_mm == LOADED_MM_SWITCHING)
-+		return true;
++			if (wait_rv == 0) {
++				retval = -ETIMEDOUT;
++				goto error;
++			}
 +
- 	/* The target mm is loaded, and the CPU is not lazy. */
--	if (per_cpu(cpu_tlbstate.loaded_mm, cpu) == info->mm)
-+	if (loaded_mm == info->mm)
- 		return true;
+ 		}
  
- 	/* In cpumask, but not the loaded mm? Periodically remove by flushing. */
+ 		urb = usb_get_from_anchor(&file_data->in_anchor);
 
 
 
