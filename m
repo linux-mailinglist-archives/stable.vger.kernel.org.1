@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-143558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9100AB4051
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:52:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5848EAB4112
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:01:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8689D19E774F
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:52:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0750466B9C
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:01:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5372A261586;
-	Mon, 12 May 2025 17:52:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0562255235;
+	Mon, 12 May 2025 18:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b7x3unkV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KzeLSpaq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF461A08CA;
-	Mon, 12 May 2025 17:52:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D9F21DE4CD;
+	Mon, 12 May 2025 18:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072343; cv=none; b=bwYouB6PiewSys72Mgs8xCmqtBgFxWghTdJWgtMxWKfFjKRzBOdw8PZq259DFsZL8v+DqWICmocVb9CME7z10AOpUtRzNb7hhpD/Ofg6qz4ofI435l5M3XN2JqSyTn7W1ijxnulKlAxn1wRibG/2auK+hWDoWS9RXMHt8xqzWmY=
+	t=1747072885; cv=none; b=fjphu1PistsxoTqTvXZgg+5HfGoQb2DDpm/Cl9TEVjcvay9+ybrlML+tUNufgu75JeyaBr7TyEwY9D198NXEnD5bRaOaGUdclG5A8KIeyd3paRvva+KpEAreSlLgjQnGJzMkKQAx2Vxm4joPhEr7X8sl1qcbKpQHbVXNVw0hg10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072343; c=relaxed/simple;
-	bh=Q9Uaw67sflNNMmeA516iGrBXOE1nKUdhDSeEmHlL3O4=;
+	s=arc-20240116; t=1747072885; c=relaxed/simple;
+	bh=dBUw9+pI+HGfrpr0p7hTioRYyOZDZFiZnhtbdVU65vs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m7G8rfxF3F3o38T6OQe1Wl6ARbc/Fl5oPM4+0YMQB8XDXrQXKk1Di5sCFz7E3d2sfSEq93RWUlvf0OG3pL+ug+O++ngBCdfWCs6+tSkzGq51ghRxbxjORAPd9XOZw3r5JuFtD8Yj2ola05aFYzGPsFeqiVl+t3hS3QhKcPG9yA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b7x3unkV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24BC5C4CEE7;
-	Mon, 12 May 2025 17:52:21 +0000 (UTC)
+	 MIME-Version; b=axWmmwR0ZcqcT8mDHahd3xbvKmhytFngkdGAvzlqXfjXwo4zvefJ49FmV6g37iY5u03owS8ZgWRgkKaxVjuAilHHvhyVMfrW8EGKuI22O/mLatUI+HxtQgF6nsH/2rEZ/mrXTTKt3pHDeFkFaaHORjjzE68WxIM1LKXwmah3R3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KzeLSpaq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ECF3C4CEE7;
+	Mon, 12 May 2025 18:01:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072342;
-	bh=Q9Uaw67sflNNMmeA516iGrBXOE1nKUdhDSeEmHlL3O4=;
+	s=korg; t=1747072885;
+	bh=dBUw9+pI+HGfrpr0p7hTioRYyOZDZFiZnhtbdVU65vs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b7x3unkVoptQ4Q4nWUjVDUvVDXI8dM5VAjlMfau8cNA0WTX2ZrHJ4Y03akqaStia1
-	 YVbjfU2yNICTFpX8mGoUuTrluqCSWcQtpZHB8mA9lcq9qQOTcw6Fth6A9k6J4Unv0w
-	 yID7cziE1w+P8xzg+hhCs+eA82VW9i1C/HGy1jwE=
+	b=KzeLSpaq1AbGaOJRsOHXdtgdCUGWrdRn5norO4h7yd13oBCvj3iCWRY9eDJ0Gqx72
+	 jSFnmVL8TD+wPYGcswmvZce9vVP3r9GePtBmwB9P45T2rZiI+XRK8oWcxiDizeKtZQ
+	 fXklb3TkaLcahOzlOaDM15M9Sgcd2ISPs060b1A0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 11/92] rcu/kvfree: Add kvfree_rcu_mightsleep() and kfree_rcu_mightsleep()
-Date: Mon, 12 May 2025 19:44:46 +0200
-Message-ID: <20250512172023.588351989@linuxfoundation.org>
+	Silvano Seva <s.seva@4sigma.it>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.12 086/184] iio: imu: st_lsm6dsx: fix possible lockup in st_lsm6dsx_read_fifo
+Date: Mon, 12 May 2025 19:44:47 +0200
+Message-ID: <20250512172045.326060075@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172023.126467649@linuxfoundation.org>
-References: <20250512172023.126467649@linuxfoundation.org>
+In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
+References: <20250512172041.624042835@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uladzislau Rezki (Sony) <urezki@gmail.com>
+From: Silvano Seva <s.seva@4sigma.it>
 
-[ Upstream commit 608723c41cd951fb32ade2f8371e61c270816175 ]
+commit 159ca7f18129834b6f4c7eae67de48e96c752fc9 upstream.
 
-The kvfree_rcu() and kfree_rcu() APIs are hazardous in that if you forget
-the second argument, it works, but might sleep.  This sleeping can be a
-correctness bug from atomic contexts, and even in non-atomic contexts
-it might introduce unacceptable latencies.  This commit therefore adds
-kvfree_rcu_mightsleep() and kfree_rcu_mightsleep(), which will replace
-the single-argument kvfree_rcu() and kfree_rcu(), respectively.
+Prevent st_lsm6dsx_read_fifo from falling in an infinite loop in case
+pattern_len is equal to zero and the device FIFO is not empty.
 
-This commit enables a series of commits that switch from single-argument
-kvfree_rcu() and kfree_rcu() to their _mightsleep() counterparts.  Once
-all of these commits land, the single-argument versions will be removed.
-
-Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Stable-dep-of: 511e64e13d8c ("can: gw: fix RCU/BH usage in cgw_create_job()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 290a6ce11d93 ("iio: imu: add support to lsm6dsx driver")
+Signed-off-by: Silvano Seva <s.seva@4sigma.it>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20250311085030.3593-2-s.seva@4sigma.it
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/rcupdate.h | 3 +++
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c |    3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/include/linux/rcupdate.h b/include/linux/rcupdate.h
-index d001a69fcb7d4..aef8c7304d45d 100644
---- a/include/linux/rcupdate.h
-+++ b/include/linux/rcupdate.h
-@@ -1031,6 +1031,9 @@ static inline notrace void rcu_read_unlock_sched_notrace(void)
- #define kvfree_rcu(...) KVFREE_GET_MACRO(__VA_ARGS__,		\
- 	kvfree_rcu_arg_2, kvfree_rcu_arg_1)(__VA_ARGS__)
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+@@ -392,6 +392,9 @@ int st_lsm6dsx_read_fifo(struct st_lsm6d
+ 	if (fifo_status & cpu_to_le16(ST_LSM6DSX_FIFO_EMPTY_MASK))
+ 		return 0;
  
-+#define kvfree_rcu_mightsleep(ptr) kvfree_rcu_arg_1(ptr)
-+#define kfree_rcu_mightsleep(ptr) kvfree_rcu_mightsleep(ptr)
++	if (!pattern_len)
++		pattern_len = ST_LSM6DSX_SAMPLE_SIZE;
 +
- #define KVFREE_GET_MACRO(_1, _2, NAME, ...) NAME
- #define kvfree_rcu_arg_2(ptr, rhf)					\
- do {									\
--- 
-2.39.5
-
+ 	fifo_len = (le16_to_cpu(fifo_status) & fifo_diff_mask) *
+ 		   ST_LSM6DSX_CHAN_SIZE;
+ 	fifo_len = (fifo_len / pattern_len) * pattern_len;
 
 
 
