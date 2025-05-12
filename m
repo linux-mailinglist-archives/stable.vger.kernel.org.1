@@ -1,145 +1,135 @@
-Return-Path: <stable+bounces-143125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 593E0AB2E20
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 05:32:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C81FFAB2EC7
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 07:17:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCB143B5539
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 03:31:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B9BB1894B2A
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 05:17:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60BF4254869;
-	Mon, 12 May 2025 03:31:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47F8324DFFD;
+	Mon, 12 May 2025 05:17:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JqhJnXS3"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1E4D224FA;
-	Mon, 12 May 2025 03:31:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26503383;
+	Mon, 12 May 2025 05:17:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747020708; cv=none; b=UiC+lrg4hHC1YKtYS40S3kPDQszs3y8vIBT0FiHAwLY0RM7yqcs5Lw5T3/qbokb///3wLxiUbqYnjnf9i1MoaKaubn9ZS585gmR9gfhx8Y3aPrY7AriYaEEOmwiqRyiWM21olaizBkncBhpCHYco0UUbYio2LOJIiulXFcZBmRU=
+	t=1747027039; cv=none; b=kx7Z+/OyK2/bDXo7bT9jJAkjn2prMQjHvq/GD8g6cSgDAmTxdXiduZ6an5cnLH/eA1aH2X5ELgQ8aF7OvYOaOXkijvuqamaE6VbmeVKZwyzxKKqgTvQTGZ68rTNgTtlrqO4+eQC2e/ZntcKoWZINLR9jb9OMhSex4oHl68OlZF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747020708; c=relaxed/simple;
-	bh=1UfzN0drI/52aA/1kE18PAPZsjm6Wigacdpy3q4D0FY=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=MMMsFfSZRtPAsmqrjC9ad8h31w+qB1qyTJeepHqCZCD7Bd3ynsBTXZHz/zNfueyynZZrh8E12+79jFJ+2MnQRhR8drqIsZcXhqyGrHLpYXw6/EB6i08YzAaZFHHHb/BROYJTyMqnpzOaxAu/Hywq534vg31B95GcsaoyO8KafvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54C20FUr026933;
-	Sun, 11 May 2025 20:31:35 -0700
-Received: from ala-exchng01.corp.ad.wrs.com (ala-exchng01.wrs.com [147.11.82.252])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 46j6ajs10s-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Sun, 11 May 2025 20:31:35 -0700 (PDT)
-Received: from ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) by
- ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.43; Sun, 11 May 2025 20:31:34 -0700
-Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
- ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server id
- 15.1.2507.43 via Frontend Transport; Sun, 11 May 2025 20:31:30 -0700
-From: <jianqi.ren.cn@windriver.com>
-To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>
-CC: <patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-        <jianqi.ren.cn@windriver.com>, <robdclark@gmail.com>,
-        <quic_abhinavk@quicinc.com>, <dmitry.baryshkov@linaro.org>,
-        <sean@poorly.run>, <airlied@gmail.com>, <daniel@ffwll.ch>,
-        <sashal@kernel.org>, <quic_vpolimer@quicinc.com>,
-        <quic_jesszhan@quicinc.com>, <linux-arm-msm@vger.kernel.org>,
-        <dri-devel@lists.freedesktop.org>, <freedreno@lists.freedesktop.org>,
-        <quic_kalyant@quicinc.com>
-Subject: [PATCH 6.1.y 2/2] drm/msm/dpu: move dpu_encoder's connector assignment to atomic_enable()
-Date: Mon, 12 May 2025 11:31:29 +0800
-Message-ID: <20250512033129.3331690-1-jianqi.ren.cn@windriver.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1747027039; c=relaxed/simple;
+	bh=d1DbIspaborzszuaHHfNpLuHTD+O86chj15Atki5stY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hbeP/PiHIEsC4nVaZ4IIVN+Kp/D9gZqTYmXaw8ia3c1uM/+PDtkRNb2ijpVMA0a3e/hqliEC2HaK2mr4+MIBpiqyJ+jffYe8Hy8/3dpUKBbIBUnqxBRBGLdbx0pJrEE4r5bqeTzRUjbVhsvaHr0Ye1LsbX7LN/QwWY1IK1fytUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JqhJnXS3; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747027037; x=1778563037;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=d1DbIspaborzszuaHHfNpLuHTD+O86chj15Atki5stY=;
+  b=JqhJnXS33bAQuu2iFS9HIQOGo6asxNKp9tnmNnAf4eGeOdEmEPkFby8h
+   Z0G14xkqffB5T21b3bQRcj0UyIhqklnZ6dLN55Zb0DIjwBt+aVayf2bZN
+   ikXUY17GDlg1dB5r6W8RKEvBhai0ST9SFCQehoK58fZh64SBp4AtYO87X
+   AXDouqFEwkg8RgpydJO67jlVV+tUz3SjIeYLE0XCDMMV6f9YpJHfCRoqZ
+   sWBSY54MJtj21x3fo3mqimKWe9e13p5HL7jUtgAB5v8AVNvGoqumI68Sh
+   sRH4sFqBGrmHf/xlZe4NXBBVk5UstNuIRqZ9xxpBbZZY2aqu6wFtz8HA0
+   g==;
+X-CSE-ConnectionGUID: Pu1zHaLqQdCXFGfvRCfzJw==
+X-CSE-MsgGUID: 9IRFA7yZQ++p/4kymyjSyQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11430"; a="52620523"
+X-IronPort-AV: E=Sophos;i="6.15,281,1739865600"; 
+   d="scan'208";a="52620523"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2025 22:17:16 -0700
+X-CSE-ConnectionGUID: XGBJ7UCTRGqvUpUbTFCatQ==
+X-CSE-MsgGUID: dISN6hk3Qz213K05sVGIxg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,281,1739865600"; 
+   d="scan'208";a="137119974"
+Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2025 22:17:13 -0700
+Message-ID: <089b2370-23e4-4a22-bf57-886e46247a1f@linux.intel.com>
+Date: Mon, 12 May 2025 13:12:38 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] applespi from 6.12 onwards
+To: kobarity <kobarity@gmail.com>, Aditya Garg <gargaditya08@live.com>
+Cc: =?UTF-8?Q?Berkel_J=C3=B6rg?= <joerg.berkel@bfh.ch>,
+ Robin Murphy <robin.murphy@arm.com>,
+ "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
+ "dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+ "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+ "lukas@wunner.de" <lukas@wunner.de>, David Woodhouse <dwmw2@infradead.org>,
+ "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+ Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>
+References: <4dada48a-c5dd-4c30-9c85-5b03b0aa01f0@bfh.ch>
+ <PN3PR01MB9597D8E327CC7910673849D3B888A@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM>
+ <122a1f90-ddd9-4e74-96d1-57e21e580ae2@linux.intel.com>
+ <f1b41874-1535-4457-9747-eee3d816091a@arm.com>
+ <PN3PR01MB959764E908600CD45169348CB88BA@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM>
+ <c0bbfcc8-1275-43de-be40-acb8f2653359@bfh.ch>
+ <PN3PR01MB959708DEEA1567DD38447D5AB895A@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM>
+ <eke7wmanw9xq.wl-kobarity@gmail.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <eke7wmanw9xq.wl-kobarity@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: jUe6BD8Shi0-jxbKpTp8lwmGI_5xvz9Z
-X-Authority-Analysis: v=2.4 cv=c8irQQ9l c=1 sm=1 tr=0 ts=68216b97 cx=c_pps a=/ZJR302f846pc/tyiSlYyQ==:117 a=/ZJR302f846pc/tyiSlYyQ==:17 a=dt9VzEwgFbYA:10 a=e5mUnYsNAAAA:8 a=VwQbUJbxAAAA:8 a=COk6AnOGAAAA:8 a=KKAkSRfTAAAA:8 a=t7CeM3EgAAAA:8
- a=Il65ExNKTjwmHhc7HzsA:9 a=Vxmtnl_E_bksehYqCbjh:22 a=TjNXssC_j7lpFel5tvFf:22 a=cvBusfyB2V15izCimMoJ:22 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTEyMDAzNSBTYWx0ZWRfX4lurK13BdaPG fEReN2NNX/aSdG5vmDuTxPLaP+60ScXivK4QA8yWKzYrkQ2xlsr1M8pTV25ZshrX7jADPCS+0L8 TZaWdX9Y8LNRKQo2XwfWJDuMbr1hiwBXI+JjpYTz2nLfwwv1xduQswcNB7GDbt8T2uqx9sWO4X4
- 5XKrTzgLW8RqfhB86Xfylqggt6afs3I4AD2SqcZITEhO4/XPnBqW+ildly3IYx+0Ig5Kvx76X7H Rq3HuPgdI74NOA3vkaTcVNr81IIUg5K2rm3+a/O8/xpwLEkvrc7CFbuGCnxMVGuYqPMFzibnw7u AmGo3b1EqPiNWXuFEZF8j4BJv2HTwl0SN59y7l6iP2Gg6pO3UewZXTFLqRuXHbtrUZ3k83PylSp
- lQ99a38BIyEVQVRSlYYzsG/98gnbN5Kwqqp0yndqF9pa6fUXR8fgPEEN4VAhxiD9IDL8BCXu
-X-Proofpoint-GUID: jUe6BD8Shi0-jxbKpTp8lwmGI_5xvz9Z
-X-Sensitive_Customer_Information: Yes
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-12_01,2025-05-09_01,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- lowpriorityscore=0 mlxscore=0 clxscore=1011 bulkscore=0 adultscore=0
- mlxlogscore=999 malwarescore=0 spamscore=0 priorityscore=1501
- suspectscore=0 phishscore=0 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.21.0-2504070000
- definitions=main-2505120035
 
-From: Abhinav Kumar <quic_abhinavk@quicinc.com>
+On 5/11/25 21:31, kobarity wrote:
+> 
+> Hi
+> 
+> I'm also experiencing this problem on my MacBookPro14,3.
+> 
+> Aditya Garg wrote:
+>>
+>> Hi Jörg
+>>
+>> Can you test the kernel here to see if this fixes your issue:
+>>
+>> https://github.com/t2linux/T2-Debian-and-Ubuntu-Kernel/actions/runs/14944200356
+>>
+>> Alternatively you can try compiling your own kernel with this patch:
+>>
+>> https://lore.kernel.org/all/0-v1-c26553717e90+65f-iommu_vtd_ss_wo_jgg@nvidia.com/
+> 
+> As far as I have tried, this patch did not solve the problem.
+> 
+> By bisecting, I found that this problem was introduced by commit
+> 2031c469f816 ("iommu/vt-d: Add support for static identity domain").
+> In fact, since this commit, it will panic at startup.  This panic was
+> fixed by commit 6e02a277f1db ("iommu/vt-d: Fix incorrect
+> pci_for_each_dma_alias() for non-PCI devices").  So I applied commit
+> 6e02a277f1db on commit 2031c469f816 and confirmed that the keyboard
+> and touchpad is not working.
 
-[ Upstream commit aedf02e46eb549dac8db4821a6b9f0c6bf6e3990 ]
+Have you tried to apply commit 64f792981e35 ("iommu/vt-d: Remove device
+comparison in context_setup_pass_through_cb")?
 
-For cases where the crtc's connectors_changed was set without enable/active
-getting toggled , there is an atomic_enable() call followed by an
-atomic_disable() but without an atomic_mode_set().
+> 
+> I also found that I can workaround this problem by reverting only the
+> intel_iommu_attach_device() change in commit 2031c469f816 as in the
+> attached patch, but I'm not sure if this is a reasonable fix.
+> 
 
-This results in a NULL ptr access for the dpu_encoder_get_drm_fmt() call in
-the atomic_enable() as the dpu_encoder's connector was cleared in the
-atomic_disable() but not re-assigned as there was no atomic_mode_set() call.
-
-Fix the NULL ptr access by moving the assignment for atomic_enable() and also
-use drm_atomic_get_new_connector_for_encoder() to get the connector from
-the atomic_state.
-
-Fixes: 25fdd5933e4c ("drm/msm: Add SDM845 DPU support")
-Reported-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Closes: https://gitlab.freedesktop.org/drm/msm/-/issues/59
-Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Tested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org> # SM8350-HDK
-Patchwork: https://patchwork.freedesktop.org/patch/606729/
-Link: https://lore.kernel.org/r/20240731191723.3050932-1-quic_abhinavk@quicinc.com
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-[Minor conflict resolved due to code context change.]
-Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
----
-Verified the build test
----
- drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-index c7fcd617b48c..94f352253c74 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-@@ -1101,8 +1101,6 @@ static void dpu_encoder_virt_atomic_mode_set(struct drm_encoder *drm_enc,
- 
- 	cstate->num_mixers = num_lm;
- 
--	dpu_enc->connector = conn_state->connector;
--
- 	for (i = 0; i < dpu_enc->num_phys_encs; i++) {
- 		struct dpu_encoder_phys *phys = dpu_enc->phys_encs[i];
- 
-@@ -1192,6 +1190,9 @@ static void dpu_encoder_virt_atomic_enable(struct drm_encoder *drm_enc,
- 	dpu_enc = to_dpu_encoder_virt(drm_enc);
- 
- 	mutex_lock(&dpu_enc->enc_lock);
-+
-+	dpu_enc->connector = drm_atomic_get_new_connector_for_encoder(state, drm_enc);
-+
- 	cur_mode = &dpu_enc->base.crtc->state->adjusted_mode;
- 
- 	trace_dpu_enc_enable(DRMID(drm_enc), cur_mode->hdisplay,
--- 
-2.34.1
-
+Thanks,
+baolu
 
