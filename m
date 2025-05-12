@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-143838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28A46AB41F1
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:15:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D393AAB4371
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:34:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9A901B601BC
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:15:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7A8F7BB00A
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:26:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 169492BCF50;
-	Mon, 12 May 2025 18:05:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B08D29A337;
+	Mon, 12 May 2025 18:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eh/SoiZH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WVommQoR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C87BC29E04F;
-	Mon, 12 May 2025 18:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06F3C2980C5;
+	Mon, 12 May 2025 18:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073111; cv=none; b=VpOycqMwQFutXtOR3ihku7PeaB8YDAwgKpeGe7q3LNVECwZ4aXESEwCs0aUf+pU5as0gQlg5oO2i7dVXHYxaC3BlgPSxx3XuQPJ7jnmoBcatYHKjmFVCe43+rYLotlgNIXYwIs1gUcgQd2guVHWlFGTBotHPp+qjsmm/CDtsnFw=
+	t=1747073419; cv=none; b=C6z+HwsnHzVkWV5KVF0pBKJoHRx685EC/dDev7uRkhuFik8S4OwZ7CCNZI4cCRFxL+BmwSwB6WrjnCBakRAL6c9u2sZvJaz/ICeWrYkbK/qWPgdanH4vemlbmQl9vqSzuMSQJNEXj1xsixbo+2bt+tFFqhuFwTXP1tvY5Nq7T4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073111; c=relaxed/simple;
-	bh=Ui/npbgSS/tq8IKw2Tuu5il/T7BEa3dczYtyDt3Neg8=;
+	s=arc-20240116; t=1747073419; c=relaxed/simple;
+	bh=bsgytnYn4ZanvM07XKl92fD5P21k5asvHXMa3dK9JiM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qILK0Sobstcp4zMPpu2BZwNotb9dUGiNQOtcnVyrxXHfrKdTUWWfjBV+3aSDDFncj4kG2P31vCcfztDGUanj7p/x+0+6x57cyWLL3l+T9CxFSBfop7Y25PhS8JZqGhwiLrEqiDmcnx9N7oVfeV2FKoHINyUYTOuuLtBll63SZiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eh/SoiZH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F9E8C4CEF1;
-	Mon, 12 May 2025 18:05:11 +0000 (UTC)
+	 MIME-Version; b=DxXYB2+OF2guNv3/mKD0ZfDcLW0sEMxyGIfV7/D8ah38Z7THBuImLB7qzXgFPWtF+6FmkmPCbJhIwm6bTrREjmignWrowXHwpNJwMFrVvOz2pnsvJ8NVJ0Ct+HehKBQb2LF7cEL4kx0YHvxEURpOjTtUEbxF8jJuhtjlaG7Uqps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WVommQoR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6808AC4CEE7;
+	Mon, 12 May 2025 18:10:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073111;
-	bh=Ui/npbgSS/tq8IKw2Tuu5il/T7BEa3dczYtyDt3Neg8=;
+	s=korg; t=1747073418;
+	bh=bsgytnYn4ZanvM07XKl92fD5P21k5asvHXMa3dK9JiM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Eh/SoiZH0EjpMZtnMJx0F80DgVi2DoDbatHqcLBsrJ6/nd4PPl9+LGyk7IAOw1QFL
-	 tagD4XfXGrBLNDTjf8o+g95kZ+vFZgDLVXKegaTiHU36rc01dxXfEJETysETQAfWU3
-	 HeTMyx8B/ukrFkTbqB+fiw4S1/odXUShcBPw8Z88=
+	b=WVommQoRrhipmEgazwsja1YOX1FAwWCi9pty7GWwSPb731DmnUIUo20t5C8jXnGMW
+	 iRCl9n++3CNhbMh0dAwuvekh6M45RwOFVhtLU/dbIKKSKelT36wKMNg6ezE5yMm0WP
+	 jydnncjT7knp7yDZ4tu+WEv10qCc6stq71Vyy63c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chase Hiltz <chase@path.net>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 156/184] io_uring: always arm linked timeouts prior to issue
+	stable <stable@kernel.org>,
+	Pawel Laszczak <pawell@cadence.com>,
+	Peter Chen <peter.chen@kernel.org>
+Subject: [PATCH 6.6 068/113] usb: cdnsp: fix L1 resume issue for RTL_REVISION_NEW_LPM version
 Date: Mon, 12 May 2025 19:45:57 +0200
-Message-ID: <20250512172048.171659591@linuxfoundation.org>
+Message-ID: <20250512172030.449321607@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
-References: <20250512172041.624042835@linuxfoundation.org>
+In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
+References: <20250512172027.691520737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,160 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Pawel Laszczak <pawell@cadence.com>
 
-Commit b53e523261bf058ea4a518b482222e7a277b186b upstream.
+commit 8614ecdb1570e4fffe87ebdc62b613ed66f1f6a6 upstream.
 
-There are a few spots where linked timeouts are armed, and not all of
-them adhere to the pre-arm, attempt issue, post-arm pattern. This can
-be problematic if the linked request returns that it will trigger a
-callback later, and does so before the linked timeout is fully armed.
+The controllers with rtl version larger than
+RTL_REVISION_NEW_LPM (0x00002700) has bug which causes that controller
+doesn't resume from L1 state. It happens if after receiving LPM packet
+controller starts transitioning to L1 and in this moment the driver force
+resuming by write operation to PORTSC.PLS.
+It's corner case and happens when write operation to PORTSC occurs during
+device delay before transitioning to L1 after transmitting ACK
+time (TL1TokenRetry).
 
-Consolidate all the linked timeout handling into __io_issue_sqe(),
-rather than have it spread throughout the various issue entry points.
+Forcing transition from L1->L0 by driver for revision larger than
+RTL_REVISION_NEW_LPM is not needed, so driver can simply fix this issue
+through block call of cdnsp_force_l0_go function.
 
-Cc: stable@vger.kernel.org
-Link: https://github.com/axboe/liburing/issues/1390
-Reported-by: Chase Hiltz <chase@path.net>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Pawel Laszczak <pawell@cadence.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/PH7PR07MB9538B55C3A6E71F9ED29E980DD842@PH7PR07MB9538.namprd07.prod.outlook.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io_uring.c |   50 +++++++++++++++-----------------------------------
- 1 file changed, 15 insertions(+), 35 deletions(-)
+ drivers/usb/cdns3/cdnsp-gadget.c |    2 ++
+ drivers/usb/cdns3/cdnsp-gadget.h |    3 +++
+ drivers/usb/cdns3/cdnsp-ring.c   |    3 ++-
+ 3 files changed, 7 insertions(+), 1 deletion(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -441,24 +441,6 @@ static struct io_kiocb *__io_prep_linked
- 	return req->link;
- }
+--- a/drivers/usb/cdns3/cdnsp-gadget.c
++++ b/drivers/usb/cdns3/cdnsp-gadget.c
+@@ -1796,6 +1796,8 @@ static void cdnsp_get_rev_cap(struct cdn
+ 	reg += cdnsp_find_next_ext_cap(reg, 0, RTL_REV_CAP);
+ 	pdev->rev_cap  = reg;
  
--static inline struct io_kiocb *io_prep_linked_timeout(struct io_kiocb *req)
--{
--	if (likely(!(req->flags & REQ_F_ARM_LTIMEOUT)))
--		return NULL;
--	return __io_prep_linked_timeout(req);
--}
--
--static noinline void __io_arm_ltimeout(struct io_kiocb *req)
--{
--	io_queue_linked_timeout(__io_prep_linked_timeout(req));
--}
--
--static inline void io_arm_ltimeout(struct io_kiocb *req)
--{
--	if (unlikely(req->flags & REQ_F_ARM_LTIMEOUT))
--		__io_arm_ltimeout(req);
--}
--
- static void io_prep_async_work(struct io_kiocb *req)
- {
- 	const struct io_issue_def *def = &io_issue_defs[req->opcode];
-@@ -511,7 +493,6 @@ static void io_prep_async_link(struct io
- 
- static void io_queue_iowq(struct io_kiocb *req)
- {
--	struct io_kiocb *link = io_prep_linked_timeout(req);
- 	struct io_uring_task *tctx = req->task->io_uring;
- 
- 	BUG_ON(!tctx);
-@@ -536,8 +517,6 @@ static void io_queue_iowq(struct io_kioc
- 
- 	trace_io_uring_queue_async_work(req, io_wq_is_hashed(&req->work));
- 	io_wq_enqueue(tctx->io_wq, &req->work);
--	if (link)
--		io_queue_linked_timeout(link);
- }
- 
- static void io_req_queue_iowq_tw(struct io_kiocb *req, struct io_tw_state *ts)
-@@ -1731,17 +1710,24 @@ static bool io_assign_file(struct io_kio
- 	return !!req->file;
- }
- 
-+#define REQ_ISSUE_SLOW_FLAGS	(REQ_F_CREDS | REQ_F_ARM_LTIMEOUT)
++	pdev->rtl_revision = readl(&pdev->rev_cap->rtl_revision);
 +
- static int io_issue_sqe(struct io_kiocb *req, unsigned int issue_flags)
- {
- 	const struct io_issue_def *def = &io_issue_defs[req->opcode];
- 	const struct cred *creds = NULL;
-+	struct io_kiocb *link = NULL;
- 	int ret;
+ 	dev_info(pdev->dev, "Rev: %08x/%08x, eps: %08x, buff: %08x/%08x\n",
+ 		 readl(&pdev->rev_cap->ctrl_revision),
+ 		 readl(&pdev->rev_cap->rtl_revision),
+--- a/drivers/usb/cdns3/cdnsp-gadget.h
++++ b/drivers/usb/cdns3/cdnsp-gadget.h
+@@ -1362,6 +1362,7 @@ struct cdnsp_port {
+  * @rev_cap: Controller Capabilities Registers.
+  * @hcs_params1: Cached register copies of read-only HCSPARAMS1
+  * @hcc_params: Cached register copies of read-only HCCPARAMS1
++ * @rtl_revision: Cached controller rtl revision.
+  * @setup: Temporary buffer for setup packet.
+  * @ep0_preq: Internal allocated request used during enumeration.
+  * @ep0_stage: ep0 stage during enumeration process.
+@@ -1416,6 +1417,8 @@ struct cdnsp_device {
+ 	__u32 hcs_params1;
+ 	__u32 hcs_params3;
+ 	__u32 hcc_params;
++	#define RTL_REVISION_NEW_LPM 0x2700
++	__u32 rtl_revision;
+ 	/* Lock used in interrupt thread context. */
+ 	spinlock_t lock;
+ 	struct usb_ctrlrequest setup;
+--- a/drivers/usb/cdns3/cdnsp-ring.c
++++ b/drivers/usb/cdns3/cdnsp-ring.c
+@@ -308,7 +308,8 @@ static bool cdnsp_ring_ep_doorbell(struc
  
- 	if (unlikely(!io_assign_file(req, def, issue_flags)))
- 		return -EBADF;
+ 	writel(db_value, reg_addr);
  
--	if (unlikely((req->flags & REQ_F_CREDS) && req->creds != current_cred()))
--		creds = override_creds(req->creds);
-+	if (unlikely(req->flags & REQ_ISSUE_SLOW_FLAGS)) {
-+		if ((req->flags & REQ_F_CREDS) && req->creds != current_cred())
-+			creds = override_creds(req->creds);
-+		if (req->flags & REQ_F_ARM_LTIMEOUT)
-+			link = __io_prep_linked_timeout(req);
-+	}
+-	cdnsp_force_l0_go(pdev);
++	if (pdev->rtl_revision < RTL_REVISION_NEW_LPM)
++		cdnsp_force_l0_go(pdev);
  
- 	if (!def->audit_skip)
- 		audit_uring_entry(req->opcode);
-@@ -1751,8 +1737,12 @@ static int io_issue_sqe(struct io_kiocb
- 	if (!def->audit_skip)
- 		audit_uring_exit(!ret, ret);
- 
--	if (creds)
--		revert_creds(creds);
-+	if (unlikely(creds || link)) {
-+		if (creds)
-+			revert_creds(creds);
-+		if (link)
-+			io_queue_linked_timeout(link);
-+	}
- 
- 	if (ret == IOU_OK) {
- 		if (issue_flags & IO_URING_F_COMPLETE_DEFER)
-@@ -1765,7 +1755,6 @@ static int io_issue_sqe(struct io_kiocb
- 
- 	if (ret == IOU_ISSUE_SKIP_COMPLETE) {
- 		ret = 0;
--		io_arm_ltimeout(req);
- 
- 		/* If the op doesn't have a file, we're not polling for it */
- 		if ((req->ctx->flags & IORING_SETUP_IOPOLL) && def->iopoll_queue)
-@@ -1808,8 +1797,6 @@ void io_wq_submit_work(struct io_wq_work
- 	else
- 		req_ref_get(req);
- 
--	io_arm_ltimeout(req);
--
- 	/* either cancelled or io-wq is dying, so don't touch tctx->iowq */
- 	if (atomic_read(&work->flags) & IO_WQ_WORK_CANCEL) {
- fail:
-@@ -1929,15 +1916,11 @@ struct file *io_file_get_normal(struct i
- static void io_queue_async(struct io_kiocb *req, int ret)
- 	__must_hold(&req->ctx->uring_lock)
- {
--	struct io_kiocb *linked_timeout;
--
- 	if (ret != -EAGAIN || (req->flags & REQ_F_NOWAIT)) {
- 		io_req_defer_failed(req, ret);
- 		return;
- 	}
- 
--	linked_timeout = io_prep_linked_timeout(req);
--
- 	switch (io_arm_poll_handler(req, 0)) {
- 	case IO_APOLL_READY:
- 		io_kbuf_recycle(req, 0);
-@@ -1950,9 +1933,6 @@ static void io_queue_async(struct io_kio
- 	case IO_APOLL_OK:
- 		break;
- 	}
--
--	if (linked_timeout)
--		io_queue_linked_timeout(linked_timeout);
- }
- 
- static inline void io_queue_sqe(struct io_kiocb *req)
+ 	/* Doorbell was set. */
+ 	return true;
 
 
 
