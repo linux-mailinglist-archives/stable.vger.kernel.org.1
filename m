@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-143687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E899AB40E7
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:59:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF083AB40EA
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:59:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCF9419E7607
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:59:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D60F16DD52
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:59:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33B3D255E52;
-	Mon, 12 May 2025 17:59:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 349A5295D97;
+	Mon, 12 May 2025 17:59:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MbR876xY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U4hKn+g7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E55DD1E505;
-	Mon, 12 May 2025 17:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E60BA248F49;
+	Mon, 12 May 2025 17:59:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072756; cv=none; b=GCmpwcdd/37eNa/l0PMIL/ONVRskrWu+DLr3BFTsBlapQbchEXuWdsBPKLOf0fu3iUnFDQpMvLAROzai6A4kjrNK7ekB7xFY+8n6sB1x0IgjATgBUp8/nw1h8CJ5iKw5ptHp2scYlESXcKlt/9ce7clh1bhmcqANTMlphvLyeqE=
+	t=1747072762; cv=none; b=NBuem3HD9SYKtc+ze1mLkoX+uP/F0Qy4R7tasA1aNajz8ECtwUWG80QW3Z/sl6GarQGpbFLSTsJk1e3ccljL88L8rmWHZ7OzhHGfhX6rfUbs27xRCbr/J17kzj5hYFaP+IdkV7frY+qET56NBXs5y+BFLrilTDnn2BGhN3W90uA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072756; c=relaxed/simple;
-	bh=oh4RU2ujmKHmD4aT4x9zsf6aRgW1XaRuJVE+eSlAoao=;
+	s=arc-20240116; t=1747072762; c=relaxed/simple;
+	bh=VrtHjBvs/Qbwe5Axyo+78Y03H2/y3ZuVKc4ptGOnzL4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HO1kO8ZxNnMElWtmueoRlzj83KibdwWHE8ltF1CCmWp7QdKHx5zl2Rw51UiL/rZw1fsbHpS5m5P/vvIDfhcdc7Y6O3/8cCueh/jQK3zyM1r+IcZZav6TWjlcUAuBdAthpHBSpqcFn+oRpJdQw1Zyvcled4xBWPPg7NEw9GrPAWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MbR876xY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 080C4C4CEE7;
-	Mon, 12 May 2025 17:59:14 +0000 (UTC)
+	 MIME-Version; b=Xhzh8K5Wl0UogC2A84DyXaiesnoGWA0FG8Yt1Us8y2OkPI+wJmPX7GG/J5Yjd9fLiCAVCagnXYsu90LAo7WfbYUxNm6EVi4EWH4DxJXGHJiKPJGtTr+Qp2l8C3X6m1LDLko0ohFDBl9qCgNf0Mpqk1f6iJVjSbDRyI42Je/o13Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U4hKn+g7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D885C4CEEF;
+	Mon, 12 May 2025 17:59:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072755;
-	bh=oh4RU2ujmKHmD4aT4x9zsf6aRgW1XaRuJVE+eSlAoao=;
+	s=korg; t=1747072761;
+	bh=VrtHjBvs/Qbwe5Axyo+78Y03H2/y3ZuVKc4ptGOnzL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MbR876xYlo9yV+8/JihMS5aSAEyxsIwXX5CRJSkbLeOguU59zJNKAGMQ/GCb4VAJ8
-	 M0pXPrzWxsO048RTbKmmpxHvjgrLMBYdiPwREE19zNhS0QqAlnVBohqKJAVNMdgLl0
-	 n4IWwUJh5NmVhqaGO/se5gM0Yx/9Z0fsiFQz+z7I=
+	b=U4hKn+g7beZBZZCif65sqlBqI+HZEdaEYBhxM7oOCxNcW28KxXCfcbLgvyeMGz2q/
+	 AxD1IR6qNKALWF8sNZoy2lrwNq/AEBpB6MJLv4qPGF10/41doSgbTuZ71f9or4OYOg
+	 36Xh4rthyJsUbz0yjQqiCh3jHa1VH7GG3X9eVDjU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,9 +48,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 047/184] fbnic: Gate AXI read/write enabling on FW mailbox
-Date: Mon, 12 May 2025 19:44:08 +0200
-Message-ID: <20250512172043.652387805@linuxfoundation.org>
+Subject: [PATCH 6.12 048/184] fbnic: Actually flush_tx instead of stalling out
+Date: Mon, 12 May 2025 19:44:09 +0200
+Message-ID: <20250512172043.693346007@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
 References: <20250512172041.624042835@linuxfoundation.org>
@@ -71,180 +71,105 @@ Content-Transfer-Encoding: 8bit
 
 From: Alexander Duyck <alexanderduyck@fb.com>
 
-[ Upstream commit 3b12f00ddd08e888273b2ac0488d396d90a836fc ]
+[ Upstream commit 0f9a959a0addd9bbc47e5d16c36b3a7f97981915 ]
 
-In order to prevent the device from throwing spurious writes and/or reads
-at us we need to gate the AXI fabric interface to the PCIe until such time
-as we know the FW is in a known good state.
+The fbnic_mbx_flush_tx function had a number of issues.
 
-To accomplish this we use the mailbox as a mechanism for us to recognize
-that the FW has acknowledged our presence and is no longer sending any
-stale message data to us.
+First, we were waiting 200ms for the firmware to process the packets. We
+can drop this to 20ms and in almost all cases this should be more than
+enough time. So by changing this we can significantly reduce shutdown time.
 
-We start in fbnic_mbx_init by calling fbnic_mbx_reset_desc_ring function,
-disabling the DMA in both directions, and then invalidating all the
-descriptors in each ring.
+Second, we were not making sure that the Tx path was actually shut off. As
+such we could still have packets added while we were flushing the mailbox.
+To prevent that we can now clear the ready flag for the Tx side and it
+should stay down since the interrupt is disabled.
 
-We then poll the mailbox in fbnic_mbx_poll_tx_ready and when the interrupt
-is set by the FW we pick it up and mark the mailboxes as ready, while also
-enabling the DMA.
+Third, we kept re-reading the tail due to the second issue. The tail should
+not move after we have started the flush so we can just read it once while
+we are holding the mailbox Tx lock. By doing that we are guaranteed that
+the value should be consistent.
 
-Once we have completed all the transactions and need to shut down we call
-into fbnic_mbx_clean which will in turn call fbnic_mbx_reset_desc_ring for
-each ring and shut down the DMA and once again invalidate the descriptors.
+Fourth, we were keeping a count of descriptors cleaned due to the second
+and third issues called out. That count is not a valid reason to be exiting
+the cleanup, and with the tail only being read once we shouldn't see any
+cases where the tail moves after the disable so the tracking of count can
+be dropped.
 
-Fixes: 3646153161f1 ("eth: fbnic: Add register init to set PCIe/Ethernet device config")
+Fifth, we were using attempts * sleep time to determine how long we would
+wait in our polling loop to flush out the Tx. This can be very imprecise.
+In order to tighten up the timing we are shifting over to using a jiffies
+value of jiffies + 10 * HZ + 1 to determine the jiffies value we should
+stop polling at as this should be accurate within once sleep cycle for the
+total amount of time spent polling.
+
 Fixes: da3cde08209e ("eth: fbnic: Add FW communication mechanism")
 Signed-off-by: Alexander Duyck <alexanderduyck@fb.com>
 Reviewed-by: Simon Horman <horms@kernel.org>
 Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/174654718623.499179.7445197308109347982.stgit@ahduyck-xeon-server.home.arpa
+Link: https://patch.msgid.link/174654719929.499179.16406653096197423749.stgit@ahduyck-xeon-server.home.arpa
 Reviewed-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/meta/fbnic/fbnic_csr.h |  2 ++
- drivers/net/ethernet/meta/fbnic/fbnic_fw.c  | 38 +++++++++++++++++----
- drivers/net/ethernet/meta/fbnic/fbnic_mac.c |  6 ----
- 3 files changed, 33 insertions(+), 13 deletions(-)
+ drivers/net/ethernet/meta/fbnic/fbnic_fw.c | 31 +++++++++++-----------
+ 1 file changed, 16 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_csr.h b/drivers/net/ethernet/meta/fbnic/fbnic_csr.h
-index 21db509acbc15..e91b4432fddd7 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_csr.h
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_csr.h
-@@ -700,8 +700,10 @@ enum {
- /* PUL User Registers */
- #define FBNIC_CSR_START_PUL_USER	0x31000	/* CSR section delimiter */
- #define FBNIC_PUL_OB_TLP_HDR_AW_CFG	0x3103d		/* 0xc40f4 */
-+#define FBNIC_PUL_OB_TLP_HDR_AW_CFG_FLUSH	CSR_BIT(19)
- #define FBNIC_PUL_OB_TLP_HDR_AW_CFG_BME		CSR_BIT(18)
- #define FBNIC_PUL_OB_TLP_HDR_AR_CFG	0x3103e		/* 0xc40f8 */
-+#define FBNIC_PUL_OB_TLP_HDR_AR_CFG_FLUSH	CSR_BIT(19)
- #define FBNIC_PUL_OB_TLP_HDR_AR_CFG_BME		CSR_BIT(18)
- #define FBNIC_CSR_END_PUL_USER	0x31080	/* CSR section delimiter */
- 
 diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
-index 612d09ea08ebb..7db68fe7df940 100644
+index 7db68fe7df940..dd30f0cb02506 100644
 --- a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
 +++ b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
-@@ -51,10 +51,26 @@ static u64 __fbnic_mbx_rd_desc(struct fbnic_dev *fbd, int mbx_idx, int desc_idx)
- 	return desc;
- }
+@@ -797,35 +797,36 @@ int fbnic_mbx_poll_tx_ready(struct fbnic_dev *fbd)
  
--static void fbnic_mbx_init_desc_ring(struct fbnic_dev *fbd, int mbx_idx)
-+static void fbnic_mbx_reset_desc_ring(struct fbnic_dev *fbd, int mbx_idx)
+ void fbnic_mbx_flush_tx(struct fbnic_dev *fbd)
  {
- 	int desc_idx;
- 
-+	/* Disable DMA transactions from the device,
-+	 * and flush any transactions triggered during cleaning
-+	 */
-+	switch (mbx_idx) {
-+	case FBNIC_IPC_MBX_RX_IDX:
-+		wr32(fbd, FBNIC_PUL_OB_TLP_HDR_AW_CFG,
-+		     FBNIC_PUL_OB_TLP_HDR_AW_CFG_FLUSH);
-+		break;
-+	case FBNIC_IPC_MBX_TX_IDX:
-+		wr32(fbd, FBNIC_PUL_OB_TLP_HDR_AR_CFG,
-+		     FBNIC_PUL_OB_TLP_HDR_AR_CFG_FLUSH);
-+		break;
-+	}
-+
-+	wrfl(fbd);
-+
- 	/* Initialize first descriptor to all 0s. Doing this gives us a
- 	 * solid stop for the firmware to hit when it is done looping
- 	 * through the ring.
-@@ -90,7 +106,7 @@ void fbnic_mbx_init(struct fbnic_dev *fbd)
- 	wr32(fbd, FBNIC_INTR_CLEAR(0), 1u << FBNIC_FW_MSIX_ENTRY);
- 
- 	for (i = 0; i < FBNIC_IPC_MBX_INDICES; i++)
--		fbnic_mbx_init_desc_ring(fbd, i);
-+		fbnic_mbx_reset_desc_ring(fbd, i);
- }
- 
- static int fbnic_mbx_map_msg(struct fbnic_dev *fbd, int mbx_idx,
-@@ -155,7 +171,7 @@ static void fbnic_mbx_clean_desc_ring(struct fbnic_dev *fbd, int mbx_idx)
- {
- 	int i;
- 
--	fbnic_mbx_init_desc_ring(fbd, mbx_idx);
-+	fbnic_mbx_reset_desc_ring(fbd, mbx_idx);
- 
- 	for (i = FBNIC_IPC_MBX_DESC_LEN; i--;)
- 		fbnic_mbx_unmap_and_free_msg(fbd, mbx_idx, i);
-@@ -297,7 +313,7 @@ static int fbnic_fw_xmit_cap_msg(struct fbnic_dev *fbd)
- 	return (err == -EOPNOTSUPP) ? 0 : err;
- }
- 
--static void fbnic_mbx_postinit_desc_ring(struct fbnic_dev *fbd, int mbx_idx)
-+static void fbnic_mbx_init_desc_ring(struct fbnic_dev *fbd, int mbx_idx)
- {
- 	struct fbnic_fw_mbx *mbx = &fbd->mbx[mbx_idx];
- 
-@@ -309,10 +325,18 @@ static void fbnic_mbx_postinit_desc_ring(struct fbnic_dev *fbd, int mbx_idx)
- 
- 	switch (mbx_idx) {
- 	case FBNIC_IPC_MBX_RX_IDX:
-+		/* Enable DMA writes from the device */
-+		wr32(fbd, FBNIC_PUL_OB_TLP_HDR_AW_CFG,
-+		     FBNIC_PUL_OB_TLP_HDR_AW_CFG_BME);
-+
- 		/* Make sure we have a page for the FW to write to */
- 		fbnic_mbx_alloc_rx_msgs(fbd);
- 		break;
- 	case FBNIC_IPC_MBX_TX_IDX:
-+		/* Enable DMA reads from the device */
-+		wr32(fbd, FBNIC_PUL_OB_TLP_HDR_AR_CFG,
-+		     FBNIC_PUL_OB_TLP_HDR_AR_CFG_BME);
-+
- 		/* Force version to 1 if we successfully requested an update
- 		 * from the firmware. This should be overwritten once we get
- 		 * the actual version from the firmware in the capabilities
-@@ -329,7 +353,7 @@ static void fbnic_mbx_postinit(struct fbnic_dev *fbd)
- {
- 	int i;
- 
--	/* We only need to do this on the first interrupt following init.
-+	/* We only need to do this on the first interrupt following reset.
- 	 * this primes the mailbox so that we will have cleared all the
- 	 * skip descriptors.
- 	 */
-@@ -339,7 +363,7 @@ static void fbnic_mbx_postinit(struct fbnic_dev *fbd)
- 	wr32(fbd, FBNIC_INTR_CLEAR(0), 1u << FBNIC_FW_MSIX_ENTRY);
- 
- 	for (i = 0; i < FBNIC_IPC_MBX_INDICES; i++)
--		fbnic_mbx_postinit_desc_ring(fbd, i);
-+		fbnic_mbx_init_desc_ring(fbd, i);
- }
- 
- /**
-@@ -761,7 +785,7 @@ int fbnic_mbx_poll_tx_ready(struct fbnic_dev *fbd)
- 		 * avoid the mailbox getting stuck closed if the interrupt
- 		 * is reset.
- 		 */
--		fbnic_mbx_init_desc_ring(fbd, FBNIC_IPC_MBX_TX_IDX);
-+		fbnic_mbx_reset_desc_ring(fbd, FBNIC_IPC_MBX_TX_IDX);
- 
- 		msleep(200);
- 
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_mac.c b/drivers/net/ethernet/meta/fbnic/fbnic_mac.c
-index 7b654d0a6dac6..06fa65e4f35b6 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_mac.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_mac.c
-@@ -79,12 +79,6 @@ static void fbnic_mac_init_axi(struct fbnic_dev *fbd)
- 	fbnic_init_readrq(fbd, FBNIC_QM_RNI_RBP_CTL, cls, readrq);
- 	fbnic_init_mps(fbd, FBNIC_QM_RNI_RDE_CTL, cls, mps);
- 	fbnic_init_mps(fbd, FBNIC_QM_RNI_RCM_CTL, cls, mps);
++	unsigned long timeout = jiffies + 10 * HZ + 1;
+ 	struct fbnic_fw_mbx *tx_mbx;
+-	int attempts = 50;
+-	u8 count = 0;
 -
--	/* Enable XALI AR/AW outbound */
--	wr32(fbd, FBNIC_PUL_OB_TLP_HDR_AW_CFG,
--	     FBNIC_PUL_OB_TLP_HDR_AW_CFG_BME);
--	wr32(fbd, FBNIC_PUL_OB_TLP_HDR_AR_CFG,
--	     FBNIC_PUL_OB_TLP_HDR_AR_CFG_BME);
+-	/* Nothing to do if there is no mailbox */
+-	if (!fbnic_fw_present(fbd))
+-		return;
++	u8 tail;
+ 
+ 	/* Record current Rx stats */
+ 	tx_mbx = &fbd->mbx[FBNIC_IPC_MBX_TX_IDX];
+ 
+-	/* Nothing to do if mailbox never got to ready */
+-	if (!tx_mbx->ready)
+-		return;
++	spin_lock_irq(&fbd->fw_tx_lock);
++
++	/* Clear ready to prevent any further attempts to transmit */
++	tx_mbx->ready = false;
++
++	/* Read tail to determine the last tail state for the ring */
++	tail = tx_mbx->tail;
++
++	spin_unlock_irq(&fbd->fw_tx_lock);
+ 
+ 	/* Give firmware time to process packet,
+-	 * we will wait up to 10 seconds which is 50 waits of 200ms.
++	 * we will wait up to 10 seconds which is 500 waits of 20ms.
+ 	 */
+ 	do {
+ 		u8 head = tx_mbx->head;
+ 
+-		if (head == tx_mbx->tail)
++		/* Tx ring is empty once head == tail */
++		if (head == tail)
+ 			break;
+ 
+-		msleep(200);
++		msleep(20);
+ 		fbnic_mbx_process_tx_msgs(fbd);
+-
+-		count += (tx_mbx->head - head) % FBNIC_IPC_MBX_DESC_LEN;
+-	} while (count < FBNIC_IPC_MBX_DESC_LEN && --attempts);
++	} while (time_is_after_jiffies(timeout));
  }
  
- static void fbnic_mac_init_qm(struct fbnic_dev *fbd)
+ void fbnic_get_fw_ver_commit_str(struct fbnic_dev *fbd, char *fw_version,
 -- 
 2.39.5
 
