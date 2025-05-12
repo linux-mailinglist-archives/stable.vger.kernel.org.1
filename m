@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-143967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F77EAB42F2
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:28:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 904E4AB4293
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:24:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCAE14A2A64
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:28:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C794D18826D5
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:23:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 696AA29AAEA;
-	Mon, 12 May 2025 18:10:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 623F0296FB9;
+	Mon, 12 May 2025 18:06:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KbzG0Yff"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AI4dptCb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2690B296147;
-	Mon, 12 May 2025 18:10:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 207742951D9;
+	Mon, 12 May 2025 18:06:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073446; cv=none; b=LCNk+5BBcFLsXhFx0jWN+9fkQ3x98T0mGPi54hRSk3wMN2qOt/xLcVYp6BvVYebiyLKOb35uVSTlL4DPBDhkKdS0rvRVEJ6ji7WqfdBmnvdmbNd38OA2BMY3tmCrv57y2dzRyLsDlc/6Z4EUKSoVe4maF7yVysd8vbdJDfKg5XQ=
+	t=1747073219; cv=none; b=GoHfgctkbcvIm26R03o9g+q33qhyldANMGgwWHpb9RDQEPoSf41lWvJOQ3ugz43BumT1oA3LNAQCbu/EdxSnYRBEEv9z/oBe+pytbCK0iG4oN+BqkIEtpV5NwvWCOP06zmveDgD2rBdJQVEf3QqLE+8nfyQx/rEAjCHXOaSwZYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073446; c=relaxed/simple;
-	bh=Y6RDMYQ/Rew40lJivN8kNZrnHuTW76F2niKjpgqXlb8=;
+	s=arc-20240116; t=1747073219; c=relaxed/simple;
+	bh=KUiMOMr3ZlT0HvkvAmnwDBkzJ1hu2HZCcRsRUrtWM18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R47eogKzVbBrtGPZ4DNqRsS+FKHDAIecPdlX0uxmeQia9Bun2VNJyb/Av3bMPtzwx4zb4s+mX7xU03wZGa2MITkfH7UCmyVoPLYWuOhsw9ZObLWCkfpK+YbukHEvxuS1DX6EED0DFDb8Tg2EAR42/hy+bUOrHqfQk8wezb6Cj3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KbzG0Yff; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2815C4CEEF;
-	Mon, 12 May 2025 18:10:45 +0000 (UTC)
+	 MIME-Version; b=RmvFlA8x+cxNChUtY+xU2Hece7oTk9faIvPSck/GtbUpt1aJ6w0oQWZvRChHfywjF3T8cUUwrOidO0nyeCRwMGOx+XhpAIZUMb2iv50bQTJGfsIgVqZnV5XKNC8ngU49onc6myj1iwVBZAKanT438PAtwJXYb76/B4y5PSwn5KM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AI4dptCb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83EFDC4CEE7;
+	Mon, 12 May 2025 18:06:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073446;
-	bh=Y6RDMYQ/Rew40lJivN8kNZrnHuTW76F2niKjpgqXlb8=;
+	s=korg; t=1747073219;
+	bh=KUiMOMr3ZlT0HvkvAmnwDBkzJ1hu2HZCcRsRUrtWM18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KbzG0YffRE2P945NqreL4Q+F3SoYwjh0eShBmFGYILJkq8q1CrDanvHxQxarZWZVt
-	 4GOvFpteY9QWZXgqcIHrnfieXpxKiOfFmbGQ0/Qi4sr2LWwuN6bDFGV+9L+esr11HJ
-	 uydoUYLN4QVkFUwo+RbtYlgnQiq8bCfqjS3vq1So=
+	b=AI4dptCbKoTu4JLwvFsP4jQUvJx3+rnqZMlVJ2kGneKYr6Lf9hJoeZOSp2ilu/CU4
+	 2YP9qyLtGfmw+UsvjrNTp+DYoeMgTr2pJ8Rdb5GiBas2q9dxGayc42sllJ0E5dYp7O
+	 BCgA9Hccbgk5NW9tCKKx9cvwRplItxv+Yt7hesUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Penkler <dpenkler@gmail.com>
-Subject: [PATCH 6.6 077/113] usb: usbtmc: Fix erroneous wait_srq ioctl return
-Date: Mon, 12 May 2025 19:46:06 +0200
-Message-ID: <20250512172030.814868218@linuxfoundation.org>
+	James Morse <james.morse@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Daniel Borkmann <daniel@iogearbox.net>
+Subject: [PATCH 6.12 166/184] arm64: bpf: Only mitigate cBPF programs loaded by unprivileged users
+Date: Mon, 12 May 2025 19:46:07 +0200
+Message-ID: <20250512172048.573634993@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
-References: <20250512172027.691520737@linuxfoundation.org>
+In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
+References: <20250512172041.624042835@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,79 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Penkler <dpenkler@gmail.com>
+From: James Morse <james.morse@arm.com>
 
-commit a9747c9b8b59ab4207effd20eb91a890acb44e16 upstream.
+commit f300769ead032513a68e4a02e806393402e626f8 upstream.
 
-wait_event_interruptible_timeout returns a long
-The return was being assigned to an int causing an integer overflow when
-the remaining jiffies > INT_MAX resulting in random error returns.
+Support for eBPF programs loaded by unprivileged users is typically
+disabled. This means only cBPF programs need to be mitigated for BHB.
 
-Use a long return value,  converting to the int ioctl return only on
-error.
+In addition, only mitigate cBPF programs that were loaded by an
+unprivileged user. Privileged users can also load the same program
+via eBPF, making the mitigation pointless.
 
-Fixes: 739240a9f6ac ("usb: usbtmc: Add ioctl USBTMC488_IOCTL_WAIT_SRQ")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dave Penkler <dpenkler@gmail.com>
-Link: https://lore.kernel.org/r/20250502070941.31819-3-dpenkler@gmail.com
+Signed-off-by: James Morse <james.morse@arm.com>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/class/usbtmc.c |   23 +++++++++++------------
- 1 file changed, 11 insertions(+), 12 deletions(-)
+ arch/arm64/net/bpf_jit_comp.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/usb/class/usbtmc.c
-+++ b/drivers/usb/class/usbtmc.c
-@@ -606,9 +606,9 @@ static int usbtmc488_ioctl_wait_srq(stru
- {
- 	struct usbtmc_device_data *data = file_data->data;
- 	struct device *dev = &data->intf->dev;
--	int rv;
- 	u32 timeout;
- 	unsigned long expire;
-+	long wait_rv;
+--- a/arch/arm64/net/bpf_jit_comp.c
++++ b/arch/arm64/net/bpf_jit_comp.c
+@@ -870,6 +870,9 @@ static void __maybe_unused build_bhb_mit
+ 	    arm64_get_spectre_v2_state() == SPECTRE_VULNERABLE)
+ 		return;
  
- 	if (!data->iin_ep_present) {
- 		dev_dbg(dev, "no interrupt endpoint present\n");
-@@ -622,25 +622,24 @@ static int usbtmc488_ioctl_wait_srq(stru
- 
- 	mutex_unlock(&data->io_mutex);
- 
--	rv = wait_event_interruptible_timeout(
--			data->waitq,
--			atomic_read(&file_data->srq_asserted) != 0 ||
--			atomic_read(&file_data->closing),
--			expire);
-+	wait_rv = wait_event_interruptible_timeout(
-+		data->waitq,
-+		atomic_read(&file_data->srq_asserted) != 0 ||
-+		atomic_read(&file_data->closing),
-+		expire);
- 
- 	mutex_lock(&data->io_mutex);
- 
- 	/* Note! disconnect or close could be called in the meantime */
- 	if (atomic_read(&file_data->closing) || data->zombie)
--		rv = -ENODEV;
-+		return -ENODEV;
- 
--	if (rv < 0) {
--		/* dev can be invalid now! */
--		pr_debug("%s - wait interrupted %d\n", __func__, rv);
--		return rv;
-+	if (wait_rv < 0) {
-+		dev_dbg(dev, "%s - wait interrupted %ld\n", __func__, wait_rv);
-+		return wait_rv;
- 	}
- 
--	if (rv == 0) {
-+	if (wait_rv == 0) {
- 		dev_dbg(dev, "%s - wait timed out\n", __func__);
- 		return -ETIMEDOUT;
- 	}
++	if (capable(CAP_SYS_ADMIN))
++		return;
++
+ 	if (supports_clearbhb(SCOPE_SYSTEM)) {
+ 		emit(aarch64_insn_gen_hint(AARCH64_INSN_HINT_CLEARBHB), ctx);
+ 		return;
 
 
 
