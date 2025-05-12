@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-143784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47986AB4178
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:06:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35618AB42F4
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:28:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 18A937AFB34
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:04:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC36B1B61873
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:27:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B188297A70;
-	Mon, 12 May 2025 18:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60D1F29A328;
+	Mon, 12 May 2025 18:10:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xLELGVwV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Am9jvc1g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB7EF297A62;
-	Mon, 12 May 2025 18:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E0BB29A31D;
+	Mon, 12 May 2025 18:10:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073047; cv=none; b=VOwp3Yfkr3anN9RiEBDwXVDSlP49BFA3y6uhNQe9HsYjBTqqVhMVpiE8VD5i3yeMFoECezu5hEzsZ2vEqMXBiUhqNIcxnjDyw/FbiC0eqYpx+vBi12C/o+ZNsFUMKmGW98VdpWFJ/DtPd1t6qkOk6J1ZPsyOU2zpnplGVeKG0gU=
+	t=1747073416; cv=none; b=mVU1dQvMPw7kiYLGb9Kmdht2btLSBKapsuFM28+drN8fzCv3Cc4VqTdsu7txyVF5AkbDL66NnyPmiC8TYr7JXi4VlCQXKpE6ZikOGUxJStkCrneNfZcX9+6mYAsRh4THBKRBjaZk9oog2vySXDtmAQAllVLaQ9mj6chGZktl9HE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073047; c=relaxed/simple;
-	bh=7AdmamawxFHQVl9sNZyBGg7z72bkK+K1M5B0fw/WG7c=;
+	s=arc-20240116; t=1747073416; c=relaxed/simple;
+	bh=QEBORpZF20U8q6OandXgSLHO6iYjd+IjdaeL1OLvYFk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iyMsaoxZyFi6xHogDfyERreNIaeSxyoXVI2+i0aTNjdRZaqALj4ob2+qar+rSQ7BxE3E/9/qM/nIB9cwxFc462OdT8Ik7j9Jt4YoMC044/y7COyPjnFt/rXaz6bahRzXNGl4MjAyk8PJnYT8lz/W+BBetzcKeARKY/OnZRwvwVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xLELGVwV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 496D5C4CEE7;
-	Mon, 12 May 2025 18:04:06 +0000 (UTC)
+	 MIME-Version; b=GqJ793O8z/HKw2UcoqhQky1vo4zS8fVAuV6+9wmXwTkQ9yOvPye3cr2GDZGAVgNultBM2rwy+hlgwFerZkUCyvz8zzdGC1Olr8xo/Meq5K2m61YrvO8gj88E7msHupsZXrQ06hgp3EvfUfSncvbmi08nwFw8KY6goOPHuS9pxnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Am9jvc1g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A23C7C4CEE7;
+	Mon, 12 May 2025 18:10:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073046;
-	bh=7AdmamawxFHQVl9sNZyBGg7z72bkK+K1M5B0fw/WG7c=;
+	s=korg; t=1747073416;
+	bh=QEBORpZF20U8q6OandXgSLHO6iYjd+IjdaeL1OLvYFk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xLELGVwVC1UmcO8rA7v7ESzh9yG2gZhwdH5psuKpkaR7fomWYvCLF41LEYIMGw4+0
-	 F6+scQcs9H3H9qdU0+yeYsudEfhkl9A1zJf/1lAaeCtUtOI4F+XBPWCCTypkuS41cx
-	 YjrW8vD4+wsogf3iINktVtzDR/ADainjdUt2Ba+U=
+	b=Am9jvc1g/W1ifYofoWlFB02it8AZ4ACZFTV7DJFarKmEivihGUCLmHhh80ybKN9J4
+	 1ow7mlNA4EO7NRYslKScBhvtKs8MD5JNcedq5Dj+k+7RTxNDhYMnl498efe+NJhEY4
+	 rAKKVvGXey5a17z3pgdmguYYV17vD6E/HK8WXg2c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zong Li <zong.li@sifive.com>,
-	Nylon Chen <nylon.chen@sifive.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 138/184] riscv: misaligned: Add handling for ZCB instructions
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Ray Wu <ray.wu@amd.com>,
+	Wayne Lin <Wayne.Lin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.6 050/113] drm/amd/display: Remove incorrect checking in dmub aux handler
 Date: Mon, 12 May 2025 19:45:39 +0200
-Message-ID: <20250512172047.434221281@linuxfoundation.org>
+Message-ID: <20250512172029.712356168@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
-References: <20250512172041.624042835@linuxfoundation.org>
+In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
+References: <20250512172027.691520737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nylon Chen <nylon.chen@sifive.com>
+From: Wayne Lin <Wayne.Lin@amd.com>
 
-[ Upstream commit eb16b3727c05ed36420c90eca1e8f0e279514c1c ]
+commit 396dc51b3b7ea524bf8061f478332d0039e96d5d upstream.
 
-Add support for the Zcb extension's compressed half-word instructions
-(C.LHU, C.LH, and C.SH) in the RISC-V misaligned access trap handler.
+[Why & How]
+"Request length != reply length" is expected behavior defined in spec.
+It's not an invalid reply. Besides, replied data handling logic is not
+designed to be written in amdgpu_dm_process_dmub_aux_transfer_sync().
+Remove the incorrectly handling section.
 
-Signed-off-by: Zong Li <zong.li@sifive.com>
-Signed-off-by: Nylon Chen <nylon.chen@sifive.com>
-Fixes: 956d705dd279 ("riscv: Unaligned load/store handling for M_MODE")
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20250411073850.3699180-2-nylon.chen@sifive.com
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ead08b95fa50 ("drm/amd/display: Fix race condition in DPIA AUX transfer")
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Ray Wu <ray.wu@amd.com>
+Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
+Signed-off-by: Ray Wu <ray.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 81b5c6fa62af62fe89ae9576f41aae37830b94cb)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kernel/traps_misaligned.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   12 +-----------
+ 1 file changed, 1 insertion(+), 11 deletions(-)
 
-diff --git a/arch/riscv/kernel/traps_misaligned.c b/arch/riscv/kernel/traps_misaligned.c
-index 9a80a12f6b48f..d14bfc23e315b 100644
---- a/arch/riscv/kernel/traps_misaligned.c
-+++ b/arch/riscv/kernel/traps_misaligned.c
-@@ -87,6 +87,13 @@
- #define INSN_MATCH_C_FSWSP		0xe002
- #define INSN_MASK_C_FSWSP		0xe003
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -11070,19 +11070,9 @@ int amdgpu_dm_process_dmub_aux_transfer_
+ 		payload->reply[0] = (adev->dm.dmub_notify->aux_reply.command >> 4) & 0xF;
  
-+#define INSN_MATCH_C_LHU		0x8400
-+#define INSN_MASK_C_LHU			0xfc43
-+#define INSN_MATCH_C_LH			0x8440
-+#define INSN_MASK_C_LH			0xfc43
-+#define INSN_MATCH_C_SH			0x8c00
-+#define INSN_MASK_C_SH			0xfc43
-+
- #define INSN_LEN(insn)			((((insn) & 0x3) < 0x3) ? 2 : 4)
+ 	if (!payload->write && p_notify->aux_reply.length &&
+-			(payload->reply[0] == AUX_TRANSACTION_REPLY_AUX_ACK)) {
+-
+-		if (payload->length != p_notify->aux_reply.length) {
+-			DRM_WARN("invalid read length %d from DPIA AUX 0x%x(%d)!\n",
+-				p_notify->aux_reply.length,
+-					payload->address, payload->length);
+-			*operation_result = AUX_RET_ERROR_INVALID_REPLY;
+-			goto out;
+-		}
+-
++			(payload->reply[0] == AUX_TRANSACTION_REPLY_AUX_ACK))
+ 		memcpy(payload->data, p_notify->aux_reply.data,
+ 				p_notify->aux_reply.length);
+-	}
  
- #if defined(CONFIG_64BIT)
-@@ -405,6 +412,13 @@ int handle_misaligned_load(struct pt_regs *regs)
- 		fp = 1;
- 		len = 4;
- #endif
-+	} else if ((insn & INSN_MASK_C_LHU) == INSN_MATCH_C_LHU) {
-+		len = 2;
-+		insn = RVC_RS2S(insn) << SH_RD;
-+	} else if ((insn & INSN_MASK_C_LH) == INSN_MATCH_C_LH) {
-+		len = 2;
-+		shift = 8 * (sizeof(ulong) - len);
-+		insn = RVC_RS2S(insn) << SH_RD;
- 	} else {
- 		regs->epc = epc;
- 		return -1;
-@@ -504,6 +518,9 @@ int handle_misaligned_store(struct pt_regs *regs)
- 		len = 4;
- 		val.data_ulong = GET_F32_RS2C(insn, regs);
- #endif
-+	} else if ((insn & INSN_MASK_C_SH) == INSN_MATCH_C_SH) {
-+		len = 2;
-+		val.data_ulong = GET_RS2S(insn, regs);
- 	} else {
- 		regs->epc = epc;
- 		return -1;
--- 
-2.39.5
-
+ 	/* success */
+ 	ret = p_notify->aux_reply.length;
 
 
 
