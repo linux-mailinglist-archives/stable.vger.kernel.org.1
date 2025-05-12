@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-143179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E08E6AB3451
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 12:01:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EFDDAB3454
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 12:01:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30BD87A891B
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 10:00:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F255118884B9
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 10:01:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF6C818B47E;
-	Mon, 12 May 2025 10:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FFF425F97A;
+	Mon, 12 May 2025 10:01:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1PXo1CSz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ISwNTgsi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A01DB11712
-	for <stable@vger.kernel.org>; Mon, 12 May 2025 10:01:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2DB525F79E
+	for <stable@vger.kernel.org>; Mon, 12 May 2025 10:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747044077; cv=none; b=oD92GOn9IXZbxntZwDlxhuv3prmUpP4TrzWQhzeARmN37aHQdH92cuMcZCV83RzxTBCuc3Th008ACvkqEjTbFifsEAgrVfsoiJAtCF5d8JmjYoeRpCvVA7rKbJt8Fef8oRKPaNlFKvPKbdotmYka3t2uyr9y7sK437/Bucl/obM=
+	t=1747044087; cv=none; b=GiXTV/HPF4pVynmQbQ6Cguc/pJluWSfTQDMvcXHEJ/7lEQWwP+0CgRoVcHAlT2lMyDgH2Ia2OwGWNyBed86TKKD4kYL2bamL4DLggzsInF521KgzcYpytBCDeXfZEI3JdmpRXMsBfPamRdIHcjWY6+ZjmZNgEKX3p+2X1dHjAqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747044077; c=relaxed/simple;
-	bh=g8G6gq2aV+3Z8mfCfZvglS4uCvm9tnQRgfKdKnN6lg0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=SFJrJD9eIh4BH84BwErt0LWP9v5nze4DdF6mHX9XnMvlDRszbGwBoTmCV1JkHmEsQPyYISXu7fRrzWgec3fWesd3n4y5IuzCCCs8ulthq6XRpi+mYlHPGuMQSKKefW9m3jqXphMNKZOjLDy+28nrYdidKgks9MX94rsfCfhyvBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1PXo1CSz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D7E5C4CEE9;
-	Mon, 12 May 2025 10:01:14 +0000 (UTC)
+	s=arc-20240116; t=1747044087; c=relaxed/simple;
+	bh=0FVNhHkBfIBu84S714kG6U1bF4yJhv0C9DxgARn0Kfc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ge87Cs1vHaj/jga9h6V+HyNYOQyhYGdSaJ0VeKbG2moskR3vXEoCPrhHJqyNZvBH8Wco+x08uWWCb/Kks+Ef6xC8v2XI6Iuocb2MOTs/uRUGVIichKZFpkzW+37fj7y7nt/l3do2LXt8QVzOX4WkkN+m96Tyyav7P4TXbDsPImQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ISwNTgsi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11CCAC4CEE7;
+	Mon, 12 May 2025 10:01:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747044075;
-	bh=g8G6gq2aV+3Z8mfCfZvglS4uCvm9tnQRgfKdKnN6lg0=;
+	s=korg; t=1747044087;
+	bh=0FVNhHkBfIBu84S714kG6U1bF4yJhv0C9DxgARn0Kfc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=1PXo1CSzTWeCdWjumf5ZukD1SmRXEFWSwiBbCz2Rva3NCI4O+b5MX2CCLO9wzL8hY
-	 QFYs0R+UwWZb3vbOX8mkB44yi6O0THPVMPioqcqeOSp3KOxe/RqusyDUpsvD2xeajT
-	 Bzuw4R8h3oV09MhrOI1Cy4cwH2yruuXdCeduiNBw=
-Subject: FAILED: patch "[PATCH] io_uring: ensure deferred completions are flushed for" failed to apply to 6.1-stable tree
-To: axboe@kernel.dk,christian.mazakas@gmail.com,norman_maurer@apple.com
+	b=ISwNTgsiigJndAL2Drafm5J9ZTQLMpFFe0Quxjwh1VWkp2d/ERawLKobpAVrCTo3M
+	 tgqjXvJf3132bwIgnXIZjgbprJ9ptTNOZeBtn9FX+S32RUIZcjY/ODFQR+W8qKryfT
+	 YsrqXJ6RfwtWICEGVRpa9l+jBJ7ib/qXonsr0NXQ=
+Subject: FAILED: patch "[PATCH] io_uring: always arm linked timeouts prior to issue" failed to apply to 6.14-stable tree
+To: axboe@kernel.dk,chase@path.net
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 May 2025 12:01:12 +0200
-Message-ID: <2025051212-antirust-outshoot-07f7@gregkh>
+Date: Mon, 12 May 2025 12:01:24 +0200
+Message-ID: <2025051224-effects-slightly-6462@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.14.y
 git checkout FETCH_HEAD
-git cherry-pick -x 687b2bae0efff9b25e071737d6af5004e6e35af5
+git cherry-pick -x b53e523261bf058ea4a518b482222e7a277b186b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025051212-antirust-outshoot-07f7@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025051224-effects-slightly-6462@gregkh' --subject-prefix 'PATCH 6.14.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,46 +77,152 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 687b2bae0efff9b25e071737d6af5004e6e35af5 Mon Sep 17 00:00:00 2001
+From b53e523261bf058ea4a518b482222e7a277b186b Mon Sep 17 00:00:00 2001
 From: Jens Axboe <axboe@kernel.dk>
-Date: Wed, 7 May 2025 07:34:24 -0600
-Subject: [PATCH] io_uring: ensure deferred completions are flushed for
- multishot
+Date: Sun, 4 May 2025 08:06:28 -0600
+Subject: [PATCH] io_uring: always arm linked timeouts prior to issue
 
-Multishot normally uses io_req_post_cqe() to post completions, but when
-stopping it, it may finish up with a deferred completion. This is fine,
-except if another multishot event triggers before the deferred completions
-get flushed. If this occurs, then CQEs may get reordered in the CQ ring,
-as new multishot completions get posted before the deferred ones are
-flushed. This can cause confusion on the application side, if strict
-ordering is required for the use case.
+There are a few spots where linked timeouts are armed, and not all of
+them adhere to the pre-arm, attempt issue, post-arm pattern. This can
+be problematic if the linked request returns that it will trigger a
+callback later, and does so before the linked timeout is fully armed.
 
-When multishot posting via io_req_post_cqe(), flush any pending deferred
-completions first, if any.
+Consolidate all the linked timeout handling into __io_issue_sqe(),
+rather than have it spread throughout the various issue entry points.
 
-Cc: stable@vger.kernel.org # 6.1+
-Reported-by: Norman Maurer <norman_maurer@apple.com>
-Reported-by: Christian Mazakas <christian.mazakas@gmail.com>
+Cc: stable@vger.kernel.org
+Link: https://github.com/axboe/liburing/issues/1390
+Reported-by: Chase Hiltz <chase@path.net>
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 
 diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index 769814d71153..541e65a1eebf 100644
+index a2b256e96d5d..769814d71153 100644
 --- a/io_uring/io_uring.c
 +++ b/io_uring/io_uring.c
-@@ -848,6 +848,14 @@ bool io_req_post_cqe(struct io_kiocb *req, s32 res, u32 cflags)
- 	struct io_ring_ctx *ctx = req->ctx;
- 	bool posted;
+@@ -448,24 +448,6 @@ static struct io_kiocb *__io_prep_linked_timeout(struct io_kiocb *req)
+ 	return req->link;
+ }
  
-+	/*
-+	 * If multishot has already posted deferred completions, ensure that
-+	 * those are flushed first before posting this one. If not, CQEs
-+	 * could get reordered.
-+	 */
-+	if (!wq_list_empty(&ctx->submit_state.compl_reqs))
-+		__io_submit_flush_completions(ctx);
+-static inline struct io_kiocb *io_prep_linked_timeout(struct io_kiocb *req)
+-{
+-	if (likely(!(req->flags & REQ_F_ARM_LTIMEOUT)))
+-		return NULL;
+-	return __io_prep_linked_timeout(req);
+-}
+-
+-static noinline void __io_arm_ltimeout(struct io_kiocb *req)
+-{
+-	io_queue_linked_timeout(__io_prep_linked_timeout(req));
+-}
+-
+-static inline void io_arm_ltimeout(struct io_kiocb *req)
+-{
+-	if (unlikely(req->flags & REQ_F_ARM_LTIMEOUT))
+-		__io_arm_ltimeout(req);
+-}
+-
+ static void io_prep_async_work(struct io_kiocb *req)
+ {
+ 	const struct io_issue_def *def = &io_issue_defs[req->opcode];
+@@ -518,7 +500,6 @@ static void io_prep_async_link(struct io_kiocb *req)
+ 
+ static void io_queue_iowq(struct io_kiocb *req)
+ {
+-	struct io_kiocb *link = io_prep_linked_timeout(req);
+ 	struct io_uring_task *tctx = req->tctx;
+ 
+ 	BUG_ON(!tctx);
+@@ -543,8 +524,6 @@ static void io_queue_iowq(struct io_kiocb *req)
+ 
+ 	trace_io_uring_queue_async_work(req, io_wq_is_hashed(&req->work));
+ 	io_wq_enqueue(tctx->io_wq, &req->work);
+-	if (link)
+-		io_queue_linked_timeout(link);
+ }
+ 
+ static void io_req_queue_iowq_tw(struct io_kiocb *req, io_tw_token_t tw)
+@@ -1724,15 +1703,22 @@ static bool io_assign_file(struct io_kiocb *req, const struct io_issue_def *def,
+ 	return !!req->file;
+ }
+ 
++#define REQ_ISSUE_SLOW_FLAGS	(REQ_F_CREDS | REQ_F_ARM_LTIMEOUT)
 +
- 	lockdep_assert(!io_wq_current_is_worker());
- 	lockdep_assert_held(&ctx->uring_lock);
+ static inline int __io_issue_sqe(struct io_kiocb *req,
+ 				 unsigned int issue_flags,
+ 				 const struct io_issue_def *def)
+ {
+ 	const struct cred *creds = NULL;
++	struct io_kiocb *link = NULL;
+ 	int ret;
  
+-	if (unlikely((req->flags & REQ_F_CREDS) && req->creds != current_cred()))
+-		creds = override_creds(req->creds);
++	if (unlikely(req->flags & REQ_ISSUE_SLOW_FLAGS)) {
++		if ((req->flags & REQ_F_CREDS) && req->creds != current_cred())
++			creds = override_creds(req->creds);
++		if (req->flags & REQ_F_ARM_LTIMEOUT)
++			link = __io_prep_linked_timeout(req);
++	}
+ 
+ 	if (!def->audit_skip)
+ 		audit_uring_entry(req->opcode);
+@@ -1742,8 +1728,12 @@ static inline int __io_issue_sqe(struct io_kiocb *req,
+ 	if (!def->audit_skip)
+ 		audit_uring_exit(!ret, ret);
+ 
+-	if (creds)
+-		revert_creds(creds);
++	if (unlikely(creds || link)) {
++		if (creds)
++			revert_creds(creds);
++		if (link)
++			io_queue_linked_timeout(link);
++	}
+ 
+ 	return ret;
+ }
+@@ -1769,7 +1759,6 @@ static int io_issue_sqe(struct io_kiocb *req, unsigned int issue_flags)
+ 
+ 	if (ret == IOU_ISSUE_SKIP_COMPLETE) {
+ 		ret = 0;
+-		io_arm_ltimeout(req);
+ 
+ 		/* If the op doesn't have a file, we're not polling for it */
+ 		if ((req->ctx->flags & IORING_SETUP_IOPOLL) && def->iopoll_queue)
+@@ -1824,8 +1813,6 @@ void io_wq_submit_work(struct io_wq_work *work)
+ 	else
+ 		req_ref_get(req);
+ 
+-	io_arm_ltimeout(req);
+-
+ 	/* either cancelled or io-wq is dying, so don't touch tctx->iowq */
+ 	if (atomic_read(&work->flags) & IO_WQ_WORK_CANCEL) {
+ fail:
+@@ -1941,15 +1928,11 @@ struct file *io_file_get_normal(struct io_kiocb *req, int fd)
+ static void io_queue_async(struct io_kiocb *req, int ret)
+ 	__must_hold(&req->ctx->uring_lock)
+ {
+-	struct io_kiocb *linked_timeout;
+-
+ 	if (ret != -EAGAIN || (req->flags & REQ_F_NOWAIT)) {
+ 		io_req_defer_failed(req, ret);
+ 		return;
+ 	}
+ 
+-	linked_timeout = io_prep_linked_timeout(req);
+-
+ 	switch (io_arm_poll_handler(req, 0)) {
+ 	case IO_APOLL_READY:
+ 		io_kbuf_recycle(req, 0);
+@@ -1962,9 +1945,6 @@ static void io_queue_async(struct io_kiocb *req, int ret)
+ 	case IO_APOLL_OK:
+ 		break;
+ 	}
+-
+-	if (linked_timeout)
+-		io_queue_linked_timeout(linked_timeout);
+ }
+ 
+ static inline void io_queue_sqe(struct io_kiocb *req)
 
 
