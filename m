@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-143660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DDC7AB40E8
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:59:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F5EFAB40F0
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:59:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F08703B9C8B
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:57:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B4F6F860866
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:58:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1404255E52;
-	Mon, 12 May 2025 17:57:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6799255E52;
+	Mon, 12 May 2025 17:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bet35wAc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aeoAdEtt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADABF1E505;
-	Mon, 12 May 2025 17:57:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D82F1E505;
+	Mon, 12 May 2025 17:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072667; cv=none; b=dZ8/lXcZum3Yc1xm1ZqvX24V9YanOsDzFKufDU7VJdwX6l9p8W651128qpX2PZLJPd/a03rBLL2Tb0VkZDrZ6ldrU9gzqS7VFoqy3PjfjeG1XFez+rF9YfeY5EmlhYp/ryg6e118uK7VkIy67L7WM7hIenEyFF9RrkQfDPFnbMQ=
+	t=1747072699; cv=none; b=pxDEX9CE+kNBvkVeJ1G6pvLDwQEXgT1Cr8W4k7yXk8CJjoskg9DaxI6yA3fLP5nqx8CRqHAEqGn8PYXqNyJl5WjoaWEufYFzdiJZCkQ/rHjI2FX0wo+a6w3fTrXhUVBEONwFam3lVbnGxImFlhdqxZWPR7iL+c03XWs9kqVs0xI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072667; c=relaxed/simple;
-	bh=UIsjY21il5eShVoWaVrKZUwur6TxH17D3SWc3pkwTEE=;
+	s=arc-20240116; t=1747072699; c=relaxed/simple;
+	bh=VhEkZy+mH6XfucqvqU/QaK2kG0l6VpLavT6O/EzOUNg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JUQynx709y39itjaPBGmDuZ2IMky98vfAQUcNcwo6+mNVciqHtyFS2r4PEgpeA6ipS7kMjrwRelWhqdphQx5Kb1uD4yLA854/JZBnKHFzhL9cOyaO8W8HGoYaBCCGko6xDvWZJYKmG69F74A/M7KMxMNzWCmXcyvvdJP/riHvQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bet35wAc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29E14C4CEE7;
-	Mon, 12 May 2025 17:57:47 +0000 (UTC)
+	 MIME-Version; b=GdK8ew7PRhFpD3sUiC2KThAzrvowQV8wJSDUBPWTFsiMXyqcm7bsUamCbXGe1Dc1YFjGa/3SUciojEXTcs/YwLW3pfD2dhnE6Sjlbd/d/nuiwDaEFozV6YfRJaGqsctKWCR0sIIpgaTKvep9Cw7gjH1UOTa2T1TtkhkCA2kWRS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aeoAdEtt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D04F1C4CEE9;
+	Mon, 12 May 2025 17:58:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072667;
-	bh=UIsjY21il5eShVoWaVrKZUwur6TxH17D3SWc3pkwTEE=;
+	s=korg; t=1747072699;
+	bh=VhEkZy+mH6XfucqvqU/QaK2kG0l6VpLavT6O/EzOUNg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bet35wActNVOANoNeNiPMt1MucjEhI03/Yc5rjKwDzyAg80ZQVrTlQVuqKrH1s4yy
-	 9NW61In0j9vQNMKWBy5H+62Dl6LMzNwqWom4q6JNVJZlGAfaOOdtSJb7uG2TW0GRVQ
-	 Q2alkfWRDcjeBkbl9j39wuufzLcX9S0zWyNU3flo=
+	b=aeoAdEttmuo0yOxZvLK1WaieoIdJz0h4H4gp2K/q71X8GOD/tkGI90WkUQU7Y3Zdy
+	 9SCJYpgQCuQ+WsLmIJ+8ninFctVjJUfJgIoKvunajWGCoiBANqlBO3JPvf/TrSRbmk
+	 Z0FvYbVRvMKw9Acybxe+lN+pcmodIvVL6pfYVI2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Max Kellermann <max.kellermann@ionos.com>,
-	Gao Xiang <xiang@kernel.org>,
-	Hongbo Li <lihongbo22@huawei.com>
-Subject: [PATCH 6.12 002/184] fs/erofs/fileio: call erofs_onlinefolio_split() after bio_add_folio()
-Date: Mon, 12 May 2025 19:43:23 +0200
-Message-ID: <20250512172041.741521141@linuxfoundation.org>
+	Boris Burkov <boris@bur.io>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.12 003/184] Revert "btrfs: canonicalize the device path before adding it"
+Date: Mon, 12 May 2025 19:43:24 +0200
+Message-ID: <20250512172041.784103493@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
 References: <20250512172041.624042835@linuxfoundation.org>
@@ -66,71 +66,171 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Max Kellermann <max.kellermann@ionos.com>
+From: Qu Wenruo <wqu@suse.com>
 
-commit bbfe756dc3062c1e934f06e5ba39c239aa953b92 upstream.
+commit 8fb1dcbbcc1ffe6ed7cf3f0f96d2737491dd1fbf upstream.
 
-If bio_add_folio() fails (because it is full),
-erofs_fileio_scan_folio() needs to submit the I/O request via
-erofs_fileio_rq_submit() and allocate a new I/O request with an empty
-`struct bio`.  Then it retries the bio_add_folio() call.
+This reverts commit 7e06de7c83a746e58d4701e013182af133395188.
 
-However, at this point, erofs_onlinefolio_split() has already been
-called which increments `folio->private`; the retry will call
-erofs_onlinefolio_split() again, but there will never be a matching
-erofs_onlinefolio_end() call.  This leaves the folio locked forever
-and all waiters will be stuck in folio_wait_bit_common().
+Commit 7e06de7c83a7 ("btrfs: canonicalize the device path before adding
+it") tries to make btrfs to use "/dev/mapper/*" name first, then any
+filename inside "/dev/" as the device path.
 
-This bug has been added by commit ce63cb62d794 ("erofs: support
-unencoded inodes for fileio"), but was practically unreachable because
-there was room for 256 folios in the `struct bio` - until commit
-9f74ae8c9ac9 ("erofs: shorten bvecs[] for file-backed mounts") which
-reduced the array capacity to 16 folios.
+This is mostly fine when there is only the root namespace involved, but
+when multiple namespace are involved, things can easily go wrong for the
+d_path() usage.
 
-It was now trivial to trigger the bug by manually invoking readahead
-from userspace, e.g.:
+As d_path() returns a file path that is namespace dependent, the
+resulted string may not make any sense in another namespace.
 
- posix_fadvise(fd, 0, st.st_size, POSIX_FADV_WILLNEED);
+Furthermore, the "/dev/" prefix checks itself is not reliable, one can
+still make a valid initramfs without devtmpfs, and fill all needed
+device nodes manually.
 
-This should be fixed by invoking erofs_onlinefolio_split() only after
-bio_add_folio() has succeeded.  This is safe: asynchronous completions
-invoking erofs_onlinefolio_end() will not unlock the folio because
-erofs_fileio_scan_folio() is still holding a reference to be released
-by erofs_onlinefolio_end() at the end.
+Overall the userspace has all its might to pass whatever device path for
+mount, and we are not going to win the war trying to cover every corner
+case.
 
-Fixes: ce63cb62d794 ("erofs: support unencoded inodes for fileio")
-Fixes: 9f74ae8c9ac9 ("erofs: shorten bvecs[] for file-backed mounts")
-Cc: stable@vger.kernel.org
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-Reviewed-by: Gao Xiang <xiang@kernel.org>
-Tested-by: Hongbo Li <lihongbo22@huawei.com>
-Link: https://lore.kernel.org/r/20250428230933.3422273-1-max.kellermann@ionos.com
-Signed-off-by: Gao Xiang <xiang@kernel.org>
+So just revert that commit, and do no extra d_path() based file path
+sanity check.
+
+CC: stable@vger.kernel.org # 6.12+
+Link: https://lore.kernel.org/linux-fsdevel/20250115185608.GA2223535@zen.localdomain/
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/erofs/fileio.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/btrfs/volumes.c |   91 -----------------------------------------------------
+ 1 file changed, 1 insertion(+), 90 deletions(-)
 
-diff --git a/fs/erofs/fileio.c b/fs/erofs/fileio.c
-index 4fa0a0121288..60c7cc4c105c 100644
---- a/fs/erofs/fileio.c
-+++ b/fs/erofs/fileio.c
-@@ -150,10 +150,10 @@ static int erofs_fileio_scan_folio(struct erofs_fileio *io, struct folio *folio)
- 				io->rq->bio.bi_iter.bi_sector = io->dev.m_pa >> 9;
- 				attached = 0;
- 			}
--			if (!attached++)
--				erofs_onlinefolio_split(folio);
- 			if (!bio_add_folio(&io->rq->bio, folio, len, cur))
- 				goto io_retry;
-+			if (!attached++)
-+				erofs_onlinefolio_split(folio);
- 			io->dev.m_pa += len;
- 		}
- 		cur += len;
--- 
-2.49.0
-
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -732,82 +732,6 @@ const u8 *btrfs_sb_fsid_ptr(const struct
+ 	return has_metadata_uuid ? sb->metadata_uuid : sb->fsid;
+ }
+ 
+-/*
+- * We can have very weird soft links passed in.
+- * One example is "/proc/self/fd/<fd>", which can be a soft link to
+- * a block device.
+- *
+- * But it's never a good idea to use those weird names.
+- * Here we check if the path (not following symlinks) is a good one inside
+- * "/dev/".
+- */
+-static bool is_good_dev_path(const char *dev_path)
+-{
+-	struct path path = { .mnt = NULL, .dentry = NULL };
+-	char *path_buf = NULL;
+-	char *resolved_path;
+-	bool is_good = false;
+-	int ret;
+-
+-	if (!dev_path)
+-		goto out;
+-
+-	path_buf = kmalloc(PATH_MAX, GFP_KERNEL);
+-	if (!path_buf)
+-		goto out;
+-
+-	/*
+-	 * Do not follow soft link, just check if the original path is inside
+-	 * "/dev/".
+-	 */
+-	ret = kern_path(dev_path, 0, &path);
+-	if (ret)
+-		goto out;
+-	resolved_path = d_path(&path, path_buf, PATH_MAX);
+-	if (IS_ERR(resolved_path))
+-		goto out;
+-	if (strncmp(resolved_path, "/dev/", strlen("/dev/")))
+-		goto out;
+-	is_good = true;
+-out:
+-	kfree(path_buf);
+-	path_put(&path);
+-	return is_good;
+-}
+-
+-static int get_canonical_dev_path(const char *dev_path, char *canonical)
+-{
+-	struct path path = { .mnt = NULL, .dentry = NULL };
+-	char *path_buf = NULL;
+-	char *resolved_path;
+-	int ret;
+-
+-	if (!dev_path) {
+-		ret = -EINVAL;
+-		goto out;
+-	}
+-
+-	path_buf = kmalloc(PATH_MAX, GFP_KERNEL);
+-	if (!path_buf) {
+-		ret = -ENOMEM;
+-		goto out;
+-	}
+-
+-	ret = kern_path(dev_path, LOOKUP_FOLLOW, &path);
+-	if (ret)
+-		goto out;
+-	resolved_path = d_path(&path, path_buf, PATH_MAX);
+-	if (IS_ERR(resolved_path)) {
+-		ret = PTR_ERR(resolved_path);
+-		goto out;
+-	}
+-	ret = strscpy(canonical, resolved_path, PATH_MAX);
+-out:
+-	kfree(path_buf);
+-	path_put(&path);
+-	return ret;
+-}
+-
+ static bool is_same_device(struct btrfs_device *device, const char *new_path)
+ {
+ 	struct path old = { .mnt = NULL, .dentry = NULL };
+@@ -1495,23 +1419,12 @@ struct btrfs_device *btrfs_scan_one_devi
+ 	bool new_device_added = false;
+ 	struct btrfs_device *device = NULL;
+ 	struct file *bdev_file;
+-	char *canonical_path = NULL;
+ 	u64 bytenr;
+ 	dev_t devt;
+ 	int ret;
+ 
+ 	lockdep_assert_held(&uuid_mutex);
+ 
+-	if (!is_good_dev_path(path)) {
+-		canonical_path = kmalloc(PATH_MAX, GFP_KERNEL);
+-		if (canonical_path) {
+-			ret = get_canonical_dev_path(path, canonical_path);
+-			if (ret < 0) {
+-				kfree(canonical_path);
+-				canonical_path = NULL;
+-			}
+-		}
+-	}
+ 	/*
+ 	 * Avoid an exclusive open here, as the systemd-udev may initiate the
+ 	 * device scan which may race with the user's mount or mkfs command,
+@@ -1556,8 +1469,7 @@ struct btrfs_device *btrfs_scan_one_devi
+ 		goto free_disk_super;
+ 	}
+ 
+-	device = device_list_add(canonical_path ? : path, disk_super,
+-				 &new_device_added);
++	device = device_list_add(path, disk_super, &new_device_added);
+ 	if (!IS_ERR(device) && new_device_added)
+ 		btrfs_free_stale_devices(device->devt, device);
+ 
+@@ -1566,7 +1478,6 @@ free_disk_super:
+ 
+ error_bdev_put:
+ 	fput(bdev_file);
+-	kfree(canonical_path);
+ 
+ 	return device;
+ }
 
 
 
