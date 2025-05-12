@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-143539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C30D9AB4038
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:51:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAA6EAB404A
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:52:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 514FB4668DE
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:51:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 747E93A92BF
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:51:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8378C255E47;
-	Mon, 12 May 2025 17:51:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 611DC254879;
+	Mon, 12 May 2025 17:51:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NECJ9BF1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NqTCiFTA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B052528FC;
-	Mon, 12 May 2025 17:51:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BD4E245022;
+	Mon, 12 May 2025 17:51:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072285; cv=none; b=D6fCGasAeNrlWxoRKi2p7eZ7lcUcePoKjmZz5Xo2LbqhzsOoh9u+AK9U0MVHEoyygXSWwxw1SsUVTiAJzySlanDxZ9ahYtYvkHCr1UBt/iggAhdFeViK9NIHn5XKE6/EXA+PtvQvOGk80L7onU6TqmBzvPXcVCKT1DsSt1J+qxw=
+	t=1747072294; cv=none; b=jGZZZ76e5RxwqAl/aXM/ckIsmMIp6KJsYJ7AAQX2vSbPXB+MvskdKjrIzr3Or0BZ2q8N3w7zFm6gNaTqJnxb/BdNIiVW5HsG0ACJfuqW3IeHlDvx0B1msBq0NH2gqvHZiG1Js7PwALKgS5X25HOnnn9+Dqv2UZ22536OR2nlavQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072285; c=relaxed/simple;
-	bh=AgcEP7e1bXMTYK0UEOiDR5DiFXXTM0Gm4Jf0C++xN4E=;
+	s=arc-20240116; t=1747072294; c=relaxed/simple;
+	bh=AMFmhNu9oN5w7aaiG1GjcK4W+K7K5zI+NGMlqiNtK6Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a9AlFej0PKAZQWmmd5ftk0s/ZDid7WZBPGgw7fQIiLFR2ou3mGYWnhNVoDxzC9v9UUUbyl4MqWmgi75dBmtqZLG/pd7etgGwQ09YJ4s0Gf9VDBIhkWgsVfqrcHurZhFarWHIawoIB2JPtOrUMN8reLQMJl2N4mbmU+YDSd2m5GY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NECJ9BF1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A17F5C4CEE7;
-	Mon, 12 May 2025 17:51:24 +0000 (UTC)
+	 MIME-Version; b=fgl8AwbPM1SAx51OGR6ucvZqLmBJJICLJ9NJbnd9Tp1nCAr+zkU++nunZFTlG9yMP9zhv7UJrlD/0qAEX3nrTHRJ4uj9gaC4yCd5RSrqp0nVV0GrpGn4I1uQKIhnyYNUonGFCfOkIZjefp3ubuSOyiKFOhICh5S/iS3k+NTz5II=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NqTCiFTA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A38EFC4CEE7;
+	Mon, 12 May 2025 17:51:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072285;
-	bh=AgcEP7e1bXMTYK0UEOiDR5DiFXXTM0Gm4Jf0C++xN4E=;
+	s=korg; t=1747072294;
+	bh=AMFmhNu9oN5w7aaiG1GjcK4W+K7K5zI+NGMlqiNtK6Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NECJ9BF1gQmvSfvHza11oFAr/fKMCAfp/00Cf5Zz2fX7tRBifXhqhoD8e8DWmNPcc
-	 XM0x8stWsaqrstrlTXGFujKaD5Imh4zrJsbf2ZR2ixOQXC+03Pfwm1cNTsddQeoLUa
-	 U6icjpEVKmjuUQvI9hOq9KnlQcXyJRSVGMeQqG8E=
+	b=NqTCiFTAEmfcP2G6AvrzGqAFUtnqQpZnmiwD1KSmzJLfIt86mDRp9/AO2BzmINEMA
+	 CRXDyoj6kWJVI0pN8LFGiQiblPxpWmoOAqYQWrG7DV7LnmZts71ttvdiAppRk3swNA
+	 6Z+V/3eIb/kuSVLh7cY1106kaHZw6o3ONB2sqycQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6af973a3b8dfd2faefdc@syzkaller.appspotmail.com,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
+	Kevin Baker <kevinb@ventureresearch.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 162/197] loop: Add sanity check for read/write_iter
-Date: Mon, 12 May 2025 19:40:12 +0200
-Message-ID: <20250512172050.980575013@linuxfoundation.org>
+Subject: [PATCH 6.14 163/197] drm/panel: simple: Update timings for AUO G101EVN010
+Date: Mon, 12 May 2025 19:40:13 +0200
+Message-ID: <20250512172051.020851220@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512172044.326436266@linuxfoundation.org>
 References: <20250512172044.326436266@linuxfoundation.org>
@@ -68,78 +66,71 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Lizhi Xu <lizhi.xu@windriver.com>
+From: Kevin Baker <kevinb@ventureresearch.com>
 
-[ Upstream commit f5c84eff634ba003326aa034c414e2a9dcb7c6a7 ]
+[ Upstream commit 7c6fa1797a725732981f2d77711c867166737719 ]
 
-Some file systems do not support read_iter/write_iter, such as selinuxfs
-in this issue.
-So before calling them, first confirm that the interface is supported and
-then call it.
+Switch to panel timings based on datasheet for the AUO G101EVN01.0
+LVDS panel. Default timings were tested on the panel.
 
-It is releavant in that vfs_iter_read/write have the check, and removal
-of their used caused szybot to be able to hit this issue.
+Previous mode-based timings resulted in horizontal display shift.
 
-Fixes: f2fed441c69b ("loop: stop using vfs_iter__{read,write} for buffered I/O")
-Reported-by: syzbot+6af973a3b8dfd2faefdc@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=6af973a3b8dfd2faefdc
-Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20250428143626.3318717-1-lizhi.xu@windriver.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Kevin Baker <kevinb@ventureresearch.com>
+Fixes: 4fb86404a977 ("drm/panel: simple: Add AUO G101EVN010 panel support")
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250505170256.1385113-1-kevinb@ventureresearch.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250505170256.1385113-1-kevinb@ventureresearch.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/loop.c | 23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ drivers/gpu/drm/panel/panel-simple.c | 25 +++++++++++++------------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/block/loop.c b/drivers/block/loop.c
-index 61ce7ccde3445..b378d2aa49f06 100644
---- a/drivers/block/loop.c
-+++ b/drivers/block/loop.c
-@@ -504,6 +504,17 @@ static void loop_assign_backing_file(struct loop_device *lo, struct file *file)
- 			lo->old_gfp_mask & ~(__GFP_IO | __GFP_FS));
- }
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index 9b2f128fd3094..cf9ab2d1f1d2a 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -1027,27 +1027,28 @@ static const struct panel_desc auo_g070vvn01 = {
+ 	},
+ };
  
-+static int loop_check_backing_file(struct file *file)
-+{
-+	if (!file->f_op->read_iter)
-+		return -EINVAL;
-+
-+	if ((file->f_mode & FMODE_WRITE) && !file->f_op->write_iter)
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+
- /*
-  * loop_change_fd switched the backing store of a loopback device to
-  * a new file. This is useful for operating system installers to free up
-@@ -525,6 +536,10 @@ static int loop_change_fd(struct loop_device *lo, struct block_device *bdev,
- 	if (!file)
- 		return -EBADF;
+-static const struct drm_display_mode auo_g101evn010_mode = {
+-	.clock = 68930,
+-	.hdisplay = 1280,
+-	.hsync_start = 1280 + 82,
+-	.hsync_end = 1280 + 82 + 2,
+-	.htotal = 1280 + 82 + 2 + 84,
+-	.vdisplay = 800,
+-	.vsync_start = 800 + 8,
+-	.vsync_end = 800 + 8 + 2,
+-	.vtotal = 800 + 8 + 2 + 6,
++static const struct display_timing auo_g101evn010_timing = {
++	.pixelclock = { 64000000, 68930000, 85000000 },
++	.hactive = { 1280, 1280, 1280 },
++	.hfront_porch = { 8, 64, 256 },
++	.hback_porch = { 8, 64, 256 },
++	.hsync_len = { 40, 168, 767 },
++	.vactive = { 800, 800, 800 },
++	.vfront_porch = { 4, 8, 100 },
++	.vback_porch = { 4, 8, 100 },
++	.vsync_len = { 8, 16, 223 },
+ };
  
-+	error = loop_check_backing_file(file);
-+	if (error)
-+		return error;
-+
- 	/* suppress uevents while reconfiguring the device */
- 	dev_set_uevent_suppress(disk_to_dev(lo->lo_disk), 1);
+ static const struct panel_desc auo_g101evn010 = {
+-	.modes = &auo_g101evn010_mode,
+-	.num_modes = 1,
++	.timings = &auo_g101evn010_timing,
++	.num_timings = 1,
+ 	.bpc = 6,
+ 	.size = {
+ 		.width = 216,
+ 		.height = 135,
+ 	},
+ 	.bus_format = MEDIA_BUS_FMT_RGB666_1X7X3_SPWG,
++	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
+ 	.connector_type = DRM_MODE_CONNECTOR_LVDS,
+ };
  
-@@ -956,6 +971,14 @@ static int loop_configure(struct loop_device *lo, blk_mode_t mode,
- 
- 	if (!file)
- 		return -EBADF;
-+
-+	if ((mode & BLK_OPEN_WRITE) && !file->f_op->write_iter)
-+		return -EINVAL;
-+
-+	error = loop_check_backing_file(file);
-+	if (error)
-+		return error;
-+
- 	is_loop = is_loop_device(file);
- 
- 	/* This is safe, since we have a reference from open(). */
 -- 
 2.39.5
 
