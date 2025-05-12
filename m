@@ -1,97 +1,179 @@
-Return-Path: <stable+bounces-143134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 326E5AB3218
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 10:47:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D459EAB323D
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 10:51:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFD4A188E694
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 08:47:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B8DA53ACD25
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 08:50:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1949E25B1DD;
-	Mon, 12 May 2025 08:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E0FC25A2AC;
+	Mon, 12 May 2025 08:50:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Cpjqn/hY"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JblRDqxA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7320925A2AC;
-	Mon, 12 May 2025 08:46:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 218342566EE
+	for <stable@vger.kernel.org>; Mon, 12 May 2025 08:50:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747039609; cv=none; b=Bv4FzX4tiHOfE2608ryzxOHkvtokfW00yECFPkiNHUe2tGGTS16xUS5SJCpuf7u5h+96VYMJpYfgeEWYJWVr8HnaOpTerjCzNNwRrrSkKWOTMQvdPO9wzIIJS2k7circeOjw97BjdxXkZHvCV+QgRp/Rbf6bxpOpe2C2pU2Svx8=
+	t=1747039848; cv=none; b=hjugawAEr1BRO4rLDa8vV8hCedlztHQjzdv9xJbnJsEsvfKSEkDD+S+3Kod75vcik1HVhDhojPa5u+Fh/cVnVURt4M+uNPxctuA1qdoQYN7o3jM5NAgkocO5apeolhcm1UmTcVmOut0rKe8rGpGylPUTq4Gt7tjMCa5N3D+GuKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747039609; c=relaxed/simple;
-	bh=5E/bA1eM2wU2BC0VCWGwxexEaGR0i3e1NdalK4z2Pfs=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=qKToz5cXXF5+V8LgjEHaHjM1FwffL6IN6LO1nJw9AKT4eg8WPYs6iSoV/i9e1xV3njIotY5cDNVMST1+s8R9sHboyJGBT2Ui8ZqEN5IH1pgXnvYXiksC11bFLU7cZgGlY6tc2347Mk0a2ozORwnZSMd7DeZTQog0ZGWEN12SOjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Cpjqn/hY; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 523DD40E023F;
-	Mon, 12 May 2025 08:46:45 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id SKF5IAOxcAli; Mon, 12 May 2025 08:46:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1747039599; bh=r4yiL2NeUjVIZT9U2eVGSesDcYIgjx9AlbTxXhhyCFI=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=Cpjqn/hYUk3g50RPTmdKe6Y9brQGhDLwfq277OQSG8zEXOXuVJ56UjP5KjOsjse51
-	 tJam1vlG77V6OMpwJ7hmXGJRR5gNRDeUt4hbBILM7QU91bkNptWJOPJW7WkWx1y6KS
-	 8n5DGbSs0e4DBxbHfmMjP81JBCy256J+OcIOV9xsS0ED6apa41dULHEeYz4v/zZtJl
-	 YZGtk5JVtkGmyjuvajZuGCC2o4hfpG4ZS+otH4TQzQ7z8Mn6J12yEYei+b6NpCnT6z
-	 pNK1orFZjtb5rC1VJNPXKDTN9LfPPbXrp3tDLE/3HVbTOtqNSJnK1J0elySRmh9MOf
-	 M1fpEIb8EEaL21awp+oUcknC0C+h5ns2gLsKUH5kz7srlnvyhr11V7NFMzvG/FoyVI
-	 X7wcHwvWmaSEHYujNFLVr3kGd3v4zaiq+NG3UIiehqgmy6GMspaDOb52MHxvQTbg86
-	 NCYpJHJ9sf/CU3eo5gCNq//NAxd/t0LkGV6DsfSdFZIfiac53qMbKZBKIfhBOUzKgj
-	 KGw/07LxcnpyBXUKIif/Dwe7GxY+zvNezo/y+0c5edizJKD6Wnvq/DbwkEIIR3tVE5
-	 fwODnHffjSxHH4DJL9y+GQyPlJ9kX1Oi3AyHHbc/1SHMAPSMvYWCgqBdw3WTOwQoS8
-	 A4VScONipcpSorRfULnP/UM0=
-Received: from [IPv6:::1] (unknown [IPv6:2a02:3038:204:a05a:7dcf:8efb:5016:7f05])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 387A440E023B;
-	Mon, 12 May 2025 08:46:28 +0000 (UTC)
-Date: Mon, 12 May 2025 10:46:22 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
-CC: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Bernhard Kaindl <bk@suse.de>,
- Andi Kleen <ak@linux.intel.com>, Li Fei <fei1.li@intel.com>,
- stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2=5D_x86/mtrr=3A_Check_if_fixed-ra?=
- =?US-ASCII?Q?nge_MTRR_exists_in_mtrr=5Fsave=5Ffixed=5Franges=28=29?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <0ec52e49-3996-48e2-a16b-5d7eb0a4c8a6@linux.intel.com>
-References: <20250509170633.3411169-2-jiaqing.zhao@linux.intel.com> <20250509173225.GDaB48KZvZSA9QLUaR@fat_crate.local> <0ec52e49-3996-48e2-a16b-5d7eb0a4c8a6@linux.intel.com>
-Message-ID: <FFB8ACEC-7208-40D0-8B57-EBB2A57DF65F@alien8.de>
+	s=arc-20240116; t=1747039848; c=relaxed/simple;
+	bh=4iMobanZvL6ZMqvaDbrkvLN2vR3Q3UVfZ/v9JwDE/rs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CE7Ng+dJwUGssRo60ENNaMk8uT4fjzhMwH4zvFL52vYzZxwhP6buq6KuYFt/l7B7g92yfneZSzqJi804FwxQJgH8nOU/CKfeBR77e9x3S72Zss0l/wyawn+TORU2MIMlSQGqaP+mZ1qEL4zp/4uoBd3GBAq5skNcYy0X7KQDZdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JblRDqxA; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1747039846;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wRVZE0uzDi6mY23fwHxsV0F3g4VaiH2RBigcwGLVHN4=;
+	b=JblRDqxAlDfa7Lp/qSzcGq2L0dkQDxvAQZQysX6v+jWAfK2P0Upd8KAYqfAUT1kqfWPKcH
+	wUyQafXTFz0BRU83lEfrVmguAh0WbLvuz+6EOjQCGst7+Cl/xa/J83QxP4kYXGaNestTqj
+	vVFmxLnTgRdBZuZWBo2/j4yAlE6GiwE=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-464-yb2-VjfjMjyBdVeajXFhww-1; Mon, 12 May 2025 04:50:44 -0400
+X-MC-Unique: yb2-VjfjMjyBdVeajXFhww-1
+X-Mimecast-MFC-AGG-ID: yb2-VjfjMjyBdVeajXFhww_1747039843
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-acb8f9f58ebso353132266b.2
+        for <stable@vger.kernel.org>; Mon, 12 May 2025 01:50:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747039842; x=1747644642;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wRVZE0uzDi6mY23fwHxsV0F3g4VaiH2RBigcwGLVHN4=;
+        b=XyMfHVpfrt8l4DK/xwBw/O9VL7k4XELIFmorf/8TqLLX/XAu4lX9tE2FnXqe1oabow
+         z/a1ahWxVvUEERItacOqfQ0CjLTmE8UVcW/ppSQifFEnzvLy0op3EKbvn+tEV6A2P1IM
+         8cqQc+GmPHyADo+hqIlkLR1q8RP4LSUNEKGp6kpu0zqyAtE1p4XCodmMbtJM9e3sYLY1
+         7U9l7GHyI6ISuOyaGW0cXZ55CMHtsX8GxxWOWMvW311YVnqaj9qBQ+ZftuH7yKw7vCeA
+         3JexF+ilrQrbQwfKwmpNmXIgMiBdKipnsbpZ+peLd/B1La6DtkOYrX3w7YPEf2fotxC+
+         b12g==
+X-Forwarded-Encrypted: i=1; AJvYcCWvVz9AEERgJk2N/Wrdg7nMrZA+6U2+FOjo/EM8cN4mstelw/lrR+awYRJaG9k8A3ZwTh4XALs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxVf18uWu2JRq/sOQceSZj+rvyLyQMjuQ6iQrnn8ZcMJG4wgvh+
+	6tuwI9c/pAZPIPsB/azL6NoPloS4rYE83PWrBLpzceILfW7ey4qnZJfaz1R7fqOwOgLit27QwbO
+	qujV+4PC0MfHh38iy+UFrUJ+wKQiaOyfZOB3VYRaFY78iHxDDgUdIL6gDpcBYfQ==
+X-Gm-Gg: ASbGnctTHHXLF/0IuhjRUcjIRpjKP1EB3OjKu1Sk/Vzqrez0obIzx9acXLHBA8QrFGg
+	CxOTz6j12BS7a+wUrXjiI5Rt35hrfUCfGDIcvbD/0wB4JDLUI+uPO+H+dPbTQ7475cLzPWCLbu0
+	I60B12zvWJn5fVANurqLWmWpFQFpOwj76hcPVkfCt5cHZzyBNm4HzxZcGTnALpPNm1Xa5N3iUE+
+	4eGPPaqKJhVpnOFXHWGQeik/bVz2iLJB/joJx17n88+tBKEyTcinpO2nHOA2oZrc9Q/BtIi0eXz
+	VeiczeB0b4Uv8IMpItNzmvv5n0K9rJZl5FcjML1DQ2vhF+Q/7utOKYA=
+X-Received: by 2002:a17:907:9628:b0:ad2:3371:55cd with SMTP id a640c23a62f3a-ad233715c99mr713692866b.5.1747039842376;
+        Mon, 12 May 2025 01:50:42 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFSljQgiL2cPOQkorag8Y/JJhPj5K70If7rNnfBu/H6fyrDaRWF7KwnU4F2z9lX96I7XNy4Ew==
+X-Received: by 2002:a17:907:9628:b0:ad2:3371:55cd with SMTP id a640c23a62f3a-ad233715c99mr713690966b.5.1747039841936;
+        Mon, 12 May 2025 01:50:41 -0700 (PDT)
+Received: from [172.16.2.76] (5920ab7b.static.cust.trined.nl. [89.32.171.123])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad219853438sm581896566b.162.2025.05.12.01.50.41
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 12 May 2025 01:50:41 -0700 (PDT)
+From: Eelco Chaudron <echaudro@redhat.com>
+To: gregkh@linuxfoundation.org
+Cc: aconole@redhat.com, i.maximets@ovn.org, kuba@kernel.org,
+ stable@vger.kernel.org
+Subject: Re: FAILED: patch
+ "[PATCH] openvswitch: Fix unsafe attribute parsing in" failed to apply to
+ 5.4-stable tree
+Date: Mon, 12 May 2025 10:50:39 +0200
+X-Mailer: MailMate (2.0r6255)
+Message-ID: <8DD6C6C6-2277-4A95-B73D-E95DB1B2D21C@redhat.com>
+In-Reply-To: <2025050913-rubble-confirm-99ee@gregkh>
+References: <2025050913-rubble-confirm-99ee@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+Content-Type: text/plain
 Content-Transfer-Encoding: quoted-printable
 
-On May 12, 2025 10:31:23 AM GMT+02:00, Jiaqing Zhao <jiaqing=2Ezhao@linux=
-=2Eintel=2Ecom> wrote:
->This fixes unchecked MSR access error on platform without fixed-range
->MTRRs when doing ACPI S3 suspend=2E
 
-Is this happening on hw which is shipping now and users will see it or is =
-this some new platform which is yet to see the light of day in the future?
 
---=20
-Sent from a small device: formatting sucks and brevity is inevitable=2E 
+On 9 May 2025, at 10:56, gregkh@linuxfoundation.org wrote:
+
+> The patch below does not apply to the 5.4-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit=
+
+> id to <stable@vger.kernel.org>.
+
+Hi Greg,
+
+I've just sent out a patch using the description below. This is my first =
+time doing this, so please let me know if I messed anything up. :)
+
+Cheers,
+
+Eelco
+
+
+> To reproduce the conflict and resubmit, you may use the following comma=
+nds:
+>
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.=
+git/ linux-5.4.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x 6beb6835c1fbb3f676aebb51a5fee6b77fed9308
+> # <resolve conflicts, build, test, etc.>
+> git commit -s
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '202505091=
+3-rubble-confirm-99ee@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+>
+> Possible dependencies:
+>
+>
+>
+> thanks,
+>
+> greg k-h
+>
+> ------------------ original commit in Linus's tree ------------------
+>
+> From 6beb6835c1fbb3f676aebb51a5fee6b77fed9308 Mon Sep 17 00:00:00 2001
+> From: Eelco Chaudron <echaudro@redhat.com>
+> Date: Tue, 6 May 2025 16:28:54 +0200
+> Subject: [PATCH] openvswitch: Fix unsafe attribute parsing in
+>  output_userspace()
+>
+> This patch replaces the manual Netlink attribute iteration in
+> output_userspace() with nla_for_each_nested(), which ensures that only
+> well-formed attributes are processed.
+>
+> Fixes: ccb1352e76cf ("net: Add Open vSwitch kernel components.")
+> Signed-off-by: Eelco Chaudron <echaudro@redhat.com>
+> Acked-by: Ilya Maximets <i.maximets@ovn.org>
+> Acked-by: Aaron Conole <aconole@redhat.com>
+> Link: https://patch.msgid.link/0bd65949df61591d9171c0dc13e42cea8941da10=
+=2E1746541734.git.echaudro@redhat.com
+> Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+>
+> diff --git a/net/openvswitch/actions.c b/net/openvswitch/actions.c
+> index 61fea7baae5d..2f22ca59586f 100644
+> --- a/net/openvswitch/actions.c
+> +++ b/net/openvswitch/actions.c
+> @@ -975,8 +975,7 @@ static int output_userspace(struct datapath *dp, st=
+ruct sk_buff *skb,
+>  	upcall.cmd =3D OVS_PACKET_CMD_ACTION;
+>  	upcall.mru =3D OVS_CB(skb)->mru;
+>
+> -	for (a =3D nla_data(attr), rem =3D nla_len(attr); rem > 0;
+> -	     a =3D nla_next(a, &rem)) {
+> +	nla_for_each_nested(a, attr, rem) {
+>  		switch (nla_type(a)) {
+>  		case OVS_USERSPACE_ATTR_USERDATA:
+>  			upcall.userdata =3D a;
+
 
