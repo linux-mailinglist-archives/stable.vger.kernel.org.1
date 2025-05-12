@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-143567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4CD2AB4056
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:53:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1AC4AB412A
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:02:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33F3F466DD8
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:53:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A22E865EF6
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:00:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 626B1281531;
-	Mon, 12 May 2025 17:52:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC7DE296D23;
+	Mon, 12 May 2025 18:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EhQ/gcWo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qfi6QxHS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CD511A08CA;
-	Mon, 12 May 2025 17:52:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69F3D1519B8;
+	Mon, 12 May 2025 18:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072372; cv=none; b=oQ9pX5JHyL6KSruORfwGSx0A7EZU8d0L3r3VU42Oq8SLOCOWiLTjB9mI2m1pDDE+2P2rZL2CDZNeMLhLjDl9ZcdJT1m8RbX0c9bHU8B3umXF7yHEdV2te6V88BUersx+ZiNsqx0njyxW/3eeaJSKLe7ozSIiVSpLIfLdq3WpZoA=
+	t=1747072852; cv=none; b=gPc14O0XWwJwU7YxfHFGNG7FjkKkZ8jiyqRFNuCy7C8/JD5roiT81xN0QC6I1pafuuWgWAO4mZtvYUF/4VlFRb/XGv9jHTv+kjcPQrxyFCfoFyT4KGFRC2CmCoE911g6q4/9EZ1mFzqcXrTOhBWoSxnut0b2vKOaUMiKWuvL8kg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072372; c=relaxed/simple;
-	bh=xQd178MJuImDXcQrECieYEAki+rvHJcvImkqcPxW7sE=;
+	s=arc-20240116; t=1747072852; c=relaxed/simple;
+	bh=C7NFKrmVYyCg51kJ67jug8Ag7HkIJZrQkLRpywzwzGI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WaoxdR6XNnChh9SBfCmOFZxJ5DtEAz6whyWH6Pc3uCqEmkxXKS0Sd2qyOTtOqodmC1D8QybeegBm1frLP1ns+QiRy5RUmDjhbeEDhvHFrLZQ5pfuB7xWFM75ifi5S2Q48CIdQnSAjGveiclzU5szwYwepvUhKLIfgb+Aut5FBhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EhQ/gcWo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10551C4CEE7;
-	Mon, 12 May 2025 17:52:50 +0000 (UTC)
+	 MIME-Version; b=nsqIKeR8LNHxP7R6eBzKAsyszFvTh76y4I2PPuVgeYFTIFkdoLHmWjT8io1zGfxu7DNCDtBMEsCnImDisTQ9i4cm3CFBlhElNFiK5uhQTvOGEciMLKIxz2nPJIJ72swyPOKejueeflXVOgTJQDn1woEJalWAimZwrv8lBJv4auI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qfi6QxHS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB333C4CEE7;
+	Mon, 12 May 2025 18:00:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072371;
-	bh=xQd178MJuImDXcQrECieYEAki+rvHJcvImkqcPxW7sE=;
+	s=korg; t=1747072852;
+	bh=C7NFKrmVYyCg51kJ67jug8Ag7HkIJZrQkLRpywzwzGI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EhQ/gcWouLJN70KZFClJtqY1HmgIm/aB3pi58PLrVzr7x703c+bSzZ2fZRSUJiGb/
-	 1Jcca7HbwKZVy5pMJDjw4LnHVRi7GJSlm/fRrBhvHBP+UlFupqezxFnClAroaAv18t
-	 HPbDsfUG2tcHKwayQu5pAtHHNB6c3VthlGmx0dms=
+	b=Qfi6QxHSqP1+CJyBvVIOyhYHUB7bHU80K0wSEKT0JTk5Eh1E99xwEBq16fgU2SgJj
+	 gYaHEj/OW1EAM6sYUrzbDRxuW36wEa89SKrolQeErCV5gFh5yF+x7XU+jJr/4LETAU
+	 X5lWLVDZyvu07kSkODRW+1IS82li17+eK94p7NAo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manuel Traut <manuel.traut@mt.com>,
-	Philippe Schenker <philippe.schenker@impulsing.ch>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Wojciech Dubowik <Wojciech.Dubowik@mt.com>,
-	Shawn Guo <shawnguo@kernel.org>
-Subject: [PATCH 6.1 02/92] arm64: dts: imx8mm-verdin: Link reg_usdhc2_vqmmc to usdhc2
+	Peter Xu <peterx@redhat.com>,
+	Andrea Arcangeli <aarcange@redhat.com>,
+	David Hildenbrand <david@redhat.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.12 076/184] mm/userfaultfd: fix uninitialized output field for -EAGAIN race
 Date: Mon, 12 May 2025 19:44:37 +0200
-Message-ID: <20250512172023.236389536@linuxfoundation.org>
+Message-ID: <20250512172044.922617074@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172023.126467649@linuxfoundation.org>
-References: <20250512172023.126467649@linuxfoundation.org>
+In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
+References: <20250512172041.624042835@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,117 +66,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wojciech Dubowik <Wojciech.Dubowik@mt.com>
+From: Peter Xu <peterx@redhat.com>
 
-commit 5591ce0069ddda97cdbbea596bed53e698f399c2 upstream.
+commit 95567729173e62e0e60a1f8ad9eb2e1320a8ccac upstream.
 
-Define vqmmc regulator-gpio for usdhc2 with vin-supply
-coming from LDO5.
+While discussing some userfaultfd relevant issues recently, Andrea noticed
+a potential ABI breakage with -EAGAIN on almost all userfaultfd ioctl()s.
 
-Without this definition LDO5 will be powered down, disabling
-SD card after bootup. This has been introduced in commit
-f5aab0438ef1 ("regulator: pca9450: Fix enable register for LDO5").
+Quote from Andrea, explaining how -EAGAIN was processed, and how this
+should fix it (taking example of UFFDIO_COPY ioctl):
 
-Fixes: 6a57f224f734 ("arm64: dts: freescale: add initial support for verdin imx8m mini")
-Fixes: f5aab0438ef1 ("regulator: pca9450: Fix enable register for LDO5")
-Tested-by: Manuel Traut <manuel.traut@mt.com>
-Reviewed-by: Philippe Schenker <philippe.schenker@impulsing.ch>
-Tested-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Wojciech Dubowik <Wojciech.Dubowik@mt.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+  The "mmap_changing" and "stale pmd" conditions are already reported as
+  -EAGAIN written in the copy field, this does not change it. This change
+  removes the subnormal case that left copy.copy uninitialized and required
+  apps to explicitly set the copy field to get deterministic
+  behavior (which is a requirement contrary to the documentation in both
+  the manpage and source code). In turn there's no alteration to backwards
+  compatibility as result of this change because userland will find the
+  copy field consistently set to -EAGAIN, and not anymore sometime -EAGAIN
+  and sometime uninitialized.
+
+  Even then the change only can make a difference to non cooperative users
+  of userfaultfd, so when UFFD_FEATURE_EVENT_* is enabled, which is not
+  true for the vast majority of apps using userfaultfd or this unintended
+  uninitialized field may have been noticed sooner.
+
+Meanwhile, since this bug existed for years, it also almost affects all
+ioctl()s that was introduced later.  Besides UFFDIO_ZEROPAGE, these also
+get affected in the same way:
+
+  - UFFDIO_CONTINUE
+  - UFFDIO_POISON
+  - UFFDIO_MOVE
+
+This patch should have fixed all of them.
+
+Link: https://lkml.kernel.org/r/20250424215729.194656-2-peterx@redhat.com
+Fixes: df2cc96e7701 ("userfaultfd: prevent non-cooperative events vs mcopy_atomic races")
+Fixes: f619147104c8 ("userfaultfd: add UFFDIO_CONTINUE ioctl")
+Fixes: fc71884a5f59 ("mm: userfaultfd: add new UFFDIO_POISON ioctl")
+Fixes: adef440691ba ("userfaultfd: UFFDIO_MOVE uABI")
+Signed-off-by: Peter Xu <peterx@redhat.com>
+Reported-by: Andrea Arcangeli <aarcange@redhat.com>
+Suggested-by: Andrea Arcangeli <aarcange@redhat.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Axel Rasmussen <axelrasmussen@google.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi |   25 ++++++++++++++++++-----
- 1 file changed, 20 insertions(+), 5 deletions(-)
+ fs/userfaultfd.c |   28 ++++++++++++++++++++++------
+ 1 file changed, 22 insertions(+), 6 deletions(-)
 
---- a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
-@@ -144,6 +144,19 @@
- 		startup-delay-us = <20000>;
- 	};
+--- a/fs/userfaultfd.c
++++ b/fs/userfaultfd.c
+@@ -1585,8 +1585,11 @@ static int userfaultfd_copy(struct userf
+ 	user_uffdio_copy = (struct uffdio_copy __user *) arg;
  
-+	reg_usdhc2_vqmmc: regulator-usdhc2-vqmmc {
-+		compatible = "regulator-gpio";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_usdhc2_vsel>;
-+		gpios = <&gpio1 4 GPIO_ACTIVE_HIGH>;
-+		regulator-max-microvolt = <3300000>;
-+		regulator-min-microvolt = <1800000>;
-+		states = <1800000 0x1>,
-+			 <3300000 0x0>;
-+		regulator-name = "PMIC_USDHC_VSELECT";
-+		vin-supply = <&reg_nvcc_sd>;
-+	};
-+
- 	reserved-memory {
- 		#address-cells = <2>;
- 		#size-cells = <2>;
-@@ -262,7 +275,7 @@
- 			  "SODIMM_19",
- 			  "",
- 			  "",
--			  "",
-+			  "PMIC_USDHC_VSELECT",
- 			  "",
- 			  "",
- 			  "",
-@@ -788,6 +801,7 @@
- 	pinctrl-2 = <&pinctrl_usdhc2_200mhz>, <&pinctrl_usdhc2_cd>;
- 	pinctrl-3 = <&pinctrl_usdhc2_sleep>, <&pinctrl_usdhc2_cd_sleep>;
- 	vmmc-supply = <&reg_usdhc2_vmmc>;
-+	vqmmc-supply = <&reg_usdhc2_vqmmc>;
- };
+ 	ret = -EAGAIN;
+-	if (atomic_read(&ctx->mmap_changing))
++	if (unlikely(atomic_read(&ctx->mmap_changing))) {
++		if (unlikely(put_user(ret, &user_uffdio_copy->copy)))
++			return -EFAULT;
+ 		goto out;
++	}
  
- &wdog1 {
-@@ -1210,13 +1224,17 @@
- 			<MX8MM_IOMUXC_NAND_CLE_GPIO3_IO5		0x6>;	/* SODIMM 76 */
- 	};
+ 	ret = -EFAULT;
+ 	if (copy_from_user(&uffdio_copy, user_uffdio_copy,
+@@ -1641,8 +1644,11 @@ static int userfaultfd_zeropage(struct u
+ 	user_uffdio_zeropage = (struct uffdio_zeropage __user *) arg;
  
-+	pinctrl_usdhc2_vsel: usdhc2vselgrp {
-+		fsl,pins =
-+			<MX8MM_IOMUXC_GPIO1_IO04_GPIO1_IO4	0x10>; /* PMIC_USDHC_VSELECT */
-+	};
-+
- 	/*
- 	 * Note: Due to ERR050080 we use discrete external on-module resistors pulling-up to the
- 	 * on-module +V3.3_1.8_SD (LDO5) rail and explicitly disable the internal pull-ups here.
- 	 */
- 	pinctrl_usdhc2: usdhc2grp {
- 		fsl,pins =
--			<MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT		0x10>,
- 			<MX8MM_IOMUXC_SD2_CLK_USDHC2_CLK		0x90>,	/* SODIMM 78 */
- 			<MX8MM_IOMUXC_SD2_CMD_USDHC2_CMD		0x90>,	/* SODIMM 74 */
- 			<MX8MM_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x90>,	/* SODIMM 80 */
-@@ -1227,7 +1245,6 @@
+ 	ret = -EAGAIN;
+-	if (atomic_read(&ctx->mmap_changing))
++	if (unlikely(atomic_read(&ctx->mmap_changing))) {
++		if (unlikely(put_user(ret, &user_uffdio_zeropage->zeropage)))
++			return -EFAULT;
+ 		goto out;
++	}
  
- 	pinctrl_usdhc2_100mhz: usdhc2-100mhzgrp {
- 		fsl,pins =
--			<MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT		0x10>,
- 			<MX8MM_IOMUXC_SD2_CLK_USDHC2_CLK		0x94>,
- 			<MX8MM_IOMUXC_SD2_CMD_USDHC2_CMD		0x94>,
- 			<MX8MM_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x94>,
-@@ -1238,7 +1255,6 @@
+ 	ret = -EFAULT;
+ 	if (copy_from_user(&uffdio_zeropage, user_uffdio_zeropage,
+@@ -1744,8 +1750,11 @@ static int userfaultfd_continue(struct u
+ 	user_uffdio_continue = (struct uffdio_continue __user *)arg;
  
- 	pinctrl_usdhc2_200mhz: usdhc2-200mhzgrp {
- 		fsl,pins =
--			<MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT		0x10>,
- 			<MX8MM_IOMUXC_SD2_CLK_USDHC2_CLK		0x96>,
- 			<MX8MM_IOMUXC_SD2_CMD_USDHC2_CMD		0x96>,
- 			<MX8MM_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x96>,
-@@ -1250,7 +1266,6 @@
- 	/* Avoid backfeeding with removed card power */
- 	pinctrl_usdhc2_sleep: usdhc2slpgrp {
- 		fsl,pins =
--			<MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT		0x0>,
- 			<MX8MM_IOMUXC_SD2_CLK_USDHC2_CLK		0x0>,
- 			<MX8MM_IOMUXC_SD2_CMD_USDHC2_CMD		0x0>,
- 			<MX8MM_IOMUXC_SD2_DATA0_USDHC2_DATA0		0x0>,
+ 	ret = -EAGAIN;
+-	if (atomic_read(&ctx->mmap_changing))
++	if (unlikely(atomic_read(&ctx->mmap_changing))) {
++		if (unlikely(put_user(ret, &user_uffdio_continue->mapped)))
++			return -EFAULT;
+ 		goto out;
++	}
+ 
+ 	ret = -EFAULT;
+ 	if (copy_from_user(&uffdio_continue, user_uffdio_continue,
+@@ -1801,8 +1810,11 @@ static inline int userfaultfd_poison(str
+ 	user_uffdio_poison = (struct uffdio_poison __user *)arg;
+ 
+ 	ret = -EAGAIN;
+-	if (atomic_read(&ctx->mmap_changing))
++	if (unlikely(atomic_read(&ctx->mmap_changing))) {
++		if (unlikely(put_user(ret, &user_uffdio_poison->updated)))
++			return -EFAULT;
+ 		goto out;
++	}
+ 
+ 	ret = -EFAULT;
+ 	if (copy_from_user(&uffdio_poison, user_uffdio_poison,
+@@ -1870,8 +1882,12 @@ static int userfaultfd_move(struct userf
+ 
+ 	user_uffdio_move = (struct uffdio_move __user *) arg;
+ 
+-	if (atomic_read(&ctx->mmap_changing))
+-		return -EAGAIN;
++	ret = -EAGAIN;
++	if (unlikely(atomic_read(&ctx->mmap_changing))) {
++		if (unlikely(put_user(ret, &user_uffdio_move->move)))
++			return -EFAULT;
++		goto out;
++	}
+ 
+ 	if (copy_from_user(&uffdio_move, user_uffdio_move,
+ 			   /* don't copy "move" last field */
 
 
 
