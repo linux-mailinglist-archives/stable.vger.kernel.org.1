@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-143764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16EA8AB415F
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:05:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EB9EAB429F
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:24:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C819E3B8C00
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:03:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8605518977E5
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:24:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFD541DF754;
-	Mon, 12 May 2025 18:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABBBC255235;
+	Mon, 12 May 2025 18:07:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lNkQXO1k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="azwj8gEB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CA4B175BF;
-	Mon, 12 May 2025 18:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6918629825B;
+	Mon, 12 May 2025 18:07:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073002; cv=none; b=s+KztRjl8kA9/OKcDuSLvj+e7IWmVS2YEc7JMS5FvCC5IgVnGEisu8WCMgAznTrKDdYYnpWOvRLX3nh68dpBuGsrtHeiz4iVnKASKphNuHaSCUWfunSqqmZaCkcBz2LdTGbGylaj/sv0gcDa8TiIa2zN8WFf4G4G18L7i2+ljps=
+	t=1747073263; cv=none; b=EpESo1LGeUwINx3VP/63Vv/ZMu7qsLxgEWePPuyu8z6Vu9XaX9ToHM8sw2ENOolWKj1/zygTTwfpQlQXWf9CD8NyFjsoQAg1UtpvJJNSUBBJXH6PM0NlYntKCNFzkjLNgF1oUJftxeevDGVNQjaVcpLtBE3KUr9HGokvuheo7jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073002; c=relaxed/simple;
-	bh=QV+BGyST/mqHZzbN30ATJut4lUXBtf6XLCsRQKcaHpA=;
+	s=arc-20240116; t=1747073263; c=relaxed/simple;
+	bh=szKki3rPnekN61gOG8N0BnUwFHyLjM4e7eEGkYzhT/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YUazHwiOOrOuOVvEyrbzq/PXYvtFOkWV6CyehQxv8fV7jUuq+LaCrt4pZD0VAU2Bg+IdikDzxvE8gFk3AVTDprxXo49k6QUp/1BbMdVDF7MKFDNMFnbIsKwusRu7Xv0Jl0Osm6G0N4iUErrTI4N3L8zequwichr44pMuzxtgQoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lNkQXO1k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3BDAC4CEEF;
-	Mon, 12 May 2025 18:03:21 +0000 (UTC)
+	 MIME-Version; b=UtYtxks3SG5gURQPIY8olGPR9HvfpGbv1k0UGVD5KmxCRP1xvz5qK742/i5e6aZZ27llhlBbzH/yKaPYwK6OhUpM47csj+C61/wVcFP0Wq3ObQQzFJOf8uuaizFphlLHnYW9VJgQUX7vXPRAmg1ucLyJ9bLIO3r9JJV97YN8JY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=azwj8gEB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B9A4C4CEEF;
+	Mon, 12 May 2025 18:07:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073002;
-	bh=QV+BGyST/mqHZzbN30ATJut4lUXBtf6XLCsRQKcaHpA=;
+	s=korg; t=1747073262;
+	bh=szKki3rPnekN61gOG8N0BnUwFHyLjM4e7eEGkYzhT/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lNkQXO1kDqwZ4Tevqbsdn9dM9I45meSyPuC2Lsp6/Y8myBbTDiq+98lfBm1ZGm3i7
-	 gjOzGLz0r4KOlbq9cKXp+TRBLic7h91WeFrqIBvd7W8DfTyikruOqdC3hlS9pnLzJs
-	 /dl3a0a0TTtbag6tPBrme/U/holUC7xpEfcXz1FQ=
+	b=azwj8gEBGOz6m9YL8ibgtioW23JandEqzOCqRg2JQ0SZkr7WZiywlKzsfLDWGGxAf
+	 sRlLDQyVBdYy8KVGVxR0qaUiw3oD5k0C/rRYNtFnk42J1zXTJEHUw/bGgPk7f7RdWx
+	 kG2PCzRti0AoZDciZlchWakTJIff/uDzIvRZWk3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Ray Wu <ray.wu@amd.com>,
-	Wayne Lin <Wayne.Lin@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.12 096/184] drm/amd/display: Copy AUX read reply data whenever length > 0
+	Sean Heelan <seanheelan@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 008/113] ksmbd: Fix UAF in __close_file_table_ids
 Date: Mon, 12 May 2025 19:44:57 +0200
-Message-ID: <20250512172045.734863507@linuxfoundation.org>
+Message-ID: <20250512172028.038419777@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
-References: <20250512172041.624042835@linuxfoundation.org>
+In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
+References: <20250512172027.691520737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wayne Lin <Wayne.Lin@amd.com>
+From: Sean Heelan <seanheelan@gmail.com>
 
-commit 3924f45d4de7250a603fd7b50379237a6a0e5adf upstream.
+commit 36991c1ccde2d5a521577c448ffe07fcccfe104d upstream.
 
-[Why]
-amdgpu_dm_process_dmub_aux_transfer_sync() should return all exact data
-reply from the sink side. Don't do the analysis job in it.
+A use-after-free is possible if one thread destroys the file
+via __ksmbd_close_fd while another thread holds a reference to
+it. The existing checks on fp->refcount are not sufficient to
+prevent this.
 
-[How]
-Remove unnecessary check condition AUX_TRANSACTION_REPLY_AUX_ACK.
+The fix takes ft->lock around the section which removes the
+file from the file table. This prevents two threads acquiring the
+same file pointer via __close_file_table_ids, as well as the other
+functions which retrieve a file from the IDR and which already use
+this same lock.
 
-Fixes: ead08b95fa50 ("drm/amd/display: Fix race condition in DPIA AUX transfer")
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Ray Wu <ray.wu@amd.com>
-Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
-Signed-off-by: Ray Wu <ray.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 9b540e3fe6796fec4fb1344f3be8952fc2f084d4)
 Cc: stable@vger.kernel.org
+Signed-off-by: Sean Heelan <seanheelan@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/smb/server/vfs_cache.c |   33 ++++++++++++++++++++++++++-------
+ 1 file changed, 26 insertions(+), 7 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -12546,8 +12546,7 @@ int amdgpu_dm_process_dmub_aux_transfer_
- 		/* The reply is stored in the top nibble of the command. */
- 		payload->reply[0] = (adev->dm.dmub_notify->aux_reply.command >> 4) & 0xF;
+--- a/fs/smb/server/vfs_cache.c
++++ b/fs/smb/server/vfs_cache.c
+@@ -644,21 +644,40 @@ __close_file_table_ids(struct ksmbd_file
+ 		       bool (*skip)(struct ksmbd_tree_connect *tcon,
+ 				    struct ksmbd_file *fp))
+ {
+-	unsigned int			id;
+-	struct ksmbd_file		*fp;
+-	int				num = 0;
++	struct ksmbd_file *fp;
++	unsigned int id = 0;
++	int num = 0;
  
--	if (!payload->write && p_notify->aux_reply.length &&
--			(payload->reply[0] == AUX_TRANSACTION_REPLY_AUX_ACK))
-+	if (!payload->write && p_notify->aux_reply.length)
- 		memcpy(payload->data, p_notify->aux_reply.data,
- 				p_notify->aux_reply.length);
+-	idr_for_each_entry(ft->idr, fp, id) {
+-		if (skip(tcon, fp))
++	while (1) {
++		write_lock(&ft->lock);
++		fp = idr_get_next(ft->idr, &id);
++		if (!fp) {
++			write_unlock(&ft->lock);
++			break;
++		}
++
++		if (skip(tcon, fp) ||
++		    !atomic_dec_and_test(&fp->refcount)) {
++			id++;
++			write_unlock(&ft->lock);
+ 			continue;
++		}
+ 
+ 		set_close_state_blocked_works(fp);
++		idr_remove(ft->idr, fp->volatile_id);
++		fp->volatile_id = KSMBD_NO_FID;
++		write_unlock(&ft->lock);
++
++		down_write(&fp->f_ci->m_lock);
++		list_del_init(&fp->node);
++		up_write(&fp->f_ci->m_lock);
+ 
+-		if (!atomic_dec_and_test(&fp->refcount))
+-			continue;
+ 		__ksmbd_close_fd(ft, fp);
++
+ 		num++;
++		id++;
+ 	}
++
+ 	return num;
+ }
  
 
 
