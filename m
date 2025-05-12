@@ -1,116 +1,175 @@
-Return-Path: <stable+bounces-143110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CB3AAB2CB0
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 02:56:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 984CAAB2CC1
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 03:23:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AED9D1898F98
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 00:56:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F3E5018941BA
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 01:23:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB4DC1A76D4;
-	Mon, 12 May 2025 00:56:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="cNRudEoB"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0339D1B4159;
+	Mon, 12 May 2025 01:22:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775CA1A725A;
-	Mon, 12 May 2025 00:56:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E791D1BC4E;
+	Mon, 12 May 2025 01:22:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747011375; cv=none; b=Mz9G5bfN1Y3GvINovlHUiz42v1UyQUdV0xuCplTyVzlJ2MiCpJb+La98RqoNFEEY9yT72DIBb4Zx1qeUDO+NS/s/046N9AnIpMnTyNgnNpRA2RW1DWyDHYeytApOF0sB7AIMkrnboZtDsN4eql5qrrGwDWg24ln3s4mh2P0HJUk=
+	t=1747012975; cv=none; b=jlrrVflkG+UcG6RaRffb5YdbKXbeCqkdV0XSmQkpLRXl3ToROOh7yNpgh/WqkhpX7y+7jWpPxo1uliNUhxJNTHEav1iiQWQsWUfWGFeaPlkOXL4g/Q+3OauiJ7dWvHyKeEEC3W+ifu7dkUo7nrQmOJHH6iRz6v+oBueNMVe3LQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747011375; c=relaxed/simple;
-	bh=BQlWKE9oMnECkAXh8bCbYknBZUOUd0KCWfuMmXuhCTQ=;
-	h=Date:To:From:Subject:Message-Id; b=ui1rxyQwaEBlh3ilbhDzYYObOodBbLzb8bTcI4KJVeJK1xwHleiO9GgSZs4IKQVqKq1iPODfdSpJL5dlhADLehY1wiUlBz9iE8NEOfml5SfNDSLSE+JJL2LFI9npCVcqDgouVBOG7Mm9jv8M7JRPNfXx+SpdlVeRDMxzYoaVZfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=cNRudEoB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BAF2C4CEE4;
-	Mon, 12 May 2025 00:56:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1747011375;
-	bh=BQlWKE9oMnECkAXh8bCbYknBZUOUd0KCWfuMmXuhCTQ=;
-	h=Date:To:From:Subject:From;
-	b=cNRudEoBcrre21UbX3nMRNhae40zrszmaDuF52OpiYEFYbA3dvMBXSkBM2zYpwXX2
-	 8A1AV77uBeu75Vg5H5BNzDDrW1fGAa/4HP21ph1qX1OMKi2/fgt0+SlByupAFEvIQp
-	 SH+DzM6WdNMe3OvK8uWEO4ywxSRMD2a+hyNk8yYo=
-Date: Sun, 11 May 2025 17:56:14 -0700
-To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,segoon@openwall.com,lorenzo.stoakes@oracle.com,liam.howlett@oracle.com,aha310510@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-nonmm-stable] ipc-fix-to-protect-ipcs-lookups-using-rcu.patch removed from -mm tree
-Message-Id: <20250512005615.4BAF2C4CEE4@smtp.kernel.org>
+	s=arc-20240116; t=1747012975; c=relaxed/simple;
+	bh=wcp82npn+wUfrm/naB0FTQP5FtlBFA1AeVpXLqtoNtc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZDwwbhvZQZzdXB9fxtB6VF3RoVIxxuMLzwTvf0M44o4zUgFT+DLTXqvq/8ukLlKHYJpjOKlGc5p8mnOgMz0u8ApbziEo90tM2Tt6wTJG6txVWVYY25c66R1vi1LIMITFa0S1r4uShSKTQCrEKdCh+/jxUKGZwB9TGSGIXfGqkxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250810.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54C0e28Q006496;
+	Sun, 11 May 2025 18:22:43 -0700
+Received: from ala-exchng01.corp.ad.wrs.com (ala-exchng01.wrs.com [147.11.82.252])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 46j233h335-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Sun, 11 May 2025 18:22:43 -0700 (PDT)
+Received: from ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.43; Sun, 11 May 2025 18:22:42 -0700
+Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
+ ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server id
+ 15.1.2507.43 via Frontend Transport; Sun, 11 May 2025 18:22:40 -0700
+From: <jianqi.ren.cn@windriver.com>
+To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>
+CC: <heikki.krogerus@linux.intel.com>, <rdbabiera@google.com>,
+        <linux-usb@vger.kernel.org>, <patches@lists.linux.dev>,
+        <linux-kernel@vger.kernel.org>, <jianqi.ren.cn@windriver.com>
+Subject: [PATCH 6.1.y] usb: typec: altmodes/displayport: create sysfs nodes as driver's default device attribute group
+Date: Mon, 12 May 2025 09:22:39 +0800
+Message-ID: <20250512012239.3323952-1-jianqi.ren.cn@windriver.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Authority-Analysis: v=2.4 cv=EojSrTcA c=1 sm=1 tr=0 ts=68214d63 cx=c_pps a=/ZJR302f846pc/tyiSlYyQ==:117 a=/ZJR302f846pc/tyiSlYyQ==:17 a=dt9VzEwgFbYA:10 a=VwQbUJbxAAAA:8 a=1XWaLZrsAAAA:8 a=ag1SF4gXAAAA:8 a=t7CeM3EgAAAA:8 a=8qJ9y54MyL8qpMpceN8A:9
+ a=Yupwre4RP9_Eg_Bd0iYG:22 a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTEyMDAxMiBTYWx0ZWRfX4hJQlAjQdHMe ya8Cu4FfC14vmqBdjliC8Ot9XW9e+rCk6CnmAgNVYnGbPNL/fEf7b8fSGchi64I2qgpB85XtV8G 1YlbFrdpREajCaHYAh4xyfxVSFzkvAjC70bMjhievoLRQohM0eO42f3ej6+u1rXDGdKAZOvrn+B
+ ZAYftecSl914pUQMvVYiYlIQ2hSLRgN7gJ6RnhkApoM7hnwR2+6bbBFHgcZm/F0gknAdAu5sPb8 dzo3HSCDF338zq+cfN2qRNgDJ3m+OZZK34m9pMEO+8YBqCFIiSmO4K4tzWJwjCOEUi+6OmKY1me mgFEVLnntlvjki0MUHmHX3zZyC99lb3lPtiux2kO4lko01jo+2mtKuVhvl4o7610XxstmskLbws
+ gGppcp0BVr26n/I7JfGxnOL2XCqvHuBTLg1eHocBphZovlyJmf+yZVAJYYKUSoRtlqGL+u/s
+X-Proofpoint-GUID: mxB03OUrCl4aPZAu8Lmba85tQsCtSUF5
+X-Proofpoint-ORIG-GUID: mxB03OUrCl4aPZAu8Lmba85tQsCtSUF5
+X-Sensitive_Customer_Information: Yes
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-11_10,2025-05-09_01,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ phishscore=0 priorityscore=1501 mlxlogscore=999 adultscore=0
+ impostorscore=0 clxscore=1011 malwarescore=0 mlxscore=0 spamscore=0
+ bulkscore=0 suspectscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.21.0-2504070000
+ definitions=main-2505120012
 
+From: RD Babiera <rdbabiera@google.com>
 
-The quilt patch titled
-     Subject: ipc: fix to protect IPCS lookups using RCU
-has been removed from the -mm tree.  Its filename was
-     ipc-fix-to-protect-ipcs-lookups-using-rcu.patch
+commit 165376f6b23e9a779850e750fb2eb06622e5a531 upstream.
 
-This patch was dropped because it was merged into the mm-nonmm-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+The DisplayPort driver's sysfs nodes may be present to the userspace before
+typec_altmode_set_drvdata() completes in dp_altmode_probe. This means that
+a sysfs read can trigger a NULL pointer error by deferencing dp->hpd in
+hpd_show or dp->lock in pin_assignment_show, as dev_get_drvdata() returns
+NULL in those cases.
 
-------------------------------------------------------
-From: Jeongjun Park <aha310510@gmail.com>
-Subject: ipc: fix to protect IPCS lookups using RCU
-Date: Thu, 24 Apr 2025 23:33:22 +0900
+Remove manual sysfs node creation in favor of adding attribute group as
+default for devices bound to the driver. The ATTRIBUTE_GROUPS() macro is
+not used here otherwise the path to the sysfs nodes is no longer compliant
+with the ABI.
 
-syzbot reported that it discovered a use-after-free vulnerability, [0]
-
-[0]: https://lore.kernel.org/all/67af13f8.050a0220.21dd3.0038.GAE@google.com/
-
-idr_for_each() is protected by rwsem, but this is not enough.  If it is
-not protected by RCU read-critical region, when idr_for_each() calls
-radix_tree_node_free() through call_rcu() to free the radix_tree_node
-structure, the node will be freed immediately, and when reading the next
-node in radix_tree_for_each_slot(), the already freed memory may be read.
-
-Therefore, we need to add code to make sure that idr_for_each() is
-protected within the RCU read-critical region when we call it in
-shm_destroy_orphaned().
-
-Link: https://lkml.kernel.org/r/20250424143322.18830-1-aha310510@gmail.com
-Fixes: b34a6b1da371 ("ipc: introduce shm_rmid_forced sysctl")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Reported-by: syzbot+a2b84e569d06ca3a949c@syzkaller.appspotmail.com
-Cc: Jeongjun Park <aha310510@gmail.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Vasiliy Kulikov <segoon@openwall.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 0e3bb7d6894d ("usb: typec: Add driver for DisplayPort alternate mode")
+Cc: stable@vger.kernel.org
+Signed-off-by: RD Babiera <rdbabiera@google.com>
+Link: https://lore.kernel.org/r/20240229001101.3889432-2-rdbabiera@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[Minor conflict resolved due to code context change.]
+Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
 ---
+Verified the build test
+---
+ drivers/usb/typec/altmodes/displayport.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
- ipc/shm.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
---- a/ipc/shm.c~ipc-fix-to-protect-ipcs-lookups-using-rcu
-+++ a/ipc/shm.c
-@@ -431,8 +431,11 @@ static int shm_try_destroy_orphaned(int
- void shm_destroy_orphaned(struct ipc_namespace *ns)
- {
- 	down_write(&shm_ids(ns).rwsem);
--	if (shm_ids(ns).in_use)
-+	if (shm_ids(ns).in_use) {
-+		rcu_read_lock();
- 		idr_for_each(&shm_ids(ns).ipcs_idr, &shm_try_destroy_orphaned, ns);
-+		rcu_read_unlock();
-+	}
- 	up_write(&shm_ids(ns).rwsem);
+diff --git a/drivers/usb/typec/altmodes/displayport.c b/drivers/usb/typec/altmodes/displayport.c
+index f564d0d471bb..f80124102328 100644
+--- a/drivers/usb/typec/altmodes/displayport.c
++++ b/drivers/usb/typec/altmodes/displayport.c
+@@ -543,15 +543,20 @@ static ssize_t pin_assignment_show(struct device *dev,
  }
+ static DEVICE_ATTR_RW(pin_assignment);
  
-_
-
-Patches currently in -mm which might be from aha310510@gmail.com are
-
-mm-vmalloc-fix-data-race-in-show_numa_info.patch
+-static struct attribute *dp_altmode_attrs[] = {
++static struct attribute *displayport_attrs[] = {
+ 	&dev_attr_configuration.attr,
+ 	&dev_attr_pin_assignment.attr,
+ 	NULL
+ };
+ 
+-static const struct attribute_group dp_altmode_group = {
++static const struct attribute_group displayport_group = {
+ 	.name = "displayport",
+-	.attrs = dp_altmode_attrs,
++	.attrs = displayport_attrs,
++};
++
++static const struct attribute_group *displayport_groups[] = {
++	&displayport_group,
++	NULL,
+ };
+ 
+ int dp_altmode_probe(struct typec_altmode *alt)
+@@ -559,7 +564,6 @@ int dp_altmode_probe(struct typec_altmode *alt)
+ 	const struct typec_altmode *port = typec_altmode_get_partner(alt);
+ 	struct fwnode_handle *fwnode;
+ 	struct dp_altmode *dp;
+-	int ret;
+ 
+ 	/* FIXME: Port can only be DFP_U. */
+ 
+@@ -570,10 +574,6 @@ int dp_altmode_probe(struct typec_altmode *alt)
+ 	      DP_CAP_PIN_ASSIGN_DFP_D(alt->vdo)))
+ 		return -ENODEV;
+ 
+-	ret = sysfs_create_group(&alt->dev.kobj, &dp_altmode_group);
+-	if (ret)
+-		return ret;
+-
+ 	dp = devm_kzalloc(&alt->dev, sizeof(*dp), GFP_KERNEL);
+ 	if (!dp)
+ 		return -ENOMEM;
+@@ -604,7 +604,6 @@ void dp_altmode_remove(struct typec_altmode *alt)
+ {
+ 	struct dp_altmode *dp = typec_altmode_get_drvdata(alt);
+ 
+-	sysfs_remove_group(&alt->dev.kobj, &dp_altmode_group);
+ 	cancel_work_sync(&dp->work);
+ 
+ 	if (dp->connector_fwnode) {
+@@ -629,6 +628,7 @@ static struct typec_altmode_driver dp_altmode_driver = {
+ 	.driver = {
+ 		.name = "typec_displayport",
+ 		.owner = THIS_MODULE,
++		.dev_groups = displayport_groups,
+ 	},
+ };
+ module_typec_altmode_driver(dp_altmode_driver);
+-- 
+2.34.1
 
 
