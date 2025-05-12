@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-144056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4F3EAB46C6
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 23:52:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E33FEAB46C8
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 23:52:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 550A74A032A
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 21:52:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 004731B4095A
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 21:53:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 341BC299951;
-	Mon, 12 May 2025 21:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B31229992B;
+	Mon, 12 May 2025 21:52:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="I1/5nQ6o"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DPcu1n6+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8D27259C9F
-	for <stable@vger.kernel.org>; Mon, 12 May 2025 21:52:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DED17299A86
+	for <stable@vger.kernel.org>; Mon, 12 May 2025 21:52:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747086762; cv=none; b=ifrk+wQYtchLKzc46h3QxWcDFfHSt7eEl3D6HYomujJlpV4VMEtD3n1Fk8gmGpEC4nFhXdivqtFmDz25SbHkO8EzshJO6xSyxLPNZwXRYW9OyMaLMmWRAjPWEl5ArkoDutmtt5H0NlWab74kE39Z7c0i9uPcRSujQcWTrrdHcEE=
+	t=1747086764; cv=none; b=NkXbT589T+h9rSK220KH1iTzvaCHifOuuvScJXMreKb2Ew0yorhayDG8cuekkmy+/otDMXkgz+OCZZhoSiMMiIPrDNX7WXZMKXDXvgDV6MQBtwDSHtgQpeHiCyGfybFz8NmF56SxuGR3iWRpPeZD1a2wPU45dfZJlTU5/M0cFVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747086762; c=relaxed/simple;
-	bh=8Cphp9RNg9Ov7CGNM1k8vSnwPft/QpI8xnb8Yk2C10k=;
+	s=arc-20240116; t=1747086764; c=relaxed/simple;
+	bh=x0r7F45Fpu2/IKG0NJx/6wMKAGU6lwmLVsqy5iqe/zA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fTE+Jw8Drc9qB0wIo1bO6ULqXQeLsuH4P00XqNoKwUp3p+6wuKNXvODWV15gkPAciAl7/+v5Ih1v5VpQlLbBAuldhE1Ky3DWMbXv+I3cR2ORZqdaB3lDT7x5tGs82P3XkL5NYdTiyrsXhW5FLuNWY1J1Tu8aRcYJyVP6ZV1eI28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=I1/5nQ6o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F08F0C4CEE7;
-	Mon, 12 May 2025 21:52:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AzD870g6KN8q3oG4cJmO85lpUeviG0Fp66AeHGgkMcdsO1xlZWSKSFS8YA7uXIjcWO6ouejoE8jw/YmFgVC/c72USMBkQjmG71b6ZfDwHLy443l/4v7emoAPwQMvjfpZ5KuXsDnt2RrsBqX2/YF4qLbLhkBowHEzn6MnFkJAf0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DPcu1n6+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57BFBC4CEE7;
+	Mon, 12 May 2025 21:52:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747086760;
-	bh=8Cphp9RNg9Ov7CGNM1k8vSnwPft/QpI8xnb8Yk2C10k=;
+	s=k20201202; t=1747086763;
+	bh=x0r7F45Fpu2/IKG0NJx/6wMKAGU6lwmLVsqy5iqe/zA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I1/5nQ6oBxOcN/W3kYjwMDbWdQjLfUtrvgqWKM5hPOdEB8q8IP6x1VXou3fTwynwJ
-	 D2gu+a+0CPBaGCrC2PL9KEedt0BnLD/yT+LFLWYeo4Y8749RylmmZ7UaRqrbx1Z2GO
-	 NjoicyKdy+UB7AacbKE2J5xk/KDRUSb7mXdIDRq1st6Dd9R/1/+jkdsGrItVb9DshF
-	 K7dq/6gcnbuxSMiApc/CnO+t1l+LklSF7lA3rng3V76gUZHIjaf3m51GatIerNUR6d
-	 9wMC+PFL8GdhCfTPZ0D9XxhFoMAh2SmZAAVwaCQtrlcjKrlfKLGyf/r2mhVgVzPETs
-	 n98O0MdAq5JOg==
+	b=DPcu1n6+FSsclwGSDw7wgev5q0ETRJHIv1RNgcdLwbfT+UUmjA7xs3PfZ/c27WYP8
+	 wg+5ZmhLG933Voy64NFuEfD45DaZndPJJD1GtkzVXHuCKZyoi8sTGxVeL/4dpyUsZ5
+	 mhpxTrPwi0V4JPBEplcAulXWoJ2Wwo/0O3PixTGZMCyLFztqmEGI9qyQY9kVTrndq7
+	 qY/cIhqeaZr9ldVVfdtdTk4sOEXxQLFSNHWl411VkoCO7H3GcPgIWxedbSYiup0kJt
+	 TJN09WEL0uQ4J0rovinZDuHKoT2sNYtSnWQapngYCz/O8jLK+VXXaAVbWek6rDeG3o
+	 0IwVy91Su9bAg==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	ojeda@kernel.org
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.14.y] rust: clean Rust 1.88.0's `clippy::uninlined_format_args` lint
-Date: Mon, 12 May 2025 17:52:36 -0400
-Message-Id: <20250512170256-aa13e96862457ea5@stable.kernel.org>
+To: stable@vger.kernel.org
+Cc: jianqi.ren.cn@windriver.com,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.1.y] spi: microchip-core: ensure TX and RX FIFOs are empty at start of a transfer
+Date: Mon, 12 May 2025 17:52:40 -0400
+Message-Id: <20250512163207-282f1e7f1aec7163@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250512131657.1407076-1-ojeda@kernel.org>
+In-Reply-To:  <20250512015227.3326695-1-jianqi.ren.cn@windriver.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,91 +64,56 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Summary of potential issues:
-⚠️ Found matching upstream commit but patch is missing proper reference to it
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-Found matching upstream commit: 211dcf77856db64c73e0c3b9ce0c624ec855daca
+The upstream commit SHA1 provided is correct: 9cf71eb0faef4bff01df4264841b8465382d7927
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: <jianqi.ren.cn@windriver.com>
+Commit author: Steve Wilkins<steve.wilkins@raymarine.com>
+
+Status in newer kernel trees:
+6.14.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (different SHA1: 3feda3677e8b)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  211dcf77856db ! 1:  3d50fea3c59c6 rust: clean Rust 1.88.0's `clippy::uninlined_format_args` lint
+1:  9cf71eb0faef4 ! 1:  e2b7a4dc57e1d spi: microchip-core: ensure TX and RX FIFOs are empty at start of a transfer
+    @@ Metadata
+      ## Commit message ##
+         spi: microchip-core: ensure TX and RX FIFOs are empty at start of a transfer
+     
+    +    [ Upstream commit 9cf71eb0faef4bff01df4264841b8465382d7927 ]
+    +
+         While transmitting with rx_len == 0, the RX FIFO is not going to be
+         emptied in the interrupt handler. A subsequent transfer could then
+         read crap from the previous transfer out of the RX FIFO into the
     @@ Commit message
-         Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-         Link: https://lore.kernel.org/r/20250502140237.1659624-6-ojeda@kernel.org
-         Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-    -
-    - ## drivers/gpu/nova-core/gpu.rs ##
-    -@@ drivers/gpu/nova-core/gpu.rs: pub(crate) fn arch(&self) -> Architecture {
-    - // For now, redirect to fmt::Debug for convenience.
-    - impl fmt::Display for Chipset {
-    -     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-    --        write!(f, "{:?}", self)
-    -+        write!(f, "{self:?}")
-    -     }
-    - }
-    - 
-    +    (cherry picked from commit 211dcf77856db64c73e0c3b9ce0c624ec855daca)
-    +    Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+         Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+         Link: https://patch.msgid.link/20240715-flammable-provoke-459226d08e70@wendy
+         Signed-off-by: Mark Brown <broonie@kernel.org>
+    +    [Minor conflict resolved due to code context change.]
+    +    Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+    +    Signed-off-by: He Zhe <zhe.he@windriver.com>
      
-      ## rust/kernel/str.rs ##
-     @@ rust/kernel/str.rs: fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-    @@ rust/kernel/str.rs: fn test_cstr_display_all_bytes() {
-      }
+      ## drivers/spi/spi-microchip-core.c ##
+     @@
+    @@ drivers/spi/spi-microchip-core.c: static int mchp_corespi_transfer_one(struct sp
       
-     
-    - ## rust/macros/kunit.rs ##
-    -@@ rust/macros/kunit.rs: pub(crate) fn kunit_tests(attr: TokenStream, ts: TokenStream) -> TokenStream {
-    -     }
+     +	mchp_corespi_write(spi, REG_COMMAND, COMMAND_RXFIFORST | COMMAND_TXFIFORST);
+     +
+    - 	mchp_corespi_write(spi, REG_SLAVE_SELECT, spi->pending_slave_select);
     - 
-    -     if attr.len() > 255 {
-    --        panic!(
-    --            "The test suite name `{}` exceeds the maximum length of 255 bytes",
-    --            attr
-    --        )
-    -+        panic!("The test suite name `{attr}` exceeds the maximum length of 255 bytes")
-    -     }
-    - 
-    -     let mut tokens: Vec<_> = ts.into_iter().collect();
-    -@@ rust/macros/kunit.rs: pub(crate) fn kunit_tests(attr: TokenStream, ts: TokenStream) -> TokenStream {
-    -     let mut kunit_macros = "".to_owned();
-    -     let mut test_cases = "".to_owned();
-    -     for test in &tests {
-    --        let kunit_wrapper_fn_name = format!("kunit_rust_wrapper_{}", test);
-    -+        let kunit_wrapper_fn_name = format!("kunit_rust_wrapper_{test}");
-    -         let kunit_wrapper = format!(
-    --            "unsafe extern \"C\" fn {}(_test: *mut kernel::bindings::kunit) {{ {}(); }}",
-    --            kunit_wrapper_fn_name, test
-    -+            "unsafe extern \"C\" fn {kunit_wrapper_fn_name}(_test: *mut kernel::bindings::kunit) {{ {test}(); }}"
-    -         );
-    -         writeln!(kunit_macros, "{kunit_wrapper}").unwrap();
-    -         writeln!(
-    -             test_cases,
-    --            "    kernel::kunit::kunit_case(kernel::c_str!(\"{}\"), {}),",
-    --            test, kunit_wrapper_fn_name
-    -+            "    kernel::kunit::kunit_case(kernel::c_str!(\"{test}\"), {kunit_wrapper_fn_name}),"
-    -         )
-    -         .unwrap();
-    -     }
-    -
-      ## rust/macros/module.rs ##
-     @@ rust/macros/module.rs: fn emit_base(&mut self, field: &str, content: &str, builtin: bool) {
-                  )
-    @@ rust/macros/paste.rs: fn concat_helper(tokens: &[TokenTree]) -> Vec<(String, Spa
-          }
-      
-     
-    - ## rust/pin-init/internal/src/pinned_drop.rs ##
-    -@@ rust/pin-init/internal/src/pinned_drop.rs: pub(crate) fn pinned_drop(_args: TokenStream, input: TokenStream) -> TokenStream
-    + ## rust/macros/pinned_drop.rs ##
-    +@@ rust/macros/pinned_drop.rs: pub(crate) fn pinned_drop(_args: TokenStream, input: TokenStream) -> TokenStream
-                  // Found the end of the generics, this should be `PinnedDrop`.
-                  assert!(
-                      matches!(tt, TokenTree::Ident(i) if i.to_string() == "PinnedDrop"),
+      	while (spi->tx_len)
+    + 		mchp_corespi_write_fifo(spi);
+    + 
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.14.y       |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Success   |
 
