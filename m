@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-143348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 397B0AB3F3E
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:33:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5501AB3F35
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:32:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E396864DA7
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:32:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F0765189E57B
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:32:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CCAF29614E;
-	Mon, 12 May 2025 17:32:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67B282522BA;
+	Mon, 12 May 2025 17:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hPSXdXwU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FHlhIUgH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECBD91DC1A7;
-	Mon, 12 May 2025 17:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23C2521770B;
+	Mon, 12 May 2025 17:32:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747071139; cv=none; b=rOX4W2fGuw02ZoYyJ2FFpNYyHy2gsoiaus7gWsSvoyuL6htK61jA2VlRUsWUqKsTd50/8WHqSDzUo46DxSIrWGkXK4xm0h3RYpxELqH9jxtj28GRbZ8YwvC000CKGCJjgyW4UMHgaj70RvU+7wM8arm+nDmkoFGKIDtTKTu2A+I=
+	t=1747071147; cv=none; b=PySrpsS2UJpYg9EgC7CTbSDadCA5fXpOZsBO2+GvwFoizEUxZ0vjkpyoIlM2qHlCaxCsai8asttLZQ+zsOruLxpBQvFduTP8xnSAxRVbueFFI0eFJFk1YqmA6hAlfa80qlzHv8Rua1+eIJQkXFixk1wwcys9bAiI8GIpogfqsT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747071139; c=relaxed/simple;
-	bh=6ZdXF/LgQhCM3y0YQNXGzR1AS7H95NKJOgPhvqzm1xU=;
+	s=arc-20240116; t=1747071147; c=relaxed/simple;
+	bh=9SMR5DlrEgIUadMQm+drJv05wr0BROAU4FhU67lvObg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H6IO7u5Q34ZY0OqVVlELzOvG0vi9HJQxnDg2/DYPa6HtjhZbXuALSKB821skP2KdhVfpuqrKdC/Kk+gPkiioNOSag1z9g+RRqC7WeKpcKUQhCnuCgCxt+ueA8s9035803WMOlopZ17/YG1qGS/ngHtfoDw2iW52FcItFGA20H9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hPSXdXwU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EF11C4CEE7;
-	Mon, 12 May 2025 17:32:18 +0000 (UTC)
+	 MIME-Version; b=trgbE+zDXWzr+heumzcB3QrqAzqhcJLK1LmIA1UPyAQme+Aw7Rty1Wee9u8KPBh5naktdIayuQgpleR6KWwNQ9F5UFPfF1k8neQPpuZpIO7+sJ6dM3iZBvySU+Pb68knGK7cg0yWYucpMwFNgEG8K5UoK2kKzTx4ObZayaVt3EE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FHlhIUgH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7E1FC4CEE7;
+	Mon, 12 May 2025 17:32:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747071138;
-	bh=6ZdXF/LgQhCM3y0YQNXGzR1AS7H95NKJOgPhvqzm1xU=;
+	s=korg; t=1747071147;
+	bh=9SMR5DlrEgIUadMQm+drJv05wr0BROAU4FhU67lvObg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hPSXdXwUD65M4oi/qcOtzHJ7PZv6OavTJo7L/2ROqshbLiaU/V6vK+/AvV+nsZlyB
-	 HRsx7ixf+kt84R98epEn8GxpC4LG3bFWmkRKrQ898cfCjClE03CexbHGxubMNis9AL
-	 4qJe35dmqZVgV+sXLls67ysrQS5d9CrBiLH4Kp7E=
+	b=FHlhIUgHhTiY+rFjwI7Un/OqKUjRzmjr5JXM8q//2x7SwwTWvCiBHld6ZBTuntSpt
+	 4sJSeC8qAAKzHGPx5+pswczZDO9EyDgysarHZJQuaybe3p/uegJMvHLxqK83TPTAxm
+	 /Td8yp1E/t3Tu9niip/41wR4cUspr9LJwuSLwjBc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Lorenzo Bianconi <lorenzo@kernel.org>,
 	Stable@vger.kernel.org,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 26/54] iio: imu: st_lsm6dsx: fix possible lockup in st_lsm6dsx_read_fifo
-Date: Mon, 12 May 2025 19:29:38 +0200
-Message-ID: <20250512172016.701045146@linuxfoundation.org>
+Subject: [PATCH 5.15 27/54] iio: imu: st_lsm6dsx: fix possible lockup in st_lsm6dsx_read_tagged_fifo
+Date: Mon, 12 May 2025 19:29:39 +0200
+Message-ID: <20250512172016.737336170@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512172015.643809034@linuxfoundation.org>
 References: <20250512172015.643809034@linuxfoundation.org>
@@ -69,15 +69,15 @@ Content-Transfer-Encoding: 8bit
 
 From: Silvano Seva <s.seva@4sigma.it>
 
-commit 159ca7f18129834b6f4c7eae67de48e96c752fc9 upstream.
+commit 8114ef86e2058e2554111b793596f17bee23fa15 upstream.
 
-Prevent st_lsm6dsx_read_fifo from falling in an infinite loop in case
-pattern_len is equal to zero and the device FIFO is not empty.
+Prevent st_lsm6dsx_read_tagged_fifo from falling in an infinite loop in
+case pattern_len is equal to zero and the device FIFO is not empty.
 
-Fixes: 290a6ce11d93 ("iio: imu: add support to lsm6dsx driver")
+Fixes: 801a6e0af0c6 ("iio: imu: st_lsm6dsx: add support to LSM6DSO")
 Signed-off-by: Silvano Seva <s.seva@4sigma.it>
 Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20250311085030.3593-2-s.seva@4sigma.it
+Link: https://patch.msgid.link/20250311085030.3593-4-s.seva@4sigma.it
 Cc: <Stable@vger.kernel.org>
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
@@ -87,16 +87,16 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
 +++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-@@ -369,6 +369,9 @@ int st_lsm6dsx_read_fifo(struct st_lsm6d
- 	if (fifo_status & cpu_to_le16(ST_LSM6DSX_FIFO_EMPTY_MASK))
+@@ -589,6 +589,9 @@ int st_lsm6dsx_read_tagged_fifo(struct s
+ 	if (!fifo_len)
  		return 0;
  
 +	if (!pattern_len)
-+		pattern_len = ST_LSM6DSX_SAMPLE_SIZE;
++		pattern_len = ST_LSM6DSX_TAGGED_SAMPLE_SIZE;
 +
- 	fifo_len = (le16_to_cpu(fifo_status) & fifo_diff_mask) *
- 		   ST_LSM6DSX_CHAN_SIZE;
- 	fifo_len = (fifo_len / pattern_len) * pattern_len;
+ 	for (read_len = 0; read_len < fifo_len; read_len += pattern_len) {
+ 		err = st_lsm6dsx_read_block(hw,
+ 					    ST_LSM6DSX_REG_FIFO_OUT_TAG_ADDR,
 
 
 
