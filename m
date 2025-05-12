@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-143737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFE32AB4140
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:03:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E01A1AB411D
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:02:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87F703A962D
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:01:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72B4A467C7D
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:02:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B1F723BF9F;
-	Mon, 12 May 2025 18:01:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A15E255235;
+	Mon, 12 May 2025 18:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yduwogiq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IRnfPePb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46DF91519B8;
-	Mon, 12 May 2025 18:01:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0857C23C510;
+	Mon, 12 May 2025 18:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072917; cv=none; b=AI6+Hwo4wf8p7RpwVB9HLDqqvayjnnqYikL741N4ntTZhBrYUewwmQXuxAPwbYPpwAnlRKD+oEQN4YccoEjfEbVtIyjoOnhqYwO8BlYssinxbn0R5Oywl8VKroB62XF9znR7InNPO9XsmKCriP9MAixJ/LWPIK+ddKq9/jgW63A=
+	t=1747072920; cv=none; b=oRN69KWGWR5k4csAK4ZOPJQeKeJAGQTKRR6CJsPoqhDTQhp/NGquBp8mXSGn76ZiZTv5e2Jf1COZqk8k/2gdLMirV9DI2LwBUFGRqcb0NCSH/kUy1OxXoMmCN2j9CtkC/eMOKyz/qXmtQohKc67kGtjklKpGPqQhoYzOt5uiriA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072917; c=relaxed/simple;
-	bh=Th0Gje3q2eRbaeUaCWquVLZc1lejTzSmGFvqtTdmOvU=;
+	s=arc-20240116; t=1747072920; c=relaxed/simple;
+	bh=tD7uwiAda4sNaGX0Gm3syPuZYUxWM/qmBRkC646SJ0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gZjTkv+On8Z3cCkaJ0CaAcIqJeVxUgt2crHElDoDZZKG92fQoc6cKSlZyC7SCNhD1T189WKm0sDnYOQbA8Pe5/LyypRlIQe14OEP7zi3XClU+XainRJq1YMEOM1teLZlrIaky3dSMRJE0k8jwXbBeo7aOOp+Ie4DvO5+NHp21wI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yduwogiq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DF91C4CEE7;
-	Mon, 12 May 2025 18:01:56 +0000 (UTC)
+	 MIME-Version; b=OT0PQV2VBSXvyKYEzwYqOV0SHEt4FKXmt/PNsjmm0Yl4Xue9AkAvriWZmykr1Bo1664hRqbOu29BVmspMCfi9QXwYnyveGaO2r5tKlP1QScJ0Zem/tmYx8rh+HVIVeBVQzUEGhTJqZ9RqvfUpXBi7Oky3zRxnESPqpPRCTOn/wg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IRnfPePb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86A9FC4CEE7;
+	Mon, 12 May 2025 18:01:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072916;
-	bh=Th0Gje3q2eRbaeUaCWquVLZc1lejTzSmGFvqtTdmOvU=;
+	s=korg; t=1747072919;
+	bh=tD7uwiAda4sNaGX0Gm3syPuZYUxWM/qmBRkC646SJ0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yduwogiqR5gr3/npW8CxK2JPX0IVB2Z2xwvGl4rxl5p/iHwXpmzDJDjQdBo8ahXYs
-	 eBH0iIWiSj9ouPRsf1OFwYmmGCnoh07soVHJPFqe/tBSZM8alAXVVOSeghN8dSAAni
-	 3PcNu6iNmCLutlxsYAC+IsKvbQemna6eQjoN3334=
+	b=IRnfPePbUga2DBuxNBNNSkgtVfnJHzbwjQStB8N6n5teCz3ZJLjw2iq3WBPzm/Emk
+	 9jidbXv1PcuGgMPHNUA7f5UUsL42teU1ulYNOIYMx7Gyc14S5SJDBhkw0qBkxkdAgY
+	 Db+F6LaZQQe/0C2g5wEA4t8CgThvx7RDM1pYjcd0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Miguel Ojeda <ojeda@kernel.org>
-Subject: [PATCH 6.12 066/184] objtool/rust: add one more `noreturn` Rust function for Rust 1.87.0
-Date: Mon, 12 May 2025 19:44:27 +0200
-Message-ID: <20250512172044.523593913@linuxfoundation.org>
+Subject: [PATCH 6.12 067/184] rust: clean Rust 1.88.0s warning about `clippy::disallowed_macros` configuration
+Date: Mon, 12 May 2025 19:44:28 +0200
+Message-ID: <20250512172044.563585242@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
 References: <20250512172041.624042835@linuxfoundation.org>
@@ -69,50 +67,52 @@ Content-Transfer-Encoding: 8bit
 
 From: Miguel Ojeda <ojeda@kernel.org>
 
-commit 19f5ca461d5fc09bdf93a9f8e4bd78ed3a49dc71 upstream.
+commit c016722fd57551f8a6fcf472c9d2bcf2130ea0ec upstream.
 
-Starting with Rust 1.87.0 (expected 2025-05-15), `objtool` may report:
+Starting with Rust 1.88.0 (expected 2025-06-26) [1], Clippy may start
+warning about paths that do not resolve in the `disallowed_macros`
+configuration:
 
-    rust/core.o: warning: objtool: _R..._4core9panicking9panic_fmt() falls
-    through to next function _R..._4core9panicking18panic_nounwind_fmt()
+    warning: `kernel::dbg` does not refer to an existing macro
+      --> .clippy.toml:10:5
+       |
+    10 |     { path = "kernel::dbg", reason = "the `dbg!` macro is intended as a debugging tool" },
+       |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-    rust/core.o: warning: objtool: _R..._4core9panicking18panic_nounwind_fmt()
-    falls through to next function _R..._4core9panicking5panic()
+This is a lint we requested at [2], due to the trouble debugging
+the lint due to false negatives (e.g. [3]), which we use to emulate
+`clippy::dbg_macro` [4]. See commit 8577c9dca799 ("rust: replace
+`clippy::dbg_macro` with `disallowed_macros`") for more details.
 
-The reason is that `rust_begin_unwind` is now mangled:
+Given the false negatives are not resolved yet, it is expected that
+Clippy complains about not finding this macro.
 
-    _R..._7___rustc17rust_begin_unwind
-
-Thus add the mangled one to the list so that `objtool` knows it is
-actually `noreturn`.
-
-See commit 56d680dd23c3 ("objtool/rust: list `noreturn` Rust functions")
-for more details.
-
-Alternatively, we could remove the fixed one in `noreturn.h` and relax
-this test to cover both, but it seems best to be strict as long as we can.
+Thus, until the false negatives are fixed (and, even then, probably we
+will need to wait for the MSRV to raise enough), use the escape hatch
+to allow an invalid path.
 
 Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://github.com/rust-lang/rust-clippy/pull/14397 [1]
+Link: https://github.com/rust-lang/rust-clippy/issues/11432 [2]
+Link: https://github.com/rust-lang/rust-clippy/issues/11431 [3]
+Link: https://github.com/rust-lang/rust-clippy/issues/11303 [4]
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Link: https://lore.kernel.org/r/20250502140237.1659624-2-ojeda@kernel.org
+Link: https://lore.kernel.org/r/20250502140237.1659624-5-ojeda@kernel.org
 Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/objtool/check.c |    1 +
- 1 file changed, 1 insertion(+)
+ .clippy.toml |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -219,6 +219,7 @@ static bool is_rust_noreturn(const struc
- 	       str_ends_with(func->name, "_4core9panicking19assert_failed_inner")			||
- 	       str_ends_with(func->name, "_4core9panicking30panic_null_pointer_dereference")		||
- 	       str_ends_with(func->name, "_4core9panicking36panic_misaligned_pointer_dereference")	||
-+	       str_ends_with(func->name, "_7___rustc17rust_begin_unwind")				||
- 	       strstr(func->name, "_4core9panicking13assert_failed")					||
- 	       strstr(func->name, "_4core9panicking11panic_const24panic_const_")			||
- 	       (strstr(func->name, "_4core5slice5index24slice_") &&
+--- a/.clippy.toml
++++ b/.clippy.toml
+@@ -5,5 +5,5 @@ check-private-items = true
+ disallowed-macros = [
+     # The `clippy::dbg_macro` lint only works with `std::dbg!`, thus we simulate
+     # it here, see: https://github.com/rust-lang/rust-clippy/issues/11303.
+-    { path = "kernel::dbg", reason = "the `dbg!` macro is intended as a debugging tool" },
++    { path = "kernel::dbg", reason = "the `dbg!` macro is intended as a debugging tool", allow-invalid = true },
+ ]
 
 
 
