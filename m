@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-143445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52C42AB3FDA
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:47:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02A93AB400A
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:49:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D643F189ED7B
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:47:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BABC8C02D3
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:48:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C237F296FCD;
-	Mon, 12 May 2025 17:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CB932528FC;
+	Mon, 12 May 2025 17:48:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LeY1Q5Js"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ow0Qim0z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F35F2566DD;
-	Mon, 12 May 2025 17:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3985E1C173C;
+	Mon, 12 May 2025 17:48:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747071972; cv=none; b=iwOhij6dHukvmW5dPYC0hSTNtc+8hKD29/l3+eVmASyATVOTiaCGDQp3h+YT25iJ6HoRc9YqgHvO2QZiUZNYvO8Kn1Uz7uxUBwVB3WsYRTfabQyrhHWI90MqLC74Kh0yXNFHQcyuR1AaO5RL3rP6uh1NUaR8MtdzsmL1U0skBXg=
+	t=1747072085; cv=none; b=tfbNJx55Kj48P0zxZLZjo0al0paw9vmBiV+GK5OjB47oa4yJXbaO7yB08Qvy3b8XCtDrgYFF1KgRCoBSYPUQStwLn9k2b/5mFeJAbu8u2d6hLbbQ0MsQfhxPMSZOwm8DroQhNDUgE9kTPGtriAjL0VqEGVxrFFfNJ6qrZxRoa5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747071972; c=relaxed/simple;
-	bh=JhHdTo/bbX5Vc0+3ynXPXxE5o/KpBu7SbHnzvc1l2m8=;
+	s=arc-20240116; t=1747072085; c=relaxed/simple;
+	bh=UWD64vTkTWAb/roMKU1BEpijRZ30V6SyCaoPZMBsDE0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W+XAJRLDyldHgr/n+PlEfLPJ26ygbZsVgG13+e34k3mPb28oUq+AJxE5pXbQvqhqJ9kPFrAUPDHOgXBlyouJ2g4jrMCYJ/u4jZL5moZDKwXlid93scMQMERQdGl+uFX+RvUdcCtYaMvRmp0YzEkiubdhKbY+XP9QfuTCPOdzeFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LeY1Q5Js; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03076C4CEE9;
-	Mon, 12 May 2025 17:46:11 +0000 (UTC)
+	 MIME-Version; b=un6hR268LbeeOSwgSx6vopB9fQUwCoxIRRAt6iXKj5TyqOegF2dW/28Ab7Y/0ZlzjqxUWHYNzCzMkbj1OcSUjFLQkelnXe+u2EZTWZ7/ADkcB8MHkfa5HcKJds3CE6F/pa11ir9enRkuO93nOPveeePSTScYvTaaNkndUmfYs7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ow0Qim0z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC0DDC4CEE7;
+	Mon, 12 May 2025 17:48:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747071972;
-	bh=JhHdTo/bbX5Vc0+3ynXPXxE5o/KpBu7SbHnzvc1l2m8=;
+	s=korg; t=1747072085;
+	bh=UWD64vTkTWAb/roMKU1BEpijRZ30V6SyCaoPZMBsDE0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LeY1Q5JsGhV4zfQPAn3PEWXx8tbwnpBSN/jAEoTbGf6wn8zuo8Q0UCPJcjqGG57gi
-	 3mjJw+tZ6wIRPGQOuOIOcCF9Lk/pkM6nid/W07DEPVAXHN76Z8QcyE2kpCsRPxWM19
-	 fHxPSh6ANBtf5gkYSDczIUKknhpzazZf9uqENvXI=
+	b=ow0Qim0z/0kTkcq1AXMrWXw/vvE8CM0Svb4pu+O9dSsZcSphC9eRFc19XaFEUvdqC
+	 I7VAcLbu2fEjZI24iytkL7zD/sK6ETumBXcwhSzT9ECValFwlxYypQej5aOU7kRWoo
+	 DDDGCPO2qzHpfv4A0iGmnTNaKOD03dGGkb9d01oU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Zhang Lixu <lixu.zhang@intel.com>,
 	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.14 094/197] iio: hid-sensor-prox: support multi-channel SCALE calculation
-Date: Mon, 12 May 2025 19:39:04 +0200
-Message-ID: <20250512172048.212333276@linuxfoundation.org>
+Subject: [PATCH 6.14 095/197] iio: hid-sensor-prox: Fix incorrect OFFSET calculation
+Date: Mon, 12 May 2025 19:39:05 +0200
+Message-ID: <20250512172048.252462714@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512172044.326436266@linuxfoundation.org>
 References: <20250512172044.326436266@linuxfoundation.org>
@@ -68,95 +68,36 @@ Content-Transfer-Encoding: 8bit
 
 From: Zhang Lixu <lixu.zhang@intel.com>
 
-commit 8b518cdb03f5f6e06d635cbfd9583d1fdbb39bfd upstream.
+commit 79dabbd505210e41c88060806c92c052496dd61c upstream.
 
-With the introduction of multi-channel support in commit 596ef5cf654b
-("iio: hid-sensor-prox: Add support for more channels"), each channel
-requires an independent SCALE calculation, but the existing code only
-calculates SCALE for a single channel.
+The OFFSET calculation in the prox_read_raw() was incorrectly using the
+unit exponent, which is intended for SCALE calculations.
 
-Addresses the problem by modifying the driver to perform independent
-SCALE calculations for each channel.
+Remove the incorrect OFFSET calculation and set it to a fixed value of 0.
 
 Cc: stable@vger.kernel.org
-Fixes: 596ef5cf654b ("iio: hid-sensor-prox: Add support for more channels")
+Fixes: 39a3a0138f61 ("iio: hid-sensors: Added Proximity Sensor Driver")
 Signed-off-by: Zhang Lixu <lixu.zhang@intel.com>
 Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Link: https://patch.msgid.link/20250331055022.1149736-3-lixu.zhang@intel.com
+Link: https://patch.msgid.link/20250331055022.1149736-4-lixu.zhang@intel.com
 Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/common/hid-sensors/hid-sensor-attributes.c |    4 ++
- drivers/iio/light/hid-sensor-prox.c                    |   24 +++++++++--------
- 2 files changed, 17 insertions(+), 11 deletions(-)
+ drivers/iio/light/hid-sensor-prox.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
-+++ b/drivers/iio/common/hid-sensors/hid-sensor-attributes.c
-@@ -66,6 +66,10 @@ static struct {
- 	{HID_USAGE_SENSOR_HUMIDITY, 0, 1000, 0},
- 	{HID_USAGE_SENSOR_HINGE, 0, 0, 17453293},
- 	{HID_USAGE_SENSOR_HINGE, HID_USAGE_SENSOR_UNITS_DEGREES, 0, 17453293},
-+
-+	{HID_USAGE_SENSOR_HUMAN_PRESENCE, 0, 1, 0},
-+	{HID_USAGE_SENSOR_HUMAN_PROXIMITY, 0, 1, 0},
-+	{HID_USAGE_SENSOR_HUMAN_ATTENTION, 0, 1, 0},
- };
- 
- static void simple_div(int dividend, int divisor, int *whole,
 --- a/drivers/iio/light/hid-sensor-prox.c
 +++ b/drivers/iio/light/hid-sensor-prox.c
-@@ -34,9 +34,9 @@ struct prox_state {
- 	struct iio_chan_spec channels[MAX_CHANNELS];
- 	u32 channel2usage[MAX_CHANNELS];
- 	u32 human_presence[MAX_CHANNELS];
--	int scale_pre_decml;
--	int scale_post_decml;
--	int scale_precision;
-+	int scale_pre_decml[MAX_CHANNELS];
-+	int scale_post_decml[MAX_CHANNELS];
-+	int scale_precision[MAX_CHANNELS];
- 	unsigned long scan_mask[2]; /* One entry plus one terminator. */
- 	int num_channels;
- };
-@@ -116,9 +116,12 @@ static int prox_read_raw(struct iio_dev
- 		ret_type = IIO_VAL_INT;
- 		break;
- 	case IIO_CHAN_INFO_SCALE:
--		*val = prox_state->scale_pre_decml;
--		*val2 = prox_state->scale_post_decml;
--		ret_type = prox_state->scale_precision;
-+		if (chan->scan_index >= prox_state->num_channels)
-+			return -EINVAL;
-+
-+		*val = prox_state->scale_pre_decml[chan->scan_index];
-+		*val2 = prox_state->scale_post_decml[chan->scan_index];
-+		ret_type = prox_state->scale_precision[chan->scan_index];
+@@ -124,8 +124,7 @@ static int prox_read_raw(struct iio_dev
+ 		ret_type = prox_state->scale_precision[chan->scan_index];
  		break;
  	case IIO_CHAN_INFO_OFFSET:
- 		*val = hid_sensor_convert_exponent(
-@@ -249,6 +252,10 @@ static int prox_parse_report(struct plat
- 					     st->prox_attr[index].size);
- 		dev_dbg(&pdev->dev, "prox %x:%x\n", st->prox_attr[index].index,
- 			st->prox_attr[index].report_id);
-+		st->scale_precision[index] =
-+			hid_sensor_format_scale(usage_id, &st->prox_attr[index],
-+						&st->scale_pre_decml[index],
-+						&st->scale_post_decml[index]);
- 		index++;
- 	}
- 
-@@ -257,11 +264,6 @@ static int prox_parse_report(struct plat
- 
- 	st->num_channels = index;
- 
--	st->scale_precision = hid_sensor_format_scale(hsdev->usage,
--						      &st->prox_attr[0],
--						      &st->scale_pre_decml,
--						      &st->scale_post_decml);
--
- 	return 0;
- }
- 
+-		*val = hid_sensor_convert_exponent(
+-			prox_state->prox_attr[chan->scan_index].unit_expo);
++		*val = 0;
+ 		ret_type = IIO_VAL_INT;
+ 		break;
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
 
 
 
