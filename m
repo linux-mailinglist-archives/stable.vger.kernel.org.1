@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-143561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C404AB406C
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:54:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D5518AB4138
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:03:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3EFB78C09E4
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:52:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 690453A5BC1
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:01:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7CDA295DA6;
-	Mon, 12 May 2025 17:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62ECB1EE03B;
+	Mon, 12 May 2025 18:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y7+0gzSt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qr9qqtz8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92A38254863;
-	Mon, 12 May 2025 17:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DE681519B8;
+	Mon, 12 May 2025 18:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072352; cv=none; b=KeDHZLXqHMmDFr32eMF96nPdJsOEER2O259hWscpsQjVrtp599m9FklfDNP0p0fSP9/ATFid+FPjWsqEHeDiG3T1YImzhbYM7svEuw5F45k/MetgVvk+9Y5d4mNHu+6nBTr/9AY2E5UnAepKaQaRN+0SEMfFIeSPd6NToXDo+GU=
+	t=1747072892; cv=none; b=c9Y5lglUr1ZN2gESBj+8zvZRYs3IhyNZqbaPY3Nd5bGkAmVxRqoivQp9Uve1rV/WemTxiOwIDBRclt/taH0USwtQpjUPxITSx2/BTK1jQBcnIULbEDjli597PWmI7WTug3YyGGBr7aQO14CbZdnyDfzkSFgYN1HlwjH2ZxoFM+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072352; c=relaxed/simple;
-	bh=kVVDe/ckEEFaCmhIoo0XNwEJ5QLP/z/bsfkYf3BrwTU=;
+	s=arc-20240116; t=1747072892; c=relaxed/simple;
+	bh=9zk6D3wiKIPK94xbF6hv5AGHTssCF7mWw+ssJyPnSrg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BxXQoKnoZISPXfBPm4KcvS1ZPIzHhW3qMsbiKM0gFd3vAbH+9hd8WZ2fQPXxLgCc0thl+Vqq5/oDUDfqF60DibkBuf+v+SlbXfmIBtq/qmQRmTiI3j85AAU875E0eL++8GB/7Z1/zfuxYgQx4X3Dw4zNxWNu1yeXmcjuDyDhuM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y7+0gzSt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BBBBC4CEE7;
-	Mon, 12 May 2025 17:52:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BLbjTMXe6bTW1sMKBkhC8xhBTVO8ccDWpmRljPRj23amrTYa9RMuuYjq91oeE56JNxQeIRfKJOWEo2UvHSzSw5Ba0ftu7oIT4H8UOE0QKTaRWYnnbktbuCFuWNa5lJr5HUjYx/nqILCyR89lBzJlDi92UgfrTOcHj1zK1wqqQW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qr9qqtz8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 829F2C4CEE7;
+	Mon, 12 May 2025 18:01:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072352;
-	bh=kVVDe/ckEEFaCmhIoo0XNwEJ5QLP/z/bsfkYf3BrwTU=;
+	s=korg; t=1747072892;
+	bh=9zk6D3wiKIPK94xbF6hv5AGHTssCF7mWw+ssJyPnSrg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y7+0gzStMVWPTqBv96HtxTnT8cV8CfbehsGqDcdwxMtFKrurIFTGiAZB/C37g5AfX
-	 5XwDB/+uY+boK0V9oE3X1h0Y8wMC9VfP2XSNAo3EJvkLIXkoL0MwyfsbGf5Ay3DRXR
-	 w+CFOhB22QX+jhFirSkKBJQrGLTNY30AHmQ07Hgg=
+	b=Qr9qqtz8Y7PTsJP8y2TcX7lRggaQe3lyD//Yb61L99RXu1BmRYEDON78RZXUXutzL
+	 mlGbPEyhiBpEahD5LJfn0aDa9dFESyZP7Qdr1mPKtkPQ5Xyc9MFaqKUyr5INxqIp2K
+	 Sp0MoYaxJTTcZfY6YlJfrTQmuQlC+YSTkmS3FBwo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+04b9a82855c8aed20860@syzkaller.appspotmail.com,
-	Julian Anastasov <ja@ssi.bg>,
-	Simon Horman <horms@kernel.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 14/92] ipvs: fix uninit-value for saddr in do_output_route4
+	Daivik Bhatia <dtgs1208@gmail.com>,
+	Iago Toral Quiroga <itoral@igalia.com>,
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	=?UTF-8?q?Ma=C3=ADra=20Canal?= <mcanal@igalia.com>
+Subject: [PATCH 6.12 088/184] drm/v3d: Add job to pending list if the reset was skipped
 Date: Mon, 12 May 2025 19:44:49 +0200
-Message-ID: <20250512172023.705890472@linuxfoundation.org>
+Message-ID: <20250512172045.406734079@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172023.126467649@linuxfoundation.org>
-References: <20250512172023.126467649@linuxfoundation.org>
+In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
+References: <20250512172041.624042835@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,174 +61,103 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Julian Anastasov <ja@ssi.bg>
+From: Maíra Canal <mcanal@igalia.com>
 
-[ Upstream commit e34090d7214e0516eb8722aee295cb2507317c07 ]
+commit 35e4079bf1a2570abffce6ababa631afcf8ea0e5 upstream.
 
-syzbot reports for uninit-value for the saddr argument [1].
-commit 4754957f04f5 ("ipvs: do not use random local source address for
-tunnels") already implies that the input value of saddr
-should be ignored but the code is still reading it which can prevent
-to connect the route. Fix it by changing the argument to ret_saddr.
+When a CL/CSD job times out, we check if the GPU has made any progress
+since the last timeout. If so, instead of resetting the hardware, we skip
+the reset and let the timer get rearmed. This gives long-running jobs a
+chance to complete.
 
-[1]
-BUG: KMSAN: uninit-value in do_output_route4+0x42c/0x4d0 net/netfilter/ipvs/ip_vs_xmit.c:147
- do_output_route4+0x42c/0x4d0 net/netfilter/ipvs/ip_vs_xmit.c:147
- __ip_vs_get_out_rt+0x403/0x21d0 net/netfilter/ipvs/ip_vs_xmit.c:330
- ip_vs_tunnel_xmit+0x205/0x2380 net/netfilter/ipvs/ip_vs_xmit.c:1136
- ip_vs_in_hook+0x1aa5/0x35b0 net/netfilter/ipvs/ip_vs_core.c:2063
- nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
- nf_hook_slow+0xf7/0x400 net/netfilter/core.c:626
- nf_hook include/linux/netfilter.h:269 [inline]
- __ip_local_out+0x758/0x7e0 net/ipv4/ip_output.c:118
- ip_local_out net/ipv4/ip_output.c:127 [inline]
- ip_send_skb+0x6a/0x3c0 net/ipv4/ip_output.c:1501
- udp_send_skb+0xfda/0x1b70 net/ipv4/udp.c:1195
- udp_sendmsg+0x2fe3/0x33c0 net/ipv4/udp.c:1483
- inet_sendmsg+0x1fc/0x280 net/ipv4/af_inet.c:851
- sock_sendmsg_nosec net/socket.c:712 [inline]
- __sock_sendmsg+0x267/0x380 net/socket.c:727
- ____sys_sendmsg+0x91b/0xda0 net/socket.c:2566
- ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2620
- __sys_sendmmsg+0x41d/0x880 net/socket.c:2702
- __compat_sys_sendmmsg net/compat.c:360 [inline]
- __do_compat_sys_sendmmsg net/compat.c:367 [inline]
- __se_compat_sys_sendmmsg net/compat.c:364 [inline]
- __ia32_compat_sys_sendmmsg+0xc8/0x140 net/compat.c:364
- ia32_sys_call+0x3ffa/0x41f0 arch/x86/include/generated/asm/syscalls_32.h:346
- do_syscall_32_irqs_on arch/x86/entry/syscall_32.c:83 [inline]
- __do_fast_syscall_32+0xb0/0x110 arch/x86/entry/syscall_32.c:306
- do_fast_syscall_32+0x38/0x80 arch/x86/entry/syscall_32.c:331
- do_SYSENTER_32+0x1f/0x30 arch/x86/entry/syscall_32.c:369
- entry_SYSENTER_compat_after_hwframe+0x84/0x8e
+However, when `timedout_job()` is called, the job in question is removed
+from the pending list, which means it won't be automatically freed through
+`free_job()`. Consequently, when we skip the reset and keep the job
+running, the job won't be freed when it finally completes.
 
-Uninit was created at:
- slab_post_alloc_hook mm/slub.c:4167 [inline]
- slab_alloc_node mm/slub.c:4210 [inline]
- __kmalloc_cache_noprof+0x8fa/0xe00 mm/slub.c:4367
- kmalloc_noprof include/linux/slab.h:905 [inline]
- ip_vs_dest_dst_alloc net/netfilter/ipvs/ip_vs_xmit.c:61 [inline]
- __ip_vs_get_out_rt+0x35d/0x21d0 net/netfilter/ipvs/ip_vs_xmit.c:323
- ip_vs_tunnel_xmit+0x205/0x2380 net/netfilter/ipvs/ip_vs_xmit.c:1136
- ip_vs_in_hook+0x1aa5/0x35b0 net/netfilter/ipvs/ip_vs_core.c:2063
- nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
- nf_hook_slow+0xf7/0x400 net/netfilter/core.c:626
- nf_hook include/linux/netfilter.h:269 [inline]
- __ip_local_out+0x758/0x7e0 net/ipv4/ip_output.c:118
- ip_local_out net/ipv4/ip_output.c:127 [inline]
- ip_send_skb+0x6a/0x3c0 net/ipv4/ip_output.c:1501
- udp_send_skb+0xfda/0x1b70 net/ipv4/udp.c:1195
- udp_sendmsg+0x2fe3/0x33c0 net/ipv4/udp.c:1483
- inet_sendmsg+0x1fc/0x280 net/ipv4/af_inet.c:851
- sock_sendmsg_nosec net/socket.c:712 [inline]
- __sock_sendmsg+0x267/0x380 net/socket.c:727
- ____sys_sendmsg+0x91b/0xda0 net/socket.c:2566
- ___sys_sendmsg+0x28d/0x3c0 net/socket.c:2620
- __sys_sendmmsg+0x41d/0x880 net/socket.c:2702
- __compat_sys_sendmmsg net/compat.c:360 [inline]
- __do_compat_sys_sendmmsg net/compat.c:367 [inline]
- __se_compat_sys_sendmmsg net/compat.c:364 [inline]
- __ia32_compat_sys_sendmmsg+0xc8/0x140 net/compat.c:364
- ia32_sys_call+0x3ffa/0x41f0 arch/x86/include/generated/asm/syscalls_32.h:346
- do_syscall_32_irqs_on arch/x86/entry/syscall_32.c:83 [inline]
- __do_fast_syscall_32+0xb0/0x110 arch/x86/entry/syscall_32.c:306
- do_fast_syscall_32+0x38/0x80 arch/x86/entry/syscall_32.c:331
- do_SYSENTER_32+0x1f/0x30 arch/x86/entry/syscall_32.c:369
- entry_SYSENTER_compat_after_hwframe+0x84/0x8e
+This situation leads to a memory leak, as exposed in [1] and [2].
 
-CPU: 0 UID: 0 PID: 22408 Comm: syz.4.5165 Not tainted 6.15.0-rc3-syzkaller-00019-gbc3372351d0c #0 PREEMPT(undef)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 02/12/2025
+Similarly to commit 704d3d60fec4 ("drm/etnaviv: don't block scheduler when
+GPU is still active"), this patch ensures the job is put back on the
+pending list when extending the timeout.
 
-Reported-by: syzbot+04b9a82855c8aed20860@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/68138dfa.050a0220.14dd7d.0017.GAE@google.com/
-Fixes: 4754957f04f5 ("ipvs: do not use random local source address for tunnels")
-Signed-off-by: Julian Anastasov <ja@ssi.bg>
-Acked-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # 6.0
+Reported-by: Daivik Bhatia <dtgs1208@gmail.com>
+Closes: https://gitlab.freedesktop.org/mesa/mesa/-/issues/12227 [1]
+Closes: https://github.com/raspberrypi/linux/issues/6817 [2]
+Reviewed-by: Iago Toral Quiroga <itoral@igalia.com>
+Acked-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Link: https://lore.kernel.org/r/20250430210643.57924-1-mcanal@igalia.com
+Signed-off-by: Maíra Canal <mcanal@igalia.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/ipvs/ip_vs_xmit.c | 27 ++++++++-------------------
- 1 file changed, 8 insertions(+), 19 deletions(-)
+ drivers/gpu/drm/v3d/v3d_sched.c |   28 +++++++++++++++++++++-------
+ 1 file changed, 21 insertions(+), 7 deletions(-)
 
-diff --git a/net/netfilter/ipvs/ip_vs_xmit.c b/net/netfilter/ipvs/ip_vs_xmit.c
-index f9ae72122e343..e1437c72ca6e6 100644
---- a/net/netfilter/ipvs/ip_vs_xmit.c
-+++ b/net/netfilter/ipvs/ip_vs_xmit.c
-@@ -119,13 +119,12 @@ __mtu_check_toobig_v6(const struct sk_buff *skb, u32 mtu)
- 	return false;
+--- a/drivers/gpu/drm/v3d/v3d_sched.c
++++ b/drivers/gpu/drm/v3d/v3d_sched.c
+@@ -728,11 +728,16 @@ v3d_gpu_reset_for_timeout(struct v3d_dev
+ 	return DRM_GPU_SCHED_STAT_NOMINAL;
  }
  
--/* Get route to daddr, update *saddr, optionally bind route to saddr */
-+/* Get route to daddr, optionally bind route to saddr */
- static struct rtable *do_output_route4(struct net *net, __be32 daddr,
--				       int rt_mode, __be32 *saddr)
-+				       int rt_mode, __be32 *ret_saddr)
- {
- 	struct flowi4 fl4;
- 	struct rtable *rt;
--	bool loop = false;
+-/* If the current address or return address have changed, then the GPU
+- * has probably made progress and we should delay the reset.  This
+- * could fail if the GPU got in an infinite loop in the CL, but that
+- * is pretty unlikely outside of an i-g-t testcase.
+- */
++static void
++v3d_sched_skip_reset(struct drm_sched_job *sched_job)
++{
++	struct drm_gpu_scheduler *sched = sched_job->sched;
++
++	spin_lock(&sched->job_list_lock);
++	list_add(&sched_job->list, &sched->pending_list);
++	spin_unlock(&sched->job_list_lock);
++}
++
+ static enum drm_gpu_sched_stat
+ v3d_cl_job_timedout(struct drm_sched_job *sched_job, enum v3d_queue q,
+ 		    u32 *timedout_ctca, u32 *timedout_ctra)
+@@ -742,9 +747,16 @@ v3d_cl_job_timedout(struct drm_sched_job
+ 	u32 ctca = V3D_CORE_READ(0, V3D_CLE_CTNCA(q));
+ 	u32 ctra = V3D_CORE_READ(0, V3D_CLE_CTNRA(q));
  
- 	memset(&fl4, 0, sizeof(fl4));
- 	fl4.daddr = daddr;
-@@ -135,23 +134,17 @@ static struct rtable *do_output_route4(struct net *net, __be32 daddr,
- retry:
- 	rt = ip_route_output_key(net, &fl4);
- 	if (IS_ERR(rt)) {
--		/* Invalid saddr ? */
--		if (PTR_ERR(rt) == -EINVAL && *saddr &&
--		    rt_mode & IP_VS_RT_MODE_CONNECT && !loop) {
--			*saddr = 0;
--			flowi4_update_output(&fl4, 0, daddr, 0);
--			goto retry;
--		}
- 		IP_VS_DBG_RL("ip_route_output error, dest: %pI4\n", &daddr);
- 		return NULL;
--	} else if (!*saddr && rt_mode & IP_VS_RT_MODE_CONNECT && fl4.saddr) {
-+	}
-+	if (rt_mode & IP_VS_RT_MODE_CONNECT && fl4.saddr) {
- 		ip_rt_put(rt);
--		*saddr = fl4.saddr;
- 		flowi4_update_output(&fl4, 0, daddr, fl4.saddr);
--		loop = true;
-+		rt_mode = 0;
- 		goto retry;
- 	}
--	*saddr = fl4.saddr;
-+	if (ret_saddr)
-+		*ret_saddr = fl4.saddr;
- 	return rt;
- }
- 
-@@ -344,19 +337,15 @@ __ip_vs_get_out_rt(struct netns_ipvs *ipvs, int skb_af, struct sk_buff *skb,
- 		if (ret_saddr)
- 			*ret_saddr = dest_dst->dst_saddr.ip;
- 	} else {
--		__be32 saddr = htonl(INADDR_ANY);
--
- 		noref = 0;
- 
- 		/* For such unconfigured boxes avoid many route lookups
- 		 * for performance reasons because we do not remember saddr
- 		 */
- 		rt_mode &= ~IP_VS_RT_MODE_CONNECT;
--		rt = do_output_route4(net, daddr, rt_mode, &saddr);
-+		rt = do_output_route4(net, daddr, rt_mode, ret_saddr);
- 		if (!rt)
- 			goto err_unreach;
--		if (ret_saddr)
--			*ret_saddr = saddr;
++	/* If the current address or return address have changed, then the GPU
++	 * has probably made progress and we should delay the reset. This
++	 * could fail if the GPU got in an infinite loop in the CL, but that
++	 * is pretty unlikely outside of an i-g-t testcase.
++	 */
+ 	if (*timedout_ctca != ctca || *timedout_ctra != ctra) {
+ 		*timedout_ctca = ctca;
+ 		*timedout_ctra = ctra;
++
++		v3d_sched_skip_reset(sched_job);
+ 		return DRM_GPU_SCHED_STAT_NOMINAL;
  	}
  
- 	local = (rt->rt_flags & RTCF_LOCAL) ? 1 : 0;
--- 
-2.39.5
-
+@@ -784,11 +796,13 @@ v3d_csd_job_timedout(struct drm_sched_jo
+ 	struct v3d_dev *v3d = job->base.v3d;
+ 	u32 batches = V3D_CORE_READ(0, V3D_CSD_CURRENT_CFG4(v3d->ver));
+ 
+-	/* If we've made progress, skip reset and let the timer get
+-	 * rearmed.
++	/* If we've made progress, skip reset, add the job to the pending
++	 * list, and let the timer get rearmed.
+ 	 */
+ 	if (job->timedout_batches != batches) {
+ 		job->timedout_batches = batches;
++
++		v3d_sched_skip_reset(sched_job);
+ 		return DRM_GPU_SCHED_STAT_NOMINAL;
+ 	}
+ 
 
 
 
