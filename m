@@ -1,111 +1,112 @@
-Return-Path: <stable+bounces-143835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C60B8AB42DF
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:27:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BFC6AB4215
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:17:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9248E7B0FEA
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:13:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C9C197B7492
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:11:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 007B629E05D;
-	Mon, 12 May 2025 18:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D970C29B8F9;
+	Mon, 12 May 2025 18:04:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C5lzzYKi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ASEh9vj5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6DB029E04F;
-	Mon, 12 May 2025 18:05:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98AC829B8F0
+	for <stable@vger.kernel.org>; Mon, 12 May 2025 18:04:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073107; cv=none; b=ID0znEOeBdlycLUOJcyLGqx/fZLpD+zgZMDDMT7FhUtfBqUlD2nTUKEB8WW/2G6sFx1hja3pgx0hjRcs0Z1ZcIXsU0zjlWS3G41BnhPjzYJQprrK1UnR3jblO08ji3ieCJCdrZDE0hedKaIEH9/AMP3X/uJa3qd/V36qRYS/icQ=
+	t=1747073098; cv=none; b=uQ4IbfoQmhAJryK6H9zsZukmhcCt0PdfWFknXqj8oF52J8QCVkTOQs2aVR9JSijHUy/ptu+jS1vJa/z6XPoVvGhwEa7/qjUxgI0xCQNToayOjDSGsHyy5J+aMLN00IKXN51FOD9QfbncDPC+Q5oi8zOAHQlidXpZE9U46Glhhow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073107; c=relaxed/simple;
-	bh=9QrrgY5oyHOR4ZrZYG/jcgKZ5o5VjCPPovTFlnkkskE=;
+	s=arc-20240116; t=1747073098; c=relaxed/simple;
+	bh=c2stgpVyNOAA5GD7bASdXXvAocrLbixGABQ1mhUcLAM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Abv8tbu/toH2pmrcp6Sj2qp/STT6AX3KM2pHID7cJKtlf6f5ISN2E9EF6JJNiHOaHN128N5wHzd6+cco20zNll8uj5BvU+kJo7SyOgZx+s1jppA5PQOCdLh69I2RO+qgyFVPZmwVQ7vi98sNKOtHCmhZm6OHEfYHfKaWQBS1HHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C5lzzYKi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2FD0C4CEF2;
-	Mon, 12 May 2025 18:05:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=c+mpWAqWVuxI1UYZMKBDuVtUZZ6gHQNAObwtuP0v+e57hYtWX0710GE7gC3mPsZRnouRic7D4tOowZTZ11pVP9Rg3KadzMK2fhxYuIQS3kSvgHvWZJ4XEPWz477of7TATGoL2Zs3cputfIGNi3qCnCmF6wkX5FaY/UaIdeUr3cA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ASEh9vj5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D60DC4CEF6;
+	Mon, 12 May 2025 18:04:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747073107;
-	bh=9QrrgY5oyHOR4ZrZYG/jcgKZ5o5VjCPPovTFlnkkskE=;
+	s=k20201202; t=1747073098;
+	bh=c2stgpVyNOAA5GD7bASdXXvAocrLbixGABQ1mhUcLAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C5lzzYKioc6py107GqX2V+8T3Q/6802eo9ZLDwnMJExh+ncHyXsI1McQpmRu9YHok
-	 CcNg0q1So1qGA7mpoZnUxtlq84hUO3DZVmYm2/6grz7iSHeT7yF0vao+wIN4NZX8XE
-	 j3hork+dKzw+HrUebEDFeA8c5+nsXbjzYIJw+YJoCBDKf0olHt0SBvibxuE5YJ3gks
-	 6o4MqRwOLchye/rV4e1A3Sl1zOj5PEJtr8uTtRqu+oOTG40zErnjzgQURjrrkz++Qc
-	 Pw5bx31qxScC8ovc4Cfm+m1CD6s8baB5sI83OyPh2i0p/MeVaZZILW8ABtwjSkmy9V
-	 40gEP+tuFvgsQ==
+	b=ASEh9vj5Iehldg6HDTBPhRNLxommrjNfly1Gd32kLjMTaZ/kk6pbaOXQbn0TjU4BH
+	 RGMmHI8Lw0NnHWPFpGYRNxl5Xz4zg+JoVTB1UzxaCCsy/NoDNJGWC7CmG6IrJwKk1J
+	 LjtrLakd2mUHEcd2inwdIBOWVAvcUGhAKy3Mgksfvi0SwdDaZ9SS+2YMsTRCOjbwK6
+	 7MGCO20DDuXSofS0xkL7Y+1qD8ZUTz+fEYSQ6Ad9tjqLLQ/FiCiCmJNf8eYWE5Nu1a
+	 1umBUXt3o8DG4KfXX4nLchwN2mtfkl1nSFsW7IvZNY9Iq3OhGaauu4uO4w3vzLtzu6
+	 X509tASbNayeQ==
 From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Al Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 6/6] __legitimize_mnt(): check for MNT_SYNC_UMOUNT should be under mount_lock
-Date: Mon, 12 May 2025 14:04:52 -0400
-Message-Id: <20250512180452.437844-6-sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Feng Liu <Feng.Liu3@windriver.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.10.y/5.15.y] ELF: fix kernel.randomize_va_space double read
+Date: Mon, 12 May 2025 14:04:55 -0400
+Message-Id: <20250511221746-17a0e7ea300c9d83@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250512180452.437844-1-sashal@kernel.org>
-References: <20250512180452.437844-1-sashal@kernel.org>
+In-Reply-To:  <20250509061415.435740-1-Feng.Liu3@windriver.com>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.90
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+[ Sasha's backport helper bot ]
 
-[ Upstream commit 250cf3693060a5f803c5f1ddc082bb06b16112a9 ]
+Hi,
 
-... or we risk stealing final mntput from sync umount - raising mnt_count
-after umount(2) has verified that victim is not busy, but before it
-has set MNT_SYNC_UMOUNT; in that case __legitimize_mnt() doesn't see
-that it's safe to quietly undo mnt_count increment and leaves dropping
-the reference to caller, where it'll be a full-blown mntput().
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-Check under mount_lock is needed; leaving the current one done before
-taking that makes no sense - it's nowhere near common enough to bother
-with.
+The upstream commit SHA1 provided is correct: 2a97388a807b6ab5538aa8f8537b2463c6988bd2
 
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Feng Liu<Feng.Liu3@windriver.com>
+Commit author: Alexey Dobriyan<adobriyan@gmail.com>
+
+Status in newer kernel trees:
+6.14.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (different SHA1: 53f17409abf6)
+6.1.y | Present (different SHA1: 1f81d51141a2)
+5.15.y | Not found
+
+Note: The patch differs from the upstream commit:
 ---
- fs/namespace.c | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+1:  2a97388a807b6 ! 1:  795c22f390cda ELF: fix kernel.randomize_va_space double read
+    @@ Metadata
+      ## Commit message ##
+         ELF: fix kernel.randomize_va_space double read
+     
+    +    [ Upstream commit 2a97388a807b6ab5538aa8f8537b2463c6988bd2 ]
+    +
+         ELF loader uses "randomize_va_space" twice. It is sysctl and can change
+         at any moment, so 2 loads could see 2 different values in theory with
+         unpredictable consequences.
+    @@ Commit message
+         Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
+         Link: https://lore.kernel.org/r/3329905c-7eb8-400a-8f0a-d87cff979b5b@p183
+         Signed-off-by: Kees Cook <kees@kernel.org>
+    +    Signed-off-by: Feng Liu <Feng.Liu3@windriver.com>
+    +    Signed-off-by: He Zhe <Zhe.He@windriver.com>
+     
+      ## fs/binfmt_elf.c ##
+     @@ fs/binfmt_elf.c: static int load_elf_binary(struct linux_binprm *bprm)
+---
 
-diff --git a/fs/namespace.c b/fs/namespace.c
-index 5a885d35efe93..207fc2f1321dc 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -636,12 +636,8 @@ int __legitimize_mnt(struct vfsmount *bastard, unsigned seq)
- 	smp_mb();			// see mntput_no_expire()
- 	if (likely(!read_seqretry(&mount_lock, seq)))
- 		return 0;
--	if (bastard->mnt_flags & MNT_SYNC_UMOUNT) {
--		mnt_add_count(mnt, -1);
--		return 1;
--	}
- 	lock_mount_hash();
--	if (unlikely(bastard->mnt_flags & MNT_DOOMED)) {
-+	if (unlikely(bastard->mnt_flags & (MNT_SYNC_UMOUNT | MNT_DOOMED))) {
- 		mnt_add_count(mnt, -1);
- 		unlock_mount_hash();
- 		return 1;
--- 
-2.39.5
+Results of testing on various branches:
 
+| Branch                    | Patch Apply | Build Test |
+|---------------------------|-------------|------------|
+| stable/linux-5.10.y       |  Success    |  Success   |
+| stable/linux-5.15.y       |  Success    |  Success   |
 
