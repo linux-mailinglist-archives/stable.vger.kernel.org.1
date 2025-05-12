@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-143701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BFC0AB40F9
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:00:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D599AAB4147
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:04:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0004919E7F3E
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:00:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08C0F3AA4D0
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:01:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 796F4293B6B;
-	Mon, 12 May 2025 18:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08FC523BF9F;
+	Mon, 12 May 2025 18:02:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uy0+5BEg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g/8NuZ7Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35FC02512EF;
-	Mon, 12 May 2025 18:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B83F9175BF;
+	Mon, 12 May 2025 18:02:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072800; cv=none; b=BMLlOdHFt72vXd4aCri96SDjncMx7drtdHq85o2eWc3v3TyY3dyozABXBmCUhUr/Bg2NMvDiCtA3MC0/5Qg61v5GyD6j1cFsjhnkf5hkIUt4YJPuLkdHf8C0aPkAbRg2/FGQ+5R3yvI35lYTSC7+HpG+P+nb6AB4zNauXB4dAYo=
+	t=1747072929; cv=none; b=FtTH5myOrafgWmBX24LoBhFSomtNeObZ9Oa8WnkVzx7magxxL7paC0hDRUqL3KEEWL2CiCj03In4P9EIbiy8qzaPcGivvpqjgW/CkmvYq2Zggo8PUQpKeQctkI7mL3tXX/ybExvx/YRhsov92xR2jlK3n7mIv++pkJ05fDR3lm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072800; c=relaxed/simple;
-	bh=6MC4EOgmpqEYcEejg4jcoBzgkaijHfJKg6WyRq+oVQ0=;
+	s=arc-20240116; t=1747072929; c=relaxed/simple;
+	bh=EfDzcDBvv2IMVkC+F249kKyUx+9m8XkEbAKO1i1OlZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SbTToGADo5xNPe14fzXrcW4hw6b3vYX7LPmJoFwa7mVggUpu+svW+AejcC87iutdmBX/HIU8w/+eG+8QvnHdp7Fd+GRoSbQrb+EN4UdhRVMaYenSeDx8jCr25soRxKA76wQyfb3J1fZFKVFplj5La6oWG2simcN7G9XPBOKJHuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uy0+5BEg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 968B6C4CEE7;
-	Mon, 12 May 2025 17:59:59 +0000 (UTC)
+	 MIME-Version; b=oEb+CowlA/lJOqPgd90+GsAw0VX9yJzsuoZrX1pqaqZ+oM1q8bcZwAryry46ZB0pwFLujSui+xayUboBaaZ0j5tsqhouR5KqsnGEQhmI+mab+B5ijy9ub44FR+5zOT5x7lOrSl6x5CHMAL5wEADMOHHtlbqwRTLHLfZnOfWggw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g/8NuZ7Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 259E6C4CEE7;
+	Mon, 12 May 2025 18:02:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072800;
-	bh=6MC4EOgmpqEYcEejg4jcoBzgkaijHfJKg6WyRq+oVQ0=;
+	s=korg; t=1747072929;
+	bh=EfDzcDBvv2IMVkC+F249kKyUx+9m8XkEbAKO1i1OlZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uy0+5BEgpC/+UAnyVmW8M5KwtXmMUV9Q0S/syvKLIkkNgBM0RD3fyN28BbEVPHdAp
-	 Sb3yeha8Q3xYxyLKE8UylWSKcPW4k3C11Nqpn71Oe/vVoiN3YrhtinDZDmCj6RmqQz
-	 6Ly05RVs+sQbrhahd0b1CTEDs0pOy63a4nzNr+Wg=
+	b=g/8NuZ7Q4lDzF94WpqDYOAQoQUio/e0WkI8QI98HD0TYcoZtbeP3Ixn5VEBdx+ZQX
+	 arrXTYcR64+iFBrBMlp4qZleceXDERH/q9ZSJs7y8YDgdZZK+Pe1qM3aF71Vlft7Uy
+	 MDah9i4IOgCWVCY3aTviyS1Gn3CiF/gleOMpg2wE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vicki Pfau <vi@endrift.com>,
+	Manuel Fombuena <fombuena@outlook.com>,
+	Aditya Garg <gargaditya08@live.com>,
 	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.12 059/184] Input: xpad - fix two controller table values
-Date: Mon, 12 May 2025 19:44:20 +0200
-Message-ID: <20250512172044.138755003@linuxfoundation.org>
+Subject: [PATCH 6.12 060/184] Input: synaptics - enable InterTouch on Dynabook Portege X30-D
+Date: Mon, 12 May 2025 19:44:21 +0200
+Message-ID: <20250512172044.179729305@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
 References: <20250512172041.624042835@linuxfoundation.org>
@@ -65,45 +66,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Vicki Pfau <vi@endrift.com>
+From: Manuel Fombuena <fombuena@outlook.com>
 
-commit d05a424bea9aa3435009d5c462055008cc1545d8 upstream.
+commit 6d7ea0881000966607772451b789b5fb5766f11d upstream.
 
-Two controllers -- Mad Catz JOYTECH NEO SE Advanced and PDP Mirror's
-Edge Official -- were missing the value of the mapping field, and thus
-wouldn't detect properly.
+[    5.989588] psmouse serio1: synaptics: Your touchpad (PNP: TOS0213 PNP0f03) says it can support a different bus. If i2c-hid and hid-rmi are not used, you might want to try setting psmouse.synaptics_intertouch to 1 and report this to linux-input@vger.kernel.org.
+[    6.039923] psmouse serio1: synaptics: Touchpad model: 1, fw: 9.32, id: 0x1e2a1, caps: 0xf00223/0x840300/0x12e800/0x52d884, board id: 3322, fw id: 2658004
 
-Signed-off-by: Vicki Pfau <vi@endrift.com>
-Link: https://lore.kernel.org/r/20250328234345.989761-1-vi@endrift.com
-Fixes: 540602a43ae5 ("Input: xpad - add a few new VID/PID combinations")
-Fixes: 3492321e2e60 ("Input: xpad - add multiple supported devices")
+The board is labelled TM3322.
+
+Present on the Toshiba / Dynabook Portege X30-D and possibly others.
+
+Confirmed working well with psmouse.synaptics_intertouch=1 and local build.
+
+Signed-off-by: Manuel Fombuena <fombuena@outlook.com>
+Signed-off-by: Aditya Garg <gargaditya08@live.com>
+Link: https://lore.kernel.org/r/PN3PR01MB9597711E7933A08389FEC31DB888A@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM
 Cc: stable@vger.kernel.org
 Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/joystick/xpad.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/input/mouse/synaptics.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/input/joystick/xpad.c
-+++ b/drivers/input/joystick/xpad.c
-@@ -206,7 +206,7 @@ static const struct xpad_device {
- 	{ 0x0738, 0x9871, "Mad Catz Portable Drum", 0, XTYPE_XBOX360 },
- 	{ 0x0738, 0xb726, "Mad Catz Xbox controller - MW2", 0, XTYPE_XBOX360 },
- 	{ 0x0738, 0xb738, "Mad Catz MVC2TE Stick 2", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOX360 },
--	{ 0x0738, 0xbeef, "Mad Catz JOYTECH NEO SE Advanced GamePad", XTYPE_XBOX360 },
-+	{ 0x0738, 0xbeef, "Mad Catz JOYTECH NEO SE Advanced GamePad", 0, XTYPE_XBOX360 },
- 	{ 0x0738, 0xcb02, "Saitek Cyborg Rumble Pad - PC/Xbox 360", 0, XTYPE_XBOX360 },
- 	{ 0x0738, 0xcb03, "Saitek P3200 Rumble Pad - PC/Xbox 360", 0, XTYPE_XBOX360 },
- 	{ 0x0738, 0xcb29, "Saitek Aviator Stick AV8R02", 0, XTYPE_XBOX360 },
-@@ -241,7 +241,7 @@ static const struct xpad_device {
- 	{ 0x0e6f, 0x0146, "Rock Candy Wired Controller for Xbox One", 0, XTYPE_XBOXONE },
- 	{ 0x0e6f, 0x0147, "PDP Marvel Xbox One Controller", 0, XTYPE_XBOXONE },
- 	{ 0x0e6f, 0x015c, "PDP Xbox One Arcade Stick", MAP_TRIGGERS_TO_BUTTONS, XTYPE_XBOXONE },
--	{ 0x0e6f, 0x015d, "PDP Mirror's Edge Official Wired Controller for Xbox One", XTYPE_XBOXONE },
-+	{ 0x0e6f, 0x015d, "PDP Mirror's Edge Official Wired Controller for Xbox One", 0, XTYPE_XBOXONE },
- 	{ 0x0e6f, 0x0161, "PDP Xbox One Controller", 0, XTYPE_XBOXONE },
- 	{ 0x0e6f, 0x0162, "PDP Xbox One Controller", 0, XTYPE_XBOXONE },
- 	{ 0x0e6f, 0x0163, "PDP Xbox One Controller", 0, XTYPE_XBOXONE },
+--- a/drivers/input/mouse/synaptics.c
++++ b/drivers/input/mouse/synaptics.c
+@@ -194,6 +194,7 @@ static const char * const smbus_pnp_ids[
+ 	"SYN3221", /* HP 15-ay000 */
+ 	"SYN323d", /* HP Spectre X360 13-w013dx */
+ 	"SYN3257", /* HP Envy 13-ad105ng */
++	"TOS0213", /* Dynabook Portege X30-D */
+ 	NULL
+ };
+ 
 
 
 
