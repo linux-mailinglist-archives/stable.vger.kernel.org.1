@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-143728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 402B9AB4114
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:01:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3911DAB4066
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 19:53:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C81A6466E8C
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:01:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CCDF87B2F8F
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 17:51:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D01932550A7;
-	Mon, 12 May 2025 18:01:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D57296D2E;
+	Mon, 12 May 2025 17:52:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QZouuHZ/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1c2EmFo0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C6151519B8;
-	Mon, 12 May 2025 18:01:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 463CF296D1D;
+	Mon, 12 May 2025 17:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747072888; cv=none; b=B+hSHzfNfD8J31vkx1ZQlZ0GzexWDSXsEe7LeBZ8lUAbT45NO7J+is1QoSlYR8Gm4+zj92tylEKnv2x3q3Zf7cK9nF9veVflholowERe/vJm/EKLN3qvX/0RsjrKUNTxDAz+NIq4f/6N7LZ4sh3C46r7M5m6xPjWqb2ck6b9KkU=
+	t=1747072349; cv=none; b=TUjuP2IXLnRf8WrkKoIXyMoIz2zfmRqOI/ebYFs35+1qVBXMYj0Dd8Py6zl3SHZSeVP1icrphxO6wh8NC6A5JNLzgYfnMiS6VX8csC3lonUUVtU5dOXClJfEqxBw+GU8KyTDS870ZFoAkSzwRFdvPwzt25lXNiOwegGWJGoGPyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747072888; c=relaxed/simple;
-	bh=GhuQwn8sCGW2M6xFU04dAX0qi0QlS43NsJ8Oa8GbUgM=;
+	s=arc-20240116; t=1747072349; c=relaxed/simple;
+	bh=9/P0cZEtN5cqMFywYain1RMdj0QTGzjx9JTc31RZmgs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T1S3Ovq/Dd/8fawffqVrdwmD9NM3u94j3aYi7q8HAgdGNnr7FgWMvDP5VUNUvud/5t7zfSahaqOdN2FqaiQrUAR/z3MV5kI4USMhByyr1Vo0duwwhxb4mBpGPyh6mWviH/BZ0Jt9Pw2CvoXOgfSGHfbxaI6CWXIxEgE/cg7dqH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QZouuHZ/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B927C4CEE7;
-	Mon, 12 May 2025 18:01:27 +0000 (UTC)
+	 MIME-Version; b=ZnoqM2vw6xQ3zwiWRp93w7UYoYEj1QXrHNoEW0hVqknG31QRbnVtCj16lk9t9FFQcMtZ/bxOJ/wu9Bs++4v+8JURD5qFTZLSIz9YvW5m7X2NDj7zKTu+xiy080mGdtLrJUFT203W+k8hPcCgxY7HkWfrZhfE05t4voQ0ajrJhSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1c2EmFo0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60093C4CEE7;
+	Mon, 12 May 2025 17:52:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747072888;
-	bh=GhuQwn8sCGW2M6xFU04dAX0qi0QlS43NsJ8Oa8GbUgM=;
+	s=korg; t=1747072348;
+	bh=9/P0cZEtN5cqMFywYain1RMdj0QTGzjx9JTc31RZmgs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QZouuHZ/6iZ/0zEpXe1k6+rMfi0we82AREdma45hlpAyKQo4EqRV2CJnDwZDmatlg
-	 DO8Hb4br/VRx4wTjoLORZMS6Cs6l3mnMQBaYATqYnpCuvWS6QeRYBSj4gE51eqzmRG
-	 F7oEzHah+jo8uyAaO+vz8Q9rGzfbzJrleA0EygOQ=
+	b=1c2EmFo05Uh2oWJSl9A7R4cFRDviuetQsmeMBhu1gGjz5LgYfRcoHKk97+NB6RNaz
+	 OjzulmeKI64gHDpZ2ki34pxeXM5Us+5SxLdTt9CjYopbTi5a7CTYn61c/Umax6GMg/
+	 KK34qVbpNOEnSUlwuZLR5So1YUot0OFsFxkX/aFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Silvano Seva <s.seva@4sigma.it>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.12 087/184] iio: imu: st_lsm6dsx: fix possible lockup in st_lsm6dsx_read_tagged_fifo
+	Guillaume Nault <gnault@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 13/92] ipv4: Drop tos parameter from flowi4_update_output()
 Date: Mon, 12 May 2025 19:44:48 +0200
-Message-ID: <20250512172045.364734153@linuxfoundation.org>
+Message-ID: <20250512172023.664723552@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
-References: <20250512172041.624042835@linuxfoundation.org>
+In-Reply-To: <20250512172023.126467649@linuxfoundation.org>
+References: <20250512172023.126467649@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Silvano Seva <s.seva@4sigma.it>
+From: Guillaume Nault <gnault@redhat.com>
 
-commit 8114ef86e2058e2554111b793596f17bee23fa15 upstream.
+[ Upstream commit 3f06760c00f56c5fe6c7f3361c2cf64becee1174 ]
 
-Prevent st_lsm6dsx_read_tagged_fifo from falling in an infinite loop in
-case pattern_len is equal to zero and the device FIFO is not empty.
+Callers of flowi4_update_output() never try to update ->flowi4_tos:
 
-Fixes: 801a6e0af0c6 ("iio: imu: st_lsm6dsx: add support to LSM6DSO")
-Signed-off-by: Silvano Seva <s.seva@4sigma.it>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20250311085030.3593-4-s.seva@4sigma.it
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  * ip_route_connect() updates ->flowi4_tos with its own current
+    value.
+
+  * ip_route_newports() has two users: tcp_v4_connect() and
+    dccp_v4_connect. Both initialise fl4 with ip_route_connect(), which
+    in turn sets ->flowi4_tos with RT_TOS(inet_sk(sk)->tos) and
+    ->flowi4_scope based on SOCK_LOCALROUTE.
+
+    Then ip_route_newports() updates ->flowi4_tos with
+    RT_CONN_FLAGS(sk), which is the same as RT_TOS(inet_sk(sk)->tos),
+    unless SOCK_LOCALROUTE is set on the socket. In that case, the
+    lowest order bit is set to 1, to eventually inform
+    ip_route_output_key_hash() to restrict the scope to RT_SCOPE_LINK.
+    This is equivalent to properly setting ->flowi4_scope as
+    ip_route_connect() did.
+
+  * ip_vs_xmit.c initialises ->flowi4_tos with memset(0), then calls
+    flowi4_update_output() with tos=0.
+
+  * sctp_v4_get_dst() uses the same RT_CONN_FLAGS_TOS() when
+    initialising ->flowi4_tos and when calling flowi4_update_output().
+
+In the end, ->flowi4_tos never changes. So let's just drop the tos
+parameter. This will simplify the conversion of ->flowi4_tos from __u8
+to dscp_t.
+
+Signed-off-by: Guillaume Nault <gnault@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: e34090d7214e ("ipvs: fix uninit-value for saddr in do_output_route4")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c |    3 +++
- 1 file changed, 3 insertions(+)
+ include/net/flow.h              | 3 +--
+ include/net/route.h             | 6 ++----
+ net/netfilter/ipvs/ip_vs_xmit.c | 4 ++--
+ net/sctp/protocol.c             | 4 +---
+ 4 files changed, 6 insertions(+), 11 deletions(-)
 
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-@@ -626,6 +626,9 @@ int st_lsm6dsx_read_tagged_fifo(struct s
- 	if (!fifo_len)
- 		return 0;
+diff --git a/include/net/flow.h b/include/net/flow.h
+index 079cc493fe67d..5a17fa6e016f8 100644
+--- a/include/net/flow.h
++++ b/include/net/flow.h
+@@ -115,11 +115,10 @@ static inline void flowi4_init_output(struct flowi4 *fl4, int oif,
+ }
  
-+	if (!pattern_len)
-+		pattern_len = ST_LSM6DSX_TAGGED_SAMPLE_SIZE;
-+
- 	for (read_len = 0; read_len < fifo_len; read_len += pattern_len) {
- 		err = st_lsm6dsx_read_block(hw,
- 					    ST_LSM6DSX_REG_FIFO_OUT_TAG_ADDR,
+ /* Reset some input parameters after previous lookup */
+-static inline void flowi4_update_output(struct flowi4 *fl4, int oif, __u8 tos,
++static inline void flowi4_update_output(struct flowi4 *fl4, int oif,
+ 					__be32 daddr, __be32 saddr)
+ {
+ 	fl4->flowi4_oif = oif;
+-	fl4->flowi4_tos = tos;
+ 	fl4->daddr = daddr;
+ 	fl4->saddr = saddr;
+ }
+diff --git a/include/net/route.h b/include/net/route.h
+index 4185e6da9ef85..cdca622c5c6fe 100644
+--- a/include/net/route.h
++++ b/include/net/route.h
+@@ -325,8 +325,7 @@ static inline struct rtable *ip_route_connect(struct flowi4 *fl4, __be32 dst,
+ 		if (IS_ERR(rt))
+ 			return rt;
+ 		ip_rt_put(rt);
+-		flowi4_update_output(fl4, oif, fl4->flowi4_tos, fl4->daddr,
+-				     fl4->saddr);
++		flowi4_update_output(fl4, oif, fl4->daddr, fl4->saddr);
+ 	}
+ 	security_sk_classify_flow(sk, flowi4_to_flowi_common(fl4));
+ 	return ip_route_output_flow(net, fl4, sk);
+@@ -341,8 +340,7 @@ static inline struct rtable *ip_route_newports(struct flowi4 *fl4, struct rtable
+ 		fl4->fl4_dport = dport;
+ 		fl4->fl4_sport = sport;
+ 		ip_rt_put(rt);
+-		flowi4_update_output(fl4, sk->sk_bound_dev_if,
+-				     RT_CONN_FLAGS(sk), fl4->daddr,
++		flowi4_update_output(fl4, sk->sk_bound_dev_if, fl4->daddr,
+ 				     fl4->saddr);
+ 		security_sk_classify_flow(sk, flowi4_to_flowi_common(fl4));
+ 		return ip_route_output_flow(sock_net(sk), fl4, sk);
+diff --git a/net/netfilter/ipvs/ip_vs_xmit.c b/net/netfilter/ipvs/ip_vs_xmit.c
+index d40a4ca2b27f5..f9ae72122e343 100644
+--- a/net/netfilter/ipvs/ip_vs_xmit.c
++++ b/net/netfilter/ipvs/ip_vs_xmit.c
+@@ -139,7 +139,7 @@ static struct rtable *do_output_route4(struct net *net, __be32 daddr,
+ 		if (PTR_ERR(rt) == -EINVAL && *saddr &&
+ 		    rt_mode & IP_VS_RT_MODE_CONNECT && !loop) {
+ 			*saddr = 0;
+-			flowi4_update_output(&fl4, 0, 0, daddr, 0);
++			flowi4_update_output(&fl4, 0, daddr, 0);
+ 			goto retry;
+ 		}
+ 		IP_VS_DBG_RL("ip_route_output error, dest: %pI4\n", &daddr);
+@@ -147,7 +147,7 @@ static struct rtable *do_output_route4(struct net *net, __be32 daddr,
+ 	} else if (!*saddr && rt_mode & IP_VS_RT_MODE_CONNECT && fl4.saddr) {
+ 		ip_rt_put(rt);
+ 		*saddr = fl4.saddr;
+-		flowi4_update_output(&fl4, 0, 0, daddr, fl4.saddr);
++		flowi4_update_output(&fl4, 0, daddr, fl4.saddr);
+ 		loop = true;
+ 		goto retry;
+ 	}
+diff --git a/net/sctp/protocol.c b/net/sctp/protocol.c
+index bcd3384ab07a4..036dc574af4f9 100644
+--- a/net/sctp/protocol.c
++++ b/net/sctp/protocol.c
+@@ -497,9 +497,7 @@ static void sctp_v4_get_dst(struct sctp_transport *t, union sctp_addr *saddr,
+ 			continue;
+ 
+ 		fl4->fl4_sport = laddr->a.v4.sin_port;
+-		flowi4_update_output(fl4,
+-				     asoc->base.sk->sk_bound_dev_if,
+-				     RT_CONN_FLAGS_TOS(asoc->base.sk, tos),
++		flowi4_update_output(fl4, asoc->base.sk->sk_bound_dev_if,
+ 				     daddr->v4.sin_addr.s_addr,
+ 				     laddr->a.v4.sin_addr.s_addr);
+ 
+-- 
+2.39.5
+
 
 
 
