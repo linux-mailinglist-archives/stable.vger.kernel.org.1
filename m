@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-143950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAC0CAB42E8
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:27:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB773AB41E3
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:14:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 166B41888431
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:27:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9F0807B65A2
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:10:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F931297110;
-	Mon, 12 May 2025 18:09:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47EFC29ACCE;
+	Mon, 12 May 2025 18:04:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S3nhhwtW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RP4jNRem"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0F9623C4E7;
-	Mon, 12 May 2025 18:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 027D429A304;
+	Mon, 12 May 2025 18:04:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073392; cv=none; b=e/R2IQio1QuipWSah5iKKGo3EA+G2F/8Azcc5jaxG7/EhQCxsVtcaHj/VM4Zx1JZXD/BamueeJuwFaAnFWIO3Iu8hd+jpOPThjAwv8Z1jBqi3eLga+N0s0cA9x4lT73KEWlrXDFxJpKAsWb2rhZuUd/5K7/mI/OhtNumLqglI1U=
+	t=1747073086; cv=none; b=O2yCJfYU+3139//wqyE7W0gNVp7i4Yi2bkB1yuT/dYnCasdG/XTK6kft9nz0nBJ6CI6pI6H3xhS+KuPL9//wOlZZ7HyafFEUAiRJbQNlOuSVVz5ItYR688SboiJp9nS3JL/GnJ8NcnPBTDeYJY7RIyJbMxSAQPkSamQq7DyqzN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073392; c=relaxed/simple;
-	bh=4G4SSruSqBwo16D5PMlEHwXy4ky1b4eRHjKQHrYzDso=;
+	s=arc-20240116; t=1747073086; c=relaxed/simple;
+	bh=AOWKYaLPpzXd6qiVfWF76i2WIxHHp0NxVAsN9pwCoMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OFlTR0DMCKU5/lutfLCP0sM9NNmpobQsDjXZ9WG+KUfRBHhiffXorVj01C5QWl+9ZHD0YidMa46dAAbMNvzoubVq62wxQk8DWAlv2XmGwcrRxaoOZq7RzqFYR5vYK20uUlN6Ie8d1rFpdySKqlwzTiRUUCl1eiYX6T7Ih5bhDZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S3nhhwtW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78BE5C4CEE7;
-	Mon, 12 May 2025 18:09:51 +0000 (UTC)
+	 MIME-Version; b=QSCuKESysEH1vHYXSbLVIn42Q/hNlBRaw0BxrcUct0o5vVV4Z5Qu22Gp7+QiHWQwNzB5O9vq92lV0rzhYGitwp3xUCq883i4Xrf2CLctuikh8cGzVq3Qvj0AF8XueQPINv+JGKyclvNgbVZoUxNnpNXg9XnSxjLQENA2gF7LdOU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RP4jNRem; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F122C4CEE7;
+	Mon, 12 May 2025 18:04:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073392;
-	bh=4G4SSruSqBwo16D5PMlEHwXy4ky1b4eRHjKQHrYzDso=;
+	s=korg; t=1747073085;
+	bh=AOWKYaLPpzXd6qiVfWF76i2WIxHHp0NxVAsN9pwCoMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S3nhhwtWhlTiEJmXk7mE7c9A0F3OdICHQaimvn9jLabuLL0xcQEVY2D5UBIEtQOFF
-	 Mw1ijEtbtqvMSLPPFnpzSlGjnJjTa/9JsXHwOaujhOWd7j1z7GGrOJdNxRK1JzdgJ1
-	 sLxgXO976AGpfBJPwbPVPUd7WPsp3sqyDiccgfhs=
+	b=RP4jNRem22Yu+JFs/H87dmKt8IqzzhFjuODy8YdHqZ7cPljmPAqkpexwLMG2U7D/E
+	 N19NL8pM9wxQWl6WLzJsMnDSLnVefPOrGl2rz3DeSqTFVfMm7pSeWoDj9kCj6QSYSO
+	 YfHUXmGXxbw9GZpyU8wTpzUVOxTkY+3tWdDpidlg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 6.6 061/113] clocksource/i8253: Use raw_spinlock_irqsave() in clockevent_i8253_disable()
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
+	Nirmoy Das <nirmoy.das@intel.com>,
+	Badal Nilawar <badal.nilawar@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 149/184] drm/xe/tests/mocs: Update xe_force_wake_get() return handling
 Date: Mon, 12 May 2025 19:45:50 +0200
-Message-ID: <20250512172030.162378225@linuxfoundation.org>
+Message-ID: <20250512172047.884209866@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
-References: <20250512172027.691520737@linuxfoundation.org>
+In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
+References: <20250512172041.624042835@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,58 +65,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
 
-commit 94cff94634e506a4a44684bee1875d2dbf782722 upstream.
+[ Upstream commit 6a966d677d06e96a81d430537abb5db65e2b4fda ]
 
-On x86 during boot, clockevent_i8253_disable() can be invoked via
-x86_late_time_init -> hpet_time_init() -> pit_timer_init() which happens
-with enabled interrupts.
+With xe_force_wake_get() now returning the refcount-incremented domain
+mask, a return value of 0 indicates failure for single domains.
+Change assert condition to incorporate this change in return and
+pass the return value to xe_force_wake_put()
 
-If some of the old i8253 hardware is actually used then lockdep will notice
-that i8253_lock is used in hard interrupt context. This causes lockdep to
-complain because it observed the lock being acquired with interrupts
-enabled and in hard interrupt context.
+v3
+- return xe_wakeref_t instead of int in xe_force_wake_get()
 
-Make clockevent_i8253_disable() acquire the lock with
-raw_spinlock_irqsave() to cure this.
+v5
+- return unsigned int for xe_force_wake_get()
 
-[ tglx: Massage change log and use guard() ]
-
-Fixes: c8c4076723dac ("x86/timer: Skip PIT initialization on modern chipsets")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20250404133116.p-XRWJXf@linutronix.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+Reviewed-by: Badal Nilawar <badal.nilawar@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241014075601.2324382-13-himal.prasad.ghimiray@intel.com
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Stable-dep-of: 51c0ee84e4dc ("drm/xe/tests/mocs: Hold XE_FORCEWAKE_ALL for LNCF regs")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clocksource/i8253.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/gpu/drm/xe/tests/xe_mocs.c | 18 ++++++++----------
+ 1 file changed, 8 insertions(+), 10 deletions(-)
 
---- a/drivers/clocksource/i8253.c
-+++ b/drivers/clocksource/i8253.c
-@@ -103,7 +103,7 @@ int __init clocksource_i8253_init(void)
- #ifdef CONFIG_CLKEVT_I8253
- void clockevent_i8253_disable(void)
+diff --git a/drivers/gpu/drm/xe/tests/xe_mocs.c b/drivers/gpu/drm/xe/tests/xe_mocs.c
+index 79be73b4a02ba..434e7c7e60883 100644
+--- a/drivers/gpu/drm/xe/tests/xe_mocs.c
++++ b/drivers/gpu/drm/xe/tests/xe_mocs.c
+@@ -43,12 +43,11 @@ static void read_l3cc_table(struct xe_gt *gt,
  {
--	raw_spin_lock(&i8253_lock);
-+	guard(raw_spinlock_irqsave)(&i8253_lock);
+ 	struct kunit *test = kunit_get_current_test();
+ 	u32 l3cc, l3cc_expected;
+-	unsigned int i;
++	unsigned int fw_ref, i;
+ 	u32 reg_val;
+-	u32 ret;
  
- 	/*
- 	 * Writing the MODE register should stop the counter, according to
-@@ -132,8 +132,6 @@ void clockevent_i8253_disable(void)
- 	outb_p(0, PIT_CH0);
+-	ret = xe_force_wake_get(gt_to_fw(gt), XE_FW_GT);
+-	KUNIT_ASSERT_EQ_MSG(test, ret, 0, "Forcewake Failed.\n");
++	fw_ref = xe_force_wake_get(gt_to_fw(gt), XE_FW_GT);
++	KUNIT_ASSERT_NE_MSG(test, fw_ref, 0, "Forcewake Failed.\n");
  
- 	outb_p(0x30, PIT_MODE);
--
--	raw_spin_unlock(&i8253_lock);
+ 	for (i = 0; i < info->num_mocs_regs; i++) {
+ 		if (!(i & 1)) {
+@@ -72,7 +71,7 @@ static void read_l3cc_table(struct xe_gt *gt,
+ 		KUNIT_EXPECT_EQ_MSG(test, l3cc_expected, l3cc,
+ 				    "l3cc idx=%u has incorrect val.\n", i);
+ 	}
+-	xe_force_wake_put(gt_to_fw(gt), XE_FW_GT);
++	xe_force_wake_put(gt_to_fw(gt), fw_ref);
  }
  
- static int pit_shutdown(struct clock_event_device *evt)
+ static void read_mocs_table(struct xe_gt *gt,
+@@ -80,15 +79,14 @@ static void read_mocs_table(struct xe_gt *gt,
+ {
+ 	struct kunit *test = kunit_get_current_test();
+ 	u32 mocs, mocs_expected;
+-	unsigned int i;
++	unsigned int fw_ref, i;
+ 	u32 reg_val;
+-	u32 ret;
+ 
+ 	KUNIT_EXPECT_TRUE_MSG(test, info->unused_entries_index,
+ 			      "Unused entries index should have been defined\n");
+ 
+-	ret = xe_force_wake_get(gt_to_fw(gt), XE_FW_GT);
+-	KUNIT_ASSERT_EQ_MSG(test, ret, 0, "Forcewake Failed.\n");
++	fw_ref = xe_force_wake_get(gt_to_fw(gt), XE_FW_GT);
++	KUNIT_ASSERT_NE_MSG(test, fw_ref, 0, "Forcewake Failed.\n");
+ 
+ 	for (i = 0; i < info->num_mocs_regs; i++) {
+ 		if (regs_are_mcr(gt))
+@@ -106,7 +104,7 @@ static void read_mocs_table(struct xe_gt *gt,
+ 				    "mocs reg 0x%x has incorrect val.\n", i);
+ 	}
+ 
+-	xe_force_wake_put(gt_to_fw(gt), XE_FW_GT);
++	xe_force_wake_put(gt_to_fw(gt), fw_ref);
+ }
+ 
+ static int mocs_kernel_test_run_device(struct xe_device *xe)
+-- 
+2.39.5
+
 
 
 
