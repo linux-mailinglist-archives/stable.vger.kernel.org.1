@@ -1,56 +1,64 @@
-Return-Path: <stable+bounces-143821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-143953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64E3BAB41D2
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:13:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48E04AB4318
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 20:30:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0ED014680BB
-	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:12:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24E7E8C617A
+	for <lists+stable@lfdr.de>; Mon, 12 May 2025 18:26:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF62229B225;
-	Mon, 12 May 2025 18:04:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D06D429A310;
+	Mon, 12 May 2025 18:10:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XDWmdXn5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S5TMp0bi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AACCE29B771;
-	Mon, 12 May 2025 18:04:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B0B729A306;
+	Mon, 12 May 2025 18:10:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747073092; cv=none; b=mhsmfr6Oi6wxhXe6hqaLMtLjwE1UnguBk6el9HVmDLThEXhNgD9I85Iu3alZbm/a63eFRyl3OgBc74BZ9tkT6Zd9/bV5/wtSBK4PdOiT6AyiLaN3QWO/14YWJ9IdbMW0aJu8cklhkFXvutDXUk5QZNiGG4Vfl079kRJ7i+eekwg=
+	t=1747073403; cv=none; b=W5s6FRFEiMlQZdxj0ymlMH7khnNjYlmkJKsXkKdkdyhkciZVYMBWH1BwaG1pP+eXbu5okRJ0gXRUcK1FpgiwVYXLLK6yf6bRBDn2D4NNtlJmmk7OBrVeA4nGyjMuEf/jI21U3edaoQWJtfN9d752cQfLooUlNnRU8cqZvPeeHoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747073092; c=relaxed/simple;
-	bh=cDVovQpZwxFVqYUJ19dKELTt2MoCccvbY2EzrCKtLWk=;
+	s=arc-20240116; t=1747073403; c=relaxed/simple;
+	bh=fb5Xi6rH7nUSa/ISIrWStYk9shv1W1eoi2LOMEctURk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YoE5asB+d1j4axt9dsT9CWP4oyY8NYchlJM8SRAZ61T1A8vu3nzx5zJgIx/PHu8n6uctI/fWochDipfOz0DvJ7W57hT2qaaa24Qjk/eLqow+aQ1tg+O/HTNvBOA8Vq5LF6qAey0osBF+Py5x6vhN0mYAXvehlIsh8US/8S3x9hM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XDWmdXn5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9B8EC4CEE7;
-	Mon, 12 May 2025 18:04:51 +0000 (UTC)
+	 MIME-Version; b=Wzi5lc0Bjqfnnamzn7LlCVE7FovcDPcW/tnIrdllXoPXOO3RnlP6lmznjJcg2wyAcpl6v4yHLfeGGdb+hwAIZpRS59cCrcJ7xvIq1+HLzrlAlbK4o3bfDsdF4OvaQWxIMuvopm0joFGdaOdZQ9xdnE7lrkT/avl7L/TPRlaM34c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S5TMp0bi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEE26C4CEE7;
+	Mon, 12 May 2025 18:10:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747073092;
-	bh=cDVovQpZwxFVqYUJ19dKELTt2MoCccvbY2EzrCKtLWk=;
+	s=korg; t=1747073403;
+	bh=fb5Xi6rH7nUSa/ISIrWStYk9shv1W1eoi2LOMEctURk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XDWmdXn5imuymgcXMYel55Pue74pY79DW2bvI2b9V5CAtJzo1U0JqUwQFM58d/NYj
-	 RzQRkIhBn4wy7X7jVK5BIAxktm/yhXU/wPLtgXYO0lvByNlZ/A1yljkX4HiLl4gIt7
-	 DKPXG5TIVAqGHuylP8i8pspJkVgcM6suO7q2Ve/0=
+	b=S5TMp0bioTL8D1oSD8y5Ig7Wq3d9j+8TEYhMqpdusT8FGIqVMKYClzqJHBl4QWJki
+	 RiTySM10UUEO4gMATkIve+urlVlQhPbHjVQoDIyGdE5nWmWrW45So7YzSIJBzBcLYm
+	 sYrMRPdmEccXiF2hYShU+Fm1nL43/sPjrBK7mTNs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabriel Krisman Bertazi <krisman@suse.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 151/184] io_uring/sqpoll: Increase task_work submission batch size
-Date: Mon, 12 May 2025 19:45:52 +0200
-Message-ID: <20250512172047.965760945@linuxfoundation.org>
+	Jan Kara <jack@suse.cz>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Shichangkuo <shi.changkuo@h3c.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 064/113] ocfs2: switch osb->disable_recovery to enum
+Date: Mon, 12 May 2025 19:45:53 +0200
+Message-ID: <20250512172030.286743280@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250512172041.624042835@linuxfoundation.org>
-References: <20250512172041.624042835@linuxfoundation.org>
+In-Reply-To: <20250512172027.691520737@linuxfoundation.org>
+References: <20250512172027.691520737@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,106 +70,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabriel Krisman Bertazi <krisman@suse.de>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 92835cebab120f8a5f023a26a792a2ac3f816c4f ]
+commit c0fb83088f0cc4ee4706e0495ee8b06f49daa716 upstream.
 
-Our QA team reported a 10%-23%, throughput reduction on an io_uring
-sqpoll testcase doing IO to a null_blk, that I traced back to a
-reduction of the device submission queue depth utilization. It turns out
-that, after commit af5d68f8892f ("io_uring/sqpoll: manage task_work
-privately"), we capped the number of task_work entries that can be
-completed from a single spin of sqpoll to only 8 entries, before the
-sqpoll goes around to (potentially) sleep.  While this cap doesn't drive
-the submission side directly, it impacts the completion behavior, which
-affects the number of IO queued by fio per sqpoll cycle on the
-submission side, and io_uring ends up seeing less ios per sqpoll cycle.
-As a result, block layer plugging is less effective, and we see more
-time spent inside the block layer in profilings charts, and increased
-submission latency measured by fio.
+Patch series "ocfs2: Fix deadlocks in quota recovery", v3.
 
-There are other places that have increased overhead once sqpoll sleeps
-more often, such as the sqpoll utilization calculation.  But, in this
-microbenchmark, those were not representative enough in perf charts, and
-their removal didn't yield measurable changes in throughput.  The major
-overhead comes from the fact we plug less, and less often, when submitting
-to the block layer.
+This implements another approach to fixing quota recovery deadlocks.  We
+avoid grabbing sb->s_umount semaphore from ocfs2_finish_quota_recovery()
+and instead stop quota recovery early in ocfs2_dismount_volume().
 
-My benchmark is:
 
-fio --ioengine=io_uring --direct=1 --iodepth=128 --runtime=300 --bs=4k \
-    --invalidate=1 --time_based  --ramp_time=10 --group_reporting=1 \
-    --filename=/dev/nullb0 --name=RandomReads-direct-nullb-sqpoll-4k-1 \
-    --rw=randread --numjobs=1 --sqthread_poll
+This patch (of 3):
 
-In one machine, tested on top of Linux 6.15-rc1, we have the following
-baseline:
-  READ: bw=4994MiB/s (5236MB/s), 4994MiB/s-4994MiB/s (5236MB/s-5236MB/s), io=439GiB (471GB), run=90001-90001msec
+We will need more recovery states than just pure enable / disable to fix
+deadlocks with quota recovery.  Switch osb->disable_recovery to enum.
 
-With this patch:
-  READ: bw=5762MiB/s (6042MB/s), 5762MiB/s-5762MiB/s (6042MB/s-6042MB/s), io=506GiB (544GB), run=90001-90001msec
-
-which is a 15% improvement in measured bandwidth.  The average
-submission latency is noticeably lowered too.  As measured by
-fio:
-
-Baseline:
-   lat (usec): min=20, max=241, avg=99.81, stdev=3.38
-Patched:
-   lat (usec): min=26, max=226, avg=86.48, stdev=4.82
-
-If we look at blktrace, we can also see the plugging behavior is
-improved. In the baseline, we end up limited to plugging 8 requests in
-the block layer regardless of the device queue depth size, while after
-patching we can drive more io, and we manage to utilize the full device
-queue.
-
-In the baseline, after a stabilization phase, an ordinary submission
-looks like:
-  254,0    1    49942     0.016028795  5977  U   N [iou-sqp-5976] 7
-
-After patching, I see consistently more requests per unplug.
-  254,0    1     4996     0.001432872  3145  U   N [iou-sqp-3144] 32
-
-Ideally, the cap size would at least be the deep enough to fill the
-device queue, but we can't predict that behavior, or assume all IO goes
-to a single device, and thus can't guess the ideal batch size.  We also
-don't want to let the tw run unbounded, though I'm not sure it would
-really be a problem.  Instead, let's just give it a more sensible value
-that will allow for more efficient batching.  I've tested with different
-cap values, and initially proposed to increase the cap to 1024.  Jens
-argued it is too big of a bump and I observed that, with 32, I'm no
-longer able to observe this bottleneck in any of my machines.
-
-Fixes: af5d68f8892f ("io_uring/sqpoll: manage task_work privately")
-Signed-off-by: Gabriel Krisman Bertazi <krisman@suse.de>
-Link: https://lore.kernel.org/r/20250508181203.3785544-1-krisman@suse.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250424134301.1392-1-jack@suse.cz
+Link: https://lkml.kernel.org/r/20250424134515.18933-4-jack@suse.cz
+Fixes: 5f530de63cfc ("ocfs2: Use s_umount for quota recovery protection")
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Heming Zhao <heming.zhao@suse.com>
+Tested-by: Heming Zhao <heming.zhao@suse.com>
+Acked-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Murad Masimov <m.masimov@mt-integration.ru>
+Cc: Shichangkuo <shi.changkuo@h3c.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/sqpoll.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ocfs2/journal.c |   14 ++++++++------
+ fs/ocfs2/ocfs2.h   |    7 ++++++-
+ 2 files changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/io_uring/sqpoll.c b/io_uring/sqpoll.c
-index 5bc54c6df20fd..430922c541681 100644
---- a/io_uring/sqpoll.c
-+++ b/io_uring/sqpoll.c
-@@ -20,7 +20,7 @@
- #include "sqpoll.h"
+--- a/fs/ocfs2/journal.c
++++ b/fs/ocfs2/journal.c
+@@ -174,7 +174,7 @@ int ocfs2_recovery_init(struct ocfs2_sup
+ 	struct ocfs2_recovery_map *rm;
  
- #define IORING_SQPOLL_CAP_ENTRIES_VALUE 8
--#define IORING_TW_CAP_ENTRIES_VALUE	8
-+#define IORING_TW_CAP_ENTRIES_VALUE	32
+ 	mutex_init(&osb->recovery_lock);
+-	osb->disable_recovery = 0;
++	osb->recovery_state = OCFS2_REC_ENABLED;
+ 	osb->recovery_thread_task = NULL;
+ 	init_waitqueue_head(&osb->recovery_event);
  
- enum {
- 	IO_SQ_THREAD_SHOULD_STOP = 0,
--- 
-2.39.5
-
+@@ -206,7 +206,7 @@ void ocfs2_recovery_exit(struct ocfs2_su
+ 	/* disable any new recovery threads and wait for any currently
+ 	 * running ones to exit. Do this before setting the vol_state. */
+ 	mutex_lock(&osb->recovery_lock);
+-	osb->disable_recovery = 1;
++	osb->recovery_state = OCFS2_REC_DISABLED;
+ 	mutex_unlock(&osb->recovery_lock);
+ 	wait_event(osb->recovery_event, !ocfs2_recovery_thread_running(osb));
+ 
+@@ -1582,14 +1582,16 @@ bail:
+ 
+ void ocfs2_recovery_thread(struct ocfs2_super *osb, int node_num)
+ {
++	int was_set = -1;
++
+ 	mutex_lock(&osb->recovery_lock);
++	if (osb->recovery_state < OCFS2_REC_DISABLED)
++		was_set = ocfs2_recovery_map_set(osb, node_num);
+ 
+ 	trace_ocfs2_recovery_thread(node_num, osb->node_num,
+-		osb->disable_recovery, osb->recovery_thread_task,
+-		osb->disable_recovery ?
+-		-1 : ocfs2_recovery_map_set(osb, node_num));
++		osb->recovery_state, osb->recovery_thread_task, was_set);
+ 
+-	if (osb->disable_recovery)
++	if (osb->recovery_state == OCFS2_REC_DISABLED)
+ 		goto out;
+ 
+ 	if (osb->recovery_thread_task)
+--- a/fs/ocfs2/ocfs2.h
++++ b/fs/ocfs2/ocfs2.h
+@@ -308,6 +308,11 @@ enum ocfs2_journal_trigger_type {
+ void ocfs2_initialize_journal_triggers(struct super_block *sb,
+ 				       struct ocfs2_triggers triggers[]);
+ 
++enum ocfs2_recovery_state {
++	OCFS2_REC_ENABLED = 0,
++	OCFS2_REC_DISABLED,
++};
++
+ struct ocfs2_journal;
+ struct ocfs2_slot_info;
+ struct ocfs2_recovery_map;
+@@ -370,7 +375,7 @@ struct ocfs2_super
+ 	struct ocfs2_recovery_map *recovery_map;
+ 	struct ocfs2_replay_map *replay_map;
+ 	struct task_struct *recovery_thread_task;
+-	int disable_recovery;
++	enum ocfs2_recovery_state recovery_state;
+ 	wait_queue_head_t checkpoint_event;
+ 	struct ocfs2_journal *journal;
+ 	unsigned long osb_commit_interval;
 
 
 
