@@ -1,127 +1,125 @@
-Return-Path: <stable+bounces-144119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D974AB4CAC
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 09:26:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27C56AB4CBB
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 09:31:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B26DA16AE7F
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 07:26:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA0353A6235
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 07:30:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E4481E9B18;
-	Tue, 13 May 2025 07:26:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABD261C84B9;
+	Tue, 13 May 2025 07:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4V9oT3Ln";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="8jdiJMyZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uZRyLHmB"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60AD974059
-	for <stable@vger.kernel.org>; Tue, 13 May 2025 07:26:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 667B918EAB;
+	Tue, 13 May 2025 07:31:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747121170; cv=none; b=WRsSaTsACfcgFDA+wmyDRslO2sH1CKhYkwCBViF9L64YdkUMYU2dsU9SYOpGi9NO/IbFmvyT3mhqBZJww8NwnEWpmxsGReOkDrIj1Xz5vg0R1xDOVC2tVVmCJDPeXPi4ljxxTenr0aRpS7yi4GxUFM7OO0Eyg4KnU37iZne/EfY=
+	t=1747121474; cv=none; b=Bc0TgUKsgqqTAP+QbQvufr4+yn2jl1nkK6qXWLG48OTBnYVW6pbcxF4UQ+Xixzyod6hJANqgFz/UhrWP/BPoIWzIFNYj3zjT3MKcn0UdQpep9STJwvJS7zK+n1/S+8VUCXxrqHKunorm9UdeAufLpsTvxrtUU4mBEQ3EhysDG9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747121170; c=relaxed/simple;
-	bh=NYT88Hit4EJsMS1ewbwETqzx5reVtkAXpy0msK8TBrw=;
+	s=arc-20240116; t=1747121474; c=relaxed/simple;
+	bh=0p4WvW8RaRImKPzubhYqD9RMNzWJQrE9S1OPZn9D3uk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QL8edb9j4/u4NDflfdotmFNJOBMd5JgEBuooG/qw/rk6QC+Xi5fRusmsRUGat4ROz4ukg5Koqx8ml++pW9oILYv2xksaPtcfc/naPK4Ba6jLsL3myxVJzCy0zvPKLLUnTrkgp8lOj+21lqAmVT7z7iocNTCCrMSoCyOnsHrysGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4V9oT3Ln; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=8jdiJMyZ; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1747121167;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FhgiJLatjSCachUyT9REx3lEG/LQUSugKIItaBArwqQ=;
-	b=4V9oT3Ln/62ZzyoSDoGdh/Ib6HRKen9MZpOdhKjcGQdSK1OAF9lTD4VaMFDpd/aP47rZBy
-	VqVe82VDFIbjzBJ4Y24OjPJ46a1WXAwgCQ/oyiSvyAlYX3+/2Wr6OZAlyevMFkdWJItye+
-	KZ3NZzBZEG1zTYouoMO0O9T/P9xXSH0H2VExutf35bjK9npVPUBtHhC7yO3PDqh7aqIZQy
-	ElYauHM8sO1M+6eE8+0zai6h4uUdau2ChZTM0aXEvLvwg9L7p87WMVtROQS1Nr3iG/59Fw
-	S8rxSdfHwVWQoBkQtYRmMkJSh50NpNPchxYS/uSEyaIQDDpWKlZHuPNRv+/bKw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1747121167;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=FhgiJLatjSCachUyT9REx3lEG/LQUSugKIItaBArwqQ=;
-	b=8jdiJMyZdBbcIYTLkzJcVubqB4f9/3F1HjXERSwWbNKPvW4xbxDPokEirgTium/osZe9UD
-	eRQZFwqHChijjbAg==
-To: stable@vger.kernel.org
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 5.4.y] clocksource/i8253: Use raw_spinlock_irqsave() in clockevent_i8253_disable()
-Date: Tue, 13 May 2025 09:26:05 +0200
-Message-ID: <20250513072606.620633-1-bigeasy@linutronix.de>
-In-Reply-To: <2025051258-washbowl-alongside-de3d@gregkh>
-References: <2025051258-washbowl-alongside-de3d@gregkh>
+	 MIME-Version; b=MRUJ5ttK93Ir7KQvtR6isPZ5bGBj1FqWS/fFG9lqk7JUp3sNnGyU+Oy7kVr+TptKtyaOOqpImmV+wz/R/yANSw5hvtdJaLeJcUnc9EVbQeM+xYIJ1z3gG9AFkU4prINzw4YiM4liJJvwuce3aLrYTWYOMGqc4c4Tjl89l2RvzEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uZRyLHmB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81254C4CEEF;
+	Tue, 13 May 2025 07:31:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747121473;
+	bh=0p4WvW8RaRImKPzubhYqD9RMNzWJQrE9S1OPZn9D3uk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=uZRyLHmBW+eB+aibbXdpLyUKQUnIyTMtdZzrub34+8RXu47ksHM/RhRgWItlln5bl
+	 /Kg8g3AGhds3afMc47xOcEsAMZNu6/lxEwRG18K22xSqTYmwQ0RNgcwM9ghYDsycWd
+	 fnIadsJ44OyuT62lNT2CDBrqv+4OtZ9e717L2IW03JNW6n4E69d+ZHoi3pPJN6apj8
+	 INts434b9a/+UOkNLrCYfa6aV78jgxpyskmaCeAwhw2+TpyTMP2Tyb8vsAbElJP580
+	 ycIxrP5NzTxE4aQNKSixPWdwHTNnVIE0CUwUT0Cu6Ae6WpCE5Qm6ScJ44fM7nhEOfu
+	 mjlrcOTPkGRtw==
+From: Niklas Cassel <cassel@kernel.org>
+To: Jingoo Han <jingoohan1@gmail.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Kishon Vijay Abraham I <kishon@kernel.org>
+Cc: Wilfred Mallawa <wilfred.mallawa@wdc.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	stable@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Subject: [PATCH v2 1/6] PCI: dwc: ep: Fix broken set_msix() callback
+Date: Tue, 13 May 2025 09:30:56 +0200
+Message-ID: <20250513073055.169486-9-cassel@kernel.org>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250513073055.169486-8-cassel@kernel.org>
+References: <20250513073055.169486-8-cassel@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2318; i=cassel@kernel.org; h=from:subject; bh=0p4WvW8RaRImKPzubhYqD9RMNzWJQrE9S1OPZn9D3uk=; b=owGbwMvMwCV2MsVw8cxjvkWMp9WSGDKUvhpoa8+JFSz7Ez8jW6NYc1H944lSp/+l2WtU5jO+V e8u2Xa1o5SFQYyLQVZMkcX3h8v+4m73KccV79jAzGFlAhnCwMUpABMRyGFk2G7k8lHpxE+NLSps SRsnpCQpL2fU0j9l1WxrK6+uZWqdwPCbXXlXEN/jm6+YX5gf4W7Ieu1nmvGyO8Pg7ppLXdta8r8 wAAA=
+X-Developer-Key: i=cassel@kernel.org; a=openpgp; fpr=5ADE635C0E631CBBD5BE065A352FE6582ED9B5DA
+Content-Transfer-Encoding: 8bit
 
-On x86 during boot, clockevent_i8253_disable() can be invoked via
-x86_late_time_init -> hpet_time_init() -> pit_timer_init() which happens
-with enabled interrupts.
+While the set_msix() callback function in pcie-designware-ep writes the
+Table Size field correctly (N-1), the calculation of the PBA offset
+is wrong because it calculates space for (N-1) entries instead of N.
 
-If some of the old i8253 hardware is actually used then lockdep will notice
-that i8253_lock is used in hard interrupt context. This causes lockdep to
-complain because it observed the lock being acquired with interrupts
-enabled and in hard interrupt context.
+This results in e.g. the following error when using QEMU with PCI
+passthrough on a device which relies on the PCI endpoint subsystem:
+failed to add PCI capability 0x11[0x50]@0xb0: table & pba overlap, or they don't fit in BARs, or don't align
 
-Make clockevent_i8253_disable() acquire the lock with
-raw_spinlock_irqsave() to cure this.
+Fix the calculation of PBA offset in the MSI-X capability.
 
-[ tglx: Massage change log and use guard() ]
-[ bigeasy: Dropped guard() for stable ]
-
-Fixes: c8c4076723dac ("x86/timer: Skip PIT initialization on modern chipset=
-s")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20250404133116.p-XRWJXf@linutronix.de
-(cherry picked from commit 94cff94634e506a4a44684bee1875d2dbf782722)
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Fixes: 83153d9f36e2 ("PCI: endpoint: Fix ->set_msix() to take BIR and offset as arguments")
+Reviewed-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 ---
- drivers/clocksource/i8253.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/pci/controller/dwc/pcie-designware-ep.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clocksource/i8253.c b/drivers/clocksource/i8253.c
-index 39f7c2d736d16..9a91ce66e16eb 100644
---- a/drivers/clocksource/i8253.c
-+++ b/drivers/clocksource/i8253.c
-@@ -103,7 +103,9 @@ int __init clocksource_i8253_init(void)
- #ifdef CONFIG_CLKEVT_I8253
- void clockevent_i8253_disable(void)
- {
--	raw_spin_lock(&i8253_lock);
-+	unsigned long flags;
-+
-+	raw_spin_lock_irqsave(&i8253_lock, flags);
-=20
- 	/*
- 	 * Writing the MODE register should stop the counter, according to
-@@ -133,7 +135,7 @@ void clockevent_i8253_disable(void)
-=20
- 	outb_p(0x30, PIT_MODE);
-=20
--	raw_spin_unlock(&i8253_lock);
-+	raw_spin_unlock_irqrestore(&i8253_lock, flags);
- }
-=20
- static int pit_shutdown(struct clock_event_device *evt)
---=20
+diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
+index 1a0bf9341542..24026f3f3413 100644
+--- a/drivers/pci/controller/dwc/pcie-designware-ep.c
++++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+@@ -585,6 +585,7 @@ static int dw_pcie_ep_set_msix(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
+ 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+ 	struct dw_pcie_ep_func *ep_func;
+ 	u32 val, reg;
++	u16 actual_interrupts = interrupts + 1;
+ 
+ 	ep_func = dw_pcie_ep_get_func_from_ep(ep, func_no);
+ 	if (!ep_func || !ep_func->msix_cap)
+@@ -595,7 +596,7 @@ static int dw_pcie_ep_set_msix(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
+ 	reg = ep_func->msix_cap + PCI_MSIX_FLAGS;
+ 	val = dw_pcie_ep_readw_dbi(ep, func_no, reg);
+ 	val &= ~PCI_MSIX_FLAGS_QSIZE;
+-	val |= interrupts;
++	val |= interrupts; /* 0's based value */
+ 	dw_pcie_writew_dbi(pci, reg, val);
+ 
+ 	reg = ep_func->msix_cap + PCI_MSIX_TABLE;
+@@ -603,7 +604,7 @@ static int dw_pcie_ep_set_msix(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
+ 	dw_pcie_ep_writel_dbi(ep, func_no, reg, val);
+ 
+ 	reg = ep_func->msix_cap + PCI_MSIX_PBA;
+-	val = (offset + (interrupts * PCI_MSIX_ENTRY_SIZE)) | bir;
++	val = (offset + (actual_interrupts * PCI_MSIX_ENTRY_SIZE)) | bir;
+ 	dw_pcie_ep_writel_dbi(ep, func_no, reg, val);
+ 
+ 	dw_pcie_dbi_ro_wr_dis(pci);
+-- 
 2.49.0
 
 
