@@ -1,87 +1,56 @@
-Return-Path: <stable+bounces-144132-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FC68AB4DE0
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 10:16:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28F56AB4DE3
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 10:17:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D37A41891262
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 08:17:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE3C61B408E4
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 08:17:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D95351FFC7E;
-	Tue, 13 May 2025 08:16:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="l+koJVOo"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80818200BBC;
+	Tue, 13 May 2025 08:17:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C97A31F5846
-	for <stable@vger.kernel.org>; Tue, 13 May 2025 08:16:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42B6D20101F
+	for <stable@vger.kernel.org>; Tue, 13 May 2025 08:17:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747124204; cv=none; b=YkXAbZhhB6JbkldxEpCAb2Lh+qDqCOSs+/JgF9ndXpT6YndemloRakzPqnueIZk2Br3emnto+T0tGed2wp/UdVPlyocSC0ZK9oI6/1JXAgNX/aBZTGRou6Ug7keNbbw1mvUHtxL8oFm13EMtkWwagcssn9pfqqpKbLgDorElC/o=
+	t=1747124245; cv=none; b=DD8TaRQrAXSLaYGvcbeI+QXOJjNPqrmSeTtIrSOrUqKJm9s+ytWGvlnXSjyrqER03WxOhm1wcGoSWYCm0ymLLvvTSnumMeeFXT0JAJn2wRNMssO1j4goK0NyK56eo6XEX3tkKKvx2/JFYMqObTL8FzvlHnH7dPIiBH3TlJvt8ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747124204; c=relaxed/simple;
-	bh=Mr+1S6hjJ3g9gpaUqvrYhljpnhocR9DHcnv5rkKvjY0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PyEW8ksfTQH+stC18YdbQMtrdPwgLniFcE1a2nfP77tGhIYaJu0aU0rNU9pByFX5hlw1NJIJ/+ppXXtmZVB1WL/AEFcTIlZDMs7fgCSgcdqrZoctVEHrYp56oyt/GJ10VEbeqmfj/lrEQNz6LVWK8GM8+8TkRy3+9i+NOhK0XPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=l+koJVOo; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5fbf534f8dbso8173684a12.3
-        for <stable@vger.kernel.org>; Tue, 13 May 2025 01:16:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1747124199; x=1747728999; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6Xv3HD5FD7XV0d67klm477bUmRqFzEsWgu+CGNrq8oc=;
-        b=l+koJVOokPYYPrQJv9ineJpak7GaChkvmjrB0P9GZEMDe/U8p5OH97JHBiUXD5mtCo
-         F6Uh5hTOmjQAefXSymTJ/fz1Lsvv5gXhY4csZYDfJjVJR61rUSETdEHhfja/bUpscExL
-         lObmV17XwKLwlvTP3dCnG7TgFCoMfHBvcJBFU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747124199; x=1747728999;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6Xv3HD5FD7XV0d67klm477bUmRqFzEsWgu+CGNrq8oc=;
-        b=kfwbGiFKuXbquCuqlThyg/u2l5m9sEv4PItPI1ASdaDNlbpTSVEp2jE2CNxOjKVpnL
-         nwbG2WKkQvvj8bCUxtSseKNravlI0ivKkKpaDP5SVZeggXC45onz7STbW+TGOk7rWCUy
-         IFB63kmuAWixrfJE5Zlpivxu+kfZuSFVyf5Qp9RTcL7kFtV5UkKu3dkZK8BN8Do4nEI9
-         2bo1fQEU1FOorFLx+cfag8bRcBBOZ2HkF/TIYqlD350tYwaoJ6+zhYXRl/xBstEnCWQx
-         sdDREBDz6Mpn1yFYh/ig3BJRPcwvX7PKXdrTWN9iyriqJtwLv5ibWeEycqJRIQsEi52X
-         0EZg==
-X-Gm-Message-State: AOJu0YxoTBlGj380VtBHcRuZgW7CKJuGR6TLrsqs9BKY3R4h00hj80np
-	2p1sjITxSC5bh4vuLCMe9ltj54WZtO64Pr1i7LVHxwvG4vu7gxUdCBHlBWesoAvmN/N/yR5vpMu
-	KCA==
-X-Gm-Gg: ASbGncsZqwb5XO4QGCRKAOCNhGF9KJ2lYUOls7+gD5w4tXZ57l+UMauGkyJPHroTGGp
-	RSB3gDLYr43s0BpI+I8ZJh+a2Ey8LDunvOdrm0tpYIskRUb1XBIWywOIu28OTjt59yw+JTDcI3m
-	6wsGTph0PGVxBRcOPr7TSjlk22+vxGwuU2H32loOd8aGoXPh7/uMqh4/dj79e6IG4Z/3YJlRwlH
-	0p5YTrNDhAkX2lIrvFQ5wJXElsnchX8h3+5Lc9hFHBIUROt0bzK8bpA1OCIiU1/pPj7R2wsemsh
-	VcU9Bgz7QE8+1ob7PUhwiPJPxdxYfWB42sNEPbASkB2lt/Z4TUhFmFyCJ4tIrvRnOkKgfPkGXa2
-	Ye8kUFSGbc/CVkeog6vw/3hn77wt+MrClI8kl3FKR+w==
-X-Google-Smtp-Source: AGHT+IGv1WXr0QYhu6AUi3H4F0EgJXEW/eWGFDE7w42ASWbqgLnPDs1qObFaDhaxeu4dekoYEF6LAQ==
-X-Received: by 2002:a17:906:99c2:b0:ad1:8dde:5b7a with SMTP id a640c23a62f3a-ad21916973dmr1622224566b.43.1747124199315;
-        Tue, 13 May 2025 01:16:39 -0700 (PDT)
-Received: from akuchynski.c.googlers.com.com (37.247.91.34.bc.googleusercontent.com. [34.91.247.37])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad23ad2b386sm551860766b.104.2025.05.13.01.16.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 May 2025 01:16:38 -0700 (PDT)
-From: Andrei Kuchynski <akuchynski@chromium.org>
-To: stable@vger.kernel.org
-Cc: Andrei Kuchynski <akuchynski@chromium.org>,
-	stable <stable@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH 6.1.y] usb: typec: ucsi: displayport: Fix deadlock
-Date: Tue, 13 May 2025 08:16:30 +0000
-Message-ID: <20250513081630.534069-1-akuchynski@chromium.org>
-X-Mailer: git-send-email 2.49.0.1045.g170613ef41-goog
-In-Reply-To: <2025051222-thursday-outdoors-ffda@gregkh>
-References: <2025051222-thursday-outdoors-ffda@gregkh>
+	s=arc-20240116; t=1747124245; c=relaxed/simple;
+	bh=7LiUzXnkzTfMVy0tjPHbAGiUjDNFmvL9u5V1MiRWYZ0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WpWtvX5zra4vO99HorGE+NABBzFvmZYmMtEQ17iBCg/Mq7xy39BXbNUai8wgg7jIwXq7+LR+hiKj+vkwGWFXnNPa7uIqLPleCImUnrUoLee1rOg4iccSPlyyxDfOXJvb/bROjayv5vkARgyt+6VRY5jCrAUaYKOGDE9bgxzEzG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [223.64.68.186])
+	by gateway (Coremail) with SMTP id _____8BxIK8LACNo2qPjAA--.40874S3;
+	Tue, 13 May 2025 16:17:15 +0800 (CST)
+Received: from localhost.localdomain (unknown [223.64.68.186])
+	by front1 (Coremail) with SMTP id qMiowMCxqhr4_yJoEn3NAA--.18021S2;
+	Tue, 13 May 2025 16:16:59 +0800 (CST)
+From: Huacai Chen <chenhuacai@loongson.cn>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Huacai Chen <chenhuacai@kernel.org>
+Cc: Xuerui Wang <kernel@xen0n.name>,
+	stable@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-mm@kvack.org,
+	loongarch@lists.linux.dev,
+	Zi Yan <ziy@nvidia.com>,
+	Huang Ying <ying.huang@intel.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	David Hildenbrand <david@redhat.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH V2 for 6.6] mm/migrate: correct nr_failed in migrate_pages_sync()
+Date: Tue, 13 May 2025 16:16:47 +0800
+Message-ID: <20250513081647.252911-1-chenhuacai@loongson.cn>
+X-Mailer: git-send-email 2.47.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -89,171 +58,134 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowMCxqhr4_yJoEn3NAA--.18021S2
+X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoWxWFW7uryrGr17tw47uF47WrX_yoWrCw47pF
+	4Igw1qyrW8XrWvgF9xtryqkFnxCrZxZr43Ja4xGryFyFsxX3sFkFWfGayqyF4rKry2van3
+	JF4qgF1Y9ay8XrcCm3ZEXasCq-sJn29KB7ZKAUJUUUUP529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUBYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+	6rxl6s0DM2kKe7AKxVWUtVW8ZwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
+	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWrXVW3
+	AwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI4
+	8JMxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j
+	6r4UMxCIbckI1I0E14v26r1q6r43MI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwV
+	AFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv2
+	0xvE14v26ryj6F1UMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4
+	v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x0267AK
+	xVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IUnLID5UUUUU==
 
-This patch introduces the ucsi_con_mutex_lock / ucsi_con_mutex_unlock
-functions to the UCSI driver. ucsi_con_mutex_lock ensures the connector
-mutex is only locked if a connection is established and the partner pointer
-is valid. This resolves a deadlock scenario where
-ucsi_displayport_remove_partner holds con->mutex waiting for
-dp_altmode_work to complete while dp_altmode_work attempts to acquire it.
+From: Zi Yan <ziy@nvidia.com>
 
-Cc: stable <stable@kernel.org>
-Fixes: af8622f6a585 ("usb: typec: ucsi: Support for DisplayPort alt mode")
-Change-Id: I8b77692a60f77b8ddbb0503088f447fe1bb6a512
-Signed-off-by: Andrei Kuchynski <akuchynski@chromium.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250424084429.3220757-2-akuchynski@chromium.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-(cherry picked from commit 364618c89d4c57c85e5fc51a2446cd939bf57802)
+commit a259945efe6ada94087ef666e9b38f8e34ea34ba upstream.
+
+nr_failed was missing the large folio splits from migrate_pages_batch()
+and can cause a mismatch between migrate_pages() return value and the
+number of not migrated pages, i.e., when the return value of
+migrate_pages() is 0, there are still pages left in the from page list.
+It will happen when a non-PMD THP large folio fails to migrate due to
+-ENOMEM and is split successfully but not all the split pages are not
+migrated, migrate_pages_batch() would return non-zero, but
+astats.nr_thp_split = 0.  nr_failed would be 0 and returned to the caller
+of migrate_pages(), but the not migrated pages are left in the from page
+list without being added back to LRU lists.
+
+Fix it by adding a new nr_split counter for large folio splits and adding
+it to nr_failed in migrate_page_sync() after migrate_pages_batch() is
+done.
+
+Link: https://lkml.kernel.org/r/20231017163129.2025214-1-zi.yan@sent.com
+Fixes: 2ef7dbb26990 ("migrate_pages: try migrate in batch asynchronously firstly")
+Signed-off-by: Zi Yan <ziy@nvidia.com>
+Acked-by: Huang Ying <ying.huang@intel.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 ---
- drivers/usb/typec/ucsi/displayport.c | 19 +++++++++-------
- drivers/usb/typec/ucsi/ucsi.c        | 34 ++++++++++++++++++++++++++++
- drivers/usb/typec/ucsi/ucsi.h        |  3 +++
- 3 files changed, 48 insertions(+), 8 deletions(-)
+V2: Add upstream commit id.
 
-diff --git a/drivers/usb/typec/ucsi/displayport.c b/drivers/usb/typec/ucsi/displayport.c
-index 2431febc4615..6f5c46368cc5 100644
---- a/drivers/usb/typec/ucsi/displayport.c
-+++ b/drivers/usb/typec/ucsi/displayport.c
-@@ -54,7 +54,8 @@ static int ucsi_displayport_enter(struct typec_altmode *alt, u32 *vdo)
- 	u8 cur = 0;
- 	int ret;
+ mm/migrate.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
+
+diff --git a/mm/migrate.c b/mm/migrate.c
+index 1004b1def1c2..4ed470885217 100644
+--- a/mm/migrate.c
++++ b/mm/migrate.c
+@@ -1504,6 +1504,7 @@ struct migrate_pages_stats {
+ 	int nr_thp_succeeded;	/* THP migrated successfully */
+ 	int nr_thp_failed;	/* THP failed to be migrated */
+ 	int nr_thp_split;	/* THP split before migrating */
++	int nr_split;	/* Large folio (include THP) split before migrating */
+ };
  
--	mutex_lock(&dp->con->lock);
-+	if (!ucsi_con_mutex_lock(dp->con))
-+		return -ENOTCONN;
+ /*
+@@ -1623,6 +1624,7 @@ static int migrate_pages_batch(struct list_head *from,
+ 	int nr_retry_pages = 0;
+ 	int pass = 0;
+ 	bool is_thp = false;
++	bool is_large = false;
+ 	struct folio *folio, *folio2, *dst = NULL, *dst2;
+ 	int rc, rc_saved = 0, nr_pages;
+ 	LIST_HEAD(unmap_folios);
+@@ -1638,7 +1640,8 @@ static int migrate_pages_batch(struct list_head *from,
+ 		nr_retry_pages = 0;
  
- 	if (!dp->override && dp->initialized) {
- 		const struct typec_altmode *p = typec_altmode_get_partner(alt);
-@@ -100,7 +101,7 @@ static int ucsi_displayport_enter(struct typec_altmode *alt, u32 *vdo)
- 	schedule_work(&dp->work);
- 	ret = 0;
- err_unlock:
--	mutex_unlock(&dp->con->lock);
-+	ucsi_con_mutex_unlock(dp->con);
+ 		list_for_each_entry_safe(folio, folio2, from, lru) {
+-			is_thp = folio_test_large(folio) && folio_test_pmd_mappable(folio);
++			is_large = folio_test_large(folio);
++			is_thp = is_large && folio_test_pmd_mappable(folio);
+ 			nr_pages = folio_nr_pages(folio);
  
- 	return ret;
- }
-@@ -112,7 +113,8 @@ static int ucsi_displayport_exit(struct typec_altmode *alt)
- 	u64 command;
- 	int ret = 0;
+ 			cond_resched();
+@@ -1658,6 +1661,7 @@ static int migrate_pages_batch(struct list_head *from,
+ 				stats->nr_thp_failed++;
+ 				if (!try_split_folio(folio, split_folios)) {
+ 					stats->nr_thp_split++;
++					stats->nr_split++;
+ 					continue;
+ 				}
+ 				stats->nr_failed_pages += nr_pages;
+@@ -1686,11 +1690,12 @@ static int migrate_pages_batch(struct list_head *from,
+ 				nr_failed++;
+ 				stats->nr_thp_failed += is_thp;
+ 				/* Large folio NUMA faulting doesn't split to retry. */
+-				if (folio_test_large(folio) && !nosplit) {
++				if (is_large && !nosplit) {
+ 					int ret = try_split_folio(folio, split_folios);
  
--	mutex_lock(&dp->con->lock);
-+	if (!ucsi_con_mutex_lock(dp->con))
-+		return -ENOTCONN;
- 
- 	if (!dp->override) {
- 		const struct typec_altmode *p = typec_altmode_get_partner(alt);
-@@ -144,7 +146,7 @@ static int ucsi_displayport_exit(struct typec_altmode *alt)
- 	schedule_work(&dp->work);
- 
- out_unlock:
--	mutex_unlock(&dp->con->lock);
-+	ucsi_con_mutex_unlock(dp->con);
- 
- 	return ret;
- }
-@@ -202,20 +204,21 @@ static int ucsi_displayport_vdm(struct typec_altmode *alt,
- 	int cmd = PD_VDO_CMD(header);
- 	int svdm_version;
- 
--	mutex_lock(&dp->con->lock);
-+	if (!ucsi_con_mutex_lock(dp->con))
-+		return -ENOTCONN;
- 
- 	if (!dp->override && dp->initialized) {
- 		const struct typec_altmode *p = typec_altmode_get_partner(alt);
- 
- 		dev_warn(&p->dev,
- 			 "firmware doesn't support alternate mode overriding\n");
--		mutex_unlock(&dp->con->lock);
-+		ucsi_con_mutex_unlock(dp->con);
- 		return -EOPNOTSUPP;
+ 					if (!ret) {
+ 						stats->nr_thp_split += is_thp;
++						stats->nr_split += is_large;
+ 						break;
+ 					} else if (reason == MR_LONGTERM_PIN &&
+ 						   ret == -EAGAIN) {
+@@ -1836,6 +1841,7 @@ static int migrate_pages_sync(struct list_head *from, new_folio_t get_new_folio,
+ 	stats->nr_succeeded += astats.nr_succeeded;
+ 	stats->nr_thp_succeeded += astats.nr_thp_succeeded;
+ 	stats->nr_thp_split += astats.nr_thp_split;
++	stats->nr_split += astats.nr_split;
+ 	if (rc < 0) {
+ 		stats->nr_failed_pages += astats.nr_failed_pages;
+ 		stats->nr_thp_failed += astats.nr_thp_failed;
+@@ -1843,7 +1849,11 @@ static int migrate_pages_sync(struct list_head *from, new_folio_t get_new_folio,
+ 		return rc;
  	}
- 
- 	svdm_version = typec_altmode_get_svdm_version(alt);
- 	if (svdm_version < 0) {
--		mutex_unlock(&dp->con->lock);
-+		ucsi_con_mutex_unlock(dp->con);
- 		return svdm_version;
- 	}
- 
-@@ -259,7 +262,7 @@ static int ucsi_displayport_vdm(struct typec_altmode *alt,
- 		break;
- 	}
- 
--	mutex_unlock(&dp->con->lock);
-+	ucsi_con_mutex_unlock(dp->con);
- 
- 	return 0;
- }
-diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
-index 2adf5fdc0c56..2a03bb992806 100644
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -1398,6 +1398,40 @@ void ucsi_set_drvdata(struct ucsi *ucsi, void *data)
- }
- EXPORT_SYMBOL_GPL(ucsi_set_drvdata);
- 
-+/**
-+ * ucsi_con_mutex_lock - Acquire the connector mutex
-+ * @con: The connector interface to lock
-+ *
-+ * Returns true on success, false if the connector is disconnected
-+ */
-+bool ucsi_con_mutex_lock(struct ucsi_connector *con)
-+{
-+	bool mutex_locked = false;
-+	bool connected = true;
-+
-+	while (connected && !mutex_locked) {
-+		mutex_locked = mutex_trylock(&con->lock) != 0;
-+		connected = con->status.flags & UCSI_CONSTAT_CONNECTED;
-+		if (connected && !mutex_locked)
-+			msleep(20);
-+	}
-+
-+	connected = connected && con->partner;
-+	if (!connected && mutex_locked)
-+		mutex_unlock(&con->lock);
-+
-+	return connected;
-+}
-+
-+/**
-+ * ucsi_con_mutex_unlock - Release the connector mutex
-+ * @con: The connector interface to unlock
-+ */
-+void ucsi_con_mutex_unlock(struct ucsi_connector *con)
-+{
-+	mutex_unlock(&con->lock);
-+}
-+
- /**
-  * ucsi_create - Allocate UCSI instance
-  * @dev: Device interface to the PPM (Platform Policy Manager)
-diff --git a/drivers/usb/typec/ucsi/ucsi.h b/drivers/usb/typec/ucsi/ucsi.h
-index 4a1a86e37fd5..793a8307dded 100644
---- a/drivers/usb/typec/ucsi/ucsi.h
-+++ b/drivers/usb/typec/ucsi/ucsi.h
-@@ -15,6 +15,7 @@
- 
- struct ucsi;
- struct ucsi_altmode;
-+struct ucsi_connector;
- 
- /* UCSI offsets (Bytes) */
- #define UCSI_VERSION			0
-@@ -62,6 +63,8 @@ int ucsi_register(struct ucsi *ucsi);
- void ucsi_unregister(struct ucsi *ucsi);
- void *ucsi_get_drvdata(struct ucsi *ucsi);
- void ucsi_set_drvdata(struct ucsi *ucsi, void *data);
-+bool ucsi_con_mutex_lock(struct ucsi_connector *con);
-+void ucsi_con_mutex_unlock(struct ucsi_connector *con);
- 
- void ucsi_connector_change(struct ucsi *ucsi, u8 num);
- 
+ 	stats->nr_thp_failed += astats.nr_thp_split;
+-	nr_failed += astats.nr_thp_split;
++	/*
++	 * Do not count rc, as pages will be retried below.
++	 * Count nr_split only, since it includes nr_thp_split.
++	 */
++	nr_failed += astats.nr_split;
+ 	/*
+ 	 * Fall back to migrate all failed folios one by one synchronously. All
+ 	 * failed folios except split THPs will be retried, so their failure
 -- 
-2.49.0.1045.g170613ef41-goog
+2.47.1
 
 
