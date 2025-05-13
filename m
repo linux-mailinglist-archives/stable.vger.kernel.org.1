@@ -1,212 +1,144 @@
-Return-Path: <stable+bounces-144072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35F22AB4901
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 03:59:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 252D3AB4938
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 04:07:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF4B1460960
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 01:59:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B537E3B9270
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 02:07:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DECD1990D9;
-	Tue, 13 May 2025 01:59:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="QcAY2vFq"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 643F919CC2E;
+	Tue, 13 May 2025 02:07:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2042.outbound.protection.outlook.com [40.107.244.42])
+Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93B191BC2A
-	for <stable@vger.kernel.org>; Tue, 13 May 2025 01:59:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747101576; cv=fail; b=Cz9LzzdgLdaDfDolRkdLG2HsZTZcDK2njcpUsMHo3Be1BP5BKxERqU1IyVl/N5TjP7mbUNgeVh1KJ0b0zbwwVF/gpTaNEPJB/eGqHFUXzXnOYpkgYCdSJ6WFEawVZJX65NHtRw7lKRE0HGm0Tfd25exk6BO10/KvxgSyPE/YEHQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747101576; c=relaxed/simple;
-	bh=f/Gui63NMNfJHs2htu6txUZRPWXAzaJgAP4Dypi0Sy0=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=WnNn5zWui4vIFIGAUDdcp4+lsI4WKi+1Rz/VnSvADYntEzSPdbJ3EOFanMMKhinVDXRWWipPZq0/Ijf7B2DHNzH1iiZJz6bqjjBnL29Yu2BkyMjrPpDuD6hgcBUWXq8Vuxj4baaF1YDpbtO0XsoW8Dv30nJXDHozFUO/wXbb7IE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=QcAY2vFq; arc=fail smtp.client-ip=40.107.244.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=aC5glE6S2NWFqxLhbZKJhlbEnate2wAzYD60gCNQEx/T885K7loBzvLL34meTVKd3mfFGl+9f3FtBjgMhz5RNrjr0HHCQRAvkpXu4CFgKpCj9maRfly4Qj1AvTi8eZP31abvyk8VpaH4SO4uYbSg97/avXVsWApSvvIi1RVl9UNx6y2UDHoRkiXf1KtSM8whtxAYk8zsJHUwOTm6P6VPcGjfUGILXgXKTSNZdB99HZk0pcYDatqy1HLYK+eKY2BW/ZJQxuKE/f31dz7cZgfJHQjKXzEcveGTukT3JgnNOwsRGTLGCmen4DVX8UPhfAeJXlI5TckmAGS01wM3W1T+Aw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ewYxUfMELL9/N8f5xdwBdaVRuilsEjt2q2DuKSDFJ/E=;
- b=oBx4rA0hfmC3x0ZBdjFe/i0ZD9Ez/MQtJ0/kf+9d4r4EICqVJPzzxBoQMWVl3iOGqDybuMKqDBoF4/HEz92t5MWkmbUg6EmI+3QDRaPgjnQO3sZPX7HpnK2vvFFyjnTU5SzL6+e2hB+zjcpSg6UZ52UBrV6DXTcJF+V6iA7efW/ht1z39xzZ5k3DoOX3ecHMBE0spo11vp214DfnGSr7NmjUrOA6nF/GvIGgEYA22DFgjywws0DM+HOyIX8lcZcU6Inl4tfJ8yLOsYVtRHmc899F+AngxFRKCwYrmLBKdTWIZzdYl484CCJEArakZKkzo6eQ2Ca/bNtcS5+9RnGPWQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ewYxUfMELL9/N8f5xdwBdaVRuilsEjt2q2DuKSDFJ/E=;
- b=QcAY2vFqMD1w/IfFSrGdOg2xD9a2vpcwVcQkfIlXh1KSjoOj3tHiijFNEk7PPwtG+Fcmwjs5uh6DzE2ySp/zpVGZB2vhBvPwb2LsXEWDqps1e3sFER+JK9jMXR6DPq7UOS0Y1EW3W93UENIN2cgwI+WO4lKBncc34BTguQgoiRU=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by DS7PR12MB6021.namprd12.prod.outlook.com (2603:10b6:8:87::5) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8699.26; Tue, 13 May 2025 01:59:29 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::37ee:a763:6d04:81ca]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::37ee:a763:6d04:81ca%7]) with mapi id 15.20.8722.027; Tue, 13 May 2025
- 01:59:29 +0000
-Message-ID: <d32947b6-5580-46e9-a79b-11fae276ab6e@amd.com>
-Date: Mon, 12 May 2025 20:59:26 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/amd: Turn off doorbell for vcn 4.0.5
-To: Mario Limonciello <superm1@kernel.org>, amd-gfx@lists.freedesktop.org
-Cc: stable@vger.kernel.org, David.Wu3@amd.com
-References: <20250510190216.3461208-1-superm1@kernel.org>
-Content-Language: en-US
-From: Mario Limonciello <mario.limonciello@amd.com>
-In-Reply-To: <20250510190216.3461208-1-superm1@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: DS7PR06CA0012.namprd06.prod.outlook.com
- (2603:10b6:8:2a::22) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C15818DB20;
+	Tue, 13 May 2025 02:07:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747102038; cv=none; b=t4zouUJM2dVcw/7FUgpA9nLdUbH7szFaY9xg3//GlRuUBa6Ze1bjn3KvrT0FKQgByW8Dbpta97rcjkeT2jMsFYUjlfSJlJuE7DIL40aM3m89kxGYrJ1KPReO1hkR8UT/5fMu4Tme6W7kHhjMoLccr8CrbznJqrTBM0VfAf0jKdY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747102038; c=relaxed/simple;
+	bh=CNUHkt67UtuoRyMOScLNUcMEjQj2NOYzghsKilvulV0=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ucTAJsJGdcrgbA9wtQH+FLurdqKAJkJuvHX7TMZV7Q3xCrbyBflkLDxZBq4jyOxR0cipp+a/KhFdjIsN8ht/NvtTJX/yaXSrsAZeIgFIfRUxjcIWhDViVOdIi1SL1tYX1N06VtITIWHZy8KHKdJY7sPEhkx4usAjiIVth0hp/Zg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54D1x28u014990;
+	Mon, 12 May 2025 19:06:46 -0700
+Received: from ala-exchng02.corp.ad.wrs.com (ala-exchng02.wrs.com [147.11.82.254])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 46j6ajt6ew-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Mon, 12 May 2025 19:06:46 -0700 (PDT)
+Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
+ ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.43; Mon, 12 May 2025 19:06:45 -0700
+Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
+ 15.1.2507.43 via Frontend Transport; Mon, 12 May 2025 19:06:42 -0700
+From: <jianqi.ren.cn@windriver.com>
+To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>
+CC: <patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+        <jianqi.ren.cn@windriver.com>, <johannes@sipsolutions.net>,
+        <davem@davemloft.net>, <kuba@kernel.org>,
+        <linux-wireless@vger.kernel.org>, <netdev@vger.kernel.or>,
+        <johannes.berg@intel.com>
+Subject: [PATCH 5.15.y] wifi: cfg80211: check A-MSDU format more carefully
+Date: Tue, 13 May 2025 10:06:42 +0800
+Message-ID: <20250513020642.3361140-1-jianqi.ren.cn@windriver.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|DS7PR12MB6021:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9c5e6437-b895-403e-b848-08dd91c1cb9b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?UFZQRGJHZzlHckQ2TTg0TWhidVZlbEFncUM2UkIvRWlPUG1kS1ROZW1sWERZ?=
- =?utf-8?B?U3BNazRLNFFUV2syVXEyUTQzV0E3dlYxVEQrVDVsUWxvci93SUt6aVdkcDdE?=
- =?utf-8?B?OE5XWHlJcHJLZ3MrM3BGTG45MTg3c1l4ZFhrYXlweTZoSWhnV2s1RFl5T3dM?=
- =?utf-8?B?djBvOUluTDArbG0wSDdMa3NMUGNaSmdvaitCMTNaZmkxUmFpMzkwUitQekdW?=
- =?utf-8?B?MlpEdm1VdVFjMG9Xb01tT2NSK0pVRFg2amxxYzRTTFBaT0hwbzBYemxzUm1j?=
- =?utf-8?B?WFFoRDNrUE50Z2NsZ3I3RWVQOXpGSVZaRU5yRjM3UXJIVFFvN01jVkxkNGZl?=
- =?utf-8?B?bFM4dVFMVWgvWHRGenJJeG4xMHh1Q3M1aVJpVERqaWpJVkx2ZzJSbjZGUEFR?=
- =?utf-8?B?R1A0ZVJYQVJqS2dWOGVVeWRnRkwwVTA4V3lVc2hrMnBXaWVUT3pTUzJRZmY5?=
- =?utf-8?B?Ym94NGdMdFNER1FnaGwycEt2VEFhNGl5aW9Vb3dmS1pCdmI0eTNIS1NhK1Zj?=
- =?utf-8?B?ZWFKUjduQ0M1UnlpRDFlUG5QOFQxT1hJWFpBZzd1aVpya1ZCS0orTmErL3kw?=
- =?utf-8?B?WlBGLzk2RUNqbTlrV24rODFEKzl0aURFNVh6THkzSEQ4UkMzMWZVVU1sU2tG?=
- =?utf-8?B?Z0hwa3N3T2t5YWJ1MythUXViVnZ0OTRGazV1emp1VnR2blIxeWJrMHlMc2tV?=
- =?utf-8?B?QWJLY1FrRFJlVUxQd05EOWNjU1ZFRzlyUjZIL0lTSjBGQ2VURkFFMkplZnpT?=
- =?utf-8?B?WklvK1VoRGNLMGdyWXg4SXdRSTlzYzlXSFBVVTlBR2xZczJxK2ZwS1VITE1l?=
- =?utf-8?B?c1l6Umo2Q05XNHhtMGZWaTFjMEpzZXZKbmF6SEdrMm4yTWFvR245d1ZoeHJK?=
- =?utf-8?B?K3d1NjRvSThVOHBsZWtkQ3FwbkNhWTk3bWNPNkJEZjU1VlJYbUVjcWJZQnFq?=
- =?utf-8?B?aG80L1lCdUM5c3M5bWpjenJiTDhOMFc2VUVNdmtOc2Mza2FQRmkvK1l0d29q?=
- =?utf-8?B?dkNhTjB4YU5IcXFWNUlpbkhTR2Fab2RjYnU3ZnFXWndEaG0zbE9FT1ROWmg4?=
- =?utf-8?B?N25KZTNrTTRWeVJOc0NwWUdDN0pEdXJqRG5hOHEyVUM4K29obGFucjYzYXAz?=
- =?utf-8?B?cW9OVzlzUTdlSncvRDg4aTMrbEU0RFoydmh6YnlqenBnMjhOT3VRT2lQTUxK?=
- =?utf-8?B?dGR0RUNUcDBKL0hMbkZmd2JrNTRFMU5jdHlFWW8zaTkxbVlDQTVqL3pjalk1?=
- =?utf-8?B?WVcyQkcvT0k0YkVBZGtrV1pKQnlqLzVJRjY1aFM0QUVxZDVYSXNYTjd0Y3pt?=
- =?utf-8?B?TUV0OHdrN0R5dGNIOUVhOTNNNWFvRXFEdGo5ZkJyMGJQbmw5WUptYVVKNUZ0?=
- =?utf-8?B?Nk05aWszTjJmZGcwMTJuODFaQkJ2V29wMmMyZ2hXTzZsYTJ3eHBGa1NjVGhi?=
- =?utf-8?B?TVlGdkNwOEhIZDRTbzZzUzJIZmVZTGJJQmdOU1lFSWYrZjVyc0p4Qnlad3dO?=
- =?utf-8?B?L2tlMmkwT0VvMERrOFJKRDdiNDh4Sy9uYW5XS0tYVTg0Wk5ia05uK0M1QXBQ?=
- =?utf-8?B?YTVRUGNIVWg1eVk0b3pxWnd0Y0NtVStSVkNCY2RGVGhZMWt6enJXTjNYR2Fm?=
- =?utf-8?B?WDc0ekRmOFBOTzVhUEMyZGhzUzhwNzNmcGVqaUtQVjlqNHJ0eVkrUzZ6MUdq?=
- =?utf-8?B?SlN6VDM2S1pTZVl1Q2RUejU3SGl2RWpHMEVvS3huY3FvQkZHWFNMSWtpazBP?=
- =?utf-8?B?YXRmNHRwSXJ1TzR0bGhJOXdnWTdCTVJGUlNsZG9jSHJnQmVMNG9EWDdMRWtQ?=
- =?utf-8?Q?rwiQwhefWtR5eDnK7q06xcw3+pOAwy/C3hPFQ=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aUpaWnlsTk1JUHNORU8vMVhZaFdyRVMycG5XQkYwOWxGSlNKMldMRzhvTTRP?=
- =?utf-8?B?d3VtTUphTzlzbHczTnlOL0d0NVhjdHEwZWFkZXdQVDJXNEVjczBtdHdDRnZP?=
- =?utf-8?B?Smk0WTBTWDdSd3A5RDgzaTZHcjVUVTF5MW1rb1p2YVI1dUFwK1o1UmJrdHor?=
- =?utf-8?B?elJOUms3WEpRUnN0R0lyTUNHTlpkNEw4RW9EVHZMMkVxZkZ2TzlwVzZudVA4?=
- =?utf-8?B?RUhLaFZuYzV0d2VtOEJSb0hhTUZQMDFxSjN0VWhSU3FlMWFSeFJHdGNpbkp2?=
- =?utf-8?B?cDdsRmpoWm5FbHhpVDdHWnE3SUNkN3UvdnluQmNaRERZUkZ5MnVtVlRkQWIr?=
- =?utf-8?B?RmFPQUtudEVCWFpLalFlR1p1SURvb1dTVzJTa3BQYUNRRTRPRituaWQ2WW9R?=
- =?utf-8?B?UHR5QTBxZ25TdUwvcnpuRmFocUs5c0FUa1lMSGdBNnY1c3JTV2lDc0dXYjhz?=
- =?utf-8?B?bm95dzlXT0RpeVBVYXNZM085U1A4enZIQndCcHlsS1VkT2N3QWswdFF1REJP?=
- =?utf-8?B?d0dhU1pVeG41WDRVMnNINVI1OUxPZG1oOWpzRTh2LytTU1YzWkxEb290S2U4?=
- =?utf-8?B?QUtMYkNtdVdZZEdpT3FRcUxyMktEZXdNNFNWOXpjNnhINTZqUWU3cUN1b1Ry?=
- =?utf-8?B?cWJmdUlFN2Y2NEVkTmFaWUxyNDY3K1J6MnNpTmV0dXJnY2w1VUZMTW1SN2dR?=
- =?utf-8?B?SjllMnc3NFFseHdZcGk1UUZwTkRRNnZXWElXRkp5ZElRNnA5c0RkSFJWaSt1?=
- =?utf-8?B?Vm5TMXFSODlnbnBMVEpTTm1vZmRTQWJ0bDVSQVQvZFd1U09XM0pUZzZTUkpx?=
- =?utf-8?B?NVhMMFg1SGcvWVdmK1hQeE0zSXhlNk9wZGhVa3hTa012cmVpcGZPb1k4c3Vv?=
- =?utf-8?B?b1kzOGkyM2dTYmpOTlRvQVJQWXB2S1h2VE1mLzJ5YktrQm5SUEJaUG9uU3hm?=
- =?utf-8?B?dTJnaGE2RmRTYzdOMmp0SGl0R01wNS82WmpudTZBQ2NyYnAxZ3d3UzRxVWlz?=
- =?utf-8?B?MzNLY2RxalJLTXhhNVZuT0ZvOVRJR2I5RTNnek1QZlhHMHkrRXZzRTZBR0pt?=
- =?utf-8?B?VENxN2xhS3FtZXpFc1VDdUVVVzVEUyt4ZWtGNTRsWFkzWHNtSEFnb0Z2VTFv?=
- =?utf-8?B?ZkZ4TEpVaXZVcUZFRFpsV0x3UWcwR1J5cmFUNFNucDQyNHMyQmFoV3BwQ1hv?=
- =?utf-8?B?Zjczb2tQM3RLV3NqSjlFQ3NVMEwvNW9ET3RvT040Q1JCZlQzVU40ZU5XYzNI?=
- =?utf-8?B?T1FlcCtvNmU3MEtZSUhLVDRPZjB6SmhCR2JRWGVseWVGeHhIVTZHRWIxVXRD?=
- =?utf-8?B?M2pJY1RBcGxzeDhVNklyMlR4WEpUZkVHUTg3Y3dOcUFUSFpVSHVnOWdWeGx1?=
- =?utf-8?B?dzc2djFHcUFrNXdGRXBWbHl6MFhQdzZiTzhOeU5LQmQxNDJGLzVmcGVERVg4?=
- =?utf-8?B?WnhOc2pxTUZ5eEk3alZQZDlGcERQODR4aWJtVy9hY2JVaTZyLzJoNU9XTWVE?=
- =?utf-8?B?WFI4aTBTSUQ5eUMzeHA3dDk4S1pzT0lya0dqbXhnSWNaajZmYUt3cVRlcnFs?=
- =?utf-8?B?YklsN3JZMFZjTGJZVGVuQWU1MTVTRVR6VGwweVlnaFFXV0tpWXl4VDFhb2Zs?=
- =?utf-8?B?VGEwcFliUGExLzZsK1Njdmgydk50Q3RiUitBT1BmemVFMXYvOGtYQ3RqOGs3?=
- =?utf-8?B?VkxCWTNOcXZRY2JLM1FZSkJHaTM0dDBJYkdKVW5EbVlURU9vK3ljSDRkZmdN?=
- =?utf-8?B?dlJPbkpIRlFsVk5rNmNQdlFHZjZHQXk4eHQyKzE4QXlyNFJLcTlJRW9EemhU?=
- =?utf-8?B?MDAxQ2orVHc3Uit0K0paemhpaTRyczgzai9lRlEvRWxXUmc1a0x5NENPbUly?=
- =?utf-8?B?bkVDWXNqNnoxMTVKd0FBNGx6c3hBVjlvSXd1aFRCOVhGVSs0eXNjRnlDQnRE?=
- =?utf-8?B?MEVDZFdOdjRqUWdneTdZc2xMN2h4RlYza09BOWczdkQrSjVxOU54NzJjMTIx?=
- =?utf-8?B?bVVxVXBZN0Z0RlVWMlc2dTNoaXNncW5vOS9kSjZxbFlQVlZNa0xTM0RKYjFx?=
- =?utf-8?B?ZWRlRnFEN1RDYlZFZXVqTW5RUmd3Q1hQQ0J5dVExamN5ZzJCQlAzT0FtT1ps?=
- =?utf-8?Q?kPXYpZ/Fm9I/tx8tlwqh6JM43?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9c5e6437-b895-403e-b848-08dd91c1cb9b
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2025 01:59:28.9488
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Z4UHZ1vZaCnhf0wq9dFmK5GjNSqKhqgwtPPZw13t6WXe97OLBykeiwKa5MTplDkhIVSiqLoqa0ptRTcUTTZcxw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB6021
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-ORIG-GUID: lPlt57WDfABipqFRRiMvBqyZODW62Qi6
+X-Authority-Analysis: v=2.4 cv=c8irQQ9l c=1 sm=1 tr=0 ts=6822a936 cx=c_pps a=K4BcnWQioVPsTJd46EJO2w==:117 a=K4BcnWQioVPsTJd46EJO2w==:17 a=dt9VzEwgFbYA:10 a=bC-a23v3AAAA:8 a=QyXUC8HyAAAA:8 a=hSkVLCK3AAAA:8 a=t7CeM3EgAAAA:8 a=bq9goISz1wTSU3ywWP0A:9
+ a=-FEs8UIgK8oA:10 a=FO4_E8m0qiDe52t0p3_H:22 a=cQPPKAXgyycSBL8etih5:22 a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTEzMDAxOCBTYWx0ZWRfX5x1XsH80Tdwp 3EQMqolUNG3vG4v8eFIEK/fs62TEp9mx6v4tQw4N/nmfkCbFz9Ll75Rdc58lfBea9K328Ky4+Q5 OG3YJNIlf5g7jjlDmBAL/w+Kk3qvV1NBf5IClbFU7hA/AMF1bjrdLcGnOUdehra0wfiNVhJUq5B
+ gADPUuokUoZ72jIg/M5jQDkLqq5JiRtezTaAOXT3UhXpMQhcBeAdTFAazb5KzCYkSryRaVWnS7B EI79gMBQHjNuH7EX/l9UhnxqxXbDk7Nsq1JysUbzNrub9suLGlNAaZPbCVyGDccx0L2yXvx/zFD +YJ1qx4qIjM4K41ovgsBMvrIkE7mhVZdXkt52DCIoxehMyDQ+FJRpp+zXWsame6hPuyp1vxZNyH
+ J0QRzOoKElxxkVFW8S1TudQslfIcUhATbf++rA8kGJYhTkGMxE5x1DKURtDg74P8ZgaSbEg7
+X-Proofpoint-GUID: lPlt57WDfABipqFRRiMvBqyZODW62Qi6
+X-Sensitive_Customer_Information: Yes
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-12_07,2025-05-09_01,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ lowpriorityscore=0 mlxscore=0 clxscore=1011 bulkscore=0 adultscore=0
+ mlxlogscore=945 malwarescore=0 spamscore=0 priorityscore=1501
+ suspectscore=0 phishscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.21.0-2504070000
+ definitions=main-2505130018
 
-On 5/10/2025 2:02 PM, Mario Limonciello wrote:
-> From: Mario Limonciello <mario.limonciello@amd.com>
-> 
-> On VCN 4.0.5 using a doorbell to notify VCN hardware for WPTR changes
-> while dynamic power gating is enabled introduces a timing dependency
-> that can sometimes cause WPTR to not be properly updated. This manifests
-> as a job timeout which will trigger a VCN reset and cause the application
-> that submitted the job to crash.
-> 
-> Writing directly to the WPTR register instead of using the doorbell changes
-> the timing enough that the issue doesn't happen. Turn off doorbell use for
-> now while the issue continues to be debugged.
-> 
-> Cc: stable@vger.kernel.org
-> Cc: David.Wu3@amd.com
-> Closes: https://gitlab.freedesktop.org/mesa/mesa/-/issues/12528
-> Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3909
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-> ---
->   drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c
-> index ba603b2246e2e..ea9513f65d7e4 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c
-> @@ -181,7 +181,7 @@ static int vcn_v4_0_5_sw_init(struct amdgpu_ip_block *ip_block)
->   			return r;
->   
->   		ring = &adev->vcn.inst[i].ring_enc[0];
-> -		ring->use_doorbell = true;
-> +		ring->use_doorbell = false;
->   		if (amdgpu_sriov_vf(adev))
->   			ring->doorbell_index = (adev->doorbell_index.vcn.vcn_ring0_1 << 1) +
->   						i * (adev->vcn.inst[i].num_enc_rings + 1) + 1;
+From: Johannes Berg <johannes.berg@intel.com>
 
-Although this is confirmed to help the issue David found the correct 
-solution.  I expect he'll submit that this week and it will supersede my 
-patch.
+[ Upstream commit 9ad7974856926129f190ffbe3beea78460b3b7cc ]
 
-https://gitlab.freedesktop.org/-/project/176/uploads/defeac39ec232976c7c82aab151bfe63/0001-drm-amdgpu-read-back-DB_CTRL-register-after-write-fo.patch
+If it looks like there's another subframe in the A-MSDU
+but the header isn't fully there, we can end up reading
+data out of bounds, only to discard later. Make this a
+bit more careful and check if the subframe header can
+even be present.
 
+Reported-by: syzbot+d050d437fe47d479d210@syzkaller.appspotmail.com
+Link: https://msgid.link/20240226203405.a731e2c95e38.I82ce7d8c0cc8970ce29d0a39fdc07f1ffc425be4@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[Minor conflict resolved due to code context change. And routine
+ieee80211_is_valid_amsdu is introduced by commit fe4a6d2db3ba
+ ("wifi: mac80211: implement support for yet another mesh A-MSDU format")
+ after 6.4.]
+Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
+---
+Verified the build test
+---
+ net/wireless/util.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/net/wireless/util.c b/net/wireless/util.c
+index 6ebc6567b287..0fd48361e3e1 100644
+--- a/net/wireless/util.c
++++ b/net/wireless/util.c
+@@ -751,24 +751,27 @@ void ieee80211_amsdu_to_8023s(struct sk_buff *skb, struct sk_buff_head *list,
+ 	struct sk_buff *frame = NULL;
+ 	u16 ethertype;
+ 	u8 *payload;
+-	int offset = 0, remaining;
++	int offset = 0;
+ 	struct ethhdr eth;
+ 	bool reuse_frag = skb->head_frag && !skb_has_frag_list(skb);
+ 	bool reuse_skb = false;
+ 	bool last = false;
+ 
+ 	while (!last) {
++		int remaining = skb->len - offset;
+ 		unsigned int subframe_len;
+ 		int len;
+ 		u8 padding;
+ 
++		if (sizeof(eth) > remaining)
++			goto purge;
++
+ 		skb_copy_bits(skb, offset, &eth, sizeof(eth));
+ 		len = ntohs(eth.h_proto);
+ 		subframe_len = sizeof(struct ethhdr) + len;
+ 		padding = (4 - subframe_len) & 0x3;
+ 
+ 		/* the last MSDU has no padding */
+-		remaining = skb->len - offset;
+ 		if (subframe_len > remaining)
+ 			goto purge;
+ 		/* mitigate A-MSDU aggregation injection attacks */
+-- 
+2.34.1
 
 
