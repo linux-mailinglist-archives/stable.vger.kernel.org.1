@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-144228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75C71AB5CB4
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 20:49:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54CE7AB5CB1
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 20:49:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C2A0164C6F
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 18:49:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D6C5867785
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 18:48:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4555B2BF979;
-	Tue, 13 May 2025 18:48:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A7B32BEC3F;
+	Tue, 13 May 2025 18:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LdnRiQm7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cvGuxWuN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04B332BF3FD
-	for <stable@vger.kernel.org>; Tue, 13 May 2025 18:48:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 497BC1B3950
+	for <stable@vger.kernel.org>; Tue, 13 May 2025 18:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747162137; cv=none; b=djDtfoJaAzNz4SEF90D5mh0TqLcPNcKjwz27aUozkYqwxxU1UNZw0J3B+3rrRDLAaEf4LKkB4KXViPVIarHRbqR8Gg4ZH43Dd7qC2LYVMUZ7iUKONqi5+zyChi3LC79mmylKgtAAOFK/RDRCU8+BMT7If95ojbCNwyHNbPZtQBI=
+	t=1747162141; cv=none; b=guSw41br6UBpl7nAXa6Mf0bqtt7xZqCxNdPpDdzasBMnDaDtU6Zb2ivEDAPqlqf3SzzCnnrXQ+wzSv2me9bZZjUj+CCOj6ziZeQcOXQDEmu7ueJ7tGKcRcLeOXd+nhJjMsukY0f4tGyi64lshNMdC8Ab1DSOdwPqT5BugGDJ9uE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747162137; c=relaxed/simple;
-	bh=TlPP1GFa+AlDnlFe64TCg5L2fk2QRrm6P6S+0z2IL3s=;
+	s=arc-20240116; t=1747162141; c=relaxed/simple;
+	bh=AO7LiyfTufg0tRBc7fyelNcRfFrv+wCw9ZJCYGf3gSc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mnOozi2slltKOA8p/PgwXQZ0sblp0MaAWth4GPo3v5v4zymJ2DMTIrGuBdN/bWfkVr5pItqQcu0q/DAeSIo+05E3eqIBzjhQSkVD73YvLk15J61AW1b312MP6/fIzrWN8T7pJ9Ac3uvvwNkKi/2HrK6b3C0Tkn3vo40Gl7+9Gc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LdnRiQm7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A615C4CEE4;
-	Tue, 13 May 2025 18:48:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kTj/TrTaYma5bAj7PfNbTo8EyZ7VmKyo20U0PntmysppVLTzEEQzmsVKZ6pmnT+WtrcWhqCqiPE1EWn3fcVTb6QIfwweHvjB3fHB4oFq2/xG4t+CkGflj5nujzC4qloJ+egghPbLvjQV86+SsD2Itm6+Ya0784EvFGB4lkKZZaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cvGuxWuN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B57E8C4CEE4;
+	Tue, 13 May 2025 18:49:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747162136;
-	bh=TlPP1GFa+AlDnlFe64TCg5L2fk2QRrm6P6S+0z2IL3s=;
+	s=k20201202; t=1747162141;
+	bh=AO7LiyfTufg0tRBc7fyelNcRfFrv+wCw9ZJCYGf3gSc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LdnRiQm7j2h5ge4TEg9LgemCKh8TdPts457Qw/ujKSzHN/KfBDRtKWav3SNQxJNQA
-	 8P0cUanM1POd6zIOg7HCvQLcvkjj6NNIjor4qVsJ0etOCYLcspmXmmHvUu6sDapPOL
-	 sPerZrdMOVbkYDeRCh/EwYj5L1Fr/02e6kacrj3dUX93a/8hOGPloX5qrf31sl5Idz
-	 to7eNidcDeoCJqqcDKoKaT0cVIKVa5MOplMvhYKpWMm3cZTzqMNmGsTWEV5zFcVbDV
-	 lTy1UzjqCHhPvGmiIWN2sRwycmLgPM8DokEtv8PqEcEoaUAkT7sX2NUtN2Pe3eY61o
-	 +uHhQPtxjQFLg==
+	b=cvGuxWuNz5OPN5+ITgtHBYVHzZcMJSPnNG2+vqDk8yIRoiSgGYXfBp1NIvAi444M2
+	 fwsASP3STw2CIxL1XRXcrcGWrSvqcLaLozvLALOltg/CHQz9NrooSFOl3AKpNDQD+Q
+	 IuFi5WuoejW7tqd8albcr9GvHf2U5EBkSG98qaHOOE49ZItpp1cgeVk7+6fJGpEclD
+	 uvveroA7gLwa7kzq5KdcQIEteCT4C0cDsSzjJ2+bMEhlyek4BVPN2kvHeTzprRnBfq
+	 nr1dJaoBVdNfMqXjupW10dWvQdsVp4v2qR+IxPHYTH86CKsG+utspwu7083Zq7Zt4x
+	 U+AxN1iMkZ1hg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Huacai Chen <chenhuacai@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH V2 for 6.6] mm/migrate: correct nr_failed in migrate_pages_sync()
-Date: Tue, 13 May 2025 14:48:53 -0400
-Message-Id: <20250513105809-aaba5731e040f208@stable.kernel.org>
+Subject: Re: [PATCH V2 for 6.1/6.6] LoongArch: Explicitly specify code model in Makefile
+Date: Tue, 13 May 2025 14:48:57 -0400
+Message-Id: <20250513075741-480595720f391d9a@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250513081647.252911-1-chenhuacai@loongson.cn>
+In-Reply-To:  <20250513081321.252766-1-chenhuacai@loongson.cn>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,41 +67,46 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: a259945efe6ada94087ef666e9b38f8e34ea34ba
-
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Huacai Chen<chenhuacai@loongson.cn>
-Commit author: Zi Yan<ziy@nvidia.com>
+The upstream commit SHA1 provided is correct: e67e0eb6a98b261caf45048f9eb95fd7609289c0
 
 Status in newer kernel trees:
 6.14.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
+6.12.y | Present (different SHA1: 7b3a7918f10d)
+6.6.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  a259945efe6ad ! 1:  b80fbf97fca7b mm/migrate: correct nr_failed in migrate_pages_sync()
+1:  e67e0eb6a98b2 ! 1:  5d0dbec0340e9 LoongArch: Explicitly specify code model in Makefile
     @@ Metadata
       ## Commit message ##
-         mm/migrate: correct nr_failed in migrate_pages_sync()
+         LoongArch: Explicitly specify code model in Makefile
      
-    +    commit a259945efe6ada94087ef666e9b38f8e34ea34ba upstream.
+    +    commit e67e0eb6a98b261caf45048f9eb95fd7609289c0 upstream.
     +
-         nr_failed was missing the large folio splits from migrate_pages_batch()
-         and can cause a mismatch between migrate_pages() return value and the
-         number of not migrated pages, i.e., when the return value of
-    @@ Commit message
-         Cc: David Hildenbrand <david@redhat.com>
-         Cc: Matthew Wilcox <willy@infradead.org>
-         Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-    +    Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-     
-      ## mm/migrate.c ##
-     @@ mm/migrate.c: struct migrate_pages_stats {
+         LoongArch's toolchain may change the default code model from normal to
+         medium. This is unnecessary for kernel, and generates some relocations
+         which cannot be handled by the module loader. So explicitly specify the
+    @@ arch/loongarch/Makefile: endif
+     +cflags-y		+= -mabi=lp64s -mcmodel=normal
+      endif
+      
+    - cflags-y			+= -pipe $(CC_FLAGS_NO_FPU)
+    -@@ arch/loongarch/Makefile: ifdef CONFIG_OBJTOOL
+    - KBUILD_CFLAGS			+= -fno-jump-tables
+    - endif
+    - 
+    --KBUILD_RUSTFLAGS		+= --target=loongarch64-unknown-none-softfloat
+    -+KBUILD_RUSTFLAGS		+= --target=loongarch64-unknown-none-softfloat -Ccode-model=small
+    - KBUILD_RUSTFLAGS_KERNEL		+= -Zdirect-access-external-data=yes
+    - KBUILD_RUSTFLAGS_MODULE		+= -Zdirect-access-external-data=no
+    - 
+    + cflags-y			+= -pipe -msoft-float
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
+| stable/linux-6.1.y        |  Success    |  Success   |
 | stable/linux-6.6.y        |  Success    |  Success   |
 
