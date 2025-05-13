@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-144240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B40A9AB5CBA
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 20:49:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE88EAB5CBB
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 20:49:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 61A7719E858D
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 18:50:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D58119E8629
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 18:50:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73C4B1E521A;
-	Tue, 13 May 2025 18:49:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67D912BF3FE;
+	Tue, 13 May 2025 18:49:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NDg6gyfF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="coNa/h6/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34A058479
-	for <stable@vger.kernel.org>; Tue, 13 May 2025 18:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 272472BEC3F
+	for <stable@vger.kernel.org>; Tue, 13 May 2025 18:49:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747162188; cv=none; b=KtPNX2EVvQ2vzxekO4cvsnO6fNSbB2b6+h63X+ZliWGBNmia17kEspT4cmuemcYS3kNrR3tlpjXGUT2Y8cC+MPgv9CpTjly89lhR17Crmxqp5CmwpVgapolHZzpiw4bmBoZhWNE0DT5/tWs1/39jrc7xSHUgVoykctX/JQPwKJ8=
+	t=1747162191; cv=none; b=N1uK7pODquTaL6CNfyp7QUVYlJR1AHxFieGDM5+jZi2sgjFlAaESNt1ASpvHIX+6OrqlzvCngGmxHiwB77Ax+gKKPH8auwHptwgjeD2EgKIIuWySw07Ib1pNaZUSLa2rK+3fTtj73TjU9kVfSta5tvmiJnN6dst/6vusnPcyWzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747162188; c=relaxed/simple;
-	bh=aczzzJcjewAP+6RKan2OAk/JYUcyxtcaTJSeZwpYCgI=;
+	s=arc-20240116; t=1747162191; c=relaxed/simple;
+	bh=74xxrAsBphp9yVP5IfWidn5tDyDIbxScyTVksbQj2FQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ql1ZlBw//5Y7QWDtXn9cfIYz/PYEZRKuiFUlCHhDF3qNboRt9y/aVcERWbvsOxwQNy3YjtBGVCJ8N3FI39a/vVPuXeaDepExHlQtuonZupd0fSJUERaODkf+1LxfWhv+tj3+Ah9s23uYTkoAqx3NBtHKxbxzBd1ZkZf3JMo/iQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NDg6gyfF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3538CC4CEE4;
-	Tue, 13 May 2025 18:49:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DVzWkTGM/okqFHhiwGLrquCXCxxlxwckMyOw00hRhVU0GABBNSMKVgHIow/hFY0JYUgaxi4kBlpNrdCvyh38MZKbA26ZcLQL3Sg9L161nG8yveKEMVjKfQw/XxBsSUctzz1dvwqqtb7++tm0SHbvUkaWN17wYAT2J2Y19fql8UA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=coNa/h6/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95368C4CEE4;
+	Tue, 13 May 2025 18:49:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747162187;
-	bh=aczzzJcjewAP+6RKan2OAk/JYUcyxtcaTJSeZwpYCgI=;
+	s=k20201202; t=1747162191;
+	bh=74xxrAsBphp9yVP5IfWidn5tDyDIbxScyTVksbQj2FQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NDg6gyfFYyfGkltdWAZ6N3zA9Cc/orensVwabQgvJOKcClBz5Et+Ag9UwLqQQa2+y
-	 RsO08q9WSH9w+z+OSXSzj6NWvs7u28Rjd9AVzhmZCUTCCx7APOh8KinWrA6mfEJXZM
-	 cW2cj0yIfGurDjyMz5Ha6uYQeJMC2ZaDmhF+eyN2MdRzN/3UsBIuPyM/cV44qs7Jtv
-	 XoY1AytjlqKN1d+BX7Y2PYhpFpnBJ312eoPve9y02zs3fUXU13NW1ruDDoV8BKjutJ
-	 q6hbKv7Il7Nc5+Q1XCgjxlSHEb0oKDbA0s4sOIcoQ2AaJXGWgK+3+lq0Y08LzXpgpg
-	 eNYCZaZ4lmbcg==
+	b=coNa/h6/r+KOiFxND/ExYet66im2VVe9T4bSTEcdgxUJOpWxiQfkLyIC35mBaul/q
+	 6PImJLZmmcrJQypHhs1uVGkO9qdkF4SUmZMlXYzZ/eOBwZ8rCQFC7Gq3j4Cs4ceaQD
+	 EOrx5B95PwSDFw9Dka9Raa4QL8N/69dp0wqACt/pe1CdSjd2LlhF5o3XQBVa+zxvzG
+	 EGE9Z4kxZ8ReYehz4f9tUdWuJWGsSgRN7Ed1piwUaS6UAXl2VMC85xdOqdGk/DX/Zw
+	 ZFO51astB3C5lYNn6gytTVCYgX6sWj6PgxXgw4anN3Gpj+MX7Q0uGeVlq+6c6zoq8I
+	 EpBBPSKR7/fBQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Aditya Garg <gargaditya08@live.com>,
+Cc: Zhaoyang Li <lizy04@hust.edu.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH RESEND 2/2] Input: synaptics - enable InterTouch on TUXEDO InfinityBook Pro 14 v5
-Date: Tue, 13 May 2025 14:49:43 -0400
-Message-Id: <20250513094633-1604f597cc222c28@stable.kernel.org>
+Subject: Re: [PATCH 6.1.y] hrtimers: Force migrate away hrtimers queued after CPUHP_AP_HRTIMERS_DYING
+Date: Tue, 13 May 2025 14:49:47 -0400
+Message-Id: <20250513104906-ef676fa035b23f5d@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <PN3PR01MB959722F0D276D1E717B69275B896A@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM>
+In-Reply-To:  <20250513060430.378468-1-lizy04@hust.edu.cn>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,17 +67,55 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 2abc698ac77314e0de5b33a6d96a39c5159d88e4
+The upstream commit SHA1 provided is correct: 53dac345395c0d2493cbc2f4c85fe38aef5b63f5
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Zhaoyang Li<lizy04@hust.edu.cn>
+Commit author: Frederic Weisbecker<frederic@kernel.org>
+
+Status in newer kernel trees:
+6.14.y | Present (exact SHA1)
+6.12.y | Present (different SHA1: e456a88bddae)
+6.6.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  2abc698ac7731 < -:  ------------- Input: synaptics - enable InterTouch on TUXEDO InfinityBook Pro 14 v5
--:  ------------- > 1:  e2d3e1fdb5301 Linux 6.14.6
+1:  53dac345395c0 ! 1:  80e6b55d26f94 hrtimers: Force migrate away hrtimers queued after CPUHP_AP_HRTIMERS_DYING
+    @@ Metadata
+      ## Commit message ##
+         hrtimers: Force migrate away hrtimers queued after CPUHP_AP_HRTIMERS_DYING
+     
+    +    [ Upstream commit 53dac345395c0d2493cbc2f4c85fe38aef5b63f5 ]
+    +
+         hrtimers are migrated away from the dying CPU to any online target at
+         the CPUHP_AP_HRTIMERS_DYING stage in order not to delay bandwidth timers
+         handling tasks involved in the CPU hotplug forward progress.
+    @@ Commit message
+         Link: https://lore.kernel.org/all/20250117232433.24027-1-frederic@kernel.org
+         Closes: 20241213203739.1519801-1-usamaarif642@gmail.com
+     
+    - ## include/linux/hrtimer_defs.h ##
+    -@@ include/linux/hrtimer_defs.h: struct hrtimer_cpu_base {
+    +    Signed-off-by: Zhaoyang Li <lizy04@hust.edu.cn>
+    +
+    + ## include/linux/hrtimer.h ##
+    +@@ include/linux/hrtimer.h: struct hrtimer_cpu_base {
+      	ktime_t				softirq_expires_next;
+      	struct hrtimer			*softirq_next_timer;
+      	struct hrtimer_clock_base	clock_base[HRTIMER_MAX_CLOCK_BASES];
+     +	call_single_data_t		csd;
+      } ____cacheline_aligned;
+      
+    - 
+    + static inline void hrtimer_set_expires(struct hrtimer *timer, ktime_t time)
+     
+      ## kernel/time/hrtimer.c ##
+     @@
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.4.y        |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Success   |
 
