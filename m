@@ -1,154 +1,142 @@
-Return-Path: <stable+bounces-144080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54A49AB49C6
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 04:58:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8972AAB49CB
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 04:59:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01B6A19E8198
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 02:58:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1B9E8C273B
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 02:59:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 744721C2437;
-	Tue, 13 May 2025 02:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20C861D63EE;
+	Tue, 13 May 2025 02:59:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Zfya9R7J"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cJSTfGuB"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C631B1C683
-	for <stable@vger.kernel.org>; Tue, 13 May 2025 02:58:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEEE01B3950;
+	Tue, 13 May 2025 02:59:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747105108; cv=none; b=taMG6Ux2sEAUXc9nz5qx/Y7JsopSYoE/5NOtR6zpXCi5iUhON1RBqcSQm0BzR5TicSLLBau3MxdvARCvSLXX2K0HmD1ZL0RwMFL+2ahAh3YCdMWv7rUQLAW/JE6VYxirepX7cyB6drKKo5VpLolAdNIJCi6f1rR777YAoYKrmrw=
+	t=1747105169; cv=none; b=fFmD4/YtLbWqJB1RP6bC2EkdxYWKc1e2DXBoHoaRBo7j4aQq8xP3Yba4Qgzc4EWBKkY+qRgIwhL0oIe2QuSY05dxGvwjXegrGoQ4WiYEEbOw0+hLGure/Q8sPNOwPjH+AfdbD84ULijigMkWBi9YwoOZFviyxav7TwafxGUMNQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747105108; c=relaxed/simple;
-	bh=+/YI0S18jPqJopaQprHR1V3MNh1pHtctH4ctgknaW5c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QBVeVodpv9XWC/4X2t+pZpu1eWz3mZ3rhCsxxH5xLUljOAn9LKMbO6t3abql2i7kNBzbDhOhic5UvO0B1xk77K6JtVOpk6a8s196KZN6Q7aACmHTkwWKXnaXgtpoXDEnAXUCLzSAx1UF4VRyHOqXfeTa8R2BCZqQuLOAw9A/fHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Zfya9R7J; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747105107; x=1778641107;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=+/YI0S18jPqJopaQprHR1V3MNh1pHtctH4ctgknaW5c=;
-  b=Zfya9R7JBvjwa/BUL++qXepYnMIyjuEcmvI+phoc4DTfBrcNzXUzhukO
-   kAsY6zUFq5fvYYjYPwVO8lNRY8SY8IRm9TMipBaYUEwakIzljtusAQCOv
-   PqSUDSUspqYYGnsQlnhmNzR2xlRWqDX94ZXWAU6cdrgaZLWumF3b9eFzB
-   4gkd2YiVjC/1FSTcOtvBvccYTPqERfgp2TNe/ZkOm9L8O7+AyzwHL5gDX
-   ECk+A5kd0I7yPyzdOdx+6Fe3CG3oqT4Nnvhp2i9LhgI7HtpbBYUVu3rFF
-   BsbDUhwBWEAlr+j6DqutEBcg1QJbPVfnf+yIOAmjP3HVROznj/ZS3MOCN
-   Q==;
-X-CSE-ConnectionGUID: 0mVe+wWYQAm3GiwziOuy4Q==
-X-CSE-MsgGUID: Wr/Cjs/PTTOa9R0ia2xnfQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11431"; a="51583525"
-X-IronPort-AV: E=Sophos;i="6.15,284,1739865600"; 
-   d="scan'208";a="51583525"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2025 19:58:26 -0700
-X-CSE-ConnectionGUID: hnRQiYMJT8adkVoN0JkbHA==
-X-CSE-MsgGUID: zkB/Sy6dSiqT4LsKbCKM2A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,284,1739865600"; 
-   d="scan'208";a="137576210"
-Received: from lvelazqu-mobl.amr.corp.intel.com (HELO desk) ([10.125.146.9])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2025 19:58:26 -0700
-Date: Mon, 12 May 2025 19:58:25 -0700
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: stable@vger.kernel.org
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
-	Alexandre Chartre <alexandre.chartre@oracle.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 5.15 03/14] x86/speculation: Add a conditional CS prefix to
- CALL_NOSPEC
-Message-ID: <20250512-its-5-15-v1-3-6a536223434d@linux.intel.com>
-X-Mailer: b4 0.14.2
-References: <20250512-its-5-15-v1-0-6a536223434d@linux.intel.com>
+	s=arc-20240116; t=1747105169; c=relaxed/simple;
+	bh=xnBuJ33IjmxKii5QXnuU99dRaHGsgayvZv3tVyw/OB4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Gd/35j0gNFB9X2xw8+rqM9d12qG4/u+aFjZSlWMF/ykh9UfF37o7essYGtdzGJ7flHtbtp6YqV79EcB7n2NsHHUMlfBXRRWsRcSFPxTzCp+FFtyEjjOqoiXkVvXHIm9JnQrs+SLjJw40UFz3pAbuZf9hE9RAkWqRwLCkgXt0DM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cJSTfGuB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F84AC4CEEE;
+	Tue, 13 May 2025 02:59:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747105169;
+	bh=xnBuJ33IjmxKii5QXnuU99dRaHGsgayvZv3tVyw/OB4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=cJSTfGuB7W6s0Ho/oDcxqTuuosSul45OM5now9iXhf+0TnRTTRjISmJsH98ckeTeO
+	 4mXFgWqyXel6VNHoOF7QpyBkJKe6bTMlXOkSjA/9qGxg9DcTzmvFCBhWhr1Wsr7LMB
+	 wYaPLHfuO2o8K8ZoVrOS20yMvH4vRjOaVCykU85PqjNXYNPKSE6o6ehjhEykBLZIsp
+	 dMGB6U0jnP1/lT0qLSEbsoDPVrac4lY28SZmhhwTcrYibea5lBnhfkeg5HY6LtTHSz
+	 NCbNFQ+grb5Y2PJ+c4XEc21tiW+3gpBW6CDEDJw9LfOj2H2MQxtksQn54D8llpx7gU
+	 reFJjz/akrrRg==
+From: Eric Biggers <ebiggers@kernel.org>
+To: x86@kernel.org
+Cc: Peter Zijlstra <peterz@infradead.org>,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] x86/its: Fix build errors when CONFIG_MODULES=n
+Date: Mon, 12 May 2025 19:58:39 -0700
+Message-ID: <20250513025839.495755-1-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250512-its-5-15-v1-0-6a536223434d@linux.intel.com>
+Content-Transfer-Encoding: 8bit
 
-commit 052040e34c08428a5a388b85787e8531970c0c67 upstream.
+From: Eric Biggers <ebiggers@google.com>
 
-Retpoline mitigation for spectre-v2 uses thunks for indirect branches. To
-support this mitigation compilers add a CS prefix with
--mindirect-branch-cs-prefix. For an indirect branch in asm, this needs to
-be added manually.
+Fix several build errors when CONFIG_MODULES=n, including the following:
 
-CS prefix is already being added to indirect branches in asm files, but not
-in inline asm. Add CS prefix to CALL_NOSPEC for inline asm as well. There
-is no JMP_NOSPEC for inline asm.
+../arch/x86/kernel/alternative.c:195:25: error: incomplete definition of type 'struct module'
+  195 |         for (int i = 0; i < mod->its_num_pages; i++) {
 
-Reported-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Andrew Cooper <andrew.cooper3@citrix.com
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250228-call-nospec-v3-2-96599fed0f33@linux.intel.com
+Fixes: 872df34d7c51 ("x86/its: Use dynamic thunks for indirect branches")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Biggers <ebiggers@google.com>
 ---
- arch/x86/include/asm/nospec-branch.h | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ arch/x86/kernel/alternative.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
-index 031a38366b0dd1e35a82e49d6b18147ada7dd80c..9b16113687e21e0a272ec2fa13b7f144efe833a7 100644
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -119,9 +119,8 @@
- .endm
- 
- /*
-- * Equivalent to -mindirect-branch-cs-prefix; emit the 5 byte jmp/call
-- * to the retpoline thunk with a CS prefix when the register requires
-- * a RAX prefix byte to encode. Also see apply_retpolines().
-+ * Emits a conditional CS prefix that is compatible with
-+ * -mindirect-branch-cs-prefix.
-  */
- .macro __CS_PREFIX reg:req
- 	.irp rs,r8,r9,r10,r11,r12,r13,r14,r15
-@@ -281,12 +280,24 @@ extern retpoline_thunk_t __x86_indirect_thunk_array[];
- 
- #ifdef CONFIG_X86_64
- 
-+/*
-+ * Emits a conditional CS prefix that is compatible with
-+ * -mindirect-branch-cs-prefix.
-+ */
-+#define __CS_PREFIX(reg)				\
-+	".irp rs,r8,r9,r10,r11,r12,r13,r14,r15\n"	\
-+	".ifc \\rs," reg "\n"				\
-+	".byte 0x2e\n"					\
-+	".endif\n"					\
-+	".endr\n"
-+
- /*
-  * Inline asm uses the %V modifier which is only in newer GCC
-  * which is ensured when CONFIG_RETPOLINE is defined.
-  */
- #ifdef CONFIG_RETPOLINE
--#define CALL_NOSPEC	"call __x86_indirect_thunk_%V[thunk_target]\n"
-+#define CALL_NOSPEC	__CS_PREFIX("%V[thunk_target]")	\
-+			"call __x86_indirect_thunk_%V[thunk_target]\n"
- #else
- #define CALL_NOSPEC	"call *%[thunk_target]\n"
+diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
+index 48fd04e90114..45bcff181cba 100644
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -131,11 +131,13 @@ const unsigned char * const x86_nops[ASM_NOP_MAX+1] =
+ static bool cfi_paranoid __ro_after_init;
  #endif
+ 
+ #ifdef CONFIG_MITIGATION_ITS
+ 
++#ifdef CONFIG_MODULES
+ static struct module *its_mod;
++#endif
+ static void *its_page;
+ static unsigned int its_offset;
+ 
+ /* Initialize a thunk with the "jmp *reg; int3" instructions. */
+ static void *its_init_thunk(void *thunk, int reg)
+@@ -169,10 +171,11 @@ static void *its_init_thunk(void *thunk, int reg)
+ 	bytes[i++] = 0xcc;
+ 
+ 	return thunk + offset;
+ }
+ 
++#ifdef CONFIG_MODULES
+ void its_init_mod(struct module *mod)
+ {
+ 	if (!cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS))
+ 		return;
+ 
+@@ -207,18 +210,20 @@ void its_free_mod(struct module *mod)
+ 		void *page = mod->its_page_array[i];
+ 		execmem_free(page);
+ 	}
+ 	kfree(mod->its_page_array);
+ }
++#endif /* CONFIG_MODULES */
+ 
+ static void *its_alloc(void)
+ {
+ 	void *page __free(execmem) = execmem_alloc(EXECMEM_MODULE_TEXT, PAGE_SIZE);
+ 
+ 	if (!page)
+ 		return NULL;
+ 
++#ifdef CONFIG_MODULES
+ 	if (its_mod) {
+ 		void *tmp = krealloc(its_mod->its_page_array,
+ 				     (its_mod->its_num_pages+1) * sizeof(void *),
+ 				     GFP_KERNEL);
+ 		if (!tmp)
+@@ -227,10 +232,11 @@ static void *its_alloc(void)
+ 		its_mod->its_page_array = tmp;
+ 		its_mod->its_page_array[its_mod->its_num_pages++] = page;
+ 
+ 		execmem_make_temp_rw(page, PAGE_SIZE);
+ 	}
++#endif /* CONFIG_MODULES */
+ 
+ 	return no_free_ptr(page);
+ }
+ 
+ static void *its_allocate_thunk(int reg)
 
+base-commit: 627277ba7c2398dc4f95cc9be8222bb2d9477800
 -- 
-2.34.1
-
+2.49.0
 
 
