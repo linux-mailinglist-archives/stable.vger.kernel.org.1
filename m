@@ -1,86 +1,51 @@
-Return-Path: <stable+bounces-144095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67ADEAB4A17
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 05:20:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91BF5AB4A1E
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 05:27:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D56111B42386
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 03:21:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EA1A77B1290
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 03:26:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EA6F1C173F;
-	Tue, 13 May 2025 03:20:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="uAMdjpc8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF2481D89FD;
+	Tue, 13 May 2025 03:27:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2061.outbound.protection.outlook.com [40.107.236.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5772845038
-	for <stable@vger.kernel.org>; Tue, 13 May 2025 03:20:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.61
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747106451; cv=fail; b=KjZYhhPI54SP6O+mBhV+WvL4ZTrc8oTeb/tgib7SHIcnAzwgzAI3bGcvCYgKmixGrnLNHS5jKDD73rjiOx91Woaa82Zci6pPKH4aJSB5o8GKa/1kaYUWM9BDfeeIl7xCC/L5/nKtn4WQjib5A4QU3ECNbqP9+AqsUTBs2joSEHs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747106451; c=relaxed/simple;
-	bh=IC3D8MjaZP4rS9rxqj6AIG7XI7ZPJzuuOMI7zBlLJBc=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UyevhiUywpFGzS+ps3jFre/Sz4zAuBw5hHhGXLsps4JARI3saSDsHIkn3uD6tsA6S6Gc/7sXPGlHhjBzjfJFBU+u0s9F4xOkfjG5uGcvyrfx1EodOBZXC4JNMPQJ9Cu+WXtNWcFo5KoLaUf27Y+Gcv8+T4xzb7Huc12tZe9ONNo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=uAMdjpc8; arc=fail smtp.client-ip=40.107.236.61
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=IAaDa9qYqkdxzC3XEbriR/o7hBNVTkx5eFejSoGnKimNybaMQgKzkPcJfAjAVQbhPR3XE/r7smIXJsowPGofj5OXmSjvomAxUIjqRIFWcIWyQWm21gpbwOnOXZLZ4cN1KMSdLgZJGpwl0zsH8BHSzVpMoJTk6s0yZbbGhmnX9cgLyheAzzttigbSySG4IkutQq5OErzuG6jOOVNgSaytFmcJ2b4VCuyMJLA6VPURulJB7pmUTcW+54NfJwzh82pLaNJJM0EEupGAV3TP44AQeeW/Ch4GjwQjfFbiW/to2UQgL1dG+YlaLO6G0Q0J0dKEQzIihdF43nbQAxiVtzdAHQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=9nCia4LSlyxLcmzF3bmn313yZhlA1MQqFbk8js91hVo=;
- b=k5TCdmnsTmPaIkN7REDz3HXKsbrIcQul3jqzAk+m17gQRjWv+Hwi4OyZ9DgUrECS9o5RG6Dap3ttKCCYGpS+dGUoEVFI+1AEIPOdgbnUDVyl0J9bTife5Q6YHR9jeo11wx5NtL2iJoNeWcATcL8mz3OkZL5xJYBIz7vmw14zsBIHZHPlAWlwUJVqINMp0Rw6UOeC/iTuTsCJ+jUSR9/5Rc7y8k3mmwCFOdC8yxMyxyHIs1N8XOn7jXvtq45R/yh/8bAvXffvOuBrkXBoFcG3dMoLXCiQrjTdykhmPpmH1N/Wk8d+PA5JxnoWy/IG2gukgXkzWJqc6ge+3xTasc8UFA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=9nCia4LSlyxLcmzF3bmn313yZhlA1MQqFbk8js91hVo=;
- b=uAMdjpc8UtHHzrrQcGBRi1vg6RIl+zT6/nhLJUnBp198cdUsXS/CWV/rTd7KghLpVtI+HZ5MYhlZ0FndjAEG0pyp8L7OTQ7tY9FAHSdZpPzhPHoplnPzPZYDpLH5do38Ab7xLszGewOShpu2otCnPZqJUg5uPb2rxxuKTW5CL0Y=
-Received: from DS7PR03CA0098.namprd03.prod.outlook.com (2603:10b6:5:3b7::13)
- by PH7PR12MB6740.namprd12.prod.outlook.com (2603:10b6:510:1ab::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.28; Tue, 13 May
- 2025 03:20:42 +0000
-Received: from CY4PEPF0000EDD0.namprd03.prod.outlook.com
- (2603:10b6:5:3b7:cafe::31) by DS7PR03CA0098.outlook.office365.com
- (2603:10b6:5:3b7::13) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8699.24 via Frontend Transport; Tue,
- 13 May 2025 03:20:42 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CY4PEPF0000EDD0.mail.protection.outlook.com (10.167.241.196) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8722.18 via Frontend Transport; Tue, 13 May 2025 03:20:41 +0000
-Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Mon, 12 May
- 2025 22:20:38 -0500
-Received: from localhost.localdomain (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
- Transport; Mon, 12 May 2025 22:20:35 -0500
-From: Wayne Lin <Wayne.Lin@amd.com>
-To: <amd-gfx@lists.freedesktop.org>
-CC: Harry Wentland <harry.wentland@amd.com>, Mario Limonciello
-	<mario.limonciello@amd.com>, Alex Deucher <alexander.deucher@amd.com>, "Wayne
- Lin" <Wayne.Lin@amd.com>, <stable@vger.kernel.org>
-Subject: [PATCH] drm/amd/display: Avoid flooding unnecessary info messages
-Date: Tue, 13 May 2025 11:20:24 +0800
-Message-ID: <20250513032026.838036-1-Wayne.Lin@amd.com>
-X-Mailer: git-send-email 2.43.0
+Received: from zg8tmja2lje4os4yms4ymjma.icoremail.net (zg8tmja2lje4os4yms4ymjma.icoremail.net [206.189.21.223])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06263EAF9
+	for <stable@vger.kernel.org>; Tue, 13 May 2025 03:27:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.21.223
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747106845; cv=none; b=bBtnrtzD//JYaKDKrYj3Il8RUOY5hhmH4GduNDk7I9veMkHUMwo5LGIiF7935tzas8xTE3iGYre8SrAx8kuIwSyQYwqB078XdxrmoDGoGbLTjcF2/8c5NKa483PXLLEmf5RjvuLc/1v2tjhpiDIbaUfgnLI1FI6rxKujlanM9dQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747106845; c=relaxed/simple;
+	bh=EIEHBct1LRjrFIpG+dMizkc2dYcslIuMANipXN0AZ7M=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=WUIvDIb2RKvWQjx6vlgn6S4XGW8r5aQ3/mkSNveL3l/sKNpz9+98BrPWOiXBl/Afg0yXdJ5y8FgRGZwLMXYD2GFG2a33mLrrDBVxKIj9VHe0ALbeUWMi6LXEh7X7zUnygxLT63YNR9c/73Ez4JRyASoNC1Gofr/TiklXSNGODy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hust.edu.cn; spf=pass smtp.mailfrom=hust.edu.cn; arc=none smtp.client-ip=206.189.21.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hust.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hust.edu.cn
+Received: from hust.edu.cn (unknown [172.16.0.52])
+	by app2 (Coremail) with SMTP id HwEQrADHp+zuuyJo0mVKAQ--.7326S2;
+	Tue, 13 May 2025 11:26:38 +0800 (CST)
+Received: from ubuntu.localdomain (unknown [10.12.190.56])
+	by gateway (Coremail) with SMTP id _____wDHzwPsuyJopV3DAg--.11386S4;
+	Tue, 13 May 2025 11:26:37 +0800 (CST)
+From: Zhaoyang Li <lizy04@hust.edu.cn>
+To: stable@vger.kernel.org
+Cc: dzm91@hust.edu.cn,
+	Boris Burkov <boris@bur.io>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Zhaoyang Li <lizy04@hust.edu.cn>
+Subject: [PATCH 6.1.y] btrfs: check folio mapping after unlock in relocate_one_folio()
+Date: Tue, 13 May 2025 11:25:23 +0800
+Message-Id: <20250513032523.377137-1-lizy04@hust.edu.cn>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <2024123045-parka-sublet-a95d@gregkh>
+References: <2024123045-parka-sublet-a95d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -88,99 +53,128 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-Received-SPF: None (SATLEXMB04.amd.com: Wayne.Lin@amd.com does not designate
- permitted sender hosts)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000EDD0:EE_|PH7PR12MB6740:EE_
-X-MS-Office365-Filtering-Correlation-Id: ef1648c3-4043-49c0-416e-08dd91cd2436
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|82310400026|36860700013|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?uIujJGufBZNwGCotSMvDPsOdwSomlSihUhici2dclEc4ZRRPdjCt8wl6Mt1r?=
- =?us-ascii?Q?/+LUpeFx65dkDLNDeIxjgi3o1uiQFJr9Z60vX7CsRgj/bCUbYqpvpNYJsSCI?=
- =?us-ascii?Q?7sZAaDZHYcHPLnwAp+2tDbqQBIqxvysUP+klofiJGO7w9MFArL04W5JertyI?=
- =?us-ascii?Q?AVESXzE8wv7cesIjWWPDSD5Ptcxr0fIDK3ixDy2TpzOKOdBy1BhiKJPKd7QA?=
- =?us-ascii?Q?Xbk3SeG2E6dw28xLbap5U3syF5v8fKa8QuA240FIVVRFdlvq2HSlNFFibd9y?=
- =?us-ascii?Q?ky9gKLbJoCP0Sr60lkmIhwfL1K1Uty5oBZrchL3yrTFbjTiuv8ZFjcg7fuAX?=
- =?us-ascii?Q?g/pybX2+aoixXtE6euBwXQC8K6s0qdJmO/bTSth3y85KzewI7G78lhmXh0DO?=
- =?us-ascii?Q?BaHLPpPw4+LIbj5Y8pz9xeXPZDd/nh0VjtJNoNb/0Zy8vdIeqUbxi9Mqx9jg?=
- =?us-ascii?Q?AAll0hFalguj2n6277B+cgtAq9KmkwAsv6BYXd9wXMluUC6/bPDpnxy6J4L+?=
- =?us-ascii?Q?r5mQ9MAq4GXAvKdIvE0jI3xTZPjGI+ZvnVF8cyrZlTs5lAS/vdyczgxZY0Pa?=
- =?us-ascii?Q?nx8egct0DFOBlQuFoL6q4Vw/ThO3wYJMaT93SdTYBa37hf7F/SwdfTtie8c7?=
- =?us-ascii?Q?Vaof22iwA2vMPkpP8fGjl2Bd0KM16bMPcgiFqefdTuSPVYUvmmsODl9vHgyJ?=
- =?us-ascii?Q?mjrPu5ATjccGLjcEVZsgZndnJ7vYtowNcItiWDq2H17Oy4bWkNw8gJcXqK67?=
- =?us-ascii?Q?2d7SlDkfSNvw9yoqk4etWhHompMw/yVCGTPpf2O4KzefwIxMgvs+dfqbWIsQ?=
- =?us-ascii?Q?lIyfsncvA0U11fPCGVXeV3O2v5IEqB/F3apzdA6nIhYc245j21VSP1OqEukK?=
- =?us-ascii?Q?LEXjnFtznSOkPLJoSeDW/2Mw7ff8MsZS5OGTpQSP2n4HgbLISyeLZeNHwH5o?=
- =?us-ascii?Q?mlGeSgAs4FajSs113bv68rP1WFFK/ms9L1D9i2OCnbGLqzu9bdS7iBRb/ufd?=
- =?us-ascii?Q?Pja02rwmdHqQt4iYHGrH2ymKmv30952OmxijEZheBtKjnYAYyjtLm3pfz+1+?=
- =?us-ascii?Q?lvX5MqDb8Tt8fV3olnu995/EutC2L2PD/h9K2vo9hFeA0VId0jKXl95Zmtjj?=
- =?us-ascii?Q?kRvHVCnudyAUsMDoN5qIPjdWB0nbEWrTSlaKU2zJmwYzo4OseAUd/l4YjC37?=
- =?us-ascii?Q?Hqp5bhP8p5FMjUZFi8zOojipXHadsGgoQlOxqiflAK+2KSo3rxmftYQCKJv5?=
- =?us-ascii?Q?+PTR2ZCSDLKVh03KK24qn/gO72QvHmTsdWF+jrw0/KwXHfS0NZg6dElU5X97?=
- =?us-ascii?Q?KB2q1ZmULxDhhrrNm0SOS11HROeWwuqft/fDjYREZ524UTWvWaqg+ovY1LkW?=
- =?us-ascii?Q?m9t40xIVmSG63dpsI0tRFWdtVFrvmTSdiooxGNQATCJBh43wd09w6Wgso13o?=
- =?us-ascii?Q?sdVaoIZfUpRl+CxiwnfzrTT/RB6mTg47ka0AFaboRTVkOJMiNjmkEj1bicPJ?=
- =?us-ascii?Q?8gdlHkyUph2M9IkVNMCx8ku09kpG7MuD8e2Z?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(82310400026)(36860700013)(1800799024);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2025 03:20:41.7380
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: ef1648c3-4043-49c0-416e-08dd91cd2436
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000EDD0.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6740
+X-CM-TRANSID:HwEQrADHp+zuuyJo0mVKAQ--.7326S2
+Authentication-Results: app2; spf=neutral smtp.mail=lizy04@hust.edu.cn
+	;
+X-Coremail-Antispam: 1UD129KBjvJXoWxXrWkurW5Zw43Ar18AF48Crg_yoWrXF43pr
+	y7Gr1DKr48Jr1UJr4xJ3Wjyr1rK3WDZay7XrWxZrn3Z3W3Jwn8t34DGr1jyFyUtr4ktrW2
+	qws8tw10qrn8AaUanT9S1TB71UUUUUJqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUQab7Iv0xC_Kw4lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
+	cIk0rVWrJVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjx
+	v20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1l84ACjcxK
+	6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1ln4kS14v26r
+	1Y6r17M2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI
+	12xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj64x0Y40En7xvr7AKxV
+	W8Jr0_Cr1UMcIj6x8ErcxFaVAv8VW8uFyUJr1UMcIj6xkF7I0En7xvr7AKxVW8Jr0_Cr1U
+	McvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwCY1x0262kKe7AKxVWUAVWUtw
+	CF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26r4fZr1UJr1l4I8I3I0E4IkC6x0Y
+	z7v_Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x
+	8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE
+	2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42
+	xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF
+	7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07bIiiDUUUUU=
+X-CM-SenderInfo: rpsqjjixsriko6kx23oohg3hdfq/1tbiAQgBB2ghb2GHSwAAsE
 
-It's expected that we'll encounter temporary exceptions
-during aux transactions. Adjust logging from drm_info to
-drm_dbg_dp to prevent flooding with unnecessary log messages.
+From: Boris Burkov <boris@bur.io>
 
-Fixes: 6285f12bc54c ("drm/amd/display: Fix wrong handling for AUX_DEFER case")
-Cc: stable@vger.kernel.org
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
+[ Upstream commit 3e74859ee35edc33a022c3f3971df066ea0ca6b9 ]
+
+When we call btrfs_read_folio() to bring a folio uptodate, we unlock the
+folio. The result of that is that a different thread can modify the
+mapping (like remove it with invalidate) before we call folio_lock().
+This results in an invalid page and we need to try again.
+
+In particular, if we are relocating concurrently with aborting a
+transaction, this can result in a crash like the following:
+
+  BUG: kernel NULL pointer dereference, address: 0000000000000000
+  PGD 0 P4D 0
+  Oops: 0000 [#1] SMP
+  CPU: 76 PID: 1411631 Comm: kworker/u322:5
+  Workqueue: events_unbound btrfs_reclaim_bgs_work
+  RIP: 0010:set_page_extent_mapped+0x20/0xb0
+  RSP: 0018:ffffc900516a7be8 EFLAGS: 00010246
+  RAX: ffffea009e851d08 RBX: ffffea009e0b1880 RCX: 0000000000000000
+  RDX: 0000000000000000 RSI: ffffc900516a7b90 RDI: ffffea009e0b1880
+  RBP: 0000000003573000 R08: 0000000000000001 R09: ffff88c07fd2f3f0
+  R10: 0000000000000000 R11: 0000194754b575be R12: 0000000003572000
+  R13: 0000000003572fff R14: 0000000000100cca R15: 0000000005582fff
+  FS:  0000000000000000(0000) GS:ffff88c07fd00000(0000) knlGS:0000000000000000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 0000000000000000 CR3: 000000407d00f002 CR4: 00000000007706f0
+  DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+  DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+  PKRU: 55555554
+  Call Trace:
+  <TASK>
+  ? __die+0x78/0xc0
+  ? page_fault_oops+0x2a8/0x3a0
+  ? __switch_to+0x133/0x530
+  ? wq_worker_running+0xa/0x40
+  ? exc_page_fault+0x63/0x130
+  ? asm_exc_page_fault+0x22/0x30
+  ? set_page_extent_mapped+0x20/0xb0
+  relocate_file_extent_cluster+0x1a7/0x940
+  relocate_data_extent+0xaf/0x120
+  relocate_block_group+0x20f/0x480
+  btrfs_relocate_block_group+0x152/0x320
+  btrfs_relocate_chunk+0x3d/0x120
+  btrfs_reclaim_bgs_work+0x2ae/0x4e0
+  process_scheduled_works+0x184/0x370
+  worker_thread+0xc6/0x3e0
+  ? blk_add_timer+0xb0/0xb0
+  kthread+0xae/0xe0
+  ? flush_tlb_kernel_range+0x90/0x90
+  ret_from_fork+0x2f/0x40
+  ? flush_tlb_kernel_range+0x90/0x90
+  ret_from_fork_asm+0x11/0x20
+  </TASK>
+
+This occurs because cleanup_one_transaction() calls
+destroy_delalloc_inodes() which calls invalidate_inode_pages2() which
+takes the folio_lock before setting mapping to NULL. We fail to check
+this, and subsequently call set_extent_mapping(), which assumes that
+mapping != NULL (in fact it asserts that in debug mode)
+
+Note that the "fixes" patch here is not the one that introduced the
+race (the very first iteration of this code from 2009) but a more recent
+change that made this particular crash happen in practice.
+
+Fixes: e7f1326cc24e ("btrfs: set page extent mapped after read_folio in relocate_one_page")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Zhaoyang Li <lizy04@hust.edu.cn>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/btrfs/relocation.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-index 0d7b72c75802..25e8befbcc47 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-@@ -107,7 +107,7 @@ static ssize_t dm_dp_aux_transfer(struct drm_dp_aux *aux,
- 	if (payload.write && result >= 0) {
- 		if (result) {
- 			/*one byte indicating partially written bytes*/
--			drm_info(adev_to_drm(adev), "amdgpu: AUX partially written\n");
-+			drm_dbg_dp(adev_to_drm(adev), "amdgpu: AUX partially written\n");
- 			result = payload.data[0];
- 		} else if (!payload.reply[0])
- 			/*I2C_ACK|AUX_ACK*/
-@@ -133,11 +133,11 @@ static ssize_t dm_dp_aux_transfer(struct drm_dp_aux *aux,
- 			break;
- 		}
+diff --git a/fs/btrfs/relocation.c b/fs/btrfs/relocation.c
+index d6cda0b2e925..fd6ea3fcab33 100644
+--- a/fs/btrfs/relocation.c
++++ b/fs/btrfs/relocation.c
+@@ -2977,6 +2977,7 @@ static int relocate_one_page(struct inode *inode, struct file_ra_state *ra,
+ 	int ret;
  
--		drm_info(adev_to_drm(adev), "amdgpu: DP AUX transfer fail:%d\n", operation_result);
-+		drm_dbg_dp(adev_to_drm(adev), "amdgpu: DP AUX transfer fail:%d\n", operation_result);
+ 	ASSERT(page_index <= last_index);
++again:
+ 	page = find_lock_page(inode->i_mapping, page_index);
+ 	if (!page) {
+ 		page_cache_sync_readahead(inode->i_mapping, ra, NULL,
+@@ -2998,6 +2999,11 @@ static int relocate_one_page(struct inode *inode, struct file_ra_state *ra,
+ 			ret = -EIO;
+ 			goto release_page;
+ 		}
++		if (page->mapping != inode->i_mapping) {
++			unlock_page(page);
++			put_page(page);
++			goto again;
++		}
  	}
  
- 	if (payload.reply[0])
--		drm_info(adev_to_drm(adev), "amdgpu: AUX reply command not ACK: 0x%02x.",
-+		drm_dbg_dp(adev_to_drm(adev), "amdgpu: AUX reply command not ACK: 0x%02x.",
- 			payload.reply[0]);
- 
- 	return result;
+ 	/*
 -- 
-2.43.0
+2.25.1
 
 
