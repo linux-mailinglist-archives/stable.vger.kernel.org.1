@@ -1,233 +1,139 @@
-Return-Path: <stable+bounces-144070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCEB4AB48E5
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 03:42:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CD40AB48F7
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 03:52:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C7B647B1112
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 01:41:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0DFA61769E3
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 01:52:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FF7D1990D9;
-	Tue, 13 May 2025 01:42:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Chy+YN34"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26F2B1922FD;
+	Tue, 13 May 2025 01:52:37 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A5517583;
-	Tue, 13 May 2025 01:42:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E715613AD26;
+	Tue, 13 May 2025 01:52:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.178.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747100534; cv=none; b=MdzSf3q/AH5N3SX/zRHvbDTZ5J/GvqX+EYNINU1zz5rDyBx728ywOmXjS3F10r242H5lYtGd7WuWQKGDcVngu0Y1ipRrn9FafeUTCKPxLHs3aH4lkg3VKHN/xHTk/GqvXknQEgA4DXnNozdO6w8uopZ+i9WUwRm/SQwHm8ONtnc=
+	t=1747101157; cv=none; b=rGOzV85YXnjjcJxHAVCDAtohspp6hYGS3xk1s22M+iW3j7rRbJQzcxavB/cvjynBxz4qYVdMUFJ++/LciN+ZspJwprJTKbJ5Sofwv4rhELdUnZALdSaUlklJUxSvIK1qR6K3odYuQVGm08B+gDnAKl1pZ1UkDS29a/BQA124/4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747100534; c=relaxed/simple;
-	bh=tqfQS6oxsFjhPs/Z50e9x6aN2DzbxyZhm92wCnbhKDU=;
-	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To; b=WDZMH0TU8JnhYd/5KIISUp8SKg/2IDzpAq7MyySEJtsl/dybSewwLAK9AoXpsOaveH7BzMvd3UX4AhOA68qBasZHO9zxlXR8S2q0H+EmdGr69DwX3QsJp0lcMTQD+xeskqoqMkdvrVSrsGBNrGsPDtI+Y/SvGkpxfdE6j198dmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Chy+YN34; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747100533; x=1778636533;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to;
-  bh=tqfQS6oxsFjhPs/Z50e9x6aN2DzbxyZhm92wCnbhKDU=;
-  b=Chy+YN34mY22ZozBYtd+UuJLKPU0k1atSJLJxHgE8OJYrSbYWNknitm5
-   k0TfKjYt+u41Mz/zSwY9mLVkeRgULYZnKU1GNIFoHoD6qFXKRY1WvD3Dp
-   rj6NhzSn3eLvElDobR72/6AfD4ZVwIcVlaeBOLroLmPklJ29LTpWXe1wZ
-   wLY+SBpwtqvhpkyOfxgV6NqMLM1MTvPRjIlnnbNnMVhWcHbzfXT+2wPgn
-   wSI/W0voq/szmnEtNneRVoMhwzhS2vRzHcoRKTVh+END9bNNAaUm0BKHT
-   LvAlCtatqTCpJwW1GbM3aQdrvSB/KYPV6mXSZqQwYWCnoBQaYWzH6h+r+
-   g==;
-X-CSE-ConnectionGUID: HwHAbeAYRFCWAZp1ygjLoQ==
-X-CSE-MsgGUID: B2tVQlv9Qn6R8btHW58VWw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11431"; a="66332200"
-X-IronPort-AV: E=Sophos;i="6.15,283,1739865600"; 
-   d="scan'208";a="66332200"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2025 18:42:13 -0700
-X-CSE-ConnectionGUID: gs+bo9UCRS6oUiHvHgEzow==
-X-CSE-MsgGUID: 98vXkWv8RyW7ZTZtktSHOA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,283,1739865600"; 
-   d="scan'208";a="142497925"
-Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2025 18:42:10 -0700
-Content-Type: multipart/mixed; boundary="------------Pmc9TytVRXbvZn0nfSt18r6r"
-Message-ID: <5d760ba9-031f-469b-96e0-a171b7142f88@linux.intel.com>
-Date: Tue, 13 May 2025 09:37:33 +0800
+	s=arc-20240116; t=1747101157; c=relaxed/simple;
+	bh=M595WY/9RVqODvqTZylWt2B6BMgRbFBdcAnXmJIlofk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mBQKJMtwUAFpnbAD5KpjC+UAuPQGVkxroFrhmMyeYqZVmCzQLIyxrsNrBD+oYYWe6KityU9kNIG6eoyBuGLj2LBR/Hrh1RY0nGLTvAMduOIcrEMWo6o6flRM6+i4xifcxwWgllSHa7IldMY+kt/IOUIFcbg5OIZWwThKuzYtl2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.178.238
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
+Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54D196Q8028546;
+	Tue, 13 May 2025 01:52:21 GMT
+Received: from ala-exchng01.corp.ad.wrs.com (ala-exchng01.wrs.com [147.11.82.252])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 46hv11jg9p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Tue, 13 May 2025 01:52:21 +0000 (GMT)
+Received: from ala-exchng01.corp.ad.wrs.com (147.11.82.252) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.43; Mon, 12 May 2025 18:52:19 -0700
+Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
+ ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server id
+ 15.1.2507.43 via Frontend Transport; Mon, 12 May 2025 18:52:15 -0700
+From: <jianqi.ren.cn@windriver.com>
+To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>
+CC: <patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+        <jianqi.ren.cn@windriver.com>, <harry.wentland@amd.com>,
+        <sunpeng.li@amd.com>, <Rodrigo.Siqueira@amd.com>,
+        <alexander.deucher@amd.com>, <christian.koenig@amd.com>,
+        <Xinhui.Pan@amd.com>, <airlied@gmail.com>, <daniel@ffwll.ch>,
+        <Jerry.Zuo@amd.com>, <wayne.lin@amd.com>,
+        <amd-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
+        <zaeem.mohamed@amd.com>, <daniel.wheeler@amd.com>
+Subject: [PATCH 6.1.y] drm/amd/display: Don't refer to dc_sink in is_dsc_need_re_compute
+Date: Tue, 13 May 2025 09:52:14 +0800
+Message-ID: <20250513015214.3360461-1-jianqi.ren.cn@windriver.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] applespi from 6.12 onwards
-To: kobarity <kobarity@gmail.com>
-Cc: Aditya Garg <gargaditya08@live.com>, =?UTF-8?Q?Berkel_J=C3=B6rg?=
- <joerg.berkel@bfh.ch>, Robin Murphy <robin.murphy@arm.com>,
- "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
- "dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
- "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
- "lukas@wunner.de" <lukas@wunner.de>, David Woodhouse <dwmw2@infradead.org>,
- "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
- Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>
-References: <4dada48a-c5dd-4c30-9c85-5b03b0aa01f0@bfh.ch>
- <PN3PR01MB9597D8E327CC7910673849D3B888A@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM>
- <122a1f90-ddd9-4e74-96d1-57e21e580ae2@linux.intel.com>
- <f1b41874-1535-4457-9747-eee3d816091a@arm.com>
- <PN3PR01MB959764E908600CD45169348CB88BA@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM>
- <c0bbfcc8-1275-43de-be40-acb8f2653359@bfh.ch>
- <PN3PR01MB959708DEEA1567DD38447D5AB895A@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM>
- <eke7wmanw9xq.wl-kobarity@gmail.com>
- <089b2370-23e4-4a22-bf57-886e46247a1f@linux.intel.com>
- <eke7v7q6vxai.wl-kobarity@gmail.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <eke7v7q6vxai.wl-kobarity@gmail.com>
-
-This is a multi-part message in MIME format.
---------------Pmc9TytVRXbvZn0nfSt18r6r
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Authority-Analysis: v=2.4 cv=TZCWtQQh c=1 sm=1 tr=0 ts=6822a5d5 cx=c_pps a=/ZJR302f846pc/tyiSlYyQ==:117 a=/ZJR302f846pc/tyiSlYyQ==:17 a=dt9VzEwgFbYA:10 a=zd2uoN0lAAAA:8 a=t7CeM3EgAAAA:8 a=r8Kla15me-PCpvyDwbMA:9 a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-GUID: IfsBuhMvJYAouEqq-Dl30CUPGKGNyJ_c
+X-Proofpoint-ORIG-GUID: IfsBuhMvJYAouEqq-Dl30CUPGKGNyJ_c
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTEzMDAxNSBTYWx0ZWRfX7nmkn/8mDoje Fu6onx5XJN1H5fJMKinqsKlP5HAFLE1QQasBeElUiF/SbMgJGKkB9hZOr/ew42pm0nDLMWgUI4W V/EsSWVwW61Z51laT7w7InyLPRX3xme8ONHquNW6HgbftrO+Cpq7p8OB4vFkT3Gs7ihGYGYfgvD
+ ay3+E9SJ1uYKkZAdyQ9wuT7BypwFVkFzrnoyDV+7sBaruPdXAb+PrclKMYMIxbuNmE//HVlRXrG P7+iIe/m5uiYzbPoViTrBjuNd8z/mLkzk26QhcRtEccGCgdM3HPV/PbZUPTl71Ym6WTE8J6XXn6 gL5BhoBsSGlinnrKV4oA/jiFla8R74Q1RpuTdxU71KEZ074FQXflRKan9K2PFUgzRipgTttlKl2
+ +tTBEH55Fo4Ca25TQrfddwm4HOBvBbS4uqe8WzGubnhpN3Z5CVEJV3hQNmQvy/kFRNJqOpE4
+X-Sensitive_Customer_Information: Yes
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-12_07,2025-05-09_01,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 bulkscore=0
+ phishscore=0 mlxscore=0 adultscore=0 mlxlogscore=999 suspectscore=0
+ lowpriorityscore=0 priorityscore=1501 malwarescore=0 impostorscore=0
+ spamscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.21.0-2504070000
+ definitions=main-2505130015
 
-On 5/12/25 20:16, kobarity wrote:
-> Baolu Lu wrote:
->> On 5/11/25 21:31, kobarity wrote:
->>>
->>> Hi
->>>
->>> I'm also experiencing this problem on my MacBookPro14,3.
->>>
->>> Aditya Garg wrote:
->>>>
->>>> Hi Jörg
->>>>
->>>> Can you test the kernel here to see if this fixes your issue:
->>>>
->>>> https://github.com/t2linux/T2-Debian-and-Ubuntu-Kernel/actions/runs/14944200356
->>>>
->>>> Alternatively you can try compiling your own kernel with this patch:
->>>>
->>>> https://lore.kernel.org/all/0-v1-c26553717e90+65f-iommu_vtd_ss_wo_jgg@nvidia.com/
->>>
->>> As far as I have tried, this patch did not solve the problem.
->>>
->>> By bisecting, I found that this problem was introduced by commit
->>> 2031c469f816 ("iommu/vt-d: Add support for static identity domain").
->>> In fact, since this commit, it will panic at startup.  This panic was
->>> fixed by commit 6e02a277f1db ("iommu/vt-d: Fix incorrect
->>> pci_for_each_dma_alias() for non-PCI devices").  So I applied commit
->>> 6e02a277f1db on commit 2031c469f816 and confirmed that the keyboard
->>> and touchpad is not working.
->>
->> Have you tried to apply commit 64f792981e35 ("iommu/vt-d: Remove device
->> comparison in context_setup_pass_through_cb")?
-> 
-> Yes, I tried it on yesterday's master branch, including commit
-> 64f792981e35.
-> 
-> - Keyboard/Touchpad NOT working:
->    - No patches
->    - With patch in https://lore.kernel.org/all/0-v1-c26553717e90+65f-iommu_vtd_ss_wo_jgg@nvidia.com/
-> - Keyboard/Touchpad working:
->    - With my workaround patch
+From: Wayne Lin <wayne.lin@amd.com>
 
-Okay, thanks! Can you please try below change? I also attached a diff
-file in the attachment for your convenience.
+[ Upstream commit fcf6a49d79923a234844b8efe830a61f3f0584e4 ]
 
-diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-index 49530d5d8c85..9a86ead8377d 100644
---- a/drivers/iommu/intel/iommu.c
-+++ b/drivers/iommu/intel/iommu.c
-@@ -1832,6 +1832,8 @@ static int dmar_domain_attach_device(struct 
-dmar_domain *domain,
-         if (ret)
-                 goto out_block_translation;
+[Why]
+When unplug one of monitors connected after mst hub, encounter null pointer dereference.
 
-+       info->domain_attached = true;
-+
-         return 0;
+It's due to dc_sink get released immediately in early_unregister() or detect_ctx(). When
+commit new state which directly referring to info stored in dc_sink will cause null pointer
+dereference.
 
-  out_block_translation:
-@@ -3206,6 +3208,10 @@ void device_block_translation(struct device *dev)
-         struct intel_iommu *iommu = info->iommu;
-         unsigned long flags;
+[how]
+Remove redundant checking condition. Relevant condition should already be covered by checking
+if dsc_aux is null or not. Also reset dsc_aux to NULL when the connector is disconnected.
 
-+       /* Device in DMA blocking state. Noting to do. */
-+       if (!info->domain_attached)
-+               return;
-+
-         if (info->domain)
-                 cache_tag_unassign_domain(info->domain, dev, 
-IOMMU_NO_PASID);
+Reviewed-by: Jerry Zuo <jerry.zuo@amd.com>
+Acked-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
+Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[The deleted codes in this fix is introduced by commit b9b5a82c5321
+("drm/amd/display: Fix DSC-re-computing") after 6.11.]
+Signed-off-by: Jianqi Ren <jianqi.ren.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
+---
+Verified the build test
+---
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-@@ -4302,6 +4308,9 @@ static int identity_domain_attach_dev(struct 
-iommu_domain *domain, struct device
-         else
-                 ret = device_setup_pass_through(dev);
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+index 5eb994ed5471..6bb590bc7c19 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+@@ -183,6 +183,8 @@ amdgpu_dm_mst_connector_early_unregister(struct drm_connector *connector)
+ 		dc_sink_release(dc_sink);
+ 		aconnector->dc_sink = NULL;
+ 		aconnector->edid = NULL;
++		aconnector->dsc_aux = NULL;
++		port->passthrough_aux = NULL;
+ 	}
+ 
+ 	aconnector->mst_status = MST_STATUS_DEFAULT;
+@@ -487,6 +489,8 @@ dm_dp_mst_detect(struct drm_connector *connector,
+ 		dc_sink_release(aconnector->dc_sink);
+ 		aconnector->dc_sink = NULL;
+ 		aconnector->edid = NULL;
++		aconnector->dsc_aux = NULL;
++		port->passthrough_aux = NULL;
+ 
+ 		amdgpu_dm_set_mst_status(&aconnector->mst_status,
+ 			MST_REMOTE_EDID | MST_ALLOCATE_NEW_PAYLOAD | MST_CLEAR_ALLOCATED_PAYLOAD,
+-- 
+2.34.1
 
-+       if (!ret)
-+               info->domain_attached = true;
-+
-         return ret;
-  }
-
-diff --git a/drivers/iommu/intel/iommu.h b/drivers/iommu/intel/iommu.h
-index cbfb8bb4c94a..3ddbcc603de2 100644
---- a/drivers/iommu/intel/iommu.h
-+++ b/drivers/iommu/intel/iommu.h
-@@ -774,6 +774,7 @@ struct device_domain_info {
-         u8 ats_supported:1;
-         u8 ats_enabled:1;
-         u8 dtlb_extra_inval:1;  /* Quirk for devices need extra flush */
-+       u8 domain_attached:1;   /* Device has domain attached */
-         u8 ats_qdep;
-         unsigned int iopf_refcount;
-         struct device *dev; /* it's NULL for PCIe-to-PCI bridge */
-
-Thanks,
-baolu
---------------Pmc9TytVRXbvZn0nfSt18r6r
-Content-Type: text/x-patch; charset=UTF-8; name="diff.patch"
-Content-Disposition: attachment; filename="diff.patch"
-Content-Transfer-Encoding: base64
-
-ZGlmZiAtLWdpdCBhL2RyaXZlcnMvaW9tbXUvaW50ZWwvaW9tbXUuYyBiL2RyaXZlcnMvaW9t
-bXUvaW50ZWwvaW9tbXUuYwppbmRleCA0OTUzMGQ1ZDhjODUuLjlhODZlYWQ4Mzc3ZCAxMDA2
-NDQKLS0tIGEvZHJpdmVycy9pb21tdS9pbnRlbC9pb21tdS5jCisrKyBiL2RyaXZlcnMvaW9t
-bXUvaW50ZWwvaW9tbXUuYwpAQCAtMTgzMiw2ICsxODMyLDggQEAgc3RhdGljIGludCBkbWFy
-X2RvbWFpbl9hdHRhY2hfZGV2aWNlKHN0cnVjdCBkbWFyX2RvbWFpbiAqZG9tYWluLAogCWlm
-IChyZXQpCiAJCWdvdG8gb3V0X2Jsb2NrX3RyYW5zbGF0aW9uOwogCisJaW5mby0+ZG9tYWlu
-X2F0dGFjaGVkID0gdHJ1ZTsKKwogCXJldHVybiAwOwogCiBvdXRfYmxvY2tfdHJhbnNsYXRp
-b246CkBAIC0zMjA2LDYgKzMyMDgsMTAgQEAgdm9pZCBkZXZpY2VfYmxvY2tfdHJhbnNsYXRp
-b24oc3RydWN0IGRldmljZSAqZGV2KQogCXN0cnVjdCBpbnRlbF9pb21tdSAqaW9tbXUgPSBp
-bmZvLT5pb21tdTsKIAl1bnNpZ25lZCBsb25nIGZsYWdzOwogCisJLyogRGV2aWNlIGluIERN
-QSBibG9ja2luZyBzdGF0ZS4gTm90aW5nIHRvIGRvLiAqLworCWlmICghaW5mby0+ZG9tYWlu
-X2F0dGFjaGVkKQorCQlyZXR1cm47CisKIAlpZiAoaW5mby0+ZG9tYWluKQogCQljYWNoZV90
-YWdfdW5hc3NpZ25fZG9tYWluKGluZm8tPmRvbWFpbiwgZGV2LCBJT01NVV9OT19QQVNJRCk7
-CiAKQEAgLTQzMDIsNiArNDMwOCw5IEBAIHN0YXRpYyBpbnQgaWRlbnRpdHlfZG9tYWluX2F0
-dGFjaF9kZXYoc3RydWN0IGlvbW11X2RvbWFpbiAqZG9tYWluLCBzdHJ1Y3QgZGV2aWNlCiAJ
-ZWxzZQogCQlyZXQgPSBkZXZpY2Vfc2V0dXBfcGFzc190aHJvdWdoKGRldik7CiAKKwlpZiAo
-IXJldCkKKwkJaW5mby0+ZG9tYWluX2F0dGFjaGVkID0gdHJ1ZTsKKwogCXJldHVybiByZXQ7
-CiB9CiAKZGlmZiAtLWdpdCBhL2RyaXZlcnMvaW9tbXUvaW50ZWwvaW9tbXUuaCBiL2RyaXZl
-cnMvaW9tbXUvaW50ZWwvaW9tbXUuaAppbmRleCBjYmZiOGJiNGM5NGEuLjNkZGJjYzYwM2Rl
-MiAxMDA2NDQKLS0tIGEvZHJpdmVycy9pb21tdS9pbnRlbC9pb21tdS5oCisrKyBiL2RyaXZl
-cnMvaW9tbXUvaW50ZWwvaW9tbXUuaApAQCAtNzc0LDYgKzc3NCw3IEBAIHN0cnVjdCBkZXZp
-Y2VfZG9tYWluX2luZm8gewogCXU4IGF0c19zdXBwb3J0ZWQ6MTsKIAl1OCBhdHNfZW5hYmxl
-ZDoxOwogCXU4IGR0bGJfZXh0cmFfaW52YWw6MTsJLyogUXVpcmsgZm9yIGRldmljZXMgbmVl
-ZCBleHRyYSBmbHVzaCAqLworCXU4IGRvbWFpbl9hdHRhY2hlZDoxOwkvKiBEZXZpY2UgaGFz
-IGRvbWFpbiBhdHRhY2hlZCAqLwogCXU4IGF0c19xZGVwOwogCXVuc2lnbmVkIGludCBpb3Bm
-X3JlZmNvdW50OwogCXN0cnVjdCBkZXZpY2UgKmRldjsgLyogaXQncyBOVUxMIGZvciBQQ0ll
-LXRvLVBDSSBicmlkZ2UgKi8K
-
---------------Pmc9TytVRXbvZn0nfSt18r6r--
 
