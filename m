@@ -1,214 +1,148 @@
-Return-Path: <stable+bounces-144180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144183-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82C16AB5821
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 17:10:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDFBEAB58E2
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 17:40:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C65523A9DE2
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 15:10:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8167616B927
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 15:40:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8692C28F501;
-	Tue, 13 May 2025 15:10:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E36A62BE103;
+	Tue, 13 May 2025 15:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kvaser.com header.i=@kvaser.com header.b="iXXPawG6"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="hxvAFFFb"
 X-Original-To: stable@vger.kernel.org
-Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2114.outbound.protection.outlook.com [40.107.22.114])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 450EE482F2;
-	Tue, 13 May 2025 15:10:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.114
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747149020; cv=fail; b=hfE18r25ehSfu7OhHVUxg+2R9cfymVtHjOSvcoqesyGL4MG75RniuX98KYuvpLfM4/rN6j0EApBvceo0PEAcVepdfXNBL9Qz04tZeM7ddhXXROlLE6H+kfvCOpfvVWYFwl7ogi482eJlULzSuNfNWo08Nm+hWcuLmco/uqX11Nw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747149020; c=relaxed/simple;
-	bh=cHyFhLgZgXczPy1YDuJGgvZcckbko3tqzyoomWqLRnI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=oA3bp6FEHmiUEKqwXvjKDgDadUUS3TwfywKRWwXAC64dFziTt+MOPFqR5gEuQPgtjbm0oTMZRwipMaj5NayjEfiwES7qC+IDItsE5mWHC5zIVz4NYc9zNhDPC+ujuSUCpvDgg0Jtro1EvJYrxb2dJBOPGllKZdnkpbxtMv71b2s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kvaser.com; spf=pass smtp.mailfrom=kvaser.com; dkim=pass (1024-bit key) header.d=kvaser.com header.i=@kvaser.com header.b=iXXPawG6; arc=fail smtp.client-ip=40.107.22.114
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kvaser.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kvaser.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xxgBTpvbdgkABk7dJtZgbx1OwMpI5meKtgOLVXztVhzEWgH5SKOIQurSoVWBmKzfhoIQz7uedq0JEr/TIn4/VxUWXqUL/uBksY+m8Vl+OQwMgWyd3TUQmisQL9agm+IccYWxvdYQekggR0a7r3GKwDaUwu7eP0kYOaogt2Up4jKpJYTK4a8qL2zrtGp1P1F3w63Dz9ZVeiVmlB8eGAUwaK7tOsedhjEwsQH16WOGmQ7zgoyJgr4F7WiA1WcbSFJtz83CU4Bx6394aXD5Rg21Qx9Wh3QiWS+Wcau9s9Aiet6FClmM1N1pS9uRnp5LpFHzvA1WwFWWBu2p0IRGp+KTVw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=UlG/P3jWuScz824gZK8v9sNZx33XrP2syVe2GUjjMFQ=;
- b=Oy0U32WQnlbExJa3jc5/3KNTvX7kqK1B+PiBcAQeV+oZHYSMbqYHCrg6cwkb7gkEgOrDhF4kJ2XhOf8kc+ExRqF8AgcJK3N15eI1n9NJKPNIqcBKMAVtjFozJnrODc4WH9JpDyligaSXACV7KOBcJSWzezSigqP2AOHG/d2goBnE+6yY006dSGSu7RrfsdG9mvGPlUuaJtCcmolgxI0YKqOgRnGR8VbarCt5avvTyCqJ88E6C65uvQSOgK7i4YUQinIHCuVMgJ0/6AAuMC99p5k8N6539Z/2z9pH8ONVI3c6jgye/y5kN2hoNnmIJRpNcDCc7c6J4y1te77JooJq9Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=kvaser.com; dmarc=pass action=none header.from=kvaser.com;
- dkim=pass header.d=kvaser.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kvaser.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=UlG/P3jWuScz824gZK8v9sNZx33XrP2syVe2GUjjMFQ=;
- b=iXXPawG6L/dL9ON/8W7dg5YSXwHcSx1lAFyf4uHD/VdwEj0m/YaqOYx6gw9UqmwJTP4Lg4SOicfk1Oc1OzDkOQbmQ/6R3BCnS6SFPiO7CQX3Q+12jCdXAGbG7Qpj3eYjau2sFfaf4jusLe1i0F/wvjdgWi2DbH3qWiQuCiPaWpM=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=kvaser.com;
-Received: from AM9P193MB1652.EURP193.PROD.OUTLOOK.COM (2603:10a6:20b:3ed::14)
- by AS8P193MB1352.EURP193.PROD.OUTLOOK.COM (2603:10a6:20b:351::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.30; Tue, 13 May
- 2025 15:10:14 +0000
-Received: from AM9P193MB1652.EURP193.PROD.OUTLOOK.COM
- ([fe80::e973:de09:5df2:4e18]) by AM9P193MB1652.EURP193.PROD.OUTLOOK.COM
- ([fe80::e973:de09:5df2:4e18%7]) with mapi id 15.20.8722.027; Tue, 13 May 2025
- 15:10:14 +0000
-From: Axel Forsman <axfo@kvaser.com>
-To: linux-can@vger.kernel.org
-Cc: mkl@pengutronix.de,
-	mailhol.vincent@wanadoo.fr,
-	Axel Forsman <axfo@kvaser.com>,
-	stable@vger.kernel.org,
-	Jimmy Assarsson <extja@kvaser.com>
-Subject: [PATCH v2 3/3] can: kvaser_pciefd: Continue parsing DMA buf after dropped RX
-Date: Tue, 13 May 2025 17:09:39 +0200
-Message-ID: <20250513150939.61319-4-axfo@kvaser.com>
-X-Mailer: git-send-email 2.47.2
-In-Reply-To: <20250513150939.61319-1-axfo@kvaser.com>
-References: <20250513150939.61319-1-axfo@kvaser.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MM0P280CA0033.SWEP280.PROD.OUTLOOK.COM
- (2603:10a6:190:b::13) To AM9P193MB1652.EURP193.PROD.OUTLOOK.COM
- (2603:10a6:20b:3ed::14)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 249852BE0F9;
+	Tue, 13 May 2025 15:40:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747150840; cv=none; b=Aql6TjgsEScNtPCK70s1OpRMUCCibwoGI78XKhI1k6JkCHHh06ylVeZnuItXoMwLYQ9Jx9bcWjxQmGTrP1Olum6AAp8aYNNDeyWuL9MG3PY9Ku+8E5B9Q2rVZyn7fBKuBODv1QFN2vvNaylK+nxsPHzqV+ppLBPZZnN2i/2vMcc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747150840; c=relaxed/simple;
+	bh=CA9HKh4zrFSNCYLEtZ0JCP1cKMnxrY99Mpg4RTowzeE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TkYyJk/PuFKetPWsw8DJHz/nHHEOmjbiiIbduYnAzOokPdLu3XPR45JpMFvkfjvtpxnZsaFXSnWtAa4WW4aaL33enxcGFHRZplqg0ZFSF53vHpoVzSWPlpfLh8yQzlGdjfOnRZNXPwn7hzi0D/l31Rf1xSdnri9fI/sTBpH0LgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=hxvAFFFb; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54DDni6C032140;
+	Tue, 13 May 2025 15:40:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=CQfh1MzvC6iT6mM7lVHwgZXBAw8DRUvB7ncdS0TY2
+	e0=; b=hxvAFFFbkhqdWNx95+5jOo17Y6uIjiDUF7i8oTaX/TkUPk3FjUkX1Wjl+
+	y9t5ShYsSoAYgxO2faRcbywCasa2mSvTKs9Ylkx1mjVQPEoyeir2fAwlhnT77uKl
+	MrS4AxM58esi9zO8wNKw1uFULgqn7L71vIo2IGkNXx+EW78lrBUTzD5F3Bz51ctA
+	10wfAh6abnhyXwFvfr3yDVVB9plJNW+w4pDuxaOvU/1KGmIUtUTWRRpDEzMzoJ01
+	ZgN043TjpKI/NVgfuHQYqnxedrP/G8qZdZf6qJo20gkuqFJzvItSZOPWyBwODPOb
+	vpq/7kK7y6EXr5qPUSbOB3PokCSHg==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46m7a70jc6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 13 May 2025 15:40:31 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 54DFNlGl022147;
+	Tue, 13 May 2025 15:40:30 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 46m7a70jc1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 13 May 2025 15:40:30 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 54DBt8I0011552;
+	Tue, 13 May 2025 15:40:29 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 46jku2be14-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 13 May 2025 15:40:29 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 54DFeSHS52822340
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 13 May 2025 15:40:28 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4E17F20102;
+	Tue, 13 May 2025 15:21:03 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3AAFE20101;
+	Tue, 13 May 2025 15:21:03 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue, 13 May 2025 15:21:03 +0000 (GMT)
+Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55669)
+	id CCFCBE0609; Tue, 13 May 2025 17:21:02 +0200 (CEST)
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+        Daniel Axtens <dja@axtens.net>, Harry Yoo <harry.yoo@oracle.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        kasan-dev@googlegroups.com, linux-s390@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: [PATCH v8 0/1] kasan: Avoid sleepable page allocation from atomic context
+Date: Tue, 13 May 2025 17:21:01 +0200
+Message-ID: <cover.1747149155.git.agordeev@linux.ibm.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM9P193MB1652:EE_|AS8P193MB1352:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2c5f70eb-8e1a-467d-0a81-08dd92304380
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?PbAS/z35lOhPMHJLcERvbGKPRl/Z3blelwp7Cq/GvJYYw3zmgCKv/xkK4gt6?=
- =?us-ascii?Q?wrxjZzGVBAjza8zvEMD2CzpWVonx5E3791Wo6WGs/6xayKxZDTHsvY7LCk9D?=
- =?us-ascii?Q?71fDIGtNrc3utGzv2jRpwGFrwHR9mUHS9aAnrIsb8gU5iKUWFrqJqtmIWJqE?=
- =?us-ascii?Q?uK/0DGRFa2D10Vw6ZQtKdcsHLZjk84ivvVwXFx/dJTq7EwjlMjDcmVrC1CIo?=
- =?us-ascii?Q?YNL6WYiAdqUNcRHI6vCSMSwKTPCw0TSwMEkqcjFR1dJdITaw/y0diaynWxjx?=
- =?us-ascii?Q?g6/JBg+oyZ8epdR3E18sjRG+W3sXv7qFywVgKT9llu2s2/9L6i48ao21xO6c?=
- =?us-ascii?Q?WlK2tCjAKZ80d9wwKshjvtPz14PhBSXWDRAVxP5YtSH4oEoX0LW15ikpCiAl?=
- =?us-ascii?Q?9rvSnHIh+HWHbJgB6vy9wPwfxL+icunynvPoL21EXziw5DZp0snPZMZkXE7Q?=
- =?us-ascii?Q?S9Q3ZDopfmIh2HBTXFHAJktRFq9kiAZ7Yf2kbKDLavssDNGgcMfyGaztNE8Q?=
- =?us-ascii?Q?FoReIQxiqtrS2VtQOK4FxQfHwieFJTnU2DhSjsjYI3SW2/y3kfDS2LLlEDgQ?=
- =?us-ascii?Q?IJOSNvRY/HdQGUEK/DonVk2NBOVBhOetW83OFU8aNSh7gzox1j/Fs3DyFgow?=
- =?us-ascii?Q?Rq8qgNAToVPpK/z70//wyik4sShn3KMI8rs8/f5T04F2rE82pvWcUGAX7FSJ?=
- =?us-ascii?Q?1w8bW7Wt7maJKlH/6idXuSvj2gQ4qO/wHG9LIDXoRdUPQPL6i/nDW1gNNLx4?=
- =?us-ascii?Q?pEJCfJVNWBirIfAWoqXMmHCPTSGEkb5w1qU35veAj8s6BXqrtc8GH3XNm+nS?=
- =?us-ascii?Q?5NJPxKZ3BcuTYDU9vyYvju9JCHtjc9loklGSWdVtcsAFWIWQ+Z6dssI9n0YS?=
- =?us-ascii?Q?Kmyoyu4CwNJt4CnI/GTmHMUcIZ+W2X/EDoZAldKcHvqjh1EJA0wOUbyf/leL?=
- =?us-ascii?Q?AwbmnOWjapqf7yEgCrpQLjMK4UJ8D3Gejhnlu8KRvDTv6DW/+AURTirVedus?=
- =?us-ascii?Q?B0CYtHRFjKpHRcIjtE07YQoammpeTxT09lowlb2ZqZmxAN75FDzVX024Ugsf?=
- =?us-ascii?Q?D4zatbMgLXMfRl+Z16eztg8xTkGg3ZmPjRKOupN3eL+8x8KrGuqtsMxPpkr+?=
- =?us-ascii?Q?BWiF0ZDufIJL0cUoZwK6jJSsihmsjd59V2aJO4wTq4fCmfRqx7fvBIW3bDfl?=
- =?us-ascii?Q?fmTVZXzt328sTxIKVVc+SnGLSxyNALHB1j55Lf9BytXHtEueeU+5YZ/c3oQ0?=
- =?us-ascii?Q?M097CJJo+4YQDB2OZvpoE03/EHNIjuga/BsgI4+8vMqUza78Icjw+MQlJlVT?=
- =?us-ascii?Q?yXiyywD1AxYNQ9siWH/5jE0G4DNi/rzCxO6rARmdHNydbMM1v22+tD+wTaHq?=
- =?us-ascii?Q?Cpx3lNebfUcxB3lKe3kEQGx4jfTXsKh3duwvUBoIJ6eoR81Sil/4sp3Nc4Op?=
- =?us-ascii?Q?VTMJQQUvQx0=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM9P193MB1652.EURP193.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?syG5rTcAIFyp5SnhFXXMZQvCdG4qQJsUvcChCdaBVTJKTH864rYRsltUPUhi?=
- =?us-ascii?Q?1IeLOm1lmoXefrw6Qnqv68FjMUyVLssEKxKxrJxzgyaLUtll5T1GiTSD7wJ5?=
- =?us-ascii?Q?9DUuOjE0hN04BwHO3e1TSQSXtobPYCgjj+W5HBsW58TQFtUE0e6D5JZr4UHd?=
- =?us-ascii?Q?TsXhtvjJzRyEUjUKaPeR+4K8niC5cToyt9UaXjV8UvBTUQZVuWMn1G8Cu31P?=
- =?us-ascii?Q?ujiZHYjP5ZkQDEJC1gcnAxyr3lMOEJKwR2PmdhhTGIawWF9tZwAX8ueKsJsW?=
- =?us-ascii?Q?hES8JNSdU/3aMZBZ7bPT5Q8TvM1QNWXKX7carfMJTTKl8iOVFvHx3nJxFkC6?=
- =?us-ascii?Q?FOUSTE7unzAQftsSSJPqOGG4VwZ6C3Yl82g/iTW2YaX8teyBBwP+YpWGR7nw?=
- =?us-ascii?Q?S5Q2EpWudcS+/ZcKg2SC1JmugjB0RU7Jbjmecm2Fugiee04pkXJ4V3RRx/S3?=
- =?us-ascii?Q?RGhADTLxo3VIczffYYNX60Gv8hz4PNudDQt/9mV1yhFldMo3yA3S435x6DAa?=
- =?us-ascii?Q?9Vb51Y/RDIdgCox+6cj9yuud9DtU4UstVAE9YvJr9yXeyBtcmZKYIRIL0rzg?=
- =?us-ascii?Q?ePpy4/eA0xVL7oyl+G+DJe+gpgsoWa/Zw8d4dCKyYC2CuxhyfQRzgRe/fhOM?=
- =?us-ascii?Q?Ra1i6bkuXqLbDfnZCijgpsrLoIqncvB9926lfF2HG/9nBWUb4clOKCP0LjeO?=
- =?us-ascii?Q?Ege4CSWBHuOseNvskqqVo8VJKn9TLBTc1JY4ZCNvZCm7Xb7kms5LiMW3T+vE?=
- =?us-ascii?Q?Mjzdl4lLuc/5rKF8L8JJR2jgvBqOehglwXjGHxADrKbR9UXnzVLrCOL2j4XD?=
- =?us-ascii?Q?8U//xHmgWW2FDsnXUY5urHf1Hrs0nt0WTeEcdTrN9fsvB/XVqFaLjl0h69SR?=
- =?us-ascii?Q?tTvPVRalrytUwik5Xd0GG1fDYGnCXsuCT5/mc7Z/3d9b2as0qj46WS8XmPI7?=
- =?us-ascii?Q?34JHGouFCQJ3YDsIbbzJEoI6CGeQzAxpvRZNm7DDhBPk+/ycAyePIpOfzoQJ?=
- =?us-ascii?Q?3QehcwMlJolXTdVEnauKpWOSdzhe3MH//nekV7vpVNgjY1pLazWUsnpffcWJ?=
- =?us-ascii?Q?Lgv4knoBc3TeKQhEZWNVqT4yYroESlkLY5LOKd2s091rjr6vP94zDS0+hz9K?=
- =?us-ascii?Q?3Ue6SFJ5OkNGZo0QNFBtNn6s/qwNT9TVg9bmWSfFSby82I/3F4f4mo8wLlJV?=
- =?us-ascii?Q?5ouP54whtQmKcjj1uy7kkewQ5LeC7JCVHL7GRK6m/4SNS8odrRq3R6m8m4Jp?=
- =?us-ascii?Q?QuyRWbyqhXSlDeObpFCfj/tm3tbtt0uoWhwUXyhkSnkp0TiGyAmhyy3A1Rrs?=
- =?us-ascii?Q?YFR2GptDQV8QBhtfMESO07rHUYfdvnKTkBRNBabCnodYrOztr1y6YFWzfT4A?=
- =?us-ascii?Q?ck5lIT6dfEXHj8WsX+rsL6PnhMvNYj3pHlxeBRMc5w0O+wnjM06bg55tgI5B?=
- =?us-ascii?Q?ll/kpnyERdqVwNB8vx/NmUurnx/9QMX+08YgHJ1gSkcRtqx08sqZYbcPhLBg?=
- =?us-ascii?Q?041ueHHDpmNrnyLORqSp0t4iPDJHW2oiQVNkkkGQYRh2Zm/sys3ZHVwxC+FC?=
- =?us-ascii?Q?uPR2/DprADtYAQdF9SYN8Flk6Rp8yIoRK5+pHY1Q?=
-X-OriginatorOrg: kvaser.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2c5f70eb-8e1a-467d-0a81-08dd92304380
-X-MS-Exchange-CrossTenant-AuthSource: AM9P193MB1652.EURP193.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2025 15:10:14.6561
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 73c42141-e364-4232-a80b-d96bd34367f3
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 84f4uh0HVZylY6r1Ly4Fsj8ZJeTjKBtGRBEgzbOfE1UwjTc6Thud7HQUTNsafGirY4GQS1QGlUZKRn+6/3RuOg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8P193MB1352
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=K8ciHzWI c=1 sm=1 tr=0 ts=682367ef cx=c_pps a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17 a=dt9VzEwgFbYA:10 a=M4n5Zv9w_bjhLjlc4U8A:9 a=zZCYzV9kfG8A:10
+X-Proofpoint-GUID: DBBehTTBvX9qsC78fS4B-Pq9qcDH0x5W
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTEzMDE0OCBTYWx0ZWRfX3Ro2qgunbtst YpiEJWshZEpwgFgNh6DUgLqham72fs4BvvKMKutOoHPSH07AlpYe7pQ5YCi2HdZ5nILC75uCiju IWYImiPzfWf3podYFZOjSls1rcOdgk72yDa3rolzKL4vg7MxTtRRzOD7Zs54dCpcFIWuxuu+EK0
+ QkIJ/BRGoGmhUCBjzaDyz1IMReBDty2ghHIQLCL1vaAhGz9JkAgbrDVty+dUOHB1jXN44t7HVJK cMtIYLYwLwmus3mL71kB6cl1K28JDvLF2O3KG8dkNu9dJXSM3ofh9geWQ4w/j6r7+O4igy6meEp 0nXf51BmQu16OcHzaLETtDpfMQ+PxaAqgY6hNFo+C5dr11+LBz1O0Gz/NEb1ZL+oousbZmNyN0g
+ kS3cSLrkhmXIK/w+vptnwdeTNCkhyZ72QS3kKi57VyvofCfZSG4SaN1iUvPpz4AIUvoDujXn
+X-Proofpoint-ORIG-GUID: eeJyLkhC8F1qa6Wbqxc-xE5X7ub4YSI3
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-13_03,2025-05-09_01,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ impostorscore=0 bulkscore=0 suspectscore=0 spamscore=0 clxscore=1015
+ lowpriorityscore=0 mlxscore=0 priorityscore=1501 mlxlogscore=721
+ phishscore=0 adultscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2504070000
+ definitions=main-2505130148
 
-Going bus-off on a channel doing RX could result in dropped packets.
+Hi All,
 
-As netif_running() gets cleared before the channel abort procedure,
-the handling of any last RDATA packets would see netif_rx() return
-non-zero to signal a dropped packet. kvaser_pciefd_read_buffer() dealt
-with this "error" by breaking out of processing the remaining DMA RX
-buffer.
+Chages since v7:
+- drop "unnecessary free pages" optimization
+- fix error path page leak
 
-Only return an error from kvaser_pciefd_read_buffer() due to packet
-corruption, otherwise handle it internally.
+Chages since v6:
+- do not unnecessary free pages across iterations
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Axel Forsman <axfo@kvaser.com>
-Tested-by: Jimmy Assarsson <extja@kvaser.com>
-Reviewed-by: Jimmy Assarsson <extja@kvaser.com>
----
- drivers/net/can/kvaser_pciefd.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+Chages since v5:
+- full error message included into commit description
 
-diff --git a/drivers/net/can/kvaser_pciefd.c b/drivers/net/can/kvaser_pciefd.c
-index 6cb657018cdf..6b3b04b5a4c2 100644
---- a/drivers/net/can/kvaser_pciefd.c
-+++ b/drivers/net/can/kvaser_pciefd.c
-@@ -1209,7 +1209,7 @@ static int kvaser_pciefd_handle_data_packet(struct kvaser_pciefd *pcie,
- 		skb = alloc_canfd_skb(priv->dev, &cf);
- 		if (!skb) {
- 			priv->dev->stats.rx_dropped++;
--			return -ENOMEM;
-+			return 0;
- 		}
- 
- 		cf->len = can_fd_dlc2len(dlc);
-@@ -1221,7 +1221,7 @@ static int kvaser_pciefd_handle_data_packet(struct kvaser_pciefd *pcie,
- 		skb = alloc_can_skb(priv->dev, (struct can_frame **)&cf);
- 		if (!skb) {
- 			priv->dev->stats.rx_dropped++;
--			return -ENOMEM;
-+			return 0;
- 		}
- 		can_frame_set_cc_len((struct can_frame *)cf, dlc, priv->ctrlmode);
- 	}
-@@ -1239,7 +1239,9 @@ static int kvaser_pciefd_handle_data_packet(struct kvaser_pciefd *pcie,
- 	priv->dev->stats.rx_packets++;
- 	kvaser_pciefd_set_skb_timestamp(pcie, skb, p->timestamp);
- 
--	return netif_rx(skb);
-+	netif_rx(skb);
-+
-+	return 0;
- }
- 
- static void kvaser_pciefd_change_state(struct kvaser_pciefd_can *can,
+Chages since v4:
+- unused pages leak is avoided
+
+Chages since v3:
+- pfn_to_virt() changed to page_to_virt() due to compile error
+
+Chages since v2:
+- page allocation moved out of the atomic context
+
+Chages since v1:
+- Fixes: and -stable tags added to the patch description
+
+Thanks!
+
+Alexander Gordeev (1):
+  kasan: Avoid sleepable page allocation from atomic context
+
+ mm/kasan/shadow.c | 77 ++++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 63 insertions(+), 14 deletions(-)
+
 -- 
-2.47.2
+2.45.2
 
 
