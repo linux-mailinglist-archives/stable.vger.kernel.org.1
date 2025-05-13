@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-144241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE88EAB5CBB
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 20:49:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A00ACAB5CC1
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 20:50:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D58119E8629
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 18:50:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30DCB19E86DF
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 18:50:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67D912BF3FE;
-	Tue, 13 May 2025 18:49:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEE322BFC7D;
+	Tue, 13 May 2025 18:49:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="coNa/h6/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WGyejPRa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 272472BEC3F
-	for <stable@vger.kernel.org>; Tue, 13 May 2025 18:49:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DC3E2BFC78
+	for <stable@vger.kernel.org>; Tue, 13 May 2025 18:49:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747162191; cv=none; b=N1uK7pODquTaL6CNfyp7QUVYlJR1AHxFieGDM5+jZi2sgjFlAaESNt1ASpvHIX+6OrqlzvCngGmxHiwB77Ax+gKKPH8auwHptwgjeD2EgKIIuWySw07Ib1pNaZUSLa2rK+3fTtj73TjU9kVfSta5tvmiJnN6dst/6vusnPcyWzU=
+	t=1747162195; cv=none; b=juwn4+nhiMGct8pMxYnwEv9JM8Fs7vZVchF12AwzYlewZ1iDMQrASIYXohF9RvmW/AbKwA75JeGqU6gp2KERu8Aif2qK0uqM47zRjbXluKltjRc8L0TfmZEbV/3ImZHbTeiFfsvi+7d7fpef5LLhlRZL8e3mFbzqbPFEZ9kZf0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747162191; c=relaxed/simple;
-	bh=74xxrAsBphp9yVP5IfWidn5tDyDIbxScyTVksbQj2FQ=;
+	s=arc-20240116; t=1747162195; c=relaxed/simple;
+	bh=bQ/qCibLPU393mJ/Lvx3b5AgywnRHHeUWs4ZxKeU07o=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DVzWkTGM/okqFHhiwGLrquCXCxxlxwckMyOw00hRhVU0GABBNSMKVgHIow/hFY0JYUgaxi4kBlpNrdCvyh38MZKbA26ZcLQL3Sg9L161nG8yveKEMVjKfQw/XxBsSUctzz1dvwqqtb7++tm0SHbvUkaWN17wYAT2J2Y19fql8UA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=coNa/h6/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95368C4CEE4;
-	Tue, 13 May 2025 18:49:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GEiFWaE+dtbDTJQyMZHSPBSNIi6NVZJTjUeYf7tKi5frXbTPb+sWjaZyUbBGHKGIUGd7JxNqgpPrBus/lhjrc3d9SpOjKAbVbjJIdKO/UENdoF3s+DAXJ6O2QpqnmImWSmSzk9Dz+MCwPvOniArdBxWT8WJIrKJ/qptglBbjafA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WGyejPRa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0420AC4CEEF;
+	Tue, 13 May 2025 18:49:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747162191;
-	bh=74xxrAsBphp9yVP5IfWidn5tDyDIbxScyTVksbQj2FQ=;
+	s=k20201202; t=1747162195;
+	bh=bQ/qCibLPU393mJ/Lvx3b5AgywnRHHeUWs4ZxKeU07o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=coNa/h6/r+KOiFxND/ExYet66im2VVe9T4bSTEcdgxUJOpWxiQfkLyIC35mBaul/q
-	 6PImJLZmmcrJQypHhs1uVGkO9qdkF4SUmZMlXYzZ/eOBwZ8rCQFC7Gq3j4Cs4ceaQD
-	 EOrx5B95PwSDFw9Dka9Raa4QL8N/69dp0wqACt/pe1CdSjd2LlhF5o3XQBVa+zxvzG
-	 EGE9Z4kxZ8ReYehz4f9tUdWuJWGsSgRN7Ed1piwUaS6UAXl2VMC85xdOqdGk/DX/Zw
-	 ZFO51astB3C5lYNn6gytTVCYgX6sWj6PgxXgw4anN3Gpj+MX7Q0uGeVlq+6c6zoq8I
-	 EpBBPSKR7/fBQ==
+	b=WGyejPRaENFOC+92/smGkSFnM7obzqlwN7hGSRT21FF0evb1j8Qmp4cq1nfVEVPIO
+	 1GxTDIAMfsd9IuzVY7I+BOvYtpX5rTpus9qaNGAbio3ykLlRbfWm4TmoFxqXvHFAC7
+	 R8mMamEexU4UPXvsVYe0an3DDBW+D++s6WSw4bhBsWa5Mzr7LA71xXZOr//qc5WE7b
+	 ycKstzFEuyva80hYX3wW0BKYfW+xG1lDitXXrIpb5jaQVtKODIiLLJM7LeL9rH2mBG
+	 2zfpN5FvMNtexuVi0vYzkL63ihY4OBaZ4nKwpU/waIya8dy3tpG/IE26UktuwRH0UL
+	 39vGXioQA5Olw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Zhaoyang Li <lizy04@hust.edu.cn>,
+Cc: Feng Tang <feng.tang@linux.alibaba.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1.y] hrtimers: Force migrate away hrtimers queued after CPUHP_AP_HRTIMERS_DYING
-Date: Tue, 13 May 2025 14:49:47 -0400
-Message-Id: <20250513104906-ef676fa035b23f5d@stable.kernel.org>
+Subject: Re: [PATCH 6.1.y] selftests/mm: compaction_test: support platform with huge mount of memory
+Date: Tue, 13 May 2025 14:49:51 -0400
+Message-Id: <20250513112902-67c201360cff774d@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250513060430.378468-1-lizy04@hust.edu.cn>
+In-Reply-To:  <20250513055831.93239-1-feng.tang@linux.alibaba.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,50 +67,60 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 53dac345395c0d2493cbc2f4c85fe38aef5b63f5
-
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Zhaoyang Li<lizy04@hust.edu.cn>
-Commit author: Frederic Weisbecker<frederic@kernel.org>
+The upstream commit SHA1 provided is correct: ab00ddd802f80e31fc9639c652d736fe3913feae
 
 Status in newer kernel trees:
-6.14.y | Present (exact SHA1)
-6.12.y | Present (different SHA1: e456a88bddae)
+6.14.y | Present (different SHA1: cc09dec6cce3)
+6.12.y | Present (different SHA1: 72669f82feb1)
 6.6.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  53dac345395c0 ! 1:  80e6b55d26f94 hrtimers: Force migrate away hrtimers queued after CPUHP_AP_HRTIMERS_DYING
+1:  ab00ddd802f80 ! 1:  a22426c38dd6a selftests/mm: compaction_test: support platform with huge mount of memory
     @@ Metadata
       ## Commit message ##
-         hrtimers: Force migrate away hrtimers queued after CPUHP_AP_HRTIMERS_DYING
+         selftests/mm: compaction_test: support platform with huge mount of memory
      
-    +    [ Upstream commit 53dac345395c0d2493cbc2f4c85fe38aef5b63f5 ]
+    +    commit ab00ddd802f80e31fc9639c652d736fe3913feae upstream.
     +
-         hrtimers are migrated away from the dying CPU to any online target at
-         the CPUHP_AP_HRTIMERS_DYING stage in order not to delay bandwidth timers
-         handling tasks involved in the CPU hotplug forward progress.
+         When running mm selftest to verify mm patches, 'compaction_test' case
+         failed on an x86 server with 1TB memory.  And the root cause is that it
+         has too much free memory than what the test supports.
     @@ Commit message
-         Link: https://lore.kernel.org/all/20250117232433.24027-1-frederic@kernel.org
-         Closes: 20241213203739.1519801-1-usamaarif642@gmail.com
+         Signed-off-by: Feng Tang <feng.tang@linux.alibaba.com>
+         Acked-by: Dev Jain <dev.jain@arm.com>
+         Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+    -    Tested-by: Baolin Wang <baolin.wang@inux.alibaba.com>
+    +    Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+         Cc: Shuah Khan <shuah@kernel.org>
+         Cc: Sri Jayaramappa <sjayaram@akamai.com>
+         Cc: <stable@vger.kernel.org>
+         Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
      
-    - ## include/linux/hrtimer_defs.h ##
-    -@@ include/linux/hrtimer_defs.h: struct hrtimer_cpu_base {
-    +    Signed-off-by: Zhaoyang Li <lizy04@hust.edu.cn>
-    +
-    + ## include/linux/hrtimer.h ##
-    +@@ include/linux/hrtimer.h: struct hrtimer_cpu_base {
-      	ktime_t				softirq_expires_next;
-      	struct hrtimer			*softirq_next_timer;
-      	struct hrtimer_clock_base	clock_base[HRTIMER_MAX_CLOCK_BASES];
-     +	call_single_data_t		csd;
-      } ____cacheline_aligned;
+    - ## tools/testing/selftests/mm/compaction_test.c ##
+    -@@ tools/testing/selftests/mm/compaction_test.c: int check_compaction(unsigned long mem_free, unsigned long hugepage_size,
+    + ## tools/testing/selftests/vm/compaction_test.c ##
+    +@@ tools/testing/selftests/vm/compaction_test.c: int check_compaction(unsigned long mem_free, unsigned long hugepage_size)
+      	int compaction_index = 0;
+    + 	char initial_nr_hugepages[20] = {0};
+      	char nr_hugepages[20] = {0};
+    - 	char init_nr_hugepages[24] = {0};
+     +	char target_nr_hugepages[24] = {0};
+     +	int slen;
       
-    - 
-    + static inline void hrtimer_set_expires(struct hrtimer *timer, ktime_t time)
-     
-      ## kernel/time/hrtimer.c ##
-     @@
+    - 	snprintf(init_nr_hugepages, sizeof(init_nr_hugepages),
+    - 		 "%lu", initial_nr_hugepages);
+    -@@ tools/testing/selftests/mm/compaction_test.c: int check_compaction(unsigned long mem_free, unsigned long hugepage_size,
+    - 		goto out;
+    - 	}
+    + 	/* We want to test with 80% of available memory. Else, OOM killer comes
+    + 	   in to play */
+    +@@ tools/testing/selftests/vm/compaction_test.c: int check_compaction(unsigned long mem_free, unsigned long hugepage_size)
+    + 
+    + 	lseek(fd, 0, SEEK_SET);
+      
+     -	/* Request a large number of huge pages. The Kernel will allocate
+     -	   as much as it can */
 ---
 
 Results of testing on various branches:
