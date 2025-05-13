@@ -1,67 +1,67 @@
-Return-Path: <stable+bounces-144118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBE3AAB4C8B
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 09:15:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D974AB4CAC
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 09:26:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D69E63B67CE
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 07:15:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B26DA16AE7F
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 07:26:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C93C71F0991;
-	Tue, 13 May 2025 07:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E4481E9B18;
+	Tue, 13 May 2025 07:26:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="QaxDfSAd";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="o0bJ4TqI"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="4V9oT3Ln";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="8jdiJMyZ"
 X-Original-To: stable@vger.kernel.org
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8ABD1F0990
-	for <stable@vger.kernel.org>; Tue, 13 May 2025 07:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60AD974059
+	for <stable@vger.kernel.org>; Tue, 13 May 2025 07:26:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747120548; cv=none; b=eZzeCKjtJgKR0GYoW4Q+c4gENDt8XxzPqL0S+W706e3JnqsZpwxR49q+nwzzBFdRH2vkesBSBVB8J98tCfTlsG7OORepjV8GJiAbsIebJRQV8gyXiP/cYvo6AiPvdAPgztSRvD9l/T5N0wJqqqhNi/IStTSgzIodXjW8BYRMv9Y=
+	t=1747121170; cv=none; b=WRsSaTsACfcgFDA+wmyDRslO2sH1CKhYkwCBViF9L64YdkUMYU2dsU9SYOpGi9NO/IbFmvyT3mhqBZJww8NwnEWpmxsGReOkDrIj1Xz5vg0R1xDOVC2tVVmCJDPeXPi4ljxxTenr0aRpS7yi4GxUFM7OO0Eyg4KnU37iZne/EfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747120548; c=relaxed/simple;
+	s=arc-20240116; t=1747121170; c=relaxed/simple;
 	bh=NYT88Hit4EJsMS1ewbwETqzx5reVtkAXpy0msK8TBrw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E6pjAM1GrAefFcE+TvxmpGJWnsCS+Z3jCF+FzDPPj7y25UmfwI6veLB96568S2vV9Gzhd2oPYAnNk2cZ8cmk36FvQa98vfYoDWL2jO53qy324NmD5ONmTVYyhF+UOIG6qIGTZfeALzi6xzwZ+o1gxaGw4Lm2wMGv+4et6AaEcvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=QaxDfSAd; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=o0bJ4TqI; arc=none smtp.client-ip=193.142.43.55
+	 MIME-Version; b=QL8edb9j4/u4NDflfdotmFNJOBMd5JgEBuooG/qw/rk6QC+Xi5fRusmsRUGat4ROz4ukg5Koqx8ml++pW9oILYv2xksaPtcfc/naPK4Ba6jLsL3myxVJzCy0zvPKLLUnTrkgp8lOj+21lqAmVT7z7iocNTCCrMSoCyOnsHrysGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=4V9oT3Ln; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=8jdiJMyZ; arc=none smtp.client-ip=193.142.43.55
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1747120545;
+	s=2020; t=1747121167;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
 	bh=FhgiJLatjSCachUyT9REx3lEG/LQUSugKIItaBArwqQ=;
-	b=QaxDfSAdFogp4FJwBcyN4h0uhJRlEYz7CwV4Ae+oNGp+91HZYsBLLFvU0XwstuRKDjlKqI
-	2RRHKTqJzID7lMUhLjC0bfHPDEhd+1vzT2W5n0docCcXAGSmIEI1e0CyxtSmnydrsxkZ1z
-	4ooLLOOu1aV2IkHAvTybjJnnaNkVRC6X7YEbz44oZ0heUayrPY9jKMrJukAnLoI6nop7Mw
-	a4UzoPHPCLDhdnP8ZwiU+LoIzJKSXahds/y2KTFgREBKGlaxWhpmHm/Nm9U59jvnR1UWwN
-	phCVf3g4jnREHpBGvA3GIWBHb5teuO06ic1Tz1dPxO48ex+0a4IyVsuwTrw3BA==
+	b=4V9oT3Ln/62ZzyoSDoGdh/Ib6HRKen9MZpOdhKjcGQdSK1OAF9lTD4VaMFDpd/aP47rZBy
+	VqVe82VDFIbjzBJ4Y24OjPJ46a1WXAwgCQ/oyiSvyAlYX3+/2Wr6OZAlyevMFkdWJItye+
+	KZ3NZzBZEG1zTYouoMO0O9T/P9xXSH0H2VExutf35bjK9npVPUBtHhC7yO3PDqh7aqIZQy
+	ElYauHM8sO1M+6eE8+0zai6h4uUdau2ChZTM0aXEvLvwg9L7p87WMVtROQS1Nr3iG/59Fw
+	S8rxSdfHwVWQoBkQtYRmMkJSh50NpNPchxYS/uSEyaIQDDpWKlZHuPNRv+/bKw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1747120545;
+	s=2020e; t=1747121167;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
 	bh=FhgiJLatjSCachUyT9REx3lEG/LQUSugKIItaBArwqQ=;
-	b=o0bJ4TqIz+bf1ECh8vJ/Q+bN0hAQdwkfSL6xNrD3ssUtDyTcI+uy+vZ4LjW7KLtn0CsZ0A
-	e+INh7mQLIIeh+CQ==
+	b=8jdiJMyZdBbcIYTLkzJcVubqB4f9/3F1HjXERSwWbNKPvW4xbxDPokEirgTium/osZe9UD
+	eRQZFwqHChijjbAg==
 To: stable@vger.kernel.org
 Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
 	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 5.15.y] clocksource/i8253: Use raw_spinlock_irqsave() in clockevent_i8253_disable()
-Date: Tue, 13 May 2025 09:15:38 +0200
-Message-ID: <20250513071538.552838-1-bigeasy@linutronix.de>
-In-Reply-To: <2025051256-safeguard-purchase-6c4e@gregkh>
-References: <2025051256-safeguard-purchase-6c4e@gregkh>
+Subject: [PATCH 5.4.y] clocksource/i8253: Use raw_spinlock_irqsave() in clockevent_i8253_disable()
+Date: Tue, 13 May 2025 09:26:05 +0200
+Message-ID: <20250513072606.620633-1-bigeasy@linutronix.de>
+In-Reply-To: <2025051258-washbowl-alongside-de3d@gregkh>
+References: <2025051258-washbowl-alongside-de3d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
