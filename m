@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-144242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A00ACAB5CC1
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 20:50:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D319AB5CC4
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 20:50:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30DCB19E86DF
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 18:50:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E21A64C094F
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 18:50:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEE322BFC7D;
-	Tue, 13 May 2025 18:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30E55748F;
+	Tue, 13 May 2025 18:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WGyejPRa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XL+pB/k0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DC3E2BFC78
-	for <stable@vger.kernel.org>; Tue, 13 May 2025 18:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5F5F1E521A
+	for <stable@vger.kernel.org>; Tue, 13 May 2025 18:49:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747162195; cv=none; b=juwn4+nhiMGct8pMxYnwEv9JM8Fs7vZVchF12AwzYlewZ1iDMQrASIYXohF9RvmW/AbKwA75JeGqU6gp2KERu8Aif2qK0uqM47zRjbXluKltjRc8L0TfmZEbV/3ImZHbTeiFfsvi+7d7fpef5LLhlRZL8e3mFbzqbPFEZ9kZf0A=
+	t=1747162200; cv=none; b=seGOZ0VFxkEX4YBATg3lY1b+vvbKu1ZCBGxZjBLECPmaRoTTPpgXuOXCa2XmftDBgX7XXyZuvMFFxOQFKTSLIPA8QkbBH6S+EPbZqYNQS+dTet0Xiby/0WycSR8ZsKYMSqc1ttkc5Xtaaejh2rL4Qq+8ZCkkUcUFAQt1GTk0juc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747162195; c=relaxed/simple;
-	bh=bQ/qCibLPU393mJ/Lvx3b5AgywnRHHeUWs4ZxKeU07o=;
+	s=arc-20240116; t=1747162200; c=relaxed/simple;
+	bh=A+SKe/wktFdjlVFY3lqcuQ4gmBK7AZ+AYPYxtTLe+FM=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GEiFWaE+dtbDTJQyMZHSPBSNIi6NVZJTjUeYf7tKi5frXbTPb+sWjaZyUbBGHKGIUGd7JxNqgpPrBus/lhjrc3d9SpOjKAbVbjJIdKO/UENdoF3s+DAXJ6O2QpqnmImWSmSzk9Dz+MCwPvOniArdBxWT8WJIrKJ/qptglBbjafA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WGyejPRa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0420AC4CEEF;
-	Tue, 13 May 2025 18:49:54 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SxPbju6wQwJwpuQJcOFbOtC/p0CUUJa087zr/jCmeM2i1dl4bbVxQWxpm1t5zUR8gaYhs5/o2ap8q8wR/RkvjyDQbCRHY8qjt2qkmfyCFfd9GilHnauyrakJ5vOKD32q2YnN/cM3B0ndGoypvPSQ+VCsAc5aGmDlNNbgD8Q8FZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XL+pB/k0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F674C4CEE4;
+	Tue, 13 May 2025 18:49:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747162195;
-	bh=bQ/qCibLPU393mJ/Lvx3b5AgywnRHHeUWs4ZxKeU07o=;
+	s=k20201202; t=1747162199;
+	bh=A+SKe/wktFdjlVFY3lqcuQ4gmBK7AZ+AYPYxtTLe+FM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WGyejPRaENFOC+92/smGkSFnM7obzqlwN7hGSRT21FF0evb1j8Qmp4cq1nfVEVPIO
-	 1GxTDIAMfsd9IuzVY7I+BOvYtpX5rTpus9qaNGAbio3ykLlRbfWm4TmoFxqXvHFAC7
-	 R8mMamEexU4UPXvsVYe0an3DDBW+D++s6WSw4bhBsWa5Mzr7LA71xXZOr//qc5WE7b
-	 ycKstzFEuyva80hYX3wW0BKYfW+xG1lDitXXrIpb5jaQVtKODIiLLJM7LeL9rH2mBG
-	 2zfpN5FvMNtexuVi0vYzkL63ihY4OBaZ4nKwpU/waIya8dy3tpG/IE26UktuwRH0UL
-	 39vGXioQA5Olw==
+	b=XL+pB/k0bRMghPdyi5vXUxVKbPGfCTt/WBtiFKnOGixNer2P8+Ceu42X9wf9idNta
+	 few+2yFELTqe7RhS6ypUP3TW4mGXDe3P4zR5/f07ZYsx7+G6qUezqFaW4myNaiP8Qm
+	 zkxeYgt11+dGoxh6CTf1xhyFACU9mO1iiZNDo+y12EGzzphVCod8Vr5lK4erskoNz6
+	 CIcj0zfymJvg5NRQAQxCqUXoLP5pd/o/88LK3hYzoLY1RBkb9IjdNqcVsXd3Tn8HLn
+	 86JZ+w9sXs1YL2lQHvYEdt+Var6+SQhqSQ6LWOB/NH+MkUU6hHJZXTAyQ0FngzZrqC
+	 7MY7H0WIAHuVA==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Feng Tang <feng.tang@linux.alibaba.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1.y] selftests/mm: compaction_test: support platform with huge mount of memory
-Date: Tue, 13 May 2025 14:49:51 -0400
-Message-Id: <20250513112902-67c201360cff774d@stable.kernel.org>
+To: stable@vger.kernel.org,
+	chenhuacai@loongson.cn
+Cc: Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH for 6.1/6.6] LoongArch: Explicitly specify code model in Makefile
+Date: Tue, 13 May 2025 14:49:55 -0400
+Message-Id: <20250513113647-90f20a5797414ec0@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250513055831.93239-1-feng.tang@linux.alibaba.com>
+In-Reply-To:  <20250513080645.252607-1-chenhuacai@loongson.cn>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,63 +64,34 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+Summary of potential issues:
+⚠️ Found matching upstream commit but patch is missing proper reference to it
 
-The upstream commit SHA1 provided is correct: ab00ddd802f80e31fc9639c652d736fe3913feae
+Found matching upstream commit: e67e0eb6a98b261caf45048f9eb95fd7609289c0
 
 Status in newer kernel trees:
-6.14.y | Present (different SHA1: cc09dec6cce3)
-6.12.y | Present (different SHA1: 72669f82feb1)
+6.14.y | Present (exact SHA1)
+6.12.y | Present (different SHA1: 7b3a7918f10d)
 6.6.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  ab00ddd802f80 ! 1:  a22426c38dd6a selftests/mm: compaction_test: support platform with huge mount of memory
-    @@ Metadata
-      ## Commit message ##
-         selftests/mm: compaction_test: support platform with huge mount of memory
-     
-    +    commit ab00ddd802f80e31fc9639c652d736fe3913feae upstream.
-    +
-         When running mm selftest to verify mm patches, 'compaction_test' case
-         failed on an x86 server with 1TB memory.  And the root cause is that it
-         has too much free memory than what the test supports.
-    @@ Commit message
-         Signed-off-by: Feng Tang <feng.tang@linux.alibaba.com>
-         Acked-by: Dev Jain <dev.jain@arm.com>
-         Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-    -    Tested-by: Baolin Wang <baolin.wang@inux.alibaba.com>
-    +    Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-         Cc: Shuah Khan <shuah@kernel.org>
-         Cc: Sri Jayaramappa <sjayaram@akamai.com>
-         Cc: <stable@vger.kernel.org>
-         Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-     
-    - ## tools/testing/selftests/mm/compaction_test.c ##
-    -@@ tools/testing/selftests/mm/compaction_test.c: int check_compaction(unsigned long mem_free, unsigned long hugepage_size,
-    + ## tools/testing/selftests/vm/compaction_test.c ##
-    +@@ tools/testing/selftests/vm/compaction_test.c: int check_compaction(unsigned long mem_free, unsigned long hugepage_size)
-      	int compaction_index = 0;
-    + 	char initial_nr_hugepages[20] = {0};
-      	char nr_hugepages[20] = {0};
-    - 	char init_nr_hugepages[24] = {0};
-     +	char target_nr_hugepages[24] = {0};
-     +	int slen;
+1:  e67e0eb6a98b2 ! 1:  fa2ca06c43c1a LoongArch: Explicitly specify code model in Makefile
+    @@ arch/loongarch/Makefile: endif
+     +cflags-y		+= -mabi=lp64s -mcmodel=normal
+      endif
       
-    - 	snprintf(init_nr_hugepages, sizeof(init_nr_hugepages),
-    - 		 "%lu", initial_nr_hugepages);
-    -@@ tools/testing/selftests/mm/compaction_test.c: int check_compaction(unsigned long mem_free, unsigned long hugepage_size,
-    - 		goto out;
-    - 	}
-    + 	/* We want to test with 80% of available memory. Else, OOM killer comes
-    + 	   in to play */
-    +@@ tools/testing/selftests/vm/compaction_test.c: int check_compaction(unsigned long mem_free, unsigned long hugepage_size)
-    + 
-    + 	lseek(fd, 0, SEEK_SET);
-      
-     -	/* Request a large number of huge pages. The Kernel will allocate
-     -	   as much as it can */
+    - cflags-y			+= -pipe $(CC_FLAGS_NO_FPU)
+    -@@ arch/loongarch/Makefile: ifdef CONFIG_OBJTOOL
+    - KBUILD_CFLAGS			+= -fno-jump-tables
+    - endif
+    - 
+    --KBUILD_RUSTFLAGS		+= --target=loongarch64-unknown-none-softfloat
+    -+KBUILD_RUSTFLAGS		+= --target=loongarch64-unknown-none-softfloat -Ccode-model=small
+    - KBUILD_RUSTFLAGS_KERNEL		+= -Zdirect-access-external-data=yes
+    - KBUILD_RUSTFLAGS_MODULE		+= -Zdirect-access-external-data=no
+    - 
+    + cflags-y			+= -pipe -msoft-float
 ---
 
 Results of testing on various branches:
@@ -128,4 +99,5 @@ Results of testing on various branches:
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
 | stable/linux-6.1.y        |  Success    |  Success   |
+| stable/linux-6.6.y        |  Success    |  Success   |
 
