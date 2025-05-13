@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-144254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B53DAB5CCD
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 20:50:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C3A10AB5CCE
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 20:50:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1480C4A5C96
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 18:50:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C2624A7B4D
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 18:50:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 132622BEC3F;
-	Tue, 13 May 2025 18:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68D242BF994;
+	Tue, 13 May 2025 18:50:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rqoa312t"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uUs46A5q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8A1D49620
-	for <stable@vger.kernel.org>; Tue, 13 May 2025 18:50:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E212BF964
+	for <stable@vger.kernel.org>; Tue, 13 May 2025 18:50:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747162246; cv=none; b=STT6UHKec0WzgSaXhMmhW3al80fv5FkLyZuDsyFYQGPnqbA/p7Wi9QWIjdqSvlG0d9kBGpJITxhNR9AMtu8za30fDQssb5VuNpPH5Y9/FvaKdmNZBqCaoKslHZv04chMQHlGWffbKNNNMv5Aeluv19IH4QRLrES294FBXS6BU5o=
+	t=1747162251; cv=none; b=CKPEE3kFyzXRvE3gsoawl5pBJMKV+KtNFpYltafcJMRHZmytXqIcM5h6hZoG0i6BM1g8+vq2Jj9aCfqekbdU/O+8K/qi8Vhlso+Vz9RfsBiqQ9IR3ZWDAjxQYgxCs7Spv8sDndgsx6cRqc5G3UszpaQ3LImrZ1FBzraAd3KrWIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747162246; c=relaxed/simple;
-	bh=oqpfDLb0fi9VrGXmlGTgREpJQgkESXn/JlpaLrB47sk=;
+	s=arc-20240116; t=1747162251; c=relaxed/simple;
+	bh=1MZgwqdNuabU1oqa2MTGWDY0XTdxvB7wJ+7Ep3Y3+WU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X0C6fuqJ/s9fTtW6e4wz2Q/fd0JwrFgDmkQ9YRBo164nv0EB2Df0GNsVuXJ9lSdpolkDUnaS61K3fbzqN7kQitniLRvspP/rsNyM6eJ17g2E3xKBZBZqUuRyo/n0BORUNBonMNmUgWdS8sKpCv/48M6HD/dKfXqfeilDXMw0eVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rqoa312t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38D06C4CEE4;
-	Tue, 13 May 2025 18:50:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=DedijvJ13oTdEVJeJaT8GCnIg91HshMgDu2rH3Pf5+jUtqPD3Xr9TqnNsDgioNKpwA2CoXpoPgkfs64tEg7umiEmq9O/wSY5BSUTwLbhydNaBAfC6+dRQnMuFyl5AidYGqTqhKlwMnIEI+Te3yPTt8owQKm0xUL05mbuviimjwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uUs46A5q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99B4DC4CEE4;
+	Tue, 13 May 2025 18:50:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747162246;
-	bh=oqpfDLb0fi9VrGXmlGTgREpJQgkESXn/JlpaLrB47sk=;
+	s=k20201202; t=1747162251;
+	bh=1MZgwqdNuabU1oqa2MTGWDY0XTdxvB7wJ+7Ep3Y3+WU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rqoa312tjii7xA8ecM2jiYBhF8bW1wS++quN5Py8Kt6q1mXMeqQQA5iNWtwKlqSLt
-	 XrtMI00/nbG/yJWvaTqN5TsSbkNHLRoPuE2rSuPHsxuzRh3eeKRb3/5I5xKBP+KOum
-	 2w5p7X5qsPNqA8WBGSKQEFygVEdLNS94k8oxuiVa1Xo35ch7sVDcmrGdHQ22EtV1Op
-	 rTGgYyHiBvnnAbMtLUaSN98C6WW+mF/U9PAsu4+yWhzVBu7f/+0x7nydINvKQ67WuZ
-	 w8NA9nffK67e0WFtoa53fEhLko3ZJU3k0m1EvSCx9xg+gO38JXF78HF+Lr8F1llksr
-	 4OTWIxOjW4+rw==
+	b=uUs46A5qaOfb2xnoCirHSbqIXto8l9crD98peyblW9atr465Rbem0z6dr3GjwFsCo
+	 WDrLFlbKJLXjYr1IxGsOLfeNc+tvZlgreGcSLZGEDXU+VPnJ4Efk1HjjTDajvp8S/y
+	 2y1cdoX6tpmr08ih0o/wYME6narHHa10sO3c7i7rZV+RvKt6fy/l42tAnY65bfjzqh
+	 H2+LSSsB/CHty2Mh96OXWGTev/InHAD2nWJpmJy1KrhwyNcwsJNVwXat24lIBXEG4l
+	 w5d8Ss1Iq139BIN2C7XBd9Jq6Bvk+9Iv/hlfZwSQY9p8Fo7Rm8zdXqAUVNKMRCYC1H
+	 gipu8P/8EvVrA==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	bigeasy@linutronix.de
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10.y] clocksource/i8253: Use raw_spinlock_irqsave() in clockevent_i8253_disable()
-Date: Tue, 13 May 2025 14:50:42 -0400
-Message-Id: <20250513080408-03c3b9e248f87d0b@stable.kernel.org>
+To: stable@vger.kernel.org
+Cc: Feng Tang <feng.tang@linux.alibaba.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.6.y] selftests/mm: compaction_test: support platform with huge mount of memory
+Date: Tue, 13 May 2025 14:50:46 -0400
+Message-Id: <20250513072716-af2af7f9eea8bf63@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250513070201.488210-1-bigeasy@linutronix.de>
+In-Reply-To:  <20250513010056.25926-1-feng.tang@linux.alibaba.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,64 +64,58 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Summary of potential issues:
-⚠️ Found matching upstream commit but patch is missing proper reference to it
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-Found matching upstream commit: 94cff94634e506a4a44684bee1875d2dbf782722
+The upstream commit SHA1 provided is correct: ab00ddd802f80e31fc9639c652d736fe3913feae
 
 Status in newer kernel trees:
-6.14.y | Present (different SHA1: 6fdc7368341b)
-6.12.y | Present (different SHA1: e0e66bb1af60)
-6.6.y | Present (different SHA1: 5dd520b92acb)
-6.1.y | Present (different SHA1: d2f5f71707cf)
-5.15.y | Present (different SHA1: f29f5341f350)
+6.14.y | Present (different SHA1: cc09dec6cce3)
+6.12.y | Present (different SHA1: 72669f82feb1)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  94cff94634e50 ! 1:  2a4e575499d58 clocksource/i8253: Use raw_spinlock_irqsave() in clockevent_i8253_disable()
+1:  ab00ddd802f80 ! 1:  1ccf7357bb200 selftests/mm: compaction_test: support platform with huge mount of memory
+    @@ Metadata
+      ## Commit message ##
+         selftests/mm: compaction_test: support platform with huge mount of memory
+     
+    +    commit ab00ddd802f80e31fc9639c652d736fe3913feae upstream.
+    +
+         When running mm selftest to verify mm patches, 'compaction_test' case
+         failed on an x86 server with 1TB memory.  And the root cause is that it
+         has too much free memory than what the test supports.
     @@ Commit message
-         raw_spinlock_irqsave() to cure this.
+         Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
      
-         [ tglx: Massage change log and use guard() ]
-    +    [ bigeasy: Dropped guard() for stable ]
-     
-         Fixes: c8c4076723dac ("x86/timer: Skip PIT initialization on modern chipsets")
-         Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-         Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-         Cc: stable@vger.kernel.org
-         Link: https://lore.kernel.org/all/20250404133116.p-XRWJXf@linutronix.de
-    +    (cherry picked from commit 94cff94634e506a4a44684bee1875d2dbf782722)
-    +    Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-     
-      ## drivers/clocksource/i8253.c ##
-     @@ drivers/clocksource/i8253.c: int __init clocksource_i8253_init(void)
-    @@ drivers/clocksource/i8253.c: int __init clocksource_i8253_init(void)
-      void clockevent_i8253_disable(void)
-      {
-     -	raw_spin_lock(&i8253_lock);
-    -+	guard(raw_spinlock_irqsave)(&i8253_lock);
-    ++	unsigned long flags;
-    ++
-    ++	raw_spin_lock_irqsave(&i8253_lock, flags);
+      ## tools/testing/selftests/mm/compaction_test.c ##
+    -@@ tools/testing/selftests/mm/compaction_test.c: int check_compaction(unsigned long mem_free, unsigned long hugepage_size,
+    +@@ tools/testing/selftests/mm/compaction_test.c: int check_compaction(unsigned long mem_free, unsigned long hugepage_size)
+      	int compaction_index = 0;
+    + 	char initial_nr_hugepages[20] = {0};
+      	char nr_hugepages[20] = {0};
+    - 	char init_nr_hugepages[24] = {0};
+     +	char target_nr_hugepages[24] = {0};
+     +	int slen;
       
-      	/*
-      	 * Writing the MODE register should stop the counter, according to
-     @@ drivers/clocksource/i8253.c: void clockevent_i8253_disable(void)
-    - 	outb_p(0, PIT_CH0);
-      
-      	outb_p(0x30, PIT_MODE);
-    --
+    - 	snprintf(init_nr_hugepages, sizeof(init_nr_hugepages),
+    - 		 "%lu", initial_nr_hugepages);
+    -@@ tools/testing/selftests/mm/compaction_test.c: int check_compaction(unsigned long mem_free, unsigned long hugepage_size,
+    - 		goto out;
+    - 	}
+    + 	/* We want to test with 80% of available memory. Else, OOM killer comes
+    + 	   in to play */
+    +@@ tools/testing/selftests/mm/compaction_test.c: int check_compaction(unsigned long mem_free, unsigned long hugepage_size)
     + 
-     -	raw_spin_unlock(&i8253_lock);
-    ++	raw_spin_unlock_irqrestore(&i8253_lock, flags);
-      }
+    + 	lseek(fd, 0, SEEK_SET);
       
-      static int pit_shutdown(struct clock_event_device *evt)
+     -	/* Request a large number of huge pages. The Kernel will allocate
+     -	   as much as it can */
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.10.y       |  Success    |  Success   |
+| stable/linux-6.6.y        |  Success    |  Success   |
 
