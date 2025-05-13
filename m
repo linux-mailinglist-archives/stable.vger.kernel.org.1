@@ -1,419 +1,241 @@
-Return-Path: <stable+bounces-144212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 988E6AB5C0B
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 20:08:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8368EAB5C0D
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 20:08:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DA713BE10C
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 18:07:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FB771B4776D
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 18:08:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C55A52BF3F0;
-	Tue, 13 May 2025 18:07:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C024A2BEC2F;
+	Tue, 13 May 2025 18:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kP+D2Ynl";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="Cv5erCyI"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="H+85oZrd"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2049.outbound.protection.outlook.com [40.107.94.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C7E1E0083;
-	Tue, 13 May 2025 18:07:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747159672; cv=none; b=MMHRNL2ewes93sIUZPgE4ZvrrZAIdoiDtKZCl/KpRaDjGo4eqzq0VmlTI9tc51JHjgqkl/Aymqzl41+muB9wiCfmGaFZS82/2m9onPFXa2CRaBksm3xFoBYWm+ur+obTb/ACE2GEvcQ4hPaOJ1fwpjqqbbXbRv6a1kTlUsB1n9g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747159672; c=relaxed/simple;
-	bh=/QpeFcl2VthoJ0gjijjEJaJFJbBz/vFy3CjA4vm8phI=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=ryNEyIkXJUXuWy+9XnjPaMDgPR2FpaMjdf4BAvKo2UJyn2AlHuvLs+KYd8uxEUcDNVd62qAV4BVzhuEGsXpuT/i7NkA24P7iLIfSYC6WKxokwpvTYiNbmWxTGyBGiKDF9M73yVGLVRZ/XKSclrQy7dHfSj9a+bLjP/pCSfPSK9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kP+D2Ynl; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=Cv5erCyI; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 13 May 2025 18:07:47 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1747159668;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aH7ej6N9qJWoZxc+h/McgMIF89aH3zqHZ6RSW5dr/gQ=;
-	b=kP+D2YnlPBlK676CQvZBfnSbqnBvF2373Bra07J+q81uNdXsySNt/iId/H/BEEfRs8ovn9
-	Qv528TPKzS/0yHxIoqKIeXOP45t6s3yUVFHnfEZKg9ULalD2cCTdBefWwrBaQkWtKztxy5
-	jA22myoyZJWlCerhCq/xj4cwwXmLcoE8jANUaHbsneZK183k9CBS+CI7zIZ9iFIRcfK6tg
-	Fpuguem78mKYG1cyMrlmmvLLeub4eHuRnBDkUWg2XUX8oIXcYjcUmPrCva6bUVklzPfq/m
-	vHKRr/pqduXzGnBk2fSRDlCPcQxRlzZzqK9JXMZIVWxkn4vNYevvlM+q7WfT6Q==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1747159668;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aH7ej6N9qJWoZxc+h/McgMIF89aH3zqHZ6RSW5dr/gQ=;
-	b=Cv5erCyIaMy8WvC0dyxwukRm9qOEi74AslCT+lsWiutHdVm0peceuRucblXIuiKXhT0Hdn
-	NPCf2D5O2guJ5bCQ==
-From: "tip-bot2 for Ashish Kalra" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/sev: Do not touch VMSA pages during SNP guest
- memory kdump
-Cc: Ashish Kalra <ashish.kalra@amd.com>,
- "Borislav Petkov (AMD)" <bp@alien8.de>, Pankaj Gupta <pankaj.gupta@amd.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, Srikanth Aithal <sraithal@amd.com>,
- stable@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250428214151.155464-1-Ashish.Kalra@amd.com>
-References: <20250428214151.155464-1-Ashish.Kalra@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D710C1E0083;
+	Tue, 13 May 2025 18:08:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747159684; cv=fail; b=KbPRYtCE/rKbdQu6066HlMMuL82KWdkfIFTxbi4JwCLdrHYAYEQw4AvgMNn6mOOYHaQJtJmwXoTSbRW0C00tXdFHQrLCwgENq1RnPgM+0psuotZn/0dK9APUCFaHcB8UhfxL2ofjEp9mafhYcpZm76hvMBhWMA+WDLvDK336pY8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747159684; c=relaxed/simple;
+	bh=DiVLv+CSvvDcBHzAG3fHCH4KWWn0H2YJ7pROAHmfZB4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=uJaPVt0Z2rNRkhDx+theJNfqp/k1X6JuBoEZOENdabXUHuuJ8Xcbyn9ramihRHLFzy+wLtAj1TI1FrILThETm04o3mOMCUJbZffG726S2iYTGLoelKafLxxsRWWCFqxk19Cl4IvHI18BtaDS8562vL1AoIv0rGqV8r3156odMws=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=H+85oZrd; arc=fail smtp.client-ip=40.107.94.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dFyA350pd+xJ1898x2N8XfkdBsZuidIaeVWh8p2lWkIctNdebaf2zy+DSINMCFifsjroyvAmVkSIotK6qVDCO5aDk2riOlPFKuvVCYDWy+n4gBo78teNxGKfgmOt5we9k53+MPx/GMaTIv8il9iCoGnxDMI/XDWOXpWlNEPT9i0CnH41xI3SkQlUc9Z7A14lI9X4vu3CU/Q9sjvhWHqAMUsd3rRJzapGFjHkEmw4M7tYheIwm7bbDKX3++YpLOh8qlXdaiqBehmdAruRuLhLrQIY4Dqxc1Afq6/lnsdqg/Z2vm/Zx8fp+VDAFysb+zWUuSwhjskttEz9A3LYotundA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dBBm6Yv/AfS4cDh/NLwLrtXaosVnqfDThvjk4GNLciM=;
+ b=L+Ind297TIbb9pLg1k/oJ9XkN2d02Wdykrn7Bueek4BDXfgSD22HV5OHS44bYvmVPRMcYDt3qNgEXxcExR6K+q/rob80cW7sSRLevFzIH/WYH8ExEnMD/c3EzH4dpByF5cacNPXQQXlSm0DDc7TdxwVdBXiS7B53zGn504NJJrL1Owi1buzGbr+ieHKLfVrKqay8xoiUpqXunNQmiXd8sdCphYZDdHOdhY8lNzdWVFaCkQMrrj4rf39ysrCymU/2akLy5lFDN1oLL6FLxuQOI5cApfimGMexcV3jMaxwyNMrPAk5GZQAGG/CK+5c11Qw8J2V+whc+dxIa8x3fgIbuw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dBBm6Yv/AfS4cDh/NLwLrtXaosVnqfDThvjk4GNLciM=;
+ b=H+85oZrdxGfvzEG4TF7AX7fJDVBNimzYeE/eyIGKKqHrzXqN1qvY5qKwFLilyzVhVRiRLXbSGnGm4JKZx4ekgU7MhjM68qCzX6ykKILlMsSRLZaRzMOmkimNmZ41G4qHthBlP/TGVNY17AL80yWbcTyFfNEhbQW9PxNqNm7YZa9kt27O0Yw458NR3xRAjSQgV23O9z8BnWOcP1lv/Kxe7134OV1kTp2PjOXl8GgQCiC+6tqt20yOKGl/Cbchhr5zj9Qfpwu3oe5fHe5XR4h33NIX5Jay7b06rYPC3P6wwNylAfuQtTtvEw3fCOt603h+rnnngY/cOvLECUsuZ+1Gvw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from SN7PR12MB8059.namprd12.prod.outlook.com (2603:10b6:806:32b::7)
+ by MW4PR12MB7240.namprd12.prod.outlook.com (2603:10b6:303:226::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.28; Tue, 13 May
+ 2025 18:07:59 +0000
+Received: from SN7PR12MB8059.namprd12.prod.outlook.com
+ ([fe80::4ee2:654e:1fe8:4b91]) by SN7PR12MB8059.namprd12.prod.outlook.com
+ ([fe80::4ee2:654e:1fe8:4b91%3]) with mapi id 15.20.8722.027; Tue, 13 May 2025
+ 18:07:59 +0000
+Date: Tue, 13 May 2025 14:07:57 -0400
+From: Joel Fernandes <joelagnelf@nvidia.com>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Danilo Krummrich <dakr@kernel.org>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev,
+	stable@vger.kernel.org, Josh Poimboeuf <jpoimboe@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>, ttabi@nvidia.com,
+	acourbot@nvidia.com, jhubbard@nvidia.com, apopple@nvidia.com
+Subject: Re: [PATCH 1/5] objtool/rust: add one more `noreturn` Rust function
+ for Rust 1.87.0
+Message-ID: <20250513180757.GA1295002@joelnvbox>
+References: <20250502140237.1659624-1-ojeda@kernel.org>
+ <20250502140237.1659624-2-ojeda@kernel.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250502140237.1659624-2-ojeda@kernel.org>
+X-ClientProxiedBy: MN2PR10CA0015.namprd10.prod.outlook.com
+ (2603:10b6:208:120::28) To SN7PR12MB8059.namprd12.prod.outlook.com
+ (2603:10b6:806:32b::7)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <174715966762.406.12942579862694214802.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SN7PR12MB8059:EE_|MW4PR12MB7240:EE_
+X-MS-Office365-Filtering-Correlation-Id: 39ed9f64-3ed3-4e61-2a89-08dd9249181c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?ZqQHIcZEZs8n132VToEW8Ds2IyzTkqSPi/QeCH0ZNJpQesClN39Y1NaE9gYT?=
+ =?us-ascii?Q?SjI8VFi2S+cVGhO1wD1vBcwp8QkH7Z97KM3ECouQ6FbhV3M2s/dfBJq3ktbP?=
+ =?us-ascii?Q?HpkPI035pwS3RGDa2jpzhz3nW3CYiQSVv8PJ9hFpQmf69rJFF7TvBeSmQhlN?=
+ =?us-ascii?Q?ir9OPn+0Oa+QUO19zjmGmoJvDeZq8IxiBUfDl5XNTAXsO15/X7WPXgBbJFCB?=
+ =?us-ascii?Q?01fsSt1GAi3i9t4JVv5GuctrNFJdo71/q0qo14U7Yimi2vY7NLxkCpL1IKXW?=
+ =?us-ascii?Q?7DWMazKgl/Oro7+vuzx64y3o/nDm4ytoVsEQFJIRn7aC87i+PgHbwQ4QXA3e?=
+ =?us-ascii?Q?2gdiAesPECkgM8fjMrcKEzXjUrxrGmcIcWLe8uedWSdfXsePCvkGUi8jz3dI?=
+ =?us-ascii?Q?qgwzbVAwWYcp7zfEwDN57MY2WZDLJ0GJzjV2RcZo4jFoXhmjD/s1M2Lz/22f?=
+ =?us-ascii?Q?j1LrfRVn0JVf/ljrm9oEFT/ByYhmmPKIuW+wHZZoiVWC6qxkKsH11mdfdRlJ?=
+ =?us-ascii?Q?RbKb/+qTmETsaveCZPolnyGhcBmARlqN0YCyv2qjlcnPqwQgVfYdeS8vnLVB?=
+ =?us-ascii?Q?1rocxjV3wW7AFalTXN1XOCzQxE9CfW5E53IlQNsfN6jDtzyQUxtSkDZ6MeoV?=
+ =?us-ascii?Q?OFgTdtB8azWmBZ9XSTmQKqBayjYTF+vykryzB+SEKDEn3/I6PrL0Ok7yrnVw?=
+ =?us-ascii?Q?ZF5t0MdGepbvAJ6UCUuiVzlHZGZ3xe7VRhWCPSc11niKNF5Mn7NuXFyEF7mn?=
+ =?us-ascii?Q?hHmga34G0WoRLor5GdkVq9epE5kJHMPAh7uPo199+amhds5d6WTyr9v5DfAd?=
+ =?us-ascii?Q?7ByDZoBWm1gDLQ3LNNMx9PccaqLAJL+oywJqqT75xV09u1gFlItZh65OhudF?=
+ =?us-ascii?Q?DeIozsnIDvYZ+w30vSyvYo/X1lIF1QyisS+GoJ00bL+2j6Y/okRNZfVQGmIV?=
+ =?us-ascii?Q?BQztlLm6+giOIjGYbvC9fmE3Bp11VLOFE6t+MIjHFpulbBT0GwTa2k9qO9uj?=
+ =?us-ascii?Q?RCAhYn3M3cTW4PI6smJAlFOp/izIJ9w4ND8VZo1xX7GfY+iEhV9HKEwZFuzn?=
+ =?us-ascii?Q?Ax65IxY7juk9JJByYaQoxgxirxreNTSXjcxcKej5qC2fEFPrali3nd+x/S7b?=
+ =?us-ascii?Q?Yvx6jakGlWNgZ3S3RIirQn2YUsF5QvlI1SWKRLqdjzcxNepC0xIF/4oA5GnG?=
+ =?us-ascii?Q?Ikb3VigiuUH8K5fN+kwx+6WqN/ObBvjhucTeC5au0pAsxJflK4NOaaBgcgER?=
+ =?us-ascii?Q?Mh6Q6yXYK4BsfI0t7FNWMTROMRn6Q9mXNtPIIekBmw1YxwZHdFTl9ec8xnw9?=
+ =?us-ascii?Q?tlPsClcrIt2nn3dLvCsA9YshXqVE7oGRapYYEtL3UXPwYeQudymRlWiBxcw6?=
+ =?us-ascii?Q?is3nfvIpXTYXFhEmoU4uLprZh3Pu2n57tTsF8P8jRdaFGSzzXveneb3K4BZf?=
+ =?us-ascii?Q?2u7CMFfEJz0=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB8059.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?KcA1i6RksMvuYXQzUuBnB1hLNOR9xVCUwgGINVjHCOJE7cwvCZHAwUERxGkV?=
+ =?us-ascii?Q?K46ermCgIVaP1WYBt2xlWaHDCApP86TWao2l11MtnqRRSWgO9gaY0Ed//fad?=
+ =?us-ascii?Q?rn2fLMsqYIrT6ahJPJEOKe2j6ASuoVl6l9Jff7a3njDqwIya2zCgxA+qQWhp?=
+ =?us-ascii?Q?mO/RvhSAFFHxcTqKKPQSBsqbmykvbI6S2/JWQRo8osIaHVrsxEy58O25czJR?=
+ =?us-ascii?Q?L66U/3mggyjjB+nLwlCUj2eKVlgmtc3MVNdwsAnWfoYTEs8tifnBpwG5Hz7d?=
+ =?us-ascii?Q?7bn7287pc9u1xdU8pt9Jnb8LF06lqpkSBTj2ogQ4zkc1PnLAuezV2oo9dyhC?=
+ =?us-ascii?Q?/1J4uZ9K0BDmXdc4ZgtRlVNPO5lrfbqjcXlZJnfeJH1zwEMyRx9iF6qYlmnz?=
+ =?us-ascii?Q?UQN0qnJJ9tXHPmw94HUPqq/wPulYF4ohcKfbHJX8AD95dgcbeoc7eovS4SYo?=
+ =?us-ascii?Q?ekFpdBH4ll8DrGYr+y5ZkjW/jGYhKeQ15As/BmLN9NpJ5bJ/ZM1zs6Y0w23u?=
+ =?us-ascii?Q?6cGktpYO3Shgeb7cvQJbdtollE9reOoP8VqWfjcujjW/tlms3XXrCrXRPu7G?=
+ =?us-ascii?Q?YgtMtCT5ms9FXuqwI+sLMKph4rtiKBi6K3Pk+LrUn3e1TXissx+m5Yjr4Chd?=
+ =?us-ascii?Q?3j0E8QI1W1eR5bdAS+/ygWH2FRzWbJ2K2+9SQCQSQUFptbuE3pBzdklqvPao?=
+ =?us-ascii?Q?s594ebyoOKLc6vML+ikoAsFlzprOJ3NEXwi+BeOEfZJBzrN2S3a5kgckDTK/?=
+ =?us-ascii?Q?tnrrBB/PwRZg21jcVkMYJGbKg/4tTfZEcSLXfST/juqkoEc8qbOBmtNzeYZ6?=
+ =?us-ascii?Q?jrNMHiZc3nL6EpJWxhVnkKYDetRFmuHeOQ1NlJ7Pi5ABweGlWWpQGPgluG4G?=
+ =?us-ascii?Q?19oQpyEc/7YJj+XWz2JU2DbrdoAoGQ9Rd1x6oEqlsTYP+jh7oKJRxh7m1FT2?=
+ =?us-ascii?Q?m3KdHaHMiC4UkfQJkAbcJveKyw/uL2DGVdT7EPBQ5TyoXNGj7y3IqNx+XcQI?=
+ =?us-ascii?Q?F1I4MIv6ao3Hw1wHQNKtoxvTErMPfFsQirwKqtNjsLNLHOP98ccPY5U5pbDK?=
+ =?us-ascii?Q?gmlAk2P2dLCism+TP2Qmh13qb/ruxrHX6sfTE/x+FMNdZr8xTfeJXH15uG2t?=
+ =?us-ascii?Q?JiY6CSS415A/KOOXd4sAhKFgekn2l+msTWGw7NbJUN4pZtVsYoxSXGEKOpXZ?=
+ =?us-ascii?Q?Tx5gs82kI2frDpLr5Jo5U9MdWeQDuX2+ejW292HvxNuemACkqZml+Txn29o/?=
+ =?us-ascii?Q?jm3vpeCBCsG0V8/684iYURV9y/PqE+ItuKhOuhFoTCa/WnIpRkCtwnDyeOKz?=
+ =?us-ascii?Q?GnSOxO+8sxng5ZSpGJiEOg+5pZ9UGiRYinrVXNGOi+x337fUtMjox1MWDM4Y?=
+ =?us-ascii?Q?Dl5eZ/FJduO+vTU0hgcj3aWU6jzHv1Z3YQPxgzu2EjPgCgTn+Y2v+demTzBC?=
+ =?us-ascii?Q?HYQ7FrUCoIljOp3oAcEZoJceJFUYXYzFo5R1oS6foX1Xidk/xaVpPJcirKb0?=
+ =?us-ascii?Q?8t3fWwlI/wHTOlqLn/A1X+fvy5Y/rYerBu3rZJGQKU3rkPv4Vdn10wP8omEq?=
+ =?us-ascii?Q?ozibz+Nv0wPOWk1tSrQiRce6oWxWhHAkY40C6bhU?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 39ed9f64-3ed3-4e61-2a89-08dd9249181c
+X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB8059.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2025 18:07:59.2981
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: zXASC+rILuoL1VjrLD557BnYhvOITc//O80VthKHcH9CO998Rc0yQt5o/oZnTWUA/mDzgHG8AvnHSRbCz/ysFw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7240
 
-The following commit has been merged into the x86/urgent branch of tip:
+Hello Miguel,
 
-Commit-ID:     d2062cc1b1c367d5d019f595ef860159e1301351
-Gitweb:        https://git.kernel.org/tip/d2062cc1b1c367d5d019f595ef860159e1301351
-Author:        Ashish Kalra <ashish.kalra@amd.com>
-AuthorDate:    Mon, 28 Apr 2025 21:41:51 
-Committer:     Borislav Petkov (AMD) <bp@alien8.de>
-CommitterDate: Tue, 13 May 2025 19:40:44 +02:00
+On Fri, May 02, 2025 at 04:02:33PM +0200, Miguel Ojeda wrote:
+> Starting with Rust 1.87.0 (expected 2025-05-15), `objtool` may report:
+> 
+>     rust/core.o: warning: objtool: _R..._4core9panicking9panic_fmt() falls
+>     through to next function _R..._4core9panicking18panic_nounwind_fmt()
+> 
+>     rust/core.o: warning: objtool: _R..._4core9panicking18panic_nounwind_fmt()
+>     falls through to next function _R..._4core9panicking5panic()
 
-x86/sev: Do not touch VMSA pages during SNP guest memory kdump
+We are seeing a similar issue with the patch [1]:
 
-When kdump is running makedumpfile to generate vmcore and dump SNP guest
-memory it touches the VMSA page of the vCPU executing kdump.
+  RUSTC [M] drivers/gpu/nova-core/nova_core.o
+drivers/gpu/nova-core/nova_core.o: warning: objtool:
+<nova_core::vbios::PciAtBiosImage as
+core::convert::TryFrom<nova_core::vbios::BiosImageBase>>::try_from() falls
+through to next function <nova_core::vbios::FwSecBiosImage>::fwsec_header()
 
-It then results in unrecoverable #NPF/RMP faults as the VMSA page is
-marked busy/in-use when the vCPU is running and subsequently a causes
-guest softlockup/hang.
+The code in concern is implementing try_from():
++
++impl TryFrom<BiosImageBase> for PciAtBiosImage {
++    type Error = Error;
++
++    fn try_from(base: BiosImageBase) -> Result<Self> {
 
-Additionally, other APs may be halted in guest mode and their VMSA pages
-are marked busy and touching these VMSA pages during guest memory dump
-will also cause #NPF.
+I dumped the codegen [2] for this function and at the end of the codegen, there
+is a call instruction to to the fwsec_header() function.
 
-Issue AP_DESTROY GHCB calls on other APs to ensure they are kicked out
-of guest mode and then clear the VMSA bit on their VMSA pages.
+Any thoughts on how to fix the warning?
 
-If the vCPU running kdump is an AP, mark it's VMSA page as offline to
-ensure that makedumpfile excludes that page while dumping guest memory.
+thanks,
 
-Fixes: 3074152e56c9 ("x86/sev: Convert shared memory back to private on kexec")
-Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Tested-by: Srikanth Aithal <sraithal@amd.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/20250428214151.155464-1-Ashish.Kalra@amd.com
----
- arch/x86/coco/sev/core.c | 244 ++++++++++++++++++++++++--------------
- 1 file changed, 158 insertions(+), 86 deletions(-)
+ - Joel
 
-diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-index b0c1a7a..41060ba 100644
---- a/arch/x86/coco/sev/core.c
-+++ b/arch/x86/coco/sev/core.c
-@@ -959,6 +959,102 @@ void snp_accept_memory(phys_addr_t start, phys_addr_t end)
- 	set_pages_state(vaddr, npages, SNP_PAGE_STATE_PRIVATE);
- }
- 
-+static int vmgexit_ap_control(u64 event, struct sev_es_save_area *vmsa, u32 apic_id)
-+{
-+	bool create = event != SVM_VMGEXIT_AP_DESTROY;
-+	struct ghcb_state state;
-+	unsigned long flags;
-+	struct ghcb *ghcb;
-+	int ret = 0;
-+
-+	local_irq_save(flags);
-+
-+	ghcb = __sev_get_ghcb(&state);
-+
-+	vc_ghcb_invalidate(ghcb);
-+
-+	if (create)
-+		ghcb_set_rax(ghcb, vmsa->sev_features);
-+
-+	ghcb_set_sw_exit_code(ghcb, SVM_VMGEXIT_AP_CREATION);
-+	ghcb_set_sw_exit_info_1(ghcb,
-+				((u64)apic_id << 32)	|
-+				((u64)snp_vmpl << 16)	|
-+				event);
-+	ghcb_set_sw_exit_info_2(ghcb, __pa(vmsa));
-+
-+	sev_es_wr_ghcb_msr(__pa(ghcb));
-+	VMGEXIT();
-+
-+	if (!ghcb_sw_exit_info_1_is_valid(ghcb) ||
-+	    lower_32_bits(ghcb->save.sw_exit_info_1)) {
-+		pr_err("SNP AP %s error\n", (create ? "CREATE" : "DESTROY"));
-+		ret = -EINVAL;
-+	}
-+
-+	__sev_put_ghcb(&state);
-+
-+	local_irq_restore(flags);
-+
-+	return ret;
-+}
-+
-+static int snp_set_vmsa(void *va, void *caa, int apic_id, bool make_vmsa)
-+{
-+	int ret;
-+
-+	if (snp_vmpl) {
-+		struct svsm_call call = {};
-+		unsigned long flags;
-+
-+		local_irq_save(flags);
-+
-+		call.caa = this_cpu_read(svsm_caa);
-+		call.rcx = __pa(va);
-+
-+		if (make_vmsa) {
-+			/* Protocol 0, Call ID 2 */
-+			call.rax = SVSM_CORE_CALL(SVSM_CORE_CREATE_VCPU);
-+			call.rdx = __pa(caa);
-+			call.r8  = apic_id;
-+		} else {
-+			/* Protocol 0, Call ID 3 */
-+			call.rax = SVSM_CORE_CALL(SVSM_CORE_DELETE_VCPU);
-+		}
-+
-+		ret = svsm_perform_call_protocol(&call);
-+
-+		local_irq_restore(flags);
-+	} else {
-+		/*
-+		 * If the kernel runs at VMPL0, it can change the VMSA
-+		 * bit for a page using the RMPADJUST instruction.
-+		 * However, for the instruction to succeed it must
-+		 * target the permissions of a lesser privileged (higher
-+		 * numbered) VMPL level, so use VMPL1.
-+		 */
-+		u64 attrs = 1;
-+
-+		if (make_vmsa)
-+			attrs |= RMPADJUST_VMSA_PAGE_BIT;
-+
-+		ret = rmpadjust((unsigned long)va, RMP_PG_SIZE_4K, attrs);
-+	}
-+
-+	return ret;
-+}
-+
-+static void snp_cleanup_vmsa(struct sev_es_save_area *vmsa, int apic_id)
-+{
-+	int err;
-+
-+	err = snp_set_vmsa(vmsa, NULL, apic_id, false);
-+	if (err)
-+		pr_err("clear VMSA page failed (%u), leaking page\n", err);
-+	else
-+		free_page((unsigned long)vmsa);
-+}
-+
- static void set_pte_enc(pte_t *kpte, int level, void *va)
- {
- 	struct pte_enc_desc d = {
-@@ -1055,6 +1151,65 @@ void snp_kexec_begin(void)
- 		pr_warn("Failed to stop shared<->private conversions\n");
- }
- 
-+/*
-+ * Shutdown all APs except the one handling kexec/kdump and clearing
-+ * the VMSA tag on AP's VMSA pages as they are not being used as
-+ * VMSA page anymore.
-+ */
-+static void shutdown_all_aps(void)
-+{
-+	struct sev_es_save_area *vmsa;
-+	int apic_id, this_cpu, cpu;
-+
-+	this_cpu = get_cpu();
-+
-+	/*
-+	 * APs are already in HLT loop when enc_kexec_finish() callback
-+	 * is invoked.
-+	 */
-+	for_each_present_cpu(cpu) {
-+		vmsa = per_cpu(sev_vmsa, cpu);
-+
-+		/*
-+		 * The BSP or offlined APs do not have guest allocated VMSA
-+		 * and there is no need  to clear the VMSA tag for this page.
-+		 */
-+		if (!vmsa)
-+			continue;
-+
-+		/*
-+		 * Cannot clear the VMSA tag for the currently running vCPU.
-+		 */
-+		if (this_cpu == cpu) {
-+			unsigned long pa;
-+			struct page *p;
-+
-+			pa = __pa(vmsa);
-+			/*
-+			 * Mark the VMSA page of the running vCPU as offline
-+			 * so that is excluded and not touched by makedumpfile
-+			 * while generating vmcore during kdump.
-+			 */
-+			p = pfn_to_online_page(pa >> PAGE_SHIFT);
-+			if (p)
-+				__SetPageOffline(p);
-+			continue;
-+		}
-+
-+		apic_id = cpuid_to_apicid[cpu];
-+
-+		/*
-+		 * Issue AP destroy to ensure AP gets kicked out of guest mode
-+		 * to allow using RMPADJUST to remove the VMSA tag on it's
-+		 * VMSA page.
-+		 */
-+		vmgexit_ap_control(SVM_VMGEXIT_AP_DESTROY, vmsa, apic_id);
-+		snp_cleanup_vmsa(vmsa, apic_id);
-+	}
-+
-+	put_cpu();
-+}
-+
- void snp_kexec_finish(void)
- {
- 	struct sev_es_runtime_data *data;
-@@ -1069,6 +1224,8 @@ void snp_kexec_finish(void)
- 	if (!IS_ENABLED(CONFIG_KEXEC_CORE))
- 		return;
- 
-+	shutdown_all_aps();
-+
- 	unshare_all_memory();
- 
- 	/*
-@@ -1090,51 +1247,6 @@ void snp_kexec_finish(void)
- 	}
- }
- 
--static int snp_set_vmsa(void *va, void *caa, int apic_id, bool make_vmsa)
--{
--	int ret;
--
--	if (snp_vmpl) {
--		struct svsm_call call = {};
--		unsigned long flags;
--
--		local_irq_save(flags);
--
--		call.caa = this_cpu_read(svsm_caa);
--		call.rcx = __pa(va);
--
--		if (make_vmsa) {
--			/* Protocol 0, Call ID 2 */
--			call.rax = SVSM_CORE_CALL(SVSM_CORE_CREATE_VCPU);
--			call.rdx = __pa(caa);
--			call.r8  = apic_id;
--		} else {
--			/* Protocol 0, Call ID 3 */
--			call.rax = SVSM_CORE_CALL(SVSM_CORE_DELETE_VCPU);
--		}
--
--		ret = svsm_perform_call_protocol(&call);
--
--		local_irq_restore(flags);
--	} else {
--		/*
--		 * If the kernel runs at VMPL0, it can change the VMSA
--		 * bit for a page using the RMPADJUST instruction.
--		 * However, for the instruction to succeed it must
--		 * target the permissions of a lesser privileged (higher
--		 * numbered) VMPL level, so use VMPL1.
--		 */
--		u64 attrs = 1;
--
--		if (make_vmsa)
--			attrs |= RMPADJUST_VMSA_PAGE_BIT;
--
--		ret = rmpadjust((unsigned long)va, RMP_PG_SIZE_4K, attrs);
--	}
--
--	return ret;
--}
--
- #define __ATTR_BASE		(SVM_SELECTOR_P_MASK | SVM_SELECTOR_S_MASK)
- #define INIT_CS_ATTRIBS		(__ATTR_BASE | SVM_SELECTOR_READ_MASK | SVM_SELECTOR_CODE_MASK)
- #define INIT_DS_ATTRIBS		(__ATTR_BASE | SVM_SELECTOR_WRITE_MASK)
-@@ -1166,24 +1278,10 @@ static void *snp_alloc_vmsa_page(int cpu)
- 	return page_address(p + 1);
- }
- 
--static void snp_cleanup_vmsa(struct sev_es_save_area *vmsa, int apic_id)
--{
--	int err;
--
--	err = snp_set_vmsa(vmsa, NULL, apic_id, false);
--	if (err)
--		pr_err("clear VMSA page failed (%u), leaking page\n", err);
--	else
--		free_page((unsigned long)vmsa);
--}
--
- static int wakeup_cpu_via_vmgexit(u32 apic_id, unsigned long start_ip)
- {
- 	struct sev_es_save_area *cur_vmsa, *vmsa;
--	struct ghcb_state state;
- 	struct svsm_ca *caa;
--	unsigned long flags;
--	struct ghcb *ghcb;
- 	u8 sipi_vector;
- 	int cpu, ret;
- 	u64 cr4;
-@@ -1297,33 +1395,7 @@ static int wakeup_cpu_via_vmgexit(u32 apic_id, unsigned long start_ip)
- 	}
- 
- 	/* Issue VMGEXIT AP Creation NAE event */
--	local_irq_save(flags);
--
--	ghcb = __sev_get_ghcb(&state);
--
--	vc_ghcb_invalidate(ghcb);
--	ghcb_set_rax(ghcb, vmsa->sev_features);
--	ghcb_set_sw_exit_code(ghcb, SVM_VMGEXIT_AP_CREATION);
--	ghcb_set_sw_exit_info_1(ghcb,
--				((u64)apic_id << 32)	|
--				((u64)snp_vmpl << 16)	|
--				SVM_VMGEXIT_AP_CREATE);
--	ghcb_set_sw_exit_info_2(ghcb, __pa(vmsa));
--
--	sev_es_wr_ghcb_msr(__pa(ghcb));
--	VMGEXIT();
--
--	if (!ghcb_sw_exit_info_1_is_valid(ghcb) ||
--	    lower_32_bits(ghcb->save.sw_exit_info_1)) {
--		pr_err("SNP AP Creation error\n");
--		ret = -EINVAL;
--	}
--
--	__sev_put_ghcb(&state);
--
--	local_irq_restore(flags);
--
--	/* Perform cleanup if there was an error */
-+	ret = vmgexit_ap_control(SVM_VMGEXIT_AP_CREATE, vmsa, apic_id);
- 	if (ret) {
- 		snp_cleanup_vmsa(vmsa, apic_id);
- 		vmsa = NULL;
+[1] https://lore.kernel.org/all/20250420-nova-frts-v1-13-ecd1cca23963@nvidia.com/
+[2] https://paste.debian.net/1374516/
+
+
+> The reason is that `rust_begin_unwind` is now mangled:
+> 
+>     _R..._7___rustc17rust_begin_unwind
+> 
+> Thus add the mangled one to the list so that `objtool` knows it is
+> actually `noreturn`.
+> 
+> See commit 56d680dd23c3 ("objtool/rust: list `noreturn` Rust functions")
+> for more details.
+> 
+> Alternatively, we could remove the fixed one in `noreturn.h` and relax
+> this test to cover both, but it seems best to be strict as long as we can.
+> 
+> Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned in older LTSs).
+> Cc: Josh Poimboeuf <jpoimboe@kernel.org>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> ---
+>  tools/objtool/check.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/tools/objtool/check.c b/tools/objtool/check.c
+> index 3a411064fa34..b21b12ec88d9 100644
+> --- a/tools/objtool/check.c
+> +++ b/tools/objtool/check.c
+> @@ -227,6 +227,7 @@ static bool is_rust_noreturn(const struct symbol *func)
+>  	       str_ends_with(func->name, "_4core9panicking19assert_failed_inner")			||
+>  	       str_ends_with(func->name, "_4core9panicking30panic_null_pointer_dereference")		||
+>  	       str_ends_with(func->name, "_4core9panicking36panic_misaligned_pointer_dereference")	||
+> +	       str_ends_with(func->name, "_7___rustc17rust_begin_unwind")				||
+>  	       strstr(func->name, "_4core9panicking13assert_failed")					||
+>  	       strstr(func->name, "_4core9panicking11panic_const24panic_const_")			||
+>  	       (strstr(func->name, "_4core5slice5index24slice_") &&
+> --
+> 2.49.0
 
