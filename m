@@ -1,139 +1,101 @@
-Return-Path: <stable+bounces-144217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC6A7AB5C6D
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 20:40:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAF07AB5CA0
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 20:47:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0195F4A7B40
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 18:40:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0975B3ADCB3
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 18:47:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12F9E2BFC70;
-	Tue, 13 May 2025 18:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B489239090;
+	Tue, 13 May 2025 18:47:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FVaVTU0S"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="nFjfmaiB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 544892BFC6F
-	for <stable@vger.kernel.org>; Tue, 13 May 2025 18:39:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8BF520E032;
+	Tue, 13 May 2025 18:47:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747161571; cv=none; b=nI2/5vVTE7TQ6k7HwlnqzEzLPKeEX1/tHLyjBTcCYVUs0yAxzcLrBrVwZCUTjYwiwg6bIchoza/YnMwl2S5ZHDbERjcFJNZCz/3pIlToQcetMqlyYAdQNpcPsE4bmkl0GEWxESctmEwVHVCXsSM/omS0PkXqWIRchRAC61EeUBA=
+	t=1747162034; cv=none; b=h0aYiQ7mRdeJRCqM8JmpIDWZg+KXco/lr5YGw5pj+nOyhmoRg3a3A6scC475YJQlq4HcNGKyttJYQsg1+f28SSpYvm47hfWtehQCSsPgOPvaOarZIia1cBYtmVf41M4BUFoPUIGm77oNiz8WfAAWJFUquA9/gEHe+6z1KgDds9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747161571; c=relaxed/simple;
-	bh=6MlCYK0KC27pJqxhgArtOJiciB1+hKa5thGbK7f5pQY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=m20uLhuxQohFilb2QPmIwb+k1M2mYLjvsoUVK/zLFBAKVtWwaBgSvo4L0AcmQnqMjFUaeOvCJYqM1mtOLflPBhUf9sQc7R10fKhLu8EI7PCrr4ldUkszVHG5AxdGRMP4RcfrXKpggOdlZYPaYfpmI1NKW70EYXzKP/3Q+2TN0HA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FVaVTU0S; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-22e423394feso7119735ad.1
-        for <stable@vger.kernel.org>; Tue, 13 May 2025 11:39:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747161569; x=1747766369; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KeSFDgZBgYjm3mhWQLfA97pjPHc8r1eeA74RDgLjocA=;
-        b=FVaVTU0SJQFtlkSs9rtJ96x99yQGS8GGVR9zYykzDAarJ6donLrgRad6HtRQfAknoS
-         AZe0yapQz3JEIp3ZnJB6ZWQbEDVL2MwXKiDXLwRYAZYiaq2DHOMRA06UagfR/dmJLQUo
-         q7+WldbitQvQlkrL8rOaDVT5PMT9CYJHDgPNh/eQ4McUj2dCNX8V+iZo9D8J+3znNsUG
-         bDOLO1X2F+N3qHpcjM2JgXXW2nbCDrrTHiX7CjH/mLfwoCvQKhQ0X+qiZNnShWf3UPiA
-         gOLERq6+MP1oD96BFVaqJ/LBiO1HOhKIQtC4iYCUlTgBjC08VuIHsu5Gr5L14BVY0UJ5
-         Q2oQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747161569; x=1747766369;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KeSFDgZBgYjm3mhWQLfA97pjPHc8r1eeA74RDgLjocA=;
-        b=A/zzMAk1DuEbj5W1jbv8n8vYrrx5Z0wRJTBtrX9cAOKGpZyTfcoSnLP91I1uXd8e46
-         lBusKpy5FDK3eevTHO6GA9uzxXHAXKQ7yl2l+zkLmORvRiTlYxw1MKFW7R2m+hs7Et+U
-         8vnOQwD/55SYUxjfNV3slMN5LQ0sXAEEVwkXVT44XvN0ebpynHnUgPqFXiLIexsE78XW
-         MrMoCAlMhZLjtzwLqPtUaa4YSF2+MJE2L6wbbPauFv35oI983+SpYFuegZGnJY+Gb/lI
-         qji7lMiVVOWbs+85Z5ungCUO47uiFwG9Di1+6336zhmql+Y9ggf0EKbRJdiyFjr+/zbN
-         MXPQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUQuMVoEutfzFeg7+79GDi1966sNHM7LHZNVPSyyQD6gHqULF/upZB6wTWe2K/Uaq7SJanWfpA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxNgjrjfD9QGP8WTchPG1NEo16t2WMQ3DyVDjHzl9y4E3X31/T9
-	CA3djDn0M/kiCpQq5SQB8wdqNOKKFxYdjx3Htyp+t8FLO0kQdlbaeI2XYuX1ZNaEkaDjK7L95IU
-	O7iuaE4o4wK39RJG4K1kUzJYVArE=
-X-Gm-Gg: ASbGncsMYKuiFHbGuimxTJfHy7cfUXcpGfzhipYuQMKknv3CrtvzqRwvSBTUwm3V8hK
-	GxIWxKSARaFEnIlwa1iVT58tc8D+MRiv4H3nbO2KDvo2ceJBYsuGgE0NsUJ4KuoTzN1HA+Firqo
-	h1L30N6v9eCkTDMykEwYd4kxC9RFQ6PGa5
-X-Google-Smtp-Source: AGHT+IEJVCK9KIRtAfD8UaJbTZhHDynI0APK1xZ+d876UDrwNh149XBJidFcMewCnee5Sc3YLXDrLw/I5Ox03yA5BVk=
-X-Received: by 2002:a17:903:248:b0:215:435d:b41a with SMTP id
- d9443c01a7336-231980ce4d3mr2681605ad.1.1747161569573; Tue, 13 May 2025
- 11:39:29 -0700 (PDT)
+	s=arc-20240116; t=1747162034; c=relaxed/simple;
+	bh=RogUgGwR0FOP6KYfV+t2DS4AvPTOIL+mE8+yVO+7w0k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dLndxyVn/WLkKKlu8ryvCYSHPPmJ+HxZrN1G8KxK5q95EW7+d4OX+VslicM4mBNHDepKHgrF0p60/QwGf2Z250lfOaiw2JnCgdCNsYFZXqfiJPiYG9PvvI/4xwQBW0btyexUh5glVxIzjs+JSTdwZqv/4w1gzMBtvWFfoMp3IY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=nFjfmaiB; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Transfer-Encoding:Content-Disposition:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:From:
+	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Content-Disposition:
+	In-Reply-To:References; bh=L61EUFuE+Uq6nCLl8f3dUo/UmLoSS1/cO7xG1BCxA+c=; b=nF
+	jfmaiBN+QXzHcGAxI2akzGtdEYv8hNnwN5bDkrKU2qOZkD3thr9CvnhfbCh9Sws/nn88v0oDli/Yw
+	LghD3qJnTInrgopOeQRV3Dp1XSP7Inlufs+3/c3btAMq4FEM+LMov4OghGMahsKm5qU/X3M3paV7F
+	iOCO059MV0q/rTU=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1uEueZ-00CULZ-Gk; Tue, 13 May 2025 20:46:59 +0200
+Date: Tue, 13 May 2025 20:46:59 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Gabor Juhos <j4g8y7@gmail.com>
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+	Gregory Clement <gregory.clement@bootlin.com>,
+	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Imre Kaloz <kaloz@openwrt.org>
+Subject: Re: [PATCH 0/7] pinctrl: armada-37xx: a couple of small fixes
+Message-ID: <f638f5ca-a479-4ab2-a8ae-6300bbe0cb08@lunn.ch>
+References: <20250512-pinctrl-a37xx-fixes-v1-0-d470fb1116a5@gmail.com>
+ <60ef3803-4f8b-4d9b-bef8-6cf3708af057@lunn.ch>
+ <CACRpkdbqPLaBheEv1=ky1gUJ-qSsPRjR0J-UXEuhXf2Oix_EzQ@mail.gmail.com>
+ <aefa5ed3-1085-4e88-b3ec-4cf9958e7e2a@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250513182307.642953-1-David.Wu3@amd.com>
-In-Reply-To: <20250513182307.642953-1-David.Wu3@amd.com>
-From: Alex Deucher <alexdeucher@gmail.com>
-Date: Tue, 13 May 2025 14:39:18 -0400
-X-Gm-Features: AX0GCFtd89wE4tDE9Sg1rgrjihi7OvYXBuB8EcJ1TER_zc8KtbZrJNJYjDryxpY
-Message-ID: <CADnq5_PGOb9msPRH=-YzRTQp_wCyONqKnXUJRwfAZOW-Y3O=uw@mail.gmail.com>
-Subject: Re: [PATCH V2 1/2] drm/amdgpu: read back register after written for
- VCN v4.0.5
-To: "David (Ming Qiang) Wu" <David.Wu3@amd.com>
-Cc: amd-gfx@lists.freedesktop.org, Christian.Koenig@amd.com, 
-	alexander.deucher@amd.com, leo.liu@amd.com, sonny.jiang@amd.com, 
-	ruijing.dong@amd.com, stable@vger.kernel.org, 
-	Mario Limonciello <mario.limonciello@amd.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aefa5ed3-1085-4e88-b3ec-4cf9958e7e2a@gmail.com>
 
-On Tue, May 13, 2025 at 2:23=E2=80=AFPM David (Ming Qiang) Wu <David.Wu3@am=
-d.com> wrote:
->
-> V2: not to add extra read-back in vcn_v4_0_5_start as there is a
->     read-back already. New comment for better understanding.
->
-> On VCN v4.0.5 there is a race condition where the WPTR is not
-> updated after starting from idle when doorbell is used. The read-back
-> of regVCN_RB1_DB_CTRL register after written is to ensure the
-> doorbell_index is updated before it can work properly.
->
-> Closes: https://gitlab.freedesktop.org/mesa/mesa/-/issues/12528
-> Cc: stable@vger.kernel.org
->
-> Signed-off-by: David (Ming Qiang) Wu <David.Wu3@amd.com>
-> Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-> Tested-by: Mario Limonciello <mario.limonciello@amd.com>
+On Tue, May 13, 2025 at 06:51:35PM +0200, Gabor Juhos wrote:
+> 2025. 05. 13. 15:36 keltezéssel, Linus Walleij írta:
+> > On Mon, May 12, 2025 at 11:33 PM Andrew Lunn <andrew@lunn.ch> wrote:
+> >> On Mon, May 12, 2025 at 04:22:36PM +0200, Gabor Juhos wrote:
+> >>> The series contains several small patches to fix various
+> >>> issues in the pinctrl driver for Armada 3700.
+> >>
+> >> I'm not sure all these should be for stable. Some are clear bugs, but
+> >> not propagating the errors has not bothered anybody so far, a
+> >> requirement for stable.
+> > 
+> > So we are at -rc6 so I'm not sending these as fixes to Torvalds
+> > right now unless they are super-critical.
+> > 
+> > I will merge this for v6.16 (-rc1) and then the stable maintainers
+> > will have to decide from the point it enters mainline.
+> > 
+> > Gabor: can you look over the tags? Once you have decided
+> > on stable/non-stable tags I will merge the series.
+> 
+> Sure, I will send a v2. Just a question, shall I also remove the 'Fixes' tags
+> along with the 'stable' ones? If I keep those, they might land up in stable
+> trees anyway.
 
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+For the return values patches, i would drop the Fixes. It is just
+really continuing development work for the driver.
 
-> ---
->  drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c | 4 ++++
->  1 file changed, 4 insertions(+)
->
-> diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c b/drivers/gpu/drm/am=
-d/amdgpu/vcn_v4_0_5.c
-> index ed00d35039c13..e55b76d71367d 100644
-> --- a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c
-> +++ b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c
-> @@ -1034,6 +1034,10 @@ static int vcn_v4_0_5_start_dpg_mode(struct amdgpu=
-_vcn_inst *vinst,
->                         ring->doorbell_index << VCN_RB1_DB_CTRL__OFFSET__=
-SHIFT |
->                         VCN_RB1_DB_CTRL__EN_MASK);
->
-> +       /* Keeping one read-back to ensure all register writes are done, =
-otherwise
-> +        * it may introduce race conditions */
-> +       RREG32_SOC15(VCN, inst_idx, regVCN_RB1_DB_CTRL);
-> +
->         return 0;
->  }
->
-> --
-> 2.34.1
->
+	Andrew
 
