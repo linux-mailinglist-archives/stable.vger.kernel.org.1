@@ -1,78 +1,134 @@
-Return-Path: <stable+bounces-144067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E651AB4880
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 02:38:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C38EAAB48A1
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 03:01:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3350A3AB8C6
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 00:38:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59323463C2C
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 01:01:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D47FA54763;
-	Tue, 13 May 2025 00:38:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 606486BFCE;
+	Tue, 13 May 2025 01:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="msb6F8Id"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="VmHpZq9N"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AD391BC2A;
-	Tue, 13 May 2025 00:38:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B1317578
+	for <stable@vger.kernel.org>; Tue, 13 May 2025 01:01:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.99
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747096728; cv=none; b=EisaXC7un3aUdZ+bRg5Ympq6DmmTdo2CpQFn7gZc1bKsZPfboShp+dhwV4C92VJNU/4aRvae933vReTmNu5EcX7Ue5EbpzZqrLhkk7aWXBKZrWwRas9WY/a2vytt+C3nJFPSPHsnKUCQcqXhfX5pYv22eNVv5rpSFTXgcwFOP+I=
+	t=1747098065; cv=none; b=UGwO+Ji95WQiPC2AsOyO84MhKViIEcO9RGlBqM5mW8IZMXxhchmN3vM0KdqoxHaBDzFKSQgHCx7yhoo9+LOYjt063GKzfFGmqDUMDZ9rVoZZ+Z3XN84Ss08/pqtDzVRY7mpdMHH63U0TCHMYYSw0WDhL0DzPE3xMyYmOqxDAwdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747096728; c=relaxed/simple;
-	bh=flBB8DjvsauKMmFKOOZ3kglblEROS9qMRYYhOuXJGuk=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Hk/h1g5VGET1+jh7rshW10K8mNzeNXSou2FA8EkBDsm8yMGw0oHUDu1seX1jP1snRsOTvp2JCoRGNTH0w4vMTGMh2P3Hr93HmmKVvgEcCIGivX7F6APw9UjnpcG6XxKLzgxSfv8kcKzpv2u29kNJInDGZkpPFIcNI5dn9/vUUsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=msb6F8Id; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FA38C4CEE7;
-	Tue, 13 May 2025 00:38:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747096728;
-	bh=flBB8DjvsauKMmFKOOZ3kglblEROS9qMRYYhOuXJGuk=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=msb6F8IdO+YfS7WclIgqjRBOasou2kc/kwcfHMFRQAxFgwjfnhRE4e/EhCimbMerm
-	 G2in5f3v0WIgcXRFAPvBV5/+gGaty9roH/IabkZHvgHlo0gz/aKFeQalc8K6Gkvmrc
-	 3sWonqoSxSP+vb3TZoMFtgor7YdlNeeCIp+2YHt8y2fUTgUKugH3JUO2hjqvFTQbn1
-	 7HD8pEIviDmSDf+h2scKBZwFiFwBmKSd1OTzmRioxxOYGy1IGgwTfj9r3qYvyPO05f
-	 1d8k+fnxbzalVDjWSbnqm1Ms6op4GILNO37vutw3M/Atv+7BQ8gtLmswb1Rti7rtsW
-	 41ZtD6hsGFfbw==
-Date: Mon, 12 May 2025 17:38:46 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: "Russell King (Oracle)" <linux@armlinux.org.uk>, Christian Marangi
- <ansuelsmth@gmail.com>, Andrew Lunn <andrew@lunn.ch>, Heiner Kallweit
- <hkallweit1@gmail.com>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Daniel
- Golle <daniel@makrotopia.org>, Bartosz Golaszewski
- <bartosz.golaszewski@linaro.org>, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [net PATCH] net: phy: aquantia: fix wrong GENMASK define for
- LED_PROV_ACT_STRETCH
-Message-ID: <20250512173846.511a2303@kernel.org>
-In-Reply-To: <e5a4fc33-4fe2-4078-83e5-596dff96bef9@wanadoo.fr>
-References: <20250511090619.3453606-1-ansuelsmth@gmail.com>
-	<aCB0dkhiO49NJhyX@shell.armlinux.org.uk>
-	<e5a4fc33-4fe2-4078-83e5-596dff96bef9@wanadoo.fr>
+	s=arc-20240116; t=1747098065; c=relaxed/simple;
+	bh=xk84oF4JkGKKvWivhJyZqb9u0CLO0vAk4lO+ZA11Hps=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=MoowgQJ4mgJ3ofkDr+G7YG3/CRnH806G/HQ+c5biC9jtHZKG1WOW13OojbVokx+PvFKxmAs99zvYSUlxZl2MfO+HXD4FonXTT4GFUR76r7BnYKF9Jn84RLfeSh7eGzad5rAadDMAvKzdcppNzp7/9JuUVPYJEWE5osPYxc3AoWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=VmHpZq9N; arc=none smtp.client-ip=115.124.30.99
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1747098058; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=OCvLd308IAX9BAZrTp6ZIykU2dLpCtq1qWZUcq7XiHk=;
+	b=VmHpZq9NMoW5B+MJQJfikp3FNGbqF3zSZa+QM6aF9duKKYOnFELbiJbyzEoRyOydhX2y148JAGVABOwgOdoLV900XyI+ybB6OaIpdDEV+UfFUxa1N3m6nYSo2dIiAl4e1mDhFgzjm4rRV5Ktaio6QOJpgq9g7KIL7dBY9SI+oMM=
+Received: from localhost(mailfrom:feng.tang@linux.alibaba.com fp:SMTPD_---0WaPtR5v_1747098056 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 13 May 2025 09:00:57 +0800
+From: Feng Tang <feng.tang@linux.alibaba.com>
+To: stable@vger.kernel.org
+Cc: Feng Tang <feng.tang@linux.alibaba.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Baolin Wang <baolin.wang@inux.alibaba.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Sri Jayaramappa <sjayaram@akamai.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6.y] selftests/mm: compaction_test: support platform with huge mount of memory
+Date: Tue, 13 May 2025 09:00:56 +0800
+Message-Id: <20250513010056.25926-1-feng.tang@linux.alibaba.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <2025051243-handprint-impulse-c20a@gregkh>
+References: <2025051243-handprint-impulse-c20a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Sun, 11 May 2025 12:06:38 +0200 Christophe JAILLET wrote:
-> There is a compile time check, but in this case
-> VEND1_GLOBAL_LED_PROV_ACT_STRETCH looks unused. So it is never expanded 
-> and compiled.
+commit ab00ddd802f80e31fc9639c652d736fe3913feae upstream.
 
-Thanks!
+When running mm selftest to verify mm patches, 'compaction_test' case
+failed on an x86 server with 1TB memory.  And the root cause is that it
+has too much free memory than what the test supports.
 
-Given this the patch is obviously not a fix.
+The test case tries to allocate 100000 huge pages, which is about 200 GB
+for that x86 server, and when it succeeds, it expects it's large than 1/3
+of 80% of the free memory in system.  This logic only works for platform
+with 750 GB ( 200 / (1/3) / 80% ) or less free memory, and may raise false
+alarm for others.
+
+Fix it by changing the fixed page number to self-adjustable number
+according to the real number of free memory.
+
+Link: https://lkml.kernel.org/r/20250423103645.2758-1-feng.tang@linux.alibaba.com
+Fixes: bd67d5c15cc1 ("Test compaction of mlocked memory")
+Signed-off-by: Feng Tang <feng.tang@linux.alibaba.com>
+Acked-by: Dev Jain <dev.jain@arm.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Tested-by: Baolin Wang <baolin.wang@inux.alibaba.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Sri Jayaramappa <sjayaram@akamai.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+ tools/testing/selftests/mm/compaction_test.c | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
+
+diff --git a/tools/testing/selftests/mm/compaction_test.c b/tools/testing/selftests/mm/compaction_test.c
+index 309b3750e57e..38fec412206b 100644
+--- a/tools/testing/selftests/mm/compaction_test.c
++++ b/tools/testing/selftests/mm/compaction_test.c
+@@ -89,6 +89,8 @@ int check_compaction(unsigned long mem_free, unsigned long hugepage_size)
+ 	int compaction_index = 0;
+ 	char initial_nr_hugepages[20] = {0};
+ 	char nr_hugepages[20] = {0};
++	char target_nr_hugepages[24] = {0};
++	int slen;
+ 
+ 	/* We want to test with 80% of available memory. Else, OOM killer comes
+ 	   in to play */
+@@ -119,11 +121,18 @@ int check_compaction(unsigned long mem_free, unsigned long hugepage_size)
+ 
+ 	lseek(fd, 0, SEEK_SET);
+ 
+-	/* Request a large number of huge pages. The Kernel will allocate
+-	   as much as it can */
+-	if (write(fd, "100000", (6*sizeof(char))) != (6*sizeof(char))) {
+-		ksft_print_msg("Failed to write 100000 to /proc/sys/vm/nr_hugepages: %s\n",
+-			       strerror(errno));
++	/*
++	 * Request huge pages for about half of the free memory. The Kernel
++	 * will allocate as much as it can, and we expect it will get at least 1/3
++	 */
++	nr_hugepages_ul = mem_free / hugepage_size / 2;
++	snprintf(target_nr_hugepages, sizeof(target_nr_hugepages),
++		 "%lu", nr_hugepages_ul);
++
++	slen = strlen(target_nr_hugepages);
++	if (write(fd, target_nr_hugepages, slen) != slen) {
++		ksft_print_msg("Failed to write %lu to /proc/sys/vm/nr_hugepages: %s\n",
++			       nr_hugepages_ul, strerror(errno));
+ 		goto close_fd;
+ 	}
+ 
+-- 
+2.39.5 (Apple Git-154)
+
 
