@@ -1,134 +1,220 @@
-Return-Path: <stable+bounces-144068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C38EAAB48A1
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 03:01:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B74DAB48A6
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 03:09:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59323463C2C
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 01:01:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A800B7A8FDE
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 01:08:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 606486BFCE;
-	Tue, 13 May 2025 01:01:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1329D17578;
+	Tue, 13 May 2025 01:09:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="VmHpZq9N"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="xRM/o1Hi"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98B1317578
-	for <stable@vger.kernel.org>; Tue, 13 May 2025 01:01:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C245A71747;
+	Tue, 13 May 2025 01:09:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747098065; cv=none; b=UGwO+Ji95WQiPC2AsOyO84MhKViIEcO9RGlBqM5mW8IZMXxhchmN3vM0KdqoxHaBDzFKSQgHCx7yhoo9+LOYjt063GKzfFGmqDUMDZ9rVoZZ+Z3XN84Ss08/pqtDzVRY7mpdMHH63U0TCHMYYSw0WDhL0DzPE3xMyYmOqxDAwdE=
+	t=1747098545; cv=none; b=oLJeWqqNHzM2CK7ebek/95SjyzE7fr2TDgmZ00TTRXeV3lJpWSBeZm8ZArV15IfG5cutUl7d9nu4EFhnV2d4gKYOSCqjG9jpLPv0MH9m14c3PAakPHsUuuQbhdjsYBSEtcpnPK+hDn0JAXBjm6u8BwIOaoRDWM8xobrA/AVRk5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747098065; c=relaxed/simple;
-	bh=xk84oF4JkGKKvWivhJyZqb9u0CLO0vAk4lO+ZA11Hps=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=MoowgQJ4mgJ3ofkDr+G7YG3/CRnH806G/HQ+c5biC9jtHZKG1WOW13OojbVokx+PvFKxmAs99zvYSUlxZl2MfO+HXD4FonXTT4GFUR76r7BnYKF9Jn84RLfeSh7eGzad5rAadDMAvKzdcppNzp7/9JuUVPYJEWE5osPYxc3AoWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=VmHpZq9N; arc=none smtp.client-ip=115.124.30.99
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1747098058; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=OCvLd308IAX9BAZrTp6ZIykU2dLpCtq1qWZUcq7XiHk=;
-	b=VmHpZq9NMoW5B+MJQJfikp3FNGbqF3zSZa+QM6aF9duKKYOnFELbiJbyzEoRyOydhX2y148JAGVABOwgOdoLV900XyI+ybB6OaIpdDEV+UfFUxa1N3m6nYSo2dIiAl4e1mDhFgzjm4rRV5Ktaio6QOJpgq9g7KIL7dBY9SI+oMM=
-Received: from localhost(mailfrom:feng.tang@linux.alibaba.com fp:SMTPD_---0WaPtR5v_1747098056 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 13 May 2025 09:00:57 +0800
-From: Feng Tang <feng.tang@linux.alibaba.com>
-To: stable@vger.kernel.org
-Cc: Feng Tang <feng.tang@linux.alibaba.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Baolin Wang <baolin.wang@inux.alibaba.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Sri Jayaramappa <sjayaram@akamai.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6.y] selftests/mm: compaction_test: support platform with huge mount of memory
-Date: Tue, 13 May 2025 09:00:56 +0800
-Message-Id: <20250513010056.25926-1-feng.tang@linux.alibaba.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <2025051243-handprint-impulse-c20a@gregkh>
-References: <2025051243-handprint-impulse-c20a@gregkh>
+	s=arc-20240116; t=1747098545; c=relaxed/simple;
+	bh=exO81zqTt1mxANJDYCH82Tn0QqzQN7ysFbcIM560OfM=;
+	h=Date:To:From:Subject:Message-Id; b=mkgn9iABbsCW0t+heQJBxpROLQ1Oom25shx0SYnAw+VNyPdUI0rOAlZ8/mGedjwADYzffOUouajRs/V+yoIfZPWIExAHQ3/I+QioFG7L0E+4Jxzx2kpnSAXBncVUgDTGmXqb1EM63yNqjrvuKQcjHok+mWakwgORiW47qW5Rwgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=xRM/o1Hi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31B02C4CEE7;
+	Tue, 13 May 2025 01:09:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1747098545;
+	bh=exO81zqTt1mxANJDYCH82Tn0QqzQN7ysFbcIM560OfM=;
+	h=Date:To:From:Subject:From;
+	b=xRM/o1HiKAFXzDDuK0GUdZQETiyBf0B7CQ8ItCgzzXL+LtuP+LA/ZQ9Fy8MO7bjiA
+	 291rIh866JGNiUYMVt5/q0WNyJYuyzerGhbaEvJj07hAQAvvGQWQIgUMZ96C396A0I
+	 3/UfFN3IBJcaBV3ZuYvRMmi8Nh2dIMQ2E7eP9G7I=
+Date: Mon, 12 May 2025 18:09:04 -0700
+To: mm-commits@vger.kernel.org,yang.yang29@zte.com.cn,xu.xin16@zte.com.cn,stable@vger.kernel.org,jiang.kun2@zte.com.cn,bsingharora@gmail.com,wang.yaxin@zte.com.cn,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + taskstats-fix-struct-taskstats-breaks-backward-compatibility-since-version-15.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250513010905.31B02C4CEE7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-commit ab00ddd802f80e31fc9639c652d736fe3913feae upstream.
 
-When running mm selftest to verify mm patches, 'compaction_test' case
-failed on an x86 server with 1TB memory.  And the root cause is that it
-has too much free memory than what the test supports.
+The patch titled
+     Subject: taskstats: fix struct taskstats breaks backward compatibility since version 15
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     taskstats-fix-struct-taskstats-breaks-backward-compatibility-since-version-15.patch
 
-The test case tries to allocate 100000 huge pages, which is about 200 GB
-for that x86 server, and when it succeeds, it expects it's large than 1/3
-of 80% of the free memory in system.  This logic only works for platform
-with 750 GB ( 200 / (1/3) / 80% ) or less free memory, and may raise false
-alarm for others.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/taskstats-fix-struct-taskstats-breaks-backward-compatibility-since-version-15.patch
 
-Fix it by changing the fixed page number to self-adjustable number
-according to the real number of free memory.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Link: https://lkml.kernel.org/r/20250423103645.2758-1-feng.tang@linux.alibaba.com
-Fixes: bd67d5c15cc1 ("Test compaction of mlocked memory")
-Signed-off-by: Feng Tang <feng.tang@linux.alibaba.com>
-Acked-by: Dev Jain <dev.jain@arm.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Tested-by: Baolin Wang <baolin.wang@inux.alibaba.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Sri Jayaramappa <sjayaram@akamai.com>
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Wang Yaxin <wang.yaxin@zte.com.cn>
+Subject: taskstats: fix struct taskstats breaks backward compatibility since version 15
+Date: Sat, 10 May 2025 15:54:13 +0800 (CST)
+
+Problem
+========
+commit 658eb5ab916d ("delayacct: add delay max to record delay peak")
+  - adding more fields
+commit f65c64f311ee ("delayacct: add delay min to record delay peak")
+  - adding more fields
+commit b016d0873777 ("taskstats: modify taskstats version")
+ - version bump to 15
+
+Since version 15 (TASKSTATS_VERSION=15) the new layout of the structure
+adds fields in the middle of the structure, rendering all old software
+incompatible with newer kernels and software compiled against the new
+kernel headers incompatible with older kernels.
+
+Solution
+=========
+move delay max and delay min to the end of taskstat, and bump
+the version to 16 after the change
+
+Link: https://lkml.kernel.org/r/20250510155413259V4JNRXxukdDgzsaL0Fo6a@zte.com.cn
+Fixes: f65c64f311ee ("delayacct: add delay min to record delay peak")
+Signed-off-by: Wang Yaxin <wang.yaxin@zte.com.cn>
+Signed-off-by: xu xin <xu.xin16@zte.com.cn>
+Signed-off-by: Kun Jiang <jiang.kun2@zte.com.cn>
+Cc: Balbir Singh <bsingharora@gmail.com>
+Cc: Yang Yang <yang.yang29@zte.com.cn>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- tools/testing/selftests/mm/compaction_test.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/compaction_test.c b/tools/testing/selftests/mm/compaction_test.c
-index 309b3750e57e..38fec412206b 100644
---- a/tools/testing/selftests/mm/compaction_test.c
-+++ b/tools/testing/selftests/mm/compaction_test.c
-@@ -89,6 +89,8 @@ int check_compaction(unsigned long mem_free, unsigned long hugepage_size)
- 	int compaction_index = 0;
- 	char initial_nr_hugepages[20] = {0};
- 	char nr_hugepages[20] = {0};
-+	char target_nr_hugepages[24] = {0};
-+	int slen;
+ include/uapi/linux/taskstats.h |   43 +++++++++++++++++++------------
+ 1 file changed, 27 insertions(+), 16 deletions(-)
+
+--- a/include/uapi/linux/taskstats.h~taskstats-fix-struct-taskstats-breaks-backward-compatibility-since-version-15
++++ a/include/uapi/linux/taskstats.h
+@@ -34,7 +34,7 @@
+  */
  
- 	/* We want to test with 80% of available memory. Else, OOM killer comes
- 	   in to play */
-@@ -119,11 +121,18 @@ int check_compaction(unsigned long mem_free, unsigned long hugepage_size)
  
- 	lseek(fd, 0, SEEK_SET);
+-#define TASKSTATS_VERSION	15
++#define TASKSTATS_VERSION	16
+ #define TS_COMM_LEN		32	/* should be >= TASK_COMM_LEN
+ 					 * in linux/sched.h */
  
--	/* Request a large number of huge pages. The Kernel will allocate
--	   as much as it can */
--	if (write(fd, "100000", (6*sizeof(char))) != (6*sizeof(char))) {
--		ksft_print_msg("Failed to write 100000 to /proc/sys/vm/nr_hugepages: %s\n",
--			       strerror(errno));
-+	/*
-+	 * Request huge pages for about half of the free memory. The Kernel
-+	 * will allocate as much as it can, and we expect it will get at least 1/3
-+	 */
-+	nr_hugepages_ul = mem_free / hugepage_size / 2;
-+	snprintf(target_nr_hugepages, sizeof(target_nr_hugepages),
-+		 "%lu", nr_hugepages_ul);
+@@ -72,8 +72,6 @@ struct taskstats {
+ 	 */
+ 	__u64	cpu_count __attribute__((aligned(8)));
+ 	__u64	cpu_delay_total;
+-	__u64	cpu_delay_max;
+-	__u64	cpu_delay_min;
+ 
+ 	/* Following four fields atomically updated using task->delays->lock */
+ 
+@@ -82,14 +80,10 @@ struct taskstats {
+ 	 */
+ 	__u64	blkio_count;
+ 	__u64	blkio_delay_total;
+-	__u64	blkio_delay_max;
+-	__u64	blkio_delay_min;
+ 
+ 	/* Delay waiting for page fault I/O (swap in only) */
+ 	__u64	swapin_count;
+ 	__u64	swapin_delay_total;
+-	__u64	swapin_delay_max;
+-	__u64	swapin_delay_min;
+ 
+ 	/* cpu "wall-clock" running time
+ 	 * On some architectures, value will adjust for cpu time stolen
+@@ -172,14 +166,11 @@ struct taskstats {
+ 	/* Delay waiting for memory reclaim */
+ 	__u64	freepages_count;
+ 	__u64	freepages_delay_total;
+-	__u64	freepages_delay_max;
+-	__u64	freepages_delay_min;
 +
-+	slen = strlen(target_nr_hugepages);
-+	if (write(fd, target_nr_hugepages, slen) != slen) {
-+		ksft_print_msg("Failed to write %lu to /proc/sys/vm/nr_hugepages: %s\n",
-+			       nr_hugepages_ul, strerror(errno));
- 		goto close_fd;
- 	}
  
--- 
-2.39.5 (Apple Git-154)
+ 	/* Delay waiting for thrashing page */
+ 	__u64	thrashing_count;
+ 	__u64	thrashing_delay_total;
+-	__u64	thrashing_delay_max;
+-	__u64	thrashing_delay_min;
+ 
+ 	/* v10: 64-bit btime to avoid overflow */
+ 	__u64	ac_btime64;		/* 64-bit begin time */
+@@ -187,8 +178,6 @@ struct taskstats {
+ 	/* v11: Delay waiting for memory compact */
+ 	__u64	compact_count;
+ 	__u64	compact_delay_total;
+-	__u64	compact_delay_max;
+-	__u64	compact_delay_min;
+ 
+ 	/* v12 begin */
+ 	__u32   ac_tgid;	/* thread group ID */
+@@ -210,15 +199,37 @@ struct taskstats {
+ 	/* v13: Delay waiting for write-protect copy */
+ 	__u64    wpcopy_count;
+ 	__u64    wpcopy_delay_total;
+-	__u64    wpcopy_delay_max;
+-	__u64    wpcopy_delay_min;
+ 
+ 	/* v14: Delay waiting for IRQ/SOFTIRQ */
+ 	__u64    irq_count;
+ 	__u64    irq_delay_total;
++
++	/* v15: add Delay max and Delay min */
++
++	/* v16: move Delay max and Delay min to the end of taskstat */
++	__u64	cpu_delay_max;
++	__u64	cpu_delay_min;
++
++	__u64	blkio_delay_max;
++	__u64	blkio_delay_min;
++
++	__u64	swapin_delay_max;
++	__u64	swapin_delay_min;
++
++	__u64	freepages_delay_max;
++	__u64	freepages_delay_min;
++
++	__u64	thrashing_delay_max;
++	__u64	thrashing_delay_min;
++
++	__u64	compact_delay_max;
++	__u64	compact_delay_min;
++
++	__u64    wpcopy_delay_max;
++	__u64    wpcopy_delay_min;
++
+ 	__u64    irq_delay_max;
+ 	__u64    irq_delay_min;
+-	/* v15: add Delay max */
+ };
+ 
+ 
+_
+
+Patches currently in -mm which might be from wang.yaxin@zte.com.cn are
+
+taskstats-fix-struct-taskstats-breaks-backward-compatibility-since-version-15.patch
 
 
