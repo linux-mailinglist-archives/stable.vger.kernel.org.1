@@ -1,145 +1,146 @@
-Return-Path: <stable+bounces-144194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC788AB5A76
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 18:45:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C600CAB5A7D
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 18:46:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3B591B66662
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 16:44:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64C2A18894EF
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 16:45:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC47F2BE7CA;
-	Tue, 13 May 2025 16:44:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADE682BEC3E;
+	Tue, 13 May 2025 16:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XIQaGR8U"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OyiC1lDA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3EAC1C9B9B;
-	Tue, 13 May 2025 16:44:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B48C1D5CC4
+	for <stable@vger.kernel.org>; Tue, 13 May 2025 16:45:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747154644; cv=none; b=l1/yfySzWZnwzrB9DVmHZgE45jW8Zvn/qkdQ+GiwF2IKmgN0UgHu4tONpqH8YWLMsGKlLgTZoKNqInRRumI0K9mty2ShwcQjH4JBwju48pNWur/mtorc8542SjPKtXnrN4hFWatth+eXuSeJIJgrKDeGBUe68LXDhu2c7KKI5xM=
+	t=1747154710; cv=none; b=sqGyltw+q8XCJlz612oN+xtCmomQ1TmEX0Zs/mtHTDV5jjsHdFxTmrFxRvI5PJnN9s/o+VtUPV1ms3sNa0STUIXAJGBju1QBmtKj3LDimSlzNbvtCjeEuiFktQq81tSvE45tSGkSgBdTnUZCIhsa8qpcHTtCwmkz28asAKzmn9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747154644; c=relaxed/simple;
-	bh=XL8qu73G3NGvUHj6ADq7BcnT6u+oxB7gWtMQeQF5ayQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=obL1z9FvsEdvA6KgGAF2YE15NXir90Sb3jvtYk1TWqDqYjfaMANIaDx1b5Na7pTgcKhlWpYVZhFgEDCl54Jgjf2IdCU6vh4uCxi6YO33vdKrGgMHGiyCq6pBN/10XppeSm3QKVVoVSREb5JfnOELMQhVM1PxBfJqTy4/GV6vLCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XIQaGR8U; arc=none smtp.client-ip=209.85.128.50
+	s=arc-20240116; t=1747154710; c=relaxed/simple;
+	bh=uJ16UFS8Onm/1pmcbzqCBA97VUJql7Yobxk9hj4nKzk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DL6ov/zjBqe5Ged8/bx/A9DCrN9I9PR8i18DC3CyHzfdZuX1Na4kc+BGdlGFFsSJIW86suweDvk30MeUVVHBXpTsKiaxYbWdrLjGaoLaIhc/BlVc/mkZM6JKVSk+8H73DFSDKFPoH+rXVG1w2sEfMM9Ednkf//iNMJyiOMx2M2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OyiC1lDA; arc=none smtp.client-ip=209.85.214.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-43cf89f81c5so5141355e9.2;
-        Tue, 13 May 2025 09:44:02 -0700 (PDT)
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-23179999d4aso1784585ad.1
+        for <stable@vger.kernel.org>; Tue, 13 May 2025 09:45:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747154641; x=1747759441; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=A/kRqYaGohmL+rCJZtloL3u0VjOq+d/hFBIY4Q6MI5o=;
-        b=XIQaGR8URWtpBDw2e4X667RKfLfpoFjO6lT+4LH1F+7HuUNSHuTbYP7uq7HPqktj3o
-         m8/iTVpnJgDwpUfgWUT0m5r7485qnfVakif6XA3Yru43GUMLiMj4x6AgcEq+yRXqBHxi
-         /TCiRJmwx7jle4UDM8h3W+R5KoHKtXd+v3Q75yHmPul2nvFb9oj07ZGjAazkEokOVEcn
-         qD0+7cDr8l0x52jnPsN4nuOUMzVFUA8wuqWyAaiFIgeTQ9heoA+Ry5V5Idz2VWKqp/Jb
-         tiWhTTs9bplM51iP1wK+iVUf3G+kNwaZL50sRHXsC9kZb1e3MECshVm1NxhhDONRlfWt
-         /Uqw==
+        d=gmail.com; s=20230601; t=1747154708; x=1747759508; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9iQw3rPC4MMDwF6PVhxgITs0Pt2hQtRby37OqxvKFq0=;
+        b=OyiC1lDATRxJfTv3JpDyqKpeuB6/y/95PtSHQIXsan2OLKGce5HDbBdF5EWv47wulT
+         1spPVGRLooPQZMO9a3EnYHQCJ+UOdgNwvqw5P7KT91I+mkhNqxaALa0bI2Gc2vVFEBH7
+         dRqXgh1gdZZOeDh0E2C/qUcZwkZ3ilhfWWoWHsv++0FQWLaO604WN2TawZKCTOK9q4ov
+         3SBxdBSPI4/WkAOsWQdi6zcNpanQ0G/Jj9RnvIxrdUNq0CAeRZiCKsxDLe8Egj2A5Qn7
+         Dhvk18Y4JS/DviMaax3hyEXolCnCoHK3Lvwc4EZNh+hyfzGtgjVO8VAuqU32RerMskUk
+         c8lQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747154641; x=1747759441;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=A/kRqYaGohmL+rCJZtloL3u0VjOq+d/hFBIY4Q6MI5o=;
-        b=JtHPLIFQbPw2hnCix6kCMixPyHSZSvOyY3HOtWmNHVVqb40UBZLYOTyhj31zA3yLyx
-         NebzrAlOo+l0e4htEZ3fhj+eZXPePC8PVfm+SsXI0/zfkcX+LQ/q/EMr0NdQD9bXxejL
-         fvqaUsPok/y7XLintd+hBvflZqHoZWGMwaAxPB/HoSr8D/EvvmvT+QTekipTXZv28XxW
-         Q/AsbspLtgF1h/QMdO1HMWurEuQk1duhXq1zK9Jln4rFPsM48NYw+qS0NW4VPBmCON6a
-         8yfKbbJqmy2cFHIo1gkceXHbs4VHl2urB02QmMk+w/zcmpHJ2FYI1l5j09jIQpBpxFXF
-         JwDQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWYNPMT2MjdEjGuWJy1lJpriIJ7E1vVGb8tWC3ycrXKsabUV1fU0U2RD2yGh0BM99ktvttEbRwU+9qW@vger.kernel.org, AJvYcCXEX9iQcgZN9Rymjm9xJ/7XnvacG4gTU40JxWkUILM+Oz3WxEXpqhpwjXK5/W5bvvFLIly98GiC@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywz2DqAoIFkP/+IWMg7kwlftEGLsmFsWUoU8fzT7f8kTEnl+W3j
-	tvK4wAWJb0+cbxMLYmidGIFyoDITOQrK26XsJo/rVOh/7+RKxUvQ
-X-Gm-Gg: ASbGnctn6bml7l503qTi/oHVW37PqzoSr8seAjFzWjUIdt/5yP8v3fwv24HmEt+z6+R
-	RxuiMGbW1iJpMPSk4/IdY67yJrUOJUqlXK9xQv6ulNT0VZnLvCVaPni+vl5PL4tpsjMGJcqSxBi
-	CB0fylXoP9j2olNgKxYZPZzompugGrgW4NRJCKJdplt0ZBDC+wAmlX/2ogEefJwW3u9rNM1McUN
-	782e4sqlCbKmf5ykmpT01W6m8ynTUsRIpu0nSKpMlqM/6aLrq+xKXM035kRp9HXItdbpndu1mwm
-	g91PQQMkpwm6hJhgj0wC7T/byy4swi/OZ3yG87wSAIIVb6UxqjZVG56Gl7FrFmpBJnjDwygMeey
-	PSVmhMqYno3q5nfUwqaI=
-X-Google-Smtp-Source: AGHT+IFMWq4dGQNjFikqi9SiU5l4zVjghlCpgyAzg2C2XLU1zbw34nP91iiVFBwACRU/PcSac4Jp8w==
-X-Received: by 2002:a05:600c:358f:b0:439:9a5a:d3bb with SMTP id 5b1f17b1804b1-442f20bae5amr175275e9.2.1747154640856;
-        Tue, 13 May 2025 09:44:00 -0700 (PDT)
-Received: from [192.168.0.18] (cable-94-189-140-39.dynamic.sbb.rs. [94.189.140.39])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-442d67d5c7bsm176462675e9.4.2025.05.13.09.43.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 May 2025 09:43:59 -0700 (PDT)
-Message-ID: <53a86990-0aa5-4816-a252-43287f3451b8@gmail.com>
-Date: Tue, 13 May 2025 18:43:56 +0200
+        d=1e100.net; s=20230601; t=1747154708; x=1747759508;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9iQw3rPC4MMDwF6PVhxgITs0Pt2hQtRby37OqxvKFq0=;
+        b=Z54aRXQaTlN+BM/HR9xCvp2MNWhM9NIs14lDCdA6GEH9fhMluXQhLuFp0K/cboD+6N
+         0YSRGEILireKZ724enXg0S2gfChPW+Cz1Mzbz6xEJQ/SlzSqRgYvodZwb5vDuv8Zog5M
+         04wPgIsHB1DCJvc4lN1+pzEdOlzwhvOgLa1bq27D48LxdZE+Jjf6zCz4iFNyMkRa01oZ
+         pKGFXiPqIPbf9R6GNKzXGKxYdDFV08E2YAnuMYgmvcytBGcIyF13JE6FJKyHWWvnSqBw
+         Cagmc778qn+td5eso1U+4BbI3OOcFcPvrYS+9p12IvZTx2/CLoEScSO/L8r27BYS3+/K
+         HmTQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX4a6zM/pP/hM/uyd2WxfL7VT2nvrQv/U85YuLVRAKbcPw0LCaeNUmnzBjfHGaedAt6F029n/g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwxYMj0XfAyu9ocERXx5RFGKykhV9zjatonERT5C+5GJEF5DEsi
+	mKpStvs5ycfveWeDw7JkLGl2JaDMVz/HnlQjpn5vl3oiHGr3YQMC08f+dMeHuPdWr837FsW5Dkk
+	p490BSVivc+y5BuznVq3lP1gH5wg=
+X-Gm-Gg: ASbGnctJh/oc2ASSB4i+IlOnrI5+Rbk5s6ZtGIuPaEsgRHAyTVEH5ksyK10o3sW/Kcb
+	TwDSX3UR0gp2s+bOUyjPoCATbcLD7XYEv/Udbvv0ccmQyyHlmYP7RLRkB5GJDMheT3xB6y6YS6O
+	w8SNFGXsbXnGzmtZtw8zYNVEl/iD4BiitqNAm4qs1wMjA=
+X-Google-Smtp-Source: AGHT+IGCLGVpb7jGjHSHvQsiFCfy3beYXJoE0tWVrDAAN/NSOKrjM86Dp8gLDoK/hgEV834D+BYzby5c4DvUVPfF8Rw=
+X-Received: by 2002:a17:903:1984:b0:231:7fbc:19c9 with SMTP id
+ d9443c01a7336-2319810ea4cmr807135ad.1.1747154708158; Tue, 13 May 2025
+ 09:45:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 0/1] kasan: Avoid sleepable page allocation from atomic
- context
-To: Alexander Gordeev <agordeev@linux.ibm.com>,
- Andrew Morton <akpm@linux-foundation.org>, Daniel Axtens <dja@axtens.net>,
- Harry Yoo <harry.yoo@oracle.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- kasan-dev@googlegroups.com, linux-s390@vger.kernel.org,
- stable@vger.kernel.org
-References: <cover.1747149155.git.agordeev@linux.ibm.com>
-Content-Language: en-US
-From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-In-Reply-To: <cover.1747149155.git.agordeev@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20250513162912.634716-1-David.Wu3@amd.com>
+In-Reply-To: <20250513162912.634716-1-David.Wu3@amd.com>
+From: Alex Deucher <alexdeucher@gmail.com>
+Date: Tue, 13 May 2025 12:44:56 -0400
+X-Gm-Features: AX0GCFt_zpQ0P1YWbQqYyOo2zKyDqL46kqlXipx1zxscZ6ePplgD-FIR8Ulo7us
+Message-ID: <CADnq5_P5QrYhLEzkwPUMvgYSmk8NkTOusa1dmBFD=veNfshBAA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] drm/amdgpu: read back DB_CTRL register after written
+ for VCN v4.0.5
+To: "David (Ming Qiang) Wu" <David.Wu3@amd.com>
+Cc: amd-gfx@lists.freedesktop.org, Christian.Koenig@amd.com, 
+	alexander.deucher@amd.com, leo.liu@amd.com, sonny.jiang@amd.com, 
+	ruijing.dong@amd.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Tue, May 13, 2025 at 12:38=E2=80=AFPM David (Ming Qiang) Wu
+<David.Wu3@amd.com> wrote:
+>
+> On VCN v4.0.5 there is a race condition where the WPTR is not
+> updated after starting from idle when doorbell is used. The read-back
+> of regVCN_RB1_DB_CTRL register after written is to ensure the
+> doorbell_index is updated before it can work properly.
+>
+> Link: https://gitlab.freedesktop.org/mesa/mesa/-/issues/12528
+> Signed-off-by: David (Ming Qiang) Wu <David.Wu3@amd.com>
+> ---
+>  drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>
+> diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c b/drivers/gpu/drm/am=
+d/amdgpu/vcn_v4_0_5.c
+> index ed00d35039c1..d6be8b05d7a2 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c
+> @@ -1033,6 +1033,8 @@ static int vcn_v4_0_5_start_dpg_mode(struct amdgpu_=
+vcn_inst *vinst,
+>         WREG32_SOC15(VCN, inst_idx, regVCN_RB1_DB_CTRL,
+>                         ring->doorbell_index << VCN_RB1_DB_CTRL__OFFSET__=
+SHIFT |
+>                         VCN_RB1_DB_CTRL__EN_MASK);
+> +       /* Read DB_CTRL to flush the write DB_CTRL command. */
+> +       RREG32_SOC15(VCN, inst_idx, regVCN_RB1_DB_CTRL);
+>
+>         return 0;
+>  }
+> @@ -1195,6 +1197,8 @@ static int vcn_v4_0_5_start(struct amdgpu_vcn_inst =
+*vinst)
+>         WREG32_SOC15(VCN, i, regVCN_RB1_DB_CTRL,
+>                      ring->doorbell_index << VCN_RB1_DB_CTRL__OFFSET__SHI=
+FT |
+>                      VCN_RB1_DB_CTRL__EN_MASK);
+> +       /* Read DB_CTRL to flush the write DB_CTRL command. */
+> +       RREG32_SOC15(VCN, i, regVCN_RB1_DB_CTRL);
 
+You might want to move this one down to the end of the function to
+post the other subsequent writes.  Arguably all of the VCNs should do
+something similar.  If you want to make sure a PCIe write goes
+through, you need to issue a subsequent read.  Doing this at the end
+of each function should post all previous writes.
 
-On 5/13/25 5:21 PM, Alexander Gordeev wrote:
-> Hi All,
-> 
-> Chages since v7:
-> - drop "unnecessary free pages" optimization
-> - fix error path page leak
-> 
-> Chages since v6:
-> - do not unnecessary free pages across iterations
-> 
+Alex
 
-
-Have you looked at boot failure report from kernel test robot ?
-https://lkml.kernel.org/r/202505121313.806a632c-lkp@intel.com
-
-I think the report is for v6 version, but I don't see evidence that it was
-addressed, so the v8 is probably affected as well?
-
-
-> Chages since v5:
-> - full error message included into commit description
-> 
-> Chages since v4:
-> - unused pages leak is avoided
-> 
-> Chages since v3:
-> - pfn_to_virt() changed to page_to_virt() due to compile error
-> 
-> Chages since v2:
-> - page allocation moved out of the atomic context
-> 
-> Chages since v1:
-> - Fixes: and -stable tags added to the patch description
-> 
-> Thanks!
-> 
-> Alexander Gordeev (1):
->   kasan: Avoid sleepable page allocation from atomic context
-> 
->  mm/kasan/shadow.c | 77 ++++++++++++++++++++++++++++++++++++++---------
->  1 file changed, 63 insertions(+), 14 deletions(-)
-> 
-
+>
+>         WREG32_SOC15(VCN, i, regUVD_RB_BASE_LO, ring->gpu_addr);
+>         WREG32_SOC15(VCN, i, regUVD_RB_BASE_HI, upper_32_bits(ring->gpu_a=
+ddr));
+> --
+> 2.49.0
+>
 
