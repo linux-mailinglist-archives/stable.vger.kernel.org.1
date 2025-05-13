@@ -1,106 +1,102 @@
-Return-Path: <stable+bounces-144126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B63BAAB4DA6
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 10:07:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07A1AAB4DA9
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 10:07:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BF4F17793A
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 08:07:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 671E186695E
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 08:07:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CABF51F473A;
-	Tue, 13 May 2025 08:07:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B63D01F582F;
+	Tue, 13 May 2025 08:07:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Zqhnyyub"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC16F1F3B98
-	for <stable@vger.kernel.org>; Tue, 13 May 2025 08:07:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 808111F5437
+	for <stable@vger.kernel.org>; Tue, 13 May 2025 08:07:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747123631; cv=none; b=Kk5Lssn1TwHozFGu6L66V6azdB9q3/O4pSbFADqLA4b2+8nLfmpB9+gX1cUFqNVDGYLBEiy87KO17/j00/RGhs/i0dGNBSokcbQBK7pYMJ6uh7WVJFBX87N/rEH/HmmGC2pqMCgQnRQ1gEjQgFULXZVFC4EmnQWygCihOaUmMec=
+	t=1747123651; cv=none; b=r1ECPcDiRUgvThOaGgHdVg52/0ZlCw1vCsD4jxhg2RqsNUwb82IS909tZyUP6VDcg/Jewi/+4Ag78nCuGC5fc+ig0iD+BheBxPqBQ2PlsTypnBIoZhYv7+7iSlm3AiiiNcWI+Zwdn2rIgSI1DAqEdqgSFWGfKSq4PHdgg15gJ4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747123631; c=relaxed/simple;
-	bh=Cq+HfICzYMkJFEWW5AjpY7hUpz8hyEiaol0Ein4Ft40=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FxSDAo1AUS3w5vvJtgX//MzW3z+iLL6SO3dYP6vgNeRNDIBUm/zt0pdG3IvTYxIhoVo1RbNC7zyqvHeWVP1KeWkAVSzdTmbmS0h/PYoxq8WWO0ToXLaTdAERXj7XfYteOoezNzvkiqHThSTIqaOnxHU21y3obRRVgp8saJJCKQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [223.64.68.186])
-	by gateway (Coremail) with SMTP id _____8DxWOGm_SJotZ3jAA--.42978S3;
-	Tue, 13 May 2025 16:07:02 +0800 (CST)
-Received: from localhost.localdomain (unknown [223.64.68.186])
-	by front1 (Coremail) with SMTP id qMiowMDx+xqf_SJopHXNAA--.18621S2;
-	Tue, 13 May 2025 16:06:58 +0800 (CST)
-From: Huacai Chen <chenhuacai@loongson.cn>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Huacai Chen <chenhuacai@kernel.org>
-Cc: Xuerui Wang <kernel@xen0n.name>,
-	stable@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Haiyong Sun <sunhaiyong@loongson.cn>
-Subject: [PATCH for 6.1/6.6] LoongArch: Explicitly specify code model in Makefile
-Date: Tue, 13 May 2025 16:06:45 +0800
-Message-ID: <20250513080645.252607-1-chenhuacai@loongson.cn>
-X-Mailer: git-send-email 2.47.1
+	s=arc-20240116; t=1747123651; c=relaxed/simple;
+	bh=JeHSIXfqlD33ki/2XnfHM0IKxV8H/qfQUSwwS94FDZk=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=pOrxkAUC8aWWE/zuD8CMh9cBx56P8CIjM6Z+ogcL2i125QyAg7WAXt38hEcaeysZq2I4bqU11XSSx9lIrtiBx0vodrMpkcCmTxNubPGOT1N2m2mcH9YUsX6WKvFqDIiMJSk9U6ntKD+ELo9KR6Nd95QIEyYo2HF+XTuRyJxgGmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Zqhnyyub; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747123649; x=1778659649;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=JeHSIXfqlD33ki/2XnfHM0IKxV8H/qfQUSwwS94FDZk=;
+  b=ZqhnyyubXdQeZp/HIcxBNW1OH8zHDS1uqt8F0yJisNWF3tgUThZVcPdX
+   e6ua0MS8RbR0GMinihEzA5UVgeyIc0a/gh7xkuNXArYT9DDi8JOZMWY10
+   kxEraUwn5ZQuzGwA4LEw6zpGzYEE2Q0io7deJjmsR4xBbaI0F2hEO51+J
+   nBU4wCopFunKFxycukDuIb2rCpZP60uTxfdCOR5TC9SR11SVrUTvcwCrE
+   7nUC7nM5QGDRYhdX2H+0ZyWoZrf58q3+ZGn22TidZxR/+05A4iALaJZN1
+   qwLN5oBlHltasp1T4feBG0ALDbHQbp5Egjzl66tabteKM/xLFuzSBnCFM
+   g==;
+X-CSE-ConnectionGUID: WINHjbrRQXuhqAbw8UKzxQ==
+X-CSE-MsgGUID: Y5dyo5E9QEe4n9d3ttNMWA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11431"; a="49118985"
+X-IronPort-AV: E=Sophos;i="6.15,284,1739865600"; 
+   d="scan'208";a="49118985"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2025 01:07:29 -0700
+X-CSE-ConnectionGUID: fWNmBkA4ReSPXTAYPQr9mQ==
+X-CSE-MsgGUID: kmY9YDTWRj6An0zMFTplKg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,284,1739865600"; 
+   d="scan'208";a="168555352"
+Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
+  by orviesa002.jf.intel.com with ESMTP; 13 May 2025 01:07:28 -0700
+Received: from kbuild by 1992f890471c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uEkfd-000Fqx-2g;
+	Tue, 13 May 2025 08:07:25 +0000
+Date: Tue, 13 May 2025 16:07:02 +0800
+From: kernel test robot <lkp@intel.com>
+To: Huacai Chen <chenhuacai@loongson.cn>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH for 6.6] mm/migrate: correct nr_failed in
+ migrate_pages_sync()
+Message-ID: <aCL9pl7ntFRtm3dv@75fa4dc5d8b3>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowMDx+xqf_SJopHXNAA--.18621S2
-X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj9xXoW7Gw4xWrykWrWfWF47tFWDAwc_yoWDJrgEgF
-	ZrWw4kCr4fJrWDuw4agFyrZr18Kw1DCFnayFnIvr13J3y3t34rGFn0934fZF1Ig3y7WrWS
-	9aykZF98Zr1jvosvyTuYvTs0mTUanT9S1TB71UUUUUJqnTZGkaVYY2UrUUUUj1kv1TuYvT
-	s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
-	cSsGvfJTRUUUbVAYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
-	vaj40_Wr0E3s1l1IIY67AEw4v_Jrv_JF1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
-	w2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
-	W8JVWxJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0
-	oVCq3wAaw2AFwI0_Jrv_JF1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa02
-	0Ex4CE44I27wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jw0_Wryl
-	Yx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrw
-	CF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C267AKxVWUXVWU
-	AwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1V
-	AFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVW8JVW5JwCI42IY6xII
-	jxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4
-	A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU
-	0xZFpf9x07jz2NtUUUUU=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250513080521.252543-1-chenhuacai@loongson.cn>
 
-LoongArch's toolchain may change the default code model from normal to
-medium. This is unnecessary for kernel, and generates some relocations
-which cannot be handled by the module loader. So explicitly specify the
-code model to normal in Makefile (for Rust 'normal' is 'small').
+Hi,
 
-Cc: stable@vger.kernel.org
-Tested-by: Haiyong Sun <sunhaiyong@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
----
-We may use new toolchain to build 6.1/6.6 LTS, backport it to avoid
-problems.
+Thanks for your patch.
 
- arch/loongarch/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-diff --git a/arch/loongarch/Makefile b/arch/loongarch/Makefile
-index a74bbcb05ee1..f2966745b058 100644
---- a/arch/loongarch/Makefile
-+++ b/arch/loongarch/Makefile
-@@ -55,7 +55,7 @@ endif
- 
- ifdef CONFIG_64BIT
- ld-emul			= $(64bit-emul)
--cflags-y		+= -mabi=lp64s
-+cflags-y		+= -mabi=lp64s -mcmodel=normal
- endif
- 
- cflags-y			+= -pipe -msoft-float
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-3
+
+Rule: The upstream commit ID must be specified with a separate line above the commit text.
+Subject: [PATCH for 6.6] mm/migrate: correct nr_failed in migrate_pages_sync()
+Link: https://lore.kernel.org/stable/20250513080521.252543-1-chenhuacai%40loongson.cn
+
+Please ignore this mail if the patch is not relevant for upstream.
+
 -- 
-2.47.1
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
