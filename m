@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-144233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40779AB5CB6
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 20:49:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E92DDAB5CAE
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 20:49:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89A93865125
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 18:49:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A466B19E8246
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 18:49:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA3F92BEC3F;
-	Tue, 13 May 2025 18:49:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 136172BEC5A;
+	Tue, 13 May 2025 18:49:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ghJbsHne"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LkGAqs9j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 677CB1B3950
-	for <stable@vger.kernel.org>; Tue, 13 May 2025 18:49:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8D9F1B3950
+	for <stable@vger.kernel.org>; Tue, 13 May 2025 18:49:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747162159; cv=none; b=orGxRZkVRw8SbgjbDsi7XCUbn/9TmrqGr9itWKtE4XWI9RbWi6r8SKm2JgNh52sVWnY5Hh6g5HZMrYD/hIOzRDpsj0NiG9TGw5mo6ZUcuu/uaYxwZVOlnAvtzUzGHlimZDu4iYztvJMcxcRThjCC4eBqTTPDS7w2nrf1hYfvKrI=
+	t=1747162162; cv=none; b=FBdVZgzlmtSbEDXP8z4C0u1xdGxkEBfPNQ0hYMmHgqYfW2SuaJR5OMkNku1Ur/7imWetuTjtK72tM2y6AZqRBZzdeDuUTuVhB7j25uhoG1QtBmoTecA6aU3hMuisvzr+LAven0Qe0CQq9jet15KMglfYZBR3PRWRbSwl0TGP6wI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747162159; c=relaxed/simple;
-	bh=VZIurN3D/1iQD2YQGIjlLIc2KcDDbU+y7Mc15ZcEszQ=;
+	s=arc-20240116; t=1747162162; c=relaxed/simple;
+	bh=zDOvyGCpSJOEcVXhRO0OLaEUhlGRK10GWzepJscwoNk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=F3KM6JafuKO6nKtRWx1EemqS9H7I5amebyFJnV03qvGUJy6EC4TZB4JK4N4/+vVt3NjBwLbsvmsCo7wo8oDH0/6Q2l3v4MW6N5flogar6CkQXoV0M4VSaXIDWnHpzqsINo6rLCSpe/fFbpjJ3yuM3aTPoilpOTZUSEDn9mShQB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ghJbsHne; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71D79C4CEE4;
-	Tue, 13 May 2025 18:49:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GlQL6miLbyBOLtOpErK5SYZS6rqwRqFPLxMrJKoAtx+5sRfxOX7WjUR097EOkq37218K33QPO84Qjz/S0N+kNWck1v8FvEQJi6NucKbb4DKJvTWt1TN3gJts4o79laNOg6FYc1BjoR9mFe6HBm0fFLHvJU1pNxn2o2VjwUU+WuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LkGAqs9j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2ACFC4CEEB;
+	Tue, 13 May 2025 18:49:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747162157;
-	bh=VZIurN3D/1iQD2YQGIjlLIc2KcDDbU+y7Mc15ZcEszQ=;
+	s=k20201202; t=1747162162;
+	bh=zDOvyGCpSJOEcVXhRO0OLaEUhlGRK10GWzepJscwoNk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ghJbsHne6tugZErS7UJQx8ByU+rv9Aoc0eJc7DPUCXsoybC75meeA6wnwusPZhcqM
-	 40LASfsbXfwOACLhfYz3J04pkKepfcCUIA1jkZBFaF/LD1ACmTC3DJUsbpVZ2rJwFK
-	 3IMtoOxEDda2QQ6fZDGPhpw0rcjB3m1N6bL9ht3oq0QM1iJNFJWCB/Qeo5zfRdw2Wb
-	 kHh8fLKgICJMfrj03Vo29Zj4I/rTdrNPHEYfg94vwRPa5Pddqm+wIU/8noZaUrqnsx
-	 EUFkiZ+0Ndeg3OgS6NScgoRj8aUcsaql2sYdjPtRbtI6L1tDA+p9VSsYQt/D2halHq
-	 RE4879IWjvmIA==
+	b=LkGAqs9jmca/hmFGMbyNKsjuO3e+Ks0crutCeEYWIUTnsXS536KRQeNJYZyNBWTJW
+	 lw+If+axdMgwTICx90carTwrOKo/ClTcWIurwxl5B8rsh56nnYZ+j88x9QAfTQ32xx
+	 9UWH5ta8bAmHrWg7Agy/msWJMaoLRL+rzxz7BhyslV0c9uFyNcWgQu1wuhCDEt3XY0
+	 EF42HRLXbUb6AYspow9Gcdt3lmAwcdhTxr2C8E+B6Zo3ieZ6i4+leSaycTxzzs4otN
+	 523SnbIMybz81pjIkxfIuEnDC8T5LsFy1kBBnPx/d2ZZ86h1ZAZiKGkp+TVypqmV8a
+	 dPBXFRKzS0gkA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Aditya Garg <gargaditya08@live.com>,
+Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH RESEND 1/2] Input: synaptics - enable SMBus for HP Elitebook 850 G1
-Date: Tue, 13 May 2025 14:49:13 -0400
-Message-Id: <20250513094026-e79c0376e6e9b96c@stable.kernel.org>
+Subject: Re: [PATCH 5.15 03/14] x86/speculation: Add a conditional CS prefix to CALL_NOSPEC
+Date: Tue, 13 May 2025 14:49:18 -0400
+Message-Id: <20250513124531-37bde6c403e48a7d@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <PN3PR01MB9597BAE0F2CA6845408AAD36B896A@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM>
+In-Reply-To:  <20250512-its-5-15-v1-3-6a536223434d@linux.intel.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,21 +67,52 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: f04f03d3e99bc8f89b6af5debf07ff67d961bc23
+The upstream commit SHA1 provided is correct: 052040e34c08428a5a388b85787e8531970c0c67
 
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Aditya Garg<gargaditya08@live.com>
-Commit author: Dmitry Torokhov<dmitry.torokhov@gmail.com>
+Status in newer kernel trees:
+6.14.y | Present (different SHA1: 9af9ad85ac44)
+6.12.y | Present (different SHA1: 2d3bf48b14d4)
+6.6.y | Present (different SHA1: 4dc248983ca5)
+6.1.y | Present (different SHA1: fe6577881bf4)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  f04f03d3e99bc < -:  ------------- Input: synaptics - enable SMBus for HP Elitebook 850 G1
--:  ------------- > 1:  e2d3e1fdb5301 Linux 6.14.6
+1:  052040e34c084 ! 1:  70b69b6a93bdd x86/speculation: Add a conditional CS prefix to CALL_NOSPEC
+    @@ Metadata
+      ## Commit message ##
+         x86/speculation: Add a conditional CS prefix to CALL_NOSPEC
+     
+    +    commit 052040e34c08428a5a388b85787e8531970c0c67 upstream.
+    +
+         Retpoline mitigation for spectre-v2 uses thunks for indirect branches. To
+         support this mitigation compilers add a CS prefix with
+         -mindirect-branch-cs-prefix. For an indirect branch in asm, this needs to
+    @@ arch/x86/include/asm/nospec-branch.h
+       */
+      .macro __CS_PREFIX reg:req
+      	.irp rs,r8,r9,r10,r11,r12,r13,r14,r15
+    -@@ arch/x86/include/asm/nospec-branch.h: static inline void call_depth_return_thunk(void) {}
+    +@@ arch/x86/include/asm/nospec-branch.h: extern retpoline_thunk_t __x86_indirect_thunk_array[];
+      
+      #ifdef CONFIG_X86_64
+      
+    @@ arch/x86/include/asm/nospec-branch.h: static inline void call_depth_return_thunk
+     +
+      /*
+       * Inline asm uses the %V modifier which is only in newer GCC
+    -  * which is ensured when CONFIG_MITIGATION_RETPOLINE is defined.
+    +  * which is ensured when CONFIG_RETPOLINE is defined.
+       */
+    - #ifdef CONFIG_MITIGATION_RETPOLINE
+    + #ifdef CONFIG_RETPOLINE
+     -#define CALL_NOSPEC	"call __x86_indirect_thunk_%V[thunk_target]\n"
+     +#define CALL_NOSPEC	__CS_PREFIX("%V[thunk_target]")	\
+     +			"call __x86_indirect_thunk_%V[thunk_target]\n"
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.4.y        |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Success   |
 
