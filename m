@@ -1,213 +1,178 @@
-Return-Path: <stable+bounces-144064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4F30AB4832
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 02:08:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E6B6AB4862
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 02:26:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BD4346600F
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 00:07:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 447AC19E287E
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 00:27:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 276C91527B1;
-	Tue, 13 May 2025 00:06:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9191C3F9C5;
+	Tue, 13 May 2025 00:26:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Fg7peFFw"
+	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="pNXVT8RZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.75])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3776632C8B;
-	Tue, 13 May 2025 00:06:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7316E1BC2A;
+	Tue, 13 May 2025 00:26:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.75
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747094788; cv=none; b=XFd4rjZF3NNaJn7H0XfwkFdHUPnJarYZlW9hvuiNNnJuUpCojlZIH64ACPndR551/IrYzM5R5e3YMlyez0JUY05bsI4DRVyKVmof3ihH6Mr00s5j+TopxbWPguTCB3Ibzm0yb6Km1fpHiWBrIj0PNxmO/+yaC4HsMmK6Zd0ea7E=
+	t=1747096006; cv=none; b=jw65WK9SSRK/g4IwQVZsf0LFRAaLB0rSHELLu8uZgeTx7tmNSfOimr7OMaw2UmFHJjwB3PqHZR7sCXet2afay0E0Mo0JmJTuGBO8mmd/G4GUwNK2/xh+socOPZu7WjWu4XPU/BV/D3Qvm5Qkb2EGeD3fdG1kW+zCyaDOeS6Z1WQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747094788; c=relaxed/simple;
-	bh=/3/6voPULjYvpgG6Nnc+zAtZr66zlGPAla6ugxce3l4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=e5N99biuNJy4YJlrnolLY1f4FR+mahvrlXpyKe0bVxS67vjgVhomcNnrdi7xWmbmVgIXZGnzyq7qPzKNMy9LGh/D00wlTTMKjNf0rN7PxV8r4i5Zqg9ORDIn/9SzfpthTsnJr/ECpMXt3auSzyvMevCl5k9Tb6rx5APE83OXRGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Fg7peFFw; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-22e16234307so53407175ad.0;
-        Mon, 12 May 2025 17:06:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747094786; x=1747699586; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:reply-to:references
-         :in-reply-to:message-id:date:subject:cc:to:from:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=nB0R2WkOeQvPRFxPtqwr6m021by5PVJe9qR5v1cbNws=;
-        b=Fg7peFFwmYvaeyhB0M6uVUetz9ad98+dY/FOYNSdaKQGhR1QSD+5OVs+BlxV6JgE4n
-         6U6t/sjjJVgphZT2xvcmJ/SxYiXwQxhSZp0td8t3oqGppjuJ93a6yzYr06usnAChJCqp
-         ic9qjygN/5eCWVPSvR3UVttTLn2nS5Ex1NNSbs9qj0FiCuoRx07cOuawC5nWt+Ft8w0+
-         VfYA/6ZmPkeA6+RGP2aQbb7xfrTZ1Z8oDs6O/X8zBc/nQgCjKBRlJEF04ueBXNetG8MH
-         jWc27i6OTaH9cAXDnOVocLbBWojROzeyR6yTvi7jJkF+Ql7oQ7BgP9NqahUMN9Xq8ee4
-         spuQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747094786; x=1747699586;
-        h=content-transfer-encoding:mime-version:reply-to:references
-         :in-reply-to:message-id:date:subject:cc:to:from:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=nB0R2WkOeQvPRFxPtqwr6m021by5PVJe9qR5v1cbNws=;
-        b=Lu38cYCJUnx/26MGS69LKA+dfQS6XByE8JPZsiMHAlaWCP1VP5IlE+Ce8pcLU3/g9o
-         EOT5y+B1P7Sq1t1fJxN26BgvyJPhMqF0IClSayCSW+dDBbBuQeCJ4Zkiy26Qyho+dk1f
-         t60H5BERLMEfapHLYjAjnQFqWWgPTk+WZtdwS7uH9amFHbpew4i7zY4X360RL4zsc5M7
-         HnhM9wU6g5pOIAupN0thvjZgq+VK3IJVOw1Kr7nPk8KU152pu0UWsbvYG5AIRzO2JBZa
-         AAXH/GZIeqxbc6WPCxdu0AaZHCVhmyAZLOHxOVxNMUfBiCVkEm7OxDguzfPaOyEMKRii
-         vamQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV+MG+GmtGFPeHgFmp3qMtvWwESJu4e4GhKiqTnC9Pgv+9U+R2E7cj/fJSmPL4sahsNRRF+cMPw@vger.kernel.org, AJvYcCVZgPWOALjR0Ti1uA95INX1wvsdWqcrSsFdmD5QamDIKuCErY/tmkBT0PdYfiKSVDkbXLpKR4cnNYTDbmA=@vger.kernel.org, AJvYcCWwxIKU/UvHNvt91qqeTCJge2fR/6TTgWpRtWMwhNXb3lOfHL9UGrvSduZ0S5quBP5TQf7AGMQQ@vger.kernel.org, AJvYcCXDCAAT4vy7Xj66rjl3QHkgLhwNLL4+WerppIHvnAV0HozizCGTeHUM4/CbmiUGfwDrCblmY8IoWfGgJw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzQTHwBJCU4ratFWBKgfDkLDDkvXE4+bW8r2+yxaf+V/vdTzboJ
-	jrs0ZmyCJSLg+7pfVi/GonnISxqVE8WsuFpKDvEXIbEW7iIoMTbI
-X-Gm-Gg: ASbGnct5OGHPX54DVzwn5hh1aO4GXmoXVCZoBNmLLU+gBp4oU0BodbQQEkRRXffbtHW
-	05Bo5I1NnLRN2jJyTjdJX8wVdfwycEDvKiDtPqaB5I0VUbcZvC1ASKlF8YmAkB2GgXN00eOaaaM
-	5lN2sUJ69yCBLnP9aERIk0rXGIZZ2RzWAglHWQbeHO79pLOxahJyWbTd9st/qsaDd7rAdhFB4bO
-	825+xtvbP+C5Az2wtXTwSb4aIVpzJS/C2EZq+y/hPYy/95KncBqOXg/FrHnqW+/6INMV8yCrRhL
-	Wg34ol/YtE2/ulboAWZw4m9lx29dtnGsOkWfpghQxJJVue+ihvf7APYFuEMcJcEt7lWWyykMxJk
-	6q+6BWiKboZL0O9SWP1MrgkO2D1xm8g==
-X-Google-Smtp-Source: AGHT+IFLg2j6NqWasFKsMRIuMsAX6kcU4vbM8vVlA7iOsqIK1jE+GZgWt0et1u12KP0vgp5Tktg5eg==
-X-Received: by 2002:a17:902:ce8a:b0:215:ba2b:cd55 with SMTP id d9443c01a7336-2317cac7646mr19127295ad.2.1747094786386;
-        Mon, 12 May 2025 17:06:26 -0700 (PDT)
-Received: from localhost.localdomain (c-67-160-120-253.hsd1.wa.comcast.net. [67.160.120.253])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22fc828b491sm68470665ad.184.2025.05.12.17.06.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 May 2025 17:06:26 -0700 (PDT)
-From: mhkelley58@gmail.com
-X-Google-Original-From: mhklinux@outlook.com
-To: kys@microsoft.com,
-	haiyangz@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	James.Bottomley@HansenPartnership.com,
-	martin.petersen@oracle.com
-Cc: linux-hyperv@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-scsi@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH net 5/5] Drivers: hv: vmbus: Remove vmbus_sendpacket_pagebuffer()
-Date: Mon, 12 May 2025 17:06:04 -0700
-Message-Id: <20250513000604.1396-6-mhklinux@outlook.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250513000604.1396-1-mhklinux@outlook.com>
-References: <20250513000604.1396-1-mhklinux@outlook.com>
-Reply-To: mhklinux@outlook.com
+	s=arc-20240116; t=1747096006; c=relaxed/simple;
+	bh=BXBC9dgyV5bjgXbJ044gw5x83pbJoQpt2Q3Iaohbfws=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=htVoc3ZOnd6Q6wFqQsyxki4Bu/h0SNM/Nhf+kBJFHGzAKQ+KpJXePLxAdOBLNoLs7v+aeyYGmZwPbn+DQOPWH6URxzGO3zwJRkWUX+oCOsLmiVxRvdWuhzxUzvor2tzMzh+kWWmYE0MWO2iD3JSv2L6etg4aZyKh0ME/tzr9Z00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=pNXVT8RZ; arc=none smtp.client-ip=217.72.192.75
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
+	s=s1-ionos; t=1747095991; x=1747700791; i=christian@heusel.eu;
+	bh=pgvAVXA7cbbwQNM3I6YOEdfAsrkF7KItw3guvxZ2wyo=;
+	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:References:
+	 MIME-Version:Content-Type:In-Reply-To:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=pNXVT8RZGEFP39WtAAyhm2Ajw2NEQG0DGk3/4Un7SeZrZ+sv11LRXVsSHnWsGjiH
+	 eMWEJ4nOmp+ZJbMnOtMFgCZVcslRfz8rf2pvPQ+sDRRLuACo4UOF91j7H9yem+qSp
+	 Iqf0woqmddw47XSMqAxAmvqwMUyGD1KqAfMeqrKc9ZChguNj4npN4xt8OWkTJuXAI
+	 cHxs+6A83hEWen5lrj5w8/nZI5Qk/osQN6p2mEgbhJN4rP1goZ7PFpjD9IrJt6ejO
+	 dGRUNoULbM9CTkI8nmBTGO79wyae8W2lqBx9FN9ngY74whuDdGSc8n+H2W7F5Iu0b
+	 nNVuIo07D9TTXQnPNw==
+X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
+Received: from localhost ([89.244.90.40]) by mrelayeu.kundenserver.de
+ (mreue109 [212.227.15.183]) with ESMTPSA (Nemesis) id
+ 1M3DBb-1uIDqV48Kr-007y5v; Tue, 13 May 2025 02:26:31 +0200
+Date: Tue, 13 May 2025 02:26:24 +0200
+From: Christian Heusel <christian@heusel.eu>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, 
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, 
+	hargar@microsoft.com, broonie@kernel.org, 
+	Mario Limonciello <mario.limonciello@amd.com>, Alex Deucher <alexander.deucher@amd.com>, 
+	Ray Wu <ray.wu@amd.com>, Wayne Lin <Wayne.Lin@amd.com>
+Subject: Re: [PATCH 6.14 000/197] 6.14.7-rc1 review
+Message-ID: <32c592ea-0afd-4753-a81d-73021b8e193c@heusel.eu>
+References: <20250512172044.326436266@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="si4res4pihhmlnad"
+Content-Disposition: inline
+In-Reply-To: <20250512172044.326436266@linuxfoundation.org>
+X-Provags-ID: V03:K1:AEauuiyyOgKMa6hAFd2BRFcsfT/3+JDg59UJktMQA11g19OyPo8
+ rHm1sKEotm248SEmRnq6nl6vLpBylJx2pKzk8dDhc1OukpfF7/5R4Gn3WIanKSacp2X3nsy
+ S9dfwRb3jee2O4tBgSufiaZLSt+Dqe1dL7E7swzv2683KnZcFDiIpZ0eCx1VUdqQB2M7QAV
+ jHIV92pxKPqDU0DtU1C8Q==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:ndod2FJe2NM=;3SQ8YHsXXrbt7EELh+btPzlCdmB
+ boBTSsIL8hDNQ89Z8i+mWZNegltgE/ZMJGPXlcRwtkagPNSMJYzuYI/FgInBI7dHhY5tScMQO
+ LE4A3tM6n/gMrQBrUHhGKov2kmGm1jce/2D2cAo2rrx12XRIKPUAPEVV7hqbLZbWZ0whMvOfF
+ vRIkIjgZncksqx9Ao8QXkX+YbFa/mo1V89PNeUOjfJahT5pYbevvFsTKZdkfcP3uGgFJyL4Eq
+ /NI1exnpHafZtfx95+qixSHwA41UfiiMndHTVyX+OJ7tH3zJnelxGa867ZpGioi4DRhQqQASE
+ 3ngzgDaoU0hWk5qpMSPGi8+nUXA8REpb9RzGtV+PLBBV/kqDLQLTcuFpXqOM+3AL3xVQrh+qV
+ KmpxJeIt1tbvvs4GfQSpgSyQUeoCuDHlT1bf4hdP+mzo5FyQogwPDso5YMj+YH2GTgWEORHrQ
+ 7m0u+gdIgvvVSyzeQdBu6r+g+4zeflKH/xTK6tapSX/gKN1FBFsaynEbI/TrAhmk+sWJpag8c
+ Lmwd+HB0bqZCpCsFnAw7nbz+mZK4SpsPFwhc3qj/TApDSb+5pof2UUe7n1ZtGHUF1nkuv76yr
+ 0ZGByBA2Xbfe970QmvyfXgjzxXl/01pUx4RYtbH/Dovd98QSR8F7ysJYM0FR4wf6v6O3F4qnD
+ Im9aENqMpgKVuxp/aFZO8RMj/Fvd64Mzu+MEPVRPm2EjPvIOPNycAyZ2f9zlodguWm0SoOK+9
+ TkO2virUut7/zXPYkbFnrK9d/NyqfOluOge7ZvEkWxAz4fuyMTkCvVkvZDqB3ZJjPVCDdxXJW
+ JzoS5C/Pdabz1VvNhnd8Dj9BTgwA5wvbrtpDqsReLXl0vP4q2ps0FoR47HriufxNVcMEbAdWq
+ Q/i1Cz2kxqPeiCPsRCSpzfwuMWsA+vAaf96Oc1ZRdVW+nnHc1ZtOKByG2GDR4//OUslAm5uXm
+ w46i+0dNN+KXRujUtdGzlekIBe8H7PCeLIKoG9sH8CEjiZelRXE81m7UrmBT8BReJGrer16U7
+ 3Oy0UJEGxU8eMqP5JjFZmDj5zvxdK4a4OAFv+VPFJQpxYJ0OrhTC7JTaBhmBc2eUJoQ3gSE5e
+ HqPLTcI4/XUGaCM50zIDULvYSYc5yFMCKxe44IDphwxw8ORJ3Fny2YMNLLneGyAecK7dbrJZB
+ vHYedI2ifKO+gKv8xTCADD8/K3aqrkSa6YhUTT7TpZwl64J4ZYzDNwt3axk5hx7Hsx64cxaIf
+ CwM69Rrm8i//PLztdWFAH3N3aaYd72VxAEvrsYQ2Oy5vij17BIj6czZGvk+o5YpE950KbXmgr
+ 2SfsGcyPNFRAjRD1jtv0o/gmiRgh8g/y2nSVpcyqPti4HuS+1JW2TNexOHaTBxy9KsLUpq3M/
+ tAGKxh6VaPDiM+Z8UXb0N80OMVMfLU3rvXCy9Pc5nAlueLRdxB/Up5t9FjlOB181ijiwKxGX0
+ fp4746PLGbBpOUuxtLInRYUPjrZ0=
 
-From: Michael Kelley <mhklinux@outlook.com>
 
-With the netvsc driver changed to use vmbus_sendpacket_mpb_desc()
-instead of vmbus_sendpacket_pagebuffer(), the latter has no remaining
-callers. Remove it.
+--si4res4pihhmlnad
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH 6.14 000/197] 6.14.7-rc1 review
+MIME-Version: 1.0
 
-Cc: <stable@vger.kernel.org> # 6.1.x
-Signed-off-by: Michael Kelley <mhklinux@outlook.com>
----
- drivers/hv/channel.c   | 59 ------------------------------------------
- include/linux/hyperv.h |  7 -----
- 2 files changed, 66 deletions(-)
+On 25/05/12 07:37PM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.14.7 release.
+> There are 197 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>=20
+> Responses should be made by Wed, 14 May 2025 17:19:58 +0000.
+> Anything received after that time might be too late.
 
-diff --git a/drivers/hv/channel.c b/drivers/hv/channel.c
-index 4ffd5eaa7817..35f26fa1ffe7 100644
---- a/drivers/hv/channel.c
-+++ b/drivers/hv/channel.c
-@@ -1076,65 +1076,6 @@ int vmbus_sendpacket(struct vmbus_channel *channel, void *buffer,
- }
- EXPORT_SYMBOL(vmbus_sendpacket);
- 
--/*
-- * vmbus_sendpacket_pagebuffer - Send a range of single-page buffer
-- * packets using a GPADL Direct packet type. This interface allows you
-- * to control notifying the host. This will be useful for sending
-- * batched data. Also the sender can control the send flags
-- * explicitly.
-- */
--int vmbus_sendpacket_pagebuffer(struct vmbus_channel *channel,
--				struct hv_page_buffer pagebuffers[],
--				u32 pagecount, void *buffer, u32 bufferlen,
--				u64 requestid)
--{
--	int i;
--	struct vmbus_channel_packet_page_buffer desc;
--	u32 descsize;
--	u32 packetlen;
--	u32 packetlen_aligned;
--	struct kvec bufferlist[3];
--	u64 aligned_data = 0;
--
--	if (pagecount > MAX_PAGE_BUFFER_COUNT)
--		return -EINVAL;
--
--	/*
--	 * Adjust the size down since vmbus_channel_packet_page_buffer is the
--	 * largest size we support
--	 */
--	descsize = sizeof(struct vmbus_channel_packet_page_buffer) -
--			  ((MAX_PAGE_BUFFER_COUNT - pagecount) *
--			  sizeof(struct hv_page_buffer));
--	packetlen = descsize + bufferlen;
--	packetlen_aligned = ALIGN(packetlen, sizeof(u64));
--
--	/* Setup the descriptor */
--	desc.type = VM_PKT_DATA_USING_GPA_DIRECT;
--	desc.flags = VMBUS_DATA_PACKET_FLAG_COMPLETION_REQUESTED;
--	desc.dataoffset8 = descsize >> 3; /* in 8-bytes granularity */
--	desc.length8 = (u16)(packetlen_aligned >> 3);
--	desc.transactionid = VMBUS_RQST_ERROR; /* will be updated in hv_ringbuffer_write() */
--	desc.reserved = 0;
--	desc.rangecount = pagecount;
--
--	for (i = 0; i < pagecount; i++) {
--		desc.range[i].len = pagebuffers[i].len;
--		desc.range[i].offset = pagebuffers[i].offset;
--		desc.range[i].pfn	 = pagebuffers[i].pfn;
--	}
--
--	bufferlist[0].iov_base = &desc;
--	bufferlist[0].iov_len = descsize;
--	bufferlist[1].iov_base = buffer;
--	bufferlist[1].iov_len = bufferlen;
--	bufferlist[2].iov_base = &aligned_data;
--	bufferlist[2].iov_len = (packetlen_aligned - packetlen);
--
--	return hv_ringbuffer_write(channel, bufferlist, 3, requestid, NULL);
--}
--EXPORT_SYMBOL_GPL(vmbus_sendpacket_pagebuffer);
--
- /*
-  * vmbus_sendpacket_mpb_desc - Send one or more multi-page buffer packets
-  * using a GPADL Direct packet type.
-diff --git a/include/linux/hyperv.h b/include/linux/hyperv.h
-index d6ffe01962c2..b52ac40d5830 100644
---- a/include/linux/hyperv.h
-+++ b/include/linux/hyperv.h
-@@ -1167,13 +1167,6 @@ extern int vmbus_sendpacket(struct vmbus_channel *channel,
- 				  enum vmbus_packet_type type,
- 				  u32 flags);
- 
--extern int vmbus_sendpacket_pagebuffer(struct vmbus_channel *channel,
--					    struct hv_page_buffer pagebuffers[],
--					    u32 pagecount,
--					    void *buffer,
--					    u32 bufferlen,
--					    u64 requestid);
--
- extern int vmbus_sendpacket_mpb_desc(struct vmbus_channel *channel,
- 				     struct vmbus_packet_mpb_array *mpb,
- 				     u32 desc_size,
--- 
-2.25.1
+Hello everyone,
 
+I have noticed that the following commit produces a whole bunch of lines
+in my journal, which looks like an error for me:
+
+> Wayne Lin <Wayne.Lin@amd.com>
+>     drm/amd/display: Fix wrong handling for AUX_DEFER case
+
+amdgpu 0000:04:00.0: amdgpu: [drm] amdgpu: AUX reply command not ACK: 0x01.
+amdgpu 0000:04:00.0: amdgpu: [drm] amdgpu: AUX partially written
+amdgpu 0000:04:00.0: amdgpu: [drm] amdgpu: AUX reply command not ACK: 0x01.
+amdgpu 0000:04:00.0: amdgpu: [drm] amdgpu: AUX partially written
+amdgpu 0000:04:00.0: amdgpu: [drm] amdgpu: AUX reply command not ACK: 0x01.
+amdgpu 0000:04:00.0: amdgpu: [drm] amdgpu: AUX partially written
+amdgpu 0000:04:00.0: amdgpu: [drm] amdgpu: AUX reply command not ACK: 0x01.
+amdgpu 0000:04:00.0: amdgpu: [drm] amdgpu: AUX partially written
+amdgpu 0000:04:00.0: amdgpu: [drm] amdgpu: AUX reply command not ACK: 0x01.
+amdgpu 0000:04:00.0: amdgpu: [drm] amdgpu: AUX partially written
+amdgpu 0000:04:00.0: amdgpu: [drm] amdgpu: AUX reply command not ACK: 0x01.
+amdgpu 0000:04:00.0: amdgpu: [drm] amdgpu: AUX partially written
+amdgpu 0000:04:00.0: amdgpu: [drm] amdgpu: AUX reply command not ACK: 0x01.
+amdgpu 0000:04:00.0: amdgpu: [drm] amdgpu: AUX partially written
+amdgpu 0000:04:00.0: amdgpu: [drm] amdgpu: AUX reply command not ACK: 0x01.
+amdgpu 0000:04:00.0: amdgpu: [drm] amdgpu: AUX partially written
+
+this does not seem to be serious, i.e. the system otherwise works as
+intended but it's still noteworthy. Is there a dependency commit missing
+maybe? From the code it looks like it was meant to be this way =F0=9F=A4=94
+
+You can find a full journal here, with the logspammed parts in
+highlight:
+https://gist.github.com/christian-heusel/e8418bbdca097871489a31d79ed166d6#f=
+ile-dmesg-log-L854-L981
+
+Cheers,
+Chris
+
+--si4res4pihhmlnad
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCAAdFiEEb3ea3iR6a4oPcswTwEfU8yi1JYUFAmgikbAACgkQwEfU8yi1
+JYUJ6BAAn7ljHh/+u0FkjdPoAmvX6nlcTu2d8hIp/JhZxvu7TONCXLDJZ78DiF2s
+csraQNKOZyqCaS6u+Ry7spSAFNn9nuGBCt6eesMVr/+4PHWpQ+U2DpO6/TxrTb4M
+OKUUe5x0nvB5Wy4Vx7YfPfoXufXXkzm6VPZTJT6R/2oDWPO8J+QquiYoQNi161YF
+3pydOqs4PBzAcojSzB2WsKBdstlxREzq3l4n+mCD6ZB67YbvDFlMo6rwTrW5rEda
+Vn/JB1njybQR5s4WolU0oxDaGH2ZAa2qTtvpnKH8YlZ8gYiJGINKi15twyIjZjbZ
+NMH+hdPrBmHNM4k9eD4bA8vnxE2aSgNSTc2Wj54K9i0EaVux57kIKRAj6KNkk48y
+hKmfLhEkvvBDY75lpsYVflfVdVwBYa+kBF9eQyLn1qiuoqnr8oTTkMVXaYngSBe8
+3cJlcsSTQB2d09nuaVVVc1N+6VNKp7zeDKCx+iv4aaFdr/be4DOl9gvd3/fb6Qqb
+6SOduzvMtLtEFv/0RAI3ku+bbbY3u+r77k2sjSQObYK/7OZyPURryRzLT7qWJ0w5
+LKdQOq2wkCYkN16vGBV9WQzDpf4taYPVrPCYJhHLYdI6+mI8kFyNVZenWhmT7VZz
++hEJPuDjYKAUcnqXpUHlnSyxngco9mylYW1uOFvAQNzGUMvxlCc=
+=Dfva
+-----END PGP SIGNATURE-----
+
+--si4res4pihhmlnad--
 
