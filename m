@@ -1,228 +1,151 @@
-Return-Path: <stable+bounces-144185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87FBBAB598F
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 18:17:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C9C5AB59A1
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 18:20:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C64C23BEE22
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 16:17:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A84A84A29B5
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 16:20:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F177171CD;
-	Tue, 13 May 2025 16:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAEBB2BF3C0;
+	Tue, 13 May 2025 16:20:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jMoBck57"
+	dkim=pass (1024-bit key) header.d=lessconfused.com header.i=@lessconfused.com header.b="PFI7ywq9"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D2631E487
-	for <stable@vger.kernel.org>; Tue, 13 May 2025 16:17:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 190642BF3FE
+	for <stable@vger.kernel.org>; Tue, 13 May 2025 16:20:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747153059; cv=none; b=nqZynN/J9t83I01eN7K+rTd7YPhXLQ+GXQmOtMK8FBRRhACQ+4XUDIhmc5HjWH1OboF6xpIC/4+Q3i03Y9nVW4UaVGdu/7acsPsflX6sVBDzs/O36Syrhyy+tacXymGVAhdN/s/Ib8K4jDZ0TWyYLlvU9yWfCFSOjNI5WwCuKx8=
+	t=1747153209; cv=none; b=vD0H0ubGcevXM52MKkn6bI1zgZDnB4RKj01hOKJEi6rbpRfoGXjIxgvNLWk7jACK4Zh324O9iAuyiNUKWhaTrdIG7qj4lzAeLfa8eaIidTU9u1sh0pyTUHsA/Hap6AB+4bGmOSrokNFNeb48sJMvHOyW0FvT3kNn2e6ERFWtmsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747153059; c=relaxed/simple;
-	bh=/k6EH3Fc/zb3rtylgyq4u/RSFENEtTcwHkK59WGtR7U=;
+	s=arc-20240116; t=1747153209; c=relaxed/simple;
+	bh=cWhfEEAw+tV/nQS2PrbAq7o6mdRDmYJ67CQa4j3Vk2c=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GBsqA2ym+QvOp/tO6iS19ZzPElO40kg/nNogImYMK77PbRmeBZDrSxMYAiQYYG8WK+tPOXBCk1/+NJeVGntwFrUajqyx5WlkRkucSjQ3I9+5dUdaq7srnqESrFdEQW3a5z+mhJvz2HGMrFAbsEU30aJVMAc0+Tm304RHVYbW36s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jMoBck57; arc=none smtp.client-ip=209.85.219.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-6f6e398767eso62079606d6.1
-        for <stable@vger.kernel.org>; Tue, 13 May 2025 09:17:37 -0700 (PDT)
+	 To:Cc:Content-Type; b=fxPgCBSZkUGBeFUU4Q6YPkexnxYwdo3Pjxq6TP7JUYBeeAlFG/Z/vFOeByhMXnpD8vlE/p2XI+icGGfo7PXzAEOxPgDFFZnJh0sEKfIeGDFTVnvIhsWAz1N4TW9qcbi8306Hd9oTpJSS/cE5jiM2gGv5zc0Sl4s7YjKpJBYcq6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lessconfused.com; spf=pass smtp.mailfrom=lessconfused.com; dkim=pass (1024-bit key) header.d=lessconfused.com header.i=@lessconfused.com header.b=PFI7ywq9; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lessconfused.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lessconfused.com
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-22e730c05ddso54017255ad.2
+        for <stable@vger.kernel.org>; Tue, 13 May 2025 09:20:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1747153056; x=1747757856; darn=vger.kernel.org;
+        d=lessconfused.com; s=lessconfused; t=1747153207; x=1747758007; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=6KYGCCD9QtETURvM4SFF+hSR2hHupYk+lugy2F+Fvto=;
-        b=jMoBck57sukqpYRvY82oGZGa5/vrnitDfQqhjivr02Qg5g4zlKZIyxIk+fooTp8FvI
-         DwC1dGfNErVCm8OtubgYgeq3pNV6jsoBctKozKs2Rhqd3jQB9Ev4cjvC51QhB8s8aB0m
-         3CKXV0yoeJdz6N9K/PtdS8PSrHwL/Grl/+w3tTocAm1gdGmPgMcPBKgw6RNQjNR28RyN
-         FfqRu08OnGpPcuScFXx34FkciQQttJsyk0zmtn1dvf1UNcMbPupHYpCtuSkYELmUQeoZ
-         L83ZUItYPk9pbz00dF+APnkVgmSfjqbOlnfw/ExYTaXohAvGS88UEKKkfdLdQTCtD2gj
-         gC5A==
+        bh=Okg4wdYw4WB8DO+V7q9yh5s+wPKhLzpza5jWmCmNzLM=;
+        b=PFI7ywq9Nxu7618sDhq/hrQh7AHQ/+myKdLHbqzke1KJi5dH3LKQhujwt64wR5Qb63
+         PpSPoLYxtskCwVB02+GPWh3zkMnhKfDv9XPAQASlWO9zzhr6GyXJXLZA4ZaVQpYG5sQs
+         6UetmO7zcnd2Sd2ZUsZj/mtd2112cOEM35PiE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747153056; x=1747757856;
+        d=1e100.net; s=20230601; t=1747153207; x=1747758007;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=6KYGCCD9QtETURvM4SFF+hSR2hHupYk+lugy2F+Fvto=;
-        b=PXWs0t+i9MvpknsqqpQT2nKfLws8cnNqwxsUMG9XR1NkO1ZdoR1ZVwjyUOWJ2yAU+N
-         p7gfz9hxotchOJc/OdeqWDnkQ4qPgVHw6HuAjr07crC/kHSR4pBxg6VbK3AxTGbX7ShP
-         a98ZePBKwO5xzAKgEiJyTT6gFK+i94hTL+APUSiN9CN/KiudGlhbPzqJYEH75JCHJJ8c
-         AFPXOMhvprz5UQUhkcIdmXNS89ZTV3c70Uxhq0HrgoBFxMhGSInWRu9ealeub5CfrnNm
-         zJwa9TPX9TaTfE0RNhiNP3r6oddfXbVLBDbEBbXX3gv8wU+ndMers1u2ui66df5yLqfq
-         8CXQ==
-X-Gm-Message-State: AOJu0YxTg2/PKFgE5HeZ8PLXvcZMtrHyTOpyCZJFPeX64YczusxrrBqq
-	9Np980bEvcFPd2Q9PcSWUhVsHZRWRhKDQKDYSGhEdHL9IxvxYM5YzWZvgBhKLGCJpbCEAswD/yx
-	OXI4w7d1bRfxk4n48a3QtQAHmjC2ntOCjtHDAfw==
-X-Gm-Gg: ASbGnctMNfke8NRn7GrWNCibSYXjV/Iu+c/FmF4sJ8HV6Ng8fRmRJGIyZ5l2nnyEkjv
-	nPWfoW+mypjIEgStKR4PDwkoooaValrHEmdZyd4d7M57H3iz8GrVt9p5URD1QHYp8f53iYAfyWh
-	OaCNxH3y8m+po1eSW3DgfDfz556FTfssw=
-X-Google-Smtp-Source: AGHT+IGYtyQXfctZatQi1ETEYQsyfcieEa/w22127hAJNNi/hZ6sMfmmqVsyG0iIkzuDvFKRJBUHtQq63iAMg8rxyso=
-X-Received: by 2002:a05:620a:6006:b0:7be:73f6:9e86 with SMTP id
- af79cd13be357-7cd1debe7e7mr658324285a.20.1747153056207; Tue, 13 May 2025
- 09:17:36 -0700 (PDT)
+        bh=Okg4wdYw4WB8DO+V7q9yh5s+wPKhLzpza5jWmCmNzLM=;
+        b=Hq4u+23hkw1IZn9khKQM0MXoKEjjEiO2xo5/iXmG+R/5xBK7QSdgDSFEaRSu2GpQES
+         5o4fweZTRWpHlGioIG2Gh/zXUplTxHgDRN9qDBbghSDtIZ9PUSC3hXu3wRjQJs/KHMFA
+         H/FuF7F6+26fWlxYAGTbpPS1xaq1815uX3d0fnMmTmo7H2yoA8u0fMQNrDuYf5R+M/iR
+         N6JcKirOpFMqR5lDOmlUEp08J7J+TocJwXemames/27JPevJpOEjhxpr3RR46yTiCVT2
+         4SCvsshS2rKik6xZwNn5jQL+hpex9oVlbSBA9Uw69IOCgY3+e4X17yOfbWns6utVksZF
+         cWSQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWcUO3IUzyCWtRDEnwF4IQjyEg8GWkGHGf+6IkATMHTgLDqP7xCC9vZU+uSAvkuOqBKHUAXcnM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx7/jP50VE1/46FnzAVHv16+JrsQ6cy02X1ppn4wlLfSYXq857o
+	WjsuUjw36gmRDS8qHRZ9KvqAgoVArTZfpFgllrqr23+nrVKIkQAN7xM/WaIdx8j2gn3GcJYZGy5
+	/M6zgeRG5pvuylqrYU7wae6NWG5347c6Mp9fQWg==
+X-Gm-Gg: ASbGncteEww9tlwcfxX8onMyefkXi+vtuq4Zb4RLkwae1O4bFdDmJdFJ5ViXfjxj4kn
+	k4vv3ff7yuha1HQamFGenj6eUrncrnvT8ncV9nrt/Ik70JerYjjjNiddBXvhGCDDwEyV7gwPdsE
+	GjDyni+EyERvOtvI3/oV+qBxBB0zuv2c6ocTJLWmE2dtTDHDSYRvvJcSeU1IBvP9iRuz8=
+X-Google-Smtp-Source: AGHT+IEFiZZLEVm8p4exZqTgRnoEBDvu1NNpn5CecmgOUa1lbzow7S7xDOQ9y/PS6u/6mPTPI55hbsmTlWowpXVMs6Q=
+X-Received: by 2002:a17:902:d492:b0:224:2a6d:55ae with SMTP id
+ d9443c01a7336-231981d284emr53485ad.48.1747153207290; Tue, 13 May 2025
+ 09:20:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250512172015.643809034@linuxfoundation.org>
-In-Reply-To: <20250512172015.643809034@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Tue, 13 May 2025 17:17:25 +0100
-X-Gm-Features: AX0GCFv7Gkug46vmMqzunGkj5qmL-HDap1Yz3dTHGpAw2W-izrUW9GWapqpKAMs
-Message-ID: <CA+G9fYtR4d2AF4BGDJ+7iYS8kA26J0sQWmUTJjj4DWdX4wFBGw@mail.gmail.com>
-Subject: Re: [PATCH 5.15 00/54] 5.15.183-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org
+References: <20250512142617.2175291-1-da@libre.computer> <1jecwtymsj.fsf@starbuckisacylon.baylibre.com>
+In-Reply-To: <1jecwtymsj.fsf@starbuckisacylon.baylibre.com>
+From: Da Xue <da@lessconfused.com>
+Date: Tue, 13 May 2025 12:19:55 -0400
+X-Gm-Features: AX0GCFvX20FlZeuRo40HJUU0H1dNyPENU2uA3HGGuO4tfwuq5uvg2W8hOH9cVak
+Message-ID: <CACdvmAgNVf8jtRj-jONwunGXhheaizUEEyB4rz5tpqzXb6hKqg@mail.gmail.com>
+Subject: Re: [PATCH v3] clk: meson-g12a: add missing fclk_div2 to spicc
+To: Jerome Brunet <jbrunet@baylibre.com>
+Cc: Da Xue <da@libre.computer>, Neil Armstrong <neil.armstrong@linaro.org>, 
+	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Kevin Hilman <khilman@baylibre.com>, 
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, stable@vger.kernel.org, 
+	linux-amlogic@lists.infradead.org, linux-clk@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, 12 May 2025 at 18:31, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On Tue, May 13, 2025 at 3:52=E2=80=AFAM Jerome Brunet <jbrunet@baylibre.com=
+> wrote:
 >
-> This is the start of the stable review cycle for the 5.15.183 release.
-> There are 54 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+> On Mon 12 May 2025 at 10:26, Da Xue <da@libre.computer> wrote:
 >
-> Responses should be made by Wed, 14 May 2025 17:19:58 +0000.
-> Anything received after that time might be too late.
+> > SPICC is missing fclk_div2 which causes the spicc module to output sclk=
+ at
+> > 2.5x the expected rate. Adding the missing fclk_div2 resolves this.
 >
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
-5.15.183-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-5.15.y
-> and the diffstat can be found below.
+> I had to re-read that a few times to get the what the actual problem is.
+> If you don't mind, I'll amend the commit message with
 >
-> thanks,
+> '''
+> SPICC is missing fclk_div2, which means fclk_div5 and fclk_div7 indexes
+> are wrong on this clock. This causes the spicc module to output sclk at
+> 2.5x the expected rate when clock index 3 is picked.
 >
-> greg k-h
+> Adding the missing fclk_div2 resolves this.
+> '''
+>
+> Is that OK with you Da ?
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+Feel free. Your description is better.
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-## Build
-* kernel: 5.15.183-rc1
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: 5aa355897d1bc9d3ec5947e4242c939d117e9f3d
-* git describe: v5.15.182-55-g5aa355897d1b
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15=
-.182-55-g5aa355897d1b
-
-## Test Regressions (compared to v5.15.181-56-g364c50bdd7d2)
-
-## Metric Regressions (compared to v5.15.181-56-g364c50bdd7d2)
-
-## Test Fixes (compared to v5.15.181-56-g364c50bdd7d2)
-
-## Metric Fixes (compared to v5.15.181-56-g364c50bdd7d2)
-
-## Test result summary
-total: 60455, pass: 46917, fail: 2089, skip: 11091, xfail: 358
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 101 total, 101 passed, 0 failed
-* arm64: 28 total, 28 passed, 0 failed
-* i386: 20 total, 18 passed, 2 failed
-* mips: 22 total, 22 passed, 0 failed
-* parisc: 3 total, 3 passed, 0 failed
-* powerpc: 22 total, 22 passed, 0 failed
-* riscv: 8 total, 8 passed, 0 failed
-* s390: 9 total, 9 passed, 0 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 6 total, 6 passed, 0 failed
-* x86_64: 24 total, 24 passed, 0 failed
-
-## Test suites summary
-* boot
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-exec
-* kselftest-fpu
-* kselftest-futex
-* kselftest-intel_pstate
-* kselftest-kcmp
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-mincore
-* kselftest-mm
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-x86
-* kunit
-* kvm-unit-tests
-* lava
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-build-clang
-* log-parser-build-gcc
-* log-parser-test
-* ltp-capability
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
+>
+> >
+> > Fixes: a18c8e0b7697 ("clk: meson: g12a: add support for the SPICC SCLK =
+Source clocks")
+> > Cc: <stable@vger.kernel.org> # 6.1
+> > Signed-off-by: Da Xue <da@libre.computer>
+> > ---
+> > Changelog:
+> >
+> > v2 -> v3: remove gp0
+> > v1 -> v2: add Fixes as an older version of the patch was sent as v1
+> > ---
+> >  drivers/clk/meson/g12a.c | 1 +
+> >  1 file changed, 1 insertion(+)
+> >
+> > diff --git a/drivers/clk/meson/g12a.c b/drivers/clk/meson/g12a.c
+> > index 4f92b83965d5a..b72eebd0fa474 100644
+> > --- a/drivers/clk/meson/g12a.c
+> > +++ b/drivers/clk/meson/g12a.c
+> > @@ -4099,6 +4099,7 @@ static const struct clk_parent_data spicc_sclk_pa=
+rent_data[] =3D {
+> >       { .hw =3D &g12a_clk81.hw },
+> >       { .hw =3D &g12a_fclk_div4.hw },
+> >       { .hw =3D &g12a_fclk_div3.hw },
+> > +     { .hw =3D &g12a_fclk_div2.hw },
+> >       { .hw =3D &g12a_fclk_div5.hw },
+> >       { .hw =3D &g12a_fclk_div7.hw },
+> >  };
+>
+> --
+> Jerome
+>
+> _______________________________________________
+> linux-amlogic mailing list
+> linux-amlogic@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-amlogic
 
