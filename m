@@ -1,394 +1,174 @@
-Return-Path: <stable+bounces-144188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CDC1AB59D5
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 18:28:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BBB6AB59DD
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 18:29:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0BE57B001F
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 16:27:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B1847B2779
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 16:28:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5A6B2BEC3B;
-	Tue, 13 May 2025 16:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 377382BEC3B;
+	Tue, 13 May 2025 16:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="c+iWUD3U";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="GXFkfLM6";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="c+iWUD3U";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="GXFkfLM6"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="j8tmetsy"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2062.outbound.protection.outlook.com [40.107.100.62])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75E2C2BEC23
-	for <stable@vger.kernel.org>; Tue, 13 May 2025 16:28:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747153724; cv=none; b=OEfKxLEXavLIQA1dQaaaRgyo1kSjjAVdKfeHDDDRzTZnZ0WT8wpwTZw2+IB48JM3g/xh6Gqx0y1HfBFRUFSeEC0uqs1vSEUATa9UM36d1ITj2oEWS/BjenVhA4NJK7WjuPSCsWZxfUOcwd6MR2Ja+4c55ZnOki2z9K8fR2K6p1A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747153724; c=relaxed/simple;
-	bh=9bwxlCsRBcLv0NvvdgpjIpAXcU8yxhbZsXToP15CVN0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pJusGT5VIbGE2jQoG8gzImoPsc3OGaii3UM1BWBOjyoHQ5X2QM2vNmrG+y+uLLOdlpG21t4xpjZaud2Dfx3th9TRGfkQ4WXJW0G+cexJYN4+iENrjW2Buswe0PeheSbb1QfZbH5wL+iQv8wF409tqIe5SyR7aCmRYWigwsXor7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=c+iWUD3U; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=GXFkfLM6; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=c+iWUD3U; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=GXFkfLM6; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 19470211D1;
-	Tue, 13 May 2025 16:28:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1747153720;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0REsCQLIDRvowuESA9a7z8fh6gu/E+iTv6JfzsQ+9bg=;
-	b=c+iWUD3UjVNEny775lVDdAwQ1p1qowLaOYwC7o5H5OmuzkAza09XykxiRXGJiiJ/S/Dwyn
-	vO+hDBkWPiFzqCdoEhLXwpxEFL/PCUSImdcrxti/JQEWvFS3fVdvHPrpaT+KNj0dZoDNVx
-	VAn4ufvf8QlM0LwTQol51GRi57lMteE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1747153720;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0REsCQLIDRvowuESA9a7z8fh6gu/E+iTv6JfzsQ+9bg=;
-	b=GXFkfLM6CxcMNJAHdunpeg0NWezxCfWIQ9pN9W8JUArJxIxJpRWNRNcG/AMdNQtDT8RBRZ
-	TYshQ0BaOSkTOjBg==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1747153720;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0REsCQLIDRvowuESA9a7z8fh6gu/E+iTv6JfzsQ+9bg=;
-	b=c+iWUD3UjVNEny775lVDdAwQ1p1qowLaOYwC7o5H5OmuzkAza09XykxiRXGJiiJ/S/Dwyn
-	vO+hDBkWPiFzqCdoEhLXwpxEFL/PCUSImdcrxti/JQEWvFS3fVdvHPrpaT+KNj0dZoDNVx
-	VAn4ufvf8QlM0LwTQol51GRi57lMteE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1747153720;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0REsCQLIDRvowuESA9a7z8fh6gu/E+iTv6JfzsQ+9bg=;
-	b=GXFkfLM6CxcMNJAHdunpeg0NWezxCfWIQ9pN9W8JUArJxIxJpRWNRNcG/AMdNQtDT8RBRZ
-	TYshQ0BaOSkTOjBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CB1E6137E8;
-	Tue, 13 May 2025 16:28:39 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id GK1XMTdzI2jcGQAAD6G6ig
-	(envelope-from <dsterba@suse.cz>); Tue, 13 May 2025 16:28:39 +0000
-Date: Tue, 13 May 2025 18:28:38 +0200
-From: David Sterba <dsterba@suse.cz>
-To: Zhi Yang <Zhi.Yang@eng.windriver.com>
-Cc: stable@vger.kernel.org, fdmanana@suse.com, xiangyu.chen@windriver.com,
-	zhe.he@windriver.com, clm@fb.com, josef@toxicpanda.com,
-	dsterba@suse.com, linux-btrfs@vger.kernel.org,
-	linux-kernel@vger.kernel.org, osandov@fb.com
-Subject: Re: [PATCH 5.10.y] btrfs: get rid of warning on transaction commit
- when using flushoncommit
-Message-ID: <20250513162838.GA9140@twin.jikos.cz>
-Reply-To: dsterba@suse.cz
-References: <20250513024200.1811319-1-Zhi.Yang@eng.windriver.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E2A92BE7AC
+	for <stable@vger.kernel.org>; Tue, 13 May 2025 16:29:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.100.62
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747153782; cv=fail; b=QO0/FpwwApEKFkfQjEeUBaTKM9ajHVOjuSFvZ3N4LnES2n3dCpOYHNQxU7Bu7daUY70I6XXnSTN7i1qoLA5tk9RDGNgZlWeEUy0RFg+LGB3r4FJdUIcin5tNvIoDQceVSXDJTaVc5AAGsd1F6tBVXzK1fHA4kUezXpROVh9PwV8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747153782; c=relaxed/simple;
+	bh=Ccuz9ZUM4HWqXxF8jY/BjEVxznMaYHVOld/2rscD+Yw=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=gc3vlXDHUDyc7WZ7YumKSs8IC1IQdOCeMmDrxtvkoDAlSVg/v8iURr3CxiP37+L01DCB0Iy4Rlvu1bLvgJTYuttowXWUHp/cSBn2P6+vNk5r+S2ANGoNcmjYaOOwJAqYwh0iNTX5BCGz6m2zA8Sdd3pTLT91d8QFQY3xWVmVeJk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=j8tmetsy; arc=fail smtp.client-ip=40.107.100.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=CdN9ISgtq7dRJTv6cgPx6Bv1dTlSHAXaUYZTrAB+trh5eQiqyYCChjuL3AbkbcVDAmFA5SeJDO+xncjnqBCTqrO5imwF/r00iwaFXP0KfO8kZv1374rcnR0BkmR05giyb0wNsCjMw5iKPCRsOUfINNLMj9Elxj442Qb4Prjydti/95agPga4MALzUok5ZxmjrDsFlBi/Siv/0D1W4VRZJGhM7CehxbEW4Q4ujix3+U441QRTxkj6DVrH3anERNhtrK4koDzQWBPyZG/w0EDmpoRZVXapZnrJPjNtKLaPFjOoK/QTboETCSw4U34KcymyU4brsl84e4O0iXp4zbGdOA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=5KiNrSMvDilswwrC9HHMEItA7+hFUsxEwu/4NEGIRso=;
+ b=LeHjCXHK9gFP2Py/5J6UqXGEVLzgdWzbKw1Q0hZILT0Jk9tj8cd8xilpc6wmp57YXpeWcmnuAaxTROL5ZzGssxfb/XJoEuIWIbPDzLmC1nZgNiM7oNfOa45HB4njM2Sc7AZcoyRihFSuWMIMyRn3ePIX4gKwECt2Z00n3aEvch3R2r4IlSnsnDvGz3sec9lPNggxfP111arXbkNb1T6+g1o6NCHwx1xXDlkPdv6wL3UodImxrK/JwYgsbO/lWHR5Mtye3TCjlV5UW6o/OpLxAtN4bwWyGd8O+JeSqJA8HL2rFWMNCi2djDLBdnBB6sDK6kvf//HTNIzm8JVHUOu9HQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=5KiNrSMvDilswwrC9HHMEItA7+hFUsxEwu/4NEGIRso=;
+ b=j8tmetsybshj3wxfy2vonnBQ1TYxngFKDS2KuHBpvQlbBUuiabwotpb6BsmYr/pdAEonl78GQaYaUosV8vQBM89J1phkRSzWIoXqn6ISwzas7caNryju5H1ENYnofAj7Ls/ikgtHUTsz3z/N3gdXSJa7OOsUlsnqo/VWQdcoNpw=
+Received: from SJ0PR03CA0295.namprd03.prod.outlook.com (2603:10b6:a03:39e::30)
+ by DS7PR12MB5958.namprd12.prod.outlook.com (2603:10b6:8:7d::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.30; Tue, 13 May
+ 2025 16:29:27 +0000
+Received: from SJ1PEPF000023D6.namprd21.prod.outlook.com
+ (2603:10b6:a03:39e:cafe::f6) by SJ0PR03CA0295.outlook.office365.com
+ (2603:10b6:a03:39e::30) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.8722.31 via Frontend Transport; Tue,
+ 13 May 2025 16:29:27 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ SJ1PEPF000023D6.mail.protection.outlook.com (10.167.244.71) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8769.1 via Frontend Transport; Tue, 13 May 2025 16:29:26 +0000
+Received: from david-B650-PG-Lightning.amd.com (10.180.168.240) by
+ SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Tue, 13 May 2025 11:29:25 -0500
+From: "David (Ming Qiang) Wu" <David.Wu3@amd.com>
+To: <amd-gfx@lists.freedesktop.org>, <Christian.Koenig@amd.com>
+CC: <alexander.deucher@amd.com>, <leo.liu@amd.com>, <sonny.jiang@amd.com>,
+	<ruijing.dong@amd.com>, <stable@vger.kernel.org>
+Subject: [PATCH 1/2] drm/amdgpu: read back DB_CTRL register after written for VCN v4.0.5
+Date: Tue, 13 May 2025 12:29:11 -0400
+Message-ID: <20250513162912.634716-1-David.Wu3@amd.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250513024200.1811319-1-Zhi.Yang@eng.windriver.com>
-User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
-X-Spam-Flag: NO
-X-Spam-Score: -4.00
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.00 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	HAS_REPLYTO(0.30)[dsterba@suse.cz];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	REPLYTO_ADDR_EQ_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:replyto,qemu.org:url,imap1.dmz-prg2.suse.org:helo,suse.com:email,fb.com:email,windriver.com:email];
-	RCVD_COUNT_TWO(0.00)[2];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[]
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF000023D6:EE_|DS7PR12MB5958:EE_
+X-MS-Office365-Filtering-Correlation-Id: a157f931-e890-4f3d-7a16-08dd923b542b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|36860700013|1800799024|376014|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?yMIMepvzYvEDgrMs6rAxVCt54kaN1AZa2/05LngmeY3XtuZYCz6ZzJfNWwXk?=
+ =?us-ascii?Q?dsMhpzMcbAG628Ef9kBXRS21q14A4d2OB2EHB4Oupio5crAe1WQe1RywNYb7?=
+ =?us-ascii?Q?qT+xW2USwYTkH4dZpsRgyQOb/h37hxhgxv7Rrx7b/lSP6D4XKpKbfmdADjL5?=
+ =?us-ascii?Q?lT4gFvy7gWE0h+jZri3XpciafbA8Drurmm2NNZgLJiB3Rupd5U5xZiv9yMM4?=
+ =?us-ascii?Q?hAbIUSBwapFu7ncfMtdoZCb/pCBCOjIkNHTMrjUtiIBMrT9E+MyHaOaDdyyV?=
+ =?us-ascii?Q?w6Aeqw61q6Sao3PhqVeudDvNO2WhN/KiZmpPAE5ESLKI9Ru1CxKOzjVNMbmj?=
+ =?us-ascii?Q?Wj1iuQFsC4B9U993UHALB7RIlOeJNEoqV5kiHy3/vusxw8Yi6B3IllsG+v4k?=
+ =?us-ascii?Q?gbbClEKAW58sQZNcgGcf/Wr25FsNeLH5xwAMcx/p4yfUhMgItMfI5LLsh5Mv?=
+ =?us-ascii?Q?DImx5NvEncYmnVbYrTVC/7Hfw1MaAjVp6oiPIA1XuLsq6NMniHzvM9GerfRS?=
+ =?us-ascii?Q?lH1qiQ+3UM7OYV5IOiIIvN02+hLIk5U6U8OOU62D3MScibkEktodVBP6Hgzk?=
+ =?us-ascii?Q?zIgjVVDYMzirGJqwmCSrN/0ooZRphuuBRuz9DyGG/5xX5u/ivKeB3jD2E6rd?=
+ =?us-ascii?Q?yA/ruz3iuYCdE31t/S5W1n7w6R6k5nGiHJTtQ0QJHkQaekKEv0JiTi8oRsDC?=
+ =?us-ascii?Q?AxydGECByV5L3wA5JqKP3Ms/JgcdcrGCB5bdQZt0lv6S+urP8dX2tG81LreM?=
+ =?us-ascii?Q?euvYle9ip8kjoMCwcqGIR15gEjVp320/BKMMDPAXU+cG8BSmsoSnrPzNmgfi?=
+ =?us-ascii?Q?DjRGhWqX3yWo1/C2//GHuVtl6EoM+LDgF+LXU5gV/IpAtoaXGSXZqLzjXNJh?=
+ =?us-ascii?Q?DV4LMeKrMdpzhNb3rbZickbOiAaRWElTQXgPHmQC90PwzqxxrWSdCwYXHGrL?=
+ =?us-ascii?Q?bHqHhPbxqw+Kufdl8fyZzrTsCpbOcfewV/rBdu6SaUZhtx5QRIULFDVoq+HF?=
+ =?us-ascii?Q?9Of+Add2sjfYYcS7WJuB/gBQkJxD9XJXJ9rIaXi77yMMOeRp6MV3eEztjb11?=
+ =?us-ascii?Q?wOY234CUdA6wQGsQy8+luyG37/kztS2u1YhDKrteeoXdlXbfI6sE0i/oAkya?=
+ =?us-ascii?Q?u1hsfMAPqpp0as/XQgF+SRftfPYJiwI9Xpfcbihef1Nsf4vAnPHEswr26uuh?=
+ =?us-ascii?Q?bjkUZCZEhETDeFsUwMHW7X+ptaLAWQEEsCnyXQ9Rb+DDl8WIfpmXnuH3EKdk?=
+ =?us-ascii?Q?lFWMv2vzlnOgKz8q9NwJatZcmE2djMezqKQG7aeQ3jb3n5M8ScAnb4V7DvFa?=
+ =?us-ascii?Q?6j27Ap+iXsEoX3FXe0T0vUaiiKSkgQltzqUPryjZP04QPrjptFeHP7tJmytv?=
+ =?us-ascii?Q?TI7t+LNeMKPu6AOodYTagkujjo6HJnjFOfV9113pg8hoLF98Bu8cKWhzMgTH?=
+ =?us-ascii?Q?7/urMONZwnP4unk1KZyMF7+m1Aqf6xyABHlP3Zb/a8+y2CgHW3bwWA=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(1800799024)(376014)(13003099007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2025 16:29:26.8111
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: a157f931-e890-4f3d-7a16-08dd923b542b
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF000023D6.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5958
 
-On Tue, May 13, 2025 at 10:42:00AM +0800, Zhi Yang wrote:
-> From: Filipe Manana <fdmanana@suse.com>
-> 
-> commit a0f0cf8341e34e5d2265bfd3a7ad68342da1e2aa upstream.
-> 
-> When using the flushoncommit mount option, during almost every transaction
-> commit we trigger a warning from __writeback_inodes_sb_nr():
-> 
->   $ cat fs/fs-writeback.c:
->   (...)
->   static void __writeback_inodes_sb_nr(struct super_block *sb, ...
->   {
->         (...)
->         WARN_ON(!rwsem_is_locked(&sb->s_umount));
->         (...)
->   }
->   (...)
-> 
-> The trace produced in dmesg looks like the following:
-> 
->   [947.473890] WARNING: CPU: 5 PID: 930 at fs/fs-writeback.c:2610 __writeback_inodes_sb_nr+0x7e/0xb3
->   [947.481623] Modules linked in: nfsd nls_cp437 cifs asn1_decoder cifs_arc4 fscache cifs_md4 ipmi_ssif
->   [947.489571] CPU: 5 PID: 930 Comm: btrfs-transacti Not tainted 95.16.3-srb-asrock-00001-g36437ad63879 #186
->   [947.497969] RIP: 0010:__writeback_inodes_sb_nr+0x7e/0xb3
->   [947.502097] Code: 24 10 4c 89 44 24 18 c6 (...)
->   [947.519760] RSP: 0018:ffffc90000777e10 EFLAGS: 00010246
->   [947.523818] RAX: 0000000000000000 RBX: 0000000000963300 RCX: 0000000000000000
->   [947.529765] RDX: 0000000000000000 RSI: 000000000000fa51 RDI: ffffc90000777e50
->   [947.535740] RBP: ffff888101628a90 R08: ffff888100955800 R09: ffff888100956000
->   [947.541701] R10: 0000000000000002 R11: 0000000000000001 R12: ffff888100963488
->   [947.547645] R13: ffff888100963000 R14: ffff888112fb7200 R15: ffff888100963460
->   [947.553621] FS:  0000000000000000(0000) GS:ffff88841fd40000(0000) knlGS:0000000000000000
->   [947.560537] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
->   [947.565122] CR2: 0000000008be50c4 CR3: 000000000220c000 CR4: 00000000001006e0
->   [947.571072] Call Trace:
->   [947.572354]  <TASK>
->   [947.573266]  btrfs_commit_transaction+0x1f1/0x998
->   [947.576785]  ? start_transaction+0x3ab/0x44e
->   [947.579867]  ? schedule_timeout+0x8a/0xdd
->   [947.582716]  transaction_kthread+0xe9/0x156
->   [947.585721]  ? btrfs_cleanup_transaction.isra.0+0x407/0x407
->   [947.590104]  kthread+0x131/0x139
->   [947.592168]  ? set_kthread_struct+0x32/0x32
->   [947.595174]  ret_from_fork+0x22/0x30
->   [947.597561]  </TASK>
->   [947.598553] ---[ end trace 644721052755541c ]---
-> 
-> This is because we started using writeback_inodes_sb() to flush delalloc
-> when committing a transaction (when using -o flushoncommit), in order to
-> avoid deadlocks with filesystem freeze operations. This change was made
-> by commit ce8ea7cc6eb313 ("btrfs: don't call btrfs_start_delalloc_roots
-> in flushoncommit"). After that change we started producing that warning,
-> and every now and then a user reports this since the warning happens too
-> often, it spams dmesg/syslog, and a user is unsure if this reflects any
-> problem that might compromise the filesystem's reliability.
-> 
-> We can not just lock the sb->s_umount semaphore before calling
-> writeback_inodes_sb(), because that would at least deadlock with
-> filesystem freezing, since at fs/super.c:freeze_super() sync_filesystem()
-> is called while we are holding that semaphore in write mode, and that can
-> trigger a transaction commit, resulting in a deadlock. It would also
-> trigger the same type of deadlock in the unmount path. Possibly, it could
-> also introduce some other locking dependencies that lockdep would report.
-> 
-> To fix this call try_to_writeback_inodes_sb() instead of
-> writeback_inodes_sb(), because that will try to read lock sb->s_umount
-> and then will only call writeback_inodes_sb() if it was able to lock it.
-> This is fine because the cases where it can't read lock sb->s_umount
-> are during a filesystem unmount or during a filesystem freeze - in those
-> cases sb->s_umount is write locked and sync_filesystem() is called, which
-> calls writeback_inodes_sb(). In other words, in all cases where we can't
-> take a read lock on sb->s_umount, writeback is already being triggered
-> elsewhere.
-> 
-> An alternative would be to call btrfs_start_delalloc_roots() with a
-> number of pages different from LONG_MAX, for example matching the number
-> of delalloc bytes we currently have, in which case we would end up
-> starting all delalloc with filemap_fdatawrite_wbc() and not with an
-> async flush via filemap_flush() - that is only possible after the rather
-> recent commit e076ab2a2ca70a ("btrfs: shrink delalloc pages instead of
-> full inodes"). However that creates a whole new can of worms due to new
-> lock dependencies, which lockdep complains, like for example:
-> 
-> [ 8948.247280] ======================================================
-> [ 8948.247823] WARNING: possible circular locking dependency detected
-> [ 8948.248353] 5.17.0-rc1-btrfs-next-111 #1 Not tainted
-> [ 8948.248786] ------------------------------------------------------
-> [ 8948.249320] kworker/u16:18/933570 is trying to acquire lock:
-> [ 8948.249812] ffff9b3de1591690 (sb_internal#2){.+.+}-{0:0}, at: find_free_extent+0x141e/0x1590 [btrfs]
-> [ 8948.250638]
->                but task is already holding lock:
-> [ 8948.251140] ffff9b3e09c717d8 (&root->delalloc_mutex){+.+.}-{3:3}, at: start_delalloc_inodes+0x78/0x400 [btrfs]
-> [ 8948.252018]
->                which lock already depends on the new lock.
-> 
-> [ 8948.252710]
->                the existing dependency chain (in reverse order) is:
-> [ 8948.253343]
->                -> #2 (&root->delalloc_mutex){+.+.}-{3:3}:
-> [ 8948.253950]        __mutex_lock+0x90/0x900
-> [ 8948.254354]        start_delalloc_inodes+0x78/0x400 [btrfs]
-> [ 8948.254859]        btrfs_start_delalloc_roots+0x194/0x2a0 [btrfs]
-> [ 8948.255408]        btrfs_commit_transaction+0x32f/0xc00 [btrfs]
-> [ 8948.255942]        btrfs_mksubvol+0x380/0x570 [btrfs]
-> [ 8948.256406]        btrfs_mksnapshot+0x81/0xb0 [btrfs]
-> [ 8948.256870]        __btrfs_ioctl_snap_create+0x17f/0x190 [btrfs]
-> [ 8948.257413]        btrfs_ioctl_snap_create_v2+0xbb/0x140 [btrfs]
-> [ 8948.257961]        btrfs_ioctl+0x1196/0x3630 [btrfs]
-> [ 8948.258418]        __x64_sys_ioctl+0x83/0xb0
-> [ 8948.258793]        do_syscall_64+0x3b/0xc0
-> [ 8948.259146]        entry_SYSCALL_64_after_hwframe+0x44/0xae
-> [ 8948.259709]
->                -> #1 (&fs_info->delalloc_root_mutex){+.+.}-{3:3}:
-> [ 8948.260330]        __mutex_lock+0x90/0x900
-> [ 8948.260692]        btrfs_start_delalloc_roots+0x97/0x2a0 [btrfs]
-> [ 8948.261234]        btrfs_commit_transaction+0x32f/0xc00 [btrfs]
-> [ 8948.261766]        btrfs_set_free_space_cache_v1_active+0x38/0x60 [btrfs]
-> [ 8948.262379]        btrfs_start_pre_rw_mount+0x119/0x180 [btrfs]
-> [ 8948.262909]        open_ctree+0x1511/0x171e [btrfs]
-> [ 8948.263359]        btrfs_mount_root.cold+0x12/0xde [btrfs]
-> [ 8948.263863]        legacy_get_tree+0x30/0x50
-> [ 8948.264242]        vfs_get_tree+0x28/0xc0
-> [ 8948.264594]        vfs_kern_mount.part.0+0x71/0xb0
-> [ 8948.265017]        btrfs_mount+0x11d/0x3a0 [btrfs]
-> [ 8948.265462]        legacy_get_tree+0x30/0x50
-> [ 8948.265851]        vfs_get_tree+0x28/0xc0
-> [ 8948.266203]        path_mount+0x2d4/0xbe0
-> [ 8948.266554]        __x64_sys_mount+0x103/0x140
-> [ 8948.266940]        do_syscall_64+0x3b/0xc0
-> [ 8948.267300]        entry_SYSCALL_64_after_hwframe+0x44/0xae
-> [ 8948.267790]
->                -> #0 (sb_internal#2){.+.+}-{0:0}:
-> [ 8948.268322]        __lock_acquire+0x12e8/0x2260
-> [ 8948.268733]        lock_acquire+0xd7/0x310
-> [ 8948.269092]        start_transaction+0x44c/0x6e0 [btrfs]
-> [ 8948.269591]        find_free_extent+0x141e/0x1590 [btrfs]
-> [ 8948.270087]        btrfs_reserve_extent+0x14b/0x280 [btrfs]
-> [ 8948.270588]        cow_file_range+0x17e/0x490 [btrfs]
-> [ 8948.271051]        btrfs_run_delalloc_range+0x345/0x7a0 [btrfs]
-> [ 8948.271586]        writepage_delalloc+0xb5/0x170 [btrfs]
-> [ 8948.272071]        __extent_writepage+0x156/0x3c0 [btrfs]
-> [ 8948.272579]        extent_write_cache_pages+0x263/0x460 [btrfs]
-> [ 8948.273113]        extent_writepages+0x76/0x130 [btrfs]
-> [ 8948.273573]        do_writepages+0xd2/0x1c0
-> [ 8948.273942]        filemap_fdatawrite_wbc+0x68/0x90
-> [ 8948.274371]        start_delalloc_inodes+0x17f/0x400 [btrfs]
-> [ 8948.274876]        btrfs_start_delalloc_roots+0x194/0x2a0 [btrfs]
-> [ 8948.275417]        flush_space+0x1f2/0x630 [btrfs]
-> [ 8948.275863]        btrfs_async_reclaim_data_space+0x108/0x1b0 [btrfs]
-> [ 8948.276438]        process_one_work+0x252/0x5a0
-> [ 8948.276829]        worker_thread+0x55/0x3b0
-> [ 8948.277189]        kthread+0xf2/0x120
-> [ 8948.277506]        ret_from_fork+0x22/0x30
-> [ 8948.277868]
->                other info that might help us debug this:
-> 
-> [ 8948.278548] Chain exists of:
->                  sb_internal#2 --> &fs_info->delalloc_root_mutex --> &root->delalloc_mutex
-> 
-> [ 8948.279601]  Possible unsafe locking scenario:
-> 
-> [ 8948.280102]        CPU0                    CPU1
-> [ 8948.280508]        ----                    ----
-> [ 8948.280915]   lock(&root->delalloc_mutex);
-> [ 8948.281271]                                lock(&fs_info->delalloc_root_mutex);
-> [ 8948.281915]                                lock(&root->delalloc_mutex);
-> [ 8948.282487]   lock(sb_internal#2);
-> [ 8948.282800]
->                 *** DEADLOCK ***
-> 
-> [ 8948.283333] 4 locks held by kworker/u16:18/933570:
-> [ 8948.283750]  #0: ffff9b3dc00a9d48 ((wq_completion)events_unbound){+.+.}-{0:0}, at: process_one_work+0x1d2/0x5a0
-> [ 8948.284609]  #1: ffffa90349dafe70 ((work_completion)(&fs_info->async_data_reclaim_work)){+.+.}-{0:0}, at: process_one_work+0x1d2/0x5a0
-> [ 8948.285637]  #2: ffff9b3e14db5040 (&fs_info->delalloc_root_mutex){+.+.}-{3:3}, at: btrfs_start_delalloc_roots+0x97/0x2a0 [btrfs]
-> [ 8948.286674]  #3: ffff9b3e09c717d8 (&root->delalloc_mutex){+.+.}-{3:3}, at: start_delalloc_inodes+0x78/0x400 [btrfs]
-> [ 8948.287596]
->               stack backtrace:
-> [ 8948.287975] CPU: 3 PID: 933570 Comm: kworker/u16:18 Not tainted 5.17.0-rc1-btrfs-next-111 #1
-> [ 8948.288677] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
-> [ 8948.289649] Workqueue: events_unbound btrfs_async_reclaim_data_space [btrfs]
-> [ 8948.290298] Call Trace:
-> [ 8948.290517]  <TASK>
-> [ 8948.290700]  dump_stack_lvl+0x59/0x73
-> [ 8948.291026]  check_noncircular+0xf3/0x110
-> [ 8948.291375]  ? start_transaction+0x228/0x6e0 [btrfs]
-> [ 8948.291826]  __lock_acquire+0x12e8/0x2260
-> [ 8948.292241]  lock_acquire+0xd7/0x310
-> [ 8948.292714]  ? find_free_extent+0x141e/0x1590 [btrfs]
-> [ 8948.293241]  ? lock_is_held_type+0xea/0x140
-> [ 8948.293601]  start_transaction+0x44c/0x6e0 [btrfs]
-> [ 8948.294055]  ? find_free_extent+0x141e/0x1590 [btrfs]
-> [ 8948.294518]  find_free_extent+0x141e/0x1590 [btrfs]
-> [ 8948.294957]  ? _raw_spin_unlock+0x29/0x40
-> [ 8948.295312]  ? btrfs_get_alloc_profile+0x124/0x290 [btrfs]
-> [ 8948.295813]  btrfs_reserve_extent+0x14b/0x280 [btrfs]
-> [ 8948.296270]  cow_file_range+0x17e/0x490 [btrfs]
-> [ 8948.296691]  btrfs_run_delalloc_range+0x345/0x7a0 [btrfs]
-> [ 8948.297175]  ? find_lock_delalloc_range+0x247/0x270 [btrfs]
-> [ 8948.297678]  writepage_delalloc+0xb5/0x170 [btrfs]
-> [ 8948.298123]  __extent_writepage+0x156/0x3c0 [btrfs]
-> [ 8948.298570]  extent_write_cache_pages+0x263/0x460 [btrfs]
-> [ 8948.299061]  extent_writepages+0x76/0x130 [btrfs]
-> [ 8948.299495]  do_writepages+0xd2/0x1c0
-> [ 8948.299817]  ? sched_clock_cpu+0xd/0x110
-> [ 8948.300160]  ? lock_release+0x155/0x4a0
-> [ 8948.300494]  filemap_fdatawrite_wbc+0x68/0x90
-> [ 8948.300874]  ? do_raw_spin_unlock+0x4b/0xa0
-> [ 8948.301243]  start_delalloc_inodes+0x17f/0x400 [btrfs]
-> [ 8948.301706]  ? lock_release+0x155/0x4a0
-> [ 8948.302055]  btrfs_start_delalloc_roots+0x194/0x2a0 [btrfs]
-> [ 8948.302564]  flush_space+0x1f2/0x630 [btrfs]
-> [ 8948.302970]  btrfs_async_reclaim_data_space+0x108/0x1b0 [btrfs]
-> [ 8948.303510]  process_one_work+0x252/0x5a0
-> [ 8948.303860]  ? process_one_work+0x5a0/0x5a0
-> [ 8948.304221]  worker_thread+0x55/0x3b0
-> [ 8948.304543]  ? process_one_work+0x5a0/0x5a0
-> [ 8948.304904]  kthread+0xf2/0x120
-> [ 8948.305184]  ? kthread_complete_and_exit+0x20/0x20
-> [ 8948.305598]  ret_from_fork+0x22/0x30
-> [ 8948.305921]  </TASK>
-> 
-> It all comes from the fact that btrfs_start_delalloc_roots() takes the
-> delalloc_root_mutex, in the transaction commit path we are holding a
-> read lock on one of the superblock's freeze semaphores (via
-> sb_start_intwrite()), the async reclaim task can also do a call to
-> btrfs_start_delalloc_roots(), which ends up triggering writeback with
-> calls to filemap_fdatawrite_wbc(), resulting in extent allocation which
-> in turn can call btrfs_start_transaction(), which will result in taking
-> the freeze semaphore via sb_start_intwrite(), forming a nasty dependency
-> on all those locks which can be taken in different orders by different
-> code paths.
-> 
-> So just adopt the simple approach of calling try_to_writeback_inodes_sb()
-> at btrfs_start_delalloc_flush().
-> 
-> Link: https://lore.kernel.org/linux-btrfs/20220130005258.GA7465@cuci.nl/
-> Link: https://lore.kernel.org/linux-btrfs/43acc426-d683-d1b6-729d-c6bc4a2fff4d@gmail.com/
-> Link: https://lore.kernel.org/linux-btrfs/6833930a-08d7-6fbc-0141-eb9cdfd6bb4d@gmail.com/
-> Link: https://lore.kernel.org/linux-btrfs/20190322041731.GF16651@hungrycats.org/
-> Reviewed-by: Omar Sandoval <osandov@fb.com>
-> Signed-off-by: Filipe Manana <fdmanana@suse.com>
-> [ add more link reports ]
-> Signed-off-by: David Sterba <dsterba@suse.com>
-> [Minor context change fixed]
-> Signed-off-by: Zhi Yang <Zhi.Yang@windriver.com>
-> Signed-off-by: He Zhe <zhe.he@windriver.com>
-> ---
-> Build test passed.
-  ^^^^^^^^^^^^^^^^^
+On VCN v4.0.5 there is a race condition where the WPTR is not
+updated after starting from idle when doorbell is used. The read-back
+of regVCN_RB1_DB_CTRL register after written is to ensure the
+doorbell_index is updated before it can work properly.
 
-This is insufficient for the backport. I remember some functional
-changes that are not present in 5.10 and have to be either added as
-dependencies or verified as not necessary. This is what stopped the
-patch from stable trees in the past. At least one patch for reference is
-88090ad36a64af1eb5b78d26 and there are probably like 1-2 more.
+Link: https://gitlab.freedesktop.org/mesa/mesa/-/issues/12528
+Signed-off-by: David (Ming Qiang) Wu <David.Wu3@amd.com>
+---
+ drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Stable team, please don't add this unless there are test results
-with/without this patch + potential dependencies applied.
+diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c
+index ed00d35039c1..d6be8b05d7a2 100644
+--- a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c
++++ b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c
+@@ -1033,6 +1033,8 @@ static int vcn_v4_0_5_start_dpg_mode(struct amdgpu_vcn_inst *vinst,
+ 	WREG32_SOC15(VCN, inst_idx, regVCN_RB1_DB_CTRL,
+ 			ring->doorbell_index << VCN_RB1_DB_CTRL__OFFSET__SHIFT |
+ 			VCN_RB1_DB_CTRL__EN_MASK);
++	/* Read DB_CTRL to flush the write DB_CTRL command. */
++	RREG32_SOC15(VCN, inst_idx, regVCN_RB1_DB_CTRL);
+ 
+ 	return 0;
+ }
+@@ -1195,6 +1197,8 @@ static int vcn_v4_0_5_start(struct amdgpu_vcn_inst *vinst)
+ 	WREG32_SOC15(VCN, i, regVCN_RB1_DB_CTRL,
+ 		     ring->doorbell_index << VCN_RB1_DB_CTRL__OFFSET__SHIFT |
+ 		     VCN_RB1_DB_CTRL__EN_MASK);
++	/* Read DB_CTRL to flush the write DB_CTRL command. */
++	RREG32_SOC15(VCN, i, regVCN_RB1_DB_CTRL);
+ 
+ 	WREG32_SOC15(VCN, i, regUVD_RB_BASE_LO, ring->gpu_addr);
+ 	WREG32_SOC15(VCN, i, regUVD_RB_BASE_HI, upper_32_bits(ring->gpu_addr));
+-- 
+2.49.0
+
 
