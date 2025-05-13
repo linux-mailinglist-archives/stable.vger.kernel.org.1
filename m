@@ -1,232 +1,168 @@
-Return-Path: <stable+bounces-144169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23533AB5593
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 15:07:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AB9BAB560C
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 15:29:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7AF6E4A0DAE
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 13:07:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1AC671B466A4
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 13:29:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE66128DF40;
-	Tue, 13 May 2025 13:07:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B248828F514;
+	Tue, 13 May 2025 13:29:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="rY/3vvAq"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="kR3p5wQ9"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2045.outbound.protection.outlook.com [40.107.237.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f44.google.com (mail-vs1-f44.google.com [209.85.217.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B210428CF59;
-	Tue, 13 May 2025 13:07:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747141645; cv=fail; b=eRlB0oeJQH4jKRrkZ6UhRDYoM6X5AFDrqOchoo484P2zQynZ2dGSV7Te6zwZtxruoLIFTX6nh6A/8+nH5zMdJLodp23ZFLFRfU9puLBhxOya1INgIhAzRyGmlzibaMznCuHPGkVMWEhb2fA+Jn9kFVxkLeTXXZ7RosyTySOTvYM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747141645; c=relaxed/simple;
-	bh=alT5vg5s5ZYZLMITlNQ6liGCISJ/WYykexwjqAZabrQ=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=QeY6VmthGVMN5d+sNtvO/fDDeuvYLy107AmjdSeVDkGB9sjAIRN6JKJg29/UuIWJcqRlRIZsM9ZTf5grOfPW3h0xMCn5iwmBKzviNoGAS5nklkFu9to+LGOelzbsyUa5Hc+wCLoGyt27s7ihky6yXkKktoJC7FQIIzQvzukS12o=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=rY/3vvAq; arc=fail smtp.client-ip=40.107.237.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=eTl3NB+EnnSVTGgjYYi9eraFJXjgswrWkYWt1MsouTpjInc8l+k9BIM3a765b1lpJl88UQBNKouN+MRYF2oc7VurwhdtGRZ3enepVQdhdH14OC0ufxApmokBGr45ohhCk6iycUUZ/hfaCI7uok1vFCwUsAVRrlOVZxuC6MzhUgknR4Gy/4UeENGkxXSQlymTXFd1DP4tELl/6UZRzZegxjrJ/bulAxJ9vzG6c2uEJAJq/hh1nd6tjUnZmoWULQBFUH2d6zAeMrzIIvnDpMbHE2e7sXlEoZxLI+W1RiJ8cxBiyyZUilob87OZW+9SrB1Pgg4jzrGJJpYt3r/bPPbHig==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0JGMokEswvuRLMRkl1oyYuWqM0r17FwuenfGr/Wipk0=;
- b=psHyc4fRsQrG8DjcNlhshFlZflTJw6uki0aHsAJk1WQZ8BPI07QCbTaOs69qp9qd6agiJPdMeKwV8x6AeqxHqkVspKtSXnUMJDvbXcPkiW6HnOmOqdGLn6byFgjsC5UOXtyOFIU3S9oUsoRh0/zFFfn4hcHSIGmS7VRnx4//w2q8qTX2XC0zCrPdw7Db9kJ04dfE2GfX2YQiDm6Pt23j212MVfgylVcFKYyob0mjrWTTmbR6/+jM5OIbPTzZFKJ2TNVbUFKHv+g23no19ofIjdaacb/W7r7qWdfUFMYA8q5MItqLvnZ3zEz+heow05fedXXqdfK3K/rLKTc7EIwEkA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0JGMokEswvuRLMRkl1oyYuWqM0r17FwuenfGr/Wipk0=;
- b=rY/3vvAqJkRn/FktK8ZGm6wLWdFWLupF7aKLyx8Op/ugJNIQuKF6HFZYGjOhUeYnHnKPfYmxUlUd277rozAlk5oiSmrCtcaMRpgxJuX9URtd57JiwNzAs1ji0TFBy5kz1cEZ297N2pGjxX7oECrpsYwqc90Om5ff5Hx5/msowUE=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by LV2PR12MB5917.namprd12.prod.outlook.com (2603:10b6:408:175::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.21; Tue, 13 May
- 2025 13:07:20 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::37ee:a763:6d04:81ca]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::37ee:a763:6d04:81ca%7]) with mapi id 15.20.8722.027; Tue, 13 May 2025
- 13:07:20 +0000
-Message-ID: <968725b4-d12a-482b-9a03-b1f689eaf799@amd.com>
-Date: Tue, 13 May 2025 08:07:18 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.14 000/197] 6.14.7-rc1 review
-To: Christian Heusel <christian@heusel.eu>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
- linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
- akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
- patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
- jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
- srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org,
- Alex Deucher <alexander.deucher@amd.com>, Ray Wu <ray.wu@amd.com>,
- Wayne Lin <Wayne.Lin@amd.com>
-References: <20250512172044.326436266@linuxfoundation.org>
- <32c592ea-0afd-4753-a81d-73021b8e193c@heusel.eu>
-Content-Language: en-US
-From: Mario Limonciello <mario.limonciello@amd.com>
-In-Reply-To: <32c592ea-0afd-4753-a81d-73021b8e193c@heusel.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SA1P222CA0157.NAMP222.PROD.OUTLOOK.COM
- (2603:10b6:806:3c3::24) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2D18347C7
+	for <stable@vger.kernel.org>; Tue, 13 May 2025 13:29:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.44
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747142974; cv=none; b=kOm32JjTSQkKqBHzaijpiODvprbi3fVBOV0GBlk/i5/a9LRXQu5dKjRzy0E6jOZavbS8WAM+sZAd8FZCgEVaJ/gfRA3ZjWddz6TzvmGC/igsaJ3kURlM9OKgQSCCkparMPtIkIcpwiDuMCtmu7MhC4x46oLk4lEyv1InQgaWYic=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747142974; c=relaxed/simple;
+	bh=pIZnqAbvKi6g6bM9xBkbfMYNKRFSU6d2NCIENbAWFOs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Dwi4AdomN6DYW/Xprggmgfnef3tyXJAzAiXqYcZ4vE8U6mN3S+xpvoQN64fT84MLnOPHp8ItDTUVzWju+LB6j6+Wx8gKNF1Nk9bV3I69KKLkxXi+tbeOygBVqpZzuGZHH4R1njJMGALUQ2iULxpjX1UEbewuQ3xy2J9cI7G7IWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=kR3p5wQ9; arc=none smtp.client-ip=209.85.217.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vs1-f44.google.com with SMTP id ada2fe7eead31-4ddba761dc4so3703364137.3
+        for <stable@vger.kernel.org>; Tue, 13 May 2025 06:29:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1747142971; x=1747747771; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=LZEie1OhAZfjtagVfLYxTcaBKPW2X7YkdVD9WseQzgE=;
+        b=kR3p5wQ9nxxZ0EVG5HcRztu35MW/ZMH0Z4Ap5aqYoCDbROItNisvMevG528ocbPQkd
+         Ja4KRQ/9tSVsSnPXW68q4x+7rTwCd3sGTkEZB4P2dYtgjk9yVWelrQqqHVkkQ81UBC0y
+         Gk8ZHpjj0r8KNzSrudIc/bB47aaFhpTkJRqCUCnLxkL+qZPfUxIqcov/xmgnPMtaeB0X
+         H/GHyI78InR86RlUJ0jXHgJTs+zTMZe20A5CgDi9luYA/WHykBLdTPcE53s/WmVGZ+LG
+         IeXmObmPFBorJOwPeeJkjzdZzes/uWXoCSZgBycuzBR0OtGftgifPQ0T8HU2jCurYrU1
+         DE0g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747142971; x=1747747771;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LZEie1OhAZfjtagVfLYxTcaBKPW2X7YkdVD9WseQzgE=;
+        b=fRvN6JFEWjhKem6BG525yI3IDtUkyN6nt4oV7zgI004N23G8QYSemJzw0BEdHFb3Fp
+         sGjIfrh98BwPWWv5Vx02ojfozAwMzZdddSdo6yjlV3Oyg5gvZYBlNnoYIgHFjT0hgz3Q
+         pOhU7TlfrDolx85pvUhw2N5MEIH9Huvz8locUgynxiHOQjLBiz1KI36WUS+O9IGMNRcC
+         fjcFSiJFpL0jDIS20gI1yUgeWpdsm09CxLmFrd8XEt45LGgMPV7PQM62icuczpfAgtAm
+         io/bsOp9qhiG49aZUo23AO2C7lvxJcCVgptW1zLvSZ8nsGuXXDwVlH1L+LDsDUapfR53
+         4YHA==
+X-Gm-Message-State: AOJu0YzaU3u6f327XjTc54g/tVAbjAfmtRgCLyTbJzN+0rARGan8CfXw
+	JBNsIiz9/WZQwVtDm6xDbKzyhwvr2IX3txqivaVIatDDfuMGn1dCNkJd5JdG/29pqXQlMRPtt39
+	ltD4lk3hN4aCgJ24LvHHssEI69zTEuLR+D6+OBA==
+X-Gm-Gg: ASbGncuqGy2RW62iGsOQLzXH6IAcGew254P7CPn+G2Lqho/qpITr3sxLfeD5bqkQikV
+	E93xzhe1i0PSF1p1m29ThfdcN3ajr2fqp+XDT1xCuJpO2L3kfdJsn4FPgIZqszbJias6MtxjgUt
+	i+NXeGNRpm8SD4ymDbTqEB5b6T/2GYvr8=
+X-Google-Smtp-Source: AGHT+IHlbMMFq5nAfSA83CCKmxe6r5lw+vXbf9voMmrMRSDCezf0HsCPwNDvoXL3icNnJqJh9L6Y0Q0gPm4WwUngrEA=
+X-Received: by 2002:a05:6102:2c08:b0:4c1:9b88:5c30 with SMTP id
+ ada2fe7eead31-4deed3d3870mr14789892137.19.1747142971375; Tue, 13 May 2025
+ 06:29:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|LV2PR12MB5917:EE_
-X-MS-Office365-Filtering-Correlation-Id: def1bb6f-9131-41ee-3748-08dd921f181c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?MjBnZk9GY09EU2VpQUduWUtlN2FPZWI4bS9qUzk1RUdBOUd3dnhUN3F3NStW?=
- =?utf-8?B?ZVNmYnBscjUyNE44SDc5UjhnSmFlMUlVYVZJejFsZWFIMUttdXZNMStYd2dL?=
- =?utf-8?B?Wm8rTzVJSUwyR1ZoNVlseUZXbW1JOUhMeEI1OXVRTDlRS3hJT3JabzVFTS95?=
- =?utf-8?B?bzlqOHlYSEIxYXgyL1QvYXVzQ0s0WkNLb3hZZG9zdlNWTlJyZlFHL2lMSW90?=
- =?utf-8?B?cUlZWjM0TzBydnA1NEZsdDJJb1hWUDBJQnd1T1hNY0VVYzJsL2w0cTlrZ2xB?=
- =?utf-8?B?WnpwSCtBblA4ajNaRWt1ZFFXQjE2QSsrTE1xNnVpTENMN1NFbXVSTStmaEpO?=
- =?utf-8?B?M0R6TjVURGp1S3pVTzZqM0wzYy80Qy9jUEdBWXZKWXBsb2dhcTY2RDJmYVcv?=
- =?utf-8?B?bXpMbjArbG93UW00Q3ZyQ2hPM1VzZVBKdEc4RHM2cm1kOHNITUhWTGo5LzAr?=
- =?utf-8?B?bWlzUFQrK3M1alJTRUNQYW1adktXS1R2R2FzbkVqcDB5aTlLNHREazZYTkVk?=
- =?utf-8?B?dmxKZUFvWkdrVTh6akJTRjBGRnJyb29Tc0QrVXhBb2ZreFl1SkVVNitiZmdo?=
- =?utf-8?B?S2haTTBoK2c4RXJjU2dwT0tNV0NHN291WWZ5ZVJZRk5HSjI3WXhONExJTDM5?=
- =?utf-8?B?UVVoZitaZWpORDFJRVJ0b0tOWWtkN3lWTGh6eTBwdSt3cHRBT0RLUGlNb0lj?=
- =?utf-8?B?SVpxQW9pSHNnQ3drUzBTSm50QXNTcUpBSkIwWFBrSzFNK0pNK3NsbFdlOFNR?=
- =?utf-8?B?RDhVOHBzWFBEV2xieWFKQXpLcGFSZnpmekd5RWo3MXgxRndUK0tlaHZKOGtl?=
- =?utf-8?B?blhBWWhacTJyS1Rjdnp3alV1WWxndnNOdjdoTUJGSE8rbVpSbkdmeEplTE0r?=
- =?utf-8?B?NGJmRVJHeW5qTUkyV1AxNXlxdHIyY1JQUUVnSTg2OGpXK1hrc2hkT3ltRDJu?=
- =?utf-8?B?dUtmK0ZCbklIVUlTVnJLamtaV3pyQldmS1JtZmwzTmQvV3VDUUdVZmJjc21o?=
- =?utf-8?B?VEdnVDQ0NVNBZUVBeEZOK1lXSE1mdGJwOVB6KzZWdWxJcFVJMmdVU1VrMjNx?=
- =?utf-8?B?SjE4WngxL20zczdtS21ENEZOYmd4bDFwV1RQZWcrc2FTM0RvTDZkV1p1aHFL?=
- =?utf-8?B?MHVJRGgvd2ZFVm1tZFN1V3A2OWhaNzBRSEYrRXdta1hUWXlUek1rTno1alpi?=
- =?utf-8?B?dkdrVS9uQnhZMWUreElsYXV0Wm1Yekt3ZFRtNUVWZHBkNW5UVGtleTV3SUk3?=
- =?utf-8?B?K0lBa2VkZVBGM0NXWEhOSTJlVEJFUzRLQWlkZS9kQUkyY0hkRGRMTUlLRWtV?=
- =?utf-8?B?TTRoaHFHWDFmTHpzVWVhN29UQnFWV3Q1RVgrK1BhYkY2ZTByTHFORVJNd0pm?=
- =?utf-8?B?dlZ3VzBYZnRpL3A5YVJmM1RydXhBTjNjcEgrcUtlMUtSOFdmSlAyZVJESkRo?=
- =?utf-8?B?cGZGTE5nbVo4Y1pUZEVJazJnamQySjd0SDZLNS9JenpRUDR2dGJXWEZuQThv?=
- =?utf-8?B?OVp1bWttZER5UUJMT0ZMN1VVMkZkblVpOGdTalE3cUpnSVlqME8vYnVkZks1?=
- =?utf-8?B?NnJZUDZybFMvRzd3ZFA5V01ONjdoNFF5RFUxY3BpcDBKaW1ETzR4ZHBsWjE3?=
- =?utf-8?B?RDZ3ZE50V3pjb3hFSENtZUd5cGpMVWpuRTF1WS9Fc3Roc0ZETDIvb3RjTnJF?=
- =?utf-8?B?cXNBWTM1diswVkpmS0JWeWYyaDhST08zeWJHSDBHZWZ3VXpwb3F2U3RvSEFz?=
- =?utf-8?B?RVZFeVVzN1NhbjRPK24yRm5jSHFTVDNEVXlNMlYvZ2FwTlZ4N3ZubmJDcFFL?=
- =?utf-8?B?cFBLUjlmbUFOVGcvdXk1TFR0ZHQzdklQYmR1QVBhTk82ZnV6SDRZOU53cU04?=
- =?utf-8?Q?zSst44FpjsLZd?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cElkTnV4bW5uYm9NcVZNL28xbEtLTHV0M3l6bEdKQS9GSmJFZnJ6MWczTUVu?=
- =?utf-8?B?cVZnazhTVUtOZ2hxcVIwUEErNVZPTC9XZTdybmFKd0JTaFJxQ3RnenBhZE8x?=
- =?utf-8?B?SGpjMWlSOTk2ZTlCOGR6TVZFQ1RlWGZ1RW9uSlVUU3loSnkvck5EbU13Mlhi?=
- =?utf-8?B?MnV5aVlZSUtHNVlDWWl2a1FNY1JyTTlmMHhaOXNOdWIzNlRSRHVDaDFvNmFZ?=
- =?utf-8?B?QUdRUVdQOFg1TUttejNjZ1RzNmxjQnRzb2d1bUdYT3F0SVRObm8xcDkzYnpE?=
- =?utf-8?B?bGpONVV0MkgwT29wUWlZVldabjZsWGF6UDVoSnNsVHhrVXNPN0R6WUF1TXRP?=
- =?utf-8?B?VXFWQW1iTFE2ZTU3S0RsSEZJU003VlNYUHRSb3QwTkw1QjBiWXZZajZuMng2?=
- =?utf-8?B?eXNhSjgveG8zZkhXMlA1dDVBYUxhNGlqb1FBRGxCTGZOdjZSQUlURUgvWFQz?=
- =?utf-8?B?SVBsRkpHeWE4aklHdndDM040dlV0dHVUdTBmT2xVVytwZGl3QVh0eTVPeEE3?=
- =?utf-8?B?enlHSTArNmtHWnBSY1VHbjNvRzl5Q2JLWmdjbVgrdmVON2RLZUR1RG1BL0VW?=
- =?utf-8?B?dXo5dmNzUXRxWVJkNDlYS1M1WmlZbE1GQ0p0a3hrekdQVW0yUGhqeTcvZnUz?=
- =?utf-8?B?Sm91Wm15WU0rKzM4VVlPU0VkNWF2U2lyTnN2NVZ3N3dhaEM3aGJKdFRLeFBM?=
- =?utf-8?B?QVVSb3Qzd0dOczloek5Faml6bk9Fb1Q2Nk9jZzg1U2htVGdGR29BK2pBMm55?=
- =?utf-8?B?NFp5TzZobGhvckhrL3dZdFlkRzZJQk9ZaGFmQUtzK2Y0WkhTcXNaWUZmVmph?=
- =?utf-8?B?NTR6V0dVd1daQVRWdGdpM1cxdFAvNFQvZW5PRzAwR3VlcHZPOXFNUUEzQnJq?=
- =?utf-8?B?OVZVZVBISHBmSmp6Y2JndDJmeUJVQ1hUUUlhaTJ6RUdTcStSU3ZkanZGa09G?=
- =?utf-8?B?bllJNFM1MGpHRnFFRUJIbWtOeFU1RVk2cThBcEZ6RnpiM1FXVkp3bVRUUGVr?=
- =?utf-8?B?QTFGWW90bFRjY3JnUXhsa1lLNk1jeWU1YWFWL3l0a1Q1cm5MR1IvN1pwWHNx?=
- =?utf-8?B?QmpwTFhtVERBYWdpOXBxSFlLdmJQQXZUY3VCMzdhcmRBbmdyeWJhemQ5RzBi?=
- =?utf-8?B?UHlXOHlYSUx0ODdpQUhlK3ZBYXN3VWk0ZTVFekF4engycVAzand3V053VHBv?=
- =?utf-8?B?bUp3elBjNUg3MWRuRG9xNTl4LzBzRXYrZ2kyeW84SnBodnVVSWRlNVlaMHVr?=
- =?utf-8?B?MnBzOElvdXlQbzNLdDU3YXY0YjE2aUJCRGVGQlRNNGgzeXYwTmZuYTBPUUl0?=
- =?utf-8?B?R0N3WnB3QW1od1NCTE5uaTNzOVV1WGtDajB0RWxNRlhZTmlmZmN6RkczWXNn?=
- =?utf-8?B?MGlqTDZ2TmdVY2JLU2xtbDhoNWtQbVBsQ1N4NDZLTktRcnZ4ZVpUdHg0ZW5z?=
- =?utf-8?B?YjJVWldhM1JUTUdKa1I2Z0U3MG9Sdk9INy9DbGZqZXg4d21tRTNNTTBXMGE1?=
- =?utf-8?B?d1RMZ0swMWZDaWlQMXdVRFRaSEo4QmVhWUMwUHFvanVaT3lhRTdIc0tLVDM1?=
- =?utf-8?B?OGJiQ0ZJeE9hbFJweVdwV2JTMHpmWDlDUDhOSUNZWnRJMUpQVURvZHNvY2xJ?=
- =?utf-8?B?dmE0ak9lUnc3Uk9WM3VKSnZPREREUXR0L2JTcHEzcjdZb1ZjbktEYW9wdzJj?=
- =?utf-8?B?b1R2K0d1ODltNkpNYnNpVnZXelFUMzVRVXZYRjBROWdIaENSdC9VQitRaUxC?=
- =?utf-8?B?YlYvNklNQUJzeVRNNTFEYXR0VmNDRlJPRTRyZUY3VlhSRC9Fc3hPbS85bmwv?=
- =?utf-8?B?VUVOL2wwWDZzMUNaNDE2ZVVwdGtkdkQ4WVlHd0s0M1ZkMWJDY2ZLam9mUlJw?=
- =?utf-8?B?L3BIUGY1TFpCdlp1UjBiaHBBUmdmbFUxc1NUbXhQRzNEWnY1ZzNDNlM4elNW?=
- =?utf-8?B?eG1UYW8yT2FpMmU2TzF5UnhUdEJmSVhhenp4QUR1UGdKOWJpWHZvcHVBQ3BU?=
- =?utf-8?B?L0N1VjF3QXBxNmVRSTlZMVBKeFRlZW9kTDkvaE9udkE1YVhEdWU5QWx1dW43?=
- =?utf-8?B?V3hwZ28xVGNrcFluSmhGWng0VDRYc2NxQVZyQ0gyS2JWaFpuMWZKOUwybzZL?=
- =?utf-8?Q?P3Y8jZjaF8jtfjGvKL/ATADSq?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: def1bb6f-9131-41ee-3748-08dd921f181c
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2025 13:07:20.5854
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bO/vrrQGBVeudQ7PuqfAl/SeRDVW9qUzKEI+jkMnkeeJjyCyx1NA2sfx51GQLYQa0dZQXpNyBOe+s+XivUMJug==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB5917
+References: <20250512172044.326436266@linuxfoundation.org> <CA+G9fYuO5m0EgOAbytJv2Ytp9uj-0jHVUGddaXHLckHk+ZLEHA@mail.gmail.com>
+In-Reply-To: <CA+G9fYuO5m0EgOAbytJv2Ytp9uj-0jHVUGddaXHLckHk+ZLEHA@mail.gmail.com>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Tue, 13 May 2025 14:29:20 +0100
+X-Gm-Features: AX0GCFvoub22XkeGUwB2DkAUVguhCcizeWQN8lgksWkCPZabNB8ZW-3lo3CS3bQ
+Message-ID: <CA+G9fYsGTqCxiXQOY3HEu4Z3CEwmyQoOb8DnpzVToWMW-Y8R5A@mail.gmail.com>
+Subject: Re: [PATCH 6.14 000/197] 6.14.7-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
+	broonie@kernel.org, clang-built-linux <llvm@lists.linux.dev>, 
+	Anders Roxell <anders.roxell@linaro.org>, Dan Carpenter <dan.carpenter@linaro.org>, 
+	Arnd Bergmann <arnd@arndb.de>, Nathan Chancellor <nathan@kernel.org>, 
+	Marco Crivellari <marco.crivellari@suse.com>, Thorsten Blum <thorsten.blum@linux.dev>, 
+	linux-mips@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 5/12/2025 7:26 PM, Christian Heusel wrote:
-> On 25/05/12 07:37PM, Greg Kroah-Hartman wrote:
->> This is the start of the stable review cycle for the 6.14.7 release.
->> There are 197 patches in this series, all will be posted as a response
->> to this one.  If anyone has any issues with these being applied, please
->> let me know.
->>
->> Responses should be made by Wed, 14 May 2025 17:19:58 +0000.
->> Anything received after that time might be too late.
-> 
-> Hello everyone,
-> 
-> I have noticed that the following commit produces a whole bunch of lines
-> in my journal, which looks like an error for me:
-> 
->> Wayne Lin <Wayne.Lin@amd.com>
->>      drm/amd/display: Fix wrong handling for AUX_DEFER case
-> 
-> amdgpu 0000:04:00.0: amdgpu: [drm] amdgpu: AUX reply command not ACK: 0x01.
-> amdgpu 0000:04:00.0: amdgpu: [drm] amdgpu: AUX partially written
-> amdgpu 0000:04:00.0: amdgpu: [drm] amdgpu: AUX reply command not ACK: 0x01.
-> amdgpu 0000:04:00.0: amdgpu: [drm] amdgpu: AUX partially written
-> amdgpu 0000:04:00.0: amdgpu: [drm] amdgpu: AUX reply command not ACK: 0x01.
-> amdgpu 0000:04:00.0: amdgpu: [drm] amdgpu: AUX partially written
-> amdgpu 0000:04:00.0: amdgpu: [drm] amdgpu: AUX reply command not ACK: 0x01.
-> amdgpu 0000:04:00.0: amdgpu: [drm] amdgpu: AUX partially written
-> amdgpu 0000:04:00.0: amdgpu: [drm] amdgpu: AUX reply command not ACK: 0x01.
-> amdgpu 0000:04:00.0: amdgpu: [drm] amdgpu: AUX partially written
-> amdgpu 0000:04:00.0: amdgpu: [drm] amdgpu: AUX reply command not ACK: 0x01.
-> amdgpu 0000:04:00.0: amdgpu: [drm] amdgpu: AUX partially written
-> amdgpu 0000:04:00.0: amdgpu: [drm] amdgpu: AUX reply command not ACK: 0x01.
-> amdgpu 0000:04:00.0: amdgpu: [drm] amdgpu: AUX partially written
-> amdgpu 0000:04:00.0: amdgpu: [drm] amdgpu: AUX reply command not ACK: 0x01.
-> amdgpu 0000:04:00.0: amdgpu: [drm] amdgpu: AUX partially written
-> 
-> this does not seem to be serious, i.e. the system otherwise works as
-> intended but it's still noteworthy. Is there a dependency commit missing
-> maybe? From the code it looks like it was meant to be this way 🤔
-> 
-> You can find a full journal here, with the logspammed parts in
-> highlight:
-> https://gist.github.com/christian-heusel/e8418bbdca097871489a31d79ed166d6#file-dmesg-log-L854-L981
-> 
-> Cheers,
-> Chris
+On Tue, 13 May 2025 at 11:40, Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
+>
+> On Mon, 12 May 2025 at 18:43, Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > This is the start of the stable review cycle for the 6.14.7 release.
+> > There are 197 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> >
+> > Responses should be made by Wed, 14 May 2025 17:19:58 +0000.
+> > Anything received after that time might be too late.
+> >
+> > The whole patch series can be found in one patch at:
+> >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.14.7-rc1.gz
+> > or in the git tree and branch at:
+> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.14.y
+> > and the diffstat can be found below.
+> >
+> > thanks,
+> >
+> > greg k-h
+>
+> Regressions on mips defconfig tinyconfig and allnoconfig builds failed with
+> clang-20 toolchain on stable-rc  6.14.7-rc1, 6.12.29-rc1 and 6.6.91-rc1.
+> But, builds pass with gcc-13.
+>
+> * mips, build
+>   - clang-20-allnoconfig
+>   - clang-20-defconfig
+>   - clang-20-tinyconfig
+>   - korg-clang-20-lkftconfig-hardening
+>   - korg-clang-20-lkftconfig-lto-full
+>   - korg-clang-20-lkftconfig-lto-thing
+>
+> Regression Analysis:
+>  - New regression? Yes
+>  - Reproducibility? Yes
+>
+> Build regression: mips defconfig clang-20 instantiation error expected
+> an immediate
+>
+> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+>
+> ## Build error mips
+> <instantiation>:7:11: error: expected an immediate
+>  ori $26, r4k_wait_idle_size - 2
+>           ^
+> <instantiation>:10:13: error: expected an immediate
+>  addiu $26, r4k_wait_exit - r4k_wait_insn + 2
+>             ^
+> <instantiation>:10:29: error: expected an immediate
+>  addiu $26, r4k_wait_exit - r4k_wait_insn + 2
+>                             ^
+> <instantiation>:7:11: error: expected an immediate
+>  ori $26, r4k_wait_idle_size - 2
+>           ^
+> <instantiation>:10:13: error: expected an immediate
+>  addiu $26, r4k_wait_exit - r4k_wait_insn + 2
+>             ^
+> <instantiation>:10:29: error: expected an immediate
+>  addiu $26, r4k_wait_exit - r4k_wait_insn + 2
+>                             ^
 
-Here's the fix:
 
-https://lore.kernel.org/amd-gfx/CADnq5_MrUPvFVTkMixCuhFqpEuk+cKQpXJPBBBpaVwqrTashMA@mail.gmail.com/T/#mf9e4e3b93b4b0815a3bce61a4f1f92dab08e4164
+The bisection found this as first bad commit,
 
-Thanks,
+    MIPS: Fix idle VS timer enqueue
+
+    [ Upstream commit 56651128e2fbad80f632f388d6bf1f39c928267a ]
+
+- Naresh Kamboju
 
