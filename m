@@ -1,82 +1,72 @@
-Return-Path: <stable+bounces-144273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89774AB5F25
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 00:12:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F481AB5FDB
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 01:23:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D6EE4A376F
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 22:12:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 125641B4480E
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 23:23:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAA7F1F0E26;
-	Tue, 13 May 2025 22:12:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD96B20C472;
+	Tue, 13 May 2025 23:23:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="UhbjLkRA"
+	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="F5omOgEg"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2068.outbound.protection.outlook.com [40.107.93.68])
+Received: from smtp-fw-80008.amazon.com (smtp-fw-80008.amazon.com [99.78.197.219])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D52C2198A11
-	for <stable@vger.kernel.org>; Tue, 13 May 2025 22:12:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.68
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747174357; cv=fail; b=l/uz47ZsQi10VlRzZqTOhKPVujvmSFX+cc/TjqX4AKdY5lTVfjcEdaALVVGX+CozRalDBk85zoPAxkodlWmmMQChNdDIZzxm4t9EI84H+sw0ldMYeINGMxJxLYzG14YExZoRI+KTZzYe2pymJW1vYL6VuFbldFgTCbda8OB62fY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747174357; c=relaxed/simple;
-	bh=rg9s4cETAqnksMdDRFvGKdU626lxcWOTKLrHbU2opdI=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=lm9fINVnbcLJeCnFrMlNK6NTOxpQZzBlDlP1tUe7L9+1A3yYViGcT6KD/R4n86OFjAEl0f1QqRYaG/r9MQQXM6nm/aUg1Xen9oTglavFJ5PJIaklxyq6elh3nPNd7KkpnzbqXN9F/XKyId3obPOI/bxpO/6WFsjK9OvnbLcDz9A=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=UhbjLkRA; arc=fail smtp.client-ip=40.107.93.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=F9uJpv9/28M2cPjB89O9BVAEFaWl9QCS22DOq7+csiiWnGX/DG3zpx9osRJN1zxSNItxXpFRK/FMIBJPrnfwfSp8dAkmy1LmUbhOO29WmfOtM7QYwVL0C0g0WPqtjU3LilHgFfDEz9Zu2hhFOVmXWWPq+x74oS9zGZsEKA7XGvhs7yHjjjQv49tlmEoFmd5CeEOcssb5qrVWzGOhOj+bcy3dyMYarBW8c1YslG5vj861fQLnoSzFL7Os1QffN+6UNpNSirRM0+NALaltUTEyOcw8FFNQKeyqe/jVRii9iYv98Z3FCDW7kxm7bEyhHObdNH6/yNCYAUdQq94wNWmaqw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7XsNRlPUzCbxiUZDqmacr3niB+psM9YciK4rH+gi9c4=;
- b=TYQTtCDYLx7H3gB/UzQw8ItDkJje9BfnjwkJDjsPMlPtnDD+x53eAk9XEr3nVBy+/ZkcSbHrBsBd9hG5UbQjRLttBGmeRIYx46Q3a+gvXtXwMTvgfq2XpNpAXA3T1MxhSx15uAmxd10LOfvnphZaup/E5O5CRyLOvVHSj+Wc9kZ5WIrk75FoqYWH15SjjX3x2sZLVE4nIm4dMVQx4IrOoW7RPYLBXulKJ54VgnNxy9fG0a7AFl5yCYAc8ZIW2W2WFYwAjXPn8gAh8NHQF7KOMvuJOm8fE6x1ppFUB7XzJai6SlR13zeDEtQRJOQmNrpx2JWHkHNkIfy5pvC3yTllaQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7XsNRlPUzCbxiUZDqmacr3niB+psM9YciK4rH+gi9c4=;
- b=UhbjLkRAVpnrltZpHyhXvMlCGablTuVrnU/xyj+GPO+5ejFQ+/ifiaU2LEhZ/bfWPE0EzCpxOQhI2pif8+v0Qi9tkVwssmiL1lAbcn5WGBUlQ107mUY1SYKlUrvIBDnO5tHqFqUsgNMAoUes+9CeWooed2H5A1s9+PP01KqaA/E=
-Received: from SN7PR04CA0169.namprd04.prod.outlook.com (2603:10b6:806:125::24)
- by MW4PR12MB7120.namprd12.prod.outlook.com (2603:10b6:303:222::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8699.26; Tue, 13 May
- 2025 22:12:32 +0000
-Received: from SA2PEPF00001504.namprd04.prod.outlook.com
- (2603:10b6:806:125:cafe::2d) by SN7PR04CA0169.outlook.office365.com
- (2603:10b6:806:125::24) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8746.16 via Frontend Transport; Tue,
- 13 May 2025 22:12:31 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SA2PEPF00001504.mail.protection.outlook.com (10.167.242.36) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8722.18 via Frontend Transport; Tue, 13 May 2025 22:12:31 +0000
-Received: from david-B650-PG-Lightning.amd.com (10.180.168.240) by
- SATLEXMB04.amd.com (10.181.40.145) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Tue, 13 May 2025 17:12:30 -0500
-From: "David (Ming Qiang) Wu" <David.Wu3@amd.com>
-To: <amd-gfx@lists.freedesktop.org>, <Christian.Koenig@amd.com>
-CC: <alexander.deucher@amd.com>, <leo.liu@amd.com>, <sonny.jiang@amd.com>,
-	<ruijing.dong@amd.com>, <stable@vger.kernel.org>, Mario Limonciello
-	<mario.limonciello@amd.com>
-Subject: [PATCH v4] drm/amdgpu: read back register after written for VCN v4.0.5
-Date: Tue, 13 May 2025 18:12:18 -0400
-Message-ID: <20250513221218.654442-1-David.Wu3@amd.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B5B61A3BD8
+	for <stable@vger.kernel.org>; Tue, 13 May 2025 23:23:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.78.197.219
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747178592; cv=none; b=PECu9OZElITmyZOLPMypf6TY3sLLx6SUQeQm5VLOc2RWCtlk4YP2u6nG8VfSmeh/9998yM7RiCvJClh7hzV9LOQxJDhS2hwUphNOB5I13xgRPYXkuaqoU4Tkd6JJ9ESMH5r9kXdvjDplTqUd7rCpzJ2gidU9UqjZrrqcAZYkTQ8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747178592; c=relaxed/simple;
+	bh=H4kauTX7cSTC+Kt7yhb7tPt/lgdjKxMwnSz3aE+V3Uk=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=b1vWd12syqyvIV4SbL+wdmUX6ZHYgIAA2ahwA3cCdUT9EUEfJNmF3W9xCl9/6uFwqGU6ywqlWam7eZEAWL2yZNjfghov2NCNvnFS8xOAqeczFkWaehIVTs7gN7NWf3y34vay01Dq9lL3KfjVxlZ0J70sEDOWfn36npfyiQ1HUbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=F5omOgEg; arc=none smtp.client-ip=99.78.197.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1747178591; x=1778714591;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=DAyvtdGUjYMnXTXN1ToRJXaHVz1p4DUG6CtNw07SBVk=;
+  b=F5omOgEgXtD9AKQaY5y2thJSo1rmgH6j26ffidly9T5HF1CqKaxQpmMa
+   8zsYHE1vmM2ls4xyZoLjKu697d3mvPxEenjhE6lqpdpl1DSY17ZIkzbJd
+   MYahRyKG7E+cXf0jhyhIetmwFn5uXwlM83VaOWmz4yDlSHFYKkm2VAxvM
+   HVRM88Wphl5tsgwU1g8MDYuMMJ3rSeWnIng5nWdfQp6Ac8AkyNYJAUNja
+   qIVYq5LhNAtEeEZe8OUg0Af5ashMP8W88NaQWqXuaOCBSn4eeTm1TrqHL
+   9v8qOC3iGDBwSp39TQoovBy8il6Q5hRVSIPHsXLnwX+gUs0ZmhZ6mGrze
+   w==;
+X-IronPort-AV: E=Sophos;i="6.15,286,1739836800"; 
+   d="scan'208";a="196596189"
+Received: from pdx4-co-svc-p1-lb2-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.25.36.214])
+  by smtp-border-fw-80008.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2025 23:23:09 +0000
+Received: from EX19MTAUWC002.ant.amazon.com [10.0.7.35:41322]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.57.166:2525] with esmtp (Farcaster)
+ id c5584d03-636b-46a1-90b5-ddfebec4aa2e; Tue, 13 May 2025 23:23:09 +0000 (UTC)
+X-Farcaster-Flow-ID: c5584d03-636b-46a1-90b5-ddfebec4aa2e
+Received: from EX19D015UWC003.ant.amazon.com (10.13.138.179) by
+ EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Tue, 13 May 2025 23:23:09 +0000
+Received: from u1e958862c3245e.ant.amazon.com (10.187.170.35) by
+ EX19D015UWC003.ant.amazon.com (10.13.138.179) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
+ Tue, 13 May 2025 23:23:08 +0000
+From: Suraj Jitindar Singh <surajjs@amazon.com>
+To: <stable@vger.kernel.org>
+CC: Alexander Lobakin <alexandr.lobakin@intel.com>, Ivan Vecera
+	<ivecera@redhat.com>, Tony Nguyen <anthony.l.nguyen@intel.com>, "Suraj
+ Jitindar Singh" <surajjs@amazon.com>
+Subject: [STABLE 5.10 5.15] ice: arfs: fix use-after-free when freeing @rx_cpu_rmap
+Date: Tue, 13 May 2025 16:22:47 -0700
+Message-ID: <20250513232247.219394-1-surajjs@amazon.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -86,101 +76,198 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF00001504:EE_|MW4PR12MB7120:EE_
-X-MS-Office365-Filtering-Correlation-Id: a8c70ad5-9ed9-4e7d-027b-08dd926b4164
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|376014|1800799024|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?mziErlgnJ4n8KTfPlwER1i3SRQB8aN9gQFLNWVsSocdqzt3K8Mh41ZQ9ljUc?=
- =?us-ascii?Q?QA62dk+DZNL92OM7ZtjvVLq4k83GFYY6uM23QuXYISkH28FmxwNz3g9UDPmU?=
- =?us-ascii?Q?xGibrzIhb0XkoX6JY9wCowmHeSSPXs2Qig1DuOnILnH+Kq1QvA0BSNLfort3?=
- =?us-ascii?Q?oxRA3HHjNJ1PcZ9aeQS6Cqjgk/WqRXiVKiuddR/QreeBOMayE2v6IvHjlhCP?=
- =?us-ascii?Q?wA+8vvd2OUjiqy0mZS65bre6e6J0BTGrolCvTdNonhdQg4pFbfpK6cykuTgP?=
- =?us-ascii?Q?dSTAxO7LU+zYo/ceHCnmWUjnK94qUdquspc+QST1/B3mvAetmVzJKBZp00F2?=
- =?us-ascii?Q?8bjFOTJGQElhvDauIyB8cyPoO8noQGxC+ZBw+BXNGoQIjfSR+tPRg1GaQe8k?=
- =?us-ascii?Q?KBFsDeMA4Ta84USWPOy7Tg935PGc+oHZtvdmGhZ1fb8WfzC8xptycfxBBMKL?=
- =?us-ascii?Q?PWdlf8M61VSdZusEdI2hqnprdDYk+Frt0zphAEftocV2lTBhhfui4RLmJjxY?=
- =?us-ascii?Q?LuNn3mRi7ofVdSItcWi5BK0CMFepoUzY/EwWQCM4LScP7HU7XiBLJrvMTpAf?=
- =?us-ascii?Q?bQScGE2eSyrjNHiEEW1qf3DMb8ilXFnm9RVBNWSBAnJibcXNIVrO8/MeSV7O?=
- =?us-ascii?Q?Of8vloh+YStpd7ctZmu734A29Gx/vW7FgwHc4u/hZ7sqChT+MK1Jp65Ftk8k?=
- =?us-ascii?Q?LVgHpcEIkGIOiJ8hp6tXUqJMPT8C0Gl3vbMMyT6n98aJbPomuizGkaobPDVj?=
- =?us-ascii?Q?tKXT2DqYCpxXzAWzAYs8Dg3Aa1a2vUG0ScQh2to9Y7+oChDhw1anHzv5hHVh?=
- =?us-ascii?Q?cjjpfqBQYBlnQy4p5psi1VuflYOa/kUoSCiogv8X84o7ci/t+byGgjAeUdfO?=
- =?us-ascii?Q?lgbpEm9URWw6fZPQjWyTY4SrdjFcQYt5WE8gRWh9jjqGjsGQtfNZevA9nREQ?=
- =?us-ascii?Q?FWX32YFfqHco6XIEYbE5zdrKmJk1fpa6YqcdaVOTXqaECU3FL7jENfsj5fc8?=
- =?us-ascii?Q?whX8rcQrDab7oRf0wmYnF2jLNQdKCpBDovj2mz6U/5Vj0GJIpSHbjN0wxUHB?=
- =?us-ascii?Q?t3uOJygyKuLbWtJvmmadcx/U+tFs/cEBKObICdpI/VQuXdkFCEZGuHcc2rvO?=
- =?us-ascii?Q?K9Qo+KSBnfPvEunJVBQuIF3mZr92CFl2C8sKXxaBVo+Wq1B3pzrg5DE0OLGv?=
- =?us-ascii?Q?giJrr6XnUIkDEM833+26ccsZUzz7CgC6xRGNu6Uyd2RqKvs4pWqw3WLphsju?=
- =?us-ascii?Q?RjukoizGTGa56lemGVxGEDRN+5K0eum9VEjUUoX/MIxKNVdArx5MCUXPqzIL?=
- =?us-ascii?Q?M7B425RzS69tjIrFJyO83WdUHniEKDFQijSctGt4hcNtOflfKe1VTy7JqBiE?=
- =?us-ascii?Q?6Zh2kk6gHBfUGBBuDt4uKAEBq908cvyHk0jcBN8bk/m2WmTTf7CkNku0v1WV?=
- =?us-ascii?Q?dBob3Fu+erEyn3bUKCNg3WdY/ZoziXpINzaLhgPj6Yq2Mv/8MWw9gg=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(376014)(1800799024)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2025 22:12:31.1961
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a8c70ad5-9ed9-4e7d-027b-08dd926b4164
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF00001504.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB7120
+X-ClientProxiedBy: EX19D037UWB002.ant.amazon.com (10.13.138.121) To
+ EX19D015UWC003.ant.amazon.com (10.13.138.179)
 
-V4: add read-back for non-DPG case. This is for protection
-    purpose as it is not used for producton.
+From: Alexander Lobakin <alexandr.lobakin@intel.com>
 
-On VCN v4.0.5 there is a race condition where the WPTR is not
-updated after starting from idle when doorbell is used. Adding
-register read-back after written at function end is to ensure
-all register writes are done before they can be used.
+[ Upstream commit d7442f512b71fc63a99c8a801422dde4fbbf9f93 ]
 
-Closes: https://gitlab.freedesktop.org/mesa/mesa/-/issues/12528
-Cc: stable@vger.kernel.org
+The CI testing bots triggered the following splat:
 
-Signed-off-by: David (Ming Qiang) Wu <David.Wu3@amd.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Tested-by: Mario Limonciello <mario.limonciello@amd.com>
+[  718.203054] BUG: KASAN: use-after-free in free_irq_cpu_rmap+0x53/0x80
+[  718.206349] Read of size 4 at addr ffff8881bd127e00 by task sh/20834
+[  718.212852] CPU: 28 PID: 20834 Comm: sh Kdump: loaded Tainted: G S      W IOE     5.17.0-rc8_nextqueue-devqueue-02643-g23f3121aca93 #1
+[  718.219695] Hardware name: Intel Corporation S2600WFT/S2600WFT, BIOS SE5C620.86B.02.01.0012.070720200218 07/07/2020
+[  718.223418] Call Trace:
+[  718.227139]
+[  718.230783]  dump_stack_lvl+0x33/0x42
+[  718.234431]  print_address_description.constprop.9+0x21/0x170
+[  718.238177]  ? free_irq_cpu_rmap+0x53/0x80
+[  718.241885]  ? free_irq_cpu_rmap+0x53/0x80
+[  718.245539]  kasan_report.cold.18+0x7f/0x11b
+[  718.249197]  ? free_irq_cpu_rmap+0x53/0x80
+[  718.252852]  free_irq_cpu_rmap+0x53/0x80
+[  718.256471]  ice_free_cpu_rx_rmap.part.11+0x37/0x50 [ice]
+[  718.260174]  ice_remove_arfs+0x5f/0x70 [ice]
+[  718.263810]  ice_rebuild_arfs+0x3b/0x70 [ice]
+[  718.267419]  ice_rebuild+0x39c/0xb60 [ice]
+[  718.270974]  ? asm_sysvec_apic_timer_interrupt+0x12/0x20
+[  718.274472]  ? ice_init_phy_user_cfg+0x360/0x360 [ice]
+[  718.278033]  ? delay_tsc+0x4a/0xb0
+[  718.281513]  ? preempt_count_sub+0x14/0xc0
+[  718.284984]  ? delay_tsc+0x8f/0xb0
+[  718.288463]  ice_do_reset+0x92/0xf0 [ice]
+[  718.292014]  ice_pci_err_resume+0x91/0xf0 [ice]
+[  718.295561]  pci_reset_function+0x53/0x80
+<...>
+[  718.393035] Allocated by task 690:
+[  718.433497] Freed by task 20834:
+[  718.495688] Last potentially related work creation:
+[  718.568966] The buggy address belongs to the object at ffff8881bd127e00
+                which belongs to the cache kmalloc-96 of size 96
+[  718.574085] The buggy address is located 0 bytes inside of
+                96-byte region [ffff8881bd127e00, ffff8881bd127e60)
+[  718.579265] The buggy address belongs to the page:
+[  718.598905] Memory state around the buggy address:
+[  718.601809]  ffff8881bd127d00: fa fb fb fb fb fb fb fb fb fb fb fb fc fc fc fc
+[  718.604796]  ffff8881bd127d80: 00 00 00 00 00 00 00 00 00 00 fc fc fc fc fc fc
+[  718.607794] >ffff8881bd127e00: fa fb fb fb fb fb fb fb fb fb fb fb fc fc fc fc
+[  718.610811]                    ^
+[  718.613819]  ffff8881bd127e80: 00 00 00 00 00 00 00 00 00 00 00 00 fc fc fc fc
+[  718.617107]  ffff8881bd127f00: fa fb fb fb fb fb fb fb fb fb fb fb fc fc fc fc
+
+This is due to that free_irq_cpu_rmap() is always being called
+*after* (devm_)free_irq() and thus it tries to work with IRQ descs
+already freed. For example, on device reset the driver frees the
+rmap right before allocating a new one (the splat above).
+Make rmap creation and freeing function symmetrical with
+{request,free}_irq() calls i.e. do that on ifup/ifdown instead
+of device probe/remove/resume. These operations can be performed
+independently from the actual device aRFS configuration.
+Also, make sure ice_vsi_free_irq() clears IRQ affinity notifiers
+only when aRFS is disabled -- otherwise, CPU rmap sets and clears
+its own and they must not be touched manually.
+
+Fixes: 28bf26724fdb0 ("ice: Implement aRFS")
+Co-developed-by: Ivan Vecera <ivecera@redhat.com>
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+Signed-off-by: Alexander Lobakin <alexandr.lobakin@intel.com>
+Tested-by: Ivan Vecera <ivecera@redhat.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Cc: <stable@vger.kernel.org> # 5.10.x
+Cc: <stable@vger.kernel.org> # 5.15.x
+Signed-off-by: Suraj Jitindar Singh <surajjs@amazon.com>
 ---
- drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/ethernet/intel/ice/ice_arfs.c |  9 ++-------
+ drivers/net/ethernet/intel/ice/ice_lib.c  |  5 ++++-
+ drivers/net/ethernet/intel/ice/ice_main.c | 20 ++++++++------------
+ 3 files changed, 14 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c
-index ed00d35039c1..a09f9a2dd471 100644
---- a/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c
-+++ b/drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c
-@@ -1034,6 +1034,10 @@ static int vcn_v4_0_5_start_dpg_mode(struct amdgpu_vcn_inst *vinst,
- 			ring->doorbell_index << VCN_RB1_DB_CTRL__OFFSET__SHIFT |
- 			VCN_RB1_DB_CTRL__EN_MASK);
+diff --git a/drivers/net/ethernet/intel/ice/ice_arfs.c b/drivers/net/ethernet/intel/ice/ice_arfs.c
+index 632f16ffee40..085b1a0d67c5 100644
+--- a/drivers/net/ethernet/intel/ice/ice_arfs.c
++++ b/drivers/net/ethernet/intel/ice/ice_arfs.c
+@@ -577,7 +577,7 @@ void ice_free_cpu_rx_rmap(struct ice_vsi *vsi)
+ {
+ 	struct net_device *netdev;
  
-+	/* Keeping one read-back to ensure all register writes are done, otherwise
-+	 * it may introduce race conditions */
-+	RREG32_SOC15(VCN, inst_idx, regVCN_RB1_DB_CTRL);
-+
- 	return 0;
+-	if (!vsi || vsi->type != ICE_VSI_PF || !vsi->arfs_fltr_list)
++	if (!vsi || vsi->type != ICE_VSI_PF)
+ 		return;
+ 
+ 	netdev = vsi->netdev;
+@@ -600,7 +600,7 @@ int ice_set_cpu_rx_rmap(struct ice_vsi *vsi)
+ 	int base_idx, i;
+ 
+ 	if (!vsi || vsi->type != ICE_VSI_PF)
+-		return -EINVAL;
++		return 0;
+ 
+ 	pf = vsi->back;
+ 	netdev = vsi->netdev;
+@@ -638,7 +638,6 @@ void ice_remove_arfs(struct ice_pf *pf)
+ 	if (!pf_vsi)
+ 		return;
+ 
+-	ice_free_cpu_rx_rmap(pf_vsi);
+ 	ice_clear_arfs(pf_vsi);
  }
  
-@@ -1216,6 +1220,10 @@ static int vcn_v4_0_5_start(struct amdgpu_vcn_inst *vinst)
- 	WREG32_SOC15(VCN, i, regVCN_RB_ENABLE, tmp);
- 	fw_shared->sq.queue_mode &= ~(FW_QUEUE_RING_RESET | FW_QUEUE_DPG_HOLD_OFF);
+@@ -655,9 +654,5 @@ void ice_rebuild_arfs(struct ice_pf *pf)
+ 		return;
  
-+	/* Keeping one read-back to ensure all register writes are done, otherwise
-+	 * it may introduce race conditions */
-+	RREG32_SOC15(VCN, i, regVCN_RB_ENABLE);
-+
- 	return 0;
+ 	ice_remove_arfs(pf);
+-	if (ice_set_cpu_rx_rmap(pf_vsi)) {
+-		dev_err(ice_pf_to_dev(pf), "Failed to rebuild aRFS\n");
+-		return;
+-	}
+ 	ice_init_arfs(pf_vsi);
  }
+diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
+index e99c8c10bc61..d3e5bf180c37 100644
+--- a/drivers/net/ethernet/intel/ice/ice_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_lib.c
+@@ -2411,6 +2411,8 @@ void ice_vsi_free_irq(struct ice_vsi *vsi)
+ 		return;
  
+ 	vsi->irqs_ready = false;
++	ice_free_cpu_rx_rmap(vsi);
++
+ 	ice_for_each_q_vector(vsi, i) {
+ 		u16 vector = i + base;
+ 		int irq_num;
+@@ -2424,7 +2426,8 @@ void ice_vsi_free_irq(struct ice_vsi *vsi)
+ 			continue;
+ 
+ 		/* clear the affinity notifier in the IRQ descriptor */
+-		irq_set_affinity_notifier(irq_num, NULL);
++		if (!IS_ENABLED(CONFIG_RFS_ACCEL))
++			irq_set_affinity_notifier(irq_num, NULL);
+ 
+ 		/* clear the affinity_mask in the IRQ descriptor */
+ 		irq_set_affinity_hint(irq_num, NULL);
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index 035bc90c8124..a337a6826a84 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -2247,6 +2247,13 @@ static int ice_vsi_req_irq_msix(struct ice_vsi *vsi, char *basename)
+ 		irq_set_affinity_hint(irq_num, &q_vector->affinity_mask);
+ 	}
+ 
++	err = ice_set_cpu_rx_rmap(vsi);
++	if (err) {
++		netdev_err(vsi->netdev, "Failed to setup CPU RMAP on VSI %u: %pe\n",
++			   vsi->vsi_num, ERR_PTR(err));
++		goto free_q_irqs;
++	}
++
+ 	vsi->irqs_ready = true;
+ 	return 0;
+ 
+@@ -3242,22 +3249,12 @@ static int ice_setup_pf_sw(struct ice_pf *pf)
+ 	 */
+ 	ice_napi_add(vsi);
+ 
+-	status = ice_set_cpu_rx_rmap(vsi);
+-	if (status) {
+-		dev_err(ice_pf_to_dev(pf), "Failed to set CPU Rx map VSI %d error %d\n",
+-			vsi->vsi_num, status);
+-		status = -EINVAL;
+-		goto unroll_napi_add;
+-	}
+ 	status = ice_init_mac_fltr(pf);
+ 	if (status)
+-		goto free_cpu_rx_map;
++		goto unroll_napi_add;
+ 
+ 	return status;
+ 
+-free_cpu_rx_map:
+-	ice_free_cpu_rx_rmap(vsi);
+-
+ unroll_napi_add:
+ 	if (vsi) {
+ 		ice_napi_del(vsi);
+@@ -4598,7 +4595,6 @@ static int __maybe_unused ice_suspend(struct device *dev)
+ 			continue;
+ 		ice_vsi_free_q_vectors(pf->vsi[v]);
+ 	}
+-	ice_free_cpu_rx_rmap(ice_get_main_vsi(pf));
+ 	ice_clear_interrupt_scheme(pf);
+ 
+ 	pci_save_state(pdev);
 -- 
-2.34.1
+2.47.1
 
 
