@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-144245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AA54AB5CC2
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 20:50:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E0ECAB5CC3
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 20:50:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C845D19E8424
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 18:50:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 380C919E8717
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 18:50:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66AE02BEC3F;
-	Tue, 13 May 2025 18:50:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C78602BEC5A;
+	Tue, 13 May 2025 18:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WUQxGT6l"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="t25yjU+P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A893748F
-	for <stable@vger.kernel.org>; Tue, 13 May 2025 18:50:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88508748F
+	for <stable@vger.kernel.org>; Tue, 13 May 2025 18:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747162209; cv=none; b=LU/aSpo6Vorh06mXaphwcNC6LwqOMvAqADjmTKDaJxvDh+InFixwpHUFULZr0FjuPWboD/O9Gxik19GxPkfyGzaHuEKSLRwUDWQZYNFsPTOtG6QV4/qKzLHrhdiyy22JHjhqvClPaS8w7ADqw5hocKhIa7MSB0wFWq4GIe+eksE=
+	t=1747162213; cv=none; b=CYzEyhs0pM4b6NB9Xtmfm2SNnkzFLQhorkc17AJ/Ed7jIb1TkV/whSqa93OkXkKwE7wHItzw0Xw219W78ZN1BvE2wDvGDp6Ig3n6QJbFPsj/20+UTYnZ5SoPSsExS47hFUcbim6CfuhN7VqznaXDoKIImKuRJAPnxce0poYRgUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747162209; c=relaxed/simple;
-	bh=YlfY47b6q0UNwovL+1KrxojCobilr88gZuyiZR0tH10=;
+	s=arc-20240116; t=1747162213; c=relaxed/simple;
+	bh=E3o6OC1r8L9l6rNV6l2Ammf5Klbf2OW9gLNKp+XdM3g=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=e/a9wsrEvysoUNemTlx3MZ1+1mTHssMy3BU4nWVKqg2VMLJS5Lep1Y1KPoytcnJK9nZZsRTa30QHCp7XKY4XYX4YtzdtM13VbnQyX+/VSvrZcB7LuAHyZ1d7qn8fZj3k/UlxHf/w9iBRN28h4pmFrtuk6QxxDGmFqFcHcGBZQ+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WUQxGT6l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 894EDC4CEE4;
-	Tue, 13 May 2025 18:50:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fNLhNb4llDI6WhKL8J4pooCfqMz/PnFSudVv0I2UjhZZHxDFT6Ebgpc8bNnwg3E+WSI8XTg4mzsqcJlvtOwB+u2/t1+IjcTGwnS4EPtkJ6oVCLPv3G04PdQSDrUhxpWXU513Mo/P3yvOQW+2zfxfRS9x8jKx2nUs4zl6OFPFPPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=t25yjU+P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02ECFC4CEE4;
+	Tue, 13 May 2025 18:50:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747162209;
-	bh=YlfY47b6q0UNwovL+1KrxojCobilr88gZuyiZR0tH10=;
+	s=k20201202; t=1747162213;
+	bh=E3o6OC1r8L9l6rNV6l2Ammf5Klbf2OW9gLNKp+XdM3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WUQxGT6lXyEhut/qE34LwC9ySgpxZtIe6MS+cUDQ3yaogKtfTjBJjlOT7AD2WTJKr
-	 QjJYFX5EswTrhZzyc1log5ijmjZ4arkMlSPcGHa8d6vpHBl5PAQM5N7kRE80PqMoD4
-	 S7yp4sf9GRF0WRVlbgokM7B+lgOPExD9wP2dumsgZXEtwCwRl7MO/9iSagCJ/94Nlm
-	 scShxTvtBah5wLrOmZ1TTzDlwa4n94uEUpnwpynSel0vEk9VvH1NhiARnCaOaR+via
-	 9T2dwm0hZkpJceVSFYFyecy3QwMDCNVUiuHJ/cyB71X0w1yTSQ5DkaWvrY5lfsHAdC
-	 HYL9x98qw95JA==
+	b=t25yjU+P7yKNFk6L8Q4XVH3ggDX2jSfuZddbSuWXx8eKk2W0WUEK5VdW5Rfo6NPrV
+	 HPdjwVZ2N/96Z9AhdENy4ySjZTbe+p1D2jb3cBtsxxLzaIeGcJ07Tc6A/01lMe9mIp
+	 tMlAWBTMKNED0U98l4CTWyV7ttyN+3dynsDA16vCtA51+kfvc179WNjh9iejuBG2h3
+	 2tGvGed0VFDJ/kXthT38ReJf6SGNSTnecb8oxT77wZ8zMxeND0S9DRR4F4fi6W/UYw
+	 2izpEL0WlqGlnMF6aUSoNw0NKQ/52nd6yjUGPjAwYZlDUzUkbV8rZtRI3qEL6mnHFC
+	 b+lziA7j9HaaA==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	bigeasy@linutronix.de
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15.y] clocksource/i8253: Use raw_spinlock_irqsave() in clockevent_i8253_disable()
-Date: Tue, 13 May 2025 14:50:04 -0400
-Message-Id: <20250513114837-9cee9588eab47f20@stable.kernel.org>
+To: stable@vger.kernel.org
+Cc: Feng Liu <Feng.Liu3@windriver.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.15.y] net: fec: remove .ndo_poll_controller to avoid deadlocks
+Date: Tue, 13 May 2025 14:50:09 -0400
+Message-Id: <20250513071842-506f25726da7a0a9@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250513071538.552838-1-bigeasy@linutronix.de>
+In-Reply-To:  <20250513084802.1705121-2-Feng.Liu3@windriver.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,58 +64,57 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Summary of potential issues:
-⚠️ Found matching upstream commit but patch is missing proper reference to it
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-Found matching upstream commit: 94cff94634e506a4a44684bee1875d2dbf782722
+The upstream commit SHA1 provided is correct: c2e0c58b25a0a0c37ec643255558c5af4450c9f5
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Feng Liu<Feng.Liu3@windriver.com>
+Commit author: Wei Fang<wei.fang@nxp.com>
 
 Status in newer kernel trees:
-6.14.y | Present (different SHA1: 6fdc7368341b)
-6.12.y | Present (different SHA1: e0e66bb1af60)
-6.6.y | Present (different SHA1: 5dd520b92acb)
-6.1.y | Present (different SHA1: d2f5f71707cf)
+6.14.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (different SHA1: d38625f71950)
+6.1.y | Present (different SHA1: e2348d8c61d0)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  94cff94634e50 ! 1:  8388aa8badd0d clocksource/i8253: Use raw_spinlock_irqsave() in clockevent_i8253_disable()
+1:  c2e0c58b25a0a ! 1:  a32e7777c7358 net: fec: remove .ndo_poll_controller to avoid deadlocks
+    @@ Metadata
+      ## Commit message ##
+         net: fec: remove .ndo_poll_controller to avoid deadlocks
+     
+    +    [ Upstream commit c2e0c58b25a0a0c37ec643255558c5af4450c9f5 ]
+    +
+         There is a deadlock issue found in sungem driver, please refer to the
+         commit ac0a230f719b ("eth: sungem: remove .ndo_poll_controller to avoid
+         deadlocks"). The root cause of the issue is that netpoll is in atomic
     @@ Commit message
-         raw_spinlock_irqsave() to cure this.
+         Signed-off-by: Wei Fang <wei.fang@nxp.com>
+         Link: https://lore.kernel.org/r/20240511062009.652918-1-wei.fang@nxp.com
+         Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+    +    [Minor context change fixed]
+    +    Signed-off-by: Feng Liu <Feng.Liu3@windriver.com>
+    +    Signed-off-by: He Zhe <Zhe.He@windriver.com>
      
-         [ tglx: Massage change log and use guard() ]
-    +    [ bigeasy: Dropped guard() for stable ]
-     
-         Fixes: c8c4076723dac ("x86/timer: Skip PIT initialization on modern chipsets")
-         Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-         Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-         Cc: stable@vger.kernel.org
-         Link: https://lore.kernel.org/all/20250404133116.p-XRWJXf@linutronix.de
-    +    (cherry picked from commit 94cff94634e506a4a44684bee1875d2dbf782722)
-    +    Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-     
-      ## drivers/clocksource/i8253.c ##
-     @@ drivers/clocksource/i8253.c: int __init clocksource_i8253_init(void)
-    @@ drivers/clocksource/i8253.c: int __init clocksource_i8253_init(void)
-      void clockevent_i8253_disable(void)
-      {
-     -	raw_spin_lock(&i8253_lock);
-    -+	guard(raw_spinlock_irqsave)(&i8253_lock);
-    ++	unsigned long flags;
-    ++
-    ++	raw_spin_lock_irqsave(&i8253_lock, flags);
-      
-      	/*
-      	 * Writing the MODE register should stop the counter, according to
-     @@ drivers/clocksource/i8253.c: void clockevent_i8253_disable(void)
-    - 	outb_p(0, PIT_CH0);
-      
-      	outb_p(0x30, PIT_MODE);
-    --
+      ## drivers/net/ethernet/freescale/fec_main.c ##
+     @@ drivers/net/ethernet/freescale/fec_main.c: fec_set_mac_address(struct net_device *ndev, void *p)
+    @@ drivers/net/ethernet/freescale/fec_main.c: fec_set_mac_address(struct net_device
+     @@ drivers/net/ethernet/freescale/fec_main.c: static const struct net_device_ops fec_netdev_ops = {
+      	.ndo_tx_timeout		= fec_timeout,
+      	.ndo_set_mac_address	= fec_set_mac_address,
+    - 	.ndo_eth_ioctl		= phy_do_ioctl_running,
+    + 	.ndo_eth_ioctl		= fec_enet_ioctl,
+     -#ifdef CONFIG_NET_POLL_CONTROLLER
+     -	.ndo_poll_controller	= fec_poll_controller,
+     -#endif
+      	.ndo_set_features	= fec_set_features,
+    - 	.ndo_bpf		= fec_enet_bpf,
+    - 	.ndo_xdp_xmit		= fec_enet_xdp_xmit,
+    + };
     + 
-     -	raw_spin_unlock(&i8253_lock);
-    ++	raw_spin_unlock_irqrestore(&i8253_lock, flags);
-      }
-      
-      static int pit_shutdown(struct clock_event_device *evt)
 ---
 
 Results of testing on various branches:
