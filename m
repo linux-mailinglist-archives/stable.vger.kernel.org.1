@@ -1,133 +1,158 @@
-Return-Path: <stable+bounces-144076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 427F6AB49A6
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 04:45:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7A36AB49C2
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 04:57:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6D201721D5
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 02:45:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6E04819E801A
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 02:57:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF2651DD0C7;
-	Tue, 13 May 2025 02:45:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15CF01C2437;
+	Tue, 13 May 2025 02:57:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="QYsVlpD5"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PdRkG38c"
 X-Original-To: stable@vger.kernel.org
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C50F27442
-	for <stable@vger.kernel.org>; Tue, 13 May 2025 02:45:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.97
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1BF513AD1C
+	for <stable@vger.kernel.org>; Tue, 13 May 2025 02:57:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747104312; cv=none; b=AdQcyV9vVUHNhMtdynfw+R7XSk8tWt3PNO56FCNp6EfbFm00xd+yxRHxkXzs/oFXdAMZ8vEmpkmmjyXp74CXuBDwc9CIxHVwdJ0m/8Q+bHInil4zUw8Xnvz9IXtLZmSGMRs/VIf+kF2BURko9GfaCyEh1En91aVC/GsVa6DJG8k=
+	t=1747105061; cv=none; b=LKYgVuNSaJarxZ33gZCiOpVglMlqGY8UJMHDUWdxLar+R16NXQnGx3kJEX3dVa8drSa3wmoMuB9U4eofAwPMqwyn05U24u0oI/GcSRL9h1ttiSmCs6Yu9iAYzNnU2BuA4nshfY1BqMu8WkKbH3Pzvc2q6v10rmIPxJRTaOG9ZNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747104312; c=relaxed/simple;
-	bh=JNyPO+vIuaPU2XdiKQQTeCtA9w7pkM0m+WpTBcoYGzs=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=u5jmzGb8gSdFChZtxfCY0qa8hCz2f6qage8Tk5jNMY+FqJKol9RJLiQQK2Qm6iHuJ84b943j2TxcGkUGFrKHckJE8uE0CtD/VIoG9HOFE/HljsTXaHHbvZVoWSAu39Wfu79Y6Hb+MViFOCy6H0qqN/mqlPntpeX1bELFjd6dys4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=QYsVlpD5; arc=none smtp.client-ip=115.124.30.97
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1747104300; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=Gr94QHmf1iII7jQnEvCJ7OFfWylmXkr7p8V3W3NdgHs=;
-	b=QYsVlpD5UzXzuKOr6aTE9dmTPIhLWf6PG/sogHeu8mCfXh5Fc/nO6+RVVjC4gU4/KQWKS0oBxXlw+WNvFgphA5wa9SS0kAsybdpzvV477jTZRh5p8Blsttoh/J+wLsV9ddX7m6wUwCtiHaEhe9wpCO4BJk+kMnVm8lK5CNhwGDs=
-Received: from localhost(mailfrom:feng.tang@linux.alibaba.com fp:SMTPD_---0WaQmdf._1747104299 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 13 May 2025 10:44:59 +0800
-From: Feng Tang <feng.tang@linux.alibaba.com>
+	s=arc-20240116; t=1747105061; c=relaxed/simple;
+	bh=QgCLyYq1dxiLiS2OJQoJovA523jFPw/1//tHnB2GxRM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=Vp3Rf5QVZ2Bc67MJ5NsydCHa6UwTlr7657u7gCNsB8jf0DjlGFO2YO+ykrNPObVXBlxG/irIMSvTCHc5TdyVDHesYltUXE/5OrolSeLbCnQQzr6p6RJcdC128mPHiZ2enX5KaIqOJC9tmezQhNSuNUEn75Gbh9syOdh5SzDROlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PdRkG38c; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747105060; x=1778641060;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=QgCLyYq1dxiLiS2OJQoJovA523jFPw/1//tHnB2GxRM=;
+  b=PdRkG38c+lTI/gW8DHp8nPHn5chi03lpO40zF/JHaukkvHZt/489vdjn
+   nsTbJ5k/YihGTAdzmeDu4UFOhJxB2EBleP4EYrg0WYBbl/Y2cAs8Qops4
+   YJeHEvzs3F+qivjQCdklkXnFxtG6Y42h1198+xQ/XCdjeGpLCvbPG+eEq
+   yWh35kqImkcdEXuYU+NrkLg8y1l3MHM+UfBGoTBbOcz6rQzq9QinZvfQw
+   XJ41UvoP4lp01zJe8Wq8OcFq7tSK0Znt82CT572ugXjzJvRDw5nFcFKGd
+   0FJKRQEkFh4IOmuoKZzbonT4CRt9S7E6tYLg7ENagxe+1x0LyFyPe1jcw
+   w==;
+X-CSE-ConnectionGUID: fasTR02MSRec+TF4VO8ZdA==
+X-CSE-MsgGUID: 0ABME0ttS+SqDqBf4eMc8w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11431"; a="59567305"
+X-IronPort-AV: E=Sophos;i="6.15,284,1739865600"; 
+   d="scan'208";a="59567305"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2025 19:57:39 -0700
+X-CSE-ConnectionGUID: /eWO2i8YQRWVBOD2482+kQ==
+X-CSE-MsgGUID: hGbAINDcT3mkdn+xWBexyA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,284,1739865600"; 
+   d="scan'208";a="138082340"
+Received: from lvelazqu-mobl.amr.corp.intel.com (HELO desk) ([10.125.146.9])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2025 19:57:39 -0700
+Date: Mon, 12 May 2025 19:57:38 -0700
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 To: stable@vger.kernel.org
-Cc: Feng Tang <feng.tang@linux.alibaba.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Shuah Khan <shuah@kernel.org>,
-	Sri Jayaramappa <sjayaram@akamai.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10.y] selftests/mm: compaction_test: support platform with huge mount of memory
-Date: Tue, 13 May 2025 10:44:58 +0800
-Message-Id: <20250513024458.20469-1-feng.tang@linux.alibaba.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
-In-Reply-To: <2025051245-jailbreak-unlinked-27ec@gregkh>
-References: <2025051245-jailbreak-unlinked-27ec@gregkh>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
+	Alexandre Chartre <alexandre.chartre@oracle.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 5.15 00/14] ITS mitigation
+Message-ID: <20250512-its-5-15-v1-0-6a536223434d@linux.intel.com>
+X-B4-Tracking: v=1; b=H4sIAP+yImgC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1MDU0Mj3cySYl1TXUNTXYNUA2MLUyMjw1RjIyWg8oKi1LTMCrBR0UoBjiH
+ OHiBRUz1DU6XY2loACkqDSWkAAAA=
+X-Change-ID: 20250512-its-5-15-0e0385221e32
+X-Mailer: b4 0.14.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-commit ab00ddd802f80e31fc9639c652d736fe3913feae upstream.
+This is a 5.15 backport of Indirect Target Selection (ITS) mitigation.
 
-When running mm selftest to verify mm patches, 'compaction_test' case
-failed on an x86 server with 1TB memory.  And the root cause is that it
-has too much free memory than what the test supports.
+ITS is a bug in some Intel CPUs that affects indirect branches including
+RETs in the first half of a cacheline. Mitigation is to relocate the
+affected branches to an ITS-safe thunk.
 
-The test case tries to allocate 100000 huge pages, which is about 200 GB
-for that x86 server, and when it succeeds, it expects it's large than 1/3
-of 80% of the free memory in system.  This logic only works for platform
-with 750 GB ( 200 / (1/3) / 80% ) or less free memory, and may raise false
-alarm for others.
+Below additional upstream commits are required to cover some of the special
+cases like indirects in asm and returns in static calls:
 
-Fix it by changing the fixed page number to self-adjustable number
-according to the real number of free memory.
+cfceff8526a4 ("x86/speculation: Simplify and make CALL_NOSPEC consistent")
+052040e34c08 ("x86/speculation: Add a conditional CS prefix to CALL_NOSPEC")
+c8c81458863a ("x86/speculation: Remove the extra #ifdef around CALL_NOSPEC")
+d2408e043e72 ("x86/alternative: Optimize returns patching")
+4ba89dd6ddec ("x86/alternatives: Remove faulty optimization")
 
-Link: https://lkml.kernel.org/r/20250423103645.2758-1-feng.tang@linux.alibaba.com
-Fixes: bd67d5c15cc1 ("Test compaction of mlocked memory")
-Signed-off-by: Feng Tang <feng.tang@linux.alibaba.com>
-Acked-by: Dev Jain <dev.jain@arm.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Sri Jayaramappa <sjayaram@akamai.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[1] https://github.com/torvalds/linux/commit/6f5bf947bab06f37ff931c359fd5770c4d9cbf87
+
 ---
- tools/testing/selftests/vm/compaction_test.c | 19 ++++++++++++++-----
- 1 file changed, 14 insertions(+), 5 deletions(-)
+Borislav Petkov (AMD) (1):
+      x86/alternative: Optimize returns patching
 
-diff --git a/tools/testing/selftests/vm/compaction_test.c b/tools/testing/selftests/vm/compaction_test.c
-index 7c260060a1a6..00ebd9d508ff 100644
---- a/tools/testing/selftests/vm/compaction_test.c
-+++ b/tools/testing/selftests/vm/compaction_test.c
-@@ -89,6 +89,8 @@ int check_compaction(unsigned long mem_free, unsigned long hugepage_size)
- 	int compaction_index = 0;
- 	char initial_nr_hugepages[20] = {0};
- 	char nr_hugepages[20] = {0};
-+	char target_nr_hugepages[24] = {0};
-+	int slen;
- 
- 	/* We want to test with 80% of available memory. Else, OOM killer comes
- 	   in to play */
-@@ -118,11 +120,18 @@ int check_compaction(unsigned long mem_free, unsigned long hugepage_size)
- 
- 	lseek(fd, 0, SEEK_SET);
- 
--	/* Request a large number of huge pages. The Kernel will allocate
--	   as much as it can */
--	if (write(fd, "100000", (6*sizeof(char))) != (6*sizeof(char))) {
--		ksft_test_result_fail("Failed to write 100000 to /proc/sys/vm/nr_hugepages: %s\n",
--				      strerror(errno));
-+	/*
-+	 * Request huge pages for about half of the free memory. The Kernel
-+	 * will allocate as much as it can, and we expect it will get at least 1/3
-+	 */
-+	nr_hugepages_ul = mem_free / hugepage_size / 2;
-+	snprintf(target_nr_hugepages, sizeof(target_nr_hugepages),
-+		 "%lu", nr_hugepages_ul);
-+
-+	slen = strlen(target_nr_hugepages);
-+	if (write(fd, target_nr_hugepages, slen) != slen) {
-+		ksft_test_result_fail("Failed to write %lu to /proc/sys/vm/nr_hugepages: %s\n",
-+			       nr_hugepages_ul, strerror(errno));
- 		goto close_fd;
- 	}
- 
+Josh Poimboeuf (1):
+      x86/alternatives: Remove faulty optimization
+
+Pawan Gupta (10):
+      x86/speculation: Simplify and make CALL_NOSPEC consistent
+      x86/speculation: Add a conditional CS prefix to CALL_NOSPEC
+      x86/speculation: Remove the extra #ifdef around CALL_NOSPEC
+      Documentation: x86/bugs/its: Add ITS documentation
+      x86/its: Enumerate Indirect Target Selection (ITS) bug
+      x86/its: Add support for ITS-safe indirect thunk
+      x86/its: Add support for ITS-safe return thunk
+      x86/its: Enable Indirect Target Selection mitigation
+      x86/its: Add "vmexit" option to skip mitigation on some CPUs
+      x86/its: Align RETs in BHB clear sequence to avoid thunking
+
+Peter Zijlstra (2):
+      x86,nospec: Simplify {JMP,CALL}_NOSPEC
+      x86/its: Use dynamic thunks for indirect branches
+
+ Documentation/ABI/testing/sysfs-devices-system-cpu |   1 +
+ Documentation/admin-guide/hw-vuln/index.rst        |   1 +
+ .../hw-vuln/indirect-target-selection.rst          | 156 ++++++++++++++
+ Documentation/admin-guide/kernel-parameters.txt    |  15 ++
+ arch/x86/Kconfig                                   |  11 +
+ arch/x86/entry/entry_64.S                          |  20 +-
+ arch/x86/include/asm/alternative.h                 |  24 +++
+ arch/x86/include/asm/cpufeatures.h                 |   3 +
+ arch/x86/include/asm/msr-index.h                   |   8 +
+ arch/x86/include/asm/nospec-branch.h               |  57 ++++--
+ arch/x86/kernel/alternative.c                      | 226 ++++++++++++++++++++-
+ arch/x86/kernel/cpu/bugs.c                         | 139 ++++++++++++-
+ arch/x86/kernel/cpu/common.c                       |  63 ++++--
+ arch/x86/kernel/ftrace.c                           |   2 +-
+ arch/x86/kernel/module.c                           |   7 +
+ arch/x86/kernel/static_call.c                      |   2 +-
+ arch/x86/kernel/vmlinux.lds.S                      |  10 +
+ arch/x86/kvm/x86.c                                 |   4 +-
+ arch/x86/lib/retpoline.S                           |  39 ++++
+ arch/x86/net/bpf_jit_comp.c                        |   8 +-
+ drivers/base/cpu.c                                 |   8 +
+ include/linux/cpu.h                                |   2 +
+ include/linux/module.h                             |   5 +
+ 23 files changed, 768 insertions(+), 43 deletions(-)
+---
+base-commit: 3b8db0e4f2631c030ab86f78d199ec0b198578f3
+change-id: 20250512-its-5-15-0e0385221e32
+
+Best regards,
 -- 
-2.39.5 (Apple Git-154)
+Pawan
+
 
 
