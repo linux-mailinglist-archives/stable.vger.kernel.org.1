@@ -1,100 +1,154 @@
-Return-Path: <stable+bounces-144139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B58C9AB4E7F
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 10:50:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1900FAB4EB3
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 10:59:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A8667A81D8
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 08:48:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC8178C3770
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 08:58:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6F3020E026;
-	Tue, 13 May 2025 08:49:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A112F1F1909;
+	Tue, 13 May 2025 08:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YqijE3hd"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="0/tJdYJy";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Vn1SCTmb";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="0/tJdYJy";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Vn1SCTmb"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D4651F09AC;
-	Tue, 13 May 2025 08:49:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBB011F180E
+	for <stable@vger.kernel.org>; Tue, 13 May 2025 08:59:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747126196; cv=none; b=uK8fKGEUk6kaOMduG0KhTyz2zgYZBg5bgUV7KNPHyKH0gvKzHWHAaInp4dBzWtpwrHYeX7AYkx5I0dW8E0XNthunuy+F5VaAo/+DCYDFDKU9XLl98jca9aG4YXFj4xpxZgvrBtLjIArb7fB9JZjcNUsqrwyJrrz7hscCA3UfHJo=
+	t=1747126749; cv=none; b=TBEJBTihscudyC40h0x3/lEPCmRcJSk2vPKYZBk0PvoWJ2xewZXJpfldymmYA/IqTt2Amd37+t79sPtusi3iab9kHSh1PnaShXdn7D+HNabgw8EsYVdtWr1gRefewaEJAN3JqJdwRfCS4dIyOSrlSBCLg68TzzJeP2H5PkXyFaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747126196; c=relaxed/simple;
-	bh=MaH/3rHQVFeq82s47yVwfb8amcgYaRP6dl9IPVKdCoM=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=hGxBCYT7zcK7OzdTY/fomyWAtizgQK2LUBP24rS6pFmoYmX1Tv1DaBZQcyD99U1G8zVPEnCAB8LChQUG8iV+NTLqMsZeHD2ihIzNlaNHziairj9+tuHNe/BIVIp1Et8AJAT7B9MdqCurLLhN7OQMheVNCWhYUTsNOSLT5KkoTBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YqijE3hd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6EB8C4CEE4;
-	Tue, 13 May 2025 08:49:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747126196;
-	bh=MaH/3rHQVFeq82s47yVwfb8amcgYaRP6dl9IPVKdCoM=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=YqijE3hd1sczb4GR7qY8e3KcvDJkso/wd5EDv4Nb0N4MlhNxMGTVYOVuNgZYpkyRs
-	 YeOb4UJLiMsVRiuVOHm8ZMVdCMGFk+AdV9x7U7YxRI8HUZ/9+r84cLGds/z4Oxu77p
-	 idS301QWUq+zh2kC2Y3RD9mATXJgalkF2XgHt9yBjD5mBBa26gxF/GqCUcPvjynom9
-	 3NDIEAyTowCBS60mQIiz1IMapcKfoedGGCZ5EuQ/0+eXszGTcyYacuEwt8/mAjlki3
-	 tSyil0CHC9sXaMuu3L5uwvKLZyq7kjfaodlFsfkqNCi4uXgQGX/VqGTE1n5utD0Ub+
-	 9d031bMpCWUQA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id ADD4539D6553;
-	Tue, 13 May 2025 08:50:34 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1747126749; c=relaxed/simple;
+	bh=qa4kqiTpeGYxQUkjn4Vg46+3YyeGMeZ8BvAbLPgq0Kk=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bd9GHoM1u+JKO1PK2oiKc+snn4n+8CCbeQUWpXyPOOGrBhQYatWCoODGTc+qecCKYY0MHTcT700u/C0hiyUSjjIMNZzbWXMrH4lTMLpnvIf+DJlJhKszIfyB7y8nzkU5UyrqaGIe5fVOZVmdJ/tfOOLYPOd1xngNsnUZjIPcwMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=0/tJdYJy; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Vn1SCTmb; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=0/tJdYJy; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Vn1SCTmb; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 294C51F6E6;
+	Tue, 13 May 2025 08:59:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1747126746; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+7ge7H23NNrp0HwGiU2YsFV0gkeI6XlM3YTCbOsRiCo=;
+	b=0/tJdYJyr0V7aMfS3jSx5OEJaA7duHtDSkEN8IMbkqubQZ+vfbPlrDf9QLHUbZ89PLiuAd
+	+oijCgsrY1ptlnwlpapQ/99MLswmdicwvYneTHj1qyj396rxhvL53zwoDrliSBENGCzBSI
+	HFsaqyuN0gGtDCIQywMmaOMRX/6ORDo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1747126746;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+7ge7H23NNrp0HwGiU2YsFV0gkeI6XlM3YTCbOsRiCo=;
+	b=Vn1SCTmbNAkDv5UT7JRLTXHCUOgABGvVulXvcK0zicra/Lo0BmIUgOexO6rcd9H380WoOt
+	Yu1zvFrqNmQXNWBQ==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1747126746; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+7ge7H23NNrp0HwGiU2YsFV0gkeI6XlM3YTCbOsRiCo=;
+	b=0/tJdYJyr0V7aMfS3jSx5OEJaA7duHtDSkEN8IMbkqubQZ+vfbPlrDf9QLHUbZ89PLiuAd
+	+oijCgsrY1ptlnwlpapQ/99MLswmdicwvYneTHj1qyj396rxhvL53zwoDrliSBENGCzBSI
+	HFsaqyuN0gGtDCIQywMmaOMRX/6ORDo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1747126746;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+7ge7H23NNrp0HwGiU2YsFV0gkeI6XlM3YTCbOsRiCo=;
+	b=Vn1SCTmbNAkDv5UT7JRLTXHCUOgABGvVulXvcK0zicra/Lo0BmIUgOexO6rcd9H380WoOt
+	Yu1zvFrqNmQXNWBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 11B57137E8;
+	Tue, 13 May 2025 08:59:06 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id ka/BA9oJI2gKfQAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Tue, 13 May 2025 08:59:06 +0000
+Date: Tue, 13 May 2025 10:59:01 +0200
+Message-ID: <874ixoubsa.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Christian Heusel <christian@heusel.eu>
+Cc: Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] ALSA: usb-audio: Add sample rate quirk for Audioengine D1
+In-Reply-To: <20250512-audioengine-quirk-addition-v1-1-4c370af6eff7@heusel.eu>
+References: <20250512-audioengine-quirk-addition-v1-1-4c370af6eff7@heusel.eu>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net v3 0/2] address EEE regressions on KSZ switches since v6.9
- (v6.14+)
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174712623355.1237041.4249732681101911068.git-patchwork-notify@kernel.org>
-Date: Tue, 13 May 2025 08:50:33 +0000
-References: <20250504081434.424489-1-o.rempel@pengutronix.de>
-In-Reply-To: <20250504081434.424489-1-o.rempel@pengutronix.de>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: davem@davemloft.net, andrew@lunn.ch, edumazet@google.com,
- f.fainelli@gmail.com, kuba@kernel.org, pabeni@redhat.com, olteanv@gmail.com,
- woojung.huh@microchip.com, linux@armlinux.org.uk, hkallweit1@gmail.com,
- kernel@pengutronix.de, linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
- UNGLinuxDriver@microchip.com, stable@vger.kernel.org
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Flag: NO
+X-Spam-Score: -3.30
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.30 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	ARC_NA(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid]
 
-Hello:
-
-This series was applied to netdev/net.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
-
-On Sun,  4 May 2025 10:14:32 +0200 you wrote:
-> This patch series addresses a regression in Energy Efficient Ethernet
-> (EEE) handling for KSZ switches with integrated PHYs, introduced in
-> kernel v6.9 by commit fe0d4fd9285e ("net: phy: Keep track of EEE
-> configuration").
+On Mon, 12 May 2025 22:23:37 +0200,
+Christian Heusel wrote:
 > 
-> The first patch updates the DSA driver to allow phylink to properly
-> manage PHY EEE configuration. Since integrated PHYs handle LPI
-> internally and ports without integrated PHYs do not document MAC-level
-> LPI support, dummy MAC LPI callbacks are provided.
+> A user reported on the Arch Linux Forums that their device is emitting
+> the following message in the kernel journal, which is fixed by adding
+> the quirk as submitted in this patch:
 > 
-> [...]
+>     > kernel: usb 1-2: current rate 8436480 is different from the runtime rate 48000
+> 
+> There also is an entry for this product line added long time ago.
+> Their specific device has the following ID:
+> 
+>     $ lsusb | grep Audio
+>     Bus 001 Device 002: ID 1101:0003 EasyPass Industrial Co., Ltd Audioengine D1
+> 
+> Link: https://bbs.archlinux.org/viewtopic.php?id=305494
+> Fixes: 93f9d1a4ac593 ("ALSA: usb-audio: Apply sample rate quirk for Audioengine D1")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Christian Heusel <christian@heusel.eu>
 
-Here is the summary with links:
-  - [net,v4,1/2] net: dsa: microchip: let phylink manage PHY EEE configuration on KSZ switches
-    https://git.kernel.org/netdev/net/c/76ca05e0abe3
-  - [net,v4,2/2] net: phy: micrel: remove KSZ9477 EEE quirks now handled by phylink
-    https://git.kernel.org/netdev/net/c/8c619eb21b8e
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Thanks, applied now.
 
 
+Takashi
 
