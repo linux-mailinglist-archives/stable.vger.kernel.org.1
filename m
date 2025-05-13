@@ -1,251 +1,143 @@
-Return-Path: <stable+bounces-144122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95D88AB4D3D
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 09:46:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 897F1AB4D46
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 09:48:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EA1D167968
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 07:46:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AC4B1748F4
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 07:48:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22A331E9B30;
-	Tue, 13 May 2025 07:46:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 467CD1F2C34;
+	Tue, 13 May 2025 07:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="VKJnLSAc"
+	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="vcocX/vp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F14821BC4E
-	for <stable@vger.kernel.org>; Tue, 13 May 2025 07:46:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B861F1906
+	for <stable@vger.kernel.org>; Tue, 13 May 2025 07:47:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747122374; cv=none; b=ABYmTj/N1vgVz+QQvVbFKOrVG+oIc93di72cF/2zqFVP3TsTRCLeYo1l1c6zybTGpibbKzwfbvqJXHeCBTEUB/ksn/E0YqgQ1Rv3/Ns4DkZyHclpXjkNhaZrqEMwOXZtwlRF6nbiC1rCvQLh55DlQYpa4ITs+jIOP5OEfkDrNtI=
+	t=1747122467; cv=none; b=POk6KfJSIz5IvWfCxdJ0h4AWDQ7Fp8yzTenv6www9mhj5GDorZrixJc3fbHfBqzVQWr1vD4SHQjuTgRhF2I+nEVxTeiizPIzzL7aw19ENiD+kSVfGToW1mmYwu+M91uwJDQUCnzL08qFuSEwHSVMZ9i8mqF/J3YrLRR2UdTab5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747122374; c=relaxed/simple;
-	bh=JIa9jxHomNF/vcmVu9Pcga+5jXPe8+fhk4BOKTu8vls=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BE4zKge1bGd4CP4xSek7lYGIms4klFAwl6RpxoweQMK/+TYpWC3MDOj5qv9ofUcdlq1stgofpZ3kkpoBwh3jiybUb8DD3OHGNg0Zf2GQv6G6wo7fKlFbuztWCyLl4Tyo/4VjGJpvdfB7IoERvHB5UvnCxBzLrU/CZITi3BDb+Is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=VKJnLSAc; arc=none smtp.client-ip=209.85.208.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-30bfe0d2b6dso50843401fa.3
-        for <stable@vger.kernel.org>; Tue, 13 May 2025 00:46:12 -0700 (PDT)
+	s=arc-20240116; t=1747122467; c=relaxed/simple;
+	bh=24LJEQNBtPANRsvRmA7VhJPkuYyfg6dz5LevvdvxJ1s=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=jucEALvHx6sFx/R76wZSqro4qFCI04pE5K1tgqx0pN0/Kni9yNQrN9yEXSGJGaHHP+TbJd9AgIo+3+kLJo7baxy3pC0Qt+nJQEbMsGQ0IQEC98F7NNpbtBA70zjGnItJyJcuwBwNgFdLBMLYWC39Ujo8IUW9mJmLTbztaks8Fvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=vcocX/vp; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-43cfa7e7f54so33670795e9.1
+        for <stable@vger.kernel.org>; Tue, 13 May 2025 00:47:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1747122370; x=1747727170; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NGWJZEHKSwXN0DHwy+YKyRTDYeFhRjvtX5z1aeOJwwY=;
-        b=VKJnLSAcXsZ0EGv/giHxWNH5bsFhzgHqwsR1/5JTn7Jx8Rwc/C0cjOr74LPklmfGvj
-         qOMUZmsBpzyl9uj1nZJ0Oh5MCfRXCcVSduDilBXCIwVA7/pgmROZbeja2xjW7egjgXHe
-         yft3qi80IIl+UCW9xoaHhrzto+9NxvFtNQ4cE=
+        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1747122462; x=1747727262; darn=vger.kernel.org;
+        h=mime-version:message-id:date:user-agent:references:in-reply-to
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=2RtKA7NZNuHzBQS6CrTPRAttssEFDmPD1Z8kR1U88AY=;
+        b=vcocX/vpjp8BiwIOfktZn7zPT3sQRvimXQxVQFKwW7SpKPHmz6dFJPKyXQ3d1O34zI
+         CyZKRUcdlUDWQjlmJ6va0KGdloLmKanjgmxedpkTUkCPBRiu9KFh+gA+MXYfgk4FKlUG
+         yZK8UjJcpZ9Lr+5mm0VLMbBrxuTVL6AA/QSkkhsLzmITL+ymveLa0cxhna3M5qbooUEr
+         LmiDyaqAo1UCOgV2omgs0AUFj0stRLaOl/jl4g+s3wUXg8DPou+Jm7Ax48ew+9G5AZ9A
+         eB2jw2ESEqNoiPFPKLMzhf6yW2nXqHocpe6R/0tv1Kia1F7Lo9cUjqB+dBnSlBwjnTh2
+         FgYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747122370; x=1747727170;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NGWJZEHKSwXN0DHwy+YKyRTDYeFhRjvtX5z1aeOJwwY=;
-        b=WUVFv4IVwQp6jRYTG0l1VnluUKLMFEx7Jk4w61SCcdMvW662rrH87pIMECCMuHX0aA
-         /pT8Bw+KkbkQ0KfQ1aUG8NgrwFyUvEmSAENSOmaI6XFc7PYPniL/nU5zPDRVv3Lk8SKc
-         K2DSVELhMrc1wZzLYDL4nmJ3jl5rj5gjhY3cEAZ864Z1WE7YNX+FtuslnWxTQ+nyU9Gb
-         cpvgYZc2mXHDbYJj6uy/TVWRi/ZLbQG0f08WLPFWEtMjapoenvFzGUL1yW/b0EGrfVNL
-         pm0w5QCXW5GjMXT7hODLy8bIKm9EatqE06jk4n9RsuhCJPGu5Y5y1GO4mwMSY/KB3HNI
-         LKyg==
-X-Gm-Message-State: AOJu0YxAF0ayV8bSYDZPzs61e4MxnJlHmh5YxzjnlQCTEPn5UP6aIHQh
-	5811+OIGj5e0XDgEetdg2t/n5WJHqnmkGt1Whj+JVdlDqPLpBnnX7DGfRttAuDfcIpQeUko8q9i
-	PlQ==
-X-Gm-Gg: ASbGncuyFW6VM0R1mVD/zehvP8rudyn0qiaYOoOQ1n8TgRYU4pypPxnwZc1nSxlF9t+
-	LC+GRAQms3m4yN8TZCq+KBkxCrEoP1OPR55vt39h38qLKl331m2M8cli8qj+bZaaYf+cEDY6dth
-	ooAnqTk/LYr3W8h+9p+zjgTDEGeSpa+QoS00biCbNATqbtoS5gJSVOVC1goMKqZyVszfbqFZcvG
-	ooxbbOJZ8WE4y4mW1TMSLvU4qGkeO8g+OaFPJwjDYRybZbCK8LbQBeSf/OrjU3F5g0fTbNnDHBA
-	fvaLLcAqrMIgxPhu/C4u3ZN5o6fo29EO41sG4sDe84EmOZllWnaHvqET01pqHUORKru2qMkJBRr
-	YYm9eT371+TTU152IJ9Bupfbojcp9o0uh5f94nvzz+PuzajTi6pEh
-X-Google-Smtp-Source: AGHT+IHDPU6jAOMCOVvzPD9ey9QEjQ38mQ6REAI36NQjpbm24KsWFkbs4ecZzmEx2hFYu2A59aOj2g==
-X-Received: by 2002:a17:906:adce:b0:ace:d986:d7d2 with SMTP id a640c23a62f3a-ad2192b5c89mr1244002166b.49.1747121882902;
-        Tue, 13 May 2025 00:38:02 -0700 (PDT)
-Received: from akuchynski.c.googlers.com.com (37.247.91.34.bc.googleusercontent.com. [34.91.247.37])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ad21f2145d6sm700626866b.95.2025.05.13.00.38.00
+        d=1e100.net; s=20230601; t=1747122462; x=1747727262;
+        h=mime-version:message-id:date:user-agent:references:in-reply-to
+         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2RtKA7NZNuHzBQS6CrTPRAttssEFDmPD1Z8kR1U88AY=;
+        b=hfQEw/afzrQNS8dekvsX9inLq88EsdDKQXpB8+AKQavTG0623o5k4S/WaxYCKpLKIl
+         5h+GHPuKGy1DlDvpVU0Ox4CKiWr86pW4Dyex4PRJEXRANlFINwVA2ER6yq10FORClEQt
+         I7Lc/d5q+/OGKiNkC+tu4qSwWb1leq9QUjM+Mtmf1sBursmXpA1AQ6RUxGdZ2n5g/EJR
+         YaUL8CEjGiYtV1TmvS7wm96q7IMJM6RxNMKWdolWtu412h01TPlGpwvd1Dtb50hyvw75
+         CQO9sY3lALD3Pvaf89iP3A6UH2xE12dnKSo5U8SfAlnlrdWaKeFRtE6sM8zph/5hwm4Z
+         Xndw==
+X-Forwarded-Encrypted: i=1; AJvYcCXM803V9pmMb/iWWq6PsKgYxEcIJfQq9svz3ycsPtN2wMXxBOWW2qbOuOESNTZzr6aLnYQ7DdA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YySg+4ZiOVSlv6fev7mWqmaYKfpIkDFFlUqIqkx1o6nusA3nPkS
+	x4vymimkq9EXzp0u96R5b3qU9piYwqxZoVYF3HqbcwJimQt/F8z/3J3NvuBmov4=
+X-Gm-Gg: ASbGncs+g7MCy2PCrI+OGrDuShZX55bp+8S1TRFET5iDMMhc3iEyvcNX993uj+SB7EX
+	/ujRpffyLNaDBtW4nDNdJDei9nliBx/8D5xzZArNRjL3DPgVI5jtFyHY323Lw9M8Tc9JfRt6VfH
+	CPC82LG9KqzFHJiH8y28/j4V591Jjf98UQ66D5XD4SuMSCNrAj/ZLUPmimdoBTlDJKlZQiPfT9/
+	ZgtjLwZUbCA1T/bzrOZ69kOnJQuFlZ8So72VXZkgLJ4hJsNMRNEwO8zMTRt84rrzi0fhbJcHJJ2
+	pd5fYLvDm0xRgPoxLeqao81CEcC0R/3jokM0pDEbWnvd5YGnKUc=
+X-Google-Smtp-Source: AGHT+IFAnCZ6nPY5UPyadmr7YhyYRo5ZU39JgB3mmEwc8mv+oARHGq0H1ti0jbO/TdUIglDMyD/fWQ==
+X-Received: by 2002:a05:600c:5d6:b0:442:e27c:48da with SMTP id 5b1f17b1804b1-442eacabc61mr13471135e9.8.1747122461595;
+        Tue, 13 May 2025 00:47:41 -0700 (PDT)
+Received: from localhost ([2a01:e0a:3c5:5fb1:780d:7cd3:15cf:b5d6])
+        by smtp.gmail.com with UTF8SMTPSA id ffacd0b85a97d-3a1f5a2d30asm15070456f8f.76.2025.05.13.00.47.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 May 2025 00:38:02 -0700 (PDT)
-From: Andrei Kuchynski <akuchynski@chromium.org>
-To: stable@vger.kernel.org
-Cc: Andrei Kuchynski <akuchynski@chromium.org>,
-	stable <stable@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH 6.6.y] usb: typec: ucsi: displayport: Fix deadlock
-Date: Tue, 13 May 2025 07:37:53 +0000
-Message-ID: <20250513073753.179129-1-akuchynski@chromium.org>
-X-Mailer: git-send-email 2.49.0.1045.g170613ef41-goog
-In-Reply-To: <2025051225-fiber-hummus-544f@gregkh>
-References: <2025051225-fiber-hummus-544f@gregkh>
+        Tue, 13 May 2025 00:47:41 -0700 (PDT)
+From: Jerome Brunet <jbrunet@baylibre.com>
+To: Da Xue <da@libre.computer>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>,  Michael Turquette
+ <mturquette@baylibre.com>,  Stephen Boyd <sboyd@kernel.org>,  Kevin Hilman
+ <khilman@baylibre.com>,  Martin Blumenstingl
+ <martin.blumenstingl@googlemail.com>,  stable@vger.kernel.org,
+  linux-amlogic@lists.infradead.org,  linux-clk@vger.kernel.org,
+  linux-arm-kernel@lists.infradead.org,  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] clk: meson-g12a: add missing fclk_div2 to spicc
+In-Reply-To: <20250512142617.2175291-1-da@libre.computer> (Da Xue's message of
+	"Mon, 12 May 2025 10:26:16 -0400")
+References: <20250512142617.2175291-1-da@libre.computer>
+User-Agent: mu4e 1.12.9; emacs 30.1
+Date: Tue, 13 May 2025 09:47:40 +0200
+Message-ID: <1jecwtymsj.fsf@starbuckisacylon.baylibre.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-This patch introduces the ucsi_con_mutex_lock / ucsi_con_mutex_unlock
-functions to the UCSI driver. ucsi_con_mutex_lock ensures the connector
-mutex is only locked if a connection is established and the partner pointer
-is valid. This resolves a deadlock scenario where
-ucsi_displayport_remove_partner holds con->mutex waiting for
-dp_altmode_work to complete while dp_altmode_work attempts to acquire it.
+On Mon 12 May 2025 at 10:26, Da Xue <da@libre.computer> wrote:
 
-Cc: stable <stable@kernel.org>
-Fixes: af8622f6a585 ("usb: typec: ucsi: Support for DisplayPort alt mode")
-Change-Id: I0c09bb490e1170c13eaf0399cac9b84a9d51d8a3
-Signed-off-by: Andrei Kuchynski <akuchynski@chromium.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250424084429.3220757-2-akuchynski@chromium.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-(cherry picked from commit 364618c89d4c57c85e5fc51a2446cd939bf57802)
----
- drivers/usb/typec/ucsi/displayport.c | 19 +++++++++-------
- drivers/usb/typec/ucsi/ucsi.c        | 34 ++++++++++++++++++++++++++++
- drivers/usb/typec/ucsi/ucsi.h        |  2 ++
- 3 files changed, 47 insertions(+), 8 deletions(-)
+> SPICC is missing fclk_div2 which causes the spicc module to output sclk at
+> 2.5x the expected rate. Adding the missing fclk_div2 resolves this.
 
-diff --git a/drivers/usb/typec/ucsi/displayport.c b/drivers/usb/typec/ucsi/displayport.c
-index 2431febc4615..6f5c46368cc5 100644
---- a/drivers/usb/typec/ucsi/displayport.c
-+++ b/drivers/usb/typec/ucsi/displayport.c
-@@ -54,7 +54,8 @@ static int ucsi_displayport_enter(struct typec_altmode *alt, u32 *vdo)
- 	u8 cur = 0;
- 	int ret;
- 
--	mutex_lock(&dp->con->lock);
-+	if (!ucsi_con_mutex_lock(dp->con))
-+		return -ENOTCONN;
- 
- 	if (!dp->override && dp->initialized) {
- 		const struct typec_altmode *p = typec_altmode_get_partner(alt);
-@@ -100,7 +101,7 @@ static int ucsi_displayport_enter(struct typec_altmode *alt, u32 *vdo)
- 	schedule_work(&dp->work);
- 	ret = 0;
- err_unlock:
--	mutex_unlock(&dp->con->lock);
-+	ucsi_con_mutex_unlock(dp->con);
- 
- 	return ret;
- }
-@@ -112,7 +113,8 @@ static int ucsi_displayport_exit(struct typec_altmode *alt)
- 	u64 command;
- 	int ret = 0;
- 
--	mutex_lock(&dp->con->lock);
-+	if (!ucsi_con_mutex_lock(dp->con))
-+		return -ENOTCONN;
- 
- 	if (!dp->override) {
- 		const struct typec_altmode *p = typec_altmode_get_partner(alt);
-@@ -144,7 +146,7 @@ static int ucsi_displayport_exit(struct typec_altmode *alt)
- 	schedule_work(&dp->work);
- 
- out_unlock:
--	mutex_unlock(&dp->con->lock);
-+	ucsi_con_mutex_unlock(dp->con);
- 
- 	return ret;
- }
-@@ -202,20 +204,21 @@ static int ucsi_displayport_vdm(struct typec_altmode *alt,
- 	int cmd = PD_VDO_CMD(header);
- 	int svdm_version;
- 
--	mutex_lock(&dp->con->lock);
-+	if (!ucsi_con_mutex_lock(dp->con))
-+		return -ENOTCONN;
- 
- 	if (!dp->override && dp->initialized) {
- 		const struct typec_altmode *p = typec_altmode_get_partner(alt);
- 
- 		dev_warn(&p->dev,
- 			 "firmware doesn't support alternate mode overriding\n");
--		mutex_unlock(&dp->con->lock);
-+		ucsi_con_mutex_unlock(dp->con);
- 		return -EOPNOTSUPP;
- 	}
- 
- 	svdm_version = typec_altmode_get_svdm_version(alt);
- 	if (svdm_version < 0) {
--		mutex_unlock(&dp->con->lock);
-+		ucsi_con_mutex_unlock(dp->con);
- 		return svdm_version;
- 	}
- 
-@@ -259,7 +262,7 @@ static int ucsi_displayport_vdm(struct typec_altmode *alt,
- 		break;
- 	}
- 
--	mutex_unlock(&dp->con->lock);
-+	ucsi_con_mutex_unlock(dp->con);
- 
- 	return 0;
- }
-diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
-index 29a04d679501..ea98bc567494 100644
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -1559,6 +1559,40 @@ void ucsi_set_drvdata(struct ucsi *ucsi, void *data)
- }
- EXPORT_SYMBOL_GPL(ucsi_set_drvdata);
- 
-+/**
-+ * ucsi_con_mutex_lock - Acquire the connector mutex
-+ * @con: The connector interface to lock
-+ *
-+ * Returns true on success, false if the connector is disconnected
-+ */
-+bool ucsi_con_mutex_lock(struct ucsi_connector *con)
-+{
-+	bool mutex_locked = false;
-+	bool connected = true;
-+
-+	while (connected && !mutex_locked) {
-+		mutex_locked = mutex_trylock(&con->lock) != 0;
-+		connected = con->status.flags & UCSI_CONSTAT_CONNECTED;
-+		if (connected && !mutex_locked)
-+			msleep(20);
-+	}
-+
-+	connected = connected && con->partner;
-+	if (!connected && mutex_locked)
-+		mutex_unlock(&con->lock);
-+
-+	return connected;
-+}
-+
-+/**
-+ * ucsi_con_mutex_unlock - Release the connector mutex
-+ * @con: The connector interface to unlock
-+ */
-+void ucsi_con_mutex_unlock(struct ucsi_connector *con)
-+{
-+	mutex_unlock(&con->lock);
-+}
-+
- /**
-  * ucsi_create - Allocate UCSI instance
-  * @dev: Device interface to the PPM (Platform Policy Manager)
-diff --git a/drivers/usb/typec/ucsi/ucsi.h b/drivers/usb/typec/ucsi/ucsi.h
-index 921ef0e115cf..3bb23a2ea547 100644
---- a/drivers/usb/typec/ucsi/ucsi.h
-+++ b/drivers/usb/typec/ucsi/ucsi.h
-@@ -79,6 +79,8 @@ int ucsi_register(struct ucsi *ucsi);
- void ucsi_unregister(struct ucsi *ucsi);
- void *ucsi_get_drvdata(struct ucsi *ucsi);
- void ucsi_set_drvdata(struct ucsi *ucsi, void *data);
-+bool ucsi_con_mutex_lock(struct ucsi_connector *con);
-+void ucsi_con_mutex_unlock(struct ucsi_connector *con);
- 
- void ucsi_connector_change(struct ucsi *ucsi, u8 num);
- 
+I had to re-read that a few times to get the what the actual problem is.
+If you don't mind, I'll amend the commit message with
+
+'''
+SPICC is missing fclk_div2, which means fclk_div5 and fclk_div7 indexes
+are wrong on this clock. This causes the spicc module to output sclk at
+2.5x the expected rate when clock index 3 is picked.
+
+Adding the missing fclk_div2 resolves this.
+'''
+
+Is that OK with you Da ?
+
+>
+> Fixes: a18c8e0b7697 ("clk: meson: g12a: add support for the SPICC SCLK Source clocks")
+> Cc: <stable@vger.kernel.org> # 6.1
+> Signed-off-by: Da Xue <da@libre.computer>
+> ---
+> Changelog:
+>
+> v2 -> v3: remove gp0
+> v1 -> v2: add Fixes as an older version of the patch was sent as v1
+> ---
+>  drivers/clk/meson/g12a.c | 1 +
+>  1 file changed, 1 insertion(+)
+>
+> diff --git a/drivers/clk/meson/g12a.c b/drivers/clk/meson/g12a.c
+> index 4f92b83965d5a..b72eebd0fa474 100644
+> --- a/drivers/clk/meson/g12a.c
+> +++ b/drivers/clk/meson/g12a.c
+> @@ -4099,6 +4099,7 @@ static const struct clk_parent_data spicc_sclk_parent_data[] = {
+>  	{ .hw = &g12a_clk81.hw },
+>  	{ .hw = &g12a_fclk_div4.hw },
+>  	{ .hw = &g12a_fclk_div3.hw },
+> +	{ .hw = &g12a_fclk_div2.hw },
+>  	{ .hw = &g12a_fclk_div5.hw },
+>  	{ .hw = &g12a_fclk_div7.hw },
+>  };
+
 -- 
-2.49.0.1045.g170613ef41-goog
-
+Jerome
 
