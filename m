@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-144223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11373AB5CA9
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 20:48:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59B68AB5CAB
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 20:48:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D0D8864A00
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 18:48:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0811C864E52
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 18:48:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC5042BF3E9;
-	Tue, 13 May 2025 18:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C72502BEC5A;
+	Tue, 13 May 2025 18:48:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hKcZzXSB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tZcHxr16"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D7FB748F
-	for <stable@vger.kernel.org>; Tue, 13 May 2025 18:48:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86C17748F
+	for <stable@vger.kernel.org>; Tue, 13 May 2025 18:48:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747162115; cv=none; b=Ln+2EXF4//SzAIR7xA+slGnbNEF0f6wqSzjf/vTEMLa5KIVIOf503KobvgEWelDZtUd+EE9PepOoaE4UsXYd9dA7YGoQF1GUHVVad/KNW+suhbgg0lNRUUdk29AYsdZY01gGsf5nVpEKrb4s6vKzcj3dW/muK773ds65mHPyLG4=
+	t=1747162120; cv=none; b=evSKaBjz6MsfzM3JkwdUePe5toESus47aPH1xvWFS41h1wLhlTh1E/rGFnfUtz4K0m1bGz1faa+5Jb/1wgjkVM7yN4x8TI7JlbV+sz2FGwYRZL73hVEg4tdL+5/LzD96gxVfNNAO8IdRvKk5xGvd6BI5JZgO62HCNqHT3PZcmVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747162115; c=relaxed/simple;
-	bh=hpVT3/T6Ng9SBNyg9WOI9YxTatfoYjw6sU6dyB+70IY=;
+	s=arc-20240116; t=1747162120; c=relaxed/simple;
+	bh=EvD71TVde2gyONIv4NrrAgGTFGSANrQ7rASu82Rnym8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eFL0NILLYDeT70rej72oss5M2UYO8IjWmAZfFp/9wJIP6HMtxMj41EdG5iL76p4Er44vkq00cXsUa4wdTKQ1g8cmZr2deDbKAk9lcTReuXxjD/Mw2opjpxg0kQoE6HIyAC6v39Av16n8QIqqpCI2A1XQYxcv1wRyPITk1tIEpqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hKcZzXSB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC30CC4CEE4;
-	Tue, 13 May 2025 18:48:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dC1MSJGO6Sp3tblt/bBawPAG7OfRxCvNTk9GTIotACnmjsrFekq+J5l3gtWevj9TOvfZPQFC2LObYrrqRRD0sc51Y1NNP735pEBjNCopLYOMX+jcPdGtXAHris2JMfHRYtKOQsuUofnfy9469VMxRmddRavs4fLk04crTmFVYQA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tZcHxr16; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D99BC4CEE4;
+	Tue, 13 May 2025 18:48:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747162115;
-	bh=hpVT3/T6Ng9SBNyg9WOI9YxTatfoYjw6sU6dyB+70IY=;
+	s=k20201202; t=1747162120;
+	bh=EvD71TVde2gyONIv4NrrAgGTFGSANrQ7rASu82Rnym8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hKcZzXSBMqWAdoOUzsCGisvB3vDINQV0cpJPielYdc0MX9I8zTC+lDtxYzl2zdzjP
-	 a7eF5hCD2MojJVXxytBLZk9xTD/BJD0Kijhf5BAUq2FaL5+i6AiVnC75MdTU2NJp0T
-	 yhVUlxeGff5bLwpU5/F237NShluAbqdPpkutX0fsnA2NLA808D79Qbm7G3FP/atucx
-	 vAxWpGma2CGWD0DGm4O5cBPZpTel7ponY5seoVxg7T5PiwgpgyYKzdvae5gUYryke2
-	 NoycInb5I4ZXKFNbncWBMNggBG6sGlEx23FyGMlKEziebFt3NAYdQRAoL0TZcYJY9B
-	 ysrXk+AvWiTgg==
+	b=tZcHxr163G6m0qZaJN7g2gdMRp6fxUDjIsK1CiAHmitYFUe1aIf8ld2rsYtZc25ZA
+	 QuppubEPIKiuYcjm3tJYG5QqVV01acGLS6ML8zbUdGjDXrfowG1rEI8uIweHpMtLsj
+	 63WwRXeiH+7fhwBiXCALt+wwhKRQaWpEyP3a2zLdH3nlTTtmR+S+Gu4z8yD93Ppc5l
+	 F2rZh3Xgsu9ld/Wavg94ITBAT2u4WQoeZ49wMhjJYg0ZPMfG/JL3f+kV6N5+AGpgce
+	 TnHY4QdS3UmhY0SIVZmmiuuxnpzf+I0OuoX8AuycJQ3aVYabnupSjvLNjQYjdu2xgl
+	 S3nM/V2wyk6Lw==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15 04/14] x86/speculation: Remove the extra #ifdef around CALL_NOSPEC
-Date: Tue, 13 May 2025 14:48:29 -0400
-Message-Id: <20250513130157-b8f5ddbfeb23be29@stable.kernel.org>
+To: stable@vger.kernel.org,
+	bigeasy@linutronix.de
+Cc: Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.4.y] clocksource/i8253: Use raw_spinlock_irqsave() in clockevent_i8253_disable()
+Date: Tue, 13 May 2025 14:48:35 -0400
+Message-Id: <20250513110535-97908736bfc4c5b0@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250512-its-5-15-v1-4-6a536223434d@linux.intel.com>
+In-Reply-To:  <20250513072606.620633-1-bigeasy@linutronix.de>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,75 +64,65 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+Summary of potential issues:
+⚠️ Found matching upstream commit but patch is missing proper reference to it
 
-The upstream commit SHA1 provided is correct: c8c81458863ab686cda4fe1e603fccaae0f12460
+Found matching upstream commit: 94cff94634e506a4a44684bee1875d2dbf782722
 
 Status in newer kernel trees:
-6.14.y | Not found
-6.12.y | Present (different SHA1: d6b1113648df)
-6.6.y | Present (different SHA1: 5951dc648325)
-6.1.y | Present (different SHA1: 1bb5fcee287e)
+6.14.y | Present (different SHA1: 6fdc7368341b)
+6.12.y | Present (different SHA1: e0e66bb1af60)
+6.6.y | Present (different SHA1: 5dd520b92acb)
+6.1.y | Present (different SHA1: d2f5f71707cf)
+5.15.y | Present (different SHA1: f29f5341f350)
+5.10.y | Present (different SHA1: 7d45c9f3693e)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  c8c81458863ab ! 1:  2398ad5af76ca x86/speculation: Remove the extra #ifdef around CALL_NOSPEC
-    @@ Metadata
-      ## Commit message ##
-         x86/speculation: Remove the extra #ifdef around CALL_NOSPEC
+1:  94cff94634e50 ! 1:  c0d1d522f39bf clocksource/i8253: Use raw_spinlock_irqsave() in clockevent_i8253_disable()
+    @@ Commit message
+         raw_spinlock_irqsave() to cure this.
      
-    +    commit c8c81458863ab686cda4fe1e603fccaae0f12460 upstream.
-    +
-         Commit:
+         [ tglx: Massage change log and use guard() ]
+    +    [ bigeasy: Dropped guard() for stable ]
      
-           010c4a461c1d ("x86/speculation: Simplify and make CALL_NOSPEC consistent")
+         Fixes: c8c4076723dac ("x86/timer: Skip PIT initialization on modern chipsets")
+         Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+         Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+         Cc: stable@vger.kernel.org
+         Link: https://lore.kernel.org/all/20250404133116.p-XRWJXf@linutronix.de
+    +    (cherry picked from commit 94cff94634e506a4a44684bee1875d2dbf782722)
+    +    Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
      
-    -    added an #ifdef CONFIG_MITIGATION_RETPOLINE around the CALL_NOSPEC definition.
-    -    This is not required as this code is already under a larger #ifdef.
-    +    added an #ifdef CONFIG_RETPOLINE around the CALL_NOSPEC definition. This is
-    +    not required as this code is already under a larger #ifdef.
-     
-         Remove the extra #ifdef, no functional change.
-     
-         vmlinux size remains same before and after this change:
-     
-    -     CONFIG_MITIGATION_RETPOLINE=y:
-    +     CONFIG_RETPOLINE=y:
-               text       data        bss         dec        hex    filename
-           25434752    7342290    2301212    35078254    217406e    vmlinux.before
-           25434752    7342290    2301212    35078254    217406e    vmlinux.after
-     
-    -     # CONFIG_MITIGATION_RETPOLINE is not set:
-    +     # CONFIG_RETPOLINE is not set:
-               text       data        bss         dec        hex    filename
-           22943094    6214994    1550152    30708240    1d49210    vmlinux.before
-           22943094    6214994    1550152    30708240    1d49210    vmlinux.after
-     
-    +      [ pawan: s/CONFIG_MITIGATION_RETPOLINE/CONFIG_RETPOLINE/ ]
-    +
-         Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-         Signed-off-by: Ingo Molnar <mingo@kernel.org>
-         Reviewed-by: Josh Poimboeuf <jpoimboe@kernel.org>
-         Link: https://lore.kernel.org/r/20250320-call-nospec-extra-ifdef-v1-1-d9b084d24820@linux.intel.com
-     
-      ## arch/x86/include/asm/nospec-branch.h ##
-    -@@ arch/x86/include/asm/nospec-branch.h: static inline void call_depth_return_thunk(void) {}
-    +@@ arch/x86/include/asm/nospec-branch.h: extern retpoline_thunk_t __x86_indirect_thunk_array[];
-       * Inline asm uses the %V modifier which is only in newer GCC
-    -  * which is ensured when CONFIG_MITIGATION_RETPOLINE is defined.
-    +  * which is ensured when CONFIG_RETPOLINE is defined.
-       */
-    --#ifdef CONFIG_MITIGATION_RETPOLINE
-    +-#ifdef CONFIG_RETPOLINE
-      #define CALL_NOSPEC	__CS_PREFIX("%V[thunk_target]")	\
-      			"call __x86_indirect_thunk_%V[thunk_target]\n"
-     -#else
+      ## drivers/clocksource/i8253.c ##
+     @@ drivers/clocksource/i8253.c: int __init clocksource_i8253_init(void)
+    @@ drivers/clocksource/i8253.c: int __init clocksource_i8253_init(void)
+      void clockevent_i8253_disable(void)
+      {
+     -	raw_spin_lock(&i8253_lock);
+    -+	guard(raw_spinlock_irqsave)(&i8253_lock);
+    ++	unsigned long flags;
+    ++
+    ++	raw_spin_lock_irqsave(&i8253_lock, flags);
+      
+      	/*
+      	 * Writing the MODE register should stop the counter, according to
+     @@ drivers/clocksource/i8253.c: void clockevent_i8253_disable(void)
+    - 	outb_p(0, PIT_CH0);
+      
+      	outb_p(0x30, PIT_MODE);
+    --
+    + 
+     -	raw_spin_unlock(&i8253_lock);
+    ++	raw_spin_unlock_irqrestore(&i8253_lock, flags);
+      }
+      
+      static int pit_shutdown(struct clock_event_device *evt)
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.1.y        |  Success    |  Success   |
+| stable/linux-5.4.y        |  Success    |  Success   |
 
