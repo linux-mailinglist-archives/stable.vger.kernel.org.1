@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-144232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CF09AB5CB8
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 20:49:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40779AB5CB6
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 20:49:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 526D216EB8E
-	for <lists+stable@lfdr.de>; Tue, 13 May 2025 18:49:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89A93865125
+	for <lists+stable@lfdr.de>; Tue, 13 May 2025 18:49:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 596AB2BE0FB;
-	Tue, 13 May 2025 18:49:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA3F92BEC3F;
+	Tue, 13 May 2025 18:49:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bIX3BSzK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ghJbsHne"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E7221E521A
-	for <stable@vger.kernel.org>; Tue, 13 May 2025 18:49:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 677CB1B3950
+	for <stable@vger.kernel.org>; Tue, 13 May 2025 18:49:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747162154; cv=none; b=hmEMoX6nHgToh+/otT5cfLnuqq0OI8tFvxn3QD2sjPXElF/ZT+MJaat+Dklum6YMtEkfyWnpjrUeAh+UjoCVdmKWQpCrEFAFj4nGLbeyRoF7v++rZ0EAdZM2e3velwMgTZvZCQwBBLOtrOU5y3c6yQXSrsKeCZ5w6ZMh5cRxYOQ=
+	t=1747162159; cv=none; b=orGxRZkVRw8SbgjbDsi7XCUbn/9TmrqGr9itWKtE4XWI9RbWi6r8SKm2JgNh52sVWnY5Hh6g5HZMrYD/hIOzRDpsj0NiG9TGw5mo6ZUcuu/uaYxwZVOlnAvtzUzGHlimZDu4iYztvJMcxcRThjCC4eBqTTPDS7w2nrf1hYfvKrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747162154; c=relaxed/simple;
-	bh=HXpQ+XhRTUzoizh8ninO87sQNl4Zns6oirDfGFeyqbY=;
+	s=arc-20240116; t=1747162159; c=relaxed/simple;
+	bh=VZIurN3D/1iQD2YQGIjlLIc2KcDDbU+y7Mc15ZcEszQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lJQY1AecjoY96Ls8d040QbSa3hXRomgP91SFGb6+7QbO/92+Skgg7xVVwT4cpb71MXq2zIQRstjJbwS84uIOKYSs/38A0inVr5z1nf7eHQodd4FuBun6N8ImVire+ZBP95uHydSpQFLDN+LN0f7068bIws0f8PUUBmAbMQuihJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bIX3BSzK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E56BC4CEE4;
-	Tue, 13 May 2025 18:49:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=F3KM6JafuKO6nKtRWx1EemqS9H7I5amebyFJnV03qvGUJy6EC4TZB4JK4N4/+vVt3NjBwLbsvmsCo7wo8oDH0/6Q2l3v4MW6N5flogar6CkQXoV0M4VSaXIDWnHpzqsINo6rLCSpe/fFbpjJ3yuM3aTPoilpOTZUSEDn9mShQB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ghJbsHne; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71D79C4CEE4;
+	Tue, 13 May 2025 18:49:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747162153;
-	bh=HXpQ+XhRTUzoizh8ninO87sQNl4Zns6oirDfGFeyqbY=;
+	s=k20201202; t=1747162157;
+	bh=VZIurN3D/1iQD2YQGIjlLIc2KcDDbU+y7Mc15ZcEszQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bIX3BSzK41Ln8G9Ls+dZkStOk0KV1nXVqD0ktdBf5cCSoer0RunoiWgwc2wMsvska
-	 Op2nMX3YU/PZyCoXiYjUN346d7arjyFR/nvPc3BPsMe8dRRtHV0lqL4zWBWsSpgiAO
-	 jIxf8lNURFwWROcI7jw9XAVpeN1KDCurQSWKjdHOWODzWYdMaFsaGuh5Svq19M5UNV
-	 gAR1xMrI7buNFDGKBv+v2BsQxfF1YpaXdpqgyU4QTAI2G1L7rEU7yDmrEnCTjO5rnK
-	 3VsDxQivNhhefw0SdWgyzvH8JkXRrCkCl45Us5+/GTL6NcP4eSZTIrqqHOO+oCTKnO
-	 XYa0a4NnyR3FA==
+	b=ghJbsHne6tugZErS7UJQx8ByU+rv9Aoc0eJc7DPUCXsoybC75meeA6wnwusPZhcqM
+	 40LASfsbXfwOACLhfYz3J04pkKepfcCUIA1jkZBFaF/LD1ACmTC3DJUsbpVZ2rJwFK
+	 3IMtoOxEDda2QQ6fZDGPhpw0rcjB3m1N6bL9ht3oq0QM1iJNFJWCB/Qeo5zfRdw2Wb
+	 kHh8fLKgICJMfrj03Vo29Zj4I/rTdrNPHEYfg94vwRPa5Pddqm+wIU/8noZaUrqnsx
+	 EUFkiZ+0Ndeg3OgS6NScgoRj8aUcsaql2sYdjPtRbtI6L1tDA+p9VSsYQt/D2halHq
+	 RE4879IWjvmIA==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	chenhuacai@loongson.cn
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH for 6.6] mm/migrate: correct nr_failed in migrate_pages_sync()
-Date: Tue, 13 May 2025 14:49:09 -0400
-Message-Id: <20250513100247-4397f54215e2532d@stable.kernel.org>
+To: stable@vger.kernel.org
+Cc: Aditya Garg <gargaditya08@live.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH RESEND 1/2] Input: synaptics - enable SMBus for HP Elitebook 850 G1
+Date: Tue, 13 May 2025 14:49:13 -0400
+Message-Id: <20250513094026-e79c0376e6e9b96c@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250513080521.252543-1-chenhuacai@loongson.cn>
+In-Reply-To:  <PN3PR01MB9597BAE0F2CA6845408AAD36B896A@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,35 +64,24 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Summary of potential issues:
-⚠️ Found matching upstream commit but patch is missing proper reference to it
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-Found matching upstream commit: a259945efe6ada94087ef666e9b38f8e34ea34ba
+The upstream commit SHA1 provided is correct: f04f03d3e99bc8f89b6af5debf07ff67d961bc23
 
-WARNING: Author mismatch between patch and found commit:
-Backport author: Huacai Chen<chenhuacai@loongson.cn>
-Commit author: Zi Yan<ziy@nvidia.com>
-
-Status in newer kernel trees:
-6.14.y | Present (exact SHA1)
-6.12.y | Present (exact SHA1)
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Aditya Garg<gargaditya08@live.com>
+Commit author: Dmitry Torokhov<dmitry.torokhov@gmail.com>
 
 Note: The patch differs from the upstream commit:
 ---
-1:  a259945efe6ad ! 1:  90d3b4a4b9916 mm/migrate: correct nr_failed in migrate_pages_sync()
-    @@ Commit message
-         Cc: David Hildenbrand <david@redhat.com>
-         Cc: Matthew Wilcox <willy@infradead.org>
-         Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-    +    Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-     
-      ## mm/migrate.c ##
-     @@ mm/migrate.c: struct migrate_pages_stats {
+1:  f04f03d3e99bc < -:  ------------- Input: synaptics - enable SMBus for HP Elitebook 850 G1
+-:  ------------- > 1:  e2d3e1fdb5301 Linux 6.14.6
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
+| stable/linux-5.4.y        |  Success    |  Success   |
 
