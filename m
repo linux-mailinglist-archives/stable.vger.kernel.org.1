@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-144283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E04B6AB606F
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 03:26:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82485AB6072
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 03:29:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B94123B58C4
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 01:26:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F583177C56
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 01:29:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5221614A4DF;
-	Wed, 14 May 2025 01:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F334D14D2BB;
+	Wed, 14 May 2025 01:29:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hPUwfQbO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bE6eQ9nB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B173C00;
-	Wed, 14 May 2025 01:26:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A294E3C00;
+	Wed, 14 May 2025 01:29:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747185996; cv=none; b=dWU14/kFAtZnHtR8H12TP9R2HGtafsRKD0KGyDHVofdx41JaTaK2YhEfLVM/SNmbC8ACVH+UIjat8ij2ML3UKUoEE29rIAxwa+2Mu2NY8wCGzMWKOSwG6A6YY1Zin0gaYZY6g4ytGbOeE4g1GaizvCvNDVYjiTabtlAJ7EvJQEs=
+	t=1747186150; cv=none; b=aGUFu/+8DfGgjANzurCqiUGmxGtfaJBw0Og+G2bkswBljy6Mgwms9ugy7Uy3bDfwg/AkexriWYKE06NBPGa5kLRu7uRNX+MCWtWa4B+omqhtNfvPNAptiWUaQfpSWtBiYThfytj1Od50xMFxhu3bchUppOVZwpUbfi09TDHLLHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747185996; c=relaxed/simple;
-	bh=U0F6kN/3BrA8/yua4t0F7JSzc9uNHz91fX+ER7J1wMQ=;
+	s=arc-20240116; t=1747186150; c=relaxed/simple;
+	bh=eO7mKv1YT1/mJYncjN+haZ+QIoFNpinoMkZuKwUqknY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sD4XJkMB+/z2PPyvU46RdS8oTVuAOjnZsyDUJ6Lu+7UP1S0b7DSeZTS8Hcg1u9bBn3aBNDl+zjMHdYDQ1BdZpHyw43/H9kJUgHytmfQOJZsq4894KiQgvfTcuDlvGNgGVPMp7CQs3oZh9IfqCFNY846SI4z9jfba6RApT45aCkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hPUwfQbO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6432FC4CEE4;
-	Wed, 14 May 2025 01:26:34 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=SkNZIHcoXVggYpN9asDPHBZ6TD7w4BkmbA0Nbyk5IiPMeYZqMVGb1HLue8W6Wyo7R9ImBIap8rrNEdoDPI+2i3jKIuTAIXs6icZSeUoEAyT7/YaORleAebIznKdSLkGd/M1657PoCuwapL7QIYmSXkkZ3U0daW9tJUvwiBZyYbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bE6eQ9nB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2100AC4CEE4;
+	Wed, 14 May 2025 01:29:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747185995;
-	bh=U0F6kN/3BrA8/yua4t0F7JSzc9uNHz91fX+ER7J1wMQ=;
+	s=k20201202; t=1747186149;
+	bh=eO7mKv1YT1/mJYncjN+haZ+QIoFNpinoMkZuKwUqknY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hPUwfQbOOzlMUND78gmSa+K7TVclojnoZIJdL6WBPRyyq4tVssCp9jgRtXDXlMHjK
-	 uRxLXQu+O5IYisyJgd7Ybx3LRQ/IKKr4c7bYQYwERqGEjbtqYWDn8/jqh3q2kbahhW
-	 mrm/YyN6b1cRkiMpTWTbulqGJ5pMS1hgOll0jA9011iM/z5VztUFLDX0lLfGls86Ou
-	 IKPYLtex8S+49OKEO30MFCt0tW0xfLRtfRLg33iUzD+2x7Pno/nnGF5nkFtKlP+oYG
-	 LTWnKnA0di6xw7WCv60W4b9l3ucOJ2ELUKwBQej6aAbV0c42NcDX639nlVzYqUF7vs
-	 oL1WjpR36EqAg==
-Date: Wed, 14 May 2025 09:26:27 +0800
+	b=bE6eQ9nBPoZt7V6l9fIIem1TS4bvnJP5gdi/DY7Fgy1sZpWP7aNwkO8jaDuhqatBM
+	 pKMLW61eHY30FWqsmYfYtuZxnLSgqzX7QJwPq6JxRg66u7mvBFih99Egrrx6qIRKKi
+	 MkXDdVM3idPGjCMT5jQa737aXmBx7C1TP+lzwTSPexc2LJ62GfWXiJ4PQECwKrTfa+
+	 nune5gCN71vpLVwS6Ws7aCjdzTXLl41abdMZKGPGBm19VcLsObPWlMYel/QSA4aEhq
+	 4rakbPFDjQiXkHvyf0U4TAscHhUHWcSSfegKb25u4X1agO3AAmnOtB3wW/MO0oYWci
+	 EVpOBB35PLHBg==
+Date: Wed, 14 May 2025 09:29:01 +0800
 From: "Peter Chen (CIX)" <peter.chen@kernel.org>
 To: Pawel Laszczak <pawell@cadence.com>
 Cc: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
 	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
 	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH v2] usb: cdnsp: Fix issue with detecting command
- completion event
-Message-ID: <20250514012627.GA623775@nchen-desktop>
-References: <20250513052613.447330-1-pawell@cadence.com>
- <PH7PR07MB9538AA45362ACCF1B94EE9B7DD96A@PH7PR07MB9538.namprd07.prod.outlook.com>
+Subject: Re: [PATCH] usb: cdnsp: Fix issue with detecting USB 3.2 speed
+Message-ID: <20250514012901.GB623775@nchen-desktop>
+References: <20250513065010.476366-1-pawell@cadence.com>
+ <PH7PR07MB95387AD98EDCA695FECE52BADD96A@PH7PR07MB9538.namprd07.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,81 +60,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <PH7PR07MB9538AA45362ACCF1B94EE9B7DD96A@PH7PR07MB9538.namprd07.prod.outlook.com>
+In-Reply-To: <PH7PR07MB95387AD98EDCA695FECE52BADD96A@PH7PR07MB9538.namprd07.prod.outlook.com>
 
-On 25-05-13 05:30:09, Pawel Laszczak wrote:
-> In some cases, there is a small-time gap in which CMD_RING_BUSY
-> can be cleared by controller but adding command completion event
-> to event ring will be delayed. As the result driver will return
-> error code.
-> This behavior has been detected on usbtest driver (test 9) with
-> configuration including ep1in/ep1out bulk and ep2in/ep2out isoc
-> endpoint.
-> Probably this gap occurred because controller was busy with adding
-> some other events to event ring.
-> The CMD_RING_BUSY is cleared to '0' when the Command Descriptor
-> has been executed and not when command completion event has been
-> added to event ring.
-> 
-> To fix this issue for this test the small delay is sufficient
-> less than 10us) but to make sure the problem doesn't happen again
-> in the future the patch introduces 10 retries to check with delay
-> about 20us before returning error code.
-
-Does the ./scripts/checkpatch.pl report warning if the delay time is
-20us for udelay?
-
-Peter
+On 25-05-13 06:54:03, Pawel Laszczak wrote:
+> Patch adds support for detecting SuperSpeedPlus Gen1 x2
+> and SuperSpeedPlus Gen2 x2 speed.
 > 
 > Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
 > cc: stable@vger.kernel.org
 > Signed-off-by: Pawel Laszczak <pawell@cadence.com>
+
+Acked-by: Peter Chen <peter.chen@kernel.org>
+
+Peter
 > ---
-> Changelog:
-> v2:
-> - replaced usleep_range with udelay
-> - increased retry counter and decreased the udelay value
-> 
->  drivers/usb/cdns3/cdnsp-gadget.c | 18 +++++++++++++++++-
->  1 file changed, 17 insertions(+), 1 deletion(-)
+>  drivers/usb/cdns3/cdnsp-gadget.c | 3 ++-
+>  drivers/usb/cdns3/cdnsp-gadget.h | 4 ++++
+>  2 files changed, 6 insertions(+), 1 deletion(-)
 > 
 > diff --git a/drivers/usb/cdns3/cdnsp-gadget.c b/drivers/usb/cdns3/cdnsp-gadget.c
-> index 4824a10df07e..58650b7f4173 100644
+> index 52431ea41669..893b55823261 100644
 > --- a/drivers/usb/cdns3/cdnsp-gadget.c
 > +++ b/drivers/usb/cdns3/cdnsp-gadget.c
-> @@ -547,6 +547,7 @@ int cdnsp_wait_for_cmd_compl(struct cdnsp_device *pdev)
->  	dma_addr_t cmd_deq_dma;
->  	union cdnsp_trb *event;
->  	u32 cycle_state;
-> +	u32 retry = 10;
->  	int ret, val;
->  	u64 cmd_dma;
->  	u32  flags;
-> @@ -578,8 +579,23 @@ int cdnsp_wait_for_cmd_compl(struct cdnsp_device *pdev)
->  		flags = le32_to_cpu(event->event_cmd.flags);
->  
->  		/* Check the owner of the TRB. */
-> -		if ((flags & TRB_CYCLE) != cycle_state)
-> +		if ((flags & TRB_CYCLE) != cycle_state) {
-> +			/*
-> +			 * Give some extra time to get chance controller
-> +			 * to finish command before returning error code.
-> +			 * Checking CMD_RING_BUSY is not sufficient because
-> +			 * this bit is cleared to '0' when the Command
-> +			 * Descriptor has been executed by controller
-> +			 * and not when command completion event has
-> +			 * be added to event ring.
-> +			 */
-> +			if (retry--) {
-> +				udelay(20);
-> +				continue;
-> +			}
-> +
->  			return -EINVAL;
-> +		}
->  
->  		cmd_dma = le64_to_cpu(event->event_cmd.cmd_trb);
->  
+> @@ -29,7 +29,8 @@
+>  unsigned int cdnsp_port_speed(unsigned int port_status)
+>  {
+>  	/*Detect gadget speed based on PORTSC register*/
+> -	if (DEV_SUPERSPEEDPLUS(port_status))
+> +	if (DEV_SUPERSPEEDPLUS(port_status) ||
+> +	    DEV_SSP_GEN1x2(port_status) || DEV_SSP_GEN2x2(port_status))
+>  		return USB_SPEED_SUPER_PLUS;
+>  	else if (DEV_SUPERSPEED(port_status))
+>  		return USB_SPEED_SUPER;
+> diff --git a/drivers/usb/cdns3/cdnsp-gadget.h b/drivers/usb/cdns3/cdnsp-gadget.h
+> index 12534be52f39..2afa3e558f85 100644
+> --- a/drivers/usb/cdns3/cdnsp-gadget.h
+> +++ b/drivers/usb/cdns3/cdnsp-gadget.h
+> @@ -285,11 +285,15 @@ struct cdnsp_port_regs {
+>  #define XDEV_HS			(0x3 << 10)
+>  #define XDEV_SS			(0x4 << 10)
+>  #define XDEV_SSP		(0x5 << 10)
+> +#define XDEV_SSP1x2		(0x6 << 10)
+> +#define XDEV_SSP2x2		(0x7 << 10)
+>  #define DEV_UNDEFSPEED(p)	(((p) & DEV_SPEED_MASK) == (0x0 << 10))
+>  #define DEV_FULLSPEED(p)	(((p) & DEV_SPEED_MASK) == XDEV_FS)
+>  #define DEV_HIGHSPEED(p)	(((p) & DEV_SPEED_MASK) == XDEV_HS)
+>  #define DEV_SUPERSPEED(p)	(((p) & DEV_SPEED_MASK) == XDEV_SS)
+>  #define DEV_SUPERSPEEDPLUS(p)	(((p) & DEV_SPEED_MASK) == XDEV_SSP)
+> +#define DEV_SSP_GEN1x2(p)	(((p) & DEV_SPEED_MASK) == XDEV_SSP1x2)
+> +#define DEV_SSP_GEN2x2(p)	(((p) & DEV_SPEED_MASK) == XDEV_SSP2x2)
+>  #define DEV_SUPERSPEED_ANY(p)	(((p) & DEV_SPEED_MASK) >= XDEV_SS)
+>  #define DEV_PORT_SPEED(p)	(((p) >> 10) & 0x0f)
+>  /* Port Link State Write Strobe - set this when changing link state */
 > -- 
 > 2.43.0
 > 
