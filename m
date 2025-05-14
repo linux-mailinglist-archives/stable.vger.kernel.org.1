@@ -1,163 +1,323 @@
-Return-Path: <stable+bounces-144328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3DFCAB636B
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 08:45:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 740CDAB6372
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 08:47:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF76A7B3ED8
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 06:43:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 952AC7B42D7
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 06:46:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B9151C861E;
-	Wed, 14 May 2025 06:45:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B82C1E9B07;
+	Wed, 14 May 2025 06:47:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from azure-sdnproxy.icoremail.net (l-sdnproxy.icoremail.net [20.188.111.126])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2AA31FBCA7
-	for <stable@vger.kernel.org>; Wed, 14 May 2025 06:45:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=20.188.111.126
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9868817583;
+	Wed, 14 May 2025 06:47:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747205106; cv=none; b=U3znpTbZqadktlm8hMX220yLoB25baElDcT3jaf9urQBIO8fPnqFS+aBMwdkKvQEh/pd/DloYItEoLln+0upQ4J0YTlBGUORh68KzcSJ2IVU+77Gmykn7PGNHMGEGLnllPjrBqeUXg//9lHJZDh+ofTulYzKpxerMCfIRFBMXKw=
+	t=1747205264; cv=none; b=OmVKaa/XTCRaOD0FucjzcEIv9R36bheMCFJv0QVIUnVjGz4cycu3cjq6M0+5j11s+BtHA9Fg66got3pw0e4aTEr5co7tQdqyowfcJfkBK7eebDs5TRfVSu0bQpizEcNfcPbwbhJofZ4zYPKCyFPHI5toDNii/lLcvDgVt+HfBD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747205106; c=relaxed/simple;
-	bh=q/yGq3nCDDF0CSkEwlQmhElqgZjaSe7w65A1Rc8T/o8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=G+0hiBp+ws4CK39pjNDINujGiRskvlbrf9MCnLJ84e/WUyNj2VbtSiTvfC5tuNkoYnYflJx/cFSV8qqUL1LESSf1SZxTnodXGQDh90kt97j3XzmA9EZ8QLnPhBnoXMTFW5gdgt08UBHqegmz7FUi3qJUSBva1SlpSgxyzMWDYS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hust.edu.cn; spf=pass smtp.mailfrom=hust.edu.cn; arc=none smtp.client-ip=20.188.111.126
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hust.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hust.edu.cn
-Received: from hust.edu.cn (unknown [172.16.0.50])
-	by app2 (Coremail) with SMTP id HwEQrACHjXXbOyRo+kBNAQ--.10314S2;
-	Wed, 14 May 2025 14:44:43 +0800 (CST)
-Received: from ubuntu.localdomain (unknown [10.12.190.56])
-	by gateway (Coremail) with SMTP id _____wDXN8TaOyRoEexUAA--.19998S4;
-	Wed, 14 May 2025 14:44:42 +0800 (CST)
-From: Zhaoyang Li <lizy04@hust.edu.cn>
-To: stable@vger.kernel.org
-Cc: dzm91@hust.edu.cn,
-	Shravya KN <shravya.k-n@broadcom.com>,
-	Somnath Kotur <somnath.kotur@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Zhaoyang Li <lizy04@hust.edu.cn>
-Subject: [PATCH 6.1.y] bnxt_en: Fix receive ring space parameters when XDP is active
-Date: Wed, 14 May 2025 14:44:38 +0800
-Message-Id: <20250514064438.395697-1-lizy04@hust.edu.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1747205264; c=relaxed/simple;
+	bh=Pn0/7ryZG2o71oq4Vi8VUKZpzX00/FgZwyYXhVHNRqI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FF61LgWrVBusiYwUndX8sM28kyQqkjWgeHDIhokUm2vMRk0ZWlgeY22uYKz2y616gy4e/gLX6ITKcHQmsJ0UaAhpLtKXENwkia2616brmf4yXUxJc5777SMSYyTIT/ZzyT1htLBJ1liwfqQg1lYySmPvxRcEEHG0h55d1xn2ei4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
+X-AuditID: a67dfc5b-681ff7000002311f-2b-68243c86168a
+Date: Wed, 14 May 2025 15:47:29 +0900
+From: Byungchul Park <byungchul@sk.com>
+To: Gavin Guo <gavinguo@igalia.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, muchun.song@linux.dev,
+	osalvador@suse.de, akpm@linux-foundation.org,
+	mike.kravetz@oracle.com, kernel-dev@igalia.com,
+	stable@vger.kernel.org, Hugh Dickins <hughd@google.com>,
+	Florent Revest <revest@google.com>, Gavin Shan <gshan@redhat.com>,
+	kernel_team@skhynix.com
+Subject: Re: [PATCH] mm/hugetlb: fix a deadlock with pagecache_folio and
+ hugetlb_fault_mutex_table
+Message-ID: <20250514064729.GA17622@system.software.com>
+References: <20250513093448.592150-1-gavinguo@igalia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:HwEQrACHjXXbOyRo+kBNAQ--.10314S2
-Authentication-Results: app2; spf=neutral smtp.mail=lizy04@hust.edu.cn
-	;
-X-Coremail-Antispam: 1UD129KBjvJXoWxuF4kWw47Kr1UtFW7ZF45GFg_yoWrXrWrpr
-	45uryDCr4kJr15Ja1UJFW8Ar15Kr1vy3W8Wr47JrnYv3W5K3Wjyry8KwnFyFyDtr48Wr17
-	tr4Yvw4SqFyDWaUanT9S1TB71UUUUjUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUQSb7Iv0xC_KF4lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
-	cIk0rVWrJVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjx
-	v20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1l84ACjcxK
-	6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1ln4kS14v26r
-	1Y6r17M2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI
-	12xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj64x0Y40En7xvr7AKxV
-	W8Jr0_Cr1UMcIj6x8ErcxFaVAv8VW8uFyUJr1UMcIj6xkF7I0En7xvr7AKxVW8Jr0_Cr1U
-	McvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwCY1x0262kKe7AKxVWUAVWUtw
-	CF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26r4fZr1UJr1l4I8I3I0E4IkC6x0Y
-	z7v_Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x
-	8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE
-	2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42
-	xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF
-	7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU3-eODUUUU
-X-CM-SenderInfo: rpsqjjixsriko6kx23oohg3hdfq/1tbiAQgCB2gkEmEHgwACs1
+In-Reply-To: <20250513093448.592150-1-gavinguo@igalia.com>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprOIsWRmVeSWpSXmKPExsXC9ZZnkW6bjUqGwd+VUhZz1q9hs1iy9gyz
+	xctd25gsnn7qY7E49+I7k8XlXXPYLO6t+c9q8XF/sMWynQ9ZLM5MK7LonvmD1WLBxkeMDjwe
+	CzaVekyY3c3msenTJHaPEzN+s3gsbJjK7PHx6S0Wj/f7rrJ5bD5d7fF5k1wAZxSXTUpqTmZZ
+	apG+XQJXxv6rt9kLlvtV7OmaydzA2G3XxcjJISFgIrFt60IWGPvNq4mMIDaLgKrEvXP7wOJs
+	AuoSN278ZAaxRQSUJT5MOQgU5+JgFjjBJHFx3iJ2kISwQIrEtQPbwBp4BSwkDr+9AGRzcAgJ
+	WEpcn+8MERaUODnzCVgJM9DMP/MuMYOUMAtISyz/xwERlpdo3jobbBWngJXEsq0Q5aJAaw9s
+	O84EslZC4DubxJFjr5ghbpaUOLjiBssERsFZSFbMQrJiFsKKWUhWLGBkWcUolJlXlpuYmWOi
+	l1GZl1mhl5yfu4kRGF3Lav9E72D8dCH4EKMAB6MSD6+FrnKGEGtiWXFl7iFGCQ5mJRHe61lA
+	Id6UxMqq1KL8+KLSnNTiQ4zSHCxK4rxG38pThATSE0tSs1NTC1KLYLJMHJxSDYw1Gbnfk4WV
+	mUzsdrz3qzhk8TlGpPfQ5iQT1+gXIslnf+SePL71x6xHsvumHQhXvXtOfdn5RyJi0syPFqYv
+	/j6z3PvA5m73rENTrxzp3mLhV7C1UN5Ix7iXu/vy0sZFfROvdEYwlc2unaecJniZffphqVn7
+	fR4kNF1LPCIkfezUzhf/bX47+ixVYinOSDTUYi4qTgQAwToKqKoCAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrHLMWRmVeSWpSXmKPExsXC5WfdrNtmo5Jh0HeV22LO+jVsFkvWnmG2
+	eLlrG5PF0099LBbnXnxnsjg89ySrxeVdc9gs7q35z2rxcX+wxbKdD1kszkwrsuie+YPVYsHG
+	R4wOvB4LNpV6TJjdzeax6dMkdo8TM36zeCxsmMrs8fHpLRaP9/uusnksfvGByWPz6WqPz5vk
+	AriiuGxSUnMyy1KL9O0SuDL2X73NXrDcr2JP10zmBsZuuy5GTg4JAROJN68mMoLYLAKqEvfO
+	7WMBsdkE1CVu3PjJDGKLCChLfJhyECjOxcEscIJJ4uK8RewgCWGBFIlrB7aBNfAKWEgcfnsB
+	yObgEBKwlLg+3xkiLChxcuYTsBJmoJl/5l1iBilhFpCWWP6PAyIsL9G8dTbYKk4BK4llWyHK
+	RYHWHth2nGkCI98sJJNmIZk0C2HSLCSTFjCyrGIUycwry03MzDHVK87OqMzLrNBLzs/dxAiM
+	lWW1fybuYPxy2f0QowAHoxIPr4WucoYQa2JZcWXuIUYJDmYlEd7rWUAh3pTEyqrUovz4otKc
+	1OJDjNIcLErivF7hqQlCAumJJanZqakFqUUwWSYOTqkGxvOss2zEJCc92nC5Ztk9n01tu4Ju
+	zQ9+O72i66GSqNG2Ns+CblUVp9ZDKVufX311gseU8f2fY1xuD78umv3jftge/YcqGw4lBCQc
+	6fy4+4Ct79xLn5eYqUU5a/cl1Yi/qozc8cL4qYlta/K3f/cN605c3XrboJT7wkaT3EvFszlu
+	N0foT3vr0afEUpyRaKjFXFScCABBztgikQIAAA==
+X-CFilter-Loop: Reflected
 
-From: Shravya KN <shravya.k-n@broadcom.com>
+On Tue, May 13, 2025 at 05:34:48PM +0800, Gavin Guo wrote:
+> The patch fixes a deadlock which can be triggered by an internal
+> syzkaller [1] reproducer and captured by bpftrace script [2] and its log
 
-[ Upstream commit 3051a77a09dfe3022aa012071346937fdf059033 ]
+Hi,
 
-The MTU setting at the time an XDP multi-buffer is attached
-determines whether the aggregation ring will be used and the
-rx_skb_func handler.  This is done in bnxt_set_rx_skb_mode().
+I'm trying to reproduce using the test program [1].  But not yet
+produced.  I see a lot of segfaults while running [1].  I guess
+something goes wrong.  Is there any prerequisite condition to reproduce
+it?  Lemme know if any.  Or can you try DEPT15 with your config and
+environment by the following steps:
 
-If the MTU is later changed, the aggregation ring setting may need
-to be changed and it may become out-of-sync with the settings
-initially done in bnxt_set_rx_skb_mode().  This may result in
-random memory corruption and crashes as the HW may DMA data larger
-than the allocated buffer size, such as:
+   1. Apply the patchset on v6.15-rc6.
+      https://lkml.kernel.org/r/20250513100730.12664-1-byungchul@sk.com
+   2. Turn on CONFIG_DEPT.
+   3. Run test program reproducing the deadlock.
+   4. Check dmesg to see if dept reported the dependency.
 
-BUG: kernel NULL pointer dereference, address: 00000000000003c0
-PGD 0 P4D 0
-Oops: 0000 [#1] PREEMPT SMP NOPTI
-CPU: 17 PID: 0 Comm: swapper/17 Kdump: loaded Tainted: G S         OE      6.1.0-226bf9805506 #1
-Hardware name: Wiwynn Delta Lake PVT BZA.02601.0150/Delta Lake-Class1, BIOS F0E_3A12 08/26/2021
-RIP: 0010:bnxt_rx_pkt+0xe97/0x1ae0 [bnxt_en]
-Code: 8b 95 70 ff ff ff 4c 8b 9d 48 ff ff ff 66 41 89 87 b4 00 00 00 e9 0b f7 ff ff 0f b7 43 0a 49 8b 95 a8 04 00 00 25 ff 0f 00 00 <0f> b7 14 42 48 c1 e2 06 49 03 95 a0 04 00 00 0f b6 42 33f
-RSP: 0018:ffffa19f40cc0d18 EFLAGS: 00010202
-RAX: 00000000000001e0 RBX: ffff8e2c805c6100 RCX: 00000000000007ff
-RDX: 0000000000000000 RSI: ffff8e2c271ab990 RDI: ffff8e2c84f12380
-RBP: ffffa19f40cc0e48 R08: 000000000001000d R09: 974ea2fcddfa4cbf
-R10: 0000000000000000 R11: ffffa19f40cc0ff8 R12: ffff8e2c94b58980
-R13: ffff8e2c952d6600 R14: 0000000000000016 R15: ffff8e2c271ab990
-FS:  0000000000000000(0000) GS:ffff8e3b3f840000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000000003c0 CR3: 0000000e8580a004 CR4: 00000000007706e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-PKRU: 55555554
-Call Trace:
- <IRQ>
- __bnxt_poll_work+0x1c2/0x3e0 [bnxt_en]
+	Byungchul
 
-To address the issue, we now call bnxt_set_rx_skb_mode() within
-bnxt_change_mtu() to properly set the AGG rings configuration and
-update rx_skb_func based on the new MTU value.
-Additionally, BNXT_FLAG_NO_AGG_RINGS is cleared at the beginning of
-bnxt_set_rx_skb_mode() to make sure it gets set or cleared based on
-the current MTU.
-
-Fixes: 08450ea98ae9 ("bnxt_en: Fix max_mtu setting for multi-buf XDP")
-Co-developed-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Signed-off-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Signed-off-by: Shravya KN <shravya.k-n@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-
-Signed-off-by: Zhaoyang Li <lizy04@hust.edu.cn>
----
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 393a983f6d69..6b1245a3ab4b 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -4041,7 +4041,7 @@ int bnxt_set_rx_skb_mode(struct bnxt *bp, bool page_mode)
- 	struct net_device *dev = bp->dev;
- 
- 	if (page_mode) {
--		bp->flags &= ~BNXT_FLAG_AGG_RINGS;
-+		bp->flags &= ~(BNXT_FLAG_AGG_RINGS | BNXT_FLAG_NO_AGG_RINGS);
- 		bp->flags |= BNXT_FLAG_RX_PAGE_MODE;
- 
- 		if (bp->xdp_prog->aux->xdp_has_frags)
-@@ -12799,6 +12799,14 @@ static int bnxt_change_mtu(struct net_device *dev, int new_mtu)
- 		bnxt_close_nic(bp, true, false);
- 
- 	dev->mtu = new_mtu;
-+
-+	/* MTU change may change the AGG ring settings if an XDP multi-buffer
-+	 * program is attached.  We need to set the AGG rings settings and
-+	 * rx_skb_func accordingly.
-+	 */
-+	if (READ_ONCE(bp->xdp_prog))
-+		bnxt_set_rx_skb_mode(bp, true);
-+
- 	bnxt_set_ring_params(bp);
- 
- 	if (netif_running(dev))
--- 
-2.25.1
-
+> [3] in this scenario:
+> 
+> Process 1                              Process 2
+> ---				       ---
+> hugetlb_fault
+>   mutex_lock(B) // take B
+>   filemap_lock_hugetlb_folio
+>     filemap_lock_folio
+>       __filemap_get_folio
+>         folio_lock(A) // take A
+>   hugetlb_wp
+>     mutex_unlock(B) // release B
+>     ...                                hugetlb_fault
+>     ...                                  mutex_lock(B) // take B
+>                                          filemap_lock_hugetlb_folio
+>                                            filemap_lock_folio
+>                                              __filemap_get_folio
+>                                                folio_lock(A) // blocked
+>     unmap_ref_private
+>     ...
+>     mutex_lock(B) // retake and blocked
+> 
+> This is a ABBA deadlock involving two locks:
+> - Lock A: pagecache_folio lock
+> - Lock B: hugetlb_fault_mutex_table lock
+> 
+> The deadlock occurs between two processes as follows:
+> 1. The first process (let’s call it Process 1) is handling a
+> copy-on-write (COW) operation on a hugepage via hugetlb_wp. Due to
+> insufficient reserved hugetlb pages, Process 1, owner of the reserved
+> hugetlb page, attempts to unmap a hugepage owned by another process
+> (non-owner) to satisfy the reservation. Before unmapping, Process 1
+> acquires lock B (hugetlb_fault_mutex_table lock) and then lock A
+> (pagecache_folio lock). To proceed with the unmap, it releases Lock B
+> but retains Lock A. After the unmap, Process 1 tries to reacquire Lock
+> B. However, at this point, Lock B has already been acquired by another
+> process.
+> 
+> 2. The second process (Process 2) enters the hugetlb_fault handler
+> during the unmap operation. It successfully acquires Lock B
+> (hugetlb_fault_mutex_table lock) that was just released by Process 1,
+> but then attempts to acquire Lock A (pagecache_folio lock), which is
+> still held by Process 1.
+> 
+> As a result, Process 1 (holding Lock A) is blocked waiting for Lock B
+> (held by Process 2), while Process 2 (holding Lock B) is blocked waiting
+> for Lock A (held by Process 1), constructing a ABBA deadlock scenario.
+> 
+> The solution here is to unlock the pagecache_folio and provide the
+> pagecache_folio_unlocked variable to the caller to have the visibility
+> over the pagecache_folio status for subsequent handling.
+> 
+> The error message:
+> INFO: task repro_20250402_:13229 blocked for more than 64 seconds.
+>       Not tainted 6.15.0-rc3+ #24
+> "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+> task:repro_20250402_ state:D stack:25856 pid:13229 tgid:13228 ppid:3513   task_flags:0x400040 flags:0x00004006
+> Call Trace:
+>  <TASK>
+>  __schedule+0x1755/0x4f50
+>  schedule+0x158/0x330
+>  schedule_preempt_disabled+0x15/0x30
+>  __mutex_lock+0x75f/0xeb0
+>  hugetlb_wp+0xf88/0x3440
+>  hugetlb_fault+0x14c8/0x2c30
+>  trace_clock_x86_tsc+0x20/0x20
+>  do_user_addr_fault+0x61d/0x1490
+>  exc_page_fault+0x64/0x100
+>  asm_exc_page_fault+0x26/0x30
+> RIP: 0010:__put_user_4+0xd/0x20
+>  copy_process+0x1f4a/0x3d60
+>  kernel_clone+0x210/0x8f0
+>  __x64_sys_clone+0x18d/0x1f0
+>  do_syscall_64+0x6a/0x120
+>  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> RIP: 0033:0x41b26d
+>  </TASK>
+> INFO: task repro_20250402_:13229 is blocked on a mutex likely owned by task repro_20250402_:13250.
+> task:repro_20250402_ state:D stack:28288 pid:13250 tgid:13228 ppid:3513   task_flags:0x400040 flags:0x00000006
+> Call Trace:
+>  <TASK>
+>  __schedule+0x1755/0x4f50
+>  schedule+0x158/0x330
+>  io_schedule+0x92/0x110
+>  folio_wait_bit_common+0x69a/0xba0
+>  __filemap_get_folio+0x154/0xb70
+>  hugetlb_fault+0xa50/0x2c30
+>  trace_clock_x86_tsc+0x20/0x20
+>  do_user_addr_fault+0xace/0x1490
+>  exc_page_fault+0x64/0x100
+>  asm_exc_page_fault+0x26/0x30
+> RIP: 0033:0x402619
+>  </TASK>
+> INFO: task repro_20250402_:13250 blocked for more than 65 seconds.
+>       Not tainted 6.15.0-rc3+ #24
+> "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+> task:repro_20250402_ state:D stack:28288 pid:13250 tgid:13228 ppid:3513   task_flags:0x400040 flags:0x00000006
+> Call Trace:
+>  <TASK>
+>  __schedule+0x1755/0x4f50
+>  schedule+0x158/0x330
+>  io_schedule+0x92/0x110
+>  folio_wait_bit_common+0x69a/0xba0
+>  __filemap_get_folio+0x154/0xb70
+>  hugetlb_fault+0xa50/0x2c30
+>  trace_clock_x86_tsc+0x20/0x20
+>  do_user_addr_fault+0xace/0x1490
+>  exc_page_fault+0x64/0x100
+>  asm_exc_page_fault+0x26/0x30
+> RIP: 0033:0x402619
+>  </TASK>
+> 
+> Showing all locks held in the system:
+> 1 lock held by khungtaskd/35:
+>  #0: ffffffff879a7440 (rcu_read_lock){....}-{1:3}, at: debug_show_all_locks+0x30/0x180
+> 2 locks held by repro_20250402_/13229:
+>  #0: ffff888017d801e0 (&mm->mmap_lock){++++}-{4:4}, at: lock_mm_and_find_vma+0x37/0x300
+>  #1: ffff888000fec848 (&hugetlb_fault_mutex_table[i]){+.+.}-{4:4}, at: hugetlb_wp+0xf88/0x3440
+> 3 locks held by repro_20250402_/13250:
+>  #0: ffff8880177f3d08 (vm_lock){++++}-{0:0}, at: do_user_addr_fault+0x41b/0x1490
+>  #1: ffff888000fec848 (&hugetlb_fault_mutex_table[i]){+.+.}-{4:4}, at: hugetlb_fault+0x3b8/0x2c30
+>  #2: ffff8880129500e8 (&resv_map->rw_sema){++++}-{4:4}, at: hugetlb_fault+0x494/0x2c30
+> 
+> Link: https://drive.google.com/file/d/1DVRnIW-vSayU5J1re9Ct_br3jJQU6Vpb/view?usp=drive_link [1]
+> Link: https://github.com/bboymimi/bpftracer/blob/master/scripts/hugetlb_lock_debug.bt [2]
+> Link: https://drive.google.com/file/d/1bWq2-8o-BJAuhoHWX7zAhI6ggfhVzQUI/view?usp=sharing [3]
+> Fixes: 40549ba8f8e0 ("hugetlb: use new vma_lock for pmd sharing synchronization")
+> Cc: <stable@vger.kernel.org>
+> Cc: Hugh Dickins <hughd@google.com>
+> Cc: Florent Revest <revest@google.com>
+> Cc: Gavin Shan <gshan@redhat.com>
+> Signed-off-by: Gavin Guo <gavinguo@igalia.com>
+> ---
+>  mm/hugetlb.c | 33 ++++++++++++++++++++++++++++-----
+>  1 file changed, 28 insertions(+), 5 deletions(-)
+> 
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index e3e6ac991b9c..ad54a74aa563 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -6115,7 +6115,8 @@ static void unmap_ref_private(struct mm_struct *mm, struct vm_area_struct *vma,
+>   * Keep the pte_same checks anyway to make transition from the mutex easier.
+>   */
+>  static vm_fault_t hugetlb_wp(struct folio *pagecache_folio,
+> -		       struct vm_fault *vmf)
+> +		       struct vm_fault *vmf,
+> +		       bool *pagecache_folio_unlocked)
+>  {
+>  	struct vm_area_struct *vma = vmf->vma;
+>  	struct mm_struct *mm = vma->vm_mm;
+> @@ -6212,6 +6213,22 @@ static vm_fault_t hugetlb_wp(struct folio *pagecache_folio,
+>  			u32 hash;
+>  
+>  			folio_put(old_folio);
+> +			/*
+> +			 * The pagecache_folio needs to be unlocked to avoid
+> +			 * deadlock and we won't re-lock it in hugetlb_wp(). The
+> +			 * pagecache_folio could be truncated after being
+> +			 * unlocked. So its state should not be relied
+> +			 * subsequently.
+> +			 *
+> +			 * Setting *pagecache_folio_unlocked to true allows the
+> +			 * caller to handle any necessary logic related to the
+> +			 * folio's unlocked state.
+> +			 */
+> +			if (pagecache_folio) {
+> +				folio_unlock(pagecache_folio);
+> +				if (pagecache_folio_unlocked)
+> +					*pagecache_folio_unlocked = true;
+> +			}
+>  			/*
+>  			 * Drop hugetlb_fault_mutex and vma_lock before
+>  			 * unmapping.  unmapping needs to hold vma_lock
+> @@ -6566,7 +6583,7 @@ static vm_fault_t hugetlb_no_page(struct address_space *mapping,
+>  	hugetlb_count_add(pages_per_huge_page(h), mm);
+>  	if ((vmf->flags & FAULT_FLAG_WRITE) && !(vma->vm_flags & VM_SHARED)) {
+>  		/* Optimization, do the COW without a second fault */
+> -		ret = hugetlb_wp(folio, vmf);
+> +		ret = hugetlb_wp(folio, vmf, NULL);
+>  	}
+>  
+>  	spin_unlock(vmf->ptl);
+> @@ -6638,6 +6655,7 @@ vm_fault_t hugetlb_fault(struct mm_struct *mm, struct vm_area_struct *vma,
+>  	struct hstate *h = hstate_vma(vma);
+>  	struct address_space *mapping;
+>  	int need_wait_lock = 0;
+> +	bool pagecache_folio_unlocked = false;
+>  	struct vm_fault vmf = {
+>  		.vma = vma,
+>  		.address = address & huge_page_mask(h),
+> @@ -6792,7 +6810,8 @@ vm_fault_t hugetlb_fault(struct mm_struct *mm, struct vm_area_struct *vma,
+>  
+>  	if (flags & (FAULT_FLAG_WRITE|FAULT_FLAG_UNSHARE)) {
+>  		if (!huge_pte_write(vmf.orig_pte)) {
+> -			ret = hugetlb_wp(pagecache_folio, &vmf);
+> +			ret = hugetlb_wp(pagecache_folio, &vmf,
+> +					&pagecache_folio_unlocked);
+>  			goto out_put_page;
+>  		} else if (likely(flags & FAULT_FLAG_WRITE)) {
+>  			vmf.orig_pte = huge_pte_mkdirty(vmf.orig_pte);
+> @@ -6809,10 +6828,14 @@ vm_fault_t hugetlb_fault(struct mm_struct *mm, struct vm_area_struct *vma,
+>  out_ptl:
+>  	spin_unlock(vmf.ptl);
+>  
+> -	if (pagecache_folio) {
+> +	/*
+> +	 * If the pagecache_folio is unlocked in hugetlb_wp(), we skip
+> +	 * folio_unlock() here.
+> +	 */
+> +	if (pagecache_folio && !pagecache_folio_unlocked)
+>  		folio_unlock(pagecache_folio);
+> +	if (pagecache_folio)
+>  		folio_put(pagecache_folio);
+> -	}
+>  out_mutex:
+>  	hugetlb_vma_unlock_read(vma);
+>  
+> 
+> base-commit: d76bb1ebb5587f66b0f8b8099bfbb44722bc08b3
+> -- 
+> 2.43.0
+> 
 
