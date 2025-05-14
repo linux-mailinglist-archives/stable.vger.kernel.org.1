@@ -1,150 +1,106 @@
-Return-Path: <stable+bounces-144338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E010AB655B
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 10:11:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A387BAB6567
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 10:12:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE37A3A95FC
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 08:11:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8178D3B8C72
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 08:11:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF4BE21A928;
-	Wed, 14 May 2025 08:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93CE320B81D;
+	Wed, 14 May 2025 08:11:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="R/rn48uZ"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="YDVFVU7v"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.17.10])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5078820B81D
-	for <stable@vger.kernel.org>; Wed, 14 May 2025 08:11:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A8821ABCF;
+	Wed, 14 May 2025 08:11:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747210282; cv=none; b=jQ3hX41xaHrQK62mOlrLT5wjE47Ogmoq1ncMyHefTUIZsXz+Zt2zT011wx98+sYybHmzDU+03P11pJUgZff2/nC8rSo5hbpY/nx0N45K+cxeSHg7sTRxaMRqRBjeRvmc8KSfTlLKbQ14sWztjzOtiNucIc24pqljqanwJVyQ+0E=
+	t=1747210307; cv=none; b=O8e4WugGIKky+hRFtbfaTM2grmUnagf5sCtEVH1Eqhfxp2wZvY6btgjBFm+lEDzVs3sKm07LUAXkiVcpmJsMy3ZXZ688x8RfEe9jhTiDXRZ7vepC/M1Tek0bz/GrPI5QaczcR+QAzyd/a0yYbEtsjQv+Orvqoh2HKEnTOAqMuBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747210282; c=relaxed/simple;
-	bh=lvKzWkNi9IKthvlDXe7w7jJgNJeImv/Xjjj2vPRnDLM=;
+	s=arc-20240116; t=1747210307; c=relaxed/simple;
+	bh=HNBqAM7JXRbvo2se9y6yfdhZRKG3Llrhnh2jkIvkrjQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T6AKTycxlgQ7oWUi/0j8FdSbNN8VS78rjLVX8jQrZjCgOuO/4iXuPr3RscaZIrEAWPyK5Jvgs05LFdPz5rRvinLjcQHzo/uARKFMDNuWjG/XcSQAg5OIP2lolLFIxbBKpZu7Ry8UfOmicrk3nhjuapzNO4lG2tXKIMUHHrkxkEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=R/rn48uZ; arc=none smtp.client-ip=212.227.17.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
-	s=s1-ionos; t=1747210262; x=1747815062; i=christian@heusel.eu;
-	bh=yp19kCTXAzlQPM0VTZ+xoHXpUu2B4qVH44q0U8wInjk=;
-	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:In-Reply-To:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=R/rn48uZZzDI9SEi3EFbEzkQuXl1xSxXM825o5h/ORMXCYLQ6fqF+Z2g1zZlyW5e
-	 f8y4Fnr6EB7+jU7iL4lO/3zq9cNIcGvEThyQTIny+Jhyu9o/FPpuu5Ltr7ZwryhU8
-	 OP1uYNOpIhK8+4uC/3/V0g5+otP+QO8OyIBhIN0d165FuRM9RwtjVtt3FX5NMqmih
-	 EVHttBa+lksz41IgOAzVmV1Hg+hkBIZqqLodhzvyq07v3QNm6N4rbUWzjbsenuko6
-	 5epS2hW+hM3belqAdlq1Ppigpq1DSI0frZfE9tu8hegiCdVG54WdBDGkuoSZUSy0k
-	 G+k66nDmKgwuLGTrxQ==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from localhost ([129.206.223.183]) by mrelayeu.kundenserver.de
- (mreue108 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1MTiLj-1uPGm30G4r-00Ytic; Wed, 14 May 2025 10:11:02 +0200
-Date: Wed, 14 May 2025 10:11:00 +0200
-From: Christian Heusel <christian@heusel.eu>
-To: Wayne Lin <Wayne.Lin@amd.com>
-Cc: amd-gfx@lists.freedesktop.org, Harry Wentland <harry.wentland@amd.com>, 
-	Mario Limonciello <mario.limonciello@amd.com>, Alex Deucher <alexander.deucher@amd.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] drm/amd/display: Avoid flooding unnecessary info messages
-Message-ID: <90f81e59-1f85-4c2a-9d6e-879898f83fa8@heusel.eu>
-References: <20250513032026.838036-1-Wayne.Lin@amd.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=UGrwr37Gd2CQq8IpaH5ih94vmrEN675yfmTrGkOQyfYPBfmSi5rnYZxWuhFWU7Uzy2RyU41d2n6PEw+0iFB1StaO1TgSBRmw7b2w8o4nY+6AYnMQ8urf/xI9EIJ9oQVq/2h1qQRNX2IOHoCfRtVHxYN5OhnSfDNY2PpNcZ8+0ts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=YDVFVU7v; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id AC53040E0258;
+	Wed, 14 May 2025 08:11:40 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id veJ6WnyXLA6A; Wed, 14 May 2025 08:11:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1747210295; bh=pM6qHR2IMAysyGbXGPcwspD06t/7gB1GJ/HkT8pOlr0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YDVFVU7vR/w2vT+Gk6MTJLZIDE3jY+xj7DRo0iZQclnvbc0I5dm7aRegiGlyCDczw
+	 kYT6i2kHQ1wWXdDarTXZQUICMcgK5fH8cOw89U8yLTRit9uszw3Za9D8rSR6NvqU3g
+	 Wbg8NoskvgE3jZJHJqKBIkN3WJvtr9515ZhQeta3k+MO1arNhI0UerTlWBiG10/RWI
+	 rIUGLXcOQO8kDbPX6j8lkdLluR5wJ9y32u0fmsWBlgmQmT+rSa5DaT9NZh8yDfoUaY
+	 JKuu9zDaFwQvQe0cP8zitudZgX03F4OPm3i1SzS1Uj2hc1DhK3jFyIY/no1R03QxIE
+	 PVZNg5mtq+Sy7weyxtkSX1dw8Llw8k+WlMPMN1RXVJ64rVc4kNkA0j7MpPzpJjU2i+
+	 xVHboiAEMyRRQJyEhwzrhSh4haXcK/JX1/4lrnG6mqsPTbBBBrJnIlw2EiyTcmf0pt
+	 1CTw+hkIV6WjXk8mApe25yTbXSGu3TUt+rER6Ve9Hok8qUC1FZwkcsHG6FwNkzc0ZD
+	 rLv4UJH3DCwIjGjFaVTDsTVM8h+0hmgce+psDHfSWjxhyw6P3QJKLyE9sqjQ7eYON0
+	 fwNr+A5Bpe7wXHGnEFXaT8fdZmdtZVcA3sY3zXrhhN+X2AniansJv7BSM5Alc0eF00
+	 2TcTDEw9Xgs8jzXC50p/adRA=
+Received: from zn.tnic (p579690ee.dip0.t-ipconnect.de [87.150.144.238])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id AF2CD40E01ED;
+	Wed, 14 May 2025 08:11:26 +0000 (UTC)
+Date: Wed, 14 May 2025 10:11:20 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Ingo Molnar <mingo@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-tip-commits@vger.kernel.org,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	Pankaj Gupta <pankaj.gupta@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Srikanth Aithal <sraithal@amd.com>, stable@vger.kernel.org,
+	x86@kernel.org
+Subject: Re: [tip: x86/urgent] x86/sev: Do not touch VMSA pages during SNP
+ guest memory kdump
+Message-ID: <20250514081120.GAaCRQKOVcm4dgqp59@fat_crate.local>
+References: <20250428214151.155464-1-Ashish.Kalra@amd.com>
+ <174715966762.406.12942579862694214802.tip-bot2@tip-bot2>
+ <aCREWka5uQndvTN_@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="5jbs3dkqzer36ufa"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250513032026.838036-1-Wayne.Lin@amd.com>
-X-Provags-ID: V03:K1:BmqfP4SKpP6Umy+E17qUujc5PYF8npHNNs8NIAE+FvHJhDNihjl
- XNhapen9poo0Yb5ZttPs6i3vwNg7GqLL3+DJwUQOZ+KOH+x7ehXV1RbshQp/bLvKJISd3lg
- j5/iUO2WbY3WZbUkjpDf2uf+LeUxjW9BWF3IV7qEuUBOqwmvPwA2/Jt0dOdubMkC93r3gXn
- Wwns+MjrnWIkwa+cbXJ0Q==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:pLbrL3GubYg=;sPGkEBhMgh5oDi8gekQJaF+yoWt
- 1Z8e2ymQx6hGC/sEJP2X1oENsq99qr3bG4lrp/Ja+gkgT0sjJiMFGEbtpjximBugN++5/aBPP
- VWgaXXZknw55rfIizYcJOsT+DgbfjVV9p3xlghHLfECyF7JMttyu47BJah2JMpsoCA0fLYqfb
- h+mtWT8Si+pep008GDM5qx2/vOceC8UjzXIPh7AjN+caxowfHDlsmeomRNpWE7T4TL6y3/OLN
- Q+SR6CU5J+HDVGmkxeC8D8HqsD4Wl2GfYMDE/QVvbpqCbXcLdjhE+9qbp/xyHucYntnyFBbuX
- NAk35FHCC/FjRvf29s319dLthf8pzn5g1FQOv0A5YXL9AIPkN+S4OUy98Jd+V0Cf+PHs3GlyM
- FG+HZwwNXxSQ/BDqfGapWl22cKAk2nf9N/YP98CQww0RqINb6lbtk3zoy7mou/V2qRc9Tg6wB
- ewv3uA/0oCT7dDeeW9cLvv59ghpHXqP3KJOhyayGVDvzOg0eOS0hqjMot+4zzktl9Qr+hGbhW
- IWwOSpjUTp0ssdkvaDydmfqVoyilgJ/OqFflF5XXlXIchWdWIIRVDZQbavptDapCETj/x62Ao
- mbKtd5s4yyYBq4GrYW4dhXNviPMuSV++VWQ8PdHvPH6M4e/+osVskSCjA1gThC1+2B7hBZgEY
- XVavkQxUeq2g8xfN2zLa2PQhXcGYjLRCQwg4IErxwGbLORkcPkPycT3zVoB7Zt6xuqyVtEpO2
- 9WjgrYKabZbHN5IHgYtfNoWfLy1a9vg24APyj3MOyDUXOEEFMfJ1XSd9deqK0yxXVMvDWCyTW
- o6TiYip+bT75WqY/wzQuxRFZIYIvRk5fdgxF6/HCYGv2nr0sEBtpYQA0HxqVYjjaJ14RjCDja
- 2Oit2mvDEG03oVp6FvrJuV0TCuaBYxfvb9PXNsnBTR7LXTHly+OchXqoNrgI3XMyLSklEpWET
- xJoRiaUN7YgEWWyQ/oycQHEFKSVpYVt7x4tmH5aFFxb7oFEsJvhU7jNbawwj6jUgQ0v1KfeFf
- r8KEy6Sju/44aWCWKk4JTj4yRHDoj7euBUbkn3pD9mdqRHzJ/0a7yYEctzs9hl/EKyCgQXqIZ
- 4mU5mCou0k0Kd9nXaFmfZyYi0LemNekShJ14BoFqTAiiMv0QyUSmSv+8BUgTNoG+KrHCs97Bz
- 0IIzOkgJb9RwPlhaqgOZIC+fo70W9LKn4RdLGiMzRXA65PZYZ1MdMO1N1rXIku0IIRuaSrIGw
- nSPy8G+lC2vj/tS2UEJdXr8PwA5vnCifSKQhjp1GtQSyQUp8gKrfBacFs8MYCT5ReS59izpfL
- 1V4J1Sao+Fg6eJzgyqhMVsBPz54laUgViW1vWtGYk/8PC2zNar9GLvL6Kpf6J8pGXfL/FKCq/
- qqzBQaPv61uVWK/WbQOJX2BY/4wYLbbZZc/yHm6hKjGFS019wLYA7haSE0
+In-Reply-To: <aCREWka5uQndvTN_@gmail.com>
 
+On Wed, May 14, 2025 at 09:20:58AM +0200, Ingo Molnar wrote:
+> Boris, please don't rush these SEV patches without proper review first! ;-)
 
---5jbs3dkqzer36ufa
-Content-Type: text/plain; protected-headers=v1; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH] drm/amd/display: Avoid flooding unnecessary info messages
-MIME-Version: 1.0
+You didn't read the R-by and SOB tags at the beginning?
 
-On 25/05/13 11:20AM, Wayne Lin wrote:
-> It's expected that we'll encounter temporary exceptions
-> during aux transactions. Adjust logging from drm_info to
-> drm_dbg_dp to prevent flooding with unnecessary log messages.
->=20
-> Fixes: 6285f12bc54c ("drm/amd/display: Fix wrong handling for AUX_DEFER c=
-ase")
-> Cc: stable@vger.kernel.org
-> Cc: Mario Limonciello <mario.limonciello@amd.com>
-> Cc: Alex Deucher <alexander.deucher@amd.com>
-> Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
-> ---
->  drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c | 6 +++---
->  1 file changed, 3 insertions(+), 3 deletions(-)
+Feel free to propose fixes, Tom and I will review them and even test them for
+you!
 
-If it's not already applied it would of course be nice if credit for my
-report could be added to the change:
+But ontop of those: those are fixes and the "issues" you've pointed out are to
+existing code which this patch only moves.
 
-Reported-by: Christian Heusel <christian@heusel.eu>
-Link: https://lore.kernel.org/all/32c592ea-0afd-4753-a81d-73021b8e193c@heus=
-el.eu/
+I would usually say "Thx" here but not this time.
 
-Have a nice day everyone!
-Chris
+-- 
+Regards/Gruss,
+    Boris.
 
---5jbs3dkqzer36ufa
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEb3ea3iR6a4oPcswTwEfU8yi1JYUFAmgkUBQACgkQwEfU8yi1
-JYU6SA/9GeRVNamI6JTz/D6bxRsFu94z5RLpIctlu5hzQ9xLgbE5eQeAysRme9DX
-k3Q2wDY/aO9nNKDFQkeZHmFX7nUZh/dgA5nKiOkYoF335WjpZEsZ6W90KF8PJtaS
-DuKdf+bocyc7pzgp+Hd0oIJxD7ZF35FCX7u3p8m+MD6PoTNSdhfcK5iZ9oAMEfD8
-ypmrU2fnLcDfsArm4nHa8AqcfEoUZ64XQxcRv1gn8srr1Sx2XrU7JC+SiEbTEeeI
-kchaJipEwvWVplQ0sLbs3RxEYTms7dtJUIvHiwuGf9ey0xXRK9SRYQPrAxB8WvBc
-VSTgNgvrn0WQmY2/7cxaMsZPmbH0FxQygJ3ERQDSgPJa9e77iSmD5LJ6W851mYbg
-JGkjBICBepDVt5RKpirnYoJiPCOqgPHhgnHMbBOriDHO8HIg/Uvdlj6bcSDzeJ+h
-tMxZcHUS6HJrSBDAyqV3WU1vWhwiCTb5Hn9U8KHrrk3BZl5BQoPdOolWtASL02FS
-70jjKa5qt79ki6fHoij43RhXgqIcYze+qW1qxQijS2yxx1eKzvcT3LvHzqIzAJE6
-ssMxX8OM7jPIi4HuG0/ban1xQQmsLLph1GVaXmkK7L5qzqbuHTycfj4s5aZ61kIq
-seb/DUYf2a1rt0Syp4xR7eASIQH7QEkevRKjbWPzKx9u7UdTGHM=
-=Bfpm
------END PGP SIGNATURE-----
-
---5jbs3dkqzer36ufa--
+https://people.kernel.org/tglx/notes-about-netiquette
 
