@@ -1,70 +1,70 @@
-Return-Path: <stable+bounces-144321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FE7EAB62BE
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 08:08:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71FAFAB62C0
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 08:09:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE335463BB3
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 06:08:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C19E019E025D
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 06:09:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAF12433A8;
-	Wed, 14 May 2025 06:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47BFC1EFFAC;
+	Wed, 14 May 2025 06:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mpyIlKNe"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JUUChILb"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 289DB1E5B68
-	for <stable@vger.kernel.org>; Wed, 14 May 2025 06:08:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F2041E5B68
+	for <stable@vger.kernel.org>; Wed, 14 May 2025 06:08:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747202925; cv=none; b=J/4fFK5uLPrLhPRSdL5jge/tl1wceUm/nqT2o9qLFW7kEY3iAFHFcgv4C7zrCLXgi+YFGqmXa1lO6C/57DaAvj0ulwmefki9TFZpkWDOWF0ChUMPNgNJKhiFie9Ceg0FwgVb42wscjMRd2J77E6LRPN42RslUPDiq7neLdEgdG0=
+	t=1747202941; cv=none; b=apye2h2j5oVaq6Y6MLh/W7cfqloCyFZvhQn06pxSBMAJrE0dNX0FKW6g07x5T3LWIx2mwn1fi/ClGPuuW/x6oF5Xo+l6uQ913Lo0vpRZWvaICRoGErQJryoGed7QnnmDK/VgcXLfnrp6YJyvFPobMJoSfMXYMsJD65fg6u9/fWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747202925; c=relaxed/simple;
-	bh=lM4tZzxGyQzP7oairMCUYnn3vNKj7tbU4Xi7CzY8RxM=;
+	s=arc-20240116; t=1747202941; c=relaxed/simple;
+	bh=iid/FYx0WFroZqNgtWUXU+cdIMczXORXi/sthvSeLx4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mlIM2kkQ/JLiH7kBoLn5lA106A/+/a8n5/iT3GJEVyRchJ/LuO721xOWosf1oLyJFE8BQsBgKR22NGFTi5XjeUiaANp4cvcnx+Fk/rX+lRO38yeRSA4BqEFfFRDL57LzQ843h/am/+dRiIJ3Hf/LJDBS5X7SgA938FOSN2BQDaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mpyIlKNe; arc=none smtp.client-ip=192.198.163.15
+	 Content-Type:Content-Disposition:In-Reply-To; b=PxbcuSOYFqxpY8mqyxE6JcvKX4jN3dohI7DAgplcwiaVgpTCF8+MLqlGYyd0H0VAmQZajwCNct2OVQvgp7hglv437UEhti2Aab70hvtW4PCCuD5uft/c80B/QbKuhqFJRNgAsy4TFlRu+VcWXCKOp1nIjDI4yLi6FD/mHoTx4ts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JUUChILb; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747202924; x=1778738924;
+  t=1747202940; x=1778738940;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=lM4tZzxGyQzP7oairMCUYnn3vNKj7tbU4Xi7CzY8RxM=;
-  b=mpyIlKNeCOuy6QPR65s3SfgyjyTMLQRL/31F43W8sxU7fodKI6VtnImU
-   Xxil9fsvFXjWsPvn8pR++Jw/uf15dTu/5SHFtQyRvL8nmxKBg7qd4JeU4
-   QGbg0BVC48TlTl3/deiiBSA2PfAiYJHd61VDwwIlDli6bJMosx125jV+/
-   qZukKVKJQCynfAgJsrEwS7PBsGYRkEhT8Vp6iTVuZEeZ3E3dDVC2vDGUX
-   FLvUK1IXAKLJLlyRR8byV6FYuQCOJP3RVkZ2pXgyIVMYneTlw/Hy6CSCT
-   lSOvTYS44+4Un+5GMdHPCItEQ8Nro2a+b3WQ0tP+Z09rj2JXhHqrNdy9R
+  bh=iid/FYx0WFroZqNgtWUXU+cdIMczXORXi/sthvSeLx4=;
+  b=JUUChILbUoLKDCHsra1ZFcnh0hRF2uYXtRiesC3E34m+Rzgm+lQYUldi
+   kuqtHu4xziEPXmh5FT7UL0V1TZwDR2pWUkG//9/npkoTpbRNEkE7PKuig
+   sxlzp9uEdqzE8u3aqGQ5e7nsi7LuYQQHRzuqWnSg6WiWbtyNjFOFxYB6L
+   I+XUbPbV0DCsXkrepNkleUbrfsXIJXst82ZnwJHVL/h+5OrLZClpzdgN4
+   oeVGP1jiNRfwL30cCjY36x4QnGDjKqcpDlXZ3LYMZK6/b6bUbOMTBfxTg
+   yfQiMcdk2Xjb0QFTuTqYnz9Mmz0T/276BodcFLwpNwiEbQ/hIEruYmBPR
    A==;
-X-CSE-ConnectionGUID: R1aWdqgzR/mTYpsUoh9z4A==
-X-CSE-MsgGUID: Jzc1lMYOSj63XHrv9oiB4g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11432"; a="49226293"
+X-CSE-ConnectionGUID: xudqjeaeSLqDuc1Ravsg2g==
+X-CSE-MsgGUID: /lU8xnzvTJaKTtqE8iQ3ig==
+X-IronPort-AV: E=McAfee;i="6700,10204,11432"; a="48190838"
 X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; 
-   d="scan'208";a="49226293"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2025 23:08:43 -0700
-X-CSE-ConnectionGUID: EKH1uu0jQzO2xfZjh1CiJQ==
-X-CSE-MsgGUID: CkgdiC/5TG+BRbt0tgtq/g==
+   d="scan'208";a="48190838"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2025 23:08:59 -0700
+X-CSE-ConnectionGUID: qZ8bZutGQPq8muYfWFkYMg==
+X-CSE-MsgGUID: URQR7ChpRsOs6Y45iDL7Ag==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; 
-   d="scan'208";a="137856289"
+   d="scan'208";a="137982227"
 Received: from rshah-mobl.amr.corp.intel.com (HELO desk) ([10.125.146.11])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2025 23:08:43 -0700
-Date: Tue, 13 May 2025 23:08:42 -0700
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2025 23:08:58 -0700
+Date: Tue, 13 May 2025 23:08:58 -0700
 From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 To: stable@vger.kernel.org
-Cc: "Borislav Petkov (AMD)" <bp@alien8.de>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 5.15 v2 08/14] x86/alternative: Optimize returns patching
-Message-ID: <20250513-its-5-15-v2-8-90690efdc7e0@linux.intel.com>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 5.15 v2 09/14] x86/alternatives: Remove faulty optimization
+Message-ID: <20250513-its-5-15-v2-9-90690efdc7e0@linux.intel.com>
 X-Mailer: b4 0.14.2
 References: <20250513-its-5-15-v2-0-90690efdc7e0@linux.intel.com>
 Precedence: bulk
@@ -77,57 +77,49 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20250513-its-5-15-v2-0-90690efdc7e0@linux.intel.com>
 
-From: "Borislav Petkov (AMD)" <bp@alien8.de>
+From: Josh Poimboeuf <jpoimboe@kernel.org>
 
-commit d2408e043e7296017420aa5929b3bba4d5e61013 upstream.
+commit 4ba89dd6ddeca2a733bdaed7c9a5cbe4e19d9124 upstream.
 
-Instead of decoding each instruction in the return sites range only to
-realize that that return site is a jump to the default return thunk
-which is needed - X86_FEATURE_RETHUNK is enabled - lift that check
-before the loop and get rid of that loop overhead.
+The following commit
 
-Add comments about what gets patched, while at it.
+  095b8303f383 ("x86/alternative: Make custom return thunk unconditional")
 
+made '__x86_return_thunk' a placeholder value.  All code setting
+X86_FEATURE_RETHUNK also changes the value of 'x86_return_thunk'.  So
+the optimization at the beginning of apply_returns() is dead code.
+
+Also, before the above-mentioned commit, the optimization actually had a
+bug It bypassed __static_call_fixup(), causing some raw returns to
+remain unpatched in static call trampolines.  Thus the 'Fixes' tag.
+
+Fixes: d2408e043e72 ("x86/alternative: Optimize returns patching")
+Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20230512120952.7924-1-bp@alien8.de
+Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/16d19d2249d4485d8380fb215ffaae81e6b8119e.1693889988.git.jpoimboe@kernel.org
 Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 ---
- arch/x86/kernel/alternative.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ arch/x86/kernel/alternative.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
 diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-index ddf696742c97263af9cc59c68daf1fd19efee0c6..26841dbaed76324df3c22b41c996bc81dab4ca17 100644
+index 26841dbaed76324df3c22b41c996bc81dab4ca17..5951c77723787401f8ddb470fdcda76a488ca524 100644
 --- a/arch/x86/kernel/alternative.c
 +++ b/arch/x86/kernel/alternative.c
-@@ -620,13 +620,12 @@ static int patch_return(void *addr, struct insn *insn, u8 *bytes)
- {
- 	int i = 0;
- 
-+	/* Patch the custom return thunks... */
- 	if (cpu_feature_enabled(X86_FEATURE_RETHUNK)) {
--		if (x86_return_thunk == __x86_return_thunk)
--			return -1;
--
- 		i = JMP32_INSN_SIZE;
- 		__text_gen_insn(bytes, JMP32_INSN_OPCODE, addr, x86_return_thunk, i);
- 	} else {
-+		/* ... or patch them out if not needed. */
- 		bytes[i++] = RET_INSN_OPCODE;
- 	}
- 
-@@ -639,6 +638,14 @@ void __init_or_module noinline apply_returns(s32 *start, s32 *end)
+@@ -638,14 +638,6 @@ void __init_or_module noinline apply_returns(s32 *start, s32 *end)
  {
  	s32 *s;
  
-+	/*
-+	 * Do not patch out the default return thunks if those needed are the
-+	 * ones generated by the compiler.
-+	 */
-+	if (cpu_feature_enabled(X86_FEATURE_RETHUNK) &&
-+	    (x86_return_thunk == __x86_return_thunk))
-+		return;
-+
+-	/*
+-	 * Do not patch out the default return thunks if those needed are the
+-	 * ones generated by the compiler.
+-	 */
+-	if (cpu_feature_enabled(X86_FEATURE_RETHUNK) &&
+-	    (x86_return_thunk == __x86_return_thunk))
+-		return;
+-
  	for (s = start; s < end; s++) {
  		void *dest = NULL, *addr = (void *)s + *s;
  		struct insn insn;
