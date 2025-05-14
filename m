@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-144437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A419CAB7697
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 22:14:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77D40AB7698
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 22:14:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 411011BA66B2
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 20:14:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F26216B05F
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 20:14:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 189D62951A5;
-	Wed, 14 May 2025 20:14:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E5B427703E;
+	Wed, 14 May 2025 20:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CfVJxIag"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e6T8xrXu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC90A296157
-	for <stable@vger.kernel.org>; Wed, 14 May 2025 20:14:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D196295519
+	for <stable@vger.kernel.org>; Wed, 14 May 2025 20:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747253663; cv=none; b=FwQlTHvBLZikTi4mblQeR0ZrCQfcHYPlt6BAvsrLw6bmp+RWHlK+SK1zdudOkhSQRnFoQM1Vz2gyRTWThzu4SRLXTAiMC8btY4m5XVBLOLe2LeiVDV1zHeoejSHEhaw5xW8HLie3m5rHC9fn7EDujExYTrS1PbRXNy14I8WwfvU=
+	t=1747253669; cv=none; b=OK0uTwngQchjgr1woOE388s01aNXRM/+37lX+X8cDZiDg+QjJgJUy5+KP7ywWrhUKccaK6Mrd/qmEc1fmCt9gBbOsfnL82tC6alkrYKsxdjyu2I8FTYbzun9msAIzFBa7Ocyu1fx8x7ZUXjm6vaFVUb5y63AnlukIBn6hX4YiqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747253663; c=relaxed/simple;
-	bh=CLDKtYPJe6DE211m6hONvG0MTfB70HqqHKWwg8Div50=;
+	s=arc-20240116; t=1747253669; c=relaxed/simple;
+	bh=ROaS1dRaU72GR+ULkyKMFVMlLbCd8wrAuZ9OkPAPYkI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J1ivqZ+h8BFCGecaTqgGXX8DvK+UjI19G8aR5MygQgDlSphgONgqRhevjaB6Chaa08OvC5xMaYtcSenvxW5rrLNpukvVFW3iWKeM8ATrVBhH/yR0kAI8mN7QFCxwewV5gIoJnOFZJwLGVvP5e4HR+nv+1slRMylBX1KrjhRrX/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CfVJxIag; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2143CC4CEE3;
-	Wed, 14 May 2025 20:14:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=urOf5iDKgFpZDT45Zc4S+BbtHOBBh8Cr3gNEL4A5mL3dCGmIyIq5j8SwPugp6n9XRGTZtdxXWu2dHZ+IOjeYCO+4AQQiSO8RlN9krae8iBacKgF6+12fzp11Jw8D4oIHR+ynJxgq9s3Nd3lJQkcFUEL9q6KN2I0Y2ImN1RSox7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e6T8xrXu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15316C4CEE3;
+	Wed, 14 May 2025 20:14:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747253663;
-	bh=CLDKtYPJe6DE211m6hONvG0MTfB70HqqHKWwg8Div50=;
+	s=k20201202; t=1747253669;
+	bh=ROaS1dRaU72GR+ULkyKMFVMlLbCd8wrAuZ9OkPAPYkI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CfVJxIagU0KcnWfINRIQisvS4wq6GwXTVZBfi/VQhRB3JVEBvhjvlz8xu5gEzok5R
-	 Khz+bRBH4EZ3K8kZt3jwttLu+o0r0M5Jr01aC1NqDwLNPBpIRnjXe1TzMOFtgZJb7j
-	 IwJq6GvAIICbqImFygy0AZ76xXEi4nA4mSkURJuNe/NNWDd4a7i7Y+EXOoxK8gwcqC
-	 3aBJb4lpGqfb4MnCT8gTDiORpFG9YEolwhMsF2Mmk2VvWLIpWKV/Ed4wI9fCzWzKg5
-	 CdeEwotWbhcafTo73+IgY4lzigj9ryVxE+ZbQZXN9uVtOpqZWK4ZLbEHCrjuRofvfw
-	 8nJ/fvGMkd/cQ==
+	b=e6T8xrXuemhHv2aQIykQj/KpGtYgIANzsT2Nq3Vg8HwrHbaL4RQe+/UD7zDOYV/oB
+	 eF/oI+7MQQSwJ/MhOqGrA/Kf99pwCoh3iakhLT+YnVHAEuzmRykTcb1x1k9fRUMyrs
+	 hOItti4r/DOUjoFkCFhViu72FDxUo8SH7tX9lSS4xQ7LNN5vysI/XbNYvPB/SqJtS0
+	 HEYto7FQLZahqXTrdm29aFa1WLeIx8yXjvmLCY7+AF+1uKHHYUfT94XqtVfEhrcKR8
+	 Anl8jv+1PfsnJTIl6H1+HayGM9AGQvmZWDT3iOdX5tVn2oeJjm/T8qCoC5omKD0HEt
+	 wPpAA8WYZ4inQ==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15 v2 11/14] x86/its: Enable Indirect Target Selection mitigation
-Date: Wed, 14 May 2025 16:14:18 -0400
-Message-Id: <20250514113200-185cc2962e9d31fa@stable.kernel.org>
+To: stable@vger.kernel.org,
+	pawan.kumar.gupta@linux.intel.com
+Cc: Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.15 v2 08/14] x86/alternative: Optimize returns patching
+Date: Wed, 14 May 2025 16:14:24 -0400
+Message-Id: <20250514112016-3d66742d84148d48@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250513-its-5-15-v2-11-90690efdc7e0@linux.intel.com>
+In-Reply-To:  <20250513-its-5-15-v2-8-90690efdc7e0@linux.intel.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,193 +64,49 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+Summary of potential issues:
+ℹ️ This is part 08/14 of a series
+⚠️ Found follow-up fixes in mainline
 
-The upstream commit SHA1 provided is correct: f4818881c47fd91fcb6d62373c57c7844e3de1c0
+The upstream commit SHA1 provided is correct: d2408e043e7296017420aa5929b3bba4d5e61013
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Pawan Gupta<pawan.kumar.gupta@linux.intel.com>
+Commit author: Borislav Petkov (AMD)<bp@alien8.de>
 
 Status in newer kernel trees:
-6.14.y | Present (different SHA1: 2530e9327957)
-6.12.y | Present (different SHA1: 29a3e7d59cac)
-6.6.y | Present (different SHA1: 527b6f385495)
-6.1.y | Present (different SHA1: 39fdd17f075d)
+6.14.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (exact SHA1)
+6.1.y | Not found
+
+Found fixes commits:
+4ba89dd6ddec x86/alternatives: Remove faulty optimization
 
 Note: The patch differs from the upstream commit:
 ---
-1:  f4818881c47fd ! 1:  e0aa87dadeb43 x86/its: Enable Indirect Target Selection mitigation
+1:  d2408e043e729 ! 1:  434b5a53f4508 x86/alternative: Optimize returns patching
     @@ Metadata
       ## Commit message ##
-         x86/its: Enable Indirect Target Selection mitigation
+         x86/alternative: Optimize returns patching
      
-    +    commit f4818881c47fd91fcb6d62373c57c7844e3de1c0 upstream.
+    +    commit d2408e043e7296017420aa5929b3bba4d5e61013 upstream.
     +
-         Indirect Target Selection (ITS) is a bug in some pre-ADL Intel CPUs with
-         eIBRS. It affects prediction of indirect branch and RETs in the
-         lower half of cacheline. Due to ITS such branches may get wrongly predicted
-    @@ Documentation/admin-guide/kernel-parameters.txt
-      			Format: <full_path>
-      			Run specified binary instead of /sbin/init as init
-     @@
-    + 				improves system performance, but it may also
-      				expose users to several CPU vulnerabilities.
-    - 				Equivalent to: if nokaslr then kpti=0 [ARM64]
-    - 					       gather_data_sampling=off [X86]
-    + 				Equivalent to: gather_data_sampling=off [X86]
-     +					       indirect_target_selection=off [X86]
-    + 					       kpti=0 [ARM64]
-      					       kvm.nx_huge_pages=off [X86]
-      					       l1tf=off [X86]
-    - 					       mds=off [X86]
+         Instead of decoding each instruction in the return sites range only to
+         realize that that return site is a jump to the default return thunk
+         which is needed - X86_FEATURE_RETHUNK is enabled - lift that check
+    @@ Commit message
+         Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+         Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+         Link: https://lore.kernel.org/r/20230512120952.7924-1-bp@alien8.de
+    +    Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
      
-      ## arch/x86/kernel/cpu/bugs.c ##
-     @@ arch/x86/kernel/cpu/bugs.c: static void __init srbds_select_mitigation(void);
-      static void __init l1d_flush_select_mitigation(void);
-    - static void __init srso_select_mitigation(void);
-      static void __init gds_select_mitigation(void);
-    + static void __init srso_select_mitigation(void);
-     +static void __init its_select_mitigation(void);
-      
-      /* The base value of the SPEC_CTRL MSR without task-specific bits set */
-      u64 x86_spec_ctrl_base;
-     @@ arch/x86/kernel/cpu/bugs.c: static DEFINE_MUTEX(spec_ctrl_mutex);
-      
-    - void (*x86_return_thunk)(void) __ro_after_init = __x86_return_thunk;
-    + void (*x86_return_thunk)(void) __ro_after_init = &__x86_return_thunk;
-      
-     +static void __init set_return_thunk(void *thunk)
-     +{
-    @@ arch/x86/kernel/cpu/bugs.c: void __init cpu_select_mitigations(void)
-      
-      /*
-     @@ arch/x86/kernel/cpu/bugs.c: static void __init retbleed_select_mitigation(void)
-    - 		setup_force_cpu_cap(X86_FEATURE_RETHUNK);
-      		setup_force_cpu_cap(X86_FEATURE_UNRET);
-      
-    --		x86_return_thunk = retbleed_return_thunk;
-    -+		set_return_thunk(retbleed_return_thunk);
-    + 		if (IS_ENABLED(CONFIG_RETHUNK))
-    +-			x86_return_thunk = retbleed_return_thunk;
-    ++			set_return_thunk(retbleed_return_thunk);
-      
-      		if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD &&
-      		    boot_cpu_data.x86_vendor != X86_VENDOR_HYGON)
-    -@@ arch/x86/kernel/cpu/bugs.c: static void __init retbleed_select_mitigation(void)
-    - 		setup_force_cpu_cap(X86_FEATURE_RETHUNK);
-    - 		setup_force_cpu_cap(X86_FEATURE_CALL_DEPTH);
-    - 
-    --		x86_return_thunk = call_depth_return_thunk;
-    -+		set_return_thunk(call_depth_return_thunk);
-    - 		break;
-    - 
-    - 	default:
-     @@ arch/x86/kernel/cpu/bugs.c: static void __init retbleed_select_mitigation(void)
-      	pr_info("%s\n", retbleed_strings[retbleed_mitigation]);
-      }
-    @@ arch/x86/kernel/cpu/bugs.c: static void __init retbleed_select_mitigation(void)
-     +enum its_mitigation {
-     +	ITS_MITIGATION_OFF,
-     +	ITS_MITIGATION_ALIGNED_THUNKS,
-    -+	ITS_MITIGATION_RETPOLINE_STUFF,
-     +};
-     +
-     +static const char * const its_strings[] = {
-     +	[ITS_MITIGATION_OFF]			= "Vulnerable",
-     +	[ITS_MITIGATION_ALIGNED_THUNKS]		= "Mitigation: Aligned branch/return thunks",
-    -+	[ITS_MITIGATION_RETPOLINE_STUFF]	= "Mitigation: Retpolines, Stuffing RSB",
-     +};
-     +
-     +static enum its_mitigation its_mitigation __ro_after_init = ITS_MITIGATION_ALIGNED_THUNKS;
-    @@ arch/x86/kernel/cpu/bugs.c: static void __init retbleed_select_mitigation(void)
-     +		return;
-     +	}
-     +
-    -+	/* Retpoline+CDT mitigates ITS, bail out */
-    -+	if (boot_cpu_has(X86_FEATURE_RETPOLINE) &&
-    -+	    boot_cpu_has(X86_FEATURE_CALL_DEPTH)) {
-    -+		its_mitigation = ITS_MITIGATION_RETPOLINE_STUFF;
-    -+		goto out;
-    -+	}
-    -+
-     +	/* Exit early to avoid irrelevant warnings */
-     +	if (cmd == ITS_CMD_OFF) {
-     +		its_mitigation = ITS_MITIGATION_OFF;
-    @@ arch/x86/kernel/cpu/bugs.c: static void __init retbleed_select_mitigation(void)
-     +		its_mitigation = ITS_MITIGATION_OFF;
-     +		goto out;
-     +	}
-    -+	if (!IS_ENABLED(CONFIG_MITIGATION_RETPOLINE) ||
-    -+	    !IS_ENABLED(CONFIG_MITIGATION_RETHUNK)) {
-    ++	if (!IS_ENABLED(CONFIG_RETPOLINE) || !IS_ENABLED(CONFIG_RETHUNK)) {
-     +		pr_err("WARNING: ITS mitigation depends on retpoline and rethunk support\n");
-     +		its_mitigation = ITS_MITIGATION_OFF;
-     +		goto out;
-    @@ arch/x86/kernel/cpu/bugs.c: static void __init srso_select_mitigation(void)
-     -				x86_return_thunk = srso_return_thunk;
-     +				set_return_thunk(srso_return_thunk);
-      			}
-    - 			if (has_microcode)
-    - 				srso_mitigation = SRSO_MITIGATION_SAFE_RET;
-    + 			srso_mitigation = SRSO_MITIGATION_SAFE_RET;
-    + 		} else {
-     @@ arch/x86/kernel/cpu/bugs.c: static ssize_t rfds_show_state(char *buf)
-      	return sysfs_emit(buf, "%s\n", rfds_strings[rfds_mitigation]);
-      }
-    @@ arch/x86/kernel/cpu/bugs.c: ssize_t cpu_show_reg_file_data_sampling(struct devic
-     +	return cpu_show_common(dev, attr, buf, X86_BUG_ITS);
-     +}
-      #endif
-    - 
-    - void __warn_thunk(void)
-     
-      ## drivers/base/cpu.c ##
-    -@@ drivers/base/cpu.c: CPU_SHOW_VULN_FALLBACK(spec_rstack_overflow);
-    - CPU_SHOW_VULN_FALLBACK(gds);
-    - CPU_SHOW_VULN_FALLBACK(reg_file_data_sampling);
-    - CPU_SHOW_VULN_FALLBACK(ghostwrite);
-    -+CPU_SHOW_VULN_FALLBACK(indirect_target_selection);
-    +@@ drivers/base/cpu.c: ssize_t __weak cpu_show_reg_file_data_sampling(struct device *dev,
-    + 	return sysfs_emit(buf, "Not affected\n");
-    + }
-      
-    ++ssize_t __weak cpu_show_indirect_target_selection(struct device *dev,
-    ++						  struct device_attribute *attr, char *buf)
-    ++{
-    ++	return sysfs_emit(buf, "Not affected\n");
-    ++}
-    ++
-      static DEVICE_ATTR(meltdown, 0444, cpu_show_meltdown, NULL);
-      static DEVICE_ATTR(spectre_v1, 0444, cpu_show_spectre_v1, NULL);
-    -@@ drivers/base/cpu.c: static DEVICE_ATTR(spec_rstack_overflow, 0444, cpu_show_spec_rstack_overflow, NU
-    + static DEVICE_ATTR(spectre_v2, 0444, cpu_show_spectre_v2, NULL);
-    +@@ drivers/base/cpu.c: static DEVICE_ATTR(retbleed, 0444, cpu_show_retbleed, NULL);
-      static DEVICE_ATTR(gather_data_sampling, 0444, cpu_show_gds, NULL);
-    + static DEVICE_ATTR(spec_rstack_overflow, 0444, cpu_show_spec_rstack_overflow, NULL);
-      static DEVICE_ATTR(reg_file_data_sampling, 0444, cpu_show_reg_file_data_sampling, NULL);
-    - static DEVICE_ATTR(ghostwrite, 0444, cpu_show_ghostwrite, NULL);
-     +static DEVICE_ATTR(indirect_target_selection, 0444, cpu_show_indirect_target_selection, NULL);
-      
-      static struct attribute *cpu_root_vulnerabilities_attrs[] = {
-      	&dev_attr_meltdown.attr,
-     @@ drivers/base/cpu.c: static struct attribute *cpu_root_vulnerabilities_attrs[] = {
-      	&dev_attr_gather_data_sampling.attr,
-    + 	&dev_attr_spec_rstack_overflow.attr,
-      	&dev_attr_reg_file_data_sampling.attr,
-    - 	&dev_attr_ghostwrite.attr,
-     +	&dev_attr_indirect_target_selection.attr,
-      	NULL
-      };
-    @@ drivers/base/cpu.c: static struct attribute *cpu_root_vulnerabilities_attrs[] =
-     
-      ## include/linux/cpu.h ##
-     @@ include/linux/cpu.h: extern ssize_t cpu_show_gds(struct device *dev,
-    + 			    struct device_attribute *attr, char *buf);
-      extern ssize_t cpu_show_reg_file_data_sampling(struct device *dev,
-      					       struct device_attribute *attr, char *buf);
-    - extern ssize_t cpu_show_ghostwrite(struct device *dev, struct device_attribute *attr, char *buf);
-     +extern ssize_t cpu_show_indirect_target_selection(struct device *dev,
-     +						  struct device_attribute *attr, char *buf);
-      
+      ## arch/x86/kernel/alternative.c ##
+     @@ arch/x86/kernel/alternative.c: static int patch_return(void *addr, struct insn *insn, u8 *bytes)
 ---
+
+NOTE: These results are for this patch alone. Full series testing will be
+performed when all parts are received.
 
 Results of testing on various branches:
 
