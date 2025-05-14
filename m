@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-144418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 776D8AB7682
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 22:13:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEFF5AB7683
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 22:13:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 87DB07B62CE
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 20:12:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5ACD21BA6236
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 20:13:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 836EC295DAD;
-	Wed, 14 May 2025 20:13:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAB06295519;
+	Wed, 14 May 2025 20:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oeWCHHBW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QzLVDc9O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D10295512
-	for <stable@vger.kernel.org>; Wed, 14 May 2025 20:13:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA55E295502
+	for <stable@vger.kernel.org>; Wed, 14 May 2025 20:13:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747253588; cv=none; b=CIZ5oMsyuQdqEOYGSvYnjcQ/fur3lLoAAR4jGY2hYKbLzjXKWsxjjVkvx+rktZkYcW0r/oRa6Cy5PKY7CV0nNrz6Ri3BHwiqJU9/skIM5XlHsZ46thDCJlB3tazYA3zNLZpmt3UdQRP6ydJc0ZdGHs2XErQAy/PDztNchGckiYY=
+	t=1747253591; cv=none; b=mPo34peScn5w4yZaWyg+/+A3X9YAuXZZc3qNh67jks4Jf8gStZzEG59jLtqK0DczZRX615IYJbCGX4OIWGFS8H+VfBW46638YDwbp6iQXeTe/PkmJK7qRlc1Ltdqm933qtQ2XoXs4cc7vWw4XW20JH/kVZmNN1gsThpldV2SGQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747253588; c=relaxed/simple;
-	bh=IW8ymKTNS6NplFBHeXFRY+thLdYnqGSL2xeBwUNt6SA=;
+	s=arc-20240116; t=1747253591; c=relaxed/simple;
+	bh=CGxFCtwK/rpc9EPB8hcezGUD3Pwf1dc7aom8yhpMl68=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C9mOviqwAw2Valm9l5w1XBJrGr/cYZEMxVghoZWaIKqZNLtWxLvnpbANn3+EYCUZ71I5SK3m7Ou/1l/2/yLKNErzWVloiaKPjKvyun3dxW+s0JwZ8YiU3XNPJjUYJbuNHlAfUziE01X8CA9bOZH5QE7MsIPWFFB5D1q9WM75PXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oeWCHHBW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CB64C4CEE3;
-	Wed, 14 May 2025 20:13:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=efR2Liihk99bcIMPoAYKrPDNoxp0vzmcKLwmXtgunPjZHPpZ4l0+XHiVaFMIzbxxrrAWjI6ZRuPIdNSFubEqqGpm2lkQjByU6hEqWDRqPWhes7vaOHR2hBx8QMnWV7+hwazGyZd3sqlUx5PJpkYGKJVwSluCjLOryIYcsyplujg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QzLVDc9O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4CF5C4CEE3;
+	Wed, 14 May 2025 20:13:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747253587;
-	bh=IW8ymKTNS6NplFBHeXFRY+thLdYnqGSL2xeBwUNt6SA=;
+	s=k20201202; t=1747253591;
+	bh=CGxFCtwK/rpc9EPB8hcezGUD3Pwf1dc7aom8yhpMl68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oeWCHHBW1bVgflKQyTfuc/jlaHZL7qI9bwraaytRAhfR5PLfRxugKqEVl8ct6+L/0
-	 P5fRTBBBxGll+EVadg0izhQWEbYkDu2CsXHsfmQARjaYnLjZoNfBc+0+/TCVxZcQbO
-	 gvWLsapFSWStbQCNHnAlP5wRe7MIRz6huKXopAQuv0HPXa1olv9OL7sB7lGGs/zzb/
-	 YmwE8wJqXE/xv19iWNL0Rgm9O15wusr3OKqKnIXv/C+jghckNL11DwuQw7lsnQKdQ2
-	 0QvCV4dvVGsAe5yzc6pMzoOCgiXqTsgsV2SqX7T/oCGYav8477H2USfrybpJ84nM3b
-	 X1LxbG+LFicvg==
+	b=QzLVDc9Oz4EVMj3kP0egtt6HitzAG9b+xON3Cs7okNRTrowrcLIEa2XAWPXQ/Y+f1
+	 qX4dwDoT0W5njf+W/i4P7c04133dPJRAL1Ors/+31DVE29kAH8p3Hk1FRSkNMwzXv6
+	 8qv+Jlx++/0vWsfUI+CAaXyJW/AvBvxlCTPvB832J4q7bBhZbFzFPwn69vnZZTxwHj
+	 YFkYHAhI7PvKQTYj4rzqO/t82bZk2OL4XlhdJUz6ZHPwzuSPWyTq6iX66/Hkdnv3tH
+	 iiLg++rbRNd0ei+yw+R95Fm/A5OdyblZ8sV8t7NOlQXIiXh3gTI4RjpWRP0Op2SsDn
+	 rxrB8wvfxOvfw==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	daniele.ceraolospurio@intel.com
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.14.y] drm/xe/gsc: do not flush the GSC worker from the reset path
-Date: Wed, 14 May 2025 16:13:05 -0400
-Message-Id: <20250514095358-3685068562756ee9@stable.kernel.org>
+To: stable@vger.kernel.org
+Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.15 v2 01/14] x86,nospec: Simplify {JMP,CALL}_NOSPEC
+Date: Wed, 14 May 2025 16:13:08 -0400
+Message-Id: <20250514105300-50f9d7308880365d@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250513233056.2986393-1-daniele.ceraolospurio@intel.com>
+In-Reply-To:  <20250513-its-5-15-v2-1-90690efdc7e0@linux.intel.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,60 +64,46 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Summary of potential issues:
-⚠️ Found matching upstream commit but patch is missing proper reference to it
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-Found matching upstream commit: 03552d8ac0afcc080c339faa0b726e2c0e9361cb
+The upstream commit SHA1 provided is correct: 09d09531a51a24635bc3331f56d92ee7092f5516
+
+WARNING: Author mismatch between patch and upstream commit:
+Backport author: Pawan Gupta<pawan.kumar.gupta@linux.intel.com>
+Commit author: Peter Zijlstra<peterz@infradead.org>
+
+Status in newer kernel trees:
+6.14.y | Present (exact SHA1)
+6.12.y | Present (exact SHA1)
+6.6.y | Present (exact SHA1)
+6.1.y | Present (exact SHA1)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  03552d8ac0afc ! 1:  ec3abfe7a63b2 drm/xe/gsc: do not flush the GSC worker from the reset path
+1:  09d09531a51a2 ! 1:  2ae24144e7424 x86,nospec: Simplify {JMP,CALL}_NOSPEC
+    @@ Metadata
+      ## Commit message ##
+         x86,nospec: Simplify {JMP,CALL}_NOSPEC
+     
+    +    commit 09d09531a51a24635bc3331f56d92ee7092f5516 upstream.
+    +
+         Have {JMP,CALL}_NOSPEC generate the same code GCC does for indirect
+         calls and rely on the objtool retpoline patching infrastructure.
+     
     @@ Commit message
-         Link: https://lore.kernel.org/r/20250502155104.2201469-1-daniele.ceraolospurio@intel.com
-         (cherry picked from commit 12370bfcc4f0bdf70279ec5b570eb298963422b5)
-         Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-    +    (cherry picked from commit 03552d8ac0afcc080c339faa0b726e2c0e9361cb)
+         compiler generated retpolines are not.
      
-      ## drivers/gpu/drm/xe/xe_gsc.c ##
-    -@@ drivers/gpu/drm/xe/xe_gsc.c: void xe_gsc_wait_for_worker_completion(struct xe_gsc *gsc)
-    - 		flush_work(&gsc->work);
-    +@@ drivers/gpu/drm/xe/xe_gsc.c: void xe_gsc_remove(struct xe_gsc *gsc)
-    + 	xe_gsc_proxy_remove(gsc);
-      }
-      
-     +void xe_gsc_stop_prepare(struct xe_gsc *gsc)
-    @@ drivers/gpu/drm/xe/xe_gsc.h: struct xe_hw_engine;
-      void xe_gsc_wait_for_worker_completion(struct xe_gsc *gsc);
-     +void xe_gsc_stop_prepare(struct xe_gsc *gsc);
-      void xe_gsc_load_start(struct xe_gsc *gsc);
-    + void xe_gsc_remove(struct xe_gsc *gsc);
-      void xe_gsc_hwe_irq_handler(struct xe_hw_engine *hwe, u16 intr_vec);
-    - 
+         Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+    +    Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
      
-      ## drivers/gpu/drm/xe/xe_gsc_proxy.c ##
-     @@ drivers/gpu/drm/xe/xe_gsc_proxy.c: bool xe_gsc_proxy_init_done(struct xe_gsc *gsc)
-    @@ drivers/gpu/drm/xe/xe_gsc_proxy.c: bool xe_gsc_proxy_init_done(struct xe_gsc *gs
-     
-      ## drivers/gpu/drm/xe/xe_gsc_proxy.h ##
-     @@ drivers/gpu/drm/xe/xe_gsc_proxy.h: struct xe_gsc;
-    - 
-      int xe_gsc_proxy_init(struct xe_gsc *gsc);
-      bool xe_gsc_proxy_init_done(struct xe_gsc *gsc);
-    + void xe_gsc_proxy_remove(struct xe_gsc *gsc);
-     +int xe_gsc_wait_for_proxy_init_done(struct xe_gsc *gsc);
-      int xe_gsc_proxy_start(struct xe_gsc *gsc);
-      
-    @@ drivers/gpu/drm/xe/xe_uc.h: int xe_uc_reset_prepare(struct xe_uc *uc);
-     +void xe_uc_suspend_prepare(struct xe_uc *uc);
-      int xe_uc_suspend(struct xe_uc *uc);
-      int xe_uc_sanitize_reset(struct xe_uc *uc);
-    - void xe_uc_declare_wedged(struct xe_uc *uc);
-    + void xe_uc_remove(struct xe_uc *uc);
+      ## arch/x86/include/asm/nospec-branch.h ##
+     @@
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.14.y       |  Success    |  Success   |
+| stable/linux-5.15.y       |  Success    |  Success   |
 
