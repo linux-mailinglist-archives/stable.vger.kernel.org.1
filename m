@@ -1,74 +1,71 @@
-Return-Path: <stable+bounces-144313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00EB1AB62B4
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 08:06:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2583BAB62B5
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 08:07:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 849264637B8
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 06:06:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B332546388D
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 06:07:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A81A1F8691;
-	Wed, 14 May 2025 06:06:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 807771E5B68;
+	Wed, 14 May 2025 06:06:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YjOYleeg"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AS4plHhl"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C336A433A8
-	for <stable@vger.kernel.org>; Wed, 14 May 2025 06:06:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 344681E1308
+	for <stable@vger.kernel.org>; Wed, 14 May 2025 06:06:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747202804; cv=none; b=i6yVG7mRvQLNGAvnP0/Q71WlZHErd2Ypn5MFZdUkCqYiZztxrYx78NFXFOlM/okkn9AGPO0BVivUyh31yO5NNAR2d5cWbUL8qXS/f1zQeGGCWtW8+u0WY2d3Bv5S/Yt32DpaWfeKgY7t4lkI4HnpCw4iuzyBPYoqyr4A6zcaniY=
+	t=1747202819; cv=none; b=TMUKyt0hlHTRJC2JuKADVICOmQfNALzWm4xPxw2Yn/Mkk+CfQ3b20QX27+KSJsJL7zp+h78kvDgQ+DygdV7zpEQfKDM/Ys1D6hziG25M5KrrWo/2CtlckMh/2dTOsC9BzkbFs8/jiIN6+f/5O6p2xFLZYqQ2bTC0r5/PrhIfNUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747202804; c=relaxed/simple;
-	bh=FSKcWM4AAKWDJYqC3QPs/nhjRI8jd2nlFr4JbAc2VkU=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=KlqCR7sXT3MXMpILWGdnqSp2Aqibj9XxyClhvxEbGcEtOlg5F/NzXUIiX/UYKvuvGil8VGvQckAXjcdnUInqkQba8KD8TVl9LS58SLU1fBgAKhZc3NY3g6n6cAwJIyoiefcCGdqpFHgDrHFt3HibZOT6fXwCrxo7uBMcBKUQvX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YjOYleeg; arc=none smtp.client-ip=192.198.163.14
+	s=arc-20240116; t=1747202819; c=relaxed/simple;
+	bh=8dphv/f2Nd5rYkngK6mIBlo5HEjp20PMB6jSpXcQ7Pk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=t/1cN2FoEekbc7SHGZeiKQzrVMw4ujt+Cxg5KkAML23dznmh64EuZEbtKRuGvhRzZ8e+0eZshRBNkDMbh7aIS0HkC8cvCWkZgE5N5HLFMAbAMnXEg7lPSadeN2btj7i4UK664LOtQetmVTJz4xsfDG23l269gcQJ3lWxKAYt+0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AS4plHhl; arc=none smtp.client-ip=192.198.163.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747202802; x=1778738802;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=FSKcWM4AAKWDJYqC3QPs/nhjRI8jd2nlFr4JbAc2VkU=;
-  b=YjOYleeglklTo4pKVWXoqsCBOnWFXPLf5ZJO1h2zAjEUUlRDCTCEjVPY
-   n/FxlrbqnYulGtp8fJPIODMzCrwI+Xpe2ZIne5h5nGYFqYJIt0BOpY7Jh
-   CIxAdjWk5CrxKbHUwLae1ThwngG0JO+joR9Dyjbq8rjEM8052s+1hV2Zz
-   OAfFam12XJ5SNPe3+1ZiPlhigaX+FnUB2aK8+SeKn5pMS2pqP94sPaqBF
-   ZYmGDVdy6nmokjI8l1uiEYCTWe0BicKSyFGAzUgj5yDq61OfWG9LbAYnx
-   YjVAHp16Txes4lCFa++qOlQL+qYyhQwijllseYKHRyedLkFecQH6a7Q52
-   A==;
-X-CSE-ConnectionGUID: xbSfRsEeRNugW5FwOTEMyg==
-X-CSE-MsgGUID: LDfVcH3hR1CKd6GqxjwEyw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11432"; a="49198794"
+  t=1747202816; x=1778738816;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=8dphv/f2Nd5rYkngK6mIBlo5HEjp20PMB6jSpXcQ7Pk=;
+  b=AS4plHhlPQUxjLqnzDIpOyYksRDpdKtKJenLswZVuz4WyU6TBKLtd6b+
+   vxjZB4/d3QusXraXMl/dyR9JCQxFfpS/R2/jw6obXC4Pa86QGk1cELGQF
+   aHJQuzsUldQePVBOFZ/zh+4Ff+vZJr4Xrhlc7+PuafxEdcHxPjaJVfZDu
+   PNmehG0fJ5FJuIWOjIh/2zv5XntSg3i6FrsSmPFqsVDMgwBbhGd6dZMvJ
+   epZN+6rC2bt2JQWzRVNiwC0kAfEVxHc8eet8IFK20wyiRA6EJGHs2/JBV
+   p/jBrH4QDLki1JD19sWcwVoRXSCdtr1CYgd/8zkODxQd6eeA4E+ejfV9h
+   Q==;
+X-CSE-ConnectionGUID: QCqsJir2QKaoqz008tuYtQ==
+X-CSE-MsgGUID: 9j6wUVBPS8q7i4DvDJZ93w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11432"; a="60419918"
 X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; 
-   d="scan'208";a="49198794"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2025 23:06:40 -0700
-X-CSE-ConnectionGUID: R1LsWCQyQKav9SsDRqFXIA==
-X-CSE-MsgGUID: +u2G1aAxTLKLsXeuczrWnQ==
+   d="scan'208";a="60419918"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2025 23:06:55 -0700
+X-CSE-ConnectionGUID: vnlUbahaR1+9IsmMkRLzCA==
+X-CSE-MsgGUID: ftR+ymvyReaA+Cb5yPFGCg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; 
-   d="scan'208";a="138922223"
+   d="scan'208";a="137658589"
 Received: from rshah-mobl.amr.corp.intel.com (HELO desk) ([10.125.146.11])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2025 23:06:40 -0700
-Date: Tue, 13 May 2025 23:06:39 -0700
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2025 23:06:56 -0700
+Date: Tue, 13 May 2025 23:06:55 -0700
 From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 To: stable@vger.kernel.org
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 5.15 v2 00/14] ITS mitigation
-Message-ID: <20250513-its-5-15-v2-0-90690efdc7e0@linux.intel.com>
-X-B4-Tracking: v=1; b=H4sIAMYvJGgC/x2MwQpAQBBAf0VzNtodTclNLo4ObnIQg7mgXUnJv
- 1uO7/V6N3hxKh7y6AYnp3rd1gAURzAs/ToL6hgYyBAbtoR6eGS0jEZMmjGRlZQg5LuTSa9/1UJ
- dNGX1WU4sQ/c8L58Pwf9pAAAA
-X-Change-ID: 20250512-its-5-15-0e0385221e32
+Cc: Peter Zijlstra <peterz@infradead.org>
+Subject: [PATCH 5.15 v2 01/14] x86,nospec: Simplify {JMP,CALL}_NOSPEC
+Message-ID: <20250513-its-5-15-v2-1-90690efdc7e0@linux.intel.com>
 X-Mailer: b4 0.14.2
+References: <20250513-its-5-15-v2-0-90690efdc7e0@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,76 +74,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20250513-its-5-15-v2-0-90690efdc7e0@linux.intel.com>
 
-v2:
-- Added the missing "--from" during patch generation.
-- Added missing patch to 6.1 backport.
+From: Peter Zijlstra <peterz@infradead.org>
 
-This is a backport of mitigation for Indirect Target Selection (ITS).
+commit 09d09531a51a24635bc3331f56d92ee7092f5516 upstream.
 
-ITS is a bug in some Intel CPUs that affects indirect branches including
-RETs in the first half of a cacheline. Mitigation is to relocate the
-affected branches to an ITS-safe thunk.
+Have {JMP,CALL}_NOSPEC generate the same code GCC does for indirect
+calls and rely on the objtool retpoline patching infrastructure.
 
-Below additional upstream commits are required to cover some of the special
-cases like indirects in asm and returns in static calls:
+There's no reason these should be alternatives while the vast bulk of
+compiler generated retpolines are not.
 
-cfceff8526a4 ("x86/speculation: Simplify and make CALL_NOSPEC consistent")
-052040e34c08 ("x86/speculation: Add a conditional CS prefix to CALL_NOSPEC")
-c8c81458863a ("x86/speculation: Remove the extra #ifdef around CALL_NOSPEC")
-d2408e043e72 ("x86/alternative: Optimize returns patching")
-4ba89dd6ddec ("x86/alternatives: Remove faulty optimization")
-
-[1] https://github.com/torvalds/linux/commit/6f5bf947bab06f37ff931c359fd5770c4d9cbf87
-
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 ---
-Borislav Petkov (AMD) (1):
-      x86/alternative: Optimize returns patching
+ arch/x86/include/asm/nospec-branch.h | 24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
 
-Josh Poimboeuf (1):
-      x86/alternatives: Remove faulty optimization
+diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
+index bdf22582a8c0133add704b72f88186d5aed93bab..1a825dca11a71c72701882f067d555df8fd1f8e1 100644
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -118,6 +118,19 @@
+ #endif
+ .endm
+ 
++/*
++ * Equivalent to -mindirect-branch-cs-prefix; emit the 5 byte jmp/call
++ * to the retpoline thunk with a CS prefix when the register requires
++ * a RAX prefix byte to encode. Also see apply_retpolines().
++ */
++.macro __CS_PREFIX reg:req
++	.irp rs,r8,r9,r10,r11,r12,r13,r14,r15
++	.ifc \reg,\rs
++	.byte 0x2e
++	.endif
++	.endr
++.endm
++
+ /*
+  * JMP_NOSPEC and CALL_NOSPEC macros can be used instead of a simple
+  * indirect jmp/call which may be susceptible to the Spectre variant 2
+@@ -125,19 +138,18 @@
+  */
+ .macro JMP_NOSPEC reg:req
+ #ifdef CONFIG_RETPOLINE
+-	ALTERNATIVE_2 __stringify(ANNOTATE_RETPOLINE_SAFE; jmp *%\reg), \
+-		      __stringify(jmp __x86_indirect_thunk_\reg), X86_FEATURE_RETPOLINE, \
+-		      __stringify(lfence; ANNOTATE_RETPOLINE_SAFE; jmp *%\reg), X86_FEATURE_RETPOLINE_LFENCE
++	__CS_PREFIX \reg
++	jmp	__x86_indirect_thunk_\reg
+ #else
+ 	jmp	*%\reg
++	int3
+ #endif
+ .endm
+ 
+ .macro CALL_NOSPEC reg:req
+ #ifdef CONFIG_RETPOLINE
+-	ALTERNATIVE_2 __stringify(ANNOTATE_RETPOLINE_SAFE; call *%\reg), \
+-		      __stringify(call __x86_indirect_thunk_\reg), X86_FEATURE_RETPOLINE, \
+-		      __stringify(lfence; ANNOTATE_RETPOLINE_SAFE; call *%\reg), X86_FEATURE_RETPOLINE_LFENCE
++	__CS_PREFIX \reg
++	call	__x86_indirect_thunk_\reg
+ #else
+ 	call	*%\reg
+ #endif
 
-Pawan Gupta (10):
-      x86/speculation: Simplify and make CALL_NOSPEC consistent
-      x86/speculation: Add a conditional CS prefix to CALL_NOSPEC
-      x86/speculation: Remove the extra #ifdef around CALL_NOSPEC
-      Documentation: x86/bugs/its: Add ITS documentation
-      x86/its: Enumerate Indirect Target Selection (ITS) bug
-      x86/its: Add support for ITS-safe indirect thunk
-      x86/its: Add support for ITS-safe return thunk
-      x86/its: Enable Indirect Target Selection mitigation
-      x86/its: Add "vmexit" option to skip mitigation on some CPUs
-      x86/its: Align RETs in BHB clear sequence to avoid thunking
+-- 
+2.34.1
 
-Peter Zijlstra (2):
-      x86,nospec: Simplify {JMP,CALL}_NOSPEC
-      x86/its: Use dynamic thunks for indirect branches
-
- Documentation/ABI/testing/sysfs-devices-system-cpu |   1 +
- Documentation/admin-guide/hw-vuln/index.rst        |   1 +
- .../hw-vuln/indirect-target-selection.rst          | 156 ++++++++++++++
- Documentation/admin-guide/kernel-parameters.txt    |  15 ++
- arch/x86/Kconfig                                   |  11 +
- arch/x86/entry/entry_64.S                          |  20 +-
- arch/x86/include/asm/alternative.h                 |  24 +++
- arch/x86/include/asm/cpufeatures.h                 |   3 +
- arch/x86/include/asm/msr-index.h                   |   8 +
- arch/x86/include/asm/nospec-branch.h               |  57 ++++--
- arch/x86/kernel/alternative.c                      | 226 ++++++++++++++++++++-
- arch/x86/kernel/cpu/bugs.c                         | 139 ++++++++++++-
- arch/x86/kernel/cpu/common.c                       |  63 ++++--
- arch/x86/kernel/ftrace.c                           |   2 +-
- arch/x86/kernel/module.c                           |   7 +
- arch/x86/kernel/static_call.c                      |   2 +-
- arch/x86/kernel/vmlinux.lds.S                      |  10 +
- arch/x86/kvm/x86.c                                 |   4 +-
- arch/x86/lib/retpoline.S                           |  39 ++++
- arch/x86/net/bpf_jit_comp.c                        |   8 +-
- drivers/base/cpu.c                                 |   8 +
- include/linux/cpu.h                                |   2 +
- include/linux/module.h                             |   5 +
- 23 files changed, 768 insertions(+), 43 deletions(-)
----
-change-id: 20250512-its-5-15-0e0385221e32
 
 
