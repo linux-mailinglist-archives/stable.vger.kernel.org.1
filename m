@@ -1,115 +1,171 @@
-Return-Path: <stable+bounces-144454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4DB0AB7906
-	for <lists+stable@lfdr.de>; Thu, 15 May 2025 00:26:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2564AB7905
+	for <lists+stable@lfdr.de>; Thu, 15 May 2025 00:26:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B01EE7B1A30
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 22:24:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E22798C319A
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 22:25:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87FC4221F35;
-	Wed, 14 May 2025 22:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C000C21C198;
+	Wed, 14 May 2025 22:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="Y+CXRrsD"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="cRj7f9Fl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48CF91EA7D6;
-	Wed, 14 May 2025 22:25:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 658D426AC3;
+	Wed, 14 May 2025 22:25:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747261535; cv=none; b=X5mYWK6RYXDieuG4OQ8hgV5gYPyDHn1MnoP+D755UxrJRNzLP5NZLshAezDMoauBYO0CLGHtZCsn3rEj/ax1gLTU+dvkXXzm0b2Lhdo5lhLgUYKgvtG7dWceBC4d4aOj6f0CzNfp/d2wMtp5jbFJbfgDQW4b/jJWgFggBlrW0ck=
+	t=1747261522; cv=none; b=ELTow9c05E/si4Y11JjFvW/S/CjMWAcqOi86ujjPozu/E/kmhD1MS0JPIfSBWV1gk36OpQGPBOtdjBlfJ6Cq8ck6zORIyU9PcSDZjwL4hVzwZXpaUPjG6Mq3Pg/jZPu93fFDwhAzoaSNwV0UhP59nZ5C5dwjX+oIsSx0dpqMUdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747261535; c=relaxed/simple;
-	bh=kt76mW7EYpSqm4dp8S9Ts3jRLpbzTTIf4rdn4dOuRC8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c8eh9sEjEYpygs/MVbDC/mrbXP9Xw2M60h5lS0tZnl2RBXCtiuhhaB6iMq/6YfW2n6/ldIcxDmGaMK+l2+enwBeDjYP2UStyI7Tqk95MYn58wgRUXOM5I7CdfJBx/wWmc2/awjB0+ut+3uLf9EzK1SFhl9W8NicGq/jU4v7DIWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=Y+CXRrsD; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 9E06A40E01FA;
-	Wed, 14 May 2025 22:25:29 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id 4vk0dmle8tFN; Wed, 14 May 2025 22:25:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1747261523; bh=3GO3lxo4ve1H+NZkEhr/MG/9q7gpIWMyeb/o2QdI5LE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Y+CXRrsDn0BX5+9rVv3rvbC/CowGAJPGSGof4vEUoXLo5GHosUuviTEJyaclitBb8
-	 oQPM8hyuLEhWaA78anc3PEpG+EBxAR8r53OWavJ0oyVSl6F2uxxkKPwsaYnd+60Tqm
-	 qkV0eES0Ec2ansXbvX4C/XBCrIqfoAEytKZ4SsNG4RpK3BWZmG4FXJtU1cfS0fiF6F
-	 VMKjah7ZyhAt6l9eNiKk63Lk97dwpcox3YpBtcqNjl26ink57Q7nUDtR9Q7qkmP+AX
-	 qNcqwUH8IRUbUDp2QKXkHKr4dLJ1lw7on0JR/2o4xLiYYUuba0ck589/7UOSGWorRG
-	 MvLnt7Wpwhkqf1cCSMBS2Z+mx2Jbhj8Qy6de8b3gB8jrYMCa9faXpOJEPsufoEFNq9
-	 BltQHF5dRaK9i9mRabH36mAAw6QRU1spH1ei/zGBzXic6ryTGF+/1ZdDn/slpr7HM1
-	 9XJ+2pddV/tctdNGWQvqy7ZbEeyWvWuTsJIXQ9gzKF2Jq+7X6psfWRcGO/rMuwH87x
-	 tC21Z1QoynriMYNLMvz4ioeMGSiFWGkw8SU5XwNCYfYJkf/G23LA0F42unkNovtsbY
-	 UJVssPOihlasjQG5tN0hCjsZdTvIbMHHyDP1LU5HE+JGF9Ac3WcA4kdJRKNsSCFuF5
-	 vq2CJW6it77rS98QnOvQPxuE=
-Received: from zn.tnic (p579690ee.dip0.t-ipconnect.de [87.150.144.238])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 909C040E01ED;
-	Wed, 14 May 2025 22:25:13 +0000 (UTC)
-Date: Thu, 15 May 2025 00:25:07 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Suraj Jitindar Singh <surajjs@amazon.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] x86/bugs: Don't warn when overwriting
- retbleed_return_thunk with srso_return_thunk
-Message-ID: <20250514222507.GKaCUYQ9TVadHl7zMv@fat_crate.local>
-References: <20250514220835.370700-1-surajjs@amazon.com>
+	s=arc-20240116; t=1747261522; c=relaxed/simple;
+	bh=NEZMPbz2xJDcLS27vdI+X0/N8pwHgaM5WvrJfTNNnYY=;
+	h=Date:To:From:Subject:Message-Id; b=DJGXE9q8xUowNyAvHMQ3imxgaVhHY+8kp8tq06nEWSPIkYDOyn5piZYiNrazy2BaxbUM2+rxlRcjFxMGNiZvWcthf1/hOcXiSbNr0F24OuYtT9M94O1S54zPZPogtNvAByu1LdwSVTXMwptNOZjDM5w7bL23qRnnbwumaKiy1q4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=cRj7f9Fl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8355C4CEED;
+	Wed, 14 May 2025 22:25:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1747261521;
+	bh=NEZMPbz2xJDcLS27vdI+X0/N8pwHgaM5WvrJfTNNnYY=;
+	h=Date:To:From:Subject:From;
+	b=cRj7f9FlNqieJmfGUgdNPaBZqoDAg6crmSxkwULd8EBhMXy6lsTqyMTjosVz0BnO6
+	 WOM4bcl/+82/RcxQn6WSzwtmNf6VreX7WvWFWsiyrYTVyUwmd3gMrQWkxu+jCePmgf
+	 Zy/5JrRyGod+7oosV3YRu5AVZpnQBkQw8xFIP6AM=
+Date: Wed, 14 May 2025 15:25:21 -0700
+To: mm-commits@vger.kernel.org,viro@zeniv.linux.org.uk,stable@vger.kernel.org,hughd@google.com,willy@infradead.org,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + highmem-add-folio_test_partial_kmap.patch added to mm-hotfixes-unstable branch
+Message-Id: <20250514222521.B8355C4CEED@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250514220835.370700-1-surajjs@amazon.com>
 
-On Wed, May 14, 2025 at 03:08:35PM -0700, Suraj Jitindar Singh wrote:
-> -	if (x86_return_thunk != __x86_return_thunk)
-> +	/*
-> +	 * There can only be one return thunk enabled at a time, so issue a
-> +	 * warning when overwriting it. retbleed_return_thunk is a special case
-> +	 * which is safe to be overwritten with srso_return_thunk since it
-> +	 * provides a superset of the functionality and is handled correctly in
-> +	 * entry_untrain_ret().
-> +	 */
-> +	if ((x86_return_thunk != __x86_return_thunk) &&
-> +	    (thunk != srso_return_thunk ||
-> +	     x86_return_thunk != retbleed_return_thunk))
 
-Instead of making this an unreadable conditional, why don't we ...
+The patch titled
+     Subject: highmem: add folio_test_partial_kmap()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     highmem-add-folio_test_partial_kmap.patch
 
->  		pr_warn("x86/bugs: return thunk changed\n");
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/highmem-add-folio_test_partial_kmap.patch
 
-... turn this into a
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-	pr_info("set return thunk to: %ps\n", ...)
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-and simply say which thunk was set?
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
--- 
-Regards/Gruss,
-    Boris.
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
-https://people.kernel.org/tglx/notes-about-netiquette
+------------------------------------------------------
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Subject: highmem: add folio_test_partial_kmap()
+Date: Wed, 14 May 2025 18:06:02 +0100
+
+In commit c749d9b7ebbc (iov_iter: fix copy_page_from_iter_atomic() if
+KMAP_LOCAL_FORCE_MAP), Hugh correctly noted that if KMAP_LOCAL_FORCE_MAP
+is enabled, we must limit ourselves to PAGE_SIZE bytes per call to
+kmap_local().  The same problem exists in memcpy_from_folio(),
+memcpy_to_folio(), folio_zero_tail(), folio_fill_tail() and
+memcpy_from_file_folio(), so add folio_test_partial_kmap() to do this more
+succinctly.
+
+Link: https://lkml.kernel.org/r/20250514170607.3000994-2-willy@infradead.org
+Fixes: 00cdf76012ab ("mm: add memcpy_from_file_folio()")
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ include/linux/highmem.h    |   10 +++++-----
+ include/linux/page-flags.h |    7 +++++++
+ 2 files changed, 12 insertions(+), 5 deletions(-)
+
+--- a/include/linux/highmem.h~highmem-add-folio_test_partial_kmap
++++ a/include/linux/highmem.h
+@@ -461,7 +461,7 @@ static inline void memcpy_from_folio(cha
+ 		const char *from = kmap_local_folio(folio, offset);
+ 		size_t chunk = len;
+ 
+-		if (folio_test_highmem(folio) &&
++		if (folio_test_partial_kmap(folio) &&
+ 		    chunk > PAGE_SIZE - offset_in_page(offset))
+ 			chunk = PAGE_SIZE - offset_in_page(offset);
+ 		memcpy(to, from, chunk);
+@@ -489,7 +489,7 @@ static inline void memcpy_to_folio(struc
+ 		char *to = kmap_local_folio(folio, offset);
+ 		size_t chunk = len;
+ 
+-		if (folio_test_highmem(folio) &&
++		if (folio_test_partial_kmap(folio) &&
+ 		    chunk > PAGE_SIZE - offset_in_page(offset))
+ 			chunk = PAGE_SIZE - offset_in_page(offset);
+ 		memcpy(to, from, chunk);
+@@ -522,7 +522,7 @@ static inline __must_check void *folio_z
+ {
+ 	size_t len = folio_size(folio) - offset;
+ 
+-	if (folio_test_highmem(folio)) {
++	if (folio_test_partial_kmap(folio)) {
+ 		size_t max = PAGE_SIZE - offset_in_page(offset);
+ 
+ 		while (len > max) {
+@@ -560,7 +560,7 @@ static inline void folio_fill_tail(struc
+ 
+ 	VM_BUG_ON(offset + len > folio_size(folio));
+ 
+-	if (folio_test_highmem(folio)) {
++	if (folio_test_partial_kmap(folio)) {
+ 		size_t max = PAGE_SIZE - offset_in_page(offset);
+ 
+ 		while (len > max) {
+@@ -597,7 +597,7 @@ static inline size_t memcpy_from_file_fo
+ 	size_t offset = offset_in_folio(folio, pos);
+ 	char *from = kmap_local_folio(folio, offset);
+ 
+-	if (folio_test_highmem(folio)) {
++	if (folio_test_partial_kmap(folio)) {
+ 		offset = offset_in_page(offset);
+ 		len = min_t(size_t, len, PAGE_SIZE - offset);
+ 	} else
+--- a/include/linux/page-flags.h~highmem-add-folio_test_partial_kmap
++++ a/include/linux/page-flags.h
+@@ -615,6 +615,13 @@ FOLIO_FLAG(dropbehind, FOLIO_HEAD_PAGE)
+ PAGEFLAG_FALSE(HighMem, highmem)
+ #endif
+ 
++/* Does kmap_local_folio() only allow access to one page of the folio? */
++#ifdef CONFIG_DEBUG_KMAP_LOCAL_FORCE_MAP
++#define folio_test_partial_kmap(f)	true
++#else
++#define folio_test_partial_kmap(f)	folio_test_highmem(f)
++#endif
++
+ #ifdef CONFIG_SWAP
+ static __always_inline bool folio_test_swapcache(const struct folio *folio)
+ {
+_
+
+Patches currently in -mm which might be from willy@infradead.org are
+
+highmem-add-folio_test_partial_kmap.patch
+mm-rename-page-index-to-page-__folio_index.patch
+
 
