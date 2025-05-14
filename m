@@ -1,118 +1,125 @@
-Return-Path: <stable+bounces-144445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15F40AB76A3
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 22:15:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DE44AB7704
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 22:30:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 334B48C69BD
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 20:14:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DF7B1BA69AA
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 20:30:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46985295511;
-	Wed, 14 May 2025 20:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 215C62080C4;
+	Wed, 14 May 2025 20:30:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="djEF7E5R"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="y+VbGfbc"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from 003.mia.mailroute.net (003.mia.mailroute.net [199.89.3.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05E0227703E
-	for <stable@vger.kernel.org>; Wed, 14 May 2025 20:14:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354052153EA;
+	Wed, 14 May 2025 20:30:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.3.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747253699; cv=none; b=WFQt1RRZ31JQwSgocBSa6L9CizFMSkUMT0lbkuiVhVNhaNa8kVhqQbwZEC9OyohWW3otRAJLWSoV2XxXMtn+fEeE04ourqLJg1I4gOUAaoE4Vc1Qz7+DCYXrjaYYg3k+JC8AtqRr1+9UXeYRRraDYUWDmrW4pW1S7ZnJjZomqwc=
+	t=1747254619; cv=none; b=QT/rjspQuqPFE+bi81umpaFaQFaOlWXdPemrDT2affq8zvLZLV7eon24/cECoB3zWeokffkXQVLbPzD21YVw/M420Gyzam8gud5BzWPvgt3arZfaXtwckEyv4MyITlcsM6/lUk5UKEbrz1Sre1JmqgNjw9nXJEyFzs/ctslHd5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747253699; c=relaxed/simple;
-	bh=CUawSbYwM/Xnyvv747OvtOtg+iQWMjELQWxEnzThFE4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mJnlg/z5TPzmAorDLcZn106N36IMIU/1mkBo+Jn8ygBSsN+PHu4AuC3n3jqCzQ60GK8WMbsI/kbCjHC6UzTHyYvBPnjQ5+zmumwWAkrtPyfhv8HsVeqxU82u9g+PO7EykzG2146Z4OX6QWXQwkBOzpusYw9IOMrBlkdpPd/jNMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=djEF7E5R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58E33C4CEE3;
-	Wed, 14 May 2025 20:14:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747253698;
-	bh=CUawSbYwM/Xnyvv747OvtOtg+iQWMjELQWxEnzThFE4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=djEF7E5Rlo+YYQ9jkatS+UgxgMQomvF6YjjVAPtJHa54BI2TkTpuFFTnpptmx9BiZ
-	 B9OmsBgKJ4u9e/2viMmlBIqHo/7KWdK7Qo1BhjqWzEexpLWYFO56qzhbdO31s6R19J
-	 1rRwf2+WUhsaQoF0Od1998DQ+Hi8SE04ORVoPIi1zXb9BCW07hgyqk19On3LTf0B3J
-	 JelViVjwz8qTvCnEzGI9ZbTemafDM53ZM2rjiF6MqtIPio3aAU6kUO3+DoPmu5ER3B
-	 RpzvHtp/XdD5vTfPx4eatxyg35RALvdfc3JEnshBaNw4MB2yaKFzsIr7cUK3iy+hfK
-	 1lq7OpvDn6YjA==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15 v2 03/14] x86/speculation: Add a conditional CS prefix to CALL_NOSPEC
-Date: Wed, 14 May 2025 16:14:55 -0400
-Message-Id: <20250514110041-89c01fad0c588507@stable.kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250513-its-5-15-v2-3-90690efdc7e0@linux.intel.com>
-References: 
+	s=arc-20240116; t=1747254619; c=relaxed/simple;
+	bh=wlRcbTGS9QnyRFoJpBFth2Mq4bdCk6zQurUyKr6+Hwg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=DDywNWKRemjqHEbHS8Upx/9FXX0y6sy+kvCwL/dBeAMMnoteZsUrzcGfJHKDm187Obhba7MRJC7NNj0hHaDEvXtjhZw1bNSzJxozlcY5i6aSEwnGx9k5rNxJPFcW+yGcAXdnJh6qTbP5X44NLunYOQAH4QO10DgldtSzFiufN2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=y+VbGfbc; arc=none smtp.client-ip=199.89.3.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 003.mia.mailroute.net (Postfix) with ESMTP id 4ZyQ2J0JJ6zlpkbZ;
+	Wed, 14 May 2025 20:30:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:mime-version:references:in-reply-to
+	:x-mailer:message-id:date:date:subject:subject:from:from
+	:received:received; s=mr01; t=1747254614; x=1749846615; bh=S0wEv
+	t6SuoJtzXLDCujJHcKAE+TLB4SLlQd0DV+PY4A=; b=y+VbGfbcFW+PCJ2WkqdQX
+	mrSKT9cJNnkNNvfwIHh0LCO6cKeKbXp+3IoFZCJdTSHGYqCpM5WRC9uIwHaYD/i5
+	VmE3IKL9u3Ac4mU8cvQ80dkkEKEWtYifGRCetReIaf7bhv12OEMe9Cr6D/1MbfGf
+	yZ5g/wm7GKJew+hupVHDAlTKgPBy+eHcvuKaYIVG0+4FTChofCGCTIPjUCfS149z
+	KkW3qYi2JxYOMLK2L196/tB59w/VmHetDeLXUrFTcHqWG9pgffdo5crXKkrArlkW
+	7vFx+gL/excabHqODP2dnynSwx9wZkxzrb6BE8nD3Q072J7AGjkRe9BDv28DmTEn
+	g==
+X-Virus-Scanned: by MailRoute
+Received: from 003.mia.mailroute.net ([127.0.0.1])
+ by localhost (003.mia [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id lKjIjl0AUb-1; Wed, 14 May 2025 20:30:14 +0000 (UTC)
+Received: from bvanassche.mtv.corp.google.com (unknown [104.135.204.82])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 003.mia.mailroute.net (Postfix) with ESMTPSA id 4ZyQ276PGkzlgqW1;
+	Wed, 14 May 2025 20:30:06 +0000 (UTC)
+From: Bart Van Assche <bvanassche@acm.org>
+To: Jens Axboe <axboe@kernel.dk>
+Cc: linux-block@vger.kernel.org,
+	Christoph Hellwig <hch@lst.de>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Yu Kuai <yukuai1@huaweicloud.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] block: Make __submit_bio_noacct() preserve the bio submission order
+Date: Wed, 14 May 2025 13:29:36 -0700
+Message-ID: <20250514202937.2058598-2-bvanassche@acm.org>
+X-Mailer: git-send-email 2.49.0.1045.g170613ef41-goog
+In-Reply-To: <20250514202937.2058598-1-bvanassche@acm.org>
+References: <20250514202937.2058598-1-bvanassche@acm.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 
-[ Sasha's backport helper bot ]
+submit_bio() may be called recursively. To limit the stack depth, recursi=
+ve
+calls result in bios being added to a list (current->bio_list).
+__submit_bio_noacct() sets up that list and maintains two lists with
+requests:
+* bio_list_on_stack[0] is the list with bios submitted by recursive
+  submit_bio() calls from inside the latest __submit_bio() call.
+* bio_list_on_stack[1] is the list with bios submitted by recursive
+  submit_bio() calls from inside previous __submit_bio() calls.
 
-Hi,
+Make sure that bios are submitted to lower devices in the order these
+have been submitted by submit_bio() by adding new bios at the end of the
+list instead of at the front.
 
-✅ All tests passed successfully. No issues detected.
-No action required from the submitter.
+This patch fixes unaligned write errors that I encountered with F2FS
+submitting zoned writes to a dm driver stacked on top of a zoned UFS
+device.
 
-The upstream commit SHA1 provided is correct: 052040e34c08428a5a388b85787e8531970c0c67
-
-Status in newer kernel trees:
-6.14.y | Present (different SHA1: 9af9ad85ac44)
-6.12.y | Present (different SHA1: 2d3bf48b14d4)
-6.6.y | Present (different SHA1: 4dc248983ca5)
-6.1.y | Present (different SHA1: fe6577881bf4)
-
-Note: The patch differs from the upstream commit:
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Damien Le Moal <dlemoal@kernel.org>
+Cc: Yu Kuai <yukuai1@huaweicloud.com>
+Cc: Ming Lei <ming.lei@redhat.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
 ---
-1:  052040e34c084 ! 1:  d487c1e6c3223 x86/speculation: Add a conditional CS prefix to CALL_NOSPEC
-    @@ Metadata
-      ## Commit message ##
-         x86/speculation: Add a conditional CS prefix to CALL_NOSPEC
-     
-    +    commit 052040e34c08428a5a388b85787e8531970c0c67 upstream.
-    +
-         Retpoline mitigation for spectre-v2 uses thunks for indirect branches. To
-         support this mitigation compilers add a CS prefix with
-         -mindirect-branch-cs-prefix. For an indirect branch in asm, this needs to
-    @@ arch/x86/include/asm/nospec-branch.h
-       */
-      .macro __CS_PREFIX reg:req
-      	.irp rs,r8,r9,r10,r11,r12,r13,r14,r15
-    -@@ arch/x86/include/asm/nospec-branch.h: static inline void call_depth_return_thunk(void) {}
-    +@@ arch/x86/include/asm/nospec-branch.h: extern retpoline_thunk_t __x86_indirect_thunk_array[];
-      
-      #ifdef CONFIG_X86_64
-      
-    @@ arch/x86/include/asm/nospec-branch.h: static inline void call_depth_return_thunk
-     +
-      /*
-       * Inline asm uses the %V modifier which is only in newer GCC
-    -  * which is ensured when CONFIG_MITIGATION_RETPOLINE is defined.
-    +  * which is ensured when CONFIG_RETPOLINE is defined.
-       */
-    - #ifdef CONFIG_MITIGATION_RETPOLINE
-    + #ifdef CONFIG_RETPOLINE
-     -#define CALL_NOSPEC	"call __x86_indirect_thunk_%V[thunk_target]\n"
-     +#define CALL_NOSPEC	__CS_PREFIX("%V[thunk_target]")	\
-     +			"call __x86_indirect_thunk_%V[thunk_target]\n"
----
+ block/blk-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Results of testing on various branches:
-
-| Branch                    | Patch Apply | Build Test |
-|---------------------------|-------------|------------|
-| stable/linux-6.1.y        |  Success    |  Success   |
+diff --git a/block/blk-core.c b/block/blk-core.c
+index b862c66018f2..4b728fa1c138 100644
+--- a/block/blk-core.c
++++ b/block/blk-core.c
+@@ -704,9 +704,9 @@ static void __submit_bio_noacct(struct bio *bio)
+ 		/*
+ 		 * Now assemble so we handle the lowest level first.
+ 		 */
++		bio_list_on_stack[0] =3D bio_list_on_stack[1];
+ 		bio_list_merge(&bio_list_on_stack[0], &lower);
+ 		bio_list_merge(&bio_list_on_stack[0], &same);
+-		bio_list_merge(&bio_list_on_stack[0], &bio_list_on_stack[1]);
+ 	} while ((bio =3D bio_list_pop(&bio_list_on_stack[0])));
+=20
+ 	current->bio_list =3D NULL;
 
