@@ -1,62 +1,53 @@
-Return-Path: <stable+bounces-144348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C112AB67D5
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 11:42:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57CE5AB67EE
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 11:49:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F41F1B66844
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 09:42:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34FA91646DC
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 09:49:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E6B01F4285;
-	Wed, 14 May 2025 09:42:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEFC525D218;
+	Wed, 14 May 2025 09:48:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="p9hJyjbA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FXZy2IXz"
 X-Original-To: stable@vger.kernel.org
-Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8092521C16D;
-	Wed, 14 May 2025 09:42:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B7FF25487B
+	for <stable@vger.kernel.org>; Wed, 14 May 2025 09:48:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747215724; cv=none; b=LkOl4oz6RhId3P6VcgeHwEDdCyKWQSjICBwPwB1AvuDpDWjDmueltrW4V7ZItUpA8DkH7TaQYgcKhLiF6uoDsITT0Xazv10U9iGMkGME3+kq9q9enNu3A7x1Y+2LT/HDf9QHowuDNOBmj6qbbDlK2iKkbE2Sia9Vf0V8Rmc239A=
+	t=1747216137; cv=none; b=aBoUyCpw6CtwUaHKDe78Ve2bV0xaR4pH1zWdkrKvLnCqGn1vCQkusSHi5RBRExs/w4vYx2o9HxIc4RpNuKyrprF2ZDzqsxJ/ih6pgM1XLtofaBX6UpahqMynSLfFlGr6hXbd9WCEDe57hafrA6ogklw6B8mX/4rH0HR9jlS6lpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747215724; c=relaxed/simple;
-	bh=0Ut16LIaYGIjFMbKLp14mbhIT9qAkg/mTMfHtgyYx3w=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=BiqzX/RfIwm5ExxqwBSD/6l9o10y+bmH8sbhOEpqM4lc6tQUn7e324E0okX9RGDnxBMY4OoOLfKyTq3ZTisJXvJRe1w/BXRAE0D0FGWdyqMBYH3Tccg2r6C/5f2syDW1ixX4rKARUhHPWZfbPa+i8+QEFFQvz+Ry6WaUz9p+K1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=p9hJyjbA; arc=none smtp.client-ip=144.6.53.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
-	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:Message-ID:Subject:Cc:To:
-	From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=0K2DM5nV5WtDSjS9jWdRAsQawmnoY/TG6puxv5DwAmk=; b=p9hJyjbApouhBcGjnABahtwNoQ
-	uEQ0OGw0yEiSl/pRhId/FW1/573aE+v5M6DAHIsjr8rHygIPxQSZlh993gALhgAtFPwwAswBesmRY
-	gKcSsoZl1a9VJX5IFC5mKKEpEUpMjbEXxCZ79DANqnje+eHjmrOkEDJgoTXUNSeof8+vXpcQLYxAu
-	biALK1ffIYikhFhiPfaFOmpScVO4HCYg1rf05np8UoesycDs93adGDiMqTBkH2vWAMlOzC+pO6+HC
-	reZgy5+yE2qLqrAvYXdroA7tsdp8/XpDLYVemHXZEELCcAZ/aW1u5znuVlvBS0WOoj5gV0to2TCDo
-	tz4UuOcA==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1uF8cN-0060fl-2v;
-	Wed, 14 May 2025 17:41:40 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Wed, 14 May 2025 17:41:39 +0800
-Date: Wed, 14 May 2025 17:41:39 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: linux-crypto@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
-	christophe.leroy@csgroup.eu, naveen@kernel.org, dtsen@linux.ibm.com,
-	segher@kernel.crashing.org, stable@vger.kernel.org
-Subject: Re: [PATCH] crypto: powerpc/poly1305 - add depends on BROKEN for now
-Message-ID: <aCRlU0J7QoSJs5sy@gondor.apana.org.au>
+	s=arc-20240116; t=1747216137; c=relaxed/simple;
+	bh=tJ8eOXVCt93R5a6YvX21e9ao4chQ1VdBrMd78O+pSss=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pNQifBFA6hBkxmJ3x7RKoqef3wI/iYbSC1e0Ef37qTXHwDmQtKMU+mOPDHDAm0ayKnZ6Ve7foCVKEvJx+jsXsTTfljxZueVpgmkczKGiebbyH+bFsd8LOUVXAKoPRu8vsFHA3X4Y7RnSy6mRSdZlqFYULpfKsiwnrfWsoVsAx9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FXZy2IXz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D9B2C4CEE9;
+	Wed, 14 May 2025 09:48:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1747216137;
+	bh=tJ8eOXVCt93R5a6YvX21e9ao4chQ1VdBrMd78O+pSss=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FXZy2IXzOuXT3YZ5NJDQ38Xkdg6eZrKLqa3s17OoLFx1+3DqIQZJuqbBP+dsVtRu6
+	 Lc8WisWgXXRAFZUscRBVYNXhCRrkVVUL215cyn/6BUCpC99/nPePOXGYhjbemXz4YN
+	 lVviXKwQ+9JXMwMmx2NqpUjlcUQuURc0J0r6JnMs=
+Date: Wed, 14 May 2025 11:47:08 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Cc: stable@vger.kernel.org, Eric Biggers <ebiggers@google.com>,
+	Dave Hansen <dave.hansen@intel.com>,
+	Alexandre Chartre <alexandre.chartre@oracle.com>
+Subject: Re: [PATCH] x86/its: Fix build errors when CONFIG_MODULES=n
+Message-ID: <2025051401-absolute-shelving-d657@gregkh>
+References: <20250513-its-fixes-6-6-v1-1-2bec01a29b09@linux.intel.com>
+ <20250514045557.gonwfisy34jy4rlx@desk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,31 +56,28 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250514051847.193996-1-ebiggers@kernel.org>
-X-Newsgroups: apana.lists.os.linux.cryptoapi
+In-Reply-To: <20250514045557.gonwfisy34jy4rlx@desk>
 
-Eric Biggers <ebiggers@kernel.org> wrote:
-> From: Eric Biggers <ebiggers@google.com>
+On Tue, May 13, 2025 at 09:55:57PM -0700, Pawan Gupta wrote:
+> On Tue, May 13, 2025 at 09:46:11PM -0700, Pawan Gupta wrote:
+> > From: Eric Biggers <ebiggers@google.com>
+> > 
+> > commit 9f35e33144ae5377d6a8de86dd3bd4d995c6ac65 upstream.
+> > 
+> > Fix several build errors when CONFIG_MODULES=n, including the following:
+> > 
+> > ../arch/x86/kernel/alternative.c:195:25: error: incomplete definition of type 'struct module'
+> >   195 |         for (int i = 0; i < mod->its_num_pages; i++) {
+> > 
+> > Fixes: 872df34d7c51 ("x86/its: Use dynamic thunks for indirect branches")
+> > Cc: stable@vger.kernel.org
 > 
-> As discussed in the thread containing
-> https://lore.kernel.org/linux-crypto/20250510053308.GB505731@sol/, the
-> Power10-optimized Poly1305 code is currently not safe to call in softirq
-> context.  Disable it for now.  It can be re-enabled once it is fixed.
+> Sorry I forgot to put the kernel version in the subject. The same patch
+> applies to other kernel versions as well. I don't really need to send them
+> separately I guess, stable bots will likely pick those.
 > 
-> Fixes: ba8f8624fde2 ("crypto: poly1305-p10 - Glue code for optmized Poly1305 implementation for ppc64le")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Eric Biggers <ebiggers@google.com>
-> ---
-> arch/powerpc/lib/crypto/Kconfig | 1 +
-> 1 file changed, 1 insertion(+)
 
-I thought this fix should be enough, no?
+Thanks, now queued up.
 
-https://patchwork.kernel.org/project/linux-crypto/patch/aB8Yy0JGvoErc0ns@gondor.apana.org.au/
-
-Cheers,
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+greg k-h
 
