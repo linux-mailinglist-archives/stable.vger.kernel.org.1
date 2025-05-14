@@ -1,95 +1,110 @@
-Return-Path: <stable+bounces-144294-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32F4BAB61CE
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 06:56:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FECAAB61D8
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 07:00:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 620063BF312
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 04:55:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C14747A7FBE
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 04:59:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A2771DED42;
-	Wed, 14 May 2025 04:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F5FB1F3BBB;
+	Wed, 14 May 2025 05:00:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mlmTWuot"
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="CaacCWlt"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A23E41EB36
-	for <stable@vger.kernel.org>; Wed, 14 May 2025 04:56:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D979E23BE;
+	Wed, 14 May 2025 05:00:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747198566; cv=none; b=a/CAbopDWInXw+GIqdcSf+FcRA0Mlr9zVia+S2b28idIydknvhuc5DIS+QtrLlMQUi0ya3wR574541Z/AqYTPwKoz1AYt27eO5XAMoM+Ls3v3jlP/03nGkpcLrkQyl3v2u5zVVEwuPKE4QYjyGQvXlO9lTNQgbybskdCHNPEiTs=
+	t=1747198849; cv=none; b=BbY6vzWH5cFbO7i3Pl3ZeXsyJn4zejskcufMSKMplvJ2j7+VHY6TGZWV5aGcn6LrFCog5ALGrUBTjO9f5zt9nR2DYUpseHEpOt1/VNwUIf4tYLxN8QcYLaxHEUJh95kbhqU5L9OH1SgayAhD9t3Jq5+fA8QT/F1GviWJo9KvBQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747198566; c=relaxed/simple;
-	bh=wloAIwv4m4m5G9kZ6z4YRDtm8CUkvJY550uB4C1jkOA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pRXkQu8RPTBjrICoeJcr/nCJFj3Q/OY/I5YFA6Sc40vyEpeW4bRZ7dYw9kmc2bQFrVOGZ71EKre3gZzuFOv3m4TA1bHWBwERSjdxTM1GwV5N4mSDSmtlWuZcJUsnM79OQFKPp1lsFjzEHvtqPZOuTdG2M35X11ka5E1aAhnF7Bk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mlmTWuot; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747198565; x=1778734565;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=wloAIwv4m4m5G9kZ6z4YRDtm8CUkvJY550uB4C1jkOA=;
-  b=mlmTWuotX9HZUBrKlfWANTHDYynPdkU01JS4EivU7N8xyKZNsxIzaiqG
-   NYnZbwWGXwh2Xwbnc4KcyTzI/TG+XPCk35D43vKRdlf+Z2SV+bL+TJapp
-   lR+sERG+3RewFaOhhFBYnQmNqGHWDFWsyWV5LPNaXCLMgy1OHWUwV1BVA
-   xlQcqf3f8qV4oiaydbO3lM3Mqs5qUysaa3lD4iyYa7jWMkj1fKKjKL0KY
-   1YxdPmMj86ncfeEwLsLhNr9n2VakwuCHX3HVEh5KfGnX+liP0V31R0HpZ
-   2PbTtBeHsF013K4T7ar9cvOJaxXxLAqze8gm03t6PwusFX2rCt8ftJ2KG
-   A==;
-X-CSE-ConnectionGUID: AshL4IB1SnKg/FS9TYSA9g==
-X-CSE-MsgGUID: yvaK9Uy6RQWTMSN1Ba92IQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11432"; a="60475450"
-X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; 
-   d="scan'208";a="60475450"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2025 21:56:05 -0700
-X-CSE-ConnectionGUID: fDT6RzxwTl+SZ+b7KuUgkQ==
-X-CSE-MsgGUID: SJsllisUTxKtF9FHPsU6lw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; 
-   d="scan'208";a="138345747"
-Received: from kandrew-mobl.amr.corp.intel.com (HELO desk) ([10.125.146.10])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2025 21:56:03 -0700
-Date: Tue, 13 May 2025 21:55:57 -0700
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: stable@vger.kernel.org
-Cc: Eric Biggers <ebiggers@google.com>, Dave Hansen <dave.hansen@intel.com>,
-	Alexandre Chartre <alexandre.chartre@oracle.com>
-Subject: Re: [PATCH] x86/its: Fix build errors when CONFIG_MODULES=n
-Message-ID: <20250514045557.gonwfisy34jy4rlx@desk>
-References: <20250513-its-fixes-6-6-v1-1-2bec01a29b09@linux.intel.com>
+	s=arc-20240116; t=1747198849; c=relaxed/simple;
+	bh=DOk6w4KAtF/2yyHIl4W/3BA+O6PvltzofmtBqfLTc9U=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dGoIcjPJjiMU57CeKc08GYZKwwj+xLb3AJ993Wh12vaOvJZ19VDx2yf/0T7OUhxVsIipszfqH0qZVxiQAnajngvBoNQwJNHak2iZ9erlh5dBGAM1hXB3C0pnSQA1YNf6P83z/7XbpnPvDyQvyLBjNz/mfRo1wwKbZfQTSIFZopE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=CaacCWlt; arc=none smtp.client-ip=67.231.156.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
+	by mx0b-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54DNTYdF018270;
+	Tue, 13 May 2025 22:00:30 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pfpt0220; bh=HBkYcfhQW5E/EeMsTr5py5E
+	JzuJHUSEjDNHl11vsfGA=; b=CaacCWltuy4+KMa1snPs/XZPstLVo0djtfUP3Aq
+	yz8LcUNwmaLHOZZr4JUHMhAvcdWFelsaY328gcgLyF/k9g9K+WUjTnpg3oN1rvd+
+	yN0gEefTnycKM3KPWF6mVQOEIIedh67/rbK/gBPL/L89L4xBKU4XskMV1IEQwNr6
+	qL8Hyd6JXtm7JLfMckB5ppbWNxIc73wFnUuF3S4m73QDPEylSsgvpAtVChrTP34a
+	ecMJozPbFV57F2LL6BaGoMZEMx+aN8u93YA/x6GN0e0oFOMO07rGdCZkFTIHS6wj
+	LGJiiddr4J0ajPTHeKjNujou+7U1jxU30zmYBjk+h00Bbkw==
+Received: from dc5-exch05.marvell.com ([199.233.59.128])
+	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 46mft50gau-4
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 13 May 2025 22:00:29 -0700 (PDT)
+Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
+ DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.4; Tue, 13 May 2025 22:00:27 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
+ (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
+ Transport; Tue, 13 May 2025 22:00:27 -0700
+Received: from bharat-OptiPlex-Tower-Plus-7020.. (unknown [10.28.34.254])
+	by maili.marvell.com (Postfix) with ESMTP id 558A05B6934;
+	Tue, 13 May 2025 22:00:23 -0700 (PDT)
+From: Bharat Bhushan <bbhushan2@marvell.com>
+To: <bbrezillon@kernel.org>, <arno@natisbad.org>, <schalla@marvell.com>,
+        <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
+        <iovanni.cabiddu@intel.com>, <linux@treblig.org>,
+        <linux-crypto@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>
+CC: Bharat Bhushan <bbhushan2@marvell.com>
+Subject: [PATCH 0/4] crypto: octeontx2: Fix hang and address alignment issues
+Date: Wed, 14 May 2025 10:30:16 +0530
+Message-ID: <20250514050020.3165262-1-bbhushan2@marvell.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250513-its-fixes-6-6-v1-1-2bec01a29b09@linux.intel.com>
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-ORIG-GUID: qkcIw26bq72R2i3kmLdCmCtNvveJ-hlW
+X-Authority-Analysis: v=2.4 cv=VITdn8PX c=1 sm=1 tr=0 ts=6824236d cx=c_pps a=rEv8fa4AjpPjGxpoe8rlIQ==:117 a=rEv8fa4AjpPjGxpoe8rlIQ==:17 a=dt9VzEwgFbYA:10 a=voKHntS-kiqXh1f54uIA:9
+X-Proofpoint-GUID: qkcIw26bq72R2i3kmLdCmCtNvveJ-hlW
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE0MDA0MiBTYWx0ZWRfXxDw5Z3eBNQKk I3WE8c0Was7xS7YBbFMqHLOuP1/x00aUdhW7Lf/f7z2tBU22a9JeOz2/qtjkURbDjTfjkYNdl7L yrvZxuuNnGBAlIQkBv/JVRdYGoV38HVr+p/zpn8QewUaEokoJEohVe91sg0xCovbqU5b6xh3rpm
+ qwm5rYoMD7t7LkGE79VFVwNyQcHk06N+y1wZ3CVgOrqCr+jtDoKbusSgTpriAzv1uJeDldnwV4L yG+5WGEzSkxmG+P8yPrzjLPGy8rxD6icOXYwrZ0oLsTBVJj/sq3DeWeEM50pkwT0ZKAR0zCzv95 djcR+CoOZv4RoWMt490l7jxiKGK0pfBygLzrlCNGAXc7aG9ZJV9k7Br5uRb7NxGBcNj5ssqw11p
+ KMk8rYEj2tLSC4itClEKnhsCDvTLfhdMDqPXmqxzGPVar8gkuWL9fv4CaJfCoD0B653U83eF
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-14_01,2025-05-09_01,2025-02-21_01
 
-On Tue, May 13, 2025 at 09:46:11PM -0700, Pawan Gupta wrote:
-> From: Eric Biggers <ebiggers@google.com>
-> 
-> commit 9f35e33144ae5377d6a8de86dd3bd4d995c6ac65 upstream.
-> 
-> Fix several build errors when CONFIG_MODULES=n, including the following:
-> 
-> ../arch/x86/kernel/alternative.c:195:25: error: incomplete definition of type 'struct module'
->   195 |         for (int i = 0; i < mod->its_num_pages; i++) {
-> 
-> Fixes: 872df34d7c51 ("x86/its: Use dynamic thunks for indirect branches")
-> Cc: stable@vger.kernel.org
+First patch of the series fixes possible infinite loop.
 
-Sorry I forgot to put the kernel version in the subject. The same patch
-applies to other kernel versions as well. I don't really need to send them
-separately I guess, stable bots will likely pick those.
+Remaining three patches fixes address alignment issue observed
+after "9382bc44b5f5 arm64: allow kmalloc() caches aligned to the
+       smaller cache_line_size()"
+
+Patch-2 and patch-3 applies to stable version 6.6 onwards.
+Patch-4 applies to stable version 6.12 onwards
+
+Bharat Bhushan (4):
+  crypto: octeontx2: add timeout for load_fvc completion poll
+  crypto: octeontx2: Fix address alignment issue on ucode loading
+  crypto: octeontx2: Fix address alignment on CN10K A0/A1 and OcteonTX2
+  crypto: octeontx2: Fix address alignment on CN10KB and CN10KA-B0
+
+ .../marvell/octeontx2/otx2_cpt_reqmgr.h       | 119 +++++++++++++-----
+ .../marvell/octeontx2/otx2_cptpf_ucode.c      |  46 ++++---
+ 2 files changed, 121 insertions(+), 44 deletions(-)
+
+-- 
+2.34.1
+
 
