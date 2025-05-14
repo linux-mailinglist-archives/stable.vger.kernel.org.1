@@ -1,109 +1,101 @@
-Return-Path: <stable+bounces-144455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73034AB790E
-	for <lists+stable@lfdr.de>; Thu, 15 May 2025 00:28:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9736AAB7957
+	for <lists+stable@lfdr.de>; Thu, 15 May 2025 01:13:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92A468C546C
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 22:28:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E51A41B672FB
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 23:13:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2AB2221F35;
-	Wed, 14 May 2025 22:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03092225A34;
+	Wed, 14 May 2025 23:13:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lVSWe5Ok"
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="e5pJzhcV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from outbound.pv.icloud.com (p-west1-cluster1-host12-snip4-7.eps.apple.com [57.103.64.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E18221B9D9
-	for <stable@vger.kernel.org>; Wed, 14 May 2025 22:28:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0AE71F9F73
+	for <stable@vger.kernel.org>; Wed, 14 May 2025 23:12:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.64.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747261724; cv=none; b=jIQpil9/vovn22Lvyz16UnZZSt5DNhtF9YQY+rb0OtK4iuF8kzydZjiszdexCEStRsp+zx/gSpjjtCos9SjrrFMCSeRnIEXJJrQp9UIAXNt+N/ae4721kVjE4jsQ6tXO2b83bpeO0BW+9MbYJnq7i1eI6pcGLQsyxqCi+NMV+QI=
+	t=1747264380; cv=none; b=R6/88dUFysH891AKnggdQWvtSlG6VywxISLZMEh21bul0jN++au0iuxvJaprwtSOloxTKE1REoP1gt9WVAmTKmqBe1OirILhS7mkbtG6KnvpEXX4Xq/2d/a+1aPJOuM/cQBPWOuFLwURFKODDbbysMcaV0NXHKcSzuuwO0ZhATk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747261724; c=relaxed/simple;
-	bh=ikg7uKNlFxdtInhouVVjlX/eWNb/Iocaf0FOoIsWq04=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pLdtBm0v6S1NfZoo47OWcoFJAqBlpaRDHO6UagnKPuH1JP4TqyfumttaInK8m/eIivQIX4IdVmRGApkAqjRov/xZL6r7f2zsUp0HKm9HyqhPaUc3TUoXYCDKzsoC1aH80gOqxMmhHqp2SiUcEVmgmB8iXdCFIbr67iX3pcsMR1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lVSWe5Ok; arc=none smtp.client-ip=209.85.167.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-54fbd1ba65dso263939e87.0
-        for <stable@vger.kernel.org>; Wed, 14 May 2025 15:28:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1747261721; x=1747866521; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ikg7uKNlFxdtInhouVVjlX/eWNb/Iocaf0FOoIsWq04=;
-        b=lVSWe5OkMpmjEy0mhYsTTltJfu0oaUtd//WBacEWg7ZSevmG1HqR+FdcNn9YT9vPPP
-         5BOQetKQV+LeMQyoORqCJLjIDoBhtLFxdkpRtvP6xuq/keEFldb/aNQSDSQarbtL20oA
-         9dxkgEIkGIs7oz4WTcdcE+EIWN6n5FVzOztRQDX1NtiShFJqDH/QHP/K9v+3sYM3HLvA
-         O/qrQoBcK3YMD+2Rom5Bn32xjkSG8UNQ4CVXaPPzh6EzrdL6WoTY2p1jtmoRe/gu4B92
-         y1+EI5RcIydRYBiulEyJJL9tkHHrNjv+sYHTwG4Th9rf/GG7zGWo0Y9boJoH1zQr8mUV
-         yZMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747261721; x=1747866521;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ikg7uKNlFxdtInhouVVjlX/eWNb/Iocaf0FOoIsWq04=;
-        b=ptEb9aVCf5mFhR/2OhOHwCb6lTp+Dp2WubdPHRRYkwbuMlq2YSL+oLaGwv8zdcrWFJ
-         APWLFlNoBjLOnQUiHtzOXM0tV5slPcsfbkqxl8ygZpab5+hkg/oOHDq2Vjq3K187LcTj
-         6UvOb7F1QctHEv7Xq6985VRqU0NLKffLghRrTQ99M0gc0Ovn2kbdJA0X1TwQycyMxpv0
-         vmH1M4U00iXTxulk4Q3LeaEwOtt561hpfrqhvcYbQb5IVpmoaFErJZm+Wn80ieF0JPwx
-         JbHfs94hohSPZnEs5UR+9O/bqYkBqgHAOFStiJNSisI87ce9zwFHKdsdv17XR/yFNKz4
-         E3MQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWeKtivXeNMZF33CPltS44H2KCtjR4F8SWrzMV3m0sJICYl6pBYw+EJII2uOSb5+CCmhyPwJRE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yydy6U0WtYn9Pb/Ti5iP3D7t5lqa6KdU+7sEAhrBED1HNu321Nl
-	ar+QjJrQ8Ily0B26iXlyH6ZAPHRoH//AXmKoOr1K+ZTWG0yNLtIrpF0DDNHw09VKlLOCqacxKdn
-	A40ww8uS5LSkTqrA3TSMsu3PBGo6Ee9ZqByyhSQ==
-X-Gm-Gg: ASbGncvC5/Xlpc0yDWrAnPyFBaJhWOjqceOPwyc6BgPu44sfqV8LTEI2k4BBiMh1u+k
-	q0T94xyB2X4f4GhNX2Wq6hs3B32E4dN4xXW/vYUr1kvG/Sai1azBbSgpqEvaA1HKaQ3bme/PBPY
-	n1dnr5mGFcVD5IDIw2ZlbwWk5GlY1TlyR+J52ihYkiMbI=
-X-Google-Smtp-Source: AGHT+IE1Vp4rlvI75qMKlDEVkN1t9zzD3BxyByO5SW27Vl1zUjiPYHzMEgLHLW0x21yYIa1dbtvC8PDJZuRwP2Kenrw=
-X-Received: by 2002:a05:6512:450c:b0:550:d534:2b10 with SMTP id
- 2adb3069b0e04-550dd12aeeemr60274e87.35.1747261720610; Wed, 14 May 2025
- 15:28:40 -0700 (PDT)
+	s=arc-20240116; t=1747264380; c=relaxed/simple;
+	bh=5mT+RQkMC8J5+wPg+K0XzcqnqF5PVE9oDpIqPmC9zvA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=q76tZeYSTUw+OXq/iPZd4RDaXRQsBsNKjE8N25NQRiBeR189dZgYLKU7nlfcC+IYfdXUoAtZEtq7+tvnwe5CMN+jAKXW/p/LuW6k1SSmu0KYXfbLdoBB1VoIQv3PxLPqGUWZr7tbeG5FZba6upowfeO32/ve3V3xXDnqF51+3Fo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=e5pJzhcV; arc=none smtp.client-ip=57.103.64.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
+	s=1a1hai; bh=ccwJU/LTdnXEs9iAVCu4zSGeS8J9jkqJWbyKvJzQ6hw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:x-icloud-hme;
+	b=e5pJzhcVeETD5S8VCgumVLW/shAHu+rlzp6wqHDJe49W0viMmf80Y0haG1Ei2Gv1I
+	 zgsWyq5b/PH9Sy80F5TDF6JP3IL9Ztf/ctZLhUzwQQfR543DjMI6IHZpFX/+xkzP8Q
+	 z8FKDdwamLFM9bQ0j6jqGY0qFcyMIy6FzPe84VoXkF4G6e2slyy46MZZjIsD2bLwyw
+	 BPut8wr7B7zPxmo7m77RoeQN9wWDvDSXryHBmetXa1wO5dJH3S31w5AY7SCjZrQKjQ
+	 ypd7fhQkMAR276OdLXlGOvyCStw1ARh0jc9SY4mihYPN9yE3S2IITCmiUyKVubtq+b
+	 wqpvpzjAjMRUw==
+Received: from outbound.pv.icloud.com (localhost [127.0.0.1])
+	by outbound.pv.icloud.com (Postfix) with ESMTPS id 1B4A41800EA2;
+	Wed, 14 May 2025 23:12:55 +0000 (UTC)
+Received: from [192.168.1.26] (pv-asmtp-me-k8s.p00.prod.me.com [17.56.9.36])
+	by outbound.pv.icloud.com (Postfix) with ESMTPSA id AACED1800453;
+	Wed, 14 May 2025 23:12:53 +0000 (UTC)
+Message-ID: <9302bf79-dd42-4c4f-a521-b25fc94569d4@icloud.com>
+Date: Thu, 15 May 2025 07:12:51 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250514-pinctrl-a37xx-fixes-v2-0-07e9ac1ab737@gmail.com>
-In-Reply-To: <20250514-pinctrl-a37xx-fixes-v2-0-07e9ac1ab737@gmail.com>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Thu, 15 May 2025 00:28:29 +0200
-X-Gm-Features: AX0GCFsW1KstBI2jcV_icDkbitXFWIRxmcRnuAcWr-VFZ0eu8OVxn2v41gFG6Ok
-Message-ID: <CACRpkdb2Njam8GGuN5yeR+DYvi0xe11xbARaoDepoGk=gAK6GA@mail.gmail.com>
-Subject: Re: [PATCH v2 0/7] pinctrl: armada-37xx: a couple of small fixes
-To: Gabor Juhos <j4g8y7@gmail.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Gregory Clement <gregory.clement@bootlin.com>, 
-	Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, Bartosz Golaszewski <brgl@bgdev.pl>, 
-	Imre Kaloz <kaloz@openwrt.org>, linux-arm-kernel@lists.infradead.org, 
-	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/2] PCI: of: Fix OF device node refcount leakages
+To: Bjorn Helgaas <bhelgaas@google.com>
+Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Zijun Hu <quic_zijuhu@quicinc.com>, stable@vger.kernel.org,
+ Rob Herring <robh@kernel.org>, Lizhi Hou <lizhi.hou@amd.com>
+References: <20250407-fix_of_pci-v1-0-a14d981fd148@quicinc.com>
+Content-Language: en-US
+From: Zijun Hu <zijun_hu@icloud.com>
+In-Reply-To: <20250407-fix_of_pci-v1-0-a14d981fd148@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: JDlOn7mvHZ_8tPmSTVyMKBnbbdILqJtJ
+X-Proofpoint-ORIG-GUID: JDlOn7mvHZ_8tPmSTVyMKBnbbdILqJtJ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-14_04,2025-05-14_03,2025-02-21_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
+ spamscore=0 clxscore=1015 adultscore=0 bulkscore=0 malwarescore=0
+ suspectscore=0 mlxscore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.22.0-2503310001 definitions=main-2505140215
 
-On Wed, May 14, 2025 at 9:18=E2=80=AFPM Gabor Juhos <j4g8y7@gmail.com> wrot=
-e:
+On 2025/4/7 22:14, Zijun Hu wrote:
+> This patch series is to fix OF device node refcount leakage for
+>  - of_irq_parse_and_map_pci()
+>  - of_pci_prop_intr_map()
+> 
+> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+> ---
+> Zijun Hu (2):
+>       PCI: of: Fix OF device node refcount leakage in API of_irq_parse_and_map_pci()
+>       PCI: of: Fix OF device node refcount leakages in of_pci_prop_intr_map()
 
-> The series contains several small patches to fix various
-> issues in the pinctrl driver for Armada 3700.
->
-> Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Hi Bjorn,
 
-Patches applied by applying to a separate immutable branch
-and merging into my "devel" branch: we were clashing a bit
-with Bartosz rewrites so I had to help git a bit.
+Not sure if this patch series is still in your review queue.
 
-Pushed to the autobuilders, check the result!
+Also show below mainline fixes for your reference.
 
-Yours,
-Linus Walleij
+962a2805e47b ("of/irq: Fix device node refcount leakage in API
+irq_of_parse_and_map()")
+ff93e7213d6c ("of/irq: Fix device node refcount leakage in API
+of_irq_parse_raw()")
+
 
