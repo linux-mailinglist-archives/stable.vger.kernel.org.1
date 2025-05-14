@@ -1,118 +1,139 @@
-Return-Path: <stable+bounces-144405-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CA56AB7315
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 19:44:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 442FBAB7444
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 20:23:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8211A3A962F
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 17:43:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CECDB4C3238
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 18:23:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBCF028314C;
-	Wed, 14 May 2025 17:44:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AAEIc3MA"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE46D280337;
+	Wed, 14 May 2025 18:23:16 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
+Received: from mail-out.aladdin-rd.ru (mail-out.aladdin-rd.ru [91.199.251.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E64CC27FD45
-	for <stable@vger.kernel.org>; Wed, 14 May 2025 17:43:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7C91E9B16;
+	Wed, 14 May 2025 18:23:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.199.251.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747244640; cv=none; b=AOHiW/BqgmUDXnAQ1fF1tjcdrSxq6AZEw1/ogzuN6SGj20kTIGz93Ym84XmJLQHGPrZ99OlFVRtq6A+RrmCHiEMl8CxisSzJP0+hCGgj/lyYrJRmCa4dwOfE8R/w3Vv3dxlLQRL0mLPRaytffZR0mgxI8eZan/MyqxubsCySkKM=
+	t=1747246996; cv=none; b=Sk5BqHMrVxSKIPhjrXdTb7XHQi5Ostq9JMBz5TnQcg12vFXo9VtlaHMTT4rNf4u6DYu+MJAjIVr16z2oJOFuUgzL1uVrSPGuSLcGBdf9VFhoJb/oQ+Uf6q/rsq6hnoktpLRu5hw0n0kCUqTDZ9OTaVG2VNv1HdBoARZ39etPVcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747244640; c=relaxed/simple;
-	bh=wNSwSHaQL768bwuARb+U+ClbCVRY8y/M7G0l8xnwMes=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=My72A9YP+fQ7AqqV7U1xCfU800ef8ew+lZRGK/NchBuCD43gFFU/M0Jp6lkley3tcu16t90S3IBDh7tz9L9CGdWX2pFB1b20m1BLdDY8LOyR+PI2yEx/Ejxy5x3CkeM/xch3ZqRVCzvtBWjUa9TWoYe/sbD1C5PExstgaze9Qu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AAEIc3MA; arc=none smtp.client-ip=209.85.208.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
-Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-5fc1796ff88so70657a12.2
-        for <stable@vger.kernel.org>; Wed, 14 May 2025 10:43:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1747244637; x=1747849437; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=t3HyzwFpqI96MKN6rPIIRpRYJw2Hi2fE7csbcA6ZBUg=;
-        b=AAEIc3MAESsX+Wa2luqGcJJff4QP3meX9pAvOAS1ih4c+m7dmICw0DsA722C1iQJtD
-         l1qgFVDCoq8Wz0E+dCNH3/QqlvhhMNt5waypuDrXQE4uzbqijBucU/LTVu9Wk09HYyDg
-         EgHBkHgYmrccbLnezdVBKqzlr4jyCqS/Ogi8q8OAGP0eEz84EdBPbIGhHDTt1F+6o9ii
-         VPimE6Z0Uc5OaVKO1/IUQP8rwbIjIDEtG7NNJZxqV6rRhVNO1/a7IX/zNX+jzR1CHJMO
-         2iVjGRu80kmvMMPZpscjcIGj8r9G6u9NX7TcbgjSRAIBhVbLsDlVspXQgTUSN6TwshCG
-         oqdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747244637; x=1747849437;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=t3HyzwFpqI96MKN6rPIIRpRYJw2Hi2fE7csbcA6ZBUg=;
-        b=ttSiYpVMspt6NANBxgeUb3NxC4FXwfy65OvcYd5xMY/vuz48mCVtwQUePlXNFzTYgg
-         3kJCRs/tEk8wIYz6rdFViCXO8tev3nqDYj9TjNhWkABXJYL18lN9exZqUXjd+3KIV8nw
-         tDH5vGXAQp8mS7fWsPBJEX0JXMK5lS+MHSkY9MQUQncqfh2JhE7JOFUO3Jt5u7uP1O1n
-         WammIDySdAzqbvtpV2bwltsnh6X383j/T/XnZJhbYCNOQQi836/AjGzXNx+ujBKa0OLl
-         F/kgB1P8U6BnAhE+atfXdxUxSW8/heU0HLRhYl7K2v1jBgE2rFUB6Ky0FMWPJSKL7GYo
-         pKcg==
-X-Forwarded-Encrypted: i=1; AJvYcCVpkOT4bRlLldT0Eg7JlYbCAzMIE89/cSCYf02O/kAYVQMzVX3PvXUSQSIt/mutZJNR0RS1Szk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywxm57jYUREMaz1/hBJSeaXYZXCteG4jXZx24mg1FdBbGgiJofl
-	MRIw8/SuEdAtxPlVsw+3hoiKRBV1P2y0I0Mrm894KM2pHEfNmjaSoiewGnYwD2fZE9ulzw==
-X-Google-Smtp-Source: AGHT+IFMiOIHcOTbuiXUZt5aRX5V8FD38VCujID8sYnl6g5WCQk844aGLumnl4jvPnBScsY9NLpomgSv
-X-Received: from edr22.prod.google.com ([2002:a05:6402:44d6:b0:5fc:8eaa:6880])
- (user=ardb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6402:1eca:b0:5fa:f7ed:f19c
- with SMTP id 4fb4d7f45d1cf-5ff9889159cmr3446782a12.4.1747244637109; Wed, 14
- May 2025 10:43:57 -0700 (PDT)
-Date: Wed, 14 May 2025 19:43:41 +0200
-In-Reply-To: <20250514174339.1834871-9-ardb+git@google.com>
+	s=arc-20240116; t=1747246996; c=relaxed/simple;
+	bh=4e1qOJWkWaFSa6R6yvbt8eruwMLzqqkT2IlDLCrqYys=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=L22IxhQcnqq3czH0E2UweUpc5fleRchqCSRMoP+GKSgoG3Rwrz8WH0br8/mTy3HgX2gELkt7YbHFeNIVr77i4eMKB5KuRBAPugf+DNPh9J9U0mKEQTDDIdNU8w8MYRnh3wpopm9Siwt3iYRvv6sHWV/V9YTJvvAVACAcB8JTTS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aladdin.ru; spf=pass smtp.mailfrom=aladdin.ru; arc=none smtp.client-ip=91.199.251.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=aladdin.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aladdin.ru
+From: Daniil Dulov <d.dulov@aladdin.ru>
+To: <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Daniil Dulov <d.dulov@aladdin.ru>, Alexei Starovoitov <ast@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>,
+	Martin KaFai Lau <kafai@fb.com>, Song Liu <songliubraving@fb.com>, Yonghong
+ Song <yhs@fb.com>, John Fastabend <john.fastabend@gmail.com>, KP Singh
+	<kpsingh@kernel.org>, Roman Gushchin <guro@fb.com>, <netdev@vger.kernel.org>,
+	<bpf@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<lvc-project@linuxtesting.org>, syzbot <syzkaller@googlegroups.com>, Eric
+ Dumazet <edumazet@google.com>
+Subject: [PATCH 5.10] bpf: Avoid overflows involving hash elem_size
+Date: Wed, 14 May 2025 21:07:33 +0300
+Message-ID: <20250514180733.1271988-1-d.dulov@aladdin.ru>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250514174339.1834871-9-ardb+git@google.com>
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=805; i=ardb@kernel.org;
- h=from:subject; bh=Uiag6eY4kkyJQ9LOjYS9SFHapP2JX/63rkWG9Swk9rg=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIUPlWsB25Y3CTRL3p7X+7vm8bf2FpxlxIpNnHp0k0Pe+9
- z1PjvKpjlIWBjEOBlkxRRaB2X/f7Tw9UarWeZYszBxWJpAhDFycAjARuWWMDB9TrRZWXE++3T1d
- bb8st+a0ub6btS/EH4x80K4aeOHV7UmMDAdPP5o2qVGqVFrj3exdWYfn329vd/XQllvXP/OacVb TT0YA
-X-Mailer: git-send-email 2.49.0.1101.gccaa498523-goog
-Message-ID: <20250514174339.1834871-10-ardb+git@google.com>
-Subject: [RFC PATCH 1/7] efi: Add missing static initializer for efi_mm::cpus_allowed_lock
-From: Ard Biesheuvel <ardb+git@google.com>
-To: linux-efi@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	Ard Biesheuvel <ardb@kernel.org>, Will Deacon <will@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Peter Zijlstra <peterz@infradead.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: EXCH-2016-01.aladdin.ru (192.168.1.101) To
+ EXCH-2016-01.aladdin.ru (192.168.1.101)
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-Initialize the cpus_allowed_lock struct member of efi_mm.
+commit e1868b9e36d0ca52e4e7c6c06953f191446e44df upstream.
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Use of bpf_map_charge_init() was making sure hash tables would not use more
+than 4GB of memory.
+
+Since the implicit check disappeared, we have to be more careful
+about overflows, to support big hash tables.
+
+syzbot triggers a panic using :
+
+bpf(BPF_MAP_CREATE, {map_type=BPF_MAP_TYPE_LRU_HASH, key_size=16384, value_size=8,
+                     max_entries=262200, map_flags=0, inner_map_fd=-1, map_name="",
+                     map_ifindex=0, btf_fd=-1, btf_key_type_id=0, btf_value_type_id=0,
+                     btf_vmlinux_value_type_id=0}, 64) = ...
+
+BUG: KASAN: vmalloc-out-of-bounds in bpf_percpu_lru_populate kernel/bpf/bpf_lru_list.c:594 [inline]
+BUG: KASAN: vmalloc-out-of-bounds in bpf_lru_populate+0x4ef/0x5e0 kernel/bpf/bpf_lru_list.c:611
+Write of size 2 at addr ffffc90017e4a020 by task syz-executor.5/19786
+
+CPU: 0 PID: 19786 Comm: syz-executor.5 Not tainted 5.10.0-rc3-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/01/2011
+Call Trace:
+ __dump_stack lib/dump_stack.c:77 [inline]
+ dump_stack+0x107/0x163 lib/dump_stack.c:118
+ print_address_description.constprop.0.cold+0x5/0x4c8 mm/kasan/report.c:385
+ __kasan_report mm/kasan/report.c:545 [inline]
+ kasan_report.cold+0x1f/0x37 mm/kasan/report.c:562
+ bpf_percpu_lru_populate kernel/bpf/bpf_lru_list.c:594 [inline]
+ bpf_lru_populate+0x4ef/0x5e0 kernel/bpf/bpf_lru_list.c:611
+ prealloc_init kernel/bpf/hashtab.c:319 [inline]
+ htab_map_alloc+0xf6e/0x1230 kernel/bpf/hashtab.c:507
+ find_and_alloc_map kernel/bpf/syscall.c:123 [inline]
+ map_create kernel/bpf/syscall.c:829 [inline]
+ __do_sys_bpf+0xa81/0x5170 kernel/bpf/syscall.c:4336
+ do_syscall_64+0x2d/0x70 arch/x86/entry/common.c:46
+ entry_SYSCALL_64_after_hwframe+0x44/0xa9
+RIP: 0033:0x45deb9
+Code: 0d b4 fb ff c3 66 2e 0f 1f 84 00 00 00 00 00 66 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 0f 83 db b3 fb ff c3 66 2e 0f 1f 84 00 00 00 00
+RSP: 002b:00007fd93fbc0c78 EFLAGS: 00000246 ORIG_RAX: 0000000000000141
+RAX: ffffffffffffffda RBX: 0000000000001a40 RCX: 000000000045deb9
+RDX: 0000000000000040 RSI: 0000000020000280 RDI: 0000000000000000
+RBP: 000000000119bf60 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 000000000119bf2c
+R13: 00007ffc08a7be8f R14: 00007fd93fbc19c0 R15: 000000000119bf2c
+
+Fixes: 755e5d55367a ("bpf: Eliminate rlimit-based memory accounting for hashtab maps")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Acked-by: Roman Gushchin <guro@fb.com>
+Link: https://lore.kernel.org/bpf/20201207182821.3940306-1-eric.dumazet@gmail.com
+Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
 ---
- drivers/firmware/efi/efi.c | 3 +++
- 1 file changed, 3 insertions(+)
+ kernel/bpf/hashtab.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
-index 7309394b8fc9..59a56661937c 100644
---- a/drivers/firmware/efi/efi.c
-+++ b/drivers/firmware/efi/efi.c
-@@ -73,6 +73,9 @@ struct mm_struct efi_mm = {
- 	.page_table_lock	= __SPIN_LOCK_UNLOCKED(efi_mm.page_table_lock),
- 	.mmlist			= LIST_HEAD_INIT(efi_mm.mmlist),
- 	.cpu_bitmap		= { [BITS_TO_LONGS(NR_CPUS)] = 0},
-+#ifdef CONFIG_SCHED_MM_CID
-+	.cpus_allowed_lock	= __RAW_SPIN_LOCK_UNLOCKED(efi_mm.cpus_allowed_lock),
-+#endif
- };
+diff --git a/kernel/bpf/hashtab.c b/kernel/bpf/hashtab.c
+index 4c7cab79d90e..829d6d3a8495 100644
+--- a/kernel/bpf/hashtab.c
++++ b/kernel/bpf/hashtab.c
+@@ -199,7 +199,7 @@ static void *fd_htab_map_get_ptr(const struct bpf_map *map, struct htab_elem *l)
  
- struct workqueue_struct *efi_rts_wq;
+ static struct htab_elem *get_htab_elem(struct bpf_htab *htab, int i)
+ {
+-	return (struct htab_elem *) (htab->elems + i * htab->elem_size);
++	return (struct htab_elem *) (htab->elems + i * (u64)htab->elem_size);
+ }
+ 
+ static void htab_free_elems(struct bpf_htab *htab)
+@@ -255,7 +255,7 @@ static int prealloc_init(struct bpf_htab *htab)
+ 	if (!htab_is_percpu(htab) && !htab_is_lru(htab))
+ 		num_entries += num_possible_cpus();
+ 
+-	htab->elems = bpf_map_area_alloc(htab->elem_size * num_entries,
++	htab->elems = bpf_map_area_alloc((u64)htab->elem_size * num_entries,
+ 					 htab->map.numa_node);
+ 	if (!htab->elems)
+ 		return -ENOMEM;
 -- 
-2.49.0.1101.gccaa498523-goog
+2.34.1
 
 
