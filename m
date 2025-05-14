@@ -1,155 +1,143 @@
-Return-Path: <stable+bounces-144289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23F87AB614E
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 05:44:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F10C3AB619C
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 06:34:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D428F189FB74
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 03:44:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E84181B4463C
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 04:34:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 630051E9B2B;
-	Wed, 14 May 2025 03:44:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IAgWLMh9"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D5F41F4177;
+	Wed, 14 May 2025 04:33:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D6D01E5716;
-	Wed, 14 May 2025 03:44:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 749D11F1921;
+	Wed, 14 May 2025 04:33:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=166.125.252.92
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747194262; cv=none; b=WRQcTi/ed9AO1hVY9jE0iqmptoErg5u9pD8/nhGMRuD35chtryK5ttb7LxS/M1UIiK+AiNpUtW7ai3Iw3JU87NfpMbH7l4j+hjKjF4yNPa4sbAjiDjUzI0m6u+4vRzCJZqemBGmhYq4XrT1FDCr77d+TpKfiYxlXQCsgOUNaGPw=
+	t=1747197223; cv=none; b=ODyMIGlT3kEcxaYebtYv1LxljH4y1tV5jVzZ66Scccrx0NJdGmphhEg65iqYDhU0unKYbmReUK1uzCyUqkzD0agNnSU+FMZft7Np5Efq3c3c4znWDfRYEJNqtIlvZcxLJEs11C9JNFYMM8yc4leiv0Y8CpO+P+s09H+qvC3C4cA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747194262; c=relaxed/simple;
-	bh=9pMoTXmFukaRAYw6b+fuA5BhdZG//oKKOf6c8Cvwb8U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fJeq6hSBvxi9rkXqQIgWQX9k/LnjVld+/I7bzomEmHZetqbSMk1t61bjB/tH+Bz19RtFXmK7pZGqPnCfjRzOLRcX2MHa8jSRIatRRou6TL2MzJuO1rms57pC/T24w8zeYKCIDghTtYP/18Gd48YMD0ILi79ExFymMx5ChyFIxgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IAgWLMh9; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747194261; x=1778730261;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=9pMoTXmFukaRAYw6b+fuA5BhdZG//oKKOf6c8Cvwb8U=;
-  b=IAgWLMh9IaMFCTGckaXb+BqAo2A+H/Q4elaiGwkTS1MLOG+8zHs6lJ0u
-   iB/B1uI08XpFbk6XliEmvsPWe/Qtb5MT89Me1VN5FYpIJOXINTt1DuWJR
-   MYYjC0gK2JFOcXJZjNvIVOB8DAIfK3fAUK1TMrxFIoGogVGyEGlijyesh
-   U0ZM0c9wVv/7RkFLjpiVX7HVXsg6drtgXlVnTmhW+Sk8DLLDF8kd1QDMS
-   bL0HIoy+WQh2GfWpXF5BRM5SJZLyjbQtToS+9Z627MrAefLPHlus8mIyi
-   R4lM8fnUyzDqSt/uBpAvzlQf9ank4AmDdRPvznI5A0CcSC9FnMOMn4tkR
-   w==;
-X-CSE-ConnectionGUID: RZ6RVDBDTs2BrKsGBZrmBQ==
-X-CSE-MsgGUID: UXU04rQiS/2SwA2eVNLuIw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11432"; a="49234758"
-X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; 
-   d="scan'208";a="49234758"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2025 20:44:20 -0700
-X-CSE-ConnectionGUID: muIbOqbaRXmZ/mhVFl4nFA==
-X-CSE-MsgGUID: cQDMq4JaQmS+JjO//4qkEg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; 
-   d="scan'208";a="142852843"
-Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2025 20:44:17 -0700
-Message-ID: <d0e31e5e-3965-4f7d-8881-55e13dcabaaf@linux.intel.com>
-Date: Wed, 14 May 2025 11:39:39 +0800
+	s=arc-20240116; t=1747197223; c=relaxed/simple;
+	bh=A6RnKORevZid870HTtZcCFA2jySe9hzw8ZnSSBzZ4sE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=X0rUH/0VL7hqqg5i+tFJW0/ieAsGsQkoUudW5yX7m239ZTfhxP3YupcUa/wcJkKSpTuCtom2dQsgC6H6jZDmKak/l7ZVSi73neEXadj+QuQZy1STPsCI5LhBChF0lUrI+f6JqZlc4Omc5o3lphcWmxS2DfzF81ojuPwNmguBRSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com; spf=pass smtp.mailfrom=sk.com; arc=none smtp.client-ip=166.125.252.92
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sk.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sk.com
+X-AuditID: a67dfc5b-681ff7000002311f-77-68241d1cc1f5
+Date: Wed, 14 May 2025 13:33:27 +0900
+From: Byungchul Park <byungchul@sk.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Gavin Guo <gavinguo@igalia.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, muchun.song@linux.dev,
+	osalvador@suse.de, kernel-dev@igalia.com, stable@vger.kernel.org,
+	Hugh Dickins <hughd@google.com>, Florent Revest <revest@google.com>,
+	Gavin Shan <gshan@redhat.com>, kernel_team@skhynix.com
+Subject: Re: [PATCH] mm/hugetlb: fix a deadlock with pagecache_folio and
+ hugetlb_fault_mutex_table
+Message-ID: <20250514043326.GA4318@system.software.com>
+References: <20250513093448.592150-1-gavinguo@igalia.com>
+ <20250513175633.85f4e19f4232a68ab04c8e41@linux-foundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] applespi from 6.12 onwards
-To: kobarity <kobarity@gmail.com>
-Cc: Aditya Garg <gargaditya08@live.com>, =?UTF-8?Q?Berkel_J=C3=B6rg?=
- <joerg.berkel@bfh.ch>, Robin Murphy <robin.murphy@arm.com>,
- "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
- "dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
- "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
- "lukas@wunner.de" <lukas@wunner.de>, David Woodhouse <dwmw2@infradead.org>,
- "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
- Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>
-References: <4dada48a-c5dd-4c30-9c85-5b03b0aa01f0@bfh.ch>
- <PN3PR01MB9597D8E327CC7910673849D3B888A@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM>
- <122a1f90-ddd9-4e74-96d1-57e21e580ae2@linux.intel.com>
- <f1b41874-1535-4457-9747-eee3d816091a@arm.com>
- <PN3PR01MB959764E908600CD45169348CB88BA@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM>
- <c0bbfcc8-1275-43de-be40-acb8f2653359@bfh.ch>
- <PN3PR01MB959708DEEA1567DD38447D5AB895A@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM>
- <eke7wmanw9xq.wl-kobarity@gmail.com>
- <089b2370-23e4-4a22-bf57-886e46247a1f@linux.intel.com>
- <eke7v7q6vxai.wl-kobarity@gmail.com>
- <5d760ba9-031f-469b-96e0-a171b7142f88@linux.intel.com>
- <eke7tt5oww4r.wl-kobarity@gmail.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <eke7tt5oww4r.wl-kobarity@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250513175633.85f4e19f4232a68ab04c8e41@linux-foundation.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrOLMWRmVeSWpSXmKPExsXC9ZZnka6MrEqGwdXnohZz1q9hs1iy9gyz
+	xctd25gsnn7qY7E49+I7k8XlXXPYLO6t+c9qsWznQxaLM9OKLLpn/mC1WLDxEaMDt8eCTaUe
+	E2Z3s3ls+jSJ3ePEjN8sHgsbpjJ7vN93lc1j8+lqj8+b5AI4orhsUlJzMstSi/TtErgyLv/o
+	YSroFK64fm0XUwPjH54uRk4OCQETia5Jz9lg7Ja+tWA2i4CqxMebD1lAbDYBdYkbN34yg9gi
+	AroSq57vArK5OJgFNjNJ9LbvAGsQFkiRuHZgG1gDr4C5xK6Vu5lAbCGBKol/k1qg4oISJ2c+
+	AbOZBbQkbvx7CVTDAWRLSyz/xwES5hTwlvh9ZyUriC0qoCxxYNtxJpBdEgK32SSmTNzBCHGo
+	pMTBFTdYJjAKzEIydhaSsbMQxi5gZF7FKJSZV5abmJljopdRmZdZoZecn7uJERgdy2r/RO9g
+	/HQh+BCjAAejEg+vha5yhhBrYllxZe4hRgkOZiUR3utZQCHelMTKqtSi/Pii0pzU4kOM0hws
+	SuK8Rt/KU4QE0hNLUrNTUwtSi2CyTBycUg2Mrlsm3X9+Y5WfEJ+39KFODW//xj8mz78rr/my
+	cLbZYxPtba/U1XsXy2zX5WEwSTNZzHdKzH+ua/7iCPtJM/mWs76fJVpQMaWv5FH+9fina5W3
+	dCxyv+rH5rRipegxI9nI6WrXzDjWi9x9kZ/51WzzQytrpQXP/W9U77bQXdsziZd54h/haIdT
+	SizFGYmGWsxFxYkAEwi5WIoCAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFrrHLMWRmVeSWpSXmKPExsXC5WfdrCsjq5Jh0Lqe22LO+jVsFkvWnmG2
+	eLlrG5PF0099LBbnXnxnsjg89ySrxeVdc9gs7q35z2qxbOdDFosz04osumf+YLVYsPERowOP
+	x4JNpR4TZnezeWz6NInd48SM3yweCxumMnu833eVzWPxiw9MHptPV3t83iQXwBnFZZOSmpNZ
+	llqkb5fAlXH5Rw9TQadwxfVru5gaGP/wdDFyckgImEi09K1lA7FZBFQlPt58yAJiswmoS9y4
+	8ZMZxBYR0JVY9XwXkM3FwSywmUmit30HWIOwQIrEtQPbwBp4Bcwldq3czQRiCwlUSfyb1AIV
+	F5Q4OfMJmM0soCVx499LoBoOIFtaYvk/DpAwp4C3xO87K1lBbFEBZYkD244zTWDknYWkexaS
+	7lkI3QsYmVcximTmleUmZuaY6hVnZ1TmZVboJefnbmIEhvqy2j8TdzB+uex+iFGAg1GJh9dC
+	VzlDiDWxrLgy9xCjBAezkgjv9SygEG9KYmVValF+fFFpTmrxIUZpDhYlcV6v8NQEIYH0xJLU
+	7NTUgtQimCwTB6dUA2NooEmhb5/RyfvpRRLu6qVdkzrX7C+e3Lr92NmNfF78HfktVy03c+3M
+	DE6+3x+/Icb+2q2pWqY3vjllTDonaTTt8Y/zsWIzM2Q3H73vpnHv1KIPdh8K3CYenxymNMPq
+	CNPbsI45LDvsE/6Y/P30yURy4spZT58t3F3nbTJ/sVe8nqDmso9zu5mVWIozEg21mIuKEwG5
+	eAQ7cQIAAA==
+X-CFilter-Loop: Reflected
 
-On 5/13/25 20:08, kobarity wrote:
-> Baolu Lu wrote:
->> On 5/12/25 20:16, kobarity wrote:
->>> Baolu Lu wrote:
->>>> On 5/11/25 21:31, kobarity wrote:
->>>>>
->>>>> Hi
->>>>>
->>>>> I'm also experiencing this problem on my MacBookPro14,3.
->>>>>
->>>>> Aditya Garg wrote:
->>>>>>
->>>>>> Hi Jörg
->>>>>>
->>>>>> Can you test the kernel here to see if this fixes your issue:
->>>>>>
->>>>>> https://github.com/t2linux/T2-Debian-and-Ubuntu-Kernel/actions/runs/14944200356
->>>>>>
->>>>>> Alternatively you can try compiling your own kernel with this patch:
->>>>>>
->>>>>> https://lore.kernel.org/all/0-v1-c26553717e90+65f-iommu_vtd_ss_wo_jgg@nvidia.com/
->>>>>
->>>>> As far as I have tried, this patch did not solve the problem.
->>>>>
->>>>> By bisecting, I found that this problem was introduced by commit
->>>>> 2031c469f816 ("iommu/vt-d: Add support for static identity domain").
->>>>> In fact, since this commit, it will panic at startup.  This panic was
->>>>> fixed by commit 6e02a277f1db ("iommu/vt-d: Fix incorrect
->>>>> pci_for_each_dma_alias() for non-PCI devices").  So I applied commit
->>>>> 6e02a277f1db on commit 2031c469f816 and confirmed that the keyboard
->>>>> and touchpad is not working.
->>>>
->>>> Have you tried to apply commit 64f792981e35 ("iommu/vt-d: Remove device
->>>> comparison in context_setup_pass_through_cb")?
->>>
->>> Yes, I tried it on yesterday's master branch, including commit
->>> 64f792981e35.
->>>
->>> - Keyboard/Touchpad NOT working:
->>>     - No patches
->>>     - With patch in https://lore.kernel.org/all/0-v1-c26553717e90+65f-iommu_vtd_ss_wo_jgg@nvidia.com/
->>> - Keyboard/Touchpad working:
->>>     - With my workaround patch
->>
->> Okay, thanks! Can you please try below change? I also attached a diff
->> file in the attachment for your convenience.
+On Tue, May 13, 2025 at 05:56:33PM -0700, Andrew Morton wrote:
+> On Tue, 13 May 2025 17:34:48 +0800 Gavin Guo <gavinguo@igalia.com> wrote:
 > 
-> Thanks!  The keyboard and touchpad now work with this patch.  I tested
-> it with the same master branch as before (commit 3ce9925823c7).
+> > The patch fixes a deadlock which can be triggered by an internal
+> > syzkaller [1] reproducer and captured by bpftrace script [2] and its log
+> > [3] in this scenario:
+> > 
+> > Process 1                              Process 2
+> > ---				       ---
+> > hugetlb_fault
+> >   mutex_lock(B) // take B
+> >   filemap_lock_hugetlb_folio
+> >     filemap_lock_folio
+> >       __filemap_get_folio
+> >         folio_lock(A) // take A
+> >   hugetlb_wp
+> >     mutex_unlock(B) // release B
+> >     ...                                hugetlb_fault
+> >     ...                                  mutex_lock(B) // take B
+> >                                          filemap_lock_hugetlb_folio
+> >                                            filemap_lock_folio
+> >                                              __filemap_get_folio
+> >                                                folio_lock(A) // blocked
+> >     unmap_ref_private
+> >     ...
+> >     mutex_lock(B) // retake and blocked
+> > 
+> > This is a ABBA deadlock involving two locks:
+> > - Lock A: pagecache_folio lock
+> > - Lock B: hugetlb_fault_mutex_table lock
 > 
+> Nostalgia.  A decade or three ago many of us spent much of our lives
+> staring at ABBA deadlocks.  Then came lockdep and after a few more
+> years, it all stopped.  I've long hoped that lockdep would gain a
+> solution to custom locks such as folio_wait_bit_common(), but not yet.
+> 
+> Byungchul, please take a look.  Would DEPT
+> (https://lkml.kernel.org/r/20250513100730.12664-1-byungchul@sk.com)
+> have warned us about this?
 
-Okay, thanks! Let me post a formal fix patch for this.
+Sure, I will check it.  I think this type of deadlock is what DEPT can do
+the best.
 
-Thanks,
-baolu
+	Byungchul
+
+> >
+> > ...
+> >
+> > The deadlock occurs between two processes as follows:
+> >
+> > ...
+> > 
+> > Fixes: 40549ba8f8e0 ("hugetlb: use new vma_lock for pmd sharing synchronization")
+> > Cc: <stable@vger.kernel.org>
+> 
+> It's been there for three years so I assume we aren't in a hurry.
+> 
+> The fix looks a bit nasty, sorry.  Perhaps designed for a minimal patch
+> footprint?  That's good for a backportable fixup, but a more broadly
+> architected solution may be needed going forward.
+> 
+> I'll queue it for 6.16-rc1 with a cc:stable, so this should be
+> presented to the -stable trees 3-4 weeks from now.
 
