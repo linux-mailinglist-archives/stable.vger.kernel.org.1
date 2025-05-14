@@ -1,211 +1,125 @@
-Return-Path: <stable+bounces-144332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77FE6AB6426
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 09:23:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAC00AB64BC
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 09:43:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96D80188182B
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 07:23:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41C8F176BFC
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 07:43:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EBAA21ADAB;
-	Wed, 14 May 2025 07:22:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 516D820B7FB;
+	Wed, 14 May 2025 07:43:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZW73m9fx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jCLUEd3s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAEF12063F0;
-	Wed, 14 May 2025 07:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BB2F1F3B8A;
+	Wed, 14 May 2025 07:43:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747207348; cv=none; b=pBedPpS4me1TZddJwKcJCzwWUs9WkAl/lxLPFZXWo2sFfQM1RuWxN71cLKfRHMkU7NjP214V6wiXsWf7bwbTnqhkacd+G8L907lGvo60fwGh3VWuN/twUSwZSS8VXbMvokBVogQE+JWI/EfVpbJ3mBHnhiC126wZWLlFEEw+lyA=
+	t=1747208610; cv=none; b=Zy2TTPjB/1v63NxVWUhNnYHoqtU32LepnR+TL7flpdpJDT0ayoqXeaLkvsbwT+/ML2nUrqQrL+EA4K+pTh8IHKAL2/SJa+uQaoMbcZBgzVpYqrJGosH7kQxdqey1v7n8OFBUo1B5edbJb8DnSdgndj9YbTsCLi8OCyTyal3zpaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747207348; c=relaxed/simple;
-	bh=1hZrJvEOYUx9JGctY4L22hhqz29PWO7JEuA6Jf8JYdE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OUDeBZiGNRuwxTunwbShiq/x9P0e1eHzsrp7mWVsiVUW0BAWFI5wf/ekBXmaNHSD+D8J4XkzAlT/ymo56KejRPkhxmvvLmwoCpw6bEaOiR/6AYjWcNIJLqetER/797bZ3HXrgls9NEGCdIj5o8MI6eAxTPZdUJuIp0O4YRC0gyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZW73m9fx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48394C4CEE9;
-	Wed, 14 May 2025 07:22:26 +0000 (UTC)
+	s=arc-20240116; t=1747208610; c=relaxed/simple;
+	bh=0p4WvW8RaRImKPzubhYqD9RMNzWJQrE9S1OPZn9D3uk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=FpqJoP+7DAhJau9a7aNnsnwPBTUGKzC1DlHs6/M8dkd7T3MQt6zBb5ZJqIBIokmolHz6J1whczBoFCUhOaR5LUgtHfDef/h8B1Mi7DftvFOCVz5GaYoudHvgNy5vQvXwuL5eiHahi2HXXFYK0HRZRa6RS7uWVFzVGQLhEbcdk3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jCLUEd3s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C95BC4CEF2;
+	Wed, 14 May 2025 07:43:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747207347;
-	bh=1hZrJvEOYUx9JGctY4L22hhqz29PWO7JEuA6Jf8JYdE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZW73m9fxryJP2BBe5XZJuiuJbAl9WFvR1bGr0SAsArLv39hCPQKhxfs3uKlZ5RC1o
-	 STAtwJSWSyak90MP/W8x8CHNxPIeAzhpeeJee8UjLyt9+01XBf3AVe3agI79zhyL9z
-	 cbXBnpOMDAbrL98KcLOqicGUufqNTuOSpsNWfujekYy8hxPwJyne43bIDQCpJR6MMh
-	 dt31v06qdHzW3GgEg5NCNdJhYXqQFPXuVi3ns+27KSAWlQjoZwnSjvZWTBPJ2crXDZ
-	 rRk6AzanpAINWbd7mcpNuo5dw4/03aDnND1evGIk1g4v/vgFZtmfXiRYgPM6bbUv4U
-	 UFpN90MWeFwfA==
-Message-ID: <ef8c87b6-dcf6-47a4-92dc-075927d3823c@kernel.org>
-Date: Wed, 14 May 2025 09:22:24 +0200
+	s=k20201202; t=1747208608;
+	bh=0p4WvW8RaRImKPzubhYqD9RMNzWJQrE9S1OPZn9D3uk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=jCLUEd3sOBh0YUxOH1V5tSxI4PIv2OMcl6gdUnX3Jji1LPteSsWR2uM+n8DjiguWU
+	 s+aLhA5y2/ZfV+aLXJmpbnk2M8/jDEv/fv6rrWX4UKzjkIraxnyoAFua+VxwifoZUH
+	 z9oOsrqUpMZ3CVF0RENcD1ZDbQ4ExaxptJ7h+tDOgwY8gER+y3JiK5vg5iRGCz3yHN
+	 dqlsRM90k9QhoYZOWA8maNQSTBDn3cNA4ruIg4qBq2JPFMroOUYBQPbKXXoY9ZFML5
+	 Yek4geqY2HPoZn7eKT2ep/8ZB5eW8blhdGrE25sCB2bJZ7IbO/FSzJZdWD8MGkC06h
+	 vBG/hur2UXkvg==
+From: Niklas Cassel <cassel@kernel.org>
+To: Jingoo Han <jingoohan1@gmail.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+	Rob Herring <robh@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Kishon Vijay Abraham I <kishon@kernel.org>
+Cc: Wilfred Mallawa <wilfred.mallawa@wdc.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	stable@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Subject: [PATCH v3 1/6] PCI: dwc: ep: Fix broken set_msix() callback
+Date: Wed, 14 May 2025 09:43:14 +0200
+Message-ID: <20250514074313.283156-9-cassel@kernel.org>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20250514074313.283156-8-cassel@kernel.org>
+References: <20250514074313.283156-8-cassel@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tty: serial: 8250_omap: fix TX with DMA for am33xx
-To: gregkh@linuxfoundation.org
-Cc: linux-serial@vger.kernel.org, linux-kernel@vger.kernel.org,
- Mans Rullgard <mans@mansr.com>, stable@vger.kernel.org
-References: <20250514072035.2757435-1-jirislaby@kernel.org>
-Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <20250514072035.2757435-1-jirislaby@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2318; i=cassel@kernel.org; h=from:subject; bh=0p4WvW8RaRImKPzubhYqD9RMNzWJQrE9S1OPZn9D3uk=; b=owGbwMvMwCV2MsVw8cxjvkWMp9WSGDJUPCdqa8+JFSz7Ez8jW6NYc1H944lSp/+l2WtU5jO+V e8u2Xa1o5SFQYyLQVZMkcX3h8v+4m73KccV79jAzGFlAhnCwMUpABP5JMTIsErn/v0PE3Wvmd43 0kzfcezJAgmZW7NdXfYENKolinKIMjIyrOM86n8qxL6uzrTE9Fl6uMztdHdBJt1HGjItmV0iV6I ZAQ==
+X-Developer-Key: i=cassel@kernel.org; a=openpgp; fpr=5ADE635C0E631CBBD5BE065A352FE6582ED9B5DA
+Content-Transfer-Encoding: 8bit
 
-On 14. 05. 25, 9:20, Jiri Slaby (SUSE) wrote:
-> Commit 1788cf6a91d9 ("tty: serial: switch from circ_buf to kfifo")
-> introduced an error in the TX DMA handling for 8250_omap.
-> 
-> When the OMAP_DMA_TX_KICK flag is set, the "skip_byte" is pulled from
-> the kfifo and emitted directly in order to start the DMA. While the
-> kfifo is updated, dma->tx_size is not decreased. This leads to
-> uart_xmit_advance() called in omap_8250_dma_tx_complete() advancing the
-> kfifo by one too much.
-> 
-> In practice, transmitting N bytes has been seen to result in the last
-> N-1 bytes being sent repeatedly.
-> 
-> This change fixes the problem by moving all of the dma setup after the
-> OMAP_DMA_TX_KICK handling and using kfifo_len() instead of the DMA size
-> for the 4-byte cutoff check. This slightly changes the behaviour at
-> buffer wraparound, but it still transmits the correct bytes somehow.
-> 
-> Now, the "skip_byte" would no longer be accounted to the stats. As
-> previously, dma->tx_size included also this skip byte, up->icount.tx was
-> updated by aforementioned uart_xmit_advance() in
-> omap_8250_dma_tx_complete(). Fix this by using the uart_fifo_out()
-> helper instead of bare kfifo_get().
-> 
-> Based on patch by Mans Rullgard <mans@mansr.com>
-> 
-> Fixes: 1788cf6a91d9 ("tty: serial: switch from circ_buf to kfifo")
-> Reported-by: Mans Rullgard <mans@mansr.com>
-> Cc: stable@vger.kernel.org
+While the set_msix() callback function in pcie-designware-ep writes the
+Table Size field correctly (N-1), the calculation of the PBA offset
+is wrong because it calculates space for (N-1) entries instead of N.
 
-I should have added this too:
-Link: https://lore.kernel.org/all/20250506150748.3162-1-mans@mansr.com/
+This results in e.g. the following error when using QEMU with PCI
+passthrough on a device which relies on the PCI endpoint subsystem:
+failed to add PCI capability 0x11[0x50]@0xb0: table & pba overlap, or they don't fit in BARs, or don't align
 
-> ---
-> The same as for the original patch, I would appreaciate if someone
-> actually tests this one on a real HW too.
-> 
-> A patch to optimize the driver to use 2 sgls is still welcome. I will
-> not add it without actually having the HW.
-> ---
->   drivers/tty/serial/8250/8250_omap.c | 25 ++++++++++---------------
->   1 file changed, 10 insertions(+), 15 deletions(-)
-> 
-> diff --git a/drivers/tty/serial/8250/8250_omap.c b/drivers/tty/serial/8250/8250_omap.c
-> index c9b1c689a045..bb23afdd63f2 100644
-> --- a/drivers/tty/serial/8250/8250_omap.c
-> +++ b/drivers/tty/serial/8250/8250_omap.c
-> @@ -1151,16 +1151,6 @@ static int omap_8250_tx_dma(struct uart_8250_port *p)
->   		return 0;
->   	}
->   
-> -	sg_init_table(&sg, 1);
-> -	ret = kfifo_dma_out_prepare_mapped(&tport->xmit_fifo, &sg, 1,
-> -					   UART_XMIT_SIZE, dma->tx_addr);
-> -	if (ret != 1) {
-> -		serial8250_clear_THRI(p);
-> -		return 0;
-> -	}
-> -
-> -	dma->tx_size = sg_dma_len(&sg);
-> -
->   	if (priv->habit & OMAP_DMA_TX_KICK) {
->   		unsigned char c;
->   		u8 tx_lvl;
-> @@ -1185,18 +1175,22 @@ static int omap_8250_tx_dma(struct uart_8250_port *p)
->   			ret = -EBUSY;
->   			goto err;
->   		}
-> -		if (dma->tx_size < 4) {
-> +		if (kfifo_len(&tport->xmit_fifo) < 4) {
->   			ret = -EINVAL;
->   			goto err;
->   		}
-> -		if (!kfifo_get(&tport->xmit_fifo, &c)) {
-> +		if (!uart_fifo_out(&p->port, &c, 1)) {
->   			ret = -EINVAL;
->   			goto err;
->   		}
->   		skip_byte = c;
-> -		/* now we need to recompute due to kfifo_get */
-> -		kfifo_dma_out_prepare_mapped(&tport->xmit_fifo, &sg, 1,
-> -				UART_XMIT_SIZE, dma->tx_addr);
-> +	}
-> +
-> +	sg_init_table(&sg, 1);
-> +	ret = kfifo_dma_out_prepare_mapped(&tport->xmit_fifo, &sg, 1, UART_XMIT_SIZE, dma->tx_addr);
-> +	if (ret != 1) {
-> +		ret = -EINVAL;
-> +		goto err;
->   	}
->   
->   	desc = dmaengine_prep_slave_sg(dma->txchan, &sg, 1, DMA_MEM_TO_DEV,
-> @@ -1206,6 +1200,7 @@ static int omap_8250_tx_dma(struct uart_8250_port *p)
->   		goto err;
->   	}
->   
-> +	dma->tx_size = sg_dma_len(&sg);
->   	dma->tx_running = 1;
->   
->   	desc->callback = omap_8250_dma_tx_complete;
+Fix the calculation of PBA offset in the MSI-X capability.
 
+Cc: stable@vger.kernel.org
+Fixes: 83153d9f36e2 ("PCI: endpoint: Fix ->set_msix() to take BIR and offset as arguments")
+Reviewed-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+---
+ drivers/pci/controller/dwc/pcie-designware-ep.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/pci/controller/dwc/pcie-designware-ep.c b/drivers/pci/controller/dwc/pcie-designware-ep.c
+index 1a0bf9341542..24026f3f3413 100644
+--- a/drivers/pci/controller/dwc/pcie-designware-ep.c
++++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+@@ -585,6 +585,7 @@ static int dw_pcie_ep_set_msix(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
+ 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+ 	struct dw_pcie_ep_func *ep_func;
+ 	u32 val, reg;
++	u16 actual_interrupts = interrupts + 1;
+ 
+ 	ep_func = dw_pcie_ep_get_func_from_ep(ep, func_no);
+ 	if (!ep_func || !ep_func->msix_cap)
+@@ -595,7 +596,7 @@ static int dw_pcie_ep_set_msix(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
+ 	reg = ep_func->msix_cap + PCI_MSIX_FLAGS;
+ 	val = dw_pcie_ep_readw_dbi(ep, func_no, reg);
+ 	val &= ~PCI_MSIX_FLAGS_QSIZE;
+-	val |= interrupts;
++	val |= interrupts; /* 0's based value */
+ 	dw_pcie_writew_dbi(pci, reg, val);
+ 
+ 	reg = ep_func->msix_cap + PCI_MSIX_TABLE;
+@@ -603,7 +604,7 @@ static int dw_pcie_ep_set_msix(struct pci_epc *epc, u8 func_no, u8 vfunc_no,
+ 	dw_pcie_ep_writel_dbi(ep, func_no, reg, val);
+ 
+ 	reg = ep_func->msix_cap + PCI_MSIX_PBA;
+-	val = (offset + (interrupts * PCI_MSIX_ENTRY_SIZE)) | bir;
++	val = (offset + (actual_interrupts * PCI_MSIX_ENTRY_SIZE)) | bir;
+ 	dw_pcie_ep_writel_dbi(ep, func_no, reg, val);
+ 
+ 	dw_pcie_dbi_ro_wr_dis(pci);
 -- 
-js
-suse labs
+2.49.0
+
 
