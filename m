@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-144347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AE45AB67B9
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 11:38:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C112AB67D5
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 11:42:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0E1B1887AF0
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 09:38:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F41F1B66844
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 09:42:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 912E522CBC8;
-	Wed, 14 May 2025 09:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E6B01F4285;
+	Wed, 14 May 2025 09:42:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cBYxh0W3"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="p9hJyjbA"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41BEB22ACCE;
-	Wed, 14 May 2025 09:37:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8092521C16D;
+	Wed, 14 May 2025 09:42:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747215477; cv=none; b=YSPiGqLT6OzUx8NWPDStDgKdnH43pehOZqC9q7CMwQ2tblHfah6Sx/wiyzzqkE1ZocnkptpE+mYivvpo5XJN7kgqoNGDhsY2/nzIexLR+/rcdOS/idDvAxYi97bOJPd21AMIXYX+4DuVRxd6+ykUZfrTKsg91JK6pL0HvY4EGuo=
+	t=1747215724; cv=none; b=LkOl4oz6RhId3P6VcgeHwEDdCyKWQSjICBwPwB1AvuDpDWjDmueltrW4V7ZItUpA8DkH7TaQYgcKhLiF6uoDsITT0Xazv10U9iGMkGME3+kq9q9enNu3A7x1Y+2LT/HDf9QHowuDNOBmj6qbbDlK2iKkbE2Sia9Vf0V8Rmc239A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747215477; c=relaxed/simple;
-	bh=NurdwnwGbSV9JUS/xzW5xcSfhaak9b3QqCAV7BzFooA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rgQvUFNWaIknILT3HxuLtcnu3ILxmaGjPOpKs5MeRHoxan4gp3da0GmzLW4whyPLHAEd13aFd2/0LVCDngW17Zxz2sM3zxBQRm98xmhWa/KCEwfL8IyfelB7vX+cSJ7XKcbESsDpJ+jyAf1EOb7AZNZQ6vT1BAFX5rK7ccAQLJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cBYxh0W3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D65DC4CEEB;
-	Wed, 14 May 2025 09:37:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747215476;
-	bh=NurdwnwGbSV9JUS/xzW5xcSfhaak9b3QqCAV7BzFooA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cBYxh0W3tiCiq6Ri/9ZWOL4LFwslxGL8iDU9kKOrVza7U2egvvwsWSjfZWtRhBKED
-	 FeuiIqGeiawtU/chMWX+08IyuhK++0NZwI3O7MjcVwqr897AnF6Wcvpx3Hl1BUZ/9R
-	 h2U7T8YKt8C+WqrpqxAbRA+LM1ls9BXOf+fy8dS0nEV7XM8VMREff6m9gypZraKL/M
-	 /UTXYGUwa3sKzXofDq74PbH+7ZUlQrlYVZVYjJUXOASDGVXvnm+k8BU0TuCiT45UWx
-	 tT85cjVrBLNx4n3EhKiRCyFRykqQ6rFY44JxUiy0tqbgjOdItiSugScA/JFqPMxISb
-	 K1EDDzvY81d8A==
-Date: Wed, 14 May 2025 10:37:51 +0100
-From: Simon Horman <horms@kernel.org>
-To: mhklinux@outlook.com
-Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
-	decui@microsoft.com, andrew+netdev@lunn.ch, davem@davemloft.net,
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
-	James.Bottomley@hansenpartnership.com, martin.petersen@oracle.com,
-	linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org, linux-scsi@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net 2/5] hv_netvsc: Use vmbus_sendpacket_mpb_desc() to
- send VMBus messages
-Message-ID: <20250514093751.GF3339421@horms.kernel.org>
-References: <20250513000604.1396-1-mhklinux@outlook.com>
- <20250513000604.1396-3-mhklinux@outlook.com>
+	s=arc-20240116; t=1747215724; c=relaxed/simple;
+	bh=0Ut16LIaYGIjFMbKLp14mbhIT9qAkg/mTMfHtgyYx3w=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=BiqzX/RfIwm5ExxqwBSD/6l9o10y+bmH8sbhOEpqM4lc6tQUn7e324E0okX9RGDnxBMY4OoOLfKyTq3ZTisJXvJRe1w/BXRAE0D0FGWdyqMBYH3Tccg2r6C/5f2syDW1ixX4rKARUhHPWZfbPa+i8+QEFFQvz+Ry6WaUz9p+K1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=p9hJyjbA; arc=none smtp.client-ip=144.6.53.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
+	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:Message-ID:Subject:Cc:To:
+	From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=0K2DM5nV5WtDSjS9jWdRAsQawmnoY/TG6puxv5DwAmk=; b=p9hJyjbApouhBcGjnABahtwNoQ
+	uEQ0OGw0yEiSl/pRhId/FW1/573aE+v5M6DAHIsjr8rHygIPxQSZlh993gALhgAtFPwwAswBesmRY
+	gKcSsoZl1a9VJX5IFC5mKKEpEUpMjbEXxCZ79DANqnje+eHjmrOkEDJgoTXUNSeof8+vXpcQLYxAu
+	biALK1ffIYikhFhiPfaFOmpScVO4HCYg1rf05np8UoesycDs93adGDiMqTBkH2vWAMlOzC+pO6+HC
+	reZgy5+yE2qLqrAvYXdroA7tsdp8/XpDLYVemHXZEELCcAZ/aW1u5znuVlvBS0WOoj5gV0to2TCDo
+	tz4UuOcA==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1uF8cN-0060fl-2v;
+	Wed, 14 May 2025 17:41:40 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Wed, 14 May 2025 17:41:39 +0800
+Date: Wed, 14 May 2025 17:41:39 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: linux-crypto@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+	christophe.leroy@csgroup.eu, naveen@kernel.org, dtsen@linux.ibm.com,
+	segher@kernel.crashing.org, stable@vger.kernel.org
+Subject: Re: [PATCH] crypto: powerpc/poly1305 - add depends on BROKEN for now
+Message-ID: <aCRlU0J7QoSJs5sy@gondor.apana.org.au>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,59 +65,31 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250513000604.1396-3-mhklinux@outlook.com>
+In-Reply-To: <20250514051847.193996-1-ebiggers@kernel.org>
+X-Newsgroups: apana.lists.os.linux.cryptoapi
 
-On Mon, May 12, 2025 at 05:06:01PM -0700, mhkelley58@gmail.com wrote:
-> From: Michael Kelley <mhklinux@outlook.com>
+Eric Biggers <ebiggers@kernel.org> wrote:
+> From: Eric Biggers <ebiggers@google.com>
 > 
-> netvsc currently uses vmbus_sendpacket_pagebuffer() to send VMBus
-> messages. This function creates a series of GPA ranges, each of which
-> contains a single PFN. However, if the rndis header in the VMBus
-> message crosses a page boundary, the netvsc protocol with the host
-> requires that both PFNs for the rndis header must be in a single "GPA
-> range" data structure, which isn't possible with
-> vmbus_sendpacket_pagebuffer(). As the first step in fixing this, add a
-> new function netvsc_build_mpb_array() to build a VMBus message with
-> multiple GPA ranges, each of which may contain multiple PFNs. Use
-> vmbus_sendpacket_mpb_desc() to send this VMBus message to the host.
+> As discussed in the thread containing
+> https://lore.kernel.org/linux-crypto/20250510053308.GB505731@sol/, the
+> Power10-optimized Poly1305 code is currently not safe to call in softirq
+> context.  Disable it for now.  It can be re-enabled once it is fixed.
 > 
-> There's no functional change since higher levels of netvsc don't
-> maintain or propagate knowledge of contiguous PFNs. Based on its
-> input, netvsc_build_mpb_array() still produces a separate GPA range
-> for each PFN and the behavior is the same as with
-> vmbus_sendpacket_pagebuffer(). But the groundwork is laid for a
-> subsequent patch to provide the necessary grouping.
-> 
-> Cc: <stable@vger.kernel.org> # 6.1.x
-> Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+> Fixes: ba8f8624fde2 ("crypto: poly1305-p10 - Glue code for optmized Poly1305 implementation for ppc64le")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Eric Biggers <ebiggers@google.com>
 > ---
->  drivers/net/hyperv/netvsc.c | 50 +++++++++++++++++++++++++++++++++----
->  1 file changed, 45 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/net/hyperv/netvsc.c b/drivers/net/hyperv/netvsc.c
-> index d6f5b9ea3109..6d1705f87682 100644
-> --- a/drivers/net/hyperv/netvsc.c
-> +++ b/drivers/net/hyperv/netvsc.c
-> @@ -1055,6 +1055,42 @@ static int netvsc_dma_map(struct hv_device *hv_dev,
->  	return 0;
->  }
->  
-> +/* Build an "array" of mpb entries describing the data to be transferred
-> + * over VMBus. After the desc header fields, each "array" entry is variable
-> + * size, and each entry starts after the end of the previous entry. The
-> + * "offset" and "len" fields for each entry imply the size of the entry.
-> + *
-> + * The pfns are in HV_HYP_PAGE_SIZE, because all communication with Hyper-V
-> + * uses that granularity, even if the system page size of the guest is larger.
-> + * Each entry in the input "pb" array must describe a contiguous range of
-> + * guest physical memory so that the pfns are sequential if the range crosses
-> + * a page boundary. The offset field must be < HV_HYP_PAGE_SIZE.
+> arch/powerpc/lib/crypto/Kconfig | 1 +
+> 1 file changed, 1 insertion(+)
 
-Hi Michael,
+I thought this fix should be enough, no?
 
-Is there a guarantee that this constraint is met. And moreover, is there a
-guarantee that all of the entries will fit in desc? I am slightly concerned
-that there may be an overrun lurking here.
+https://patchwork.kernel.org/project/linux-crypto/patch/aB8Yy0JGvoErc0ns@gondor.apana.org.au/
 
-...
+Cheers,
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
