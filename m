@@ -1,163 +1,120 @@
-Return-Path: <stable+bounces-144410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C7D8AB7580
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 21:14:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48110AB7583
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 21:14:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E59C8189FCDC
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 19:14:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06F707A5879
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 19:13:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B192121A43D;
-	Wed, 14 May 2025 19:13:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7978E28CF67;
+	Wed, 14 May 2025 19:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RFhIGPHI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R5gwmOzO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0247E28CF61;
-	Wed, 14 May 2025 19:13:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2829321A43D;
+	Wed, 14 May 2025 19:14:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747250018; cv=none; b=DX2J3IcnHQvgXU84juhB1t4KCHNeUxBxQ/Sxom97YHF43G2VYMjzYQ2lXD+9tSs8CaVXUBKJuzl/f+MEp/o64/Q5q3eK1cjqBpb8MBxdtfcy0Oy/K4kb2rNO4RuxW5iGq+x3kVrRoFOl+Mw09pC52Z3rDnriLmUaTRd59FLJm/0=
+	t=1747250072; cv=none; b=SeIpfhiZG/Swmcls27KythF1T8SoTR6qhohDHkXkStkpqKn91xMSSC49ox4G0oME1Mpeht/6ExFac0U4sVKDKAMvc6UWS2+fJm6MS/mFVrrFA6VzwNPeEyWhJLXu75To0l8gq1i7RpeJeiRlF2VuWQId18PJrdBKowrNWXgN2ag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747250018; c=relaxed/simple;
-	bh=zej9SKmqO0dcSNjbDPLn64QOUs1HxsHwCa6psbgi4Ys=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lGpRnwhDE2lvCoxKC3ejzKgRx3xdteP1IkbMcmz62dKxqhnezrc/1ex/bxxPXsqtIBIVcushFRpfNRJX/NMbIXwNNQ0XPyJmCzkKOOU0d453RscehI3j6ANLzI/gCvzgc+3d84zfSm3bocj+VIaX/ASyCILq/+yoZAcG4VeWFCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RFhIGPHI; arc=none smtp.client-ip=209.85.210.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-74068f95d9fso242622b3a.0;
-        Wed, 14 May 2025 12:13:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747250016; x=1747854816; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IO3ZK/e+O3LrZ/4Tf68RHMgwIvolbp2ZRRlQwKLIkIM=;
-        b=RFhIGPHISnv1rZ36oKidnXMxdVHmLe0vEA7LKuckv4dFtpHMkexF5+3YO9NckNQF03
-         kTJiBAseyRoU7DhQBCFeLMkrPPYe6nREx912eZ8Gc7F0inwFRpwFZBljOUBS6CZklGXU
-         hFhqsLugSfjSSYfXWHUtNyGIcY75G4lOrLfsEv3+C56tEz6WOJ0xvAoWGYHo5esw6o9m
-         x72bgaMnzKEapJZZNtIAOFZYUys5nAqtye6JhfNQ0qpi9lLLjTR+IQM9t3bIXUKMxr2Z
-         cOGfnqAaKeBW2jq478ZwPj1uhPRe5KV+UynbcJ54qK7pwmQBDSH3ITOzGs3D41m9/wJn
-         4QSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747250016; x=1747854816;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IO3ZK/e+O3LrZ/4Tf68RHMgwIvolbp2ZRRlQwKLIkIM=;
-        b=WX4brA701zUk4LjqiVSj7PorLlRyyLVVRWEysN7NexlxURMrc8P6RuoFMHmdFHz0G3
-         3TEJLJJtNB1X4kPT3EhA2OZ9LLwTZ1niKfpMae8Dv0f6UmY+bdYKF/ApuZea2qQlO9/3
-         ANqlVrU7rRo+QCNZmW09VuCRy0iND+VBi7XCbb6ngTrfvJQE8iQn8wayMuqVsuB7AmZu
-         ZVcrjkQ1WY6T6jOwewb0zk6nh/7Hx15uHDC1JMo2VnbnA65o3JFS0XFxRw4kUuh8G30a
-         CvIP3y+GvH5Hz5VgZlXg1C0qX6m3oxtTZkS6GND4y28Dlx+EmksXVoFIhcj8wvgIfTyp
-         Zf8w==
-X-Forwarded-Encrypted: i=1; AJvYcCUt9kEsgOz2CwsfA8+/ODEzy9xj1WablZy0L2fku7McBtSQzfIabigZkxSELX5oLiGlU2fm7HDA@vger.kernel.org, AJvYcCXiHhlys3MHFj2hJ5JRwVelThm3GQnQ/yJucsMS0qZbpq7Lmg882EbErSmaRwZGLH/Iov9Y5ietisKWvG4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzZBmVDVftO81sDcEOIiltkPVx39h03qT4A/18tJfGsIuaNggZY
-	QGv+5XHDmaT7Di9x1cKDxk6PTYMtwxHr6z4J+3wPDjEnVWpzRi3JtfAN3XGY43XH05UAqNXfsvb
-	c2h/UsP91sHm/x3fbTUbmkacdODg=
-X-Gm-Gg: ASbGnctllSHwST7SAaH3LUS1iyXVDRgoVXXekHYTa6Ne1tR5SVKhdufgw/PgYQ5LfN4
-	XlFkuW7m4yezeEjL+CZi7mAW10EWvm45nfOzvNRDuC4lWYXgehS9FWsATEz1hMHyqF+i4tIPPTq
-	BZATjoE6mdJY1HMVMrXFs6+frF+LcO9C8=
-X-Google-Smtp-Source: AGHT+IHrr9YBrLn9sQLvv9G8Qea6GKS65yH4gF3sm1MiWjRHPpmtSszuwUV3S/0XmdJVrWRfUtzFedOc1Da+4fGqLpA=
-X-Received: by 2002:a17:903:32cd:b0:223:88af:2c30 with SMTP id
- d9443c01a7336-2319813f8a3mr68289305ad.16.1747250016160; Wed, 14 May 2025
- 12:13:36 -0700 (PDT)
+	s=arc-20240116; t=1747250072; c=relaxed/simple;
+	bh=lOa0LK4b8qZWlQ7JnonxWFPgOHkWrQ9weNETFEnVwo8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gaoIuPR4P8cz9BzQWL1KHtluaW3ePYRu+rpk8EcKw7IlinB55CZTrzPjZfYIzLcU12PGHS5pmDzfTC/6smgFqVX9YGis/jSq4uNuWubiqzAtoJbg3yuNTC6+n3gkMO0AbZ9Qu2CnWBqLuNDTh6a7dwIMt/wDThYuWcoG3iDtwRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R5gwmOzO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81568C4CEE3;
+	Wed, 14 May 2025 19:14:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747250070;
+	bh=lOa0LK4b8qZWlQ7JnonxWFPgOHkWrQ9weNETFEnVwo8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=R5gwmOzOVsYI8gjDNNv0WY9HKizp9D1CBX90KWUjAeSeruXtRb+UkvQ8cY6VVViYg
+	 6UlaTcqXAKCtiOE4fmk/fDDRHpQn1XXhD/u42yvkIvmE3EaT8SLzITvHRnDzum4QHY
+	 /PCvkTDQX8R2pFZdlpnjCn6ib/DEmk/wxGLlup2yETyGUv5A/IbET5W3VjVD6jRhek
+	 i+HwV2TRWG8LhGqjhKIn0hTqnn9sNjDNLJHMB8ZAM5fzPkR6dtIpmc2A9DtWYGzssH
+	 s5aP00EN1EKYor2uGoPQ3ah8YnNBEsrgtv+iUwhNZfjir16U5N0EungQOwlhMwwoRU
+	 ki6yLUIVoZmGA==
+Date: Wed, 14 May 2025 12:14:27 -0700
+From: Josh Poimboeuf <jpoimboe@kernel.org>
+To: Joel Fernandes <joelagnelf@nvidia.com>
+Cc: Timur Tabi <ttabi@nvidia.com>, "ojeda@kernel.org" <ojeda@kernel.org>, 
+	John Hubbard <jhubbard@nvidia.com>, "dakr@kernel.org" <dakr@kernel.org>, 
+	"a.hindborg@kernel.org" <a.hindborg@kernel.org>, "boqun.feng@gmail.com" <boqun.feng@gmail.com>, 
+	"patches@lists.linux.dev" <patches@lists.linux.dev>, "tmgross@umich.edu" <tmgross@umich.edu>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>, "alex.gaynor@gmail.com" <alex.gaynor@gmail.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "benno.lossin@proton.me" <benno.lossin@proton.me>, 
+	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>, "bjorn3_gh@protonmail.com" <bjorn3_gh@protonmail.com>, 
+	"peterz@infradead.org" <peterz@infradead.org>, "aliceryhl@google.com" <aliceryhl@google.com>, 
+	Alexandre Courbot <acourbot@nvidia.com>, "gary@garyguo.net" <gary@garyguo.net>, 
+	Alistair Popple <apopple@nvidia.com>
+Subject: Re: [PATCH 1/5] objtool/rust: add one more `noreturn` Rust function
+ for Rust 1.87.0
+Message-ID: <grdfkevm4nnovdefhn7thydixjtdt2w2aybuvnrtot2jolyte3@pmvcv3vbmmll>
+References: <20250502140237.1659624-1-ojeda@kernel.org>
+ <20250502140237.1659624-2-ojeda@kernel.org>
+ <20250513180757.GA1295002@joelnvbox>
+ <20250513215833.GA1353208@joelnvbox>
+ <38a7d3f8-3e75-4a1f-bc93-9b301330d898@nvidia.com>
+ <f4c946b2988d63a26aff2d03fe73fbfe1f52f31b.camel@nvidia.com>
+ <723f7ae8-bb36-4a4c-a1d8-733d131ca222@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250514103837.27152-1-kitotavrik.s@gmail.com> <s5pju6jp2k4ddyuuz2xydeys5lhashkbvwa2lmtw3dmtedupw5@sjdrgnhwsvza>
-In-Reply-To: <s5pju6jp2k4ddyuuz2xydeys5lhashkbvwa2lmtw3dmtedupw5@sjdrgnhwsvza>
-From: Kitotavrik <kitotavrik.s@gmail.com>
-Date: Wed, 14 May 2025 22:13:24 +0300
-X-Gm-Features: AX0GCFv_Ab2mxBVLmlLL-SGxsVO6LSKhx6O8AvU7eBN2fVdlcAp5-MKcNmSGZkQ
-Message-ID: <CAJFzNq55Vg8TDVPpDbJVs9bVTJP9KL5i3h6jL0zY57UyGC4xWA@mail.gmail.com>
-Subject: Re: [PATCH v2] fs: minix: Fix handling of corrupted directories
-To: Jan Kara <jack@suse.cz>
-Cc: Christian Brauner <brauner@kernel.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Josef Bacik <josef@toxicpanda.com>, NeilBrown <neilb@suse.de>, linux-kernel@vger.kernel.org, 
-	lvc-project@linuxtesting.org, stable@vger.kernel.org, 
-	Andrey Kriulin <kitotavrik.media@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <723f7ae8-bb36-4a4c-a1d8-733d131ca222@nvidia.com>
 
->  guess the easiest is to fudge i_nlinks count in memory to 2 to
-> avoid issues...
+On Wed, May 14, 2025 at 10:52:17AM -0400, Joel Fernandes wrote:
+> On 5/13/2025 8:43 PM, Timur Tabi wrote:
+> > On Tue, 2025-05-13 at 17:22 -0700, John Hubbard wrote:
+> >> On 5/13/25 2:58 PM, Joel Fernandes wrote:
+> >>> On Tue, May 13, 2025 at 02:07:57PM -0400, Joel Fernandes wrote:
+> >>>> On Fri, May 02, 2025 at 04:02:33PM +0200, Miguel Ojeda wrote:
+> >>>>> Starting with Rust 1.87.0 (expected 2025-05-15), `objtool` may report:
+> >> ...
+> >>> Btw, Danilo mentioned to me the latest Rust compiler (1.86?) does not give
+> >>> this warning for that patch.
+> >>
+> >> I'm sorry to burst this happy bubble, but I just upgraded to rustc 1.86 and did
+> >> a clean build, and I *am* setting these warnings:
+> > 
+> > I see these warnings with .c code also:
+> > 
+> >   CHK     kernel/kheaders_data.tar.xz
+> > drivers/media/pci/solo6x10/solo6x10-tw28.o: error: objtool: tw28_set_ctrl_val() falls through to
+> > next function tw28_get_ctrl_val()
+> > make[9]: *** [scripts/Makefile.build:203: drivers/media/pci/solo6x10/solo6x10-tw28.o] Error 1
+> > 
+> > I think it's an objtool bug and not a rustc bug.
+> 
+> Thanks John and Timur.
+> And sigh, fwiw I pulled the latest rust nightly build and I see the warning as well:
+> 
+> rustc --version
+> rustc 1.89.0-nightly (414482f6a 2025-05-13)
+> 
+> I am leaning more towards Timur's opinion that this is more than likely an
+> objtool issue.
 
-But if a subdirectory was in the corrupted directory(nlinks=3D 3), it
-will be replaced with nlinks 2. And after deleting subdirectory,
-nlinks was 1 and the problem will remain. Maybe should return EUCLEAN,
-regardless of the mounting mode.
+The above warning is in completely different code from the Rust one, so
+they're likely unrelated.
 
+The fallthrough warnings are typically caused by either Clang undefined
+behavior (usually potential divide by zero or negative shift), or a call
+to an unannotated noreturn function.
 
-=D1=81=D1=80, 14 =D0=BC=D0=B0=D1=8F 2025=E2=80=AF=D0=B3. =D0=B2 18:54, Jan =
-Kara <jack@suse.cz>:
->
-> On Wed 14-05-25 13:38:35, Andrey Kriulin wrote:
-> > If the directory is corrupted and the number of nlinks is less than 2
-> > (valid nlinks have at least 2), then when the directory is deleted, the
-> > minix_rmdir will try to reduce the nlinks(unsigned int) to a negative
-> > value.
-> >
-> > Make nlinks validity check for directory.
-> >
-> > Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-> >
-> > Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Andrey Kriulin <kitotavrik.media@gmail.com>
-> > Signed-off-by: Andrey Kriulin <kitotavrik.s@gmail.com>
-> > ---
-> > v2: Move nlinks validaty check to V[12]_minix_iget() per Jan Kara
-> > <jack@suse.cz> request. Change return error code to EUCLEAN. Don't bloc=
-k
-> > directory in r/o mode per Al Viro <viro@zeniv.linux.org.uk> request.
-> >
-> >  fs/minix/inode.c | 16 ++++++++++++++++
-> >  1 file changed, 16 insertions(+)
-> >
-> > diff --git a/fs/minix/inode.c b/fs/minix/inode.c
-> > index f007e389d5d2..d815397b8b0d 100644
-> > --- a/fs/minix/inode.c
-> > +++ b/fs/minix/inode.c
-> > @@ -517,6 +517,14 @@ static struct inode *V1_minix_iget(struct inode *i=
-node)
-> >               iget_failed(inode);
-> >               return ERR_PTR(-ESTALE);
-> >       }
-> > +     if (S_ISDIR(raw_inode->i_mode) && raw_inode->i_nlinks < 2) {
-> > +             printk("MINIX-fs: inode directory with corrupted number o=
-f links");
->
-> A message like this is rather useless because it shows nothing either abo=
-ut
-> the inode or the link count or the filesystem where this happened. I'd
-> either improve or delete it.
->
-> > +             if (!sb_rdonly(inode->i_sb)) {
-> > +                     brelse(bh);
-> > +                     iget_failed(inode);
-> > +                     return ERR_PTR(-EUCLEAN);
-> > +             }
->
-> OK, but when the inode is cached in memory with the wrong link count and
-> then the filesystem is remounted read-write, you will get the same proble=
-m
-> as before? I guess the easiest is to fudge i_nlinks count in memory to 2 =
-to
-> avoid issues...
->
->
->                                                                 Honza
-> --
-> Jan Kara <jack@suse.com>
-> SUSE Labs, CR
+Timur, can you share your .config and compiler version?
+
+-- 
+Josh
 
