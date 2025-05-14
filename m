@@ -1,159 +1,155 @@
-Return-Path: <stable+bounces-144288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A56C0AB611C
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 05:09:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23F87AB614E
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 05:44:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 351244A2416
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 03:09:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D428F189FB74
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 03:44:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D5DC1E1A05;
-	Wed, 14 May 2025 03:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 630051E9B2B;
+	Wed, 14 May 2025 03:44:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LlRapKn8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IAgWLMh9"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEEB627454
-	for <stable@vger.kernel.org>; Wed, 14 May 2025 03:09:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D6D01E5716;
+	Wed, 14 May 2025 03:44:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747192187; cv=none; b=k7QLUdXijk/bzVFHfN77wuSMJ/UuaXd/7cnPXmJLxB8vBLTTyZTIaXJDHZPftLi4sfNcEIZxZkmShpeF/e/Rs8NrLBhsA3OXJW4fPR9PbiNXUS0XW7/5I3F0/wAPOFOSYIgBnGzXjEK/nD3pAKXVMVzUsWxAIcJK89nK8SCa+1c=
+	t=1747194262; cv=none; b=WRQcTi/ed9AO1hVY9jE0iqmptoErg5u9pD8/nhGMRuD35chtryK5ttb7LxS/M1UIiK+AiNpUtW7ai3Iw3JU87NfpMbH7l4j+hjKjF4yNPa4sbAjiDjUzI0m6u+4vRzCJZqemBGmhYq4XrT1FDCr77d+TpKfiYxlXQCsgOUNaGPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747192187; c=relaxed/simple;
-	bh=MJZJZQ/a4z1ncA4TDCTztGXCbFeW3SI1VklQuz2Aa1Y=;
-	h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=JHrvKojp+ipJ9z2uPli+32hPfO2i1AU4QGES1Db5ETQ3aQ6ieMxFwN50007TOJBKR/ObLmDbcZdeQC34S8PvmYwMz7fI+Je4gZaC989ULSYuWpbtOXiBNrH+YXgjgcQ3JOP/A2NmQGWsb8T5BiRQNtudvIjXkSPCzVwiahDEy7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LlRapKn8; arc=none smtp.client-ip=198.175.65.9
+	s=arc-20240116; t=1747194262; c=relaxed/simple;
+	bh=9pMoTXmFukaRAYw6b+fuA5BhdZG//oKKOf6c8Cvwb8U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fJeq6hSBvxi9rkXqQIgWQX9k/LnjVld+/I7bzomEmHZetqbSMk1t61bjB/tH+Bz19RtFXmK7pZGqPnCfjRzOLRcX2MHa8jSRIatRRou6TL2MzJuO1rms57pC/T24w8zeYKCIDghTtYP/18Gd48YMD0ILi79ExFymMx5ChyFIxgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IAgWLMh9; arc=none smtp.client-ip=198.175.65.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747192184; x=1778728184;
-  h=date:from:to:subject:message-id:mime-version;
-  bh=MJZJZQ/a4z1ncA4TDCTztGXCbFeW3SI1VklQuz2Aa1Y=;
-  b=LlRapKn8jsOVYUAekbIXF2fflwv1L8NKD7UzckRM7Q0p+T2Gy1zlnOPv
-   1IQQF81CpicY1yI4G+9xhfiJPNw99K3El1Db8VlChbndxL2C3UGpLbJl+
-   CbQ08DzoBlLPYwpdxKpm5KgRIKgNjMAlv1WLEzme66b9u6H+cd+RpfCbp
-   J9iRjttr3xKsv6WexzxOFno/A+IINjM+JlfNhyvDiNE7559ngN96cQ9S4
-   Lp7FA1mxNgRcZLPrKpTk8/BOUJjFwY0I86+4hu5uIDHVo9AJXSl8oRAsM
-   vuCNpl8npD/k2wUe4BEf78N0JZV+REvI8YtQA8aukLCmvw4I9h+7IpZUg
-   g==;
-X-CSE-ConnectionGUID: gczElmU1SWKTjLNoHsP/JQ==
-X-CSE-MsgGUID: RAFCoVqLQJ2/se9xsFxOeQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11432"; a="71569568"
+  t=1747194261; x=1778730261;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=9pMoTXmFukaRAYw6b+fuA5BhdZG//oKKOf6c8Cvwb8U=;
+  b=IAgWLMh9IaMFCTGckaXb+BqAo2A+H/Q4elaiGwkTS1MLOG+8zHs6lJ0u
+   iB/B1uI08XpFbk6XliEmvsPWe/Qtb5MT89Me1VN5FYpIJOXINTt1DuWJR
+   MYYjC0gK2JFOcXJZjNvIVOB8DAIfK3fAUK1TMrxFIoGogVGyEGlijyesh
+   U0ZM0c9wVv/7RkFLjpiVX7HVXsg6drtgXlVnTmhW+Sk8DLLDF8kd1QDMS
+   bL0HIoy+WQh2GfWpXF5BRM5SJZLyjbQtToS+9Z627MrAefLPHlus8mIyi
+   R4lM8fnUyzDqSt/uBpAvzlQf9ank4AmDdRPvznI5A0CcSC9FnMOMn4tkR
+   w==;
+X-CSE-ConnectionGUID: RZ6RVDBDTs2BrKsGBZrmBQ==
+X-CSE-MsgGUID: UXU04rQiS/2SwA2eVNLuIw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11432"; a="49234758"
 X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; 
-   d="scan'208";a="71569568"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2025 20:09:43 -0700
-X-CSE-ConnectionGUID: S2rBrNMQSC29ea2EmRQmYQ==
-X-CSE-MsgGUID: docQ2WF7RDSo6NYxJOXZXQ==
+   d="scan'208";a="49234758"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2025 20:44:20 -0700
+X-CSE-ConnectionGUID: muIbOqbaRXmZ/mhVFl4nFA==
+X-CSE-MsgGUID: cQDMq4JaQmS+JjO//4qkEg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; 
-   d="scan'208";a="137626630"
-Received: from kandrew-mobl.amr.corp.intel.com (HELO desk) ([10.125.146.10])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2025 20:09:44 -0700
-Date: Tue, 13 May 2025 20:09:42 -0700
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: stable@vger.kernel.org, Dave Hansen <dave.hansen@intel.com>,
-	Alexandre Chartre <alexandre.chartre@oracle.com>,
-	Eric Biggers <ebiggers@google.com>
-Subject: [PATCH 6.14] x86/its: Fix build errors when CONFIG_MODULES=n
-Message-ID: <20250513-its-fixes-6-14-v1-1-4c9a36e80c78@linux.intel.com>
-X-B4-Tracking: v=1; b=H4sIAMnOI2gC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1MDU0Nj3cySYt20zIrUYl0zXUMTXVPjFINEc0sTM6C0ElBTQVEqWBaoJ1o
- pwDHE2QMkaqZnaKIUW1sLABeZ5dtvAAAA
-X-Change-ID: 20250513-its-fixes-6-14-53d0a7946250
-X-Mailer: b4 0.14.2
+   d="scan'208";a="142852843"
+Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2025 20:44:17 -0700
+Message-ID: <d0e31e5e-3965-4f7d-8881-55e13dcabaaf@linux.intel.com>
+Date: Wed, 14 May 2025 11:39:39 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION] applespi from 6.12 onwards
+To: kobarity <kobarity@gmail.com>
+Cc: Aditya Garg <gargaditya08@live.com>, =?UTF-8?Q?Berkel_J=C3=B6rg?=
+ <joerg.berkel@bfh.ch>, Robin Murphy <robin.murphy@arm.com>,
+ "linux-input@vger.kernel.org" <linux-input@vger.kernel.org>,
+ "dmitry.torokhov@gmail.com" <dmitry.torokhov@gmail.com>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+ "linux-spi@vger.kernel.org" <linux-spi@vger.kernel.org>,
+ "lukas@wunner.de" <lukas@wunner.de>, David Woodhouse <dwmw2@infradead.org>,
+ "iommu@lists.linux.dev" <iommu@lists.linux.dev>,
+ Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>
+References: <4dada48a-c5dd-4c30-9c85-5b03b0aa01f0@bfh.ch>
+ <PN3PR01MB9597D8E327CC7910673849D3B888A@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM>
+ <122a1f90-ddd9-4e74-96d1-57e21e580ae2@linux.intel.com>
+ <f1b41874-1535-4457-9747-eee3d816091a@arm.com>
+ <PN3PR01MB959764E908600CD45169348CB88BA@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM>
+ <c0bbfcc8-1275-43de-be40-acb8f2653359@bfh.ch>
+ <PN3PR01MB959708DEEA1567DD38447D5AB895A@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM>
+ <eke7wmanw9xq.wl-kobarity@gmail.com>
+ <089b2370-23e4-4a22-bf57-886e46247a1f@linux.intel.com>
+ <eke7v7q6vxai.wl-kobarity@gmail.com>
+ <5d760ba9-031f-469b-96e0-a171b7142f88@linux.intel.com>
+ <eke7tt5oww4r.wl-kobarity@gmail.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <eke7tt5oww4r.wl-kobarity@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-From: Eric Biggers <ebiggers@google.com>
+On 5/13/25 20:08, kobarity wrote:
+> Baolu Lu wrote:
+>> On 5/12/25 20:16, kobarity wrote:
+>>> Baolu Lu wrote:
+>>>> On 5/11/25 21:31, kobarity wrote:
+>>>>>
+>>>>> Hi
+>>>>>
+>>>>> I'm also experiencing this problem on my MacBookPro14,3.
+>>>>>
+>>>>> Aditya Garg wrote:
+>>>>>>
+>>>>>> Hi Jörg
+>>>>>>
+>>>>>> Can you test the kernel here to see if this fixes your issue:
+>>>>>>
+>>>>>> https://github.com/t2linux/T2-Debian-and-Ubuntu-Kernel/actions/runs/14944200356
+>>>>>>
+>>>>>> Alternatively you can try compiling your own kernel with this patch:
+>>>>>>
+>>>>>> https://lore.kernel.org/all/0-v1-c26553717e90+65f-iommu_vtd_ss_wo_jgg@nvidia.com/
+>>>>>
+>>>>> As far as I have tried, this patch did not solve the problem.
+>>>>>
+>>>>> By bisecting, I found that this problem was introduced by commit
+>>>>> 2031c469f816 ("iommu/vt-d: Add support for static identity domain").
+>>>>> In fact, since this commit, it will panic at startup.  This panic was
+>>>>> fixed by commit 6e02a277f1db ("iommu/vt-d: Fix incorrect
+>>>>> pci_for_each_dma_alias() for non-PCI devices").  So I applied commit
+>>>>> 6e02a277f1db on commit 2031c469f816 and confirmed that the keyboard
+>>>>> and touchpad is not working.
+>>>>
+>>>> Have you tried to apply commit 64f792981e35 ("iommu/vt-d: Remove device
+>>>> comparison in context_setup_pass_through_cb")?
+>>>
+>>> Yes, I tried it on yesterday's master branch, including commit
+>>> 64f792981e35.
+>>>
+>>> - Keyboard/Touchpad NOT working:
+>>>     - No patches
+>>>     - With patch in https://lore.kernel.org/all/0-v1-c26553717e90+65f-iommu_vtd_ss_wo_jgg@nvidia.com/
+>>> - Keyboard/Touchpad working:
+>>>     - With my workaround patch
+>>
+>> Okay, thanks! Can you please try below change? I also attached a diff
+>> file in the attachment for your convenience.
+> 
+> Thanks!  The keyboard and touchpad now work with this patch.  I tested
+> it with the same master branch as before (commit 3ce9925823c7).
+> 
 
-commit 9f35e33144ae5377d6a8de86dd3bd4d995c6ac65 upstream.
+Okay, thanks! Let me post a formal fix patch for this.
 
-Fix several build errors when CONFIG_MODULES=n, including the following:
-
-../arch/x86/kernel/alternative.c:195:25: error: incomplete definition of type 'struct module'
-  195 |         for (int i = 0; i < mod->its_num_pages; i++) {
-
-Fixes: 872df34d7c51 ("x86/its: Use dynamic thunks for indirect branches")
-Cc: stable@vger.kernel.org
-Signed-off-by: Eric Biggers <ebiggers@google.com>
-Acked-by: Dave Hansen <dave.hansen@intel.com>
-Tested-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
----
- arch/x86/kernel/alternative.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-index 1cdcd79f302d15be44477c7350bf6537a5e42c22..c9b4f388a533530ca59846aea972fded66a37734 100644
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -129,7 +129,9 @@ const unsigned char * const x86_nops[ASM_NOP_MAX+1] =
- 
- #ifdef CONFIG_MITIGATION_ITS
- 
-+#ifdef CONFIG_MODULES
- static struct module *its_mod;
-+#endif
- static void *its_page;
- static unsigned int its_offset;
- 
-@@ -150,6 +152,7 @@ static void *its_init_thunk(void *thunk, int reg)
- 	return thunk;
- }
- 
-+#ifdef CONFIG_MODULES
- void its_init_mod(struct module *mod)
- {
- 	if (!cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS))
-@@ -188,6 +191,7 @@ void its_free_mod(struct module *mod)
- 	}
- 	kfree(mod->its_page_array);
- }
-+#endif /* CONFIG_MODULES */
- 
- static void *its_alloc(void)
- {
-@@ -196,6 +200,7 @@ static void *its_alloc(void)
- 	if (!page)
- 		return NULL;
- 
-+#ifdef CONFIG_MODULES
- 	if (its_mod) {
- 		void *tmp = krealloc(its_mod->its_page_array,
- 				     (its_mod->its_num_pages+1) * sizeof(void *),
-@@ -206,6 +211,7 @@ static void *its_alloc(void)
- 		its_mod->its_page_array = tmp;
- 		its_mod->its_page_array[its_mod->its_num_pages++] = page;
- 	}
-+#endif /* CONFIG_MODULES */
- 
- 	return no_free_ptr(page);
- }
-
----
-base-commit: 982c0c8bc78be18914f38ae20ea0f55e268b88ca
-change-id: 20250513-its-fixes-6-14-53d0a7946250
-
-Best regards,
--- 
 Thanks,
-Pawan
-
-
+baolu
 
