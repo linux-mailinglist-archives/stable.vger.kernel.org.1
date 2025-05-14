@@ -1,233 +1,198 @@
-Return-Path: <stable+bounces-144368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30A07AB6B77
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 14:34:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13564AB6BBB
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 14:48:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA7364A0676
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 12:34:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C407D1893D50
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 12:48:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD7A7272E4F;
-	Wed, 14 May 2025 12:34:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A1F4270571;
+	Wed, 14 May 2025 12:48:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="fWAkyBLb";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="A3g5jwMC"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dmMI/ERY"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b4-smtp.messagingengine.com (fhigh-b4-smtp.messagingengine.com [202.12.124.155])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D39C225401
-	for <stable@vger.kernel.org>; Wed, 14 May 2025 12:34:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.155
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B54156F45
+	for <stable@vger.kernel.org>; Wed, 14 May 2025 12:48:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747226061; cv=none; b=bnti1mksvb9jqPciaDT5GD7P4VN/ul4BN9WCNUqmAKPhec+mnyEKdg+3zangqjfkCkDet2WF1AzQhP/1DR6LCUP7Dq6BLpumnDgu4mKN9w26YoJ5W6YLZ4uNaQE6u1KaF7rmsGE/CNekb8FrfNUE/RqjBdBmapagK3AJ/5SWtio=
+	t=1747226902; cv=none; b=rnZp31cB7aib+AmFnj/z3bHlsWXRtCnrhO6uOWIp0GnXChM8/wUDBWH8COhST3nqNoTwLWe4ALGdzasluwM4cTPYnhWMJ9fwhfv5Ko1ykZH+OQELE2rPxc+opAqxKNhyCH3/L3uYJ9xD5a7UwPtmdJgwBNzdAXvLsYr6bZFSIhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747226061; c=relaxed/simple;
-	bh=V4enpT4DByOhJt17ArkkR/l1dPfdM466m2KfuD36n9k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nx5r8FWzinPHEicxIL9sQX+CHo33QySzLnQsYeEqjxFlX/uCwWSlsu/enL6Uzp6kecS9FUR620p8Sw79ZjPsKe6umv+Sfk4vFR+8H4qhc3X7QQUcsl3v6IEq35T5jpdRmgtS5M9emZ2pnRT5hBqKwDW/EsC+VyoCZSQFm8MxFq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=fWAkyBLb; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=A3g5jwMC; arc=none smtp.client-ip=202.12.124.155
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id B666C2540155;
-	Wed, 14 May 2025 08:34:14 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Wed, 14 May 2025 08:34:14 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1747226054;
-	 x=1747312454; bh=97neBx1tWKuZ17rsnXdhzvYDgSlwWh9yWI9TP6ZOeXg=; b=
-	fWAkyBLbuMIZsCXcBK0Pm8ewOmJbiuIeT7FiyhvHi2GuuN8jJn3CE5DpB7YawoiC
-	1+GoAYVbXYWXSrAbTpjFnP8Vbw+kzTZxIghwx0Drb7PCowlOBqAMEHVTlOSX5c62
-	oJwXg+/JpxYVjPeF3lb/6hYiSc2qtAta1iMTEHLBJIwBbQlmcqsXSZVvVe5LSbOc
-	nuvqrGORg0MQLW9rZKrH9CaRezkK7T7vjlHWXSBxYlEwh+OFwihXdGvt4W8n/WVS
-	ZIsb6WoYz7TQsUObuN9cNGkCEuOFhyvcO1/lFuAyUmR6MZSTzH9RwaTfUPmPeDgZ
-	0jF0B5Ni2bZpx8XEVEON7A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1747226054; x=
-	1747312454; bh=97neBx1tWKuZ17rsnXdhzvYDgSlwWh9yWI9TP6ZOeXg=; b=A
-	3g5jwMCo40Haze9ABxglu8p3fhu9wOr1s1iBx7wNMltWXJ500HiND9fAkzyE9K3n
-	7hIMfU2h9KIFnJWQJloBrjnWYd0qfOSqyfxH13vakqsAlMrD3x5s9kqdAjicZkYd
-	DxyXDV6hJyLKptzTNfHNb59+4cm4j+zqKFLWVnVk6Lw1FZMPQO6fVd+ZoFWSwToJ
-	/xpOGsc+H9EnET9w34d2PJFYDs2qAvzCjT8sgSnO8AQXVbFyh44/WscOvpsO0iEG
-	MyuJPvjS5nYqUYXZHN5TNF8iQmVaOzrUNulTmFb/MzqFGohJzrhznPyRGIyniNfg
-	WjUHBr0zMErDpxcT9Ttvg==
-X-ME-Sender: <xms:xo0kaMaed-U0fOeXYTcStS0pbridT0hdFhWZFDU2NRt0GaRmL2DNhA>
-    <xme:xo0kaHaaEoeob5eZGIR_YZtzMaVs3i047X01NsnZMAgEkBCHBFgnZR27iSuU37kx8
-    twC-6SUy8Rt6g>
-X-ME-Received: <xmr:xo0kaG8g2ulFGMSW3eDijLSw5IuhjVoT-baQufXiSJtjtcclxQpdTG01C60>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdeftdejtddtucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddt
-    tddunecuhfhrohhmpefirhgvghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenuc
-    ggtffrrghtthgvrhhnpeegveevtefgveejffffveeluefhjeefgeeuveeftedujedufedu
-    teejtddtheeuffenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrh
-    fuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgt
-    ohhmpdhnsggprhgtphhtthhopeekpdhmohguvgepshhmthhpohhuthdprhgtphhtthhope
-    hhohhlghgvrhesrghpphhlihgvugdqrghshihntghhrhhonhihrdgtohhmpdhrtghpthht
-    ohepphgvthgvrhiisehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepshhtrggslh
-    gvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgrfigrnhdrkhhumhgr
-    rhdrghhuphhtrgeslhhinhhugidrihhnthgvlhdrtghomh
-X-ME-Proxy: <xmx:xo0kaGr1Ovh9EGLg08elKwn76Q0hnhL_o66TCkU3y9RftYEmAs3n8A>
-    <xmx:xo0kaHp-kw8ohpNvC5l8xeP-qdzAvYi6XNM6rYkxb5nZTDj2rdR0DQ>
-    <xmx:xo0kaEQSzQrEMw4Tl4e0EmaZkHSBZebOXFAZn1EYVRR09qKt9ZM1lw>
-    <xmx:xo0kaHpwBxmfoPU2TGwV3MBj_ZJrbDixnePWdulGn4m9Rkho-j1b3w>
-    <xmx:xo0kaF5k_H0qy49_hmisHbsqpQ9OfuMz79s95jiNXww-W5C-q6A2C3fu>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 14 May 2025 08:34:13 -0400 (EDT)
-Date: Wed, 14 May 2025 14:32:26 +0200
-From: Greg KH <greg@kroah.com>
-To: Holger =?iso-8859-1?Q?Hoffst=E4tte?= <holger@applied-asynchrony.com>
-Cc: Peter Zijlstra <peterz@infradead.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Subject: Re: 6.14.7-rc1: undefined reference to
- `__x86_indirect_its_thunk_array' when CONFIG_CPU_MITIGATIONS is off
-Message-ID: <2025051416-pushing-pushiness-81b3@gregkh>
-References: <0fd6d544-c045-4cf5-e5ab-86345121b76a@applied-asynchrony.com>
- <f88e97c3-aaa0-a24f-3ef6-f6da38706839@applied-asynchrony.com>
- <20250514113952.GB16434@noisy.programming.kicks-ass.net>
- <fe4e737e-d2b4-1d62-d5ef-b6f294f5909e@applied-asynchrony.com>
+	s=arc-20240116; t=1747226902; c=relaxed/simple;
+	bh=zoM4WnRi5RJ/q0Bc58RgWuhyFG7CfNuGKkozXs9g/Xk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=qVFFs9kkxSahHPU+HJlX+ZDGCBn/03zcVxWh9xAmQzqL9/AxQEjBu3EinEmieZLdybwsOr7gAKZTlcJUmkiuSMEjwDPc2WF7J0N9Hbam6kNT5fIi4cmM3jxzCBeUxUwHTm9m/uTRsa3+51f2K4pAIKfTIMgeaIoIJ4SbQkb0oHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dmMI/ERY; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747226901; x=1778762901;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=zoM4WnRi5RJ/q0Bc58RgWuhyFG7CfNuGKkozXs9g/Xk=;
+  b=dmMI/ERY7nVb3qL7NHNsxgO3ZhXHDJDCSmHOl/G9QS9PXTkMnlSeDEZw
+   mQCUSiQZ3+5nFE3oj1wvF+xOa1wEP4e3MKBppsYLfhVqG9AdI/KZEn8iL
+   85VJ+gM/VSHfW6cVGQpA5qWuYMyhTKSDuXiv67jW9cdtN6FDX3YTNTMym
+   we7aZJL3w7fsI1rBjnNVU5MQukaH9UBwGQm+r+gLve1WzEQRzs6485zQV
+   4gDMPwN15Zh+S0HgxQP8JRJ6cYhPVeVeJyzbp1WER8v0Js1+U2lIbboWd
+   Js32Qg/unp4+1WAxjab9sFWU/ekp/Iafb6uX6C3LHJFIgNzMF1pQqBT7o
+   g==;
+X-CSE-ConnectionGUID: /e1cF56DQn6WhxOXIWkQ6Q==
+X-CSE-MsgGUID: 64+ZPWRUTJ6CXKBSEwUhjg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11433"; a="74520116"
+X-IronPort-AV: E=Sophos;i="6.15,288,1739865600"; 
+   d="scan'208";a="74520116"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2025 05:48:20 -0700
+X-CSE-ConnectionGUID: LOt5dIjVTZer5yYtIUBBMg==
+X-CSE-MsgGUID: /41MbBWDTj2fDFCy+IFpew==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,288,1739865600"; 
+   d="scan'208";a="143150265"
+Received: from unknown (HELO mnyman-desk.fi.intel.com) ([10.237.72.199])
+  by orviesa005.jf.intel.com with ESMTP; 14 May 2025 05:48:19 -0700
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
+To: stable@vger.kernel.org
+Cc: Mathias Nyman <mathias.nyman@linux.intel.com>,
+	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>
+Subject: [PATCH] xhci: dbc: Avoid event polling busyloop if pending rx transfers are inactive.
+Date: Wed, 14 May 2025 15:47:47 +0300
+Message-ID: <20250514124748.168922-1-mathias.nyman@linux.intel.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <fe4e737e-d2b4-1d62-d5ef-b6f294f5909e@applied-asynchrony.com>
 
-On Wed, May 14, 2025 at 02:11:26PM +0200, Holger Hoffst‰tte wrote:
-> On 2025-05-14 13:39, Peter Zijlstra wrote:
-> > On Wed, May 14, 2025 at 12:13:29PM +0200, Holger Hoffst‰tte wrote:
-> > > cc: peterz
-> > > 
-> > > On 2025-05-14 09:45, Holger Hoffst‰tte wrote:
-> > > > While trying to build 6.14.7-rc1 with CONFIG_CPU_MITIGATIONS unset:
-> > > > 
-> > > >   † LD††††† .tmp_vmlinux1
-> > > > ld: arch/x86/net/bpf_jit_comp.o: in function `emit_indirect_jump':
-> > > > /tmp/linux-6.14.7/arch/x86/net/bpf_jit_comp.c:660:(.text+0x97e): undefined reference to `__x86_indirect_its_thunk_array'
-> > > > make[2]: *** [scripts/Makefile.vmlinux:77: vmlinux] Error 1
-> > > > make[1]: *** [/tmp/linux-6.14.7/Makefile:1234: vmlinux] Error 2
-> > > > make: *** [Makefile:251: __sub-make] Error 2
-> > > > 
-> > > > - applying 9f35e33144ae aka "x86/its: Fix build errors when CONFIG_MODULES=n"
-> > > > did not help
-> > > > 
-> > > > - mainline at 9f35e33144ae does not have this problem (same config)
-> > > > 
-> > > > Are we missing a commit in stable?
-> > > 
-> > > It seems commit e52c1dc7455d ("x86/its: FineIBT-paranoid vs ITS") [1]
-> > > is missing in the stable queue. It replaces the direct array reference
-> > > in bpf_jit_comp.c:emit_indirect_jump() with a mostly-empty function stub
-> > > when !CONFIG_MITIGATION_ITS, which is why mainline built and -stable
-> > > does not.
-> > > 
-> > > Unfortunately it does not seem to apply on top of 6.14.7-rc1 at all.
-> > > Any good suggestions?
-> > > 
-> > > thanks
-> > > Holger
-> > > 
-> > > [1] https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=e52c1dc7455d32c8a55f9949d300e5e87d011fa6
-> > 
-> > Right, this is forever the problem with these embargoed things that
-> > side-step the normal development cycle and need to be backported to hell
-> > :/
-> > 
-> > Let me go update this stable.git thing.
-> > 
-> > /me twiddles thumbs for a bit, this is one fat tree it is..
-> > 
-> > Argh, I needed stable-rc.git
-> > 
-> > more thumb twiddling ...
-> > 
-> > simply picking the few hunks from that fineibt commit should do the
-> > trick I think.
-> > 
-> > /me stomps on it some ... voila! Not the prettiest thing, but definilty
-> > good enough I suppose. Builds now, must be perfect etc.. :-)
-> > 
-> > ---
-> > 
-> > diff --git a/arch/x86/include/asm/alternative.h b/arch/x86/include/asm/alternative.h
-> > index 47948ebbb409..f2294784babc 100644
-> > --- a/arch/x86/include/asm/alternative.h
-> > +++ b/arch/x86/include/asm/alternative.h
-> > @@ -6,6 +6,7 @@
-> >   #include <linux/stringify.h>
-> >   #include <linux/objtool.h>
-> >   #include <asm/asm.h>
-> > +#include <asm/bug.h>
-> >   #define ALT_FLAGS_SHIFT		16
-> > @@ -128,10 +129,17 @@ static __always_inline int x86_call_depth_emit_accounting(u8 **pprog,
-> >   extern void its_init_mod(struct module *mod);
-> >   extern void its_fini_mod(struct module *mod);
-> >   extern void its_free_mod(struct module *mod);
-> > +extern u8 *its_static_thunk(int reg);
-> >   #else /* CONFIG_MITIGATION_ITS */
-> >   static inline void its_init_mod(struct module *mod) { }
-> >   static inline void its_fini_mod(struct module *mod) { }
-> >   static inline void its_free_mod(struct module *mod) { }
-> > +static inline u8 *its_static_thunk(int reg)
-> > +{
-> > +	WARN_ONCE(1, "ITS not compiled in");
-> > +
-> > +	return NULL;
-> > +}
-> >   #endif
-> >   #if defined(CONFIG_MITIGATION_RETHUNK) && defined(CONFIG_OBJTOOL)
-> > diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-> > index 7a10e3ed5d0b..48fd04e90114 100644
-> > --- a/arch/x86/kernel/alternative.c
-> > +++ b/arch/x86/kernel/alternative.c
-> > @@ -240,6 +272,13 @@ static void *its_allocate_thunk(int reg)
-> >   	return its_init_thunk(thunk, reg);
-> >   }
-> > +u8 *its_static_thunk(int reg)
-> > +{
-> > +	u8 *thunk = __x86_indirect_its_thunk_array[reg];
-> > +
-> > +	return thunk;
-> > +}
-> > +
-> >   #endif
-> >   /*
-> > diff --git a/arch/x86/net/bpf_jit_comp.c b/arch/x86/net/bpf_jit_comp.c
-> > index a5b65c09910b..a31e58c6d89e 100644
-> > --- a/arch/x86/net/bpf_jit_comp.c
-> > +++ b/arch/x86/net/bpf_jit_comp.c
-> > @@ -663,7 +663,7 @@ static void emit_indirect_jump(u8 **pprog, int reg, u8 *ip)
-> >   	if (cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS)) {
-> >   		OPTIMIZER_HIDE_VAR(reg);
-> > -		emit_jump(&prog, &__x86_indirect_its_thunk_array[reg], ip);
-> > +		emit_jump(&prog, its_static_thunk(reg), ip);
-> >   	} else if (cpu_feature_enabled(X86_FEATURE_RETPOLINE_LFENCE)) {
-> >   		EMIT_LFENCE();
-> >   		EMIT2(0xFF, 0xE0 + reg);
-> > 
-> 
-> Can confirm that it now links, as expected. Just in case:
-> 
->   Tested-by: Holger Hoffst‰tte <holger@applied-asynchrony.com>
+[ Upstream commit cab63934c33b12c0d1e9f4da7450928057f2c142 ]
 
-Wonderful, thanks for testing!
+Backport for linux-6.12.y stable
 
-greg k-h
+6.12 kernel used older poll_interval of 1ms instead of 0 as described
+in the original commit message below.
+CPU hogging is not that bad with 1ms delay, fix it anyways, but don't
+touch poll_interval.
+
+Event polling delay is set to 0 if there are any pending requests in
+either rx or tx requests lists. Checking for pending requests does
+not work well for "IN" transfers as the tty driver always queues
+requests to the list and TRBs to the ring, preparing to receive data
+from the host.
+
+This causes unnecessary busylooping and cpu hogging.
+
+Only set the event polling delay to 0 if there are pending tx "write"
+transfers, or if it was less than 10ms since last active data transfer
+in any direction.
+
+Cc: ≈Åukasz Bartosik <ukaszb@chromium.org>
+Fixes: fb18e5bb9660 ("xhci: dbc: poll at different rate depending on data transfer activity")
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+---
+ drivers/usb/host/xhci-dbgcap.c | 19 ++++++++++++++++---
+ drivers/usb/host/xhci-dbgcap.h |  3 +++
+ 2 files changed, 19 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/usb/host/xhci-dbgcap.c b/drivers/usb/host/xhci-dbgcap.c
+index 241d7aa1fbc2..b12273f72c93 100644
+--- a/drivers/usb/host/xhci-dbgcap.c
++++ b/drivers/usb/host/xhci-dbgcap.c
+@@ -822,6 +822,7 @@ static enum evtreturn xhci_dbc_do_handle_events(struct xhci_dbc *dbc)
+ {
+ 	dma_addr_t		deq;
+ 	union xhci_trb		*evt;
++	enum evtreturn		ret = EVT_DONE;
+ 	u32			ctrl, portsc;
+ 	bool			update_erdp = false;
+ 
+@@ -906,6 +907,7 @@ static enum evtreturn xhci_dbc_do_handle_events(struct xhci_dbc *dbc)
+ 			break;
+ 		case TRB_TYPE(TRB_TRANSFER):
+ 			dbc_handle_xfer_event(dbc, evt);
++			ret = EVT_XFER_DONE;
+ 			break;
+ 		default:
+ 			break;
+@@ -924,7 +926,7 @@ static enum evtreturn xhci_dbc_do_handle_events(struct xhci_dbc *dbc)
+ 		lo_hi_writeq(deq, &dbc->regs->erdp);
+ 	}
+ 
+-	return EVT_DONE;
++	return ret;
+ }
+ 
+ static void xhci_dbc_handle_events(struct work_struct *work)
+@@ -933,6 +935,7 @@ static void xhci_dbc_handle_events(struct work_struct *work)
+ 	struct xhci_dbc		*dbc;
+ 	unsigned long		flags;
+ 	unsigned int		poll_interval;
++	unsigned long		busypoll_timelimit;
+ 
+ 	dbc = container_of(to_delayed_work(work), struct xhci_dbc, event_work);
+ 	poll_interval = dbc->poll_interval;
+@@ -951,11 +954,21 @@ static void xhci_dbc_handle_events(struct work_struct *work)
+ 			dbc->driver->disconnect(dbc);
+ 		break;
+ 	case EVT_DONE:
+-		/* set fast poll rate if there are pending data transfers */
++		/*
++		 * Set fast poll rate if there are pending out transfers, or
++		 * a transfer was recently processed
++		 */
++		busypoll_timelimit = dbc->xfer_timestamp +
++			msecs_to_jiffies(DBC_XFER_INACTIVITY_TIMEOUT);
++
+ 		if (!list_empty(&dbc->eps[BULK_OUT].list_pending) ||
+-		    !list_empty(&dbc->eps[BULK_IN].list_pending))
++		    time_is_after_jiffies(busypoll_timelimit))
+ 			poll_interval = 1;
+ 		break;
++	case EVT_XFER_DONE:
++		dbc->xfer_timestamp = jiffies;
++		poll_interval = 1;
++		break;
+ 	default:
+ 		dev_info(dbc->dev, "stop handling dbc events\n");
+ 		return;
+diff --git a/drivers/usb/host/xhci-dbgcap.h b/drivers/usb/host/xhci-dbgcap.h
+index 9dc8f4d8077c..47ac72c2286d 100644
+--- a/drivers/usb/host/xhci-dbgcap.h
++++ b/drivers/usb/host/xhci-dbgcap.h
+@@ -96,6 +96,7 @@ struct dbc_ep {
+ #define DBC_WRITE_BUF_SIZE		8192
+ #define DBC_POLL_INTERVAL_DEFAULT	64	/* milliseconds */
+ #define DBC_POLL_INTERVAL_MAX		5000	/* milliseconds */
++#define DBC_XFER_INACTIVITY_TIMEOUT	10	/* milliseconds */
+ /*
+  * Private structure for DbC hardware state:
+  */
+@@ -142,6 +143,7 @@ struct xhci_dbc {
+ 	enum dbc_state			state;
+ 	struct delayed_work		event_work;
+ 	unsigned int			poll_interval;	/* ms */
++	unsigned long			xfer_timestamp;
+ 	unsigned			resume_required:1;
+ 	struct dbc_ep			eps[2];
+ 
+@@ -187,6 +189,7 @@ struct dbc_request {
+ enum evtreturn {
+ 	EVT_ERR	= -1,
+ 	EVT_DONE,
++	EVT_XFER_DONE,
+ 	EVT_GSER,
+ 	EVT_DISC,
+ };
+-- 
+2.43.0
+
 
