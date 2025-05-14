@@ -1,90 +1,123 @@
-Return-Path: <stable+bounces-144389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4B55AB6EB9
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 17:03:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FED4AB6FBE
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 17:28:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 701141BA009D
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 15:03:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D8E0316414B
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 15:24:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 968CE1C84BE;
-	Wed, 14 May 2025 15:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73F6D183098;
+	Wed, 14 May 2025 15:24:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iYkEz35g"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z1EvO4T2"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0F619341F;
-	Wed, 14 May 2025 15:02:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A267F125B2
+	for <stable@vger.kernel.org>; Wed, 14 May 2025 15:24:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747234962; cv=none; b=e8cJCuOot4TP9MMTLPVevPpPYLG2Hb5iRB20FpciyxvRx12LGwtK99pYc+1uBAm+hx/Jf+fvKo2SkMzI2CXTy/eNuGiM368FTBOXMv/u+zSC4leFPxWfYNf4pxCsDGpoDW2Ae/hGqbI7a4xRBjD+NifFnlqIOPNg3gg1rDpiD9E=
+	t=1747236290; cv=none; b=pZ5k3R7xgsOMxBdq3X++Kou88kRNaRZO/okd/zG92UP9mhJKIvVyfOZekrhE7XhL3cvn3l+FwjDs+MhWyeFCKv0Cjdclw+MbNSH1DCfmeCrcUxj7JCLBiB5wmJRBynysZdi2UTnrjwarDXbFM2gxCSddS8JwsQJOgJhMKwCQBEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747234962; c=relaxed/simple;
-	bh=D5QrjYtZqdxl9aDAD4Mt0N5C+A1l4Okat5ZD8j05CX8=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=AR6qa3T9qHeJ5fILtafQJU7TJD/dYXefbbT9tOgVFaJ7mkfumJAQCjLgVGi6j542Lf14QQcLKFrrAd1d6Gb35DJtQkai1/WyTjpWnY2+bdKYGzho6aHK6dRDYCcY75aCs6tlc+JkVNe1Gwvua69kRktSiBKL6YLr3CE/Ex2Rufg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iYkEz35g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A9DCC4CEE3;
-	Wed, 14 May 2025 15:02:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747234960;
-	bh=D5QrjYtZqdxl9aDAD4Mt0N5C+A1l4Okat5ZD8j05CX8=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=iYkEz35ghEPY/E/ZEsQiPGJVJ70ATHHNVAVhBU4YQd4KlA0o7ljoi31EUooIirf4l
-	 L5QMIjyZqYu4M7IdQcxyO0LFT8tEGScl/+NdqWCVLF5DWwm9//jGp8YgTqhD2iul0L
-	 rZ2X+hio3TR93rTlo0V5tMxEYQlqyv++E01kyLMz1EVBeMahtJHttcauIEUIjlJ7Ok
-	 hT7leKp/L1ehnLcOJjlwBwkK2bR6fglZuh4Om/zoppilPOeL5qWNS6nN1hEiKZEVv+
-	 IXLZZN7TLUfIaKswbtSJq6vVxiA+vQubPX5Fbamt9YnoYbzcwjvlZSpzzNdo5yQ+Cy
-	 1yBGTaWr73+4g==
-From: Vinod Koul <vkoul@kernel.org>
-To: sean.wang@mediatek.com, matthias.bgg@gmail.com, 
- angelogioacchino.delregno@collabora.com, 
- Qiu-ji Chen <chenqiuji666@gmail.com>
-Cc: dmaengine@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org, 
- baijiaju1990@gmail.com, stable@vger.kernel.org
-In-Reply-To: <20250508073634.3719-1-chenqiuji666@gmail.com>
-References: <20250508073634.3719-1-chenqiuji666@gmail.com>
-Subject: Re: [PATCH v2] dmaengine: mediatek: Fix a possible deadlock error
- in mtk_cqdma_tx_status()
-Message-Id: <174723495814.115648.10076437402947235700.b4-ty@kernel.org>
-Date: Wed, 14 May 2025 16:02:38 +0100
+	s=arc-20240116; t=1747236290; c=relaxed/simple;
+	bh=sAVwxiUHyCySCQN0fWXiDUop9GOm/rUWMpBSoMI8+zQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jIsnAgCbayptMVfNkWPkic/eI9y8UYRsfz2oVCuVbIakgp0p0qSUPIQu5Ab8rKdw3jph8mqIReeBIfwwchHXGTAitCrrquPvg8v2DvH/0CrllHdlWZ2mWsb9/zOPfsLw6VwKo7h498dgyMU+WtrCSckNPtir9pkmMktoIbgfrZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Z1EvO4T2; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747236289; x=1778772289;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=sAVwxiUHyCySCQN0fWXiDUop9GOm/rUWMpBSoMI8+zQ=;
+  b=Z1EvO4T28oayE/Zi783XjE0cGoiWHBeKfi0MeHQVaIloAL2ie0nhPlju
+   w4fpnhQh9/pB3IVfSOrquIJ+TRlSJXnx1fae6Tzj/ejUiw6OdE2Nf3kOa
+   8WnRTY0IFWtwpMtmkxCRF0iQmTYCRYMYP2z/0Mif43eywdZt4omLNMya0
+   Llf2Cqx4Gzqn1LnpNhdgw0gwnjkxVkfIdLThXSKmg6ICngYpctVDHsGuE
+   4J0Rw3DlncpMe9n5ows1C6pce000HxdK7iMNa3UvOJFIFRDXI+voXbNQX
+   rqCZASth9q4H47H7DTuWcQvxWw2AlkjIZ58OPNAv3ekH60mlxEIStvv+m
+   w==;
+X-CSE-ConnectionGUID: SDyvL1jNRJWoqMdfkZlxCQ==
+X-CSE-MsgGUID: FTwrm/T2T7C0Ds9TJB3E/g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11433"; a="60149642"
+X-IronPort-AV: E=Sophos;i="6.15,288,1739865600"; 
+   d="scan'208";a="60149642"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2025 08:24:48 -0700
+X-CSE-ConnectionGUID: 1qjkFXIyTSOLBPdPv2OxZw==
+X-CSE-MsgGUID: Zu94Yn8CTUy00v9Ich4EbQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,288,1739865600"; 
+   d="scan'208";a="137949208"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com (HELO mwauld-desk.intel.com) ([10.245.245.203])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2025 08:24:47 -0700
+From: Matthew Auld <matthew.auld@intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: Matthew Brost <matthew.brost@intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] drm/xe/vm: move rebind_work init earlier
+Date: Wed, 14 May 2025 16:24:25 +0100
+Message-ID: <20250514152424.149591-3-matthew.auld@intel.com>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.14.2
 
+In xe_vm_close_and_put() we need to be able to call
+flush_work(rebind_work), however during vm creation we can call this on
+the error path, before having actually set up the worker, leading to a
+splat from flush_work().
 
-On Thu, 08 May 2025 15:36:33 +0800, Qiu-ji Chen wrote:
-> Fix a potential deadlock bug. Observe that in the mtk-cqdma.c
-> file, functions like mtk_cqdma_issue_pending() and
-> mtk_cqdma_free_active_desc() properly acquire the pc lock before the vc
-> lock when handling pc and vc fields. However, mtk_cqdma_tx_status()
-> violates this order by first acquiring the vc lock before invoking
-> mtk_cqdma_find_active_desc(), which subsequently takes the pc lock. This
-> reversed locking sequence (vc → pc) contradicts the established
-> pc → vc order and creates deadlock risks.
-> 
-> [...]
+It looks like we can simply move the worker init step earlier to fix
+this.
 
-Applied, thanks!
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: <stable@vger.kernel.org> # v6.8+
+---
+ drivers/gpu/drm/xe/xe_vm.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-[1/1] dmaengine: mediatek: Fix a possible deadlock error in mtk_cqdma_tx_status()
-      commit: 157ae5ffd76a2857ccb4b7ce40bc5a344ca00395
-
-Best regards,
+diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
+index 5a978da411b0..168756fb140b 100644
+--- a/drivers/gpu/drm/xe/xe_vm.c
++++ b/drivers/gpu/drm/xe/xe_vm.c
+@@ -1704,8 +1704,10 @@ struct xe_vm *xe_vm_create(struct xe_device *xe, u32 flags)
+ 	 * scheduler drops all the references of it, hence protecting the VM
+ 	 * for this case is necessary.
+ 	 */
+-	if (flags & XE_VM_FLAG_LR_MODE)
++	if (flags & XE_VM_FLAG_LR_MODE) {
++		INIT_WORK(&vm->preempt.rebind_work, preempt_rebind_work_func);
+ 		xe_pm_runtime_get_noresume(xe);
++	}
+ 
+ 	vm_resv_obj = drm_gpuvm_resv_object_alloc(&xe->drm);
+ 	if (!vm_resv_obj) {
+@@ -1750,10 +1752,8 @@ struct xe_vm *xe_vm_create(struct xe_device *xe, u32 flags)
+ 		vm->batch_invalidate_tlb = true;
+ 	}
+ 
+-	if (vm->flags & XE_VM_FLAG_LR_MODE) {
+-		INIT_WORK(&vm->preempt.rebind_work, preempt_rebind_work_func);
++	if (vm->flags & XE_VM_FLAG_LR_MODE)
+ 		vm->batch_invalidate_tlb = false;
+-	}
+ 
+ 	/* Fill pt_root after allocating scratch tables */
+ 	for_each_tile(tile, xe, id) {
 -- 
-~Vinod
-
+2.49.0
 
 
