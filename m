@@ -1,351 +1,163 @@
-Return-Path: <stable+bounces-144327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E826AB62C6
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 08:10:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3DFCAB636B
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 08:45:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CF02860A1B
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 06:10:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF76A7B3ED8
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 06:43:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF24B1F428C;
-	Wed, 14 May 2025 06:10:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="QsWUTaU7"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B9151C861E;
+	Wed, 14 May 2025 06:45:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF5831F5E6
-	for <stable@vger.kernel.org>; Wed, 14 May 2025 06:10:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+Received: from azure-sdnproxy.icoremail.net (l-sdnproxy.icoremail.net [20.188.111.126])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2AA31FBCA7
+	for <stable@vger.kernel.org>; Wed, 14 May 2025 06:45:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=20.188.111.126
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747203019; cv=none; b=bm8dOp6qLqpv2e87m4bdk2dSftA/VD6N7H5Z1zDU/DKP0zfWv4WHHmS1BFMk9BMFJAeBmOPoC6mEXjoIukmgZSxdmkZdUQmG6Wa1h/Nf99jcYt0yg5QRTp2lfv0I6Th55nKFxPin+JGAcrIxTMeySerdKwoEOAgP+zXShI4RJ/0=
+	t=1747205106; cv=none; b=U3znpTbZqadktlm8hMX220yLoB25baElDcT3jaf9urQBIO8fPnqFS+aBMwdkKvQEh/pd/DloYItEoLln+0upQ4J0YTlBGUORh68KzcSJ2IVU+77Gmykn7PGNHMGEGLnllPjrBqeUXg//9lHJZDh+ofTulYzKpxerMCfIRFBMXKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747203019; c=relaxed/simple;
-	bh=IJOqEn0K5+Hwu+RAQ4qWqkOCtGbhzsRfq1cSi7XcUHI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WbIytT9DEv7A8Mtmm3wjd9ucVhMqmji/vjUG7hsIegfujHVHRqQTEEItu7JIiI6RX1UJT9fg4h1XZEef4WCrJJkUceHKfqxKLdVn6sGpt7CTZPZHaxDRuIe3IMCY+8m93lGGNHmfs9JyRf8AEDLmqBdSGNPePtseFapU2VNjJ+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=QsWUTaU7; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747203018; x=1778739018;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=IJOqEn0K5+Hwu+RAQ4qWqkOCtGbhzsRfq1cSi7XcUHI=;
-  b=QsWUTaU77NURsJ88tY0eq6EgthMtiLyV+YSSbn9erCe9KQ+LZjXCMubF
-   WpGo4w9lTvBVfHDihuzVj7tjr220DfcFL5nDfqe4NocyMHmtk6XcO3mlt
-   KVZOb/6dHoN09QVTDurHS9YClqCvs70N3DMsMNa/bAiAkRXiVG6x4nM3i
-   BT04ZviVKIdVWgnc1sbvglwjmD+w4FYJCzsxR+P2tFDHgnSVR+5K/TRuQ
-   oClStwbBbv9LRW8YzK8YvFbwqUesp8vVwFZCXBPFrFz9+uyhyBJk1KzVT
-   s6smebTqUE3mbtTL+KE2LoVLy/0wjX5B1b96O52RlyQlM1vnnnpomZrAX
-   A==;
-X-CSE-ConnectionGUID: EaF8kscjQGu8Km14qWtpJg==
-X-CSE-MsgGUID: 9XKpah1WQp+5oMZFlHgEkg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11432"; a="48191066"
-X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; 
-   d="scan'208";a="48191066"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2025 23:10:17 -0700
-X-CSE-ConnectionGUID: i7/lyyIRSQ+nCraJndMaog==
-X-CSE-MsgGUID: FYD/qwNyR/OPJ1UdINygRw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; 
-   d="scan'208";a="137982326"
-Received: from rshah-mobl.amr.corp.intel.com (HELO desk) ([10.125.146.11])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2025 23:10:17 -0700
-Date: Tue, 13 May 2025 23:10:16 -0700
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+	s=arc-20240116; t=1747205106; c=relaxed/simple;
+	bh=q/yGq3nCDDF0CSkEwlQmhElqgZjaSe7w65A1Rc8T/o8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=G+0hiBp+ws4CK39pjNDINujGiRskvlbrf9MCnLJ84e/WUyNj2VbtSiTvfC5tuNkoYnYflJx/cFSV8qqUL1LESSf1SZxTnodXGQDh90kt97j3XzmA9EZ8QLnPhBnoXMTFW5gdgt08UBHqegmz7FUi3qJUSBva1SlpSgxyzMWDYS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hust.edu.cn; spf=pass smtp.mailfrom=hust.edu.cn; arc=none smtp.client-ip=20.188.111.126
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hust.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hust.edu.cn
+Received: from hust.edu.cn (unknown [172.16.0.50])
+	by app2 (Coremail) with SMTP id HwEQrACHjXXbOyRo+kBNAQ--.10314S2;
+	Wed, 14 May 2025 14:44:43 +0800 (CST)
+Received: from ubuntu.localdomain (unknown [10.12.190.56])
+	by gateway (Coremail) with SMTP id _____wDXN8TaOyRoEexUAA--.19998S4;
+	Wed, 14 May 2025 14:44:42 +0800 (CST)
+From: Zhaoyang Li <lizy04@hust.edu.cn>
 To: stable@vger.kernel.org
-Cc: Peter Zijlstra <peterz@infradead.org>,
-	Alexandre Chartre <alexandre.chartre@oracle.com>
-Subject: [PATCH 5.15 v2 14/14] x86/its: Use dynamic thunks for indirect
- branches
-Message-ID: <20250513-its-5-15-v2-14-90690efdc7e0@linux.intel.com>
-X-Mailer: b4 0.14.2
-References: <20250513-its-5-15-v2-0-90690efdc7e0@linux.intel.com>
+Cc: dzm91@hust.edu.cn,
+	Shravya KN <shravya.k-n@broadcom.com>,
+	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Zhaoyang Li <lizy04@hust.edu.cn>
+Subject: [PATCH 6.1.y] bnxt_en: Fix receive ring space parameters when XDP is active
+Date: Wed, 14 May 2025 14:44:38 +0800
+Message-Id: <20250514064438.395697-1-lizy04@hust.edu.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250513-its-5-15-v2-0-90690efdc7e0@linux.intel.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:HwEQrACHjXXbOyRo+kBNAQ--.10314S2
+Authentication-Results: app2; spf=neutral smtp.mail=lizy04@hust.edu.cn
+	;
+X-Coremail-Antispam: 1UD129KBjvJXoWxuF4kWw47Kr1UtFW7ZF45GFg_yoWrXrWrpr
+	45uryDCr4kJr15Ja1UJFW8Ar15Kr1vy3W8Wr47JrnYv3W5K3Wjyry8KwnFyFyDtr48Wr17
+	tr4Yvw4SqFyDWaUanT9S1TB71UUUUjUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUQSb7Iv0xC_KF4lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
+	cIk0rVWrJVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjx
+	v20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1l84ACjcxK
+	6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1ln4kS14v26r
+	1Y6r17M2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI
+	12xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj64x0Y40En7xvr7AKxV
+	W8Jr0_Cr1UMcIj6x8ErcxFaVAv8VW8uFyUJr1UMcIj6xkF7I0En7xvr7AKxVW8Jr0_Cr1U
+	McvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwCY1x0262kKe7AKxVWUAVWUtw
+	CF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26r4fZr1UJr1l4I8I3I0E4IkC6x0Y
+	z7v_Jr0_Gr1l4IxYO2xFxVAFwI0_Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x
+	8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE
+	2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42
+	xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF
+	7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU3-eODUUUU
+X-CM-SenderInfo: rpsqjjixsriko6kx23oohg3hdfq/1tbiAQgCB2gkEmEHgwACs1
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Shravya KN <shravya.k-n@broadcom.com>
 
-commit 872df34d7c51a79523820ea6a14860398c639b87 upstream.
+[ Upstream commit 3051a77a09dfe3022aa012071346937fdf059033 ]
 
-ITS mitigation moves the unsafe indirect branches to a safe thunk. This
-could degrade the prediction accuracy as the source address of indirect
-branches becomes same for different execution paths.
+The MTU setting at the time an XDP multi-buffer is attached
+determines whether the aggregation ring will be used and the
+rx_skb_func handler.  This is done in bnxt_set_rx_skb_mode().
 
-To improve the predictions, and hence the performance, assign a separate
-thunk for each indirect callsite. This is also a defense-in-depth measure
-to avoid indirect branches aliasing with each other.
+If the MTU is later changed, the aggregation ring setting may need
+to be changed and it may become out-of-sync with the settings
+initially done in bnxt_set_rx_skb_mode().  This may result in
+random memory corruption and crashes as the HW may DMA data larger
+than the allocated buffer size, such as:
 
-As an example, 5000 dynamic thunks would utilize around 16 bits of the
-address space, thereby gaining entropy. For a BTB that uses
-32 bits for indexing, dynamic thunks could provide better prediction
-accuracy over fixed thunks.
+BUG: kernel NULL pointer dereference, address: 00000000000003c0
+PGD 0 P4D 0
+Oops: 0000 [#1] PREEMPT SMP NOPTI
+CPU: 17 PID: 0 Comm: swapper/17 Kdump: loaded Tainted: G S         OE      6.1.0-226bf9805506 #1
+Hardware name: Wiwynn Delta Lake PVT BZA.02601.0150/Delta Lake-Class1, BIOS F0E_3A12 08/26/2021
+RIP: 0010:bnxt_rx_pkt+0xe97/0x1ae0 [bnxt_en]
+Code: 8b 95 70 ff ff ff 4c 8b 9d 48 ff ff ff 66 41 89 87 b4 00 00 00 e9 0b f7 ff ff 0f b7 43 0a 49 8b 95 a8 04 00 00 25 ff 0f 00 00 <0f> b7 14 42 48 c1 e2 06 49 03 95 a0 04 00 00 0f b6 42 33f
+RSP: 0018:ffffa19f40cc0d18 EFLAGS: 00010202
+RAX: 00000000000001e0 RBX: ffff8e2c805c6100 RCX: 00000000000007ff
+RDX: 0000000000000000 RSI: ffff8e2c271ab990 RDI: ffff8e2c84f12380
+RBP: ffffa19f40cc0e48 R08: 000000000001000d R09: 974ea2fcddfa4cbf
+R10: 0000000000000000 R11: ffffa19f40cc0ff8 R12: ffff8e2c94b58980
+R13: ffff8e2c952d6600 R14: 0000000000000016 R15: ffff8e2c271ab990
+FS:  0000000000000000(0000) GS:ffff8e3b3f840000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00000000000003c0 CR3: 0000000e8580a004 CR4: 00000000007706e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+PKRU: 55555554
+Call Trace:
+ <IRQ>
+ __bnxt_poll_work+0x1c2/0x3e0 [bnxt_en]
 
-Have ITS thunks be variable sized and use EXECMEM_MODULE_TEXT such that
-they are both more flexible (got to extend them later) and live in 2M TLBs,
-just like kernel code, avoiding undue TLB pressure.
+To address the issue, we now call bnxt_set_rx_skb_mode() within
+bnxt_change_mtu() to properly set the AGG rings configuration and
+update rx_skb_func based on the new MTU value.
+Additionally, BNXT_FLAG_NO_AGG_RINGS is cleared at the beginning of
+bnxt_set_rx_skb_mode() to make sure it gets set or cleared based on
+the current MTU.
 
-  [ pawan: CONFIG_EXECMEM and CONFIG_EXECMEM_ROX are not supported on
-	   backport kernel, made changes to use module_alloc() and
-	   set_memory_*() for dynamic thunks. ]
+Fixes: 08450ea98ae9 ("bnxt_en: Fix max_mtu setting for multi-buf XDP")
+Co-developed-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Signed-off-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Signed-off-by: Shravya KN <shravya.k-n@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
+Signed-off-by: Zhaoyang Li <lizy04@hust.edu.cn>
 ---
- arch/x86/include/asm/alternative.h |  10 +++
- arch/x86/kernel/alternative.c      | 133 ++++++++++++++++++++++++++++++++++++-
- arch/x86/kernel/module.c           |   7 ++
- include/linux/module.h             |   5 ++
- 4 files changed, 152 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/alternative.h b/arch/x86/include/asm/alternative.h
-index 4038b893449a7d38f4079e213a924493e67f4231..aa7b155b617343b3a508eb0039c81562aba53dfd 100644
---- a/arch/x86/include/asm/alternative.h
-+++ b/arch/x86/include/asm/alternative.h
-@@ -80,6 +80,16 @@ extern void apply_returns(s32 *start, s32 *end);
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 393a983f6d69..6b1245a3ab4b 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -4041,7 +4041,7 @@ int bnxt_set_rx_skb_mode(struct bnxt *bp, bool page_mode)
+ 	struct net_device *dev = bp->dev;
  
- struct module;
+ 	if (page_mode) {
+-		bp->flags &= ~BNXT_FLAG_AGG_RINGS;
++		bp->flags &= ~(BNXT_FLAG_AGG_RINGS | BNXT_FLAG_NO_AGG_RINGS);
+ 		bp->flags |= BNXT_FLAG_RX_PAGE_MODE;
  
-+#ifdef CONFIG_MITIGATION_ITS
-+extern void its_init_mod(struct module *mod);
-+extern void its_fini_mod(struct module *mod);
-+extern void its_free_mod(struct module *mod);
-+#else /* CONFIG_MITIGATION_ITS */
-+static inline void its_init_mod(struct module *mod) { }
-+static inline void its_fini_mod(struct module *mod) { }
-+static inline void its_free_mod(struct module *mod) { }
-+#endif
-+
- #ifdef CONFIG_RETHUNK
- extern bool cpu_wants_rethunk(void);
- extern bool cpu_wants_rethunk_at(void *addr);
-diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-index c3df557be55e37e256d05a83f55e4ebfdee9d451..7f5bed8753d658393278a7e28fc9217f2036cf3a 100644
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -18,6 +18,7 @@
- #include <linux/mmu_context.h>
- #include <linux/bsearch.h>
- #include <linux/sync_core.h>
-+#include <linux/moduleloader.h>
- #include <asm/text-patching.h>
- #include <asm/alternative.h>
- #include <asm/sections.h>
-@@ -30,6 +31,7 @@
- #include <asm/fixmap.h>
- #include <asm/paravirt.h>
- #include <asm/asm-prototypes.h>
-+#include <asm/set_memory.h>
+ 		if (bp->xdp_prog->aux->xdp_has_frags)
+@@ -12799,6 +12799,14 @@ static int bnxt_change_mtu(struct net_device *dev, int new_mtu)
+ 		bnxt_close_nic(bp, true, false);
  
- int __read_mostly alternatives_patched;
- 
-@@ -397,6 +399,127 @@ static int emit_indirect(int op, int reg, u8 *bytes)
- 
- #ifdef CONFIG_MITIGATION_ITS
- 
-+static struct module *its_mod;
-+static void *its_page;
-+static unsigned int its_offset;
+ 	dev->mtu = new_mtu;
 +
-+/* Initialize a thunk with the "jmp *reg; int3" instructions. */
-+static void *its_init_thunk(void *thunk, int reg)
-+{
-+	u8 *bytes = thunk;
-+	int i = 0;
-+
-+	if (reg >= 8) {
-+		bytes[i++] = 0x41; /* REX.B prefix */
-+		reg -= 8;
-+	}
-+	bytes[i++] = 0xff;
-+	bytes[i++] = 0xe0 + reg; /* jmp *reg */
-+	bytes[i++] = 0xcc;
-+
-+	return thunk;
-+}
-+
-+void its_init_mod(struct module *mod)
-+{
-+	if (!cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS))
-+		return;
-+
-+	mutex_lock(&text_mutex);
-+	its_mod = mod;
-+	its_page = NULL;
-+}
-+
-+void its_fini_mod(struct module *mod)
-+{
-+	int i;
-+
-+	if (!cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS))
-+		return;
-+
-+	WARN_ON_ONCE(its_mod != mod);
-+
-+	its_mod = NULL;
-+	its_page = NULL;
-+	mutex_unlock(&text_mutex);
-+
-+	for (i = 0; i < mod->its_num_pages; i++) {
-+		void *page = mod->its_page_array[i];
-+		set_memory_ro((unsigned long)page, 1);
-+		set_memory_x((unsigned long)page, 1);
-+	}
-+}
-+
-+void its_free_mod(struct module *mod)
-+{
-+	int i;
-+
-+	if (!cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS))
-+		return;
-+
-+	for (i = 0; i < mod->its_num_pages; i++) {
-+		void *page = mod->its_page_array[i];
-+		module_memfree(page);
-+	}
-+	kfree(mod->its_page_array);
-+}
-+
-+static void *its_alloc(void)
-+{
-+	void *page = module_alloc(PAGE_SIZE);
-+
-+	if (!page)
-+		return NULL;
-+
-+	if (its_mod) {
-+		void *tmp = krealloc(its_mod->its_page_array,
-+				     (its_mod->its_num_pages+1) * sizeof(void *),
-+				     GFP_KERNEL);
-+		if (!tmp) {
-+			module_memfree(page);
-+			return NULL;
-+		}
-+
-+		its_mod->its_page_array = tmp;
-+		its_mod->its_page_array[its_mod->its_num_pages++] = page;
-+	}
-+
-+	return page;
-+}
-+
-+static void *its_allocate_thunk(int reg)
-+{
-+	int size = 3 + (reg / 8);
-+	void *thunk;
-+
-+	if (!its_page || (its_offset + size - 1) >= PAGE_SIZE) {
-+		its_page = its_alloc();
-+		if (!its_page) {
-+			pr_err("ITS page allocation failed\n");
-+			return NULL;
-+		}
-+		memset(its_page, INT3_INSN_OPCODE, PAGE_SIZE);
-+		its_offset = 32;
-+	}
-+
-+	/*
-+	 * If the indirect branch instruction will be in the lower half
-+	 * of a cacheline, then update the offset to reach the upper half.
++	/* MTU change may change the AGG ring settings if an XDP multi-buffer
++	 * program is attached.  We need to set the AGG rings settings and
++	 * rx_skb_func accordingly.
 +	 */
-+	if ((its_offset + size - 1) % 64 < 32)
-+		its_offset = ((its_offset - 1) | 0x3F) + 33;
++	if (READ_ONCE(bp->xdp_prog))
++		bnxt_set_rx_skb_mode(bp, true);
 +
-+	thunk = its_page + its_offset;
-+	its_offset += size;
-+
-+	set_memory_rw((unsigned long)its_page, 1);
-+	thunk = its_init_thunk(thunk, reg);
-+	set_memory_ro((unsigned long)its_page, 1);
-+	set_memory_x((unsigned long)its_page, 1);
-+
-+	return thunk;
-+}
-+
- static int __emit_trampoline(void *addr, struct insn *insn, u8 *bytes,
- 			     void *call_dest, void *jmp_dest)
- {
-@@ -444,9 +567,13 @@ static int __emit_trampoline(void *addr, struct insn *insn, u8 *bytes,
+ 	bnxt_set_ring_params(bp);
  
- static int emit_its_trampoline(void *addr, struct insn *insn, int reg, u8 *bytes)
- {
--	return __emit_trampoline(addr, insn, bytes,
--				 __x86_indirect_its_thunk_array[reg],
--				 __x86_indirect_its_thunk_array[reg]);
-+	u8 *thunk = __x86_indirect_its_thunk_array[reg];
-+	u8 *tmp = its_allocate_thunk(reg);
-+
-+	if (tmp)
-+		thunk = tmp;
-+
-+	return __emit_trampoline(addr, insn, bytes, thunk, thunk);
- }
- 
- /* Check if an indirect branch is at ITS-unsafe address */
-diff --git a/arch/x86/kernel/module.c b/arch/x86/kernel/module.c
-index 06b53ea940bf604e94e3f55d6dd6316ceb9ed3f7..183b8d541b5448b50ba91a22ea0db283efda3dc9 100644
---- a/arch/x86/kernel/module.c
-+++ b/arch/x86/kernel/module.c
-@@ -283,10 +283,16 @@ int module_finalize(const Elf_Ehdr *hdr,
- 		void *pseg = (void *)para->sh_addr;
- 		apply_paravirt(pseg, pseg + para->sh_size);
- 	}
-+
-+	its_init_mod(me);
-+
- 	if (retpolines) {
- 		void *rseg = (void *)retpolines->sh_addr;
- 		apply_retpolines(rseg, rseg + retpolines->sh_size);
- 	}
-+
-+	its_fini_mod(me);
-+
- 	if (returns) {
- 		void *rseg = (void *)returns->sh_addr;
- 		apply_returns(rseg, rseg + returns->sh_size);
-@@ -317,4 +323,5 @@ int module_finalize(const Elf_Ehdr *hdr,
- void module_arch_cleanup(struct module *mod)
- {
- 	alternatives_smp_module_del(mod);
-+	its_free_mod(mod);
- }
-diff --git a/include/linux/module.h b/include/linux/module.h
-index fb9762e16f2858e070773893495ffbbefa50e7d4..8e629b03ed1e4181d7a30d3528f21dbc7b112825 100644
---- a/include/linux/module.h
-+++ b/include/linux/module.h
-@@ -528,6 +528,11 @@ struct module {
- 	atomic_t refcnt;
- #endif
- 
-+#ifdef CONFIG_MITIGATION_ITS
-+	int its_num_pages;
-+	void **its_page_array;
-+#endif
-+
- #ifdef CONFIG_CONSTRUCTORS
- 	/* Constructor functions. */
- 	ctor_fn_t *ctors;
-
+ 	if (netif_running(dev))
 -- 
-2.34.1
-
+2.25.1
 
 
