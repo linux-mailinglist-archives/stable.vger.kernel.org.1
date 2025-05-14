@@ -1,920 +1,417 @@
-Return-Path: <stable+bounces-144373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DCCEAB6C1E
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 15:06:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E62A6AB6C28
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 15:07:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42D424C5650
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 13:06:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E96A18875F0
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 13:07:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E274C279904;
-	Wed, 14 May 2025 13:06:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="drbeM6H3"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A80B27932D;
+	Wed, 14 May 2025 13:07:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 803A627A475;
-	Wed, 14 May 2025 13:06:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1002F25D550;
+	Wed, 14 May 2025 13:07:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747227966; cv=none; b=kfFEUnz5vs0/r973yKb1IhfuOJu9HialR5MKwUtrHa5sX7GwYE/Pqxb13cjfhee44e++qUxHMag01v99UtLlnjunF6N0lQ0ZEzHWvbzH0zQnEKNF+o9nHdCEdY/aRTnz/NSRyvZJEZSTjKv2h/RpsQb9Gul/ea8Jc49bKRIHcH8=
+	t=1747228055; cv=none; b=euipPEC45X/2PB40h5CrHHgeG8rCGCeBIcPa0Hgjzo8wl0S5lJHCRljUzpcB6s6rBzXTHfSYkUNfI2Q85NfR22YWklyL30SWMc76sB/L6Nd2NOF1NbgqkG/QGYfxq4Ve6AcB0FIXY3kDzo9QdX5WfS8BMmI29ueStiNUp3KQzEQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747227966; c=relaxed/simple;
-	bh=2rLzA+BHDHiBniNmFOfkSVIAithLtbaVe/3L8RpbPrk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oCkZLfM0s4KJoAmZRQjLdtp3zRNH3Me1IvQhhZBsb6YABpdWWY5CUK99AC7JEldB90wMTkha6ng1VnhRus1UA1frJgyDAf/z4qZ0qTB0z1wM6G+h1NvTpZz9E1cGsDiauCD+Up5271CZWVwWksPGFiYXWXKV6+qxRHNVrsZ4Jx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=drbeM6H3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12996C4CEE9;
-	Wed, 14 May 2025 13:06:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747227966;
-	bh=2rLzA+BHDHiBniNmFOfkSVIAithLtbaVe/3L8RpbPrk=;
-	h=From:To:Cc:Subject:Date:From;
-	b=drbeM6H3FK2Ugw6v6JgRtze3VyeHB1hSAw3GjMXgtSiZR+FsqD9F6H+8xrpUJ8Lyc
-	 vPF1nc1+tHvDsH78G8++sgbQPDbA2xGb/SzIGS8H3dqRU9uUFByPcg2fKOt4s5m+2c
-	 FNFamA8Q810M4oQRC+00cyy0p3HFw0mv0/OqscOQ=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
+	s=arc-20240116; t=1747228055; c=relaxed/simple;
+	bh=7x9OydtFeaYlX1Jn7YMnxF7uFDzBkwNknRkRlVSmkrc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=UwBVX5wOzHeariwiGhgqosCGjcYCSXgogWNd/X4ce68EP3OzsBDjLjIFyJ1dNnGO51/IAP033j92R26kINmjFmSSHnUSiXYeayE+3YDDoU/b9Ddq9Tc5YsCd6W4ceFYwcu06SG7rPXAQfnE/40Okc7N/Pk4ge+oWOoqf3KRu5LQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=none smtp.mailfrom=foss.arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=foss.arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DE428150C;
+	Wed, 14 May 2025 06:07:18 -0700 (PDT)
+Received: from usa.arm.com (GTV29432L0-2.cambridge.arm.com [10.1.36.85])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 8D49C3F5A1;
+	Wed, 14 May 2025 06:07:28 -0700 (PDT)
+From: Aishwarya <aishwarya.tcv@arm.com>
+To: jeremy.linton@arm.com
+Cc: jmeurin@google.com,
+	lenb@kernel.org,
+	linux-acpi@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org,
-	akpm@linux-foundation.org,
-	linux@roeck-us.net,
-	shuah@kernel.org,
-	patches@kernelci.org,
-	lkft-triage@lists.linaro.org,
-	pavel@denx.de,
-	jonathanh@nvidia.com,
-	f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net,
-	rwarsow@gmx.de,
-	conor@kernel.org,
-	hargar@microsoft.com,
-	broonie@kernel.org
-Subject: [PATCH 6.14 000/197] 6.14.7-rc2 review
-Date: Wed, 14 May 2025 15:04:16 +0200
-Message-ID: <20250514125625.496402993@linuxfoundation.org>
-X-Mailer: git-send-email 2.49.0
+	mheyne@amazon.de,
+	rafael@kernel.org,
+	stable@vger.kernel.org,
+	sudeep.holla@arm.com,
+	yangyicong@hisilicon.com,
+	ryan.roberts@arm.com
+Subject: Re: [PATCH] ACPI: PPTT: Fix processor subtable walk
+Date: Wed, 14 May 2025 14:07:27 +0100
+Message-Id: <20250514130727.67734-1-aishwarya.tcv@arm.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+In-Reply-To: <20250508023025.1301030-1-jeremy.linton@arm.com>
+References: <20250508023025.1301030-1-jeremy.linton@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: quilt/0.68
-X-stable: review
-X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.14.7-rc2.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-6.14.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 6.14.7-rc2
-X-KernelTest-Deadline: 2025-05-16T12:56+00:00
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This is the start of the stable review cycle for the 6.14.7 release.
-There are 197 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
-
-Responses should be made by Fri, 16 May 2025 12:55:38 +0000.
-Anything received after that time might be too late.
-
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.14.7-rc2.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.14.y
-and the diffstat can be found below.
-
-thanks,
-
-greg k-h
-
--------------
-Pseudo-Shortlog of commits:
-
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 6.14.7-rc2
-
-Peter Zijlstra <peterz@infradead.org>
-    x86/its: FineIBT-paranoid vs ITS
-
-Eric Biggers <ebiggers@google.com>
-    x86/its: Fix build errors when CONFIG_MODULES=n
-
-Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-    selftest/x86/bugs: Add selftests for ITS
-
-Peter Zijlstra <peterz@infradead.org>
-    x86/its: Use dynamic thunks for indirect branches
-
-Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-    x86/ibt: Keep IBT disabled during alternative patching
-
-Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-    x86/its: Align RETs in BHB clear sequence to avoid thunking
-
-Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-    x86/its: Add support for RSB stuffing mitigation
-
-Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-    x86/its: Add "vmexit" option to skip mitigation on some CPUs
-
-Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-    x86/its: Enable Indirect Target Selection mitigation
-
-Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-    x86/its: Add support for ITS-safe return thunk
-
-Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-    x86/its: Add support for ITS-safe indirect thunk
-
-Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-    x86/its: Enumerate Indirect Target Selection (ITS) bug
-
-Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-    Documentation: x86/bugs/its: Add ITS documentation
-
-Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-    x86/bhi: Do not set BHI_DIS_S in 32-bit mode
-
-Daniel Sneddon <daniel.sneddon@linux.intel.com>
-    x86/bpf: Add IBHF call at end of classic BPF
-
-Daniel Sneddon <daniel.sneddon@linux.intel.com>
-    x86/bpf: Call branch history clearing sequence on exit
-
-James Morse <james.morse@arm.com>
-    arm64: proton-pack: Add new CPUs 'k' values for branch mitigation
-
-James Morse <james.morse@arm.com>
-    arm64: bpf: Only mitigate cBPF programs loaded by unprivileged users
-
-James Morse <james.morse@arm.com>
-    arm64: bpf: Add BHB mitigation to the epilogue for cBPF programs
-
-James Morse <james.morse@arm.com>
-    arm64: proton-pack: Expose whether the branchy loop k value
-
-James Morse <james.morse@arm.com>
-    arm64: proton-pack: Expose whether the platform is mitigated by firmware
-
-James Morse <james.morse@arm.com>
-    arm64: insn: Add support for encoding DSB
-
-Johannes Weiner <hannes@cmpxchg.org>
-    mm: page_alloc: speed up fallbacks in rmqueue_bulk()
-
-Johannes Weiner <hannes@cmpxchg.org>
-    mm: page_alloc: don't steal single pages from biggest buddy
-
-Hao Qin <hao.qin@mediatek.com>
-    Bluetooth: btmtk: Remove the resetting step before downloading the fw
-
-Jens Axboe <axboe@kernel.dk>
-    io_uring: always arm linked timeouts prior to issue
-
-Miguel Ojeda <ojeda@kernel.org>
-    rust: clean Rust 1.88.0's `clippy::uninlined_format_args` lint
-
-Miguel Ojeda <ojeda@kernel.org>
-    rust: allow Rust 1.87.0's `clippy::ptr_eq` lint
-
-Al Viro <viro@zeniv.linux.org.uk>
-    do_umount(): add missing barrier before refcount checks in sync case
-
-Gabriel Krisman Bertazi <krisman@suse.de>
-    io_uring/sqpoll: Increase task_work submission batch size
-
-Shuicheng Lin <shuicheng.lin@intel.com>
-    drm/xe: Release force wake first then runtime power
-
-Tejas Upadhyay <tejas.upadhyay@intel.com>
-    drm/xe/tests/mocs: Hold XE_FORCEWAKE_ALL for LNCF regs
-
-Samuel Holland <samuel.holland@sifive.com>
-    riscv: Disallow PR_GET_TAGGED_ADDR_CTRL without Supm
-
-Clément Léger <cleger@rivosinc.com>
-    riscv: misaligned: enable IRQs while handling misaligned accesses
-
-Clément Léger <cleger@rivosinc.com>
-    riscv: misaligned: factorize trap handling
-
-Daniel Wagner <wagi@kernel.org>
-    nvme: unblock ctrl state transition for firmware update
-
-Kevin Baker <kevinb@ventureresearch.com>
-    drm/panel: simple: Update timings for AUO G101EVN010
-
-Lizhi Xu <lizhi.xu@windriver.com>
-    loop: Add sanity check for read/write_iter
-
-Christoph Hellwig <hch@lst.de>
-    loop: factor out a loop_assign_backing_file helper
-
-Nylon Chen <nylon.chen@sifive.com>
-    riscv: misaligned: Add handling for ZCB instructions
-
-Thorsten Blum <thorsten.blum@linux.dev>
-    MIPS: Fix MAX_REG_OFFSET
-
-Karol Wachowski <karol.wachowski@intel.com>
-    accel/ivpu: Correct mutex unlock order in job submission
-
-Karol Wachowski <karol.wachowski@intel.com>
-    accel/ivpu: Separate DB ID and CMDQ ID allocations from CMDQ allocation
-
-Thomas Gleixner <tglx@linutronix.de>
-    timekeeping: Prevent coarse clocks going backwards
-
-Jonathan Cameron <Jonathan.Cameron@huawei.com>
-    iio: adc: dln2: Use aligned_s64 for timestamp
-
-Jonathan Cameron <Jonathan.Cameron@huawei.com>
-    iio: accel: adxl355: Make timestamp 64-bit aligned using aligned_s64
-
-Jonathan Cameron <Jonathan.Cameron@huawei.com>
-    iio: temp: maxim-thermocouple: Fix potential lack of DMA safe buffer.
-
-Lothar Rubusch <l.rubusch@gmail.com>
-    iio: accel: adxl367: fix setting odr for activity time update
-
-Gustavo Silva <gustavograzs@gmail.com>
-    iio: imu: bmi270: fix initial sampling frequency configuration
-
-Dave Penkler <dpenkler@gmail.com>
-    usb: usbtmc: Fix erroneous generic_read ioctl return
-
-Dave Penkler <dpenkler@gmail.com>
-    usb: usbtmc: Fix erroneous wait_srq ioctl return
-
-Dave Penkler <dpenkler@gmail.com>
-    usb: usbtmc: Fix erroneous get_stb ioctl error returns
-
-Oliver Neukum <oneukum@suse.com>
-    USB: usbtmc: use interruptible sleep in usbtmc_read
-
-Andrei Kuchynski <akuchynski@chromium.org>
-    usb: typec: ucsi: displayport: Fix NULL pointer access
-
-Andrei Kuchynski <akuchynski@chromium.org>
-    usb: typec: ucsi: displayport: Fix deadlock
-
-RD Babiera <rdbabiera@google.com>
-    usb: typec: tcpm: delay SNK_TRY_WAIT_DEBOUNCE to SRC_TRYWAIT transition
-
-Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
-    usb: misc: onboard_usb_dev: fix support for Cypress HX3 hubs
-
-Jim Lin <jilin@nvidia.com>
-    usb: host: tegra: Prevent host controller crash when OTG port is used
-
-Prashanth K <prashanth.k@oss.qualcomm.com>
-    usb: gadget: Use get_status callback to set remote wakeup capability
-
-Wayne Chang <waynec@nvidia.com>
-    usb: gadget: tegra-xudc: ACK ST_RC after clearing CTRL_RUN
-
-Prashanth K <prashanth.k@oss.qualcomm.com>
-    usb: gadget: f_ecm: Add get_status callback
-
-Pawel Laszczak <pawell@cadence.com>
-    usb: cdnsp: fix L1 resume issue for RTL_REVISION_NEW_LPM version
-
-Pawel Laszczak <pawell@cadence.com>
-    usb: cdnsp: Fix issue with resuming from L1
-
-Prashanth K <prashanth.k@oss.qualcomm.com>
-    usb: dwc3: gadget: Make gadget_wakeup asynchronous
-
-Jan Kara <jack@suse.cz>
-    ocfs2: stop quota recovery before disabling quotas
-
-Jan Kara <jack@suse.cz>
-    ocfs2: implement handshaking with ocfs2 recovery thread
-
-Jan Kara <jack@suse.cz>
-    ocfs2: switch osb->disable_recovery to enum
-
-Heming Zhao <heming.zhao@suse.com>
-    ocfs2: fix the issue with discontiguous allocation in the global_bitmap
-
-Mark Tinguely <mark.tinguely@oracle.com>
-    ocfs2: fix panic in failed foilio allocation
-
-Borislav Petkov (AMD) <bp@alien8.de>
-    x86/microcode: Consolidate the loader enablement checking
-
-Dmitry Antipov <dmantipov@yandex.ru>
-    module: ensure that kobject_put() is safe for module type kobjects
-
-Tom Lendacky <thomas.lendacky@amd.com>
-    memblock: Accept allocated memory before use in memblock_double_array()
-
-Sebastian Ott <sebott@redhat.com>
-    KVM: arm64: Fix uninitialized memcache pointer in user_mem_abort()
-
-Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-    clocksource/i8253: Use raw_spinlock_irqsave() in clockevent_i8253_disable()
-
-Yeoreum Yun <yeoreum.yun@arm.com>
-    arm64: cpufeature: Move arm64_use_ng_mappings to the .data section to prevent wrong idmap generation
-
-Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-    accel/ivpu: Increase state dump msg timeout
-
-Jason Andryuk <jason.andryuk@amd.com>
-    xenbus: Use kref to track req lifetime
-
-John Ernberg <john.ernberg@actia.se>
-    xen: swiotlb: Use swiotlb bouncing if kmalloc allocation demands it
-
-Paul Aurich <paul@darkrain42.org>
-    smb: client: Avoid race in open_cached_dir with lease breaks
-
-Alexey Charkov <alchark@gmail.com>
-    usb: uhci-platform: Make the clock really optional
-
-Mathias Nyman <mathias.nyman@linux.intel.com>
-    xhci: dbc: Avoid event polling busyloop if pending rx transfers are inactive.
-
-Alex Deucher <alexander.deucher@amd.com>
-    drm/amdgpu/hdp7: use memcfg register to post the write for HDP flush
-
-Alex Deucher <alexander.deucher@amd.com>
-    drm/amdgpu/hdp6: use memcfg register to post the write for HDP flush
-
-Alex Deucher <alexander.deucher@amd.com>
-    drm/amdgpu/hdp5: use memcfg register to post the write for HDP flush
-
-Alex Deucher <alexander.deucher@amd.com>
-    drm/amdgpu/hdp5.2: use memcfg register to post the write for HDP flush
-
-Alex Deucher <alexander.deucher@amd.com>
-    drm/amdgpu/hdp4: use memcfg register to post the write for HDP flush
-
-Wayne Lin <Wayne.Lin@amd.com>
-    drm/amd/display: Copy AUX read reply data whenever length > 0
-
-Wayne Lin <Wayne.Lin@amd.com>
-    drm/amd/display: Fix wrong handling for AUX_DEFER case
-
-Wayne Lin <Wayne.Lin@amd.com>
-    drm/amd/display: Remove incorrect checking in dmub aux handler
-
-Wayne Lin <Wayne.Lin@amd.com>
-    drm/amd/display: Fix the checking condition in dmub aux handling
-
-Aurabindo Pillai <aurabindo.pillai@amd.com>
-    drm/amd/display: more liberal vmin/vmax update for freesync
-
-Roman Li <Roman.Li@amd.com>
-    drm/amd/display: Fix invalid context error in dml helper
-
-Ruijing Dong <ruijing.dong@amd.com>
-    drm/amdgpu/vcn: using separate VCN1_AON_SOC offset
-
-Alex Deucher <alexander.deucher@amd.com>
-    drm/amdgpu: fix pm notifier handling
-
-Matthew Brost <matthew.brost@intel.com>
-    drm/xe: Add page queue multiplier
-
-Maíra Canal <mcanal@igalia.com>
-    drm/v3d: Add job to pending list if the reset was skipped
-
-Alex Deucher <alexander.deucher@amd.com>
-    Revert "drm/amd: Stop evicting resources on APUs in suspend"
-
-David Lechner <dlechner@baylibre.com>
-    iio: pressure: mprls0025pa: use aligned_s64 for timestamp
-
-Luca Ceresoli <luca.ceresoli@bootlin.com>
-    iio: light: opt3001: fix deadlock due to concurrent flag access
-
-Silvano Seva <s.seva@4sigma.it>
-    iio: imu: st_lsm6dsx: fix possible lockup in st_lsm6dsx_read_tagged_fifo
-
-Silvano Seva <s.seva@4sigma.it>
-    iio: imu: st_lsm6dsx: fix possible lockup in st_lsm6dsx_read_fifo
-
-David Lechner <dlechner@baylibre.com>
-    iio: imu: inv_mpu6050: align buffer for timestamp
-
-Zhang Lixu <lixu.zhang@intel.com>
-    iio: hid-sensor-prox: Fix incorrect OFFSET calculation
-
-Zhang Lixu <lixu.zhang@intel.com>
-    iio: hid-sensor-prox: support multi-channel SCALE calculation
-
-Zhang Lixu <lixu.zhang@intel.com>
-    iio: hid-sensor-prox: Restore lost scale assignments
-
-David Lechner <dlechner@baylibre.com>
-    iio: chemical: pms7003: use aligned_s64 for timestamp
-
-David Lechner <dlechner@baylibre.com>
-    iio: chemical: sps30: use aligned_s64 for timestamp
-
-Gabriel Shahrouzi <gshahrouzi@gmail.com>
-    iio: adis16201: Correct inclinometer channel resolution
-
-Simon Xue <xxm@rock-chips.com>
-    iio: adc: rockchip: Fix clock initialization sequence
-
-Angelo Dureghello <adureghello@baylibre.com>
-    iio: adc: ad7606: fix serial register access
-
-Jonathan Cameron <Jonathan.Cameron@huawei.com>
-    iio: adc: ad7266: Fix potential timestamp alignment issue.
-
-Jonathan Cameron <Jonathan.Cameron@huawei.com>
-    iio: adc: ad7768-1: Fix insufficient alignment of timestamp.
-
-Jens Axboe <axboe@kernel.dk>
-    io_uring: ensure deferred completions are flushed for multishot
-
-Nam Cao <namcao@linutronix.de>
-    riscv: Fix kernel crash due to PR_SET_TAGGED_ADDR_CTRL
-
-Wayne Lin <Wayne.Lin@amd.com>
-    drm/amd/display: Shift DMUB AUX reply command if necessary
-
-Mikhail Lobanov <m.lobanov@rosa.ru>
-    KVM: SVM: Forcibly leave SMM mode on SHUTDOWN interception
-
-Sean Christopherson <seanjc@google.com>
-    KVM: x86/mmu: Prevent installing hugepages when mem attributes are changing
-
-Madhavan Srinivasan <maddy@linux.ibm.com>
-    selftests/mm: fix build break when compiling pkey_util.c
-
-Nysal Jan K.A. <nysal@linux.ibm.com>
-    selftests/mm: fix a build failure on powerpc
-
-Feng Tang <feng.tang@linux.alibaba.com>
-    selftests/mm: compaction_test: support platform with huge mount of memory
-
-Peter Xu <peterx@redhat.com>
-    mm/userfaultfd: fix uninitialized output field for -EAGAIN race
-
-Gavin Guo <gavinguo@igalia.com>
-    mm/huge_memory: fix dereferencing invalid pmd migration entry
-
-Kees Cook <kees@kernel.org>
-    mm: vmalloc: support more granular vrealloc() sizing
-
-Petr Vaněk <arkamar@atlas.cz>
-    mm: fix folio_pte_batch() on XEN PV
-
-Dave Hansen <dave.hansen@linux.intel.com>
-    x86/mm: Eliminate window where TLB flushes may be inadvertently skipped
-
-Gabriel Shahrouzi <gshahrouzi@gmail.com>
-    staging: axis-fifo: Correct handling of tx_fifo_depth for size validation
-
-Gabriel Shahrouzi <gshahrouzi@gmail.com>
-    staging: axis-fifo: Remove hardware resets for user errors
-
-Dave Stevenson <dave.stevenson@raspberrypi.com>
-    staging: bcm2835-camera: Initialise dev in v4l2_dev
-
-Gabriel Shahrouzi <gshahrouzi@gmail.com>
-    staging: iio: adc: ad7816: Correct conditional logic for store mode
-
-Naman Jain <namjain@linux.microsoft.com>
-    uio_hv_generic: Fix sysfs creation path for ring buffer
-
-Miguel Ojeda <ojeda@kernel.org>
-    rust: clean Rust 1.88.0's warning about `clippy::disallowed_macros` configuration
-
-Miguel Ojeda <ojeda@kernel.org>
-    objtool/rust: add one more `noreturn` Rust function for Rust 1.87.0
-
-Miguel Ojeda <ojeda@kernel.org>
-    rust: clean Rust 1.88.0's `unnecessary_transmutes` lint
-
-Aditya Garg <gargaditya08@live.com>
-    Input: synaptics - enable InterTouch on TUXEDO InfinityBook Pro 14 v5
-
-Dmitry Torokhov <dmitry.torokhov@gmail.com>
-    Input: synaptics - enable SMBus for HP Elitebook 850 G1
-
-Aditya Garg <gargaditya08@live.com>
-    Input: synaptics - enable InterTouch on Dell Precision M3800
-
-Aditya Garg <gargaditya08@live.com>
-    Input: synaptics - enable InterTouch on Dynabook Portege X30L-G
-
-Manuel Fombuena <fombuena@outlook.com>
-    Input: synaptics - enable InterTouch on Dynabook Portege X30-D
-
-Vicki Pfau <vi@endrift.com>
-    Input: xpad - fix two controller table values
-
-Lode Willems <me@lodewillems.com>
-    Input: xpad - add support for 8BitDo Ultimate 2 Wireless Controller
-
-Vicki Pfau <vi@endrift.com>
-    Input: xpad - fix Share button on Xbox One controllers
-
-Gary Bisson <bisson.gary@gmail.com>
-    Input: mtk-pmic-keys - fix possible null pointer dereference
-
-Mikael Gonella-Bolduc <mgonellabolduc@dimonoff.com>
-    Input: cyttsp5 - fix power control issue on wakeup
-
-Hugo Villeneuve <hvilleneuve@dimonoff.com>
-    Input: cyttsp5 - ensure minimum reset pulse width
-
-Jakub Kicinski <kuba@kernel.org>
-    virtio-net: fix total qstat values
-
-Jakub Kicinski <kuba@kernel.org>
-    net: export a helper for adding up queue stats
-
-Alexander Duyck <alexanderduyck@fb.com>
-    fbnic: Do not allow mailbox to toggle to ready outside fbnic_mbx_poll_tx_ready
-
-Alexander Duyck <alexanderduyck@fb.com>
-    fbnic: Pull fbnic_fw_xmit_cap_msg use out of interrupt context
-
-Alexander Duyck <alexanderduyck@fb.com>
-    fbnic: Improve responsiveness of fbnic_mbx_poll_tx_ready
-
-Alexander Duyck <alexanderduyck@fb.com>
-    fbnic: Cleanup handling of completions
-
-Alexander Duyck <alexanderduyck@fb.com>
-    fbnic: Actually flush_tx instead of stalling out
-
-Alexander Duyck <alexanderduyck@fb.com>
-    fbnic: Gate AXI read/write enabling on FW mailbox
-
-Alexander Duyck <alexanderduyck@fb.com>
-    fbnic: Fix initialization of mailbox descriptor rings
-
-Jonas Gorski <jonas.gorski@gmail.com>
-    net: dsa: b53: do not set learning and unicast/multicast on up
-
-Jonas Gorski <jonas.gorski@gmail.com>
-    net: dsa: b53: fix learning on VLAN unaware bridges
-
-Jonas Gorski <jonas.gorski@gmail.com>
-    net: dsa: b53: fix toggling vlan_filtering
-
-Jonas Gorski <jonas.gorski@gmail.com>
-    net: dsa: b53: do not program vlans when vlan filtering is off
-
-Jonas Gorski <jonas.gorski@gmail.com>
-    net: dsa: b53: do not allow to configure VLAN 0
-
-Jonas Gorski <jonas.gorski@gmail.com>
-    net: dsa: b53: always rejoin default untagged VLAN on bridge leave
-
-Jonas Gorski <jonas.gorski@gmail.com>
-    net: dsa: b53: fix VLAN ID for untagged vlan on bridge leave
-
-Jonas Gorski <jonas.gorski@gmail.com>
-    net: dsa: b53: fix flushing old pvid VLAN on pvid change
-
-Jonas Gorski <jonas.gorski@gmail.com>
-    net: dsa: b53: fix clearing PVID of a port
-
-Jonas Gorski <jonas.gorski@gmail.com>
-    net: dsa: b53: keep CPU port always tagged again
-
-Jonas Gorski <jonas.gorski@gmail.com>
-    net: dsa: b53: allow leaky reserved multicast
-
-Paul Chaignon <paul.chaignon@gmail.com>
-    bpf: Scrub packet on bpf_redirect_peer
-
-Jozsef Kadlecsik <kadlec@netfilter.org>
-    netfilter: ipset: fix region locking in hash types
-
-Julian Anastasov <ja@ssi.bg>
-    ipvs: fix uninit-value for saddr in do_output_route4
-
-Gao Xiang <xiang@kernel.org>
-    erofs: ensure the extra temporary copy is valid for shortened bvecs
-
-Przemek Kitszel <przemyslaw.kitszel@intel.com>
-    ice: use DSN instead of PCI BDF for ice_adapter index
-
-Michael-CY Lee <michael-cy.lee@mediatek.com>
-    wifi: mac80211: fix the type of status_code for negotiated TID to Link Mapping
-
-Oliver Hartkopp <socketcan@hartkopp.net>
-    can: gw: fix RCU/BH usage in cgw_create_job()
-
-Kelsey Maes <kelsey@vpprocess.com>
-    can: mcp251xfd: fix TDC setting for low data bit rates
-
-Antonios Salios <antonios@mwa.re>
-    can: m_can: m_can_class_allocate_dev(): initialize spin lock on device probe
-
-Frank Wunderlich <frank-w@public-files.de>
-    net: ethernet: mtk_eth_soc: do not reset PSE when setting FE
-
-Daniel Golle <daniel@makrotopia.org>
-    net: ethernet: mtk_eth_soc: reset all TX queues on DMA free
-
-Guillaume Nault <gnault@redhat.com>
-    gre: Fix again IPv6 link-local address generation.
-
-Jakub Kicinski <kuba@kernel.org>
-    virtio-net: free xsk_buffs on error in virtnet_xsk_pool_enable()
-
-Jakub Kicinski <kuba@kernel.org>
-    virtio-net: don't re-enable refill work too early when NAPI is disabled
-
-Cong Wang <xiyou.wangcong@gmail.com>
-    sch_htb: make htb_deactivate() idempotent
-
-Heiko Carstens <hca@linux.ibm.com>
-    s390/entry: Fix last breaking event handling in case of stack corruption
-
-Wang Zhaolong <wangzhaolong1@huawei.com>
-    ksmbd: fix memory leak in parse_lease_state()
-
-Eelco Chaudron <echaudro@redhat.com>
-    openvswitch: Fix unsafe attribute parsing in output_userspace()
-
-Sean Heelan <seanheelan@gmail.com>
-    ksmbd: Fix UAF in __close_file_table_ids
-
-Norbert Szetei <norbert@doyensec.com>
-    ksmbd: prevent out-of-bounds stream writes by validating *pos
-
-Namjae Jeon <linkinjeon@kernel.org>
-    ksmbd: prevent rename with empty string
-
-Marc Kleine-Budde <mkl@pengutronix.de>
-    can: rockchip_canfd: rkcanfd_remove(): fix order of unregistration calls
-
-Marc Kleine-Budde <mkl@pengutronix.de>
-    can: mcp251xfd: mcp251xfd_remove(): fix order of unregistration calls
-
-Niklas Schnelle <schnelle@linux.ibm.com>
-    s390/pci: Fix duplicate pci_dev_put() in disable_slot() when PF has child VFs
-
-Alex Williamson <alex.williamson@redhat.com>
-    vfio/pci: Align huge faults to order
-
-Veerendranath Jakkam <quic_vjakkam@quicinc.com>
-    wifi: cfg80211: fix out-of-bounds access during multi-link element defragmentation
-
-Niklas Schnelle <schnelle@linux.ibm.com>
-    s390/pci: Fix missing check for zpci_create_device() error return
-
-Marc Kleine-Budde <mkl@pengutronix.de>
-    can: mcan: m_can_class_unregister(): fix order of unregistration calls
-
-Cristian Marussi <cristian.marussi@arm.com>
-    firmware: arm_scmi: Fix timeout checks on polling path
-
-Wojciech Dubowik <Wojciech.Dubowik@mt.com>
-    arm64: dts: imx8mm-verdin: Link reg_usdhc2_vqmmc to usdhc2
-
-Qu Wenruo <wqu@suse.com>
-    Revert "btrfs: canonicalize the device path before adding it"
-
-Max Kellermann <max.kellermann@ionos.com>
-    fs/erofs/fileio: call erofs_onlinefolio_split() after bio_add_folio()
-
-Dan Carpenter <dan.carpenter@linaro.org>
-    dm: add missing unlock on in dm_keyslot_evict()
-
-
--------------
-
-Diffstat:
-
- .clippy.toml                                       |   2 +-
- Documentation/ABI/testing/sysfs-devices-system-cpu |   1 +
- Documentation/admin-guide/hw-vuln/index.rst        |   1 +
- .../hw-vuln/indirect-target-selection.rst          | 168 ++++++++++++++++
- Documentation/admin-guide/kernel-parameters.txt    |  18 ++
- Makefile                                           |   4 +-
- arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi   |  25 ++-
- arch/arm64/include/asm/cputype.h                   |   2 +
- arch/arm64/include/asm/insn.h                      |   1 +
- arch/arm64/include/asm/spectre.h                   |   3 +
- arch/arm64/kernel/cpufeature.c                     |   9 +-
- arch/arm64/kernel/proton-pack.c                    |  13 +-
- arch/arm64/kvm/mmu.c                               |  13 +-
- arch/arm64/lib/insn.c                              |  76 +++++---
- arch/arm64/net/bpf_jit_comp.c                      |  57 +++++-
- arch/mips/include/asm/ptrace.h                     |   3 +-
- arch/riscv/kernel/process.c                        |   6 +
- arch/riscv/kernel/traps.c                          |  64 ++++---
- arch/riscv/kernel/traps_misaligned.c               |  17 ++
- arch/s390/kernel/entry.S                           |   3 +-
- arch/s390/pci/pci_clp.c                            |   2 +
- arch/x86/Kconfig                                   |  12 ++
- arch/x86/entry/entry_64.S                          |  20 +-
- arch/x86/include/asm/alternative.h                 |  32 ++++
- arch/x86/include/asm/cpufeatures.h                 |   3 +
- arch/x86/include/asm/microcode.h                   |   2 +
- arch/x86/include/asm/msr-index.h                   |   8 +
- arch/x86/include/asm/nospec-branch.h               |  10 +
- arch/x86/kernel/alternative.c                      | 208 +++++++++++++++++++-
- arch/x86/kernel/cpu/bugs.c                         | 176 ++++++++++++++++-
- arch/x86/kernel/cpu/common.c                       |  72 +++++--
- arch/x86/kernel/cpu/microcode/amd.c                |   6 +-
- arch/x86/kernel/cpu/microcode/core.c               |  60 +++---
- arch/x86/kernel/cpu/microcode/intel.c              |   2 +-
- arch/x86/kernel/cpu/microcode/internal.h           |   1 -
- arch/x86/kernel/ftrace.c                           |   2 +-
- arch/x86/kernel/head32.c                           |   4 -
- arch/x86/kernel/module.c                           |   6 +
- arch/x86/kernel/static_call.c                      |   4 +-
- arch/x86/kernel/vmlinux.lds.S                      |  10 +
- arch/x86/kvm/mmu/mmu.c                             |  89 ++++++---
- arch/x86/kvm/smm.c                                 |   1 +
- arch/x86/kvm/svm/svm.c                             |   4 +
- arch/x86/kvm/x86.c                                 |   4 +-
- arch/x86/lib/retpoline.S                           |  39 ++++
- arch/x86/mm/tlb.c                                  |  23 ++-
- arch/x86/net/bpf_jit_comp.c                        |  58 +++++-
- drivers/accel/ivpu/ivpu_hw.c                       |   2 +-
- drivers/accel/ivpu/ivpu_job.c                      |  90 ++++++---
- drivers/base/cpu.c                                 |   3 +
- drivers/block/loop.c                               |  43 ++++-
- drivers/bluetooth/btmtk.c                          |  10 -
- drivers/clocksource/i8253.c                        |   4 +-
- drivers/firmware/arm_scmi/driver.c                 |  13 +-
- drivers/gpu/drm/amd/amdgpu/amdgpu.h                |   2 -
- drivers/gpu/drm/amd/amdgpu/amdgpu_acpi.c           |  18 --
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c         |  29 +--
- drivers/gpu/drm/amd/amdgpu/amdgpu_drv.c            |  10 +-
- drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.h            |   1 -
- drivers/gpu/drm/amd/amdgpu/hdp_v4_0.c              |   7 +-
- drivers/gpu/drm/amd/amdgpu/hdp_v5_0.c              |   7 +-
- drivers/gpu/drm/amd/amdgpu/hdp_v5_2.c              |  12 +-
- drivers/gpu/drm/amd/amdgpu/hdp_v6_0.c              |   7 +-
- drivers/gpu/drm/amd/amdgpu/hdp_v7_0.c              |   7 +-
- drivers/gpu/drm/amd/amdgpu/vcn_v2_0.c              |   1 +
- drivers/gpu/drm/amd/amdgpu/vcn_v2_5.c              |   1 +
- drivers/gpu/drm/amd/amdgpu/vcn_v3_0.c              |   1 +
- drivers/gpu/drm/amd/amdgpu/vcn_v4_0.c              |   4 +-
- drivers/gpu/drm/amd/amdgpu/vcn_v4_0_3.c            |   1 +
- drivers/gpu/drm/amd/amdgpu/vcn_v4_0_5.c            |   1 +
- drivers/gpu/drm/amd/amdgpu/vcn_v5_0_0.c            |   3 +-
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c  |  36 ++--
- .../amd/display/amdgpu_dm/amdgpu_dm_mst_types.c    |  28 ++-
- .../amd/display/dc/dml2/dml2_translation_helper.c  |  14 +-
- drivers/gpu/drm/panel/panel-simple.c               |  25 +--
- drivers/gpu/drm/v3d/v3d_sched.c                    |  28 ++-
- drivers/gpu/drm/xe/tests/xe_mocs.c                 |   7 +-
- drivers/gpu/drm/xe/xe_gt_debugfs.c                 |   9 +-
- drivers/gpu/drm/xe/xe_gt_pagefault.c               |  11 +-
- drivers/hv/hyperv_vmbus.h                          |   6 +
- drivers/hv/vmbus_drv.c                             | 100 +++++++++-
- drivers/iio/accel/adis16201.c                      |   4 +-
- drivers/iio/accel/adxl355_core.c                   |   2 +-
- drivers/iio/accel/adxl367.c                        |  10 +-
- drivers/iio/adc/ad7266.c                           |   2 +-
- drivers/iio/adc/ad7606_spi.c                       |   2 +-
- drivers/iio/adc/ad7768-1.c                         |   2 +-
- drivers/iio/adc/dln2-adc.c                         |   2 +-
- drivers/iio/adc/rockchip_saradc.c                  |  17 +-
- drivers/iio/chemical/pms7003.c                     |   5 +-
- drivers/iio/chemical/sps30.c                       |   2 +-
- .../iio/common/hid-sensors/hid-sensor-attributes.c |   4 +
- drivers/iio/imu/bmi270/bmi270_core.c               |   6 +-
- drivers/iio/imu/inv_mpu6050/inv_mpu_ring.c         |   2 +-
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c     |   6 +
- drivers/iio/light/hid-sensor-prox.c                |  22 ++-
- drivers/iio/light/opt3001.c                        |   5 +-
- drivers/iio/pressure/mprls0025pa.h                 |  17 +-
- drivers/iio/temperature/maxim_thermocouple.c       |   2 +-
- drivers/input/joystick/xpad.c                      |  40 ++--
- drivers/input/keyboard/mtk-pmic-keys.c             |   4 +-
- drivers/input/mouse/synaptics.c                    |   5 +
- drivers/input/touchscreen/cyttsp5.c                |   7 +-
- drivers/md/dm-table.c                              |   3 +-
- drivers/net/can/m_can/m_can.c                      |   3 +-
- drivers/net/can/rockchip/rockchip_canfd-core.c     |   2 +-
- drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c     |  42 +++-
- drivers/net/dsa/b53/b53_common.c                   | 213 +++++++++++++++------
- drivers/net/dsa/b53/b53_priv.h                     |   3 +
- drivers/net/dsa/bcm_sf2.c                          |   1 +
- drivers/net/ethernet/intel/ice/ice_adapter.c       |  47 ++---
- drivers/net/ethernet/intel/ice/ice_adapter.h       |   6 +-
- drivers/net/ethernet/mediatek/mtk_eth_soc.c        |  19 +-
- drivers/net/ethernet/meta/fbnic/fbnic_csr.h        |   2 +
- drivers/net/ethernet/meta/fbnic/fbnic_fw.c         | 197 +++++++++++--------
- drivers/net/ethernet/meta/fbnic/fbnic_mac.c        |   6 -
- drivers/net/virtio_net.c                           |  23 ++-
- drivers/nvme/host/core.c                           |   3 +-
- drivers/pci/hotplug/s390_pci_hpc.c                 |   1 -
- drivers/staging/axis-fifo/axis-fifo.c              |  14 +-
- drivers/staging/iio/adc/ad7816.c                   |   2 +-
- .../vc04_services/bcm2835-camera/bcm2835-camera.c  |   1 +
- drivers/uio/uio_hv_generic.c                       |  39 ++--
- drivers/usb/cdns3/cdnsp-gadget.c                   |  31 +++
- drivers/usb/cdns3/cdnsp-gadget.h                   |   6 +
- drivers/usb/cdns3/cdnsp-pci.c                      |  12 +-
- drivers/usb/cdns3/cdnsp-ring.c                     |   3 +-
- drivers/usb/cdns3/core.h                           |   3 +
- drivers/usb/class/usbtmc.c                         |  59 +++---
- drivers/usb/dwc3/core.h                            |   4 +
- drivers/usb/dwc3/gadget.c                          |  60 +++---
- drivers/usb/gadget/composite.c                     |  12 +-
- drivers/usb/gadget/function/f_ecm.c                |   7 +
- drivers/usb/gadget/udc/tegra-xudc.c                |   4 +
- drivers/usb/host/uhci-platform.c                   |   2 +-
- drivers/usb/host/xhci-dbgcap.c                     |  19 +-
- drivers/usb/host/xhci-dbgcap.h                     |   3 +
- drivers/usb/host/xhci-tegra.c                      |   3 +
- drivers/usb/misc/onboard_usb_dev.c                 |  10 +-
- drivers/usb/typec/tcpm/tcpm.c                      |   2 +-
- drivers/usb/typec/ucsi/displayport.c               |  21 +-
- drivers/usb/typec/ucsi/ucsi.c                      |  34 ++++
- drivers/usb/typec/ucsi/ucsi.h                      |   2 +
- drivers/vfio/pci/vfio_pci_core.c                   |  12 +-
- drivers/xen/swiotlb-xen.c                          |   1 +
- drivers/xen/xenbus/xenbus.h                        |   2 +
- drivers/xen/xenbus/xenbus_comms.c                  |   9 +-
- drivers/xen/xenbus/xenbus_dev_frontend.c           |   2 +-
- drivers/xen/xenbus/xenbus_xs.c                     |  18 +-
- fs/btrfs/volumes.c                                 |  91 +--------
- fs/erofs/fileio.c                                  |   4 +-
- fs/erofs/zdata.c                                   |  29 ++-
- fs/namespace.c                                     |   3 +-
- fs/ocfs2/alloc.c                                   |   1 +
- fs/ocfs2/journal.c                                 |  80 +++++---
- fs/ocfs2/journal.h                                 |   1 +
- fs/ocfs2/ocfs2.h                                   |  17 +-
- fs/ocfs2/quota_local.c                             |   9 +-
- fs/ocfs2/suballoc.c                                |  38 +++-
- fs/ocfs2/suballoc.h                                |   1 +
- fs/ocfs2/super.c                                   |   3 +
- fs/smb/client/cached_dir.c                         |  10 +-
- fs/smb/server/oplock.c                             |   7 +-
- fs/smb/server/smb2pdu.c                            |   5 +
- fs/smb/server/vfs.c                                |   7 +
- fs/smb/server/vfs_cache.c                          |  33 +++-
- fs/userfaultfd.c                                   |  28 ++-
- include/linux/cpu.h                                |   2 +
- include/linux/execmem.h                            |   3 +
- include/linux/hyperv.h                             |   6 +
- include/linux/ieee80211.h                          |   2 +-
- include/linux/module.h                             |   5 +
- include/linux/timekeeper_internal.h                |   8 +-
- include/linux/vmalloc.h                            |   1 +
- include/net/netdev_queues.h                        |   6 +
- init/Kconfig                                       |   3 +
- io_uring/io_uring.c                                |  58 +++---
- io_uring/sqpoll.c                                  |   2 +-
- kernel/params.c                                    |   4 +-
- kernel/time/timekeeping.c                          |  50 ++++-
- kernel/time/vsyscall.c                             |   4 +-
- mm/huge_memory.c                                   |  11 +-
- mm/internal.h                                      |  27 ++-
- mm/memblock.c                                      |   9 +-
- mm/page_alloc.c                                    | 159 +++++++++------
- mm/vmalloc.c                                       |  31 ++-
- net/can/gw.c                                       | 151 +++++++++------
- net/core/filter.c                                  |   1 +
- net/core/netdev-genl.c                             |  69 +++++--
- net/ipv6/addrconf.c                                |  15 +-
- net/mac80211/mlme.c                                |  12 +-
- net/netfilter/ipset/ip_set_hash_gen.h              |   2 +-
- net/netfilter/ipvs/ip_vs_xmit.c                    |  27 +--
- net/openvswitch/actions.c                          |   3 +-
- net/sched/sch_htb.c                                |  15 +-
- net/wireless/scan.c                                |   2 +-
- rust/bindings/lib.rs                               |   1 +
- rust/kernel/alloc/kvec.rs                          |   3 +
- rust/kernel/list.rs                                |   3 +
- rust/kernel/str.rs                                 |  46 ++---
- rust/macros/module.rs                              |  19 +-
- rust/macros/paste.rs                               |   2 +-
- rust/macros/pinned_drop.rs                         |   3 +-
- rust/uapi/lib.rs                                   |   1 +
- tools/objtool/check.c                              |   1 +
- tools/testing/selftests/Makefile                   |   1 +
- tools/testing/selftests/mm/compaction_test.c       |  19 +-
- tools/testing/selftests/mm/pkey-powerpc.h          |  14 +-
- tools/testing/selftests/mm/pkey_util.c             |   1 +
- tools/testing/selftests/x86/bugs/Makefile          |   3 +
- tools/testing/selftests/x86/bugs/common.py         | 164 ++++++++++++++++
- .../selftests/x86/bugs/its_indirect_alignment.py   | 150 +++++++++++++++
- .../testing/selftests/x86/bugs/its_permutations.py | 109 +++++++++++
- .../selftests/x86/bugs/its_ret_alignment.py        | 139 ++++++++++++++
- tools/testing/selftests/x86/bugs/its_sysfs.py      |  65 +++++++
- 215 files changed, 3586 insertions(+), 1234 deletions(-)
-
+Hi Jeremy,
+
+Thanks for providing this fix. We've tested applying the patch on top
+of v6.15-rc6 and would like to confirm that commit
+
+  7ab4f0e37a0f4207e742a8de69be03984db6ebf0
+
+was indeed the root cause of a severe performance regression observed
+on Graviton3 bare-metal systems during the 6.15 development cycle.
+
+After applying the patch, all regressions were fully resolved.
+
+The degradation began in v6.15-rc2 and persisted through rc6. Through
+bisection, we identified the above commit as introducing incorrect
+handling in ACPI PPTT parsing. This likely caused malformed CPU
+topology and broken scheduling domains.
+
+As further evidence, we observed the following warning in the kernel
+logs during affected runs. This was with: Linux version 6.15.0-rc6
+
+[    0.511191] ------------[ cut here ]------------
+[    0.511193] WARNING: CPU: 0 PID: 1 at kernel/sched/topology.c:2411 build_sched_domains+0x674/0x1204
+[    0.511201] Modules linked in:
+[    0.511205] CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Tainted: G S                  6.15.0-rc6 #1 PREEMPT
+[    0.511209] Tainted: [S]=CPU_OUT_OF_SPEC
+[    0.511211] pstate: 01400009 (nzcv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+[    0.511214] pc : build_sched_domains+0x674/0x1204
+[    0.511217] lr : build_sched_domains+0x354/0x1204
+[    0.511220] sp : ffff80008021bce0
+[    0.511222] x29: ffff80008021bd60 x28: ffff00010253e300 x27: ffff000100b74440
+[    0.511226] x26: ffffdd63645167f8 x25: ffffdd636373aee8 x24: 0000000000001297
+[    0.511229] x23: ffffdd6364aa4518 x22: 000000000000003f x21: 0000000000000000
+[    0.511233] x20: ffffdd63644fb030 x19: ffff0001014e9270 x18: ffffffffff435f00
+[    0.511236] x17: 4d52415120646574 x16: 6365746968637261 x15: 0000000000000001
+[    0.511239] x14: 0000000000000000 x13: 0000000000000318 x12: 0000000000002000
+[    0.511243] x11: ffff00815ff0e154 x10: ffffdd6364aa4518 x9 : ffffdd6364aa4510
+[    0.511246] x8 : ffffdd6364aa8780 x7 : 0000000000000002 x6 : 7fffffffffffffff
+[    0.511249] x5 : ffffffffffffffff x4 : 0000000000000002 x3 : 0000000000000001
+[    0.511252] x2 : 0000000000000040 x1 : ffffdd6364aa8788 x0 : 0000000000000001
+[    0.511256] Call trace:
+[    0.511258]  build_sched_domains+0x674/0x1204 (P)
+[    0.511262]  sched_init_domains+0xc8/0x104
+[    0.511267]  sched_init_smp+0x40/0xc0
+[    0.511270]  kernel_init_freeable+0x100/0x28c
+[    0.511273]  kernel_init+0x20/0x1d8
+[    0.511277]  ret_from_fork+0x10/0x20
+[    0.511281] ---[ end trace 0000000000000000 ]---
+
+Based on this, we believe the truncation of the PPTT was confusing the
+scheduler about the system's CPU topology. This likely explains the
+observed regressions.
+
+Example impact (`pts/pgbench` with 100 clients / 1000 scale):
+  - TPS dropped by up to -98.8%
+  - Latency increased by over +8200%
+
+Other workloads affected:
+  - mmtests/sysbench-thread showed ~+600% increase in latency
+  - mmtests/stressng-* (get, wait, vm-splice) regressed by -90%+
+  - pts/memtier and nginx throughput dropped by ~98%
+
+We’ve shared the full benchmark results in the thread below to support
+these findings.
++------------------------------------+----------------------------------------------------------+-----------------+--------------+----------------------------+
+| Benchmark                          | Result Class                                             |   6-14-0 (base) |   6-15-0-rc5 |   6-15-0-rc6-g28a90db81645 |
++====================================+==========================================================+=================+==============+============================+
+| micromm/fork                       | fork: p:1, d:10 (seconds)                                |           0.00% |   (R) 24.31% |                      0.93% |
+|                                    | fork: p:512, d:10 (seconds)                              |           0.00% |    (R) 5.45% |                     -1.39% |
++------------------------------------+----------------------------------------------------------+-----------------+--------------+----------------------------+
+| micromm/munmap                     | munmap: p:1, d:10 (seconds)                              |           0.00% |       -0.04% |                      0.70% |
+|                                    | munmap: p:512, d:10 (seconds)                            |           0.00% |    (R) 3.75% |                  (R) 2.93% |
++------------------------------------+----------------------------------------------------------+-----------------+--------------+----------------------------+
+| micromm/vmalloc                    | fix_align_alloc_test: p:1, h:0, l:500000 (usec)          |           0.00% |        0.34% |                  (R) 5.04% |
+|                                    | fix_size_alloc_test: p:1, h:0, l:500000 (usec)           |           0.00% |       -1.61% |                     -0.93% |
+|                                    | fix_size_alloc_test: p:4, h:0, l:500000 (usec)           |           0.00% |        0.59% |                  (R) 3.98% |
+|                                    | fix_size_alloc_test: p:16, h:0, l:500000 (usec)          |           0.00% |        3.96% |                  (R) 7.79% |
+|                                    | fix_size_alloc_test: p:16, h:1, l:500000 (usec)          |           0.00% |    (R) 2.14% |                  (R) 7.48% |
+|                                    | fix_size_alloc_test: p:64, h:0, l:100000 (usec)          |           0.00% |    (R) 3.50% |                  (R) 8.80% |
+|                                    | fix_size_alloc_test: p:64, h:1, l:100000 (usec)          |           0.00% |    (R) 3.30% |                  (R) 8.76% |
+|                                    | fix_size_alloc_test: p:256, h:0, l:100000 (usec)         |           0.00% |    (R) 3.86% |                  (R) 9.65% |
+|                                    | fix_size_alloc_test: p:256, h:1, l:100000 (usec)         |           0.00% |    (R) 3.44% |                  (R) 9.68% |
+|                                    | fix_size_alloc_test: p:512, h:0, l:100000 (usec)         |           0.00% |    (R) 3.37% |                  (R) 9.75% |
+|                                    | fix_size_alloc_test: p:512, h:1, l:100000 (usec)         |           0.00% |    (R) 9.26% |                 (R) 17.75% |
+|                                    | full_fit_alloc_test: p:1, h:0, l:500000 (usec)           |           0.00% |   (I) -6.70% |                      0.37% |
+|                                    | kvfree_rcu_1_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |           0.00% |   (R) 34.28% |                      0.02% |
+|                                    | kvfree_rcu_2_arg_vmalloc_test: p:1, h:0, l:500000 (usec) |           0.00% |   (R) 35.93% |                      0.42% |
+|                                    | long_busy_list_alloc_test: p:1, h:0, l:500000 (usec)     |           0.00% |        1.63% |                  (R) 2.36% |
+|                                    | pcpu_alloc_test: p:1, h:0, l:500000 (usec)               |           0.00% |        2.09% |                     -1.19% |
+|                                    | random_size_align_alloc_test: p:1, h:0, l:500000 (usec)  |           0.00% |       -1.28% |                      1.91% |
+|                                    | random_size_alloc_test: p:1, h:0, l:500000 (usec)        |           0.00% |    (R) 2.93% |                  (R) 8.94% |
+|                                    | vm_map_ram_test: p:1, h:0, l:500000 (usec)               |           0.00% |       -1.86% |                      0.12% |
++------------------------------------+----------------------------------------------------------+-----------------+--------------+----------------------------+
+| mmtests/hackbench                  | process-pipes-1 (seconds)                                |           0.00% |              |                 (I) -7.13% |
+|                                    | process-pipes-4 (seconds)                                |           0.00% |              |                 (I) -5.44% |
+|                                    | process-pipes-7 (seconds)                                |           0.00% |              |                 (I) -6.24% |
+|                                    | process-pipes-12 (seconds)                               |           0.00% |              |                 (I) -3.90% |
+|                                    | process-pipes-21 (seconds)                               |           0.00% |              |                 (I) -8.26% |
+|                                    | process-pipes-30 (seconds)                               |           0.00% |              |                 (I) -8.50% |
+|                                    | process-pipes-48 (seconds)                               |           0.00% |              |                (I) -10.24% |
+|                                    | process-pipes-79 (seconds)                               |           0.00% |              |                (I) -11.82% |
+|                                    | process-pipes-110 (seconds)                              |           0.00% |              |                (I) -13.15% |
+|                                    | process-pipes-141 (seconds)                              |           0.00% |              |                (I) -12.25% |
+|                                    | process-pipes-172 (seconds)                              |           0.00% |              |                (I) -12.79% |
+|                                    | process-pipes-203 (seconds)                              |           0.00% |              |                (I) -12.86% |
+|                                    | process-pipes-234 (seconds)                              |           0.00% |              |                (I) -12.98% |
+|                                    | process-pipes-256 (seconds)                              |           0.00% |              |                (I) -13.12% |
+|                                    | process-sockets-1 (seconds)                              |           0.00% |              |                      0.11% |
+|                                    | process-sockets-4 (seconds)                              |           0.00% |              |                     -0.22% |
+|                                    | process-sockets-7 (seconds)                              |           0.00% |              |                      0.61% |
+|                                    | process-sockets-12 (seconds)                             |           0.00% |              |                     -0.02% |
+|                                    | process-sockets-21 (seconds)                             |           0.00% |              |                      0.57% |
+|                                    | process-sockets-30 (seconds)                             |           0.00% |              |                     -0.10% |
+|                                    | process-sockets-48 (seconds)                             |           0.00% |              |                     -0.63% |
+|                                    | process-sockets-79 (seconds)                             |           0.00% |              |                      0.14% |
+|                                    | process-sockets-110 (seconds)                            |           0.00% |              |                      0.43% |
+|                                    | process-sockets-141 (seconds)                            |           0.00% |              |                      0.64% |
+|                                    | process-sockets-172 (seconds)                            |           0.00% |              |                      1.04% |
+|                                    | process-sockets-203 (seconds)                            |           0.00% |              |                     -0.11% |
+|                                    | process-sockets-234 (seconds)                            |           0.00% |              |                      0.31% |
+|                                    | process-sockets-256 (seconds)                            |           0.00% |              |                      0.60% |
+|                                    | thread-pipes-1 (seconds)                                 |           0.00% |              |                (I) -11.54% |
+|                                    | thread-pipes-4 (seconds)                                 |           0.00% |              |                 (I) -8.52% |
+|                                    | thread-pipes-7 (seconds)                                 |           0.00% |              |                 (I) -9.90% |
+|                                    | thread-pipes-12 (seconds)                                |           0.00% |              |                 (I) -6.03% |
+|                                    | thread-pipes-21 (seconds)                                |           0.00% |              |                 (I) -8.68% |
+|                                    | thread-pipes-30 (seconds)                                |           0.00% |              |                 (I) -9.16% |
+|                                    | thread-pipes-48 (seconds)                                |           0.00% |              |                (I) -10.58% |
+|                                    | thread-pipes-79 (seconds)                                |           0.00% |              |                (I) -14.23% |
+|                                    | thread-pipes-110 (seconds)                               |           0.00% |              |                (I) -15.06% |
+|                                    | thread-pipes-141 (seconds)                               |           0.00% |              |                (I) -14.22% |
+|                                    | thread-pipes-172 (seconds)                               |           0.00% |              |                (I) -14.20% |
+|                                    | thread-pipes-203 (seconds)                               |           0.00% |              |                (I) -13.78% |
+|                                    | thread-pipes-234 (seconds)                               |           0.00% |              |                (I) -13.84% |
+|                                    | thread-pipes-256 (seconds)                               |           0.00% |              |                (I) -13.80% |
+|                                    | thread-sockets-1 (seconds)                               |           0.00% |              |                 (I) -3.70% |
+|                                    | thread-sockets-4 (seconds)                               |           0.00% |              |                 (I) -2.95% |
+|                                    | thread-sockets-7 (seconds)                               |           0.00% |              |                 (I) -2.81% |
+|                                    | thread-sockets-12 (seconds)                              |           0.00% |              |                 (I) -2.31% |
+|                                    | thread-sockets-21 (seconds)                              |           0.00% |              |                 (I) -2.33% |
+|                                    | thread-sockets-30 (seconds)                              |           0.00% |              |                     -1.65% |
+|                                    | thread-sockets-48 (seconds)                              |           0.00% |              |                     -0.93% |
+|                                    | thread-sockets-79 (seconds)                              |           0.00% |              |                     -1.72% |
+|                                    | thread-sockets-110 (seconds)                             |           0.00% |              |                      0.58% |
+|                                    | thread-sockets-141 (seconds)                             |           0.00% |              |                      0.02% |
+|                                    | thread-sockets-172 (seconds)                             |           0.00% |              |                      0.51% |
+|                                    | thread-sockets-203 (seconds)                             |           0.00% |              |                      0.69% |
+|                                    | thread-sockets-234 (seconds)                             |           0.00% |              |                      0.50% |
+|                                    | thread-sockets-256 (seconds)                             |           0.00% |              |                      0.30% |
++------------------------------------+----------------------------------------------------------+-----------------+--------------+----------------------------+
+| mmtests/kernbench                  | elsp-64 (seconds)                                        |           0.00% |              |                      0.01% |
+|                                    | syst-64 (seconds)                                        |           0.00% |              |                     -0.99% |
+|                                    | user-64 (seconds)                                        |           0.00% |              |                     -0.10% |
++------------------------------------+----------------------------------------------------------+-----------------+--------------+----------------------------+
+| mmtests/stressng-af-alg            | 1 (ops/second)                                           |           0.00% |    (I) 3.53% |                      0.55% |
+|                                    | 2 (ops/second)                                           |           0.00% |  (R) -47.63% |                      0.51% |
+|                                    | 4 (ops/second)                                           |           0.00% |  (R) -73.57% |                      0.54% |
+|                                    | 8 (ops/second)                                           |           0.00% |  (R) -86.14% |                      0.54% |
+|                                    | 16 (ops/second)                                          |           0.00% |  (R) -92.06% |                      1.05% |
+|                                    | 32 (ops/second)                                          |           0.00% |  (R) -92.38% |                      0.29% |
+|                                    | 64 (ops/second)                                          |           0.00% |  (R) -91.09% |                      0.27% |
+|                                    | 128 (ops/second)                                         |           0.00% |  (R) -90.91% |                      0.09% |
++------------------------------------+----------------------------------------------------------+-----------------+--------------+----------------------------+
+| mmtests/stressng-bad-altstack      | 1 (ops/second)                                           |           0.00% |       -0.11% |                     -0.01% |
+|                                    | 2 (ops/second)                                           |           0.00% |  (R) -50.95% |                     -0.00% |
+|                                    | 4 (ops/second)                                           |           0.00% |  (R) -75.64% |                     -0.04% |
+|                                    | 8 (ops/second)                                           |           0.00% |  (R) -85.42% |                      1.59% |
+|                                    | 16 (ops/second)                                          |           0.00% |  (R) -97.55% |                  (I) 3.31% |
+|                                    | 32 (ops/second)                                          |           0.00% |  (R) -99.24% |                      0.45% |
+|                                    | 64 (ops/second)                                          |           0.00% |  (R) -99.60% |                      0.00% |
+|                                    | 128 (ops/second)                                         |           0.00% |  (R) -99.62% |                      0.40% |
++------------------------------------+----------------------------------------------------------+-----------------+--------------+----------------------------+
+| mmtests/stressng-class-io-parallel | stressng-aio-64 (ops/second)                             |           0.00% |  (I) 528.81% |                     -3.26% |
+|                                    | stressng-hdd-64 (ops/second)                             |           0.00% |  (R) -18.32% |                     -0.60% |
+|                                    | stressng-io-uring-64 (ops/second)                        |           0.00% |  (I) 434.84% |                      0.96% |
+|                                    | stressng-readahead-64 (ops/second)                       |           0.00% |  (R) -98.97% |                     -1.17% |
+|                                    | stressng-revio-64 (ops/second)                           |           0.00% |  (R) -98.92% |                    -13.03% |
+|                                    | stressng-seek-64 (ops/second)                            |           0.00% |  (R) -99.90% |                     -7.53% |
+|                                    | stressng-sync-file-64 (ops/second)                       |           0.00% |      -38.12% |                     76.58% |
++------------------------------------+----------------------------------------------------------+-----------------+--------------+----------------------------+
+| mmtests/stressng-context           | 1 (ops/second)                                           |           0.00% |   (R) -3.02% |                     -1.29% |
+|                                    | 2 (ops/second)                                           |           0.00% |  (R) -51.93% |                     -0.98% |
+|                                    | 4 (ops/second)                                           |           0.00% |  (R) -76.75% |                     -1.19% |
+|                                    | 8 (ops/second)                                           |           0.00% |  (R) -88.43% |                     -1.11% |
+|                                    | 16 (ops/second)                                          |           0.00% |  (R) -94.03% |                     -1.07% |
+|                                    | 32 (ops/second)                                          |           0.00% |  (R) -97.01% |                     -1.05% |
+|                                    | 64 (ops/second)                                          |           0.00% |  (R) -98.50% |                     -1.20% |
+|                                    | 128 (ops/second)                                         |           0.00% |  (R) -98.51% |                     -1.06% |
++------------------------------------+----------------------------------------------------------+-----------------+--------------+----------------------------+
+| mmtests/stressng-fork              | 1 (ops/second)                                           |           0.00% |   (I) 12.21% |                      4.11% |
+|                                    | 2 (ops/second)                                           |           0.00% |  (R) -46.26% |                      4.75% |
+|                                    | 4 (ops/second)                                           |           0.00% |  (R) -72.79% |                      2.21% |
+|                                    | 8 (ops/second)                                           |           0.00% |  (R) -85.88% |                  (I) 3.68% |
+|                                    | 16 (ops/second)                                          |           0.00% |  (R) -92.30% |                  (I) 2.55% |
+|                                    | 32 (ops/second)                                          |           0.00% |  (R) -94.87% |                     -0.15% |
+|                                    | 64 (ops/second)                                          |           0.00% |  (R) -95.43% |                     -6.86% |
+|                                    | 128 (ops/second)                                         |           0.00% |  (R) -95.79% |                     -2.29% |
++------------------------------------+----------------------------------------------------------+-----------------+--------------+----------------------------+
+| mmtests/stressng-get               | 1 (ops/second)                                           |           0.00% |       -0.01% |                      0.56% |
+|                                    | 2 (ops/second)                                           |           0.00% |  (R) -46.80% |                      0.33% |
+|                                    | 4 (ops/second)                                           |           0.00% |  (R) -72.05% |                      1.63% |
+|                                    | 8 (ops/second)                                           |           0.00% |  (R) -84.66% |                  (I) 2.15% |
+|                                    | 16 (ops/second)                                          |           0.00% |  (R) -88.22% |                      1.19% |
+|                                    | 32 (ops/second)                                          |           0.00% |  (R) -88.21% |                      0.92% |
+|                                    | 64 (ops/second)                                          |           0.00% |  (R) -88.16% |                      0.44% |
+|                                    | 128 (ops/second)                                         |           0.00% |  (R) -87.29% |                      1.39% |
++------------------------------------+----------------------------------------------------------+-----------------+--------------+----------------------------+
+| mmtests/stressng-getdent           | 1 (ops/second)                                           |           0.00% |   (R) -4.47% |                      0.67% |
+|                                    | 2 (ops/second)                                           |           0.00% |  (R) -42.27% |                      2.01% |
+|                                    | 4 (ops/second)                                           |           0.00% |  (R) -54.38% |                      0.97% |
+|                                    | 8 (ops/second)                                           |           0.00% |  (R) -57.53% |                      1.78% |
+|                                    | 16 (ops/second)                                          |           0.00% |  (R) -58.90% |                      1.98% |
+|                                    | 32 (ops/second)                                          |           0.00% |  (R) -64.26% |                  (I) 2.38% |
+|                                    | 64 (ops/second)                                          |           0.00% |  (R) -65.32% |                  (I) 3.37% |
+|                                    | 128 (ops/second)                                         |           0.00% |  (R) -36.72% |                     -0.36% |
++------------------------------------+----------------------------------------------------------+-----------------+--------------+----------------------------+
+| mmtests/stressng-madvise           | 1 (ops/second)                                           |           0.00% |              |                            |
+|                                    | 2 (ops/second)                                           |           0.00% |   (I) 56.22% |                      0.13% |
+|                                    | 4 (ops/second)                                           |           0.00% |  (R) -46.94% |                 (R) -2.09% |
+|                                    | 8 (ops/second)                                           |           0.00% |  (R) -76.56% |                     -1.12% |
+|                                    | 16 (ops/second)                                          |           0.00% |  (R) -84.55% |                     -0.55% |
+|                                    | 32 (ops/second)                                          |           0.00% |  (R) -90.29% |                     -0.76% |
+|                                    | 64 (ops/second)                                          |           0.00% |  (R) -90.98% |                     -1.49% |
+|                                    | 128 (ops/second)                                         |           0.00% |  (R) -92.53% |                     -4.13% |
++------------------------------------+----------------------------------------------------------+-----------------+--------------+----------------------------+
+| mmtests/stressng-mmap              | 1 (ops/second)                                           |           0.00% |    (I) 2.70% |                  (I) 3.60% |
+|                                    | 2 (ops/second)                                           |           0.00% |  (R) -46.86% |                  (I) 4.02% |
+|                                    | 4 (ops/second)                                           |           0.00% |  (R) -71.48% |                  (I) 4.05% |
+|                                    | 8 (ops/second)                                           |           0.00% |  (R) -84.90% |                  (I) 4.67% |
+|                                    | 16 (ops/second)                                          |           0.00% |  (R) -91.47% |                  (I) 3.88% |
+|                                    | 32 (ops/second)                                          |           0.00% |  (R) -92.87% |                      1.35% |
+|                                    | 64 (ops/second)                                          |           0.00% |  (R) -92.04% |                      0.81% |
+|                                    | 128 (ops/second)                                         |           0.00% |  (R) -92.36% |                      1.03% |
++------------------------------------+----------------------------------------------------------+-----------------+--------------+----------------------------+
+| mmtests/stressng-vm-splice         | 1 (ops/second)                                           |           0.00% |    (I) 4.43% |                  (I) 2.93% |
+|                                    | 2 (ops/second)                                           |           0.00% |  (R) -49.04% |                  (I) 3.53% |
+|                                    | 4 (ops/second)                                           |           0.00% |  (R) -74.48% |                  (I) 3.94% |
+|                                    | 8 (ops/second)                                           |           0.00% |  (R) -88.44% |                  (I) 4.39% |
+|                                    | 16 (ops/second)                                          |           0.00% |  (R) -94.20% |                  (I) 4.84% |
+|                                    | 32 (ops/second)                                          |           0.00% |  (R) -96.99% |                  (I) 5.05% |
+|                                    | 64 (ops/second)                                          |           0.00% |  (R) -98.41% |                  (I) 4.91% |
+|                                    | 128 (ops/second)                                         |           0.00% |  (R) -98.38% |                  (I) 5.29% |
++------------------------------------+----------------------------------------------------------+-----------------+--------------+----------------------------+
+| mmtests/stressng-wait              | 1 (ops/second)                                           |           0.00% |  (R) -27.55% |                      0.29% |
+|                                    | 2 (ops/second)                                           |           0.00% |  (R) -40.45% |                      0.31% |
+|                                    | 4 (ops/second)                                           |           0.00% |  (R) -50.89% |                      0.30% |
+|                                    | 8 (ops/second)                                           |           0.00% |  (R) -61.05% |                      0.38% |
+|                                    | 16 (ops/second)                                          |           0.00% |  (R) -69.72% |                     -0.30% |
+|                                    | 32 (ops/second)                                          |           0.00% |  (R) -77.06% |                      0.25% |
+|                                    | 64 (ops/second)                                          |           0.00% |  (R) -63.69% |                  (I) 7.23% |
+|                                    | 128 (ops/second)                                         |           0.00% |  (R) -84.87% |                      1.74% |
++------------------------------------+----------------------------------------------------------+-----------------+--------------+----------------------------+
+| mmtests/stressng-zombie            | 1 (ops/second)                                           |           0.00% |  (R) -52.97% |                  (I) 4.73% |
+|                                    | 2 (ops/second)                                           |           0.00% |  (R) -75.01% |                  (I) 6.02% |
+|                                    | 4 (ops/second)                                           |           0.00% |  (R) -86.96% |                  (I) 5.61% |
+|                                    | 8 (ops/second)                                           |           0.00% |  (R) -92.74% |                  (I) 3.33% |
+|                                    | 16 (ops/second)                                          |           0.00% |  (R) -95.44% |                 (R) -2.01% |
+|                                    | 32 (ops/second)                                          |           0.00% |  (R) -95.90% |                 (R) -5.48% |
+|                                    | 64 (ops/second)                                          |           0.00% |  (R) -93.61% |                     -1.74% |
+|                                    | 128 (ops/second)                                         |           0.00% |  (R) -92.37% |                     -0.38% |
++------------------------------------+----------------------------------------------------------+-----------------+--------------+----------------------------+
+| mmtests/sysbench-cpu               | sysbenchcpu-1 (ops/second)                               |           0.00% |       -0.04% |                      0.07% |
+|                                    | sysbenchcpu-4 (ops/second)                               |           0.00% |  (R) -75.01% |                      0.04% |
+|                                    | sysbenchcpu-7 (ops/second)                               |           0.00% |  (R) -85.72% |                      0.03% |
+|                                    | sysbenchcpu-12 (ops/second)                              |           0.00% |  (R) -91.67% |                      0.04% |
+|                                    | sysbenchcpu-21 (ops/second)                              |           0.00% |  (R) -95.24% |                      0.04% |
+|                                    | sysbenchcpu-30 (ops/second)                              |           0.00% |  (R) -96.67% |                      0.04% |
+|                                    | sysbenchcpu-48 (ops/second)                              |           0.00% |  (R) -97.92% |                      0.04% |
+|                                    | sysbenchcpu-79 (ops/second)                              |           0.00% |  (R) -98.44% |                      0.06% |
+|                                    | sysbenchcpu-110 (ops/second)                             |           0.00% |  (R) -98.44% |                      0.06% |
+|                                    | sysbenchcpu-128 (ops/second)                             |           0.00% |  (R) -98.44% |                      0.06% |
++------------------------------------+----------------------------------------------------------+-----------------+--------------+----------------------------+
+| mmtests/sysbench-mutex             | sysbenchmutex-1 (usec)                                   |           0.00% |        0.23% |                     -0.03% |
+|                                    | sysbenchmutex-4 (usec)                                   |           0.00% |  (R) 284.45% |                     -0.15% |
+|                                    | sysbenchmutex-7 (usec)                                   |           0.00% |  (R) 567.27% |                     -0.19% |
+|                                    | sysbenchmutex-12 (usec)                                  |           0.00% | (R) 1039.06% |                     -0.18% |
+|                                    | sysbenchmutex-21 (usec)                                  |           0.00% | (R) 1875.29% |                     -0.17% |
+|                                    | sysbenchmutex-30 (usec)                                  |           0.00% | (R) 2688.51% |                      0.03% |
+|                                    | sysbenchmutex-48 (usec)                                  |           0.00% | (R) 3581.82% |                     -0.17% |
+|                                    | sysbenchmutex-79 (usec)                                  |           0.00% | (R) 3955.59% |                      2.50% |
+|                                    | sysbenchmutex-110 (usec)                                 |           0.00% | (R) 3765.79% |                     -0.74% |
+|                                    | sysbenchmutex-128 (usec)                                 |           0.00% | (R) 3795.09% |                     -1.24% |
++------------------------------------+----------------------------------------------------------+-----------------+--------------+----------------------------+
+| mmtests/sysbench-thread            | sysbenchthread-1 (usec)                                  |           0.00% |        2.25% |                      0.00% |
+|                                    | sysbenchthread-4 (usec)                                  |           0.00% |  (R) 366.16% |                     -2.60% |
+|                                    | sysbenchthread-7 (usec)                                  |           0.00% |   (R) 60.81% |                      2.94% |
+|                                    | sysbenchthread-12 (usec)                                 |           0.00% |  (R) 650.47% |                      8.35% |
+|                                    | sysbenchthread-21 (usec)                                 |           0.00% |  (R) 554.92% |                     -0.02% |
+|                                    | sysbenchthread-30 (usec)                                 |           0.00% |  (R) 578.98% |                     -7.29% |
+|                                    | sysbenchthread-48 (usec)                                 |           0.00% |  (R) 663.50% |                     -9.27% |
+|                                    | sysbenchthread-79 (usec)                                 |           0.00% |  (R) 418.80% |                    -10.92% |
+|                                    | sysbenchthread-110 (usec)                                |           0.00% |  (R) 415.17% |                     -2.99% |
+|                                    | sysbenchthread-128 (usec)                                |           0.00% |  (R) 384.96% |                     -0.34% |
++------------------------------------+----------------------------------------------------------+-----------------+--------------+----------------------------+
+| pts/memtier-benchmark              | Protocol: Redis Clients: 50 Ratio: 1:1 (Ops/sec)         |           0.00% |  (R) -98.14% |                      0.69% |
+|                                    | Protocol: Redis Clients: 50 Ratio: 1:5 (Ops/sec)         |           0.00% |  (R) -98.20% |                      0.87% |
+|                                    | Protocol: Redis Clients: 50 Ratio: 5:1 (Ops/sec)         |           0.00% |  (R) -98.20% |                     -0.48% |
+|                                    | Protocol: Redis Clients: 100 Ratio: 1:1 (Ops/sec)        |           0.00% |  (R) -98.38% |                      0.52% |
+|                                    | Protocol: Redis Clients: 100 Ratio: 1:5 (Ops/sec)        |           0.00% |  (R) -98.04% |                     -1.36% |
+|                                    | Protocol: Redis Clients: 100 Ratio: 5:1 (Ops/sec)        |           0.00% |  (R) -97.87% |                     -0.92% |
++------------------------------------+----------------------------------------------------------+-----------------+--------------+----------------------------+
+| pts/nginx                          | Connections: 200 (Requests Per Second)                   |           0.00% |  (R) -98.12% |                     -0.46% |
+|                                    | Connections: 1000 (Requests Per Second)                  |           0.00% |  (R) -98.21% |                     -1.01% |
++------------------------------------+----------------------------------------------------------+-----------------+--------------+----------------------------+
+| pts/perl-benchmark                 | Test: Interpreter (Seconds)                              |           0.00% |       -0.84% |                     -1.55% |
+|                                    | Test: Pod2html (Seconds)                                 |           0.00% |        0.23% |                     -0.67% |
++------------------------------------+----------------------------------------------------------+-----------------+--------------+----------------------------+
+| pts/pgbench                        | Scale: 1 Clients: 1 Read Only (TPS)                      |           0.00% |  (R) -23.37% |                     -0.47% |
+|                                    | Scale: 1 Clients: 1 Read Only - Latency (ms)             |           0.00% |   (R) 32.35% |                      0.98% |
+|                                    | Scale: 1 Clients: 1 Read Write (TPS)                     |           0.00% |   (R) -6.06% |                     -0.67% |
+|                                    | Scale: 1 Clients: 1 Read Write - Latency (ms)            |           0.00% |    (R) 6.44% |                      0.63% |
+|                                    | Scale: 1 Clients: 250 Read Only (TPS)                    |           0.00% |  (R) -98.64% |                     -1.03% |
+|                                    | Scale: 1 Clients: 250 Read Only - Latency (ms)           |           0.00% | (R) 7260.00% |                      1.12% |
+|                                    | Scale: 1 Clients: 250 Read Write (TPS)                   |           0.00% |  (R) -41.53% |                     -2.08% |
+|                                    | Scale: 1 Clients: 250 Read Write - Latency (ms)          |           0.00% |   (R) 70.84% |                      2.04% |
+|                                    | Scale: 1 Clients: 1000 Read Only (TPS)                   |           0.00% |  (R) -98.67% |                     -1.05% |
+|                                    | Scale: 1 Clients: 1000 Read Only - Latency (ms)          |           0.00% | (R) 7430.55% |                      1.08% |
+|                                    | Scale: 1 Clients: 1000 Read Write (TPS)                  |           0.00% |  (R) -68.90% |                     -2.96% |
+|                                    | Scale: 1 Clients: 1000 Read Write - Latency (ms)         |           0.00% |  (R) 219.92% |                      3.16% |
+|                                    | Scale: 100 Clients: 1 Read Only (TPS)                    |           0.00% |  (R) -22.88% |                     -1.63% |
+|                                    | Scale: 100 Clients: 1 Read Only - Latency (ms)           |           0.00% |   (R) 28.07% |                      0.00% |
+|                                    | Scale: 100 Clients: 1 Read Write (TPS)                   |           0.00% |   (R) -9.13% |                 (R) -3.42% |
+|                                    | Scale: 100 Clients: 1 Read Write - Latency (ms)          |           0.00% |   (R) 10.10% |                  (R) 3.59% |
+|                                    | Scale: 100 Clients: 250 Read Only (TPS)                  |           0.00% |  (R) -98.77% |                     -0.93% |
+|                                    | Scale: 100 Clients: 250 Read Only - Latency (ms)         |           0.00% | (R) 8032.18% |                      0.92% |
+|                                    | Scale: 100 Clients: 250 Read Write (TPS)                 |           0.00% |  (R) -60.82% |                     -4.45% |
+|                                    | Scale: 100 Clients: 250 Read Write - Latency (ms)        |           0.00% |  (R) 155.11% |                      5.44% |
+|                                    | Scale: 100 Clients: 1000 Read Only (TPS)                 |           0.00% |  (R) -98.80% |                     -1.77% |
+|                                    | Scale: 100 Clients: 1000 Read Only - Latency (ms)        |           0.00% | (R) 8223.51% |                      1.85% |
+|                                    | Scale: 100 Clients: 1000 Read Write (TPS)                |           0.00% |  (R) -73.95% |                     -0.80% |
+|                                    | Scale: 100 Clients: 1000 Read Write - Latency (ms)       |           0.00% |  (R) 283.07% |                      1.18% |
++------------------------------------+----------------------------------------------------------+-----------------+--------------+----------------------------+
+| pts/pybench                        | Total For Average Test Times (Milliseconds)              |           0.00% |       -0.61% |                     -0.03% |
++------------------------------------+----------------------------------------------------------+-----------------+--------------+----------------------------+
+| pts/redis                          | Test: GET Connections: 50 (Requests Per Second)          |           0.00% |              |                     -0.34% |
+|                                    | Test: GET Connections: 1000 (Requests Per Second)        |           0.00% |              |                      0.69% |
+|                                    | Test: LPOP Connections: 50 (Requests Per Second)         |           0.00% |              |                      0.07% |
+|                                    | Test: LPOP Connections: 1000 (Requests Per Second)       |           0.00% |              |                      0.10% |
+|                                    | Test: LPUSH Connections: 50 (Requests Per Second)        |           0.00% |              |                      0.09% |
+|                                    | Test: LPUSH Connections: 1000 (Requests Per Second)      |           0.00% |              |                      0.03% |
+|                                    | Test: SADD Connections: 50 (Requests Per Second)         |           0.00% |              |                     -0.00% |
+|                                    | Test: SADD Connections: 1000 (Requests Per Second)       |           0.00% |              |                     -0.63% |
+|                                    | Test: SET Connections: 50 (Requests Per Second)          |           0.00% |              |                      0.03% |
+|                                    | Test: SET Connections: 1000 (Requests Per Second)        |           0.00% |              |                     -1.39% |
++------------------------------------+----------------------------------------------------------+-----------------+--------------+----------------------------+
+| pts/sqlite-speedtest               | Timed Time - Size 1,000 (Seconds)                        |           0.00% |        1.69% |                     -0.62% |
++------------------------------------+----------------------------------------------------------+-----------------+--------------+----------------------------+
+| speedometer/v2.0                   | score (runs/min)                                         |           0.00% |  (R) -37.42% |                      0.11% |
++------------------------------------+----------------------------------------------------------+-----------------+--------------+----------------------------+
+| speedometer/v2.1                   | score (runs/min)                                         |           0.00% |  (R) -38.41% |                      0.31% |
++------------------------------------+----------------------------------------------------------+-----------------+--------------+----------------------------+
+
+Thanks,
+Aishwarya
 
 
