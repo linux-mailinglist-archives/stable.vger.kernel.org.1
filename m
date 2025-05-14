@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-144433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0E4FAB7692
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 22:14:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40514AB7694
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 22:14:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EDE2F7A5E89
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 20:12:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E8891BA6630
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 20:14:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D14C295537;
-	Wed, 14 May 2025 20:14:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 750E7296700;
+	Wed, 14 May 2025 20:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p7tHfi9o"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dlJQSGai"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF59295517
-	for <stable@vger.kernel.org>; Wed, 14 May 2025 20:14:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3513129617F
+	for <stable@vger.kernel.org>; Wed, 14 May 2025 20:14:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747253645; cv=none; b=QCoqQxp279UG+A1La1/F/rTol4TTovCa9or43OFR9V2SiQLshtpyp+lWHZ12LDh4I4hQ12eUQKT3/K4Pl27L1szSjHSib01qSBZhNREwaVdAtN3xHQR3CYiF0uhDpYwW5Iaim+9POB1HRDQz6XmhVA0AvHgzMbH0P9t39DjEeTA=
+	t=1747253649; cv=none; b=P6lG1imUhD/3InnYf5ZLWSx5BBx6MyfOoU+LyNnxvtHooyuGKD+XY/d0f5FN3rQ+Sjhop+gfiv5vZ6y/F5rdjKw6oaT2c1rXb/bkctfa6mIlPXuQ9Hx+8EOAZ0Uh+xs2smqkjW8EXtiwAupZ4cbmp5PYNanC+y6toBsZlq+KQhk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747253645; c=relaxed/simple;
-	bh=IN/2G/Q2GM96m1QruzUDgR+fGn9BTNYATLtM0pJrWSI=;
+	s=arc-20240116; t=1747253649; c=relaxed/simple;
+	bh=BLj/QHwqRDvTexXdcUJaQ3m1++WkW4TISoytffYmAu8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NIbq1iqvtKl/IF4Sq1gqgnByKx5Cy3MVJPsbqMICctEzcJsZn//yBoywlmB2CqKbTQZ4illO//KElrM6XpxOHXLb1MVuvv2EZylHbg70sk7RmvI8xMv9QZbdvi1a/WfYkfNXDA7c+iZNLtxj7ScLrCxZfBAuL511Ilsw0M1Y9Ow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p7tHfi9o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AE95C4CEE3;
-	Wed, 14 May 2025 20:14:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uooPP8iZUyEOpiIJF786R8S/Db9mgC0vfgxLi0Cg/5CE/2EPpiavM/w1j1PAUC2mmPjCN4X3HVQJRLol6NnOOlaHdaamRwocEfi78JSjhd5bguDS6MRLeodxkLczQzy30/SIzgD21B/oQEPCsq/9Z0EdB46gnZxoOGIaX4cKmnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dlJQSGai; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5D74C4CEED;
+	Wed, 14 May 2025 20:14:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747253645;
-	bh=IN/2G/Q2GM96m1QruzUDgR+fGn9BTNYATLtM0pJrWSI=;
+	s=k20201202; t=1747253649;
+	bh=BLj/QHwqRDvTexXdcUJaQ3m1++WkW4TISoytffYmAu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p7tHfi9oxROnRVwL2leFljTG5CKT9l2rE8AnIWuYcJxawxPL4c5t/8zv+php75fim
-	 zC32a0lc47Pp9BRx87WIIFmGQEvRZfDBjk4B31xuMtzqZkVe/+C+mBSOPjEpuAmm4V
-	 7EZTdqzM3U+vSCydmdmQLq5STELwfdmQBBYFtAAaGvHd4TaV/1RrNW82djG8pW+wmP
-	 ICo1iAQJ6WxE+9NjSlmjgOb67GKmVnqrGjmOism+ZrjM4NwmItrN8HitV80EgOErJD
-	 52BKZGP4ZSBSDUCZKK1SZXYK6lSQCMUuJk0T0KJPWk9KF/pxVLC36tRAo1uYtt9U36
-	 HyxXrCXESn9gg==
+	b=dlJQSGaiePtcPyqUDQBJLU8Dqa+cSRJGFO2r7skxksH8MZVmP+VDeU/vW/VK0/Z6P
+	 63h+gIJ3o/F9t1sjg3QG6oCBgPXAGdqeNEWjViwI1sF6B/FzPsh/mTsY04omxwZGLF
+	 kvocVRBmb+p230Ij1PtDoqUocJmMa+Kg1d6RxgElbALcenE7nvB7bsXUN9IUd08Q/K
+	 5KwUVJYFclw/Sn4RWINYeqxVaYhSTZo9ze+Cr76c6PuZsNp3PwfmapORrPo5K60hiD
+	 X7/NJd0y/qoKxF2EB5iF4EA1vk7Crz6Xz010XPhPZtf6bOF7wTGsebwgMIsg0YXD7k
+	 ++4TOEZc/fPHA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org,
-	namjain@linux.microsoft.com
+	daniele.ceraolospurio@intel.com
 Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6.y] uio_hv_generic: Fix sysfs creation path for ring buffer
-Date: Wed, 14 May 2025 16:14:01 -0400
-Message-Id: <20250514102003-1e96340cfdda0d0f@stable.kernel.org>
+Subject: Re: [PATCH 6.12.y] drm/xe/gsc: do not flush the GSC worker from the reset path
+Date: Wed, 14 May 2025 16:14:05 -0400
+Message-Id: <20250514102623-f62384196f019631@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250513130426.1636-1-namjain@linux.microsoft.com>
+In-Reply-To:  <20250513232706.2986265-1-daniele.ceraolospurio@intel.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,84 +67,86 @@ Hi,
 Summary of potential issues:
 ⚠️ Found matching upstream commit but patch is missing proper reference to it
 
-Found matching upstream commit: f31fe8165d365379d858c53bef43254c7d6d1cfd
+Found matching upstream commit: 03552d8ac0afcc080c339faa0b726e2c0e9361cb
 
 Status in newer kernel trees:
-6.14.y | Present (different SHA1: 419663d2d8f5)
-6.12.y | Present (different SHA1: 5235de792838)
+6.14.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  f31fe8165d365 ! 1:  655fda9f47dce uio_hv_generic: Fix sysfs creation path for ring buffer
+1:  03552d8ac0afc ! 1:  29475b71fb1d0 drm/xe/gsc: do not flush the GSC worker from the reset path
     @@ Commit message
-         Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
-         Link: https://lore.kernel.org/r/20250502074811.2022-2-namjain@linux.microsoft.com
-         Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    +    (cherry picked from commit f31fe8165d365379d858c53bef43254c7d6d1cfd)
+         Link: https://lore.kernel.org/r/20250502155104.2201469-1-daniele.ceraolospurio@intel.com
+         (cherry picked from commit 12370bfcc4f0bdf70279ec5b570eb298963422b5)
+         Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+    +    (cherry picked from commit 03552d8ac0afcc080c339faa0b726e2c0e9361cb)
      
-      ## drivers/hv/hyperv_vmbus.h ##
-     @@ drivers/hv/hyperv_vmbus.h: static inline int hv_debug_add_dev_dir(struct hv_device *dev)
-    @@ drivers/hv/vmbus_drv.c: static ssize_t subchannel_id_show(struct vmbus_channel *
-      static VMBUS_CHAN_ATTR_RO(subchannel_id);
-      
-     +static int hv_mmap_ring_buffer_wrapper(struct file *filp, struct kobject *kobj,
-    -+				       const struct bin_attribute *attr,
-    ++				       struct bin_attribute *attr,
-     +				       struct vm_area_struct *vma)
-     +{
-     +	struct vmbus_channel *channel = container_of(kobj, struct vmbus_channel, kobj);
-    @@ drivers/hv/vmbus_drv.c: static umode_t vmbus_chan_attr_is_visible(struct kobject
+      ## drivers/gpu/drm/xe/xe_gsc.c ##
+    -@@ drivers/gpu/drm/xe/xe_gsc.c: void xe_gsc_wait_for_worker_completion(struct xe_gsc *gsc)
+    - 		flush_work(&gsc->work);
+    +@@ drivers/gpu/drm/xe/xe_gsc.c: void xe_gsc_remove(struct xe_gsc *gsc)
+    + 	xe_gsc_proxy_remove(gsc);
       }
       
-     +static umode_t vmbus_chan_bin_attr_is_visible(struct kobject *kobj,
-    -+					      const struct bin_attribute *attr, int idx)
-    ++					      struct bin_attribute *attr, int idx)
-     +{
-     +	const struct vmbus_channel *channel =
-     +		container_of(kobj, struct vmbus_channel, kobj);
-    @@ drivers/hv/vmbus_drv.c: static umode_t vmbus_chan_attr_is_visible(struct kobject
-     +	return attr->attr.mode;
-     +}
+     +void xe_gsc_stop_prepare(struct xe_gsc *gsc)
+    @@ drivers/gpu/drm/xe/xe_gsc.h: struct xe_hw_engine;
+      void xe_gsc_wait_for_worker_completion(struct xe_gsc *gsc);
+     +void xe_gsc_stop_prepare(struct xe_gsc *gsc);
+      void xe_gsc_load_start(struct xe_gsc *gsc);
+    + void xe_gsc_remove(struct xe_gsc *gsc);
+      void xe_gsc_hwe_irq_handler(struct xe_hw_engine *hwe, u16 intr_vec);
+    - 
+     
+      ## drivers/gpu/drm/xe/xe_gsc_proxy.c ##
+     @@ drivers/gpu/drm/xe/xe_gsc_proxy.c: bool xe_gsc_proxy_init_done(struct xe_gsc *gsc)
+    @@ drivers/gpu/drm/xe/xe_gsc_proxy.c: bool xe_gsc_proxy_init_done(struct xe_gsc *gs
+     +	struct xe_gt *gt = gsc_to_gt(gsc);
      +
-    - static const struct attribute_group vmbus_chan_group = {
-    + static struct attribute_group vmbus_chan_group = {
-      	.attrs = vmbus_chan_attrs,
-     -	.is_visible = vmbus_chan_attr_is_visible
-     +	.bin_attrs = vmbus_chan_bin_attrs,
-    @@ drivers/hv/vmbus_drv.c: static umode_t vmbus_chan_attr_is_visible(struct kobject
-     +	.is_bin_visible = vmbus_chan_bin_attr_is_visible,
-      };
+     +	/* Proxy init can take up to 500ms, so wait double that for safety */
+    -+	return xe_mmio_wait32(&gt->mmio, HECI_FWSTS1(MTL_GSC_HECI1_BASE),
+    ++	return xe_mmio_wait32(gt, HECI_FWSTS1(MTL_GSC_HECI1_BASE),
+     +			      HECI1_FWSTS1_CURRENT_STATE,
+     +			      HECI1_FWSTS1_PROXY_STATE_NORMAL,
+     +			      USEC_PER_SEC, NULL, false);
+    @@ drivers/gpu/drm/xe/xe_gsc_proxy.c: bool xe_gsc_proxy_init_done(struct xe_gsc *gs
+     
+      ## drivers/gpu/drm/xe/xe_gsc_proxy.h ##
+     @@ drivers/gpu/drm/xe/xe_gsc_proxy.h: struct xe_gsc;
+    - 
+      int xe_gsc_proxy_init(struct xe_gsc *gsc);
+      bool xe_gsc_proxy_init_done(struct xe_gsc *gsc);
+    + void xe_gsc_proxy_remove(struct xe_gsc *gsc);
+     +int xe_gsc_wait_for_proxy_init_done(struct xe_gsc *gsc);
+      int xe_gsc_proxy_start(struct xe_gsc *gsc);
       
-    - static const struct kobj_type vmbus_chan_ktype = {
-    -@@ drivers/hv/vmbus_drv.c: static const struct kobj_type vmbus_chan_ktype = {
-    + static struct kobj_type vmbus_chan_ktype = {
-    +@@ drivers/hv/vmbus_drv.c: static struct kobj_type vmbus_chan_ktype = {
-      	.release = vmbus_chan_release,
-      };
+    @@ drivers/gpu/drm/xe/xe_gsc_proxy.h: struct xe_gsc;
+     
+      ## drivers/gpu/drm/xe/xe_gt.c ##
+     @@ drivers/gpu/drm/xe/xe_gt.c: void xe_gt_suspend_prepare(struct xe_gt *gt)
+    - 
+    - 	fw_ref = xe_force_wake_get(gt_to_fw(gt), XE_FORCEWAKE_ALL);
+    + {
+    + 	XE_WARN_ON(xe_force_wake_get(gt_to_fw(gt), XE_FORCEWAKE_ALL));
       
-    @@ drivers/uio/uio_hv_generic.c: static void hv_uio_rescind(struct vmbus_channel *c
-       * The ring buffer is allocated as contiguous memory by vmbus_open
-       */
-     -static int hv_uio_ring_mmap(struct file *filp, struct kobject *kobj,
-    --			    const struct bin_attribute *attr,
-    +-			    struct bin_attribute *attr,
-     -			    struct vm_area_struct *vma)
-     +static int
-     +hv_uio_ring_mmap(struct vmbus_channel *channel, struct vm_area_struct *vma)
-    @@ drivers/uio/uio_hv_generic.c: static int hv_uio_ring_mmap(struct file *filp, str
-     -		.name = "ring",
-     -		.mode = 0600,
-     -	},
-    --	.size = 2 * SZ_2M,
-    +-	.size = 2 * HV_RING_SIZE * PAGE_SIZE,
-     -	.mmap = hv_uio_ring_mmap,
-     -};
-     -
+     -	xe_uc_stop_prepare(&gt->uc);
+     +	xe_uc_suspend_prepare(&gt->uc);
+      
+    - 	xe_force_wake_put(gt_to_fw(gt), fw_ref);
+    + 	XE_WARN_ON(xe_force_wake_put(gt_to_fw(gt), XE_FORCEWAKE_ALL));
+      }
+     
+      ## drivers/gpu/drm/xe/xe_uc.c ##
+    @@ drivers/gpu/drm/xe/xe_uc.h: int xe_uc_reset_prepare(struct xe_uc *uc);
+     +void xe_uc_suspend_prepare(struct xe_uc *uc);
+      int xe_uc_suspend(struct xe_uc *uc);
+      int xe_uc_sanitize_reset(struct xe_uc *uc);
+    - void xe_uc_declare_wedged(struct xe_uc *uc);
+    + void xe_uc_remove(struct xe_uc *uc);
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.6.y        |  Success    |  Success   |
+| stable/linux-6.12.y       |  Success    |  Success   |
 
