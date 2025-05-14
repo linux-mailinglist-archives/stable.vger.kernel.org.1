@@ -1,101 +1,115 @@
-Return-Path: <stable+bounces-144456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9736AAB7957
-	for <lists+stable@lfdr.de>; Thu, 15 May 2025 01:13:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F608AB796D
+	for <lists+stable@lfdr.de>; Thu, 15 May 2025 01:30:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E51A41B672FB
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 23:13:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C08FF4C4264
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 23:30:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03092225A34;
-	Wed, 14 May 2025 23:13:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E508B203706;
+	Wed, 14 May 2025 23:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="e5pJzhcV"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aLeh2Mx+"
 X-Original-To: stable@vger.kernel.org
-Received: from outbound.pv.icloud.com (p-west1-cluster1-host12-snip4-7.eps.apple.com [57.103.64.20])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0AE71F9F73
-	for <stable@vger.kernel.org>; Wed, 14 May 2025 23:12:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.64.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 168CE4C9F;
+	Wed, 14 May 2025 23:30:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747264380; cv=none; b=R6/88dUFysH891AKnggdQWvtSlG6VywxISLZMEh21bul0jN++au0iuxvJaprwtSOloxTKE1REoP1gt9WVAmTKmqBe1OirILhS7mkbtG6KnvpEXX4Xq/2d/a+1aPJOuM/cQBPWOuFLwURFKODDbbysMcaV0NXHKcSzuuwO0ZhATk=
+	t=1747265430; cv=none; b=ufPM2Ndka25jD2cg71Xbf53LuvzYtBkC+TXR/jC7pLzQMQ+MHvIKGxcd9EXRpnMDv5FT9HHiG6iqiKbfxwWqmj5nHCFnXbuN60ONEP7I7zz+UfSOqQLyby5LRoAgKBCHcQkH1qBxYMpBTYU4ZDLusiktN4St/rsnci8fNd7gaTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747264380; c=relaxed/simple;
-	bh=5mT+RQkMC8J5+wPg+K0XzcqnqF5PVE9oDpIqPmC9zvA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=q76tZeYSTUw+OXq/iPZd4RDaXRQsBsNKjE8N25NQRiBeR189dZgYLKU7nlfcC+IYfdXUoAtZEtq7+tvnwe5CMN+jAKXW/p/LuW6k1SSmu0KYXfbLdoBB1VoIQv3PxLPqGUWZr7tbeG5FZba6upowfeO32/ve3V3xXDnqF51+3Fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=e5pJzhcV; arc=none smtp.client-ip=57.103.64.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; bh=ccwJU/LTdnXEs9iAVCu4zSGeS8J9jkqJWbyKvJzQ6hw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:x-icloud-hme;
-	b=e5pJzhcVeETD5S8VCgumVLW/shAHu+rlzp6wqHDJe49W0viMmf80Y0haG1Ei2Gv1I
-	 zgsWyq5b/PH9Sy80F5TDF6JP3IL9Ztf/ctZLhUzwQQfR543DjMI6IHZpFX/+xkzP8Q
-	 z8FKDdwamLFM9bQ0j6jqGY0qFcyMIy6FzPe84VoXkF4G6e2slyy46MZZjIsD2bLwyw
-	 BPut8wr7B7zPxmo7m77RoeQN9wWDvDSXryHBmetXa1wO5dJH3S31w5AY7SCjZrQKjQ
-	 ypd7fhQkMAR276OdLXlGOvyCStw1ARh0jc9SY4mihYPN9yE3S2IITCmiUyKVubtq+b
-	 wqpvpzjAjMRUw==
-Received: from outbound.pv.icloud.com (localhost [127.0.0.1])
-	by outbound.pv.icloud.com (Postfix) with ESMTPS id 1B4A41800EA2;
-	Wed, 14 May 2025 23:12:55 +0000 (UTC)
-Received: from [192.168.1.26] (pv-asmtp-me-k8s.p00.prod.me.com [17.56.9.36])
-	by outbound.pv.icloud.com (Postfix) with ESMTPSA id AACED1800453;
-	Wed, 14 May 2025 23:12:53 +0000 (UTC)
-Message-ID: <9302bf79-dd42-4c4f-a521-b25fc94569d4@icloud.com>
-Date: Thu, 15 May 2025 07:12:51 +0800
+	s=arc-20240116; t=1747265430; c=relaxed/simple;
+	bh=Zbdtc9nGX/BlLp05VNDP53lvcblNsMgnV9hUlUHBtCY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hRBLsXK5bx8HzQ2TSo+OZKA7SvGeHjuzEouqTZgw/ewcazE65mbtzbCjx3AvtL4eGhiZ1Vj7YZJ72dH9kGC/9lRs3aaohePmtDzauezBNYO3S8QkJFSXOlTzMTHS2YXFAcqksrri/PGUt5PAKB/rguw+vcJEKIzUifaRFOkezkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aLeh2Mx+; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747265429; x=1778801429;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Zbdtc9nGX/BlLp05VNDP53lvcblNsMgnV9hUlUHBtCY=;
+  b=aLeh2Mx+6FJXryHNeXahlZ0skppzFvMGbTulb920/0fjk5L7vFqTvq4F
+   OZTLpWyl6QAOHFpy7Wiu+oml6bHuu+afBwrU6J+J1JYZLABcgsfVviFjY
+   muZgeB1WV5VtZiq7RN/xyesekFuB7zYCpP6Os6AZLjGEVMEFP3soppszE
+   jmqHhsamVv4VMfT5gpPgGWeZUMVhWBhR39g1mlP5Z8Al1kOUAkX2Ywycu
+   h8YFzWMAkYqrJyn8EjKAXk7AQITxxV5kTUDPIHcSqQz95G919ubcuOuRK
+   6A/N1rBDwSEwY3MQPKgWAa1B7eCzcK55pIS8i5pR12EqJwnl7lCBnXo9V
+   A==;
+X-CSE-ConnectionGUID: CUiP9ghbTSC8f2NPHwxzUQ==
+X-CSE-MsgGUID: 6y00/+28Rc6IP/J1tyMKWg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11433"; a="49120381"
+X-IronPort-AV: E=Sophos;i="6.15,289,1739865600"; 
+   d="scan'208";a="49120381"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2025 16:30:28 -0700
+X-CSE-ConnectionGUID: 9FjKg8P5Te63BRR62lCjag==
+X-CSE-MsgGUID: qlyIhVq3TIu/p+ImOQ56dg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,289,1739865600"; 
+   d="scan'208";a="137911897"
+Received: from mfrick-mobl2.amr.corp.intel.com (HELO desk) ([10.125.146.12])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2025 16:30:28 -0700
+Date: Wed, 14 May 2025 16:30:22 -0700
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: Borislav Petkov <bp@alien8.de>
+Cc: Suraj Jitindar Singh <surajjs@amazon.com>, linux-kernel@vger.kernel.org,
+	x86@kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] x86/bugs: Don't warn when overwriting
+ retbleed_return_thunk with srso_return_thunk
+Message-ID: <20250514233022.t72lijzi4ipgmmpj@desk>
+References: <20250514220835.370700-1-surajjs@amazon.com>
+ <20250514222507.GKaCUYQ9TVadHl7zMv@fat_crate.local>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/2] PCI: of: Fix OF device node refcount leakages
-To: Bjorn Helgaas <bhelgaas@google.com>
-Cc: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
- Zijun Hu <quic_zijuhu@quicinc.com>, stable@vger.kernel.org,
- Rob Herring <robh@kernel.org>, Lizhi Hou <lizhi.hou@amd.com>
-References: <20250407-fix_of_pci-v1-0-a14d981fd148@quicinc.com>
-Content-Language: en-US
-From: Zijun Hu <zijun_hu@icloud.com>
-In-Reply-To: <20250407-fix_of_pci-v1-0-a14d981fd148@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: JDlOn7mvHZ_8tPmSTVyMKBnbbdILqJtJ
-X-Proofpoint-ORIG-GUID: JDlOn7mvHZ_8tPmSTVyMKBnbbdILqJtJ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-14_04,2025-05-14_03,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0
- spamscore=0 clxscore=1015 adultscore=0 bulkscore=0 malwarescore=0
- suspectscore=0 mlxscore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.22.0-2503310001 definitions=main-2505140215
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250514222507.GKaCUYQ9TVadHl7zMv@fat_crate.local>
 
-On 2025/4/7 22:14, Zijun Hu wrote:
-> This patch series is to fix OF device node refcount leakage for
->  - of_irq_parse_and_map_pci()
->  - of_pci_prop_intr_map()
+On Thu, May 15, 2025 at 12:25:07AM +0200, Borislav Petkov wrote:
+> On Wed, May 14, 2025 at 03:08:35PM -0700, Suraj Jitindar Singh wrote:
+> > -	if (x86_return_thunk != __x86_return_thunk)
+> > +	/*
+> > +	 * There can only be one return thunk enabled at a time, so issue a
+> > +	 * warning when overwriting it. retbleed_return_thunk is a special case
+> > +	 * which is safe to be overwritten with srso_return_thunk since it
+> > +	 * provides a superset of the functionality and is handled correctly in
+> > +	 * entry_untrain_ret().
+> > +	 */
+> > +	if ((x86_return_thunk != __x86_return_thunk) &&
+> > +	    (thunk != srso_return_thunk ||
+> > +	     x86_return_thunk != retbleed_return_thunk))
 > 
-> Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-> ---
-> Zijun Hu (2):
->       PCI: of: Fix OF device node refcount leakage in API of_irq_parse_and_map_pci()
->       PCI: of: Fix OF device node refcount leakages in of_pci_prop_intr_map()
+> Instead of making this an unreadable conditional, why don't we ...
+> 
+> >  		pr_warn("x86/bugs: return thunk changed\n");
+> 
+> ... turn this into a
+> 
+> 	pr_info("set return thunk to: %ps\n", ...)
+> 
+> and simply say which thunk was set?
 
-Hi Bjorn,
+This was discussed during the mitigation, and pr_warn() was chosen because
+it was not obvious that srso mitigation also mitigates retbleed. (On a
+retrospect, there should have been a comment about it).
 
-Not sure if this patch series is still in your review queue.
-
-Also show below mainline fixes for your reference.
-
-962a2805e47b ("of/irq: Fix device node refcount leakage in API
-irq_of_parse_and_map()")
-ff93e7213d6c ("of/irq: Fix device node refcount leakage in API
-of_irq_parse_raw()")
-
+The conclusion was to make the srso and retbleed relationship clear and
+then take care of the pr_warn().
 
