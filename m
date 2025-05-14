@@ -1,120 +1,460 @@
-Return-Path: <stable+bounces-144360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65317AB6A78
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 13:47:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B1944AB6A7E
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 13:49:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E1A62179EB3
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 11:47:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B2E2168349
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 11:49:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A0D8272E5D;
-	Wed, 14 May 2025 11:47:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 930C227465C;
+	Wed, 14 May 2025 11:49:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="U+YIFnsR"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="VIq02RZS"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f66.google.com (mail-wr1-f66.google.com [209.85.221.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACACD1C3039;
-	Wed, 14 May 2025 11:47:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59FEA272E69
+	for <stable@vger.kernel.org>; Wed, 14 May 2025 11:49:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747223227; cv=none; b=ZL+b+2WJg8PgqMi6bEzrCo/pBohp+UmPxdxIbVQ2hVZ6Yn6ffKEJHltZr9UK66Yna4cFOS0UX4APm5zBLRy9h0/iHeedc+0ea+gO3sRR8fCOD0rcr+1uWMtC393t+T+BT1RpKnQSa3mhLxWG6FHLj2x13PRgtgc4+FksCtOHnwI=
+	t=1747223388; cv=none; b=FuS4vt8h8yBtStoFlb9MyAxADuepZKI0dhdk5DDvPy0Vmw2S+GExzrf2HJplT0RbrQ4/HpA/6qLkGJz52ngg1YbwyxsWXVIA5a/2TXAMqKN6nqOG4Vn6tHx4ezGwK6hIOPo6W88LcTAjSbvLrg+C2evM4+b2JbwFIlWHFBOedsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747223227; c=relaxed/simple;
-	bh=T+VyAH6hZHB1SVSCajr1scoJXuo11ZnqUWf8K72GrU0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ljMRofipZAGhJEFyQ8ydXlh4Kqr6YstBtfVNjJ4trVrCNE07zbmysRaUnyn3q+4Dp9J8QWKrLWx+xJrPlqT6IRqeO/Zy5O35dYWx9HdXPlg8nWG7p/725f8rzziF0ViG3ylGjuerj2xlMozVXg7YnpkctV/GqwiDn8u60+gK8DM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=U+YIFnsR; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54E0frgK020269;
-	Wed, 14 May 2025 11:47:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=corp-2025-04-25; bh=gLUlNc1pS78mRE8k5Ttqo0Sj79prh
-	MDmB5dvrp9WOW0=; b=U+YIFnsRkokEl3vRxmrtZL8VLLN21D9JysVF2tWhP7YXP
-	a1vFdlgy3GdcSNl8+n3Ybb7KrqyygK0YjA3v8Ge5veL9+SbVbVf+1TVSYI3qnD5e
-	CUGwE+aWfWkh+NXOloXO5T1uBDb+iscfbabJmSI21aPrLQ5pEj78/B1mYvhBFkC9
-	dU6wAZYMyALUKda0LsfyKIaRcMxKguLfDIUDCaV2Gbsow0WbzI1CmaHfzXEYDOFc
-	KvHZAed+31a0R0Vum+fn0uZAD0GtMoq7/j+m4kmpb8VTO/iGNsk8YejsKSqhH+9h
-	+V64jDZkFSZ8qXKDSRKgoAiD0i9Y3G04kgANqK2uQ==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 46mbcdsdtw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 14 May 2025 11:47:02 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 54EAXwfL004630;
-	Wed, 14 May 2025 11:47:01 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 46mshj2apt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 14 May 2025 11:47:00 +0000
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 54EBl0cA030034;
-	Wed, 14 May 2025 11:47:00 GMT
-Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 46mshj2ap4-1;
-	Wed, 14 May 2025 11:47:00 +0000
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
-To: andersson@kernel.org, konradybcio@kernel.org, robh@kernel.org,
-        krzk+dt@kernel.org, conor+dt@kernel.org
-Cc: alok.a.tiwari@oracle.com, linux-kernel@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        stable@vger.kernel.org, darren.kenny@oracle.com
-Subject: [PATCH] arm64: dts: qcom: sm8350: Fix typo in pil_camera_mem node
-Date: Wed, 14 May 2025 04:46:51 -0700
-Message-ID: <20250514114656.2307828-1-alok.a.tiwari@oracle.com>
-X-Mailer: git-send-email 2.47.1
+	s=arc-20240116; t=1747223388; c=relaxed/simple;
+	bh=wHkGKmnonszYmzAouw9lwCAd9b5jDgrFKhaTYOQFrsk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HHKoMiSSVQyz53AM4m7c/GIQNwAi4tscVK9+irjICvtphkUqn+Teve1Vb/h47offldRXXkTmfhdEmlP3NVQhVBx/qZQ6ANq9v8LNc49vH1OsxaOEkNsBQWYGlVjKMzFm74sI9vzJdwNPXpX07FQ0CMvSWwLIQ2i7ZQam+tvfAig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=VIq02RZS; arc=none smtp.client-ip=209.85.221.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wr1-f66.google.com with SMTP id ffacd0b85a97d-3a0b637db6eso4047484f8f.0
+        for <stable@vger.kernel.org>; Wed, 14 May 2025 04:49:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1747223383; x=1747828183; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=dVDInadNESruAdh66j0qSpOh8ieFDLD3Ak5W5M0GS8Y=;
+        b=VIq02RZSHrV1kiO0RUQgfxckpDhD6RL6rclD+u2A7QobntNh7NfnEiCquno2ykfiKS
+         Zta9SIr3oPbNGP9GDxgO3nRWncm3Na8hZjJJ0kHgsUPlzElBXUSMskixMVpxWWVx6963
+         ALTEApkQ2QWtL+r+6NJ11TLc/b8Gu3rshG8TxJ4RFeySDSslhUBhFu2tpBsCRB4aedyX
+         WlNDqzZFudf025/HDvHAXI0m2QM3GoGy2i6Lq35SywCr4gMuB47bYto2uSBNQnl4wR2X
+         8/uhYfJZud4BFsTB3a0B/hiYAxvMJ6zaCZzVeIduIm3kr0VsFTwOIQMzc4BWL5bUZmSP
+         g7Ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747223383; x=1747828183;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dVDInadNESruAdh66j0qSpOh8ieFDLD3Ak5W5M0GS8Y=;
+        b=Y9O3RzI7QPE+joXuJs7Oii/kHNZwSOf+Ry4kv49IPmqJEqMO13uzcCPJMqk4GgHVt/
+         myDYxm35BCkF+DLJ9vbbkHGdF5IPHdNnlceia/rCuCunHv8RmWsV0HEOdL/KlvWPlqsw
+         7tqzE5Japv2zWT4CV80ai1QTlqP2qcHq7fVXFXA6CWs4l9/zbZ2qO9HYix84yDGovIus
+         le3F4R+SVoi7We13Uwi2WDT2cUHThuUdqzFaAbbnNTGez34mGn+Qgc1nXDKpioXECYnT
+         MfTipko9YH/Z8phqwYyokLltfZUw+SP3h2zlS1vbDwbDxsl+L3V84p/gso6+g4N7NVlI
+         CIYw==
+X-Gm-Message-State: AOJu0Yya38o8r6aoLL8MXJkpUvSPMQ6yRQnyCJFoah2vOS21lVSma15b
+	bw7OxVMuD+bgB4B+3H0TLziPEIimbEdYoztMLHkp1x8KtqNzZgoKsK4AVa22ar4=
+X-Gm-Gg: ASbGncupSdvP0SFprkvObKihhbvfR9qZ77r1yoWQ9qRnO9d7/gHzO6kJLP+xvg0JF9J
+	8e8arQDN4A7NhxIn3iBJQZwQCuBFtY62WLtxSqDklsOuCVpQ+zshJpNiksFNqx3M1hUpy0oX/s2
+	bcRpfWpQhsRAwq2Azv4RKi3e9RIlx7sheLsrrkGd14XCKdduILMbp4r2TukiQYW1eylFgOv0ipV
+	s8s3KFaMLy9FA6ZgORe140tGjZgUikBBeRuhzu1dH1hLsXIVBAP2gfS0LJJSId4ZTVqf+vy2RLG
+	QY/2bubvTaYisx/erLJ+wl/3YGYGmcP476RqC+V2yTdR9Ek=
+X-Google-Smtp-Source: AGHT+IHJLQi7YfK26eZC4R5lH78kF+KYCk79EblQnC4/NrvNl/FSk149+M5TMi9OIrmOWs5Mqzr5XQ==
+X-Received: by 2002:a05:6000:2dc2:b0:3a1:fd74:4248 with SMTP id ffacd0b85a97d-3a349694826mr2522572f8f.5.1747223383466;
+        Wed, 14 May 2025 04:49:43 -0700 (PDT)
+Received: from u94a ([2401:e180:8d52:f669:ffb6:2a98:b4eb:f904])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-74237a3d6f5sm9329279b3a.129.2025.05.14.04.49.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 May 2025 04:49:42 -0700 (PDT)
+Date: Wed, 14 May 2025 19:49:29 +0800
+From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, 
+	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, 
+	hargar@microsoft.com, broonie@kernel.org, Andrii Nakryiko <andrii@kernel.org>, 
+	bpf@vger.kernel.org, Ihor Solodrai <ihor.solodrai@linux.dev>, 
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Subject: Re: [PATCH 6.14 000/197] 6.14.7-rc1 review
+Message-ID: <g4fpslyse2s6hnprgkbp23ykxn67q5wabbkpivuc3rro5bivo4@sj2o3nd5vwwm>
+References: <20250512172044.326436266@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-05-14_04,2025-05-14_02,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 adultscore=0 bulkscore=0
- malwarescore=0 mlxlogscore=809 mlxscore=0 spamscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2505070000
- definitions=main-2505140103
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE0MDEwNCBTYWx0ZWRfX0saZAcRG4Bq1 Ul3/SeFWU73MViBa5PjTDyt5oCpHX++R1PCRb0sEjC5gRfJwnMJYYdC0xIGQ4k9k8BPodhfku38 C9amnyySge+D2u1zoqh1JPsdTvhNLsmP3rFbP1a6NfIlApYhid1B2TLd0uHnE3bQQtPaW2JzfIv
- SG3CjisjBWBOwQABqD7hoisK7a4GoD0JvSZ2YpGOVhbM0n7I2SM7gJE5lNkTZ+CBhBcBQWFv2B1 ADSJ/VX2dRJqGZy/vSkUQilsIGyx4effsa0TtZb+n1+LmzXREfWM9Wm4AddqIRkCZyZredr6DVj UA9C3/+TE25juDX2hM9Xb1jWs1VkWNs2bWa8TRxSJ3jeeploboaVwkH+JvBjP4NAgIx3fOsQXjf
- kqsY+bBECqYxNCTCxASxx6AzA4hQt+1ZvtwO3e4tOrDriooKRbCfhF+Sw2CXrlhFbMmyMP3D
-X-Authority-Analysis: v=2.4 cv=Y8T4sgeN c=1 sm=1 tr=0 ts=682482b6 b=1 cx=c_pps a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17 a=dt9VzEwgFbYA:10 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8 a=yw2VYVI5MrybtI__788A:9
-X-Proofpoint-GUID: IXraA16JSyXB3nMnUKJY2LpM307rkDTF
-X-Proofpoint-ORIG-GUID: IXraA16JSyXB3nMnUKJY2LpM307rkDTF
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250512172044.326436266@linuxfoundation.org>
 
-There is a typo in sm8350.dts where the node label
-mmeory@85200000 should be memory@85200000.
-This patch corrects the typo for clarity and consistency.
+On Mon, May 12, 2025 at 07:37:30PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.14.7 release.
+> There are 197 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Fixes: b7e8f433a673 ("arm64: dts: qcom: Add basic devicetree support for SM8350 SoC")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
----
- arch/arm64/boot/dts/qcom/sm8350.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Running included BPF selftests with a BPF CI fork (i.e. running on
+GitHub Action x86-64 machines), I observe that that running the BPF
+selftests now takes about 2x the time (from ~25m to ~50m), and
+verif_scale_loop3_fail is timing out, taking more than 6 minutes to run
+compare to the usual single digit second runtime. See [1] for the log.
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8350.dtsi b/arch/arm64/boot/dts/qcom/sm8350.dtsi
-index f2e12da13e68..971c828a7555 100644
---- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
-@@ -457,7 +457,7 @@ cdsp_secure_heap: memory@80c00000 {
- 			no-map;
- 		};
- 
--		pil_camera_mem: mmeory@85200000 {
-+		pil_camera_mem: memory@85200000 {
- 			reg = <0x0 0x85200000 0x0 0x500000>;
- 			no-map;
- 		};
--- 
-2.47.1
+  07:59:38.2908767Z #449     verif_scale_loop2:OK
+  07:59:48.2920046Z WATCHDOG: test case verif_scale_loop3_fail executes for 10 seconds...
+  08:01:38.2921924Z WATCHDOG: test case verif_scale_loop3_fail executes for 120 seconds, terminating with SIGSEGV
+  08:01:38.2973073Z #450     verif_scale_loop3_fail:FAIL
+  08:01:38.2973500Z Caught signal #11!
+  08:01:38.2973808Z Stack trace:
+  08:01:38.2974148Z ./test_progs(crash_handler+0x38)[0x564524d62f5c]
+  08:01:38.2974682Z /lib/x86_64-linux-gnu/libc.so.6(+0x45330)[0x7f696f47d330]
+  08:01:38.2975847Z /lib/x86_64-linux-gnu/libc.so.6(syscall+0x1d)[0x7f696f55f25d]
+  08:01:38.2976387Z ./test_progs(+0x41a7cd)[0x564524d9d7cd]
+  08:01:38.2976822Z ./test_progs(+0x41a7f5)[0x564524d9d7f5]
+  08:01:38.2977236Z ./test_progs(+0x41a82e)[0x564524d9d82e]
+  08:01:38.2980004Z ./test_progs(bpf_prog_load+0x681)[0x564524d9e555]
+  08:01:38.2980570Z ./test_progs(+0x408ccc)[0x564524d8bccc]
+  08:01:38.2980969Z ./test_progs(+0x409b89)[0x564524d8cb89]
+  08:01:38.2981337Z ./test_progs(+0x40b87a)[0x564524d8e87a]
+  08:01:38.2981674Z ./test_progs(bpf_object__load+0x26)[0x564524d8eb24]
+  08:01:38.2981943Z ./test_progs(+0x8c160)[0x564524a0f160]
+  08:01:38.2982173Z ./test_progs(+0x8c1c8)[0x564524a0f1c8]
+  08:01:38.2982467Z ./test_progs(test_verif_scale_loop3_fail+0x21)[0x564524a0f59b]
+  08:01:38.2982752Z ./test_progs(+0x3e0500)[0x564524d63500]
+  08:01:38.2982983Z ./test_progs(main+0x5cd)[0x564524d65248]
+  08:01:38.2983261Z /lib/x86_64-linux-gnu/libc.so.6(+0x2a1ca)[0x7f696f4621ca]
+  08:01:38.2983651Z /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b)[0x7f696f46228b]
+  08:01:38.2983998Z ./test_progs(_start+0x25)[0x5645249ba4a5]
+  08:08:01.6898496Z libbpf: prog 'while_true': BPF program load failed: -E2BIG
+  08:08:01.6898956Z libbpf: prog 'while_true': -- BEGIN PROG LOAD LOG --
+  08:08:01.6899443Z BPF program is too large. Processed 1000001 insn
+  08:08:01.6899823Z verification time 383390707 usec
+  08:08:01.6900045Z stack depth 16
+  08:08:01.6900621Z processed 1000001 insns (limit 1000000) max_states_per_insn 4 total_states 12347 peak_states 12347 mark_read 1
+  08:08:01.6901359Z -- END PROG LOAD LOG --
+  08:08:01.6901824Z libbpf: prog 'while_true': failed to load: -E2BIG
+  08:08:01.6902368Z libbpf: failed to load object 'loop3.bpf.o'
+  08:08:01.6902858Z scale_test:PASS:expect_error 0 nsec
+  08:08:01.6903248Z #450     verif_scale_loop3_fail:FAIL
 
+Compare to a day before when such behavior wasn't observed[2], the main
+difference being these additional patches:
+
+  input-cyttsp5-ensure-minimum-reset-pulse-width.patch
+  input-cyttsp5-fix-power-control-issue-on-wakeup.patch
+  input-mtk-pmic-keys-fix-possible-null-pointer-dereference.patch
+  input-xpad-fix-share-button-on-xbox-one-controllers.patch
+  input-xpad-add-support-for-8bitdo-ultimate-2-wireless-controller.patch
+  input-xpad-fix-two-controller-table-values.patch
+  input-synaptics-enable-intertouch-on-dynabook-portege-x30-d.patch
+  input-synaptics-enable-intertouch-on-dynabook-portege-x30l-g.patch
+  input-synaptics-enable-intertouch-on-dell-precision-m3800.patch
+  input-synaptics-enable-smbus-for-hp-elitebook-850-g1.patch
+  input-synaptics-enable-intertouch-on-tuxedo-infinitybook-pro-14-v5.patch
+  rust-clean-rust-1.88.0-s-unnecessary_transmutes-lint.patch
+  objtool-rust-add-one-more-noreturn-rust-function-for-rust-1.87.0.patch
+  rust-clean-rust-1.88.0-s-warning-about-clippy-disallowed_macros-configuration.patch
+  uio_hv_generic-fix-sysfs-creation-path-for-ring-buffer.patch
+  staging-iio-adc-ad7816-correct-conditional-logic-for-store-mode.patch
+  staging-bcm2835-camera-initialise-dev-in-v4l2_dev.patch
+  staging-axis-fifo-remove-hardware-resets-for-user-errors.patch
+  staging-axis-fifo-correct-handling-of-tx_fifo_depth-for-size-validation.patch
+  x86-mm-eliminate-window-where-tlb-flushes-may-be-inadvertently-skipped.patch
+  mm-fix-folio_pte_batch-on-xen-pv.patch
+  mm-vmalloc-support-more-granular-vrealloc-sizing.patch
+  mm-huge_memory-fix-dereferencing-invalid-pmd-migration-entry.patch
+  mm-userfaultfd-fix-uninitialized-output-field-for-eagain-race.patch
+  selftests-mm-compaction_test-support-platform-with-huge-mount-of-memory.patch
+  selftests-mm-fix-a-build-failure-on-powerpc.patch
+  selftests-mm-fix-build-break-when-compiling-pkey_util.c.patch
+  kvm-x86-mmu-prevent-installing-hugepages-when-mem-attributes-are-changing.patch
+  kvm-svm-forcibly-leave-smm-mode-on-shutdown-interception.patch
+  drm-amd-display-shift-dmub-aux-reply-command-if-necessary.patch
+  riscv-fix-kernel-crash-due-to-pr_set_tagged_addr_ctrl.patch
+  io_uring-ensure-deferred-completions-are-flushed-for-multishot.patch
+  iio-adc-ad7768-1-fix-insufficient-alignment-of-timestamp.patch
+  iio-adc-ad7266-fix-potential-timestamp-alignment-issue.patch
+  iio-adc-ad7606-fix-serial-register-access.patch
+  iio-adc-rockchip-fix-clock-initialization-sequence.patch
+  iio-adis16201-correct-inclinometer-channel-resolution.patch
+  iio-chemical-sps30-use-aligned_s64-for-timestamp.patch
+  iio-chemical-pms7003-use-aligned_s64-for-timestamp.patch
+  iio-hid-sensor-prox-restore-lost-scale-assignments.patch
+  iio-hid-sensor-prox-support-multi-channel-scale-calculation.patch
+  iio-hid-sensor-prox-fix-incorrect-offset-calculation.patch
+  iio-imu-inv_mpu6050-align-buffer-for-timestamp.patch
+  iio-imu-st_lsm6dsx-fix-possible-lockup-in-st_lsm6dsx_read_fifo.patch
+  iio-imu-st_lsm6dsx-fix-possible-lockup-in-st_lsm6dsx_read_tagged_fifo.patch
+  iio-light-opt3001-fix-deadlock-due-to-concurrent-flag-access.patch
+  iio-pressure-mprls0025pa-use-aligned_s64-for-timestamp.patch
+  revert-drm-amd-stop-evicting-resources-on-apus-in-suspend.patch
+  drm-v3d-add-job-to-pending-list-if-the-reset-was-skipped.patch
+  drm-xe-add-page-queue-multiplier.patch
+  drm-amdgpu-fix-pm-notifier-handling.patch
+  drm-amdgpu-vcn-using-separate-vcn1_aon_soc-offset.patch
+  drm-amd-display-fix-invalid-context-error-in-dml-helper.patch
+  drm-amd-display-more-liberal-vmin-vmax-update-for-freesync.patch
+  drm-amd-display-fix-the-checking-condition-in-dmub-aux-handling.patch
+  drm-amd-display-remove-incorrect-checking-in-dmub-aux-handler.patch
+  drm-amd-display-fix-wrong-handling-for-aux_defer-case.patch
+  drm-amd-display-copy-aux-read-reply-data-whenever-length-0.patch
+  drm-amdgpu-hdp4-use-memcfg-register-to-post-the-write-for-hdp-flush.patch
+  drm-amdgpu-hdp5.2-use-memcfg-register-to-post-the-write-for-hdp-flush.patch
+  drm-amdgpu-hdp5-use-memcfg-register-to-post-the-write-for-hdp-flush.patch
+  drm-amdgpu-hdp6-use-memcfg-register-to-post-the-write-for-hdp-flush.patch
+  drm-amdgpu-hdp7-use-memcfg-register-to-post-the-write-for-hdp-flush.patch
+  xhci-dbc-avoid-event-polling-busyloop-if-pending-rx-transfers-are-inactive.patch
+  usb-uhci-platform-make-the-clock-really-optional.patch
+  smb-client-avoid-race-in-open_cached_dir-with-lease-breaks.patch
+  xen-swiotlb-use-swiotlb-bouncing-if-kmalloc-allocation-demands-it.patch
+  xenbus-use-kref-to-track-req-lifetime.patch
+  accel-ivpu-increase-state-dump-msg-timeout.patch
+  arm64-cpufeature-move-arm64_use_ng_mappings-to-the-.data-section-to-prevent-wrong-idmap-generation.patch
+  clocksource-i8253-use-raw_spinlock_irqsave-in-clockevent_i8253_disable.patch
+  kvm-arm64-fix-uninitialized-memcache-pointer-in-user_mem_abort.patch
+  memblock-accept-allocated-memory-before-use-in-memblock_double_array.patch
+  module-ensure-that-kobject_put-is-safe-for-module-type-kobjects.patch
+  x86-microcode-consolidate-the-loader-enablement-checking.patch
+  ocfs2-fix-panic-in-failed-foilio-allocation.patch
+  ocfs2-fix-the-issue-with-discontiguous-allocation-in-the-global_bitmap.patch
+  ocfs2-switch-osb-disable_recovery-to-enum.patch
+  ocfs2-implement-handshaking-with-ocfs2-recovery-thread.patch
+  ocfs2-stop-quota-recovery-before-disabling-quotas.patch
+  usb-dwc3-gadget-make-gadget_wakeup-asynchronous.patch
+  usb-cdnsp-fix-issue-with-resuming-from-l1.patch
+  usb-cdnsp-fix-l1-resume-issue-for-rtl_revision_new_lpm-version.patch
+  usb-gadget-f_ecm-add-get_status-callback.patch
+  usb-gadget-tegra-xudc-ack-st_rc-after-clearing-ctrl_run.patch
+  usb-gadget-use-get_status-callback-to-set-remote-wakeup-capability.patch
+  usb-host-tegra-prevent-host-controller-crash-when-otg-port-is-used.patch
+  usb-misc-onboard_usb_dev-fix-support-for-cypress-hx3-hubs.patch
+  usb-typec-tcpm-delay-snk_try_wait_debounce-to-src_trywait-transition.patch
+  usb-typec-ucsi-displayport-fix-deadlock.patch
+  usb-typec-ucsi-displayport-fix-null-pointer-access.patch
+  usb-usbtmc-use-interruptible-sleep-in-usbtmc_read.patch
+  usb-usbtmc-fix-erroneous-get_stb-ioctl-error-returns.patch
+  usb-usbtmc-fix-erroneous-wait_srq-ioctl-return.patch
+  usb-usbtmc-fix-erroneous-generic_read-ioctl-return.patch
+  iio-imu-bmi270-fix-initial-sampling-frequency-config.patch
+  iio-accel-adxl367-fix-setting-odr-for-activity-time-.patch
+  iio-temp-maxim-thermocouple-fix-potential-lack-of-dm.patch
+  iio-accel-adxl355-make-timestamp-64-bit-aligned-usin.patch
+  iio-adc-dln2-use-aligned_s64-for-timestamp.patch
+  mips-fix-idle-vs-timer-enqueue.patch
+  mips-move-r4k_wait-to-.cpuidle.text-section.patch
+  timekeeping-prevent-coarse-clocks-going-backwards.patch
+  accel-ivpu-separate-db-id-and-cmdq-id-allocations-fr.patch
+  accel-ivpu-correct-mutex-unlock-order-in-job-submiss.patch
+  mips-fix-max_reg_offset.patch
+  riscv-misaligned-add-handling-for-zcb-instructions.patch
+  loop-factor-out-a-loop_assign_backing_file-helper.patch
+  loop-add-sanity-check-for-read-write_iter.patch
+  drm-panel-simple-update-timings-for-auo-g101evn010.patch
+  nvme-unblock-ctrl-state-transition-for-firmware-upda.patch
+  riscv-misaligned-factorize-trap-handling.patch
+  riscv-misaligned-enable-irqs-while-handling-misalign.patch
+  riscv-disallow-pr_get_tagged_addr_ctrl-without-supm.patch
+  drm-xe-tests-mocs-hold-xe_forcewake_all-for-lncf-reg.patch
+  drm-xe-release-force-wake-first-then-runtime-power.patch
+  io_uring-sqpoll-increase-task_work-submission-batch-.patch
+  do_umount-add-missing-barrier-before-refcount-checks.patch
+  rust-allow-rust-1.87.0-s-clippy-ptr_eq-lint.patch
+  rust-clean-rust-1.88.0-s-clippy-uninlined_format_args-lint.patch
+  io_uring-always-arm-linked-timeouts-prior-to-issue.patch
+  bluetooth-btmtk-remove-the-resetting-step-before-downloading-the-fw.patch
+  mm-page_alloc-don-t-steal-single-pages-from-biggest-buddy.patch
+  mm-page_alloc-speed-up-fallbacks-in-rmqueue_bulk.patch
+  arm64-insn-add-support-for-encoding-dsb.patch
+  arm64-proton-pack-expose-whether-the-platform-is-mitigated-by-firmware.patch
+  arm64-proton-pack-expose-whether-the-branchy-loop-k-value.patch
+  arm64-bpf-add-bhb-mitigation-to-the-epilogue-for-cbpf-programs.patch
+  arm64-bpf-only-mitigate-cbpf-programs-loaded-by-unprivileged-users.patch
+  arm64-proton-pack-add-new-cpus-k-values-for-branch-mitigation.patch
+  x86-bpf-call-branch-history-clearing-sequence-on-exit.patch
+  x86-bpf-add-ibhf-call-at-end-of-classic-bpf.patch
+  x86-bhi-do-not-set-bhi_dis_s-in-32-bit-mode.patch
+  documentation-x86-bugs-its-add-its-documentation.patch
+  x86-its-enumerate-indirect-target-selection-its-bug.patch
+  x86-its-add-support-for-its-safe-indirect-thunk.patch
+  x86-its-add-support-for-its-safe-return-thunk.patch
+  x86-its-enable-indirect-target-selection-mitigation.patch
+  x86-its-add-vmexit-option-to-skip-mitigation-on-some-cpus.patch
+  x86-its-add-support-for-rsb-stuffing-mitigation.patch
+  x86-its-align-rets-in-bhb-clear-sequence-to-avoid-thunking.patch
+  x86-ibt-keep-ibt-disabled-during-alternative-patching.patch
+  x86-its-use-dynamic-thunks-for-indirect-branches.patch
+  selftest-x86-bugs-add-selftests-for-its.patch
+
+No patches touch BPF's core component, and while the
+verif_scale_loop3_fail test did time out, the verifier is still
+correctly rejecting it, so shouldn't have anything to do with
+kernel/bpf/. The x86/arm64 BPF patches only affect JIT output, and only
+for cBPF.
+
+In comparison, with 6.12.29-rc1 I don't observe any timeout or increase
+in runtime[3]. Below is a diff comparing the applied patches in
+6.12.29-rc1 and 6.14.7-rc1. Seems like 6.14.7-rc1 does not have the
+CALL_NOSPEC patches, but I cannot tell whether that is what makes the
+difference.
+
+
+1: https://github.com/shunghsiyu/libbpf/actions/runs/14979866777/job/42113654856
+2: https://github.com/shunghsiyu/libbpf/actions/runs/14958571057/job/42017510267
+3: https://github.com/shunghsiyu/libbpf/actions/runs/14979866777/job/42113654879
+
+--- a/6.12.29-rc1-series
++++ b/6.14.7-rc1-series
+@@ -17,7 +17,7 @@ openvswitch-fix-unsafe-attribute-parsing-in-output_userspace.patch
+ ksmbd-fix-memory-leak-in-parse_lease_state.patch
+ s390-entry-fix-last-breaking-event-handling-in-case-.patch
+ sch_htb-make-htb_deactivate-idempotent.patch
+-virtio_net-xsk-bind-unbind-xsk-for-tx.patch
++virtio-net-don-t-re-enable-refill-work-too-early-whe.patch
+ virtio-net-free-xsk_buffs-on-error-in-virtnet_xsk_po.patch
+ gre-fix-again-ipv6-link-local-address-generation.patch
+ net-ethernet-mtk_eth_soc-reset-all-tx-queues-on-dma-.patch
+@@ -26,7 +26,6 @@ can-m_can-m_can_class_allocate_dev-initialize-spin-l.patch
+ can-mcp251xfd-fix-tdc-setting-for-low-data-bit-rates.patch
+ can-gw-fix-rcu-bh-usage-in-cgw_create_job.patch
+ wifi-mac80211-fix-the-type-of-status_code-for-negoti.patch
+-ice-initial-support-for-e825c-hardware-in-ice_adapte.patch
+ ice-use-dsn-instead-of-pci-bdf-for-ice_adapter-index.patch
+ erofs-ensure-the-extra-temporary-copy-is-valid-for-s.patch
+ ipvs-fix-uninit-value-for-saddr-in-do_output_route4.patch
+@@ -46,6 +45,7 @@ net-dsa-b53-do-not-set-learning-and-unicast-multicas.patch
+ fbnic-fix-initialization-of-mailbox-descriptor-rings.patch
+ fbnic-gate-axi-read-write-enabling-on-fw-mailbox.patch
+ fbnic-actually-flush_tx-instead-of-stalling-out.patch
++fbnic-cleanup-handling-of-completions.patch
+ fbnic-improve-responsiveness-of-fbnic_mbx_poll_tx_re.patch
+ fbnic-pull-fbnic_fw_xmit_cap_msg-use-out-of-interrup.patch
+ fbnic-do-not-allow-mailbox-to-toggle-to-ready-outsid.patch
+@@ -65,6 +65,7 @@ input-synaptics-enable-intertouch-on-tuxedo-infinitybook-pro-14-v5.patch
+ rust-clean-rust-1.88.0-s-unnecessary_transmutes-lint.patch
+ objtool-rust-add-one-more-noreturn-rust-function-for-rust-1.87.0.patch
+ rust-clean-rust-1.88.0-s-warning-about-clippy-disallowed_macros-configuration.patch
++uio_hv_generic-fix-sysfs-creation-path-for-ring-buffer.patch
+ staging-iio-adc-ad7816-correct-conditional-logic-for-store-mode.patch
+ staging-bcm2835-camera-initialise-dev-in-v4l2_dev.patch
+ staging-axis-fifo-remove-hardware-resets-for-user-errors.patch
+@@ -76,17 +77,31 @@ mm-huge_memory-fix-dereferencing-invalid-pmd-migration-entry.patch
+ mm-userfaultfd-fix-uninitialized-output-field-for-eagain-race.patch
+ selftests-mm-compaction_test-support-platform-with-huge-mount-of-memory.patch
+ selftests-mm-fix-a-build-failure-on-powerpc.patch
++selftests-mm-fix-build-break-when-compiling-pkey_util.c.patch
++kvm-x86-mmu-prevent-installing-hugepages-when-mem-attributes-are-changing.patch
+ kvm-svm-forcibly-leave-smm-mode-on-shutdown-interception.patch
+ drm-amd-display-shift-dmub-aux-reply-command-if-necessary.patch
++riscv-fix-kernel-crash-due-to-pr_set_tagged_addr_ctrl.patch
+ io_uring-ensure-deferred-completions-are-flushed-for-multishot.patch
++iio-adc-ad7768-1-fix-insufficient-alignment-of-timestamp.patch
++iio-adc-ad7266-fix-potential-timestamp-alignment-issue.patch
+ iio-adc-ad7606-fix-serial-register-access.patch
+ iio-adc-rockchip-fix-clock-initialization-sequence.patch
+ iio-adis16201-correct-inclinometer-channel-resolution.patch
++iio-chemical-sps30-use-aligned_s64-for-timestamp.patch
++iio-chemical-pms7003-use-aligned_s64-for-timestamp.patch
++iio-hid-sensor-prox-restore-lost-scale-assignments.patch
++iio-hid-sensor-prox-support-multi-channel-scale-calculation.patch
++iio-hid-sensor-prox-fix-incorrect-offset-calculation.patch
+ iio-imu-inv_mpu6050-align-buffer-for-timestamp.patch
+ iio-imu-st_lsm6dsx-fix-possible-lockup-in-st_lsm6dsx_read_fifo.patch
+ iio-imu-st_lsm6dsx-fix-possible-lockup-in-st_lsm6dsx_read_tagged_fifo.patch
++iio-light-opt3001-fix-deadlock-due-to-concurrent-flag-access.patch
++iio-pressure-mprls0025pa-use-aligned_s64-for-timestamp.patch
++revert-drm-amd-stop-evicting-resources-on-apus-in-suspend.patch
+ drm-v3d-add-job-to-pending-list-if-the-reset-was-skipped.patch
+ drm-xe-add-page-queue-multiplier.patch
++drm-amdgpu-fix-pm-notifier-handling.patch
+ drm-amdgpu-vcn-using-separate-vcn1_aon_soc-offset.patch
+ drm-amd-display-fix-invalid-context-error-in-dml-helper.patch
+ drm-amd-display-more-liberal-vmin-vmax-update-for-freesync.patch
+@@ -99,6 +114,7 @@ drm-amdgpu-hdp5.2-use-memcfg-register-to-post-the-write-for-hdp-flush.patch
+ drm-amdgpu-hdp5-use-memcfg-register-to-post-the-write-for-hdp-flush.patch
+ drm-amdgpu-hdp6-use-memcfg-register-to-post-the-write-for-hdp-flush.patch
+ drm-amdgpu-hdp7-use-memcfg-register-to-post-the-write-for-hdp-flush.patch
++xhci-dbc-avoid-event-polling-busyloop-if-pending-rx-transfers-are-inactive.patch
+ usb-uhci-platform-make-the-clock-really-optional.patch
+ smb-client-avoid-race-in-open_cached_dir-with-lease-breaks.patch
+ xen-swiotlb-use-swiotlb-bouncing-if-kmalloc-allocation-demands-it.patch
+@@ -106,9 +122,11 @@ xenbus-use-kref-to-track-req-lifetime.patch
+ accel-ivpu-increase-state-dump-msg-timeout.patch
+ arm64-cpufeature-move-arm64_use_ng_mappings-to-the-.data-section-to-prevent-wrong-idmap-generation.patch
+ clocksource-i8253-use-raw_spinlock_irqsave-in-clockevent_i8253_disable.patch
++kvm-arm64-fix-uninitialized-memcache-pointer-in-user_mem_abort.patch
+ memblock-accept-allocated-memory-before-use-in-memblock_double_array.patch
+ module-ensure-that-kobject_put-is-safe-for-module-type-kobjects.patch
+ x86-microcode-consolidate-the-loader-enablement-checking.patch
++ocfs2-fix-panic-in-failed-foilio-allocation.patch
+ ocfs2-fix-the-issue-with-discontiguous-allocation-in-the-global_bitmap.patch
+ ocfs2-switch-osb-disable_recovery-to-enum.patch
+ ocfs2-implement-handshaking-with-ocfs2-recovery-thread.patch
+@@ -122,43 +140,41 @@ usb-gadget-use-get_status-callback-to-set-remote-wakeup-capability.patch
+ usb-host-tegra-prevent-host-controller-crash-when-otg-port-is-used.patch
+ usb-misc-onboard_usb_dev-fix-support-for-cypress-hx3-hubs.patch
+ usb-typec-tcpm-delay-snk_try_wait_debounce-to-src_trywait-transition.patch
++usb-typec-ucsi-displayport-fix-deadlock.patch
+ usb-typec-ucsi-displayport-fix-null-pointer-access.patch
+ usb-usbtmc-use-interruptible-sleep-in-usbtmc_read.patch
+ usb-usbtmc-fix-erroneous-get_stb-ioctl-error-returns.patch
+ usb-usbtmc-fix-erroneous-wait_srq-ioctl-return.patch
+ usb-usbtmc-fix-erroneous-generic_read-ioctl-return.patch
++iio-imu-bmi270-fix-initial-sampling-frequency-config.patch
+ iio-accel-adxl367-fix-setting-odr-for-activity-time-.patch
+ iio-temp-maxim-thermocouple-fix-potential-lack-of-dm.patch
+-types-complement-the-aligned-types-with-signed-64-bi.patch
+ iio-accel-adxl355-make-timestamp-64-bit-aligned-usin.patch
+ iio-adc-dln2-use-aligned_s64-for-timestamp.patch
+ mips-fix-idle-vs-timer-enqueue.patch
+ mips-move-r4k_wait-to-.cpuidle.text-section.patch
++timekeeping-prevent-coarse-clocks-going-backwards.patch
++accel-ivpu-separate-db-id-and-cmdq-id-allocations-fr.patch
++accel-ivpu-correct-mutex-unlock-order-in-job-submiss.patch
+ mips-fix-max_reg_offset.patch
+ riscv-misaligned-add-handling-for-zcb-instructions.patch
+-loop-use-bdev-limit-helpers-for-configuring-discard.patch
+-loop-simplify-discard-granularity-calc.patch
+-loop-fix-abba-locking-race.patch
+-loop-refactor-queue-limits-updates.patch
+ loop-factor-out-a-loop_assign_backing_file-helper.patch
+ loop-add-sanity-check-for-read-write_iter.patch
+ drm-panel-simple-update-timings-for-auo-g101evn010.patch
+ nvme-unblock-ctrl-state-transition-for-firmware-upda.patch
+ riscv-misaligned-factorize-trap-handling.patch
+ riscv-misaligned-enable-irqs-while-handling-misalign.patch
+-drm-xe-tests-mocs-update-xe_force_wake_get-return-ha.patch
++riscv-disallow-pr_get_tagged_addr_ctrl-without-supm.patch
+ drm-xe-tests-mocs-hold-xe_forcewake_all-for-lncf-reg.patch
++drm-xe-release-force-wake-first-then-runtime-power.patch
+ io_uring-sqpoll-increase-task_work-submission-batch-.patch
+ do_umount-add-missing-barrier-before-refcount-checks.patch
+-revert-um-work-around-sched_yield-not-yielding-in-time-travel-mode.patch
+ rust-allow-rust-1.87.0-s-clippy-ptr_eq-lint.patch
+ rust-clean-rust-1.88.0-s-clippy-uninlined_format_args-lint.patch
+ io_uring-always-arm-linked-timeouts-prior-to-issue.patch
+-bluetooth-btmtk-remove-resetting-mt7921-before-downloading-the-fw.patch
+ bluetooth-btmtk-remove-the-resetting-step-before-downloading-the-fw.patch
+ mm-page_alloc-don-t-steal-single-pages-from-biggest-buddy.patch
+ mm-page_alloc-speed-up-fallbacks-in-rmqueue_bulk.patch
+-sched-eevdf-fix-se-slice-being-set-to-u64_max-and-resulting-crash.patch
+ arm64-insn-add-support-for-encoding-dsb.patch
+ arm64-proton-pack-expose-whether-the-platform-is-mitigated-by-firmware.patch
+ arm64-proton-pack-expose-whether-the-branchy-loop-k-value.patch
+@@ -168,9 +184,6 @@ arm64-proton-pack-add-new-cpus-k-values-for-branch-mitigation.patch
+ x86-bpf-call-branch-history-clearing-sequence-on-exit.patch
+ x86-bpf-add-ibhf-call-at-end-of-classic-bpf.patch
+ x86-bhi-do-not-set-bhi_dis_s-in-32-bit-mode.patch
+-x86-speculation-simplify-and-make-call_nospec-consistent.patch
+-x86-speculation-add-a-conditional-cs-prefix-to-call_nospec.patch
+-x86-speculation-remove-the-extra-ifdef-around-call_nospec.patch
+ documentation-x86-bugs-its-add-its-documentation.patch
+ x86-its-enumerate-indirect-target-selection-its-bug.patch
+ x86-its-add-support-for-its-safe-indirect-thunk.patch
 
