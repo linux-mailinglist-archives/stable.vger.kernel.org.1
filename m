@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-144440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FABFAB7699
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 22:14:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 250A5AB769E
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 22:15:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF1C51BA6718
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 20:15:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 686578C6A7C
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 20:14:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1663295502;
-	Wed, 14 May 2025 20:14:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA2A2296155;
+	Wed, 14 May 2025 20:14:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e0gu3r7O"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sIha1Rij"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1257295537
-	for <stable@vger.kernel.org>; Wed, 14 May 2025 20:14:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69EF6295DAD
+	for <stable@vger.kernel.org>; Wed, 14 May 2025 20:14:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747253677; cv=none; b=spFliVAA6C2Leyg5jz+Ridv+JVGvu45okl1VXM8rv5WFv9TZ+8c0GJoOtmqc6KY7grdiefZubiS0KYzFHGlOxFQKsDx6oQSZMOTPKTS45A43k3h9cFZsFRufuS8d+quqkuj5wzlJ+9CiMj3smc5ZGrcFIYIRnm/Ne6QTCsVlwng=
+	t=1747253681; cv=none; b=Yerq0XvXg1UrghhcQBqWIoq1GJvyQ5fpKFW5GTT2l7X+pUEbyV4PZmR0rOLBCqu+zFZRN/HznN14Wc8CTDV2Kx5hQQSK03P9DbgpLY99lT+R17dcu9AZJdX9GPfvXlQNntxcxUnR2YLM/q7DaX8b52dxyxDCE5VQFJ/A9gL1W1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747253677; c=relaxed/simple;
-	bh=JNdlM22dhG8oNG+i0j7AZshhqLaB+togDYHpfeS0f6U=;
+	s=arc-20240116; t=1747253681; c=relaxed/simple;
+	bh=bHfQa8YiIR/h1Dgx+0fecm1o3Tg0WHkhwUgKSysQKzo=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YSLzyqd8FJ9z0aOa+TaD7dj4uLRHiTllCHsKzxbx91nIxx7XSjVFp/uHFYuGsic9N4hTywpkJNwo5KEyn/RLefOt+L0G038i9d6QJ9g0poj6BJXdT3wn/QvZafxaMTjkmcvaSZKgN3Z97dY0NTcVQBhk6mdbY8lwgwi45VebwA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e0gu3r7O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3A93C4CEE3;
-	Wed, 14 May 2025 20:14:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qk92JvU+Ff4XJERbLApC2I6D8tnaRAd2tC6wjVhzSlkSkbGAsY0pd6JwTy2XrYdCc4ugZ/oULQ8Z5YOvh7S6q7zO/Flta4ZQWyQJB2n4Thy/3ChSN5cAvOSpqSFFxrqFvCW/T7BkYtYODwBkdOTZDKy9A+Z4zy8ihX1MUnNHI2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sIha1Rij; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E1D7C4CEF3;
+	Wed, 14 May 2025 20:14:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747253677;
-	bh=JNdlM22dhG8oNG+i0j7AZshhqLaB+togDYHpfeS0f6U=;
+	s=k20201202; t=1747253681;
+	bh=bHfQa8YiIR/h1Dgx+0fecm1o3Tg0WHkhwUgKSysQKzo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e0gu3r7Ok29uNgCAHoQoauCPSdKp+qvbuoPX/evOZLhvDWvn+0DK7o1/+5mCNe9S8
-	 Hgc3fgANPlxQY4aoXXEVfDF4H/r/FzRSIv9xse9S0uPGcMfpbtRe59iJbyzvWP4n+y
-	 3rLrKjOGmWiiqU0uQ/jt+oivhy6ju4Z61hBUPDIMjXelQpO4Ak9ZjgUkaIvTtoFn7o
-	 eOKGFBYw9z5zVhuWsxJiDtLLBEW6MQg4RAZRQM6Yax35Qdn9SINtBeqv2k/wOtKvgO
-	 8N4BFrin03ohp4DvY9GfZwQoNQ2rKm0iO+E7nk/ho9CTorgO8zWCBTmBcj5N0l6uAl
-	 W6J57AQwkyrig==
+	b=sIha1Rij42c62rd6sbxT/jisYHKu8OwwjhuuQUYBZzy/w5uCBba5GpyKh+3eWlmu5
+	 wWtO0MbH/ONDsyP9++Hzw6gBYhUvONYOplB/3imJsBHNCjdYBZKBENToogiOITIuuV
+	 +BMwxUGXwRxiNpf1h/jDOtK709gMjAqSO4JwTd6c5ce4wQveoo85ivLduqCuJsaFpV
+	 3ZW4wz7mXWskJFOTGHjXZ0cvzjAbBJXkmXh+PxRmWcFKceNItcB0VdU4ROb3W5iuI/
+	 cWMJfs9EOeyDVXmpGehEGD7MsIKgnzWsVAdO2ANURhSE/dGG8AOiNa72aI6iWy2+6H
+	 iMGcsX9qhIIYw==
 From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org,
-	pawan.kumar.gupta@linux.intel.com
-Cc: Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15 v2 14/14] x86/its: Use dynamic thunks for indirect branches
-Date: Wed, 14 May 2025 16:14:33 -0400
-Message-Id: <20250514114340-f478b8a6124ab410@stable.kernel.org>
+To: stable@vger.kernel.org
+Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 5.15 v2 07/14] x86/its: Add support for ITS-safe indirect thunk
+Date: Wed, 14 May 2025 16:14:38 -0400
+Message-Id: <20250514111616-56e8a150e9ef23cf@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250513-its-5-15-v2-14-90690efdc7e0@linux.intel.com>
+In-Reply-To:  <20250513-its-5-15-v2-7-90690efdc7e0@linux.intel.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -64,254 +64,232 @@ Content-Transfer-Encoding: 8bit
 
 Hi,
 
-Summary of potential issues:
-ℹ️ This is part 14/14 of a series
-⚠️ Found follow-up fixes in mainline
+✅ All tests passed successfully. No issues detected.
+No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: 872df34d7c51a79523820ea6a14860398c639b87
-
-WARNING: Author mismatch between patch and upstream commit:
-Backport author: Pawan Gupta<pawan.kumar.gupta@linux.intel.com>
-Commit author: Peter Zijlstra<peterz@infradead.org>
+The upstream commit SHA1 provided is correct: 8754e67ad4ac692c67ff1f99c0d07156f04ae40c
 
 Status in newer kernel trees:
-6.14.y | Present (different SHA1: 0177d630dd90)
-6.12.y | Present (different SHA1: e730bef9bebb)
-6.6.y | Present (different SHA1: 101d064c5817)
-6.1.y | Present (different SHA1: bc7ff7035f36)
-
-Found fixes commits:
-9f35e33144ae x86/its: Fix build errors when CONFIG_MODULES=n
+6.14.y | Present (different SHA1: ab707958041e)
+6.12.y | Present (different SHA1: 9f0c082a206c)
+6.6.y | Present (different SHA1: 9eaa12dfcea8)
+6.1.y | Present (different SHA1: ddd68c593379)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  872df34d7c51a ! 1:  ef20c226851f4 x86/its: Use dynamic thunks for indirect branches
+1:  8754e67ad4ac6 ! 1:  33e47919dc618 x86/its: Add support for ITS-safe indirect thunk
     @@ Metadata
       ## Commit message ##
-         x86/its: Use dynamic thunks for indirect branches
+         x86/its: Add support for ITS-safe indirect thunk
      
-    +    commit 872df34d7c51a79523820ea6a14860398c639b87 upstream.
+    +    commit 8754e67ad4ac692c67ff1f99c0d07156f04ae40c upstream.
     +
-         ITS mitigation moves the unsafe indirect branches to a safe thunk. This
-         could degrade the prediction accuracy as the source address of indirect
-         branches becomes same for different execution paths.
+         Due to ITS, indirect branches in the lower half of a cacheline may be
+         vulnerable to branch target injection attack.
+     
     @@ Commit message
-         they are both more flexible (got to extend them later) and live in 2M TLBs,
-         just like kernel code, avoiding undue TLB pressure.
-     
-    +      [ pawan: CONFIG_EXECMEM and CONFIG_EXECMEM_ROX are not supported on
-    +               backport kernel, made changes to use module_alloc() and
-    +               set_memory_*() for dynamic thunks. ]
-    +
-         Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-         Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-         Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
          Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
      
-    - ## arch/x86/Kconfig ##
-    -@@ arch/x86/Kconfig: config MITIGATION_ITS
-    - 	bool "Enable Indirect Target Selection mitigation"
-    - 	depends on CPU_SUP_INTEL && X86_64
-    - 	depends on MITIGATION_RETPOLINE && MITIGATION_RETHUNK
-    -+	select EXECMEM
-    - 	default y
-    - 	help
-    - 	  Enable Indirect Target Selection (ITS) mitigation. ITS is a bug in
-    -
-      ## arch/x86/include/asm/alternative.h ##
-    -@@ arch/x86/include/asm/alternative.h: static __always_inline int x86_call_depth_emit_accounting(u8 **pprog,
+      ## arch/x86/Kconfig ##
+    -@@ arch/x86/Kconfig: config MITIGATION_SSB
+    - 	  of speculative execution in a similar way to the Meltdown and Spectre
+    - 	  security vulnerabilities.
+    +@@ arch/x86/Kconfig: config MITIGATION_SPECTRE_BHI
+    + 	  indirect branches.
+    + 	  See <file:Documentation/admin-guide/hw-vuln/spectre.rst>
+      
+     +config MITIGATION_ITS
+     +	bool "Enable Indirect Target Selection mitigation"
+     +	depends on CPU_SUP_INTEL && X86_64
+    -+	depends on MITIGATION_RETPOLINE && MITIGATION_RETHUNK
+    ++	depends on RETPOLINE && RETHUNK
+     +	default y
+     +	help
+     +	  Enable Indirect Target Selection (ITS) mitigation. ITS is a bug in
+    @@ arch/x86/Kconfig: config MITIGATION_SSB
+     
+      ## arch/x86/include/asm/cpufeatures.h ##
+     @@
+    - #define X86_FEATURE_AMD_HETEROGENEOUS_CORES (21*32 + 6) /* Heterogeneous Core Topology */
+    - #define X86_FEATURE_AMD_WORKLOAD_CLASS	(21*32 + 7) /* Workload Classification */
+    - #define X86_FEATURE_PREFER_YMM		(21*32 + 8) /* Avoid ZMM registers due to downclocking */
+    -+#define X86_FEATURE_INDIRECT_THUNK_ITS	(21*32 + 9) /* Use thunk for indirect branches in lower half of cacheline */
+    + #define X86_FEATURE_BHI_CTRL		(21*32+ 2) /* "" BHI_DIS_S HW control available */
+    + #define X86_FEATURE_CLEAR_BHB_HW	(21*32+ 3) /* "" BHI_DIS_S HW control enabled */
+    + #define X86_FEATURE_CLEAR_BHB_LOOP_ON_VMEXIT (21*32+ 4) /* "" Clear branch history at vmexit using SW loop */
+    ++#define X86_FEATURE_INDIRECT_THUNK_ITS	(21*32 + 5) /* "" Use thunk for indirect branches in lower half of cacheline */
+      
+      /*
+       * BUG word(s)
+     
+      ## arch/x86/include/asm/nospec-branch.h ##
+    -@@
+    +@@ arch/x86/include/asm/nospec-branch.h: extern void (*x86_return_thunk)(void);
+      
+    - #else /* __ASSEMBLER__ */
+    + typedef u8 retpoline_thunk_t[RETPOLINE_THUNK_SIZE];
+      
+     +#define ITS_THUNK_SIZE	64
+    -+
+    - typedef u8 retpoline_thunk_t[RETPOLINE_THUNK_SIZE];
+     +typedef u8 its_thunk_t[ITS_THUNK_SIZE];
+    - extern retpoline_thunk_t __x86_indirect_thunk_array[];
+    - extern retpoline_thunk_t __x86_indirect_call_thunk_array[];
+    - extern retpoline_thunk_t __x86_indirect_jump_thunk_array[];
+    ++
+     +extern its_thunk_t	 __x86_indirect_its_thunk_array[];
+    - 
+    - #ifdef CONFIG_MITIGATION_RETHUNK
+    - extern void __x86_return_thunk(void);
+    ++
+    + #define GEN(reg) \
+    + 	extern retpoline_thunk_t __x86_indirect_thunk_ ## reg;
+    + #include <asm/GEN-for-each-reg.h>
+     
+      ## arch/x86/kernel/alternative.c ##
+     @@ arch/x86/kernel/alternative.c: static int emit_indirect(int op, int reg, u8 *bytes)
+      	return i;
+      }
+      
+    --static int emit_call_track_retpoline(void *addr, struct insn *insn, int reg, u8 *bytes)
+    ++#ifdef CONFIG_MITIGATION_ITS
+    ++
+     +static int __emit_trampoline(void *addr, struct insn *insn, u8 *bytes,
+     +			     void *call_dest, void *jmp_dest)
+    - {
+    - 	u8 op = insn->opcode.bytes[0];
+    - 	int i = 0;
+    -@@ arch/x86/kernel/alternative.c: static int emit_call_track_retpoline(void *addr, struct insn *insn, int reg, u8
+    - 	switch (op) {
+    - 	case CALL_INSN_OPCODE:
+    - 		__text_gen_insn(bytes+i, op, addr+i,
+    --				__x86_indirect_call_thunk_array[reg],
+    ++{
+    ++	u8 op = insn->opcode.bytes[0];
+    ++	int i = 0;
+    ++
+    ++	/*
+    ++	 * Clang does 'weird' Jcc __x86_indirect_thunk_r11 conditional
+    ++	 * tail-calls. Deal with them.
+    ++	 */
+    ++	if (is_jcc32(insn)) {
+    ++		bytes[i++] = op;
+    ++		op = insn->opcode.bytes[1];
+    ++		goto clang_jcc;
+    ++	}
+    ++
+    ++	if (insn->length == 6)
+    ++		bytes[i++] = 0x2e; /* CS-prefix */
+    ++
+    ++	switch (op) {
+    ++	case CALL_INSN_OPCODE:
+    ++		__text_gen_insn(bytes+i, op, addr+i,
+     +				call_dest,
+    - 				CALL_INSN_SIZE);
+    - 		i += CALL_INSN_SIZE;
+    - 		break;
+    -@@ arch/x86/kernel/alternative.c: static int emit_call_track_retpoline(void *addr, struct insn *insn, int reg, u8
+    - 	case JMP32_INSN_OPCODE:
+    - clang_jcc:
+    - 		__text_gen_insn(bytes+i, op, addr+i,
+    --				__x86_indirect_jump_thunk_array[reg],
+    ++				CALL_INSN_SIZE);
+    ++		i += CALL_INSN_SIZE;
+    ++		break;
+    ++
+    ++	case JMP32_INSN_OPCODE:
+    ++clang_jcc:
+    ++		__text_gen_insn(bytes+i, op, addr+i,
+     +				jmp_dest,
+    - 				JMP32_INSN_SIZE);
+    - 		i += JMP32_INSN_SIZE;
+    - 		break;
+    -@@ arch/x86/kernel/alternative.c: static int emit_call_track_retpoline(void *addr, struct insn *insn, int reg, u8
+    - 	return i;
     - }
-    - #endif
-    +@@ arch/x86/include/asm/alternative.h: extern void apply_returns(s32 *start, s32 *end);
-    + 
-    + struct module;
+    - 
+    -+static int emit_call_track_retpoline(void *addr, struct insn *insn, int reg, u8 *bytes)
+    -+{
+    -+	return __emit_trampoline(addr, insn, bytes,
+    -+				 __x86_indirect_call_thunk_array[reg],
+    -+				 __x86_indirect_jump_thunk_array[reg]);
+    ++				JMP32_INSN_SIZE);
+    ++		i += JMP32_INSN_SIZE;
+    ++		break;
+    ++
+    ++	default:
+    ++		WARN(1, "%pS %px %*ph\n", addr, addr, 6, addr);
+    ++		return -1;
+    ++	}
+    ++
+    ++	WARN_ON_ONCE(i != insn->length);
+    ++
+    ++	return i;
+     +}
+     +
+    -+#ifdef CONFIG_MITIGATION_ITS
+     +static int emit_its_trampoline(void *addr, struct insn *insn, int reg, u8 *bytes)
+     +{
+     +	return __emit_trampoline(addr, insn, bytes,
+    @@ arch/x86/kernel/alternative.c: static int patch_retpoline(void *addr, struct ins
+      		return ret;
+     
+      ## arch/x86/kernel/vmlinux.lds.S ##
+    -@@ arch/x86/kernel/vmlinux.lds.S: PROVIDE(__ref_stack_chk_guard = __stack_chk_guard);
+    +@@ arch/x86/kernel/vmlinux.lds.S: INIT_PER_CPU(irq_stack_backing_store);
+      		"SRSO function pair won't alias");
+      #endif
+      
+    @@ arch/x86/kernel/vmlinux.lds.S: PROVIDE(__ref_stack_chk_guard = __stack_chk_guard
+     +
+      #endif /* CONFIG_X86_64 */
+      
+    - /*
+    + #ifdef CONFIG_KEXEC_CORE
+     
+      ## arch/x86/lib/retpoline.S ##
+    -@@ arch/x86/lib/retpoline.S: SYM_FUNC_END(call_depth_return_thunk)
+    - 
+    - #endif /* CONFIG_MITIGATION_CALL_DEPTH_TRACKING */
+    +@@ arch/x86/lib/retpoline.S: SYM_FUNC_START(entry_untrain_ret)
+    + SYM_FUNC_END(entry_untrain_ret)
+    + __EXPORT_THUNK(entry_untrain_ret)
       
      +#ifdef CONFIG_MITIGATION_ITS
-     +extern void its_init_mod(struct module *mod);
-    @@ arch/x86/include/asm/alternative.h: static __always_inline int x86_call_depth_em
-     +static inline void its_free_mod(struct module *mod) { }
+     +
+     +.macro ITS_THUNK reg
+     +
+     +SYM_INNER_LABEL(__x86_indirect_its_thunk_\reg, SYM_L_GLOBAL)
+    -+	UNWIND_HINT_UNDEFINED
+    ++	UNWIND_HINT_EMPTY
+     +	ANNOTATE_NOENDBR
+     +	ANNOTATE_RETPOLINE_SAFE
+     +	jmp *%\reg
+    @@ arch/x86/lib/retpoline.S: SYM_FUNC_END(call_depth_return_thunk)
+     +
      +#endif
      +
-    - #if defined(CONFIG_MITIGATION_RETHUNK) && defined(CONFIG_OBJTOOL)
-    + #ifdef CONFIG_RETHUNK
-      extern bool cpu_wants_rethunk(void);
-      extern bool cpu_wants_rethunk_at(void *addr);
-     
-    @@ arch/x86/kernel/alternative.c
-      #include <linux/mmu_context.h>
-      #include <linux/bsearch.h>
-      #include <linux/sync_core.h>
-    -+#include <linux/execmem.h>
-    ++#include <linux/moduleloader.h>
-      #include <asm/text-patching.h>
-      #include <asm/alternative.h>
-      #include <asm/sections.h>
-     @@
-    + #include <asm/fixmap.h>
-    + #include <asm/paravirt.h>
-      #include <asm/asm-prototypes.h>
-    - #include <asm/cfi.h>
-    - #include <asm/ibt.h>
-     +#include <asm/set_memory.h>
-      
-      int __read_mostly alternatives_patched;
-      
-    -@@ arch/x86/kernel/alternative.c: const unsigned char * const x86_nops[ASM_NOP_MAX+1] =
-    - #endif
-    - };
-    +@@ arch/x86/kernel/alternative.c: static int emit_indirect(int op, int reg, u8 *bytes)
-    + 
-    + #ifdef CONFIG_MITIGATION_ITS
-      
-    -+#ifdef CONFIG_MITIGATION_ITS
-    -+
-     +static struct module *its_mod;
-     +static void *its_page;
-     +static unsigned int its_offset;
-    @@ arch/x86/kernel/alternative.c: const unsigned char * const x86_nops[ASM_NOP_MAX+
-     +
-     +void its_fini_mod(struct module *mod)
-     +{
-    ++	int i;
-    ++
-     +	if (!cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS))
-     +		return;
-     +
-    @@ arch/x86/kernel/alternative.c: const unsigned char * const x86_nops[ASM_NOP_MAX+
-     +	its_page = NULL;
-     +	mutex_unlock(&text_mutex);
-     +
-    -+	for (int i = 0; i < mod->its_num_pages; i++) {
-    ++	for (i = 0; i < mod->its_num_pages; i++) {
-     +		void *page = mod->its_page_array[i];
-    -+		execmem_restore_rox(page, PAGE_SIZE);
-    ++		set_memory_ro((unsigned long)page, 1);
-    ++		set_memory_x((unsigned long)page, 1);
-     +	}
-     +}
-     +
-     +void its_free_mod(struct module *mod)
-     +{
-    ++	int i;
-    ++
-     +	if (!cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS))
-     +		return;
-     +
-    -+	for (int i = 0; i < mod->its_num_pages; i++) {
-    ++	for (i = 0; i < mod->its_num_pages; i++) {
-     +		void *page = mod->its_page_array[i];
-    -+		execmem_free(page);
-    ++		module_memfree(page);
-     +	}
-     +	kfree(mod->its_page_array);
-     +}
-     +
-     +static void *its_alloc(void)
-     +{
-    -+	void *page __free(execmem) = execmem_alloc(EXECMEM_MODULE_TEXT, PAGE_SIZE);
-    ++	void *page = module_alloc(PAGE_SIZE);
-     +
-     +	if (!page)
-     +		return NULL;
-    @@ arch/x86/kernel/alternative.c: const unsigned char * const x86_nops[ASM_NOP_MAX+
-     +		void *tmp = krealloc(its_mod->its_page_array,
-     +				     (its_mod->its_num_pages+1) * sizeof(void *),
-     +				     GFP_KERNEL);
-    -+		if (!tmp)
-    ++		if (!tmp) {
-    ++			module_memfree(page);
-     +			return NULL;
-    ++		}
-     +
-     +		its_mod->its_page_array = tmp;
-     +		its_mod->its_page_array[its_mod->its_num_pages++] = page;
-    -+
-    -+		execmem_make_temp_rw(page, PAGE_SIZE);
-     +	}
-     +
-    -+	return no_free_ptr(page);
-    ++	return page;
-     +}
-     +
-     +static void *its_allocate_thunk(int reg)
-    @@ arch/x86/kernel/alternative.c: const unsigned char * const x86_nops[ASM_NOP_MAX+
-     +	thunk = its_page + its_offset;
-     +	its_offset += size;
-     +
-    -+	return its_init_thunk(thunk, reg);
-    -+}
-    ++	set_memory_rw((unsigned long)its_page, 1);
-    ++	thunk = its_init_thunk(thunk, reg);
-    ++	set_memory_ro((unsigned long)its_page, 1);
-    ++	set_memory_x((unsigned long)its_page, 1);
-     +
-    -+#endif
-    ++	return thunk;
-    ++}
-     +
     - /*
-    -  * Nomenclature for variable names to simplify and clarify this code and ease
-    -  * any potential staring at it:
-    -@@ arch/x86/kernel/alternative.c: static int emit_call_track_retpoline(void *addr, struct insn *insn, int reg, u8
-    - #ifdef CONFIG_MITIGATION_ITS
-    + static int __emit_trampoline(void *addr, struct insn *insn, u8 *bytes,
-    + 			     void *call_dest, void *jmp_dest)
-    + {
-    +@@ arch/x86/kernel/alternative.c: static int __emit_trampoline(void *addr, struct insn *insn, u8 *bytes,
-    + 
-      static int emit_its_trampoline(void *addr, struct insn *insn, int reg, u8 *bytes)
-      {
-     -	return __emit_trampoline(addr, insn, bytes,
-    @@ arch/x86/kernel/alternative.c: static int emit_call_track_retpoline(void *addr,
+    -  * This function name is magical and is used by -mfunction-return=thunk-extern
+    -  * for the compiler to generate JMPs to it.
+    + SYM_CODE_START(__x86_return_thunk)
+    + 	UNWIND_HINT_FUNC
+    + 	ANNOTATE_NOENDBR
      
-      ## arch/x86/kernel/module.c ##
-     @@ arch/x86/kernel/module.c: int module_finalize(const Elf_Ehdr *hdr,
-    - 			ibt_endbr = s;
-    + 		void *pseg = (void *)para->sh_addr;
-    + 		apply_paravirt(pseg, pseg + para->sh_size);
-      	}
-    - 
-    ++
-     +	its_init_mod(me);
-     +
-    - 	if (retpolines || cfi) {
-    - 		void *rseg = NULL, *cseg = NULL;
-    - 		unsigned int rsize = 0, csize = 0;
-    -@@ arch/x86/kernel/module.c: int module_finalize(const Elf_Ehdr *hdr,
-    + 	if (retpolines) {
-      		void *rseg = (void *)retpolines->sh_addr;
-      		apply_retpolines(rseg, rseg + retpolines->sh_size);
-      	}
-    @@ arch/x86/kernel/module.c: int module_finalize(const Elf_Ehdr *hdr,
-     +	its_free_mod(mod);
-      }
-     
-    - ## include/linux/execmem.h ##
-    -@@
-    - 
-    - #include <linux/types.h>
-    - #include <linux/moduleloader.h>
-    -+#include <linux/cleanup.h>
-    - 
-    - #if (defined(CONFIG_KASAN_GENERIC) || defined(CONFIG_KASAN_SW_TAGS)) && \
-    - 		!defined(CONFIG_KASAN_VMALLOC)
-    -@@ include/linux/execmem.h: void *execmem_alloc(enum execmem_type type, size_t size);
-    -  */
-    - void execmem_free(void *ptr);
-    - 
-    -+DEFINE_FREE(execmem, void *, if (_T) execmem_free(_T));
-    -+
-    - #ifdef CONFIG_MMU
-    - /**
-    -  * execmem_vmap - create virtual mapping for EXECMEM_MODULE_DATA memory
-    -
-      ## include/linux/module.h ##
-     @@ include/linux/module.h: struct module {
-      	atomic_t refcnt;
+      ## arch/x86/net/bpf_jit_comp.c ##
+     @@ arch/x86/net/bpf_jit_comp.c: static void emit_indirect_jump(u8 **pprog, int reg, u8 *ip)
+    - {
+      	u8 *prog = *pprog;
+      
+    + #ifdef CONFIG_RETPOLINE
+     -	if (cpu_feature_enabled(X86_FEATURE_RETPOLINE_LFENCE)) {
+    -+	if (cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS)) {
+    ++	if (IS_ENABLED(CONFIG_MITIGATION_ITS) &&
+    ++	    cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS)) {
+     +		OPTIMIZER_HIDE_VAR(reg);
+     +		emit_jump(&prog, &__x86_indirect_its_thunk_array[reg], ip);
+     +	} else if (cpu_feature_enabled(X86_FEATURE_RETPOLINE_LFENCE)) {
 ---
-
-NOTE: These results are for this patch alone. Full series testing will be
-performed when all parts are received.
 
 Results of testing on various branches:
 
