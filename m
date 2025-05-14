@@ -1,100 +1,101 @@
-Return-Path: <stable+bounces-144306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D7B2AB6227
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 07:15:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B32CAB6234
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 07:19:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0F6E1B440EE
-	for <lists+stable@lfdr.de>; Wed, 14 May 2025 05:15:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D09C519E68D3
+	for <lists+stable@lfdr.de>; Wed, 14 May 2025 05:19:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B97141F4611;
-	Wed, 14 May 2025 05:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D21C21D2F42;
+	Wed, 14 May 2025 05:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UHSTyjnG"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dEn/m2PK"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA28E1F3BBB
-	for <stable@vger.kernel.org>; Wed, 14 May 2025 05:13:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F3213EA98;
+	Wed, 14 May 2025 05:19:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747199628; cv=none; b=O16qvacIBMh+Y37lE8/pHoYP1c6ljyGspTRNLiDw49cTac3EdR39gVEA0Elx5xiHjQ2ivC67xMQu57lae2eHlK1dkH+iRW25wF9JO8WiHJEGz01BXJt6LmfrqszRrKKdb7jTwbImmhHfCbtjMbiMpkdljFY+03WgS+JFu+awQlo=
+	t=1747199962; cv=none; b=aFriMEtKUQ+gPu4wr4fdv+yYfTvYrhj9jOEGb2qw4T6M0Z1RmZrFz0xUZAlDXIukKQiqNHLoN2OZF+Z+d0PsFvsm7Es7eRoG+M3NjCuBmMp+vd4y3PCqsjK2tjCb7sw5JVLaE28eUOY+3rltlnaDZFeYtyVHf+tZ+nXx4Zxipyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747199628; c=relaxed/simple;
-	bh=47lOjf4Nx59xY4fGA/g1In171qR64RKWgiryJ142M44=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=sf6QGWHl/ns7l56BCiI3F2DFFjA2+ruUW+v/nkJ6jxP9Bc/Hfmydq/O5F9CoAdVB9XyjWaQXaZD014GWm6dyYrXIj+rbzsniMw2kd4Hpng/SJe+ad9mxKL6fSJTSjgxDn/MOvTVFzmKjzBYv4UD7N8wIXXNwjze4JNStBbbOk5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UHSTyjnG; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747199627; x=1778735627;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=47lOjf4Nx59xY4fGA/g1In171qR64RKWgiryJ142M44=;
-  b=UHSTyjnGest1mkA9OJquREictLcN7Ddn1CgnJ6IRFVvmsMtqok17nIb3
-   Yul5gZFf6JhONqpFw72LkbDXsAxjJ5IpJGDGMu481LZGsJxPoVtLCmlDJ
-   FvYjYJzcodksRIsoqr/OEpthv7C6OBjpACWT9OdNhA2TVUE0HGMDfly7q
-   5WxX2gGDxbLQ8fkSgzaHTfj4NRSFCTZaS028XHNmoiuRc/qAHu+oYfC22
-   hL+7W6EV6YpJ3FIy+YuYLZl2xsKAA1ohrCdhpgO8qGOtdFS87ckC5WPYp
-   PF6/MM421DiBAMphXVf9X1CrS2J01VVo6T27qezO8LGbu4yiv31CwuaWV
-   Q==;
-X-CSE-ConnectionGUID: ZPX9bIqwQI+2XCEpBReKbQ==
-X-CSE-MsgGUID: 0JYiLUtUQYinUw5B2TeNjA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11432"; a="49056035"
-X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; 
-   d="scan'208";a="49056035"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2025 22:13:46 -0700
-X-CSE-ConnectionGUID: q3uS2N3dStOcTMdFNY6/bw==
-X-CSE-MsgGUID: oFKeLhAVQIyOV/Ksca9WSg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,287,1739865600"; 
-   d="scan'208";a="138418373"
-Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
-  by fmviesa010.fm.intel.com with ESMTP; 13 May 2025 22:13:45 -0700
-Received: from kbuild by 1992f890471c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uF4R5-000GhT-0Q;
-	Wed, 14 May 2025 05:13:43 +0000
-Date: Wed, 14 May 2025 13:13:28 +0800
-From: kernel test robot <lkp@intel.com>
-To: Bharat Bhushan <bbhushan2@marvell.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 1/4 RESEND] crypto: octeontx2: add timeout for load_fvc
- completion poll
-Message-ID: <aCQmeDeJJZ4rFYbB@75fa4dc5d8b3>
+	s=arc-20240116; t=1747199962; c=relaxed/simple;
+	bh=xmNb52zrG4E27ByLWoVRVDykaFQ8CdtLS6iK9Dk3nV8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mEMOmoIVEs/QV/F6ZUMnpatmXCUQBI+Ke+lVQuWUTvOkI5QFJbUBxbkDK4AhnZpYa/iv2Jfdgd7azWTMU39CcsiLt1hI5b89nwyOisvWGXd/i3jt7/CVXd+s4iByHTsm65S1ajV5t4GpKOi0Tw+hOdH5RDg8iins8teYSU8lsMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dEn/m2PK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A890FC4CEEB;
+	Wed, 14 May 2025 05:19:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747199962;
+	bh=xmNb52zrG4E27ByLWoVRVDykaFQ8CdtLS6iK9Dk3nV8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=dEn/m2PKu0tjxDilPRowrR7HMf0oYqZe39uyPMbSUvqjkiVI3mIfiOAba5z35V6R7
+	 q9rfm89UvZjqHoXTT2VKbF6LZzpabQJeObboHdsKFfxu3UGqhVxUmUzpi96w334kS+
+	 dY2zcD10zKalVpMAfB4LWdqPksIuy+HJroF8eCKKcamuOtb4xkcY088r1/RjXu7vcf
+	 gA6xSBxpMiPWLKUkVoYmgHBR4KwzSUyAPcH1qmpOTneyKjGzW8epFTbRaLi4R7NTp0
+	 9iHiVJlmeaVwtvJBhTUmPoKhm5J4uVb2lLX3D5f6RcCz2VH4A+5LDXuSFrEmf21ucF
+	 Nb6+Rgu+oWTkw==
+From: Eric Biggers <ebiggers@kernel.org>
+To: linux-crypto@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Danny Tsen <dtsen@linux.ibm.com>,
+	Segher Boessenkool <segher@kernel.crashing.org>,
+	stable@vger.kernel.org
+Subject: [PATCH] crypto: powerpc/poly1305 - add depends on BROKEN for now
+Date: Tue, 13 May 2025 22:18:47 -0700
+Message-ID: <20250514051847.193996-1-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.49.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250514051043.3178659-2-bbhushan2@marvell.com>
+Content-Transfer-Encoding: 8bit
 
-Hi,
+From: Eric Biggers <ebiggers@google.com>
 
-Thanks for your patch.
+As discussed in the thread containing
+https://lore.kernel.org/linux-crypto/20250510053308.GB505731@sol/, the
+Power10-optimized Poly1305 code is currently not safe to call in softirq
+context.  Disable it for now.  It can be re-enabled once it is fixed.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Fixes: ba8f8624fde2 ("crypto: poly1305-p10 - Glue code for optmized Poly1305 implementation for ppc64le")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+---
+ arch/powerpc/lib/crypto/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+diff --git a/arch/powerpc/lib/crypto/Kconfig b/arch/powerpc/lib/crypto/Kconfig
+index ffa541ad6d5da..3f9e1bbd9905b 100644
+--- a/arch/powerpc/lib/crypto/Kconfig
++++ b/arch/powerpc/lib/crypto/Kconfig
+@@ -8,10 +8,11 @@ config CRYPTO_CHACHA20_P10
+ 	select CRYPTO_ARCH_HAVE_LIB_CHACHA
+ 
+ config CRYPTO_POLY1305_P10
+ 	tristate
+ 	depends on PPC64 && CPU_LITTLE_ENDIAN && VSX
++	depends on BROKEN # Needs to be fixed to work in softirq context
+ 	default CRYPTO_LIB_POLY1305
+ 	select CRYPTO_ARCH_HAVE_LIB_POLY1305
+ 	select CRYPTO_LIB_POLY1305_GENERIC
+ 
+ config CRYPTO_SHA256_PPC_SPE
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH 1/4 RESEND] crypto: octeontx2: add timeout for load_fvc completion poll
-Link: https://lore.kernel.org/stable/20250514051043.3178659-2-bbhushan2%40marvell.com
-
+base-commit: 57999ed153ed7e651afecbabe0e998e75cf2d798
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+2.49.0
 
 
