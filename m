@@ -1,114 +1,165 @@
-Return-Path: <stable+bounces-144502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90E78AB830C
-	for <lists+stable@lfdr.de>; Thu, 15 May 2025 11:40:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CE20AB838A
+	for <lists+stable@lfdr.de>; Thu, 15 May 2025 12:07:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 277EF9E101F
-	for <lists+stable@lfdr.de>; Thu, 15 May 2025 09:39:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 121F59E26F8
+	for <lists+stable@lfdr.de>; Thu, 15 May 2025 10:06:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E39EB29827B;
-	Thu, 15 May 2025 09:37:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="bfv+bjMQ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D41CA295DAB;
+	Thu, 15 May 2025 10:07:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BDEE297A7D;
-	Thu, 15 May 2025 09:37:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9283284662;
+	Thu, 15 May 2025 10:07:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747301841; cv=none; b=O40Aw63CVv8YWdq2ylR/fJ4j3xc5VT/q0Rnx5jLcYml6AcjSkxcNf0dCPfXrMqTsFN+BFI2z72DhlPD1UEuOGYl49JmIM8wrx7urHAD+cGudemc501P9PyB/P2N0aRoeyweR5jijq0JeQlb954ZyOv230UR/taMHSMGnesaxqgU=
+	t=1747303629; cv=none; b=Kw/Lg4CtmMr7lIdbhubwzCQwl1fC7/UUcgr0PB0wh1Rod+qHWoSmA7gpXrOlQj5t1mv3sIjCOgYJ8C2x9mdZbdbnrsWYe1o1p7BHwmsSt6+sOywwF6WIGhTR175LW583/CF6WvMzlTserwslh0GFOcC/xxXKxG/HP5K31fPSPcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747301841; c=relaxed/simple;
-	bh=emi+aNYU4mWKlAhtTRSNDNOWFzQ2hO5aFxBe1DQ/olM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Wt4fuMHPMXVTU8KxO9JZgBn+p+S6uG6jz8LZa5AAnoFMLx40TaCjciTBwqxgcuggsgcLcNYbLwm8Y72XM0k3vqzo6RBD+NDQgYkFmQ5WlpQ1ss1OYdbyXtRwm2dnBQ5D409nv4SaghAaIL1orvo5XTdSUabp7sVwq2BrpQafn28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=bfv+bjMQ; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id A3E1B40E01ED;
-	Thu, 15 May 2025 09:37:14 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id FmpDjZ3TgoGK; Thu, 15 May 2025 09:37:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1747301830; bh=5IpVI1yeltgyxQx2/jTirdFyelhmgHjmGnukJe749fg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bfv+bjMQ/MbrUS7mXLtAa2m5h+dzd408M0x08KgRppZaGiemrey/08ggnAl74tpmj
-	 UANJEkxluqyV3/pHRDSCctwdw7vqxnEwk0h3r5Pad3wVqht2iausL0fCLO05XqpI11
-	 ESkpHrHfOg8Vq5QgYPJsY/PDi576nyyQ67xedVxAaRMY77OxOjjWHZB7PjL49k4GSt
-	 0cZUV8AeXHbAm2lvgxUVcwHWw6TEMYwrnuPpwKVXX5V1iAqYZyvfRinIlS+zRn318r
-	 YjGaoHHK1jzE9Y7s6CSkjctvjYA6xbJ+OM3okeVmD0UppgDGcZLrX71eiywW+1nuF4
-	 pxBZOARHJ2yAf09JjdM6EByTeostF59OyC43RbW6xAe68yWaHNRCzZ11gFN+8wVpkv
-	 hmQWbLzoy9KsQIQ9ijwJB5fhh6jSCdmOFolFmcCh3HRuw1gmZ6LiN6/9YNNfm3HtxE
-	 q4zM8Qwf34JW+DgEAjq4/bTEDLkMc2YKV3kUh6miFY3qsLhaUjMcB+w1yLUPTkYcIJ
-	 KXCyl6bNjWRiAdVC0uTX8/dZ7lLvi1xmw6pDsqqzaTXGX+6sd9+Ky2O/yt0QD5gLfD
-	 u/qa7wrPMF8+c9nR2u6IwLrw821f0WZf+zRMkRq7IhtdrI0H+2P7Q4nvVU5jEnoDN0
-	 hRPJnZ2HKW1+RcVTYPMuW1A8=
-Received: from zn.tnic (p579690ee.dip0.t-ipconnect.de [87.150.144.238])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 75A2B40E0196;
-	Thu, 15 May 2025 09:37:00 +0000 (UTC)
-Date: Thu, 15 May 2025 11:36:52 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Cc: Suraj Jitindar Singh <surajjs@amazon.com>, linux-kernel@vger.kernel.org,
-	x86@kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] x86/bugs: Don't warn when overwriting
- retbleed_return_thunk with srso_return_thunk
-Message-ID: <20250515093652.GBaCW1tARiE2jkVs_d@fat_crate.local>
-References: <20250514220835.370700-1-surajjs@amazon.com>
- <20250514222507.GKaCUYQ9TVadHl7zMv@fat_crate.local>
- <20250514233022.t72lijzi4ipgmmpj@desk>
+	s=arc-20240116; t=1747303629; c=relaxed/simple;
+	bh=IG4wFVTijQlszqMFKwdjV9K2k4N/Z+mxGNA1k/olemk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=P6V3G+g7rcGqi/+byPfiq5h3xBtHD6mzG8v/F133pLHBdlP1UOUSump73NDkIZfn5qkfWITttDxbFC39vHtFPnvPX+0On5GRTQ/AORUhEYubXjG9zpJi/NjSiDObUM/ejH0hjrrwpLvTycFR4Q/c/cckIeP8vI1W1/4NxSNIT70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5097114BF;
+	Thu, 15 May 2025 03:06:55 -0700 (PDT)
+Received: from [10.1.32.187] (XHFQ2J9959.cambridge.arm.com [10.1.32.187])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 73AA93F673;
+	Thu, 15 May 2025 03:07:05 -0700 (PDT)
+Message-ID: <bac0d8e2-6219-4eb2-b4c8-b82b208808b5@arm.com>
+Date: Thu, 15 May 2025 11:07:04 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250514233022.t72lijzi4ipgmmpj@desk>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] arm64: Check pxd_leaf() instead of !pxd_table() while
+ tearing down page tables
+Content-Language: en-GB
+To: David Hildenbrand <david@redhat.com>, Dev Jain <dev.jain@arm.com>,
+ catalin.marinas@arm.com, will@kernel.org
+Cc: anshuman.khandual@arm.com, mark.rutland@arm.com,
+ yang@os.amperecomputing.com, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+References: <20250515063450.86629-1-dev.jain@arm.com>
+ <332ecda7-14c4-4dc3-aeff-26801b74ca04@redhat.com>
+ <4904d02f-6595-4230-a321-23327596e085@arm.com>
+ <6fe7848c-485e-4639-b65c-200ed6abe119@redhat.com>
+ <35ef7691-7eac-4efa-838d-c504c88c042b@arm.com>
+ <c06930f0-f98c-4089-aa33-6789b95fd08f@redhat.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <c06930f0-f98c-4089-aa33-6789b95fd08f@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, May 14, 2025 at 04:30:22PM -0700, Pawan Gupta wrote:
-> This was discussed during the mitigation, and pr_warn() was chosen because
-> it was not obvious that srso mitigation also mitigates retbleed. (On a
-> retrospect, there should have been a comment about it).
+On 15/05/2025 09:53, David Hildenbrand wrote:
+> On 15.05.25 10:47, Dev Jain wrote:
+>>
+>>
+>> On 15/05/25 2:06 pm, David Hildenbrand wrote:
+>>> On 15.05.25 10:22, Dev Jain wrote:
+>>>>
+>>>>
+>>>> On 15/05/25 1:43 pm, David Hildenbrand wrote:
+>>>>> On 15.05.25 08:34, Dev Jain wrote:
+>>>>>> Commit 9c006972c3fe removes the pxd_present() checks because the caller
+>>>>>> checks pxd_present(). But, in case of vmap_try_huge_pud(), the caller
+>>>>>> only
+>>>>>> checks pud_present(); pud_free_pmd_page() recurses on each pmd through
+>>>>>> pmd_free_pte_page(), wherein the pmd may be none.
+>>>>> The commit states: "The core code already has a check for pXd_none()",
+>>>>> so I assume that assumption was not true in all cases?
+>>>>>
+>>>>> Should that one problematic caller then check for pmd_none() instead?
+>>>>
+>>>>    From what I could gather of Will's commit message, my interpretation is
+>>>> that the concerned callers are vmap_try_huge_pud and vmap_try_huge_pmd.
+>>>> These individually check for pxd_present():
+>>>>
+>>>> if (pmd_present(*pmd) && !pmd_free_pte_page(pmd, addr))
+>>>>      return 0;
+>>>>
+>>>> The problem is that vmap_try_huge_pud will also iterate on pte entries.
+>>>> So if the pud is present, then pud_free_pmd_page -> pmd_free_pte_page
+>>>> may encounter a none pmd and trigger a WARN.
+>>>
+>>> Yeah, pud_free_pmd_page()->pmd_free_pte_page() looks shaky.
+>>>
+>>> I assume we should either have an explicit pmd_none() check in
+>>> pud_free_pmd_page() before calling pmd_free_pte_page(), or one in
+>>> pmd_free_pte_page().
+>>>
+>>> With your patch, we'd be calling pte_free_kernel() on a NULL pointer,
+>>> which sounds wrong -- unless I am missing something important.
+>>
+>> Ah thanks, you seem to be right. We will be extracting table from a none
+>> pmd. Perhaps we should still bail out for !pxd_present() but without the
+>> warning, which the fix commit used to do.
+> 
+> Right. We just make sure that all callers of pmd_free_pte_page() already check
+> for it.
+> 
+> I'd just do something like:
 
-Why is that important?
+I just reviewed the patch and had the same feedback as David. I agree with the
+patch below, with some small mods...
 
-We have multiple cases where a mitigation strategy addresses multiple attacks.
+> 
+> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+> index 8fcf59ba39db7..e98dd7af147d5 100644
+> --- a/arch/arm64/mm/mmu.c
+> +++ b/arch/arm64/mm/mmu.c
+> @@ -1274,10 +1274,8 @@ int pmd_free_pte_page(pmd_t *pmdp, unsigned long addr)
+>  
+>         pmd = READ_ONCE(*pmdp);
+>  
+> -       if (!pmd_table(pmd)) {
+> -               VM_WARN_ON(1);
+> -               return 1;
+> -       }
+> +       VM_WARN_ON(!pmd_present(pmd));
+> +       VM_WARN_ON(!pmd_table(pmd));
 
-> The conclusion was to make the srso and retbleed relationship clear and
-> then take care of the pr_warn().
+You don't need both of these warnings; pmd_table() is only true if the pmd is
+present (well actually only if it's _valid_ which is more strict than present),
+so the second one is sufficient on its own.
 
-So let's ask ourselves: who is really going to see what single-line warning?
+>  
+>         table = pte_offset_kernel(pmdp, addr);
+>         pmd_clear(pmdp);
+> @@ -1305,7 +1303,8 @@ int pud_free_pmd_page(pud_t *pudp, unsigned long addr)
 
-What are we *actually* trying to prevent here?
+Given you are removing the runtime check and early return in
+pmd_free_pte_page(), I think you should modify this function to use the same
+style too.
 
-How about a big fat splat at least if we're really trying to prevent something
-nasty which causes a panic on warn...?
+>         next = addr;
+>         end = addr + PUD_SIZE;
+>         do {
+> -               pmd_free_pte_page(pmdp, next);
+> +               if (pmd_present(*pmdp))
 
-Thx.
+question: I wonder if it is better to use !pmd_none() as the condition here? It
+should either be none or a table at this point, so this allows the warning in
+pmd_free_pte_page() to catch more error conditions. No strong opinion though.
 
--- 
-Regards/Gruss,
-    Boris.
+Thanks,
+Ryan
 
-https://people.kernel.org/tglx/notes-about-netiquette
+> +                       pmd_free_pte_page(pmdp, next);
+>         } while (pmdp++, next += PMD_SIZE, next != end);
+>  
+>         pud_clear(pudp);
+> 
+> 
+
 
