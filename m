@@ -1,124 +1,112 @@
-Return-Path: <stable+bounces-144535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9440FAB8807
-	for <lists+stable@lfdr.de>; Thu, 15 May 2025 15:33:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CA6BAB8842
+	for <lists+stable@lfdr.de>; Thu, 15 May 2025 15:40:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F1151BC41B6
-	for <lists+stable@lfdr.de>; Thu, 15 May 2025 13:32:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 696894C4D3D
+	for <lists+stable@lfdr.de>; Thu, 15 May 2025 13:40:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BB0672634;
-	Thu, 15 May 2025 13:31:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b="EGM4ScRm"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74EE813B284;
+	Thu, 15 May 2025 13:40:09 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC5472618
-	for <stable@vger.kernel.org>; Thu, 15 May 2025 13:31:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 445454B1E52;
+	Thu, 15 May 2025 13:40:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747315918; cv=none; b=ZB6eJ+OUWUHqSm3nHkRDnNBsz8hTXhpUIGY/ep8pGELvqDSGkh++oDA0eWuVh8SrELIQCf375w3bMR9Z4HLYzAOEHgLP4t74weFmiHccmlCG6tkp2XHtYv1bb0f2igZjhHr86+2BxXTjfn2jGpg2wMSMYwonmYTdMbHAuQeeaU8=
+	t=1747316409; cv=none; b=YjivjaKnn45R1Ra8aJXTiwFbhGiwz7ZxpF0SnZO++ovQmu6raZGmqxW6JABs0TeGhfWvLIqY08PkbgQ+a+olc50HWee4Xbtt9FfnorYQiybCqD0pAx4Bl414yOAkf3wxEEicASjSamvKAyCs26jYEc2LI0l5kV0WArCfLIbIUkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747315918; c=relaxed/simple;
-	bh=Y8GGo2AMVQLbxKDyPRfMjRfAQBjFC7gN/PCZcDvLNIo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TA3xwhm+sDtMk0Q4FyipISCIMlBeUCLx0TIUQ8F6B7zjPnCSlfVH3j09R+SOZ5GfXYGyvMRMHVnSV3AgFqSyO69XWrx7oPEPxmLQULl7KuUaIQiV3KDBie2E2E28IPWl6VDmXQ3Jvshq2fpTFf5IpGbmNE/3dkp0efzv9W1mJ24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com; spf=pass smtp.mailfrom=ciq.com; dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b=EGM4ScRm; arc=none smtp.client-ip=209.85.222.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ciq.com
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-7c5568355ffso76931585a.0
-        for <stable@vger.kernel.org>; Thu, 15 May 2025 06:31:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ciq.com; s=s1; t=1747315916; x=1747920716; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=idQ7sd0YlO6Ua6mQ5kuc0PUAbrEds8+KAPjDg8rCdTM=;
-        b=EGM4ScRmj1n/VlfczGUQ5cHVcYCC+BIk19rooYOGJRVROie3Do3pZ2Ri7j72vmyZmJ
-         7xtWF78/oO15hpoBEEtWfxy18UtVRE3npxpuKGGy12NctkfAOn0hf4dEUYds4Bwe8UGC
-         lIReRIQ12AhEQT/Qw/kIIjZK60VnuDpvB2olS4Pcc6tkXuMBQN13WYkBZO9HpR1lEiB5
-         /VobMaDmnpGygaUzGMxIc8ztKjvrL8m9w7jrEws4l2+ta8b/PLKBMGuHx4oi62eXuDGZ
-         jpCLEiduTnPE2vOrdapI+Uy4dQjya1Kww5LAHlCTPhZyAdHdOqZKiodUrncE7LcP0SbC
-         fXRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747315916; x=1747920716;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=idQ7sd0YlO6Ua6mQ5kuc0PUAbrEds8+KAPjDg8rCdTM=;
-        b=QN8Len2RagHHs3GgYLPpc7MQQHsyX9tGGLCc8KCRaeUoEpXt/LovjGvQcw77uXrFCi
-         qUJKH2fvOUSzQbKifrnWJf3b9oLZq6He3vO8tiUlhCTVTfMIw+Mt8LO4Ab1/hIboAn0w
-         aZBskYVlZ5FGznkqCKNZlJHth3kuXcc7yaZ6coXdtaaf8a97VvqL+mkdsmtYNjzV5ep+
-         aYJUndioYB8ntiAJjF10qHxcDFMfkvvbjgHDk7fnUJXnRFndTsOLeEOxHqx2SwZOd3Fv
-         TtybddPk39c86MGVKLNSd5TE8O7hUJXBjJ4VX4hTKt+Nhk1eQPWhE3kZs1+kPOKbF/zR
-         V7Vg==
-X-Gm-Message-State: AOJu0Ywb5lrwlM/+JUYfl0mwgYyIv+1xSR/7Z1rGpxFvECB33gviGN8G
-	YbqK1xaf3FwLkvLdvWNpkiGZOkOhPtMnXRatpXlqLlc0fUgl3VF1kqvlWyKBBKi3bBCzycSz6mF
-	GxTLizVpE6Pg6BKz/NnVhNcp6ND1/9SI26Sco0A==
-X-Gm-Gg: ASbGncv+44Pf8eMHT9A03+L2GxqNZVQw1qQpuu1wxr+1hA+irXKshMOcikf4ehbC3pi
-	jxd7cfKg1D9N4/Tlzkioh+ypubEIzwS8sYOayE7BOIu7514RHZ6i4oUC8G+3a1zTQA8XEQF3NQR
-	cnKG3g8yV7NSLJsChaFU9C91lEGk7MwoOt
-X-Google-Smtp-Source: AGHT+IFftrViizvwzo527CdaZ+aGd3PB2+/eA4itoniQfclfljSm+WYpnBXwFNoTgGMvKSyjqiFv6xwETd/kIumJRy0=
-X-Received: by 2002:a05:620a:2445:b0:7c7:b4ba:ebf9 with SMTP id
- af79cd13be357-7cd287e16bemr972802585a.22.1747315915661; Thu, 15 May 2025
- 06:31:55 -0700 (PDT)
+	s=arc-20240116; t=1747316409; c=relaxed/simple;
+	bh=bLsm45s9D0qARSqkBSIJVd3zYZoqeCxjGRV/ULXVIrA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ny6r4n7qe3PgZiqGRquCvRZqiidcLcZL0HGKG0M2Cuv5A/JGdlgG/G1xd7/z0lWMe5Z52v9JSC994GP3DPOmFQSbGi7ZSzlQlpS/SGfaa3ENReeAQb/m6SvQC8awzeJsztlj/oHSQlR0Ehg9985CVEK0g/FkwE2kSEr85U+5Mjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [124.16.141.245])
+	by APP-03 (Coremail) with SMTP id rQCowAAXxUGm7iVorh3cFQ--.28807S2;
+	Thu, 15 May 2025 21:39:54 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: mustafa.ismail@intel.com,
+	tatyana.e.nikolova@intel.com,
+	jgg@ziepe.ca,
+	leon@kernel.org
+Cc: linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] RDMA/irdma: puda: Clear entries after allocation to ensure clean state
+Date: Thu, 15 May 2025 21:39:28 +0800
+Message-ID: <20250515133929.1222-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.42.0.windows.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250514125624.330060065@linuxfoundation.org>
-In-Reply-To: <20250514125624.330060065@linuxfoundation.org>
-From: Brett Mastbergen <bmastbergen@ciq.com>
-Date: Thu, 15 May 2025 09:31:44 -0400
-X-Gm-Features: AX0GCFt_T4qmlAP_NoDOQdZAbnEbFphd6WaqCYxvy8tpdv3fkVAu8JdgYSY-VoQ
-Message-ID: <CAOBMUvhtrfhJ7s2s6nL3dSoq2a3YwrHV60eRQ5e4si6Qhu3tdA@mail.gmail.com>
-Subject: Re: [PATCH 6.12 000/184] 6.12.29-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowAAXxUGm7iVorh3cFQ--.28807S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7uw45Zr18Gw4rur18uF1kuFg_yoW8Gry3pa
+	yDJr1q9rZ0qa1UWa1DG393CFW3Xa17Gr9FvrZFk3s3ZF45Jr10qF1kGryj9F4kGr1xuw4x
+	Xrnrtr15C3Wrur7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkG14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r1j
+	6r4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
+	JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67
+	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIY
+	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14
+	v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8
+	JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x0JUf8nOUUU
+	UU=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCQ8DA2glvjRVYQAEsx
 
-On Wed, May 14, 2025 at 9:06=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.12.29 release.
-> There are 184 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Fri, 16 May 2025 12:55:38 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.12.29-rc2.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.12.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+The irdma_puda_send() calls the irdma_puda_get_next_send_wqe() to get
+entries, but does not clear the entries after the function call. This
+could lead to wqe data inconsistency. A proper implementation can be
+found in irdma_uk_send().
 
-Builds successfully.  Boots and works on qemu and Dell XPS 15 9520 w/
-Intel Core i7-12600H
+Add the irdma_clr_wqes() after irdma_puda_get_next_send_wqe(). Add the
+headfile of the irdma_clr_wqes().
 
-Tested-by: Brett Mastbergen <bmastbergen@ciq.com>
+Fixes: a3a06db504d3 ("RDMA/irdma: Add privileged UDA queue implementation")
+Cc: stable@vger.kernel.org # v5.14
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+ drivers/infiniband/hw/irdma/puda.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Thanks,
-Brett
+diff --git a/drivers/infiniband/hw/irdma/puda.c b/drivers/infiniband/hw/irdma/puda.c
+index 7e3f9bca2c23..1d113ad05500 100644
+--- a/drivers/infiniband/hw/irdma/puda.c
++++ b/drivers/infiniband/hw/irdma/puda.c
+@@ -7,6 +7,7 @@
+ #include "protos.h"
+ #include "puda.h"
+ #include "ws.h"
++#include "user.h"
+ 
+ static void irdma_ieq_receive(struct irdma_sc_vsi *vsi,
+ 			      struct irdma_puda_buf *buf);
+@@ -444,6 +445,8 @@ int irdma_puda_send(struct irdma_sc_qp *qp, struct irdma_puda_send_info *info)
+ 	if (!wqe)
+ 		return -ENOMEM;
+ 
++	irdma_clr_wqes(qp, wqe_idx);
++
+ 	qp->qp_uk.sq_wrtrk_array[wqe_idx].wrid = (uintptr_t)info->scratch;
+ 	/* Third line of WQE descriptor */
+ 	/* maclen is in words */
+-- 
+2.42.0.windows.2
+
 
