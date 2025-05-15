@@ -1,132 +1,150 @@
-Return-Path: <stable+bounces-144550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89769AB8F5E
-	for <lists+stable@lfdr.de>; Thu, 15 May 2025 20:53:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AF35AB8FED
+	for <lists+stable@lfdr.de>; Thu, 15 May 2025 21:23:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F318B500792
-	for <lists+stable@lfdr.de>; Thu, 15 May 2025 18:53:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12AFD1BC5B35
+	for <lists+stable@lfdr.de>; Thu, 15 May 2025 19:23:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4F5429B766;
-	Thu, 15 May 2025 18:52:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CADD25C6FA;
+	Thu, 15 May 2025 19:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="M37H/kvt"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="eQelwtN6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vs1-f73.google.com (mail-vs1-f73.google.com [209.85.217.73])
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9DB229B22C
-	for <stable@vger.kernel.org>; Thu, 15 May 2025 18:52:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 581B0191F6C
+	for <stable@vger.kernel.org>; Thu, 15 May 2025 19:22:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747335167; cv=none; b=LDmYX3eTtdHnnuvR5XSzY1C9zpNQtsGKGzfN1KBZHc4q6GrO/kjN4+y4jYArSZO+0eHAY03wXBPGM1z/LGFGkyX1qrVxE8u5G6LIQRKNelmH35FExTtIIk1R3FhN1hRnjejW+2sFxmdRt2f3nTsY6cAueqwBa+yLBZ+fB65oiew=
+	t=1747336978; cv=none; b=KSLGkTaSJLo75pXnq2cIkANq+O/gqwIBabAVALmOT5ty4WbH5uMems0A4FQ5vOInA8rDqPT8fG6erWidRw5ECz0otOoGN3rrMfgDpV575pQLaevFYoPqn0qI4cAONfDAGEJK4uqkopNfkqDyXDt0nbYw6d6FjTjPxBqLh3WLIxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747335167; c=relaxed/simple;
-	bh=0LjNKhbfmAib3/bCGGrxaNTDj6/FhN1QTzDXt9i+2Dg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=GlZm7CV9VVCXmHVPSNoKcxBbx8VDf6Z8cfNTkdzzxfKaTi9qXyuboe+8gCi05HqguaB1kLng3lDyE4tfTFIsCGqKQcrOlkGa8NIY7xLQJJNGA31luq4hcgFXcWQnMCxGWCoiNjU4frVtM8yZC2HbJRtHJLAXL/SjcHFHcQ+8s5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--royluo.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=M37H/kvt; arc=none smtp.client-ip=209.85.217.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--royluo.bounces.google.com
-Received: by mail-vs1-f73.google.com with SMTP id ada2fe7eead31-4df9bc2037bso189622137.3
-        for <stable@vger.kernel.org>; Thu, 15 May 2025 11:52:45 -0700 (PDT)
+	s=arc-20240116; t=1747336978; c=relaxed/simple;
+	bh=96N46iqOIStqCIhFVpc7U2TEDGtEL6hnmfMs56TVuk0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WTAb4VkEilAPKuf65m9IilFSuOp4d7uxX8Pxjoxci28KSrGJLlWH/kNQmF11GiWl6aa7NAZO4VIL3KsL9aa7fA9afTNZIjdvZ2woFPqiZ1CWa7Zz6QCgHK4mSq6M2nPbymlgUYeacoD7cTFzfTh+5kZXroECmLUEvg6se1/e4dI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=eQelwtN6; arc=none smtp.client-ip=209.85.210.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-74248a3359fso1486012b3a.2
+        for <stable@vger.kernel.org>; Thu, 15 May 2025 12:22:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1747335165; x=1747939965; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=DWyXRAdP87qgljLxl+HMaPV4zDEKZVcFQ9p3OniQnHM=;
-        b=M37H/kvt3HAzYxRy423MGjcicT9FxMy76qDD9tflwllQp1ur6qZIwOIs+p2hnYdtvL
-         /o2PAOGLM1aSU8tBsctPeuJoP6Svs7wwJ4XGflNFLOQPpuHrG82MXffzYuGPjcNsPxRw
-         SUrek7mTeAsfOA9JjCjPUjPnY8XeuHeABA2luMC8AzwjtaUdPBuGdLY2Bmbr0jX0UIvr
-         F18s3C+D5V1+lI6FKVLOnmyb+sks5gAgyBR86o14311U+hfGNG/xtm58wI2h4Bagh3e+
-         wXT78oA1D8XqUiZ38NS6dhflqUp4ELMYiSO4su7bc7xybvoBi0Q4sh1y8IJ/qFvA+up3
-         GR2Q==
+        d=broadcom.com; s=google; t=1747336976; x=1747941776; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fyWm0rF9eCaDvUShSNc7s++hP2H/Glv+MtPcJ7Ax5f0=;
+        b=eQelwtN6xcwH2rQghkkeaj12hIAqXyv8M9NeiQZeO4eL947l4e5ddGG7KzLFavkZw/
+         oj/uEVfSCYXaDRymncHTSShDyQRDZJNBuMap4r7IMp+57Rzj0ZjtiOTqDvu2XO8RWQg0
+         hxJG2TX0vZXZRB1vV7z29+2Ao3ud3jfezDEpU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747335165; x=1747939965;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DWyXRAdP87qgljLxl+HMaPV4zDEKZVcFQ9p3OniQnHM=;
-        b=MysusyEJANcFlerfV/+tUjYXIvQhV/w2+tOMSso/jRDglXFHwmoSjg8yD1kaD2x81J
-         cIrHIgje39/FdT+zF5i+tUlQrpiH2kIhpzrv+6eh3/Ls9Xahz/2ooUBZkDCfA4hG3B8H
-         kB4b3YeVJ1Jl3nOo+w5bVtb+SM818erkLuYybyf419jbCAcMMBjpkpHAiob4y8gswFUR
-         FA4cEJAdJiH7IN9ZonTVJ4go6k1VzC7LlHIyRFEzutvvDtc8BX6m0Fwu9+UrCFm9Rlxf
-         quwDG4ZsIGp7jseQf6+tF9WeaLz/06yeBrHU0bXkDCnPvpASyyB8AXDjxUt5Rd3+ESkG
-         dr1w==
-X-Gm-Message-State: AOJu0Yx9bEqunrXzMODGuaOG+6Dc8bkcGSjD9UEsMv41BOML2jHE9eFe
-	UibX+MsdyF/A5Z9t/u/VM7M7mrYLK2HCf6asQu6N6MT77GQl82ViWk3IJJc7IWOnAtQAMPQrXxz
-	/nww4/Q==
-X-Google-Smtp-Source: AGHT+IG22pOiWebGnpFU30OwudK3lZF8XV0VjtcFcbirfzEnZEJ1trZz38ISLvHcqDC7fMy1q+bzyq8op8g=
-X-Received: from uabji15.prod.google.com ([2002:a05:6130:694f:b0:862:24ba:d6a3])
- (user=royluo job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6102:a54:b0:4df:8259:e99
- with SMTP id ada2fe7eead31-4dfa6aa8d4emr1466532137.1.1747335164831; Thu, 15
- May 2025 11:52:44 -0700 (PDT)
-Date: Thu, 15 May 2025 18:52:27 +0000
-In-Reply-To: <20250515185227.1507363-1-royluo@google.com>
+        d=1e100.net; s=20230601; t=1747336976; x=1747941776;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fyWm0rF9eCaDvUShSNc7s++hP2H/Glv+MtPcJ7Ax5f0=;
+        b=WZ1Imfe06r45KKfWEE4OEPMMnJIrFPqUin3XPzzwXQi8G/kRApBs3rq4+c5QcUJut/
+         27zbmPWQkKejw0N17kur4BuG87jYvvIyfBeNmOVlrpqRcWrgyvsFFMfWmCUzFfpX7+WT
+         MbI4j8LA/YSDuhrC7geWewtc+UNdPqb/6pzTZs9DSxp3KfEzX+McZiMlegHeqfiwcsh0
+         G4FAyiQaKT7Wtug03BmHASdhZhkTmJ8rR/rG3PLxrq+N1l9Y9oXBzQ7YoIxmpYH6O7Yn
+         IZzRIU8UzXfSOQaHGa8ntE02RL2UbgdwoJWcGQZnrdYki4n6s7k+FxCD28a9S6BZJRMl
+         Q18g==
+X-Forwarded-Encrypted: i=1; AJvYcCX/O5+U7BIYLlXpecL0wIYdpo7BGjgQE7g4QGrDODNu1PB6EdV3JZv7rfcCnqsyrYX6zq0Tly4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzxOIA1PNrGf4YOj3Q8GOdnSyD3UXmWVBCN3zJvzTDyrUda983m
+	Wd+/LCBvKEId3tAFEsPOmqKjs2VwXzs51whve/Bkd1CzyfEdhCCW2bek9vrTe6dyQA==
+X-Gm-Gg: ASbGncuXOrJs2odx+zq/W5CnCisPXa6VA0bLLzlMWvzHRuIweI8cINefhwozcp4+tqT
+	s10dczOQtAj+AfBAgKPuwy0HR3LGAbMiRPAYg6NvZ7c7dDY6Mxhva9FIh6TKQiwzQE60dFWWMV/
+	5zHct/bbVKQJRdw5dGxwX/i5OIjKKUrbBCqTVXnCnS50IGAWHNrXIJkH+4edZbikywY+Oms8p4f
+	a4bg/gzc65yMO6Wl+UzeS4TD6Oh98Z5wT9N6N8qPMr5HHGwEID4tuacoM+g6x7nkoT5Aec6ZNr3
+	nMVv7JQ4mCIjPLHQisHau20n1ywcGEt6Aib/xv1AnWnvOFQGtGThSTKFssO3unHjyM15P9qHHL3
+	b
+X-Google-Smtp-Source: AGHT+IGjWfUdXhgZL/hXJdI9mgEh2fOX9YaRz+9pHCBuN/jVr88KABTo2oYP+8cK+POae/uJK9WdVQ==
+X-Received: by 2002:a05:6a21:3289:b0:215:df3d:d56 with SMTP id adf61e73a8af0-21621902575mr851830637.21.1747336976503;
+        Thu, 15 May 2025 12:22:56 -0700 (PDT)
+Received: from ubuntu.. ([192.19.161.250])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b26eb0a0b19sm255222a12.74.2025.05.15.12.22.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 May 2025 12:22:55 -0700 (PDT)
+From: Ronak Doshi <ronak.doshi@broadcom.com>
+To: netdev@vger.kernel.org
+Cc: Ronak Doshi <ronak.doshi@broadcom.com>,
+	stable@vger.kernel.org,
+	Guolin Yang <guolin.yang@broadcom.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Ronghua Zhang <ronghua@vmware.com>,
+	Shreyas Bhatewara <sbhatewara@vmware.com>,
+	Bhavesh Davda <bhavesh@vmware.com>,
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH net v2] vmxnet3: update MTU after device quiesce
+Date: Thu, 15 May 2025 19:04:56 +0000
+Message-ID: <20250515190457.8597-1-ronak.doshi@broadcom.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250515185227.1507363-1-royluo@google.com>
-X-Mailer: git-send-email 2.49.0.1112.g889b7c5bd8-goog
-Message-ID: <20250515185227.1507363-3-royluo@google.com>
-Subject: [PATCH v2 2/2] usb: dwc3: Force full reset on xhci removal
-From: Roy Luo <royluo@google.com>
-To: royluo@google.com, mathias.nyman@intel.com, quic_ugoswami@quicinc.com, 
-	Thinh.Nguyen@synopsys.com, gregkh@linuxfoundation.org, 
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-During an xhci host controller reset (via `USBCMD.HCRST`), reading DWC3
-registers can return zero instead of their actual values. This applies
-not only to registers within the xhci memory space but also those in
-the broader DWC3 IP block.
+Currently, when device mtu is updated, vmxnet3 updates netdev mtu, quiesces
+the device and then reactivates it for the ESXi to know about the new mtu.
+So, technically the OS stack can start using the new mtu before ESXi knows
+about the new mtu.
 
-By default, the xhci driver doesn't wait for the reset handshake to
-complete during teardown. This can cause problems when the DWC3 controller
-is operating as a dual role device and is switching from host to device
-mode, the invalid register read caused by ongoing HCRST could lead to
-gadget mode startup failures and unintended register overwrites.
-
-To mitigate this, enable xhci-full-reset-on-remove-quirk to ensure that
-xhci_reset() completes its full reset handshake during xhci removal.
+This can lead to issues for TSO packets which use mss as per the new mtu
+configured. This patch fixes this issue by moving the mtu write after
+device quiesce.
 
 Cc: stable@vger.kernel.org
-Fixes: 6ccb83d6c497 ("usb: xhci: Implement xhci_handshake_check_state() helper")
-Signed-off-by: Roy Luo <royluo@google.com>
+Fixes: d1a890fa37f2 ("net: VMware virtual Ethernet NIC driver: vmxnet3")
+Signed-off-by: Ronak Doshi <ronak.doshi@broadcom.com>
+Acked-by: Guolin Yang <guolin.yang@broadcom.com>
+Changes v1-> v2:
+  Moved MTU write after destroy of rx rings
 ---
- drivers/usb/dwc3/host.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/vmxnet3/vmxnet3_drv.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/dwc3/host.c b/drivers/usb/dwc3/host.c
-index b48e108fc8fe..ea865898308f 100644
---- a/drivers/usb/dwc3/host.c
-+++ b/drivers/usb/dwc3/host.c
-@@ -126,7 +126,7 @@ static int dwc3_host_get_irq(struct dwc3 *dwc)
+diff --git a/drivers/net/vmxnet3/vmxnet3_drv.c b/drivers/net/vmxnet3/vmxnet3_drv.c
+index 3df6aabc7e33..c676979c7ab9 100644
+--- a/drivers/net/vmxnet3/vmxnet3_drv.c
++++ b/drivers/net/vmxnet3/vmxnet3_drv.c
+@@ -3607,8 +3607,6 @@ vmxnet3_change_mtu(struct net_device *netdev, int new_mtu)
+ 	struct vmxnet3_adapter *adapter = netdev_priv(netdev);
+ 	int err = 0;
  
- int dwc3_host_init(struct dwc3 *dwc)
- {
--	struct property_entry	props[6];
-+	struct property_entry	props[7];
- 	struct platform_device	*xhci;
- 	int			ret, irq;
- 	int			prop_idx = 0;
-@@ -182,6 +182,9 @@ int dwc3_host_init(struct dwc3 *dwc)
- 	if (DWC3_VER_IS_WITHIN(DWC3, ANY, 300A))
- 		props[prop_idx++] = PROPERTY_ENTRY_BOOL("quirk-broken-port-ped");
+-	WRITE_ONCE(netdev->mtu, new_mtu);
+-
+ 	/*
+ 	 * Reset_work may be in the middle of resetting the device, wait for its
+ 	 * completion.
+@@ -3622,6 +3620,7 @@ vmxnet3_change_mtu(struct net_device *netdev, int new_mtu)
  
-+	if (dwc->dr_mode == USB_DR_MODE_OTG)
-+		props[prop_idx++] = PROPERTY_ENTRY_BOOL("xhci-full-reset-on-remove-quirk");
-+
- 	if (prop_idx) {
- 		ret = device_create_managed_software_node(&xhci->dev, props, NULL);
- 		if (ret) {
+ 		/* we need to re-create the rx queue based on the new mtu */
+ 		vmxnet3_rq_destroy_all(adapter);
++		WRITE_ONCE(netdev->mtu, new_mtu);
+ 		vmxnet3_adjust_rx_ring_size(adapter);
+ 		err = vmxnet3_rq_create_all(adapter);
+ 		if (err) {
+@@ -3638,6 +3637,8 @@ vmxnet3_change_mtu(struct net_device *netdev, int new_mtu)
+ 				   "Closing it\n", err);
+ 			goto out;
+ 		}
++	} else {
++		WRITE_ONCE(netdev->mtu, new_mtu);
+ 	}
+ 
+ out:
 -- 
-2.49.0.1112.g889b7c5bd8-goog
+2.45.2
 
 
