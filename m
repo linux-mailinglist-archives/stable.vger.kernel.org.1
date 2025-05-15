@@ -1,133 +1,105 @@
-Return-Path: <stable+bounces-144542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C0B8AB8BB9
-	for <lists+stable@lfdr.de>; Thu, 15 May 2025 17:59:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1205AB8C2A
+	for <lists+stable@lfdr.de>; Thu, 15 May 2025 18:18:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30FC04E3279
-	for <lists+stable@lfdr.de>; Thu, 15 May 2025 15:58:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEDABA06D88
+	for <lists+stable@lfdr.de>; Thu, 15 May 2025 16:17:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5691621D584;
-	Thu, 15 May 2025 15:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FB6D21B908;
+	Thu, 15 May 2025 16:18:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="oJGDMdxX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PAU/zj6I"
 X-Original-To: stable@vger.kernel.org
-Received: from 003.mia.mailroute.net (003.mia.mailroute.net [199.89.3.6])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0E221B91F;
-	Thu, 15 May 2025 15:58:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.3.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCA43145323;
+	Thu, 15 May 2025 16:17:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747324710; cv=none; b=U1y9T/6v9sBwTeJLa2NcArDkYFE2WCEWwg5Pd1T7I6uIThY6fKSPjM70JJD24QwUTosRvoS/8wMIgPPBcko7e0KPVllnsvE0T/n3ZRhxe0+rHVSh9yNY9ez17umm1rvb4cgN5sMtcSK4VITNVh5UWeoocDAWkogjdLlAFISw4zA=
+	t=1747325879; cv=none; b=OCWV9SoY3hM1kN1d/UIZVFKg9G9yTAiSDMjCaeZu4JdijSdi8aFNZrmiVeTSDedwPK69u+jFk4m075a56qPg1Pf2xNO0jj/GkrsJCBr2qQJq7P22BxZLtovVhHeOJJ+1n9ZfZLLaqi3o10NqA+UysbjLmzpFDd7B0ONMimXYDbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747324710; c=relaxed/simple;
-	bh=R1H/UXsGaSYVCvw+5uX0eEYzsRNgloGCKh8AReIPnTs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PGK2avcgsb2f2zkD7WMzq0maCXourJH63GU34+jEbsuE8AN1ohbneJ1bMffCXUKaLIvNFz6SCRKyn+3lF+rxAQRvLk0TQAnEu+oflzg+xiSj1JySDyD9BNdP8POmPAMRzIaGUlKKx26ECDRPDVv1hX1pm1Kk1YJUrDqTTLC8kl4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=oJGDMdxX; arc=none smtp.client-ip=199.89.3.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 003.mia.mailroute.net (Postfix) with ESMTP id 4ZyvyB4qRzzlgrtN;
-	Thu, 15 May 2025 15:58:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1747324704; x=1749916705; bh=PFeKXxYALnMjUsC7mTWZ7ISJ
-	RXk4tHkOy0Au+85G4pY=; b=oJGDMdxXRBQzD58vhM6a9NGDtDdCffPR2oLbzTaB
-	YRkXquEqkwBu/YwocwCzFYVfLxNA2XelXhMxexC9wjRz9XSpMvs7aVWdC99MMRgS
-	xlRYxZNTqWY5ZOIr34qtxXQybFtVLxR2GQbW5LOQ4r9S1nll12dEoDn1REEqwsec
-	6PEyeIpMRpE5ytNPQ0K/feW1FWAZSjVQKiKTziz7CyJir41743th2fNShr0R4IuY
-	hJhcMrygKIwElFpQAMXl10sGelJuaIdKIXej8yNi2xdEA2eNjrcrPHybDgDXzFrW
-	bKo6ny4vB15wYKpT+Mk1Rbt+JyyiatDWyONjAEclaUbc/A==
-X-Virus-Scanned: by MailRoute
-Received: from 003.mia.mailroute.net ([127.0.0.1])
- by localhost (003.mia [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id qb34mU40CL_g; Thu, 15 May 2025 15:58:24 +0000 (UTC)
-Received: from [100.66.154.22] (unknown [104.135.204.82])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 003.mia.mailroute.net (Postfix) with ESMTPSA id 4Zyvxz74l8zlvm7W;
-	Thu, 15 May 2025 15:58:14 +0000 (UTC)
-Message-ID: <6e448a08-d202-414f-8eb6-423a8ed51fcc@acm.org>
-Date: Thu, 15 May 2025 08:58:13 -0700
+	s=arc-20240116; t=1747325879; c=relaxed/simple;
+	bh=kzHBF662pqxhsGGLZh7BrRVc0QDWCjDBYBSl6PTpfvU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=glYXYdG7+xeJX3BWoZPoGSLxGk+83547I6kV1xhYRSEnIpsfK6Zyi/q9GWgJC/IJkklBVojcaqSLy3QrgVeFaKGkF0aF7CJwLqhE+wTmW5u4jhpxNJh5snm1dtkGeUS50DOogW56GDabKC89SLYN7lkU0VxRjiK27IQa2MP1eYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PAU/zj6I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 236C9C4CEE7;
+	Thu, 15 May 2025 16:17:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747325879;
+	bh=kzHBF662pqxhsGGLZh7BrRVc0QDWCjDBYBSl6PTpfvU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=PAU/zj6IlrWsqfb2SsnaYNtPsn/moM1Ulix937tis2ax4a3E5/ptqkVdomKeo8aAr
+	 sxBZJ+IBIGb1fw5xM0YgKoKXbGvsSdXqCbE39X2hCrOgFesPt+ZGTgdRorEL9eO7jP
+	 4CYn5hfoKpPqACIlY/2roe9Imxnw2Xx0Kx/oXRPVB3UkOY8cZgTZHQw9FL3mbMExti
+	 F9b/okD1Wtq6WOXhAVJJf0NGn2gmBMuquF2wy8qGR8KFZ4x5WbPdkNNQm2USRt68UJ
+	 NTmY0Ev3uypj+5g8Y2Ta2N7Qfxmf6owzGHPbBb0C5VQkoyGRny2/ktY0oYWBuu53S0
+	 L7gVxYTpJvjCg==
+Date: Thu, 15 May 2025 17:17:52 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Sean Nyekjaer <sean@geanix.com>
+Cc: Marcelo Schmitt <marcelo.schmitt1@gmail.com>, Lars-Peter Clausen
+ <lars@metafoo.de>, Andy Shevchenko <andy.shevchenko@gmail.com>, Jonathan
+ Cameron <Jonathan.Cameron@huawei.com>, linux-iio@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v4 0/2] iio: accel: fxls8962af: Fix temperature readings
+Message-ID: <20250515171752.06f2e617@jic23-huawei>
+In-Reply-To: <20250505-fxls-v4-0-a38652e21738@geanix.com>
+References: <20250505-fxls-v4-0-a38652e21738@geanix.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.48; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] block: Make __submit_bio_noacct() preserve the bio
- submission order
-To: Niklas Cassel <cassel@kernel.org>, NeilBrown <neil@brown.name>
-Cc: Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
- Christoph Hellwig <hch@lst.de>, Damien Le Moal <dlemoal@kernel.org>,
- Yu Kuai <yukuai1@huaweicloud.com>, Ming Lei <ming.lei@redhat.com>,
- stable@vger.kernel.org
-References: <20250514202937.2058598-1-bvanassche@acm.org>
- <20250514202937.2058598-2-bvanassche@acm.org> <aCWVa68kp9vXTqHb@ryzen>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <aCWVa68kp9vXTqHb@ryzen>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On 5/15/25 12:19 AM, Niklas Cassel wrote:
-> Hello Bart,
+On Mon, 05 May 2025 21:20:06 +0200
+Sean Nyekjaer <sean@geanix.com> wrote:
+
+> Add the correct scale to get temperature in mili degree Celcius.
+> Add sign component to temperature scan element.
 > 
-> On Wed, May 14, 2025 at 01:29:36PM -0700, Bart Van Assche wrote:
->> submit_bio() may be called recursively. To limit the stack depth, recursive
->> calls result in bios being added to a list (current->bio_list).
->> __submit_bio_noacct() sets up that list and maintains two lists with
->> requests:
->> * bio_list_on_stack[0] is the list with bios submitted by recursive
->>    submit_bio() calls from inside the latest __submit_bio() call.
->> * bio_list_on_stack[1] is the list with bios submitted by recursive
->>    submit_bio() calls from inside previous __submit_bio() calls.
->>
->> Make sure that bios are submitted to lower devices in the order these
->> have been submitted by submit_bio() by adding new bios at the end of the
->> list instead of at the front.
->>
->> This patch fixes unaligned write errors that I encountered with F2FS
->> submitting zoned writes to a dm driver stacked on top of a zoned UFS
->> device.
->>
->> Cc: Christoph Hellwig <hch@lst.de>
->> Cc: Damien Le Moal <dlemoal@kernel.org>
->> Cc: Yu Kuai <yukuai1@huaweicloud.com>
->> Cc: Ming Lei <ming.lei@redhat.com>
->> Cc: stable@vger.kernel.org
-> 
-> Here you add stable to Cc, but you don't specify either
-> 1) a minimum version e.g.
-> stable@vger.kernel.org # v6.8+
-> or
-> 2) a Fixes tag.
-
-Hi Niklas,
-
-Let's add the following to this patch:
-
-Fixes: 79bd99596b73 ("blk: improve order of bio handling in 
-generic_make_request()")
-
-Neil, since that commit was authored by you: the commit message is
-elaborate but the names of the drivers that needed that commit have
-not been mentioned. Which drivers needed that change? Additionally,
-can you please help with reviewing this patch:
-
-https://lore.kernel.org/linux-block/20250514202937.2058598-2-bvanassche@acm.org/
+> Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+Applied.
 
 Thanks,
 
-Bart.
+> ---
+> Changes in v4:
+> - Blindly Copy/Pasted  Andy's comment. Use the correct MILLIDEGREE_PER_DEGREE
+> - Link to v3: https://lore.kernel.org/r/20250505-fxls-v3-0-8c541bf0205c@geanix.com
+> 
+> Changes in v3:
+> - Dropping define infavor of inline scale value
+> - Added using constants from units.h
+> - Tweaked commit msg to make it more assertive
+> - Link to v2: https://lore.kernel.org/r/20250502-fxls-v2-0-e1af65f1aa6c@geanix.com
+> 
+> Changes in v2:
+> - Correct offset is applied before scaling component 
+> - Added sign component to temperature scan element
+> - Link to v1: https://lore.kernel.org/r/20250501-fxls-v1-1-f54061a07099@geanix.com
+> 
+> ---
+> Sean Nyekjaer (2):
+>       iio: accel: fxls8962af: Fix temperature calculation
+>       iio: accel: fxls8962af: Fix temperature scan element sign
+> 
+>  drivers/iio/accel/fxls8962af-core.c | 15 +++++++++++++--
+>  1 file changed, 13 insertions(+), 2 deletions(-)
+> ---
+> base-commit: 609bc31eca06c7408e6860d8b46311ebe45c1fef
+> change-id: 20250501-fxls-307ef3d6d065
+> 
+> Best regards,
+
 
