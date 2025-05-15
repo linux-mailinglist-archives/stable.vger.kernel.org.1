@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-144461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F24DAB7AB8
-	for <lists+stable@lfdr.de>; Thu, 15 May 2025 02:49:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C9C2AB7ABB
+	for <lists+stable@lfdr.de>; Thu, 15 May 2025 02:50:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7CE4A1B666C0
-	for <lists+stable@lfdr.de>; Thu, 15 May 2025 00:50:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6B0F27ABD8A
+	for <lists+stable@lfdr.de>; Thu, 15 May 2025 00:48:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFEC461FCE;
-	Thu, 15 May 2025 00:49:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E90011581F9;
+	Thu, 15 May 2025 00:49:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E22ED26296;
-	Thu, 15 May 2025 00:49:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.166.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF171474B8;
+	Thu, 15 May 2025 00:49:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.178.238
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747270175; cv=none; b=loX67x9Rbc9ergeYAKGg4yN0RT155GgBYv4swNGKTClJPBXDxGati8CO7puWcscnW8fjSMd6GLW553BbeOYRCBxhBq17vv/u4iUZS3RNao4GzY51wZiYKkp1w0AUBXYY/WbyQj5aKgOOvNZpm+vixYJjyFfqeqO8TNj/jakjOZE=
+	t=1747270178; cv=none; b=Kpd0VkjbkO9VlMZOX5cRkbo8vTuIspEV1QIIKA8HE6WD4A7PMNF6jOc+XvFEUTbWJZg3el5Ki6Fv6/I4Le7jo8cpGtnI0SC4WHB7xWP8bj6RvG9t/QVN4l6rGapeFJx21WS44UQrgqFsZ9KOGR14vqQ+B2PkXUrgWhAgN20eI6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747270175; c=relaxed/simple;
-	bh=P9u51Aq46XScFXBQ7P2XjgOqcaD4Min7LreEYNSkMpk=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ePvk3sg4GmcUTOfRUvhSRq3jEG99Sqq2FdrGE9/kYeam7XW5bGKNTswTZ1fAqQeBYJII3h+dFB1x6i8VL5LFBK/YXva8PN9e+T0si/aHhTPHvoyjrXdkUqlenm/HLr5p/KFeGI5lWRYAspcUhQW8siqAtBB7K/TY5fI4Q/Kxt4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.166.238
+	s=arc-20240116; t=1747270178; c=relaxed/simple;
+	bh=jM11sU/4Lo+ORLC/uix01viOA2sKS5KoPncZgKtH+Qc=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RK6MckE16GOqg4BKBOyRNWAhDmMYMyQ8CMP8wgFk7Efad12jQycslqCgv+vCcWWD0ACmgn9efid7azQyUHfPzYLO10qIq8I1hAvt1J2v9eCUwK3L3g+pNjkMP5iDruO5ZNuMdf/MCiLnzNGJQ0/facF0U3iyaaqUcbK0ucujEeg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=none smtp.client-ip=205.220.178.238
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250810.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54F0mAOt020677;
-	Wed, 14 May 2025 17:49:01 -0700
+Received: from pps.filterd (m0250812.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54F0nC4r019971;
+	Thu, 15 May 2025 00:49:12 GMT
 Received: from ala-exchng01.corp.ad.wrs.com (ala-exchng01.wrs.com [147.11.82.252])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 46mbcb9y3f-1
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 46mbc8sxfy-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Wed, 14 May 2025 17:49:00 -0700 (PDT)
+	Thu, 15 May 2025 00:49:12 +0000 (GMT)
 Received: from ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) by
  ala-exchng01.corp.ad.wrs.com (147.11.82.252) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.43; Wed, 14 May 2025 17:48:57 -0700
+ 15.1.2507.43; Wed, 14 May 2025 17:49:08 -0700
 Received: from pek-lpg-core1.wrs.com (147.11.136.210) by
  ALA-EXCHNG02.corp.ad.wrs.com (147.11.82.254) with Microsoft SMTP Server id
- 15.1.2507.43 via Frontend Transport; Wed, 14 May 2025 17:48:51 -0700
+ 15.1.2507.43 via Frontend Transport; Wed, 14 May 2025 17:49:04 -0700
 From: <jianqi.ren.cn@windriver.com>
 To: <gregkh@linuxfoundation.org>, <stable@vger.kernel.org>
 CC: <patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
@@ -49,9 +49,9 @@ CC: <patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
         <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
         <pabeni@redhat.com>, <jhs@mojatatu.com>, <xiyou.wangcong@gmail.com>,
         <jiri@resnulli.us>, <vladbu@mellanox.com>, <netdev@vger.kernel.org>
-Subject: [PATCH 6.1.y] net/sched: flower: Fix chain template offload
-Date: Thu, 15 May 2025 08:48:50 +0800
-Message-ID: <20250515004850.3611876-1-jianqi.ren.cn@windriver.com>
+Subject: [PATCH 5.15.y] net/sched: flower: Fix chain template offload
+Date: Thu, 15 May 2025 08:49:05 +0800
+Message-ID: <20250515004905.3611889-1-jianqi.ren.cn@windriver.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -61,23 +61,23 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE1MDAwNSBTYWx0ZWRfX7C1B/r43fQig oK70+d3q7r4WhJaQwngNr7Df+yLH/xu16DtY4u+xlPtb2JNsZDYx9KbR2qsey3d1b7R1EDTbd+d rmF0YnLa0biDqEkCz6Q4FuQI24Jm1p7bv0HvaymPj1tdbawI/FWOSTvdVvLzjnadNO7vVcJ7k3U
- cbc1g73jKYXXfFdrUf5Lflel4rkN0UZ/Rto3x84tS4Fwi2BjON9XztSQx3DVBxq958a5qFhhX3c qvlbYjpmyM6+fWsjRwu5uPB3zEV1Sk7MnY3cwgJ4txnXYIHUV3xmb0shN0v21JNrWWdO2T5Jzpn zZvUlhv7ZkIeorkEoAT2WUn/E2zbakbxijRIL0umxyOWb68tPNDUfcYC2EeiLMLyJS58IedcnaS
- QNoTlD+mJjWObZXzp4IvS/0Ni2NnwopZB8ROgWVAy0hJIn57UVdS9gNTnmi/qKQI0UnmLCR2
-X-Proofpoint-GUID: 3xnH6m0oX0tsBvgiOKNi-Y-G9z9T0P8P
-X-Proofpoint-ORIG-GUID: 3xnH6m0oX0tsBvgiOKNi-Y-G9z9T0P8P
-X-Authority-Analysis: v=2.4 cv=LpWSymdc c=1 sm=1 tr=0 ts=682539fc cx=c_pps a=/ZJR302f846pc/tyiSlYyQ==:117 a=/ZJR302f846pc/tyiSlYyQ==:17 a=dt9VzEwgFbYA:10 a=Ikd4Dj_1AAAA:8 a=J1Y8HTJGAAAA:8 a=t7CeM3EgAAAA:8 a=uSdy2bKQw3vfi-H1j0oA:9 a=y1Q9-5lHfBjTkpIzbSAN:22
+X-Proofpoint-GUID: ImFKZqz8Pd6kDv67RaBDPKa1pxpascWx
+X-Proofpoint-ORIG-GUID: ImFKZqz8Pd6kDv67RaBDPKa1pxpascWx
+X-Authority-Analysis: v=2.4 cv=IIACChvG c=1 sm=1 tr=0 ts=68253a08 cx=c_pps a=/ZJR302f846pc/tyiSlYyQ==:117 a=/ZJR302f846pc/tyiSlYyQ==:17 a=dt9VzEwgFbYA:10 a=Ikd4Dj_1AAAA:8 a=J1Y8HTJGAAAA:8 a=t7CeM3EgAAAA:8 a=uSdy2bKQw3vfi-H1j0oA:9 a=y1Q9-5lHfBjTkpIzbSAN:22
  a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE1MDAwNSBTYWx0ZWRfX+pc4/hYqETLJ f7kRZKMCvtM0bagsGHuym6psNCpII3iC/u2GtBTTk9pTLzOOYHiXj6pXPqMYXh5N1CuxaBQYAJx wi05oEpjpuqyWOnmJTdo8MilHABSlyPfYWjDAA0zDEPaGsF8dWKVGy/sMsnH5EVlLzApu2NtISS
+ gB6pN7ewDx5nqOtS2+2Mfniri0YGc0sJ4lvzggsQrXlqWOgOzsXH7WUp4RUUkXQrPFo8n4wD3b6 0wBzioBSvvDmTPnNkgAlNRMxOUlX37Wm4KRsMJZYQ7r1iuUqDHVjvY2TA9khqtrQCsI6ktdR/cA GuK7GPeZZhHqp3U/LP0jVDbrKYPuKF6+gbjR7aK3GatgfAd2bBfvze2PCvIsPBHopwqiHyQr+00
+ SK/pJF/em5HirHP9i8WaLW4aIL0lVSRqZblwAzJgIX59A9MsA9Gm8upldjh3J3uA3wpn1HcM
 X-Sensitive_Customer_Information: Yes
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-05-14_05,2025-05-14_03,2025-02-21_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- suspectscore=0 clxscore=1011 malwarescore=0 mlxscore=0 bulkscore=0
- spamscore=0 adultscore=0 lowpriorityscore=0 phishscore=0
- priorityscore=1501 mlxlogscore=999 classifier=spam authscore=0 authtc=n/a
- authcc= route=outbound adjust=0 reason=mlx scancount=1
- engine=8.21.0-2505070000 definitions=main-2505150005
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ spamscore=0 mlxscore=0 suspectscore=0 malwarescore=0 phishscore=0
+ bulkscore=0 impostorscore=0 mlxlogscore=999 priorityscore=1501
+ clxscore=1015 adultscore=0 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.21.0-2505070000
+ definitions=main-2505150005
 
 From: Ido Schimmel <idosch@nvidia.com>
 
@@ -176,10 +176,10 @@ Verified the build test
  3 files changed, 35 insertions(+), 1 deletion(-)
 
 diff --git a/include/net/sch_generic.h b/include/net/sch_generic.h
-index 80f657bf2e04..d7b76f486c44 100644
+index 0919dfd3a67a..cdf8a21622ad 100644
 --- a/include/net/sch_generic.h
 +++ b/include/net/sch_generic.h
-@@ -377,6 +377,10 @@ struct tcf_proto_ops {
+@@ -367,6 +367,10 @@ struct tcf_proto_ops {
  						struct nlattr **tca,
  						struct netlink_ext_ack *extack);
  	void			(*tmplt_destroy)(void *tmplt_priv);
@@ -191,10 +191,10 @@ index 80f657bf2e04..d7b76f486c44 100644
  	/* rtnetlink specific */
  	int			(*dump)(struct net*, struct tcf_proto*, void *,
 diff --git a/net/sched/cls_api.c b/net/sched/cls_api.c
-index 89da596be1b8..8548220b6112 100644
+index a5864ddfb890..c001909f009e 100644
 --- a/net/sched/cls_api.c
 +++ b/net/sched/cls_api.c
-@@ -1431,6 +1431,9 @@ tcf_block_playback_offloads(struct tcf_block *block, flow_setup_cb_t *cb,
+@@ -1412,6 +1412,9 @@ tcf_block_playback_offloads(struct tcf_block *block, flow_setup_cb_t *cb,
  	     chain_prev = chain,
  		     chain = __tcf_get_next_chain(block, chain),
  		     tcf_chain_put(chain_prev)) {
@@ -204,7 +204,7 @@ index 89da596be1b8..8548220b6112 100644
  		for (tp = __tcf_get_next_proto(chain, NULL); tp;
  		     tp_prev = tp,
  			     tp = __tcf_get_next_proto(chain, tp),
-@@ -1446,6 +1449,9 @@ tcf_block_playback_offloads(struct tcf_block *block, flow_setup_cb_t *cb,
+@@ -1427,6 +1430,9 @@ tcf_block_playback_offloads(struct tcf_block *block, flow_setup_cb_t *cb,
  				goto err_playback_remove;
  			}
  		}
@@ -214,7 +214,7 @@ index 89da596be1b8..8548220b6112 100644
  	}
  
  	return 0;
-@@ -2832,7 +2838,8 @@ static int tc_chain_tmplt_add(struct tcf_chain *chain, struct net *net,
+@@ -2766,7 +2772,8 @@ static int tc_chain_tmplt_add(struct tcf_chain *chain, struct net *net,
  	ops = tcf_proto_lookup_ops(name, true, extack);
  	if (IS_ERR(ops))
  		return PTR_ERR(ops);
@@ -225,10 +225,10 @@ index 89da596be1b8..8548220b6112 100644
  		module_put(ops->owner);
  		return -EOPNOTSUPP;
 diff --git a/net/sched/cls_flower.c b/net/sched/cls_flower.c
-index a40a9e84c75f..42234a0101e7 100644
+index af437be93e25..18f76f1cf944 100644
 --- a/net/sched/cls_flower.c
 +++ b/net/sched/cls_flower.c
-@@ -2596,6 +2596,28 @@ static void fl_tmplt_destroy(void *tmplt_priv)
+@@ -2430,6 +2430,28 @@ static void fl_tmplt_destroy(void *tmplt_priv)
  	kfree(tmplt);
  }
  
@@ -257,7 +257,7 @@ index a40a9e84c75f..42234a0101e7 100644
  static int fl_dump_key_val(struct sk_buff *skb,
  			   void *val, int val_type,
  			   void *mask, int mask_type, int len)
-@@ -3452,6 +3474,7 @@ static struct tcf_proto_ops cls_fl_ops __read_mostly = {
+@@ -3235,6 +3257,7 @@ static struct tcf_proto_ops cls_fl_ops __read_mostly = {
  	.bind_class	= fl_bind_class,
  	.tmplt_create	= fl_tmplt_create,
  	.tmplt_destroy	= fl_tmplt_destroy,
