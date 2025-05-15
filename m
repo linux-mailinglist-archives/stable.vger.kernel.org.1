@@ -1,139 +1,234 @@
-Return-Path: <stable+bounces-144538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14A9CAB891C
-	for <lists+stable@lfdr.de>; Thu, 15 May 2025 16:19:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1202AB8A93
+	for <lists+stable@lfdr.de>; Thu, 15 May 2025 17:26:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89703A05824
-	for <lists+stable@lfdr.de>; Thu, 15 May 2025 14:18:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C9A11BC1CE0
+	for <lists+stable@lfdr.de>; Thu, 15 May 2025 15:26:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55A821BE238;
-	Thu, 15 May 2025 14:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F1E020C47F;
+	Thu, 15 May 2025 15:26:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WG5Pq+YC"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A2BB170A26;
-	Thu, 15 May 2025 14:18:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9C0157A6B;
+	Thu, 15 May 2025 15:26:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747318702; cv=none; b=oCpc5uq8X45KFRZjhuSVON95Glie5u86dwLhqnFwzrx6VQyszNEmO1bv0sjN0yBlYH0prYaIhJHCl0V1GO4aCxQ726QpO/nYSljdYXPEDFXNLmwbSuSzPrsBA8B07zIAzr3zMxVUsilI6Lcb3IKJ78czVJ9+HDePu+WfbqyRr38=
+	t=1747322767; cv=none; b=P/bfgR7XA4lFZiXI5W90bh/k793g2lDPosVlCj0mWgmDUOYdquN7NHD4J+1DBvc9kPaz3lZUll9JAW2L3gyKLiOdQI1awmMVtHDzwq9nOGsWDzxGHW3yGWW9xbX2V2cHEXyK1FKqnIvWxaw8Dr+frOIo3j98YLJD5OmcMFWCz3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747318702; c=relaxed/simple;
-	bh=C8h6LmLlmJ3uMh+AH6IRCULCPy29XRdKk0CG2VXp8wA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uMer10jYa+LMN1vSYWNFzjtf7Pym5qDD5NS2QnCpknL8UVL4MQ5+Kb3kIPAOBesOQ3TRFHiZ/SZu1zbwp8xEbbmubnMkBNH5LpsYyOLxtbsvzXUxwCZSWv6k/lMA2nF+pLd+1X5Q4BlAsCQgUe/T3Lkcc38qvn3b3tpcJz+ECzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [124.16.141.245])
-	by APP-01 (Coremail) with SMTP id qwCowADni_yb9yVoS_LMFQ--.6807S2;
-	Thu, 15 May 2025 22:18:05 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: alexander.deucher@amd.com,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
-	airlied@gmail.com,
-	simona@ffwll.ch
-Cc: amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] drm: radeon: ci_dpm: Add error handling for ci_send_msg_to_smc_with_parameter()
-Date: Thu, 15 May 2025 22:17:40 +0800
-Message-ID: <20250515141740.1324-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.42.0.windows.2
+	s=arc-20240116; t=1747322767; c=relaxed/simple;
+	bh=ZArRs3HPLf9KeUKhJEOw3f0CEX59vDwwhKUGHW10dag=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=C6C0qWT3xHMYbJMac1l04/6gjXfMnXM7EgitVGG+1yrGrrdqw7Ug4yl3W7OiZetFl1yIMyozsP859hd3eAOS32mXTdZT38m7KP16TEuaVSONOBOh04TkFeivAnWDqiy9QxQIKJUlfYxdCFqjuBW5xyzo9aQbSw8KIvKi6CyDS5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WG5Pq+YC; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747322765; x=1778858765;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=ZArRs3HPLf9KeUKhJEOw3f0CEX59vDwwhKUGHW10dag=;
+  b=WG5Pq+YC8Rn78yhsYv7OY7tVCq5ZdxBU9vln7TzX5LrLdoJZPGdEY5bl
+   6Ew99+G+TJoZXrzdXb1YL1qV5EzE4qPvXYjZQCbipt80SMW+u/FEf3Uwx
+   /Yt++Se18Qg6dH9lWQ0EFv60g7Sc4XNEySVxBXzgEN7Wr3K+ipNR72/ka
+   46oXoaL/8Ca5xhKVuJkJ3mOSq/7SkdRhOQQWnKfXZZT0TmZyV7ESd5khx
+   C+NTc5OlqoPCJfkwVdC6ynCjHrELiSjNDpkZ2SdD/hEUlMUmyfqcxSvYI
+   HUBQ9255KD1Y4WskfYC34K+2GibxfOc8WeoVPtxDjYlNazrPt57K22Y5s
+   Q==;
+X-CSE-ConnectionGUID: j3nQ/lzuR7CslbjarEOEHg==
+X-CSE-MsgGUID: xjrn5VkXReuBj8N1T9S5mg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11434"; a="71778585"
+X-IronPort-AV: E=Sophos;i="6.15,291,1739865600"; 
+   d="scan'208";a="71778585"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2025 08:26:04 -0700
+X-CSE-ConnectionGUID: E6tAvZ2vQvi80tyoulfXOA==
+X-CSE-MsgGUID: QgQbqN/ESDaP4p4sFdQ0GA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,291,1739865600"; 
+   d="scan'208";a="142413561"
+Received: from gkhatri-mobl.amr.corp.intel.com (HELO desk) ([10.125.146.13])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2025 08:26:03 -0700
+Date: Thu, 15 May 2025 08:25:57 -0700
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Guenter Roeck <linux@roeck-us.net>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org,
+	Darren Kenny <darren.kenny@oracle.com>
+Subject: Re: [PATCH 6.6 000/113] 6.6.91-rc2 review
+Message-ID: <20250515152557.a4q2cqab4uvhnpia@desk>
+References: <20250514125617.240903002@linuxfoundation.org>
+ <861004b4-e036-4306-b129-252b9cb983c7@oracle.com>
+ <2025051440-sturdily-dragging-3843@gregkh>
+ <9af6afb1-9d91-48ea-a212-bcd6d1a47203@oracle.com>
+ <e1ea37bd-ea7d-4e8a-bb2f-6be709eb99f4@roeck-us.net>
+ <2025051527-travesty-shape-0e3b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowADni_yb9yVoS_LMFQ--.6807S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Cw1kKFW5uw4Utw4rJw4kCrg_yoW8KFW8pa
-	yxCFyYyrZ5AayrWwsFyw4UAryrAwsrXFWxJrsrKw43Z34ayFyrJF13uryayFW0yryvgFya
-	vrn2y3W8Zr4UCF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9Y14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
-	Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x
-	0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2
-	zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF
-	4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWU
-	CwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCT
-	nIWIevJa73UjIFyTuYvjfU52NtDUUUU
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCQ4DA2glvjTL+AAAsz
+In-Reply-To: <2025051527-travesty-shape-0e3b@gregkh>
 
-The ci_enable_uvd_dpm() calls ci_send_msg_to_smc_with_parameter()
-but does not check the return value. This could lead to the execution
-with potentially invalid data. A proper implementation can be found
-in the ci_fan_ctrl_start_smc_fan_control().
+On Thu, May 15, 2025 at 07:35:26AM +0200, Greg Kroah-Hartman wrote:
+> On Wed, May 14, 2025 at 01:49:06PM -0700, Guenter Roeck wrote:
+> > On 5/14/25 13:33, Harshit Mogalapalli wrote:
+> > > Hi Greg,
+> > > 
+> > > On 15/05/25 01:35, Greg Kroah-Hartman wrote:
+> > > > On Thu, May 15, 2025 at 12:29:40AM +0530, Harshit Mogalapalli wrote:
+> > > > > Hi Greg,
+> > > > > On 14/05/25 18:34, Greg Kroah-Hartman wrote:
+> > > > > > This is the start of the stable review cycle for the 6.6.91 release.
+> > > > > > There are 113 patches in this series, all will be posted as a response
+> > > > > > to this one.  If anyone has any issues with these being applied, please
+> > > > > > let me know.
+> > > > > > 
+> > > > > > Responses should be made by Fri, 16 May 2025 12:55:38 +0000.
+> > > > > > Anything received after that time might be too late.
+> > > > > 
+> > > > > ld: vmlinux.o: in function `patch_retpoline':
+> > > > > alternative.c:(.text+0x3b6f1): undefined reference to `module_alloc'
+> > > > > make[2]: *** [scripts/Makefile.vmlinux:37: vmlinux] Error 1
+> > > > > 
+> > > > > We see this build error in 6.6.91-rc2 tag.
+> > > > 
+> > > > What is odd about your .config?  Have a link to it?  I can't duplicate
+> > > > it here on my builds.
+> > > > 
+> > > 
+> > > So this is a config where CONFIG_MODULES is unset(!=y) -- with that we could reproduce it on defconfig + disabling CONFIG_MODULES as well.
+> > > 
+> > 
+> > Key is the combination of CONFIG_MODULES=n with CONFIG_MITIGATION_ITS=y.
+> 
+> Ah, this is due to the change in its_alloc() for 6.6.y and 6.1.y by the
+> call to module_alloc() instead of execmem_alloc() in the backport of
+> 872df34d7c51 ("x86/its: Use dynamic thunks for indirect branches").
 
-Add a check after calling ci_send_msg_to_smc_with_parameter(), return
--EINVAL if the sending fails.
+Sorry for the trouble. I wish I had a test to catch problems like this. The
+standard config targets defconfig, allyesconfig, allnoconfig, etc. do not
+expose such issues. The only thing that comes close is randconfig.
 
-Fixes: cc8dbbb4f62a ("drm/radeon: add dpm support for CI dGPUs (v2)")
-Cc: stable@vger.kernel.org # v3.12
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+CONFIG_MODULES=n is not a common setting, I wonder how people find such
+issues? (trying to figure out how to prevent such issues in future).
+
+> Pawan, any hints on what should be done here instead?
+
+Since dynamic thunks are not possible without CONFIG_MODULES, one option is
+to adjust the already in 6.6.91-rc2 patch 9f35e331144a (x86/its: Fix build
+errors when CONFIG_MODULES=n) to also bring the ITS thunk allocation under
+CONFIG_MODULES.
+
+I am not seeing any issue with below build and boot test:
+
+  #!/bin/bash -ex
+
+  ./scripts/config --disable CONFIG_MODULES
+  ./scripts/config --disable CONFIG_MITIGATION_ITS
+  # https://github.com/arighi/virtme-ng
+  vng -b
+  vng -- lscpu
+
+  # main test
+  ./scripts/config --disable CONFIG_MODULES
+  ./scripts/config --enable CONFIG_MITIGATION_ITS
+  vng -b
+  vng -- lscpu
+
+  ./scripts/config --enable CONFIG_MODULES
+  ./scripts/config --disable CONFIG_MITIGATION_ITS
+  vng -b
+  vng -- lscpu
+
+  ./scripts/config --enable CONFIG_MODULES
+  ./scripts/config --enable CONFIG_MITIGATION_ITS
+  vng -b
+  vng -- lscpu
+
+  echo "PASS"
+
+Similar change is required for 6.1 and 5.15 as well. 6.12 is fine because
+it uses execmem_alloc().
+
+--- 8< ---
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Subject: [PATCH 6.6] x86/its: Fix build errors when CONFIG_MODULES=n
+
+From: Eric Biggers <ebiggers@google.com>
+
+commit 9f35e33144ae5377d6a8de86dd3bd4d995c6ac65 upstream.
+
+Fix several build errors when CONFIG_MODULES=n, including the following:
+
+../arch/x86/kernel/alternative.c:195:25: error: incomplete definition of type 'struct module'
+  195 |         for (int i = 0; i < mod->its_num_pages; i++) {
+
+  [ pawan: backport: Bring ITS dynamic thunk code under CONFIG_MODULES ]
+
+Fixes: 872df34d7c51 ("x86/its: Use dynamic thunks for indirect branches")
+Cc: stable@vger.kernel.org
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+Acked-by: Dave Hansen <dave.hansen@intel.com>
+Tested-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/radeon/ci_dpm.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ arch/x86/kernel/alternative.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/radeon/ci_dpm.c b/drivers/gpu/drm/radeon/ci_dpm.c
-index abe9d65cc460..3877863c6893 100644
---- a/drivers/gpu/drm/radeon/ci_dpm.c
-+++ b/drivers/gpu/drm/radeon/ci_dpm.c
-@@ -3889,6 +3889,7 @@ static int ci_enable_uvd_dpm(struct radeon_device *rdev, bool enable)
- 	struct ci_power_info *pi = ci_get_pi(rdev);
- 	const struct radeon_clock_and_voltage_limits *max_limits;
- 	int i;
-+	PPSMC_Result result;
+diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
+index 6085919d3b3e..c6d9a3882ec8 100644
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -129,6 +129,7 @@ const unsigned char * const x86_nops[ASM_NOP_MAX+1] =
  
- 	if (rdev->pm.dpm.ac_power)
- 		max_limits = &rdev->pm.dpm.dyn_state.max_clock_voltage_on_ac;
-@@ -3907,24 +3908,30 @@ static int ci_enable_uvd_dpm(struct radeon_device *rdev, bool enable)
- 			}
- 		}
+ #ifdef CONFIG_MITIGATION_ITS
  
--		ci_send_msg_to_smc_with_parameter(rdev,
-+		result = ci_send_msg_to_smc_with_parameter(rdev,
- 						  PPSMC_MSG_UVDDPM_SetEnabledMask,
- 						  pi->dpm_level_enable_mask.uvd_dpm_enable_mask);
-+		if (result != PPSMC_Result_OK)
-+			return -EINVAL;
++#ifdef CONFIG_MODULES
+ static struct module *its_mod;
+ static void *its_page;
+ static unsigned int its_offset;
+@@ -244,7 +245,16 @@ static void *its_allocate_thunk(int reg)
+ 	return thunk;
+ }
  
- 		if (pi->last_mclk_dpm_enable_mask & 0x1) {
- 			pi->uvd_enabled = true;
- 			pi->dpm_level_enable_mask.mclk_dpm_enable_mask &= 0xFFFFFFFE;
--			ci_send_msg_to_smc_with_parameter(rdev,
-+			result = ci_send_msg_to_smc_with_parameter(rdev,
- 							  PPSMC_MSG_MCLKDPM_SetEnabledMask,
- 							  pi->dpm_level_enable_mask.mclk_dpm_enable_mask);
-+			if (result != PPSMC_Result_OK)
-+				return -EINVAL;
- 		}
- 	} else {
- 		if (pi->last_mclk_dpm_enable_mask & 0x1) {
- 			pi->uvd_enabled = false;
- 			pi->dpm_level_enable_mask.mclk_dpm_enable_mask |= 1;
--			ci_send_msg_to_smc_with_parameter(rdev,
-+			result = ci_send_msg_to_smc_with_parameter(rdev,
- 							  PPSMC_MSG_MCLKDPM_SetEnabledMask,
- 							  pi->dpm_level_enable_mask.mclk_dpm_enable_mask);
-+			if (result != PPSMC_Result_OK)
-+				return -EINVAL;
- 		}
- 	}
+-#endif
++#else /* CONFIG_MODULES */
++
++static void *its_allocate_thunk(int reg)
++{
++	return NULL;
++}
++
++#endif /* CONFIG_MODULES */
++
++#endif /* CONFIG_MITIGATION_ITS */
  
+ /*
+  * Fill the buffer with a single effective instruction of size @len.
 -- 
-2.42.0.windows.2
+2.34.1
 
 
