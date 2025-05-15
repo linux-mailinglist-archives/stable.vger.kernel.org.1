@@ -1,88 +1,88 @@
-Return-Path: <stable+bounces-144531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A23C5AB873F
-	for <lists+stable@lfdr.de>; Thu, 15 May 2025 15:02:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF468AB874A
+	for <lists+stable@lfdr.de>; Thu, 15 May 2025 15:05:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3259016A50A
-	for <lists+stable@lfdr.de>; Thu, 15 May 2025 13:02:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89ABD1885A5D
+	for <lists+stable@lfdr.de>; Thu, 15 May 2025 13:05:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9D1027FD44;
-	Thu, 15 May 2025 13:02:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9646D298245;
+	Thu, 15 May 2025 13:04:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fIW+JMEG"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Hoe+w0K7"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F32E205AA8
-	for <stable@vger.kernel.org>; Thu, 15 May 2025 13:02:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99B8B2980D2
+	for <stable@vger.kernel.org>; Thu, 15 May 2025 13:04:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747314122; cv=none; b=kuSouFLu/rKWqCP2YxQniz2jRs1kB8hIOpimD6NICWkjDN2jgr0sESzvicAJ+JkKAXGBJOVFudQYkC9FDZrh8CPcpRlLU430giFMXeoLNhpVkkMlypwJJTPfQpv+IUvfNNmHjKvbI/KDei4QAgIbXlE/ZoBES8mpi1DVlxmG290=
+	t=1747314299; cv=none; b=TOQtEY9a/9MPShL+2gpgofGHxgns9cSWim83DDdt1O9r5IK36V264XbqLPnrpBokUpNj7RCX0+awd9+jckUquT04lRMdVV3xsP464LG1I6s00QxPNneHiOcO+v59AjPgI9ICweq8mop0y1qS4QOCXYBtf52yXI01FXQvb1KJNZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747314122; c=relaxed/simple;
-	bh=uQCg3D5iXaRbgGA3G6uY+lOLG56XBPSms1leaLY0nPw=;
+	s=arc-20240116; t=1747314299; c=relaxed/simple;
+	bh=A0QhoCreTBgK1KOD8hVVHNjzN26lZPjruOeGMEoEnuI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IV7bhP+gdjulOj4Mrq2lhAsTk9sO0/vJMB/KbgQP86fVbGYJc0qrq5A9N1aQRGe9GruV7aYLw7+38q4534au+mmkZrAsend2ivMDOZOnnrllUz65ht5M3h0nM2C5qLjtgIW5SKUHYVABUAxmUZgfcboEhdLhSGlI2UVG2d7BEhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fIW+JMEG; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=i9YK6ZlWIpdI8Kc4oDaJdll22mOCM4A5ZlXzn8oGV9og85syBJJ1CmGlC7kjg7oAizR2j1D+fP89r22w3iyGmmGPKo9SZKB4pb0WNyoM+GzsgHEBnd2TQiPq8E/i8KpHy4DA2Y2rou0+0loi8tkqgOAOCi63TDVsXPg3kap6acQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Hoe+w0K7; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1747314119;
+	s=mimecast20190719; t=1747314296;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=9DBeSBbi6U3zLRkJS53qHOo+MmuTmB6ZFLiCDJKoJVE=;
-	b=fIW+JMEGlJnnhQ2xmxSJHWD2WJ2j4W1M5hNlAYJ2cQ/Mv0N/zTJDeClEZ3K+4BT0ByV3ha
-	XCn/K4R5jZxZwJ3/L6pIkCxoDPtJNy1/kYVI7EbT7ZpzWF4G6fxQxkFz59Q6fnUy5soOwM
-	OyvpRgcYrtn/JNQY5PFl3nTENvScD2Q=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=4OVct6eIY8UVkrmsL8R0B75tOQosGD46TedZOTJVtt0=;
+	b=Hoe+w0K7tnvXUHPqMhHerjxDIHcOiFyteFhbC167cJlAKm8iXOwdMSmIPqZNLDTsFo7RKE
+	fhk9owJ6g1U5HWcqgAR0vGOc6BES3vKyOvPj9n1wg9HJSmD3M+Ymmz349jS7NmR3R2OWcW
+	Xe8icGcU5mKjMjAsLHMlIZ9NunTA3qI=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-661-sAle-HMoP9KGnET_rJ39Sw-1; Thu, 15 May 2025 09:01:58 -0400
-X-MC-Unique: sAle-HMoP9KGnET_rJ39Sw-1
-X-Mimecast-MFC-AGG-ID: sAle-HMoP9KGnET_rJ39Sw_1747314118
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-43d007b2c79so7525495e9.2
-        for <stable@vger.kernel.org>; Thu, 15 May 2025 06:01:58 -0700 (PDT)
+ us-mta-628-Gd0ceui1PGihYOiPL3ETaw-1; Thu, 15 May 2025 09:04:55 -0400
+X-MC-Unique: Gd0ceui1PGihYOiPL3ETaw-1
+X-Mimecast-MFC-AGG-ID: Gd0ceui1PGihYOiPL3ETaw_1747314294
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3a34f19c977so455417f8f.0
+        for <stable@vger.kernel.org>; Thu, 15 May 2025 06:04:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747314117; x=1747918917;
+        d=1e100.net; s=20230601; t=1747314294; x=1747919094;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=9DBeSBbi6U3zLRkJS53qHOo+MmuTmB6ZFLiCDJKoJVE=;
-        b=sCG8TA0lE4uCv1sLbVAZzvinfXuj9OLDopQmlH6VnfBDVULT9LyqTiJXXmsKEfzipX
-         n5w9mSHC360PuG8OxlvlVO4Lfd4ESjuY8ClNlhCddQx5uoBWn5tbQlbpDRH2SVuyavkr
-         pyntx/GTKEG3dITCtCKSACzePI9JXXAfoIv7tcG3wyBoDblEzPaCrYazUYIKICZgb19N
-         HmUJS5DNqupSB2WLKSkVZp+8fbxRa2M117B94s59TL6paiCfuxte4RIyr1x2zYFWUxdZ
-         pKxG9iTgWG2CPYRabR7x70E5+Qx7fO+Jv19KqfUFCbFo8npU4Qb93rJKXNTVObpEfgNy
-         9o6g==
-X-Forwarded-Encrypted: i=1; AJvYcCXYFbrmTDl907BZXf2iIgXcM+eBBdQgkGUlg8GBfkKlHZrHTerKIuQ32i3HlzyOmLwiSuB4OwM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx3n7PrdmJDVA/3oxlN8Ml9N5q9Kj0F27PavmLGJZY02XwRcIM/
-	Mk181oJ6p5BJwM/rUCC+RwOmnwF2iLWElJ+msCpV/7PcDz/tPDZ36CbGy0MH5eKwALXaKPyP0wU
-	40xAR39EQgsej1oqspPX21IPcaJmvc19VgHrCgfn+X7OEBr7mO9MAdA==
-X-Gm-Gg: ASbGnctv8rkRacMGzyr+9h+zE+hfyI0Kt49eJNLja9WY0FV6LmTAdk69MtFCnehqliq
-	6ctlq7S2bOxAbsAKhwPfvy0eJSa3JNTVKZEKnVDTtpn2jdOUPwajoC1gap919tZDPvaE9S01AKs
-	4fqXtWf84VYIHOCR7YTGlT/4PasKBoFcol8CLIk70wOR3HIH680NbCbNpcO1Q5NDSEai1mIZjwo
-	WgkVlcgTeBix3lBWEZ2rH9nuLB6+ERZ/nDCLgrG0LhhRmc37GSAE1O9z/Cy/QDDvxGVPB2iyM8g
-	zViEeo8lGiJHvb4lWsv+02/q2eho8jHaDX9r0Yavc44EL62kr2GsJnep28k6gEfFAo6MKYh8k02
-	611ijAWqH/pJxxE5MuSXh25z58x9UIVSwuqQyBSg=
-X-Received: by 2002:a05:600c:4ecf:b0:442:e011:7eb with SMTP id 5b1f17b1804b1-442f2179993mr86156125e9.30.1747314117368;
-        Thu, 15 May 2025 06:01:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGuFQKN6vlr1SKNALYZAGvjhh5kNbmGxWG9WUosIntWg48TXe7G3ffUvQFumHJGN+QYlu+52g==
-X-Received: by 2002:a05:600c:4ecf:b0:442:e011:7eb with SMTP id 5b1f17b1804b1-442f2179993mr86155395e9.30.1747314116736;
-        Thu, 15 May 2025 06:01:56 -0700 (PDT)
+        bh=4OVct6eIY8UVkrmsL8R0B75tOQosGD46TedZOTJVtt0=;
+        b=YPpXRFiF3Xeahm8JylD37ZtukoDHd+ZO4ruzBKFAqmuGVsHWsdqMJFol3YgtkigLHK
+         9VzKm7tLwdq6DesjKVx5BuraMex0gpW8Pd1uphIEBNmHHkSfpuDdr2FCRNvR2+M5HZKe
+         8PqJtdnJIzfDN2uX5hmVYh2wgjHxE88BfW/qKQGSlR12T6dy/YyoeiKoK8wuLSA9jh/N
+         lEzBNwGQwEj/b94iWW1Rbt5oNr6/4rrCTa0ygLFjlwyhR+KUj6zsWGkOwwU3PA67OinV
+         ENVHzKpjtpgF+HuyOG5yAtu1SecdSX9sCbuJZ+Noom/k4n7RlmLOjrCo5jkPo6IdE+a0
+         QH0w==
+X-Forwarded-Encrypted: i=1; AJvYcCWF8ihzRZXXS+ChVrT34PF3XRJi8+1TN/JT82ToZhkIBM1MMZEn6RxysSP4cF09y+f9s5rGC1Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxdCrDv4iOP/Lemf9AtWg0HVsHPWzJQbEkVcIXVQgDANlE9HloA
+	lveOk0XQUo238adtDvUroAIhpZTE80TQfVFcgcUN5SajZexQQBgbD5u6dMtIBbyWG5HVVYNBc3K
+	JhrJRglqC+nifRaWZZ4HZBUHazhl3wiB7up/0qSRd77EftUYnTa1JHWF/zA==
+X-Gm-Gg: ASbGncsUgQLtsvra8JJUTSUxn+QdqXRSj8UkLCXj4VRoNs0tYRDhxv4oOMwQ5Hjg49k
+	XpNRCJvWQG+KaZ2hTzVUCIQCJUs13CpRNesy89ei3DeFFvcP6jZgFzVTiY1Gp/X3O2hwJy3vVfj
+	klB5A0AeLwXZMnLg/ToKcTTSy39H1xgBgTjKQJU/t/b6aDUjZ/CpKIY9ABcluzc91/zDpdP3gAP
+	6vIzIjK7QIWx+JOwtFAMpxuUBzcSZapkzJxCc0PsVHvMG7ittl0CYuZjGXDjqq5a/uoQoonFpkD
+	RMxufDVoH4Iyq/ZfaWJZEq+BEcFtr42/AR+9PufzCG5t7m3IVla3j+ykKjDYyTfVf6xW3+OdI9L
+	vMfGn3e3SZGrptPGirGP3r4cedulWMCiPXFL8Oow=
+X-Received: by 2002:a05:6000:22c5:b0:3a3:42cd:3701 with SMTP id ffacd0b85a97d-3a35121006dmr3078668f8f.23.1747314293875;
+        Thu, 15 May 2025 06:04:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG34MR2/hL4QU6/FgKqlRKoAIw7LQp3Sh4WlCdUOqMyMeGP+QaRhiTTrqwEMQUqg2XL8k/5/A==
+X-Received: by 2002:a05:6000:22c5:b0:3a3:42cd:3701 with SMTP id ffacd0b85a97d-3a35121006dmr3078593f8f.23.1747314293332;
+        Thu, 15 May 2025 06:04:53 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f4a:8900:884a:b3af:e3c9:ec88? (p200300d82f4a8900884ab3afe3c9ec88.dip0.t-ipconnect.de. [2003:d8:2f4a:8900:884a:b3af:e3c9:ec88])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-442f39ef811sm65186185e9.35.2025.05.15.06.01.54
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a1f58ebd43sm23421175f8f.37.2025.05.15.06.04.52
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 May 2025 06:01:55 -0700 (PDT)
-Message-ID: <3aeb6b8e-040c-47ae-8b46-1ef66d5f11e4@redhat.com>
-Date: Thu, 15 May 2025 15:01:53 +0200
+        Thu, 15 May 2025 06:04:52 -0700 (PDT)
+Message-ID: <23042cdf-e0fc-4b3a-92f6-688689728cc7@redhat.com>
+Date: Thu, 15 May 2025 15:04:50 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -92,9 +92,9 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] arm64: Check pxd_leaf() instead of !pxd_table() while
  tearing down page tables
-To: Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- catalin.marinas@arm.com, will@kernel.org
-Cc: anshuman.khandual@arm.com, mark.rutland@arm.com,
+To: Will Deacon <will@kernel.org>
+Cc: Dev Jain <dev.jain@arm.com>, catalin.marinas@arm.com,
+ ryan.roberts@arm.com, anshuman.khandual@arm.com, mark.rutland@arm.com,
  yang@os.amperecomputing.com, linux-kernel@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
 References: <20250515063450.86629-1-dev.jain@arm.com>
@@ -103,7 +103,9 @@ References: <20250515063450.86629-1-dev.jain@arm.com>
  <6fe7848c-485e-4639-b65c-200ed6abe119@redhat.com>
  <35ef7691-7eac-4efa-838d-c504c88c042b@arm.com>
  <c06930f0-f98c-4089-aa33-6789b95fd08f@redhat.com>
- <bac0d8e2-6219-4eb2-b4c8-b82b208808b5@arm.com>
+ <91fc96c3-4931-4f07-a0a9-507ac7b5ae6d@arm.com>
+ <a005b0c3-861f-4e73-a747-91e0a15c85de@redhat.com>
+ <20250515125606.GA11878@willie-the-truck>
 From: David Hildenbrand <david@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=david@redhat.com; keydata=
@@ -151,115 +153,97 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <bac0d8e2-6219-4eb2-b4c8-b82b208808b5@arm.com>
+In-Reply-To: <20250515125606.GA11878@willie-the-truck>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 15.05.25 12:07, Ryan Roberts wrote:
-> On 15/05/2025 09:53, David Hildenbrand wrote:
->> On 15.05.25 10:47, Dev Jain wrote:
+On 15.05.25 14:56, Will Deacon wrote:
+> On Thu, May 15, 2025 at 11:32:22AM +0200, David Hildenbrand wrote:
+>> On 15.05.25 11:27, Dev Jain wrote:
 >>>
 >>>
->>> On 15/05/25 2:06 pm, David Hildenbrand wrote:
->>>> On 15.05.25 10:22, Dev Jain wrote:
+>>> On 15/05/25 2:23 pm, David Hildenbrand wrote:
+>>>> On 15.05.25 10:47, Dev Jain wrote:
 >>>>>
 >>>>>
->>>>> On 15/05/25 1:43 pm, David Hildenbrand wrote:
->>>>>> On 15.05.25 08:34, Dev Jain wrote:
->>>>>>> Commit 9c006972c3fe removes the pxd_present() checks because the caller
->>>>>>> checks pxd_present(). But, in case of vmap_try_huge_pud(), the caller
->>>>>>> only
->>>>>>> checks pud_present(); pud_free_pmd_page() recurses on each pmd through
->>>>>>> pmd_free_pte_page(), wherein the pmd may be none.
->>>>>> The commit states: "The core code already has a check for pXd_none()",
->>>>>> so I assume that assumption was not true in all cases?
+>>>>> On 15/05/25 2:06 pm, David Hildenbrand wrote:
+>>>>>> On 15.05.25 10:22, Dev Jain wrote:
+>>>>>>>
+>>>>>>>
+>>>>>>> On 15/05/25 1:43 pm, David Hildenbrand wrote:
+>>>>>>>> On 15.05.25 08:34, Dev Jain wrote:
+>>>>>>>>> Commit 9c006972c3fe removes the pxd_present() checks because the
+>>>>>>>>> caller
+>>>>>>>>> checks pxd_present(). But, in case of vmap_try_huge_pud(), the caller
+>>>>>>>>> only
+>>>>>>>>> checks pud_present(); pud_free_pmd_page() recurses on each pmd
+>>>>>>>>> through
+>>>>>>>>> pmd_free_pte_page(), wherein the pmd may be none.
+>>>>>>>> The commit states: "The core code already has a check for pXd_none()",
+>>>>>>>> so I assume that assumption was not true in all cases?
+>>>>>>>>
+>>>>>>>> Should that one problematic caller then check for pmd_none() instead?
+>>>>>>>
+>>>>>>>      From what I could gather of Will's commit message, my
+>>>>>>> interpretation is
+>>>>>>> that the concerned callers are vmap_try_huge_pud and vmap_try_huge_pmd.
+>>>>>>> These individually check for pxd_present():
+>>>>>>>
+>>>>>>> if (pmd_present(*pmd) && !pmd_free_pte_page(pmd, addr))
+>>>>>>>        return 0;
+>>>>>>>
+>>>>>>> The problem is that vmap_try_huge_pud will also iterate on pte entries.
+>>>>>>> So if the pud is present, then pud_free_pmd_page -> pmd_free_pte_page
+>>>>>>> may encounter a none pmd and trigger a WARN.
 >>>>>>
->>>>>> Should that one problematic caller then check for pmd_none() instead?
+>>>>>> Yeah, pud_free_pmd_page()->pmd_free_pte_page() looks shaky.
+>>>>>>
+>>>>>> I assume we should either have an explicit pmd_none() check in
+>>>>>> pud_free_pmd_page() before calling pmd_free_pte_page(), or one in
+>>>>>> pmd_free_pte_page().
+>>>>>>
+>>>>>> With your patch, we'd be calling pte_free_kernel() on a NULL pointer,
+>>>>>> which sounds wrong -- unless I am missing something important.
 >>>>>
->>>>>     From what I could gather of Will's commit message, my interpretation is
->>>>> that the concerned callers are vmap_try_huge_pud and vmap_try_huge_pmd.
->>>>> These individually check for pxd_present():
->>>>>
->>>>> if (pmd_present(*pmd) && !pmd_free_pte_page(pmd, addr))
->>>>>       return 0;
->>>>>
->>>>> The problem is that vmap_try_huge_pud will also iterate on pte entries.
->>>>> So if the pud is present, then pud_free_pmd_page -> pmd_free_pte_page
->>>>> may encounter a none pmd and trigger a WARN.
+>>>>> Ah thanks, you seem to be right. We will be extracting table from a none
+>>>>> pmd. Perhaps we should still bail out for !pxd_present() but without the
+>>>>> warning, which the fix commit used to do.
 >>>>
->>>> Yeah, pud_free_pmd_page()->pmd_free_pte_page() looks shaky.
+>>>> Right. We just make sure that all callers of pmd_free_pte_page() already
+>>>> check for it.
 >>>>
->>>> I assume we should either have an explicit pmd_none() check in
->>>> pud_free_pmd_page() before calling pmd_free_pte_page(), or one in
->>>> pmd_free_pte_page().
+>>>> I'd just do something like:
 >>>>
->>>> With your patch, we'd be calling pte_free_kernel() on a NULL pointer,
->>>> which sounds wrong -- unless I am missing something important.
+>>>> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+>>>> index 8fcf59ba39db7..e98dd7af147d5 100644
+>>>> --- a/arch/arm64/mm/mmu.c
+>>>> +++ b/arch/arm64/mm/mmu.c
+>>>> @@ -1274,10 +1274,8 @@ int pmd_free_pte_page(pmd_t *pmdp, unsigned long
+>>>> addr)
+>>>>
+>>>>            pmd = READ_ONCE(*pmdp);
+>>>>
+>>>> -       if (!pmd_table(pmd)) {
+>>>> -               VM_WARN_ON(1);
+>>>> -               return 1;
+>>>> -       }
+>>>> +       VM_WARN_ON(!pmd_present(pmd));
+>>>> +       VM_WARN_ON(!pmd_table(pmd));
 >>>
->>> Ah thanks, you seem to be right. We will be extracting table from a none
->>> pmd. Perhaps we should still bail out for !pxd_present() but without the
->>> warning, which the fix commit used to do.
+>>> And also return 1?
 >>
->> Right. We just make sure that all callers of pmd_free_pte_page() already check
->> for it.
+>> I'll leave that to Catalin + Will.
 >>
->> I'd just do something like:
+>> I'm not a friend for adding runtime-overhead for soemthing that should not
+>> happen and be caught early during testing -> VM_WARN_ON_ONCE().
 > 
-> I just reviewed the patch and had the same feedback as David. I agree with the
-> patch below, with some small mods...
-> 
->>
->> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
->> index 8fcf59ba39db7..e98dd7af147d5 100644
->> --- a/arch/arm64/mm/mmu.c
->> +++ b/arch/arm64/mm/mmu.c
->> @@ -1274,10 +1274,8 @@ int pmd_free_pte_page(pmd_t *pmdp, unsigned long addr)
->>   
->>          pmd = READ_ONCE(*pmdp);
->>   
->> -       if (!pmd_table(pmd)) {
->> -               VM_WARN_ON(1);
->> -               return 1;
->> -       }
->> +       VM_WARN_ON(!pmd_present(pmd));
->> +       VM_WARN_ON(!pmd_table(pmd));
-> 
-> You don't need both of these warnings; pmd_table() is only true if the pmd is
-> present (well actually only if it's _valid_ which is more strict than present),
-> so the second one is sufficient on its own.
+> I definitely think we should return early if the pmd isn't a table.
+> Otherwise, we could end up descending into God-knows-what!
 
-Ah, right.
-
-> 
->>   
->>          table = pte_offset_kernel(pmdp, addr);
->>          pmd_clear(pmdp);
->> @@ -1305,7 +1303,8 @@ int pud_free_pmd_page(pud_t *pudp, unsigned long addr)
-> 
-> Given you are removing the runtime check and early return in
-> pmd_free_pte_page(), I think you should modify this function to use the same
-> style too.
-
-BTW, the "return 1" is weird. But looking at x86, we seem to be making a 
-private copy of the page table first, to defer freeing the page tables 
-after the TLB flush.
-
-I wonder if there isn't a better way (e.g., clear PUDP + flush tlb, then 
-walk over the effectively-disconnected page table). But I'm sure there 
-is a good reason for that.
-
-> 
->>          next = addr;
->>          end = addr + PUD_SIZE;
->>          do {
->> -               pmd_free_pte_page(pmdp, next);
->> +               if (pmd_present(*pmdp))
-> 
-> question: I wonder if it is better to use !pmd_none() as the condition here? It
-> should either be none or a table at this point, so this allows the warning in
-> pmd_free_pte_page() to catch more error conditions. No strong opinion though.
-
-Same here. The existing callers check pmd_present().
+The question is: how did something that is not a table end up here, and 
+why is it valid to check exactly that at runtime. Not strong opinion, it 
+just feels a bit arbitrary to test for exactly that at runtime if it is 
+completely unexpected.
 
 -- 
 Cheers,
