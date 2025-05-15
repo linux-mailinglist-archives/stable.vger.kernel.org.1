@@ -1,88 +1,88 @@
-Return-Path: <stable+bounces-144495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFE6DAB8158
-	for <lists+stable@lfdr.de>; Thu, 15 May 2025 10:49:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F107AAB81A5
+	for <lists+stable@lfdr.de>; Thu, 15 May 2025 10:56:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 319514A5B8E
-	for <lists+stable@lfdr.de>; Thu, 15 May 2025 08:49:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B006866FC9
+	for <lists+stable@lfdr.de>; Thu, 15 May 2025 08:53:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CD3D28DF59;
-	Thu, 15 May 2025 08:49:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3D6C28C013;
+	Thu, 15 May 2025 08:53:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bI5Sm1Sq"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Fw0bV684"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B81F28AAFE
-	for <stable@vger.kernel.org>; Thu, 15 May 2025 08:49:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEBEE29345D
+	for <stable@vger.kernel.org>; Thu, 15 May 2025 08:53:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747298984; cv=none; b=Bebk9qCBv7LPUUPkoJcEkn6xO+43op0jzuudilXkh9UT8tXF++B3VXMrTrZ5RhZmWlZLs0OdRT7mLsxQ1nhobleysw6WS1ld94prtxrv4SbD/xyErZ9e0B1K7rzNfqicz/E8W+t/HOe8dU05yZT8+9p3GqSitbOMmbPjNEaUBqs=
+	t=1747299211; cv=none; b=X81YEguo4/z6vBMn+Z5x3paMQIZO0XYifHM54hjO7k5ZLRSLwAFmhqB5TepljlZxUnRmWBUqBTwZQSTH1TBx0HKJoxpAdsGMTECRGqKGmIaB0+c+X6UQhsWc37lOZ99o5Qj+84JLT9XJ0uNVoAc6vcRHCdLOh3zDdtj5HcB+TUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747298984; c=relaxed/simple;
-	bh=kVKTp1u2T3K/2CbuM8jvK/+7c7/tfdpkS5Lf9BOkaqs=;
+	s=arc-20240116; t=1747299211; c=relaxed/simple;
+	bh=gP5bYnarlJgPCAcYhBxdJqiGMfS3ZlaEJF4D8OrewcI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=W4Iqoi3GEjaksfnIIFJTCWALaYLwhevAfh1BBkmGhnvESH5MadscXEyZk3tdgjEU3B0nOB18TeFe73HV7fB0ejGDbUVqZNCHuPRXb+C7EYgQ0oe2Grvg4c7QdscILvvyQbYokHm0ALzcAwdRUgVHY40sPOWNT+aLMRdoATGZ4j0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bI5Sm1Sq; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type; b=VKl/ra6DiNpXDrnJDbuHIEYlPD6X463ONqh/IljU2ox8evddBWnayx+Xrohh8de7RynagAEDwPhD6mVMj3VMzh6vwteDISjpwTQVie0a7sQKuJHZvdlynEOBgyT5zOI7+d4EIpAT8bwhAWGWXpf0WY77QMSGtgU7Z6fDN/fb6WQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Fw0bV684; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1747298981;
+	s=mimecast20190719; t=1747299208;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=numVHUGG76UJqn6luDC1PvM4Gdk34C40sFiPEgPwpO8=;
-	b=bI5Sm1SqYSBqofzJdb29qn9AbWLCmyoVkTTjEpNaeoI7eh5pE4obUZaI/AeLkIr3rx40bM
-	vC3jhXv0Q8slsFGuWvk+lYVcUbxK9sL852Lqe65aNMFt14pTkdkTKLXMV7cMhcixhzDXJK
-	kr7MsKI5dzVhWE91ZFLcJuAJ6L5Qx4M=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=mxFMYaptLLUT//IK4P864ymdu1SsueZ98Tp1MNq3RV4=;
+	b=Fw0bV684IX7idkVlpRr0+x2vcnBQC3K1w2+2OLIs5k0D/0tLNDIw4QGm5w2jt4796Tm8z2
+	zH2krEuFNBopjNGpaFdQFd6udHXKKb0IA3eS3VWvibUwQdhFB1cOr86J59E9rWluVQXnjQ
+	813c9z9shbvPBTYR7oUkMi9bq9n7kaQ=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-627-JPBR0hcZMkOUJ71M8arg2w-1; Thu, 15 May 2025 04:49:39 -0400
-X-MC-Unique: JPBR0hcZMkOUJ71M8arg2w-1
-X-Mimecast-MFC-AGG-ID: JPBR0hcZMkOUJ71M8arg2w_1747298979
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-43cf172ffe1so4750195e9.3
-        for <stable@vger.kernel.org>; Thu, 15 May 2025 01:49:39 -0700 (PDT)
+ us-mta-102-JHzmWDc-OeuQ0J4hF_92ww-1; Thu, 15 May 2025 04:53:27 -0400
+X-MC-Unique: JHzmWDc-OeuQ0J4hF_92ww-1
+X-Mimecast-MFC-AGG-ID: JHzmWDc-OeuQ0J4hF_92ww_1747299206
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3a206f05150so456207f8f.0
+        for <stable@vger.kernel.org>; Thu, 15 May 2025 01:53:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747298978; x=1747903778;
+        d=1e100.net; s=20230601; t=1747299206; x=1747904006;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=numVHUGG76UJqn6luDC1PvM4Gdk34C40sFiPEgPwpO8=;
-        b=UcjpQkmNwP0mMN4HUZZYshqQ3rdZKkA234kfEaskcGO4jgAifzQ4XrwQyAKa+eZy59
-         Df/O0lrGfEf98pwSYLmFbBgNrfm5Pb4GKfj0nVPqu4Oef0iMZPRRlaOgI9ZRjGqWK/wa
-         TBBktZQTvGzlofTzrEM10xicv52NhaiB54FKabR+IDOtnRPWuWcoan9oQ5YFA404+PeX
-         98Ab8VE23LXmA33W21vDdDvQF/eKgwOdILBdhZvZbbqF+wV65fP1D7NXT+pE/KwP/Gny
-         4rnobCoSj5cjRGoZ/JY83VH3YDbIXppzzsILxhd0mBxQFUH4MLq0yF6Am+AVKkeK6uDh
-         lKIA==
-X-Forwarded-Encrypted: i=1; AJvYcCX95Fgqws09l9wivlEi8zQiRY9GxYbNvvWdJIB8MF/TUy4tPZd4UUTjqP4FIkiVVzvNYNnTFnY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyjjRemnssb2nLAsrRXxw3u+mtJyCrQSGCPdSxRiX4J4Voa+X8Z
-	BU5zHrvgq+odhQCOTZRxB2Qmnv9lixr2UaDiCo2YjBAmEQOVNvZHkZOHCMFLMsmYQvpxssCOnfh
-	AIQEo/dw+kTAQTYNXAXiq9R6dJi9s7PhgxJfDV1RG3MkdCMrz4fGLrQ==
-X-Gm-Gg: ASbGncuX1Lr3v4CA3+SkjD+S5IgsR5kK0kny7kt6xfZwUi3mAQlBOuFNwMyO9MVtX/4
-	A8gmfuTaAgGzBD9rik6D7SHuC/65JnWuFuOLU4sODk3D+2xGMSAaeuR8BhRzzkBDVHxQ18OCEuL
-	a1xX1LYhz1M9Szv0jwAVu+L0vDQMRhx40mKqTt0sf3aJ4tA32JN5t6kdpeLIyfubBGBqIRcCfiF
-	MR8fenGByyP4vXJupxgkervzBnlRK8LrlCQZ9p3m/bQ/6AVHPVai21eYK2UCiHyJ2Kp7KNbMdHw
-	kbkfGkYnnCPCLxjJpAZIzTp/37+5sdGhuS4XEo/rPuy5vZT2ODDrAPPRU9XjjpGW44968tDDJrw
-	PUztAefrFA0d/AknsVbQ/QvSFyIvcoW4NfUewDlI=
-X-Received: by 2002:a05:600c:818d:b0:442:f8e7:25ef with SMTP id 5b1f17b1804b1-442f96e9395mr13742995e9.11.1747298978519;
-        Thu, 15 May 2025 01:49:38 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEF9Ljyx9InpG9QwACcNHvFcbbyugKq1zXFwEj77RI8E97AvX6NCU5d7dYmk90/DADgbbtlOg==
-X-Received: by 2002:a05:600c:818d:b0:442:f8e7:25ef with SMTP id 5b1f17b1804b1-442f96e9395mr13742725e9.11.1747298978121;
-        Thu, 15 May 2025 01:49:38 -0700 (PDT)
+        bh=mxFMYaptLLUT//IK4P864ymdu1SsueZ98Tp1MNq3RV4=;
+        b=Gii/HSCLBuvV3upk1x1l9d+gkIxSwUWp8YEiuPzkuofejPJG02PZAck/YtYN2vjVRk
+         k5RVKCZPKl8HZA3ZLHmI9Z8HMXpNRb+Gp4rOBcdattJKNbwWot2sUlBuGaDkZveclKgL
+         YqTSIleuzDn3FvWGmvS8RtxzeX/aLn/KVNv83+O+o3mAhIj9doVrKMhmHYfT/jZwnc9r
+         g8XGZkkieSt2cn+fvMOO6clhWSBn2cF6hY0qccYy6PpXX0gxZwtOQjIZ32+RtnjaA0Nm
+         0eC96zdDC/ortp9Kg2ElXRnJp0I/X9XYwxw/fhFOFvkAHLAwfGxBAJikzU74nY9oQP1I
+         DtDA==
+X-Forwarded-Encrypted: i=1; AJvYcCXfFKSzTbgQK+r9gQcO7gKjZ6PPloAEsCOaFJ0SQg5fil/3jex9lvpCv/1YiGKG/ceVb1rH+dg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz05EMo4UsbigQIwv8NwPn5HzKGxie9NM7FV+nYMM8RPph45xsX
+	S+oLvqwL9RnFG4iMnSv1lMSSc2wv6EFTS4edVW39Z7M4jfJLqeE8O/klW8LxmmCqyH9lLYMRWvl
+	RN+/x6s83QcyFZP7uSni1WhHhRe6pffuWub3oOFnnAGMGSsvwb+qhUrEjRZMnlPG5
+X-Gm-Gg: ASbGnctI2CtVfNDcldgPMb1qfKDE/nVEQDozyorbkiqG9zBm6XbkcfbwaQOiaGZWf3n
+	WyJN+Pu6TudJheU/ONP0FnV+OnmEbytWrhAItwXqdj6Ia762lUA9P52G1aBj3PBSaCkMTr1S6iY
+	4uQK2U9qyC0uvuGS56IMDVBkxD4XLuxPnq4v1I3u0FLwnsZF4XeCOjAI1Z34VXgVa34bWEx9pDn
+	nl/mMEHrrOrvIccUEPA2170f18v6gZNeZCbRE1W0YGldz95obiORcFul1Htx1wHIpw6TmGEmwD4
+	WNSZ68RwP/VKpI3Yz/KrqYkP1QZcXkboKLZHiBzdiHqU/96WxOpi8xSb43CE35DcL04wpYjNVq8
+	2I5DrNe2TaxsDeBwJPEWwu7LYcgsbi7G0rF7fxks=
+X-Received: by 2002:a5d:588b:0:b0:3a0:b635:ea43 with SMTP id ffacd0b85a97d-3a35374176dmr1365850f8f.33.1747299206226;
+        Thu, 15 May 2025 01:53:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEEsJz5zNV7+Zfbrzpouk886RkGlZnICJAg6K6r7C6mHK9QfUY97jHM/U62zf/Yv0DULdBX7w==
+X-Received: by 2002:a5d:588b:0:b0:3a0:b635:ea43 with SMTP id ffacd0b85a97d-3a35374176dmr1365828f8f.33.1747299205872;
+        Thu, 15 May 2025 01:53:25 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f4a:8900:884a:b3af:e3c9:ec88? (p200300d82f4a8900884ab3afe3c9ec88.dip0.t-ipconnect.de. [2003:d8:2f4a:8900:884a:b3af:e3c9:ec88])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-442f396c093sm60263885e9.27.2025.05.15.01.49.37
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a1f5a4c599sm22499647f8f.94.2025.05.15.01.53.24
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 May 2025 01:49:37 -0700 (PDT)
-Message-ID: <61da67fe-ba7a-4b9c-acb2-f1488f00a804@redhat.com>
-Date: Thu, 15 May 2025 10:49:36 +0200
+        Thu, 15 May 2025 01:53:25 -0700 (PDT)
+Message-ID: <c06930f0-f98c-4089-aa33-6789b95fd08f@redhat.com>
+Date: Thu, 15 May 2025 10:53:24 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -100,7 +100,7 @@ References: <20250515063450.86629-1-dev.jain@arm.com>
  <332ecda7-14c4-4dc3-aeff-26801b74ca04@redhat.com>
  <4904d02f-6595-4230-a321-23327596e085@arm.com>
  <6fe7848c-485e-4639-b65c-200ed6abe119@redhat.com>
- <73a67d06-b497-40a2-8cb2-3b80c6ba59d1@arm.com>
+ <35ef7691-7eac-4efa-838d-c504c88c042b@arm.com>
 From: David Hildenbrand <david@redhat.com>
 Content-Language: en-US
 Autocrypt: addr=david@redhat.com; keydata=
@@ -148,11 +148,11 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <73a67d06-b497-40a2-8cb2-3b80c6ba59d1@arm.com>
+In-Reply-To: <35ef7691-7eac-4efa-838d-c504c88c042b@arm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 15.05.25 10:40, Dev Jain wrote:
+On 15.05.25 10:47, Dev Jain wrote:
 > 
 > 
 > On 15/05/25 2:06 pm, David Hildenbrand wrote:
@@ -190,20 +190,43 @@ On 15.05.25 10:40, Dev Jain wrote:
 >>
 >> With your patch, we'd be calling pte_free_kernel() on a NULL pointer,
 >> which sounds wrong -- unless I am missing something important.
->>
->>>
->>>>
->>>> If you were able to trigger this WARN, it's always a good idea to
->>>> include the splat in the commit.
->>>
->>> I wasn't able to, it is just an observation from code inspection.
->>
->> That better be included in the patch description :)
 > 
-> I did, actually. My bad for not putting in spaces, I notice now that the
-> description looks horrible to the eye :)
+> Ah thanks, you seem to be right. We will be extracting table from a none
+> pmd. Perhaps we should still bail out for !pxd_present() but without the
+> warning, which the fix commit used to do.
 
-Ahh, there it is. Sorry :) Yeah, some empty lines won't hurt!
+Right. We just make sure that all callers of pmd_free_pte_page() already check for it.
+
+I'd just do something like:
+
+diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+index 8fcf59ba39db7..e98dd7af147d5 100644
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -1274,10 +1274,8 @@ int pmd_free_pte_page(pmd_t *pmdp, unsigned long addr)
+  
+         pmd = READ_ONCE(*pmdp);
+  
+-       if (!pmd_table(pmd)) {
+-               VM_WARN_ON(1);
+-               return 1;
+-       }
++       VM_WARN_ON(!pmd_present(pmd));
++       VM_WARN_ON(!pmd_table(pmd));
+  
+         table = pte_offset_kernel(pmdp, addr);
+         pmd_clear(pmdp);
+@@ -1305,7 +1303,8 @@ int pud_free_pmd_page(pud_t *pudp, unsigned long addr)
+         next = addr;
+         end = addr + PUD_SIZE;
+         do {
+-               pmd_free_pte_page(pmdp, next);
++               if (pmd_present(*pmdp))
++                       pmd_free_pte_page(pmdp, next);
+         } while (pmdp++, next += PMD_SIZE, next != end);
+  
+         pud_clear(pudp);
+
 
 -- 
 Cheers,
