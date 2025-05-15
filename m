@@ -1,138 +1,184 @@
-Return-Path: <stable+bounces-144465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36EB0AB7AF5
-	for <lists+stable@lfdr.de>; Thu, 15 May 2025 03:31:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E7FEAB7B0A
+	for <lists+stable@lfdr.de>; Thu, 15 May 2025 03:40:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 007281BA4622
-	for <lists+stable@lfdr.de>; Thu, 15 May 2025 01:31:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB54A7A8967
+	for <lists+stable@lfdr.de>; Thu, 15 May 2025 01:39:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D659282EE;
-	Thu, 15 May 2025 01:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F0CC2798F2;
+	Thu, 15 May 2025 01:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="aBaWm5U+"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mY4yBTIz"
 X-Original-To: stable@vger.kernel.org
-Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BC0C4B1E64
-	for <stable@vger.kernel.org>; Thu, 15 May 2025 01:30:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1BCB2797B7
+	for <stable@vger.kernel.org>; Thu, 15 May 2025 01:40:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747272655; cv=none; b=hKp0wHfzPYPaA7QBwwzY9R9N33m7/Z2ngZs6IyQOWgkQ/bRusotFPCcDinALbuXRT3X7GSN5LRJRfwspYEib4Xs0wHyTnA4u6B4rb0gsaRkntpgRo/BP5V5yuiPaqlEb3fegXbSTAr5QcUvo7oq9/56ey0gcx+dnw5EXOzGVt9o=
+	t=1747273211; cv=none; b=M8LGR3Al3hRbe1vb5aubYAvx2szKCmlRBkM1S15tG7iFBnVf558wdGI0Fj4nokUkEJeh+8OT97zFfnxgM+iqbgbiKhEP5Y1086xbvqAx2tKr/q5BpIcY/YoT7ZuPbKuLTxBZHPTRlOrjP+NYVZw3OHNKkPmhanWTFxn7Msveagk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747272655; c=relaxed/simple;
-	bh=7d11dxMUWSlUIvsx1ISMixfrtiUXfAzjI3gLaGSALKU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Aj4pmPdFzb+tr6/WDI3iSl370CamIgo9beSMXYadAfh4x2MX9xpePhcNM7eT44aUMoTigGxCueLStrni8CjECHKNpnT9JC9Hko3p8CmWY9zN5B3gbakCmwPHrw83iRmgLpb6MR/iAewQ3OP1s6m08vpIg1MomPMTkW+le8JT0dc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=aBaWm5U+; arc=none smtp.client-ip=91.218.175.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <7135de9f-4372-4e12-994d-ecdc234bff28@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1747272641;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ciAFAPUHoqP7kxDTaOJWSofaP2GTW0t32HqF5a7B428=;
-	b=aBaWm5U+V54ipnws5yhyd78b0OCayavJMYV1WP4Do40m7+AZKeVhiwXPNb1Vh6DBT/FQbj
-	vJA1nJOn4XmwrE4UwRcPtYvDzpfZFAsDpASr85yAyd7JE8fAe7Uyhq4qOCzyLLGsswApKE
-	nnouiomU3pAY4gGj1KnCcoUmOIBCc08=
-Date: Thu, 15 May 2025 09:30:36 +0800
+	s=arc-20240116; t=1747273211; c=relaxed/simple;
+	bh=j3AQqh2bF+a1tTBBmMb6vQqukFWdDH12NEK3gDZ/zHw=;
+	h=Date:Mime-Version:Message-ID:Subject:From:Cc:Content-Type; b=murHr4gM3ZJxYevgBZn/hjdaFKB/O6k6D4ibIuKfKI7R8k4cgqAPphY9JmPjGUedrWizvbyt1+8LqMSYl92nKhQPWXjQbR9oXPzRyeawlCBmtBrh0D4AP3ANGv5K8I4PLayFaDnJghWmL4Nq49wS03NcgHOUKkGR+2lIu1uZrDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--rdbabiera.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mY4yBTIz; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--rdbabiera.bounces.google.com
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-30ab5d34fdbso447751a91.0
+        for <stable@vger.kernel.org>; Wed, 14 May 2025 18:40:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1747273209; x=1747878009; darn=vger.kernel.org;
+        h=cc:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=IakyZJkj7nOlvLL2uNc9irIZAgoOcA1vyttW9qbfPnU=;
+        b=mY4yBTIzgZmK5j5zGfnDvG6JQm/gN6JTEo1tXzzkXxZy8vDFMgJp0S9V0JplwDYdgh
+         T4Jt3D116pUj+P2fqsBkLLf76tUCi97li2me8oSvwN3cYRwM0pBHF+08U4sWrCUK08DR
+         MVBalcLuDWN5kuXObLpRrWrb5UFrfqzmMtVJqHW554zbg7Dsfg2lVP5NmE46TWMoxGpn
+         YSEw6+P7scu6QlQOfOnHTuKFxmZFRrxK8PxwRW1KWtZWWZfPRab/ImDge4bQlrIMC/gB
+         saASXtqZrDZJfGvI5Hw/VuD4gCsa6MWb4k+rnuBslKRcCzzCLf2URUNQzNgtLnAZ2HXe
+         gKRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747273209; x=1747878009;
+        h=cc:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=IakyZJkj7nOlvLL2uNc9irIZAgoOcA1vyttW9qbfPnU=;
+        b=QQNLO/MF/gp2q13PXoIEsBhctJC5GcumwZ3N2/iYU+77PrCBI5TWpBJCTjGB/SDebx
+         ia7p8Mn4UsuDzo5/svfsGHxa+Ljif+P9UyZbK/R5Npw63G/raxslR8ULzI4T4elhjOp+
+         nl86lm8TYo1tlUmFbkhyz/VLWMlX06P3vOekjVI/M2CJJRUZ6wwMQlxtOz8RUEq03Zfj
+         YtQvqIBBgkVTDLmoXJqtflc9fcC8oJ96j/mrcs2TUvIi3gDhvO6jTDIJ7EFfCKuIFTnO
+         bZxD8ORAcGUSmKr6IjYYnHpou0BEdGwpp9sLQIrnglUxW196Rc95HkL4OoWt0dNDQJsC
+         aPSg==
+X-Forwarded-Encrypted: i=1; AJvYcCWFASIJnQTVskgmxUsb5nhZsLsl/5CC7j8td+EfdJieOq0s05Pjg77+4K3FQGZ6JVg8PtbLLKE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4lVZ6it5xmwJaPbF4KOTxNO94vtHdrGUir0/Ipn+ohX0sC6vw
+	qnvARGmgr2+dSBMXt8yKG12dW40yLvrQW8FgqXUnIb8RxRZMSy4lcrE4reMsLBNkUbXAV0xM/FM
+	RMbqOoMxQ+eoewQ==
+X-Google-Smtp-Source: AGHT+IEyLvp3ghttpO9cVp/ndy7EDcY+GfCBT+shK3xrBkQdK1whbMrygpWLNQikJyJ78DDaeVfQrWnuBB9FBDk=
+X-Received: from pjbsu3.prod.google.com ([2002:a17:90b:5343:b0:2fc:3022:36b8])
+ (user=rdbabiera job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:90b:3949:b0:2ea:a9ac:eee1 with SMTP id 98e67ed59e1d1-30e2e5e5a63mr9196895a91.10.1747273209002;
+ Wed, 14 May 2025 18:40:09 -0700 (PDT)
+Date: Thu, 15 May 2025 01:40:02 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Subject: Re: [PATCH] LoongArch: Save and restore CSR.CNTC for hibernation
-To: Huacai Chen <chenhuacai@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>
-Cc: loongarch@lists.linux.dev, Xuefeng Li <lixuefeng@loongson.cn>,
- Guo Ren <guoren@kernel.org>, Xuerui Wang <kernel@xen0n.name>,
- Jiaxun Yang <jiaxun.yang@flygoat.com>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Xianglai Li <lixianglai@loongson.cn>
-References: <20250514144643.1620870-1-chenhuacai@loongson.cn>
-Content-Language: en-US
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yanteng Si <si.yanteng@linux.dev>
-In-Reply-To: <20250514144643.1620870-1-chenhuacai@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Mime-Version: 1.0
+X-Developer-Key: i=rdbabiera@google.com; a=openpgp; fpr=639A331F1A21D691815CE090416E17CA2BBBD5C8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2883; i=rdbabiera@google.com;
+ h=from:subject; bh=j3AQqh2bF+a1tTBBmMb6vQqukFWdDH12NEK3gDZ/zHw=;
+ b=owGbwMvMwCFW0bfok0KS4TbG02pJDBmqrp+nexnMyP91YvlDq4/t5j/2nvGYyf91ySyXoOzNO
+ wrbRPRedZSyMIhxMMiKKbLo+ucZ3LiSumUOZ40xzBxWJpAhDFycAjCR9GqGf+ZF/zoNwq07ZgSm
+ T7kyi9fm3pke0cUXr2TuN+VPPdd+VouRYeGMU16hm0Oenr75ZWHY7xdHmLpWdb378D6Jx/ix99t jRzkA
+X-Mailer: git-send-email 2.49.0.1045.g170613ef41-goog
+Message-ID: <20250515014003.1681068-2-rdbabiera@google.com>
+Subject: [PATCH v2] usb: typec: tcpm: apply vbus before data bringup in tcpm_src_attach
+From: RD Babiera <rdbabiera@google.com>
+Cc: heikki.krogerus@linux.intel.com, badhri@google.com, 
+	gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, RD Babiera <rdbabiera@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-在 5/14/25 10:46 PM, Huacai Chen 写道:
-> Save and restore CSR.CNTC for hibernation which is similar to suspend.
-> 
-> For host this is unnecessary because sched clock is ensured continuous,
-> but for kvm guest sched clock isn't enough because rdtime.d should also
-> be continuous.
-> 
-> Host::rdtime.d = Host::CSR.CNTC + counter
-> Guest::rdtime.d = Host::CSR.CNTC + Host::CSR.GCNTC + Guest::CSR.CNTC + counter
-> 
-> so,
-> 
-> Guest::rdtime.d = Host::rdtime.d + Host::CSR.GCNTC + Guest::CSR.CNTC
-> 
-> To ensure Guest::rdtime.d continuous, Host::rdtime.d should be at first
-> continuous, while Host::CSR.GCNTC / Guest::CSR.CNTC is maintained by KVM.
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
-> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Reviewed-by: Yanteng Si <si.yanteng@linux.dev>
+This patch fixes Type-C compliance test TD 4.7.6 - Try.SNK DRP Connect
+SNKAS.
 
-Thanks,
-Yanteng
-> ---
->   arch/loongarch/kernel/time.c     | 2 +-
->   arch/loongarch/power/hibernate.c | 3 +++
->   2 files changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/loongarch/kernel/time.c b/arch/loongarch/kernel/time.c
-> index e2d3bfeb6366..bc75a3a69fc8 100644
-> --- a/arch/loongarch/kernel/time.c
-> +++ b/arch/loongarch/kernel/time.c
-> @@ -111,7 +111,7 @@ static unsigned long __init get_loops_per_jiffy(void)
->   	return lpj;
->   }
->   
-> -static long init_offset __nosavedata;
-> +static long init_offset;
->   
->   void save_counter(void)
->   {
-> diff --git a/arch/loongarch/power/hibernate.c b/arch/loongarch/power/hibernate.c
-> index 1e0590542f98..e7b7346592cb 100644
-> --- a/arch/loongarch/power/hibernate.c
-> +++ b/arch/loongarch/power/hibernate.c
-> @@ -2,6 +2,7 @@
->   #include <asm/fpu.h>
->   #include <asm/loongson.h>
->   #include <asm/sections.h>
-> +#include <asm/time.h>
->   #include <asm/tlbflush.h>
->   #include <linux/suspend.h>
->   
-> @@ -14,6 +15,7 @@ struct pt_regs saved_regs;
->   
->   void save_processor_state(void)
->   {
-> +	save_counter();
->   	saved_crmd = csr_read32(LOONGARCH_CSR_CRMD);
->   	saved_prmd = csr_read32(LOONGARCH_CSR_PRMD);
->   	saved_euen = csr_read32(LOONGARCH_CSR_EUEN);
-> @@ -26,6 +28,7 @@ void save_processor_state(void)
->   
->   void restore_processor_state(void)
->   {
-> +	sync_counter();
->   	csr_write32(saved_crmd, LOONGARCH_CSR_CRMD);
->   	csr_write32(saved_prmd, LOONGARCH_CSR_PRMD);
->   	csr_write32(saved_euen, LOONGARCH_CSR_EUEN);
+tVbusON has a limit of 275ms when entering SRC_ATTACHED. Compliance
+testers can interpret the TryWait.Src to Attached.Src transition after
+Try.Snk as being in Attached.Src the entire time, so ~170ms is lost
+to the debounce timer.
+
+Setting the data role can be a costly operation in host mode, and when
+completed after 100ms can cause Type-C compliance test check TD 4.7.5.V.4
+to fail.
+
+Turn VBUS on before tcpm_set_roles to meet timing requirement.
+
+Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
+Cc: stable@vger.kernel.org
+Signed-off-by: RD Babiera <rdbabiera@google.com>
+Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+---
+Changes since v1:
+* Rebased on top of usb-linus for v6.15
+---
+ drivers/usb/typec/tcpm/tcpm.c | 32 ++++++++++++++++----------------
+ 1 file changed, 16 insertions(+), 16 deletions(-)
+
+diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+index 8adf6f954633..05c62a1673af 100644
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -4353,16 +4353,6 @@ static int tcpm_src_attach(struct tcpm_port *port)
+ 
+ 	tcpm_enable_auto_vbus_discharge(port, true);
+ 
+-	ret = tcpm_set_roles(port, true, TYPEC_SOURCE, tcpm_data_role_for_source(port));
+-	if (ret < 0)
+-		return ret;
+-
+-	if (port->pd_supported) {
+-		ret = port->tcpc->set_pd_rx(port->tcpc, true);
+-		if (ret < 0)
+-			goto out_disable_mux;
+-	}
+-
+ 	/*
+ 	 * USB Type-C specification, version 1.2,
+ 	 * chapter 4.5.2.2.8.1 (Attached.SRC Requirements)
+@@ -4372,12 +4362,22 @@ static int tcpm_src_attach(struct tcpm_port *port)
+ 	    (polarity == TYPEC_POLARITY_CC2 && port->cc1 == TYPEC_CC_RA)) {
+ 		ret = tcpm_set_vconn(port, true);
+ 		if (ret < 0)
+-			goto out_disable_pd;
++			return ret;
+ 	}
+ 
+ 	ret = tcpm_set_vbus(port, true);
+ 	if (ret < 0)
+ 		goto out_disable_vconn;
++	
++	ret = tcpm_set_roles(port, true, TYPEC_SOURCE, tcpm_data_role_for_source(port));
++	if (ret < 0)
++		goto out_disable_vbus;
++
++	if (port->pd_supported) {
++		ret = port->tcpc->set_pd_rx(port->tcpc, true);
++		if (ret < 0)
++			goto out_disable_mux;
++	}
+ 
+ 	port->pd_capable = false;
+ 
+@@ -4389,14 +4389,14 @@ static int tcpm_src_attach(struct tcpm_port *port)
+ 
+ 	return 0;
+ 
+-out_disable_vconn:
+-	tcpm_set_vconn(port, false);
+-out_disable_pd:
+-	if (port->pd_supported)
+-		port->tcpc->set_pd_rx(port->tcpc, false);
+ out_disable_mux:
+ 	tcpm_mux_set(port, TYPEC_STATE_SAFE, USB_ROLE_NONE,
+ 		     TYPEC_ORIENTATION_NONE);
++out_disable_vbus:
++	tcpm_set_vbus(port, false);
++out_disable_vconn:
++	tcpm_set_vconn(port, false);
++
+ 	return ret;
+ }
+ 
+
+base-commit: 82f2b0b97b36ee3fcddf0f0780a9a0825d52fec3
+-- 
+2.49.0.1045.g170613ef41-goog
 
 
