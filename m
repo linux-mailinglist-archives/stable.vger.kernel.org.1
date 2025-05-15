@@ -1,101 +1,98 @@
-Return-Path: <stable+bounces-144477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144478-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B838AB7EB2
-	for <lists+stable@lfdr.de>; Thu, 15 May 2025 09:19:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7215EAB7EC7
+	for <lists+stable@lfdr.de>; Thu, 15 May 2025 09:28:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 906BC1731A3
-	for <lists+stable@lfdr.de>; Thu, 15 May 2025 07:19:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BA291BA3B72
+	for <lists+stable@lfdr.de>; Thu, 15 May 2025 07:29:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 085D216F8E5;
-	Thu, 15 May 2025 07:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E56F9202C46;
+	Thu, 15 May 2025 07:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KnBjGATk"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Eutej4SB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4BF43C00;
-	Thu, 15 May 2025 07:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 963D9201268;
+	Thu, 15 May 2025 07:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747293552; cv=none; b=fWBquiQP9anGu+1DJKWnUw4WcEPE1Q7mp2ZyB+Eju7cClRJ30e7XRH4Cr2ZvAcAGPZOnKdk/flcMt8ETiUWvWKvKNmvDCNjJwcbP16EQbr850HQCdhTebsXkV4fH7wDvqS1z6z+fVWHJNCqpGvnXMfr6dRa3rqrFxHQnQmAct7k=
+	t=1747294130; cv=none; b=gk0r9lGZGX/5O3+3FlbD3GhG+/fLYWSCxzNAcJ4w+QKhQR1hTrJnrN5yx36z+Y+BPGmaw3FUGbH/oenz76XtK2tRD5HVYViC0l3ta4S+5sI9oQrOT6HQD4slcreghWUeRS6f2ZD8RYufUO1VkTq34fVR5L0zAsiTstvvAkTYIdA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747293552; c=relaxed/simple;
-	bh=NkLBdrijFJswBxzpyufasT+pKXDbScVm9q2E/Qb0UZg=;
+	s=arc-20240116; t=1747294130; c=relaxed/simple;
+	bh=hafwXR36EMxvqkpSmEhncwunmZ49Lryi/C1Hogduf4c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cheGim2ysDljUSupXz/4wB1NNvPxeRqCoVDsS1jAfDPPRK9p97tM5G2G/u7ihU0RCNhRG0BydJAPJ1F1ZRs5xwy8ePLIX1iGQw/0Pc1vE3Mnfp750eDv+RjeM+itOO3HXNhfr2BL04s8Sd9yMW2vqX4NixeBBr/OdVhrPf7jtdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KnBjGATk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50B34C4CEF2;
-	Thu, 15 May 2025 07:19:10 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=iDTE0zd6jM7mF12KdaBocGOjnPMrdVfETmGtphYrncahdmYwF3PSjq+8kDpDdFMUAYcs0QNmMC1PGo5CZxB78zGe+JKH4K4wjvj3p7OsZjwzK/6l6xKIXT4YscucWIvzC80xHogx0gLJHaCeHLDmby+Axz93ZUKPg2FAU0twNJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Eutej4SB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D70DC4CEE7;
+	Thu, 15 May 2025 07:28:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747293552;
-	bh=NkLBdrijFJswBxzpyufasT+pKXDbScVm9q2E/Qb0UZg=;
+	s=k20201202; t=1747294130;
+	bh=hafwXR36EMxvqkpSmEhncwunmZ49Lryi/C1Hogduf4c=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KnBjGATkzALgMw3pOGBMm1sdR0zCN42fpzszIvO6MSd5rgeJTr9p8XsFQsPWRI2/Z
-	 eCmPweF6o0t4um9xhH8kjtUriOUh5vPDQTwGNtDLSnLv3D7qfL7/4On02Bi0IWrlzV
-	 94XupcNb0RFyO57+DGNgswboERDyUu/mZBskoMPKCypMb7w7oGJICqwH+5s3moMSyx
-	 m9GGEYxXR0++8xkntDAC1f68PgmWh00k3gdj6KnUlYp/zzNQpRbT6D1/KffnOjLJ/X
-	 pVBjOwQ2oqN48F+626lEbTfgg9tkBBsjVOWop5A4O0xWwuQkJDuiLYvjubiF/HyZ1C
-	 jm4WJSClcfvOg==
-Date: Thu, 15 May 2025 09:19:07 +0200
-From: Niklas Cassel <cassel@kernel.org>
-To: Bart Van Assche <bvanassche@acm.org>
-Cc: Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
-	Christoph Hellwig <hch@lst.de>, Damien Le Moal <dlemoal@kernel.org>,
-	Yu Kuai <yukuai1@huaweicloud.com>, Ming Lei <ming.lei@redhat.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] block: Make __submit_bio_noacct() preserve the bio
- submission order
-Message-ID: <aCWVa68kp9vXTqHb@ryzen>
-References: <20250514202937.2058598-1-bvanassche@acm.org>
- <20250514202937.2058598-2-bvanassche@acm.org>
+	b=Eutej4SBJkPxuFpGx/jIjCG1gaBbVHCuhUsvfkHqQvOTeRPmom/ea/icCCM62vpsL
+	 M534gxjWxV/n1NlzODc+8zgpmHVJMElVw5UfNDaouptuLzjP9siATGlgvlsRkoOl4z
+	 lKeLOW8O9wsAO01XqXfAe/TGLPz9O6niNllCAcosBGy2V05eTuxbwNuu3rY90mTbmG
+	 6lWPNNHMo5Hww0o+MmD3oyIuEL+guCQwyRRDfw0hnjwmIGmmdie1bvScFffbbxT7Q8
+	 jGVj2Mosvsd+J+klGPHaSYsF95MHlS1k6Zq8Ay8lZcmy3ENJ17afep2f/hOboxgDHX
+	 KURnUOoyfIgwA==
+Date: Thu, 15 May 2025 09:28:45 +0200
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, hargar@microsoft.com
+Subject: Re: [PATCH 6.14 000/197] 6.14.7-rc2 review
+Message-ID: <aCWXra9vbzSrtA68@finisterre.sirena.org.uk>
+References: <20250514125625.496402993@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="XhpwyD56vIH6YWQQ"
+Content-Disposition: inline
+In-Reply-To: <20250514125625.496402993@linuxfoundation.org>
+X-Cookie: Well begun is half done.
+
+
+--XhpwyD56vIH6YWQQ
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250514202937.2058598-2-bvanassche@acm.org>
 
-Hello Bart,
+On Wed, May 14, 2025 at 03:04:16PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.14.7 release.
+> There are 197 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-On Wed, May 14, 2025 at 01:29:36PM -0700, Bart Van Assche wrote:
-> submit_bio() may be called recursively. To limit the stack depth, recursive
-> calls result in bios being added to a list (current->bio_list).
-> __submit_bio_noacct() sets up that list and maintains two lists with
-> requests:
-> * bio_list_on_stack[0] is the list with bios submitted by recursive
->   submit_bio() calls from inside the latest __submit_bio() call.
-> * bio_list_on_stack[1] is the list with bios submitted by recursive
->   submit_bio() calls from inside previous __submit_bio() calls.
-> 
-> Make sure that bios are submitted to lower devices in the order these
-> have been submitted by submit_bio() by adding new bios at the end of the
-> list instead of at the front.
-> 
-> This patch fixes unaligned write errors that I encountered with F2FS
-> submitting zoned writes to a dm driver stacked on top of a zoned UFS
-> device.
-> 
-> Cc: Christoph Hellwig <hch@lst.de>
-> Cc: Damien Le Moal <dlemoal@kernel.org>
-> Cc: Yu Kuai <yukuai1@huaweicloud.com>
-> Cc: Ming Lei <ming.lei@redhat.com>
-> Cc: stable@vger.kernel.org
+Tested-by: Mark Brown <broonie@kernel.org>
 
-Here you add stable to Cc, but you don't specify either
-1) a minimum version e.g.
-stable@vger.kernel.org # v6.8+
-or
-2) a Fixes tag.
+--XhpwyD56vIH6YWQQ
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
 
-Kind regards,
-Niklas
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmgll60ACgkQJNaLcl1U
+h9BExwf9Hat45yE39oBIYCEZc7Y8sYT7ch0RwgPKCYBfjJzaBzninX3AXhQ9aNJA
+3FNjuv6UDGAFkrnEgzMti1l08j7AG26ISF/qYEru7zhQr7cJnrCvi8cSAKe/Ngok
+LXiuielkWgmgQSiGCUIuNc4syGHHLY0H1edgWM4dKC7Lo2+5EwVV4rMusyHFAag1
+xywvInRXHX38OlvMPaxgTbc7fb7Smyd1/KE7NE/Qt8iR3ukgT2T991nz7YHHFSta
++Bt+M+99AzEqbtzzR2yG/7eq6/cSaS0NA9foaZCn3i9wT4E2qT9VsX0QEUWN0IbN
+Pfpg1Bj5OMkX/nT0aEptI7i7aHSLBA==
+=b+qi
+-----END PGP SIGNATURE-----
+
+--XhpwyD56vIH6YWQQ--
 
