@@ -1,203 +1,133 @@
-Return-Path: <stable+bounces-144541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B123AB8ADE
-	for <lists+stable@lfdr.de>; Thu, 15 May 2025 17:37:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C0B8AB8BB9
+	for <lists+stable@lfdr.de>; Thu, 15 May 2025 17:59:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26429A20C7B
-	for <lists+stable@lfdr.de>; Thu, 15 May 2025 15:29:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30FC04E3279
+	for <lists+stable@lfdr.de>; Thu, 15 May 2025 15:58:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C0D1218E91;
-	Thu, 15 May 2025 15:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5691621D584;
+	Thu, 15 May 2025 15:58:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H0/eBXaN"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="oJGDMdxX"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from 003.mia.mailroute.net (003.mia.mailroute.net [199.89.3.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E54B215F6C;
-	Thu, 15 May 2025 15:29:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0E221B91F;
+	Thu, 15 May 2025 15:58:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.3.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747322951; cv=none; b=VUbpvhiSk9G9xpQaAWErI7bCQ0y2R4UBnb0mPP3uL0+bxoN1QixLosVORiqdFJ4SMH+n8rh6+JpElAGnPJzHmCaEX9EgSJg24Wgj0v4Z0GDDrcKMcK/aHgtW7fWIrRam1DjIIOJP7OBWyssPin6p+HeflpJtBwrHBjkqZdXXJjk=
+	t=1747324710; cv=none; b=U1y9T/6v9sBwTeJLa2NcArDkYFE2WCEWwg5Pd1T7I6uIThY6fKSPjM70JJD24QwUTosRvoS/8wMIgPPBcko7e0KPVllnsvE0T/n3ZRhxe0+rHVSh9yNY9ez17umm1rvb4cgN5sMtcSK4VITNVh5UWeoocDAWkogjdLlAFISw4zA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747322951; c=relaxed/simple;
-	bh=wzY+6d/sGnmcDJMn4ZDQ5jNioYD2ve8+ymqCu8LJxn4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MuAI1Z9dz+oO5JrQgSSrzpkUlFvq+lXMXHsY3yC0+Dj0yB9yA2sG8uf1JeGBeKMFYVeYVTQoLh5rs//kUhqUwrC4n/vLGWT0U/IX4d/EShWNptO/MBOgtnvQ77TJXe3kEDa1WyVC+SUl1qwfwDpcpB7dCwKFIDcYcBDqLDbY3kY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H0/eBXaN; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747322949; x=1778858949;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=wzY+6d/sGnmcDJMn4ZDQ5jNioYD2ve8+ymqCu8LJxn4=;
-  b=H0/eBXaNAe89FwXAo0V0150EZYTueLMfQnPn9v295MchETBw3PhVW9mE
-   sTWhzd1BklwSPB6cOUf5OwBCXMGiG67H8R4V8yiJ1fd48ZZaaxgxOGxB6
-   hVl8buTtJEIt3cSD49EZL2sWKd29v/1asR7IKgC4AZXzgRVx8WaCdsXw9
-   WpcckqNicjnOn/twLRjp4h/u9j9ES6I75Wx0tQvND0optiomS1HMwcJd9
-   Aa8yLpQBqnzufXvBao0BLCcoWSnmCMHb2WkV/qxir2kWQKcGaQnxQn/nq
-   b4ydOQHl/l0FtYQOrryZdT69ltuKvuXGGYfBcgifmqslHZHcD2TdpIrKq
-   w==;
-X-CSE-ConnectionGUID: zj1yJUZfQRq//toGZmlMQg==
-X-CSE-MsgGUID: Bp/g86dqQTSQX/PZULlG1A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11434"; a="60285042"
-X-IronPort-AV: E=Sophos;i="6.15,291,1739865600"; 
-   d="scan'208";a="60285042"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2025 08:29:08 -0700
-X-CSE-ConnectionGUID: IgnFK8KoTEyhykzgNMormA==
-X-CSE-MsgGUID: XE+ntt9zSKCmZ8lx6SbkdQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,291,1739865600"; 
-   d="scan'208";a="138940815"
-Received: from gkhatri-mobl.amr.corp.intel.com (HELO desk) ([10.125.146.13])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2025 08:29:07 -0700
-Date: Thu, 15 May 2025 08:29:00 -0700
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Guenter Roeck <linux@roeck-us.net>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
-	stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org,
-	Darren Kenny <darren.kenny@oracle.com>
-Subject: Re: [PATCH 6.6 000/113] 6.6.91-rc2 review
-Message-ID: <20250515152900.vk3vbotiedv2temq@desk>
-References: <20250514125617.240903002@linuxfoundation.org>
- <861004b4-e036-4306-b129-252b9cb983c7@oracle.com>
- <2025051440-sturdily-dragging-3843@gregkh>
- <9af6afb1-9d91-48ea-a212-bcd6d1a47203@oracle.com>
- <e1ea37bd-ea7d-4e8a-bb2f-6be709eb99f4@roeck-us.net>
- <2025051527-travesty-shape-0e3b@gregkh>
- <20250515152557.a4q2cqab4uvhnpia@desk>
+	s=arc-20240116; t=1747324710; c=relaxed/simple;
+	bh=R1H/UXsGaSYVCvw+5uX0eEYzsRNgloGCKh8AReIPnTs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PGK2avcgsb2f2zkD7WMzq0maCXourJH63GU34+jEbsuE8AN1ohbneJ1bMffCXUKaLIvNFz6SCRKyn+3lF+rxAQRvLk0TQAnEu+oflzg+xiSj1JySDyD9BNdP8POmPAMRzIaGUlKKx26ECDRPDVv1hX1pm1Kk1YJUrDqTTLC8kl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=oJGDMdxX; arc=none smtp.client-ip=199.89.3.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 003.mia.mailroute.net (Postfix) with ESMTP id 4ZyvyB4qRzzlgrtN;
+	Thu, 15 May 2025 15:58:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1747324704; x=1749916705; bh=PFeKXxYALnMjUsC7mTWZ7ISJ
+	RXk4tHkOy0Au+85G4pY=; b=oJGDMdxXRBQzD58vhM6a9NGDtDdCffPR2oLbzTaB
+	YRkXquEqkwBu/YwocwCzFYVfLxNA2XelXhMxexC9wjRz9XSpMvs7aVWdC99MMRgS
+	xlRYxZNTqWY5ZOIr34qtxXQybFtVLxR2GQbW5LOQ4r9S1nll12dEoDn1REEqwsec
+	6PEyeIpMRpE5ytNPQ0K/feW1FWAZSjVQKiKTziz7CyJir41743th2fNShr0R4IuY
+	hJhcMrygKIwElFpQAMXl10sGelJuaIdKIXej8yNi2xdEA2eNjrcrPHybDgDXzFrW
+	bKo6ny4vB15wYKpT+Mk1Rbt+JyyiatDWyONjAEclaUbc/A==
+X-Virus-Scanned: by MailRoute
+Received: from 003.mia.mailroute.net ([127.0.0.1])
+ by localhost (003.mia [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id qb34mU40CL_g; Thu, 15 May 2025 15:58:24 +0000 (UTC)
+Received: from [100.66.154.22] (unknown [104.135.204.82])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 003.mia.mailroute.net (Postfix) with ESMTPSA id 4Zyvxz74l8zlvm7W;
+	Thu, 15 May 2025 15:58:14 +0000 (UTC)
+Message-ID: <6e448a08-d202-414f-8eb6-423a8ed51fcc@acm.org>
+Date: Thu, 15 May 2025 08:58:13 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250515152557.a4q2cqab4uvhnpia@desk>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] block: Make __submit_bio_noacct() preserve the bio
+ submission order
+To: Niklas Cassel <cassel@kernel.org>, NeilBrown <neil@brown.name>
+Cc: Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
+ Christoph Hellwig <hch@lst.de>, Damien Le Moal <dlemoal@kernel.org>,
+ Yu Kuai <yukuai1@huaweicloud.com>, Ming Lei <ming.lei@redhat.com>,
+ stable@vger.kernel.org
+References: <20250514202937.2058598-1-bvanassche@acm.org>
+ <20250514202937.2058598-2-bvanassche@acm.org> <aCWVa68kp9vXTqHb@ryzen>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <aCWVa68kp9vXTqHb@ryzen>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, May 15, 2025 at 08:26:04AM -0700, Pawan Gupta wrote:
-> On Thu, May 15, 2025 at 07:35:26AM +0200, Greg Kroah-Hartman wrote:
-> > On Wed, May 14, 2025 at 01:49:06PM -0700, Guenter Roeck wrote:
-> > > On 5/14/25 13:33, Harshit Mogalapalli wrote:
-> > > > Hi Greg,
-> > > > 
-> > > > On 15/05/25 01:35, Greg Kroah-Hartman wrote:
-> > > > > On Thu, May 15, 2025 at 12:29:40AM +0530, Harshit Mogalapalli wrote:
-> > > > > > Hi Greg,
-> > > > > > On 14/05/25 18:34, Greg Kroah-Hartman wrote:
-> > > > > > > This is the start of the stable review cycle for the 6.6.91 release.
-> > > > > > > There are 113 patches in this series, all will be posted as a response
-> > > > > > > to this one.  If anyone has any issues with these being applied, please
-> > > > > > > let me know.
-> > > > > > > 
-> > > > > > > Responses should be made by Fri, 16 May 2025 12:55:38 +0000.
-> > > > > > > Anything received after that time might be too late.
-> > > > > > 
-> > > > > > ld: vmlinux.o: in function `patch_retpoline':
-> > > > > > alternative.c:(.text+0x3b6f1): undefined reference to `module_alloc'
-> > > > > > make[2]: *** [scripts/Makefile.vmlinux:37: vmlinux] Error 1
-> > > > > > 
-> > > > > > We see this build error in 6.6.91-rc2 tag.
-> > > > > 
-> > > > > What is odd about your .config?  Have a link to it?  I can't duplicate
-> > > > > it here on my builds.
-> > > > > 
-> > > > 
-> > > > So this is a config where CONFIG_MODULES is unset(!=y) -- with that we could reproduce it on defconfig + disabling CONFIG_MODULES as well.
-> > > > 
-> > > 
-> > > Key is the combination of CONFIG_MODULES=n with CONFIG_MITIGATION_ITS=y.
-> > 
-> > Ah, this is due to the change in its_alloc() for 6.6.y and 6.1.y by the
-> > call to module_alloc() instead of execmem_alloc() in the backport of
-> > 872df34d7c51 ("x86/its: Use dynamic thunks for indirect branches").
+On 5/15/25 12:19 AM, Niklas Cassel wrote:
+> Hello Bart,
 > 
-> Sorry for the trouble. I wish I had a test to catch problems like this. The
-> standard config targets defconfig, allyesconfig, allnoconfig, etc. do not
-> expose such issues. The only thing that comes close is randconfig.
+> On Wed, May 14, 2025 at 01:29:36PM -0700, Bart Van Assche wrote:
+>> submit_bio() may be called recursively. To limit the stack depth, recursive
+>> calls result in bios being added to a list (current->bio_list).
+>> __submit_bio_noacct() sets up that list and maintains two lists with
+>> requests:
+>> * bio_list_on_stack[0] is the list with bios submitted by recursive
+>>    submit_bio() calls from inside the latest __submit_bio() call.
+>> * bio_list_on_stack[1] is the list with bios submitted by recursive
+>>    submit_bio() calls from inside previous __submit_bio() calls.
+>>
+>> Make sure that bios are submitted to lower devices in the order these
+>> have been submitted by submit_bio() by adding new bios at the end of the
+>> list instead of at the front.
+>>
+>> This patch fixes unaligned write errors that I encountered with F2FS
+>> submitting zoned writes to a dm driver stacked on top of a zoned UFS
+>> device.
+>>
+>> Cc: Christoph Hellwig <hch@lst.de>
+>> Cc: Damien Le Moal <dlemoal@kernel.org>
+>> Cc: Yu Kuai <yukuai1@huaweicloud.com>
+>> Cc: Ming Lei <ming.lei@redhat.com>
+>> Cc: stable@vger.kernel.org
 > 
-> CONFIG_MODULES=n is not a common setting, I wonder how people find such
-> issues? (trying to figure out how to prevent such issues in future).
-> 
-> > Pawan, any hints on what should be done here instead?
-> 
-> Since dynamic thunks are not possible without CONFIG_MODULES, one option is
-> to adjust the already in 6.6.91-rc2 patch 9f35e331144a (x86/its: Fix build
-> errors when CONFIG_MODULES=n) to also bring the ITS thunk allocation under
-> CONFIG_MODULES.
-> 
-> I am not seeing any issue with below build and boot test:
-> 
->   #!/bin/bash -ex
-> 
->   ./scripts/config --disable CONFIG_MODULES
->   ./scripts/config --disable CONFIG_MITIGATION_ITS
->   # https://github.com/arighi/virtme-ng
->   vng -b
->   vng -- lscpu
-> 
->   # main test
->   ./scripts/config --disable CONFIG_MODULES
->   ./scripts/config --enable CONFIG_MITIGATION_ITS
->   vng -b
->   vng -- lscpu
-> 
->   ./scripts/config --enable CONFIG_MODULES
->   ./scripts/config --disable CONFIG_MITIGATION_ITS
->   vng -b
->   vng -- lscpu
-> 
->   ./scripts/config --enable CONFIG_MODULES
->   ./scripts/config --enable CONFIG_MITIGATION_ITS
->   vng -b
->   vng -- lscpu
-> 
->   echo "PASS"
-> 
-> Similar change is required for 6.1 and 5.15 as well. 6.12 is fine because
-> it uses execmem_alloc().
-> 
-> --- 8< ---
-> From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-> Subject: [PATCH 6.6] x86/its: Fix build errors when CONFIG_MODULES=n
-> 
-> From: Eric Biggers <ebiggers@google.com>
-> 
-> commit 9f35e33144ae5377d6a8de86dd3bd4d995c6ac65 upstream.
-> 
-> Fix several build errors when CONFIG_MODULES=n, including the following:
-> 
-> ../arch/x86/kernel/alternative.c:195:25: error: incomplete definition of type 'struct module'
->   195 |         for (int i = 0; i < mod->its_num_pages; i++) {
-> 
->   [ pawan: backport: Bring ITS dynamic thunk code under CONFIG_MODULES ]
-> 
-> Fixes: 872df34d7c51 ("x86/its: Use dynamic thunks for indirect branches")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Eric Biggers <ebiggers@google.com>
-> Acked-by: Dave Hansen <dave.hansen@intel.com>
-> Tested-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-> Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
-> Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Here you add stable to Cc, but you don't specify either
+> 1) a minimum version e.g.
+> stable@vger.kernel.org # v6.8+
+> or
+> 2) a Fixes tag.
 
-Agh!
+Hi Niklas,
 
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Let's add the following to this patch:
+
+Fixes: 79bd99596b73 ("blk: improve order of bio handling in 
+generic_make_request()")
+
+Neil, since that commit was authored by you: the commit message is
+elaborate but the names of the drivers that needed that commit have
+not been mentioned. Which drivers needed that change? Additionally,
+can you please help with reviewing this patch:
+
+https://lore.kernel.org/linux-block/20250514202937.2058598-2-bvanassche@acm.org/
+
+Thanks,
+
+Bart.
 
