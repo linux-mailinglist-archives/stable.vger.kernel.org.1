@@ -1,133 +1,190 @@
-Return-Path: <stable+bounces-144561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52CCCAB924C
-	for <lists+stable@lfdr.de>; Fri, 16 May 2025 00:29:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69BE6AB92AA
+	for <lists+stable@lfdr.de>; Fri, 16 May 2025 01:05:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0D3816F203
-	for <lists+stable@lfdr.de>; Thu, 15 May 2025 22:29:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63D6DA20264
+	for <lists+stable@lfdr.de>; Thu, 15 May 2025 23:05:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D3E7288C9A;
-	Thu, 15 May 2025 22:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42E4C28B3E4;
+	Thu, 15 May 2025 23:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="Fk44wA45"
+	dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b="xL3ctv5Q";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="DAAh2Rw+"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-fw-52002.amazon.com (smtp-fw-52002.amazon.com [52.119.213.150])
+Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 942B3E55B;
-	Thu, 15 May 2025 22:28:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.119.213.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A6719FA93;
+	Thu, 15 May 2025 23:05:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747348140; cv=none; b=Zmll42Mej/Ftj2wDLCUPmgPttVKK8A0QH0tXz/VbyESHOkq3HnjWjBN9QZxLIkVPlcqb8vv3tt4rCEwhuuGIY4B+NEPxQLE5A80UEXOpq8Ex17WPzPA36bbIoOzJ4biSsVW0gXC3tL2fP1/pqj/e8qMkPIdWTJPpW6aPNjENZ/4=
+	t=1747350344; cv=none; b=YtRroZLdSJ6yJK2pbLQq4ry5ZekcwWqG1HyLXXdygKkB+ksDe4nMo6+MbhKNCWGQ4JaLUGqBoYh0rCI56NkFgaEdDfmXQX6VE9hDrH0QhUhsEyMe+IObZ+qU7VZkf6xRHW31zx/WRFZZXhQVhsTP2BRcV25nGmv/n048B5c842o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747348140; c=relaxed/simple;
-	bh=3j49X7ylBCwmdaUflrhLyH28SbNIQMG8C6USoXMDC6I=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=JleVmonsPc0w5cqWVWeSdoPo5UcPRPQdVc+FBA8FHAelZ/sqihGJWwRgRVo1RSQ3+FZhqUc1mOF3O3W2vas3nepniQTVBzI43qvGgk9Mk4ngHdrtSc1ge8dn7JC2sDH+00ykJTGIO72uisHkI2zJm1fyY4miWGPQHCfEERjRU8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=Fk44wA45; arc=none smtp.client-ip=52.119.213.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1747348139; x=1778884139;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=3j49X7ylBCwmdaUflrhLyH28SbNIQMG8C6USoXMDC6I=;
-  b=Fk44wA451HTk2C4qLbP2fyEmLD/KmhcjDm3x+hEdgDZCqAf5qd0F9LtH
-   XUXKahe9Vch9OWW06RcuFDrVyGn4R7vwAQ6Hw71nRmcNPFpYyLwr6sr0M
-   z7xrjnvXkTMWWQB2SRvdecmNNf7TXTTchjTf9ikkPnAHRrISOX2lW1x0w
-   HeCJ443wFHNG0f5Lx5XMBHWXKT6Wy1mUNqwWPNrnjSfN5Sfggf/0RqadT
-   Eib5Q7pzxjWki6XkleHfMqqZFZhg2kcFPfWoPudif9WOBlr7p8HPsQlgM
-   ThK3AL323kMrSHeEEZ6/h/hTsvVXMllsKHKp2T3b2cfDHcIylRiP/XWm3
-   w==;
-X-IronPort-AV: E=Sophos;i="6.15,292,1739836800"; 
-   d="scan'208";a="723235557"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO smtpout.prod.us-west-2.prod.farcaster.email.amazon.dev) ([10.43.8.6])
-  by smtp-border-fw-52002.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2025 22:28:57 +0000
-Received: from EX19MTAUWB002.ant.amazon.com [10.0.7.35:33171]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.11.48:2525] with esmtp (Farcaster)
- id ed2bae08-5f3a-462d-a842-8236c48a5326; Thu, 15 May 2025 22:28:56 +0000 (UTC)
-X-Farcaster-Flow-ID: ed2bae08-5f3a-462d-a842-8236c48a5326
-Received: from EX19D015UWC002.ant.amazon.com (10.13.138.161) by
- EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Thu, 15 May 2025 22:28:56 +0000
-Received: from EX19D015UWC003.ant.amazon.com (10.13.138.179) by
- EX19D015UWC002.ant.amazon.com (10.13.138.161) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.1544.14;
- Thu, 15 May 2025 22:28:56 +0000
-Received: from EX19D015UWC003.ant.amazon.com ([fe80::d084:6d60:a01b:9e2c]) by
- EX19D015UWC003.ant.amazon.com ([fe80::d084:6d60:a01b:9e2c%5]) with mapi id
- 15.02.1544.014; Thu, 15 May 2025 22:28:55 +0000
-From: "Jitindar Singh, Suraj" <surajjs@amazon.com>
-To: "pawan.kumar.gupta@linux.intel.com" <pawan.kumar.gupta@linux.intel.com>,
-	"bp@alien8.de" <bp@alien8.de>
-CC: "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"x86@kernel.org" <x86@kernel.org>, "peterz@infradead.org"
-	<peterz@infradead.org>, "mingo@redhat.com" <mingo@redhat.com>,
-	"tglx@linutronix.de" <tglx@linutronix.de>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>, "jpoimboe@kernel.org" <jpoimboe@kernel.org>
-Subject: Re: [PATCH] x86/bugs: Don't warn when overwriting
- retbleed_return_thunk with srso_return_thunk
-Thread-Topic: [PATCH] x86/bugs: Don't warn when overwriting
- retbleed_return_thunk with srso_return_thunk
-Thread-Index: AQHbxei+2+hDRI+2X0aMj4Gszp0Lnw==
-Date: Thu, 15 May 2025 22:28:55 +0000
-Message-ID: <11e9589a1489d9a7d9cca99a2c0673ae99e8166e.camel@amazon.com>
-References: <20250514220835.370700-1-surajjs@amazon.com>
-	 <20250514222507.GKaCUYQ9TVadHl7zMv@fat_crate.local>
-	 <20250514233022.t72lijzi4ipgmmpj@desk>
-	 <20250515093652.GBaCW1tARiE2jkVs_d@fat_crate.local>
-	 <20250515170633.sn27zil2wie54yhn@desk>
-	 <20250515172355.GIaCYjK_fz-n71Aruz@fat_crate.local>
-	 <20250515173830.uulahmrm37vyjopx@desk>
-In-Reply-To: <20250515173830.uulahmrm37vyjopx@desk>
-Accept-Language: en-AU, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <5F4A4BB367E8464DBA827D448AC17970@amazon.com>
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1747350344; c=relaxed/simple;
+	bh=cEs2+yF34Xs4bBvxmMPvMak1IG58tE0mb3L9XJmKztw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jHVz2ynWeI6Xl24tHK0owlEBmXkY572OTYgSDq36aqPDQmG4VBHMJGbMHNSQL/tVjIhlA/44j2iOj+oMcciUxdM3G1A2n76FBOjlyTazt2VvqYAdYRyo6/zRSU6CKmamW4tzypmjjmDAsxdQQ6W2q1Te4Vt3DcyBiKCXp9MGP9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net; spf=pass smtp.mailfrom=jannau.net; dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b=xL3ctv5Q; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=DAAh2Rw+; arc=none smtp.client-ip=103.168.172.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jannau.net
+Received: from phl-compute-06.internal (phl-compute-06.phl.internal [10.202.2.46])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id ADB261140135;
+	Thu, 15 May 2025 19:05:39 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Thu, 15 May 2025 19:05:39 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jannau.net; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm2; t=1747350339; x=1747436739; bh=bG3/nCBxpO
+	ZP1UZbjEgqjPi/B/eWSTRKLZU8uiNiaGA=; b=xL3ctv5Q5JKe9RG6cpJUi3m+2B
+	mXyE53WkQQQz8PL58s4wy/KR/nSG7LYHJlIEhN8MoOokMO6eboq/XkzRp/3t55un
+	Dn6eHMjjYs6Hus0N6bMa3X5D2jt6+4GhBSHDa/nfkCkv9IHdUl16KZcJOr5r2H3y
+	qudYjfCeZbBkzhPAT7OG0KQ94qRQ15z/8+Q8pM9pfEhF+SJW/2jxEYkhP6YM2O++
+	udb/KVVi/qB0xGazAM9/yJMWbh2PYkcpVvtW7LNcvB6D7fh4eo+EBAIklRa87nC6
+	m7UsSJFoOUfkl4WJ+F1Gtcbhn+7syKwQOplBhlnAUaALbiXbTGRemNlRtCCQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1747350339; x=1747436739; bh=bG3/nCBxpOZP1UZbjEgqjPi/B/eWSTRKLZU
+	8uiNiaGA=; b=DAAh2Rw+ZHZVrlgmFuQDZ/MdjeD+LgmkYuJNxkZA57C5c/yoVFS
+	iOH06ELePSodrx+CJbZ2L6oixmm5AOdoj1ppinOPlLtTi8n0jK28+pwYUlDfCc0R
+	K34acJF5gaFLdq9jc4MrmRtc3kX1b/nypYNRHqoFudkrsCd1dPolktJUZiLlPTb5
+	zQGmWFkKe+oB9j1/YK5g9DNxQB8J5pBaINT7xHHkE3IenH+Rn6Cf59T3pF+/k0MY
+	OgUQ36rMwnS2Aiv76hILoE9e8AKU6wYCXwjbeX0fJ/0N2+/4kjPXPEBa9N5y8i/u
+	qLsf12zYivmwuHC/naYXIZLDdgEHNzhLUlg==
+X-ME-Sender: <xms:Q3MmaEKWyNfHXh4KOTydO-MK4shTldf0KzgOR4s5debRrDqPxMfo-A>
+    <xme:Q3MmaEJiNSBYulFuo6BdzTBa3cLIXZQM28l5sz2KnBHQl2Ig3bEslTJfk_lq47YsZ
+    0maqPHBjPhsNEgas-o>
+X-ME-Received: <xmr:Q3MmaEt6OnWZNmEnuKkmkfvyWSJFC1Inrj5C-t2WibcEGw8UfKHJ-wjjJh8fPnPLAwu2ngHfH39h_1xX98oO61qT_AqCfxl3o08>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdefudduudegucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddt
+    jeenucfhrhhomheplfgrnhhnvgcuifhruhhnrghuuceojhesjhgrnhhnrghurdhnvghtqe
+    enucggtffrrghtthgvrhhnpefgvdffveelgedujeeffeehheekheelheefgfejffeftedu
+    geethfeuudefheefteenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrih
+    hlfhhrohhmpehjsehjrghnnhgruhdrnhgvthdpnhgspghrtghpthhtohepuddtpdhmohgu
+    vgepshhmthhpohhuthdprhgtphhtthhopeifpggrrhhmihhnsehgmhigrdguvgdprhgtph
+    htthhopehjihhkohhssehkvghrnhgvlhdrohhrghdprhgtphhtthhopegsvghnthhishhs
+    sehkvghrnhgvlhdrohhrghdprhgtphhtthhopehvihhshhhnuhhotghvsehgmhgrihhlrd
+    gtohhmpdhrtghpthhtoheprhgrfhgrvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthho
+    pehlvghnsgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqrggtphhise
+    hvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqihhnphhuthes
+    vhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlh
+    esvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:Q3MmaBbgzH_9mbQAB8GQ3i4SLbum3Poy7iO7RfJ5yU7J3phZH_lljw>
+    <xmx:Q3MmaLbxGmA07ZdDzM0CBdLusX7oXq1HMixyqMOJtTf_CLQb6E3sFg>
+    <xmx:Q3MmaNAKUUmm5bviBcrKVQ0qpReOg1IifEJr6uxlPTH574FwcSk2tg>
+    <xmx:Q3MmaBYMltETE4U8NwIdGLJ6357t8EUHCZ1PLJr5hU1zQVcg2l-AxQ>
+    <xmx:Q3MmaMIoLIA3xuY3iwT6mjwvGHTH8qW-NAU5tDhKctrVrgwfVsiL7STm>
+Feedback-ID: i47b949f6:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 15 May 2025 19:05:38 -0400 (EDT)
+Date: Fri, 16 May 2025 01:05:37 +0200
+From: Janne Grunau <j@jannau.net>
+To: Armin Wolf <W_Armin@gmx.de>
+Cc: Jiri Kosina <jikos@kernel.org>, Benjamin Tissoires <bentiss@kernel.org>,
+	Vishnu Sankar <vishnuocv@gmail.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, linux-acpi@vger.kernel.org,
+	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] HID: lenovo: Unbreak USB/BT keyboards on non-ACPI
+ platforms
+Message-ID: <20250515230537.GA1556976@robin.jannau.net>
+References: <20250512-hid_lenovo_unbreak_non_acpi-v1-1-e9e37ecbfbfe@jannau.net>
+ <b77edae0-50bd-4039-9487-15bb69389c6c@gmx.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <b77edae0-50bd-4039-9487-15bb69389c6c@gmx.de>
 
-T24gVGh1LCAyMDI1LTA1LTE1IGF0IDEwOjM4IC0wNzAwLCBQYXdhbiBHdXB0YSB3cm90ZToNCj4g
-Q0FVVElPTjogVGhpcyBlbWFpbCBvcmlnaW5hdGVkIGZyb20gb3V0c2lkZSBvZiB0aGUgb3JnYW5p
-emF0aW9uLiBEbw0KPiBub3QgY2xpY2sgbGlua3Mgb3Igb3BlbiBhdHRhY2htZW50cyB1bmxlc3Mg
-eW91IGNhbiBjb25maXJtIHRoZSBzZW5kZXINCj4gYW5kIGtub3cgdGhlIGNvbnRlbnQgaXMgc2Fm
-ZS4NCj4gDQo+IA0KPiANCj4gT24gVGh1LCBNYXkgMTUsIDIwMjUgYXQgMDc6MjM6NTVQTSArMDIw
-MCwgQm9yaXNsYXYgUGV0a292IHdyb3RlOg0KPiA+IE9uIFRodSwgTWF5IDE1LCAyMDI1IGF0IDEw
-OjA2OjMzQU0gLTA3MDAsIFBhd2FuIEd1cHRhIHdyb3RlOg0KPiA+ID4gQXMgSSBzYWlkIGFib3Zl
-LCBhIG1pdGlnYXRpb24gdW5pbnRlbnRpb25hbGx5IG1ha2UgYW5vdGhlcg0KPiA+ID4gbWl0aWdh
-dGlvbg0KPiA+ID4gaW5lZmZlY3RpdmUuDQo+ID4gDQo+ID4gSSBhY3R1YWxseSBkaWRuJ3QgbmVl
-ZCBhbiBhbmFseXNpcyAtIG15IHBvaW50IGlzOiBpZiB5b3UncmUgZ29pbmcNCj4gPiB0byB3YXJu
-DQo+ID4gYWJvdXQgaXQsIHRoZW4gbWFrZSBpdCBiaWcgc28gdGhhdCBpdCBnZXRzIGNhdWdodC4N
-Cj4gPiANCj4gPiA+IFllcywgbWF5YmUgYSBXQVJOX09OKCkgY29uZGl0aW9uYWwgdG8gc2FuaXR5
-IGNoZWNrcyBmb3INCj4gPiA+IHJldGJsZWVkL1NSU08uDQo+ID4gDQo+ID4gWWVzLCB0aGF0Lg0K
-PiA+IA0KPiA+IEF0IGxlYXN0Lg0KPiA+IA0KPiA+IFRoZSBuZXh0IHN0ZXAgd291bGQgYmUgaWYg
-dGhpcyB3aG9sZSAibGV0J3Mgc2V0IGEgdGh1bmsgd2l0aG91dA0KPiA+IG92ZXJ3cml0aW5nDQo+
-ID4gYSBwcmV2aW91c2x5IHNldCBvbmUiIGNhbiBiZSBmaXhlZCBkaWZmZXJlbnRseS4NCj4gPiAN
-Cj4gPiBGb3Igbm93LCB0aG91Z2gsIHRoZSAqbGVhc3QqIHdoYXQgc2hvdWxkIGJlIGRvbmUgaGVy
-ZSBpcyBjYXRjaCB0aGUNCj4gPiBjcml0aWNhbA0KPiA+IGNhc2VzIHdoZXJlIGEgbWl0aWdhdGlv
-biBpcyByZW5kZXJlZCBpbmVmZmVjdGl2ZS4gQW5kIHdhcm5pbmcgSm9lDQo+ID4gTm9ybWFsIFVz
-ZXINCj4gPiBhYm91dCBpdCBkb2Vzbid0IGJyaW5nIGFueXRoaW5nLiBXZSBkbyBkZWNpZGUgZm9y
-IHRoZSB1c2VyIHdoYXQgaXMNCj4gPiBzYWZlIG9yDQo+ID4gbm90LCBwcmFjdGljYWxseS4gQXQg
-bGVhc3QgdGhpcyBoYXMgYmVlbiB0aGUgc3RyYXRlZ3kgdW50aWwgbm93Lg0KPiA+IA0KPiA+IFNv
-IHRoZSBnb2FsIGhlcmUgc2hvdWxkIGJlIHRvIG1ha2UgSm9lIGNhdGNoIHRoaXMgYW5kIHRlbGwg
-dXMgdG8NCj4gPiBmaXggaXQuDQo+ID4gDQo+ID4gTWFrZXMgc2Vuc2U/DQo+IA0KPiBBYnNvbHV0
-ZWx5IG1ha2VzIHNlbnNlLg0KPiANCj4gU3VyYWosIGRvIHdhbnQgdG8gcmV2aXNlIHRoaXMgcGF0
-Y2g/IE9yIGVsc2UgSSBjYW4gZG8gaXQgdG9vLg0KDQpIYXBweSB0byByZXZpc2UgaXQuDQoNClRv
-IGJlIGNsZWFyLCBiYXNlZCBvbiBteSB1bmRlcnN0YW5kaW5nIHRoZSByZXF1ZXN0IGlzIHRvIG1h
-a2UgdGhlDQp3YXJuaW5nIG1vcmUgb2J2aW91cyB3aXRoIGEgV0FSTigpPw0K
+On Fri, May 16, 2025 at 12:05:11AM +0200, Armin Wolf wrote:
+> Am 12.05.25 um 23:55 schrieb Janne Grunau via B4 Relay:
+> 
+> > From: Janne Grunau <j@jannau.net>
+> >
+> > Commit 84c9d2a968c8 ("HID: lenovo: Support for ThinkPad-X12-TAB-1/2 Kbd
+> > Fn keys") added a dependency on ACPI_PLATFORM_PROFILE to cycle through
+> > power profiles. This breaks USB and Bluetooth keyboards on non-ACPI
+> > platforms since platform_profile_init() fails. See the warning below for
+> > the visible symptom but cause is the dependency on the platform_profile
+> > module.
+> >
+> > [  266.225052] kernel: usb 1-1.3.2: new full-speed USB device number 9 using xhci_hcd
+> > [  266.316032] kernel: usb 1-1.3.2: New USB device found, idVendor=17ef, idProduct=6047, bcdDevice= 3.30
+> > [  266.327129] kernel: usb 1-1.3.2: New USB device strings: Mfr=1, Product=2, SerialNumber=0
+> > [  266.327623] kernel: usb 1-1.3.2: Product: ThinkPad Compact USB Keyboard with TrackPoint
+> > [  266.328096] kernel: usb 1-1.3.2: Manufacturer: Lenovo
+> > [  266.337488] kernel: ------------[ cut here ]------------
+> > [  266.337551] kernel: WARNING: CPU: 4 PID: 2619 at fs/sysfs/group.c:131 internal_create_group+0xc0/0x358
+> > [  266.337584] kernel: Modules linked in: platform_profile(+) nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft>
+> > [  266.337685] kernel:  apple_sio spi_apple apple_dart soundcore spmi_apple_controller pinctrl_apple_gpio i2c_pasemi_platform apple_admac i2c_pasemi_core clk_apple_nco xhci_pla>
+> > [  266.337717] kernel: CPU: 4 UID: 0 PID: 2619 Comm: (udev-worker) Tainted: G S      W          6.14.4-400.asahi.fc41.aarch64+16k #1
+> > [  266.337750] kernel: Tainted: [S]=CPU_OUT_OF_SPEC, [W]=WARN
+> > [  266.337776] kernel: Hardware name: Apple Mac mini (M1, 2020) (DT)
+> > [  266.337808] kernel: pstate: 61400009 (nZCv daif +PAN -UAO -TCO +DIT -SSBS BTYPE=--)
+> > [  266.337834] kernel: pc : internal_create_group+0xc0/0x358
+> > [  266.337860] kernel: lr : sysfs_create_group+0x20/0x40
+> > [  266.337886] kernel: sp : ffff800086f877a0
+> > [  266.337914] kernel: x29: ffff800086f877b0 x28: 0000000000000000 x27: ffffb66d0b338348
+> > [  266.337939] kernel: x26: ffffb66d0b338358 x25: ffffb66d528c7c50 x24: ffffb66d507e37b0
+> > [  266.337965] kernel: x23: 0000fffebf6708d8 x22: 0000000000000000 x21: ffffb66d0b370340
+> > [  266.337991] kernel: x20: ffffb66d0b370308 x19: 0000000000000000 x18: 0000000000000000
+> > [  266.338029] kernel: x17: 554e514553007373 x16: ffffb66d4f8c2268 x15: 595342555300656c
+> > [  266.338051] kernel: x14: 69666f72702d6d72 x13: 00353236353d4d55 x12: 4e51455300737361
+> > [  266.338075] kernel: x11: ffff6adf91b80100 x10: 0000000000000139 x9 : ffffb66d4f8c2288
+> > [  266.338097] kernel: x8 : ffff800086f87620 x7 : 0000000000000000 x6 : 0000000000000000
+> > [  266.338116] kernel: x5 : ffff6adfc896e100 x4 : 0000000000000000 x3 : ffff6adfc896e100
+> > [  266.338139] kernel: x2 : ffffb66d0b3703a0 x1 : 0000000000000000 x0 : 0000000000000000
+> > [  266.338155] kernel: Call trace:
+> > [  266.338173] kernel:  internal_create_group+0xc0/0x358 (P)
+> > [  266.338193] kernel:  sysfs_create_group+0x20/0x40
+> > [  266.338206] kernel:  platform_profile_init+0x48/0x3ff8 [platform_profile]
+> > [  266.338224] kernel:  do_one_initcall+0x60/0x358
+> > [  266.338239] kernel:  do_init_module+0x94/0x260
+> > [  266.338257] kernel:  load_module+0x5e0/0x708
+> > [  266.338271] kernel:  init_module_from_file+0x94/0x100
+> > [  266.338290] kernel:  __arm64_sys_finit_module+0x268/0x360
+> > [  266.338309] kernel:  invoke_syscall+0x6c/0x100
+> > [  266.338327] kernel:  el0_svc_common.constprop.0+0xc8/0xf0
+> > [  266.338346] kernel:  do_el0_svc+0x24/0x38
+> > [  266.338365] kernel:  el0_svc+0x3c/0x170
+> > [  266.338385] kernel:  el0t_64_sync_handler+0x10c/0x138
+> > [  266.338404] kernel:  el0t_64_sync+0x1b0/0x1b8
+> > [  266.338419] kernel: ---[ end trace 0000000000000000 ]---
+> >
+> > Fixes: 84c9d2a968c8 ("HID: lenovo: Support for ThinkPad-X12-TAB-1/2 Kbd Fn keys")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Janne Grunau <j@jannau.net>
+> >
+> > ------>8---------
+> > I don't see an easy solution to keep the functionality in generic HID
+> > code which is used on non-ACPI platforms. Solution for this are not
+> > trivial so remove the functionality for now.
+> > Cc-ing the ACPI maintainers in the case they can think of a solution for
+> > this issue.
+> 
+> Hi,
+> 
+> i think we can fix that. We just have to skip the compat stuff if acpi_kobj is NULL (means that ACPI is not used).
+> The modern platform profile interface is generic enough to also work on non-ACPI systems.
+> 
+> Can you test a patch?
+
+I can easily test patches
+
+Janne
 
