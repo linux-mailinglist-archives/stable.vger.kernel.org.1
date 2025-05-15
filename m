@@ -1,163 +1,159 @@
-Return-Path: <stable+bounces-144508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144509-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 861AAAB843B
-	for <lists+stable@lfdr.de>; Thu, 15 May 2025 12:46:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A040AB8452
+	for <lists+stable@lfdr.de>; Thu, 15 May 2025 12:50:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C42C1771C5
-	for <lists+stable@lfdr.de>; Thu, 15 May 2025 10:46:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98FD79E45D4
+	for <lists+stable@lfdr.de>; Thu, 15 May 2025 10:50:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D67D2101AE;
-	Thu, 15 May 2025 10:46:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE6FA2980B7;
+	Thu, 15 May 2025 10:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="vNRy2TM0";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="RdBJqzYs";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="n4KPlRid";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="z13MK/ZY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E/WWEWg9"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DA891F5425
-	for <stable@vger.kernel.org>; Thu, 15 May 2025 10:46:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC3B2101AE;
+	Thu, 15 May 2025 10:50:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747306000; cv=none; b=Fn+fROva6srpm/9nJ9Tl4lOopyI15dvip3kCCsg/j6IuEMi0VPKMR91kMN5QqioGVETGFCSIAPVSpjh2+BzjzebDjfyHCMbBOnnjqbI4cRvpTAHNIJX7tLkTzfUw7U46akTZvxb950fQ6N2ixDu7pWwy0Rb0oBeafXbjz2R9tE0=
+	t=1747306239; cv=none; b=U7i1J8l1nzF4WdqLXH1XwOVcubcASGA0v1S8LRYw6l34dMjPV7VldnAevEWYOJK7MxQC3RjJyCfGFWGSv+62M0paaelEyd7MbofODskyTfUgBs5d0myiWkvqRnMPQOFzmk1Sj59V+99i4Ft5+/798Ey9o9JvqKAgR5Scrv+4O8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747306000; c=relaxed/simple;
-	bh=uSC3FoTK1qaBjKKoRPvmW8tbiie4H0XvqOQUs2s/3ys=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TKXYxsHuo8IhBJ03FfxCMxfa6awHULSYMMYAMCHmpYefCBp0Nbeud1eughvXnUc9qJVFJPBjpu3yDPoVANlmJno3DQ5hGPSaEZXHxqOH1H8XnXSI0hvoWImp0xLSLU0hnFcXw3QzoGu+HGuamqhBYEP5fnC6HfHhEAFqfiMtXf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=vNRy2TM0; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=RdBJqzYs; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=n4KPlRid; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=z13MK/ZY; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 754A81F6E6;
-	Thu, 15 May 2025 10:46:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1747305996; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ESAwA4r7a1Fm6MOy9EpWBEBZFQFWv8V+lGLSeLMan4E=;
-	b=vNRy2TM0g/sqcPHd4XgvJXZ3gBFm7L0bS0kOIPrc5u6U7IJtgZq7SCoE3+QvwZW4x6QqAV
-	fS6mlxcPazf4F8FuxNvftzcHuIPQGa8AV9K/SHjWYjWBSoncy0qnVNtWFhNW3GWjMjy5Bj
-	qGP+A+pH7ZrVL3rIFB/f9/E/ASYJMG4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1747305996;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ESAwA4r7a1Fm6MOy9EpWBEBZFQFWv8V+lGLSeLMan4E=;
-	b=RdBJqzYsNvFURU0/G0XfSOuja+M2VtR+zBffepSdgHjr/8dRtSvBzHX+BbxMDJA7CeSh79
-	ugL9i34/AyFWM+AQ==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=n4KPlRid;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="z13MK/ZY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1747305995; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ESAwA4r7a1Fm6MOy9EpWBEBZFQFWv8V+lGLSeLMan4E=;
-	b=n4KPlRid6ZmQ4M6D1PoznN/xv6+1+BQEwZrrO8EtKvzOUHVu0Pzn4jXojPKXD6wRhUg61G
-	q7gA8RS3tF3wdg7ScTzJel/Bi3dQPCWhITQ7wZVG0VuJiBkSSzDIF3lMtbWOtonKdeEg0L
-	A0vXFq3dUTolaDM+ihM9bRQ+fNl6Uuk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1747305995;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ESAwA4r7a1Fm6MOy9EpWBEBZFQFWv8V+lGLSeLMan4E=;
-	b=z13MK/ZY5w8iw8L4TYj23tqkaYa2gdj7qII/qKUuF28Ke2nTJ93YRRkUEgNTAVPqI7Bkyw
-	ZDhTeeKi/S4xVeAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4A596137E8;
-	Thu, 15 May 2025 10:46:35 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id xvu7EAvGJWhQZwAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Thu, 15 May 2025 10:46:35 +0000
-Date: Thu, 15 May 2025 12:46:34 +0200
-Message-ID: <87o6vurw1h.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Nicolas Chauvet <kwizart@gmail.com>
-Cc: Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>,
-	linux-sound@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] ALSA: usb-audio: Add sample rate quirk for Microdia JP001 USB Camera
-In-Reply-To: <20250515102132.73062-1-kwizart@gmail.com>
-References: <20250515102132.73062-1-kwizart@gmail.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+	s=arc-20240116; t=1747306239; c=relaxed/simple;
+	bh=wT+u7zaXSan0nDn3kznsFYtD2+9D/7UMrhifMQAMXoo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=d16Q381lO5AmcNVpSY5nr4YaKHMqUK72i399Z5Pml6ZtPJmkF4uzK7K5t/NyFqQOTVYDtmP4bEmVfS9OKiXiKTp53u1sF5aK5JPRke1skwKGoSg32EB+mXpOo/j5pzSqG7EARSChaKYoULgEKL5Ckxu+nJGIYiuwoOYL6zceuNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E/WWEWg9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9E4DC4CEED;
+	Thu, 15 May 2025 10:50:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747306239;
+	bh=wT+u7zaXSan0nDn3kznsFYtD2+9D/7UMrhifMQAMXoo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=E/WWEWg9UqxrG4dLl6a9cMJc4KKG036GhZZ58EHkipbDPnK77JYFgmkr0kdiU9MRi
+	 X/igkxjvUBwl1xl04pAKU9OlDiRnR55gwXmD8esvmhNLq0tXzmNbOF3zO444jXSX5d
+	 l8ZbPt9HwBNIvb7zLIaPVZ5+FCuFf+AWqIoIUNPmXVcFOCBnkhxczulcduE3KaOCTF
+	 ozolgJgDcEgzfjHjdkGwIgkxA8QQYF/+TejWC738WBLdMu/cf2HIHBS83ZeVne0/5/
+	 KQgHXkgPnD+DmCtNzbG+0Axgo0aiMvpCjfUe5u3DcrmyjsGgz1pj5+6Vi26ePQI/X4
+	 DMkFSyg0Ri/Rw==
+Date: Thu, 15 May 2025 11:50:33 +0100
+From: Simon Horman <horms@kernel.org>
+To: Michael Kelley <mhklinux@outlook.com>
+Cc: "kys@microsoft.com" <kys@microsoft.com>,
+	"haiyangz@microsoft.com" <haiyangz@microsoft.com>,
+	"wei.liu@kernel.org" <wei.liu@kernel.org>,
+	"decui@microsoft.com" <decui@microsoft.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"James.Bottomley@hansenpartnership.com" <James.Bottomley@hansenpartnership.com>,
+	"martin.petersen@oracle.com" <martin.petersen@oracle.com>,
+	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH net 2/5] hv_netvsc: Use vmbus_sendpacket_mpb_desc() to
+ send VMBus messages
+Message-ID: <20250515105033.GR3339421@horms.kernel.org>
+References: <20250513000604.1396-1-mhklinux@outlook.com>
+ <20250513000604.1396-3-mhklinux@outlook.com>
+ <20250514093751.GF3339421@horms.kernel.org>
+ <SN6PR02MB4157C9EC51BEC1EBCB2B7DC5D491A@SN6PR02MB4157.namprd02.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Rspamd-Queue-Id: 754A81F6E6
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spamd-Result: default: False [-3.51 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	ARC_NA(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FREEMAIL_TO(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	RCPT_COUNT_FIVE(0.00)[5];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns]
-X-Spam-Score: -3.51
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <SN6PR02MB4157C9EC51BEC1EBCB2B7DC5D491A@SN6PR02MB4157.namprd02.prod.outlook.com>
 
-On Thu, 15 May 2025 12:21:32 +0200,
-Nicolas Chauvet wrote:
+On Wed, May 14, 2025 at 03:44:35PM +0000, Michael Kelley wrote:
+> From: Simon Horman <horms@kernel.org> Sent: Wednesday, May 14, 2025 2:38 AM
+> > 
+> > On Mon, May 12, 2025 at 05:06:01PM -0700, mhkelley58@gmail.com wrote:
+> > > From: Michael Kelley <mhklinux@outlook.com>
+> > >
+> > > netvsc currently uses vmbus_sendpacket_pagebuffer() to send VMBus
+> > > messages. This function creates a series of GPA ranges, each of which
+> > > contains a single PFN. However, if the rndis header in the VMBus
+> > > message crosses a page boundary, the netvsc protocol with the host
+> > > requires that both PFNs for the rndis header must be in a single "GPA
+> > > range" data structure, which isn't possible with
+> > > vmbus_sendpacket_pagebuffer(). As the first step in fixing this, add a
+> > > new function netvsc_build_mpb_array() to build a VMBus message with
+> > > multiple GPA ranges, each of which may contain multiple PFNs. Use
+> > > vmbus_sendpacket_mpb_desc() to send this VMBus message to the host.
+> > >
+> > > There's no functional change since higher levels of netvsc don't
+> > > maintain or propagate knowledge of contiguous PFNs. Based on its
+> > > input, netvsc_build_mpb_array() still produces a separate GPA range
+> > > for each PFN and the behavior is the same as with
+> > > vmbus_sendpacket_pagebuffer(). But the groundwork is laid for a
+> > > subsequent patch to provide the necessary grouping.
+> > >
+> > > Cc: <stable@vger.kernel.org> # 6.1.x
+> > > Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+> > > ---
+> > >  drivers/net/hyperv/netvsc.c | 50 +++++++++++++++++++++++++++++++++----
+> > >  1 file changed, 45 insertions(+), 5 deletions(-)
+> > >
+> > > diff --git a/drivers/net/hyperv/netvsc.c b/drivers/net/hyperv/netvsc.c
+> > > index d6f5b9ea3109..6d1705f87682 100644
+> > > --- a/drivers/net/hyperv/netvsc.c
+> > > +++ b/drivers/net/hyperv/netvsc.c
+> > > @@ -1055,6 +1055,42 @@ static int netvsc_dma_map(struct hv_device *hv_dev,
+> > >  	return 0;
+> > >  }
+> > >
+> > > +/* Build an "array" of mpb entries describing the data to be transferred
+> > > + * over VMBus. After the desc header fields, each "array" entry is variable
+> > > + * size, and each entry starts after the end of the previous entry. The
+> > > + * "offset" and "len" fields for each entry imply the size of the entry.
+> > > + *
+> > > + * The pfns are in HV_HYP_PAGE_SIZE, because all communication with Hyper-V
+> > > + * uses that granularity, even if the system page size of the guest is larger.
+> > > + * Each entry in the input "pb" array must describe a contiguous range of
+> > > + * guest physical memory so that the pfns are sequential if the range crosses
+> > > + * a page boundary. The offset field must be < HV_HYP_PAGE_SIZE.
+> > 
+> > Hi Michael,
+> > 
+> > Is there a guarantee that this constraint is met. And moreover, is there a
+> > guarantee that all of the entries will fit in desc? I am slightly concerned
+> > that there may be an overrun lurking here.
+> > 
 > 
-> Microdia JP001 does not support reading the sample rate which leads to
-> many lines of "cannot get freq at ep 0x84".
-> This patch adds the USB ID to quirks.c and avoids those error messages.
+> It is indeed up to the caller to ensure that the pb array is properly
+> constructed. netvsc_build_mpb_array() doesn't do additional validation.
+> There are only two sources of the pb array, both of which do the right
+> thing, so additional validation seemed redundant.
 > 
-> usb 7-4: New USB device found, idVendor=0c45, idProduct=636b, bcdDevice= 1.00
-> usb 7-4: New USB device strings: Mfr=2, Product=1, SerialNumber=3
-> usb 7-4: Product: JP001
-> usb 7-4: Manufacturer: JP001
-> usb 7-4: SerialNumber: JP001
-> usb 7-4: 3:1: cannot get freq at ep 0x84
-> 
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Nicolas Chauvet <kwizart@gmail.com>
+> An overrun is a concern, but again the callers do the right thing. As
+> described in my response to Patch 3 of the series, netvsc_xmit()
+> counts the number of pages ahead of time, and makes sure the count is
+> within the limit of the amount space allocated in the "desc" argument
+> to netvsc_build_mpb_array().
 
-Applied now.  Thanks.
+Thanks Michael,
 
+I agree that is entirely reasonable for callers to be responsible
+correctly constructing the pb array. And that it's not necessary
+to add validation to netvsc_build_mpb_array().
 
-Takashi
+Also, based on the above, I'm satisfied that the callers are correctly
+constructing the pb array.
+
+With the above clarified in my mind I'm now happy with this patch.
+
+Reviewed-by: Simon Horman <horms@kernel.org>
 
