@@ -1,65 +1,40 @@
-Return-Path: <stable+bounces-144498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6B9CAB826E
-	for <lists+stable@lfdr.de>; Thu, 15 May 2025 11:23:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E53F1AB8286
+	for <lists+stable@lfdr.de>; Thu, 15 May 2025 11:27:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 846404C627B
-	for <lists+stable@lfdr.de>; Thu, 15 May 2025 09:23:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CE484C6BD2
+	for <lists+stable@lfdr.de>; Thu, 15 May 2025 09:27:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49BFA29673D;
-	Thu, 15 May 2025 09:23:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DlSg03m8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7333D296D09;
+	Thu, 15 May 2025 09:27:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E2B6289E03;
-	Thu, 15 May 2025 09:23:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8EC629672F;
+	Thu, 15 May 2025 09:27:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747301025; cv=none; b=emluqKjMyMImP051FOTA4p0ZAkmQL2cLeHri2R8vtTW30ABBBp+DfsaaAKvO/5RbwCHyL0dO7lFY57j77BSlbybL1jth6HahUKHs2zMCsrbLAvwp1MeGNuyt2pcx81qUULU2jlcizkkTT+AHrtgnitv0K6zCF/fbAcJ0Ivx/Oyk=
+	t=1747301246; cv=none; b=l0epWatkgoqywYETvaor5nDWqm6LR/CgJDP6j7lr+4Cz2zIzFaOiT8ZHeQ3h9amj6teMKInmqgEjUIqA/FrCPzm/Zfv61fVU+OmFBMJTbmBhsmaGnOSebRTLE32HekOjzKOT0Dq3yPJ4Rb/HiL3cyHZD3OSJxfovwYtThusvkr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747301025; c=relaxed/simple;
-	bh=pmh0bU9D30ShKkm22QJjwQKrEY0tzBBAail+x8L+Wfg=;
+	s=arc-20240116; t=1747301246; c=relaxed/simple;
+	bh=CG/LZ+w1W61yrSttG7fYTJQ0VMdFcH9K/FubTccL+i8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eh1rWGYHMjTB804HsQbOF639VQxl93wog57BS9XHHm0nAAIHW1Qw0DBw7cBuaUjGXek154O/9sJPtfCFTa0Df5v8KSaF8ZhUsICnrUbrPIj0qrNjlq+9mXxfwXtf7Nr+J9VvWvwir34As8JSEoZWp09E+IT094N4IGrATWaQfT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DlSg03m8; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747301024; x=1778837024;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=pmh0bU9D30ShKkm22QJjwQKrEY0tzBBAail+x8L+Wfg=;
-  b=DlSg03m8IylNEUUW6MTQCJbsnIW1G5ZqugPTa9crCmTTof/LzSwLVNwW
-   p6UUWLidHo1FWZhA7Hv46RNa5US39hUZLWtM6dOhCV5OyOhWjpPmiGO+W
-   Cs3rXQESMYyfwhw1ajKSf46uvlapHDeHn2NLjtdVwPsSgUZZoecF+7Z2g
-   bMevLfNCsfz6F6Td9j82XOEqObov4pislEOrrcba2I/7sTEDA7HhslZJo
-   JVsl5jzlzGABmr5uWYWtzndHtQ8NdLIitlyD+ZsSnB/7QwFVmzAV3wb3E
-   LfHScJLzNkXUSsXle79B0gwdH82PjRVvI8Z5rfvhroqimx82UlUJvigwg
-   Q==;
-X-CSE-ConnectionGUID: EXXIF+x5TYmRhL2w2cqnTQ==
-X-CSE-MsgGUID: /V05UTTsTuqqotMANPi2TA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11433"; a="60628654"
-X-IronPort-AV: E=Sophos;i="6.15,290,1739865600"; 
-   d="scan'208";a="60628654"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2025 02:23:42 -0700
-X-CSE-ConnectionGUID: Refl9nmdQnCSQuH4FV2QOA==
-X-CSE-MsgGUID: J3wJnCFwRly62bB+1zlDUA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,290,1739865600"; 
-   d="scan'208";a="138722753"
-Received: from sbockowx-mobl2.ger.corp.intel.com (HELO [10.94.8.84]) ([10.94.8.84])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2025 02:23:38 -0700
-Message-ID: <3470451d-6768-42d4-93db-2783ffd9cbab@linux.intel.com>
-Date: Thu, 15 May 2025 11:23:36 +0200
+	 In-Reply-To:Content-Type; b=FI/EH6zN9lhop2JGEbCApCTeknrfeM0QddvMHfTmJzrsrgYhMjtp2yAUBN4/70siO+6ms1v5DAZhajWvIOL+GHqyb1NuOLgmA/reY75nGObwGy4nGlX32bQp+fUMyY9dJU/6Ekpb+UemxVEHJqsqyIqTc67NO3pGarxoTXP6tJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B583314BF;
+	Thu, 15 May 2025 02:27:10 -0700 (PDT)
+Received: from [10.162.40.26] (K4MQJ0H1H2.blr.arm.com [10.162.40.26])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 54E303F5A1;
+	Thu, 15 May 2025 02:27:19 -0700 (PDT)
+Message-ID: <91fc96c3-4931-4f07-a0a9-507ac7b5ae6d@arm.com>
+Date: Thu, 15 May 2025 14:57:16 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,71 +42,118 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ASoC: Intel: avs: rt274: Add null pointer check for
- snd_soc_card_get_codec_dai()
-To: Wentao Liang <vulab@iscas.ac.cn>, cezary.rojewski@intel.com,
- liam.r.girdwood@linux.intel.com, peter.ujfalusi@linux.intel.com,
- yung-chuan.liao@linux.intel.com, ranjani.sridharan@linux.intel.com,
- kai.vehmanen@linux.intel.com, pierre-louis.bossart@linux.dev,
- broonie@kernel.org, perex@perex.cz, tiwai@suse.com
-Cc: kuninori.morimoto.gx@renesas.com, linux-sound@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20250514141947.998-1-vulab@iscas.ac.cn>
+Subject: Re: [PATCH] arm64: Check pxd_leaf() instead of !pxd_table() while
+ tearing down page tables
+To: David Hildenbrand <david@redhat.com>, catalin.marinas@arm.com,
+ will@kernel.org
+Cc: ryan.roberts@arm.com, anshuman.khandual@arm.com, mark.rutland@arm.com,
+ yang@os.amperecomputing.com, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
+References: <20250515063450.86629-1-dev.jain@arm.com>
+ <332ecda7-14c4-4dc3-aeff-26801b74ca04@redhat.com>
+ <4904d02f-6595-4230-a321-23327596e085@arm.com>
+ <6fe7848c-485e-4639-b65c-200ed6abe119@redhat.com>
+ <35ef7691-7eac-4efa-838d-c504c88c042b@arm.com>
+ <c06930f0-f98c-4089-aa33-6789b95fd08f@redhat.com>
 Content-Language: en-US
-From: =?UTF-8?Q?Amadeusz_S=C5=82awi=C5=84ski?=
- <amadeuszx.slawinski@linux.intel.com>
-In-Reply-To: <20250514141947.998-1-vulab@iscas.ac.cn>
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <c06930f0-f98c-4089-aa33-6789b95fd08f@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
 
 
-On 2025-05-14 16:19, Wentao Liang wrote:
-> The avs_card_suspend_pre() and avs_card_resume_post() in rt274
-> calls the snd_soc_card_get_codec_dai(), but does not check its return
-> value which is a null pointer if the function fails. This can result
-> in a null pointer dereference. A proper implementation can be found
-> in acp5x_nau8821_hw_params() and card_suspend_pre().
+On 15/05/25 2:23 pm, David Hildenbrand wrote:
+> On 15.05.25 10:47, Dev Jain wrote:
+>>
+>>
+>> On 15/05/25 2:06 pm, David Hildenbrand wrote:
+>>> On 15.05.25 10:22, Dev Jain wrote:
+>>>>
+>>>>
+>>>> On 15/05/25 1:43 pm, David Hildenbrand wrote:
+>>>>> On 15.05.25 08:34, Dev Jain wrote:
+>>>>>> Commit 9c006972c3fe removes the pxd_present() checks because the 
+>>>>>> caller
+>>>>>> checks pxd_present(). But, in case of vmap_try_huge_pud(), the caller
+>>>>>> only
+>>>>>> checks pud_present(); pud_free_pmd_page() recurses on each pmd 
+>>>>>> through
+>>>>>> pmd_free_pte_page(), wherein the pmd may be none.
+>>>>> The commit states: "The core code already has a check for pXd_none()",
+>>>>> so I assume that assumption was not true in all cases?
+>>>>>
+>>>>> Should that one problematic caller then check for pmd_none() instead?
+>>>>
+>>>>    From what I could gather of Will's commit message, my 
+>>>> interpretation is
+>>>> that the concerned callers are vmap_try_huge_pud and vmap_try_huge_pmd.
+>>>> These individually check for pxd_present():
+>>>>
+>>>> if (pmd_present(*pmd) && !pmd_free_pte_page(pmd, addr))
+>>>>      return 0;
+>>>>
+>>>> The problem is that vmap_try_huge_pud will also iterate on pte entries.
+>>>> So if the pud is present, then pud_free_pmd_page -> pmd_free_pte_page
+>>>> may encounter a none pmd and trigger a WARN.
+>>>
+>>> Yeah, pud_free_pmd_page()->pmd_free_pte_page() looks shaky.
+>>>
+>>> I assume we should either have an explicit pmd_none() check in
+>>> pud_free_pmd_page() before calling pmd_free_pte_page(), or one in
+>>> pmd_free_pte_page().
+>>>
+>>> With your patch, we'd be calling pte_free_kernel() on a NULL pointer,
+>>> which sounds wrong -- unless I am missing something important.
+>>
+>> Ah thanks, you seem to be right. We will be extracting table from a none
+>> pmd. Perhaps we should still bail out for !pxd_present() but without the
+>> warning, which the fix commit used to do.
 > 
-> Add a null pointer check for snd_soc_card_get_codec_dai() to avoid null
-> pointer dereference when the function fails.
+> Right. We just make sure that all callers of pmd_free_pte_page() already 
+> check for it.
 > 
-> Fixes: a08797afc1f9 ("ASoC: Intel: avs: rt274: Refactor jack handling")
-> Cc: stable@vger.kernel.org # v6.2
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-> ---
->   sound/soc/intel/avs/boards/rt274.c | 10 ++++++++++
->   1 file changed, 10 insertions(+)
+> I'd just do something like:
 > 
-> diff --git a/sound/soc/intel/avs/boards/rt274.c b/sound/soc/intel/avs/boards/rt274.c
-> index 4b6c02a40204..7a8b6ee79f4c 100644
-> --- a/sound/soc/intel/avs/boards/rt274.c
-> +++ b/sound/soc/intel/avs/boards/rt274.c
-> @@ -194,6 +194,11 @@ static int avs_card_suspend_pre(struct snd_soc_card *card)
->   {
->   	struct snd_soc_dai *codec_dai = snd_soc_card_get_codec_dai(card, RT274_CODEC_DAI);
->   
-> +	if (!codec_dai) {
-> +		dev_err(card->dev, "Codec dai not found\n");
-> +		return -EINVAL;
-> +	}
-> +
->   	return snd_soc_component_set_jack(codec_dai->component, NULL, NULL);
->   }
->   
-> @@ -202,6 +207,11 @@ static int avs_card_resume_post(struct snd_soc_card *card)
->   	struct snd_soc_dai *codec_dai = snd_soc_card_get_codec_dai(card, RT274_CODEC_DAI);
->   	struct snd_soc_jack *jack = snd_soc_card_get_drvdata(card);
->   
-> +	if (!codec_dai) {
-> +		dev_err(card->dev, "Codec dai not found\n");
-> +		return -EINVAL;
-> +	}
-> +
->   	return snd_soc_component_set_jack(codec_dai->component, jack, NULL);
->   }
->   
+> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+> index 8fcf59ba39db7..e98dd7af147d5 100644
+> --- a/arch/arm64/mm/mmu.c
+> +++ b/arch/arm64/mm/mmu.c
+> @@ -1274,10 +1274,8 @@ int pmd_free_pte_page(pmd_t *pmdp, unsigned long 
+> addr)
+> 
+>          pmd = READ_ONCE(*pmdp);
+> 
+> -       if (!pmd_table(pmd)) {
+> -               VM_WARN_ON(1);
+> -               return 1;
+> -       }
+> +       VM_WARN_ON(!pmd_present(pmd));
+> +       VM_WARN_ON(!pmd_table(pmd));
 
-Same as in other case, where Cezary commented - this is not needed, once 
-card is loaded codec should exist.
+And also return 1?
+Also we should BUG_ON(!pmd_present(pmd)) to avoid the null dereference?
+
+> 
+>          table = pte_offset_kernel(pmdp, addr);
+>          pmd_clear(pmdp);
+> @@ -1305,7 +1303,8 @@ int pud_free_pmd_page(pud_t *pudp, unsigned long 
+> addr)
+>          next = addr;
+>          end = addr + PUD_SIZE;
+>          do {
+> -               pmd_free_pte_page(pmdp, next);
+> +               if (pmd_present(*pmdp))
+> +                       pmd_free_pte_page(pmdp, next);
+
+Ah yes, the "caller" of pmd_free_pte_page() is not only 
+vmap_try_huge_pmd but this also...my mind has been foggy lately...
+need to solve a math problem or two to sharpen it :)
+
+>          } while (pmdp++, next += PMD_SIZE, next != end);
+> 
+>          pud_clear(pudp);
+> 
+> 
+
 
