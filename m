@@ -1,184 +1,90 @@
-Return-Path: <stable+bounces-144466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E7FEAB7B0A
-	for <lists+stable@lfdr.de>; Thu, 15 May 2025 03:40:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 677D3AB7B73
+	for <lists+stable@lfdr.de>; Thu, 15 May 2025 04:11:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB54A7A8967
-	for <lists+stable@lfdr.de>; Thu, 15 May 2025 01:39:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D71A1BA1503
+	for <lists+stable@lfdr.de>; Thu, 15 May 2025 02:11:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F0CC2798F2;
-	Thu, 15 May 2025 01:40:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5366C2820A0;
+	Thu, 15 May 2025 02:10:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mY4yBTIz"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="p7OwC/2e"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1BCB2797B7
-	for <stable@vger.kernel.org>; Thu, 15 May 2025 01:40:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD551A2391;
+	Thu, 15 May 2025 02:10:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747273211; cv=none; b=M8LGR3Al3hRbe1vb5aubYAvx2szKCmlRBkM1S15tG7iFBnVf558wdGI0Fj4nokUkEJeh+8OT97zFfnxgM+iqbgbiKhEP5Y1086xbvqAx2tKr/q5BpIcY/YoT7ZuPbKuLTxBZHPTRlOrjP+NYVZw3OHNKkPmhanWTFxn7Msveagk=
+	t=1747275058; cv=none; b=CZqRhE7MYxnarhoU6zgD2GvrDO2OeEHK9s3HxL4EVc8SfpRkBm+IiHMkE0cRWOJ85yP15LYLQ0IWa5yO64VaepTLALR0DdzHmvRS6hyRdVgySfwFWnV1fJFo+KkbzRs5JDs6z82bqDlPgaFcaRuCwnLGVdlYBU0lrXe/j4uY+d4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747273211; c=relaxed/simple;
-	bh=j3AQqh2bF+a1tTBBmMb6vQqukFWdDH12NEK3gDZ/zHw=;
-	h=Date:Mime-Version:Message-ID:Subject:From:Cc:Content-Type; b=murHr4gM3ZJxYevgBZn/hjdaFKB/O6k6D4ibIuKfKI7R8k4cgqAPphY9JmPjGUedrWizvbyt1+8LqMSYl92nKhQPWXjQbR9oXPzRyeawlCBmtBrh0D4AP3ANGv5K8I4PLayFaDnJghWmL4Nq49wS03NcgHOUKkGR+2lIu1uZrDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--rdbabiera.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mY4yBTIz; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--rdbabiera.bounces.google.com
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-30ab5d34fdbso447751a91.0
-        for <stable@vger.kernel.org>; Wed, 14 May 2025 18:40:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1747273209; x=1747878009; darn=vger.kernel.org;
-        h=cc:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=IakyZJkj7nOlvLL2uNc9irIZAgoOcA1vyttW9qbfPnU=;
-        b=mY4yBTIzgZmK5j5zGfnDvG6JQm/gN6JTEo1tXzzkXxZy8vDFMgJp0S9V0JplwDYdgh
-         T4Jt3D116pUj+P2fqsBkLLf76tUCi97li2me8oSvwN3cYRwM0pBHF+08U4sWrCUK08DR
-         MVBalcLuDWN5kuXObLpRrWrb5UFrfqzmMtVJqHW554zbg7Dsfg2lVP5NmE46TWMoxGpn
-         YSEw6+P7scu6QlQOfOnHTuKFxmZFRrxK8PxwRW1KWtZWWZfPRab/ImDge4bQlrIMC/gB
-         saASXtqZrDZJfGvI5Hw/VuD4gCsa6MWb4k+rnuBslKRcCzzCLf2URUNQzNgtLnAZ2HXe
-         gKRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747273209; x=1747878009;
-        h=cc:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=IakyZJkj7nOlvLL2uNc9irIZAgoOcA1vyttW9qbfPnU=;
-        b=QQNLO/MF/gp2q13PXoIEsBhctJC5GcumwZ3N2/iYU+77PrCBI5TWpBJCTjGB/SDebx
-         ia7p8Mn4UsuDzo5/svfsGHxa+Ljif+P9UyZbK/R5Npw63G/raxslR8ULzI4T4elhjOp+
-         nl86lm8TYo1tlUmFbkhyz/VLWMlX06P3vOekjVI/M2CJJRUZ6wwMQlxtOz8RUEq03Zfj
-         YtQvqIBBgkVTDLmoXJqtflc9fcC8oJ96j/mrcs2TUvIi3gDhvO6jTDIJ7EFfCKuIFTnO
-         bZxD8ORAcGUSmKr6IjYYnHpou0BEdGwpp9sLQIrnglUxW196Rc95HkL4OoWt0dNDQJsC
-         aPSg==
-X-Forwarded-Encrypted: i=1; AJvYcCWFASIJnQTVskgmxUsb5nhZsLsl/5CC7j8td+EfdJieOq0s05Pjg77+4K3FQGZ6JVg8PtbLLKE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw4lVZ6it5xmwJaPbF4KOTxNO94vtHdrGUir0/Ipn+ohX0sC6vw
-	qnvARGmgr2+dSBMXt8yKG12dW40yLvrQW8FgqXUnIb8RxRZMSy4lcrE4reMsLBNkUbXAV0xM/FM
-	RMbqOoMxQ+eoewQ==
-X-Google-Smtp-Source: AGHT+IEyLvp3ghttpO9cVp/ndy7EDcY+GfCBT+shK3xrBkQdK1whbMrygpWLNQikJyJ78DDaeVfQrWnuBB9FBDk=
-X-Received: from pjbsu3.prod.google.com ([2002:a17:90b:5343:b0:2fc:3022:36b8])
- (user=rdbabiera job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:3949:b0:2ea:a9ac:eee1 with SMTP id 98e67ed59e1d1-30e2e5e5a63mr9196895a91.10.1747273209002;
- Wed, 14 May 2025 18:40:09 -0700 (PDT)
-Date: Thu, 15 May 2025 01:40:02 +0000
+	s=arc-20240116; t=1747275058; c=relaxed/simple;
+	bh=02TAFNyi4tVZfqDZNSQHOJvCWqiOCoC90hUCMvVBnq4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=n0swoTL28lEw7nF5SpQ1i9yvpybv/qAQLcxjZAUV+WFRDRbXF0W8XFGDu1NSQfNGQ8N821sT9t8cyMJiRbGTkxgbSD4JB7Ukb6jRTVhlwROmSQNHxnY+vGauRA01/zJC/b/vL/cBxugKPrVVQhDvc6xt0jV5dXxfBDtxYPHufUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=p7OwC/2e; arc=none smtp.client-ip=144.6.53.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
+	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=9OEU6IES7eFPDsF41jBYUq3IDtt0/P5xjuptgC1MYUg=; b=p7OwC/2e36XHYXR8OunAzbwvCI
+	kBCjfhT7HyoJnPZdsg4CJBJc4JTIQLpd/G8jAGDG0sFfPWTXo+ebSX89xzR6GhdOrOe1ypgcOPuXR
+	3aYV/XV6hh2OYeKBI+e2q2oDGFgJTGOIXH16y274YLhyC8pb+zQV/LUvMErOrA3RJZEKSUtJtqy/2
+	igPiebsyH7dg/UEU5FO6dt83UETCQhDevJfFuTwd/MT8VrGlhDJ5MeTruGvmOHN96PIiUKetcbS9f
+	o9ZMSMaDBF+8tnn9DIMhToGmGZIVzWQg5Y9RaOWUx7Wlc48NHKBuUWivDzXIprullon3Y44DKjQWd
+	5gtdQu/Q==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1uFO3P-006CgW-04;
+	Thu, 15 May 2025 10:10:36 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Thu, 15 May 2025 10:10:35 +0800
+Date: Thu, 15 May 2025 10:10:35 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: linux-crypto@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+	christophe.leroy@csgroup.eu, naveen@kernel.org, dtsen@linux.ibm.com,
+	segher@kernel.crashing.org, stable@vger.kernel.org
+Subject: Re: [PATCH] crypto: powerpc/poly1305 - add depends on BROKEN for now
+Message-ID: <aCVNG2lm9x9dzu6x@gondor.apana.org.au>
+References: <20250514051847.193996-1-ebiggers@kernel.org>
+ <aCRlU0J7QoSJs5sy@gondor.apana.org.au>
+ <20250514162933.GB1236@sol>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Developer-Key: i=rdbabiera@google.com; a=openpgp; fpr=639A331F1A21D691815CE090416E17CA2BBBD5C8
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2883; i=rdbabiera@google.com;
- h=from:subject; bh=j3AQqh2bF+a1tTBBmMb6vQqukFWdDH12NEK3gDZ/zHw=;
- b=owGbwMvMwCFW0bfok0KS4TbG02pJDBmqrp+nexnMyP91YvlDq4/t5j/2nvGYyf91ySyXoOzNO
- wrbRPRedZSyMIhxMMiKKbLo+ucZ3LiSumUOZ40xzBxWJpAhDFycAjCR9GqGf+ZF/zoNwq07ZgSm
- T7kyi9fm3pke0cUXr2TuN+VPPdd+VouRYeGMU16hm0Oenr75ZWHY7xdHmLpWdb378D6Jx/ix99t jRzkA
-X-Mailer: git-send-email 2.49.0.1045.g170613ef41-goog
-Message-ID: <20250515014003.1681068-2-rdbabiera@google.com>
-Subject: [PATCH v2] usb: typec: tcpm: apply vbus before data bringup in tcpm_src_attach
-From: RD Babiera <rdbabiera@google.com>
-Cc: heikki.krogerus@linux.intel.com, badhri@google.com, 
-	gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, RD Babiera <rdbabiera@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250514162933.GB1236@sol>
 
-This patch fixes Type-C compliance test TD 4.7.6 - Try.SNK DRP Connect
-SNKAS.
+On Wed, May 14, 2025 at 09:29:33AM -0700, Eric Biggers wrote:
+>
+> I didn't notice that.  Probably, though I don't have time to review this subtle
+> Poly1305 code.  Especially with all the weird unions in the code.  Would be
+> great if the PowerPC folks would take a look.
 
-tVbusON has a limit of 275ms when entering SRC_ATTACHED. Compliance
-testers can interpret the TryWait.Src to Attached.Src transition after
-Try.Snk as being in Attached.Src the entire time, so ~170ms is lost
-to the debounce timer.
+Of course more reviews would be great and I think they're all on
+the cc list.
 
-Setting the data role can be a costly operation in host mode, and when
-completed after 100ms can cause Type-C compliance test check TD 4.7.5.V.4
-to fail.
+I did test this by manually forcing the conversion, which is how
+I discovered that powerpc wasn't even using donna64.
 
-Turn VBUS on before tcpm_set_roles to meet timing requirement.
-
-Fixes: f0690a25a140 ("staging: typec: USB Type-C Port Manager (tcpm)")
-Cc: stable@vger.kernel.org
-Signed-off-by: RD Babiera <rdbabiera@google.com>
-Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
----
-Changes since v1:
-* Rebased on top of usb-linus for v6.15
----
- drivers/usb/typec/tcpm/tcpm.c | 32 ++++++++++++++++----------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-index 8adf6f954633..05c62a1673af 100644
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -4353,16 +4353,6 @@ static int tcpm_src_attach(struct tcpm_port *port)
- 
- 	tcpm_enable_auto_vbus_discharge(port, true);
- 
--	ret = tcpm_set_roles(port, true, TYPEC_SOURCE, tcpm_data_role_for_source(port));
--	if (ret < 0)
--		return ret;
--
--	if (port->pd_supported) {
--		ret = port->tcpc->set_pd_rx(port->tcpc, true);
--		if (ret < 0)
--			goto out_disable_mux;
--	}
--
- 	/*
- 	 * USB Type-C specification, version 1.2,
- 	 * chapter 4.5.2.2.8.1 (Attached.SRC Requirements)
-@@ -4372,12 +4362,22 @@ static int tcpm_src_attach(struct tcpm_port *port)
- 	    (polarity == TYPEC_POLARITY_CC2 && port->cc1 == TYPEC_CC_RA)) {
- 		ret = tcpm_set_vconn(port, true);
- 		if (ret < 0)
--			goto out_disable_pd;
-+			return ret;
- 	}
- 
- 	ret = tcpm_set_vbus(port, true);
- 	if (ret < 0)
- 		goto out_disable_vconn;
-+	
-+	ret = tcpm_set_roles(port, true, TYPEC_SOURCE, tcpm_data_role_for_source(port));
-+	if (ret < 0)
-+		goto out_disable_vbus;
-+
-+	if (port->pd_supported) {
-+		ret = port->tcpc->set_pd_rx(port->tcpc, true);
-+		if (ret < 0)
-+			goto out_disable_mux;
-+	}
- 
- 	port->pd_capable = false;
- 
-@@ -4389,14 +4389,14 @@ static int tcpm_src_attach(struct tcpm_port *port)
- 
- 	return 0;
- 
--out_disable_vconn:
--	tcpm_set_vconn(port, false);
--out_disable_pd:
--	if (port->pd_supported)
--		port->tcpc->set_pd_rx(port->tcpc, false);
- out_disable_mux:
- 	tcpm_mux_set(port, TYPEC_STATE_SAFE, USB_ROLE_NONE,
- 		     TYPEC_ORIENTATION_NONE);
-+out_disable_vbus:
-+	tcpm_set_vbus(port, false);
-+out_disable_vconn:
-+	tcpm_set_vconn(port, false);
-+
- 	return ret;
- }
- 
-
-base-commit: 82f2b0b97b36ee3fcddf0f0780a9a0825d52fec3
+Cheers,
 -- 
-2.49.0.1045.g170613ef41-goog
-
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
