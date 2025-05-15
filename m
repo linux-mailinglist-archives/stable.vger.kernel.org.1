@@ -1,150 +1,167 @@
-Return-Path: <stable+bounces-144548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A099AB8E34
-	for <lists+stable@lfdr.de>; Thu, 15 May 2025 19:55:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E53CAB8F5C
+	for <lists+stable@lfdr.de>; Thu, 15 May 2025 20:53:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D63B1BC6562
-	for <lists+stable@lfdr.de>; Thu, 15 May 2025 17:55:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB9873BE813
+	for <lists+stable@lfdr.de>; Thu, 15 May 2025 18:52:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40B29254B03;
-	Thu, 15 May 2025 17:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7D67285405;
+	Thu, 15 May 2025 18:52:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AQCsg9Le"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RLas4Hmf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
+Received: from mail-vs1-f73.google.com (mail-vs1-f73.google.com [209.85.217.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5243D35971;
-	Thu, 15 May 2025 17:55:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A3ED2690E0
+	for <stable@vger.kernel.org>; Thu, 15 May 2025 18:52:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747331723; cv=none; b=adyNrDdSjORVHoHWdOpw/e3Qk1Gh0rNmGixW7VIY5J4NfU19BEwF6zxy5lttjbpIugHvyjn4RND83NUxIc4gumm2rFCDN+RMK++tTP5FfRfWzxzSoTb0FMcVq2+mSrXy7e//HdgWEbei8V505K9h2of7XDi0EZi+7k8noedkhE4=
+	t=1747335164; cv=none; b=StXqCn445HU/TGUAOgY6fL0mf1fsR9YIDx6ZQvI5ZfV5W2xPkQgyJyInxY6J9+xfipmJpHJFaDqaazm7NGkAazpzmDUP3ZJLoUYqad6zfUWDK/9w/u6dgXdIlhuDAIoHDdffiAgfcNiHV1Jp4ItM5kxxbPxWHrxlZjbOLzKxIJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747331723; c=relaxed/simple;
-	bh=9rEB8MGAMouvWT1mRTZ0aDO/9zJ1K3nvDRmId1JOb2g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ERNlPro45ldD+8VJ65e6LC6QOQIBfAGDgcjGY8ngN9E2ueLkuYS+66IeTGgHmACdlkMIvxTPzpEppro8awDjjEIV/mqMeqYstrbjFCt4ukpaebN3BksUdwactBJE26dZEgPyHbJIBVcdwTSP15ipKMi5j/ja3+rmfvcWOR9rJ+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AQCsg9Le; arc=none smtp.client-ip=209.85.208.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-326ca53a7f1so12436121fa.2;
-        Thu, 15 May 2025 10:55:20 -0700 (PDT)
+	s=arc-20240116; t=1747335164; c=relaxed/simple;
+	bh=K63IL0wd/AKdNf65nemBDPL4UNxLf79dzeti/LRO/dc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=N7I+l6IKnznrvY1WuMzwZTzY1GAQlDq4loBZ+8qOx+ttUeh2BFV1GID4vQ95gV6ZwkyrfCJKW9IF8n8/Io/X1VdUywfzxFnHS7X3xhIhWUL4r6QKmaNfcQqe4TdlX2PbgHIHBaDjuWtdeD0nTHYsWGLBHR1sBdtm8yiragKunS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--royluo.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RLas4Hmf; arc=none smtp.client-ip=209.85.217.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--royluo.bounces.google.com
+Received: by mail-vs1-f73.google.com with SMTP id ada2fe7eead31-4df5143c87aso1776122137.1
+        for <stable@vger.kernel.org>; Thu, 15 May 2025 11:52:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747331719; x=1747936519; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=C6BvMq2D5p+ldyLhswJqBQibnI6QVGEbvUpylGppPw8=;
-        b=AQCsg9LeR8Ys7+OHy8VyA6pRT72kCIAJJSAHEWYhC4VTCcLfHGtt0pdz7Bnu2P12aR
-         GY379mIhLi1bzuzoXVzCZY24IN1zOKj6kx8j0f9X8wsMSHSQ/Cy5ocGjNS+hhliL3uiY
-         BmSpflAv8+es6h4xcn7x5Wo+/QicIVR+/f9+EFe+6m56/9Y/RxhT+apsxNq9I6NQWwvi
-         c+5Aw2qipvZF7IJSVsM6T7RMH0c7Vo0FZMQoI3KdgokCzIq3Fgzr54ZLdQRkOKKXeO6w
-         QsVRJqXQFiST7/XFwn5h57KqejYA7fatq/ewGJV04so4EhuoGl4vVZKr0OQmiQtHwlc8
-         NK3g==
+        d=google.com; s=20230601; t=1747335162; x=1747939962; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=tL75l/1ix6yb8tbp2dmZra7s66c/0nxAmQo/67QfY1c=;
+        b=RLas4HmfZdBgXec0iVl9utjTrnZwrjBuxziIyXoYb9G5IBY5hNXLf7WqvI9MCWSCNs
+         6Oj4PoTdn6RCgs2eILDJD5DbnUC0k11WkeeK99oQdR0Uqbigz4adZ7CvWBj5JOVsD0fN
+         6aL1sKGDSwdmOeF1bhb0PYf+StEZTAeRM94yX4UpUWQ4E80oTV8ydrc0a/tGyEeVoV7P
+         W6fQ09nwugMXQIgokTvofz8OUx1nAJAZd7LIaaibsJ+qYp4tdZeU7SLPa/BEODozD3CE
+         bv3n3tIQfgWcR1BTMRZCmi4Rshzz7yutYedXREuyCT21JkJqZdJWPsYC3KoJoF0oI8oU
+         LJhg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747331719; x=1747936519;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=C6BvMq2D5p+ldyLhswJqBQibnI6QVGEbvUpylGppPw8=;
-        b=nzQY4mfLHk3TFK+/e1rCealeM+0zXnextI2QDd/0imLclJ0sJc+VvfeplQbJ1B1/KI
-         kt7wLyTauUDI4uqqhVjMfhX9zHd4Aq9raCxan7rbO+uBoKqt748MEjQDvcpbOhGbiMW3
-         R5G7hw6qHWTf6+5XzpOelBZJcYwbZ2AujPQDSl/iHY1EP+n5VS9Ok/fnJjvVOhOpqn99
-         6mz7gcwI23bBSeIm55ZsopewWb2y1YOFuSKeVrVT2iqX8n9H3D5WUEx9yYXwtSbVKEdz
-         fSZyXOVXgD9cONBIvkTvyIC/3KqJjRNJyPJNMXPgwGXdbm9raqYQrlYl061G2JpeHxG3
-         +TgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVx1d3hdy6ClAmWZrlmlPpL01lL1TAkcJd4XVmwSRKhfsacQKb918M5q6pISO6Ih8z67dZkjtRp@vger.kernel.org, AJvYcCXPGQ4yZoU2/KOGmoXGaRZhzn0bBJfQcIQsuXRWLYfBWjFf4S803VR+R2SttZglE+gHdIgnJQ+hpoNwgZk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxn49w6JW2Ck8jq/U2aoB31m3gPrlKdQRHDNlLMXZt/fOUhsGEd
-	zbkOtjtC3h/JvS92uOymuErB6krXKSCJWQjkYUsdchwMekJA8Y9Ij1tg
-X-Gm-Gg: ASbGncunyeSm/8mq5iFJcos0r2KjKHZj0ih0jXLhc4RC48jBeMWis7QmeGbZdC4Q/4s
-	PlSOa8YHntEwUmBOAuk4NsG89QNgaoUmdZA5jnC8EuUhTX1wua0w1C/krpvNX4S1/AuImHIwRFi
-	8NH0QtnmNF/TnMCXgUv/rEMZPlmiq8jnw3BfjaH4tslteXRKMG066dqLqQXvrV6igkc1ZEJNgpW
-	DRiqyx4xSbiJTxamyiibdDunJWHvjzTimiIL7SU4lImZjuXYRJ1RigmHjNodevvgguQ3dxZz+MB
-	1oMGNzgtLET4wgRU946qMUwU0PFjnm9rQ1LaUoDHxyXFJ6N/h5D/6ErvS6zRGxKm8RV3K2njos1
-	D
-X-Google-Smtp-Source: AGHT+IEAYT7A8V86V38Ir8ujqQaxYXXPI/SygzlFMMcOI46zlz+ZfaOlGXG2fLbME3wues+vX6CuKA==
-X-Received: by 2002:a05:651c:4215:b0:326:c07e:b0a4 with SMTP id 38308e7fff4ca-3280771da40mr2056621fa.11.1747331719010;
-        Thu, 15 May 2025 10:55:19 -0700 (PDT)
-Received: from localhost.localdomain ([91.197.2.199])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-328084dd21esm137531fa.63.2025.05.15.10.55.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 May 2025 10:55:18 -0700 (PDT)
-From: Andrey Kriulin <kitotavrik.s@gmail.com>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Andrey Kriulin <kitotavrik.s@gmail.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Josef Bacik <josef@toxicpanda.com>,
-	NeilBrown <neilb@suse.de>,
-	Jan Kara <jack@suse.cz>,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: [PATCH v3] fs: minix: Fix handling of corrupted directories
-Date: Thu, 15 May 2025 20:54:57 +0300
-Message-ID: <20250515175500.12128-1-kitotavrik.s@gmail.com>
-X-Mailer: git-send-email 2.47.2
+        d=1e100.net; s=20230601; t=1747335162; x=1747939962;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tL75l/1ix6yb8tbp2dmZra7s66c/0nxAmQo/67QfY1c=;
+        b=qi9Q0Bj7GGIrhpxEYRrZGBqpbRY2MVZaw6IY1KD0wdFEcCPvcqDJNlMdcLjceyqaDm
+         DjGiY/hQBBBpcENmv5hTvofJJFOBBIM8XUV6OIuWSC5BKUqw70XHnvgAs6qIu1Lltd9L
+         mr5WseuGyEXwusN1U3AyWxubYwLDtpYDjSZTMypYzh+iNjq6MyX7WwuApyd8e1hxfIqr
+         l1vSx7/LbA16vreC0MOkDZ9PGlKwcLD6ECbjlBrozcQCK9Q5yEqL7ZgOFS5bfjySBOfJ
+         PgwSH+2dqoLRZLGq5JF1DbTfM3/13o0HDUe+L0n6x5/QJx+m1JnItN4OfPSFizUCgJzx
+         ziRg==
+X-Gm-Message-State: AOJu0Yydtgprt50AQsckGljWX981JNAQZaribSwfcHnMkrC2ek3/qcCN
+	3k0EuxR4v8o5pLDM94767WO7gSilZnVfhdWjZCuVkSr6p0e+PSRi0R3ImY3d1S74sDE0aQ0Mgqs
+	lI7ejCw==
+X-Google-Smtp-Source: AGHT+IHwuQNwb0vPJPmRY4g+OzhIySpP7oIxTudeED3uvgNH9M4u5I7QlZs6oj9hjEmhqlFSDJT1BU6HPfA=
+X-Received: from uabjd12.prod.google.com ([2002:a05:6130:678c:b0:879:ee02:ddc8])
+ (user=royluo job=prod-delivery.src-stubby-dispatcher) by 2002:a67:ff90:0:b0:4db:10bf:6f2c
+ with SMTP id ada2fe7eead31-4df900f5181mr5384781137.11.1747335161968; Thu, 15
+ May 2025 11:52:41 -0700 (PDT)
+Date: Thu, 15 May 2025 18:52:26 +0000
+In-Reply-To: <20250515185227.1507363-1-royluo@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-
-If the directory is corrupted and the number of nlinks is less than 2
-(valid nlinks have at least 2), then when the directory is deleted, the
-minix_rmdir will try to reduce the nlinks(unsigned int) to a negative
-value.
-
-Make nlinks validity check for directories.
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Mime-Version: 1.0
+References: <20250515185227.1507363-1-royluo@google.com>
+X-Mailer: git-send-email 2.49.0.1112.g889b7c5bd8-goog
+Message-ID: <20250515185227.1507363-2-royluo@google.com>
+Subject: [PATCH v2 1/2] xhci: Add a quirk for full reset on removal
+From: Roy Luo <royluo@google.com>
+To: royluo@google.com, mathias.nyman@intel.com, quic_ugoswami@quicinc.com, 
+	Thinh.Nguyen@synopsys.com, gregkh@linuxfoundation.org, 
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
 Cc: stable@vger.kernel.org
-Signed-off-by: Andrey Kriulin <kitotavrik.s@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+
+Commit 6ccb83d6c497 ("usb: xhci: Implement xhci_handshake_check_state()
+helper") introduced an optimization to xhci_reset() during xhci removal,
+allowing it to bail out early without waiting for the reset to complete.
+
+This behavior can cause issues on SNPS DWC3 USB controller with dual-role
+capability. When the DWC3 controller exits host mode and removes xhci
+while a reset is still in progress, and then tries to configure its
+hardware for device mode, the ongoing reset leads to register access
+issues; specifically, all register reads returns 0. These issues extend
+beyond the xhci register space (which is expected during a reset) and
+affect the entire DWC3 IP block, causing the DWC3 device mode to
+malfunction.
+
+To address this, introduce the `XHCI_FULL_RESET_ON_REMOVE` quirk. When this
+quirk is set, xhci_reset() always completes its reset handshake, ensuring
+the controller is in a fully reset state before proceeding.
+
+Cc: stable@vger.kernel.org
+Fixes: 6ccb83d6c497 ("usb: xhci: Implement xhci_handshake_check_state() helper")
+Signed-off-by: Roy Luo <royluo@google.com>
 ---
-v3: Move nlinks validaty check to minix_rmdir and minix_rename per Jan
-Kara <jack@suse.cz> request.
-v2: Move nlinks validaty check to V[12]_minix_iget() per Jan Kara
-<jack@suse.cz> request. Change return error code to EUCLEAN. Don't block
-directory in r/o mode per Al Viro <viro@zeniv.linux.org.uk> request.
+ drivers/usb/host/xhci-plat.c | 3 +++
+ drivers/usb/host/xhci.c      | 8 +++++++-
+ drivers/usb/host/xhci.h      | 1 +
+ 3 files changed, 11 insertions(+), 1 deletion(-)
 
- fs/minix/namei.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
-
-diff --git a/fs/minix/namei.c b/fs/minix/namei.c
-index 8938536d8d3c..5a1e5f8ef443 100644
---- a/fs/minix/namei.c
-+++ b/fs/minix/namei.c
-@@ -161,8 +161,12 @@ static int minix_unlink(struct inode * dir, struct dentry *dentry)
- static int minix_rmdir(struct inode * dir, struct dentry *dentry)
- {
- 	struct inode * inode = d_inode(dentry);
--	int err = -ENOTEMPTY;
-+	int err = -EUCLEAN;
+diff --git a/drivers/usb/host/xhci-plat.c b/drivers/usb/host/xhci-plat.c
+index 3155e3a842da..19c5c26a8e63 100644
+--- a/drivers/usb/host/xhci-plat.c
++++ b/drivers/usb/host/xhci-plat.c
+@@ -265,6 +265,9 @@ int xhci_plat_probe(struct platform_device *pdev, struct device *sysdev, const s
+ 		if (device_property_read_bool(tmpdev, "xhci-skip-phy-init-quirk"))
+ 			xhci->quirks |= XHCI_SKIP_PHY_INIT;
  
-+	if (inode->i_nlink < 2)
-+		return err;
++		if (device_property_read_bool(tmpdev, "xhci-full-reset-on-remove-quirk"))
++			xhci->quirks |= XHCI_FULL_RESET_ON_REMOVE;
 +
-+	err = -ENOTEMPTY;
- 	if (minix_empty_dir(inode)) {
- 		err = minix_unlink(dir, dentry);
- 		if (!err) {
-@@ -235,6 +239,10 @@ static int minix_rename(struct mnt_idmap *idmap,
- 	mark_inode_dirty(old_inode);
+ 		device_property_read_u32(tmpdev, "imod-interval-ns",
+ 					 &xhci->imod_interval);
+ 	}
+diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
+index 90eb491267b5..4f091d618c01 100644
+--- a/drivers/usb/host/xhci.c
++++ b/drivers/usb/host/xhci.c
+@@ -198,6 +198,7 @@ int xhci_reset(struct xhci_hcd *xhci, u64 timeout_us)
+ 	u32 command;
+ 	u32 state;
+ 	int ret;
++	unsigned int exit_state;
  
- 	if (dir_de) {
-+		if (old_dir->i_nlink <= 2) {
-+			err = -EUCLEAN;
-+			goto out_dir;
-+		}
- 		err = minix_set_link(dir_de, dir_folio, new_dir);
- 		if (!err)
- 			inode_dec_link_count(old_dir);
+ 	state = readl(&xhci->op_regs->status);
+ 
+@@ -226,8 +227,13 @@ int xhci_reset(struct xhci_hcd *xhci, u64 timeout_us)
+ 	if (xhci->quirks & XHCI_INTEL_HOST)
+ 		udelay(1000);
+ 
++	if (xhci->quirks & XHCI_FULL_RESET_ON_REMOVE)
++		exit_state = 0;
++	else
++		exit_state = XHCI_STATE_REMOVING;
++
+ 	ret = xhci_handshake_check_state(xhci, &xhci->op_regs->command,
+-				CMD_RESET, 0, timeout_us, XHCI_STATE_REMOVING);
++				CMD_RESET, 0, timeout_us, exit_state);
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
+index 242ab9fbc8ae..ac65af788298 100644
+--- a/drivers/usb/host/xhci.h
++++ b/drivers/usb/host/xhci.h
+@@ -1637,6 +1637,7 @@ struct xhci_hcd {
+ #define XHCI_WRITE_64_HI_LO	BIT_ULL(47)
+ #define XHCI_CDNS_SCTX_QUIRK	BIT_ULL(48)
+ #define XHCI_ETRON_HOST	BIT_ULL(49)
++#define XHCI_FULL_RESET_ON_REMOVE	BIT_ULL(50)
+ 
+ 	unsigned int		num_active_eps;
+ 	unsigned int		limit_active_eps;
 -- 
-2.47.2
+2.49.0.1112.g889b7c5bd8-goog
 
 
