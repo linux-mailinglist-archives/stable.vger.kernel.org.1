@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-144626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44EBDABA2BE
-	for <lists+stable@lfdr.de>; Fri, 16 May 2025 20:26:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CCAFABA2BF
+	for <lists+stable@lfdr.de>; Fri, 16 May 2025 20:26:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA4DB179030
-	for <lists+stable@lfdr.de>; Fri, 16 May 2025 18:26:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BED3417E33B
+	for <lists+stable@lfdr.de>; Fri, 16 May 2025 18:26:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A515327AC33;
-	Fri, 16 May 2025 18:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87D2227AC46;
+	Fri, 16 May 2025 18:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vBMUaR5J"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qiNiKgSC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64C8A19938D
-	for <stable@vger.kernel.org>; Fri, 16 May 2025 18:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45E5C19938D
+	for <stable@vger.kernel.org>; Fri, 16 May 2025 18:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747420011; cv=none; b=GL3YdkpVmgkILQan4EXmsktO569e6JOF+FAZ/9poIzxdZfnCSVo/RAULhxbmM++SlDFzsWXuAfSDzkGWuM8/43QIFWUzvJCZznHbf5bLgpl3oufhFoGXnhU37oNnOudh6jRrX+33fpAEwuEXqeTVHPLlFsd8wyNnwFpKtGCI6Es=
+	t=1747420013; cv=none; b=QqGCiaoVmiSmlpIVxdYBDqAl+Ks9AqdcuIA8znidu8ROCVKXdMmAZAB8jUG7fx8F87bak32VdORNZkQykc3NT8KlVRIDkSJhYz5Nd/Fzb3rhPixtYykh8Tf0oAJ3rglPNb5n5ZnZmnb/53FEDxzfk36/5ec2zgc0RSe1mYTimjA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747420011; c=relaxed/simple;
-	bh=6XZYS2fftLhJuPVenmjusaMbzB+KF8Cw1m/egu7M/aw=;
+	s=arc-20240116; t=1747420013; c=relaxed/simple;
+	bh=9VhGCekkyxpxS4N7P4zZkQXKvyS0Ep5vY7v5Wj1CNPQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rRJkaAn3kp2dyUMeFynMzPoSQo61bpf20N/5KUZGyRCZhBFT5veN2jEnkEVMu1a2fBckG8i1Okhk184xKMvtei92rP6zncV82WW4OOpCmSPr1tPHo1kGIPeTKVBcUfED5s9QSAdpKBHGQJrFVbAkiHBPLS3fg9SOER/O75FpMF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vBMUaR5J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70929C4CEE4;
-	Fri, 16 May 2025 18:26:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TIK9l36SFNshCmW33tNlkPb4391Cb+H7lLP8ob1E7AdNZKwccdWBp1BdqMBGdGsKV0N7h5YuWZJblEnE//unQn/jiobPT1eXTDpltDkOhBcMMyWJzlh3JFRQ4QRoHC5hnEPLOMr3CvOLrWoJWfiWy0SFM/WSGzomsCp+DZYtFMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qiNiKgSC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52EDEC4CEED;
+	Fri, 16 May 2025 18:26:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747420010;
-	bh=6XZYS2fftLhJuPVenmjusaMbzB+KF8Cw1m/egu7M/aw=;
+	s=k20201202; t=1747420012;
+	bh=9VhGCekkyxpxS4N7P4zZkQXKvyS0Ep5vY7v5Wj1CNPQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vBMUaR5JrDoO12rRFvZsI+Rdm/b58BjKvIgUuvBqL6C9Xt9VoYc+SHyzy2+rmjUfA
-	 Bq5OPmlDNtNoeiK3HyQPbrYrG4hn6X4cWWYkZ3UKOqvvncCQcM7EwMDa579UkJh+rp
-	 O0T5VRQGmYf92MEke7n2jsHUT76jqGVCPRTpFhXXpE0rlbRGi96haNoIdtglI9AyxL
-	 Tj6a7g5nSuUOk4IXrJcpA4xHE/5Bgwj6ld2d3iZPQciYFoAad0j7yVLhtiHY4sS2SM
-	 d0CfafT255EGvQMqHg2MU61s3S9A1RT93gktefjtDlk3+3fm6vYyVIzrtmh/9q2Byr
-	 ZV7lEt4m7pSJA==
+	b=qiNiKgSCCUrgKp2F7HC37xs4b/8LarLcqw7ckuxZrvxn0xWY9nOnYRFQpG1Hvh4vZ
+	 oqOD+d5Eb4ZjMYA94Vd/i60tYX8iPPdJMgJrgsCxl8bFy77F5Yluv1kmdCinX953H3
+	 hnRUIjXW8SkyvenZ4raS5xl8CI+soQzIDDgHOxuDYbLpg/1LlxV/2Fzp53H4sl6BL0
+	 7dKth3O0TLpDrhtDfU9nHEkHGxwL0MbrJiENycLzJcDxGRlYllFQhkENOy8xT0sROQ
+	 i6xHLlTk1RMR4neUjo1CT7J4WutP3wA/F+VD3PtzsAu4aRwXBLe/Paa9C6x41ydyTe
+	 Kuk2yj4LS0Ebg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: jianqi.ren.cn@windriver.com,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.1.y] fs: relax assertions on failure to encode file handles
-Date: Fri, 16 May 2025 14:26:49 -0400
-Message-Id: <20250516113604-f3756a310ee0dfb4@stable.kernel.org>
+Subject: Re: [PATCH 5.10.y] fs: relax assertions on failure to encode file handles
+Date: Fri, 16 May 2025 14:26:51 -0400
+Message-Id: <20250516112303-ef8c8750ddc4dd7d@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250516005329.1343966-1-jianqi.ren.cn@windriver.com>
+In-Reply-To:  <20250516010604.1344396-1-jianqi.ren.cn@windriver.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -77,10 +77,12 @@ Status in newer kernel trees:
 6.14.y | Present (exact SHA1)
 6.12.y | Present (different SHA1: adcde2872f8f)
 6.6.y | Present (different SHA1: f47c834a9131)
+6.1.y | Not found
+5.15.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  974e3fe0ac61d ! 1:  0b03c1f28e522 fs: relax assertions on failure to encode file handles
+1:  974e3fe0ac61d ! 1:  e03b9715a3d01 fs: relax assertions on failure to encode file handles
     @@ Metadata
       ## Commit message ##
          fs: relax assertions on failure to encode file handles
@@ -117,12 +119,16 @@ Note: The patch differs from the upstream commit:
     + 	f.handle.handle_bytes = size * sizeof(u32);
      
       ## fs/overlayfs/copy_up.c ##
-     @@ fs/overlayfs/copy_up.c: struct ovl_fh *ovl_encode_real_fh(struct ovl_fs *ofs, struct dentry *real,
+    -@@ fs/overlayfs/copy_up.c: struct ovl_fh *ovl_encode_real_fh(struct ovl_fs *ofs, struct dentry *real,
+    +@@ fs/overlayfs/copy_up.c: struct ovl_fh *ovl_encode_real_fh(struct dentry *real, bool is_upper)
+      	buflen = (dwords << 2);
+      
+      	err = -EIO;
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.1.y        |  Success    |  Success   |
+| stable/linux-5.10.y       |  Success    |  Success   |
 
