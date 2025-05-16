@@ -1,69 +1,70 @@
-Return-Path: <stable+bounces-144643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 582FCABA6D1
-	for <lists+stable@lfdr.de>; Sat, 17 May 2025 01:59:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A96F5ABA6D3
+	for <lists+stable@lfdr.de>; Sat, 17 May 2025 02:00:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4271DA0858D
-	for <lists+stable@lfdr.de>; Fri, 16 May 2025 23:59:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D8B14E686C
+	for <lists+stable@lfdr.de>; Sat, 17 May 2025 00:00:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44701280A3B;
-	Fri, 16 May 2025 23:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDE27280CFC;
+	Sat, 17 May 2025 00:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nkagaMpZ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="II7ftFPd"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8640A23644F
-	for <stable@vger.kernel.org>; Fri, 16 May 2025 23:59:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0163C23644F
+	for <stable@vger.kernel.org>; Sat, 17 May 2025 00:00:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747439987; cv=none; b=VzcU10+hkpxyIMFb/8kuBOdjY/YDwSr7O6nEBQB/9GmjSFZ9hvwEAxnfiP0MUtzpiCa+fLh0VYvR4sFyX6Ir4nkLDsOuQE6uu7P26t1ZjkSrlPXZlYnlNvaAjgvawheoumG+F9V72JHvdrLnVS5yhiTmYdiCRmJH+hM5wI9roEY=
+	t=1747440002; cv=none; b=VDxFuT42ayZg9p9FDIupvnVcHaAgh/epB1RRr4+HRU5lhmOmxm3H1F9sNbsQ1oSbi+hQocu/fLErtcdeP07WT0v8QWPtld9O9pg/3CzsluzAXKOKC0MstI0wt0svQoboxwmzyhKCkJmaiCTc710T4vGjuD4XzEKskYlPWIiA5WA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747439987; c=relaxed/simple;
-	bh=8dphv/f2Nd5rYkngK6mIBlo5HEjp20PMB6jSpXcQ7Pk=;
+	s=arc-20240116; t=1747440002; c=relaxed/simple;
+	bh=O1AoQkdhKpQj26YUpFFNc4eYyaMVIPdxPdw0UQAVoKw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Btr+NW7fnhwkHffkIniarVVpDiTTAhu8lyXgrgDUbTXmpQURxHABNtj+jUsn29N6vHWzSQnnVu1bUUT2+EWvdERnMV10fx0rMDzchN53fmmzZCd7NDAZBy6osLmbUDnhheJQwhR/NsyUvhWk76lMabxtJL8LZDcMrw2yv254L0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nkagaMpZ; arc=none smtp.client-ip=192.198.163.9
+	 Content-Type:Content-Disposition:In-Reply-To; b=bevZ3qnDvB3xkCJ6vineBsRGtIXNNPBqE3Gq5zYG6SUVPBQer4mc8Nxp87oufBYqhkOw+eoAtRLJObao+InrPKZKgDELqxcsYrqMMfyitOSzN7wDVInd6gUqhTkpncWmu0wXYCLk2hBzVMcvwoZFzE/YT7Ms2YMg2gLm5hoKuYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=II7ftFPd; arc=none smtp.client-ip=198.175.65.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747439986; x=1778975986;
+  t=1747440001; x=1778976001;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=8dphv/f2Nd5rYkngK6mIBlo5HEjp20PMB6jSpXcQ7Pk=;
-  b=nkagaMpZG7e0Pd7PiwHVO9rSOsf+4fIFP+7+KvlGtqIDHyIDzR9scCBp
-   RBmXiH2Fj22XyvzGGz/Mdm4y7A/yZahsBKKBUoxcOftwakMZR06P+lwpq
-   nX6pB2FRdTr4YZsPL64IvBUa2aTbuqnMqYhk22uu/E2yBEOp5gBKjD6B6
-   2yZ5GCh8EifD8F/DoCZEF3GMAzQojFSrPVClmLxUvM7UMxAmMehGy3HrZ
-   GiMybYaAFj8hX5a2SrkW390RrgFigAMGaI+2rNBh9y2zWYqEL9URTP5UK
-   p3VsphAx0dc2yhPGWi0u1w0x1AvPXIvYZ7A8bK1+6OUDthzh2Nh0/jYci
-   Q==;
-X-CSE-ConnectionGUID: EjEhhMEbRAWeQhLFE3QFKQ==
-X-CSE-MsgGUID: aRypmBfrS/iJOL/NH5NeFQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11435"; a="60081441"
+  bh=O1AoQkdhKpQj26YUpFFNc4eYyaMVIPdxPdw0UQAVoKw=;
+  b=II7ftFPdZfPAmf0qeazevevJkDwJb3U9me2q3dgjJq5n7ZxXrgBRR5hC
+   /2wMcFhwqr4bTPfaykMc++Kh8/+0e1+1bV6wzmqNnAm29T56juSc/qU1M
+   b4MYXpQnv2qm6akz6g/P73/sFrjIyVs6Cg7QJwFdz4ovXa0VoAVIOy58c
+   bSshFAiBj3VDWO20+0jo1mfdcKEpZcoyIa8l8H4I/rt1T/O3ocUowkC3v
+   sCugrEt6DT/icvc7i42KhFlavJG8AH77JZwGYpmvfGC0erT3NZjopQSAt
+   fXDjKX1ccyjiaN3Nc4u2gCLmBJc/XojXqD2RHV9UhcfmMY4lyiQooT4R8
+   w==;
+X-CSE-ConnectionGUID: c7tPvWCfTvqA7JV7DzFdAw==
+X-CSE-MsgGUID: Me8j1ThPTc6RDScj8zURQA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11435"; a="49298325"
 X-IronPort-AV: E=Sophos;i="6.15,295,1739865600"; 
-   d="scan'208";a="60081441"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2025 16:59:45 -0700
-X-CSE-ConnectionGUID: /IkE6EQHTkGrFH93aRJ74Q==
-X-CSE-MsgGUID: e7KfOohOSleVbMkafwoK3g==
+   d="scan'208";a="49298325"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2025 17:00:00 -0700
+X-CSE-ConnectionGUID: 4sC+5efnRjigb7U5shKGMw==
+X-CSE-MsgGUID: CAFybGDzQXCIOWBvR/M25Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,295,1739865600"; 
-   d="scan'208";a="162140866"
+   d="scan'208";a="142820084"
 Received: from yzhou16-mobl1.amr.corp.intel.com (HELO desk) ([10.125.146.16])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2025 16:59:44 -0700
-Date: Fri, 16 May 2025 16:59:44 -0700
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2025 17:00:00 -0700
+Date: Fri, 16 May 2025 16:59:59 -0700
 From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 To: stable@vger.kernel.org
 Cc: Peter Zijlstra <peterz@infradead.org>
-Subject: [PATCH 5.15 v3 01/16] x86,nospec: Simplify {JMP,CALL}_NOSPEC
-Message-ID: <20250516-its-5-15-v3-1-16fcdaaea544@linux.intel.com>
+Subject: [PATCH 5.15 v3 02/16] x86/speculation: Simplify and make CALL_NOSPEC
+ consistent
+Message-ID: <20250516-its-5-15-v3-2-16fcdaaea544@linux.intel.com>
 X-Mailer: b4 0.14.2
 References: <20250516-its-5-15-v3-0-16fcdaaea544@linux.intel.com>
 Precedence: bulk
@@ -76,71 +77,58 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20250516-its-5-15-v3-0-16fcdaaea544@linux.intel.com>
 
-From: Peter Zijlstra <peterz@infradead.org>
+commit cfceff8526a426948b53445c02bcb98453c7330d upstream.
 
-commit 09d09531a51a24635bc3331f56d92ee7092f5516 upstream.
+CALL_NOSPEC macro is used to generate Spectre-v2 mitigation friendly
+indirect branches. At compile time the macro defaults to indirect branch,
+and at runtime those can be patched to thunk based mitigations.
 
-Have {JMP,CALL}_NOSPEC generate the same code GCC does for indirect
-calls and rely on the objtool retpoline patching infrastructure.
+This approach is opposite of what is done for the rest of the kernel, where
+the compile time default is to replace indirect calls with retpoline thunk
+calls.
 
-There's no reason these should be alternatives while the vast bulk of
-compiler generated retpolines are not.
+Make CALL_NOSPEC consistent with the rest of the kernel, default to
+retpoline thunk at compile time when CONFIG_RETPOLINE is
+enabled.
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+  [ pawan: s/CONFIG_MITIGATION_RETPOLINE/CONFIG_RETPOLINE/ ]
+
 Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Andrew Cooper <andrew.cooper3@citrix.com
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20250228-call-nospec-v3-1-96599fed0f33@linux.intel.com
 ---
- arch/x86/include/asm/nospec-branch.h | 24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
+ arch/x86/include/asm/nospec-branch.h | 15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
 
 diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
-index bdf22582a8c0133add704b72f88186d5aed93bab..1a825dca11a71c72701882f067d555df8fd1f8e1 100644
+index 1a825dca11a71c72701882f067d555df8fd1f8e1..031a38366b0dd1e35a82e49d6b18147ada7dd80c 100644
 --- a/arch/x86/include/asm/nospec-branch.h
 +++ b/arch/x86/include/asm/nospec-branch.h
-@@ -118,6 +118,19 @@
- #endif
- .endm
- 
-+/*
-+ * Equivalent to -mindirect-branch-cs-prefix; emit the 5 byte jmp/call
-+ * to the retpoline thunk with a CS prefix when the register requires
-+ * a RAX prefix byte to encode. Also see apply_retpolines().
-+ */
-+.macro __CS_PREFIX reg:req
-+	.irp rs,r8,r9,r10,r11,r12,r13,r14,r15
-+	.ifc \reg,\rs
-+	.byte 0x2e
-+	.endif
-+	.endr
-+.endm
-+
- /*
-  * JMP_NOSPEC and CALL_NOSPEC macros can be used instead of a simple
-  * indirect jmp/call which may be susceptible to the Spectre variant 2
-@@ -125,19 +138,18 @@
+@@ -285,16 +285,11 @@ extern retpoline_thunk_t __x86_indirect_thunk_array[];
+  * Inline asm uses the %V modifier which is only in newer GCC
+  * which is ensured when CONFIG_RETPOLINE is defined.
   */
- .macro JMP_NOSPEC reg:req
- #ifdef CONFIG_RETPOLINE
--	ALTERNATIVE_2 __stringify(ANNOTATE_RETPOLINE_SAFE; jmp *%\reg), \
--		      __stringify(jmp __x86_indirect_thunk_\reg), X86_FEATURE_RETPOLINE, \
--		      __stringify(lfence; ANNOTATE_RETPOLINE_SAFE; jmp *%\reg), X86_FEATURE_RETPOLINE_LFENCE
-+	__CS_PREFIX \reg
-+	jmp	__x86_indirect_thunk_\reg
- #else
- 	jmp	*%\reg
-+	int3
- #endif
- .endm
+-# define CALL_NOSPEC						\
+-	ALTERNATIVE_2(						\
+-	ANNOTATE_RETPOLINE_SAFE					\
+-	"call *%[thunk_target]\n",				\
+-	"call __x86_indirect_thunk_%V[thunk_target]\n",		\
+-	X86_FEATURE_RETPOLINE,					\
+-	"lfence;\n"						\
+-	ANNOTATE_RETPOLINE_SAFE					\
+-	"call *%[thunk_target]\n",				\
+-	X86_FEATURE_RETPOLINE_LFENCE)
++#ifdef CONFIG_RETPOLINE
++#define CALL_NOSPEC	"call __x86_indirect_thunk_%V[thunk_target]\n"
++#else
++#define CALL_NOSPEC	"call *%[thunk_target]\n"
++#endif
  
- .macro CALL_NOSPEC reg:req
- #ifdef CONFIG_RETPOLINE
--	ALTERNATIVE_2 __stringify(ANNOTATE_RETPOLINE_SAFE; call *%\reg), \
--		      __stringify(call __x86_indirect_thunk_\reg), X86_FEATURE_RETPOLINE, \
--		      __stringify(lfence; ANNOTATE_RETPOLINE_SAFE; call *%\reg), X86_FEATURE_RETPOLINE_LFENCE
-+	__CS_PREFIX \reg
-+	call	__x86_indirect_thunk_\reg
- #else
- 	call	*%\reg
- #endif
+ # define THUNK_TARGET(addr) [thunk_target] "r" (addr)
+ 
 
 -- 
 2.34.1
