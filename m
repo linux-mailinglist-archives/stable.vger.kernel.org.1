@@ -1,92 +1,167 @@
-Return-Path: <stable+bounces-144594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97484AB9B9F
-	for <lists+stable@lfdr.de>; Fri, 16 May 2025 14:08:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 195A8AB9BC7
+	for <lists+stable@lfdr.de>; Fri, 16 May 2025 14:17:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10DF79E4AC6
-	for <lists+stable@lfdr.de>; Fri, 16 May 2025 12:07:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9DCC16AB08
+	for <lists+stable@lfdr.de>; Fri, 16 May 2025 12:17:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF9F1238142;
-	Fri, 16 May 2025 12:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0118A19FA93;
+	Fri, 16 May 2025 12:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zt08rREA"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="RwH/croA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ACA721D00A;
-	Fri, 16 May 2025 12:08:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACAE81F461A
+	for <stable@vger.kernel.org>; Fri, 16 May 2025 12:17:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747397294; cv=none; b=rGXlSFMr8UT6krRDavXc4CNIljej1OXDngU3yfLir6DmNSLmqCaj7oJzUqxdfrf4ekDbp2x0MP+56Hsg97w/Py2ysk706G2POpCWTWzBEu1NIbCLi2HW9n3lGsK0er/XqeoK40fau2wDrhtPot3/ehKSA6A3lghgbTiw9UwgQrg=
+	t=1747397835; cv=none; b=Z23ShqN/O27NcGJRc9qz9XUwOwbO+xBXWFmLJrarfhhwoO7o5HfBOs5WKw2/LzsWq8VeX8NOUOgXp/pJyywwkKdRjWk3EE6zCjESzCmEgEtBvdofujHrny3vyiGgmb5v01P8vlbphtcswgsN8xRk0uGPyWdfLATbG4sAPqrSUkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747397294; c=relaxed/simple;
-	bh=vvInzG+WhOwuClFT+hBEQCpv3Ilc02wgtTPwylfKFcs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=l6cgTNXU8Wh4cE8W5a23ZCDG7z2r+7LgeCdOK3UTKr4HMI/yoGRC+3kGlrw4mrc8x+QA0yczuuxb9BxSHlknZgKN5zZB3edcCg4G7Nxo2eTsihb9MtMXXlND21jSXAe7lGJe0Z/oS/PTK1KKw1ggA3jqNbcAlrflhmab15x8YWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zt08rREA; arc=none smtp.client-ip=209.85.215.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-879d2e419b9so1816790a12.2;
-        Fri, 16 May 2025 05:08:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747397292; x=1748002092; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=vvInzG+WhOwuClFT+hBEQCpv3Ilc02wgtTPwylfKFcs=;
-        b=Zt08rREA6SiuLLxrm4DRz1ooQ7lP2n9VI1h9ss/QeIWNVDE/sPfC2HBVBvVraM4mqu
-         n7jf1BQEHIa2PxHpoBZNPBAg2DRs7hvbKqNx0Wd7j/bGTpA7BLvFry77RSTSZenTC9If
-         6hwfeFrQKy2R1UT+jRMMncTtBrR5e4qC8hrt3DFfr8YsKhzPKP1Wf357qu+xDd+l1oNw
-         0KGzvcS6HhPJu2QDg/pSt49HQqj33eMjx656r+UW0kpo9m/V3DsL9qvLAfXWns17fb2C
-         ebnh/56obAKu/wdVeCxnfzAHzbmq18xH/0JdL8uMuQKtvrdi3dhBDD2imjYEqR3Ki3j7
-         Bz3w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747397292; x=1748002092;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=vvInzG+WhOwuClFT+hBEQCpv3Ilc02wgtTPwylfKFcs=;
-        b=jLce9OFYVpo89NaKI6DX8OmVANDJ4zyvEIS7PUTdc+rxvUxjMYe4W1wgKJBdyeA/ae
-         q7ZHjxHB8c2zBiGH+U4Xxn+3JDA7kBP5/7kOHV7n3ITFNEQpPp2t4gfa8UdZTgk4//RA
-         T2o6odSpWY+AJFb16ug8bzVM9rSCPuFp8TGrA5RhtTCcc84jiqAgR4moWHONBgPBidfe
-         wJAPebWMVUe+uwHxFzgfrnhOfDVqSZqt5k/ULvxs4hN85ZN/XPmwheXCZz70c0451ZUy
-         8HyMwn7ISKLye1Sy8MAi32pvKMv1pqeS79fBXKZmCGFJ9L0beLR/+morH1xmpCLQ1+j8
-         RGbw==
-X-Forwarded-Encrypted: i=1; AJvYcCVPfz8fFo3vLUq8Odn933ZJcbhjqRdVwknwWk81yMLG76XqvkTI0CHqitY13k9/clxghx+UyHch@vger.kernel.org, AJvYcCWGOyzH/fFaE3NoqLgrrp7RWeXoN4vSbRh7/yPynrzpbb9INJPIfVyJPGktp7o8ToGdfWmGsXuxEdPcp5I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzauKbu5nClB57/mCdcvwtsBdDY6RhPz+Alx0oEf8C0yzQ/9fPC
-	292oBOUYaAQnlI4cmQFWqNv2vlmk1DBB8Ix56AuE6L9gdrNDn4AGwYz2Pl800piNw3n+c1oQZbu
-	mkWApyQUgj6K+53pD2JDSEv8W0ufjEq4=
-X-Gm-Gg: ASbGnct7xSokVEexJ6G5KfRTXWox6VRW20hcAkTTzl98N5dTC5yPp3Jlt4WvOfVHV6z
-	DLMxyYwwSiqJiiEe1qGaX9gK7LEFilqs1SgUWMYnEeY6NZUe30BKSjtEj9+w6cG4vU1QcviC9ry
-	gLTWkCF+d3RF4UyZu2WsFchteAHS1vj6s=
-X-Google-Smtp-Source: AGHT+IHOrDmbHxv5DER6XUzHCdNLptqi6Yl/kppUI/qzVCXsv5Y5EK81JcGT+mIeDr/DOLOoxGm31qXAeLeUTcgBjTE=
-X-Received: by 2002:a17:902:cecf:b0:22d:e57a:279b with SMTP id
- d9443c01a7336-231d4519b0bmr49246575ad.24.1747397292421; Fri, 16 May 2025
- 05:08:12 -0700 (PDT)
+	s=arc-20240116; t=1747397835; c=relaxed/simple;
+	bh=SBGfKQOKXSezZCxstpHnCLS2LCoipPuR1NvtOhowLdE=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Jwfee9VdC5am0M9Qk5DMX9oPvBsmFL8d8Ffz/Cogw0hfeBQSNsGlvr279OUOWu3KsiMHIQ7GI6ap0330GV2JbHlFMXOY5q9rUeZ/e3eRThEqjtbpReKsMRZBV/WICLdE4FfGyvRwgaGLI6Y8OZbbUdaQsJwUPKA4SI2QU75LGI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=RwH/croA; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747397834; x=1778933834;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=SBGfKQOKXSezZCxstpHnCLS2LCoipPuR1NvtOhowLdE=;
+  b=RwH/croAnPydVDereZyDog6KTvQhbajhu4cQuhP516FQKBY2w0p5lJSo
+   TrxxSI47OamIWVkEUc1LY49AV9ZHqWslmZot91iVWbC4hT7b/ppK5iSHT
+   6pfcWE2vIZX5pjIPiyiaHSezw0FCuju2mm5sut4363JlkglGtlzBAAGpg
+   qiw9/9whnnlHPFViiHrVqD5W9pyijmYyTvYaduHT8C9r4+qWEftU9jLaZ
+   hWnH3sO3LukgfYnY5waqINBtwxM+M7VN17Qn9rQ1N2Efvy8TRnZ8YKd93
+   z6SQhzVciWjQxUb7d3sGf/SmfWXUOpvolLsm+s+O9rBrxOes79p0VcUx9
+   Q==;
+X-CSE-ConnectionGUID: CNF6GL+FQoWhKho5Ty5iLg==
+X-CSE-MsgGUID: 4WBHbNGXS7uL12ZccMH8dQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11434"; a="74766521"
+X-IronPort-AV: E=Sophos;i="6.15,293,1739865600"; 
+   d="scan'208";a="74766521"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2025 05:17:12 -0700
+X-CSE-ConnectionGUID: zRftZlVHRQqjFEiJ6zwEdQ==
+X-CSE-MsgGUID: Mld+jSUPQg2R2YXFGuCTuA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,293,1739865600"; 
+   d="scan'208";a="143568554"
+Received: from fdefranc-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.245.133])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2025 05:17:10 -0700
+From: Jani Nikula <jani.nikula@intel.com>
+To: intel-gfx@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org
+Cc: jani.nikula@intel.com,
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/7] drm/i915/display: Add check for alloc_ordered_workqueue() and alloc_workqueue()
+Date: Fri, 16 May 2025 15:16:54 +0300
+Message-Id: <20d3d096c6a4907636f8a1389b3b4dd753ca356e.1747397638.git.jani.nikula@intel.com>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <cover.1747397638.git.jani.nikula@intel.com>
+References: <cover.1747397638.git.jani.nikula@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250515175500.12128-1-kitotavrik.s@gmail.com> <enhxf3daymfubn226ha4ywvh74k3zhacdya2mgfln7g2kzsq6x@llwzvp3vejsk>
-In-Reply-To: <enhxf3daymfubn226ha4ywvh74k3zhacdya2mgfln7g2kzsq6x@llwzvp3vejsk>
-From: Kitotavrik <kitotavrik.s@gmail.com>
-Date: Fri, 16 May 2025 15:08:01 +0300
-X-Gm-Features: AX0GCFtAc7jQ5C9dsDEktognTcJ9Mvl7g7BjNAjuCOqFs1-0YBxSmiPN41nxW4o
-Message-ID: <CAJFzNq5Qwb3o5WHSq2c_k3-Nj1KTbcLQL-L6e03o+nZvRxpoVA@mail.gmail.com>
-Subject: Re: [PATCH v3] fs: minix: Fix handling of corrupted directories
-To: Jan Kara <jack@suse.cz>
-Cc: Christian Brauner <brauner@kernel.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Josef Bacik <josef@toxicpanda.com>, NeilBrown <neilb@suse.de>, linux-kernel@vger.kernel.org, 
-	lvc-project@linuxtesting.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Transfer-Encoding: 8bit
 
-No, because the live directory has nlinks = 2 when deleted. But if I
-understand correctly, it's worth adding a check for parent
-directory(dir->i_nlinks <= 2)
+From: Haoxiang Li <haoxiang_li2024@163.com>
+
+Add check for the return value of alloc_ordered_workqueue()
+and alloc_workqueue(). Furthermore, if some allocations fail,
+cleanup works are added to avoid potential memory leak problem.
+
+Fixes: 40053823baad ("drm/i915/display: move modeset probe/remove functions to intel_display_driver.c")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+---
+ .../drm/i915/display/intel_display_driver.c   | 30 +++++++++++++++----
+ 1 file changed, 25 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/gpu/drm/i915/display/intel_display_driver.c b/drivers/gpu/drm/i915/display/intel_display_driver.c
+index 5c74ab5fd1aa..411fe7b918a7 100644
+--- a/drivers/gpu/drm/i915/display/intel_display_driver.c
++++ b/drivers/gpu/drm/i915/display/intel_display_driver.c
+@@ -244,31 +244,45 @@ int intel_display_driver_probe_noirq(struct intel_display *display)
+ 	intel_dmc_init(display);
+ 
+ 	display->wq.modeset = alloc_ordered_workqueue("i915_modeset", 0);
++	if (!display->wq.modeset) {
++		ret = -ENOMEM;
++		goto cleanup_vga_client_pw_domain_dmc;
++	}
++
+ 	display->wq.flip = alloc_workqueue("i915_flip", WQ_HIGHPRI |
+ 						WQ_UNBOUND, WQ_UNBOUND_MAX_ACTIVE);
++	if (!display->wq.flip) {
++		ret = -ENOMEM;
++		goto cleanup_wq_modeset;
++	}
++
+ 	display->wq.cleanup = alloc_workqueue("i915_cleanup", WQ_HIGHPRI, 0);
++	if (!display->wq.cleanup) {
++		ret = -ENOMEM;
++		goto cleanup_wq_flip;
++	}
+ 
+ 	intel_mode_config_init(display);
+ 
+ 	ret = intel_cdclk_init(display);
+ 	if (ret)
+-		goto cleanup_vga_client_pw_domain_dmc;
++		goto cleanup_wq_cleanup;
+ 
+ 	ret = intel_color_init(display);
+ 	if (ret)
+-		goto cleanup_vga_client_pw_domain_dmc;
++		goto cleanup_wq_cleanup;
+ 
+ 	ret = intel_dbuf_init(display);
+ 	if (ret)
+-		goto cleanup_vga_client_pw_domain_dmc;
++		goto cleanup_wq_cleanup;
+ 
+ 	ret = intel_bw_init(display);
+ 	if (ret)
+-		goto cleanup_vga_client_pw_domain_dmc;
++		goto cleanup_wq_cleanup;
+ 
+ 	ret = intel_pmdemand_init(display);
+ 	if (ret)
+-		goto cleanup_vga_client_pw_domain_dmc;
++		goto cleanup_wq_cleanup;
+ 
+ 	intel_init_quirks(display);
+ 
+@@ -276,6 +290,12 @@ int intel_display_driver_probe_noirq(struct intel_display *display)
+ 
+ 	return 0;
+ 
++cleanup_wq_cleanup:
++	destroy_workqueue(display->wq.cleanup);
++cleanup_wq_flip:
++	destroy_workqueue(display->wq.flip);
++cleanup_wq_modeset:
++	destroy_workqueue(display->wq.modeset);
+ cleanup_vga_client_pw_domain_dmc:
+ 	intel_dmc_fini(display);
+ 	intel_power_domains_driver_remove(display);
+-- 
+2.39.5
+
 
