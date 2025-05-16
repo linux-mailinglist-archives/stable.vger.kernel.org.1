@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-144612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 567AFAB9FB0
-	for <lists+stable@lfdr.de>; Fri, 16 May 2025 17:17:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 829FDAB9FAA
+	for <lists+stable@lfdr.de>; Fri, 16 May 2025 17:16:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93D339E1612
-	for <lists+stable@lfdr.de>; Fri, 16 May 2025 15:12:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 881F518848C7
+	for <lists+stable@lfdr.de>; Fri, 16 May 2025 15:13:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EAD61A7264;
-	Fri, 16 May 2025 15:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0ADC1A5BAE;
+	Fri, 16 May 2025 15:13:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iATgP8xV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OguDdDcV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1E5613C914
-	for <stable@vger.kernel.org>; Fri, 16 May 2025 15:13:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E84839ACC
+	for <stable@vger.kernel.org>; Fri, 16 May 2025 15:13:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747408391; cv=none; b=R9TvdhMJpjBK2mtHbn7E95+7+Pcuavl0v1h90dn/e2GZod199Q8t5gY+3xIBA06/ZPLpjncKIxqScv/LByKKEW+OMhJXSUunlTGHQ2nbWgM/WM2ptbtBoWZc28eCNlQRLGpBkfHyBzSUqhp3CZF7PoB45f0KuvwtayyZgii5dQ8=
+	t=1747408393; cv=none; b=ZbOBeO3+TH/o4xBlUxHExTXzr8gZu9h7i67Z0E5ijaYSeb5HiLNVSw35n/OTI5oE7OVCRyWuKNXqLQ0pLCqvSTxS2B7UTStSNp9pP8om+mdSkZHrxJuoU7J51x2D6/iz8B3igkI5krlesumw9XSiOIaLPFPTfegMtXdYhEdylcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747408391; c=relaxed/simple;
-	bh=9yBgYWd0EoYneOiWCTCsBxbED2biXmbdDdpQkyYVaKE=;
+	s=arc-20240116; t=1747408393; c=relaxed/simple;
+	bh=Luql5Bc70t7G8WkEKA3NfNmKSGf8ChIKR2aidSKUjKc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VI1oDlEaQps+r5dbmAXboIrPj67u8poNbJ6O0lH2O5iBJsmkgJ0STRHlY0NJbZH0Mm79oQFNJs9l70q4cOTwU62YtrbytKqyCN0K8zvGT/hoUFH2IsPKq/09p4E+6g4bwx2g3e4TVQrxESS2Rwnwih8mxB5TcSZCfUZblGSE6Ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iATgP8xV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD227C4CEE4;
-	Fri, 16 May 2025 15:13:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=esU/ks6wt0qVxh/V38I5EnyLEj/IFdUdhS+9MHDFrUt9TLIAif1YYxXDKBNDN8i3DDgP+/kS0mqD8XJdl51Xbm7duVDbO5rakuVtam2qcBgXW0UIW9+F6Vr4RHiZpGc6bvtaGj38hxLk6NPV+aPlWiueZmAsxbyCGexPZavsFUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OguDdDcV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2C39C4CEE4;
+	Fri, 16 May 2025 15:13:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747408391;
-	bh=9yBgYWd0EoYneOiWCTCsBxbED2biXmbdDdpQkyYVaKE=;
+	s=k20201202; t=1747408393;
+	bh=Luql5Bc70t7G8WkEKA3NfNmKSGf8ChIKR2aidSKUjKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iATgP8xVafRrVoFpoPFMqFKlppX0Rd48HziqYcJgW2xfgP+rE1VHghjj03cnKES51
-	 8XiNdj18Lf5JansY2COHjQ+QW53zC6I33IS38Kw3c7Yv3LYp0MZEQviIDnrbwghqPj
-	 ieX52WysxTEZGMXRvmisjLIeMJ1vOFAOnQMPPS67Z3o+xWlgBfn+JSPMJN0VGkiLoI
-	 AH3D3+mrwR+UChybaURuqqIVSOy9a8IIRizld2mj0YAIIXFaAL4772dDF687Erbnt3
-	 ey78rx2P+DDdBXQfkuordFjBHRQ1ltStjZShS2qo2kkkrG2dz7uBsSN5d/Sg9uih+t
-	 heLi85aDkimdg==
+	b=OguDdDcVfEAkF0SMuCbZy5SUb5pNXvLFqiSrcp1ztwXYDpz13EmIzSRmI4LsIERKZ
+	 03xY6tt9t6MiM4XALwjSBcmXgToY/2i6G1Z82rFdE9WResPBVV9b75qQXNjkWM2t3d
+	 +7PHtFXbIdDuoqjvqS5/J5o4LNQyb7pwb4AODQALlz+S2k33s5wzZHlHHpMf8BB8nI
+	 PcXd9p57ScBKQQIgk5p81h2VK0QgyTUiujMEmsfiHGrFlSZS7efYFhI7D4aAGapoEE
+	 Akz9jToqhrtE8QJ1glBPHGI0WD/ovuoPTF1/DGKk3GbQVKBdMmsOWLIBqC2d0f9C5W
+	 OwAV89kTgrc4w==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: jianqi.ren.cn@windriver.com,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15.y] net/sched: flower: Fix chain template offload
-Date: Fri, 16 May 2025 11:13:09 -0400
-Message-Id: <20250515085258-9e47399a5686b651@stable.kernel.org>
+Subject: Re: [PATCH 6.1.y] net/sched: flower: Fix chain template offload
+Date: Fri, 16 May 2025 11:13:11 -0400
+Message-Id: <20250515091603-b5920fdd27662a9c@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250515004905.3611889-1-jianqi.ren.cn@windriver.com>
+In-Reply-To:  <20250515004850.3611876-1-jianqi.ren.cn@windriver.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -77,11 +77,10 @@ Status in newer kernel trees:
 6.14.y | Present (exact SHA1)
 6.12.y | Present (exact SHA1)
 6.6.y | Present (different SHA1: 9ed46144cff3)
-6.1.y | Not found
 
 Note: The patch differs from the upstream commit:
 ---
-1:  32f2a0afa95fa ! 1:  a29e5c1218d0e net/sched: flower: Fix chain template offload
+1:  32f2a0afa95fa ! 1:  0a537109451b8 net/sched: flower: Fix chain template offload
     @@ Metadata
       ## Commit message ##
          net/sched: flower: Fix chain template offload
@@ -126,5 +125,5 @@ Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-5.15.y       |  Success    |  Success   |
+| stable/linux-6.1.y        |  Success    |  Success   |
 
