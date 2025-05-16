@@ -1,119 +1,194 @@
-Return-Path: <stable+bounces-144582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B7D2AB96CF
-	for <lists+stable@lfdr.de>; Fri, 16 May 2025 09:49:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3AD0AB9722
+	for <lists+stable@lfdr.de>; Fri, 16 May 2025 10:05:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C31171BC4633
-	for <lists+stable@lfdr.de>; Fri, 16 May 2025 07:49:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0EDEF3AD639
+	for <lists+stable@lfdr.de>; Fri, 16 May 2025 08:05:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5420322CBD8;
-	Fri, 16 May 2025 07:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3B2A22A4D8;
+	Fri, 16 May 2025 08:05:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="HdTE/7lO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pRVbBiBO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66212288F9;
-	Fri, 16 May 2025 07:48:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E4F820B807;
+	Fri, 16 May 2025 08:05:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747381717; cv=none; b=GB2xPeeCIPquD8axmpVSxm8GBjmZBAHYdifl0DxAjLBtQzphcykDR1eAXUvoCNGzMJoYVcjsLZXngHCxm3KRtRV52mFOMKY5wTH6enmxll4MqO7pdjo+3fRjx/5VmaDUOC+wBIg7SRCYmoEnOb449yzWWYuYtx7j7CFyzbVIQoo=
+	t=1747382748; cv=none; b=ODTCExCniOuBzbgQlFJ2Sd/ZsXYuDaGmk2YDfnYz2J7atXMj0O2PYjE1OLhBkUhOIEa/irdYjqs894dXb+enuhKb3/0azmLrgH/wTTSZHBdnlrEswam0yxTSBpqe+YDb3/apyBKl09kZTm+sSlzprTmXiuWAxzNaCaQyK1wjjSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747381717; c=relaxed/simple;
-	bh=NGGea+Xl9PhfLPNnOL1TZgnMozKaFETgeW8lvayNJEs=;
+	s=arc-20240116; t=1747382748; c=relaxed/simple;
+	bh=ds4odAefAQvzyanBagLFGP/a0SAzCWLHPEI73H21+qM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y1qEDu/LsaL2Yw4s66yyTd9/Q+JR27V2Hntd5+C0ADxRHp4EkT0b8YlEVBBgmZHjJR0wdVLjBvwWubIxY9eRpq6KhKp9oC5LPIeV5cklUKJuDLJ1C5GKkDkOssqQblMm+3A8KovbrsMhlP5mBRq7c8Qu4YV/aXTuwRhgX5BiJp0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=HdTE/7lO; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id B5EA540E01ED;
-	Fri, 16 May 2025 07:48:29 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id s4U2TzRhrVR5; Fri, 16 May 2025 07:48:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1747381706; bh=N7Zdp89bjOj4FjeUAF9kFqVmlf6VStnPSEwpdOdDTRo=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=JlnXprei2oyfqeciTK8KLELKt7t5sc7tcbBDNhHlhZHcKhYBztOtX8vVVz1Jof2nzwUI+q9Rc/DRZHueNOywFSkGJlmp5QtjVGthx/TBqgU3GW5jSLdPigmOHB3LU85JhZCMzLevzYwlFLFqj7/1/EP4uwQwkzQof4zABhQjZ6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pRVbBiBO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F896C4CEEF;
+	Fri, 16 May 2025 08:05:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1747382747;
+	bh=ds4odAefAQvzyanBagLFGP/a0SAzCWLHPEI73H21+qM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HdTE/7lOnT2f6hY8ww9RAXnyBcXkrxsLYTIMiemYtpol/JQr9zNik2VRthZmd/JC+
-	 8fqOYkA9nHsUS8SXSrgHNbss/zDP2jyIOyT/DVqjUwKewv4DV/RJxuqOfD19XbZ+G/
-	 i0MCaMZsW9SdM1tbJ4clokpf6NTbK4ko5lHhGO4zwWguMjpF0xBXDXVIuP3Wa5oYE1
-	 MPD385I+O68yukhzdizfu4a+EsNWWZWyUkjjoQQ9aNW06l7rp1MHLQp3cN3xA0vw14
-	 Dsml7w8Az4Xnk/gfbJzp654iBAWXdrOAUNoEAox3H5iFcKhtjC7waIlSn6K3FawkNG
-	 dqcrwhcCfCquXuBzCsH3sWN1xiLBmtK3HUjpDSf642Q3yvUed5mTI+Djjn8cwguEts
-	 8HnovGW0Fk7blveZN6CI5YL8e2eEgZKPfphIKSR69oTZ3K1BcpoCsf4KWC7XXD7Ukd
-	 4TCqd3esqtY3YM9PbGP4tMgQswh0yFah18TQEYAilO0r/4O35wSSWtVrJ42b5hwYfK
-	 7CM1YVXSQ62mP2djQl9ICzl4wfQK+e9R+YW5sU8S4EERZ1WUCPwsw1iWVM/4TWz1FC
-	 N62Gf6zTrTaIjOwlvgoqP0ocynsbPOUVcJT3tGeQIAdLZWqjC3IYRBcRQI3cZ24rm1
-	 ur9k4jHjrGvaz5vpHAdQSsAE=
-Received: from zn.tnic (p579690ee.dip0.t-ipconnect.de [87.150.144.238])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 25AC940E0239;
-	Fri, 16 May 2025 07:48:15 +0000 (UTC)
-Date: Fri, 16 May 2025 09:48:06 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Suraj Jitindar Singh <surajjs@amazon.com>,
-	David Kaplan <David.Kaplan@amd.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] x86/bugs: Don't WARN() when overwriting
- retbleed_return_thunk with srso_return_thunk
-Message-ID: <20250516074806.GAaCbttptX_H2Gn8OZ@fat_crate.local>
-References: <20250515173830.uulahmrm37vyjopx@desk>
- <20250515233433.105054-1-surajjs@amazon.com>
- <20250515233433.105054-2-surajjs@amazon.com>
+	b=pRVbBiBOqpn2tM3WYE6C5RSlOK6DmWOAWEcV6c41K8ZBoSNYbiQMx+eaQ8R0Npx1E
+	 epCtMwHpldf3l0Wrf9tjH0Ny/jcgTctvsgUOvFldcZharnc7RW1mi9GkPMmrxIVxuD
+	 vcmeBD9etUFAxvfNeGWYqPRRu9T/mjqpO68KQz6E=
+Date: Fri, 16 May 2025 10:03:59 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Cc: Guenter Roeck <linux@roeck-us.net>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org,
+	Darren Kenny <darren.kenny@oracle.com>
+Subject: Re: [PATCH 6.6 000/113] 6.6.91-rc2 review
+Message-ID: <2025051632-uncaring-immature-ed38@gregkh>
+References: <20250514125617.240903002@linuxfoundation.org>
+ <861004b4-e036-4306-b129-252b9cb983c7@oracle.com>
+ <2025051440-sturdily-dragging-3843@gregkh>
+ <9af6afb1-9d91-48ea-a212-bcd6d1a47203@oracle.com>
+ <e1ea37bd-ea7d-4e8a-bb2f-6be709eb99f4@roeck-us.net>
+ <2025051527-travesty-shape-0e3b@gregkh>
+ <20250515152557.a4q2cqab4uvhnpia@desk>
+ <20250515152900.vk3vbotiedv2temq@desk>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20250515233433.105054-2-surajjs@amazon.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250515152900.vk3vbotiedv2temq@desk>
 
-On Thu, May 15, 2025 at 04:34:33PM -0700, Suraj Jitindar Singh wrote:
-> -	WARN(x86_return_thunk != __x86_return_thunk,
-> +	WARN((x86_return_thunk != __x86_return_thunk) &&
-> +	     (thunk != srso_return_thunk ||
-> +	      x86_return_thunk != retbleed_return_thunk),
->  	     "x86/bugs: return thunk changed from %ps to %ps\n",
->  	     x86_return_thunk, thunk);
+On Thu, May 15, 2025 at 08:29:00AM -0700, Pawan Gupta wrote:
+> On Thu, May 15, 2025 at 08:26:04AM -0700, Pawan Gupta wrote:
+> > On Thu, May 15, 2025 at 07:35:26AM +0200, Greg Kroah-Hartman wrote:
+> > > On Wed, May 14, 2025 at 01:49:06PM -0700, Guenter Roeck wrote:
+> > > > On 5/14/25 13:33, Harshit Mogalapalli wrote:
+> > > > > Hi Greg,
+> > > > > 
+> > > > > On 15/05/25 01:35, Greg Kroah-Hartman wrote:
+> > > > > > On Thu, May 15, 2025 at 12:29:40AM +0530, Harshit Mogalapalli wrote:
+> > > > > > > Hi Greg,
+> > > > > > > On 14/05/25 18:34, Greg Kroah-Hartman wrote:
+> > > > > > > > This is the start of the stable review cycle for the 6.6.91 release.
+> > > > > > > > There are 113 patches in this series, all will be posted as a response
+> > > > > > > > to this one.  If anyone has any issues with these being applied, please
+> > > > > > > > let me know.
+> > > > > > > > 
+> > > > > > > > Responses should be made by Fri, 16 May 2025 12:55:38 +0000.
+> > > > > > > > Anything received after that time might be too late.
+> > > > > > > 
+> > > > > > > ld: vmlinux.o: in function `patch_retpoline':
+> > > > > > > alternative.c:(.text+0x3b6f1): undefined reference to `module_alloc'
+> > > > > > > make[2]: *** [scripts/Makefile.vmlinux:37: vmlinux] Error 1
+> > > > > > > 
+> > > > > > > We see this build error in 6.6.91-rc2 tag.
+> > > > > > 
+> > > > > > What is odd about your .config?  Have a link to it?  I can't duplicate
+> > > > > > it here on my builds.
+> > > > > > 
+> > > > > 
+> > > > > So this is a config where CONFIG_MODULES is unset(!=y) -- with that we could reproduce it on defconfig + disabling CONFIG_MODULES as well.
+> > > > > 
+> > > > 
+> > > > Key is the combination of CONFIG_MODULES=n with CONFIG_MITIGATION_ITS=y.
+> > > 
+> > > Ah, this is due to the change in its_alloc() for 6.6.y and 6.1.y by the
+> > > call to module_alloc() instead of execmem_alloc() in the backport of
+> > > 872df34d7c51 ("x86/its: Use dynamic thunks for indirect branches").
+> > 
+> > Sorry for the trouble. I wish I had a test to catch problems like this. The
+> > standard config targets defconfig, allyesconfig, allnoconfig, etc. do not
+> > expose such issues. The only thing that comes close is randconfig.
+> > 
+> > CONFIG_MODULES=n is not a common setting, I wonder how people find such
+> > issues? (trying to figure out how to prevent such issues in future).
+> > 
+> > > Pawan, any hints on what should be done here instead?
+> > 
+> > Since dynamic thunks are not possible without CONFIG_MODULES, one option is
+> > to adjust the already in 6.6.91-rc2 patch 9f35e331144a (x86/its: Fix build
+> > errors when CONFIG_MODULES=n) to also bring the ITS thunk allocation under
+> > CONFIG_MODULES.
+> > 
+> > I am not seeing any issue with below build and boot test:
+> > 
+> >   #!/bin/bash -ex
+> > 
+> >   ./scripts/config --disable CONFIG_MODULES
+> >   ./scripts/config --disable CONFIG_MITIGATION_ITS
+> >   # https://github.com/arighi/virtme-ng
+> >   vng -b
+> >   vng -- lscpu
+> > 
+> >   # main test
+> >   ./scripts/config --disable CONFIG_MODULES
+> >   ./scripts/config --enable CONFIG_MITIGATION_ITS
+> >   vng -b
+> >   vng -- lscpu
+> > 
+> >   ./scripts/config --enable CONFIG_MODULES
+> >   ./scripts/config --disable CONFIG_MITIGATION_ITS
+> >   vng -b
+> >   vng -- lscpu
+> > 
+> >   ./scripts/config --enable CONFIG_MODULES
+> >   ./scripts/config --enable CONFIG_MITIGATION_ITS
+> >   vng -b
+> >   vng -- lscpu
+> > 
+> >   echo "PASS"
+> > 
+> > Similar change is required for 6.1 and 5.15 as well. 6.12 is fine because
+> > it uses execmem_alloc().
+> > 
+> > --- 8< ---
+> > From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+> > Subject: [PATCH 6.6] x86/its: Fix build errors when CONFIG_MODULES=n
+> > 
+> > From: Eric Biggers <ebiggers@google.com>
+> > 
+> > commit 9f35e33144ae5377d6a8de86dd3bd4d995c6ac65 upstream.
+> > 
+> > Fix several build errors when CONFIG_MODULES=n, including the following:
+> > 
+> > ../arch/x86/kernel/alternative.c:195:25: error: incomplete definition of type 'struct module'
+> >   195 |         for (int i = 0; i < mod->its_num_pages; i++) {
+> > 
+> >   [ pawan: backport: Bring ITS dynamic thunk code under CONFIG_MODULES ]
+> > 
+> > Fixes: 872df34d7c51 ("x86/its: Use dynamic thunks for indirect branches")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Eric Biggers <ebiggers@google.com>
+> > Acked-by: Dave Hansen <dave.hansen@intel.com>
+> > Tested-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+> > Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
+> > Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> 
+> Agh!
+> 
+> Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 
-This is still adding that nasty conditional which I'd like to avoid.
+Thanks for this.
 
-And I just had this other idea: we're switching to select/update/apply logic
-with the mitigations and I'm sure we can use that new ability to select the
-proper mitigation when other mitigations are influencing the decision, to
-select the proper return thunk.
+It applied to 6.6.y, but not 6.1.y or 5.15.y, so can you provide some
+updated versions for them too?
 
-I'm thinking for retbleed and SRSO we could set it only once, perhaps in
-srso_select_mitigation() as it runs last.
+thanks,
 
-I don't want to introduce an amd_return_thunk... :-)
-
-But David might have a better idea...
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+greg k-h
 
