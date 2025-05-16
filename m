@@ -1,211 +1,124 @@
-Return-Path: <stable+bounces-144591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF8CBAB9A03
-	for <lists+stable@lfdr.de>; Fri, 16 May 2025 12:23:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A5EAAB9A55
+	for <lists+stable@lfdr.de>; Fri, 16 May 2025 12:40:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CC834A7B8F
-	for <lists+stable@lfdr.de>; Fri, 16 May 2025 10:23:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 576011BC18D4
+	for <lists+stable@lfdr.de>; Fri, 16 May 2025 10:40:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9843233706;
-	Fri, 16 May 2025 10:23:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44FD022FF35;
+	Fri, 16 May 2025 10:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="qs7y4MPx";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="NLdK9TgS";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="qs7y4MPx";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="NLdK9TgS"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="sGl/Y0g3"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F01B21ABDA
-	for <stable@vger.kernel.org>; Fri, 16 May 2025 10:23:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45891233128
+	for <stable@vger.kernel.org>; Fri, 16 May 2025 10:40:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747390982; cv=none; b=knE+Is7xkmavkOEJk/6vAGH5HNfHyTHRwXBmThhsM0/SgKc4OwHTbyMHcAuqL8S49h/+iy4gS9vsZMNIOf3YdpfNjrl8QGcQHNwXLq2m6ive/KAujsDlyHGIY8cDHSdhQIELeEaY4Q9nh5M2pZHNat8IqVw2smxOhcRIKcST16Q=
+	t=1747392033; cv=none; b=K+pMUJrp3G3QRILnuwUkGjg/5jdoNq9IN2OnrDgEvZv5mTVsZu9yIlkB3h26cNSH2btIRvxcEGG8zB0DHek9IQ0Q5OSE8egOBZCqv0CXx7bnMNZUf2LfNhrxrPMn46cCHQA/pkyNtE8DkjUUjV3YboQOXuCN/hYn7yqAJBF2JhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747390982; c=relaxed/simple;
-	bh=2RML4bc73QeojdsIhKSTiERj8sZUEd792kGhlylelEk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eF0m2wLF4K9hppvO2JibFplI0ckUqBVL0XC2zLCWgod1w48YU7IHfi5xubwHl10cy7FsrIKv2LGnZ2Bfiu7kOErPIqABpSvvQ94DaNEKtqEs2nRF3b/0JtTccMf99Xb3Av8YvsScsM8116SuaLPgXJT07g2cZO9NIs0mFRHZREA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=qs7y4MPx; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=NLdK9TgS; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=qs7y4MPx; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=NLdK9TgS; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 6F04A2126F;
-	Fri, 16 May 2025 10:22:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1747390978; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OWrJPjWlYuwuMcb4sBTH247o2s/AahWTBVUEKMJk8Ao=;
-	b=qs7y4MPxGbRdL1PI5KsFP/sKCIizSwmP7t50XAKq6TPqxpO8uTrjqsM9MKREie2u8y6Gn0
-	DINBVB6avH8QT/F2qL+tVNUb4b+Hg9/GklsbvlkBryU7pU9E7yXw7MpXzY4pzPi8t4szGV
-	LzsDDeiVwzJzmRrZ/qstSwr88C63w+s=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1747390978;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OWrJPjWlYuwuMcb4sBTH247o2s/AahWTBVUEKMJk8Ao=;
-	b=NLdK9TgS2yfzomDgInwe0WAHze51rwAvhLcsoXa7lGaKu7KF1MmkL5cNe+ztYgr0Yy/3Cr
-	MjdhEF02MH9GBPAA==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=qs7y4MPx;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=NLdK9TgS
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1747390978; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OWrJPjWlYuwuMcb4sBTH247o2s/AahWTBVUEKMJk8Ao=;
-	b=qs7y4MPxGbRdL1PI5KsFP/sKCIizSwmP7t50XAKq6TPqxpO8uTrjqsM9MKREie2u8y6Gn0
-	DINBVB6avH8QT/F2qL+tVNUb4b+Hg9/GklsbvlkBryU7pU9E7yXw7MpXzY4pzPi8t4szGV
-	LzsDDeiVwzJzmRrZ/qstSwr88C63w+s=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1747390978;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OWrJPjWlYuwuMcb4sBTH247o2s/AahWTBVUEKMJk8Ao=;
-	b=NLdK9TgS2yfzomDgInwe0WAHze51rwAvhLcsoXa7lGaKu7KF1MmkL5cNe+ztYgr0Yy/3Cr
-	MjdhEF02MH9GBPAA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4B6FF13411;
-	Fri, 16 May 2025 10:22:58 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id zqEeEgISJ2jufgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Fri, 16 May 2025 10:22:58 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 6E823A09DD; Fri, 16 May 2025 12:22:53 +0200 (CEST)
-Date: Fri, 16 May 2025 12:22:53 +0200
-From: Jan Kara <jack@suse.cz>
-To: Andrey Kriulin <kitotavrik.s@gmail.com>
-Cc: Christian Brauner <brauner@kernel.org>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Josef Bacik <josef@toxicpanda.com>, NeilBrown <neilb@suse.de>, 
-	Jan Kara <jack@suse.cz>, linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org, 
+	s=arc-20240116; t=1747392033; c=relaxed/simple;
+	bh=fAilwiO7dEF17O9fXmgvqXjSp0ceiL5RFE6YjkH+XWA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=exmvDJRvAzsBMTIWH6qM9FXgVAsxJN4WBAfbjBHYJY0qVIM6TFSmi/WfrhDm7ptwVPQ71iE/IpmYe+QzHcQmLkoz1VIV0e+ZMZ2fN1QD5ofnVczl9DLF8Pk0TIIAsYEKc/e01d6m5n+y7vSXQqHjRa8mWcC+hnDK5wQxZaHgwLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=sGl/Y0g3; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-441d1ed82dbso19061455e9.0
+        for <stable@vger.kernel.org>; Fri, 16 May 2025 03:40:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1747392029; x=1747996829; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=9/D6lYZls2BWjWpZt2g/sTx/5BxVlF4dtuEMmn0jBB0=;
+        b=sGl/Y0g3SBdzgomtqh7aAIhIM9+2524vqHynVRriIf0dYgjq/bqsQyuPrc9y/Jn0A5
+         PNOIiweLwX588EVl26TrVCGxcim47UqtICay3p7BcMvZmNfqSLCeU8EQI4leqdt01q2V
+         xs7cHNb26jpnWTEbZaXXNaST4hlX9cQ6GPgpPZ1WUSItxllS4h1k90H8mBsqnYXKB5qG
+         TnjVt2zoslckNDnj9XPd4a/RUbZzow0Yz9ICfvoqlfB7cIT1Y8rWluI0eoBslKDYrKZL
+         gg40PMI+njZQ95jQcDepjpA2AgveCzBN8VTDZf90iQsnlgB12ZVYSFeOqatpfnUj7Eji
+         pCIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747392029; x=1747996829;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=9/D6lYZls2BWjWpZt2g/sTx/5BxVlF4dtuEMmn0jBB0=;
+        b=sWJb5VkVTAETXFKI3XsYPVx0yJCLwgTOUQPQTaFjbrEXh+zK15Db3dEQtFxUSuVDnQ
+         K+IDkb8cc4eo5tVtIOqQrp73XxhZW9nla7ynhZFHk34oBQQxsPAXffP+DzIIe/viDyJ3
+         fzFbtY572kQhp2Uxrfo6744wRWjpdvjamGD179RJmYZwHJPDcY+jSHPd1wsFnB8KxTVJ
+         ySObTwJyy5Cdccr8v/oHDWMrBOZLQJJQSzMnvxvbMiS9498oi2qnVoD6uji9tONC36Ao
+         kr1a//jMnhwNMYjpaVQZSp2L8Hp++cV4jHBT9lhwOK7UN1X9WPVqCVjcx/3+WTU/lGty
+         QHUQ==
+X-Forwarded-Encrypted: i=1; AJvYcCULQCVGW3Ohy/y8j3vAM27t91yIsh99JYFbJ/rjNA41All3rOmrRjp3AAtLnkwGYMmLky6DUys=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw7+DSYrqQ/vs4cUTA4meeVDHo8vOLIomv2sYBKNsLh1NECZgh/
+	aRcfViZNW67oBPRURCeNc+oX4t3u8P/CnQ58bBNE1NdwZYToG/9err4xpZng2rxzevbPRnV+WJs
+	1mFBI
+X-Gm-Gg: ASbGncsNPZxceqZbCqoAcIT20kq4o8yNcAnXgvCf9dNGUB6KCwd4de7Io2Zuznz3diw
+	F/ZTyXNcDReFlIjs6FkPJLdWksGFebi8AcLOZeL/ogH9BI+DL5W7k2j16PEGAoZVWZrOdBFMoGY
+	YRe0pTHBWzGcjS6ejnfQWBTZwXspN/PiTssgiwC8nCAippunAp6bof+rlaWC/dSZE77LOcyuAJp
+	XceNyiklOd3VDWx5WWEJ4brYBg8swfYHkLsVmfWu3KWI6RhBjyMSLycVvYdhVuPwE5jHm+eE3kW
+	hPvPzJ0Gc0ZYmi4geD+rq3Kk6QuN6yTe/bkmvEiiNxEOBR14Wfk11LiLGIwUfpo4O8iKxAm6TL4
+	OwvlNhBXb4qVWJrswz+lLKRVQ
+X-Google-Smtp-Source: AGHT+IEkveirfZoVjmBNTeL1wlQxfdi/+yuj3FFTnYkHDey8ix0A99YrVgeOzmWXo2/MPNYmRSeKCg==
+X-Received: by 2002:a05:600c:4ec6:b0:442:e147:bea6 with SMTP id 5b1f17b1804b1-442fd950bd4mr25855615e9.11.1747392029382;
+        Fri, 16 May 2025 03:40:29 -0700 (PDT)
+Received: from brgl-uxlite.c.hoisthospitality.com (110.8.30.213.rev.vodafone.pt. [213.30.8.110])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-442f3369293sm104607025e9.6.2025.05.16.03.40.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 May 2025 03:40:28 -0700 (PDT)
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+To: Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	Johan Hovold <johan@kernel.org>
+Cc: linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v3] fs: minix: Fix handling of corrupted directories
-Message-ID: <enhxf3daymfubn226ha4ywvh74k3zhacdya2mgfln7g2kzsq6x@llwzvp3vejsk>
-References: <20250515175500.12128-1-kitotavrik.s@gmail.com>
+Subject: [PATCH] gpio: sysfs: add missing mutex_destroy()
+Date: Fri, 16 May 2025 12:40:23 +0200
+Message-ID: <20250516104023.20561-1-brgl@bgdev.pl>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250515175500.12128-1-kitotavrik.s@gmail.com>
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Rspamd-Queue-Id: 6F04A2126F
-X-Spam-Flag: NO
-X-Spam-Score: -2.51
-X-Spam-Level: 
-X-Spamd-Result: default: False [-2.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_LAST(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	ARC_NA(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[9];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[];
-	MISSING_XM_UA(0.00)[];
-	ASN(0.00)[asn:25478, ipnet:::/0, country:RU];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo]
-X-Rspamd-Action: no action
+Content-Transfer-Encoding: 8bit
 
-On Thu 15-05-25 20:54:57, Andrey Kriulin wrote:
-> If the directory is corrupted and the number of nlinks is less than 2
-> (valid nlinks have at least 2), then when the directory is deleted, the
-> minix_rmdir will try to reduce the nlinks(unsigned int) to a negative
-> value.
-> 
-> Make nlinks validity check for directories.
-> 
-> Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-> 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Andrey Kriulin <kitotavrik.s@gmail.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-This patch is mostly fine (see just one nit below).
+We initialize the data->mutex in gpiod_export() but lack the
+corresponding mutex_destroy() in gpiod_unexport() causing a resource
+leak with mutex debugging enabled. Add the call right before kfreeing
+the GPIO data.
 
-> ---
-> v3: Move nlinks validaty check to minix_rmdir and minix_rename per Jan
-> Kara <jack@suse.cz> request.
-> v2: Move nlinks validaty check to V[12]_minix_iget() per Jan Kara
-> <jack@suse.cz> request. Change return error code to EUCLEAN. Don't block
-> directory in r/o mode per Al Viro <viro@zeniv.linux.org.uk> request.
-> 
->  fs/minix/namei.c | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
-> 
-> diff --git a/fs/minix/namei.c b/fs/minix/namei.c
-> index 8938536d8d3c..5a1e5f8ef443 100644
-> --- a/fs/minix/namei.c
-> +++ b/fs/minix/namei.c
-> @@ -161,8 +161,12 @@ static int minix_unlink(struct inode * dir, struct dentry *dentry)
->  static int minix_rmdir(struct inode * dir, struct dentry *dentry)
->  {
->  	struct inode * inode = d_inode(dentry);
-> -	int err = -ENOTEMPTY;
-> +	int err = -EUCLEAN;
->  
-> +	if (inode->i_nlink < 2)
+Fixes: 6ffcb7971486 ("gpio: sysfs: use per-gpio locking")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+---
+ drivers/gpio/gpiolib-sysfs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-This should be <= 2 as well?
-
-								Honza
-
-> +		return err;
-> +
-> +	err = -ENOTEMPTY;
->  	if (minix_empty_dir(inode)) {
->  		err = minix_unlink(dir, dentry);
->  		if (!err) {
-> @@ -235,6 +239,10 @@ static int minix_rename(struct mnt_idmap *idmap,
->  	mark_inode_dirty(old_inode);
->  
->  	if (dir_de) {
-> +		if (old_dir->i_nlink <= 2) {
-> +			err = -EUCLEAN;
-> +			goto out_dir;
-> +		}
->  		err = minix_set_link(dir_de, dir_folio, new_dir);
->  		if (!err)
->  			inode_dec_link_count(old_dir);
-> -- 
-> 2.47.2
-> 
+diff --git a/drivers/gpio/gpiolib-sysfs.c b/drivers/gpio/gpiolib-sysfs.c
+index 4a3aa09dad9d..cd3381a4bc93 100644
+--- a/drivers/gpio/gpiolib-sysfs.c
++++ b/drivers/gpio/gpiolib-sysfs.c
+@@ -713,6 +713,7 @@ void gpiod_unexport(struct gpio_desc *desc)
+ 	}
+ 
+ 	put_device(dev);
++	mutex_destroy(&data->mutex);
+ 	kfree(data);
+ }
+ EXPORT_SYMBOL_GPL(gpiod_unexport);
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+2.45.2
+
 
