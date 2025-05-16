@@ -1,170 +1,183 @@
-Return-Path: <stable+bounces-144619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00BB1ABA1A5
-	for <lists+stable@lfdr.de>; Fri, 16 May 2025 19:10:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 765D1ABA1F3
+	for <lists+stable@lfdr.de>; Fri, 16 May 2025 19:39:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D47F39E67EF
-	for <lists+stable@lfdr.de>; Fri, 16 May 2025 17:10:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DDE94A4147
+	for <lists+stable@lfdr.de>; Fri, 16 May 2025 17:39:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 503E226A1C4;
-	Fri, 16 May 2025 17:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E5432505C5;
+	Fri, 16 May 2025 17:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="lQtZu9xV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MsYFQzVi"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10olkn2017.outbound.protection.outlook.com [40.92.42.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D0926C3A8
-	for <stable@vger.kernel.org>; Fri, 16 May 2025 17:10:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.42.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747415417; cv=fail; b=cwKalrTJ4o7IufXid2z+JK24Qr0Ze/ROmN+mJoVQkG/ZLEfWfFMNviB6ujGLBqn1GMvJ5bKZLuDkzFAVZ7hbTUE8vs7o6eYx9ek2qhtOVrnJhNPpouqso0zFN86yIEO8zYZ8LbdOgBmEN3RX66Oh7Vr6WzKlb3cdcPoZN9iQ+Tg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747415417; c=relaxed/simple;
-	bh=NvnETfhqIjPKCgV3EchLTKj3B70TdLdtwW9Vf/mhj5g=;
-	h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version; b=ri8Htu2Fa2qvTf/U2yBOsFlJOUQdMwLp+dnRwXE5yDlo0mTjR8cZ/xZLVE+rWfK7VS0Jh/kLl45zXgFnaqqLq5QueYvaAswzn2ojbvDs6jBc5dTMK9ltuiEbsxPled+fpgO9oLMjJDsBOL4++ehTSWOce3l+tV4f9aEW9/vuCa0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=lQtZu9xV; arc=fail smtp.client-ip=40.92.42.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sQ7XkPYOOXgJCgElC24PHLnQFPY31Aj2t8ANTGHbAQ/JAtFYDDXTzbfqSRV1gErJ7A7kYpnlwFnK5CyKW7cV1sY7zQV/T/PG9q24yG8mnVqhW4XFda2ty4DuvrJV/uXnsCNWo2srkfxGujqauQhDsnbg+vXZF3DF5UrA3+BkJVL/88cEBuk1n+qREcBTGwiUAgJRivqdV/virYJPF2/LbSGETiPlmy6l7RI1sAkDtCc5os0DwGPje++7aICeUqHfGJLKZ97YL4EOsT7uAGjwKhjW+tMbEwHETycJ1t1/4fGKlUp/zuAZUYn96ienEUN9kf/9RNh6r0zuQiVEYNYj5Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NvnETfhqIjPKCgV3EchLTKj3B70TdLdtwW9Vf/mhj5g=;
- b=DQRSTwGznvlVAr1UNVv6qLXimUZGuutpBO80gccqmlyQvQjF+CrQt92tdartsbVgeqQb3DR5MONv8GidMATTyEtY/tvBtrpljuCdSn2zV/EwYGwN0ghnRqOAVGNdpl4yEruSYU4ZK6w8VlrqvRkit/XZark7+bhrZLHav7myTZf7hnURonfKorVGgX/dGw36E5+mLN2Xl1ttCwwIMXJ3MQ2HGtdLblxO6l8A2OiCIM5z9ZymDcDZokldlKPm/Bafu2R3sGWzpGAhEjk2Chro5rtoUx4OBlUe4sDRHcX/tNvwq4ArN3j5GLC6y7p4SVqayfyitfAhzxE0Vt0ibJIrJA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NvnETfhqIjPKCgV3EchLTKj3B70TdLdtwW9Vf/mhj5g=;
- b=lQtZu9xVhsMNPIixatLnaxRRUhMliItO+R2eAFdfHWwsII8CGuNzLFtAaIqqVPzk5Y4Fm6RjsVjfAbLVRcg0dk1x7odF4IQNhxhWSHvag/R4harzh5T5/Yl3Zo3QleX+MWPg66kyq+34aEd1ys2cXH1ohV+WUoQbxCZp7896df/KJ0VXZxvOS5Z9pPxwMHmiSwbNyHMJJdW5vAwrsXG4Z26s1ahCZ8qosGlvLy3KBNHKjR1jDUiYxoWeyg/a2gVeLmj5dnCVVFNw3l+IJjYjO+DtolszwKL8yfL+0YMKkcr1kTa6lm5Ll/YkQq9JG6uWdc/iJWokHg3fDBlsNa6M+w==
-Received: from CY4PR03MB3335.namprd03.prod.outlook.com (2603:10b6:910:56::14)
- by BN5PR03MB8078.namprd03.prod.outlook.com (2603:10b6:408:2ac::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.33; Fri, 16 May
- 2025 17:10:13 +0000
-Received: from CY4PR03MB3335.namprd03.prod.outlook.com
- ([fe80::e8c6:bfb:511d:77d8]) by CY4PR03MB3335.namprd03.prod.outlook.com
- ([fe80::e8c6:bfb:511d:77d8%3]) with mapi id 15.20.8678.025; Fri, 16 May 2025
- 17:10:13 +0000
-From: Jessica Garcia <jessica.campaigndataleads@outlook.com>
-To: "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Drive Results for MRO & Air Charter with Targeted Contact Solutions
-Thread-Topic: Drive Results for MRO & Air Charter with Targeted Contact
- Solutions
-Thread-Index: AdvGbdgUCBkViepxSrGsnhBTl70uCw==
-Disposition-Notification-To: Jessica Garcia
-	<jessica.campaigndataleads@outlook.com>
-Date: Fri, 16 May 2025 17:10:13 +0000
-Message-ID:
- <CY4PR03MB3335C18ECFDA9C9B72C7A41CE793A@CY4PR03MB3335.namprd03.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: CY4PR03MB3335:EE_|BN5PR03MB8078:EE_
-x-ms-office365-filtering-correlation-id: b79cda3f-d296-4c99-1ac0-08dd949c85ae
-x-microsoft-antispam:
- BCL:0;ARA:14566002|8062599006|8060799009|15080799009|19110799006|461199028|13031999003|3412199025|440099028|102099032|56899033;
-x-microsoft-antispam-message-info:
- =?iso-8859-1?Q?6jBReSsn+pxywJ2l3Syyo0Y6gVmp+X6c+oNuqR3sLbZzc/mRsNgu6J78SP?=
- =?iso-8859-1?Q?XyeY9chKwvOU1iQRQEGYWgvfPyux08UtSHnG8ldLgTsHI9YPpFyKPWXSVu?=
- =?iso-8859-1?Q?DHX2sGfVWgw9T1yqY/zDdJJbx00InNFO4Sg5SFyz9Bp+WqOLycVtab0u2O?=
- =?iso-8859-1?Q?/DaJstoyq5fcPbHGNCWqKunI7XEUKELjlHSWDApFN/z2deCIpQT8N7s4ZW?=
- =?iso-8859-1?Q?lVUA3TetYKMReV21KaJZHAnsndpuW33yrucq7n1lEKCFwVKFbj+7zKYcMk?=
- =?iso-8859-1?Q?8Zm/IngN296NUk0GSzjTmpX2aBlJorGm9IKaLo5+1aBv68QwIfrHgK76up?=
- =?iso-8859-1?Q?Rw6Bz4GQ/3VhpsIhIRsQIcxZOzX5mcDxvNbd72Wox2qClCSPJ1BtqRlkiB?=
- =?iso-8859-1?Q?O879+Ffk238VWfsfICSbqeXE21QYfqIu0j1YBYZGinbpIMdGSEvrqn61wI?=
- =?iso-8859-1?Q?m7I7HtB/Kbce1TMIFWpCjYedSLp8QeM0Qsfe8axGcjtpIT4AdukinIt68t?=
- =?iso-8859-1?Q?47YlI30yM4wBj/uNLOnDLlpqSoKuw2TqYRtFWm+K1mXnAzRnCcqBFaCOLk?=
- =?iso-8859-1?Q?9oOG05+TjSc9T9SWGrXsWwLewAjFTtvv+Jofc+apZpeBUcWdm67vFqZrxo?=
- =?iso-8859-1?Q?7v8s0j9lwZKiUJPerOM4/KjFVw0OxpyfFfkXl6A81FXYaCDP8gnd662hsb?=
- =?iso-8859-1?Q?TTenD5D1VC3KBIOyutI1IytvB/viHX7/PgRFJ+Twj9FbUlQ0a4AIM3RYGl?=
- =?iso-8859-1?Q?wrIpSplY/xBvghVDfDu9OCFa+Q1bM+J8FP2uq5yrknSraTC0K+MJa0SXC6?=
- =?iso-8859-1?Q?QO2kG5P3h8WZ8phc5nLXo/Kn1K5xNRaQg6YB+NPgFoelBEi5QyhweOtjmI?=
- =?iso-8859-1?Q?uKJCE07rqR+xt0l4EuuLtJPcD6Ddx9j+Q2GbJGERWZ4cEBnHrL6zyj2BZr?=
- =?iso-8859-1?Q?OV4347OyNTs2m3SQ1kxrar9ryAZQuAEf1JC7AI2eYBOtKxHt3i4z5VgOyy?=
- =?iso-8859-1?Q?fWIs23+EFGRcDTYhu8UUNLPJUd23RYHruwKlUBNyHpTH/FCcRLTQN5wI8A?=
- =?iso-8859-1?Q?aLJETi5PDSTc+JxqJn1pgsj1uQSGHiI7F+cW4m10/9hvBCpc8bZTsyPCQt?=
- =?iso-8859-1?Q?8KfH7k2rm16OfqlxF9JmxpmkaOkeVROpWE81bAcyfYCLuSBMrU?=
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?iso-8859-1?Q?CNv/A53GGBqyvhtLdz1RgO48tejgr4RrsnryAeQJR6gldGe8xEzRQLF7SV?=
- =?iso-8859-1?Q?3XGDQb6pKObTVp1ZqGewJxRsWPkTvrzbvHLhbAShUG5g37IpkxTOEoYnS9?=
- =?iso-8859-1?Q?raS3t4p/L5VdLeQ5ilcAY/uBgYLDSWqovUNABUBp3QD0yXlmHxZDEJLBZK?=
- =?iso-8859-1?Q?DgZTOC8rw6Wu9qvq2827QKrjbDpBgOfEPZWsjIRHlvF3Qi3IwOt4HH8ZQT?=
- =?iso-8859-1?Q?Qr4seu9uZKsPJbASeI72X/TLnF0sDiZP2o/z5xMt+u8XchETP490fN8hqJ?=
- =?iso-8859-1?Q?IppGmA9nFwzrjzNMrp8BCE854kuMS2YzYi1/4jt3nI5I4JKey1E7Jzgz5G?=
- =?iso-8859-1?Q?Z2aXjul6Ee3N10mw2S64hf/oFmPfhLN/ym9/abBILT+V6f/d0caBKH0fCa?=
- =?iso-8859-1?Q?+ock3hGs56Q62ohoMYYs/sPJt1swWAJ0tTcX6frmLeLkzq4BinxTT/iEZ6?=
- =?iso-8859-1?Q?dao972Ba5wWKq2SWGGg45vIMgvPraSrryvUvNuejhKj2j/PljDlWvAGIFZ?=
- =?iso-8859-1?Q?A4mKOvUrkmKHe1+39edGSNCS2zsnfipN9MMJWCET+D4SO9ctUluWNhz+iJ?=
- =?iso-8859-1?Q?OieWC6t5v+WvSAx48m7CkfOEX34u3cSeNSezEYqJFUTpRe7CXEh9p/eclr?=
- =?iso-8859-1?Q?ynHXkdWYsOaeto4y/beObFJ7aH82Pka0vQLLAD1sXZqiYu3Rcg2hGSo23L?=
- =?iso-8859-1?Q?sTtSRKsSjpTiXYZp02tREcocX8JjKhn35OxT7+f6sNmTcStbCPLAD2+rph?=
- =?iso-8859-1?Q?Sd5OClvz3l8e9yBQSxGa6zs1uEa0odznaxdFlUk5lptcORSRHrPU5sAugT?=
- =?iso-8859-1?Q?UGnOohjtg8b+wLjoZeur2ZOZXLMb/T4nE809pvJ2nH80cdomgU9B8nwp12?=
- =?iso-8859-1?Q?rUzVg2MNu9hvd01Ij4Yw/wMPjl4s0sVnIsOm9jylH3V+DeTv8g8WGH6/r2?=
- =?iso-8859-1?Q?8bg0M/3//LXIImvpI5HOhsoGRvWUK2H5mt7l11LwC+494+xQkXIfsYrYcb?=
- =?iso-8859-1?Q?V8X4YhokiErSFBao6P0LzaHfHPRMuXBbHsK8pP9DsaPu5z48BTzeA/Klcs?=
- =?iso-8859-1?Q?AcOQPJqJuuPr9du+3jg0rdi9xbvNbkOFB8dEuLLRW5chwzqKJWuwoPcRu8?=
- =?iso-8859-1?Q?xUzpKQ5IKdICye5B4lVGjJXRgtqoPHWtpNQ0RtNXw/zQ5c5cmr9JeYI+WT?=
- =?iso-8859-1?Q?quwRbfnGsSOHgq+nF1KPJy9JVUJ+gSelHjNJCuJpsjYI6PIH+QX/GLYNeB?=
- =?iso-8859-1?Q?PFz5K+2rp4/vW+GjUSZGSR10jG6F9EnGaOk5GxUwwSzgVsdN+BEiqpTf7q?=
- =?iso-8859-1?Q?U+FXX0hrlkPW+ngFta3rbD5Z+34QNcewoT3X4cueib04c6YP57R3qfybl+?=
- =?iso-8859-1?Q?pJaIs1iU0k8OKsHTCzDe+S2A4hgBCDaw=3D=3D?=
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB6E81B6D06;
+	Fri, 16 May 2025 17:39:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747417175; cv=none; b=LkmLa/2XjFWJ3Galh93dIK+QoKmVgwATsxfmffB6MsM2K9EeEepAA3HZKdR3o0LCAiyEg/q94tNhERofBvC0S2vid7jfYQjv88oCqeK4+VGQudyO5Nb016oRFK+x6KfuhtukI2g4S7usnDrxsEMkWLiaLwPt+TydaZ6lGF7DCIs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747417175; c=relaxed/simple;
+	bh=hRr0vkqcCBiiuQr2Noi3VLDJRnVEgKy0iWnva5xhDNE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rFqpWd7jkhFRln5YZGMNoVEx3njGQwvVZgixSvGRhqUSiuNQQo5lHzNbNnrYxHN9iAKEtGC4Lw3JPMlVeAbBiqpAih7G/SMeOnCtTBBnnF3Eb9cCHJKbaeMBNrqq2Y/0noGln5awJtzGyo0Vp7+ylyx+1iQ4LyatrlUZ6VhP1Gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MsYFQzVi; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-741b3e37a1eso2690847b3a.1;
+        Fri, 16 May 2025 10:39:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1747417173; x=1748021973; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=lm907Blt8eZZmibNKx552yPMN0qew1WtA6qDv46jnDA=;
+        b=MsYFQzViLBYAnGk9jDMgDAoJZyn9bRNKcENgxhaDaewdcJv2K9tqNrBAHu8NXvUXcs
+         hiJGAJdpmavDGsC3wpBzcIuoH/nYUh/P+MH616f7SUBTIBUHsHUtz+oRgSzwy4v43W/u
+         n6OJJ8DReENijcYS97rzqsx+NFONreBLz9ggExZTjHn4zhfJVlu36QPSr+rs64pJZOuT
+         QXwuKCBNu+wIyIyCt/SpGJXyahsOSs402pqk1vQVvEu91s/u5pzPuR7CLbCkiRrRA/0W
+         TjZfmooTREuJd9DsxhNVWwf3Zd5BgQJ6BVbp3f8Z+HPLQOpEmjvHH2KC2F3zz1g2Vf45
+         0XCQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747417173; x=1748021973;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lm907Blt8eZZmibNKx552yPMN0qew1WtA6qDv46jnDA=;
+        b=JrFyZ7G7B8Omi7idBj0dBMPabzJa5CkpYvptQEBRX3XPujOf2kO8N9FU6V3/EqbMg8
+         aDZhW5ia4MfQ8pYYBQTqndEltIrTs6ZcvNpJHR/8/tRcVTO+9DnQzBL0KHIypfTZ+fOf
+         CAip6LFYng4XeYpT8HSRcJNmZ3w64cppNhWhpdKDGlWUDYSWXawjBlVy1Bu/SPSDCgnE
+         QobAB0xOp0n2ZHecKnjYlGVi+OD3JoKCgeBGRLreDVGZE3uDYIRBzcvDjzut2tMG6o9+
+         NRH573FxuG6sjseFCcOLTgc9Gbcdle1YMfnT7ohgBipF1sCpyQlq4LmBHS63YgcdHyLi
+         HuCA==
+X-Forwarded-Encrypted: i=1; AJvYcCVC0swuur8trdcqvm3kFCHP83bvjWg12wW7ZfD9ZOH/ruAaLj8S6kyXNCpSxyfShIQgeAs/YKv5@vger.kernel.org, AJvYcCVmN/ClYdBAniHljb9kyDKWe5PnEpod+rF6mg7ebLX6INgRG+9ZasYvu75E6zZiAw8ZHsdej8LVhho=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyTpSqkyjNwJrKL7i+/FokNA7GkWGHNNbPzUxnxf46jcCgfoFH7
+	4zOc02y7Jnhk24/Mpc5LzQz7KyUTKZ/DghvGHcJ7MMNIUwZ2BAifZCCX
+X-Gm-Gg: ASbGncvhG28C/93UVS9txOIPSSuGY8MRExbnoSAUWJTmrsFomXxepjSNwZOvmByEDpV
+	xIp93ry6vRz0qE3F5zdO+fZlq/+ybqEACZs9GGQMTlUFzzTtyF0JojXdVfCBGuP3PdTcD3rehMo
+	hAC8KO76dUybQ784lnlDtdB3id8b/0COBYyC07xJQLJDAM0dgX+MnUogHRtgNIca9lR10HWFG3c
+	nCB3/ZzEPncTA37beI/Dv9kb/WCv/o4l+RDH1r2e6alHiCwL+lAr/lJS7LxESHD3M9pKqbo2a/a
+	P5MNRj7cPBsGM0VNl5vACxZR7K2WAAEkFNRSIcHgZVlAfmFzeArSagTCFbiSHsYL2w==
+X-Google-Smtp-Source: AGHT+IHD0migFvT1aM+B0g561TwoSRuL4bAJjayYRLgG0iSW65e9n+KdHWvJpvQyxc+LytP54UTZ8g==
+X-Received: by 2002:a05:6a20:12ca:b0:1f3:418c:6281 with SMTP id adf61e73a8af0-21621875ab8mr6490718637.4.1747417172739;
+        Fri, 16 May 2025 10:39:32 -0700 (PDT)
+Received: from fabio-Precision-3551.. ([2804:14c:485:4b61:93a1:94a9:517a:f69c])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-742a970c85dsm1842201b3a.61.2025.05.16.10.39.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 May 2025 10:39:32 -0700 (PDT)
+From: Fabio Estevam <festevam@gmail.com>
+To: jic23@kernel.org
+Cc: mazziesaccount@gmail.com,
+	linux-iio@vger.kernel.org,
+	Fabio Estevam <festevam@denx.de>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/2] iio: adc: max1363: Fix MAX1363_4X_CHANS/MAX1363_8X_CHANS[]
+Date: Fri, 16 May 2025 14:38:59 -0300
+Message-Id: <20250516173900.677821-1-festevam@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: CY4PR03MB3335.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: b79cda3f-d296-4c99-1ac0-08dd949c85ae
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 May 2025 17:10:13.4468
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN5PR03MB8078
+Content-Transfer-Encoding: 8bit
 
-Hi ,
-=A0
-I'm offering a resource that connects aviation outreach with data-backed di=
-rection.
-=A0
-We provide a current and verified list of contacts, tailored specifically f=
-or your industry.
-=A0
-(i) High-Net-Worth Individuals (HNWI) seeking seamless luxury travel and pr=
-ivate charters=20
-(ii) MRO Professionals focused on enhancing maintenance and procurement str=
-ategies=20
-(iii) Executive Assistants managing the travel needs of high-ranking execut=
-ives=20
-=A0
-For businesses offering aviation products, maintenance services, or charter=
- flights, these contacts are ideal for your campaign.
-=A0
-Please let me know if you'd like to explore the lead counts and their prici=
-ng structure.
-=A0
-Regards,
-Jessica
-Marketing Manager
-Campaign Data Leads.,
-=A0
-Please respond with an Remove if you don't wish to receive further emails.
+From: Fabio Estevam <festevam@denx.de>
+
+Since commit 2718f15403fb ("iio: sanity check available_scan_masks array"),
+booting a board populated with a MAX11601 results in a flood of warnings:
+
+max1363 1-0064: available_scan_mask 8 subset of 0. Never used
+max1363 1-0064: available_scan_mask 9 subset of 0. Never used
+max1363 1-0064: available_scan_mask 10 subset of 0. Never used
+max1363 1-0064: available_scan_mask 11 subset of 0. Never used
+max1363 1-0064: available_scan_mask 12 subset of 0. Never used
+max1363 1-0064: available_scan_mask 13 subset of 0. Never used
+...
+
+These warnings are caused by incorrect offsets used for differential
+channels in the MAX1363_4X_CHANS() and MAX1363_8X_CHANS() macros.
+
+The max1363_mode_table[] defines the differential channel mappings as
+follows:
+
+MAX1363_MODE_DIFF_SINGLE(0, 1, 1 << 12),
+MAX1363_MODE_DIFF_SINGLE(2, 3, 1 << 13),
+MAX1363_MODE_DIFF_SINGLE(4, 5, 1 << 14),
+MAX1363_MODE_DIFF_SINGLE(6, 7, 1 << 15),
+MAX1363_MODE_DIFF_SINGLE(8, 9, 1 << 16),
+MAX1363_MODE_DIFF_SINGLE(10, 11, 1 << 17),
+MAX1363_MODE_DIFF_SINGLE(1, 0, 1 << 18),
+MAX1363_MODE_DIFF_SINGLE(3, 2, 1 << 19),
+MAX1363_MODE_DIFF_SINGLE(5, 4, 1 << 20),
+MAX1363_MODE_DIFF_SINGLE(7, 6, 1 << 21),
+MAX1363_MODE_DIFF_SINGLE(9, 8, 1 << 22),
+MAX1363_MODE_DIFF_SINGLE(11, 10, 1 << 23),
+
+Update the macros to follow this same pattern, ensuring that the scan masks
+are valid and preventing the warnings.
+
+Cc: stable@vger.kernel.org
+Fixes: 2718f15403fb ("iio: sanity check available_scan_masks array")
+Suggested-by: Jonathan Cameron <jic23@kernel.org>
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+---
+Changes since v1:
+- Fix the problem by changing the MAX1363_4X_CHANS() and MAX1363_8X_CHANS()
+macros. (Jonathan)
+
+ drivers/iio/adc/max1363.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/drivers/iio/adc/max1363.c b/drivers/iio/adc/max1363.c
+index a7e9912fb44a..bc44b4604ef4 100644
+--- a/drivers/iio/adc/max1363.c
++++ b/drivers/iio/adc/max1363.c
+@@ -511,10 +511,10 @@ static const struct iio_event_spec max1363_events[] = {
+ 	MAX1363_CHAN_U(1, _s1, 1, bits, ev_spec, num_ev_spec),		\
+ 	MAX1363_CHAN_U(2, _s2, 2, bits, ev_spec, num_ev_spec),		\
+ 	MAX1363_CHAN_U(3, _s3, 3, bits, ev_spec, num_ev_spec),		\
+-	MAX1363_CHAN_B(0, 1, d0m1, 4, bits, ev_spec, num_ev_spec),	\
+-	MAX1363_CHAN_B(2, 3, d2m3, 5, bits, ev_spec, num_ev_spec),	\
+-	MAX1363_CHAN_B(1, 0, d1m0, 6, bits, ev_spec, num_ev_spec),	\
+-	MAX1363_CHAN_B(3, 2, d3m2, 7, bits, ev_spec, num_ev_spec),	\
++	MAX1363_CHAN_B(0, 1, d0m1, 12, bits, ev_spec, num_ev_spec),	\
++	MAX1363_CHAN_B(2, 3, d2m3, 13, bits, ev_spec, num_ev_spec),	\
++	MAX1363_CHAN_B(1, 0, d1m0, 18, bits, ev_spec, num_ev_spec),	\
++	MAX1363_CHAN_B(3, 2, d3m2, 19, bits, ev_spec, num_ev_spec),	\
+ 	IIO_CHAN_SOFT_TIMESTAMP(8)					\
+ 	}
+ 
+@@ -609,14 +609,14 @@ static const enum max1363_modes max11608_mode_list[] = {
+ 	MAX1363_CHAN_U(5, _s5, 5, bits, NULL, 0),	\
+ 	MAX1363_CHAN_U(6, _s6, 6, bits, NULL, 0),	\
+ 	MAX1363_CHAN_U(7, _s7, 7, bits, NULL, 0),	\
+-	MAX1363_CHAN_B(0, 1, d0m1, 8, bits, NULL, 0),	\
+-	MAX1363_CHAN_B(2, 3, d2m3, 9, bits, NULL, 0),	\
+-	MAX1363_CHAN_B(4, 5, d4m5, 10, bits, NULL, 0),	\
+-	MAX1363_CHAN_B(6, 7, d6m7, 11, bits, NULL, 0),	\
+-	MAX1363_CHAN_B(1, 0, d1m0, 12, bits, NULL, 0),	\
+-	MAX1363_CHAN_B(3, 2, d3m2, 13, bits, NULL, 0),	\
+-	MAX1363_CHAN_B(5, 4, d5m4, 14, bits, NULL, 0),	\
+-	MAX1363_CHAN_B(7, 6, d7m6, 15, bits, NULL, 0),	\
++	MAX1363_CHAN_B(0, 1, d0m1, 12, bits, NULL, 0),	\
++	MAX1363_CHAN_B(2, 3, d2m3, 13, bits, NULL, 0),	\
++	MAX1363_CHAN_B(4, 5, d4m5, 14, bits, NULL, 0),	\
++	MAX1363_CHAN_B(6, 7, d6m7, 15, bits, NULL, 0),	\
++	MAX1363_CHAN_B(1, 0, d1m0, 18, bits, NULL, 0),	\
++	MAX1363_CHAN_B(3, 2, d3m2, 19, bits, NULL, 0),	\
++	MAX1363_CHAN_B(5, 4, d5m4, 20, bits, NULL, 0),	\
++	MAX1363_CHAN_B(7, 6, d7m6, 21, bits, NULL, 0),	\
+ 	IIO_CHAN_SOFT_TIMESTAMP(16)			\
+ }
+ static const struct iio_chan_spec max11602_channels[] = MAX1363_8X_CHANS(8);
+-- 
+2.34.1
+
 
