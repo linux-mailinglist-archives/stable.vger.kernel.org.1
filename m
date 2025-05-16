@@ -1,90 +1,170 @@
-Return-Path: <stable+bounces-144603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 774E1AB9E0A
-	for <lists+stable@lfdr.de>; Fri, 16 May 2025 15:56:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E8A5AB9E26
+	for <lists+stable@lfdr.de>; Fri, 16 May 2025 16:05:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 25E1F7ADA3D
-	for <lists+stable@lfdr.de>; Fri, 16 May 2025 13:55:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CE92A20560
+	for <lists+stable@lfdr.de>; Fri, 16 May 2025 14:04:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 578EA13B280;
-	Fri, 16 May 2025 13:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 697801F956;
+	Fri, 16 May 2025 14:05:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="prNvNtn8"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="laDUhfed"
 X-Original-To: stable@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91BB978F5E;
-	Fri, 16 May 2025 13:56:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4572DFC1D
+	for <stable@vger.kernel.org>; Fri, 16 May 2025 14:05:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747403775; cv=none; b=Ldjhg9i8nv/iAXR80yz5057yA0q4LKHPQu94e/ki6FD2IjDpgwc6KmYBCMjcf1Rdn2U5vqgTL0kOyKU7+ojUDupJw6Zmp7JdbPBojmHn2FP6YOMplwsgdvjNxMht+/n9p9+gzEOP54y81Kka2cYfrRuDnd/rbipb1v1C/9Nl9Dc=
+	t=1747404303; cv=none; b=NifNRDaDL9yC4sfVtGHZ9wtuNopQgh9eOUB0pODbmydpKlF3MlrYOs4EIJvJGQ97+C8LsWGzU1kyyiXcdj7QX9Bbtvw64suzdu33dLTR9MGmFBlkHiBxuNXK4VXjZl79DiUgI20CcVd15fTX+4RGp/OJbsNOxJA0p5y8nSLN7fw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747403775; c=relaxed/simple;
-	bh=RcvThd/w/vxl6XWWU8Y+ukSVSVXtWFY8ae5nUArXFOo=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=mXUaeoYQPKDZ8eUCLZttg6QIpN1KmLO5TjkYbbopM9Hsd+p8PeGw8qwQ3rohmLNitXfrwE2SRHZDc3cJOVZvXZuAbv7cyVKxpuR4n7l/BBgd6iHXzj8+t5C8Q1TzwgoyqGK2EHzBNo3s2KZmj5Tzfxs9BfRIf2t2fuKuzdpvroE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=prNvNtn8; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=qU1qVMNi0qMy5Blos1rCviLL0yU0/cw8rCcjhi3fPbg=;
-	t=1747403773; x=1748613373; b=prNvNtn8nGnOwHRtCAzVlfQF/cgv98PiAMlwP3WK5meqjge
-	SuavXx/e8VXTkdA7tGiuxPtCj6pK8hX1BGosx5r4wGn/iek7yxjcY78eisu3PXv2379DDtXbjR+hS
-	pdpdOZHjoxAieaatPRrSc4NCGY3F8DRq4TkMhScoc9CtWowihnB/muGR7s0Si4pTaG08GshVzZ8HJ
-	f5QPJ1MqGS8BiIMY/FiSVTG+Wl5JRJ+q8gn56RculpXnxmKRz+8n/RT2+hb+X1U5Bj+HqlDCXn+NQ
-	rPRg4TgEtOKFV9OMUmcyVzdbXR5mrZ/jCGVPrSRA5v6X/wUs8qEs8vmDviOg9UTw==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.1)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1uFvXj-0000000EqOS-3pVe;
-	Fri, 16 May 2025 15:56:08 +0200
-Message-ID: <ab918cc3d5e26a6c38b3331172b60b6676bc32c5.camel@sipsolutions.net>
-Subject: Re: [PATCH] wifi: wilc1000: Add error handling for wilc_sdio_cmd52()
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Markus Elfring <Markus.Elfring@web.de>, vulab@iscas.ac.cn, 
-	linux-wireless@vger.kernel.org, Ajay Singh <ajay.kathat@microchip.com>, 
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, Kalle Valo <kvalo@kernel.org>
-Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
-Date: Fri, 16 May 2025 15:56:07 +0200
-In-Reply-To: <22ba7622-a838-47a8-b0f8-29a90d6df34c@web.de>
-References: <20250516083842.903-1-vulab@iscas.ac.cn>
-	 <22ba7622-a838-47a8-b0f8-29a90d6df34c@web.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	s=arc-20240116; t=1747404303; c=relaxed/simple;
+	bh=AARtyQQn4x3pnO3w+0Flli0MLpF+OLmxeanXecRDEkM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=BOHJpBIoIv5F8s1z4L7SRr97OWX53LHdjJl4WC4QoDK4o94nPphAmlYn7/4SPt4fxAdOLiEQZpunDEvzO3y504VNTR5/rEedtPEGVljBl1p6v4x0ZncnYhTZ49mz3tA//L8T+fy5ltzbHfRV6JP5m3PzTcZjV3XEfRwllga10eg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=laDUhfed; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747404302; x=1778940302;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=AARtyQQn4x3pnO3w+0Flli0MLpF+OLmxeanXecRDEkM=;
+  b=laDUhfedz534qVNH0EJ/srZFvKo+6aFozjrRyaIuL4mlqp8VLsMv+9uq
+   HwYmL4yhhz7SD7sREAxQnCan/RoXB6EmU/1INcTYeJLScgKVUMWFTG9WN
+   RvcUm0nyqPijdQdl7FUseozEFlnngDyW/rZucHvfh+QR/HXhjCck19m0B
+   2XQsAgKumKYTtFk04Y1MdJL0DuMGxB/qA8ydWAtxzRgtOonkO2NESsv0s
+   JjRcYO8ISAfPAdw59GAAYSMQLu7Hh6N3DBzgqv+OHFhiFsTjlhNomEkFc
+   KeyS0vLb7B3Ewo50bBhQ2q9s19YbCzjjY20U9jOkqmosGrN2B9aH8a725
+   A==;
+X-CSE-ConnectionGUID: P9FjNnZLTkePb3r+4+UczA==
+X-CSE-MsgGUID: I3ojBQ/8R5itgaFAodju/g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11435"; a="49533463"
+X-IronPort-AV: E=Sophos;i="6.15,293,1739865600"; 
+   d="scan'208";a="49533463"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2025 07:05:01 -0700
+X-CSE-ConnectionGUID: 468EPgi6QFabP7q5fiJGZA==
+X-CSE-MsgGUID: 56MrHrFWQnmA1jJlusy6gg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,293,1739865600"; 
+   d="scan'208";a="142706963"
+Received: from slindbla-desk.ger.corp.intel.com (HELO [10.245.245.176]) ([10.245.245.176])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2025 07:04:59 -0700
+Message-ID: <8c1002cd-e5bf-4d1b-880c-5e7ac7d08f70@intel.com>
+Date: Fri, 16 May 2025 15:04:56 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/7] drm/i915/display: Add check for
+ alloc_ordered_workqueue() and alloc_workqueue()
+To: Jani Nikula <jani.nikula@intel.com>, intel-gfx@lists.freedesktop.org,
+ intel-xe@lists.freedesktop.org
+Cc: Haoxiang Li <haoxiang_li2024@163.com>, stable@vger.kernel.org
+References: <cover.1747397638.git.jani.nikula@intel.com>
+ <20d3d096c6a4907636f8a1389b3b4dd753ca356e.1747397638.git.jani.nikula@intel.com>
+Content-Language: en-GB
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <20d3d096c6a4907636f8a1389b3b4dd753ca356e.1747397638.git.jani.nikula@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, 2025-05-16 at 15:50 +0200, Markus Elfring wrote:
-> =E2=80=A6
-> > Add error handling for wilc_sdio_cmd52(). If wilc_sdio_cmd52() fails,
-> > log an error message via dev_err().
->=20
-> Please avoid duplicate exception handling code.
-> Can another jump target become nicer for this purpose?
->=20
+On 16/05/2025 13:16, Jani Nikula wrote:
+> From: Haoxiang Li <haoxiang_li2024@163.com>
+> 
+> Add check for the return value of alloc_ordered_workqueue()
+> and alloc_workqueue(). Furthermore, if some allocations fail,
+> cleanup works are added to avoid potential memory leak problem.
+> 
+> Fixes: 40053823baad ("drm/i915/display: move modeset probe/remove functions to intel_display_driver.c")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
 
-<form letter>
-(stolen from Greg)
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
 
-Patch submitter, please ignore Markus's suggestion; you do not need to
-follow it at all.  The person/bot/AI that sent it is being ignored by
-almost all Linux kernel maintainers for having a persistent pattern of
-behavior of producing distracting and pointless commentary, and
-inability to adapt to feedback.  Please feel free to also ignore emails
-from them.
+> ---
+>   .../drm/i915/display/intel_display_driver.c   | 30 +++++++++++++++----
+>   1 file changed, 25 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/i915/display/intel_display_driver.c b/drivers/gpu/drm/i915/display/intel_display_driver.c
+> index 5c74ab5fd1aa..411fe7b918a7 100644
+> --- a/drivers/gpu/drm/i915/display/intel_display_driver.c
+> +++ b/drivers/gpu/drm/i915/display/intel_display_driver.c
+> @@ -244,31 +244,45 @@ int intel_display_driver_probe_noirq(struct intel_display *display)
+>   	intel_dmc_init(display);
+>   
+>   	display->wq.modeset = alloc_ordered_workqueue("i915_modeset", 0);
+> +	if (!display->wq.modeset) {
+> +		ret = -ENOMEM;
+> +		goto cleanup_vga_client_pw_domain_dmc;
+> +	}
+> +
+>   	display->wq.flip = alloc_workqueue("i915_flip", WQ_HIGHPRI |
+>   						WQ_UNBOUND, WQ_UNBOUND_MAX_ACTIVE);
+> +	if (!display->wq.flip) {
+> +		ret = -ENOMEM;
+> +		goto cleanup_wq_modeset;
+> +	}
+> +
+>   	display->wq.cleanup = alloc_workqueue("i915_cleanup", WQ_HIGHPRI, 0);
+> +	if (!display->wq.cleanup) {
+> +		ret = -ENOMEM;
+> +		goto cleanup_wq_flip;
+> +	}
+>   
+>   	intel_mode_config_init(display);
+>   
+>   	ret = intel_cdclk_init(display);
+>   	if (ret)
+> -		goto cleanup_vga_client_pw_domain_dmc;
+> +		goto cleanup_wq_cleanup;
+>   
+>   	ret = intel_color_init(display);
+>   	if (ret)
+> -		goto cleanup_vga_client_pw_domain_dmc;
+> +		goto cleanup_wq_cleanup;
+>   
+>   	ret = intel_dbuf_init(display);
+>   	if (ret)
+> -		goto cleanup_vga_client_pw_domain_dmc;
+> +		goto cleanup_wq_cleanup;
+>   
+>   	ret = intel_bw_init(display);
+>   	if (ret)
+> -		goto cleanup_vga_client_pw_domain_dmc;
+> +		goto cleanup_wq_cleanup;
+>   
+>   	ret = intel_pmdemand_init(display);
+>   	if (ret)
+> -		goto cleanup_vga_client_pw_domain_dmc;
+> +		goto cleanup_wq_cleanup;
+>   
+>   	intel_init_quirks(display);
+>   
+> @@ -276,6 +290,12 @@ int intel_display_driver_probe_noirq(struct intel_display *display)
+>   
+>   	return 0;
+>   
+> +cleanup_wq_cleanup:
+> +	destroy_workqueue(display->wq.cleanup);
+> +cleanup_wq_flip:
+> +	destroy_workqueue(display->wq.flip);
+> +cleanup_wq_modeset:
+> +	destroy_workqueue(display->wq.modeset);
+>   cleanup_vga_client_pw_domain_dmc:
+>   	intel_dmc_fini(display);
+>   	intel_power_domains_driver_remove(display);
 
 
