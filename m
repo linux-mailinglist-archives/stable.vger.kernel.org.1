@@ -1,48 +1,72 @@
-Return-Path: <stable+bounces-144585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17346AB97D6
-	for <lists+stable@lfdr.de>; Fri, 16 May 2025 10:39:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 492EDAB97FC
+	for <lists+stable@lfdr.de>; Fri, 16 May 2025 10:45:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E18901BA77C9
-	for <lists+stable@lfdr.de>; Fri, 16 May 2025 08:39:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA7871BC1A45
+	for <lists+stable@lfdr.de>; Fri, 16 May 2025 08:45:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0371422E3FF;
-	Fri, 16 May 2025 08:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3B3622F169;
+	Fri, 16 May 2025 08:45:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="dzxxhTxZ"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mx0b-0016f401.pphosted.com (mx0a-0016f401.pphosted.com [67.231.148.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5AB7282E1;
-	Fri, 16 May 2025 08:39:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C74C522E00E;
+	Fri, 16 May 2025 08:45:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.148.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747384766; cv=none; b=Cmjf4jBseqx5p0FaDvYAIgjmtdQ6pF06YK/O/Cl7kUkr5GmbDeaOAWCaZnPFU9l+A780qiBSX1Ap8j1db7+ncI65M1Bwb+2kaZcyoRJcx2scLdMCt+jrk6d2L/e+yzZyfp8RGoen60G8Qzl8IITBl841+2u3TTOw0JAMpG1drlI=
+	t=1747385104; cv=none; b=SNeFOiYCEes8fL/TbY4hzBUuYpZ0ewqOiQlXaQlgfkZduEBE5OIc+D66vxzhNyAwafTlT8paBrsmkf9HCZLJxZKj1cMJo/GqONGllb64/DPdSVWOwUNQjCnVKMdkww3KyIM5aWhVBtVKhg6dAyR6d4fx0pm2tmd0nAur3dmtlj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747384766; c=relaxed/simple;
-	bh=RYjeXy5eHZRl5Mt/8DZrayKgM7iSHvClpWchztY8Rac=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k5PE1JWQC41HFmaVAUD3Wg4a4j3Qi3lkZRfIlrITdCqz2GAqpyvejlf3m4SkzAC1Ud3RaO8aRFh9llNx1vBAUX0eRidKfHZoiIGDz2PODK2+E+pQpLa9czUGD5U7SUCHdfZyNpsMRPwaGd/NTZsI0b66oty8fCcQydn8jMv484M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from localhost.localdomain (unknown [124.16.141.245])
-	by APP-03 (Coremail) with SMTP id rQCowAA3pkKt+SZoThhgFg--.38627S2;
-	Fri, 16 May 2025 16:39:13 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: ajay.kathat@microchip.com,
-	claudiu.beznea@tuxon.dev,
-	kvalo@kernel.org
-Cc: linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] wifi: wilc1000: Add error handling for wilc_sdio_cmd52()
-Date: Fri, 16 May 2025 16:38:41 +0800
-Message-ID: <20250516083842.903-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.42.0.windows.2
+	s=arc-20240116; t=1747385104; c=relaxed/simple;
+	bh=MCPD5vLVfDPlZDQL7eGOOEzDsmZvrf8VWIwwoE0whJs=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=gBMpm7/+Gygf6DhgAGB6pETnxeRrfDjC8g88jk/nV5L1gQ7ahCG1/0C9hC81Hd+2mDG/lZTeTH+TRMy8EX3UNu5pLmjxJ7ePMimvB99fwOu7QUUGuQr0A+/SAzf99kFxAKkZmHoErpCQC3ENbvzG6G6szQXx8PniWv1FZhMZDl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=dzxxhTxZ; arc=none smtp.client-ip=67.231.148.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
+Received: from pps.filterd (m0045849.ppops.net [127.0.0.1])
+	by mx0a-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54G7up4N008332;
+	Fri, 16 May 2025 01:44:49 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
+	cc:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pfpt0220; bh=F4WHEyC2UcuKVIqP0y7lKr7
+	SaYwxU8ryoBlI5c6cbcE=; b=dzxxhTxZoD8b1tRhcIWGPUQUj99o8ak3sUTbln4
+	VmBLfm53d4kinsQnVvB+vtHj1W16U2HyfKfcST024xRCY6hxqgLKEdlhMp2iRVS0
+	+a7rS5rbPI6AUX3ecQocL3AxpTo2rlOhpSwyjPfrVTN2zQpxZAUAnpTxjvl3g/h9
+	yUfL8ZEbyfKhnyzDZIamxV8sousX+N9LjBqEMA8+gorpVQ91Cr89xoAD0wpwk7yd
+	FCRDdJT92/En4UkCPPK3dGZ5hoW1H7qi5xWlkzBQYOtFjJ4JcSLmIzWzD3N164BM
+	0NEhCryyWMWlyRt3cc+4jim9xPj/F7bMDF2erXJiZb3wqCg==
+Received: from dc6wp-exch02.marvell.com ([4.21.29.225])
+	by mx0a-0016f401.pphosted.com (PPS) with ESMTPS id 46p1du02nu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 16 May 2025 01:44:49 -0700 (PDT)
+Received: from DC6WP-EXCH02.marvell.com (10.76.176.209) by
+ DC6WP-EXCH02.marvell.com (10.76.176.209) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.4; Fri, 16 May 2025 01:44:48 -0700
+Received: from maili.marvell.com (10.69.176.80) by DC6WP-EXCH02.marvell.com
+ (10.76.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
+ Transport; Fri, 16 May 2025 01:44:48 -0700
+Received: from bharat-OptiPlex-Tower-Plus-7020.. (unknown [10.28.34.254])
+	by maili.marvell.com (Postfix) with ESMTP id 5A7BC3F707C;
+	Fri, 16 May 2025 01:44:44 -0700 (PDT)
+From: Bharat Bhushan <bbhushan2@marvell.com>
+To: <bbrezillon@kernel.org>, <schalla@marvell.com>,
+        <herbert@gondor.apana.org.au>, <davem@davemloft.net>,
+        <giovanni.cabiddu@intel.com>, <linux@treblig.org>,
+        <bharatb.linux@gmail.com>, <linux-crypto@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>
+CC: <stable@vger.kernel.org>, Bharat Bhushan <bbhushan2@marvell.com>
+Subject: [PATCH v2 0/2] crypto: octeontx2: Changes related to LMTST memory
+Date: Fri, 16 May 2025 14:14:39 +0530
+Message-ID: <20250516084441.3721548-1-bbhushan2@marvell.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,77 +74,47 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowAA3pkKt+SZoThhgFg--.38627S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7tr4fWFWxKF4fXFW7AF1fWFg_yoW8Cr4rpF
-	WxWr4Yqw1qkrWrZw17JFsYyF95ta4ktrWUuFWI9w1rZr4kZw1Skr4fXFy5Xrn0q3W7Cw18
-	Xr1vqF4jgF10vFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvq14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r12
-	6r1DMxkIecxEwVAFwVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8Jw
-	C20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAF
-	wI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjx
-	v20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2
-	jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0x
-	ZFpf9x0JU7KsbUUUUU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwkEA2gmkZXk+wABsd
+Content-Type: text/plain
+X-Proofpoint-ORIG-GUID: IH5gXWqIRfCMVLpD6jzdiNjAD9fNKKO-
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE2MDA4MiBTYWx0ZWRfX75uIOdWJ4a0P BfG7woKXlp1uAud1rDPL8h3zCZoypX8jv4yDMAE88z/PoRTMbj1+CpE9IU/J/+eaLMaJi3iWQTA bDkVTpvzBSzlwQDFJozXzlzVkh3YkVrYd/vBHjYt4QDVtQKjpLAnHocj3nEhl+MaWxZKbDjLGh6
+ EKWU5oRo9LW/6KuP0JYb4NtqwkCxQ2mQtW48AWDIq30eyIrpPX2NkRgLxVt/AE33m3+K5sPC0YF a38DJzCH52/d8EHvhUFkKInwjs6rFTCgxh3DuDoka6toxLnfXxXbBQ9hUqzwq2p+5P7Iv7ae2Fq pKRjJ4nxzBNwyVQq/CNcwAmVsEvtzX7wWyuMoGVJXgyy/+kH1ZSrBhyTM0G+ST6Ix4KIPMrko8r
+ dsOwZelu0+2/PnKCbl7lvdxbroSXnVYxWru0ga3beSOdRFvXMVCl/iXYTJyrf2+uS4kGkXqE
+X-Proofpoint-GUID: IH5gXWqIRfCMVLpD6jzdiNjAD9fNKKO-
+X-Authority-Analysis: v=2.4 cv=fvPcZE4f c=1 sm=1 tr=0 ts=6826fb01 cx=c_pps a=gIfcoYsirJbf48DBMSPrZA==:117 a=gIfcoYsirJbf48DBMSPrZA==:17 a=dt9VzEwgFbYA:10 a=5-JLTSaU0EQnWg3z5X0A:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-16_03,2025-05-15_01,2025-03-28_01
 
-The wilc_sdio_read_size() calls wilc_sdio_cmd52() but does not check the
-return value. This could lead to execution with potentially invalid data
-if wilc_sdio_cmd52() fails. A proper implementation can be found in
-wilc_sdio_read_reg().
+v1->v2:
+ -  Removed changes in pci-host-common.c, those were comitted
+    by mistake.
 
-Add error handling for wilc_sdio_cmd52(). If wilc_sdio_cmd52() fails,
-log an error message via dev_err().
-
-Fixes: 0e1af73ddeb9 ("staging/wilc1000: use proper naming for global symbols")
-Cc: stable@vger.kernel.org # v4.15
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
----
- drivers/net/wireless/microchip/wilc1000/sdio.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/net/wireless/microchip/wilc1000/sdio.c b/drivers/net/wireless/microchip/wilc1000/sdio.c
-index 5262c8846c13..e7a2bc9f9902 100644
---- a/drivers/net/wireless/microchip/wilc1000/sdio.c
-+++ b/drivers/net/wireless/microchip/wilc1000/sdio.c
-@@ -771,6 +771,8 @@ static int wilc_sdio_read_size(struct wilc *wilc, u32 *size)
- {
- 	u32 tmp;
- 	struct sdio_cmd52 cmd;
-+	struct sdio_func *func = dev_to_sdio_func(wilc->dev);
-+	int ret;
+The first patch moves the initialization of cptlfs device info to the early
+probe stage, also eliminate redundant initialization.
  
- 	/**
- 	 *      Read DMA count in words
-@@ -780,12 +782,20 @@ static int wilc_sdio_read_size(struct wilc *wilc, u32 *size)
- 	cmd.raw = 0;
- 	cmd.address = WILC_SDIO_INTERRUPT_DATA_SZ_REG;
- 	cmd.data = 0;
--	wilc_sdio_cmd52(wilc, &cmd);
-+	ret = wilc_sdio_cmd52(wilc, &cmd);
-+	if (ret) {
-+		dev_err(&func->devm, "Fail cmd 52, interrupt data register...\n");
-+		return ret;
-+	}
- 	tmp = cmd.data;
- 
- 	cmd.address = WILC_SDIO_INTERRUPT_DATA_SZ_REG + 1;
- 	cmd.data = 0;
--	wilc_sdio_cmd52(wilc, &cmd);
-+	ret = wilc_sdio_cmd52(wilc, &cmd);
-+	if (ret) {
-+		dev_err(&func->devm, "Fail cmd 52, interrupt data register...\n");
-+		return ret;
-+	}
- 	tmp |= (cmd.data << 8);
- 
- 	*size = tmp;
+The second patch updates the driver to use a dynamically allocated
+memory region for LMTST instead of the statically allocated memory
+from firmware. It also adds myself as a maintainer.
+
+Bharat Bhushan (2):
+  crypto: octeontx2: Initialize cptlfs device info once
+  crypto: octeontx2: Use dynamic allocated memory region for lmtst
+
+ MAINTAINERS                                   |  1 +
+ drivers/crypto/marvell/octeontx2/cn10k_cpt.c  | 89 ++++++++++++++-----
+ drivers/crypto/marvell/octeontx2/cn10k_cpt.h  |  1 +
+ .../marvell/octeontx2/otx2_cpt_common.h       |  1 +
+ .../marvell/octeontx2/otx2_cpt_mbox_common.c  | 25 ++++++
+ drivers/crypto/marvell/octeontx2/otx2_cptlf.c |  5 +-
+ drivers/crypto/marvell/octeontx2/otx2_cptlf.h | 12 ++-
+ .../marvell/octeontx2/otx2_cptpf_main.c       | 18 +++-
+ .../marvell/octeontx2/otx2_cptpf_mbox.c       |  6 +-
+ .../marvell/octeontx2/otx2_cptpf_ucode.c      |  2 -
+ .../marvell/octeontx2/otx2_cptvf_main.c       | 19 ++--
+ .../marvell/octeontx2/otx2_cptvf_mbox.c       |  1 +
+ 12 files changed, 133 insertions(+), 47 deletions(-)
+
 -- 
-2.42.0.windows.2
+2.34.1
 
 
