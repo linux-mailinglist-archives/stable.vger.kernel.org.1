@@ -1,225 +1,266 @@
-Return-Path: <stable+bounces-144655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84453ABA6E0
-	for <lists+stable@lfdr.de>; Sat, 17 May 2025 02:02:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 45CFEABA6E6
+	for <lists+stable@lfdr.de>; Sat, 17 May 2025 02:04:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B0744C0121
-	for <lists+stable@lfdr.de>; Sat, 17 May 2025 00:02:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC94816FB86
+	for <lists+stable@lfdr.de>; Sat, 17 May 2025 00:04:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38589136E;
-	Sat, 17 May 2025 00:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90A2C1FC8;
+	Sat, 17 May 2025 00:04:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Vq67Ar2w"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="LOkEsCTQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2080.outbound.protection.outlook.com [40.107.94.80])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7633E23DE
-	for <stable@vger.kernel.org>; Sat, 17 May 2025 00:02:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747440158; cv=none; b=TBv1u7csPPhImFvsk+B5izrBpHqyMB1zuSBex1aUpJfqf7o6sYrtgq5UhiSgYw+Xy+K2We5SXBI7Aoq2D9GcZyP8q4vK3mamsevQ212mDUXQ8tfDX2JUXyMm8AbOZPD49lt//AtNCpYDXd3ps7F75meyTXnOisniVyyJ32e9ieM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747440158; c=relaxed/simple;
-	bh=hj4NBIy6PDBMM89iBJXNhfY9VdfzxcGfKhmQ6x8wfE8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T4CC3eBcguc0wxXjPOpa+ucitl2ud01fKGXEBWzsIv0PHwqzDJGR3W3SYn/1x9dANqdrnyWY+cjdPSWFCiei0QtioQ7rC5kPTO9rklOco46cJ6KN1N8IBOcR6WCFI1wmBplE/D+kXDYWntqTeGVt5IUIrJJOj7gW+tROmKe79G8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Vq67Ar2w; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747440156; x=1778976156;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=hj4NBIy6PDBMM89iBJXNhfY9VdfzxcGfKhmQ6x8wfE8=;
-  b=Vq67Ar2wlj6F1dW/ZQQlPQ9WEAq4aCtWUDJbbHfQFb8wX1IsxP8nVcmO
-   5ytD3Wct5LX8+nFemd93tJrPmcOC5Wo+y6c2+JRBlaPnlaCeg+ZFzFtw7
-   RhFO3KZx6w5YtoVR2BSE7+GitwFGHti9XyvdDugRXjqIRBSZUOq8BUHgo
-   xAomc5uRO9vu/JexnZP7/qfiIda59FA6LFJyLiZEkK8ElAElJrSjhvrtf
-   TAz9ca4va8hT1T8Yof11eAm45u42EMYf0kp/e2pzHp+DmjSsFR5Qz7ERD
-   iKTwqs4YF+M0tc2Zzr/eFsQBXVkHqnNesdpyufb8BO5l3ynmBL9BNLe2b
-   A==;
-X-CSE-ConnectionGUID: z25+mI43QHq5f7RNimm94w==
-X-CSE-MsgGUID: 5/fNksm+Qvq20lEarJ23PQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11435"; a="49531233"
-X-IronPort-AV: E=Sophos;i="6.15,295,1739865600"; 
-   d="scan'208";a="49531233"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2025 17:02:35 -0700
-X-CSE-ConnectionGUID: SsxfYAP9S52HkL2+z6ASdA==
-X-CSE-MsgGUID: 8oRhCekVRsap8OEj4wTdcg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,295,1739865600"; 
-   d="scan'208";a="143705718"
-Received: from yzhou16-mobl1.amr.corp.intel.com (HELO desk) ([10.125.146.16])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2025 17:02:35 -0700
-Date: Fri, 16 May 2025 17:02:35 -0700
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: stable@vger.kernel.org
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
-	Alexandre Chartre <alexandre.chartre@oracle.com>
-Subject: [PATCH 5.15 v3 12/16] x86/its: Add "vmexit" option to skip
- mitigation on some CPUs
-Message-ID: <20250516-its-5-15-v3-12-16fcdaaea544@linux.intel.com>
-X-Mailer: b4 0.14.2
-References: <20250516-its-5-15-v3-0-16fcdaaea544@linux.intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E60910E0;
+	Sat, 17 May 2025 00:04:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.80
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747440255; cv=fail; b=sAB6D+BW5ODjxvOnrWaIc9pyvVW6frQGne+ByDYhAPMiraVhZUYyHfjL23BaCKrDRB5oI2Ks2r2rNogqg69ABexKvgqYTppTmf41X0P7lP6ZRXRs+uAnelgeQH1STX6RBKyd8LWKZdj94HkNSnyhzb+z6iPXPIFNgmGou9QlIiU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747440255; c=relaxed/simple;
+	bh=sPQvuPLo6pskgYU809kUZXUPulKuuwrVQyGmO7C6yuU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=gakjzTl73N62oJ+gJoDa2xUqxpgzA4VMnm99KpQAkMEBd+vROzTr30DAbS6PLuyO2olJpq2APVHTtXDcKdbbJwx8ziDjwQqWqpE6HXfV4XYeB5XkqxMAaPgM2gnaZE+UCV2kU//3WHfnOdpVVf3VY6ZrvIDVxWrMBagviNf3EYQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=LOkEsCTQ; arc=fail smtp.client-ip=40.107.94.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bXBbbiL6dS2Krkgttg0E/boPA/egQ+NlCXYtwxkxEiwn53eYLEVtveY3qfk+3kP6uv/7IMMn+FWP07ui+yi5E4OwB22qtnpWp+5orIEavCt2G+AHQY+rr7XkukP8iuktLShUsXvvR85SnB2IYyTQrIrnRuNVkFprDh2Rmyep57qpGAzy4TOZSFAmYQxCyEuKuBCvC0iFdPLKLI/cEabOmXakPkZiTaAnwzzmhTPyzc3/74DIBRYrFXskeQDHPkOJpr5xyuosLPLSkuj5X2Z6hrVb5ZgcsHtnrmLmOpXHgBozUWx17iFDukQCb1K8KXuA4rqsjEVeH9fjioXMwWUTxw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=WJ2i0mHY1ti9CPnp+P9KZk5uZcidOzWjM1GRVyl/AsI=;
+ b=PPr+UnsN4KKh2a9TlrqSrYzaZrkoz6CSPHdIQJ/lUcPg07DC3xEtNqrx6IuGdAWZ/uXCMKeg3Hwp5gjpcQvSld44ZKzDhCrwglQY2w5JzwbNNQHF5TlSsu1nQZepjqAi6+GFjbYorrsX4yAxrU38MvAcwnwFhUCaMgGhrAywhuRW5DRcPSZdjcNEurxcUyFvb/hLdFC3ALvhVvrLQ69TT640kwfLwe/fcQZZBf9wgoZOtZMJmrvkwLo9H8RmXPEpuEBWevKqDSIn+yQgLYvsZmDMzwDok5up1RUukOYeJZlA7e+ebW5MTO1EV1WIQa+uo+jz9Vgoa05J7ZSqr/g3Ng==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WJ2i0mHY1ti9CPnp+P9KZk5uZcidOzWjM1GRVyl/AsI=;
+ b=LOkEsCTQIGYdF+VOEt5UajRtASiWqvQRxnJr+jhvMvqyMP5w2sibM5W5/vICCk0DHOArsDUd0qUDAObU366aavNaJffooxQJrg3zg11JZUjjqWaXw29oe28cd6RUQnS8QJ/vxr+oxg/8Wykuct/bCao5uA8xL79sxfiuKo3VzYii7orc68s87qJNZhR9XSMPEMt05dKqxwfcm/9rUEjMx748lu6In7RduIvF16IKXrVCfxoPjrdVVqe56aITx3bn1yPxtkJjCgFGrT+BJGSlUNqpFL57kiZeJR2ugkW7XvRojlEh97wnkjMsdmM6i4QRfw9SmNYQYtWRaqxXwymj7w==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BN5PR12MB9464.namprd12.prod.outlook.com (2603:10b6:408:2ab::10)
+ by DM6PR12MB4434.namprd12.prod.outlook.com (2603:10b6:5:2ad::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.33; Sat, 17 May
+ 2025 00:04:09 +0000
+Received: from BN5PR12MB9464.namprd12.prod.outlook.com
+ ([fe80::e83f:10b6:1259:d000]) by BN5PR12MB9464.namprd12.prod.outlook.com
+ ([fe80::e83f:10b6:1259:d000%4]) with mapi id 15.20.8722.027; Sat, 17 May 2025
+ 00:04:09 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
+ kvm@vger.kernel.org, linux-mm@kvack.org,
+ Christian Borntraeger <borntraeger@linux.ibm.com>,
+ Janosch Frank <frankja@linux.ibm.com>,
+ Claudio Imbrenda <imbrenda@linux.ibm.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>,
+ Sven Schnelle <svens@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+ Matthew Wilcox <willy@infradead.org>,
+ Sebastian Mitterle <smitterl@redhat.com>, stable@vger.kernel.org
+Subject: Re: [PATCH v1 1/3] s390/uv: don't return 0 from make_hva_secure() if
+ the operation was not successful
+Date: Fri, 16 May 2025 20:02:46 -0400
+X-Mailer: MailMate (2.0r6255)
+Message-ID: <818174C5-0FA3-4FA2-880D-FF5C1102B2B1@nvidia.com>
+In-Reply-To: <0454761b-ec54-4cc8-9d01-b783e2e58f9e@redhat.com>
+References: <20250516123946.1648026-1-david@redhat.com>
+ <20250516123946.1648026-2-david@redhat.com>
+ <60DDE99E-E09D-4BD4-AC58-569186E45660@nvidia.com>
+ <0454761b-ec54-4cc8-9d01-b783e2e58f9e@redhat.com>
+Content-Type: text/plain
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: MN2PR20CA0017.namprd20.prod.outlook.com
+ (2603:10b6:208:e8::30) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250516-its-5-15-v3-0-16fcdaaea544@linux.intel.com>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN5PR12MB9464:EE_|DM6PR12MB4434:EE_
+X-MS-Office365-Filtering-Correlation-Id: 67b26675-3b93-48f6-9e95-08dd94d628ba
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?8AEJeHS+FfEMdjudEYfARwiMOm8K7v4ZS5diVfInI15Sym0vY8cYYQ686i1F?=
+ =?us-ascii?Q?6UMwuihbli+Rj8vcPXG59KZQ0wIcUV+djwHt58kEI4gGyI2BDDvzKgDFRboE?=
+ =?us-ascii?Q?6Agkr5EvsN+tth0vBRZv1RRqJY3Qc3CVRhdv8gGyPBL13AfVvaEIbUKps+T1?=
+ =?us-ascii?Q?iYCekWCOqiPk2ZRH7+AFRQTFlz6jRrOE3YGtcjlAGgclcSzRE0NV0LFfDlrz?=
+ =?us-ascii?Q?ap4k5by57fEcHJ4e1UFvctAhDmbMfXI964BHrAUsdPwPLYXKGlzBXFGdUcAH?=
+ =?us-ascii?Q?jlTsxW1qbrh26tGQlPIBEEP7r1htM1jkZbSdskZeR1ha19n4Vsaso0OFS/A4?=
+ =?us-ascii?Q?nQplCH9r2GvS/4/q9TfwG3tBc7aEuqbixMfqLemZHmUcMMqOv3LN4hfYsCI3?=
+ =?us-ascii?Q?HFskCfWhk7kYoDacIGoKX1fEn4MTTIMkvYAfE78bHJsk2xOS8Srtk3xPm6BA?=
+ =?us-ascii?Q?tSEUb42FzAjLudBc1bTH9e61SgaP3U0HRiLaNoYVpBl8b7woJsVWc7DbIgJ3?=
+ =?us-ascii?Q?Fk5eSGecadEN3Tg3pDy2yLphgeLdh5DkRIF/cVIz6OmxTm5lA8UxARvU14iI?=
+ =?us-ascii?Q?v7rfV9nblqY8XG85pJDuj45lgRtR2gGlJWBrIsNNgmLNUm3RckO6rnvFgixD?=
+ =?us-ascii?Q?pu0WkRaUBsAhm5V+DspEjHh5o+gFe/ee47g3AVbRIYB/aA8+VoXqhKuBGlNA?=
+ =?us-ascii?Q?0R7dtYnijva/YHK96aox6lbGjC/WcJkS0jsVthR2fvbuAc5yZhpT2Rze02o0?=
+ =?us-ascii?Q?z0tV8tQ+vSaJQqxlk0JbkBwaQTR3BBBTNQV6GE52NgdBtr9PmVvAL8M3bWft?=
+ =?us-ascii?Q?muj9nZdFUgbV46OmOK/rmboBSvef6kT/WIQz0gGN5A26uv1D+/NMPFB7QsX8?=
+ =?us-ascii?Q?YaMprsik5UuPxazXsLWUnoMc81z1Mc40QLWms0cCOzve72BnhKU8wTg8/OCu?=
+ =?us-ascii?Q?spNIrfvGHqYFUSQFy3qeX8bJEwWSYL5dAMFiVX8hAnZYNwuDTH9xz4tlANHS?=
+ =?us-ascii?Q?PyvXYMcNoNRAKWGlpMbgBkpWP111c2BnaGRdBizO7sg7Jw6EW6mJlXtMAyoJ?=
+ =?us-ascii?Q?lVkQNGiXbyxqx+uXukhg/qQsmk70knWEua1p3M5L+8DmMF8F1nwNH4FxrcRZ?=
+ =?us-ascii?Q?P1CP0iJ/js/saJqfI2x8ZK2MxMKjyWzu2HgTq//4Vw6K8lGQfDkd15p6jzoA?=
+ =?us-ascii?Q?oYiezBsu7fA6ew40rIg/xBwG0CLDbVZrJaL2L49qtkqdj/6GFLTpNkRAvIZ3?=
+ =?us-ascii?Q?WbZWHvpEhUblytpJg/u0nVZvL+wEo8y5J79xd6PBJTXp9ATC8LyMAfD2zDTp?=
+ =?us-ascii?Q?Q1eANoa167YE8vltsx1nIOFf88fmHcsCcq5oDAnEzQIFTkGviVCBR207JrMp?=
+ =?us-ascii?Q?8O7lWkNEMo3mqEO3wBFfMxrVclcKmF9WzbB80X1ZAQkyjLsPQE6WB/u0xjmJ?=
+ =?us-ascii?Q?zlRMTtlilvo=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN5PR12MB9464.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?CA8K+3D/Ex7ZePCJKgEVGgnDH9VjpZZK3sqVt5FZqLXvaK3DHxqmf5L2hErZ?=
+ =?us-ascii?Q?pHoqtyTuDsHsvmTYB7d8LzVCR+7DDcRb2boT0Bh1q+mpay8fUdKrdcxy37Tx?=
+ =?us-ascii?Q?zyAi710H9MYmCSczaxa/maLyVCt+JZgwlf+71HQucNi0ZyjiytSGUeCdNnJn?=
+ =?us-ascii?Q?rgI147xH3TxgXQVdpwb6K8uYBMiNUoY0q9KTptev15bZkK7SKfG/UvE+Esb1?=
+ =?us-ascii?Q?RcQHJBS4Rs8BAQmerOruYqs2DD26R4OxaFjGlNOXbuLmpDvkYGSx65JSTlOv?=
+ =?us-ascii?Q?UCZJUcmnNgIo31ppAcUz43JuuGBc9lBymgLrcTFwqbrQywvrG39HHzy9aoDZ?=
+ =?us-ascii?Q?wDyNk1Yu6UkgHS7Y3qKZxeR6Ki+hvUyJBWqFiFv1Rju3ZseSLoeVBDFyFutj?=
+ =?us-ascii?Q?qq9ZHPo7K644s05CrflLavFAQUgySCVMUwIZnnJ2XlYuUwSBbTzYekrRydVH?=
+ =?us-ascii?Q?3iBV1TvPR6wupZb09jslbKDuiv/1RqB9wVh0hM9I7IqH1a9d14N2hhjOybW1?=
+ =?us-ascii?Q?8vFiryrcduMe9x6B6gCUyyCLRzLE6OHIodBiSHMgne3uLZgwKKeXz2vIkxky?=
+ =?us-ascii?Q?ED7Q4vRBWZsD7SBD2591JOkdXmdjnRoqDOKKodoa/m9QCjvvKm8e5dVjtgdl?=
+ =?us-ascii?Q?G62Y2IwYycQByfcxim3EinRADbPWShVa1xiqzgktjLVDacnunyKdVYo1ebMi?=
+ =?us-ascii?Q?/lEFFKpZIk7AbTG18iHCgbayoe0JB/OMBVWZ+Wm0HWh+b99mBTurJtFp+brp?=
+ =?us-ascii?Q?l/om6tkqHTVBU1ak4gYyk7iD02nEA5OCe3DCiR91ZaofARBPRGeucuZC0hV6?=
+ =?us-ascii?Q?U0uQFvX1WmILMKpmzg41WqZDaCyuLhypz6KZI0obnOREUgE7IzHQiXoTSjrt?=
+ =?us-ascii?Q?P9hVb6r+dozMyeyfRQMAfIXjaoCPgt/kZLNOFIdnuutNetHJcg8wP4c3JG3G?=
+ =?us-ascii?Q?pY9S/kHqfOg+hWc0FURx/2o4helGDrHJTXWQAZDyUg0SLHIGafdyYp7n3KUr?=
+ =?us-ascii?Q?nY1kwUC3XEwcfua0XLnMm8hA69mIumIoJRCN1qk3LnyeVRObLJZc8Lmqwj7/?=
+ =?us-ascii?Q?OnZF/EZFOEjwsHSgiBDje5PK3qs4gPYShcH1XhjOoAO78d7CI6FBbsDHRzlg?=
+ =?us-ascii?Q?WkUNFRMbO90YDLue1NVWjFUBsBfJ1HE3p9Q/epgSQo2svXAIxoxmcrf2Qido?=
+ =?us-ascii?Q?KGuvTGRO3KDAQs1eZrUiDDCK8LtX6B7eZVzyprq/GvyJ1yCLWpt49fSK4CSy?=
+ =?us-ascii?Q?gWe+8rXVd7F83ZBqsdQ2M06gOeR5Z+LdWJn1zZWiURDOUWQ8VE7Hdoj54rQC?=
+ =?us-ascii?Q?FnzwQQ1OKV/2H7jsLSMxXgmNBZJ0+q8u6lfCRJMkziJPQT84Yde8tfEE/NBJ?=
+ =?us-ascii?Q?pe1pfaBkxEnLl3cQpfIKYTn2Pw0oXp7h8HYnDb/h+4iX18Ov06ucm3UZSO3G?=
+ =?us-ascii?Q?hWNAtCeKmED7Ajp3wr3hnO/Pmhurg4dNKNdkn2tekrqqX0XXcxrBQd8WT6Iq?=
+ =?us-ascii?Q?rNUa2dHW/zC7zn2ScrA6i+G2f9V8Gn0dvHJ7DZgYV6c57VlUZFZ0vk5f9MDe?=
+ =?us-ascii?Q?HmCA70Cnfg3dALGsgmGNoubn+vPtjg2ScCmEaU7N?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 67b26675-3b93-48f6-9e95-08dd94d628ba
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 May 2025 00:02:48.5395
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +0oCx87W+UOzUDvWDLMpcWybDJbsqS6qcn1dz71Bl3wIUMiWoKwA3va8zLwQqukU
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4434
 
-commit 2665281a07e19550944e8354a2024635a7b2714a upstream.
+On 16 May 2025, at 17:20, David Hildenbrand wrote:
 
-Ice Lake generation CPUs are not affected by guest/host isolation part of
-ITS. If a user is only concerned about KVM guests, they can now choose a
-new cmdline option "vmexit" that will not deploy the ITS mitigation when
-CPU is not affected by guest/host isolation. This saves the performance
-overhead of ITS mitigation on Ice Lake gen CPUs.
+> On 16.05.25 23:08, Zi Yan wrote:
+>> On 16 May 2025, at 8:39, David Hildenbrand wrote:
+>>
+>>> If s390_wiggle_split_folio() returns 0 because splitting a large foli=
+o
+>>> succeeded, we will return 0 from make_hva_secure() even though a retr=
+y
+>>> is required. Return -EAGAIN in that case.
+>>>
+>>> Otherwise, we'll return 0 from gmap_make_secure(), and consequently f=
+rom
+>>> unpack_one(). In kvm_s390_pv_unpack(), we assume that unpacking
+>>> succeeded and skip unpacking this page. Later on, we run into issues
+>>> and fail booting the VM.
+>>>
+>>> So far, this issue was only observed with follow-up patches where we
+>>> split large pagecache XFS folios. Maybe it can also be triggered with=
 
-When "vmexit" option selected, if the CPU is affected by ITS guest/host
-isolation, the default ITS mitigation is deployed.
+>>> shmem?
+>>>
+>>> We'll cleanup s390_wiggle_split_folio() a bit next, to also return 0
+>>> if no split was required.
+>>>
+>>> Fixes: d8dfda5af0be ("KVM: s390: pv: fix race when making a page secu=
+re")
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: David Hildenbrand <david@redhat.com>
+>>> ---
+>>>   arch/s390/kernel/uv.c | 5 ++++-
+>>>   1 file changed, 4 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/arch/s390/kernel/uv.c b/arch/s390/kernel/uv.c
+>>> index 9a5d5be8acf41..2cc3b599c7fe3 100644
+>>> --- a/arch/s390/kernel/uv.c
+>>> +++ b/arch/s390/kernel/uv.c
+>>> @@ -393,8 +393,11 @@ int make_hva_secure(struct mm_struct *mm, unsign=
+ed long hva, struct uv_cb_header
+>>>   	folio_walk_end(&fw, vma);
+>>>   	mmap_read_unlock(mm);
+>>>
+>>> -	if (rc =3D=3D -E2BIG || rc =3D=3D -EBUSY)
+>>> +	if (rc =3D=3D -E2BIG || rc =3D=3D -EBUSY) {
+>>>   		rc =3D s390_wiggle_split_folio(mm, folio, rc =3D=3D -E2BIG);
+>>> +		if (!rc)
+>>> +			rc =3D -EAGAIN;
+>>
+>> Why not just folio_put() then jump back to the beginning of the
+>> function to do the retry? This could avoid going all the way back
+>> to kvm_s390_unpack().
+>
+> Hi, thanks for the review.
+>
+> We had a pretty optimized version with such tricks before Claudio refac=
+tored it in:
+>
+> commit 5cbe24350b7d8ef6d466a37d56b07ae643c622ca
+> Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
+> Date:   Thu Jan 23 15:46:17 2025 +0100
+>
+>     KVM: s390: move pv gmap functions into kvm
+>
+>
+>
+> In particular, one relevant hunk was:
+>
+> -       switch (rc) {
+> -       case -E2BIG:
+> -               folio_lock(folio);
+> -               rc =3D split_folio(folio);
+> -               folio_unlock(folio);
+> -               folio_put(folio);
+> -
+> -               switch (rc) {
+> -               case 0:
+> -                       /* Splitting succeeded, try again immediately. =
+*/
+> -                       goto again;
+> -               case -EAGAIN:
+> -                       /* Additional folio references. */
+> -                       if (drain_lru(&drain_lru_called))
+> -                               goto again;
+> -                       return -EAGAIN;
+>
+>
+>
+> Claudio probably had a good reason to rewrite the code -- and I hope we=
+'ll be able to rip all of that out soon, so ...
+>
+> ... minimal changes until then :)
 
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
----
- Documentation/admin-guide/kernel-parameters.txt |  2 ++
- arch/x86/include/asm/cpufeatures.h              |  1 +
- arch/x86/kernel/cpu/bugs.c                      | 11 +++++++++++
- arch/x86/kernel/cpu/common.c                    | 19 ++++++++++++-------
- 4 files changed, 26 insertions(+), 7 deletions(-)
+Got it. Acked-by: Zi Yan <ziy@nvidia.com>
 
-diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
-index e3619e868c884ca4bd786d6049d407c28e0fd994..4bc5d8c97d097b3ee6b8ff99f3958429f0352e59 100644
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -1934,6 +1934,8 @@
- 			off:    Disable mitigation.
- 			force:	Force the ITS bug and deploy default
- 				mitigation.
-+			vmexit: Only deploy mitigation if CPU is affected by
-+				guest/host isolation part of ITS.
- 
- 			For details see:
- 			Documentation/admin-guide/hw-vuln/indirect-target-selection.rst
-diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index a268028a6ac7b71e6968356f622663c561d65153..e2bf1cba02cdde7458f59d1e3e03075a339517af 100644
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -485,4 +485,5 @@
- #define X86_BUG_BHI			X86_BUG(1*32 + 3) /* CPU is affected by Branch History Injection */
- #define X86_BUG_IBPB_NO_RET		X86_BUG(1*32 + 4) /* "ibpb_no_ret" IBPB omits return target predictions */
- #define X86_BUG_ITS			X86_BUG(1*32 + 5) /* CPU is affected by Indirect Target Selection */
-+#define X86_BUG_ITS_NATIVE_ONLY		X86_BUG(1*32 + 6) /* CPU is affected by ITS, VMX is not affected */
- #endif /* _ASM_X86_CPUFEATURES_H */
-diff --git a/arch/x86/kernel/cpu/bugs.c b/arch/x86/kernel/cpu/bugs.c
-index 3cb2a5b4230c9f084dfb922ca3f3ee42285ff8b5..63af3d73d19e5d83b16fef8c3fc9aa6e13dda832 100644
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1158,15 +1158,18 @@ static void __init retbleed_select_mitigation(void)
- enum its_mitigation_cmd {
- 	ITS_CMD_OFF,
- 	ITS_CMD_ON,
-+	ITS_CMD_VMEXIT,
- };
- 
- enum its_mitigation {
- 	ITS_MITIGATION_OFF,
-+	ITS_MITIGATION_VMEXIT_ONLY,
- 	ITS_MITIGATION_ALIGNED_THUNKS,
- };
- 
- static const char * const its_strings[] = {
- 	[ITS_MITIGATION_OFF]			= "Vulnerable",
-+	[ITS_MITIGATION_VMEXIT_ONLY]		= "Mitigation: Vulnerable, KVM: Not affected",
- 	[ITS_MITIGATION_ALIGNED_THUNKS]		= "Mitigation: Aligned branch/return thunks",
- };
- 
-@@ -1192,6 +1195,8 @@ static int __init its_parse_cmdline(char *str)
- 	} else if (!strcmp(str, "force")) {
- 		its_cmd = ITS_CMD_ON;
- 		setup_force_cpu_bug(X86_BUG_ITS);
-+	} else if (!strcmp(str, "vmexit")) {
-+		its_cmd = ITS_CMD_VMEXIT;
- 	} else {
- 		pr_err("Ignoring unknown indirect_target_selection option (%s).", str);
- 	}
-@@ -1239,6 +1244,12 @@ static void __init its_select_mitigation(void)
- 	case ITS_CMD_OFF:
- 		its_mitigation = ITS_MITIGATION_OFF;
- 		break;
-+	case ITS_CMD_VMEXIT:
-+		if (boot_cpu_has_bug(X86_BUG_ITS_NATIVE_ONLY)) {
-+			its_mitigation = ITS_MITIGATION_VMEXIT_ONLY;
-+			goto out;
-+		}
-+		fallthrough;
- 	case ITS_CMD_ON:
- 		its_mitigation = ITS_MITIGATION_ALIGNED_THUNKS;
- 		if (!boot_cpu_has(X86_FEATURE_RETPOLINE))
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index 541114a2b93533f2768097fa126fa6b19b375dfd..dc15568e14d935026a8eecc5efc57aaed78699d5 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -1143,6 +1143,8 @@ static const __initconst struct x86_cpu_id cpu_vuln_whitelist[] = {
- #define RFDS		BIT(7)
- /* CPU is affected by Indirect Target Selection */
- #define ITS		BIT(8)
-+/* CPU is affected by Indirect Target Selection, but guest-host isolation is not affected */
-+#define ITS_NATIVE_ONLY	BIT(9)
- 
- static const struct x86_cpu_id cpu_vuln_blacklist[] __initconst = {
- 	VULNBL_INTEL_STEPPINGS(IVYBRIDGE,	X86_STEPPING_ANY,		SRBDS),
-@@ -1163,16 +1165,16 @@ static const struct x86_cpu_id cpu_vuln_blacklist[] __initconst = {
- 	VULNBL_INTEL_STEPPINGS(KABYLAKE,	X86_STEPPINGS(0x0, 0xc),	MMIO | RETBLEED | GDS | SRBDS),
- 	VULNBL_INTEL_STEPPINGS(KABYLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS | ITS),
- 	VULNBL_INTEL_STEPPINGS(CANNONLAKE_L,	X86_STEPPING_ANY,		RETBLEED),
--	VULNBL_INTEL_STEPPINGS(ICELAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS | ITS),
--	VULNBL_INTEL_STEPPINGS(ICELAKE_D,	X86_STEPPING_ANY,		MMIO | GDS | ITS),
--	VULNBL_INTEL_STEPPINGS(ICELAKE_X,	X86_STEPPING_ANY,		MMIO | GDS | ITS),
-+	VULNBL_INTEL_STEPPINGS(ICELAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS | ITS | ITS_NATIVE_ONLY),
-+	VULNBL_INTEL_STEPPINGS(ICELAKE_D,	X86_STEPPING_ANY,		MMIO | GDS | ITS | ITS_NATIVE_ONLY),
-+	VULNBL_INTEL_STEPPINGS(ICELAKE_X,	X86_STEPPING_ANY,		MMIO | GDS | ITS | ITS_NATIVE_ONLY),
- 	VULNBL_INTEL_STEPPINGS(COMETLAKE,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS | ITS),
- 	VULNBL_INTEL_STEPPINGS(COMETLAKE_L,	X86_STEPPINGS(0x0, 0x0),	MMIO | RETBLEED | ITS),
- 	VULNBL_INTEL_STEPPINGS(COMETLAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS | ITS),
--	VULNBL_INTEL_STEPPINGS(TIGERLAKE_L,	X86_STEPPING_ANY,		GDS | ITS),
--	VULNBL_INTEL_STEPPINGS(TIGERLAKE,	X86_STEPPING_ANY,		GDS | ITS),
-+	VULNBL_INTEL_STEPPINGS(TIGERLAKE_L,	X86_STEPPING_ANY,		GDS | ITS | ITS_NATIVE_ONLY),
-+	VULNBL_INTEL_STEPPINGS(TIGERLAKE,	X86_STEPPING_ANY,		GDS | ITS | ITS_NATIVE_ONLY),
- 	VULNBL_INTEL_STEPPINGS(LAKEFIELD,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED),
--	VULNBL_INTEL_STEPPINGS(ROCKETLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | ITS),
-+	VULNBL_INTEL_STEPPINGS(ROCKETLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | ITS | ITS_NATIVE_ONLY),
- 	VULNBL_INTEL_STEPPINGS(ALDERLAKE,	X86_STEPPING_ANY,		RFDS),
- 	VULNBL_INTEL_STEPPINGS(ALDERLAKE_L,	X86_STEPPING_ANY,		RFDS),
- 	VULNBL_INTEL_STEPPINGS(RAPTORLAKE,	X86_STEPPING_ANY,		RFDS),
-@@ -1389,8 +1391,11 @@ static void __init cpu_set_bug_bits(struct cpuinfo_x86 *c)
- 	if (cpu_has(c, X86_FEATURE_AMD_IBPB) && !cpu_has(c, X86_FEATURE_AMD_IBPB_RET))
- 		setup_force_cpu_bug(X86_BUG_IBPB_NO_RET);
- 
--	if (vulnerable_to_its(x86_arch_cap_msr))
-+	if (vulnerable_to_its(x86_arch_cap_msr)) {
- 		setup_force_cpu_bug(X86_BUG_ITS);
-+		if (cpu_matches(cpu_vuln_blacklist, ITS_NATIVE_ONLY))
-+			setup_force_cpu_bug(X86_BUG_ITS_NATIVE_ONLY);
-+	}
- 
- 	if (cpu_matches(cpu_vuln_whitelist, NO_MELTDOWN))
- 		return;
-
--- 
-2.34.1
-
-
+--
+Best Regards,
+Yan, Zi
 
