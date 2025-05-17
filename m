@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-144682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BDA4ABAA3A
-	for <lists+stable@lfdr.de>; Sat, 17 May 2025 15:08:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 192F9ABAA3B
+	for <lists+stable@lfdr.de>; Sat, 17 May 2025 15:08:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0E9C74A4F5B
-	for <lists+stable@lfdr.de>; Sat, 17 May 2025 13:08:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DC2AE1B63C64
+	for <lists+stable@lfdr.de>; Sat, 17 May 2025 13:09:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3482D1E1A3B;
-	Sat, 17 May 2025 13:08:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1825A1F4717;
+	Sat, 17 May 2025 13:08:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nY968e5J"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aIfEYZkN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E798D35979
-	for <stable@vger.kernel.org>; Sat, 17 May 2025 13:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBB3A35979
+	for <stable@vger.kernel.org>; Sat, 17 May 2025 13:08:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747487323; cv=none; b=hQ1IW05pb69Q9auo/dIPQ4rVjWJ97vzdIcQ3/4C55V1+DCcVm28zbRNB40TTPOESE0OctVOohwiyAtumbhkoEFgSAxqcpLWq5EuAkGh4NLuHNSuKEu0NLeZ9VWG3By1ZB50PWPy6s/75rIJ25m3t6NVHCo9KxXRaaaNCov4Nh78=
+	t=1747487324; cv=none; b=aLG/QuF4caBP9yyIH0myM+8Z4I7y2d78Sm1Ga0cwmxixO+7dsCaW7v25VW4k6yAFmKfzrw7Y47QviSkk1HLIwniNCYCaE+51L59y3SoNSM96DVjLYlHzShldvwxlY76Y6dPaPPWBmet97I/8z8nhIfuT+nxZGwRspN9ASC3LtUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747487323; c=relaxed/simple;
-	bh=J8ZPuvPK8PKfzHdoHbUuitfSCiI0vuaVn3ufB2q6N90=;
+	s=arc-20240116; t=1747487324; c=relaxed/simple;
+	bh=UXu/LOyRWe9Y9sO4FKQQi0BLc/Aiyo1FWHBAvYlb4y8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C67Rr7EhTndRsXFUWhdh3iwELRpviv5dz1MdWdLYZ4GLMc8foGXADY1LeO3J5YEuNhdF2BeRCQ+Pj5jTNf6oH79cEWTyqI8wP7JwdA4dQSnpTVt+v+VZum5YWrjXNgSm4lj6Tw99b7tslurPeVXxBA1IsK3jQlTegRr0GBRGR2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nY968e5J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57C6BC4CEE3;
-	Sat, 17 May 2025 13:08:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jII6RCzKJEA+jXI+k/dHs6FkiztoQ0ok+Ms34e0Ad1pft7seQVdQDihaRmBOMaemPnmdZRfDgFFtC1yFSUX4v7QIRcyALy2c0/FmH66YzfA9HXsqwoPuTxjespwpmurz+ki7xV/loGPY1b1EqEEEKZI2AGVMsmoIxSofPDB5ovI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aIfEYZkN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 415C3C4CEE3;
+	Sat, 17 May 2025 13:08:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747487322;
-	bh=J8ZPuvPK8PKfzHdoHbUuitfSCiI0vuaVn3ufB2q6N90=;
+	s=k20201202; t=1747487324;
+	bh=UXu/LOyRWe9Y9sO4FKQQi0BLc/Aiyo1FWHBAvYlb4y8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nY968e5JdEHwuUzk5U7gtq0L0NMf/bgDwR0YbrOKoViKZlF8cdqhz6JPBEk0l9RBc
-	 spOq324cug1b25ZiSGWJfnZNz7THbrEex22FWFWR1ZqFn1dILH30KPw6ieC2uLjfB9
-	 GSUkAeLAA60REDs9QeAj6suSOu1x2hu15vob64jEGOpWyKt3xsSG9JzW02Lk+UQBvP
-	 R95MF7dOQ4uHJrx9rWNEfJy0eOtWwftJebTbLarJFBK9Fqf8wG5j76IC+9ye0Y65R9
-	 vBTJfR19SF8/FO8YNhauEkPvkIP8W8krtrsMdBGwirfuDL/uL0Q3l4BxDkdCDtJykz
-	 Q5JDPZwLKP5wA==
+	b=aIfEYZkNwnF8M3SOtIlzeL+XAsmkh++7kCRJODdFjfEwXbgaA1amR6Bjb9IHFZnEW
+	 /jeVBxQzMSzAyBcsGSW2uf16vhDwhE3Ezy4+oQjbXUf5zJ5DcFqpU2AW7uCRVF6enW
+	 i/oFjgvP0+bR1MNukuoz4u75bpW2beznLIJoEDEmbmb3la32GO4+SBzSPLYF3A4USW
+	 0ZHlecIS8seBrYKr6MwHpEZOImxkJdDJUW5M57HBLumbk0BkJQMeoSCAxQBrxSpo6Z
+	 gfgOomPNpUf08JExW00V5UR+yF7pPX5wLhtXTv+uE1qyMfwpZAM8KVD1K8ddvzAXVe
+	 KL6nx2o+/hcoA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15 v3 11/16] x86/its: Enable Indirect Target Selection mitigation
-Date: Sat, 17 May 2025 09:08:41 -0400
-Message-Id: <20250516220042-03410cef69eea03c@stable.kernel.org>
+Subject: Re: [PATCH 5.15 v3 10/16] x86/its: Add support for ITS-safe return thunk
+Date: Sat, 17 May 2025 09:08:43 -0400
+Message-Id: <20250516215643-6e77207da7b569a8@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250516-its-5-15-v3-11-16fcdaaea544@linux.intel.com>
+In-Reply-To:  <20250516-its-5-15-v3-10-16fcdaaea544@linux.intel.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,189 +67,128 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: f4818881c47fd91fcb6d62373c57c7844e3de1c0
+The upstream commit SHA1 provided is correct: a75bf27fe41abe658c53276a0c486c4bf9adecfc
 
 Status in newer kernel trees:
-6.14.y | Present (different SHA1: 35311149d329)
-6.12.y | Present (different SHA1: 6968bef67f0f)
-6.6.y | Present (different SHA1: be8e627b89f4)
-6.1.y | Present (different SHA1: fb02629ab89d)
+6.14.y | Present (different SHA1: f9a449a04ad6)
+6.12.y | Present (different SHA1: 22d1efbb1e99)
+6.6.y | Present (different SHA1: 2bacac79dd22)
+6.1.y | Present (different SHA1: e1d254d4a267)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  f4818881c47fd ! 1:  1a74f28934512 x86/its: Enable Indirect Target Selection mitigation
+1:  a75bf27fe41ab ! 1:  335c313faf43f x86/its: Add support for ITS-safe return thunk
     @@ Metadata
       ## Commit message ##
-         x86/its: Enable Indirect Target Selection mitigation
+         x86/its: Add support for ITS-safe return thunk
      
-    +    commit f4818881c47fd91fcb6d62373c57c7844e3de1c0 upstream.
+    +    commit a75bf27fe41abe658c53276a0c486c4bf9adecfc upstream.
     +
-         Indirect Target Selection (ITS) is a bug in some pre-ADL Intel CPUs with
-         eIBRS. It affects prediction of indirect branch and RETs in the
-         lower half of cacheline. Due to ITS such branches may get wrongly predicted
-    @@ Documentation/admin-guide/kernel-parameters.txt
-      			Format: <full_path>
-      			Run specified binary instead of /sbin/init as init
-     @@
-    + 				improves system performance, but it may also
-      				expose users to several CPU vulnerabilities.
-    - 				Equivalent to: if nokaslr then kpti=0 [ARM64]
-    - 					       gather_data_sampling=off [X86]
-    + 				Equivalent to: gather_data_sampling=off [X86]
-     +					       indirect_target_selection=off [X86]
-    + 					       kpti=0 [ARM64]
-      					       kvm.nx_huge_pages=off [X86]
-      					       l1tf=off [X86]
-    - 					       mds=off [X86]
+         RETs in the lower half of cacheline may be affected by ITS bug,
+         specifically when the RSB-underflows. Use ITS-safe return thunk for such
+         RETs.
+    @@ Commit message
      
-      ## arch/x86/kernel/cpu/bugs.c ##
-     @@ arch/x86/kernel/cpu/bugs.c: static void __init srbds_select_mitigation(void);
-      static void __init l1d_flush_select_mitigation(void);
-    - static void __init srso_select_mitigation(void);
-      static void __init gds_select_mitigation(void);
-    + static void __init srso_select_mitigation(void);
-     +static void __init its_select_mitigation(void);
+         - RET in retpoline sequence does not need to be patched, because the
+           sequence itself fills an RSB before RET.
+    -    - RET in Call Depth Tracking (CDT) thunks __x86_indirect_{call|jump}_thunk
+    -      and call_depth_return_thunk are not patched because CDT by design
+    -      prevents RSB-underflow.
+         - RETs in .init section are not reachable after init.
+         - RETs that are explicitly marked safe with ANNOTATE_UNRET_SAFE.
+     
+    @@ Commit message
+         Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
+     
+      ## arch/x86/include/asm/alternative.h ##
+    -@@ arch/x86/include/asm/alternative.h: static __always_inline int x86_call_depth_emit_accounting(u8 **pprog,
+    - }
+    - #endif
+    +@@ arch/x86/include/asm/alternative.h: extern void apply_returns(s32 *start, s32 *end);
+    + 
+    + struct module;
       
-      /* The base value of the SPEC_CTRL MSR without task-specific bits set */
-      u64 x86_spec_ctrl_base;
-     @@ arch/x86/kernel/cpu/bugs.c: static DEFINE_MUTEX(spec_ctrl_mutex);
-      
-    - void (*x86_return_thunk)(void) __ro_after_init = __x86_return_thunk;
-    + void (*x86_return_thunk)(void) __ro_after_init = &__x86_return_thunk;
-      
-     +static void __init set_return_thunk(void *thunk)
-     +{
-    @@ arch/x86/kernel/cpu/bugs.c: void __init cpu_select_mitigations(void)
-      
-      /*
-     @@ arch/x86/kernel/cpu/bugs.c: static void __init retbleed_select_mitigation(void)
-    - 		setup_force_cpu_cap(X86_FEATURE_RETHUNK);
-      		setup_force_cpu_cap(X86_FEATURE_UNRET);
-      
-    --		x86_return_thunk = retbleed_return_thunk;
-    -+		set_return_thunk(retbleed_return_thunk);
-    + 		if (IS_ENABLED(CONFIG_RETHUNK))
-    +-			x86_return_thunk = retbleed_return_thunk;
-    ++			set_return_thunk(retbleed_return_thunk);
-      
-      		if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD &&
-      		    boot_cpu_data.x86_vendor != X86_VENDOR_HYGON)
-    -@@ arch/x86/kernel/cpu/bugs.c: static void __init retbleed_select_mitigation(void)
-    - 		setup_force_cpu_cap(X86_FEATURE_RETHUNK);
-    - 		setup_force_cpu_cap(X86_FEATURE_CALL_DEPTH);
-    - 
-    --		x86_return_thunk = call_depth_return_thunk;
-    -+		set_return_thunk(call_depth_return_thunk);
-    - 		break;
-    - 
-    - 	default:
-     @@ arch/x86/kernel/cpu/bugs.c: static void __init retbleed_select_mitigation(void)
-      	pr_info("%s\n", retbleed_strings[retbleed_mitigation]);
-      }
-    @@ arch/x86/kernel/cpu/bugs.c: static void __init retbleed_select_mitigation(void)
-     +enum its_mitigation {
-     +	ITS_MITIGATION_OFF,
-     +	ITS_MITIGATION_ALIGNED_THUNKS,
-    -+	ITS_MITIGATION_RETPOLINE_STUFF,
-     +};
-     +
-     +static const char * const its_strings[] = {
-     +	[ITS_MITIGATION_OFF]			= "Vulnerable",
-     +	[ITS_MITIGATION_ALIGNED_THUNKS]		= "Mitigation: Aligned branch/return thunks",
-    -+	[ITS_MITIGATION_RETPOLINE_STUFF]	= "Mitigation: Retpolines, Stuffing RSB",
-     +};
-     +
-     +static enum its_mitigation its_mitigation __ro_after_init = ITS_MITIGATION_ALIGNED_THUNKS;
-    @@ arch/x86/kernel/cpu/bugs.c: static void __init retbleed_select_mitigation(void)
-     +		return;
-     +	}
-     +
-    -+	/* Retpoline+CDT mitigates ITS, bail out */
-    -+	if (boot_cpu_has(X86_FEATURE_RETPOLINE) &&
-    -+	    boot_cpu_has(X86_FEATURE_CALL_DEPTH)) {
-    -+		its_mitigation = ITS_MITIGATION_RETPOLINE_STUFF;
-    -+		goto out;
-    -+	}
-    -+
-     +	/* Exit early to avoid irrelevant warnings */
-     +	if (cmd == ITS_CMD_OFF) {
-     +		its_mitigation = ITS_MITIGATION_OFF;
-    @@ arch/x86/kernel/cpu/bugs.c: static void __init retbleed_select_mitigation(void)
-     +		its_mitigation = ITS_MITIGATION_OFF;
-     +		goto out;
-     +	}
-    -+	if (!IS_ENABLED(CONFIG_MITIGATION_RETPOLINE) ||
-    -+	    !IS_ENABLED(CONFIG_MITIGATION_RETHUNK)) {
-    ++	if (!IS_ENABLED(CONFIG_RETPOLINE) || !IS_ENABLED(CONFIG_RETHUNK)) {
-     +		pr_err("WARNING: ITS mitigation depends on retpoline and rethunk support\n");
-     +		its_mitigation = ITS_MITIGATION_OFF;
-     +		goto out;
-    @@ arch/x86/kernel/cpu/bugs.c: static void __init srso_select_mitigation(void)
-     -				x86_return_thunk = srso_return_thunk;
-     +				set_return_thunk(srso_return_thunk);
-      			}
-    - 			if (has_microcode)
-    - 				srso_mitigation = SRSO_MITIGATION_SAFE_RET;
-    + 			srso_mitigation = SRSO_MITIGATION_SAFE_RET;
-    + 		} else {
-     @@ arch/x86/kernel/cpu/bugs.c: static ssize_t rfds_show_state(char *buf)
-      	return sysfs_emit(buf, "%s\n", rfds_strings[rfds_mitigation]);
-      }
-    @@ arch/x86/kernel/cpu/bugs.c: ssize_t cpu_show_reg_file_data_sampling(struct devic
-     +	return cpu_show_common(dev, attr, buf, X86_BUG_ITS);
-     +}
+    -+#if defined(CONFIG_MITIGATION_RETHUNK) && defined(CONFIG_OBJTOOL)
+    ++#ifdef CONFIG_RETHUNK
+     +extern bool cpu_wants_rethunk(void);
+     +extern bool cpu_wants_rethunk_at(void *addr);
+     +#else
+    @@ arch/x86/include/asm/alternative.h: static __always_inline int x86_call_depth_em
+      					void *locks, void *locks_end,
+     
+      ## arch/x86/include/asm/nospec-branch.h ##
+    -@@ arch/x86/include/asm/nospec-branch.h: static inline void srso_return_thunk(void) {}
+    - static inline void srso_alias_return_thunk(void) {}
+    +@@ arch/x86/include/asm/nospec-branch.h: extern void __x86_return_thunk(void);
+    + static inline void __x86_return_thunk(void) {}
       #endif
+      
+     +#ifdef CONFIG_MITIGATION_ITS
+    @@ arch/x86/include/asm/nospec-branch.h: static inline void srso_return_thunk(void)
+      ## arch/x86/kernel/alternative.c ##
+     @@ arch/x86/kernel/alternative.c: void __init_or_module noinline apply_retpolines(s32 *start, s32 *end)
+      
+    - #ifdef CONFIG_MITIGATION_RETHUNK
+    + #ifdef CONFIG_RETHUNK
+      
+     +bool cpu_wants_rethunk(void)
+     +{
+    @@ arch/x86/kernel/alternative.c: static int patch_return(void *addr, struct insn *
+      		i = JMP32_INSN_SIZE;
+      		__text_gen_insn(bytes, JMP32_INSN_OPCODE, addr, x86_return_thunk, i);
+      	} else {
+    -@@ arch/x86/kernel/alternative.c: void __init_or_module noinline apply_returns(s32 *start, s32 *end)
+    - {
+    - 	s32 *s;
     - 
-    - void __warn_thunk(void)
+    --	if (cpu_feature_enabled(X86_FEATURE_RETHUNK))
+    -+	if (cpu_wants_rethunk())
+    - 		static_call_force_reinit();
+    - 
+    - 	for (s = start; s < end; s++) {
      
-      ## drivers/base/cpu.c ##
-    -@@ drivers/base/cpu.c: CPU_SHOW_VULN_FALLBACK(spec_rstack_overflow);
-    - CPU_SHOW_VULN_FALLBACK(gds);
-    - CPU_SHOW_VULN_FALLBACK(reg_file_data_sampling);
-    - CPU_SHOW_VULN_FALLBACK(ghostwrite);
-    -+CPU_SHOW_VULN_FALLBACK(indirect_target_selection);
-    +@@ drivers/base/cpu.c: ssize_t __weak cpu_show_reg_file_data_sampling(struct device *dev,
-    + 	return sysfs_emit(buf, "Not affected\n");
-    + }
-      
-    ++ssize_t __weak cpu_show_indirect_target_selection(struct device *dev,
-    ++						  struct device_attribute *attr, char *buf)
-    ++{
-    ++	return sysfs_emit(buf, "Not affected\n");
-    ++}
-    ++
-      static DEVICE_ATTR(meltdown, 0444, cpu_show_meltdown, NULL);
-      static DEVICE_ATTR(spectre_v1, 0444, cpu_show_spectre_v1, NULL);
-    -@@ drivers/base/cpu.c: static DEVICE_ATTR(spec_rstack_overflow, 0444, cpu_show_spec_rstack_overflow, NU
-    + static DEVICE_ATTR(spectre_v2, 0444, cpu_show_spectre_v2, NULL);
-    +@@ drivers/base/cpu.c: static DEVICE_ATTR(retbleed, 0444, cpu_show_retbleed, NULL);
-      static DEVICE_ATTR(gather_data_sampling, 0444, cpu_show_gds, NULL);
-    + static DEVICE_ATTR(spec_rstack_overflow, 0444, cpu_show_spec_rstack_overflow, NULL);
-      static DEVICE_ATTR(reg_file_data_sampling, 0444, cpu_show_reg_file_data_sampling, NULL);
-    - static DEVICE_ATTR(ghostwrite, 0444, cpu_show_ghostwrite, NULL);
-     +static DEVICE_ATTR(indirect_target_selection, 0444, cpu_show_indirect_target_selection, NULL);
-      
-      static struct attribute *cpu_root_vulnerabilities_attrs[] = {
-      	&dev_attr_meltdown.attr,
-     @@ drivers/base/cpu.c: static struct attribute *cpu_root_vulnerabilities_attrs[] = {
-      	&dev_attr_gather_data_sampling.attr,
-    + 	&dev_attr_spec_rstack_overflow.attr,
-      	&dev_attr_reg_file_data_sampling.attr,
-    - 	&dev_attr_ghostwrite.attr,
-     +	&dev_attr_indirect_target_selection.attr,
-      	NULL
-      };
-    @@ drivers/base/cpu.c: static struct attribute *cpu_root_vulnerabilities_attrs[] =
+      ## arch/x86/kernel/ftrace.c ##
+     @@ arch/x86/kernel/ftrace.c: create_trampoline(struct ftrace_ops *ops, unsigned int *tramp_size)
+    @@ arch/x86/kernel/static_call.c: static void __ref __static_call_transform(void *i
+      			code = text_gen_insn(JMP32_INSN_OPCODE, insn, x86_return_thunk);
+      		else
+      			code = &retinsn;
+    -@@ arch/x86/kernel/static_call.c: static void __ref __static_call_transform(void *insn, enum insn_type type,
+    - 	case JCC:
+    - 		if (!func) {
+    - 			func = __static_call_return;
+    --			if (cpu_feature_enabled(X86_FEATURE_RETHUNK))
+    -+			if (cpu_wants_rethunk())
+    - 				func = x86_return_thunk;
+    - 		}
+    - 
      
-      ## include/linux/cpu.h ##
-     @@ include/linux/cpu.h: extern ssize_t cpu_show_gds(struct device *dev,
-    + 			    struct device_attribute *attr, char *buf);
-      extern ssize_t cpu_show_reg_file_data_sampling(struct device *dev,
-      					       struct device_attribute *attr, char *buf);
-    - extern ssize_t cpu_show_ghostwrite(struct device *dev, struct device_attribute *attr, char *buf);
-     +extern ssize_t cpu_show_indirect_target_selection(struct device *dev,
-     +						  struct device_attribute *attr, char *buf);
+      ## arch/x86/kernel/vmlinux.lds.S ##
+    -@@ arch/x86/kernel/vmlinux.lds.S: PROVIDE(__ref_stack_chk_guard = __stack_chk_guard);
+    +@@ arch/x86/kernel/vmlinux.lds.S: INIT_PER_CPU(irq_stack_backing_store);
+      . = ASSERT(__x86_indirect_its_thunk_array == __x86_indirect_its_thunk_rax, "Gap in ITS thunk array");
+      #endif
       
+    @@ arch/x86/kernel/vmlinux.lds.S: PROVIDE(__ref_stack_chk_guard = __stack_chk_guard
+     +
+      #endif /* CONFIG_X86_64 */
+      
+    - /*
+    + #ifdef CONFIG_KEXEC_CORE
+     
+      ## arch/x86/lib/retpoline.S ##
+     @@ arch/x86/lib/retpoline.S: SYM_CODE_START(__x86_indirect_its_thunk_array)
+    @@ arch/x86/lib/retpoline.S: SYM_CODE_START(__x86_indirect_its_thunk_array)
+     +
+     +#endif /* CONFIG_MITIGATION_ITS */
+      
+    - /*
+    -  * This function name is magical and is used by -mfunction-return=thunk-extern
+    + SYM_CODE_START(__x86_return_thunk)
+    + 	UNWIND_HINT_FUNC
+     
+      ## arch/x86/net/bpf_jit_comp.c ##
+     @@ arch/x86/net/bpf_jit_comp.c: static void emit_return(u8 **pprog, u8 *ip)
 ---
 
 Results of testing on various branches:
