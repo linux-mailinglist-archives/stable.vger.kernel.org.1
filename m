@@ -1,137 +1,283 @@
-Return-Path: <stable+bounces-144692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B79D4ABAAFF
-	for <lists+stable@lfdr.de>; Sat, 17 May 2025 18:14:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEE0DABAB43
+	for <lists+stable@lfdr.de>; Sat, 17 May 2025 19:10:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F4C39E0941
-	for <lists+stable@lfdr.de>; Sat, 17 May 2025 16:14:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 657ED4A1E54
+	for <lists+stable@lfdr.de>; Sat, 17 May 2025 17:10:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13A4320A5F5;
-	Sat, 17 May 2025 16:14:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 920AC209F45;
+	Sat, 17 May 2025 17:10:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="N3L2Ud0+"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3DcyE+Ih"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51EE21DDA31;
-	Sat, 17 May 2025 16:14:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C00B1747F
+	for <stable@vger.kernel.org>; Sat, 17 May 2025 17:10:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747498454; cv=none; b=fqdzQdaTJ2OpIPeKVn105WLfz4e0/PoZdjDa00hX9XfsIjkcERmUkUvX9pcIopNocX53n73bqNErUYQB1Bk1wyEij1pp+42lAfHSqxkAtWWwR7W7QRM0KiWDvkIqHx1nmIX8HC5OmWaC9TAhH7ZBKoTuErSMFGMWgeesnXqpXg8=
+	t=1747501803; cv=none; b=D6wFhdIHYoEcvY3Rawepfy/BkWNb+fq/MtNxqQbQlmtXGPwh2zleYSzCJV6gpsnjTiGCCm9W9Fo2InQkLXjFob2v6o+yxHdGKkQg/7iAPcQ0J1yOWXy3syjzKFa03CaAr9FQeonQGKOWXb7P4b10yULxuoKnOVn8Eo2z3ZlrvKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747498454; c=relaxed/simple;
-	bh=ZP5sgS649DCp8pKyp5+gDU2SaHxlpdxEWgLLSkxMhw0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N+oyUC53gC6PnAUjvTOueIAylfy96qXj074VNGrNeu4PJBLSc+5UTdfw+B7nA5qfxMu+jr2Au1Q47p2MMxgYSGCfNpiibX4FbPzu+8RJ1Q9v3TvXEBuvy5CNmwrSQH3++BTzrQ2StfQ5Y/LxQbyCW4Kk4/cdb4sBpJqKQ4s5lfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=N3L2Ud0+; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1127)
-	id C257E20277EE; Sat, 17 May 2025 09:14:07 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C257E20277EE
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1747498447;
-	bh=U+y3WnyyEX1tltnb09bQ7ul6gLocRvrHBtDNvGAY82M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=N3L2Ud0+1DD4PspUqSqSlYmfdpItWZYeEW+jxVjne03Ma0FcuDGa+Y0AnBbsHPXDj
-	 GnhKmQEsBad3jflZYHA7eINIhbRN2yfYBXuUl8NF919R6kqCnV3l/+CUDW2mSALlMS
-	 jIuDn0Q3pR7xDqTuThOgpYvoF4H5BnfRooloQhJU=
-Date: Sat, 17 May 2025 09:14:07 -0700
-From: Saurabh Singh Sengar <ssengar@linux.microsoft.com>
-To: Michael Kelley <mhklinux@outlook.com>
-Cc: Saurabh Singh Sengar <ssengar@microsoft.com>,
-	KY Srinivasan <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	"wei.liu@kernel.org" <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>, "deller@gmx.de" <deller@gmx.de>,
-	"javierm@redhat.com" <javierm@redhat.com>,
-	"arnd@arndb.de" <arnd@arndb.de>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [EXTERNAL] [PATCH 1/1] Drivers: hv: Always select CONFIG_SYSFB
- for Hyper-V guests
-Message-ID: <20250517161407.GA30678@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-References: <20250516235820.15356-1-mhklinux@outlook.com>
- <KUZP153MB144472E667B0C1A421B49285BE92A@KUZP153MB1444.APCP153.PROD.OUTLOOK.COM>
- <SN6PR02MB41575C18EA832E640484A02CD492A@SN6PR02MB4157.namprd02.prod.outlook.com>
+	s=arc-20240116; t=1747501803; c=relaxed/simple;
+	bh=3Q2uQtbS0TwdJLonhG2wzutXgpQ/l87O196qpSBKW74=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=h7rN/36/6zBYHaqUgWC4MSCMJJixuB8KeIlyQhVf7AQj7cm+Q7Urvls7Q6jwB1uTwebSE4Nrkx7n/rISV4ZVUqcLwg0xMmCIGlluliWtX0yL4m2ldS8pukJ7w69VmW5egpfXUZV0YRZtQoGHPXvm67zNTNUSqjEUTdfD7Q/lx38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3DcyE+Ih; arc=none smtp.client-ip=209.85.215.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-b115fb801bcso3023110a12.3
+        for <stable@vger.kernel.org>; Sat, 17 May 2025 10:10:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1747501801; x=1748106601; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=LtoZv7L+uQHZo85O7tV0lhxa0GdHzk5iFE9SupDBP24=;
+        b=3DcyE+Ih1QPY3vhomPcernRSZJtenO66gIcHJhd42jj0DB2fvOrqBZszBP/LrpLvRL
+         HIuPyH60kF+kTQZn74vKmFspPNOLdKxHvaVzj9JGn7b3laAv3M8apYUjmvet3z4hpHiB
+         ZuIFdal/j6MwFS73/lxaECVUdCjYbeYonhUbwLXRTWEOYj9M0H9qc0E/F7qMZkS7xXwJ
+         7QyFiBk08KaF6Z/dIFwTc9UkRTevN7zpNHIG4yWvq7nbWMH9W96QdIe0OxhrRQFYdd7F
+         2RCIounxrD2KkDJDJ3gw/97Adex0y5E1PW9OxO7ATZJB6GOX8oGanPIm05BdO7rukT6k
+         e1UA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1747501801; x=1748106601;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=LtoZv7L+uQHZo85O7tV0lhxa0GdHzk5iFE9SupDBP24=;
+        b=YYu5luWtIzAxVerksV10pFcbWjczmcy+7fdwUYDH+EeCbvoYD1Q2K7d3cKfOYhVXE6
+         by9S5gJ5F+B2F66yOerFJtC8QsQlaXBO9m5n+Kura10le3q4D9POXgFshxnZArHq4V+2
+         3iCFM5HrnS3skhZ8QBo0Wu3qWVSz5+/iH3J8Vzy5ZS+7/OphYgPAAIbZnvSTMMJcFfSo
+         8RnCY/KX67Dcpitsr4wukS1mmpFOr9uyYOmeqPfhfgifgOKtd1WAFdyNc2xDUwnb1tVT
+         bHjfpe/77FGaOnM2PLlnsGhw7eizDefdnz/9xKaden+HsSn3CpEyU+WSTeCIgSLaQ5+4
+         7EqA==
+X-Forwarded-Encrypted: i=1; AJvYcCXlIecbnunv/bvOJbRFnl+HDVLPdJmlWHjo5IIc2H34cespEU8bHgCZ84+Vwy/UDdG+w8VZ5vA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+nPAalHqE78M9fA7i6egbAZzAzHgt0djQkTpRPh3du6EJSiwp
+	ovv0uFvC2IK8G78IaU43lGluQyZ7yTMWFb/9MVwmvZnsDPdSUlni6q8DpElBrd75GygNZkG2bQ4
+	n1NKfbiDY99zqrA==
+X-Google-Smtp-Source: AGHT+IFOUOpcz/ZDUCnYzVgtcWcR1sH4ylYN+CW1nr0jijT1SCfosVFbBi/eOfCIXHBMUFzKCx+3+3jyy+0UtQ==
+X-Received: from pgii13.prod.google.com ([2002:a63:220d:0:b0:b1f:ffc9:5f4d])
+ (user=cmllamas job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a20:6a1a:b0:1f5:a577:dd10 with SMTP id adf61e73a8af0-216219eddfcmr11001348637.36.1747501801030;
+ Sat, 17 May 2025 10:10:01 -0700 (PDT)
+Date: Sat, 17 May 2025 17:09:56 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <SN6PR02MB41575C18EA832E640484A02CD492A@SN6PR02MB4157.namprd02.prod.outlook.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.49.0.1101.gccaa498523-goog
+Message-ID: <20250517170957.1317876-1-cmllamas@google.com>
+Subject: [PATCH v2] binder: fix use-after-free in binderfs_evict_inode()
+From: Carlos Llamas <cmllamas@google.com>
+To: Alice Ryhl <aliceryhl@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Christian Brauner <brauner@kernel.org>, 
+	Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>
+Cc: kernel-team@android.com, Dmitry Antipov <dmantipov@yandex.ru>, stable@vger.kernel.org, 
+	syzbot+353d7b75658a95aa955a@syzkaller.appspotmail.com, 
+	"open list:ANDROID DRIVERS" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Sat, May 17, 2025 at 01:34:20PM +0000, Michael Kelley wrote:
-> From: Saurabh Singh Sengar <ssengar@microsoft.com> Sent: Friday, May 16, 2025 9:38 PM
-> > 
-> > > From: Michael Kelley <mhklinux@outlook.com>
-> > >
-> > > The Hyper-V host provides guest VMs with a range of MMIO addresses that
-> > > guest VMBus drivers can use. The VMBus driver in Linux manages that MMIO
-> > > space, and allocates portions to drivers upon request. As part of managing
-> > > that MMIO space in a Generation 2 VM, the VMBus driver must reserve the
-> > > portion of the MMIO space that Hyper-V has designated for the synthetic
-> > > frame buffer, and not allocate this space to VMBus drivers other than graphics
-> > > framebuffer drivers. The synthetic frame buffer MMIO area is described by
-> > > the screen_info data structure that is passed to the Linux kernel at boot time,
-> > > so the VMBus driver must access screen_info for Generation 2 VMs. (In
-> > > Generation 1 VMs, the framebuffer MMIO space is communicated to the
-> > > guest via a PCI pseudo-device, and access to screen_info is not needed.)
-> > >
-> > > In commit a07b50d80ab6 ("hyperv: avoid dependency on screen_info") the
-> > > VMBus driver's access to screen_info is restricted to when CONFIG_SYSFB is
-> > > enabled. CONFIG_SYSFB is typically enabled in kernels built for Hyper-V by
-> > > virtue of having at least one of CONFIG_FB_EFI, CONFIG_FB_VESA, or
-> > > CONFIG_SYSFB_SIMPLEFB enabled, so the restriction doesn't usually affect
-> > > anything. But it's valid to have none of these enabled, in which case
-> > > CONFIG_SYSFB is not enabled, and the VMBus driver is unable to properly
-> > > reserve the framebuffer MMIO space for graphics framebuffer drivers. The
-> > > framebuffer MMIO space may be assigned to some other VMBus driver, with
-> > > undefined results. As an example, if a VM is using a PCI pass-thru NVMe
-> > > controller to host the OS disk, the PCI NVMe controller is probed before any
-> > > graphic devices, and the NVMe controller is assigned a portion of the
-> > > framebuffer MMIO space.
-> > > Hyper-V reports an error to Linux during the probe, and the OS disk fails to
-> > > get setup. Then Linux fails to boot in the VM.
-> > >
-> > > Fix this by having CONFIG_HYPERV always select SYSFB. Then the VMBus
-> > > driver in a Gen 2 VM can always reserve the MMIO space for the graphics
-> > > framebuffer driver, and prevent the undefined behavior.
-> > 
-> > One question: Shouldn't the SYSFB be selected by actual graphics framebuffer driver
-> > which is expected to use it. With this patch this option will be enabled irrespective
-> > if there is any user for it or not, wondering if we can better optimize it for such systems.
-> > 
-> 
-> That approach doesn't work. For a cloud-based server, it might make
-> sense to build a kernel image without either of the Hyper-V graphics
-> framebuffer drivers (DRM_HYPERV or HYPERV_FB) since in that case the
-> Linux console is the serial console. But the problem could still occur
-> where a PCI pass-thru NVMe controller tries to use the MMIO space
-> that Hyper-V intends for the framebuffer. That problem is directly tied
-> to CONFIG_SYSFB because it's the VMBus driver that must treat the
-> framebuffer MMIO space as special. The absence or presence of a
-> framebuffer driver isn't the key factor, though we've been (incorrectly)
-> relying on the presence of a framebuffer driver to set CONFIG_SYSFB.
-> 
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-Thank you for the clarification. I was concerned because SYSFB is not currently
-enabled in the OpenHCL kernel, and our goal is to keep the OpenHCL configuration
-as minimal as possible. I haven’t yet looked into the details to determine
-whether this might have any impact on the kernel binary size or runtime memory
-usage. I trust this won't affect negatively.
+Running 'stress-ng --binderfs 16 --timeout 300' under KASAN-enabled
+kernel, I've noticed the following:
 
-OpenHCL Config Ref:
-https://github.com/microsoft/OHCL-Linux-Kernel/blob/product/hcl-main/6.12/Microsoft/hcl-x64.config
+BUG: KASAN: slab-use-after-free in binderfs_evict_inode+0x1de/0x2d0
+Write of size 8 at addr ffff88807379bc08 by task stress-ng-binde/1699
 
-- Saurabh
+CPU: 0 UID: 0 PID: 1699 Comm: stress-ng-binde Not tainted 6.14.0-rc7-g586de92313fc-dirty #13
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-3.fc41 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x1c2/0x2a0
+ ? __pfx_dump_stack_lvl+0x10/0x10
+ ? __pfx__printk+0x10/0x10
+ ? __pfx_lock_release+0x10/0x10
+ ? __virt_addr_valid+0x18c/0x540
+ ? __virt_addr_valid+0x469/0x540
+ print_report+0x155/0x840
+ ? __virt_addr_valid+0x18c/0x540
+ ? __virt_addr_valid+0x469/0x540
+ ? __phys_addr+0xba/0x170
+ ? binderfs_evict_inode+0x1de/0x2d0
+ kasan_report+0x147/0x180
+ ? binderfs_evict_inode+0x1de/0x2d0
+ binderfs_evict_inode+0x1de/0x2d0
+ ? __pfx_binderfs_evict_inode+0x10/0x10
+ evict+0x524/0x9f0
+ ? __pfx_lock_release+0x10/0x10
+ ? __pfx_evict+0x10/0x10
+ ? do_raw_spin_unlock+0x4d/0x210
+ ? _raw_spin_unlock+0x28/0x50
+ ? iput+0x697/0x9b0
+ __dentry_kill+0x209/0x660
+ ? shrink_kill+0x8d/0x2c0
+ shrink_kill+0xa9/0x2c0
+ shrink_dentry_list+0x2e0/0x5e0
+ shrink_dcache_parent+0xa2/0x2c0
+ ? __pfx_shrink_dcache_parent+0x10/0x10
+ ? __pfx_lock_release+0x10/0x10
+ ? __pfx_do_raw_spin_lock+0x10/0x10
+ do_one_tree+0x23/0xe0
+ shrink_dcache_for_umount+0xa0/0x170
+ generic_shutdown_super+0x67/0x390
+ kill_litter_super+0x76/0xb0
+ binderfs_kill_super+0x44/0x90
+ deactivate_locked_super+0xb9/0x130
+ cleanup_mnt+0x422/0x4c0
+ ? lockdep_hardirqs_on+0x9d/0x150
+ task_work_run+0x1d2/0x260
+ ? __pfx_task_work_run+0x10/0x10
+ resume_user_mode_work+0x52/0x60
+ syscall_exit_to_user_mode+0x9a/0x120
+ do_syscall_64+0x103/0x210
+ ? asm_sysvec_apic_timer_interrupt+0x1a/0x20
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0xcac57b
+Code: c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 f3 0f 1e fa 31 f6 e9 05 00 00 00 0f 1f 44 00 00 f3 0f 1e fa b8
+RSP: 002b:00007ffecf4226a8 EFLAGS: 00000246 ORIG_RAX: 00000000000000a6
+RAX: 0000000000000000 RBX: 00007ffecf422720 RCX: 0000000000cac57b
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 00007ffecf422850
+RBP: 00007ffecf422850 R08: 0000000028d06ab1 R09: 7fffffffffffffff
+R10: 3fffffffffffffff R11: 0000000000000246 R12: 00007ffecf422718
+R13: 00007ffecf422710 R14: 00007f478f87b658 R15: 00007ffecf422830
+ </TASK>
+
+Allocated by task 1705:
+ kasan_save_track+0x3e/0x80
+ __kasan_kmalloc+0x8f/0xa0
+ __kmalloc_cache_noprof+0x213/0x3e0
+ binderfs_binder_device_create+0x183/0xa80
+ binder_ctl_ioctl+0x138/0x190
+ __x64_sys_ioctl+0x120/0x1b0
+ do_syscall_64+0xf6/0x210
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Freed by task 1705:
+ kasan_save_track+0x3e/0x80
+ kasan_save_free_info+0x46/0x50
+ __kasan_slab_free+0x62/0x70
+ kfree+0x194/0x440
+ evict+0x524/0x9f0
+ do_unlinkat+0x390/0x5b0
+ __x64_sys_unlink+0x47/0x50
+ do_syscall_64+0xf6/0x210
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+This 'stress-ng' workload causes the concurrent deletions from
+'binder_devices' and so requires full-featured synchronization
+to prevent list corruption.
+
+I've found this issue independently but pretty sure that syzbot did
+the same, so Reported-by: and Closes: should be applicable here as well.
+
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+353d7b75658a95aa955a@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=353d7b75658a95aa955a
+Fixes: e77aff5528a18 ("binderfs: fix use-after-free in binder_devices")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Acked-by: Carlos Llamas <cmllamas@google.com>
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+---
+v1:
+https://lore.kernel.org/all/20250324132427.922495-1-dmantipov@yandex.ru/
+
+v2:
+- Collect tags. Actually Cc Greg and stable@ this time.
+
+ drivers/android/binder.c          | 15 +++++++++++++--
+ drivers/android/binder_internal.h |  8 ++++++--
+ drivers/android/binderfs.c        |  2 +-
+ 3 files changed, 20 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/android/binder.c b/drivers/android/binder.c
+index 5fc2c8ee61b1..8d9c5f436fca 100644
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -79,6 +79,8 @@ static HLIST_HEAD(binder_deferred_list);
+ static DEFINE_MUTEX(binder_deferred_lock);
+ 
+ static HLIST_HEAD(binder_devices);
++static DEFINE_SPINLOCK(binder_devices_lock);
++
+ static HLIST_HEAD(binder_procs);
+ static DEFINE_MUTEX(binder_procs_lock);
+ 
+@@ -6929,7 +6931,16 @@ const struct binder_debugfs_entry binder_debugfs_entries[] = {
+ 
+ void binder_add_device(struct binder_device *device)
+ {
++	spin_lock(&binder_devices_lock);
+ 	hlist_add_head(&device->hlist, &binder_devices);
++	spin_unlock(&binder_devices_lock);
++}
++
++void binder_remove_device(struct binder_device *device)
++{
++	spin_lock(&binder_devices_lock);
++	hlist_del_init(&device->hlist);
++	spin_unlock(&binder_devices_lock);
+ }
+ 
+ static int __init init_binder_device(const char *name)
+@@ -6956,7 +6967,7 @@ static int __init init_binder_device(const char *name)
+ 		return ret;
+ 	}
+ 
+-	hlist_add_head(&binder_device->hlist, &binder_devices);
++	binder_add_device(binder_device);
+ 
+ 	return ret;
+ }
+@@ -7018,7 +7029,7 @@ static int __init binder_init(void)
+ err_init_binder_device_failed:
+ 	hlist_for_each_entry_safe(device, tmp, &binder_devices, hlist) {
+ 		misc_deregister(&device->miscdev);
+-		hlist_del(&device->hlist);
++		binder_remove_device(device);
+ 		kfree(device);
+ 	}
+ 
+diff --git a/drivers/android/binder_internal.h b/drivers/android/binder_internal.h
+index 6a66c9769c6c..1ba5caf1d88d 100644
+--- a/drivers/android/binder_internal.h
++++ b/drivers/android/binder_internal.h
+@@ -583,9 +583,13 @@ struct binder_object {
+ /**
+  * Add a binder device to binder_devices
+  * @device: the new binder device to add to the global list
+- *
+- * Not reentrant as the list is not protected by any locks
+  */
+ void binder_add_device(struct binder_device *device);
+ 
++/**
++ * Remove a binder device to binder_devices
++ * @device: the binder device to remove from the global list
++ */
++void binder_remove_device(struct binder_device *device);
++
+ #endif /* _LINUX_BINDER_INTERNAL_H */
+diff --git a/drivers/android/binderfs.c b/drivers/android/binderfs.c
+index 94c6446604fc..44d430c4ebef 100644
+--- a/drivers/android/binderfs.c
++++ b/drivers/android/binderfs.c
+@@ -274,7 +274,7 @@ static void binderfs_evict_inode(struct inode *inode)
+ 	mutex_unlock(&binderfs_minors_mutex);
+ 
+ 	if (refcount_dec_and_test(&device->ref)) {
+-		hlist_del_init(&device->hlist);
++		binder_remove_device(device);
+ 		kfree(device->context.name);
+ 		kfree(device);
+ 	}
+-- 
+2.49.0.1101.gccaa498523-goog
+
 
