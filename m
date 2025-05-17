@@ -1,266 +1,180 @@
-Return-Path: <stable+bounces-144660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45CFEABA6E6
-	for <lists+stable@lfdr.de>; Sat, 17 May 2025 02:04:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0368AABA6E1
+	for <lists+stable@lfdr.de>; Sat, 17 May 2025 02:02:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC94816FB86
-	for <lists+stable@lfdr.de>; Sat, 17 May 2025 00:04:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E47A4C0117
+	for <lists+stable@lfdr.de>; Sat, 17 May 2025 00:02:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90A2C1FC8;
-	Sat, 17 May 2025 00:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5A9110F9;
+	Sat, 17 May 2025 00:02:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="LOkEsCTQ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FzW8h0HF"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2080.outbound.protection.outlook.com [40.107.94.80])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E60910E0;
-	Sat, 17 May 2025 00:04:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.80
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747440255; cv=fail; b=sAB6D+BW5ODjxvOnrWaIc9pyvVW6frQGne+ByDYhAPMiraVhZUYyHfjL23BaCKrDRB5oI2Ks2r2rNogqg69ABexKvgqYTppTmf41X0P7lP6ZRXRs+uAnelgeQH1STX6RBKyd8LWKZdj94HkNSnyhzb+z6iPXPIFNgmGou9QlIiU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747440255; c=relaxed/simple;
-	bh=sPQvuPLo6pskgYU809kUZXUPulKuuwrVQyGmO7C6yuU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=gakjzTl73N62oJ+gJoDa2xUqxpgzA4VMnm99KpQAkMEBd+vROzTr30DAbS6PLuyO2olJpq2APVHTtXDcKdbbJwx8ziDjwQqWqpE6HXfV4XYeB5XkqxMAaPgM2gnaZE+UCV2kU//3WHfnOdpVVf3VY6ZrvIDVxWrMBagviNf3EYQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=LOkEsCTQ; arc=fail smtp.client-ip=40.107.94.80
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bXBbbiL6dS2Krkgttg0E/boPA/egQ+NlCXYtwxkxEiwn53eYLEVtveY3qfk+3kP6uv/7IMMn+FWP07ui+yi5E4OwB22qtnpWp+5orIEavCt2G+AHQY+rr7XkukP8iuktLShUsXvvR85SnB2IYyTQrIrnRuNVkFprDh2Rmyep57qpGAzy4TOZSFAmYQxCyEuKuBCvC0iFdPLKLI/cEabOmXakPkZiTaAnwzzmhTPyzc3/74DIBRYrFXskeQDHPkOJpr5xyuosLPLSkuj5X2Z6hrVb5ZgcsHtnrmLmOpXHgBozUWx17iFDukQCb1K8KXuA4rqsjEVeH9fjioXMwWUTxw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WJ2i0mHY1ti9CPnp+P9KZk5uZcidOzWjM1GRVyl/AsI=;
- b=PPr+UnsN4KKh2a9TlrqSrYzaZrkoz6CSPHdIQJ/lUcPg07DC3xEtNqrx6IuGdAWZ/uXCMKeg3Hwp5gjpcQvSld44ZKzDhCrwglQY2w5JzwbNNQHF5TlSsu1nQZepjqAi6+GFjbYorrsX4yAxrU38MvAcwnwFhUCaMgGhrAywhuRW5DRcPSZdjcNEurxcUyFvb/hLdFC3ALvhVvrLQ69TT640kwfLwe/fcQZZBf9wgoZOtZMJmrvkwLo9H8RmXPEpuEBWevKqDSIn+yQgLYvsZmDMzwDok5up1RUukOYeJZlA7e+ebW5MTO1EV1WIQa+uo+jz9Vgoa05J7ZSqr/g3Ng==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WJ2i0mHY1ti9CPnp+P9KZk5uZcidOzWjM1GRVyl/AsI=;
- b=LOkEsCTQIGYdF+VOEt5UajRtASiWqvQRxnJr+jhvMvqyMP5w2sibM5W5/vICCk0DHOArsDUd0qUDAObU366aavNaJffooxQJrg3zg11JZUjjqWaXw29oe28cd6RUQnS8QJ/vxr+oxg/8Wykuct/bCao5uA8xL79sxfiuKo3VzYii7orc68s87qJNZhR9XSMPEMt05dKqxwfcm/9rUEjMx748lu6In7RduIvF16IKXrVCfxoPjrdVVqe56aITx3bn1yPxtkJjCgFGrT+BJGSlUNqpFL57kiZeJR2ugkW7XvRojlEh97wnkjMsdmM6i4QRfw9SmNYQYtWRaqxXwymj7w==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from BN5PR12MB9464.namprd12.prod.outlook.com (2603:10b6:408:2ab::10)
- by DM6PR12MB4434.namprd12.prod.outlook.com (2603:10b6:5:2ad::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.33; Sat, 17 May
- 2025 00:04:09 +0000
-Received: from BN5PR12MB9464.namprd12.prod.outlook.com
- ([fe80::e83f:10b6:1259:d000]) by BN5PR12MB9464.namprd12.prod.outlook.com
- ([fe80::e83f:10b6:1259:d000%4]) with mapi id 15.20.8722.027; Sat, 17 May 2025
- 00:04:09 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
- kvm@vger.kernel.org, linux-mm@kvack.org,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Janosch Frank <frankja@linux.ibm.com>,
- Claudio Imbrenda <imbrenda@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
- Matthew Wilcox <willy@infradead.org>,
- Sebastian Mitterle <smitterl@redhat.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v1 1/3] s390/uv: don't return 0 from make_hva_secure() if
- the operation was not successful
-Date: Fri, 16 May 2025 20:02:46 -0400
-X-Mailer: MailMate (2.0r6255)
-Message-ID: <818174C5-0FA3-4FA2-880D-FF5C1102B2B1@nvidia.com>
-In-Reply-To: <0454761b-ec54-4cc8-9d01-b783e2e58f9e@redhat.com>
-References: <20250516123946.1648026-1-david@redhat.com>
- <20250516123946.1648026-2-david@redhat.com>
- <60DDE99E-E09D-4BD4-AC58-569186E45660@nvidia.com>
- <0454761b-ec54-4cc8-9d01-b783e2e58f9e@redhat.com>
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: MN2PR20CA0017.namprd20.prod.outlook.com
- (2603:10b6:208:e8::30) To DS7PR12MB9473.namprd12.prod.outlook.com
- (2603:10b6:8:252::5)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC0601FC8
+	for <stable@vger.kernel.org>; Sat, 17 May 2025 00:02:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747440173; cv=none; b=Iw4LkR4WV+y6SwoN1U7fNGsbDIUHILPL6kXy3SPXJQLSbwDAAfbzRttPKgCKmnKqibiJkjk2g+8YS6GitluJ60ZS44/7x8la3ckFP5kJ4jsq5so92S1ruawaW0/1lIiSg9BRFJ/ZnPyEs7ogODx2pbqE3CtDqGVTOHWGCbe8NAc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747440173; c=relaxed/simple;
+	bh=5NHavNtv3RDzqddKQnuU7SaWRGOTdW6NWDh6TE4/ft8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ip9fk9MbPleAd2HEQvtLyVoZ4d81VoMUadjlNn/YY0aLxcjXXnhlmncmJLGBsXeL7qiBXvnA9e/yF2J16kGGJgYxGSeZVIocwukGIcyLZprgns5jXlq6Jhxk+ujO5ttDzAC4T3ARRPssSzZp6ahE5wZhJBV0AgJ6NcIaOlIjedA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FzW8h0HF; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747440172; x=1778976172;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=5NHavNtv3RDzqddKQnuU7SaWRGOTdW6NWDh6TE4/ft8=;
+  b=FzW8h0HF2n/Zm4Zcwuqv+9nDRj5oLx/DLZWyDRqfmvC85MeEqlHpdqY7
+   9a787eDKA5c+B6G9PDOyzDPA6LFzv8zOuTpteyqFADDPm5AajoerNAHRt
+   Dpa1AStjurRuLUgO2KPpZyazAaRN6Fbn5rTcxfQr4OeWduKnltIKnvyc4
+   m3I5mWOIz/wJ8Vb6doRmk31JxF3PRYGJbqlES1nykDwD285KtTvBQdUrv
+   ExXEptmJKLmeXtR+urzU7lEgyP0ZW/+1r/SxAwS2vnYB7pIkhTU+TPOMq
+   AE4/cZJ2yJ2vSuKqaIBbNXA8s57Kb5aVkkNWXpRI9jx8cqz94paHCb0SR
+   A==;
+X-CSE-ConnectionGUID: Berl69eGSF2fJKG6HHR4Og==
+X-CSE-MsgGUID: AEPzz9F4TfioJN9AgsB0hw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11435"; a="74823072"
+X-IronPort-AV: E=Sophos;i="6.15,295,1739865600"; 
+   d="scan'208";a="74823072"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2025 17:02:51 -0700
+X-CSE-ConnectionGUID: 4SefhkgFSHaaQn2VY4U+yA==
+X-CSE-MsgGUID: yeH10qjMQ8uacsbU7A5AQw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,295,1739865600"; 
+   d="scan'208";a="138883598"
+Received: from yzhou16-mobl1.amr.corp.intel.com (HELO desk) ([10.125.146.16])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2025 17:02:51 -0700
+Date: Fri, 16 May 2025 17:02:50 -0700
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: stable@vger.kernel.org
+Cc: Andrew Cooper <andrew.cooper3@citrix.com>,
+	Alexandre Chartre <alexandre.chartre@oracle.com>
+Subject: [PATCH 5.15 v3 13/16] x86/its: Align RETs in BHB clear sequence to
+ avoid thunking
+Message-ID: <20250516-its-5-15-v3-13-16fcdaaea544@linux.intel.com>
+X-Mailer: b4 0.14.2
+References: <20250516-its-5-15-v3-0-16fcdaaea544@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN5PR12MB9464:EE_|DM6PR12MB4434:EE_
-X-MS-Office365-Filtering-Correlation-Id: 67b26675-3b93-48f6-9e95-08dd94d628ba
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?8AEJeHS+FfEMdjudEYfARwiMOm8K7v4ZS5diVfInI15Sym0vY8cYYQ686i1F?=
- =?us-ascii?Q?6UMwuihbli+Rj8vcPXG59KZQ0wIcUV+djwHt58kEI4gGyI2BDDvzKgDFRboE?=
- =?us-ascii?Q?6Agkr5EvsN+tth0vBRZv1RRqJY3Qc3CVRhdv8gGyPBL13AfVvaEIbUKps+T1?=
- =?us-ascii?Q?iYCekWCOqiPk2ZRH7+AFRQTFlz6jRrOE3YGtcjlAGgclcSzRE0NV0LFfDlrz?=
- =?us-ascii?Q?ap4k5by57fEcHJ4e1UFvctAhDmbMfXI964BHrAUsdPwPLYXKGlzBXFGdUcAH?=
- =?us-ascii?Q?jlTsxW1qbrh26tGQlPIBEEP7r1htM1jkZbSdskZeR1ha19n4Vsaso0OFS/A4?=
- =?us-ascii?Q?nQplCH9r2GvS/4/q9TfwG3tBc7aEuqbixMfqLemZHmUcMMqOv3LN4hfYsCI3?=
- =?us-ascii?Q?HFskCfWhk7kYoDacIGoKX1fEn4MTTIMkvYAfE78bHJsk2xOS8Srtk3xPm6BA?=
- =?us-ascii?Q?tSEUb42FzAjLudBc1bTH9e61SgaP3U0HRiLaNoYVpBl8b7woJsVWc7DbIgJ3?=
- =?us-ascii?Q?Fk5eSGecadEN3Tg3pDy2yLphgeLdh5DkRIF/cVIz6OmxTm5lA8UxARvU14iI?=
- =?us-ascii?Q?v7rfV9nblqY8XG85pJDuj45lgRtR2gGlJWBrIsNNgmLNUm3RckO6rnvFgixD?=
- =?us-ascii?Q?pu0WkRaUBsAhm5V+DspEjHh5o+gFe/ee47g3AVbRIYB/aA8+VoXqhKuBGlNA?=
- =?us-ascii?Q?0R7dtYnijva/YHK96aox6lbGjC/WcJkS0jsVthR2fvbuAc5yZhpT2Rze02o0?=
- =?us-ascii?Q?z0tV8tQ+vSaJQqxlk0JbkBwaQTR3BBBTNQV6GE52NgdBtr9PmVvAL8M3bWft?=
- =?us-ascii?Q?muj9nZdFUgbV46OmOK/rmboBSvef6kT/WIQz0gGN5A26uv1D+/NMPFB7QsX8?=
- =?us-ascii?Q?YaMprsik5UuPxazXsLWUnoMc81z1Mc40QLWms0cCOzve72BnhKU8wTg8/OCu?=
- =?us-ascii?Q?spNIrfvGHqYFUSQFy3qeX8bJEwWSYL5dAMFiVX8hAnZYNwuDTH9xz4tlANHS?=
- =?us-ascii?Q?PyvXYMcNoNRAKWGlpMbgBkpWP111c2BnaGRdBizO7sg7Jw6EW6mJlXtMAyoJ?=
- =?us-ascii?Q?lVkQNGiXbyxqx+uXukhg/qQsmk70knWEua1p3M5L+8DmMF8F1nwNH4FxrcRZ?=
- =?us-ascii?Q?P1CP0iJ/js/saJqfI2x8ZK2MxMKjyWzu2HgTq//4Vw6K8lGQfDkd15p6jzoA?=
- =?us-ascii?Q?oYiezBsu7fA6ew40rIg/xBwG0CLDbVZrJaL2L49qtkqdj/6GFLTpNkRAvIZ3?=
- =?us-ascii?Q?WbZWHvpEhUblytpJg/u0nVZvL+wEo8y5J79xd6PBJTXp9ATC8LyMAfD2zDTp?=
- =?us-ascii?Q?Q1eANoa167YE8vltsx1nIOFf88fmHcsCcq5oDAnEzQIFTkGviVCBR207JrMp?=
- =?us-ascii?Q?8O7lWkNEMo3mqEO3wBFfMxrVclcKmF9WzbB80X1ZAQkyjLsPQE6WB/u0xjmJ?=
- =?us-ascii?Q?zlRMTtlilvo=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN5PR12MB9464.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?CA8K+3D/Ex7ZePCJKgEVGgnDH9VjpZZK3sqVt5FZqLXvaK3DHxqmf5L2hErZ?=
- =?us-ascii?Q?pHoqtyTuDsHsvmTYB7d8LzVCR+7DDcRb2boT0Bh1q+mpay8fUdKrdcxy37Tx?=
- =?us-ascii?Q?zyAi710H9MYmCSczaxa/maLyVCt+JZgwlf+71HQucNi0ZyjiytSGUeCdNnJn?=
- =?us-ascii?Q?rgI147xH3TxgXQVdpwb6K8uYBMiNUoY0q9KTptev15bZkK7SKfG/UvE+Esb1?=
- =?us-ascii?Q?RcQHJBS4Rs8BAQmerOruYqs2DD26R4OxaFjGlNOXbuLmpDvkYGSx65JSTlOv?=
- =?us-ascii?Q?UCZJUcmnNgIo31ppAcUz43JuuGBc9lBymgLrcTFwqbrQywvrG39HHzy9aoDZ?=
- =?us-ascii?Q?wDyNk1Yu6UkgHS7Y3qKZxeR6Ki+hvUyJBWqFiFv1Rju3ZseSLoeVBDFyFutj?=
- =?us-ascii?Q?qq9ZHPo7K644s05CrflLavFAQUgySCVMUwIZnnJ2XlYuUwSBbTzYekrRydVH?=
- =?us-ascii?Q?3iBV1TvPR6wupZb09jslbKDuiv/1RqB9wVh0hM9I7IqH1a9d14N2hhjOybW1?=
- =?us-ascii?Q?8vFiryrcduMe9x6B6gCUyyCLRzLE6OHIodBiSHMgne3uLZgwKKeXz2vIkxky?=
- =?us-ascii?Q?ED7Q4vRBWZsD7SBD2591JOkdXmdjnRoqDOKKodoa/m9QCjvvKm8e5dVjtgdl?=
- =?us-ascii?Q?G62Y2IwYycQByfcxim3EinRADbPWShVa1xiqzgktjLVDacnunyKdVYo1ebMi?=
- =?us-ascii?Q?/lEFFKpZIk7AbTG18iHCgbayoe0JB/OMBVWZ+Wm0HWh+b99mBTurJtFp+brp?=
- =?us-ascii?Q?l/om6tkqHTVBU1ak4gYyk7iD02nEA5OCe3DCiR91ZaofARBPRGeucuZC0hV6?=
- =?us-ascii?Q?U0uQFvX1WmILMKpmzg41WqZDaCyuLhypz6KZI0obnOREUgE7IzHQiXoTSjrt?=
- =?us-ascii?Q?P9hVb6r+dozMyeyfRQMAfIXjaoCPgt/kZLNOFIdnuutNetHJcg8wP4c3JG3G?=
- =?us-ascii?Q?pY9S/kHqfOg+hWc0FURx/2o4helGDrHJTXWQAZDyUg0SLHIGafdyYp7n3KUr?=
- =?us-ascii?Q?nY1kwUC3XEwcfua0XLnMm8hA69mIumIoJRCN1qk3LnyeVRObLJZc8Lmqwj7/?=
- =?us-ascii?Q?OnZF/EZFOEjwsHSgiBDje5PK3qs4gPYShcH1XhjOoAO78d7CI6FBbsDHRzlg?=
- =?us-ascii?Q?WkUNFRMbO90YDLue1NVWjFUBsBfJ1HE3p9Q/epgSQo2svXAIxoxmcrf2Qido?=
- =?us-ascii?Q?KGuvTGRO3KDAQs1eZrUiDDCK8LtX6B7eZVzyprq/GvyJ1yCLWpt49fSK4CSy?=
- =?us-ascii?Q?gWe+8rXVd7F83ZBqsdQ2M06gOeR5Z+LdWJn1zZWiURDOUWQ8VE7Hdoj54rQC?=
- =?us-ascii?Q?FnzwQQ1OKV/2H7jsLSMxXgmNBZJ0+q8u6lfCRJMkziJPQT84Yde8tfEE/NBJ?=
- =?us-ascii?Q?pe1pfaBkxEnLl3cQpfIKYTn2Pw0oXp7h8HYnDb/h+4iX18Ov06ucm3UZSO3G?=
- =?us-ascii?Q?hWNAtCeKmED7Ajp3wr3hnO/Pmhurg4dNKNdkn2tekrqqX0XXcxrBQd8WT6Iq?=
- =?us-ascii?Q?rNUa2dHW/zC7zn2ScrA6i+G2f9V8Gn0dvHJ7DZgYV6c57VlUZFZ0vk5f9MDe?=
- =?us-ascii?Q?HmCA70Cnfg3dALGsgmGNoubn+vPtjg2ScCmEaU7N?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 67b26675-3b93-48f6-9e95-08dd94d628ba
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 May 2025 00:02:48.5395
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +0oCx87W+UOzUDvWDLMpcWybDJbsqS6qcn1dz71Bl3wIUMiWoKwA3va8zLwQqukU
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4434
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250516-its-5-15-v3-0-16fcdaaea544@linux.intel.com>
 
-On 16 May 2025, at 17:20, David Hildenbrand wrote:
+commit f0cd7091cc5a032c8870b4285305d9172569d126 upstream.
 
-> On 16.05.25 23:08, Zi Yan wrote:
->> On 16 May 2025, at 8:39, David Hildenbrand wrote:
->>
->>> If s390_wiggle_split_folio() returns 0 because splitting a large foli=
-o
->>> succeeded, we will return 0 from make_hva_secure() even though a retr=
-y
->>> is required. Return -EAGAIN in that case.
->>>
->>> Otherwise, we'll return 0 from gmap_make_secure(), and consequently f=
-rom
->>> unpack_one(). In kvm_s390_pv_unpack(), we assume that unpacking
->>> succeeded and skip unpacking this page. Later on, we run into issues
->>> and fail booting the VM.
->>>
->>> So far, this issue was only observed with follow-up patches where we
->>> split large pagecache XFS folios. Maybe it can also be triggered with=
+The software mitigation for BHI is to execute BHB clear sequence at syscall
+entry, and possibly after a cBPF program. ITS mitigation thunks RETs in the
+lower half of the cacheline. This causes the RETs in the BHB clear sequence
+to be thunked as well, adding unnecessary branches to the BHB clear
+sequence.
 
->>> shmem?
->>>
->>> We'll cleanup s390_wiggle_split_folio() a bit next, to also return 0
->>> if no split was required.
->>>
->>> Fixes: d8dfda5af0be ("KVM: s390: pv: fix race when making a page secu=
-re")
->>> Cc: stable@vger.kernel.org
->>> Signed-off-by: David Hildenbrand <david@redhat.com>
->>> ---
->>>   arch/s390/kernel/uv.c | 5 ++++-
->>>   1 file changed, 4 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/arch/s390/kernel/uv.c b/arch/s390/kernel/uv.c
->>> index 9a5d5be8acf41..2cc3b599c7fe3 100644
->>> --- a/arch/s390/kernel/uv.c
->>> +++ b/arch/s390/kernel/uv.c
->>> @@ -393,8 +393,11 @@ int make_hva_secure(struct mm_struct *mm, unsign=
-ed long hva, struct uv_cb_header
->>>   	folio_walk_end(&fw, vma);
->>>   	mmap_read_unlock(mm);
->>>
->>> -	if (rc =3D=3D -E2BIG || rc =3D=3D -EBUSY)
->>> +	if (rc =3D=3D -E2BIG || rc =3D=3D -EBUSY) {
->>>   		rc =3D s390_wiggle_split_folio(mm, folio, rc =3D=3D -E2BIG);
->>> +		if (!rc)
->>> +			rc =3D -EAGAIN;
->>
->> Why not just folio_put() then jump back to the beginning of the
->> function to do the retry? This could avoid going all the way back
->> to kvm_s390_unpack().
->
-> Hi, thanks for the review.
->
-> We had a pretty optimized version with such tricks before Claudio refac=
-tored it in:
->
-> commit 5cbe24350b7d8ef6d466a37d56b07ae643c622ca
-> Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
-> Date:   Thu Jan 23 15:46:17 2025 +0100
->
->     KVM: s390: move pv gmap functions into kvm
->
->
->
-> In particular, one relevant hunk was:
->
-> -       switch (rc) {
-> -       case -E2BIG:
-> -               folio_lock(folio);
-> -               rc =3D split_folio(folio);
-> -               folio_unlock(folio);
-> -               folio_put(folio);
-> -
-> -               switch (rc) {
-> -               case 0:
-> -                       /* Splitting succeeded, try again immediately. =
-*/
-> -                       goto again;
-> -               case -EAGAIN:
-> -                       /* Additional folio references. */
-> -                       if (drain_lru(&drain_lru_called))
-> -                               goto again;
-> -                       return -EAGAIN;
->
->
->
-> Claudio probably had a good reason to rewrite the code -- and I hope we=
-'ll be able to rip all of that out soon, so ...
->
-> ... minimal changes until then :)
+Since the sequence is in hot path, align the RET instructions in the
+sequence to avoid thunking.
 
-Got it. Acked-by: Zi Yan <ziy@nvidia.com>
+This is how disassembly clear_bhb_loop() looks like after this change:
 
---
-Best Regards,
-Yan, Zi
+   0x44 <+4>:     mov    $0x5,%ecx
+   0x49 <+9>:     call   0xffffffff81001d9b <clear_bhb_loop+91>
+   0x4e <+14>:    jmp    0xffffffff81001de5 <clear_bhb_loop+165>
+   0x53 <+19>:    int3
+   ...
+   0x9b <+91>:    call   0xffffffff81001dce <clear_bhb_loop+142>
+   0xa0 <+96>:    ret
+   0xa1 <+97>:    int3
+   ...
+   0xce <+142>:   mov    $0x5,%eax
+   0xd3 <+147>:   jmp    0xffffffff81001dd6 <clear_bhb_loop+150>
+   0xd5 <+149>:   nop
+   0xd6 <+150>:   sub    $0x1,%eax
+   0xd9 <+153>:   jne    0xffffffff81001dd3 <clear_bhb_loop+147>
+   0xdb <+155>:   sub    $0x1,%ecx
+   0xde <+158>:   jne    0xffffffff81001d9b <clear_bhb_loop+91>
+   0xe0 <+160>:   ret
+   0xe1 <+161>:   int3
+   0xe2 <+162>:   int3
+   0xe3 <+163>:   int3
+   0xe4 <+164>:   int3
+   0xe5 <+165>:   lfence
+   0xe8 <+168>:   pop    %rbp
+   0xe9 <+169>:   ret
+
+Suggested-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
+---
+ arch/x86/entry/entry_64.S | 20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
+
+diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
+index f656c6e0e45882f261c9f61829a3c1f3e1e74167..ed74778c8ebd7fa4b80ed885d86fef638a1c4f26 100644
+--- a/arch/x86/entry/entry_64.S
++++ b/arch/x86/entry/entry_64.S
+@@ -1530,7 +1530,9 @@ SYM_CODE_END(rewind_stack_and_make_dead)
+  * ORC to unwind properly.
+  *
+  * The alignment is for performance and not for safety, and may be safely
+- * refactored in the future if needed.
++ * refactored in the future if needed. The .skips are for safety, to ensure
++ * that all RETs are in the second half of a cacheline to mitigate Indirect
++ * Target Selection, rather than taking the slowpath via its_return_thunk.
+  */
+ SYM_FUNC_START(clear_bhb_loop)
+ 	push	%rbp
+@@ -1540,10 +1542,22 @@ SYM_FUNC_START(clear_bhb_loop)
+ 	call	1f
+ 	jmp	5f
+ 	.align 64, 0xcc
++	/*
++	 * Shift instructions so that the RET is in the upper half of the
++	 * cacheline and don't take the slowpath to its_return_thunk.
++	 */
++	.skip 32 - (.Lret1 - 1f), 0xcc
+ 	ANNOTATE_INTRA_FUNCTION_CALL
+ 1:	call	2f
+-	RET
++.Lret1:	RET
+ 	.align 64, 0xcc
++	/*
++	 * As above shift instructions for RET at .Lret2 as well.
++	 *
++	 * This should be ideally be: .skip 32 - (.Lret2 - 2f), 0xcc
++	 * but some Clang versions (e.g. 18) don't like this.
++	 */
++	.skip 32 - 18, 0xcc
+ 2:	movl	$5, %eax
+ 3:	jmp	4f
+ 	nop
+@@ -1551,7 +1565,7 @@ SYM_FUNC_START(clear_bhb_loop)
+ 	jnz	3b
+ 	sub	$1, %ecx
+ 	jnz	1b
+-	RET
++.Lret2:	RET
+ 5:	lfence
+ 	pop	%rbp
+ 	RET
+
+-- 
+2.34.1
+
+
 
