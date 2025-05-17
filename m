@@ -1,168 +1,222 @@
-Return-Path: <stable+bounces-144661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E8F6ABA767
-	for <lists+stable@lfdr.de>; Sat, 17 May 2025 02:51:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C793BABA828
+	for <lists+stable@lfdr.de>; Sat, 17 May 2025 06:38:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26C4E1BC5010
-	for <lists+stable@lfdr.de>; Sat, 17 May 2025 00:51:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A5E77ADD57
+	for <lists+stable@lfdr.de>; Sat, 17 May 2025 04:37:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C5F01CD2C;
-	Sat, 17 May 2025 00:51:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E21417CA1B;
+	Sat, 17 May 2025 04:38:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zXOhNWrI"
+	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="COY62Dr4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from TYPPR03CU001.outbound.protection.outlook.com (mail-japaneastazon11022140.outbound.protection.outlook.com [52.101.126.140])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A8C6DCE1
-	for <stable@vger.kernel.org>; Sat, 17 May 2025 00:51:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747443080; cv=none; b=N2gzCqgK5McivQ0ATGMAoz9o/zoRcyVjV8dji3meAG/Oc/47XPqLjITS1qyCucfNZm22jPCiG8VOF3rUjZLJbCLyfZKZi8xecu3jH/poan17zp/+Uw8smFl8WvIdFcxhhAyLxYHXZh0HEzNBmGkcRjEEhy/MImo8HDLPOo6bYA8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747443080; c=relaxed/simple;
-	bh=emC6wSHOX4jBo4J4vC1MTSFuL796KQqnFvFmFmQPylQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BJO6OXhL0lqqfZpLsGwmmi6262Hri4JuFtYpX/UQxBs1aKJGc/xshYkyTISvpAFrKgb70VSjxdVgVYN+UaCWMmukqcU8Lo0Ed7ZizoLO7v5TUnHg5dNTqP6QtZi/N5uL5vMLRZjvHSwKL5+/qIpL1srnf6BwD9vtJxkUAj5MLLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zXOhNWrI; arc=none smtp.client-ip=209.85.222.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-7c922169051so157839985a.0
-        for <stable@vger.kernel.org>; Fri, 16 May 2025 17:51:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1747443077; x=1748047877; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=emC6wSHOX4jBo4J4vC1MTSFuL796KQqnFvFmFmQPylQ=;
-        b=zXOhNWrI11GT10Bh4kxx4kCSg3VAsMzRPUz98zMpV9Ss3q4Z9pJLHIHWW7pmcAX83F
-         VekrirhP/qvpq2p20xX9l7vwOywjfStni3yRJyObbmY7qztEdHq3OW//tx0eVHQGwdJZ
-         kOpVRYh0YLjf2gkWJbLjhezBUA6fBM4MIdolum13tKY+lWVzJ/1GS5uPzsvEgDuSczwo
-         3nIM0DvIyRMwStFjxHA2I2x3NY6rmlBJuEd8KhJ0+NAxM0OYSPzIf0k2XYsbbNJ4BrT5
-         3/xlwyPuY5cYGXboQG2+H/fahw0gqWj7ZxT4GDt3WdpE3ol5Bu5eu7l+fQEfZRM3FU/H
-         ZX0A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747443077; x=1748047877;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=emC6wSHOX4jBo4J4vC1MTSFuL796KQqnFvFmFmQPylQ=;
-        b=jvXXLdVwmXdWcMy8voLgrs7O2qMDUX2xHSldgoTYhdxai0XCmZz775U9bLXM5XUOPp
-         oMwjn4Bsir3fcvzhyyhHieMu6d7ycO2lL5SW6Vyvzts9uyiUqWwCzirMqRV6ch1yo1NM
-         4Z8HTU1stHoWW1x4rkqSYmVXPUh5rZR5KfjdNDCtA/uZuWRbD5ItbF17ibuaC/bMT2mO
-         Ao6R73qNLbPWZ7ODNE4SOSuecKaOW+yjx8qXzvrnAD148WxLos8nztPIJH4WrDDgOjap
-         MHUPCV+NkKz1nvlvUgAkSkHevFyl1SHgi0HZdzHPKfq2bIhWv6KPbSzQJDeDo/qxfzpq
-         9YaA==
-X-Forwarded-Encrypted: i=1; AJvYcCUovnAQQWK2OWXAp9suddoL3T8yOY88qf6nTUG9QPACz5GmjLxKb5k5JUJbLdcfLwv3uo5LkU4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyB+I/6/u1S1wUAyXx5/naSi3DSMV54JgFjwxNsdW0zuNQ11rDC
-	OGwQeNr2R16pN/VSEGf4VSvbY0t2UZxNfo2/60FpOVuPA3wjOuAJ/pHpXWhdsqtEXLKKVqsMGLD
-	xmTPrOmVTXgE9Vgx6U6kM95BGdoTazH64AdXRC3Mp
-X-Gm-Gg: ASbGncvbDIgtsPuriwaAAG/UfsRxIqFnz+sCWKEt6eGyOsK0JVUmCz+dyYi3pnad1rc
-	DQBrvN2xM6la61jgzo9aDLVg5zajMzII2k0ccDMnXw+QCMfnHPZKNK80KQatqgrA5JtgfDKJNb7
-	4mG2ETijdhTSZycCL7pWt1chwZ3HPSrpw=
-X-Google-Smtp-Source: AGHT+IHXgLhz/4da2oxNryMroYxlfO28K6AlaQIZ/V6cHkp8D4WGQ0LNLoPyvKqahrIjnRVpFmFmoPkjQ5XtiMH7NRg=
-X-Received: by 2002:a05:620a:298e:b0:7c5:6375:144c with SMTP id
- af79cd13be357-7cd467237f3mr739080285a.23.1747443077283; Fri, 16 May 2025
- 17:51:17 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 557A929CEB;
+	Sat, 17 May 2025 04:38:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.126.140
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747456699; cv=fail; b=UuE/jDahWaSuVDgJOvmN5AngJArzof/Oc0Ep/jghCGzhHv190+IyEMFdgK9Dg+nQea5XSpVSKlAU2QmHQEOJoXQoFlbdluwAqBOJEnWiZKupWHpDAQnObC2X7s7cj0ow2y8c4GofZVaJS+ZyqXOiIReM4lq23FdBsKFh9ZPvtiw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747456699; c=relaxed/simple;
+	bh=awafyEMF3ZA8VzKmIbkXomNx1WRWsFXGHgIjBfGXTxo=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=IWsEngTCFItJUn036Jlk4QK+JIsJH8zTVNo64I426da/KNB6WbPQt4/XyVKG4GM6uk5CITfGVXW4qfrmctOiuNrHdMJ4wfaiXIh/DRo//zIVSrpwyLAoQ7kS3FEmw/+V2PKMrRbGx4pvAetKxiN3EW8h8CG2E7Idp+qaTm8u9wg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=microsoft.com; dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b=COY62Dr4; arc=fail smtp.client-ip=52.101.126.140
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microsoft.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wouDwPME4pPn/1BBBkCtg3xPl1EI+GTeUOawwTUEzJ/O2tZbPA4QYOFY28zT2gxByeuT3N2HGfjib/m/FDmQcOGGkzSzM5fajEgowwpVLM8nsb4kKel8xpa8NYQyGU5CEZ44Od3CT267fP9KNgjsGJC6JNGgQ94B+oV6plCP3M9h5U9oMLzLVoHr3KYBgEeRs2eH5LYYCWrMcZxuBXGk5YDDZ78HgATvVwchOg/intApoli39dx2jYeIpBPpJnxjeIh3EL90ftAxAHc3g3mwW7L/ZEA37PzU03DONbausoU7ZMAM9RNimpzx+Qn70g2r0HrZh01uXcixGriJVRL1/g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=awafyEMF3ZA8VzKmIbkXomNx1WRWsFXGHgIjBfGXTxo=;
+ b=ZTch9veG0WuM8LaiKpcjosM+1Mt822iDPCQemxq11lHX8wPz6Mr7kyeBfyAUKr8SGcyiO6beM1kxKJ5nQC0XhrlSkJCnil6exaU/OVbL2V2XdtotJ5qCkbfzbaB2dNVtXGnC9X/X51yAS6rFvlaR2R/GA4Zg8FHBAB8bXesU8cWIAftQT8akz4+y/0zrH8gY2WF6GJvCpZeYj67pngOfSUwmBGTppbltNpy95xLwpLGHFLBkbggUIEg3rDnAGMxW2CTc0wxyaMrArVS2mk5f3kFb9juBWMaDrC6MLPX1K2Xwv6jksTEeyuvcun2pOTdtk0S6avHtjbmlGzMD0qjrBQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microsoft.com; dmarc=pass action=none
+ header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=awafyEMF3ZA8VzKmIbkXomNx1WRWsFXGHgIjBfGXTxo=;
+ b=COY62Dr4lsvZawp3CrPlkumk4ti3MU7/WsOEXUek6CWM84lLbG33vJTB6+eUPmU92YX/B+pRwkj2gEZOEl4GthVKTLO7EiVKMLywOJ4x0hLl2BzKp99ZOpgivE8rEpXR2XWxGi8vNGwiZtK2nPu/6Mx8ZVzb0QeGwXVl2nzQU5M=
+Received: from KUZP153MB1444.APCP153.PROD.OUTLOOK.COM (2603:1096:d10:36::22)
+ by SEZP153MB0792.APCP153.PROD.OUTLOOK.COM (2603:1096:101:a7::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.10; Sat, 17 May
+ 2025 04:37:57 +0000
+Received: from KUZP153MB1444.APCP153.PROD.OUTLOOK.COM
+ ([fe80::1d66:c349:800b:f365]) by KUZP153MB1444.APCP153.PROD.OUTLOOK.COM
+ ([fe80::1d66:c349:800b:f365%6]) with mapi id 15.20.8769.001; Sat, 17 May 2025
+ 04:37:53 +0000
+From: Saurabh Singh Sengar <ssengar@microsoft.com>
+To: "mhklinux@outlook.com" <mhklinux@outlook.com>, KY Srinivasan
+	<kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>,
+	"wei.liu@kernel.org" <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	"deller@gmx.de" <deller@gmx.de>, "javierm@redhat.com" <javierm@redhat.com>,
+	"arnd@arndb.de" <arnd@arndb.de>
+CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: RE: [EXTERNAL] [PATCH 1/1] Drivers: hv: Always select CONFIG_SYSFB
+ for Hyper-V guests
+Thread-Topic: [EXTERNAL] [PATCH 1/1] Drivers: hv: Always select CONFIG_SYSFB
+ for Hyper-V guests
+Thread-Index: AQHbxr5ySnaNfFUt8EO7pmq66j83WLPWPFMA
+Date: Sat, 17 May 2025 04:37:53 +0000
+Message-ID:
+ <KUZP153MB144472E667B0C1A421B49285BE92A@KUZP153MB1444.APCP153.PROD.OUTLOOK.COM>
+References: <20250516235820.15356-1-mhklinux@outlook.com>
+In-Reply-To: <20250516235820.15356-1-mhklinux@outlook.com>
+Accept-Language: en-IN, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=7629be49-67cd-41df-bae8-102768aa5e60;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2025-05-17T04:33:58Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Tag=10,
+ 3, 0, 1;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microsoft.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: KUZP153MB1444:EE_|SEZP153MB0792:EE_
+x-ms-office365-filtering-correlation-id: bb90a9d0-9777-442b-041d-08dd94fc965c
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|376014|1800799024|10070799003|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?bpG2xVj9CASdyHa8HFqSyLzQXwzFJjALtrHjRniTaDg4tGYu0He8BQnB4wwN?=
+ =?us-ascii?Q?ksveFeiOJPbQ4jiUxOACREoMFxpddp2fI+WDo3qPqYObGU2krKHHojJoo6Kt?=
+ =?us-ascii?Q?+ChJAZHmQSz2g78vuHo/Rav/n5wbjSUozVwFJvD6RsRKJ2fl44H0laEla37J?=
+ =?us-ascii?Q?iGlJ1dOWIbGNStZAz4J0ixmpFqrbGiKPF6TwF8kY1mtGN/lxXPkbd2rq+QVa?=
+ =?us-ascii?Q?+67w21WK22CioTWeA3fSYlZ7tp5Y3cMoqZcklxtNdK8u3pxjZbm++HQewyrB?=
+ =?us-ascii?Q?WxDTMwIzAdH2/Hl8MsT5LEGN8mc+O9G/9MKruhhbIk+zF9Ky9u3E2JkFz3z1?=
+ =?us-ascii?Q?WHZn9DcpTyQz5f6pAJxDgyMlfIey9LJuTwxnm9+cNNv+nE66x4H1QIv2z++A?=
+ =?us-ascii?Q?oAGoDB4jLHC9Ye4wZikPGBQk8KKehDRy5GkXyHx9wNJBxmsrXY/pxFI8ZDxc?=
+ =?us-ascii?Q?+SUhK2Fds1VRbcsEu/Du8TG+KwDkOQCS6vTP19PfJwZH7eTyC+TL5yAK3qEG?=
+ =?us-ascii?Q?oUfqfQdFudcQF1LPrchtM0TITNUGgrjYfLHDvyx+EPRv0sU8zDM6GUy14sHL?=
+ =?us-ascii?Q?tLefKHakANFGsVmQ7EstNtV21nEZ6adaK9ZqtHiFt0WYkYfsw+pavRu9O1x7?=
+ =?us-ascii?Q?CJAiY2YD0ByyrSyOHcJsAcoRidl0AoWDWrIXWl1zZRBIJ8iJizm2K1fOAh//?=
+ =?us-ascii?Q?wOLY5udPXIClKnteYy1Msr/chJ92FhkelF6wDbUNpBE7ew6LcZZNCtdt8ORM?=
+ =?us-ascii?Q?/INEoSIBn8/BO5pd90vyTrzpI0B41u2fMqAjkcUxZ4F1PmR1HhlNJ9PlmH//?=
+ =?us-ascii?Q?Na4Os+LOgGUW68aduKb5bVXqwHbCzRag9u1h4S/0eoZoGRXNsmTz8jLhedC1?=
+ =?us-ascii?Q?7pbY6Gu+LtfHUZfFf28GiffyZDP7lStP8nu2nl8aJb069LBwa/XbZdiC9tV2?=
+ =?us-ascii?Q?7I21rnKnXbzf5M8IrOxXTVi6tCsMSXvloKPqCdvQbOHjxH90zJZsqgOyqQJE?=
+ =?us-ascii?Q?0eLEpCgFal79uaDkNDfmGxWBglR9rMNXF5VZT+kZPgEY0bwGlO4sJr+eP9fj?=
+ =?us-ascii?Q?4oD39F8D+/SCE2hGT+KEGqlC5xVx9RwXDvYYM0Xu1rQ3Fj1ERP3yFwTXkUmc?=
+ =?us-ascii?Q?0R9XcBJRdKKU7X2nMO/w/YXfOdqy8Tvto1OVqdD3TIWcDAVMwGS6qcnmEeni?=
+ =?us-ascii?Q?uZkqW1uKCZv1obC1FGU2RlJUonsJUaWp2W4jE4M7Ct0VO59QkFnpePNwdDGD?=
+ =?us-ascii?Q?BfIhvf1xgBNB7nboazf2Mhkg/mhphxGIYIMtRVQOcPo5EH/SXl1EI+HCcHIu?=
+ =?us-ascii?Q?MedcrpfOA99xqhioLtWubuWVjscOiOp4Dcv2vkc1hwHXSRli87uGlkWeMtoO?=
+ =?us-ascii?Q?mLtIl6qYbDzUOzOMou+LDsW0CLjP2Bc9UTrpS+OZyBtRl75ZxmB5DJ7GaZ77?=
+ =?us-ascii?Q?V5++edHERYSbl6yzJBvxBEEA96MJAeUadQILmWTwSZ7ohQKj3g6u3ejWxU2A?=
+ =?us-ascii?Q?i9pEX8bSTsmI3co=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:KUZP153MB1444.APCP153.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(10070799003)(38070700018);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?hlCQIZgq4bQJfzD36ojoQ9JdFFDiz8kAuUnlUbc02HTNtsD8oCUr05s+oH52?=
+ =?us-ascii?Q?jjwkhfGdGeB0Be7TdOyN1iozMSUxJI7PAS3YnvRWVYsOZ1GdrZcjeaoMrw+B?=
+ =?us-ascii?Q?npltr/wv9ruk59Lvh+0ayx4Gr0oWRSgPtzKKldukR3Rapt/RG2KQUSvs/yK5?=
+ =?us-ascii?Q?VTKxK+2BnhOK1Y+UQuIKAxy8fLPo9GcTtQljalz/acxStmNle2v+cUSTDqKZ?=
+ =?us-ascii?Q?hVC4QBbL35urXL6QysF0EdoZJRkIU73TQICl2enZYdnyN3jQae+1VY28qqMG?=
+ =?us-ascii?Q?+gHd/zSacrZNKZQaFiSMIwW+f3UnR9XxmZgPOmpitKvv5tuHHefBf8V5VRDJ?=
+ =?us-ascii?Q?zCqU1L0qLeDZjYMDAGemttEMD9yhi57OPiR2PWuWzN4yeEBMG420m3p0Vv0s?=
+ =?us-ascii?Q?pu6hAWv1aCFZSYMLM3dmpo14gyRxfsTLWOYMLlCWo0B0OJoRCml1VeOLHiiS?=
+ =?us-ascii?Q?AL8Lj/iFoAniSfaVc5gVR1GLfChMSgOdJwV0YrQaPiTAD0DxKf15h0KgI0Ns?=
+ =?us-ascii?Q?OyEMCbdzO69IH+RaRSDlkbjlmGDPTZD+mZSYO4Z8k/kFOi/IshYFDJYSyuup?=
+ =?us-ascii?Q?gm6rPoVEobT5Gwf06CP2K2qGix7vXyVUzGAzOTJMGmWvZmpiIsuXTTYEaWhb?=
+ =?us-ascii?Q?DSpEYGBPLpHhOQ8UbLwMWsfJIVMqennRUzubDjnFimbZnsIqaeJmNzXrzNkL?=
+ =?us-ascii?Q?Mrguzj0ZXccfyWCImz8YeND76za5X8ScSUga55+YtW/2Z9A73eLBAQHgpITX?=
+ =?us-ascii?Q?jwrw+KeSAwhBGXrzpe2IAkMOYq8sAPAbstnCKMucxoJ/g+T6vALv96PxQGFt?=
+ =?us-ascii?Q?idUsSwudfeJyh2+m08/6evipL4TXK3xGHnGqPe4nYdr0p3Uj19bLAchFlJAt?=
+ =?us-ascii?Q?H6gM8c/ynF3Y40IJqZ6FhSkTOq2pEJ+BlKvtyk8m7XK+UgS/irHEa8a8zgxo?=
+ =?us-ascii?Q?D0IASBjLMGDQRxMwnS34AyFc3CtXAMnIWte8iUSeFJBFt5iVxwS5lhZNVHW/?=
+ =?us-ascii?Q?0t3rLKQmXj5gNzbxJLqsUJJfJML8TIcz8msSNTSzRZyIQHMNPZQ5TOoLrjvS?=
+ =?us-ascii?Q?/SMXFiWPzI4sCtzvRawR3RUMF7ZfnRmYq43XxVtggkd7Hpz2f4gB/QmNDx0h?=
+ =?us-ascii?Q?1YFKVN8rkww2DRiQg/uu7FqPlQH1fanOS5ggjvPsfkhT/kAQbt4iS3pdf54p?=
+ =?us-ascii?Q?w72PxBnvOZa9fVgY9+Xieae3Vjg5Rx/rgRG6pS90fhZ2Bm4pEiS7FzeU8qkH?=
+ =?us-ascii?Q?5NHA2kQSQmvMQjYr2/5OAvCwzmC8abhqkB5JAtWx2gQcUbATNyxF1lDJPxFx?=
+ =?us-ascii?Q?lh6C9BwVoFCivPBasVwedvS0euTu05yYCuABXXXAow0fBXKEzljQZlSjPcxo?=
+ =?us-ascii?Q?b+ORsndN69zg/6qTAFOk2tDmbs/YJxQpHS9coc81SDSVPdGEh59Zv4q1oL3Y?=
+ =?us-ascii?Q?1hm+iaeInIB9XDIeiOal8WGQS/YT9n7VZehT7Vrf988LlVhL2/owSIO0SinW?=
+ =?us-ascii?Q?Mk/1xkWpUKf6FIIeS0hPqzDjfxOorFySnjssCC997+2nnavgUpB8SSxXjYMV?=
+ =?us-ascii?Q?00DuCIEyczyxEfcc5x9xZo5L25q00aKxk/3A0wEP?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250515185227.1507363-1-royluo@google.com> <20250515185227.1507363-2-royluo@google.com>
- <20250515234244.tpqp375x77jh53fl@synopsys.com> <20250516083328.228813ec@foxbook>
- <CA+zupgwSVRNyf40JiDi6ugSLHX_rXkyS2=pwc9_VHsSXj4AV5g@mail.gmail.com> <20250516233829.ibffgnicnxgchbim@synopsys.com>
-In-Reply-To: <20250516233829.ibffgnicnxgchbim@synopsys.com>
-From: Roy Luo <royluo@google.com>
-Date: Fri, 16 May 2025 17:50:40 -0700
-X-Gm-Features: AX0GCFvBBIJ0tJYmNiwSeGuTL7XoFar4ZXbR5vD-1gComRSZi_wkKqrH1wZJz5I
-Message-ID: <CA+zupgz=z8A3agOh0P3Q9U=nnjys7FPhYbMt3sdV+P2v_xpXgA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] xhci: Add a quirk for full reset on removal
-To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Cc: =?UTF-8?Q?Micha=C5=82_Pecio?= <michal.pecio@gmail.com>, 
-	"mathias.nyman@intel.com" <mathias.nyman@intel.com>, 
-	"quic_ugoswami@quicinc.com" <quic_ugoswami@quicinc.com>, 
-	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, 
-	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: KUZP153MB1444.APCP153.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: bb90a9d0-9777-442b-041d-08dd94fc965c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 17 May 2025 04:37:53.1278
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: +8JNOU8gGAJZqVRIDz6i4mJNF5VcoN5t3oF7k0yD1F3BiTvnfPJIx7nu+M/DF577JZlGEdkUL1uPRELWs1JdnQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SEZP153MB0792
 
-On Fri, May 16, 2025 at 4:38=E2=80=AFPM Thinh Nguyen <Thinh.Nguyen@synopsys=
-.com> wrote:
->
-> Hi Roy, Micha=C5=82,
->
-> On Fri, May 16, 2025, Roy Luo wrote:
-> > > There's no state 0. Checking against that is odd. Couldn't we just us=
-e
-> > > xhci_handshake() equivalent instead?
-> >
-> > Ok, I will change it in the next version.
-> >
-> > On Thu, May 15, 2025 at 11:33=E2=80=AFPM Micha=C5=82 Pecio <michal.peci=
-o@gmail.com> wrote:
-> > >
-> > > On Thu, 15 May 2025 23:42:50 +0000, Thinh Nguyen wrote:
-> > > > In any case, this is basically a revert of this change:
-> > > > 6ccb83d6c497 ("usb: xhci: Implement xhci_handshake_check_state()
-> > > > helper")
-> > > >
-> > > > Can't we just revert or fix the above patch that causes a regressio=
-n?
-> > >
-> > > Also note that 6ccb83d6c497 claimed to fix actual problems, so
-> > > disabling it on selected hardware could bring the old bug back:
-> > >
-> > > > In some situations where xhci removal happens parallel to
-> > > > xhci_handshake, we encounter a scenario where the xhci_handshake
-> > > > can't succeed, and it polls until timeout.
-> > > >
-> > > > If xhci_handshake runs until timeout it can on some platforms resul=
-t
-> > > > in a long wait which might lead to a watchdog timeout.
-> >
-> > On top of this, xhci_handshake_check_state(XHCI_STATE_REMOVING)
-> > is also used elsewhere like xhci_abort_cmd_ring(), so a simple revert i=
+> From: Michael Kelley <mhklinux@outlook.com>
+>=20
+> The Hyper-V host provides guest VMs with a range of MMIO addresses that
+> guest VMBus drivers can use. The VMBus driver in Linux manages that MMIO
+> space, and allocates portions to drivers upon request. As part of managin=
+g
+> that MMIO space in a Generation 2 VM, the VMBus driver must reserve the
+> portion of the MMIO space that Hyper-V has designated for the synthetic
+> frame buffer, and not allocate this space to VMBus drivers other than gra=
+phics
+> framebuffer drivers. The synthetic frame buffer MMIO area is described by
+> the screen_info data structure that is passed to the Linux kernel at boot=
+ time,
+> so the VMBus driver must access screen_info for Generation 2 VMs. (In
+> Generation 1 VMs, the framebuffer MMIO space is communicated to the
+> guest via a PCI pseudo-device, and access to screen_info is not needed.)
+>=20
+> In commit a07b50d80ab6 ("hyperv: avoid dependency on screen_info") the
+> VMBus driver's access to screen_info is restricted to when CONFIG_SYSFB i=
 s
-> > off the table. Commit 6ccb83d6c497 did not specify which platform and
-> > in what circumstance would xhci handshake timeout, adding a quirk for
-> > DWC3 seems to be the better option here.
-> >
->
-> Regarding the commit 6ccb83d6c497, I'm assuming Udipto made the change
-> for Qcom platforms. Hi @Udipto, if you're reading this, please confirm.
->
-> Many of the Qcom platforms are using dwc3 controller. The change you
-> made here are affecting all the dwc3 DRD controllers, which has a good
-> chance to also impact the Qcom platforms.
->
-> > >
-> > > But on the other hand, xhci_handshake() has long timeouts because
-> > > the handshakes themselves can take a surprisingly long time (and
-> > > sometimes still succeed), so any reliance on handshake completing
-> > > before timeout is frankly a bug in itself.
-> >
-> > This patch simply honors the contract between the software and
-> > hardware, allowing the handshake to complete. It doesn't assume the
-> > handshake will finish on time. If it times out, then it times out and
-> > returns a failure.
-> >
->
-> As Micha=C5=82 pointed out, disregarding the xhci handshake timeout is no=
-t
-> proper. The change 6ccb83d6c497 seems to workaround some different
-> watchdog warning timeout instead of resolving the actual issue. The
-> watchdog timeout should not be less than the handshake timeout here.
->
-This makes sense, I will send out a revert of 6ccb83d6c497 then.
+> enabled. CONFIG_SYSFB is typically enabled in kernels built for Hyper-V b=
+y
+> virtue of having at least one of CONFIG_FB_EFI, CONFIG_FB_VESA, or
+> CONFIG_SYSFB_SIMPLEFB enabled, so the restriction doesn't usually affect
+> anything. But it's valid to have none of these enabled, in which case
+> CONFIG_SYSFB is not enabled, and the VMBus driver is unable to properly
+> reserve the framebuffer MMIO space for graphics framebuffer drivers. The
+> framebuffer MMIO space may be assigned to some other VMBus driver, with
+> undefined results. As an example, if a VM is using a PCI pass-thru NVMe
+> controller to host the OS disk, the PCI NVMe controller is probed before =
+any
+> graphic devices, and the NVMe controller is assigned a portion of the
+> framebuffer MMIO space.
+> Hyper-V reports an error to Linux during the probe, and the OS disk fails=
+ to
+> get setup. Then Linux fails to boot in the VM.
+>=20
+> Fix this by having CONFIG_HYPERV always select SYSFB. Then the VMBus
+> driver in a Gen 2 VM can always reserve the MMIO space for the graphics
+> framebuffer driver, and prevent the undefined behavior.
 
-Thanks,
-Roy
+One question: Shouldn't the SYSFB be selected by actual graphics framebuffe=
+r driver
+which is expected to use it. With this patch this option will be enabled ir=
+respective
+if there is any user for it or not, wondering if we can better optimize it =
+for such systems.
+
+- Saurabh
+
+<Snip>
 
