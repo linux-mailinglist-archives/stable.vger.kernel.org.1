@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-144671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E33B6ABAA2F
-	for <lists+stable@lfdr.de>; Sat, 17 May 2025 15:08:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE7EFABAA30
+	for <lists+stable@lfdr.de>; Sat, 17 May 2025 15:08:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89E021B63B5B
-	for <lists+stable@lfdr.de>; Sat, 17 May 2025 13:08:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F22616667A
+	for <lists+stable@lfdr.de>; Sat, 17 May 2025 13:08:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 608191E1A3B;
-	Sat, 17 May 2025 13:08:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E7311F4717;
+	Sat, 17 May 2025 13:08:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R1iCfchZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B2McQK9f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2140235979
-	for <stable@vger.kernel.org>; Sat, 17 May 2025 13:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2A3C35979
+	for <stable@vger.kernel.org>; Sat, 17 May 2025 13:08:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747487286; cv=none; b=NI27UN1EemdRQKV8Pi7jcGLxtT5kD6cnRGNMYSoTDngx3WocHPQ1Hjsd+yCXGahDIM/zPO0/ib4q+iRARA8OMLgCphu2l/aEAxsysHUSKevwJbyFQdu9X+afV6ncx7mEHZOjFYcy1lpIPcMNKVu6D/kyXp6tvxJGcHkszVaaBjM=
+	t=1747487288; cv=none; b=ZVadyTOExcL707VEKvr9BYaDXuYAso1tJn2H4lsGwFKoK4EXdxQmo6PIRCL7H8Fldo1GUsO3URrPwvZUrFVeW/xa5pS6DZUoAgZP2ice4pOsWHNSyk43N+xJGehyDDiCsoiS0QSohElArnEa1yMNtlCJXowTbkds0RSN2S7NrPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747487286; c=relaxed/simple;
-	bh=ChAIv5qddxcxMrZVZwpwXz8UOZZjQaXt3qZS9vus/uY=;
+	s=arc-20240116; t=1747487288; c=relaxed/simple;
+	bh=2Wez9c6dqXCKIsJKxTz7zAakNAR8pbU/1fDQgWJK+PU=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d1WGPlx5+bvb/V5+dkiJOVkMHESYWaa5FCDO/rUyWXfDlxfRQH6h6xBt56oVsMUW1ErNJZtuVrPZ/CnFm5CxZJjFULWr9kOy7Od/zh8GWW6PI0lHzfiLBtlZHRYWJrzHtPLikIJnOQLhw5I9Y6iKkp362ljE9cRq276Yb23rhJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R1iCfchZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FACFC4CEE3;
-	Sat, 17 May 2025 13:08:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Hn9IazefJNCMyYjqdvdxyYBKvLZD0JlcwU7jA5NdJfJjHvghr6tYS8mFvJvSeYC+Ul/F6hSh0Xi0ji5LJ6O6y5xEwz8VJ+X2AoOWFloTjl8gYh0pIQnPynDLm2ccP4JwE28AjS3kif0jRSucacqqtIsIFQDDjleVHt7qVhEiUjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B2McQK9f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02789C4CEED;
+	Sat, 17 May 2025 13:08:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747487285;
-	bh=ChAIv5qddxcxMrZVZwpwXz8UOZZjQaXt3qZS9vus/uY=;
+	s=k20201202; t=1747487287;
+	bh=2Wez9c6dqXCKIsJKxTz7zAakNAR8pbU/1fDQgWJK+PU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R1iCfchZ4PLDcxMHla2PZZhTg7slJ2QPzpMZXwtSIXNgXyTBuT1Rf5OiDWQg8neXs
-	 Vo2wIcFU7X2HY3GwCCjxoDgzk4hex+V9lNE5DuHZ1aR6IxsH/HlSEifsC1oVO1yR12
-	 pJ5aRcnehbjRvj/DVD0xHg/Q7KW4fxIWsaxTjpJQaJXBDsUOFaPrBdsxKy8jTmRrSn
-	 +PRsbhUY2M2b+9HU2QDBQyfQ+ePqHuof4YRYgJ99zqcCYRy2Uqia6F3NNc0Kzu8+cx
-	 6YKlqYJYDiJBEM3DEuwUlkVW/DOVq+ezBXov8AB5KRn3KqEzV1XhiRS6942U13UOBj
-	 vASmZ3IHHJpmw==
+	b=B2McQK9fb9Go1WK5gPKdbewhE/o6KOPy5piGkz4SjcGvQ35EvZpzxXSPXuD59B2FP
+	 Kp1lbsNZDBuluwu3UPy1CSnbt/GdgMJU1bc76ATxj+vQ1c85QIRQzxd7KnbBHmfJBk
+	 51h/b/K2419ZvKgP1bmQz7Hnn6nWgnOiYXltZIyAA39ct5RsjR9JM7DNRqmv1JR6A9
+	 rsWeZrOJ6FjomZQ2/WT6bntGXqGExblI9QbIpL+73hg/Y2fuk3QsLowfB9xbof4goa
+	 BzaNVHbuhCfovktCfstNhdjMzmfStimbYZDq7+wOJXcJP687Bpa0sQnPqY/mQAkMqG
+	 n8sAJt/mEwLEQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+Cc: Luca Ceresoli <luca.ceresoli@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.15 v3 02/16] x86/speculation: Simplify and make CALL_NOSPEC consistent
-Date: Sat, 17 May 2025 09:08:03 -0400
-Message-Id: <20250516212425-49b09642bb00be4a@stable.kernel.org>
+Subject: Re: [PATCH 6.12.y v2] iio: light: opt3001: fix deadlock due to concurrent flag access
+Date: Sat, 17 May 2025 09:08:05 -0400
+Message-Id: <20250516211535-9c2dbd3945cf02a6@stable.kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To:  <20250516-its-5-15-v3-2-16fcdaaea544@linux.intel.com>
+In-Reply-To:  <20250516184154.5622-1-luca.ceresoli@bootlin.com>
 References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,65 +67,45 @@ Hi,
 ✅ All tests passed successfully. No issues detected.
 No action required from the submitter.
 
-The upstream commit SHA1 provided is correct: cfceff8526a426948b53445c02bcb98453c7330d
+The upstream commit SHA1 provided is correct: f063a28002e3350088b4577c5640882bf4ea17ea
 
 Status in newer kernel trees:
-6.14.y | Present (different SHA1: 010c4a461c1d)
-6.12.y | Present (different SHA1: ca16a0acacd7)
-6.6.y | Present (different SHA1: ffe12f8aa62c)
-6.1.y | Present (different SHA1: 7f6da764325a)
+6.14.y | Present (different SHA1: 3950887ff9a9)
 
 Note: The patch differs from the upstream commit:
 ---
-1:  cfceff8526a42 ! 1:  cf7360bfe0353 x86/speculation: Simplify and make CALL_NOSPEC consistent
+1:  f063a28002e33 ! 1:  99a94f9f0a69a iio: light: opt3001: fix deadlock due to concurrent flag access
     @@ Metadata
       ## Commit message ##
-         x86/speculation: Simplify and make CALL_NOSPEC consistent
+         iio: light: opt3001: fix deadlock due to concurrent flag access
      
-    +    commit cfceff8526a426948b53445c02bcb98453c7330d upstream.
+    +    [ Upstream commit f063a28002e3350088b4577c5640882bf4ea17ea ]
     +
-         CALL_NOSPEC macro is used to generate Spectre-v2 mitigation friendly
-         indirect branches. At compile time the macro defaults to indirect branch,
-         and at runtime those can be patched to thunk based mitigations.
+         The threaded IRQ function in this driver is reading the flag twice: once to
+         lock a mutex and once to unlock it. Even though the code setting the flag
+         is designed to prevent it, there are subtle cases where the flag could be
     @@ Commit message
-         calls.
+         Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+         Link: https://patch.msgid.link/20250321-opt3001-irq-fix-v1-1-6c520d851562@bootlin.com
+         Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+    +    (cherry picked from commit f063a28002e3350088b4577c5640882bf4ea17ea)
+    +    [Fixed conflict while applying on 6.12]
+    +    Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
      
-         Make CALL_NOSPEC consistent with the rest of the kernel, default to
-    -    retpoline thunk at compile time when CONFIG_MITIGATION_RETPOLINE is
-    +    retpoline thunk at compile time when CONFIG_RETPOLINE is
-         enabled.
-     
-    +      [ pawan: s/CONFIG_MITIGATION_RETPOLINE/CONFIG_RETPOLINE/ ]
-    +
-         Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-         Signed-off-by: Ingo Molnar <mingo@kernel.org>
-         Cc: Andrew Cooper <andrew.cooper3@citrix.com
-    @@ Commit message
-         Link: https://lore.kernel.org/r/20250228-call-nospec-v3-1-96599fed0f33@linux.intel.com
-     
-      ## arch/x86/include/asm/nospec-branch.h ##
-    -@@ arch/x86/include/asm/nospec-branch.h: static inline void call_depth_return_thunk(void) {}
-    +@@ arch/x86/include/asm/nospec-branch.h: extern retpoline_thunk_t __x86_indirect_thunk_array[];
-       * Inline asm uses the %V modifier which is only in newer GCC
-    -  * which is ensured when CONFIG_MITIGATION_RETPOLINE is defined.
-    +  * which is ensured when CONFIG_RETPOLINE is defined.
-       */
-     -# define CALL_NOSPEC						\
-     -	ALTERNATIVE_2(						\
-    @@ arch/x86/include/asm/nospec-branch.h: static inline void call_depth_return_thunk
-     -	ANNOTATE_RETPOLINE_SAFE					\
-     -	"call *%[thunk_target]\n",				\
-     -	X86_FEATURE_RETPOLINE_LFENCE)
-    -+#ifdef CONFIG_MITIGATION_RETPOLINE
-    ++#ifdef CONFIG_RETPOLINE
-     +#define CALL_NOSPEC	"call __x86_indirect_thunk_%V[thunk_target]\n"
-     +#else
-     +#define CALL_NOSPEC	"call *%[thunk_target]\n"
+      ## drivers/iio/light/opt3001.c ##
+     @@ drivers/iio/light/opt3001.c: static irqreturn_t opt3001_irq(int irq, void *_iio)
+    + 	struct opt3001 *opt = iio_priv(iio);
+      	int ret;
+      	bool wake_result_ready_queue = false;
+    - 	enum iio_chan_type chan_type = opt->chip_info->chan_type;
+     +	bool ok_to_ignore_lock = opt->ok_to_ignore_lock;
+      
+     -	if (!opt->ok_to_ignore_lock)
 ---
 
 Results of testing on various branches:
 
 | Branch                    | Patch Apply | Build Test |
 |---------------------------|-------------|------------|
-| stable/linux-6.1.y        |  Success    |  Success   |
+| stable/linux-6.12.y       |  Success    |  Success   |
 
