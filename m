@@ -1,72 +1,74 @@
-Return-Path: <stable+bounces-144645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E875ABA6D4
-	for <lists+stable@lfdr.de>; Sat, 17 May 2025 02:00:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47A55ABA6D6
+	for <lists+stable@lfdr.de>; Sat, 17 May 2025 02:00:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE0BF1BC3053
-	for <lists+stable@lfdr.de>; Sat, 17 May 2025 00:00:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31670A23BF7
+	for <lists+stable@lfdr.de>; Sat, 17 May 2025 00:00:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B42B34CDD;
-	Sat, 17 May 2025 00:00:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE087208D0;
+	Sat, 17 May 2025 00:00:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CIFVbDxJ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CiFO8vao"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 644F4A47
-	for <stable@vger.kernel.org>; Sat, 17 May 2025 00:00:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB03A47
+	for <stable@vger.kernel.org>; Sat, 17 May 2025 00:00:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747440018; cv=none; b=ZKU+Ih/l1KcoFaS8GrGJThQTX9sqzcrk94mcpUBfHntbW7Or2BbifsCD8deBf2JJu2lrmXPezkA2g01M2/7Xn8LxND7u9s4Nc+fXli/rPWhh7L87C4q9+9KCJDd3mobuvS+Xx15XDSlNV1G4707PCcANmmFjvIGbyJ7lqklmpv8=
+	t=1747440043; cv=none; b=fInf6onk+dD/HvPbVK1HV/YrhuJPk1lLKdT4NGcdR4BeCXyqy06A99Z7zhCPgv+xqzSy0KMk3ZyRc9VOZnKOZ1gjC4sE0t7BpBvLDyYEi1Iu32GZTgm+9SvaBEqrJX+MtPB8ci1Jnrp3VDH4egLOKWe1aUgnW+dDSEWMHoIRMQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747440018; c=relaxed/simple;
-	bh=+/YI0S18jPqJopaQprHR1V3MNh1pHtctH4ctgknaW5c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f2xMUgQcYFg/nHtb6wk5R8LaTze/jSGTXEg6pxuvuA696wH7Uqr/TQTr4QPpvq1qpGdDIrnNtwCI8OLg42FIy5tzEjbnNGvzlk6A0UWKMzJ+OdJ3z6Nj3jp/8aPpGMQakVLA5HafvuXWqLgLsm1MhngSqZEGX/hPjxf2YpRm9tA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CIFVbDxJ; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1747440043; c=relaxed/simple;
+	bh=9tw4MfudjKnpiqwmPcods5XpkbREKqLBsvfX5UK4pns=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=n7+mbA8e3rf164naKL0uYkgq0PQLeSfh8X5yKF5JHA/i7iOBHRcHn9qiBnqIy+Tgz1BH84KSdZWoTEJLKvU3HV1v3Yd8uT+fXG/YdowYYbfxJo07TNDu82U2QrVFLazCyRugJxOaiJ8U1JfESUqJki5XAHxOV96SshGr6cNKdYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CiFO8vao; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747440017; x=1778976017;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=+/YI0S18jPqJopaQprHR1V3MNh1pHtctH4ctgknaW5c=;
-  b=CIFVbDxJq3zBDjsmZ7C7howCTDfKpjl+1+Ga2ojjz3mIs+UDq4w/ICFe
-   YVvUc2rZWiNB6BCJ4dxD/a4nTday2zuTqYGLxHJqoyej/TCSt2XdtQgVN
-   kdulA++v5vpayFNHm7D/trlppVF2OZ1HNjO6e0oYKbzj9X2KueZyYNkuU
-   TrehGKQU7UYCRW5lgUXeyuE1cAGFgOHcZy12d0/cXYrLXRWJeC2P1Jfzk
-   xEFlcp6PGxC4SZvuF3n0Zi/0hf6D2TaVtCi8Vm2VXCDFOTQ5WhFJ37MNa
-   IHjiMR6MDUMffsQWJN/gFvf/9ZH+h6Wf2F6Ee2QtGGvyycTaRDI+O3gnR
-   A==;
-X-CSE-ConnectionGUID: DOUuw0NnQVCeU5Emh4R6MQ==
-X-CSE-MsgGUID: eRk/RaHtRZikhA39Iat3Fg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11435"; a="74822835"
+  t=1747440041; x=1778976041;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=9tw4MfudjKnpiqwmPcods5XpkbREKqLBsvfX5UK4pns=;
+  b=CiFO8vao7S9jMvK/wUEPgGm+gKbUQr8OwQP6Ke3/yw3MgQs91uMu7ERH
+   096Vh1Bcq7kCJrqx/F78CMqUdmj+PE0/AszXRh85aRpOwYMbS+1XsVyq+
+   Omd9X1OVCw9LkhfN5TrX8OUwQdvAYNXo0i2yNlA2aOYdZBRDrE8wisAqo
+   qF6cY5vOmp9n/xzUP7aAbDe7QKFTbgPZ7SanonQQ0zwTkinRfkfIr4pRb
+   LNyq9Lh749HhyOchsUSRLE3UmD2zM3Mr2nHlpL1agkm1Ifg/d8dMgv/7O
+   FuTnukTY+GUp5JBArjFwo1SxIMR+iZtvttRx/mtIKzHOBHGfi7KgkBxf+
+   w==;
+X-CSE-ConnectionGUID: LTIeSL7mQW6ZxOAJVl+Wyg==
+X-CSE-MsgGUID: PD+sZidcQHCW6hLQeXQEdQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11435"; a="49531091"
 X-IronPort-AV: E=Sophos;i="6.15,295,1739865600"; 
-   d="scan'208";a="74822835"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2025 17:00:15 -0700
-X-CSE-ConnectionGUID: U0gKScfVRMugOSU4vpUGvw==
-X-CSE-MsgGUID: O+mGEUYMTS2DbpG09oMk6w==
+   d="scan'208";a="49531091"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2025 17:00:41 -0700
+X-CSE-ConnectionGUID: fqMCVoNPQdW/YeCvP1PEDA==
+X-CSE-MsgGUID: 7nGddxJpTvWi5CiYIVo3Ug==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,295,1739865600"; 
-   d="scan'208";a="138883131"
-Received: from yzhou16-mobl1.amr.corp.intel.com (HELO desk) ([10.125.146.16])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2025 17:00:15 -0700
-Date: Fri, 16 May 2025 17:00:15 -0700
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: stable@vger.kernel.org
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>
-Subject: [PATCH 5.15 v3 03/16] x86/speculation: Add a conditional CS prefix
- to CALL_NOSPEC
-Message-ID: <20250516-its-5-15-v3-3-16fcdaaea544@linux.intel.com>
-X-Mailer: b4 0.14.2
-References: <20250516-its-5-15-v3-0-16fcdaaea544@linux.intel.com>
+   d="scan'208";a="143705384"
+Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
+  by fmviesa005.fm.intel.com with ESMTP; 16 May 2025 17:00:40 -0700
+Received: from kbuild by 1992f890471c with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1uG4yk-000Jnf-0y;
+	Sat, 17 May 2025 00:00:38 +0000
+Date: Sat, 17 May 2025 08:00:28 +0800
+From: kernel test robot <lkp@intel.com>
+To: mhkelley58@gmail.com
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH 1/1] Drivers: hv: Always select CONFIG_SYSFB for Hyper-V
+ guests
+Message-ID: <aCfRnBTuKB19578m@8c81029db2be>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -75,75 +77,24 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250516-its-5-15-v3-0-16fcdaaea544@linux.intel.com>
+In-Reply-To: <20250516235820.15356-1-mhklinux@outlook.com>
 
-commit 052040e34c08428a5a388b85787e8531970c0c67 upstream.
+Hi,
 
-Retpoline mitigation for spectre-v2 uses thunks for indirect branches. To
-support this mitigation compilers add a CS prefix with
--mindirect-branch-cs-prefix. For an indirect branch in asm, this needs to
-be added manually.
+Thanks for your patch.
 
-CS prefix is already being added to indirect branches in asm files, but not
-in inline asm. Add CS prefix to CALL_NOSPEC for inline asm as well. There
-is no JMP_NOSPEC for inline asm.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-Reported-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Andrew Cooper <andrew.cooper3@citrix.com
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250228-call-nospec-v3-2-96599fed0f33@linux.intel.com
----
- arch/x86/include/asm/nospec-branch.h | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
-index 031a38366b0dd1e35a82e49d6b18147ada7dd80c..9b16113687e21e0a272ec2fa13b7f144efe833a7 100644
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -119,9 +119,8 @@
- .endm
- 
- /*
-- * Equivalent to -mindirect-branch-cs-prefix; emit the 5 byte jmp/call
-- * to the retpoline thunk with a CS prefix when the register requires
-- * a RAX prefix byte to encode. Also see apply_retpolines().
-+ * Emits a conditional CS prefix that is compatible with
-+ * -mindirect-branch-cs-prefix.
-  */
- .macro __CS_PREFIX reg:req
- 	.irp rs,r8,r9,r10,r11,r12,r13,r14,r15
-@@ -281,12 +280,24 @@ extern retpoline_thunk_t __x86_indirect_thunk_array[];
- 
- #ifdef CONFIG_X86_64
- 
-+/*
-+ * Emits a conditional CS prefix that is compatible with
-+ * -mindirect-branch-cs-prefix.
-+ */
-+#define __CS_PREFIX(reg)				\
-+	".irp rs,r8,r9,r10,r11,r12,r13,r14,r15\n"	\
-+	".ifc \\rs," reg "\n"				\
-+	".byte 0x2e\n"					\
-+	".endif\n"					\
-+	".endr\n"
-+
- /*
-  * Inline asm uses the %V modifier which is only in newer GCC
-  * which is ensured when CONFIG_RETPOLINE is defined.
-  */
- #ifdef CONFIG_RETPOLINE
--#define CALL_NOSPEC	"call __x86_indirect_thunk_%V[thunk_target]\n"
-+#define CALL_NOSPEC	__CS_PREFIX("%V[thunk_target]")	\
-+			"call __x86_indirect_thunk_%V[thunk_target]\n"
- #else
- #define CALL_NOSPEC	"call *%[thunk_target]\n"
- #endif
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH 1/1] Drivers: hv: Always select CONFIG_SYSFB for Hyper-V guests
+Link: https://lore.kernel.org/stable/20250516235820.15356-1-mhklinux%40outlook.com
 
 -- 
-2.34.1
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
 
 
 
