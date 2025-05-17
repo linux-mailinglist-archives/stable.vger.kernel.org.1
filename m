@@ -1,74 +1,71 @@
-Return-Path: <stable+bounces-144647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47A55ABA6D6
-	for <lists+stable@lfdr.de>; Sat, 17 May 2025 02:00:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 162CAABA6D5
+	for <lists+stable@lfdr.de>; Sat, 17 May 2025 02:00:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31670A23BF7
-	for <lists+stable@lfdr.de>; Sat, 17 May 2025 00:00:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC445A23A1B
+	for <lists+stable@lfdr.de>; Sat, 17 May 2025 00:00:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE087208D0;
-	Sat, 17 May 2025 00:00:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06214101C8;
+	Sat, 17 May 2025 00:00:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CiFO8vao"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Lke/M/je"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB03A47
-	for <stable@vger.kernel.org>; Sat, 17 May 2025 00:00:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 599794B1E7A
+	for <stable@vger.kernel.org>; Sat, 17 May 2025 00:00:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747440043; cv=none; b=fInf6onk+dD/HvPbVK1HV/YrhuJPk1lLKdT4NGcdR4BeCXyqy06A99Z7zhCPgv+xqzSy0KMk3ZyRc9VOZnKOZ1gjC4sE0t7BpBvLDyYEi1Iu32GZTgm+9SvaBEqrJX+MtPB8ci1Jnrp3VDH4egLOKWe1aUgnW+dDSEWMHoIRMQ0=
+	t=1747440033; cv=none; b=Ih4cdwe25eG98fps0jRriNgYcY8kfNwOyeftGgdRPyQUX9SemmE49SQpcTEH/Anu6QjdREzk9thYigCK+CnOFWNgGZAJuEa83xRN1yp4FHRaqilPtPZUa6bzsHLOOqRT0KRpaZBGFtfk8Bqp2FQx/PqIQy8M95HVCtXycoR+PJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747440043; c=relaxed/simple;
-	bh=9tw4MfudjKnpiqwmPcods5XpkbREKqLBsvfX5UK4pns=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=n7+mbA8e3rf164naKL0uYkgq0PQLeSfh8X5yKF5JHA/i7iOBHRcHn9qiBnqIy+Tgz1BH84KSdZWoTEJLKvU3HV1v3Yd8uT+fXG/YdowYYbfxJo07TNDu82U2QrVFLazCyRugJxOaiJ8U1JfESUqJki5XAHxOV96SshGr6cNKdYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CiFO8vao; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1747440033; c=relaxed/simple;
+	bh=XlTJbiueJinftVairJQROOU7wHnezx25T+4wD+M7otY=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jnHJsGuzeqd/oYTVTWiAJl1j0cn3zz5MRr6111RDiPcpBcTl78YTWa9/vHCGcwY/7fLMh5M6tF2xplUqniwcPNYMnL0BQrJJ5ofPktqq2RUjl/ygPg+xb+nAlc9zaN97N2bFHWmnHunJOmSrjdSHbBGlkWNnfvJmUzb0nwxaEtc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Lke/M/je; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747440041; x=1778976041;
-  h=date:from:to:cc:subject:message-id:mime-version:
+  t=1747440032; x=1778976032;
+  h=date:from:to:subject:message-id:references:mime-version:
    in-reply-to;
-  bh=9tw4MfudjKnpiqwmPcods5XpkbREKqLBsvfX5UK4pns=;
-  b=CiFO8vao7S9jMvK/wUEPgGm+gKbUQr8OwQP6Ke3/yw3MgQs91uMu7ERH
-   096Vh1Bcq7kCJrqx/F78CMqUdmj+PE0/AszXRh85aRpOwYMbS+1XsVyq+
-   Omd9X1OVCw9LkhfN5TrX8OUwQdvAYNXo0i2yNlA2aOYdZBRDrE8wisAqo
-   qF6cY5vOmp9n/xzUP7aAbDe7QKFTbgPZ7SanonQQ0zwTkinRfkfIr4pRb
-   LNyq9Lh749HhyOchsUSRLE3UmD2zM3Mr2nHlpL1agkm1Ifg/d8dMgv/7O
-   FuTnukTY+GUp5JBArjFwo1SxIMR+iZtvttRx/mtIKzHOBHGfi7KgkBxf+
-   w==;
-X-CSE-ConnectionGUID: LTIeSL7mQW6ZxOAJVl+Wyg==
-X-CSE-MsgGUID: PD+sZidcQHCW6hLQeXQEdQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11435"; a="49531091"
+  bh=XlTJbiueJinftVairJQROOU7wHnezx25T+4wD+M7otY=;
+  b=Lke/M/jeQ3cDQv3mVq5qOfCMntD5I20IaTN+KWxfF4ZPddIQfilRNYVc
+   5C59g1ejYgI5oDmKzoQ5vjkRyA/OTKb6ldxcnNbxElUJUBhJJ4y39EA4c
+   jgIjQYiE/Psh/xIBM7k1FgYAk8xCWD9+awXVUZKyeSM3aW7cQNyx6+JY2
+   oB/J3A29WgQ4cQaiNyYblOiPhC4pvNXCcWP8OtmwuS9PKORyu0MT4z1b2
+   7sqiPTqCageMoex/yMtuwRHBNlXPIb2N78qErGqo9yfxSNqC+S9BEDIM4
+   Z+0RL/tMDWkpSi2/0a2VVzc46k0Jekvjewhs8CJYInDiqPRD7zBNw0+ak
+   A==;
+X-CSE-ConnectionGUID: 1VudQbgYSranv9I86FSbbw==
+X-CSE-MsgGUID: JXavXzYeQyOQCAkjGqk3dg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11435"; a="37043613"
 X-IronPort-AV: E=Sophos;i="6.15,295,1739865600"; 
-   d="scan'208";a="49531091"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2025 17:00:41 -0700
-X-CSE-ConnectionGUID: fqMCVoNPQdW/YeCvP1PEDA==
-X-CSE-MsgGUID: 7nGddxJpTvWi5CiYIVo3Ug==
+   d="scan'208";a="37043613"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2025 17:00:31 -0700
+X-CSE-ConnectionGUID: awSyEuipTTmPOuXdbOGFkw==
+X-CSE-MsgGUID: NnFXtdvLQIyxcMqgGBO5IA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,295,1739865600"; 
-   d="scan'208";a="143705384"
-Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
-  by fmviesa005.fm.intel.com with ESMTP; 16 May 2025 17:00:40 -0700
-Received: from kbuild by 1992f890471c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uG4yk-000Jnf-0y;
-	Sat, 17 May 2025 00:00:38 +0000
-Date: Sat, 17 May 2025 08:00:28 +0800
-From: kernel test robot <lkp@intel.com>
-To: mhkelley58@gmail.com
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 1/1] Drivers: hv: Always select CONFIG_SYSFB for Hyper-V
- guests
-Message-ID: <aCfRnBTuKB19578m@8c81029db2be>
+   d="scan'208";a="139851343"
+Received: from yzhou16-mobl1.amr.corp.intel.com (HELO desk) ([10.125.146.16])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2025 17:00:31 -0700
+Date: Fri, 16 May 2025 17:00:30 -0700
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: stable@vger.kernel.org
+Subject: [PATCH 5.15 v3 04/16] x86/speculation: Remove the extra #ifdef
+ around CALL_NOSPEC
+Message-ID: <20250516-its-5-15-v3-4-16fcdaaea544@linux.intel.com>
+X-Mailer: b4 0.14.2
+References: <20250516-its-5-15-v3-0-16fcdaaea544@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,24 +74,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250516235820.15356-1-mhklinux@outlook.com>
+In-Reply-To: <20250516-its-5-15-v3-0-16fcdaaea544@linux.intel.com>
 
-Hi,
+commit c8c81458863ab686cda4fe1e603fccaae0f12460 upstream.
 
-Thanks for your patch.
+Commit:
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+  010c4a461c1d ("x86/speculation: Simplify and make CALL_NOSPEC consistent")
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+added an #ifdef CONFIG_RETPOLINE around the CALL_NOSPEC definition. This is
+not required as this code is already under a larger #ifdef.
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH 1/1] Drivers: hv: Always select CONFIG_SYSFB for Hyper-V guests
-Link: https://lore.kernel.org/stable/20250516235820.15356-1-mhklinux%40outlook.com
+Remove the extra #ifdef, no functional change.
+
+vmlinux size remains same before and after this change:
+
+ CONFIG_RETPOLINE=y:
+      text       data        bss         dec        hex    filename
+  25434752    7342290    2301212    35078254    217406e    vmlinux.before
+  25434752    7342290    2301212    35078254    217406e    vmlinux.after
+
+ # CONFIG_RETPOLINE is not set:
+      text       data        bss         dec        hex    filename
+  22943094    6214994    1550152    30708240    1d49210    vmlinux.before
+  22943094    6214994    1550152    30708240    1d49210    vmlinux.after
+
+  [ pawan: s/CONFIG_MITIGATION_RETPOLINE/CONFIG_RETPOLINE/ ]
+
+Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Link: https://lore.kernel.org/r/20250320-call-nospec-extra-ifdef-v1-1-d9b084d24820@linux.intel.com
+---
+ arch/x86/include/asm/nospec-branch.h | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
+index 9b16113687e21e0a272ec2fa13b7f144efe833a7..79f51824fad3938032bd994709e46f1171c1b70c 100644
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -295,12 +295,8 @@ extern retpoline_thunk_t __x86_indirect_thunk_array[];
+  * Inline asm uses the %V modifier which is only in newer GCC
+  * which is ensured when CONFIG_RETPOLINE is defined.
+  */
+-#ifdef CONFIG_RETPOLINE
+ #define CALL_NOSPEC	__CS_PREFIX("%V[thunk_target]")	\
+ 			"call __x86_indirect_thunk_%V[thunk_target]\n"
+-#else
+-#define CALL_NOSPEC	"call *%[thunk_target]\n"
+-#endif
+ 
+ # define THUNK_TARGET(addr) [thunk_target] "r" (addr)
+ 
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
+2.34.1
 
 
 
