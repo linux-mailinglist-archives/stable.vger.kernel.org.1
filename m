@@ -1,71 +1,70 @@
-Return-Path: <stable+bounces-144656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0368AABA6E1
-	for <lists+stable@lfdr.de>; Sat, 17 May 2025 02:02:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F347AABA6E2
+	for <lists+stable@lfdr.de>; Sat, 17 May 2025 02:03:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E47A4C0117
-	for <lists+stable@lfdr.de>; Sat, 17 May 2025 00:02:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83E734C0153
+	for <lists+stable@lfdr.de>; Sat, 17 May 2025 00:03:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5A9110F9;
-	Sat, 17 May 2025 00:02:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 818221367;
+	Sat, 17 May 2025 00:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FzW8h0HF"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mD9hEmVF"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC0601FC8
-	for <stable@vger.kernel.org>; Sat, 17 May 2025 00:02:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD39E10E0
+	for <stable@vger.kernel.org>; Sat, 17 May 2025 00:03:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747440173; cv=none; b=Iw4LkR4WV+y6SwoN1U7fNGsbDIUHILPL6kXy3SPXJQLSbwDAAfbzRttPKgCKmnKqibiJkjk2g+8YS6GitluJ60ZS44/7x8la3ckFP5kJ4jsq5so92S1ruawaW0/1lIiSg9BRFJ/ZnPyEs7ogODx2pbqE3CtDqGVTOHWGCbe8NAc=
+	t=1747440189; cv=none; b=NEZ5c+74mU6nzeC5+wfpHqrwTv1L2V0BqZc24/D0vWpGBBbvvFFmgk606VNyPBZrmArtN87oySm74cDwbJkBr3DuNCCxVRLckNeT3ike9EZLIbbs6TQd9Z0X1zeXfVsbB4wCMtNRkFI9o2riuq+M++qnASBaSVSncJXmO5BrAyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747440173; c=relaxed/simple;
-	bh=5NHavNtv3RDzqddKQnuU7SaWRGOTdW6NWDh6TE4/ft8=;
+	s=arc-20240116; t=1747440189; c=relaxed/simple;
+	bh=IJOqEn0K5+Hwu+RAQ4qWqkOCtGbhzsRfq1cSi7XcUHI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ip9fk9MbPleAd2HEQvtLyVoZ4d81VoMUadjlNn/YY0aLxcjXXnhlmncmJLGBsXeL7qiBXvnA9e/yF2J16kGGJgYxGSeZVIocwukGIcyLZprgns5jXlq6Jhxk+ujO5ttDzAC4T3ARRPssSzZp6ahE5wZhJBV0AgJ6NcIaOlIjedA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FzW8h0HF; arc=none smtp.client-ip=192.198.163.7
+	 Content-Type:Content-Disposition:In-Reply-To; b=g159VVFbiZh4aL/NqA4mAfbV0KWX9LQ8YOPbC1t8eX3oe8ZsNitpr8/Sg3VXVWESRABkVhDzJ0bgylAMAd020RGU2n2+QlTCN/2i6aKNbAjiuE7pE1R5tAKgu5qEK8hHZIgp2mv00GH4HotflMc8Cp/A9cLuiJrcopvAg261B08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mD9hEmVF; arc=none smtp.client-ip=192.198.163.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747440172; x=1778976172;
+  t=1747440188; x=1778976188;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=5NHavNtv3RDzqddKQnuU7SaWRGOTdW6NWDh6TE4/ft8=;
-  b=FzW8h0HF2n/Zm4Zcwuqv+9nDRj5oLx/DLZWyDRqfmvC85MeEqlHpdqY7
-   9a787eDKA5c+B6G9PDOyzDPA6LFzv8zOuTpteyqFADDPm5AajoerNAHRt
-   Dpa1AStjurRuLUgO2KPpZyazAaRN6Fbn5rTcxfQr4OeWduKnltIKnvyc4
-   m3I5mWOIz/wJ8Vb6doRmk31JxF3PRYGJbqlES1nykDwD285KtTvBQdUrv
-   ExXEptmJKLmeXtR+urzU7lEgyP0ZW/+1r/SxAwS2vnYB7pIkhTU+TPOMq
-   AE4/cZJ2yJ2vSuKqaIBbNXA8s57Kb5aVkkNWXpRI9jx8cqz94paHCb0SR
+  bh=IJOqEn0K5+Hwu+RAQ4qWqkOCtGbhzsRfq1cSi7XcUHI=;
+  b=mD9hEmVFsIR21flaI3cUeqVjkRzbv+/W2K7eqjTDFwpFK4cTikbdtO30
+   0lnjsHdsvvk/P8B2wsQymYcN90rXum8jmp6V2of1zIa4UNgfOuItERMNL
+   ZM7yTpr455BYxWwdqphElLyQ7RtzqtyeYgRUsoKOI9RIX/eIAlPyDkA5q
+   oq6AzypJD8Wpbw/NSfZPb8g+3znsv7MbPOJ3xwxyNTGwjUL9+pqLrNOZd
+   jgpLICWaizlWw15pFu31EWVyxMwijABsEVvYlkcR+8B3QBtkxf5ca8rsu
+   Lt26T4GpZ3Vy1AxdiNwPbJi9juVmxppZK11SG7DQiUlg2l0vIemQzw2FX
    A==;
-X-CSE-ConnectionGUID: Berl69eGSF2fJKG6HHR4Og==
-X-CSE-MsgGUID: AEPzz9F4TfioJN9AgsB0hw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11435"; a="74823072"
+X-CSE-ConnectionGUID: g7n29GaGSBS5D+2/0zCnMA==
+X-CSE-MsgGUID: yPFmoAaMSPulk5ilQZZgUg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11435"; a="49563553"
 X-IronPort-AV: E=Sophos;i="6.15,295,1739865600"; 
-   d="scan'208";a="74823072"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2025 17:02:51 -0700
-X-CSE-ConnectionGUID: 4SefhkgFSHaaQn2VY4U+yA==
-X-CSE-MsgGUID: yeH10qjMQ8uacsbU7A5AQw==
+   d="scan'208";a="49563553"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2025 17:03:07 -0700
+X-CSE-ConnectionGUID: wx5iEzbzRUOCOIXLXM2Vmw==
+X-CSE-MsgGUID: GPawnWmWRgqeDFspg1qNdg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,295,1739865600"; 
-   d="scan'208";a="138883598"
+   d="scan'208";a="139324579"
 Received: from yzhou16-mobl1.amr.corp.intel.com (HELO desk) ([10.125.146.16])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2025 17:02:51 -0700
-Date: Fri, 16 May 2025 17:02:50 -0700
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 May 2025 17:03:07 -0700
+Date: Fri, 16 May 2025 17:03:06 -0700
 From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 To: stable@vger.kernel.org
-Cc: Andrew Cooper <andrew.cooper3@citrix.com>,
-	Alexandre Chartre <alexandre.chartre@oracle.com>
-Subject: [PATCH 5.15 v3 13/16] x86/its: Align RETs in BHB clear sequence to
- avoid thunking
-Message-ID: <20250516-its-5-15-v3-13-16fcdaaea544@linux.intel.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Subject: [PATCH 5.15 v3 14/16] x86/its: Use dynamic thunks for indirect
+ branches
+Message-ID: <20250516-its-5-15-v3-14-16fcdaaea544@linux.intel.com>
 X-Mailer: b4 0.14.2
 References: <20250516-its-5-15-v3-0-16fcdaaea544@linux.intel.com>
 Precedence: bulk
@@ -78,100 +77,271 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20250516-its-5-15-v3-0-16fcdaaea544@linux.intel.com>
 
-commit f0cd7091cc5a032c8870b4285305d9172569d126 upstream.
+From: Peter Zijlstra <peterz@infradead.org>
 
-The software mitigation for BHI is to execute BHB clear sequence at syscall
-entry, and possibly after a cBPF program. ITS mitigation thunks RETs in the
-lower half of the cacheline. This causes the RETs in the BHB clear sequence
-to be thunked as well, adding unnecessary branches to the BHB clear
-sequence.
+commit 872df34d7c51a79523820ea6a14860398c639b87 upstream.
 
-Since the sequence is in hot path, align the RET instructions in the
-sequence to avoid thunking.
+ITS mitigation moves the unsafe indirect branches to a safe thunk. This
+could degrade the prediction accuracy as the source address of indirect
+branches becomes same for different execution paths.
 
-This is how disassembly clear_bhb_loop() looks like after this change:
+To improve the predictions, and hence the performance, assign a separate
+thunk for each indirect callsite. This is also a defense-in-depth measure
+to avoid indirect branches aliasing with each other.
 
-   0x44 <+4>:     mov    $0x5,%ecx
-   0x49 <+9>:     call   0xffffffff81001d9b <clear_bhb_loop+91>
-   0x4e <+14>:    jmp    0xffffffff81001de5 <clear_bhb_loop+165>
-   0x53 <+19>:    int3
-   ...
-   0x9b <+91>:    call   0xffffffff81001dce <clear_bhb_loop+142>
-   0xa0 <+96>:    ret
-   0xa1 <+97>:    int3
-   ...
-   0xce <+142>:   mov    $0x5,%eax
-   0xd3 <+147>:   jmp    0xffffffff81001dd6 <clear_bhb_loop+150>
-   0xd5 <+149>:   nop
-   0xd6 <+150>:   sub    $0x1,%eax
-   0xd9 <+153>:   jne    0xffffffff81001dd3 <clear_bhb_loop+147>
-   0xdb <+155>:   sub    $0x1,%ecx
-   0xde <+158>:   jne    0xffffffff81001d9b <clear_bhb_loop+91>
-   0xe0 <+160>:   ret
-   0xe1 <+161>:   int3
-   0xe2 <+162>:   int3
-   0xe3 <+163>:   int3
-   0xe4 <+164>:   int3
-   0xe5 <+165>:   lfence
-   0xe8 <+168>:   pop    %rbp
-   0xe9 <+169>:   ret
+As an example, 5000 dynamic thunks would utilize around 16 bits of the
+address space, thereby gaining entropy. For a BTB that uses
+32 bits for indexing, dynamic thunks could provide better prediction
+accuracy over fixed thunks.
 
-Suggested-by: Andrew Cooper <andrew.cooper3@citrix.com>
+Have ITS thunks be variable sized and use EXECMEM_MODULE_TEXT such that
+they are both more flexible (got to extend them later) and live in 2M TLBs,
+just like kernel code, avoiding undue TLB pressure.
+
+  [ pawan: CONFIG_EXECMEM and CONFIG_EXECMEM_ROX are not supported on
+	   backport kernel, made changes to use module_alloc() and
+	   set_memory_*() for dynamic thunks. ]
+
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
 Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
 ---
- arch/x86/entry/entry_64.S | 20 +++++++++++++++++---
- 1 file changed, 17 insertions(+), 3 deletions(-)
+ arch/x86/include/asm/alternative.h |  10 +++
+ arch/x86/kernel/alternative.c      | 133 ++++++++++++++++++++++++++++++++++++-
+ arch/x86/kernel/module.c           |   7 ++
+ include/linux/module.h             |   5 ++
+ 4 files changed, 152 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/entry/entry_64.S b/arch/x86/entry/entry_64.S
-index f656c6e0e45882f261c9f61829a3c1f3e1e74167..ed74778c8ebd7fa4b80ed885d86fef638a1c4f26 100644
---- a/arch/x86/entry/entry_64.S
-+++ b/arch/x86/entry/entry_64.S
-@@ -1530,7 +1530,9 @@ SYM_CODE_END(rewind_stack_and_make_dead)
-  * ORC to unwind properly.
-  *
-  * The alignment is for performance and not for safety, and may be safely
-- * refactored in the future if needed.
-+ * refactored in the future if needed. The .skips are for safety, to ensure
-+ * that all RETs are in the second half of a cacheline to mitigate Indirect
-+ * Target Selection, rather than taking the slowpath via its_return_thunk.
-  */
- SYM_FUNC_START(clear_bhb_loop)
- 	push	%rbp
-@@ -1540,10 +1542,22 @@ SYM_FUNC_START(clear_bhb_loop)
- 	call	1f
- 	jmp	5f
- 	.align 64, 0xcc
+diff --git a/arch/x86/include/asm/alternative.h b/arch/x86/include/asm/alternative.h
+index 4038b893449a7d38f4079e213a924493e67f4231..aa7b155b617343b3a508eb0039c81562aba53dfd 100644
+--- a/arch/x86/include/asm/alternative.h
++++ b/arch/x86/include/asm/alternative.h
+@@ -80,6 +80,16 @@ extern void apply_returns(s32 *start, s32 *end);
+ 
+ struct module;
+ 
++#ifdef CONFIG_MITIGATION_ITS
++extern void its_init_mod(struct module *mod);
++extern void its_fini_mod(struct module *mod);
++extern void its_free_mod(struct module *mod);
++#else /* CONFIG_MITIGATION_ITS */
++static inline void its_init_mod(struct module *mod) { }
++static inline void its_fini_mod(struct module *mod) { }
++static inline void its_free_mod(struct module *mod) { }
++#endif
++
+ #ifdef CONFIG_RETHUNK
+ extern bool cpu_wants_rethunk(void);
+ extern bool cpu_wants_rethunk_at(void *addr);
+diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
+index c3df557be55e37e256d05a83f55e4ebfdee9d451..7f5bed8753d658393278a7e28fc9217f2036cf3a 100644
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -18,6 +18,7 @@
+ #include <linux/mmu_context.h>
+ #include <linux/bsearch.h>
+ #include <linux/sync_core.h>
++#include <linux/moduleloader.h>
+ #include <asm/text-patching.h>
+ #include <asm/alternative.h>
+ #include <asm/sections.h>
+@@ -30,6 +31,7 @@
+ #include <asm/fixmap.h>
+ #include <asm/paravirt.h>
+ #include <asm/asm-prototypes.h>
++#include <asm/set_memory.h>
+ 
+ int __read_mostly alternatives_patched;
+ 
+@@ -397,6 +399,127 @@ static int emit_indirect(int op, int reg, u8 *bytes)
+ 
+ #ifdef CONFIG_MITIGATION_ITS
+ 
++static struct module *its_mod;
++static void *its_page;
++static unsigned int its_offset;
++
++/* Initialize a thunk with the "jmp *reg; int3" instructions. */
++static void *its_init_thunk(void *thunk, int reg)
++{
++	u8 *bytes = thunk;
++	int i = 0;
++
++	if (reg >= 8) {
++		bytes[i++] = 0x41; /* REX.B prefix */
++		reg -= 8;
++	}
++	bytes[i++] = 0xff;
++	bytes[i++] = 0xe0 + reg; /* jmp *reg */
++	bytes[i++] = 0xcc;
++
++	return thunk;
++}
++
++void its_init_mod(struct module *mod)
++{
++	if (!cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS))
++		return;
++
++	mutex_lock(&text_mutex);
++	its_mod = mod;
++	its_page = NULL;
++}
++
++void its_fini_mod(struct module *mod)
++{
++	int i;
++
++	if (!cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS))
++		return;
++
++	WARN_ON_ONCE(its_mod != mod);
++
++	its_mod = NULL;
++	its_page = NULL;
++	mutex_unlock(&text_mutex);
++
++	for (i = 0; i < mod->its_num_pages; i++) {
++		void *page = mod->its_page_array[i];
++		set_memory_ro((unsigned long)page, 1);
++		set_memory_x((unsigned long)page, 1);
++	}
++}
++
++void its_free_mod(struct module *mod)
++{
++	int i;
++
++	if (!cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS))
++		return;
++
++	for (i = 0; i < mod->its_num_pages; i++) {
++		void *page = mod->its_page_array[i];
++		module_memfree(page);
++	}
++	kfree(mod->its_page_array);
++}
++
++static void *its_alloc(void)
++{
++	void *page = module_alloc(PAGE_SIZE);
++
++	if (!page)
++		return NULL;
++
++	if (its_mod) {
++		void *tmp = krealloc(its_mod->its_page_array,
++				     (its_mod->its_num_pages+1) * sizeof(void *),
++				     GFP_KERNEL);
++		if (!tmp) {
++			module_memfree(page);
++			return NULL;
++		}
++
++		its_mod->its_page_array = tmp;
++		its_mod->its_page_array[its_mod->its_num_pages++] = page;
++	}
++
++	return page;
++}
++
++static void *its_allocate_thunk(int reg)
++{
++	int size = 3 + (reg / 8);
++	void *thunk;
++
++	if (!its_page || (its_offset + size - 1) >= PAGE_SIZE) {
++		its_page = its_alloc();
++		if (!its_page) {
++			pr_err("ITS page allocation failed\n");
++			return NULL;
++		}
++		memset(its_page, INT3_INSN_OPCODE, PAGE_SIZE);
++		its_offset = 32;
++	}
++
 +	/*
-+	 * Shift instructions so that the RET is in the upper half of the
-+	 * cacheline and don't take the slowpath to its_return_thunk.
++	 * If the indirect branch instruction will be in the lower half
++	 * of a cacheline, then update the offset to reach the upper half.
 +	 */
-+	.skip 32 - (.Lret1 - 1f), 0xcc
- 	ANNOTATE_INTRA_FUNCTION_CALL
- 1:	call	2f
--	RET
-+.Lret1:	RET
- 	.align 64, 0xcc
-+	/*
-+	 * As above shift instructions for RET at .Lret2 as well.
-+	 *
-+	 * This should be ideally be: .skip 32 - (.Lret2 - 2f), 0xcc
-+	 * but some Clang versions (e.g. 18) don't like this.
-+	 */
-+	.skip 32 - 18, 0xcc
- 2:	movl	$5, %eax
- 3:	jmp	4f
- 	nop
-@@ -1551,7 +1565,7 @@ SYM_FUNC_START(clear_bhb_loop)
- 	jnz	3b
- 	sub	$1, %ecx
- 	jnz	1b
--	RET
-+.Lret2:	RET
- 5:	lfence
- 	pop	%rbp
- 	RET
++	if ((its_offset + size - 1) % 64 < 32)
++		its_offset = ((its_offset - 1) | 0x3F) + 33;
++
++	thunk = its_page + its_offset;
++	its_offset += size;
++
++	set_memory_rw((unsigned long)its_page, 1);
++	thunk = its_init_thunk(thunk, reg);
++	set_memory_ro((unsigned long)its_page, 1);
++	set_memory_x((unsigned long)its_page, 1);
++
++	return thunk;
++}
++
+ static int __emit_trampoline(void *addr, struct insn *insn, u8 *bytes,
+ 			     void *call_dest, void *jmp_dest)
+ {
+@@ -444,9 +567,13 @@ static int __emit_trampoline(void *addr, struct insn *insn, u8 *bytes,
+ 
+ static int emit_its_trampoline(void *addr, struct insn *insn, int reg, u8 *bytes)
+ {
+-	return __emit_trampoline(addr, insn, bytes,
+-				 __x86_indirect_its_thunk_array[reg],
+-				 __x86_indirect_its_thunk_array[reg]);
++	u8 *thunk = __x86_indirect_its_thunk_array[reg];
++	u8 *tmp = its_allocate_thunk(reg);
++
++	if (tmp)
++		thunk = tmp;
++
++	return __emit_trampoline(addr, insn, bytes, thunk, thunk);
+ }
+ 
+ /* Check if an indirect branch is at ITS-unsafe address */
+diff --git a/arch/x86/kernel/module.c b/arch/x86/kernel/module.c
+index 06b53ea940bf604e94e3f55d6dd6316ceb9ed3f7..183b8d541b5448b50ba91a22ea0db283efda3dc9 100644
+--- a/arch/x86/kernel/module.c
++++ b/arch/x86/kernel/module.c
+@@ -283,10 +283,16 @@ int module_finalize(const Elf_Ehdr *hdr,
+ 		void *pseg = (void *)para->sh_addr;
+ 		apply_paravirt(pseg, pseg + para->sh_size);
+ 	}
++
++	its_init_mod(me);
++
+ 	if (retpolines) {
+ 		void *rseg = (void *)retpolines->sh_addr;
+ 		apply_retpolines(rseg, rseg + retpolines->sh_size);
+ 	}
++
++	its_fini_mod(me);
++
+ 	if (returns) {
+ 		void *rseg = (void *)returns->sh_addr;
+ 		apply_returns(rseg, rseg + returns->sh_size);
+@@ -317,4 +323,5 @@ int module_finalize(const Elf_Ehdr *hdr,
+ void module_arch_cleanup(struct module *mod)
+ {
+ 	alternatives_smp_module_del(mod);
++	its_free_mod(mod);
+ }
+diff --git a/include/linux/module.h b/include/linux/module.h
+index fb9762e16f2858e070773893495ffbbefa50e7d4..8e629b03ed1e4181d7a30d3528f21dbc7b112825 100644
+--- a/include/linux/module.h
++++ b/include/linux/module.h
+@@ -528,6 +528,11 @@ struct module {
+ 	atomic_t refcnt;
+ #endif
+ 
++#ifdef CONFIG_MITIGATION_ITS
++	int its_num_pages;
++	void **its_page_array;
++#endif
++
+ #ifdef CONFIG_CONSTRUCTORS
+ 	/* Constructor functions. */
+ 	ctor_fn_t *ctors;
 
 -- 
 2.34.1
