@@ -1,283 +1,137 @@
-Return-Path: <stable+bounces-144693-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEE0DABAB43
-	for <lists+stable@lfdr.de>; Sat, 17 May 2025 19:10:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 461D7ABABC2
+	for <lists+stable@lfdr.de>; Sat, 17 May 2025 20:02:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 657ED4A1E54
-	for <lists+stable@lfdr.de>; Sat, 17 May 2025 17:10:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDFE14A16CA
+	for <lists+stable@lfdr.de>; Sat, 17 May 2025 18:02:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 920AC209F45;
-	Sat, 17 May 2025 17:10:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0D8A2144D6;
+	Sat, 17 May 2025 18:01:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3DcyE+Ih"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="OX7MW6+Q"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.web.de (mout.web.de [212.227.17.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C00B1747F
-	for <stable@vger.kernel.org>; Sat, 17 May 2025 17:10:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A30944B1E45;
+	Sat, 17 May 2025 18:01:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747501803; cv=none; b=D6wFhdIHYoEcvY3Rawepfy/BkWNb+fq/MtNxqQbQlmtXGPwh2zleYSzCJV6gpsnjTiGCCm9W9Fo2InQkLXjFob2v6o+yxHdGKkQg/7iAPcQ0J1yOWXy3syjzKFa03CaAr9FQeonQGKOWXb7P4b10yULxuoKnOVn8Eo2z3ZlrvKQ=
+	t=1747504917; cv=none; b=YFmnmrE/laCqnDflZ8ViYoe6Xt+ANbH2FQnkXccm7t8Xigg4pEzsNCm1rrAKhhR1VBZfe0mT1OEJ4AhTl31H/9qrVYU1MdTVeRj21jGBd8G1lQ8Td0cJotlElI+r54L0OvipOlz3pMrtBz2s4lwdV9IOP28NsimAykz/raTR1r8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747501803; c=relaxed/simple;
-	bh=3Q2uQtbS0TwdJLonhG2wzutXgpQ/l87O196qpSBKW74=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=h7rN/36/6zBYHaqUgWC4MSCMJJixuB8KeIlyQhVf7AQj7cm+Q7Urvls7Q6jwB1uTwebSE4Nrkx7n/rISV4ZVUqcLwg0xMmCIGlluliWtX0yL4m2ldS8pukJ7w69VmW5egpfXUZV0YRZtQoGHPXvm67zNTNUSqjEUTdfD7Q/lx38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3DcyE+Ih; arc=none smtp.client-ip=209.85.215.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-b115fb801bcso3023110a12.3
-        for <stable@vger.kernel.org>; Sat, 17 May 2025 10:10:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1747501801; x=1748106601; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=LtoZv7L+uQHZo85O7tV0lhxa0GdHzk5iFE9SupDBP24=;
-        b=3DcyE+Ih1QPY3vhomPcernRSZJtenO66gIcHJhd42jj0DB2fvOrqBZszBP/LrpLvRL
-         HIuPyH60kF+kTQZn74vKmFspPNOLdKxHvaVzj9JGn7b3laAv3M8apYUjmvet3z4hpHiB
-         ZuIFdal/j6MwFS73/lxaECVUdCjYbeYonhUbwLXRTWEOYj9M0H9qc0E/F7qMZkS7xXwJ
-         7QyFiBk08KaF6Z/dIFwTc9UkRTevN7zpNHIG4yWvq7nbWMH9W96QdIe0OxhrRQFYdd7F
-         2RCIounxrD2KkDJDJ3gw/97Adex0y5E1PW9OxO7ATZJB6GOX8oGanPIm05BdO7rukT6k
-         e1UA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747501801; x=1748106601;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=LtoZv7L+uQHZo85O7tV0lhxa0GdHzk5iFE9SupDBP24=;
-        b=YYu5luWtIzAxVerksV10pFcbWjczmcy+7fdwUYDH+EeCbvoYD1Q2K7d3cKfOYhVXE6
-         by9S5gJ5F+B2F66yOerFJtC8QsQlaXBO9m5n+Kura10le3q4D9POXgFshxnZArHq4V+2
-         3iCFM5HrnS3skhZ8QBo0Wu3qWVSz5+/iH3J8Vzy5ZS+7/OphYgPAAIbZnvSTMMJcFfSo
-         8RnCY/KX67Dcpitsr4wukS1mmpFOr9uyYOmeqPfhfgifgOKtd1WAFdyNc2xDUwnb1tVT
-         bHjfpe/77FGaOnM2PLlnsGhw7eizDefdnz/9xKaden+HsSn3CpEyU+WSTeCIgSLaQ5+4
-         7EqA==
-X-Forwarded-Encrypted: i=1; AJvYcCXlIecbnunv/bvOJbRFnl+HDVLPdJmlWHjo5IIc2H34cespEU8bHgCZ84+Vwy/UDdG+w8VZ5vA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+nPAalHqE78M9fA7i6egbAZzAzHgt0djQkTpRPh3du6EJSiwp
-	ovv0uFvC2IK8G78IaU43lGluQyZ7yTMWFb/9MVwmvZnsDPdSUlni6q8DpElBrd75GygNZkG2bQ4
-	n1NKfbiDY99zqrA==
-X-Google-Smtp-Source: AGHT+IFOUOpcz/ZDUCnYzVgtcWcR1sH4ylYN+CW1nr0jijT1SCfosVFbBi/eOfCIXHBMUFzKCx+3+3jyy+0UtQ==
-X-Received: from pgii13.prod.google.com ([2002:a63:220d:0:b0:b1f:ffc9:5f4d])
- (user=cmllamas job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a20:6a1a:b0:1f5:a577:dd10 with SMTP id adf61e73a8af0-216219eddfcmr11001348637.36.1747501801030;
- Sat, 17 May 2025 10:10:01 -0700 (PDT)
-Date: Sat, 17 May 2025 17:09:56 +0000
+	s=arc-20240116; t=1747504917; c=relaxed/simple;
+	bh=5aBOsGbdCnxAk09k8KrUvZofVNhHW+rS11IkuXATWpA=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=JElhIoInjF/fqyuC8fIblvdSseYgOt5xFOHtYTQZnvtquwZBMI0pNT0GnXNXm8a+OF+dVMIwVmjT53WYo3j0PTwDqzesRJfD57KqKMma9oyYgQWWnQXMh63mwro+hzlrMoirDGWedt+bW5N3uUY4m9GOrYTQu7mbWdxfYrFumic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=OX7MW6+Q; arc=none smtp.client-ip=212.227.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1747504890; x=1748109690; i=markus.elfring@web.de;
+	bh=SpGz0mgfSy0dGsokb7EQbHYPttCEHqkOkWjC/fsUf04=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=OX7MW6+QBZZW2lVeru+HJmDMrmgU2tET/B5GXkWmXHhnZIHzPGrDVv0Gjqwy0Jd5
+	 q8qnw20PRgHDwKaUY9zVr8neySHZmvAzGcOpSTz3l7xM1OpaPMQh7EuBDa57lY92s
+	 48MB3WOOqNa+Io3qwaV/CE4RjcTbUooXlIOFtAns2RUIgBJ1KtLXnkmbb3gTlR4VA
+	 feeOp2va9Wo3iabmuW03ui5Dqr+Et1NQv2M8x6VuEkfgmU7FectftiaZ37UZUe4sU
+	 bltFzTEdinxxQepgZSlH1f/DpKibEAi1btaLCeHOMJzqgckU/BVdzeqjr+U8wBAYt
+	 lSOqZZWNuTRwjlwO5g==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.69.250]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1MnFyI-1uhk2Y0I9k-00k7yM; Sat, 17
+ May 2025 20:01:30 +0200
+Message-ID: <8debcddc-b788-4ee0-99d4-b9ac28d62df9@web.de>
+Date: Sat, 17 May 2025 20:01:21 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.49.0.1101.gccaa498523-goog
-Message-ID: <20250517170957.1317876-1-cmllamas@google.com>
-Subject: [PATCH v2] binder: fix use-after-free in binderfs_evict_inode()
-From: Carlos Llamas <cmllamas@google.com>
-To: Alice Ryhl <aliceryhl@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Christian Brauner <brauner@kernel.org>, 
-	Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>
-Cc: kernel-team@android.com, Dmitry Antipov <dmantipov@yandex.ru>, stable@vger.kernel.org, 
-	syzbot+353d7b75658a95aa955a@syzkaller.appspotmail.com, 
-	"open list:ANDROID DRIVERS" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+To: vulab@iscas.ac.cn, linux-wireless@vger.kernel.org,
+ Ajay Singh <ajay.kathat@microchip.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, Kalle Valo <kvalo@kernel.org>
+Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
+References: <20250517154611.910-1-vulab@iscas.ac.cn>
+Subject: Re: [PATCH] wifi: wilc1000: Handle wilc_sdio_cmd52() failure in
+ wilc_sdio_read_init()
+Content-Language: en-GB, de-DE
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20250517154611.910-1-vulab@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:aDje+Y5p/VRQQNoqQwcR8EeolwyzVYwEevv8AI2mofIQL67z2Dg
+ UVFdnfpVkVzM1LoM7nHHDxMNNSKuhZKhPYs5LYowD3xlLrChFuYjBgYGPIPAR7FldgrnHOm
+ FRd2FA8Ozf1QWiaSobqPcY5g194LCeb6O1AQUFS+AJ+w63f3G/DopUpzqJeoGRHrn5goeOd
+ oBAk57C9SQvUvU/CV7FmQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:j08uRNsWw4w=;INUoJGRpounDjCuc8mXXkLl4t4C
+ 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
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+=E2=80=A6
+> Add error handling for wilc_sdio_cmd52(). If wilc_sdio_cmd52() fails,
+> log an error message via dev_err().
+=E2=80=A6
+> ---
+>  drivers/net/wireless/microchip/wilc1000/sdio.c | 8 +++++++-
+=E2=80=A6
 
-Running 'stress-ng --binderfs 16 --timeout 300' under KASAN-enabled
-kernel, I've noticed the following:
+How do you think about to integrate adjustments for two function implement=
+ations
+by a single patch for better error handling in the affected software modul=
+e?
 
-BUG: KASAN: slab-use-after-free in binderfs_evict_inode+0x1de/0x2d0
-Write of size 8 at addr ffff88807379bc08 by task stress-ng-binde/1699
-
-CPU: 0 UID: 0 PID: 1699 Comm: stress-ng-binde Not tainted 6.14.0-rc7-g586de92313fc-dirty #13
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-3.fc41 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x1c2/0x2a0
- ? __pfx_dump_stack_lvl+0x10/0x10
- ? __pfx__printk+0x10/0x10
- ? __pfx_lock_release+0x10/0x10
- ? __virt_addr_valid+0x18c/0x540
- ? __virt_addr_valid+0x469/0x540
- print_report+0x155/0x840
- ? __virt_addr_valid+0x18c/0x540
- ? __virt_addr_valid+0x469/0x540
- ? __phys_addr+0xba/0x170
- ? binderfs_evict_inode+0x1de/0x2d0
- kasan_report+0x147/0x180
- ? binderfs_evict_inode+0x1de/0x2d0
- binderfs_evict_inode+0x1de/0x2d0
- ? __pfx_binderfs_evict_inode+0x10/0x10
- evict+0x524/0x9f0
- ? __pfx_lock_release+0x10/0x10
- ? __pfx_evict+0x10/0x10
- ? do_raw_spin_unlock+0x4d/0x210
- ? _raw_spin_unlock+0x28/0x50
- ? iput+0x697/0x9b0
- __dentry_kill+0x209/0x660
- ? shrink_kill+0x8d/0x2c0
- shrink_kill+0xa9/0x2c0
- shrink_dentry_list+0x2e0/0x5e0
- shrink_dcache_parent+0xa2/0x2c0
- ? __pfx_shrink_dcache_parent+0x10/0x10
- ? __pfx_lock_release+0x10/0x10
- ? __pfx_do_raw_spin_lock+0x10/0x10
- do_one_tree+0x23/0xe0
- shrink_dcache_for_umount+0xa0/0x170
- generic_shutdown_super+0x67/0x390
- kill_litter_super+0x76/0xb0
- binderfs_kill_super+0x44/0x90
- deactivate_locked_super+0xb9/0x130
- cleanup_mnt+0x422/0x4c0
- ? lockdep_hardirqs_on+0x9d/0x150
- task_work_run+0x1d2/0x260
- ? __pfx_task_work_run+0x10/0x10
- resume_user_mode_work+0x52/0x60
- syscall_exit_to_user_mode+0x9a/0x120
- do_syscall_64+0x103/0x210
- ? asm_sysvec_apic_timer_interrupt+0x1a/0x20
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0xcac57b
-Code: c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 f3 0f 1e fa 31 f6 e9 05 00 00 00 0f 1f 44 00 00 f3 0f 1e fa b8
-RSP: 002b:00007ffecf4226a8 EFLAGS: 00000246 ORIG_RAX: 00000000000000a6
-RAX: 0000000000000000 RBX: 00007ffecf422720 RCX: 0000000000cac57b
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 00007ffecf422850
-RBP: 00007ffecf422850 R08: 0000000028d06ab1 R09: 7fffffffffffffff
-R10: 3fffffffffffffff R11: 0000000000000246 R12: 00007ffecf422718
-R13: 00007ffecf422710 R14: 00007f478f87b658 R15: 00007ffecf422830
- </TASK>
-
-Allocated by task 1705:
- kasan_save_track+0x3e/0x80
- __kasan_kmalloc+0x8f/0xa0
- __kmalloc_cache_noprof+0x213/0x3e0
- binderfs_binder_device_create+0x183/0xa80
- binder_ctl_ioctl+0x138/0x190
- __x64_sys_ioctl+0x120/0x1b0
- do_syscall_64+0xf6/0x210
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Freed by task 1705:
- kasan_save_track+0x3e/0x80
- kasan_save_free_info+0x46/0x50
- __kasan_slab_free+0x62/0x70
- kfree+0x194/0x440
- evict+0x524/0x9f0
- do_unlinkat+0x390/0x5b0
- __x64_sys_unlink+0x47/0x50
- do_syscall_64+0xf6/0x210
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-This 'stress-ng' workload causes the concurrent deletions from
-'binder_devices' and so requires full-featured synchronization
-to prevent list corruption.
-
-I've found this issue independently but pretty sure that syzbot did
-the same, so Reported-by: and Closes: should be applicable here as well.
-
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+353d7b75658a95aa955a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=353d7b75658a95aa955a
-Fixes: e77aff5528a18 ("binderfs: fix use-after-free in binder_devices")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Acked-by: Carlos Llamas <cmllamas@google.com>
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
----
-v1:
-https://lore.kernel.org/all/20250324132427.922495-1-dmantipov@yandex.ru/
-
-v2:
-- Collect tags. Actually Cc Greg and stable@ this time.
-
- drivers/android/binder.c          | 15 +++++++++++++--
- drivers/android/binder_internal.h |  8 ++++++--
- drivers/android/binderfs.c        |  2 +-
- 3 files changed, 20 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/android/binder.c b/drivers/android/binder.c
-index 5fc2c8ee61b1..8d9c5f436fca 100644
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -79,6 +79,8 @@ static HLIST_HEAD(binder_deferred_list);
- static DEFINE_MUTEX(binder_deferred_lock);
- 
- static HLIST_HEAD(binder_devices);
-+static DEFINE_SPINLOCK(binder_devices_lock);
-+
- static HLIST_HEAD(binder_procs);
- static DEFINE_MUTEX(binder_procs_lock);
- 
-@@ -6929,7 +6931,16 @@ const struct binder_debugfs_entry binder_debugfs_entries[] = {
- 
- void binder_add_device(struct binder_device *device)
- {
-+	spin_lock(&binder_devices_lock);
- 	hlist_add_head(&device->hlist, &binder_devices);
-+	spin_unlock(&binder_devices_lock);
-+}
-+
-+void binder_remove_device(struct binder_device *device)
-+{
-+	spin_lock(&binder_devices_lock);
-+	hlist_del_init(&device->hlist);
-+	spin_unlock(&binder_devices_lock);
- }
- 
- static int __init init_binder_device(const char *name)
-@@ -6956,7 +6967,7 @@ static int __init init_binder_device(const char *name)
- 		return ret;
- 	}
- 
--	hlist_add_head(&binder_device->hlist, &binder_devices);
-+	binder_add_device(binder_device);
- 
- 	return ret;
- }
-@@ -7018,7 +7029,7 @@ static int __init binder_init(void)
- err_init_binder_device_failed:
- 	hlist_for_each_entry_safe(device, tmp, &binder_devices, hlist) {
- 		misc_deregister(&device->miscdev);
--		hlist_del(&device->hlist);
-+		binder_remove_device(device);
- 		kfree(device);
- 	}
- 
-diff --git a/drivers/android/binder_internal.h b/drivers/android/binder_internal.h
-index 6a66c9769c6c..1ba5caf1d88d 100644
---- a/drivers/android/binder_internal.h
-+++ b/drivers/android/binder_internal.h
-@@ -583,9 +583,13 @@ struct binder_object {
- /**
-  * Add a binder device to binder_devices
-  * @device: the new binder device to add to the global list
-- *
-- * Not reentrant as the list is not protected by any locks
-  */
- void binder_add_device(struct binder_device *device);
- 
-+/**
-+ * Remove a binder device to binder_devices
-+ * @device: the binder device to remove from the global list
-+ */
-+void binder_remove_device(struct binder_device *device);
-+
- #endif /* _LINUX_BINDER_INTERNAL_H */
-diff --git a/drivers/android/binderfs.c b/drivers/android/binderfs.c
-index 94c6446604fc..44d430c4ebef 100644
---- a/drivers/android/binderfs.c
-+++ b/drivers/android/binderfs.c
-@@ -274,7 +274,7 @@ static void binderfs_evict_inode(struct inode *inode)
- 	mutex_unlock(&binderfs_minors_mutex);
- 
- 	if (refcount_dec_and_test(&device->ref)) {
--		hlist_del_init(&device->hlist);
-+		binder_remove_device(device);
- 		kfree(device->context.name);
- 		kfree(device);
- 	}
--- 
-2.49.0.1101.gccaa498523-goog
-
+Regards,
+Markus
 
