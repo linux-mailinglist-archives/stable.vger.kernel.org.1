@@ -1,138 +1,113 @@
-Return-Path: <stable+bounces-144716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA1A5ABAF32
-	for <lists+stable@lfdr.de>; Sun, 18 May 2025 11:59:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71BC9ABB098
+	for <lists+stable@lfdr.de>; Sun, 18 May 2025 16:51:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56DE116A86A
-	for <lists+stable@lfdr.de>; Sun, 18 May 2025 09:59:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A095176E96
+	for <lists+stable@lfdr.de>; Sun, 18 May 2025 14:51:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C68B313D891;
-	Sun, 18 May 2025 09:59:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="SxhEO6/2"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AFD021CA1F;
+	Sun, 18 May 2025 14:51:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE767E1
-	for <stable@vger.kernel.org>; Sun, 18 May 2025 09:59:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E93B1E4AB;
+	Sun, 18 May 2025 14:50:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747562348; cv=none; b=Kpg8Z1ejvKVaL5poPO6bZwlzToTnDUbk738QNBnvpIDr7LXCrhht8VyWQMouqLspsFkCYopVXUbQZaO95snOEq3isMcM9wHSikHajuscpF8SUjcjYJa4MLMlzYOz+mYYmNKMHo2VdeUS7lldfI2HkDNiEc8tmrd//phVkPw6Zww=
+	t=1747579861; cv=none; b=X4uecAqoehU1OErn7jsDDORTNpQR6gXMvOTwxwTSVbO+i3skdSvgBoDPibg3c8Ub3rKDPYy/XCK4bBeRa7EvasIIouLthS6/O0JtQ94HSQ4I2GCGqrmY/P41csbTlP5UmGL2hqpLOYEMozA0h03Cw+ClSublp9fZo5Koz/Df6Cs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747562348; c=relaxed/simple;
-	bh=LR1Mhrf6Bs4wSUWjcnk/fQx3UL3sVGebxQdkUelfyBY=;
-	h=MIME-Version:from:Date:Message-ID:Subject:To:Cc:Content-Type; b=dHJtPjNcTTpnfarsf+3bYl+MpOMzpvye6mWbTro66nyP1gp/utldJ0u8988d+I6WKSIjOXJRAiaa09Zq5hB9UyC6kBhHTB5HWYsqGuTGin+rd5xsheplw6aaBOq7zPRO2qE3j+kWfsrH6KEAP3OtEcHsOLmQNx7lyAN40FcXlMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=SxhEO6/2; arc=none smtp.client-ip=209.85.219.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-e75668006b9so3529909276.3
-        for <stable@vger.kernel.org>; Sun, 18 May 2025 02:59:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1747562345; x=1748167145; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:reply-to:from:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PglU88x4n4qllhzfvjESKFFEq92m0kLBBPud0yKRW7Q=;
-        b=SxhEO6/2jqr8O0YvEIXi5zaFsD94oEZU2LWqLP4yI/sveRjXNylLxLrmv9/9TSJOf9
-         56BwnGvO85pmMbon9oscysuXHWBbU+3V/cTcutMRFCISInptWfRge0kyKden+FsTPAid
-         7DZ+uVV4eSIfxIxVci0W8G64LNwf+KTNQky+jkcD5s7cFDjRLHp8yM+h1/1ld6asLuHa
-         4DK57wxOG9JwvE2EyT2SXBov9nQIavHbYT885a3IERkX45qKjvKV7RNORifGCsVsv5je
-         rVCisM+Ug8ijTw446FdtTIm+t/4XELhVyjKvVECkhCDcIeIDdopWxrjarOEEc4FjN20p
-         rBAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747562345; x=1748167145;
-        h=cc:to:subject:message-id:date:reply-to:from:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PglU88x4n4qllhzfvjESKFFEq92m0kLBBPud0yKRW7Q=;
-        b=Ducef4fwBx2dGhO5f9j3nuJipx4nORHG34KFmBMCBxQPqvEq9PT+P8tkYVMCGJRpBJ
-         30SVWyw6CYNd6hryNKV1jUTNbaCjv2Qvq9FgPQ4RGsIjbW0eXipedFix9GNvDKWuMCo2
-         qsR0gO2s2Ln3L9EJJHSMB2+l1G0V2qHWnQPIjlDBY0q8oAFqlvmnHIn7E6ylJ+tb/EQn
-         yyA3Gb1mXKl2nkcw0bousdmthKZC5iep5WH8ao4W/BXkTrx9CCfgN4Cnm5AWoOEFDH+S
-         bAsZIehE6CF89acf1lEzaO7qLNy2wKDJSnYlAMyBiYoBFpdI0NeqXL0acxWyBlGXTTd9
-         V8tA==
-X-Forwarded-Encrypted: i=1; AJvYcCV7pOo5y5f09z+CzDLfi2+z2of++eky7X2bt7rlj6+Jg+J72+u85DG5mCnqep4tN8NsCjBB/JM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YymfjyegiIQPEiJ0sRQ6RKjz5GQsoIxy3856eaE2HXfzkWaUznY
-	z2NIB5m/6KV9xsXQyrMvJVIkndHRloT5SxBeaaNNEao2I1lHrmz9Ao73nsEbc/cIJUHuxJgW5yA
-	xnUYWYH1Ap5P8hrlPNcj5/ZbRbbwn2Y4g2DlqSfUaJA==
-X-Gm-Gg: ASbGncukGUze8wJtPpGGuLJQjkNWiWtKDvSJQvaKJVnSsIoAIRY3XTTUAVV2iO3DPYl
-	xl004f6nlFgJKOywyMJe6Kc6XL2WlXOL/LIXcuy69GRzxTV+UkELNe6vfOvbBnQhphJBHCdCJnI
-	5WjcWIr5KkonOpJu7FnQ1dvMlkF2CPfCY=
-X-Google-Smtp-Source: AGHT+IFmDbtKgO0N5F4WKZPxch7AWV/RcMHwzm6qC3sm+UX+Z08rd+M/4pge7TPjB2saV9yGShySQCV9o5RmgXU3xRI=
-X-Received: by 2002:a05:6902:110c:b0:e77:d5ca:ffad with SMTP id
- 3f1490d57ef6-e7b6a0ab67fmr12267280276.29.1747562345099; Sun, 18 May 2025
- 02:59:05 -0700 (PDT)
-Received: from 415818378487 named unknown by gmailapi.google.com with
- HTTPREST; Sun, 18 May 2025 04:59:03 -0500
-Received: from 415818378487 named unknown by gmailapi.google.com with
- HTTPREST; Sun, 18 May 2025 04:59:03 -0500
+	s=arc-20240116; t=1747579861; c=relaxed/simple;
+	bh=JQVglm6Di0GfvSzpslqlCi8HxodRM4bFoO3iBNHZRFU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=i+Z8r/MH2PgTeMGqveVHtCs2jeJX0Q6m9Hg2c9k+IzojYYyJ2rpmtn0ZwuhVQVyMpIrqTPszYhi87yo0dUV1xOyNKt2II+UjyZ1qow5Wg0s+Uy7FFZa8+dFD0oYNnSxo5xatWjpWyyuFZOwye2Lupu70U3LcSUqeFgmNiXMkD5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [111.199.70.239])
+	by APP-03 (Coremail) with SMTP id rQCowAA3SvXD8yloUbkVAQ--.548S2;
+	Sun, 18 May 2025 22:50:48 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: mustafa.ismail@intel.com,
+	tatyana.e.nikolova@intel.com,
+	jgg@ziepe.ca,
+	leon@kernel.org
+Cc: linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] RDMA/irdma: puda: Clear entries after allocation to ensure clean state
+Date: Sun, 18 May 2025 22:49:42 +0800
+Message-ID: <20250518144942.714-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.42.0.windows.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-from: KernelCI bot <bot@kernelci.org>
-Reply-To: kernelci@lists.linux.dev
-Date: Sun, 18 May 2025 04:59:03 -0500
-X-Gm-Features: AX0GCFtkBFE7CflNDF_firGXJTs9eEbfsejapZF45FND08oke9asfZA2dmIU4_0
-Message-ID: <CACo-S-3VvZ8uMB-S9G0rPNDtMPRQ8_gWajhYe8JkFTXG9SMZ_Q@mail.gmail.com>
-Subject: [REGRESSION] stable-rc/linux-6.6.y: (build) set_ftrace_ops_ro+0x46:
- relocation to !ENDBR: .text+0x16c578 in vm...
-To: kernelci-results@groups.io
-Cc: gus@collabora.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowAA3SvXD8yloUbkVAQ--.548S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7CFyfWF43ur4xZF4DGFyrXrb_yoW8GF15pa
+	y5Jr4qkrZ0qa1j93WUG393CFW5XanrKr9FvrZF93s3ZF4UJrW0qFs5Kr1Y9F4kGr1I9a1x
+	Zrnrtr1rC3Wrur7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkK14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr
+	1j6F4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv
+	7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r
+	1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AK
+	xVWUAVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F4
+	0E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFyl
+	IxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxV
+	AFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j
+	6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7VUbSfO7
+	UUUUU==
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBg0GA2gp1Gc4vQAAs5
 
-Hello,
+The irdma_puda_send() calls the irdma_puda_get_next_send_wqe() to get
+entries, but does not clear the entries after the function call. A proper
+implementation can be found in irdma_uk_send().
 
-New build issue found on stable-rc/linux-6.6.y:
+Add the irdma_clr_wqes() after irdma_puda_get_next_send_wqe(). Add the
+headfile of the irdma_clr_wqes().
 
+Fixes: a3a06db504d3 ("RDMA/irdma: Add privileged UDA queue implementation")
+Cc: stable@vger.kernel.org # v5.14
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 ---
- set_ftrace_ops_ro+0x46: relocation to !ENDBR: .text+0x16c578 in
-vmlinux (vmlinux.o) [logspec:kbuild,kbuild.compiler.objtool]
----
+v2: Fix code error and remove improper description.
 
-- dashboard: https://d.kernelci.org/i/maestro:c49af145451f7a03012be6a37ed4b2bc44aa3470
-- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-- commit HEAD:  615b9e10e3377467ced8f50592a1b5ba8ce053d8
+ drivers/infiniband/hw/irdma/puda.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
+diff --git a/drivers/infiniband/hw/irdma/puda.c b/drivers/infiniband/hw/irdma/puda.c
+index 7e3f9bca2c23..f7a826a5bedf 100644
+--- a/drivers/infiniband/hw/irdma/puda.c
++++ b/drivers/infiniband/hw/irdma/puda.c
+@@ -7,6 +7,7 @@
+ #include "protos.h"
+ #include "puda.h"
+ #include "ws.h"
++#include "user.h"
+ 
+ static void irdma_ieq_receive(struct irdma_sc_vsi *vsi,
+ 			      struct irdma_puda_buf *buf);
+@@ -444,6 +445,8 @@ int irdma_puda_send(struct irdma_sc_qp *qp, struct irdma_puda_send_info *info)
+ 	if (!wqe)
+ 		return -ENOMEM;
+ 
++	irdma_clr_wqes(&qp->qp_uk, wqe_idx);
++
+ 	qp->qp_uk.sq_wrtrk_array[wqe_idx].wrid = (uintptr_t)info->scratch;
+ 	/* Third line of WQE descriptor */
+ 	/* maclen is in words */
+-- 
+2.42.0.windows.2
 
-Log excerpt:
-=====================================================
-vmlinux.o: warning: objtool: set_ftrace_ops_ro+0x46: relocation to
-!ENDBR: .text+0x16c578
-  OBJCOPY modules.builtin.modinfo
-  GEN     modules.builtin
-  GEN     .vmlinux.objs
-  MODPOST vmlinux.symvers
-  CC      .vmlinux.export.o
-  UPD     include/generated/utsversion.h
-  CC      init/version-timestamp.o
-  LD      .tmp_vmlinux.kallsyms1
-ld.lld: error: undefined symbol: its_static_thunk
->>> referenced by usercopy_64.c
->>>               vmlinux.o:(emit_indirect_jump)
-
-=====================================================
-
-
-# Builds where the incident occurred:
-
-## x86_64_defconfig+allmodconfig on (x86_64):
-- compiler: clang-17
-- dashboard: https://d.kernelci.org/build/maestro:6829871bfef071f536c1102b
-
-
-#kernelci issue maestro:c49af145451f7a03012be6a37ed4b2bc44aa3470
-
-Reported-by: kernelci.org bot <bot@kernelci.org>
-
---
-This is an experimental report format. Please send feedback in!
-Talk to us at kernelci@lists.linux.dev
-
-Made with love by the KernelCI team - https://kernelci.org
 
