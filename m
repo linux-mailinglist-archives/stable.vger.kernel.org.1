@@ -1,235 +1,358 @@
-Return-Path: <stable+bounces-144720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4300ABB0D0
-	for <lists+stable@lfdr.de>; Sun, 18 May 2025 18:23:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32719ABB122
+	for <lists+stable@lfdr.de>; Sun, 18 May 2025 19:46:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 801E81894C2D
-	for <lists+stable@lfdr.de>; Sun, 18 May 2025 16:24:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67A803A7A8D
+	for <lists+stable@lfdr.de>; Sun, 18 May 2025 17:46:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F10D121CC4B;
-	Sun, 18 May 2025 16:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 078FF21D3F9;
+	Sun, 18 May 2025 17:46:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="YlyAqY9M"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b="r2c/F5jb"
 X-Original-To: stable@vger.kernel.org
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11021089.outbound.protection.outlook.com [52.101.57.89])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED81E4B1E5E;
-	Sun, 18 May 2025 16:23:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.89
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747585424; cv=fail; b=bNHwg5I7IRh5ekcVWc9vayQx+cUaa+//Ya/qeOfoFgr4HDBGY/1Ymfwb4gt88MK1CL2DRb7Ry5SLX8MudeM92A/OXbb/tEIBMCowjSHjzxyqL6Xeofa538ZOCz/LguM5fGJ9F4oG1/llTNZ/TERWRkICRjXDznaPS1D2nod96ss=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747585424; c=relaxed/simple;
-	bh=tTyXkn3MNmHPcXroRCM7Qs387wId6mKzsc/gFKq9CQU=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=kSc/bnjezouAaR+eecGMUZfi5UNg0xotsaKzi+5GR5HpuvkEk4OrVmoWfDlXwyU0a7jfBKiUvKistCfG1vs9B8CIRuhua5y/k95gq8/l2QFIw9JCMbkPjjxaA3KnpcVLBgCbWAwF06naa8+xGSZTyLHwzkFALoKm68quahGqy8c=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=microsoft.com; dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b=YlyAqY9M; arc=fail smtp.client-ip=52.101.57.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microsoft.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xIzAAahVJWJy0FkNx7R24KaJg15vRkibhL7BKg+5E6LQWPxlU07AaPjczBbg1p9iLXRgC2wf/RacDPv3uDkYWX5gTqzFeZWdobjE2OuLl04/MAY0Z5EGq2xtd3e5MGf9hG1MLY/hs3IRcdXpLhj2CwbI0639uxdHzbXIFSldiFJt3+uKFsmFoaYIE8VnqBVoBYP+Fiv2wjDqC7+dKq3qVXhOr/fiDXSQ9mG/2XFqjuTV60167iTGRGsuxoIGOy91Cfeq4otA8xRXRriM5K8sT57IcM5lPOYIL9gSDuirW30R4KGCTbSXcWegUaw5j1Pt2nYOLOD4Qdso2Iiw50KCXw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=N2pp7dDVPVEVJ3QKmrq05WEe9QQhkUVoH6sJt4Rt2Bc=;
- b=TQpteV5+IUFguuXbwyH2dban2ZYDq0LDbGwVm3wBhrMvLaAOUeXGO5KzFA0w1FCsZj6dcw+uDMg/KejpjK+hTfgL07h2Q37m+mPTATE35siThpWjArOxTsPwG2dUeAyrWTGANpCUwFJanGNyCzJy2sycQdIiSXn60uTG5FIhlBDIJaSnImkEvTNS+eHoI1S9UG3Bh/6idXKd+Y+zJJkO/Ko74fbSjevnMhfo+gROIQ5VGpSbXKCuUpMTXZwCOK6/tEaWObn29nz+HFJV1yTZJ2XhuDaZlHpL/OJTHRN8mRtYmE+UZKnyjGbR/Z9sQ7d9mv5VljW0L8SPAqQ7UKYhKQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=N2pp7dDVPVEVJ3QKmrq05WEe9QQhkUVoH6sJt4Rt2Bc=;
- b=YlyAqY9MQvVRg8wsFcVddg8kcUJ82QTKbRDE8fwqaO6upyFChkyGypvFpeA3finI2SWTYMkzVbrcBMA2aR/v2LyHwl8wazbbwXma/T/TE2zBAV6Xe79xm9ypokUD9LoeW7uD9csQ1F3SncGj+GA6+bOygM6jhlcgb+1p+z8E/4o=
-Received: from MN0PR21MB3437.namprd21.prod.outlook.com (2603:10b6:208:3d2::17)
- by MN0PR21MB3168.namprd21.prod.outlook.com (2603:10b6:208:378::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8769.4; Sun, 18 May
- 2025 16:23:39 +0000
-Received: from MN0PR21MB3437.namprd21.prod.outlook.com
- ([fe80::5125:461:1c07:1a97]) by MN0PR21MB3437.namprd21.prod.outlook.com
- ([fe80::5125:461:1c07:1a97%4]) with mapi id 15.20.8769.001; Sun, 18 May 2025
- 16:23:39 +0000
-From: Haiyang Zhang <haiyangz@microsoft.com>
-To: Saurabh Sengar <ssengar@linux.microsoft.com>, KY Srinivasan
-	<kys@microsoft.com>, "wei.liu@kernel.org" <wei.liu@kernel.org>, Dexuan Cui
-	<decui@microsoft.com>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
-	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
-	<edumazet@google.com>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"horms@kernel.org" <horms@kernel.org>, "ast@kernel.org" <ast@kernel.org>,
-	"daniel@iogearbox.net" <daniel@iogearbox.net>, "hawk@kernel.org"
-	<hawk@kernel.org>, "john.fastabend@gmail.com" <john.fastabend@gmail.com>,
-	"sdf@fomichev.me" <sdf@fomichev.me>, "kuniyu@amazon.com" <kuniyu@amazon.com>,
-	"ahmed.zaki@intel.com" <ahmed.zaki@intel.com>, "aleksander.lobakin@intel.com"
-	<aleksander.lobakin@intel.com>, "linux-hyperv@vger.kernel.org"
-	<linux-hyperv@vger.kernel.org>, "netdev@vger.kernel.org"
-	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "bpf@vger.kernel.org" <bpf@vger.kernel.org>
-CC: Saurabh Singh Sengar <ssengar@microsoft.com>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: RE: [PATCH net] hv_netvsc: fix potential deadlock in
- netvsc_vf_setxdp()
-Thread-Topic: [PATCH net] hv_netvsc: fix potential deadlock in
- netvsc_vf_setxdp()
-Thread-Index: AQHbx6eoP016nJk2S0CcGjqDqYBs+7PYkp4Q
-Date: Sun, 18 May 2025 16:23:38 +0000
-Message-ID:
- <MN0PR21MB34371EBD052E958A8D50105BCA9DA@MN0PR21MB3437.namprd21.prod.outlook.com>
-References: <1747540070-11086-1-git-send-email-ssengar@linux.microsoft.com>
-In-Reply-To: <1747540070-11086-1-git-send-email-ssengar@linux.microsoft.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
- MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=fd63344a-899d-4c2c-a9cc-0bc02c89c62c;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2025-05-18T16:21:52Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Tag=10,
- 3, 0, 1;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microsoft.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MN0PR21MB3437:EE_|MN0PR21MB3168:EE_
-x-ms-office365-filtering-correlation-id: 560a7029-1c4f-4399-97ec-08dd962858da
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|7416014|1800799024|376014|921020|38070700018|7053199007;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?Dj4g48ETXxcqLOBMNvQWZHq36+ILQt5kn+Kz7/RZXtkrP0uj66rxOCSFxtY0?=
- =?us-ascii?Q?WRaGAtq3papQEky0eNJBP4NtQHfdon42IpivwQ8V6eDGvtAgVCvkP44V7CbX?=
- =?us-ascii?Q?qgvEIxquGG5QQoC3bA8b3GcmBL/do2XHOiPjo2bjNvm2NKaY5HYE3jtQ9bv6?=
- =?us-ascii?Q?WMBOT6P/yPa9dZXLeA/qj9lh5leDIWz1SLa3nILS8YUYP/6yLiJfMADui7Rh?=
- =?us-ascii?Q?J4zOmZtKrxWY1NEPfpIUFe1kRMXsTpsuNtfBlJIVtTQaKGxnb0Jt/ArUOVi/?=
- =?us-ascii?Q?jDPG2d0r3FmbLW4G436iYZcpSXOCkzw5XgFTdWQx3GpMXvMp1UIfeAJhdgCw?=
- =?us-ascii?Q?qnl1gntg7lEYgxXrTx/qCU553eHbLhuhHzVjX3woMYpXKbbN1TZbCt+GIKgo?=
- =?us-ascii?Q?U9PHRzBXxPlx6lyqUTLcAiQ0zewvbm5/E0BTivKLktWvs0mYRuXNjgcVttiY?=
- =?us-ascii?Q?7fCt9OsLf3GbaEbrks4ay5kGZmoeQOBYfp1qvv0hwXQors1imEtnrsFaHhhS?=
- =?us-ascii?Q?mQjw18fZbWwQnhK0SMeaBY4SVJgMMS2tQEY+Ycx/uUC1OBebxicGPGhP2pJJ?=
- =?us-ascii?Q?D5Cql7t1/vwh8brwOpMArjX+mGk9qSMHv7/kl04RiisH0W9ZbpzXJqUYWHPC?=
- =?us-ascii?Q?wo2ExxgDBwGrmNAybRFK1OnPpc+tJwAXWMyy5d/1R1NG6WCRFw3OS0+A7HUH?=
- =?us-ascii?Q?AFevppHl+Rov4WS51yzT4lWZHguLZW+WG6ubpWIPj8iRGuZMSo1+EiI3UWMD?=
- =?us-ascii?Q?HV/spkIJW+02rxbJ+SwizmnNyzuTksHCfUzU1IVkkHdsy6ZxLpRQlvPxOsgv?=
- =?us-ascii?Q?T+rI/IfsR/ggsFbYdbjijutJEIrgLenOmrAH9YsdgjkCtoNGqvKutZlouLJT?=
- =?us-ascii?Q?LoYfC9Mk/IUJiZrN3tSzz9iQsQe3DFr6Zz19jOUbO2rDNJxeafsXGAZqKSng?=
- =?us-ascii?Q?qCdjU5U5kZGDrcZY4LscE/Tfv2XPxYiw2CxnII6PsvfEjWnR3f+Avh/k3pKy?=
- =?us-ascii?Q?rN2Psmp741dhqw2wo7s2Ft680rha4uQCB7QTWlh+XZmBmFM+3A1Xil+TuKVT?=
- =?us-ascii?Q?nRtuz8Vg/zHb3FnYWdsnkJuio1/OqOLgVRhDb3f9tD5wrbREQGyfuHPijLNR?=
- =?us-ascii?Q?CBcVzzhk7elHdYEkn4STUQWZrvR+LumnU7ebnyWZqlKCEoniI0GpXlTCIRmO?=
- =?us-ascii?Q?Lud9DoPnW/FChpu2RM/Vd28PBUpcxcB9anL6+XZk4QzIG62/fFqQkZSdgPnR?=
- =?us-ascii?Q?+C/a7kUDyuH3eDDeC7Sqki/hfH6qNp7bw+qt53aV1PGulY4EMmICexaw7+No?=
- =?us-ascii?Q?xkL8q8HSFHh93xN3+nV7P1UfJ3gTq+4nbKOyI4LSgsgWCK7RMpCFHZC1E0IG?=
- =?us-ascii?Q?5Qmh8CgguIJlQp5cEpKR1bknXaRu3C0EIBBEBh4eqWIL32M7o/gMnDeQseAj?=
- =?us-ascii?Q?vgEtwG/VSSp2266zs1BeWlyF86voLvgmNbU/GtV+M3o6vIFrZKYulmgrdFye?=
- =?us-ascii?Q?+0DPvYSUfZ+Tps8=3D?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR21MB3437.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(376014)(921020)(38070700018)(7053199007);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?wHuM7gaV1rMVrmyxfUPe5JVPIwvSllu639W2ldi5f+BPAEQXe8JTI38MRwcc?=
- =?us-ascii?Q?bI9pKnQjiwThoIZaMUzLMvM/IE6vsDtObX+yq5sSl8/4xue2PwYT89YDaHGU?=
- =?us-ascii?Q?HkETpzhz7mI5zRLCxEMqW4eB/sZ0R6lm0JtrT22eCABLFcYQ/2UFTk4u3ncz?=
- =?us-ascii?Q?eUz6wpHO74fsmqrZo83T/88uzEMI94oGm8fCXCPK8RKTUZEsP/aupatr70mu?=
- =?us-ascii?Q?WzeER4Q9aw1p9b2Og+K3Xsr+lA5fzJz/l+WzyHM03sogpWrSy0mlC2FhmzUB?=
- =?us-ascii?Q?iT4rQZ2xkBEYj/++aXOVAvH9GHgFCwEUFSvd7XXFrqret8UHoW4i68kAIRfa?=
- =?us-ascii?Q?CoAgM+DXnZs5mbQ5nrAnyXLqGTE3GNqkHZ16ZrS4g6bH5At0PYL/bsukz84+?=
- =?us-ascii?Q?QwPs7zdyYPZdn8lJpfnRfl+Zwb5ohj9s1groJwbsk7Qm/TrRKREaWyNFcHPz?=
- =?us-ascii?Q?/T6Jz0CaSrY2BntDKfMxbWnIs0/bd5E8/hB30X+392BMQD8CWAYx2YprvB1Y?=
- =?us-ascii?Q?aJNZ2XrtuxKxjVg0kmhN2LrC5k4Afm5w7Gdu5Sn4hfx7Fkvlw7pHG2vMLFMW?=
- =?us-ascii?Q?E4kLM+OjMNXHUT4VhNT3QqJSzsM9nt0G9JyXGsMiO8bV7LLVkc5MH2uWX0cp?=
- =?us-ascii?Q?g7xr0K4gEpualWbPfOpTtPi1nWy0YnJbf4bBFt9s7Uk+q8e5KMMZ9WtwvlaB?=
- =?us-ascii?Q?pBShEW5dUlXW+OmN4a6aQRyJC2J4lnS/m8PIsTQnDZXnGJldI9YaAwLeLrpJ?=
- =?us-ascii?Q?tDzGfyrdKIrhCl2PVqE4SNvJLeWTOaJvduXiZEi2JMggMhreOQ6F57iLrNH+?=
- =?us-ascii?Q?u4AO7cORiFgOH4I/1OymQklNHvzobtghXxxB8GA/EOaRP0Mk0UaEkixXUzFo?=
- =?us-ascii?Q?upeiNmy+NTNOYCfWAWsWqDC5J+/yUrgjpV2eGnnwmj6VSxADURS/zk3TYP/P?=
- =?us-ascii?Q?D4nl7/CU44b0gY3gKMiOEWEq0+nkw3GSiGcwI/cC3/MOY10QRSiEE67E0p5p?=
- =?us-ascii?Q?KS3sjLxTx6M5TwTex7nZ5lbuhMta+twMlSyseJq2XP7Ok78btLeVC1AEwKPO?=
- =?us-ascii?Q?TbEZmb5D4oqXMw+2Y/e55zFQXWbkeEmpNI9AWERHv18Wn25u0ynfMLXQf3iA?=
- =?us-ascii?Q?wptNhcCC+TbykmKpSOdzkeoiE34dGeR4Mz+ID6vFl41dMnuEDisnBkv8M/nK?=
- =?us-ascii?Q?fA9l4tQpInsnT+cMXtjP2tXdfuNrRJ1MX/WstONh40F8jBhiJ243AoGF0a/K?=
- =?us-ascii?Q?HqoaI3PjgwWeDLl1yHxNt/T2hzKOro41QHiS74N3SmXEvtf/LwitwJ67Ka8v?=
- =?us-ascii?Q?vIMPubQLHG8UEaFyZElDr3kDkd5YBCZyeTP7HwLmvu3C+IBjiBs76ZSA23Fn?=
- =?us-ascii?Q?XB7MIGuqG76nCGhq73oDvN6GhlusHSsFN5404D3Vpin6A0DwpOASZ1LgnUmW?=
- =?us-ascii?Q?w0SYCzD216BO5dSVjuQaEZQpQPeqMjM1e7P0IskyML9WBfVdUzarXLR3xnEF?=
- =?us-ascii?Q?p9H2cXdv+G2zeAeiDp5MYGkoR3DfdpqyyISFG+j9DBLjuN5OlsXpznKT8F/Q?=
- =?us-ascii?Q?jFUor+d0hEGpmfA8V/FYytUkzlP6oub3bPMn7VfF?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C540712CDBE;
+	Sun, 18 May 2025 17:46:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747590388; cv=none; b=awfaBus0A7cbtali/t4CGY12P+uOVyGRzxs2Lko6puZlUQBsl+tB9K001y0F553gXOwOyRpNm5uGtk3hFKzyiR5OrWqoXrDRzxFZYKMO0XIYN0NqVC2VnLQTznHpU4x1AXzrNwO6H7Nt9Uysh6KsMAt3J6tZ0N7DXy+18rSekgI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747590388; c=relaxed/simple;
+	bh=MKxU4FFxfUMYFM9K/j7LO/V4H/bEqGP/GAlCJy9CA3Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MX+Q1AO5OD6Nd2zn//OR1riE4196V0Nrtiee/8OHGT9RJ5m+6EVt8jOZoGa603l7noytaU8pXogO89jgP13kkKLkYNG3aNgBKfKBtjIVZmzYZrne0C4tO0HMTWyjp3LTZFvQ8AMq/co7qPXMPRljwkh0fQV7Q2MghcBK6CzzKFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=w_armin@gmx.de header.b=r2c/F5jb; arc=none smtp.client-ip=212.227.15.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1747590374; x=1748195174; i=w_armin@gmx.de;
+	bh=I7IK5ECjWd9nplphgrQo+Hveys8NTa0a5CWuKNr3WNY=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=r2c/F5jbsYelKCYLI+11HjROL6xigNkAqxI6sWuZKVId6tUW5P7xdsgyKgCzEwk3
+	 QBUToLHUtLCe7xynUUUIYPT+lNwh9oRMsQ4JB19tCZ5u5vJAKD8b0zsYg02S0hkmZ
+	 76YKKagFYOtKzq5qPMz8AQGShkH7woqs7DG5IkoW7JhZxR54zKmYQTFIq0uavmhF6
+	 Cf1Q7IzVY461qI0w34fgiZfd2WEea9324HBunTD4vj1UoP1Sw/gfBIA+MeINrWKix
+	 8pLL/Q4UCE/lDrDeO91WzFCJWmxzr9JvvLMw0JsE8HupaAmbvmbXT0B5l07UByM5h
+	 /wC1yuVM+NFe1GRWCA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.0.69] ([87.177.78.219]) by mail.gmx.net (mrgmx004
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1M6DWs-1uIst41q1I-007Bi0; Sun, 18
+ May 2025 19:46:14 +0200
+Message-ID: <79124489-0a2f-42ca-85ae-6f442e42e2d3@gmx.de>
+Date: Sun, 18 May 2025 19:46:12 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR21MB3437.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 560a7029-1c4f-4399-97ec-08dd962858da
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 May 2025 16:23:38.9842
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: BdFkWttaF5P1Sgx+Va7VXgNRhHuNR2VNQoHFee14UTwMy3gParl79oAlmuGArffuKTTgRQIsXZdfQXTZqcZFOw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN0PR21MB3168
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] HID: lenovo: Unbreak USB/BT keyboards on non-ACPI
+ platforms
+To: Janne Grunau <j@jannau.net>
+Cc: Jiri Kosina <jikos@kernel.org>, Benjamin Tissoires <bentiss@kernel.org>,
+ Vishnu Sankar <vishnuocv@gmail.com>, "Rafael J. Wysocki"
+ <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+ linux-acpi@vger.kernel.org, linux-input@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20250512-hid_lenovo_unbreak_non_acpi-v1-1-e9e37ecbfbfe@jannau.net>
+ <b77edae0-50bd-4039-9487-15bb69389c6c@gmx.de>
+ <20250515230537.GA1556976@robin.jannau.net>
+ <b3536162-44aa-40af-861e-07371497ef30@gmx.de>
+ <20250518094353.GB1556976@robin.jannau.net>
+Content-Language: en-US
+From: Armin Wolf <W_Armin@gmx.de>
+In-Reply-To: <20250518094353.GB1556976@robin.jannau.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:5gw4QP79TBBrrzA6OPK9UqK46HbwUInur45ziCIq3oCeYHBTVv3
+ tF3qeF3JkUwTt1FygSddpG6YzGcdHqADqtimR9EwsAvGCGnix7T0uw+alu7poM8NkGDtDZ6
+ evzSNoxO5AESiFLY+nIVbNUGBUUqCj4195CGl665ok3ARFcW62O+lUwXExALbjgl4+d6zik
+ Wh2RfLGAwlur4pCUPjTPA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:9iNik3bY4/0=;QHPEmVvfdQ8zjZVRXjSa5p+YhHs
+ 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
 
+Am 18.05.25 um 11:43 schrieb Janne Grunau:
 
+> Hej,
+>
+> On Sat, May 17, 2025 at 05:58:24PM +0200, Armin Wolf wrote:
+>> Am 16.05.25 um 01:05 schrieb Janne Grunau:
+>>
+>>> On Fri, May 16, 2025 at 12:05:11AM +0200, Armin Wolf wrote:
+>>>> Am 12.05.25 um 23:55 schrieb Janne Grunau via B4 Relay:
+>>>>
+>>>>> From: Janne Grunau <j@jannau.net>
+>>>>>
+>>>>> Commit 84c9d2a968c8 ("HID: lenovo: Support for ThinkPad-X12-TAB-1/2 =
+Kbd
+>>>>> Fn keys") added a dependency on ACPI_PLATFORM_PROFILE to cycle throu=
+gh
+>>>>> power profiles. This breaks USB and Bluetooth keyboards on non-ACPI
+>>>>> platforms since platform_profile_init() fails. See the warning below=
+ for
+>>>>> the visible symptom but cause is the dependency on the platform_prof=
+ile
+>>>>> module.
+> [...]
+>
+>>>> i think we can fix that. We just have to skip the compat stuff if acp=
+i_kobj is NULL (means that ACPI is not used).
+>>>> The modern platform profile interface is generic enough to also work =
+on non-ACPI systems.
+>>>>
+>>>> Can you test a patch?
+>>> I can easily test patches
+>> Nice, i attached the necessary patch. Please keep in mind that this pat=
+ch is compile-tested only.
+>>
+>> From: Armin Wolf <W_Armin@gmx.de>
+>> Date: Sat, 17 May 2025 17:45:09 +0200
+>> Subject: [PATCH] ACPI: platform_profile: Add support for non-ACPI platf=
+orms
+>>
+>> Currently the platform profile subsystem assumes that all supported
+>> (i.e. ACPI-capable) platforms always run with ACPI being enabled.
+>> However some ARM64 notebooks do not support ACPI and are instead
+>> using devicetree for booting.
+>>
+>> Do not register the legacy sysfs interface on such devices as it
+>> depends on the acpi_kobj (/sys/firmware/acpi/) being present. Users
+>> are encouraged to use the new platform-profile class interface
+>> instead.
+>>
+>> Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+>> ---
+>>   drivers/acpi/platform_profile.c | 68 ++++++++++++++++++++++++++------=
+-
+>>   1 file changed, 55 insertions(+), 13 deletions(-)
+>>
+>> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_pr=
+ofile.c
+>> index ffbfd32f4cf1..c5a5da7d03f1 100644
+>> --- a/drivers/acpi/platform_profile.c
+>> +++ b/drivers/acpi/platform_profile.c
+>> @@ -190,6 +190,20 @@ static ssize_t profile_show(struct device *dev,
+>>   	return sysfs_emit(buf, "%s\n", profile_names[profile]);
+>>   }
+>>  =20
+>> +/**
+>> + * profile_notify_legacy - Notify the legacy sysfs interface
+>> + *
+>> + * This wrapper takes care of only notifying the legacy sysfs interfac=
+e
+>> + * if it was registered during module initialization.
+>> + */
+>> +static void profile_notify_legacy(void)
+>> +{
+>> +	if (!acpi_kobj)
+>> +		return;
+>> +
+>> +	sysfs_notify(acpi_kobj, NULL, "platform_profile");
+>> +}
+>> +
+>>   /**
+>>    * profile_store - Set the profile for a class device
+>>    * @dev: The device
+>> @@ -215,7 +229,7 @@ static ssize_t profile_store(struct device *dev,
+>>   			return ret;
+>>   	}
+>>  =20
+>> -	sysfs_notify(acpi_kobj, NULL, "platform_profile");
+>> +	profile_notify_legacy();
+>>  =20
+>>   	return count;
+>>   }
+>> @@ -435,7 +449,7 @@ static ssize_t platform_profile_store(struct kobjec=
+t *kobj,
+>>   			return ret;
+>>   	}
+>>  =20
+>> -	sysfs_notify(acpi_kobj, NULL, "platform_profile");
+>> +	profile_notify_legacy();
+>>  =20
+>>   	return count;
+>>   }
+>> @@ -472,6 +486,22 @@ static const struct attribute_group platform_profi=
+le_group =3D {
+>>   	.is_visible =3D profile_class_is_visible,
+>>   };
+>>  =20
+>> +/**
+>> + * profile_update_legacy - Update the legacy sysfs interface
+>> + *
+>> + * This wrapper takes care of only updating the legacy sysfs interface
+>> + * if it was registered during module initialization.
+>> + *
+>> + * Return: 0 on success or error code on failure.
+>> + */
+>> +static int profile_update_legacy(void)
+>> +{
+>> +	if (!acpi_kobj)
+>> +		return 0;
+>> +
+>> +	return sysfs_update_group(acpi_kobj, &platform_profile_group);
+>> +}
+>> +
+>>   /**
+>>    * platform_profile_notify - Notify class device and legacy sysfs int=
+erface
+>>    * @dev: The class device
+>> @@ -481,7 +511,7 @@ void platform_profile_notify(struct device *dev)
+>>   	scoped_cond_guard(mutex_intr, return, &profile_lock) {
+>>   		_notify_class_profile(dev, NULL);
+>>   	}
+>> -	sysfs_notify(acpi_kobj, NULL, "platform_profile");
+>> +	profile_notify_legacy();
+>>   }
+>>   EXPORT_SYMBOL_GPL(platform_profile_notify);
+>>  =20
+>> @@ -529,7 +559,7 @@ int platform_profile_cycle(void)
+>>   			return err;
+>>   	}
+>>  =20
+>> -	sysfs_notify(acpi_kobj, NULL, "platform_profile");
+>> +	profile_notify_legacy();
+>>  =20
+>>   	return 0;
+>>   }
+>> @@ -603,9 +633,9 @@ struct device *platform_profile_register(struct dev=
+ice *dev, const char *name,
+>>   		goto cleanup_ida;
+>>   	}
+>>  =20
+>> -	sysfs_notify(acpi_kobj, NULL, "platform_profile");
+>> +	profile_notify_legacy();
+>>  =20
+>> -	err =3D sysfs_update_group(acpi_kobj, &platform_profile_group);
+>> +	err =3D profile_update_legacy();
+>>   	if (err)
+>>   		goto cleanup_cur;
+>>  =20
+>> @@ -639,8 +669,8 @@ void platform_profile_remove(struct device *dev)
+>>   	ida_free(&platform_profile_ida, pprof->minor);
+>>   	device_unregister(&pprof->dev);
+>>  =20
+>> -	sysfs_notify(acpi_kobj, NULL, "platform_profile");
+>> -	sysfs_update_group(acpi_kobj, &platform_profile_group);
+>> +	profile_notify_legacy();
+>> +	profile_update_legacy();
+>>   }
+>>   EXPORT_SYMBOL_GPL(platform_profile_remove);
+>>  =20
+>> @@ -692,16 +722,28 @@ static int __init platform_profile_init(void)
+>>   	if (err)
+>>   		return err;
+>>  =20
+>> -	err =3D sysfs_create_group(acpi_kobj, &platform_profile_group);
+>> -	if (err)
+>> -		class_unregister(&platform_profile_class);
+>> +	/*
+>> +	 * The ACPI kobject can be missing if ACPI was disabled during bootin=
+g.
+>> +	 * We thus skip the initialization of the legacy sysfs interface in s=
+uch
+>> +	 * cases to allow the platform profile class to work on ARM64 noteboo=
+ks
+>> +	 * without ACPI support.
+> I wouldn't say work as I'd expect that there are 0 registered
+> platform_profile class devices.
 
-> -----Original Message-----
-> From: Saurabh Sengar <ssengar@linux.microsoft.com>
-> Sent: Saturday, May 17, 2025 11:48 PM
-> To: KY Srinivasan <kys@microsoft.com>; Haiyang Zhang
-> <haiyangz@microsoft.com>; wei.liu@kernel.org; Dexuan Cui
-> <decui@microsoft.com>; andrew+netdev@lunn.ch; davem@davemloft.net;
-> edumazet@google.com; pabeni@redhat.com; horms@kernel.org; ast@kernel.org;
-> daniel@iogearbox.net; hawk@kernel.org; john.fastabend@gmail.com;
-> sdf@fomichev.me; kuniyu@amazon.com; ahmed.zaki@intel.com;
-> aleksander.lobakin@intel.com; linux-hyperv@vger.kernel.org;
-> netdev@vger.kernel.org; linux-kernel@vger.kernel.org; bpf@vger.kernel.org
-> Cc: Saurabh Singh Sengar <ssengar@microsoft.com>; stable@vger.kernel.org;
-> Saurabh Sengar <ssengar@linux.microsoft.com>
-> Subject: [PATCH net] hv_netvsc: fix potential deadlock in
-> netvsc_vf_setxdp()
->=20
-> The MANA driver's probe registers netdevice via the following call chain:
->=20
-> mana_probe()
->   register_netdev()
->     register_netdevice()
->=20
-> register_netdevice() calls notifier callback for netvsc driver,
-> holding the netdev mutex via netdev_lock_ops().
->=20
-> Further this netvsc notifier callback end up attempting to acquire the
-> same lock again in dev_xdp_propagate() leading to deadlock.
->=20
-> netvsc_netdev_event()
->   netvsc_vf_setxdp()
->     dev_xdp_propagate()
->=20
-> This deadlock was not observed so far because net_shaper_ops was never
-> set and this lock in noop in this case. Fix this by using
-> netif_xdp_propagate instead of dev_xdp_propagate to avoid recursive
-> locking in this path.
->=20
-> This issue has not observed so far because net_shaper_ops was unset,
-> making the lock path effectively a no-op. To prevent recursive locking
-> and avoid this deadlock, replace dev_xdp_propagate() with
-> netif_xdp_propagate(), which does not acquire the lock again.
->=20
-> Also, clean up the unregistration path by removing unnecessary call to
-> netvsc_vf_setxdp(), since unregister_netdevice_many_notify() already
-> performs this cleanup via dev_xdp_uninstall.
->=20
-> Fixes: 97246d6d21c2 ("net: hold netdev instance lock during ndo_bpf")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Just as expected, currently all drivers registering with the platform prof=
+ile subsystem are
+depending on ACPI. In the future this might change.
 
-Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
+>> +	 */
+>> +	if (acpi_kobj) {
+>> +		err =3D sysfs_create_group(acpi_kobj, &platform_profile_group);
+>> +		if (err < 0) {
+>> +			class_unregister(&platform_profile_class);
+>> +			return err;
+>> +		}
+>> +	}
+>>  =20
+>> -	return err;
+>> +	return 0;
+>>   }
+>>  =20
+>>   static void __exit platform_profile_exit(void)
+>>   {
+>> -	sysfs_remove_group(acpi_kobj, &platform_profile_group);
+>> +	if (acpi_kobj)
+>> +		sysfs_remove_group(acpi_kobj, &platform_profile_group);
+>> +
+>>   	class_unregister(&platform_profile_class);
+>>   }
+>>   module_init(platform_profile_init);
+> thanks, patch works on the affected system and the HID device for the
+> Lenovo keyboard probes successfully. We still need to stub
+> platform_profile_cycle() to get rid of the ACPI Kconfig dependency. I'll
+> send that out separately.
+>
+> Reviewed-by: Janne Grunau <j@jannau.net>
+> Tested-by: Janne Grunau <j@jannau.net>
+>
+Alright, i will send this patch to the ACPI mailing list ASAP. Please keep=
+ in mind
+that merely stubbing out the affected functions is not enough, as the plat=
+form profile code
+needs to be moved out of drivers/acpi/ as well.
 
-
+Thanks,
+Armin Wolf
 
 
