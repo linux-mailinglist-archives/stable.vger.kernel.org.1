@@ -1,176 +1,135 @@
-Return-Path: <stable+bounces-144696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 620B5ABAC79
-	for <lists+stable@lfdr.de>; Sat, 17 May 2025 22:35:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08FB3ABADAD
+	for <lists+stable@lfdr.de>; Sun, 18 May 2025 05:46:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EBB0D7A81FC
-	for <lists+stable@lfdr.de>; Sat, 17 May 2025 20:34:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C57253BCE57
+	for <lists+stable@lfdr.de>; Sun, 18 May 2025 03:45:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 095BB215062;
-	Sat, 17 May 2025 20:35:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01C4C13B2A4;
+	Sun, 18 May 2025 03:46:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="l+kQUxFO"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="YZVFu5hN"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A521A1A8F84;
-	Sat, 17 May 2025 20:35:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37C4A152E02
+	for <stable@vger.kernel.org>; Sun, 18 May 2025 03:46:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747514122; cv=none; b=V94lmHi2SEy7Xaz1NbbK+UNiHOtHZzM/KzQnwpTyYTMtQl8GJDDeyxfZiQAPoKqRIQWV9hDTvpf5o6/O3B3RexxJTARpzXoJa9qSYxN8LWpl52ibzvkPXw+uvYF8Gviia5dpDAc0D1p9t8YchLh0bYEP8sIVuC0sTdvJTZNyWf0=
+	t=1747539971; cv=none; b=rfn0JCqS5Z/WrbatOctQGvn9zztkLDPe4gyzm5VhWo6/7vW8WbGv8qHNZ+veH+ALunOevf1m2Df3CJZ1Z82T/9dxvbBTnt/JnzwnMn1tjcyDjTtnYZpVtvIzcpKG5oxhclinO0LaBV/C04zx+QCGp5AD0xk5e9KU/PBTK2DCvpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747514122; c=relaxed/simple;
-	bh=A1adUe+cYOvArGNE/hSK4EzFP4GP4YO5FYj9H98ZZGQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c0RsxcR6owJAf0IrqH1PbPa/dkeUHG87SzqBr0O2sdS1p0YicnyyEx9VMJ7Y3yJOBap8FVBivVkDFI0jyRcjufWib/tCDQFGhNLbk30qlX/ionRSrOypRw5p0SuUZSkdZEzqAN1IgIM7ZqBYVNrH9coHdY0KURtxcauCpyLLPjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=l+kQUxFO; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747514120; x=1779050120;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=A1adUe+cYOvArGNE/hSK4EzFP4GP4YO5FYj9H98ZZGQ=;
-  b=l+kQUxFOF7H1XamjgfipG/v+EmIA4uqrrPtcyeH9+RZMPRjfPHTth5K+
-   nrsisM4lBfzAA+FkDju4d4NwEObmus/5NtnGCsJYqqRgyQCrxBBY7SJf2
-   7nc5EwTa7O+NDANIlHG+IxgRc7nj49NDmaJx94Jw32n6z9iXqdBFNdrY4
-   pRzO7LV87br1MPfEzRSNBi8LnqjqMUjCCrwHOpImrEny1NTB2dSxj2EEe
-   lRBfuJ1ZbJzMrXhYDaM1amKP+jwD1JJ3SMeSn7SdCMeh4q+aNBFtz2gJi
-   q0wIB+9c8MU6RECWvITcoo06XZubGJhHkU5Dxl92piBlRjLgVdMNYsMQd
-   A==;
-X-CSE-ConnectionGUID: /RjZoGvsQGaiKHiwOzJUYw==
-X-CSE-MsgGUID: gqbxTUJbSYmIBUGFuSGtYw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11436"; a="71961248"
-X-IronPort-AV: E=Sophos;i="6.15,297,1739865600"; 
-   d="scan'208";a="71961248"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2025 13:35:19 -0700
-X-CSE-ConnectionGUID: KuzKdv50RgmVX84J2pgSQg==
-X-CSE-MsgGUID: SE9CoXYGRI+xOotZOC8XOw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,297,1739865600"; 
-   d="scan'208";a="139402611"
-Received: from lkp-server01.sh.intel.com (HELO 1992f890471c) ([10.239.97.150])
-  by fmviesa008.fm.intel.com with ESMTP; 17 May 2025 13:35:17 -0700
-Received: from kbuild by 1992f890471c with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1uGOFW-000KQF-0H;
-	Sat, 17 May 2025 20:35:14 +0000
-Date: Sun, 18 May 2025 04:35:03 +0800
-From: kernel test robot <lkp@intel.com>
-To: Wentao Liang <vulab@iscas.ac.cn>, ajay.kathat@microchip.com,
-	claudiu.beznea@tuxon.dev, kvalo@kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, linux-wireless@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Wentao Liang <vulab@iscas.ac.cn>,
+	s=arc-20240116; t=1747539971; c=relaxed/simple;
+	bh=aXvJKxmzfESpaedYEM0k3r230KTw/3k6G8+3Tse+Lhs=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=SiVZk8Jl4U0a8hgyb8zuMpuDHNk5ffHKATlhwQKAJb2px+UaHkY3U+ImklLlqMIlKjIQ3dMyTJ/wnevgwsXeuzuMcjosG2NW5u6ZVcHjUx1TkcZEdpONymkOGd6Sg7o6rXPfulpxEzefvV0LaYlfNuuF2A31/TDCVnykbeOxjT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=YZVFu5hN; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1127)
+	id B905D20277FE; Sat, 17 May 2025 20:46:09 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com B905D20277FE
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1747539969;
+	bh=lPGYH1glaOFQwG0Qf4sdwd5qCLAWVCDmPlEySsWR4Kg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=YZVFu5hNn5B/6ZcyI8N+lV4bZjBscpuGSM4OQXHe+7+xV9aOIuYhpp06pyvXANrmZ
+	 VitEc5x57JtQm06HuOapnJHzyXRcZ3VjNx1ZQdOc9nn7NFrN4fvEH6ZKGzk5YmnRrK
+	 VWe23r16gYElr1eOVBzSUq8G7kRKSRqW+eZdA/Ls=
+From: Saurabh Sengar <ssengar@linux.microsoft.com>
+To: ssengar@microsoft.com
+Cc: Saurabh Sengar <ssengar@linux.microsoft.com>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] wifi: wilc1000: Add error handling for wilc_sdio_cmd52()
-Message-ID: <202505180440.dyQDHWJJ-lkp@intel.com>
-References: <20250516083842.903-1-vulab@iscas.ac.cn>
+Subject: [PATCH net] hv_netvsc: fix potential deadlock in netvsc_vf_setxdp()
+Date: Sat, 17 May 2025 20:46:07 -0700
+Message-Id: <1747539967-10795-1-git-send-email-ssengar@linux.microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250516083842.903-1-vulab@iscas.ac.cn>
 
-Hi Wentao,
+The MANA driver's probe registers netdevice via the following call chain:
 
-kernel test robot noticed the following build errors:
+mana_probe()
+  register_netdev()
+    register_netdevice()
 
-[auto build test ERROR on wireless-next/main]
-[also build test ERROR on wireless/main linus/master v6.15-rc6 next-20250516]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+register_netdevice() calls notifier callback for netvsc driver,
+holding the netdev mutex via netdev_lock_ops().
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Wentao-Liang/wifi-wilc1000-Add-error-handling-for-wilc_sdio_cmd52/20250516-163959
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git main
-patch link:    https://lore.kernel.org/r/20250516083842.903-1-vulab%40iscas.ac.cn
-patch subject: [PATCH] wifi: wilc1000: Add error handling for wilc_sdio_cmd52()
-config: sh-allmodconfig (https://download.01.org/0day-ci/archive/20250518/202505180440.dyQDHWJJ-lkp@intel.com/config)
-compiler: sh4-linux-gcc (GCC) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250518/202505180440.dyQDHWJJ-lkp@intel.com/reproduce)
+Further this netvsc notifier callback end up attempting to acquire the
+same lock again in dev_xdp_propagate() leading to deadlock.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202505180440.dyQDHWJJ-lkp@intel.com/
+netvsc_netdev_event()
+  netvsc_vf_setxdp()
+    dev_xdp_propagate()
 
-All errors (new ones prefixed by >>):
+This deadlock was not observed so far because net_shaper_ops was never
+set and this lock in noop in this case. Fix this by using
+netif_xdp_propagate instead of dev_xdp_propagate to avoid recursive
+locking in this path.
 
-   In file included from include/linux/device.h:15,
-                    from include/linux/mmc/sdio_func.h:11,
-                    from drivers/net/wireless/microchip/wilc1000/sdio.c:8:
-   drivers/net/wireless/microchip/wilc1000/sdio.c: In function 'wilc_sdio_read_size':
->> drivers/net/wireless/microchip/wilc1000/sdio.c:792:32: error: 'struct sdio_func' has no member named 'devm'; did you mean 'dev'?
-     792 |                 dev_err(&func->devm, "Fail cmd 52, interrupt data register...\n");
-         |                                ^~~~
-   include/linux/dev_printk.h:110:25: note: in definition of macro 'dev_printk_index_wrap'
-     110 |                 _p_func(dev, fmt, ##__VA_ARGS__);                       \
-         |                         ^~~
-   drivers/net/wireless/microchip/wilc1000/sdio.c:792:17: note: in expansion of macro 'dev_err'
-     792 |                 dev_err(&func->devm, "Fail cmd 52, interrupt data register...\n");
-         |                 ^~~~~~~
-   drivers/net/wireless/microchip/wilc1000/sdio.c:801:32: error: 'struct sdio_func' has no member named 'devm'; did you mean 'dev'?
-     801 |                 dev_err(&func->devm, "Fail cmd 52, interrupt data register...\n");
-         |                                ^~~~
-   include/linux/dev_printk.h:110:25: note: in definition of macro 'dev_printk_index_wrap'
-     110 |                 _p_func(dev, fmt, ##__VA_ARGS__);                       \
-         |                         ^~~
-   drivers/net/wireless/microchip/wilc1000/sdio.c:801:17: note: in expansion of macro 'dev_err'
-     801 |                 dev_err(&func->devm, "Fail cmd 52, interrupt data register...\n");
-         |                 ^~~~~~~
+This issue has not observed so far because net_shaper_ops was unset,
+making the lock path effectively a no-op. To prevent recursive locking
+and avoid this deadlock, replace dev_xdp_propagate() with
+netif_xdp_propagate(), which does not acquire the lock again.
 
+Also, clean up the unregistration path by removing unnecessary call to
+netvsc_vf_setxdp(), since unregister_netdevice_many_notify() already
+performs this cleanup via dev_xdp_uninstall.
 
-vim +792 drivers/net/wireless/microchip/wilc1000/sdio.c
+Fixes: 97246d6d21c2 ("net: hold netdev instance lock during ndo_bpf")
+Cc: stable@vger.kernel.org
+Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+---
+ drivers/net/hyperv/netvsc_bpf.c | 2 +-
+ drivers/net/hyperv/netvsc_drv.c | 2 --
+ net/core/dev.c                  | 1 +
+ 3 files changed, 2 insertions(+), 3 deletions(-)
 
-   774	
-   775	static int wilc_sdio_read_size(struct wilc *wilc, u32 *size)
-   776	{
-   777		u32 tmp;
-   778		struct sdio_cmd52 cmd;
-   779		struct sdio_func *func = dev_to_sdio_func(wilc->dev);
-   780		int ret;
-   781	
-   782		/**
-   783		 *      Read DMA count in words
-   784		 **/
-   785		cmd.read_write = 0;
-   786		cmd.function = 0;
-   787		cmd.raw = 0;
-   788		cmd.address = WILC_SDIO_INTERRUPT_DATA_SZ_REG;
-   789		cmd.data = 0;
-   790		ret = wilc_sdio_cmd52(wilc, &cmd);
-   791		if (ret) {
- > 792			dev_err(&func->devm, "Fail cmd 52, interrupt data register...\n");
-   793			return ret;
-   794		}
-   795		tmp = cmd.data;
-   796	
-   797		cmd.address = WILC_SDIO_INTERRUPT_DATA_SZ_REG + 1;
-   798		cmd.data = 0;
-   799		ret = wilc_sdio_cmd52(wilc, &cmd);
-   800		if (ret) {
-   801			dev_err(&func->devm, "Fail cmd 52, interrupt data register...\n");
-   802			return ret;
-   803		}
-   804		tmp |= (cmd.data << 8);
-   805	
-   806		*size = tmp;
-   807		return 0;
-   808	}
-   809	
-
+diff --git a/drivers/net/hyperv/netvsc_bpf.c b/drivers/net/hyperv/netvsc_bpf.c
+index e01c5997a551..1dd3755d9e6d 100644
+--- a/drivers/net/hyperv/netvsc_bpf.c
++++ b/drivers/net/hyperv/netvsc_bpf.c
+@@ -183,7 +183,7 @@ int netvsc_vf_setxdp(struct net_device *vf_netdev, struct bpf_prog *prog)
+ 	xdp.command = XDP_SETUP_PROG;
+ 	xdp.prog = prog;
+ 
+-	ret = dev_xdp_propagate(vf_netdev, &xdp);
++	ret = netif_xdp_propagate(vf_netdev, &xdp);
+ 
+ 	if (ret && prog)
+ 		bpf_prog_put(prog);
+diff --git a/drivers/net/hyperv/netvsc_drv.c b/drivers/net/hyperv/netvsc_drv.c
+index d8b169ac0343..ee3aaf9c10e6 100644
+--- a/drivers/net/hyperv/netvsc_drv.c
++++ b/drivers/net/hyperv/netvsc_drv.c
+@@ -2462,8 +2462,6 @@ static int netvsc_unregister_vf(struct net_device *vf_netdev)
+ 
+ 	netdev_info(ndev, "VF unregistering: %s\n", vf_netdev->name);
+ 
+-	netvsc_vf_setxdp(vf_netdev, NULL);
+-
+ 	reinit_completion(&net_device_ctx->vf_add);
+ 	netdev_rx_handler_unregister(vf_netdev);
+ 	netdev_upper_dev_unlink(vf_netdev, ndev);
+diff --git a/net/core/dev.c b/net/core/dev.c
+index fccf2167b235..8c6c9d7fba26 100644
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -9953,6 +9953,7 @@ int netif_xdp_propagate(struct net_device *dev, struct netdev_bpf *bpf)
+ 
+ 	return dev->netdev_ops->ndo_bpf(dev, bpf);
+ }
++EXPORT_SYMBOL_GPL(netif_xdp_propagate);
+ 
+ u32 dev_xdp_prog_id(struct net_device *dev, enum bpf_xdp_mode mode)
+ {
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.43.0
+
 
