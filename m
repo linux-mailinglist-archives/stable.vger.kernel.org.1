@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-144776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6790DABBD27
-	for <lists+stable@lfdr.de>; Mon, 19 May 2025 14:00:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9F8DABBD2C
+	for <lists+stable@lfdr.de>; Mon, 19 May 2025 14:01:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A02133AF7B5
-	for <lists+stable@lfdr.de>; Mon, 19 May 2025 11:59:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE2701794ED
+	for <lists+stable@lfdr.de>; Mon, 19 May 2025 12:00:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B868C276058;
-	Mon, 19 May 2025 11:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47522201246;
+	Mon, 19 May 2025 12:00:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fSNnZxen"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W5HuHlX/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79BF327604B
-	for <stable@vger.kernel.org>; Mon, 19 May 2025 11:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0724313D52F
+	for <stable@vger.kernel.org>; Mon, 19 May 2025 12:00:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747655993; cv=none; b=SaJRjLRmhgDBF226Wikx3g4mDg3E6Ii8SqRSmjsWpSnPIc+5YtoP8fff0GQk+hVMaFN2m/eeTcuWX+GExPtq3g5KjJ6I/1qsRQnMP1E0YqJKblglsAKOANozt+q/Psh4+Nik9VgRhOrTWlddL4A+a0Hy7qnF3pPMWfGRtc2/Qak=
+	t=1747656040; cv=none; b=tHXQQLfD+2OsWF2HfgQO4vA+X2vwZmvD92zDHeDedcLvigxY5CWQ6bSEMRRwW8dHEpQ7aRcEXGJKtoS6of5hnJkvJ097aTkkRJ4/OcO2+x2B9AD0Zpudhb0Sc590En4b+VGYAGkoLGA044wbaZmYhmdxxhSTFfRsl2/+luR0Zhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747655993; c=relaxed/simple;
-	bh=nLHU28Kr2Paz39RhYm3DppOtSgp9TDmR/MR6RVLUy+U=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=DpfuIDuROxSGUQ+r7+2R5mpSzKgQBbKb/R0rO7BeqI9XyfWISTv/d8GTwwQuG0hQg1+3uOKklhRCp3qRMXKKetxsFDZerBoOgAAG3bYrpO9TThuH4J/le9fkTu6/FbPrpH2qmoRTlDL6mna4z6yluhj8NWn7XhvDZOQlQb5Yotk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fSNnZxen; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C1BDC4CEEF;
-	Mon, 19 May 2025 11:59:52 +0000 (UTC)
+	s=arc-20240116; t=1747656040; c=relaxed/simple;
+	bh=TR6ErX/anTb5QmRY9UdgO7D4tfO7wV1k4FpnKzC1lNk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qsahENqDbNphOLfrMLycQa+KvF1z2IrB+lV9Z2V4ll1bQoCSPSX1d/ZRo6RuG7CSN/+7qUdKqe5QMsMBfytpnZ4VqR55GOEjlJK05xCneNjMTprCIWxeIceyxHimsgO6Q2g2CquOXlNU1NgGshM/grzjmmlm1jV1OBj2eHZi6Ds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W5HuHlX/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 095D8C4CEE4;
+	Mon, 19 May 2025 12:00:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747655992;
-	bh=nLHU28Kr2Paz39RhYm3DppOtSgp9TDmR/MR6RVLUy+U=;
+	s=korg; t=1747656039;
+	bh=TR6ErX/anTb5QmRY9UdgO7D4tfO7wV1k4FpnKzC1lNk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=fSNnZxenSMzJhQ222usCZHoae3R6CHQ2xdnoPvFbkZS5dzvVWxUqzCCXb87PQv80I
-	 1S7bnG4Hddsevetr4KpPIxKJcPOKutTFHg4Wav5TMJYnynWO5IoePWXVyZoko3QYLu
-	 f8PZQL8MSV7V2dJRz8HiMWdBCZy0FKwNpQy7k4gI=
-Subject: FAILED: patch "[PATCH] btrfs: fix folio leak in submit_one_async_extent()" failed to apply to 6.6-stable tree
-To: boris@bur.io,dsterba@suse.com,fdmanana@suse.com,josef@toxicpanda.com
+	b=W5HuHlX/OZqnxYcp6MB+y0y4hsC0fko8hHtEJJmxZU7DNwNr5pcpGeJbIQOV+/OtK
+	 3LWAbSlFhT3aybUTCXvKF11a3BoEzKiRB5Q33umud8UjmANX3gHlVhxVPrFgpnD83R
+	 RiL94eQtbxZkdHYD8TUKArtnpcq78BwKeB2HjaK4=
+Subject: FAILED: patch "[PATCH] drm/tiny: panel-mipi-dbi: Use drm_client_setup_with_fourcc()" failed to apply to 6.12-stable tree
+To: festevam@denx.de,javierm@redhat.com,tzimmermann@suse.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 May 2025 13:59:49 +0200
-Message-ID: <2025051949-line-blog-2ffe@gregkh>
+Date: Mon, 19 May 2025 14:00:36 +0200
+Message-ID: <2025051936-qualify-waged-4677@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x a0fd1c6098633f9a95fc2f636383546c82b704c3
+git cherry-pick -x 9c1798259b9420f38f1fa1b83e3d864c3eb1a83e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025051949-line-blog-2ffe@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025051936-qualify-waged-4677@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,79 +77,52 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From a0fd1c6098633f9a95fc2f636383546c82b704c3 Mon Sep 17 00:00:00 2001
-From: Boris Burkov <boris@bur.io>
-Date: Wed, 7 May 2025 12:42:24 -0700
-Subject: [PATCH] btrfs: fix folio leak in submit_one_async_extent()
+From 9c1798259b9420f38f1fa1b83e3d864c3eb1a83e Mon Sep 17 00:00:00 2001
+From: Fabio Estevam <festevam@denx.de>
+Date: Thu, 17 Apr 2025 07:34:58 -0300
+Subject: [PATCH] drm/tiny: panel-mipi-dbi: Use drm_client_setup_with_fourcc()
 
-If btrfs_reserve_extent() fails while submitting an async_extent for a
-compressed write, then we fail to call free_async_extent_pages() on the
-async_extent and leak its folios. A likely cause for such a failure
-would be btrfs_reserve_extent() failing to find a large enough
-contiguous free extent for the compressed extent.
+Since commit 559358282e5b ("drm/fb-helper: Don't use the preferred depth
+for the BPP default"), RGB565 displays such as the CFAF240320X no longer
+render correctly: colors are distorted and the content is shown twice
+horizontally.
 
-I was able to reproduce this by:
+This regression is due to the fbdev emulation layer defaulting to 32 bits
+per pixel, whereas the display expects 16 bpp (RGB565). As a result, the
+framebuffer data is incorrectly interpreted by the panel.
 
-1. mount with compress-force=zstd:3
-2. fallocating most of a filesystem to a big file
-3. fragmenting the remaining free space
-4. trying to copy in a file which zstd would generate large compressed
-   extents for (vmlinux worked well for this)
+Fix the issue by calling drm_client_setup_with_fourcc() with a format
+explicitly selected based on the display's bits-per-pixel value. For 16
+bpp, use DRM_FORMAT_RGB565; for other values, fall back to the previous
+behavior. This ensures that the allocated framebuffer format matches the
+hardware expectations, avoiding color and layout corruption.
 
-Step 4. hits the memory leak and can be repeated ad nauseam to
-eventually exhaust the system memory.
+Tested on a CFAF240320X display with an RGB565 configuration, confirming
+correct colors and layout after applying this patch.
 
-Fix this by detecting the case where we fallback to uncompressed
-submission for a compressed async_extent and ensuring that we call
-free_async_extent_pages().
+Cc: stable@vger.kernel.org
+Fixes: 559358282e5b ("drm/fb-helper: Don't use the preferred depth for the BPP default")
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://lore.kernel.org/r/20250417103458.2496790-1-festevam@gmail.com
 
-Fixes: 131a821a243f ("btrfs: fallback if compressed IO fails for ENOSPC")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Co-developed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index d295a37fa049..c1bd17915f81 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -1109,6 +1109,7 @@ static void submit_one_async_extent(struct async_chunk *async_chunk,
- 	struct extent_state *cached = NULL;
- 	struct extent_map *em;
- 	int ret = 0;
-+	bool free_pages = false;
- 	u64 start = async_extent->start;
- 	u64 end = async_extent->start + async_extent->ram_size - 1;
+diff --git a/drivers/gpu/drm/tiny/panel-mipi-dbi.c b/drivers/gpu/drm/tiny/panel-mipi-dbi.c
+index 0460ecaef4bd..23914a9f7fd3 100644
+--- a/drivers/gpu/drm/tiny/panel-mipi-dbi.c
++++ b/drivers/gpu/drm/tiny/panel-mipi-dbi.c
+@@ -390,7 +390,10 @@ static int panel_mipi_dbi_spi_probe(struct spi_device *spi)
  
-@@ -1129,7 +1130,10 @@ static void submit_one_async_extent(struct async_chunk *async_chunk,
- 	}
+ 	spi_set_drvdata(spi, drm);
  
- 	if (async_extent->compress_type == BTRFS_COMPRESS_NONE) {
-+		ASSERT(!async_extent->folios);
-+		ASSERT(async_extent->nr_folios == 0);
- 		submit_uncompressed_range(inode, async_extent, locked_folio);
-+		free_pages = true;
- 		goto done;
- 	}
+-	drm_client_setup(drm, NULL);
++	if (bpp == 16)
++		drm_client_setup_with_fourcc(drm, DRM_FORMAT_RGB565);
++	else
++		drm_client_setup_with_fourcc(drm, DRM_FORMAT_RGB888);
  
-@@ -1145,6 +1149,7 @@ static void submit_one_async_extent(struct async_chunk *async_chunk,
- 		 * fall back to uncompressed.
- 		 */
- 		submit_uncompressed_range(inode, async_extent, locked_folio);
-+		free_pages = true;
- 		goto done;
- 	}
- 
-@@ -1186,6 +1191,8 @@ static void submit_one_async_extent(struct async_chunk *async_chunk,
- done:
- 	if (async_chunk->blkcg_css)
- 		kthread_associate_blkcg(NULL);
-+	if (free_pages)
-+		free_async_extent_pages(async_extent);
- 	kfree(async_extent);
- 	return;
- 
+ 	return 0;
+ }
 
 
