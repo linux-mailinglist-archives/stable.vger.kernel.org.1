@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-144834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8363BABBEBD
-	for <lists+stable@lfdr.de>; Mon, 19 May 2025 15:11:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5364ABBECC
+	for <lists+stable@lfdr.de>; Mon, 19 May 2025 15:13:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5232F188BD00
-	for <lists+stable@lfdr.de>; Mon, 19 May 2025 13:12:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D847817F797
+	for <lists+stable@lfdr.de>; Mon, 19 May 2025 13:13:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D2441F4717;
-	Mon, 19 May 2025 13:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 746412798FF;
+	Mon, 19 May 2025 13:13:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UxPoLhuX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pXeZB5L7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D25EEA55
-	for <stable@vger.kernel.org>; Mon, 19 May 2025 13:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30CE72797AD
+	for <stable@vger.kernel.org>; Mon, 19 May 2025 13:13:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747660302; cv=none; b=FjZv87HmmTHcLAi84hlI8f/hEaFa2lJj5lzBAs41TNKX9mONrIUVjESusTRA3gyMEW6vVKMGQ2PRJmL2nmKibqc9plt+/t7bM8u+GByzQRv6h2DdO8RbFzELBCfEkqVsuca6yzzhCbjMKXF6KPPvUe5DUUIormMhHMLKKjiP3Ro=
+	t=1747660388; cv=none; b=Psd/xF5G0qaCxjson450hTouySKKqGE6OvWq2mSdlF90b8Z2onQjTURQMznWxIz5lzfOv6IlxKFAbKc/IMHjZlcUB3WwE2TPrj/Jy8qBn3BKaiUk6skWEk44DzO+M2eplsaivDrBPcvid01wMaVk+7uBW9p2ozM6YLGJauZxtNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747660302; c=relaxed/simple;
-	bh=TMJcbqG9BxDx/6IADqyhLsUIRklhDJ9D081vA4Raxn8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=V7NgIdx1uM/0IkX2eT8ETB3xKaMLGq6jJM2Pg+KyreyDOqBIwhrNMwQFqGeshvtiW+jLHVY+ZXIk7wV69/ZydRy+zCUSyWkDqiIHMRLqkXB078yTMvVfekHoQA7oJNowbAUc2iHyBtKIbYK1eDqnatNo4WWgRx6PpxUTrGhVR7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UxPoLhuX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD0CEC4CEE4;
-	Mon, 19 May 2025 13:11:41 +0000 (UTC)
+	s=arc-20240116; t=1747660388; c=relaxed/simple;
+	bh=decFZC/MGfP/kgwqwrHp5tFE3A4UJP/l4yguiwCKxVc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=dnRjl7waWQt2snUOuGwvqsYlUtDDch4chAEXEl6UEUIZVip4pgKVWen5n5BmtHsObneZG6SZDkAlmv3c9TypF1F1P8htqkBXzSzhzPvh15y70Q1GJkbNvlaD8gVrH/kCLT4j1uFkB6QCDrKKojCyuvBM4iH5r2N/tWtZcss1yMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pXeZB5L7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4013FC4CEE9;
+	Mon, 19 May 2025 13:13:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747660302;
-	bh=TMJcbqG9BxDx/6IADqyhLsUIRklhDJ9D081vA4Raxn8=;
+	s=korg; t=1747660387;
+	bh=decFZC/MGfP/kgwqwrHp5tFE3A4UJP/l4yguiwCKxVc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=UxPoLhuXxXpA+pbkNutMwpLMWnjXxawY8ca+pJohc/Ce5yZUXfQAlWacosO/oj5a+
-	 psEpIg9o+fSHlBYRFFxjwnaW82tZQs74OVUdBKF+DOcHBSuwUHCcYl6F2XdLiWXv8v
-	 J+QcUtzPG5GeDWMgMK3fZF9fnS2nD93BpP1xCqoA=
-Subject: FAILED: patch "[PATCH] wifi: mt76: disable napi on driver removal" failed to apply to 5.4-stable tree
-To: pchelkin@ispras.ru,mingyen.hsieh@mediatek.com,nbd@nbd.name
+	b=pXeZB5L7VPfIAOOQehOT/8bUj5OrQ2aQe7vX5hdJv2w5Ic7UpSIR7o/18xmJs1XEG
+	 8CLNQB1Tl7hI0wEj7/Yp9FjPZyCZ93KlFZMqyIzKP3jgwsXV2JpN+s+I3W9BiaeFDu
+	 NGgayglohE9GYLLpteU/i5zBwdYcNMmE+FydJg1Q=
+Subject: FAILED: patch "[PATCH] mm: hugetlb: fix incorrect fallback for subpool" failed to apply to 6.12-stable tree
+To: mawupeng1@huawei.com,akpm@linux-foundation.org,david@redhat.com,joshua.hahnjy@gmail.com,muchun.song@linux.dev,osalvador@suse.de,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 May 2025 15:11:39 +0200
-Message-ID: <2025051939-overbuilt-leverage-7eec@gregkh>
+Date: Mon, 19 May 2025 15:12:59 +0200
+Message-ID: <2025051959-steadily-imposing-a3e6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.12-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
 git checkout FETCH_HEAD
-git cherry-pick -x 78ab4be549533432d97ea8989d2f00b508fa68d8
+git cherry-pick -x a833a693a490ecff8ba377654c6d4d333718b6b1
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025051939-overbuilt-leverage-7eec@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025051959-steadily-imposing-a3e6@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,58 +77,115 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 78ab4be549533432d97ea8989d2f00b508fa68d8 Mon Sep 17 00:00:00 2001
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-Date: Tue, 6 May 2025 14:55:39 +0300
-Subject: [PATCH] wifi: mt76: disable napi on driver removal
+From a833a693a490ecff8ba377654c6d4d333718b6b1 Mon Sep 17 00:00:00 2001
+From: Wupeng Ma <mawupeng1@huawei.com>
+Date: Thu, 10 Apr 2025 14:26:33 +0800
+Subject: [PATCH] mm: hugetlb: fix incorrect fallback for subpool
 
-A warning on driver removal started occurring after commit 9dd05df8403b
-("net: warn if NAPI instance wasn't shut down"). Disable tx napi before
-deleting it in mt76_dma_cleanup().
+During our testing with hugetlb subpool enabled, we observe that
+hstate->resv_huge_pages may underflow into negative values.  Root cause
+analysis reveals a race condition in subpool reservation fallback handling
+as follow:
 
- WARNING: CPU: 4 PID: 18828 at net/core/dev.c:7288 __netif_napi_del_locked+0xf0/0x100
- CPU: 4 UID: 0 PID: 18828 Comm: modprobe Not tainted 6.15.0-rc4 #4 PREEMPT(lazy)
- Hardware name: ASUS System Product Name/PRIME X670E-PRO WIFI, BIOS 3035 09/05/2024
- RIP: 0010:__netif_napi_del_locked+0xf0/0x100
- Call Trace:
- <TASK>
- mt76_dma_cleanup+0x54/0x2f0 [mt76]
- mt7921_pci_remove+0xd5/0x190 [mt7921e]
- pci_device_remove+0x47/0xc0
- device_release_driver_internal+0x19e/0x200
- driver_detach+0x48/0x90
- bus_remove_driver+0x6d/0xf0
- pci_unregister_driver+0x2e/0xb0
- __do_sys_delete_module.isra.0+0x197/0x2e0
- do_syscall_64+0x7b/0x160
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
+hugetlb_reserve_pages()
+    /* Attempt subpool reservation */
+    gbl_reserve = hugepage_subpool_get_pages(spool, chg);
 
-Tested with mt7921e but the same pattern can be actually applied to other
-mt76 drivers calling mt76_dma_cleanup() during removal. Tx napi is enabled
-in their *_dma_init() functions and only toggled off and on again inside
-their suspend/resume/reset paths. So it should be okay to disable tx
-napi in such a generic way.
+    /* Global reservation may fail after subpool allocation */
+    if (hugetlb_acct_memory(h, gbl_reserve) < 0)
+        goto out_put_pages;
 
-Found by Linux Verification Center (linuxtesting.org).
+out_put_pages:
+    /* This incorrectly restores reservation to subpool */
+    hugepage_subpool_put_pages(spool, chg);
 
-Fixes: 2ac515a5d74f ("mt76: mt76x02: use napi polling for tx cleanup")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Tested-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Link: https://patch.msgid.link/20250506115540.19045-1-pchelkin@ispras.ru
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+When hugetlb_acct_memory() fails after subpool allocation, the current
+implementation over-commits subpool reservations by returning the full
+'chg' value instead of the actual allocated 'gbl_reserve' amount.  This
+discrepancy propagates to global reservations during subsequent releases,
+eventually causing resv_huge_pages underflow.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/dma.c b/drivers/net/wireless/mediatek/mt76/dma.c
-index 844af16ee551..35b4ec91979e 100644
---- a/drivers/net/wireless/mediatek/mt76/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/dma.c
-@@ -1011,6 +1011,7 @@ void mt76_dma_cleanup(struct mt76_dev *dev)
- 	int i;
+This problem can be trigger easily with the following steps:
+1. reverse hugepage for hugeltb allocation
+2. mount hugetlbfs with min_size to enable hugetlb subpool
+3. alloc hugepages with two task(make sure the second will fail due to
+   insufficient amount of hugepages)
+4. with for a few seconds and repeat step 3 which will make
+   hstate->resv_huge_pages to go below zero.
+
+To fix this problem, return corrent amount of pages to subpool during the
+fallback after hugepage_subpool_get_pages is called.
+
+Link: https://lkml.kernel.org/r/20250410062633.3102457-1-mawupeng1@huawei.com
+Fixes: 1c5ecae3a93f ("hugetlbfs: add minimum size accounting to subpools")
+Signed-off-by: Wupeng Ma <mawupeng1@huawei.com>
+Tested-by: Joshua Hahn <joshua.hahnjy@gmail.com>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Ma Wupeng <mawupeng1@huawei.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 6ea1be71aa42..7ae38bfb9096 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -3010,7 +3010,7 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+ 	struct hugepage_subpool *spool = subpool_vma(vma);
+ 	struct hstate *h = hstate_vma(vma);
+ 	struct folio *folio;
+-	long retval, gbl_chg;
++	long retval, gbl_chg, gbl_reserve;
+ 	map_chg_state map_chg;
+ 	int ret, idx;
+ 	struct hugetlb_cgroup *h_cg = NULL;
+@@ -3163,8 +3163,16 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+ 		hugetlb_cgroup_uncharge_cgroup_rsvd(idx, pages_per_huge_page(h),
+ 						    h_cg);
+ out_subpool_put:
+-	if (map_chg)
+-		hugepage_subpool_put_pages(spool, 1);
++	/*
++	 * put page to subpool iff the quota of subpool's rsv_hpages is used
++	 * during hugepage_subpool_get_pages.
++	 */
++	if (map_chg && !gbl_chg) {
++		gbl_reserve = hugepage_subpool_put_pages(spool, 1);
++		hugetlb_acct_memory(h, -gbl_reserve);
++	}
++
++
+ out_end_reservation:
+ 	if (map_chg != MAP_CHG_ENFORCED)
+ 		vma_end_reservation(h, vma, addr);
+@@ -7239,7 +7247,7 @@ bool hugetlb_reserve_pages(struct inode *inode,
+ 					struct vm_area_struct *vma,
+ 					vm_flags_t vm_flags)
+ {
+-	long chg = -1, add = -1;
++	long chg = -1, add = -1, spool_resv, gbl_resv;
+ 	struct hstate *h = hstate_inode(inode);
+ 	struct hugepage_subpool *spool = subpool_inode(inode);
+ 	struct resv_map *resv_map;
+@@ -7374,8 +7382,16 @@ bool hugetlb_reserve_pages(struct inode *inode,
+ 	return true;
  
- 	mt76_worker_disable(&dev->tx_worker);
-+	napi_disable(&dev->tx_napi);
- 	netif_napi_del(&dev->tx_napi);
- 
- 	for (i = 0; i < ARRAY_SIZE(dev->phys); i++) {
+ out_put_pages:
+-	/* put back original number of pages, chg */
+-	(void)hugepage_subpool_put_pages(spool, chg);
++	spool_resv = chg - gbl_reserve;
++	if (spool_resv) {
++		/* put sub pool's reservation back, chg - gbl_reserve */
++		gbl_resv = hugepage_subpool_put_pages(spool, spool_resv);
++		/*
++		 * subpool's reserved pages can not be put back due to race,
++		 * return to hstate.
++		 */
++		hugetlb_acct_memory(h, -gbl_resv);
++	}
+ out_uncharge_cgroup:
+ 	hugetlb_cgroup_uncharge_cgroup_rsvd(hstate_index(h),
+ 					    chg * pages_per_huge_page(h), h_cg);
 
 
