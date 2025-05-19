@@ -1,193 +1,213 @@
-Return-Path: <stable+bounces-144891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79D21ABC6E5
-	for <lists+stable@lfdr.de>; Mon, 19 May 2025 20:10:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D2A2ABC6F3
+	for <lists+stable@lfdr.de>; Mon, 19 May 2025 20:13:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C93344A1A7A
-	for <lists+stable@lfdr.de>; Mon, 19 May 2025 18:08:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEEA33A6A71
+	for <lists+stable@lfdr.de>; Mon, 19 May 2025 18:13:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 769711EE032;
-	Mon, 19 May 2025 18:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B2F0286D64;
+	Mon, 19 May 2025 18:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="g5PG1DKN"
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Qm7im8mk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69C5E284B40
-	for <stable@vger.kernel.org>; Mon, 19 May 2025 18:08:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D1827FD40
+	for <stable@vger.kernel.org>; Mon, 19 May 2025 18:13:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747678102; cv=none; b=HgMJ9YSVDM3iHIzL8qzt8dvx7Ql7HH9aknrDLDEOSBnuJqd8AwB5uDT7qQ+LZzuGhBadGuAWmgp1+xp8tsg9x0A/sQB6nVl5/LuNF3FhaIORxlixIxvvIEB004pWgIOTAYMojQuvtdC2VfqNbqu5COB69p209T0skBHfm5qDmfQ=
+	t=1747678431; cv=none; b=m38YSuXcIwi5tBr7MVQmvhw4LIeyi803HnPiFvsZ5lNjU1UVu/KnYwpM+OZxX63ZFxtuo3cscTJoFJOaaFK0yL+/kFqE3xLm8ltqheux4XeUR6vaOenAhLeX9DJfMaOdAlYChEkQEU/MWTLIeI5cofMW8OfoaBrw0EfQn9DvJh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747678102; c=relaxed/simple;
-	bh=h25b1ZQHWUy7GA1BKwsRv4lBzQgq/l+ecx3lVX8QMB0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=YRWUblwRWd5yPMQ95oJU+PMCTdPH+S+9ouc/QXYMbAc0JFQGuWr/n/z9kdUP1BFRI+028fhr5NcLxaHaRrpmUsi0NDRtU3VaVlmCP4t/CuPUYTOjHOK/FAmxotsipY6AMlHVzxMyd2X03arn8po7UT+txcJppcM3eW8runbYq0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=g5PG1DKN; arc=none smtp.client-ip=209.85.221.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-3a376da334dso439858f8f.0
-        for <stable@vger.kernel.org>; Mon, 19 May 2025 11:08:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1747678099; x=1748282899; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yVFuYQ5+RK+jobpgYs8UNNrUAZW+AMGmHxrUYMucspg=;
-        b=g5PG1DKNb4CHYkH7t1pqtI6HOny2iDoBxERSBVb4ijfqE1/uz0W7LlUl9llFBL/+Xf
-         FWs2f6F0KbDg3f0f4/XsotZ9Wo2aznXrMPetUc76MVfLMfW2I9mF0ribIByxyss04H7t
-         tC0N3yDfkE5iRk4aeOim57eccNfqPU760v+8MIrPl9c9WqjqDohKGFoNTosrgAH00mcy
-         R1rrMC0xAMrNUa5Ksytdrao0g5qUb9CEzWmPWzvahLvOsDTAAtWeIS7RBvgTK3TWZGGK
-         sKx9aOl0msLsFWMlVc/FxbXfTmIH6GXydK6CrFySAYl/nxGYZh5Y7VofERet1BBhGaHM
-         3VeA==
+	s=arc-20240116; t=1747678431; c=relaxed/simple;
+	bh=TIGgb4okBX/vll+qQ8jYm+OEmV6VojPTh7dBT/O+1YQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=u3E+hvT9IGNQtV9uPnJO+Mb+ez4gy+z1Z6OXVEK2pIolIQwc2XONRDIFNcWG86FwyVN6f292RHPEUVLf23ROIl49Is6mubsRdSwO3+zaPBJNierCwuUR1TdfOTXrQtNVnUqqQsKXc40YSiKCC496jzN+gBWwrbJ9uvGHmylyyxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Qm7im8mk; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54J9W9Ns026158
+	for <stable@vger.kernel.org>; Mon, 19 May 2025 18:13:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	TIGgb4okBX/vll+qQ8jYm+OEmV6VojPTh7dBT/O+1YQ=; b=Qm7im8mkMHZMSlaD
+	55nUCdaU2ec6hZyCKDQfkQtVp55GS3+6RVoalHhCRwY17X0ovyoF3bLA1jSUbQdq
+	oHt/x68CPPh+tzIBA74H+fzS56Oh/Z9bnknwaDSApjF4E+YfRiFvp2EFpJdCJu5v
+	zTT8jsxZ/nYJbdiHssz7yZeVqAV37bvjVFeJRZXuxXf7DtBZU33tOAOZkMpjPQXf
+	B9wd6phNYYKH2IroS9WPPgnh8M5mYsl1f4UpF9jqakpGzsmzfpQjtugP4zGtT9A7
+	xhcZ/8QmkCazqZJf8TV3LR/cGs5GovstpF3h9k3jTej1AKixgojyeQPQT7j6V1oY
+	HwVPtw==
+Received: from mail-pj1-f71.google.com (mail-pj1-f71.google.com [209.85.216.71])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 46pju7d8c6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <stable@vger.kernel.org>; Mon, 19 May 2025 18:13:48 +0000 (GMT)
+Received: by mail-pj1-f71.google.com with SMTP id 98e67ed59e1d1-30e78145dc4so4855044a91.2
+        for <stable@vger.kernel.org>; Mon, 19 May 2025 11:13:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747678099; x=1748282899;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yVFuYQ5+RK+jobpgYs8UNNrUAZW+AMGmHxrUYMucspg=;
-        b=FDdla8XxYlkNeVVI/VAzLDncUekyM/7fav+PTUOQml1Aq3kZ/2baimO12f79viVB8d
-         tyZuvNUu8bVwXCRDv4w8sz6AGWRUtEcqhLAafRitz60GMkZQOAgWZQ3i/QkrFYUaSFDq
-         +glP6OkGoIpbHBOPB12cUXYl35Z9ciDOH2Da40ZQuBcmQvYgblMZnyf+wjcuvBi3Jjnl
-         PQjFDdqlA0T2Onrrim7jL7poykklEkvCpw1SREPylmI7+Al50e3M6dmH9dSkMNOCKAdt
-         Z/AwzyIHdKQJIm+BdW5rcW0DFhF7CsGXDQPyus56pGDfq3qf2Nl81ryWsWkvWc906nHb
-         MMgg==
-X-Forwarded-Encrypted: i=1; AJvYcCUeDfpD81zuX42/AIcc73Yvi1E1O1bzlxDGm3Z6IVluxA6UAjjgXOpQvCGKrL0KD/nmtbL169o=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzDxB/QzZjFs608b3KjkkHgn5JLZ1Ot4WsoACiqg8vyvBZVluUm
-	LfCO7towCIV7hppQe5txDVtGvS9GU5ovU+Om8j8aXLkEhlHXCbVSi3WPVYI4FEFQsoKkoA1vTIX
-	NR+PxKX+bEMUo9gkL3A==
-X-Google-Smtp-Source: AGHT+IGbmbkLxQ6+c+1jvf284DkuCMXNCx0iTcuUM30vDlHFtVeT2ykVdEf82/2w+mxDQEcmu8s27itQ8/1huBM=
-X-Received: from wrbft8.prod.google.com ([2002:a05:6000:2b08:b0:3a1:f532:5b8f])
- (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6000:144c:b0:3a3:6843:497a with SMTP id ffacd0b85a97d-3a368434aefmr6924653f8f.27.1747678098818;
- Mon, 19 May 2025 11:08:18 -0700 (PDT)
-Date: Mon, 19 May 2025 18:08:16 +0000
-In-Reply-To: <20250517170957.1317876-1-cmllamas@google.com>
+        d=1e100.net; s=20230601; t=1747678413; x=1748283213;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TIGgb4okBX/vll+qQ8jYm+OEmV6VojPTh7dBT/O+1YQ=;
+        b=dCaoORzCuEExOA+9elJsghR+RYaiy9UiYHOsvkDutBKzBAO/1WIh8NiLuzl7qglXz9
+         urjMDWG4FeTEV45AW4PUUdO4jXlx1RHgFl7lLIY1AtvwTXyJww4wM2dphSVShvAU0oDU
+         B41L8u1e9dsdm7PdZDLnTiFXx8kcao2/Y7LuTWSuATQadLjZyCB8sIP5WdOHzmrygBmX
+         yanodK5KaVvl4TKaJcrRGaOG7jX2f6VqywPopDsUFK5yStI4xiFjxoRgIIK4OvfaS0rN
+         fIkUUBLHzcDvhy7s7xW2nOdwx2yUjUixftkeB30fnwV0nTOG8Le+5M4m53bc+q8wUNr5
+         PTwg==
+X-Forwarded-Encrypted: i=1; AJvYcCXMorvj6XJucf6Qby5qjDR1SxxUKzTZ1nuRYTyBy7E3j2/pP88C9SpknjVQULJBMmmbuvCVPrE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxoRp0tNQPRviUCMFM+V/GcyEdpJzbG29IScYrgdXI8iKBEpHYY
+	3h20Y/IMC+bic4cyjfplh1pRa6QpI+SwFk6wNlIZWzw2BEB2HWTP0+DpB8Ag7H2L6DvRce0tu5i
+	pv1vM0OSbTJt4cEqZTWw2bU0ZeW1FfNKypvsQk0ErzNJDDzV+4r7DtmMlXx+y1Tf+UXpbF0Prxq
+	FIW0zEHr398DJvEZOzOQ0oxwQtLq8Y/5CPOA==
+X-Gm-Gg: ASbGncsGUoPz7Hw/PeOTLamvXCPkZCr143tsAmb/+cVV9iF8Yhg8yT42U7AxxChmqxV
+	9FVFyfPfFOj+okvueqITIGA3UXdTTByTmVpvfUjT4mUjFI3FIG1yl9Xmwl+7Mt0FaSK9cRw==
+X-Received: by 2002:a17:90b:28c5:b0:2fe:a79e:f56f with SMTP id 98e67ed59e1d1-30e7d522165mr20016487a91.13.1747678412764;
+        Mon, 19 May 2025 11:13:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFXiSZ+57NgWlBM17stmX1Q7Pk1mJNJiu1dJvz3tL2n2jDsMA/NqGwUXr0pTbyMR9VA0aqbRF6Cwr57mNkjxNY=
+X-Received: by 2002:a17:90b:28c5:b0:2fe:a79e:f56f with SMTP id
+ 98e67ed59e1d1-30e7d522165mr20016457a91.13.1747678412392; Mon, 19 May 2025
+ 11:13:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250517170957.1317876-1-cmllamas@google.com>
-Message-ID: <aCtzkI2HGqIStHg-@google.com>
-Subject: Re: [PATCH v2] binder: fix use-after-free in binderfs_evict_inode()
-From: Alice Ryhl <aliceryhl@google.com>
-To: Carlos Llamas <cmllamas@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"Arve =?utf-8?B?SGrDuG5uZXbDpWc=?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Christian Brauner <brauner@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, kernel-team@android.com, 
-	Dmitry Antipov <dmantipov@yandex.ru>, stable@vger.kernel.org, 
-	syzbot+353d7b75658a95aa955a@syzkaller.appspotmail.com, 
-	"open list:ANDROID DRIVERS" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+References: <20250517043942.372315-1-royluo@google.com> <8f023425-3f9b-423c-9459-449d0835c608@linux.intel.com>
+In-Reply-To: <8f023425-3f9b-423c-9459-449d0835c608@linux.intel.com>
+From: Udipto Goswami <udipto.goswami@oss.qualcomm.com>
+Date: Mon, 19 May 2025 23:43:21 +0530
+X-Gm-Features: AX0GCFtEvLTRHA_v2SuDhVKcrDTDc6HNjubfnir7k5AwZppJ-xNdbEg5MKkj1j8
+Message-ID: <CAMTwNXB0QLP-b=RmLPtRJo=T_efN_3H4dd5AiMNYrJDXddJkMA@mail.gmail.com>
+Subject: Re: [PATCH v1] Revert "usb: xhci: Implement xhci_handshake_check_state()
+ helper"
+To: Mathias Nyman <mathias.nyman@linux.intel.com>
+Cc: Roy Luo <royluo@google.com>, mathias.nyman@intel.com,
+        quic_ugoswami@quicinc.com, Thinh.Nguyen@synopsys.com,
+        gregkh@linuxfoundation.org, michal.pecio@gmail.com,
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Authority-Analysis: v=2.4 cv=XKEwSRhE c=1 sm=1 tr=0 ts=682b74dc cx=c_pps
+ a=UNFcQwm+pnOIJct1K4W+Mw==:117 a=IkcTkHD0fZMA:10 a=dt9VzEwgFbYA:10
+ a=QyXUC8HyAAAA:8 a=t5j83SEWn0A7TGmuvnUA:9 a=QEXdDO2ut3YA:10
+ a=uKXjsCUrEbL0IQVhDsJ9:22
+X-Proofpoint-ORIG-GUID: 7uzAU8z4wn9A8iov6qI5npTdAFdoLNUD
+X-Proofpoint-GUID: 7uzAU8z4wn9A8iov6qI5npTdAFdoLNUD
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE5MDE3MCBTYWx0ZWRfX/0mxQdvcucGe
+ Be+C0h4yxaX8xg+zuQmP5YycxTmRwlEnc8N72exKYm/ppnbJV53jzNvnfyESaTEt367+TRLfljt
+ ILXQA/L1bNwPKcfe9vbA4i/0pQ9dsdmG8Sq3IgcBBrXp005h+Z1m7qzrYaL58rsriSUK5gX4hax
+ sZCascJEHKEs4Hc8gshW+oa2K81vTI+W/CLJHJ/ZDdkTlYgvljMVv9pdo0z++DMesdycCPODCp3
+ x0uNe1D2q6svPZyP/szf7fMcr2SShYtjf9ObqN/VSKRxjS+2ds8mVWvXLH22xlFMauCG7Yahf8k
+ 3YqibM7eemsLQgWIrprCIolZS4/QaxCkDW9OvXoIVZTFhzIj5IAsc8yUTt36HtwjriT1I9PQsB7
+ eVsSqJDQ/fTKAECQsgzevxRKomg27eXYHhjdu6F49fZDPLsMMeZmqnY9aS1C3SyWgpLD0rxG
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-05-19_07,2025-05-16_03,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ lowpriorityscore=0 priorityscore=1501 impostorscore=0 clxscore=1011
+ spamscore=0 suspectscore=0 malwarescore=0 adultscore=0 mlxscore=0
+ mlxlogscore=999 phishscore=0 bulkscore=0 classifier=spam authscore=0
+ authtc=n/a authcc= route=outbound adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2505070000 definitions=main-2505190170
 
-On Sat, May 17, 2025 at 05:09:56PM +0000, Carlos Llamas wrote:
-> From: Dmitry Antipov <dmantipov@yandex.ru>
-> 
-> Running 'stress-ng --binderfs 16 --timeout 300' under KASAN-enabled
-> kernel, I've noticed the following:
-> 
-> BUG: KASAN: slab-use-after-free in binderfs_evict_inode+0x1de/0x2d0
-> Write of size 8 at addr ffff88807379bc08 by task stress-ng-binde/1699
-> 
-> CPU: 0 UID: 0 PID: 1699 Comm: stress-ng-binde Not tainted 6.14.0-rc7-g586de92313fc-dirty #13
-> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-3.fc41 04/01/2014
-> Call Trace:
->  <TASK>
->  dump_stack_lvl+0x1c2/0x2a0
->  ? __pfx_dump_stack_lvl+0x10/0x10
->  ? __pfx__printk+0x10/0x10
->  ? __pfx_lock_release+0x10/0x10
->  ? __virt_addr_valid+0x18c/0x540
->  ? __virt_addr_valid+0x469/0x540
->  print_report+0x155/0x840
->  ? __virt_addr_valid+0x18c/0x540
->  ? __virt_addr_valid+0x469/0x540
->  ? __phys_addr+0xba/0x170
->  ? binderfs_evict_inode+0x1de/0x2d0
->  kasan_report+0x147/0x180
->  ? binderfs_evict_inode+0x1de/0x2d0
->  binderfs_evict_inode+0x1de/0x2d0
->  ? __pfx_binderfs_evict_inode+0x10/0x10
->  evict+0x524/0x9f0
->  ? __pfx_lock_release+0x10/0x10
->  ? __pfx_evict+0x10/0x10
->  ? do_raw_spin_unlock+0x4d/0x210
->  ? _raw_spin_unlock+0x28/0x50
->  ? iput+0x697/0x9b0
->  __dentry_kill+0x209/0x660
->  ? shrink_kill+0x8d/0x2c0
->  shrink_kill+0xa9/0x2c0
->  shrink_dentry_list+0x2e0/0x5e0
->  shrink_dcache_parent+0xa2/0x2c0
->  ? __pfx_shrink_dcache_parent+0x10/0x10
->  ? __pfx_lock_release+0x10/0x10
->  ? __pfx_do_raw_spin_lock+0x10/0x10
->  do_one_tree+0x23/0xe0
->  shrink_dcache_for_umount+0xa0/0x170
->  generic_shutdown_super+0x67/0x390
->  kill_litter_super+0x76/0xb0
->  binderfs_kill_super+0x44/0x90
->  deactivate_locked_super+0xb9/0x130
->  cleanup_mnt+0x422/0x4c0
->  ? lockdep_hardirqs_on+0x9d/0x150
->  task_work_run+0x1d2/0x260
->  ? __pfx_task_work_run+0x10/0x10
->  resume_user_mode_work+0x52/0x60
->  syscall_exit_to_user_mode+0x9a/0x120
->  do_syscall_64+0x103/0x210
->  ? asm_sysvec_apic_timer_interrupt+0x1a/0x20
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> RIP: 0033:0xcac57b
-> Code: c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 f3 0f 1e fa 31 f6 e9 05 00 00 00 0f 1f 44 00 00 f3 0f 1e fa b8
-> RSP: 002b:00007ffecf4226a8 EFLAGS: 00000246 ORIG_RAX: 00000000000000a6
-> RAX: 0000000000000000 RBX: 00007ffecf422720 RCX: 0000000000cac57b
-> RDX: 0000000000000000 RSI: 0000000000000000 RDI: 00007ffecf422850
-> RBP: 00007ffecf422850 R08: 0000000028d06ab1 R09: 7fffffffffffffff
-> R10: 3fffffffffffffff R11: 0000000000000246 R12: 00007ffecf422718
-> R13: 00007ffecf422710 R14: 00007f478f87b658 R15: 00007ffecf422830
->  </TASK>
-> 
-> Allocated by task 1705:
->  kasan_save_track+0x3e/0x80
->  __kasan_kmalloc+0x8f/0xa0
->  __kmalloc_cache_noprof+0x213/0x3e0
->  binderfs_binder_device_create+0x183/0xa80
->  binder_ctl_ioctl+0x138/0x190
->  __x64_sys_ioctl+0x120/0x1b0
->  do_syscall_64+0xf6/0x210
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> 
-> Freed by task 1705:
->  kasan_save_track+0x3e/0x80
->  kasan_save_free_info+0x46/0x50
->  __kasan_slab_free+0x62/0x70
->  kfree+0x194/0x440
->  evict+0x524/0x9f0
->  do_unlinkat+0x390/0x5b0
->  __x64_sys_unlink+0x47/0x50
->  do_syscall_64+0xf6/0x210
->  entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> 
-> This 'stress-ng' workload causes the concurrent deletions from
-> 'binder_devices' and so requires full-featured synchronization
-> to prevent list corruption.
-> 
-> I've found this issue independently but pretty sure that syzbot did
-> the same, so Reported-by: and Closes: should be applicable here as well.
-> 
-> Cc: stable@vger.kernel.org
-> Reported-by: syzbot+353d7b75658a95aa955a@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=353d7b75658a95aa955a
-> Fixes: e77aff5528a18 ("binderfs: fix use-after-free in binder_devices")
-> Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-> Acked-by: Carlos Llamas <cmllamas@google.com>
-> Signed-off-by: Carlos Llamas <cmllamas@google.com>
+On Mon, May 19, 2025 at 6:23=E2=80=AFPM Mathias Nyman
+<mathias.nyman@linux.intel.com> wrote:
+>
+> On 17.5.2025 7.39, Roy Luo wrote:
+> > This reverts commit 6ccb83d6c4972ebe6ae49de5eba051de3638362c.
+> >
+> > Commit 6ccb83d6c497 ("usb: xhci: Implement xhci_handshake_check_state()
+> > helper") was introduced to workaround watchdog timeout issues on some
+> > platforms, allowing xhci_reset() to bail out early without waiting
+> > for the reset to complete.
+> >
+> > Skipping the xhci handshake during a reset is a dangerous move. The
+> > xhci specification explicitly states that certain registers cannot
+> > be accessed during reset in section 5.4.1 USB Command Register (USBCMD)=
+,
+> > Host Controller Reset (HCRST) field:
+> > "This bit is cleared to '0' by the Host Controller when the reset
+> > process is complete. Software cannot terminate the reset process
+> > early by writinga '0' to this bit and shall not write any xHC
+> > Operational or Runtime registers until while HCRST is '1'."
+> >
+> > This behavior causes a regression on SNPS DWC3 USB controller with
+> > dual-role capability. When the DWC3 controller exits host mode and
+> > removes xhci while a reset is still in progress, and then tries to
+> > configure its hardware for device mode, the ongoing reset leads to
+> > register access issues; specifically, all register reads returns 0.
+> > These issues extend beyond the xhci register space (which is expected
+> > during a reset) and affect the entire DWC3 IP block, causing the DWC3
+> > device mode to malfunction.
+>
+> I agree with you and Thinh that waiting for the HCRST bit to clear during
+> reset is the right thing to do, especially now when we know skipping it
+> causes issues for SNPS DWC3, even if it's only during remove phase.
+>
+> But reverting this patch will re-introduce the issue originally worked
+> around by Udipto Goswami, causing regression.
+>
+> Best thing to do would be to wait for HCRST to clear for all other platfo=
+rms
+> except the one with the issue.
+>
+> Udipto Goswami, can you recall the platforms that needed this workaroud?
+> and do we have an easy way to detect those?
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Hi Mathias,
+
+From what I recall, we saw this issue coming up on our QCOM mobile
+platforms but it was not consistent. It was only reported in long runs
+i believe. The most recent instance when I pushed this patch was with
+platform SM8650, it was a watchdog timeout issue where xhci_reset() ->
+xhci_handshake() polling read timeout upon xhci remove. Unfortunately
+I was not able to simulate the scenario for more granular testing and
+had validated it with long hours stress testing.
+The callstack was like so:
+
+Full call stack on core6:
+-000|readl([X19] addr =3D 0xFFFFFFC03CC08020)
+-001|xhci_handshake(inline)
+-001|xhci_reset([X19] xhci =3D 0xFFFFFF8942052250, [X20] timeout_us =3D 100=
+00000)
+-002|xhci_resume([X20] xhci =3D 0xFFFFFF8942052250, [?] hibernated =3D ?)
+-003|xhci_plat_runtime_resume([locdesc] dev =3D ?)
+-004|pm_generic_runtime_resume([locdesc] dev =3D ?)
+-005|__rpm_callback([X23] cb =3D 0xFFFFFFE3F09307D8, [X22] dev =3D
+0xFFFFFF890F619C10)
+-006|rpm_callback(inline)
+-006|rpm_resume([X19] dev =3D 0xFFFFFF890F619C10,
+[NSD:0xFFFFFFC041453AD4] rpmflags =3D 4)
+-007|__pm_runtime_resume([X20] dev =3D 0xFFFFFF890F619C10, [X19] rpmflags =
+=3D 4)
+-008|pm_runtime_get_sync(inline)
+-008|xhci_plat_remove([X20] dev =3D 0xFFFFFF890F619C00)
+-009|platform_remove([X19] _dev =3D 0xFFFFFF890F619C10)
+-010|device_remove(inline)
+-010|__device_release_driver(inline)
+-010|device_release_driver_internal([X20] dev =3D 0xFFFFFF890F619C10,
+[?] drv =3D ?, [X19] parent =3D 0x0)
+-011|device_release_driver(inline)
+-011|bus_remove_device([X19] dev =3D 0xFFFFFF890F619C10)
+-012|device_del([X20] dev =3D 0xFFFFFF890F619C10)
+-013|platform_device_del(inline)
+-013|platform_device_unregister([X19] pdev =3D 0xFFFFFF890F619C00)
+-014|dwc3_host_exit(inline)
+-014|__dwc3_set_mode([X20] work =3D 0xFFFFFF886072F840)
+-015|process_one_work([X19] worker =3D 0xFFFFFF887AEE46C0, [X21] work =3D
+0xFFFFFF886072F840)
+-016|worker_thread([X19] __worker =3D 0xFFFFFF887AEE46C0)
+-017|kthread([X22] _create =3D 0xFFFFFF8937350600)
+-018|ret_from_fork(asm)
+---|end of frame
 
