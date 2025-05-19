@@ -1,90 +1,88 @@
-Return-Path: <stable+bounces-144874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97440ABC18C
-	for <lists+stable@lfdr.de>; Mon, 19 May 2025 17:01:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A154EABC23D
+	for <lists+stable@lfdr.de>; Mon, 19 May 2025 17:22:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F1A53A4986
-	for <lists+stable@lfdr.de>; Mon, 19 May 2025 15:01:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEBE6188D994
+	for <lists+stable@lfdr.de>; Mon, 19 May 2025 15:22:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9917628466A;
-	Mon, 19 May 2025 15:01:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FA342853E2;
+	Mon, 19 May 2025 15:22:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="cbvsoKzI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CkmnGYOK"
 X-Original-To: stable@vger.kernel.org
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A658EBE5E;
-	Mon, 19 May 2025 15:01:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D062F3F9D2;
+	Mon, 19 May 2025 15:22:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747666883; cv=none; b=Ow52etk6tUxpo6vGCd6xq98SPJVHz/ZWCVd1DwiJXgDI9QdSLXR7X8zInD0ZdW0DnqpeFWYm/HBNxMDKl0fLLyONpTzni9qrFCfgsARYHp8N5iKDB9mFO9LjF++yO3qKEpZuvSog7i+VDRxKkMxv9JplLS8egb4zNZTAYLUM/9I=
+	t=1747668133; cv=none; b=BySWp5zZfL+YucnJhM0GHh7JHC1Jvy94S9hGvWywIOEQR9+BqSAbZljcbFX69yoVfyca0PuYOwxgShCn51k/+WeWJpSK6KQvfprrVICFQHsLCj+pQSxfW+1257zk8aZpPwFaGZd77IzbfKRA14658QjlHVvaLRADomt/UvRHMXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747666883; c=relaxed/simple;
-	bh=SP+3uwUr1dUqOoOJChhGpSJSREZe1bvlmtKjcOsOu9U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pkU7Hxm9M1nb2FG+yX4G3S0+DZJ9x3de7LuUAiZw8fX50SDY+Z7ybR7gu8aoTIckOuRmcvkzKSvPO9Bzt/nwVmB3ZuWEAmo9+f+feSm3TWYH+XcWDuJQXyrXwA7ix6E27qAfz0GknZ0ZvEFm/Z1B8fiG+rfupj/XZWp4T409R1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=cbvsoKzI; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=D+WlcLSTHUk7L2L0T5ZmVak0RKGML7Ka2WOYeq1OccI=; b=cbvsoKzIvnU/T53Bdebc0qBAEJ
-	zgHYXgAtOn+jHwiFDrxux21nNS29sR5FIMUxb3QY6Vz0Yx8omQhDFrfTpvaW6CSNVD4m7RqV+VfOX
-	+LRaLWnzTdLue3Gx+CM/m7X01wDSizLhT+m4q90L6JnJDCoa1ccT+my36cBJ9SiubiwY=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1uH1zL-00D1pn-Jy; Mon, 19 May 2025 17:01:11 +0200
-Date: Mon, 19 May 2025 17:01:11 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: chalianis1@gmail.com
-Cc: hkallweit1@gmail.com, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, linux@armlinux.org.uk,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1747668133; c=relaxed/simple;
+	bh=s9dzKebIdZy4b9g1q/MYH+pyp2xnRZ2ePgm1nnvc1FY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Hjd6nnlQ9m/cgpjnc15k1ZQM2uQfQbx/UAwE3Ck7KTNpYamcz0tejrk9z2bCE9gDOIqhInA082C7ST4fHvSkAeH1zSWNspGbxzjEcpscqVq7hZqzfSrZBjXVfJF7f4gWbi0wniEqc6MsKtc6BpKKPJRY7M73tyZ4TgVr3FWrcOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CkmnGYOK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE869C4CEE4;
+	Mon, 19 May 2025 15:22:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747668133;
+	bh=s9dzKebIdZy4b9g1q/MYH+pyp2xnRZ2ePgm1nnvc1FY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=CkmnGYOKI83Z98Kd1zCEKTEDbu8XrjAGeMJnSeRccWybQnf2T81+uewEttmwAi5J+
+	 roGXHAtdCXeFi4HW+8VaHH//TQZUTv0p2ZHJ5JpOt0+icn104qKs8IHXSOfnEgg+T5
+	 Nc4BX77308W6VWIVSXkTp5KdSNgVyVf1nzOvj9vvZQBgP/HVPyk02Tc5EVIJjohk1i
+	 7z+7sxYZOaF29dbIS8JJWt5zwl6MgNbk+MxOl7qXPhnO+mV68W2wAZn685nOefHwIo
+	 6abFYzFPw94Tsor4xCIzM2OOeNhOnt9zXtHU8NENjR7z3/ggg7avxqhE+r+xR5m6i+
+	 djotxESeXZ0Mg==
+From: Will Deacon <will@kernel.org>
+To: Robin Murphy <robin.murphy@arm.com>
+Cc: catalin.marinas@arm.com,
+	kernel-team@android.com,
+	Will Deacon <will@kernel.org>,
+	mark.rutland@arm.com,
+	ilkka@os.amperecomputing.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-perf-users@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH net] phy: dp83869: fix interrupts issue when using with
- an optical fiber sfp. to correctly clear the interrupts both status
- registers must be read.
-Message-ID: <97d0e167-ef11-4cbf-a473-fb823d7b727a@lunn.ch>
-References: <20250519144701.92264-1-chalianis1@gmail.com>
+Subject: Re: [PATCH] perf/arm-cmn: Add CMN S3 ACPI binding
+Date: Mon, 19 May 2025 16:22:08 +0100
+Message-Id: <174765431517.1659777.133438662977545374.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <7dafe147f186423020af49d7037552ee59c60e97.1747652164.git.robin.murphy@arm.com>
+References: <7dafe147f186423020af49d7037552ee59c60e97.1747652164.git.robin.murphy@arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250519144701.92264-1-chalianis1@gmail.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-On Mon, May 19, 2025 at 10:47:01AM -0400, chalianis1@gmail.com wrote:
-> From: Anis Chali <chalianis1@gmail.com>
+On Mon, 19 May 2025 11:56:04 +0100, Robin Murphy wrote:
+> An ACPI binding for CMN S3 was not yet finalised when the driver support
+> was originally written, but v1.2 of DEN0093 "ACPI for Arm Components"
+> has at last been published; support ACPI systems using the proper HID.
 > 
-> from datasheet of dp83869hm
-> 7.3.6 Interrupt
-> The DP83869HM can be configured to generate an interrupt when changes of internal status occur. The interrupt
-> allows a MAC to act upon the status in the PHY without polling the PHY registers. The interrupt source can be
-> selected through the interrupt registers, MICR (12h) and FIBER_INT_EN (C18h). The interrupt status can be
-> read from ISR (13h) and FIBER_INT_STTS (C19h) registers. Some interrupts are enabled by default and can
-> be disabled through register access. Both the interrupt status registers must be read in order to clear pending
-> interrupts. Until the pending interrupts are cleared, new interrupts may not be routed to the interrupt pin.
-> Fixes: interrupts issue when using with an optical fiber sfp.
+> 
 
-The subject is now correct, but the Fixes: tag is supposed to be a git
-hash for when the problem was introduced:
+Applied to will (for-next/perf), thanks!
 
-https://docs.kernel.org/process/submitting-patches.html#describe-your-changes
+[1/1] perf/arm-cmn: Add CMN S3 ACPI binding
+      https://git.kernel.org/will/c/8c138a189f6d
 
-    Andrew
+Cheers,
+-- 
+Will
 
----
-pw-bot: cr
-
+https://fixes.arm64.dev
+https://next.arm64.dev
+https://will.arm64.dev
 
