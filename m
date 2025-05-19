@@ -1,137 +1,119 @@
-Return-Path: <stable+bounces-144809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B10DABBE0E
-	for <lists+stable@lfdr.de>; Mon, 19 May 2025 14:37:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 734CFABBE20
+	for <lists+stable@lfdr.de>; Mon, 19 May 2025 14:42:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8E0FC7A8B03
-	for <lists+stable@lfdr.de>; Mon, 19 May 2025 12:36:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9D9027A4AA4
+	for <lists+stable@lfdr.de>; Mon, 19 May 2025 12:41:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18CD3275840;
-	Mon, 19 May 2025 12:37:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1521B279321;
+	Mon, 19 May 2025 12:42:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IKIsGiBV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BXHUVwNu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25E326D4E3
-	for <stable@vger.kernel.org>; Mon, 19 May 2025 12:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF67E22339;
+	Mon, 19 May 2025 12:42:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747658270; cv=none; b=gd87B545wlvgLJs+3LfupZFPnqOZ/mYCWhaKdqn3MEZBlJE8gw5L+BDA8W/h4HlxI07Um0YTFJR0Awy6IxTL0d8/HX9M8B+zxxyvyuzTYNCvt9YGmeXZyzN/YHNvt8GGYaLw0jzolRXaR0PZfFT9YY37j4UQU7sbaBn/AJUkPQY=
+	t=1747658559; cv=none; b=G2Q6OmZUhsJH7Wib97/ofJBynWzwbyAind941n9EU6JssRK1exFpFuKaZJ14bPqbn/fNNTDOm7utabiPeCC4HgdqFAsy/FJITYTudiMwZNPFY2KEtGFT+3tt3/9JFyDTceUeX42Cx3tnlOKKd8+Iq6W8zDPsGSlEIJwoIpy7KAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747658270; c=relaxed/simple;
-	bh=1cc0TPmUTJj9XE5IV0pzoD7HQ94+X0nD8sPgA8J8XrA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=N/xjHp0DhSuVMZ8g6lghsOZ5nxCiYPHKq0vEzDutD8pXg7Vpu889yW3gw+qjogF6ZsXYUH2XgqC+4aT44lumv0HMldrhoAkKI2vILSuTdz6CdTzQaZaATeoMzCzRbywVpx70ZoJMam8r8Vej1Bi/vjJ6SL+9MapCVPpsGQvqTW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IKIsGiBV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6245C4CEF0;
-	Mon, 19 May 2025 12:37:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747658270;
-	bh=1cc0TPmUTJj9XE5IV0pzoD7HQ94+X0nD8sPgA8J8XrA=;
-	h=Subject:To:Cc:From:Date:From;
-	b=IKIsGiBVT2/RMrNAxdoZ3ql+KCgVXBKy7e+wCVESc0GUgt+cCKZgDgBgNSfYn49cG
-	 nyTDW/ctHZe+fxv/4XvQ4L73bHF3S0W8RA6moVTi3Bj7SPOr0hbTglCGp+fLmrFaxm
-	 gXHEwGNYDXZnYS33xaNhpni8VK90ljqJE59QSamE=
-Subject: FAILED: patch "[PATCH] ftrace: Fix preemption accounting for stacktrace filter" failed to apply to 5.4-stable tree
-To: pengdonglin@xiaomi.com,dolinux.peng@gmail.com,rostedt@goodmis.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 May 2025 14:37:39 +0200
-Message-ID: <2025051939-front-expediter-3ddd@gregkh>
+	s=arc-20240116; t=1747658559; c=relaxed/simple;
+	bh=iWb64mpfGWYFttCriCMI9AmY9YMbIIrfyB0yaxjiDPM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ReQEHKP1KRKVnAagzCYxiOhSMrab01bkiNcpSI4e/0D6Lv5J+TjFLUEQPMu2pxd0Q/EcbiHoEG4TcHCykz7Y3n9YXPfj86OWpIqnlUt2LWcz1KdaarF1ftjgRKY7ge67YWRuoFZsoWCT+b+MBS7ixGZIZwbkcG/7VVlLJ5lN8RE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BXHUVwNu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30FF0C4CEF1;
+	Mon, 19 May 2025 12:42:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747658559;
+	bh=iWb64mpfGWYFttCriCMI9AmY9YMbIIrfyB0yaxjiDPM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=BXHUVwNua4905w+hsZeutp4rRHq8dH/nVXBOTybw5lo+Xn+agxiIx+iD0u5EOLpmp
+	 izSdJthAxXTVSn/pr2zwc++p1PcqoBTCJwS3JUXGXOoXu8GN721IrYpKDVnqfYd2DN
+	 VmzNHJAX7ykmMFqT0J4h4s3zJ/g3iPHOvcvXhILc/b3N9P0rD1Uyi4UVe1f/ubprRu
+	 8EXjpdPHNzsHhBtilLuLZg5zhgWtRCUhLhFMxmkB6CHDnzUAYpweIf6E7c+Zo8a70P
+	 fGm1a5Ldiyh7GFug7Q9emdkIEiXdqK29p+FCKnT+KflRkV+rWtoIR83g460cTIHZSh
+	 e3VhZxSg7m6jA==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1uGzpC-000000006ah-23l0;
+	Mon, 19 May 2025 14:42:34 +0200
+Date: Mon, 19 May 2025 14:42:34 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Linus Walleij <linus.walleij@linaro.org>, linux-gpio@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] gpio: sysfs: add missing mutex_destroy()
+Message-ID: <aCsnOthU3z1jwWdb@hovoldconsulting.com>
+References: <20250516104023.20561-1-brgl@bgdev.pl>
+ <aCckl9cC8fCBhHQT@hovoldconsulting.com>
+ <CAMRc=Mf=xW6HFVYOOVS2W6GOGHS2tCRtDYAco0rz4wmEpMZhmA@mail.gmail.com>
+ <aCdutI4J6r5kjCNs@hovoldconsulting.com>
+ <CAMRc=MdS0QG_ThYUhwTRaKidyGcj3h6x0=jmaW7UK8EBPhrYrw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMRc=MdS0QG_ThYUhwTRaKidyGcj3h6x0=jmaW7UK8EBPhrYrw@mail.gmail.com>
 
+On Mon, May 19, 2025 at 02:18:15PM +0200, Bartosz Golaszewski wrote:
+> On Fri, May 16, 2025 at 6:58 PM Johan Hovold <johan@kernel.org> wrote:
+> > On Fri, May 16, 2025 at 02:32:54PM +0200, Bartosz Golaszewski wrote:
+> > > On Fri, May 16, 2025 at 1:42 PM Johan Hovold <johan@kernel.org> wrote:
+> > > > On Fri, May 16, 2025 at 12:40:23PM +0200, Bartosz Golaszewski wrote:
+> > > > > From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> > > > >
+> > > > > We initialize the data->mutex in gpiod_export() but lack the
+> > > > > corresponding mutex_destroy() in gpiod_unexport() causing a resource
+> > > > > leak with mutex debugging enabled. Add the call right before kfreeing
+> > > > > the GPIO data.
+> > > >
+> > > > No, there's no resource leak and it's perfectly fine not to call
+> > > > mutex_destroy().
+> > >
+> > > No, there's no leak but with lock debugging it still warns if the
+> > > mutex is locked when it's being destroyed so the change still makes
+> > > sense with a modified commit message.
+> > >
+> > > > You can't just make shit up and then pretend to fix it...
+> > >
+> > > There's no need for this kind of comment. You made your point clear in
+> > > the first sentence.
+> >
+> > Your claim that there's "a resource leak with mutex debugging enabled"
+> > is is quite specific. Now I had to go check that no one had changed
+> > something in ways they shouldn't have recently. But mutex_destroy()
+> > still works as it always has, which you should have verified yourself
+> > before sending a "fix" tagged for stable backport based on a hunch.
+> 
+> Yes, I admitted that the commit message was wrong. And yes, it
+> sometimes happens that we get copied on crappy patches. However,
+> unlike what your comment suggests, I don't go around the kernel,
+> "making sh*t up" just to add a "Fixes: Johan's commit". I had this as
+> part of a bigger rework I have in progress[1] (discussed previously
+> here[2]) and figured that with the series growing in size, I'll at
+> least get the fix upstream before v6.16-rc1.
 
-The patch below does not apply to the 5.4-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+But it is not a fix. It is based on a misunderstanding that you should
+have caught yourself by just looking at the code before posting.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Sure, mutex_destroy() is an odd bird, but you still need to verify your
+guesses before posting patches based on them. It's that lazy attitude
+(and violation of the stable kernel policy) that I'm criticising.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
-git checkout FETCH_HEAD
-git cherry-pick -x 11aff32439df6ca5b3b891b43032faf88f4a6a29
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025051939-front-expediter-3ddd@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 11aff32439df6ca5b3b891b43032faf88f4a6a29 Mon Sep 17 00:00:00 2001
-From: pengdonglin <pengdonglin@xiaomi.com>
-Date: Mon, 12 May 2025 17:42:46 +0800
-Subject: [PATCH] ftrace: Fix preemption accounting for stacktrace filter
- command
-
-The preemption count of the stacktrace filter command to trace ksys_read
-is consistently incorrect:
-
-$ echo ksys_read:stacktrace > set_ftrace_filter
-
-   <...>-453     [004] ...1.    38.308956: <stack trace>
-=> ksys_read
-=> do_syscall_64
-=> entry_SYSCALL_64_after_hwframe
-
-The root cause is that the trace framework disables preemption when
-invoking the filter command callback in function_trace_probe_call:
-
-   preempt_disable_notrace();
-   probe_ops->func(ip, parent_ip, probe_opsbe->tr, probe_ops, probe->data);
-   preempt_enable_notrace();
-
-Use tracing_gen_ctx_dec() to account for the preempt_disable_notrace(),
-which will output the correct preemption count:
-
-$ echo ksys_read:stacktrace > set_ftrace_filter
-
-   <...>-410     [006] .....    31.420396: <stack trace>
-=> ksys_read
-=> do_syscall_64
-=> entry_SYSCALL_64_after_hwframe
-
-Cc: stable@vger.kernel.org
-Fixes: 36590c50b2d07 ("tracing: Merge irqflags + preempt counter.")
-Link: https://lore.kernel.org/20250512094246.1167956-2-dolinux.peng@gmail.com
-Signed-off-by: pengdonglin <dolinux.peng@gmail.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-
-diff --git a/kernel/trace/trace_functions.c b/kernel/trace/trace_functions.c
-index 98ccf3f00c51..4e37a0f6aaa3 100644
---- a/kernel/trace/trace_functions.c
-+++ b/kernel/trace/trace_functions.c
-@@ -633,11 +633,7 @@ ftrace_traceoff(unsigned long ip, unsigned long parent_ip,
- 
- static __always_inline void trace_stack(struct trace_array *tr)
- {
--	unsigned int trace_ctx;
--
--	trace_ctx = tracing_gen_ctx();
--
--	__trace_stack(tr, trace_ctx, FTRACE_STACK_SKIP);
-+	__trace_stack(tr, tracing_gen_ctx_dec(), FTRACE_STACK_SKIP);
- }
- 
- static void
-
+Johan
 
