@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-144775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9B79ABBD26
-	for <lists+stable@lfdr.de>; Mon, 19 May 2025 14:00:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6790DABBD27
+	for <lists+stable@lfdr.de>; Mon, 19 May 2025 14:00:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 790463B9AA8
-	for <lists+stable@lfdr.de>; Mon, 19 May 2025 11:59:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A02133AF7B5
+	for <lists+stable@lfdr.de>; Mon, 19 May 2025 11:59:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC9C927603D;
-	Mon, 19 May 2025 11:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B868C276058;
+	Mon, 19 May 2025 11:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zeFvegO0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fSNnZxen"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA00927511C
-	for <stable@vger.kernel.org>; Mon, 19 May 2025 11:59:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79BF327604B
+	for <stable@vger.kernel.org>; Mon, 19 May 2025 11:59:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747655977; cv=none; b=ZbHgOti6Sdv3OVmpRWx+1SzS4x7L9d+dAFSKu7k1jakiUpzINYoXqAplklHjJL6BgNvQMluBCIR0Cf4YgtjsGsRefWbUdfUaLldEh66yfsqz6yhzhVrF+dpkpSEEKzPtU7Ahnf9qrI1ROIwVPX1cc6KBJBofRXfbOtI14cLalj0=
+	t=1747655993; cv=none; b=SaJRjLRmhgDBF226Wikx3g4mDg3E6Ii8SqRSmjsWpSnPIc+5YtoP8fff0GQk+hVMaFN2m/eeTcuWX+GExPtq3g5KjJ6I/1qsRQnMP1E0YqJKblglsAKOANozt+q/Psh4+Nik9VgRhOrTWlddL4A+a0Hy7qnF3pPMWfGRtc2/Qak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747655977; c=relaxed/simple;
-	bh=sp4bp031ayh2p+BJr3Hask6gREAgygOsT6CLFBKKXP4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=S3P76LyE6TKhCXEUsHyr3uXnh6EyHJ0xs4N2/N2s0S/0CvJIHf4xH5bXy/DrCnfHnn4SWX7E+YkJvDn1l4yQfgYLKip38NdG3PdWi3JWlllGu/UTHJoBuskb7MM+t74V28weW3gCDZkTDLRb4f08fcZWRPVmnq7YWKBXLzgD6gc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zeFvegO0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71CB8C4CEE4;
-	Mon, 19 May 2025 11:59:36 +0000 (UTC)
+	s=arc-20240116; t=1747655993; c=relaxed/simple;
+	bh=nLHU28Kr2Paz39RhYm3DppOtSgp9TDmR/MR6RVLUy+U=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=DpfuIDuROxSGUQ+r7+2R5mpSzKgQBbKb/R0rO7BeqI9XyfWISTv/d8GTwwQuG0hQg1+3uOKklhRCp3qRMXKKetxsFDZerBoOgAAG3bYrpO9TThuH4J/le9fkTu6/FbPrpH2qmoRTlDL6mna4z6yluhj8NWn7XhvDZOQlQb5Yotk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fSNnZxen; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C1BDC4CEEF;
+	Mon, 19 May 2025 11:59:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747655976;
-	bh=sp4bp031ayh2p+BJr3Hask6gREAgygOsT6CLFBKKXP4=;
+	s=korg; t=1747655992;
+	bh=nLHU28Kr2Paz39RhYm3DppOtSgp9TDmR/MR6RVLUy+U=;
 	h=Subject:To:Cc:From:Date:From;
-	b=zeFvegO03ZnMFjOnAl4tWZxfC4bKwXIz4Ga9c1Rx247XotNeloFiloCFQoBsRqWhV
-	 2MYnZEtOnLKFHgyyirbYEYY2DeHXY6zJW97w/QduI4BZEb3jwIzuPAQ2MgDpVNRJIh
-	 Tmww8ZbDKDNSWrqlTaJN6DoBcVD39XC5UtGOcKuM=
-Subject: FAILED: patch "[PATCH] btrfs: fix discard worker infinite loop after disabling" failed to apply to 5.10-stable tree
-To: fdmanana@suse.com,boris@bur.io,dsterba@suse.com,neelx@suse.com
+	b=fSNnZxenSMzJhQ222usCZHoae3R6CHQ2xdnoPvFbkZS5dzvVWxUqzCCXb87PQv80I
+	 1S7bnG4Hddsevetr4KpPIxKJcPOKutTFHg4Wav5TMJYnynWO5IoePWXVyZoko3QYLu
+	 f8PZQL8MSV7V2dJRz8HiMWdBCZy0FKwNpQy7k4gI=
+Subject: FAILED: patch "[PATCH] btrfs: fix folio leak in submit_one_async_extent()" failed to apply to 6.6-stable tree
+To: boris@bur.io,dsterba@suse.com,fdmanana@suse.com,josef@toxicpanda.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 May 2025 13:59:34 +0200
-Message-ID: <2025051934-turret-savage-e165@gregkh>
+Date: Mon, 19 May 2025 13:59:49 +0200
+Message-ID: <2025051949-line-blog-2ffe@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 54db6d1bdd71fa90172a2a6aca3308bbf7fa7eb5
+git cherry-pick -x a0fd1c6098633f9a95fc2f636383546c82b704c3
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025051934-turret-savage-e165@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025051949-line-blog-2ffe@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,175 +77,79 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 54db6d1bdd71fa90172a2a6aca3308bbf7fa7eb5 Mon Sep 17 00:00:00 2001
-From: Filipe Manana <fdmanana@suse.com>
-Date: Mon, 5 May 2025 16:03:16 +0100
-Subject: [PATCH] btrfs: fix discard worker infinite loop after disabling
- discard
+From a0fd1c6098633f9a95fc2f636383546c82b704c3 Mon Sep 17 00:00:00 2001
+From: Boris Burkov <boris@bur.io>
+Date: Wed, 7 May 2025 12:42:24 -0700
+Subject: [PATCH] btrfs: fix folio leak in submit_one_async_extent()
 
-If the discard worker is running and there's currently only one block
-group, that block group is a data block group, it's in the unused block
-groups discard list and is being used (it got an extent allocated from it
-after becoming unused), the worker can end up in an infinite loop if a
-transaction abort happens or the async discard is disabled (during remount
-or unmount for example).
+If btrfs_reserve_extent() fails while submitting an async_extent for a
+compressed write, then we fail to call free_async_extent_pages() on the
+async_extent and leak its folios. A likely cause for such a failure
+would be btrfs_reserve_extent() failing to find a large enough
+contiguous free extent for the compressed extent.
 
-This happens like this:
+I was able to reproduce this by:
 
-1) Task A, the discard worker, is at peek_discard_list() and
-   find_next_block_group() returns block group X;
+1. mount with compress-force=zstd:3
+2. fallocating most of a filesystem to a big file
+3. fragmenting the remaining free space
+4. trying to copy in a file which zstd would generate large compressed
+   extents for (vmlinux worked well for this)
 
-2) Block group X is in the unused block groups discard list (its discard
-   index is BTRFS_DISCARD_INDEX_UNUSED) since at some point in the past
-   it become an unused block group and was added to that list, but then
-   later it got an extent allocated from it, so its ->used counter is not
-   zero anymore;
+Step 4. hits the memory leak and can be repeated ad nauseam to
+eventually exhaust the system memory.
 
-3) The current transaction is aborted by task B and we end up at
-   __btrfs_handle_fs_error() in the transaction abort path, where we call
-   btrfs_discard_stop(), which clears BTRFS_FS_DISCARD_RUNNING from
-   fs_info, and then at __btrfs_handle_fs_error() we set the fs to RO mode
-   (setting SB_RDONLY in the super block's s_flags field);
+Fix this by detecting the case where we fallback to uncompressed
+submission for a compressed async_extent and ensuring that we call
+free_async_extent_pages().
 
-4) Task A calls __add_to_discard_list() with the goal of moving the block
-   group from the unused block groups discard list into another discard
-   list, but at __add_to_discard_list() we end up doing nothing because
-   btrfs_run_discard_work() returns false, since the super block has
-   SB_RDONLY set in its flags and BTRFS_FS_DISCARD_RUNNING is not set
-   anymore in fs_info->flags. So block group X remains in the unused block
-   groups discard list;
-
-5) Task A then does a goto into the 'again' label, calls
-   find_next_block_group() again we gets block group X again. Then it
-   repeats the previous steps over and over since there are not other
-   block groups in the discard lists and block group X is never moved
-   out of the unused block groups discard list since
-   btrfs_run_discard_work() keeps returning false and therefore
-   __add_to_discard_list() doesn't move block group X out of that discard
-   list.
-
-When this happens we can get a soft lockup report like this:
-
-  [71.957] watchdog: BUG: soft lockup - CPU#0 stuck for 27s! [kworker/u4:3:97]
-  [71.957] Modules linked in: xfs af_packet rfkill (...)
-  [71.957] CPU: 0 UID: 0 PID: 97 Comm: kworker/u4:3 Tainted: G        W          6.14.2-1-default #1 openSUSE Tumbleweed 968795ef2b1407352128b466fe887416c33af6fa
-  [71.957] Tainted: [W]=WARN
-  [71.957] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-3-gd478f380-rebuilt.opensuse.org 04/01/2014
-  [71.957] Workqueue: btrfs_discard btrfs_discard_workfn [btrfs]
-  [71.957] RIP: 0010:btrfs_discard_workfn+0xc4/0x400 [btrfs]
-  [71.957] Code: c1 01 48 83 (...)
-  [71.957] RSP: 0018:ffffafaec03efe08 EFLAGS: 00000246
-  [71.957] RAX: ffff897045500000 RBX: ffff8970413ed8d0 RCX: 0000000000000000
-  [71.957] RDX: 0000000000000001 RSI: ffff8970413ed8d0 RDI: 0000000a8f1272ad
-  [71.957] RBP: 0000000a9d61c60e R08: ffff897045500140 R09: 8080808080808080
-  [71.957] R10: ffff897040276800 R11: fefefefefefefeff R12: ffff8970413ed860
-  [71.957] R13: ffff897045500000 R14: ffff8970413ed868 R15: 0000000000000000
-  [71.957] FS:  0000000000000000(0000) GS:ffff89707bc00000(0000) knlGS:0000000000000000
-  [71.957] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-  [71.957] CR2: 00005605bcc8d2f0 CR3: 000000010376a001 CR4: 0000000000770ef0
-  [71.957] PKRU: 55555554
-  [71.957] Call Trace:
-  [71.957]  <TASK>
-  [71.957]  process_one_work+0x17e/0x330
-  [71.957]  worker_thread+0x2ce/0x3f0
-  [71.957]  ? __pfx_worker_thread+0x10/0x10
-  [71.957]  kthread+0xef/0x220
-  [71.957]  ? __pfx_kthread+0x10/0x10
-  [71.957]  ret_from_fork+0x34/0x50
-  [71.957]  ? __pfx_kthread+0x10/0x10
-  [71.957]  ret_from_fork_asm+0x1a/0x30
-  [71.957]  </TASK>
-  [71.957] Kernel panic - not syncing: softlockup: hung tasks
-  [71.987] CPU: 0 UID: 0 PID: 97 Comm: kworker/u4:3 Tainted: G        W    L     6.14.2-1-default #1 openSUSE Tumbleweed 968795ef2b1407352128b466fe887416c33af6fa
-  [71.989] Tainted: [W]=WARN, [L]=SOFTLOCKUP
-  [71.989] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-3-gd478f380-rebuilt.opensuse.org 04/01/2014
-  [71.991] Workqueue: btrfs_discard btrfs_discard_workfn [btrfs]
-  [71.992] Call Trace:
-  [71.993]  <IRQ>
-  [71.994]  dump_stack_lvl+0x5a/0x80
-  [71.994]  panic+0x10b/0x2da
-  [71.995]  watchdog_timer_fn.cold+0x9a/0xa1
-  [71.996]  ? __pfx_watchdog_timer_fn+0x10/0x10
-  [71.997]  __hrtimer_run_queues+0x132/0x2a0
-  [71.997]  hrtimer_interrupt+0xff/0x230
-  [71.998]  __sysvec_apic_timer_interrupt+0x55/0x100
-  [71.999]  sysvec_apic_timer_interrupt+0x6c/0x90
-  [72.000]  </IRQ>
-  [72.000]  <TASK>
-  [72.001]  asm_sysvec_apic_timer_interrupt+0x1a/0x20
-  [72.002] RIP: 0010:btrfs_discard_workfn+0xc4/0x400 [btrfs]
-  [72.002] Code: c1 01 48 83 (...)
-  [72.005] RSP: 0018:ffffafaec03efe08 EFLAGS: 00000246
-  [72.006] RAX: ffff897045500000 RBX: ffff8970413ed8d0 RCX: 0000000000000000
-  [72.006] RDX: 0000000000000001 RSI: ffff8970413ed8d0 RDI: 0000000a8f1272ad
-  [72.007] RBP: 0000000a9d61c60e R08: ffff897045500140 R09: 8080808080808080
-  [72.008] R10: ffff897040276800 R11: fefefefefefefeff R12: ffff8970413ed860
-  [72.009] R13: ffff897045500000 R14: ffff8970413ed868 R15: 0000000000000000
-  [72.010]  ? btrfs_discard_workfn+0x51/0x400 [btrfs 23b01089228eb964071fb7ca156eee8cd3bf996f]
-  [72.011]  process_one_work+0x17e/0x330
-  [72.012]  worker_thread+0x2ce/0x3f0
-  [72.013]  ? __pfx_worker_thread+0x10/0x10
-  [72.014]  kthread+0xef/0x220
-  [72.014]  ? __pfx_kthread+0x10/0x10
-  [72.015]  ret_from_fork+0x34/0x50
-  [72.015]  ? __pfx_kthread+0x10/0x10
-  [72.016]  ret_from_fork_asm+0x1a/0x30
-  [72.017]  </TASK>
-  [72.017] Kernel Offset: 0x15000000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
-  [72.019] Rebooting in 90 seconds..
-
-So fix this by making sure we move a block group out of the unused block
-groups discard list when calling __add_to_discard_list().
-
-Fixes: 2bee7eb8bb81 ("btrfs: discard one region at a time in async discard")
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1242012
-CC: stable@vger.kernel.org # 5.10+
-Reviewed-by: Boris Burkov <boris@bur.io>
-Reviewed-by: Daniel Vacek <neelx@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Fixes: 131a821a243f ("btrfs: fallback if compressed IO fails for ENOSPC")
+CC: stable@vger.kernel.org # 6.1+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Co-developed-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
+Reviewed-by: David Sterba <dsterba@suse.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
 
-diff --git a/fs/btrfs/discard.c b/fs/btrfs/discard.c
-index d6eef4bd9e9d..de23c4b3515e 100644
---- a/fs/btrfs/discard.c
-+++ b/fs/btrfs/discard.c
-@@ -94,8 +94,6 @@ static void __add_to_discard_list(struct btrfs_discard_ctl *discard_ctl,
- 				  struct btrfs_block_group *block_group)
- {
- 	lockdep_assert_held(&discard_ctl->lock);
--	if (!btrfs_run_discard_work(discard_ctl))
--		return;
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index d295a37fa049..c1bd17915f81 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -1109,6 +1109,7 @@ static void submit_one_async_extent(struct async_chunk *async_chunk,
+ 	struct extent_state *cached = NULL;
+ 	struct extent_map *em;
+ 	int ret = 0;
++	bool free_pages = false;
+ 	u64 start = async_extent->start;
+ 	u64 end = async_extent->start + async_extent->ram_size - 1;
  
- 	if (list_empty(&block_group->discard_list) ||
- 	    block_group->discard_index == BTRFS_DISCARD_INDEX_UNUSED) {
-@@ -118,6 +116,9 @@ static void add_to_discard_list(struct btrfs_discard_ctl *discard_ctl,
- 	if (!btrfs_is_block_group_data_only(block_group))
- 		return;
+@@ -1129,7 +1130,10 @@ static void submit_one_async_extent(struct async_chunk *async_chunk,
+ 	}
  
-+	if (!btrfs_run_discard_work(discard_ctl))
-+		return;
-+
- 	spin_lock(&discard_ctl->lock);
- 	__add_to_discard_list(discard_ctl, block_group);
- 	spin_unlock(&discard_ctl->lock);
-@@ -244,6 +245,18 @@ static struct btrfs_block_group *peek_discard_list(
- 		    block_group->used != 0) {
- 			if (btrfs_is_block_group_data_only(block_group)) {
- 				__add_to_discard_list(discard_ctl, block_group);
-+				/*
-+				 * The block group must have been moved to other
-+				 * discard list even if discard was disabled in
-+				 * the meantime or a transaction abort happened,
-+				 * otherwise we can end up in an infinite loop,
-+				 * always jumping into the 'again' label and
-+				 * keep getting this block group over and over
-+				 * in case there are no other block groups in
-+				 * the discard lists.
-+				 */
-+				ASSERT(block_group->discard_index !=
-+				       BTRFS_DISCARD_INDEX_UNUSED);
- 			} else {
- 				list_del_init(&block_group->discard_list);
- 				btrfs_put_block_group(block_group);
+ 	if (async_extent->compress_type == BTRFS_COMPRESS_NONE) {
++		ASSERT(!async_extent->folios);
++		ASSERT(async_extent->nr_folios == 0);
+ 		submit_uncompressed_range(inode, async_extent, locked_folio);
++		free_pages = true;
+ 		goto done;
+ 	}
+ 
+@@ -1145,6 +1149,7 @@ static void submit_one_async_extent(struct async_chunk *async_chunk,
+ 		 * fall back to uncompressed.
+ 		 */
+ 		submit_uncompressed_range(inode, async_extent, locked_folio);
++		free_pages = true;
+ 		goto done;
+ 	}
+ 
+@@ -1186,6 +1191,8 @@ static void submit_one_async_extent(struct async_chunk *async_chunk,
+ done:
+ 	if (async_chunk->blkcg_css)
+ 		kthread_associate_blkcg(NULL);
++	if (free_pages)
++		free_async_extent_pages(async_extent);
+ 	kfree(async_extent);
+ 	return;
+ 
 
 
