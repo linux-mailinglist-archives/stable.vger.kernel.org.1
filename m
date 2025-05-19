@@ -1,80 +1,127 @@
-Return-Path: <stable+bounces-144740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B78F1ABB56C
-	for <lists+stable@lfdr.de>; Mon, 19 May 2025 08:57:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29A61ABB580
+	for <lists+stable@lfdr.de>; Mon, 19 May 2025 09:02:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD8601892195
-	for <lists+stable@lfdr.de>; Mon, 19 May 2025 06:57:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A34551886EAB
+	for <lists+stable@lfdr.de>; Mon, 19 May 2025 07:02:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CACC2580D2;
-	Mon, 19 May 2025 06:57:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dKHqGtCc"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3D5C2580EC;
+	Mon, 19 May 2025 07:02:29 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A7FD1E9B04
-	for <stable@vger.kernel.org>; Mon, 19 May 2025 06:57:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED7235946;
+	Mon, 19 May 2025 07:02:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747637835; cv=none; b=EaHA3FnddW0oVPMrq4Pg99uIgZ3zVqV03d+X/i1V3ESYeBaaO416kiraJnkzeW6VD8YAWm52ZFb68Z80nUhsEvaN6/lea3Ec/bT0AObHA4YffZa1Tj8QyXTrB1Y8+o3bDlMQ4c/eR0XMi8DpubE/RpLrbOjzlKQQOT/aSAz3agQ=
+	t=1747638149; cv=none; b=HmejmcoSf4eaZ/5fx+7Y+nQiGhNKRf47AbZKzNbbWpfDgxMg3kgKo+QFYGLcP/U9iVeQNJH/jrRO9eQ+Spo1tioVREf46FosLjtjCftDPPUZMI0ahm6sV3qI7Q+9brlt7AJrO4ODRm2/8CQCy5zF5lTbUF66tTRyB5Qa1yiT6H8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747637835; c=relaxed/simple;
-	bh=xiCN8eXxLeBnW23wMhJ3g9YnGCX+NRRYT6p5GNxO7lc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d3DOe8AKfk6oD0V/x6hl9i97wTn63rT78faRqlPEutSdta8nk4+ianyNl3DoTuydN2xgOrHf9Qpz/4C8pO+ey8AKWlEGYSMEmNjS8jS33JRog5/sZ/i6zaaXh2a2HoCYA/ZXLxuh7kY90DazrpM/wskZE275GImaa2RaS+R7pWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dKHqGtCc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A9C5C4CEE4;
-	Mon, 19 May 2025 06:57:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747637834;
-	bh=xiCN8eXxLeBnW23wMhJ3g9YnGCX+NRRYT6p5GNxO7lc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dKHqGtCcpw2Ylr5+lTdDffIpR48JpENABk6HrR2y5c6Xb9vYZS3lGMuUqNjFVjLy+
-	 U5zRyxf9hPtYgyVo2l1PPOOkV4Fi9//Ogzq29kQAModRu1t/6IQViqt7VkeDJASh0h
-	 /2WZfjEQ8iwNrchVa493E9OOcL30oEjj7Zgdrcbw=
-Date: Mon, 19 May 2025 08:57:11 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Andrei Kuchynski <akuchynski@chromium.org>
-Cc: stable@vger.kernel.org, stable <stable@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: Re: [PATCH 6.12.y] usb: typec: ucsi: displayport: Fix deadlock
-Message-ID: <2025051945-rotten-primer-4e5c@gregkh>
-References: <2025051224-washing-elated-c973@gregkh>
- <20250514144931.2347498-1-akuchynski@chromium.org>
+	s=arc-20240116; t=1747638149; c=relaxed/simple;
+	bh=vlILRjt+MJi4z7+U136HzfBSyDjykYmz510W5xUfFU0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SQk75H6HmKV3ILpzA7AtzNPdRCfPLksX66Hd6VmUQWs2K56+VZk29YpVK3gD33vcRRzzRmg0eyjpvUTgQ6fK1FJ5VQrFz5wozEgEyy5iLqh+Qjm71UI8djmtmqtxLo48kAPe5uP79NxSjCfiLJu1WzyTw6MWyFh/1RJWpC7EVCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from localhost.localdomain (unknown [124.16.141.245])
+	by APP-05 (Coremail) with SMTP id zQCowABnpiho1ypoTZ1kAQ--.8218S2;
+	Mon, 19 May 2025 15:02:05 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: saeedm@nvidia.com,
+	leon@kernel.org,
+	tariqt@nvidia.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: netdev@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] net: mlx5: vport: Add error handling in mlx5_query_nic_vport_node_guid()
+Date: Mon, 19 May 2025 15:01:14 +0800
+Message-ID: <20250519070114.1320-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.42.0.windows.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250514144931.2347498-1-akuchynski@chromium.org>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowABnpiho1ypoTZ1kAQ--.8218S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxJr4ruF45tF1xJryktry7Jrb_yoW8AF17pF
+	47tr9rJrykJa48X34jkFWrZr9Yk3yvya1Uua47J343Xr4ktr4DAr45AF9FgrWUuFW8tFZY
+	yr4ay3ZxAFn8C37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9Y14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r4j6F4UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2
+	Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x
+	0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2
+	zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF
+	4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWU
+	CwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCT
+	nIWIevJa73UjIFyTuYvjfU52NtDUUUU
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRAHA2gqs4h99gAAsv
 
-On Wed, May 14, 2025 at 02:49:31PM +0000, Andrei Kuchynski wrote:
-> This patch introduces the ucsi_con_mutex_lock / ucsi_con_mutex_unlock
-> functions to the UCSI driver. ucsi_con_mutex_lock ensures the connector
-> mutex is only locked if a connection is established and the partner pointer
-> is valid. This resolves a deadlock scenario where
-> ucsi_displayport_remove_partner holds con->mutex waiting for
-> dp_altmode_work to complete while dp_altmode_work attempts to acquire it.
-> 
-> Cc: stable <stable@kernel.org>
-> Fixes: af8622f6a585 ("usb: typec: ucsi: Support for DisplayPort alt mode")
-> Change-Id: Ib10b1ec42c210b49cf67155ed1df7b074a99405e
+The function mlx5_query_nic_vport_node_guid() calls the functuion
+mlx5_query_nic_vport_context() but does not check its return value.
+A proper implementation can be found in mlx5_nic_vport_query_local_lb().
 
-Why did you add a Change-Id: here?
+Add error handling for mlx5_query_nic_vport_context(). If it fails, free
+the out buffer via kvfree() and return error code.
 
-Please fix up for all of these that you submitted with that invalid
-tag in it.
+Fixes: 9efa75254593 ("net/mlx5_core: Introduce access functions to query vport RoCE fields")
+Cc: stable@vger.kernel.org # v4.5
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+---
+ drivers/net/ethernet/mellanox/mlx5/core/vport.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-thanks,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/vport.c b/drivers/net/ethernet/mellanox/mlx5/core/vport.c
+index 276b162ccf18..db45ad72ff43 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/vport.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/vport.c
+@@ -464,20 +464,23 @@ int mlx5_query_nic_vport_sd_group(struct mlx5_core_dev *mdev, u8 *sd_group)
+ int mlx5_query_nic_vport_node_guid(struct mlx5_core_dev *mdev, u64 *node_guid)
+ {
+ 	u32 *out;
+-	int outlen = MLX5_ST_SZ_BYTES(query_nic_vport_context_out);
++	int ret, outlen = MLX5_ST_SZ_BYTES(query_nic_vport_context_out);
+ 
+ 	out = kvzalloc(outlen, GFP_KERNEL);
+ 	if (!out)
+ 		return -ENOMEM;
+ 
+-	mlx5_query_nic_vport_context(mdev, 0, out);
++	ret = mlx5_query_nic_vport_context(mdev, 0, out);
++	if (ret)
++		goto err;
+ 
+ 	*node_guid = MLX5_GET64(query_nic_vport_context_out, out,
+ 				nic_vport_context.node_guid);
+-
++	ret = 0;
++err:
+ 	kvfree(out);
+ 
+-	return 0;
++	return ret;
+ }
+ EXPORT_SYMBOL_GPL(mlx5_query_nic_vport_node_guid);
+ 
+-- 
+2.42.0.windows.2
 
-greg k-h
 
