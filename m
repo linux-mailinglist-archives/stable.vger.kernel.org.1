@@ -1,119 +1,215 @@
-Return-Path: <stable+bounces-144974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E4E0ABCA04
-	for <lists+stable@lfdr.de>; Mon, 19 May 2025 23:40:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D351ABCABE
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 00:12:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC8367A29E3
-	for <lists+stable@lfdr.de>; Mon, 19 May 2025 21:37:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7D423BC36B
+	for <lists+stable@lfdr.de>; Mon, 19 May 2025 22:12:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2663F21B91D;
-	Mon, 19 May 2025 21:23:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E0DF21B9E7;
+	Mon, 19 May 2025 22:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F5J2sLgK"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="W1bMKO98"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from 004.mia.mailroute.net (004.mia.mailroute.net [199.89.3.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CECF12472B2;
-	Mon, 19 May 2025 21:23:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F17D914F9FB;
+	Mon, 19 May 2025 22:12:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.3.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747689819; cv=none; b=Mv0YvQKnIM4oG05uoyvJKVkbbfiRE8YdFfJDZkc/hTmpVVyqCicRUOpmV4dggpZ1O+Qc0RKa0JUNqjJkMOlielR9YaJKzzKvQDT1zc8LM90+C4fYJRHcumUpK7sNKnsVnP8odTU1X4vd05XM+PUYFJwL1xkusYsZ9SS4GGxO8/g=
+	t=1747692743; cv=none; b=E+CYI8YXgYIdW++k9TGUKYbrsjLF+RV4hugNYiDWd276LbdtpGekAB6SNyxoLV944eN+E4ukLjb6Yk9obxVj2+lOuh6W0JZ+LslvwBBHlSyE6FiQwtm1debKA3/TjkxO0C77eQ1kV8izP/1ucOMDyJdeolguPaX19RqApnqZpCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747689819; c=relaxed/simple;
-	bh=WKN0tIyIVZDMFS27vKYjeDiZINzeS4GUB+3+CuoWzKk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=FK1ZArwpehN1DHdjjEZzRk37zk7Oj8jN4BtRA30vzXr0/Qns+ash8ay0hsiklgPbX5BHUqyAGJj0j+R/9Ug2Y2pGW1K6/VSrkY6S9A25aD+T7EeQ4HjSByVGdeBnnm2GjoUGHEhxDgbS91cJRtpWqSavoDM+cQBquNC3lq+NZUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F5J2sLgK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1305C4CEE4;
-	Mon, 19 May 2025 21:23:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747689819;
-	bh=WKN0tIyIVZDMFS27vKYjeDiZINzeS4GUB+3+CuoWzKk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F5J2sLgK3mNyC5t74W2OB91lcRC/5VHsjc5SBk0zX8Nxqnk3UU+6viaJjcymyTohb
-	 qadoJCPE65SuxmQC8DsH7fmcSwxbikpcRTGpGosiTAzU/TjuOuJ0C3b7N1dSkw0bbe
-	 +02KDqUdkFP4j+SC4bplIP9zqjVjVtz7ezYokSGNULzVoQtiNRNtaw9tazng3+tyJg
-	 m4tF9gqH3p5xRGePeb7njg26PZTrzv4ZsgUActTqwGbComzdTxF9EKBQiHZSbFDRPf
-	 Xd5bHVKRpx+2bMf36vLn3U9erTf/5Lk/RMuEiR1DsK84a4Wprg3zbaRJ/tPGkRQvJt
-	 oLujhyRUC8SiQ==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Alessandro Grassi <alessandro.grassi@mailbox.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	mripard@kernel.org,
-	wens@csie.org,
-	linux-spi@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 5/5] spi: spi-sun4i: fix early activation
-Date: Mon, 19 May 2025 17:23:31 -0400
-Message-Id: <20250519212331.1986865-5-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250519212331.1986865-1-sashal@kernel.org>
-References: <20250519212331.1986865-1-sashal@kernel.org>
+	s=arc-20240116; t=1747692743; c=relaxed/simple;
+	bh=LMEG56td4ywXVY7nfEMZFrE/DmPXpjWKAiaV91tn/dA=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=V/4E6QEIyKj2yXYB1a/OdbYGRSPr4U6qegwylxfMcalDdsc+02Tf63dIeYZajRFLkZ2ql+EdNzPaa5pXQhhffcIsgS0Jmsgeg/t2Lvisz5DJAP8kR3LauCdcw8OYfbQCQUjN++gVUt0ns3jlwV+rpSYv8Ln/a+bEJFnUanPkDAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=W1bMKO98; arc=none smtp.client-ip=199.89.3.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 004.mia.mailroute.net (Postfix) with ESMTP id 4b1X3l5Tw9zm1KXd;
+	Mon, 19 May 2025 22:12:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:content-language:references:subject:subject:from:from
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1747692738; x=1750284739; bh=lWnCiSYGLXLTQIYsSx/OwpKS
+	e7KefkvEb/U7hOIQ7H0=; b=W1bMKO98oLq/7I1V+GApF2W4WPzmTyNVwHL99hzT
+	m1ufwADcXELUlsiY1PEFNynd5bjNjKRns9BSO7VzKpnKAEK3L+jsBKdUgKK9s492
+	WgDodlIei/V8aHN4lYWkop+k/79qfu3467EGznzUzvDsmtQCQtpc16PMXLVDgZRl
+	FMZlDWOZmTKjqvQ8aGRoznfX5q4/e5oTWCBMI2CUyckrsmpX/HQ8GlW6eTm2y8S3
+	hLIPXnfbzi6OX+dx+nkqY7Yy/FJfH8n2ZTrdgPxvTVYXMLuXzbej8OD0RsuuUmb4
+	/pm1w4p/oXOEdFl0qR85HVTemUCjPdIBaEyO0VvMhVWC1g==
+X-Virus-Scanned: by MailRoute
+Received: from 004.mia.mailroute.net ([127.0.0.1])
+ by localhost (004.mia [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id OTpZxtz9W56J; Mon, 19 May 2025 22:12:18 +0000 (UTC)
+Received: from [100.66.154.22] (unknown [104.135.204.82])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 004.mia.mailroute.net (Postfix) with ESMTPSA id 4b1X3d4gBHzm1KXt;
+	Mon, 19 May 2025 22:12:12 +0000 (UTC)
+Message-ID: <47b24ea0-ef8f-441f-b405-a062b986ce93@acm.org>
+Date: Mon, 19 May 2025 15:12:11 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.4.293
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+From: Bart Van Assche <bvanassche@acm.org>
+Subject: Re: [PATCH 1/2] block: Make __submit_bio_noacct() preserve the bio
+ submission order
+To: Christoph Hellwig <hch@lst.de>
+Cc: Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
+ Damien Le Moal <dlemoal@kernel.org>, Yu Kuai <yukuai1@huaweicloud.com>,
+ Ming Lei <ming.lei@redhat.com>, stable@vger.kernel.org
+References: <20250514202937.2058598-1-bvanassche@acm.org>
+ <20250514202937.2058598-2-bvanassche@acm.org> <20250516044754.GA12964@lst.de>
+Content-Language: en-US
+In-Reply-To: <20250516044754.GA12964@lst.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Alessandro Grassi <alessandro.grassi@mailbox.org>
+On 5/15/25 9:47 PM, Christoph Hellwig wrote:
+> On Wed, May 14, 2025 at 01:29:36PM -0700, Bart Van Assche wrote:
+>>   		/*
+>>   		 * Now assemble so we handle the lowest level first.
+>>   		 */
+>> +		bio_list_on_stack[0] = bio_list_on_stack[1];
+>>   		bio_list_merge(&bio_list_on_stack[0], &lower);
+>>   		bio_list_merge(&bio_list_on_stack[0], &same);
+>> -		bio_list_merge(&bio_list_on_stack[0], &bio_list_on_stack[1]);
+> 
+> If I read this code correctly, this means that we no keep processing bios
+> that already were on bio_list_on_stack[0] and the beginning of the loop
+> in the next iteration(s) instead of finishing off the ones created by
+> this iteration, which could lead to exhaustion of resources like mempool.
+> 
+> Note that this is a big if - the code is really hard to read, it should
+> really grow a data structure for the on-stack list that has named members
+> for both lists instead of the array magic.. :(
+> 
+> I'm still trying to understand your problem given that it wasn't
+> described much. What I could think it is that bio_split_to_limits through
+> bio_submit_split first re-submits the remainder bio using
+> submit_bio_noacct, which the above should place on the same list and then
+> later the stacking block drivers also submit the bio split off at the
+> beginning, unlike blk-mq drivers that process it directly.  But given
+> that this resubmission should be on the lower list above I don't
+> see how it causes problems.
 
-[ Upstream commit fb98bd0a13de2c9d96cb5c00c81b5ca118ac9d71 ]
+Agreed that this should be root-caused. To my own frustration I do not
+yet have a full root-cause analysis. What I have done to obtain more
+information is to make the kernel issue a warning the first time a bio
+is added out-of-order at the end of the bio list. The following output
+appeared (sde is the zoned block device at the bottom of the stack):
 
-The SPI interface is activated before the CPOL setting is applied. In
-that moment, the clock idles high and CS goes low. After a short delay,
-CPOL and other settings are applied, which may cause the clock to change
-state and idle low. This transition is not part of a clock cycle, and it
-can confuse the receiving device.
+[   71.312492][    T1] bio_list_insert_sorted: inserting in the middle 
+of a bio list
+[   71.313483][    T1] print_bio_list(sde) sector 0x1b7520 size 0x10
+[   71.313034][    T1] bio_list_insert_sorted(sde) sector 0x1b7120 size 
+0x400
+[ ... ]
+[   71.368117][  T163] WARNING: CPU: 4 PID: 163 at block/blk-core.c:725 
+bio_list_insert_sorted+0x144/0x18c
+[   71.386664][  T163] Workqueue: writeback wb_workfn (flush-253:49)
+[   71.387110][  T163] pstate: 61400005 (nZCv daif +PAN -UAO -TCO +DIT 
+-SSBS BTYPE=--)
+[   71.393772][  T163] Call trace:
+[   71.393988][  T163]  bio_list_insert_sorted+0x144/0x18c
+[   71.394338][  T163]  submit_bio_noacct_nocheck+0xd8/0x4f4
+[   71.394696][  T163]  submit_bio_noacct+0x32c/0x50c
+[   71.395017][  T163]  bio_submit_split+0xf0/0x1f8
+[   71.395349][  T163]  bio_split_rw+0xdc/0xf0
+[   71.395631][  T163]  blk_mq_submit_bio+0x320/0x940
+[   71.395970][  T163]  __submit_bio+0xa4/0x1c4
+[   71.396260][  T163]  submit_bio_noacct_nocheck+0x1c0/0x4f4
+[   71.396623][  T163]  submit_bio_noacct+0x32c/0x50c
+[   71.396942][  T163]  submit_bio+0x17c/0x198
+[   71.397222][  T163]  f2fs_submit_write_bio+0x94/0x154
+[   71.397604][  T163]  __submit_merged_bio+0x80/0x204
+[   71.397933][  T163]  __submit_merged_write_cond+0xd0/0x1fc
+[   71.398297][  T163]  f2fs_submit_merged_write+0x24/0x30
+[   71.398646][  T163]  f2fs_sync_node_pages+0x5ec/0x64c
+[   71.398999][  T163]  f2fs_write_node_pages+0xe8/0x1dc
+[   71.399338][  T163]  do_writepages+0xe4/0x2f8
+[   71.399673][  T163]  __writeback_single_inode+0x84/0x6e4
+[   71.400036][  T163]  writeback_sb_inodes+0x2cc/0x5c0
+[   71.400369][  T163]  wb_writeback+0x134/0x550
+[   71.400662][  T163]  wb_workfn+0x154/0x588
+[   71.400937][  T163]  process_one_work+0x26c/0x65c
+[   71.401271][  T163]  worker_thread+0x33c/0x498
+[   71.401575][  T163]  kthread+0x110/0x134
+[   71.401844][  T163]  ret_from_fork+0x10/0x20
 
-To prevent this unexpected transition, activate the interface while CPOL
-and the other settings are being applied.
+I think that the above call stack indicates the following:
+f2fs_submit_write_bio() submits a bio to a dm driver, that the dm driver
+submitted a bio for the lower driver (SCSI core), that the bio for the
+lower driver is split by bio_split_rw(), and that the second half of the
+split bio triggers the above out-of-order warning.
 
-Signed-off-by: Alessandro Grassi <alessandro.grassi@mailbox.org>
-Link: https://patch.msgid.link/20250502095520.13825-1-alessandro.grassi@mailbox.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/spi/spi-sun4i.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+This new patch should address the concerns brought up in your latest
+email:
 
-diff --git a/drivers/spi/spi-sun4i.c b/drivers/spi/spi-sun4i.c
-index cbfac6596fad5..2bdac65789b62 100644
---- a/drivers/spi/spi-sun4i.c
-+++ b/drivers/spi/spi-sun4i.c
-@@ -263,6 +263,9 @@ static int sun4i_spi_transfer_one(struct spi_master *master,
- 	else
- 		reg |= SUN4I_CTL_DHB;
- 
-+	/* Now that the settings are correct, enable the interface */
-+	reg |= SUN4I_CTL_ENABLE;
+diff --git a/block/blk-core.c b/block/blk-core.c
+index 411f005e6b1f..aa270588272a 100644
+--- a/block/blk-core.c
++++ b/block/blk-core.c
+@@ -649,6 +649,26 @@ static void __submit_bio(struct bio *bio)
+  	blk_finish_plug(&plug);
+  }
+
++/*
++ * Insert a bio in LBA order. If no bio for the same bdev with a higher 
+LBA is
++ * found, append at the end.
++ */
++static void bio_list_insert_sorted(struct bio_list *bl, struct bio *bio)
++{
++	struct block_device *bdev = bio->bi_bdev;
++	struct bio **pprev = &bl->head, *next;
++	sector_t sector = bio->bi_iter.bi_sector;
 +
- 	sun4i_spi_write(sspi, SUN4I_CTL_REG, reg);
- 
- 	/* Ensure that we have a parent clock fast enough */
-@@ -403,7 +406,7 @@ static int sun4i_spi_runtime_resume(struct device *dev)
- 	}
- 
- 	sun4i_spi_write(sspi, SUN4I_CTL_REG,
--			SUN4I_CTL_ENABLE | SUN4I_CTL_MASTER | SUN4I_CTL_TP);
-+			SUN4I_CTL_MASTER | SUN4I_CTL_TP);
- 
- 	return 0;
- 
--- 
-2.39.5
++	for (next = *pprev; next; pprev = &next->bi_next, next = next->bi_next)
++		if (next->bi_bdev == bdev && sector < next->bi_iter.bi_sector)
++			break;
++
++	bio->bi_next = next;
++	*pprev = bio;
++	if (!next)
++		bl->tail = bio;
++}
++
+  /*
+   * The loop in this function may be a bit non-obvious, and so deserves 
+some
+   * explanation:
+@@ -706,7 +726,8 @@ static void __submit_bio_noacct(struct bio *bio)
+  		 */
+  		bio_list_merge(&bio_list_on_stack[0], &lower);
+  		bio_list_merge(&bio_list_on_stack[0], &same);
+-		bio_list_merge(&bio_list_on_stack[0], &bio_list_on_stack[1]);
++		while ((bio = bio_list_pop(&bio_list_on_stack[1])))
++			bio_list_insert_sorted(&bio_list_on_stack[0], bio);
+  	} while ((bio = bio_list_pop(&bio_list_on_stack[0])));
 
+  	current->bio_list = NULL;
+@@ -746,7 +767,7 @@ void submit_bio_noacct_nocheck(struct bio *bio)
+  	 * it is active, and then process them after it returned.
+  	 */
+  	if (current->bio_list)
+-		bio_list_add(&current->bio_list[0], bio);
++		bio_list_insert_sorted(&current->bio_list[0], bio);
+  	else if (!bdev_test_flag(bio->bi_bdev, BD_HAS_SUBMIT_BIO))
+  		__submit_bio_noacct_mq(bio);
+  	else
 
