@@ -1,95 +1,126 @@
-Return-Path: <stable+bounces-144769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F12EBABBC2C
-	for <lists+stable@lfdr.de>; Mon, 19 May 2025 13:19:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A714ABBD01
+	for <lists+stable@lfdr.de>; Mon, 19 May 2025 13:54:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49907168EE2
-	for <lists+stable@lfdr.de>; Mon, 19 May 2025 11:19:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E93153AF86E
+	for <lists+stable@lfdr.de>; Mon, 19 May 2025 11:54:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 594F8274674;
-	Mon, 19 May 2025 11:19:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2CAF2749F7;
+	Mon, 19 May 2025 11:54:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S4wlDU0Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="echq3M0u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D2F81DFFC;
-	Mon, 19 May 2025 11:19:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A31681ADFE4
+	for <stable@vger.kernel.org>; Mon, 19 May 2025 11:54:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747653593; cv=none; b=Pa8sTeueJcjRifGYy1Xx/+oMHnhvD5MAfvZCLmhhyzx4PAOklZK4exbfM2rlvKA+1ck0hR0Q4WAvUuXBqMrCJERYk+V4llAQ7TElC3WUsBsMuxcHOcPMQf9QJ2XPO6GpS5FV3T2t6Wx2/ib1UwdPkquaFcQIMI+Gz8IVmcXGreY=
+	t=1747655660; cv=none; b=lL+llh6RYwIg5WOhTwXQAptK+sXuBZu6RVMnPuGwarV2k5JoMBtW+6s+hG6Y956IkMz3xfnTLgQMebWP5VBU+ig0GHz1PkTGZzoAH0zWRoPXrUs0xnV88rR2XfjQvSgGs7p7XwWe4j2DmX8zLr9LTEXmHVJCvBI2yvEFubMvFEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747653593; c=relaxed/simple;
-	bh=+/1L7nBOago7zEMsBVJxrLA7VA41M3OJ93q2rhByYpA=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=qbnJRsjbiLOgEYTY+5x3viSvURtbAKTcttad0/KdYzPSEpE8zrVVpZLl1Dx7kWza6F85LBt7JDhVggpFFSBmFcqiIpVaJCF8IE7+cqS4nfskTUef9kuwC1ETgSC3vsD7d8lEoWqp9QD7uPOHWnKlGccwps/+5M/V+CnaBLMlZfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S4wlDU0Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BC88C4CEE4;
-	Mon, 19 May 2025 11:19:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1747653592;
-	bh=+/1L7nBOago7zEMsBVJxrLA7VA41M3OJ93q2rhByYpA=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=S4wlDU0YDFP74dz9RumjIMEhJ1ueNcB6OCc1fjie04kwiceNVmxkGQcUGd9+2ap9K
-	 lrIwCtlgXYNsxtW42Nj7Y8FUT6vg8cL9XcCSBsHBMJ+xAlRJnQppG+yVFCuMB7a0/6
-	 aNF6mH5CHVgzzIF9itsF55XfhUIUlHNUoQATkDq7d343lhvxz83Uwk6L8ipmK5NMkZ
-	 wZAf6tkQ8Avoor1lcU6bzHdyv5AWeb0FcLwvv2a1oOTpmyZ3IEhW57FG9mUmoOQjps
-	 m8tlWXrFveoduIsN90pbSEG1ng8PFLe1K4aNlMAo5HbFoMMmnQqtPJag8byq1YDAKL
-	 38YMGkBJ5Pw1Q==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAE5A380AA70;
-	Mon, 19 May 2025 11:20:29 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1747655660; c=relaxed/simple;
+	bh=nnMWPNE/jVjnqORrUX0OmB2Z8uxxZ2Re3w/Ckeq2fww=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=AF7BBO+YSAnWeppjFXkJ6TJnfc2XitpOete7hboTCdrtybDs/1ysl9Ds+HANevoblisjd8B59qNDpbNHc+NmeS5EN7I+Q19KetLQ9cQHgeXP5CgH4DZAqXL/rAA58WYwfK8nxg27va+eEqQMX9mmyGdmUY/1+AuA1cYZxudp64s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=echq3M0u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BF33C4CEE4;
+	Mon, 19 May 2025 11:54:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1747655660;
+	bh=nnMWPNE/jVjnqORrUX0OmB2Z8uxxZ2Re3w/Ckeq2fww=;
+	h=Subject:To:Cc:From:Date:From;
+	b=echq3M0ub4gUsILQ5JsP4clc9CYerYp7Q3VVxySwMqKzLdxc7oquydeWCl+xMshYO
+	 iSuwYg9K4p1EYuABr1xacxYYUi2IKMsUE3HuaLCsyXLO/9d9Z7sYpiuMS2Ug5qjFj2
+	 rSZ9Q96IBeG0n3e8jV9Yv2aqoJpqRZk2vhj8MgVo=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Avoid flooding unnecessary info messages" failed to apply to 6.14-stable tree
+To: Wayne.Lin@amd.com,alexander.deucher@amd.com,mario.limonciello@amd.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 19 May 2025 13:54:17 +0200
+Message-ID: <2025051917-kabob-bagginess-9b30@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net] llc: fix data loss when reading from a socket in
- llc_ui_recvmsg()
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174765362875.883795.7035367870465648507.git-patchwork-notify@kernel.org>
-Date: Mon, 19 May 2025 11:20:28 +0000
-References: <20250515122014.1475447-1-Ilia.Gavrilov@infotecs.ru>
-In-Reply-To: <20250515122014.1475447-1-Ilia.Gavrilov@infotecs.ru>
-To: Ilia Gavrilov <Ilia.Gavrilov@infotecs.ru>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, horms@kernel.org, mhal@rbox.co, acme@mandriva.com,
- stephen@networkplumber.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org,
- stable@vger.kernel.org
 
-Hello:
 
-This patch was applied to netdev/net.git (main)
-by David S. Miller <davem@davemloft.net>:
+The patch below does not apply to the 6.14-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-On Thu, 15 May 2025 12:20:15 +0000 you wrote:
-> For SOCK_STREAM sockets, if user buffer size (len) is less
-> than skb size (skb->len), the remaining data from skb
-> will be lost after calling kfree_skb().
-> 
-> To fix this, move the statement for partial reading
-> above skb deletion.
-> 
-> [...]
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Here is the summary with links:
-  - [net] llc: fix data loss when reading from a socket in llc_ui_recvmsg()
-    https://git.kernel.org/netdev/net/c/239af1970bcb
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.14.y
+git checkout FETCH_HEAD
+git cherry-pick -x 9a9c3e1fe5256da14a0a307dff0478f90c55fc8c
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025051917-kabob-bagginess-9b30@gregkh' --subject-prefix 'PATCH 6.14.y' HEAD^..
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Possible dependencies:
 
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 9a9c3e1fe5256da14a0a307dff0478f90c55fc8c Mon Sep 17 00:00:00 2001
+From: Wayne Lin <Wayne.Lin@amd.com>
+Date: Tue, 13 May 2025 11:20:24 +0800
+Subject: [PATCH] drm/amd/display: Avoid flooding unnecessary info messages
+
+It's expected that we'll encounter temporary exceptions
+during aux transactions. Adjust logging from drm_info to
+drm_dbg_dp to prevent flooding with unnecessary log messages.
+
+Fixes: 3637e457eb00 ("drm/amd/display: Fix wrong handling for AUX_DEFER case")
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Wayne Lin <Wayne.Lin@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://lore.kernel.org/r/20250513032026.838036-1-Wayne.Lin@amd.com
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+index 0d7b72c75802..25e8befbcc47 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+@@ -107,7 +107,7 @@ static ssize_t dm_dp_aux_transfer(struct drm_dp_aux *aux,
+ 	if (payload.write && result >= 0) {
+ 		if (result) {
+ 			/*one byte indicating partially written bytes*/
+-			drm_info(adev_to_drm(adev), "amdgpu: AUX partially written\n");
++			drm_dbg_dp(adev_to_drm(adev), "amdgpu: AUX partially written\n");
+ 			result = payload.data[0];
+ 		} else if (!payload.reply[0])
+ 			/*I2C_ACK|AUX_ACK*/
+@@ -133,11 +133,11 @@ static ssize_t dm_dp_aux_transfer(struct drm_dp_aux *aux,
+ 			break;
+ 		}
+ 
+-		drm_info(adev_to_drm(adev), "amdgpu: DP AUX transfer fail:%d\n", operation_result);
++		drm_dbg_dp(adev_to_drm(adev), "amdgpu: DP AUX transfer fail:%d\n", operation_result);
+ 	}
+ 
+ 	if (payload.reply[0])
+-		drm_info(adev_to_drm(adev), "amdgpu: AUX reply command not ACK: 0x%02x.",
++		drm_dbg_dp(adev_to_drm(adev), "amdgpu: AUX reply command not ACK: 0x%02x.",
+ 			payload.reply[0]);
+ 
+ 	return result;
 
 
