@@ -1,142 +1,95 @@
-Return-Path: <stable+bounces-144871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35BD4ABC13F
-	for <lists+stable@lfdr.de>; Mon, 19 May 2025 16:47:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C709FABC163
+	for <lists+stable@lfdr.de>; Mon, 19 May 2025 16:55:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE56B3B8520
-	for <lists+stable@lfdr.de>; Mon, 19 May 2025 14:46:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CDB03AB3F5
+	for <lists+stable@lfdr.de>; Mon, 19 May 2025 14:54:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA0901DE2A7;
-	Mon, 19 May 2025 14:47:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DE1927AC54;
+	Mon, 19 May 2025 14:55:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hntFdLCu"
+	dkim=pass (1024-bit key) header.d=alpinelinux.org header.i=@alpinelinux.org header.b="wG64oYYh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from gbr-app-1.alpinelinux.org (gbr-app-1.alpinelinux.org [213.219.36.190])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F0531CD21C;
-	Mon, 19 May 2025 14:47:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282DF1DE4FB
+	for <stable@vger.kernel.org>; Mon, 19 May 2025 14:55:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.219.36.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747666028; cv=none; b=Yi/vKxI0yFP76flpKjKSNqHGuBSywAcfbgme8vz2Ew9uFdfZBKfgjJnEWaYN+gyJfUk85Vpw0c3cK1955SY3LnBiuSWtEjVyBgYMV2kt9MbRJTheZbkquIzT9LD6eVTyH5KIKVO8hvWdOaUdKbC0/3WdICEuw8xTpWtxdY88zuU=
+	t=1747666510; cv=none; b=HqXARRY2L4QnasXBfCdSRr7KDnKxW3c2YMxqsMKr0pzN2eE7YlhkWL3nOn3b99GSmUl/ZK2rG4zMqllzMYudPB+O+jOTYHWP+j5c4bwikKif/mdTEl+Poj43NUbn2lI69F+sRylYCGR0QZwQbYIXlbu5jEhMa71qjdt39Y1eM/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747666028; c=relaxed/simple;
-	bh=3qnV08bZhkf4pfjJZBx8dUF6Qff3QUhvneWIe9at9jA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=q+Q/2aW31w3YBwFXEjvRuSgJuxr3LSggMPbWwsadxWFg13LzCHFd0ntzps4PHDSIEsqA2+dzDr4H/V7TtC6/XgYfIxnGFuklh73ulfJFP624qVuTr0SSscCTnLDmbFv7kzJJoscaCbL9mbfcr63K+5lXojbWZQUnl77y/q7M6ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hntFdLCu; arc=none smtp.client-ip=209.85.219.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-6f8b81fda4aso28390826d6.1;
-        Mon, 19 May 2025 07:47:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1747666026; x=1748270826; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=E8Jd7Qi9TWpcjCpG46oFCwsLyC3CfnqUMVCo075QTSo=;
-        b=hntFdLCuvNpu0kuBMD8S6ipRLDVfGnsqNbIlmJ0GfDNJVQFOuFw4Rl5j5ry3BRSZwu
-         m/y/Km/wtx9ZRd4U9fMc2q23hW7tEjZnVHZHOvAZ20bzdlipbDwyTnRSWYybk2lO1hu6
-         yuNwK6Tl68oIWWcA8PS4ihemkchjuVG9otaL/TfPeiyjVyFQoMKqOB2SGY5Gd4CS0kQf
-         0LPBry+UkBh03P5nAW1kf+mg/4BIOSIocsIxOahvOGvylckxwKmZ1aGGzN+Oxv9TuynE
-         qN+4ujcXrdoOIxU2Kr2h9ZD2mqF4ry2TNgD2YKa8bbtN0o7+Ui6a+wjIzgECRQRRkRK8
-         0CYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747666026; x=1748270826;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=E8Jd7Qi9TWpcjCpG46oFCwsLyC3CfnqUMVCo075QTSo=;
-        b=IRvJ2/ZxhsU79qCABpxI5oRi8RXVdApKq29CkQuw5hqH1dXM/+ukyou5hxZ/5g6zQt
-         4OgIHbhuh827JzHkcryU1a2Enu5lRS/AjVxHeOmeCPEO36+EfQnSKRcX6a3qqrXxETI4
-         9FYZXnzRIE2jVaqhTPEDJ9vebenDrGu5c82UP6J++vDkVD+dEaa6xLPs8znYMu6oFjV9
-         UZ7PG3CLGuJo9OLemUyRB/i/z3rv/ki7FxwoO0V+ve6rEEtaVSWWsyF+zCKcZaZUiLHC
-         8YfGmEoygXpJrE4UK1vg3giyHjdL7Mg0lVRKZF8jGYoSMfQtlkxft2LDzrygMUS2Eg82
-         V98Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWrWyLB1UlsisNJXmeJFik3mqUNPMmz1w/YRRzsACvyP+buh769+OyurHqTGGnE68MHhS8T78K7@vger.kernel.org, AJvYcCXpAC3CsWqbcCEp2tRxUl0bU2CJzU1gzUB/Zcn7X3eXL0fbLbSl5iRqNYrdFV2r+3QGL2EFnSrso/U0Yg8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzl1/N/4pXElCZCHnVhcs+l+o0ieMT0YLk9yU/uZOI5MofsUS+v
-	CTFJlpOQiQWJXexy9xF7xlcfAXtSd+LyBf62j4m4IwloHQGkIaUznAmCj88tGDFWfik=
-X-Gm-Gg: ASbGnctkbnaQrK6OdxquCNw4uHyv5fm4/R0kDoh8i7Ca5eZ8yyHraq1+bWZm6O9oF7+
-	O4glFUbfkWaUqVKejRSgC/d6MPlAqIuVV7E34oshPhrUgO5zj+lGjiY3fae0+JpzHe1Rd4oxtDr
-	SVBOFBf5R32S/fUTe40yTndjdlws8dQFwDVzyznBInw+ZM7dJCBXn7cgPfgPi+Sahaivb1x8svU
-	R6PCxkjy607omaip7KEuto5VJSb3YHnwjB2ShnQH/qU6RrYGrdYu5xcNCGrL8kBAAZzCHoWK3f1
-	uP9ciDm0VYaYR2nyFjIJF8xMhtGSdHu/hC73U1rigRZvq/PmbUvD
-X-Google-Smtp-Source: AGHT+IH9gfQ+apMRIS3qcJyKjW6PWaqbuvRhWH7s8idH69K7FwlmtGsTZZNFdqKx6LjWZmqCtVkvgQ==
-X-Received: by 2002:a05:6214:2403:b0:6e8:fcde:58d5 with SMTP id 6a1803df08f44-6f8b08e56ddmr210246136d6.42.1747666026022;
-        Mon, 19 May 2025 07:47:06 -0700 (PDT)
-Received: from CNCMK0001D007E.ht.home ([2607:fa49:8c41:2600::f21d])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6f8b096ddb4sm57405716d6.78.2025.05.19.07.47.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 May 2025 07:47:05 -0700 (PDT)
-From: chalianis1@gmail.com
-To: andrew@lunn.ch,
-	hkallweit1@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux@armlinux.org.uk,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: stable@vger.kernel.org,
-	Anis Chali <chalianis1@gmail.com>
-Subject: [PATCH net] phy: dp83869: fix interrupts issue when using with an optical fiber sfp. to correctly clear the interrupts both status registers must be read.
-Date: Mon, 19 May 2025 10:47:01 -0400
-Message-ID: <20250519144701.92264-1-chalianis1@gmail.com>
-X-Mailer: git-send-email 2.49.0
+	s=arc-20240116; t=1747666510; c=relaxed/simple;
+	bh=9R5a2W7x9CCMg8U2Oln6bEokyIT997EuJej9u2AdWqg=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=hTpkNWg10DoVlPFZdA1yCaZTCnMXW1sw442uy22psnuayH04kjPcxbm8shrm2jGHtdE4d5r/WVPQDOLSSqrGAOz01DOoDkSQQ/qwl1aHmdtjxePUMoIHGG5bgc2B8M8QDZEM2FkGnMse2Un8erfY6Y0txMy69OKY1ub7+83pAxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alpinelinux.org; spf=pass smtp.mailfrom=alpinelinux.org; dkim=pass (1024-bit key) header.d=alpinelinux.org header.i=@alpinelinux.org header.b=wG64oYYh; arc=none smtp.client-ip=213.219.36.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=alpinelinux.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alpinelinux.org
+Received: from ncopa-desktop (unknown [IPv6:2001:4646:fb05:0:b16e:79bb:ebde:f3fe])
+	(Authenticated sender: ncopa@alpinelinux.org)
+	by gbr-app-1.alpinelinux.org (Postfix) with ESMTPSA id 865E32234A3;
+	Mon, 19 May 2025 14:47:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alpinelinux.org;
+	s=smtp; t=1747666041;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=HOdRBWfK7HCTbPhOWXh60Dx4qp+WkOQSJ6EXpePkCPU=;
+	b=wG64oYYh0altLQCkJzCGAiWDrs2wsXhHUstu9Pvwhun2pKU2FtbA2RUBohsKpDsZWcpgi0
+	cIZQq4+U9nvaplyUh8IJP/4oHa5mBsxYTeCEnCIH7y3slbOtYnJ5QO0SF9KeYA2Q7e82e/
+	7kdeMnj/U/dQFSTrAQ34zRU01oDnaRs=
+Date: Mon, 19 May 2025 16:47:17 +0200
+From: Natanael Copa <ncopa@alpinelinux.org>
+To: stable@vger.kernel.org
+Cc: regressions@lists.linux.dev
+Subject: regression in 6.6.91: arch/x86/kernel/alternative.c:1452:5: error:
+ redefinition of 'its_static_thunk'
+Message-ID: <20250519164717.18738b4e@ncopa-desktop>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-alpine-linux-musl)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Anis Chali <chalianis1@gmail.com>
+Hi!
 
-from datasheet of dp83869hm
-7.3.6 Interrupt
-The DP83869HM can be configured to generate an interrupt when changes of internal status occur. The interrupt
-allows a MAC to act upon the status in the PHY without polling the PHY registers. The interrupt source can be
-selected through the interrupt registers, MICR (12h) and FIBER_INT_EN (C18h). The interrupt status can be
-read from ISR (13h) and FIBER_INT_STTS (C19h) registers. Some interrupts are enabled by default and can
-be disabled through register access. Both the interrupt status registers must be read in order to clear pending
-interrupts. Until the pending interrupts are cleared, new interrupts may not be routed to the interrupt pin.
-Fixes: interrupts issue when using with an optical fiber sfp.
+When building 6.6.91 for Alpine Linux I got this error on 32 bit x86:
 
-Signed-off-by: Anis Chali <chalianis1@gmail.com>
----
- drivers/net/phy/dp83869.c | 7 +++++++
- 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/phy/dp83869.c b/drivers/net/phy/dp83869.c
-index a62cd838a9ea..1e8c20f387b8 100644
---- a/drivers/net/phy/dp83869.c
-+++ b/drivers/net/phy/dp83869.c
-@@ -41,6 +41,7 @@
- #define DP83869_IO_MUX_CFG	0x0170
- #define DP83869_OP_MODE		0x01df
- #define DP83869_FX_CTRL		0x0c00
-+#define DP83869_FX_INT_STS		0x0c19
- 
- #define DP83869_SW_RESET	BIT(15)
- #define DP83869_SW_RESTART	BIT(14)
-@@ -195,6 +196,12 @@ static int dp83869_ack_interrupt(struct phy_device *phydev)
- 	if (err < 0)
- 		return err;
- 
-+	if (linkmode_test_bit(ETHTOOL_LINK_MODE_FIBRE_BIT, phydev->supported)) {
-+		err = phy_read_mmd(phydev, DP83869_DEVADDR, DP83869_FX_INT_STS);
-+		if (err < 0)
-+			return err;		
-+	}
-+
- 	return 0;
- }
- 
--- 
-2.49.0
 
+  CC      net/devlink/dpipe.o
+/home/buildozer/aports/main/linux-lts/src/linux-6.6/arch/x86/kernel/alternative.c:1452:5: error: redefinition of 'its_static_thunk'
+ 1452 | u8 *its_static_thunk(int reg)
+      |     ^~~~~~~~~~~~~~~~
+In file included from /home/buildozer/aports/main/linux-lts/src/linux-6.6/arch/x86/include/asm/barrier.h:5,
+                 from /home/buildozer/aports/main/linux-lts/src/linux-6.6/include/linux/list.h:11,
+                 from /home/buildozer/aports/main/linux-lts/src/linux-6.6/include/linux/module.h:12,
+                 from /home/buildozer/aports/main/linux-lts/src/linux-6.6/arch/x86/kernel/alternative.c:4:
+/home/buildozer/aports/main/linux-lts/src/linux-6.6/arch/x86/include/asm/alternative.h:143:19: note: previous definition of 'its_static_thunk' with type 'u8 *(int)' {aka 'unsigned char *(int)'}
+  143 | static inline u8 *its_static_thunk(int reg)
+      |                   ^~~~~~~~~~~~~~~~
+  CC [M]  net/sched/act_skbmod.o
+make[4]: *** [/home/buildozer/aports/main/linux-lts/src/linux-6.6/scripts/Makefile.build:243: arch/x86/kernel/alternative.o] Error 1
+make[3]: *** [/home/buildozer/aports/main/linux-lts/src/linux-6.6/scripts/Makefile.build:480: arch/x86/kernel] Error 2
+make[3]: *** Waiting for unfinished jobs....
+
+
+I believe this was introduce with
+
+commit 772934d9062a0f7297ad4e5bffbd904208655660
+Author: Peter Zijlstra <peterz@infradead.org>
+Date:   Wed Apr 23 09:57:31 2025 +0200
+
+    x86/its: FineIBT-paranoid vs ITS
+    
+    commit e52c1dc7455d32c8a55f9949d300e5e87d011fa6 upstream.
 
