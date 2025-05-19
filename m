@@ -1,277 +1,257 @@
-Return-Path: <stable+bounces-144893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81954ABC758
-	for <lists+stable@lfdr.de>; Mon, 19 May 2025 20:46:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FAE8ABC7FF
+	for <lists+stable@lfdr.de>; Mon, 19 May 2025 21:50:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AD054A2642
-	for <lists+stable@lfdr.de>; Mon, 19 May 2025 18:46:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 86A651B63CB6
+	for <lists+stable@lfdr.de>; Mon, 19 May 2025 19:50:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C59E11F12FC;
-	Mon, 19 May 2025 18:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74284212B3E;
+	Mon, 19 May 2025 19:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="akCErf+v"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gHPfxdAC"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30CB01E47CC
-	for <stable@vger.kernel.org>; Mon, 19 May 2025 18:46:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747680371; cv=fail; b=GFRHz4Mryw0ZaNjSYfFmqctI+6Gv+1ocmMaCNnws0XGD4Zq1KjYdjMrRIy1NoBq7TRt+rnovnOS3E3TYiMzX8QZJAdaFSMpcKcNFToQX1RMWeUCrnHRAYdZVudtoHDOACdyMe2JeiGqzZrbDtUIcrEfe3ObyQFc/3Y1+IfJjurQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747680371; c=relaxed/simple;
-	bh=lnrtcs4YCBWhR5tfd2b7rCn11xUJYb1C3pbLnJrSMbc=;
-	h=Message-ID:Date:Subject:To:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=PT5fVeiST23gIVzXjiKVUqHuXTTXNqezDI3y6YiDWHkS1Kx3KjSXZS6j4Wl1FNn9HfrZbmN2s9jJyLwPUTZUydsX/c4jf30f1xYzK/UmZ1vyeYwwqhlpKG0nv636jU8ZKoZ5d/Hjq3iQLK79MVRFYZ0Rm6JYN8ErFhY+u9PCaBk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=akCErf+v; arc=fail smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BC852116F5;
+	Mon, 19 May 2025 19:50:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1747684232; cv=none; b=EkvBH8jJCAVDLBsITh15I5Y6Wm+JbybZmrxKBsG/UkxovyArwO1nYN70gh5MGrHJ2zX/Sy18cH3KKTxE5HmCKubD5qzIOSoZNUxLFd99Uz39fGFI6K9dRsXi8+GVxfci/a9ueOuj4te8Rr6h/weNj21WzrAM462quP8Kczx10l0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1747684232; c=relaxed/simple;
+	bh=YD+qRoMazuh2TKk+L6Zu0sganjL3uVQPsYulM1ha2UA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kNv3PTPjuvB4fow/tmJQRN3dggMCRY68e5EJKJIiuJDA8n4W8nYknYAcjD8VXCq0CzHa43pGjT4N9HZEcuwmIqzIRyMC2pFJInYyyF3JeNS00pfm13Fcvcn+dP7UkNYglgBaYJTQm+6ZAtWAQfUE4hohwExTkzXLvX1XxttGdRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gHPfxdAC; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747680370; x=1779216370;
-  h=message-id:date:subject:to:references:from:in-reply-to:
-   content-transfer-encoding:mime-version;
-  bh=lnrtcs4YCBWhR5tfd2b7rCn11xUJYb1C3pbLnJrSMbc=;
-  b=akCErf+vEzbx9V1uKRQJceUc8unmMbfbN/J28NZ+TRRZhCvW+TgnCssX
-   +8tM29uOohroxCIt0Zknxzjp5ueB0gYac0pFYcFJ65h2cNAiP19IvfuF+
-   jvEmzSVSwXB270xs7YVd6mpILB8ClmAYbYH7UayDJb/jfTsTZQAyVEZQN
-   XF687HhS3VpIOhBj6r15B9M91BKRFN32qs0C240WJ6OQcb9YYX1kvI4FS
-   YcmzW7yPUnSBpCnYluftkh9ka7/2MviFIEfEiXwFzCYd6y1upkupQNB0G
-   XEAkRdLpHxnOqKEUn6dgqjCaO5BD9p2pVGAW8txL+Y7RAhTs9HgKhlmtk
+  t=1747684229; x=1779220229;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=YD+qRoMazuh2TKk+L6Zu0sganjL3uVQPsYulM1ha2UA=;
+  b=gHPfxdAC7NQBOxIb0AG880nsiqcMjwjUDWNkMd1V81/cQbea+a/1Gk9A
+   62c0ngkq/wBn36EAGjI8ECVhbbEnBjK79xtXcp8piQ5v7/NFIkxcDiM4q
+   qkGsaelINd441zBZdk5CGjAwjHbVTV4phS+S49a9zPc2D4ucX5mWCE323
+   5A8EDKttc9vmecYCypnEfDzVPAPo/8PrnqBMeTFd9IppJMkIhDuvPsjRQ
+   PTtggDamLNajPq3/8ISBkK0dn7dCX+9C7NernsJN5Tro9zzT0v3r4r7E4
+   ziqUsZ8QvjbvtshID/lVeBNcgjV/JMTy4+BxLWOQfMiIskEuqW1zjGyMo
    Q==;
-X-CSE-ConnectionGUID: DfgsSxLgSb6Fhoycfy4xsA==
-X-CSE-MsgGUID: 1Vl9tC9VQUif3RJ3VD5Xcw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11438"; a="53267233"
+X-CSE-ConnectionGUID: baFOUgByTFO9AY+EyWGz3Q==
+X-CSE-MsgGUID: HmSe+odUQtCU1+2kw1pX3Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11438"; a="74997028"
 X-IronPort-AV: E=Sophos;i="6.15,301,1739865600"; 
-   d="scan'208";a="53267233"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2025 11:46:08 -0700
-X-CSE-ConnectionGUID: 0/FItxDRR1ycNHDzyMsOKw==
-X-CSE-MsgGUID: kVFkIPBRRMGuIlzmPpLrkw==
+   d="scan'208";a="74997028"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2025 12:50:28 -0700
+X-CSE-ConnectionGUID: odPu1XaHSW2Rae7MLZxRww==
+X-CSE-MsgGUID: m2vyWQeQSRSMfl/yBWF+Sw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,301,1739865600"; 
-   d="scan'208";a="139358884"
-Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
-  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2025 11:46:07 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Mon, 19 May 2025 11:46:07 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25 via Frontend Transport; Mon, 19 May 2025 11:46:07 -0700
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (104.47.73.45) by
- edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Mon, 19 May 2025 11:46:06 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Upt2XD6iANtgGjgfxDME8Agu4NBpt9+05Bq0+dLg2Vbvi6o5DuzcLMF+6ZsjVz/iSS7Xga89g70g7aOvQfRyEes0VxTIj3JVQT7/WdS0/ttwPSJLce+IQfifXcEGPguh1PvrWLLvF6GIVI2wV3oTuTs3G7rUCNAXd8W+/S7vqbTiPCFA8W5/o25/dgdBce64JaEm6dgI4Hm5PHvldMDSCvPiVu31tX10osTO2HXo1X/PCaQsBoGSUo5q20t+KKK7TcuDD+jhdVwSEce563RtI/dLoHl9RjY1lXWAl9XCoDEGsPfa3eHetds4uDN6BfgjdSQEju9SGLulK+kdMGfWDw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MBP+IkUWvFZijjlwOop7wJwXLgiCjIf103Fwvtm4cB0=;
- b=xvhIvy3/emAHTUL3M1tzqn/Rqx56bok2jsxHlvBdRQRMUxn14G2XQ1pq+TGLJ1OMq9wyiHWoF3ieyDqSW01zgpmYm3woqZeNDkXL9j7BODUYwoKHRxOi8xOxrJUEAR1wBxPBrJcdaXSfYlKZqyDSJlmAOPYL/WV4k5W3A+2sZrrp8esM+0uojpLREoDk86bog4Cgh0OrbVSJpd8vm++oKwyT0/9hPuuSKOok5bibEeylQLRNJj+19xbarlDJV+FyfPXrbssrNXIHBWiJJmmSeFlQ65KXlRDoWXitLdL8DeGBPtOEuMmUSwmsNzRkh48AWHRYD2SbkwctZtsrLhVyFQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH7PR11MB7605.namprd11.prod.outlook.com (2603:10b6:510:277::5)
- by DM4PR11MB7256.namprd11.prod.outlook.com (2603:10b6:8:10c::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.21; Mon, 19 May
- 2025 18:46:03 +0000
-Received: from PH7PR11MB7605.namprd11.prod.outlook.com
- ([fe80::d720:25db:67bb:6f50]) by PH7PR11MB7605.namprd11.prod.outlook.com
- ([fe80::d720:25db:67bb:6f50%6]) with mapi id 15.20.8746.029; Mon, 19 May 2025
- 18:46:03 +0000
-Message-ID: <16240db1-e85e-47e6-9adc-505a140a7efd@intel.com>
-Date: Mon, 19 May 2025 11:46:03 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.14.y] drm/xe/gsc: do not flush the GSC worker from the
- reset path
-To: Sasha Levin <sashal@kernel.org>, <stable@vger.kernel.org>
-References: <20250514095358-3685068562756ee9@stable.kernel.org>
-Content-Language: en-US
-From: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-In-Reply-To: <20250514095358-3685068562756ee9@stable.kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SJ0PR05CA0149.namprd05.prod.outlook.com
- (2603:10b6:a03:33d::34) To PH7PR11MB7605.namprd11.prod.outlook.com
- (2603:10b6:510:277::5)
+   d="scan'208";a="140364826"
+Received: from shikevix-mobl.amr.corp.intel.com (HELO desk) ([10.125.146.20])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2025 12:50:28 -0700
+Date: Mon, 19 May 2025 12:50:21 -0700
+From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Natanael Copa <ncopa@alpinelinux.org>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>,
+	stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, broonie@kernel.org,
+	Darren Kenny <darren.kenny@oracle.com>
+Subject: Re: [PATCH 6.6 000/113] 6.6.91-rc2 review
+Message-ID: <20250519195021.mgldcftlu5k4u5sw@desk>
+References: <20250514125617.240903002@linuxfoundation.org>
+ <861004b4-e036-4306-b129-252b9cb983c7@oracle.com>
+ <2025051440-sturdily-dragging-3843@gregkh>
+ <9af6afb1-9d91-48ea-a212-bcd6d1a47203@oracle.com>
+ <e1ea37bd-ea7d-4e8a-bb2f-6be709eb99f4@roeck-us.net>
+ <2025051527-travesty-shape-0e3b@gregkh>
+ <20250515152557.a4q2cqab4uvhnpia@desk>
+ <2025051931-hardy-had-44a3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR11MB7605:EE_|DM4PR11MB7256:EE_
-X-MS-Office365-Filtering-Correlation-Id: c4270f6b-4d94-4140-c4be-08dd9705682c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?VVN4aFVWNGdja29jVDRqNktBbFd1T1RCZ1drWnNFeTBGQkJwV3V0NlhjUldL?=
- =?utf-8?B?dlBUbjhjQmZMMDlYOXUvTWxhemowY0lqLzJUU0s0RzJzR09qN3Z1Z2RtZy9j?=
- =?utf-8?B?R3Z5UTFDWkozZDA5UG9Md01ERUpyVTFpa05ic1hyOUNtMXZNL0pYQWgwbEs0?=
- =?utf-8?B?Y3VOZ1NhNGRIT2NMVm85ZEYzSGxXaFdUQ0x6L2F4eUZhejJ3L1pya0ZuQ3BI?=
- =?utf-8?B?Qkt2YzEzQ3ZZUjRUOXFWMHhmbi9GSjAwQW85czU5blJ3VnMwSkx2aFNzck15?=
- =?utf-8?B?TE9lQit0N0IwRzE4cVRIL21zT0RRdkt2aGZrZGY5NDk5NExpODRuOHVCWDc5?=
- =?utf-8?B?dWVmWUYxWmIxSFl5QzhvN0lYalRCVElhc05UQjdSVFpCRkg4T2FVaWJzKzI5?=
- =?utf-8?B?SEU5ODNFVzRJTGRKcDl3ZDRlMHZFVnN1alk4cm9jWkszS0U3cTduR01Xc3Zo?=
- =?utf-8?B?dEFCTkNOUXZ2dkdTMWVuR1ZwaW1PSTRxTVhnWFVyaDNnVHEvaXhaUDJrN0FD?=
- =?utf-8?B?YXRlSitHMVBPbmFFRVhuZHdnREFVWXVhVFdpQ3RsdVo1ODBraHRkeVZXc2do?=
- =?utf-8?B?NjBkTkREU040Y1I2ajRVZ1dna2RYZS9lRHIvTG1EZ0tCSm1Xd3JMWHFUZTVi?=
- =?utf-8?B?T1dvWENwb0pNVkJqTldKUUtoMk4zTlRlYncrOGFJYnovSTdnNTVGbEcyZkFX?=
- =?utf-8?B?RzIzNTA0Y2FKUUhiTWhMRjdNSld2bXplZzg3UTR6RTNncFAwY3RoMmE2TmI0?=
- =?utf-8?B?QjIvTkNCN0ZvMmdiQTgxNUhaTU1GdElOalU2ajVqUDh3d08wakZ5dDlNMEll?=
- =?utf-8?B?cmVydWh0TEt5QjFQWVRGWUlWMlRKNUtHbmlmdlAxL1hWODlLK09iU2xaSDQ1?=
- =?utf-8?B?NzNIaGNzS3p1bXVFVWFkUGwzNDBkNDFFMmRYTWdMYVk0QTEvajN0ZzhIZkxy?=
- =?utf-8?B?YWpOV1hxdS9malpyOFBLN1d1dU0zaExaZGlwTlA0Yk0wTXhRaUtkMnY4WmJM?=
- =?utf-8?B?T0ZKTG16bCtKUVd2c0orcTVXTmZRb1h1VXpnRkw2TDh4SzEweGZSc0EyT0dG?=
- =?utf-8?B?ZXRkd2gvbFNDMWZDVVFUSjEzd0ZkUnh4eTNQblRTY2UwWGZ2bEQyeVBndzI0?=
- =?utf-8?B?c1h4UksrNTkwYnVQdG9sTTViY3FQb1hTZnVkaDIvVDM0cXFMVXZwazdjbS9m?=
- =?utf-8?B?U1ZacjNsSmRPMGloNHFNUTZvRnUyYzdnR0s0ZTJOdWtwVit2Y2F6RjkzeW9m?=
- =?utf-8?B?TWQvTWtkMWNsNVBJQmc4bEFBV0ZCYlhYeTZVMWtoenN3VzYwSldsWXN5cTJv?=
- =?utf-8?B?NjY3Z1NMejFJSDgreEQ4K0ZXalFaekl4dDJCNEwzY0puZWlsaENyb29PMm9P?=
- =?utf-8?B?NDYxRjNSV0Z0MHlBVUwwazA0UDZEQXUyUDcreVVGYjlDbUlWTnFIZWxnOVcx?=
- =?utf-8?B?cnUySWlhODFFRm5rS245SkVTQmZKbGIySG94YkZGQnZMNjNvWXZnRzd6akZl?=
- =?utf-8?B?Wk84THdKeGpDenl6aFdLU2FSS2RMSW0xczhFaGE0ZElIRGxIWVBIRGxOVE4x?=
- =?utf-8?B?MUtiWldyOVo3ZVo5MVlrRXJGQ2NUODNNcWV2Ykgzd3hweVRGV0NHcHE3UEtT?=
- =?utf-8?B?M2tFOHMzOGU2OWptYytycFBLK0xmOGF3c1N5ZmN3Z01kNWhrTFVUbGFRTHFp?=
- =?utf-8?B?SkJ1bFpiNFFMV0c3WWwvS1NCWG5md2hGK1ZIM29EU3FNdWtKeTZyQVIzZk5s?=
- =?utf-8?B?c21PRHZnY20rUE9mOWNTM1BZNVR5ZGZOSEZWQmlEWDlHMEdJaCtZeXFEQUph?=
- =?utf-8?B?aEtXeEJjNXFjRWZMYnNQNDhiWGdHMXFTZWdxWFpvWmdjTVdjb2tMcUMvNGR3?=
- =?utf-8?B?VjhidVZJY283bnpBVEpGY0ZWSlNhR0pvYkl6dzkvRnloM1JNbUR2ZGUvWkhR?=
- =?utf-8?Q?w/db/QQUgbg=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB7605.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?b0Fod3k0U1dZTkxQaUMwM0lqSFpianhUdTdNUnFlWVNKV2tTbTNYVi9NWmxo?=
- =?utf-8?B?ek5ROVljRFlHb1RjLzQ2bmJ1N2c3TG9IM1lsV2k4Z2Y0aGNNY0c3N0R5emZJ?=
- =?utf-8?B?Tml0ZlU1ZVVaQ1dNamlIM0V4U3VzaitjN1JtOW5Ra3Q3WVplNDZ5S1lWTWNj?=
- =?utf-8?B?VWdMVjhxbHYzRkQzaHM5dlkvNFNhVkxvTEZKcy9iUEluaDJsZ3pGNFhqenk3?=
- =?utf-8?B?RWpRbWdiOWp1bmxJTlV3UWVqR1hQVkpCTG90ZDk2MncwS1l1VXhiWFhybUdi?=
- =?utf-8?B?ZTI2YnNORVRydFFwclUzOW51b0krTU9PTlNYbGM0a3pQL1o5NDNkRjFLODNM?=
- =?utf-8?B?amYramQxdUxOdjhFRFJvMmdUTWp3T0JNR0l1K2RKeHlyZDhDRnFtVHp6ZXpK?=
- =?utf-8?B?U01UK3RLMktVc1pjSWZyWHNuVjUxM2VuK0hLbGxFbDFYdTRqcnpYVW00eXpM?=
- =?utf-8?B?dzJnQVBtL2ZYbjhGYWNib2FnYVJmNE54SzB3RjJqOGpSRVMzWXVVWjhWZWxa?=
- =?utf-8?B?QkJzYVdZVlZXaEppZDZ4L2UvUmFHYWJHUFBuRHdGaENvbXJXZkpiNHhwZWZE?=
- =?utf-8?B?dkR0Q1JTeDV5cWEyZnZPa0pEZWhXOS9Hejl6RWJWSUtHWDBxeVRINDJwUHRP?=
- =?utf-8?B?WmtaN1lpOFVOdEhnM0hycXA0WTNRL2hDdTVXK3JrL215QmtKbmNuR3BlTG1Q?=
- =?utf-8?B?S3A1UVlML3VYZXp1MHJrVnhSbWxZY05NUm5CdlRBWmloaWFGZW9EZ0l0dmpm?=
- =?utf-8?B?djRMcHJpclVLcUFreUhtalhPKzQ2d1Y4MjFZRFNIbW02cHFTRGdZbkk0Qk1W?=
- =?utf-8?B?aE5Takt3S0hsaW96Zjl1Q2JKVTUxVG1EcWdlazhINXhkekxjb3R3cjIwVHQz?=
- =?utf-8?B?V3FNOWkyQm1TQ05xT1l1enhKR1plRCtqSXBrTTdxVHpEc085UTU1K2lQcGZH?=
- =?utf-8?B?eEZBdXdvOGJJTXhXY2FpUzF5OUN1VHRaczR5TUkvY1N0cHVJMmpEOW5kQU9C?=
- =?utf-8?B?STIxYWpvWHRhc2VNRS85aGxmU0xnM3B3NFQ5ZzhuNVMxRFFLVFJGQzlsd2lI?=
- =?utf-8?B?S3pjQ3V3ZFR3S0IyRlhlMm9rU0ZzREd6eGtjUE9RVU50R0c2a2VVd0ZCVklI?=
- =?utf-8?B?cEZTL0RlUXRkRGVPV3JFekVuQkpjQ1ZtcFR4bzVRRityZ29EMUxyMFlvR21B?=
- =?utf-8?B?QmpOSWx6bjM4V0dBNEpHT0gvMEoyV09NR2xxdnN4VkVqSjBEdTlrUEhUWG1q?=
- =?utf-8?B?WFR3cnhxdHBMYkJ0TGxlQkpvUksvaXVteitEckFLQ3lsRHEzZm1sOC9zcDda?=
- =?utf-8?B?RHF4Qk5lelpmSUF1YS9RbWJiaVQ3QmhaZER0QS9BSmFpSUZqU0phZTd4aW02?=
- =?utf-8?B?RUI5T081aXlKcXlQb3RlSWU4c010Qmo5NzNiekRidjVWUEd1cWdTeUJtelJH?=
- =?utf-8?B?UWpUZm9ZMExPQnFFRTIzbTV2ekdVOGtjN1NFaDlDME5ZZ2had1VBZHdJY0xs?=
- =?utf-8?B?WTY2Z3IvRyt6N2FOVTdaRU9pcTZJV3BITmcyQm1rcGdjdkpzZ1Nib2RuUVpw?=
- =?utf-8?B?SE8zR1ovbUlJK2JWLzJObW5nUCtqVmJ6M1p6ZTlVRzdKN2NqWVB4blRpRk4w?=
- =?utf-8?B?bnJwSUpKb2FML01RVWxRSTN4VmpOZWpXZ2dSM05Yc1d6T2YxNVEvb29RWWVL?=
- =?utf-8?B?cGs0VnFBbVg5cFZUQjUwQ05uUWFxZUxrN0phcWIxTlZMbkQ2dklseHcxWlJT?=
- =?utf-8?B?cUhteHFNSGwrZzF4UmlPSGR1VDBKRzI0SGhlSXR6UHRpbkNBTjJaa3VwNWQ4?=
- =?utf-8?B?dTdNTkYyRXB2dDVDN3ZQNDJySWhEaW1xS0hvSzl6MUhQaFcvelpHNTdMT29T?=
- =?utf-8?B?bWh0YjR3QVhRcnFSelVZYW5PcU1qQ1p4V2QvaU5YeklwZTdZN1c0Zy8yL2Rq?=
- =?utf-8?B?dGVidWlKLzVldVJOY2toajR3SzByYTNpcm12QWw1a1lBL1lvSHZLOGxvaW0w?=
- =?utf-8?B?NDVWa1FobFZDNjMwSmFGUkdZcXdRa3pzeHdneHY4OVNocW1CTFpZb0VxR2xo?=
- =?utf-8?B?Z3AvUFlNd1lIeG1xbzJEYVVyZjFNWFk3ZVVqS2F1cHpLOTlaczRERXlaeVNo?=
- =?utf-8?B?UXcvdzZnd1o0RytXZXg2eUswb0hyZ2xzcnY4UWdZelc5YmJGQ1doUHlqQURt?=
- =?utf-8?Q?sIRyYhdeJnmakI03JOoKXps=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: c4270f6b-4d94-4140-c4be-08dd9705682c
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB7605.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 May 2025 18:46:03.6516
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SYm4Ppwkba20ffaXxLJwJ+YegaGMLgQteAh/BbZus0XLpYkrLQF157PAHo/BANJ95yPbGqsmljh35c6u5BOm52bL0hTImI5ozu3Jqk8vo8E=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB7256
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2025051931-hardy-had-44a3@gregkh>
 
-Hi,
+On Mon, May 19, 2025 at 05:27:30PM +0200, Greg Kroah-Hartman wrote:
+> On Thu, May 15, 2025 at 08:25:57AM -0700, Pawan Gupta wrote:
+> > On Thu, May 15, 2025 at 07:35:26AM +0200, Greg Kroah-Hartman wrote:
+> > > On Wed, May 14, 2025 at 01:49:06PM -0700, Guenter Roeck wrote:
+> > > > On 5/14/25 13:33, Harshit Mogalapalli wrote:
+> > > > > Hi Greg,
+> > > > > 
+> > > > > On 15/05/25 01:35, Greg Kroah-Hartman wrote:
+> > > > > > On Thu, May 15, 2025 at 12:29:40AM +0530, Harshit Mogalapalli wrote:
+> > > > > > > Hi Greg,
+> > > > > > > On 14/05/25 18:34, Greg Kroah-Hartman wrote:
+> > > > > > > > This is the start of the stable review cycle for the 6.6.91 release.
+> > > > > > > > There are 113 patches in this series, all will be posted as a response
+> > > > > > > > to this one.  If anyone has any issues with these being applied, please
+> > > > > > > > let me know.
+> > > > > > > > 
+> > > > > > > > Responses should be made by Fri, 16 May 2025 12:55:38 +0000.
+> > > > > > > > Anything received after that time might be too late.
+> > > > > > > 
+> > > > > > > ld: vmlinux.o: in function `patch_retpoline':
+> > > > > > > alternative.c:(.text+0x3b6f1): undefined reference to `module_alloc'
+> > > > > > > make[2]: *** [scripts/Makefile.vmlinux:37: vmlinux] Error 1
+> > > > > > > 
+> > > > > > > We see this build error in 6.6.91-rc2 tag.
+> > > > > > 
+> > > > > > What is odd about your .config?  Have a link to it?  I can't duplicate
+> > > > > > it here on my builds.
+> > > > > > 
+> > > > > 
+> > > > > So this is a config where CONFIG_MODULES is unset(!=y) -- with that we could reproduce it on defconfig + disabling CONFIG_MODULES as well.
+> > > > > 
+> > > > 
+> > > > Key is the combination of CONFIG_MODULES=n with CONFIG_MITIGATION_ITS=y.
+> > > 
+> > > Ah, this is due to the change in its_alloc() for 6.6.y and 6.1.y by the
+> > > call to module_alloc() instead of execmem_alloc() in the backport of
+> > > 872df34d7c51 ("x86/its: Use dynamic thunks for indirect branches").
+> > 
+> > Sorry for the trouble. I wish I had a test to catch problems like this. The
+> > standard config targets defconfig, allyesconfig, allnoconfig, etc. do not
+> > expose such issues. The only thing that comes close is randconfig.
+> > 
+> > CONFIG_MODULES=n is not a common setting, I wonder how people find such
+> > issues? (trying to figure out how to prevent such issues in future).
+> > 
+> > > Pawan, any hints on what should be done here instead?
+> > 
+> > Since dynamic thunks are not possible without CONFIG_MODULES, one option is
+> > to adjust the already in 6.6.91-rc2 patch 9f35e331144a (x86/its: Fix build
+> > errors when CONFIG_MODULES=n) to also bring the ITS thunk allocation under
+> > CONFIG_MODULES.
+> > 
+> > I am not seeing any issue with below build and boot test:
+> > 
+> >   #!/bin/bash -ex
+> > 
+> >   ./scripts/config --disable CONFIG_MODULES
+> >   ./scripts/config --disable CONFIG_MITIGATION_ITS
+> >   # https://github.com/arighi/virtme-ng
+> >   vng -b
+> >   vng -- lscpu
+> > 
+> >   # main test
+> >   ./scripts/config --disable CONFIG_MODULES
+> >   ./scripts/config --enable CONFIG_MITIGATION_ITS
+> >   vng -b
+> >   vng -- lscpu
+> > 
+> >   ./scripts/config --enable CONFIG_MODULES
+> >   ./scripts/config --disable CONFIG_MITIGATION_ITS
+> >   vng -b
+> >   vng -- lscpu
+> > 
+> >   ./scripts/config --enable CONFIG_MODULES
+> >   ./scripts/config --enable CONFIG_MITIGATION_ITS
+> >   vng -b
+> >   vng -- lscpu
+> > 
+> >   echo "PASS"
+> > 
+> > Similar change is required for 6.1 and 5.15 as well. 6.12 is fine because
+> > it uses execmem_alloc().
+> > 
+> > --- 8< ---
+> > From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+> > Subject: [PATCH 6.6] x86/its: Fix build errors when CONFIG_MODULES=n
+> > 
+> > From: Eric Biggers <ebiggers@google.com>
+> > 
+> > commit 9f35e33144ae5377d6a8de86dd3bd4d995c6ac65 upstream.
+> > 
+> > Fix several build errors when CONFIG_MODULES=n, including the following:
+> > 
+> > ../arch/x86/kernel/alternative.c:195:25: error: incomplete definition of type 'struct module'
+> >   195 |         for (int i = 0; i < mod->its_num_pages; i++) {
+> > 
+> >   [ pawan: backport: Bring ITS dynamic thunk code under CONFIG_MODULES ]
+> > 
+> > Fixes: 872df34d7c51 ("x86/its: Use dynamic thunks for indirect branches")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Eric Biggers <ebiggers@google.com>
+> > Acked-by: Dave Hansen <dave.hansen@intel.com>
+> > Tested-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+> > Reviewed-by: Alexandre Chartre <alexandre.chartre@oracle.com>
+> > Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > ---
+> >  arch/x86/kernel/alternative.c | 12 +++++++++++-
+> >  1 file changed, 11 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
+> > index 6085919d3b3e..c6d9a3882ec8 100644
+> > --- a/arch/x86/kernel/alternative.c
+> > +++ b/arch/x86/kernel/alternative.c
+> > @@ -129,6 +129,7 @@ const unsigned char * const x86_nops[ASM_NOP_MAX+1] =
+> >  
+> >  #ifdef CONFIG_MITIGATION_ITS
+> >  
+> > +#ifdef CONFIG_MODULES
+> >  static struct module *its_mod;
+> >  static void *its_page;
+> >  static unsigned int its_offset;
+> > @@ -244,7 +245,16 @@ static void *its_allocate_thunk(int reg)
+> >  	return thunk;
+> >  }
+> >  
+> > -#endif
+> > +#else /* CONFIG_MODULES */
+> > +
+> > +static void *its_allocate_thunk(int reg)
+> > +{
+> > +	return NULL;
+> > +}
+> > +
+> > +#endif /* CONFIG_MODULES */
+> > +
+> > +#endif /* CONFIG_MITIGATION_ITS */
+> >  
+> >  /*
+> >   * Fill the buffer with a single effective instruction of size @len.
+> > -- 
+> > 2.34.1
+> > 
+> 
+> This looks to still be causing problems, see these two reports of build
+> problems with the latest 6.1 and 6.6 releases with this commit in it:
+> 	https://lore.kernel.org/r/20250519164717.18738b4e@ncopa-desktop
+> 	https://lore.kernel.org/r/2f1ae598-0339-4e17-8156-03e8525a213d@roeck-us.net
 
-On 5/14/2025 1:13 PM, Sasha Levin wrote:
-> [ Sasha's backport helper bot ]
->
-> Hi,
->
-> Summary of potential issues:
-> ⚠️ Found matching upstream commit but patch is missing proper reference to it
+These reports appear to be related to a merge resolution of "x86/its:
+FineIBT-paranoid vs ITS" in 6.6 (and 6.1):
 
-Not sure what the issue is here, the patch does have a "cherry picked 
-from" line with the correct commit, as seen in the diff below. Do I need 
-to add something else?
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.6.91&id=772934d9062a0f7297ad4e5bffbd904208655660
 
-Thanks,
-Daniele
+which is different from 6.12:
 
->
-> Found matching upstream commit: 03552d8ac0afcc080c339faa0b726e2c0e9361cb
->
-> Note: The patch differs from the upstream commit:
-> ---
-> 1:  03552d8ac0afc ! 1:  ec3abfe7a63b2 drm/xe/gsc: do not flush the GSC worker from the reset path
->      @@ Commit message
->           Link: https://lore.kernel.org/r/20250502155104.2201469-1-daniele.ceraolospurio@intel.com
->           (cherry picked from commit 12370bfcc4f0bdf70279ec5b570eb298963422b5)
->           Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
->      +    (cherry picked from commit 03552d8ac0afcc080c339faa0b726e2c0e9361cb)
->       
->        ## drivers/gpu/drm/xe/xe_gsc.c ##
->      -@@ drivers/gpu/drm/xe/xe_gsc.c: void xe_gsc_wait_for_worker_completion(struct xe_gsc *gsc)
->      - 		flush_work(&gsc->work);
->      +@@ drivers/gpu/drm/xe/xe_gsc.c: void xe_gsc_remove(struct xe_gsc *gsc)
->      + 	xe_gsc_proxy_remove(gsc);
->        }
->        
->       +void xe_gsc_stop_prepare(struct xe_gsc *gsc)
->      @@ drivers/gpu/drm/xe/xe_gsc.h: struct xe_hw_engine;
->        void xe_gsc_wait_for_worker_completion(struct xe_gsc *gsc);
->       +void xe_gsc_stop_prepare(struct xe_gsc *gsc);
->        void xe_gsc_load_start(struct xe_gsc *gsc);
->      + void xe_gsc_remove(struct xe_gsc *gsc);
->        void xe_gsc_hwe_irq_handler(struct xe_hw_engine *hwe, u16 intr_vec);
->      -
->       
->        ## drivers/gpu/drm/xe/xe_gsc_proxy.c ##
->       @@ drivers/gpu/drm/xe/xe_gsc_proxy.c: bool xe_gsc_proxy_init_done(struct xe_gsc *gsc)
->      @@ drivers/gpu/drm/xe/xe_gsc_proxy.c: bool xe_gsc_proxy_init_done(struct xe_gsc *gs
->       
->        ## drivers/gpu/drm/xe/xe_gsc_proxy.h ##
->       @@ drivers/gpu/drm/xe/xe_gsc_proxy.h: struct xe_gsc;
->      -
->        int xe_gsc_proxy_init(struct xe_gsc *gsc);
->        bool xe_gsc_proxy_init_done(struct xe_gsc *gsc);
->      + void xe_gsc_proxy_remove(struct xe_gsc *gsc);
->       +int xe_gsc_wait_for_proxy_init_done(struct xe_gsc *gsc);
->        int xe_gsc_proxy_start(struct xe_gsc *gsc);
->        
->      @@ drivers/gpu/drm/xe/xe_uc.h: int xe_uc_reset_prepare(struct xe_uc *uc);
->       +void xe_uc_suspend_prepare(struct xe_uc *uc);
->        int xe_uc_suspend(struct xe_uc *uc);
->        int xe_uc_sanitize_reset(struct xe_uc *uc);
->      - void xe_uc_declare_wedged(struct xe_uc *uc);
->      + void xe_uc_remove(struct xe_uc *uc);
-> ---
->
-> Results of testing on various branches:
->
-> | Branch                    | Patch Apply | Build Test |
-> |---------------------------|-------------|------------|
-> | stable/linux-6.14.y       |  Success    |  Success   |
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.12.29&id=7e78061be78b8593df9b0cd0f21b1fee425035de
 
+Basically its_static_thunk() needs to be under #ifdef CONFIG_MITIGATION_ITS
+
+I guess there needs to be a separate patch to fix this?
 
