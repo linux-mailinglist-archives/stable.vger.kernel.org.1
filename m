@@ -1,47 +1,50 @@
-Return-Path: <stable+bounces-144729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF595ABB302
-	for <lists+stable@lfdr.de>; Mon, 19 May 2025 03:54:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CD8CABB36D
+	for <lists+stable@lfdr.de>; Mon, 19 May 2025 04:41:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 79350170BE6
-	for <lists+stable@lfdr.de>; Mon, 19 May 2025 01:54:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B78FD7AA0B2
+	for <lists+stable@lfdr.de>; Mon, 19 May 2025 02:40:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C58D71B042E;
-	Mon, 19 May 2025 01:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A69AC1DBB13;
+	Mon, 19 May 2025 02:41:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 521DE18C004;
-	Mon, 19 May 2025 01:54:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2324A94F;
+	Mon, 19 May 2025 02:41:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747619686; cv=none; b=Yf+/EQn9w4DxcsXKnp9MWzIRaHt8hVocBeV/dhkj8Fhy7V3HrZJmUQ85kLUd/uomd/zHrTZzJ/FcUd6Zj/qLohE/DAgr93cQsyQnS9wgoW6WIRXgks4ImyyGvH/uh2CnhbtM9VYuu3Gg3kY0/U0R/zcaNzK07B20yXlJM+6KYyQ=
+	t=1747622480; cv=none; b=mkl9NDZV7ZMOv9Z6UanQkVOQh3Se9hiJEkIChvkdaHag4DNrZqjiihxcNljJY0fkGuiAqLgq31/bBd6UcC1x73Asgq8bcoM9RTRoowm7TVGZqcOOi67zyex8bD5zB1k4QWHNMpAR3SHvWPLdBvWSkntqrRfV5c/YZgyIAD3N7Jo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747619686; c=relaxed/simple;
-	bh=QtUHOhPV0ehWeJwt6RG0Hz4M9XSUQwDisOX7ZGfog7s=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rtVbFx8HM7QkwqsTxB94jZr/EA1GuDjd1mqFswH7SAkJadIo3FWkjOo8SiK+bxXVKafOlTh5Uk9e804gnWROicrhMz26btv8FfA+lWLWGAoZw/OdVknTdVs2TgtP7JpXH8EyKQpkM7c3toWc+J5ckQSH6PZMXk6K/28Du3UwDOw=
+	s=arc-20240116; t=1747622480; c=relaxed/simple;
+	bh=FvP3hUURlzaObOTyBgrf0qa89O3CbPtk5X36mTObOys=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XYrQZrQi77KdS5IS17Wy+pl8QSlea34X3MKzFT6kHo4PUid/iPP4qZ5q1xHzZ+xhtIh4YK8aOE2HZKSAxaBRg213iv44e2tUr+NnhV1O+4dUjK/4Xd9HfXjmYPGmTq6vgTV82eliJswtzytznbathyGv8+GNiX/Ms1475dkEmRA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from localhost.localdomain (unknown [124.16.141.245])
-	by APP-03 (Coremail) with SMTP id rQCowADn7PZcjypoMT1BAQ--.9661S2;
-	Mon, 19 May 2025 09:54:36 +0800 (CST)
+	by APP-03 (Coremail) with SMTP id rQCowAAHGvVEmipoO59DAQ--.10155S2;
+	Mon, 19 May 2025 10:41:10 +0800 (CST)
 From: Wentao Liang <vulab@iscas.ac.cn>
-To: ajay.kathat@microchip.com,
-	claudiu.beznea@tuxon.dev,
-	kvalo@kernel.org
-Cc: linux-wireless@vger.kernel.org,
+To: alexander.deucher@amd.com,
+	christian.koenig@amd.com,
+	Xinhui.Pan@amd.com,
+	airlied@gmail.com,
+	simona@ffwll.ch
+Cc: amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
 	linux-kernel@vger.kernel.org,
 	Wentao Liang <vulab@iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH v2] wifi: wilc1000: Handle wilc_sdio_cmd52() failure in wilc_sdio_read_init()
-Date: Mon, 19 May 2025 09:54:14 +0800
-Message-ID: <20250519015415.966-1-vulab@iscas.ac.cn>
+Subject: [PATCH] drm: radeon: ci_dpm: Add error handling in ci_enable_vce_dpm()
+Date: Mon, 19 May 2025 10:40:35 +0800
+Message-ID: <20250519024036.1119-1-vulab@iscas.ac.cn>
 X-Mailer: git-send-email 2.42.0.windows.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -50,68 +53,66 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowADn7PZcjypoMT1BAQ--.9661S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7tr4fWFWxKF4fXw4UZFW5ZFb_yoW8XFy7pF
-	WxurWYqw10kFWrZ3W7tFs5A3WrJa48trW7WFWxuw1fZr4kZr1fCr4fXa45Zr1qg3WUC3Wx
-	Xw10vr4jgF1IyFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvl14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+X-CM-TRANSID:rQCowAAHGvVEmipoO59DAQ--.10155S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7Cw1DZr4ruF1fXF43tF4fZrb_yoW8WFW8p3
+	yDWFyYyrZ5Aay8WanFyw4DAryruws7JFWxJFsFk345uw4ayFy8JF13XryayFy0vr92gFya
+	vrn2k3WkZr4UArJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUB014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
 	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
 	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr
 	1j6F4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv
-	7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r
-	1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwCY1x0262kKe7AK
-	xVWUAVWUtwCY02Avz4vE14v_KwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJV
-	W8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF
-	1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6x
-	IIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvE
-	x4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvj
-	DU0xZFpf9x0JUJOz3UUUUU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwsHA2gqdo5g3gAAsM
+	7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r
+	1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02
+	628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE14v_Gr1l42xK82IYc2Ij64
+	vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8G
+	jcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2I
+	x0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK
+	8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I
+	0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUOtC7UUUUU
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBgwHA2gqdbeYjQAAsb
 
-The wilc_sdio_read_init() calls wilc_sdio_cmd52() but does not check the
-return value. This could lead to execution with potentially invalid data
-if wilc_sdio_cmd52() fails. A proper implementation can be found in
-wilc_sdio_read_reg().
+The ci_enable_vce_dpm() calls ci_send_msg_to_smc_with_parameter()
+but does not check the return value. A proper implementation can be
+found in the ci_upload_dpm_level_enable_mask().
 
-Add error handling for wilc_sdio_cmd52(). If wilc_sdio_cmd52() fails,
-log an error message via dev_err().
+Add a check after calling ci_send_msg_to_smc_with_parameter(), return
+-EINVAL if the sending fails.
 
-Fixes: eda308be643f ("staging: wilc1000: refactor interrupt handling for sdio")
-Cc: stable@vger.kernel.org # v5.7
+Fixes: cc8dbbb4f62a ("drm/radeon: add dpm support for CI dGPUs (v2)")
+Cc: stable@vger.kernel.org # v3.12
 Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 ---
-v2: Fix code error.
+ drivers/gpu/drm/radeon/ci_dpm.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
- drivers/net/wireless/microchip/wilc1000/sdio.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/microchip/wilc1000/sdio.c b/drivers/net/wireless/microchip/wilc1000/sdio.c
-index 8ff49b08bbd2..e85aa5c605ef 100644
---- a/drivers/net/wireless/microchip/wilc1000/sdio.c
-+++ b/drivers/net/wireless/microchip/wilc1000/sdio.c
-@@ -808,6 +808,7 @@ static int wilc_sdio_read_int(struct wilc *wilc, u32 *int_status)
- 	u32 tmp;
- 	u8 irq_flags;
- 	struct sdio_cmd52 cmd;
-+	int ret;
+diff --git a/drivers/gpu/drm/radeon/ci_dpm.c b/drivers/gpu/drm/radeon/ci_dpm.c
+index 3877863c6893..c4faaa16a5c4 100644
+--- a/drivers/gpu/drm/radeon/ci_dpm.c
++++ b/drivers/gpu/drm/radeon/ci_dpm.c
+@@ -3945,6 +3945,7 @@ static int ci_enable_vce_dpm(struct radeon_device *rdev, bool enable)
+ 	struct ci_power_info *pi = ci_get_pi(rdev);
+ 	const struct radeon_clock_and_voltage_limits *max_limits;
+ 	int i;
++	PPSMC_Result result;
  
- 	wilc_sdio_read_size(wilc, &tmp);
+ 	if (rdev->pm.dpm.ac_power)
+ 		max_limits = &rdev->pm.dpm.dyn_state.max_clock_voltage_on_ac;
+@@ -3962,9 +3963,11 @@ static int ci_enable_vce_dpm(struct radeon_device *rdev, bool enable)
+ 			}
+ 		}
  
-@@ -826,7 +827,12 @@ static int wilc_sdio_read_int(struct wilc *wilc, u32 *int_status)
- 	cmd.raw = 0;
- 	cmd.read_write = 0;
- 	cmd.data = 0;
--	wilc_sdio_cmd52(wilc, &cmd);
-+	ret = wilc_sdio_cmd52(wilc, &cmd);
-+	if (ret) {
-+		dev_err(&func->dev, "Fail cmd 52, get IRQ register...\n");
-+		return ret;
-+	}
-+
- 	irq_flags = cmd.data;
+-		ci_send_msg_to_smc_with_parameter(rdev,
+-						  PPSMC_MSG_VCEDPM_SetEnabledMask,
+-						  pi->dpm_level_enable_mask.vce_dpm_enable_mask);
++		result = ci_send_msg_to_smc_with_parameter(rdev,
++				PPSMC_MSG_VCEDPM_SetEnabledMask,
++				pi->dpm_level_enable_mask.vce_dpm_enable_mask);
++		if (result != PPSMC_Result_OK)
++			return -EINVAL;
+ 	}
  
- 	if (sdio_priv->irq_gpio)
+ 	return (ci_send_msg_to_smc(rdev, enable ?
 -- 
 2.42.0.windows.2
 
