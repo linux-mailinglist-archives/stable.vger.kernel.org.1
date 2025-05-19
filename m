@@ -1,158 +1,123 @@
-Return-Path: <stable+bounces-144896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF412ABC895
-	for <lists+stable@lfdr.de>; Mon, 19 May 2025 22:43:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D00DABC902
+	for <lists+stable@lfdr.de>; Mon, 19 May 2025 23:21:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 985E11B65710
-	for <lists+stable@lfdr.de>; Mon, 19 May 2025 20:44:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4120B1897675
+	for <lists+stable@lfdr.de>; Mon, 19 May 2025 21:21:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F6E62192FC;
-	Mon, 19 May 2025 20:43:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 988A0217709;
+	Mon, 19 May 2025 21:21:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CrVFg7Wv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Cx4QMIwj"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E98F4B1E73
-	for <stable@vger.kernel.org>; Mon, 19 May 2025 20:43:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 449772147E3;
+	Mon, 19 May 2025 21:21:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747687425; cv=none; b=dSJFkmoIXjt6ImUW+8bg8+sFwN+JxbrIxT59gWtf1H12X6kBLStIOZnut3bABYieP9N5cmXpZI6GdVM6QD/f3XSnOPElHlepLcbSGziFmakMSN/sXVimAc5JvumcaTLshq7ZMfFyTgt7tj6VImWi4Zn3poGATLUW9c7XOxOoceo=
+	t=1747689695; cv=none; b=q47Bs4KwPuDgx9mVMWAgHkt8CTzl6VkQf8Qjq+fwVjPZ9vCVJ8P4A03YuolfoF5u6npfkm+moitjpg6a57Aw7Wq6pg35EWHfScRFLB4tVF7rXLO49/5dfggBz3niQxn2qI7CVbYCq2az0w74lk0qJ3RGbc3hXHcznonAEO+XYn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747687425; c=relaxed/simple;
-	bh=fiynrl1U0kMcMPVVScJed3hQaXfpNGEbeJqXUjanyJ0=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=fke+i4aan6hwF6cpVL/gz/kiIDVXZzgTHd1BVniWlReVA4S8+cUMikLYg7dHl3nReQbYljPkMkbH83xUtIA69LEV47SPVRjZq+vJ1YPp28Dgukw0KcuBbVN7TsGBwqLljQOM7M0zSM6rXmz3mAgzBGJ7UBWru8r2jFPccakkEiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CrVFg7Wv; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1747687423; x=1779223423;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=fiynrl1U0kMcMPVVScJed3hQaXfpNGEbeJqXUjanyJ0=;
-  b=CrVFg7WvY2gBXnwuiO2PxBXnZwg3ftdlyGfvK/vMTVzQ+uP8+FdYzxmD
-   IGD4EennqU1reS/6+M8RFn9cNm9ztLaGUyHaHlv4yFJ2SiWGBe83jiFTH
-   6UEkyPFFQ93ggYJniIu7+8iL7y1SXc/FPq7mDkZp41IozBjDdDzdLw6te
-   8dcTqrNtXVGWFkaTAvx1O4TdIZdmmEVXBXq8p4YQ6+AYJ0aqQZdz86RDN
-   W+p1lJMgAloT27mRqmQ+4Vl53dk0A+Kpp8GSC0Z1uqSN/Fqb1CKgG28zJ
-   OiYcQ46Nr9cgSDzWq5CsZRPhWvUOMEr7gV9uSIPQfBgs+5c6PH9mE+QCo
-   Q==;
-X-CSE-ConnectionGUID: wefUrymtRY+C762yjtZlFg==
-X-CSE-MsgGUID: DSWXT8J1R+CQOpnJXPv2Sg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11438"; a="49508494"
-X-IronPort-AV: E=Sophos;i="6.15,301,1739865600"; 
-   d="scan'208";a="49508494"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2025 13:43:43 -0700
-X-CSE-ConnectionGUID: iRBs/iIuR+ephaIygu94zw==
-X-CSE-MsgGUID: bMjkZzN+Rfq1QD/E+Bylgw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,301,1739865600"; 
-   d="scan'208";a="139211702"
-Received: from shikevix-mobl.amr.corp.intel.com (HELO desk) ([10.125.146.20])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2025 13:43:43 -0700
-Date: Mon, 19 May 2025 13:43:42 -0700
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Natanael Copa <ncopa@alpinelinux.org>
-Subject: [PATCH 6.6] x86/its: Fix build error for its_static_thunk()
-Message-ID: <20250519-its-build-fix-6-6-v1-1-225ac41eb447@linux.intel.com>
-X-B4-Tracking: v=1; b=H4sIAOWVK2gC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDI1MDU0NL3cySYt2k0sycFN20zApdMyBMsjBONrM0M0lONk5VAuorKEoFSoH
- NjFYKcAxx9gCJmumZKcXW1gIArEPFinEAAAA=
-X-Change-ID: 20250519-its-build-fix-6-6-b83c6964cc3e
-X-Mailer: b4 0.14.2
+	s=arc-20240116; t=1747689695; c=relaxed/simple;
+	bh=bDtecZjKTbaLHO+lu0f0b899YCLPuy/seha4FHlWQdk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nEoxOQP0y5E2WoBhXTAcjiAQPk+6VxsnVg8zox/SRfEWokTB1qN2mjz+YA5wx7lORvXWsoKGzKvTWILuaGwhS1MCg6I7WoWgU7lFCjEMj3Mba9P8tBHIV85xk1NZffVPDLqAxdkivIjGjyKU7n8kV5VtXlCOdAeSnFT3DvkiTVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Cx4QMIwj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A82F7C4CEE9;
+	Mon, 19 May 2025 21:21:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1747689693;
+	bh=bDtecZjKTbaLHO+lu0f0b899YCLPuy/seha4FHlWQdk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Cx4QMIwjrDo0MesJYT7yYMiSKsds9vvLKzlw71BgjmOoMlEzqtMzi8FtMmVlRa/xI
+	 oJ1FajLFDz5m0qDWxmvS6lZeni8C/iLkuiR8iDjh0VxphPBDTqwwgivoWSGIglaDMv
+	 n5a6uSs0ttgTGavcUUVII4WMS4UemY/CUb40FyPw/AtmopRwXsG+BvnUIihj3UnxrZ
+	 r42gpYnijkb8ebBs0+zDogZxGFJetn0QLD0ZXsVObjRGYRBpQtR0mI6ZiwrHmzB2K/
+	 TjUuaN0mmyPYkDvze5uCIFM7pYShxQ/o07b51wPW/rWTHEJCD6zN9PqxKBze0p82g+
+	 Z+D3yUQwaBSVw==
+From: Sasha Levin <sashal@kernel.org>
+To: patches@lists.linux.dev,
+	stable@vger.kernel.org
+Cc: Purva Yeshi <purvayeshi550@gmail.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	dmaengine@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.14 01/23] dmaengine: idxd: cdev: Fix uninitialized use of sva in idxd_cdev_open
+Date: Mon, 19 May 2025 17:21:08 -0400
+Message-Id: <20250519212131.1985647-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250519195021.mgldcftlu5k4u5sw@desk>
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.14.7
+Content-Transfer-Encoding: 8bit
 
-Due to a likely merge resolution error of backport commit 772934d9062a
-("x86/its: FineIBT-paranoid vs ITS"), the function its_static_thunk() was
-placed in the wrong ifdef block, causing a build error when
-CONFIG_MITIGATION_ITS and CONFIG_FINEIBT are both disabled:
+From: Purva Yeshi <purvayeshi550@gmail.com>
 
-  /linux-6.6/arch/x86/kernel/alternative.c:1452:5: error: redefinition of 'its_static_thunk'
-   1452 | u8 *its_static_thunk(int reg)
-        |     ^~~~~~~~~~~~~~~~
+[ Upstream commit 97994333de2b8062d2df4e6ce0dc65c2dc0f40dc ]
 
-Fix it by moving its_static_thunk() under CONFIG_MITIGATION_ITS.
+Fix Smatch-detected issue:
+drivers/dma/idxd/cdev.c:321 idxd_cdev_open() error:
+uninitialized symbol 'sva'.
 
-Reported-by: Natanael Copa <ncopa@alpinelinux.org>
-Link: https://lore.kernel.org/all/20250519164717.18738b4e@ncopa-desktop/
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+'sva' pointer may be used uninitialized in error handling paths.
+Specifically, if PASID support is enabled and iommu_sva_bind_device()
+returns an error, the code jumps to the cleanup label and attempts to
+call iommu_sva_unbind_device(sva) without ensuring that sva was
+successfully assigned. This triggers a Smatch warning about an
+uninitialized symbol.
+
+Initialize sva to NULL at declaration and add a check using
+IS_ERR_OR_NULL() before unbinding the device. This ensures the
+function does not use an invalid or uninitialized pointer during
+cleanup.
+
+Signed-off-by: Purva Yeshi <purvayeshi550@gmail.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Link: https://lore.kernel.org/r/20250410110216.21592-1-purvayeshi550@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-commit ("x86/its: FineIBT-paranoid vs ITS") was resolved correctly in
-v6.12:
+ drivers/dma/idxd/cdev.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?h=v6.12.29&id=7e78061be78b8593df9b0cd0f21b1fee425035de
-
-Fix is required in v6.6 and v6.1
-
-v5.15 is unaffected:
-
-https://lore.kernel.org/stable/20250516-its-5-15-v3-16-16fcdaaea544@linux.intel.com/
----
- arch/x86/kernel/alternative.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
-
-diff --git a/arch/x86/kernel/alternative.c b/arch/x86/kernel/alternative.c
-index 4817e424d6965875b7e56ed9aeee5cd6ba8ed5b0..8e6cad42b296ee08aa16df2598ba7196f70b609c 100644
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -730,7 +730,15 @@ static bool cpu_wants_indirect_its_thunk_at(unsigned long addr, int reg)
- 	/* Lower-half of the cacheline? */
- 	return !(addr & 0x20);
- }
--#endif
-+
-+u8 *its_static_thunk(int reg)
-+{
-+	u8 *thunk = __x86_indirect_its_thunk_array[reg];
-+
-+	return thunk;
-+}
-+
-+#endif /* CONFIG_MITIGATION_ITS */
+diff --git a/drivers/dma/idxd/cdev.c b/drivers/dma/idxd/cdev.c
+index ff94ee892339d..7bd031a608943 100644
+--- a/drivers/dma/idxd/cdev.c
++++ b/drivers/dma/idxd/cdev.c
+@@ -222,7 +222,7 @@ static int idxd_cdev_open(struct inode *inode, struct file *filp)
+ 	struct idxd_wq *wq;
+ 	struct device *dev, *fdev;
+ 	int rc = 0;
+-	struct iommu_sva *sva;
++	struct iommu_sva *sva = NULL;
+ 	unsigned int pasid;
+ 	struct idxd_cdev *idxd_cdev;
  
- /*
-  * Rewrite the compiler generated retpoline thunk calls.
-@@ -1449,13 +1457,6 @@ static void __apply_fineibt(s32 *start_retpoline, s32 *end_retpoline,
- static void poison_cfi(void *addr) { }
- #endif
- 
--u8 *its_static_thunk(int reg)
--{
--	u8 *thunk = __x86_indirect_its_thunk_array[reg];
--
--	return thunk;
--}
--
- #endif
- 
- void apply_fineibt(s32 *start_retpoline, s32 *end_retpoline,
-
----
-base-commit: 615b9e10e3377467ced8f50592a1b5ba8ce053d8
-change-id: 20250519-its-build-fix-6-6-b83c6964cc3e
-
-Best regards,
+@@ -317,7 +317,7 @@ static int idxd_cdev_open(struct inode *inode, struct file *filp)
+ 	if (device_user_pasid_enabled(idxd))
+ 		idxd_xa_pasid_remove(ctx);
+ failed_get_pasid:
+-	if (device_user_pasid_enabled(idxd))
++	if (device_user_pasid_enabled(idxd) && !IS_ERR_OR_NULL(sva))
+ 		iommu_sva_unbind_device(sva);
+ failed:
+ 	mutex_unlock(&wq->wq_lock);
 -- 
-Pawan
-
+2.39.5
 
 
