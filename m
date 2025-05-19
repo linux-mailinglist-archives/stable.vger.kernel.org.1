@@ -1,342 +1,115 @@
-Return-Path: <stable+bounces-144978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1E19ABCB25
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 00:52:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79CA3ABCB89
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 01:34:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 823DC4A5DE1
-	for <lists+stable@lfdr.de>; Mon, 19 May 2025 22:52:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC6CB1BA0382
+	for <lists+stable@lfdr.de>; Mon, 19 May 2025 23:35:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1BE121D590;
-	Mon, 19 May 2025 22:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B151621A45D;
+	Mon, 19 May 2025 23:34:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="yccyMw/x"
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="QmWvh8MT";
+	dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b="npyS8tnd"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.netfilter.org (mail.netfilter.org [217.70.190.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CA971E51EE;
-	Mon, 19 May 2025 22:51:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCF4120C038;
+	Mon, 19 May 2025 23:34:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.190.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747695110; cv=none; b=im38H89kUQCunIl5hLggZHYSN3HzCaFPWNLKppYum9PzFLOHp53G9r+osjcIVa1OPNkkzmaevbysof88TDoDCXaLdbnuTH0jlTiu3eDPb8S0xD09S38a2LIldFbmasTujoua7EB7tm36j6IP2zt/MNPCqezf78lpEL8oI5Xy5bk=
+	t=1747697691; cv=none; b=otMv7Wrz33VS1PkQZoAvWFJBQxnBWbwMtXh605Dfaosmkspuzl3czbkQvOwjgpDWymqcc1/1/gcFGFGmGcuYrd94fqWeNbkkMPRyugwuiKbuF3S0VFjEYlbyU4Mqmoh2lLesw2iQHKubGff3VxW84ZnHAfC8D3a1JRBKq/MwCKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747695110; c=relaxed/simple;
-	bh=WukVvV++Vv1iqxqB/0NuaNOUic3dkytmDNLvuse41i0=;
-	h=Date:To:From:Subject:Message-Id; b=aQBC131ccF9xo2kHOwPWCHHUWQSWOnkiR6ZGBfo5svpnG7vWZ6xDEBfM2R2Qj9VGaD3JZlvNZyZ6YMRTyMBjrkpZExomcPwtZTXlj0V9COFBAsByo2u7nZFq62/QfRf6tvkB7Jy4755rS51KRa80tUd1P3nx7MJ0hXBKmA9kbzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=yccyMw/x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C43E5C4CEEB;
-	Mon, 19 May 2025 22:51:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1747695109;
-	bh=WukVvV++Vv1iqxqB/0NuaNOUic3dkytmDNLvuse41i0=;
-	h=Date:To:From:Subject:From;
-	b=yccyMw/xqz93TDrlIH3FJb2CgeyZuFZlysW60X2H5KW49YHLPWouhVzPav7RHNtbq
-	 CjoH9bpeJnF4JJNawxmFc9KJyl7K8I3M0j0R74jWPA9KQdSnlo5mUPuHfrKI/Ifhcz
-	 RalaAaXOdRe5xSIlUsQoEuZxBgKC7wa3CK6cgDNg=
-Date: Mon, 19 May 2025 15:51:49 -0700
-To: mm-commits@vger.kernel.org,tj@kernel.org,stable@vger.kernel.org,pasha.tatashin@soleen.com,kent.overstreet@linux.dev,dennis@kernel.org,cl@gentwo.org,00107082@163.com,surenb@google.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + alloc_tag-allocate-percpu-counters-for-module-tags-dynamically.patch added to mm-hotfixes-unstable branch
-Message-Id: <20250519225149.C43E5C4CEEB@smtp.kernel.org>
+	s=arc-20240116; t=1747697691; c=relaxed/simple;
+	bh=/cJO7MDam9H/yJUU1hMnK+9SDqMOEjkaESrfpeQ2Mlg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gifE+Rb1yvl4o2JKg5ti17FWFG4ceCcoutuJuGcSPKBM+nmmmZUPNKe3pIBH10Vz7RvRcqKIQVOz1bEfE/TgyicjW6Z3yeYgkiWN9BEVISqnKGrf2qtpohV88TKivEQXbDNFKRFxs8ZCYBzvDLdRVHWNwHu2/YmHWsvXwn+e3bU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=netfilter.org; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=QmWvh8MT; dkim=pass (2048-bit key) header.d=netfilter.org header.i=@netfilter.org header.b=npyS8tnd; arc=none smtp.client-ip=217.70.190.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=netfilter.org
+Received: by mail.netfilter.org (Postfix, from userid 109)
+	id 798746029B; Tue, 20 May 2025 01:34:44 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1747697684;
+	bh=YdlhzWlnL7+uzdwYZHxO5RGnTYT/KFQ7t62WkHuEFxk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=QmWvh8MT3qlDdlI4djvljWJWhfgjH427OFrNy5dOKIFJH8slthon/R2+kl/aK9Ns+
+	 PPz5n6EedolLA3MEyGut2ssccvpcktKEh/IfLmYQb3URymAKYI0h5uIFSDkDiXCw6l
+	 d0fg7NNdu3aUbKYnq9/ykceg+fSZQckTbMyuW8LUDSuB+4jQinENnmMcko3VUiT9Gs
+	 g9rAtMzp31maCX6RhincJS/OY9r3/sRpMj5xDk5VCnht4teBhXUXF3WUniEmO4BQNU
+	 zZZ3yROyURuuVBFB3734r3O8FsEFEcPvmXKd1DcGmz1Y7ykq+S1iV0XjmiA2APR4Zy
+	 CFbe4nXskGexw==
+X-Spam-Level: 
+Received: from localhost.localdomain (mail-agni [217.70.190.124])
+	by mail.netfilter.org (Postfix) with ESMTPSA id 9F8EC60296;
+	Tue, 20 May 2025 01:34:43 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=netfilter.org;
+	s=2025; t=1747697683;
+	bh=YdlhzWlnL7+uzdwYZHxO5RGnTYT/KFQ7t62WkHuEFxk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=npyS8tndompupIyaJx7obf85c7t48NLHLjVjW6CgiKG0v2GOJCDl7Qp7/m4CYnnxs
+	 IDg3X7QtpRjax58EyaPG+r4MVGP5xtoGB9mjwDGnAFcmS6QPbOsaK7L1Q4WsIM6w2H
+	 lJY7i0iyX/b0mQvG/iX0lVzyYX7UQBYm3VEePXGVo/ONGiiN1kerEuSu6sCe+Ftu8X
+	 6nXFWIc+ofG3TFh0UmUB/waT2jQgMVikXPTMGs5fILZW6m5U/uwkA9qciQ934rtHBU
+	 XbdX+t8ecaWY3IKEq1TC7PamOboeM5yt06GVGBWyzVnVUdZJ51oj0wKsL0uCKIAZmx
+	 j02HxLjnUrSDw==
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: netfilter-devel@vger.kernel.org
+Cc: gregkh@linuxfoundation.org,
+	sashal@kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH -stable,6.1 0/3] Netfilter fixes for -stable
+Date: Tue, 20 May 2025 01:34:35 +0200
+Message-Id: <20250519233438.22640-1-pablo@netfilter.org>
+X-Mailer: git-send-email 2.30.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
+Hi Greg, Sasha,
 
-The patch titled
-     Subject: alloc_tag: allocate percpu counters for module tags dynamically
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     alloc_tag-allocate-percpu-counters-for-module-tags-dynamically.patch
+This batch contains backported fixes for 6.1 -stable.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/alloc_tag-allocate-percpu-counters-for-module-tags-dynamically.patch
+The following list shows the backported patches, I am using original commit
+IDs for reference:
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+1) 8965d42bcf54 ("netfilter: nf_tables: pass nft_chain to destroy function, not nft_ctx")
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+   This is a stable dependency for the next patch.
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+2) c03d278fdf35 ("netfilter: nf_tables: wait for rcu grace period on net_device removal")
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
+3) b04df3da1b5c ("netfilter: nf_tables: do not defer rule destruction via call_rcu")
 
-------------------------------------------------------
-From: Suren Baghdasaryan <surenb@google.com>
-Subject: alloc_tag: allocate percpu counters for module tags dynamically
-Date: Fri, 16 May 2025 17:07:39 -0700
+   This is a fix-for-fix for patch 2.
 
-When a module gets unloaded it checks whether any of its tags are still in
-use and if so, we keep the memory containing module's allocation tags
-alive until all tags are unused.  However percpu counters referenced by
-the tags are freed by free_module().  This will lead to UAF if the memory
-allocated by a module is accessed after module was unloaded.
+These three patches are required to fix the netdevice release path for
+netdev family basechains.
 
-To fix this we allocate percpu counters for module allocation tags
-dynamically and we keep it alive for tags which are still in use after
-module unloading.  This also removes the requirement of a larger
-PERCPU_MODULE_RESERVE when memory allocation profiling is enabled because
-percpu memory for counters does not need to be reserved anymore.
+Please, apply,
+Thanks
 
-Link: https://lkml.kernel.org/r/20250517000739.5930-1-surenb@google.com
-Fixes: 0db6f8d7820a ("alloc_tag: load module tags into separate contiguous memory")
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Reported-by: David Wang <00107082@163.com>
-Closes: https://lore.kernel.org/all/20250516131246.6244-1-00107082@163.com/
-Tested-by: David Wang <00107082@163.com>
-Cc: Christoph Lameter (Ampere) <cl@gentwo.org>
-Cc: Dennis Zhou <dennis@kernel.org>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
+Florian Westphal (2):
+  netfilter: nf_tables: pass nft_chain to destroy function, not nft_ctx
+  netfilter: nf_tables: do not defer rule destruction via call_rcu
 
- include/linux/alloc_tag.h |   12 ++++
- include/linux/codetag.h   |    8 +--
- include/linux/percpu.h    |    4 -
- lib/alloc_tag.c           |   89 ++++++++++++++++++++++++++++--------
- lib/codetag.c             |    5 +-
- 5 files changed, 89 insertions(+), 29 deletions(-)
+Pablo Neira Ayuso (1):
+  netfilter: nf_tables: wait for rcu grace period on net_device removal
 
---- a/include/linux/alloc_tag.h~alloc_tag-allocate-percpu-counters-for-module-tags-dynamically
-+++ a/include/linux/alloc_tag.h
-@@ -104,6 +104,16 @@ DECLARE_PER_CPU(struct alloc_tag_counter
- 
- #else /* ARCH_NEEDS_WEAK_PER_CPU */
- 
-+#ifdef MODULE
-+
-+#define DEFINE_ALLOC_TAG(_alloc_tag)						\
-+	static struct alloc_tag _alloc_tag __used __aligned(8)			\
-+	__section(ALLOC_TAG_SECTION_NAME) = {					\
-+		.ct = CODE_TAG_INIT,						\
-+		.counters = NULL };
-+
-+#else  /* MODULE */
-+
- #define DEFINE_ALLOC_TAG(_alloc_tag)						\
- 	static DEFINE_PER_CPU(struct alloc_tag_counters, _alloc_tag_cntr);	\
- 	static struct alloc_tag _alloc_tag __used __aligned(8)			\
-@@ -111,6 +121,8 @@ DECLARE_PER_CPU(struct alloc_tag_counter
- 		.ct = CODE_TAG_INIT,						\
- 		.counters = &_alloc_tag_cntr };
- 
-+#endif /* MODULE */
-+
- #endif /* ARCH_NEEDS_WEAK_PER_CPU */
- 
- DECLARE_STATIC_KEY_MAYBE(CONFIG_MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT,
---- a/include/linux/codetag.h~alloc_tag-allocate-percpu-counters-for-module-tags-dynamically
-+++ a/include/linux/codetag.h
-@@ -36,10 +36,10 @@ union codetag_ref {
- struct codetag_type_desc {
- 	const char *section;
- 	size_t tag_size;
--	void (*module_load)(struct codetag_type *cttype,
--			    struct codetag_module *cmod);
--	void (*module_unload)(struct codetag_type *cttype,
--			      struct codetag_module *cmod);
-+	void (*module_load)(struct module *mod,
-+			    struct codetag *start, struct codetag *end);
-+	void (*module_unload)(struct module *mod,
-+			      struct codetag *start, struct codetag *end);
- #ifdef CONFIG_MODULES
- 	void (*module_replaced)(struct module *mod, struct module *new_mod);
- 	bool (*needs_section_mem)(struct module *mod, unsigned long size);
---- a/include/linux/percpu.h~alloc_tag-allocate-percpu-counters-for-module-tags-dynamically
-+++ a/include/linux/percpu.h
-@@ -15,11 +15,7 @@
- 
- /* enough to cover all DEFINE_PER_CPUs in modules */
- #ifdef CONFIG_MODULES
--#ifdef CONFIG_MEM_ALLOC_PROFILING
--#define PERCPU_MODULE_RESERVE		(8 << 13)
--#else
- #define PERCPU_MODULE_RESERVE		(8 << 10)
--#endif
- #else
- #define PERCPU_MODULE_RESERVE		0
- #endif
---- a/lib/alloc_tag.c~alloc_tag-allocate-percpu-counters-for-module-tags-dynamically
-+++ a/lib/alloc_tag.c
-@@ -350,18 +350,28 @@ static bool needs_section_mem(struct mod
- 	return size >= sizeof(struct alloc_tag);
- }
- 
--static struct alloc_tag *find_used_tag(struct alloc_tag *from, struct alloc_tag *to)
-+static bool clean_unused_counters(struct alloc_tag *start_tag,
-+				  struct alloc_tag *end_tag)
- {
--	while (from <= to) {
-+	struct alloc_tag *tag;
-+	bool ret = true;
-+
-+	for (tag = start_tag; tag <= end_tag; tag++) {
- 		struct alloc_tag_counters counter;
- 
--		counter = alloc_tag_read(from);
--		if (counter.bytes)
--			return from;
--		from++;
-+		if (!tag->counters)
-+			continue;
-+
-+		counter = alloc_tag_read(tag);
-+		if (!counter.bytes) {
-+			free_percpu(tag->counters);
-+			tag->counters = NULL;
-+		} else {
-+			ret = false;
-+		}
- 	}
- 
--	return NULL;
-+	return ret;
- }
- 
- /* Called with mod_area_mt locked */
-@@ -371,12 +381,16 @@ static void clean_unused_module_areas_lo
- 	struct module *val;
- 
- 	mas_for_each(&mas, val, module_tags.size) {
-+		struct alloc_tag *start_tag;
-+		struct alloc_tag *end_tag;
-+
- 		if (val != &unloaded_mod)
- 			continue;
- 
- 		/* Release area if all tags are unused */
--		if (!find_used_tag((struct alloc_tag *)(module_tags.start_addr + mas.index),
--				   (struct alloc_tag *)(module_tags.start_addr + mas.last)))
-+		start_tag = (struct alloc_tag *)(module_tags.start_addr + mas.index);
-+		end_tag = (struct alloc_tag *)(module_tags.start_addr + mas.last);
-+		if (clean_unused_counters(start_tag, end_tag))
- 			mas_erase(&mas);
- 	}
- }
-@@ -561,7 +575,8 @@ unlock:
- static void release_module_tags(struct module *mod, bool used)
- {
- 	MA_STATE(mas, &mod_area_mt, module_tags.size, module_tags.size);
--	struct alloc_tag *tag;
-+	struct alloc_tag *start_tag;
-+	struct alloc_tag *end_tag;
- 	struct module *val;
- 
- 	mas_lock(&mas);
-@@ -575,15 +590,22 @@ static void release_module_tags(struct m
- 	if (!used)
- 		goto release_area;
- 
--	/* Find out if the area is used */
--	tag = find_used_tag((struct alloc_tag *)(module_tags.start_addr + mas.index),
--			    (struct alloc_tag *)(module_tags.start_addr + mas.last));
--	if (tag) {
--		struct alloc_tag_counters counter = alloc_tag_read(tag);
--
--		pr_info("%s:%u module %s func:%s has %llu allocated at module unload\n",
--			tag->ct.filename, tag->ct.lineno, tag->ct.modname,
--			tag->ct.function, counter.bytes);
-+	start_tag = (struct alloc_tag *)(module_tags.start_addr + mas.index);
-+	end_tag = (struct alloc_tag *)(module_tags.start_addr + mas.last);
-+	if (!clean_unused_counters(start_tag, end_tag)) {
-+		struct alloc_tag *tag;
-+
-+		for (tag = start_tag; tag <= end_tag; tag++) {
-+			struct alloc_tag_counters counter;
-+
-+			if (!tag->counters)
-+				continue;
-+
-+			counter = alloc_tag_read(tag);
-+			pr_info("%s:%u module %s func:%s has %llu allocated at module unload\n",
-+				tag->ct.filename, tag->ct.lineno, tag->ct.modname,
-+				tag->ct.function, counter.bytes);
-+		}
- 	} else {
- 		used = false;
- 	}
-@@ -596,6 +618,34 @@ out:
- 	mas_unlock(&mas);
- }
- 
-+static void load_module(struct module *mod, struct codetag *start, struct codetag *stop)
-+{
-+	/* Allocate module alloc_tag percpu counters */
-+	struct alloc_tag *start_tag;
-+	struct alloc_tag *stop_tag;
-+	struct alloc_tag *tag;
-+
-+	if (!mod)
-+		return;
-+
-+	start_tag = ct_to_alloc_tag(start);
-+	stop_tag = ct_to_alloc_tag(stop);
-+	for (tag = start_tag; tag < stop_tag; tag++) {
-+		WARN_ON(tag->counters);
-+		tag->counters = alloc_percpu(struct alloc_tag_counters);
-+		if (!tag->counters) {
-+			while (--tag >= start_tag) {
-+				free_percpu(tag->counters);
-+				tag->counters = NULL;
-+			}
-+			shutdown_mem_profiling(true);
-+			pr_err("Failed to allocate memory for allocation tag percpu counters in the module %s. Memory allocation profiling is disabled!\n",
-+			       mod->name);
-+			break;
-+		}
-+	}
-+}
-+
- static void replace_module(struct module *mod, struct module *new_mod)
- {
- 	MA_STATE(mas, &mod_area_mt, 0, module_tags.size);
-@@ -757,6 +807,7 @@ static int __init alloc_tag_init(void)
- 		.needs_section_mem	= needs_section_mem,
- 		.alloc_section_mem	= reserve_module_tags,
- 		.free_section_mem	= release_module_tags,
-+		.module_load		= load_module,
- 		.module_replaced	= replace_module,
- #endif
- 	};
---- a/lib/codetag.c~alloc_tag-allocate-percpu-counters-for-module-tags-dynamically
-+++ a/lib/codetag.c
-@@ -194,7 +194,7 @@ static int codetag_module_init(struct co
- 	if (err >= 0) {
- 		cttype->count += range_size(cttype, &range);
- 		if (cttype->desc.module_load)
--			cttype->desc.module_load(cttype, cmod);
-+			cttype->desc.module_load(mod, range.start, range.stop);
- 	}
- 	up_write(&cttype->mod_lock);
- 
-@@ -333,7 +333,8 @@ void codetag_unload_module(struct module
- 		}
- 		if (found) {
- 			if (cttype->desc.module_unload)
--				cttype->desc.module_unload(cttype, cmod);
-+				cttype->desc.module_unload(cmod->mod,
-+					cmod->range.start, cmod->range.stop);
- 
- 			cttype->count -= range_size(cttype, &cmod->range);
- 			idr_remove(&cttype->mod_idr, mod_id);
-_
+ include/net/netfilter/nf_tables.h |  3 +-
+ net/netfilter/nf_tables_api.c     | 54 ++++++++++++++++++++++---------
+ net/netfilter/nft_immediate.c     |  2 +-
+ 3 files changed, 42 insertions(+), 17 deletions(-)
 
-Patches currently in -mm which might be from surenb@google.com are
-
-alloc_tag-allocate-percpu-counters-for-module-tags-dynamically.patch
+-- 
+2.30.2
 
 
