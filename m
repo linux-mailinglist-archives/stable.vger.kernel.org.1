@@ -1,143 +1,104 @@
-Return-Path: <stable+bounces-144863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C00D1ABBFA5
-	for <lists+stable@lfdr.de>; Mon, 19 May 2025 15:47:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B5ECABBF58
+	for <lists+stable@lfdr.de>; Mon, 19 May 2025 15:39:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E05157ACB43
-	for <lists+stable@lfdr.de>; Mon, 19 May 2025 13:46:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 538C83B1632
+	for <lists+stable@lfdr.de>; Mon, 19 May 2025 13:39:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC2EB280CE3;
-	Mon, 19 May 2025 13:46:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73D742777E2;
+	Mon, 19 May 2025 13:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b="WLR4iUFW"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lN/9gE8/"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.denx.de (mx.denx.de [89.58.32.78])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1AF928000C
-	for <stable@vger.kernel.org>; Mon, 19 May 2025 13:46:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.58.32.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1343154BE2
+	for <stable@vger.kernel.org>; Mon, 19 May 2025 13:39:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747662391; cv=none; b=b8y7WuW2U3Y8VVB//T1wWXqglA+6SeCWqgQ+fLtMEp09a73xcbHUk57jpQYSAuJxJ+y7s3G9GN8UpIyYguTrsPB4WpGbgYWNOQjzPk6SodW05d2q+4rqHmUkgFmEsv7jsqHJVVrglPsLm4IlR2CaYH4/ps2Vh45Cv6kZJSesvS4=
+	t=1747661996; cv=none; b=EOc/HMGPnU69E4JBd9W3k8538gS/v7imvXly0oqfDyfkzrwU/gTsohzGCFIM8z9K9T6b9V82ic9hi+wcHHooyShJzcoyejCD99jRr/2oHB/pllYPmKoIy8yPGgGcf3+rgIqZ1Jv1aXmBvexRvo/qUHeY78tyMfWhoRLYQLfrrRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747662391; c=relaxed/simple;
-	bh=4JHlbJffv+4mNNCLT/9/i5HIt+X1wJcN8eLmEPy9Gks=;
-	h=From:In-Reply-To:Content-Type:References:Date:Cc:To:MIME-Version:
-	 Message-ID:Subject; b=auj7TlnpqJ0TFx2YvFE6PNny/gShvkkKDmZQBnmUQ6Pq2VupBEXht3urB20NE5zhEY2FtgA49Yv6nGPQTWwUtDcNN60E32HAqpf7cuFJ0K3FYEhJ33RTZLX1yrrMxOlhLsg6AV9nHNXPNv+SZczHLIDLFcQcdZ88G3HhXh11uyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de; spf=pass smtp.mailfrom=denx.de; dkim=pass (2048-bit key) header.d=denx.de header.i=@denx.de header.b=WLR4iUFW; arc=none smtp.client-ip=89.58.32.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=denx.de
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPA id E484C1039728C;
-	Mon, 19 May 2025 15:38:23 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=denx.de; s=mx-20241105;
-	t=1747661904; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=N1/hqvFMciSOi5HeuuAMzlViYvSbLPpgL4twkOL0a78=;
-	b=WLR4iUFWsTi766GhQbhQhzgpwoTr3SxUab5Ow2+9dP6uGLIz4weFFu/FrMsSUdR6YLraDv
-	9KkMLWR+Oly+3Xe1tnZvvDAgtUJCh+bUVGoTowg3fLQVMvnU40rY+++cPYHhnCy9gJBqbZ
-	52juUvSRC0wwNsdFkgYUNJW3qNoj0lEFgBnt77aPEY5PKZEK3UBcnwr+Iof1cVI649mt7j
-	mgFQzteQxVLK/s07+4NdvQrGLithRF5SrrgZ90o5tywAkNfnQu4wT5/9InxUDdGCltKUmJ
-	J85IGhZCvoJlhaFBPeD0buTmtZrGHFK+DDHtijQlwyf2mwHYShLSzM7yeRJomA==
-From: "Fabio Estevam" <festevam@denx.de>
-In-Reply-To: <2025051936-qualify-waged-4677@gregkh>
-Content-Type: text/plain; charset="utf-8"
-References: <2025051936-qualify-waged-4677@gregkh>
-Date: Mon, 19 May 2025 15:38:23 +0200
-Cc: javierm@redhat.com, tzimmermann@suse.de, stable@vger.kernel.org, festevam@gmail.com
-To: gregkh@linuxfoundation.org
+	s=arc-20240116; t=1747661996; c=relaxed/simple;
+	bh=p77BJ1A0XYXe1YK84cAeUqoR7zmC4AjZUO0nh+qjfIA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=m54ihHNpZS5LMaF8tFV8OCdHx/udJPrUGVuW1cEkT2LuVMdJBDXQCOi2DfjPbwuWFoof6pdthqXtUlsCg2gAfhJAVRHDXz5Z77zvpJU2iTWme9ZAMkJL+GiciV4usAwCMp4JZHqw4BqJ5DcceFR7P7cUNDBMmaOerd9ZUCzp39o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lN/9gE8/; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1747661995; x=1779197995;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=p77BJ1A0XYXe1YK84cAeUqoR7zmC4AjZUO0nh+qjfIA=;
+  b=lN/9gE8/MwgqmxoEHLQVQMyHCdCiT/7EbajFYhbEZNCr43SXhnv4WUvy
+   GOOsI6m8PJmvnhbyTerGL5dd3jgGEQ065tWpBJv0W+zqS9Bfc+udvXhyy
+   jvf0tQY+pg1QUVhEMO27N0Hb2+JVx9YdxO9jMBUatlm3BINkdKthV81bU
+   oRsUFeHxJt2nBcHuiDz4tidJNRR53LoRRGn70LkUjwcORtz+4ql+oGlVG
+   LhstimyTRYbZ0UFPHFJGJBvarzPiu6f6z9mX50zaTQJvm7RrNTSCc7U0u
+   jqZ+ncaLSKEK8hc7mksmnIixC+d4/arQZwu+Owt9AWToJxtHooHCLurY1
+   A==;
+X-CSE-ConnectionGUID: 0dzHkgoTRuGlVLZL3k4gIA==
+X-CSE-MsgGUID: GIhhfRuFRwSjtfkjxqiSAg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11438"; a="52194460"
+X-IronPort-AV: E=Sophos;i="6.15,300,1739865600"; 
+   d="scan'208";a="52194460"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2025 06:39:54 -0700
+X-CSE-ConnectionGUID: 4tW6cBNJTlWFmnxRzdK/Pg==
+X-CSE-MsgGUID: bvD2LyN0SuGnkTd2JnezaQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,300,1739865600"; 
+   d="scan'208";a="139212719"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa010.jf.intel.com with ESMTP; 19 May 2025 06:39:53 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1001)
+	id 369B5256; Mon, 19 May 2025 16:39:51 +0300 (EEST)
+Date: Mon, 19 May 2025 16:39:51 +0300
+From: Mika Westerberg <mika.westerberg@linux.intel.com>
+To: Imre Deak <imre.deak@intel.com>
+Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] drm/i915/dp_mst: Work around Thunderbolt sink
+ disconnect after SINK_COUNT_ESI read
+Message-ID: <20250519133951.GD88033@black.fi.intel.com>
+References: <20250516170946.1313722-1-imre.deak@intel.com>
+ <20250519133417.1469181-1-imre.deak@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <136-682b3480-1-3097af80@2841359>
-Subject: =?utf-8?q?Re=3A?==?utf-8?q?_FAILED=3A?= patch =?utf-8?q?=22[PATCH]?=
- =?utf-8?q?_drm/tiny=3A?==?utf-8?q?_panel-mipi-dbi=3A?= Use 
- =?utf-8?q?drm=5Fclient=5Fsetup=5Fwith=5Ffourcc()=22?= failed to apply to 
- =?utf-8?q?6=2E12-stable?= tree
-User-Agent: SOGoMail 5.12.0
-Content-Transfer-Encoding: quoted-printable
-X-Last-TLS-Session-Version: None
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250519133417.1469181-1-imre.deak@intel.com>
 
-Hi Greg and Thomas,
+On Mon, May 19, 2025 at 04:34:17PM +0300, Imre Deak wrote:
+> Due to a problem in the iTBT DP-in adapter's firmware the sink on a TBT
+> link may get disconnected inadvertently if the SINK_COUNT_ESI and the
+> DP_LINK_SERVICE_IRQ_VECTOR_ESI0 registers are read in a single AUX
+> transaction. Work around the issue by reading these registers in
+> separate transactions.
+> 
+> The issue affects MTL+ platforms and will be fixed in the DP-in adapter
+> firmware, however releasing that firmware fix may take some time and is
+> not guaranteed to be available for all systems. Based on this apply the
+> workaround on affected platforms.
+> 
+> See HSD #13013007775.
+> 
+> v2: Cc'ing Mika Westerberg.
+> 
+> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/13760
+> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/14147
+> Cc: Mika Westerberg <mika.westerberg@linux.intel.com>
 
-On Monday, May 19, 2025 09:00 -03, <gregkh@linuxfoundation.org> wrote:
-
->=20
-> The patch below does not apply to the 6.12-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git comm=
-it
-> id to <stable@vger.kernel.org>.
->=20
-> To reproduce the conflict and resubmit, you may use the following com=
-mands:
->=20
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linu=
-x.git/ linux-6.12.y
-> git checkout FETCH=5FHEAD
-> git cherry-pick -x 9c1798259b9420f38f1fa1b83e3d864c3eb1a83e
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025051=
-936-qualify-waged-4677@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
-
-Locally,  I am running 6.12 with these two extra dependencies applied:
-
-commit 8998eedda2539d2528cfebdc7c17eed0ad35b714
-Author: Thomas Zimmermann <tzimmermann@suse.de>
-Date:   Tue Sep 24 09:12:03 2024 +0200
-
-    drm/fbdev-dma: Support struct drm=5Fdriver.fbdev=5Fprobe
-   =20
-    Rework fbdev probing to support fbdev=5Fprobe in struct drm=5Fdrive=
-r
-    and reimplement the old fb=5Fprobe callback on top of it. Provide a=
-n
-    initializer macro for struct drm=5Fdriver that sets the callback
-    according to the kernel configuration.
-   =20
-    This change allows the common fbdev client to run on top of DMA-
-    based DRM drivers.
-   =20
-    Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-    Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-    Link: https://patchwork.freedesktop.org/patch/msgid/20240924071734.=
-98201-6-tzimmermann@suse.de
-
-
-commit 1b0caa5f5ac20bcaf82fc89a5c849b21ce3bfdf6
-Author: Thomas Zimmermann <tzimmermann@suse.de>
-Date:   Tue Sep 24 09:12:29 2024 +0200
-
-    drm/panel-mipi-dbi: Run DRM default client setup
-   =20
-    Call drm=5Fclient=5Fsetup() to run the kernel's default client setu=
-p
-    for DRM. Set fbdev=5Fprobe in struct drm=5Fdriver, so that the clie=
-nt
-    setup can start the common fbdev client.
-   =20
-    v5:
-    - select DRM=5FCLIENT=5FSELECTION
-   =20
-    Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-    Cc: "Noralf Tr=C3=B8nnes" <noralf@tronnes.org>
-    Acked-by: Noralf Tr=C3=B8nnes <noralf@tronnes.org>
-    Link: https://patchwork.freedesktop.org/patch/msgid/20240924071734.=
-98201-32-tzimmermann@suse.de
-
-I have only tested panel-mipi-dbi (the only display available on the bo=
-ard I use). I am unsure if applying these extra patches to linux-6.12 s=
-table is safe or if they could cause issues with other fbdev drivers.
-
-Regards,
-
-Fabio Estevam
-
+Reviewed-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 
