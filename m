@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-144800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A35EABBE03
-	for <lists+stable@lfdr.de>; Mon, 19 May 2025 14:37:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36045ABBE05
+	for <lists+stable@lfdr.de>; Mon, 19 May 2025 14:37:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72943189772D
-	for <lists+stable@lfdr.de>; Mon, 19 May 2025 12:37:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E9213A5E59
+	for <lists+stable@lfdr.de>; Mon, 19 May 2025 12:36:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8BB9269AE6;
-	Mon, 19 May 2025 12:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2536E278E63;
+	Mon, 19 May 2025 12:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AqZmm3Yt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BCrYUE8T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F7826D4E3
-	for <stable@vger.kernel.org>; Mon, 19 May 2025 12:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAA0920C00E
+	for <stable@vger.kernel.org>; Mon, 19 May 2025 12:37:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747658212; cv=none; b=Zeuvu5HDIXhdE4hHSeI9B093RtDAqbu58PTg5MLQUZ4rZxCiWXYoCUTPSEj39TXyW7vOzicWg0+rRUxzZ/TuiXonn13bbEEoRKD82yVL6WDkwDl9e/tAIN0C8JveFf7X/FXcVT7m29vWZko+tZXl512fDqvJ7BvMDH/yBoWR9Pw=
+	t=1747658222; cv=none; b=Du4CmsY0L5BRSwN6lg5E4gXhjM0flFRNzwGIoruiPCaXbpWTYzhFkpY5cxSOtMfmg0aGI94uNwd4F1tg6Yi7hfw2lIE+jV4ahZ52T+pezZzGU101bA+iEy/wzYWnTGU3s9qVJGHCdrF5Bifiuh9RIB3lvCJxbSVOJ+185/H6Q28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747658212; c=relaxed/simple;
-	bh=7Q33aqPD+paja+LFxCeNrCqTauw4in8EQ2OJdugTQAI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=e74LZiMIVD6Lf8frSJBAaCM96I0+KIQjMbpMQL9xdxtw2BwQKgYMmp/scgAchdYCUru2QY6107JbzdqteJ7ac9HBl0XB/38hEAz/W/A638eTio3RrtqVQdjpX6h69NO5LPkNVe0iPyHGlal6Fh/7q8XAwaqcuBpY0o1jY1/hVhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AqZmm3Yt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9000EC4CEE4;
-	Mon, 19 May 2025 12:36:51 +0000 (UTC)
+	s=arc-20240116; t=1747658222; c=relaxed/simple;
+	bh=bdoibA9TD3aN02iHry/WvAtT4Vi7sxqvqozTCPUSbkY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=LsMUNvNodWBAwfB6YJq3XsORvMOjhzCP9tQQ9dij/3dftBTLeWNoTBg64hKXC1q0YsITQBz2dsNGgtjPRpiSyXYuXZvPl1yvdEf+crA9dCfZ3fjChYkivYZt7RnHjRKhC/i9MmHQCz/Pd3HVKbuA3AVOnJWCgPAKSODvlzidJEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BCrYUE8T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E29C9C4CEE4;
+	Mon, 19 May 2025 12:37:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747658212;
-	bh=7Q33aqPD+paja+LFxCeNrCqTauw4in8EQ2OJdugTQAI=;
+	s=korg; t=1747658222;
+	bh=bdoibA9TD3aN02iHry/WvAtT4Vi7sxqvqozTCPUSbkY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=AqZmm3YtZo4Ggq94wmU0bm4gadyMKyjA8nOFNoTuL/zRDX0B3TkIW84ZYtfgNipRE
-	 Y2yCFuhpMqcH3QNg8vP8vloz/mMjukWsyoTjJw1OlFhRboYmv0aNMbplXo4TxCDT4c
-	 KAi1R6rpaFhtfkc5aJUgzu4akMFLOVlfuS9wmb00=
-Subject: FAILED: patch "[PATCH] dma-buf: insert memory barrier before updating num_fences" failed to apply to 5.4-stable tree
-To: hjeong.choi@samsung.com,christian.koenig@amd.com
+	b=BCrYUE8TJwM4bvbOejlBYXpGHT/hMaKPmSNLr8aHMzUy4w/dgkFY7STX4jeixxRqg
+	 j4q2JIYewc7CoeTX6aviqdnAoThsN+xTMlm0lPtbZ/c3mKESlMjITJ/AWuVQMVzFZo
+	 65dkrr24GEuzYeroVVth7cBfDtI9gWCXxgRGVWUU=
+Subject: FAILED: patch "[PATCH] i2c: designware: Fix an error handling path in" failed to apply to 6.6-stable tree
+To: christophe.jaillet@wanadoo.fr,andi.shyti@kernel.org,jarkko.nikula@linux.intel.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 May 2025 14:35:49 +0200
-Message-ID: <2025051949-jaywalker-stargazer-fc9f@gregkh>
+Date: Mon, 19 May 2025 14:36:56 +0200
+Message-ID: <2025051956-employed-unranked-500c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 72c7d62583ebce7baeb61acce6057c361f73be4a
+git cherry-pick -x 1cfe51ef07ca3286581d612debfb0430eeccbb65
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025051949-jaywalker-stargazer-fc9f@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025051956-employed-unranked-500c@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,40 +77,39 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 72c7d62583ebce7baeb61acce6057c361f73be4a Mon Sep 17 00:00:00 2001
-From: Hyejeong Choi <hjeong.choi@samsung.com>
-Date: Mon, 12 May 2025 21:06:38 -0500
-Subject: [PATCH] dma-buf: insert memory barrier before updating num_fences
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+From 1cfe51ef07ca3286581d612debfb0430eeccbb65 Mon Sep 17 00:00:00 2001
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Date: Tue, 13 May 2025 19:56:41 +0200
+Subject: [PATCH] i2c: designware: Fix an error handling path in
+ i2c_dw_pci_probe()
 
-smp_store_mb() inserts memory barrier after storing operation.
-It is different with what the comment is originally aiming so Null
-pointer dereference can be happened if memory update is reordered.
+If navi_amd_register_client() fails, the previous i2c_dw_probe() call
+should be undone by a corresponding i2c_del_adapter() call, as already done
+in the remove function.
 
-Signed-off-by: Hyejeong Choi <hjeong.choi@samsung.com>
-Fixes: a590d0fdbaa5 ("dma-buf: Update reservation shared_count after adding the new fence")
-CC: stable@vger.kernel.org
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Link: https://lore.kernel.org/r/20250513020638.GA2329653@au1-maretx-p37.eng.sarc.samsung.com
-Signed-off-by: Christian König <christian.koenig@amd.com>
+Fixes: 17631e8ca2d3 ("i2c: designware: Add driver support for AMD NAVI GPU")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: <stable@vger.kernel.org> # v5.13+
+Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/fcd9651835a32979df8802b2db9504c523a8ebbb.1747158983.git.christophe.jaillet@wanadoo.fr
 
-diff --git a/drivers/dma-buf/dma-resv.c b/drivers/dma-buf/dma-resv.c
-index 5f8d010516f0..b1ef4546346d 100644
---- a/drivers/dma-buf/dma-resv.c
-+++ b/drivers/dma-buf/dma-resv.c
-@@ -320,8 +320,9 @@ void dma_resv_add_fence(struct dma_resv *obj, struct dma_fence *fence,
- 	count++;
+diff --git a/drivers/i2c/busses/i2c-designware-pcidrv.c b/drivers/i2c/busses/i2c-designware-pcidrv.c
+index 8e0267c7cc29..f21f9877c040 100644
+--- a/drivers/i2c/busses/i2c-designware-pcidrv.c
++++ b/drivers/i2c/busses/i2c-designware-pcidrv.c
+@@ -278,9 +278,11 @@ static int i2c_dw_pci_probe(struct pci_dev *pdev,
  
- 	dma_resv_list_set(fobj, i, fence, usage);
--	/* pointer update must be visible before we extend the num_fences */
--	smp_store_mb(fobj->num_fences, count);
-+	/* fence update must be visible before we extend the num_fences */
-+	smp_wmb();
-+	fobj->num_fences = count;
- }
- EXPORT_SYMBOL(dma_resv_add_fence);
+ 	if ((dev->flags & MODEL_MASK) == MODEL_AMD_NAVI_GPU) {
+ 		dev->slave = i2c_new_ccgx_ucsi(&dev->adapter, dev->irq, &dgpu_node);
+-		if (IS_ERR(dev->slave))
++		if (IS_ERR(dev->slave)) {
++			i2c_del_adapter(&dev->adapter);
+ 			return dev_err_probe(device, PTR_ERR(dev->slave),
+ 					     "register UCSI failed\n");
++		}
+ 	}
  
+ 	pm_runtime_set_autosuspend_delay(device, 1000);
 
 
