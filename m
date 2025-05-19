@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-144833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4122CABBEBA
-	for <lists+stable@lfdr.de>; Mon, 19 May 2025 15:11:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8363BABBEBD
+	for <lists+stable@lfdr.de>; Mon, 19 May 2025 15:11:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 607201B60D6F
-	for <lists+stable@lfdr.de>; Mon, 19 May 2025 13:11:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5232F188BD00
+	for <lists+stable@lfdr.de>; Mon, 19 May 2025 13:12:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81ADC27935D;
-	Mon, 19 May 2025 13:11:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D2441F4717;
+	Mon, 19 May 2025 13:11:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KBymvdan"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UxPoLhuX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 418281F4717
-	for <stable@vger.kernel.org>; Mon, 19 May 2025 13:11:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D25EEA55
+	for <stable@vger.kernel.org>; Mon, 19 May 2025 13:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747660273; cv=none; b=s5Q1wej2NQSHdJ7ASbBEJnfHhfbzmdjDJAwZdEw0m3anhEaIUDwUjAqlDWbt+qDNDIAD4kT2FueVmCSioDDdBKHdZSLl7kt0mdt3hzW/OmJjkmR/aawYXhIe4xAaIHyWCM5KXpKx2MGiqwyzpB1x2O14UYyIFqyvDr3dEvobD6s=
+	t=1747660302; cv=none; b=FjZv87HmmTHcLAi84hlI8f/hEaFa2lJj5lzBAs41TNKX9mONrIUVjESusTRA3gyMEW6vVKMGQ2PRJmL2nmKibqc9plt+/t7bM8u+GByzQRv6h2DdO8RbFzELBCfEkqVsuca6yzzhCbjMKXF6KPPvUe5DUUIormMhHMLKKjiP3Ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747660273; c=relaxed/simple;
-	bh=t96So4evZv57aLXDgCi0MmRHI2+/k0UUc8meQLBqgZY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=eASU9O0iVoUk+2kWy9hyv2sWoy8aKAo6+mXtWTrJ3W51+oL83QhqZ2/0lOufBoVADQPrRx3PqLJ9VecGS5s/pWGxDACs9fnGCa0poowkPEFIoXk9PxJEaYCBuVw2riiFaHGdlc1ifs2Q4lQvEPB1yr2Y86eCMOk8TuE1ilRgYl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KBymvdan; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 972DEC4CEE4;
-	Mon, 19 May 2025 13:11:12 +0000 (UTC)
+	s=arc-20240116; t=1747660302; c=relaxed/simple;
+	bh=TMJcbqG9BxDx/6IADqyhLsUIRklhDJ9D081vA4Raxn8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=V7NgIdx1uM/0IkX2eT8ETB3xKaMLGq6jJM2Pg+KyreyDOqBIwhrNMwQFqGeshvtiW+jLHVY+ZXIk7wV69/ZydRy+zCUSyWkDqiIHMRLqkXB078yTMvVfekHoQA7oJNowbAUc2iHyBtKIbYK1eDqnatNo4WWgRx6PpxUTrGhVR7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UxPoLhuX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD0CEC4CEE4;
+	Mon, 19 May 2025 13:11:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747660273;
-	bh=t96So4evZv57aLXDgCi0MmRHI2+/k0UUc8meQLBqgZY=;
+	s=korg; t=1747660302;
+	bh=TMJcbqG9BxDx/6IADqyhLsUIRklhDJ9D081vA4Raxn8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=KBymvdanr6u4DMQz4zIuHYK4s1eHuRT35JmyN/RlnkJuJ/Gst3BKIAI0UcrGJjzml
-	 LzEmMCLIocnozmxXphoPZmPoOMx8qM+1X4pmb0pvQTA2/8pr2Yer3Y+6HfyWN+BIks
-	 DkRgnSNMFGXF1C7SEIOQsK3sfulGxkoRPAXBAtNk=
-Subject: FAILED: patch "[PATCH] scsi: sd_zbc: block: Respect bio vector limits for REPORT" failed to apply to 5.10-stable tree
-To: ssiwinski@atto.com,dlemoal@kernel.org,martin.petersen@oracle.com
+	b=UxPoLhuXxXpA+pbkNutMwpLMWnjXxawY8ca+pJohc/Ce5yZUXfQAlWacosO/oj5a+
+	 psEpIg9o+fSHlBYRFFxjwnaW82tZQs74OVUdBKF+DOcHBSuwUHCcYl6F2XdLiWXv8v
+	 J+QcUtzPG5GeDWMgMK3fZF9fnS2nD93BpP1xCqoA=
+Subject: FAILED: patch "[PATCH] wifi: mt76: disable napi on driver removal" failed to apply to 5.4-stable tree
+To: pchelkin@ispras.ru,mingyen.hsieh@mediatek.com,nbd@nbd.name
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 May 2025 15:10:59 +0200
-Message-ID: <2025051959-radiantly-ominous-f8f3@gregkh>
+Date: Mon, 19 May 2025 15:11:39 +0200
+Message-ID: <2025051939-overbuilt-leverage-7eec@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x e8007fad5457ea547ca63bb011fdb03213571c7e
+git cherry-pick -x 78ab4be549533432d97ea8989d2f00b508fa68d8
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025051959-radiantly-ominous-f8f3@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025051939-overbuilt-leverage-7eec@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,83 +77,58 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From e8007fad5457ea547ca63bb011fdb03213571c7e Mon Sep 17 00:00:00 2001
-From: Steve Siwinski <ssiwinski@atto.com>
-Date: Thu, 8 May 2025 16:01:22 -0400
-Subject: [PATCH] scsi: sd_zbc: block: Respect bio vector limits for REPORT
- ZONES buffer
+From 78ab4be549533432d97ea8989d2f00b508fa68d8 Mon Sep 17 00:00:00 2001
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+Date: Tue, 6 May 2025 14:55:39 +0300
+Subject: [PATCH] wifi: mt76: disable napi on driver removal
 
-The REPORT ZONES buffer size is currently limited by the HBA's maximum
-segment count to ensure the buffer can be mapped. However, the block
-layer further limits the number of iovec entries to 1024 when allocating
-a bio.
+A warning on driver removal started occurring after commit 9dd05df8403b
+("net: warn if NAPI instance wasn't shut down"). Disable tx napi before
+deleting it in mt76_dma_cleanup().
 
-To avoid allocation of buffers too large to be mapped, further restrict
-the maximum buffer size to BIO_MAX_INLINE_VECS.
+ WARNING: CPU: 4 PID: 18828 at net/core/dev.c:7288 __netif_napi_del_locked+0xf0/0x100
+ CPU: 4 UID: 0 PID: 18828 Comm: modprobe Not tainted 6.15.0-rc4 #4 PREEMPT(lazy)
+ Hardware name: ASUS System Product Name/PRIME X670E-PRO WIFI, BIOS 3035 09/05/2024
+ RIP: 0010:__netif_napi_del_locked+0xf0/0x100
+ Call Trace:
+ <TASK>
+ mt76_dma_cleanup+0x54/0x2f0 [mt76]
+ mt7921_pci_remove+0xd5/0x190 [mt7921e]
+ pci_device_remove+0x47/0xc0
+ device_release_driver_internal+0x19e/0x200
+ driver_detach+0x48/0x90
+ bus_remove_driver+0x6d/0xf0
+ pci_unregister_driver+0x2e/0xb0
+ __do_sys_delete_module.isra.0+0x197/0x2e0
+ do_syscall_64+0x7b/0x160
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Replace the UIO_MAXIOV symbolic name with the more contextually
-appropriate BIO_MAX_INLINE_VECS.
+Tested with mt7921e but the same pattern can be actually applied to other
+mt76 drivers calling mt76_dma_cleanup() during removal. Tx napi is enabled
+in their *_dma_init() functions and only toggled off and on again inside
+their suspend/resume/reset paths. So it should be okay to disable tx
+napi in such a generic way.
 
-Fixes: b091ac616846 ("sd_zbc: Fix report zones buffer allocation")
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: 2ac515a5d74f ("mt76: mt76x02: use napi polling for tx cleanup")
 Cc: stable@vger.kernel.org
-Signed-off-by: Steve Siwinski <ssiwinski@atto.com>
-Link: https://lore.kernel.org/r/20250508200122.243129-1-ssiwinski@atto.com
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Tested-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Link: https://patch.msgid.link/20250506115540.19045-1-pchelkin@ispras.ru
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 
-diff --git a/block/bio.c b/block/bio.c
-index 4e6c85a33d74..4be592d37fb6 100644
---- a/block/bio.c
-+++ b/block/bio.c
-@@ -611,7 +611,7 @@ struct bio *bio_kmalloc(unsigned short nr_vecs, gfp_t gfp_mask)
- {
- 	struct bio *bio;
+diff --git a/drivers/net/wireless/mediatek/mt76/dma.c b/drivers/net/wireless/mediatek/mt76/dma.c
+index 844af16ee551..35b4ec91979e 100644
+--- a/drivers/net/wireless/mediatek/mt76/dma.c
++++ b/drivers/net/wireless/mediatek/mt76/dma.c
+@@ -1011,6 +1011,7 @@ void mt76_dma_cleanup(struct mt76_dev *dev)
+ 	int i;
  
--	if (nr_vecs > UIO_MAXIOV)
-+	if (nr_vecs > BIO_MAX_INLINE_VECS)
- 		return NULL;
- 	return kmalloc(struct_size(bio, bi_inline_vecs, nr_vecs), gfp_mask);
- }
-diff --git a/drivers/scsi/sd_zbc.c b/drivers/scsi/sd_zbc.c
-index 7a447ff600d2..a8db66428f80 100644
---- a/drivers/scsi/sd_zbc.c
-+++ b/drivers/scsi/sd_zbc.c
-@@ -169,6 +169,7 @@ static void *sd_zbc_alloc_report_buffer(struct scsi_disk *sdkp,
- 					unsigned int nr_zones, size_t *buflen)
- {
- 	struct request_queue *q = sdkp->disk->queue;
-+	unsigned int max_segments;
- 	size_t bufsize;
- 	void *buf;
+ 	mt76_worker_disable(&dev->tx_worker);
++	napi_disable(&dev->tx_napi);
+ 	netif_napi_del(&dev->tx_napi);
  
-@@ -180,12 +181,15 @@ static void *sd_zbc_alloc_report_buffer(struct scsi_disk *sdkp,
- 	 * Furthermore, since the report zone command cannot be split, make
- 	 * sure that the allocated buffer can always be mapped by limiting the
- 	 * number of pages allocated to the HBA max segments limit.
-+	 * Since max segments can be larger than the max inline bio vectors,
-+	 * further limit the allocated buffer to BIO_MAX_INLINE_VECS.
- 	 */
- 	nr_zones = min(nr_zones, sdkp->zone_info.nr_zones);
- 	bufsize = roundup((nr_zones + 1) * 64, SECTOR_SIZE);
- 	bufsize = min_t(size_t, bufsize,
- 			queue_max_hw_sectors(q) << SECTOR_SHIFT);
--	bufsize = min_t(size_t, bufsize, queue_max_segments(q) << PAGE_SHIFT);
-+	max_segments = min(BIO_MAX_INLINE_VECS, queue_max_segments(q));
-+	bufsize = min_t(size_t, bufsize, max_segments << PAGE_SHIFT);
- 
- 	while (bufsize >= SECTOR_SIZE) {
- 		buf = kvzalloc(bufsize, GFP_KERNEL | __GFP_NORETRY);
-diff --git a/include/linux/bio.h b/include/linux/bio.h
-index cafc7c215de8..b786ec5bcc81 100644
---- a/include/linux/bio.h
-+++ b/include/linux/bio.h
-@@ -11,6 +11,7 @@
- #include <linux/uio.h>
- 
- #define BIO_MAX_VECS		256U
-+#define BIO_MAX_INLINE_VECS	UIO_MAXIOV
- 
- struct queue_limits;
- 
+ 	for (i = 0; i < ARRAY_SIZE(dev->phys); i++) {
 
 
