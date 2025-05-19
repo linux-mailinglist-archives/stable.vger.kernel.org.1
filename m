@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-144830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB4FDABBEB7
-	for <lists+stable@lfdr.de>; Mon, 19 May 2025 15:11:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10888ABBEB8
+	for <lists+stable@lfdr.de>; Mon, 19 May 2025 15:11:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B34171B60CFE
-	for <lists+stable@lfdr.de>; Mon, 19 May 2025 13:11:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC080178D8A
+	for <lists+stable@lfdr.de>; Mon, 19 May 2025 13:11:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0CB3279337;
-	Mon, 19 May 2025 13:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 329ADA55;
+	Mon, 19 May 2025 13:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j05hIpdv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fjd7l2Av"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 624081F4717
-	for <stable@vger.kernel.org>; Mon, 19 May 2025 13:11:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5B30279787
+	for <stable@vger.kernel.org>; Mon, 19 May 2025 13:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747660262; cv=none; b=CnCjcqbVEptObxMvph2nnBYGNpAslFz3+viIha1tyUau6k0vj+sIsKXSp1sgUhhy+unSTwOqeypwH53k02mDUc6QWWe/YC3L3ooSHgWj3xz+vGOADjdUCgOtAwzXi5UN42VB+KM/0BirtNKJjEtDHBaFnlk0szc+S76ovt1QxJk=
+	t=1747660267; cv=none; b=AMwJ6jfVnOFDYLQhPbi4YS6UDE2SSy4cAZSQ/ydJJW9XRJtIKNP8CFI2Lf9fYGBB6AE1R2iMqFdiLssQLbffnlVG7x90LKItxmrLQgNfK18wrrCqpZh0EsKTQ1vT8JMyI7brf5H0o9FEn5vsmVlkl587r5jPw6CbmZapGk0jLII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747660262; c=relaxed/simple;
-	bh=uKQXLRYTcMpGj0orXKoTeJTXv3JoCu8dHvGqEfgtsC0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=cTHiegxNTkslC6QLGpxqIBiUJPaRgKurMpv1TqbLI2pU6hI28CGzNT6z2CUwT+KcQ8IATWltzmqhYjlQRbXxssSlgDCBItwpsov/3GASkHlX0Q07KYVdU9rFNAwLHuzvCM7Scdch3VSbM8ZuY+jxyOcFeChr1rTtl7h+PY8HWI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j05hIpdv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F13FC4CEE9;
-	Mon, 19 May 2025 13:11:01 +0000 (UTC)
+	s=arc-20240116; t=1747660267; c=relaxed/simple;
+	bh=OP/EINmpHz2xpCAsCejD8CR7DLEKyhWi3+62xsBxeB8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Dg29xaiNA7cl2ATLwsDbqwaOq7vUNSH4KsFICl4q1eNoKmIKLRbyMCGZFuFS2vRZ3v9q+a0lv4PZlLaGIKP1NQ7Dd8RvLA/rFTfscJr9TuomhyG/EqfrjxMfk5ESoeqFCZtNJlgoGA7EoRj/LMBGx85nzSSG0in7VIp/WPnxOrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fjd7l2Av; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5328C4CEE9;
+	Mon, 19 May 2025 13:11:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747660261;
-	bh=uKQXLRYTcMpGj0orXKoTeJTXv3JoCu8dHvGqEfgtsC0=;
+	s=korg; t=1747660266;
+	bh=OP/EINmpHz2xpCAsCejD8CR7DLEKyhWi3+62xsBxeB8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=j05hIpdvUNRBMLpAePr2Hx8kBxg7ycIMhXw5bmVXTrvtW5DTiJNZ367CWpyThuzPu
-	 DykvVlOKiyjPA3cyJpq7hDq3DiqOzqtHD5P03Z0nzvr19wyenFNyhh8TolZn5TRVB0
-	 nYgyHUoamZUdfMKxIbQRSmR/7Z91KljBgrNwAqKw=
-Subject: FAILED: patch "[PATCH] phy: renesas: rcar-gen3-usb2: Lock around hardware registers" failed to apply to 5.4-stable tree
-To: claudiu.beznea.uj@bp.renesas.com,prabhakar.mahadev-lad.rj@bp.renesas.com,vkoul@kernel.org,yoshihiro.shimoda.uh@renesas.com
+	b=Fjd7l2AvUZhB65eCW9qaK0zvhlZbKHxIM0/7CllGZltD522oteQ8t7gmWy5Gv4HRv
+	 D951o3lCl4NgmU8AmrVjapA+d9j/sWa2GJTdy5eLDJjwfpEEAS6Pi9XL2L1aDNw9vI
+	 V7m0lYJH6M9S6UAEYpC99h5D2j7hSKGA/iak+5aY=
+Subject: FAILED: patch "[PATCH] scsi: sd_zbc: block: Respect bio vector limits for REPORT" failed to apply to 5.15-stable tree
+To: ssiwinski@atto.com,dlemoal@kernel.org,martin.petersen@oracle.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 May 2025 15:10:26 +0200
-Message-ID: <2025051926-moonlit-rash-12a3@gregkh>
+Date: Mon, 19 May 2025 15:10:58 +0200
+Message-ID: <2025051958-canal-tidbit-2b4d@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 55a387ebb9219cbe4edfa8ba9996ccb0e7ad4932
+git cherry-pick -x e8007fad5457ea547ca63bb011fdb03213571c7e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025051926-moonlit-rash-12a3@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025051958-canal-tidbit-2b4d@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,192 +77,83 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 55a387ebb9219cbe4edfa8ba9996ccb0e7ad4932 Mon Sep 17 00:00:00 2001
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Date: Wed, 7 May 2025 15:50:30 +0300
-Subject: [PATCH] phy: renesas: rcar-gen3-usb2: Lock around hardware registers
- and driver data
+From e8007fad5457ea547ca63bb011fdb03213571c7e Mon Sep 17 00:00:00 2001
+From: Steve Siwinski <ssiwinski@atto.com>
+Date: Thu, 8 May 2025 16:01:22 -0400
+Subject: [PATCH] scsi: sd_zbc: block: Respect bio vector limits for REPORT
+ ZONES buffer
 
-The phy-rcar-gen3-usb2 driver exposes four individual PHYs that are
-requested and configured by PHY users. The struct phy_ops APIs access the
-same set of registers to configure all PHYs. Additionally, PHY settings can
-be modified through sysfs or an IRQ handler. While some struct phy_ops APIs
-are protected by a driver-wide mutex, others rely on individual
-PHY-specific mutexes.
+The REPORT ZONES buffer size is currently limited by the HBA's maximum
+segment count to ensure the buffer can be mapped. However, the block
+layer further limits the number of iovec entries to 1024 when allocating
+a bio.
 
-This approach can lead to various issues, including:
-1/ the IRQ handler may interrupt PHY settings in progress, racing with
-   hardware configuration protected by a mutex lock
-2/ due to msleep(20) in rcar_gen3_init_otg(), while a configuration thread
-   suspends to wait for the delay, another thread may try to configure
-   another PHY (with phy_init() + phy_power_on()); re-running the
-   phy_init() goes to the exact same configuration code, re-running the
-   same hardware configuration on the same set of registers (and bits)
-   which might impact the result of the msleep for the 1st configuring
-   thread
-3/ sysfs can configure the hardware (though role_store()) and it can
-   still race with the phy_init()/phy_power_on() APIs calling into the
-   drivers struct phy_ops
+To avoid allocation of buffers too large to be mapped, further restrict
+the maximum buffer size to BIO_MAX_INLINE_VECS.
 
-To address these issues, add a spinlock to protect hardware register access
-and driver private data structures (e.g., calls to
-rcar_gen3_is_any_rphy_initialized()). Checking driver-specific data remains
-necessary as all PHY instances share common settings. With this change,
-the existing mutex protection is removed and the cleanup.h helpers are
-used.
+Replace the UIO_MAXIOV symbolic name with the more contextually
+appropriate BIO_MAX_INLINE_VECS.
 
-While at it, to keep the code simpler, do not skip
-regulator_enable()/regulator_disable() APIs in
-rcar_gen3_phy_usb2_power_on()/rcar_gen3_phy_usb2_power_off() as the
-regulators enable/disable operations are reference counted anyway.
-
-Fixes: f3b5a8d9b50d ("phy: rcar-gen3-usb2: Add R-Car Gen3 USB2 PHY driver")
+Fixes: b091ac616846 ("sd_zbc: Fix report zones buffer allocation")
 Cc: stable@vger.kernel.org
-Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
-Reviewed-by: Lad Prabhakar <prabhakar.mahadev-lad.rj@bp.renesas.com>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://lore.kernel.org/r/20250507125032.565017-4-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Steve Siwinski <ssiwinski@atto.com>
+Link: https://lore.kernel.org/r/20250508200122.243129-1-ssiwinski@atto.com
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 
-diff --git a/drivers/phy/renesas/phy-rcar-gen3-usb2.c b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-index bb05fd26eb7f..00ce564463de 100644
---- a/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-+++ b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
-@@ -9,6 +9,7 @@
-  * Copyright (C) 2014 Cogent Embedded, Inc.
-  */
+diff --git a/block/bio.c b/block/bio.c
+index 4e6c85a33d74..4be592d37fb6 100644
+--- a/block/bio.c
++++ b/block/bio.c
+@@ -611,7 +611,7 @@ struct bio *bio_kmalloc(unsigned short nr_vecs, gfp_t gfp_mask)
+ {
+ 	struct bio *bio;
  
-+#include <linux/cleanup.h>
- #include <linux/extcon-provider.h>
- #include <linux/interrupt.h>
- #include <linux/io.h>
-@@ -118,7 +119,7 @@ struct rcar_gen3_chan {
- 	struct regulator *vbus;
- 	struct reset_control *rstc;
- 	struct work_struct work;
--	struct mutex lock;	/* protects rphys[...].powered */
-+	spinlock_t lock;	/* protects access to hardware and driver data structure. */
- 	enum usb_dr_mode dr_mode;
- 	u32 obint_enable_bits;
- 	bool extcon_host;
-@@ -348,6 +349,8 @@ static ssize_t role_store(struct device *dev, struct device_attribute *attr,
- 	bool is_b_device;
- 	enum phy_mode cur_mode, new_mode;
- 
-+	guard(spinlock_irqsave)(&ch->lock);
-+
- 	if (!ch->is_otg_channel || !rcar_gen3_is_any_otg_rphy_initialized(ch))
- 		return -EIO;
- 
-@@ -415,7 +418,7 @@ static void rcar_gen3_init_otg(struct rcar_gen3_chan *ch)
- 		val = readl(usb2_base + USB2_ADPCTRL);
- 		writel(val | USB2_ADPCTRL_IDPULLUP, usb2_base + USB2_ADPCTRL);
- 	}
--	msleep(20);
-+	mdelay(20);
- 
- 	writel(0xffffffff, usb2_base + USB2_OBINTSTA);
- 	writel(ch->obint_enable_bits, usb2_base + USB2_OBINTEN);
-@@ -436,12 +439,14 @@ static irqreturn_t rcar_gen3_phy_usb2_irq(int irq, void *_ch)
- 	if (pm_runtime_suspended(dev))
- 		goto rpm_put;
- 
--	status = readl(usb2_base + USB2_OBINTSTA);
--	if (status & ch->obint_enable_bits) {
--		dev_vdbg(dev, "%s: %08x\n", __func__, status);
--		writel(ch->obint_enable_bits, usb2_base + USB2_OBINTSTA);
--		rcar_gen3_device_recognition(ch);
--		ret = IRQ_HANDLED;
-+	scoped_guard(spinlock, &ch->lock) {
-+		status = readl(usb2_base + USB2_OBINTSTA);
-+		if (status & ch->obint_enable_bits) {
-+			dev_vdbg(dev, "%s: %08x\n", __func__, status);
-+			writel(ch->obint_enable_bits, usb2_base + USB2_OBINTSTA);
-+			rcar_gen3_device_recognition(ch);
-+			ret = IRQ_HANDLED;
-+		}
- 	}
- 
- rpm_put:
-@@ -456,6 +461,8 @@ static int rcar_gen3_phy_usb2_init(struct phy *p)
- 	void __iomem *usb2_base = channel->base;
- 	u32 val;
- 
-+	guard(spinlock_irqsave)(&channel->lock);
-+
- 	/* Initialize USB2 part */
- 	val = readl(usb2_base + USB2_INT_ENABLE);
- 	val |= USB2_INT_ENABLE_UCOM_INTEN | rphy->int_enable_bits;
-@@ -479,6 +486,8 @@ static int rcar_gen3_phy_usb2_exit(struct phy *p)
- 	void __iomem *usb2_base = channel->base;
- 	u32 val;
- 
-+	guard(spinlock_irqsave)(&channel->lock);
-+
- 	rphy->initialized = false;
- 
- 	val = readl(usb2_base + USB2_INT_ENABLE);
-@@ -498,16 +507,17 @@ static int rcar_gen3_phy_usb2_power_on(struct phy *p)
- 	u32 val;
- 	int ret = 0;
- 
--	mutex_lock(&channel->lock);
--	if (!rcar_gen3_are_all_rphys_power_off(channel))
--		goto out;
--
- 	if (channel->vbus) {
- 		ret = regulator_enable(channel->vbus);
- 		if (ret)
--			goto out;
-+			return ret;
- 	}
- 
-+	guard(spinlock_irqsave)(&channel->lock);
-+
-+	if (!rcar_gen3_are_all_rphys_power_off(channel))
-+		goto out;
-+
- 	val = readl(usb2_base + USB2_USBCTR);
- 	val |= USB2_USBCTR_PLL_RST;
- 	writel(val, usb2_base + USB2_USBCTR);
-@@ -517,7 +527,6 @@ static int rcar_gen3_phy_usb2_power_on(struct phy *p)
- out:
- 	/* The powered flag should be set for any other phys anyway */
- 	rphy->powered = true;
--	mutex_unlock(&channel->lock);
- 
- 	return 0;
+-	if (nr_vecs > UIO_MAXIOV)
++	if (nr_vecs > BIO_MAX_INLINE_VECS)
+ 		return NULL;
+ 	return kmalloc(struct_size(bio, bi_inline_vecs, nr_vecs), gfp_mask);
  }
-@@ -528,18 +537,12 @@ static int rcar_gen3_phy_usb2_power_off(struct phy *p)
- 	struct rcar_gen3_chan *channel = rphy->ch;
- 	int ret = 0;
+diff --git a/drivers/scsi/sd_zbc.c b/drivers/scsi/sd_zbc.c
+index 7a447ff600d2..a8db66428f80 100644
+--- a/drivers/scsi/sd_zbc.c
++++ b/drivers/scsi/sd_zbc.c
+@@ -169,6 +169,7 @@ static void *sd_zbc_alloc_report_buffer(struct scsi_disk *sdkp,
+ 					unsigned int nr_zones, size_t *buflen)
+ {
+ 	struct request_queue *q = sdkp->disk->queue;
++	unsigned int max_segments;
+ 	size_t bufsize;
+ 	void *buf;
  
--	mutex_lock(&channel->lock);
--	rphy->powered = false;
--
--	if (!rcar_gen3_are_all_rphys_power_off(channel))
--		goto out;
-+	scoped_guard(spinlock_irqsave, &channel->lock)
-+		rphy->powered = false;
+@@ -180,12 +181,15 @@ static void *sd_zbc_alloc_report_buffer(struct scsi_disk *sdkp,
+ 	 * Furthermore, since the report zone command cannot be split, make
+ 	 * sure that the allocated buffer can always be mapped by limiting the
+ 	 * number of pages allocated to the HBA max segments limit.
++	 * Since max segments can be larger than the max inline bio vectors,
++	 * further limit the allocated buffer to BIO_MAX_INLINE_VECS.
+ 	 */
+ 	nr_zones = min(nr_zones, sdkp->zone_info.nr_zones);
+ 	bufsize = roundup((nr_zones + 1) * 64, SECTOR_SIZE);
+ 	bufsize = min_t(size_t, bufsize,
+ 			queue_max_hw_sectors(q) << SECTOR_SHIFT);
+-	bufsize = min_t(size_t, bufsize, queue_max_segments(q) << PAGE_SHIFT);
++	max_segments = min(BIO_MAX_INLINE_VECS, queue_max_segments(q));
++	bufsize = min_t(size_t, bufsize, max_segments << PAGE_SHIFT);
  
- 	if (channel->vbus)
- 		ret = regulator_disable(channel->vbus);
+ 	while (bufsize >= SECTOR_SIZE) {
+ 		buf = kvzalloc(bufsize, GFP_KERNEL | __GFP_NORETRY);
+diff --git a/include/linux/bio.h b/include/linux/bio.h
+index cafc7c215de8..b786ec5bcc81 100644
+--- a/include/linux/bio.h
++++ b/include/linux/bio.h
+@@ -11,6 +11,7 @@
+ #include <linux/uio.h>
  
--out:
--	mutex_unlock(&channel->lock);
--
- 	return ret;
- }
+ #define BIO_MAX_VECS		256U
++#define BIO_MAX_INLINE_VECS	UIO_MAXIOV
  
-@@ -750,7 +753,7 @@ static int rcar_gen3_phy_usb2_probe(struct platform_device *pdev)
- 	if (phy_data->no_adp_ctrl)
- 		channel->obint_enable_bits = USB2_OBINT_IDCHG_EN;
+ struct queue_limits;
  
--	mutex_init(&channel->lock);
-+	spin_lock_init(&channel->lock);
- 	for (i = 0; i < NUM_OF_PHYS; i++) {
- 		channel->rphys[i].phy = devm_phy_create(dev, NULL,
- 							phy_data->phy_usb2_ops);
 
 
