@@ -1,71 +1,71 @@
-Return-Path: <stable+bounces-144849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16132ABBEEA
-	for <lists+stable@lfdr.de>; Mon, 19 May 2025 15:16:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D96A6ABBEFA
+	for <lists+stable@lfdr.de>; Mon, 19 May 2025 15:20:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5ADC0188EED6
-	for <lists+stable@lfdr.de>; Mon, 19 May 2025 13:17:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64A193A427A
+	for <lists+stable@lfdr.de>; Mon, 19 May 2025 13:19:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E5B1279331;
-	Mon, 19 May 2025 13:16:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D17F2798F5;
+	Mon, 19 May 2025 13:20:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QLKvqV3l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z4wuTG7x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E8EE275117
-	for <stable@vger.kernel.org>; Mon, 19 May 2025 13:16:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CF6D2798E1
+	for <stable@vger.kernel.org>; Mon, 19 May 2025 13:20:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747660613; cv=none; b=c26f1qhpPhPQxLBjMxqjabTlM4uEcTTgDl9lzBpzsSP3C9Ybfdj+/oKeb2KmYC57YMF3fz1sysxRDd1DZ6ncvdMZtmCe6lWqWOQlRDwY+iUon1SksYoKkSqtLALvuF2vUBkjkiwQk1dd5O2lctUfSpKqYCVmO3jXOR0eTrhXpRo=
+	t=1747660810; cv=none; b=eYijmjBk8OkAC5KgHAu5lD4K/cTAOchC1yIUa3P6lq1c5pGQJdE0KetEnFznEgDnDVIMeS4r6BrAlrSRdbred/GXMzkER8ULpOKla2HeAHzcFC6LF+rlx/K/u8NBXulCj251weKWJy4w83NlEU+gWsSnxgE+rvOIwwnpkQ1N/kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747660613; c=relaxed/simple;
-	bh=Ms98Ntvk9JDvAnUq0M+j7mzWZv9qjAdJHUKIeGj7V+E=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=gIhhmXk3kugQRSobT8mPLngdvJ4B0xSKyIGuTMtVLlhsqPUJalfqIMIMrIoLg2Vys6U9oDWyyGj99WIF3/gPrN7r51xg8hXSJXubVDM0CrViHSKPXi7EykJVDIirZN/Dd8g2p2DtlJRLsxPuQkkFYZTy9HE6H4rOzdPg3csxvrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QLKvqV3l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90058C4CEE4;
-	Mon, 19 May 2025 13:16:52 +0000 (UTC)
+	s=arc-20240116; t=1747660810; c=relaxed/simple;
+	bh=ZlJ/1mCQtAtbtraaXiSkWJWJiiYrsGeHnqBGmjHLrHs=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FzoIOcAg3Jkr6AqkecPwl0j+H75bszfifEE0zz8h7+eI18W8/aRN0LPTDW6s89irHgWCVClxl+FRJHigDMIPEV6bi5m6TbS4UTjASUn8XtQal7QzSaxb4bJVW/ptBSb3MDJxBZNX9kuKZ7oRRoFVz5Ib2PwyuUThaLKDk9QkgMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z4wuTG7x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2B6EC4CEE4;
+	Mon, 19 May 2025 13:20:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747660613;
-	bh=Ms98Ntvk9JDvAnUq0M+j7mzWZv9qjAdJHUKIeGj7V+E=;
+	s=korg; t=1747660809;
+	bh=ZlJ/1mCQtAtbtraaXiSkWJWJiiYrsGeHnqBGmjHLrHs=;
 	h=Subject:To:Cc:From:Date:From;
-	b=QLKvqV3lzoTZoPkl6y48ATfJxZQAHIpijHBElHhhwkekiFDUn8zFKz46ik6DNvI8W
-	 iG4PqlHsof1TrKTeNh9/4rFjecUMPgaWRgYaxOtyB9aiOcruCDL1iaW519AZVxp/eM
-	 38VDKTdUG0/U8gwd4Ry6F9WkFqSjexzkfhzF7GR8=
-Subject: FAILED: patch "[PATCH] dmaengine: idxd: Refactor remove call with idxd_cleanup()" failed to apply to 5.10-stable tree
-To: xueshuai@linux.alibaba.com,dave.jiang@intel.com,fenghuay@nvidia.com,vinicius.gomes@intel.com,vkoul@kernel.org
+	b=Z4wuTG7x3v4A1ateBE9FyBOvlrl8qqQOFfxGXNgz2z5Z+BXVpvkR+H2f8WpyjtvBR
+	 smnXzDs1Y9w2oi23na/EmO67Co8ST6oZqmUMmXiY9s1kXdSWhL2z82nmaB+vCU3H2Z
+	 /bPKAqGoJykZ6m7RkbEu2AjlgDNYzzZSgv9WMNMY=
+Subject: FAILED: patch "[PATCH] dmaengine: mediatek: Fix a possible deadlock error in" failed to apply to 5.15-stable tree
+To: chenqiuji666@gmail.com,angelogioacchino.delregno@collabora.com,vkoul@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 May 2025 15:16:39 +0200
-Message-ID: <2025051939-grumpily-unbuckled-7738@gregkh>
+Date: Mon, 19 May 2025 15:20:06 +0200
+Message-ID: <2025051905-paced-scrounger-571a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x a409e919ca321cc0e28f8abf96fde299f0072a81
+git cherry-pick -x 157ae5ffd76a2857ccb4b7ce40bc5a344ca00395
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025051939-grumpily-unbuckled-7738@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2025051905-paced-scrounger-571a@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,61 +77,74 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From a409e919ca321cc0e28f8abf96fde299f0072a81 Mon Sep 17 00:00:00 2001
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-Date: Fri, 4 Apr 2025 20:02:17 +0800
-Subject: [PATCH] dmaengine: idxd: Refactor remove call with idxd_cleanup()
- helper
+From 157ae5ffd76a2857ccb4b7ce40bc5a344ca00395 Mon Sep 17 00:00:00 2001
+From: Qiu-ji Chen <chenqiuji666@gmail.com>
+Date: Thu, 8 May 2025 15:36:33 +0800
+Subject: [PATCH] dmaengine: mediatek: Fix a possible deadlock error in
+ mtk_cqdma_tx_status()
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-The idxd_cleanup() helper cleans up perfmon, interrupts, internals and
-so on. Refactor remove call with the idxd_cleanup() helper to avoid code
-duplication. Note, this also fixes the missing put_device() for idxd
-groups, enginces and wqs.
+Fix a potential deadlock bug. Observe that in the mtk-cqdma.c
+file, functions like mtk_cqdma_issue_pending() and
+mtk_cqdma_free_active_desc() properly acquire the pc lock before the vc
+lock when handling pc and vc fields. However, mtk_cqdma_tx_status()
+violates this order by first acquiring the vc lock before invoking
+mtk_cqdma_find_active_desc(), which subsequently takes the pc lock. This
+reversed locking sequence (vc → pc) contradicts the established
+pc → vc order and creates deadlock risks.
 
-Fixes: bfe1d56091c1 ("dmaengine: idxd: Init and probe for Intel data accelerators")
+Fix the issue by moving the vc lock acquisition code from
+mtk_cqdma_find_active_desc() to mtk_cqdma_tx_status(). Ensure the pc lock
+is acquired before the vc lock in the calling function to maintain correct
+locking hierarchy. Note that since mtk_cqdma_find_active_desc() is a
+static function with only one caller (mtk_cqdma_tx_status()), this
+modification safely eliminates the deadlock possibility without affecting
+other components.
+
+This possible bug is found by an experimental static analysis tool
+developed by our team. This tool analyzes the locking APIs to extract
+function pairs that can be concurrently executed, and then analyzes the
+instructions in the paired functions to identify possible concurrency bugs
+including deadlocks, data races and atomicity violations.
+
+Fixes: b1f01e48df5a ("dmaengine: mediatek: Add MediaTek Command-Queue DMA controller for MT6765 SoC")
 Cc: stable@vger.kernel.org
-Suggested-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://lore.kernel.org/r/20250404120217.48772-10-xueshuai@linux.alibaba.com
+Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20250508073634.3719-1-chenqiuji666@gmail.com
 Signed-off-by: Vinod Koul <vkoul@kernel.org>
 
-diff --git a/drivers/dma/idxd/init.c b/drivers/dma/idxd/init.c
-index 974b926bd930..760b7d81fcd8 100644
---- a/drivers/dma/idxd/init.c
-+++ b/drivers/dma/idxd/init.c
-@@ -1308,7 +1308,6 @@ static void idxd_shutdown(struct pci_dev *pdev)
- static void idxd_remove(struct pci_dev *pdev)
- {
- 	struct idxd_device *idxd = pci_get_drvdata(pdev);
--	struct idxd_irq_entry *irq_entry;
+diff --git a/drivers/dma/mediatek/mtk-cqdma.c b/drivers/dma/mediatek/mtk-cqdma.c
+index d5ddb4e30e71..e35271ac1eed 100644
+--- a/drivers/dma/mediatek/mtk-cqdma.c
++++ b/drivers/dma/mediatek/mtk-cqdma.c
+@@ -422,13 +422,10 @@ static struct virt_dma_desc *mtk_cqdma_find_active_desc(struct dma_chan *c,
+ 	struct virt_dma_desc *vd;
+ 	unsigned long flags;
  
- 	idxd_unregister_devices(idxd);
- 	/*
-@@ -1321,21 +1320,12 @@ static void idxd_remove(struct pci_dev *pdev)
- 	get_device(idxd_confdev(idxd));
- 	device_unregister(idxd_confdev(idxd));
- 	idxd_shutdown(pdev);
--	if (device_pasid_enabled(idxd))
--		idxd_disable_system_pasid(idxd);
- 	idxd_device_remove_debugfs(idxd);
--
--	irq_entry = idxd_get_ie(idxd, 0);
--	free_irq(irq_entry->vector, irq_entry);
--	pci_free_irq_vectors(pdev);
-+	idxd_cleanup(idxd);
- 	pci_iounmap(pdev, idxd->reg_base);
--	if (device_user_pasid_enabled(idxd))
--		idxd_disable_sva(pdev);
--	pci_disable_device(pdev);
--	destroy_workqueue(idxd->wq);
--	perfmon_pmu_remove(idxd);
- 	put_device(idxd_confdev(idxd));
- 	idxd_free(idxd);
-+	pci_disable_device(pdev);
- }
+-	spin_lock_irqsave(&cvc->pc->lock, flags);
+ 	list_for_each_entry(vd, &cvc->pc->queue, node)
+ 		if (vd->tx.cookie == cookie) {
+-			spin_unlock_irqrestore(&cvc->pc->lock, flags);
+ 			return vd;
+ 		}
+-	spin_unlock_irqrestore(&cvc->pc->lock, flags);
  
- static struct pci_driver idxd_pci_driver = {
+ 	list_for_each_entry(vd, &cvc->vc.desc_issued, node)
+ 		if (vd->tx.cookie == cookie)
+@@ -452,9 +449,11 @@ static enum dma_status mtk_cqdma_tx_status(struct dma_chan *c,
+ 	if (ret == DMA_COMPLETE || !txstate)
+ 		return ret;
+ 
++	spin_lock_irqsave(&cvc->pc->lock, flags);
+ 	spin_lock_irqsave(&cvc->vc.lock, flags);
+ 	vd = mtk_cqdma_find_active_desc(c, cookie);
+ 	spin_unlock_irqrestore(&cvc->vc.lock, flags);
++	spin_unlock_irqrestore(&cvc->pc->lock, flags);
+ 
+ 	if (vd) {
+ 		cvd = to_cqdma_vdesc(vd);
 
 
