@@ -1,72 +1,71 @@
-Return-Path: <stable+bounces-144724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-144726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25FD5ABB2CA
-	for <lists+stable@lfdr.de>; Mon, 19 May 2025 03:17:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C362ABB2DF
+	for <lists+stable@lfdr.de>; Mon, 19 May 2025 03:28:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCA943B34C8
-	for <lists+stable@lfdr.de>; Mon, 19 May 2025 01:17:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 72AF47A3A8E
+	for <lists+stable@lfdr.de>; Mon, 19 May 2025 01:27:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD4714B1E72;
-	Mon, 19 May 2025 01:17:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2944F19EEC2;
+	Mon, 19 May 2025 01:28:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0064b401.pphosted.com (mx0a-0064b401.pphosted.com [205.220.166.238])
+Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9787F2CA6
-	for <stable@vger.kernel.org>; Mon, 19 May 2025 01:17:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.166.238
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB9B19DFA2
+	for <stable@vger.kernel.org>; Mon, 19 May 2025 01:28:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.178.238
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747617460; cv=fail; b=ZT5UG//ohDA+7A/Bgen2lCH/1PSJbyQ3jQ2mzVPmSVKZDFCMRC2xa0a4kUvmuucGYMDIfv//CEQiWC5/iSxWmaxtcQsjdW1OtFbjRQqp897QIYxDw2t3r5aNwBUNyLAsC0sZzGve8Hxi/P6O7Aegl38H/JxA0J9O4D4l9vqW5Gc=
+	t=1747618131; cv=fail; b=XB17MXVzcB5cS1HDCMuF8G+YI3Z1lusBK08JZQEOJ3puZvzpeLuHGHUA2od2qw22nxiUatObRzMOClUDdGU5BIzawCOpRv8Nw4MDZJEfZ2YL4F4jbfwVdzFjSwU3iXeDnjnu1gu/5fgVlf12wrCnOY4WQLDKLeC+U+UZL70lSKk=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747617460; c=relaxed/simple;
-	bh=Oq20+mVNQgKPuKvFenFSEXIecwIr0GpYEU4Dfhly52M=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=UbhDad0VUCo/QGHtP7n3XaT1oPCV/2cKURC8TCz4S4TvjGNJg+rOPjkSahL55ucIjOLqbW6WyGbS5Aw69r8rZrhH/E9s/TrQIeM3JVB3vgkFna+jKCrojmDbxtQKsw8kZXGSbrgBIar23ch1WfQxGJS0zGKjCTMY291e52zRa/s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=fail smtp.client-ip=205.220.166.238
+	s=arc-20240116; t=1747618131; c=relaxed/simple;
+	bh=Bk9Xx+VWbU2c1bgvi0v4FCbW0D2SVeZqJP15pk6wzTY=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=S9k83n2F77bonU6RS8fdE5YtApmj04ECtvb2OOhhBOM1FRjNbBedIk8NUPIcWckkFhT/eOFQxrHvqKyYWSiCAgnvlPAc5yioE9Xby3P5mVGNihFURjYJTPRAJFuGAbvaOkSruFqpOJPTHWrIORpI3MMWcb+iE8ZmsGQC4Q+BuCU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass smtp.mailfrom=windriver.com; arc=fail smtp.client-ip=205.220.178.238
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=windriver.com
-Received: from pps.filterd (m0250809.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54J0j3Bf028298;
-	Sun, 18 May 2025 18:17:21 -0700
-Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10lp2043.outbound.protection.outlook.com [104.47.58.43])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 46psykh3k8-1
+Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
+	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 54J0VOjX028277;
+	Mon, 19 May 2025 01:28:34 GMT
+Received: from nam12-bn8-obe.outbound.protection.outlook.com (mail-bn8nam12lp2171.outbound.protection.outlook.com [104.47.55.171])
+	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 46pfp0sfr9-2
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 18 May 2025 18:17:21 -0700 (PDT)
+	Mon, 19 May 2025 01:28:33 +0000 (GMT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Imcxz8POazpoVjaTvxaHNVHZRlWf8hg24Uq64B0pZ6NrY9cMDZAXNb0eow1y0I7DlCXfcz//mJ0AW9HIl3idILs/kUN6kXlb7nJlSYsiH95MUztCKyUaGKUFdu2u/QGEoY4R7DaPIXYFLhMd5D/u+QFZs8UigXE6UhKXQrgTYdiSg2V9IGezSyRQMqHBQfSbZQAvxbPXcbj0C0QgqWjgeLguQaLXP8HN+StouL/YcvMrccBFhLBsTbRGg97ueokjlfkzmt65Q2gpXchD48M2j26ldfXCADct9fKASTpNUfZ00hHncr21LgK9V+WTcp69maJLNcrEGg3hyHela9Mwgw==
+ b=gmml6ZfdF++CF2FSw0iB5ks0lq1fTm+XqF4VPmW8eRh4c4cFCl74aJQgEQiX2bj+xaTUWc+xm7Vvsv94LymFrm7ildV7vwSLvR95vmKh1RXbGiAFMPrfK46L9RbQpTEI5NKALooKOs5eyEn6wCrkUbur9u1Xhx+42Bzbh2hLmwU449KYA0KbquQe0oXeVe3I9X6mrOoRg+NpttsqneTZxWzwKoYX210vzMRL52PMBawIl2k21eJkzSqigibEeJwvdeBrGZ8gwtvu7RPuoVyW6wLAI5j4YdgMkR6WIziwkPanEt5o+l+efMrF23aBPb6JFSDxCbS50zSgq+jTv7i/pg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OvJC6cZhZWaosVS0w3QjSQ5E6StS+4q+V1NNGMy+lk0=;
- b=bw6gowqyGgXbqeFuAcdI1qbk5sXxw882SWgsCKEQR+7lTOMhjPB/ZAKEiMK5fEU+cwru1AYoCaVChIKAVz59c1oPYCZFaMFZAY/REN9tqAzsIMSZM78pZccEvXFeu4hGaXPQfdN9N21lCeOfAxSY93dM3Yp87aHblOjQbbhDeUNGZi0F4fC0P+rh29YECiZLbZ9U0KLWgsanEgO4UMco0yNJzNKsl9onLBKRhrKdn8PCmQklqwGRxMI3ODcmq/xY6lyJLeThRcYEhZuSc1VvyP9iRMFsnfcHnun+2Uo9xr0xljoRIcqNJXHRlxfbBSvs3SQcoyJaUoBvA2/YVgnqKQ==
+ bh=y7RkpO0ub5rSqMO32uPC3QlSCuWaWj/+yJwG3s1YRvQ=;
+ b=sXbgE/2nayYN8cLu39KbvYjuK/pBgs47z+0a9HgB6vrUUR4pLpeiLFZl4vAPynv4amOT+T1g+/h8jjgGeEvCg+LgVnROsZpQqjHLR2llm3GPbZhvqDZHucy3u7h8kWp1uneqOdTJJjfU0wcwhIWQeZJaBxKLTDl3N1L/Bw3PZ91QEGVYaPjSYt3As14Qxn8JMAEKZELBFiQ5owcYD+1WZ9bH+wytP8vKO/NcXLQpG3WUCPUUeXkF9VIZK2Oc0M0/20TGl9VgLzcdxsJC/dSoXoYCSBzHD4CJSKSkFTrIVyMAjGp84wfUwSBUkcNdBuCAvCUIzBCcTezcupyXzYPL/A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=windriver.com; dmarc=pass action=none
  header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
 Received: from IA1PR11MB7174.namprd11.prod.outlook.com (2603:10b6:208:41a::7)
- by SJ1PR11MB6130.namprd11.prod.outlook.com (2603:10b6:a03:45f::9) with
+ by PH0PR11MB4774.namprd11.prod.outlook.com (2603:10b6:510:40::9) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8722.33; Mon, 19 May
- 2025 01:17:15 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8746.30; Mon, 19 May
+ 2025 01:28:28 +0000
 Received: from IA1PR11MB7174.namprd11.prod.outlook.com
  ([fe80::562e:b570:2775:f6d4]) by IA1PR11MB7174.namprd11.prod.outlook.com
  ([fe80::562e:b570:2775:f6d4%5]) with mapi id 15.20.8722.031; Mon, 19 May 2025
- 01:17:12 +0000
+ 01:28:28 +0000
 From: Feng Liu <Feng.Liu3@windriver.com>
-To: dmitry.baryshkov@linaro.org, srinivas.kandagatla@linaro.org,
-        sboyd@kernel.org, broonie@kernel.org, Zhe.He@windriver.com,
-        Feng.Liu3@windriver.com
+To: npiggin@gmail.com, mpe@ellerman.id.au, Feng.Liu3@windriver.com,
+        Zhe.He@windriver.com
 Cc: stable@vger.kernel.org
-Subject: [PATCH 5.10.y] ASoC: q6afe-clocks: fix reprobing of the driver
-Date: Mon, 19 May 2025 09:16:58 +0800
-Message-Id: <20250519011658.3642339-1-Feng.Liu3@windriver.com>
+Subject: [PATCH 5.10.y] powerpc/pseries: Fix scv instruction crash with kexec
+Date: Mon, 19 May 2025 09:28:15 +0800
+Message-Id: <20250519012816.3659046-1-Feng.Liu3@windriver.com>
 X-Mailer: git-send-email 2.34.1
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: TYCPR01CA0189.jpnprd01.prod.outlook.com
- (2603:1096:400:2b0::14) To IA1PR11MB7174.namprd11.prod.outlook.com
+X-ClientProxiedBy: TYAPR01CA0141.jpnprd01.prod.outlook.com
+ (2603:1096:404:2d::33) To IA1PR11MB7174.namprd11.prod.outlook.com
  (2603:10b6:208:41a::7)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -75,426 +74,192 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: IA1PR11MB7174:EE_|SJ1PR11MB6130:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1d797071-0b42-4a9f-6757-08dd9672e22a
+X-MS-TrafficTypeDiagnostic: IA1PR11MB7174:EE_|PH0PR11MB4774:EE_
+X-MS-Office365-Filtering-Correlation-Id: e1659027-60f9-444a-10d3-08dd96747512
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|52116014|1800799024|7053199007|38350700014;
+	BCL:0;ARA:13230040|52116014|376014|366016|1800799024|7053199007|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?2WZsDHUITssmkfdl3B5qmjmj+8zuqqm5A9jmELoDyX29CP8OyXT5AuhEQrJa?=
- =?us-ascii?Q?wiGiE8ToHqi1ocudhqRpnlj8PJsNlXjgNH3SuyoRrKzXfV8kDMvroZQsnEus?=
- =?us-ascii?Q?xLQq32HOqVRTjChSnlKCmgMHn7OJZpYU8YvttVmmaMuya0JVuQefCL31F0W/?=
- =?us-ascii?Q?759qkaBpOSKb7//YQe2x4XeC0/gI8q0ncZCDi0p7ayF+9AwBnc0IbhCNMRoN?=
- =?us-ascii?Q?Ju5fsD12jwLQHPo6vwloYxW1Eq+gihfnpoW5QdSMc9oyr96Vb51J9puyj3xU?=
- =?us-ascii?Q?IrworRg3Z7AICXiX1+sAlsvf9I483RZ8ALzkXdjOPGKmfwNnmxtOlrIYArWZ?=
- =?us-ascii?Q?uMN4ItLYgKyGL9ZeWAeHi9STn4iCSpEl/1JpnxgPf1OmdTkiiPKL0Kgc4T0q?=
- =?us-ascii?Q?kL6i+ZHU87xMCosD/ImqxO/wuBo9nZfSTRDp8UGFz8lOKsUrKDaauyxNDe7X?=
- =?us-ascii?Q?Vf6FjE++tnD4heNXbIPWhHQ7BfinFYAF980BJHLhBItYB30zDl/mtQIvvT2x?=
- =?us-ascii?Q?0IzxstdDGtGBZSiYW5nFn32GBSxsgLIIwVsdrmQ4+NF2YUBPtYIb68LV1ky4?=
- =?us-ascii?Q?gkg6zTOQmjJj1WpXCLg6EO5G0A0KaeWn6yPOexh4OiUq/ZBDP0eHXCjzGTyU?=
- =?us-ascii?Q?akmxlYfdgxrTA8mYHrV8PvDjYEQq+Fs9SjqxFdBTdgn/bFmfQ755iFkuvowN?=
- =?us-ascii?Q?htfNKiOw8Or4AxBsIzFYfZtm57B1y3BF2XErKZa0H6QKL1pPy4UFaMIbZo4d?=
- =?us-ascii?Q?tm3MyTi/5s2DsvbKhix2eyMC+deOY6y2IUJee9o/HWfCh8KGirxcERDyyBJZ?=
- =?us-ascii?Q?s+1i62XbPUPWU1mXc2OjtiKayul/vt9tnzBVcMeBX5fwU4zSXqR8sZYh7dr0?=
- =?us-ascii?Q?jM/36VjAfsKkZZzPUuhB8tBrVFwAKrbXHbLP/O9fuNK1HqOq0GssnaLJUi39?=
- =?us-ascii?Q?DiJtGKI0UEIE1VhTK7LyFQbJZEwN+WX/KKv6WqxZ7v3xythwPvNEH4rDfMjW?=
- =?us-ascii?Q?iwOM/mhD5uV92VLG+DRaBClTQIXoZcyvDqAGoPw2Hzn9mqJCfvWUUVDs9UXF?=
- =?us-ascii?Q?MysjP91vL60aR9nSRYbeDHa11jXu/FBK3X2DsW+Toa3XUPdTA5K87nHHNndE?=
- =?us-ascii?Q?pL5EvhbUT2LVP5beGCl/Gw4Ye6eybftHWSZrlU8BT9PkEvRM9HxJ7tyRvNTr?=
- =?us-ascii?Q?ZLL4+MikHnlvbDd5Lif9TRhlIMoInbsJU3+QBWhrXT6JtI4vpTpioBAjlmpU?=
- =?us-ascii?Q?MymbW0OPITpFZa1EFKLUgAYE0owcXv+sRvZNG/EU2mdRngsIJ+zUts6GBNTk?=
- =?us-ascii?Q?FtBTHR9qpQXq2I/rpPu+CSw5LWXzXdGqlFqzTM222iBPPlViFQuHxgWFR3Qo?=
- =?us-ascii?Q?pMKJ1lWxyc83XrPwy507TFTz39LNpAV+jlOBACpxcOtiK9nEhZnHwv/4BuOt?=
- =?us-ascii?Q?JvcMjkPEoc3ZmUtegJFCD/1FjFf80095qhuOeMKamEt55xXA1K6vrOUYxlWa?=
- =?us-ascii?Q?zZN5rb6D7acTFh0=3D?=
+	=?us-ascii?Q?jhUltDkX1GoFRdPSBpCQeZxj9amgjRjLdhp9z5n6tLuNR8Ol0RNf+c1SfIA3?=
+ =?us-ascii?Q?73rnKO7QzK26ytvO4n94niqdn2atOBAlH75IxKO9xixgf2NVwxIcbu0AIiBQ?=
+ =?us-ascii?Q?bsoYH9OKgRlHmQ85/7eQtNV5rSTwKNFzl8abDkg5IE6eauMXBR3ubEyCA2VE?=
+ =?us-ascii?Q?MlZs7wsij/aRoDKI/LXnL2U2SBReOnLE23/FJT2mvi8Nk7fnmdKmqwBGuRGq?=
+ =?us-ascii?Q?2unAh6JbvFscPWSiRbNBPzSddQ+WWhmyKLeRErX7mvvCGuhSV+izERJcZ+27?=
+ =?us-ascii?Q?g9Y4gHDzVXgdMFf9EJEfrPjfzzlmsJesqD877FBsgRa5c7LaLKA2QatwWqJx?=
+ =?us-ascii?Q?cvFpymac66J/4b0FKGmXql1uNR9Rzqwntz5T4cKOhiFtbOY/P28XRYHrOy6c?=
+ =?us-ascii?Q?BrN44nqgMHKBmESDnf+soYHz4pC7woML991zMU+kDFhE56YdVQCZvl1aDWQS?=
+ =?us-ascii?Q?MhxbJtABIVuI/SLvR1b1numlPlOMT7ex+DGjBpsqpTvtEoFFzMsmVWW7EWPj?=
+ =?us-ascii?Q?xwaQxoMHjoWQaRoQ5VBRlBn44M5y4p88053+L+bSl+ukiH0G7N+ZrHlu7xcF?=
+ =?us-ascii?Q?Lkoa6SwOEiMT3bUdO+iAwZyeF9WmGZx8Ef+7wy6I8q5gM4VKrW2apnosdVWi?=
+ =?us-ascii?Q?aPlqHmcPMh8cgqIwSaaoGwQePe+vUGcmX7uMMhmLFurmSjEI6HHyiD4U1otn?=
+ =?us-ascii?Q?0oiPvQPYciAK/JCl06srPHgfI3odxl1lA+yPCENs5+sotauSIOitiuj8XMMh?=
+ =?us-ascii?Q?FT1fXDO4GkCfuYBoHwXHa8KAQF9Od0nulCxQwiZQs1pGF2d9WvhkvJfWgM6b?=
+ =?us-ascii?Q?icQoqgk0r5UlAg8YiMS50dQTmXOLamMBEl9YQlcTKO6YpiXG6sCkhZCLhdMR?=
+ =?us-ascii?Q?abxvitJIc/Tv9vDZ5vsSnhsTJNlkNY7P218HsbIqUlAT3euYNywXESLFaq32?=
+ =?us-ascii?Q?n5cOGrGq5FPxx+11JPPSA/GbkTxAdfn+4pccMI+RTDbGRL5KHtGNMrTi6oVj?=
+ =?us-ascii?Q?qVA3rLqqK/9RTLlVM9VQweu8rwJIaHQXMfyEQiDMjxxucwv+tm0oPeSNpvFU?=
+ =?us-ascii?Q?8ioGk8neIHbgs1nBElx9idIiAN+WopgwImKlkSncKn0dpo56IMvH32E0EH4k?=
+ =?us-ascii?Q?nAt3eWVvNQzqwp5BW4Flx54DPIoTgVialeJABEX8jA+OTRFEtnSrKWgGszS1?=
+ =?us-ascii?Q?choOfu8EemSQLAb76ojHj5f24TzfZqLv1PrODv1Zr5qp4AIwys96IyFsaOlA?=
+ =?us-ascii?Q?QjoJi5tKZ02hlGEkJemA2nm2qV8f9XDtsRJGqJjuFb2xrz3kJlm85YtCsA7U?=
+ =?us-ascii?Q?OnFJ2Q3VynvmcA3nwbCBUcejcy86Swb+TtOzExwqJFwpZRjPnaRFgNwbjv/B?=
+ =?us-ascii?Q?OtBE9IGAuGjlfU72Ok4i2Y+nYIKiLPBAJZvrIXXEDTcjGigLs//wemfxFV+t?=
+ =?us-ascii?Q?aOhek/EmOIcrq98pJoK9YYp30H2iB7t/?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB7174.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(52116014)(1800799024)(7053199007)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:IA1PR11MB7174.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(366016)(1800799024)(7053199007)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?q8wKaG7/rQn4qvDdhL/1wwevyMYHeEitfPHZ4Bwcu7G6pl1HgruNlPxChtpn?=
- =?us-ascii?Q?VWyeowrpEj2vTrvl4ccDOo5wAGNREtIuNLJFyR/8CjiyJuRJ7nvIUsntDklT?=
- =?us-ascii?Q?kJwDjyfdB4fa4GaUUp/hTa21CLMyN9rcpPPUc4x+v29TmFNxbD135TT4KZs5?=
- =?us-ascii?Q?VOCIlAc3LnPnFDxVovG+ckFayKEJwfEeXKjyb2sSXpxOTtRbE8aIMf+YNFHn?=
- =?us-ascii?Q?zjMambWTK7iQDaat8Qwrx/9MYPeP+bJpV4WedLMiiY+LOMkJ4eBwdTzK0u2I?=
- =?us-ascii?Q?RWH2ZmHwUhrKDgbW2xHEpX5F9FLN/407gPiiBq/gzZZzADg/xkXU/kHAgB3M?=
- =?us-ascii?Q?r3saOM/kMpLwMJdzFBoE1J19DrLAeO86dZkQ0/RhC2ughUv3mWanDO+vDuZg?=
- =?us-ascii?Q?OPmBFZe9VKHR6EULSELdUIDAec6Hp2fhIp4GdeWL9Z/yWO+oZLsmW0Y3/jwf?=
- =?us-ascii?Q?tU1v/irYT/GRa5q2aR9vbjch3wt13Z89d7qmcgSEhO/tkiXqjSHDkTntZWAS?=
- =?us-ascii?Q?doHj2Ka0Nf00dDbCLcPNL9QeY581byuoSLKc/H8S63eBcecDi/ULV0b46Kwf?=
- =?us-ascii?Q?6cyjm2G9nKgdH/JN3NahDU805kEFQ6fuhIu1Houo/+TlFHqG58neemilK5px?=
- =?us-ascii?Q?T0nqyJkOO2Nipdo7EshVaNgVkfHsvmvnr8LoZpCxvsbm+NhV7dCTPQhxhR3D?=
- =?us-ascii?Q?nkl0QwOOzwmQX8eT5qRtZ9AVaxZwUt9zL6SlajyVfpiCwdBQIyKCmK19HrLY?=
- =?us-ascii?Q?CMS9VHdcdPstH0uMVttrtjqwcPAJlspN09DhFzfrOEP55HcdZs6o2wDdE6x4?=
- =?us-ascii?Q?sJZNnCdA+JWD6uhZ6EahC4AX9agQF/sHcV8+5yso9ubpIi1R27HHBWPIVXUQ?=
- =?us-ascii?Q?SCZmIgWdkbZl5W1LLqTu2klCtqF/jnfsCpN6q4nwefEH7y5IJrdEnjjyBBt6?=
- =?us-ascii?Q?hfX9MUT2OgKI5C3FQRLrDkJ3MJcd9oHVM67CQGyBYoHicfxWLelQxeJDWpxN?=
- =?us-ascii?Q?ukpDnfUHwa46c53uYPPkSXDxhHvkpt2f5Kx18DbC4GuNlNz9C4RXzlxB7w2m?=
- =?us-ascii?Q?1ZJlmo/lvP7zXyiPfygarAorz98fDb1suTk6m10t6avoG1yR8Kd+Kzyp2enV?=
- =?us-ascii?Q?pu8TWUAqE09V7+VK4p2cNuO+W3HdsLmIYIeQSFavCQXYh+c1QWlMe2oun8jU?=
- =?us-ascii?Q?ObYV1zV3ha14gljiZgVWuusrkm75/MIF7KEt6RI0jeC3rqH469QiEuVXbjvo?=
- =?us-ascii?Q?DVqmkhnsRUb9Z4Pm5tySB6oNdi8c/o24mqFvN/1vCxiG89kWxW3cVToVIwLz?=
- =?us-ascii?Q?kbHJjKIpKh/VcKWzPVxP0McKmImXCz7vdzVSGWjqj5cG0tzIAKPA3GVLutQw?=
- =?us-ascii?Q?GvUby/LRyJDDG7g6SoBfQxfHLmQNB09kvMf3y76XJnVq9xg4ijhE9tV0FoDt?=
- =?us-ascii?Q?PbkN28pnebXjcuGeYzOz3jQjvoNkrvu/yyQZ5cYfY7x8trcDWQKVp1NC6KaZ?=
- =?us-ascii?Q?ecnPGXjYmSgazSTtbSv8EpAnxWLK/Uxyse+flFeUVHvLW4lEkwkhFmNymuYe?=
- =?us-ascii?Q?4XW7qtZShuT/1/muypRVsD7hmNFNqqr5vB2pRM43?=
+	=?us-ascii?Q?i3Et1MNgPDnxIeCBRm74MaolPNJykW6WkZXA7LXZUUK7hAmAH1NvZn0Yc1Zs?=
+ =?us-ascii?Q?tu9UtgBoB+e9hp5kmLNV24IFXLetMcnsiPGL8yOESkLzQuVRZ6vLJba6KEBk?=
+ =?us-ascii?Q?KhSssyraAHPOgEA5zJiDW2kqdzeK5eeC8y0fZyxSY/5Yd/Zx1j9+36zLOsMw?=
+ =?us-ascii?Q?8CewHwa5sPmpmawoRzXvym4rLno0mTbJhWSIv5i1bc4+H4az5sRoQAv621qg?=
+ =?us-ascii?Q?5J9REysohm4OZDWdZjZGYln33K5hiL8AbOOWfz9h92DqrDYOZztRYEGrZ+iW?=
+ =?us-ascii?Q?pkmXV5oYaCV3bOOnb0cWKLNQlSjdwmAm46JpQWO4bFyeHi6ToB+2TVm8mmhG?=
+ =?us-ascii?Q?1vwI/A+/mZh9XPXc3ww6UjJ6WuNin4ZJ1E7ZIjgnwTYSd78vc2FbWdBEbH9C?=
+ =?us-ascii?Q?LTjNei5z0VCZa3oeqME/ySY7KrgzA41HCUBluzKPbaIeOgxBoecN1XRgM3j9?=
+ =?us-ascii?Q?Ivzg6nfiXVYfoBV8YPGocn2vqKOpdJx1nmGFpWC9uvGx1/OlfGlNDeHMRzss?=
+ =?us-ascii?Q?7MJx0FRpkwkNPBmmfxb9zvfjeeQBudwWBFUh5xNhKqm2+nnrIYrZyDggSVxF?=
+ =?us-ascii?Q?NQXuW/KCeVPfGzVFOhSd/lGt/8u5utdU+ac4Cu+bqX/Ip6u+Pka3dY3FqPZE?=
+ =?us-ascii?Q?/NtF1CvLjBe/JgZTWIU4GaAUl/UH6JQNSLW82CrFFdzMrBsr7WVezbuP69ek?=
+ =?us-ascii?Q?J2vqgNow/+/atEhdt1Oscsqx7Tz2nxbse/0mkTqU5opvKO6IogoNfsyzjRvj?=
+ =?us-ascii?Q?McPWlZGDXd/g/9RecinkVVpPKob4zX29JAK/7YzcvZfRlPQD4909sFbqARLR?=
+ =?us-ascii?Q?9ik6guNT39f4i0R1paJbPZpATnMxke9I7DCc85CNsFFr4eGAvuIkCOSQ0FZq?=
+ =?us-ascii?Q?UCDJRyD/R/5etj8EQp6Z6EOqx8YWbYp0EmdP3GJ6Xukbx+X9Xfm5OmIovlTc?=
+ =?us-ascii?Q?U26eDctfalBNctaU8n11cCp8Nl826ORJa0olQiE8kNBsPDUczZiLgJzGUWlY?=
+ =?us-ascii?Q?3VYRKVlT++ELap1A690zPXlAYfNe7Bh6ejGaznRN5EjlYl7+KYgdT51Q9/uR?=
+ =?us-ascii?Q?0CNnFGbSOGAyNX5/WdSAb1PLKd9gdiv0Ue/PWXOt4FAE0Y3R/rl1epSaa7X6?=
+ =?us-ascii?Q?rgEDHB03JkrWtNN9vn4QSB/jFr+LkTZwpn7nVd5GyT187q7nv5VJYfgw1uEo?=
+ =?us-ascii?Q?EYXG1qxFIZq59yL2E/UAUSOoDiAXw/wDeenv/FQGuklDvF7REzobWp1QKZ9D?=
+ =?us-ascii?Q?F5g8aj+RsyzNjDFY4NbvHjI3xcq2viQoMLUxyi/EP4eLgB0bQjpc80DKANRR?=
+ =?us-ascii?Q?UsVah0yJqG9GfrjMrlxBzRIeVBaKv+3xNKQcTjCUXxbb6cfPuOLPbwUrm4FL?=
+ =?us-ascii?Q?JQ1s0w5qlvUsQS4Nwn0it6gEpoW7NDUNs5OW3uw3gaH1pMk8g52yKFqF1Gxe?=
+ =?us-ascii?Q?rB8+ttofqir6LrZ45Wpt2FRv730M0pUFwmlXQTacEUgGHRbIgYU/JvLdKhsM?=
+ =?us-ascii?Q?sDMNZBpwyNbO3c4pjkvmQ0oRIq9Mde/e5dkCVogm17uxlS6QzTiwqMAq5Xi4?=
+ =?us-ascii?Q?37sTwcjv8cuCpBu1ogea5a3dxnsgqP6mIqzzLOFsH+9WxlLEw1R3B+4h0x85?=
+ =?us-ascii?Q?6A=3D=3D?=
 X-OriginatorOrg: windriver.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1d797071-0b42-4a9f-6757-08dd9672e22a
+X-MS-Exchange-CrossTenant-Network-Message-Id: e1659027-60f9-444a-10d3-08dd96747512
 X-MS-Exchange-CrossTenant-AuthSource: IA1PR11MB7174.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 May 2025 01:17:12.4517
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 May 2025 01:28:28.3922
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jw9JUqvvpxWZ1FufBienhKl76Exf0nY8cIPHqCHsFs3AoKL1TEP8dh1akxoBJG3dygoCbcxQXFeT0hnPTo30lQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR11MB6130
-X-Authority-Analysis: v=2.4 cv=a8kw9VSF c=1 sm=1 tr=0 ts=682a86a1 cx=c_pps a=S2IcI55zTQM2EKrhu3zyRw==:117 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=dt9VzEwgFbYA:10
- a=VwQbUJbxAAAA:8 a=KKAkSRfTAAAA:8 a=t7CeM3EgAAAA:8 a=IYtqZXSvkW_t-lYs0WcA:9 a=cvBusfyB2V15izCimMoJ:22 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-GUID: y94X1vZnbTgfn-WgV-w_z-qOn1I1QLxT
-X-Proofpoint-ORIG-GUID: y94X1vZnbTgfn-WgV-w_z-qOn1I1QLxT
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE5MDAwOSBTYWx0ZWRfX99vIA5iYPZiu x2rBIm841R8vE2ewd8/oRJHhf2FEEXwu5OCWFycCKT5HXkAPK4JE1zXqT4X2hb0l6Bbrguh23Vx +KiQ8eqzJ83UD8yBBhx6ae0oA76zKmI8EuHlqqgighjfh08b4+VXMxoITMwpjBqxtnSqQ65vs0m
- uNj9pkYzuZBgpBqhyE+gV8vvSIZJeQlndejOEF15q1BGreEq3oPIIcgVk+moSP8GNnXk3a3V6t7 WroW7ziYlvaArHMcaSJCO0n63UjuiHZYQJccqebxA0sRCcZ0d9Rw+B7s9oX6KDjL8bW6ysnSCkr IUgf0ZQSAJfPqG1w5MBWGiQtexbkN1WzQzttGyl9O3zz3Z6EHXmLHpu8pI1cwAc5KzsMVBgjd2y
- k34vb2Rj2X/pwKTdal2EWnIdkeUJiqHk8y4uxvTG3QSYBt2U0JnJZTT1GWnY+zDsMFmig8Qi
+X-MS-Exchange-CrossTenant-UserPrincipalName: 9d5vcjLm6fKWl0dFRwEaCYR2x9lAVg6VMEERtS6Z9lkOQdn4ZeUsKts6grGvo+YDwrMpLxkt6D2RwSn1MEOBNw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB4774
+X-Authority-Analysis: v=2.4 cv=F8pXdrhN c=1 sm=1 tr=0 ts=682a8941 cx=c_pps a=98TgpmV4a5moxWevO5qy4g==:117 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=dt9VzEwgFbYA:10
+ a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=bC-a23v3AAAA:8 a=pGLkceISAAAA:8 a=t7CeM3EgAAAA:8 a=Q_-QqQvvsW3-AdnsPqgA:9 a=-FEs8UIgK8oA:10 a=FO4_E8m0qiDe52t0p3_H:22 a=FdTzh2GWekK77mhwV6Dw:22
+X-Proofpoint-GUID: 1qyMO4L3ixsNM6VHRMpjgWfRaAW-raQ7
+X-Proofpoint-ORIG-GUID: 1qyMO4L3ixsNM6VHRMpjgWfRaAW-raQ7
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNTE5MDAxMSBTYWx0ZWRfX4bsxtJjqbqQB AtZnfv4e44bCZ9dEtqpXoPiAuBMNWSzwLQDX6XfhAZUEcbxYkflE3EiTxwGe6iEq8yfqGaag8Tw Kpg7NMHh0QVe0lG1LeikfWIIXuh7tA9942wfepv/jBVU+0NhvJaWfr7UhqWfgMT7yw7HhrO+h+i
+ e+PLnh9hrbqe3cKDB+y6UpXf5VN1kuSZl4z2t0tVlBG70WavNmrNaQuVo53pb/uhHcZQZRtu2h6 NmkDWCef161CV5lalxXr1zUAHgkq6DIdw+xyC/tV6BGEuEqBjjHV4VcNcj4ebErt+QszLB2qz/Z oMZRAOZdU7JnlW4f7FMKae2y4aHGOP9YjHsmXPjoJ0TEaAhmQIllnV9xz4xurWngqiMUb3HreqZ
+ GTIzmUJhCaLb9FOj/gGsQsiW2SuWGdj04g5XoZNIH8NVA7hYgq8mpsh2GyaHf0QRpG8JnRiz
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
  definitions=2025-05-18_12,2025-05-16_03,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 malwarescore=0
- lowpriorityscore=0 adultscore=0 spamscore=0 bulkscore=0 phishscore=0
- impostorscore=0 mlxlogscore=999 mlxscore=0 priorityscore=1501
- clxscore=1011 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.21.0-2505070000
- definitions=main-2505190009
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 spamscore=0
+ adultscore=0 mlxlogscore=999 priorityscore=1501 malwarescore=0 bulkscore=0
+ mlxscore=0 suspectscore=0 impostorscore=0 lowpriorityscore=0 clxscore=1011
+ classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.21.0-2505070000
+ definitions=main-2505190011
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Nicholas Piggin <npiggin@gmail.com>
 
-[ Upstream commit 96fadf7e8ff49fdb74754801228942b67c3eeebd ]
+[ commit 21a741eb75f80397e5f7d3739e24d7d75e619011 upstream ]
 
-Q6afe-clocks driver can get reprobed. For example if the APR services
-are restarted after the firmware crash. However currently Q6afe-clocks
-driver will oops because hw.init will get cleared during first _probe
-call. Rewrite the driver to fill the clock data at runtime rather than
-using big static array of clocks.
+kexec on pseries disables AIL (reloc_on_exc), required for scv
+instruction support, before other CPUs have been shut down. This means
+they can execute scv instructions after AIL is disabled, which causes an
+interrupt at an unexpected entry location that crashes the kernel.
 
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Reviewed-by: Stephen Boyd <sboyd@kernel.org>
-Fixes: 520a1c396d19 ("ASoC: q6afe-clocks: add q6afe clock controller")
-Link: https://lore.kernel.org/r/20210327092857.3073879-1-dmitry.baryshkov@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-[Minor context change fixed]
+Change the kexec sequence to disable AIL after other CPUs have been
+brought down.
+
+As a refresher, the real-mode scv interrupt vector is 0x17000, and the
+fixed-location head code probably couldn't easily deal with implementing
+such high addresses so it was just decided not to support that interrupt
+at all.
+
+Fixes: 7fa95f9adaee ("powerpc/64s: system call support for scv/rfscv instructions")
+Cc: stable@vger.kernel.org # v5.9+
+Reported-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Closes: https://lore.kernel.org/3b4b2943-49ad-4619-b195-bc416f1d1409@linux.ibm.com
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Tested-by: Gautam Menghani <gautam@linux.ibm.com>
+Tested-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Link: https://msgid.link/20240625134047.298759-1-npiggin@gmail.com
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+[pSeries_machine_kexec hadn't been moved to kexec.c in v5.10, fix context accordingly]
 Signed-off-by: Feng Liu <Feng.Liu3@windriver.com>
 Signed-off-by: He Zhe <Zhe.He@windriver.com>
 ---
 Verified the build test.
 ---
- sound/soc/qcom/qdsp6/q6afe-clocks.c | 209 ++++++++++++++--------------
- sound/soc/qcom/qdsp6/q6afe.c        |   2 +-
- sound/soc/qcom/qdsp6/q6afe.h        |   2 +-
- 3 files changed, 108 insertions(+), 105 deletions(-)
+ arch/powerpc/kexec/core_64.c           | 11 +++++++++++
+ arch/powerpc/platforms/pseries/setup.c | 11 -----------
+ 2 files changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/sound/soc/qcom/qdsp6/q6afe-clocks.c b/sound/soc/qcom/qdsp6/q6afe-clocks.c
-index acfc0c698f6a..9431656283cd 100644
---- a/sound/soc/qcom/qdsp6/q6afe-clocks.c
-+++ b/sound/soc/qcom/qdsp6/q6afe-clocks.c
-@@ -11,33 +11,29 @@
- #include <linux/slab.h>
- #include "q6afe.h"
+diff --git a/arch/powerpc/kexec/core_64.c b/arch/powerpc/kexec/core_64.c
+index 8a449b2d8715..ffc57d5a39a6 100644
+--- a/arch/powerpc/kexec/core_64.c
++++ b/arch/powerpc/kexec/core_64.c
+@@ -26,6 +26,7 @@
+ #include <asm/mmu.h>
+ #include <asm/sections.h>	/* _end */
+ #include <asm/prom.h>
++#include <asm/setup.h>
+ #include <asm/smp.h>
+ #include <asm/hw_breakpoint.h>
+ #include <asm/asm-prototypes.h>
+@@ -313,6 +314,16 @@ void default_machine_kexec(struct kimage *image)
+ 	if (!kdump_in_progress())
+ 		kexec_prepare_cpus();
  
--#define Q6AFE_CLK(id) &(struct q6afe_clk) {		\
-+#define Q6AFE_CLK(id) {					\
- 		.clk_id	= id,				\
- 		.afe_clk_id	= Q6AFE_##id,		\
- 		.name = #id,				\
--		.attributes = LPASS_CLK_ATTRIBUTE_COUPLE_NO, \
- 		.rate = 19200000,			\
--		.hw.init = &(struct clk_init_data) {	\
--			.ops = &clk_q6afe_ops,		\
--			.name = #id,			\
--		},					\
- 	}
- 
--#define Q6AFE_VOTE_CLK(id, blkid, n) &(struct q6afe_clk) { \
-+#define Q6AFE_VOTE_CLK(id, blkid, n) {			\
- 		.clk_id	= id,				\
- 		.afe_clk_id = blkid,			\
--		.name = #n,				\
--		.hw.init = &(struct clk_init_data) {	\
--			.ops = &clk_vote_q6afe_ops,	\
--			.name = #id,			\
--		},					\
-+		.name = n,				\
- 	}
- 
--struct q6afe_clk {
--	struct device *dev;
-+struct q6afe_clk_init {
- 	int clk_id;
- 	int afe_clk_id;
- 	char *name;
-+	int rate;
-+};
++#ifdef CONFIG_PPC_PSERIES
++	/*
++	 * This must be done after other CPUs have shut down, otherwise they
++	 * could execute the 'scv' instruction, which is not supported with
++	 * reloc disabled (see configure_exceptions()).
++	 */
++	if (firmware_has_feature(FW_FEATURE_SET_MODE))
++		pseries_disable_reloc_on_exc();
++#endif
 +
-+struct q6afe_clk {
-+	struct device *dev;
-+	int afe_clk_id;
- 	int attributes;
- 	int rate;
- 	uint32_t handle;
-@@ -48,8 +44,7 @@ struct q6afe_clk {
+ 	printk("kexec: Starting switchover sequence.\n");
  
- struct q6afe_cc {
- 	struct device *dev;
--	struct q6afe_clk **clks;
--	int num_clks;
-+	struct q6afe_clk *clks[Q6AFE_MAX_CLK_ID];
- };
- 
- static int clk_q6afe_prepare(struct clk_hw *hw)
-@@ -105,7 +100,7 @@ static int clk_vote_q6afe_block(struct clk_hw *hw)
- 	struct q6afe_clk *clk = to_q6afe_clk(hw);
- 
- 	return q6afe_vote_lpass_core_hw(clk->dev, clk->afe_clk_id,
--					clk->name, &clk->handle);
-+					clk_hw_get_name(&clk->hw), &clk->handle);
+ 	/* switch to a staticly allocated stack.  Based on irq stack code.
+diff --git a/arch/powerpc/platforms/pseries/setup.c b/arch/powerpc/platforms/pseries/setup.c
+index 8e4a2e8aee11..be4d35354daf 100644
+--- a/arch/powerpc/platforms/pseries/setup.c
++++ b/arch/powerpc/platforms/pseries/setup.c
+@@ -409,16 +409,6 @@ void pseries_disable_reloc_on_exc(void)
  }
+ EXPORT_SYMBOL(pseries_disable_reloc_on_exc);
  
- static void clk_unvote_q6afe_block(struct clk_hw *hw)
-@@ -120,84 +115,76 @@ static const struct clk_ops clk_vote_q6afe_ops = {
- 	.unprepare	= clk_unvote_q6afe_block,
- };
- 
--struct q6afe_clk *q6afe_clks[Q6AFE_MAX_CLK_ID] = {
--	[LPASS_CLK_ID_PRI_MI2S_IBIT] = Q6AFE_CLK(LPASS_CLK_ID_PRI_MI2S_IBIT),
--	[LPASS_CLK_ID_PRI_MI2S_EBIT] = Q6AFE_CLK(LPASS_CLK_ID_PRI_MI2S_EBIT),
--	[LPASS_CLK_ID_SEC_MI2S_IBIT] = Q6AFE_CLK(LPASS_CLK_ID_SEC_MI2S_IBIT),
--	[LPASS_CLK_ID_SEC_MI2S_EBIT] = Q6AFE_CLK(LPASS_CLK_ID_SEC_MI2S_EBIT),
--	[LPASS_CLK_ID_TER_MI2S_IBIT] = Q6AFE_CLK(LPASS_CLK_ID_TER_MI2S_IBIT),
--	[LPASS_CLK_ID_TER_MI2S_EBIT] = Q6AFE_CLK(LPASS_CLK_ID_TER_MI2S_EBIT),
--	[LPASS_CLK_ID_QUAD_MI2S_IBIT] = Q6AFE_CLK(LPASS_CLK_ID_QUAD_MI2S_IBIT),
--	[LPASS_CLK_ID_QUAD_MI2S_EBIT] = Q6AFE_CLK(LPASS_CLK_ID_QUAD_MI2S_EBIT),
--	[LPASS_CLK_ID_SPEAKER_I2S_IBIT] =
--				Q6AFE_CLK(LPASS_CLK_ID_SPEAKER_I2S_IBIT),
--	[LPASS_CLK_ID_SPEAKER_I2S_EBIT] =
--				Q6AFE_CLK(LPASS_CLK_ID_SPEAKER_I2S_EBIT),
--	[LPASS_CLK_ID_SPEAKER_I2S_OSR] =
--				Q6AFE_CLK(LPASS_CLK_ID_SPEAKER_I2S_OSR),
--	[LPASS_CLK_ID_QUI_MI2S_IBIT] = Q6AFE_CLK(LPASS_CLK_ID_QUI_MI2S_IBIT),
--	[LPASS_CLK_ID_QUI_MI2S_EBIT] = Q6AFE_CLK(LPASS_CLK_ID_QUI_MI2S_EBIT),
--	[LPASS_CLK_ID_SEN_MI2S_IBIT] = Q6AFE_CLK(LPASS_CLK_ID_SEN_MI2S_IBIT),
--	[LPASS_CLK_ID_SEN_MI2S_EBIT] = Q6AFE_CLK(LPASS_CLK_ID_SEN_MI2S_EBIT),
--	[LPASS_CLK_ID_INT0_MI2S_IBIT] = Q6AFE_CLK(LPASS_CLK_ID_INT0_MI2S_IBIT),
--	[LPASS_CLK_ID_INT1_MI2S_IBIT] = Q6AFE_CLK(LPASS_CLK_ID_INT1_MI2S_IBIT),
--	[LPASS_CLK_ID_INT2_MI2S_IBIT] = Q6AFE_CLK(LPASS_CLK_ID_INT2_MI2S_IBIT),
--	[LPASS_CLK_ID_INT3_MI2S_IBIT] = Q6AFE_CLK(LPASS_CLK_ID_INT3_MI2S_IBIT),
--	[LPASS_CLK_ID_INT4_MI2S_IBIT] = Q6AFE_CLK(LPASS_CLK_ID_INT4_MI2S_IBIT),
--	[LPASS_CLK_ID_INT5_MI2S_IBIT] = Q6AFE_CLK(LPASS_CLK_ID_INT5_MI2S_IBIT),
--	[LPASS_CLK_ID_INT6_MI2S_IBIT] = Q6AFE_CLK(LPASS_CLK_ID_INT6_MI2S_IBIT),
--	[LPASS_CLK_ID_QUI_MI2S_OSR] = Q6AFE_CLK(LPASS_CLK_ID_QUI_MI2S_OSR),
--	[LPASS_CLK_ID_PRI_PCM_IBIT] = Q6AFE_CLK(LPASS_CLK_ID_PRI_PCM_IBIT),
--	[LPASS_CLK_ID_PRI_PCM_EBIT] = Q6AFE_CLK(LPASS_CLK_ID_PRI_PCM_EBIT),
--	[LPASS_CLK_ID_SEC_PCM_IBIT] = Q6AFE_CLK(LPASS_CLK_ID_SEC_PCM_IBIT),
--	[LPASS_CLK_ID_SEC_PCM_EBIT] = Q6AFE_CLK(LPASS_CLK_ID_SEC_PCM_EBIT),
--	[LPASS_CLK_ID_TER_PCM_IBIT] = Q6AFE_CLK(LPASS_CLK_ID_TER_PCM_IBIT),
--	[LPASS_CLK_ID_TER_PCM_EBIT] = Q6AFE_CLK(LPASS_CLK_ID_TER_PCM_EBIT),
--	[LPASS_CLK_ID_QUAD_PCM_IBIT] = Q6AFE_CLK(LPASS_CLK_ID_QUAD_PCM_IBIT),
--	[LPASS_CLK_ID_QUAD_PCM_EBIT] = Q6AFE_CLK(LPASS_CLK_ID_QUAD_PCM_EBIT),
--	[LPASS_CLK_ID_QUIN_PCM_IBIT] = Q6AFE_CLK(LPASS_CLK_ID_QUIN_PCM_IBIT),
--	[LPASS_CLK_ID_QUIN_PCM_EBIT] = Q6AFE_CLK(LPASS_CLK_ID_QUIN_PCM_EBIT),
--	[LPASS_CLK_ID_QUI_PCM_OSR] = Q6AFE_CLK(LPASS_CLK_ID_QUI_PCM_OSR),
--	[LPASS_CLK_ID_PRI_TDM_IBIT] = Q6AFE_CLK(LPASS_CLK_ID_PRI_TDM_IBIT),
--	[LPASS_CLK_ID_PRI_TDM_EBIT] = Q6AFE_CLK(LPASS_CLK_ID_PRI_TDM_EBIT),
--	[LPASS_CLK_ID_SEC_TDM_IBIT] = Q6AFE_CLK(LPASS_CLK_ID_SEC_TDM_IBIT),
--	[LPASS_CLK_ID_SEC_TDM_EBIT] = Q6AFE_CLK(LPASS_CLK_ID_SEC_TDM_EBIT),
--	[LPASS_CLK_ID_TER_TDM_IBIT] = Q6AFE_CLK(LPASS_CLK_ID_TER_TDM_IBIT),
--	[LPASS_CLK_ID_TER_TDM_EBIT] = Q6AFE_CLK(LPASS_CLK_ID_TER_TDM_EBIT),
--	[LPASS_CLK_ID_QUAD_TDM_IBIT] = Q6AFE_CLK(LPASS_CLK_ID_QUAD_TDM_IBIT),
--	[LPASS_CLK_ID_QUAD_TDM_EBIT] = Q6AFE_CLK(LPASS_CLK_ID_QUAD_TDM_EBIT),
--	[LPASS_CLK_ID_QUIN_TDM_IBIT] = Q6AFE_CLK(LPASS_CLK_ID_QUIN_TDM_IBIT),
--	[LPASS_CLK_ID_QUIN_TDM_EBIT] = Q6AFE_CLK(LPASS_CLK_ID_QUIN_TDM_EBIT),
--	[LPASS_CLK_ID_QUIN_TDM_OSR] = Q6AFE_CLK(LPASS_CLK_ID_QUIN_TDM_OSR),
--	[LPASS_CLK_ID_MCLK_1] = Q6AFE_CLK(LPASS_CLK_ID_MCLK_1),
--	[LPASS_CLK_ID_MCLK_2] = Q6AFE_CLK(LPASS_CLK_ID_MCLK_2),
--	[LPASS_CLK_ID_MCLK_3] = Q6AFE_CLK(LPASS_CLK_ID_MCLK_3),
--	[LPASS_CLK_ID_MCLK_4] = Q6AFE_CLK(LPASS_CLK_ID_MCLK_4),
--	[LPASS_CLK_ID_INTERNAL_DIGITAL_CODEC_CORE] =
--		Q6AFE_CLK(LPASS_CLK_ID_INTERNAL_DIGITAL_CODEC_CORE),
--	[LPASS_CLK_ID_INT_MCLK_0] = Q6AFE_CLK(LPASS_CLK_ID_INT_MCLK_0),
--	[LPASS_CLK_ID_INT_MCLK_1] = Q6AFE_CLK(LPASS_CLK_ID_INT_MCLK_1),
--	[LPASS_CLK_ID_WSA_CORE_MCLK] = Q6AFE_CLK(LPASS_CLK_ID_WSA_CORE_MCLK),
--	[LPASS_CLK_ID_WSA_CORE_NPL_MCLK] =
--				Q6AFE_CLK(LPASS_CLK_ID_WSA_CORE_NPL_MCLK),
--	[LPASS_CLK_ID_VA_CORE_MCLK] = Q6AFE_CLK(LPASS_CLK_ID_VA_CORE_MCLK),
--	[LPASS_CLK_ID_TX_CORE_MCLK] = Q6AFE_CLK(LPASS_CLK_ID_TX_CORE_MCLK),
--	[LPASS_CLK_ID_TX_CORE_NPL_MCLK] =
--			Q6AFE_CLK(LPASS_CLK_ID_TX_CORE_NPL_MCLK),
--	[LPASS_CLK_ID_RX_CORE_MCLK] = Q6AFE_CLK(LPASS_CLK_ID_RX_CORE_MCLK),
--	[LPASS_CLK_ID_RX_CORE_NPL_MCLK] =
--				Q6AFE_CLK(LPASS_CLK_ID_RX_CORE_NPL_MCLK),
--	[LPASS_CLK_ID_VA_CORE_2X_MCLK] =
--				Q6AFE_CLK(LPASS_CLK_ID_VA_CORE_2X_MCLK),
--	[LPASS_HW_AVTIMER_VOTE] = Q6AFE_VOTE_CLK(LPASS_HW_AVTIMER_VOTE,
--						 Q6AFE_LPASS_CORE_AVTIMER_BLOCK,
--						 "LPASS_AVTIMER_MACRO"),
--	[LPASS_HW_MACRO_VOTE] = Q6AFE_VOTE_CLK(LPASS_HW_MACRO_VOTE,
--						Q6AFE_LPASS_CORE_HW_MACRO_BLOCK,
--						"LPASS_HW_MACRO"),
--	[LPASS_HW_DCODEC_VOTE] = Q6AFE_VOTE_CLK(LPASS_HW_DCODEC_VOTE,
--					Q6AFE_LPASS_CORE_HW_DCODEC_BLOCK,
--					"LPASS_HW_DCODEC"),
-+static const struct q6afe_clk_init q6afe_clks[] = {
-+	Q6AFE_CLK(LPASS_CLK_ID_PRI_MI2S_IBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_PRI_MI2S_EBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_SEC_MI2S_IBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_SEC_MI2S_EBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_TER_MI2S_IBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_TER_MI2S_EBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_QUAD_MI2S_IBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_QUAD_MI2S_EBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_SPEAKER_I2S_IBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_SPEAKER_I2S_EBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_SPEAKER_I2S_OSR),
-+	Q6AFE_CLK(LPASS_CLK_ID_QUI_MI2S_IBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_QUI_MI2S_EBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_SEN_MI2S_IBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_SEN_MI2S_EBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_INT0_MI2S_IBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_INT1_MI2S_IBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_INT2_MI2S_IBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_INT3_MI2S_IBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_INT4_MI2S_IBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_INT5_MI2S_IBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_INT6_MI2S_IBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_QUI_MI2S_OSR),
-+	Q6AFE_CLK(LPASS_CLK_ID_PRI_PCM_IBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_PRI_PCM_EBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_SEC_PCM_IBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_SEC_PCM_EBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_TER_PCM_IBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_TER_PCM_EBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_QUAD_PCM_IBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_QUAD_PCM_EBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_QUIN_PCM_IBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_QUIN_PCM_EBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_QUI_PCM_OSR),
-+	Q6AFE_CLK(LPASS_CLK_ID_PRI_TDM_IBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_PRI_TDM_EBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_SEC_TDM_IBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_SEC_TDM_EBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_TER_TDM_IBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_TER_TDM_EBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_QUAD_TDM_IBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_QUAD_TDM_EBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_QUIN_TDM_IBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_QUIN_TDM_EBIT),
-+	Q6AFE_CLK(LPASS_CLK_ID_QUIN_TDM_OSR),
-+	Q6AFE_CLK(LPASS_CLK_ID_MCLK_1),
-+	Q6AFE_CLK(LPASS_CLK_ID_MCLK_2),
-+	Q6AFE_CLK(LPASS_CLK_ID_MCLK_3),
-+	Q6AFE_CLK(LPASS_CLK_ID_MCLK_4),
-+	Q6AFE_CLK(LPASS_CLK_ID_INTERNAL_DIGITAL_CODEC_CORE),
-+	Q6AFE_CLK(LPASS_CLK_ID_INT_MCLK_0),
-+	Q6AFE_CLK(LPASS_CLK_ID_INT_MCLK_1),
-+	Q6AFE_CLK(LPASS_CLK_ID_WSA_CORE_MCLK),
-+	Q6AFE_CLK(LPASS_CLK_ID_WSA_CORE_NPL_MCLK),
-+	Q6AFE_CLK(LPASS_CLK_ID_VA_CORE_MCLK),
-+	Q6AFE_CLK(LPASS_CLK_ID_TX_CORE_MCLK),
-+	Q6AFE_CLK(LPASS_CLK_ID_TX_CORE_NPL_MCLK),
-+	Q6AFE_CLK(LPASS_CLK_ID_RX_CORE_MCLK),
-+	Q6AFE_CLK(LPASS_CLK_ID_RX_CORE_NPL_MCLK),
-+	Q6AFE_CLK(LPASS_CLK_ID_VA_CORE_2X_MCLK),
-+	Q6AFE_VOTE_CLK(LPASS_HW_AVTIMER_VOTE,
-+		       Q6AFE_LPASS_CORE_AVTIMER_BLOCK,
-+		       "LPASS_AVTIMER_MACRO"),
-+	Q6AFE_VOTE_CLK(LPASS_HW_MACRO_VOTE,
-+		       Q6AFE_LPASS_CORE_HW_MACRO_BLOCK,
-+		       "LPASS_HW_MACRO"),
-+	Q6AFE_VOTE_CLK(LPASS_HW_DCODEC_VOTE,
-+		       Q6AFE_LPASS_CORE_HW_DCODEC_BLOCK,
-+		       "LPASS_HW_DCODEC"),
- };
- 
- static struct clk_hw *q6afe_of_clk_hw_get(struct of_phandle_args *clkspec,
-@@ -207,7 +194,7 @@ static struct clk_hw *q6afe_of_clk_hw_get(struct of_phandle_args *clkspec,
- 	unsigned int idx = clkspec->args[0];
- 	unsigned int attr = clkspec->args[1];
- 
--	if (idx >= cc->num_clks || attr > LPASS_CLK_ATTRIBUTE_COUPLE_DIVISOR) {
-+	if (idx >= Q6AFE_MAX_CLK_ID || attr > LPASS_CLK_ATTRIBUTE_COUPLE_DIVISOR) {
- 		dev_err(cc->dev, "Invalid clk specifier (%d, %d)\n", idx, attr);
- 		return ERR_PTR(-EINVAL);
- 	}
-@@ -230,20 +217,36 @@ static int q6afe_clock_dev_probe(struct platform_device *pdev)
- 	if (!cc)
- 		return -ENOMEM;
- 
--	cc->clks = &q6afe_clks[0];
--	cc->num_clks = ARRAY_SIZE(q6afe_clks);
-+	cc->dev = dev;
- 	for (i = 0; i < ARRAY_SIZE(q6afe_clks); i++) {
--		if (!q6afe_clks[i])
--			continue;
-+		unsigned int id = q6afe_clks[i].clk_id;
-+		struct clk_init_data init = {
-+			.name =  q6afe_clks[i].name,
-+		};
-+		struct q6afe_clk *clk;
-+
-+		clk = devm_kzalloc(dev, sizeof(*clk), GFP_KERNEL);
-+		if (!clk)
-+			return -ENOMEM;
-+
-+		clk->dev = dev;
-+		clk->afe_clk_id = q6afe_clks[i].afe_clk_id;
-+		clk->rate = q6afe_clks[i].rate;
-+		clk->hw.init = &init;
-+
-+		if (clk->rate)
-+			init.ops = &clk_q6afe_ops;
-+		else
-+			init.ops = &clk_vote_q6afe_ops;
- 
--		q6afe_clks[i]->dev = dev;
-+		cc->clks[id] = clk;
- 
--		ret = devm_clk_hw_register(dev, &q6afe_clks[i]->hw);
-+		ret = devm_clk_hw_register(dev, &clk->hw);
- 		if (ret)
- 			return ret;
- 	}
- 
--	ret = of_clk_add_hw_provider(dev->of_node, q6afe_of_clk_hw_get, cc);
-+	ret = devm_of_clk_add_hw_provider(dev, q6afe_of_clk_hw_get, cc);
- 	if (ret)
- 		return ret;
- 
-diff --git a/sound/soc/qcom/qdsp6/q6afe.c b/sound/soc/qcom/qdsp6/q6afe.c
-index 0ca1e4aae518..7be495336446 100644
---- a/sound/soc/qcom/qdsp6/q6afe.c
-+++ b/sound/soc/qcom/qdsp6/q6afe.c
-@@ -1681,7 +1681,7 @@ int q6afe_unvote_lpass_core_hw(struct device *dev, uint32_t hw_block_id,
- EXPORT_SYMBOL(q6afe_unvote_lpass_core_hw);
- 
- int q6afe_vote_lpass_core_hw(struct device *dev, uint32_t hw_block_id,
--			     char *client_name, uint32_t *client_handle)
-+			     const char *client_name, uint32_t *client_handle)
+-#ifdef CONFIG_KEXEC_CORE
+-static void pSeries_machine_kexec(struct kimage *image)
+-{
+-	if (firmware_has_feature(FW_FEATURE_SET_MODE))
+-		pseries_disable_reloc_on_exc();
+-
+-	default_machine_kexec(image);
+-}
+-#endif
+-
+ #ifdef __LITTLE_ENDIAN__
+ void pseries_big_endian_exceptions(void)
  {
- 	struct q6afe *afe = dev_get_drvdata(dev->parent);
- 	struct afe_cmd_remote_lpass_core_hw_vote_request *vote_cfg;
-diff --git a/sound/soc/qcom/qdsp6/q6afe.h b/sound/soc/qcom/qdsp6/q6afe.h
-index 22e10269aa10..3845b56c0ed3 100644
---- a/sound/soc/qcom/qdsp6/q6afe.h
-+++ b/sound/soc/qcom/qdsp6/q6afe.h
-@@ -236,7 +236,7 @@ int q6afe_port_set_sysclk(struct q6afe_port *port, int clk_id,
- int q6afe_set_lpass_clock(struct device *dev, int clk_id, int clk_src,
- 			  int clk_root, unsigned int freq);
- int q6afe_vote_lpass_core_hw(struct device *dev, uint32_t hw_block_id,
--			     char *client_name, uint32_t *client_handle);
-+			     const char *client_name, uint32_t *client_handle);
- int q6afe_unvote_lpass_core_hw(struct device *dev, uint32_t hw_block_id,
- 			       uint32_t client_handle);
- #endif /* __Q6AFE_H__ */
+@@ -1071,7 +1061,6 @@ define_machine(pseries) {
+ 	.machine_check_early	= pseries_machine_check_realmode,
+ 	.machine_check_exception = pSeries_machine_check_exception,
+ #ifdef CONFIG_KEXEC_CORE
+-	.machine_kexec          = pSeries_machine_kexec,
+ 	.kexec_cpu_down         = pseries_kexec_cpu_down,
+ #endif
+ #ifdef CONFIG_MEMORY_HOTPLUG_SPARSE
 -- 
 2.34.1
 
