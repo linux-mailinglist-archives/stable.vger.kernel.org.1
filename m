@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-145497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AAB27ABDC28
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:21:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31757ABDB22
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:07:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E2647B7998
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:15:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC6A71891D76
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:05:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A08DE250BF0;
-	Tue, 20 May 2025 14:12:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 484D0244663;
+	Tue, 20 May 2025 14:04:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BMpgag4Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EvdOcD3K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F6B124A052;
-	Tue, 20 May 2025 14:12:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A2C242907;
+	Tue, 20 May 2025 14:04:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750347; cv=none; b=R4AytrBrtrV+K3NCDXD+lfbKYUsolgAtgYFfOocTGU97RxQMmrx5cwPF2mXx6DvS13b6ChPr5SxI58I4/3GCcdXG9mA8kk5LMtxr4UR5uuHsqloDCPvs0ARcSccd7XgHlrz0I1vnGxfyx/H/T8iw1mqsWm13T7uiXivu2gnVmEE=
+	t=1747749896; cv=none; b=ejyWT+qIJfEgVQ+jjipv3ylf/z59JHgImZn8GlIzwNxpGdLdpXPMLheIcp+gXbBVFlaud5Hzkab6Z8xp+Z3hT448acc55XXa/hX1EzjrKXDr7aJcb87OhXCOelM6INfbAazCRI88UhOoHj+ffBL5EMjLEPO/gpERIQEZkbrWH0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750347; c=relaxed/simple;
-	bh=EQLXH4LxiFejAzhv20VBaFAD2Uzuft4a0NomYrx86So=;
+	s=arc-20240116; t=1747749896; c=relaxed/simple;
+	bh=+1+H1/RveEw6QY3+07d1ycOzyWK91PerJsw8LeU45dg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JakVQq6kEheK9acPIcMbxZFXIL2GiEwdiNXzpWuayeC/PzhP/NXgXrysQoT0hs8cbQkj2mE73yojJWTGzjpZZYbEEzfs18JFYbNWO9ZzSAeXX07+zr0w1xc4L+8L33vQo0qas5X2imRs2fi3BDFkGbMypNOqpDClf3DahHjuY2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BMpgag4Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FABEC4CEEA;
-	Tue, 20 May 2025 14:12:26 +0000 (UTC)
+	 MIME-Version; b=P39Ab4bbdK41hxvLLTcsWU791xO7PiKkigSTLpWiTX6hnzmwRxHhP+WXhAmEyRhjkBAi8Sr0nSZRkppuZUD1cOIWe3YYkxYlHCqNrlSodst6NiOrkx4Gy7GSpxcp3AoUQIufWsYooAlLR8mumhU1hbJ2DxGVShxBK7sqS+H/AVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EvdOcD3K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 464D5C4CEE9;
+	Tue, 20 May 2025 14:04:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750347;
-	bh=EQLXH4LxiFejAzhv20VBaFAD2Uzuft4a0NomYrx86So=;
+	s=korg; t=1747749895;
+	bh=+1+H1/RveEw6QY3+07d1ycOzyWK91PerJsw8LeU45dg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BMpgag4QCnYPTGygPfxw992hKw0ElDiJnX3B8mbxIftJgMqiH7zdwuoH6ie9dBAkU
-	 7TIVQAHx8ALL/JV0ZzIqw8pQYHuOIxc/BMgbSQsidV5Aw458UdTcE5eulD70Mzz0yf
-	 inGyDX2IxMXs7WjslrwlVxtawVTmCLH0mvqmgSEk=
+	b=EvdOcD3KkoUKh2i+rEts63BDh3oJ6kioIy60VxRWDuD88D19xex9Gr+4U0N083BGH
+	 1hOvIIE2/XEQLISrnXcXxCeTrtmi2zYgwkeiyTpX36ZXllB8KQ9G935b3GPLhMj+Ew
+	 /W88o9bon8W8qd7GQUQotw+2n7Ejb0VhMzHwbg8s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Divya Indi <divya.indi@oracle.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.12 105/143] tracing: samples: Initialize trace_array_printk() with the correct function
+	Shuai Xue <xueshuai@linux.alibaba.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Fenghua Yu <fenghuay@nvidia.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.6 095/117] dmaengine: idxd: fix memory leak in error handling path of idxd_setup_engines
 Date: Tue, 20 May 2025 15:51:00 +0200
-Message-ID: <20250520125814.172476233@linuxfoundation.org>
+Message-ID: <20250520125807.755222606@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
+References: <20250520125803.981048184@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
 
-commit 1b0c192c92ea1fe2dcb178f84adf15fe37c3e7c8 upstream.
+commit 817bced19d1dbdd0b473580d026dc0983e30e17b upstream.
 
-When using trace_array_printk() on a created instance, the correct
-function to use to initialize it is:
+Memory allocated for engines is not freed if an error occurs during
+idxd_setup_engines(). To fix it, free the allocated memory in the
+reverse order of allocation before exiting the function in case of an
+error.
 
-  trace_array_init_printk()
-
-Not
-
-  trace_printk_init_buffer()
-
-The former is a proper function to use, the latter is for initializing
-trace_printk() and causes the NOTICE banner to be displayed.
-
+Fixes: 75b911309060 ("dmaengine: idxd: fix engine conf_dev lifetime")
 Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Divya Indi <divya.indi@oracle.com>
-Link: https://lore.kernel.org/20250509152657.0f6744d9@gandalf.local.home
-Fixes: 89ed42495ef4a ("tracing: Sample module to demonstrate kernel access to Ftrace instances.")
-Fixes: 38ce2a9e33db6 ("tracing: Add trace_array_init_printk() to initialize instance trace_printk() buffers")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Reviewed-by: Fenghua Yu <fenghuay@nvidia.com>
+Link: https://lore.kernel.org/r/20250404120217.48772-3-xueshuai@linux.alibaba.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- samples/ftrace/sample-trace-array.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma/idxd/init.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/samples/ftrace/sample-trace-array.c
-+++ b/samples/ftrace/sample-trace-array.c
-@@ -112,7 +112,7 @@ static int __init sample_trace_array_ini
- 	/*
- 	 * If context specific per-cpu buffers havent already been allocated.
- 	 */
--	trace_printk_init_buffers();
-+	trace_array_init_printk(tr);
+--- a/drivers/dma/idxd/init.c
++++ b/drivers/dma/idxd/init.c
+@@ -265,6 +265,7 @@ static int idxd_setup_engines(struct idx
+ 		rc = dev_set_name(conf_dev, "engine%d.%d", idxd->id, engine->id);
+ 		if (rc < 0) {
+ 			put_device(conf_dev);
++			kfree(engine);
+ 			goto err;
+ 		}
  
- 	simple_tsk = kthread_run(simple_thread, NULL, "sample-instance");
- 	if (IS_ERR(simple_tsk)) {
+@@ -278,7 +279,10 @@ static int idxd_setup_engines(struct idx
+ 		engine = idxd->engines[i];
+ 		conf_dev = engine_confdev(engine);
+ 		put_device(conf_dev);
++		kfree(engine);
+ 	}
++	kfree(idxd->engines);
++
+ 	return rc;
+ }
+ 
 
 
 
