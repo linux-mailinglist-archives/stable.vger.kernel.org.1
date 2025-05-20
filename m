@@ -1,151 +1,73 @@
-Return-Path: <stable+bounces-145047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145050-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACC04ABD2F2
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 11:14:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AD84ABD473
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 12:22:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EAB01BA2E1F
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 09:14:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D35A7B044C
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 10:21:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7288F2676DF;
-	Tue, 20 May 2025 09:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E70A268683;
+	Tue, 20 May 2025 10:22:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eOlXRnAZ"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DDB22676DC;
-	Tue, 20 May 2025 09:13:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1728326772C
+	for <stable@vger.kernel.org>; Tue, 20 May 2025 10:22:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747732407; cv=none; b=e20Y0j1zQdVa4+fj8urAx7f1Ssoz/c9g9XEAx7xVHnBhVeT7AvwV0LG875jOVmFGSrwC9aGhFKwY3H2MWq2KIV7DZ8S4ClXXH4//nZqvVIFqrzmHIMXrJvn6sBSZhMwUBtdKU7AaAAXC7byJrW6Hxph4m7n2OuqE8I4btq5drmE=
+	t=1747736570; cv=none; b=MQ4UCTkogvbCEJsTobNbitUVYdTenJjbmoX+ehg2/dNy6TZEZnOq6lhEuCRkBRWNHMpqcw8BZGTIeeSnFlryj5m9xUROFDhtnNveUwzfIeeDwKfmJjPiAL+yzgKPmKQ3Q+MSHSxVJmqTfq+NxBnttjxknDMXz5rs2ran0eOD0xo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747732407; c=relaxed/simple;
-	bh=Hh9qJZdaF4ZQAaENwivk2JifLFjrU3RWeIo0TJd3veQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GCBwSvNx7VcMLMF3GOGwStgKDX7CLGMABx593J1ShbCUElaLM0QNcqux0bc2f/dPt9VbQtLlsWmHkNVn5FTtGuUPELKinuMhnMs+Nz1bK8ugzT1b+2H9BrPdHlEEUv+WdRk4G/mhN3b/e0Vj+tV6isdOTrM3GkRGKPd0WrUWrLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6BBE2152B;
-	Tue, 20 May 2025 02:13:11 -0700 (PDT)
-Received: from [10.164.18.48] (unknown [10.164.18.48])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 35A483F5A1;
-	Tue, 20 May 2025 02:13:21 -0700 (PDT)
-Message-ID: <7d5476a1-baa8-4bd0-965f-009bfa01c3c3@arm.com>
-Date: Tue, 20 May 2025 14:43:10 +0530
+	s=arc-20240116; t=1747736570; c=relaxed/simple;
+	bh=pY0pKNr68GUVN2DyKXvNbRdfvRDVNQJnEE7QZYFPEZ4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qQ5n/nOrXSNMEDveG8iEGJYlsWn+1vY9nj2MISfECxIMgwekx9kKGEJaOScAzMevx5q/FCUzOuNPVuYv/tHvzqRC9oh3G1snvAae9RcDTbyvj2Ea5Fl9Ff2x8L1eI4iQjpk+5Pr4bKzNMEItjTHLpRnGSYnKCw0o7m10HGydqew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eOlXRnAZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10F96C4CEE9;
+	Tue, 20 May 2025 10:22:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1747736569;
+	bh=pY0pKNr68GUVN2DyKXvNbRdfvRDVNQJnEE7QZYFPEZ4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eOlXRnAZwWCzNhh49oKoOiq45ixjw1eAwbQN8/KC2qsfp3KnOaUF7NwGi2vJloyXn
+	 VcYR00hFDITQRf0MmoVXFZb5ldmV3lQpKBv1qtEDNJj9D14Rb5EJQpZzaPHaae0DbN
+	 Oj/Eq6ctnrRy4hlFE3r5qD74i68sywFWDSEgiigE=
+Date: Tue, 20 May 2025 12:22:46 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Cc: stable@vger.kernel.org
+Subject: Re: Request for backporting accel/ivpu FW log patches to 6.12
+Message-ID: <2025052040-struck-status-997a@gregkh>
+References: <a0f38bde-d782-4170-9736-f1ad14a13ba6@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] arm64: Restrict pagetable teardown to avoid false
- warning
-To: Ryan Roberts <ryan.roberts@arm.com>, David Hildenbrand
- <david@redhat.com>, catalin.marinas@arm.com, will@kernel.org
-Cc: anshuman.khandual@arm.com, mark.rutland@arm.com,
- yang@os.amperecomputing.com, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org
-References: <20250518095445.31044-1-dev.jain@arm.com>
- <5763d921-f8a8-4ca6-b5b5-ad96eb5cda11@arm.com>
- <7680e775-d277-45ea-9b6c-1f16b8b55a3f@redhat.com>
- <df7eb016-bea4-489d-aecb-1a47eb5e33b2@arm.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <df7eb016-bea4-489d-aecb-1a47eb5e33b2@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a0f38bde-d782-4170-9736-f1ad14a13ba6@linux.intel.com>
 
+On Tue, May 13, 2025 at 06:26:28PM +0200, Jacek Lawrynowicz wrote:
+> Hi,
+> 
+> Please cherry-pick following 4 patches to 6.12:
+> 3a3fb8110c65d361cd9d750c9e16520f740c93f2 accel/ivpu: Rename ivpu_log_level to fw_log_level
+> 4b4d9e394b6f45ac26ac6144b31604c76b7e3705 accel/ivpu: Reset fw log on cold boot
+> 1fc1251149a76d3b75d7f4c94d9c4e081b7df6b4 accel/ivpu: Refactor functions in ivpu_fw_log.c
+> 4bc988b47019536b3b1f7d9c5b83893c712d94d6 accel/ivpu: Fix fw log printing
+> 
+> These are fixing some firmware log corner cases that allow us to get reliable output in case of a failure.
+> They should apply without conflicts.
 
+All now queued up, thanks.
 
-On 19/05/25 6:17 pm, Ryan Roberts wrote:
-> On 19/05/2025 13:16, David Hildenbrand wrote:
->> On 19.05.25 11:08, Ryan Roberts wrote:
->>> On 18/05/2025 10:54, Dev Jain wrote:
->>>> Commit 9c006972c3fe removes the pxd_present() checks because the caller
->>>
->>> nit: please use the standard format for describing commits: Commit 9c006972c3fe
->>> ("arm64: mmu: drop pXd_present() checks from pXd_free_pYd_table()")
->>>
->>>> checks pxd_present(). But, in case of vmap_try_huge_pud(), the caller only
->>>> checks pud_present(); pud_free_pmd_page() recurses on each pmd through
->>>> pmd_free_pte_page(), wherein the pmd may be none. Thus it is possible to
->>>> hit a warning in the latter, since pmd_none => !pmd_table(). Thus, add
->>>> a pmd_present() check in pud_free_pmd_page().
->>>>
->>>> This problem was found by code inspection.
->>>>
->>>> This patch is based on 6.15-rc6.
->>>
->>> nit: please remove this to below the "---", its not part of the commit log.
->>>
->>>>
->>>> Fixes: 9c006972c3fe (arm64: mmu: drop pXd_present() checks from
->>>> pXd_free_pYd_table())
->>>>
->>>
->>> nit: remove empty line; the tags should all be in a single block with no empty
->>> lines.
->>>
->>>> Cc: <stable@vger.kernel.org>
->>>> Reported-by: Ryan Roberts <ryan.roberts@arm.com>
->>>> Signed-off-by: Dev Jain <dev.jain@arm.com>
->>>> ---
->>>> v1->v2:
->>>>    - Enforce check in caller
->>>>
->>>>    arch/arm64/mm/mmu.c | 3 ++-
->>>>    1 file changed, 2 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
->>>> index ea6695d53fb9..5b1f4cd238ca 100644
->>>> --- a/arch/arm64/mm/mmu.c
->>>> +++ b/arch/arm64/mm/mmu.c
->>>> @@ -1286,7 +1286,8 @@ int pud_free_pmd_page(pud_t *pudp, unsigned long addr)
->>>>        next = addr;
->>>>        end = addr + PUD_SIZE;
->>>>        do {
->>>> -        pmd_free_pte_page(pmdp, next);
->>>> +        if (pmd_present(*pmdp))
->>>
->>> pmd_free_pte_page() is using READ_ONCE() to access the *pmdp to ensure it can't
->>> be torn. I suspect we don't technically need that in these functions because
->>> there can be no race with a writer.
->>
->> Yeah, if there is no proper locking in place the function would already
->> seriously mess up (double freeing etc).
-> 
-> Indeed; there is no locking, but this portion of the vmalloc VA space has been
-> allocated to us exclusively, so we know there can be no one else racing.
-> 
->>
->>> But the arm64 arch code always uses
->>> READ_ONCE() for dereferencing pgtable entries for safely. Perhaps we should be
->>> consistent here?
->>
->> mm/vmalloc.c:   if (pmd_present(*pmd) && !pmd_free_pte_page(pmd, addr))
-> 
-> Yes, I saw that. I know that we don't technically need READ_ONCE(). I'm just
-> proposng that for arm64 code we should be consistent with what it already does.
-> See Commit 20a004e7b017 ("arm64: mm: Use READ_ONCE/WRITE_ONCE when accessing
-> page tables")
-
-(Sorry for the spam, managed to import the mbox into thunderbird)
-So we can just pmdp_get() here?
-
-> 
-> Thanks,
-> Ryan
-> 
->>
->>
->> :)
->>
->> Acked-by: David Hildenbrand <david@redhat.com>
->>
-> 
-
+greg k-h
 
