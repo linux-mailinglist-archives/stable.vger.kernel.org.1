@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-145474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75BF6ABDC4E
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:23:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E07CABDC6A
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:24:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB5FB4C7A40
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:14:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09D3E1BA3019
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:23:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 312DB242D85;
-	Tue, 20 May 2025 14:11:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBF842528FB;
+	Tue, 20 May 2025 14:17:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="simq6ScU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ToS71D27"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E28E5242D7C;
-	Tue, 20 May 2025 14:11:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 889892512C6;
+	Tue, 20 May 2025 14:17:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750283; cv=none; b=qJF4NBe+xqX81glNyDub5pxwU0O3RYT2rtcm+xy3KR7OZPn8Y0G0Klkf384W8H1ro2V+A3qVjQPS+wCrLul2Inozw1a4BJ79NGmbMtCfxVR4UXP6odXZ6Vq/MYkFDsuc9JMF9wEyGDJc4V63R4RbkuhM8eh45rxHjgQuCR29+Vo=
+	t=1747750674; cv=none; b=oGWJcADaT0Thr8A1C8EezxGOL6+mtdP44oIJkIZuMojzMey2cZH+7jJY8YN41mRRORJLmdB+K7AoKe0HJrKjSgkAEvYRK63eqGxIarUrWMONaOSbu0DRVvJ2wEKHAO9T38tH+wyr5IDhvDrHT+iBOgFKT4+3OUjSGWemOWl5tgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750283; c=relaxed/simple;
-	bh=AKcpQmC5t9EaHsSu97TVXdWsBVD1JHPalepaUo0AqCA=;
+	s=arc-20240116; t=1747750674; c=relaxed/simple;
+	bh=dPrpKq5KmT6AFVggzuJhnLd/i5WPJFN1ccI+gh/jznk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nUTgDGwUusry9ypCvnpogn1qOJEy/waSIZBjLv3Xlh3Svf5qrVvtDfvu2avBLTVpYMBSwfJ8jOfcmfNmSD9/SUx8XTYfqYBQ0byA3GtY9RHKFVptoA5SG6dylevX0Sws8VQAP/ac+ePzwFRRzeJEsCAqMZgFODdQ4iIXwn+kZuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=simq6ScU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64C2CC4CEE9;
-	Tue, 20 May 2025 14:11:22 +0000 (UTC)
+	 MIME-Version; b=fMHpCeiQd+VKSmAzDzeRENV1e29seoycVt1ajPRBQepLgq+sbT4exJbBY3hsIBqayya4cSvt9cM700Sy/noVYe94Gq8F9gVuwe8phBo82TtUwNBp1O6Rdxus/ntrBiKaj8gjTu/UllHIkFuc9wGnMdRgFVNZ0JQ0c9up4oZn9Gc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ToS71D27; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1C9AC4CEE9;
+	Tue, 20 May 2025 14:17:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750282;
-	bh=AKcpQmC5t9EaHsSu97TVXdWsBVD1JHPalepaUo0AqCA=;
+	s=korg; t=1747750674;
+	bh=dPrpKq5KmT6AFVggzuJhnLd/i5WPJFN1ccI+gh/jznk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=simq6ScU+hSyeBnmqn5h/CScCZ2g9ylezPrytk03xPyNaN95+rfJDwSdwNgebVqhm
-	 XU9/UM6VkZfHKmyhBFppR4ZJPxSoEQXyJavpe6Sf2zSi5UcRBkuB46SXredYcv7HM7
-	 eQpCgY8ykBBaKMtnS3v94mLlHWhlgJ1g+R83PD5c=
+	b=ToS71D27wbxOhA1714/x+CZoHvAhwk4nKWJ5pZ3U5EPLedT253FgMOdbhkWi+uPvP
+	 Sv4tMzkW+41Ae8OD25vVJvMO6SCHYgq+4JgamdkDEfwcOHNUJ0jTYuTWgd2dcLqP/c
+	 t3Ou8XX+6zo97HHZSiDIL0WC9IvW75rzaeThsIsc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Kelley <mhklinux@outlook.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 100/143] Drivers: hv: Allow vmbus_sendpacket_mpb_desc() to create multiple ranges
+	Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
+	Juergen Gross <jgross@suse.com>,
+	Alexey Makhalov <alexey.makhalov@broadcom.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.14 085/145] MAINTAINERS: Update Alexey Makhalovs email address
 Date: Tue, 20 May 2025 15:50:55 +0200
-Message-ID: <20250520125813.982532166@linuxfoundation.org>
+Message-ID: <20250520125813.904989638@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Kelley <mhklinux@outlook.com>
+From: Alexey Makhalov <alexey.makhalov@broadcom.com>
 
-commit 380b75d3078626aadd0817de61f3143f5db6e393 upstream.
+commit 386cd3dcfd63491619b4034b818737fc0219e128 upstream.
 
-vmbus_sendpacket_mpb_desc() is currently used only by the storvsc driver
-and is hardcoded to create a single GPA range. To allow it to also be
-used by the netvsc driver to create multiple GPA ranges, no longer
-hardcode as having a single GPA range. Allow the calling driver to
-specify the rangecount in the supplied descriptor.
+Fix a typo in an email address.
 
-Update the storvsc driver to reflect this new approach.
-
-Cc: <stable@vger.kernel.org> # 6.1.x
-Signed-off-by: Michael Kelley <mhklinux@outlook.com>
-Link: https://patch.msgid.link/20250513000604.1396-2-mhklinux@outlook.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Closes: https://lore.kernel.org/all/20240925-rational-succinct-vulture-cca9fb@lemur/T/
+Reported-by: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+Reported-by: Juergen Gross <jgross@suse.com>
+Signed-off-by: Alexey Makhalov <alexey.makhalov@broadcom.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/20250318004031.2703923-1-alexey.makhalov@broadcom.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hv/channel.c       |    6 +++---
- drivers/scsi/storvsc_drv.c |    1 +
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ MAINTAINERS |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/hv/channel.c
-+++ b/drivers/hv/channel.c
-@@ -1136,9 +1136,10 @@ int vmbus_sendpacket_pagebuffer(struct v
- EXPORT_SYMBOL_GPL(vmbus_sendpacket_pagebuffer);
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -17954,7 +17954,7 @@ F:	include/uapi/linux/ppdev.h
+ PARAVIRT_OPS INTERFACE
+ M:	Juergen Gross <jgross@suse.com>
+ R:	Ajay Kaher <ajay.kaher@broadcom.com>
+-R:	Alexey Makhalov <alexey.amakhalov@broadcom.com>
++R:	Alexey Makhalov <alexey.makhalov@broadcom.com>
+ R:	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+ L:	virtualization@lists.linux.dev
+ L:	x86@kernel.org
+@@ -25350,7 +25350,7 @@ F:	drivers/misc/vmw_balloon.c
  
- /*
-- * vmbus_sendpacket_multipagebuffer - Send a multi-page buffer packet
-+ * vmbus_sendpacket_mpb_desc - Send one or more multi-page buffer packets
-  * using a GPADL Direct packet type.
-- * The buffer includes the vmbus descriptor.
-+ * The desc argument must include space for the VMBus descriptor. The
-+ * rangecount field must already be set.
-  */
- int vmbus_sendpacket_mpb_desc(struct vmbus_channel *channel,
- 			      struct vmbus_packet_mpb_array *desc,
-@@ -1160,7 +1161,6 @@ int vmbus_sendpacket_mpb_desc(struct vmb
- 	desc->length8 = (u16)(packetlen_aligned >> 3);
- 	desc->transactionid = VMBUS_RQST_ERROR; /* will be updated in hv_ringbuffer_write() */
- 	desc->reserved = 0;
--	desc->rangecount = 1;
- 
- 	bufferlist[0].iov_base = desc;
- 	bufferlist[0].iov_len = desc_size;
---- a/drivers/scsi/storvsc_drv.c
-+++ b/drivers/scsi/storvsc_drv.c
-@@ -1819,6 +1819,7 @@ static int storvsc_queuecommand(struct S
- 				return SCSI_MLQUEUE_DEVICE_BUSY;
- 		}
- 
-+		payload->rangecount = 1;
- 		payload->range.len = length;
- 		payload->range.offset = offset_in_hvpg;
- 
+ VMWARE HYPERVISOR INTERFACE
+ M:	Ajay Kaher <ajay.kaher@broadcom.com>
+-M:	Alexey Makhalov <alexey.amakhalov@broadcom.com>
++M:	Alexey Makhalov <alexey.makhalov@broadcom.com>
+ R:	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+ L:	virtualization@lists.linux.dev
+ L:	x86@kernel.org
+@@ -25378,7 +25378,7 @@ F:	drivers/scsi/vmw_pvscsi.h
+ VMWARE VIRTUAL PTP CLOCK DRIVER
+ M:	Nick Shi <nick.shi@broadcom.com>
+ R:	Ajay Kaher <ajay.kaher@broadcom.com>
+-R:	Alexey Makhalov <alexey.amakhalov@broadcom.com>
++R:	Alexey Makhalov <alexey.makhalov@broadcom.com>
+ R:	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+ L:	netdev@vger.kernel.org
+ S:	Supported
 
 
 
