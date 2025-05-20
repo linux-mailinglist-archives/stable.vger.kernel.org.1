@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-145463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88A39ABDC5B
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:23:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83539ABDB64
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:10:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3FFA4E3E3A
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:14:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A3E0160265
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:04:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E1D92517BC;
-	Tue, 20 May 2025 14:10:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FFAF22DF87;
+	Tue, 20 May 2025 14:04:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="py63MxWK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xdtsRxH2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59A3A24C077;
-	Tue, 20 May 2025 14:10:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1B58EEDE;
+	Tue, 20 May 2025 14:04:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750253; cv=none; b=HrXjKfQwyb630a2eAkZzZuk1dc+xT65ccLYNFBjKX8qnfjoDyq0ZV9Huob2Y259rsGJnWro1hcvbbGdt85tjhrydqOniLiM9Yq/ZlB6vihonfEk30XX+pKjCk4llYehbgKAc2W7Bqmxx/16sIyJL8qXjUaVRnbUtp1jwtcgVT20=
+	t=1747749857; cv=none; b=gCipcEa5gxBaPCqmRFUqvzjupwUxxieVFjRWKiA0i4mdl5nehKLHq3+5VWMC6xYLs97ri/ydZNEZPM8IYowK66D9RvH1J4qMC318xVsVYMIveL4IZgUkCTNaS9oKGVLBU1dwYe/stERjAp1CcdWaD44yYyU6bhsqqWpKXLM6D5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750253; c=relaxed/simple;
-	bh=9atDdiq0AeLo+AAsmFKHPjQdlMFloaCPaQu7W0LaNXk=;
+	s=arc-20240116; t=1747749857; c=relaxed/simple;
+	bh=afLxmKZUVxp8AgOYJbyiEzA37pKbqS5HOio27kli+KI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hHj0bY+0qgfe3svjL2uUCJTCy8P6MD+rnB/ryP/argwKPe4VumLOfdZpBho96riM3+i5ODI5ccupGSuAra4oMHu4c1iVlstphrzUXNKHVeKosYI50/rswK6RCHY/UY0260zgDCLNRKCsF8qqRCkuL+k9B+gbvUXcM/jkvZY8JSM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=py63MxWK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE0CFC4CEE9;
-	Tue, 20 May 2025 14:10:52 +0000 (UTC)
+	 MIME-Version; b=rnrFUbqO8Xt3zNvzHtgOFyjCSym71vLLZ6R8g1IF1iHYtUJqGjR17qMFEY6hAt63HCbwJ58QHrXcBZLDXLQJjeB8K/6xGYKyhIn1sHLZOSIbV2lY1bDcyrl8d7/9mNLfjv+zyBZldo13AmxyU3aGdVPGySwe2a7kz5zHYFJEdoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xdtsRxH2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 431C9C4CEE9;
+	Tue, 20 May 2025 14:04:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750253;
-	bh=9atDdiq0AeLo+AAsmFKHPjQdlMFloaCPaQu7W0LaNXk=;
+	s=korg; t=1747749857;
+	bh=afLxmKZUVxp8AgOYJbyiEzA37pKbqS5HOio27kli+KI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=py63MxWKovJ9P2FJHDSM2LCDCtQelkD/Inc22IZi9XvREbRVXXiSMT6y++t6QYdXB
-	 GMH+gZgFfR6qfFF65jb+hfBLjzXhIMy+Oh8SnA5dr0elxFisKcUuQ6cyngnXI+FYnP
-	 hMpsxgJMa6B32VS8l+E77Dy3G2I0Rpl9qma/fwUM=
+	b=xdtsRxH2UE7+S3gwQthe98M3zii1wC46NrE8sxv8Boz+Th+vybkB6/qXU70iVuIIC
+	 bDOKp16xhtx7uiED2D5yuzEMJ7OIF/F1iNR3ho+8bOZDtat1pv7Mbb8X0WZavajR4Q
+	 OHUDXsmxJ0WoO+B4JFPuz1YdvM+5B6Ab5nkRO5v0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 091/143] ALSA: es1968: Add error handling for snd_pcm_hw_constraint_pow2()
+	pengdonglin <dolinux.peng@gmail.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 081/117] ftrace: Fix preemption accounting for stacktrace filter command
 Date: Tue, 20 May 2025 15:50:46 +0200
-Message-ID: <20250520125813.636360449@linuxfoundation.org>
+Message-ID: <20250520125807.210873396@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
+References: <20250520125803.981048184@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: pengdonglin <pengdonglin@xiaomi.com>
 
-commit 9e000f1b7f31684cc5927e034360b87ac7919593 upstream.
+commit 11aff32439df6ca5b3b891b43032faf88f4a6a29 upstream.
 
-The function snd_es1968_capture_open() calls the function
-snd_pcm_hw_constraint_pow2(), but does not check its return
-value. A proper implementation can be found in snd_cx25821_pcm_open().
+The preemption count of the stacktrace filter command to trace ksys_read
+is consistently incorrect:
 
-Add error handling for snd_pcm_hw_constraint_pow2() and propagate its
-error code.
+$ echo ksys_read:stacktrace > set_ftrace_filter
 
-Fixes: b942cf815b57 ("[ALSA] es1968 - Fix stuttering capture")
-Cc: stable@vger.kernel.org # v2.6.22
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20250514092444.331-1-vulab@iscas.ac.cn
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+   <...>-453     [004] ...1.    38.308956: <stack trace>
+=> ksys_read
+=> do_syscall_64
+=> entry_SYSCALL_64_after_hwframe
+
+The root cause is that the trace framework disables preemption when
+invoking the filter command callback in function_trace_probe_call:
+
+   preempt_disable_notrace();
+   probe_ops->func(ip, parent_ip, probe_opsbe->tr, probe_ops, probe->data);
+   preempt_enable_notrace();
+
+Use tracing_gen_ctx_dec() to account for the preempt_disable_notrace(),
+which will output the correct preemption count:
+
+$ echo ksys_read:stacktrace > set_ftrace_filter
+
+   <...>-410     [006] .....    31.420396: <stack trace>
+=> ksys_read
+=> do_syscall_64
+=> entry_SYSCALL_64_after_hwframe
+
+Cc: stable@vger.kernel.org
+Fixes: 36590c50b2d07 ("tracing: Merge irqflags + preempt counter.")
+Link: https://lore.kernel.org/20250512094246.1167956-2-dolinux.peng@gmail.com
+Signed-off-by: pengdonglin <dolinux.peng@gmail.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/es1968.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ kernel/trace/trace_functions.c |    6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
---- a/sound/pci/es1968.c
-+++ b/sound/pci/es1968.c
-@@ -1561,7 +1561,7 @@ static int snd_es1968_capture_open(struc
- 	struct snd_pcm_runtime *runtime = substream->runtime;
- 	struct es1968 *chip = snd_pcm_substream_chip(substream);
- 	struct esschan *es;
--	int apu1, apu2;
-+	int err, apu1, apu2;
+--- a/kernel/trace/trace_functions.c
++++ b/kernel/trace/trace_functions.c
+@@ -561,11 +561,7 @@ ftrace_traceoff(unsigned long ip, unsign
  
- 	apu1 = snd_es1968_alloc_apu_pair(chip, ESM_APU_PCM_CAPTURE);
- 	if (apu1 < 0)
-@@ -1605,7 +1605,9 @@ static int snd_es1968_capture_open(struc
- 	runtime->hw = snd_es1968_capture;
- 	runtime->hw.buffer_bytes_max = runtime->hw.period_bytes_max =
- 		calc_available_memory_size(chip) - 1024; /* keep MIXBUF size */
--	snd_pcm_hw_constraint_pow2(runtime, 0, SNDRV_PCM_HW_PARAM_BUFFER_BYTES);
-+	err = snd_pcm_hw_constraint_pow2(runtime, 0, SNDRV_PCM_HW_PARAM_BUFFER_BYTES);
-+	if (err < 0)
-+		return err;
+ static __always_inline void trace_stack(struct trace_array *tr)
+ {
+-	unsigned int trace_ctx;
+-
+-	trace_ctx = tracing_gen_ctx();
+-
+-	__trace_stack(tr, trace_ctx, FTRACE_STACK_SKIP);
++	__trace_stack(tr, tracing_gen_ctx_dec(), FTRACE_STACK_SKIP);
+ }
  
- 	spin_lock_irq(&chip->substream_lock);
- 	list_add(&es->list, &chip->substream_list);
+ static void
 
 
 
