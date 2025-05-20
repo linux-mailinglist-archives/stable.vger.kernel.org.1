@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-145385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6F03ABDB67
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:10:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F8E9ABDC69
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:23:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B29711891418
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:08:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18E2F3A2D7E
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:18:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FB162472B5;
-	Tue, 20 May 2025 14:07:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5B95251780;
+	Tue, 20 May 2025 14:14:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HOrVkvIe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mej9XNXW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFE4F24290D;
-	Tue, 20 May 2025 14:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60B5E24677B;
+	Tue, 20 May 2025 14:14:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750025; cv=none; b=eQyyendD/Kqu+n9oQ/Sm9DY8pNDhdsBcdbVT1f/KPU5ViVUpPk0PRrfySH8cRYMyYXD9GowH5BM/DRXBL1iOclnEJ7hnqkIMeyBJLYr2JB4NfK8dwApJCYXORDhVB+9V+EiWsGa7BdWoa21iww+j6aBS2xygg3oODIze4vapYyg=
+	t=1747750445; cv=none; b=bUv2jVHKNkGcwFuShrzn2zKJCn0KxDO0ZDRrliNcSaNsnCKnUP2DVEt7326dZobm/MQXSSvZdcq8VfqFTFxJkjSUQx/tknFtK1EE6ZaYM+/XCCKQR6IwaEPyvEKXxZ+57DUPdmAsuGdK2ZTex5vynx8S8WnHG1kz9qLlrJMYySQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750025; c=relaxed/simple;
-	bh=rcjC7NNA6g2kNgoAo0/BPM835rE6zYa12yk5hwuAl0o=;
+	s=arc-20240116; t=1747750445; c=relaxed/simple;
+	bh=h1MMft14RBQfNvSPHEsTEWJyW6B+h9SGbhQTGpBDkds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O3ffs7vfDMWdsWI2S9snNCTVLLbbaTgdmHTNbmoN2Ft25OQFoRDHe5fTcruHvJex9L1zLwJtLVeHzwn3E9LMKaZlTJYCta6pZ5g8XovRKAFgwmO2plyIPbwxgR7JuuFDFT8i7xolNN3pLpslcWmCMUpBarMDEMNOBuZEBwW/7vg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HOrVkvIe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F06C9C4CEE9;
-	Tue, 20 May 2025 14:07:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cT4gIGHIYtWyc8g0UuKGLmqM4K81pdz13l8wLe85aI1V61r8E/i/L7cE6O6sgddByBonAAQy0EIooY221YIMQNygRGhRi5/9/X56yJ9LyPzWzT4UAW/g6SREYE/VkvFzPj7aMSAvA3/pm3JtX5ExstSurK3bHbCjAijA7MoNhDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mej9XNXW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0256C4CEE9;
+	Tue, 20 May 2025 14:14:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750024;
-	bh=rcjC7NNA6g2kNgoAo0/BPM835rE6zYa12yk5hwuAl0o=;
+	s=korg; t=1747750445;
+	bh=h1MMft14RBQfNvSPHEsTEWJyW6B+h9SGbhQTGpBDkds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HOrVkvIeU4ire9grcw89Az+oxYJdPVdb+ujKDwZLiRKO5RhAgOphozCPGCIDOzLk8
-	 jTLuICuW0sejbCVq6OWvyJu8VPqhe52vnqWwS9Kf1NIdzQpURxFVNfL5aoTYFPspnG
-	 +QMmk3E+YF/M4dmu29nXpHLKcYylEWi4xgy8q5+E=
+	b=Mej9XNXWhWDkEIpBJpu+KGfGK23AXPyb30J0X6b+ZNvBbYAe5v8Ag0bfRfBke7Z+s
+	 kWOqgDmdByivI4PtJS76jY4bpbB8AMzBpLySv19l6V6JN140qJIguS45mrtowGA9zG
+	 +ENcsUFBbg2GwdiwOwZ94h+/deaUQocaz/msfWes=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 018/143] iio: pressure: mprls0025pa: use aligned_s64 for timestamp
+Subject: [PATCH 6.14 003/145] drivers/platform/x86/amd: pmf: Check for invalid sideloaded Smart PC Policies
 Date: Tue, 20 May 2025 15:49:33 +0200
-Message-ID: <20250520125810.776013224@linuxfoundation.org>
+Message-ID: <20250520125810.680357975@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit ffcd19e9f4cca0c8f9e23e88f968711acefbb37b ]
+[ Upstream commit 690d722e02819ef978f90cd7553973eba1007e6c ]
 
-Follow the pattern of other drivers and use aligned_s64 for the
-timestamp. This will ensure the struct itself it also 8-byte aligned.
+If a policy is passed into amd_pmf_get_pb_data() that causes the engine
+to fail to start there is a memory leak. Free the memory in this failure
+path.
 
-While touching this, convert struct mpr_chan to an anonymous struct
-to consolidate the code a bit to make it easier for future readers.
-
-Fixes: 713337d9143e ("iio: pressure: Honeywell mprls0025pa pressure sensor")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250418-iio-more-timestamp-alignment-v2-2-d6a5d2b1c9fe@baylibre.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 10817f28e5337 ("platform/x86/amd/pmf: Add capability to sideload of policy binary")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20250423132002.3984997-2-superm1@kernel.org
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/pressure/mprls0025pa.h | 17 ++++++-----------
- 1 file changed, 6 insertions(+), 11 deletions(-)
+ drivers/platform/x86/amd/pmf/tee-if.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/pressure/mprls0025pa.h b/drivers/iio/pressure/mprls0025pa.h
-index 9d5c30afa9d69..d62a018eaff32 100644
---- a/drivers/iio/pressure/mprls0025pa.h
-+++ b/drivers/iio/pressure/mprls0025pa.h
-@@ -34,16 +34,6 @@ struct iio_dev;
- struct mpr_data;
- struct mpr_ops;
+diff --git a/drivers/platform/x86/amd/pmf/tee-if.c b/drivers/platform/x86/amd/pmf/tee-if.c
+index 14b99d8b63d2f..e008ac079fade 100644
+--- a/drivers/platform/x86/amd/pmf/tee-if.c
++++ b/drivers/platform/x86/amd/pmf/tee-if.c
+@@ -364,9 +364,14 @@ static ssize_t amd_pmf_get_pb_data(struct file *filp, const char __user *buf,
+ 	amd_pmf_hex_dump_pb(dev);
+ 	ret = amd_pmf_start_policy_engine(dev);
+ 	if (ret < 0)
+-		return ret;
++		goto cleanup;
  
--/**
-- * struct mpr_chan
-- * @pres: pressure value
-- * @ts: timestamp
-- */
--struct mpr_chan {
--	s32 pres;
--	s64 ts;
--};
--
- enum mpr_func_id {
- 	MPR_FUNCTION_A,
- 	MPR_FUNCTION_B,
-@@ -69,6 +59,8 @@ enum mpr_func_id {
-  *       reading in a loop until data is ready
-  * @completion: handshake from irq to read
-  * @chan: channel values for buffered mode
-+ * @chan.pres: pressure value
-+ * @chan.ts: timestamp
-  * @buffer: raw conversion data
-  */
- struct mpr_data {
-@@ -87,7 +79,10 @@ struct mpr_data {
- 	struct gpio_desc	*gpiod_reset;
- 	int			irq;
- 	struct completion	completion;
--	struct mpr_chan		chan;
-+	struct {
-+		s32 pres;
-+		aligned_s64 ts;
-+	} chan;
- 	u8	    buffer[MPR_MEASUREMENT_RD_SIZE] __aligned(IIO_DMA_MINALIGN);
- };
+ 	return length;
++
++cleanup:
++	kfree(dev->policy_buf);
++	dev->policy_buf = NULL;
++	return ret;
+ }
  
+ static const struct file_operations pb_fops = {
 -- 
 2.39.5
 
