@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-145606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 913CCABDC68
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:23:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88A39ABDC5B
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:23:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADF831883739
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:23:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3FFA4E3E3A
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:14:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98FC6243371;
-	Tue, 20 May 2025 14:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E1D92517BC;
+	Tue, 20 May 2025 14:10:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ah6Ma8V+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="py63MxWK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 541512505C7;
-	Tue, 20 May 2025 14:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59A3A24C077;
+	Tue, 20 May 2025 14:10:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750671; cv=none; b=c9oU+yBQEjuoEMLWbJtZvHF9B758hY5H+KEqFftVeidPmm2MyhdqOCUNZtr047lRtsQoWTK8WDw6sKD8UvyNdi3YLBPt99Iy3UFiKqVMJIGvnSEYS8U1JYRijSjJkyLwVv+pA6wFDk3pEJ5et4nH0OrxJBKoQ/vT3mcGDwntiTg=
+	t=1747750253; cv=none; b=HrXjKfQwyb630a2eAkZzZuk1dc+xT65ccLYNFBjKX8qnfjoDyq0ZV9Huob2Y259rsGJnWro1hcvbbGdt85tjhrydqOniLiM9Yq/ZlB6vihonfEk30XX+pKjCk4llYehbgKAc2W7Bqmxx/16sIyJL8qXjUaVRnbUtp1jwtcgVT20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750671; c=relaxed/simple;
-	bh=VsiOQTTZlodxZtTyG+5cNDL//iaSCnRn28yRgdiyIr8=;
+	s=arc-20240116; t=1747750253; c=relaxed/simple;
+	bh=9atDdiq0AeLo+AAsmFKHPjQdlMFloaCPaQu7W0LaNXk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tU7G/Ei9Eld3eYNacW8DcxWDBL0Hsn4CA3Mfd4Sr0wONGlXBWN3Pj/aR/Tode1xdp3fYPdItMBFrdaJZAgOCYmlX0CnaKT5UwSrrsE7GLxIRjbPR4lA6NpG7kS8tKI0G+9Hd7azHvKoR2c41+eQ3M01eYVqkoZEalDQ558WHN/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ah6Ma8V+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B933AC4CEE9;
-	Tue, 20 May 2025 14:17:50 +0000 (UTC)
+	 MIME-Version; b=hHj0bY+0qgfe3svjL2uUCJTCy8P6MD+rnB/ryP/argwKPe4VumLOfdZpBho96riM3+i5ODI5ccupGSuAra4oMHu4c1iVlstphrzUXNKHVeKosYI50/rswK6RCHY/UY0260zgDCLNRKCsF8qqRCkuL+k9B+gbvUXcM/jkvZY8JSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=py63MxWK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE0CFC4CEE9;
+	Tue, 20 May 2025 14:10:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750671;
-	bh=VsiOQTTZlodxZtTyG+5cNDL//iaSCnRn28yRgdiyIr8=;
+	s=korg; t=1747750253;
+	bh=9atDdiq0AeLo+AAsmFKHPjQdlMFloaCPaQu7W0LaNXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ah6Ma8V+86bHW3sjMJFs9DBvazYD/N/HB9Y2Tro02wYbX8Ipftr68WRt9/yADl9OJ
-	 0wLG4IptB4BP1OlxMzsMknsgV9QvMf3cYbd4gqJqIDf/v77pLsJPANzohIs1XlAy0M
-	 fChYkCM9c4mo70V4Z884PtWoy5L1Su2Jtbnsno5Q=
+	b=py63MxWKovJ9P2FJHDSM2LCDCtQelkD/Inc22IZi9XvREbRVXXiSMT6y++t6QYdXB
+	 GMH+gZgFfR6qfFF65jb+hfBLjzXhIMy+Oh8SnA5dr0elxFisKcUuQ6cyngnXI+FYnP
+	 hMpsxgJMa6B32VS8l+E77Dy3G2I0Rpl9qma/fwUM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>,
-	Josef Bacik <josef@toxicpanda.com>
-Subject: [PATCH 6.14 076/145] btrfs: fix folio leak in submit_one_async_extent()
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.12 091/143] ALSA: es1968: Add error handling for snd_pcm_hw_constraint_pow2()
 Date: Tue, 20 May 2025 15:50:46 +0200
-Message-ID: <20250520125813.561804012@linuxfoundation.org>
+Message-ID: <20250520125813.636360449@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Burkov <boris@bur.io>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-commit a0fd1c6098633f9a95fc2f636383546c82b704c3 upstream.
+commit 9e000f1b7f31684cc5927e034360b87ac7919593 upstream.
 
-If btrfs_reserve_extent() fails while submitting an async_extent for a
-compressed write, then we fail to call free_async_extent_pages() on the
-async_extent and leak its folios. A likely cause for such a failure
-would be btrfs_reserve_extent() failing to find a large enough
-contiguous free extent for the compressed extent.
+The function snd_es1968_capture_open() calls the function
+snd_pcm_hw_constraint_pow2(), but does not check its return
+value. A proper implementation can be found in snd_cx25821_pcm_open().
 
-I was able to reproduce this by:
+Add error handling for snd_pcm_hw_constraint_pow2() and propagate its
+error code.
 
-1. mount with compress-force=zstd:3
-2. fallocating most of a filesystem to a big file
-3. fragmenting the remaining free space
-4. trying to copy in a file which zstd would generate large compressed
-   extents for (vmlinux worked well for this)
-
-Step 4. hits the memory leak and can be repeated ad nauseam to
-eventually exhaust the system memory.
-
-Fix this by detecting the case where we fallback to uncompressed
-submission for a compressed async_extent and ensuring that we call
-free_async_extent_pages().
-
-Fixes: 131a821a243f ("btrfs: fallback if compressed IO fails for ENOSPC")
-CC: stable@vger.kernel.org # 6.1+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Co-developed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: b942cf815b57 ("[ALSA] es1968 - Fix stuttering capture")
+Cc: stable@vger.kernel.org # v2.6.22
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20250514092444.331-1-vulab@iscas.ac.cn
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/inode.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ sound/pci/es1968.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -1116,6 +1116,7 @@ static void submit_one_async_extent(stru
- 	struct extent_state *cached = NULL;
- 	struct extent_map *em;
- 	int ret = 0;
-+	bool free_pages = false;
- 	u64 start = async_extent->start;
- 	u64 end = async_extent->start + async_extent->ram_size - 1;
+--- a/sound/pci/es1968.c
++++ b/sound/pci/es1968.c
+@@ -1561,7 +1561,7 @@ static int snd_es1968_capture_open(struc
+ 	struct snd_pcm_runtime *runtime = substream->runtime;
+ 	struct es1968 *chip = snd_pcm_substream_chip(substream);
+ 	struct esschan *es;
+-	int apu1, apu2;
++	int err, apu1, apu2;
  
-@@ -1136,7 +1137,10 @@ static void submit_one_async_extent(stru
- 	}
+ 	apu1 = snd_es1968_alloc_apu_pair(chip, ESM_APU_PCM_CAPTURE);
+ 	if (apu1 < 0)
+@@ -1605,7 +1605,9 @@ static int snd_es1968_capture_open(struc
+ 	runtime->hw = snd_es1968_capture;
+ 	runtime->hw.buffer_bytes_max = runtime->hw.period_bytes_max =
+ 		calc_available_memory_size(chip) - 1024; /* keep MIXBUF size */
+-	snd_pcm_hw_constraint_pow2(runtime, 0, SNDRV_PCM_HW_PARAM_BUFFER_BYTES);
++	err = snd_pcm_hw_constraint_pow2(runtime, 0, SNDRV_PCM_HW_PARAM_BUFFER_BYTES);
++	if (err < 0)
++		return err;
  
- 	if (async_extent->compress_type == BTRFS_COMPRESS_NONE) {
-+		ASSERT(!async_extent->folios);
-+		ASSERT(async_extent->nr_folios == 0);
- 		submit_uncompressed_range(inode, async_extent, locked_folio);
-+		free_pages = true;
- 		goto done;
- 	}
- 
-@@ -1152,6 +1156,7 @@ static void submit_one_async_extent(stru
- 		 * fall back to uncompressed.
- 		 */
- 		submit_uncompressed_range(inode, async_extent, locked_folio);
-+		free_pages = true;
- 		goto done;
- 	}
- 
-@@ -1193,6 +1198,8 @@ static void submit_one_async_extent(stru
- done:
- 	if (async_chunk->blkcg_css)
- 		kthread_associate_blkcg(NULL);
-+	if (free_pages)
-+		free_async_extent_pages(async_extent);
- 	kfree(async_extent);
- 	return;
- 
+ 	spin_lock_irq(&chip->substream_lock);
+ 	list_add(&es->list, &chip->substream_list);
 
 
 
