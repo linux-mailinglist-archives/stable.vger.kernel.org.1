@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-145629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B473FABDC87
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:25:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C819ABDB38
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:08:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6045189D101
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:24:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 304881883AEB
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:06:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22ED22512FB;
-	Tue, 20 May 2025 14:19:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F7C224728F;
+	Tue, 20 May 2025 14:05:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1PMLQx23"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ExJWBbuU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D33F72512E9;
-	Tue, 20 May 2025 14:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D028E24728A;
+	Tue, 20 May 2025 14:05:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750742; cv=none; b=XXmvLk55erd1b92yn38AvXFfUWM/MMLcubU33HriY2c0sNoVdL2dzwBuK8NC6vOpsWOOFZVrugoQJgpfp9a76b8f8ltw2h2Yc0vO8FAyNxcm2yfFTjn4duN0xZLF0Zf/5kDMg5ho+vW5kEfVtxwPTdLyj5KRIXz3fArIMMch1Tg=
+	t=1747749946; cv=none; b=Io+gMCUNmoAzyfDYW1PWvJaE7637P+0G46AiaLqscj9Cv47nZSt4bnrahlqfJOx4hYNb9KDDlLkpVow+B6GbFzw/1/eRdR2mQeoHi2oVJZ4FbQR36V4rjs1U/j/7rNXp2lFBbWWPnHUZswKfo2i8TKpLSOmfjMQ8ldOEl4yDSuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750742; c=relaxed/simple;
-	bh=8bdRJ4oLSxq76BQvy8tMflB/oevOc4yb3VOIlib820w=;
+	s=arc-20240116; t=1747749946; c=relaxed/simple;
+	bh=H0wFkCMYbLMqN9GvMbIkA6+m3B81G+FAQ6rMfNXgp4k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qq3+N42FG61ZGyl2mG0+7eIHUxJwdyiLQeqLCKCfjiNtAHxNiKj5yboosY4kG0lfZXv6MI5Q1HhjA4M4wRW9hFoutnPLQGccozSddeo22t1JE3LeAuH8I2waFk/Cnxai4FU0SYGI0Ba4SvlQl1O4K9Skf7eNpZSx4v5OEJi+xwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1PMLQx23; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 510B0C4CEEA;
-	Tue, 20 May 2025 14:19:02 +0000 (UTC)
+	 MIME-Version; b=uz67Rcl8nxKJ+Uq04gtZUaNaX/QZFEJee7AfCQ6HD0UnYF7dQQYCya+Sr/Qe4Jp7Aug48w3qqYrYVBSXxORx1q2kEheaGNoobRdN2b/cW5262i1gEbBpkESrPk/95qNUVKC8lY8QCeqp/JGbNZOLG8G6tUcGunX9GsVdxIiJqL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ExJWBbuU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 359FAC4CEEB;
+	Tue, 20 May 2025 14:05:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750742;
-	bh=8bdRJ4oLSxq76BQvy8tMflB/oevOc4yb3VOIlib820w=;
+	s=korg; t=1747749946;
+	bh=H0wFkCMYbLMqN9GvMbIkA6+m3B81G+FAQ6rMfNXgp4k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1PMLQx23MEzyLXjS2j9C+uMwN6DK83ma3C3Oy3SI3I6XCrqjQ1EF/XW4/d0ITOhYD
-	 T97SsJv+tiqDnk9XYRn9Mpj2LfPlG8cC/m1jti3VkScapwc8XzHNDgoSqA1925IuuL
-	 EEybPifl3FPwUH5ma0R6PeMGsRTiWYsM/eg5PW2M=
+	b=ExJWBbuUd1w/4YM6QjEiEIUXDR/OmvMV3KiAFvp3ZwkJSuya6/XmNJKppMbko6tng
+	 a7a/QncH6ZDeGZPfMJWuzMTsctot2Je7sWU8hTNhVuY7MgoYTSZgcmQ+4S6IeJvNfP
+	 YCaLks8k1wKqFJdjSxgCxkWPy1RtnelVFAfK27tA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Srikanth Aithal <sraithal@amd.com>
-Subject: [PATCH 6.14 105/145] x86/sev: Make sure pages are not skipped during kdump
+	Peter Collingbourne <pcc@google.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Xu Kuohai <xukuohai@huawei.com>,
+	Bin Lan <bin.lan.cn@windriver.com>,
+	He Zhe <zhe.he@windriver.com>
+Subject: [PATCH 6.6 110/117] bpf, arm64: Fix address emission with tag-based KASAN enabled
 Date: Tue, 20 May 2025 15:51:15 +0200
-Message-ID: <20250520125814.673418179@linuxfoundation.org>
+Message-ID: <20250520125808.367935395@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125803.981048184@linuxfoundation.org>
+References: <20250520125803.981048184@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ashish Kalra <ashish.kalra@amd.com>
+From: Peter Collingbourne <pcc@google.com>
 
-commit 82b7f88f2316c5442708daeb0b5ec5aa54c8ff7f upstream.
+commit a552e2ef5fd1a6c78267cd4ec5a9b49aa11bbb1c upstream.
 
-When shared pages are being converted to private during kdump, additional
-checks are performed. They include handling the case of a GHCB page being
-contained within a huge page.
+When BPF_TRAMP_F_CALL_ORIG is enabled, the address of a bpf_tramp_image
+struct on the stack is passed during the size calculation pass and
+an address on the heap is passed during code generation. This may
+cause a heap buffer overflow if the heap address is tagged because
+emit_a64_mov_i64() will emit longer code than it did during the size
+calculation pass. The same problem could occur without tag-based
+KASAN if one of the 16-bit words of the stack address happened to
+be all-ones during the size calculation pass. Fix the problem by
+assuming the worst case (4 instructions) when calculating the size
+of the bpf_tramp_image address emission.
 
-Currently, this check incorrectly skips a page just below the GHCB page from
-being transitioned back to private during kdump preparation.
-
-This skipped page causes a 0x404 #VC exception when it is accessed later while
-dumping guest memory for vmcore generation.
-
-Correct the range to be checked for GHCB contained in a huge page.  Also,
-ensure that the skipped huge page containing the GHCB page is transitioned
-back to private by applying the correct address mask later when changing GHCBs
-to private at end of kdump preparation.
-
-  [ bp: Massage commit message. ]
-
-Fixes: 3074152e56c9 ("x86/sev: Convert shared memory back to private on kexec")
-Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-Tested-by: Srikanth Aithal <sraithal@amd.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/20250506183529.289549-1-Ashish.Kalra@amd.com
+Fixes: 19d3c179a377 ("bpf, arm64: Fix trampoline for BPF_TRAMP_F_CALL_ORIG")
+Signed-off-by: Peter Collingbourne <pcc@google.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Xu Kuohai <xukuohai@huawei.com>
+Link: https://linux-review.googlesource.com/id/I1496f2bc24fba7a1d492e16e2b94cf43714f2d3c
+Link: https://lore.kernel.org/bpf/20241018221644.3240898-1-pcc@google.com
+[Minor context change fixed.]
+Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
+Signed-off-by: He Zhe <zhe.he@windriver.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/coco/sev/core.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ arch/arm64/net/bpf_jit_comp.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/coco/sev/core.c b/arch/x86/coco/sev/core.c
-index 41060ba41b5c..36beaac713c1 100644
---- a/arch/x86/coco/sev/core.c
-+++ b/arch/x86/coco/sev/core.c
-@@ -1101,7 +1101,8 @@ static void unshare_all_memory(void)
- 			data = per_cpu(runtime_data, cpu);
- 			ghcb = (unsigned long)&data->ghcb_page;
+--- a/arch/arm64/net/bpf_jit_comp.c
++++ b/arch/arm64/net/bpf_jit_comp.c
+@@ -2001,7 +2001,11 @@ static int prepare_trampoline(struct jit
+ 	emit(A64_STR64I(A64_R(20), A64_SP, regs_off + 8), ctx);
  
--			if (addr <= ghcb && ghcb <= addr + size) {
-+			/* Handle the case of a huge page containing the GHCB page */
-+			if (addr <= ghcb && ghcb < addr + size) {
- 				skipped_addr = true;
- 				break;
- 			}
-@@ -1213,8 +1214,8 @@ static void shutdown_all_aps(void)
- void snp_kexec_finish(void)
- {
- 	struct sev_es_runtime_data *data;
-+	unsigned long size, addr;
- 	unsigned int level, cpu;
--	unsigned long size;
- 	struct ghcb *ghcb;
- 	pte_t *pte;
- 
-@@ -1242,8 +1243,10 @@ void snp_kexec_finish(void)
- 		ghcb = &data->ghcb_page;
- 		pte = lookup_address((unsigned long)ghcb, &level);
- 		size = page_level_size(level);
--		set_pte_enc(pte, level, (void *)ghcb);
--		snp_set_memory_private((unsigned long)ghcb, (size / PAGE_SIZE));
-+		/* Handle the case of a huge page containing the GHCB page */
-+		addr = (unsigned long)ghcb & page_level_mask(level);
-+		set_pte_enc(pte, level, (void *)addr);
-+		snp_set_memory_private(addr, (size / PAGE_SIZE));
+ 	if (flags & BPF_TRAMP_F_CALL_ORIG) {
+-		emit_a64_mov_i64(A64_R(0), (const u64)im, ctx);
++		/* for the first pass, assume the worst case */
++		if (!ctx->image)
++			ctx->idx += 4;
++		else
++			emit_a64_mov_i64(A64_R(0), (const u64)im, ctx);
+ 		emit_call((const u64)__bpf_tramp_enter, ctx);
  	}
- }
  
--- 
-2.49.0
-
+@@ -2045,7 +2049,11 @@ static int prepare_trampoline(struct jit
+ 
+ 	if (flags & BPF_TRAMP_F_CALL_ORIG) {
+ 		im->ip_epilogue = ctx->image + ctx->idx;
+-		emit_a64_mov_i64(A64_R(0), (const u64)im, ctx);
++		/* for the first pass, assume the worst case */
++		if (!ctx->image)
++			ctx->idx += 4;
++		else
++			emit_a64_mov_i64(A64_R(0), (const u64)im, ctx);
+ 		emit_call((const u64)__bpf_tramp_exit, ctx);
+ 	}
+ 
 
 
 
