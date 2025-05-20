@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-145449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145578-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3150AABDB9E
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:13:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07227ABDD6B
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:41:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56E5A7B5D44
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:11:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17E864E5FE2
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:21:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D307124BC14;
-	Tue, 20 May 2025 14:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA1AD248896;
+	Tue, 20 May 2025 14:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Znnv7U0C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qml4ro5E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E8BB250C18;
-	Tue, 20 May 2025 14:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9813E1CAA85;
+	Tue, 20 May 2025 14:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750212; cv=none; b=sM7K2cQYIS1a9U6bee9Z41KV6LegwuzhcTnU1QHdkTJRZhDYNNz2/t7dY7rK5tPyPo7MYDKTUKg6WNJK06qW5UDS9IZVhBSv3b9Vor3xGFmJJW8SYYspA7yEH0tS2iy3v79eHbds54mpfNJotXNtX7oRKcKZLdLjGnvZG1uy460=
+	t=1747750582; cv=none; b=eUEWGtLKZQa8MoAIyoR1q2GNDnd9Cu0EgYgJkMUlLBCW1/Upmda3qnA6fRtDynuv1VKxbcdOqUiLWnx/JCOlgCDEv9sfDbKtM6TYYHYuzIWMhRMOwhLC/I4DqndfD9JvarMh2vSpHHQ+Z01zjuJVZEsSxO91y6UpT4w42g6POMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750212; c=relaxed/simple;
-	bh=5eJJW0LkTccGthSezKm7risl34GhLu3OH7WfC+V5osg=;
+	s=arc-20240116; t=1747750582; c=relaxed/simple;
+	bh=9T18XgCOa56SCPgjYmhXGJRdTE1LObstygaR60NbQaI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JOewvsxUlxU6YLORtqE+ctOnSRNZ2DT2rnRu1eYKbI10SKj+RJHHaJi/2N74C862m2FVmfp9er6gkbblbiT93tZZkNpaRDCtYlQCKbxiJXU6pPWAgucvPMA3b1fJ7HwYil7hGjV3t4PIbGIJ7B1OasQLQhPB2TV40JNL4dsHsrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Znnv7U0C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1F86C4CEE9;
-	Tue, 20 May 2025 14:10:11 +0000 (UTC)
+	 MIME-Version; b=tJT+3lxZQd3JzUvYTvPCSBdHX5HRcMEyB9Yy8C7N72ICq0QKHQ6OCTQsEop2Fv9evhkUuY5fPVPgW+ViqlehY/XkArqwFUAhw4lXKCWn2/abVuQ4s0wB9VMqzVUSYnleiFeQK5eWZcrgTn4/67V4Xdk2hyPONcvfplxs2feJbIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qml4ro5E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A45EC4CEE9;
+	Tue, 20 May 2025 14:16:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750212;
-	bh=5eJJW0LkTccGthSezKm7risl34GhLu3OH7WfC+V5osg=;
+	s=korg; t=1747750582;
+	bh=9T18XgCOa56SCPgjYmhXGJRdTE1LObstygaR60NbQaI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Znnv7U0CPVmm7VX/y9tBU4CAiBOPAWxUOS7Q0YysAMAc4bOy2wqowX+fAWZWaJ5gd
-	 KusAWww8LcjLtYC0UceYkP9FKVYHg96bHqE05xlfA+28caTUmf+atUHRAoUSkFp2La
-	 U/iGBKwNuyhM3xPVChgrpw8qzy0i10NTfoNaUrX8=
+	b=Qml4ro5EACp0lATsyQV6pDvmArVCURm6O2Xu0LbPJnsFyV06c9vpcC5NB4UrotYBJ
+	 8HqMHCClauxicKiKrzQtfnkyokaiu2gyXNTuErW4c7TjqnW89VA/hI0JCipo8SUfe4
+	 RAtEq1ERVTvOzedIJT9LDyIyCnZRvej51rk2+500=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 6.12 071/143] udf: Make sure i_lenExtents is uptodate on inode eviction
+	syzbot+4bcdddd48bb6f0be0da1@syzkaller.appspotmail.com,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.14 056/145] wifi: mac80211: Set n_channels after allocating struct cfg80211_scan_request
 Date: Tue, 20 May 2025 15:50:26 +0200
-Message-ID: <20250520125812.859749722@linuxfoundation.org>
+Message-ID: <20250520125812.773361291@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
-References: <20250520125810.036375422@linuxfoundation.org>
+In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
+References: <20250520125810.535475500@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Kees Cook <kees@kernel.org>
 
-commit 55dd5b4db3bf04cf077a8d1712f6295d4517c337 upstream.
+[ Upstream commit 82bbe02b2500ef0a62053fe2eb84773fe31c5a0a ]
 
-UDF maintains total length of all extents in i_lenExtents. Generally we
-keep extent lengths (and thus i_lenExtents) block aligned because it
-makes the file appending logic simpler. However the standard mandates
-that the inode size must match the length of all extents and thus we
-trim the last extent when closing the file. To catch possible bugs we
-also verify that i_lenExtents matches i_size when evicting inode from
-memory. Commit b405c1e58b73 ("udf: refactor udf_next_aext() to handle
-error") however broke the code updating i_lenExtents and thus
-udf_evict_inode() ended up spewing lots of errors about incorrectly
-sized extents although the extents were actually sized properly. Fix the
-updating of i_lenExtents to silence the errors.
+Make sure that n_channels is set after allocating the
+struct cfg80211_registered_device::int_scan_req member. Seen with
+syzkaller:
 
-Fixes: b405c1e58b73 ("udf: refactor udf_next_aext() to handle error")
-CC: stable@vger.kernel.org
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+UBSAN: array-index-out-of-bounds in net/mac80211/scan.c:1208:5
+index 0 is out of range for type 'struct ieee80211_channel *[] __counted_by(n_channels)' (aka 'struct ieee80211_channel *[]')
+
+This was missed in the initial conversions because I failed to locate
+the allocation likely due to the "sizeof(void *)" not matching the
+"channels" array type.
+
+Reported-by: syzbot+4bcdddd48bb6f0be0da1@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/lkml/680fd171.050a0220.2b69d1.045e.GAE@google.com/
+Fixes: e3eac9f32ec0 ("wifi: cfg80211: Annotate struct cfg80211_scan_request with __counted_by")
+Signed-off-by: Kees Cook <kees@kernel.org>
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Link: https://patch.msgid.link/20250509184641.work.542-kees@kernel.org
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/udf/truncate.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mac80211/main.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/fs/udf/truncate.c
-+++ b/fs/udf/truncate.c
-@@ -115,7 +115,7 @@ void udf_truncate_tail_extent(struct ino
- 	}
- 	/* This inode entry is in-memory only and thus we don't have to mark
- 	 * the inode dirty */
--	if (ret == 0)
-+	if (ret >= 0)
- 		iinfo->i_lenExtents = inode->i_size;
- 	brelse(epos.bh);
- }
+diff --git a/net/mac80211/main.c b/net/mac80211/main.c
+index 53e5aee468856..2b6249d75a5d4 100644
+--- a/net/mac80211/main.c
++++ b/net/mac80211/main.c
+@@ -1354,10 +1354,12 @@ int ieee80211_register_hw(struct ieee80211_hw *hw)
+ 	hw->wiphy->software_iftypes |= BIT(NL80211_IFTYPE_MONITOR);
+ 
+ 
+-	local->int_scan_req = kzalloc(sizeof(*local->int_scan_req) +
+-				      sizeof(void *) * channels, GFP_KERNEL);
++	local->int_scan_req = kzalloc(struct_size(local->int_scan_req,
++						  channels, channels),
++				      GFP_KERNEL);
+ 	if (!local->int_scan_req)
+ 		return -ENOMEM;
++	local->int_scan_req->n_channels = channels;
+ 
+ 	eth_broadcast_addr(local->int_scan_req->bssid);
+ 
+-- 
+2.39.5
+
 
 
 
