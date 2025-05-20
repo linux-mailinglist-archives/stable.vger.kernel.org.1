@@ -1,235 +1,275 @@
-Return-Path: <stable+bounces-145045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0073ABD2D3
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 11:10:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57B0BABD2FA
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 11:14:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB8731BA224E
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 09:10:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BDB601BA2D57
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 09:15:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDE24266EE7;
-	Tue, 20 May 2025 09:10:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MWaut7Km"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FC78267B10;
+	Tue, 20 May 2025 09:14:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EBCA264621
-	for <stable@vger.kernel.org>; Tue, 20 May 2025 09:10:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BB05266F15
+	for <stable@vger.kernel.org>; Tue, 20 May 2025 09:14:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747732212; cv=none; b=hfhXR4k2cI3G8RPYjiFt5a58QBucQMEtSqxVJAWOT6IkjdMOI0Ub1ZlArp0q8r9UcLCpNAdlYzFktCyZz7J12r976CvI+gsaus/JM0k/NRvt1ZIwVa3/fkCYFw5lcCvGgfct0dKoOTElHHSqFc8Dqka5o4H7/SPnaALfi43vsYo=
+	t=1747732474; cv=none; b=YJh+kQHg3bItxfiWeM3b1sziK27yGDOJg4CDnH5fR+D9CRqIUUZwT/+zvnMienIg75MPUvYL9fpYn3wISI69b8tRMxz7V4Sy/D1w5uHSKFg/dkXnHgNexM7HFl2F+Pe9zx4mdRib3hyyA8o3fwyQ08JbX7F4av8Ev1T72fRw7qU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747732212; c=relaxed/simple;
-	bh=QRmAV0gSmSUP0f7c6LscqVGt+B1LZxtU9Yvv7ylAOYw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=S6k6h14Q33dKpFrD3SwPDZ0MKUdqpSXsAHP0kdSlZ3OQe/Ofnvdkpnaqm88wlT75sISo3+4RgWLYxay76ZtMP7E6SbVNqfyJ5LlptPq33vz7vstOUBpc2XfpeVen+0C6L3iV8cetgRVi/7ARZQdr36eGN5A7n8JKdo30QolhaaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MWaut7Km; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1747732209;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=PSR1/u0V+jGJxOjEFN3NNH+g3uaL+3CXLAVsxo/mjXA=;
-	b=MWaut7KmQaUQ7nv0dMcSF76eNavtfO5yKmb9en361b7EneTtUa7hoCUd63qGIuq2VXanIt
-	D2tVgTSkrR2ZkWoxrNdH/IUWVtPYZST7LAjUKvGmhD0yOSGKBsHIa2keT22M2FpdQbMcrL
-	VDuaxO2rgZo9Zx9jYx8KcKXUmbnkmuY=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-338-vzK5UUYHMx28Y0J6_Bxt0g-1; Tue, 20 May 2025 05:10:07 -0400
-X-MC-Unique: vzK5UUYHMx28Y0J6_Bxt0g-1
-X-Mimecast-MFC-AGG-ID: vzK5UUYHMx28Y0J6_Bxt0g_1747732206
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-43cf446681cso32964225e9.1
-        for <stable@vger.kernel.org>; Tue, 20 May 2025 02:10:07 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1747732206; x=1748337006;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=PSR1/u0V+jGJxOjEFN3NNH+g3uaL+3CXLAVsxo/mjXA=;
-        b=RO9hWDcmFCJrbgFUh72bka/70TmOmJlxbuNOfy9pV8wTxcF/3vChhRqmTl9xChr92t
-         tWogmAY7k2R6ShxyD/mxOP88VgHPLFsj4UfzCbs0UTSSVEBGtEfntQ09aJE+4IcQDXKh
-         TmBwRnjU8EYDupyojAzAFT6VaN1IC/BzITNhuk1w0FB85bBwxApsBs3Z/T4Z56/U0TlM
-         nHuysF8h/BPNsO+TgpxIMybQUfVmsM2HvndyDYzAJQnCPK+gxQaJ7bWpA59JnW4huv9a
-         4Z6WJsRv8tWMik5gqxP7Cy2+67XOEqQxgM6eZGw6L+wbNDlmVJPWZpvVpKfAgmV7Hs5w
-         7DrQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWvu7FczN51zFBcHFN2omXl1VonZmHm0lrxH00iWVIieIX7Iz14rhfQtDovHv35GDCxGn+IvGs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyL58H5JRCz5cPoq4qwzKXKnIVa309guG6iX3QJ+eYthbSPSrAx
-	blp+IZo/ELHZJd10Wf1etvixsqoJCAuxehL0D+wRgOJn06IsJxugdS/tKjbfoLIO4vSjwmWAnLg
-	zIx3qwYHYpRN2rkH/JZssENZdhL8b1nuVgdUb9H7eFfTBY7F/glrPAiFimQ==
-X-Gm-Gg: ASbGncuNG2JE5yLEL3pHoCPozuIDrA52SgpL1X7A8iqp690GmEma9WiejtwK3lB8vYW
-	7g8U9bAnufLF0onFUMY4fELsok17YnGignDeb7MEdIWvspRc5jSSY4vMWg3i1jC5KoTe1T+Zf+b
-	B/xNiAIF/vWL9sN+lQdIxuOtJXnbJS2VTZKzBWVkUHSF9/qy3w5jI0bpCoidl276DyKn1HOiPzL
-	0vH49j23fI89EJhsA84HVwCVymgbIM/FSBx5Z9s25A3PIvR3+OCIK4hVZaIrADsLbRYBJFG6bSH
-	QuZZel/cKeevwp99Q1n42+sYBearhx8lDwSz3/JX5QXfJLmo5BaNRXLyselq6miuz0DH8BeQb0g
-	nyFXb2HS0lWvX98V+WeBimF03rEOVdN6k1m83eVY=
-X-Received: by 2002:a05:600c:5008:b0:442:f482:c429 with SMTP id 5b1f17b1804b1-442fd622da0mr155950795e9.8.1747732206182;
-        Tue, 20 May 2025 02:10:06 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFg+fp/L4WVymGk9SPSBtpbctVG+Z2wbaOjNHfL4pL3y/IW6svbACJGKerPgXy0imMXlFDQmw==
-X-Received: by 2002:a05:600c:5008:b0:442:f482:c429 with SMTP id 5b1f17b1804b1-442fd622da0mr155950525e9.8.1747732205777;
-        Tue, 20 May 2025 02:10:05 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f16:e400:525a:df91:1f90:a6a8? (p200300d82f16e400525adf911f90a6a8.dip0.t-ipconnect.de. [2003:d8:2f16:e400:525a:df91:1f90:a6a8])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-447f1825457sm24064175e9.1.2025.05.20.02.10.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 20 May 2025 02:10:05 -0700 (PDT)
-Message-ID: <021dfe38-f786-46d0-a43f-769aff07b3f0@redhat.com>
-Date: Tue, 20 May 2025 11:10:04 +0200
+	s=arc-20240116; t=1747732474; c=relaxed/simple;
+	bh=fOU0jwiS9HaIPOgXAHtilLh1OTKInWV1Y/yX1PfHH6o=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=Y4N/zuCyBHxNZz7BK9doRa/aTMNii+eKOK4NgNVcBINid748MesIpH0sgqn8BP8xSepHCMjkl7XFqqZ9MZVxiHw68xfa8cl29LjZlahY+h+ZVwu7G34YMzg5ABLRDWHcnOM9KSOM8WJYCiECaSFPpWly8y/uRB+nIuTianmhFHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1uHJ3P-0007qW-GX
+	for stable@vger.kernel.org; Tue, 20 May 2025 11:14:31 +0200
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1uHJ3P-000O6R-0q
+	for stable@vger.kernel.org;
+	Tue, 20 May 2025 11:14:31 +0200
+Received: from dspam.blackshift.org (localhost [127.0.0.1])
+	by bjornoya.blackshift.org (Postfix) with SMTP id E9824415A41
+	for <stable@vger.kernel.org>; Tue, 20 May 2025 09:14:30 +0000 (UTC)
+Received: from hardanger.blackshift.org (unknown [172.20.34.65])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id 4FA74415A27;
+	Tue, 20 May 2025 09:14:28 +0000 (UTC)
+Received: from blackshift.org (localhost [::1])
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 9b9a135e;
+	Tue, 20 May 2025 09:14:26 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	linux-can@vger.kernel.org,
+	kernel@pengutronix.de,
+	Oliver Hartkopp <socketcan@hartkopp.net>,
+	Anderson Nascimento <anderson@allelesecurity.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	stable@vger.kernel.org
+Subject: [PATCH net 2/3] can: bcm: add locking for bcm_op runtime updates
+Date: Tue, 20 May 2025 11:11:02 +0200
+Message-ID: <20250520091424.142121-3-mkl@pengutronix.de>
+X-Mailer: git-send-email 2.47.2
+In-Reply-To: <20250520091424.142121-1-mkl@pengutronix.de>
+References: <20250520091424.142121-1-mkl@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] arm64: Restrict pagetable teardown to avoid false
- warning
-To: Dev Jain <dev.jain@arm.com>, ryan.roberts@arm.com
-Cc: anshuman.khandual@arm.com, catalin.marinas@arm.com,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- mark.rutland@arm.com, stable@vger.kernel.org, will@kernel.org,
- yang@os.amperecomputing.com
-References: <df7eb016-bea4-489d-aecb-1a47eb5e33b2@arm.com>
- <20250520090501.27273-1-dev.jain@arm.com>
-From: David Hildenbrand <david@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <20250520090501.27273-1-dev.jain@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
-On 20.05.25 11:05, Dev Jain wrote:
-> On 19/05/2025 13:16, David Hildenbrand wrote:
->> On 19.05.25 11:08, Ryan Roberts wrote:
->>> On 18/05/2025 10:54, Dev Jain wrote:
->>>> Commit 9c006972c3fe removes the pxd_present() checks because the caller
->>>
->>> nit: please use the standard format for describing commits: Commit 9c006972c3fe
->>> ("arm64: mmu: drop pXd_present() checks from pXd_free_pYd_table()")
->>>
->>>> checks pxd_present(). But, in case of vmap_try_huge_pud(), the caller only
->>>> checks pud_present(); pud_free_pmd_page() recurses on each pmd through
->>>> pmd_free_pte_page(), wherein the pmd may be none. Thus it is possible to
->>>> hit a warning in the latter, since pmd_none => !pmd_table(). Thus, add
->>>> a pmd_present() check in pud_free_pmd_page().
->>>>
->>>> This problem was found by code inspection.
->>>>
->>>> This patch is based on 6.15-rc6.
->>>
->>> nit: please remove this to below the "---", its not part of the commit log.
->>>
->>>>
->>>> Fixes: 9c006972c3fe (arm64: mmu: drop pXd_present() checks from
->>>> pXd_free_pYd_table())
->>>>
->>>
->>> nit: remove empty line; the tags should all be in a single block with no empty
->>> lines.
->>>
->>>> Cc: <stable@vger.kernel.org>
->>>> Reported-by: Ryan Roberts <ryan.roberts@arm.com>
->>>> Signed-off-by: Dev Jain <dev.jain@arm.com>
->>>> ---
->>>> v1->v2:
->>>>    - Enforce check in caller
->>>>
->>>>    arch/arm64/mm/mmu.c | 3 ++-
->>>>    1 file changed, 2 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
->>>> index ea6695d53fb9..5b1f4cd238ca 100644
->>>> --- a/arch/arm64/mm/mmu.c
->>>> +++ b/arch/arm64/mm/mmu.c
->>>> @@ -1286,7 +1286,8 @@ int pud_free_pmd_page(pud_t *pudp, unsigned long addr)
->>>>        next = addr;
->>>>        end = addr + PUD_SIZE;
->>>>        do {
->>>> -        pmd_free_pte_page(pmdp, next);
->>>> +        if (pmd_present(*pmdp))
->>>
->>> pmd_free_pte_page() is using READ_ONCE() to access the *pmdp to ensure it can't
->>> be torn. I suspect we don't technically need that in these functions because
->>> there can be no race with a writer.
->>
->> Yeah, if there is no proper locking in place the function would already
->> seriously mess up (double freeing etc).
-> 
-> Indeed; there is no locking, but this portion of the vmalloc VA space has been
-> allocated to us exclusively, so we know there can be no one else racing.
-> 
->>
->>> But the arm64 arch code always uses
->>> READ_ONCE() for dereferencing pgtable entries for safely. Perhaps we should be
->>> consistent here?
->>
->> mm/vmalloc.c:   if (pmd_present(*pmd) && !pmd_free_pte_page(pmd, addr))
-> 
-> Yes, I saw that. I know that we don't technically need READ_ONCE(). I'm just
-> proposng that for arm64 code we should be consistent with what it already does.
-> See Commit 20a004e7b017 ("arm64: mm: Use READ_ONCE/WRITE_ONCE when accessing
-> page tables")
-> 
-> So I'll just use pmdp_get()?
+From: Oliver Hartkopp <socketcan@hartkopp.net>
 
-Maybe that's the cleanest approach. Likely also common code should use 
-that at some point @Ryan?
+The CAN broadcast manager (CAN BCM) can send a sequence of CAN frames via
+hrtimer. The content and also the length of the sequence can be changed
+resp reduced at runtime where the 'currframe' counter is then set to zero.
 
+Although this appeared to be a safe operation the updates of 'currframe'
+can be triggered from user space and hrtimer context in bcm_can_tx().
+Anderson Nascimento created a proof of concept that triggered a KASAN
+slab-out-of-bounds read access which can be prevented with a spin_lock_bh.
+
+At the rework of bcm_can_tx() the 'count' variable has been moved into
+the protected section as this variable can be modified from both contexts
+too.
+
+Fixes: ffd980f976e7 ("[CAN]: Add broadcast manager (bcm) protocol")
+Reported-by: Anderson Nascimento <anderson@allelesecurity.com>
+Tested-by: Anderson Nascimento <anderson@allelesecurity.com>
+Reviewed-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://patch.msgid.link/20250519125027.11900-1-socketcan@hartkopp.net
+Cc: stable@vger.kernel.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ net/can/bcm.c | 66 +++++++++++++++++++++++++++++++++++----------------
+ 1 file changed, 45 insertions(+), 21 deletions(-)
+
+diff --git a/net/can/bcm.c b/net/can/bcm.c
+index 0bca1b9b3f70..871707dab7db 100644
+--- a/net/can/bcm.c
++++ b/net/can/bcm.c
+@@ -58,6 +58,7 @@
+ #include <linux/can/skb.h>
+ #include <linux/can/bcm.h>
+ #include <linux/slab.h>
++#include <linux/spinlock.h>
+ #include <net/sock.h>
+ #include <net/net_namespace.h>
+ 
+@@ -122,6 +123,7 @@ struct bcm_op {
+ 	struct canfd_frame last_sframe;
+ 	struct sock *sk;
+ 	struct net_device *rx_reg_dev;
++	spinlock_t bcm_tx_lock; /* protect currframe/count in runtime updates */
+ };
+ 
+ struct bcm_sock {
+@@ -285,13 +287,18 @@ static void bcm_can_tx(struct bcm_op *op)
+ {
+ 	struct sk_buff *skb;
+ 	struct net_device *dev;
+-	struct canfd_frame *cf = op->frames + op->cfsiz * op->currframe;
++	struct canfd_frame *cf;
+ 	int err;
+ 
+ 	/* no target device? => exit */
+ 	if (!op->ifindex)
+ 		return;
+ 
++	/* read currframe under lock protection */
++	spin_lock_bh(&op->bcm_tx_lock);
++	cf = op->frames + op->cfsiz * op->currframe;
++	spin_unlock_bh(&op->bcm_tx_lock);
++
+ 	dev = dev_get_by_index(sock_net(op->sk), op->ifindex);
+ 	if (!dev) {
+ 		/* RFC: should this bcm_op remove itself here? */
+@@ -312,6 +319,10 @@ static void bcm_can_tx(struct bcm_op *op)
+ 	skb->dev = dev;
+ 	can_skb_set_owner(skb, op->sk);
+ 	err = can_send(skb, 1);
++
++	/* update currframe and count under lock protection */
++	spin_lock_bh(&op->bcm_tx_lock);
++
+ 	if (!err)
+ 		op->frames_abs++;
+ 
+@@ -320,6 +331,11 @@ static void bcm_can_tx(struct bcm_op *op)
+ 	/* reached last frame? */
+ 	if (op->currframe >= op->nframes)
+ 		op->currframe = 0;
++
++	if (op->count > 0)
++		op->count--;
++
++	spin_unlock_bh(&op->bcm_tx_lock);
+ out:
+ 	dev_put(dev);
+ }
+@@ -430,7 +446,7 @@ static enum hrtimer_restart bcm_tx_timeout_handler(struct hrtimer *hrtimer)
+ 	struct bcm_msg_head msg_head;
+ 
+ 	if (op->kt_ival1 && (op->count > 0)) {
+-		op->count--;
++		bcm_can_tx(op);
+ 		if (!op->count && (op->flags & TX_COUNTEVT)) {
+ 
+ 			/* create notification to user */
+@@ -445,7 +461,6 @@ static enum hrtimer_restart bcm_tx_timeout_handler(struct hrtimer *hrtimer)
+ 
+ 			bcm_send_to_user(op, &msg_head, NULL, 0);
+ 		}
+-		bcm_can_tx(op);
+ 
+ 	} else if (op->kt_ival2) {
+ 		bcm_can_tx(op);
+@@ -956,6 +971,27 @@ static int bcm_tx_setup(struct bcm_msg_head *msg_head, struct msghdr *msg,
+ 		}
+ 		op->flags = msg_head->flags;
+ 
++		/* only lock for unlikely count/nframes/currframe changes */
++		if (op->nframes != msg_head->nframes ||
++		    op->flags & TX_RESET_MULTI_IDX ||
++		    op->flags & SETTIMER) {
++
++			spin_lock_bh(&op->bcm_tx_lock);
++
++			if (op->nframes != msg_head->nframes ||
++			    op->flags & TX_RESET_MULTI_IDX) {
++				/* potentially update changed nframes */
++				op->nframes = msg_head->nframes;
++				/* restart multiple frame transmission */
++				op->currframe = 0;
++			}
++
++			if (op->flags & SETTIMER)
++				op->count = msg_head->count;
++
++			spin_unlock_bh(&op->bcm_tx_lock);
++		}
++
+ 	} else {
+ 		/* insert new BCM operation for the given can_id */
+ 
+@@ -963,9 +999,14 @@ static int bcm_tx_setup(struct bcm_msg_head *msg_head, struct msghdr *msg,
+ 		if (!op)
+ 			return -ENOMEM;
+ 
++		spin_lock_init(&op->bcm_tx_lock);
+ 		op->can_id = msg_head->can_id;
+ 		op->cfsiz = CFSIZ(msg_head->flags);
+ 		op->flags = msg_head->flags;
++		op->nframes = msg_head->nframes;
++
++		if (op->flags & SETTIMER)
++			op->count = msg_head->count;
+ 
+ 		/* create array for CAN frames and copy the data */
+ 		if (msg_head->nframes > 1) {
+@@ -1023,22 +1064,8 @@ static int bcm_tx_setup(struct bcm_msg_head *msg_head, struct msghdr *msg,
+ 
+ 	} /* if ((op = bcm_find_op(&bo->tx_ops, msg_head->can_id, ifindex))) */
+ 
+-	if (op->nframes != msg_head->nframes) {
+-		op->nframes   = msg_head->nframes;
+-		/* start multiple frame transmission with index 0 */
+-		op->currframe = 0;
+-	}
+-
+-	/* check flags */
+-
+-	if (op->flags & TX_RESET_MULTI_IDX) {
+-		/* start multiple frame transmission with index 0 */
+-		op->currframe = 0;
+-	}
+-
+ 	if (op->flags & SETTIMER) {
+ 		/* set timer values */
+-		op->count = msg_head->count;
+ 		op->ival1 = msg_head->ival1;
+ 		op->ival2 = msg_head->ival2;
+ 		op->kt_ival1 = bcm_timeval_to_ktime(msg_head->ival1);
+@@ -1055,11 +1082,8 @@ static int bcm_tx_setup(struct bcm_msg_head *msg_head, struct msghdr *msg,
+ 		op->flags |= TX_ANNOUNCE;
+ 	}
+ 
+-	if (op->flags & TX_ANNOUNCE) {
++	if (op->flags & TX_ANNOUNCE)
+ 		bcm_can_tx(op);
+-		if (op->count)
+-			op->count--;
+-	}
+ 
+ 	if (op->flags & STARTTIMER)
+ 		bcm_tx_start_timer(op);
 -- 
-Cheers,
+2.47.2
 
-David / dhildenb
 
 
