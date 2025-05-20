@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-145553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-145415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C64B4ABDC18
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:20:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6132ABDBC1
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 16:15:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0514F1883D0C
-	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:20:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80DEA8C7D93
+	for <lists+stable@lfdr.de>; Tue, 20 May 2025 14:09:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06B1325C83D;
-	Tue, 20 May 2025 14:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C53AE247294;
+	Tue, 20 May 2025 14:08:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DzKkWMeI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u6tdOAo+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B61C7253F3A;
-	Tue, 20 May 2025 14:15:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 829021FBE9E;
+	Tue, 20 May 2025 14:08:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1747750510; cv=none; b=IcB70npRLKVdlPCmGIWI1L7MNRaxepPyWbHHk46+XFu1BzI6ZgJ5+ThBfGctlc9FKVniFNoIfSVG3a3b80XUwOsu1Z1b1BZKT68oWOUHR43xmmAsTrRsPAw1/nETxjgNFx1dxb5UdDJ9qy1e6ha76RfyQCerC9ucFNj8XIcP4DA=
+	t=1747750113; cv=none; b=MeyMTlqganKcFxAOIWjRKT6EJSGTHVbkY+wHRxOFO7poDe9XruWGAZLbHJTNpAhAMLQYtLyowgbcPjcfIOnyJALj1JEeO6CA6UvNPskmMdV2b3oyTTGNmEGKVskEGCSWXDAJDzVcLvWseEoFATkiHezxiHrVXkMO2rQvhxtVzDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1747750510; c=relaxed/simple;
-	bh=VEGaStB4Qc8jmzrLSKD8Njd1lysmikoLaljm3QF1diE=;
+	s=arc-20240116; t=1747750113; c=relaxed/simple;
+	bh=xHUdoYz8y099M3/J1htQJ04JtMEBaCvFxEPeuFp3daU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TEhJaQTUULhVL3US4/sEvmWK/5JhsYtiJLbSNtUg8XSt6G7nJrGDJTN4CghaxQsiC0+nEUgh2anTsvRVNEsPJHwW/Nf3sqi3M1TTyrritELeubtfilY+rhyh/JwIf1pPxGthiY/FA3kxJc0QVrxhvQmKxolgeZH2YSf/M4hoCEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DzKkWMeI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DE5AC4CEE9;
-	Tue, 20 May 2025 14:15:09 +0000 (UTC)
+	 MIME-Version; b=XAF04V1VVgi4VWSkE1cC4LgWuYPxsSoZmerfupHnx6Ru6p8nWY32Cq0BpHRbD1c14unNf0plMYbWMdNpOp0PkrClTrklkmaHj7xvQ8XLRH5QMKMke6ot5NdhWyXlznn6GKs30L25qZRN7H/795cCY3tL6fRTWdq1YhtpTmviurE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u6tdOAo+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1221BC4CEE9;
+	Tue, 20 May 2025 14:08:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1747750510;
-	bh=VEGaStB4Qc8jmzrLSKD8Njd1lysmikoLaljm3QF1diE=;
+	s=korg; t=1747750113;
+	bh=xHUdoYz8y099M3/J1htQJ04JtMEBaCvFxEPeuFp3daU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DzKkWMeI2eGAEl9quqjltDcQ+f6UX87NId/J6EBOWTLUWl0ByXzr0mjRoZibBGaDD
-	 Iuq7RCUmou2TpC0K0xXSw681bLSEqVlY4oxYj79kAUW0mhB7ZRXHiFTTTjyoKZrQIv
-	 PuJyAymPgbZrk0GuIWba024xzri4rv9EMvdXdp+E=
+	b=u6tdOAo+tVLbEv/R9xxjPaH7seMUGyM69NluWrTCf+jjjfxXb+nCr5WxJ77+zFxqb
+	 DPkNVwda2sjhS3o+N9nNNedqmxV5tjsL+hkkoQWo+l/z9JDUylvWSZxAgrsbmXNIJ4
+	 /hpa3G3Ca2b+B5f/samFLJtvjbUNm4HP8ilaDu4s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+e76d52dadc089b9d197f@syzkaller.appspotmail.com,
-	syzbot+1065a199625a388fce60@syzkaller.appspotmail.com,
-	Matt Johnston <matt@codeconstruct.com.au>,
+	Mathieu Othacehe <othacehe@gnu.org>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.14 031/145] net: mctp: Dont access ifa_index when missing
-Date: Tue, 20 May 2025 15:50:01 +0200
-Message-ID: <20250520125811.786242241@linuxfoundation.org>
+Subject: [PATCH 6.12 047/143] net: cadence: macb: Fix a possible deadlock in macb_halt_tx.
+Date: Tue, 20 May 2025 15:50:02 +0200
+Message-ID: <20250520125811.897043541@linuxfoundation.org>
 X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250520125810.535475500@linuxfoundation.org>
-References: <20250520125810.535475500@linuxfoundation.org>
+In-Reply-To: <20250520125810.036375422@linuxfoundation.org>
+References: <20250520125810.036375422@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.14-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Johnston <matt@codeconstruct.com.au>
+From: Mathieu Othacehe <othacehe@gnu.org>
 
-[ Upstream commit f11cf946c0a92c560a890d68e4775723353599e1 ]
+[ Upstream commit c92d6089d8ad7d4d815ebcedee3f3907b539ff1f ]
 
-In mctp_dump_addrinfo, ifa_index can be used to filter interfaces, but
-only when the struct ifaddrmsg is provided. Otherwise it will be
-comparing to uninitialised memory - reproducible in the syzkaller case from
-dhcpd, or busybox "ip addr show".
+There is a situation where after THALT is set high, TGO stays high as
+well. Because jiffies are never updated, as we are in a context with
+interrupts disabled, we never exit that loop and have a deadlock.
 
-The kernel MCTP implementation has always filtered by ifa_index, so
-existing userspace programs expecting to dump MCTP addresses must
-already be passing a valid ifa_index value (either 0 or a real index).
+That deadlock was noticed on a sama5d4 device that stayed locked for days.
 
-BUG: KMSAN: uninit-value in mctp_dump_addrinfo+0x208/0xac0 net/mctp/device.c:128
- mctp_dump_addrinfo+0x208/0xac0 net/mctp/device.c:128
- rtnl_dump_all+0x3ec/0x5b0 net/core/rtnetlink.c:4380
- rtnl_dumpit+0xd5/0x2f0 net/core/rtnetlink.c:6824
- netlink_dump+0x97b/0x1690 net/netlink/af_netlink.c:2309
+Use retries instead of jiffies so that the timeout really works and we do
+not have a deadlock anymore.
 
-Fixes: 583be982d934 ("mctp: Add device handling and netlink interface")
-Reported-by: syzbot+e76d52dadc089b9d197f@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68135815.050a0220.3a872c.000e.GAE@google.com/
-Reported-by: syzbot+1065a199625a388fce60@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/681357d6.050a0220.14dd7d.000d.GAE@google.com/
-Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
-Link: https://patch.msgid.link/20250508-mctp-addr-dump-v2-1-c8a53fd2dd66@codeconstruct.com.au
+Fixes: e86cd53afc590 ("net/macb: better manage tx errors")
+Signed-off-by: Mathieu Othacehe <othacehe@gnu.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250509121935.16282-1-othacehe@gnu.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mctp/device.c | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/cadence/macb_main.c | 19 ++++++-------------
+ 1 file changed, 6 insertions(+), 13 deletions(-)
 
-diff --git a/net/mctp/device.c b/net/mctp/device.c
-index 8e0724c56723d..7c0dcf3df3196 100644
---- a/net/mctp/device.c
-+++ b/net/mctp/device.c
-@@ -117,11 +117,18 @@ static int mctp_dump_addrinfo(struct sk_buff *skb, struct netlink_callback *cb)
- 	struct net_device *dev;
- 	struct ifaddrmsg *hdr;
- 	struct mctp_dev *mdev;
--	int ifindex, rc;
--
--	hdr = nlmsg_data(cb->nlh);
--	// filter by ifindex if requested
--	ifindex = hdr->ifa_index;
-+	int ifindex = 0, rc;
-+
-+	/* Filter by ifindex if a header is provided */
-+	if (cb->nlh->nlmsg_len >= nlmsg_msg_size(sizeof(*hdr))) {
-+		hdr = nlmsg_data(cb->nlh);
-+		ifindex = hdr->ifa_index;
-+	} else {
-+		if (cb->strict_check) {
-+			NL_SET_ERR_MSG(cb->extack, "mctp: Invalid header for addr dump request");
-+			return -EINVAL;
-+		}
-+	}
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index 60847cdb516ee..ae100ed8ed6b9 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -1016,22 +1016,15 @@ static void macb_update_stats(struct macb *bp)
  
- 	rcu_read_lock();
- 	for_each_netdev_dump(net, dev, mcb->ifindex) {
+ static int macb_halt_tx(struct macb *bp)
+ {
+-	unsigned long	halt_time, timeout;
+-	u32		status;
++	u32 status;
+ 
+ 	macb_writel(bp, NCR, macb_readl(bp, NCR) | MACB_BIT(THALT));
+ 
+-	timeout = jiffies + usecs_to_jiffies(MACB_HALT_TIMEOUT);
+-	do {
+-		halt_time = jiffies;
+-		status = macb_readl(bp, TSR);
+-		if (!(status & MACB_BIT(TGO)))
+-			return 0;
+-
+-		udelay(250);
+-	} while (time_before(halt_time, timeout));
+-
+-	return -ETIMEDOUT;
++	/* Poll TSR until TGO is cleared or timeout. */
++	return read_poll_timeout_atomic(macb_readl, status,
++					!(status & MACB_BIT(TGO)),
++					250, MACB_HALT_TIMEOUT, false,
++					bp, TSR);
+ }
+ 
+ static void macb_tx_unmap(struct macb *bp, struct macb_tx_skb *tx_skb, int budget)
 -- 
 2.39.5
 
